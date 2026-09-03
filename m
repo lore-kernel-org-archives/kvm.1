@@ -1,218 +1,237 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C8149502D;
-	Thu,  3 Sep 2026 11:43:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48784499F00
+	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 11:50:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788435815; cv=none; b=NNOE99es5XAFTd4D8IQ8pMeUKLhdp+Cf472G/21UAdZtLQJNCsRBcncRbGVRKwmyt0ObEXHe4zK+IBohX6bkVISZArobzWYMJ4NHB8/MEM2Ih+P3w4sRSO12SVMd6S/3ATJ2g2KDFCNvW9FN5WlME/mkaU0lJw6ITfi1wvDNJ7E=
+	t=1788436256; cv=none; b=IGOwZaFr2XFjrubZqt8Cogrm2BuaRJCc8zpPDLn7YNOp5U2d82/uaxyhttHjqYO8tpyh4efXZJkuKap8wRuUygp4jKTbbTJYE4xvPz1Fg0+V8wl6mzQ18t0QIbUOgcZ637EQUNnMsvdvPVPDTlYU8h44SpAsSFHZSA98qg+jh0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788435815; c=relaxed/simple;
-	bh=ZrbwLximMOBFhEmsQ2KRoTd7L8oPHb0M7HOR1hFw/QM=;
+	s=arc-20240116; t=1788436256; c=relaxed/simple;
+	bh=IA/FyinYLLiRR7uiR9JiTcuMCefiei+WEKGA7rZCOXs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qvt1vfamgUCn/dOLx5zsVpf+/+VgI2jk04HTJbwxpwmpOS3CJ+U7TFH2amTUCOy/N7us4VntrooGTcuqcrP+zLybw9TeuCtQll7LCYvjdv9H3a7/KJFk7E0WVAdQ0AVTPB5+d4gz7P4z1ZR67h2jba6zdLNO/UKuOIsw0tU6bQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DhmA2Olb; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=qTms8GKupF3DazAwGzz8L4S3PH+sXX3D2EmcXDDba32rfoZXpfPvM/L8JKlKJLLqNZ60//bTPN1kGddfkudaKCaGZ1gc4b3GOonRE7x0ZGx86XrMhsf4jEINw04ymsYgN+QiBFpFSW6dlA9PNMy/QVtwvqVU2Fb8FBKXnarqLCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c1ME5cDx; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DhmA2Olb"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 683AVdb82788612;
-	Thu, 3 Sep 2026 11:42:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=9oLkw0qjqO4GI99RoguIDq2Of1fwQf
-	bYDfKvR2b2tKM=; b=DhmA2OlbGLz7GEK7kiDWIF4IAi/NILmTDomo0TFAlGFHYB
-	KSBRpb745sgCXhVbDqoHnrruxZwZazgfAewAwe+DNLAZeiar3doff+n+NZil7l4Z
-	NGh5jbCEb2Xybon06LggFN59wHOS4+asVFQuKc1BdWDiWUVWxh8iXmO0ig69KbIe
-	K6R7sOSOElBYFPPnuUVVRC1z6ibyYJvAJx/TApIMIC8GFuOXwTSOAyeiE4fK+Yci
-	OWZZ4HnI22dhJUNyPQzp+tJF+MLnXW/wTWYT1MR/XeMSMPNB6i0qH/+BWYDopddU
-	RnkECX5KJRxY67oueIpSOpVyXLVyeaWeqp8dddhw==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbq2tm0p0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Sep 2026 11:42:48 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 683BfFVY021696;
-	Thu, 3 Sep 2026 11:42:47 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gc9rqqmb1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Sep 2026 11:42:47 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 683Bgi6a37159326
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 3 Sep 2026 11:42:44 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E8B1D2004D;
-	Thu,  3 Sep 2026 11:42:43 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EFAFC2004B;
-	Thu,  3 Sep 2026 11:42:42 +0000 (GMT)
-Received: from osiris (unknown [9.111.48.84])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  3 Sep 2026 11:42:42 +0000 (GMT)
-Date: Thu, 3 Sep 2026 13:42:41 +0200
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
-        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Friedrich Welter <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>,
-        Gautam Gala <ggala@linux.ibm.com>,
-        Hariharan Mari <hari55@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
-        Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>,
-        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-        Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v7 02/23] KVM: Make device name configurable
-Message-ID: <20260903114241.33034-C-seiden@linux.ibm.com>
-References: <20260831144802.834315-1-seiden@linux.ibm.com>
- <20260831144802.834315-3-seiden@linux.ibm.com>
- <apdweRfqt4dTxcU9@google.com>
- <20260902075028.231001-D-seiden@linux.ibm.com>
- <aphLXQL1H2zYZgTi@google.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c1ME5cDx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788436239;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7N/zyzj0lUQ4bvNdYRstAKniDWgPqMJqPkFYzvAl/Yg=;
+	b=c1ME5cDxGI4Avn64mGJg58bzA9QZq6E21USj/5o5Ev+aLdFsBJJ/HHccRGS6+Krz+D6oX/
+	9WuCEqkZWhiYIBHAomMEuennseM5GpWZw7B83WWCHmRmA2iG/UXM8CYpHYpYNJn5as/Y90
+	/+IwJRiuqdlQ7sTgSSugkOi5f6lFD7Q=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-358-uFtoyYfqPlOg56D0c1VwWQ-1; Thu,
+ 03 Sep 2026 07:50:38 -0400
+X-MC-Unique: uFtoyYfqPlOg56D0c1VwWQ-1
+X-Mimecast-MFC-AGG-ID: uFtoyYfqPlOg56D0c1VwWQ_1788436237
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0F44E19540C5;
+	Thu,  3 Sep 2026 11:50:37 +0000 (UTC)
+Received: from redhat.com (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5559D1800346;
+	Thu,  3 Sep 2026 11:50:33 +0000 (UTC)
+Date: Thu, 3 Sep 2026 12:50:31 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Luigi Leonardi <leonardi@redhat.com>
+Cc: Ani Sinha <anisinha@redhat.com>, qemu-devel <qemu-devel@nongnu.org>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH 4/4] igvm/sev: forward the IGVM guest policy to the
+ platform before launch
+Message-ID: <aplfB4L_WoFdpeBD@redhat.com>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+References: <20260901-fix_igvm_policy-v1-0-e93a6cf8c5ac@redhat.com>
+ <20260901-fix_igvm_policy-v1-4-e93a6cf8c5ac@redhat.com>
+ <16C1B63D-7E80-49DF-83AC-47769A6D9AE8@redhat.com>
+ <apk1djopa9z3tfYR@leonardi-redhat>
+ <CEF80B59-E81A-4B97-87E5-9087FAF3680B@redhat.com>
+ <aplQKjieyMHUoCWs@leonardi-redhat>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aphLXQL1H2zYZgTi@google.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=bc1bluPB c=1 sm=1 tr=0 ts=6a995d39 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=OuOidQGzm_B0OR8t9-sA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAzMDEwMCBTYWx0ZWRfX6I//yFMP1cvb
- 2NSO8UtcbS/jeQvugs8aSITFHUubx5IDuYFtrPh776Rm440IrrG9V06vQwZk4Apbqql1Mo/zmhQ
- Kbu98tkJDhVTrcay/2quJr5yzNARM8c=
-X-Proofpoint-ORIG-GUID: PFKHzACBWoaNkpsFvvSuoBR3lbObVU9R
-X-Proofpoint-GUID: Z39W2fnS2iSIUk0mKJtmPKWfITGpItDI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAzMDEwMCBTYWx0ZWRfX5yoMhPcW5hld
- BSYUovIRTMpBfqaI5PY8NfO/hznkg14OqthzmsfqRtis/roYxWNnMh0UeE5A3A9mINIYzataINO
- m5mbnK0N17WYfJ4w4V3VSHXkKWPDyhAJchPu0ncyQL1t/hEfis116Pu5/ZIQuGr72yGXUomuO05
- qar4zin8TnoRPRhkvif4leyWJI1RA1T55RQ/+5qVgtyyfSb+oDH16eA6IyLWkDdaMQHVhqxjW4N
- rh7OZ7aYsuS0dYbbycwpP/ObNh/kQuhi8yc1QygjxFzUuLnlkGs7MmXt0wpPoNnOmFQoFPwlbnR
- Xio5HUs82IsLmULN+4kmxpRagb3nMBp9SNjMR+defDYovoRq0HhjhdYnOFXYA9/v8IS17ZTwdkX
- RJ/Rfootf80xDNOUceFSdXfcUKgSpSDxe2JFUp+HXb6aWwPWkVDm7oQWxDY51HWX1e27KlJ3/RU
- xaJxHFYeIifbL/hYI0w==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-03_03,2026-09-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 suspectscore=0 adultscore=0 malwarescore=0 spamscore=0
- lowpriorityscore=0 phishscore=0 clxscore=1015 priorityscore=1501
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2609030100
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aplQKjieyMHUoCWs@leonardi-redhat>
+User-Agent: Mutt/2.4.0 (2026-06-19)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Wed, Sep 02, 2026 at 09:14:21AM -0700, Sean Christopherson wrote:
-> On Wed, Sep 02, 2026, Steffen Eiden wrote:
-> > On Tue, Sep 01, 2026 at 05:40:25PM -0700, Sean Christopherson wrote:
-> > > On Mon, Aug 31, 2026, Steffen Eiden wrote:
-> > > > Allow KVM implementations to choose alternative device names. This is
-> > > > especially useful for architectures providing multiple KVM
-> > > > implementations simultaneously. Architectures providing multiple KVM
-> > > > implementations must compile the KVM common code once per
-> > > > implementation and mange symbols.
+On Thu, Sep 03, 2026 at 01:02:17PM +0200, Luigi Leonardi wrote:
+> On Thu, Sep 03, 2026 at 03:33:30PM +0530, Ani Sinha wrote:
+> > 
+> > 
+> > > On 3 Sep 2026, at 2:31 PM, Luigi Leonardi <leonardi@redhat.com> wrote:
 > > > 
-> > > What about tracepoints?  Or do those show up as "kvm" and "kvm-arm64"?
+> > > Hi Ani,
+> > > 
+> > > On Thu, Sep 03, 2026 at 02:16:30PM +0530, Ani Sinha wrote:
+> > > > 
+> > > > 
+> > > > > On 1 Sep 2026, at 3:39 PM, Luigi Leonardi <leonardi@redhat.com> wrote:
+> > > > > 
+> > > > > The guest policy carried in the IGVM guest-policy initialization header
+> > > > > was parsed into QIgvm but never forwarded to the confidential guest
+> > > > > platform: the previous callback ran at the end of qigvm_process_file,
+> > > > > after LAUNCH_START had already been issued, so writing the policy had
+> > > > > no effect.
+> > > > > 
+> > > > > Add a set_guest_policy callback and invoke it from the guest-policy
+> > > > > initialization handler, so the policy reaches the platform before
+> > > > > LAUNCH_START.
+> > > > > 
+> > > > > The guest policy can also be set on the command line. As it is part of
+> > > > > the attestation report, silently overriding it would cause attestation
+> > > > > to fail, so return an error if the command-line value differs from the
+> > > > > one supplied by the IGVM file.
+> > > > > 
+> > > > > Link: https://gitlab.com/qemu-project/qemu/-/work_items/4189
+> > > > > Fixes: 915b47078d ("backends/igvm: Handle policy for SEV guests")
+> > > > > Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
+> > > > > ---
+> > > > > backends/confidential-guest-support.c |  9 ++++++++
+> > > > > backends/igvm.c                       |  4 ++++
+> > > > > target/i386/sev.c                     | 39 +++++++++++++++++++++++++++++++++++
+> > > > > 3 files changed, 52 insertions(+)
+> > > > > 
+> > > > > diff --git a/backends/confidential-guest-support.c b/backends/confidential-guest-support.c
+> > > > > index a0b36d2da5..c0d15b4a76 100644
+> > > > > --- a/backends/confidential-guest-support.c
+> > > > > +++ b/backends/confidential-guest-support.c
+> > > > > @@ -38,6 +38,14 @@ static int set_guest_state(hwaddr gpa, uint8_t *ptr, uint64_t len,
+> > > > >    return -1;
+> > > > > }
+> > > > > 
+> > > > > +static int set_guest_policy(ConfidentialGuestPolicyType policy_type,
+> > > > > +                            uint64_t policy, Error **errp)
+> > > > > +{
+> > > > > +    error_setg(errp,
+> > > > > +               "Setting guest policy is not supported for this platform");
+> > > > > +    return -1;
+> > > > > +}
+> > > > > +
+> > > > > static int set_id_block(void *id_block, uint32_t id_block_size,
+> > > > >                        void *id_auth, uint32_t id_auth_size,
+> > > > >                        Error **errp)
+> > > > > @@ -62,6 +70,7 @@ static void confidential_guest_support_class_init(ObjectClass *oc,
+> > > > >    ConfidentialGuestSupportClass *cgsc = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
+> > > > >    cgsc->check_support = check_support;
+> > > > >    cgsc->set_guest_state = set_guest_state;
+> > > > > +    cgsc->set_guest_policy = set_guest_policy;
+> > > > >    cgsc->set_id_block = set_id_block;
+> > > > >    cgsc->get_mem_map_entry = get_mem_map_entry;
+> > > > > }
+> > > > > diff --git a/backends/igvm.c b/backends/igvm.c
+> > > > > index 6545382546..5131ee7829 100644
+> > > > > --- a/backends/igvm.c
+> > > > > +++ b/backends/igvm.c
+> > > > > @@ -868,6 +868,10 @@ static int qigvm_initialization_guest_policy(QIgvm *ctx,
+> > > > > 
+> > > > >    if (guest->compatibility_mask & ctx->compatibility_mask) {
+> > > > >        ctx->sev_policy = guest->policy;
+> > > > > +        if (ctx->cgsc) {
+> > > > > +            return ctx->cgsc->set_guest_policy(GUEST_POLICY_SEV,
+> > > > > +                                               guest->policy, errp);
+> > > > > +        }
+> > > > >    }
+> > > > >    return 0;
+> > > > > }
+> > > > > diff --git a/target/i386/sev.c b/target/i386/sev.c
+> > > > > index c76cdba8d2..533ea4b54e 100644
+> > > > > --- a/target/i386/sev.c
+> > > > > +++ b/target/i386/sev.c
+> > > > > @@ -128,6 +128,8 @@ struct SevCommonState {
+> > > > >    bool kernel_hashes;
+> > > > >    uint64_t sev_features;
+> > > > >    uint64_t supported_sev_features;
+> > > > > +    /* whether the guest policy was explicitly set on the command line */
+> > > > > +    bool policy_set;
+> > > > > 
+> > > > >    /* runtime state */
+> > > > >    uint8_t api_major;
+> > > > > @@ -2723,6 +2725,40 @@ static int cgs_get_mem_map_entry(int index,
+> > > > >    return 0;
+> > > > > }
+> > > > > 
+> > > > > +static int cgs_set_guest_policy(ConfidentialGuestPolicyType policy_type,
+> > > > > +                                uint64_t policy, Error **errp)
+> > > > > +{
+> > > > > +    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
+> > > > > +
+> > > > > +    if (policy_type != GUEST_POLICY_SEV) {
+> > > > > +        error_setg(errp, "SEV: Invalid guest policy type provided for SEV: %d",
+> > > > > +                   policy_type);
+> > > > > +        return -1;
+> > > > > +    }
+> > > > > +
+> > > > > +    if (sev_snp_enabled()) {
+> > > > > +        SevSnpGuestState *sev_snp_guest = SEV_SNP_GUEST(sev_common);
+> > > > > +
+> > > > > +        if (sev_common->policy_set &&
+> > > > > +            sev_snp_guest->kvm_start_conf.policy != policy) {
+> > > > > +            error_setg(errp, "SNP: policy mismatch between IGVM and CLI");
+> > > > > +            return -1;
+> > > > > +        }
+> > > > > +
+> > > > > +        sev_snp_guest->kvm_start_conf.policy = policy;
+> > > 
+> > > Thanks for you review!
+> > > 
+> > > > 
+> > > > I had fixed a bug initially here where we need to check if the policy passed is not 0. I am not sure if that fix is still needed here.
+> > > > Please test this scenario:
+> > > > a) Generate an IGVM file with policy set to 0.
+> > > 
+> > > 0 is not a valid sev-snp guest policy: bit 17 is reserved and must be 1.
+> > > It's a valid sev/sev-es policy though.
+> > > 
+> > > > b) Start a confidential SEV-SNP guest with policy set in command line and with this IGVM.
+> > > > I think with your patch this will fail as the policies won’t match.
+> > > 
+> > > Correct: this was suggested by Gerd, as this is something unexpected. I
+> > > think it would break launch measurement.
 > > 
-> > Yes, I want them to show up as kvm and  kvm-arm64.
-> > 
-> > Thanks for pointing that out - I just noticed that I forgot to switch
-> > the trace system to kvm-arm64 for the common tracepoints in
-> > trace/events/kvm.h
-> > I only did it for the arch-local traces in PATCH 21.
-> > 
-> > I would just do the following:
-> > 
-> > diff --git a/include/trace/events/kvm.h b/include/trace/events/kvm.h
-> > index b282e3a86769..5d4f8a0693a3 100644
-> > --- a/include/trace/events/kvm.h
-> > +++ b/include/trace/events/kvm.h
-> > @@ -5,7 +5,11 @@
-> >  #include <linux/tracepoint.h>
-> > 
-> >  #undef TRACE_SYSTEM
-> > +#ifdef KVM_S390_ARM64
-> 
-> Side topic, I recommend choosing a macro name that doesn't have a near-collision
-> with CONFIG_KVM_S390_ARM64.  This *looks* like a typo, i.e. it looks like you
-> forgot the CONFIG_ prefix.  Especially since the macro is defined in the Makefile
-> and won't show up with e.g. "git grep -w KVM_S390_ARM64". E.g. KVM_S390_BUILD_ARM64
-> or something?
+> > Yes I think the right thing to do is that if the policy is correctly set by IGVM, override the one set in the cli with the one in IGVM. Otherwise ignore IGVM policy.
 
-Interesting. The name was deliberately chosen to be similar. But I
-see that it could be confusing.
+As a general rule, if the user passes a parameter to QEMU, it should
+always either be honoured, or result in an error. Selectively ignoring
+user input has proved to be a generally bad idea, as it tends to mask
+user configuration mistakes.
 
-I am not totally happy with KVM_S390_BUILD_ARM64 but I cannot find a
-better name either.
+> mmh why? I might be missing something, but for now I'm not really convinced:
+> if we have a policy set in IGVM we should use that one. Overriding it using the
+> CLI, may cause measurement failure. If we have an IGVM image with a wrong policy
+> set, then the problem should be fixed there.
 
-> 
-> Side topic #2, this entire approach seems extremely brittle unless you make it
-> all but impossible for non-KVM code to get at KVM structure definitions.  Outside
-> of KVM, all compilation units will see the s390 version of KVM structures.  Which
-> is "fine", but obviously dangerous and IMO asking for maintenance issues down the
-> road.
-> 
-> > +#define TRACE_SYSTEM kvm-arm64
-> > +#else
-> >  #define TRACE_SYSTEM kvm
-> > +#endif /* KVM_S390_ARM64 */
-> > 
-> >  #define ERSN(x) { KVM_EXIT_##x, "KVM_EXIT_" #x }
-> > 
-> > 
-> > This would leak a bit of arm on s390 into common KVM but I do not see
-> > another way.
-> 
-> Morpheus: Stop trying to use macros, and use macros!
-> 
-> The most annoying thing is that macro shenanigans don't play well with hyphens,
-> but that can be handled either by using a different macro for the trace name, or
-> by creating /dev/kvm_arm64 instead of /dev/kvm-arm64.  My vote would be to have
-> the device be /dev/kvm_arm64, assuming that doesn't cause problems elsewhere.
+If the user choose to override policy on the CLI, isn't it now just
+their problem to also figure out what the new expected measurement
+will be ? 
 
-I am not aware of any problems that could cause. It was just a personal
-preference IIRC. 
+Why wouldn't we just honour the IGVM by default, and if the CLI
+has further customizations let them override the IGVM, and leave
+the user to figure out the implications.
 
-> And taking things a few steps further, we can solve the MMIO issue in a more
-> elegant way, and eliminate the runtime string building in this patch (after looking
-> more closely, that code needs to be jettisoned no matter what, there's simply no
-> reason to specify the names at runtime since they're separate compilation units).
-> 
-> Rather than splatter #defines throughout header files, deal with the bulk of the
-> pain in Makefile.kvm.  By feeding conditionals into Makefile.kvm, the s390+arm64
-> build can easily omit coalesced_mmio.o and async_pf.o, define __KVM_HAVE_ARCH_MMIO
-> programatically without having to change other architectures, and solve the naming
-> stuff.
+With regards,
+Daniel
+-- 
+|: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
+|: https://libvirt.org          ~~          https://entangle-photo.org :|
+|: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
 
-Yes, this is a great idea. Thank you. I second you, this looks more clean
-and stable than the stuff we came up with :) 
-
-I'll integrate it into the series and send it with the next round.
-
-Thank you for your input. Very much appreciated.
-
-	Steffen
-
-...
