@@ -1,144 +1,144 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A05503BDA;
-	Thu,  3 Sep 2026 19:36:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3BF4ACC78
+	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 19:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788464216; cv=none; b=iZ8q4U7oiUAyB9ryCO991b4II+o4OWgBHlkxn06yyBCEwcULnfwMBQS51kf/SPOtcDc5cLVU3W2OtVnX/hpAFOjauDXjCiQGXKQHYc5rrukyv90/cz9pNOPzWn+uROihu9mm1ws6Jlrg8lM87pEs77iYMyuW27nygbphZSzO/9Q=
+	t=1788464219; cv=none; b=nnWoufT7oVpQF5VOOs8g8N8UGnmc3aNKvgEqz7BNCCluHS+PmCdDpOnexQUbUSJel9hWYC2HseDMLDgomQekjd97j/1KDfEaAEkGsGDHKURVleCidWDlpZSIiV7plUbqXvykKrJnaSofvnlKq/+6ZDzthO969JH15l8RF+kX+8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788464216; c=relaxed/simple;
-	bh=2gpy4HhiwKnU9m8xg/t1eefm48IBe/sw+KZ5jv8e3Gs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=udZdwoUz1IrenRVOhROMWoP9WY5oXoQx4hlxjtrQxONJjpAmGAlTiUsLt2TrCpl/Vt8BrceRkcgaqI4S+d0cS5uRBwcCUXiDL6Q0izfrbr8S0upMnMny+arceguZl7Kl5FPkuJlwxg9hPSDFfa5AQMz6SEPPk0uevlW12ENkV3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dG5UxycT; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1788464219; c=relaxed/simple;
+	bh=iL4LwTv6jpagSCEbFOJxY6wYTYCRxlWMX+RJhMh9vxI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UzgAovLwqB4Pyu6tLIQ4h38/6hzuuwCS0s8lpUT9rLwDb9FCb7jmEn1ZsD9hqfkctYB851CratL5qQbGk+GNvKLhStf8Z/8mCCnjtFE+J8YzAyWjl9YtoCTBZD9xQjp2lVoEJbI5aswOvWe1ytDku6+evRh7Om+0LehC5T8HnAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FpnnLp7C; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dG5UxycT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788464195; x=1820000195;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=2gpy4HhiwKnU9m8xg/t1eefm48IBe/sw+KZ5jv8e3Gs=;
-  b=dG5UxycT3Wv0RfuJnQkIu+TEGgkGtjjs2CTCWjPnvYcGTfjft19qWxf2
-   WjxfEFIha/1EHhM0hTg4uTah6HPDzdOf+cEfMMbubyRW6y2hDOGzl+qSA
-   dAJPWiSqGiprJfpCXiXAurgHM0ZGcwOgYrr/2bVL9BkjhHslreMAuU8XC
-   64Q5vaT7U3jl8KmLrhna8WdvN+HHc/jnqvwSrnIhlj3YtI0WD9hTU1GMG
-   +qnlZUBwXh01BT+dUx4lpVyBdiI9J98yrM5WYmUdNzftBEWOALfeT7zWo
-   m2H5RevXZZA+N1rMVdcP2sSfitlD554bjQSOOHHFsEr5zh6PmjwBLVZJH
-   g==;
-X-CSE-ConnectionGUID: 2cUfgOtXSwa3TT7BXGdG0Q==
-X-CSE-MsgGUID: YVQxJcuEQRiJMAMGJuBbUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="100119056"
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="100119056"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 12:36:31 -0700
-X-CSE-ConnectionGUID: HGdMqjXkQ6miKKg4VJ28Qg==
-X-CSE-MsgGUID: k/lR5R/vTKmTCBJRhi+9BA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="263627184"
-Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.110.172]) ([10.125.110.172])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 12:36:29 -0700
-Message-ID: <ac7c383e-9da5-4456-97fe-532518d6c2a7@intel.com>
-Date: Thu, 3 Sep 2026 12:36:28 -0700
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FpnnLp7C"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-395cf2535acso237732a91.1
+        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 12:36:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1788464202; x=1789069002; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=yYE9pOet48lRlcAA3fKM0Js3n1ztODOyy6XvoWvQ26M=;
+        b=FpnnLp7CQ3xfI6s1ylRHY9OFWoGRIWDdNONhl4iGziHZh1ihSLAqZkwJiT7GtvMcs0
+         +6cuBkzm5tOxx3UUdLJh/x2OhwLaAzCNWnBnY/JvZOLH6e/8nB+ERBjjLQXCc+YYkJPc
+         nHTjuozrYuf6A6a4sIbT2Im4mpXOXKtXlthEFHQANw4RS6s64wtB5jXrxn+dgVNUrnwI
+         jinHloK7SxLITZg2ntNq2weInw1uHmFaQOjJfyH2dUXjvVmB6D7WIi4A27FEb9yneHOB
+         zD41QRdUkAdUhYxp3INT9BIxP38x/yJvtinzuPhpTC6/p2lEcX99b3qoz+K4CQdu1wtl
+         XNuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788464202; x=1789069002;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=yYE9pOet48lRlcAA3fKM0Js3n1ztODOyy6XvoWvQ26M=;
+        b=ImstH1U/Sm6J90Zw3QZ5/SKRaIUIkMCii6MFFeRfE/POvPBQrcyho5sP3b5luocvfT
+         ktfNeb58SVXxnICFPKjERVIPz9rqAvRA0XoBXpIPNxh2BbRO6puX5R9pOKWTaZMQhQkz
+         1DhtL1XlOU5jXAbmyv1vpg4pRhS20gOZr3DtKDwMKYXzl1on6/xMdOXStjrGpn8d5tbs
+         VKl5z3aqwOIc6G4krgsp8Mqk/938Rn68drYS3c+XARLfolPH897qwR9Fxcydnd/EvER2
+         RPI7JeHyWYBlZNDrIKlPzvuBG1d/+IHUOEkmPpROh3O/r8otFV/laG4ZbOZs+6KgSGu4
+         wEgg==
+X-Forwarded-Encrypted: i=1; AKwUvBwOGifiylA/7F+ChUd8/3jWLES549k8gxKjK2CF8GVBt7y+QfXqn24QCxI6XWMLliV6pmQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++nxl28AsG8aJttd1psrGzb84cs9XMv6IdC3B6npMJ8NFFVtVrBn
+	O0u7bO5Wf3ntAZ/spE50+y98yrtg041icaGcwZI6zn3iWDsXR59RokaeE8uXFHQeSFs=
+X-Gm-Gg: AYBFou1ib00299HxQAfry1vZretKkstmNZN9fBY9/ztmJBioIIDf/s6WpVFzqExYAFp
+	wSFzJG2uN6clIeaFAfXmYYNcvJkFNQdRofPDiLRPfKEb1mSiO71wIBXHoRfTHBcg8n9mxxcnSjE
+	dtMjEpyhlLu48yeknZh9RqV2EekERO0fS8fK9RnvxUuhGnL2jYGuNmjFKhEXD5lTJe4c38GONKy
+	xQ2ZoScWfIniOYN4pgQaGNtKkFN2ekQ+iu/0423qi7FvZYt5OqdX7Vvo+rB+l/D5/k4Xd26/xGa
+	0zsIUcRifaxb2lqFgMRZ1zfZw1CHih8Q0f/kJ8LeOdMJEUywSdLH5g22Zah/zfGxF1xdtGbnqc5
+	SiEsiDtgC2hIZeR6cs+RudAuv4kcT2zNVHNI0aKA+apILNlKXmQkxYsnjiadPFFHhPHaDgiYTEE
+	dKbwSQW0C3vSj+8RtFOxAXU2zuhE6H735bRzaVosleklAX1bTCyW8rjzRjQW8ja8TN08DgwI1sB
+	0eno8lxCT44UlM=
+X-Received: by 2002:a17:90b:5484:b0:384:927f:3db9 with SMTP id 98e67ed59e1d1-39b27c0fa43mr86643a91.1.1788464202333;
+        Thu, 03 Sep 2026 12:36:42 -0700 (PDT)
+Received: from p14s.cg.shawcable.net ([2604:3d09:148c:c800:40c0:ec33:6266:c275])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b083e4fafsm6836951a91.1.2026.09.03.12.36.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Sep 2026 12:36:41 -0700 (PDT)
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: berrange@redhat.com,
+	kchamart@redhat.com,
+	pierrick.bouvier@oss.qualcomm.com,
+	peter.maydell@linaro.org,
+	mst@redhat.com,
+	cohuck@redhat.com,
+	pbonzini@redhat.com,
+	eblake@redhat.com,
+	armbru@redhat.com,
+	lorenzo.pieralisi@linaro.org,
+	gshan@redhat.com,
+	enju.kohei@fujitsu.com
+Cc: qemu-devel@nongnu.org,
+	qemu-arm@nongnu.org,
+	kvm@vger.kernel.org,
+	mathieu.poirier@linaro.org
+Subject: [RFC v4 16/24] hw/arm/virt: Embed Realm VM type with IPA address space
+Date: Thu,  3 Sep 2026 13:36:03 -0600
+Message-ID: <20260903193611.1058589-17-mathieu.poirier@linaro.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
+References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 10/11] Documentation/x86: Add documentation for TDX's
- Dynamic PAMT
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "Huang, Kai" <kai.huang@intel.com>, "Zhao, Yan Y" <yan.y.zhao@intel.com>,
- "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
- "Wu, Binbin" <binbin.wu@intel.com>, "kas@kernel.org" <kas@kernel.org>,
- "seanjc@google.com" <seanjc@google.com>, "mingo@redhat.com"
- <mingo@redhat.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "nik.borisov@suse.com" <nik.borisov@suse.com>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "hpa@zytor.com" <hpa@zytor.com>, "tglx@kernel.org" <tglx@kernel.org>,
- "Annapurve, Vishal" <vannapurve@google.com>,
- "Mehta, Sohil" <sohil.mehta@intel.com>, "bp@alien8.de" <bp@alien8.de>,
- "Gao, Chao" <chao.gao@intel.com>, "x86@kernel.org" <x86@kernel.org>
-Cc: "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
- "hongyu.ning@linux.intel.com" <hongyu.ning@linux.intel.com>
-References: <20260903015113.93343-1-rick.p.edgecombe@intel.com>
- <20260903015113.93343-11-rick.p.edgecombe@intel.com>
- <225572f8-5636-41fd-9315-ef5efb78f0a5@intel.com>
- <7cd4a38ed0ab1618a90e1afc8d56b450d57a9374.camel@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <7cd4a38ed0ab1618a90e1afc8d56b450d57a9374.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/3/26 12:31, Edgecombe, Rick P wrote:
-> So we have:
-> 1. If you are inclined to think support bits should actually report whether
-> something is supported, then this kinda is a TDX module bug that we are working
-> around by making DPAMT an opt-in.
-> 2. The bug will only be hit if anyone has configured a low number of hkids.
-> 
-> We could optimistically think the TDX module with the fix will be distributed
-> before anyone with this configuration hits it? And if that is wrong, add the
-> keyid checking or opt-in as a fix. Then maybe we save some code long term.
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-How about we just make the kernel tolerate DPAMT enabling failures. If a
-user makes this weird hkid config, then they'll get temporarily higher
-memory consumption until they fix their config or get a new TDX module.
+Set the Ream VM bit in the IPA address space size when needed.
 
-That seems way better than trying to work around this with opt-ins or
-permanent documentation for a temporary problem.
+Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+---
+ hw/arm/virt.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 37211bc81926..61751aa31e0d 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -97,6 +97,8 @@
+ #include "qemu/guest-random.h"
+ #include "hw/watchdog/sbsa_gwdt.h"
+ 
++#include <linux/kvm.h>
++
+ static GlobalProperty arm_virt_compat_defaults[] = {
+     { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "48" },
+ };
+@@ -4053,9 +4055,12 @@ static int virt_kvm_type(MachineState *ms, const char *type_str)
+     VirtMachineState *vms = VIRT_MACHINE(ms);
+     int max_vm_pa_size, requested_pa_size;
+     bool fixed_ipa;
++    int vm_type;
+ 
+     max_vm_pa_size = kvm_arm_get_max_vm_ipa_size(ms, &fixed_ipa);
+ 
++    vm_type = (ms->cgs ? KVM_VM_TYPE_ARM_REALM : KVM_VM_TYPE_ARM_NORMAL);
++
+     /* we freeze the memory map to compute the highest gpa */
+     virt_set_memmap(vms, max_vm_pa_size);
+ 
+@@ -4080,7 +4085,11 @@ static int virt_kvm_type(MachineState *ms, const char *type_str)
+      * the implicit legacy 40b IPA setting, in which case the kvm_type
+      * must be 0.
+      */
+-    return fixed_ipa ? 0 : requested_pa_size;
++    if (fixed_ipa) {
++        return 0;
++    }
++
++    return requested_pa_size | vm_type;
+ }
+ 
+ static int virt_get_physical_address_range(MachineState *ms,
+-- 
+2.43.0
+
