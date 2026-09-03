@@ -1,237 +1,161 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48784499F00
-	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 11:50:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF44485CCA;
+	Thu,  3 Sep 2026 12:27:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788436256; cv=none; b=IGOwZaFr2XFjrubZqt8Cogrm2BuaRJCc8zpPDLn7YNOp5U2d82/uaxyhttHjqYO8tpyh4efXZJkuKap8wRuUygp4jKTbbTJYE4xvPz1Fg0+V8wl6mzQ18t0QIbUOgcZ637EQUNnMsvdvPVPDTlYU8h44SpAsSFHZSA98qg+jh0k=
+	t=1788438480; cv=none; b=kg3itz8RI1gMz440vKbzneSBn343BglzTD/FEDDWTlYPcSTblSfZD3H1IsZnXrbWNdxsDV4q4V5XK/qIoo8MHJF/iF+pfL0XS0EJoekOyJw2icWnI8xFntpcAw9PCiRS0Cn/05IimhrXqp+YjjvqZyB6nBBuaJuGEgVXFVKSwPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788436256; c=relaxed/simple;
-	bh=IA/FyinYLLiRR7uiR9JiTcuMCefiei+WEKGA7rZCOXs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qTms8GKupF3DazAwGzz8L4S3PH+sXX3D2EmcXDDba32rfoZXpfPvM/L8JKlKJLLqNZ60//bTPN1kGddfkudaKCaGZ1gc4b3GOonRE7x0ZGx86XrMhsf4jEINw04ymsYgN+QiBFpFSW6dlA9PNMy/QVtwvqVU2Fb8FBKXnarqLCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c1ME5cDx; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788438480; c=relaxed/simple;
+	bh=tPgQPqeQ8tivFoOi8T92/LAwDafbjGB3DMZys3D1d8g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R0ZDxHSP8T8QhpDGbO5RVyX4j54Yc8DUjvKaBVpqqvrulx0lgh9PpNraE4Thd4JPPlFfROHXcpfu542Nn3VRTc3rAbXoajOFj2Xo6FTVTn7rSB9JXkc5Fv5obDYMJl3nUqrNJlPMUJiWPxe4UIMsxdzsrHN90UTWRc21MZkjBaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ewng8sCF; arc=none smtp.client-ip=115.124.30.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c1ME5cDx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788436239;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7N/zyzj0lUQ4bvNdYRstAKniDWgPqMJqPkFYzvAl/Yg=;
-	b=c1ME5cDxGI4Avn64mGJg58bzA9QZq6E21USj/5o5Ev+aLdFsBJJ/HHccRGS6+Krz+D6oX/
-	9WuCEqkZWhiYIBHAomMEuennseM5GpWZw7B83WWCHmRmA2iG/UXM8CYpHYpYNJn5as/Y90
-	/+IwJRiuqdlQ7sTgSSugkOi5f6lFD7Q=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-358-uFtoyYfqPlOg56D0c1VwWQ-1; Thu,
- 03 Sep 2026 07:50:38 -0400
-X-MC-Unique: uFtoyYfqPlOg56D0c1VwWQ-1
-X-Mimecast-MFC-AGG-ID: uFtoyYfqPlOg56D0c1VwWQ_1788436237
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0F44E19540C5;
-	Thu,  3 Sep 2026 11:50:37 +0000 (UTC)
-Received: from redhat.com (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5559D1800346;
-	Thu,  3 Sep 2026 11:50:33 +0000 (UTC)
-Date: Thu, 3 Sep 2026 12:50:31 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Luigi Leonardi <leonardi@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>, qemu-devel <qemu-devel@nongnu.org>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org
-Subject: Re: [PATCH 4/4] igvm/sev: forward the IGVM guest policy to the
- platform before launch
-Message-ID: <aplfB4L_WoFdpeBD@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-References: <20260901-fix_igvm_policy-v1-0-e93a6cf8c5ac@redhat.com>
- <20260901-fix_igvm_policy-v1-4-e93a6cf8c5ac@redhat.com>
- <16C1B63D-7E80-49DF-83AC-47769A6D9AE8@redhat.com>
- <apk1djopa9z3tfYR@leonardi-redhat>
- <CEF80B59-E81A-4B97-87E5-9087FAF3680B@redhat.com>
- <aplQKjieyMHUoCWs@leonardi-redhat>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ewng8sCF"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1788438470; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=iSSfdL1I/sWuhejsZXnDXVfRiUf2pDJbtuLEZmLDvb8=;
+	b=ewng8sCFzw4k/iSZrIWhvFJJeaOlW/jA0VOnK5InyKGKdLoPHOX2+s6MFh0kOm+v9/InuIs64r7/+JAsKaFhgUsUmOY5V01k986TGBiXZ/lm81CYqcYzwTwQ5OUIJbjIesewXaYdilDLYWOU6ZRVydVxsOrkdqhfLzBhqeeJ2QU=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R361e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=33;SR=0;TI=SMTPD_---0XAFvA3u_1788438466;
+Received: from 30.246.160.252(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0XAFvA3u_1788438466 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 03 Sep 2026 20:27:48 +0800
+Message-ID: <3dc96249-5103-4b00-8981-5d309ad9e941@linux.alibaba.com>
+Date: Thu, 3 Sep 2026 20:27:46 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aplQKjieyMHUoCWs@leonardi-redhat>
-User-Agent: Mutt/2.4.0 (2026-06-19)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 17/27] vfio/cxl: Virtualize the CXL DVSEC
+To: mhonap@nvidia.com, alex@shazbot.org, jgg@ziepe.ca, ankita@nvidia.com,
+ jic23@kernel.org, dave.jiang@intel.com, alejandro.lucero-palau@amd.com,
+ smadhavan@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org,
+ dave@stgolabs.net, alison.schofield@intel.com, vishal.l.verma@intel.com,
+ iweiny@kernel.org, ming.li@zohomail.com, yishaih@nvidia.com,
+ skolothumtho@nvidia.com, kevin.tian@intel.com, bhelgaas@google.com,
+ dmatlack@google.com, kees@kernel.org, gustavoars@kernel.org
+Cc: cjia@nvidia.com, kjaju@nvidia.com, vsethi@nvidia.com, zhiw@nvidia.com,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-hardening@vger.kernel.org
+References: <20260813093631.2288172-1-mhonap@nvidia.com>
+ <20260813093631.2288172-18-mhonap@nvidia.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <20260813093631.2288172-18-mhonap@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 03, 2026 at 01:02:17PM +0200, Luigi Leonardi wrote:
-> On Thu, Sep 03, 2026 at 03:33:30PM +0530, Ani Sinha wrote:
-> > 
-> > 
-> > > On 3 Sep 2026, at 2:31 PM, Luigi Leonardi <leonardi@redhat.com> wrote:
-> > > 
-> > > Hi Ani,
-> > > 
-> > > On Thu, Sep 03, 2026 at 02:16:30PM +0530, Ani Sinha wrote:
-> > > > 
-> > > > 
-> > > > > On 1 Sep 2026, at 3:39 PM, Luigi Leonardi <leonardi@redhat.com> wrote:
-> > > > > 
-> > > > > The guest policy carried in the IGVM guest-policy initialization header
-> > > > > was parsed into QIgvm but never forwarded to the confidential guest
-> > > > > platform: the previous callback ran at the end of qigvm_process_file,
-> > > > > after LAUNCH_START had already been issued, so writing the policy had
-> > > > > no effect.
-> > > > > 
-> > > > > Add a set_guest_policy callback and invoke it from the guest-policy
-> > > > > initialization handler, so the policy reaches the platform before
-> > > > > LAUNCH_START.
-> > > > > 
-> > > > > The guest policy can also be set on the command line. As it is part of
-> > > > > the attestation report, silently overriding it would cause attestation
-> > > > > to fail, so return an error if the command-line value differs from the
-> > > > > one supplied by the IGVM file.
-> > > > > 
-> > > > > Link: https://gitlab.com/qemu-project/qemu/-/work_items/4189
-> > > > > Fixes: 915b47078d ("backends/igvm: Handle policy for SEV guests")
-> > > > > Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
-> > > > > ---
-> > > > > backends/confidential-guest-support.c |  9 ++++++++
-> > > > > backends/igvm.c                       |  4 ++++
-> > > > > target/i386/sev.c                     | 39 +++++++++++++++++++++++++++++++++++
-> > > > > 3 files changed, 52 insertions(+)
-> > > > > 
-> > > > > diff --git a/backends/confidential-guest-support.c b/backends/confidential-guest-support.c
-> > > > > index a0b36d2da5..c0d15b4a76 100644
-> > > > > --- a/backends/confidential-guest-support.c
-> > > > > +++ b/backends/confidential-guest-support.c
-> > > > > @@ -38,6 +38,14 @@ static int set_guest_state(hwaddr gpa, uint8_t *ptr, uint64_t len,
-> > > > >    return -1;
-> > > > > }
-> > > > > 
-> > > > > +static int set_guest_policy(ConfidentialGuestPolicyType policy_type,
-> > > > > +                            uint64_t policy, Error **errp)
-> > > > > +{
-> > > > > +    error_setg(errp,
-> > > > > +               "Setting guest policy is not supported for this platform");
-> > > > > +    return -1;
-> > > > > +}
-> > > > > +
-> > > > > static int set_id_block(void *id_block, uint32_t id_block_size,
-> > > > >                        void *id_auth, uint32_t id_auth_size,
-> > > > >                        Error **errp)
-> > > > > @@ -62,6 +70,7 @@ static void confidential_guest_support_class_init(ObjectClass *oc,
-> > > > >    ConfidentialGuestSupportClass *cgsc = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
-> > > > >    cgsc->check_support = check_support;
-> > > > >    cgsc->set_guest_state = set_guest_state;
-> > > > > +    cgsc->set_guest_policy = set_guest_policy;
-> > > > >    cgsc->set_id_block = set_id_block;
-> > > > >    cgsc->get_mem_map_entry = get_mem_map_entry;
-> > > > > }
-> > > > > diff --git a/backends/igvm.c b/backends/igvm.c
-> > > > > index 6545382546..5131ee7829 100644
-> > > > > --- a/backends/igvm.c
-> > > > > +++ b/backends/igvm.c
-> > > > > @@ -868,6 +868,10 @@ static int qigvm_initialization_guest_policy(QIgvm *ctx,
-> > > > > 
-> > > > >    if (guest->compatibility_mask & ctx->compatibility_mask) {
-> > > > >        ctx->sev_policy = guest->policy;
-> > > > > +        if (ctx->cgsc) {
-> > > > > +            return ctx->cgsc->set_guest_policy(GUEST_POLICY_SEV,
-> > > > > +                                               guest->policy, errp);
-> > > > > +        }
-> > > > >    }
-> > > > >    return 0;
-> > > > > }
-> > > > > diff --git a/target/i386/sev.c b/target/i386/sev.c
-> > > > > index c76cdba8d2..533ea4b54e 100644
-> > > > > --- a/target/i386/sev.c
-> > > > > +++ b/target/i386/sev.c
-> > > > > @@ -128,6 +128,8 @@ struct SevCommonState {
-> > > > >    bool kernel_hashes;
-> > > > >    uint64_t sev_features;
-> > > > >    uint64_t supported_sev_features;
-> > > > > +    /* whether the guest policy was explicitly set on the command line */
-> > > > > +    bool policy_set;
-> > > > > 
-> > > > >    /* runtime state */
-> > > > >    uint8_t api_major;
-> > > > > @@ -2723,6 +2725,40 @@ static int cgs_get_mem_map_entry(int index,
-> > > > >    return 0;
-> > > > > }
-> > > > > 
-> > > > > +static int cgs_set_guest_policy(ConfidentialGuestPolicyType policy_type,
-> > > > > +                                uint64_t policy, Error **errp)
-> > > > > +{
-> > > > > +    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
-> > > > > +
-> > > > > +    if (policy_type != GUEST_POLICY_SEV) {
-> > > > > +        error_setg(errp, "SEV: Invalid guest policy type provided for SEV: %d",
-> > > > > +                   policy_type);
-> > > > > +        return -1;
-> > > > > +    }
-> > > > > +
-> > > > > +    if (sev_snp_enabled()) {
-> > > > > +        SevSnpGuestState *sev_snp_guest = SEV_SNP_GUEST(sev_common);
-> > > > > +
-> > > > > +        if (sev_common->policy_set &&
-> > > > > +            sev_snp_guest->kvm_start_conf.policy != policy) {
-> > > > > +            error_setg(errp, "SNP: policy mismatch between IGVM and CLI");
-> > > > > +            return -1;
-> > > > > +        }
-> > > > > +
-> > > > > +        sev_snp_guest->kvm_start_conf.policy = policy;
-> > > 
-> > > Thanks for you review!
-> > > 
-> > > > 
-> > > > I had fixed a bug initially here where we need to check if the policy passed is not 0. I am not sure if that fix is still needed here.
-> > > > Please test this scenario:
-> > > > a) Generate an IGVM file with policy set to 0.
-> > > 
-> > > 0 is not a valid sev-snp guest policy: bit 17 is reserved and must be 1.
-> > > It's a valid sev/sev-es policy though.
-> > > 
-> > > > b) Start a confidential SEV-SNP guest with policy set in command line and with this IGVM.
-> > > > I think with your patch this will fail as the policies won’t match.
-> > > 
-> > > Correct: this was suggested by Gerd, as this is something unexpected. I
-> > > think it would break launch measurement.
-> > 
-> > Yes I think the right thing to do is that if the policy is correctly set by IGVM, override the one set in the cli with the one in IGVM. Otherwise ignore IGVM policy.
 
-As a general rule, if the user passes a parameter to QEMU, it should
-always either be honoured, or result in an error. Selectively ignoring
-user input has proved to be a generally bad idea, as it tends to mask
-user configuration mistakes.
 
-> mmh why? I might be missing something, but for now I'm not really convinced:
-> if we have a policy set in IGVM we should use that one. Overriding it using the
-> CLI, may cause measurement failure. If we have an IGVM image with a wrong policy
-> set, then the problem should be fixed there.
+On 8/13/26 5:36 PM, mhonap@nvidia.com wrote:
+> From: Manish Honap <mhonap@nvidia.com>
+> 
+> Serve reads of the CXL DVSEC body from the per-open shadow and keep guest
+> writes in the shadow rather than letting them reach the hardware, so a
+> guest cannot reprogram the device through the DVSEC. Accesses outside the
+> CXL DVSEC return -ENODEV and take the default DVSEC handling, so a device
+> that also exposes a vendor DVSEC is unaffected.
+> 
+> Route each shadow write through the CXL r4.0 field class rather than
+> storing it verbatim: Control stays programmable, Status is
+> write-1-to-clear, and Capability, Lock and the Range registers keep their
+> firmware snapshot. The guest can no longer set Config Lock or scribble the
+> capability and range fields.
+> 
+> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+> ---
+>   drivers/vfio/pci/cxl/vfio_cxl_core.c | 88 ++++++++++++++++++++++++++++
+>   drivers/vfio/pci/vfio_pci_config.c   | 36 +++++++++++-
+>   include/linux/vfio_pci_core.h        |  5 ++
+>   include/uapi/linux/pci_regs.h        |  1 +
+>   4 files changed, 129 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/vfio/pci/cxl/vfio_cxl_core.c b/drivers/vfio/pci/cxl/vfio_cxl_core.c
+> index 2e516a0929c6..9fed909cb9d3 100644
+> --- a/drivers/vfio/pci/cxl/vfio_cxl_core.c
+> +++ b/drivers/vfio/pci/cxl/vfio_cxl_core.c
+> @@ -148,11 +148,99 @@ static void vfio_cxl_close_device(struct vfio_pci_core_device *vdev)
+>   	cxl->dvsec_shadow = NULL;
+>   }
+>   
+> +/* Read a 16-bit DVSEC field from the shadow; @off is DVSEC-relative. */
+> +static u16 vfio_cxl_dvsec16(struct vfio_cxl_state *cxl, u32 off)
+> +{
+> +	u32 dw = cxl->dvsec_shadow[off / sizeof(u32)];
+> +
+> +	return (dw >> (8 * (off % sizeof(u32)))) & 0xffff;
+> +}
+> +
+> +/*
+> + * Apply the CXL r4.0 8.1.3 write class for the 16-bit DVSEC register at @off.
+> + * Control is programmable, Status is write-1-to-clear, and Capability, Lock and
+> + * the Range registers stay fixed at their firmware snapshot.
+> + */
+> +static u16 vfio_cxl_dvsec_field(u32 off, u16 old, u16 wval, u16 wmask)
+> +{
+> +	switch (off) {
+> +	case PCI_DVSEC_CXL_CTRL:
+> +		/*
+> +		 * CXL.mem stays enabled for as long as the guest owns the device.
+> +		 * The HDM decoder maps the guest window to device memory, so a
+> +		 * store to it while CXL.mem is disabled completes on the device as
+> +		 * an error that the host fabric reports as an SError, which is
+> +		 * fatal. The spec does not pin down accesses to a decoder whose
+> +		 * CXL.mem is off and many hosts SError, so ignore a guest request
+> +		 * to clear the enable and keep the bit set.
+> +		 */
+> +		return ((old & ~wmask) | (wval & wmask)) | PCI_DVSEC_CXL_MEM_ENABLE;
+> +	case PCI_DVSEC_CXL_CTRL2:
+> +		return (old & ~wmask) | (wval & wmask);
 
-If the user choose to override policy on the CLI, isn't it now just
-their problem to also figure out what the new expected measurement
-will be ? 
 
-Why wouldn't we just honour the IGVM by default, and if the CLI
-has further customizations let them override the IGVM, and leave
-the user to figure out the implications.
+Control2 is routed through the r4.0 write class as plain RW,
+but both INITIATE bits are self-clearing doorbells per spec: the guest
+sets the bit, the device performs the operation and clears it, and
+completion is observed in STATUS2 (Cache_Invalid for the WBI). With the
+plain-RW class the shadow latches the bit at 1 forever, and because
+reads are served from the open-time snapshot, Cache_Invalid
+(CXL_DVSEC_STATUS2_CACHE_INVALID) never changes either.
+Both polling paths are dead ends.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
-|: https://libvirt.org          ~~          https://entangle-photo.org :|
-|: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
+The interesting part is that the series already models this correctly
+for the sibling command bit -- the vfio_cxl_reset() epilogue does:
 
+	/*
+	 * The guest-facing DVSEC bookkeeping only applies while the device
+	 * is open. Initiate_CXL_Reset self-clears in hardware; mirror that
+	 * and stamp the outcome onto a fresh hardware STATUS2 read for the
+	 * polling guest.
+	 */
+
+INIT_CXL_RST is self-cleared in the shadow and the outcome is
+stamped into STATUS2 for the polling guest. Initiate_Cache_WBI just
+never gets the same treatment.
+
+The polling contract is one this series itself implements on the host
+side: cxl_reset_wait_cache_wbi() sets WBI, then polls STATUS2
+Cache_Invalid with a 100ms budget. A guest kernel running the same
+sequence would set WBI, poll the frozen snapshot, and time out before
+ever reaching INIT_CXL_RST, so whether a guest-initiated CXL reset
+succeeds depends on the open-time STATUS2 value rather than on device
+state. The stuck command bit is also directly visible to any guest
+reading CTRL2 back.
+
+Would the minimal fix be to mirror the epilogue's INIT_CXL_RST handling
+for WBI: self-clear the bit on the 0->1 write and set Cache_Invalid in
+the shadow (the host already runs the real WBI at VM power on/off via
+cxl_reset_dvsec_sequence(), and the existing W1C class on STATUS2 lets
+the guest clear Cache_Invalid before the next round)? Or is forwarding
+the WBI to hardware and keeping Cache_Invalid live the intended
+long-term model?
+
+Thanks.
+Shuai
