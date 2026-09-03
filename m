@@ -1,207 +1,144 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C52A50EBF2
-	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 19:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A05503BDA;
+	Thu,  3 Sep 2026 19:36:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788464212; cv=none; b=jRUCAnZGxWdw/t1ipUeh4GR1FhyItLmGpUu2F2uy9K8W63PZOLlb8ICN/jAf31KTHC5dR4qVekh4uMOMAMDMELQCfUg11s0XafVD8Iy50VOIhyHVpBxVIIIL/23V64p+e+/4uQo/vyro5CAM0q+HQm5FS6guqcLIpiwQUI9BoYw=
+	t=1788464216; cv=none; b=iZ8q4U7oiUAyB9ryCO991b4II+o4OWgBHlkxn06yyBCEwcULnfwMBQS51kf/SPOtcDc5cLVU3W2OtVnX/hpAFOjauDXjCiQGXKQHYc5rrukyv90/cz9pNOPzWn+uROihu9mm1ws6Jlrg8lM87pEs77iYMyuW27nygbphZSzO/9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788464212; c=relaxed/simple;
-	bh=HJHg0Je5bQPZY1G+VY8EBdt/1UJ39MVmNCTQL3dgFak=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oUUupmnQMeIiUSEMe0Nt3GjausUCMiay+WbE2J5KSRTxkFY5Lq1P9CRoKVVyx+Y4W8YqJIX9rp4Cq4Z/V4TC7vqIMbGZgQII8Gfztic6vNLpVU6TEssbLTDMlNBXaHE/Z9tQg7PtDGvKj8Fm0f4xMYhTqnTtd4jB3JH/Tc8kFC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kRuWgXE4; arc=none smtp.client-ip=209.85.215.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1788464216; c=relaxed/simple;
+	bh=2gpy4HhiwKnU9m8xg/t1eefm48IBe/sw+KZ5jv8e3Gs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=udZdwoUz1IrenRVOhROMWoP9WY5oXoQx4hlxjtrQxONJjpAmGAlTiUsLt2TrCpl/Vt8BrceRkcgaqI4S+d0cS5uRBwcCUXiDL6Q0izfrbr8S0upMnMny+arceguZl7Kl5FPkuJlwxg9hPSDFfa5AQMz6SEPPk0uevlW12ENkV3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dG5UxycT; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kRuWgXE4"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cc1c9879395so284008a12.1
-        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 12:36:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1788464193; x=1789068993; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=v/EbG9/3Hb8DCKZa1jZljaYOgVIsiNG77AyoF+zPvP4=;
-        b=kRuWgXE48LEdCD1IPlEgbMQbFChbZRSL/g8po82kviKF9L8iYoSO1hdBQhi+/IQRZK
-         b2Q2sf9A+GbxekDh2ZIM2urPhRz60OltRGnxTevcl9SSC9zpSYG90/9STZTKsQ5OHwhv
-         sU+jrGt8fViAEiJOHTPHuV4bKjxaTFZiCpHfPjsqiuNeFnntjD2osOp9F48WdNIIzwqJ
-         VdIIsBQwj+xwb3K0VgI+/aU0f6/GQZZbB+JbS3v9DQ16l/wb27SxzFvzh29YxebcOh/7
-         95paorBQ90FOQc3WoR9SNncLYR/aZaQucoIol+CvU9FKj9BimNjiAxS3Z4bSYJAuZn3U
-         putQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788464193; x=1789068993;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=v/EbG9/3Hb8DCKZa1jZljaYOgVIsiNG77AyoF+zPvP4=;
-        b=DaNQpunG6fo8uHN10Ftp0g5J65/NIZDA8vpVImboCAzw6DN48zt0B+5phqROTG3L9l
-         4ANkjy2JucEWNAgwAUxqXJ9YL6wh/R1PSzCR+p+gNXQA2T4utkvDPUsFyGcG2wLcVaPS
-         5Vx6Qe/W+KsGi8XA17cQ/VDz11MXAeo2QyWy9vB+uwbQyEXEfWOX/KRXxeeMl4QrRGQJ
-         LqZbRft59u7p+k0vGuHR4dL6gcNiKl3B/cpyIflYgPqadpW4JoZ6MehbXDFcPubxBZXi
-         Iwi5kryP2cepnqTyBNPMMN7qtmOxaZh9mqPDuDucptk4ZTBtNCU/AVMqQBvazT9THvOJ
-         XHkQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw4RDdIbcBKH/YrFoLb2xdbEFKt4xuStvYYYYfJ7fWFQMFP9t54RgPgcX5NM1IV9siQVZM=@vger.kernel.org
-X-Gm-Message-State: AFuF++ltF6WquZQ1C+3H3FAd/BH9hMWOagO9ZNVbVYDBQrNZZ3LQYk/W
-	oPyr8CMz+6bQfx06qX+AI9s1FNic+U/+vS8ibCochrk5CZUp5KdB16yS/8WbhM+7EbA=
-X-Gm-Gg: AYBFou0b2pk5R0M+IMEVXN+j5e5CMVcVPfRD5o2GShYYrIoymo0JknS09b3AbvqelL+
-	UecuERRW+yGlkkTIQvtISKtgm9odJjtE2HUzJ8FtdRbEUX5i6O9yeLmBxW7wSMaS64OBD+0QGWd
-	McAZwd0Jpd7C2/DFEku4+f0p1HUPyJ4NLWutbWVI/jYdPH+ozQbP+t4wxZXmViLhsAS6NDe0NM0
-	WaR/hw6Lw6y+B045S7jHylgLdgA+RcEHnrjpWyeFQcdQZXUQT8WZOZNatKPuX6JmpZ0e28cLhhb
-	BrHmxCX3gUk/fBO6HSSVkU52IsuNu75yw9BhNz06s6S71cimoSM0p0KNkJDaz3uIk9L4fX72eHx
-	ZwQ1ql+vYZgUyTVr9OD8UMxDSjw7RIhdUQCgA3vH5YgxWa5Rv41ZLitr5FqS4drzmUJz7QW/BBe
-	YCc5QajWw4+rz38HMpUiJoGzmlB2DyxnQQ/ZpqpMd1xLzK7pD23lRFFjtymW3wnFrvebkNO01RO
-	xdXpGS1lRx7srA=
-X-Received: by 2002:a17:90b:3810:b0:398:9beb:5c18 with SMTP id 98e67ed59e1d1-39b26213a86mr1124061a91.19.1788464193150;
-        Thu, 03 Sep 2026 12:36:33 -0700 (PDT)
-Received: from p14s.cg.shawcable.net ([2604:3d09:148c:c800:40c0:ec33:6266:c275])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b083e4fafsm6836951a91.1.2026.09.03.12.36.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 12:36:32 -0700 (PDT)
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: berrange@redhat.com,
-	kchamart@redhat.com,
-	pierrick.bouvier@oss.qualcomm.com,
-	peter.maydell@linaro.org,
-	mst@redhat.com,
-	cohuck@redhat.com,
-	pbonzini@redhat.com,
-	eblake@redhat.com,
-	armbru@redhat.com,
-	lorenzo.pieralisi@linaro.org,
-	gshan@redhat.com,
-	enju.kohei@fujitsu.com
-Cc: qemu-devel@nongnu.org,
-	qemu-arm@nongnu.org,
-	kvm@vger.kernel.org,
-	mathieu.poirier@linaro.org
-Subject: [RFC v4 11/24] target/arm/kvm-rme: Populate Realm with runtime images
-Date: Thu,  3 Sep 2026 13:35:58 -0600
-Message-ID: <20260903193611.1058589-12-mathieu.poirier@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
-References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dG5UxycT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788464195; x=1820000195;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=2gpy4HhiwKnU9m8xg/t1eefm48IBe/sw+KZ5jv8e3Gs=;
+  b=dG5UxycT3Wv0RfuJnQkIu+TEGgkGtjjs2CTCWjPnvYcGTfjft19qWxf2
+   WjxfEFIha/1EHhM0hTg4uTah6HPDzdOf+cEfMMbubyRW6y2hDOGzl+qSA
+   dAJPWiSqGiprJfpCXiXAurgHM0ZGcwOgYrr/2bVL9BkjhHslreMAuU8XC
+   64Q5vaT7U3jl8KmLrhna8WdvN+HHc/jnqvwSrnIhlj3YtI0WD9hTU1GMG
+   +qnlZUBwXh01BT+dUx4lpVyBdiI9J98yrM5WYmUdNzftBEWOALfeT7zWo
+   m2H5RevXZZA+N1rMVdcP2sSfitlD554bjQSOOHHFsEr5zh6PmjwBLVZJH
+   g==;
+X-CSE-ConnectionGUID: 2cUfgOtXSwa3TT7BXGdG0Q==
+X-CSE-MsgGUID: YVQxJcuEQRiJMAMGJuBbUg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="100119056"
+X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
+   d="scan'208";a="100119056"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 12:36:31 -0700
+X-CSE-ConnectionGUID: HGdMqjXkQ6miKKg4VJ28Qg==
+X-CSE-MsgGUID: k/lR5R/vTKmTCBJRhi+9BA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
+   d="scan'208";a="263627184"
+Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.110.172]) ([10.125.110.172])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 12:36:29 -0700
+Message-ID: <ac7c383e-9da5-4456-97fe-532518d6c2a7@intel.com>
+Date: Thu, 3 Sep 2026 12:36:28 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 10/11] Documentation/x86: Add documentation for TDX's
+ Dynamic PAMT
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "Huang, Kai" <kai.huang@intel.com>, "Zhao, Yan Y" <yan.y.zhao@intel.com>,
+ "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+ "Wu, Binbin" <binbin.wu@intel.com>, "kas@kernel.org" <kas@kernel.org>,
+ "seanjc@google.com" <seanjc@google.com>, "mingo@redhat.com"
+ <mingo@redhat.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "nik.borisov@suse.com" <nik.borisov@suse.com>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "hpa@zytor.com" <hpa@zytor.com>, "tglx@kernel.org" <tglx@kernel.org>,
+ "Annapurve, Vishal" <vannapurve@google.com>,
+ "Mehta, Sohil" <sohil.mehta@intel.com>, "bp@alien8.de" <bp@alien8.de>,
+ "Gao, Chao" <chao.gao@intel.com>, "x86@kernel.org" <x86@kernel.org>
+Cc: "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
+ "hongyu.ning@linux.intel.com" <hongyu.ning@linux.intel.com>
+References: <20260903015113.93343-1-rick.p.edgecombe@intel.com>
+ <20260903015113.93343-11-rick.p.edgecombe@intel.com>
+ <225572f8-5636-41fd-9315-ef5efb78f0a5@intel.com>
+ <7cd4a38ed0ab1618a90e1afc8d56b450d57a9374.camel@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <7cd4a38ed0ab1618a90e1afc8d56b450d57a9374.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+On 9/3/26 12:31, Edgecombe, Rick P wrote:
+> So we have:
+> 1. If you are inclined to think support bits should actually report whether
+> something is supported, then this kinda is a TDX module bug that we are working
+> around by making DPAMT an opt-in.
+> 2. The bug will only be hit if anyone has configured a low number of hkids.
+> 
+> We could optimistically think the TDX module with the fix will be distributed
+> before anyone with this configuration hits it? And if that is wrong, add the
+> keyid checking or opt-in as a fix. Then maybe we save some code long term.
 
-Once the Realm descriptor has been created, tell KVM to transfer runtime
-images (kernel, DT, and rootfs) from guest memory to Realm memory.
+How about we just make the kernel tolerate DPAMT enabling failures. If a
+user makes this weird hkid config, then they'll get temporarily higher
+memory consumption until they fix their config or get a new TDX module.
 
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
----
- target/arm/kvm-rme.c | 76 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 76 insertions(+)
-
-diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
-index 9985f5daba89..c082a5d8f3d1 100644
---- a/target/arm/kvm-rme.c
-+++ b/target/arm/kvm-rme.c
-@@ -15,6 +15,7 @@
- #include "migration/blocker.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
-+#include "qemu/memalign.h"
- #include "qom/object_interfaces.h"
- #include "system/confidential-guest-support.h"
- #include "system/kvm.h"
-@@ -43,12 +44,87 @@ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
- 
- static RmeGuest *rme_guest;
- 
-+static int rme_populate_range(const RmeRamRegion *region, bool measure,
-+                              Error **errp)
-+{
-+    int ret;
-+    void *buffer;
-+    hwaddr size = region->size;
-+    hwaddr base = region->base;
-+    hwaddr start = QEMU_ALIGN_DOWN(base, RME_PAGE_SIZE);
-+    hwaddr end = QEMU_ALIGN_UP(base + size, RME_PAGE_SIZE);
-+    struct kvm_arm_rmi_populate populate_args;
-+    size_t aligned_size = ROUND_UP(region->size, qemu_real_host_page_size());
-+
-+    if (!region->data) {
-+        return -ENODEV;
-+    }
-+
-+    ret = kvm_set_memory_attributes_private(start, end - start);
-+    if (ret) {
-+        error_report("RME: failed to configure initial"
-+                     "private guest memory");
-+        return ret;
-+    }
-+
-+    /* Allocate page-aligned memory */
-+    buffer = qemu_memalign(qemu_real_host_page_size(), aligned_size);
-+
-+    if (!buffer) {
-+        return -ENOMEM;
-+    }
-+
-+    memset(buffer, 0, aligned_size);
-+    memcpy(buffer, region->data, region->size);
-+
-+    populate_args = (struct kvm_arm_rmi_populate) {
-+        .base = start,
-+        .size = end - start,
-+        .source_uaddr = (uintptr_t)buffer,
-+        .flags = measure ? KVM_ARM_RMI_POPULATE_FLAGS_MEASURE : 0,
-+    };
-+
-+    while (populate_args.size > 0) {
-+        ret = kvm_vm_ioctl(kvm_state, KVM_ARM_RMI_POPULATE, &populate_args, 0);
-+        if (ret) {
-+            error_setg_errno(errp, -ret,
-+                "failed to populate realm [0x%"HWADDR_PRIx", 0x%"HWADDR_PRIx")",
-+                start, end);
-+            break;
-+        }
-+    }
-+
-+    qemu_vfree(buffer);
-+
-+    return ret;
-+}
-+
-+static void rme_populate_ram_region(gpointer data, gpointer err)
-+{
-+    Error **errp = err;
-+    const RmeRamRegion *region = data;
-+
-+    if (*errp) {
-+        return;
-+    }
-+
-+    rme_populate_range(region, /* measure */ true, errp);
-+}
-+
- static void rme_vm_state_change(void *opaque, bool running, RunState state)
- {
-+    Error *errp = NULL;
-+
-     if (!running) {
-         return;
-     }
- 
-+    g_slist_foreach(rme_guest->ram_regions, rme_populate_ram_region, &errp);
-+    g_slist_free_full(g_steal_pointer(&rme_guest->ram_regions), g_free);
-+    if (errp) {
-+        return;
-+    }
-+
-     kvm_mark_guest_state_protected();
- }
- 
--- 
-2.43.0
-
+That seems way better than trying to work around this with opt-ins or
+permanent documentation for a temporary problem.
