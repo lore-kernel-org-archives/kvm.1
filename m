@@ -1,139 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7450D3E95A8
-	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 06:30:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1F837A83B;
+	Thu,  3 Sep 2026 06:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788417032; cv=none; b=RJ342IeOr0q/VtqZTGNnINF5pAUIFyQb1G+Ssqk7NCyYW2pWq0WeJoM6PbVkc+hPV/XXo0gzObeoVb53kVEfwtK+ELMqo4gODd56BebUF2nMa2tLRbZS8VoamzLiXeDVpLZhN9T6jwYZ935ZBlNaw0XneqIG/+Z3XWabrKPA3fQ=
+	t=1788417104; cv=none; b=hTJEVECVVIpPlRATN4bOvsyYRiSb0WZVh1ptshcFJJWe06o96aa8skrrLLbhrGWzexwo/NmaG6wdnCnfulMmMN2fijx18amXynpYhi0jQmUoKgL8Ep2zaEPReL7ipMGkB06P2QN02Sl7r8escEmaqiWXFwOTUfx/uhsAce+UB10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788417032; c=relaxed/simple;
-	bh=upgAS3QhbwQDYrLzViBQS9u/HOQy6d6rM9ummlMmTu8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jneeogFp0J24H+lmZVnArC4xrC79ypUKCn2Y2gjnSCM/Y/fiBaMKZeXG8lhGiRTEsHve8A2OK8jncFb722QMStD0JBViI2K2+18N0apxGl5oXNbJfQoRp+Z9LYppVLlUStNq1y12lj/ZCmjPfvXFhhSsbdTo36kTH4cg5EVJMTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oktMOJGk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788417104; c=relaxed/simple;
+	bh=YVucUw3YVfg82zo4PM4SYrWo1aven9VvV41QrSEm9Jo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zw0q0PPyCZbSxdFHipN1Nv9m/Dfg0pUv08D2sPmAb6UcHbT5dSRg2MtCjCv2867ZnWkpZi44lppjViahP8OYERNUS1aPeCi8z6uYVIllqAUeUyAjeU9cmjeVBUSofAToxr/W5Pyv/bG0y4Z4knnj4DSyubN2ksQ2k9uVzDI3/Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JQ6uqq4i; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oktMOJGk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 582B21F000E9;
-	Thu,  3 Sep 2026 06:30:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788417028;
-	bh=k6HirYOPwhnvcG/G1JkXkI1vcjpTLFmc+EprWnm3IWU=;
-	h=From:To:Cc:Subject:Date;
-	b=oktMOJGkIKPiYZV5yPiNcQpj2FkN/CZUnRgqVwgOUZT03wk8RFdrlWtw/Rvhe8KNq
-	 ypwBJP0lZn2yo6kzVclvWZfw/ggNKv3rVU09NUMLunn0VY7BTq7ySnu8TQ3DNx/bOx
-	 jRfLbBgIOU9Kh1nbk5E5UHadfqSkRxr2CAniDdW3nyd34XX3jLlYiAIzRqxPDILrtn
-	 t1BrppAVYABWlSXCXzEiKNRxM6iaou8bTrcg6dP6iUSkr2JHj/aA6zhKG3w3s5QfCZ
-	 0K1yPSa/0vLMas6NLq0dTgDyr212uNs63pgbJ7iiV7gmqqhD1UPH8FmRZySGR7S6m0
-	 8xtZlVNego1yQ==
-From: "Naveen N Rao (AMD)" <naveen@kernel.org>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: <kvm@vger.kernel.org>,
-	Dmytro Maluka <dmaluka@chromium.org>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Subject: [PATCH] KVM: SVM: Clear AVIC Physical ID table entry if vCPU creation fails
-Date: Thu,  3 Sep 2026 11:58:56 +0530
-Message-ID: <20260903062856.2090499-1-naveen@kernel.org>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JQ6uqq4i"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788417103; x=1819953103;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YVucUw3YVfg82zo4PM4SYrWo1aven9VvV41QrSEm9Jo=;
+  b=JQ6uqq4iKNA3q33vTLitHXDQPjgTsySsb135wfpZwLtCcfdPz9xSX+Eh
+   E311hTJ1qqTHyKf+xTj6XyCexQsEBQ8qB1izQ/FqxPK/9BTwAl35YjRUI
+   UmWWYB4UDSHgX3GMgT4AXa7LofGWqA7sWAofQ1HIAPv/Oq85ryXxijvJj
+   sr0X6eTZlwlsetjcyLBzVJv9ZFiuh+UCQgtIiTHCB2jI8JGJzz70hm0vJ
+   Du6mZATKcsPD3eKYZ9Ip2c/qyqJAzWAxnnkoWGMylFs38hRyyRLWszQGB
+   dJGMgCT4noR7yBiqjWnSqGAum3YA9wmd9R31SP+t4/8lrBPEfbyoacB0u
+   A==;
+X-CSE-ConnectionGUID: XNuZSCUfSgKicQlc6fzpSA==
+X-CSE-MsgGUID: yAG2ZVqSQWiIXfXBrlSCIg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="76441692"
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="76441692"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 23:31:36 -0700
+X-CSE-ConnectionGUID: WelPxJRuQUekczAxiS3jkQ==
+X-CSE-MsgGUID: /1saqC4PQpivb9WDyq4Eaw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="269632159"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.231])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 23:31:31 -0700
+Date: Thu, 3 Sep 2026 09:31:28 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Peter Fang <peter.fang@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>
+Subject: Re: [PATCH v3 3/4] virt: tdx-guest: Use a variable to store the
+ Quote buffer size
+Message-ID: <apkUQL5KJ7JQqtpY@tlindgre-MOBL1>
+References: <20260729122939.1340412-1-peter.fang@intel.com>
+ <20260729122939.1340412-4-peter.fang@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260729122939.1340412-4-peter.fang@intel.com>
 
-If vCPU creation fails after kvm_arch_vcpu_create(), the AVIC Physical
-ID table entry corresponding to that vCPU continues to point to the
-freed APIC backing page which can result in UAF. Address this by
-clearing out the corresponding AVIC Physical ID table entry in the
-vcpu_free() callback, similar to the VMX commit b41f2ca6c060 ("KVM: VMX:
-Fix stale PID-pointer table entry left after vCPU free").
+On Wed, Jul 29, 2026 at 05:29:33AM -0700, Peter Fang wrote:
+> In preparation for dynamic Quote buffer sizes, replace the fixed size
+> constant with a variable.
+> 
+> The size is currently a constant sprinkled across several places. Store
+> it in a variable and have all the users read it from there.
+...
+> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
+> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> @@ -417,7 +416,8 @@ static int __init tdx_guest_init(void)
+>  	if (ret)
+>  		goto deinit_mr;
+>  
+> -	quote_data = alloc_quote_buf();
+> +	quote_data_len = GET_QUOTE_BUF_SIZE;
+> +	quote_data = alloc_quote_buf(quote_data_len);
+>  	if (!quote_data) {
+>  		pr_err("Failed to allocate Quote buffer\n");
+>  		ret = -ENOMEM;
 
-Though unlikely, it is also possible that svm_vcpu_create() itself fails
-after the AVIC Physical ID table entry has been setup if memory
-allocation fails in svm_vcpu_alloc_msrpm(). Clear the entry in this path
-as well.
+I assume the quote_data_len does not need to change after init because
+of a TDX module update. So:
 
-Note: this change depends on commit 97d65b544f48 ("KVM: Check for
-duplicate vcpu_id as early as possible"), which ensures that a vCPU with
-a duplicate ID is never created. Otherwise, a valid AVIC Physical ID
-table entry for an existing vCPU will be cleared.
-
-Fixes: 44a95dae1d22 ("KVM: x86: Detect and Initialize AVIC support")
-Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
----
- arch/x86/kvm/svm/svm.h  |  1 +
- arch/x86/kvm/svm/avic.c | 10 ++++++++++
- arch/x86/kvm/svm/svm.c  |  6 +++++-
- 3 files changed, 16 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index e958943b8162..790bd96a9791 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -954,6 +954,7 @@ void avic_init_vmcb(struct vcpu_svm *svm, struct vmcb *vmcb);
- int avic_incomplete_ipi_interception(struct kvm_vcpu *vcpu);
- int avic_unaccelerated_access_interception(struct kvm_vcpu *vcpu);
- int avic_init_vcpu(struct vcpu_svm *svm);
-+void avic_vcpu_free(struct kvm_vcpu *vcpu);
- void avic_vcpu_load(struct kvm_vcpu *vcpu, int cpu);
- void avic_vcpu_put(struct kvm_vcpu *vcpu);
- void avic_apicv_post_state_restore(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-index 3b037e385523..bc2c699380b3 100644
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -885,6 +885,16 @@ int avic_init_vcpu(struct vcpu_svm *svm)
- 	return ret;
- }
- 
-+void avic_vcpu_free(struct kvm_vcpu *vcpu)
-+{
-+	u32 max_id = x2avic_enabled ? x2avic_max_physical_id : AVIC_MAX_PHYSICAL_ID;
-+	struct kvm_svm *kvm_svm = to_kvm_svm(vcpu->kvm);
-+	u32 id = vcpu->vcpu_id;
-+
-+	if (kvm_svm->avic_physical_id_table && id <= max_id)
-+		WRITE_ONCE(kvm_svm->avic_physical_id_table[id], 0);
-+}
-+
- void avic_apicv_post_state_restore(struct kvm_vcpu *vcpu)
- {
- 	avic_handle_dfr_update(vcpu);
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index ea647938a2a6..c2a2ae7d8ec3 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1337,7 +1337,7 @@ static int svm_vcpu_create(struct kvm_vcpu *vcpu)
- 	svm->msrpm = svm_vcpu_alloc_msrpm();
- 	if (!svm->msrpm) {
- 		err = -ENOMEM;
--		goto error_free_sev;
-+		goto error_free_avic;
- 	}
- 
- 	svm->x2avic_msrs_intercepted = true;
-@@ -1351,6 +1351,8 @@ static int svm_vcpu_create(struct kvm_vcpu *vcpu)
- 
- 	return 0;
- 
-+error_free_avic:
-+	avic_vcpu_free(vcpu);
- error_free_sev:
- 	sev_free_vcpu(vcpu);
- error_free_vmcb_page:
-@@ -1365,6 +1367,8 @@ static void svm_vcpu_free(struct kvm_vcpu *vcpu)
- 
- 	WARN_ON_ONCE(!list_empty(&svm->ir_list));
- 
-+	avic_vcpu_free(vcpu);
-+
- 	svm_leave_nested(vcpu);
- 	svm_free_nested(svm);
- 
-
-base-commit: 76671054f9a1ff6abb976583cd8da37650acdc97
--- 
-2.55.0
-
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
