@@ -1,56 +1,56 @@
 Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8872B233926
-	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 00:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C19263F5D
+	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 00:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788394589; cv=none; b=ZVg443BS240A9uuYHyXGqOY1WHSi/Jo8Fse3p3H0jer73fYjRWcopDDc33mKllzFMQSOVMmGFcsFwBrTE1ig7/OgO1PUUmTnPfYwg3Pg67VIKMgGv1i/nRmF50obwtaQFwrPp2IxdAiJ8xm7C0ZSp9jTVkd0Zsall/d1WGNolZc=
+	t=1788394591; cv=none; b=ZrDH3yMgBWey6p825vd5EG86Xe782ido2XI0N4U1Ef3hxrVq3a5109xCCdmaZYsBo+IC/ITgL5Xro5P2Ine+4/owgcZXKMMEgS+K+MGkpP5c08Evvqt2Bs16sfGRZ1LEljJz4ptB2jeLLbQJAt2c7Pfzf3+nPMkBygmze3to3nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788394589; c=relaxed/simple;
-	bh=GwUAO3/qh3jBnPvjL539kUpRgMJEXtQNJH9ROB0FcAQ=;
+	s=arc-20240116; t=1788394591; c=relaxed/simple;
+	bh=hrCUfZiWrw9ZwLGPWRegXU7yNm5oMyEYfmcKkafasI4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RAW94uc1oRpMKY6IdL3EOppZwRCIE3a2Idt8i9hdfRN+1X1lDR57Bb+KcxRab9Wa/me4dreGvTgauHtbjsdVyPVS7n43XlU+8I9Fx0LFPLIcZSa42m4D4gXOjqLrKw2Q/hjLMUTaKhbvc7X5I3dp9ADlJgWfKATEk/pStZZLxQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GtMb4gRv; arc=none smtp.client-ip=209.85.214.198
+	 To:Cc:Content-Type; b=GhhUYa0Bs3Mqjs6wJuLXF8wO+t7B5WAFWAY0OkibkGVxHWXBPKpo+GJuskO7PM6u1yI0dfEufuAaj1PTUHpeSVZEhCzvI/ER15eWb9X3jok0qJULk9PZESOYp7dmkR3LfjMc3NgtgwKzLoYCJG92+LKQzx7jc2o9/tE6HXzvrTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TN4RKXPZ; arc=none smtp.client-ip=209.85.214.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GtMb4gRv"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d6f80c76e6so28352125ad.3
-        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 17:16:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TN4RKXPZ"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d6c166bafcso26337695ad.2
+        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 17:16:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788394588; x=1788999388; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788394589; x=1788999389; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=tjeJ2nAAXDrhJbonGdD2NMDMFjcyQiwI3v/yLE7aS0g=;
-        b=GtMb4gRvQ40yFxcDce2xXnerxAVfFgmir3T9O77Vin9FGGsiId/T3jFNVuuqmOMZrT
-         q5hhVDoHicNPvGfMQttvgcInngbg1r46HPr+/+mLJkeEF+jJlVoVBku0vOC9lua2xQmh
-         mRMBJ9hGhmPB9UaJw0sNuRdxYdIjJnjzhTflFZm6mszx/OEaRa68x+M48NFwZrRSSiCw
-         dJsgIqtsY2vb/RbrxwFBT05VuUfIDwT+dTLlxljHJoabK2CUH2WufIDXKRcyns7paZhB
-         ZMeHsbPI8PrRK7D9ooiNkvVjeTx9ITUo+NbZCdKYzcSf0hjYuVIfL5dnlfy2WdhAG0zU
-         wvCg==
+        bh=sf4kQQtnclBVJ8kleYvL+id2aL4kDG4DntUcaSprvaY=;
+        b=TN4RKXPZHzssHKAHHDQtnGFrx5dn69Zh+6uygQHUKc0Qnlqth9M+O9Gwg9jWFgpXa8
+         AMGF0mzn8Vw3OLwP/75D/GXfOHhcuDlZn1Lbxawn4/irDsLs0lxyDLI5ShQP5YIn0f8w
+         ZeVlajdE36+EX6Mq2Fx+3723eGnypHskqMUoXJt01ci9nD5z3B2lD7VGNOGWNPuz/hM7
+         yDpFsS9PTueAbYBI5kcnE7Qfi35PvHt4nTTdqWX/IixZcUmQVJKifO6X0L0+zXPIUvEG
+         VevmsnWaz7PCPwAnJ6sRWlGdh0VglBJQH+cNFX5t2UCTxkYFlYshslHaegrnrY/G5I91
+         hiPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788394588; x=1788999388;
+        d=1e100.net; s=20251104; t=1788394589; x=1788999389;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=tjeJ2nAAXDrhJbonGdD2NMDMFjcyQiwI3v/yLE7aS0g=;
-        b=QHaWFPt7VqzcZwL0HWF+NIQdozRalNRbejtwIZFmDKgFKWX1qyy1b16LZDWssfdtUo
-         BPPopRwcNkooNPhR5dThxVelWJl7ZqJZ/XX2BYUEAigT4zclVLQYoQybReteqG7w6Dbt
-         SbE/iDp5v0DgYJB+4thyYsmqcD2jkCHfJRyXWM4VQAv6COvBXg+MfyJUlDUub7oFPq7+
-         KWDPamodvqwPpAnQ1TNnLMR1TVqu5fn2AP1H03z3HZfngfHZj03Cq95PqsPNgtEca2vl
-         NwiyfLvz8kfOHGrt8T4/FpXyV2N9r8op/XLVdR8ZslvhLuqHDZZlgPCuuQ6Laxrk9g0c
-         uJCA==
-X-Gm-Message-State: AFuF++krGXpa0SogIDU6a4FHz2ambhlvZ+VuJ+G1aeUHL8pWxkdFnP7H
-	fyTddelmD8mc6usSTlNAGt8iGnsBaYyIZtpULYETr3D0rwYcF8EAsyjJK4pXBJOwxur0Ynut6Nk
-	6FU7hQw==
-X-Received: from plbmb8.prod.google.com ([2002:a17:903:988:b0:2ca:ddbd:a19c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e749:b0:2d8:de9f:9a44
- with SMTP id d9443c01a7336-2daec732f99mr105045205ad.19.1788394587684; Wed, 02
- Sep 2026 17:16:27 -0700 (PDT)
+        bh=sf4kQQtnclBVJ8kleYvL+id2aL4kDG4DntUcaSprvaY=;
+        b=CdBnsTGCfv0fsDNpf9YDU6BFhMcctj7Ylk7DXBfk0L4cZ0PPN2wCNqHAcTESTCydf7
+         dYPnMaIbrkCDitY2tOtNjSJqLHScZQJAcYIuS6SfMGCkH5sFIDtsZET/LZQjLIB5SfwT
+         Atr9NqV0Br0/n+lIWQVwt9QoiZ1nrgnKUcLy6xZIq321fGnOo8jJp31qr30KcGgYSh9B
+         EHnVrevRSzMl8TNKqKJF7LHQNqySPYffbL3QHEUVr5XUrBIT+lo18TLXxEsYr5IEEuT5
+         Y3gE5wUcDKwLYIJoLOE3AMxBGrh4dfof/ihG+GFe6IzhsRkYYCYlUKhXPNBvvuJkMPMD
+         cR1g==
+X-Gm-Message-State: AFuF++mf2qrlJpae6vFoNuHZOWDUU3QTTNdhI5XZDDAJEV77BO0YSE2B
+	h0FbSRyOxhr/h02k5Qj7gVn+IkK57BYkYFRIsqKNjl9Z6AO5CtpqnsHpQw6Sn2Pd3JJ7phQ6lPl
+	9MG8hnA==
+X-Received: from plpw20.prod.google.com ([2002:a17:902:9a94:b0:2cf:1f9d:da12])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:19e6:b0:2d9:2069:a286
+ with SMTP id d9443c01a7336-2daec62416cmr113756255ad.9.1788394588841; Wed, 02
+ Sep 2026 17:16:28 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed,  2 Sep 2026 17:16:19 -0700
+Date: Wed,  2 Sep 2026 17:16:20 -0700
 In-Reply-To: <20260903001625.2792367-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,96 +60,45 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260903001625.2792367-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.970.g62bdec98f9-goog
-Message-ID: <20260903001625.2792367-2-seanjc@google.com>
-Subject: [PATCH 1/7] KVM: selftests: Account for kernel's off-by-one bug in
- NUMA node syscalls
+Message-ID: <20260903001625.2792367-3-seanjc@google.com>
+Subject: [PATCH 2/7] KVM: selftests: Fix maxnode argument to migrate_pages()
+ in xapic_ipi_test
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Shivank Garg <shivankg@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Add and use MAXNODE_FOR_MASK() to compute the "correct" maxnode value that
-is passed to various NUMA-related syscalls, e.g. get_mempolicy(), mbind(),
-migrate_pages(), etc.  In quotes, because the kernel has an undocumented,
-longstanding off-by-one bug that requires userspace to specify the number
-of bits plus one, i.e. the max node plus two.
+From: Shivank Garg <shivankg@amd.com>
 
-The kernel bug has been known since 2007[*]:
+Use MAXNODE_FOR_MASK() to compute the @maxnode argument when migrating
+pages in the xAPIC IPI test, as the current code incorrectly passes the
+number of bytes, not the number of bits, in the mask, and also fails to
+account for the kernel's off-by-one bug.  I.e. the test sets maxnode to 8,
+and so the kernel only checks node IDs 0-6 even though the nodemask covers
+node IDs 0-63.
 
- : And this is I think the reason why we can't change this now. I assume
- : numactl allocates 1024 bits (0 to 1023) and passes 1025 to make sure all
- : 1024 bits are processed. If we change it now, kernel will process 1025
- : bits (0 to 1024) and overflow the allocated bitmask. If it happens to be
- : at the border of mmaped vma, it's a segfault...
-
-But unfortunately the manpages haven't yet been updated, e.g.
-
- : The maxnode argument is the maximum node number in the bit mask plus one
-
-Link: https://lore.kernel.org/all/63ccc890-fd57-118b-5997-e0259f507d28@suse.cz[*]
+Fixes: 678e90a349a4 ("KVM: selftests: Test IPI to halted vCPU in xAPIC while backing page moves")
+Signed-off-by: Shivank Garg <shivankg@amd.com>
+[sean: use MAXNODE_FOR_MASK(), rewrite changelog]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- tools/testing/selftests/kvm/guest_memfd_test.c   |  2 +-
- tools/testing/selftests/kvm/include/numaif.h     | 11 +++++++++++
- tools/testing/selftests/kvm/x86/xapic_ipi_test.c |  2 +-
- 3 files changed, 13 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kvm/x86/xapic_ipi_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index 2233d871a38f..cd5df88bc642 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -80,7 +80,7 @@ static void test_mbind(int fd, size_t total_size)
- {
- 	const unsigned long nodemask_0 = 1; /* nid: 0 */
- 	unsigned long nodemask = 0;
--	unsigned long maxnode = BITS_PER_TYPE(nodemask);
-+	unsigned long maxnode = MAXNODE_FOR_MASK(nodemask);
- 	int policy;
- 	char *mem;
- 	int ret;
-diff --git a/tools/testing/selftests/kvm/include/numaif.h b/tools/testing/selftests/kvm/include/numaif.h
-index 29572a6d789c..71f261eafc90 100644
---- a/tools/testing/selftests/kvm/include/numaif.h
-+++ b/tools/testing/selftests/kvm/include/numaif.h
-@@ -6,6 +6,7 @@
- 
- #include <dirent.h>
- 
-+#include <linux/bitops.h>
- #include <linux/mempolicy.h>
- 
- #include "kvm_syscalls.h"
-@@ -30,6 +31,16 @@ KVM_SYSCALL_DEFINE(mbind, 6, void *, addr, unsigned long, size, int, mode,
- 		   const unsigned long *, nodemask, unsigned long, maxnode,
- 		   unsigned int, flags);
- 
-+/*
-+ * Calculate the @maxnode param for the above syscalls given the mask that will
-+ * be passed to the kernel, to account for a longstanding off-by-one bug in the
-+ * kernel that isn't properly documented in the manpages.  The manpages say
-+ * that @maxnode is "the maximum node ID plus one", but the kernel's actual
-+ * behavior is "the number of bits in the mask plus one", i.e. "the maximum
-+ * node ID plus two".
-+ */
-+#define MAXNODE_FOR_MASK(mask) (BITS_PER_TYPE(mask) + 1)
-+
- static inline int get_max_numa_node(void)
- {
- 	struct dirent *de;
 diff --git a/tools/testing/selftests/kvm/x86/xapic_ipi_test.c b/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
-index 469e3ab16460..1ddcf95d7fe4 100644
+index 1ddcf95d7fe4..6be11c1c725c 100644
 --- a/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
 +++ b/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
-@@ -248,7 +248,7 @@ void do_migrations(struct test_data_page *data, int run_secs, int delay_usecs,
- 		delay_usecs);
- 
- 	/* Get set of first 64 numa nodes available */
--	kvm_get_mempolicy(NULL, &nodemask, sizeof(nodemask) * 8,
-+	kvm_get_mempolicy(NULL, &nodemask, MAXNODE_FOR_MASK(nodemask),
- 			  0, MPOL_F_MEMS_ALLOWED);
- 
- 	fprintf(stderr, "Numa nodes found amongst first %lu possible nodes "
+@@ -291,7 +291,7 @@ void do_migrations(struct test_data_page *data, int run_secs, int delay_usecs,
+ 		 * KVM_CREATE_VCPU ioctl. If that assumption ever changes this
+ 		 * test may break or give a false positive signal.
+ 		 */
+-		pages_not_moved = migrate_pages(0, sizeof(nodemasks[from]),
++		pages_not_moved = migrate_pages(0, MAXNODE_FOR_MASK(nodemasks[from]),
+ 						&nodemasks[from],
+ 						&nodemasks[to]);
+ 		if (pages_not_moved < 0)
 -- 
 2.55.0.970.g62bdec98f9-goog
 
