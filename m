@@ -1,65 +1,64 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1395F50EBF5
-	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 19:36:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB4C50C288
+	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 19:36:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788464219; cv=none; b=bxSQ2Gv8NlzH7ECWJEUVIWRNVzd8HsKEKS1lO6U27/nOlVIcmP+wNJ5zULogNK3KVUx5A5kWppgubkIbyTj05nuGHAEMjsfq0W1NpxwigDCfq4wfIryVUg6Z5WJu6jTXmplADmUWzNls47wTOi+ngdNIW2GPznF+tW94LELyzhc=
+	t=1788464225; cv=none; b=nQNGHdf0aiOlzWbkKa1FuZRPq/+ImtsUNwURhnmu5A+P/u6+NEH4XOEsMKTB9gnTjAO4AlCIIP2Ig9VuO4yu7pTcR1e6bZgVZ3QL+S3F1ge3NEwXXewBzzGE2M7AVbIEr+JNarNsoxpwqy6783y+T3BgLLIQPcT0cFEF+3WXsPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788464219; c=relaxed/simple;
-	bh=TRVI0rDWsxNGBTz6qm81OE3wXj63LYZ+zuMZKUW1KSo=;
+	s=arc-20240116; t=1788464225; c=relaxed/simple;
+	bh=3kjSulVQLNpdJGCnkM4enWU4K4Gl5SuK9lAIOWLiD0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s5XWjXLtZ649CHr68k282UwnGi/VErDS27360PnBKBgHniur1+9vjQaYxOKqc31ZRtsTVB3FXTnBLrzWiy0GHs+CdYAU3/MZ5RVjzH0vTwVVFmWwKkpFVTTvfoweAdaIZpjudETqALw2OQmxTmJi/Mad2fpkR7nSCaWwlpvb2Ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XEjs0iw9; arc=none smtp.client-ip=209.85.216.45
+	 MIME-Version; b=kbjZoeT6ziCzskRGMCvTj/sQb9+4gBm4b78vzEB2D5bffblhnccOa5quBGUx7e6wGwmoBdoUbY+tO0myUPG5M8zYwzuiUMzza76HvwsoUkn7C1EeyHaWcdQMQQuNZwTi1BA40R6E3rrsyw06tTcT0CFUgzHGrWyjHJRkrD7i7+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PjcpyoZk; arc=none smtp.client-ip=209.85.215.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XEjs0iw9"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38dfe910e9dso202922a91.3
-        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 12:36:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PjcpyoZk"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c96c92c0980so217450a12.3
+        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 12:36:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1788464189; x=1789068989; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1788464204; x=1789069004; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ycFh0f47IuceK21rmhYjAzxurWXaF92SY8dhiJMI5DE=;
-        b=XEjs0iw9ZXS7AOr2KU7DTTAPNmkuAuRNTt0Ksat5H6qQAUFYgqvQIE/iYiG8A2A9Gc
-         dmfVO5sSsokUYFtvfGb2eKCxFoCmyzqcttLm7q0C813RvuUDamF275yISaqhGnqNsM+h
-         jly81+OVourRz3Pkkz1/N7c0KPk3cMDxknxE5iQz39Nf6+q/2/r8zZDdoWaPADo9W8Gf
-         1gyMw1AbEf3zvm38QjidAMMQWE2S9zPSZsmmDfDf9ADv4pR/Cga5g7QvScD1tQdE4B+3
-         GJWVBprIlMVLr6a+bGz+oJ2zRNzA/gPw1L/WL9HIbRl1NqxwbyCtZdkHpoNoLdSSUPBn
-         +hIg==
+        bh=Y7O2QFPzNWx332l2m0iFWMqO57jF7lDWROu5Spv39Uc=;
+        b=PjcpyoZkU3OSGBICYdpGT3EgQfK4r2ahWUxxjdDdv8dZFG1p3VCqYs9sI/CxMuPIac
+         Eo2ffJPPNT8bcEFdLgurRq5cHNEYC3rQwGymqdG4QBZ70YsXJXcVEHxp9TKxWdrLpq+B
+         1mUv6ywITvwytM0mMhcjleBUrC+UlnTf/OL7rFDPDHo4yrLX+NojnWnX4mqKEmQ123Np
+         JYFFGbZ0obuCiGRj5m7fbz2UdjqVU1BJtsmkh3rerw8I5tUftsRot9jD89LiK+am2OQ9
+         mSh8X9dwg6VpBfN2qvsSbfHs6/wDQr3O091qrggZFNuxigPVwL8LZdqcCcCkkfDd+wqR
+         Oy4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788464189; x=1789068989;
+        d=1e100.net; s=20251104; t=1788464204; x=1789069004;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ycFh0f47IuceK21rmhYjAzxurWXaF92SY8dhiJMI5DE=;
-        b=V9SKSVW/huLZ1ZHXoBPotLhv8OgqA+lN2qc/vEknYaf8gM46He1pmKNaSKB1NYy3pI
-         pjNx5EsvLjbLPeHrz258H/NgkX7X3ArDqmD4o5lARiCFwFSr+3pEj0dDdh9nU36pSPfS
-         sxafShXkS/iNepj6u7oG/15D63SRsR8kXc3PGwZf1saKU6vdNv6MI+bHaBCIoPwVWvz4
-         Z5twZwclKC81ZWWhaxVwNfJba0J+o0Q+mPcw51DK8HyvXAcm//TqVkSC5XSt0sxg3NaN
-         191BX89/8do47I2CfxP4mqn/SMoKorp1sZyXbBCfumFksO/fDWnPczAT/7q/X4Wy4bno
-         F3rw==
-X-Forwarded-Encrypted: i=1; AKwUvBw/QiZhtKnqpQqGE9I7MPXzB2raLGjJQsSHmPQWZ02RHAqG4uUcRgBH+dbpxSIAX5u/DpI=@vger.kernel.org
-X-Gm-Message-State: AFuF++m7KK+2Yw/E2wtolwWtNVze3Z2+18d0PcwuK87XmIlOD0KawCF1
-	KHTwCOAXQpekHBmKvUE10nNzTJ7VKv7j8jeK+VJPh0kuQ60wHkprjmUj/rSc3NVhzHnR0eTa4E9
-	WC6kd
-X-Gm-Gg: AYBFou0zmmqKa337Hu4NUZxkRocb9GTAEm0uA4zTakd5DVs+5r2v4Fyd6CZSW8AGyS/
-	tKb9e9MeID0cHzicVGe+lp6yskmN2aVbNeoeR8aE7dcVbuMx1eZxmlALflf90GboCRUeZxIPo3Y
-	3jKNiOK+2tTwIn0pwClpLdT941NrqVgmDDarqlyLPi55xgjiXnN3GmkmHqivdsGh6M8/fB7W1lp
-	LJG72lX5O4cch0XFNxkDhLK5h/L7cHQGOFJLcIUGjxcf76lpUxX31350m+3RzwcXh571vXFsW3p
-	YYEgw4QTOTM/E40FerufyQQHczsl3y8pWLMlFUAPuH9n8kQgGiLLmjAnOri/2xcFqIrfwv2NkNM
-	FWt5PiXR7bKJPW/L+duDpPQPaYY8P5JLwQqNJ1414esnLH5CIeMGDPgAsiKeZlureV/E96NlpFH
-	uds9Z32Q9D1+Ov7Wo7c02wCEWGTqnr4nde6yiEfgkyZJ6afI+6sNIprKTBFCL2TxQNS5K+xO0pV
-	47+GxqSx8lksRk=
-X-Received: by 2002:a17:90b:3d89:b0:398:9be8:ea69 with SMTP id 98e67ed59e1d1-39b262167e7mr1125588a91.22.1788464189422;
-        Thu, 03 Sep 2026 12:36:29 -0700 (PDT)
+        bh=Y7O2QFPzNWx332l2m0iFWMqO57jF7lDWROu5Spv39Uc=;
+        b=cj6GEdGoDhXGQSd6iraJcu8i+OOieWBlJGv9EwyqYJTT+xW6oiiyjxJfT4/+yrYpsu
+         boD7UuYl2Qh5/byrYW60++Pl4V0qE89zckWAlUpjatBn3H8T6S+eAF/q+RT/VxEYmcmy
+         W838Vh/WB3mZA4vdBXCJVAwoGsr8ovO/Cg492kQ9CCkszZm2fTIiCtoeEyMILvch9O80
+         EcuT16uyt3lS4XxDgJTPzJOT3JNrdyAy9+smU7fl6ZAHe1q6yNFkU+KyVQe+2cDZf/WI
+         /KXJSDjAjzZx117zm37hRWOvc21ME+5xJhzG7+QKKyy0TYEXXR2VRyWpLsnicBLPuFPv
+         L/wA==
+X-Forwarded-Encrypted: i=1; AKwUvByNXlDsLJqrMEORcLsIDiMqjRLB0w8ZKu7prm0W0HDJlcQ5q4s8KNzD9JNevYNt5EqhCuM=@vger.kernel.org
+X-Gm-Message-State: AFuF++nTeRQmhplTxy9ALyBc9lhKDT2n7TZvVQAVKpAGF5E0f+9eXxZT
+	AcxFg1nErgIR/M0X5KK+Qe6TxNY5+/uj4me1XSbmuxoaNH6LlC02n63yuxszwg4vaHU=
+X-Gm-Gg: AYBFou0VijV7HEbjtz1idwd4SsWd95TxNRm1y4clgqSX1Kfx3iNHMTUBZbbcvoF4TNG
+	rbwF0GwCRLSi4QeUslj8VK+ZBLKVb4Zsx/d7voua825Vgx51qn6Ob1cocC7Gj/R6gLb6zAfnKbv
+	9w/TiR/vD9kaidVXAFBaMApQCjZL5kMZLwQ25VQryS4W5WBW3O4X6HZpD6oIIup2Wcw7ARbzoEc
+	YcxXaPHQcv6ErFkDWdIsMNnNdp2YxL1c9CEg3kIAA3nTfQqZY0acpC1wPC/P0x6/o6yKj1gUgrp
+	BlJGnAWzWP+L2QDwG4Xf9AecMqnBmqXsL7zsp5kh56xMk/hB70tmGYbSWQPtcrKo+OGyT6brS6C
+	2yWoy7rrdQTGYBSOQuyIOW8i0kKflXP7PpRpV5ekOA5iOLvBdOfTh0rw8gZuAhYKr0qfL8OEZne
+	7puyjeQHVLLMQzCRa9+rWorfckK7OArbCBlO1TphuaL0EiNJTOam3GeQL5YM5D9iyivVKOB8ps0
+	oI58Qno4h22cf0=
+X-Received: by 2002:a17:90b:274c:b0:398:9be9:ab92 with SMTP id 98e67ed59e1d1-39b2629b27fmr1266138a91.23.1788464203921;
+        Thu, 03 Sep 2026 12:36:43 -0700 (PDT)
 Received: from p14s.cg.shawcable.net ([2604:3d09:148c:c800:40c0:ec33:6266:c275])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b083e4fafsm6836951a91.1.2026.09.03.12.36.28
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b083e4fafsm6836951a91.1.2026.09.03.12.36.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 12:36:29 -0700 (PDT)
+        Thu, 03 Sep 2026 12:36:43 -0700 (PDT)
 From: Mathieu Poirier <mathieu.poirier@linaro.org>
 To: berrange@redhat.com,
 	kchamart@redhat.com,
@@ -77,9 +76,9 @@ Cc: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org,
 	mathieu.poirier@linaro.org
-Subject: [RFC v4 09/24] hw/core/loader: Add a ROM loader notifier
-Date: Thu,  3 Sep 2026 13:35:56 -0600
-Message-ID: <20260903193611.1058589-10-mathieu.poirier@linaro.org>
+Subject: [RFC v4 17/24] hw/arm/virt: Reserve one bit of guest physical address for RME
+Date: Thu,  3 Sep 2026 13:36:04 -0600
+Message-ID: <20260903193611.1058589-18-mathieu.poirier@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
 References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
@@ -93,96 +92,65 @@ Content-Transfer-Encoding: 8bit
 
 From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-Add a function to register a notifier that is invoked when ROMs get
-loaded into guest memory.
-
-It will be used by Arm confidential guest support, in order to register
-all blobs loaded into memory with KVM, so that their content is moved
-into Realm state and measured into the initial VM state.
+When RME is enabled, the upper GPA bit is used to distinguish protected
+from unprotected addresses. Reserve it when setting up the guest memory
+map.
 
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@linaro.org>
 Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 ---
- hw/core/loader.c         | 15 +++++++++++++++
- include/hw/core/loader.h | 17 +++++++++++++++++
- 2 files changed, 32 insertions(+)
+ hw/arm/virt.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index 5cbfba0a86d2..388f10e828db 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -74,6 +74,8 @@
- #endif
- 
- static int roms_loaded;
-+static NotifierList rom_loader_notifier =
-+    NOTIFIER_LIST_INITIALIZER(rom_loader_notifier);
- 
- /* return the size or -1 if error */
- int64_t get_image_size(const char *filename, Error **errp)
-@@ -1201,6 +1203,11 @@ MemoryRegion *rom_add_blob(const char *name, const void *blob, size_t len,
-     return mr;
- }
- 
-+void rom_add_load_notifier(Notifier *notifier)
-+{
-+    notifier_list_add(&rom_loader_notifier, notifier);
-+}
-+
- /* This function is specific for elf program because we don't need to allocate
-  * all the rom. We just allocate the first part and the rest is just zeros. This
-  * is why romsize and datasize are different. Also, this function takes its own
-@@ -1242,6 +1249,7 @@ ssize_t rom_add_option(const char *file, int32_t bootindex)
- static void rom_reset(void *unused)
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 61751aa31e0d..cf3a9320dc3a 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -4054,17 +4054,27 @@ static int virt_kvm_type(MachineState *ms, const char *type_str)
  {
-     Rom *rom;
-+    RomLoaderNotifyData notify;
+     VirtMachineState *vms = VIRT_MACHINE(ms);
+     int max_vm_pa_size, requested_pa_size;
++    int rme_reserve_bit = 0;
+     bool fixed_ipa;
+     int vm_type;
  
-     QTAILQ_FOREACH(rom, &roms, next) {
-         if (rom->fw_file) {
-@@ -1290,6 +1298,13 @@ static void rom_reset(void *unused)
-         address_space_flush_icache_range(rom->as, rom->addr, rom->datasize);
+-    max_vm_pa_size = kvm_arm_get_max_vm_ipa_size(ms, &fixed_ipa);
+-
+     vm_type = (ms->cgs ? KVM_VM_TYPE_ARM_REALM : KVM_VM_TYPE_ARM_NORMAL);
  
-         trace_loader_write_rom(rom->name, rom->addr, rom->datasize, rom->isrom);
++    if (vm_type) {
++        /*
++         * With RME, the upper GPA bit differentiates Realm from NS memory.
++         * Reserve the upper bit to ensure that highmem devices will fit.
++         */
++        rme_reserve_bit = 1;
++    }
 +
-+        notify = (RomLoaderNotifyData) {
-+            .addr = rom->addr,
-+            .len = rom->datasize,
-+            .data = rom->data,
-+        };
-+        notifier_list_notify(&rom_loader_notifier, &notify);
++    max_vm_pa_size = kvm_arm_get_max_vm_ipa_size(ms, &fixed_ipa) -
++                     rme_reserve_bit;
++
+     /* we freeze the memory map to compute the highest gpa */
+     virt_set_memmap(vms, max_vm_pa_size);
+ 
+-    requested_pa_size = 64 - clz64(vms->highest_gpa);
++    requested_pa_size = 64 - clz64(vms->highest_gpa) + rme_reserve_bit;
+ 
+     /*
+      * KVM requires the IPA size to be at least 32 bits.
+@@ -4073,11 +4083,11 @@ static int virt_kvm_type(MachineState *ms, const char *type_str)
+         requested_pa_size = 32;
      }
- }
  
-diff --git a/include/hw/core/loader.h b/include/hw/core/loader.h
-index d9431e8a8d12..fdfddfa7443e 100644
---- a/include/hw/core/loader.h
-+++ b/include/hw/core/loader.h
-@@ -342,6 +342,23 @@ void *rom_ptr_for_as(AddressSpace *as, hwaddr addr, size_t size);
- ssize_t rom_add_vga(const char *file);
- ssize_t rom_add_option(const char *file, int32_t bootindex);
- 
-+typedef struct RomLoaderNotifyData {
-+    /* Address of the blob in guest memory */
-+    hwaddr addr;
-+    /* Length of the blob */
-+    size_t len;
-+    /* Blog data */
-+    uint8_t *data;
-+} RomLoaderNotifyData;
-+
-+/**
-+ * rom_add_load_notifier - Add a notifier for loaded images
-+ *
-+ * Add a notifier that will be invoked with a RomLoaderNotifyData structure for
-+ * each blob loaded into guest memory, after the blob is loaded.
-+ */
-+void rom_add_load_notifier(Notifier *notifier);
-+
- /* This is the usual maximum in uboot, so if a uImage overflows this, it would
-  * overflow on real hardware too. */
- #define UBOOT_MAX_DECOMPRESSED_BYTES (64 << 20)
+-    if (requested_pa_size > max_vm_pa_size) {
++    if (requested_pa_size > max_vm_pa_size + rme_reserve_bit) {
+         error_report("-m and ,maxmem option values "
+                      "require an IPA range (%d bits) larger than "
+                      "the one supported by the host (%d bits)",
+-                     requested_pa_size, max_vm_pa_size);
++                     requested_pa_size, max_vm_pa_size + rme_reserve_bit);
+         return -1;
+     }
+     /*
 -- 
 2.43.0
 
