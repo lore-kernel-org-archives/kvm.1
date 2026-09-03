@@ -1,117 +1,176 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9088A1E8332;
-	Thu,  3 Sep 2026 01:01:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68D5223702;
+	Thu,  3 Sep 2026 01:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788397308; cv=none; b=cKBayJSvLnfCr3IHyxG0BJVcqxMC1MAiOmQsvhA3SCB2O9X35RHgVSeykzQRtkkoTVIIUGSI5bwVX70SPTVzsDqlTn9dlU31/QGcdnAJEPonhNh7nXf/MpJ6rw6uunVnQJ0iSKZlFS8KQXBYLxAvlhIijW0TG56hczL6WXq/Bo8=
+	t=1788400285; cv=none; b=LQmYFa8I6rUuXzGgLM1mWbkIRRTV3kObplzdVzJiB1cLmr6cxmgBEvcJE3XzpdSze024CYt+4N3xaxI0sXgvHaBttqPVDM7t6QbVxv5SLNfu0ShN8sdGDjBeVyuNits5JuaWFK1/+LJklHHy3JXcasufPjId2l487c8a2PxUdgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788397308; c=relaxed/simple;
-	bh=WwGnAA5ErGotDZh3VbAgEK5nIiocXB/JGkOeCgq4A54=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=B6orzQRYqWmqIzjqjHPe6SL4uTID+rqWHUgUYi8K2o7lxWQtaOGq8ss1vmlxD9nrT3nOx7Zc9CPQvwLIYyjNjsvhLg4vkf8g1sX7KL5Qtysk2RNmMlzGG4ax2INGLycTrZsx1JGAm7XMGpwYDRzV4HG3zGq9NkFdqKKQTBt7yH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8AxdvD3xphq0_8HAA--.22830S3;
-	Thu, 03 Sep 2026 09:01:43 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJDxRs30xphqzu0ZAA--.42143S2;
-	Thu, 03 Sep 2026 09:01:41 +0800 (CST)
-Subject: Re: [PATCH v2 02/20] KVM: selftests: Use the common minimum GPA for
- page tables on LoongArch
-To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
- Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Tianrui Zhao <zhaotianrui@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
- Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>,
- Steffen Eiden <seiden@linux.ibm.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, Atish Patra <atish.patra@linux.dev>,
- Alexandre Ghiti <alex@ghiti.fr>, David Hildenbrand <david@kernel.org>,
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
- kvm@vger.kernel.org, loongarch@lists.linux.dev,
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org, Itaru Kitayama <itaru.kitayama@fujitsu.com>,
- Nicholas Piggin <npiggin@gmail.com>, Ritesh Harjani <ritesh.list@gmail.com>
-References: <20260902164123.2546762-1-seanjc@google.com>
- <20260902164123.2546762-3-seanjc@google.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <170acb36-7542-e6f8-d834-250816ddfbfc@loongson.cn>
-Date: Thu, 3 Sep 2026 09:01:24 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1788400285; c=relaxed/simple;
+	bh=8RaIWadECS+2y7/yh9MkgYmB0nbRAz+aqhhQmiSe6xE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SywLeqGQN3H6XQG+Zh2nRXvYuQoXA27F0BL4Q1ynJ8RDKOZKGdGA3urrFFMXXXaOYAqos8dsBg62Q68M9PZC5ndmUi/6qkVq1cx3rPFLonECCoU+HpiKbUftyJ0tEqzZVdvTuq1PfsRUvTYYiJbRyV5d3paaVq11O8/DoxpynJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C2qoS9GY; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C2qoS9GY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788400283; x=1819936283;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=8RaIWadECS+2y7/yh9MkgYmB0nbRAz+aqhhQmiSe6xE=;
+  b=C2qoS9GYOHF0a3DqXkRxVUwYU78zgLbl1K8G587A5G8k1X/GveeEXcMH
+   lvgzdoO57/zOR2LywhN3YrEiIGTNBdTcFpdAR2Wj3aVbgpSHofjn2s31+
+   q7rnBGSoCeIao+i+ijrYIKGAIPNWLI25bFfWE/QxYto6schDa2Nfq57nr
+   M/jarOgamc2kgKK3x57veTsBxKydzc+T2x9jpSIHuj4ForyfmWXgBsS5N
+   rMLOOHep3vC8X+5BDL+SVFD2pjJZ3YEgQSrYSRZlX9r1IBWxfa1aIRwFE
+   ucLT++m/4GgI0c6QzDS8zs1qOjWEjlrct9KycGYVxKiDgS/dP8Ovq6Uuj
+   A==;
+X-CSE-ConnectionGUID: El8NjLCRR0m1Uot3b0Rt0A==
+X-CSE-MsgGUID: tDFwyZ2pQG2sS6vnq7CA3A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="99469101"
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="99469101"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 18:51:22 -0700
+X-CSE-ConnectionGUID: opMajHb+QL6pkd5gLvIcQw==
+X-CSE-MsgGUID: sP1z4fy4SBGVXX4gA4hX6w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="307770208"
+Received: from rpedgeco-desk.jf.intel.com ([10.88.27.135])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 18:51:21 -0700
+From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+To: bp@alien8.de,
+	dave.hansen@intel.com,
+	hpa@zytor.com,
+	kas@kernel.org,
+	kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	mingo@redhat.com,
+	nik.borisov@suse.com,
+	pbonzini@redhat.com,
+	seanjc@google.com,
+	tglx@kernel.org,
+	vannapurve@google.com,
+	x86@kernel.org,
+	chao.gao@intel.com,
+	yan.y.zhao@intel.com,
+	kai.huang@intel.com,
+	tony.lindgren@linux.intel.com,
+	binbin.wu@intel.com,
+	sohil.mehta@intel.com
+Cc: rick.p.edgecombe@intel.com
+Subject: [PATCH v10 00/11] Dynamic PAMT
+Date: Wed,  2 Sep 2026 18:51:02 -0700
+Message-ID: <20260903015113.93343-1-rick.p.edgecombe@intel.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260902164123.2546762-3-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxRs30xphqzu0ZAA--.42143S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7ZF43uFy8JrWDCF15CFWUJrc_yoW8CrWUpa
-	ykAryY9r4rGr17KFZ7WwnYqFy8Wa97GFWxAr1S9ryDurnrAry2gFWxKasrXFy5Z39Yq34S
-	v3WI93W5Za1kZwbCm3ZEXasCq-sJn29KB7ZKAUJUUUUt529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUtVW8ZwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
-	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
-	k0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l
-	4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jw0_GFylx2IqxVAqx4xG67AKxV
-	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI
-	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
-	4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI
-	42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUShiSDUUUU
+
+Hi,
+
+This is another revision of the Dynamic PAMT TDX series. The biggest 
+change from the last version resulted from a request from Dave to more 
+clearly comment and name things *DPAMT* in the DPAMT specific parts of the 
+code, rather than PAMT. Discretion was used, and I left some of the PAMT 
+names (the API names previously agreed with KVM were not updated, and the 
+names associated with the TDX ABI itself were left matching the spec, 
+etc). Comments were also strengthened around the earlier get/put patches 
+to clarify their temporary limitations. There were no functional changes. 
+To help if anyone wants to scrutinize the diff, a rebased branch of v9 is 
+pushed here [0].
+
+Our CI AI system has gained some extra checks, which I thought were better
+to apply. So that was done too. The changes were all trivial.
+
+Lastly, based on offlist discussion with Dave and Kiryl, I author flipped 
+the arch/x86 patches to me and updated them to have a single Intel 
+signoff. I left the KVM patches as they were, based on my best expectation 
+of Sean's preference.
 
 
+We have a ton of RBs at this point (8 different people, thanks!), which I 
+left in place due to the trivial depth of the changes. All KVM patches 
+have Sean's ack. The following escaped Dave's RB last time:
+[PATCH 03/11] x86/virt/tdx: Add __tdx_pamt_get/put() helpers
+[PATCH 04/11] x86/virt/tdx: Allocate refcounts for Dynamic PAMT memory
+[PATCH 09/11] x86/virt/tdx: Enable Dynamic PAMT
+[PATCH 10/11] Documentation/x86: Add documentation for TDX's Dynamic PAMT
 
-On 2026/9/3 上午12:41, Sean Christopherson wrote:
-> Use the common minimum GPA for page tables (0x180000) on LoongArch instead
-> of LoongArch's custom minimum of 0x200000, so that LoongArch can use
-> vm_alloc_page_table() instead of open coding a rough equivalent.  There are
-> no known reasons why LoongArch can't use a lower, less-aligned minimum.
-> The more-aligned value was originally selected to support huge pages for
-> the guest, but that only requires the address of the final allocation to be
-> aligned, the addresses of page table pages is irrelevant on that front.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->   tools/testing/selftests/kvm/lib/loongarch/processor.c | 3 +--
->   1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/kvm/lib/loongarch/processor.c b/tools/testing/selftests/kvm/lib/loongarch/processor.c
-> index 47bbde3e205a..057a77713542 100644
-> --- a/tools/testing/selftests/kvm/lib/loongarch/processor.c
-> +++ b/tools/testing/selftests/kvm/lib/loongarch/processor.c
-> @@ -9,7 +9,6 @@
->   #include "processor.h"
->   #include "ucall_common.h"
->   
-> -#define LOONGARCH_PAGE_TABLE_PHYS_MIN		0x200000
->   #define LOONGARCH_GUEST_STACK_VADDR_MIN		0x200000
->   
->   static gpa_t invalid_pgtable[4];
-> @@ -57,7 +56,7 @@ void virt_arch_pgd_alloc(struct kvm_vm *vm)
->   	child = table = 0;
->   	for (i = 0; i < vm->mmu.pgtable_levels; i++) {
->   		invalid_pgtable[i] = child;
-> -		table = vm_phy_page_alloc(vm, LOONGARCH_PAGE_TABLE_PHYS_MIN,
-> +		table = vm_phy_page_alloc(vm, KVM_GUEST_PAGE_TABLE_MIN_PADDR,
->   				vm->memslots[MEM_REGION_PT]);
->   		TEST_ASSERT(table, "Fail to allocate page tale at level %d\n", i);
->   		virt_set_pgtable(vm, table, child);
-> 
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+This should be in pretty good shape, Dave please strongly consider 
+applying.
+
+Background
+==========
+Dynamic PAMT is a TDX feature that allows saving memory by allocating some 
+of its page tracking metadata dynamically, instead of statically at boot. 
+These static allocations take roughly 0.4% of system memory. The savings 
+are variable depending on system and TDX usage, but could be up to 100x. 
+For more Dynamic PAMT background, please refer to [1]. For more analysis 
+of the savings in different scenarios, see the v6 coverleter[2].
+
+It occurred to me that since the Dynamic PAMT effort began, RAM has become
+much more expensive. Consequently, this feature is even more valuable now.
+It would be good to enable it for TDX users.
+
+Base
+====
+This is based on v7.3-rc1. A branch of this series can be found here: [3].
+
+Testing
+=======
+Since there were not any changes which would be expected to have 
+functional impact, I just did some regression testing with our standard 
+automated testing for this one. I left Tested-by tags per Hongyu's
+preference.
+
+
+[0] https://github.com/intel-staging/tdx/tree/dpamt_v9_on_v7.3-rc1
+[1] https://lore.kernel.org/lkml/20250918232224.2202592-1-rick.p.edgecombe@intel.com/
+[2] https://lore.kernel.org/lkml/20260526023515.288829-1-rick.p.edgecombe@intel.com/
+[3] https://github.com/intel-staging/tdx/tree/dpamt_v10
+
+
+Kiryl Shutsemau (2):
+  KVM: TDX: Allocate PAMT memory for TD and vCPU control structures
+  KVM: TDX: Get/put PAMT pages when (un)mapping private memory
+
+Rick Edgecombe (9):
+  x86/virt/tdx: Simplify PAMT layout calculation
+  x86/virt/tdx: Allocate page bitmap for Dynamic PAMT
+  x86/virt/tdx: Add __tdx_pamt_get/put() helpers
+  x86/virt/tdx: Allocate refcounts for Dynamic PAMT memory
+  x86/virt/tdx: Handle multiple callers in tdx_pamt_get/put()
+  x86/virt/tdx: Add APIs to support Dynamic PAMT ops from KVM's fault
+    path
+  x86/virt/tdx: Enable Dynamic PAMT
+  Documentation/x86: Add documentation for TDX's Dynamic PAMT
+  x86/virt/tdx: Optimize tdx_pamt_get/put()
+
+ .../admin-guide/kernel-parameters.txt         |  10 +
+ Documentation/arch/x86/tdx.rst                |  27 +
+ arch/x86/include/asm/kvm-x86-ops.h            |   1 +
+ arch/x86/include/asm/kvm_host.h               |   1 +
+ arch/x86/include/asm/tdx.h                    |  23 +
+ arch/x86/include/asm/tdx_global_metadata.h    |   9 +-
+ arch/x86/kvm/mmu/mmu.c                        |   4 +
+ arch/x86/kvm/vmx/tdx.c                        |  99 ++--
+ arch/x86/kvm/vmx/tdx.h                        |   2 +
+ arch/x86/virt/vmx/tdx/tdx.c                   | 460 +++++++++++++++---
+ arch/x86/virt/vmx/tdx/tdx.h                   |   2 +
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c   |  23 +-
+ 12 files changed, 566 insertions(+), 95 deletions(-)
+
+-- 
+2.55.0
 
