@@ -1,134 +1,98 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FF52E888C
-	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 06:17:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C06B3E3C5A;
+	Thu,  3 Sep 2026 06:21:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788416252; cv=none; b=ZH6gm31nQOXRKB9lrUall+n/oZdwEV6O1KUWfJrH3zYF7R4+r7QYGD31ZX0Zl8PL13i9wsY/zSZdKbOC+lhUIftjwjMx3GTTMef69rSJt3xaIzb1upxkXOE0zOVkp4RV4h93p4KxOK6r9xR4oQRFS0ttSRa8iw8oyTcUYUOTZPA=
+	t=1788416503; cv=none; b=S91YgbyxTwzdatauvaWZjAzKCxvoAiCMZZr59xVBnn5HZdzH9a8umoY9/ikM0HVskGM5+JAQOahYmgij9d/OMvfJVo+NRUhBanRu1Y19tnb4uBqjJr5qm6Q5mDjTlrYBHs1eFxmUeCzvmF+VSD1U6Vqf4j0eqE2RoN6v6pn3C4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788416252; c=relaxed/simple;
-	bh=5fEpVgp9E7FDiWUah58fsA7bdrIxanTxTOaQkc2H9Js=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 Content-Type:MIME-Version; b=dTsErNUkpv6fEgYugKqMqcqptFFEC9M+Q940lL5lMYBvmUxo3OfdchNPES6Tg+KQGOjypM5HExwj34nuKeu/1PT/8IoQGVP3fows+g6iDfOA8TZO5YDL/42xhs84yx+LQpwGfQBL86r8AwgfGM5OAsoraCo5xTbV8TYddOyma3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qHudFzUG; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788416503; c=relaxed/simple;
+	bh=6/rj+c+IzNhry1TdYe80RDUcerB9QKuJs9SppT64Ly4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XMxw0JZ1/PAwMN+UOeNjA8jtvMmZWmRq3lQCHW4K9HKgso9dKV5sJYmqnBUkp6JRADWCkdlSSTZBwUBOSVfY0Iz6fJ8RcZ51UDX3/VgnGPKG8lleyTiOjpV0VRzwE2LxHVmdLyFcFc6drI3jcrbDBAEFA6sYyg7KokCszfh21gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IWl4mc7r; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qHudFzUG"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-855d2bfae95so757249b3a.1
-        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 23:17:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788416249; x=1789021049; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:content-type:message-id:date
-         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=iBqEdXDuBCy8uZJKHbshNmmYy9yfjB6hUG6xMylUjFw=;
-        b=qHudFzUGi8oRrtJ+tfnlAGtGA4kLyRrVrpkEbldIWRWuXkoGMmUKGo96cksz5iijhC
-         iWHvvF+8SZHHAAGaWghfFuTqfCTQdLQwylS5pl758CeEPQQ+S6OfWnVJlgngvXxWoeHY
-         nb+0pRJc6yyd5YxZ++1PAUQRN6lWp+2Wonzw2YgIgFw12toSG00UPZfpuD8MkMGKzkHT
-         GGyVq6ZCOPVl/28yCNvZUCzwBf57gbR8j6QVc0WuJAOKy4KPJ9E+uPRQP7CEDBBaRKrv
-         CvgNbse25W3ELMuo2VqvUitDXoKEL5e4QVY15dnw1lNNsXeFK+2toAO/7M2dmUkhUSjD
-         M3fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788416249; x=1789021049;
-        h=mime-version:content-transfer-encoding:content-type:message-id:date
-         :references:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iBqEdXDuBCy8uZJKHbshNmmYy9yfjB6hUG6xMylUjFw=;
-        b=tAgO49XlAOgLScjnb/Oty90jvSWVEVqNXcCP23w1pLx9ukQ9kfSusAHWd5vnZlzGDs
-         av3u+/foFKpl3Q9BuRtWKepo3mQodUAKuwC2kKRe0vuXxokEf0ZswnIv/SMP6NKvTdoD
-         92PXCln6yPQ/VSobD6tHYbQix0AqAEnSNsK7zUNwZQW3kn5cCQJBqPY3ah6BDEgpdAS2
-         NxNP7nASF1aABh3O8BGnDpH9aNZdKXYSXVKMj78eoQxknK+z1J3zfiCUNWIBLKuJT3JK
-         B/vrDDlPW5Ja5KOnW7K234tmY/U3JFGH/aI+4CiK5u4Uq5HjqPqhqWZF5u2TrNuw74I6
-         jzRg==
-X-Forwarded-Encrypted: i=1; AKwUvBxPX8PZE6EuTlDC9HGR7RoTddJnKTHAMtxK2AtRnDq1uPm38zJtCWUNV1ObbSW+fWosAcQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++ki+met94/2/ACWyQ+mxQeT/xKJUBd1Yt3QV/fJz8hL95LUCAMS
-	Lu/lgFvkaO3/POkxEBttphSZZ2jXMTYzfVhXreYnN/SV0p/rGbebiC1W
-X-Gm-Gg: AYBFou1K4Q6rLbla2GFV2ncbGFTRYRMwEyJmz5/C07KG53kVWY1xHucRg1hfVULBhod
-	Na7ksApD9le02QTy9gAlsO6nwnSvkiQjMEy46IYXa4LMcBLD/vjOM9mFHaJYLcOsn3by6jvd0Zw
-	aGIdhBlfdnXKbgx6KD90SN9WraoZsBzNMnezbSnmQ5pNeEssRa5d9TrW8MFLUmbKeTUCLf0mxOO
-	6Lmzx5A9N6EvHlI6fb+wL44MM7ShPp7WnA2FLaAt1Z9i10FcYSdOIPm0AJc7FzbOGiiVUXuJBmU
-	THm4K0TCrSLU81HjwoMdT8ahqj9gPpMeMxKJDE0H0uz/mUAV0iQ6ksYBdw3iZhkJSmz9yLR7Lmq
-	v4VW2HhG2nlApqJJkPkjpZBCWKgzW3tCfVSex+kzf/QxhTPMPfghqvimce9BzxdazWvnUioHxzK
-	L56Ort2/7PuozVtLyS1zjazBXZPfAHo5qJPEk3ltWt/xUX1/y1j/KfmXZn173cMNtf35TS1nzdz
-	Fj21nFBLYflJBg=
-X-Received: by 2002:a05:6a21:7008:b0:3d1:66eb:511c with SMTP id adf61e73a8af0-3da215a7315mr3588262637.13.1788416248458;
-        Wed, 02 Sep 2026 23:17:28 -0700 (PDT)
-Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14319976a4asm2874285c88.13.2026.09.02.23.17.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Sep 2026 23:17:27 -0700 (PDT)
-From: Hemanth Selam <hemanth.selam@gmail.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: seanjc@google.com, pbonzini@redhat.com, shuah@kernel.org,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 1/2] KVM: selftests: Actually compare sregs and events in
- sync_regs_test
-In-Reply-To: <20260902122209.865E61F00A3E@smtp.kernel.org>
-References: <20260902120235.18486-1-hemanth.selam@gmail.com>
- <20260902120235.18486-2-hemanth.selam@gmail.com>
- <20260902122209.865E61F00A3E@smtp.kernel.org>
-Date: Thu, 03 Sep 2026 11:47:23 +0530
-Message-ID: <178841624362.1403938.933078415206124828@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IWl4mc7r"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788416502; x=1819952502;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=6/rj+c+IzNhry1TdYe80RDUcerB9QKuJs9SppT64Ly4=;
+  b=IWl4mc7rcXnc/en2NX1AcTu3QmAP+O7dVuu15owWYSH+86Mj5HCXFfQv
+   tl6o7Qcr7/gUgTqB5f4VvGnDDRUmx8wk8R6IuXz0iPBupahQIkRl8IK7p
+   Bm8LKKdrn9GlFPO3YIQh/rBDlTOeGnAu7lN75A8m/6W3MairoUvBsmLcj
+   /3l92h4nBHXiIrvs8IAZzUkvZdWFo6IeonKfCYOwO928ZMLeGxXEyOb5d
+   l5jerAM4g6hlJrocArhapB519k5FwiRPH3ADFRKm11DV2AvuWBfWtUg5C
+   IJpxOVpCAhCq824fxhMS1egj+yA8rAJOcuvOsoPBMq8QT2Np3RmOwmTfh
+   A==;
+X-CSE-ConnectionGUID: ftYufxbKQSedm+4ci1epcg==
+X-CSE-MsgGUID: txkFHBsLRFaUhD39bvyPDA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="99484683"
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="99484683"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 23:21:41 -0700
+X-CSE-ConnectionGUID: XQQnnL8MRAK2/JXVtas98A==
+X-CSE-MsgGUID: nJUrpAGPQU2OMAWovOWtrg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; 
+   d="scan'208";a="299488985"
+Received: from unknown (HELO [10.238.208.122]) ([10.238.208.122])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 23:21:39 -0700
+Message-ID: <bf51e3d3-cf28-4155-9915-683bf6c848a4@intel.com>
+Date: Thu, 3 Sep 2026 14:21:35 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/4] virt: tdx-guest: Allocate Quote buffer dynamically
+To: Peter Fang <peter.fang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ Binbin Wu <binbin.wu@linux.intel.com>
+References: <20260729122939.1340412-1-peter.fang@intel.com>
+ <20260729122939.1340412-5-peter.fang@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260729122939.1340412-5-peter.fang@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 02, 2026 at 12:22:09PM +0000, sashiko-bot@kernel.org wrote:
-> [Severity: High]
-> This is a pre-existing issue, but does this new assertion trigger test
-> failures due to how __get_sregs() handles the interrupt_bitmap?
+On 7/29/2026 8:29 PM, Peter Fang wrote:
+> A new TDX module ABI reports the TD Quote size limit in a metadata
+> field. This size used to be fixed at 128 KB.
+> 
+> The guest driver's Quote buffer is shared with the host VMM. The current
+> fixed size may be too small for Quotes using schemes such as
+> post-quantum cryptography (PQC), where larger certificate chains can
+> increase the Quote size significantly.
+> 
+> Allocate the Quote buffer based on the reported limit. This avoids
+> wasting memory on platforms that do not require larger Quotes. Older
+> platforms fall back to the default 128 KB buffer.
 
-No.  Neither of the two tests that reach compare_sregs(),
-req_and_verify_all_valid and set_and_verify_various, ever injects an
-interrupt: the guest just loops on an IN from a port, and nothing in the
-test writes interrupt_bitmap.  KVM allocates the kvm_run page with
-__GFP_ZERO, so the sync region's copy starts out zero and stays zero,
-and the KVM_GET_SREGS side is filled from a kzalloc()'d buffer.  Both
-sides are all zeros at every point where the memcmp() runs, which I
-confirmed by printing them, and the series passes 10/10 on an AMD host.
+I think we need to justify why using the value reported by TDX module
+(i.e., QUOTE_MAX_SIZE) is safe.
 
-> This function sets the bit corresponding to the currently injected interrupt
-> but never clears the prior contents of the array.
+From "Intel TDX Module Extension for Quoting" spec,
 
-That part is right, and it is observable from userspace.  Planting a bit
-in the sync region and running the vCPU with KVM_SYNC_X86_SREGS in
-kvm_valid_regs but nothing in kvm_dirty_regs:
+  QUOTE_MAX_SIZE that specifies the maximum size of the buffer that must be
+  allocated to contain the Intel TDX Quote received from Intel TDX Module.
 
-  run->s.regs.sregs.interrupt_bitmap[0] = 1ULL << 0x30;
-
-leaves KVM_GET_SREGS reporting 0x0 while the sync region still reads
-0x1000000000000 after the exit.  KVM refreshed sregs there and left the
-caller's bit in place.
-
-> Could this lead to spurious interrupt injections or corrupted state during
-> live migration for any VMM using the KVM_SYNC_X86_SREGS API?
-
-Handing that same stale bit back with KVM_SYNC_X86_SREGS set in
-kvm_dirty_regs does inject it: __set_sregs()'s find_first_bit() picks up
-vector 0x30, kvm_queue_interrupt() queues it, and the guest dies on an
-unhandled 0x30.  So a VMM that read-modify-writes the sync region can
-resubmit a vector KVM itself put there on an earlier exit, since nothing
-clears the field once a bit is set.
-
-I could not demonstrate KVM planting the bit itself here, as selftest VMs
-have an in-kernel irqchip and KVM_INTERRUPT returns -ENXIO; that half
-rests on __get_sregs() only ever doing set_bit().
-
-Whether KVM should zero interrupt_bitmap before it ORs in the injected
-vector, or clear it in store_regs(), is an ABI question rather than
-something this test change should decide, and I am happy to send a patch
-if that is the direction.  I would keep the memcmp() either way: it is
-precisely the check that would catch a stale bit turning up in the sync
-region.
-
-Thanks,
-Hemanth
+So, TDX module only guarantees that QUOTE_MAX_SIZE is big enough to hold
+the quote that is generated by the TDX module. But for the current tdx
+guest driver, it doesn't know how host will generate the quote. Host can
+generate the SGX-based quote and we need to justify the QUOTE_MAX_SIZE will
+be enough for such case.
