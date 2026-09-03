@@ -1,466 +1,166 @@
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-125.mail.aliyun.com (out28-125.mail.aliyun.com [115.124.28.125])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0C4330B14
-	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 02:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73593546E0;
+	Thu,  3 Sep 2026 02:41:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.125
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788402908; cv=none; b=icNuNXjaeVWseL4Xgrl2Ey7t0mpBIHYPZjYOKpj/Ft5pQmLZc6NyCIeEEql8uzAbRt9esaBFfZOxcA4zmLvKeEvS8uqrAyOoDHBfQEsDuMkdG45tm+ttqsIXqIDdAg/IILFH4te+6WlE9J/wQ6hopUDKmcY6HL/ql+Htm9Nrt4I=
+	t=1788403303; cv=none; b=NkEVnkxlZioMeZ+cwKZcwEwzqnFFojxrF/XywVk5R4KlzC3HJ24kwr6WLzXUv6dDRbydeGmMSSpQ98Y/g3WLoeXnL1+Vwd0vfL9uwpo8rEhZ1iiAnq8Q9zSvFCMff70dv/Jva7D1Fxaz6vckBpcb5zJ4y9g8nL5Ibdu6BA0Wvi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788402908; c=relaxed/simple;
-	bh=KkllZ0CXRBgyZYgnbfWvEuICZuPWHeEgnlWGgS0PT3U=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=f0ZmexPX/okMYkx3piKySWZe/qpNgO88UhU8Mfn83Qrl7K9SwByrb0+XWXsmE7aiJ6v+1hlmy+8JSW/0B9RMy7l7e2k9hLD1aPlJG9OCXfKdFM9tUuOXt8MykslP+OtnzAbiUbtlNCNi6NWMIksDkh9L5IvtX5HVM27DyWgUIF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--loganodell.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uk1Q1YTc; arc=none smtp.client-ip=209.85.216.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--loganodell.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uk1Q1YTc"
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38e8fee6af3so2681602a91.1
-        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 19:35:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788402899; x=1789007699; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3jZRbPTlJQ2oU3N5reiU/R1oleIxZE7zMycKAHKHmwY=;
-        b=uk1Q1YTctHR1EAEfSx+NSD5Yg4sQUeFkYqL5tLARwc3+BJDmamiVU2FYRiB9Ixk5+C
-         DDYynVGn3pKqg7zwXfGXCn3fMo2PahO3CicpVlLS7N6Tw5J8/a9K02hL5m7SrXKUnZOf
-         72APtMM3ow1p1G72jInznyzn0OhPKob1EsgsAxcRHwwZUFmYgD4aXvZf1vx9K8SSdd0+
-         HLnHcoY42rW1FUt0PclLX1fd+DRrMEmsrBwOAiU4oTX42aYsRhRqx8HopGaMqfRBOX+R
-         6IA/tWHS5uuOGs4xYhrqHhhmmRNZgOokqJHkTfTLED0ECLcCFhzz1/CJdRNFLvPCEa5+
-         5ITQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788402899; x=1789007699;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3jZRbPTlJQ2oU3N5reiU/R1oleIxZE7zMycKAHKHmwY=;
-        b=LTAC8oejGOZp+S9uGaWpVHw9yQGEJmeRFz8pNEjnkR/e+2fuH1/Q0wtpaX5HVmX3pt
-         gj+7fEo+cdGcwjYQpgOetmygcBJ1GYevn7PVzZe34hXcQHPKnSY6dnpRpJ++G4iomnFZ
-         HCx92C3LFWMeh3Wix5pmtREOQ26UitpkchjBJTavjQYJP4rhair5lWjXFCt9NBNuWE9O
-         GNoQk5MvARStttdwpOgvZB6mqnZOQ/xzt0JeuSYOdeaip7S9KUmUFCQaLa7uS9EBfFFN
-         VoTNJ1hPBN2Wy0Q7KsVmhLEaIvU2Rz50QuVv4QeDP6e/iwDsDe9J1LowR+VIhqDLHSHx
-         v5NA==
-X-Forwarded-Encrypted: i=1; AKwUvByONEg+RmzDbmNCh4mGqRy4VnGvXRY2s2hXngRlLDNV/m5QRvJweAhpYVGTW7bzVmfi3Sw=@vger.kernel.org
-X-Gm-Message-State: AFuF++kePK4JeIH1MopVM4evoD9A3aOLkHsrvaVbAUC3lLV/f33NzILv
-	iF27/1v8m3Xy/8DHqRCE4kFrYibNwt+akj3WdvUbZmz4G9DnKkaF3vlBg7tP1KECyEiRQSLyGhN
-	f1onTiG+Jd13/lqK0hJoM8w==
-X-Received: from dyboc22.prod.google.com ([2002:a05:7301:3f16:b0:32b:1306:42ad])
- (user=loganodell job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:288a:b0:380:21b7:e727 with SMTP id 98e67ed59e1d1-39aee0848bbmr14352175a91.14.1788402898410;
- Wed, 02 Sep 2026 19:34:58 -0700 (PDT)
-Date: Wed,  2 Sep 2026 19:34:52 -0700
-In-Reply-To: <20260903023452.721732-1-loganodell@google.com>
+	s=arc-20240116; t=1788403303; c=relaxed/simple;
+	bh=6u4PHAZ/H4x65SWpE7IYKnikm6E+U38Lj4eVkpdhFKM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bj7teHrbiciLcnlX0MP1SzNQ7BdavcX31/B+6JznCg6aJldUZD+y91G7/5UYNQKKE9RGuJv2j1tgHUlMNU7FPtbRPUHgJEAvqrQpmrMOdZzUmKj9KcXaeaDSS89j7feOkmV40gNY0SRpsXL5L7qSiQmT0cazb/c9x1S98DyS8Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.125
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.09446921|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00875414-0.00211812-0.989128;FP=7200128259874146027|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033023018039;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.j429d-8_1788403282;
+Received: from 172.18.22.44(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.j429d-8_1788403282 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Thu, 03 Sep 2026 10:41:26 +0800
+Message-ID: <9515a124-5c18-4015-b64a-e80bb6b84264@open-hieco.net>
+Date: Thu, 3 Sep 2026 10:41:20 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260903023452.721732-1-loganodell@google.com>
-X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
-Message-ID: <20260903023452.721732-4-loganodell@google.com>
-Subject: [RFC PATCH 3/3] luo: memfd: Move to feature flags instead of
- compatibility strings
-From: Logan Odell <loganodell@google.com>
-To: arnd@arndb.de, pasha.tatashin@soleen.com, rppt@kernel.org, 
-	pratyush@kernel.org, graf@amazon.com, akpm@linux-foundation.org, 
-	pbonzini@redhat.com, maz@kernel.org, oupton@kernel.org, seanjc@google.com, 
-	bhelgaas@google.com, alex@shazbot.org, jgg@nvidia.com, kevin.tian@intel.com, 
-	dwmw2@infradead.org, baolu.lu@linux.intel.com, joro@8bytes.org, 
-	will@kernel.org, robin.murphy@arm.com
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-pci@vger.kernel.org, iommu@lists.linux.dev, 
-	Logan Odell <loganodell@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/8] KVM: nSVM: Enable DecodeAssists for nested guests
+To: Sean Christopherson <seanjc@google.com>, Jim Mattson
+ <jmattson@google.com>, kvm@vger.kernel.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+ zhouyanjing@hygon.cn, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260824123954.315112-1-zhang_wei@open-hieco.net>
+Content-Language: en-US
+From: Tina Zhang <zhang_wei@open-hieco.net>
+In-Reply-To: <20260824123954.315112-1-zhang_wei@open-hieco.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Update struct memfd_luo_ser to embed struct luo_feature_hdr features.
-Define feature flags for memfd (MEMFD_LUO_FEATURE_SEALS and
-MEMFD_LUO_FEATURE_FOLIOS), emit the liveupdate feature entry for memfd,
-and validate required features and active flags during deserialization.
-Also replace the version bump requirement for seals with
-MEMFD_LUO_BASE_SEALS to allow new seals to be introduced granularly as
-feature bits.
+Hi Sean and Jim,
 
-Signed-off-by: Logan Odell <loganodell@google.com>
----
- include/linux/kho/abi/luo.h   |  8 +++---
- include/linux/kho/abi/memfd.h | 41 ++++++++++++++++++++----------
- include/linux/liveupdate.h    | 10 ++++----
- kernel/liveupdate/luo_file.c  | 28 ++++++++++-----------
- kernel/liveupdate/luo_flb.c   |  2 +-
- lib/tests/liveupdate.c        |  2 +-
- mm/memfd_luo.c                | 47 +++++++++++++++++++++++++----------
- 7 files changed, 87 insertions(+), 51 deletions(-)
+A gentle ping on this series. I believe v5 addresses all the comments 
+from the previous review rounds. Could you please take another look when 
+you have a chance? Any further comments would be appreciated.
 
-diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
-index 5b25e1b48cf5..450a0e40e2ab 100644
---- a/include/linux/kho/abi/luo.h
-+++ b/include/linux/kho/abi/luo.h
-@@ -132,18 +132,18 @@ struct luo_ser {
- 	u64 flbs_pa;
- } __packed;
- 
--#define LIVEUPDATE_HNDL_COMPAT_LENGTH	48
-+#define LIVEUPDATE_HNDL_NAME_LENGTH	48
- 
- /**
-  * struct luo_file_ser - Represents the serialized preserves files.
-- * @compatible:  File handler compatible string.
-+ * @name:        File handler name.
-  * @data:        Private data
-  * @token:       User provided token for this file
-  *
-  * If this structure is modified, `LUO_ABI_COMPATIBLE` must be updated.
-  */
- struct luo_file_ser {
--	char compatible[LIVEUPDATE_HNDL_COMPAT_LENGTH];
-+	char name[LIVEUPDATE_HNDL_NAME_LENGTH];
- 	u64 data;
- 	u64 token;
- } __packed;
-@@ -256,7 +256,7 @@ struct liveupdate_ver_hdr {
-  * @active:     Bitmask of active features.
-  */
- struct liveupdate_feature_entry {
--	char name[LIVEUPDATE_HNDL_COMPAT_LENGTH];
-+	char name[LIVEUPDATE_HNDL_NAME_LENGTH];
- 	u32 feat_bytes;
- 	u32 reserved;
- 	u64 supp;
-diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
-index 08b10fea2afc..9961df5be423 100644
---- a/include/linux/kho/abi/memfd.h
-+++ b/include/linux/kho/abi/memfd.h
-@@ -11,6 +11,8 @@
- #ifndef _LINUX_KHO_ABI_MEMFD_H
- #define _LINUX_KHO_ABI_MEMFD_H
- 
-+#include <linux/bits.h>
-+#include <linux/kho/abi/luo.h>
- #include <linux/types.h>
- #include <linux/kho/abi/kexec_handover.h>
- 
-@@ -23,11 +25,20 @@
-  * The state is serialized into a packed structure `struct memfd_luo_ser`
-  * which is handed over to the next kernel via the KHO mechanism.
-  *
-- * This interface is a contract. Any modification to the structure layout
-- * constitutes a breaking change. Such changes require incrementing the
-- * version number in the MEMFD_LUO_FH_COMPATIBLE string.
-+ * This interface is a contract. Any changes should be additive using feature
-+ * flags to ensure backwards compatibility.
-  */
- 
-+#define MEMFD_LUO_FEATURE_SEALS		BIT_ULL(0)
-+#define MEMFD_LUO_FEATURE_FOLIOS	BIT_ULL(1)
-+
-+#define MEMFD_LUO_FEATURES_SUPP		(MEMFD_LUO_FEATURE_SEALS | \
-+					 MEMFD_LUO_FEATURE_FOLIOS)
-+#define MEMFD_LUO_FEATURES_REQ		(MEMFD_LUO_FEATURE_SEALS | \
-+					 MEMFD_LUO_FEATURE_FOLIOS)
-+#define MEMFD_LUO_FEATURES_ACTIVE	(MEMFD_LUO_FEATURE_SEALS | \
-+					 MEMFD_LUO_FEATURE_FOLIOS)
-+
- /**
-  * MEMFD_LUO_FOLIO_DIRTY - The folio is dirty.
-  *
-@@ -57,18 +68,21 @@ struct memfd_luo_folio_ser {
- } __packed;
- 
- /*
-- * The set of seals this version supports preserving. If support for any new
-- * seals is needed, add it here and bump version.
-+ * The set of base seals supported by MEMFD_LUO_FEATURE_SEALS.
-+ * If support for new seals is needed, define a dedicated feature bit
-+ * (e.g. MEMFD_LUO_FEATURE_SEAL_<NAME>) to allow granular compatibility.
-  */
--#define MEMFD_LUO_ALL_SEALS (F_SEAL_SEAL | \
--			     F_SEAL_SHRINK | \
--			     F_SEAL_GROW | \
--			     F_SEAL_WRITE | \
--			     F_SEAL_FUTURE_WRITE | \
--			     F_SEAL_EXEC)
-+#define MEMFD_LUO_BASE_SEALS	(F_SEAL_SEAL | \
-+				 F_SEAL_SHRINK | \
-+				 F_SEAL_GROW | \
-+				 F_SEAL_WRITE | \
-+				 F_SEAL_FUTURE_WRITE | \
-+				 F_SEAL_EXEC)
-+#define MEMFD_LUO_ALL_SEALS	MEMFD_LUO_BASE_SEALS
- 
- /**
-  * struct memfd_luo_ser - Main serialization structure for a memfd.
-+ * @features:  Bit mask of supported, required, and active features.
-  * @pos:       The file's current position (f_pos).
-  * @size:      The total size of the file in bytes (i_size).
-  * @seals:     The seals present on the memfd. The seals are uABI so it is safe
-@@ -79,6 +93,7 @@ struct memfd_luo_folio_ser {
-  *             struct memfd_luo_folio_ser.
-  */
- struct memfd_luo_ser {
-+	struct luo_feature_hdr features;
- 	u64 pos;
- 	u64 size;
- 	u32 seals;
-@@ -87,7 +102,7 @@ struct memfd_luo_ser {
- 	struct kho_vmalloc folios;
- } __packed;
- 
--/* The compatibility string for memfd file handler */
--#define MEMFD_LUO_FH_COMPATIBLE	"memfd-v2"
-+/* The name for memfd file handler */
-+#define MEMFD_LUO_FH_NAME	"memfd"
- 
- #endif /* _LINUX_KHO_ABI_MEMFD_H */
-diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
-index e058df23fed1..4489e344f76f 100644
---- a/include/linux/liveupdate.h
-+++ b/include/linux/liveupdate.h
-@@ -90,10 +90,10 @@ struct liveupdate_file_ops {
- /**
-  * struct liveupdate_file_handler - Represents a handler for a live-updatable file type.
-  * @ops:                Callback functions
-- * @compatible:         The compatibility string (e.g., "memfd-v1", "vfiofd-v1")
-- *                      that uniquely identifies the file type this handler
-- *                      supports. This is matched against the compatible string
-- *                      associated with individual &struct file instances.
-+ * @name:               The name (e.g., "memfd", "vfiofd") that uniquely
-+ *                      identifies the file type this handler supports. This
-+ *                      is matched against the name associated with individual
-+ *                      &struct file instances.
-  *
-  * Modules that want to support live update for specific file types should
-  * register an instance of this structure. LUO uses this registration to
-@@ -102,7 +102,7 @@ struct liveupdate_file_ops {
-  */
- struct liveupdate_file_handler {
- 	const struct liveupdate_file_ops *ops;
--	const char compatible[LIVEUPDATE_HNDL_COMPAT_LENGTH];
-+	const char name[LIVEUPDATE_HNDL_NAME_LENGTH];
- 
- 	/* private: */
- 
-diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-index dbae0715220b..775484af0750 100644
---- a/kernel/liveupdate/luo_file.c
-+++ b/kernel/liveupdate/luo_file.c
-@@ -480,13 +480,13 @@ int luo_file_freeze(struct luo_file_set *file_set,
- 		err = luo_file_freeze_one(file_set, luo_file);
- 		if (err < 0) {
- 			pr_warn("Freeze failed for token[%#0llx] handler[%s] err[%pe]\n",
--				luo_file->token, luo_file->fh->compatible,
-+				luo_file->token, luo_file->fh->name,
- 				ERR_PTR(err));
- 			goto err_unfreeze;
- 		}
- 
--		strscpy(file_ser->compatible, luo_file->fh->compatible,
--			sizeof(file_ser->compatible));
-+		strscpy(file_ser->name, luo_file->fh->name,
-+			sizeof(file_ser->name));
- 		file_ser->data = luo_file->serialized_data;
- 		file_ser->token = luo_file->token;
- 	}
-@@ -732,7 +732,7 @@ static int luo_file_deserialize_one(struct luo_file_set *file_set,
- 
- 	down_read(&luo_register_rwlock);
- 	list_private_for_each_entry(fh, &luo_file_handler_list, list) {
--		if (!strcmp(fh->compatible, ser->compatible)) {
-+		if (!strcmp(fh->name, ser->name)) {
- 			if (try_module_get(fh->ops->owner))
- 				handler_found = true;
- 			break;
-@@ -741,9 +741,9 @@ static int luo_file_deserialize_one(struct luo_file_set *file_set,
- 	up_read(&luo_register_rwlock);
- 
- 	if (!handler_found) {
--		pr_warn("No registered handler for compatible '%.*s'\n",
--			(int)sizeof(ser->compatible),
--			ser->compatible);
-+		pr_warn("No registered handler for name '%.*s'\n",
-+			(int)sizeof(ser->name),
-+			ser->name);
- 		return -ENOENT;
- 	}
- 
-@@ -774,9 +774,9 @@ static int luo_file_deserialize_one(struct luo_file_set *file_set,
-  * in-memory linked list of 'struct luo_file' instances.
-  *
-  * For each serialized entry, it performs the following steps:
-- *   1. Reads the 'compatible' string.
-+ *   1. Reads the 'name' string.
-  *   2. Searches the global list of registered file handlers for one that
-- *      matches the compatible string.
-+ *      matches the name.
-  *   3. Allocates a new 'struct luo_file'.
-  *   4. Populates the new structure with the deserialized data (token, private
-  *      data handle) and links it to the found handler. The 'file' pointer is
-@@ -870,7 +870,7 @@ void luo_file_set_destroy(struct luo_file_set *file_set)
-  * liveupdate_register_file_handler - Register a file handler with LUO.
-  * @fh: Pointer to a caller-allocated &struct liveupdate_file_handler.
-  * The caller must initialize this structure, including a unique
-- * 'compatible' string and a valid 'fh' callbacks. This function adds the
-+ * 'name' string and valid 'fh' callbacks. This function adds the
-  * handler to the global list of supported file handlers.
-  *
-  * Context: Typically called during module initialization for file types that
-@@ -893,11 +893,11 @@ int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
- 	}
- 
- 	down_write(&luo_register_rwlock);
--	/* Check for duplicate compatible strings */
-+	/* Check for duplicate handler names */
- 	list_private_for_each_entry(fh_iter, &luo_file_handler_list, list) {
--		if (!strcmp(fh_iter->compatible, fh->compatible)) {
--			pr_err("File handler registration failed: Compatible string '%s' already registered.\n",
--			       fh->compatible);
-+		if (!strcmp(fh_iter->name, fh->name)) {
-+			pr_err("File handler registration failed: Handler name '%s' already registered.\n",
-+			       fh->name);
- 			err = -EEXIST;
- 			goto err_unlock;
- 		}
-diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
-index cd715a7c1d99..cb8c15f181e0 100644
---- a/kernel/liveupdate/luo_flb.c
-+++ b/kernel/liveupdate/luo_flb.c
-@@ -337,7 +337,7 @@ static void luo_flb_unregister_one(struct liveupdate_file_handler *fh,
- 
- 	if (!found) {
- 		pr_warn("Failed to unregister FLB '%s': not found in file handler '%s'\n",
--			flb->compatible, fh->compatible);
-+			flb->compatible, fh->name);
- 		return;
- 	}
- 
-diff --git a/lib/tests/liveupdate.c b/lib/tests/liveupdate.c
-index 4c08a7c6fb78..d3a8573a648e 100644
---- a/lib/tests/liveupdate.c
-+++ b/lib/tests/liveupdate.c
-@@ -135,7 +135,7 @@ void liveupdate_test_register(struct liveupdate_file_handler *fh)
- 	}
- 
- 	pr_info("Registered %d FLBs with file handler: [%s]\n",
--		TEST_NFLBS, fh->compatible);
-+		TEST_NFLBS, fh->name);
- }
- 
- MODULE_LICENSE("GPL");
-diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index 59de210bee5f..36ee503672a2 100644
---- a/mm/memfd_luo.c
-+++ b/mm/memfd_luo.c
-@@ -52,8 +52,8 @@
-  *
-  * Seals
-  *   File seals set on the memfd are preserved and re-applied on restore.
-- *   Only seals known to this LUO version (see ``MEMFD_LUO_ALL_SEALS``) may
-- *   be present; preservation fails with ``-EOPNOTSUPP`` otherwise.
-+ *   Only base seals supported by this LUO version (see ``MEMFD_LUO_BASE_SEALS``)
-+ *   may be present; preservation fails with ``-EOPNOTSUPP`` otherwise.
-  *
-  * Non-Preserved Properties
-  * ========================
-@@ -273,6 +273,10 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
- 		goto err_unlock;
- 	}
- 
-+	ser->features.supp = MEMFD_LUO_FEATURES_SUPP;
-+	ser->features.req = MEMFD_LUO_FEATURES_REQ;
-+	ser->features.active = MEMFD_LUO_FEATURES_ACTIVE;
-+
- 	seals = memfd_get_seals(args->file);
- 	if (seals < 0) {
- 		err = seals;
-@@ -352,8 +356,9 @@ static void memfd_luo_unpreserve(struct liveupdate_file_op_args *args)
- 
- 	ser = phys_to_virt(args->serialized_data);
- 
--	memfd_luo_unpreserve_folios(&ser->folios, args->private_data,
--				    ser->nr_folios);
-+	if (LUO_FEATURE_IS_ACTIVE(ser, MEMFD_LUO_FEATURE_FOLIOS) && ser->nr_folios)
-+		memfd_luo_unpreserve_folios(&ser->folios, args->private_data,
-+					    ser->nr_folios);
- 
- 	kho_unpreserve_free(ser);
- 	inode_unlock(inode);
-@@ -401,7 +406,7 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
- 	if (!ser)
- 		return;
- 
--	if (ser->nr_folios) {
-+	if (LUO_FEATURE_IS_ACTIVE(ser, MEMFD_LUO_FEATURE_FOLIOS) && ser->nr_folios) {
- 		folios_ser = kho_restore_vmalloc(&ser->folios);
- 		if (!folios_ser)
- 			goto out;
-@@ -526,12 +531,21 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
- 	if (!ser)
- 		return -EINVAL;
- 
--	/* Make sure the file only has seals supported by this version. */
--	if (ser->seals & ~MEMFD_LUO_ALL_SEALS) {
-+	if (ser->features.req & ~MEMFD_LUO_FEATURES_SUPP) {
-+		pr_err("Unsupported required memfd feature (req: 0x%llx, supp: 0x%llx)\n",
-+		       ser->features.req, (u64)MEMFD_LUO_FEATURES_SUPP);
- 		err = -EOPNOTSUPP;
- 		goto free_ser;
- 	}
- 
-+	if (LUO_FEATURE_IS_ACTIVE(ser, MEMFD_LUO_FEATURE_SEALS)) {
-+		/* Make sure the file only has seals supported by this version. */
-+		if (ser->seals & ~MEMFD_LUO_ALL_SEALS) {
-+			err = -EOPNOTSUPP;
-+			goto free_ser;
-+		}
-+	}
-+
- 	/*
- 	 * The seals are preserved. Allow sealing here so they can be added
- 	 * later.
-@@ -543,16 +557,18 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
- 		goto free_ser;
- 	}
- 
--	err = memfd_add_seals(file, ser->seals);
--	if (err) {
--		pr_err("failed to add seals: %pe\n", ERR_PTR(err));
--		goto put_file;
-+	if (LUO_FEATURE_IS_ACTIVE(ser, MEMFD_LUO_FEATURE_SEALS)) {
-+		err = memfd_add_seals(file, ser->seals);
-+		if (err) {
-+			pr_err("failed to add seals: %pe\n", ERR_PTR(err));
-+			goto put_file;
-+		}
- 	}
- 
- 	vfs_setpos(file, ser->pos, MAX_LFS_FILESIZE);
- 	i_size_write(file_inode(file), ser->size);
- 
--	if (ser->nr_folios) {
-+	if (LUO_FEATURE_IS_ACTIVE(ser, MEMFD_LUO_FEATURE_FOLIOS) && ser->nr_folios) {
- 		folios_ser = kho_restore_vmalloc(&ser->folios);
- 		if (!folios_ser) {
- 			err = -EINVAL;
-@@ -601,9 +617,14 @@ static const struct liveupdate_file_ops memfd_luo_file_ops = {
- 	.owner = THIS_MODULE,
- };
- 
-+LIVEUPDATE_FEATURE_ENTRY(memfd_luo, MEMFD_LUO_FH_NAME,
-+			 MEMFD_LUO_FEATURES_SUPP,
-+			 MEMFD_LUO_FEATURES_REQ,
-+			 MEMFD_LUO_FEATURES_ACTIVE);
-+
- static struct liveupdate_file_handler memfd_luo_handler = {
- 	.ops = &memfd_luo_file_ops,
--	.compatible = MEMFD_LUO_FH_COMPATIBLE,
-+	.name = MEMFD_LUO_FH_NAME,
- };
- 
- static int __init memfd_luo_init(void)
--- 
-2.55.0.979.g7e5102b832-goog
+Thanks,
+Tina
+
+
+On 8/24/2026 8:39 PM, Tina Zhang wrote:
+> The SVM DecodeAssists feature provides decode state for selected
+> VM-Exits.  KVM currently does not expose this feature to L1.  Some L1
+> hypervisors may therefore treat the platform's SVM support as
+> incomplete.
+> 
+> In practice, this was observed with Hyper-V running on top of KVM.
+> Hyper-V appears to require DecodeAssists before enabling nested SVM for
+> its guests.  Virtualizing the feature lets users enable Hyper-V
+> virtualization features inside a Windows VM when needed, e.g. to run
+> QEMU/KVM in WSL.  Without DecodeAssists, Hyper-V does not enable nested
+> SVM because DecodeAssists is missing from KVM's virtual SVM model.
+> 
+> Virtualize both parts of DecodeAssists for nested SVM.  For emulated
+> MOV CR/DR, INTn, INVLPG, and INVLPGA intercepts, synthesize the
+> architectural EXITINFO state that hardware would provide to L1.
+> 
+> For data #PF and #NPF VM-Exits, provide GuestInstrBytes from fresh
+> VMCB02 state, matching emulator fetch bytes, or an on-demand fetch from
+> the current L2 CS:RIP, depending on how the nested VM-Exit was produced.
+> Instruction-fetch faults report no instruction bytes, and encrypted
+> guests do not use the on-demand fallback.
+> 
+> Add a focused selftest covering synthesized EXITINFO, hardware and
+> synthesized GuestInstrBytes, truncated instruction fetching, and
+> instruction-fetch faults.  The test has been run with
+> kvm.force_emulation_prefix both disabled and enabled.
+> 
+> Changes since v4:
+> - Drop the generic queued-exception provenance tracking for delayed and
+>    synthesized #PF VM-Exits.  Fetch their instruction bytes from the
+>    current L2 CS:RIP when constructing VMCB12 instead.
+> - Keep matching emulator fetch bytes only for synthesized #NPF exits,
+>    and use the on-demand fetch to fill any missing tail.
+> - Reduce the series from nine to eight patches by removing the generic
+>    x86 exception-tracking patch.
+> - Trim the selftest to focused cases that cover distinct implementation
+>    paths and regressions, removing redundant instruction variants,
+>    overlapping boundary cases, and userspace event-state coverage.
+> 
+> v4:
+> https://lore.kernel.org/r/cover.1787116250.git.zhang_wei@open-hieco.net
+> 
+> Changes since v3:
+> - Rebase onto kvm-x86/next.
+> - Register DecodeAssists in the CPUID 0x8000000A SVM capability
+>    initializer so that common code validates its CPUID word before the
+>    SVM code enables it for nested guests.
+> - Make the VMCB02 instruction-byte source const and simplify the
+>    synthesized-byte copy and fallback-fetch flow.
+> 
+> v3:
+> https://lore.kernel.org/r/cover.1785411877.git.zhang_wei@open-hieco.net
+> 
+> Changes since v2:
+> - Rebase onto kvm-x86/next.
+> - Track hardware-provided instruction bytes independently of the VMCB02
+>    exit code, and preserve the bytes when L0 handles an intercepted #PF
+>    before reflecting it to L1.
+> - Select the instruction-byte source using host-owned VMCB02 state
+>    instead of control fields in guest-owned VMCB12.
+> - Record whether a queued #PF VM-Exit has a matching emulator context,
+>    so userspace-injected #PF exits do not consume stale emulator bytes.
+> - Stop fallback instruction fetches at noncanonical addresses and at the
+>    32-bit linear-address boundary.
+> - Extend the selftest with regression coverage for replacing a hardware
+>    #NPF with a synthesized #NPF and for userspace-injected #PF during
+>    emulation, and harden its page layout and ucall handling.
+> 
+> v2:
+> https://lore.kernel.org/r/cover.1783999988.git.zhang_wei@open-hieco.net
+> 
+> Changes since v1:
+> - Split the implementation into seven patches to make the individual
+>    pieces easier to review.
+> - Add EXITINFO virtualization for emulator-generated MOV CR/DR, INTn,
+>    INVLPG, and INVLPGA intercepts.
+> - Limit GuestInstrBytes propagation to data #NPF and intercepted #PF
+>    exits, and clear the fields for instruction-fetch and unrelated exits.
+> - Provide GuestInstrBytes for KVM-synthesized data #PF/#NPF exits.  Use
+>    matching emulator bytes first and fetch missing bytes from L2 RIP as a
+>    fallback, while avoiding fallback reads for SEV guests.
+> - Expand the selftest beyond hardware #NPF and stale-state coverage to
+>    exercise hardware, synthesized, userspace-injected, instruction-fetch,
+>    page-boundary, and CS-limit cases.
+> 
+> v1:
+> https://lore.kernel.org/r/20260629125205.52394-1-zhang_wei@open-hieco.net
+> 
+> Tina Zhang (8):
+>    KVM: x86: Add helper to provide intercept linear addresses
+>    KVM: nSVM: Synthesize DecodeAssists EXITINFO for emulated intercepts
+>    KVM: nSVM: Track fresh hardware DecodeAssist bytes
+>    KVM: nSVM: Propagate hardware DecodeAssist bytes to VMCB12
+>    KVM: nSVM: Use emulator bytes for synthesized nested #NPF
+>    KVM: nSVM: Fetch missing DecodeAssist bytes for synthesized #NPF/#PF
+>    KVM: nSVM: Advertise DecodeAssists to L1
+>    KVM: selftests: Add nested SVM DecodeAssists test
+> 
+>   arch/x86/kvm/cpuid.c                          |   1 +
+>   arch/x86/kvm/emulate.c                        |  29 +-
+>   arch/x86/kvm/kvm_emulate.h                    |   1 +
+>   arch/x86/kvm/svm/nested.c                     | 180 ++++++-
+>   arch/x86/kvm/svm/svm.c                        |  56 +-
+>   arch/x86/kvm/svm/svm.h                        |  17 +-
+>   tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+>   .../selftests/kvm/include/x86/processor.h     |   1 +
+>   .../kvm/x86/svm_nested_decode_assists_test.c  | 482 ++++++++++++++++++
+>   9 files changed, 754 insertions(+), 14 deletions(-)
+>   create mode 100644 tools/testing/selftests/kvm/x86/svm_nested_decode_assists_test.c
+> 
+> 
+> base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
 
