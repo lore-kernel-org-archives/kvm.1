@@ -1,104 +1,113 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0B6472093
-	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 09:29:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296D03AC0DC
+	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 09:40:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788427779; cv=none; b=f01XpFTX98xC/VX4HM0cdjcbeI6E1eTrsJH4S/qmiDSVCs2ORcnmFXv7eaZRxbX5vlPoa1juIEmgRtm/1maH/vZivApebyGsUy3ss2ekQfz6TLc0HC247g6kfTzCIArG7KI6+5eecblqb20kGgqTscFo6OyXNEsKsPuELDtkG68=
+	t=1788428461; cv=none; b=N13dV4SD/CJ9tD2g7plaaxZYSr+ZHzs6/kzS87FXifxVvHiZMIm15r3MFvs2fEVB5pYOnvY9qB3Vy+4SXsXVx09X9qsCy//Rh7l+7snfc4GhZindX7mjZAkDJLyIv46Yx6SAL9BE8X6q7xGH87Cr1VIqqqZ91W7jH/amNwL5E6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788427779; c=relaxed/simple;
-	bh=97tOsgvmm7X1epfGoYPiV/SmrI1Y4zgVj/hv/un0+0U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jM2ymu5R5biVR0+XAZn5TTi9xAZsjVG3oIkMdhZRoz7P4AL+ZacbG4UySGWg9YcTsHY8q7X7X6Nb4o/yo/x/SEDWyxse1Zk18tQxNPNEQef+7/uvFt3a3b+xj4gj6p8jijkeuJ1E5rKOKU3ZrX349ahQ4ZlmLTA6uVD0j0CNCGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sFaHxRuO; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788428461; c=relaxed/simple;
+	bh=7yKB4aXctmfqBWO3XwhnU9GprmG2qYW9BJr8rWlnbxs=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=ZB9Ac+xXNICRn4aIPIv8mjDVHD2VPlHB8cFjWlDCId9nn6mrRmgDWOtutrmlyrpczAQj7W+JsEXuK1BNqnKc0cvRQu6oVEBWgyLgecxEgjLrOzNu7aJMQgRSvl7B/yterusDlKb8ymPfmZINE8pHfGQZW25vcLABGvZjOodXyyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Le+VL6pM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sFaHxRuO"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-49b0d78a801so17452555e9.2
-        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 02:29:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788427776; x=1789032576; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vxgMPMXFY5ML7LzmKL13A6JFIKTjcrgE7JC1G5UiQIg=;
-        b=sFaHxRuOuHkqCOOwEGBJxH/ZNQOy6ZeN2CEsl65SdBzyhK6CUIBqfGs34W1jPCnM3j
-         zBKCTzq7A8/Q5uEjK0YvHSAq9uMaxMeKCjyDcl8a0WRAuX8j17jZfHxaEwleNUOFSzqN
-         onCEtYtCgBtgLEul+CF9HAMj/tVHgQnFDQbPsjHM1BDlxr/Sx8faWF+BlgaA/bJyXwSM
-         J4aohh5YdXkbXHwi7l3SrVcSFOnWhL0pM3bPKVG7SJp6ymREmFYY4e9/rvu/nZIsIpge
-         zrwaaDvyRZojM8bIEnfVHZnvpe8SkAtUoeh8r1YqahMS8bE+jBDJAQcouJeMu/3kg0VY
-         ijhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788427776; x=1789032576;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vxgMPMXFY5ML7LzmKL13A6JFIKTjcrgE7JC1G5UiQIg=;
-        b=YBv6JTesMGsR0bPPB0I4yNu3FnuBsSXX1Y+d17E4EG47xckOuGCaUxyeChrSeYbuiB
-         e50abV0WOhUI/ji688hlwSumo6a5cUnZJQk824EFHEPSUz8KBqp+IcZ/tZYXkGXZYFMZ
-         EGSMesaXVFe72UPHUyNldWiDkN+JFWr1SenZhjnOsPhBEyg/ttr8DqVsOtw2Zdy+UMvb
-         4TLD7rlZledz25jzn0i3xGjAq0Vz3fHPeKGSBponCK0SkNxaQ0WzpV7ip/d5MtmYtXnR
-         Bj1UrePrw9ieGaI5SEWA8jHjkd3vJsizlvbpAuxUq/caPsPCPY1N8L95bdIaCw2VMZwl
-         Wt0w==
-X-Gm-Message-State: AFuF++nr1DxB7rK2+AmBdRz6fSeJqrdoBrYWUV1r+8y9Dqmpgtg/3W3V
-	gRSGnk9qWbLw0Z1I1kUyYKBi/nLT8ZQ9k3PI+fukBJaRoAIiQK+5gNDb4v//bg==
-X-Gm-Gg: AYBFou1/rplkTuSMQL+VYkmzxKQTPLZgJeXfMq1bxXdx4G2TqH/ZaTxfD2at+noa4pi
-	pq0kLqcb3YT5PlwiEfam4YxlWV1M+ufNbj40jEoTTvMqU0ZOvVO7oxF/Yp1c0QsP5BbQ6I8VCp/
-	5e82N/7OEdIoi6POhpKwMAqb3xBFF9cAn1mgGs9EHIwQkP/CawYcZSlcAtGIBDh8Dju93JY9NvI
-	MRYKKLx47PcCkmxD//bJikqvHmyS9BUcwNjoFiXQSwSB1m3331gfmhAUO5pG/IuliQRa2haIK9P
-	6w/51aIFJRNy3PQcmDA9cwuNQ9nZXdTPCbrWrkosClaY3KobrZWcufoi5x1NvwTB2y1yP/cFkGu
-	J3xc35MWeFb1stWV/QLXMllDSZ1cfxMziSnzsmoEeOXhkjyRfJ/SMh3eeRzMM9Q6RtRHXKaHmYC
-	jJMQXVgRJ0QpoAnzMPkmcxG8SEQzXpbbw20YOGJOcso/ybp5RKTE9Yw3KpyfON1I13csU=
-X-Received: by 2002:a05:600c:8705:b0:49c:dca2:ac47 with SMTP id 5b1f17b1804b1-49ce57ec7efmr197647145e9.2.1788427775572;
-        Thu, 03 Sep 2026 02:29:35 -0700 (PDT)
-Received: from SurHub.localdomain ([196.188.114.38])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee5d587csm60133625e9.4.2026.09.03.02.29.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 02:29:35 -0700 (PDT)
-From: Abdifatah Suruur <suruurism@gmail.com>
-To: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Alex Williamson <alex@shazbot.org>
-Subject: [PATCH] vfio/cdx: keep logical vm_pgoff in MMIO region mmap
-Date: Thu,  3 Sep 2026 12:29:32 +0300
-Message-ID: <20260903092932.526-1-suruurism@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Le+VL6pM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99FA51F000E9;
+	Thu,  3 Sep 2026 09:40:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788428459;
+	bh=1dxrcpdTTNysZbTbYq9OX+Q6ggUv1c0UUqydl4xlAZQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Le+VL6pMHlYHWDhYKEtqWZV1IyIxul7LySA0NEXWBknMkLY1PQsJlinY6Ney1ACqM
+	 9TenoBT27Bh2LyRSFxozYnoc1ekysxh+4ptjPLB6EKkMMRMqbZ4hxxejKlokUa9yAO
+	 6ovIGMz8sM1HFs9dGvHkQf+sFE7F1c47I9zmpKfJxkdj8j2sFD8OQOH+oaP/CcEXxM
+	 CDxDp+DefCUrbTzDrVS7weLnwzIMAjyJIKvPIfhbWJfe5ElNQSVnVDo/i21VFTZBBT
+	 QH7E2iYrgLIfWIzY8cI4dwH6kcPk2q06m7+E1BLsaJAidMd60ANIUM95mHUFnqZpg0
+	 ur/jOhIWRfDTw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3] vfio/fsl-mc: prevent read-only region mappings from
+ becoming writable
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Abdifatah Suruur" <suruurism@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260903092912.444-1-suruurism@gmail.com>
+References: <20260903092912.444-1-suruurism@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 03 Sep 2026 09:40:59 +0000
+Message-Id: <20260903094059.99FA51F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-vfio_cdx_mmap_mmio() overwrites vma->vm_pgoff with the physical frame
-number of the MMIO region and passes it to io_remap_pfn_range().  The
-VMA is inserted into the device file's mapping->i_mmap interval tree
-keyed by vm_pgoff, which VFIO expects to be the logical file offset:
-the core links every device mmap to the device inode's i_mapping
-precisely so that unmap_mapping_range() can revoke all mappings
-associated with a device (see vfio_device_cdev_open()).
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-With a raw PFN in vm_pgoff the interval tree entry lands in the wrong
-coordinate space and unmap_mapping_range() cannot find the VMA,
-leaving stale MMIO mappings behind any revocation attempt.  Keep
-vm_pgoff in the logical VFIO offset space, as vfio-pci does, and pass
-the physical PFN to io_remap_pfn_range() explicitly.
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the mmap handler=
+ corrupts vma->vm_pgoff by assigning it a physical frame number (PFN) inste=
+ad of preserving the logical file offset.
+--
 
-Fixes: 234489ac56130 ("vfio/cdx: add support for CDX bus")
-Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
+commit fe80ad0e14281d6649ff304dd40e83fe0649cbb2
+Author: Abdifatah Suruur <suruurism@gmail.com>
 
----
---- a/drivers/vfio/cdx/main.c
-+++ b/drivers/vfio/cdx/main.c
-@@ -257,6 +257,6 @@
--	vma->vm_pgoff = (region.addr >> PAGE_SHIFT) + pgoff;
- 	vma->vm_page_prot = pgprot_device(vma->vm_page_prot);
+vfio/fsl-mc: prevent read-only region mappings from becoming writable
 
--	return io_remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff,
-+	return io_remap_pfn_range(vma, vma->vm_start,
-+				  (region.addr >> PAGE_SHIFT) + pgoff,
- 				  size, vma->vm_page_prot);
- }
+This commit prevents read-only region mappings from being upgraded to writa=
+ble
+via mprotect(). It does so by clearing VM_MAYWRITE for regions lacking the
+WRITE flag, providing defensive hardening similar to other subsystems.
+
+> diff --git a/drivers/vfio/fsl-mc/vfio_fsl_mc.c b/drivers/vfio/fsl-mc/vfio=
+_fsl_mc.c
+> index b4c3958201b25..85f479db936c6 100644
+> --- a/drivers/vfio/fsl-mc/vfio_fsl_mc.c
+> +++ b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
+> @@ -407,6 +407,10 @@ static int vfio_fsl_mc_mmap(struct vfio_device *core=
+_vdev,
+>  			&& (vma->vm_flags & VM_WRITE))
+>  		return -EINVAL;
+> =20
+> +	/* Prevent read-only region mappings from being upgraded with mprotect(=
+) */
+> +	if (!(vdev->regions[index].flags & VFIO_REGION_INFO_FLAG_WRITE))
+> +		vm_flags_clear(vma, VM_MAYWRITE);
+> +
+>  	vma->vm_private_data =3D mc_dev;
+> =20
+>  	return vfio_fsl_mc_mmap_mmio(vdev->regions[index], vma);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but the mmap handler corrupts
+vma->vm_pgoff by assigning it a physical frame number (PFN) instead of
+preserving the logical file offset.
+
+When vfio_fsl_mc_mmap_mmio() is called, it overwrites vma->vm_pgoff:
+
+drivers/vfio/fsl-mc/vfio_fsl_mc.c:vfio_fsl_mc_mmap_mmio() {
+	...
+	vma->vm_pgoff =3D (region.addr >> PAGE_SHIFT) + pgoff;
+
+	return remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff,
+			       size, vma->vm_page_prot);
+}
+
+The VMA is inserted into the file's interval tree (mapping->i_mmap) using
+the PFN as its key instead of the logical file offset.
+
+If the kernel later attempts to invalidate or unmap this region (e.g., via
+unmap_mapping_range() during device removal, reset, or when switching VFIO
+modes), it will search the interval tree using the logical file offset, fail
+to find the VMA, and leave stale hardware mappings active in userspace.
+
+Can this allow userspace to access hardware after it has been reassigned,
+causing serious security and stability issues?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260903092912.444-=
+1-suruurism@gmail.com?part=3D1
