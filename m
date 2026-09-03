@@ -1,166 +1,141 @@
-Received: from out28-125.mail.aliyun.com (out28-125.mail.aliyun.com [115.124.28.125])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73593546E0;
-	Thu,  3 Sep 2026 02:41:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.125
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BED3603DF;
+	Thu,  3 Sep 2026 02:43:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788403303; cv=none; b=NkEVnkxlZioMeZ+cwKZcwEwzqnFFojxrF/XywVk5R4KlzC3HJ24kwr6WLzXUv6dDRbydeGmMSSpQ98Y/g3WLoeXnL1+Vwd0vfL9uwpo8rEhZ1iiAnq8Q9zSvFCMff70dv/Jva7D1Fxaz6vckBpcb5zJ4y9g8nL5Ibdu6BA0Wvi4=
+	t=1788403400; cv=none; b=uOBjInLxj8BxZffHoGcQonKdH0n1VrqM8eeNcqB+JWmWr89GIRzLH4WMoGOMA/4a36/sF/rH5CnV9MXnnDd6WffGg3NkdBRdsS6eINwNV0gbtXCqNjIbxNzBXlnhqUvtG6hsPQvfWNzW+USWKQynPstRtZCllWT7LiNkgB2GEMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788403303; c=relaxed/simple;
-	bh=6u4PHAZ/H4x65SWpE7IYKnikm6E+U38Lj4eVkpdhFKM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bj7teHrbiciLcnlX0MP1SzNQ7BdavcX31/B+6JznCg6aJldUZD+y91G7/5UYNQKKE9RGuJv2j1tgHUlMNU7FPtbRPUHgJEAvqrQpmrMOdZzUmKj9KcXaeaDSS89j7feOkmV40gNY0SRpsXL5L7qSiQmT0cazb/c9x1S98DyS8Ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.125
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.09446921|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00875414-0.00211812-0.989128;FP=7200128259874146027|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033023018039;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.j429d-8_1788403282;
-Received: from 172.18.22.44(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.j429d-8_1788403282 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Thu, 03 Sep 2026 10:41:26 +0800
-Message-ID: <9515a124-5c18-4015-b64a-e80bb6b84264@open-hieco.net>
-Date: Thu, 3 Sep 2026 10:41:20 +0800
+	s=arc-20240116; t=1788403400; c=relaxed/simple;
+	bh=AasAC1gxzv4J5euJBthw2qlwrGJ/HW/z3+aHvYL5dr0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=WnrK7T2pO/IgAk8BqYzJ07JnElZKXO8RozS564jI05/7RukkDRfz+MVxkaGulpyRGG+9OwzR2Uznb1Bh6xmPEatCB0iC0siXMGst1mU52626EtVKD/Z0qx8ucICLwMnt0WgpZeqRxqhFy9Yd5U3NZfwwCY25rCZigNaXnj1Vu9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GGkcmAIK; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GGkcmAIK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE041F000E9;
+	Thu,  3 Sep 2026 02:43:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788403398;
+	bh=AWzC9HaHKHX91r9aWxxVIw3eOC137V5YmrW8ADBkFtA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=GGkcmAIKxK92EciGhI7uSlYlRY+arDpHRWC/0rigWOIlY7bnWSoAQEB1MSebq5MVl
+	 208cEyXNPb8j9N14LDAYoqI2P7LLr8RjopkrKSabJoQ/NNQtdzJ2z3QDDZdYTzv+yS
+	 CwmNChUreHz/Gb6vE5cuMGAHQfmK+yamXTTQxodPt5n45ygAwVjDlAfiek0x0W5JOc
+	 3hz62Cj9tfQIqeVDajIfKbj0ShOy6PKvdxTMq8YEFExjgZn2kBkpYe1R+Ropz+pdn1
+	 +eD1Nn6Hj6wXtXe2UlsXNjVjj7+ganhE1Y9L3ODjGRkxNU6sas+cO1Pi7KRHT/F5AG
+	 vY78stuT2tcCA==
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 1/3] luo: Move to feature flags instead of
+ compatibility strings
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Logan Odell" <loganodell@google.com>
+Cc: kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org, "Marc
+ Zyngier" <maz@kernel.org>, linux-pci@vger.kernel.org
+In-Reply-To: <20260903023452.721732-2-loganodell@google.com>
+References: <20260903023452.721732-1-loganodell@google.com>
+ <20260903023452.721732-2-loganodell@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 03 Sep 2026 02:43:17 +0000
+Message-Id: <20260903024317.AFE041F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/8] KVM: nSVM: Enable DecodeAssists for nested guests
-To: Sean Christopherson <seanjc@google.com>, Jim Mattson
- <jmattson@google.com>, kvm@vger.kernel.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
- zhouyanjing@hygon.cn, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260824123954.315112-1-zhang_wei@open-hieco.net>
-Content-Language: en-US
-From: Tina Zhang <zhang_wei@open-hieco.net>
-In-Reply-To: <20260824123954.315112-1-zhang_wei@open-hieco.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Hi Sean and Jim,
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Missing payload length validation before accessing feature-depende=
+nt fields in `luo_ser`, leading to out-of-bounds reads.
+--
 
-A gentle ping on this series. I believe v5 addresses all the comments 
-from the previous review rounds. Could you please take another look when 
-you have a chance? Any further comments would be appreciated.
+commit 8e63def24ae09c6e2674a2bd48e32ef12916dd48
+Author: Logan Odell <loganodell@google.com>
 
-Thanks,
-Tina
+luo: Move to feature flags instead of compatibility strings
 
+This commit replaces the compatibility string check with a 128-byte feature
+header in the live update serialization structure. It introduces flags for
+supported, required, and active features to allow for more flexible structu=
+re
+evolution.
 
-On 8/24/2026 8:39 PM, Tina Zhang wrote:
-> The SVM DecodeAssists feature provides decode state for selected
-> VM-Exits.  KVM currently does not expose this feature to L1.  Some L1
-> hypervisors may therefore treat the platform's SVM support as
-> incomplete.
-> 
-> In practice, this was observed with Hyper-V running on top of KVM.
-> Hyper-V appears to require DecodeAssists before enabling nested SVM for
-> its guests.  Virtualizing the feature lets users enable Hyper-V
-> virtualization features inside a Windows VM when needed, e.g. to run
-> QEMU/KVM in WSL.  Without DecodeAssists, Hyper-V does not enable nested
-> SVM because DecodeAssists is missing from KVM's virtual SVM model.
-> 
-> Virtualize both parts of DecodeAssists for nested SVM.  For emulated
-> MOV CR/DR, INTn, INVLPG, and INVLPGA intercepts, synthesize the
-> architectural EXITINFO state that hardware would provide to L1.
-> 
-> For data #PF and #NPF VM-Exits, provide GuestInstrBytes from fresh
-> VMCB02 state, matching emulator fetch bytes, or an on-demand fetch from
-> the current L2 CS:RIP, depending on how the nested VM-Exit was produced.
-> Instruction-fetch faults report no instruction bytes, and encrypted
-> guests do not use the on-demand fallback.
-> 
-> Add a focused selftest covering synthesized EXITINFO, hardware and
-> synthesized GuestInstrBytes, truncated instruction fetching, and
-> instruction-fetch faults.  The test has been run with
-> kvm.force_emulation_prefix both disabled and enabled.
-> 
-> Changes since v4:
-> - Drop the generic queued-exception provenance tracking for delayed and
->    synthesized #PF VM-Exits.  Fetch their instruction bytes from the
->    current L2 CS:RIP when constructing VMCB12 instead.
-> - Keep matching emulator fetch bytes only for synthesized #NPF exits,
->    and use the on-demand fetch to fill any missing tail.
-> - Reduce the series from nine to eight patches by removing the generic
->    x86 exception-tracking patch.
-> - Trim the selftest to focused cases that cover distinct implementation
->    paths and regressions, removing redundant instruction variants,
->    overlapping boundary cases, and userspace event-state coverage.
-> 
-> v4:
-> https://lore.kernel.org/r/cover.1787116250.git.zhang_wei@open-hieco.net
-> 
-> Changes since v3:
-> - Rebase onto kvm-x86/next.
-> - Register DecodeAssists in the CPUID 0x8000000A SVM capability
->    initializer so that common code validates its CPUID word before the
->    SVM code enables it for nested guests.
-> - Make the VMCB02 instruction-byte source const and simplify the
->    synthesized-byte copy and fallback-fetch flow.
-> 
-> v3:
-> https://lore.kernel.org/r/cover.1785411877.git.zhang_wei@open-hieco.net
-> 
-> Changes since v2:
-> - Rebase onto kvm-x86/next.
-> - Track hardware-provided instruction bytes independently of the VMCB02
->    exit code, and preserve the bytes when L0 handles an intercepted #PF
->    before reflecting it to L1.
-> - Select the instruction-byte source using host-owned VMCB02 state
->    instead of control fields in guest-owned VMCB12.
-> - Record whether a queued #PF VM-Exit has a matching emulator context,
->    so userspace-injected #PF exits do not consume stale emulator bytes.
-> - Stop fallback instruction fetches at noncanonical addresses and at the
->    32-bit linear-address boundary.
-> - Extend the selftest with regression coverage for replacing a hardware
->    #NPF with a synthesized #NPF and for userspace-injected #PF during
->    emulation, and harden its page layout and ucall handling.
-> 
-> v2:
-> https://lore.kernel.org/r/cover.1783999988.git.zhang_wei@open-hieco.net
-> 
-> Changes since v1:
-> - Split the implementation into seven patches to make the individual
->    pieces easier to review.
-> - Add EXITINFO virtualization for emulator-generated MOV CR/DR, INTn,
->    INVLPG, and INVLPGA intercepts.
-> - Limit GuestInstrBytes propagation to data #NPF and intercepted #PF
->    exits, and clear the fields for instruction-fetch and unrelated exits.
-> - Provide GuestInstrBytes for KVM-synthesized data #PF/#NPF exits.  Use
->    matching emulator bytes first and fetch missing bytes from L2 RIP as a
->    fallback, while avoiding fallback reads for SEV guests.
-> - Expand the selftest beyond hardware #NPF and stale-state coverage to
->    exercise hardware, synthesized, userspace-injected, instruction-fetch,
->    page-boundary, and CS-limit cases.
-> 
-> v1:
-> https://lore.kernel.org/r/20260629125205.52394-1-zhang_wei@open-hieco.net
-> 
-> Tina Zhang (8):
->    KVM: x86: Add helper to provide intercept linear addresses
->    KVM: nSVM: Synthesize DecodeAssists EXITINFO for emulated intercepts
->    KVM: nSVM: Track fresh hardware DecodeAssist bytes
->    KVM: nSVM: Propagate hardware DecodeAssist bytes to VMCB12
->    KVM: nSVM: Use emulator bytes for synthesized nested #NPF
->    KVM: nSVM: Fetch missing DecodeAssist bytes for synthesized #NPF/#PF
->    KVM: nSVM: Advertise DecodeAssists to L1
->    KVM: selftests: Add nested SVM DecodeAssists test
-> 
->   arch/x86/kvm/cpuid.c                          |   1 +
->   arch/x86/kvm/emulate.c                        |  29 +-
->   arch/x86/kvm/kvm_emulate.h                    |   1 +
->   arch/x86/kvm/svm/nested.c                     | 180 ++++++-
->   arch/x86/kvm/svm/svm.c                        |  56 +-
->   arch/x86/kvm/svm/svm.h                        |  17 +-
->   tools/testing/selftests/kvm/Makefile.kvm      |   1 +
->   .../selftests/kvm/include/x86/processor.h     |   1 +
->   .../kvm/x86/svm_nested_decode_assists_test.c  | 482 ++++++++++++++++++
->   9 files changed, 754 insertions(+), 14 deletions(-)
->   create mode 100644 tools/testing/selftests/kvm/x86/svm_nested_decode_assists_test.c
-> 
-> 
-> base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
+> diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
+> --- a/kernel/liveupdate/luo_core.c
+> +++ b/kernel/liveupdate/luo_core.c
+> @@ -107,26 +107,37 @@ static int __init luo_early_startup(void)
+>  		return 0;
+>  	}
+> =20
+> -	if (len < sizeof(*luo_ser)) {
+> -		pr_err("LUO state is too small (%zu < %zu)\n", len, sizeof(*luo_ser));
+> -		return -EINVAL;
+> +	luo_ser =3D phys_to_virt(luo_ser_phys);
+> +
+> +	if (len < sizeof(struct luo_feature_hdr)) {
 
+[Severity: High]
+In luo_early_startup() in kernel/liveupdate/luo_core.c, does this code
+sufficiently validate the payload length?
+
+Since len is only checked against the size of struct luo_feature_hdr, it se=
+ems
+the check for the full struct luo_ser size has been removed.
+
+> +		pr_err("LUO state is too small (%zu < %zu)\n",
+> +		       len, sizeof(struct luo_feature_hdr));
+> +		err =3D -EINVAL;
+> +		goto out_free_ser;
+>  	}
+
+[ ... ]
+
+> +	if (LUO_FEATURE_IS_ACTIVE(luo_ser, LUO_FEATURE_NUMBER)) {
+> +		luo_global.liveupdate_num =3D luo_ser->liveupdate_num;
+
+[Severity: High]
+Can this access memory out of bounds?
+
+If the payload length from KHO is large enough to pass the header check but
+smaller than the full structure size, this will read luo_ser->liveupdate_num
+beyond the validated length.
+
+> +		pr_info("Retrieved live update data, liveupdate number: %lld\n",
+> +			luo_global.liveupdate_num);
+> +	}
+> =20
+> -	err =3D luo_session_setup_incoming(luo_ser->sessions_pa);
+> -	if (err)
+> -		goto out_free_ser;
+> =20
+> -	luo_flb_setup_incoming(luo_ser->flbs_pa);
+> +	if (LUO_FEATURE_IS_ACTIVE(luo_ser, LUO_FEATURE_SESSIONS)) {
+> +		err =3D luo_session_setup_incoming(luo_ser->sessions_pa);
+
+[Severity: High]
+Can this result in the use of uninitialized or garbage data?
+
+If len does not cover the sessions_pa field, reading it could yield a garba=
+ge
+physical address that luo_session_setup_incoming() might then dereference,
+leading to a panic or state corruption during boot.
+
+> +		if (err)
+> +			goto out_free_ser;
+> +	}
+> +
+> +	if (LUO_FEATURE_IS_ACTIVE(luo_ser, LUO_FEATURE_FLBS))
+> +		luo_flb_setup_incoming(luo_ser->flbs_pa);
+
+[Severity: High]
+Does this code pass a garbage address to luo_flb_setup_incoming()?
+
+Accessing luo_ser->flbs_pa could read beyond the payload if len is smaller
+than the full struct luo_ser size.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260903023452.7217=
+32-1-loganodell@google.com?part=3D1
