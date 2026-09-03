@@ -1,64 +1,65 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB4C50C288
-	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 19:36:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9AF503BC5
+	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 19:36:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788464225; cv=none; b=nQNGHdf0aiOlzWbkKa1FuZRPq/+ImtsUNwURhnmu5A+P/u6+NEH4XOEsMKTB9gnTjAO4AlCIIP2Ig9VuO4yu7pTcR1e6bZgVZ3QL+S3F1ge3NEwXXewBzzGE2M7AVbIEr+JNarNsoxpwqy6783y+T3BgLLIQPcT0cFEF+3WXsPY=
+	t=1788464223; cv=none; b=SxRAeKku2kGbfMbtpyG2NG2SsDhgobv8Cj9HIQgMOpz5NV1zVCoy7W9DMk1YnbpncIxGL/EYKAHr54lHwEshO/woFvI9MxzcywuYQT+8pN15hSwLlkvMa0g3imjx3lOQUH+StrYjRdLDqkRIp73VmAnL+s02qsbLtrHtDjwGUoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788464225; c=relaxed/simple;
-	bh=3kjSulVQLNpdJGCnkM4enWU4K4Gl5SuK9lAIOWLiD0I=;
+	s=arc-20240116; t=1788464223; c=relaxed/simple;
+	bh=VvYf+UaS+ESqe1L7/c/mAuVasIvcu83bLN47UbJ/oXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kbjZoeT6ziCzskRGMCvTj/sQb9+4gBm4b78vzEB2D5bffblhnccOa5quBGUx7e6wGwmoBdoUbY+tO0myUPG5M8zYwzuiUMzza76HvwsoUkn7C1EeyHaWcdQMQQuNZwTi1BA40R6E3rrsyw06tTcT0CFUgzHGrWyjHJRkrD7i7+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PjcpyoZk; arc=none smtp.client-ip=209.85.215.171
+	 MIME-Version:Content-Type; b=ZAdLXeyGHr8qbTuTwI194BdYaF59oT57BzxDAOO0moP0tnR771E9OLTYXQ/Ymd7xwWng3nwt5CShBXWI6PRuqb1+47oGarSJXUJJo2YgTgYHKnmJxSOkufIv1LO+bbIb+3lkFigwVpo1TEGIeJVc3qj1ZDL/KT7sphdSAsQDTto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zLJV9sAZ; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PjcpyoZk"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c96c92c0980so217450a12.3
-        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 12:36:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zLJV9sAZ"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38511175ad3so161406a91.2
+        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 12:36:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1788464204; x=1789069004; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Y7O2QFPzNWx332l2m0iFWMqO57jF7lDWROu5Spv39Uc=;
-        b=PjcpyoZkU3OSGBICYdpGT3EgQfK4r2ahWUxxjdDdv8dZFG1p3VCqYs9sI/CxMuPIac
-         Eo2ffJPPNT8bcEFdLgurRq5cHNEYC3rQwGymqdG4QBZ70YsXJXcVEHxp9TKxWdrLpq+B
-         1mUv6ywITvwytM0mMhcjleBUrC+UlnTf/OL7rFDPDHo4yrLX+NojnWnX4mqKEmQ123Np
-         JYFFGbZ0obuCiGRj5m7fbz2UdjqVU1BJtsmkh3rerw8I5tUftsRot9jD89LiK+am2OQ9
-         mSh8X9dwg6VpBfN2qvsSbfHs6/wDQr3O091qrggZFNuxigPVwL8LZdqcCcCkkfDd+wqR
-         Oy4Q==
+        d=linaro.org; s=google; t=1788464207; x=1789069007; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1L228YeDnliJno5IJsBCLMujCzUwIWC4F+2ZyI1byow=;
+        b=zLJV9sAZ0k4nJi5z9SJA3zgyFWbujuRQr5ZRoGctUz7reXRmK5nig5yucPVvPhHAVJ
+         w9Z6asiFqNXWBMqk86j2CQC+ySRFs4RJaCdJfMqW5MTNQYKs/GMVe2kZmudZoECmM9Br
+         7tEngXcwNjHaijkk98m0jaVbhP8aHQQrP7aJPikOBP94IMj+ctUViKynxE5hUvGEX0Vf
+         FtJYrNnSgFXq3kFx+E1rXraqwczZNNX65LkIVa4fpSI85iFX+IKnDLTG9mgtrQdpYQpO
+         U849pj3BEO2WxgB60a+w6js1psg0vXEn+gjnNxenSUCQXBII5Cg7v8r1YBTDgXvMoseM
+         tjJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788464204; x=1789069004;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Y7O2QFPzNWx332l2m0iFWMqO57jF7lDWROu5Spv39Uc=;
-        b=cj6GEdGoDhXGQSd6iraJcu8i+OOieWBlJGv9EwyqYJTT+xW6oiiyjxJfT4/+yrYpsu
-         boD7UuYl2Qh5/byrYW60++Pl4V0qE89zckWAlUpjatBn3H8T6S+eAF/q+RT/VxEYmcmy
-         W838Vh/WB3mZA4vdBXCJVAwoGsr8ovO/Cg492kQ9CCkszZm2fTIiCtoeEyMILvch9O80
-         EcuT16uyt3lS4XxDgJTPzJOT3JNrdyAy9+smU7fl6ZAHe1q6yNFkU+KyVQe+2cDZf/WI
-         /KXJSDjAjzZx117zm37hRWOvc21ME+5xJhzG7+QKKyy0TYEXXR2VRyWpLsnicBLPuFPv
-         L/wA==
-X-Forwarded-Encrypted: i=1; AKwUvByNXlDsLJqrMEORcLsIDiMqjRLB0w8ZKu7prm0W0HDJlcQ5q4s8KNzD9JNevYNt5EqhCuM=@vger.kernel.org
-X-Gm-Message-State: AFuF++nTeRQmhplTxy9ALyBc9lhKDT2n7TZvVQAVKpAGF5E0f+9eXxZT
-	AcxFg1nErgIR/M0X5KK+Qe6TxNY5+/uj4me1XSbmuxoaNH6LlC02n63yuxszwg4vaHU=
-X-Gm-Gg: AYBFou0VijV7HEbjtz1idwd4SsWd95TxNRm1y4clgqSX1Kfx3iNHMTUBZbbcvoF4TNG
-	rbwF0GwCRLSi4QeUslj8VK+ZBLKVb4Zsx/d7voua825Vgx51qn6Ob1cocC7Gj/R6gLb6zAfnKbv
-	9w/TiR/vD9kaidVXAFBaMApQCjZL5kMZLwQ25VQryS4W5WBW3O4X6HZpD6oIIup2Wcw7ARbzoEc
-	YcxXaPHQcv6ErFkDWdIsMNnNdp2YxL1c9CEg3kIAA3nTfQqZY0acpC1wPC/P0x6/o6yKj1gUgrp
-	BlJGnAWzWP+L2QDwG4Xf9AecMqnBmqXsL7zsp5kh56xMk/hB70tmGYbSWQPtcrKo+OGyT6brS6C
-	2yWoy7rrdQTGYBSOQuyIOW8i0kKflXP7PpRpV5ekOA5iOLvBdOfTh0rw8gZuAhYKr0qfL8OEZne
-	7puyjeQHVLLMQzCRa9+rWorfckK7OArbCBlO1TphuaL0EiNJTOam3GeQL5YM5D9iyivVKOB8ps0
-	oI58Qno4h22cf0=
-X-Received: by 2002:a17:90b:274c:b0:398:9be9:ab92 with SMTP id 98e67ed59e1d1-39b2629b27fmr1266138a91.23.1788464203921;
-        Thu, 03 Sep 2026 12:36:43 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788464207; x=1789069007;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1L228YeDnliJno5IJsBCLMujCzUwIWC4F+2ZyI1byow=;
+        b=ETY4b0DoSGw7Nqj+lcxBR+Rf3ITRiC7ndWgs90NMvbgQD88NN3BT20XOgFq6/RjC1b
+         KN8DJFnPIlPKFOLtTOpqZjYh853UkD6h8m1nlAWM13ndgdGhArqaR6f+LgtUuRRInKpk
+         6OHMFkaGj75iV59L8jJf/O5sfs+c+Y9ipdzfnZmGFuRwB8YwI20i99vk6bK6A7O6icaO
+         HO0WXp0EEFw8xtw2cPabLSo0/ICrQg4ac/qR4PAdmaQUOo1fsylc4JtHE/jRvVulvmlM
+         l/9vci7XtrQcYtijMmbP4HX7oEQqwfkiFDhVv9kTtgVOnOd+Ga72wkwQLYb7TS92n7ka
+         OpRg==
+X-Forwarded-Encrypted: i=1; AKwUvBwP+h6VUt2pZ5whG9N+J6FczbVxBSqZuCF1eh+FYB03I0cQAvL1zWrJRN8bgvuVXaDAhzs=@vger.kernel.org
+X-Gm-Message-State: AFuF++kkSkM+hfGdNmNnx7ooJLvx1nxZsODrjDrdlJ9ZX8QZ8Jp7zxrk
+	EjqiE/yZucR7XFWjaapTdyovcMoOpNjXw9leoTPsHaEXOAVudfdglsBL0f+Oq08+NsM=
+X-Gm-Gg: AYBFou2fE3Uy5CnBwrVZubznNjaJ3setHC0OEV1cudGYemGkMbN5b5khLZ5XULCoAWe
+	gGbMbmlBX6Ovh0sr8SUVloDpvTwu+tUgA689BxUu8PrQ84+NPWbNWEBQ8cKwZ42rUO5WqGLdUq9
+	iZnZfX7r1qGrZbjpJWB8ehbfcTsCgF6Go3nFaL3ecE/60OgyaVywLSdYzY7dGhc4o+gfwGl6eMO
+	auMatuG0BMuuaTm+zeU76UmVE5g0rG5Z5UQa/xhoySlyNFALcEowwCTIHu4D05Kfe0c8qW18kSN
+	7a47BuN5pbcdbR5GYD9jBntMnIILfNASm9x1ExQ0DmalrbcF5U9QAXjWvsDJRkZyzkkKZgACamo
+	MqIE5/Jp59bx/qYWmtpAIU9T2DCtaSeZCFRR/yHxCuGigJ9i3J9GL4PN4qz206tDPCqHkuaIGd7
+	l4qvd9fgq2RRxOYHnhYTdoTLLsuy5bKSVkQRjkz4QlRaH7kMx5LNXKDn1IX4SQcponBAYpojd6d
+	d7cWzTk42Ltaj5ayqDSiYgbvzQ=
+X-Received: by 2002:a17:90b:4fcb:b0:381:a766:efcb with SMTP id 98e67ed59e1d1-39b26100e5dmr1338301a91.4.1788464207294;
+        Thu, 03 Sep 2026 12:36:47 -0700 (PDT)
 Received: from p14s.cg.shawcable.net ([2604:3d09:148c:c800:40c0:ec33:6266:c275])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b083e4fafsm6836951a91.1.2026.09.03.12.36.42
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b083e4fafsm6836951a91.1.2026.09.03.12.36.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 12:36:43 -0700 (PDT)
+        Thu, 03 Sep 2026 12:36:46 -0700 (PDT)
 From: Mathieu Poirier <mathieu.poirier@linaro.org>
 To: berrange@redhat.com,
 	kchamart@redhat.com,
@@ -76,9 +77,9 @@ Cc: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org,
 	mathieu.poirier@linaro.org
-Subject: [RFC v4 17/24] hw/arm/virt: Reserve one bit of guest physical address for RME
-Date: Thu,  3 Sep 2026 13:36:04 -0600
-Message-ID: <20260903193611.1058589-18-mathieu.poirier@linaro.org>
+Subject: [RFC v4 19/24] hw/arm/virt: Move virt_flash_create() to machvirt_init()
+Date: Thu,  3 Sep 2026 13:36:06 -0600
+Message-ID: <20260903193611.1058589-20-mathieu.poirier@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
 References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
@@ -88,69 +89,46 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-When RME is enabled, the upper GPA bit is used to distinguish protected
-from unprotected addresses. Reserve it when setting up the guest memory
-map.
+For confidential VMs we'll want to skip flash device creation.
+Unfortunately, in virt_instance_init() the machine->cgs member has not
+yet been initialized, so we cannot check whether confidential guest is
+enabled. Move virt_flash_create() to machvirt_init(), where we can
+access the machine->cgs member.
 
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@oss.qualcomm.com>
 Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 ---
- hw/arm/virt.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ hw/arm/virt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 61751aa31e0d..cf3a9320dc3a 100644
+index 329c881eb91a..f3ece746916a 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -4054,17 +4054,27 @@ static int virt_kvm_type(MachineState *ms, const char *type_str)
- {
-     VirtMachineState *vms = VIRT_MACHINE(ms);
-     int max_vm_pa_size, requested_pa_size;
-+    int rme_reserve_bit = 0;
-     bool fixed_ipa;
-     int vm_type;
+@@ -2911,6 +2911,8 @@ static void machvirt_init(MachineState *machine)
+     unsigned int smp_cpus = machine->smp.cpus;
+     unsigned int max_cpus = machine->smp.max_cpus;
  
--    max_vm_pa_size = kvm_arm_get_max_vm_ipa_size(ms, &fixed_ipa);
++    virt_flash_create(vms);
++
+     possible_cpus = mc->possible_cpu_arch_ids(machine);
+ 
+     /*
+@@ -4435,8 +4437,6 @@ static void virt_instance_init(Object *obj)
+ 
+     vms->virtio_transports = NUM_VIRTIO_TRANSPORTS;
+ 
+-    virt_flash_create(vms);
 -
-     vm_type = (ms->cgs ? KVM_VM_TYPE_ARM_REALM : KVM_VM_TYPE_ARM_NORMAL);
- 
-+    if (vm_type) {
-+        /*
-+         * With RME, the upper GPA bit differentiates Realm from NS memory.
-+         * Reserve the upper bit to ensure that highmem devices will fit.
-+         */
-+        rme_reserve_bit = 1;
-+    }
-+
-+    max_vm_pa_size = kvm_arm_get_max_vm_ipa_size(ms, &fixed_ipa) -
-+                     rme_reserve_bit;
-+
-     /* we freeze the memory map to compute the highest gpa */
-     virt_set_memmap(vms, max_vm_pa_size);
- 
--    requested_pa_size = 64 - clz64(vms->highest_gpa);
-+    requested_pa_size = 64 - clz64(vms->highest_gpa) + rme_reserve_bit;
- 
-     /*
-      * KVM requires the IPA size to be at least 32 bits.
-@@ -4073,11 +4083,11 @@ static int virt_kvm_type(MachineState *ms, const char *type_str)
-         requested_pa_size = 32;
-     }
- 
--    if (requested_pa_size > max_vm_pa_size) {
-+    if (requested_pa_size > max_vm_pa_size + rme_reserve_bit) {
-         error_report("-m and ,maxmem option values "
-                      "require an IPA range (%d bits) larger than "
-                      "the one supported by the host (%d bits)",
--                     requested_pa_size, max_vm_pa_size);
-+                     requested_pa_size, max_vm_pa_size + rme_reserve_bit);
-         return -1;
-     }
-     /*
+     vms->oem_id = g_strndup(ACPI_BUILD_APPNAME6, 6);
+     vms->oem_table_id = g_strndup(ACPI_BUILD_APPNAME8, 8);
+     cxl_machine_init(obj, &vms->cxl_devices_state);
 -- 
 2.43.0
 
