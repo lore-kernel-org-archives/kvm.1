@@ -1,114 +1,119 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319AD3D76
-	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 00:03:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA35986329
+	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 00:10:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788393821; cv=none; b=QaRHUGBkvVXTZkGPrdbyJ3l+HT7ukbyiobFn81XecYVqJ2lrskvBsk9hJ99s5ZUxJmjW/DdRwgsbnMmtA6N1e8DhclEMx7MpJVR/pn//2YhL9Wjei8nz1LZgaosZlbBvDpWrj8HKqhrMNqT7S5lm+iqD+1+OTSfIXMba+DfxO7s=
+	t=1788394243; cv=none; b=i+DPOXatGIwW0N+JKxdzjGrbz5B6S37hYEM/49rnH46BOcej6DI6qniPCjxhSJA1PCAtgrHt0HWQmww2Ts+gdSHe82GNU6FfrCdApsNEg3pKRwTRNADP4HEmWqZIMos6tsiUTCSnMu3H1pxKKmKIz1UcoUBUoAtPheID+Bcm6cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788393821; c=relaxed/simple;
-	bh=4bOUM9SqneLmuOGjaCbKT2K3+I7j68NoiUuvTB0+iYg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=lxZlRBGkiMOXmzT/peMmrICByIXd6LKV8lsyLFRhYg05iQYc5btHi2HkWIjk32ewr7KDEKqXFdzbwh8Qz+KteZrZQLtnVYzEu5zJx2x1M5QNcxKk0CxWB9TSmg0V01qxoouG5ppok6hdbdQ+1JbnugWhgEJyiAOwmZCzoL5hyJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bnLXiPVt; arc=none smtp.client-ip=209.85.214.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1788394243; c=relaxed/simple;
+	bh=zEVE4VkRXoGtq5FLEuRQNOYsVnaBElMxxCZxBZwqS34=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hZQdf6KFnTbINc4EsbhRVmzEOvAdIOYqunHVqih9nhT2aWC5X4i//I7XxD91UMPbVbuG4szWuueAbAMdJhiM9izYs8+H1JfoDWMVa87ANYpuIxk+nctW71ow7Jx/KTfDDS6ZzGlolzRhRfuOhMC3N0uJnc9F+wSM1v22ywS1Oe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q5LaSGJC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bnLXiPVt"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d52734fc41so31373725ad.1
-        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 17:03:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788393819; x=1788998619; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PtrGZ8c2EjX4OS+R2zOI0XlmpBoBwI0YX1JBim1uXc4=;
-        b=bnLXiPVtk5S6Ag9fLq9ZjHI01TH4V4OHiXGw0EaM5tBbKGj5A7y66fZXcUlSMHsasy
-         IOWX81HdrQOLZjM01lvln0mrC2uV0VF4mbVg7grJFMzsqVxWeo68Crm9Tee21GJZUSQR
-         fzDOcGm/xFeECCSEXfl3WVoyrubQZiJybiyEiHYx/HwshgEmzYFTyI80vHLrGHpf9yNS
-         CuqBXOB8cko1Wckq9G+YucExO1BTNMZ32A6gLPl2tOs03VdpUQupISKRReHVJAximGrx
-         PdVy5GjxsY970Z6sUrxtC0Bv5OZoaUY9N7iq85DAuozwFQguOPdkthdG0T3NtLMHG5L3
-         CPmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788393819; x=1788998619;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PtrGZ8c2EjX4OS+R2zOI0XlmpBoBwI0YX1JBim1uXc4=;
-        b=qqjYQzCcNEVh0Rk0Nv2aQ3cJVpCNlHN5vevIHTnIsddHnthV0lD0LKaHKrXztH+g0q
-         zhHe7vhiRBxmb8axNNqnCEl35T+QX0Ahr8SzNnmeJD6K9M6WrMjFxuSGF6jaJ3a8UeBh
-         KoM7ofj/6TRiU3BeX2fqLL1hvYppI62fgKpRJIHFme+ktG+a5znJgy/vceLStix9aK9B
-         y6lM+0+0Bm7ZszWrRa/Hj1ogvUQEKhX0P44CIYJcmnwe5NayTVuiPPxBEhL+89Cyev5o
-         v/lTxMgGuTw7JwcDx9qAjUyN0NJgmB6bgl+PTqzuTJmH3DAAAxrnviNcqDDXnxq1MjCg
-         Bplw==
-X-Gm-Message-State: AFuF++kxkp0l9+yvmtUd3gFHw/knFJH7Yd1wmGfJVAajOkgxmxBZfWMg
-	pmkoFQ2athBZZJ6xS6zpfTAmN7XPDrfqJztv6AkFXM3bzWRw2+ik3LXV53VQKrFvNrjZH0QaupH
-	Qjq8JFQ==
-X-Received: from plll21.prod.google.com ([2002:a17:902:d055:b0:2da:efa4:6509])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3884:b0:2da:fa6a:b04f
- with SMTP id d9443c01a7336-2dafa6ab21cmr45722325ad.2.1788393819396; Wed, 02
- Sep 2026 17:03:39 -0700 (PDT)
-Date: Wed, 2 Sep 2026 17:03:38 -0700
-In-Reply-To: <20260902234003.B3A561F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q5LaSGJC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A56F1F00A3D
+	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 00:10:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788394242;
+	bh=1HG4jQs0H27MEa+W+zQe3T3ePi8+ljHDYVpGxBtOdVI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Q5LaSGJCe2idLRH2WJZZO6S54oc4NaoPX3sEAidEG/0o58oOz+g+jXRWiXem9sHOC
+	 9a4G9FbrtMyuqhTWzMTTQ5AsHcwpJ28othvNREwSoaop4dv8XUGCs7yF0DGOwkatYD
+	 mAC7kmwcGI1Dp1UOihJJQQ9RwfCt+mfC+gaTjj4KvZJnSYnhgRhL2MLUkF2R7VQkwV
+	 KGk9A9ZFEmqbycmgy8nbnugMYQxbA5MxxRpOSzSs9z+/Y1skurocAHZAj5zJtATVPg
+	 EqreB2S5euSqK85oAgV8q8X19pzzoSN5JN9KBKsaNxdqF8mFEAhwQm4jQiJpBJMe95
+	 ADZPrWwMM2PyQ==
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c2531f453eeso240113866b.3
+        for <kvm@vger.kernel.org>; Wed, 02 Sep 2026 17:10:42 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxRXKn3nVztpVodP+4rWQugKlyNCJl48BKzQbr+dRadZIWCPbIIPcXKM7Eof8oU0dvmY8g=@vger.kernel.org
+X-Gm-Message-State: AFuF++n0GthCPqxmg8sOxHLJ8F/740gnjfxKIVAF4Lh6/W7joWf5oKMS
+	LJURVwJ+q3z+fD+wIjsZ6DgcOR2HLV6eVFSHmTIJI269BVuKbHZANEVehT6XsXJCfwrtNWnJrNy
+	cSyfQvbPXyqW85KYQHG57sXAJ1AERRw4=
+X-Received: by 2002:a17:907:928b:b0:c16:12ff:dc93 with SMTP id
+ a640c23a62f3a-c25d5509d65mr490835466b.18.1788394241271; Wed, 02 Sep 2026
+ 17:10:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 References: <20260902232028.2767071-1-seanjc@google.com> <20260902232028.2767071-3-seanjc@google.com>
- <20260902234003.B3A561F000E9@smtp.kernel.org>
-Message-ID: <api5WjBiSpJW656d@google.com>
+ <CAO9r8zPEqnp6Hcs9M8dz_n1MwSvH4H+kfr7EJfrMMqLgQ7fM4w@mail.gmail.com> <api5AjDG2dByAnXi@google.com>
+In-Reply-To: <api5AjDG2dByAnXi@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 2 Sep 2026 17:10:28 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMWdNLDot27LxM=j4ijXSYariMHtkFYwtd6eObp5LFa8g@mail.gmail.com>
+X-Gm-Features: AcwNN1VHRefv4Wo9edOaW6QwykwSjr0USw1UZG0JP6FPppQiuOQ6yXSUJvHDbhA
+Message-ID: <CAO9r8zMWdNLDot27LxM=j4ijXSYariMHtkFYwtd6eObp5LFa8g@mail.gmail.com>
 Subject: Re: [PATCH v2 2/5] KVM: nSVM: Ignore EFER.LMA if EFER.LME=0 when
  preparing L2 state
-From: Sean Christopherson <seanjc@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Stefan Teodorescu <fane@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 02, 2026, sashiko-bot@kernel.org wrote:
-> > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> > index 49fb10ad1f9f6..23d29597d6bf2 100644
-> > --- a/arch/x86/kvm/svm/nested.c
-> > +++ b/arch/x86/kvm/svm/nested.c
-> > @@ -789,6 +789,10 @@ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm)
-> >  
-> >  	kvm_set_rflags(vcpu, save->rflags | X86_EFLAGS_FIXED);
-> >  
-> > +	/* SVM ignores EFER.LMA if EFER.LME=0 (instead of failing VMRUN). */
-> > +	if (!(svm->nested.save.efer & EFER_LME))
-> > +		svm->nested.save.efer &= ~EFER_LMA;
-> > +
-> >  	svm_set_efer(vcpu, svm->nested.save.efer);
-> >  
-> >  	svm_set_cr0(vcpu, svm->nested.save.cr0);
-> 
-> [Severity: High]
-> This is a pre-existing issue, but does this logic only implement half of the
-> hardware VMRUN rule? 
-> 
-> While this correctly fixes the invariant for EFER.LME=0, could a malicious
-> guest desynchronize KVM's MMU state from the physical CPU when EFER.LME=1?
-> 
-> If an L1 guest creates a VMCB12 with EFER.LME=1, CR0.PG=1, but EFER.LMA=0,
-> and executes VMRUN, nested_vmcb02_prepare_save() skips the LMA update
-> because LME=1, passing LMA=0 to svm_set_efer().
-> 
-> Then, when we reach svm_set_cr0(), it fails to correct EFER.LMA because it
-> expects an edge transition (!is_paging(vcpu)), which is always false since
-> L1 must already be paging to execute VMRUN:
-> 
-> arch/x86/kvm/svm/svm.c:svm_set_cr0() {
->     ...
->     if (vcpu->arch.efer & EFER_LME) {
->         if (!is_paging(vcpu) && (cr0 & X86_CR0_PG)) {
->             vcpu->arch.efer |= EFER_LMA;
->     ...
-> }
-> 
-> Would this allow the guest to trick KVM's instruction emulator into fetching
-> arbitrary instructions from a different physical page than what the guest
-> actually executed?
+On Wed, Sep 2, 2026 at 5:02=E2=80=AFPM Sean Christopherson <seanjc@google.c=
+om> wrote:
+>
+> On Wed, Sep 02, 2026, Yosry Ahmed wrote:
+> > On Wed, Sep 2, 2026 at 4:20=E2=80=AFPM Sean Christopherson <seanjc@goog=
+le.com> wrote:
+> > >
+> > > Force EFER.LMA=3D0 if EFER.LME=3D0 when preparing L2 state for VMRUN,=
+ i.e.
+> > > mimic real hardware's behavior of ignoring EFER.LMA if EFER.LME=3D0. =
+ VMRUN
+> > > unfortunately allows the nonsensical combination, i.e. doesn't fail, =
+but
+> > > KVM itself has an invariant EFER.LMA can be set et if and only if EFE=
+R.LME
+> > > is set.   Breaking that invariant can lead to a variety of issue,
+> > > particularly in MMU code that keys off EFER.LMA when determining whet=
+her to
+> > > emulate/virtualization 4/5-level paging versus PAE paging.
+> > >
+> > > Cc: stable@vger.kernel.org
+> > > Cc: Yosry Ahmed <yosry@kernel.org>
+> > > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > > ---
+> > >  arch/x86/kvm/svm/nested.c | 4 ++++
+> > >  1 file changed, 4 insertions(+)
+> > >
+> > > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> > > index 49fb10ad1f9f..23d29597d6bf 100644
+> > > --- a/arch/x86/kvm/svm/nested.c
+> > > +++ b/arch/x86/kvm/svm/nested.c
+> > > @@ -789,6 +789,10 @@ static void nested_vmcb02_prepare_save(struct vc=
+pu_svm *svm)
+> > >
+> > >         kvm_set_rflags(vcpu, save->rflags | X86_EFLAGS_FIXED);
+> > >
+> > > +       /* SVM ignores EFER.LMA if EFER.LME=3D0 (instead of failing V=
+MRUN). */
+> > > +       if (!(svm->nested.save.efer & EFER_LME))
+> > > +               svm->nested.save.efer &=3D ~EFER_LMA;
+> >
+> > We sanitize control fields in __nested_copy_vmcb_control_to_cache().
+> > Should we similarly sanitize this in __nested_copy_vmcb_save_to_cache()=
+?
+>
+> Ideally, yes?  In practice, it doesn't work because svm_set_nested_state(=
+) loads
+> state from "save", not from "save_cached".
 
-Maybe?  But unless it negatively affects the host, I don't think we care?
+I was gonna say let's just pass save_cached to svm_copy_vmrun_state()
+instead of "save", but then I realized the SMM Code also uses it. We
+can make it work for both (macro time!), but maybe that's not worth
+doing. Sigh.
+
+> And even if we fixed that, it would
+> then allow userspace to pass in garbage (that is then ignored), i.e. woul=
+d undo
+> patch 1, and I don't want to do that.
+
+I don't think so, patch 1 specifically performs the check on "save".
