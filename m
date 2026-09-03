@@ -1,260 +1,170 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9804A482E
-	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 12:58:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351374A841C;
+	Thu,  3 Sep 2026 13:09:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788440283; cv=none; b=DoSdGGjp8MV4PpZn1Xjran+ihS9DzMsys2EVTSXSsaxEpuG7AMSqG8HmZl0gSeSLGFHtChRzD500AriTimxTObhilV6HKymypMKdxAV2RdtBTxHhjMVhh+ceobxbSdgPCtte1BHMozo4lAd5uTIcJGuNvB3/d5zzmJb28rsm0ug=
+	t=1788440964; cv=none; b=TKg2KsJuakYDBBGwVovSB2fI5hOLxT4tynUfuVfA+8NPrB/HLfP7ZWPpVjrZaBcOkZy4W+A/Fww17OBdK20mrmZV5S+9cz5d+vMc25RTIYYSqSlZzZMC0fdRN2fZcRwFq+S04HfbwtH6V0s3ESkOMEbuuCmBIgGRBwPZUK/7zAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788440283; c=relaxed/simple;
-	bh=UECByAsiLsg8VzQtIyDKYKguG/+f168CyeSsBDdvyy8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FqHjEzVon5LUcUDJP3Q1n1jNvjyURHCSl4UhuBG/+BhL9dyokvodwPv9U1AN7R1D/1/R+rjOAsSu3pXWQHvyeOO62MOlx8/s5JxrWihjfZCZDKIIoe1aRQF/an+x6+7Dc1BnFs8jXmapIODTs3akRHnh8fIzNp9BYZrrDu8tlhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QYK4TVQg; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DjfFpeZ/; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788440964; c=relaxed/simple;
+	bh=y0WeSMNmvquEtmZVbb1RvEBpBOgEwtX1AAkYqYEEltU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Y8dot7v/s0d4O7w+lmoxO+qtXrHpZNjVJ4a5N9vHbIVBx8nUQxwm4F1mJxhqbpy7xACAmXd/i5OcJxIEiph2mLaDCcfoOEHLSlLq5JxnEtZ22EP42kLcpFrun3NxctF+CsDuEV1qz2VDC3Og+MLcZgwek+LsnsERtqIEcnyaeGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mRvAWCzr; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QYK4TVQg";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DjfFpeZ/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788440280;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dFw4kmpiXgnJgYg/MdJcXbpa7WDv+OilNPqzeDo4f/c=;
-	b=QYK4TVQgoRTg0NEVSzybgwn2cugajmmQWnrIRUnvUOjl5S9RTxVM0dytGeJsgvObrk/Y8+
-	Dzk7aK5ewkR/uns0ydN84c4ZRMt/jM9P4pVXM2xqmNNt3wN8CVFE1wAy2EkTQguO879hxy
-	MNLBzA9dvqdv9JoOHREovT7ywHEQ4BM=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-131-9_xFd_ZlOZ6VZxRzkD1mQg-1; Thu, 03 Sep 2026 08:57:57 -0400
-X-MC-Unique: 9_xFd_ZlOZ6VZxRzkD1mQg-1
-X-Mimecast-MFC-AGG-ID: 9_xFd_ZlOZ6VZxRzkD1mQg_1788440276
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49ccb223bceso6316545e9.0
-        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 05:57:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788440276; x=1789045076; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dFw4kmpiXgnJgYg/MdJcXbpa7WDv+OilNPqzeDo4f/c=;
-        b=DjfFpeZ/XkPdkDcJnPrbDWKpkNiv/YeBmGEEVJZWxLzDpjnP/x9n80IH5oXk7LAlxk
-         uiSOGEblLl1/Ok7FCPtKZd860Xidw407KUQV84N/CxPDrCGS3fqt9LBTNUT/QBANkOog
-         9ZvQkSQPci0lhPQdJdv5oeiUd+LoRYBHYEnHm9P9TU5IblF3tF4v0Kk8Q4S4JLrf6XP0
-         O2oNQU3obayk2OGMQntZvcCkceOr2xnSWvvMWpKvA4ljpKjqP8cXc3TbquiL0DIa0bXy
-         u7Hu26yxtCztdsTOTyD32mADFvkTxNYtl9nGxBi/959gcXralEvrELOSaYYs7BDO7aED
-         FgFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788440276; x=1789045076;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dFw4kmpiXgnJgYg/MdJcXbpa7WDv+OilNPqzeDo4f/c=;
-        b=n5MCGHah1WBJ+CreEw2XK/qaDC6DLSOnFCw9amZLonPDzOUhEhg4uo2FGeuo4MRR9i
-         zxxn4LClHQKzysRf1VUw/+asNypuJ/RLkDlpGsN3y+/qRm8E4nJEcVzf6kweS3wT3NA8
-         ELE9gqCEOjFE9wHlYDVM62uB/0bXhBvFs2El+jZWa85wnMYyOVOg5I6i3IYcD06qzps4
-         QQUcqhNlRZn/38arWTv2jg5iNHQDFRfCFBoxsUz4vm/aTkxaaeqqlLuvJ+tzDtUJhnRH
-         HdGk16XeogOUnVevUMdHdol8g/PbYEKR6Zaj3HabP92QBQvlNfl+GKjfCzsDtW/MCp9z
-         DgMg==
-X-Forwarded-Encrypted: i=1; AKwUvBy7Ad0rlh1+c7uFWVzzn05DG2bJ8xtzXetoYT2xIuwLvcA9WwWi3W6oapSyV4dxScpvaWU=@vger.kernel.org
-X-Gm-Message-State: AFuF++lS2Xt2nhBz7nL/GXJzWGkqGdxbvThw8KcUc/g48ki10x102oe7
-	fyTLO4NquXtMgdd1Vazve0lywMxGt1CbmpAeNQmp2lIanAuXPugUC7bN+AM4vKnbViIpBQWlEaA
-	tLZdkS011xeFVNtSL0kATOWBKoeIJWIgiT+mw9xy6YEvbFEwDJ03pEQ==
-X-Gm-Gg: AYBFou1aY1Mj2FzC02whk//qOIlTqo0QOGqGPvpMKinN5NxnzBSWcwcI77lYPm8IPLr
-	mWOgy58LjGKwRCKzva+Tba5sWCeDDuo2RCR/QrRoJVk4wuP6Gjcqbf3AbjBAHdhXqtDjLU27jat
-	dE3fA758IT0e2ut/mX9lEgl7olVwpUoSkaRCYt/+HwHuI3eVw7m2qAxc+HuZ55wA0204cddAS3J
-	kT8EDQqJ9wFXuX6W9JYQHmOI1gfRySexp5G4v7D35u+RQVYtv0KL3MLporKXyB/E9xVAUeGHAZx
-	UhYhIBVaJgsSDsTeFxz+fWHNNIYIFy8Q09p1wkFk81S6QvF4W7jzBUZxopImDppZESc+Vfti2jU
-	66H7Ru2jDQdsWv75dp9KAk8FjLjq/ybBkeKOiq73WK+bReg==
-X-Received: by 2002:a05:600c:46c6:b0:49c:799a:177b with SMTP id 5b1f17b1804b1-49cf1576df1mr34980945e9.2.1788440276346;
-        Thu, 03 Sep 2026 05:57:56 -0700 (PDT)
-X-Received: by 2002:a05:600c:46c6:b0:49c:799a:177b with SMTP id 5b1f17b1804b1-49cf1576df1mr34980545e9.2.1788440275769;
-        Thu, 03 Sep 2026 05:57:55 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-53-30-11.retail.telecomitalia.it. [79.53.30.11])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce58da3acsm259684435e9.0.2026.09.03.05.57.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 05:57:55 -0700 (PDT)
-Date: Thu, 3 Sep 2026 14:57:44 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Luigi Leonardi <leonardi@redhat.com>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
-	Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Zhao Liu <zhao1.liu@intel.com>, Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org
-Subject: Re: [PATCH 2/4] igvm: move set_id_block call into the SNP ID block
- directive handler
-Message-ID: <aplM8ZVCrsjuELHT@sgarzare-redhat>
-References: <20260901-fix_igvm_policy-v1-0-e93a6cf8c5ac@redhat.com>
- <20260901-fix_igvm_policy-v1-2-e93a6cf8c5ac@redhat.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mRvAWCzr"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 683AVeBB1606233;
+	Thu, 3 Sep 2026 13:09:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=T/jc++
+	tLbSNEV7AK19qKe3n3s2kGYWtmrMjM1OeDxiY=; b=mRvAWCzrQLAh18x7/tXZdp
+	OFAxEWgR7PVgJ0IR9yvF+XpqSFJ3m3p3uWdi10JSyi5lTIFQEBUHHp+fLbPRJKmS
+	8k/zSPUwevBKM/KbD3F76vmIxmBJwSb/oJqQUPif+XaqKPu1UWWyzXAWg08IYsnu
+	ECat5FPxV7rdV81Xpj0X7R/aqoLGHJcosctRFh69kwJvp4d6ONwyUIty+Vk6Vxkq
+	vMsNEU/Pr3EHxC/mirkKWwi98DUWOY73USXnXIplcBi4kGv0BHBFGnebvRb6R+KF
+	iyZFYHxSf7FOPy/9dzZtysaLWqqtYb7/z36jN9k78qVgOdmEKonxTBZuO2zjImGQ
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbnue4kb9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 03 Sep 2026 13:09:01 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 683CuHfn024949;
+	Thu, 3 Sep 2026 13:09:01 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gcb8hqptw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 03 Sep 2026 13:09:01 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 683D8uKf50332152
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 3 Sep 2026 13:08:57 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CD49C2004B;
+	Thu,  3 Sep 2026 13:08:56 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 81C5B20040;
+	Thu,  3 Sep 2026 13:08:55 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.87.146.55])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Thu,  3 Sep 2026 13:08:55 +0000 (GMT)
+Date: Thu, 3 Sep 2026 15:08:52 +0200
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank
+ <frankja@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        David
+ Hildenbrand <david@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Sven
+ Schnelle <svens@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>, Vlastimil Babka <vbabka@kernel.org>,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-s390@vger.kernel.org
+Subject: Re: [PATCH 0/4] KVM: s390: replace page allocator calls with
+ kzalloc()
+Message-ID: <20260903150852.518d6cdc@p-imbrenda>
+In-Reply-To: <apkqHLgg7nqBiYW7@kernel.org>
+References: <20260902-s390-kvm-v1-0-3bc0986550b1@kernel.org>
+	<20260902130612.41500808@p-imbrenda>
+	<apghz4XAgv0ro15t@kernel.org>
+	<20260902165315.06996af6@p-imbrenda>
+	<apkqHLgg7nqBiYW7@kernel.org>
+Organization: IBM
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260901-fix_igvm_policy-v1-2-e93a6cf8c5ac@redhat.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: rQsTroj8xn3GdbO75jzE15PR6kvzF6jW
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAzMDExMyBTYWx0ZWRfXxC/CioTB8XFW
+ bXzXT7CVmLTowOI5tl6/4yAw6jKpBBQpmlAb4Q7P5G5PXe39cUj1QomSXEtIbf5l9l6bQ6vP6Ls
+ oEvhWUvILExAAMl0sQqMY4Cw2qZPlQk/B6mc4BFdOD3dkf8fY+7EVHO2uDYN3xsJHuBpbm+Ykjh
+ TgKMx2JGDniBOu7MpN/QBKrgW0b/OAZM73SiKTCzZeKQGV0hYIGESWecFgWrmxF80sPpNyhmdUo
+ SRadS7r3Dtp0pkYfJCRDmmsEm7XrwyUAX0TCsh7B6CcQkBYLJ6YJEUsKjcKNHq94zudpCKhbdby
+ bBeJT3eo9HSyC1ohspEtfzc0kQsg8M2N5LGsJz3u8ksgJhjfjdDb+JhnoylQmabsOOCrUyqOYua
+ i2+eF65Qoaw5p28bRQMOV1GcI+dNKq8C5sz2leviV+LaqUQ/vjqo+aOcVOD+gZ+0xq/492z7GVn
+ ID6mzmVBfT5KQ9KY2QA==
+X-Proofpoint-ORIG-GUID: rQsTroj8xn3GdbO75jzE15PR6kvzF6jW
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAzMDExMyBTYWx0ZWRfXyG1RdVQm6qAZ
+ GadFcA8vNVNNkirzwOcjbz+I5ItvsGbt/IRMHTgQU/nTsee4yZ3pdL4uury0bGiwMOzT34WmHw8
+ ZKP0t+AuWlpk155FQmOuf2jFWLSs/Kg=
+X-Authority-Analysis: v=2.4 cv=B92JFutM c=1 sm=1 tr=0 ts=6a99716d cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=ohm-7uY5D15YhrtMo_UA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-03_03,2026-09-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 spamscore=0 clxscore=1015 suspectscore=0 phishscore=0
+ lowpriorityscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2609030113
 
-On Tue, Sep 01, 2026 at 12:09:19PM +0200, Luigi Leonardi wrote:
->set_id_block only makes sense when the IGVM file contains an
->IGVM_VHT_SNP_ID_BLOCK directive. Move the call from the removed
->qigvm_handle_policy into qigvm_directive_snp_id_block, where the ID
->block and ID auth are populated. This avoids a no-op call to
->set_id_block when no ID block is present.
->
->The ID block embeds the guest policy, so the policy must be known by the
->time the directive is handled. Process the initialization section (which
->carries the GUEST_POLICY header) before the directive section, and
->copy ctx->sev_policy into the ID block in the directive handler.
->
->Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
->---
-> backends/igvm.c | 81 +++++++++++++++++++++++++++------------------------------
-> 1 file changed, 38 insertions(+), 43 deletions(-)
->
->diff --git a/backends/igvm.c b/backends/igvm.c
->index 85de0d54ec..6545382546 100644
->--- a/backends/igvm.c
->+++ b/backends/igvm.c
->@@ -778,6 +778,8 @@ static int qigvm_directive_snp_id_block(QIgvm *ctx, const uint8_t *header_data,
->     ctx->id_block->version = IGVM_SEV_ID_BLOCK_VERSION;
->     memcpy(ctx->id_block->ld, igvm_id->ld, sizeof(ctx->id_block->ld));
->
->+    ctx->id_block->policy = ctx->sev_policy;
+On Thu, 3 Sep 2026 11:04:44 +0300
+Mike Rapoport <rppt@kernel.org> wrote:
 
-Is it fine to copy the sev_policy in the id_block in any case?
+> Hi Claudio,
+> 
+> On Wed, Sep 02, 2026 at 04:53:15PM +0200, Claudio Imbrenda wrote:
+> > On Wed, 2 Sep 2026 16:17:03 +0300
+> > Mike Rapoport <rppt@kernel.org> wrote:
+> >   
+> > > On Wed, Sep 02, 2026 at 01:06:12PM +0200, Claudio Imbrenda wrote:  
+> > > > On Wed, 02 Sep 2026 09:15:12 +0300
+> > > > "Mike Rapoport (Microsoft)" <rppt@kernel.org> wrote:
+> > > >     
+> > > > > This is a (small) part of larger work of replacing page allocator calls
+> > > > > with kmalloc.  
+> > > > 
+> > > > I have some objections to this series, but not because of what you are
+> > > > trying to do (which is actually nice).
+> > > > 
+> > > > I understand that you probably wanted to touch as little code as
+> > > > possible,    
+> > > 
+> > > Yep :)
+> > >   
+> > > > but now since you're rewriting the allocations to use
+> > > > kmalloc.... I'd like them to be converted to use the __free(kvmalloc)    
+> > > 
+> > > You mean __free(kfree)? Sure, I can look into it.  
+> > 
+> > yep :)  
+> 
+> Well, I looked :) 
+> 
+> The only place where __free(kfree) is completely safe is handle_sthyi().
+> 
+> In all the other functions using __free(kfree) creates a mix of of goto
+> and cleanup helpers and cleanup docs advise against mixing them:
+> 
+> https://docs.kernel.org/core-api/cleanup.html
+> 
+> The cleanup paths are quite involved in these functions so using
 
-I mean, what happen if IGVM_VHT_GUEST_POLICY is not in the IGVM file, so 
-IIUC sev_policy is 0, but the user set the policy by the CLI?
+it looked trivial when I gave it a cursory glance, hence the reason of
+my original request, but... 
 
-Maybe this was pre-existing and handled in the next patches.
+> __free(kfree) there is really not trivial.
 
-Thanks,
-Stefano
+... yeah, it's actually not trivial at all.
 
->+
->     ctx->id_auth->id_key_alg = igvm_id->id_key_algorithm;
->     assert(sizeof(igvm_id->id_key_signature) <=
->            sizeof(ctx->id_auth->id_block_sig));
->@@ -805,6 +807,14 @@ static int qigvm_directive_snp_id_block(QIgvm *ctx, const uint8_t *header_data,
->     memcpy(&ctx->id_auth->author_key[76], &igvm_id->author_public_key.qy,
->             72);
->
->+    if (ctx->cgsc) {
->+        return ctx->cgsc->set_id_block(ctx->id_block,
->+                                       sizeof(struct sev_id_block),
->+                                       ctx->id_auth,
->+                                       sizeof(struct sev_id_authentication),
->+                                       errp);
->+    }
->+
->     return 0;
-> }
->
->@@ -958,23 +968,6 @@ static int qigvm_supported_platform_compat_mask(QIgvm *ctx, Error **errp)
->     return 0;
-> }
->
->-static int qigvm_handle_policy(QIgvm *ctx, Error **errp)
->-{
->-    if (ctx->platform_type == IGVM_PLATFORM_TYPE_SEV_SNP) {
->-        int id_block_len = 0;
->-        int id_auth_len = 0;
->-        if (ctx->id_block) {
->-            ctx->id_block->policy = ctx->sev_policy;
->-            id_block_len = sizeof(struct sev_id_block);
->-            id_auth_len = sizeof(struct sev_id_authentication);
->-        }
->-
->-        return ctx->cgsc->set_id_block(ctx->id_block, id_block_len,
->-                                       ctx->id_auth, id_auth_len, errp);
->-    }
->-    return 0;
->-}
->-
-> IgvmHandle qigvm_file_init(char *filename, Error **errp)
-> {
->     IgvmHandle igvm;
->@@ -1032,6 +1025,34 @@ int qigvm_process_file(IgvmCfg *cfg, MachineState *machine_state,
->         goto cleanup;
->     }
->
->+    /*
->+     * Process the initialization section first so that the guest policy is
->+     * known before the directive section is handled. The SNP ID block
->+     * directive embeds the guest policy into the ID block, so the policy from
->+     * the guest policy initialization header must be available by then.
->+     */
->+    header_count =
->+        igvm_header_count(ctx.cfg->file, IGVM_HEADER_SECTION_INITIALIZATION);
->+    if (header_count < 0) {
->+        error_setg(
->+            errp,
->+            "Invalid initialization header count in IGVM file. Error code: %X",
->+            header_count);
->+        goto cleanup;
->+    }
->+
->+    for (ctx.current_header_index = 0;
->+         ctx.current_header_index < (unsigned)header_count;
->+         ctx.current_header_index++) {
->+        IgvmVariableHeaderType type =
->+            igvm_get_header_type(ctx.cfg->file,
->+                                 IGVM_HEADER_SECTION_INITIALIZATION,
->+                                 ctx.current_header_index);
->+        if (qigvm_handler(&ctx, type, errp) < 0) {
->+            goto cleanup;
->+        }
->+    }
->+
->     header_count = igvm_header_count(ctx.cfg->file,
->                                      IGVM_HEADER_SECTION_DIRECTIVE);
->     if (header_count <= 0) {
->@@ -1065,28 +1086,6 @@ int qigvm_process_file(IgvmCfg *cfg, MachineState *machine_state,
->         goto cleanup_parameters;
->     }
->
->-    header_count =
->-        igvm_header_count(ctx.cfg->file, IGVM_HEADER_SECTION_INITIALIZATION);
->-    if (header_count < 0) {
->-        error_setg(
->-            errp,
->-            "Invalid initialization header count in IGVM file. Error code: %X",
->-            header_count);
->-        goto cleanup_parameters;
->-    }
->-
->-    for (ctx.current_header_index = 0;
->-         ctx.current_header_index < (unsigned)header_count;
->-         ctx.current_header_index++) {
->-        IgvmVariableHeaderType type =
->-            igvm_get_header_type(ctx.cfg->file,
->-                                 IGVM_HEADER_SECTION_INITIALIZATION,
->-                                 ctx.current_header_index);
->-        if (qigvm_handler(&ctx, type, errp) < 0) {
->-            goto cleanup_parameters;
->-        }
->-    }
->-
->     /*
->      * Contiguous pages of data with compatible flags are grouped together in
->      * order to reduce the number of memory regions we create. Make sure the
->@@ -1094,10 +1093,6 @@ int qigvm_process_file(IgvmCfg *cfg, MachineState *machine_state,
->      */
->     retval = qigvm_process_mem_page(&ctx, NULL, errp);
->
->-    if (retval == 0) {
->-        retval = qigvm_handle_policy(&ctx, errp);
->-    }
->-
-> cleanup_parameters:
->     QTAILQ_FOREACH(parameter, &ctx.parameter_data, next)
->     {
->
->-- 
->2.55.0
->
+
+maybe refactor the first patch, and leave the rest as it is :)
 
