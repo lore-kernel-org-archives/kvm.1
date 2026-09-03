@@ -1,297 +1,384 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013023.outbound.protection.outlook.com [40.93.201.23])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454FE480325;
-	Thu,  3 Sep 2026 10:16:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.23
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788430588; cv=fail; b=mYFHjdqJkC5ECKtGcG76/2gDrpeQUzCSgxW/2SkZy2eQ4y94fGDn2m9dsqINfdPfxeItshC1ZYlmavqfYpbhFQBsNihYNrOJWBTmhCNLKZn7WSvn1JV8Co6Y6mC+BkNwDOGWZQL5q6V0toqx9EJO2AsQNUWDn8uNmyomk1fYGTs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788430588; c=relaxed/simple;
-	bh=3VRcHa59YiZtW37OJr0UJJ4L2TDpFK6BZBGcVL/PA0s=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=DYbxOvXJFTNnuTkGe5zjxnczT3kZgmwmBZK3NTROA3TbuMcH4//Cy3RWsmZ1EHgOskgjx9n9TmPGC8j9fz+dEX5YY0FTkAvpKtJoaFuUUUT3Orut1JaEXE38IqQiyX/BHuIGYA9TjnssgeBobXAUdqzcFlmENi762PHOd/ztpeY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=KR/lx/H6; arc=fail smtp.client-ip=40.93.201.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510B748EBE8
+	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 10:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788431566; cv=none; b=tU27cjt3+IB2F4mzjoyLrQTmYvgCcVh3+2oS33e4NTeOsJalARltJSNFs3JXt+sEyNCTWUlZ6R/BJF0AsFcMXM1HFXhf+9gw0KTWTOTvM9oaV69dZHenWCY4ZvNnHqcg7UWwQ2Mz79Br567WPPjfEH0x7m8oMK+ZUKYj42gG6X0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788431566; c=relaxed/simple;
+	bh=rQ2cUXSaJXnGq6/2v2Adr3T9sKty4wEHfA7+0rqs1Zs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qRzI9ILnurDF7OiGqBqjz3twQCnUmeNr+HIj64mtHYYJ7T2pPXDuUs6jg2q7uS2+eW9YxGdtRy7amUkpSnmUpF7r3RMPMW+P9dHAbl79ZavKKqianRCO7xIxMBvJFc+tFWYvGIeN2FVU46f8PobsKR4/s/nRNo/D9m+Ew7jVnT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Hechm80n; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=B95R6fWa; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="KR/lx/H6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uC6yAw4tnMiROxXe3ZcaL2Ma6Ndwd3HO2SbB83cDi2IWwL+yAvHqQjwZo+TLuTZAkeJA55u7HstwTV+Nh89RcUoMirn3FQnZg+XndgO/xuxE7Z8vQMFZkveIughzFGbubVPUs9cGeNCJJaIiBaexSKCbTHoL7jIqONgUqbXP2jo+Y/5hcDQ0pWmbAvmu6oB4j40PGHU/IAhaobE6ccMRIQdXXCzPd+8BNakGyWhkLdCrxDQuL82m3ALh2VvI+YQZSBt5jnlVOf5ZGZ9AukenGoTZsj3ea1xm7ygai/5wWpLmfjKPU4cuBOBEfvqA2ooT/ETMXE1jox9uRqZBvGpCcQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dLaWX9Y9RHB6DTyXBcyzLVCWnWCuY+HOhMB9bJc3dd0=;
- b=P5yTKCYqJ+yD3exOxXf+DeTxo1f/IRFMKzYwI+hurdBOJ/MoD9ZNpdICgTvfmAdb5/yTX+EZWLy1CO5812nd+y/Jvum6Z8205fLM26YDiMvg4Ptx4QQFrqZCUVDsY1r+o7myEC9FrwLEZ3bikVwNdfszszHqn06frpH6r1K9Kkbil7RR0EngcoYrEntc3+eGOFfnAKaErfDPyK/CEh5ysNvbrlaOG5WQPEcXlTNizpA4APkIhkVqpo9x7NiLNe7bOhHLvULlmZqRIh6Q2PUfCSQIhnStb/732TyhowcLkXRcHJEnPQw/tuDvkRsiM6+ZFO1HKhcB8s6aDCV3pAcXsQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dLaWX9Y9RHB6DTyXBcyzLVCWnWCuY+HOhMB9bJc3dd0=;
- b=KR/lx/H6R/Pc0dNc9M0V17Vlf8HcoWG+gwOjPlfWAOjbNSSiIdTLy4efuYP9wxTLmnSZrck1Chd5pZQLox2FIgZCFSeS6mKPK+iSPy2Uy0g9FPILJsvI7pmyZwv1lRSynmVy7FfkKAmma6bTIpzMjA1PRgG2ANfN13Nr/fDAlB/p2U6fV8d2M2/3QV7JtCDFqBfu4/vWwvO59ZoXXeHvqxlPwrUBwfSyM8GhESTDIz707NgCc4GZePDWXduYqG52laYVOiQUhEYWQhWN5oRi0DgcW5WJqSsbv57v8M+tFk0YMPcbBnvwDS9FJ6B8Sxo1BL5taX6i1qCfXHxfYlCvRw==
-Received: from IA1PR12MB9030.namprd12.prod.outlook.com (2603:10b6:208:3f2::22)
- by CY1PR12MB9582.namprd12.prod.outlook.com (2603:10b6:930:fe::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Thu, 3 Sep
- 2026 10:16:05 +0000
-Received: from IA1PR12MB9030.namprd12.prod.outlook.com
- ([fe80::2c1d:ed27:b53a:97d2]) by IA1PR12MB9030.namprd12.prod.outlook.com
- ([fe80::2c1d:ed27:b53a:97d2%7]) with mapi id 15.21.0360.008; Thu, 3 Sep 2026
- 10:16:05 +0000
-From: Manish Honap <mhonap@nvidia.com>
-To: Alex Williamson <alex@shazbot.org>
-CC: "jgg@ziepe.ca" <jgg@ziepe.ca>, Ankit Agrawal <ankita@nvidia.com>,
-	"jic23@kernel.org" <jic23@kernel.org>, "dave.jiang@intel.com"
-	<dave.jiang@intel.com>, "alejandro.lucero-palau@amd.com"
-	<alejandro.lucero-palau@amd.com>, Srirangan Madhavan <smadhavan@nvidia.com>,
-	"corbet@lwn.net" <corbet@lwn.net>, "skhan@linuxfoundation.org"
-	<skhan@linuxfoundation.org>, "dave@stgolabs.net" <dave@stgolabs.net>,
-	"alison.schofield@intel.com" <alison.schofield@intel.com>,
-	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, "iweiny@kernel.org"
-	<iweiny@kernel.org>, "ming.li@zohomail.com" <ming.li@zohomail.com>, Yishai
- Hadas <yishaih@nvidia.com>, Shameer Kolothum Thodi <skolothumtho@nvidia.com>,
-	"kevin.tian@intel.com" <kevin.tian@intel.com>, "bhelgaas@google.com"
-	<bhelgaas@google.com>, "dmatlack@google.com" <dmatlack@google.com>,
-	"kees@kernel.org" <kees@kernel.org>, "gustavoars@kernel.org"
-	<gustavoars@kernel.org>, Neo Jia <cjia@nvidia.com>, Krishnakant Jaju
-	<kjaju@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>, Zhi Wang
-	<zhiw@nvidia.com>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-cxl@vger.kernel.org"
-	<linux-cxl@vger.kernel.org>, "linux-pci@vger.kernel.org"
-	<linux-pci@vger.kernel.org>, "linux-kselftest@vger.kernel.org"
-	<linux-kselftest@vger.kernel.org>, "linux-hardening@vger.kernel.org"
-	<linux-hardening@vger.kernel.org>, Manish Honap <mhonap@nvidia.com>
-Subject: RE: [PATCH v4 25/27] vfio/pci: Provide an opt-out for the CXL Type-2
- extensions
-Thread-Topic: [PATCH v4 25/27] vfio/pci: Provide an opt-out for the CXL Type-2
- extensions
-Thread-Index: AQHdKwfr4GISZAMcQ0OcN0BwTtF47La0Ku+AgAiWMxA=
-Date: Thu, 3 Sep 2026 10:16:05 +0000
-Message-ID:
- <IA1PR12MB9030ABB798B34C694C626418BDB62@IA1PR12MB9030.namprd12.prod.outlook.com>
-References: <20260813093631.2288172-1-mhonap@nvidia.com>
-	<20260813093631.2288172-26-mhonap@nvidia.com>
- <20260828165645.03aed778@shazbot.org>
-In-Reply-To: <20260828165645.03aed778@shazbot.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA1PR12MB9030:EE_|CY1PR12MB9582:EE_
-x-ms-office365-filtering-correlation-id: f2eece16-46a2-46d5-39c0-08df09a45d15
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|38070700021|10067099003|11063799006|4143699003|18002099003|22082099003|56012099006;
-x-microsoft-antispam-message-info:
- BIViEieAUdV4HETSkU0bb1A/gL5R421yClgn1Y22kKrqoMSL7mUscQfXZh85w6P+BGN33mIcDuaxiGKX3X/Ps4vIzXiLJ0HAKcT8DeKFWumijiO70geoUp1capB66RTcUlV/i15idt/JoQzLprT0n26Obvz+tBeZ3CqxKDKNQ4Ku6eHqW9TZJ3EO5NX8PqbBfS0opBj9GtHY2/AtIJBtbO/wN9sQNURh5wrAVG5DMtowYRLCIttLf6mfzrVZdCR91Udf/CBfzKrxGPbBsiUjs0tp9oTy+vwcb1z9eNxy5e8ZU8JpjbYRf+0GnScy2BvTpJXCqXn3oux2C5yFMjIgyu4DAq14tzYc7ibJHnuxFKzLRT8GHP/+4ULeBv+phminCh93/svGVhV2ces0UwE/yntoWf2wzPC3CRnX9RjGYl54nwy14eBlsLaJE0vN132fUe/R/j/yUrGXekNBQjQ2q0UOVVwqdpMg6StxZx/XB5ypYT/czW4poTJiedcOzE/dOjSmOLEyFstF+Nk9TDPOr4PFg3aisUtkDfSNrW3oUA9Jy6pFLDCrb/1HJytw1az8GzfuAY8IhxngwKtmkjBap/bfpmRAqCPvzHzBifXISDQ/49Py/kgUgu90A/512iRmjsrSfVQm2FbF/U5nk3tEkW6Gjcn5tjrmWkZYN7fU6O7o74BNF7nEysHk0pb509bpJRNeIFT3KYVab0DaDszZZLVPHv6vXHwdsdKjhD0eOeo=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB9030.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(38070700021)(10067099003)(11063799006)(4143699003)(18002099003)(22082099003)(56012099006);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?aMxbz1Oyy/ng1t0t82JqO95y/oVCEYuAW1fuepu/PasZM+IWJJGO02wc0LhH?=
- =?us-ascii?Q?tBGsxCaIn0spTf3pf0jVJc00RcHtOMdfuzHraRbO4z1BlADZKv59U9FBFwKz?=
- =?us-ascii?Q?EprMf5i8+FLnNlKl5hrPBxyTkGxBfLEZG0PaKsnrV3YjM8tXaiZXQ5SMBaZa?=
- =?us-ascii?Q?kPRk+XdnZgsoP0+nZlUy0CsvRBMyB3sTF6r0QyzrHQQ9qG0JHeZOfLy524ay?=
- =?us-ascii?Q?9CRrkdIyTcui76YXHBnuKryYbaDUO4QqsNx9Z+8gWVaQQuZueF/Lgknc9gJ8?=
- =?us-ascii?Q?KrO+NuocjPzn9GPMhrELcLdTRlrCM0yS53B1gS/75IYg7iVvfotESYXZA4Ya?=
- =?us-ascii?Q?c9XTL9HJX81iKXw9YcJ+aRvqi6xFRshTPNZAktyhwi6ik3GQtSTnWW9OurCi?=
- =?us-ascii?Q?+zPVcKe2df3Js/CGPTenK0HYMYHEO5EX7XN7zdUeUpvnpe7kosft9CQNvmnI?=
- =?us-ascii?Q?srzB/1pxcFEtaEh4zv0nD2Hj21Dq2ULuiC+pf/KIm3mfqO2UJA7bUXKv+VFP?=
- =?us-ascii?Q?Rqqd8nSfnqGAJR9NgUq9czCJGF7nrSEVjwhFCFMHANhBaqWC31v9KOSWVsLR?=
- =?us-ascii?Q?wbEoprZqPV5GnydtSQkzPFkg//+PCV/lHXdDpBFclzMK0kO5BJhkf+9n8Jks?=
- =?us-ascii?Q?ENievOk8RxPaBgimn/jakia5X6Gtc7eAwAQGE/8jOZ5tHm120Ynm8XIyzyER?=
- =?us-ascii?Q?TpftfYfLouUrNp4iPxpbFdFlJr1gYAg7H0wN7JHK7xctkDmUTAfarp/vvi1m?=
- =?us-ascii?Q?xNjNHHVBHkK7iiz9UdUcZ47vMoIEC2rExsO9WJKRVLQcu+8vojV2Gpv/6/hK?=
- =?us-ascii?Q?fcZfOWuWfLiAqTo1e2yngQOVfqaLkwOpy2JS1VSO8aP2KacJGeQmKIw4AqsZ?=
- =?us-ascii?Q?vtd2O8PZnnoVMR+2vJxa2FoP/bGGXvlwOsx4iGoqlcxbCd/kFSYAKZR53G3r?=
- =?us-ascii?Q?mqEwaOXhZjLHrtGNOREuUgCScoF/BSxRnWzZCzvuXkzH2BGFdHhmJSK+D9P7?=
- =?us-ascii?Q?Lt5Vaz7+DXfN73phYYuS0UGkXtD4cTtHpWmIQBW7mMPNcL+3HKH3KuAo0PZe?=
- =?us-ascii?Q?yo1v2pkkBWsEe01SreH8mn76WiD/egA0tti1/rAzDErTBAl0ArvCyj4KiTiv?=
- =?us-ascii?Q?z9Ji4s4FZwBnGEsJu2YQ58azqBRIn6eMmAt+ExR5Z+R4J6o8xEm2nBVebKvR?=
- =?us-ascii?Q?hz0GsYAvamtqRjQ65Fy+2G6MiemQolu8maTQZZrWRSOHnxL/YZ6lqq+STucq?=
- =?us-ascii?Q?+BJ2PMb+ACpq7e62IyOppuqxXNqMcWnTzVjYkZUH8ehGJ0i+gtKZJXOX9lEU?=
- =?us-ascii?Q?Y8nHOpGzYHrMY5un0oH2tDkkHLpMcDykCyZHME35ibH/gqJ9PHnppuoc5YTU?=
- =?us-ascii?Q?3drp0uJgLunI8UW6RvX0bxUEeCjIN95aI41yLsRdVJqqEygfFclXuKpzduRo?=
- =?us-ascii?Q?t2rh6NIypLPeX6zq9x8vdh8gIR0fP5YujRsZ+7rDd4pHg6iwlz0HwqbacLXk?=
- =?us-ascii?Q?Rv5h1TBHxMJM8JXVxEIdL5VSp7fe38n+82J/GjqSY5Vc1cEZEXaO2MoC2lCt?=
- =?us-ascii?Q?z9RRmg3DCesY2dBSZgWRFcNvLHZM4flIbPMA/QfeG64Q2BWwlXf0WJDPja4p?=
- =?us-ascii?Q?hFhlgC52GOhNzHW6DT0YD3BEdU9bm2BPFZEAqFK3AhTP7b0TY3mF8vzn9/HE?=
- =?us-ascii?Q?JwnIw1Q34if8CkbR/JA7eBrMowXYw6FrnjV2axFG468077fC?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Hechm80n";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="B95R6fWa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788431553;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CHyMIlofhNL6z+jdjT7C6ovClEoJiv5L+VxyiVvJAyI=;
+	b=Hechm80nQzbe/OiKm02lrXjSLUBQvET93Qd7kk75Cs1KeHD6lfYrxo8bTonilubqBz9RWw
+	Ol+VaNpXa86qL9c0O6xUgIpgv9AIoQJojAPrLVVpRhTo/2INP4C5Q/GhRElwZSAPah2tu5
+	Ws6mw/abIW/MfaBNp/ep0k3DMUVyujA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-348-m-yyzUH2MwOoQHo9BeIoAA-1; Thu, 03 Sep 2026 06:32:32 -0400
+X-MC-Unique: m-yyzUH2MwOoQHo9BeIoAA-1
+X-Mimecast-MFC-AGG-ID: m-yyzUH2MwOoQHo9BeIoAA_1788431551
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49991beee7aso20010455e9.2
+        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 03:32:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1788431551; x=1789036351; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=CHyMIlofhNL6z+jdjT7C6ovClEoJiv5L+VxyiVvJAyI=;
+        b=B95R6fWa5O0InS206OnCt0VeNiNPVWcV05vAQE8sZ8wlboiH9hGy6M+c4hCTshj48e
+         KuJ9Ra4n9BJANfmy+gh31Te8SKVXQmeMmZKnsJ2oEhLfVwimJ7QQ/jErEvJ7u+B0hZLs
+         wyoAYlYKp5zwIgZkNkH9FYqOeQ3LMuHkuJqkxJRfZW0Ge7n16iL4MS6NY1OjXyddQQnA
+         JwVaU6aSK/t18C2lWbpRX0O1On+AnoHryuJySLC528fGZlrq1cqLu8KMy2+GrBB+ZN7E
+         DJzDpAVAL4hVu/mB+DMyO5w99k8VMwkQjb4L7Z0W58hpzUNdHRYc5kPTUJjJLGYN3X0W
+         +fOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788431551; x=1789036351;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CHyMIlofhNL6z+jdjT7C6ovClEoJiv5L+VxyiVvJAyI=;
+        b=J9VI1bbbSdVw2FisQ5xMHNgqVMeFUZpNRYT997C9vD8vwhw/vrQIdRElXCxwtx4hJA
+         sWOr1gfVIslkOETonE3udSonYmDlj/cG3TuiR7Ezk/hKlRP2QJdgDYHu0wKo9bFLW4xz
+         VJr4T6rAVzk23I0DjTf0v9+WjBwNFRbJxAl5yCX9OwE+4xldypZrtj8/Cst6JYu5MVV/
+         CjptcMRudSa3zPG+Zm7qPMLwdEyb+I8v4nlMTJnNtp+swmOK9HHKoz6CyUeSW/JZXer5
+         cdwmlbR5Mzb13gPNc04asXusb3hUIHjx5xUmN/zV93vj3WNwmmGdBCAVv99zeqSzE4PR
+         2Asg==
+X-Forwarded-Encrypted: i=1; AKwUvBw6y7YJZEQR/c+Ax0X9La9x1wDeEFFkQ7pwtnf39JXTsMJ41AF9pUj8pOhvqvnYUYsU094=@vger.kernel.org
+X-Gm-Message-State: AFuF++m6ohRFe+Oz113RM1ZdklcdPjZZUiSjKlJZb1191Yt3Ef5tooeo
+	K796Kzz6vigK9p9AHAO9YZu3gX2BJaqKMFyYEy+rlsmOU8bhLYTNSzqv5PK7D69pN8ejWaJtU/W
+	GTa6KbSMZWnIvOLeQ5OnTrBfwzkr4hcvQki7iKL52RYulct8gjUL5Wg==
+X-Gm-Gg: AYBFou2Ve6g0mx7IknypBeOUGwpZvIrHltlnxodrdSVpBYIS1mU/ksnYvANYpDg6tyR
+	GEDLGAqewf1Q933mARuPzYULwsvlVkx59bHCtvFTY+ik6NBYy1WGXo2ApIbUpi78AbjZmJaJS81
+	liq/sow3Sqnexd64694/9jQXrzQMD+UZQaoT/x+RgayYjNWnAacvVfG79ZDFZwE46cHiOSbBR22
+	gVrHKxT95xENloAD6GOXH2IwT+xncx21Hf6PKTIMzIXjP1zFhoOgC/nvnuhys9LXbfCiYQnPVa+
+	Xw6pV3ASA5ANWajsGGwaRBk3me1TKcgQC7uwV0ozJSQ5z9x+bGax+qcjPiALhN8PnbO+IAmH4sa
+	/
+X-Received: by 2002:a05:6000:4910:b0:482:f61c:7cdd with SMTP id ffacd0b85a97d-48488df9e0dmr21611936f8f.4.1788431551148;
+        Thu, 03 Sep 2026 03:32:31 -0700 (PDT)
+X-Received: by 2002:a05:6000:4910:b0:482:f61c:7cdd with SMTP id ffacd0b85a97d-48488df9e0dmr21611788f8f.4.1788431550502;
+        Thu, 03 Sep 2026 03:32:30 -0700 (PDT)
+Received: from sgarzare-redhat ([62.205.9.89])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48448e72f02sm12594275f8f.3.2026.09.03.03.32.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Sep 2026 03:32:29 -0700 (PDT)
+Date: Thu, 3 Sep 2026 12:32:21 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Luigi Leonardi <leonardi@redhat.com>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
+	Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Zhao Liu <zhao1.liu@intel.com>, Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH 1/4] sev: rename set_guest_policy to set_id_block and
+ remove dead policy code
+Message-ID: <aplMPpjG6X__JZeM@sgarzare-redhat>
+References: <20260901-fix_igvm_policy-v1-0-e93a6cf8c5ac@redhat.com>
+ <20260901-fix_igvm_policy-v1-1-e93a6cf8c5ac@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB9030.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f2eece16-46a2-46d5-39c0-08df09a45d15
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Sep 2026 10:16:05.0455
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: xaRNKdya+N5TMoIib8QYEH5iN9McHzUwzI1ZINewEdUszXfHppE3i9qBrEVp44O7quZdi5felqu1d07X8sn+BQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR12MB9582
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260901-fix_igvm_policy-v1-1-e93a6cf8c5ac@redhat.com>
 
+On Tue, Sep 01, 2026 at 12:09:18PM +0200, Luigi Leonardi wrote:
+>The guest policy must be provided at guest launch start: LAUNCH_START for
+>SEV/SEV-ES and SNP_LAUNCH_START for SEV-SNP. See the SEV API
+>specification, chapter 3 (Guest Policy), and the SEV-SNP firmware ABI
+>specification, section 4.3 (Guest Policy).
+>
+>The policy parameter in set_guest_policy was never effective: by the
+>time this callback runs, LAUNCH_START has already been issued for both
+>SEV/SEV-ES and SEV-SNP, so writing to kvm_start_conf.policy or
+>sev_guest->policy has no effect. In practice the only thing this
+>callback actually does is set the ID block and ID auth for SNP's
+>LAUNCH_FINISH, so rename it to set_id_block to reflect its real
+>purpose, remove the unused policy parameter, and drop the non-SNP code
+>path which was entirely dead.
+>
+>This is preliminary work: actually forwarding the guest policy to the
+>platform before LAUNCH_START is added in a later commit.
 
+IIUC the behaviour is the same after this patch, but IMO better to
+clarify.
 
-> -----Original Message-----
-> From: Alex Williamson <alex@shazbot.org>
-> Sent: Saturday, August 29, 2026 4:27 AM
-> To: Manish Honap <mhonap@nvidia.com>
-> Cc: jgg@ziepe.ca; Ankit Agrawal <ankita@nvidia.com>; jic23@kernel.org;
-> dave.jiang@intel.com; alejandro.lucero-palau@amd.com; Srirangan Madhavan
-> <smadhavan@nvidia.com>; corbet@lwn.net; skhan@linuxfoundation.org;
-> dave@stgolabs.net; alison.schofield@intel.com; vishal.l.verma@intel.com;
-> iweiny@kernel.org; ming.li@zohomail.com; Yishai Hadas
-> <yishaih@nvidia.com>; Shameer Kolothum Thodi
-> <skolothumtho@nvidia.com>; kevin.tian@intel.com; bhelgaas@google.com;
-> dmatlack@google.com; kees@kernel.org; gustavoars@kernel.org; Neo Jia
-> <cjia@nvidia.com>; Krishnakant Jaju <kjaju@nvidia.com>; Vikram Sethi
-> <vsethi@nvidia.com>; Zhi Wang <zhiw@nvidia.com>; linux-
-> doc@vger.kernel.org; linux-kernel@vger.kernel.org; kvm@vger.kernel.org;
-> linux-cxl@vger.kernel.org; linux-pci@vger.kernel.org; linux-
-> kselftest@vger.kernel.org; linux-hardening@vger.kernel.org; alex@shazbot.=
-org
-> Subject: Re: [PATCH v4 25/27] vfio/pci: Provide an opt-out for the CXL Ty=
-pe-2
-> extensions
->=20
-> External email: Use caution opening links or attachments
->=20
->=20
-> On Thu, 13 Aug 2026 15:06:29 +0530
-> <mhonap@nvidia.com> wrote:
->=20
-> > From: Manish Honap <mhonap@nvidia.com>
-> >
-> > Add an opt-out so users can keep vfio-pci's CXL extensions out of the
-> > path for individual devices or for an entire vfio-pci instance. The
-> > runtime gates are:
-> >
-> >   - Module parameter vfio_pci.disable_cxl (bool, 0444). Setting
-> >     disable_cxl=3D1 at modprobe time makes vfio_pci_probe() set
-> >     vdev->disable_cxl on every device it binds.
-> >
-> >   - Variant drivers (nvgrace, mlx5, and others) may set vdev->disable_c=
-xl
-> >     in their own probe for per-device control without the module
-> >     parameter. The bit lives on struct vfio_pci_core_device so it is
-> >     reachable from any variant.
-> >
-> > vfio_pci_core_init_dev() consults vdev->disable_cxl before it probes
-> > for a CXL device, so a device that opts out is driven as plain vfio-pci=
-:
-> > vfio-cxl is not loaded, init_device() never runs, and the device gets
-> > no VFIO_DEVICE_FLAGS_CXL, no HDM or component-register regions, and
-> no
-> > DVSEC virtualization.
-> >
-> > The module parameter is built only when CONFIG_VFIO_CXL is enabled;
-> > the disable_cxl bit itself is unconditional so a variant driver can
-> > set it regardless. This mirrors the long-standing disable_denylist opt-=
-out.
-> >
-> > Signed-off-by: Manish Honap <mhonap@nvidia.com>
-> > ---
-> >  drivers/vfio/pci/vfio_pci.c      | 9 +++++++++
-> >  drivers/vfio/pci/vfio_pci_core.c | 8 +++++---
-> >  include/linux/vfio_pci_core.h    | 1 +
-> >  3 files changed, 15 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
-> > index 830369ff878d..0ad041fffe48 100644
-> > --- a/drivers/vfio/pci/vfio_pci.c
-> > +++ b/drivers/vfio/pci/vfio_pci.c
-> > @@ -60,6 +60,12 @@ static bool disable_denylist;
-> > module_param(disable_denylist, bool, 0444);
-> > MODULE_PARM_DESC(disable_denylist, "Disable use of device denylist.
-> > Disabling the denylist allows binding to devices with known errata
-> > that may lead to exploitable stability or security issues when
-> > accessed by untrusted users.");
-> >
-> > +#if IS_ENABLED(CONFIG_VFIO_CXL)
-> > +static bool disable_cxl;
-> > +module_param(disable_cxl, bool, 0444); MODULE_PARM_DESC(disable_cxl,
-> > +"Disable CXL Type-2 extensions for all devices bound to vfio-pci. A
-> > +variant driver may instead set vdev->disable_cxl in its own .init
-> > +callback.");
->=20
-> The latter sentence isn't module parameter description material, it's aim=
-ed at
-> users.  Why does this need to be read-only since it's following the latch=
--at-init
-> flow?  Thanks,
->=20
-> Alex
+>
+>Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
+>---
+> backends/confidential-guest-support.c       |  12 ++-
+> backends/igvm.c                             |   6 +-
+> include/system/confidential-guest-support.h |  28 ++++---
+> target/i386/sev.c                           | 118 +++++++++++-----------------
+> 4 files changed, 67 insertions(+), 97 deletions(-)
+>
+>diff --git a/backends/confidential-guest-support.c b/backends/confidential-guest-support.c
+>index 156dd15e66..a0b36d2da5 100644
+>--- a/backends/confidential-guest-support.c
+>+++ b/backends/confidential-guest-support.c
+>@@ -38,14 +38,12 @@ static int set_guest_state(hwaddr gpa, uint8_t *ptr, uint64_t len,
+>     return -1;
+> }
+>
+>-static int set_guest_policy(ConfidentialGuestPolicyType policy_type,
+>-                            uint64_t policy,
+>-                            void *policy_data1, uint32_t policy_data1_size,
+>-                            void *policy_data2, uint32_t policy_data2_size,
+>-                            Error **errp)
+>+static int set_id_block(void *id_block, uint32_t id_block_size,
+>+                        void *id_auth, uint32_t id_auth_size,
+>+                        Error **errp)
+> {
+>     error_setg(errp,
+>-               "Setting confidential guest policy is not supported for this platform");
+>+               "Setting ID block is not supported for this platform");
+>     return -1;
+> }
+>
+>@@ -64,7 +62,7 @@ static void confidential_guest_support_class_init(ObjectClass *oc,
+>     ConfidentialGuestSupportClass *cgsc = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
+>     cgsc->check_support = check_support;
+>     cgsc->set_guest_state = set_guest_state;
+>-    cgsc->set_guest_policy = set_guest_policy;
+>+    cgsc->set_id_block = set_id_block;
+>     cgsc->get_mem_map_entry = get_mem_map_entry;
+> }
+>
+>diff --git a/backends/igvm.c b/backends/igvm.c
+>index 7b7bdc72b7..85de0d54ec 100644
+>--- a/backends/igvm.c
+>+++ b/backends/igvm.c
+>@@ -968,9 +968,9 @@ static int qigvm_handle_policy(QIgvm *ctx, Error **errp)
+>             id_block_len = sizeof(struct sev_id_block);
+>             id_auth_len = sizeof(struct sev_id_authentication);
+>         }
+>-        return ctx->cgsc->set_guest_policy(GUEST_POLICY_SEV, 
+>ctx->sev_policy,
+>-                                          ctx->id_block, id_block_len,
+>-                                          ctx->id_auth, id_auth_len, errp);
+>+
+>+        return ctx->cgsc->set_id_block(ctx->id_block, id_block_len,
+>+                                       ctx->id_auth, id_auth_len, errp);
+>     }
+>     return 0;
+> }
+>diff --git a/include/system/confidential-guest-support.h b/include/system/confidential-guest-support.h
+>index 5dca717308..6d35ddb97a 100644
+>--- a/include/system/confidential-guest-support.h
+>+++ b/include/system/confidential-guest-support.h
+>@@ -128,21 +128,23 @@ typedef struct ConfidentialGuestSupportClass {
+>                            uint16_t cpu_index, Error **errp);
+>
+>     /*
+>-     * Set the guest policy. The policy can be used to configure the
+>-     * confidential platform, such as if debug is enabled or not and can contain
+>-     * information about expected launch measurements, signed verification of
+>-     * guest configuration and other platform data.
+>-     *
+>-     * The format of the policy data is specific to each platform. For example,
+>-     * SEV-SNP uses a policy bitfield in the 'policy' argument and provides an
+>-     * ID block and ID authentication in the 'policy_data' parameters. The type
+>-     * of policy data is identified by the 'policy_type' argument.
+>+     * Set the guest policy for the confidential platform. The policy
+>+     * configures properties of the guest, such as whether debug is
+>+     * enabled. Its format is platform-specific; for SEV/SEV-ES and
+>+     * SEV-SNP it is a policy bitfield. Must be called before LAUNCH_START
+>+     * so the policy is in effect for launch.
+>      */
+>     int (*set_guest_policy)(ConfidentialGuestPolicyType policy_type,
 
-Okay, I will move the user-facing sentence out of the module-parameter desc=
-ription
-and use the normal parameter mode rather than read-only.
+I'm confused, this commit says "rename set_guest_policy to set_id_block"
+so why this callback is still here?
 
-Thanks,
-Manish
-
->=20
-> > +#endif
-> > +
-> >  static bool vfio_pci_dev_in_denylist(struct pci_dev *pdev)  {
-> >       switch (pdev->vendor) {
-> > @@ -142,6 +148,9 @@ static int vfio_pci_init_dev(struct vfio_device
-> > *core_vdev)  #ifdef CONFIG_VFIO_PCI_VGA
-> >       vdev->disable_vga =3D disable_vga;  #endif
-> > +#if IS_ENABLED(CONFIG_VFIO_CXL)
-> > +     vdev->disable_cxl =3D disable_cxl; #endif
-> >
-> >       return vfio_pci_core_init_dev(core_vdev);
-> >  }
-> > diff --git a/drivers/vfio/pci/vfio_pci_core.c
-> > b/drivers/vfio/pci/vfio_pci_core.c
-> > index 0fed8e00bc1d..4b51a0f1e847 100644
-> > --- a/drivers/vfio/pci/vfio_pci_core.c
-> > +++ b/drivers/vfio/pci/vfio_pci_core.c
-> > @@ -2423,10 +2423,12 @@ int vfio_pci_core_init_dev(struct vfio_device
-> *core_vdev)
-> >       xa_init(&vdev->ctx);
-> >
-> >       /*
-> > -      * Load vfio-cxl on demand for a CXL device. If it is absent, dri=
-ve the
-> > -      * device as plain vfio-pci rather than failing the bind.
-> > +      * Load vfio-cxl on demand for a CXL device unless the user opted=
- out.
-> > +      * If it is opted out or absent, drive the device as plain vfio-p=
-ci
-> > +      * rather than failing the bind.
-> >        */
-> > -     if (pcie_is_cxl(vdev->pdev) && vfio_pci_is_cxl_type2(vdev->pdev))=
- {
-> > +     if (!vdev->disable_cxl && pcie_is_cxl(vdev->pdev) &&
-> > +         vfio_pci_is_cxl_type2(vdev->pdev)) {
-> >               const struct vfio_cxl_ops *ops;
-> >
-> >               request_module("vfio-cxl"); diff --git
-> > a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h index
-> > 18e206a35d8c..8e3723a55c17 100644
-> > --- a/include/linux/vfio_pci_core.h
-> > +++ b/include/linux/vfio_pci_core.h
-> > @@ -158,6 +158,7 @@ struct vfio_pci_core_device {
-> >       bool                    disable_idle_d3:1;
-> >       bool                    nointxmask:1;
-> >       bool                    disable_vga:1;
-> > +     bool                    disable_cxl:1;
-> >       /* Flags modified at runtime - dedicated storage unit */
-> >       bool                    needs_reset;
-> >       bool                    pm_intx_masked;
+>-                            uint64_t policy,
+>-                            void *policy_data1, uint32_t policy_data1_size,
+>-                            void *policy_data2, uint32_t policy_data2_size,
+>-                            Error **errp);
+>+                            uint64_t policy, Error **errp);
+>+
+>+    /*
+>+     * Set the SEV-SNP ID block and ID authentication block. These are
+>+     * passed to SNP_LAUNCH_FINISH to provide signed verification of the
+>+     * guest configuration.
+>+     */
+>+    int (*set_id_block)(void *id_block, uint32_t id_block_size,
+>+                        void *id_auth, uint32_t id_auth_size,
+>+                        Error **errp);
+>
+>     /*
+>      * Iterate the system memory map, getting the entry with the given index
+>diff --git a/target/i386/sev.c b/target/i386/sev.c
+>index 4d875d10ff..465415c535 100644
+>--- a/target/i386/sev.c
+>+++ b/target/i386/sev.c
+>@@ -2723,10 +2723,9 @@ static int cgs_get_mem_map_entry(int index,
+>     return 0;
+> }
+>
+>-static int cgs_set_guest_policy(ConfidentialGuestPolicyType policy_type,
+>-                                uint64_t policy, void *policy_data1,
+>-                                uint32_t policy_data1_size, void *policy_data2,
+>-                                uint32_t policy_data2_size, Error **errp)
+>+static int cgs_set_id_block(void *id_block, uint32_t id_block_size,
+>+                            void *id_auth, uint32_t id_auth_size,
+>+                            Error **errp)
+> {
+>     SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
+>     if (sev_common->state == SEV_STATE_UNINIT) {
+>@@ -2734,86 +2733,57 @@ static int cgs_set_guest_policy(ConfidentialGuestPolicyType policy_type,
+>         return 0;
+>     }
+>
+>-    if (policy_type != GUEST_POLICY_SEV) {
+>-        error_setg(errp, "SEV: Invalid guest policy type provided for SEV: %d",
+>-                   policy_type);
+>+    if (!sev_snp_enabled()) {
+>+        error_setg(errp, "SEV: ID block is only supported for SEV-SNP");
+>         return -1;
+>     }
+>-    /*
+>-     * SEV-SNP handles policy differently. The policy flags are defined in
+>-     * kvm_start_conf.policy and an ID block and ID auth can be provided.
+>-     */
+>-    if (sev_snp_enabled()) {
+>-        SevSnpGuestState *sev_snp_guest =
+>-            SEV_SNP_GUEST(MACHINE(qdev_get_machine())->cgs);
+>-        struct kvm_sev_snp_launch_finish *finish =
+>-            &sev_snp_guest->kvm_finish_conf;
+>
+>-        /*
+>-         * The policy consists of flags in 'policy' and optionally an ID block
+>-         * and ID auth in policy_data1 and policy_data2 respectively. The ID
+>-         * block and auth are optional so clear any previous ID block and auth
+>-         * and set them if provided, but always set the policy flags.
+>-         */
+>-        g_free(sev_snp_guest->id_block);
+>-        g_free((guchar *)finish->id_block_uaddr);
+>-        g_free(sev_snp_guest->id_auth);
+>-        g_free((guchar *)finish->id_auth_uaddr);
+>-        sev_snp_guest->id_block = NULL;
+>-        finish->id_block_uaddr = 0;
+>-        sev_snp_guest->id_auth = NULL;
+>-        finish->id_auth_uaddr = 0;
+>-
+>-        if (policy_data1_size > 0) {
+>-            struct sev_snp_id_authentication *id_auth =
+>-                (struct sev_snp_id_authentication *)policy_data2;
+>-
+>-            if (policy_data1_size != KVM_SEV_SNP_ID_BLOCK_SIZE) {
+>-                error_setg(errp, "SEV: Invalid SEV-SNP ID block: incorrect size");
+>-                return -1;
+>-            }
+>-            if (policy_data2_size != KVM_SEV_SNP_ID_AUTH_SIZE) {
+>-                error_setg(errp,
+>-                           "SEV: Invalid SEV-SNP ID auth block: incorrect size");
+>-                return -1;
+>-            }
+>-            assert(policy_data1 != NULL);
+>-            assert(policy_data2 != NULL);
+>+    SevSnpGuestState *sev_snp_guest =
+>+        SEV_SNP_GUEST(MACHINE(qdev_get_machine())->cgs);
+>+    struct kvm_sev_snp_launch_finish *finish =
+>+        &sev_snp_guest->kvm_finish_conf;
+>
+>-            finish->id_block_uaddr =
+>-                (__u64)g_memdup2(policy_data1, KVM_SEV_SNP_ID_BLOCK_SIZE);
+>-            finish->id_auth_uaddr =
+>-                (__u64)g_memdup2(policy_data2, KVM_SEV_SNP_ID_AUTH_SIZE);
+>+    g_free(sev_snp_guest->id_block);
+>+    g_free((guchar *)finish->id_block_uaddr);
+>+    g_free(sev_snp_guest->id_auth);
+>+    g_free((guchar *)finish->id_auth_uaddr);
+>+    sev_snp_guest->id_block = NULL;
+>+    finish->id_block_uaddr = 0;
+>+    sev_snp_guest->id_auth = NULL;
+>+    finish->id_auth_uaddr = 0;
+>
+>-            /*
+>-             * Check if an author key has been provided and use that to flag
+>-             * whether the author key is enabled. The first of the author key
+>-             * must be non-zero to indicate the key type, which will currently
+>-             * always be 2.
+>-             */
+>-            sev_snp_guest->kvm_finish_conf.auth_key_en =
+>-                id_auth->author_key[0] ? 1 : 0;
+>-            finish->id_block_en = 1;
+>-        }
+>+    if (id_block_size > 0) {
+>+        struct sev_snp_id_authentication *auth =
+>+            (struct sev_snp_id_authentication *)id_auth;
+>
+>-        /* do not reset existing policy if policy was not set in IGVM  */
+>-        if (policy != 0) {
+>-            sev_snp_guest->kvm_start_conf.policy = policy;
+>+        if (id_block_size != KVM_SEV_SNP_ID_BLOCK_SIZE) {
+>+            error_setg(errp, "SEV: Invalid SEV-SNP ID block: incorrect size");
+>+            return -1;
+>         }
+>-    } else {
+>-        SevGuestState *sev_guest = SEV_GUEST(MACHINE(qdev_get_machine())->cgs);
+>-        /* Only the policy flags are supported for SEV and SEV-ES */
+>-        if ((policy_data1_size > 0) || (policy_data2_size > 0) || !sev_guest) {
+>-            error_setg(errp, "SEV: An ID block/ID auth block has been provided "
+>-                             "but SEV-SNP is not enabled");
+>+        if (id_auth_size != KVM_SEV_SNP_ID_AUTH_SIZE) {
+>+            error_setg(errp,
+>+                       "SEV: Invalid SEV-SNP ID auth block: incorrect size");
+>             return -1;
+>         }
+>+        assert(id_block != NULL);
+>+        assert(id_auth != NULL);
+>
+>-        /* do not reset existing policy if policy was not set in IGVM  */
+>-        if (policy != 0) {
+>-            sev_guest->policy = policy;
+>-        }
+>+        finish->id_block_uaddr =
+>+            (__u64)g_memdup2(id_block, KVM_SEV_SNP_ID_BLOCK_SIZE);
+>+        finish->id_auth_uaddr =
+>+            (__u64)g_memdup2(id_auth, KVM_SEV_SNP_ID_AUTH_SIZE);
+>+
+>+        /*
+>+         * Check if an author key has been provided and use that to flag
+>+         * whether the author key is enabled. The first of the author key
+>+         * must be non-zero to indicate the key type, which will currently
+>+         * always be 2.
+>+         */
+>+        sev_snp_guest->kvm_finish_conf.auth_key_en =
+>+            auth->author_key[0] ? 1 : 0;
+>+        finish->id_block_en = 1;
+>     }
+>+
+>     return 0;
+> }
+>
+>@@ -2878,7 +2848,7 @@ sev_common_instance_init(Object *obj)
+>     cgs->check_support = cgs_check_support;
+>     cgs->set_guest_state = cgs_set_guest_state;
+>     cgs->get_mem_map_entry = cgs_get_mem_map_entry;
+>-    cgs->set_guest_policy = cgs_set_guest_policy;
+>+    cgs->set_id_block = cgs_set_id_block;
+>     cgs->can_rebuild_guest_state = true;
+>
+>     QTAILQ_INIT(&sev_common->launch_vmsa);
+>
+>-- 
+>2.55.0
+>
 
