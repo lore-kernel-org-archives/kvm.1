@@ -1,286 +1,229 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011044.outbound.protection.outlook.com [40.107.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16D140BCB2
-	for <kvm@vger.kernel.org>; Thu,  3 Sep 2026 10:03:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788429838; cv=none; b=kk9lFnUashamXYBAnOXFnjo2ldPTZRiD5KKp5gLb6u+IjiuN33zio+HdkpjnSh7BXrrgsZzUXfcV+n6/4MW1ORJHXyhZMCMWoA0V1qz4PODlfr23LhA5FGSetYwQlqiGF9m+tZhGeaKPo/L/cATnGOjiBeIo+daK+UNKB0yLd10=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788429838; c=relaxed/simple;
-	bh=CMyQ3eRUE+vU1AGZI4CJcp0I+EXlkC161HJj/M1H1ts=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=JIIxXdg2Q1vzdiH1m5iczGvQxbTa3lf0XBdjKDSvBdvIQwHnYbuHg9WlPkk4dpWvjWLBaKH2HIROqLT5zLrJs54Kd3/h3dxz/jGKMdN68CDtzdEJGUmyXK5JSN57BKgsCIEmfqj1YHGRJX9iSSJ+ZWHK/SH1L8Mjwzf52EYCXxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dAq4w+p9; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=i9YuHHbU; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0639A47126A;
+	Thu,  3 Sep 2026 10:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788430059; cv=fail; b=uAJz+wgtEsi/9js2DSiULP83NDMDi+2yGnvuisGQoOXLyGFYLCUBH/0Wpt9R3M02tUoaLyB+RbNKeZFhYc/EzUv9Nw+JbcvsK9IULuOXulYJoNZ32IQaCxqfiJsy+WWVtewpKarRxq5CO4PhRgCseRNOFyWi9yJ0i1UQT7kyKzQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788430059; c=relaxed/simple;
+	bh=DJQzuJB/TZu/pazQgBz4EMV5+bzEAKfeRYK+Ze4MDWA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=rg0vAnm+06yP0Cu2y2+oftVSQKyk9Gss1rqUOMS9JaXFpH/oHHlZkltzjEALzcYcKwShy2fpg6OxoCe1PJcq0hSMa6ZLKxcDEOKM9f9KsEwZK3BFsvv4cyZQGtsPJmvIAegL9eVWg6BG++hCNpF1o/E7Ey1kLq8js8Wjzha8J8c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Df9VzQYT; arc=fail smtp.client-ip=40.107.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dAq4w+p9";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="i9YuHHbU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788429828;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=woT1+ZPOXiDcdwXTujdWlBy7LAoncL7qE/P/uU0ietQ=;
-	b=dAq4w+p9ukRr+TzfKPNZIARV0Uj6ZIB65c99v5lkpCJlpc/P5yUyWTPDHgF9G5XFgZs+Yj
-	4x6n5dSjm/Z02PCBmYVIWTKON+rpHHYjExZHkOGrolxyWsfcAYjFKpMIdEVEy0t1kV9+uB
-	GscXFd61qbBvP4b9pWHUndeH1p9fHtk=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-544-4Pbo9FO6MDW473MLywrgCQ-1; Thu, 03 Sep 2026 06:03:47 -0400
-X-MC-Unique: 4Pbo9FO6MDW473MLywrgCQ-1
-X-Mimecast-MFC-AGG-ID: 4Pbo9FO6MDW473MLywrgCQ_1788429826
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-399311947f6so3896161a91.0
-        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 03:03:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788429826; x=1789034626; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:content-type:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=woT1+ZPOXiDcdwXTujdWlBy7LAoncL7qE/P/uU0ietQ=;
-        b=i9YuHHbUhdEyc473nr7fiuwPiXVbDUyE6nHwrBxR5pnJXu7BLz3fNkpRb9Y4G2bHf8
-         N+Z+OjmThFkT4ioByrLULd1KLte0iGTW+Ez5Sg5dMSZEjeHNhwXUDb+tfZR2JErV2qoW
-         +ETTMMKHzM82tNNye7+cGz0v3K6g7cWrg6XeSM85zHDJmrLcyf4nryIiob28qmFIW9ED
-         B1ek5d5gwBahf9XjQyf+eL1l4yWQR4nxhQnfCnNljDPUOEL35jraGLqu1uBlp8U3Zs4a
-         KxwMZCgJZssPwkHLtrhbAkZChivou415pucBgD5saPibYLLyTuza/FIH04bdO8N3NNkr
-         XBMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788429826; x=1789034626;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=woT1+ZPOXiDcdwXTujdWlBy7LAoncL7qE/P/uU0ietQ=;
-        b=g8Hwurbs0gh59FRBpebq3WLGtbXVI8bF7x1RKWyFZYimcYkBhd/fhQ2GLxP0yvEXG1
-         mYHd6Bz2KBIA3sWtwLAWmISE122TrEwzyVOfQxl8YP4yCEGV/K95zwZAJeztFCQGCfof
-         eZwnX7NQcrrnqYxZ5CknfZPdNgDZ3xw1cmYFaneKiadjkFsw2hbL/dCiOX9QrVUlVIDg
-         gF4DD2Zjd6Uf/4o50DSX3purxjQvhwMcXh/1f3OjxngDgWiJF738z/Mh+remjQ0PR2Ua
-         vBs4MBVqAzdWSSGfOyD44Ycc17oqwR/+1ma4dM298BJ/Bifam6GthyjPPH72oKh54vNY
-         LqnA==
-X-Forwarded-Encrypted: i=1; AKwUvBwxaguRS4xjghOKXJO4+Z3pwpVKAhTXnr5hDkSZQfvBIUldExSlOfK7eSGqlwu7UYHO1cc=@vger.kernel.org
-X-Gm-Message-State: AFuF++lXbsvtBA8H2IQNSIfeGdpySccL0EMErqgI1IMzn1+WturWN48J
-	IW6QmmXYGFB5NR4ZAQ6kgIzOXU9vvwt9fzzUjznsBvknsGko7w5bN6tm4T4Nzr2AMwfwvVpm53J
-	0zS1NIpyblwSkbFJLDzR9L69vA0I/LLJbA7w2wmu+4bgbSR4U0sWalXu0a3nMGA==
-X-Gm-Gg: AYBFou1AJKJMkR/Y6+XFgPkznWImlo46MX0YgSvPfiih6BXEwP5Ttu8zlAZ/5FnvGP8
-	c4eF6yAO6okkftrBAJT1nJp4OCZ7A6NQA+TA4oNXhkXRr1eL03g7PK+UcQDB31EjR+HAyGLk7Ww
-	AMtjh2xaN0KFyqjQNABgJkJ0yCTrYR8FMzro5Jmokwfgezc3bLy6s7CGGxjMGbDZQjGYwaDsFxc
-	rcxpXccSx+6KM6n8TCmSaXbDNBg7K0/zc76yzDRF5mC22yumVJwRUNEIXdOTngBrpfDPozi0B75
-	Rl2CZh+6hkhkCngf1qa2MZgWZp5soZq4+9kZItwUrw1haP0/wCwQfkyJx8PmDESKw/tpg6ANhHi
-	4A2T/XBbncDTYW/wfb1KBeHlwgNkiSACLvAoCkeO+gOmzsTvvF5HDbZE=
-X-Received: by 2002:a17:90b:4fc6:b0:398:c315:fa6f with SMTP id 98e67ed59e1d1-39aee04acdamr18816777a91.14.1788429826023;
-        Thu, 03 Sep 2026 03:03:46 -0700 (PDT)
-X-Received: by 2002:a17:90b:4fc6:b0:398:c315:fa6f with SMTP id 98e67ed59e1d1-39aee04acdamr18816675a91.14.1788429825547;
-        Thu, 03 Sep 2026 03:03:45 -0700 (PDT)
-Received: from smtpclient.apple ([106.219.132.168])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3325621af3bsm5020819eec.21.2026.09.03.03.03.42
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 03 Sep 2026 03:03:45 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Df9VzQYT"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GHJjpBOwJ3GwxkZPeIvcZ6wP6fbn8nq2Af6oCXSgRZoVLUXfow9hFfRslIFL5NkJgtqblSxFw0B2YI7PS43IMkypZ7IKACOBP0+YtF1rBneT13KTT/N6vGx7kndWilDzpCgKvPPO9WNSF/NA3sNAzq+VvK8oTQOqSTN6i/R/seBxHN81QMDfD7J6k2kvkju/cOPAqRXTsvcWkCig15YGdI5IYGK+nUqq0Hl2HYy9AvtisEgci072xXbd8sA0ECzX2gYzdwFNsqkMX8i63uYGyzig6/XuQFQc46CIvdiI0Gzov6Bdewg5nAma9M6Sz3E9xqyesHXhtkEEBzYPBSK0iw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pmT+vZjECHY0di8/36lzFbY8rEPIRqofC+O/x9H9wzI=;
+ b=uPKsR/RGKgAsw5IUbEqeIqAiuM7Ryb19xzyLEL85s2uBysKKfnq0q7/+CjOvZbJ1W/gTzwS+n30sBKjvRCvRs5ZI/a/pNgZ0e9gj6JHxooNz4REoXj6Md0p5ZAHaEcq8oEowE+mjdeGFSlD5Mz0Ft5iRIpMCQ5OxLjEx4E+KqlHoZK066pVshwPuMuQWDDHDpehYEvT82RWyNGWe3cPRL9WeRMF2v0WdSF1I76Y/oUYEVCTed7xdTXOx/iXxwPNc2e2XM7n80nE94I9NjjwDa2LJdAke542Eg5RHIdz3i+rZU0oMCSXAkHKG1WH0pz0enKnaXnJ0jNBSBln0HvrFzg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pmT+vZjECHY0di8/36lzFbY8rEPIRqofC+O/x9H9wzI=;
+ b=Df9VzQYTwNoGBadjd3HPujI0JWYjmIbZ4VpxwA3BAE/4Mwaf+IRSEOwhQK+9oQqgrnAeGA4KXXSxGdkSxoy2qMWPn+bsSTxBXev8R5QF8H59er7yCMtTGI2yHNH8YU1YFazFetLcSKadr6tjfpgCThERfdBS76+lMLoFu/pmiOYzFtHaSVt/qprH6FXiNY+QJaQWGQGIiK0qNcrHXXg6chFu+LtiDPvrFMiCUZhdj6PayEogBv2LE7J23V4Zx+fTPDqm/m7UFXBC1trC4TzGHuELYeRI03fVjMoP5C/AlawzlqbBq2q1RIep94eIH7Xum2RlhCXHY4jsBvA7yECIYw==
+Received: from IA1PR12MB9030.namprd12.prod.outlook.com (2603:10b6:208:3f2::22)
+ by CH2PR12MB4326.namprd12.prod.outlook.com (2603:10b6:610:af::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.10; Thu, 3 Sep
+ 2026 10:07:23 +0000
+Received: from IA1PR12MB9030.namprd12.prod.outlook.com
+ ([fe80::2c1d:ed27:b53a:97d2]) by IA1PR12MB9030.namprd12.prod.outlook.com
+ ([fe80::2c1d:ed27:b53a:97d2%7]) with mapi id 15.21.0360.008; Thu, 3 Sep 2026
+ 10:07:23 +0000
+From: Manish Honap <mhonap@nvidia.com>
+To: Jonathan Cameron <jic23@kernel.org>
+CC: "alex@shazbot.org" <alex@shazbot.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
+	Ankit Agrawal <ankita@nvidia.com>, "dave.jiang@intel.com"
+	<dave.jiang@intel.com>, "alejandro.lucero-palau@amd.com"
+	<alejandro.lucero-palau@amd.com>, Srirangan Madhavan <smadhavan@nvidia.com>,
+	"corbet@lwn.net" <corbet@lwn.net>, "skhan@linuxfoundation.org"
+	<skhan@linuxfoundation.org>, "dave@stgolabs.net" <dave@stgolabs.net>,
+	"alison.schofield@intel.com" <alison.schofield@intel.com>,
+	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, "iweiny@kernel.org"
+	<iweiny@kernel.org>, "ming.li@zohomail.com" <ming.li@zohomail.com>, Yishai
+ Hadas <yishaih@nvidia.com>, Shameer Kolothum Thodi <skolothumtho@nvidia.com>,
+	"kevin.tian@intel.com" <kevin.tian@intel.com>, "bhelgaas@google.com"
+	<bhelgaas@google.com>, "dmatlack@google.com" <dmatlack@google.com>,
+	"kees@kernel.org" <kees@kernel.org>, "gustavoars@kernel.org"
+	<gustavoars@kernel.org>, Neo Jia <cjia@nvidia.com>, Krishnakant Jaju
+	<kjaju@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>, Zhi Wang
+	<zhiw@nvidia.com>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-cxl@vger.kernel.org"
+	<linux-cxl@vger.kernel.org>, "linux-pci@vger.kernel.org"
+	<linux-pci@vger.kernel.org>, "linux-kselftest@vger.kernel.org"
+	<linux-kselftest@vger.kernel.org>, "linux-hardening@vger.kernel.org"
+	<linux-hardening@vger.kernel.org>, Manish Honap <mhonap@nvidia.com>
+Subject: RE: [PATCH v4 01/27] cxl: Fix resource.c include path and export
+ cxl_restore_hdm_after_pci_reset
+Thread-Topic: [PATCH v4 01/27] cxl: Fix resource.c include path and export
+ cxl_restore_hdm_after_pci_reset
+Thread-Index: AQHdKwdkZtSAYgnzrkys1MolqR67xrapKXoAgBNT2IA=
+Date: Thu, 3 Sep 2026 10:07:23 +0000
+Message-ID:
+ <IA1PR12MB9030D9E7A6FF2279708F7B4DBDB62@IA1PR12MB9030.namprd12.prod.outlook.com>
+References: <20260813093631.2288172-1-mhonap@nvidia.com>
+	<20260813093631.2288172-2-mhonap@nvidia.com>
+ <20260821235240.7926351d@jic23-huawei>
+In-Reply-To: <20260821235240.7926351d@jic23-huawei>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA1PR12MB9030:EE_|CH2PR12MB4326:EE_
+x-ms-office365-filtering-correlation-id: 48180932-c0bb-4b17-a25c-08df09a3264f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|7416014|4143699003|10067099003|56012099006|5023799004|11063799006|22082099003|18002099003|38070700021;
+x-microsoft-antispam-message-info:
+ SitQop/lZTDSO2TWE4arexFCAYisoDIm0IfAoxSo+oVrH+3I9J2+Ttkw1b1q2JcLZMDnjKegrmCcekdiCQBAxOsI9U6/fgT1qivafWe+yRmY+VkVDdv2r+iqoSzEWKjPcHtR9CA95RegSgbzjbhq1ZXHsD2DernhEi7fZv2sXsw8igdIwMSy0EpND52sUZMSmV2MxSGEqhzQOiGpuDQQJcpkxp0/lp6LbO4N6JSZc/haDVqQeE9Nh5ZYjcpvj4JVGOv/zLhxBbnCvuDxixlDQ7gmqEryLUhsrYwZhZnlqYJqA8l0ig2N3mIXa8/mobxVgLy+1PjSdI3M3HNGA0HE3Gxew3iLYHzUgD2VdqFptdO6kjbyjiR5gK7+8hHZgveN3GVl2Xwsgby2B5EhesvQd9B4txigRTmKJ9X3Qln4bQ3VE65Gxd9SOsEOWobVRAXJi/sLqFJpaIKmfqga7wI1Sr3Fc9QbOeeER4WZNn4Qywj0AnREEVhksguX1ogCejuigvXVWxoZDn55kIoFQgvUAL87UFAdmv7zhrgAWN17WgPs3BjO1Cb17iibRBUFRGCK5kCrKKF+b9FtGlz75T9sctZUL/8ANiKqz78koDq09msB3DsK24GuXSpeeeXjfgElfCmSBmwLSfmwcMaCu497J3bysY5ftaylZ4fbdoKF+9CEICT5XXqNUw2pl+3+mLTuy/FnG+zr85TVtlE1CIByxd0HBUYUlNG2cfuKEWpSn0k=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB9030.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(7416014)(4143699003)(10067099003)(56012099006)(5023799004)(11063799006)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?IsECCzEwaT8HEhN1c442SRW9levEcOB30zDLVSSnun+6GNcKdt7z2LXj9GEk?=
+ =?us-ascii?Q?maVN5axFLWtuIavUTvySafWDwexgxt1ZhEFAPoqshZku8HPTFN2CY3EjjzGs?=
+ =?us-ascii?Q?sL8SIFvc9rV1BaagIw+6z8YN3h03CLFEl0KSs767ZxlBxoGIyERlT5YDSbEH?=
+ =?us-ascii?Q?3F/+b+xECs50aVTvpCT77hWG3opA6MGdEKOWloA8dUlYOjnfLJoKX2UOHxid?=
+ =?us-ascii?Q?c+iBnRbvr/PWMrqJK2t6siWOZ9Af7L9kwmc0R4SUDk0CJQUu0bDvy2cXufJt?=
+ =?us-ascii?Q?Qc0mptkqFoueKb0chIafup3kiuCYn18t8zzxJXKkMao2gpzFRZCR5nJKmHQN?=
+ =?us-ascii?Q?uSDNImW4QMGqF4bKS3uvF3xjhTF6YyW/WrkkvAG3laNyqtuEzukEGELC4/Km?=
+ =?us-ascii?Q?uH1504LzweAGAIWtcKGMsQBx4d+B640AscnERex4zm9a46SBYzwIvr2voFsZ?=
+ =?us-ascii?Q?d9q54qxRgezy1ohxmWOrgQcJc0zNrAPdSn4FC6iCRet9JbFDnJTKQg7DANXh?=
+ =?us-ascii?Q?nVDGGUxzVx+S+RuwbczpixNsM4mqH+3C9NXRxWXd/dKl0zCmdt6gSQ8Ddbg6?=
+ =?us-ascii?Q?VmaRsxBmfr2UhWJHvVjLWl3AklgOMmMN1YwLceHii0Z75u/kqZHZmgDvu9qH?=
+ =?us-ascii?Q?vxD2wMT/+kcf6yxCl87yTH6NlEOd41fhn3Fh2aefIZj8OfSs10WU8SQBJUH2?=
+ =?us-ascii?Q?l85T6SdaGRykoEIU/hvfx8JaN9UVASKXzaMeSknjUWfbMOws/7QYCQoKCqI7?=
+ =?us-ascii?Q?67CNi3QhmzmZTyCz90GyhaOHguupYZXgWoUtEx8CT1eECPylFRbUJ29KrXFz?=
+ =?us-ascii?Q?VB0qAdPBOn0/gmH4CPGPBrPfyb+kav6HSUOMlkNc5jWJrmiQNYT1uu9REn4j?=
+ =?us-ascii?Q?X48Zm58n+tYsQwO6EN5MeU85dp+7L29OQPhDBmFymo6OC4fLJx2RtNjpZYgh?=
+ =?us-ascii?Q?cZGatePCiBT2+z0i7okKA8a9uIV9ZWOjUL1AXwk0qh1oSZqHQ8soz4moGikY?=
+ =?us-ascii?Q?dc7P/ObYDHTjWhUW1L6ImqdDkPHnErMOc2K2TZP5kC31yAV6YYBblTfClfbp?=
+ =?us-ascii?Q?9Sd/cvIpSLTUdkGeUTBZOdWw9SqOPRzBrcdSpdf/L1qy+g8WfaRMCE+lUSpH?=
+ =?us-ascii?Q?H0pWpPKiWP1mvDOJnZU/SH8Zd+Cs6QKjAAHvAf5QSOCjydmWQlumhKir90O4?=
+ =?us-ascii?Q?/ywLNE5MLFVWgO7iJyfMIDqo5kB50HRx7YRstrx2+D+ql/zIShuGKteti//Z?=
+ =?us-ascii?Q?ZmQvmxgoaA4VrXuasqvfZOtG39qLeXrXZU8Yp7bl986M8MsHVZ1YzCtt10pD?=
+ =?us-ascii?Q?L0DMqnJbgbIsIW47TWlkpYHcOixSqJ45UyXYzvwaXJuf8wxgZaxilcsa1NL/?=
+ =?us-ascii?Q?gu7ecGmS1VvphBKUKqMMu81r1uf/osSkvIlJGZdfsUmQam3p4QINuu12dNvm?=
+ =?us-ascii?Q?Uc52/hZ/TIt4mENFxI+pOyh3mkm249OsB8bYUalrY/f0QU2/QThY2Av2DCaY?=
+ =?us-ascii?Q?x7s0IAwtM9LGs5jb9OzPskPwRiZpam6dc2PsX9c30qcToXxXY+hjfdAnQlV0?=
+ =?us-ascii?Q?P7H2g34vUMMhqkABgfSbi/SAPM96OIJQybhjvgON4gz+v7djTTSNI0dFMr35?=
+ =?us-ascii?Q?C8xZcTWv3hVm4lRY2t2/1fWcnAZSqRmL7LJfbPqSAEqWs7WQFY9OvUEma8r1?=
+ =?us-ascii?Q?FFlAauRbqtvhT3c67T16Q/ME+wIMNgmlvds7Rcw3+HOFFQ+/?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: Re: [PATCH 4/4] igvm/sev: forward the IGVM guest policy to the
- platform before launch
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <apk1djopa9z3tfYR@leonardi-redhat>
-Date: Thu, 3 Sep 2026 15:33:30 +0530
-Cc: qemu-devel <qemu-devel@nongnu.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- kvm@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <CEF80B59-E81A-4B97-87E5-9087FAF3680B@redhat.com>
-References: <20260901-fix_igvm_policy-v1-0-e93a6cf8c5ac@redhat.com>
- <20260901-fix_igvm_policy-v1-4-e93a6cf8c5ac@redhat.com>
- <16C1B63D-7E80-49DF-83AC-47769A6D9AE8@redhat.com>
- <apk1djopa9z3tfYR@leonardi-redhat>
-To: Luigi Leonardi <leonardi@redhat.com>
-X-Mailer: Apple Mail (2.3864.700.51.1.1)
+MIME-Version: 1.0
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB9030.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 48180932-c0bb-4b17-a25c-08df09a3264f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Sep 2026 10:07:23.6858
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: dGK9A23L6TL2k89Zqo/Y8M6UmQwRKBreNEt6UZjbuTNL1Ap3yaqXKfetfcsCt68/HO5zK9e1YgxOHgVmjHMgGw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4326
 
 
 
-> On 3 Sep 2026, at 2:31=E2=80=AFPM, Luigi Leonardi =
-<leonardi@redhat.com> wrote:
+> -----Original Message-----
+> From: Jonathan Cameron <jic23@kernel.org>
+> Sent: Saturday, August 22, 2026 4:23 AM
+> To: Manish Honap <mhonap@nvidia.com>
+> Cc: alex@shazbot.org; jgg@ziepe.ca; Ankit Agrawal <ankita@nvidia.com>;
+> dave.jiang@intel.com; alejandro.lucero-palau@amd.com; Srirangan Madhavan
+> <smadhavan@nvidia.com>; corbet@lwn.net; skhan@linuxfoundation.org;
+> dave@stgolabs.net; alison.schofield@intel.com; vishal.l.verma@intel.com;
+> iweiny@kernel.org; ming.li@zohomail.com; Yishai Hadas
+> <yishaih@nvidia.com>; Shameer Kolothum Thodi
+> <skolothumtho@nvidia.com>; kevin.tian@intel.com; bhelgaas@google.com;
+> dmatlack@google.com; kees@kernel.org; gustavoars@kernel.org; Neo Jia
+> <cjia@nvidia.com>; Krishnakant Jaju <kjaju@nvidia.com>; Vikram Sethi
+> <vsethi@nvidia.com>; Zhi Wang <zhiw@nvidia.com>; linux-
+> doc@vger.kernel.org; linux-kernel@vger.kernel.org; kvm@vger.kernel.org;
+> linux-cxl@vger.kernel.org; linux-pci@vger.kernel.org; linux-
+> kselftest@vger.kernel.org; linux-hardening@vger.kernel.org
+> Subject: Re: [PATCH v4 01/27] cxl: Fix resource.c include path and export
+> cxl_restore_hdm_after_pci_reset
 >=20
-> Hi Ani,
+> External email: Use caution opening links or attachments
 >=20
-> On Thu, Sep 03, 2026 at 02:16:30PM +0530, Ani Sinha wrote:
->>=20
->>=20
->>> On 1 Sep 2026, at 3:39=E2=80=AFPM, Luigi Leonardi =
-<leonardi@redhat.com> wrote:
->>>=20
->>> The guest policy carried in the IGVM guest-policy initialization =
-header
->>> was parsed into QIgvm but never forwarded to the confidential guest
->>> platform: the previous callback ran at the end of =
-qigvm_process_file,
->>> after LAUNCH_START had already been issued, so writing the policy =
-had
->>> no effect.
->>>=20
->>> Add a set_guest_policy callback and invoke it from the guest-policy
->>> initialization handler, so the policy reaches the platform before
->>> LAUNCH_START.
->>>=20
->>> The guest policy can also be set on the command line. As it is part =
-of
->>> the attestation report, silently overriding it would cause =
-attestation
->>> to fail, so return an error if the command-line value differs from =
-the
->>> one supplied by the IGVM file.
->>>=20
->>> Link: https://gitlab.com/qemu-project/qemu/-/work_items/4189
->>> Fixes: 915b47078d ("backends/igvm: Handle policy for SEV guests")
->>> Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
->>> ---
->>> backends/confidential-guest-support.c |  9 ++++++++
->>> backends/igvm.c                       |  4 ++++
->>> target/i386/sev.c                     | 39 =
-+++++++++++++++++++++++++++++++++++
->>> 3 files changed, 52 insertions(+)
->>>=20
->>> diff --git a/backends/confidential-guest-support.c =
-b/backends/confidential-guest-support.c
->>> index a0b36d2da5..c0d15b4a76 100644
->>> --- a/backends/confidential-guest-support.c
->>> +++ b/backends/confidential-guest-support.c
->>> @@ -38,6 +38,14 @@ static int set_guest_state(hwaddr gpa, uint8_t =
-*ptr, uint64_t len,
->>>    return -1;
->>> }
->>>=20
->>> +static int set_guest_policy(ConfidentialGuestPolicyType =
-policy_type,
->>> +                            uint64_t policy, Error **errp)
->>> +{
->>> +    error_setg(errp,
->>> +               "Setting guest policy is not supported for this =
-platform");
->>> +    return -1;
->>> +}
->>> +
->>> static int set_id_block(void *id_block, uint32_t id_block_size,
->>>                        void *id_auth, uint32_t id_auth_size,
->>>                        Error **errp)
->>> @@ -62,6 +70,7 @@ static void =
-confidential_guest_support_class_init(ObjectClass *oc,
->>>    ConfidentialGuestSupportClass *cgsc =3D =
-CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
->>>    cgsc->check_support =3D check_support;
->>>    cgsc->set_guest_state =3D set_guest_state;
->>> +    cgsc->set_guest_policy =3D set_guest_policy;
->>>    cgsc->set_id_block =3D set_id_block;
->>>    cgsc->get_mem_map_entry =3D get_mem_map_entry;
->>> }
->>> diff --git a/backends/igvm.c b/backends/igvm.c
->>> index 6545382546..5131ee7829 100644
->>> --- a/backends/igvm.c
->>> +++ b/backends/igvm.c
->>> @@ -868,6 +868,10 @@ static int =
-qigvm_initialization_guest_policy(QIgvm *ctx,
->>>=20
->>>    if (guest->compatibility_mask & ctx->compatibility_mask) {
->>>        ctx->sev_policy =3D guest->policy;
->>> +        if (ctx->cgsc) {
->>> +            return ctx->cgsc->set_guest_policy(GUEST_POLICY_SEV,
->>> +                                               guest->policy, =
-errp);
->>> +        }
->>>    }
->>>    return 0;
->>> }
->>> diff --git a/target/i386/sev.c b/target/i386/sev.c
->>> index c76cdba8d2..533ea4b54e 100644
->>> --- a/target/i386/sev.c
->>> +++ b/target/i386/sev.c
->>> @@ -128,6 +128,8 @@ struct SevCommonState {
->>>    bool kernel_hashes;
->>>    uint64_t sev_features;
->>>    uint64_t supported_sev_features;
->>> +    /* whether the guest policy was explicitly set on the command =
-line */
->>> +    bool policy_set;
->>>=20
->>>    /* runtime state */
->>>    uint8_t api_major;
->>> @@ -2723,6 +2725,40 @@ static int cgs_get_mem_map_entry(int index,
->>>    return 0;
->>> }
->>>=20
->>> +static int cgs_set_guest_policy(ConfidentialGuestPolicyType =
-policy_type,
->>> +                                uint64_t policy, Error **errp)
->>> +{
->>> +    SevCommonState *sev_common =3D =
-SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
->>> +
->>> +    if (policy_type !=3D GUEST_POLICY_SEV) {
->>> +        error_setg(errp, "SEV: Invalid guest policy type provided =
-for SEV: %d",
->>> +                   policy_type);
->>> +        return -1;
->>> +    }
->>> +
->>> +    if (sev_snp_enabled()) {
->>> +        SevSnpGuestState *sev_snp_guest =3D =
-SEV_SNP_GUEST(sev_common);
->>> +
->>> +        if (sev_common->policy_set &&
->>> +            sev_snp_guest->kvm_start_conf.policy !=3D policy) {
->>> +            error_setg(errp, "SNP: policy mismatch between IGVM and =
-CLI");
->>> +            return -1;
->>> +        }
->>> +
->>> +        sev_snp_guest->kvm_start_conf.policy =3D policy;
 >=20
-> Thanks for you review!
+> On Thu, 13 Aug 2026 15:06:05 +0530
+> <mhonap@nvidia.com> wrote:
 >=20
->>=20
->> I had fixed a bug initially here where we need to check if the policy =
-passed is not 0. I am not sure if that fix is still needed here.
->> Please test this scenario:
->> a) Generate an IGVM file with policy set to 0.
+> > From: Manish Honap <mhonap@nvidia.com>
+> >
+> > The vfio-cxl Type-2 driver restores the endpoint HDM decoder after a
+> > D3hot->D0 soft reset by calling cxl_restore_hdm_after_pci_reset(), so
+> > export it to the CXL namespace. While here, correct the resource.c
+> > include of the CXL PCI definitions from <cxlpci.h> to <cxl/pci.h>.
 >=20
-> 0 is not a valid sev-snp guest policy: bit 17 is reserved and must be =
-1.
-> It's a valid sev/sev-es policy though.
+> Why?  + if this makes sense (I haven't checked) please make that a separa=
+te
+> patch (for now) + make sure to call it out in review of Srirangan Madhava=
+n
+> series where this file comes from and which hasn't merged yet. I think it=
+ is in
+> patch 5.
 >=20
->> b) Start a confidential SEV-SNP guest with policy set in command line =
-and with this IGVM.
->> I think with your patch this will fail as the policies won=E2=80=99t =
-match.
+> Jonathan
 >=20
-> Correct: this was suggested by Gerd, as this is something unexpected. =
-I
-> think it would break launch measurement.
 
-Yes I think the right thing to do is that if the policy is correctly set =
-by IGVM, override the one set in the cli with the one in IGVM. Otherwise =
-ignore IGVM policy.
+Dropping this patch in v5 series. On v7.3-rc1 + Srirangan's v11 series, res=
+ource.c
+already includes <cxl/pci.h> and cxl_restore_hdm_after_pci_reset() is decla=
+red in the
+public include/cxl/cxl.h, so there is nothing left for us to add here.
 
+Manish
+> >
+> > Signed-off-by: Manish Honap <mhonap@nvidia.com>
+> > ---
+> >  drivers/cxl/core/resource.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/cxl/core/resource.c b/drivers/cxl/core/resource.c
+> > index daa5e7fa2509..492ffe8e3576 100644
+> > --- a/drivers/cxl/core/resource.c
+> > +++ b/drivers/cxl/core/resource.c
+> > @@ -16,7 +16,7 @@
+> >  #include <linux/pci.h>
+> >  #include <linux/slab.h>
+> >
+> > -#include <cxlpci.h>
+> > +#include <cxl/pci.h>
+> >
+> >  #include "cxl.h"
+> >  #include "core.h"
+> > @@ -850,6 +850,7 @@ int cxl_restore_hdm_after_pci_reset(struct pci_dev
+> > *pdev)
+> >
+> >       return cxl_reset_save_restored_state(pdev, command);  }
+> > +EXPORT_SYMBOL_NS_GPL(cxl_restore_hdm_after_pci_reset, "CXL");
+> >
+> >  static void cxl_hdm_range_context_init(struct cxl_hdm_range_context *c=
+tx)
+> >  {
 >=20
->> This potentially breaks some tests. For example, with your patch, =
-does my FUKI confidential tests still pass?
->=20
-> To be fair, guest policy set via igvm _never_ worked. Only the =
-policies
-> set from CLI worked.
->=20
-> That said, I'll try to run your tests.
->=20
-> Luigi
-
 
