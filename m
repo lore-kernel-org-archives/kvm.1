@@ -1,141 +1,116 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D43318BC3B
-	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 00:54:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5533D35DA64
+	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 01:03:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788483285; cv=none; b=b0YqWi2XnjtOX3rpR0T2s9en9tCHGaCaiQodaUGSV4PYhzrP6BuH4tNUKx8LzUEyGhIKIZWjB+Yn5HSgZCFIiTIViP1aDi7jQeueadPbb/M/8nhUqsGohaxcVPFWcy7vcCRLUieCfLHAF7f7d3rLxEyPHiQCrvbKGMJzM2i8FKE=
+	t=1788483838; cv=none; b=JIy4aIo/MteCGPllNx/YP1VzFKmHfMCZyDxsID690RYxiYIulZnM6MymiPHJxQgCwgXSpGSJTN+HVh8f2fA2XFzSXAAvwdfGmTY29rMA3/qRt/kZEtTEOkKjRMXPOF8Y3lqwnYWHK40OAu7CLeInQ0FuvDfob6yS9qrOWMebDlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788483285; c=relaxed/simple;
-	bh=IkRcJkUVS3S/nYokkPEqFp2L2o+giKgO5ZoROUE5wMA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WnIDXAUICGvSRPtlFs47dGvNY7QHRhaq2oWEmWlfz7dLFLe9TibOUI0EL56A8jgsPrBvF38KqQH+m8NIx7JRhwj4SNPPJsW8iiLBOiJxnj26UWdkISJdfYdR6lGBs+g0KcE2Yg8dVVSyqhO4odKAY6HL45zZFB7dwP81zBiA+hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PFtzq1f1; arc=none smtp.client-ip=209.85.214.197
+	s=arc-20240116; t=1788483838; c=relaxed/simple;
+	bh=sB5ja1hTvJ6hcTqcbO8S+itN3H8/xDjD8wQ5qsWLCg4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=J/9P7iCw42nrmnDfoWvxZnq9p5qNriG1mn+uJop7IeIzLO4MgTJhVHzCWOKS3fSQMXJ5p2CWXLJ069bPXRMmUF2fIcVte3BQYYvDzIBpOiHigBOybXVCcBX56zRFt1BKpkaBZQ/CUcG8M7c+oS88snPWQcJfJRG2nvUAqc7cfxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GenV9GMR; arc=none smtp.client-ip=209.85.215.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PFtzq1f1"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d94a158dc8so7855015ad.2
-        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 17:54:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GenV9GMR"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc1cdfb337eso846392a12.0
+        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 18:03:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788483284; x=1789088084; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=zNs7dTgAiCxJPiOhAGbP3H0vOe86pU6Y6qcqudQdAkk=;
-        b=PFtzq1f19Ajv45YbDA/EEMbmMgfs22PWL8tK35s9MFjH/7so47e6TtETFkABoSmWym
-         glk99SKkLmeHGrZjG87FDv87bilYp5JQD2kETjrNBIfm91qu4C3AGl1E40eRN69svyoQ
-         g4m9OaWDwq39Xh0SLBFufYfmRUwP+YkjKsy9cDdRtZUn/ig1pmSqIUnqnNcf08mlYo9P
-         nVgtq08RkMuMjtEInGCoPCYRbHik0SnDl4b3VV1wpHDDjXuTbJWMMqQT+H7CiNMYMBCD
-         rtG+2Ra/NWu9Yu7IUDoPsVELYezVBB5oY30hzCFwbLO7m6jrdoU+DlVl7VJgGdVedVWj
-         Bx2Q==
+        d=google.com; s=20251104; t=1788483835; x=1789088635; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=g1/0D8PhzsqQbcuHEIiqrrUM/zjogKFZy1mLAKunYKo=;
+        b=GenV9GMRARLeAtFpTGF62FizTDpF33NvTqrsOkzy17ig8BuYvl9nv6n3nLeD//s9JA
+         nS58iOGE/GR306JrY9VnD26nWMV9+kLVCul4bbGuUivd3llFoZDOL7QYpZOCxmTn/22S
+         URbAIr/fPd48Cpg0KtLAzwVPxSSL2ps7X22d0PJR0dPpHUzMORfUvbuh/Y++w4p+XDLF
+         OBtuUxIoJ4Iy3aqeW72PqFkITn8v7nJsJW/QAbK2KB1jp65styzIhzvuV4QZqbQs+9OU
+         QFmnui6TfzBIfsWAVXEKjhP9wcU4Bnz8tMmlu2RaTjerQ9ykoFlWX+3q7pt8Bh0UzX3L
+         tjGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788483284; x=1789088084;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zNs7dTgAiCxJPiOhAGbP3H0vOe86pU6Y6qcqudQdAkk=;
-        b=E6zSVtTjqWZOqfWwJLyxQD9qqFeuJFrbU6aOyoeP4M2Y1sphGjPp8jR2GEuaYVrZro
-         4IdLhIgif13fOtMHe4JDQBb8PsTv0aH7d9EwqxdWnSiRU7b6u2PCDGSBFoMmIdtVxcPj
-         uPPOQuuc6Zkk33fYizO+aMafR4ZmnGkwmwCNwF0G7hl1mkjjroM414RQf+M1NvH2wmjR
-         lVddTXXrJUtvkq2tAMWrK0Rhjf0RPeUWSfk6Ng7kFaS18sarF7npkFaVnY6S5TYz3lpp
-         DXFHq8CDRYG6lLjgHCiYHFZd+YZuHOMRueVTAavIy0Y0xg5icmcbO0SrXSDcAP68fMHB
-         /OgQ==
-X-Forwarded-Encrypted: i=1; AKwUvBycD2O3dwKuWcK8tfwJSIEvI/yiQIg0vEaP1GbugubiWD57rXPB7Udm64wjNj4VoVdYtpE=@vger.kernel.org
-X-Gm-Message-State: AFuF++n9+f4IQK0DmrTIlsBWkc7AsuUFNUJln5FWjcqel0Lubt9NWmLa
-	LhawKf5ZSqUXT4dtQJz0N473JhD08ZVNSOlu1oIUcfHxfS5GW5YziOzLH4BHv4m9UVsdSpJcUZY
-	tzMhAhg==
-X-Received: from pjqo10.prod.google.com ([2002:a17:90a:ac0a:b0:396:1f9d:c3c7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5343:b0:398:e46e:ade3
- with SMTP id 98e67ed59e1d1-39b2628fc1amr4074759a91.23.1788483283664; Thu, 03
- Sep 2026 17:54:43 -0700 (PDT)
-Date: Thu, 3 Sep 2026 17:54:42 -0700
-In-Reply-To: <CAO9r8zMWdNLDot27LxM=j4ijXSYariMHtkFYwtd6eObp5LFa8g@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1788483835; x=1789088635;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=g1/0D8PhzsqQbcuHEIiqrrUM/zjogKFZy1mLAKunYKo=;
+        b=JvIEElnd54oBtBXlDfpohj3dXAApOY1LoUg+0EVLFBXbAgdZrf8Ro6h0sKl/vA84eO
+         FbOS+krgVjV5egNQLeo4Wayag+E7NAefycCYCFA4M4EdPvzp99RIXtBxdEDSjDm3yXE2
+         gamBaFc1N2zLPfT7JpqEvfyElBCqtBuqhIbBt27Qh4RUaEASanz11VTdUTF9mWExE0IE
+         BA6GM04Op/nfkQrpmh34rxQkkFvZsJImYU3oYW+ZbL4bTD98mmC0hT917pmExtrv6B2R
+         mNoCpYDdMTlt6tLAISPRE7NGS7TFZl2m203MvLp5ho4Y9EKRwXVrKKn36nOje1fK9O/Y
+         7C7A==
+X-Gm-Message-State: AFuF++kdnpqnVQr+HZ2jTv/SjMqb+aBdqdch8fvTQWuqjh0T6Djn0qVd
+	k05kBkCf/7tfC7t7cph+OliHCds3npAUCIotxlGtRr8oW/2huC+RnbdAKLUrMcG7H4wgVJ4FiFl
+	q9UgAag==
+X-Received: from pgbbm16.prod.google.com ([2002:a65:6e90:0:b0:c97:228f:37ae])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:cc8e:b0:3c4:36ef:3dc9
+ with SMTP id adf61e73a8af0-3da39fef37emr3912160637.17.1788483835141; Thu, 03
+ Sep 2026 18:03:55 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Thu,  3 Sep 2026 18:03:45 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260902232028.2767071-1-seanjc@google.com> <20260902232028.2767071-3-seanjc@google.com>
- <CAO9r8zPEqnp6Hcs9M8dz_n1MwSvH4H+kfr7EJfrMMqLgQ7fM4w@mail.gmail.com>
- <api5AjDG2dByAnXi@google.com> <CAO9r8zMWdNLDot27LxM=j4ijXSYariMHtkFYwtd6eObp5LFa8g@mail.gmail.com>
-Message-ID: <apoW0nWjWQVSSeY_@google.com>
-Subject: Re: [PATCH v2 2/5] KVM: nSVM: Ignore EFER.LMA if EFER.LME=0 when
- preparing L2 state
+X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
+Message-ID: <20260904010353.3175819-1-seanjc@google.com>
+Subject: [PATCH v3 0/8] KVM: VMX: Harden against interpreting TDX vCPU as vcpu_vmx
 From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Stefan Teodorescu <fane@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Kai Huang <kai.huang@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Sep 02, 2026, Yosry Ahmed wrote:
-> On Wed, Sep 2, 2026 at 5:02=E2=80=AFPM Sean Christopherson <seanjc@google=
-.com> wrote:
-> >
-> > On Wed, Sep 02, 2026, Yosry Ahmed wrote:
-> > > On Wed, Sep 2, 2026 at 4:20=E2=80=AFPM Sean Christopherson <seanjc@go=
-ogle.com> wrote:
-> > > >
-> > > > Force EFER.LMA=3D0 if EFER.LME=3D0 when preparing L2 state for VMRU=
-N, i.e.
-> > > > mimic real hardware's behavior of ignoring EFER.LMA if EFER.LME=3D0=
-.  VMRUN
-> > > > unfortunately allows the nonsensical combination, i.e. doesn't fail=
-, but
-> > > > KVM itself has an invariant EFER.LMA can be set et if and only if E=
-FER.LME
-> > > > is set.   Breaking that invariant can lead to a variety of issue,
-> > > > particularly in MMU code that keys off EFER.LMA when determining wh=
-ether to
-> > > > emulate/virtualization 4/5-level paging versus PAE paging.
-> > > >
-> > > > Cc: stable@vger.kernel.org
-> > > > Cc: Yosry Ahmed <yosry@kernel.org>
-> > > > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > > > ---
-> > > >  arch/x86/kvm/svm/nested.c | 4 ++++
-> > > >  1 file changed, 4 insertions(+)
-> > > >
-> > > > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> > > > index 49fb10ad1f9f..23d29597d6bf 100644
-> > > > --- a/arch/x86/kvm/svm/nested.c
-> > > > +++ b/arch/x86/kvm/svm/nested.c
-> > > > @@ -789,6 +789,10 @@ static void nested_vmcb02_prepare_save(struct =
-vcpu_svm *svm)
-> > > >
-> > > >         kvm_set_rflags(vcpu, save->rflags | X86_EFLAGS_FIXED);
-> > > >
-> > > > +       /* SVM ignores EFER.LMA if EFER.LME=3D0 (instead of failing=
- VMRUN). */
-> > > > +       if (!(svm->nested.save.efer & EFER_LME))
-> > > > +               svm->nested.save.efer &=3D ~EFER_LMA;
-> > >
-> > > We sanitize control fields in __nested_copy_vmcb_control_to_cache().
-> > > Should we similarly sanitize this in __nested_copy_vmcb_save_to_cache=
-()?
-> >
-> > Ideally, yes?  In practice, it doesn't work because svm_set_nested_stat=
-e() loads
-> > state from "save", not from "save_cached".
->=20
-> I was gonna say let's just pass save_cached to svm_copy_vmrun_state()
-> instead of "save", but then I realized the SMM Code also uses it. We
-> can make it work for both (macro time!), but maybe that's not worth
-> doing. Sigh.
+Move and rename "all" (read: everything I could find) common helpers out of
+vmx.c and/or replace their vmx_ prefix with vt_, and then poison to_vmx() for
+all common .c files to harden KVM against misinterpreting a TDX vCPU as a VMX
+vCPU, i.e. consuming to_vmx() on a TDX vCPU.  Spotted when working through
+the bus lock series.
 
-IMO, not worth doing.  At least, not for an immediate fix.
+v3:
+ - Collect tags. [Kai, Xiaoyao, Binbin]
+ - Move the poisoning to patch 1. [Xiaoyao]
+ - s/Disallowing/Disallow. [Binbin, Kai]
+ - s/vmx_needs_pi_wakeup/vt_needs_pi_wakeup. [Xiaoyao]
 
-> > And even if we fixed that, it would
-> > then allow userspace to pass in garbage (that is then ignored), i.e. wo=
-uld undo
-> > patch 1, and I don't want to do that.
->=20
-> I don't think so, patch 1 specifically performs the check on "save".
+v2:
+ - https://lore.kernel.org/all/20260826171246.777729-1-seanjc@google.com
+ - Complete my train of though in patch 1's changelog. [Binbin]
+ - Rename vmx_handle_exit_irqoff() => vt_handle_exit_irqoff. [Binbin, Sashiko]
+ - Collect a review. [Binbin]
+ - Move and rename everything I could find, using a dummy "struct vcpu_vmx_tdx"
+   to allow relocating common inline helpers from vmx.h to common.h.
 
-True, I was thinking that we'd want to omit the massaged/sanitized state, b=
-ut
-that's obviously not a requirement.
+v1: https://lore.kernel.org/all/20260814161129.2177118-1-seanjc@google.com
+
+Sean Christopherson (8):
+  KVM: VMX: Disallow using to_vmx() in common VT code
+  KVM: VMX: Move the shared "IRQs off" exit handler(s) to common code
+  KVM: VMX: Move the shared NMI handler/trampoline to common code
+  KVM: VMX: Rename posted interrupt prefixes from "vmx" to "vt"
+  KVM: VMX: Rename EPT violation handler prefix from "vmx" to "vt"
+  KVM: VMX: Use dummy pseudo-overlay struct for to_vt() and vt_to_vcpu()
+  KVM: VMX: Move common VT getters/converters to common.h
+  KVM: VMX: Rename common exit info getters prefixes from "vmx" to "vt"
+
+ arch/x86/kvm/vmx/common.h      |  60 +++++++++++--
+ arch/x86/kvm/vmx/main.c        |  92 ++++++++++++++++++-
+ arch/x86/kvm/vmx/nested.c      |  36 ++++----
+ arch/x86/kvm/vmx/posted_intr.c |  24 ++---
+ arch/x86/kvm/vmx/posted_intr.h |   8 +-
+ arch/x86/kvm/vmx/tdx.c         |  32 +++----
+ arch/x86/kvm/vmx/vmx.c         | 155 ++++++++-------------------------
+ arch/x86/kvm/vmx/vmx.h         |  37 --------
+ arch/x86/kvm/vmx/x86_ops.h     |   1 -
+ 9 files changed, 229 insertions(+), 216 deletions(-)
+
+
+base-commit: 76671054f9a1ff6abb976583cd8da37650acdc97
+-- 
+2.55.0.979.g7e5102b832-goog
+
