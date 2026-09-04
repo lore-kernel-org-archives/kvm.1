@@ -1,56 +1,56 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CEE27467F
-	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 00:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0D62472AE
+	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 00:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788481473; cv=none; b=T0mZeYEMt6CAJHpzmFfMOukoEoDGsaIe6onyL+HAsfA6LUCb4bq7J6J86ru+gMv74kNiU0OEbugq4QBFeb7MemlT/h2o+ZFIKRDSmr7O0JlIVV9o6St/5Tg0BwigC62B1r/DFVlPrA+4iSSwjJvgOhJUXe12S0meH3XWMhx5ONA=
+	t=1788481475; cv=none; b=BLgW7HvFs6ntoTspXx1MrjhmNOFXhE7qJAEzsEPopGinzf2UCqVGBa7h7F/YRXMz5Dkz+gCCt14bYZnx++1gERaWTiO/jVG4wMR2haVtmY/NQ62d0oVWXslxs++Gc1osyssMNK0wcjzsp6cdx3EBtUr0p6HbtsSg2u94DhemLwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788481473; c=relaxed/simple;
-	bh=lKfRr6U2bhRKVy1KJfPiyPVEF5KWt/ARhVVbK4kS7kg=;
+	s=arc-20240116; t=1788481475; c=relaxed/simple;
+	bh=Q7qpdWJEFs8lqslQBXctE4tqpv3fzC5rKtHXZQkZOvU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=n+1ykZCFs24VOV2UbSmaKvxbIEiRvWCmo3T/qVk4w01UM5w6Ihxj1m8ik/9Q9neFJSMG6c8Dt25pK68+9qOfXIJI+dkV/Te+j+6vCxRJu1PzreTt6PHUAwemX1OXi8rq3hWSMxfWEoZEYeCBQetlxjurf6OFVObEv5Q9z9OtBt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HGAdgqfU; arc=none smtp.client-ip=209.85.215.200
+	 To:Cc:Content-Type; b=BLJc1IjVbdZj/rqKKTPGUzAZ2DQzftoqZv7kET5QT2rvkf4hD50+vc/bo7YRkcmwftaZooCadxqdbprSUA4eTBT430EJ8aCmNeLRpx5RNW8bs4plfKivGTXpxinxCc7e/U1ZbwkQH7aFXN5ffleWcZhEG+1HabmPmpBqg0G0IFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CTENJn+L; arc=none smtp.client-ip=209.85.210.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HGAdgqfU"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c856470fe9fso509517a12.2
-        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 17:24:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CTENJn+L"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84e024d2129so614557b3a.2
+        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 17:24:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788481471; x=1789086271; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788481472; x=1789086272; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=DpIcw/+ywfe8w4rdBomypCt/lLrNM04RMqmRif2yLnY=;
-        b=HGAdgqfUIuZzuI4Lq6ATsGs0cdTa+GQmyN/FCGlQ1HwCiQhkddPkEJhW+aG5FsN1gx
-         YVunqfQHvlJ2KqkM7YukxuTLIKARUULxGG+x1JnidzL+SKx14gryyDOXpRRc7b6MxIsh
-         qLUnFOfOVpixWw7OlgFo9bLu3uWfKKRVtzHRBYOBD0qmlyKTUWrZKX6FGP4YGLVOXeP0
-         SgD0uLEAM0UUUTOIkuPd4nIlHSVyBgjRKHqJsns2zQS0ZibXjGR3D19yXWVRGavj13eQ
-         mJdGxmPnfAPUWww4xkwD5ZvPsL+AuU0NKYY/FfRqFp6K5uDPnNjWgb5UWV67ianMtsZq
-         yjMQ==
+        bh=wRWK/v12x99rpq8aWGzvGBtRUnaxTCM6WoKg5BCcAo4=;
+        b=CTENJn+LUSpcW2lMtC+wi/5eqSiZr24HUZeKn8ulmXsUdBdh8GovS8IBXqKF2qrGau
+         wY/kzWCIantR8mD8sRTGWZibnBC2ZW5ClaMuZahaQhgpMPOEgHkmU1q4OJFudfTqwit6
+         vAmu/6nOQFguPTlqXywCtrGnE5ZYYM001BK0jqYZuiS2hf3QiMYEri55aEeRV1ygdx7d
+         A8PFws/4c7TDauqaM3Nzhy5fsVQCnwHh0a8vTocdKwIrH0YSLr4ejNcmASbYzNuR8cGM
+         rgSbe2W4MdX47Yu8baFiTXZpWVPcgQMGVIqMQzIdKbIA6iuwvpFkbt4rNUBkgsuo9irz
+         jP9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788481471; x=1789086271;
+        d=1e100.net; s=20251104; t=1788481472; x=1789086272;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=DpIcw/+ywfe8w4rdBomypCt/lLrNM04RMqmRif2yLnY=;
-        b=Si8Tp9oiLKyAJUFn4UUSNvh5cQex18FeFJ01gO8bIeURM3M0c47vUnJruqxdKvnI2L
-         EGQjR8M9V2gDBkQkk+hM/4hUp22OKnaAk5PL2T8tFRFbcwSSn2Tvks/C8m1yJscKU4xb
-         dergzcON3jTUCXK+IdbAPMZxN44/AaIhmX3vxxtzraGxaIplGOGMol9Q82uIwwzA2EkV
-         0zn+xhhSLptRLhghiKG1o+FmhoagnijeSt0ilwU+y5XzJJllMM3S+oAGM9BgIg9ThZhG
-         Z0FGW4wUzCln4Cs7GbmFGhxmGc7uIJoUQSV/cqwtoJkb8C/3HJ6wJExjcUpQjtcROmaU
-         JNJQ==
-X-Gm-Message-State: AFuF++nYXMq161obW9D7ry2RFB3VPU9zOv6Sl/y/AM6D/zzqpLaAJXXT
-	DLsKxksoTzEdezr4v+oRrIZSjovulERo1hZENJxCWvRq28A18zgnKSQYgsGpVopI7AKsYQOzBpe
-	tjC0mYg==
-X-Received: from pfuj13.prod.google.com ([2002:a05:6a00:130d:b0:847:86fe:e9c2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3d4b:b0:84c:1cd2:142b
- with SMTP id d2e1a72fcca58-861671b9e4fmr3506208b3a.9.1788481470573; Thu, 03
- Sep 2026 17:24:30 -0700 (PDT)
+        bh=wRWK/v12x99rpq8aWGzvGBtRUnaxTCM6WoKg5BCcAo4=;
+        b=B9ZjAbMaqZi5fDqgPNOL8drzFiMXSDfzCC4G8f5Gt0lgZH5/5DSrvLqahl78l26UYh
+         68jxoY24saMZUAa0XbTRPliZ3vb0fZtC2Yp0Lkb1b9FkWZCxrOOoPqCi7erHPHBDqitI
+         Lcahtc0mo1kjP94JWGE0EVmBDPo+xDSwdVSzhpdtL8tBj2npWbdn1UaYtJ/Bu2cCp9zQ
+         PqSDwLuEJ4tol/RyrD1h43WueWskaDdF+oL9QmnwcabkZl6BQT4WwWfODEorD26AfbMP
+         Qp5TfFlmdtshFbw57rFD2TLwv7wFgfst4RM7Gz+lnT71P3O8MYNM4rGcR3c194tN7/rY
+         u0FA==
+X-Gm-Message-State: AFuF++lgsLxLWgmwcKcUqXo+lCFC80oY9ULC/snO2yyQlLllakWzzdGZ
+	ibp3tbjhyICFkHevy67MfZizw8SN23w0wPXE4jKw1Ru6kG6gzTiFsSBkHNp26cIGwvLigd8EjIx
+	i4H26eQ==
+X-Received: from pfus9.prod.google.com ([2002:a05:6a00:8c9:b0:847:ac08:fdf6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4b4c:b0:85c:9bb4:a7ea
+ with SMTP id d2e1a72fcca58-8616af56c5fmr2991883b3a.11.1788481471741; Thu, 03
+ Sep 2026 17:24:31 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  3 Sep 2026 17:24:10 -0700
+Date: Thu,  3 Sep 2026 17:24:11 -0700
 In-Reply-To: <20260904002423.3154436-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260904002423.3154436-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
-Message-ID: <20260904002423.3154436-5-seanjc@google.com>
-Subject: [PATCH v4 04/17] KVM: selftests: Adapt to the updated VMPTRST
- behavior when eVMCS is used
+Message-ID: <20260904002423.3154436-6-seanjc@google.com>
+Subject: [PATCH v4 05/17] KVM: selftests: Check VMPTRLD with active eVMCS
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, f734222792@gmail.com, 
@@ -72,74 +71,130 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Vitaly Kuznetsov <vkuznets@redhat.com>
 
-Previously, VMPTRST was forbidden with eVMCS and selftests were mocking the
-correct behavior in vmptrst() by returning enlightened vmptr directly.
-Since KVM's behavior has changed to match genuine Hyper-V, adjust evmcs
-test accordingly.
+Check that VMPTRLD when eVMCS is active results in #UD. This matches
+genuine Hyper-V's behavior.
 
+Use KVM_ASM_SAFE framework to handle #UD from VMPTRLD.  Unfortunately, the
+same trick cannot be applied to the existing #UD check on VMLAUNCH as
+VMLAUNCH clobbers all registers which KVM_ASM_SAFE depends on.  Keep
+VMLAUNCH handling separately.  Deliberately use a double-underscores
+prefix instead of a "safe" postfix for the helper, to communicate that the
+inner/outer helpers handle more than just exceptions, they also handle
+VM-Fail conditions.
+
+Assisted-by: Claude:claude-sonnet-4-6
 Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+[sean: use __ instead of _safe]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- tools/testing/selftests/kvm/include/x86/evmcs.h | 8 --------
- tools/testing/selftests/kvm/include/x86/vmx.h   | 3 ---
- tools/testing/selftests/kvm/x86/hyperv_evmcs.c  | 5 ++---
- 3 files changed, 2 insertions(+), 14 deletions(-)
+ tools/testing/selftests/kvm/include/x86/vmx.h | 19 +++++++++++---
+ .../testing/selftests/kvm/x86/hyperv_evmcs.c  | 26 +++++++++++++++----
+ 2 files changed, 37 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/x86/evmcs.h b/tools/testing/selftests/kvm/include/x86/evmcs.h
-index 82a8ea6b661f..c5b9d26f6cdb 100644
---- a/tools/testing/selftests/kvm/include/x86/evmcs.h
-+++ b/tools/testing/selftests/kvm/include/x86/evmcs.h
-@@ -265,14 +265,6 @@ static inline bool load_evmcs(struct hyperv_test_pages *hv)
- 	return true;
- }
- 
--static inline int evmcs_vmptrst(u64 *value)
--{
--	*value = current_vp_assist->current_nested_vmcs &
--		~HV_X64_MSR_VP_ASSIST_PAGE_ENABLE;
--
--	return 0;
--}
--
- static inline int evmcs_vmread(u64 encoding, u64 *value)
- {
- 	switch (encoding) {
 diff --git a/tools/testing/selftests/kvm/include/x86/vmx.h b/tools/testing/selftests/kvm/include/x86/vmx.h
-index 04f5e34dea3a..ac7d48d1387e 100644
+index ac7d48d1387e..a161dbee7e04 100644
 --- a/tools/testing/selftests/kvm/include/x86/vmx.h
 +++ b/tools/testing/selftests/kvm/include/x86/vmx.h
-@@ -358,9 +358,6 @@ static inline int vmptrst(u64 *value)
- 	u64 tmp;
+@@ -342,9 +342,6 @@ static inline int vmptrld(u64 vmcs_pa)
+ {
  	u8 ret;
  
 -	if (enable_evmcs)
--		return evmcs_vmptrst(value);
+-		return -1;
 -
- 	__asm__ __volatile__("vmptrst %[value]; setna %[ret]"
- 		: [value]"=m"(tmp), [ret]"=rm"(ret)
- 		: : "cc", "memory");
+ 	__asm__ __volatile__ ("vmptrld %[pa]; setna %[ret]"
+ 		: [ret]"=rm"(ret)
+ 		: [pa]"m"(vmcs_pa)
+@@ -353,6 +350,22 @@ static inline int vmptrld(u64 vmcs_pa)
+ 	return ret;
+ }
+ 
++static inline int __vmptrld(u64 vmcs_pa)
++{
++	u64 error_code;
++	u8 vector;
++	u8 failed;
++
++	asm volatile(KVM_ASM_SAFE("vmptrld %[pa]")
++		     "\n\tsetna %[failed]"
++		     : KVM_ASM_SAFE_OUTPUTS(vector, error_code),
++		       [failed]"=qm"(failed)
++		     : [pa]"m"(vmcs_pa)
++		     : "cc", "memory", KVM_ASM_SAFE_CLOBBERS);
++
++	return vector ? vector : failed ? -EINVAL : 0;
++}
++
+ static inline int vmptrst(u64 *value)
+ {
+ 	u64 tmp;
 diff --git a/tools/testing/selftests/kvm/x86/hyperv_evmcs.c b/tools/testing/selftests/kvm/x86/hyperv_evmcs.c
-index 63ea1533e4ea..6224d859d7bb 100644
+index 6224d859d7bb..f953a9755a76 100644
 --- a/tools/testing/selftests/kvm/x86/hyperv_evmcs.c
 +++ b/tools/testing/selftests/kvm/x86/hyperv_evmcs.c
-@@ -92,15 +92,14 @@ void guest_code(struct vmx_pages *vmx_pages, struct hyperv_test_pages *hv_pages,
- 	GUEST_ASSERT(prepare_for_vmx_operation(vmx_pages));
- 	GUEST_SYNC(3);
- 	GUEST_ASSERT(load_evmcs(hv_pages));
--	GUEST_ASSERT(vmptrstz() == hv_pages->enlightened_vmcs_gpa);
-+	/* VMPTRST returns -1 until VMLAUNCH with eVMCS ptr set */
-+	GUEST_ASSERT(vmptrstz() == -1);
+@@ -23,7 +23,11 @@ static int ud_count;
+ static void guest_ud_handler(struct ex_regs *regs)
+ {
+ 	ud_count++;
+-	regs->rip += 3; /* VMLAUNCH */
++	/*
++	 * VMLAUNCH insn can't be easily covered by KVM_ASM_SAFE framework but
++	 * luckily the instruction is always three bytes.
++	 */
++	regs->rip += 3;
+ }
  
- 	GUEST_SYNC(4);
--	GUEST_ASSERT(vmptrstz() == hv_pages->enlightened_vmcs_gpa);
+ static void guest_nmi_handler(struct ex_regs *regs)
+@@ -178,7 +182,15 @@ void guest_code(struct vmx_pages *vmx_pages, struct hyperv_test_pages *hv_pages,
+ 	GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_VMCALL);
+ 	GUEST_SYNC(11);
  
- 	prepare_vmcs(vmx_pages, l2_guest_code);
- 
- 	GUEST_SYNC(5);
--	GUEST_ASSERT(vmptrstz() == hv_pages->enlightened_vmcs_gpa);
- 	current_evmcs->revision_id = -1u;
+-	/* Try enlightened vmptrld with an incorrect GPA */
++	/* VMPTRLD instruction causes #UD after enlightened VMLAUNCH */
++	GUEST_ASSERT(__vmptrld(hv_pages->enlightened_vmcs_gpa) == UD_VECTOR);
++
++	/*
++	 * Try enlightened vmptrld with an incorrect GPA. GUEST_SYNC(12) signals
++	 * the host to enable guest_ud_handler() which cannot be enabled beforehand
++	 * to not override the default fixup handler from KVM_ASM_SAFE().
++	 */
++	GUEST_SYNC(12);
+ 	evmcs_vmptrld(0xdeadbeef, hv_pages->enlightened_vmcs);
  	GUEST_ASSERT(vmlaunch());
- 	current_evmcs->revision_id = EVMCS_VERSION;
+ 	GUEST_ASSERT(ud_count == 1);
+@@ -252,7 +264,6 @@ int main(int argc, char *argv[])
+ 	vcpu_args_set(vcpu, 3, vmx_pages_gva, hv_pages_gva, addr_gva2gpa(vm, hcall_page));
+ 	vcpu_set_msr(vcpu, HV_X64_MSR_VP_INDEX, vcpu->id);
+ 
+-	vm_install_exception_handler(vm, UD_VECTOR, guest_ud_handler);
+ 	vm_install_exception_handler(vm, NMI_VECTOR, guest_nmi_handler);
+ 
+ 	pr_info("Running L1 which uses EVMCS to run L2\n");
+@@ -282,7 +293,7 @@ int main(int argc, char *argv[])
+ 
+ 		/* Force immediate L2->L1 exit before resuming */
+ 		if (stage == 8) {
+-			pr_info("Injecting NMI into L1 before L2 had a chance to run after restore\n");
++			pr_debug("Injecting NMI into L1 before L2 had a chance to run after restore\n");
+ 			inject_nmi(vcpu);
+ 		}
+ 
+@@ -292,9 +303,14 @@ int main(int argc, char *argv[])
+ 		 * KVM_STATE_NESTED_EVMCS is not lost.
+ 		 */
+ 		if (stage == 9) {
+-			pr_info("Trying extra KVM_GET_NESTED_STATE/KVM_SET_NESTED_STATE cycle\n");
++			pr_debug("Trying extra KVM_GET_NESTED_STATE/KVM_SET_NESTED_STATE cycle\n");
+ 			vcpu = save_restore_vm(vm, vcpu);
+ 		}
++
++		if (stage == 12) {
++			pr_debug("Trying enlightened VMLAUNCH with an invalid PTR\n");
++			vm_install_exception_handler(vm, UD_VECTOR, guest_ud_handler);
++		}
+ 	}
+ 
+ done:
 -- 
 2.55.0.979.g7e5102b832-goog
 
