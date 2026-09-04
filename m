@@ -1,47 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4725D390214;
-	Fri,  4 Sep 2026 02:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BB235A38C;
+	Fri,  4 Sep 2026 02:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788489096; cv=none; b=Tbn/3emK6AKTKAs/BdT4XsVjwWWgsWukLxRqUTHhe/89aiJ81HY7bJO0x53zTM1ppui8Hca5tS/LRAg60WDVhG442LE2fcvh/9KOSA2ZBVKcgRIM7CkrZekykr7C0Y7XUBgvGwW5OBqWXQsV7DFLT/HzYnsjA7pFZCG/OzNHa0Q=
+	t=1788489098; cv=none; b=d++hGZQ3Cfk51dP7FSjFNoAHEOEsPJXb+10XILAbckZicEYjYLsaArBCFDyy9nqbK2dkZmFkvIbLtHpuq2nQRHcGNfme/34fdpSQm4xd1TbWBnNfhU5tWRUZGGjxMGz6w3dicsoEMhmg8sX94jWmy3HLEmX+tOccWYWglR29vJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788489096; c=relaxed/simple;
-	bh=akIoDhXyVIrI7sL7nD+jqHniSkh3DFIabdfKV37esCw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qMMB0kkl2We+/+naRlmidZ9RI44Qbas9RXXvE4aX3GRscphz96FDy4SqnRmpJAbPYlFLtLKW5t83IHQ8HhPVPqx/fOcSCWbEi+MevmF+w6VvtQcnKeOjSWsKioLP10IZ/pVPi3UXNrzA0VfAu8kBgtRHIZc+FG94WVNUMHxQrtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y6eEAlJZ; arc=none smtp.client-ip=192.198.163.8
+	s=arc-20240116; t=1788489098; c=relaxed/simple;
+	bh=xyyAeImsv/c6zaKPXBbjA79R1V7s/rMIpMqeIvhnIGk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=V52a7u2+eP/3qBsf4EAWP4extPO2EVAh7+Jg1xUnBo7tg8wXisfo6ePdQp83e3SK5e5UdbCOQk/bPkw2shxIsxkWJewXOiVYCO5QJKu3lFRoG8islo5BUHWB6coASaspewi2nn2tMTWbiUDhZ8hHWh1HJWNxh074a7cKs1vObJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R0p8i/L3; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y6eEAlJZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R0p8i/L3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788489093; x=1820025093;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=akIoDhXyVIrI7sL7nD+jqHniSkh3DFIabdfKV37esCw=;
-  b=Y6eEAlJZKE878DYvnhKqAM3jB2y8K4e7o+bFs1Mzx8lqi3zIcie9Dmvz
-   KprVn82smjD0RW+G2uEm9rby+zYaG5AdlhVQAuOBNyrESumvQVQ1b2dZa
-   BrizcUOkAcf5Ebmqi5EPE57g2dPPBPTLjxHSZgLF6//YVZwPUndfi/718
-   gLljO1He2A94anNzn3qZFg16FYQq5LbYMpnFeMa3cbF9S9mmyZEmE2yea
-   sCWKPRL8tPFsMgHCw8ZMhGij+n3/hDvSnMjQFFLxP0is7riJ28La9CX8n
-   PiJTSrh3MoYZL/ms5AKGK+fvryDK0SPda9jgom1AuiUyiYqjjpnoam1j8
-   Q==;
-X-CSE-ConnectionGUID: 713oasOYQ1WYR3kWVYrDBg==
-X-CSE-MsgGUID: pVxugXkeTp+g+vUd91LN0g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="106506737"
+  t=1788489096; x=1820025096;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=xyyAeImsv/c6zaKPXBbjA79R1V7s/rMIpMqeIvhnIGk=;
+  b=R0p8i/L3kHykwN7qqIaM2GsDI0V3SReH++ev+86kuW2YuJZsLequwK2P
+   kjuGzGs2EDk4VlEjPa0A3ajOIL/5c+oCHlx4ySO4lzRiAkAqB5nh3WnAO
+   lxRYmlQuUb1BU94ADTx91VXG3N4DH+mKtlfcAIokVruVxU8Yau6PXZ2rp
+   6BeTRdZxhRo958YeLpnOvunKzpHZQwBn8Cz73nWCsETWZWfFXYBHm7Isv
+   WFQHPyoIJiJvNc+XQcYpTtwnTxhvGwRGdyp6mLSToTM7SuuQFV0LN3THu
+   MA8fRj2wMh+fYjo+UEQ8qZjXaUTd2xE3/x6OX88SZZHUaqoKHLYoOSilW
+   w==;
+X-CSE-ConnectionGUID: 7UdPWLcrQ+WL1dMSEiYsiw==
+X-CSE-MsgGUID: d8onl97rT/2OQQCSwycgQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="106506746"
 X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="106506737"
+   d="scan'208";a="106506746"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 19:31:32 -0700
-X-CSE-ConnectionGUID: CBsqO7imSD6iGL6OHbMuJw==
-X-CSE-MsgGUID: 3eBBviPLSPykQsDmVANN8w==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 19:31:35 -0700
+X-CSE-ConnectionGUID: /wm2SOTXQN+Fww2QRETqHw==
+X-CSE-MsgGUID: cNa97v6VRyGi3U7g4x21VQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="270433488"
+   d="scan'208";a="270433492"
 Received: from zhaoliu1-desk.sh.intel.com ([10.238.208.118])
-  by orviesa009.jf.intel.com with ESMTP; 03 Sep 2026 19:31:29 -0700
+  by orviesa009.jf.intel.com with ESMTP; 03 Sep 2026 19:31:33 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -59,10 +60,12 @@ Cc: Chao Gao <chao.gao@intel.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 0/4] KVM: nVMX: Fix guest (CET) state handling on VM-entry failure
-Date: Fri,  4 Sep 2026 10:31:01 +0800
-Message-Id: <20260904023105.1167376-1-zhao1.liu@intel.com>
+Subject: [RFC 1/4] KVM: nVMX: Don't copy L2's CET state to L1 if VM-entry didn't load it
+Date: Fri,  4 Sep 2026 10:31:02 +0800
+Message-Id: <20260904023105.1167376-2-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260904023105.1167376-1-zhao1.liu@intel.com>
+References: <20260904023105.1167376-1-zhao1.liu@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -71,215 +74,189 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+On a nested VM-exit that disables VM_EXIT_LOAD_CET_STATE, only copy L2's
+CET state from vmcs12 to vmcs01 if VM-entry really loaded that state,
+i.e. don't copy when VM-entry fails before loading guest state.
 
-This series tries to point out the missing guest state retain behavior
-in the current KVM handling for the nested vm-entry failure case, by a
-CET nested selftest (patch 4), and to raise a discussion on how KVM
-retains guest state at VM-entry failure.
+The state, that L1 should see after a L2 VM-exit, depends on three
+things: the VM-exit load (host state) control, whether VM-entry loaded
+L2's state, and whether L2 ran.
 
-Currently, I think there are two possible fix approaches: one is patch 1,
-which explicitly enumerates the stages, and the other is option B
-mentioned in section "Option B", which uses (or reuse pre_vmenter_* ?)
-intermediate variables to cache the guest state between vmcs01 and
-vmcs02.
+For CET, there are 4 cases:
 
-Back to problem (using CET as the example), at present, on a nested
-VM-exit with VM_EXIT_LOAD_CET_STATE cleared, KVM unconditionally copies
-vmcs12's guest CET fields into vmcs01. When the VM-exit is a VM-entry
-failure that occurred before guest state was loaded, those fields hold
-what L1 wrote for L2, not what the CPU would have kept, so L1 resumes
-with the S_CET/SSP/INTERRUPT_SSP_TABLE_ADDR it had programmed for L2.
+ 1) VM_EXIT_LOAD_CET_STATE is set. Load L1's CET state from vmcs12's
+    host fields, no matter what happened before. KVM already does this.
 
-This does not conform to the SDM's description of vm-entry failure.
+ 2) VM_EXIT_LOAD_CET_STATE is clear, and VM-entry loaded L2's CET
+    state. Whether it's the normal VM-exit or VM-entry failure exit,
+    the guest's (L2's) state should be retained, so copy vmcs12's guest
+    fields into vmcs01 to give L1 the same result.
 
-Background
-==========
+ 3) VM_EXIT_LOAD_CET_STATE is clear, VM-entry didn't load L2's CET
+    state, and L2 never ran. This is the typical case that VM-entry
+    fails before loading guest state, the CPU keeps L1's own state, so
+    do nothing.
 
-What L1 should observe after a nested VM-exit depends on three things:
-the VM-exit "load host state" control, whether VM-entry got far enough
-to load L2's state, and whether L2 ran. For CET:
+ 4) VM_EXIT_LOAD_CET_STATE is clear, VM-entry didn't load L2's CET
+    state, but L2 ran and exited normally. The CPU keeps L1's state
+    again, but L2 could have changed it while running, so still copy
+    vmcs12's guest fields into vmcs01, because they hold what L2 left
+    behind.
 
- 1) VM_EXIT_LOAD_CET_STATE set: load L1's state from vmcs12's host
-    fields, no matter what happened before. KVM already does this, and
-    setting this control makes L1 immune to the bug below.
+Case 3) is broken today. When VM-entry fails, KVM copies vmcs12's guest
+CET fields into vmcs01 as long as VM_EXIT_LOAD_CET_STATE is clear, so L1
+gets the state it wrote for L2 instead of its own state. KVM never syncs
+vmcs02 back to vmcs12 on this path, so those guest fields still hold
+what L1 wrote with VMWRITE.
 
- 2) Control clear, VM-entry loaded L2's CET state: the guest state is
-    retained on the CPU, so L1 observes it. Copying vmcs12's guest
-    fields into vmcs01 gives the right result.
+To fix case 3), it's necessary to distinguish case 2), case 3) and case
+4). But one "VM-entry failed" flag is not enough, since it only tells
+whether L2 ran, and lacks the information about whether VM-entry loaded
+L2's state - and this is important, EXIT_REASON_MSR_LOAD_FAIL is
+triggered after guest state loading, but EXIT_REASON_INVALID_STATE is
+not.
 
- 3) Control clear, VM-entry did not load L2's CET state (VM-entry
-    failed before the guest-state loading phase): the CPU keeps L1's
-    own state, so KVM must do nothing.
+Note, SDM vol.3, chapter 29, "VM ENTRIES", does not guarantee the order
+of the guest state check and the guest state load, however KVM can more
+directly assume that the guest state load occurs after the check,
+thereby simplifying the emulation of state handling when
+EXIT_REASON_INVALID_STATE occurs (corresponding to Case 3). But MSR list
+loading is after guest state loading, so at EXIT_REASON_MSR_LOAD_FAIL,
+guest state has been loaded.
 
- 4) Control clear, VM-entry did not load CET state, but L2 ran and
-    exited normally: L2 may have changed the state while running, and
-    vmcs12's guest fields hold what L2 left behind (guest CET state is
-    always saved on VM-exit; there is no VM-exit control for it), so
-    copying them is again correct.
+Therefore, to determine whether the VM-entry loaded L2's state and
+whether L2 ran, introduce the nested_l2_state enumeration to mark the L2
+guest state phase, thereby helping to distinguish between Case 2), Case
+3), and Case 4) in a helper nested_l2_state_is_live().
 
-Case 3) is broken today: KVM never syncs vmcs02 back to vmcs12 on the
-VM-entry failure path, so vmcs12's guest fields still hold whatever L1
-wrote with VMWRITE, and KVM stuffs that into vmcs01.
+This pattern can be reused to support additional features that have load
+controls, such as BNDCFGS, PAT, and FRED.
 
-Note that one "VM-entry failed" flag is not enough to distinguish 2)
-from 3): MSR loading happens after guest-state loading, so an
-EXIT_REASON_MSR_LOAD_FAIL implies L2's state was loaded, whereas an
-EXIT_REASON_INVALID_STATE does not.
-
-The INVALID_STATE side of this is a modeling choice, not a hardware
-guarantee. Per the SDM ("Checking and Loading Guest State"), guest-state
-checking and loading occur concurrently, so whether L2's state was
-loaded when the check fails is architecturally undefined.
-
-With patch 1, we can make the behavior well-defined for KVM, by treating
-the check as preceding the load, i.e. it emulates an INVALID_STATE
-VM-entry failure as if no guest state was loaded at all (Case 3).
-
-Option A (this series)
-======================
-
-Track how far VM-entry got, and use that at VM-exit to decide whether
-vmcs12's guest fields are a faithful copy of what the CPU holds:
-
-  enum nested_l2_state {
-	L2_STATE_NOT_LOADED,		/* VM-entry failed before the
-					   guest-state loading phase */
-	L2_STATE_LOADED_FROM_VMCS12,
-	L2_STATE_SAVED_TO_VMCS12,	/* L2 ran, state synced back */
-  };
-
-nested_vmx_enter_non_root_mode() sets L2_STATE_LOADED_FROM_VMCS12 right
-after prepare_vmcs02() succeeds, __nested_vmx_vmexit() passes
-L2_STATE_SAVED_TO_VMCS12, and nested_l2_state_is_live() folds the three
-states plus the VM-entry load control into one predicate.
-
-Pros: small, self-contained, no new state that outlives the transition
-(the enum is a local + one parameter), and the per-feature cost is one
-stage check in load_vmcs12_host_state().
-
-Cons: the VM-exit path now has to look at vmcs12->vm_entry_controls,
-which is odd, because that control belongs to VM-entry.
-
-Option B (not implemented)
-==========================
-
-On a VM-exit, the host-state loading step only ever does one of two
-things: load the register from the VMCS host field, or leave the register
-alone. It does not care why the VM-exit happened, nor how far a failed
-VM-entry got. But KVM cannot simply "leave the register alone", because
-the live value sits in the guest fields of the current VMCS, so it moves
-when KVM switches from vmcs02 back to vmcs01.
-
-KVM already solves this for the L1->L2 direction, with
-nested.pre_vmenter_{s_cet,ssp,ssp_tbl}: L1's live value is read from
-vmcs01 before the switch, and written into vmcs02 if VM-entry does not
-load CET state. The L2->L1 direction has no such variable and uses
-vmcs12's guest fields instead. That is where the bug comes from.
-
-So the other way to fix this is to keep those fields updated in both
-directions. They would then hold more than the pre-VM-entry value, so
-they'd want a new name as well (nested.cet_state, i.e. drop the
-"pre_vmenter" prefix again :-)):
-
-  nested_vmx_enter_non_root_mode()
-	read the live state from vmcs01		/* unconditionally */
-	switch to vmcs02
-	guest-state checks fail  -> exit path, value is still L1's
-	prepare_vmcs02() fails   -> exit path, value is still L1's
-	/* guest-state loading phase */
-	if (VM_ENTRY_LOAD_CET_STATE)
-		value = vmcs12 guest fields
-	write the value into vmcs02
-	/* MSR loading phase; on failure the value is already correct */
-
-  prepare_vmcs12()				/* real VM-exits only */
-	read the live state from vmcs02 into vmcs12's guest fields
-	and into the tracked value
-
-  load_vmcs12_host_state()
-	if (VM_EXIT_LOAD_CET_STATE)
-		value = vmcs12 host fields
-	write the value into vmcs01		/* unconditionally */
-
-Pros: no history to reconstruct at VM-exit, no reference to the
-VM-entry control from the VM-exit path, symmetric with the existing
-L1->L2 handling, and it works for state that is not synced back to
-vmcs12.
-
-Cons: a wider diff (VM-entry path, prepare_vmcs02(), prepare_vmcs12(),
-load_vmcs12_host_state()), and the tracked value is a "second copy" [*]
-of live state, which introduces a third place where guest state lives,
-next to vmcs01/vmcs02 and vmcs12, and every affected state needs its
-own variable. So this is the approach that grows with the number of
-features, whereas Option A's staging enum is shared by all of them.
-
-[*]: "second copy" may be inaccurate, since several places already hold
-guest state outside the VMCS: EFER and PAT are kept in vcpu->arch.*,
-which survives the VMCS switch for free, while CET and BNDCFGS live only
-in the VMCS and already need their own nested.pre_vmenter_* fields for
-the L1->L2 direction. No single unified place is a pity indeed.
-
-Extensibility
-=============
-
-Any feature with a VM-exit "load host state" (or "clear") control has to
-answer the same question: with that control set/clear, what state to
-retain for l1? So this is not only about CET:
-
- * EFER is correct, because vcpu->arch.efer holds L2's value and
-   the vmx_set_efer() at the end of that if/else chain writes vmcs01
-   unconditionally.
-
- * CET is broken, which is what patch 1 fixes.
-
- * BNDCFGS is broken: load_vmcs12_host_state() only handles
-   VM_EXIT_CLEAR_BNDCFGS, so with that control clear L2's value is lost
-   and L1 resumes with its own. MPX is limited to a few older CPUs.
-
- * PAT is broken: with VM_EXIT_LOAD_IA32_PAT clear, vmcs01.GUEST_IA32_PAT
-   keeps L1's pre-VM-entry value while vcpu->arch.pat holds L2's, so L1
-   resumes with its own PAT but reads L2's back with RDMSR.
-
- * (in future) FRED also needs to consider this.
-
-Testing
-=======
-
-The selftest gives L1, L2 and vmcs12's host fields three different sets
-of CET values, so that whichever one L1 ends up with tells us where it
-came from. For each of the 4 combinations of VM_ENTRY_LOAD_CET_STATE and
-VM_EXIT_LOAD_CET_STATE, it triggers both kinds of VM-entry failure and
-then checks what L1 reads back:
-
- - EXIT_REASON_INVALID_STATE: guest CR0 with PG set and PE clear.
- - EXIT_REASON_MSR_LOAD_FAIL: a VM-entry MSR load list entry for
-   MSR_IA32_UCODE_REV.
-
-MSR_IA32_INTERRUPT_SSP_TABLE_ADDR is the primary observation point
-because KVM always intercepts it and reads it straight out of
-vmcs01.GUEST_INTR_SSP_TABLE. The test requires SHSTK and skips
-otherwise.
-
-Thanks and Best Regards,
-Zhao
+Fixes: 625884996bff ("KVM: nVMX: Prepare for enabling CET support for nested guest")
+Reported-by: Xin Li <xin@zytor.com>
+Suggested-by: Chao Gao <chao.gao@intel.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Zhao Liu (4):
-  KVM: nVMX: Don't copy L2's CET state to L1 if VM-entry didn't load it
-  KVM: selftests: Synchronize and update VMCS controls
-  KVM: selftests: Synchronize and update VMCS encodings
-  KVM: selftests: Test VM-entry failure handling for nested VM
+ arch/x86/kvm/vmx/nested.c | 59 +++++++++++++++++++++++++++++++++++----
+ 1 file changed, 53 insertions(+), 6 deletions(-)
 
- arch/x86/kvm/vmx/nested.c                     |  59 ++-
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../selftests/kvm/include/x86/processor.h     |   1 +
- tools/testing/selftests/kvm/include/x86/vmx.h | 489 ++++++++++--------
- .../selftests/kvm/include/x86/vmxfeatures.h   |  93 ++++
- .../x86/vmx_nested_entry_fail_state_test.c    | 311 +++++++++++
- 6 files changed, 727 insertions(+), 227 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/include/x86/vmxfeatures.h
- create mode 100644 tools/testing/selftests/kvm/x86/vmx_nested_entry_fail_state_test.c
-
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 151873407abd..35f0bf84b373 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -3613,8 +3613,45 @@ static int nested_vmx_check_permission(struct kvm_vcpu *vcpu)
+ 	return 1;
+ }
+ 
++/*
++ * Describe the loading state of L2 guest state, i.e. whether VM-Entry loaded
++ * L2's state from vmcs12 into vmcs02, and whether L2's state is synced back to
++ * vmcs12.
++ */
++enum nested_l2_state {
++	/* VM-entry failed before finishing loading L2's state. */
++	L2_STATE_NOT_LOADED,
++	/* VM-entry loaded L2's state from vmcs12 into vmcs02 before L2 runs. */
++	L2_STATE_LOADED_FROM_VMCS12,
++	/* L2 ran, and KVM saved L2's live state to vmcs12 from vmcs02 on VM-exit. */
++	L2_STATE_SAVED_TO_VMCS12,
++};
++
++/*
++ * Return true if L2's guest state in vmcs12 needs to be loaded into vmcs01,
++ * i.e. if L1 should observe L2's state retained on hardware when L1 runs.
++ * @vm_entry_load_control is the VM-Entry control that loads the state on
++ * VM-Entry.
++ *
++ * Note: this helper is used when the VM-exit load (host state) control is off.
++ * Otherwise, host state (L1 state) should be loaded into vmcs01.
++ */
++static bool nested_l2_state_is_live(struct vmcs12 *vmcs12,
++				    u32 vm_entry_load_control,
++				    enum nested_l2_state l2_state)
++{
++	/* normal VM-exit. */
++	if (l2_state == L2_STATE_SAVED_TO_VMCS12)
++		return true;
++
++	/* true iff VM-entry failed after loading L2's state. */
++	return l2_state == L2_STATE_LOADED_FROM_VMCS12 &&
++	       (vmcs12->vm_entry_controls & vm_entry_load_control);
++}
++
+ static void load_vmcs12_host_state(struct kvm_vcpu *vcpu,
+-				   struct vmcs12 *vmcs12);
++				   struct vmcs12 *vmcs12,
++				   enum nested_l2_state l2_state);
+ 
+ /*
+  * If from_vmentry is false, this is being called from state restore (either RSM
+@@ -3636,6 +3673,7 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
+ 		.basic = EXIT_REASON_INVALID_STATE,
+ 		.failed_vmentry = 1,
+ 	};
++	enum nested_l2_state l2_state = L2_STATE_NOT_LOADED;
+ 	u32 failed_index;
+ 
+ 	trace_kvm_nested_vmenter(kvm_rip_read(vcpu),
+@@ -3700,6 +3738,13 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
+ 		goto vmentry_fail_vmexit_guest_mode;
+ 	}
+ 
++	/*
++	 * VM-entry has completed the architectural guest-state loading phase;
++	 * MSRs are loaded after guest state, so failures below should retain
++	 * L2's state (see nested_l2_state_is_live()).
++	 */
++	l2_state = L2_STATE_LOADED_FROM_VMCS12;
++
+ 	if (from_vmentry) {
+ 		failed_index = nested_vmx_load_msr(vcpu,
+ 						   vmcs12->vm_entry_msr_load_addr,
+@@ -3778,7 +3823,7 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
+ 
+ 	nested_put_vmcs12_pages(vcpu);
+ 
+-	load_vmcs12_host_state(vcpu, vmcs12);
++	load_vmcs12_host_state(vcpu, vmcs12, l2_state);
+ 	vmcs12->vm_exit_reason = exit_reason.full;
+ 	if (enable_shadow_vmcs || nested_vmx_is_evmptr12_valid(vmx))
+ 		vmx->nested.need_vmcs12_to_shadow_sync = true;
+@@ -4798,7 +4843,8 @@ static void prepare_vmcs12(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
+  * This function should be called when the active VMCS is L1's (vmcs01).
+  */
+ static void load_vmcs12_host_state(struct kvm_vcpu *vcpu,
+-				   struct vmcs12 *vmcs12)
++				   struct vmcs12 *vmcs12,
++				   enum nested_l2_state l2_state)
+ {
+ 	enum vm_entry_failure_code ignored;
+ 	struct kvm_segment seg;
+@@ -4856,12 +4902,13 @@ static void load_vmcs12_host_state(struct kvm_vcpu *vcpu,
+ 	/*
+ 	 * Load CET state from host state if VM_EXIT_LOAD_CET_STATE is set.
+ 	 * otherwise CET state should be retained across VM-exit, i.e.,
+-	 * guest values should be propagated from vmcs12 to vmcs01.
++	 * guest values should be propagated from vmcs12 to vmcs01, but only if
++	 * L2's CET state is live in hardware.
+ 	 */
+ 	if (vmcs12->vm_exit_controls & VM_EXIT_LOAD_CET_STATE)
+ 		vmcs_write_cet_state(vcpu, vmcs12->host_s_cet, vmcs12->host_ssp,
+ 				     vmcs12->host_ssp_tbl);
+-	else
++	else if (nested_l2_state_is_live(vmcs12, VM_ENTRY_LOAD_CET_STATE, l2_state))
+ 		vmcs_write_cet_state(vcpu, vmcs12->guest_s_cet, vmcs12->guest_ssp,
+ 				     vmcs12->guest_ssp_tbl);
+ 
+@@ -5193,7 +5240,7 @@ void __nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
+ 						       vmcs12->vm_exit_intr_error_code,
+ 						       KVM_ISA_VMX);
+ 
+-		load_vmcs12_host_state(vcpu, vmcs12);
++		load_vmcs12_host_state(vcpu, vmcs12, L2_STATE_SAVED_TO_VMCS12);
+ 
+ 		/*
+ 		 * Process events if an injectable IRQ or NMI is pending, even
 -- 
 2.34.1
 
