@@ -1,138 +1,141 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE14917D6
-	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 00:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D43318BC3B
+	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 00:54:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788483227; cv=none; b=USyGJe66SLJMy5HNk3Hzc5aDy193DqoKly51E3B6xdgqSwYYGdqx867212CB1FYdfmdYG+ub4Wrn2J3JGkG5d2PVpOF6PwVEpX5sZby23Swz510Ydbtn7XAX66qTFDwu8klN5K1D0qvYCrj8gAycPcGsHIBvEd6yJOhaR1LePQs=
+	t=1788483285; cv=none; b=b0YqWi2XnjtOX3rpR0T2s9en9tCHGaCaiQodaUGSV4PYhzrP6BuH4tNUKx8LzUEyGhIKIZWjB+Yn5HSgZCFIiTIViP1aDi7jQeueadPbb/M/8nhUqsGohaxcVPFWcy7vcCRLUieCfLHAF7f7d3rLxEyPHiQCrvbKGMJzM2i8FKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788483227; c=relaxed/simple;
-	bh=0ZpfWwRDAHgu1mRcWZVQMtXirmVz5qsYIzeHiB+CHr0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qLUVSKcTvMvvYDPLfKiVnSoDm0KNtQCKLrhQdlmlMTLZesDrsm7VGlv8r4SYGO+dI2Lh3fMdU1qHQNUfKNOpzPstEJPINxNbTxy2oFZHggiAd16k/r714b9w5f7uDgA1kvPwfy/ZWCLeo+ZIVawxr45a0WXJGVVSfeWcXa54MW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cAl2MJFB; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788483285; c=relaxed/simple;
+	bh=IkRcJkUVS3S/nYokkPEqFp2L2o+giKgO5ZoROUE5wMA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=WnIDXAUICGvSRPtlFs47dGvNY7QHRhaq2oWEmWlfz7dLFLe9TibOUI0EL56A8jgsPrBvF38KqQH+m8NIx7JRhwj4SNPPJsW8iiLBOiJxnj26UWdkISJdfYdR6lGBs+g0KcE2Yg8dVVSyqhO4odKAY6HL45zZFB7dwP81zBiA+hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PFtzq1f1; arc=none smtp.client-ip=209.85.214.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cAl2MJFB"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cc147d86bebso492804a12.0
-        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 17:53:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PFtzq1f1"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d94a158dc8so7855015ad.2
+        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 17:54:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788483226; x=1789088026; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2el8XyfB2FMbOrmCud+3jZOtrXhR6MDItbmJqyOOTqQ=;
-        b=cAl2MJFBgyOCpkwE97bNjJlzvr6OWg5YVgTAaMHpgiNDVPihn2QTCWTzWB9KXdwYSj
-         7w0jUYeELjdjxtVpaVFQ4DfKao31tvdjtuHbnGlNCfXOu61ZkNexOfs9pySSMJrz9x+0
-         o8DRD3ESp1IoXt+c6c9x+tHXSsBiBc+grHM7Iz0PK63UzsfTN6h3UGLGAXnrAQV2qBMT
-         IZVQj/YgnIFyYpQvQkyMvzzsPQ/JGZoyo77aST7VgrL06gRJeWwxdw7H53qR06cgeMOt
-         qmtgORdvz0TAene4buv/bNet4Etdfy7y3o1rr3UKNOuHIQblEkbIY3r8q6UevwQd8wo/
-         EWyw==
+        d=google.com; s=20251104; t=1788483284; x=1789088084; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=zNs7dTgAiCxJPiOhAGbP3H0vOe86pU6Y6qcqudQdAkk=;
+        b=PFtzq1f19Ajv45YbDA/EEMbmMgfs22PWL8tK35s9MFjH/7so47e6TtETFkABoSmWym
+         glk99SKkLmeHGrZjG87FDv87bilYp5JQD2kETjrNBIfm91qu4C3AGl1E40eRN69svyoQ
+         g4m9OaWDwq39Xh0SLBFufYfmRUwP+YkjKsy9cDdRtZUn/ig1pmSqIUnqnNcf08mlYo9P
+         nVgtq08RkMuMjtEInGCoPCYRbHik0SnDl4b3VV1wpHDDjXuTbJWMMqQT+H7CiNMYMBCD
+         rtG+2Ra/NWu9Yu7IUDoPsVELYezVBB5oY30hzCFwbLO7m6jrdoU+DlVl7VJgGdVedVWj
+         Bx2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788483226; x=1789088026;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2el8XyfB2FMbOrmCud+3jZOtrXhR6MDItbmJqyOOTqQ=;
-        b=ZCJ/umW8mQkzItj2c+UbVpC2O/NEOsNM7T0oz/cFFUnor8Saqui+xJtXszKzM2s3rj
-         w7cssS6AcuhoPiMQX0+FBbmwurwALeaKctYLkqSwO/1b6+usJ4X007DBM6wH7KVcaJiF
-         yyu6OK3SVlSpKoceNqceYcvoQlUnObgr9QQPgnXCJz8l3kO8KfwCe1bMHh9fltF4hxaq
-         mg5bWWHSrAwu578m9F/kvfWy9wQd7UsBg7oFPMhi/kX8DlYctz/K5oqS+TnkLJJvVwAZ
-         HWNTfuTy1Os4Q5eX4mnioYgiiM7eARnlwVJTNddod4ABM/I/Mtq6Gkta2M4q4UaCjJgX
-         XcXA==
-X-Forwarded-Encrypted: i=1; AKwUvByKmMEWEoz6gRZfWbSxewmbTv27ce5/qqrvG5odpyofmEDePIka3UAdPmGbHzfO1A0/+UQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++mp3oV7PSQVh9H70Y2DNOdy4KGuTZkPHLp4veejvKh0Omscpc7U
-	pWwl8f9IODzUPSl8wULTeqH3kJK74EoXA8Xd+MkKc/q1TmrEjo1qNDx6
-X-Gm-Gg: AYBFou2rueMBJJyqu7TDHj0xA5BWvfvYYP2thu6pi5BCAglQA8Fov/rZ1IaIol7dqbm
-	JvJhyAL2nTPxslyoJ5vtRA5LbQuuvpjsRk5BP8sanUXx78NI/JoF9eqoU6Uvw3yXg2nMBb6++p7
-	l5VeOm4jQL+iSkTL2xgXoivCpHS6U8a7ZwLcrRTEDgiXUAh/kvEkbEsz6+DV6lmbRxegsctGke8
-	+w8YsCMSfx4ww1O+rA8HH80jixuVqNWKZ8qv6xIHDRKAprdEG+64zzu0BSYysC1DCkkmZfesXif
-	JiRdwmJG8EPrc5WZ+D9oExKPQRCziGDO1L01i2dDlSmgCJfn/pG7ZYaahyRVH2oXATbzswGY/6Y
-	BHh3Q5xRSLZo03YTu03ZM8+BUZ0zJLphm+9Pq8EPuxzGE3rmnyNwds8xRWRcVNJodB/07vg3z/b
-	3JMxr8dnO0E3jpQmeCFyv6nBozS8f2twMnbj5CTGg6fmfn9KHn3tetcdI/o40I
-X-Received: by 2002:a17:90b:4490:b0:38e:42f5:d096 with SMTP id 98e67ed59e1d1-39b279ad968mr1194020a91.0.1788483225951;
-        Thu, 03 Sep 2026 17:53:45 -0700 (PDT)
-Received: from gmail.com ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08bcc081sm7701712a91.6.2026.09.03.17.53.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Sep 2026 17:53:45 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jaswangio@gmail.com>,
-	Mike Christie <michael.christie@oracle.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Nicholas Bellinger <nab@linux-iscsi.org>,
-	Asias He <asias@redhat.com>,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] vhost-scsi: fix event queue iov out-of-bounds
-Date: Fri,  4 Sep 2026 08:52:40 +0800
-Message-Id: <20260904005240.502787-1-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20251104; t=1788483284; x=1789088084;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zNs7dTgAiCxJPiOhAGbP3H0vOe86pU6Y6qcqudQdAkk=;
+        b=E6zSVtTjqWZOqfWwJLyxQD9qqFeuJFrbU6aOyoeP4M2Y1sphGjPp8jR2GEuaYVrZro
+         4IdLhIgif13fOtMHe4JDQBb8PsTv0aH7d9EwqxdWnSiRU7b6u2PCDGSBFoMmIdtVxcPj
+         uPPOQuuc6Zkk33fYizO+aMafR4ZmnGkwmwCNwF0G7hl1mkjjroM414RQf+M1NvH2wmjR
+         lVddTXXrJUtvkq2tAMWrK0Rhjf0RPeUWSfk6Ng7kFaS18sarF7npkFaVnY6S5TYz3lpp
+         DXFHq8CDRYG6lLjgHCiYHFZd+YZuHOMRueVTAavIy0Y0xg5icmcbO0SrXSDcAP68fMHB
+         /OgQ==
+X-Forwarded-Encrypted: i=1; AKwUvBycD2O3dwKuWcK8tfwJSIEvI/yiQIg0vEaP1GbugubiWD57rXPB7Udm64wjNj4VoVdYtpE=@vger.kernel.org
+X-Gm-Message-State: AFuF++n9+f4IQK0DmrTIlsBWkc7AsuUFNUJln5FWjcqel0Lubt9NWmLa
+	LhawKf5ZSqUXT4dtQJz0N473JhD08ZVNSOlu1oIUcfHxfS5GW5YziOzLH4BHv4m9UVsdSpJcUZY
+	tzMhAhg==
+X-Received: from pjqo10.prod.google.com ([2002:a17:90a:ac0a:b0:396:1f9d:c3c7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5343:b0:398:e46e:ade3
+ with SMTP id 98e67ed59e1d1-39b2628fc1amr4074759a91.23.1788483283664; Thu, 03
+ Sep 2026 17:54:43 -0700 (PDT)
+Date: Thu, 3 Sep 2026 17:54:42 -0700
+In-Reply-To: <CAO9r8zMWdNLDot27LxM=j4ijXSYariMHtkFYwtd6eObp5LFa8g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260902232028.2767071-1-seanjc@google.com> <20260902232028.2767071-3-seanjc@google.com>
+ <CAO9r8zPEqnp6Hcs9M8dz_n1MwSvH4H+kfr7EJfrMMqLgQ7fM4w@mail.gmail.com>
+ <api5AjDG2dByAnXi@google.com> <CAO9r8zMWdNLDot27LxM=j4ijXSYariMHtkFYwtd6eObp5LFa8g@mail.gmail.com>
+Message-ID: <apoW0nWjWQVSSeY_@google.com>
+Subject: Re: [PATCH v2 2/5] KVM: nSVM: Ignore EFER.LMA if EFER.LME=0 when
+ preparing L2 state
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Stefan Teodorescu <fane@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-vhost_scsi_do_evt_work() uses vq->iov[out] after vhost_get_vq_desc()
-without checking that the descriptor chain contains an input segment.
-vq->iov has UIO_MAXIOV entries (1024).  A chain of 1024 output-only
-descriptors yields out == 1024 and in == 0, so the length check reads
-one past the end of the array.
+On Wed, Sep 02, 2026, Yosry Ahmed wrote:
+> On Wed, Sep 2, 2026 at 5:02=E2=80=AFPM Sean Christopherson <seanjc@google=
+.com> wrote:
+> >
+> > On Wed, Sep 02, 2026, Yosry Ahmed wrote:
+> > > On Wed, Sep 2, 2026 at 4:20=E2=80=AFPM Sean Christopherson <seanjc@go=
+ogle.com> wrote:
+> > > >
+> > > > Force EFER.LMA=3D0 if EFER.LME=3D0 when preparing L2 state for VMRU=
+N, i.e.
+> > > > mimic real hardware's behavior of ignoring EFER.LMA if EFER.LME=3D0=
+.  VMRUN
+> > > > unfortunately allows the nonsensical combination, i.e. doesn't fail=
+, but
+> > > > KVM itself has an invariant EFER.LMA can be set et if and only if E=
+FER.LME
+> > > > is set.   Breaking that invariant can lead to a variety of issue,
+> > > > particularly in MMU code that keys off EFER.LMA when determining wh=
+ether to
+> > > > emulate/virtualization 4/5-level paging versus PAE paging.
+> > > >
+> > > > Cc: stable@vger.kernel.org
+> > > > Cc: Yosry Ahmed <yosry@kernel.org>
+> > > > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > > > ---
+> > > >  arch/x86/kvm/svm/nested.c | 4 ++++
+> > > >  1 file changed, 4 insertions(+)
+> > > >
+> > > > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> > > > index 49fb10ad1f9f..23d29597d6bf 100644
+> > > > --- a/arch/x86/kvm/svm/nested.c
+> > > > +++ b/arch/x86/kvm/svm/nested.c
+> > > > @@ -789,6 +789,10 @@ static void nested_vmcb02_prepare_save(struct =
+vcpu_svm *svm)
+> > > >
+> > > >         kvm_set_rflags(vcpu, save->rflags | X86_EFLAGS_FIXED);
+> > > >
+> > > > +       /* SVM ignores EFER.LMA if EFER.LME=3D0 (instead of failing=
+ VMRUN). */
+> > > > +       if (!(svm->nested.save.efer & EFER_LME))
+> > > > +               svm->nested.save.efer &=3D ~EFER_LMA;
+> > >
+> > > We sanitize control fields in __nested_copy_vmcb_control_to_cache().
+> > > Should we similarly sanitize this in __nested_copy_vmcb_save_to_cache=
+()?
+> >
+> > Ideally, yes?  In practice, it doesn't work because svm_set_nested_stat=
+e() loads
+> > state from "save", not from "save_cached".
+>=20
+> I was gonna say let's just pass save_cached to svm_copy_vmrun_state()
+> instead of "save", but then I realized the SMM Code also uses it. We
+> can make it work for both (macro time!), but maybe that's not worth
+> doing. Sigh.
 
-With a host-side harness that sets VHOST_SCSI_SET_EVENTS_MISSED and
-kicks an event queue filled with 1024 OUT descriptors, UBSAN reports:
+IMO, not worth doing.  At least, not for an immediate fix.
 
-  UBSAN: array-index-out-of-bounds in drivers/vhost/scsi.c:611:14
-  index 1024 is out of range for type 'iovec [1024]'
+> > And even if we fixed that, it would
+> > then allow userspace to pass in garbage (that is then ignored), i.e. wo=
+uld undo
+> > patch 1, and I don't want to do that.
+>=20
+> I don't think so, patch 1 specifically performs the check on "save".
 
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x5f/0x90
-   dump_stack+0x10/0x18
-   ubsan_epilogue+0x9/0x39
-   __ubsan_handle_out_of_bounds.cold+0x50/0x55
-   vhost_scsi_complete_events+0x55f/0x5a0 [vhost_scsi]
-   vhost_scsi_evt_work+0x17/0x30 [vhost_scsi]
-   vhost_run_work_list+0x8e/0xd0 [vhost]
-   vhost_task_fn+0xe1/0x210
-   ret_from_fork+0x348/0x540
-   ret_from_fork_asm+0x1a/0x30
-   </TASK>
-
-Require at least one input descriptor before indexing iov[out], and
-treat a pure-output chain as a missed event like other invalid event
-buffers.
-
-Fixes: a6c9af87363c ("tcm_vhost: Add hotplug/hotunplug support")
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
----
- drivers/vhost/scsi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 9a1253b9d8c5..9b5f07f52b0c 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -608,9 +608,10 @@
- 		return;
- 	}
- 
--	if ((vq->iov[out].iov_len != sizeof(struct virtio_scsi_event))) {
-+	if (!in ||
-+	    vq->iov[out].iov_len != sizeof(struct virtio_scsi_event)) {
- 		vq_err(vq, "Expecting virtio_scsi_event, got %zu bytes\n",
--				vq->iov[out].iov_len);
-+		       in ? vq->iov[out].iov_len : 0);
- 		vs->vs_events_missed = true;
- 		return;
- 	}
--- 
-2.43.0
+True, I was thinking that we'd want to omit the massaged/sanitized state, b=
+ut
+that's obviously not a requirement.
