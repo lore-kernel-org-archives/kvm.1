@@ -1,89 +1,74 @@
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF5D5111B4
-	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 17:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62EF3517BC1
+	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 17:33:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788543037; cv=none; b=hQsu2HNzPpUNzW9CLbatvet12GYMU503oD9HMWJKprKPH2jJHqxqFZTxkosCji5CJUBAE/uG+MWdllHot0/3TWi8vajaeajtmxNXI0O6qaLF16p8JLmNZXVUqdD9682yKEJWtez8NNwCawEokB+9KSm9TqtfFGKrSJhk5mO5yyw=
+	t=1788543230; cv=none; b=KLQEEof+DtlV/EGY9+1MmmxZekFq+Gvotc/Q5j2I6NrEvnAd8YaA6ojtHel3bcQrjsPKgpfwPqAYE3JvKIhu5tqeBmgoiFd7feHB+3pMeew8t6Ru/wgi5AnJo6M5a3y7/52Uzw0r2YVdD0DEHGyUifwpspOOqPq+Ou3DxFm1w8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788543037; c=relaxed/simple;
-	bh=uFS7CqJ/4WMuU0sv4h1FMLN2xytbZtd+0px5/4cj4zo=;
+	s=arc-20240116; t=1788543230; c=relaxed/simple;
+	bh=0ZP+HRnzu9z6DgT/BXO+5YVGLrMTir6BRcJGXtbrHM4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AZL7a2qPzxm7r1fZCWrx9ulyq0E/85s//4ttaUu9VtzvME3PN9IW0i+nwdcsLB9oK107mS8d+1EosfvDuvUys2eE5EbBa4uSnoLdfxlyfYVXjFDuBY067/ycufw6CKugLThskgrHbZL/oHckiQnt1A9+tUpMkUxYL9GikFuOI68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dlp4D8Nr; arc=none smtp.client-ip=209.85.210.50
+	 Content-Type:Content-Disposition:In-Reply-To; b=CUZ9zz16xsMoVoaiT+cUDTW2+igzJgQIT0hybttNBZ/pqjjzhsXiFFIojC9Io+euAI0qD8yVYQyT7ekyFi+miJpjcJ3lKEBZlfxeDttA9oSCkjz+WlGcnuMphEYM1/YlYd3RJqkn09jNDr1SEHDOmcP7ahY1sTz1hGUmePjdKmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hh9oj8nx; arc=none smtp.client-ip=209.85.160.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dlp4D8Nr"
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7eb5bdb50fcso1210163a34.1
-        for <kvm@vger.kernel.org>; Fri, 04 Sep 2026 10:30:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hh9oj8nx"
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-45837e52d8aso1015600fac.0
+        for <kvm@vger.kernel.org>; Fri, 04 Sep 2026 10:33:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788543034; x=1789147834; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788543223; x=1789148023; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=+yXuzXtZ9/rSTTLjcAorY8DG6JyAA49nbzxpJiEv6qQ=;
-        b=dlp4D8NrLCfOaml28Rfdy2UhZF7UzLr8y67EdqEca+eOC6vhG/NIYXhT0BI/YIe1DG
-         0FRo3ZqT1MFTMyUmHteUK8cGOhsjMtoxEt7Vzdo47oxkEEb79Esj4qg6VKYLXBme/Dey
-         SLIQVcK3eBN1TlS6oS7xrEvOuTSAPu959xKfLhOhY/4vKju4y14xNKSxs3S+L7R8kXCk
-         8iWjcJl64v+zxd9EWmMFP2Cka3FdyGDWnSHQiR6ATzNMWXXrgCDWT0pxCSWhakswsG+G
-         obQvno+V7z20U1QE1/cnNmy4Pa8pZ3KCDCoxW5TyQuKb7woDkhFFN/NgfBWvpg3p9Nh5
-         zRYw==
+        bh=TNzIgR372J08ntlK40uw/Lpu5PtLTk6ngTClcXiLgnM=;
+        b=hh9oj8nxbghH/8a0mfMW0nNlyMdmSjE8t8/JcISWp1U+nMlz8lDffPW7mbbd0wzPr1
+         1OPCxV+jDzAByX1QS4JFpvyVaVRIMzYfNxlOHgLJp7w4pX1RCpl+7KGHmznccXQ69PNd
+         1Rahzjs5qzQRBYrm2swIuUBtOIcJ0z+LgyLJdt2RDzjReAwuw1w2Pc0ACW2fn6390Yve
+         3tMtjjkmmSPuO2fTx1oTt6GVTSF3TB4tQdDxlpx21wPTOEKdM4DzYf9ctgib7zJNRmzJ
+         RCvd8SafICg34o47MzuPlBtvvNEOGWoL26FPC/hvJmUGLEXn7Z/VVhhhPgIF6mggY4ji
+         g+Yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788543034; x=1789147834;
+        d=1e100.net; s=20251104; t=1788543223; x=1789148023;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=+yXuzXtZ9/rSTTLjcAorY8DG6JyAA49nbzxpJiEv6qQ=;
-        b=QTySyuRhjjYuc5lpcsT+zAS3VWwFKIQfifdirlec4VFqliGpjoBc5FMPy8uRTLZVXI
-         ev3i037WPTBW8QWSg9wfkBh+DUj+5C4ekZldc7B52hk25lPa14oU7T7CcPM18WQAGPsd
-         3QvLWWdaIHGKU3YV40Bzi3LLbm/NDAh7mBtZK27XhChbpoU+1rNyb95w43Y4/rJpd3aL
-         Q67un6zZ4fE9JCXdEHZdmRBjJLaADTshAeARxuAnstu9V0AYl5boe/tm7tmvUkW7Wv37
-         cbDtGnpPIjUYuP55AnsiM22tL3VqEwdsR3KAY14TUPft4b/qi/6doJyGehuh9Jx/rMN5
-         kGMg==
-X-Forwarded-Encrypted: i=1; AKwUvBxtmoeoe98P/ckFMgYuODZxGGUzM1t8VlDN3HoQCTdyTgFwUN28pCx7KT/mm/YlsB84lMs=@vger.kernel.org
-X-Gm-Message-State: AFuF++k7jr82kAQb5It9/hZ0qNvkug52Fxly/stzMX2d+lzyq7fRunYW
-	yd70L1EmBDf6GjNZ8K3S0MQ+U9jbTwWTLsJvc9hKByTTLjEK/5zQVFlC
-X-Gm-Gg: AYBFou248aluB2hbbXmP1dJ7FaT40SYdhVkN9CZS41vSxrsEKiE1XOEOlPsBRBby0gH
-	LpEpWc/pL8CgEEkXV4h92n99cY6CspiDuk+GZSxYS2bPmh7l+PGjy6bbNeJyBlmqkrf4tIeRLju
-	5M67ahaFYMg9VbAkasmAHO0QubLxkclE/ER2YD9ml/4aM27NMYixJs/xiNFWJpuhEOhrLKwWopA
-	8VZtNsT+PGLOCmmvyTbqh4fxyFMJW06KrKnk3pnUg4EdIEoltvup6CmBPOyyha1Ujbu5IUyTXmG
-	SWuJtCCSewgEeqe/StNI6cBBrYlwsma+PENGO/PjT0feVV0bsdVLZhUxH3jZTdwbJS0BNTJL9vL
-	bEQGZ5WOkGohieXDaIHWqRkOrKNkh2i8iIdp1g3sZPqIsrB0kS1YfMJ7pDYfXjDhvpZnUUlQFKh
-	2ox+lU7QHOu9xxS8gXMHwDMaTUJSwqrjO+UUO0G6CcMjrooWPNapVmMkm0Xej589Dta+CrCBXVg
-	BzeakHYS087Y0w8Kr/h
-X-Received: by 2002:a05:6830:6684:b0:7e4:163:49cc with SMTP id 46e09a7af769-7fa1e2c7eabmr7139441a34.7.1788543034170;
-        Fri, 04 Sep 2026 10:30:34 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:5b::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f9f6da9a3esm3454794a34.10.2026.09.04.10.30.30
+        bh=TNzIgR372J08ntlK40uw/Lpu5PtLTk6ngTClcXiLgnM=;
+        b=rgom+6tbFVjtJ0gACTfEUg4Uu49P7Fhu+XddM7a8o1xKzOJc9HcL5KBesDpcI63YTJ
+         Y9xxNUWvV28QE8kTcIYMgdQO+gRy6fTRmC6DS/J7b68ALeW2prynxVTrYnepxq9P6ri4
+         jXUp/JHqWz2hgv59UoacfVI7jCqMOIb5eA2Z9PlGDLquFoN1FvWxt2KEUJaV1Qx/Hdin
+         xlLUZXVJs7Jba2FqFb/21XCkdY6upp/R6xuThrVLNLQlcrAXEWL4lYbdVTfcLWrwwsdm
+         BkKs/LH1txlVD3ka/D9Yy1lJ6AAdIsduhCVYz/qnfaaWpQWl5vKO7YmA/mnohL9kwiR/
+         3ipQ==
+X-Gm-Message-State: AFuF++nfDpvS+YQegN4PbZPjWXoHcCyCbObfto5emetUpM7XnADtzO2P
+	PW8LrVkM8Fd3Yb5m4h1dgHhxQFyanN2Rjso6VByactriMYYm+CyFpIp+
+X-Gm-Gg: AYBFou065ExFDjupV/VVyVdBEz0YFQSziG5a4a5CM4a3SxFT8yg/n5vnQSrqc2+Ou4w
+	ukI4k6RDjB4dNpyNclDJfAEnoZ93ThZbe5Zgfeb+HpIn5F004HIU0QioH5qxc7dq60tqCDOlCNY
+	wvK8xSdVEhf5VX9CNcpCnU5v5omloxLJdYCZ/MEn+1FGP1PB+aVRo3o1T7jp3OLs9p2MpwFKydz
+	r7o7MuwV7050UZhOlPMoH2UHwa59YvSh1v3Q7YpNQho8YSmFVNeybNA3ZEbIkyjBN5s/IWlb3sH
+	AQO75zW/qhzqjU9FSPgPYkShaY+SEux7QdCum12kdrXgXFQ3X4tRbfrLhS6qMPeMc7DTDvFenYs
+	sZdgbTV/8gcFoGMI/5CYK2OjVA1mXujbubVPfwZDFk/coZ7uVZoJbdeWnrdSiBMznv+j7hj1Oe1
+	EKLwc95/n+aMWeZQdUhxWtFegTRGGQngoVtSMYmCnWaJqa8N+41YMxkUJC8emeQZS6PLG5tJt1E
+	PcCYkNWIA==
+X-Received: by 2002:a05:6820:81c5:b0:6b1:6462:7e4a with SMTP id 006d021491bc7-6b6fc7d69eamr7174889eaf.13.1788543223122;
+        Fri, 04 Sep 2026 10:33:43 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:53::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b6dcb85657sm3425792eaf.7.2026.09.04.10.33.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 10:30:33 -0700 (PDT)
-Date: Fri, 4 Sep 2026 10:30:28 -0700
+        Fri, 04 Sep 2026 10:33:42 -0700 (PDT)
+Date: Fri, 4 Sep 2026 10:33:39 -0700
 From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Shuah Khan <shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	sargun@sargun.me, jlinbox@meta.com,
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next 0/6] vsock: assign the guest vsock device to a
- network namespace
-Message-ID: <apsANK7ySuRzzK0V@devvm29614.prn0.facebook.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Subject: Re: [PATCH net-next 6/6] selftests/vsock: test the assign ioctl
+ privilege checks
+Message-ID: <apsA808VUA8CrbCd@devvm29614.prn0.facebook.com>
 References: <20260902-vsock-guest-ns-v1-0-9995383e9a8b@meta.com>
- <apqGcFDFm9_Wtw4q@sgarzare-redhat>
+ <20260902-vsock-guest-ns-v1-6-9995383e9a8b@meta.com>
+ <20260903230147.63ACA1F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -92,72 +77,79 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <apqGcFDFm9_Wtw4q@sgarzare-redhat>
+In-Reply-To: <20260903230147.63ACA1F00A3D@smtp.kernel.org>
 
-On Fri, Sep 04, 2026 at 10:55:17AM +0200, Stefano Garzarella wrote:
-> On Wed, Sep 02, 2026 at 04:00:46PM -0700, Bobby Eshleman wrote:
-> > vsock network namespaces let a host put each VM in a namespace of its
-> > own. A guest has no equivalent yet. It has a single G2H device that
-> > cannot be assigned to a network namespace.
+On Thu, Sep 03, 2026 at 11:01:47PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Medium] The unprivileged user namespace test spuriously fails because the unprivileged user lacks DAC permissions to open `/dev/vsock`.
+> --
 > 
-> Thanks for this, I'll do a proper review next week, in the mean time some
-> comments below:
+> commit 4c5b8557bb5663f827061639a80256407bfe6c8c
+> Author: Bobby Eshleman <bobbyeshleman@meta.com>
 > 
-> > 
-> > This series lets a guest move that device into a network namespace. A
-> > new ioctl on /dev/vsock, IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS, assigns the
-> > device to the namespace of the calling process. The namespace's existing
+> selftests/vsock: test the assign ioctl privilege checks
 > 
-> Why an ioctl?
+> This commit adds two tests to verify that CAP_NET_ADMIN is required to use
+> the IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS ioctl, and that an unprivileged user
+> namespace alone is insufficient.
 > 
-> I'm asking because I'd like to know if you've already considered any
-> alternatives (sysfs, netlink, etc.)
+> > diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
+> > index 53591fa07f1a8..efb94d17d9976 100755
+> > --- a/tools/testing/selftests/vsock/vmtest.sh
+> > +++ b/tools/testing/selftests/vsock/vmtest.sh
+> [ ... ]
+> > @@ -1805,6 +1817,51 @@ test_ns_guest_assign_g2h_netns_reset_on_ns_delete_ok() {
+> [ ... ]
+> > +test_ns_guest_assign_g2h_netns_unpriv_user_ns_fails() {
+> > +	local helper=/tmp/vsock_assign_g2h_netns
+> > +	local unpriv_uid=65534
+> > +	local unpriv
+> > +	local rc
+> > +
+> > +	unpriv="setpriv --reuid=${unpriv_uid} --regid=${unpriv_uid}"
+> > +	unpriv="${unpriv} --clear-groups"
+> > +
+> > +	if ! vm_ssh "init_ns" -- "${unpriv} unshare -U true"; then
+> > +		log_host "unprivileged user namespaces unavailable, skipping"
+> > +		return "${KSFT_SKIP}"
+> > +	fi
+> > +
+> > +	# The home shared with the guest is root-only, so place the helper where
+> > +	# an unprivileged user can execute it.
+> > +	vm_ssh "init_ns" -- \
+> > +		"cp ./vsock_assign_g2h_netns ${helper} && chmod 755 ${helper}"
+> > +
+> > +	vm_ssh "init_ns" -- "${unpriv} unshare -Urn ${helper}" &>/dev/null
+> > +	rc=$?
+> > +
+> > +	if [[ "${rc}" -ne "${EPERM}" ]]; then
 > 
-> How do you think the ioctl should be used? Should we provide an userspace
-> tool, or extending some existing tools?
+> [Severity: Medium]
+> Will this test spuriously fail in minimal environments like virtme-ng?
 > 
-> Thanks,
-> Stefano
+> The test helper vsock_assign_g2h_netns is executed as an unprivileged user
+> (UID 65534). In minimal environments without systemd-udevd to modify default
+> device node permissions, devtmpfs creates /dev/vsock with default 0600
+> (root:root) permissions since vsock_device in the kernel does not explicitly
+> specify a mode.
+> 
+> When the unprivileged user tries to open /dev/vsock:
+> 
+> tools/testing/selftests/vsock/vsock_assign_g2h_netns.c:main() {
+>     ...
+> 	fd = open("/dev/vsock", O_RDONLY);
+> 	if (fd < 0) {
+> 		fprintf(stderr, "open /dev/vsock: %s\n", strerror(errno));
+> 		return -1;
+> 	}
+>     ...
+> }
+> 
+> It gets EACCES, causing the C helper to return -1 (exit code 255).
+> 
+> Since the script expects EPERM (exit code 1) from the ioctl failure, does it
+> misinterpret the 255 exit code as a test failure?
+> 
 
-Really only because /dev/vsock exists and the prior series used it.
-
-Considering netlink, it might be the better option because there is a
-lot of prior art solving problems we might have in the future. For
-example, I was thinking about when users suddenly lose access to vsock,
-with just the current assign ioctl there is no way for apps or users to
-figure out why this happened. We can have an ioctl() setter for user,
-but in netdev world users can actually get a notification via netlink as
-to which namespace the device went to and what its ifindex is there (see
-__dev_change_net_namespace() for the RTM_DELLINK and RTM_NEWLINK
-messages). There is probably more, but that's the case that comes to
-mind.
-
-> 
-> > ns_mode then decides who may use it: a "global" namespace shares the
-> > device with every other global namespace, and a "local" namespace keeps
-> > the host connection to itself. The device starts out in the initial
-> > namespace, so until the ioctl is issued nothing has moved and no mode
-> > has changed. There is no explicit unassign as assigning the device back
-> > to the initial namespace is equivalent.
-> > 
-> > The ioctl requires CAP_NET_ADMIN in the initial user namespace.
-> > 
-> > Connections that can no longer reach the device after a move are reset,
-> > so that a namespace which has lost access cannot keep using a socket it
-> > opened while it still had access. Following netdevs, the device returns
-> > to the initial namespace when the namespace it was moved to is deleted.
-> > 
-> > Transports opt in through a new netns_assign_allow callback. Only
-> > virtio-vsock implements it here.
-> 
-> Why? (Not asking to support all the others, asking to explain the reason or
-> ask helps from others to extend it)
-> 
-> Thanks,
-> Stefano
-
-Sure, can add a note here about extending it. I just didn't want to
-implement code without having an environment allowing me to test it.
-
-Best,
-Bobby
+I don't know about systemd-udevd, but seems like we can generalize this
+to non-zero exits just to be cautious.
