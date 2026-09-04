@@ -1,95 +1,94 @@
 Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C3A20DD51
-	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 23:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1327F3E9C19
+	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 23:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.76
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788563243; cv=pass; b=Ptnt+Uf+2kac5pkaqybhh3zywH1zyndaRyBuv9gcZF0mTaQf+YgUnzsvJI2APODq9nDsFkx0hvkZqnFiRTYumbyytRwOUFqUj11qE1mU8ofPFuCBECxvE/Wgx2bIpxysvfThoe4ql7x5B0/VZSLD627tMHIh9BFGqgOSvlaKwlo=
+	t=1788565373; cv=pass; b=oHNXzwZ3jBEIfRIeFXCda73Idv6qJrQcw2PqWZpEhSbYYxBfsBGjvUQW3QRSravlhhQZPuv2QkY4L/gsIuq/4u1OGFO7jWfAr7Y/6jfWDASbNo6cdxvPLyKouX/ZijDvcIQJa4xneVGNOFPcIVbwJdfALVoxKZhKdreZXD+dxH0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788563243; c=relaxed/simple;
-	bh=gb4dOZ2ww7j3/A+6+TU83/q7vS18PQ0rzYZIjQp5d48=;
+	s=arc-20240116; t=1788565373; c=relaxed/simple;
+	bh=tdeIH4baK11lM3YxuNe0/+kLC8zzDloAejtrDuGVn1o=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QGkEVx5jyaWEnNqZx6QxVf5r9xpK9vddEv5zCO74p8VmBAenTAD7MYQiamc/Tnsj8XR5Mx4OOrN510aLjectZ6HTpPHVsvRcwNuBs2kKualjlqOVLPGfU1i4Mu/tW/YHWkbFNLADEWrU1QhIFZ8y779aPluoab/QCNjetGmMdbU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c+Mm4LUy; arc=pass smtp.client-ip=74.125.228.76
+	 To:Cc:Content-Type; b=gwGmn/LxoJNsHh1U9YcJjHrMuyQcC92OqqKnbfeORVPN8lFbzyaxMjNiv6G4Eg0WZDoQ3HbtzyxjrrSrFgKxxwwJ3REfT8RYKbeSe1DbrLAQ2dlkaIgtq9CYGfp2XLS9iL1pKW6ycM0D7dNpEwMxwx9mkOhoj3hAnKDyggxvHW0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZF4j5uCp; arc=pass smtp.client-ip=74.125.228.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c+Mm4LUy"
-Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a5d8fd8d88so2173a12.0
-        for <kvm@vger.kernel.org>; Fri, 04 Sep 2026 16:07:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788563239; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZF4j5uCp"
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a6141a61c0so1765a12.1
+        for <kvm@vger.kernel.org>; Fri, 04 Sep 2026 16:42:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788565370; cv=none;
         d=google.com; s=arc-20260327;
-        b=GTvtq8h+/VbzPZC6b0MYCj1KLEKBwEY3NVYpq8u6Czg4si4HFfyOGaIVYp0RgakSTM
-         7XFjaNOFlTumgP8T5Za1m4wDMxPghORnk2NLay4ow7jXHWbE6QFIFTXF/cSVFl0uhL/k
-         yRz3od0q95LP8eE0cJ1dWq1eMWF4fun6Zylc2aSAGOGDnqWAHuz80iOcFO7EnOy+zdMM
-         EDWGEqhrvOyZHUY0EDvJSc08MLoQ16DwqgEYl+gKuoqlh278xV7reWrEqDCqNhDzasaA
-         OBlMoOZz/EOfpTUWj7DHYNbEPeMxjOde4tfZj3XYVVn7VaU1GPL4PAGNre5/Ocrj1+Su
-         zSgw==
+        b=WCKKwxBgXDStRM9N8KKGc+eMWzg0CHjgHyTM82hXY/3tEl/QfA4BRdTpnBZQ1JoiKx
+         dmk62TtGjRTCXguB2GJqvfY1fV6pi7HKv+TSIn1lU3nOA23e2KPrKXYmvMXoK3E7Di6r
+         ph5QcSEgSlEFU6OpzGWZ4Wa+0l0IZbaBsBUxGtPQ1MSQLXir8FSeNFAc+6y2DpdKYRX1
+         8C6PZZ1fbkQMyqImZ1uyBfTI26inY9CQ4zSSCVTofPKxQPyYDPYBkBV/gzvt+X4dNWgG
+         j6eNELAoBm1L1TVtWqyqx1EWVv+mXcej/OQMNB8daRWRCNXv/Cux9Bz8NHkX1+WA5uvH
+         swwQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=/6zIiOUhrTcb0uUWQ8IotYmhxf+N+MfQ3oz9P1c3HMU=;
-        fh=KJk6LktSIohoIyT8tEbG8SjiDfy2aiCJwnw2O2zcGIU=;
-        b=OwuEdr85m0u93TNso5KuFJDZ2exmy2sBUcUVbKJnPQpee694BEl4azQ3X/QrGVyxBI
-         WkBr1efEdRG+onRsVuDCYP8KtPm95sdIsQ689SiIXP8f8AMPzmVzVpXwflUBBKTA5o64
-         E8UbhlnFgxmsGRSiCnNUx/cFQq1LSQo7eseGZOI5+d3qv2anzOLX+5oCSzqZ60jwYumY
-         iXHdCuNCIzWKgJ2uFWg7St0ZCA1CfD0NnxJJd4+9Q0ZMJWIFaSHVEjsl+iYe9lc+Cd6N
-         Vonvc6x4uznvabAXgcYV2hdq3E6KdiWQGhqdqW40G2pocPARtdV0/3JCd3qs9hECy8N6
-         NZeg==;
+        bh=a490dV5va/G+fyNgSv3jbK3kZI5ySQnRWsBN/ioce6o=;
+        fh=k1pgYH91ELfGXFanNyjxZCsNX4nAJKuOruNSCDk1zUo=;
+        b=G5iajFUD8G1HH6zf7ZNBatdoEoxMn6OSaWZ1t/tQO2qlxrzOHP6EJuGt6DFL1Wu3SR
+         TtKAdWDz7YG854LHMm0QIFkbe0uNbf3ueny/ZnNxqqCYbudXjwoQtsNmO0qNWMsCv1Ef
+         E7VcOEt5ERAsRxhpXW0Pk8vKsGd3LElEhzO+EpQTeN1mrUyP245SGZuswFr3195faYhV
+         EoF4aZTqKnlWIGyN9JNWdmXXuJrC98rt7sPprzI+sVEoGXMgxH+GYHyEim9e1Dq/qaI6
+         JTPNNnx/d0ntC3g6d6+3/oTDEAB1kibKB0xO5YbowiQzMF4pegJZXHaQOzAszoUB/B76
+         hxlQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788563239; x=1789168039; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788565370; x=1789170170; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=/6zIiOUhrTcb0uUWQ8IotYmhxf+N+MfQ3oz9P1c3HMU=;
-        b=c+Mm4LUy6CQfMa6+qhM4yfbVh1vMpIvUyh2B2j+e69FRqYw3Ov5mzgNtu1GXPZEntP
-         kMTxC3cWeGGQqL/i3eplHjKRxsXvAW8izmZl1o5JclnxB5Utk01bOVDW2Mg7ofN+vhhl
-         wI/Ge93armEP8pAWxKTBcSbmcr1FTAxLMHoxjcK4Jx2v4yOFGqePGjRBMIZYHXex9bfo
-         erXeJPKyV5fMhSg/NnKGWj6AFBWy8Z7NTa75p6owNJBAsJL9TFDGXIgVNHjjq0k7k0h5
-         t7rrZLOkSvlRmISH3qR37L5xBb4RgwWkQNV20z4i+dg79OWa3T/qsqxrXsZlYMDsav8Z
-         R8yg==
+        bh=a490dV5va/G+fyNgSv3jbK3kZI5ySQnRWsBN/ioce6o=;
+        b=ZF4j5uCpoKaUnazWnTNp2ojnyEHndnkgC5TuSr5x9xX2Gu7egVp6hYDu0gFYl5/aL3
+         XrOMxY/HGvP8kkf247LrxyhJegpnNbgA6bS/8B3ktAUo9nB+1YlmLrJDVGWc1VUoPZ8U
+         Q2iuTkZPPaj18l0BTgo0kqaZJ99IjW6b6rOocQxXpkYMqbYpIB0GmG0BlwhlM5av7MuI
+         lhCzKrdRFYXjDnLMr8DdkiBJBFY2f1pdYnuycVoDTKhk5WNGSbtzJ1b8N5s6QMWxetPD
+         77FN/KJfZXQwJpFcw9cC9gzhd5VBgvEKPrjwGOGH4EODJtHnYWKrufXDmEBabDF8NWrD
+         GmTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788563239; x=1789168039;
+        d=1e100.net; s=20251104; t=1788565370; x=1789170170;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/6zIiOUhrTcb0uUWQ8IotYmhxf+N+MfQ3oz9P1c3HMU=;
-        b=oWe3uX6LnSPqHSs2Kp3pb9WiYoT5NUuG+kwz3/NMr9muX2b9ISjJaWV9Y1Q4OMoLli
-         lmiz0vtg5qd6ZCmjsuiYKX6P/pWNSajdL73HSlG6Ej2gNFLcF2gqPBpldjtCsEs7Gjox
-         g7A+1BBVpOUrXHw3jYzU527ybq4sg8Qyak7EpTch+DOqNgib5gqw8PhG7BELVGLKy6Mj
-         UJa8SmjQC1MMveUOnZWDeD2EqBs7/rhUO/FV8dCPRVmjGWvJ17+RANox7q0+FHgZ3oXs
-         Fme1CkMBRhXa+WJPvYhjMWCdTG42I9Ua/wvyxato8SGT6Vfd++5Tqj4m67xTqX1XtUti
-         +dlA==
-X-Forwarded-Encrypted: i=1; AKwUvBzowdDQnZ4VUg2G0ycYuzWx3eL4glHxM5YhBM1FmuNuAvsruA9/ZmjU4cddQCoippA+rvQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++ko3TzXdOi2Wlh4HQe1YsEpmI3+xcniPrnSHgKP5CwvKUgXwj5J
-	5vwrG/JrxxrYnORw4ZOk9xoPiw2bXtICTXmSB9nGrYe/PiIyGojd7bctcjomrhqlGo2frCVWXNr
-	RjfgfigYdSldE8KJJ8s/u8wu+2uRGctz1G1Ild4xR
-X-Gm-Gg: AYBFou3hPIjrHNcD7CgAmBI8IKcZVzWcNpXC5gVXmmAzZyoTP1a34tbnkRMswzeMx1b
-	RVCz+vCFJ48Cvt6+OqM2m3xz+K4RSt8JSvbzKNwgn4Ej9g2FP27Ox6oeCyMzJn8dVb/9sYZV685
-	8Ns6oTveyUsLaF5l4cMbX+T+ZMqkUzdJ5c5S5ELFzHn6LopUkKRzyQGrs1AOgaWFnkI71z0n+gN
-	nvcAxXRZD9JsC5j9d5y/3p7uueTQUBHT17y1eOmbFOhTbshfsKJXdB1VWea6ODu40dZRggAUwOl
-	C6wR5HSPC5mZOnJc30SslYBfo5MMAeiBYPi+Ef1w1MUo
-X-Received: by 2002:a05:6402:311c:b0:69e:98c8:e958 with SMTP id
- 4fb4d7f45d1cf-6a7f687b853mr12119a12.7.1788563238383; Fri, 04 Sep 2026
- 16:07:18 -0700 (PDT)
+        bh=a490dV5va/G+fyNgSv3jbK3kZI5ySQnRWsBN/ioce6o=;
+        b=c9i2O5h6nXln5hBDHIOkYtkiTn9E2Nujeh5sQM3v+S77fes49qhKC3i5lzpv/cdLQ2
+         PaLwVwlWeKdebSJvDAOVZuzHXf3QEqtCbAS+XxG/V6bS9sTq5pYDG1siVoNLBYEPcd5D
+         KC92jN8zA6W39vqAImUQFVmRn5E6iKKix/02YJwSBM9zfl77HaQsH6jOkQuO3id+rAC2
+         C0NitQdgX8uHQp2qrS/30rMVL3qu0nLYUi+n2F/ymzZHH/07KZACqU/jwv6fXoTaAzMC
+         mCU/lforf88GHvByUpnUAajpL8gPNeDNi1uVpvM3wJtMN2Un5QIfzIsrUQzxTkZ9aQaB
+         2AQw==
+X-Forwarded-Encrypted: i=1; AKwUvBx9gjAkiBFpn2sCyyGqvdo1X/aFanPRUyR6QPRM3EcDZzxQcjituIjjRCuZjMH9MfoMilE=@vger.kernel.org
+X-Gm-Message-State: AFuF++n/QtVnMQMCrH4P69JTYctN6UtK6ZrFj6OWVwwhfrPsPRSGC+Gr
+	4cojGyYpGKO3NG4ebePDCQbAgWHGpo2n4gvFu9REX70jAzidp4efeamQ2zXrKSUcp54vMD69Rzv
+	uoOqFGmvhiSbqYu0wCCeOdl7catQBv1CdhvnElLWw
+X-Gm-Gg: AYBFou0UuNCht0tQwufPDeB/L/sB1IyEa4oKjRJwo8QsYwOKxLWu60DvrFU3Mo7TkR5
+	WEs6+YopbeMQTJ+Ur3e7skKfrh/8iAyJj9CjvQ58RUsCne2SYPSHQ33v8xSeIZSijBzj0WMZ0Cv
+	X1prxpuFH82e1CThhmv7LTj1dFsMgpH88SQcTYuICUdmw+mSjvov24c56R/uON5JM5V4sg3zm3/
+	Heh8rTNqudcEjIycVkKcn+Mnz5+TG5KEypmG0NRmDVvHxhzUzbQ5glEjS7SH6TvilzBEzB5BfTR
+	WqHwxDgueerRJqDODCYciFM9yG7HEd1j1Cy5ZGYF+ZX8
+X-Received: by 2002:aa7:d892:0:b0:6a6:32f6:2841 with SMTP id
+ 4fb4d7f45d1cf-6a7f684a29bmr14334a12.14.1788565369618; Fri, 04 Sep 2026
+ 16:42:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260824123954.315112-1-zhang_wei@open-hieco.net> <20260824123954.315112-3-zhang_wei@open-hieco.net>
-In-Reply-To: <20260824123954.315112-3-zhang_wei@open-hieco.net>
+References: <20260824123954.315112-1-zhang_wei@open-hieco.net> <20260824123954.315112-4-zhang_wei@open-hieco.net>
+In-Reply-To: <20260824123954.315112-4-zhang_wei@open-hieco.net>
 From: Jim Mattson <jmattson@google.com>
-Date: Fri, 4 Sep 2026 16:07:06 -0700
-X-Gm-Features: AcwNN1W1tvX6VzRjnC7l8gz4hxgqZGETgcAZJsyQxtEsA1mVWr9eN5JoJOp6QQk
-Message-ID: <CALMp9eSmrHdLpOi9-xQvcRUxyVN-8CG2MKWnxKfXFaBBDztzNg@mail.gmail.com>
-Subject: Re: [PATCH v5 2/8] KVM: nSVM: Synthesize DecodeAssists EXITINFO for
- emulated intercepts
+Date: Fri, 4 Sep 2026 16:42:37 -0700
+X-Gm-Features: AcwNN1VTu8soNFdZKDDuJyRJOCyguZsvF4fhB4VorP5tfiMZXhPhnkzdAlhwRFU
+Message-ID: <CALMp9eTUv+4v3jT7w3T8XoQmoSwkEjx6LHr39oJ9k8QNiQnyUA@mail.gmail.com>
+Subject: Re: [PATCH v5 3/8] KVM: nSVM: Track fresh hardware DecodeAssist bytes
 To: Tina Zhang <zhang_wei@open-hieco.net>
 Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
 	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, zhouyanjing@hygon.cn, 
@@ -100,99 +99,195 @@ Content-Transfer-Encoding: quoted-printable
 On Mon, Aug 24, 2026 at 5:40=E2=80=AFAM Tina Zhang <zhang_wei@open-hieco.ne=
 t> wrote:
 >
-> When the x86 emulator encounters an instruction intercepted by L1,
-> svm_check_intercept() synthesizes a nested VM-Exit without fresh hardware
-> DecodeAssist state.  Populate the architectural EXITINFO fields when
-> DecodeAssists is exposed to L1.
+> VMCB02 instruction bytes are valid only for the hardware VM-Exit that
+> populated them.  Track whether VMCB02 contains instruction bytes for the
+> data #PF or #NPF currently being reflected to L1 so that stale bytes are
+> not copied to VMCB12.
 >
-> Generate EXITINFO1 with the GPR number for MOV CR/DR, the interrupt vecto=
-r
-> for INTn, and the linear address for INVLPG.  Set EXITINFO1 to zero for
-> CLTS, LMSW, SMSW, and INVLPGA; the INVLPGA address remains in guest rAX.
-> Clear EXITINFO2 for all covered intercepts and leave unrelated intercepts
-> unchanged.
+> Clear the VMCB02 instruction-byte fields and freshness state before each
+> nested run.  Mark the bytes as fresh only when a data #PF or #NPF came
+
+By "nested run," do you mean "emulated VMRUN"? IIUC, that's when the
+bytes and freshness are cleared.
+
+> from hardware; KVM-synthesized exits and instruction-fetch faults leave
+> the state clear.
+>
+> A subsequent change will use this state when propagating hardware
+> DecodeAssist instruction bytes to VMCB12.
 >
 > Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
 > ---
->  arch/x86/kvm/svm/svm.c | 48 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 48 insertions(+)
+>  arch/x86/kvm/svm/nested.c | 41 +++++++++++++++++++++++++++++++++++++--
+>  arch/x86/kvm/svm/svm.c    |  6 +++---
+>  arch/x86/kvm/svm/svm.h    |  5 ++++-
+>  3 files changed, 46 insertions(+), 6 deletions(-)
 >
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index 9d607b98bd06..c7c1f1527c3c 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -4810,6 +4810,52 @@ static const struct __x86_intercept {
->  #undef POST_EX
->  #undef POST_MEM
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index 73f37b050d0a..6770721d4e4c 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -35,6 +35,38 @@
 >
-> +static void svm_prepare_decode_assist_exit_info(struct kvm_vcpu *vcpu,
-> +                                               const struct x86_instruct=
-ion_info *info)
+>  #define CC KVM_NESTED_VMENTER_CONSISTENCY_CHECK
+>
+> +static void nested_svm_clear_insn_bytes(struct vmcb *vmcb)
 > +{
-> +       struct vmcb *vmcb =3D to_svm(vcpu)->vmcb;
-> +       u64 exit_info_1;
-> +
-> +       if (!guest_cpu_cap_has(vcpu, X86_FEATURE_DECODEASSISTS))
-> +               return;
-> +
-> +       switch (info->intercept) {
-> +       case x86_intercept_cr_read:
-> +       case x86_intercept_cr_write:
-> +               /* MOV CRx: bit 63 set, GPR number in bits 3:0. */
-> +               exit_info_1 =3D BIT_ULL(63) | (info->modrm_rm & 0xf);
-> +               break;
-> +       case x86_intercept_clts:
-> +       case x86_intercept_lmsw:
-> +       case x86_intercept_smsw:
-> +               /* CLTS/LMSW/SMSW: no decode information, bit 63 clear. *=
-/
-> +               exit_info_1 =3D 0;
-> +               break;
-> +       case x86_intercept_dr_read:
-> +       case x86_intercept_dr_write:
-> +               /* MOV DRx: GPR number in bits 3:0. */
-> +               exit_info_1 =3D info->modrm_rm & 0xf;
-> +               break;
-> +       case x86_intercept_intn:
-> +               /* INTn: software interrupt number in bits 7:0. */
-> +               exit_info_1 =3D info->src_val & 0xff;
-> +               break;
-> +       case x86_intercept_invlpg:
-> +               /* INVLPG: linear address of the target page. */
-> +               exit_info_1 =3D info->intercept_linear_addr;
-> +               break;
-> +       case x86_intercept_invlpga:
-> +               /* INVLPGA: the address remains available in guest rAX. *=
-/
-> +               exit_info_1 =3D 0;
-> +               break;
-> +       default:
-> +               return;
-> +       }
-> +
-> +       vmcb->control.exit_info_1 =3D exit_info_1;
-> +       vmcb->control.exit_info_2 =3D 0;
+> +       vmcb->control.insn_len =3D 0;
+> +       memset(vmcb->control.insn_bytes, 0,
+> +              sizeof(vmcb->control.insn_bytes));
 > +}
 
-Can this entire function be integrated into the existing switch
-statement in svm_check_intercept()?
+Is it necessary to clear the bytes? The APM says, "All other
+intercepts clear bits 7:0 in this field to zero (to indicate an
+invalid condition); implementations may leave the other bytes
+untouched."
 
-And, if !guest_cpu_cap_has(vcpu, X86_FEATURE_DECODEASSISTS), should
-exit_info_1 be cleared for these intercepts?
+Are you concerned about leaking bytes from unreflected VM-exits handled by =
+L0?
 
->  static int svm_check_intercept(struct kvm_vcpu *vcpu,
->                                struct x86_instruction_info *info,
->                                enum x86_intercept_stage stage,
-> @@ -4931,6 +4977,8 @@ static int svm_check_intercept(struct kvm_vcpu *vcp=
-u,
->                 break;
+> +static bool nested_svm_vmexit_has_insn_bytes(const struct vmcb *vmcb)
+> +{
+> +       u64 exit_code =3D vmcb->control.exit_code;
+> +
+> +       if (exit_code !=3D SVM_EXIT_NPF &&
+> +           exit_code !=3D SVM_EXIT_EXCP_BASE + PF_VECTOR)
+> +               return false;
+> +
+> +       return !(vmcb->control.exit_info_1 & PFERR_FETCH_MASK);
+> +}
+> +
+> +static void nested_svm_set_vmcb02_insn_bytes_fresh(struct vcpu_svm *svm,
+> +                                                  bool from_hardware)
+> +{
+> +       svm->nested.vmcb02_insn_bytes_fresh =3D
+> +               from_hardware && static_cpu_has(X86_FEATURE_DECODEASSISTS=
+) &&
+> +               nested_svm_vmexit_has_insn_bytes(svm->vmcb);
+
+For  consistency, should svm->vmcb be svm->nested.vmcb02.ptr?
+
+> +}
+> +
+> +static void nested_svm_clear_vmcb02_insn_bytes(struct vcpu_svm *svm)
+> +{
+> +       nested_svm_clear_insn_bytes(svm->nested.vmcb02.ptr);
+> +       svm->nested.vmcb02_insn_bytes_fresh =3D false;
+> +}
+> +
+>  static void nested_svm_inject_npf_exit(struct kvm_vcpu *vcpu,
+>                                        struct x86_exception *fault,
+>                                        bool from_hardware)
+> @@ -68,6 +100,7 @@ static void nested_svm_inject_npf_exit(struct kvm_vcpu=
+ *vcpu,
+>                                     (fault->error_code & ~PFERR_GUEST_FAU=
+LT_STAGE_MASK);
+>         vmcb->control.exit_info_2 =3D fault->address;
+>
+> +       nested_svm_set_vmcb02_insn_bytes_fresh(svm, from_hardware);
+>         nested_svm_vmexit(svm);
+>  }
+>
+> @@ -868,7 +901,9 @@ static void nested_vmcb02_prepare_control(struct vcpu=
+_svm *svm)
+>         /*
+>          * Filled at exit: exit_code, exit_info_1, exit_info_2, exit_int_=
+info,
+>          * exit_int_info_err, next_rip, insn_len, insn_bytes.
+> +        * Clear stale DecodeAssist data before L2 runs.
+>          */
+> +       nested_svm_clear_vmcb02_insn_bytes(svm);
+>
+>         if (guest_cpu_cap_has(vcpu, X86_FEATURE_VGIF) &&
+>             (vmcb12_ctrl->int_ctl & V_GIF_ENABLE_MASK))
+> @@ -1643,14 +1678,16 @@ static int nested_svm_intercept(struct vcpu_svm *=
+svm)
+>         return vmexit;
+>  }
+>
+> -int nested_svm_exit_handled(struct vcpu_svm *svm)
+> +int nested_svm_exit_handled(struct vcpu_svm *svm, bool from_hardware)
+
+I don't think 'from_hardware' is necessary. The two callsites where
+from_hardware is false are for opcode exits, and will be ruled out by
+the check for nested_svm_vmexit_has_insn_bytes(svm->vmcb). If you drop
+this extra parameter, there will be less churn.
+
+>  {
+>         int vmexit;
+>
+>         vmexit =3D nested_svm_intercept(svm);
+>
+> -       if (vmexit =3D=3D NESTED_EXIT_DONE)
+> +       if (vmexit =3D=3D NESTED_EXIT_DONE) {
+> +               nested_svm_set_vmcb02_insn_bytes_fresh(svm, from_hardware=
+);
+>                 nested_svm_vmexit(svm);
+> +       }
+>
+>         return vmexit;
+>  }
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index c7c1f1527c3c..5426a9669053 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -2571,7 +2571,7 @@ static bool check_selective_cr0_intercepted(struct =
+kvm_vcpu *vcpu,
+>
+>         if (cr0 ^ val) {
+>                 svm->vmcb->control.exit_code =3D SVM_EXIT_CR0_SEL_WRITE;
+> -               ret =3D (nested_svm_exit_handled(svm) =3D=3D NESTED_EXIT_=
+DONE);
+> +               ret =3D (nested_svm_exit_handled(svm, false) =3D=3D NESTE=
+D_EXIT_DONE);
 >         }
 >
-> +       svm_prepare_decode_assist_exit_info(vcpu, info);
-> +
->         /* TODO: Advertise NRIPS to guest hypervisor unconditionally */
+>         return ret;
+> @@ -3723,7 +3723,7 @@ static int svm_handle_exit(struct kvm_vcpu *vcpu, f=
+astpath_t exit_fastpath)
+>                 vmexit =3D nested_svm_exit_special(svm);
+>
+>                 if (vmexit =3D=3D NESTED_EXIT_CONTINUE)
+> -                       vmexit =3D nested_svm_exit_handled(svm);
+> +                       vmexit =3D nested_svm_exit_handled(svm, true);
+>
+>                 if (vmexit =3D=3D NESTED_EXIT_DONE)
+>                         return 1;
+> @@ -4983,7 +4983,7 @@ static int svm_check_intercept(struct kvm_vcpu *vcp=
+u,
 >         if (static_cpu_has(X86_FEATURE_NRIPS))
 >                 vmcb->control.next_rip  =3D info->next_rip;
+>         vmcb->control.exit_code =3D icpt_info.exit_code;
+> -       vmexit =3D nested_svm_exit_handled(svm);
+> +       vmexit =3D nested_svm_exit_handled(svm, false);
+>
+>         ret =3D (vmexit =3D=3D NESTED_EXIT_DONE) ? X86EMUL_INTERCEPTED
+>                                            : X86EMUL_CONTINUE;
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index 66b44b54608e..610def16f700 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -242,6 +242,9 @@ struct svm_nested_state {
+>          * on its side.
+>          */
+>         bool force_msr_bitmap_recalc;
+> +
+> +       /* True if VMCB02 has instruction bytes from the current hardware=
+ exit. */
+> +       bool vmcb02_insn_bytes_fresh;
+>  };
+>
+>  struct vcpu_sev_es_state {
+> @@ -887,7 +890,7 @@ static inline void nested_svm_simple_vmexit(struct vc=
+pu_svm *svm, u32 exit_code)
+>         nested_svm_vmexit(svm);
+>  }
+>
+> -int nested_svm_exit_handled(struct vcpu_svm *svm);
+> +int nested_svm_exit_handled(struct vcpu_svm *svm, bool from_hardware);
+>  int nested_svm_check_permissions(struct kvm_vcpu *vcpu);
+>  int nested_svm_check_cached_vmcb12(struct kvm_vcpu *vcpu);
+>  int nested_svm_check_exception(struct vcpu_svm *svm, unsigned nr,
 > --
 > 2.43.7
 >
