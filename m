@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7408946A61D;
-	Fri,  4 Sep 2026 21:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8401149C4C3;
+	Fri,  4 Sep 2026 21:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788559174; cv=none; b=G4C/rgA940/omfex6PlSAeW+H0Z2rRaYGdj8JHQ9x0AABiVwudGtUii4iyh80UI1+l9GtS/6xZolEOsEKxxoB343c03NZPCZtc/l6ZIigcbDYSykhlCabM+05UVjVwAWDLxvBqlUvPYXC4xzJoMbpjJjKbOTe0pzshKhNvqR/OU=
+	t=1788559184; cv=none; b=OHVLB02Lqe/FWjEegFMn3LU3iFeWZ0aDjx+EXAvRwtz9Wp+ZUpSp5XiPQJFfAIZ9lerK5Yfb4YDOHDLF/K3BEQWA+4llgQnomx3185/9jdwoOCo3km3E2p7iUG9dBwvXGm8nz+tDVb/Ldd24GCYD75eX50jyyP5xhDysMft0llw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788559174; c=relaxed/simple;
-	bh=hvztLrJ4PSwRHtsh0fvfEfYYCEyJ1k5t2jSDdBWb7G0=;
+	s=arc-20240116; t=1788559184; c=relaxed/simple;
+	bh=civPgAf2mzS8v72P8m0qpuMc6SRr9Ck1NpDbk10ClD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S5ayK8KlM1D9vZihnDONdJzJY1mqPMiz5nWQ4fzzacUdDIWrqOo5RYClni8D/ESnwNcRq7iuoLRRENST1iLyLB0Sw/yNWOdEoAggip+d+6f88qc+AoRaaBBN7VrdAd9ecyvpmpKV//NhKps3IsCBH1sRlppf+gZus0nLH/iWwJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=igy9ciFb; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=pffVc/eIrL4rzPbMsDVPVIdxxCeUTWKaEpNBJ8FTh8rDp8R2bYp8y4nOZGsZnWNTtpGMyysX8NfQ1wfvuycr3YFf+Q6qmWqz2sxpM2wxHP6PbpsvDLe+cE69uqYR+kzdFYbHT9MEWfxoU2+klr22bCYp5FCaUQciJY98O8lHHPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xx+jNftn; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="igy9ciFb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xx+jNftn"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788559168; x=1820095168;
+  t=1788559175; x=1820095175;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=hvztLrJ4PSwRHtsh0fvfEfYYCEyJ1k5t2jSDdBWb7G0=;
-  b=igy9ciFbyC7NL3wSsRBAfmJeDn68mHIENLHlxqoL4gWy/eyP5z5dK+g/
-   Ayb4WS4ec0oghjkM9lm9fiqqQFiElBc3ycerD+cvc7o9tfsWk8XeEWF4n
-   axln1HB4C9Tupu9ag5QrPJEUQpjJfAbcmN4KgKXhEVxsNnfuT1tfH5l81
-   aTiTdECsrLqu3n4P5DTMzmBJ0//ZZvSnmEEP1akVlhE03G0ypO4jG4euX
-   7Q3EAArywdqLn34yl16pXQV7z+D8v6VpQi8wbwqXPgutq5t6h3ZuMthmz
-   2IfzlfZoJU5feO5zsImiOWesabI+lHhKWh4qhkprkcOI0PLhYvIMePPYJ
+  bh=civPgAf2mzS8v72P8m0qpuMc6SRr9Ck1NpDbk10ClD0=;
+  b=Xx+jNftnQ1Ek2s1/vEOpE0iQjxptYja6v9Zm123rMATgWXOR8MWuy7Li
+   GTBaEqCYPjBgncGhs2yPVJhysn99sw4x5aBvquygE6j9GZF4tYhpkLZw/
+   kiry6jiQoBzY4R/FUZtN81LnWJgXTgVon1SwfDz3Zz8fMOZc1wcNTNE3V
+   GMUIaF0Kzk1FTQ/1eEwMC5QQRe2u3RWpiIQPQA11D3bLcVRjwD4uegAqy
+   0xebEwFppoaCnwH7nvHj1Sq9Rmz8HrXOotStEI2iwoVKcBpcPQ9htIfz0
+   uxOG1TeFAKTqL5n7dAKWj03ilrRfieJWFoAi7fuE9trNZ7OKpD2qwsX+W
    g==;
-X-CSE-ConnectionGUID: Yh72UnjbQ8Sbe897XqtmEw==
-X-CSE-MsgGUID: lI4JNfUUTXiR8vysvfpVRA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11896"; a="100224814"
+X-CSE-ConnectionGUID: SMx1XC3HTO+yhGt9VtyLSQ==
+X-CSE-MsgGUID: e0jQAYZuSmqE89KkLCm2cA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11896"; a="100224824"
 X-IronPort-AV: E=Sophos;i="6.25,262,1779174000"; 
-   d="scan'208";a="100224814"
+   d="scan'208";a="100224824"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
   by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 14:59:24 -0700
-X-CSE-ConnectionGUID: bAMvgsvlQLivJ43/U3GpYg==
-X-CSE-MsgGUID: ZGJ1W0GXQwOPtskIBpaQ9g==
+X-CSE-ConnectionGUID: MqbYiAhPQgG2oez0b8PjgQ==
+X-CSE-MsgGUID: aFN7j5GhQ+qm3wDhQoy5Ng==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,262,1779174000"; 
-   d="scan'208";a="270675028"
+   d="scan'208";a="270675031"
 Received: from rpedgeco-desk.jf.intel.com ([10.88.27.135])
   by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 14:59:23 -0700
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
@@ -69,9 +69,9 @@ Cc: rick.p.edgecombe@intel.com,
 	Hongyu Ning <hongyu.ning@linux.intel.com>,
 	Binbin Wu <binbin.wu@linux.intel.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH v11 02/11] x86/virt/tdx: Allocate page bitmap for Dynamic PAMT
-Date: Fri,  4 Sep 2026 14:58:32 -0700
-Message-ID: <20260904215841.303070-3-rick.p.edgecombe@intel.com>
+Subject: [PATCH v11 03/11] x86/virt/tdx: Add __tdx_pamt_get/put() helpers
+Date: Fri,  4 Sep 2026 14:58:33 -0700
+Message-ID: <20260904215841.303070-4-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260904215841.303070-1-rick.p.edgecombe@intel.com>
 References: <20260904215841.303070-1-rick.p.edgecombe@intel.com>
@@ -83,225 +83,316 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The TDX Physical Address Metadata Table (PAMT) holds data about the
-physical memory used by TDX, and must be allocated by the kernel during
-TDX module initialization.
+Add helpers to use when allocating or preparing pages that are handed to
+the TDX module for use as control/S-EPT pages, and thus need Dynamic PAMT
+(DPAMT) adjustments.
 
-The exact size of the required PAMT memory is determined by the TDX module
-and may vary between TDX module versions. Currently it is approximately
-0.4% of the system memory. This is a significant commitment, especially if
-it is not known upfront whether the machine will run any TDX guests.
+The TDX module tracks some state for each page of physical memory that it
+might use. It calls this state the PAMT. It includes separate state for
+each page size a physical page could be utilized at within the TDX module
+(1GB, 2MB, 4KB). In DPAMT, only the 4KB page size state is
+allocated dynamically.
 
-Each memory region that the TDX module might use needs three separate PAMT
-allocations. One for each supported page size (1GB, 2MB, 4KB). The
-TDX module supports a new feature designed to reduce PAMT overhead called
-Dynamic PAMT (DPAMT). Under DPAMT the 4KB level is allocated dynamically
-during runtime, while the 1GB and 2MB levels remain allocated on TDX
-module initialization.
+KVM will need to hand pages to the TDX module that it will use at 4KB
+granularity. So these pages will need DPAMT backing added before they are
+used by the TDX module, and removed afterwards.
 
-However, in the details, DPAMT still needs some smaller per 4KB page
-scoped data (currently it is 1 bit per page). The TDX module exposes the
-number of bits as a separate piece of metadata than the 4KB static
-allocation for normal PAMT. Although the size is enumerated differently,
-it is handed to the TDX module in the same way the 4KB page size PAMT
-allocation is for normal PAMT.
+Create __tdx_pamt_get/put() to handle installing DPAMT 4KB backing for
+pages that are already allocated (such as KVM's use of S-EPT page tables
+or guest private memory). Have them take a pfn instead of a struct page,
+as future changes will want to use these helpers for guest pages which are
+tracked by PFN.
 
-Begin to implement DPAMT in the kernel by reading the bits-per-page needed
-for DPAMT. Calculate the size needed for the bitmap, and use it instead of
-the 4KB size determined for normal PAMT, in the case of DPAMT.
+Also add __tdx_alloc_control_page() and __tdx_free_control_page() to handle
+both page allocation and DPAMT installation. Make them behave like
+normal alloc/free functions where allocation can fail in the case of no
+memory, but free (with any necessary DPAMT release) always
+succeeds. Do this so they can eventually support the existing TDX flows
+that require teardowns to succeed.
 
-The existing metadata reading code was generated by a script, but the
-current plan is to stop generating this code, as the script has continued
-to need adjustments. So add manually written code and adjust the comment
-about it being autogenerated to be more generic. Start to adopt a more
-normal kernel code style without the ternary statements and if
-conditionals assignments that the auto generated code has.
+Don't CLFLUSH the DPAMT pages handed to the TDX module, as is done
+for some other SEAMCALLs, as the TDX docs specify that this is only
+needed on "TD private memory or TD control structure page".
 
-AI was used under supervision to collect/apply feedback, review code and
-workshop logs.
+Since these allocations will be easily user triggerable, account the
+memory.
+
+Only one pair of DPAMT pages is required for each 2MB-aligned physical
+region, so multiple callers could trip over each other if they try to
+manage the shared backing for two separate 4KB pages contained in one.
+To build the logic up iteratively, don't do anything to handle pages
+from the same 2MB region yet. Functionality to handle this will be added
+before DPAMT can be enabled.
+
+AI was used under supervision to collect/apply feedback, split patches,
+review code and workshop logs.
 
 Based on a patch originally by Kiryl Shutsemau.
 
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Tested-by: Hongyu Ning <hongyu.ning@linux.intel.com>
+Reviewed-by: Chao Gao <chao.gao@intel.com>
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 Reviewed-by: Vishal Annapurve <vannapurve@google.com>
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 Acked-by: Sohil Mehta <sohil.mehta@intel.com>
 ---
+v11:
+ - Set correct __maybe_unused order in this patch instad of fixing it in
+   the next one. (Dave)
+
 v10:
- - Remove other "autogenerated" references. (AI nit checker)
+ - Clarify in comments about the limitations of the helpers added. (Dave)
+ - Add comments in pamt_2mb_arg() about what is going on (Dave)
+ - Prepend helpers with __ (Dave)
+ - Align tdx_module_args args (Dave)
+ - Standardize "TDX Module" (Dave)
+ - Remove exports for newly private __ functions.
+ - Move TDX_DPAMT_ENTRY_PAGE_CNT out of header to sole file that uses it.
+   (AI nit checker)
+ - Standardize for loop iterators declaration. (Nit checker)
  - Change "Dynamic PAMT" to "DPAMT" in comments, and in the second
    reference in the logs. (Dave)
 
 v9:
- - Switch to byte size hint in metadata field id (Sashiko)
-
-v7:
- - Re-order pamt size calculations for greater readability (Kiryl)
- - Move comment to its own line in tdx_supports_dynamic_pamt() (Yan,
-   Sohil)
- - Log tweak (Sohil)
- - Make comment in metadata reading more appropriate (Sohil)
- - Drop Assisted-by tag and cover AI use in log (Dave)
- - Move tdx_supports_dynamic_pamt() to not static inline to reduce
-   churn in later changes
-
-v6:
- - Improve comment (Binbin)
- - Log tweaks
- - Mark tdmr_get_pamt_bitmap_sz() __init in response to upstream
-   changes
- - Switch to more normal kernel code style, even though it differs from
-   the existing auto generated code.
+ - Address about how the log doesn't fully cover the limitations at this
+   stage. (Sashiko)
 ---
- arch/x86/include/asm/tdx.h                  |  2 ++
- arch/x86/include/asm/tdx_global_metadata.h  |  9 ++++---
- arch/x86/virt/vmx/tdx/tdx.c                 | 29 +++++++++++++++++++--
- arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 23 +++++++++++++++-
- 4 files changed, 57 insertions(+), 6 deletions(-)
+ arch/x86/virt/vmx/tdx/tdx.c | 197 ++++++++++++++++++++++++++++++++++++
+ arch/x86/virt/vmx/tdx/tdx.h |   2 +
+ 2 files changed, 199 insertions(+)
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 89e97d5761d89..d414064436221 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -118,6 +118,8 @@ static inline bool tdx_supports_runtime_update(const struct tdx_sys_info *sysinf
- 	return sysinfo->features.tdx_features0 & TDX_FEATURES0_TD_PRESERVING;
- }
- 
-+bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo);
-+
- int tdx_guest_keyid_alloc(void);
- u32 tdx_get_nr_guest_keyids(void);
- void tdx_guest_keyid_free(unsigned int keyid);
-diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
-index 41150d546589c..8a3cc1a2a41e2 100644
---- a/arch/x86/include/asm/tdx_global_metadata.h
-+++ b/arch/x86/include/asm/tdx_global_metadata.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--/* Automatically generated TDX global metadata structures. */
--#ifndef _X86_VIRT_TDX_AUTO_GENERATED_TDX_GLOBAL_METADATA_H
--#define _X86_VIRT_TDX_AUTO_GENERATED_TDX_GLOBAL_METADATA_H
-+/* TDX global metadata structures. */
-+#ifndef _X86_VIRT_TDX_TDX_GLOBAL_METADATA_H
-+#define _X86_VIRT_TDX_TDX_GLOBAL_METADATA_H
- 
- #include <linux/types.h>
- 
-@@ -21,6 +21,9 @@ struct tdx_sys_info_tdmr {
- 	u16 pamt_4k_entry_size;
- 	u16 pamt_2m_entry_size;
- 	u16 pamt_1g_entry_size;
-+
-+	/* Optional metadata, if DPAMT is supported */
-+	u8  pamt_page_bitmap_entry_bits;
- };
- 
- struct tdx_sys_info_td_ctrl {
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 51b191bf12258..54074ddcce858 100644
+index 54074ddcce858..a9c5b6f5384ea 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -510,6 +510,18 @@ static __init int fill_out_tdmrs(struct list_head *tmb_list,
- 	return 0;
+@@ -46,6 +46,9 @@
+ #include "seamcall_internal.h"
+ #include "tdx.h"
+ 
++/* Number of DPAMT pages to be provided to TDX module per 2MB region of PA */
++#define TDX_DPAMT_ENTRY_PAGE_CNT 2
++
+ struct tdx_module_state {
+ 	bool initialized;
+ 	bool sysinit_done;
+@@ -1996,6 +1999,200 @@ bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo)
+ 	return false;
  }
  
-+static __init unsigned long tdmr_get_pamt_bitmap_sz(struct tdmr_info *tdmr)
++static int alloc_pamt_array(struct page **pamt_pages)
 +{
-+	unsigned long pamt_sz, nr_pamt_entries;
-+	int bits_per_entry;
++	int i, j;
 +
-+	bits_per_entry = tdx_sysinfo.tdmr.pamt_page_bitmap_entry_bits;
-+	nr_pamt_entries = tdmr->size >> PAGE_SHIFT;
-+	pamt_sz = DIV_ROUND_UP(nr_pamt_entries * bits_per_entry, BITS_PER_BYTE);
-+
-+	return PAGE_ALIGN(pamt_sz);
-+}
-+
- /*
-  * Calculate PAMT size given a TDMR and a page size.  The returned
-  * PAMT size is always aligned up to 4K page boundary.
-@@ -578,9 +590,16 @@ static __init int tdmr_set_up_pamt(struct tdmr_info *tdmr,
- 	 * Calculate the PAMT size for each TDX supported page size
- 	 * and the total PAMT size.
- 	 */
--	tdmr->pamt_4k_size = tdmr_get_pamt_sz(tdmr, TDX_PS_4K);
--	tdmr->pamt_2m_size = tdmr_get_pamt_sz(tdmr, TDX_PS_2M);
- 	tdmr->pamt_1g_size = tdmr_get_pamt_sz(tdmr, TDX_PS_1G);
-+	tdmr->pamt_2m_size = tdmr_get_pamt_sz(tdmr, TDX_PS_2M);
-+
-+	if (tdx_supports_dynamic_pamt(&tdx_sysinfo)) {
-+		/* With DPAMT, PAMT_4K is replaced with a bitmap */
-+		tdmr->pamt_4k_size = tdmr_get_pamt_bitmap_sz(tdmr);
-+	} else {
-+		tdmr->pamt_4k_size = tdmr_get_pamt_sz(tdmr, TDX_PS_4K);
++	for (i = 0; i < TDX_DPAMT_ENTRY_PAGE_CNT; i++) {
++		pamt_pages[i] = alloc_page(GFP_KERNEL_ACCOUNT);
++		if (!pamt_pages[i])
++			goto err;
 +	}
 +
- 	tdmr_pamt_size = tdmr->pamt_4k_size + tdmr->pamt_2m_size + tdmr->pamt_1g_size;
- 
- 	/*
-@@ -1971,6 +1990,12 @@ u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, kvm_pfn_t pfn)
- }
- EXPORT_SYMBOL_FOR_KVM(tdh_phymem_page_wbinvd_hkid);
- 
-+bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo)
++	return 0;
++
++err:
++	for (j = 0; j < i; j++)
++		__free_page(pamt_pages[j]);
++
++	return -ENOMEM;
++}
++
++static void free_pamt_array(struct page **pamt_pages)
 +{
-+	/* To be enabled when kernel is ready. */
-+	return false;
++	int i;
++
++	for (i = 0; i < TDX_DPAMT_ENTRY_PAGE_CNT; i++) {
++		/*
++		 * Reset pages unconditionally to cover cases
++		 * where they were passed to the TDX module.
++		 */
++		tdx_quirk_reset_paddr(page_to_phys(pamt_pages[i]), PAGE_SIZE);
++
++		__free_page(pamt_pages[i]);
++	}
++}
++
++/* Helper for building DPAMT seamcall() arguments. */
++static u64 pamt_2mb_arg(kvm_pfn_t pfn)
++{
++	/* Find the 2MB-wide DPAMT region for 'pfn': */
++	unsigned long hpa_2mb = ALIGN_DOWN(pfn << PAGE_SHIFT, PMD_SIZE);
++
++	/*
++	 * TDX ABI requires specifying the page level the installed DPAMT
++	 * backing will cover, even though today only 2MB is supported.
++	 */
++	return hpa_2mb | TDX_PS_2M;
++}
++
++/* Add PAMT backing for the 2MB region surrounding the given pfn. */
++static u64 tdh_phymem_pamt_add(kvm_pfn_t pfn, struct page **pamt_pages)
++{
++	struct tdx_module_args args = {
++		.rcx = pamt_2mb_arg(pfn),
++		.rdx = page_to_phys(pamt_pages[0]),
++		.r8  = page_to_phys(pamt_pages[1]),
++	};
++
++	return seamcall(TDH_PHYMEM_PAMT_ADD, &args);
++}
++
++/* Remove PAMT backing for the 2MB region surrounding the given pfn. */
++static u64 tdh_phymem_pamt_remove(kvm_pfn_t pfn, struct page **pamt_pages)
++{
++	struct tdx_module_args args = {
++		.rcx = pamt_2mb_arg(pfn),
++	};
++	u64 ret;
++
++	ret = seamcall_ret(TDH_PHYMEM_PAMT_REMOVE, &args);
++	if (ret)
++		return ret;
++
++	/* Copy PAMT pages out of the struct per the TDX ABI */
++	pamt_pages[0] = phys_to_page(args.rdx);
++	pamt_pages[1] = phys_to_page(args.r8);
++
++	return 0;
++}
++
++/*
++ * Allocate DPAMT memory for the 2MB aligned region  surrounding
++ * the given page.
++ *
++ * Only call this when the pfn is known not to already have Dynamic
++ * PAMT pages in the TDX module for it.
++ *
++ * Effectively it is not (yet) like a get, and more like a manual
++ * manipulation of the DPAMT backing for the 2MB aligned range
++ * covered by the pfn.
++ */
++static int __tdx_pamt_get(kvm_pfn_t pfn)
++{
++	struct page *pamt_pages[TDX_DPAMT_ENTRY_PAGE_CNT];
++	u64 tdx_status;
++	int ret;
++
++	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
++		return 0;
++
++	ret = alloc_pamt_array(pamt_pages);
++	if (ret)
++		return ret;
++
++	tdx_status = tdh_phymem_pamt_add(pfn, pamt_pages);
++	if (tdx_status != TDX_SUCCESS) {
++		ret = -EIO;
++		goto out_free;
++	}
++
++	return 0;
++
++out_free:
++	free_pamt_array(pamt_pages);
++
++	return ret;
++}
++
++/*
++ * Free DPAMT memory for the 2MB aligned region surrounding the
++ * given page. Only call this when the pfn is known to already
++ * have DPAMT pages in the TDX module for it, and no other pfns
++ * in the aligned 2MB physical region still need it.
++ *
++ * Don't make multiple calls concurrently of __tdx_pamt_get/put(),
++ * as there is no protections from races.
++ *
++ * Effectively it is not (yet) like a refcounted put, and more like a
++ * manual manipulation of the DPAMT backing for the 2MB aligned
++ * range covered by the pfn.
++ */
++static void __tdx_pamt_put(kvm_pfn_t pfn)
++{
++	struct page *pamt_pages[TDX_DPAMT_ENTRY_PAGE_CNT] = {};
++	u64 tdx_status;
++
++	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
++		return;
++
++	tdx_status = tdh_phymem_pamt_remove(pfn, pamt_pages);
++
++	/*
++	 * Don't free pamt_pages as it could hold garbage when
++	 * tdh_phymem_pamt_remove() fails.  Don't panic/BUG_ON(), as
++	 * there is no risk of data corruption, but do yell loudly as
++	 * failure indicates a kernel bug, memory is being leaked, and
++	 * the dangling PAMT entry may cause future operations to fail.
++	 */
++	if (WARN_ON_ONCE(tdx_status != TDX_SUCCESS))
++		return;
++
++	free_pamt_array(pamt_pages);
++}
++
++/*
++ * Return a page that can be gifted to the TDX module for use as a "control"
++ * page, i.e. pages that are used for control structures for a given TDX
++ * guest, and thus obtain TDX protections, including PAMT tracking.
++ *
++ * This function is currently only safe to call once. And not safe to call
++ * if __tdx_pamt_get() is called before or after.
++ */
++static __maybe_unused struct page *__tdx_alloc_control_page(void)
++{
++	struct page *page;
++
++	page = alloc_page(GFP_KERNEL_ACCOUNT);
++	if (!page)
++		return NULL;
++
++	if (__tdx_pamt_get(page_to_pfn(page))) {
++		__free_page(page);
++		return NULL;
++	}
++
++	return page;
++}
++
++/*
++ * Free a page that was gifted to the TDX module for use as a control
++ * page. After this, the page is no longer protected by TDX.
++ *
++ * Like __tdx_pamt_put(), this is currently only safe to call this when
++ * a page is already known to have DPAMT pages in the TDX module for
++ * it, and no other pages in the aligned 2MB physical region will
++ * still need the backing.
++ */
++static __maybe_unused void __tdx_free_control_page(struct page *page)
++{
++	if (!page)
++		return;
++
++	__tdx_pamt_put(page_to_pfn(page));
++	__free_page(page);
 +}
 +
  void tdx_sys_disable(void)
  {
  	struct tdx_module_args args = {};
-diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-index e49c300f23d43..98ebf17aab1ce 100644
---- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-+++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index bdfd0e1e337ac..a886c54decaad 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -48,6 +48,8 @@
+ #define TDH_SYS_CONFIG			45
+ #define TDH_SYS_SHUTDOWN		52
+ #define TDH_SYS_UPDATE			53
++#define TDH_PHYMEM_PAMT_ADD		58
++#define TDH_PHYMEM_PAMT_REMOVE		59
+ #define TDH_SYS_DISABLE			69
+ 
  /*
-- * Automatically generated functions to read TDX global metadata.
-+ * Functions to read TDX global metadata.
-  *
-  * This file doesn't compile on its own as it lacks of inclusion
-  * of SEAMCALL wrapper primitive which reads global metadata.
-@@ -33,6 +33,18 @@ static __init int get_tdx_sys_info_features(struct tdx_sys_info_features *sysinf
- 	return ret;
- }
- 
-+static __init int get_tdx_sys_info_tdmr_dpamt(struct tdx_sys_info_tdmr *sysinfo_tdmr)
-+{
-+	int ret;
-+	u64 val;
-+
-+	ret = read_sys_metadata_field(0x9100000000000013, &val);
-+	if (!ret)
-+		sysinfo_tdmr->pamt_page_bitmap_entry_bits = val;
-+
-+	return ret;
-+}
-+
- static __init int get_tdx_sys_info_tdmr(struct tdx_sys_info_tdmr *sysinfo_tdmr)
- {
- 	int ret = 0;
-@@ -129,5 +141,14 @@ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
- 	ret = ret ?: get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);
- 	ret = ret ?: get_tdx_sys_info_td_conf(&sysinfo->td_conf);
- 
-+	/*
-+	 * The kernel supports using TDX without DPAMT, so
-+	 * avoid reporting failure if it's not supported. Don't
-+	 * try to support buggy TDX modules that advertise
-+	 * DPAMT but don't expose the metadata.
-+	 */
-+	if (!ret && tdx_supports_dynamic_pamt(sysinfo))
-+		ret = get_tdx_sys_info_tdmr_dpamt(&sysinfo->tdmr);
-+
- 	return ret;
- }
 -- 
 2.55.0
 
