@@ -1,155 +1,195 @@
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013032.outbound.protection.outlook.com [40.107.159.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62EF3517BC1
-	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 17:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788543230; cv=none; b=KLQEEof+DtlV/EGY9+1MmmxZekFq+Gvotc/Q5j2I6NrEvnAd8YaA6ojtHel3bcQrjsPKgpfwPqAYE3JvKIhu5tqeBmgoiFd7feHB+3pMeew8t6Ru/wgi5AnJo6M5a3y7/52Uzw0r2YVdD0DEHGyUifwpspOOqPq+Ou3DxFm1w8E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788543230; c=relaxed/simple;
-	bh=0ZP+HRnzu9z6DgT/BXO+5YVGLrMTir6BRcJGXtbrHM4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CUZ9zz16xsMoVoaiT+cUDTW2+igzJgQIT0hybttNBZ/pqjjzhsXiFFIojC9Io+euAI0qD8yVYQyT7ekyFi+miJpjcJ3lKEBZlfxeDttA9oSCkjz+WlGcnuMphEYM1/YlYd3RJqkn09jNDr1SEHDOmcP7ahY1sTz1hGUmePjdKmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hh9oj8nx; arc=none smtp.client-ip=209.85.160.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CAB51356A
+	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 17:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.32
+ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788543904; cv=fail; b=dP25Rqb1MelVCmLtU8n7fiNVOsAY+jxkr9MDhqfTUb5SGMdF+4n8l+N5+ggMr1Q7dE8eLZrymvxloZJ+Y0Yur+ofDMxLZpYwC8JrP/FmmTUGoNemD+7IBYy6d8JJwIh3+x4Nd0kdyqd8p6hyY/WJ17WaR/V8n26l36ENkqk85EY=
+ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788543904; c=relaxed/simple;
+	bh=K13jn9ajls6AvZrHWSFo7gJc/VrJlTUbxOrGtcpGKI4=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=K7v6UTvTus74PPwJtWvzUcyFRIT8/fZ9gAqvohYgbwfCUoIzzigKK+hxgJX8pmzI8YfIUwZKKDB3mpGj27BSV8tdNJByzQmpcZOjZOmumfpx8+y9/D1uCO0gZ7GKzsAArDfrzUKyT4si/cWw0XcjR9ArM0Y9BFJFo5M0Be70/EQ=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Ia1ZftWE; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Ia1ZftWE; arc=fail smtp.client-ip=40.107.159.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hh9oj8nx"
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-45837e52d8aso1015600fac.0
-        for <kvm@vger.kernel.org>; Fri, 04 Sep 2026 10:33:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788543223; x=1789148023; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=TNzIgR372J08ntlK40uw/Lpu5PtLTk6ngTClcXiLgnM=;
-        b=hh9oj8nxbghH/8a0mfMW0nNlyMdmSjE8t8/JcISWp1U+nMlz8lDffPW7mbbd0wzPr1
-         1OPCxV+jDzAByX1QS4JFpvyVaVRIMzYfNxlOHgLJp7w4pX1RCpl+7KGHmznccXQ69PNd
-         1Rahzjs5qzQRBYrm2swIuUBtOIcJ0z+LgyLJdt2RDzjReAwuw1w2Pc0ACW2fn6390Yve
-         3tMtjjkmmSPuO2fTx1oTt6GVTSF3TB4tQdDxlpx21wPTOEKdM4DzYf9ctgib7zJNRmzJ
-         RCvd8SafICg34o47MzuPlBtvvNEOGWoL26FPC/hvJmUGLEXn7Z/VVhhhPgIF6mggY4ji
-         g+Yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788543223; x=1789148023;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TNzIgR372J08ntlK40uw/Lpu5PtLTk6ngTClcXiLgnM=;
-        b=rgom+6tbFVjtJ0gACTfEUg4Uu49P7Fhu+XddM7a8o1xKzOJc9HcL5KBesDpcI63YTJ
-         Y9xxNUWvV28QE8kTcIYMgdQO+gRy6fTRmC6DS/J7b68ALeW2prynxVTrYnepxq9P6ri4
-         jXUp/JHqWz2hgv59UoacfVI7jCqMOIb5eA2Z9PlGDLquFoN1FvWxt2KEUJaV1Qx/Hdin
-         xlLUZXVJs7Jba2FqFb/21XCkdY6upp/R6xuThrVLNLQlcrAXEWL4lYbdVTfcLWrwwsdm
-         BkKs/LH1txlVD3ka/D9Yy1lJ6AAdIsduhCVYz/qnfaaWpQWl5vKO7YmA/mnohL9kwiR/
-         3ipQ==
-X-Gm-Message-State: AFuF++nfDpvS+YQegN4PbZPjWXoHcCyCbObfto5emetUpM7XnADtzO2P
-	PW8LrVkM8Fd3Yb5m4h1dgHhxQFyanN2Rjso6VByactriMYYm+CyFpIp+
-X-Gm-Gg: AYBFou065ExFDjupV/VVyVdBEz0YFQSziG5a4a5CM4a3SxFT8yg/n5vnQSrqc2+Ou4w
-	ukI4k6RDjB4dNpyNclDJfAEnoZ93ThZbe5Zgfeb+HpIn5F004HIU0QioH5qxc7dq60tqCDOlCNY
-	wvK8xSdVEhf5VX9CNcpCnU5v5omloxLJdYCZ/MEn+1FGP1PB+aVRo3o1T7jp3OLs9p2MpwFKydz
-	r7o7MuwV7050UZhOlPMoH2UHwa59YvSh1v3Q7YpNQho8YSmFVNeybNA3ZEbIkyjBN5s/IWlb3sH
-	AQO75zW/qhzqjU9FSPgPYkShaY+SEux7QdCum12kdrXgXFQ3X4tRbfrLhS6qMPeMc7DTDvFenYs
-	sZdgbTV/8gcFoGMI/5CYK2OjVA1mXujbubVPfwZDFk/coZ7uVZoJbdeWnrdSiBMznv+j7hj1Oe1
-	EKLwc95/n+aMWeZQdUhxWtFegTRGGQngoVtSMYmCnWaJqa8N+41YMxkUJC8emeQZS6PLG5tJt1E
-	PcCYkNWIA==
-X-Received: by 2002:a05:6820:81c5:b0:6b1:6462:7e4a with SMTP id 006d021491bc7-6b6fc7d69eamr7174889eaf.13.1788543223122;
-        Fri, 04 Sep 2026 10:33:43 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:53::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b6dcb85657sm3425792eaf.7.2026.09.04.10.33.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 10:33:42 -0700 (PDT)
-Date: Fri, 4 Sep 2026 10:33:39 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Subject: Re: [PATCH net-next 6/6] selftests/vsock: test the assign ioctl
- privilege checks
-Message-ID: <apsA808VUA8CrbCd@devvm29614.prn0.facebook.com>
-References: <20260902-vsock-guest-ns-v1-0-9995383e9a8b@meta.com>
- <20260902-vsock-guest-ns-v1-6-9995383e9a8b@meta.com>
- <20260903230147.63ACA1F00A3D@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Ia1ZftWE";
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Ia1ZftWE"
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=jz5PMr//j0rB+bCLKP8wQOlu/w/yu+qrZy75RkGVsnWHBdOJdGdnQdXncwmExDgquF1mDAn15ZWTPyXSEsGiGuaoVtZfIRl+nvV9u80xv8BbNyiIos9vWqOdtdXne4zgA8YgcM9gVqeek9llc2CZLE4cnisGcs7jYziwKBYJRbKpi+oy5Nnf3eJIBOAR9ktJPmAnSd/V/w8mmBDuCNz9GGK4yd+QzvtJvVn1ejcAaow2x7IdYghnTUvekXk7RSgWxFVm2JCi1KB12qtiUt0bKVAqBITaeJRUf/TJW0hLQP4g3bZebdk7GWPozSzwZfzsvdDKm7gpx9vQe+WMj8HTFQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pOYObNS0PAyZ3/TPx9Rj+JRLf+Qnfqq6SkPib1CQaL8=;
+ b=PCyOoTStdu8uqFDhp+4vLRMjL5KvRGAVrHab1139xkgeF+yXcU0xpnZvzAchsvCANglLT62FzfjaEDb6YM/0EWxgS/7R9e61WWf+BKkXCd2O08Ibi1nnoVIPjXEMCMHMCrX20lVxosvsbAYH0rQx/Lfu3fvr3psXDMf0V6iGovAmfjuCKBuTqOvX1Lib56JUipKI7AYfWayOhnUTppgNmEE5206BvMzivDQ40D9gLnRQw6EP2ahWxwcZrxlpda932G5aABva+zkRIfamas0sG7ZWsKgSoEQCSW16+GstXSW/nBJ8vC7J3O7qU2MDslptIpQJsycmXlCoaIAn48RBTA==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=arm.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
+ dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pOYObNS0PAyZ3/TPx9Rj+JRLf+Qnfqq6SkPib1CQaL8=;
+ b=Ia1ZftWEkxTLRBcygLjftV3uC2cklH+O/IJGed4dhz484oUE5NtNKSNIoWGWwHASif7skCNxvx6pBrveMq2E25GOqAHVal1XqXHzFdkawKef/uw490cqgQp+CAIssnqRpV9DlZtoIY4tnFVbdYJV9V5ODs1e/c3rXkIsSNOM25w=
+Received: from AS4P192CA0007.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:5da::19)
+ by AS8PR08MB8489.eurprd08.prod.outlook.com (2603:10a6:20b:568::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.10; Fri, 4 Sep
+ 2026 17:44:54 +0000
+Received: from AM4PEPF00027A65.eurprd04.prod.outlook.com
+ (2603:10a6:20b:5da:cafe::8a) by AS4P192CA0007.outlook.office365.com
+ (2603:10a6:20b:5da::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.13 via Frontend Transport; Fri, 4
+ Sep 2026 17:44:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ AM4PEPF00027A65.mail.protection.outlook.com (10.167.16.86) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.8
+ via Frontend Transport; Fri, 4 Sep 2026 17:44:53 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yAkcf00rAvfMQeDNsPZWy7OZ7SoTjD6GNJNT2TjQ5t+Tso2KAhDMRsnVSTf7+um6mHbqkHnhKDbkn44KYjPxhRpYkGjV1TJEwRH0GKujCpmny5ISFReaeY4XtV75dbcPDyeMlX7ZHtUUelwZWCX8wBY02n254htPeIMI9QYshrxNu6q+tYVmG5FNOR8rvuonnWRROa7C+mUf3ezP9hNruKnfzOAURd6jPFGoVJmsrO9t3Rl+HX0duQxhya6uUMWcEYZipViWL0ANp9NUv9Ru52A0aP1xzLxdZYoiJL+dmdnhADX6jDfELteGBL9FhSFtQWiU8rR/NlpzbT1hepSohw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pOYObNS0PAyZ3/TPx9Rj+JRLf+Qnfqq6SkPib1CQaL8=;
+ b=XlRR6SdPe17NtJwfgDv5cC+qtPR0K75hwUYtdKsntHvekFVdBU5W7ACP0Z/G21NByLSTZ/ERKqHTwO7QsWaFfqcZr6GYQu50tSTmurWHTsXd7DypB1YsgjEzgDhbTQ7rLNxJqbo9tOfdI3irVsfJnQnrEfUzIOa63/2yjrjT+sSAl11Fv0hANQoJPyJWKPF06Tc2s+molAb20yB/Eq5TQWRkJEta6V4HiMVY+i4rDV8yFDk9JfjPDwOKoowN32FhGoKqORK6PKB5qAtDtVIBIFifPgiE5JJDlFiIq80PdPTHbyFo8bsvM4nSnn6NumFHx9yzqgk+tv6Ex1GpLDcgXQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pOYObNS0PAyZ3/TPx9Rj+JRLf+Qnfqq6SkPib1CQaL8=;
+ b=Ia1ZftWEkxTLRBcygLjftV3uC2cklH+O/IJGed4dhz484oUE5NtNKSNIoWGWwHASif7skCNxvx6pBrveMq2E25GOqAHVal1XqXHzFdkawKef/uw490cqgQp+CAIssnqRpV9DlZtoIY4tnFVbdYJV9V5ODs1e/c3rXkIsSNOM25w=
+Received: from PR2PR08MB4889.eurprd08.prod.outlook.com (2603:10a6:101:1d::23)
+ by AS1PR08MB7633.eurprd08.prod.outlook.com (2603:10a6:20b:475::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.10; Fri, 4 Sep
+ 2026 17:44:21 +0000
+Received: from PR2PR08MB4889.eurprd08.prod.outlook.com
+ ([fe80::8bda:5986:a1f1:cb7e]) by PR2PR08MB4889.eurprd08.prod.outlook.com
+ ([fe80::8bda:5986:a1f1:cb7e%4]) with mapi id 15.21.0382.007; Fri, 4 Sep 2026
+ 17:44:21 +0000
+From: Sascha Bischoff <Sascha.Bischoff@arm.com>
+To: "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, "kvm@vger.kernel.org"
+	<kvm@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+CC: nd <nd@arm.com>, "maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org"
+	<oupton@kernel.org>, "fuad.tabba@linux.dev" <fuad.tabba@linux.dev>, Joey
+ Gouly <Joey.Gouly@arm.com>, "seiden@linux.ibm.com" <seiden@linux.ibm.com>,
+	Suzuki Poulose <Suzuki.Poulose@arm.com>, "yuzenghui@huawei.com"
+	<yuzenghui@huawei.com>, Sashiko <sashiko-bot@kernel.org>
+Subject: [PATCH] KVM: arm64: vgic: Serialise CTRL_INIT against vCPU creation
+Thread-Topic: [PATCH] KVM: arm64: vgic: Serialise CTRL_INIT against vCPU
+ creation
+Thread-Index: AQHdPJUEoX61INNB4k+aTdA+Ycbu0A==
+Date: Fri, 4 Sep 2026 17:44:20 +0000
+Message-ID: <20260904174419.76057-1-sascha.bischoff@arm.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-mailer: git-send-email 2.34.1
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+x-ms-traffictypediagnostic:
+	PR2PR08MB4889:EE_|AS1PR08MB7633:EE_|AM4PEPF00027A65:EE_|AS8PR08MB8489:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3ce901ac-232f-4b66-5a41-08df0aac3a67
+x-checkrecipientrouted: true
+nodisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|38070700021|10067099003|56012099006|11063799006|18002099003;
+X-Microsoft-Antispam-Message-Info-Original:
+ VCw9lay9PN/s8zbdusXBWuohuPGcOdCqQhbEXWLMggpc0l42Xic+y7rx0k9v4XBKs7wSDgrZGIKC3D1jWB2w16VPDC//A/HkJBteV6PDcMHwp5UljT96dZ8QH9CpQk7xEPhLwqTwLLy/uGP+DzhF9GZUCadayDIgTs5IzRPqgZVqxKD0y3TafQlcmUZiq78PmaSjis/C658qnhEIbxxeSXG9wqQtGi77TeiDoPVeKiUnKLfbZ5R7czFKrOhPL0bPiPYUSd+xp017h1+ZsjW+EqytMYX2plZyF+J51UC86ckvxB8Qi34O8pdabTq+vlqp3vtBfX5ftwSqkTyNUUW8pjQp97xdibEnOuQFDG00i9SQvT1Qg0zMHtX1B2+v1CTCXytMziOSLjKfJf/g+Cm/4dJRF3P3xZFK22HKDdn1kM7+07wEsPC7Fg4+FrUEujnvrFP39pa/A8dsnohUH8JZdwtjS7WF+BJEGKNe5PGrbdHimduXkcbk8zcSLPe2xnmugU1VXqRITuN98lXfzaQeQNGBNdPPG6OIAUuTBarLF4nJGWxg2l7rSS0Knj3X+Yc068ZU/+0F091eKsGVdJe0/fnwLx6ElyDm5+gp0RdkHncMRofyQCFvSstWd6Q7OuNfitCHNucoYfMjLlTTy/7gXb58CvE8IJ1nSO5TUWa3OFCVjeoQAR4vGLtXeYTdYC6txPAPoOOMQxTxLSb0RFRn2fKVSw8egEkBx1QOU7gS9pQ=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR2PR08MB4889.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(38070700021)(10067099003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903230147.63ACA1F00A3D@smtp.kernel.org>
+X-Exchange-RoutingPolicyChecked:
+ J5Ijia7cnAmDg4N/shYajddndZBv187/38BC+ubwmxNcqiWn9tQTHgO9SVt1yWLGSMCAZC1CNFEn8dYP2aDQk6D4s7YBBdSEr07R//oM7lFYRKvbu8NjfUoE60gHEvmH8du2wIbFslg8Q/T45h079zKsED/l4tKFJ5z7xQonzbGbFclQ9fp4oTqu/Q4VNV3da0UvrVzcM53GkjjR22YOOZ2lYKJ6peEVXdVBoO+k6VFhC4bpBXr9d+vLS9rj/az9GGwBR5EhHRXtQv2nWrRkxm+vT+EjBpFkMIqB3yhPuZxEj+P1kMRS4yZaLX/gzxqvhO/R+tt1cccObHQcjjVIdQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR08MB7633
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ AM4PEPF00027A65.eurprd04.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	6d269ae9-8331-4472-7c91-08df0aac26b7
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|14060799003|23010399003|1800799024|36860700016|82310400026|35042699022|376014|13003099007|18002099003|10067099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	7RXf49IBNJdshHKb3+3sWscSWNbvInLzaAHYR//E3rvZoz7p8I/npd4HiKITaDlncI6pcr4THs5C0stIB4DeRto+s/YDO6ttUD3ul5MAIZth0r5rlqh6hDAE1VSVAzSh6HOHM422GLhVa9Cs0wUw+annT5g+YKsPx/Gs8v/Bd/I6Q5cwdAYbgayCWT3grftaDaBPdbDQxKtnMyHPT3bUJR+rAkBZE+oxhf+Q4a25zXyt+/OmwKsGwBUN7MGVEdmFwgEwyy3ZYrUD54ZcxkSXw5HZz61j3aW8rzcH/7rPkIvaqgPwQggFVpMyTc8qOkCGhpGMuUmpm9tgLm1NZxg/u53VGQbVQ/GBAC/WXugjjZQsYn0ho1Gn/2YsDA7iOGPLUemXWZu+kP/cu7NM1X8V3ydBSpflO8T+mGCClGVzmYhR9Pc92WNIl4xJoW4zuy2Y4hD2r578g7nos6azOiBuENz5n78cJBWmCCMUURTnWZr3+CIJKG20Oo0PaNxNSlzx7W+nZjKZiDaPD93F3CE6LurfNyerBqs6klnu5CGGuRavCIsoZfxyXkvz59ly4O6ziBh8kuuHh7iAtt5WFATXBjp4yyBAvpQTmLsMORP3cP83eZMeZAlzA1eJHOCCERVrjby1rqdD/Tox1rmOPQlZ/Zpvj/WYvlR5yMN+2qqwJ2c=
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(14060799003)(23010399003)(1800799024)(36860700016)(82310400026)(35042699022)(376014)(13003099007)(18002099003)(10067099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	aew5ME4Bbhah0fC5QcUVjuoQEe+uWDq5qSsb2yonNfznzMgNoben66TxBEileknnNcNNpT00NsOpdgqnz8hxlJ3fpjWFSMPlSSxbhlNBrhUbrYiXgtOmctb6h/VWniQYTtvqOiOehiHtedtpDKgdRR0P5gFlPVs3mt6MFtZE/2p5C0wyOrUtEeMRDK95e7BhfdgKapacFEMNWlPYJThPA1DM3JeqbqCZ2IgyDxXhuPWp22Rxg5YKVWCrSyrKyelY2q0nxcVSqUj18mO/s9RwXymHOxvL0mzYHhpbkVr4HjnCKBREQXedgHKNrem2giQsCZG3Hjc5EWKiMQWNcOFRqAIWY3dScepSpmPIaf3UgaaFZrvWZywM6z7SCL+Easv58lynJc13oSOmMaXuBDxEL+Ug7yee60OVrhbE8rWi3snBpp4f/xrTMGKfy8eDDdCC
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2026 17:44:53.9398
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3ce901ac-232f-4b66-5a41-08df0aac3a67
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM4PEPF00027A65.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB8489
 
-On Thu, Sep 03, 2026 at 11:01:47PM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] The unprivileged user namespace test spuriously fails because the unprivileged user lacks DAC permissions to open `/dev/vsock`.
-> --
-> 
-> commit 4c5b8557bb5663f827061639a80256407bfe6c8c
-> Author: Bobby Eshleman <bobbyeshleman@meta.com>
-> 
-> selftests/vsock: test the assign ioctl privilege checks
-> 
-> This commit adds two tests to verify that CAP_NET_ADMIN is required to use
-> the IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS ioctl, and that an unprivileged user
-> namespace alone is insufficient.
-> 
-> > diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-> > index 53591fa07f1a8..efb94d17d9976 100755
-> > --- a/tools/testing/selftests/vsock/vmtest.sh
-> > +++ b/tools/testing/selftests/vsock/vmtest.sh
-> [ ... ]
-> > @@ -1805,6 +1817,51 @@ test_ns_guest_assign_g2h_netns_reset_on_ns_delete_ok() {
-> [ ... ]
-> > +test_ns_guest_assign_g2h_netns_unpriv_user_ns_fails() {
-> > +	local helper=/tmp/vsock_assign_g2h_netns
-> > +	local unpriv_uid=65534
-> > +	local unpriv
-> > +	local rc
-> > +
-> > +	unpriv="setpriv --reuid=${unpriv_uid} --regid=${unpriv_uid}"
-> > +	unpriv="${unpriv} --clear-groups"
-> > +
-> > +	if ! vm_ssh "init_ns" -- "${unpriv} unshare -U true"; then
-> > +		log_host "unprivileged user namespaces unavailable, skipping"
-> > +		return "${KSFT_SKIP}"
-> > +	fi
-> > +
-> > +	# The home shared with the guest is root-only, so place the helper where
-> > +	# an unprivileged user can execute it.
-> > +	vm_ssh "init_ns" -- \
-> > +		"cp ./vsock_assign_g2h_netns ${helper} && chmod 755 ${helper}"
-> > +
-> > +	vm_ssh "init_ns" -- "${unpriv} unshare -Urn ${helper}" &>/dev/null
-> > +	rc=$?
-> > +
-> > +	if [[ "${rc}" -ne "${EPERM}" ]]; then
-> 
-> [Severity: Medium]
-> Will this test spuriously fail in minimal environments like virtme-ng?
-> 
-> The test helper vsock_assign_g2h_netns is executed as an unprivileged user
-> (UID 65534). In minimal environments without systemd-udevd to modify default
-> device node permissions, devtmpfs creates /dev/vsock with default 0600
-> (root:root) permissions since vsock_device in the kernel does not explicitly
-> specify a mode.
-> 
-> When the unprivileged user tries to open /dev/vsock:
-> 
-> tools/testing/selftests/vsock/vsock_assign_g2h_netns.c:main() {
->     ...
-> 	fd = open("/dev/vsock", O_RDONLY);
-> 	if (fd < 0) {
-> 		fprintf(stderr, "open /dev/vsock: %s\n", strerror(errno));
-> 		return -1;
-> 	}
->     ...
-> }
-> 
-> It gets EACCES, causing the C helper to return -1 (exit code 255).
-> 
-> Since the script expects EPERM (exit code 1) from the ioctl failure, does it
-> misinterpret the 255 exit code as a test failure?
-> 
+vgic_init() compares created_vcpus with online_vcpus to detect a vCPU
+being created. However, CTRL_INIT only holds config_lock, while
+admission of new vCPUs and updates to created_vcpus are protected by
+kvm->lock.
 
-I don't know about systemd-udevd, but seems like we can generalize this
-to non-zero exits just to be cautious.
+A concurrent KVM_CREATE_VCPU can therefore increment created_vcpus
+after vgic_init() checks the counters, then block on config_lock before
+publishing the new vCPU. For a GICv4 VM, vgic_v4_init() consequently
+sizes its vPE array using a stale online_vcpus value, leaving no vPE
+entry for the new vCPU once its creation completes. The upcoming GICv5
+IRS support would hit the same issue when sizing its doorbell domain.
+
+Hold kvm->lock around CTRL_INIT. The existing counter check detects a
+vCPU creation already in progress, while the lock prevents a new one
+from starting until initialisation has completed.
+
+Fixes: f00327731131 ("KVM: arm64: Use config_lock to protect vgic state")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Link: https://lore.kernel.org/r/20260807124506.ED85C1F000E9@smtp.kernel.org
+Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+---
+ arch/arm64/kvm/vgic/vgic-kvm-device.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm64/kvm/vgic/vgic-kvm-device.c b/arch/arm64/kvm/vgic/vg=
+ic-kvm-device.c
+index 90be99443df3b..219881915bf41 100644
+--- a/arch/arm64/kvm/vgic/vgic-kvm-device.c
++++ b/arch/arm64/kvm/vgic/vgic-kvm-device.c
+@@ -255,9 +255,11 @@ static int vgic_set_common_attr(struct kvm_device *dev=
+,
+ 	case KVM_DEV_ARM_VGIC_GRP_CTRL: {
+ 		switch (attr->attr) {
+ 		case KVM_DEV_ARM_VGIC_CTRL_INIT:
++			mutex_lock(&dev->kvm->lock);
+ 			mutex_lock(&dev->kvm->arch.config_lock);
+ 			r =3D vgic_init(dev->kvm);
+ 			mutex_unlock(&dev->kvm->arch.config_lock);
++			mutex_unlock(&dev->kvm->lock);
+ 			return r;
+ 		case KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES:
+ 			/*
+--=20
+2.34.1
