@@ -1,236 +1,545 @@
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19693932EA;
-	Fri,  4 Sep 2026 19:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4143D47C8
+	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 19:59:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788548984; cv=none; b=TEfhOQM1Tde+TvuC3V5hAUokcnQvg0XuQ6sBIlNu3+UfwXyhiaI53rhllF/mSYkifl9VEUhxRrMysUYp8UMkc9msfFkznQUJTuKrrqx/8AUjcbpI5Fx3/tmfOOHfEddEgKYEGeF5yN1fyGx1b0e7L5MzWEMvhLbr6kYoyw69kz8=
+	t=1788551953; cv=none; b=RqRAAGmQL/t3epD3trTg04HWXKIYOUaUPNPjdjMK3Ehe6TAFncH9XVJig/Fr7t/bkYRA4HonD/Fi+OL5/yFpcWBuU++wxkkUMlwOzvWzW5u/zYAvp1ZrpQtv4b2JGH4nbMQ421MartqV8g5XqJsw/XDODftf9qQvNlwGtQdIxzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788548984; c=relaxed/simple;
-	bh=yWPKa06wdV33sHqlVbOx/I7hTCE70vq1eC2Tx3A9yTk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hCeq8M3Jy+RUEkTYx8lzzwxgM1gKM2GwcPy9w8L/EuOhK4pkddLLezC+gg7kiGJW5z768NXoTsRwQSPh6RX2nOK18vlXgd3DLIqKa315o7HC3h+Kd03Wd1pO8JeN0BrNFjI8nF848uBuPrmEDwjPxBFv59LIjhsBCTSt794GiXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=jq/mNMIB; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=nIxBGEEJ; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1788551953; c=relaxed/simple;
+	bh=0oJvipEyE7ZrlbLOCm1+wHXK5aKzcRUJ6dpaFPnqKAY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=aFZpY+RLEPb7J6LLc9xlO6YhJCvFlnD+LVb7T24Fy0q4OrqMWHq9AwNFxEQ2aQocjHddoCEj4ms8JEh/6+GzOCIoR5MZiZ00374gHw1MMf9mka4TBwa0a8ee3vV22dtHTf9jSUGcDVYTpBXREJ1xOltSZIawr3QAiU0Z7cxi1wI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ig3f0KIT; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="jq/mNMIB";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="nIxBGEEJ"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id B511F7A00F8;
-	Fri,  4 Sep 2026 15:09:32 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Fri, 04 Sep 2026 15:09:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1788548972;
-	 x=1788635372; bh=5lMGz/z9spGna6kQNQ5IoPLGwwwI+xjju3MdKu2x6uw=; b=
-	jq/mNMIBi9cvY0h1nfSJpzCstgNCyRktuPNQPrhjr++EQ5lq+Isas5ShlePXLbHU
-	oScCIngyuu9Zc8xe5dpqVTE6SeTnhF3+WLPEqbMr64RglLIePxHnHewtbsl6hTw0
-	Sn/i6ZM9WDWaX1eR6usVJYBH5ZfN5oeBaMoJbG9+Krv6C5mpT3GoyOZLlJ4lnvAt
-	mhH7cneQSafg7GG1a6OZKs1w9glC+TwSX3wIUaLquZMyk3tA3q/Fkz6F687wJ8LO
-	c5SM8p7ZL+qY99Z47h2wuxjUGulP/JlLXMkp+tPAe4aaa6Lf1uA//ljVqtFOqeSk
-	y5+X7amUcfG8cJtLqBIrNA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1788548972; x=
-	1788635372; bh=5lMGz/z9spGna6kQNQ5IoPLGwwwI+xjju3MdKu2x6uw=; b=n
-	IxBGEEJcpEzqlCBzJo9l6bEyS+QBIqTHANd6Vfl9Mw/gOeZGnMOp0lzwJ8NMP/5K
-	JcwuVhbRkKgOW88zk7nCntxHrolaOBn13iRhxvqTpQ0iIuDPsViS9Xu8nTP3uzx4
-	IqoHSsVCOuK+Us8x9J8wYVUZGV3Ju0OVAQsSGoR9rNyK2qaJuvZCjiMOUPUK2rqt
-	zHmYf86HYpPhTxX9+g4ZvwcJsBj+fGI2+FzOjnitUaGntfuTO2AoME0BfE5738LM
-	saiZlB9AUWaPEqhqVKOFlAt70yRID5t86paM2UrHQWP6DOPWrUVJTdTYX/wiYWIa
-	XEQM8kks8U3gcU49B/7Wg==
-X-ME-Sender: <xms:bBebaqBnLjZiPWng4I6BkBXlRl5oGOhEiMS9HgVEALbCWG50aAqIpg>
-    <xme:bBebahMrBhhuANVAiH3fHJzVjxuRd9Unhf9w0WsHuG5JnwSWg2wK419ljSA59gPS1
-    uYgN6hwRDs8srs1HwVAOo6ICWqT2A8QvwOLtUmMngik73Ot96YL_iA>
-X-ME-Received: <xmr:bBebahdMxW5ry8666S63gmlvBLgJPeGZnaMaWRmVEdVPObiLz8OOwhwti8PoVA>
-X-ME-Proxy-Cause: dmFkZTGcr6jmw64IquojJXpO2xtMve9/1B/qGAWt8VlMJG3AMBpF8pcof42bRMl7lkRST6
-    V3TFG3M9cRm1maws1qb7zDhAolJbFVF8lpoq3lKiIUGn+BtFvUTtqbIy0OGFM5WPhNBenm
-    PPzUpC0RF26LrjGDdPx4tAX8Qg1FikmK53UEqVvSuMCc/VTwz5ZYmWXfIttjajpmrIm8YS
-    QJ2yF6FJnA/2cuPPlan0lVU10TaWYop87ozaSzVZHVa9BSJFidAvmcloEBchiWvEEP+a3d
-    Xx4tVbJ8657Pq6IPXY0rYEl1NvfOsEikDTwkFOVZwItcIR/MJLEPhgzv+T27OehKZBHxZ1
-    FnL+ga564ONOzNqA2cITQdPH2rAbgaYVebENDpjGtn8ywguojwQuE5/mMNpRv4BUPCs5DP
-    dUY1c6i3vUVaNaXTg6orJI/XQc+XOPM+D5j+GLmKbVS3I825KVsNNOgjxg1rQHFOpilG2L
-    F1p5jgTmNvkZILNPMPr/Yo+jZxYV3h/RbQ9cPFQTfLIuJTEHU2mtl3az3DYuqrR7OtCtZI
-    d9WlVUb1TYEe0WRqJCHqCWzCbfAB37E1oQ2rb2wzhf7i4dgJZyfjrpkTCUN1aT7yMjUAqR
-    PKe7GOoxtmmnSeK1jlO02YNpFFOM3E9ej8C4gA6or1ZhMkuDPhFDh3my24cg
-X-ME-Proxy: <xmx:bBebai4DWCF_TRw33uGRKWDLWN6-e42jEqnKfERWu_ACrFCcWTTNjA>
-    <xmx:bBebajL8M9-uZMPayhjUqs7IgX_OaKkh6rD1N8yMXcXUgWtiNzW4qA>
-    <xmx:bBebasWUT8iamnE9TDUu1QIKfdkxCUKOcm9LAhudO-9HQJ0RNybLwA>
-    <xmx:bBebavHdkeTsKvtT3Ewb-zJwUWCFhIGvgormc4EoKbpV4ZWWooCwcg>
-    <xmx:bBebaj64aH-6QVOwj2TAs96utFYYvZfNcuv-AjiaFJ4H0sQqCh_FhwAy>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 4 Sep 2026 15:09:30 -0400 (EDT)
-Date: Fri, 4 Sep 2026 13:09:27 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Shameer Kolothum <skolothumtho@nvidia.com>
-Cc: <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <jgg@ziepe.ca>, <kevin.tian@intel.com>,
- <kbusch@meta.com>, <michal.winiarski@intel.com>,
- <satyanarayana.k.v.p@intel.com>, <sonangp@nvidia.com>,
- <nathanc@nvidia.com>, <mochs@nvidia.com>, alex@shazbot.org
-Subject: Re: [RFC PATCH 00/19] vfio/pci: Handle PCI error recovery and
- report state to userspace
-Message-ID: <20260904130927.2e234a21@shazbot.org>
-In-Reply-To: <20260901093217.8539-1-skolothumtho@nvidia.com>
-References: <20260901093217.8539-1-skolothumtho@nvidia.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ig3f0KIT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788551947;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gqZptmaizdvAk5ugP8ylt06TdOoUU96wWhAskXzHT7A=;
+	b=ig3f0KITPhOia/ZX62vdoKgRY7ZjPxHDn2jh3KgwvE2HEGr+ocHNf50NxhPYp7rPx0h3Oc
+	BP24qiJZlKT+heTyZIpA05By51hkqnaLDt21wSp2MhQPNcUM9M5HNozyKtBiqe7z3iipIk
+	orpKEsHWWP2/Z/o7iJ5Tbqzz2mq/6Ys=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-640-drZq3pEsMVevdzQ4GDs_Sw-1; Fri,
+ 04 Sep 2026 15:59:04 -0400
+X-MC-Unique: drZq3pEsMVevdzQ4GDs_Sw-1
+X-Mimecast-MFC-AGG-ID: drZq3pEsMVevdzQ4GDs_Sw_1788551942
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AA2B919E5758;
+	Fri,  4 Sep 2026 19:59:02 +0000 (UTC)
+Received: from localhost (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 20A927DD;
+	Fri,  4 Sep 2026 19:59:00 +0000 (UTC)
+From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+Date: Fri, 04 Sep 2026 23:57:58 +0400
+Subject: [PATCH v4 15/75] qom: convert enum properties to QAPI-aware
+ registration
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260904-qom-qapi-v4-15-a985f168e938@redhat.com>
+References: <20260904-qom-qapi-v4-0-a985f168e938@redhat.com>
+In-Reply-To: <20260904-qom-qapi-v4-0-a985f168e938@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
+ Michael Roth <michael.roth@amd.com>, 
+ Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>, 
+ David Hildenbrand <david@kernel.org>, Igor Mammedov <imammedo@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+ Jason Wang <jasowangio@gmail.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
+ kvm@vger.kernel.org
+X-Developer-Signature: v=1; a=openpgp-sha256; l=19408;
+ i=marcandre.lureau@redhat.com; h=from:subject:message-id;
+ bh=0oJvipEyE7ZrlbLOCm1+wHXK5aKzcRUJ6dpaFPnqKAY=;
+ b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBqmyLJ/Ga7J23cz9yd2SL39fclxlIiAbQPwHPCY
+ uVqlkKpCyeJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCapsiyQAKCRDa6OEJdZac
+ 5TNDD/9rCel1SsfxGbm4Q293bYLKIvDCtYM6Sdu3XMi8giN3z2zTM0a0Bi9RyhmEwD2pXf/0tDD
+ xrGqyzOU/v/jryj27fqPjGYy2vr8LHH0S3QvDIJhlDRJGiN9hw0IIKxvtciXUNiQ/vSKiperMIX
+ Gtt9TW/uYH7jIBQ5nulL8WlF+RxiSt3BYA8kDs5EbVl98hAgiPDjHwWHidcIHK2c3kJ7SSpGIes
+ qep9cIvnmYtJFaL/SnrI6cbsAixhbJDla3ZhiRfxWw1DtIMidT8q2+/RaMhSLNwdtkowU7tz/f4
+ W4GqLzn9c2AeXbkdFhrJGodUrTshMXuh/wBbNai//UFxF8DMcEBlxMC0ZBtiCO5zk8Ar1i2GMY8
+ v9X08rg12e98ii4R9FwW1aLefP9uIPxuT5iQqYO/DsRj7LIvkxowUlU1jBBu70p/42VSsJmBLIe
+ boXTNuZVrsCd7VStjY9mgSPfmS+nh3zk4gF6DvGwtJIO7wfh2NRG9xWoR3RvC7YHxD+eNpVJPak
+ jzuB2pb3/e3Rf9sPXp7FynEggda8rYCyVbGcgiBOS4AdJlWVz6uQMniM5McNsJnL4VcC7k5th+t
+ POVAuycygZUJWcxqpiGLcEBxLZTUZhBIL6b+MPU7NAno18VBejtsL2nyHThhoXiTZGnF6a5qTqZ
+ o2+QZfbfTG08/9g==
+X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
+ fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-On Tue, 1 Sep 2026 10:31:58 +0100
-Shameer Kolothum <skolothumtho@nvidia.com> wrote:
+Convert all callers of object_class_property_add_enum() to use the new
+object_class_property_add_qapi_enum() with the QAPI_ENUM_PROP()
+macro, which provides type information via QAPITypeInfo instead of
+raw lookup tables and string type names.
 
-> Hi,
-> 
-> Currently, vfio-pci takes almost no part in PCI error recovery. It
-> implements error_detected() and neither of the other two callbacks. That
-> one callback ignores the pci_channel_state_t it is given, signals the
-> error eventfd, and returns PCI_ERS_RESULT_CAN_RECOVER for every error, a
-> permanent failure included. Nothing implements slot_reset() or resume(),
-> so vfio-pci never learns that the host reset the device, or that
-> recovery finished.
-> 
-> Userspace gets one eventfd signal with nothing attached to it. It cannot
-> tell a non-fatal error the host recovered from apart from a permanent
-> failure, and it is never told when recovery is over. With nothing to go
-> on, QEMU assumes the worst and calls vm_stop(RUN_STATE_INTERNAL_ERROR),
-> which the VM cannot come back from.
-> 
-> Any device assigned through vfio-pci can hit this. A non-fatal
-> uncorrectable error is reported, the host AER path recovers the device
-> fine, and the VM is killed anyway.
-> 
-> This series lets userspace observe host recovery state, and keeps it off
-> the device while recovery is running. With that state visible, userspace
-> can decide what to do with the guest rather than assuming the worst.
-> 
-> The approach here comes from an earlier discussion with Alex.
-> 
-> https://lore.kernel.org/qemu-devel/20260707161234.23ed28db@nvidia.com/
-> https://lore.kernel.org/all/20260818083754.7ccf76d9@shazbot.org/
-> 
-> Design
-> ------
-> 
-> The VMM watches recovery. It does not take part in it. The kernel runs
-> the recovery sequence and tells userspace what happened and when it is
-> done.
-> 
-> vfio-pci already has error_detected(). This series extends it and adds
-> the other two callbacks:
-> 
->   - error_detected() now records the channel state, blocks new device
->     access, revokes BAR mappings and exported DMA-BUFs, and quiesces
->     INTx. It still signals err_trigger as it does today. It votes on
->     severity rather than always claiming it can recover: CAN_RECOVER for
->     a non-fatal error, NEED_RESET for a frozen channel, DISCONNECT for a
->     permanent failure, and NONE if our own quiesce failed, which leaves
->     the rest of the domain alone.
->   - slot_reset() is new. It restores config state after the host has
->     reset the device. Nothing does that today, which is why a device
->     comes back from an AER reset with its config lost.
->   - resume() is new. It restores PCI_COMMAND, unblocks access and wakes
->     waiters.
->   - A new device feature reports the state and carries an eventfd.
-> 
-> A non-fatal error gets the same quiesce as a frozen one. The host has not
-> finished deciding what the error was, and can still escalate to a reset,
-> so the device is not the user's again until resume() says so.
-> 
-> The support is opt-in. Until userspace installs the recovery eventfd,
-> generic vfio-pci behaves as it does today. error_detected() takes its
-> existing path and signals the same eventfd. VFIO variant driver support
-> is not added for now.
-> 
-> The uAPI is VFIO_DEVICE_FEATURE_PCI_ERROR_RECOVERY. It carries the
-> eventfd and reports a status word plus a sequence number, so userspace
-> can tell coalesced notifications apart. IN_PROGRESS is set while a
-> recovery is running. CHANNEL_FROZEN says the link went down.
-> DEVICE_RESET says the host reset the device. FAILED says the device
-> cannot be used again until close and reopen. ENABLED says userspace has
-> opted in.
-> 
-> A non-fatal recovery can complete before userspace reacts to the eventfd,
-> so IN_PROGRESS may already be clear by the time the feature is read. Work
-> from the sequence number and the status bits rather than expecting to
-> catch the event while it runs.
-> 
-> Patches
-> -------
-> 
->   1-3    the groundwork: the recovery state fields, the open and close
->          lifecycle so a callback never sees a half built or half torn
->          down device, and the access guards the rest of the series uses
->   4-13   close the access paths one at a time: function reset, config
->          space, ioeventfd, BAR faults, BAR and ROM, interrupts, hot
->          reset, runtime PM, info queries, DMA-BUF
->   14-18  the error handler callbacks: slot reset, the INTx helpers and
->          the quiesce that uses them, then resume and error_detected
->   19     the uAPI a user opts in through
-> 
-> Locking
-> -------
-> 
-> Blocking access is the hard part of this series, and it comes down to
-> one rule.
-> 
->   recovery_lock can be held while publishing state, and while draining
->   operations that are already under way. It cannot be held across a reset,
->   or across anything else that reaches pci_bus_sem.
-> 
-> The reason is the order AER arrives in. It enters the driver already
-> holding device_lock, and pci_bus_sem too when the device sits under a
-> bridge with a subordinate bus, and only then takes recovery_lock. A
-> secondary bus reset reaches pci_bus_sem. So a vfio path which holds
-> recovery_lock across a reset ends up taking those two the other way
-> round.
-> 
-> Seven places needed reshaping for this rule: device close, slot_reset(),
-> open, VFIO_DEVICE_RESET, the guest triggered config space FLR,
-> VFIO_DEVICE_SET_IRQS, and a guest write putting the device back in D0,
-> which reaches pci_bus_sem through pcie_aspm_pm_state_change().
-> 
-> Most access takes recovery_lock for reading and checks whether a recovery
-> or a reset is blocking the device. A few places cannot take the lock and
-> read that state directly instead. All of them fail safe. A stale read
-> costs an extra refusal or retry, never an unguarded access.
-> 
-> Interrupt teardown is the one deliberate exception. It flushes the global
-> virqfd workqueue with recovery_lock held, which can make the hold last as
-> long as a reset on another vfio device. It costs latency, not
-> correctness.
-> 
-> I am not sure this is the best way to handle it, and would welcome
-> suggestions.
+This enables QMP introspection to report accurate QAPI type names
+for enum properties. Where a separate set_description call was used,
+the description is now embedded in the QAPI_ENUM_PROP initializer.
 
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ authz/list.c                             | 12 +++++++-----
+ backends/hostmem.c                       | 14 ++++++++------
+ crypto/secret_common.c                   | 12 +++++++-----
+ crypto/tlscreds.c                        | 12 +++++++-----
+ hw/i386/pc_piix.c                        | 18 ++++++++++++------
+ hw/microblaze/petalogix_s3adsp1800_mmu.c | 19 +++++++++++--------
+ include/chardev/char.h                   |  8 --------
+ monitor/qmp.c                            | 12 +++++++-----
+ net/filter.c                             | 10 +++++++---
+ target/i386/kvm/kvm.c                    | 30 +++++++++++++++++-------------
+ ui/console-vc.c                          |  8 +++++++-
+ ui/dbus.c                                | 18 ++++++++++++++----
+ ui/input-linux.c                         | 11 +++++++----
+ 13 files changed, 111 insertions(+), 73 deletions(-)
 
-Thanks for tackling this, Shameer.  The recovery_lock wrapping all
-these accesses does make me nervous, both in lock complexity and
-overhead.  Wouldn't it be a better solution to decouple the user
-interface from the device by replacing the access path via SRCU then
-doing zap/move/interrupt teardown?
+diff --git a/authz/list.c b/authz/list.c
+index 17aa0efd80e8..363b2ee12c98 100644
+--- a/authz/list.c
++++ b/authz/list.c
+@@ -22,6 +22,7 @@
+ #include "authz/list.h"
+ #include "trace.h"
+ #include "qom/object_interfaces.h"
++#include "qapi/qapi-type-infos-authz.h"
+ #include "qapi/qapi-visit-authz.h"
+ #include "qemu/module.h"
+ 
+@@ -120,11 +121,12 @@ qauthz_list_class_init(ObjectClass *oc, const void *data)
+ {
+     QAuthZClass *authz = QAUTHZ_CLASS(oc);
+ 
+-    object_class_property_add_enum(oc, "policy",
+-                                   "QAuthZListPolicy",
+-                                   &QAuthZListPolicy_lookup,
+-                                   qauthz_list_prop_get_policy,
+-                                   qauthz_list_prop_set_policy);
++    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
++        .name = "policy",
++        .qapi_type = &QAuthZListPolicy_type_info,
++        .get = qauthz_list_prop_get_policy,
++        .set = qauthz_list_prop_set_policy,
++    ));
+ 
+     object_class_property_add(oc, "rules", "QAuthZListRule",
+                               qauthz_list_prop_get_rules,
+diff --git a/backends/hostmem.c b/backends/hostmem.c
+index 5dd5fb155c47..ce82958050e2 100644
+--- a/backends/hostmem.c
++++ b/backends/hostmem.c
+@@ -16,6 +16,7 @@
+ #include "hw/core/boards.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-builtin-visit.h"
++#include "qapi/qapi-type-infos-common.h"
+ #include "qapi/visitor.h"
+ #include "qemu/config-file.h"
+ #include "qom/compat-properties.h"
+@@ -551,12 +552,13 @@ host_memory_backend_class_init(ObjectClass *oc, const void *data)
+         NULL, NULL);
+     object_class_property_set_description(oc, "host-nodes",
+         "Binds memory to the list of NUMA host nodes");
+-    object_class_property_add_enum(oc, "policy", "HostMemPolicy",
+-        &HostMemPolicy_lookup,
+-        host_memory_backend_get_policy,
+-        host_memory_backend_set_policy);
+-    object_class_property_set_description(oc, "policy",
+-        "Set the NUMA policy");
++    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
++        .name = "policy",
++        .description = "Set the NUMA policy",
++        .qapi_type = &HostMemPolicy_type_info,
++        .get = host_memory_backend_get_policy,
++        .set = host_memory_backend_set_policy,
++    ));
+     object_class_property_add_bool(oc, "share",
+         host_memory_backend_get_share, host_memory_backend_set_share);
+     object_class_property_set_description(oc, "share",
+diff --git a/crypto/secret_common.c b/crypto/secret_common.c
+index a5ecb876aeba..381d23ecc8e0 100644
+--- a/crypto/secret_common.c
++++ b/crypto/secret_common.c
+@@ -22,6 +22,7 @@
+ #include "crypto/secret_common.h"
+ #include "crypto/cipher.h"
+ #include "qapi/error.h"
++#include "qapi/qapi-type-infos-crypto.h"
+ #include "qom/object_interfaces.h"
+ #include "qemu/base64.h"
+ #include "qemu/module.h"
+@@ -269,11 +270,12 @@ qcrypto_secret_class_init(ObjectClass *oc, const void *data)
+ 
+     ucc->complete = qcrypto_secret_complete;
+ 
+-    object_class_property_add_enum(oc, "format",
+-                                   "QCryptoSecretFormat",
+-                                   &QCryptoSecretFormat_lookup,
+-                                   qcrypto_secret_prop_get_format,
+-                                   qcrypto_secret_prop_set_format);
++    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
++        .name = "format",
++        .qapi_type = &QCryptoSecretFormat_type_info,
++        .get = qcrypto_secret_prop_get_format,
++        .set = qcrypto_secret_prop_set_format,
++    ));
+     object_class_property_add_str(oc, "keyid",
+                                   qcrypto_secret_prop_get_keyid,
+                                   qcrypto_secret_prop_set_keyid);
+diff --git a/crypto/tlscreds.c b/crypto/tlscreds.c
+index fb09e295a65c..54859720bf74 100644
+--- a/crypto/tlscreds.c
++++ b/crypto/tlscreds.c
+@@ -20,6 +20,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
++#include "qapi/qapi-type-infos-crypto.h"
+ #include "qapi-types-crypto.h"
+ #include "qemu/module.h"
+ #include "qemu/error-report.h"
+@@ -221,11 +222,12 @@ qcrypto_tls_creds_class_init(ObjectClass *oc, const void *data)
+     object_class_property_add_str(oc, "dir",
+                                   qcrypto_tls_creds_prop_get_dir,
+                                   qcrypto_tls_creds_prop_set_dir);
+-    object_class_property_add_enum(oc, "endpoint",
+-                                   "QCryptoTLSCredsEndpoint",
+-                                   &QCryptoTLSCredsEndpoint_lookup,
+-                                   qcrypto_tls_creds_prop_get_endpoint,
+-                                   qcrypto_tls_creds_prop_set_endpoint);
++    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
++        .name = "endpoint",
++        .qapi_type = &QCryptoTLSCredsEndpoint_type_info,
++        .get = qcrypto_tls_creds_prop_get_endpoint,
++        .set = qcrypto_tls_creds_prop_set_endpoint,
++    ));
+     object_class_property_add_str(oc, "priority",
+                                   qcrypto_tls_creds_prop_get_priority,
+                                   qcrypto_tls_creds_prop_set_priority);
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index a929cc4decd6..dac2bee88a2e 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -336,6 +336,11 @@ static const QEnumLookup PCSouthBridgeOption_lookup = {
+     .size = PC_SOUTH_BRIDGE_OPTION_MAX
+ };
+ 
++static const QAPITypeInfo PCSouthBridgeOption_type_info = {
++    .name = "PCSouthBridgeOption",
++    .lookup = &PCSouthBridgeOption_lookup,
++};
++
+ static int pc_get_south_bridge(Object *obj, Error **errp)
+ {
+     PCMachineState *pcms = PC_MACHINE(obj);
+@@ -418,12 +423,13 @@ static void pc_i440fx_machine_options(MachineClass *m)
+     machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
+     machine_class_allow_dynamic_sysbus_dev(m, TYPE_UEFI_VARS_X64);
+ 
+-    object_class_property_add_enum(oc, "x-south-bridge", "PCSouthBridgeOption",
+-                                   &PCSouthBridgeOption_lookup,
+-                                   pc_get_south_bridge,
+-                                   pc_set_south_bridge);
+-    object_class_property_set_description(oc, "x-south-bridge",
+-                                     "Use a different south bridge than PIIX3");
++    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
++        .name = "x-south-bridge",
++        .description = "Use a different south bridge than PIIX3",
++        .qapi_type = &PCSouthBridgeOption_type_info,
++        .get = pc_get_south_bridge,
++        .set = pc_set_south_bridge,
++    ));
+     compat_props_add(m->compat_props,
+                      pc_piix_compat_defaults, pc_piix_compat_defaults_len);
+ }
+diff --git a/hw/microblaze/petalogix_s3adsp1800_mmu.c b/hw/microblaze/petalogix_s3adsp1800_mmu.c
+index c5f64319009b..9a8fcc667812 100644
+--- a/hw/microblaze/petalogix_s3adsp1800_mmu.c
++++ b/hw/microblaze/petalogix_s3adsp1800_mmu.c
+@@ -27,6 +27,7 @@
+ #include "qemu/target-info.h"
+ #include "qemu/units.h"
+ #include "qapi/error.h"
++#include "qapi/qapi-type-infos-common.h"
+ #include "target/microblaze/cpu.h"
+ #include "hw/core/sysbus.h"
+ #include "net/net.h"
+@@ -174,14 +175,16 @@ static void petalogix_s3adsp1800_machine_class_init(ObjectClass *oc,
+     mc->init = petalogix_s3adsp1800_init;
+     mc->is_default = true;
+ 
+-    prop = object_class_property_add_enum(oc, "endianness", "EndianMode",
+-                                          &EndianMode_lookup,
+-                                          machine_get_endianness,
+-                                          machine_set_endianness);
+-    object_property_set_default_str(prop, target_big_endian() ? "big"
+-                                                              : "little");
+-    object_class_property_set_description(oc, "endianness",
+-            "Defines whether the machine runs in big or little endian mode");
++    prop = object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
++        .name = "endianness",
++        .description =
++            "Defines whether the machine runs in big or little endian mode",
++        .qapi_type = &EndianMode_type_info,
++        .get = machine_get_endianness,
++        .set = machine_set_endianness,
++    ));
++    object_property_set_default_enum(prop,
++        target_big_endian() ? ENDIAN_MODE_BIG : ENDIAN_MODE_LITTLE);
+ }
+ 
+ static const TypeInfo petalogix_s3adsp1800_machine_types[] = {
+diff --git a/include/chardev/char.h b/include/chardev/char.h
+index 7377d8e60a08..f5e53b3867a3 100644
+--- a/include/chardev/char.h
++++ b/include/chardev/char.h
+@@ -343,12 +343,4 @@ static void set_encoding(Object *obj, int value, Error **errp)  \
+     cast_func(obj)->encoding = value;                           \
+ }
+ 
+-static inline void chardev_vc_add_encoding_prop(ObjectClass *oc,
+-    int (*get)(Object *, Error **),
+-    void (*set)(Object *, int, Error **))
+-{
+-    object_class_property_add_enum(oc, "encoding", "ChardevVCEncoding",
+-                                   &ChardevVCEncoding_lookup, get, set);
+-}
+-
+ #endif
+diff --git a/monitor/qmp.c b/monitor/qmp.c
+index aec03157750c..728a58bfd5e9 100644
+--- a/monitor/qmp.c
++++ b/monitor/qmp.c
+@@ -30,6 +30,7 @@
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-control.h"
+ #include "qapi/qapi-commands-char.h"
++#include "qapi/qapi-type-infos-qom.h"
+ #include "qobject/qdict.h"
+ #include "qobject/qjson.h"
+ #include "qobject/qlist.h"
+@@ -133,11 +134,12 @@ static void monitor_qmp_class_init(ObjectClass *cls, const void *data)
+     object_class_property_add_bool(cls, "pretty",
+                                    monitor_qmp_get_pretty,
+                                    monitor_qmp_set_pretty);
+-    object_class_property_add_enum(cls, "close-action",
+-                                   "MonitorQMPCloseAction",
+-                                   &MonitorQMPCloseAction_lookup,
+-                                   monitor_qmp_get_close_action,
+-                                   monitor_qmp_set_close_action);
++    object_class_property_add_qapi_enum(cls, QAPI_ENUM_PROP(
++        .name = "close-action",
++        .qapi_type = &MonitorQMPCloseAction_type_info,
++        .get = monitor_qmp_get_close_action,
++        .set = monitor_qmp_set_close_action,
++    ));
+ 
+     moncls->emit_event = monitor_qmp_emit_event;
+     moncls->requires_iothread = monitor_qmp_requires_iothread;
+diff --git a/net/filter.c b/net/filter.c
+index 389f3b0bfefb..79883af22a54 100644
+--- a/net/filter.c
++++ b/net/filter.c
+@@ -8,6 +8,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
++#include "qapi/qapi-type-infos-common.h"
+ #include "qapi/qmp/qerror.h"
+ #include "qemu/error-report.h"
+ 
+@@ -342,9 +343,12 @@ static void netfilter_class_init(ObjectClass *oc, const void *data)
+ 
+     object_class_property_add_str(oc, "netdev",
+                                   netfilter_get_netdev_id, netfilter_set_netdev_id);
+-    object_class_property_add_enum(oc, "queue", "NetFilterDirection",
+-                                   &NetFilterDirection_lookup,
+-                                   netfilter_get_direction, netfilter_set_direction);
++    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
++        .name = "queue",
++        .qapi_type = &NetFilterDirection_type_info,
++        .get = netfilter_get_direction,
++        .set = netfilter_set_direction,
++    ));
+     object_class_property_add_str(oc, "status",
+                                   netfilter_get_status, netfilter_set_status);
+     object_class_property_add_str(oc, "position",
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 1eeadb99adac..9f65419a2c1a 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -14,6 +14,8 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qapi/qapi-events-run-state.h"
++#include "qapi/qapi-type-infos-common.h"
++#include "qapi/qapi-type-infos-run-state.h"
+ #include "qapi/error.h"
+ #include "qapi/visitor.h"
+ #include <math.h>
+@@ -7089,12 +7091,13 @@ static void kvm_arch_set_honor_guest_pat(Object *obj, int value, Error **errp)
+ 
+ void kvm_arch_accel_class_init(ObjectClass *oc)
+ {
+-    object_class_property_add_enum(oc, "notify-vmexit", "NotifyVMexitOption",
+-                                   &NotifyVmexitOption_lookup,
+-                                   kvm_arch_get_notify_vmexit,
+-                                   kvm_arch_set_notify_vmexit);
+-    object_class_property_set_description(oc, "notify-vmexit",
+-                                          "Enable notify VM exit");
++    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
++        .name = "notify-vmexit",
++        .description = "Enable notify VM exit",
++        .qapi_type = &NotifyVmexitOption_type_info,
++        .get = kvm_arch_get_notify_vmexit,
++        .set = kvm_arch_set_notify_vmexit,
++    ));
+ 
+     object_class_property_add(oc, "notify-window", "uint32",
+                               kvm_arch_get_notify_window,
+@@ -7127,13 +7130,14 @@ void kvm_arch_accel_class_init(ObjectClass *oc)
+     object_class_property_set_description(oc, "xen-evtchn-max-pirq",
+                                           "Maximum number of Xen PIRQs");
+ 
+-    object_class_property_add_enum(oc, "honor-guest-pat", "OnOffAuto",
+-                                   &OnOffAuto_lookup,
+-                                   kvm_arch_get_honor_guest_pat,
+-                                   kvm_arch_set_honor_guest_pat);
+-    object_class_property_set_description(oc, "honor-guest-pat",
+-                                          "Disable KVM quirk that ignores guest PAT "
+-                                          "memory type settings (default: auto)");
++    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
++        .name = "honor-guest-pat",
++        .description = "Disable KVM quirk that ignores guest PAT "
++                       "memory type settings (default: auto)",
++        .qapi_type = &OnOffAuto_type_info,
++        .get = kvm_arch_get_honor_guest_pat,
++        .set = kvm_arch_set_honor_guest_pat,
++    ));
+ }
+ 
+ void kvm_set_max_apic_id(uint32_t max_apic_id)
+diff --git a/ui/console-vc.c b/ui/console-vc.c
+index 53d9e9d39b36..1e46eceeded2 100644
+--- a/ui/console-vc.c
++++ b/ui/console-vc.c
+@@ -6,6 +6,7 @@
+ 
+ #include "chardev/char.h"
+ #include "qapi/error.h"
++#include "qapi/qapi-type-infos-char.h"
+ #include "qemu/option.h"
+ #include "qemu/queue.h"
+ #include "qom/compat-properties.h"
+@@ -318,7 +319,12 @@ static void char_vc_class_init(ObjectClass *oc, const void *data)
+     cc->supports_size_opts = true;
+     cc->supports_encoding_opts = true;
+ 
+-    chardev_vc_add_encoding_prop(oc, get_encoding, set_encoding);
++    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
++        .name = "encoding",
++        .qapi_type = &ChardevVCEncoding_type_info,
++        .get = get_encoding,
++        .set = set_encoding,
++    ));
+ }
+ 
+ static void char_vc_init(Object *obj)
+diff --git a/ui/dbus.c b/ui/dbus.c
+index 7be0f8e26119..afc321514c68 100644
+--- a/ui/dbus.c
++++ b/ui/dbus.c
+@@ -38,6 +38,8 @@
+ #include "qemu/audio.h"
+ #include "audio/audio_int.h" /* FIXME: use QOM dynamic cast instead of drv->name */
+ #include "qapi/error.h"
++#include "qapi/qapi-type-infos-char.h"
++#include "qapi/qapi-type-infos-ui.h"
+ #include "trace.h"
+ 
+ #include "dbus.h"
+@@ -508,9 +510,12 @@ dbus_display_class_init(ObjectClass *oc, const void *data)
+     object_class_property_add_bool(oc, "p2p", get_dbus_p2p, set_dbus_p2p);
+     object_class_property_add_str(oc, "addr", get_dbus_addr, set_dbus_addr);
+     object_class_property_add_str(oc, "audiodev", get_audiodev, set_audiodev);
+-    object_class_property_add_enum(oc, "gl-mode",
+-                                   "DisplayGLMode", &DisplayGLMode_lookup,
+-                                   get_gl_mode, set_gl_mode);
++    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
++        .name = "gl-mode",
++        .qapi_type = &DisplayGLMode_type_info,
++        .get = get_gl_mode,
++        .set = set_gl_mode,
++    ));
+ }
+ 
+ #define TYPE_CHARDEV_VC "chardev-vc"
+@@ -602,7 +607,12 @@ dbus_vc_class_init(ObjectClass *oc, const void *data)
+     cc->chr_open = dbus_vc_open;
+     cc->supports_encoding_opts = true;
+ 
+-    chardev_vc_add_encoding_prop(oc, get_encoding, set_encoding);
++    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
++        .name = "encoding",
++        .qapi_type = &ChardevVCEncoding_type_info,
++        .get = get_encoding,
++        .set = set_encoding,
++    ));
+ }
+ 
+ static void
+diff --git a/ui/input-linux.c b/ui/input-linux.c
+index f4eee1ffd7ec..715d1f589297 100644
+--- a/ui/input-linux.c
++++ b/ui/input-linux.c
+@@ -6,6 +6,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
++#include "qapi/qapi-type-infos-common.h"
+ #include "qemu/config-file.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/module.h"
+@@ -506,10 +507,12 @@ static void input_linux_class_init(ObjectClass *oc, const void *data)
+     object_class_property_add_bool(oc, "repeat",
+                                    input_linux_get_repeat,
+                                    input_linux_set_repeat);
+-    object_class_property_add_enum(oc, "grab-toggle", "GrabToggleKeys",
+-                                   &GrabToggleKeys_lookup,
+-                                   input_linux_get_grab_toggle,
+-                                   input_linux_set_grab_toggle);
++    object_class_property_add_qapi_enum(oc, QAPI_ENUM_PROP(
++        .name = "grab-toggle",
++        .qapi_type = &GrabToggleKeys_type_info,
++        .get = input_linux_get_grab_toggle,
++        .set = input_linux_set_grab_toggle,
++    ));
+ }
+ 
+ static const TypeInfo input_linux_info = {
 
-Such a solution would have utility beyond the error path.  We could use
-it for surprise removal/DPC, we could allow a policy to remove the
-device from the user on unbind, in place of or in addition to the
-request eventfd we use currently.  In the error case, the intention
-would be to temporarily suspend access to the device, but if it falls
-off the bus after recovery, it may turn into a permanent removal.
+-- 
+2.55.0.543.g5ebe2ebe4ea8
 
-What do you think?  Thanks,
-
-Alex
