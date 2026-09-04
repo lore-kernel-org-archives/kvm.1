@@ -1,56 +1,56 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE02A2DCF4C
-	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 00:24:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D814725E469
+	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 00:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788481484; cv=none; b=np8VZUn95QKZApZYuy+/mCVZyyO4QgG1AfFYGuSxt4iAaMXRr21PcKYcD6mPKfEhHFjMUKk/UlEbuGGr95Fp1VIO9Ogqx2djIJXFhkXBvsVHR4SwaabwDf+lsjmx6tkasDr7FcqxKDv6FwCfs/BAZdbjKnrn4mCQd4RDtRO+tgM=
+	t=1788481486; cv=none; b=FQsaNpsdZSySSRov56qot0U8LAYxh/VOHafCX3icGIL7aQcZPDIN3OVvr1LBQK5GVvoLXQP/trbr2qT5hRnnVd+XY0WvX1NDdTjuCuGT2Uuj0qKx7IZ1gEnr8Z8/hmh5Tn9irtMiBavOYN9X0qxv7gDaojbfM66Huogj5jeF++Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788481484; c=relaxed/simple;
-	bh=lOLkDhC+0jEEmaJA/kJ3+0nq2l0G4q+uHGVmRu7NGRo=;
+	s=arc-20240116; t=1788481486; c=relaxed/simple;
+	bh=vgXQFuBJ0c3qC6re8no35X7E/n7kKg/3QaAVG1RR6lM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=k4xPzOG7UJHApH0maxX8s+5T8hpkjuFyI980GATMtZV+v+szt+HCWemePsBcKqHnHpWxGXV1yrqNQgqwc/cFBeZsKtnNa6AcXhn8ofvc9KDpx/jHSXJ8k/Xm7cppwO84e0UjHFY/+cscyJ9EGak+sy2RPDQ+aWvrDouDqwITiuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BhNDZMrt; arc=none smtp.client-ip=209.85.214.198
+	 To:Cc:Content-Type; b=pSy5Tm9BYhhb4wo6p0rILWeVq+f8/PsmnQxkok0Zw+IFDNfqgKGQB1TNx8UfY6lz/BKUG9vmeTW5ktv3ivlIccfH9cmVnxiCZCGTDHi89cFd+64cqppJ6yUBfRlW0Lvr2L9aTU+W4mjpYqytwKW6W84hwi1nFlAV6NvXwOKvljQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q3J+wWjs; arc=none smtp.client-ip=209.85.210.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BhNDZMrt"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ce7dfd33ffso5667765ad.0
-        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 17:24:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q3J+wWjs"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-85599cf98e5so694767b3a.1
+        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 17:24:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788481481; x=1789086281; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788481483; x=1789086283; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=ldmCfKYtALnNcT6kPjdmhY8VFTLAAtrBH06PwWUQQDg=;
-        b=BhNDZMrt6y6pj+f/M6ZqL5ZOby9XPobh/+CpccYQsIqaagm244Q3j3PkRIIKBhSVL1
-         gvynXcD37YIuotZEBKWQ5Kh+TGM6gqZI1w2IBXYJfTnMelsEGgB3B7yO+qqkupjZVwXg
-         05TEWfP+uPa8NjYMqkMN2Vm1EgfsBNA1lyOsGdeMIHJH3mGTsvy22v2OrTMwfi/I7GNC
-         GzHbwL6OHPqf4ErFFlUgIHPSYN0ys4MvYjrWnphnSOgBZqO8R0wnQQPyvkDVsGJWutvi
-         HJHuAAKzFmaOh4TyKKnrRYVjMTuK9MGfOxmWJJ5X6JfE2+wHt90kmcyyfJ4OAPMJMQhD
-         Z6Bg==
+        bh=8ag8bpeoUZOOSbjWNaS/zDOOv3tyyAmOLhY6BO17Mks=;
+        b=q3J+wWjs3H40orhptjf8giQ6V7S/F2L8+QfTR9QUSKDPmYvlZJMVKJJYv+aSDaubsc
+         702Dlaj7DADOwQsDzmKFFARrmh9q8u2U9rPF5ehRk+FNSuPh5x+3/sIMG+CKJCKONCIC
+         lEWYcS4J5f58w6YrORmxDHIXLFgwrij8hIRThG46HYJuas3Sbj4duRq2VQqF28b5TzEz
+         dZpQDRABg52LN6aImNzRPJiNGru7LsQWvWlcv46pclwZkWGtonZAofrPwlu6hVGKAPvt
+         qB1/iOe0lymf10vZUsDKYzX/AvG23Z7cpA6SQbpzFWEiTiKqijUURIs5/DiF7CX9J02n
+         KNug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788481481; x=1789086281;
+        d=1e100.net; s=20251104; t=1788481483; x=1789086283;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ldmCfKYtALnNcT6kPjdmhY8VFTLAAtrBH06PwWUQQDg=;
-        b=UpoGMK/1WLea9jwgTiQlmiHJjazhLJENo5U+iSPNAmk21j6D///aLYJRMDZdR5ZSyZ
-         f+Ws2koRiYx482Dk8FyIoPczb2iOsirvA3h4izKprM9/Mk+fldHkAGxCi3QZHZGH9Cb9
-         RJsYp6fO1PJMqh4/B8cVu8H9oHmGDtSqpciELHYaZ44bIFj/CXGMtpy53pPACudFFfRM
-         yRc6YoQIII9ZGrtMd7RULY4kzZlGSYi5wZy3VnFud+q6MqLnf+GGiFHfLn7NHOm1m+jv
-         vTK4F6jAwF4CVhA7LLg2rJPqnxdxkJuBe9/mUzPTXmAaZX8TxiD/h57gIRTARK9MXEd3
-         Lrjg==
-X-Gm-Message-State: AFuF++nRg+sIVverwlCM59PaaXbXFUnhgE4RPv5Hn6fjRwlr7rargx9T
-	vMvJDiSvw/6/JwUtUPe+9hZLgHcT2Z8wE56+bKVmjeP6aV0NEcfCbgXAocyvOo4G0iDPUfkWxji
-	wFyJDjA==
-X-Received: from plww3.prod.google.com ([2002:a17:902:d103:b0:2ce:fa2c:7de3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:a981:b0:2d8:de9f:9a44
- with SMTP id d9443c01a7336-2db12879178mr27625465ad.19.1788481480684; Thu, 03
- Sep 2026 17:24:40 -0700 (PDT)
+        bh=8ag8bpeoUZOOSbjWNaS/zDOOv3tyyAmOLhY6BO17Mks=;
+        b=Zoiv+86FrcTmL1SHsExr78nahyXjau4/aWAJ0r1ux5fn0XB4/WBg+T4lwRBqp0V3+f
+         7NOAEB8yFWZwdo+9AAX4oC52XQSjCeb8sAudFnOp6WKcP4ydYANe/JUVf2DatlIinpky
+         7vzk6e7pLUZ2BVr9WlcuXQjdia3LAm6pVhWkljzoJOtgJEflxCfOhE+EhSJu6YsXWQjt
+         OSbGraHn/8phx84trU+EI6WCHVqpqJpxanDldb1AFHdhjzkNXUeMDFHKY2btZoSk90Hw
+         v0a2cY3uJLqP02yu7nqc2IcCSn3JvcyXkt+kfpk1VJN0nKM/EGZF23BkCf+/5QenECdy
+         dxTQ==
+X-Gm-Message-State: AFuF++mLzapBOGEU8HafdoGR71/bm1GIBfMy1XIEoYzDE48x+gN3v0LR
+	XA8cHv+TRd1mKKymaVIBblVCj9KAoCJRrJtS+IuBYfd/ICBYlPeq6IQIEXzh+fZLeBEar+U15G9
+	jHinz3g==
+X-Received: from pfcg1.prod.google.com ([2002:a05:6a00:23c1:b0:848:7fd6:7dec])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:8d8d:b0:855:eb7b:5804
+ with SMTP id d2e1a72fcca58-861662d4c0fmr3948705b3a.4.1788481483050; Thu, 03
+ Sep 2026 17:24:43 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  3 Sep 2026 17:24:19 -0700
+Date: Thu,  3 Sep 2026 17:24:21 -0700
 In-Reply-To: <20260904002423.3154436-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260904002423.3154436-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
-Message-ID: <20260904002423.3154436-14-seanjc@google.com>
-Subject: [PATCH v4 13/17] KVM: selftests: Dedup assembly code for VMLAUNCH and VMRESUME
+Message-ID: <20260904002423.3154436-16-seanjc@google.com>
+Subject: [PATCH v4 15/17] KVM: selftests: Add __vmwrite() and use it when
+ initializing optional fields.
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, f734222792@gmail.com, 
@@ -69,251 +70,116 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, f734222792@gmail.com,
 	Yosry Ahmed <yosry@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Dedup the assembly code for VMLAUNCH vs. VMRESUME, for both architectural
-VMCS and eVMCS, as the difference is literally only the actual VM-Enter
-instruction for VMLAUNCH vs. VMRESUME, and VMWRITE vs. MOV for VMCS vs.
-eVMCS.
+Add __vmwrite() in anticipation of having vmwrite() assert success, and use
+the "failure allowed" version in the common VMCS setup code, which is the
+only code that wants to write fields that may or may not exist (although
+arguably the code should check if the field exists instead of blindly
+writing).
 
-Opportunistically place the implementations in vmx.c so that the lengthy
-sequence (~580 bytes of code) aren't inlined for every single VM-Enter.
+E.g. When doing initial configuration of a VMCS, the core library doesn't
+want to assume secondary controls are supported, and so blindly does a
+VMWRITE and pivots on success/failure.
 
-000000000041b910 <__vmlaunch>:
-  41b910:       80 3d 61 5e 10 00 00                            cmpb   $0x0,0x105e61(%rip)        # 521778 <enable_evmcs>
-  41b917:       0f 85 13 01 00 00                               jne    41ba30 <__vmlaunch+0x120>
-  41b91d:       ba 14 6c 00 00                                  mov    $0x6c14,%edx
-  41b922:       b9 16 6c 00 00                                  mov    $0x6c16,%ecx
-  41b927:       6a 00                                           push   $0x0
-  41b929:       0f 79 d4                                        vmwrite %rsp,%rdx
-  41b92c:       48 8d 05 82 00 00 00                            lea    0x82(%rip),%rax        # 41b9b5 <__vmlaunch+0xa5>
-  41b933:       0f 79 c8                                        vmwrite %rax,%rcx
-  <xchg GPRs>
-  41b9ae:       0f 01 c2                                        vmlaunch
-  41b9b1:       48 ff 04 24                                     incq   (%rsp)
-  <xchg GPRs>
-  41ba2d:       58                                              pop    %rax
-  41ba2e:       c3                                              ret
-  41ba2f:       90                                              nop
-  41ba30:       48 8b 35 39 5d 10 00                            mov    0x105d39(%rip),%rsi        # 521770 <current_evmcs>
-  41ba37:       c7 86 38 03 00 00 00 00 00 00                   movl   $0x0,0x338(%rsi)
-  41ba41:       6a 00                                           push   $0x0
-  41ba43:       48 89 a6 68 02 00 00                            mov    %rsp,0x268(%rsi)
-  41ba4a:       48 8d 05 83 00 00 00                            lea    0x83(%rip),%rax        # 41bad4 <__vmlaunch+0x1c4>
-  41ba51:       48 89 46 50                                     mov    %rax,0x50(%rsi)
-  <xchg GPRs>
-  41bacd:       0f 01 c2                                        vmlaunch
-  41bad0:       48 ff 04 24                                     incq   (%rsp)
-  <xchg GPRs>
-  41bb4c:       58                                              pop    %rax
-  41bb4d:       c3                                              ret
+All usage of vmwrite() outside of common setup already asserts success, or
+100% relies on VMWRITE succeeding in order for the test to function
+correctly.
 
-No functional change intended (though the code generation will be quite
-different).
+No functional change intended.
 
-Cc: Yosry Ahmed <yosry@kernel.org>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- .../testing/selftests/kvm/include/x86/evmcs.h | 58 -------------------
- tools/testing/selftests/kvm/include/x86/vmx.h | 47 ++-------------
- tools/testing/selftests/kvm/lib/x86/vmx.c     | 55 ++++++++++++++++++
- 3 files changed, 60 insertions(+), 100 deletions(-)
+ tools/testing/selftests/kvm/include/x86/vmx.h |  7 ++++++-
+ tools/testing/selftests/kvm/lib/x86/vmx.c     | 18 +++++++++---------
+ 2 files changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/x86/evmcs.h b/tools/testing/selftests/kvm/include/x86/evmcs.h
-index f18ebfb10ee0..491fb8107473 100644
---- a/tools/testing/selftests/kvm/include/x86/evmcs.h
-+++ b/tools/testing/selftests/kvm/include/x86/evmcs.h
-@@ -1187,62 +1187,4 @@ static inline int evmcs_vmwrite(u64 encoding, u64 value)
- 	return 0;
- }
- 
--static inline int evmcs_vmlaunch(void)
--{
--	int ret;
--
--	current_evmcs->hv_clean_fields = 0;
--
--	__asm__ __volatile__("push $0;"
--			     "mov %%rsp, (%[host_rsp]);"
--			     "lea 1f(%%rip), %%rax;"
--			     "mov %%rax, (%[host_rip]);"
--			     VMX_SWITCH_GPRS_ASM
--			     "vmlaunch;"
--			     "incq (%%rsp);"
--			     "1: ;"
--			     VMX_SWITCH_GPRS_ASM
--			     "pop %%rax;"
--			     : [ret]"=&a"(ret)
--			     : [host_rsp]"r"
--			       ((u64)&current_evmcs->host_rsp),
--			       [host_rip]"r"
--			       ((u64)&current_evmcs->host_rip),
--			       GUEST_REGS_OFFSETS
--			     : "memory", "cc");
--	return ret;
--}
--
--/*
-- * No guest state (e.g. GPRs) is established by this vmresume.
-- */
--static inline int evmcs_vmresume(void)
--{
--	int ret;
--
--	/* HOST_RIP */
--	current_evmcs->hv_clean_fields &= ~HV_VMX_ENLIGHTENED_CLEAN_FIELD_HOST_GRP1;
--	/* HOST_RSP */
--	current_evmcs->hv_clean_fields &= ~HV_VMX_ENLIGHTENED_CLEAN_FIELD_HOST_POINTER;
--
--	__asm__ __volatile__("push $0;"
--			     "mov %%rsp, (%[host_rsp]);"
--			     "lea 1f(%%rip), %%rax;"
--			     "mov %%rax, (%[host_rip]);"
--			     VMX_SWITCH_GPRS_ASM
--			     "vmresume;"
--			     "incq (%%rsp);"
--			     "1: ;"
--			     VMX_SWITCH_GPRS_ASM
--			     "pop %%rax;"
--			     : [ret]"=&a"(ret)
--			     : [host_rsp]"r"
--			       ((u64)&current_evmcs->host_rsp),
--			       [host_rip]"r"
--			       ((u64)&current_evmcs->host_rip),
--			       GUEST_REGS_OFFSETS
--			     : "memory", "cc");
--	return ret;
--}
--
- #endif /* !SELFTEST_KVM_EVMCS_H */
 diff --git a/tools/testing/selftests/kvm/include/x86/vmx.h b/tools/testing/selftests/kvm/include/x86/vmx.h
-index 3def8df902a2..d0ac8e128d98 100644
+index 1419043b41dd..40111db580a8 100644
 --- a/tools/testing/selftests/kvm/include/x86/vmx.h
 +++ b/tools/testing/selftests/kvm/include/x86/vmx.h
-@@ -359,54 +359,17 @@ static inline u64 vmptrst(void)
+@@ -414,7 +414,7 @@ static inline u64 vmreadz(u64 encoding)
  	return value;
  }
  
-+int __vmlaunch(void);
-+int __vmresume(void);
+-static inline int vmwrite(u64 encoding, u64 value)
++static __always_inline int __vmwrite(u64 encoding, u64 value)
+ {
+ 	u8 ret;
+ 
+@@ -429,6 +429,11 @@ static inline int vmwrite(u64 encoding, u64 value)
+ 	return ret;
+ }
+ 
++static inline int vmwrite(u64 encoding, u64 value)
++{
++	return __vmwrite(encoding, value);
++}
 +
- static inline int vmlaunch(void)
+ static inline u32 vmcs_revision(void)
  {
--	int ret;
--
--	if (enable_evmcs)
--		return evmcs_vmlaunch();
--
--	__asm__ __volatile__("push $0;"
--			     "vmwrite %%rsp, %[host_rsp];"
--			     "lea 1f(%%rip), %%rax;"
--			     "vmwrite %%rax, %[host_rip];"
--			     VMX_SWITCH_GPRS_ASM
--			     "vmlaunch;"
--			     "incq (%%rsp);"
--			     "1: ;"
--			     VMX_SWITCH_GPRS_ASM
--			     "pop %%rax;"
--			     : [ret]"=&a"(ret)
--			     : [host_rsp]"r"((u64)HOST_RSP),
--			       [host_rip]"r"((u64)HOST_RIP),
--			       GUEST_REGS_OFFSETS
--			     : "memory", "cc");
--	return ret;
-+	return __vmlaunch();
- }
- 
- static inline int vmresume(void)
- {
--	int ret;
--
--	if (enable_evmcs)
--		return evmcs_vmresume();
--
--	__asm__ __volatile__("push $0;"
--			     "vmwrite %%rsp, %[host_rsp];"
--			     "lea 1f(%%rip), %%rax;"
--			     "vmwrite %%rax, %[host_rip];"
--			     VMX_SWITCH_GPRS_ASM
--			     "vmresume;"
--			     "incq (%%rsp);"
--			     "1: ;"
--			     VMX_SWITCH_GPRS_ASM
--			     "pop %%rax;"
--			     : [ret]"=&a"(ret)
--			     : [host_rsp]"r"((u64)HOST_RSP),
--			       [host_rip]"r"((u64)HOST_RIP),
--			       GUEST_REGS_OFFSETS
--			     : "memory", "cc");
--	return ret;
-+	return __vmresume();
- }
- 
- static inline void vmcall(void)
+ 	return rdmsr(MSR_IA32_VMX_BASIC);
 diff --git a/tools/testing/selftests/kvm/lib/x86/vmx.c b/tools/testing/selftests/kvm/lib/x86/vmx.c
-index 5c6cadc08405..1a8515de42b0 100644
+index 1a8515de42b0..b6bd9423e676 100644
 --- a/tools/testing/selftests/kvm/lib/x86/vmx.c
 +++ b/tools/testing/selftests/kvm/lib/x86/vmx.c
-@@ -179,6 +179,61 @@ void load_vmcs(struct vmx_pages *vmx)
- 	vmclear(vmx->shadow_vmcs_gpa);
+@@ -252,7 +252,7 @@ static inline void init_vmcs_control_fields(struct vmx_pages *vmx)
+ 	u32 sec_exec_ctl = 0;
+ 
+ 	vmwrite(VIRTUAL_PROCESSOR_ID, 0);
+-	vmwrite(POSTED_INTR_NV, 0);
++	__vmwrite(POSTED_INTR_NV, 0);
+ 
+ 	vmwrite(PIN_BASED_VM_EXEC_CONTROL, rdmsr(MSR_IA32_VMX_TRUE_PINBASED_CTLS));
+ 
+@@ -269,7 +269,7 @@ static inline void init_vmcs_control_fields(struct vmx_pages *vmx)
+ 		sec_exec_ctl |= SECONDARY_EXEC_ENABLE_EPT;
+ 	}
+ 
+-	if (!vmwrite(SECONDARY_VM_EXEC_CONTROL, sec_exec_ctl))
++	if (!__vmwrite(SECONDARY_VM_EXEC_CONTROL, sec_exec_ctl))
+ 		vmwrite(CPU_BASED_VM_EXEC_CONTROL,
+ 			rdmsr(MSR_IA32_VMX_TRUE_PROCBASED_CTLS) | CPU_BASED_ACTIVATE_SECONDARY_CONTROLS);
+ 	else {
+@@ -289,16 +289,16 @@ static inline void init_vmcs_control_fields(struct vmx_pages *vmx)
+ 		VM_ENTRY_IA32E_MODE);		  /* 64-bit guest */
+ 	vmwrite(VM_ENTRY_MSR_LOAD_COUNT, 0);
+ 	vmwrite(VM_ENTRY_INTR_INFO_FIELD, 0);
+-	vmwrite(TPR_THRESHOLD, 0);
++	__vmwrite(TPR_THRESHOLD, 0);
+ 
+ 	vmwrite(CR0_GUEST_HOST_MASK, 0);
+ 	vmwrite(CR4_GUEST_HOST_MASK, 0);
+ 	vmwrite(CR0_READ_SHADOW, get_cr0());
+ 	vmwrite(CR4_READ_SHADOW, get_cr4());
+ 
+-	vmwrite(MSR_BITMAP, vmx->msr_gpa);
+-	vmwrite(VMREAD_BITMAP, vmx->vmread_gpa);
+-	vmwrite(VMWRITE_BITMAP, vmx->vmwrite_gpa);
++	__vmwrite(MSR_BITMAP, vmx->msr_gpa);
++	__vmwrite(VMREAD_BITMAP, vmx->vmread_gpa);
++	__vmwrite(VMWRITE_BITMAP, vmx->vmwrite_gpa);
  }
  
-+#define __BUILD_VMX_VM_ENTRY_HELPER(insn, prefix, vmwrite_insn, vmwrite_operand,	\
-+				    __host_rsp, __host_rip)				\
-+static int __##prefix##_##insn(void)							\
-+{											\
-+	int ret;									\
-+											\
-+	__asm__ __volatile__("push $0;"							\
-+			     __stringify(vmwrite_insn) " %%rsp, %[host_rsp];"		\
-+			     "lea 1f(%%rip), %%rax;"					\
-+			     __stringify(vmwrite_insn) " %%rax, %[host_rip];"		\
-+			     VMX_SWITCH_GPRS_ASM					\
-+			     __stringify(insn)";"					\
-+			     "incq (%%rsp);"						\
-+			     "1: ;"							\
-+			     VMX_SWITCH_GPRS_ASM					\
-+			     "pop %%rax;"						\
-+			     : [ret]"=&a"(ret)						\
-+			     : [host_rsp]__stringify(vmwrite_operand)(__host_rsp),	\
-+			       [host_rip]__stringify(vmwrite_operand)(__host_rip),	\
-+			       GUEST_REGS_OFFSETS					\
-+			     : "memory", "cc");						\
-+	return ret;									\
-+}
-+
-+#define BUILD_VMX_VM_ENTRY_HELPER(insn) \
-+	__BUILD_VMX_VM_ENTRY_HELPER(insn, _, vmwrite, r, (u64)HOST_RSP, (u64)HOST_RIP)	\
-+	__BUILD_VMX_VM_ENTRY_HELPER(insn, __evmcs, mov, m,				\
-+				    current_evmcs->host_rsp, current_evmcs->host_rip)
-+
-+BUILD_VMX_VM_ENTRY_HELPER(vmlaunch)
-+BUILD_VMX_VM_ENTRY_HELPER(vmresume)
-+
-+int __vmlaunch(void)
-+{
-+	if (enable_evmcs) {
-+		current_evmcs->hv_clean_fields = 0;
-+		return ____evmcs_vmlaunch();
-+	}
-+
-+	return ____vmlaunch();
-+}
-+
-+int __vmresume(void)
-+{
-+	if (enable_evmcs) {
-+		/* HOST_RIP */
-+		current_evmcs->hv_clean_fields &= ~HV_VMX_ENLIGHTENED_CLEAN_FIELD_HOST_GRP1;
-+		/* HOST_RSP */
-+		current_evmcs->hv_clean_fields &= ~HV_VMX_ENLIGHTENED_CLEAN_FIELD_HOST_POINTER;
-+		return ____evmcs_vmresume();
-+	}
-+
-+	return ____vmresume();
-+}
-+
- static bool ept_vpid_cap_supported(u64 mask)
- {
- 	return rdmsr(MSR_IA32_VMX_EPT_VPID_CAP) & mask;
+ /*
+@@ -356,8 +356,8 @@ static inline void init_vmcs_guest_state(void *rip, void *rsp)
+ 	vmwrite(GUEST_GS_SELECTOR, vmreadz(HOST_GS_SELECTOR));
+ 	vmwrite(GUEST_LDTR_SELECTOR, 0);
+ 	vmwrite(GUEST_TR_SELECTOR, vmreadz(HOST_TR_SELECTOR));
+-	vmwrite(GUEST_INTR_STATUS, 0);
+-	vmwrite(GUEST_PML_INDEX, 0);
++	__vmwrite(GUEST_INTR_STATUS, 0);
++	__vmwrite(GUEST_PML_INDEX, 0);
+ 
+ 	vmwrite(VMCS_LINK_POINTER, -1ll);
+ 	vmwrite(GUEST_IA32_DEBUGCTL, 0);
+@@ -391,7 +391,7 @@ static inline void init_vmcs_guest_state(void *rip, void *rsp)
+ 	vmwrite(GUEST_INTERRUPTIBILITY_INFO, 0);
+ 	vmwrite(GUEST_ACTIVITY_STATE, 0);
+ 	vmwrite(GUEST_SYSENTER_CS, vmreadz(HOST_IA32_SYSENTER_CS));
+-	vmwrite(VMX_PREEMPTION_TIMER_VALUE, 0);
++	__vmwrite(VMX_PREEMPTION_TIMER_VALUE, 0);
+ 
+ 	vmwrite(GUEST_CR0, vmreadz(HOST_CR0));
+ 	vmwrite(GUEST_CR3, vmreadz(HOST_CR3));
 -- 
 2.55.0.979.g7e5102b832-goog
 
