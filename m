@@ -1,180 +1,105 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CF64908BC;
-	Fri,  4 Sep 2026 17:56:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A473D4E8E05;
+	Fri,  4 Sep 2026 18:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788544598; cv=none; b=A3yzxwWEcbv8m3g6Fi9hJ5zqD+JSKWv7GNiT2LlW2n38k7bn94VyL5TYUh7pcXQkG2AZxkJt5mCVSou/6AT40UfMapikTHuMcgyUbE+iCORqHLn5PkRRe+qf+jiSwZYRcsUx8ohxjvvSPPbp3oCdSigDWi4O0Fu9yuFEbJA5skQ=
+	t=1788545237; cv=none; b=Fxpr0ayRhEd18yKs0OWKwChQrP+BK2qyUAzC31zdvvvYBWy3eiwr8ES7oRTwx2VsVb5DDxigdX9sGyp+EgE9iBLy8ZIuRxRMwcHQ5DnwXJR3LdXq+StXm5HDrQzg8H0yD80TtUvwjXxCi/vr0Y6mKxo53NJwkS2YmAJGDhndmy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788544598; c=relaxed/simple;
-	bh=+i+qQOmlMnhgZmCjVjcybjYcoYiwWcxPC7QuojgQK1M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V3o2tiLxu/EZgrCNb5Yd1vIJ6K5m6Bs2t55Pc0olwcC2JA4sr/Q84BlPQDxw1uuZZU5wE7EAhE+Ikchwl10VMH1Etmead/urmFFhGCq6T3wVzwpU+ftxikjYoSQPvxgCcnAa1d+4Dt4D7TncfnReyZqJ46rnCAov9LpS6YA2aIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=qUmVpX7o; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1788545237; c=relaxed/simple;
+	bh=IxHSg/j8Ki9ahRhZ1QDt1Hr+tNfCwmkxXt1918EHDwc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=rIReMKMBrQzaeSpT16AQP/uHl/wUBeiepeh2FCa2bFsCi+ia9T8KfD6jPdaymirNCdkzegSF1T/jesnokUELN8u/PXzYy5jnwNzpdd3sG0t+AOxX8zuW6Ibs1FmQTH+Y4K331SvFx8fUt3uZL9cpp5q6yLcfdyXBhxbQs88mM5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vc8uahzL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="qUmVpX7o"
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 684GhG2d3185986;
-	Fri, 4 Sep 2026 17:55:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=Tp/rQlVy5b9H8KkGE/UvNF5Djl53J
-	ttIzvuDDXZXs0w=; b=qUmVpX7o/+HsMehwD8MGS0jYqhpJSz0FrQmQ6LsiGkyvc
-	kSuJhPMBztlCctiWoErSwlGvaOp8nsUXMjZwT9INGW+O/T5+jhY0BQOKoVkARbdl
-	KoWOd1KTudfuQqhDZpGFwPsju1au1LyB9ejEN6Ufxy/M9YR/2Pen3omT6x6ZoKFN
-	NDUpB+f/PhDgxr2wHCwzdIz7ac36Klnr+0P65Bk7bBKC4nPlkqM9ogbP/XGHH7so
-	dVSJhomTHMceY7D6YOAll53Ecepm8QJ3TKxQzfRgl7MGsFPvNg1MBdWOHGOmUu+2
-	zz95oQTvikiACKg9FRL2K1KqhwECc9azZIaGLt/8A==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4gbp72k5qd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 04 Sep 2026 17:55:54 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 684HoYTI016095;
-	Fri, 4 Sep 2026 17:55:53 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4gbnvv3675-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 04 Sep 2026 17:55:53 +0000 (GMT)
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 684HrwmF032217;
-	Fri, 4 Sep 2026 17:55:52 GMT
-Received: from donglzha-e6-vfio-setup.osdevelopmeniad.oraclevcn.com (donglzha-e6-vfio-setup.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.255.69])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4gbnvv366p-1;
-	Fri, 04 Sep 2026 17:55:52 +0000 (GMT)
-From: Dongli Zhang <dongli.zhang@oracle.com>
-To: kvm@vger.kernel.org, kvmarm@lists.linux.dev, loongarch@lists.linux.dev,
-        kvm-riscv@lists.infradead.org, linux-kselftest@vger.kernel.org
-Cc: maz@kernel.org, oupton@kernel.org, fuad.tabba@linux.dev,
-        joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com,
-        yuzenghui@huawei.com, zhaotianrui@loongson.cn, maobibo@loongson.cn,
-        chenhuacai@kernel.org, anup@brainfault.org, atish.patra@linux.dev,
-        seanjc@google.com, pbonzini@redhat.com, shuah@kernel.org,
-        dwmw2@infradead.org, joe.jin@oracle.com
-Subject: [PATCH v2 0/4] KVM: Reset steal time accounting on vCPU pid change
-Date: Fri,  4 Sep 2026 17:55:22 +0000
-Message-ID: <20260904175550.430266-1-dongli.zhang@oracle.com>
-X-Mailer: git-send-email 2.43.7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vc8uahzL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5CD51F00A3E;
+	Fri,  4 Sep 2026 18:07:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788545236;
+	bh=6kSxY6CUMEM3rUpzTBliWX0F364RXnjJy6IcmREJPzg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Vc8uahzLtn6GTxZ74bpMMJ6o7DwngJHMZT+OVQMsKe/XuCOzoSEr0CUzbCJ/EhBmx
+	 bUteT/s1dpqFVCYJwjqyocZEzgmVCZn425+WLNNWkayYHmRcEgDiZVomfD3xIkXTT6
+	 B/7LdnffOEfhCNz3NH7PYNyfrHDu/+WDjDkN4TpGtmhwTwm2oM7/ztwEU4KjmV+y1B
+	 KjapKpvnObw18FxcXnbZ5f15PF3J7wji56s7EInhu2hAci4pSoyWc20kErFT7JgTAs
+	 rtljYeD+47u1JA0ySpIgNM02fnz9PlQ8Q5OZUiXabrYp6OeBpSxx0mi17yCoFbUxrD
+	 FOazz+4avRDNA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 1/4] KVM: Move last_steal to common struct kvm_vcpu
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Dongli Zhang" <dongli.zhang@oracle.com>
+Cc: "Marc Zyngier" <maz@kernel.org>, kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>, kvmarm@lists.linux.dev
+In-Reply-To: <20260904175550.430266-2-dongli.zhang@oracle.com>
+References: <20260904175550.430266-1-dongli.zhang@oracle.com>
+ <20260904175550.430266-2-dongli.zhang@oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 04 Sep 2026 18:07:15 +0000
+Message-Id: <20260904180715.E5CD51F00A3E@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-04_05,2026-09-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- mlxscore=0 bulkscore=0 lowpriorityscore=0 phishscore=0 adultscore=0
- mlxlogscore=999 spamscore=0 suspectscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.19.0-2606160000 definitions=main-2609040163
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA0MDE2MyBTYWx0ZWRfX7n+VNjWgH3mr
- JZx3pkbANN7dwqHVyLAS5IVrsoeWRPU3jdp0u/VtqMgZ8a9RZhONAFn6iMXT9PPQSA4NmJI+vZ5
- 2jrRPIRMmK1pH07LKZf7sdEWovV4WORVYPMz4pSE18uSZkMZrtiH
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA0MDE2MyBTYWx0ZWRfX8u1jin8Hwbe3
- Ju0zFlBV+u6P6WOsEp9nLvWFpbDcOKWT33tE7w+ntOHeRjwxUwxIbkoq8XffFf5KdagV7vdILO6
- GxA+FyLW7GZWd4A+tOstnevoKbj7yf1W5UX3BmsYhkLUZ4obsS5WUEM9SjeKB69BdSYSvv+m/v1
- dGUAn5rV8IcHoNpJ6Bg8N1vaxdIga166yzQdmsjzAVI13z6T/3+Jl5d4NjQGejI61VyFQZ4j/Ic
- DLR8IIFKaeUf/MLcl3mLOa/m+NPjhyIr0fPf+t9HM7mIBcxOq7cVXrDznHuhxfgGGmQC7Wuh9nQ
- ls7TRglewyXOcgSBn8DFaN4gc39yhOBZY8TJK8CuVzgQu+lYwu49TDRAAdABgFL2I5dT7oiANDt
- ymbjX/Z6J72hX0I+wFTLyiBtptgpZw1eIUjxVzdgy8ed+edsNCTifaeXa8buLpx5BaVBUGU4+qN
- 7vPnz0t8FOW0cX+JMk9XHQspwwhmgFoexxptjQCM=
-X-Authority-Analysis: v=2.4 cv=G7os1dk5 c=1 sm=1 tr=0 ts=6a9b062a b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=o5oIOnhZENCTenyL_yNV:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
- a=jldH35smy0nQoxfUp5IA:9 a=5yU3S35YU4bGjq-dph-N:22 a=Bho9c0fBagfJEIQBS7DQ:22
- cc=ntf awl=host:12101
-X-Proofpoint-GUID: jXUH9hFuxjT4XbU59qtQoreu8BjKnino
-X-Proofpoint-ORIG-GUID: jXUH9hFuxjT4XbU59qtQoreu8BjKnino
 
-v1: https://lore.kernel.org/all/20260816053630.527528-1-dongli.zhang@oracle.com
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-v1->v2:
-  - move the last_steal field in the main vcpu structure (suggested by
-    Marc Zyngier).
-  - Reset last_steal from the caller of kvm_arch_vcpu_run_pid_change().
+Pre-existing issues:
+- [High] Host-userspace reachable WARN_ON can cause a host crash when updat=
+ing guest steal time.
+--
 
-KVM does not support vCPU hotplug. When a vCPU is removed, its
-corresponding data structures are not freed by KVM. Instead, QEMU destroys
-only the userspace state and the vCPU thread, while the KVM vCPU fd remains
-open and parked in QEMU.
+commit 8f2f1662b1b75cda859eddacb4ef288871960d3d
+Author: Dongli Zhang <dongli.zhang@oracle.com>
 
-As a result, vcpu->arch.st.last_steal is not reset. If the same vCPU is
-later re-created by QEMU, last_steal retains its old value, while
-current->sched_info.run_delay starts from zero since a new vCPU thread is
-created. This causes current->sched_info.run_delay - vcpu->arch.st.last_steal
-to produce a large, bogus value.
+KVM: Move last_steal to common struct kvm_vcpu
 
-For instance, current->sched_info.run_delay can become smaller than
-vcpu->arch.st.last_steal (see line 3804) if a QEMU vCPU is re-added after
-it has previously been removed.
+This commit moves the last_steal cache field for the per-vCPU host task's
+run_delay from architecture-specific structures into the common struct
+kvm_vcpu. It updates x86, arm64, riscv, and loongarch to use this unified
+field and introduces the HAVE_KVM_PV_STEAL_TIME config option.
 
-As a result, st->steal restarts from a very small value, close to
-current->sched_info.run_delay.
+[ ... ]
 
-3720 static void record_steal_time(struct kvm_vcpu *vcpu)
-3721 {
-... ...
-3803         unsafe_get_user(steal, &st->steal, out);
-3804         steal += current->sched_info.run_delay -
-3805                 vcpu->arch.st.last_steal;
-3806         vcpu->arch.st.last_steal = current->sched_info.run_delay;
-3807         unsafe_put_user(steal, &st->steal, out);
+> diff --git a/arch/riscv/kvm/vcpu_sbi_sta.c b/arch/riscv/kvm/vcpu_sbi_sta.c
+> index 60e50296a0085..9a77d3bde7c72 100644
+> --- a/arch/riscv/kvm/vcpu_sbi_sta.c
+> +++ b/arch/riscv/kvm/vcpu_sbi_sta.c
+[ ... ]
+> @@ -67,8 +67,8 @@ void kvm_riscv_vcpu_record_steal_time(struct kvm_vcpu *=
+vcpu)
+> =20
+>  	if (!WARN_ON(get_user(steal_le, steal_ptr))) {
+>  		steal =3D le64_to_cpu(steal_le);
+> -		vcpu->arch.sta.last_steal =3D READ_ONCE(current->sched_info.run_delay);
+> -		steal +=3D vcpu->arch.sta.last_steal - last_steal;
+> +		vcpu->last_steal =3D READ_ONCE(current->sched_info.run_delay);
+> +		steal +=3D vcpu->last_steal - last_steal;
+>  		WARN_ON(put_user(cpu_to_le64(steal), steal_ptr));
+>  	}
+> =20
 
+[Severity: High]
+This is a pre-existing issue, but I noticed these WARN_ON() macros wrapping
+get_user() and put_user() accesses to host-userspace memory in=20
+kvm_riscv_vcpu_record_steal_time() (as well as the sequence_ptr accesses
+just above this block).
 
-This patchset resets last_steal when the vCPU PID changes, as suggested by
-Sean.
+Could a malicious host-userspace process trigger these kernel warnings by
+unmapping the shared memory area or protecting it with mprotect(PROT_NONE)
+before this function runs?
 
-Although David suggested accounting the run_delay left over from the
-previous vCPU PID, this series does not do that. It would be easy to make
-that work if KVM could simply assume every transition is a vCPU PID change.
-In practice, KVM does not always have enough information about the previous
-vCPU PID, e.g. after live migration, unless a new ioctl is introduced. For
-now, this series simply resets last_steal.
+If the virtual memory area is made inaccessible, get_user() or put_user()
+will fail with -EFAULT, causing the WARN_ON() to fire. This allows
+unprivileged host userspace to trigger a host kernel panic if panic_on_warn
+is enabled.
 
-Although David also suggested doing the same for Xen-on-KVM vCPUs, this
-series does not reset last_steal for Xen vCPUs. That change itself would
-not be difficult, but Xen uses a different mechanism to account downtime,
-including runnable time and offline time when a vCPU is not running. It may
-therefore need no additional ioctl, or a smaller ioctl extension, to account
-run_delay left over from the previous PID.
+Would it be better to handle these user-memory access checks as normal error
+paths without the WARN_ON() wrappers?
 
-As I have access to only x86 and arm64 KVM hosts, I created and validated
-the selftest on those two architectures only.
-
-Dongli Zhang (4)
-  KVM: Move last_steal to common struct kvm_vcpu
-  KVM: Reset last_steal on vCPU pid change
-  KVM: selftests: Test steal time across vCPU pid changes on x86
-  KVM: selftests: Add arm64 coverage for steal time pid changes
-
- arch/arm64/include/asm/kvm_host.h               |   1 -
- arch/arm64/kvm/Kconfig                          |   1 +
- arch/arm64/kvm/pvtime.c                         |   8 +-
- arch/loongarch/include/asm/kvm_host.h           |   1 -
- arch/loongarch/kvm/Kconfig                      |   1 +
- arch/loongarch/kvm/exit.c                       |   2 +-
- arch/loongarch/kvm/vcpu.c                       |   6 +-
- arch/riscv/include/asm/kvm_host.h               |   1 -
- arch/riscv/kvm/Kconfig                          |   1 +
- arch/riscv/kvm/vcpu_sbi_sta.c                   |  10 +-
- arch/x86/include/asm/kvm_host.h                 |   1 -
- arch/x86/kvm/Kconfig                            |   1 +
- arch/x86/kvm/x86.c                              |   5 +-
- include/linux/kvm_host.h                        |   4 +
- tools/testing/selftests/kvm/Makefile.kvm        |   2 +
- .../selftests/kvm/steal_time_change_pid.c       | 216 +++++++++++++++++++
- virt/kvm/Kconfig                                |   3 +
- virt/kvm/kvm_main.c                             |   4 +
- 18 files changed, 248 insertions(+), 20 deletions(-)
-
-base-commit: 8ab1afb2eb246ab15b301cd255b5943d208a93c1
-
-Thank you very much!
-
-Dongli Zhang
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260904175550.4302=
+66-1-dongli.zhang@oracle.com?part=3D1
