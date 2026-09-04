@@ -1,165 +1,112 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2140F35DA64;
-	Fri,  4 Sep 2026 13:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D342347DD54;
+	Fri,  4 Sep 2026 13:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788528859; cv=none; b=K/l1WpHm8CJNLpA7aK87RLgb9rxjtD2xsBfZaQWB5vX0S76wPiI1juvoglgRcPdZc8zqji2pr+3qF4cC2ePB8SLif3j9UabDbQqTQJekMubbXHqLdog0u7cr19pRp7/z83Kf6b9hcbBOT4b6r1UD0pY6x7VR24H827kj3/u6OyM=
+	t=1788529548; cv=none; b=iupU6oP//xkGDsCk84EmXkjnU438mjKJ8ZANHBfdJm0ULJMDBxd8X07STxbABAJc3oUUaajjb5nTUbkME4zp7q7nqkmY2VrZiqUyvrperR4NKC+MwwNF6beNTB5jd3jFOcAg5/I1SrXXJ1yL5P1Be4InZdzeUADPAPiAIIgDfgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788528859; c=relaxed/simple;
-	bh=/dm5FD6Qj4yIoOSXM98Aslc4UW7+h3TiJOG9Z39+9ck=;
+	s=arc-20240116; t=1788529548; c=relaxed/simple;
+	bh=x0A1kB72ZpUPDKdBQWyRDq4/HRBE+lO3fb6GPu8hn1w=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=lj5dcLOKvE6l0TCEogynbWTEOxJluq8omiYfxAVIMKHjQnsdyiO7SPY8/qgmQAkUbKd9KSUY+WtWnN1VwCwT5953FUd8eomz3yVCSdUWN8e7XppmBcDeYP9D4kuGCyLQhJ3azbWOKL+Z3+tbUvDj2mIX/Qq22NygBmSbva5cTfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QRXNywYA; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=aV1lgsYo36FPWhJYRo4XzQYD/FtDvnlqPlh7q2vCrIpbV4H6AKyQcFeyZ+uX0hE0GuQCzpcGRGaOrVdS8Xiwhqm2uN7G7tDm9cKnpSde7Vvknid72v7v87e2Ur4rpqzzwMlsf7h9yyydITvV9dJJlJGA8yXgI9dyPfkZtBmwxtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=db9pWl9R; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QRXNywYA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEC21F00A3D;
-	Fri,  4 Sep 2026 13:34:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="db9pWl9R"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2561F1F00A3D;
+	Fri,  4 Sep 2026 13:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788528857;
-	bh=u9HDguz8GZOQD5/ELmJwG1FyHCO8FBv55xEDPINhapU=;
+	s=k20260515; t=1788529546;
+	bh=CEN3eHGG8a4J8rPb3syRCgQ4tzK/RBznwyDvY1psSjI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=QRXNywYAOrRxFpIl+Wi5WIPY3kqxCilUu+X5hYRG85J3tLmr8LpHXxwR+C5IJTnsg
-	 3Mnn8jxVlsyaYvXefpzNkrZrQQkyYew/CXDa6A0JZ+x4polfnq5BoyTxFDhG5oqJWe
-	 duT6Yu9xxpZEwpFkYQl54jRnpamW80MYI7GdsLNAbeaobFi/PkHP8fUtZTVdoVWrRt
-	 8RlWVPSSEdY5pXuExb8pVMfAmqqIgwN4zNp5w2lvrbxEXyLgPD8xHgWgnvFcJQV+nC
-	 AIYgShXxlKcVdjCyfKEYzZlqsRC6zus9TCqZ2rXekZErDaVLGtZ+KQay2kiUpjdRQX
-	 eWkbSfE7utQcg==
+	b=db9pWl9RpjbBtlHsQY7OF8v12D2k0weK5fTMTPFRdUTgU65DCU+SCUll21QB8kFA9
+	 WrCKmMeRcgG4zVR5B7BiSlG4cgGuf1fZBjZRdjjvqz9H/TbFRtoTmE6iJXg7W9zJmZ
+	 8LZ5zvW8eQ2DHKZqfbSE0IJFyrp3AWVQyAPmDCb+pEHdobcaNk+0gkpzBndQhhYaSY
+	 1nYq32K173oJnF5iBAwHDCMhvK9zZ6WKGzyV8SY9B5vBW8cpJvhlpVCxezhsycPna/
+	 zGX3PN935/VwhZ8rxYWK3vSmNUXyCgaOg8jPvSesep39q0QobUTB4UXiicKJJ7vvMa
+	 ejDjFgxIT6H6Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 32/49] KVM: arm64: gic-v5: Handle userspace accesses
- to IRS MMIO region
+Subject: Re: [PATCH v6 35/49] KVM: arm64: gic-v5: Implement save/restore
+ mechanisms for ISTs
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Sascha Bischoff" <Sascha.Bischoff@arm.com>
-Cc: "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, "Marc
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>, "Marc
  Zyngier" <maz@kernel.org>
-In-Reply-To: <20260904113404.4051341-33-sascha.bischoff@arm.com>
+In-Reply-To: <20260904113404.4051341-36-sascha.bischoff@arm.com>
 References: <20260904113404.4051341-1-sascha.bischoff@arm.com>
- <20260904113404.4051341-33-sascha.bischoff@arm.com>
+ <20260904113404.4051341-36-sascha.bischoff@arm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 04 Sep 2026 13:34:16 +0000
-Message-Id: <20260904133417.6BEC21F00A3D@smtp.kernel.org>
+Date: Fri, 04 Sep 2026 13:45:45 +0000
+Message-Id: <20260904134546.2561F1F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Failure to clear lpi_ist_restore_pending when IST_BASER.Valid is c=
-leared by userspace, permanently preventing VM execution.
-- [Medium] KVM_HAS_DEVICE_ATTR fails with -EINVAL for KVM_DEV_ARM_VGIC_GRP_=
-IRS_REGS if no VCPUs are created yet.
-- [Medium] Userspace can bypass KVM's intentional 16-bit limit for GICV5_IR=
-S_IDR2.ID_BITS, potentially causing oversized memory allocations.
+- [High] KVM fails to validate that restored pending LPIs have a valid IntI=
+D (>=3D 8192), allowing userspace to inject out-of-range LPIs into the hard=
+ware.
 --
 
-commit 114e2a53a8a49611a9a0cdd053417985c38f2cd2
+commit f80500170eda967b08d4456f691f187bea6f8d97
 Author: Sascha Bischoff <Sascha.Bischoff@arm.com>
 
-KVM: arm64: gic-v5: Handle userspace accesses to IRS MMIO region
+KVM: arm64: gic-v5: Implement save/restore mechanisms for ISTs
 
-As part of saving and restoring the state of a GICv5-based system,
-userspace must save and restore the IRS MMIO registers. These include
-important information such as the guest IST configuration, and KVM
-must present consistent state to the guest after migration.
+This commit introduces the ability to save and restore Interrupt State Tabl=
+es
+(ISTs) for SPIs and LPIs in a GICv5 VM. Userspace provides migration storage
+via KVM_DEV_ARM_VGIC_GRP_IST, and KVM handles copying the state between the
+GICv5 hardware and these buffers while ensuring the VM remains quiesced.
 
-> diff --git a/arch/arm64/kvm/vgic/vgic-irs-v5.c b/arch/arm64/kvm/vgic/vgic=
--irs-v5.c
-> index 06d2deb770a6d..9e9853b88ce2a 100644
-> --- a/arch/arm64/kvm/vgic/vgic-irs-v5.c
-> +++ b/arch/arm64/kvm/vgic/vgic-irs-v5.c
+> diff --git a/arch/arm64/kvm/vgic/vgic-v5-tables.c b/arch/arm64/kvm/vgic/v=
+gic-v5-tables.c
+> --- a/arch/arm64/kvm/vgic/vgic-v5-tables.c
+> +++ b/arch/arm64/kvm/vgic/vgic-v5-tables.c
 [ ... ]
-> @@ -431,90 +489,231 @@ static void vgic_v5_mmio_write_irs_ist(struct kvm_=
-vcpu *vcpu, gpa_t addr,
-[ ... ]
-> +static int vgic_v5_mmio_uaccess_write_irs(struct kvm_vcpu *vcpu, gpa_t a=
-ddr,
-> +					  unsigned int len, unsigned long val)
+> +static int vgic_v5_process_iste(__le32 *iste, struct list_head *pending_=
+irqs,
+> +				u32 intid, u32 type)
 > +{
-[ ... ]
-> +	case GICV5_IRS_IDR2:
-> +		/* We always support LPIs */
-> +		if (!(val & GICV5_IRS_IDR2_LPI))
-> +			return -EINVAL;
-[ ... ]
-> +		/* We can't present more bits than we have support for in HW */
-> +		if (FIELD_GET(GICV5_IRS_IDR2_ID_BITS, val) >
-> +		    vgic_v5_irs_ist_id_bits(&irs_caps))
-> +			return -EINVAL;
-
-[Severity: Medium]
-Can userspace bypass KVM's intentional 16-bit limit for
-GICV5_IRS_IDR2.ID_BITS here?
-
-KVM caps this to 16 during initialization, but this check appears to allow
-userspace to restore a value up to the hardware maximum. This could
-potentially cause architecturally inconsistent state and oversized host mem=
-ory
-allocations.
-
+> +	u32 iste_data =3D le32_to_cpu(READ_ONCE(*iste));
+> +	int ret;
 > +
-> +		/* Min LPI ID bits must be greater than or equal to the HW */
-> +		if (FIELD_GET(GICV5_IRS_IDR2_MIN_LPI_ID_BITS, val) <
-> +		    vgic_v5_irs_min_lpi_id_bits(&irs_caps))
-> +			return -EINVAL;
-[ ... ]
-> +		irs_data->idr2.id_bits =3D FIELD_GET(GICV5_IRS_IDR2_ID_BITS, val);
-> +		break;
-[ ... ]
-> +	case GICV5_IRS_IST_BASER:
-> +		if (irs_data->ist_baser.valid &&
-> +		    !vgic_v5_ist_baser_matches(irs_data, val))
-> +			return -EINVAL;
-> +
-> +		if (!irs_data->ist_baser.valid &&
-> +		    (val & GICV5_IRS_IST_BASER_VALID))
-> +			irs_data->lpi_ist_restore_pending =3D true;
-> +
-> +		vgic_v5_update_irs_ist_baser(irs_data, val);
-> +		break;
+> +	/* Pending state is replayed later with VDPEND. */
+> +	if (iste_data & GICV5_ISTL2E_PENDING) {
+> +		ret =3D vgic_v5_track_pending_irq(pending_irqs, intid, type);
 
 [Severity: High]
-If userspace sets GICV5_IRS_IST_BASER with Valid=3D1 (setting
-lpi_ist_restore_pending=3Dtrue) and later clears it by setting Valid=3D0, d=
-oes
-lpi_ist_restore_pending remain true?
+Can userspace inject an out-of-range LPI by restoring a buffer with the
+pending bit set for an invalid index?
 
-If the state machine fails to clear this pending flag, it appears this would
-cause vgic_v5_map_resources() to fail unconditionally and permanently preve=
-nt
-VM execution.
+When restoring the IST via KVM_DEV_ARM_VGIC_GRP_IST, KVM scans the
+userspace-provided buffer and calls vgic_v5_process_iste(). If the
+pending bit is set, it tracks the interrupt for later replay. However,
+there does not appear to be a check to ensure that the intid is within
+the valid range for LPIs (e.g., >=3D 8192).
 
-> +	case GICV5_IRS_IST_CFGR:
-[ ... ]
-> diff --git a/arch/arm64/kvm/vgic/vgic-kvm-device.c b/arch/arm64/kvm/vgic/=
-vgic-kvm-device.c
-> index 599ab4efc1db5..f1f1fcb08161f 100644
-> --- a/arch/arm64/kvm/vgic/vgic-kvm-device.c
-> +++ b/arch/arm64/kvm/vgic/vgic-kvm-device.c
-> @@ -786,6 +786,9 @@ int vgic_v5_parse_attr(struct kvm_device *dev, struct=
- kvm_device_attr *attr,
->  		mpidr_reg =3D VGIC_TO_MPIDR(vgic_mpidr);
->  		reg_attr->vcpu =3D kvm_mpidr_to_vcpu(dev->kvm, mpidr_reg);
->  		break;
-> +	case KVM_DEV_ARM_VGIC_GRP_IRS_REGS:
-> +		reg_attr->vcpu =3D kvm_get_vcpu(dev->kvm, 0);
-> +		break;
->  	default:
->  		return -EINVAL;
->  	}
+Executing a vdpend instruction with an LPI identifier less than 8192 is
+architecturally unpredictable. Could this allow a malicious userspace
+process to trigger a synchronous exception or SError at EL2, taking
+down the host hypervisor?
 
-[Severity: Medium]
-If userspace probes for the KVM_DEV_ARM_VGIC_GRP_IRS_REGS capability before
-creating any VCPUs, does this unconditionally fetch VCPU 0 and subsequently
-fail the attribute parsing with -EINVAL?
-
-It looks like this breaks the standard KVM capability probing sequence where
-userspace calls KVM_HAS_DEVICE_ATTR on a newly created VGIC device before
-calling KVM_CREATE_VCPU.
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	iste_data &=3D ~GICV5_ISTL2E_PENDING;
+> +	iste_data &=3D ~GICV5_ISTL2E_HWU;
+> +
+> +	WRITE_ONCE(*iste, cpu_to_le32(iste_data));
+> +
+> +	return 0;
+> +}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260904113404.4051=
-341-1-sascha.bischoff@arm.com?part=3D32
+341-1-sascha.bischoff@arm.com?part=3D35
