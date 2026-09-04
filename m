@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D842271450;
-	Fri,  4 Sep 2026 13:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595FB30C16A;
+	Fri,  4 Sep 2026 13:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788526825; cv=none; b=mJfn8CuX3zD8BH2V7LTBmyhTBobAqq4FBUGGorXRkF90My53uZvMWecG66zCwMFr6i861Z3HqlLbhx5WHF/efM/PQ+RjgtbePRGPHqkJUhCl2xXidhNgMxng4XZ0m92M8Hr75kG+khWrq3dbJN36gpVck/WVPo8KIOX9kemJ4jY=
+	t=1788527159; cv=none; b=CRD7Hu64ueMSjYJlHtj9WLu+riWjrZLjyV//sUo4kECKSCLsR0k70DPx8iCHAktsByPHboA4N89SQyNR9eNwGGE3gcZ+G0/pZ0MW3D7NgPqBGMfJGl5xX/jV3Xl92aRF3GoaV6IrbuVXKCZpQkJRjyFslOmP2dEyoI1U43DjYbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788526825; c=relaxed/simple;
-	bh=qMPxDXl8XswbWoVyvM2qtuaeRgT+hpd0hbJtDkX/6M4=;
+	s=arc-20240116; t=1788527159; c=relaxed/simple;
+	bh=qhu6btIAusw6rHvt5juXkHhc8a2yXLOxN1F8bEaJaRE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ojgbJDKMk51MC+05MMMTvca6ntxRqBhIoVbWn94WnbEBdZiaGwS3lH5S/RzmC3O0E/5DhWx4b3DxcrwUzAOEpLwS8UUnBl0PvKa9LHFxnJoyXGUSoxrdmtRR42ijF0PP95ZkI7Xg7fw3Mp2HF7ButQAemWMESmO1i60uONZ+5mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e0bEgo9s; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=JcfKI+npRfr4K7zQbqWL4BTPBN62yyjllzZ+/akqjP2Kr9ZhuYY8nbpSQ2bGdSkJTqggVVMOBLYmpWjai6fCeSiZHtYrgbHm/jO9Ivh+4LMOvFRH0laLU8JD4TDPHU6dp/yrKMD9lQP7Iv1TsNCgor0XApTzBnVjcP9oAfwtKzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iaNxFtHK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e0bEgo9s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A63291F00A3D;
-	Fri,  4 Sep 2026 13:00:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iaNxFtHK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8CFD1F01564;
+	Fri,  4 Sep 2026 13:05:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788526824;
-	bh=5/CS0wcncUNX4qbevwTJ+1tLbDjwJRipOJK4Z9N8oqo=;
+	s=k20260515; t=1788527157;
+	bh=fFLnlLSXjYy6jFtau2Yv7Nd0enqAeLIWbFxH8QhnDv4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=e0bEgo9sMmvX9TUMfo0z5AlOyYhScb4e0+fiuqK0R45m4peZht52iU5J3PvF3VEdH
-	 AuYHnzBRbRLerkIsyGVMZdpGNUD0YMV1UasvCm+S5kY18fNGx3MEH/u5WWWUZ+REU6
-	 2feRrSKCF0zUdBaUVKxz/8P5AwnqEYry3U204Z8SRa9xsHE5SP0gS9REz3jPgRtuOU
-	 JDr8dgT4mKTpui3Xk80aY8Gomebj8QwVdh5VdYby6GDo6BVrp4WewVZhgW1CO/QrOD
-	 WisK6S/Fw1t4v0/+INzq/8vMnnW0txvRQ7glZ/f6UMmdV/H+SGskfTkT/Ce3uggxtU
-	 K3+uipznHn62w==
+	b=iaNxFtHK2LTS/061jTlgZiAj+brwwa86PrwuNC6jH6awHVegFh35omCtGWTNMFg9P
+	 gBRv0aYWBSYl0juwANHhHiKI28NTVh1gfPcdgGugbkJj3g0i5g8JkzOR9D3yLnej3T
+	 Ybmh5GyALNzOiwDZa3bzuePy4yDk9WmSEestoZUCOugvWPAvgHPjyzChEjKFNGLuLu
+	 8QCkcm7F9GhRaSLcfXDmxi1YGjpm472DLARe5HJDEGNQHptdePU5TeDGZuAmbGDAp7
+	 vhKyCE04eqFKLXixxrLhhz0LtMEiWtBlKPBJxhdDFGGFx83QJ5JbJGVuoEtzSof1id
+	 xOWm+qm2G3vsw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 21/49] KVM: arm64: gic-v5: Initialise per-VM IRS
- state
+Subject: Re: [PATCH v6 23/49] KVM: arm64: gic-v5: Set IRICHPPIDIS based on
+ IRS enable state
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Sascha Bischoff" <Sascha.Bischoff@arm.com>
-Cc: "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-In-Reply-To: <20260904113404.4051341-22-sascha.bischoff@arm.com>
+Cc: "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, kvmarm@lists.linux.dev, kvm@vger.kernel.org
+In-Reply-To: <20260904113404.4051341-24-sascha.bischoff@arm.com>
 References: <20260904113404.4051341-1-sascha.bischoff@arm.com>
- <20260904113404.4051341-22-sascha.bischoff@arm.com>
+ <20260904113404.4051341-24-sascha.bischoff@arm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 04 Sep 2026 13:00:23 +0000
-Message-Id: <20260904130023.A63291F00A3D@smtp.kernel.org>
+Date: Fri, 04 Sep 2026 13:05:56 +0000
+Message-Id: <20260904130556.A8CFD1F01564@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,63 +47,61 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] Memory leak of the `dist->spis` array across retries of `vgic_in=
-it()` on error paths.
+- [High] Skipping the doorbell request when the IRS is disabled breaks vSGI=
+ wakeups and causes a KVM blocked-state deadlock when the IRS is re-enabled.
 --
 
-commit 13674819963e3cb02a4360c21cc165dd2bbdc227
+commit 614bfb31d4f0af06eb90b62b9d08cfb10894ae32
 Author: Sascha Bischoff <Sascha.Bischoff@arm.com>
 
-KVM: arm64: gic-v5: Initialise per-VM IRS state
+KVM: arm64: gic-v5: Set IRICHPPIDIS based on IRS enable state
 
-This commit allocates the per-VM emulated IRS state when creating a virtual
-GICv5 and initializes it. It establishes the IRS backing required for SPIs
-and LPIs during GICv5 initialization.
+This commit uses the GICv5 ICH_CONTEXTR_EL2 IRICHPPIDIS field to emulate the
+guest enabling and disabling the IRS. It programs IRICHPPIDIS when loading a
+VPE and skips calculating the doorbell priority mask and requesting a doorb=
+ell
+when a VPE enters WFI with a disabled IRS.
 
 > diff --git a/arch/arm64/kvm/vgic/vgic-v5.c b/arch/arm64/kvm/vgic/vgic-v5.c
-> index 5a058ef8fe701..bdf06dbff4231 100644
+> index bdf06dbff4231..5a5abf51d4ddd 100644
 > --- a/arch/arm64/kvm/vgic/vgic-v5.c
 > +++ b/arch/arm64/kvm/vgic/vgic-v5.c
 
 [ ... ]
 
-> @@ -747,6 +748,11 @@ int vgic_v5_init(struct kvm *kvm)
->  			goto err;
->  	}
+> @@ -1101,7 +1103,10 @@ void vgic_v5_put(struct kvm_vcpu *vcpu)
+>  	kvm_call_hyp(__vgic_v5_save_apr, cpu_if);
 > =20
-> +	/* Init IRS (and alloc SPI IST) */
-> +	ret =3D kvm_vgic_v5_irs_init(kvm, kvm->arch.vgic.nr_spis);
-
-[Severity: Medium]
-Does this leak the dist->spis array (up to ~106KB) if userspace retries
-initialization?
-
-When kvm_vgic_v5_irs_init() is called here, it unconditionally allocates
-dist->spis without checking if it is already allocated:
-
-arch/arm64/kvm/vgic/vgic-irs-v5.c:kvm_vgic_v5_irs_init() {
-    ...
-    dist->spis =3D kcalloc(nr_spis, sizeof(struct vgic_irq),
-                         GFP_KERNEL_ACCOUNT);
-    ...
-}
-
-If a downstream step in vgic_init() fails (such as=20
-kvm_vgic_setup_default_irq_routing() returning an error), the error path
-calls vgic_v5_teardown(), which deliberately does not free dist->spis.
-
-If userspace retries the failed KVM_DEV_ARM_VGIC_CTRL_INIT ioctl, we will
-hit kvm_vgic_v5_irs_init() again and overwrite the old dist->spis pointer,
-leaking the previous allocation.
-
-Should kvm_vgic_v5_irs_init() check if dist->spis is already allocated, or
-should vgic_v5_teardown() free it on failure?
-
-> +	if (ret)
-> +		goto err;
+>  	cpu_if->vgic_contextr =3D 0;
+> -	if (vcpu_get_flag(vcpu, IN_WFI)) {
 > +
->  	return 0;
+> +	/* Request a doorbell if entering WFI, unless the IRS is disabled */
+> +	if (vcpu_get_flag(vcpu, IN_WFI) &&
+> +	    READ_ONCE(vcpu->kvm->arch.vgic.enabled)) {
+
+[Severity: High]
+Does skipping the doorbell request when the IRS is disabled break vSGI wake=
+ups
+and cause a KVM blocked-state deadlock when the IRS is re-enabled?
+
+If a guest disables the IRS (setting vgic.enabled =3D false) and a VCPU
+executes WFI, vgic_v5_put() will skip requesting the hardware doorbell.
+If another VCPU sends a vSGI to this sleeping VCPU, the hardware cannot
+assert a doorbell to wake the physical CPU, so the vSGI is ignored.
+
+Furthermore, if another VCPU later re-enables the IRS, KVM sets
+KVM_REQ_RELOAD_GICv5 and kicks the sleeping VCPU. The VCPU thread wakes up =
+in
+kvm_vcpu_block(), but because KVM_REQ_RELOAD_GICv5 does not set
+KVM_REQ_UNBLOCK and does not make kvm_arch_vcpu_runnable() return true
+(as db_fired is false), kvm_vcpu_check_block() returns 0. The VCPU thread
+goes right back to sleep without processing the request or re-requesting a
+doorbell, resulting in a permanent hang.
+
+>  		u32 priority_mask;
+>  		int dbpm;
+>
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260904113404.4051=
-341-1-sascha.bischoff@arm.com?part=3D21
+341-1-sascha.bischoff@arm.com?part=3D23
