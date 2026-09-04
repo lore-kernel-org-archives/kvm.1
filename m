@@ -1,72 +1,73 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD6A3D9023
-	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 13:50:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91F04A2A78
+	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 13:52:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788529861; cv=none; b=aWXyAONW5qTssIromFfaA1UEUKHoeDumN5yJ0tIHkpZb+65SJ2DiLyTe+rAa2SwaafsazOhYzw+ZjcFvtINqkfNnriyFm+iAcYto3de7Gkzq6YbMPEDL98guUM+jl16nCRlLSepRXZPoUgQDgRlv2Ay5GHhpZ6nFO9mkZ/XhyrY=
+	t=1788529929; cv=none; b=EFL71cO+N84hLC/NaytFM64JPb+TSrinC2aKlyKxeYIuQmv3cTMZj+rfdEjK+qP2ZsmcdRnU89egyOgUquhCXuSpsgA8ZHUaOsoHw1e6w5pPnp4EM289HLg7aGPMcM2+QIu3CLDy2SXX6rtPB4jfnl+OyKfaTfJnRCEz69RP0nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788529861; c=relaxed/simple;
-	bh=8p9pX3f/Jni4/804dN03aY2QgzvCn8h0nT7REjf25z4=;
+	s=arc-20240116; t=1788529929; c=relaxed/simple;
+	bh=jHnLUWIESbcX49x//Q4q7Bwcagr68GVUnUN7YIG+4NE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l7F3/4TxfxdKhf57RU2pEiFCKsH15lRw/aGmLaUDHHB9jMelfR63vvO23YYiO7dTn/AQgIobd1ttKOOa3vlkHV5nzmT6gReLa9fRgALZHoaO6Kmbz0awHCHIFRx0o5k4BMWw1C0P3cGNtv2E0wcI5Gw0xn2x0KUfcwj5cdGRxrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J1XL0SMP; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=GB4f+NV/rfYkmvOmDnSwmnT29PbCS968Xu10NfnsYhfVVGocUaWXE6CQjgQJYqmzjWwPLLZwFkaj37vJr/ABS/N+1PPGtOvfiY5FNU4Y4U3jKhZgiBp3ZBD+wGUGhVXRTcB4Jh6V4ck1B10qavN7v5qHx1ArRnd4p0oFpf6PNJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eqlbIxHm; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J1XL0SMP"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eqlbIxHm"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788529859;
+	s=mimecast20190719; t=1788529926;
 	h=from:from:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OMGOFQALV7U5ZmaS0qjL9QRN5TZgiLFu8RShunh6mL4=;
-	b=J1XL0SMPzeN/pTsTn3S/K6tNYeB0An6MfrpPUR6HRP+hNs0Sn3AWmRFK4jyM4aA9GuqfMF
-	dE/ENOqDvQCg+GbI0VKt5MiyTN9kAE5G8PeLtX+kE0ILAk++EBeATZwlOROpGvAXNKAJoy
-	hI78IusMHhoky3KWonVD3vWfpC52GpQ=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=IhhXcRIecUQqwiCbMDmvIAEilzEU8sFSDbKFkRHxEJU=;
+	b=eqlbIxHm1BXgDYYa5qbjXVDwpAZCIO3zsQBsageKCvLuL06OdE6j7jqLWJtazO/+byc1Zd
+	J/IoNxy9bHUPEgqeLjJTQQtlD7JhkvCrCb5Mky4DR5R9zQh5NsepCfQAY5R7hEm2cc55uW
+	wXXHm197/Wx2KtvonrfTDef70hAzTzY=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-400-jpBiMpqnOCirmW93qEET8w-1; Fri, 04 Sep 2026 09:50:57 -0400
-X-MC-Unique: jpBiMpqnOCirmW93qEET8w-1
-X-Mimecast-MFC-AGG-ID: jpBiMpqnOCirmW93qEET8w_1788529857
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48439eea716so753692f8f.2
-        for <kvm@vger.kernel.org>; Fri, 04 Sep 2026 06:50:57 -0700 (PDT)
+ us-mta-507-vyiEUTrbMBic3BcjUo4GBQ-1; Fri, 04 Sep 2026 09:52:05 -0400
+X-MC-Unique: vyiEUTrbMBic3BcjUo4GBQ-1
+X-Mimecast-MFC-AGG-ID: vyiEUTrbMBic3BcjUo4GBQ_1788529924
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49554715277so10283345e9.1
+        for <kvm@vger.kernel.org>; Fri, 04 Sep 2026 06:52:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788529857; x=1789134657;
+        d=1e100.net; s=20251104; t=1788529924; x=1789134724;
         h=content-transfer-encoding:content-type:in-reply-to:from:references
          :cc:to:content-language:subject:reply-to:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=OMGOFQALV7U5ZmaS0qjL9QRN5TZgiLFu8RShunh6mL4=;
-        b=pR0q+a47+sH2h9XFjS55ZDx0ZDWLSdLP8U8LxJniXDK48kGOCf2u5cv8xgaBS6LRHV
-         oVmU5vFxlZlhh12vb2VK0AMCZiH00rU7Z87qyjB0csWttkNfGpSHvjTumJ9MJMr+5JCp
-         rSgO2WsEd916SWcF4RFMlfQmtygB0O78oLbdbuuXLT4XZW9asMPpfigSImqYtC1gV+UC
-         Hz3jRClBKL2HptJTE03fQ6vnzAzFtnSnKn0sYp4Q9G5eIz7jcCNiGeJosL/7Frgwg5U/
-         +ufDI+nggn5vMoSexykPTsdnSfzuqNzoUmGCmLi2YfzOdHI+lzktZe89+g6aDs3GHjBw
-         pNVA==
-X-Gm-Message-State: AFuF++kbNh1xKNumY81FsTJ21HJi2Bs/yCnvWC39Snpsajn6xnfVo25h
-	NY6Al6h9Ab+MBOilB8ub47jiPJ/kXtMVGRhnr47vHerqt4hHLMy45k4JKTCIpQ7wuRPiUsh8j9u
-	vMBP5zuhN8BYpljg+Q0f3hqHHae635LraDr5rgA+yvpKTY2cGuJ80mQ==
-X-Gm-Gg: AYBFou1HIa9ZJTosuyhlacZidp90CyDOiyS4hq2dpGxSAa4xDs+I2g1Nbds132/9aRk
-	etQOcx6u3G1FznUA3SoopJRdVqAwaQO25gcaXp3gvRhtQKNHTPPZhS6M+s1kfpbPq0sEipAdhtp
-	RVTFxFCDsCcwaImfRoKAe0LwwnOoMNCsvxs2VXktECju4w88GY6szY1+XmBPDiiglIwn7sSYgTl
-	0+SOZPbrEEJVJVCz5SP8Gb3rKYOwC2m/tE0X3ZIt++JfuE92Wy8ZBx6sufOL6aLZo1/NkEnRrR2
-	tZKPk6yRGso28rlj73I5a+U6ajsVP0Lw4LL2+Ngm68bnc+A6tPwOewEc2GdbJ7k8+ExULI3fPmx
-	0bIB0eZvyA1iljVXNz/1TwL91/2SqE6cS3D2Sa1lusy6NCLRH
-X-Received: by 2002:a05:600c:c1d7:20b0:49c:ffe3:2b3f with SMTP id 5b1f17b1804b1-49cffe32f58mr2114035e9.3.1788529855656;
-        Fri, 04 Sep 2026 06:50:55 -0700 (PDT)
-X-Received: by 2002:a05:600c:c1d7:20b0:49c:ffe3:2b3f with SMTP id 5b1f17b1804b1-49cffe32f58mr2113475e9.3.1788529855165;
-        Fri, 04 Sep 2026 06:50:55 -0700 (PDT)
+        bh=IhhXcRIecUQqwiCbMDmvIAEilzEU8sFSDbKFkRHxEJU=;
+        b=RhstLp96kjHecTzqIB47r+hnbKmn1SgxBvTirDA/WLkVPkm8f8stvsc4mnj1pp1PBH
+         wZS3qLRG8jbzpEy6IsnNhfhv74S6iOECOLYqzCfPp3/pVZSv9pSEv0p73cgFrY1VMsK1
+         gs+Ucjup2bdULApTdUliN97Qo5IT8l7FmmsCaWAWY+WAp8sjaPcmtB4DEWCWkDdaEMZK
+         H5KtVE1GVXLFuVP1NtKGyXpeNfT82kGLZBcg/RrciDuNhJBZo2iZnd0R6uYEyGeo7Vaq
+         OMdjl8a6O/a7G07e/DKweQAgkvKgXTF4qGjVnlrSPe9TR5PpvvAdu1zaLKJ9zi6DlJDI
+         i14w==
+X-Forwarded-Encrypted: i=1; AKwUvBxAUdsXpTfCXVnhHa5EeDAQLFfsIBgP76q9EEMDPTSjAfwrMP2PtdWuS/3Y+gFnXq8/KHk=@vger.kernel.org
+X-Gm-Message-State: AFuF++nphs5SJyotlkKQdKhqsWqLLHTqRdPSs1/cMzNkz6dnPrs84BDe
+	srT2Q9n53hcBFRWcvI0Tb5Qs0QfTOLhDkR08NxlzORpBoIQQONSOtqWRX4NSnngQm1658w2tr2l
+	aH4eITPp4ggb6BjhYCrVxHhzg2bolRkst9frFQpVRn14P0xC4Cwii44daW5hyjw==
+X-Gm-Gg: AYBFou3xKSVm4wf/YE7ZPFus4S3yvAlnf8k/+3tprIi/uvX/iK154nXBKmJE7rE03xi
+	W/n2VSCoih2jUIT6dgUc5Qn40b+OXCdTe1HCer7kTfwJDtI9h8h8M0TZ6ErwkmpurKVOEWRhFcJ
+	iJdWBGzSftp6wY1QPXXR7CEJUhDpLDp/J05PpjFWYWbqWH5/hG1lCoYQ8e3aredk2Q/l8THWX+b
+	ZJtBWSM87+o/vVH9w6QReAZIdWnQxcCEu1Qgbj7J2nWazupGsSfA1zFx1EtCImp3EcqoRiYEBpT
+	6qgmqj6FLW1u6XE2H+k+r4v4k0BDogjC3God45BZ2FHHU9OOuMaJxq90Yv9iyWgg7GSF9Rth60R
+	KYzSxFGWgKRHl5DbVZKguiAq0u4UkIxw3gg==
+X-Received: by 2002:a05:600c:8b09:b0:499:b65e:49c9 with SMTP id 5b1f17b1804b1-49cf823f57fmr113368175e9.10.1788529924220;
+        Fri, 04 Sep 2026 06:52:04 -0700 (PDT)
+X-Received: by 2002:a05:600c:8b09:b0:499:b65e:49c9 with SMTP id 5b1f17b1804b1-49cf823f57fmr113367165e9.10.1788529923865;
+        Fri, 04 Sep 2026 06:52:03 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874? ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee5d476esm172660985e9.1.2026.09.04.06.50.52
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee6024a8sm160985535e9.6.2026.09.04.06.52.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Sep 2026 06:50:52 -0700 (PDT)
-Message-ID: <75c62e73-0c71-4143-84ff-a1707ff822ab@redhat.com>
-Date: Fri, 4 Sep 2026 15:50:51 +0200
+        Fri, 04 Sep 2026 06:52:03 -0700 (PDT)
+Message-ID: <882503c8-6993-452a-98e5-2eb72faff58b@redhat.com>
+Date: Fri, 4 Sep 2026 15:52:01 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -75,119 +76,55 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Reply-To: eric.auger@redhat.com
-Subject: Re: [PATCH v3] vfio/platform: prevent read-only region mappings from
- becoming writable
+Subject: Re: [PATCH] vfio/platform: keep logical vm_pgoff in MMIO region mmap
 Content-Language: en-US
-To: sashiko-reviews@lists.linux.dev, Abdifatah Suruur <suruurism@gmail.com>
-Cc: kvm@vger.kernel.org
-References: <20260903092907.419-1-suruurism@gmail.com>
- <20260903094814.EC02F1F000E9@smtp.kernel.org>
+To: Abdifatah Suruur <suruurism@gmail.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Mostafa Saleh <smostafa@google.com>,
+ Pranjal Shrivastava <praan@google.com>, Alex Williamson <alex@shazbot.org>
+References: <20260903092927.502-1-suruurism@gmail.com>
 From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20260903094814.EC02F1F000E9@smtp.kernel.org>
+In-Reply-To: <20260903092927.502-1-suruurism@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi,
+Hi Abdifatah,
 
-On 9/3/26 11:48 AM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+On 9/3/26 11:29 AM, Abdifatah Suruur wrote:
+> vfio_platform_mmap_mmio() overwrites vma->vm_pgoff with the physical
+> frame number of the MMIO region and passes it to remap_pfn_range().
+> The VMA is inserted into the device file's mapping->i_mmap interval
+> tree keyed by vm_pgoff, which VFIO expects to be the logical file
+> offset: the core links every device mmap to the device inode's
+> i_mapping precisely so that unmap_mapping_range() can revoke all
+> mappings associated with a device (see vfio_device_cdev_open()).
 >
-> New issues:
-> - [Medium] Modifying VMA flags post-merge inside the .mmap() callback silently breaks future VMA merges, leading to fragmentation.
+> With a raw PFN in vm_pgoff the interval tree entry lands in the wrong
+> coordinate space and unmap_mapping_range() cannot find the VMA,
+> leaving stale MMIO mappings behind any revocation attempt.  Keep
+> vm_pgoff in the logical VFIO offset space, as vfio-pci does, and pass
+> the physical PFN to remap_pfn_range() explicitly.
 >
-> Pre-existing issues:
-> - [High] Incomplete mprotect() hardening allows unauthorized read access to write-only hardware regions.
-> - [High] Assigning a raw physical frame number (PFN) to `vma->vm_pgoff` for a file-backed VMA corrupts the VMA interval tree.
-> --
+> Fixes: fad4d5b1f042a ("vfio/platform: support MMAP of MMIO regions")
+> Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
 >
-> commit 6c3ce3b68057fa0dfd3b9b92fc8493eaac414153
-> Author: Abdifatah Suruur <suruurism@gmail.com>
-> Subject: vfio/platform: prevent read-only region mappings from becoming writable
+> ---
+> --- a/drivers/vfio/platform/vfio_platform_common.c
+> +++ b/drivers/vfio/platform/vfio_platform_common.c
+> @@ -559,6 +559,5 @@
+>  	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+> -	vma->vm_pgoff = (region.addr >> PAGE_SHIFT) + pgoff;
+> -
+> -	return remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff,
+> +	return remap_pfn_range(vma, vma->vm_start,
+> +			       (region.addr >> PAGE_SHIFT) + pgoff,
+>  			       req_len, vma->vm_page_prot);
+>  }
 >
-> vfio_platform_mmap() rejects writable mappings of regions without the
-> WRITE flag, but leaves VM_MAYWRITE set. Userspace can map such a region
-> read-only and then upgrade the mapping to writable with mprotect(). This
-> commit clears VM_MAYWRITE for regions without the WRITE flag.
->
->> diff --git a/drivers/vfio/platform/vfio_platform_common.c b/drivers/vfio/platform/vfio_platform_common.c
->> index c72db5a99ebda..20d87c244ca28 100644
->> --- a/drivers/vfio/platform/vfio_platform_common.c
->> +++ b/drivers/vfio/platform/vfio_platform_common.c
->> @@ -595,6 +595,10 @@ int vfio_platform_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
->>  			&& (vma->vm_flags & VM_WRITE))
->>  		return -EINVAL;
->>  
->> +	/* Prevent read-only region mappings from being upgraded with mprotect() */
->> +	if (!(vdev->regions[index].flags & VFIO_REGION_INFO_FLAG_WRITE))
->> +		vm_flags_clear(vma, VM_MAYWRITE);
-> [Severity: High]
-> This isn't a bug introduced by this patch, but while this hardens the WRITE
-> path against mprotect upgrades, does it overlook hardening the READ path via
-> vm_flags_clear(vma, VM_MAYREAD)?
-every MMIO region in vfio-platform is marked as
-VFIO_REGION_INFO_FLAG_READ so write-only regions do not exist. I don't
-think there is such symetrical need here.
->
-> If a user maps a write-only region with PROT_NONE (or PROT_WRITE), they
-> bypass the initial vma->vm_flags & VM_READ check. Since the region lacks
-> the READ flag, the user should not be able to read it. However, because
-> VM_MAYREAD is not cleared, couldn't the user successfully call
-> mprotect(..., PROT_READ) to upgrade the VMA and read the memory?
->
-> Can this allow an attacker to gain unauthorized read access to write-only
-> hardware registers, which might corrupt hardware state machines, cause CPU
-> stalls, or trigger fatal bus errors (e.g., SError on ARM)?
->
-> [Severity: Medium]
-> Will modifying VMA flags post-merge inside the driver's mmap callback
-> silently break future VMA merges and lead to fragmentation?
->
-> When userspace mmaps a subsequent adjacent segment of the same region,
-> mmap_region() attempts to merge it using the proposed VMA flags, which
-> still contain VM_MAYWRITE by default. Because the existing adjacent VMA
-> had VM_MAYWRITE cleared by the driver's .mmap callback during its
-> creation, and VM_MAYWRITE is not in VMA_IGNORE_MERGE_FLAGS, the flags
-> will mismatch.
->
-> Won't is_mergeable_vma() reject the merge, causing VMA fragmentation for
-> adjacent mappings of the same read-only region?
-Isn't it pretty unlikely that the region gets mmapped in several
-adjacent chunks? At least for devices officially/publicly integrated, I
-don't think this happened.
->
->>  
->>  	vma->vm_private_data = vdev;
->>  
->>  	if (vdev->regions[index].type & VFIO_PLATFORM_REGION_TYPE_MMIO)
->>  		return vfio_platform_mmap_mmio(vdev->regions[index], vma);
-> [Severity: High]
-> This is a pre-existing issue, but does assigning a raw physical frame
-> number (PFN) to vma->vm_pgoff for a file-backed VMA corrupt the VMA
-> interval tree?
->
-> vfio_platform_mmap_mmio() explicitly overwrites vma->vm_pgoff with the PFN
-> before calling remap_pfn_range():
->
-> drivers/vfio/platform/vfio_platform_common.c:vfio_platform_mmap_mmio() {
-> 	...
-> 	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
-> 	vma->vm_pgoff = (region.addr >> PAGE_SHIFT) + pgoff;
->
-> 	return remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff,
-> 			       req_len, vma->vm_page_prot);
-> }
->
-> The VMA is inserted into the file's mapping->i_mmap interval tree using
-> the raw PFN as the index instead of the file offset. Won't any core kernel
-> mechanism (such as unmap_mapping_range) that searches the interval tree by
-> file offset fail to find the VMA?
->
-> While remap_pfn_range() expects the PFN as an argument, it does not
-> require overwriting vma->vm_pgoff for non-COW shared mappings.
-the same pattern also exists in cdx/main.c, fsl-mc/vfio_fsl_mc.c
+While at it, don't you want to fix the same pattern in cdx/main.c,
+fsl-mc/vfio_fsl_mc.c?
 
 Thanks
 
 Eric
->
 
