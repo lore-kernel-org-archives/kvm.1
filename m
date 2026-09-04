@@ -1,29 +1,29 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013010.outbound.protection.outlook.com [40.107.162.10])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013035.outbound.protection.outlook.com [52.101.83.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FE03B14D9
-	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 11:37:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D02939EF33
+	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 11:37:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.35
 ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788521829; cv=fail; b=ZP5Sn+PyRP+uRMmO7NKPamw8BeZ3cl4iM2OB9k9U6F9HFhQEgYC3/bO/AKu7Wvv/8f0Th6OPlGSspwsNRA1+6jj5Yp/qxxczWuVb/xLduAMDvvthh5GALcCrWUGN48qnj4UXjXiycZf+vQ2D99/Gyp2KwhJpy0gm1SDaEeMqs80=
+	t=1788521850; cv=fail; b=Z8jd0S6bbBBMM7Y9uFAl6SI83GiP+ZESaqDSHegeRFZ8K0syXQv0TFCg0oXe4qN7Fhd695cdOthk33M7HP1NMyA5kk7JwwyKmgHiLZuBWX1mw4OAwxW8ixnr02HTHUvRMnpEohEYIp5hUUzK9Y9ToOhLocfxYK5JQuX8I3Ga9s0=
 ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788521829; c=relaxed/simple;
-	bh=Cc5YNExIz1QfPDHRcnJxyM8UKFypJy9mnWipQf5zdxQ=;
+	s=arc-20240116; t=1788521850; c=relaxed/simple;
+	bh=/HgK0MUKOsuwapKxhhqaeOlLsVmWogbowN6BCq4mGUw=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=LI1X5CNezXHeJmNsYK/AeFYTZC/RS3MpODplJJJ5V+QWE0rXv+hWXnYGWZy7H1nJ1UVLdAJNhBkq0gWtwkBexzbExg4sVVTFAxPzejmyq73TgBhm93LCFLdgxlTapItBGCyOVA66bvhMw/rhH74ZNsPnEfaEDsbvQZIbs7CmNwI=
-ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Hp7ib/6e; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Hp7ib/6e; arc=fail smtp.client-ip=40.107.162.10
+	 Content-Type:MIME-Version; b=SFM0YZ9JK+RwN1qIXiFnGCoDIQyYbS8KKo8gAsPMFqTzub3okhDTUPfW2Gdm/7m8975imetGBH/7pY2+62x7OlHr+Hc930XSRIp5hcBeCkUCFPoFTx7E/+oh6BDrvTwoiLsPiDohQCPiEp+5TWTO0jtZT3zyYV9J3xgZfo/YsSo=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=YuwNoeZU; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=YuwNoeZU; arc=fail smtp.client-ip=52.101.83.35
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Hp7ib/6e";
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Hp7ib/6e"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="YuwNoeZU";
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="YuwNoeZU"
 ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=cqEk89m2FUJS/OSusgLvkpRGL4xq/I6KHvRW28Pg41nVKoPfdE48f9BU/fZatOvJ88FXcM5MCpKR8yXjYnfqMDFffAYWIsXyKbzXtxqD5Bq4Kge4TlzdY8ck1+FMMmKx39ux17y5fAkk9m+oaBirIQkvCo01r7b+oE1RoyAazcFGdl3dsQiWawC7W5eEOjtu9JCO5zJnxQJ4cxX8V/r4oRdq7of2t1rGqxjmfDq+DYO8CaSIlgGSFG6ANkGXgEg5wVzNWFMTbMYEh4FDjrF3tMdNn+cQHMBAPgaZN0RlH9nnUgZ2zJzfBGNHKXJgPFIWqsq/kHlnbpJaKCHy1SIkUg==
+ b=IVdk0A9kqEmJcEMcQybSMbap9YQ9FjhvcNBp5/kWci0GJLgxI8FRN8LDmmATuGJofm2shUCvc6oVqED0neG/g0f4b64jSWJqtwpk24zEqkWrx8LYWUkrlxqgN1X9LxPr9QLUDjwi4ujh5DxEaHxA7Fso0da1DuI/EQKj9tJKe4gBAdC5ttQfaB0TakF7xchP6iuxawsCv0w8VmVu2uHQlx3o1hkMJhoAT2F6Kfv4tSj3eEEsKIwa74L66RGqjs+POn5qKYatdgdyjt/frlaqw19YnWdFzaLhYR9D11ogOh8Mft6K3dqiqQqgxSXdQJuy3goQIX8kUks1/snM2juxXQ==
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AIFQF9a5G87BQNZj00Ox7mBcLxs5QvUl0fGhOOf2AIc=;
- b=HZ7tfeUy4niZ7B9Bhdc3lcMG5o6mYwUt9/VPdjw0RPWTmBmYh7LE1jet9jxvE05iDIuA6NRKuxL/i5Wmf24eH1OzZqJ2Jmk6tdJblFFjNj7PrlUtnr7UCRSQ1hRzIkvuM8GykU5yYeAiIOIb+myR3NjPLuHRiwlQstt3wKqgyAfuSJP0iw9JsW4cOsSQHe3LvG+m5sYxRSXIRxoWZ0f/9Vxk0COh+dEhfRwB7Dh/oW29ZHLPtsEVTU6fT+gOclSe4ALfZzxoUtPUYu4EWz99ZDADsqvVMHM/Ix7P7+kFbldJDc2o8Hh5t7OAFGn0bjQx/8KoMtiZ87UBH1vxlGOWkA==
+ bh=zCalhb05CxZ1gDL/cWbJWSU2QHc55x+70R2AKTjCVfA=;
+ b=WFqFmZCLNjbEfig9WzljG3PoBwZZYMd5arSXvl1e6mc0mcN8dvzkg1L0Sgah1fuAV3Q+U9/ZaWlqe9XVBHYb353eVTA4zXjKiXzN/orRkZrN0IkglcgOs3jd1fl2ziHHtp7DO2Xt/IXZ9WFzvT57ke6XtDr3VPiEUXxsbcIBnjs80exR3+dDn3II7LkInSzgvU6EecU6A0uZtQxaqDygl/8s2Zoe1SO9xKyiazriMubRIwM3goWG7u4WPcUKh7jwSAROWPlZPG9mw+n/sRdJhW5++GTTiTFsPLy71xWaMSk/Fhwgj43NsjdHDY24tLxmOelabNzczXXbf4J3ng9PKg==
 ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
  4.158.2.129) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=arm.com;
  dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
@@ -32,18 +32,18 @@ ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
  dmarc=[1,1,header.from=arm.com])
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AIFQF9a5G87BQNZj00Ox7mBcLxs5QvUl0fGhOOf2AIc=;
- b=Hp7ib/6eQJ76IHNHS3ilMsWM3iTKmsI+y0itm91exmIw3dkpqGhKBqc+XLLXYBYtq+1hS2fwUHapBz0ikg2SqljhgwsZjDcyoKrMj0rnuvonTFHE+amGuW505UXIpy6DxDqFteRHdP/g8qwhRMOT9iWgnUlv4enU9leeRFc0Qo8=
-Received: from AS4P191CA0011.EURP191.PROD.OUTLOOK.COM (2603:10a6:20b:5d5::9)
- by PAVPR08MB9457.eurprd08.prod.outlook.com (2603:10a6:102:319::20) with
- Microsoft SMTP Server (version=TLS1_2,
+ bh=zCalhb05CxZ1gDL/cWbJWSU2QHc55x+70R2AKTjCVfA=;
+ b=YuwNoeZU+jeyDpEoHuuA7O3O7PHXpgx3M+Z+3DmMd3hqwYL2S5AbR3ParxFLgOzq82Uz3BG9M7Aqf+lQd54L5pkyEyYY7+50y6zjys7deO8F7FXiHIdi8GP/9oFef12EvcYzSRzma1Qx84Hf9posYfRy6aqc97VfF0/LY3f8z74=
+Received: from DUZPR01CA0110.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4bb::7) by VI0PR08MB11773.eurprd08.prod.outlook.com
+ (2603:10a6:800:313::19) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.10; Fri, 4 Sep
- 2026 11:36:55 +0000
-Received: from DB3PEPF0000885C.eurprd02.prod.outlook.com
- (2603:10a6:20b:5d5:cafe::1) by AS4P191CA0011.outlook.office365.com
- (2603:10a6:20b:5d5::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.12 via Frontend Transport; Fri, 4
- Sep 2026 11:36:55 +0000
+ 2026 11:37:24 +0000
+Received: from DB1PEPF000509FC.eurprd03.prod.outlook.com
+ (2603:10a6:10:4bb:cafe::9b) by DUZPR01CA0110.outlook.office365.com
+ (2603:10a6:10:4bb::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.13 via Frontend Transport; Fri, 4
+ Sep 2026 11:37:23 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
  smtp.mailfrom=arm.com; dkim=pass (signature was verified)
  header.d=arm.com;dmarc=pass action=none header.from=arm.com;
@@ -51,32 +51,32 @@ Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
  4.158.2.129 as permitted sender) receiver=protection.outlook.com;
  client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
 Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- DB3PEPF0000885C.mail.protection.outlook.com (10.167.242.7) with Microsoft
+ DB1PEPF000509FC.mail.protection.outlook.com (10.167.242.38) with Microsoft
  SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.8
- via Frontend Transport; Fri, 4 Sep 2026 11:36:54 +0000
+ via Frontend Transport; Fri, 4 Sep 2026 11:37:23 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jDrNoUd4zHRCsNmLUzh0TmD382XsujCzEqgvzbxO/YjjmBbgckD6c7NaY1bFF17Jkyefi9ikKtl28jOvYxCILzmToDLb9wPsVYv1/noOvGtBQl3zHCNfgjtyiZk6o6oZZdcM4cusbKpSA66MpuqJkoxLSdGKa5iASGRuUVZ3aGF3hyZUfS0WC6hQud53isU00niB3+8sNq5lBJvAY/Fim/ZimFcD3QDo5a0ZH2kWCYqMXvSGrfp4tyPKWuUamP34v/ejXck3H3N4rCleQulQA2kOyCNRrmrzuDYHKgTrGnnno+OC45LnaVvBQhFT2esTbAEz50B5inbmVqsncMgilA==
+ b=sQpSRKH95bjqnPcTYJzLFQTR19QA0legtkL5/GUHXu+fEteLHF7JSk8q0g9asPkSsL5EYoAtCeVVbPCfKbfnLhS6gwbfrfi2fLdihQP63TgUAXogCOmT5umKHZAwpRy0gDRYLr0LrzQNxkmmrmU88JznqlrXMPxjp0qjAr86VqZsreXlBVAcyQiobih3jk4Mxzk0lKc68sE+O4Rooik8UXgDIaBQ4dujrU4+bHw20PrEesmTg1VlBfbgobZfJ7Dk/d6em2o6/RV6NoPHQfIOq8R3GOPfRAchpoLhLPUdmrx4IVufUkz6q4X7VNVhUIHhT+iSemIp9/NJywgd7Pe9lQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AIFQF9a5G87BQNZj00Ox7mBcLxs5QvUl0fGhOOf2AIc=;
- b=LLruLN+g9ZE6H4dQD7svkwXIbJS34Itgz3Ab7mq6JazTRMFT023xLMt976rVM1vENRjY+75+lsqHgiDoEROaAmUDlb0tcDHMswuHwVaKisvc15pEi3NxMwJ4HmiVnYd3DeNJOvIa0r9rdXL0XISNwf/2NKpG73jGIcev7RDV3MObLeJPjHDVK4MbMz+WrZmIj6kjWr9mKudX4ohNxc8p4Ql3uKyGMfxOyQzHhGBq5C+9kY9YVGaKlwsdN0eS10LrgeGEz9HEdiFP8kRTbKElokuvPlu95FpAVWV72HmRp0jEEENeNCBrS//nD4W0SVdONwTdmQbBKGK/CbRz3g7L6g==
+ bh=zCalhb05CxZ1gDL/cWbJWSU2QHc55x+70R2AKTjCVfA=;
+ b=c4nvhF8ZZDm5etCFA7XkeMrTqZNjT3JobRdSkNrtxk2+BwHm8AQ0K+k1Kx+H7qgNrtIyKIsIM2ldi4dIr4G1HeDzk2dQLca7nJqz6WFgzPGTr1J2Yuzg1h8ruAAtbDuQBc0KCDXjA2O9PVV4qFbx+gADUxKJTOrBvgZjs45HQ0d7ICUbIVHclOQlNOe4rsaqxI2nAFt8H7ltg45JhelIFbH9V4WcycPhUXisBX6EidW6TZqWkihxSTqnsbgriIaJ9VlKywnaQet/iIT6XZe1iLX2DZwygizsbtSaIGqnSTeSI+F+dTCbrtA525P0AILdbXUk68Tto6wK5CrooNGpNg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
  header.d=arm.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AIFQF9a5G87BQNZj00Ox7mBcLxs5QvUl0fGhOOf2AIc=;
- b=Hp7ib/6eQJ76IHNHS3ilMsWM3iTKmsI+y0itm91exmIw3dkpqGhKBqc+XLLXYBYtq+1hS2fwUHapBz0ikg2SqljhgwsZjDcyoKrMj0rnuvonTFHE+amGuW505UXIpy6DxDqFteRHdP/g8qwhRMOT9iWgnUlv4enU9leeRFc0Qo8=
+ bh=zCalhb05CxZ1gDL/cWbJWSU2QHc55x+70R2AKTjCVfA=;
+ b=YuwNoeZU+jeyDpEoHuuA7O3O7PHXpgx3M+Z+3DmMd3hqwYL2S5AbR3ParxFLgOzq82Uz3BG9M7Aqf+lQd54L5pkyEyYY7+50y6zjys7deO8F7FXiHIdi8GP/9oFef12EvcYzSRzma1Qx84Hf9posYfRy6aqc97VfF0/LY3f8z74=
 Received: from PR2PR08MB4889.eurprd08.prod.outlook.com (2603:10a6:101:1d::23)
  by VI1PR08MB5504.eurprd08.prod.outlook.com (2603:10a6:803:13b::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.10; Fri, 4 Sep
- 2026 11:36:19 +0000
+ 2026 11:36:49 +0000
 Received: from PR2PR08MB4889.eurprd08.prod.outlook.com
  ([fe80::8bda:5986:a1f1:cb7e]) by PR2PR08MB4889.eurprd08.prod.outlook.com
  ([fe80::8bda:5986:a1f1:cb7e%4]) with mapi id 15.21.0382.007; Fri, 4 Sep 2026
- 11:36:19 +0000
+ 11:36:49 +0000
 From: Sascha Bischoff <Sascha.Bischoff@arm.com>
 To: "linux-arm-kernel@lists.infradead.org"
 	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
@@ -88,13 +88,11 @@ CC: nd <nd@arm.com>, "maz@kernel.org" <maz@kernel.org>,
 	<peter.maydell@linaro.org>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
 	Timothy Hayes <Timothy.Hayes@arm.com>, "fuad.tabba@linux.dev"
 	<fuad.tabba@linux.dev>
-Subject: [PATCH v6 04/49] KVM: arm64: gic-v5: Define remaining IRS MMIO
- registers
-Thread-Topic: [PATCH v6 04/49] KVM: arm64: gic-v5: Define remaining IRS MMIO
- registers
-Thread-Index: AQHdPGGaKRFdj+jhoUagR3mV+bN5KQ==
-Date: Fri, 4 Sep 2026 11:36:18 +0000
-Message-ID: <20260904113404.4051341-5-sascha.bischoff@arm.com>
+Subject: [PATCH v6 05/49] arm64/sysreg: Add GICv5 GIC VDPEND encoding
+Thread-Topic: [PATCH v6 05/49] arm64/sysreg: Add GICv5 GIC VDPEND encoding
+Thread-Index: AQHdPGGs9GwENqzYvkWWk2sgtvYmtw==
+Date: Fri, 4 Sep 2026 11:36:49 +0000
+Message-ID: <20260904113404.4051341-6-sascha.bischoff@arm.com>
 References: <20260904113404.4051341-1-sascha.bischoff@arm.com>
 In-Reply-To: <20260904113404.4051341-1-sascha.bischoff@arm.com>
 Accept-Language: en-GB, en-US
@@ -105,18 +103,18 @@ x-mailer: git-send-email 2.34.1
 Authentication-Results-Original: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=arm.com;
 x-ms-traffictypediagnostic:
-	PR2PR08MB4889:EE_|VI1PR08MB5504:EE_|DB3PEPF0000885C:EE_|PAVPR08MB9457:EE_
-X-MS-Office365-Filtering-Correlation-Id: cbfd9a6b-b95c-43ac-766d-08df0a78d222
+	PR2PR08MB4889:EE_|VI1PR08MB5504:EE_|DB1PEPF000509FC:EE_|VI0PR08MB11773:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7e22c1e9-1767-44e1-e5f9-08df0a78e35b
 x-checkrecipientrouted: true
 nodisclaimer: true
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|38070700021|6133799003|56012099006|10067099003|11063799006|18002099003|22082099003;
+ BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|38070700021|6133799003|56012099006|10067099003|11063799006|18002099003|22082099003|3023799007;
 X-Microsoft-Antispam-Message-Info-Original:
- hYNNN6AvnwZSr/+TnFgbGotjx0njD+Tl/7A2qajIcH068Rnq9G4OurLAYHAEsmBeBFS7hSh2OFisVZD87TZaExEjlmsV5ZV0EYf9bGfX0rWkpNOqDpjypV3I4WqExQGGybjfgUrleU4K1ooluZ9gxCaXNeYQuzsJ4NI8xC1vYtszSg+652plw13ZP5CCMh6ZhQKNskyoPKr5nQC2Ag+zNgImjupUmioKINVrb1Oye45Zmn8f7zAW0Redu83Au5EoVqAEYyhPAbQ+K//BhZM29cV3DugpSS9dTwsmF/1StIs1qqlj6iRA3kdN8kU5RFh+TczQBWFWITwnQmAU0w+EvQ93Gzhbu2hbmTAhl2c0dy4NYXv6pQtBM+8rp0EZKuTuRc6kIA1cdjNbgHktPyTxpnpr+n4YaqQd2Kn6TgtvuUgxAAJELaAs1yRcyKsHlFPsedllA/8rTShwGKwGDhzBvzkNiKO1fYcS2uwt6/dADS61wmBm1RBmfrks6X/I8z+2bRrzgCpGhQcVVXt6gL58p4WlNx5bpugMu6JRS5YCzdWNXct/k77juJfRuql2nTkZ0Mv0ZoikDDRnBauolWkHDQx93Kfky8vbbl4tW8maC/ohq/Gis6jNHipPYLPE3N1uNdnd5T6MANSoSY8eBkbCU4Zfa/xaQEDRu0j0Zm+YfMqkG0pehanf9xoPmRs85Y7TE2n+eThVw6WAb4EmDuIx4rA/L4rjzZDdTf6YeGa96Hw=
+ AgQQmpyBQjvL8NaYM+Z96E4007aJn2NHRoiWeISlDsfxPqDPfq2WiPvflWEZOYfagXiJx89py59aQPstKokz4769xITTOlXvws8/deAnoqDpvlrr2JYOOFlMXR9rajJuwptBTu/cR0E7fZjn+BLnnWmts0L/KGg5NeuN5UkfN5YyPGFdA4SQTxK/EAbNHr2xUZggNd8x1A89IQkX/3uWztB6vSQICCrjxns6u/iyeK22s1sD2Uff9ArQbH+NX16MqfXG0u6yZFoQnitM8DYBS8CJxLBgM1mg+vJhIjttJZZnbljo81Pzn20hQASOXIKQh5C5P03gB3w3K6LxiFwMQ0zSjJg7qGWglLSfCYN8mgtuyF05kridEqku6FofTrsev67/GiWyl3tldjH9JNIbKBUrXHAJnE/T1AHLWDj+afgTooigTFP/qBqNFGQAajdHUGPqbAaK0D0M8GgeViSAoGZU8dNI4LCWEQqdiMrGl5CWvFj5N/ssRh8pFVh31F+5tT7OYrhcPRo/wF/E82QZbfliPtxInGXQxYRU9FhPHyvq2Jy7sz9bhul4gEuxLYGlo1o6JzZd3MyuUFw68fsBLIbFwRbQnKXu6mm+blARNx2df+o/kz+RLVUG9fZnzsUl/Xho9R1hQhIk0lSjxnTfUAi6VWTOoDQMMFu/KzcQuvgG4uv98YPLOML5Q6JvlEr7OnHx4pFmBdYaAZshvqyZv1tOpBKd+yKQpjapePRL/eo=
 X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR2PR08MB4889.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(38070700021)(6133799003)(56012099006)(10067099003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR2PR08MB4889.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(38070700021)(6133799003)(56012099006)(10067099003)(11063799006)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -126,372 +124,78 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Exchange-RoutingPolicyChecked:
- Vz51tqdytYZm+1ZH1XoCkQgOrscPsnL/nh8x1dPDVBvNQ3DIFu0YSzIzfjO0qMPXvEgYjv4NzHdsaGmgkOd8rwnMGYq+R/3xpSAX1WUJSOlI0305aQO4RHtbkxDhgef55SkLiGaOZ+30NedkpgSOy1mP0fJTedDnTt4HUyrTuqC3PyVfvrboD8bY+K/cIZ1RXU+5kVAmWxfz1A1lcUIbvGl2DgiqDCAX1CLJRkwbF3KQ9Iw4rwJZF6TEIiXf/W6BAMsXx2ZRZO1VQbeNiDJN2RRsIXpuyc69GrIecfHqbf606K7lL8b1PiU5rxmfPRVp7sYAvk6bT2APeN4Znterbg==
+ nJU4Gph2KWHps9SK/paa6jwTY1mEl9eZ36lAr7Hv/6K0SlH+sfHImcKIcDqctw4rRlXiZXy6PhGX1Yznztod4+shKMetqRuqjooQtakMnQjjbIMtQfJba6O4ry5/+fwSvV1JT5iyPv1YZnTdQneh8uwXCPPAZe8mBC+RbB2XWXFjOVO1XOt8o1jvATnpogRO/V3ZzBi9y/5Olcsz9XXU0p0II/tFV6ZNEbZXAdXM3zxQ7JgQBG9tcGSZPr+8rQvA8R7kWoMhxeU7l9/a1SpbFSDws5edFX11q6IlxcVTKqrvxMyV9X4hixy/NsBTXmqUBzwmUOUTWz6pgjIZWwYWqA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR08MB5504
 X-EOPAttributedMessage: 0
 X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- DB3PEPF0000885C.eurprd02.prod.outlook.com
+ DB1PEPF000509FC.eurprd03.prod.outlook.com
 X-MS-PublicTrafficType: Email
 X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	1596505e-599b-4638-f6f6-08df0a78bccd
+	6948e336-364c-4f2d-5d37-08df0a78cef9
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|35042699022|82310400026|36860700016|376014|1800799024|14060799003|23010399003|10067099003|11063799006|56012099006|6133799003|18002099003|22082099003;
+	BCL:0;ARA:13230040|82310400026|35042699022|14060799003|36860700016|23010399003|376014|1800799024|3023799007|6133799003|10067099003|18002099003|22082099003|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	QRMoP/J7z5I938Kr8la+1A+/S1h6anRW1i1fir7Z8hNhfU0ngf/Zr+e6pl4ke6kBIcHoybtQX4eIgMpDorIS5b2LjIr1m0Y4HWLmm10pSfx90Lll/LDR3LD5i2a9Rdj+KmU1GUM8Sg2SoI/fsW0z4EiRxtSjDnRGZTzey+Yn97Ug9kFOIPaAba7hlak1XcjsKzuI6pefeLmwk5n4dT0M2eOj3YdCmu4W3oeKejsE2DWwJbYo/PWM+2wvxChbQeAn3dfgHJguwrARuPcdgAAbiGDFlbf45S6LuYl1tEjwqCHzyWdNDG8DIkwJnMzdwVhV3BCCGNpzuyBxVhW/ohJ1XymoeOhgK37ruumaGPDg5oA2SI5plaio08QNf9YeI5XiwWXYhXUsS3QxHtbnRbvtyYPKuQI27Pi0Nx6fA3dogyiZEZCNQcxMZnVhQLj4CChYH4L2mFn2QmjjvCG7wlUGn6t9xOx9497jWjYo09JM637IzAHbwN8cs4HoWxl0oJKx1NWO/d6iApb1/zJ5zJAr1Dhu1Mti6Ec9rtQ6x1L2ZbejOuBz2WAW9adG5oG4wkzPFCxnoVAGCw14VI02H9Sk1236JgNm6H5t0RnFLN/e+SoA7DHirMljnwHOT2BkBujvSZGUj2abgpDueM22xM6BgX4pmqXVYAMIsOyEfdndiYk=
+	M0V7oU4MIipekKxxg1q76HETExnCnjG/dOm/Yo7H/1DflIEKWmuSigZ0SWSm0zo69U0c/l01/lvmNPwokQNSOzWOo59LX7dlwA4QIk2Tr6V5FuXe0EnJv1hKUgHvbsesza0hz41GLlZSQIESCs6YskkYqEVjNmxLpjKW6EnelNw4HjM83tCJY1r0ksv/oGpvIY5yFWftkNH0Dbrd2wlqEtIYghyvMjOpmYS4bBNQ6IhYr3q9m5K7Q+koFIXzP2nuzm7gdEBacUVNAJka7soT5xPs7yFzATG47uh7ahEMob0DCQH2EfHfaWODK8Sz07lMZPtCIo1ZXXBz5aQuOxOmNwyBPnRlvOlB1brrxYfIBnHuIkl1Yf29TKwh1v+BdoreySFi700RDq10jW++GxqX/Yo+4ZrVx49hM2AFhWjjK7jWNqRC9Bj4Sh+DNikosvTShp/f1y8klz81sNO27Gqy5fKI988Ya+8ejNhz5oXr+mEmNnISgH2XiXrCkSoYHFgsSQ5jL9O/tQ+yKSu6F1JCSKRL8wDD6Mlst6tEspZi9ndBSy0YqBSCEa+4aJmiS1gO2qnlXPtLphF3L1ERiW1yTHsuMplOhlKL9kxFyXnUYlz6HwAzagfQz1BA8t41zRfkAlZtb64cXhINwtqjwyaTbaXVzjefHKG6CRYG9UaI1mo=
 X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(35042699022)(82310400026)(36860700016)(376014)(1800799024)(14060799003)(23010399003)(10067099003)(11063799006)(56012099006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:4.158.2.129;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(35042699022)(14060799003)(36860700016)(23010399003)(376014)(1800799024)(3023799007)(6133799003)(10067099003)(18002099003)(22082099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	GRsRdDcQ89fIMGtty6lx7SUeEtsh0mgOm3yl5hHGShO2xSz7s9Vb3V6fptyw/tv8VEpx4WYLaBkHz2x5SZ3/87s1PUbPEShqnR7LW2B9qKCWSEgUkIEl/WtJcAfK7AZhj7bSAbhWpxpxSvEacwKfRdpg/dlAKExxoRGWy6vXyMhgvj61xL1Izm4atUOkxLgYABsPcR4o4wQTHjj4+i5Yn0MbBFPVuzAHYBr6Bj9mT4DwgXR8Kz6rBBXTARnU9TkTKztdGE9zNcai3fh9thlUjREFgB7yG53IK1HJ65qwTkY8REu3RB3TztQ60AG21pqfNbPqodjUW8aB6q4hXehB41kLDhFOawSEoTRPraLRyUUOl7sDLPl3neGgHfyySGEMUeox2Zi5AMdtMnoDa84VBiUXF/ocjvviWekA0MIj80pQdMFdSgRykKIMyCrtj4vq
+	ijrwX5CoRzXVjYKacYFbKXP8Wno6jJoIx33BBJq8wcHnRX4YW7NimQQoESlNuJPALoWCuT3FpmxhxkNvhNWDPw6Enughft5+zPGfSYazuklFgPZCCjfqupWLwJIJttxDwzLzS5OgAlaaZZg38ZNbwFKu359r/4k9yW1+MKc8Z+YgStRXiUjz7QeqIMW1nzqP5mxjzrbnc1suI7VlBG21A9HVHi8Avucz6RIBljO6jGEt173UTCnIVTGLFLS6+pc4uHM1/zxzb91X/1OE2jdFPsPPmNGehPyA0wiIXoHCn6o1/6vZwj0X+bqU57SCcrgfiRhAF0OdX/slIRv8kC46Og86JsPVhxN9+d+9+lnC+7VWZOW6+YdJZDKTzlYoWY6c9xqfOliwq5l0DsRy8RBzzCxCl04nhvbWHC5SaA0/nv6FMzW7j93zJ53zMKS+DxIh
 X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2026 11:36:54.6597
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2026 11:37:23.5684
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cbfd9a6b-b95c-43ac-766d-08df0a78d222
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e22c1e9-1767-44e1-e5f9-08df0a78e35b
 X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DB3PEPF0000885C.eurprd02.prod.outlook.com
+	DB1PEPF000509FC.eurprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAVPR08MB9457
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR08MB11773
 
-Complete the set of defined IRS MMIO registers in the GICv5 header
-file. Up until now, the set of defined IRS MMIO registers has been
-driven by code requirements. However, in order to properly emulate the
-IRS MMIO interface in KVM, the full set of IRS MMIO registers needs to
-be added.
+Add the encoding for the GIC VDPEND system instruction. This operates
+on the virtual interrupt domain, and is used to make interrupts
+pending for a VM.
+
+This is part of enabling GICv5 KVM support, and is required for
+injection of SPIs and LPIs.
 
 Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
 ---
- include/linux/irqchip/arm-gic-v5.h | 239 +++++++++++++++++++++++++++--
- 1 file changed, 230 insertions(+), 9 deletions(-)
+ arch/arm64/include/asm/sysreg.h | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/irqchip/arm-gic-v5.h b/include/linux/irqchip/arm=
--gic-v5.h
-index 59a5875854319..8dc5847a646eb 100644
---- a/include/linux/irqchip/arm-gic-v5.h
-+++ b/include/linux/irqchip/arm-gic-v5.h
-@@ -63,20 +63,34 @@
- #define GICV5_OUTER_SHARE		0b10
- #define GICV5_INNER_SHARE		0b11
-=20
-+#define GICV5_AIDR_COMPONENT_IRS	0b00
-+#define GICV5_AIDR_COMPONENT_ITS	0b01
-+#define GICV5_AIDR_COMPONENT_IWB	0b10
-+
-+#define GICV5_AIDR_ARCH_MAJ_REV_V5	0
-+#define GICV5_AIDR_ARCH_MIN_REV_V0	0
-+
+diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysre=
+g.h
+index 7aa08d59d4944..c840b37adb2fb 100644
+--- a/arch/arm64/include/asm/sysreg.h
++++ b/arch/arm64/include/asm/sysreg.h
+@@ -1040,7 +1040,7 @@
+ #define GCS_CAP(x)	((((unsigned long)x) & GCS_CAP_ADDR_MASK) | \
+ 					       GCS_CAP_VALID_TOKEN)
  /*
-  * IRS registers and tables structures
+- * Definitions for GICv5 instructions
++ * Definitions for GICv5 instructions for the Current Domain
   */
- #define GICV5_IRS_IDR0			0x0000
- #define GICV5_IRS_IDR1			0x0004
- #define GICV5_IRS_IDR2			0x0008
-+#define GICV5_IRS_IDR3			0x000c
-+#define GICV5_IRS_IDR4			0x0010
- #define GICV5_IRS_IDR5			0x0014
- #define GICV5_IRS_IDR6			0x0018
- #define GICV5_IRS_IDR7			0x001c
-+#define GICV5_IRS_IIDR			0x0040
-+#define GICV5_IRS_AIDR			0x0044
- #define GICV5_IRS_CR0			0x0080
- #define GICV5_IRS_CR1			0x0084
- #define GICV5_IRS_SYNCR			0x00c0
- #define GICV5_IRS_SYNC_STATUSR		0x00c4
-+#define GICV5_IRS_SPI_VMR		0x0100
- #define GICV5_IRS_SPI_SELR		0x0108
-+#define GICV5_IRS_SPI_DOMAINR		0x010c
-+#define GICV5_IRS_SPI_RESAMPLER		0x0110
- #define GICV5_IRS_SPI_CFGR		0x0114
- #define GICV5_IRS_SPI_STATUSR		0x0118
- #define GICV5_IRS_PE_SELR		0x0140
-@@ -86,11 +100,51 @@
- #define GICV5_IRS_IST_CFGR		0x0190
- #define GICV5_IRS_IST_STATUSR		0x0194
- #define GICV5_IRS_MAP_L2_ISTR		0x01c0
--
-+#define GICV5_IRS_VMT_BASER		0x0200
-+#define GICV5_IRS_VMT_CFGR		0x0210
-+#define GICV5_IRS_VMT_STATUSR		0x0214
-+#define GICV5_IRS_VPE_SELR		0x0240
-+#define GICV5_IRS_VPE_DBR		0x0248
-+#define GICV5_IRS_VPE_HPPIR		0x0250
-+#define GICV5_IRS_VPE_CR0		0x0258
-+#define GICV5_IRS_VPE_STATUSR		0x025c
-+#define GICV5_IRS_VM_DBR		0x0280
-+#define GICV5_IRS_VM_SELR		0x0288
-+#define GICV5_IRS_VM_STATUSR		0x028c
-+#define GICV5_IRS_VMAP_L2_VMTR		0x02c0
-+#define GICV5_IRS_VMAP_VMR		0x02c8
-+#define GICV5_IRS_VMAP_VISTR		0x02d0
-+#define GICV5_IRS_VMAP_L2_VISTR		0x02d8
-+#define GICV5_IRS_VMAP_VPER		0x02e0
-+#define GICV5_IRS_SAVE_VMR		0x0300
-+#define GICV5_IRS_SAVE_VM_STATUSR	0x0308
-+#define GICV5_IRS_MEC_IDR		0x0340
-+#define GICV5_IRS_MEC_MECID_R		0x0344
-+#define GICV5_IRS_MPAM_IDR		0x0380
-+#define GICV5_IRS_MPAM_PARTID_R		0x0384
-+#define GICV5_IRS_SWERR_STATUSR		0x03c0
-+#define GICV5_IRS_SWERR_SYNDROMER0	0x03c8
-+#define GICV5_IRS_SWERR_SYNDROMER1	0x03d0
-+
-+#define GICV5_IRS_IDR0_IRSID		GENMASK(31, 16)
-+#define GICV5_IRS_IDR0_SWE		BIT(12)
-+#define GICV5_IRS_IDR0_MPAM		BIT(11)
-+#define GICV5_IRS_IDR0_MEC		BIT(10)
-+#define GICV5_IRS_IDR0_SETLPI		BIT(9)
-+#define GICV5_IRS_IDR0_VIRT_ONE_N	BIT(8)
-+#define GICV5_IRS_IDR0_ONE_N		BIT(7)
- #define GICV5_IRS_IDR0_VIRT		BIT(6)
-+#define GICV5_IRS_IDR0_PA_RANGE		GENMASK(5, 2)
-+#define GICV5_IRS_IDR0_INT_DOM		GENMASK(1, 0)
-+
-+#define GICV5_IRS_IDR0_INT_DOM_SECURE		0b00
-+#define GICV5_IRS_IDR0_INT_DOM_NON_SECURE	0b01
-+#define GICV5_IRS_IDR0_INT_DOM_EL3		0b10
-+#define GICV5_IRS_IDR0_INT_DOM_REALM		0b11
-=20
- #define GICV5_IRS_IDR1_PRIORITY_BITS	GENMASK(22, 20)
- #define GICV5_IRS_IDR1_IAFFID_BITS	GENMASK(19, 16)
-+#define GICV5_IRS_IDR1_PE_CNT		GENMASK(15, 0)
-=20
- #define GICV5_IRS_IDR1_PRIORITY_BITS_1BITS	0b000
- #define GICV5_IRS_IDR1_PRIORITY_BITS_2BITS	0b001
-@@ -106,13 +160,30 @@
- #define GICV5_IRS_IDR2_LPI		BIT(5)
- #define GICV5_IRS_IDR2_ID_BITS		GENMASK(4, 0)
-=20
-+#define GICV5_IRS_IST_L2SZ_SUPPORT_4KB(r)	FIELD_GET(BIT(11), (r))
-+#define GICV5_IRS_IST_L2SZ_SUPPORT_16KB(r)	FIELD_GET(BIT(12), (r))
-+#define GICV5_IRS_IST_L2SZ_SUPPORT_64KB(r)	FIELD_GET(BIT(13), (r))
-+
-+#define GICV5_IRS_IDR3_VMT_LEVELS	BIT(10)
-+#define GICV5_IRS_IDR3_VM_ID_BITS	GENMASK(9, 5)
-+#define GICV5_IRS_IDR3_VMD_SZ		GENMASK(4, 1)
-+#define GICV5_IRS_IDR3_VMD		BIT(0)
-+
-+#define GICV5_IRS_IDR4_VPE_ID_BITS	GENMASK(9, 6)
-+#define GICV5_IRS_IDR4_VPED_SZ		GENMASK(5, 0)
-+
- #define GICV5_IRS_IDR5_SPI_RANGE	GENMASK(24, 0)
- #define GICV5_IRS_IDR6_SPI_IRS_RANGE	GENMASK(24, 0)
- #define GICV5_IRS_IDR7_SPI_BASE		GENMASK(23, 0)
-=20
--#define GICV5_IRS_IST_L2SZ_SUPPORT_4KB(r)	FIELD_GET(BIT(11), (r))
--#define GICV5_IRS_IST_L2SZ_SUPPORT_16KB(r)	FIELD_GET(BIT(12), (r))
--#define GICV5_IRS_IST_L2SZ_SUPPORT_64KB(r)	FIELD_GET(BIT(13), (r))
-+#define GICV5_IRS_IIDR_PRODUCT_ID	GENMASK(31, 20)
-+#define GICV5_IRS_IIDR_VARIANT		GENMASK(19, 16)
-+#define GICV5_IRS_IIDR_REVISION		GENMASK(15, 12)
-+#define GICV5_IRS_IIDR_IMPLEMENTER	GENMASK(11, 0)
-+
-+#define GICV5_IRS_AIDR_COMPONENT	GENMASK(11, 8)
-+#define GICV5_IRS_AIDR_ARCHMAJORREV	GENMASK(7, 4)
-+#define GICV5_IRS_AIDR_ARCHMINORREV	GENMASK(3, 0)
-=20
- #define GICV5_IRS_CR0_IDLE		BIT(1)
- #define GICV5_IRS_CR0_IRSEN		BIT(0)
-@@ -135,21 +206,39 @@
-=20
- #define GICV5_IRS_SYNC_STATUSR_IDLE	BIT(0)
-=20
--#define GICV5_IRS_SPI_STATUSR_V		BIT(1)
--#define GICV5_IRS_SPI_STATUSR_IDLE	BIT(0)
-+#define GICV5_IRS_SPI_VMR_VIRT		BIT_ULL(63)
-+#define GICV5_IRS_SPI_VMR_VM_ID		GENMASK_ULL(15, 0)
-=20
- #define GICV5_IRS_SPI_SELR_ID		GENMASK(23, 0)
-=20
-+#define GICV5_IRS_SPI_DOMAINR_DOMAIN	GENMASK(1, 0)
-+
-+#define GICV5_IRS_SPI_DOMAINR_DOMAIN_SECURE	0b00
-+#define GICV5_IRS_SPI_DOMAINR_DOMAIN_NON_SECURE	0b01
-+#define GICV5_IRS_SPI_DOMAINR_DOMAIN_EL3	0b10
-+#define GICV5_IRS_SPI_DOMAINR_DOMAIN_REALM	0b11
-+
-+#define GICV5_IRS_SPI_RESAMPLER_ID	GENMASK(23, 0)
-+
- #define GICV5_IRS_SPI_CFGR_TM		BIT(0)
-=20
-+#define GICV5_IRS_SPI_CFGR_TM_EDGE	0b0
-+#define GICV5_IRS_SPI_CFGR_TM_LEVEL	0b1
-+
-+#define GICV5_IRS_SPI_STATUSR_V		BIT(1)
-+#define GICV5_IRS_SPI_STATUSR_IDLE	BIT(0)
-+
- #define GICV5_IRS_PE_SELR_IAFFID	GENMASK(15, 0)
-=20
-+#define GICV5_IRS_PE_STATUSR_ONLINE	BIT(2)
- #define GICV5_IRS_PE_STATUSR_V		BIT(1)
- #define GICV5_IRS_PE_STATUSR_IDLE	BIT(0)
-=20
- #define GICV5_IRS_PE_CR0_DPS		BIT(0)
-=20
--#define GICV5_IRS_IST_STATUSR_IDLE	BIT(0)
-+#define GICV5_IRS_IST_BASER_ADDR_MASK	GENMASK_ULL(55, 6)
-+#define GICV5_IRS_IST_BASER_VALID	BIT_ULL(0)
-+#define GICV5_IRS_IST_BASER_ADDR_SHIFT	6ULL
-=20
- #define GICV5_IRS_IST_CFGR_STRUCTURE	BIT(16)
- #define GICV5_IRS_IST_CFGR_ISTSZ	GENMASK(8, 7)
-@@ -167,15 +256,111 @@
- #define GICV5_IRS_IST_CFGR_L2SZ_16K	0b01
- #define GICV5_IRS_IST_CFGR_L2SZ_64K	0b10
-=20
--#define GICV5_IRS_IST_BASER_ADDR_MASK	GENMASK_ULL(55, 6)
--#define GICV5_IRS_IST_BASER_VALID	BIT_ULL(0)
-+#define GICV5_IRS_IST_STATUSR_IDLE	BIT(0)
-=20
- #define GICV5_IRS_MAP_L2_ISTR_ID	GENMASK(23, 0)
-=20
-+#define GICV5_IRS_VMT_BASER_ADDR	GENMASK_ULL(55, 3)
-+#define GICV5_IRS_VMT_BASER_ADDR_SHIFT	3ULL
-+#define GICV5_IRS_VMT_BASER_VALID	BIT_ULL(0)
-+
-+#define GICV5_IRS_VMT_CFGR_STRUCTURE_TWO_LEVEL	0b1
-+#define GICV5_IRS_VMT_CFGR_STRUCTURE_LINEAR	0b0
-+
-+#define GICV5_IRS_VMT_CFGR_STRUCTURE	BIT(16)
-+#define GICV5_IRS_VMT_CFGR_VM_ID_BITS	GENMASK(4, 0)
-+
-+#define GICV5_IRS_VMT_STATUSR_IDLE	BIT(0)
-+
-+#define GICV5_IRS_VPE_SELR_S		BIT_ULL(63)
-+#define GICV5_IRS_VPE_SELR_VPE_ID	GENMASK_ULL(47, 32)
-+#define GICV5_IRS_VPE_SELR_VM_ID	GENMASK_ULL(15, 0)
-+
-+#define GICV5_IRS_VPE_DBR_DBV		BIT_ULL(63)
-+#define GICV5_IRS_VPE_DBR_REQ_DB	BIT_ULL(62)
-+#define GICV5_IRS_VPE_DBR_DBPM		GENMASK_ULL(36, 32)
-+#define GICV5_IRS_VPE_DBR_INTID	GENMASK_ULL(23, 0)
-+
-+#define GICV5_IRS_VPE_HPPIR_HPPIV	BIT_ULL(32)
-+#define GICV5_IRS_VPE_HPPIR_TYPE	GENMASK_ULL(31, 29)
-+#define GICV5_IRS_VPE_HPPIR_ID		GENMASK_ULL(23, 0)
-+
-+#define GICV5_IRS_VPE_CR0_DPS		BIT(0)
-+
-+#define GICV5_IRS_VPE_STATUSR_V		BIT(1)
-+#define GICV5_IRS_VPE_STATUSR_IDLE	BIT(0)
-+
-+#define GICV5_IRS_VM_DBR_EN		BIT_ULL(63)
-+#define GICV5_IRS_VM_DBR_VPE_ID		GENMASK_ULL(15, 0)
-+
-+#define GICV5_IRS_VM_SELR_VM_ID		GENMASK(15, 0)
-+
-+#define GICV5_IRS_VM_STATUSR_V		BIT(1)
-+#define GICV5_IRS_VM_STATUSR_IDLE	BIT(0)
-+
-+#define GICV5_IRS_VMAP_L2_VMTR_M	BIT_ULL(63)
-+#define GICV5_IRS_VMAP_L2_VMTR_VM_ID	GENMASK_ULL(15, 0)
-+
-+#define GICV5_IRS_VMAP_VMR_M		BIT_ULL(63)
-+#define GICV5_IRS_VMAP_VMR_U		BIT_ULL(62)
-+#define GICV5_IRS_VMAP_VMR_VM_ID	GENMASK_ULL(15, 0)
-+
-+#define GICV5_IRS_VMAP_VISTR_M		BIT_ULL(63)
-+#define GICV5_IRS_VMAP_VISTR_U		BIT_ULL(62)
-+#define GICV5_IRS_VMAP_VISTR_VM_ID	GENMASK_ULL(47, 32)
-+#define GICV5_IRS_VMAP_VISTR_TYPE	GENMASK_ULL(31, 29)
-+
-+#define GICV5_IRS_VMAP_L2_VISTR_M	BIT_ULL(63)
-+#define GICV5_IRS_VMAP_L2_VISTR_VM_ID	GENMASK_ULL(47, 32)
-+#define GICV5_IRS_VMAP_L2_VISTR_TYPE	GENMASK_ULL(31, 29)
-+#define GICV5_IRS_VMAP_L2_VISTR_ID	GENMASK_ULL(23, 0)
-+
-+#define GICV5_IRS_VMAP_VPER_M		BIT_ULL(63)
-+#define GICV5_IRS_VMAP_VPER_VM_ID	GENMASK_ULL(47, 32)
-+#define GICV5_IRS_VMAP_VPER_VPE_ID	GENMASK_ULL(15, 0)
-+
-+#define GICV5_IRS_SAVE_VMR_VM_ID	GENMASK_ULL(15, 0)
-+#define GICV5_IRS_SAVE_VMR_Q		BIT_ULL(62)
-+#define GICV5_IRS_SAVE_VMR_S		BIT_ULL(63)
-+
-+#define GICV5_IRS_SAVE_VM_STATUSR_IDLE	BIT(0)
-+#define GICV5_IRS_SAVE_VM_STATUSR_Q	BIT(1)
-+
-+#define GICV5_IRS_MEC_IDR_MECIDSIZE	GENMASK(3, 0)
-+
-+#define GICV5_IRS_MEC_MECID_R_MECID	GENMASK(15, 0)
-+
-+#define GICV5_IRS_MPAM_IDR_HAS_MPAM_SP	BIT(24)
-+#define GICV5_IRS_MPAM_IDR_PMG_MAX	GENMASK(23, 16)
-+#define GICV5_IRS_MPAM_IDR_PARTID_MAX	GENMASK(15, 0)
-+
-+#define GICV5_IRS_MPAM_PARTID_R_IDLE	BIT(31)
-+#define GICV5_IRS_MPAM_PARTID_R_MPAM_SP	GENMASK(25, 24)
-+#define GICV5_IRS_MPAM_PARTID_R_PMG	GENMASK(23, 16)
-+#define GICV5_IRS_MPAM_PARTID_R_PARTID	GENMASK(15, 0)
-+
-+#define GICV5_IRS_SWERR_STATUSR_IMP_EC	GENMASK_ULL(31, 24)
-+#define GICV5_IRS_SWERR_STATUSR_EC	GENMASK_ULL(23, 16)
-+#define GICV5_IRS_SWERR_STATUSR_OF	BIT_ULL(3)
-+#define GICV5_IRS_SWERR_STATUSR_S1V	BIT_ULL(2)
-+#define GICV5_IRS_SWERR_STATUSR_S0V	BIT_ULL(1)
-+#define GICV5_IRS_SWERR_STATUSR_V	BIT_ULL(0)
-+
-+#define GICV5_IRS_SWERR_SYNDROMER0_VIRTUAL	BIT_ULL(63)
-+#define GICV5_IRS_SWERR_SYNDROMER0_TYPE		GENMASK_ULL(62, 60)
-+#define GICV5_IRS_SWERR_SYNDROMER0_ID		GENMASK_ULL(55, 32)
-+#define GICV5_IRS_SWERR_SYNDROMER0_VM_ID	GENMASK_ULL(15, 0)
-+
-+#define GICV5_IRS_SWERR_SYNDROMER1_ADDR	GENMASK_ULL(55, 3)
-+
- #define GICV5_ISTL1E_VALID		BIT_ULL(0)
-+#define GICV5_IRS_ISTL1E_SIZE		8UL
-=20
- #define GICV5_ISTL1E_L2_ADDR_MASK	GENMASK_ULL(55, 12)
-=20
-+#define GICV5_IRS_SETLPIR		0x0000
-+#define GICV5_IRS_SETLPIR_ID		GENMASK(23, 0)
-+
- /*
-  * ITS registers and tables structures
-  */
-@@ -297,6 +482,42 @@
- #define GICV5_GSI_IWB_FRAME_ID			GENMASK(28, 16)
- #define GICV5_GSI_IWB_WIRE			GENMASK(15, 0)
+ #define GICV5_OP_GIC_CDAFF		sys_insn(1, 0, 12, 1, 3)
+ #define GICV5_OP_GIC_CDDI		sys_insn(1, 0, 12, 2, 0)
+@@ -1105,6 +1105,17 @@
+ #define GICV5_GICR_CDNMIA_TYPE_MASK	GENMASK_ULL(31, 29)
+ #define GICV5_GICR_CDNMIA_ID_MASK	GENMASK_ULL(23, 0)
 =20
 +/*
-+ * CoreSight identification registers - ordered by increasing offset.
++ * Definitions for GICv5 instructions for the Virtual Domain
 + */
-+#define GICV5_CORESIGHT_DEVARCH		0xffbc
-+#define GICV5_CORESIGHT_PIDR4		0xffd0
-+#define GICV5_CORESIGHT_PIDR5		0xffd4
-+#define GICV5_CORESIGHT_PIDR6		0xffd8
-+#define GICV5_CORESIGHT_PIDR7		0xffdc
-+#define GICV5_CORESIGHT_PIDR0		0xffe0
-+#define GICV5_CORESIGHT_PIDR1		0xffe4
-+#define GICV5_CORESIGHT_PIDR2		0xffe8
-+#define GICV5_CORESIGHT_PIDR3		0xffec
-+#define GICV5_CORESIGHT_CIDR0		0xfff0
-+#define GICV5_CORESIGHT_CIDR1		0xfff4
-+#define GICV5_CORESIGHT_CIDR2		0xfff8
-+#define GICV5_CORESIGHT_CIDR3		0xfffc
++#define GICV5_OP_GIC_VDPEND		sys_insn(1, 4, 12, 1, 4)
 +
-+#define GICV5_CORESIGHT_DEVARCH_VAL			\
-+	(FIELD_PREP(GENMASK(31, 21), 0x23b) |		\
-+	 BIT(20) |					\
-+	 0x5a19)
++/* Shift and mask definitions for GIC VDPEND */
++#define GICV5_GIC_VDPEND_PENDING_MASK	BIT_ULL(63)
++#define GICV5_GIC_VDPEND_VM_MASK	GENMASK_ULL(47, 32)
++#define GICV5_GIC_VDPEND_TYPE_MASK	GENMASK_ULL(31, 29)
++#define GICV5_GIC_VDPEND_ID_MASK	GENMASK_ULL(23, 0)
 +
-+#define GICV5_CORESIGHT_PIDR4_JEP106_CONT	0x04
-+#define GICV5_CORESIGHT_PIDR5_RES0		0x00
-+#define GICV5_CORESIGHT_PIDR6_RES0		0x00
-+#define GICV5_CORESIGHT_PIDR7_RES0		0x00
-+#define GICV5_CORESIGHT_PIDR0_PART_0		0x4b
-+#define GICV5_CORESIGHT_PIDR1_DES_0_PART_1	0xb0
-+#define GICV5_CORESIGHT_PIDR2_DES_1		0x0b
-+#define GICV5_CORESIGHT_PIDR3_REVAND_CMOD	0x00
-+
-+#define GICV5_CORESIGHT_CIDR0_VAL		0x0d
-+#define GICV5_CORESIGHT_CIDR1_VAL		0xf0
-+#define GICV5_CORESIGHT_CIDR2_VAL		0x05
-+#define GICV5_CORESIGHT_CIDR3_VAL		0xb1
-+
- /*
-  * Global Data structures and functions
-  */
+ #define gicr_insn(insn)			read_sysreg_s(GICV5_OP_GICR_##insn)
+ #define gic_insn(v, insn)		write_sysreg_s(v, GICV5_OP_GIC_##insn)
+=20
 --=20
 2.34.1
