@@ -1,82 +1,90 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from esa1.hc1455-7.c3s2.iphmx.com (esa1.hc1455-7.c3s2.iphmx.com [207.54.90.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837C229B781;
-	Fri,  4 Sep 2026 03:01:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDB8390214
+	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 03:09:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.54.90.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788490862; cv=none; b=qV6aSNxz+Et1nNc5hhmei/9BPQlKbsC1sAWIK7hIkWXopFZlJUzKYPQcvZKRtsZll790ZtFvRHP+gyc6+AUtoGn6ctRY+rFa7hegRdIOI0u+9SJNnjFI8Q/M09BqFByOj7aXeD+BZdZeY6s7REeoqede8wFvv5mk4ERfvkwwUjE=
+	t=1788491389; cv=none; b=ibJe4aDO4KTCFI8rIaoBK5tsF+hRMbQ/mUKl2qYHi534UQS39hyleJJGTCDQtNQKh2w0PXqfClA6jEKDOXec0rEZS7ojXuV3mRNx4W/9kYPyzR+WY/2Scy9aFWePHpE0KoROkOAqJIWCQYELoD58q4VFKhFKy60Edd4eMxpbJVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788490862; c=relaxed/simple;
-	bh=Y4wQ8Wn+gn9c4agb/hKRqOV+AwGG0fXfgBPp4Bk8tjY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jDy82zIGfBUbiez7boYFkBXD57DKOzACH7Bj9Lh281As9BxWZuwTNEgdAhGGoJeDgxUbuwQdUGmamBwC+CYx3Bh8XA/FcxnYyHqoNO00g8M7eaebsevOtAPgEHl/lXx7ZBEXIkuglJLAUsQdfPCMHoqNyewet2Y2rfvdj2xryig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EJzp/zKI; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1788491389; c=relaxed/simple;
+	bh=9Y4wgbNgAjv+eE+KIA/oCpZuJVblXsW/G+HiW1/93os=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sx9UtbOygy56OwFzj3OzvOaI9n1wF67phpKPq5tD0tzeKS6pmtPd0R1Ih8+eESRr6SdkQRKUjxqlxS+Gsdlaac99cGZ1JKUyHyqlTnbJQaZPhAeu7a7OjXZR1FighPkNzMOspUqPwHLgZOulLijamqksB0cICw0g4u0jfRWPMs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=dGC+Gm3q; arc=none smtp.client-ip=207.54.90.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EJzp/zKI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788490861; x=1820026861;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Y4wQ8Wn+gn9c4agb/hKRqOV+AwGG0fXfgBPp4Bk8tjY=;
-  b=EJzp/zKIccVoHadRWq2dw0tXhemTmpSPRMfjhmK05bIcSt3euSqwlxqI
-   UN2YJ3ISSr5rJHX5Gl7kS7PYeuVKDIUMiiwHUOdS5DsjIxDHk9bWN546e
-   EoXevpg1nVx+kEjw/8+Xi6VTvAVUpi01Yyh0190tbymESkO7yuNLajQ+v
-   wxjGPPqz/JFwEPCA5zI1DSmSy/Z47NBbRCyvPaaOepwe/eWaO/H2HUECV
-   2LBc9UlV4kIASKuPP9LZdIgX4xQSqCiXGQ994y6cJRPxIZScoZQtYhvSx
-   Tmd8Fz/E/LFEYJSHIoGyNA8pUU4ooRK+IhRKCWg0HpHKusNOZAhVhWtwy
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="dGC+Gm3q"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1788491392; x=1820027392;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9Y4wgbNgAjv+eE+KIA/oCpZuJVblXsW/G+HiW1/93os=;
+  b=dGC+Gm3qANMxT9S7gLsSU2jE6HOng5SdpuHb5lH41xYz0tIId07a1FSW
+   Zxm0qTy4ok1f+SrrTLrjnsz1/RrnDrObVqqCKVm/TCnJ+IaFWRSOp62VZ
+   5zjMzJo1aw6A1o7b2cnhX3N2ntvBBv6K5S8rfmTpWuqdH+o1llQYst6SF
+   MvdQzLd6iYUYZf8H2K6ESlAmDJZ/SliEjTEwcb3L6VfN9MSuGVMMEGRzs
+   W1yGANmmecOf+nom3LBdF7n7BazzmKydRKXC3NvNdRTH50mI4gL7JvpgY
+   TYc+wJWX79YDttzLc3E3OIpO+N+JPj52uBUVNa8dWSsf9LuIMtt5IAXG1
    Q==;
-X-CSE-ConnectionGUID: +JahrDrkScaBHhZhpI0wEw==
-X-CSE-MsgGUID: kRUcZDqeSoel6qP9LR6rSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="99318816"
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="99318816"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 20:01:00 -0700
-X-CSE-ConnectionGUID: PV1xzFIfRta1JZjjEWHXKA==
-X-CSE-MsgGUID: z0nDE6DmQQOT97SEBpkXTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="266231293"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 20:00:57 -0700
-Message-ID: <38d13237-71e8-4b82-8f21-7317fd27f50c@linux.intel.com>
-Date: Fri, 4 Sep 2026 11:00:55 +0800
+X-CSE-ConnectionGUID: y+8MXciUSba8muPBVeh4+g==
+X-CSE-MsgGUID: UlHP4rZqT8WpulXOnwcs3A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="253827394"
+X-IronPort-AV: E=Sophos;i="6.25,260,1779116400"; 
+   d="scan'208";a="253827394"
+Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
+  by esa1.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 12:09:44 +0900
+Received: from az2uksmgm1.o.css.fujitsu.com (unknown [10.151.22.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id 4A1CD1002B88
+	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 03:09:40 +0000 (UTC)
+Received: from az2uksmom4.o.css.fujitsu.com (unknown [10.151.22.204])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id F4166896E2A
+	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 03:09:39 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.9.19.125])
+	by az2uksmom4.o.css.fujitsu.com (Postfix) with SMTP id 1C2954045ED;
+	Fri,  4 Sep 2026 03:09:33 +0000 (UTC)
+Date: Fri, 4 Sep 2026 12:09:32 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: berrange@redhat.com, kchamart@redhat.com, 
+	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org, mst@redhat.com, cohuck@redhat.com, 
+	pbonzini@redhat.com, eblake@redhat.com, armbru@redhat.com, 
+	lorenzo.pieralisi@linaro.org, gshan@redhat.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
+	kvm@vger.kernel.org
+Subject: Re: [RFC v4 07/24] target/arm/kvm: Create scratch Realm VM when
+ requested
+Message-ID: <apo185JSe61bK3zm@FCCLS0092175.localdomain>
+References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
+ <20260903193611.1058589-8-mathieu.poirier@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 8/8] KVM: VMX: Rename common exit info getters prefixes
- from "vmx" to "vt"
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Xiaoyao Li <xiaoyao.li@intel.com>,
- Kai Huang <kai.huang@intel.com>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, Yan Zhao <yan.y.zhao@intel.com>
-References: <20260904010353.3175819-1-seanjc@google.com>
- <20260904010353.3175819-9-seanjc@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260904010353.3175819-9-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260903193611.1058589-8-mathieu.poirier@linaro.org>
 
-On 9/4/2026 9:03 AM, Sean Christopherson wrote:
-> Rename all common prefixes for the APIs that get exit information common to
-> VMX and TDX from "vmx" to "vt" to capture that they are used for both VMX
-> and TDX vCPUs.
+On 09/03 13:35, Mathieu Poirier wrote:
+> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > 
-> No functional change intended.
-> 
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Reviewed-by: Kai Huang <kai.huang@intel.com>
-> Tested-by: Kai Huang <kai.huang@intel.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> When a Realm is requested, create a scratch Realm VM by setting bit 8
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+nit:
+KVM_VM_TYPE_ARM_REALM is no longer defined as 1 << 8, so shouldn't this
+be updated as well?
+
+> of the argument given to the KVM_CREATE_VM ioctl().  Bit 7-0 are reserved
+> for the guest PA size.
+> 
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
