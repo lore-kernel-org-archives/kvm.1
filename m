@@ -1,199 +1,156 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013016.outbound.protection.outlook.com [40.93.201.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBB94F0550
-	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 15:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A8B258EE9;
+	Fri,  4 Sep 2026 16:00:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788536253; cv=pass; b=Rnz4doMwQj5iDbELMgq3fa3HaaEnc7RATEoNLXokqoM6Vp4q3Nb1D+3MdP/D4qRqlJ+W/zhujdaw9q05lPHzmVK9uXnlQxWKqcEOFVFUm5SPfKhcawvi67wTQUcbOpRTz7EJFb8nfQES2ORN1Ci3qrDwxk10EB4JQ1frzSf5u/8=
+	t=1788537619; cv=fail; b=MTtP2sEuCBtQEaLeXS333Oxk9d7+341hMQrdaThc5knlRcbUW+INWh5905+LVzJFmViqRu8LF2feFHDz7wCS/Cwq06V2SnTozds0eocXkLfVmapMs+s0UbjA14cmzb662AJwinAtnNRf8hh1EJzmcj+euofv+rMldOLH/mJjuI8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788536253; c=relaxed/simple;
-	bh=sCBkffF/x+6ivWSUBWyD8pLivoWQ//A01/hYzFbxjrI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bVyLJ84up+ip2sqVInt9SC/+p53d4vrJ5RLHzj7MrKk9e8B6ou9WbMF+lIICVCmAzMrcvFSI5U6XL5lbloQhUfZm2QZDUV2vb5v9MgkwiW/ma5h/a0u9RdTCF2RA/OETn4vpiUwTEqLjb1hGB9LidqLF0drftAWHU6jcoxQ6pac=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O6ztyx5H; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KQ2d/Qrs; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788537619; c=relaxed/simple;
+	bh=vOiSTDdLGAyJPxgIBG/PZtee9QAtl0XR/rDovedb0pw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=hDgMDfZQVVz9QBAbjXsAQb0eLZBfcv/xfH6A0c9tcFbFG++oRCW3G1u/00mdIjNN6ZavSO9l0sXik9eQE4I7Ppos4szgiafyHS5ujqI/AOn472LanXWIseTyXbG96zNkJ+Rp9yPm3lz36F2SNVDYAlGdjuZqbZV5+iOxNQ5DqQg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gvWW3BhI; arc=fail smtp.client-ip=40.93.201.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O6ztyx5H";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KQ2d/Qrs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788536251;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rrK07pcEfzHDfc8s9dAeUAxX5iBfU+4JJI3XH4xHwd4=;
-	b=O6ztyx5HTPlGBvNEiQ+PGyYnXbg+D8RJgzUuc1Aitw0+MEtMFyTXg968OBcuIMyjBSkmRP
-	T8+xMh+scCWtfKAIKNkqxjCfjJOQjG9LpOEPeds7jxq7UCI0X0qBXswJqloJYuORmdb5Gz
-	U2d6QXowb2Fn0Z86K1AJDS7WiPStk2w=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-355-4jLJbLTdPLWLylcV4qo0nQ-1; Fri, 04 Sep 2026 11:37:29 -0400
-X-MC-Unique: 4jLJbLTdPLWLylcV4qo0nQ-1
-X-Mimecast-MFC-AGG-ID: 4jLJbLTdPLWLylcV4qo0nQ_1788536249
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-495569acf8dso7593385e9.1
-        for <kvm@vger.kernel.org>; Fri, 04 Sep 2026 08:37:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788536248; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PBLBsx6K5/bbM2kdgBDzO6aeznqHU2IIL2WQ4CFNDO95qvVL1+Ljj2iAomCb6odms6
-         WQaN8SCUvxtCSCyk/vWe9nMbXM3mX2jU7XnYhoFMnhwKpO3ITYGhxiellqDZWV8U2xNC
-         xjDe8hz95/dV9SbMgO5aVNXYNNpXRlPhpThy6hySfAPaWSgfkV/hATSmvCO0rjg4Rlxx
-         dFXEZeArQmnFguFe4+AkK7I+rzx67fIOHjFUuZXbaygyT2XXUUqONL/1wyem7EV1fXv8
-         Ru55nvfGu3xxQ0BJmS5DQ2nZs2SOLz/9HbERxgU7fgtsPazy+svdj3iBDxk/52Gb+vyd
-         Xm/Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=rrK07pcEfzHDfc8s9dAeUAxX5iBfU+4JJI3XH4xHwd4=;
-        fh=3sk59ukVivFBWCnKHotH8vn2Cqv5XsUG2G6NvdGlfG4=;
-        b=Xhp6yuQnSvHZcSnfi6vEc85XaaxFxo8S/LwEJUVyGD8oRkS1SAFVdpGyOzQOoxUM1S
-         xr85+tw6v2bSMyffwWTREt5nifrvVqdneWbhQjqsPDBdTRCx2NOQ6yzzTTlobA+lxymY
-         9Hewj5TIVN50VM5dDyLwKlP9B+9XgnmV6eXetuwJOdDKg4kl+6Ig1OocvfOFBxNDkl0Q
-         gKfHVKRUhyvPocEWInCNFnXuF3kriGs29Prn8q8TVzA2ONjdcRmtT3rK+aqcYD3GF8TJ
-         aGXjrXBrmswMf3nwsEvq+KHAYi2dd8yeQGulWPwkXtBlF3jCrQsIO78r3aSUdcDiM7Wf
-         hUAg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788536248; x=1789141048; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=rrK07pcEfzHDfc8s9dAeUAxX5iBfU+4JJI3XH4xHwd4=;
-        b=KQ2d/QrsoL1mKs3o9CNAIkCZwP7sOlNuKP11sfuv2c/zzIj3Xx99RhYNmRtnh/KV4N
-         Yxoj688aFpWtuvq+DxZ9nfo3se09bdmW77HhLnyKoUqDAoUJLW/A/N75esf4goPvxz0B
-         3Mkqe2OqoubvG9mZ60QpGLPLG1WEjez8A49LefC3mYcS54SK1d6YCM1wg1mxyowbbalS
-         LMw30Hne/v5wQBEdADkn7odaJvyIU7UHWEG0czDW81vlFxfVd2E4z4b3uh/KdZ4bNEbq
-         TZ6UZjg1UT1d3bISfdYu1cRVB6eNhqnawxPFqE95cZIaj4RqKbk3YOChr97KiSs7G5vz
-         ndiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788536248; x=1789141048;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rrK07pcEfzHDfc8s9dAeUAxX5iBfU+4JJI3XH4xHwd4=;
-        b=HnqutEdGNYMa4sBDgc58KCthUrM8KrMBONMmeiB/BjprF4BvsUoxq3ikEjHkXknTrf
-         grupWzcLfpiToo9tE5U1HsjlB74TNu4gE8PI8w6J9fdQRoaRqaLq60OUC1yhogGSEqbp
-         8VSXwfEEZ/VSzSEO+xXf7YEwJh8Itly+64lQJ+XVqEP1dQVL4+UiOIFk425rg/j6BOMo
-         fmmDTJqAqtd9s0XLSzevjnhda+2zHk7hw6i3Twi3b3gbFUlukYzb4KBLWSDeDQuSkeiH
-         t8mQgQ0yzkrkLpA3gZedFOCfojF6Xdg85vjScz0gWION+VJxEl6hm5rRnIaPxoE6xAgF
-         Ff/g==
-X-Forwarded-Encrypted: i=1; AKwUvBzWtdstpMCdR1xA2DXF6Fy5HA/yT3R0glIk0WlluYbiJjoMCL1mK5nOclOKubFfsz4YC9I=@vger.kernel.org
-X-Gm-Message-State: AFuF++nQed6GX+L/9kfGsJzZMXybs8PIjhnnOlfEY+wRr44MDKsdGFIr
-	9Fo4PqRXxYvZ+ciWEhktkLvjgG9JquWbFHvU3Pu6AuKFlUzBnSom67mfnz9PWWzGH/tohGHQLng
-	Vx6fhjITy13onmItOswHXpN+zel2m6WLZ9/fmAqzgfkzoa/7ZhRB4LcSLV/UXFx7UmxmeE4XRGD
-	WaoqdBlHU8of4Qvnige/5BQfzeS+oJ
-X-Gm-Gg: AYBFou3pXW+ovTu/uSYqA9xJudeX2xfMmWTaXj9lVI0z/CNS282wmGXhqE2XqmmJbO+
-	bp3hElBctl+zD5AgPzNfUolQfHNYWqsrE0VOa+5ywTgMCe3dylWHIXucG6dK/tJCYWqU+SPRsxV
-	zA1NYevmYoktDx2354XJrESP/cdXIYuO0HPJPOtkS2qYn5ZUWUs22OsO/Fs8G6Ht9Q0VUU0M1vX
-	4XpISBwooYWmlnQiADjfw7rL98Nyrxv7cB4c0uKaMhBiEC4Zs8Afrz1Tcd5lQ==
-X-Received: by 2002:a05:600c:468b:b0:49b:9105:cdaf with SMTP id 5b1f17b1804b1-49cf8214eaemr97285975e9.8.1788536248623;
-        Fri, 04 Sep 2026 08:37:28 -0700 (PDT)
-X-Received: by 2002:a05:600c:468b:b0:49b:9105:cdaf with SMTP id
- 5b1f17b1804b1-49cf8214eaemr97285005e9.8.1788536248224; Fri, 04 Sep 2026
- 08:37:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gvWW3BhI"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=P7zR96oJc1JwWXQbSclXfqcTceTTZa6mxDPVM+CZdkIqJ13Z7PGcWil7nXemsbieCmqGW35GU0U4/RHyikSYRUTLLlkqHv0U7DE19C/iC2o+NQtim/YbcKZG2tw5T3MnH6wIIBGsV7iIu4trg01H7sS1aIkaTi27jMpaGhPk6+Axj/vwjJz62YwAquQHKVb2ryWnCXpSsrrTqoHsAKzLTvu87sXMGonycNS/ctgpOnfQLGhSiktKko6AxU4q7Eg3ubgkblqVySQgfBpkBbH3OAM03Fupv2Osup1ip5upZDCjZIxfMfAC5tmKSv8mgQvAXJTSvfIa8mkeqrpanCoXKA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WisfPxbQJQ7TDJJHqC8qQmgkAFnmwETL6QTYfMAUrN4=;
+ b=h+xMXZIpNxYSXA6TgDhUO7xEjthNu6WUYFduwHv0E9aTF8PgZ07F+dcUjoe8Iimx/x8J8mhtGp+G00XePpKdEmNvkO4z2rKggI/1ImWhQLePg37tK2xlbotmfCY2D1G4zo58/Vd2J/xhaboraW4II0J9GMcxWQ4IpL2J4HBSdMmlxfO1PlUPsUPI+gsEb8hHPci4sklfLNJK/kH6AzYwRM47KgD6yqiA3pentgWZobrd2PhzMcQvtcoYGAbpdBvDS3hhIsUVsxb19+ugoAlghz/5OFAl/j7OdS7t6NXg7Uym11T//PuQMCYlkyiorJPsc6NJcStibEGWHo4RmTI0VA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WisfPxbQJQ7TDJJHqC8qQmgkAFnmwETL6QTYfMAUrN4=;
+ b=gvWW3BhICwoQ4/ReEXGlyVNT1C2iCeTmnDYNdlt2kFQe/4/0izgW4ksKo8cxOpE3NzjtFy6xP5K2KN4M0hlQ667WuWhgcI3BWkJ/EgQsHx597W74jrlQzKDJB8Evgy6S5Ojo/hzsK5oT4TbH1fmlG+cAf0uL6OZ0CrVtApWDiyFkQ797C5hLry8WkAB71ReXsDu9IOXET96E0ZiPV1zR/q7oeAAtTkfRFe0VhYTt+Wj4Tr/nBCh4d6pcP6urIOdeXNjihwCkqKyE18PFkpikwYPhaflcB90SNlFzrqoj9VtR0INuzHQaisbtYhtoW5nbm2t7IYhXl5k03dh3rZfraA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by PH8PR12MB6772.namprd12.prod.outlook.com (2603:10b6:510:1c7::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Fri, 4 Sep
+ 2026 16:00:11 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%4]) with mapi id 15.21.0360.008; Fri, 4 Sep 2026
+ 16:00:11 +0000
+Date: Fri, 4 Sep 2026 13:00:09 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Logan Odell <loganodell@google.com>
+Cc: arnd@arndb.de, pasha.tatashin@soleen.com, rppt@kernel.org,
+	pratyush@kernel.org, graf@amazon.com, akpm@linux-foundation.org,
+	pbonzini@redhat.com, maz@kernel.org, oupton@kernel.org,
+	seanjc@google.com, bhelgaas@google.com, alex@shazbot.org,
+	kevin.tian@intel.com, dwmw2@infradead.org, baolu.lu@linux.intel.com,
+	joro@8bytes.org, will@kernel.org, robin.murphy@arm.com,
+	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org, linux-mm@kvack.org, kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-pci@vger.kernel.org, iommu@lists.linux.dev
+Subject: Re: [RFC PATCH 0/3] liveupdate: Move to feature flags for LUO and
+ memfd ABI compatibility
+Message-ID: <20260904160009.GV4157646@nvidia.com>
+References: <20260903023452.721732-1-loganodell@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260903023452.721732-1-loganodell@google.com>
+X-ClientProxiedBy: YT3PR01CA0126.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:83::22) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260831213632.81023-1-dwmw2@infradead.org>
-In-Reply-To: <20260831213632.81023-1-dwmw2@infradead.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 4 Sep 2026 17:37:08 +0200
-X-Gm-Features: AcwNN1XbrXQRdBqaPVwlG8lJe2LjPmHbNMIXKEiTmO74fasedEPvKI1EXe7LwZE
-Message-ID: <CABgObfYgYrjf2xbvyvLVmX0iJgUjoZ4N84aNiBgW9_oshaSh5A@mail.gmail.com>
-Subject: Re: [PATCH v3 0/13] KVM: x86/xen: Bug fixes and long_mode cleanup
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: seanjc@google.com, paul@xen.org, joao.m.martins@oracle.com, 
-	boris.ostrovsky@oracle.com, ankur.a.arora@oracle.com, tglx@kernel.org, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
-	x86@kernel.org, syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com, 
-	syzkaller-bugs@googlegroups.com, suryasaimadhu369@gmail.com, lkp@intel.com, 
-	nicoyip.dev@gmail.com, frn1furkan10@gmail.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imv4bel@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|PH8PR12MB6772:EE_
+X-MS-Office365-Filtering-Correlation-Id: cfa9b40b-c6ce-401b-5f7c-08df0a9d999a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|11063799006|56012099006|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	c1F5s7/JCC6wWnKfOceMxpvxGfhciNBegPTQUfHiHL6vdTVr90mbs40Jt8X7/cTHsglFxz/pP/BQEKTV2d/QF/LCOjvspiPsYoh5PP7m8QcfmeNReKq+FLnbDU86YqC2/zqm0cryA9ITOrjfuVpr7k8HHbxEagx90XP/NbhO543i9Eaaf7o/O0CyTdVmYTMXZ5OqlS8hUjoGW9C9QkTYGnymAgZKR1KS62mbRzIRwPDPPnRTFHI5J9RVqDb9CIlpFuPZnEvLsC79xgAjgKU8+ITNb1zttBZWg25xmyXkeEKPBOZQHqJ+Ukm8XBnf5PLD/2PYeXKiw70fvVscdkXWP51e81kt8gh8cR8ADpuk+xSaL4+2kSEaiYLw/TT0GpDMgkhgbZ+hFdJDow8J06PtlY7O0ovGEZg7FQugPhDukqC7Kp2ZlJ0VuHsExxGxiJAlE2EnQAqykUiGg65Edvts7HO7C6lJZk1UUcKLTrN3t0PR8HeUqrMp0FVtf9VrOU8cSKROYzuGKsSUjRDTiVTA2QFj++QJZRNTmFfwlJ2o3PH0/JYySXxG7F4LTtWtozZstQqDmE4S6rdkBE6VwrXtjZ8aMxvUDBplspdLg/GcPx3mFCcFC4scHI6N9S5Gl5qN27j/HgqCkyaKZDyJvluPRjVHlocBbRJMR52+HJas1Zo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(11063799006)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?xV5sl24cOng/+JXfKVV+LpvyukxPrPvydPS/6gUXIv8OPVUoFbSED6nAKr6U?=
+ =?us-ascii?Q?ig3NhsIPud/LTHR44SHYWQ5ezyu99GAzvgHT+5gItsXZ4n4P5hDrhhhSJjzw?=
+ =?us-ascii?Q?F5RM8icwxbLQequ1f3QXcU1t6OzwjfTBFkAGnUW31B76c7+rZ4BEjcqVJcCh?=
+ =?us-ascii?Q?MW+IjMKVBIdxC7J1XSccQEILKba4a51OhK6tFQqzJrwTR//HnvlBn42jkAxN?=
+ =?us-ascii?Q?se5C1kljO1CS/ZYW4SM3Z5xXXoDAJw2iwm0qrBFf/fuxRrPZ/lA7P5HFCWSs?=
+ =?us-ascii?Q?9kLaBl+Cz+KJT0WACsw/bmWlnome3lDytqxkXtekzoRY6SCb/wGxRqGByBGw?=
+ =?us-ascii?Q?cTOnLa1O30aJS6yCxkM4tVnOhi2r1Ks/p593fjRMUedZoiqesmKs0PuhgXY/?=
+ =?us-ascii?Q?TlNQ5ST9ohavmeStTg0C5P8gomlqmEGmbTx8GrR3pXt/YyCdtMNKjgsB3U2a?=
+ =?us-ascii?Q?Y/cySKJqYmPgx1VItcpP3WxnRv3rnyZgqiFHV9jtb/aaRM+cXFeJ2m/Iicb9?=
+ =?us-ascii?Q?eSeQHjcgf8Ho6q3zbh64P1dJMKMn8velA5hwJcsjSVtpKfossGjy6tQuH7Lp?=
+ =?us-ascii?Q?e2RPBeFOHzbkUjYEGRjr6g5n+KEMRLdc5VKr0TgejbNsfbZBkPhRzfTNASq9?=
+ =?us-ascii?Q?ZiLWAOutMFSXW/gIJXfxL8XaGQZ3eDhf9zImq2cUj2/4vM/yUfC7DK4uOASw?=
+ =?us-ascii?Q?UBovpc9VHielk5AJfJbvEJS0zLWGhi2g8Opvr3TUeVLgRJOIWHny72a8Vgfh?=
+ =?us-ascii?Q?VPDFJHvBXcYLYg92JlPKFWcTAqzoDg+o6f9o2OpyI1TZxegrvWYzjhsUuueL?=
+ =?us-ascii?Q?oYNJNup/qOt6iN1wvV3e+zZEHHykYKncqUflCs1YIfz1MS/ilkI+SbZ+iZna?=
+ =?us-ascii?Q?Ubh860vrgetZeYadBmidAG1oQ71QOQS5kdopI09ira3HzCk9We+QSHdX/nSm?=
+ =?us-ascii?Q?Uul62+VSfo4w8K3R+lj1oUYUvtn6GiKzGV9gvouWeVszdlQrJAO4BfnWWg1D?=
+ =?us-ascii?Q?C1wRBuzpAlrvMESJ39YwxXCUawHaHf2e/6Hql5Xh3eoMtlcR1sJRu6EH6Fhy?=
+ =?us-ascii?Q?HcYnOAI3zXHd3MiFZJsoePbtGGxrusaJd4S49TQKAEMGahwiy812+n+DfrHx?=
+ =?us-ascii?Q?XWevVpwJzTwcFDX1SE401Bcu4faYOgBZ73RtEzledDBSQ6KX8hVma02Wlo41?=
+ =?us-ascii?Q?C/x+v6qlKtOXXQ12pFspnTXiaN8uLX4w1yfD8KEm9yRkzstgp1TQbLprv/pi?=
+ =?us-ascii?Q?exScVHGVpT6/Qs1f9EsLKL3srJvW6qgSnzWJCshVHONBz4206BpmNGQV8sBb?=
+ =?us-ascii?Q?JZR01urlOqkuYrZdaiZYXXNXOpm3ey/xo5u92sY4q6eOh+psBzE3USq4+yU7?=
+ =?us-ascii?Q?wtBq/av3ZsecegOOAXwvop40IWxNfBV5S1E8W+gS6MENOvwcreVlsDndmPuu?=
+ =?us-ascii?Q?f7gRRoNA3lpA1qvVQk/pQUDimVo78OJVozp8gwY3/KwKALfH0vlcbSt4S1fI?=
+ =?us-ascii?Q?8b/GYswBpPg1b6UxEXFKd36fHveuP4/xLRHIsVvSwFzdu9qDEqyDpCScsaDP?=
+ =?us-ascii?Q?aTTNmYE9tyXQkzLgjVheELag0z+tyfHmzkwUIZV1hYljypL1MvKvv4o0PsAJ?=
+ =?us-ascii?Q?lWb7nSzA+12aiBGKlcBUDLl1iOhxP/eU96hmpK+6BuUgztKNUYmJ9J9u0f57?=
+ =?us-ascii?Q?xpbQfmtrnx4ZsHJKvTAiDs/ocsQ3wd8gd54iwLC5tw4EedA5?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cfa9b40b-c6ce-401b-5f7c-08df0a9d999a
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2026 16:00:11.5213
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rWdojgZNSskNuyGNN+ISFbG6xbEC5yT8H16EoHvt4xWi+RHq5Wshm8JQxguaRiwy
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6772
 
-On Mon, Aug 31, 2026 at 11:36=E2=80=AFPM David Woodhouse <dwmw2@infradead.o=
-rg> wrote:
->
-> Clean up the handling of vcpu->arch.xen.long_mode to be consistent and
-> correctly handle 32-bit/64-bit alignment. And various other bug fixes
-> that have accumulated over the months since v1.
+On Wed, Sep 02, 2026 at 07:34:49PM -0700, Logan Odell wrote:
+> We're including maintainers from all subsystems that currently is or
+> will be expected to participate in live update to ensure alignment on
+> the path forward for compatibility.
+> 
+> Currently, Live Update Orchestrator (LUO) and its file handlers rely on
+> monolithic compatibility strings (such as "luo-v5" and "memfd-v1") to
+> validate ABI compatibility across kexec live updates. Any modification
+> to serialized structures requires bumping the version string, which
+> strictly breaks compatibility between adjacent kernels even when changes
+> are additive, backwards-compatible, or optional.
 
-Applied to kvm/next, thanks.
+That was the intention, I aruged strongly that upstream does not want
+to maintain a CSP matrix of endless kernel version combinations. That
+is far too much work to push on maintainers. Upstream would do much
+less, maybe only same-version, depending.
 
-Paolo
+> This RFC series transitions LUO and subsystem file handlers to use
+> granular feature bitmasks instead of compatibility strings. We replace
+> the compatibility string with a header structure that includes some
+> reserved space to define the features that are included after the
+> feature.
 
-> v3:
->  - Rebase onto kvm/next (7.3 merge window).
->  - Add poll_evtchn READ_ONCE/WRITE_ONCE annotation (Chengfeng Ye).
->  - Add evtchn_ports IDR to XArray conversion (Furkan Caliskan).
->
-> v2: https://lore.kernel.org/all/20260811094829.98794-1-dwmw2@infradead.or=
-g/
->  - Take kvm->srcu in __kvm_xen_has_interrupt().
->  - Add dedicated invalidation sequence for HVA-based caches.
->  - Take Sean's version of the 32-bit atomics patch, and his follow-up
->    replacing the remaining asm blobs with atomic*() APIs.
->  - Use GEN_BINARY_RMWcc() rather than open-coding the btsl.
->  - Explain why the pending_bits access in kvm_xen_set_evtchn_fast() does
->    not need the same treatment as the vcpu_info one (it is in the page
->    aligned per-VM shared_info).
->  - Don't require 8-byte alignment of vcpu_info in 64-bit mode; always
->    accept 4-byte alignment, so as not to break migration of guests which
->    registered while in 32-bit mode.
->  - Add Closes: links for the reported issues.
->  - Cast to u64 before the >> 32 in the unaligned evtchn_pending_sel
->    handling; evtchn_pending_sel is unsigned long, so the shift was
->    undefined on 32-bit even though the branch is unreachable there
->    (kernel test robot).
->  - Rebase onto kvm-x86/next; the mode-aware kvm_<reg>_read() helpers whic=
-h
->    landed in the meantime subsume most of what patch 1 was doing by hand.
->
-> v1: https://lore.kernel.org/all/20260605143034.3603-1-dwmw2@infradead.org=
-/
->
-> Chengfeng Ye (1):
->       KVM: x86/xen: Mark poll_evtchn accesses with READ_ONCE()/WRITE_ONCE=
-()
->
-> David Woodhouse (8):
->       KVM: x86/xen: Rename 'longmode' to 'is_64bit' in hypercall handling
->       KVM: x86/xen: Introduce kvm_xen_has_64bit_shinfo() macro
->       KVM: x86/xen: Rename max_evtchn_port() to kvm_max_evtchn_port()
->       KVM: x86/xen: Latch shinfo mode in kvm_xen_schedop_poll()
->       KVM: x86/xen: Enforce 4-byte alignment of vcpu_info registration
->       KVM: x86/xen: Use 32-bit locked bts for vcpu_info evtchn_pending_se=
-l
->       KVM: x86/xen: Take kvm->srcu in __kvm_xen_has_interrupt()
->       KVM: pfncache: use a dedicated invalidation sequence for cache refr=
-esh
->
-> Furkan Caliskan (1):
->       KVM: x86/xen: Convert evtchn_ports from IDR to XArray
->
-> Hyunwoo Kim (1):
->       KVM: x86/xen: Latch shinfo mode in kvm_xen_set_evtchn_fast()
->
-> Sean Christopherson (2):
->       KVM: x86/xen: Use 32-bit atomics if vCPU's evtchn_pending_sel isn't=
- aligned
->       KVM: x86/xen: Use atomic*() APIs instead of open coded equivalents
->
->  arch/x86/include/asm/kvm_host.h |   3 +-
->  arch/x86/kvm/xen.c              | 212 ++++++++++++++++++++++++----------=
-------
->  arch/x86/kvm/xen.h              |   5 +
->  include/linux/kvm_host.h        |   2 +
->  virt/kvm/kvm_main.c             |  10 ++
->  virt/kvm/pfncache.c             |  18 ++--
->  6 files changed, 157 insertions(+), 93 deletions(-)
->
+The compatability string is only a small part of it, you also need a
+serializing ABI that can handle some random mixmash of these
+features. Ie the various TLV schemes that were all proposed. What is
+the plan here?
 
+Jason
