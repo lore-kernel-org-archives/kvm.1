@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B00917D6;
-	Fri,  4 Sep 2026 02:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C80F3A7848;
+	Fri,  4 Sep 2026 02:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788489105; cv=none; b=X/T8qECDbcTn5r3OCL+s3C22pZBt1Qi32OQk0tsdqlQDOMgwvXZm11mshcpS7iz9ZLfMb0wq3NCzr0FELXkrqPiJe5CbcJD2Myq4jUX0EJ6hpMAegoa0vg3gAxiOKzCRB+MYzVMzy/XLjCG8tPNsoR4yZEanID/NFXKeNjHsiGk=
+	t=1788489109; cv=none; b=tTrfcy9k9AepsRZp/eOjsRvLh7+ye/8vMg4NZy6IXLf3BpY1jZh1Htm6DI9WgwlverHZI5QHmDcT/7rFlLygk1WVkCZOgOOPasVnTzHzHRb5kb0ACEd59kmMEwkjMh+Ryzr18flcR9876pfkye79I2JJwwxuZr3R3zv1NBvzH4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788489105; c=relaxed/simple;
-	bh=hQkQ8Ne/DgA9pMhdKsQpHn8ucavD+hxfPiOakK37Y64=;
+	s=arc-20240116; t=1788489109; c=relaxed/simple;
+	bh=oopmgu0AWR1HPnMv1Lm+slLchzVcGhuCGowevaxY80s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FOIWx8UsQ/n2Ml3H0rQEh8uEvLdQE+8YnYwlAFKdKb11vyFigWAi7GN3a3zv1PVoUMWMVdUjpfvIfS9CTCFrGKilrXpqFz/IWSOkBIKmuneuYTMXD1Pau/20i6qCip7e6eVG2Wdy54USr9b09hNucfAvyXyV5tH60QASL3PlvRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bUjxiLPo; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=RKLNUG0xzxb9h7fzT4t3VUkoSxseDuDIp/9fhweXLFI6z6zQ/fYckUzwEqcXbNC2Y3T9rcLSq7hUPZCJyAPBSWg5WLnhiHaMCUHbGbmJMFR4UKCXja5RJrVaSxzlUi9kJK+yTivh2yJ9/06UkeVwKAfW9lLht2qrI2i9aOruPV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l/ZPiU8f; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bUjxiLPo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l/ZPiU8f"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788489103; x=1820025103;
+  t=1788489107; x=1820025107;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=hQkQ8Ne/DgA9pMhdKsQpHn8ucavD+hxfPiOakK37Y64=;
-  b=bUjxiLPoUuwn/LXrBQmS0hEgZk24wlaA+3VzF3saNyjNAs0TXY4xjIPZ
-   cjD3ZGKYlsi81qzSt9Txq/HUUoVz/KMdry9UsTTJ96fnnWBioe22wcxhf
-   LPwNZmZ6Dv49sQzzY2kZTsdiUMan32vOM+cJ2uFvjnZxrmBH/koGYXDgj
-   m9WqOsMgJ0YVKO3JKVAiM4C/I4SSlohoWd5R7MrBtN0lx+GKKPPyA70sy
-   +64Z7D9NDMVUfkoZt+yapbvU4DR8pmUJN/Qp3uPI/LcJn+3/t8dkp8v9K
-   EuH5lslYWIRZZ0tOqEMABwSoo7tqrbhBl4BH7HLvyu/kKffV3z3XjEWH7
-   w==;
-X-CSE-ConnectionGUID: hhc7bxSgRk+Z5xl0wE6z6A==
-X-CSE-MsgGUID: fJv+yd0OTd+eJ+reXju+5w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="106506770"
+  bh=oopmgu0AWR1HPnMv1Lm+slLchzVcGhuCGowevaxY80s=;
+  b=l/ZPiU8fZViWJCYFdhoumndG9cOeCffuPjempj+ACpYQB+egVhX5//KQ
+   1FEcg67SQSc6cjHcRY7pjxgnxqgr3VLjjtxf9kuMEZNyP5EQVPyMRiKpe
+   uUY94yT2ePLxnilbDXzHBCPe/PqpwoQDAoPY63xYdA05ClKvpBcR1RGV0
+   RQ9NINeRJT2hn+HFotPTKPGi5v+61YXRhp2skdRQIwK62jjmeOJuNDhh6
+   Bv1+E3ku8ZNInUiDlrxLyK70lpQfF0mVrU2cHpJELMUL9uPrzhpZFH7ug
+   eWZ6055QFQXQqoaL0rbxzEQQzxiYndqyGvpL9LzGUvr3Ex35dmwhrCPr5
+   Q==;
+X-CSE-ConnectionGUID: 2sDGjh4TTT+Ggpb23Twjqg==
+X-CSE-MsgGUID: vt5T01ksTJ+ovkNDRuIfGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="106506786"
 X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="106506770"
+   d="scan'208";a="106506786"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 19:31:42 -0700
-X-CSE-ConnectionGUID: 2EF+ix43RN6Kxkdy8nfWVA==
-X-CSE-MsgGUID: vUqfnUatRtaLpKI/AWQoWg==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 19:31:46 -0700
+X-CSE-ConnectionGUID: 6l3oIaAeQISWovLuaQ3gBA==
+X-CSE-MsgGUID: SFX/s9O/THOFcS677tNQGA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="270433503"
+   d="scan'208";a="270433511"
 Received: from zhaoliu1-desk.sh.intel.com ([10.238.208.118])
-  by orviesa009.jf.intel.com with ESMTP; 03 Sep 2026 19:31:40 -0700
+  by orviesa009.jf.intel.com with ESMTP; 03 Sep 2026 19:31:43 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -60,9 +60,9 @@ Cc: Chao Gao <chao.gao@intel.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 3/4] KVM: selftests: Synchronize and update VMCS encodings
-Date: Fri,  4 Sep 2026 10:31:04 +0800
-Message-Id: <20260904023105.1167376-4-zhao1.liu@intel.com>
+Subject: [RFC 4/4] KVM: selftests: Test VM-entry failure handling for nested VM
+Date: Fri,  4 Sep 2026 10:31:05 +0800
+Message-Id: <20260904023105.1167376-5-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260904023105.1167376-1-zhao1.liu@intel.com>
 References: <20260904023105.1167376-1-zhao1.liu@intel.com>
@@ -74,388 +74,405 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Copy and update VMCS encodings from arch/x86/include/asm/vmx.h.
+Add a test for the CET state L1 sees after a nested VM-entry fails. What
+L1 should see depends on two controls: the VM-entry "load CET state"
+control, which tells whether L2's state was ever loaded, and the VM-exit
+"load CET state" control, which tells whether L1's state is reloaded from
+vmcs12's host-state area.
+
+A failed VM-entry is a VM-exit, but it leaves nested mode in an unusual
+way: vmcs12's guest state was never copied back from vmcs02. So when KVM
+copies vmcs12->guest_* into vmcs01 while emulating the VM-exit, it
+overwrites the CET state that L1 is really running with, using L2's
+values.
+
+Test all four combinations of the two controls, with both failure points,
+and check L1's S_CET and INT_SSP_TAB:
+
+  exit  entry  failure      what L1 should see
+  ----  -----  -----------  -------------------------------------
+   1     x     either       vmcs12's host state
+   0     0     either       L1's own state, L2's was never loaded
+   0     1     MSR-load     vmcs12's guest state
+   0     1     guest-state  L1's own state, see below
+
+The last row is the only case where KVM is more precise than the SDM
+requires. The SDM vol. 3C, section 29.3, "Checking and Loading Guest
+State" says guest state is checked and loaded at the same time, so a
+guest-state failure may be found after some state is already loaded. In
+other words, the CET state after such a failure is undefined, unless the
+VM-exit control reloads the host state.
+
+The VM-entry MSR-load list is different: it is handled only after guest
+state is loaded, so a failure there always keeps whatever the VM-entry
+loaded.
+
+For that undefined case, KVM picks the simplest well-defined behavior: it
+emulates every EXIT_REASON_INVALID_STATE VM-entry failure as if no guest
+state was loaded at all, so L1 keeps its own state. Note, this holds even
+though KVM does have guest-state checks that run after L2's CET state is
+written into vmcs02, e.g. vmx_guest_state_valid() and
+nested_vmx_load_cr3() in prepare_vmcs02(); the failed VM-entry throws
+vmcs02 away, and L1's state never left vmcs01. Test KVM's behavior
+here.
+
+This test case uses the two failure points, that covers KVM's two exit
+paths: a bad guest CR0 (PG set, PE clear) gives EXIT_REASON_INVALID_STATE,
+and a read-only MSR in the VM-entry MSR-load list triggers
+EXIT_REASON_MSR_LOAD_FAIL.
+
+Only CET state is checked for now, and other state loaded by the
+VM-entry/VM-exit controls can be added later.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- tools/testing/selftests/kvm/include/x86/vmx.h | 344 ++++++++++--------
- 1 file changed, 183 insertions(+), 161 deletions(-)
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/include/x86/processor.h     |   1 +
+ .../x86/vmx_nested_entry_fail_state_test.c    | 311 ++++++++++++++++++
+ 3 files changed, 313 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/x86/vmx_nested_entry_fail_state_test.c
 
-diff --git a/tools/testing/selftests/kvm/include/x86/vmx.h b/tools/testing/selftests/kvm/include/x86/vmx.h
-index 0c61cfdd3201..4d095883658b 100644
---- a/tools/testing/selftests/kvm/include/x86/vmx.h
-+++ b/tools/testing/selftests/kvm/include/x86/vmx.h
-@@ -126,187 +126,209 @@
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 96bab7002d39..352ae003183a 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -134,6 +134,7 @@ TEST_GEN_PROGS_x86 += x86/vmx_apicv_updates_test
+ TEST_GEN_PROGS_x86 += x86/vmx_exception_with_invalid_guest_state
+ TEST_GEN_PROGS_x86 += x86/vmx_msrs_test
+ TEST_GEN_PROGS_x86 += x86/vmx_invalid_nested_guest_state
++TEST_GEN_PROGS_x86 += x86/vmx_nested_entry_fail_state_test
+ TEST_GEN_PROGS_x86 += x86/vmx_nested_la57_state_test
+ TEST_GEN_PROGS_x86 += x86/apic_bus_clock_test
+ TEST_GEN_PROGS_x86 += x86/xapic_ipi_test
+diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+index 6e6f70035508..870ef1bb1ba1 100644
+--- a/tools/testing/selftests/kvm/include/x86/processor.h
++++ b/tools/testing/selftests/kvm/include/x86/processor.h
+@@ -79,6 +79,7 @@ const char *ex_str(int vector);
+ #define X86_CR4_SMEP		(1ul << 20)
+ #define X86_CR4_SMAP		(1ul << 21)
+ #define X86_CR4_PKE		(1ul << 22)
++#define X86_CR4_CET		(1ul << 23)
  
- #define EXIT_REASON_FAILED_VMENTRY	0x80000000
- 
-+/* VMCS Encodings */
- enum vmcs_field {
--	VIRTUAL_PROCESSOR_ID		= 0x00000000,
--	POSTED_INTR_NV			= 0x00000002,
--	GUEST_ES_SELECTOR		= 0x00000800,
--	GUEST_CS_SELECTOR		= 0x00000802,
--	GUEST_SS_SELECTOR		= 0x00000804,
--	GUEST_DS_SELECTOR		= 0x00000806,
--	GUEST_FS_SELECTOR		= 0x00000808,
--	GUEST_GS_SELECTOR		= 0x0000080a,
--	GUEST_LDTR_SELECTOR		= 0x0000080c,
--	GUEST_TR_SELECTOR		= 0x0000080e,
--	GUEST_INTR_STATUS		= 0x00000810,
-+	VIRTUAL_PROCESSOR_ID            = 0x00000000,
-+	POSTED_INTR_NV                  = 0x00000002,
-+	LAST_PID_POINTER_INDEX		= 0x00000008,
-+	GUEST_ES_SELECTOR               = 0x00000800,
-+	GUEST_CS_SELECTOR               = 0x00000802,
-+	GUEST_SS_SELECTOR               = 0x00000804,
-+	GUEST_DS_SELECTOR               = 0x00000806,
-+	GUEST_FS_SELECTOR               = 0x00000808,
-+	GUEST_GS_SELECTOR               = 0x0000080a,
-+	GUEST_LDTR_SELECTOR             = 0x0000080c,
-+	GUEST_TR_SELECTOR               = 0x0000080e,
-+	GUEST_INTR_STATUS               = 0x00000810,
- 	GUEST_PML_INDEX			= 0x00000812,
--	HOST_ES_SELECTOR		= 0x00000c00,
--	HOST_CS_SELECTOR		= 0x00000c02,
--	HOST_SS_SELECTOR		= 0x00000c04,
--	HOST_DS_SELECTOR		= 0x00000c06,
--	HOST_FS_SELECTOR		= 0x00000c08,
--	HOST_GS_SELECTOR		= 0x00000c0a,
--	HOST_TR_SELECTOR		= 0x00000c0c,
--	IO_BITMAP_A			= 0x00002000,
--	IO_BITMAP_A_HIGH		= 0x00002001,
--	IO_BITMAP_B			= 0x00002002,
--	IO_BITMAP_B_HIGH		= 0x00002003,
--	MSR_BITMAP			= 0x00002004,
--	MSR_BITMAP_HIGH			= 0x00002005,
--	VM_EXIT_MSR_STORE_ADDR		= 0x00002006,
--	VM_EXIT_MSR_STORE_ADDR_HIGH	= 0x00002007,
--	VM_EXIT_MSR_LOAD_ADDR		= 0x00002008,
--	VM_EXIT_MSR_LOAD_ADDR_HIGH	= 0x00002009,
--	VM_ENTRY_MSR_LOAD_ADDR		= 0x0000200a,
--	VM_ENTRY_MSR_LOAD_ADDR_HIGH	= 0x0000200b,
-+	HOST_ES_SELECTOR                = 0x00000c00,
-+	HOST_CS_SELECTOR                = 0x00000c02,
-+	HOST_SS_SELECTOR                = 0x00000c04,
-+	HOST_DS_SELECTOR                = 0x00000c06,
-+	HOST_FS_SELECTOR                = 0x00000c08,
-+	HOST_GS_SELECTOR                = 0x00000c0a,
-+	HOST_TR_SELECTOR                = 0x00000c0c,
-+	IO_BITMAP_A                     = 0x00002000,
-+	IO_BITMAP_A_HIGH                = 0x00002001,
-+	IO_BITMAP_B                     = 0x00002002,
-+	IO_BITMAP_B_HIGH                = 0x00002003,
-+	MSR_BITMAP                      = 0x00002004,
-+	MSR_BITMAP_HIGH                 = 0x00002005,
-+	VM_EXIT_MSR_STORE_ADDR          = 0x00002006,
-+	VM_EXIT_MSR_STORE_ADDR_HIGH     = 0x00002007,
-+	VM_EXIT_MSR_LOAD_ADDR           = 0x00002008,
-+	VM_EXIT_MSR_LOAD_ADDR_HIGH      = 0x00002009,
-+	VM_ENTRY_MSR_LOAD_ADDR          = 0x0000200a,
-+	VM_ENTRY_MSR_LOAD_ADDR_HIGH     = 0x0000200b,
- 	PML_ADDRESS			= 0x0000200e,
- 	PML_ADDRESS_HIGH		= 0x0000200f,
--	TSC_OFFSET			= 0x00002010,
--	TSC_OFFSET_HIGH			= 0x00002011,
--	VIRTUAL_APIC_PAGE_ADDR		= 0x00002012,
--	VIRTUAL_APIC_PAGE_ADDR_HIGH	= 0x00002013,
-+	TSC_OFFSET                      = 0x00002010,
-+	TSC_OFFSET_HIGH                 = 0x00002011,
-+	VIRTUAL_APIC_PAGE_ADDR          = 0x00002012,
-+	VIRTUAL_APIC_PAGE_ADDR_HIGH     = 0x00002013,
- 	APIC_ACCESS_ADDR		= 0x00002014,
- 	APIC_ACCESS_ADDR_HIGH		= 0x00002015,
--	POSTED_INTR_DESC_ADDR		= 0x00002016,
--	POSTED_INTR_DESC_ADDR_HIGH	= 0x00002017,
--	EPT_POINTER			= 0x0000201a,
--	EPT_POINTER_HIGH		= 0x0000201b,
--	EOI_EXIT_BITMAP0		= 0x0000201c,
--	EOI_EXIT_BITMAP0_HIGH		= 0x0000201d,
--	EOI_EXIT_BITMAP1		= 0x0000201e,
--	EOI_EXIT_BITMAP1_HIGH		= 0x0000201f,
--	EOI_EXIT_BITMAP2		= 0x00002020,
--	EOI_EXIT_BITMAP2_HIGH		= 0x00002021,
--	EOI_EXIT_BITMAP3		= 0x00002022,
--	EOI_EXIT_BITMAP3_HIGH		= 0x00002023,
--	VMREAD_BITMAP			= 0x00002026,
--	VMREAD_BITMAP_HIGH		= 0x00002027,
--	VMWRITE_BITMAP			= 0x00002028,
--	VMWRITE_BITMAP_HIGH		= 0x00002029,
--	XSS_EXIT_BITMAP			= 0x0000202C,
--	XSS_EXIT_BITMAP_HIGH		= 0x0000202D,
-+	POSTED_INTR_DESC_ADDR           = 0x00002016,
-+	POSTED_INTR_DESC_ADDR_HIGH      = 0x00002017,
-+	VM_FUNCTION_CONTROL             = 0x00002018,
-+	VM_FUNCTION_CONTROL_HIGH        = 0x00002019,
-+	EPT_POINTER                     = 0x0000201a,
-+	EPT_POINTER_HIGH                = 0x0000201b,
-+	EOI_EXIT_BITMAP0                = 0x0000201c,
-+	EOI_EXIT_BITMAP0_HIGH           = 0x0000201d,
-+	EOI_EXIT_BITMAP1                = 0x0000201e,
-+	EOI_EXIT_BITMAP1_HIGH           = 0x0000201f,
-+	EOI_EXIT_BITMAP2                = 0x00002020,
-+	EOI_EXIT_BITMAP2_HIGH           = 0x00002021,
-+	EOI_EXIT_BITMAP3                = 0x00002022,
-+	EOI_EXIT_BITMAP3_HIGH           = 0x00002023,
-+	EPTP_LIST_ADDRESS               = 0x00002024,
-+	EPTP_LIST_ADDRESS_HIGH          = 0x00002025,
-+	VMREAD_BITMAP                   = 0x00002026,
-+	VMREAD_BITMAP_HIGH              = 0x00002027,
-+	VMWRITE_BITMAP                  = 0x00002028,
-+	VMWRITE_BITMAP_HIGH             = 0x00002029,
-+	VE_INFORMATION_ADDRESS		= 0x0000202A,
-+	VE_INFORMATION_ADDRESS_HIGH	= 0x0000202B,
-+	XSS_EXIT_BITMAP                 = 0x0000202C,
-+	XSS_EXIT_BITMAP_HIGH            = 0x0000202D,
- 	ENCLS_EXITING_BITMAP		= 0x0000202E,
- 	ENCLS_EXITING_BITMAP_HIGH	= 0x0000202F,
--	TSC_MULTIPLIER			= 0x00002032,
--	TSC_MULTIPLIER_HIGH		= 0x00002033,
--	GUEST_PHYSICAL_ADDRESS		= 0x00002400,
--	GUEST_PHYSICAL_ADDRESS_HIGH	= 0x00002401,
--	VMCS_LINK_POINTER		= 0x00002800,
--	VMCS_LINK_POINTER_HIGH		= 0x00002801,
--	GUEST_IA32_DEBUGCTL		= 0x00002802,
--	GUEST_IA32_DEBUGCTL_HIGH	= 0x00002803,
-+	TSC_MULTIPLIER                  = 0x00002032,
-+	TSC_MULTIPLIER_HIGH             = 0x00002033,
-+	TERTIARY_VM_EXEC_CONTROL	= 0x00002034,
-+	TERTIARY_VM_EXEC_CONTROL_HIGH	= 0x00002035,
-+	SHARED_EPT_POINTER		= 0x0000203C,
-+	PID_POINTER_TABLE		= 0x00002042,
-+	PID_POINTER_TABLE_HIGH		= 0x00002043,
-+	GUEST_PHYSICAL_ADDRESS          = 0x00002400,
-+	GUEST_PHYSICAL_ADDRESS_HIGH     = 0x00002401,
-+	VMCS_LINK_POINTER               = 0x00002800,
-+	VMCS_LINK_POINTER_HIGH          = 0x00002801,
-+	GUEST_IA32_DEBUGCTL             = 0x00002802,
-+	GUEST_IA32_DEBUGCTL_HIGH        = 0x00002803,
- 	GUEST_IA32_PAT			= 0x00002804,
- 	GUEST_IA32_PAT_HIGH		= 0x00002805,
- 	GUEST_IA32_EFER			= 0x00002806,
- 	GUEST_IA32_EFER_HIGH		= 0x00002807,
- 	GUEST_IA32_PERF_GLOBAL_CTRL	= 0x00002808,
- 	GUEST_IA32_PERF_GLOBAL_CTRL_HIGH= 0x00002809,
--	GUEST_PDPTR0			= 0x0000280a,
--	GUEST_PDPTR0_HIGH		= 0x0000280b,
--	GUEST_PDPTR1			= 0x0000280c,
--	GUEST_PDPTR1_HIGH		= 0x0000280d,
--	GUEST_PDPTR2			= 0x0000280e,
--	GUEST_PDPTR2_HIGH		= 0x0000280f,
--	GUEST_PDPTR3			= 0x00002810,
--	GUEST_PDPTR3_HIGH		= 0x00002811,
--	GUEST_BNDCFGS			= 0x00002812,
--	GUEST_BNDCFGS_HIGH		= 0x00002813,
-+	GUEST_PDPTR0                    = 0x0000280a,
-+	GUEST_PDPTR0_HIGH               = 0x0000280b,
-+	GUEST_PDPTR1                    = 0x0000280c,
-+	GUEST_PDPTR1_HIGH               = 0x0000280d,
-+	GUEST_PDPTR2                    = 0x0000280e,
-+	GUEST_PDPTR2_HIGH               = 0x0000280f,
-+	GUEST_PDPTR3                    = 0x00002810,
-+	GUEST_PDPTR3_HIGH               = 0x00002811,
-+	GUEST_BNDCFGS                   = 0x00002812,
-+	GUEST_BNDCFGS_HIGH              = 0x00002813,
-+	GUEST_IA32_RTIT_CTL		= 0x00002814,
-+	GUEST_IA32_RTIT_CTL_HIGH	= 0x00002815,
- 	HOST_IA32_PAT			= 0x00002c00,
- 	HOST_IA32_PAT_HIGH		= 0x00002c01,
- 	HOST_IA32_EFER			= 0x00002c02,
- 	HOST_IA32_EFER_HIGH		= 0x00002c03,
- 	HOST_IA32_PERF_GLOBAL_CTRL	= 0x00002c04,
- 	HOST_IA32_PERF_GLOBAL_CTRL_HIGH	= 0x00002c05,
--	PIN_BASED_VM_EXEC_CONTROL	= 0x00004000,
--	CPU_BASED_VM_EXEC_CONTROL	= 0x00004002,
--	EXCEPTION_BITMAP		= 0x00004004,
--	PAGE_FAULT_ERROR_CODE_MASK	= 0x00004006,
--	PAGE_FAULT_ERROR_CODE_MATCH	= 0x00004008,
--	CR3_TARGET_COUNT		= 0x0000400a,
--	VM_EXIT_CONTROLS		= 0x0000400c,
--	VM_EXIT_MSR_STORE_COUNT		= 0x0000400e,
--	VM_EXIT_MSR_LOAD_COUNT		= 0x00004010,
--	VM_ENTRY_CONTROLS		= 0x00004012,
--	VM_ENTRY_MSR_LOAD_COUNT		= 0x00004014,
--	VM_ENTRY_INTR_INFO_FIELD	= 0x00004016,
--	VM_ENTRY_EXCEPTION_ERROR_CODE	= 0x00004018,
--	VM_ENTRY_INSTRUCTION_LEN	= 0x0000401a,
--	TPR_THRESHOLD			= 0x0000401c,
--	SECONDARY_VM_EXEC_CONTROL	= 0x0000401e,
--	PLE_GAP				= 0x00004020,
--	PLE_WINDOW			= 0x00004022,
--	VM_INSTRUCTION_ERROR		= 0x00004400,
--	VM_EXIT_REASON			= 0x00004402,
--	VM_EXIT_INTR_INFO		= 0x00004404,
--	VM_EXIT_INTR_ERROR_CODE		= 0x00004406,
--	IDT_VECTORING_INFO_FIELD	= 0x00004408,
--	IDT_VECTORING_ERROR_CODE	= 0x0000440a,
--	VM_EXIT_INSTRUCTION_LEN		= 0x0000440c,
--	VMX_INSTRUCTION_INFO		= 0x0000440e,
--	GUEST_ES_LIMIT			= 0x00004800,
--	GUEST_CS_LIMIT			= 0x00004802,
--	GUEST_SS_LIMIT			= 0x00004804,
--	GUEST_DS_LIMIT			= 0x00004806,
--	GUEST_FS_LIMIT			= 0x00004808,
--	GUEST_GS_LIMIT			= 0x0000480a,
--	GUEST_LDTR_LIMIT		= 0x0000480c,
--	GUEST_TR_LIMIT			= 0x0000480e,
--	GUEST_GDTR_LIMIT		= 0x00004810,
--	GUEST_IDTR_LIMIT		= 0x00004812,
--	GUEST_ES_AR_BYTES		= 0x00004814,
--	GUEST_CS_AR_BYTES		= 0x00004816,
--	GUEST_SS_AR_BYTES		= 0x00004818,
--	GUEST_DS_AR_BYTES		= 0x0000481a,
--	GUEST_FS_AR_BYTES		= 0x0000481c,
--	GUEST_GS_AR_BYTES		= 0x0000481e,
--	GUEST_LDTR_AR_BYTES		= 0x00004820,
--	GUEST_TR_AR_BYTES		= 0x00004822,
--	GUEST_INTERRUPTIBILITY_INFO	= 0x00004824,
--	GUEST_ACTIVITY_STATE		= 0X00004826,
--	GUEST_SYSENTER_CS		= 0x0000482A,
--	VMX_PREEMPTION_TIMER_VALUE	= 0x0000482E,
--	HOST_IA32_SYSENTER_CS		= 0x00004c00,
--	CR0_GUEST_HOST_MASK		= 0x00006000,
--	CR4_GUEST_HOST_MASK		= 0x00006002,
--	CR0_READ_SHADOW			= 0x00006004,
--	CR4_READ_SHADOW			= 0x00006006,
--	CR3_TARGET_VALUE0		= 0x00006008,
--	CR3_TARGET_VALUE1		= 0x0000600a,
--	CR3_TARGET_VALUE2		= 0x0000600c,
--	CR3_TARGET_VALUE3		= 0x0000600e,
--	EXIT_QUALIFICATION		= 0x00006400,
--	GUEST_LINEAR_ADDRESS		= 0x0000640a,
--	GUEST_CR0			= 0x00006800,
--	GUEST_CR3			= 0x00006802,
--	GUEST_CR4			= 0x00006804,
--	GUEST_ES_BASE			= 0x00006806,
--	GUEST_CS_BASE			= 0x00006808,
--	GUEST_SS_BASE			= 0x0000680a,
--	GUEST_DS_BASE			= 0x0000680c,
--	GUEST_FS_BASE			= 0x0000680e,
--	GUEST_GS_BASE			= 0x00006810,
--	GUEST_LDTR_BASE			= 0x00006812,
--	GUEST_TR_BASE			= 0x00006814,
--	GUEST_GDTR_BASE			= 0x00006816,
--	GUEST_IDTR_BASE			= 0x00006818,
--	GUEST_DR7			= 0x0000681a,
--	GUEST_RSP			= 0x0000681c,
--	GUEST_RIP			= 0x0000681e,
--	GUEST_RFLAGS			= 0x00006820,
--	GUEST_PENDING_DBG_EXCEPTIONS	= 0x00006822,
--	GUEST_SYSENTER_ESP		= 0x00006824,
--	GUEST_SYSENTER_EIP		= 0x00006826,
--	HOST_CR0			= 0x00006c00,
--	HOST_CR3			= 0x00006c02,
--	HOST_CR4			= 0x00006c04,
--	HOST_FS_BASE			= 0x00006c06,
--	HOST_GS_BASE			= 0x00006c08,
--	HOST_TR_BASE			= 0x00006c0a,
--	HOST_GDTR_BASE			= 0x00006c0c,
--	HOST_IDTR_BASE			= 0x00006c0e,
--	HOST_IA32_SYSENTER_ESP		= 0x00006c10,
--	HOST_IA32_SYSENTER_EIP		= 0x00006c12,
--	HOST_RSP			= 0x00006c14,
--	HOST_RIP			= 0x00006c16,
-+	PIN_BASED_VM_EXEC_CONTROL       = 0x00004000,
-+	CPU_BASED_VM_EXEC_CONTROL       = 0x00004002,
-+	EXCEPTION_BITMAP                = 0x00004004,
-+	PAGE_FAULT_ERROR_CODE_MASK      = 0x00004006,
-+	PAGE_FAULT_ERROR_CODE_MATCH     = 0x00004008,
-+	CR3_TARGET_COUNT                = 0x0000400a,
-+	VM_EXIT_CONTROLS                = 0x0000400c,
-+	VM_EXIT_MSR_STORE_COUNT         = 0x0000400e,
-+	VM_EXIT_MSR_LOAD_COUNT          = 0x00004010,
-+	VM_ENTRY_CONTROLS               = 0x00004012,
-+	VM_ENTRY_MSR_LOAD_COUNT         = 0x00004014,
-+	VM_ENTRY_INTR_INFO_FIELD        = 0x00004016,
-+	VM_ENTRY_EXCEPTION_ERROR_CODE   = 0x00004018,
-+	VM_ENTRY_INSTRUCTION_LEN        = 0x0000401a,
-+	TPR_THRESHOLD                   = 0x0000401c,
-+	SECONDARY_VM_EXEC_CONTROL       = 0x0000401e,
-+	PLE_GAP                         = 0x00004020,
-+	PLE_WINDOW                      = 0x00004022,
-+	NOTIFY_WINDOW                   = 0x00004024,
-+	VM_INSTRUCTION_ERROR            = 0x00004400,
-+	VM_EXIT_REASON                  = 0x00004402,
-+	VM_EXIT_INTR_INFO               = 0x00004404,
-+	VM_EXIT_INTR_ERROR_CODE         = 0x00004406,
-+	IDT_VECTORING_INFO_FIELD        = 0x00004408,
-+	IDT_VECTORING_ERROR_CODE        = 0x0000440a,
-+	VM_EXIT_INSTRUCTION_LEN         = 0x0000440c,
-+	VMX_INSTRUCTION_INFO            = 0x0000440e,
-+	GUEST_ES_LIMIT                  = 0x00004800,
-+	GUEST_CS_LIMIT                  = 0x00004802,
-+	GUEST_SS_LIMIT                  = 0x00004804,
-+	GUEST_DS_LIMIT                  = 0x00004806,
-+	GUEST_FS_LIMIT                  = 0x00004808,
-+	GUEST_GS_LIMIT                  = 0x0000480a,
-+	GUEST_LDTR_LIMIT                = 0x0000480c,
-+	GUEST_TR_LIMIT                  = 0x0000480e,
-+	GUEST_GDTR_LIMIT                = 0x00004810,
-+	GUEST_IDTR_LIMIT                = 0x00004812,
-+	GUEST_ES_AR_BYTES               = 0x00004814,
-+	GUEST_CS_AR_BYTES               = 0x00004816,
-+	GUEST_SS_AR_BYTES               = 0x00004818,
-+	GUEST_DS_AR_BYTES               = 0x0000481a,
-+	GUEST_FS_AR_BYTES               = 0x0000481c,
-+	GUEST_GS_AR_BYTES               = 0x0000481e,
-+	GUEST_LDTR_AR_BYTES             = 0x00004820,
-+	GUEST_TR_AR_BYTES               = 0x00004822,
-+	GUEST_INTERRUPTIBILITY_INFO     = 0x00004824,
-+	GUEST_ACTIVITY_STATE            = 0x00004826,
-+	GUEST_SYSENTER_CS               = 0x0000482A,
-+	VMX_PREEMPTION_TIMER_VALUE      = 0x0000482E,
-+	HOST_IA32_SYSENTER_CS           = 0x00004c00,
-+	CR0_GUEST_HOST_MASK             = 0x00006000,
-+	CR4_GUEST_HOST_MASK             = 0x00006002,
-+	CR0_READ_SHADOW                 = 0x00006004,
-+	CR4_READ_SHADOW                 = 0x00006006,
-+	CR3_TARGET_VALUE0               = 0x00006008,
-+	CR3_TARGET_VALUE1               = 0x0000600a,
-+	CR3_TARGET_VALUE2               = 0x0000600c,
-+	CR3_TARGET_VALUE3               = 0x0000600e,
-+	EXIT_QUALIFICATION              = 0x00006400,
-+	GUEST_LINEAR_ADDRESS            = 0x0000640a,
-+	GUEST_CR0                       = 0x00006800,
-+	GUEST_CR3                       = 0x00006802,
-+	GUEST_CR4                       = 0x00006804,
-+	GUEST_ES_BASE                   = 0x00006806,
-+	GUEST_CS_BASE                   = 0x00006808,
-+	GUEST_SS_BASE                   = 0x0000680a,
-+	GUEST_DS_BASE                   = 0x0000680c,
-+	GUEST_FS_BASE                   = 0x0000680e,
-+	GUEST_GS_BASE                   = 0x00006810,
-+	GUEST_LDTR_BASE                 = 0x00006812,
-+	GUEST_TR_BASE                   = 0x00006814,
-+	GUEST_GDTR_BASE                 = 0x00006816,
-+	GUEST_IDTR_BASE                 = 0x00006818,
-+	GUEST_DR7                       = 0x0000681a,
-+	GUEST_RSP                       = 0x0000681c,
-+	GUEST_RIP                       = 0x0000681e,
-+	GUEST_RFLAGS                    = 0x00006820,
-+	GUEST_PENDING_DBG_EXCEPTIONS    = 0x00006822,
-+	GUEST_SYSENTER_ESP              = 0x00006824,
-+	GUEST_SYSENTER_EIP              = 0x00006826,
-+	GUEST_S_CET                     = 0x00006828,
-+	GUEST_SSP                       = 0x0000682a,
-+	GUEST_INTR_SSP_TABLE            = 0x0000682c,
-+	HOST_CR0                        = 0x00006c00,
-+	HOST_CR3                        = 0x00006c02,
-+	HOST_CR4                        = 0x00006c04,
-+	HOST_FS_BASE                    = 0x00006c06,
-+	HOST_GS_BASE                    = 0x00006c08,
-+	HOST_TR_BASE                    = 0x00006c0a,
-+	HOST_GDTR_BASE                  = 0x00006c0c,
-+	HOST_IDTR_BASE                  = 0x00006c0e,
-+	HOST_IA32_SYSENTER_ESP          = 0x00006c10,
-+	HOST_IA32_SYSENTER_EIP          = 0x00006c12,
-+	HOST_RSP                        = 0x00006c14,
-+	HOST_RIP                        = 0x00006c16,
-+	HOST_S_CET                      = 0x00006c18,
-+	HOST_SSP                        = 0x00006c1a,
-+	HOST_INTR_SSP_TABLE             = 0x00006c1c
- };
- 
- struct vmx_msr_entry {
+ struct xstate_header {
+ 	u64				xstate_bv;
+diff --git a/tools/testing/selftests/kvm/x86/vmx_nested_entry_fail_state_test.c b/tools/testing/selftests/kvm/x86/vmx_nested_entry_fail_state_test.c
+new file mode 100644
+index 000000000000..ed0cb045ed53
+--- /dev/null
++++ b/tools/testing/selftests/kvm/x86/vmx_nested_entry_fail_state_test.c
+@@ -0,0 +1,311 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Nested VM-entry failure state test
++ *
++ * Copyright (C) 2026, Intel, Inc.
++ */
++#include <asm/msr-index.h>
++
++#include "kvm_util.h"
++#include "processor.h"
++#include "test_util.h"
++#include "vmx.h"
++
++static gva_t entry_msr_load_list_gva;
++static gpa_t entry_msr_load_list_gpa;
++
++enum state_src {
++	STATE_SRC_L1,		/* L1's own state */
++	STATE_SRC_VMCS12_GUEST,	/* vmcs12->guest_*, i.e. L2's state */
++	STATE_SRC_VMCS12_HOST,	/* vmcs12->host_*, i.e. host state to load */
++	NR_STATE_SRCS,
++};
++
++static bool has_shstk;
++struct cet_state {
++	u64 s_cet;
++	u64 ssp;
++	u64 ssp_tbl;
++};
++
++struct test_state {
++	struct cet_state cet;
++};
++
++/*
++ * In practice, states of STATE_SRC_L1 and STATE_SRC_VMCS12_HOST should be
++ * same, i.e., the state of STATE_SRC_VMCS12_HOST is copied from host (L1).
++ *
++ * But in this test, to distinguish the "load (host) state" operation, make
++ * STATE_SRC_VMCS12_HOST different from STATE_SRC_L1.
++ */
++static const struct test_state states[NR_STATE_SRCS] = {
++	[STATE_SRC_L1] = {
++		.cet = {
++			.s_cet		= CET_SHSTK_EN,
++			/*
++			 * SSP is not an MSR; the L1 SSP must be configured
++			 * using the KVM_SET_ONE_REG ioctl. To simplify the
++			 * test logic, checking the other MSRs is enough to
++			 * identify the state source, so that there's no need
++			 * to configure different SSPs.
++			 */
++			.ssp		= 0x0000111111111000UL,
++			.ssp_tbl	= 0x0000123456789000UL,
++		}
++	},
++	[STATE_SRC_VMCS12_GUEST] = {
++		.cet = {
++			.s_cet		= CET_SHSTK_EN | CET_WRSS_EN,
++			.ssp		= 0x0000111111111000UL,
++			.ssp_tbl	= 0x00000abcabcab000UL,
++		}
++	},
++	[STATE_SRC_VMCS12_HOST] = {
++		.cet = {
++			.s_cet		= CET_WRSS_EN,
++			.ssp		= 0x0000111111111000UL,
++			.ssp_tbl	= 0x00007edcba987000UL,
++		}
++	},
++};
++
++/* VM-entry-load and VM-exit-load, each 0 or 1. There are 4 combinations in total. */
++#define NR_CTRL_COMBOS		4
++/* each load control combination includes 2 cases with different VM-exit reasons. */
++#define NR_CASES		(NR_CTRL_COMBOS * 2)
++
++/* Define what state the hardware should retain in different cases. */
++static enum state_src get_expected_state_src(bool entry_load, bool exit_load,
++					     uint32_t exit_reason)
++{
++	if (exit_load)
++		return STATE_SRC_VMCS12_HOST;
++
++	/* no entry load, no exit load - L1's own state is retained. */
++	if (!entry_load)
++		return STATE_SRC_L1;
++
++	/*
++	 * From the Intel SDM volume 3, chapter 29.3 "CHECKING AND LOADING
++	 * GUEST STATE":
++	 *   The following operations take place concurrently:
++	 *     (1) the guest-state area of the VMCS is checked to ensure that,
++	 *         after the VM entry completes, the state of the logical
++	 *         processor is consistent with IA-32 and Intel 64
++	 *         architectures;
++	 *     (2) processor state is loaded from the guest-state area or as
++	 *         specified by the VM-entry control fields;
++	 *     and (3) address-range monitoring is cleared.
++	 *   Because the checking and the loading occur concurrently, a failure
++	 *   may be discovered only after some state has been loaded.
++	 *
++	 * I.e. the state left behind by a guest-state failure is
++	 * architecturally undefined. KVM picks the simplest well-defined
++	 * behavior: an EXIT_REASON_INVALID_STATE VM-entry failure is emulated
++	 * as if no guest state was loaded at all, so L1 keeps its own state.
++	 * Note, that holds even for KVM's guest-state checks that run after
++	 * L2's CET state is written into vmcs02, e.g. vmx_guest_state_valid()
++	 * and nested_vmx_load_cr3() in prepare_vmcs02(); the failed VM-entry
++	 * throws vmcs02 away while L1's state never left vmcs01.
++	 */
++	if (exit_reason == EXIT_REASON_INVALID_STATE)
++		return STATE_SRC_L1;
++
++	return STATE_SRC_VMCS12_GUEST;
++}
++
++static void l1_load_own_state(void)
++{
++	if (has_shstk) {
++		const struct cet_state *cet = &states[STATE_SRC_L1].cet;
++
++		wrmsr(MSR_IA32_S_CET, cet->s_cet);
++		wrmsr(MSR_IA32_INT_SSP_TAB, cet->ssp_tbl);
++	}
++}
++
++static void l1_program_vmcs12_cet(bool entry_load, bool exit_load)
++{
++	const struct cet_state *guest = &states[STATE_SRC_VMCS12_GUEST].cet;
++	const struct cet_state *host = &states[STATE_SRC_VMCS12_HOST].cet;
++	u64 entry_ctrl = vmreadz(VM_ENTRY_CONTROLS) & ~VM_ENTRY_LOAD_CET_STATE;
++	u64 exit_ctrl = vmreadz(VM_EXIT_CONTROLS) & ~VM_EXIT_LOAD_CET_STATE;
++
++	GUEST_ASSERT(!vmwrite(GUEST_S_CET, guest->s_cet));
++	GUEST_ASSERT(!vmwrite(GUEST_SSP, guest->ssp));
++	GUEST_ASSERT(!vmwrite(GUEST_INTR_SSP_TABLE, guest->ssp_tbl));
++	GUEST_ASSERT(!vmwrite(HOST_S_CET, host->s_cet));
++	GUEST_ASSERT(!vmwrite(HOST_SSP, host->ssp));
++	GUEST_ASSERT(!vmwrite(HOST_INTR_SSP_TABLE, host->ssp_tbl));
++
++	if (entry_load) {
++		entry_ctrl |= VM_ENTRY_LOAD_CET_STATE;
++
++		/*
++		 * Enable CET for L2 -- although it's not required for this test,
++		 * since L2 never runs (VM-entry always fails), so these never
++		 * reach real hardware -- just trying to emulate a L2 guest running
++		 * CET.
++		 */
++		GUEST_ASSERT(!vmwrite(GUEST_CR0, vmreadz(GUEST_CR0) | X86_CR0_WP));
++		GUEST_ASSERT(!vmwrite(GUEST_CR4, vmreadz(GUEST_CR4) | X86_CR4_CET));
++	}
++	if (exit_load)
++		exit_ctrl |= VM_EXIT_LOAD_CET_STATE;
++
++	GUEST_ASSERT(!vmwrite(VM_ENTRY_CONTROLS, entry_ctrl));
++	GUEST_ASSERT(!vmwrite(VM_EXIT_CONTROLS, exit_ctrl));
++}
++
++static void l1_program_vmcs12_state(bool entry_load, bool exit_load)
++{
++	if (has_shstk)
++		l1_program_vmcs12_cet(entry_load, exit_load);
++}
++
++/*
++ * Set the invalid guest state to fail the VM-entry check
++ * -- triggering a VM-exit (EXIT_REASON_INVALID_STATE).
++ */
++static void l1_break_guest_state(void)
++{
++	u64 cr0 = vmreadz(GUEST_CR0);
++
++	GUEST_ASSERT(!vmwrite(GUEST_CR0, (cr0 | X86_CR0_PG) & ~X86_CR0_PE));
++}
++
++/*
++ * Set the invalid MSR load list to fail the VM-entry check
++ * -- triggering a VM-exit (EXIT_REASON_MSR_LOAD_FAIL).
++ */
++static void l1_break_msr_load_list(void)
++{
++	struct vmx_msr_entry *list = (void *)entry_msr_load_list_gva;
++
++	list[0] = (struct vmx_msr_entry){
++		.index = MSR_IA32_UCODE_REV,
++		.reserved = 0,
++		.value = 0,
++	};
++
++	GUEST_ASSERT(!vmwrite(VM_ENTRY_MSR_LOAD_ADDR, entry_msr_load_list_gpa));
++	GUEST_ASSERT(!vmwrite(VM_ENTRY_MSR_LOAD_COUNT, 1));
++}
++
++static void l1_check_observed_cet(bool entry_load, bool exit_load, uint32_t exit_reason)
++{
++	enum state_src src = get_expected_state_src(entry_load, exit_load, exit_reason);
++	const struct cet_state *expect = &states[src].cet;
++	u64 s_cet = rdmsr(MSR_IA32_S_CET);
++	u64 ssp_tbl = rdmsr(MSR_IA32_INT_SSP_TAB);
++
++	__GUEST_ASSERT(s_cet == expect->s_cet && ssp_tbl == expect->ssp_tbl,
++		       "entry_load=%d exit_load=%d exit_reason=%u: "
++		       "expect src %d S_CET=%#lx INT_SSP_TAB=%#lx, "
++		       "got S_CET=%#lx INT_SSP_TAB=%#lx",
++		       entry_load, exit_load, exit_reason, src, expect->s_cet,
++		       expect->ssp_tbl, s_cet, ssp_tbl);
++}
++
++static void l1_check_observed_state(bool entry_load, bool exit_load, uint32_t exit_reason)
++{
++	if (has_shstk)
++		l1_check_observed_cet(entry_load, exit_load, exit_reason);
++}
++
++static void l1_run_case(struct vmx_pages *vmx, bool entry_load, bool exit_load,
++			uint32_t exit_reason)
++{
++	l1_load_own_state();
++
++	GUEST_ASSERT(load_vmcs(vmx));
++	prepare_vmcs(vmx, NULL);
++
++	l1_program_vmcs12_state(entry_load, exit_load);
++
++	switch (exit_reason) {
++	case EXIT_REASON_INVALID_STATE:
++		l1_break_guest_state();
++		break;
++	case EXIT_REASON_MSR_LOAD_FAIL:
++		l1_break_msr_load_list();
++		break;
++	default:
++		GUEST_FAIL("unexpected exit reason %u", exit_reason);
++	}
++
++	GUEST_ASSERT(!vmlaunch());
++	GUEST_ASSERT_EQ(vmreadz(VM_EXIT_REASON),
++			EXIT_REASON_FAILED_VMENTRY | exit_reason);
++
++	l1_check_observed_state(entry_load, exit_load, exit_reason);
++
++	GUEST_SYNC(0);
++}
++
++static void l1_guest_code(struct vmx_pages *vmx)
++{
++	int ctrl;
++
++	GUEST_ASSERT(prepare_for_vmx_operation(vmx));
++
++	for (ctrl = 0; ctrl < NR_CTRL_COMBOS; ctrl++) {
++		bool entry_load = ctrl & BIT(0);
++		bool exit_load = ctrl & BIT(1);
++
++		/* 2 cases with different VM-exit reasons. */
++		l1_run_case(vmx, entry_load, exit_load, EXIT_REASON_INVALID_STATE);
++		l1_run_case(vmx, entry_load, exit_load, EXIT_REASON_MSR_LOAD_FAIL);
++	}
++
++	GUEST_DONE();
++}
++
++int main(int argc, char *argv[])
++{
++	gva_t vmx_pages_gva;
++	struct kvm_vcpu *vcpu;
++	struct kvm_vm *vm;
++	struct ucall uc;
++	int ncases = 0;
++
++	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_VMX));
++
++	has_shstk = kvm_cpu_has(X86_FEATURE_SHSTK);
++	TEST_REQUIRE(has_shstk);
++
++	vm = vm_create_with_one_vcpu(&vcpu, l1_guest_code);
++
++	entry_msr_load_list_gva = vm_alloc_page(vm);
++	entry_msr_load_list_gpa = addr_gva2gpa(vm, entry_msr_load_list_gva);
++	sync_global_to_guest(vm, entry_msr_load_list_gva);
++	sync_global_to_guest(vm, entry_msr_load_list_gpa);
++
++	sync_global_to_guest(vm, has_shstk);
++
++	vcpu_alloc_vmx(vm, &vmx_pages_gva);
++	vcpu_args_set(vcpu, 1, vmx_pages_gva);
++
++	for (;;) {
++		vcpu_run(vcpu);
++		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
++
++		switch (get_ucall(vcpu, &uc)) {
++		case UCALL_SYNC:
++			ncases++;
++			break;
++		case UCALL_DONE:
++			TEST_ASSERT(ncases == NR_CASES, "L1 ran %d cases, expected %d",
++				    ncases, NR_CASES);
++			goto done;
++		case UCALL_ABORT:
++			REPORT_GUEST_ASSERT(uc);
++		default:
++			TEST_FAIL("Unexpected ucall: %lu", uc.cmd);
++		}
++	}
++done:
++	kvm_vm_free(vm);
++	return 0;
++}
 -- 
 2.34.1
 
