@@ -1,138 +1,217 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C1E4B2CC5
-	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 14:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788531444; cv=none; b=WHyhNqqV/gFqj80DbBGwzvtE5eoGf0svjlV60iThRJU6rs9dJvDL3D4wQBLZjlXQOyR5OhAynEs+gbP63CJdvYtHkwYnxtekvwU1vha7daZfOSDXokqvs0ghQJDVgZoq2dXMSKqd9dcYeR4SI7vS/6hjQKPp003XzVD4aKmuGn4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788531444; c=relaxed/simple;
-	bh=D2t6B1YS33bYDK84WqJqNPxeuOe8w02R1XfEYryLAhc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CSAFX+rZz/fSuuCnav4pTOdcxah5AGVq+e53kLeHVCOFq/ylixwzfUGntpUa7CLaboNuUsQw0GY/N4zLmS+8LLeyHxqueT3snp/TOw6L8m3dObKMuoQCMliYnSKsqI8ufYKkLmk42lL+EvNIkXj9Iocd3zhweb1zsJ5VpEaMR2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nCp4SGOd; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC064A3F04
+	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 15:36:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788536216; cv=pass; b=Ml2ycVJ/VlumUw3HcOeMzPNN/NlzX2EZxoB1lFRo3NBianEQ07KoyDynw5PPkY7s40G3zptOwYxQGIJ5xGJPl8HCa5r2+Dv5ElI5fF8vktEWpUI0yS0zwdMyD2ir817QC4YlKxs2/JRVH8WJKyajX94iPPzqTVYJvENP+sGJPLI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788536216; c=relaxed/simple;
+	bh=o8HNsLeZzORg+lffL2AzJCaTytWq6/qRqD0NFejzqwE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BXXZo9mB0J8JSP5fHCcLsLq/Yh+FUX4wNRy5LCFyFv0WgmE5kV/zy3yMkCVj+uNUEBd3poGTH+7LTVSB8evI5eM5VwPygq2jQlAugJdP4nmBviAZ0WAtW5JHQHYE9b10GQJRNK0jUN1pwsityGXG0RP1RfDV7D/MZyy2Uz//S6Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X5zNtLFc; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=eO/wWNUt; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nCp4SGOd"
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d6ff3aca06so92595ad.0
-        for <kvm@vger.kernel.org>; Fri, 04 Sep 2026 07:17:22 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X5zNtLFc";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="eO/wWNUt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788536212;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UhUfCEAvWX3HQ4TKnpOsQaNeGPkBhU8moeSBLrDZbeE=;
+	b=X5zNtLFcCk4S3wlw7qyn42tTGaMF6xIBwAiEng6SAoBV6pfltS7hgnb0HRSeN0xfPpGsu/
+	mzQBcA4Td4IQnXzVc7T4ic3XlTOg2Yji1yiKRLvgdzgEsvsLdkviFFZlQzF350YrBl2227
+	AhguLbxwLluSjnNgl6ADT4CQWIj18k8=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-16-F_x5ZY2UPrC8WcbQNozkOw-1; Fri, 04 Sep 2026 11:36:49 -0400
+X-MC-Unique: F_x5ZY2UPrC8WcbQNozkOw-1
+X-Mimecast-MFC-AGG-ID: F_x5ZY2UPrC8WcbQNozkOw_1788536208
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-484362cb000so796503f8f.0
+        for <kvm@vger.kernel.org>; Fri, 04 Sep 2026 08:36:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788536208; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZKt6ZoM+Bo+L0eJipxnP97iXz5GIKLZcLY6v81MgBYpycCZzlzmnN09IFeL7CLUNF0
+         EoZtpBN9IULN+sHXe9nZVh57Sfa+xEWiJPsrlZNr+J0ho5CUcCgY5bCfCg1dFpnyx2Z6
+         ljtRVuduE/QInrhlmtR1PuNQDDvcIE+Q9idX7uhoYHGrY9ssa77S1l2FTvLGpXbdgu3O
+         AWLG7KQ1ew4O/lJjv5bnd2LUFwylInNISI71NOrHqe4aWteU7FLgmlQ2/C6GHIRNPVhq
+         qmaL9WPT4+MPIkYObWYKreAMdNlj8t8Gg98BsKiiXqSE1YpnAbIo1ZYVtOe6yHGLaMaD
+         xsRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=UhUfCEAvWX3HQ4TKnpOsQaNeGPkBhU8moeSBLrDZbeE=;
+        fh=5Lw/HGKJ+8zJXISiApHzH9cgJ56F3WHZbEDIJ+izNqs=;
+        b=ZD+D4mLESCFUTBb7XBap8WxYFKaoIqtdyYK7ArSQlMffyF1TxcX9AnG6DXpqL1UFbN
+         xSYBreScFeG3ieVfmWEpHVpeuEybtvhtg9+FiHCff8g9gpfetnB6kxvAdmEz/vtN/tbL
+         8NbfrRl2iCT2S931p5TJpU1LuFFuwNs5qCVa8cSY7RMrO31pSAcKaV6kYGi6FE9NpWWk
+         UlBMsc2QngRG/Q1bNs6XB3wZ9ws/oVjMIMQVCHiRlsrHyw+so7YAilIt6HBhl7xRL94/
+         oSDYuX5pzIJrirpgpMOLuIEMA7hIHm1F3EguG/oYiJ1GFYaEhc+7GNd90rsUUk5Qr22e
+         lNGw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788531442; x=1789136242; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=redhat.com; s=google; t=1788536208; x=1789141008; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=60ByTjtXefcxnqfTN2YbLnHfehKM3hxAEVNuYOtMxjU=;
-        b=nCp4SGOdAF06D8bgFngQo4t9xp/tHR6rqhAMBRBLD6FHjeGVOzpxO3+W+ClZn3WDiw
-         VLTuHeSNay9kIU8gzvgSl5EUhP7yfelgSFQzr9gfUKcuXh3oP5NndoSkMc6oDGE3X0ID
-         XmdMMXvO8UwqMxxsv/7Kmb8QvBNhbIt7qb0PuieLhshJFoUZPnNHI9SIZ9a9OnffRWVq
-         1bgla9vCkLBNDz8e1GhHOJs0UckaDp8WWlf/x2/DsCBxor+7U+H6+MtGhvBDcMENcYls
-         guca1xRJaH65h1ZdlfunC7cjaZBqBttWWbI1i9RR/J1Z86G+BbcGZZPjOZape7IfNpjT
-         QwIg==
+        bh=UhUfCEAvWX3HQ4TKnpOsQaNeGPkBhU8moeSBLrDZbeE=;
+        b=eO/wWNUtNTyaAQsu4ON53RQOyGfTC7N3dEhhsJmLvvUxr/nyjJtd9XcAWiFARKdKqq
+         iQbcaUKGE3su/Z9vddix+Zl4kQtB8uoPlx9dLWDT5NWzj3sYuFKPYJma3C+2emX98jat
+         BUiyeO+FCYGi407GzDuAwk1ZEFrMdHCfsneUDq7ViaWq9+rv8qVVTVQt00Lc1fWZ3yjf
+         QEphYiKXQurHdghIPRstOzzupt1O3iiXKWfGbFUeloxCOn5/NgfkrwQcd4cD/0vpcNwP
+         uhw9l/ctYEzo3dJkjzTuXPhsgJcIpc79N6lFYbwDXxz8ULs9MG6V7WltZYzshvFUfRP0
+         Dh0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788531442; x=1789136242;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1788536208; x=1789141008;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=60ByTjtXefcxnqfTN2YbLnHfehKM3hxAEVNuYOtMxjU=;
-        b=GjKgMNKKIUoO8dPEzY8O+hWGv5yo1VJfGPoh5FfQq3yxHK4H+aGAuVbLyDUocx3Www
-         MpJqGf2gf/etYy7Rn73Q4JhXH/Souh+5/U29isdOMrgDgCWaSARTodHAUFfOu9B8FkE3
-         aNsT7mX1rqYtaVclP+bCK4mHqahMAoW6alHBjFyY4kCzgM+IpCWCqZU/2d2gx0JDKD3K
-         DE8JhYkY6Pwg9Z1YTIJB3QczGt3IanE8oo4Z4TPvH3j3rgJ84IdDpdL8sZB12Z5suyJE
-         pCRa5m5D832boNPqiD2BscXDxfSXusCbcsT6qxm/jCfkKGE4HOOQCHLskgjjhx9NfILX
-         Ey8Q==
-X-Gm-Message-State: AFuF++nVLlodY+wXqRIT38YhU1+4Bk27uGYIkUenwdGfQB7dDQLPEdMC
-	ggqn9qijRp4aC0vbD2o56J8YfVnerQ1Ey+nijQ/FTTrpkEmyDjlWtLfKmIXKQOu4lQ==
-X-Gm-Gg: AYBFou0DNMUsBcO8Q6OfTI5lqkweLR2nIYB5/ijXh3J3bB47MDBNUWsWFlJaXNNocMZ
-	B377XHXP3lLMxe30G7aB45lf/wC7Q+sWKgud6V/fU3TBmH+yOvHhUTxIHggvtjUMHnyCyvOwXDL
-	aM/pjDI6zavqJsHop/LzLw/YUF/YWGMg2Pr6iESo1rcR8kPP0NDHinMNHZZrJgf0wfP9LqZBSaF
-	A2JKzvESKV+getxoXAMR4r90MjkdqZpg2NbPbfHFYpc6+JQC781yfS6IqDThQZnbLdesbnRtsGZ
-	mYC94PWIzfKvUfDrDSO8sZWfIqnU0rm5pPGcP2a+kcoqNvmdFCAXEMQhgQ9B1X/IbpmVE5uIlpJ
-	RD6ail0H1+mp52FtkOq2/Lnek1nJUHWUvtasVbnqbtA78jqyLVixoKwuLAje7nrA1x5Z27pqOb1
-	8m5TEuIgAXp+Xvf6ZDDO7Ww4icHhpbWIqTuoKUtroleg8SGYkWicELkf8B/MfQjgN/+pgs4HlBx
-	IrkJ9abpUJ/j8QFr0pTlRbld7I+n+G2XzT+
-X-Received: by 2002:a17:903:3c2b:b0:2db:2225:d2fd with SMTP id d9443c01a7336-2db2225d395mr1063405ad.16.1788531441093;
-        Fri, 04 Sep 2026 07:17:21 -0700 (PDT)
-Received: from google.com (164.210.142.34.bc.googleusercontent.com. [34.142.210.164])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b25f8d2c5sm5029514a91.2.2026.09.04.07.17.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 07:17:20 -0700 (PDT)
-Date: Fri, 4 Sep 2026 14:17:15 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Abdifatah Suruur <suruurism@gmail.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Eric Auger <eric.auger@redhat.com>,
-	Mostafa Saleh <smostafa@google.com>,
-	Alex Williamson <alex@shazbot.org>
-Subject: Re: [PATCH v3] vfio/platform: prevent read-only region mappings from
- becoming writable
-Message-ID: <aprS65nZ3vi6TPxY@google.com>
-References: <20260903092907.419-1-suruurism@gmail.com>
+        bh=UhUfCEAvWX3HQ4TKnpOsQaNeGPkBhU8moeSBLrDZbeE=;
+        b=gxRjUq3FQCJrnZfUTqYV6oe1ApyxVSdwhRL9lkueoarUGCvj/M8/JSUDl8tho2QVHd
+         uuX4kzh2qqxGTvPoJhOoaMbyld+a6GMNt2hTn/lww35l+as0ZFWAllQMv5RGW1s0bBg4
+         qYiJEcPZ1clUWroMVaL8dY5Y6GRmOqDQGVAc+ovro/4+4QBK7DAEcAoIVTBSlBlC9RKl
+         /7T7VeVeyibqcShpySK+xMzg+EBFeIVQsY5vyytis7v71tvben53Tz3x6bZyXeK6nSeo
+         wrOGz/zg+pG4kR3kqujE6dtQ6jja7wJ6qjzAuUr7hfoIzeOunGaRp4mJrW728RXWTUFA
+         h5nA==
+X-Gm-Message-State: AFuF++kjeopkSk9d+Z7Lkt1QWm6LnXoHRZ6vPako0gCVHDMhYT74Qi2r
+	1oK3XoLdWLU5j0Txdrhbd7DxNP0l9pulp/Eh4Uj7VpezUECpFWkFnf3CpK2G4USlzxFjWPRFXls
+	hGbO9Y65yuvQDjgTM1tRlj+7h08VakFzMTzbSLlj7TfWtDk1iKRfGNbLgWI3rT18H0rYs9bbGHc
+	K6BMu41XJeKTmGHdWMJnPkQuqxIU+f
+X-Gm-Gg: AYBFou3j5k1SVr1lQZRqnwbDvoZ+jr6AajtZLG/OTdkLrPBjgS7ztjBGjIc1CC+2xSd
+	jCfZUIea2UqK2/n5L5Mr6dOEaP7yO7voXYQTO6RJ65Mv4vQw2SxrrKwBi2cIXPspeeOxBgnNxVp
+	8lwkQWEctlFx/s3rM+FUXDsUKrMerKUI861I5em5JgE9s59uwFotgSDYQ84E85SzWUHt32y9xWT
+	mhim/ZtNpL2Q/R0+mPQVq31EGl3LBkLqqhEsYNtl0+caZmUunuhcfcap+2QIA==
+X-Received: by 2002:a05:6000:4105:b0:485:8226:c694 with SMTP id ffacd0b85a97d-4858226c967mr11829098f8f.19.1788536208211;
+        Fri, 04 Sep 2026 08:36:48 -0700 (PDT)
+X-Received: by 2002:a05:6000:4105:b0:485:8226:c694 with SMTP id
+ ffacd0b85a97d-4858226c967mr11829033f8f.19.1788536207632; Fri, 04 Sep 2026
+ 08:36:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903092907.419-1-suruurism@gmail.com>
+References: <20260904060647.562443-1-imbrenda@linux.ibm.com>
+In-Reply-To: <20260904060647.562443-1-imbrenda@linux.ibm.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Fri, 4 Sep 2026 17:36:28 +0200
+X-Gm-Features: AcwNN1UM7o-vZcW8Wc3wn3D5DYydTSSdA81i2MBw2kUOwZogbcxlqjZ4yCZ7sPI
+Message-ID: <CABgObfZ1E2+-KmM=dGm8S=jLX1vWb_qrFg00xt4u3VB94EzmRA@mail.gmail.com>
+Subject: Re: [GIT PULL v1 00/11] KVM: s390: Misc fixes
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com, 
+	borntraeger@de.ibm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 03, 2026 at 12:29:07PM +0300, Abdifatah Suruur wrote:
-> vfio_platform_mmap() rejects writable mappings of regions without the
-> WRITE flag, but leaves VM_MAYWRITE set.  Userspace can map such a region
-> read-only and then upgrade the mapping to writable with mprotect().
-> 
-> Clear VM_MAYWRITE for regions without the WRITE flag, as i915 does for
-> its read-only objects and as fixed in drm/vc4 (CVE-2026-68445),
-> drm/panthor (CVE-2024-53071) and commit a5edadbae57e ("ptp: vmclock:
-> prevent read-only mappings from becoming writable").
-> 
-> Note this is defensive hardening: no in-tree platform driver currently
-> publishes a region without the WRITE flag.  The guard costs nothing and
-> keeps the mmap() interface honest if a read-only region ever appears.
-> 
-> Fixes: fad4d5b1f042 ("vfio/platform: support MMAP of MMIO regions")
-> Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
-> Reviewed-by: Mostafa Saleh <smostafa@google.com>
-> ---
-> v2: commit log now states plainly that the read-only path is
-> unreachable in practice, per Alex's review; dropped Cc: stable as
-> there is no reachable issue to backport.
-> v3: use 'commit <sha> ("<title>")' style for the vmclock reference
-> and point Fixes at the MMAP support commit, per Mostafa's review.
-> 
-> --- a/drivers/vfio/platform/vfio_platform_common.c
-> +++ b/drivers/vfio/platform/vfio_platform_common.c
-> @@ -594,7 +594,11 @@
->  	if (!(vdev->regions[index].flags & VFIO_REGION_INFO_FLAG_WRITE)
->  			&& (vma->vm_flags & VM_WRITE))
->  		return -EINVAL;
-> 
-> +	/* Prevent read-only region mappings from being upgraded with mprotect() */
-> +	if (!(vdev->regions[index].flags & VFIO_REGION_INFO_FLAG_WRITE))
-> +		vm_flags_clear(vma, VM_MAYWRITE);
-> +
+On Fri, Sep 4, 2026 at 8:07=E2=80=AFAM Claudio Imbrenda <imbrenda@linux.ibm=
+.com> wrote:
+>
+> Ciao Paolo,
+>
+> Here you have a bunch of fixes to bugs found in the past few weeks.
 
-Minor Nit: We seem to be evaluating this condition twice, back-to-back:
+Pulled, thanks.
 
-if (!(vdev->regions[index].flags & VFIO_REGION_INFO_FLAG_WRITE))
+Paolo
 
-We could consolidate this into a single block to make the intent and
-flow cleaner:
+>
+>
+> Anthony Krowiak (1):
+>   s390/vfio-ap: fix KVM GISC and page leak when queue removed from host
+>     config
+>
+> Claudio Imbrenda (8):
+>   KVM: s390: Fix dirty marking in adapter_indicators_set*()
+>   KVM: s390: Fix compile warning for kvm_s390_update_cmma_dirty()
+>   KVM: s390: Fix _gaccess_shadow_fault()
+>   KVM: s390: Refactor dat_set_slot()
+>   KVM: s390: Move all code into s390_kvm_mmu_prepare_memory_region()
+>   KVM: s390: Add missing srcu in kvm_s390_set_irq_state()
+>   KVM: s390: Fix potential races in dat skey functions
+>   KVM: s390: Fix race in _destroy_pages_crste()
+>
+> Steffen Eiden (2):
+>   s390/uv: Fix loop condition in uv_find_secrets
+>   s390/uv: Prevent potential out-of-bounds read
+>
+>  arch/s390/kernel/uv.c             |  8 ++-
+>  arch/s390/kvm/gmap/dat.c          | 65 ++++++++++++----------
+>  arch/s390/kvm/gmap/dat.h          | 10 ++--
+>  arch/s390/kvm/gmap/gmap.c         |  6 +-
+>  arch/s390/kvm/gmap/kvm_mmu.c      | 91 +++++++++++++------------------
+>  arch/s390/kvm/gmap/kvm_mmu.h      |  4 --
+>  arch/s390/kvm/s390/gaccess.c      | 13 +++++
+>  arch/s390/kvm/s390/interrupt.c    | 79 ++++++++++++++-------------
+>  arch/s390/kvm/s390/s390.c         |  3 +-
+>  arch/s390/kvm/s390/s390.h         |  2 +-
+>  drivers/s390/crypto/vfio_ap_ops.c | 18 ++++--
+>  11 files changed, 156 insertions(+), 143 deletions(-)
+>
+> --
+> 2.55.0
+>
+> The following changes since commit 786262be6048deab760f68c8acc2c856071658=
+94:
+>
+>   Merge tag 'edac_updates_for_v7.3_rc2' of git://git.kernel.org/pub/scm/l=
+inux/kernel/git/ras/ras (2026-08-31 20:10:39 -0700)
+>
+> are available in the Git repository at:
+>
+>   https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git tags/=
+kvm-s390-master-7.3-1
+>
+> for you to fetch changes up to f47190b08b71e8482072978373ee88cb2dfbdaf4:
+>
+>   s390/uv: Prevent potential out-of-bounds read (2026-09-02 18:50:42 +020=
+0)
+>
+> ----------------------------------------------------------------
+> KVM: s390: Misc fixes
+>
+> A bunch of fixes to bugs found in the past weeks.
+>
+> ----------------------------------------------------------------
+> Anthony Krowiak (1):
+>       s390/vfio-ap: fix KVM GISC and page leak when queue removed from ho=
+st config
+>
+> Claudio Imbrenda (8):
+>       KVM: s390: Fix dirty marking in adapter_indicators_set*()
+>       KVM: s390: Fix compile warning for kvm_s390_update_cmma_dirty()
+>       KVM: s390: Fix _gaccess_shadow_fault()
+>       KVM: s390: Refactor dat_set_slot()
+>       KVM: s390: Move all code into s390_kvm_mmu_prepare_memory_region()
+>       KVM: s390: Add missing srcu in kvm_s390_set_irq_state()
+>       KVM: s390: Fix potential races in dat skey functions
+>       KVM: s390: Fix race in _destroy_pages_crste()
+>
+> Steffen Eiden (2):
+>       s390/uv: Fix loop condition in uv_find_secrets
+>       s390/uv: Prevent potential out-of-bounds read
+>
+>  arch/s390/kernel/uv.c             |  8 ++--
+>  arch/s390/kvm/gmap/dat.c          | 65 ++++++++++++++++------------
+>  arch/s390/kvm/gmap/dat.h          | 10 ++---
+>  arch/s390/kvm/gmap/gmap.c         |  6 ++-
+>  arch/s390/kvm/gmap/kvm_mmu.c      | 91 ++++++++++++++++-----------------=
+------
+>  arch/s390/kvm/gmap/kvm_mmu.h      |  4 --
+>  arch/s390/kvm/s390/gaccess.c      | 13 ++++++
+>  arch/s390/kvm/s390/interrupt.c    | 79 ++++++++++++++++-----------------
+>  arch/s390/kvm/s390/s390.c         |  3 +-
+>  arch/s390/kvm/s390/s390.h         |  2 +-
+>  drivers/s390/crypto/vfio_ap_ops.c | 18 ++++++--
+>  11 files changed, 156 insertions(+), 143 deletions(-)
+>
 
-        /* Prevent read-only region mappings from [...] */
-        if (!(vdev->regions[index].flags & VFIO_REGION_INFO_FLAG_WRITE)) {
-            if (vma->vm_flags & VM_WRITE)
-                return -EINVAL;
-            vm_flags_clear(vma, VM_MAYWRITE);
-        }
-
-Apart from that,
-
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-
-Thanks,
-Praan
