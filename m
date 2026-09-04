@@ -1,217 +1,199 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC064A3F04
-	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 15:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBB94F0550
+	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 15:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788536216; cv=pass; b=Ml2ycVJ/VlumUw3HcOeMzPNN/NlzX2EZxoB1lFRo3NBianEQ07KoyDynw5PPkY7s40G3zptOwYxQGIJ5xGJPl8HCa5r2+Dv5ElI5fF8vktEWpUI0yS0zwdMyD2ir817QC4YlKxs2/JRVH8WJKyajX94iPPzqTVYJvENP+sGJPLI=
+	t=1788536253; cv=pass; b=Rnz4doMwQj5iDbELMgq3fa3HaaEnc7RATEoNLXokqoM6Vp4q3Nb1D+3MdP/D4qRqlJ+W/zhujdaw9q05lPHzmVK9uXnlQxWKqcEOFVFUm5SPfKhcawvi67wTQUcbOpRTz7EJFb8nfQES2ORN1Ci3qrDwxk10EB4JQ1frzSf5u/8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788536216; c=relaxed/simple;
-	bh=o8HNsLeZzORg+lffL2AzJCaTytWq6/qRqD0NFejzqwE=;
+	s=arc-20240116; t=1788536253; c=relaxed/simple;
+	bh=sCBkffF/x+6ivWSUBWyD8pLivoWQ//A01/hYzFbxjrI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BXXZo9mB0J8JSP5fHCcLsLq/Yh+FUX4wNRy5LCFyFv0WgmE5kV/zy3yMkCVj+uNUEBd3poGTH+7LTVSB8evI5eM5VwPygq2jQlAugJdP4nmBviAZ0WAtW5JHQHYE9b10GQJRNK0jUN1pwsityGXG0RP1RfDV7D/MZyy2Uz//S6Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X5zNtLFc; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=eO/wWNUt; arc=pass smtp.client-ip=170.10.133.124
+	 To:Cc:Content-Type; b=bVyLJ84up+ip2sqVInt9SC/+p53d4vrJ5RLHzj7MrKk9e8B6ou9WbMF+lIICVCmAzMrcvFSI5U6XL5lbloQhUfZm2QZDUV2vb5v9MgkwiW/ma5h/a0u9RdTCF2RA/OETn4vpiUwTEqLjb1hGB9LidqLF0drftAWHU6jcoxQ6pac=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O6ztyx5H; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KQ2d/Qrs; arc=pass smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X5zNtLFc";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="eO/wWNUt"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O6ztyx5H";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KQ2d/Qrs"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788536212;
+	s=mimecast20190719; t=1788536251;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UhUfCEAvWX3HQ4TKnpOsQaNeGPkBhU8moeSBLrDZbeE=;
-	b=X5zNtLFcCk4S3wlw7qyn42tTGaMF6xIBwAiEng6SAoBV6pfltS7hgnb0HRSeN0xfPpGsu/
-	mzQBcA4Td4IQnXzVc7T4ic3XlTOg2Yji1yiKRLvgdzgEsvsLdkviFFZlQzF350YrBl2227
-	AhguLbxwLluSjnNgl6ADT4CQWIj18k8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=rrK07pcEfzHDfc8s9dAeUAxX5iBfU+4JJI3XH4xHwd4=;
+	b=O6ztyx5HTPlGBvNEiQ+PGyYnXbg+D8RJgzUuc1Aitw0+MEtMFyTXg968OBcuIMyjBSkmRP
+	T8+xMh+scCWtfKAIKNkqxjCfjJOQjG9LpOEPeds7jxq7UCI0X0qBXswJqloJYuORmdb5Gz
+	U2d6QXowb2Fn0Z86K1AJDS7WiPStk2w=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-16-F_x5ZY2UPrC8WcbQNozkOw-1; Fri, 04 Sep 2026 11:36:49 -0400
-X-MC-Unique: F_x5ZY2UPrC8WcbQNozkOw-1
-X-Mimecast-MFC-AGG-ID: F_x5ZY2UPrC8WcbQNozkOw_1788536208
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-484362cb000so796503f8f.0
-        for <kvm@vger.kernel.org>; Fri, 04 Sep 2026 08:36:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788536208; cv=none;
+ us-mta-355-4jLJbLTdPLWLylcV4qo0nQ-1; Fri, 04 Sep 2026 11:37:29 -0400
+X-MC-Unique: 4jLJbLTdPLWLylcV4qo0nQ-1
+X-Mimecast-MFC-AGG-ID: 4jLJbLTdPLWLylcV4qo0nQ_1788536249
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-495569acf8dso7593385e9.1
+        for <kvm@vger.kernel.org>; Fri, 04 Sep 2026 08:37:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788536248; cv=none;
         d=google.com; s=arc-20260327;
-        b=ZKt6ZoM+Bo+L0eJipxnP97iXz5GIKLZcLY6v81MgBYpycCZzlzmnN09IFeL7CLUNF0
-         EoZtpBN9IULN+sHXe9nZVh57Sfa+xEWiJPsrlZNr+J0ho5CUcCgY5bCfCg1dFpnyx2Z6
-         ljtRVuduE/QInrhlmtR1PuNQDDvcIE+Q9idX7uhoYHGrY9ssa77S1l2FTvLGpXbdgu3O
-         AWLG7KQ1ew4O/lJjv5bnd2LUFwylInNISI71NOrHqe4aWteU7FLgmlQ2/C6GHIRNPVhq
-         qmaL9WPT4+MPIkYObWYKreAMdNlj8t8Gg98BsKiiXqSE1YpnAbIo1ZYVtOe6yHGLaMaD
-         xsRQ==
+        b=PBLBsx6K5/bbM2kdgBDzO6aeznqHU2IIL2WQ4CFNDO95qvVL1+Ljj2iAomCb6odms6
+         WQaN8SCUvxtCSCyk/vWe9nMbXM3mX2jU7XnYhoFMnhwKpO3ITYGhxiellqDZWV8U2xNC
+         xjDe8hz95/dV9SbMgO5aVNXYNNpXRlPhpThy6hySfAPaWSgfkV/hATSmvCO0rjg4Rlxx
+         dFXEZeArQmnFguFe4+AkK7I+rzx67fIOHjFUuZXbaygyT2XXUUqONL/1wyem7EV1fXv8
+         Ru55nvfGu3xxQ0BJmS5DQ2nZs2SOLz/9HbERxgU7fgtsPazy+svdj3iBDxk/52Gb+vyd
+         Xm/Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=UhUfCEAvWX3HQ4TKnpOsQaNeGPkBhU8moeSBLrDZbeE=;
-        fh=5Lw/HGKJ+8zJXISiApHzH9cgJ56F3WHZbEDIJ+izNqs=;
-        b=ZD+D4mLESCFUTBb7XBap8WxYFKaoIqtdyYK7ArSQlMffyF1TxcX9AnG6DXpqL1UFbN
-         xSYBreScFeG3ieVfmWEpHVpeuEybtvhtg9+FiHCff8g9gpfetnB6kxvAdmEz/vtN/tbL
-         8NbfrRl2iCT2S931p5TJpU1LuFFuwNs5qCVa8cSY7RMrO31pSAcKaV6kYGi6FE9NpWWk
-         UlBMsc2QngRG/Q1bNs6XB3wZ9ws/oVjMIMQVCHiRlsrHyw+so7YAilIt6HBhl7xRL94/
-         oSDYuX5pzIJrirpgpMOLuIEMA7hIHm1F3EguG/oYiJ1GFYaEhc+7GNd90rsUUk5Qr22e
-         lNGw==;
+        bh=rrK07pcEfzHDfc8s9dAeUAxX5iBfU+4JJI3XH4xHwd4=;
+        fh=3sk59ukVivFBWCnKHotH8vn2Cqv5XsUG2G6NvdGlfG4=;
+        b=Xhp6yuQnSvHZcSnfi6vEc85XaaxFxo8S/LwEJUVyGD8oRkS1SAFVdpGyOzQOoxUM1S
+         xr85+tw6v2bSMyffwWTREt5nifrvVqdneWbhQjqsPDBdTRCx2NOQ6yzzTTlobA+lxymY
+         9Hewj5TIVN50VM5dDyLwKlP9B+9XgnmV6eXetuwJOdDKg4kl+6Ig1OocvfOFBxNDkl0Q
+         gKfHVKRUhyvPocEWInCNFnXuF3kriGs29Prn8q8TVzA2ONjdcRmtT3rK+aqcYD3GF8TJ
+         aGXjrXBrmswMf3nwsEvq+KHAYi2dd8yeQGulWPwkXtBlF3jCrQsIO78r3aSUdcDiM7Wf
+         hUAg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788536208; x=1789141008; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1788536248; x=1789141048; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=UhUfCEAvWX3HQ4TKnpOsQaNeGPkBhU8moeSBLrDZbeE=;
-        b=eO/wWNUtNTyaAQsu4ON53RQOyGfTC7N3dEhhsJmLvvUxr/nyjJtd9XcAWiFARKdKqq
-         iQbcaUKGE3su/Z9vddix+Zl4kQtB8uoPlx9dLWDT5NWzj3sYuFKPYJma3C+2emX98jat
-         BUiyeO+FCYGi407GzDuAwk1ZEFrMdHCfsneUDq7ViaWq9+rv8qVVTVQt00Lc1fWZ3yjf
-         QEphYiKXQurHdghIPRstOzzupt1O3iiXKWfGbFUeloxCOn5/NgfkrwQcd4cD/0vpcNwP
-         uhw9l/ctYEzo3dJkjzTuXPhsgJcIpc79N6lFYbwDXxz8ULs9MG6V7WltZYzshvFUfRP0
-         Dh0A==
+        bh=rrK07pcEfzHDfc8s9dAeUAxX5iBfU+4JJI3XH4xHwd4=;
+        b=KQ2d/QrsoL1mKs3o9CNAIkCZwP7sOlNuKP11sfuv2c/zzIj3Xx99RhYNmRtnh/KV4N
+         Yxoj688aFpWtuvq+DxZ9nfo3se09bdmW77HhLnyKoUqDAoUJLW/A/N75esf4goPvxz0B
+         3Mkqe2OqoubvG9mZ60QpGLPLG1WEjez8A49LefC3mYcS54SK1d6YCM1wg1mxyowbbalS
+         LMw30Hne/v5wQBEdADkn7odaJvyIU7UHWEG0czDW81vlFxfVd2E4z4b3uh/KdZ4bNEbq
+         TZ6UZjg1UT1d3bISfdYu1cRVB6eNhqnawxPFqE95cZIaj4RqKbk3YOChr97KiSs7G5vz
+         ndiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788536208; x=1789141008;
+        d=1e100.net; s=20251104; t=1788536248; x=1789141048;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=UhUfCEAvWX3HQ4TKnpOsQaNeGPkBhU8moeSBLrDZbeE=;
-        b=gxRjUq3FQCJrnZfUTqYV6oe1ApyxVSdwhRL9lkueoarUGCvj/M8/JSUDl8tho2QVHd
-         uuX4kzh2qqxGTvPoJhOoaMbyld+a6GMNt2hTn/lww35l+as0ZFWAllQMv5RGW1s0bBg4
-         qYiJEcPZ1clUWroMVaL8dY5Y6GRmOqDQGVAc+ovro/4+4QBK7DAEcAoIVTBSlBlC9RKl
-         /7T7VeVeyibqcShpySK+xMzg+EBFeIVQsY5vyytis7v71tvben53Tz3x6bZyXeK6nSeo
-         wrOGz/zg+pG4kR3kqujE6dtQ6jja7wJ6qjzAuUr7hfoIzeOunGaRp4mJrW728RXWTUFA
-         h5nA==
-X-Gm-Message-State: AFuF++kjeopkSk9d+Z7Lkt1QWm6LnXoHRZ6vPako0gCVHDMhYT74Qi2r
-	1oK3XoLdWLU5j0Txdrhbd7DxNP0l9pulp/Eh4Uj7VpezUECpFWkFnf3CpK2G4USlzxFjWPRFXls
-	hGbO9Y65yuvQDjgTM1tRlj+7h08VakFzMTzbSLlj7TfWtDk1iKRfGNbLgWI3rT18H0rYs9bbGHc
-	K6BMu41XJeKTmGHdWMJnPkQuqxIU+f
-X-Gm-Gg: AYBFou3j5k1SVr1lQZRqnwbDvoZ+jr6AajtZLG/OTdkLrPBjgS7ztjBGjIc1CC+2xSd
-	jCfZUIea2UqK2/n5L5Mr6dOEaP7yO7voXYQTO6RJ65Mv4vQw2SxrrKwBi2cIXPspeeOxBgnNxVp
-	8lwkQWEctlFx/s3rM+FUXDsUKrMerKUI861I5em5JgE9s59uwFotgSDYQ84E85SzWUHt32y9xWT
-	mhim/ZtNpL2Q/R0+mPQVq31EGl3LBkLqqhEsYNtl0+caZmUunuhcfcap+2QIA==
-X-Received: by 2002:a05:6000:4105:b0:485:8226:c694 with SMTP id ffacd0b85a97d-4858226c967mr11829098f8f.19.1788536208211;
-        Fri, 04 Sep 2026 08:36:48 -0700 (PDT)
-X-Received: by 2002:a05:6000:4105:b0:485:8226:c694 with SMTP id
- ffacd0b85a97d-4858226c967mr11829033f8f.19.1788536207632; Fri, 04 Sep 2026
- 08:36:47 -0700 (PDT)
+        bh=rrK07pcEfzHDfc8s9dAeUAxX5iBfU+4JJI3XH4xHwd4=;
+        b=HnqutEdGNYMa4sBDgc58KCthUrM8KrMBONMmeiB/BjprF4BvsUoxq3ikEjHkXknTrf
+         grupWzcLfpiToo9tE5U1HsjlB74TNu4gE8PI8w6J9fdQRoaRqaLq60OUC1yhogGSEqbp
+         8VSXwfEEZ/VSzSEO+xXf7YEwJh8Itly+64lQJ+XVqEP1dQVL4+UiOIFk425rg/j6BOMo
+         fmmDTJqAqtd9s0XLSzevjnhda+2zHk7hw6i3Twi3b3gbFUlukYzb4KBLWSDeDQuSkeiH
+         t8mQgQ0yzkrkLpA3gZedFOCfojF6Xdg85vjScz0gWION+VJxEl6hm5rRnIaPxoE6xAgF
+         Ff/g==
+X-Forwarded-Encrypted: i=1; AKwUvBzWtdstpMCdR1xA2DXF6Fy5HA/yT3R0glIk0WlluYbiJjoMCL1mK5nOclOKubFfsz4YC9I=@vger.kernel.org
+X-Gm-Message-State: AFuF++nQed6GX+L/9kfGsJzZMXybs8PIjhnnOlfEY+wRr44MDKsdGFIr
+	9Fo4PqRXxYvZ+ciWEhktkLvjgG9JquWbFHvU3Pu6AuKFlUzBnSom67mfnz9PWWzGH/tohGHQLng
+	Vx6fhjITy13onmItOswHXpN+zel2m6WLZ9/fmAqzgfkzoa/7ZhRB4LcSLV/UXFx7UmxmeE4XRGD
+	WaoqdBlHU8of4Qvnige/5BQfzeS+oJ
+X-Gm-Gg: AYBFou3pXW+ovTu/uSYqA9xJudeX2xfMmWTaXj9lVI0z/CNS282wmGXhqE2XqmmJbO+
+	bp3hElBctl+zD5AgPzNfUolQfHNYWqsrE0VOa+5ywTgMCe3dylWHIXucG6dK/tJCYWqU+SPRsxV
+	zA1NYevmYoktDx2354XJrESP/cdXIYuO0HPJPOtkS2qYn5ZUWUs22OsO/Fs8G6Ht9Q0VUU0M1vX
+	4XpISBwooYWmlnQiADjfw7rL98Nyrxv7cB4c0uKaMhBiEC4Zs8Afrz1Tcd5lQ==
+X-Received: by 2002:a05:600c:468b:b0:49b:9105:cdaf with SMTP id 5b1f17b1804b1-49cf8214eaemr97285975e9.8.1788536248623;
+        Fri, 04 Sep 2026 08:37:28 -0700 (PDT)
+X-Received: by 2002:a05:600c:468b:b0:49b:9105:cdaf with SMTP id
+ 5b1f17b1804b1-49cf8214eaemr97285005e9.8.1788536248224; Fri, 04 Sep 2026
+ 08:37:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260904060647.562443-1-imbrenda@linux.ibm.com>
-In-Reply-To: <20260904060647.562443-1-imbrenda@linux.ibm.com>
+References: <20260831213632.81023-1-dwmw2@infradead.org>
+In-Reply-To: <20260831213632.81023-1-dwmw2@infradead.org>
 From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 4 Sep 2026 17:36:28 +0200
-X-Gm-Features: AcwNN1UM7o-vZcW8Wc3wn3D5DYydTSSdA81i2MBw2kUOwZogbcxlqjZ4yCZ7sPI
-Message-ID: <CABgObfZ1E2+-KmM=dGm8S=jLX1vWb_qrFg00xt4u3VB94EzmRA@mail.gmail.com>
-Subject: Re: [GIT PULL v1 00/11] KVM: s390: Misc fixes
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com, 
-	borntraeger@de.ibm.com
+Date: Fri, 4 Sep 2026 17:37:08 +0200
+X-Gm-Features: AcwNN1XbrXQRdBqaPVwlG8lJe2LjPmHbNMIXKEiTmO74fasedEPvKI1EXe7LwZE
+Message-ID: <CABgObfYgYrjf2xbvyvLVmX0iJgUjoZ4N84aNiBgW9_oshaSh5A@mail.gmail.com>
+Subject: Re: [PATCH v3 0/13] KVM: x86/xen: Bug fixes and long_mode cleanup
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: seanjc@google.com, paul@xen.org, joao.m.martins@oracle.com, 
+	boris.ostrovsky@oracle.com, ankur.a.arora@oracle.com, tglx@kernel.org, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
+	x86@kernel.org, syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com, 
+	syzkaller-bugs@googlegroups.com, suryasaimadhu369@gmail.com, lkp@intel.com, 
+	nicoyip.dev@gmail.com, frn1furkan10@gmail.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, imv4bel@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 4, 2026 at 8:07=E2=80=AFAM Claudio Imbrenda <imbrenda@linux.ibm=
-.com> wrote:
+On Mon, Aug 31, 2026 at 11:36=E2=80=AFPM David Woodhouse <dwmw2@infradead.o=
+rg> wrote:
 >
-> Ciao Paolo,
->
-> Here you have a bunch of fixes to bugs found in the past few weeks.
+> Clean up the handling of vcpu->arch.xen.long_mode to be consistent and
+> correctly handle 32-bit/64-bit alignment. And various other bug fixes
+> that have accumulated over the months since v1.
 
-Pulled, thanks.
+Applied to kvm/next, thanks.
 
 Paolo
 
+> v3:
+>  - Rebase onto kvm/next (7.3 merge window).
+>  - Add poll_evtchn READ_ONCE/WRITE_ONCE annotation (Chengfeng Ye).
+>  - Add evtchn_ports IDR to XArray conversion (Furkan Caliskan).
 >
+> v2: https://lore.kernel.org/all/20260811094829.98794-1-dwmw2@infradead.or=
+g/
+>  - Take kvm->srcu in __kvm_xen_has_interrupt().
+>  - Add dedicated invalidation sequence for HVA-based caches.
+>  - Take Sean's version of the 32-bit atomics patch, and his follow-up
+>    replacing the remaining asm blobs with atomic*() APIs.
+>  - Use GEN_BINARY_RMWcc() rather than open-coding the btsl.
+>  - Explain why the pending_bits access in kvm_xen_set_evtchn_fast() does
+>    not need the same treatment as the vcpu_info one (it is in the page
+>    aligned per-VM shared_info).
+>  - Don't require 8-byte alignment of vcpu_info in 64-bit mode; always
+>    accept 4-byte alignment, so as not to break migration of guests which
+>    registered while in 32-bit mode.
+>  - Add Closes: links for the reported issues.
+>  - Cast to u64 before the >> 32 in the unaligned evtchn_pending_sel
+>    handling; evtchn_pending_sel is unsigned long, so the shift was
+>    undefined on 32-bit even though the branch is unreachable there
+>    (kernel test robot).
+>  - Rebase onto kvm-x86/next; the mode-aware kvm_<reg>_read() helpers whic=
+h
+>    landed in the meantime subsume most of what patch 1 was doing by hand.
 >
-> Anthony Krowiak (1):
->   s390/vfio-ap: fix KVM GISC and page leak when queue removed from host
->     config
+> v1: https://lore.kernel.org/all/20260605143034.3603-1-dwmw2@infradead.org=
+/
 >
-> Claudio Imbrenda (8):
->   KVM: s390: Fix dirty marking in adapter_indicators_set*()
->   KVM: s390: Fix compile warning for kvm_s390_update_cmma_dirty()
->   KVM: s390: Fix _gaccess_shadow_fault()
->   KVM: s390: Refactor dat_set_slot()
->   KVM: s390: Move all code into s390_kvm_mmu_prepare_memory_region()
->   KVM: s390: Add missing srcu in kvm_s390_set_irq_state()
->   KVM: s390: Fix potential races in dat skey functions
->   KVM: s390: Fix race in _destroy_pages_crste()
+> Chengfeng Ye (1):
+>       KVM: x86/xen: Mark poll_evtchn accesses with READ_ONCE()/WRITE_ONCE=
+()
 >
-> Steffen Eiden (2):
->   s390/uv: Fix loop condition in uv_find_secrets
->   s390/uv: Prevent potential out-of-bounds read
+> David Woodhouse (8):
+>       KVM: x86/xen: Rename 'longmode' to 'is_64bit' in hypercall handling
+>       KVM: x86/xen: Introduce kvm_xen_has_64bit_shinfo() macro
+>       KVM: x86/xen: Rename max_evtchn_port() to kvm_max_evtchn_port()
+>       KVM: x86/xen: Latch shinfo mode in kvm_xen_schedop_poll()
+>       KVM: x86/xen: Enforce 4-byte alignment of vcpu_info registration
+>       KVM: x86/xen: Use 32-bit locked bts for vcpu_info evtchn_pending_se=
+l
+>       KVM: x86/xen: Take kvm->srcu in __kvm_xen_has_interrupt()
+>       KVM: pfncache: use a dedicated invalidation sequence for cache refr=
+esh
 >
->  arch/s390/kernel/uv.c             |  8 ++-
->  arch/s390/kvm/gmap/dat.c          | 65 ++++++++++++----------
->  arch/s390/kvm/gmap/dat.h          | 10 ++--
->  arch/s390/kvm/gmap/gmap.c         |  6 +-
->  arch/s390/kvm/gmap/kvm_mmu.c      | 91 +++++++++++++------------------
->  arch/s390/kvm/gmap/kvm_mmu.h      |  4 --
->  arch/s390/kvm/s390/gaccess.c      | 13 +++++
->  arch/s390/kvm/s390/interrupt.c    | 79 ++++++++++++++-------------
->  arch/s390/kvm/s390/s390.c         |  3 +-
->  arch/s390/kvm/s390/s390.h         |  2 +-
->  drivers/s390/crypto/vfio_ap_ops.c | 18 ++++--
->  11 files changed, 156 insertions(+), 143 deletions(-)
+> Furkan Caliskan (1):
+>       KVM: x86/xen: Convert evtchn_ports from IDR to XArray
 >
-> --
-> 2.55.0
+> Hyunwoo Kim (1):
+>       KVM: x86/xen: Latch shinfo mode in kvm_xen_set_evtchn_fast()
 >
-> The following changes since commit 786262be6048deab760f68c8acc2c856071658=
-94:
+> Sean Christopherson (2):
+>       KVM: x86/xen: Use 32-bit atomics if vCPU's evtchn_pending_sel isn't=
+ aligned
+>       KVM: x86/xen: Use atomic*() APIs instead of open coded equivalents
 >
->   Merge tag 'edac_updates_for_v7.3_rc2' of git://git.kernel.org/pub/scm/l=
-inux/kernel/git/ras/ras (2026-08-31 20:10:39 -0700)
->
-> are available in the Git repository at:
->
->   https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git tags/=
-kvm-s390-master-7.3-1
->
-> for you to fetch changes up to f47190b08b71e8482072978373ee88cb2dfbdaf4:
->
->   s390/uv: Prevent potential out-of-bounds read (2026-09-02 18:50:42 +020=
-0)
->
-> ----------------------------------------------------------------
-> KVM: s390: Misc fixes
->
-> A bunch of fixes to bugs found in the past weeks.
->
-> ----------------------------------------------------------------
-> Anthony Krowiak (1):
->       s390/vfio-ap: fix KVM GISC and page leak when queue removed from ho=
-st config
->
-> Claudio Imbrenda (8):
->       KVM: s390: Fix dirty marking in adapter_indicators_set*()
->       KVM: s390: Fix compile warning for kvm_s390_update_cmma_dirty()
->       KVM: s390: Fix _gaccess_shadow_fault()
->       KVM: s390: Refactor dat_set_slot()
->       KVM: s390: Move all code into s390_kvm_mmu_prepare_memory_region()
->       KVM: s390: Add missing srcu in kvm_s390_set_irq_state()
->       KVM: s390: Fix potential races in dat skey functions
->       KVM: s390: Fix race in _destroy_pages_crste()
->
-> Steffen Eiden (2):
->       s390/uv: Fix loop condition in uv_find_secrets
->       s390/uv: Prevent potential out-of-bounds read
->
->  arch/s390/kernel/uv.c             |  8 ++--
->  arch/s390/kvm/gmap/dat.c          | 65 ++++++++++++++++------------
->  arch/s390/kvm/gmap/dat.h          | 10 ++---
->  arch/s390/kvm/gmap/gmap.c         |  6 ++-
->  arch/s390/kvm/gmap/kvm_mmu.c      | 91 ++++++++++++++++-----------------=
+>  arch/x86/include/asm/kvm_host.h |   3 +-
+>  arch/x86/kvm/xen.c              | 212 ++++++++++++++++++++++++----------=
 ------
->  arch/s390/kvm/gmap/kvm_mmu.h      |  4 --
->  arch/s390/kvm/s390/gaccess.c      | 13 ++++++
->  arch/s390/kvm/s390/interrupt.c    | 79 ++++++++++++++++-----------------
->  arch/s390/kvm/s390/s390.c         |  3 +-
->  arch/s390/kvm/s390/s390.h         |  2 +-
->  drivers/s390/crypto/vfio_ap_ops.c | 18 ++++++--
->  11 files changed, 156 insertions(+), 143 deletions(-)
+>  arch/x86/kvm/xen.h              |   5 +
+>  include/linux/kvm_host.h        |   2 +
+>  virt/kvm/kvm_main.c             |  10 ++
+>  virt/kvm/pfncache.c             |  18 ++--
+>  6 files changed, 157 insertions(+), 93 deletions(-)
 >
 
