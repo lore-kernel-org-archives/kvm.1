@@ -1,56 +1,56 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE8936A369
-	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 01:03:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC6336EAAE
+	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 01:04:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788483841; cv=none; b=EieFjyH56TxLwx5+gBRA/yfZC+9bqMXvS7jYxwUV28vup15oPpSUhX9Bc7sIyOasxsmH0fCNFADcoWxGO+lCiQ1pCXvp23AZOry2ZSO/BBGTe00BMRXvqfO4iIt+NWkQ803SBLTWqaKqb0L1gXJTb9icD/agtBVq2J6rejTyuWY=
+	t=1788483843; cv=none; b=diW8RTy8c+c8ZB2i9AlsgzgGq++5tILNpmIVr0lrfu10Dy7soaLzEEke0+i6gvhVAQDo/832YlAl7T0u2o3s3QtIRKMmxp545ujsHEEZ/lWJaAPJPn1lkHMLQCbeD6+X8lmo8Q+SmppwSvf9iVxy1L6whOsdAHzMoOOz96UMEMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788483841; c=relaxed/simple;
-	bh=hmPFoHDi198piLc+Mjunw9WTBgvQgwN+OdxP0ZAXmZM=;
+	s=arc-20240116; t=1788483843; c=relaxed/simple;
+	bh=EQ3dbwkw2ZVaT4L6zDjc0l81bhCdrmVdynWqbJE1BzA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BHf2D/FMCookSVmwnJTNLHNXb8NXhl2CJNjw/dOaDsNKFLRybLzLOLsohgOzH1inFSt5czzjeTZnzQLtdagF2neOM/6ljE+NUBtvokZG4R6HwBIx+M+OQzwagrNTBL+eM7GDgxQPHHWrlI6RjOwoxkxfWV3LxXzqwjkgmsmF6aA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gWPbUp10; arc=none smtp.client-ip=209.85.214.197
+	 To:Cc:Content-Type; b=X6q6ro4ITNjSFlfXiMahU+sBjWVu6Dx1ERu9Wx2X8i2iwLoVVwQcZReXPMXydayjX0fA5VpMDUEdQE2JQX2IK4If+M7pE00P4hqVTn0Dop8ox0SD6Vw/sSiW38W1l+m1PQyvC3eygS02Uw/nuLzN3WGkkzC+rsQZMOsh7p/kSQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jejQv9jg; arc=none smtp.client-ip=209.85.214.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gWPbUp10"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d9057fab9eso7762985ad.1
-        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 18:03:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jejQv9jg"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2ccb687f82eso5688065ad.3
+        for <kvm@vger.kernel.org>; Thu, 03 Sep 2026 18:04:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788483839; x=1789088639; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788483840; x=1789088640; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=vSlMjq8tWu4P44mUn9mh71lQHrhgq0jSndGTEJFOM2U=;
-        b=gWPbUp1039zmHORJOqcwMvVebpdAXtNWuTeyLzADJPmk9trTgoFYUMF9Mt7pMCMP9j
-         UAH+S92LXxo2hTBQfrcgHrtVCQFpZHJX/IbooDblMi/xYtSjZmWmi4izS6X95Gffsank
-         yd236VEddxa65FuIHhEWZvsM08Qe9QcriMUXDMO5lf3MZGc4J4mNolbpqJhWAuO9R8/n
-         cyGxc868kbKThAI4jPHHtvFAjKjO1/p02x9riogbnH1YcwlModWn/zh4/vR6W6hUy0cM
-         5o+eAyfPEvGZLhvaYPAIFmdN8PQ8NkEqRn6oEpM27cVFamWJPsd3X8LJ0XIr82DKkCKB
-         dn9g==
+        bh=5Vh90jg/qeVICJkXqkXI15uK7I8LepvFnP71xWR+wIU=;
+        b=jejQv9jg8N4Ohtl00tpw1vP/QXZGvzcrp6Z5KOQkLJy2ql6UY5wMHueKJEKX7zRs9o
+         jeShEuW3eQZ620eMC5LmxiVCA5rdnpS6073rt1tHI5v0d7rUaDG/8q3pxm4Z+tvSMj0D
+         zI5onLwakJ7mJp5kkAW0dQ2DfoTh7t5vRNAU3KcwBqad2DNPeJhmteZHWgeYFNFa7KS3
+         +Pfok/KjgxHegEGCFdHIOPQXJm7GyhHmVnVYbwj6l5dKseEvurr9C2FIzoVNBkCmZM8P
+         F/y173mhvVHjpE+fdt36b2pp34j3r4oCUQBaZkW80MYKIicwSFkUzsmAHhPDC6JLIzS0
+         mlJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788483839; x=1789088639;
+        d=1e100.net; s=20251104; t=1788483840; x=1789088640;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=vSlMjq8tWu4P44mUn9mh71lQHrhgq0jSndGTEJFOM2U=;
-        b=aeAqr9HmPjhTuj4G2MMSVdjSLJNgoWhsNEihFCe4MnUxIvIaRcK4VaoUbRZgXzbWdy
-         YZoIRkhYHx1W9fxCjfNP9dMgHCjKNCbyOWE1k0AtfwaA21jIKQrKLn+VGow+A4SJV1RT
-         Eh5GCgStd8dC2ApW07LhueXb6bIK6vxUfl1SS5n8cCB2Wb+OcCjtTLThYrdKUoKnmmSd
-         uKjW0s2Rp5VBBKjbWQQjzjYufGlVCJyxiiNQUCtMydhagIlzCdfRFZ0Dy9RntwmrZsV6
-         9Q1ZHU2scPYpi/Pq5+ywKM8WNo64pWMnUT3JsL/ebdIv97WMdXdFn+6/5DBVKxo3C9OF
-         LGPA==
-X-Gm-Message-State: AFuF++n5j0xsSQnKRQibwlCGSep/eEuynI1ksIE/13WLtL4D0Yp21tch
-	X0j86RWqSGfO80RfUdikKF9sxet8NSW25f7PnPs11fOYzozN9IaGh65UEtyHUZ06qIKuVWgvMCQ
-	+fCBkQQ==
-X-Received: from plei1.prod.google.com ([2002:a17:902:e481:b0:2ce:9b92:ec60])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:468d:b0:2d9:56d8:75f
- with SMTP id d9443c01a7336-2db1266772dmr44885415ad.9.1788483838837; Thu, 03
- Sep 2026 18:03:58 -0700 (PDT)
+        bh=5Vh90jg/qeVICJkXqkXI15uK7I8LepvFnP71xWR+wIU=;
+        b=K8iKBgaXlmy5+5cwea62tyEw34w7mrZy/QZeB3NjUuGD4b3BNf8OeQWac5pvVOgWp8
+         /404lXkakzUo0ym6jFTQecZfPJ3gyXRgB5Sws7v0AmX8TQIeao3JjwG0xd2tXSogRBuV
+         N/96Ecfq2v0mbRt6/fZMuuev+TzoCcOVbWPXfqdQ9Hq7l4De8YtkJkZMwVNpQgtdOTve
+         ASHEjgMn87LsQRLWfPJkBC0D/IcVBj5rOVr7hiudQSBUh5IBbxOSSJEvwscsB7rz7Y3T
+         Y3ztkm4763atR4tgmmF1mw0KpBgyGaIlFIvuMPE9PCWrxmtgVkPO5ruyz8dD3MI0b83b
+         gD0g==
+X-Gm-Message-State: AFuF++nY+QP9oIzRVdc1YnKv1b5fqkRFYDbZ7c2quval8MxwsIFUaFwp
+	zqsghoLHeeNrOupj99M3F0mhgabBYiEbugXfIfYMuHpAanr71fPmMJNTSkIBSR7Dw/NP5oqCJUR
+	p6tpOlQ==
+X-Received: from pjbrs11.prod.google.com ([2002:a17:90b:2b8b:b0:381:27d7:fc1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3c05:b0:393:288:29e3
+ with SMTP id 98e67ed59e1d1-39b26106c44mr3970499a91.10.1788483839974; Thu, 03
+ Sep 2026 18:03:59 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  3 Sep 2026 18:03:48 -0700
+Date: Thu,  3 Sep 2026 18:03:49 -0700
 In-Reply-To: <20260904010353.3175819-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260904010353.3175819-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
-Message-ID: <20260904010353.3175819-4-seanjc@google.com>
-Subject: [PATCH v3 3/8] KVM: VMX: Move the shared NMI handler/trampoline to
- common code
+Message-ID: <20260904010353.3175819-5-seanjc@google.com>
+Subject: [PATCH v3 4/8] KVM: VMX: Rename posted interrupt prefixes from "vmx"
+ to "vt"
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -71,11 +71,8 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Yan Zhao <yan.y.zhao@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Move vmx_handle_nmi() to main.c to capture that it's a common handler and
-to allow guarding against incorrectly using to_vmx().
-
-Opportunistically use a "vt" prefix instead of "vmx" to communicate that
-it's a shared handler.
+Rename all common posted interrupt APIs that use a "vmx" prefix to instead
+use a "vt" prefix to capture that they are used for both VMX and TDX vCPUs.
 
 No functional change intended.
 
@@ -84,90 +81,204 @@ Reviewed-by: Kai Huang <kai.huang@intel.com>
 Tested-by: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/vmx/common.h |  2 +-
- arch/x86/kvm/vmx/main.c   | 11 +++++++++++
- arch/x86/kvm/vmx/tdx.c    |  2 +-
- arch/x86/kvm/vmx/vmx.c    | 13 +------------
- 4 files changed, 14 insertions(+), 14 deletions(-)
+ arch/x86/kvm/vmx/common.h      |  4 ++--
+ arch/x86/kvm/vmx/main.c        |  4 ++--
+ arch/x86/kvm/vmx/posted_intr.c | 22 +++++++++++-----------
+ arch/x86/kvm/vmx/posted_intr.h |  8 ++++----
+ arch/x86/kvm/vmx/tdx.c         |  6 +++---
+ arch/x86/kvm/vmx/vmx.c         |  6 +++---
+ 6 files changed, 25 insertions(+), 25 deletions(-)
 
 diff --git a/arch/x86/kvm/vmx/common.h b/arch/x86/kvm/vmx/common.h
-index 88f637c81353..4b1d46eafd0f 100644
+index 4b1d46eafd0f..ff4f6a2b6402 100644
 --- a/arch/x86/kvm/vmx/common.h
 +++ b/arch/x86/kvm/vmx/common.h
-@@ -189,6 +189,6 @@ static inline void __vmx_deliver_posted_interrupt(struct kvm_vcpu *vcpu,
- 	kvm_vcpu_trigger_posted_interrupt(vcpu, POSTED_INTR_VECTOR);
- }
- 
--noinstr void vmx_handle_nmi(struct kvm_vcpu *vcpu);
-+noinstr void vt_handle_nmi(struct kvm_vcpu *vcpu);
- 
- #endif /* __KVM_X86_VMX_COMMON_H */
+@@ -170,8 +170,8 @@ static inline void kvm_vcpu_trigger_posted_interrupt(struct kvm_vcpu *vcpu,
+  * Post an interrupt to a vCPU's PIR and trigger the vCPU to process the
+  * interrupt if necessary.
+  */
+-static inline void __vmx_deliver_posted_interrupt(struct kvm_vcpu *vcpu,
+-						  struct pi_desc *pi_desc, int vector)
++static inline void __vt_deliver_posted_interrupt(struct kvm_vcpu *vcpu,
++						 struct pi_desc *pi_desc, int vector)
+ {
+ 	if (pi_test_and_set_pir(vector, pi_desc))
+ 		return;
 diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index 9614f43e7987..b1069a8e30a7 100644
+index b1069a8e30a7..8ac6ea58b481 100644
 --- a/arch/x86/kvm/vmx/main.c
 +++ b/arch/x86/kvm/vmx/main.c
-@@ -947,6 +947,17 @@ static void vt_handle_exit_irqoff(struct kvm_vcpu *vcpu)
- 	}
+@@ -1086,8 +1086,8 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
+ 
+ 	.update_cpu_dirty_logging = vt_op(update_cpu_dirty_logging),
+ 
+-	.pi_update_irte = vmx_pi_update_irte,
+-	.pi_start_bypass = vmx_pi_start_bypass,
++	.pi_update_irte = vt_pi_update_irte,
++	.pi_start_bypass = vt_pi_start_bypass,
+ 
+ #ifdef CONFIG_X86_64
+ 	.set_hv_timer = vt_op(set_hv_timer),
+diff --git a/arch/x86/kvm/vmx/posted_intr.c b/arch/x86/kvm/vmx/posted_intr.c
+index 24221ba553be..2644add54b76 100644
+--- a/arch/x86/kvm/vmx/posted_intr.c
++++ b/arch/x86/kvm/vmx/posted_intr.c
+@@ -56,7 +56,7 @@ static int pi_try_set_control(struct pi_desc *pi_desc, u64 *pold, u64 new)
+ 	return 0;
  }
  
-+noinstr void vt_handle_nmi(struct kvm_vcpu *vcpu)
-+{
-+	if ((u16)vmx_get_exit_reason(vcpu).basic != EXIT_REASON_EXCEPTION_NMI ||
-+	    !is_nmi(vmx_get_intr_info(vcpu)))
-+		return;
-+
-+	kvm_before_interrupt(vcpu, KVM_HANDLING_NMI);
-+	x86_entry_from_kvm(EVENT_TYPE_NMI, NMI_VECTOR);
-+	kvm_after_interrupt(vcpu);
-+}
-+
- #define VMX_REQUIRED_APICV_INHIBITS				\
- 	(BIT(APICV_INHIBIT_REASON_DISABLED) |			\
- 	 BIT(APICV_INHIBIT_REASON_ABSENT) |			\
+-void vmx_vcpu_pi_load(struct kvm_vcpu *vcpu, int cpu)
++void vt_vcpu_pi_load(struct kvm_vcpu *vcpu, int cpu)
+ {
+ 	struct pi_desc *pi_desc = vcpu_to_pi_desc(vcpu);
+ 	struct vcpu_vt *vt = to_vt(vcpu);
+@@ -146,11 +146,11 @@ void vmx_vcpu_pi_load(struct kvm_vcpu *vcpu, int cpu)
+ 		pi_set_on(pi_desc);
+ }
+ 
+-static bool vmx_can_use_vtd_pi(struct kvm *kvm)
++static bool vt_can_use_vtd_pi(struct kvm *kvm)
+ {
+ 	/*
+ 	 * Note, reading the number of possible bypass IRQs can race with a
+-	 * bypass IRQ being attached to the VM.  vmx_pi_start_bypass() ensures
++	 * bypass IRQ being attached to the VM.  vt_pi_start_bypass() ensures
+ 	 * blockng vCPUs will see an elevated count or get KVM_REQ_UNBLOCK.
+ 	 */
+ 	return irqchip_in_kernel(kvm) && kvm_arch_has_irq_bypass() &&
+@@ -208,7 +208,7 @@ static void pi_enable_wakeup_handler(struct kvm_vcpu *vcpu)
+ 		__apic_send_IPI_self(POSTED_INTR_WAKEUP_VECTOR);
+ }
+ 
+-static bool vmx_needs_pi_wakeup(struct kvm_vcpu *vcpu)
++static bool vt_needs_pi_wakeup(struct kvm_vcpu *vcpu)
+ {
+ 	/*
+ 	 * The default posted interrupt vector does nothing when
+@@ -219,14 +219,14 @@ static bool vmx_needs_pi_wakeup(struct kvm_vcpu *vcpu)
+ 	 * back to the pi_wakeup_handler() function.
+ 	 */
+ 	return (vmx_can_use_ipiv(vcpu) && !is_td_vcpu(vcpu)) ||
+-		vmx_can_use_vtd_pi(vcpu->kvm);
++		vt_can_use_vtd_pi(vcpu->kvm);
+ }
+ 
+-void vmx_vcpu_pi_put(struct kvm_vcpu *vcpu)
++void vt_vcpu_pi_put(struct kvm_vcpu *vcpu)
+ {
+ 	struct pi_desc *pi_desc = vcpu_to_pi_desc(vcpu);
+ 
+-	if (!vmx_needs_pi_wakeup(vcpu))
++	if (!vt_needs_pi_wakeup(vcpu))
+ 		return;
+ 
+ 	/*
+@@ -294,17 +294,17 @@ bool pi_has_pending_interrupt(struct kvm_vcpu *vcpu)
+ /*
+  * Kick all vCPUs when the first possible bypass IRQ is attached to a VM, as
+  * blocking vCPUs may scheduled out without reconfiguring PID.NV to the wakeup
+- * vector, i.e. if the bypass IRQ came along after vmx_vcpu_pi_put().
++ * vector, i.e. if the bypass IRQ came along after vt_vcpu_pi_put().
+  */
+-void vmx_pi_start_bypass(struct kvm *kvm)
++void vt_pi_start_bypass(struct kvm *kvm)
+ {
+-	if (WARN_ON_ONCE(!vmx_can_use_vtd_pi(kvm)))
++	if (WARN_ON_ONCE(!vt_can_use_vtd_pi(kvm)))
+ 		return;
+ 
+ 	kvm_make_all_cpus_request(kvm, KVM_REQ_UNBLOCK);
+ }
+ 
+-int vmx_pi_update_irte(struct kvm_kernel_irqfd *irqfd, struct kvm *kvm,
++int vt_pi_update_irte(struct kvm_kernel_irqfd *irqfd, struct kvm *kvm,
+ 		       unsigned int host_irq, uint32_t guest_irq,
+ 		       struct kvm_vcpu *vcpu, u32 vector)
+ {
+diff --git a/arch/x86/kvm/vmx/posted_intr.h b/arch/x86/kvm/vmx/posted_intr.h
+index a4af39948cf0..c5860ea828ae 100644
+--- a/arch/x86/kvm/vmx/posted_intr.h
++++ b/arch/x86/kvm/vmx/posted_intr.h
+@@ -8,16 +8,16 @@
+ 
+ #include <asm/posted_intr.h>
+ 
+-void vmx_vcpu_pi_load(struct kvm_vcpu *vcpu, int cpu);
+-void vmx_vcpu_pi_put(struct kvm_vcpu *vcpu);
++void vt_vcpu_pi_load(struct kvm_vcpu *vcpu, int cpu);
++void vt_vcpu_pi_put(struct kvm_vcpu *vcpu);
+ void pi_wakeup_handler(void);
+ void __init pi_init_cpu(int cpu);
+ void pi_apicv_pre_state_restore(struct kvm_vcpu *vcpu);
+ bool pi_has_pending_interrupt(struct kvm_vcpu *vcpu);
+-int vmx_pi_update_irte(struct kvm_kernel_irqfd *irqfd, struct kvm *kvm,
++int vt_pi_update_irte(struct kvm_kernel_irqfd *irqfd, struct kvm *kvm,
+ 		       unsigned int host_irq, uint32_t guest_irq,
+ 		       struct kvm_vcpu *vcpu, u32 vector);
+-void vmx_pi_start_bypass(struct kvm *kvm);
++void vt_pi_start_bypass(struct kvm *kvm);
+ 
+ static inline int pi_find_highest_vector(struct pi_desc *pi_desc)
+ {
 diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index b272c20586a7..46b0e798f8b9 100644
+index 46b0e798f8b9..36578d4c00ff 100644
 --- a/arch/x86/kvm/vmx/tdx.c
 +++ b/arch/x86/kvm/vmx/tdx.c
-@@ -974,7 +974,7 @@ static noinstr void tdx_vcpu_enter_exit(struct kvm_vcpu *vcpu)
- 	tdx->exit_gpa = tdx->vp_enter_args.r8;
- 	vt->exit_intr_info = tdx->vp_enter_args.r9;
+@@ -716,7 +716,7 @@ void tdx_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+ {
+ 	struct vcpu_tdx *tdx = to_tdx(vcpu);
  
--	vmx_handle_nmi(vcpu);
-+	vt_handle_nmi(vcpu);
+-	vmx_vcpu_pi_load(vcpu, cpu);
++	vt_vcpu_pi_load(vcpu, cpu);
+ 	if (vcpu->cpu == cpu || !is_hkid_assigned(to_kvm_tdx(vcpu->kvm)))
+ 		return;
  
- 	guest_state_exit_irqoff();
+@@ -826,7 +826,7 @@ static void tdx_prepare_switch_to_host(struct kvm_vcpu *vcpu)
+ 
+ void tdx_vcpu_put(struct kvm_vcpu *vcpu)
+ {
+-	vmx_vcpu_pi_put(vcpu);
++	vt_vcpu_pi_put(vcpu);
+ 	tdx_prepare_switch_to_host(vcpu);
+ }
+ 
+@@ -1895,7 +1895,7 @@ void tdx_deliver_interrupt(struct kvm_lapic *apic, int delivery_mode,
+ 	struct vcpu_tdx *tdx = to_tdx(vcpu);
+ 
+ 	/* TDX supports only posted interrupt.  No lapic emulation. */
+-	__vmx_deliver_posted_interrupt(vcpu, &tdx->vt.pi_desc, vector);
++	__vt_deliver_posted_interrupt(vcpu, &tdx->vt.pi_desc, vector);
+ 
+ 	trace_kvm_apicv_accept_irq(vcpu->vcpu_id, delivery_mode, trig_mode, vector);
  }
 diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index adf2bc13bed2..a06dd2d77f10 100644
+index a06dd2d77f10..506be74e3e0f 100644
 --- a/arch/x86/kvm/vmx/vmx.c
 +++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7363,17 +7363,6 @@ static fastpath_t vmx_exit_handlers_fastpath(struct kvm_vcpu *vcpu,
- 	}
+@@ -1577,12 +1577,12 @@ void vmx_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+ 
+ 	vmx_vcpu_load_vmcs(vcpu, cpu);
+ 
+-	vmx_vcpu_pi_load(vcpu, cpu);
++	vt_vcpu_pi_load(vcpu, cpu);
  }
  
--noinstr void vmx_handle_nmi(struct kvm_vcpu *vcpu)
--{
--	if ((u16)vmx_get_exit_reason(vcpu).basic != EXIT_REASON_EXCEPTION_NMI ||
--	    !is_nmi(vmx_get_intr_info(vcpu)))
--		return;
--
--	kvm_before_interrupt(vcpu, KVM_HANDLING_NMI);
--	x86_entry_from_kvm(EVENT_TYPE_NMI, NMI_VECTOR);
--	kvm_after_interrupt(vcpu);
--}
--
- static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
- 					unsigned int flags)
+ void vmx_vcpu_put(struct kvm_vcpu *vcpu)
  {
-@@ -7406,7 +7395,7 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
- 	if (likely(!vmx_get_exit_reason(vcpu).failed_vmentry))
- 		vmx->idt_vectoring_info = vmcs_read32(IDT_VECTORING_INFO_FIELD);
+-	vmx_vcpu_pi_put(vcpu);
++	vt_vcpu_pi_put(vcpu);
  
--	vmx_handle_nmi(vcpu);
-+	vt_handle_nmi(vcpu);
+ 	vmx_prepare_switch_to_host(to_vmx(vcpu));
+ }
+@@ -4424,7 +4424,7 @@ static int vmx_deliver_posted_interrupt(struct kvm_vcpu *vcpu, int vector)
+ 	if (!vcpu->arch.apic->apicv_active)
+ 		return -1;
  
- out:
- 	guest_state_exit_irqoff();
+-	__vmx_deliver_posted_interrupt(vcpu, &vt->pi_desc, vector);
++	__vt_deliver_posted_interrupt(vcpu, &vt->pi_desc, vector);
+ 	return 0;
+ }
+ 
 -- 
 2.55.0.979.g7e5102b832-goog
 
