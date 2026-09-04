@@ -1,229 +1,191 @@
-Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81DC501F57
-	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 22:34:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788561275; cv=pass; b=Ptng/oKvAuqWa7XTimxQ7tJ1R4Uam+NS7STC53AlOvwGuzsXDdt6bEGd5M2V7ggg6Q0EBLVUbZbvMZUkMkaBhtJDFBbM1aBp7NzZtFbuvW5EdWs2iq9Y4ULt57e0qPPoYZQX24+p8mARRB+ZjHsZUztySxjxnZ/P+pIROtk7QGw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788561275; c=relaxed/simple;
-	bh=zQzEewI4ZvoZshQfZVFvWPcbJeYMDctnRHy7ajATikE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NmvdYuMEUR8TJiUCAScuRl06BhnKxxtnnNyMQ4P10Ce7KAfqn1Cq0pApXOhGgL0Zscppkq23vQT+nCaiVirsJNS2CgLXioZWV8vQ5MvYuqG3ccCWY2rFIqv4QXY0ZVA59+Sb+Ah+QUoPwkDaYrKjT0F5FJwjcs5fbq8jZeFBy8w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i5L5bfoR; arc=pass smtp.client-ip=74.125.228.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67494E8E08;
+	Fri,  4 Sep 2026 22:35:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788561343; cv=none; b=meL0tEE7LYCMN07Sjh46Ti9QWk+hPlRaDyi6q92yiGgVnIyCcrpHNAnPIgNNpNJbFpnpShUtnYRuc63+hluab/McnzK+q6iXGeXlX1403GCpxYwahSoJdgcO5yYUa2BJ0Aux2hxzEMxEw48D7QvGs9wBAVG+sIuPJIIOm+myjLk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788561343; c=relaxed/simple;
+	bh=1WHYw5fGJr1WmcN1NHRNZZEGmrXEGCksucSJyKzBMqY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tVivsybW6gmp7ToDImiF9bXORbmmiMw/T+m9UbZwidqx3qsraMszo4vc+nCVknzMGAagxmrJJfqkcl/i0HClvQ1h/QJe3WZZKcpG7MlwyQiQTP4siedNztC115+D+7DlLR6/IHL3JaeJQZCRwtKVGllyFhakWiiaL6/3cjaJzlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=g8rHID+l; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i5L5bfoR"
-Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a5d8fd8d8dso1228a12.1
-        for <kvm@vger.kernel.org>; Fri, 04 Sep 2026 15:34:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788561272; cv=none;
-        d=google.com; s=arc-20260327;
-        b=TDp1la2fB8p/Kl6aaf4x1VnbfHq7F/Cy6d3GEtzBAsnfEsOoAtBcinRxQ65+4hAXmq
-         DjwgcIaTj7WnmLzR5U0dK0Elea+HahnRCovSZABVLhIDnlq1e/8HKcGa5i3HgJbvTzWw
-         Oy1dOrbvE/17kAhaKRzO84BRIQCCnRiCKE9WiJM7WJI0O06INS0hUmxkZ8HdYwzl3vlO
-         0XBdhEuSweAYFCtgoXQjW0KHwaP+D0Sfk4McmsI1cj6NJvCAnzWrXHVvksSec5rs8x8o
-         DYcIufYbudh/+PV9bYUS29CZqVQ94u/WL5PrpIBEmB0WLfLTlHzxbg6nVg0sXZiXBugl
-         k6sw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vWyLFB322c+K8udyWMay6dKIPqFbfWlPPY8Vkro08BM=;
-        fh=99Ul+UKmRYuIeedfzFEWYJ/DI9fGFtvBZ7hujpViOEI=;
-        b=d5Rc+1A7l/qUqVAzbVz3LE5tPeH6E+SV+hgbGFmP1BkCbbwh6OAKdyRAhCDgglrLeY
-         OpvGiSNIu29lqEBhJlE6H91iDAyhC/IbeweQOC/IdaeVUZunRlE3UIEziHRZ+Soz9G9G
-         0yCALcUB4D602RFr67x2shcQIYPM3qKhzO7VJE46x+jORkzuIU5lK0zxoihPZqnn4Z9c
-         Pbh6+89QUTziJe2fVe61x76OaGSi2WYvLSyXYunTNKIceor17y/nXTO85IBFZJkqtuDE
-         S6YLu37vtBjrX2Km3pMMNR9HHroB7rwe0GEYNEuaVknGPlSWeiXHiuGByHv2po/hkEM7
-         ZSWQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788561272; x=1789166072; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=vWyLFB322c+K8udyWMay6dKIPqFbfWlPPY8Vkro08BM=;
-        b=i5L5bfoRS1hv4oOobsDflFsRUVPWpYm7PnaTb7K/SiND3QTD2asCSX6JMLk89t7gia
-         Et0q2++NrSbsAmKON8ON/J7DlxIFzHbIOSVzqm4bE5C+ntGaN0GNPMrSxm/2MJaE9wci
-         dhwnIFJm/hgGnFTmjB4AcV39R7IidOlxs81lxDxiS+OOxUizpmU0v/QWlE1IkvpBBNl6
-         rK8q9i0BKxUVGn2BkMYB7tyY4dQb44Y1ZGZyl90LEEmv8g36gL58GKeirCd919NuMg/w
-         9BzAVtdrjXjKhi+eXZ2UhWt+Z6VUu6P6eqZsUsls5GrXcGIMavLSeZMC6BrPb7tRMqo5
-         6UKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788561272; x=1789166072;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vWyLFB322c+K8udyWMay6dKIPqFbfWlPPY8Vkro08BM=;
-        b=BvZ6Q5PrWPA7EY0FRvzKfaZe4CjaAol4jlq7sYoil9DX6ZYPmGGuuR2jhEyr9I5DCX
-         FfURIxnUH+5QL2JBveqsbDmwIXOZD1Ob0CtgwD/L7Z3xt8fSDzuYqRshd2Xk9yyBQXW2
-         mdroMNo/3ZOVU3tLYdz88UzLEbHnyoMzIjl/UEZfdMgE5ykRHI4gZXH58o0h+4Zm0QvY
-         BqVd943mE9VEhDkm7tSI6eoEw52E8VQl/85JfuSmqZf3ps6beGkyOxtNsAzI+WNSk7Hl
-         SW6X+SfENZsQWEBw07lmY4lzcdi7Bm+DkDWBlVhEmhY7OfI8zq6SnEDduaVZl+qHcgks
-         hjzg==
-X-Forwarded-Encrypted: i=1; AKwUvBy4WenV1RY+Vo2VTmA2auQvDZSfh9QhBkE5+SmitIWaXmIcN9zqmpzBHEh4UtkIJMaG4lg=@vger.kernel.org
-X-Gm-Message-State: AFuF++kj/6SZVF+8//FmTQGZDu551+3RX2oZJRBDPM5UI56wrhJ+Ed2r
-	L87hl209HdgCE6q5NpaSXJVq3u+zG/zcc3R+PbmhQaFz6IKFH4TKhfK2Nvloilk9brVarjmoOkc
-	zX12iO9/SszPg3qhrkLAe9eFU0FM+WTIRUeWtO/fn
-X-Gm-Gg: AYBFou2O4bSiEGwIsi9PZHHBkp9lgycaVc3xc0d5jeIKs64ss2u3Jahl1slPtlkHN5r
-	S304S5y03JvJJ6XVPpHVBJxq4l0JdGcan3k/smIfHTNwyZgftLYkwskpJF7JqZKFN6xjRLMUv/I
-	sEvBKmVI5lHjReQ6gcvQwK1qMeMlQ0HFXiumL99XRjbQVqMC57IfFXXb/EqItmdZxN/cOozQGAk
-	vAkJsy9jyN4Ivlos+Hf6b+BtwV+l9IZhWTGQEHL+cjQ//xQ2zW+n+VcICSaN5VxkDM/mJ02ZSSv
-	nDASyDqtSe/84MSfEcFEQBRITMFaW3j4SyBbkkqnhWR+
-X-Received: by 2002:a05:6402:21c6:b0:6a6:96df:215b with SMTP id
- 4fb4d7f45d1cf-6a7f682710amr11857a12.14.1788561271594; Fri, 04 Sep 2026
- 15:34:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="g8rHID+l"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 684L1fXR939220;
+	Fri, 4 Sep 2026 22:35:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=/klnx6YMBQpIpE7BvIXtP/6jTEcl
+	eQ/oSzLymvi+VM0=; b=g8rHID+l3ZnZTj1xwB1nZ6+7U+TPNjCnY+lebj2X25qP
+	I7I2r5Fjj2JJBjveMp+d1LNl7bKOYaKad+kBgk6CtxNdU6YJDw7Rf38yfxiPkz27
+	2/3+cATIPAB9yn5cPNOowWIeyPcyqlL79aoKoUe6ys5BlEOZoK+ufqc0mDOPmNA8
+	fjjbzoDHdbpgILGhnmLYo+Cp0B+CsEz5KUk49Ardqf10q+wrS6WCy/zNboyVRdT1
+	swd2U+eM08z25b8Q5h3frNO1sIqylEy4tVC1c+Bed8EGCKk6MPr76lMKoepH3LcK
+	T9bcd0MSHO+TV6K2imQgDL4Yn3Pn6ed+nQmUu4AvqQ==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbq3rwkpp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 04 Sep 2026 22:35:35 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 684MQOAB011777;
+	Fri, 4 Sep 2026 22:35:34 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gecjb009j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 04 Sep 2026 22:35:34 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 684MZXSv1377188
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 4 Sep 2026 22:35:33 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E7A9658065;
+	Fri,  4 Sep 2026 22:35:32 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E211F58056;
+	Fri,  4 Sep 2026 22:35:31 +0000 (GMT)
+Received: from li-4c4c4544-004d-4810-8043-b7c04f423534.ibm.com.com (unknown [9.61.80.215])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  4 Sep 2026 22:35:31 +0000 (GMT)
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, mjrosato@linux.ibm.com,
+        pasic@linux.ibm.com, alex@shazbot.org, kwankhede@nvidia.com,
+        fiuczy@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, agordeev@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com
+Subject: [PATCH v7 0/6] s390/vfio-ap: Fix pre-existing bugs in vfio_ap device driver
+Date: Fri,  4 Sep 2026 18:35:25 -0400
+Message-ID: <20260904223531.1611088-1-akrowiak@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260824123954.315112-1-zhang_wei@open-hieco.net> <20260824123954.315112-2-zhang_wei@open-hieco.net>
-In-Reply-To: <20260824123954.315112-2-zhang_wei@open-hieco.net>
-From: Jim Mattson <jmattson@google.com>
-Date: Fri, 4 Sep 2026 15:34:19 -0700
-X-Gm-Features: AcwNN1W2CL3MX24WexOB2cU1f7wgDBrCrUSExLWQoABuDUy_PRYgrmgU2-Tp_bU
-Message-ID: <CALMp9eQoMn5BxXfu9ut5EZVGipfiZzbQz32mpi3TCjA6fA7jCw@mail.gmail.com>
-Subject: Re: [PATCH v5 1/8] KVM: x86: Add helper to provide intercept linear addresses
-To: Tina Zhang <zhang_wei@open-hieco.net>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, zhouyanjing@hygon.cn, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=EIc2FVZC c=1 sm=1 tr=0 ts=6a9b47b7 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=PgqzwkaAYJtpdSb6i4cA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA0MDIwOSBTYWx0ZWRfXwK0yc7cfiBH7
+ /HimqhcCdg3qQ51kxfTUt2AbHxlg1WA3fRnCbcycWksWzi2FLAIf4y04lEl6fw/qgVex690FQCY
+ cfNsuOqCnnBhcONeNRuhcHX/CVIz60DmVps6RxfsbKjU6Uw07XSSUdBNITlkGgZXHqL17xdthp2
+ V2IZgWIW3B4lenCSkaesAM7EZYM0xC13cCPnTMCSMXL13wi3mXx4VakaxLIBkbQkpmxUcufkvfs
+ uQ4rz4j7K7F8bGUiC2Ii8zX0UGe09WHsBSO4CKrl1rW2FsxwO+WgSak3lLd6LO6+zY0LHYhKi/S
+ ziqdJQkQF3lA98Dvns+ghMqH1tgFU0W3iQV+BPGoHfiZBf2bAQ7c76v/f4y6dyRxcguai4TRQTH
+ cE8PR6NcHFX8kO1hbdh935z6IDnQLcNkSFXKBW/FeR0kqgxujGDsCl0wJ9602n5r81dxDWtVqLN
+ BrMzPDEr/sOd5eZSkSA==
+X-Proofpoint-GUID: LKdd79r618bygc0k-CLaP89X4Pd-vciH
+X-Proofpoint-ORIG-GUID: LKdd79r618bygc0k-CLaP89X4Pd-vciH
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA0MDIwOSBTYWx0ZWRfX265A4gdb4MLa
+ +9cPrcWz8/9GkF63dMkDFIuZjn3TImk/Ri+QF/DxIOpwjOfHClsyPkkKZDwu37Vm7w9Tpn2wWp4
+ P937BF1N3d6x6rjL0wUvEdzq+CsJsNw=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-04_06,2026-09-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0 suspectscore=0 priorityscore=1501 clxscore=1015
+ phishscore=0 spamscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609040209
 
-On Mon, Aug 24, 2026 at 5:40=E2=80=AFAM Tina Zhang <zhang_wei@open-hieco.ne=
-t> wrote:
->
-> Add get_intercept_linear_addr() to compute the linear address for
-> intercepts that report one, and pass the result through
-> x86_instruction_info.
->
-> Handle INVLPG as the initial user.  INVLPG's memory operand is decoded
-> with NoAccess, and thus src_val does not contain the operand address.
-> Compute the address from the decoded segment base and effective address
-> in the emulator, where the operand state is available.
->
-> This allows intercept handlers to use the linear address directly
-> without duplicating the emulator's address calculation.
->
-> Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
-> ---
->  arch/x86/kvm/emulate.c     | 29 +++++++++++++++++++++--------
->  arch/x86/kvm/kvm_emulate.h |  1 +
->  2 files changed, 22 insertions(+), 8 deletions(-)
->
-> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-> index 8071b372d233..a0e57b64cadd 100644
-> --- a/arch/x86/kvm/emulate.c
-> +++ b/arch/x86/kvm/emulate.c
-> @@ -410,6 +410,26 @@ static int em_salc(struct x86_emulate_ctxt *ctxt)
->         _fault ? X86EMUL_UNHANDLEABLE : X86EMUL_CONTINUE; \
->  })
->
-> +static unsigned long seg_base(struct x86_emulate_ctxt *ctxt, int seg)
-> +{
-> +       if (ctxt->mode =3D=3D X86EMUL_MODE_PROT64 && seg < VCPU_SREG_FS)
-> +               return 0;
-> +
-> +       return ctxt->ops->get_cached_segment_base(ctxt, seg);
-> +}
-> +
-> +static u64 get_intercept_linear_addr(struct x86_emulate_ctxt *ctxt,
-> +                                    enum x86_intercept intercept)
-> +{
-> +       u64 la;
-> +
-> +       if (intercept !=3D x86_intercept_invlpg)
-> +               return 0;
-> +
-> +       la =3D seg_base(ctxt, ctxt->src.addr.mem.seg) + ctxt->src.addr.me=
-m.ea;
-> +       return ctxt->mode =3D=3D X86EMUL_MODE_PROT64 ? la : (u32)la;
-> +}
+The sashiko AI reported several pre-existing bugs in the vfio_ap device
+driver code while reviewing unrelated patches. This series fixes four
+such bugs.
 
-The linear address calculation here is replicated from __linearize().
-Perhaps something like:
+Change log v6 => v7:
+~~~~~~~~~~~~~~~~~~~
+Patch: s390/vfio-ap: fix queue state leakage to guest and host
 
-static u64 get_invlpg_linear_addr(struct x86_emulate_ctxt *ctxt)
-{
-        unsigned int max_size;
-        ulong linear;
+  apq_reset_check()
+  - Fixed missing closing brace on -EIO early-return block that
+    made the AP_RESET_MAX_WAIT timeout check unreachable.
+  - Introduced apq_reset_finalize() helper to copy the final
+    TAPQ status word to q->reset_status and set
+    q->reset_status.response_code to AP_RESPONSE_NORMAL only
+    when zeroization is confirmed (ret == 0). Replaces the
+    done: label and goto.
+  - Both pre-timeout and within-timeout completion paths now
+    call apq_reset_finalize() directly.
 
-        if (intercept !=3D x86_intercept_invlpg)
-                return 0;
+  apq_status_check()
+  - Signature changed from (int apqn, ...) to
+    (struct vfio_ap_queue *q, ...) to support ratelimited
+    warning reporting.
 
-        __linearize(ctxt, ctxt->src.addr.mem, &max_size, 1,
-ctxt->mode, &linear, X86EMUL_F_INVLPG);
-        return linear;
-}
+  vfio_ap_mdev_remove_queue()
+  - Removed post-lock fallback unbounded reset block that had
+    a use-after-free risk on q->matrix_mdev after
+    release_update_locks_for_mdev().
 
+Patch: s390/vfio-ap: replace guest-reachable WARNs with
+       ratelimited warnings and add dmesg visibility to DBF_WARNs
+       
+This is a new patch created in response to review comments of the
+v6 series.
 
+  vfio_ap_wait_for_irqclear()
+  - Signature changed from (int apqn) to
+    (struct vfio_ap_queue *q).
+  - Replaced WARN_ONCE calls with report_tapq_rc() and
+    report_irqclear_timeout().
 
->  static int emulator_check_intercept(struct x86_emulate_ctxt *ctxt,
->                                     enum x86_intercept intercept,
->                                     enum x86_intercept_stage stage)
-> @@ -427,6 +447,7 @@ static int emulator_check_intercept(struct x86_emulat=
-e_ctxt *ctxt,
->                 .src_type   =3D ctxt->src.type,
->                 .dst_type   =3D ctxt->dst.type,
->                 .ad_bytes   =3D ctxt->ad_bytes,
-> +               .intercept_linear_addr =3D get_intercept_linear_addr(ctxt=
-, intercept),
+  vfio_ap_irq_disable()
+  - Replaced three WARN_ONCE calls with
+    report_aqic_disable_error().
+  - Added AP_RESPONSE_STATE_CHANGE_IN_PROGRESS to retry case.
+  - Added AP_RESPONSE_INVALID_GISA,
+    AP_RESPONSE_ASSOC_SECRET_NOT_UNIQUE and
+    AP_RESPONSE_ASSOC_FAILED as explicit end_fail cases.
 
-Maybe:
-+               .invlpg_linear_addr =3D get_invlpg_linear_addr(ctxt, interc=
-ept),
+  vfio_ap_irq_enable()
+  - Added dev_warn_ratelimited() alongside each
+    VFIO_AP_DBF_WARN() call for dmesg visibility.
 
->                 .rip        =3D ctxt->eip,
->                 .next_rip   =3D ctxt->_eip,
->         };
-> @@ -520,14 +541,6 @@ static u32 desc_limit_scaled(struct desc_struct *des=
-c)
->         return desc->g ? (limit << 12) | 0xfff : limit;
->  }
->
-> -static unsigned long seg_base(struct x86_emulate_ctxt *ctxt, int seg)
-> -{
-> -       if (ctxt->mode =3D=3D X86EMUL_MODE_PROT64 && seg < VCPU_SREG_FS)
-> -               return 0;
-> -
-> -       return ctxt->ops->get_cached_segment_base(ctxt, seg);
-> -}
-> -
->  static int emulate_exception(struct x86_emulate_ctxt *ctxt, int vec,
->                              u32 error, bool valid)
->  {
-> diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
-> index 3e375af15c03..9eda648a1314 100644
-> --- a/arch/x86/kvm/kvm_emulate.h
-> +++ b/arch/x86/kvm/kvm_emulate.h
-> @@ -51,6 +51,7 @@ struct x86_instruction_info {
->         u8  src_type;           /* type of source operand               *=
-/
->         u8  dst_type;           /* type of destination operand          *=
-/
->         u8  ad_bytes;           /* size of src/dst address              *=
-/
-> +       u64 intercept_linear_addr;      /* arch-reported linear address, =
-if any */
+  handle_pqap()
+  - Added pr_warn_ratelimited() for AIV facility not installed
+    and hook not registered cases.
+  - Added dev_warn_ratelimited() for mdev not in use and queue
+    not bound cases.
 
-+       u64 invlpg_linear_addr;      /* linear address, if invlpg */
+  apq_status_check()
+  - Replaced WARN with report_tapq_rc().
 
->         u64 rip;                /* rip of the instruction               *=
-/
->         u64 next_rip;           /* rip following the instruction        *=
-/
->  };
->
-> base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
-> --
-> 2.43.7
->
+  vfio_ap_mdev_reset_queue()
+  - Replaced WARN with report_zapq_rc().
+  - Removed AP_RESPONSE_BUSY from async-reset case (not a
+    valid ZAPQ response code).
 
-I don't really like special-casing INVLPG, but I don't see an easy alternat=
-ive.
+  New functions introduced:
+  - apq_reset_finalize()
+  - report_tapq_rc()
+  - report_irqclear_timeout()
+  - report_aqic_disable_error()
+  - report_zapq_rc()
+  
+Anthony Krowiak (6):
+  s390/vfio-ap: Fix leaks of pinned NIB and registered GISC
+  s390/vfio-ap: Fix failure to release IRQ notification eventfd contexts
+  s390/vfio-ap: Fix unbounded loop in apq_reset_check()
+  s390/vfio-ap: Use AP_DOMAINS for adm_add bitmap size in
+    vfio_ap_mdev_cfg_add()
+  s390/vfio-ap: fix queue state leakage to guest and host
+  s390/vfio-ap: replace guest-reachable WARNs with ratelimited          
+        warnings and add dmesg visibility to DBF_WARNs
+
+ drivers/s390/crypto/vfio_ap_ops.c | 539 ++++++++++++++++++++++++------
+ 1 file changed, 441 insertions(+), 98 deletions(-)
+
+-- 
+2.53.0
+
