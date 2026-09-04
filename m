@@ -1,144 +1,229 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4C251E44C
-	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 22:24:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788560673; cv=none; b=olzH2DceutzeApIQY05eEGGMiUm0JobpmzUjyGNpP0WeTiAr+aPJH2km/uiq+r+VIpKxCJcC5ukglesL7Aq7cYaNFI7WEw9ry3z1aVE7RQEoRbikwpgg42NxaShqdi8Q+krj0aGfBXVslajepMMbn2o6a7/gw3bOdzurfSo23j4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788560673; c=relaxed/simple;
-	bh=3yfBn1WOKGcBed81Nlc6oSVXKJPNrdGjHRd+VzAbRwI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gKZp86e5XdzvLGBNrYK0EgGV+xg5QzXu8BPMJpokkQCfY3fgAf20HSFjZk3H+JqWhuDvO5k+9rVkXlOC4bk53SIEPIC9rVldr0VGSlJYuhh7i8/yvg2PGraKjIRYNMHYuxTmy1L55l1B+Q1ZS3dEO7p29laEsCDeaMHxtz6h/qM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GtirbCBi; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81DC501F57
+	for <kvm@vger.kernel.org>; Fri,  4 Sep 2026 22:34:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788561275; cv=pass; b=Ptng/oKvAuqWa7XTimxQ7tJ1R4Uam+NS7STC53AlOvwGuzsXDdt6bEGd5M2V7ggg6Q0EBLVUbZbvMZUkMkaBhtJDFBbM1aBp7NzZtFbuvW5EdWs2iq9Y4ULt57e0qPPoYZQX24+p8mARRB+ZjHsZUztySxjxnZ/P+pIROtk7QGw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788561275; c=relaxed/simple;
+	bh=zQzEewI4ZvoZshQfZVFvWPcbJeYMDctnRHy7ajATikE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NmvdYuMEUR8TJiUCAScuRl06BhnKxxtnnNyMQ4P10Ce7KAfqn1Cq0pApXOhGgL0Zscppkq23vQT+nCaiVirsJNS2CgLXioZWV8vQ5MvYuqG3ccCWY2rFIqv4QXY0ZVA59+Sb+Ah+QUoPwkDaYrKjT0F5FJwjcs5fbq8jZeFBy8w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i5L5bfoR; arc=pass smtp.client-ip=74.125.228.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GtirbCBi"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cc1c3c90074so1304804a12.2
-        for <kvm@vger.kernel.org>; Fri, 04 Sep 2026 15:24:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i5L5bfoR"
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a5d8fd8d8dso1228a12.1
+        for <kvm@vger.kernel.org>; Fri, 04 Sep 2026 15:34:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788561272; cv=none;
+        d=google.com; s=arc-20260327;
+        b=TDp1la2fB8p/Kl6aaf4x1VnbfHq7F/Cy6d3GEtzBAsnfEsOoAtBcinRxQ65+4hAXmq
+         DjwgcIaTj7WnmLzR5U0dK0Elea+HahnRCovSZABVLhIDnlq1e/8HKcGa5i3HgJbvTzWw
+         Oy1dOrbvE/17kAhaKRzO84BRIQCCnRiCKE9WiJM7WJI0O06INS0hUmxkZ8HdYwzl3vlO
+         0XBdhEuSweAYFCtgoXQjW0KHwaP+D0Sfk4McmsI1cj6NJvCAnzWrXHVvksSec5rs8x8o
+         DYcIufYbudh/+PV9bYUS29CZqVQ94u/WL5PrpIBEmB0WLfLTlHzxbg6nVg0sXZiXBugl
+         k6sw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vWyLFB322c+K8udyWMay6dKIPqFbfWlPPY8Vkro08BM=;
+        fh=99Ul+UKmRYuIeedfzFEWYJ/DI9fGFtvBZ7hujpViOEI=;
+        b=d5Rc+1A7l/qUqVAzbVz3LE5tPeH6E+SV+hgbGFmP1BkCbbwh6OAKdyRAhCDgglrLeY
+         OpvGiSNIu29lqEBhJlE6H91iDAyhC/IbeweQOC/IdaeVUZunRlE3UIEziHRZ+Soz9G9G
+         0yCALcUB4D602RFr67x2shcQIYPM3qKhzO7VJE46x+jORkzuIU5lK0zxoihPZqnn4Z9c
+         Pbh6+89QUTziJe2fVe61x76OaGSi2WYvLSyXYunTNKIceor17y/nXTO85IBFZJkqtuDE
+         S6YLu37vtBjrX2Km3pMMNR9HHroB7rwe0GEYNEuaVknGPlSWeiXHiuGByHv2po/hkEM7
+         ZSWQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788560667; x=1789165467; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eSoy4tzP5/vZd/n79Ub53Qw/sODynJmx2A4LOY3bVO0=;
-        b=GtirbCBix0Ds6pelGWNduaI5DqrO9m0/xSFbJNyrN9QCtgIsiNPefSN4X2cSwdrfZu
-         2BLpbI46XUeKsayPIK7n4lChRbGMeJQwXY7K71IaltGDBYjOwouT6oz1oMM3123GBoki
-         3R3wWbaLE5odTJnRTi2nGlvWqriMZlUy0U1BE72i11I3nAZ8tkTo2yDbX+r8Rlivj+P7
-         jyV7nAwI2X2Phziysdoo9Zz5kLaGhdugR4qmvUECBNqTjwfzTJo5M4vWjvNAEnKad78a
-         NKbm0+SgHQ666xirrfRITglTHd4nZTRHMUMrdJqgF1QhNdpeZ2aksEJV/Y9FI0Y35Xax
-         X22A==
+        d=google.com; s=20251104; t=1788561272; x=1789166072; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=vWyLFB322c+K8udyWMay6dKIPqFbfWlPPY8Vkro08BM=;
+        b=i5L5bfoRS1hv4oOobsDflFsRUVPWpYm7PnaTb7K/SiND3QTD2asCSX6JMLk89t7gia
+         Et0q2++NrSbsAmKON8ON/J7DlxIFzHbIOSVzqm4bE5C+ntGaN0GNPMrSxm/2MJaE9wci
+         dhwnIFJm/hgGnFTmjB4AcV39R7IidOlxs81lxDxiS+OOxUizpmU0v/QWlE1IkvpBBNl6
+         rK8q9i0BKxUVGn2BkMYB7tyY4dQb44Y1ZGZyl90LEEmv8g36gL58GKeirCd919NuMg/w
+         9BzAVtdrjXjKhi+eXZ2UhWt+Z6VUu6P6eqZsUsls5GrXcGIMavLSeZMC6BrPb7tRMqo5
+         6UKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788560667; x=1789165467;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=eSoy4tzP5/vZd/n79Ub53Qw/sODynJmx2A4LOY3bVO0=;
-        b=Wkdx7PmzaC7DS8MKqgIvt3c8sMZasbkWZExePh/gZ0IWQGTjS7KUBw5DmfbbOYIugS
-         pMetqCfZOcYJIFHk1jBVUHEJVYNuAVZE7K7fqAMHHMna0jR6ZeWgajhw3VaCzJ1eiJAN
-         onu8YirB21i2Jh4wqmBqMy7amWle1h3eNjI/CoAbPgFhOT4E92alCmzDJgQFIDqZHTgR
-         CC1FXed5alCwW8rKZ0N14w7yueVrVdy8bjv0Y+DUt5dEW35s6IzcKRYDQyp5YCV42Gxh
-         HiZz/7KaY6eDqFYAT6PE67CbzDp9ewf7P8o4avRH0Eof/8jfbF7+Sc57TneVtrlo1g5p
-         Mchw==
-X-Forwarded-Encrypted: i=1; AKwUvBwG6JIKTLG7lqmxEeTm8G20qj4JEPa4ptPLV8+fo8km1PVAHxloecvS8LqgVEa3pKYLvro=@vger.kernel.org
-X-Gm-Message-State: AFuF++lmLApA20mnfrFzDeJ33hXUdToHiFO6Ol44AWolr/8t8l15pwA6
-	xCJAkGvbpmG8gLpSbjpS4mEfrOESAuiLLor1fi5SY8LcRHVxTZPjYxu1ucFxmIr/3A==
-X-Gm-Gg: AYBFou1pL4peYBKXIXOERsEy2fV5lofXqCtBtp6+Gu5w/T23tfdsFA2+owJAuN+mMTU
-	2Pg7kD7oj6/k82pmY5zJhZrtkFPqs+jRqmUPbmUogrhYrlNaz5WE3Wd81fyG/nvc7Rw4D4y1sgD
-	eK95wB4sy3ZJhzh8pfMMPdFV4jLEWXSTW3oZKGO671n89vSy/siU5FxkhC0HhDiCcsVwLiLN3CS
-	TbnOl6cTSNQXL4xgvZs6UFQDeYg9JEGAdZaD5tEMw3BaZSFhIiWIIp7lIul7rYkLeVsCQwPJ3P9
-	wWtay8JdP39Ily0QMKJNIMc24JwfgUvyQMaTsf6vVTyL4LgGq15j4GR8BL65zBP58rzV6SAvq/5
-	d7agPACcdY3DGknJISgSYvOvlFixx3YUMmI9gfhLHsgHwPsnSkVpnnm64hHlgn1XUcvf07E0QqM
-	jwor5CfNNsEz7i2I+lyMOApPEpa7hY6cZc47n6LaFchqTWvIGrtumLyaGH3lpSA/D8/o8Ss0tJS
-	YItS/P9An4VUEAdGvVlU+7+kWzVJQ==
-X-Received: by 2002:a05:6a00:2e99:b0:84c:4b58:2cec with SMTP id d2e1a72fcca58-8616b26f6bfmr12056954b3a.15.1788560666130;
-        Fri, 04 Sep 2026 15:24:26 -0700 (PDT)
-Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86153a1c1basm1621740b3a.52.2026.09.04.15.24.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 15:24:25 -0700 (PDT)
-Date: Fri, 4 Sep 2026 22:24:21 +0000
-From: David Matlack <dmatlack@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Logan Odell <loganodell@google.com>, arnd@arndb.de,
-	pasha.tatashin@soleen.com, rppt@kernel.org, pratyush@kernel.org,
-	graf@amazon.com, akpm@linux-foundation.org, pbonzini@redhat.com,
-	maz@kernel.org, oupton@kernel.org, seanjc@google.com,
-	bhelgaas@google.com, alex@shazbot.org, kevin.tian@intel.com,
-	dwmw2@infradead.org, baolu.lu@linux.intel.com, joro@8bytes.org,
-	will@kernel.org, robin.murphy@arm.com, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	linux-mm@kvack.org, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-pci@vger.kernel.org, iommu@lists.linux.dev
-Subject: Re: [RFC PATCH 0/3] liveupdate: Move to feature flags for LUO and
- memfd ABI compatibility
-Message-ID: <aptFFYqcSiBdMLE8@google.com>
-References: <20260903023452.721732-1-loganodell@google.com>
- <20260904160009.GV4157646@nvidia.com>
+        d=1e100.net; s=20251104; t=1788561272; x=1789166072;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vWyLFB322c+K8udyWMay6dKIPqFbfWlPPY8Vkro08BM=;
+        b=BvZ6Q5PrWPA7EY0FRvzKfaZe4CjaAol4jlq7sYoil9DX6ZYPmGGuuR2jhEyr9I5DCX
+         FfURIxnUH+5QL2JBveqsbDmwIXOZD1Ob0CtgwD/L7Z3xt8fSDzuYqRshd2Xk9yyBQXW2
+         mdroMNo/3ZOVU3tLYdz88UzLEbHnyoMzIjl/UEZfdMgE5ykRHI4gZXH58o0h+4Zm0QvY
+         BqVd943mE9VEhDkm7tSI6eoEw52E8VQl/85JfuSmqZf3ps6beGkyOxtNsAzI+WNSk7Hl
+         SW6X+SfENZsQWEBw07lmY4lzcdi7Bm+DkDWBlVhEmhY7OfI8zq6SnEDduaVZl+qHcgks
+         hjzg==
+X-Forwarded-Encrypted: i=1; AKwUvBy4WenV1RY+Vo2VTmA2auQvDZSfh9QhBkE5+SmitIWaXmIcN9zqmpzBHEh4UtkIJMaG4lg=@vger.kernel.org
+X-Gm-Message-State: AFuF++kj/6SZVF+8//FmTQGZDu551+3RX2oZJRBDPM5UI56wrhJ+Ed2r
+	L87hl209HdgCE6q5NpaSXJVq3u+zG/zcc3R+PbmhQaFz6IKFH4TKhfK2Nvloilk9brVarjmoOkc
+	zX12iO9/SszPg3qhrkLAe9eFU0FM+WTIRUeWtO/fn
+X-Gm-Gg: AYBFou2O4bSiEGwIsi9PZHHBkp9lgycaVc3xc0d5jeIKs64ss2u3Jahl1slPtlkHN5r
+	S304S5y03JvJJ6XVPpHVBJxq4l0JdGcan3k/smIfHTNwyZgftLYkwskpJF7JqZKFN6xjRLMUv/I
+	sEvBKmVI5lHjReQ6gcvQwK1qMeMlQ0HFXiumL99XRjbQVqMC57IfFXXb/EqItmdZxN/cOozQGAk
+	vAkJsy9jyN4Ivlos+Hf6b+BtwV+l9IZhWTGQEHL+cjQ//xQ2zW+n+VcICSaN5VxkDM/mJ02ZSSv
+	nDASyDqtSe/84MSfEcFEQBRITMFaW3j4SyBbkkqnhWR+
+X-Received: by 2002:a05:6402:21c6:b0:6a6:96df:215b with SMTP id
+ 4fb4d7f45d1cf-6a7f682710amr11857a12.14.1788561271594; Fri, 04 Sep 2026
+ 15:34:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260904160009.GV4157646@nvidia.com>
+References: <20260824123954.315112-1-zhang_wei@open-hieco.net> <20260824123954.315112-2-zhang_wei@open-hieco.net>
+In-Reply-To: <20260824123954.315112-2-zhang_wei@open-hieco.net>
+From: Jim Mattson <jmattson@google.com>
+Date: Fri, 4 Sep 2026 15:34:19 -0700
+X-Gm-Features: AcwNN1W2CL3MX24WexOB2cU1f7wgDBrCrUSExLWQoABuDUy_PRYgrmgU2-Tp_bU
+Message-ID: <CALMp9eQoMn5BxXfu9ut5EZVGipfiZzbQz32mpi3TCjA6fA7jCw@mail.gmail.com>
+Subject: Re: [PATCH v5 1/8] KVM: x86: Add helper to provide intercept linear addresses
+To: Tina Zhang <zhang_wei@open-hieco.net>
+Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, zhouyanjing@hygon.cn, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-09-04 01:00 PM, Jason Gunthorpe wrote:
-> On Wed, Sep 02, 2026 at 07:34:49PM -0700, Logan Odell wrote:
-> > We're including maintainers from all subsystems that currently is or
-> > will be expected to participate in live update to ensure alignment on
-> > the path forward for compatibility.
-> > 
-> > Currently, Live Update Orchestrator (LUO) and its file handlers rely on
-> > monolithic compatibility strings (such as "luo-v5" and "memfd-v1") to
-> > validate ABI compatibility across kexec live updates. Any modification
-> > to serialized structures requires bumping the version string, which
-> > strictly breaks compatibility between adjacent kernels even when changes
-> > are additive, backwards-compatible, or optional.
-> 
-> That was the intention, I aruged strongly that upstream does not want
-> to maintain a CSP matrix of endless kernel version combinations. That
-> is far too much work to push on maintainers. Upstream would do much
-> less, maybe only same-version, depending.
+On Mon, Aug 24, 2026 at 5:40=E2=80=AFAM Tina Zhang <zhang_wei@open-hieco.ne=
+t> wrote:
+>
+> Add get_intercept_linear_addr() to compute the linear address for
+> intercepts that report one, and pass the result through
+> x86_instruction_info.
+>
+> Handle INVLPG as the initial user.  INVLPG's memory operand is decoded
+> with NoAccess, and thus src_val does not contain the operand address.
+> Compute the address from the decoded segment base and effective address
+> in the emulator, where the operand state is available.
+>
+> This allows intercept handlers to use the linear address directly
+> without duplicating the emulator's address calculation.
+>
+> Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
+> ---
+>  arch/x86/kvm/emulate.c     | 29 +++++++++++++++++++++--------
+>  arch/x86/kvm/kvm_emulate.h |  1 +
+>  2 files changed, 22 insertions(+), 8 deletions(-)
+>
+> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+> index 8071b372d233..a0e57b64cadd 100644
+> --- a/arch/x86/kvm/emulate.c
+> +++ b/arch/x86/kvm/emulate.c
+> @@ -410,6 +410,26 @@ static int em_salc(struct x86_emulate_ctxt *ctxt)
+>         _fault ? X86EMUL_UNHANDLEABLE : X86EMUL_CONTINUE; \
+>  })
+>
+> +static unsigned long seg_base(struct x86_emulate_ctxt *ctxt, int seg)
+> +{
+> +       if (ctxt->mode =3D=3D X86EMUL_MODE_PROT64 && seg < VCPU_SREG_FS)
+> +               return 0;
+> +
+> +       return ctxt->ops->get_cached_segment_base(ctxt, seg);
+> +}
+> +
+> +static u64 get_intercept_linear_addr(struct x86_emulate_ctxt *ctxt,
+> +                                    enum x86_intercept intercept)
+> +{
+> +       u64 la;
+> +
+> +       if (intercept !=3D x86_intercept_invlpg)
+> +               return 0;
+> +
+> +       la =3D seg_base(ctxt, ctxt->src.addr.mem.seg) + ctxt->src.addr.me=
+m.ea;
+> +       return ctxt->mode =3D=3D X86EMUL_MODE_PROT64 ? la : (u32)la;
+> +}
 
-We received basically the opposite stance from Sean regarding the KVM
-LUO ABI:
+The linear address calculation here is replicated from __linearize().
+Perhaps something like:
 
-  https://lore.kernel.org/kvm/aoSCCTTBn9D5hqzk@google.com/
+static u64 get_invlpg_linear_addr(struct x86_emulate_ctxt *ctxt)
+{
+        unsigned int max_size;
+        ulong linear;
 
-So we're trying to use this series to get some alignment across LUO
-ABIs.
+        if (intercept !=3D x86_intercept_invlpg)
+                return 0;
 
-> > This RFC series transitions LUO and subsystem file handlers to use
-> > granular feature bitmasks instead of compatibility strings. We replace
-> > the compatibility string with a header structure that includes some
-> > reserved space to define the features that are included after the
-> > feature.
-> 
-> The compatability string is only a small part of it, you also need a
-> serializing ABI that can handle some random mixmash of these
-> features. Ie the various TLV schemes that were all proposed. What is
-> the plan here?
+        __linearize(ctxt, ctxt->src.addr.mem, &max_size, 1,
+ctxt->mode, &linear, X86EMUL_F_INVLPG);
+        return linear;
+}
 
-The proposal here (which is inspired by the KVM UAPI) is to ensure every
-LUO ABI struct has 2 properties:
 
- 1. A field to encode options/features (e.g. u64 flags).
- 2. A way way to grow without breaking backward compatibility (e.g. so
-    we can add new fields).
 
-Each flag can mean whatever it needs to. e.g. It can indicate the
-precence of one or more fields (i.e. new fields in the struct), or it
-can mean a field now has a different meaning (i.e. union in the struct).
+>  static int emulator_check_intercept(struct x86_emulate_ctxt *ctxt,
+>                                     enum x86_intercept intercept,
+>                                     enum x86_intercept_stage stage)
+> @@ -427,6 +447,7 @@ static int emulator_check_intercept(struct x86_emulat=
+e_ctxt *ctxt,
+>                 .src_type   =3D ctxt->src.type,
+>                 .dst_type   =3D ctxt->dst.type,
+>                 .ad_bytes   =3D ctxt->ad_bytes,
+> +               .intercept_linear_addr =3D get_intercept_linear_addr(ctxt=
+, intercept),
 
-This would enable adding support for new features without breaking
-backward compatibility. Downstream users would have to ensure their
-kernel does not start using a new feature while it can still rollback to
-a version that does not support the new feature.
+Maybe:
++               .invlpg_linear_addr =3D get_invlpg_linear_addr(ctxt, interc=
+ept),
+
+>                 .rip        =3D ctxt->eip,
+>                 .next_rip   =3D ctxt->_eip,
+>         };
+> @@ -520,14 +541,6 @@ static u32 desc_limit_scaled(struct desc_struct *des=
+c)
+>         return desc->g ? (limit << 12) | 0xfff : limit;
+>  }
+>
+> -static unsigned long seg_base(struct x86_emulate_ctxt *ctxt, int seg)
+> -{
+> -       if (ctxt->mode =3D=3D X86EMUL_MODE_PROT64 && seg < VCPU_SREG_FS)
+> -               return 0;
+> -
+> -       return ctxt->ops->get_cached_segment_base(ctxt, seg);
+> -}
+> -
+>  static int emulate_exception(struct x86_emulate_ctxt *ctxt, int vec,
+>                              u32 error, bool valid)
+>  {
+> diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
+> index 3e375af15c03..9eda648a1314 100644
+> --- a/arch/x86/kvm/kvm_emulate.h
+> +++ b/arch/x86/kvm/kvm_emulate.h
+> @@ -51,6 +51,7 @@ struct x86_instruction_info {
+>         u8  src_type;           /* type of source operand               *=
+/
+>         u8  dst_type;           /* type of destination operand          *=
+/
+>         u8  ad_bytes;           /* size of src/dst address              *=
+/
+> +       u64 intercept_linear_addr;      /* arch-reported linear address, =
+if any */
+
++       u64 invlpg_linear_addr;      /* linear address, if invlpg */
+
+>         u64 rip;                /* rip of the instruction               *=
+/
+>         u64 next_rip;           /* rip following the instruction        *=
+/
+>  };
+>
+> base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
+> --
+> 2.43.7
+>
+
+I don't really like special-casing INVLPG, but I don't see an easy alternat=
+ive.
