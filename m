@@ -1,223 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011018.outbound.protection.outlook.com [52.101.62.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A52367F41;
-	Sat,  5 Sep 2026 15:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788622516; cv=none; b=LguWgMcFR9Ke+KvsGoR4nsM62vnGbKEuLCOAL8ZnzHL8F040oL+dUbqS3pDUFPAS0mbSp3UsS6OjIqr6ImowS5ZYGpTYej5/GCzp+8UElgNZkS4eP2w3xq+iKCm+93qQa/rTR7w1Catmk0cERCK6+F0vSkMjcuU7WAdh3ni4qfg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788622516; c=relaxed/simple;
-	bh=UCLkGvz9bphD5D3pPmnqVrfV8k026Dz+wUyOxDff/to=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=X4BTwcTJ8Wb6oIsY9KWlZ9+c43QeGWWBXiFdGXaIS+CCN5QYbigdQGVpIzRuLZ8NtzG/PEIBx5xJCH1QBtHAylBO6sYCIn1S8Viid0C9xCOVqmDnGR+t3OAknnXQrH02I0glmqCx/Nr4mNJWy0mm8UgqozUr/aOrZeON5M1iXEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FtVuq9ZY; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4086F1A2C04;
+	Sat,  5 Sep 2026 18:52:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788634342; cv=fail; b=hqL3CC6lmgP0FZWcf43rHnxDDTRuRxekhJcXYOfVBIDzRGWW5MtCBtaYowaaOQPQJrb8C/4kN3m+T5DZ3YeibI10kFdth3Rt3uFRP3R+UXzb4zrgIclArLIs/gMphA5T1p0ixUtmWuqdPHAmzqlnIGN+kT0FkfNmrrk6DoPtxIk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788634342; c=relaxed/simple;
+	bh=2iW1Mp7ZZbfi0qESyMLQumFP6tmNjl3L3M9kQftKOMA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=EObkI8g9XNTI1jt9t+0EFvTEptyUftSUMLua7rp2rlL532xM4QeIC7pJClRK82XszUwz8gTzMGmoUbAfRiy7dowaoresadMVBxXwf82i63ffC5YrrLaWegRi+ZbEMhoTkQ0dH30YyDBROknONn1VAHrVVKyqFBpI4n7gc3umNaA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=bUigbG4b; arc=fail smtp.client-ip=52.101.62.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FtVuq9ZY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55561F00A3A;
-	Sat,  5 Sep 2026 15:35:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788622515;
-	bh=JveotNKSAhk51QThDvAuc/jnLFTAkyLioUsLXMfvDKs=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FtVuq9ZYgLDKcUrBKIwIEI/PHyW7Z1T5gCkOuKp/E3t36n0fNXZ2ygWrbdwsyMlm+
-	 fKdk0GjGct9cyVVf5WtFOIdHBq9qKwj2WvYf5+EFd5NyqaWVi++bz1E7qUkXbce+b7
-	 qUK1WQR9kiTJQ7NeXi4wHnEz+U5WC45xWI00ZhzOIntCTdb+7Wupl9Pl7paSWZBUTt
-	 Nh2Fo2Z29pSThkHeFe4YUcR3D8wZcTFIgCQB4VJs/wNpivAyT1eSR/PrPzvLgfJt0a
-	 TnYb9med3nIxpa5Lq0Yi1wx0vqR3wP2Cmstmtkz/aNz7o1wUa8RjoSfUofAu2wj+kh
-	 nxE4JCWF9MWGQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/3] virtio: implement synchronize_cbs for remaining
- transports
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Karl Mehltretter" <kmehltretter@gmail.com>
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>, linux-input@vger.kernel.org, dmitry.torokhov@gmail.com, "Vasily
- Gorbik" <gor@linux.ibm.com>
-In-Reply-To: <20260905152059.89560-4-kmehltretter@gmail.com>
-References: <20260905152059.89560-1-kmehltretter@gmail.com>
- <20260905152059.89560-4-kmehltretter@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 05 Sep 2026 15:35:14 +0000
-Message-Id: <20260905153514.B55561F00A3A@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="bUigbG4b"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Umumd6PLcNMlrhXXXzaHZmhYp4/Pj9g3JgfZgUORi4zF7KpYi84MOjKeU1rL22gULHCl6HaUizbwWzTVyByAGBE8h9meIjvhJrNGJaWi+kvnAixigaxqrG9/f+KtPVSZbvGyi+zEvqRwcQORC1CwCha+dCkn34MLzbCFqE0angA/8RM0XfI8w7I56HdADVG5K0FKEfIGQb9Si+hef1kLLFOPG/MtxlIxau/UXm6gi+nB+zmHe2JFmkgIpHEW4xnUpZTiNoxSP5COk5/78fM6/AF5kic0xusyn2TWqge/rBJkdVmjF9Ic5Z5jUh7GRPDlP79nLmX5YkQNxhZELgVSpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2iW1Mp7ZZbfi0qESyMLQumFP6tmNjl3L3M9kQftKOMA=;
+ b=r7SLrg9YcazqWsol6qWkCxtkFtEPxmrXh6eIqkuWamPyeQYTyYgSxj0LfJfIAlyquvStHPlLuKcBZNdJA8dBYPPtKdHZ39cjiwiTe2MfbdjcvvIUTA+zRrChqOYhL/r0YGpq3bk8d2HYffxFSPtootUtXNGNIaJFdIsrRIpnNSERaVz8SLd+rDdS6WfNMFIk0Kxx4V1oNQTcHpTKa1BbClV8xIgSmItpOmii/tnrdj1cNQlOmrsnhAjzep4mVcooFTZ88pGX3ohF3slB76J1ja9fuE4BKs6vr6GspPWmQ8c0gJNWy/Ct77n6NUjbOmPrZRe0/Sh2rNEAKygS/gFb0w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2iW1Mp7ZZbfi0qESyMLQumFP6tmNjl3L3M9kQftKOMA=;
+ b=bUigbG4bbImJ2UI6DFI5XcuDJw1z+ny0VbnFzPB63pCVmoV2AlxquuXcRP2y8iq0mCLdAdzkgplkad9tkFe2MCcBPeZcAZU8AsTXA2CT0XI+siKbW8N9iiRshpKa3wywFSEa1Hl4ulZgfOmrVsj6JAFkZ/Nlxzx53TN9KWxm9LM=
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com (2603:10b6:408:100::17)
+ by MN2PR12MB4406.namprd12.prod.outlook.com (2603:10b6:208:268::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.13; Sat, 5 Sep
+ 2026 18:52:18 +0000
+Received: from BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed]) by BN9PR12MB5259.namprd12.prod.outlook.com
+ ([fe80::122c:cca7:c2b3:90ed%2]) with mapi id 15.21.0382.007; Sat, 5 Sep 2026
+ 18:52:18 +0000
+From: "Garg, Shivank" <shivankg@amd.com>
+To: "seanjc@google.com" <seanjc@google.com>
+CC: "jmattson@google.com" <jmattson@google.com>, "david@kernel.org"
+	<david@kernel.org>, "ackerleytng@google.com" <ackerleytng@google.com>,
+	"pshier@google.com" <pshier@google.com>, "shuah@kernel.org"
+	<shuah@kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-kselftest@vger.kernel.org"
+	<linux-kselftest@vger.kernel.org>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>, "ricarkol@google.com" <ricarkol@google.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Subject: Re: [PATCH v2 3/4] KVM: selftests: add get_numa_mem_nodes()
+Thread-Topic: [PATCH v2 3/4] KVM: selftests: add get_numa_mem_nodes()
+Thread-Index: AQHdOesdqtOlDnaM3EG9JvMCmbDNLra50zmAgAaIRwA=
+Date: Sat, 5 Sep 2026 18:52:18 +0000
+Message-ID: <c15678d5ea8f229d9b7eb8afb1f0a0c94faf8e20.camel@amd.com>
+References: <20260901-gmem-selftests-fix-v2-0-5a273153354c@amd.com>
+	 <20260901-gmem-selftests-fix-v2-3-5a273153354c@amd.com>
+	 <apbqEfeCQhgdAvKa@google.com>
+In-Reply-To: <apbqEfeCQhgdAvKa@google.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN9PR12MB5259:EE_|MN2PR12MB4406:EE_
+x-ms-office365-filtering-correlation-id: b882de53-5568-40cc-f1a1-08df0b7ecf52
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|366016|1800799024|23010399003|7416014|11063799006|56012099006|4143699003|10067099003|18002099003|22082099003|38070700021;
+x-microsoft-antispam-message-info:
+ 5Yy6nmlhH3RZQ5agOP355iNFA7gf7TD3+9bYUjEAkQ1NhB05XsKZ+bPkS5Vf9BK3TEgUBqeVdkcsrzB4gwSXoZ1pC83XJcBtXsJD6PxxNEhTzwDQ+xRgI9EZyZpyLdU9ZdthVMRpqRIR7iBX5ipYNnw5MgBfNRG7hcX2ZesStVBOPTh7I77lrf/stDf8papfPe9EEgPUalM57Qv/++TzhHtgN18VZqK15ibzvUyvdeYbUCFVxqzTCLUOD07XjnClqK3QUc0I/yAEDQg5ITcrQyH44Yzp2Wc89qIErCvqyaXe75Hr5aepqX42q9kE2/RdgeXTItbCm6ryIG86HoHUh6Be0Yu37UquNki3HszFcDtVPwT/TBiVsFqXg0GpAfE1kY0aLKVCouLLkyZqIJQhVzJvEyFeBdDe/4j3Ek+ioEMg9mfi+HMbWe5QwGgpmxxcLzzPDdq9JS9ZQgNxWN6eND0Isi+rdJzvtilLaaKPLczfdEhb05dFa3/E+ITQ9rDUyxiwCyXCZHdTETaojaGEcXquV3ka9UO0XIxQQC1nQ6ntu+y6DchH0yfYSwID3TvqmlEGOlkcJvnv/fBRIZn2qp+uIsGTOpz66jjpHpA+Fc9CKYLVJTJBHeBIbvql0MmDBk37MKMcvO9HrdAi9v77SV1Gzx/pbr+7MbphxdwDctuYPm28dCAq0jqnckEcpauoyg6zHbEtvIlT+efYMshD0g==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5259.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(23010399003)(7416014)(11063799006)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?a3BFT2dYY1ViSVJXbmMzTDA0OWNkTVJHUVRVREp5WkZmaHBNZ2JVRjh4eTl6?=
+ =?utf-8?B?dFNBNUdDb2M4WS8rZnRwNXhTaWdjK0Y0bjdrSHNsT0Z5U3pSK05KOFpaSiti?=
+ =?utf-8?B?RG9COC8rZFRLWkVLMVJiY3NtODV6WUtkdkM5TCt2RVBBMlZ3MUg3QVYzNDNq?=
+ =?utf-8?B?RTJrclFCc1ZBa01zRTVQaHVvcWgyVjI0THJtcnY2bWdlbHlXUVVGNjZuSEhi?=
+ =?utf-8?B?cFozK2RRWDl2SWM2L0hNOS8rVUgzOUpoZHkwaWlrcXZ4MXQ2UUhwTFhaUlN2?=
+ =?utf-8?B?b0JyOXRXQkdtaHlTZGY2L3ZLTVE1akhybnJWbXo3NU5xeHVGNndUNFBScVc0?=
+ =?utf-8?B?ZEFxR3lST29tM1VibnNXVlIydlJHR3JYY2V4YUU2cW16b2Z4SmUxTTRSMmE5?=
+ =?utf-8?B?MExzY1IvYlIyVmU2ekRlRFJBakMzUkNhblIwTFViRXVqT0tpNUk1eVpRQUph?=
+ =?utf-8?B?K3ZTVk05MDdpbTlZRUVHQWMwWmNQQms1SXVKNFhuQm9ZbHJibVp6b3R6SkNL?=
+ =?utf-8?B?azFBc2tHSHMxeWE0S3ZHTlNGb3VDQVM2b2gwTHlJeVkvTFJGK3VheWNYYU8w?=
+ =?utf-8?B?NjQ0WFFSZ0RRYWgzR1dGVmFWTnlFTURVY2JkTEdvZWZQYnR6dXdUVjhoSHVM?=
+ =?utf-8?B?aW1iR0pWY2MvT2NCNUt3TEszY1ZMYmlJVUJOMXlrMUpqREkrbEVvNEhHWHlh?=
+ =?utf-8?B?YmRhQTR1emdYUkQ5cGNsamJkWlYrbFNGbzBhRW9HM3VLS3JoNmFWbndSOWpG?=
+ =?utf-8?B?UktZWXpwQzBxMUt4SS8rdHdER1VxVVNBaHhzUDNwRFNYZy9sMHFSeVJ6K1d3?=
+ =?utf-8?B?R0tnL0Rib0M2N0RUbXgrMTNrbnpmbEw1QXljTDFCNTdVd0pvSml0amQySUt1?=
+ =?utf-8?B?VXFjTTdKZmM4N3NnbzIrQndUcDVtUTJBT05LSURPZFkwYmNHckgwd2RIZENa?=
+ =?utf-8?B?eGFaeEVkMFdpbmgrYS82ZVIySHZmVzdheUJNU2FrVTQ0OVAySW8zUWYyWlcw?=
+ =?utf-8?B?blFGTnhua0FHN0JjZ1FvUUluMldRMmo3MmFGbzkvc1JIQmRmYWtYZkpuYUc4?=
+ =?utf-8?B?d28xK0xBRjZ6RkNEbVlIMXRnblNkVWxSakJlU29kekg2d3QvM2tpNVpYcjVt?=
+ =?utf-8?B?dGd1T2dSckRwMHRTUE9uTTRRYVBpQzVGSW1CeFJPK1JhQUZiY2MzWXJja2lZ?=
+ =?utf-8?B?WkxuQzJadWZoVWZyU1FCVHd4MEZlMVJSalUrUjVIaTRLcVhRNjJ2amJnUGFq?=
+ =?utf-8?B?Nm5nTWZqeElEWDJDU2R0K3cxNEJjaHgyVmp5RHpDaStuUm1SdlFMZzg0Ujlz?=
+ =?utf-8?B?djZlSmVzYU12cW1aS3hEdHpDTkVpUytoaUdLaDJYT09Bb2Z4V2ZIU0hZaWp1?=
+ =?utf-8?B?SHpkUXRvbGsyaWZXOVlhdTh2eFlTOHpqN1lEckNDbXVIVGdyRWM4aTZxYUVJ?=
+ =?utf-8?B?bk0zWTZQUG1zYzhaRS8veld6QUlyQjdHdjN3c1pwSGVad0w3VkF2Wm54RVMv?=
+ =?utf-8?B?U3BMYzJXdGh5VWdOY3hxdWJuTW16K0RxTXZZL2JJMjlPaE9JOWVHUmlaZjU1?=
+ =?utf-8?B?bWZZL1BxL1EreEZmVzFFMVZ2amtkUDFYUlNTNFBMOUIxNlhZdXBOOVU3YnRn?=
+ =?utf-8?B?VVBrcVRmOFIxSzNlUmFoTkFnbUhOQUExeFFKUjZNNW1xU0NMdG5MS2xTR2xq?=
+ =?utf-8?B?UTlrWmtLaXF3UWdWWXhuOTVKS3BKanRnSmJ5b1FqbFhWWkd3bWlyM0ZWNjJN?=
+ =?utf-8?B?Rkw1MTJ6a0tMSThyUU5OQzBNUUZ4N3BINXd6VVg3NDl0eUx5ajg4OEE0L3pG?=
+ =?utf-8?B?QmczRVEyeGltU0ZDSzlnZHFPdU12dmE4eXdBSEFkVEdvNHY4VCtCcnF2UUhy?=
+ =?utf-8?B?bThWaU1QQ2xoU2ZINVdERXZOcWd6NHYrSGdxZStiZzJaUWtZQ2JFOVplNWNa?=
+ =?utf-8?B?ZUN5QmJDUlBmSDRFbWlsM2Z0TjM1UjhSTk51bEJRWHNJTXRQYUhCQTBpeTl2?=
+ =?utf-8?B?ZGkwWEF2UGQ1d2VuRHZWZDNaRkxkRUwxNDhRbGpycVl2ME1HaW12L0tPb1hF?=
+ =?utf-8?B?b0RSdk42R1pJalp2bHhkamx3SkhUdkpZYlNydlQ1dlpRT01uMXRTbG9PbWtP?=
+ =?utf-8?B?VXRFeCtDVU00YzZkVGFJZnpnSkhpQTZBdkRpbm9jdTYxWk1icE1ESFNjdWtO?=
+ =?utf-8?B?cis1OWdGamQyYS9oMkw0d1JmeTY0eGJZRU94RFhTYys5bVp5Uk92WjBhcGtY?=
+ =?utf-8?B?ZlNrZGpKUTNGY0ROYjliUThvR0FRYnFmblU2TFhKTTQwT09lb1dZM2h4N2N2?=
+ =?utf-8?B?L2FFZFY4MzhCZWREK2ZLSzZRMU1nR0hidGxFOWZndGpKTVBma2NsQT09?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E2962F076A7DA9488AEFDBDC93B4DD3F@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5259.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b882de53-5568-40cc-f1a1-08df0b7ecf52
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Sep 2026 18:52:18.1757
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: eeeG0gkCRv1kCrVH3BLulAW+wJePQRczQChCpXTBm1Y1vXbAyUicvsmGWPIp9+dG2aehT5Pze7+GRBI5BUso6Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4406
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-
-New issues:
-- [Medium] `virtio_vdpa_synchronize_cbs` fails to synchronize with the conf=
-iguration callback, bypassing the synchronization mechanism entirely.
-
-Pre-existing issues:
-- [High] In remoteproc, virtqueues are freed without waiting for concurrent=
- SRCU readers to finish, violating RCU-001 and leading to a Use-After-Free.=
- Additionally, a TOCTOU vulnerability in `rproc_vq_interrupt` allows a NULL=
- pointer dereference.
-- [High] In TmFIFO, virtqueues are freed concurrently with an active backgr=
-ound workqueue, leading to Use-After-Free. The synchronization added is inh=
-erently flawed and fails to wait for the workqueue.
---
-
-commit 9ddf2954e77ee0736af8a3f1e37367f20723435b
-Author: Karl Mehltretter <kmehltretter@gmail.com>
-
-virtio: implement synchronize_cbs for remaining transports
-
-virtio_reset_device() now calls synchronize_cbs to wait for running
-callbacks. Its synchronize_rcu() fallback does not cover workqueue or
-sleepable callbacks.
-
-> diff --git a/drivers/platform/mellanox/mlxbf-tmfifo.c b/drivers/platform/=
-mellanox/mlxbf-tmfifo.c
-> index 3c6408581373b..c260e3a1544ea 100644
-> --- a/drivers/platform/mellanox/mlxbf-tmfifo.c
-> +++ b/drivers/platform/mellanox/mlxbf-tmfifo.c
-[ ... ]
-> @@ -1135,6 +1135,19 @@ static void mlxbf_tmfifo_virtio_reset(struct virti=
-o_device *vdev)
->  	tm_vdev->status =3D 0;
->  }
-> =20
-> +static void mlxbf_tmfifo_virtio_synchronize_cbs(struct virtio_device *vd=
-ev)
-> +{
-> +	struct mlxbf_tmfifo_vdev *tm_vdev =3D mlxbf_vdev_to_tmfifo(vdev);
-> +	struct mlxbf_tmfifo *fifo =3D tm_vdev->vrings[0].fifo;
-> +	unsigned long flags;
-> +	int i;
-> +
-> +	for (i =3D 0; i < ARRAY_SIZE(fifo->spin_lock); i++) {
-> +		spin_lock_irqsave(&fifo->spin_lock[i], flags);
-> +		spin_unlock_irqrestore(&fifo->spin_lock[i], flags);
-> +	}
-> +}
-
-[Severity: High]
-This is a pre-existing issue, but does this sequential locking actually
-synchronize anything?  Acquiring and releasing locks one by one creates a r=
-ace
-window where callbacks can evade synchronization.
-
-Additionally, does this fail to synchronize with the background workqueue
-(fifo->work)?  The workqueue function mlxbf_tmfifo_rxtx_one_desc()
-dereferences vring->vq outside of the spinlocks.
-
-When mlxbf_tmfifo_virtio_del_vqs() clears and frees the virtqueue, there is
-a use-after-free risk because we haven't flushed the workqueue or properly
-synchronized here.
-
-[ ... ]
-> diff --git a/drivers/remoteproc/remoteproc_virtio.c b/drivers/remoteproc/=
-remoteproc_virtio.c
-> index d5e9ff045a28a..ecc022e354db1 100644
-> --- a/drivers/remoteproc/remoteproc_virtio.c
-> +++ b/drivers/remoteproc/remoteproc_virtio.c
-[ ... ]
-> @@ -89,14 +90,19 @@ static bool rproc_virtio_notify(struct virtqueue *vq)
->  irqreturn_t rproc_vq_interrupt(struct rproc *rproc, int notifyid)
->  {
->  	struct rproc_vring *rvring;
-> +	int srcu_idx;
-> +	irqreturn_t ret;
-> +
-> +	srcu_idx =3D srcu_read_lock(&rproc->vq_srcu);
-> =20
->  	dev_dbg(&rproc->dev, "vq index %d is interrupted\n", notifyid);
-> =20
->  	rvring =3D idr_find(&rproc->notifyids, notifyid);
-> -	if (!rvring || !rvring->vq)
-> -		return IRQ_NONE;
-> +	ret =3D rvring && rvring->vq ? vring_interrupt(0, rvring->vq) : IRQ_NON=
-E;
-
-[Severity: High]
-This is a pre-existing issue, but doesn't this double evaluation of
-rvring->vq introduce a Time-of-Check to Time-of-Use (TOCTOU) vulnerability?
-
-Because READ_ONCE() is not used, the compiler could reload a NULL pointer if
-__rproc_virtio_del_vqs() clears rvring->vq concurrently, leading to a NULL
-pointer dereference when calling vring_interrupt().
-
-> +
-> +	srcu_read_unlock(&rproc->vq_srcu, srcu_idx);
-> =20
-> -	return vring_interrupt(0, rvring->vq);
-> +	return ret;
->  }
->  EXPORT_SYMBOL(rproc_vq_interrupt);
-> =20
-[ ... ]
-> @@ -242,6 +248,13 @@ static void rproc_virtio_reset(struct virtio_device =
-*vdev)
->  	dev_dbg(&vdev->dev, "reset !\n");
->  }
-> =20
-> +static void rproc_virtio_synchronize_cbs(struct virtio_device *vdev)
-> +{
-> +	struct rproc *rproc =3D vdev_to_rproc(vdev);
-> +
-> +	synchronize_srcu(&rproc->vq_srcu);
-> +}
-
-[Severity: High]
-This is a pre-existing issue, but virtqueues are freed without waiting for
-concurrent SRCU readers to finish, violating the RCU-001 rule (Remove Before
-Reclaim).
-
-synchronize_srcu() is called here during device reset, but not during
-teardown.  In __rproc_virtio_del_vqs(), the virtqueue is removed and
-immediately freed via vring_del_virtqueue() without a grace period.
-
-Since the interrupt handler runs in an SRCU read-side critical section, can
-this cause a use-after-free if vring_interrupt() executes on freed memory?
-
-[ ... ]
-> diff --git a/drivers/virtio/virtio_vdpa.c b/drivers/virtio/virtio_vdpa.c
-> index de2af696de6ca..4f9e70c1332ef 100644
-> --- a/drivers/virtio/virtio_vdpa.c
-> +++ b/drivers/virtio/virtio_vdpa.c
-[ ... ]
-> @@ -123,8 +124,24 @@ static irqreturn_t virtio_vdpa_config_cb(void *priva=
-te)
->  static irqreturn_t virtio_vdpa_virtqueue_cb(void *private)
->  {
->  	struct virtqueue *vq =3D private;
-> +	struct virtio_vdpa_device *vd_dev;
-> +	unsigned long flags;
-> +	irqreturn_t ret;
-> =20
-> -	return vring_interrupt(0, vq);
-> +	vd_dev =3D to_virtio_vdpa_device(vq->vdev);
-> +	read_lock_irqsave(&vd_dev->callback_lock, flags);
-> +	ret =3D vring_interrupt(0, vq);
-> +	read_unlock_irqrestore(&vd_dev->callback_lock, flags);
-> +
-> +	return ret;
-> +}
-
-[Severity: Medium]
-While virtio_vdpa_virtqueue_cb() was updated to acquire callback_lock,
-virtio_vdpa_config_cb() (just above this context in the file) was not.
-
-Doesn't this mean virtio_vdpa_synchronize_cbs() fails to synchronize with
-configuration changes, bypassing the synchronization mechanism if a config
-change occurs concurrently with device reset or teardown?
-
-> +
-> +static void virtio_vdpa_synchronize_cbs(struct virtio_device *vdev)
-> +{
-> +	struct virtio_vdpa_device *vd_dev =3D to_virtio_vdpa_device(vdev);
-> +
-> +	write_lock_irq(&vd_dev->callback_lock);
-> +	write_unlock_irq(&vd_dev->callback_lock);
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260905152059.8956=
-0-1-kmehltretter@gmail.com?part=3D3
+T24gVHVlLCAyMDI2LTA5LTAxIGF0IDA4OjA2IC0wNzAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
+b3RlOg0KPiBPbiBUdWUsIFNlcCAwMSwgMjAyNiwgU2hpdmFuayBHYXJnIHdyb3RlOg0KPiA+IFRo
+ZSB4QVBJQyBJUEkgdGVzdCB1c2VzIE1QT0xfRl9NRU1TX0FMTE9XRUQgdG8gZ2V0IHRoZSBtZW1v
+cnkgbm9kZXMNCj4gPiBhdmFpbGFibGUgdG8gdGhlIGN1cnJlbnQgcHJvY2Vzcy4gTW92ZSB0aGUg
+cXVlcnkgdG8gbnVtYWlmLmggYXMNCj4gPiBnZXRfbnVtYV9tZW1fbm9kZXMoKSBzbyBvdGhlciBL
+Vk0gc2VsZnRlc3RzIGNhbiB1c2UgaXQuDQo+ID4gDQo+ID4gQ2FsbCBnZXRfbWVtcG9saWN5KCkg
+ZGlyZWN0bHkgaW5zdGVhZCBvZiB1c2luZyB0aGUgYXNzZXJ0LW9uLWZhaWx1cmUNCj4gPiBrdm1f
+Z2V0X21lbXBvbGljeSgpIHdyYXBwZXIuIFRoZSB4QVBJQyB0ZXN0IGFscmVhZHkgYXNzZXJ0cyBp
+dHMgdHdvDQo+ID4gbm9kZSByZXF1aXJlbWVudC4NCj4gDQo+IE5BSy4gIFRoaXMgaXMgbm90IGFu
+IGltcHJvdmVtZW50LiAgZ2V0X21lbXBvbGljeSgpIHN0cmFpZ2h0IHVwIHNob3VsZCBub3QgZmFp
+bA0KPiBmb3IgdGhpcyB1c2FnZS4NCg0KQWdyZWVkLiBJIHdpbGwgZHJvcCB0aGlzIHBhdGNoLg0K
+WW91ciBrdm1fZ2V0X251bWFfbWVtb3J5X25vZGVzKCkgLyBrdm1fZ2V0X25leHRfbnVtYV9ub2Rl
+KCkgaGVscGVycyBhcmUNCm1vcmUgdXNlZnVsIGhlcmUuDQoNClRoYW5rcywNClNoaXZhbmsNCg==
