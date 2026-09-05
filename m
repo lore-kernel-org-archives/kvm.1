@@ -1,101 +1,101 @@
-Received: from out28-98.mail.aliyun.com (out28-98.mail.aliyun.com [115.124.28.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF30C383980;
-	Sat,  5 Sep 2026 14:03:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048A6499F1E
+	for <kvm@vger.kernel.org>; Sat,  5 Sep 2026 15:06:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788616992; cv=none; b=V338JUJYAmLGwrZ+99J9xP7gzbxPhs5oO/3OLO1Q1H/KYR0nRxr+RGKGq3+ZcI7rp58SWOvN+NfzIdR5AqYP1RPee/qXUv2enKt8qHWKnMMqYj3KmBwXetarzXFC+fC7TysMRBCF6QkpCW1QERcej+teCitev+ua947N1WsZUns=
+	t=1788620802; cv=none; b=u593LNPhtU45KTvh7regxkBRKNUngD3oXaaC4zSAvgmixFtLrSIokggPq326LhHjXSP6kK8KJy+G4m59suT4ld8IXN6z5dhqQv4jwqFLLKQpb7IQaomgRBrFsPfm4FRSxFnIJgsirAmfLEMqr5hzPdVYuCSG2Q0h/qGDu359868=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788616992; c=relaxed/simple;
-	bh=cynATu6H8LPAyOX7rSQ7vzYVC4beIv65DY7wS3H1ifY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=umeXGJMC67RC7ig+H2NcOVB4LD6K4+/ml8mL3mK9FNhHPrLj4KYpPv1zaZmiVNJ2w/o9W/VdOM89YQXutDougTT8SfJmGw7YoZYiew0+DrlCB08Udww82ayAzf9NHPe/FFsxDKIj+L3sH4FSnLsB6+/bRy1CvVSTe9LYHs9/BuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07438851|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.00467713-0.00028342-0.995039;FP=11412257327081435002|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037026024;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.j6PS1ef_1788616970;
-Received: from 192.168.1.4(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.j6PS1ef_1788616970 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Sat, 05 Sep 2026 22:02:51 +0800
-Message-ID: <aeb97d5c-d4aa-4b5c-aeae-dcc6aacfdf1b@open-hieco.net>
-Date: Sat, 5 Sep 2026 22:02:50 +0800
+	s=arc-20240116; t=1788620802; c=relaxed/simple;
+	bh=hXINgzBTHyvUTA5Y9ccisxYS6W2cQ8xWp0qIxBb66nk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uwf+TIIXDB62fKajnJh5JOJzt6xGKdrFBN01FS5vQgvzWDREomHpqWvYLFiA3M7z3ENiMaAXaYSVIR+1clPRxoNaoVkHD7vTe1viDITQdXUN9Wk5Uh4+pAB8+vKb1sUFOKwhN74tSZ9aYx1a/8k1T5VaWnJMU7EeWbV1XcVepxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=arSFuFwg; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="arSFuFwg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B248A1F00A3D
+	for <kvm@vger.kernel.org>; Sat,  5 Sep 2026 15:06:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788620800;
+	bh=lDGsIluFgVSmvTII8ADDyuGdCHsaszYABajfQunqWW0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=arSFuFwgRUZnv7LD2n5PcnbUM/ZO3YBtLctILt9mzDm57+cE/BD5ZCqI2qY3NlCZk
+	 kRV7efLEB9HpkYA8WLF9pFyL42fJWzZ9uFoD2+y3OD2/3uaVUEco8v4sHgC0zCd8yJ
+	 2Q31RplDehicDroa7GhyuTl/LB7g/FYpq6ef25UGgn67o+UqCVFfL1weEDXR+na9ud
+	 jQDpw8KDyr/ldF7fn2wDeoVOJncQ0O1vCZcLPeyCUfZrCf/MEBXrtwIHVoZxO13K6W
+	 6E0xuCwTO1uBfwlSqUtVpSTrkdFX+3NyF5INHVNus9QLvHL0HGeNkRdidfqGS5lisZ
+	 wmWJYUtAOvMBA==
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6a600a1caf8so3271817a12.2
+        for <kvm@vger.kernel.org>; Sat, 05 Sep 2026 08:06:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwG45AJ4C9bI8R5b5jdsH+D9RG+bBKuieoPxSXqvnjBypRpWpIAZzBfyP19pCpiT1DFwms=@vger.kernel.org
+X-Gm-Message-State: AFuF++kkpZ4m31bhcK6at3lIjH5ypQmOPw+rZ+LnRMANNRUzB3K8qtH+
+	8QL9kN5cHhy/sr8hxZF3gZrZu345sbQ6wCGV0M7moUdfrcDGvUrbk9dad8y4hv8F66QGzlBXSSn
+	1d4r8X5BxL5AV0KEo1J4DgkpwhvUQEGI=
+X-Received: by 2002:a05:6402:a0db:b0:6a5:ed9e:b490 with SMTP id
+ 4fb4d7f45d1cf-6a7e8d94c7fmr4536791a12.14.1788620799387; Sat, 05 Sep 2026
+ 08:06:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/8] KVM: nSVM: Track fresh hardware DecodeAssist bytes
-To: Jim Mattson <jmattson@google.com>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
- zhouyanjing@hygon.cn, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260824123954.315112-1-zhang_wei@open-hieco.net>
- <20260824123954.315112-4-zhang_wei@open-hieco.net>
- <CALMp9eTUv+4v3jT7w3T8XoQmoSwkEjx6LHr39oJ9k8QNiQnyUA@mail.gmail.com>
-Content-Language: en-US
-From: Tina Zhang <zhang_wei@open-hieco.net>
-In-Reply-To: <CALMp9eTUv+4v3jT7w3T8XoQmoSwkEjx6LHr39oJ9k8QNiQnyUA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20260817123918.2738447-1-nagachaithanya9911@gmail.com>
+In-Reply-To: <20260817123918.2738447-1-nagachaithanya9911@gmail.com>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Sat, 5 Sep 2026 23:06:28 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7kgQngGAqJm1DOe6p7aFvZMmac-Xao8+aF8_d4C=cHVQ@mail.gmail.com>
+X-Gm-Features: AcwNN1U2JKNv-2kdY_yNpnc8sO-A7vh8ZHK951DGRlsgeKWhqOk3pz5pUnrHdDs
+Message-ID: <CAAhV-H7kgQngGAqJm1DOe6p7aFvZMmac-Xao8+aF8_d4C=cHVQ@mail.gmail.com>
+Subject: Re: [PATCH] LoongArch: KVM: Free init resources if kvm_init() fails
+To: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+Cc: zhaotianrui@loongson.cn, maobibo@loongson.cn, kernel@xen0n.name, 
+	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Applied, thanks.
 
+Huacai
 
-On 9/5/2026 7:42 AM, Jim Mattson wrote:
-> On Mon, Aug 24, 2026 at 5:40 AM Tina Zhang <zhang_wei@open-hieco.net> wrote:
->>
->> VMCB02 instruction bytes are valid only for the hardware VM-Exit that
->> populated them.  Track whether VMCB02 contains instruction bytes for the
->> data #PF or #NPF currently being reflected to L1 so that stale bytes are
->> not copied to VMCB12.
->>
->> Clear the VMCB02 instruction-byte fields and freshness state before each
->> nested run.  Mark the bytes as fresh only when a data #PF or #NPF came
-> 
-> By "nested run," do you mean "emulated VMRUN"? IIUC, that's when the
-> bytes and freshness are cleared.
-
-Yes, I meant when KVM prepares VMCB02 after emulating L1's VMRUN. The 
-same helper is also used when restoring nested state. I'll reword the 
-commit message to make that clear.
-
-
->> +static void nested_svm_clear_insn_bytes(struct vmcb *vmcb)
->> +{
->> +       vmcb->control.insn_len = 0;
->> +       memset(vmcb->control.insn_bytes, 0,
->> +              sizeof(vmcb->control.insn_bytes));
->> +}
-> 
-> Is it necessary to clear the bytes? The APM says, "All other
-> intercepts clear bits 7:0 in this field to zero (to indicate an
-> invalid condition); implementations may leave the other bytes
-> untouched."
-> 
-> Are you concerned about leaking bytes from unreflected VM-exits handled by L0?
-
-No, clearing the entire byte array isn't necessary.  VMCB02 is private 
-to L0, and insn_len determines whether the bytes are valid and how many
-bytes may be copied to VMCB12.  Setting insn_len to zero is sufficient
-and matches the behavior allowed by the APM. I'll drop the memset().
-
-
->> -int nested_svm_exit_handled(struct vcpu_svm *svm)
->> +int nested_svm_exit_handled(struct vcpu_svm *svm, bool from_hardware)
-> 
-> I don't think 'from_hardware' is necessary. The two callsites where
-> from_hardware is false are for opcode exits, and will be ruled out by
-> the check for nested_svm_vmexit_has_insn_bytes(svm->vmcb). If you drop
-> this extra parameter, there will be less churn.
-
-Agreed. Both non-hardware callsites set an opcode exit code before 
-calling nested_svm_exit_handled(), so nested_svm_vmexit_has_insn_bytes() 
-will reject them.  I'll drop the from_hardware parameter from 
-nested_svm_exit_handled() and restore its callers.
-
-Thanks,
-Tina
-
+On Mon, Aug 17, 2026 at 8:39=E2=80=AFPM Chaithanya Lagisetty
+<nagachaithanya9911@gmail.com> wrote:
+>
+> kvm_loongarch_init() calls kvm_loongarch_env_init() to allocate the
+> per-CPU kvm_context (vmcs) and kvm_loongarch_ops and to register the
+> perf callbacks, and then calls kvm_init(). If kvm_init() fails its
+> result is returned directly, but since module_init() does not run
+> module_exit() on failure, kvm_loongarch_env_exit() is never called and
+> those resources are leaked.
+>
+> Call kvm_loongarch_env_exit() when kvm_init() fails, matching the
+> teardown-on-failure pattern used by riscv_kvm_init().
+>
+> Fixes: 2bd6ac687261 ("LoongArch: KVM: Implement kvm module related interf=
+ace")
+> Signed-off-by: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+> ---
+>  arch/loongarch/kvm/main.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
+> index 3e1005526f4b..b6ddf5827c03 100644
+> --- a/arch/loongarch/kvm/main.c
+> +++ b/arch/loongarch/kvm/main.c
+> @@ -428,7 +428,11 @@ static int kvm_loongarch_init(void)
+>         if (r)
+>                 return r;
+>
+> -       return kvm_init(sizeof(struct kvm_vcpu), 0, THIS_MODULE);
+> +       r =3D kvm_init(sizeof(struct kvm_vcpu), 0, THIS_MODULE);
+> +       if (r)
+> +               kvm_loongarch_env_exit();
+> +
+> +       return r;
+>  }
+>
+>  static void kvm_loongarch_exit(void)
+> --
+> 2.43.0
+>
