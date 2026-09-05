@@ -1,56 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C17351C02
-	for <kvm@vger.kernel.org>; Sat,  5 Sep 2026 15:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2DF37B023
+	for <kvm@vger.kernel.org>; Sat,  5 Sep 2026 15:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788620845; cv=none; b=uLe8DYqyMq3m2xcM6s7fLC9DGX7fmvt7sGFe9zurxTI7gzusFGYML5qw/fBn0HQBJKiSk3uSn1qut8/NgXdaokMpDq7P9aNYsfBqqHts0zYn3UwtoLhooaNIYeyEqzwbcWjNm5Vm3I08uBTneUxY6Wb/ZJEMOh8c8Q1nxWGnISg=
+	t=1788620908; cv=none; b=kG5037eGKp//m8LivMO/M1BgiR0oBqM1qXfjxwMvQLjU6dylKyQHZg1sG7Zi2eOJ36dTiHWjkn/DgL06miwJa1QPk4P1O2sSp5t2anwCxduGO7z3Tb+7AYKSpyKK9AgTpxl4gTPSI+k5nSGhI1lvSgUrxTJXFpKEH8r/u/bfeW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788620845; c=relaxed/simple;
-	bh=nfRwOgjJOsyUJIOjBR6d6Lmr27CveS+qolynNbvilUY=;
+	s=arc-20240116; t=1788620908; c=relaxed/simple;
+	bh=D9MLe2FWXK8l0yp8EOopvSy3WBRMUQxSHtOgPpBFNfI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IUyBFM4uHX54DA1icdfXIc0Z/dCd5aODiP5LfRqtXXoX1kLsn2Bsx/6/mwZP6Os89wWiLoJDdIZmjY1H1huZ7AEYDgYr5ki9eoY0iYy4N9s9GWst29CwYnO69cL+Uoc3MM+JE9Fw9toyTiAoeGMcTHJaVkA4OxjuaVy6MX4xkp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VB8qnEQ7; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=d+7pw2YHsvgFAbJwuIgZxnWprPac++nGxBEln79ZJzKJwauJUoselXKtwVzCGWjlfMHvuWtNeOp5g3ngVR0M4m+YNab+2vrAarRADmHcoIypr6+OjyfIKqkXiV78CMqI/eTIMiCfItMFWR08YyKamvima60yEuVhfvMuVQ3zH5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HsIFm+Fu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VB8qnEQ7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 003AE1F00A3F
-	for <kvm@vger.kernel.org>; Sat,  5 Sep 2026 15:07:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HsIFm+Fu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 624EA1F00A3E
+	for <kvm@vger.kernel.org>; Sat,  5 Sep 2026 15:08:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788620844;
-	bh=GNrwivmV53YoE5aiNIGWHcSAlCfGZ0bCLDEagzO10yI=;
+	s=k20260515; t=1788620907;
+	bh=GHQttfGoEPmKo0nF5OG9d9wyjf9R2olHU8vn/gkHgUw=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=VB8qnEQ7rL0aP3xFdp65UxRsB1VhP5Ju5MGYn+x070+6QjmI+rkcoMHp+uGd7qG5s
-	 yxtXqCMQ8zuDisHXX2HXGHORtBZM0aSrZuzRT2mhlkyfoPd45/YGi6h6SgFcSDDOQ8
-	 pGkFsQRhYN9EA2R1PupYMzUTDDwCmD5EeOl1EzErWTeC8jAcQ9fSiMtwWumJsdnVkR
-	 da05TzOMXwjQ5pPtx8m7SMegRaYrYxWd2vHbJoMUMQbfmuXqJWuhegJVj1a+6jy+G8
-	 0MEryM5cq1809tGwT3IPzNeYFTKHKYIDHGpm0joM13zWdAFahoEz3Rv/rWwCTj0K/4
-	 FGi6E4hzfe6tQ==
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6a600a1caf8so3272494a12.2
-        for <kvm@vger.kernel.org>; Sat, 05 Sep 2026 08:07:23 -0700 (PDT)
-X-Gm-Message-State: AFuF++mtM53rXPyA/Jg3bNTtCk+rsPe5hAVmKcYkge+uyrKDH9RZpewD
-	i+XOvWli9BVW6DGI1x63uKy/sgxhyAzx33L0bT2MNLxhsAF66ZVScfReCy7O63yto8ApfKQ3+H3
-	LMgSs+lda1VvW8jmSoDUr6UzUt6emS8c=
-X-Received: by 2002:a05:6402:2549:b0:6a6:1c30:bc4c with SMTP id
- 4fb4d7f45d1cf-6a7e8d25de8mr4701468a12.5.1788620842659; Sat, 05 Sep 2026
- 08:07:22 -0700 (PDT)
+	b=HsIFm+FuRKgV+q5t2XjwxKz5+M9UFpJmFUPBjUuaxmSxZpgdo21UJSMv54sHBTHu+
+	 lKWIBC2zP81+0g29OQSwsMuDgoUZd0fNji3+DPpF09lqjC0RVPZkos5xKBdlas9bsG
+	 aZSqi5WMGK9wYFei3ntfZAynKLvHpS7xEwqvQ2EjWUCv7fyPTwvFF53o5roOWMcGF7
+	 fC3psp8K0af9ZFs6Q+wdWidIebkYW+KWOWq+szXHy5CnG6BzyXUR9kVjESvV6Z2syi
+	 HS+EObHttWwubXwEu9JpSGORjwrB9hXI5y9oMN/tGVv8nELE+w3CQ6l/9Kp4MHgIAq
+	 mWzXF56lgf8jA==
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6a374bea882so3048786a12.1
+        for <kvm@vger.kernel.org>; Sat, 05 Sep 2026 08:08:27 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxUAgn4XNH3JFp/D6pHQdn2ZK+b5TcHp/8Bz6IyCpDHYkvFKD6RSYjFpDpE3CQen5tcx/Q=@vger.kernel.org
+X-Gm-Message-State: AFuF++koPopptC3p2z+ds35QbJiqyNs0Q1SNtS+epKOZHiOJKkI50nNH
+	+xX0u5EthwZ1hyAkUbxoBGer842D37DGvv2ovYo+g+5FIhERAe5RDb3WEAxZZirtOsB29geMSGD
+	wbSvj7yBfKYhz0iyASvqJ5Uo44bCN/mY=
+X-Received: by 2002:a05:6402:24c2:b0:6a6:8dd:c76b with SMTP id
+ 4fb4d7f45d1cf-6a7e8d37131mr7093669a12.1.1788620906040; Sat, 05 Sep 2026
+ 08:08:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260812040132.113812-1-maobibo@loongson.cn>
-In-Reply-To: <20260812040132.113812-1-maobibo@loongson.cn>
+References: <20260828094825.357630-1-zeng_chi911@163.com>
+In-Reply-To: <20260828094825.357630-1-zeng_chi911@163.com>
 From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sat, 5 Sep 2026 23:07:11 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H6WtpF2_nsBwgjPWGBGs3veT2st1P3hUwbPTan1xeB50w@mail.gmail.com>
-X-Gm-Features: AcwNN1X-UynZDXm-MSD8BbREYdy2QcNDTWRNTljynK7ewKSv3_B1Z7CX3OJb5R0
-Message-ID: <CAAhV-H6WtpF2_nsBwgjPWGBGs3veT2st1P3hUwbPTan1xeB50w@mail.gmail.com>
-Subject: Re: [PATCH] LoongArch: KVM: Remove unused function kvm_arch_flush_remote_tlbs_memslot()
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
+Date: Sat, 5 Sep 2026 23:08:14 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H71dcn46t7_cmnCDhJf6T3oHTrpz3c==BB1WGJ3mtXSjQ@mail.gmail.com>
+X-Gm-Features: AcwNN1VQ6eiUw0Xp7Wb5Tv7Wnaju8g9BBNESfujGrbWOW852vJ9OiobZMxdp2RM
+Message-ID: <CAAhV-H71dcn46t7_cmnCDhJf6T3oHTrpz3c==BB1WGJ3mtXSjQ@mail.gmail.com>
+Subject: Re: [PATCH] LoongArch: KVM: Preserve memslot arch flags on KVM_MR_FLAGS_ONLY
+To: Zeng Chi <zeng_chi911@163.com>
+Cc: zhaotianrui@loongson.cn, maobibo@loongson.cn, kvm@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, zengchi@kylinos.cn, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -59,54 +61,67 @@ Applied, thanks.
 
 Huacai
 
-On Wed, Aug 12, 2026 at 12:08=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wro=
-te:
+On Fri, Aug 28, 2026 at 5:48=E2=80=AFPM Zeng Chi <zeng_chi911@163.com> wrot=
+e:
 >
-> Function kvm_arch_flush_remote_tlbs_memslot() is not called any more,
-> and it is unused. Here remove this API.
+> From: Zeng Chi <zengchi@kylinos.cn>
 >
-> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> kvm_arch_prepare_memory_region() computes new->arch.flags, i.e. whether
+> a memslot is KVM_MEM_HUGEPAGE_CAPABLE or KVM_MEM_HUGEPAGE_INCAPABLE, only
+> for KVM_MR_CREATE and KVM_MR_MOVE, and returns early for every other
+> change.  But the generic code allocates a zeroed memslot for every
+> change and never copies old->arch, so after a KVM_MR_FLAGS_ONLY update,
+> e.g. toggling KVM_MEM_LOG_DIRTY_PAGES for live migration, the active
+> memslot has arch.flags =3D=3D 0.
+>
+> With both flags clear, fault_supports_huge_mapping() falls through to
+> the alignment check on the HVA range alone, which no longer verifies
+> that the GPA and HVA have the same offset within a PMD.  A memslot that
+> was marked KVM_MEM_HUGEPAGE_INCAPABLE because of a GPA/HVA offset
+> mismatch can then be mapped with PMD entries on read faults, and since
+> kvm_map_page() aligns the gfn and the pfn independently, the guest ends
+> up accessing the wrong host pages, exactly the "d -> f, e -> g" case
+> described in the comment above the check.
+>
+> Carry the arch flags over from the old memslot for KVM_MR_FLAGS_ONLY,
+> as the GPA, HVA and size are guaranteed to be unchanged for that case.
+>
+> Fixes: 7ab6fb505b2a ("LoongArch: KVM: Optimization for memslot hugepage c=
+hecking")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zeng Chi <zengchi@kylinos.cn>
 > ---
->  arch/loongarch/include/asm/kvm_host.h | 1 -
->  arch/loongarch/kvm/mmu.c              | 6 ------
->  2 files changed, 7 deletions(-)
+>  arch/loongarch/kvm/mmu.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 >
-> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/inclu=
-de/asm/kvm_host.h
-> index 23cfbecebbd7..5682b8c847d1 100644
-> --- a/arch/loongarch/include/asm/kvm_host.h
-> +++ b/arch/loongarch/include/asm/kvm_host.h
-> @@ -350,7 +350,6 @@ static inline void kvm_arch_vcpu_block_finish(struct =
-kvm_vcpu *vcpu) {}
->  static inline void kvm_arch_free_memslot(struct kvm *kvm, struct kvm_mem=
-ory_slot *slot) {}
->  void kvm_check_vpid(struct kvm_vcpu *vcpu);
->  enum hrtimer_restart kvm_swtimer_wakeup(struct hrtimer *timer);
-> -void kvm_arch_flush_remote_tlbs_memslot(struct kvm *kvm, const struct kv=
-m_memory_slot *memslot);
->  void kvm_init_vmcs(struct kvm *kvm);
->  void kvm_exc_entry(void);
->  int  kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu);
 > diff --git a/arch/loongarch/kvm/mmu.c b/arch/loongarch/kvm/mmu.c
-> index e104897aa532..2c08402bfd3e 100644
+> index e104897aa532..4ca7c6ea8f08 100644
 > --- a/arch/loongarch/kvm/mmu.c
 > +++ b/arch/loongarch/kvm/mmu.c
-> @@ -939,9 +939,3 @@ int kvm_handle_mm_fault(struct kvm_vcpu *vcpu, unsign=
-ed long gpa, bool write, in
->  void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *me=
-mslot)
->  {
->  }
-> -
-> -void kvm_arch_flush_remote_tlbs_memslot(struct kvm *kvm,
-> -                                       const struct kvm_memory_slot *mem=
-slot)
-> -{
-> -       kvm_flush_remote_tlbs(kvm);
-> -}
+> @@ -383,6 +383,16 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm, =
+const struct kvm_memory_slot
+>         hva_t hva_start;
+>         size_t size, gpa_offset, hva_offset;
 >
-> base-commit: f5bbbfec59b4e2fb7520a91de3df8a6174325d6a
+> +       /*
+> +        * The generic code allocates a fresh, zeroed memslot for every c=
+hange,
+> +        * so the arch flags computed below must be carried over when onl=
+y the
+> +        * userspace flags change, e.g. when dirty logging is toggled.
+> +        */
+> +       if (change =3D=3D KVM_MR_FLAGS_ONLY) {
+> +               new->arch =3D old->arch;
+> +               return 0;
+> +       }
+> +
+>         if ((change !=3D KVM_MR_MOVE) && (change !=3D KVM_MR_CREATE))
+>                 return 0;
+>         /*
 > --
-> 2.39.3
+> 2.25.1
 >
+>
+> No virus found
+>                 Checked by Hillstone Network AntiVirus
 >
