@@ -1,119 +1,142 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9154AF9EE
-	for <kvm@vger.kernel.org>; Sat,  5 Sep 2026 15:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E3F4AE8A5
+	for <kvm@vger.kernel.org>; Sat,  5 Sep 2026 15:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788621026; cv=none; b=e2w6hE84sHHfcZOlOPcm39dPt4ITlFSHF/PTn1DwFU31/uxaQocgs0VccrMPWsBRM53QpS4GGNdhEf4LOPxvkAuiF0+abZAh7FSsaqDHTuJuLxBEIYgRe9YPCGz5PyCrFLUKfPTgCBJ1sSqe0tRYZ0GRCSFkuVu86nL+cOTVhqA=
+	t=1788621116; cv=none; b=jNXN6kjzIrTo6tR5Xj1eABvGPlmjaopstZqZqmRPnjIktuQduq3MiybBzFeeZptrCZ/qtunqSGbEuOempBVZbfq1AmHymxTLx/4iXURgwzNWxCSJG7gcpfmHVLKGyeJBoOlf0sJJK//cDv6CDRlDygLHsV4DyBCaeqGn9tR0XPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788621026; c=relaxed/simple;
-	bh=2mJGIwyj/xSapbZTBjcCCPDQG9hmyLml1tmEw/lAXg4=;
+	s=arc-20240116; t=1788621116; c=relaxed/simple;
+	bh=cs3tMB5ZJP3WI9uIvt6r8CcZt7ukNuHK6xpdE6GGht4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hZYu7U+vRp61Pqd1NooCtGJ7KG8FtD9I8qow03uSEgIuQJ6DKAMaN7DpArfInbwlcLVCExDZIcn2j8NfVpRvTJbxDP09YZNSYIlznzIF32o/UL5rbnixKyhXBPlIgurS7W1THnU2XmXRB1iRlOSGP8yeI1CEpT5cofjVf8Axvfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nV6uVKpL; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=Ug3a5e+Rvl+NBHh8CoEGiVz3SWonqJwplxABGzz/YsYQOgwm/XSqJEvxH6oTtszh6/nu1WTFPdvV+v6OU1opSh8fKEnlaSU+YtwDbWhfF446JXtuJluK0ILoroSpp4HdCxXnW+GJ7sHMcGV8HKlKd4pJt+NWTKQ3bCxgGrTslQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YfpQ1vfe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nV6uVKpL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4CA71F00A3E
-	for <kvm@vger.kernel.org>; Sat,  5 Sep 2026 15:10:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YfpQ1vfe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C811F00ACF
+	for <kvm@vger.kernel.org>; Sat,  5 Sep 2026 15:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788621017;
-	bh=+ngsQXI4zC+888E4/OJjdNvUmB+wO5RAGN8skdj0V40=;
+	s=k20260515; t=1788621111;
+	bh=bL3w34qUiq6PKrSstiPLOgFf9oEN1oR7xJDQLGR9iRs=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=nV6uVKpLTHEp92ojh5OIDyFlT2qxb10Gzvnd+exrHrBkT8Gf1sVt9N/BdHtO+mEoH
-	 S2JLnrgI1wAvdUENdAdM1pZ+MKRqpnfUgDKTR1XAaM8T7i8I0HImhUbBxnBqpinB8x
-	 ezMftbRgj4MsAZmGLM6KwFvfkexUlg1+N/88EUKqvDLQIeWXL9+dwjNlbqd+p+VDB1
-	 vCmOOoQIsQPHFFPBYSqdWMEZ7BVbViGnxIcv97KWDAtXI21zQTy6H/MsVoUG3/1BaM
-	 c7lAPoY7nLb99+DVD1/5Rhi6NH77XXVTLA51EbrNFv+KF3T1TJKEKPloyXctBCTa/o
-	 eDAkMEF/BYykQ==
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6a668ce86abso3205771a12.2
-        for <kvm@vger.kernel.org>; Sat, 05 Sep 2026 08:10:17 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwyIYRAnjCpfbq0mguPin+tFntOyxXBwvsKIifNKl0RJhzAe57v7gMbE6JWPBSn7hE0F+Y=@vger.kernel.org
-X-Gm-Message-State: AFuF++mvf81hVQtuWkNd1I+LFRhNcFV2x6Hgf545wmsQDEWMfjsFKEW5
-	73XeMLTYkBl0PjvO1AB4CihUfyiboOywf1I4ZzN9NGtBu2WcOQKSchBbYZsvohBBul+jp0gXpYg
-	Cc5wrEkcYJCNilznsNw0jbhH+ZjR5sOA=
-X-Received: by 2002:a05:6402:2b91:b0:6a6:32f5:90b0 with SMTP id
- 4fb4d7f45d1cf-6a7e8f973f7mr7958295a12.18.1788621016394; Sat, 05 Sep 2026
- 08:10:16 -0700 (PDT)
+	b=YfpQ1vfenfqwtIYla5E2kEDfvPou/1j2+HsFW0tF5CMddYYLw56AUx5gwFc/uqvq4
+	 t4L9lcAJOp+Mg7jAtuIpdqyk90+5iN6qH6GtkrSujdeh/VW8dbA/KSSAgQagMnxIqQ
+	 sL6B+OtfvjxyV3iEx7xCEO8xRkXpvTAT4zlNjfXdFyekC1fypo59uVDJz6KYMzIP/Y
+	 tynHBx+eMmAo2DS5YxloO55IE56hEP2X8X5ma1FqOXRYLdJm8GH18xnVOFv+BrcuNK
+	 0qzvG8UqXVVUehIYyPJ0MevxbUOwXcdswf7CorEj2ssKjt1P95LA3LvzUnS+psmFc5
+	 j1QCH9NBCAiRg==
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6a60f0dbeccso2741551a12.0
+        for <kvm@vger.kernel.org>; Sat, 05 Sep 2026 08:11:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBymHv8dNomV0/ni5cieIWdowFx4R9ah592XtJ4KjTkPrEeJyvt+yir69I/YIoVWG41RhUU=@vger.kernel.org
+X-Gm-Message-State: AFuF++mZVR2jieu24DlzEOoKMGxcFmQOfOX7BeNRZE4o226miiK3mKX3
+	HUxh1L+WqB4pQgIt3qmuzG9r9d0Yfvg+J0ZuutBzk1dxHEJO0p9wvlGUTiNzFDaeTaVs849Wecw
+	QMeXzGQK9GUZjeUWDRCcSsVYu0HxzE7A=
+X-Received: by 2002:a05:6402:2752:b0:6a7:ea54:38c with SMTP id
+ 4fb4d7f45d1cf-6a7ea54209dmr3447413a12.29.1788621110068; Sat, 05 Sep 2026
+ 08:11:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260828093604.56622-1-zeng_chi911@163.com>
-In-Reply-To: <20260828093604.56622-1-zeng_chi911@163.com>
+References: <20260814094738.2552440-1-cui.tao@linux.dev>
+In-Reply-To: <20260814094738.2552440-1-cui.tao@linux.dev>
 From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sat, 5 Sep 2026 23:10:05 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4Jc4txZ-cQO-h6yZmfk3YEgeEptKtRQcDO=US3sies0A@mail.gmail.com>
-X-Gm-Features: AcwNN1UKvRHYPv7HdHEqhee4ixh5TS5UumQJLZJh8j4AXNvX5xvnzRkPfAjWnIM
-Message-ID: <CAAhV-H4Jc4txZ-cQO-h6yZmfk3YEgeEptKtRQcDO=US3sies0A@mail.gmail.com>
-Subject: Re: [PATCH] LoongArch: KVM: Validate MSI data before routing it to EIOINTC
-To: Zeng Chi <zeng_chi911@163.com>
-Cc: zhaotianrui@loongson.cn, maobibo@loongson.cn, yury.norov@gmail.com, 
-	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	zengchi@kylinos.cn, stable@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
+Date: Sat, 5 Sep 2026 23:11:38 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5SRTceJzKUMCH2MXJXf+h5g0e4iyFgwStStg5hJOhB-w@mail.gmail.com>
+X-Gm-Features: AcwNN1VggpiIfHX09jVpMuhzax1l2O50S0Jc_dd9AH9e-iil6TqAP2EDuwdtxyE
+Message-ID: <CAAhV-H5SRTceJzKUMCH2MXJXf+h5g0e4iyFgwStStg5hJOhB-w@mail.gmail.com>
+Subject: Re: [PATCH v3] LoongArch: KVM: Fix TOCTOU race on pv_features
+To: Tao Cui <cui.tao@linux.dev>
+Cc: maobibo@loongson.cn, zhaotianrui@loongson.cn, kvm@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Tao Cui <cuitao@kylinos.cn>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 Applied, thanks.
 
-
 Huacai
 
-On Fri, Aug 28, 2026 at 5:36=E2=80=AFPM Zeng Chi <zeng_chi911@163.com> wrot=
-e:
+On Fri, Aug 14, 2026 at 5:47=E2=80=AFPM Tao Cui <cui.tao@linux.dev> wrote:
 >
-> From: Zeng Chi <zengchi@kylinos.cn>
+> From: Tao Cui <cuitao@kylinos.cn>
 >
-> pch_msi_set_irq() passes e->msi.data straight into eiointc_set_irq() as
-> the irq number.  The MSI data comes from userspace, either via a
-> KVM_IRQ_ROUTING_MSI entry set with KVM_SET_GSI_ROUTING (used by irqfd
-> and KVM_IRQ_LINE) or directly via KVM_SIGNAL_MSI, and is never checked
-> against EIOINTC_IRQS.
+> The check-then-set on kvm->arch.pv_features in
+> kvm_loongarch_cpucfg_set_attr() is lockless, so two vCPUs can race
+> past the validation and set different values.  Add a spinlock to
+> serialize it.
 >
-> eiointc_set_irq() uses the value with __set_bit()/__clear_bit() on the
-> 256-bit isr bitmap, eiointc_update_irq() then indexes sw_coremap[] and
-> the per-cpu coreisr/sw_coreisr bitmaps with it.  A data value >=3D 256
-> therefore reads and writes memory past the end of those arrays, i.e.
-> any process holding a VM fd can corrupt kernel memory beyond the
-> loongarch_eiointc allocation.
->
-> Reject MSI data that doesn't fit in the EIOINTC irq space.  The DMSINTC
-> path is unaffected as it decodes the vector from the address and masks
-> it.
->
-> Fixes: 1928254c5ccb ("LoongArch: KVM: Add irqfd support")
-> Cc: stable@vger.kernel.org
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/all/20260531140921.1B1181F00893@smtp.kern=
-el.org/
-> Signed-off-by: Zeng Chi <zengchi@kylinos.cn>
+> Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
 > ---
->  arch/loongarch/kvm/intc/pch_pic.c | 3 +++
->  1 file changed, 3 insertions(+)
 >
-> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/=
-pch_pic.c
-> index e7b77705c516..81fb534ce8dd 100644
-> --- a/arch/loongarch/kvm/intc/pch_pic.c
-> +++ b/arch/loongarch/kvm/intc/pch_pic.c
-> @@ -78,6 +78,9 @@ int pch_msi_set_irq(struct kvm *kvm, struct kvm_kernel_=
-irq_routing_entry *e, int
->                 return dmsintc_set_irq(kvm, msg_addr, e->msi.data, level)=
+> Changes in v2: use a spinlock instead of a cmpxchg loop (Bibo Mao).
+> Changes in v3: rename the lock to pv_setting_lock and place it next to
+> phyid_map_lock (Huacai Chen).
+>
+> v1: https://lore.kernel.org/all/20260810081321.157258-1-cui.tao@linux.dev=
+/
+> v2: https://lore.kernel.org/all/20260813232542.2098930-1-cui.tao@linux.de=
+v/
+>
+>  arch/loongarch/include/asm/kvm_host.h | 1 +
+>  arch/loongarch/kvm/vcpu.c             | 6 +++++-
+>  arch/loongarch/kvm/vm.c               | 1 +
+>  3 files changed, 7 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/inclu=
+de/asm/kvm_host.h
+> index 23cfbecebbd7..3538a199aac6 100644
+> --- a/arch/loongarch/include/asm/kvm_host.h
+> +++ b/arch/loongarch/include/asm/kvm_host.h
+> @@ -125,6 +125,7 @@ struct kvm_arch {
+>         unsigned int  pte_shifts[MAX_PGTABLE_LEVELS];
+>         unsigned int  root_level;
+>         spinlock_t    phyid_map_lock;
+> +       spinlock_t    pv_setting_lock;
+>         struct kvm_phyid_map  *phyid_map;
+>         /* Enabled PV features */
+>         unsigned long pv_features;
+> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+> index 20c207d80e31..e47fa463a8be 100644
+> --- a/arch/loongarch/kvm/vcpu.c
+> +++ b/arch/loongarch/kvm/vcpu.c
+> @@ -1165,10 +1165,14 @@ static int kvm_loongarch_cpucfg_set_attr(struct k=
+vm_vcpu *vcpu,
+>                         return -EINVAL;
+>
+>                 /* All vCPUs need set the same PV features */
+> +               spin_lock(&kvm->arch.pv_setting_lock);
+>                 if ((kvm->arch.pv_features & LOONGARCH_PV_FEAT_UPDATED)
+> -                               && ((kvm->arch.pv_features & valid) !=3D =
+val))
+> +                               && ((kvm->arch.pv_features & valid) !=3D =
+val)) {
+> +                       spin_unlock(&kvm->arch.pv_setting_lock);
+>                         return -EINVAL;
+> +               }
+>                 kvm->arch.pv_features =3D val | LOONGARCH_PV_FEAT_UPDATED=
 ;
+> +               spin_unlock(&kvm->arch.pv_setting_lock);
+>                 return 0;
+>         default:
+>                 return -ENXIO;
+> diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
+> index 1317c718f896..86ba7d54e81f 100644
+> --- a/arch/loongarch/kvm/vm.c
+> +++ b/arch/loongarch/kvm/vm.c
+> @@ -76,6 +76,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long typ=
+e)
+>                 return -ENOMEM;
 >         }
+>         spin_lock_init(&kvm->arch.phyid_map_lock);
+> +       spin_lock_init(&kvm->arch.pv_setting_lock);
 >
-> +       if (e->msi.data >=3D EIOINTC_IRQS)
-> +               return -EINVAL;
-> +
->         eiointc_set_irq(kvm->arch.eiointc, e->msi.data, level);
->
->         return 0;
+>         kvm_init_vmcs(kvm);
+>         kvm_vm_init_features(kvm);
 > --
-> 2.25.1
->
->
-> No virus found
->                 Checked by Hillstone Network AntiVirus
+> 2.43.0
 >
