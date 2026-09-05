@@ -1,27 +1,28 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010060.outbound.protection.outlook.com [52.101.61.60])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011008.outbound.protection.outlook.com [52.101.57.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0163803C6;
-	Sat,  5 Sep 2026 08:11:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.60
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695414503E0;
+	Sat,  5 Sep 2026 08:13:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.8
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788595915; cv=fail; b=a1AaK6w9bVP7Z3Vr9YqlybSNia7TxkhbOsJn/5XsCG4inXVj6YzltUCuh0e99+J87WvqGNHCxgenQw6Kt92pXj4IZsHM3/MkwyK1EWgBP8EkMgkZZzcEq1XItxmHJw4wkj8x4hM7K/qDIy7DeMbBWUlRDqMPxI9fO7ugv+z2JsA=
+	t=1788596030; cv=fail; b=pGm/gYv6oYcsBjqngUXauiUe1Ig29hPGe1FV6bs3XSfrl/Kf3MwlxieG1atgxPnidTPZlvBpc6sYacus6wT5ku3+u47zQhTQWPvLHBLxDwcYYx4q5Toe9PVyPiM5XtfHjrcgOdjy8UvhZd/ZyzOfSANSK3vWmGYT66cJAarxUDo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788595915; c=relaxed/simple;
-	bh=1RTsMVVz5bwry7IPWVIJ+nali1kcwakEp2C1GNZbzFM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uihUKsneTzMIrQHAfqXrlnbbZ8ukIZ96UkVZWhfzMA9DMi9qbbQ3Ax5uEGGP2NE2AJtELkc6zZj/ZI+c31rbM51zfVjgs7feoRYEiCfxR7ce5/izvCDEcG7dX0i7IWVg38PGDgxSz15qnHRhfSJa1HikFsRbWLvpXIZN2QiwWpg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=fkz//qOP; arc=fail smtp.client-ip=52.101.61.60
+	s=arc-20240116; t=1788596030; c=relaxed/simple;
+	bh=jE6+x6R486UU0VdJmwmQHvlN8RukzAX3/qs5azyPqoA=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KjUs+ii/N2ggy+YUgx9HaQ+A1rpC3mL/UQXM/W62XZAe91lA0GwiMoKRPXwyh6HJrGKshc+4n4+k4f0/+XD0ivPHMxV+Jcwrv9OsIjpoVEyh8wwW2lC2RVglwSHY3CrTr4YlRJ6D6/gc3QRM3fV6SlKW9Q89av0cX+iIkm/M8to=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qAvMCqNk; arc=fail smtp.client-ip=52.101.57.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="fkz//qOP"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qAvMCqNk"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KNjBq3nVqEq8cBXVyhtLFDYY0lV0GXDSPA7Krq84i1gdcLKuySITMQmzKPNpIUBzZZgaUc++S9TthIclemiN353pD/y8qCT1mn6rAnvTG8OzVU6YwUUJZkz1RdAJtYEMy77Z1/Dxy6phTNQY07oRDPGM9QkBkCk4RKXtNjRmGD1QaTv8PgNNkfgDj+f4/yXRAidZ+QlFOOhRfobUZHqWB51m5dGB0OAHQwNsiINsHHIknsLoInLx9IRJYNk4a3F2hIjgCfYX10c/zpcFkzhpblk5mEXZ6AGcald2hFxWxmew+nLwl2vpdnTYHo1couULa2AAc4qtcb8fBWzLkgdkIg==
+ b=QJopyIgHw4oHzEaIhBAO28qkjEBUfffs6oTJv2zGEc5ywjy7HvecqA7uQB2EhGS6dndsiPt56vAwddT9cD0yjAHwSbkegyK9n89F78wg1VBu0n3D0ygGVNNCF6dj2KRJzXJxk9wH8aXQs6Q/o7TL87vfdzgCVIx2lByg5E8kaVriCfa0ee8xX80zfcLIc/+iD8CDTecCYS1PYDoURZkBKGVTp/SQjyBnqH6vbf9b6+/vj2hOY4M/JZggJ8gnYKNvv2X+4OOSHWkoLSE8Th2iY1nimg8OxyC1zct/nwoGBjueJGRIFQXUmkDkBlezOVqfn0sZj/eDmU5Wh8NZo6To4Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1x0ZxjM04nmcfxveJGPnB0BieElsgaSxEj/8CExm6cs=;
- b=eiBSB1a6jZg9971d+OTpS0ilgoLPBxmbzJQkVjsfzYVf+P3aP2uwiYYDyiM03Qc+tBz6m+FrpekPEYtVBttx3/VOyZmemxhHWHvN8thXUCx/XN11aQzlQ5XFIlVNx/m5krXlvrnsryX4mfXic4u3XhXPd/YsG1bsGOZzsDwgrSxFPr+FyV0tt6kChX00do+/zk3P/DE/MvteBSP7F4SZxfiJsiwJi3FGhmmru2KLZP0sZeEe8/xA1wKlwmjNIcNBAY8b59jesJUmqme0bmHYgEuSPWEYESDBqPlAGSMIPDQuA/SutPsn1+w5Qj18u5YHWcDlJNqo+MOfWdPXjofPYw==
+ bh=jvu6UEccL7obCi5In/FQC+/SNI929r8FvTxCnjoGT30=;
+ b=qy2i4n/b+p88tavN5nviJRCdq7/yE2UUt9fShU1CL9Y8rMnEcUUM7kWVsHMhA59TML3+wj1DkhuERCDlTe6GVW/DPH4j2iSQXJcfRzLHbQwf0OFRqfQYhU8y8QFz5/KGFZgIt2+O9f/ewPpf+kbOE4B22uJ6RIO+0ANaxj/9DgDpOHUtUtJrU8JSUmN4gMXBfeCNMRrBmGrms5NwysEYsL6XKNuTmlN5OqsQjWkFjPs93d2Z27kbCQPGQmyhac38tT+3jGbJSNuHZmFSN6PIkWebEZc4+iFNW/Cn18gekQuhPp/Bqerm0IQ/u0c1DKHWZUd923O9Ybqrmfp7NB6BpA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -29,18 +30,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1x0ZxjM04nmcfxveJGPnB0BieElsgaSxEj/8CExm6cs=;
- b=fkz//qOPqc0lo6etQWJEKnVUd01rKdM4xcvixfgT43ESWufpoy5qp4m67IJawuGWeByiD4SK1//W/eO1mmW0nup0WtmHRlL0DESzujNwb0wDfXc8KidWwAOqFgqJV3Afe7bq7FfdTsou+iNQk9YI2NOjEJA02DgMq/WEgANyu9hxjqElTIYCp3lADXNjEjFSWfQCTq9NsbWwJWCk9xLKGTemRiLC9AC5DrcC7tzsKVhssMD4efCAue8+AJUexHVWnQKBhlwFGbqAWJ3Rmbgq85CNPVMuRA3/L2hlh/MB0Yj1ZJcigFiEj4liTPk5Z7Kjc1yPFb6S1TJHON45K6sK9A==
-Received: from BN9PR03CA0124.namprd03.prod.outlook.com (2603:10b6:408:fe::9)
- by SJ0PR12MB7081.namprd12.prod.outlook.com (2603:10b6:a03:4ae::17) with
+ bh=jvu6UEccL7obCi5In/FQC+/SNI929r8FvTxCnjoGT30=;
+ b=qAvMCqNkko5A3GTypYInwo4DQ5WlcBbyPgcHcQBScULh0ROYVTe2Nxxb4wZtVP11JoqvowuqMM+Wc27CMChysUpRbx6FN0YIwIjRP/CGtZJ9ZIJ/eM2pXikuOawoLSjFKtSnHXIDnZ01ka0MB86Zq3NUe+ijoWdeHfdDSnhnbU5le7CosXQ7JakVedFY/+hY+6ERJDakgSxFXF2+xwY2uEhrSvFHsV6qLda0uiVdC0G+wnH1FD/+QdgsK8pQELzaLp9/2jNYSIlYM05JjaOfxIQK/6nebpaP5OklW0oATfzkumtl4I1+8kktorXSPgkhYY16TtGduk4D39s18VVIDg==
+Received: from BN0PR04CA0067.namprd04.prod.outlook.com (2603:10b6:408:ea::12)
+ by MN2PR12MB4288.namprd12.prod.outlook.com (2603:10b6:208:1d2::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Sat, 5 Sep
- 2026 08:11:37 +0000
-Received: from BN6PEPF00000072.namprd03.prod.outlook.com
- (2603:10b6:408:fe:cafe::2b) by BN9PR03CA0124.outlook.office365.com
- (2603:10b6:408:fe::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.13; Sat, 5 Sep
+ 2026 08:13:27 +0000
+Received: from BN6PEPF0000006F.namprd03.prod.outlook.com
+ (2603:10b6:408:ea:cafe::25) by BN0PR04CA0067.outlook.office365.com
+ (2603:10b6:408:ea::12) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.14 via Frontend Transport; Sat, 5
- Sep 2026 08:11:37 +0000
+ Sep 2026 08:13:27 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -48,20 +49,20 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.117.161 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
 Received: from mail.nvidia.com (216.228.117.161) by
- BN6PEPF00000072.mail.protection.outlook.com (10.167.248.199) with Microsoft
+ BN6PEPF0000006F.mail.protection.outlook.com (10.167.248.196) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.406.5 via Frontend Transport; Sat, 5 Sep 2026 08:11:37 +0000
+ 15.21.406.5 via Frontend Transport; Sat, 5 Sep 2026 08:13:26 +0000
 Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
  (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Sat, 5 Sep
- 2026 01:11:27 -0700
+ 2026 01:13:12 -0700
 Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail205.nvidia.com
  (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Sat, 5 Sep
- 2026 01:11:26 -0700
+ 2026 01:13:12 -0700
 Received: from inno-dell.home (10.127.8.11) by mail.nvidia.com (10.129.68.7)
  with Microsoft SMTP Server id 15.2.2562.46 via Frontend Transport; Sat, 5 Sep
- 2026 01:11:17 -0700
+ 2026 01:13:03 -0700
 From: Zhi Wang <zhiw@nvidia.com>
 To: <dakr@kernel.org>, <acourbot@nvidia.com>
 CC: <alex@shazbot.org>, <jgg@nvidia.com>, <yishaih@nvidia.com>,
@@ -75,10 +76,12 @@ CC: <alex@shazbot.org>, <jgg@nvidia.com>, <yishaih@nvidia.com>,
 	<kwankhede@nvidia.com>, <targupta@nvidia.com>, <nova-gpu@lists.linux.dev>,
 	<linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, Zhi Wang
 	<zhiw@nvidia.com>, <kvm@vger.kernel.org>
-Subject: [PATCH 00/13] Introduce NVIDIA vGPU manager and VFIO variant driver
-Date: Sat, 5 Sep 2026 11:11:03 +0300
-Message-ID: <20260905081116.106613-1-zhiw@nvidia.com>
+Subject: [PATCH 12/13] vfio/nvidia-vgpu: add the NVIDIA vGPU VFIO variant driver
+Date: Sat, 5 Sep 2026 11:11:15 +0300
+Message-ID: <20260905081116.106613-13-zhiw@nvidia.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260905081116.106613-1-zhiw@nvidia.com>
+References: <20260905081116.106613-1-zhiw@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -90,233 +93,362 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN6PEPF00000072:EE_|SJ0PR12MB7081:EE_
-X-MS-Office365-Filtering-Correlation-Id: 916a1aa8-8c1b-4af8-8354-08df0b254ecb
+X-MS-TrafficTypeDiagnostic: BN6PEPF0000006F:EE_|MN2PR12MB4288:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7f699c50-6647-42bc-ccd2-08df0b25902f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|36860700016|1800799024|82310400026|3023799007|11063799006|6133799003|10067099003|5023799004|18002099003|56012099006|13003099007;
+	BCL:0;ARA:13230040|376014|7416014|82310400026|36860700016|23010399003|1800799024|6133799003|10067099003|56012099006|11063799006|18002099003|22082099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	DQ1BJAT4sUfpkUfuk6KowBx7Md2jIb8gcpWz6WOiGJ1ERAiA3h4jPZaThDJGxJ6vyFIEOs2d6CAD6pAHETkPs2KD+VBFeIdXC83lzI3th9t+NCBei2HiVyWWNLJs4n0its+cb8sWlNcUdKPG/n1sPDzG+Ic12HfcljcD3/Xasj9Dd/mAnE/SBavQqtJn5y4lW8C0/NTsxK2rMBh5T58tAF31nrM5gUk5920+p1tHKeJcCAv4zLjkTehtjOSE7oBQWP1dSF+2cpyupjvdQPpLuExpIoZFwNgFk2A1mShybflpFcbjkHfjLS8vG1vJ7uVSGAyUZnVDKFTWM0Fn7LqtaZF5pPfGF5H8d++y5DT77dZAlYHtRpWYXOcjqrl8a1Pp523qRu3IyNf6EbOVmJHvOaTqQNDBYtL9Q8IgNZcIzZcw207DfS7uCfZTgzrJkjaqZAzaqz656dq7ve7g7LKDedLftKcj0GkWSMVVSzDoxEUM3zl953VLKM9YAQ3wMuW3BH7F4xFvK1xTYPibs9K3IRTDKls54U7cY1tyX2Ike1C26MwA+oRMrV1YOAv6VTVSqLYccSF082QNmfATTFf2MpLshbUrGSm9QcUji9p/oyZwbIJDJRFZgRa5CKdZFw/3zwsKt2v+iNkY7MzdBruPi0ppsZPfWERefudW4HMxEd3+Kk1SW6ujYkjV25Kq72Q6wFT0XygNgyAsSsKh4wG5+w==
+	onpwf2h0d5BBLwRu2dfc+qJhVrgSKYQKA9mQHPRSo2ZtuhiLU3GW4hQ/CpF7/HkJ4+8z3GBtTNUahTRuF6+2y/SIyhIBNFSGyPYP7ZJr86QhhGWo6vn14vV95Rocs9ti8P4Dfkip1E1lTOJJtjCjt3Jm6+SqpmVq3mF5DMHvwsXt8lKKxXrb65Zs0djw254hHpqrfIbaDBZ5R5VDv7wMYFZVv86tacfAdSZw1URSlxWiyE3ej/0ni64j/h9tcoxLLaJSvdnyCo5Tn1vc/ytzlDQQSgJpJKYNz7VRnAyf2XAwp5iXpfNQzI1z3joxpZWSLIY4H24d5tt5x1WBUeEWgn30ICNqi4YZHOvTVjH4W8jzmqGB3kO9krxydeVxlmc6SZHib4bpuC/Als77GKb7c48g6vR683zUwojDhRqIpHPa0hayIQ3+PYRQxwZ+gmKxhaRvYBLTtwofSHMjWee8FFerTYrVHu9myZb2IqPbDDD2mwNVkGj/2L0HpjheoTf3SBHkT7Wacuu2xN23i/szsuTAVM9tu2EXk0fudgG3DMMSdAdKw2c+VxB4aqy4kWThv9pXafZ3iDwMYvOSsLNC9rTSJ5/0cGIjgxue8b4783LtZPkZX1DMPUi0iGXO4/WtbiShHTPnixvHtpbTz3jDBftobv9p3g8NM4L58n41sEoxO8a2ZNEAib6VhnuUm/D4CJrt/+e7OuMkiF+j3/kAkw==
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(36860700016)(1800799024)(82310400026)(3023799007)(11063799006)(6133799003)(10067099003)(5023799004)(18002099003)(56012099006)(13003099007);DIR:OUT;SFP:1101;
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(36860700016)(23010399003)(1800799024)(6133799003)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	Ns61973I2qBsf+6NxITVjuejcboAbVjq2dDUGOYTHjk+SJlsVNfbdM05aR0WOu0NTqv+Qu/lGDlBBaTdp9Ri04bEH9vYcJ9OJphQHB41amz+BLTgySyOtTT8xjblbLMUfOW95WIpWFRPj7X8usRFlIggh7I06Nwjq38kDnoPvlXoyvU0u94xX4yQOralTi6l18DYNuR2sFin+U5KEVaTCm5Rz0Q8WHJuYEpATxmSWHWtzn7R2y0H6YN+RQRPbZqVTpvoFW+iHyGzBrEHTnHMNdJag9PkZraIh9N31RjS2jVcVPEn1pyFUqCtakr7oSoC4kHWazewRV1OHYxqlv3yV/pcerZ6CSW7Kn5n1FO+LNZ4bfwoqySgRIiRxrLIuW5ZNVcXYpPWwlqgFYyiXLUtUs3SKk9umu6jeVPx2ZkepHZGfBWbwv5+uSLG1mhmclf7
+	jmeNkrquKcLqBSYe9fJ/4YWt+1r1y5zaGsQXxtSmhWB0zC+kH1Yl5LDR9pE0mkkkagkUacpStg1u5VS8KLRRjd3UI4gKYRD1b0vrJ9jnCb/+o1MIk5WBz4JyKfdF7rvzsHIwYaNaMP/T7acDedhOBNZAqAtpASt93KNNNen/VHtc8EspDzrYuDxeHeIwSyrxa481tdD4TU52twzkkkE9LyTu+VJjSBdiALoOj5rbAiShO7u+9L1/jHJH2v8hybXpG8isuVgn4lbaCQOcSRjtMrIx9EN9E5j3TzT5m4H5YUpxYzjy0P+EAXSZRVBmrS5leJO7QzxeFRdkO26aY313svfSNsLom/eWFuLEqcZ89/QKoEZZDJ9ma1tc8yuZ4bCwIoOYSteIH0jLbNSpSQOvlbcXlQAEuQ6BAzBqwsk3HBCc6mSEoycYH2swPDKK5hLL
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2026 08:11:37.1634
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2026 08:13:26.8773
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 916a1aa8-8c1b-4af8-8354-08df0b254ecb
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7f699c50-6647-42bc-ccd2-08df0b25902f
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN6PEPF00000072.namprd03.prod.outlook.com
+	BN6PEPF0000006F.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7081
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4288
 
-Add the nova-core support needed to create and manage NVIDIA vGPU
-instances, together with the NVIDIA vGPU VFIO variant driver that consumes
-the lifecycle interface.
+NVIDIA vGPU VFs require their open, reset, and close lifecycle to be
+coordinated with the PF-side nova-core driver.
 
-The control path introduced by this series is:
+Add a VFIO PCI variant driver that binds NVIDIA devices only through
+driver_override and rejects non-VFs. Delegate instance lifecycle
+operations to nova-core, present the firmware-selected device and
+subsystem IDs in configuration-space reads, and adjust the reported BAR1
+aperture to the assigned profile. Use vfio-pci-core for the remaining
+VFIO operations.
 
- +-----------------------+         +-----------------------+
- | Linux guest           |         | Windows guest         |
- | NVIDIA guest driver   |         | NVIDIA guest driver   |
- +-----------+-----------+         +-----------+-----------+
-             |                                 |
- +-----------v-----------+         +-----------v-----------+
- | QEMU (VFIO user)      |         | QEMU (VFIO user)      |
- +-----------+-----------+         +-----------+-----------+
-             +----------------+----------------+
-                              |
-                      +-------v-------+
-                      |   VFIO core   |
-                      +-------+-------+
-                              |
-        +---------------------v---------------------+
-        | NVIDIA vGPU VFIO variant driver           |
-        +---------------------+---------------------+
-                              |
-              +---------------+----------------------+
-              | binds PCI VF                         | PF lifecycle API
-              |                                      | open / close / reset
-              v                                      v
-     +--------+--------+               +-------------+-------------+
-     |    PCI VF(s)    |               | nova-core (PF driver)     |
-     |  (virtual GPU)  |               |       vGPU Manager        |
-     +--------+--------+               |     VRAM / channels ...   |
-              |                        +-------------+-------------+
-              |                                      |
-+-------------v--------------------------------------v----------------+
-|                      NVIDIA physical GPU                            |
-|            VF resources                 PF / GSP / VRAM             |
-+---------------------------------------------------------------------+
-
-On the nova-core side, the PF driver owns the GPU firmware-facing part
-of vGPU management. It already detects vGPU mode before GSP boot and
-supplies the SR-IOV topology to the GPU System Processor firmware
-(GSP-RM). This series extends it to:
-
-  - Retain the firmware-reported VMMU segment size and FIFO engine
-    ordering after GSP_INIT, together with nova-core's channel capacity.
-  - Add VramBlock and VramRegion ownership plus Bar1Map for bounded CPU
-    mappings of VRAM-backed control structures.
-  - Query GSP-RM through its command queue for the vGPU type already
-    assigned to a VF and its properties.
-  - Build a layout-validated, profile-wide pool of paired framebuffer and
-    management-heap slots, reserve contiguous channel ranges, and keep
-    live allocations in a per-PF instance registry.
-  - Use the typed r000 firmware bindings for control and response layouts,
-    message IDs, and firmware-defined region sizes.
-  - Handle GMC transactions over the GSP queues, match GMC replies by
-    command and sequence, dispatch interleaved RM RPCs from the shared
-    GSP-to-CPU message queue, and consume stale GMC messages.
-  - Implement the GMCAPI bootload, shutdown, and cleanup operations with
-    typed channel and resource maps for each plugin instance.
-  - Establish the BAR1-backed PluginRpc channel, negotiate its protocol,
-    and send the VM configuration and plugin BME-state update.
-  - Use per-instance CeUtils channels to scrub guest framebuffer memory
-    on allocation, reset, and shutdown. If ownership or completion is
-    uncertain, keep the affected VRAM and channels out of the allocators.
-  - Expose the three per-instance plugin log buffers through debugfs with
-    the header needed by nvlog_decoder.
-  - Keep resource locking, teardown, and rollback inside nova-core.
-  - Select the firmware-defined 48-VM WPR2 heap when a device advertises
-    more than 32 VFs.
-
-On the VFIO side, the NVIDIA vGPU VFIO variant driver:
-
-  - Binds only to an NVIDIA VF explicitly selected through
-    driver_override.
-  - Derives the guest function ID (GFID) from the SR-IOV VF index and
-    registers a vfio-pci-core device.
-  - Presents the vGPU PCI device and subsystem IDs returned by nova-core,
-    and limits the reported framebuffer BAR size.
-  - Delegates the remaining PCI and VFIO operations to vfio-pci-core and
-    uses the standard VFIO physical-device helpers for IOMMUFD.
-
-The ownership boundary between the two drivers is visible at these
-lifecycle points:
-
-  - Open: after vfio_pci_core_enable(), the variant driver passes the PF
-    returned by pci_physfn(vf), the GFID, the VF's PCI
-    domain/bus/device/function (DBDF), and the calling process TGID to
-    nvidia_vgpu_open(). nova-core validates the PF and GFID, creates and
-    activates the instance, and returns the guest-visible PCI IDs and
-    BAR1 size. On failure, the variant driver disables the vfio-pci-core
-    device; on success, it calls
-    vfio_pci_core_finish_enable().
-  - Reset: the variant driver first calls nvidia_vgpu_reset(). nova-core
-    sends the plugin reset RPC and scrubs the guest framebuffer. Only
-    after that succeeds is VFIO_DEVICE_RESET passed to vfio-pci-core for
-    the PCI function reset.
-  - Close: the variant driver invokes the void nvidia_vgpu_close()
-    interface to request plugin shutdown, framebuffer scrubbing, and
-    resource release from nova-core, then closes the vfio-pci-core
-    device.
-
-The cross-module interface is therefore limited to three GPL-only
-symbols in NOVA_CORE_VGPU: nvidia_vgpu_open(), nvidia_vgpu_close(), and
-nvidia_vgpu_reset().
-
-This is a ground-up rework of the earlier vGPU RFC [1]. In particular,
-the vGPU manager has been moved from the VFIO driver into the nova-core
-implementation, and the VFIO side no longer carries copies of RM firmware
-headers. The VFIO driver attaches to the VF and uses its PF's nova-core
-state for management, as discussed in that thread.
-
-The patches are organized as follows:
-
-  1-4   Initialize VgpuManager and add the memory and firmware building
-        blocks.
-  5-8   Allocate instances and implement GMC, plugin boot, and RPC.
-  9-10  Scrub guest framebuffer memory and expose plugin diagnostics.
- 11-12  Export the lifecycle API and add its VFIO consumer.
- 13     Select the larger WPR2 heap for 48-VF devices.
-
-The series is based on the nova-core r000 GSP, memory-management,
-SR-IOV, Rust bitmap/id-pool, and PCI abstraction work. The exact base
-commit is recorded below, and the complete prerequisite stack is
-available in [2].
-
-[1] https://lore.kernel.org/kvm/20250903221111.3866249-1-zhiw@nvidia.com/
-[2] https://github.com/zhiwang-nvidia/nova-core/tree/zhi/nova-vgpu-wip-nova-gsp-20260902
-
-Alok Kumar (1):
-  gpu: nova-core: vgpu: add VRAM slot allocator
-
-Zhi Wang (12):
-  gpu: nova-core: vgpu: add post-GSP-boot vGPU initialization
-  gpu: nova-core: mm: add VramBlock and Bar1Map
-  gpu: nova-core: vgpu: add r000 plugin bindings
-  gpu: nova-core: vgpu: add instance create/destroy
-  gpu: nova-core: gsp: add GMC transaction helpers
-  gpu: nova-core: vgpu: add vGPU bootload
-  gpu: nova-core: vgpu: implement PluginRpc channel and config params
-  gpu: nova-core: vgpu: scrub guest framebuffer memory with CeUtils
-  gpu: nova-core: vgpu: export plugin log buffers via debugfs
-  gpu: nova-core: vgpu: export lifecycle operations to VFIO
-  vfio/nvidia-vgpu: add the NVIDIA vGPU VFIO variant driver
-  gpu: nova-core: reserve the 48-VM WPR2 heap
-
- drivers/gpu/nova-core/driver.rs               |  42 +-
- drivers/gpu/nova-core/fb.rs                   |   2 +-
- drivers/gpu/nova-core/gpu.rs                  | 184 +++--
- drivers/gpu/nova-core/gpu/channel.rs          |   3 +
- drivers/gpu/nova-core/gsp.rs                  |  29 +-
- drivers/gpu/nova-core/gsp/boot.rs             |  13 +-
- drivers/gpu/nova-core/gsp/cmdq.rs             | 356 +++++++--
- drivers/gpu/nova-core/gsp/commands.rs         |  78 +-
- drivers/gpu/nova-core/gsp/fw.rs               |  63 +-
- drivers/gpu/nova-core/gsp/fw/commands.rs      | 185 ++++-
- .../gpu/nova-core/gsp/fw/r000_00/bindings.rs  | 175 +++++
- drivers/gpu/nova-core/gsp/hal/gh100.rs        |   2 +-
- drivers/gpu/nova-core/gsp/hal/tu102.rs        |   2 +-
- drivers/gpu/nova-core/mm.rs                   |   6 +-
- drivers/gpu/nova-core/mm/bar_user.rs          | 183 ++++-
- drivers/gpu/nova-core/mm/vram.rs              | 187 +++++
- drivers/gpu/nova-core/nova_core_exports.c     |   5 +
- drivers/gpu/nova-core/vgpu.rs                 |  91 ---
- drivers/gpu/nova-core/vgpu/bootload.rs        | 162 ++++
- drivers/gpu/nova-core/vgpu/consts.rs          |  33 +
- drivers/gpu/nova-core/vgpu/fw.rs              | 490 ++++++++++++
- drivers/gpu/nova-core/vgpu/fw/commands.rs     |  28 +
- drivers/gpu/nova-core/vgpu/instance.rs        | 705 ++++++++++++++++++
- drivers/gpu/nova-core/vgpu/log.rs             | 167 +++++
- drivers/gpu/nova-core/vgpu/mod.rs             | 170 +++++
- drivers/gpu/nova-core/vgpu/plugin_rpc.rs      | 274 +++++++
- drivers/gpu/nova-core/vgpu/scrubber.rs        | 474 ++++++++++++
- drivers/gpu/nova-core/vgpu/vfio.rs            | 282 +++++++
- drivers/gpu/nova-core/vgpu/vram.rs            | 140 ++++
- drivers/vfio/pci/Kconfig                      |   2 +
- drivers/vfio/pci/Makefile                     |   2 +
- drivers/vfio/pci/nvidia-vgpu/Kconfig          |  16 +
- drivers/vfio/pci/nvidia-vgpu/Makefile         |   2 +
- drivers/vfio/pci/nvidia-vgpu/main.c           | 253 +++++++
- include/drm/nvidia_vgpu.h                     |  28 +
- rust/bindings/bindings_helper.h               |   1 +
- 36 files changed, 4536 insertions(+), 299 deletions(-)
- create mode 100644 drivers/gpu/nova-core/mm/vram.rs
- delete mode 100644 drivers/gpu/nova-core/vgpu.rs
- create mode 100644 drivers/gpu/nova-core/vgpu/bootload.rs
- create mode 100644 drivers/gpu/nova-core/vgpu/consts.rs
- create mode 100644 drivers/gpu/nova-core/vgpu/fw.rs
- create mode 100644 drivers/gpu/nova-core/vgpu/fw/commands.rs
- create mode 100644 drivers/gpu/nova-core/vgpu/instance.rs
- create mode 100644 drivers/gpu/nova-core/vgpu/log.rs
- create mode 100644 drivers/gpu/nova-core/vgpu/mod.rs
- create mode 100644 drivers/gpu/nova-core/vgpu/plugin_rpc.rs
- create mode 100644 drivers/gpu/nova-core/vgpu/scrubber.rs
- create mode 100644 drivers/gpu/nova-core/vgpu/vfio.rs
- create mode 100644 drivers/gpu/nova-core/vgpu/vram.rs
+Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+---
+ drivers/vfio/pci/Kconfig              |   2 +
+ drivers/vfio/pci/Makefile             |   2 +
+ drivers/vfio/pci/nvidia-vgpu/Kconfig  |  16 ++
+ drivers/vfio/pci/nvidia-vgpu/Makefile |   2 +
+ drivers/vfio/pci/nvidia-vgpu/main.c   | 253 ++++++++++++++++++++++++++
+ 5 files changed, 275 insertions(+)
  create mode 100644 drivers/vfio/pci/nvidia-vgpu/Kconfig
  create mode 100644 drivers/vfio/pci/nvidia-vgpu/Makefile
  create mode 100644 drivers/vfio/pci/nvidia-vgpu/main.c
- create mode 100644 include/drm/nvidia_vgpu.h
 
-
-base-commit: a1dc9fdea9ab15e5df1bd6af1f6de2e40079f02d
+diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
+index 296bf01e185e..b48d8d1af42a 100644
+--- a/drivers/vfio/pci/Kconfig
++++ b/drivers/vfio/pci/Kconfig
+@@ -74,4 +74,6 @@ source "drivers/vfio/pci/qat/Kconfig"
+ 
+ source "drivers/vfio/pci/xe/Kconfig"
+ 
++source "drivers/vfio/pci/nvidia-vgpu/Kconfig"
++
+ endmenu
+diff --git a/drivers/vfio/pci/Makefile b/drivers/vfio/pci/Makefile
+index 6138f1bf241d..f3498e541555 100644
+--- a/drivers/vfio/pci/Makefile
++++ b/drivers/vfio/pci/Makefile
+@@ -24,3 +24,5 @@ obj-$(CONFIG_NVGRACE_GPU_VFIO_PCI) += nvgrace-gpu/
+ obj-$(CONFIG_QAT_VFIO_PCI) += qat/
+ 
+ obj-$(CONFIG_XE_VFIO_PCI) += xe/
++
++obj-$(CONFIG_NVIDIA_VGPU_VFIO_PCI) += nvidia-vgpu/
+diff --git a/drivers/vfio/pci/nvidia-vgpu/Kconfig b/drivers/vfio/pci/nvidia-vgpu/Kconfig
+new file mode 100644
+index 000000000000..098822d32380
+--- /dev/null
++++ b/drivers/vfio/pci/nvidia-vgpu/Kconfig
+@@ -0,0 +1,16 @@
++# SPDX-License-Identifier: GPL-2.0-only
++config NVIDIA_VGPU_VFIO_PCI
++	tristate "VFIO support for the NVIDIA vGPU"
++	depends on NOVA_CORE && PCI_IOV
++	select VFIO_PCI_CORE
++	help
++	  This option enables VFIO (Virtual Function I/O) support for
++	  NVIDIA virtual GPUs (vGPU). It allows the assignment of a virtual
++	  GPU instance to userspace applications via VFIO, typically used
++	  with hypervisors such as KVM and device emulators like QEMU.
++
++	  The NVIDIA vGPU allows a physical GPU to be partitioned into
++	  multiple virtual GPUs, each of which can be passed to a virtual
++	  machine as a PCI device using the standard VFIO infrastructure.
++
++	  If you don't know what to do here, say N.
+diff --git a/drivers/vfio/pci/nvidia-vgpu/Makefile b/drivers/vfio/pci/nvidia-vgpu/Makefile
+new file mode 100644
+index 000000000000..193cc801a081
+--- /dev/null
++++ b/drivers/vfio/pci/nvidia-vgpu/Makefile
+@@ -0,0 +1,2 @@
++obj-$(CONFIG_NVIDIA_VGPU_VFIO_PCI) += nvidia-vgpu-vfio-pci.o
++nvidia-vgpu-vfio-pci-y := main.o
+diff --git a/drivers/vfio/pci/nvidia-vgpu/main.c b/drivers/vfio/pci/nvidia-vgpu/main.c
+new file mode 100644
+index 000000000000..d8626644f952
+--- /dev/null
++++ b/drivers/vfio/pci/nvidia-vgpu/main.c
+@@ -0,0 +1,253 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <linux/module.h>
++#include <linux/overflow.h>
++#include <linux/pci.h>
++#include <linux/pid.h>
++#include <linux/vfio_pci_core.h>
++#include <drm/nvidia_vgpu.h>
++
++static int nvidia_vgpu_fb_bar_index(struct pci_dev *pdev)
++{
++	if (pci_resource_flags(pdev, 0) & IORESOURCE_MEM_64)
++		return 2;
++	return 1;
++}
++
++struct nvidia_vgpu_pci_core_device {
++	struct vfio_pci_core_device core_device;
++	struct nvidia_vgpu_type_info type_info;
++	unsigned int gfid;
++};
++
++static inline unsigned int nvidia_vgpu_vf_dbdf(struct pci_dev *vf)
++{
++	return ((u32)pci_domain_nr(vf->bus) << 16) | pci_dev_id(vf);
++}
++
++static int nvidia_vgpu_open_device(struct vfio_device *core_vdev)
++{
++	struct nvidia_vgpu_pci_core_device *nvdev = container_of(
++		core_vdev, struct nvidia_vgpu_pci_core_device, core_device.vdev);
++	struct pci_dev *vf = to_pci_dev(core_vdev->dev);
++	struct nvidia_vgpu_type_info type_info;
++	int ret;
++
++	if (!vf->is_virtfn)
++		return -ENODEV;
++
++	ret = vfio_pci_core_enable(&nvdev->core_device);
++	if (ret)
++		return ret;
++
++	ret = nvidia_vgpu_open(pci_physfn(vf), nvdev->gfid,
++			       nvidia_vgpu_vf_dbdf(vf), task_tgid_nr(current),
++			       &type_info);
++	if (ret) {
++		vfio_pci_core_disable(&nvdev->core_device);
++		return ret;
++	}
++
++	nvdev->type_info = type_info;
++	pci_dbg(vf, "vgpu open: dev_id=0x%x subsys_id=0x%x bar1_length=0x%llx\n",
++		type_info.pci_dev_id, type_info.pci_subsys_id,
++		type_info.bar1_length);
++	vfio_pci_core_finish_enable(&nvdev->core_device);
++	return 0;
++}
++
++static void nvidia_vgpu_close_device(struct vfio_device *core_vdev)
++{
++	struct nvidia_vgpu_pci_core_device *nvdev = container_of(
++		core_vdev, struct nvidia_vgpu_pci_core_device, core_device.vdev);
++	struct pci_dev *vf = to_pci_dev(core_vdev->dev);
++
++	nvidia_vgpu_close(pci_physfn(vf), nvdev->gfid);
++	vfio_pci_core_close_device(core_vdev);
++}
++
++static ssize_t nvidia_vgpu_pci_read_config(struct vfio_device *core_vdev,
++					   char __user *buf, size_t count,
++					   loff_t *ppos)
++{
++	struct nvidia_vgpu_pci_core_device *nvdev = container_of(
++		core_vdev, struct nvidia_vgpu_pci_core_device, core_device.vdev);
++	struct nvidia_vgpu_type_info *ti = &nvdev->type_info;
++	loff_t pos = *ppos & VFIO_PCI_OFFSET_MASK;
++	size_t register_offset;
++	loff_t copy_offset;
++	size_t copy_count;
++	__le16 val16;
++	int ret;
++
++	ret = vfio_pci_core_read(core_vdev, buf, count, ppos);
++	if (ret < 0)
++		return ret;
++
++	if (vfio_pci_core_range_intersect_range(pos, count, PCI_DEVICE_ID,
++						sizeof(val16), &copy_offset,
++						&copy_count, &register_offset)) {
++		val16 = cpu_to_le16(ti->pci_dev_id);
++		if (copy_to_user(buf + copy_offset,
++				 (void *)&val16 + register_offset, copy_count))
++			return -EFAULT;
++	}
++
++	if (vfio_pci_core_range_intersect_range(pos, count, PCI_SUBSYSTEM_ID,
++						sizeof(val16), &copy_offset,
++						&copy_count, &register_offset)) {
++		val16 = cpu_to_le16(ti->pci_subsys_id);
++		if (copy_to_user(buf + copy_offset,
++				 (void *)&val16 + register_offset, copy_count))
++			return -EFAULT;
++	}
++
++	return count;
++}
++
++static ssize_t nvidia_vgpu_pci_read(struct vfio_device *core_vdev,
++				    char __user *buf, size_t count,
++				    loff_t *ppos)
++{
++	unsigned int index = VFIO_PCI_OFFSET_TO_INDEX(*ppos);
++
++	if (index == VFIO_PCI_CONFIG_REGION_INDEX)
++		return nvidia_vgpu_pci_read_config(core_vdev, buf, count, ppos);
++
++	return vfio_pci_core_read(core_vdev, buf, count, ppos);
++}
++
++static int nvidia_vgpu_bar1_size(struct nvidia_vgpu_pci_core_device *nvdev,
++				 u64 *size)
++{
++	if (check_shl_overflow(nvdev->type_info.bar1_length, 20, size))
++		return -EOVERFLOW;
++
++	return 0;
++}
++
++static int nvidia_vgpu_get_region_info(struct vfio_device *core_vdev,
++				       struct vfio_region_info *info,
++				       struct vfio_info_cap *caps)
++{
++	int ret;
++
++	ret = vfio_pci_ioctl_get_region_info(core_vdev, info, caps);
++	if (ret)
++		return ret;
++
++	if (info->index == nvidia_vgpu_fb_bar_index(
++		to_pci_dev(core_vdev->dev)) && info->size) {
++		struct nvidia_vgpu_pci_core_device *nvdev = container_of(
++			core_vdev, struct nvidia_vgpu_pci_core_device,
++			core_device.vdev);
++		u64 vgpu_bar1;
++
++		ret = nvidia_vgpu_bar1_size(nvdev, &vgpu_bar1);
++		if (ret)
++			return ret;
++
++		if (vgpu_bar1 && vgpu_bar1 < info->size)
++			info->size = vgpu_bar1;
++	}
++
++	return 0;
++}
++
++static long nvidia_vgpu_pci_ioctl(struct vfio_device *core_vdev,
++				  unsigned int cmd, unsigned long arg)
++{
++	if (cmd == VFIO_DEVICE_RESET) {
++		struct nvidia_vgpu_pci_core_device *nvdev = container_of(
++			core_vdev, struct nvidia_vgpu_pci_core_device,
++			core_device.vdev);
++		struct pci_dev *vf = to_pci_dev(core_vdev->dev);
++		int ret;
++
++		ret = nvidia_vgpu_reset(pci_physfn(vf), nvdev->gfid);
++		if (ret)
++			return ret;
++	}
++
++	return vfio_pci_core_ioctl(core_vdev, cmd, arg);
++}
++
++static const struct vfio_device_ops nvidia_vgpu_pci_ops = {
++	.name		= "nvidia-vgpu-vfio-pci",
++	.init		= vfio_pci_core_init_dev,
++	.release	= vfio_pci_core_release_dev,
++	.open_device	= nvidia_vgpu_open_device,
++	.close_device	= nvidia_vgpu_close_device,
++	.ioctl		= nvidia_vgpu_pci_ioctl,
++	.get_region_info_caps = nvidia_vgpu_get_region_info,
++	.device_feature	= vfio_pci_core_ioctl_feature,
++	.read		= nvidia_vgpu_pci_read,
++	.write		= vfio_pci_core_write,
++	.mmap		= vfio_pci_core_mmap,
++	.request	= vfio_pci_core_request,
++	.match		= vfio_pci_core_match,
++	.match_token_uuid = vfio_pci_core_match_token_uuid,
++	.bind_iommufd	= vfio_iommufd_physical_bind,
++	.unbind_iommufd	= vfio_iommufd_physical_unbind,
++	.attach_ioas	= vfio_iommufd_physical_attach_ioas,
++	.detach_ioas	= vfio_iommufd_physical_detach_ioas,
++};
++
++static int nvidia_vgpu_pci_probe(struct pci_dev *pdev,
++				 const struct pci_device_id *id)
++{
++	struct nvidia_vgpu_pci_core_device *nvdev;
++	int vf_id;
++	int ret;
++
++	if (!pdev->is_virtfn)
++		return -ENODEV;
++
++	vf_id = pci_iov_vf_id(pdev);
++	if (vf_id < 0)
++		return vf_id;
++
++	nvdev = vfio_alloc_device(nvidia_vgpu_pci_core_device, core_device.vdev,
++				  &pdev->dev, &nvidia_vgpu_pci_ops);
++	if (IS_ERR(nvdev))
++		return PTR_ERR(nvdev);
++
++	nvdev->gfid = vf_id + 1;
++	dev_set_drvdata(&pdev->dev, &nvdev->core_device);
++	ret = vfio_pci_core_register_device(&nvdev->core_device);
++	if (ret)
++		goto out_put_vdev;
++
++	return 0;
++
++out_put_vdev:
++	vfio_put_device(&nvdev->core_device.vdev);
++	return ret;
++}
++
++static void nvidia_vgpu_pci_remove(struct pci_dev *pdev)
++{
++	struct vfio_pci_core_device *core_device = dev_get_drvdata(&pdev->dev);
++
++	vfio_pci_core_unregister_device(core_device);
++	vfio_put_device(&core_device->vdev);
++}
++
++static const struct pci_device_id nvidia_vgpu_pci_table[] = {
++	/* Placeholder: match all NVIDIA VFs (vendor 0x10de) */
++	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_NVIDIA, PCI_ANY_ID) },
++	{}
++};
++MODULE_DEVICE_TABLE(pci, nvidia_vgpu_pci_table);
++
++static struct pci_driver nvidia_vgpu_pci_driver = {
++	.name		= "nvidia-vgpu-vfio-pci",
++	.id_table	= nvidia_vgpu_pci_table,
++	.probe		= nvidia_vgpu_pci_probe,
++	.remove		= nvidia_vgpu_pci_remove,
++	.driver_managed_dma = true,
++};
++module_pci_driver(nvidia_vgpu_pci_driver);
++
++MODULE_DESCRIPTION("NVIDIA vGPU vfio-pci driver");
++MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS("NOVA_CORE_VGPU");
 -- 
 2.53.0
