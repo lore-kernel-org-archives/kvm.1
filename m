@@ -1,142 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E3F4AE8A5
-	for <kvm@vger.kernel.org>; Sat,  5 Sep 2026 15:11:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FE3384238
+	for <kvm@vger.kernel.org>; Sat,  5 Sep 2026 15:21:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788621116; cv=none; b=jNXN6kjzIrTo6tR5Xj1eABvGPlmjaopstZqZqmRPnjIktuQduq3MiybBzFeeZptrCZ/qtunqSGbEuOempBVZbfq1AmHymxTLx/4iXURgwzNWxCSJG7gcpfmHVLKGyeJBoOlf0sJJK//cDv6CDRlDygLHsV4DyBCaeqGn9tR0XPY=
+	t=1788621682; cv=none; b=Vr4Nu3LCkv0xN9jSRS1x/JLujasQXjfXj6rGVeqX+PR3JnV7ioLuGenHv0pSYyyNYG+7bhO0pudvDWW64FbyblziX4MZt2F2yZ4X2RCft9fHiz50dy93CbSTAzlfd+SuJtxHK8OGtz/UOTwwYLSudMqAF0OxlfScgcfZglBa+WM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788621116; c=relaxed/simple;
-	bh=cs3tMB5ZJP3WI9uIvt6r8CcZt7ukNuHK6xpdE6GGht4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ug3a5e+Rvl+NBHh8CoEGiVz3SWonqJwplxABGzz/YsYQOgwm/XSqJEvxH6oTtszh6/nu1WTFPdvV+v6OU1opSh8fKEnlaSU+YtwDbWhfF446JXtuJluK0ILoroSpp4HdCxXnW+GJ7sHMcGV8HKlKd4pJt+NWTKQ3bCxgGrTslQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YfpQ1vfe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788621682; c=relaxed/simple;
+	bh=8uVPDx/td51aPS2alcJ1aZOS4zzVv+wny8A2GZu+Kcc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IjT22D4ZJDTkgHIVaRvOBFixn4JuuNwOEoI/HfpGVhucTTnZjPc+2We0biGI4PIU1AsskBd7PYPh8oSlifP1NwUTdrd5tAKYPUB+dyLsM4mqHiktVnfe6boEikb1ZTV2zsDDTmLjjhovChefy/TnWAYSbhLmF+mPOveZ+U/jYcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SkAv5ibx; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YfpQ1vfe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C811F00ACF
-	for <kvm@vger.kernel.org>; Sat,  5 Sep 2026 15:11:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788621111;
-	bh=bL3w34qUiq6PKrSstiPLOgFf9oEN1oR7xJDQLGR9iRs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=YfpQ1vfenfqwtIYla5E2kEDfvPou/1j2+HsFW0tF5CMddYYLw56AUx5gwFc/uqvq4
-	 t4L9lcAJOp+Mg7jAtuIpdqyk90+5iN6qH6GtkrSujdeh/VW8dbA/KSSAgQagMnxIqQ
-	 sL6B+OtfvjxyV3iEx7xCEO8xRkXpvTAT4zlNjfXdFyekC1fypo59uVDJz6KYMzIP/Y
-	 tynHBx+eMmAo2DS5YxloO55IE56hEP2X8X5ma1FqOXRYLdJm8GH18xnVOFv+BrcuNK
-	 0qzvG8UqXVVUehIYyPJ0MevxbUOwXcdswf7CorEj2ssKjt1P95LA3LvzUnS+psmFc5
-	 j1QCH9NBCAiRg==
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6a60f0dbeccso2741551a12.0
-        for <kvm@vger.kernel.org>; Sat, 05 Sep 2026 08:11:51 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBymHv8dNomV0/ni5cieIWdowFx4R9ah592XtJ4KjTkPrEeJyvt+yir69I/YIoVWG41RhUU=@vger.kernel.org
-X-Gm-Message-State: AFuF++mZVR2jieu24DlzEOoKMGxcFmQOfOX7BeNRZE4o226miiK3mKX3
-	HUxh1L+WqB4pQgIt3qmuzG9r9d0Yfvg+J0ZuutBzk1dxHEJO0p9wvlGUTiNzFDaeTaVs849Wecw
-	QMeXzGQK9GUZjeUWDRCcSsVYu0HxzE7A=
-X-Received: by 2002:a05:6402:2752:b0:6a7:ea54:38c with SMTP id
- 4fb4d7f45d1cf-6a7ea54209dmr3447413a12.29.1788621110068; Sat, 05 Sep 2026
- 08:11:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SkAv5ibx"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49b96837ca3so15112365e9.3
+        for <kvm@vger.kernel.org>; Sat, 05 Sep 2026 08:21:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788621676; x=1789226476; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Mje6MYnRuPoV/Y41DYCjMHdpBcGzemV8rMOix0c43HA=;
+        b=SkAv5ibxItcgoih+oVUDj0FFrIVxzD6xxZ3tO5tO74YHrsSsip6Vmf/smEJ4IO004z
+         HQCxhfoNKrXu8ANgYHizNFKiEer3+7/7Sfjf5+X/215ngdkS0Fjqrou/0jfvoBASAfOq
+         j7RFHc4P7UrXaWbEMsZ8V5kidC5fwRyb5nJ3SWv+ZNPnmuy0wHJVIpaNFOf/Jil01ZT6
+         +pHfVWoE5TcfuC02bFbcL68k+uWJWpB/OQQuxEvPQVBmWwow/DhI93iFyxii7dKlwabI
+         hjVaQMV6QONpChvUSrtxtlUw9lIEGKQGHCqquEPKxFrEMY4b2evcpUsHh3qkLMG7Vsio
+         Aghw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788621676; x=1789226476;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Mje6MYnRuPoV/Y41DYCjMHdpBcGzemV8rMOix0c43HA=;
+        b=R2cok8qIiuEwfMiPfiFWuWqhJ86wbsZvRfPqYfi7j7LN4UyxL0oeCsaC4utQLuIz9D
+         EiUL4Gv/elL0tHTQk4xYvYvjp5dHqc/t3vFz7jETmtcEbtXPThzrkHiIEiLRO9mzoQac
+         XLS/lu+W8Hb2LBPug01gIeAFrxEsvVcVkDiMKF5tIb5Rg2jS+fySVwdCYcgpG2gzgDGi
+         I/aGN6GBFWs7cWERz9dBKefpRhlVdN+3EhCYNtm04w2kKHGJo2BIzOTpvQduVk89s08l
+         YuIdwVdQq+0waxJtyEzRVOJWvJrjM+GC1JQgLBYF5L+Oq3RsQPbXrrjhbkzOD2krRp7+
+         Isww==
+X-Forwarded-Encrypted: i=1; AKwUvBySzfkEIP26bcXdZE9UjJTBwKK9SlFOWd0RkYvEq1eCaWrEAE0pTOSkVpewOfvrMLD4Okg=@vger.kernel.org
+X-Gm-Message-State: AFuF++ndqBZT78a/BKAze2kcH/xhsqMAS50kkndCueb5G9DhJNmKXJ6F
+	CsUxupQRf9DcAnmbdKTD6df6IcJQ1x5OTX3+hnKL0IhV0JVcEvVIinLt
+X-Gm-Gg: AYBFou2MQScZH0iY4jew6CwzV86kB1OJGC7gRXGObI3QWrmW/SlKlycJUQOk/sNJMw4
+	QBhNxtrf5msC5f5BiSNJ1Ku/tzh+aAELPtgXHW4RavHaaKh9UzSRVXBrt1gK3c23QLu6+TMKPzP
+	C3rc++q9zVVUhphNN+k2XDwGob+IWGvIgstGVMUjHCGIfDv66USmIvNo14iqt5N9tL81qg2/Q27
+	s3Jsao84OEtC+ShrAFwD4vCnbj9gv+BhJcXEG+5H4pdQ/zfhcDb/ERGJXOioBqFtbA6de2+bHBX
+	1q4ZxVjzG4gSud90MPHGIp0DsjKBz+svB4FozmPPWYoAlOi3QnJRKfpSnsAA2dLsMuAEp228lNf
+	8YwS4YYN9x/E/XI44bdeD2+4gbt+uqL6gldUpcrWinaa6p2lXEO/Qlyi9Q9JKOwZKS00V9OxHnS
+	bMfYsH+2IDqh7Cfl/+PDQPrgUAHkZnOf8LivTOLh0jyGONfWsrBjXsZ6DaCL+1bkpQXu8qvayCj
+	QpUmhHn6J0GNJYW1z9NWzgRxMqPXftHxnY1dgy8QwyZ/316uVEtxoa8gIXgxZvo0jl0D/XImAT9
+	3o1t5syrEvh5eQgNCcFOnCPq1RM9rwOue3bWt8xnlSQMw2PK4+FK5gd6sXFvt6BXzU8=
+X-Received: by 2002:a05:600c:5493:b0:49b:8f18:714a with SMTP id 5b1f17b1804b1-49cf824a6c5mr137927365e9.12.1788621675623;
+        Sat, 05 Sep 2026 08:21:15 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-a4eb-3001-c06d-af27-9fa2-ea53.310.pool.telefonica.de. [2a02:3100:a4eb:3001:c06d:af27:9fa2:ea53])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cf75ce49esm267779515e9.1.2026.09.05.08.21.12
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 05 Sep 2026 08:21:14 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Gerd Hoffmann <kraxel@redhat.com>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Rusty Russell <rusty@rustcorp.com.au>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Cornelia Huck <cohuck@redhat.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Eric Farman <farman@linux.ibm.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Hans de Goede <hansg@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Vadim Pasternak <vadimp@nvidia.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	virtualization@lists.linux.dev,
+	linux-input@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	platform-driver-x86@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/3] virtio: synchronize callbacks during device reset
+Date: Sat,  5 Sep 2026 17:20:56 +0200
+Message-Id: <20260905152059.89560-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260814094738.2552440-1-cui.tao@linux.dev>
-In-Reply-To: <20260814094738.2552440-1-cui.tao@linux.dev>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sat, 5 Sep 2026 23:11:38 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5SRTceJzKUMCH2MXJXf+h5g0e4iyFgwStStg5hJOhB-w@mail.gmail.com>
-X-Gm-Features: AcwNN1VggpiIfHX09jVpMuhzax1l2O50S0Jc_dd9AH9e-iil6TqAP2EDuwdtxyE
-Message-ID: <CAAhV-H5SRTceJzKUMCH2MXJXf+h5g0e4iyFgwStStg5hJOhB-w@mail.gmail.com>
-Subject: Re: [PATCH v3] LoongArch: KVM: Fix TOCTOU race on pv_features
-To: Tao Cui <cui.tao@linux.dev>
-Cc: maobibo@loongson.cn, zhaotianrui@loongson.cn, kvm@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Tao Cui <cuitao@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Applied, thanks.
+A virtqueue callback can outlive virtio_reset_device() and race with a
+driver freeing the state it uses. The reset helper documents that no
+callbacks remain in progress, but that depends on the transport:
+virtio-pci waits in vp_reset(), while virtio-mmio does not.
 
-Huacai
+virtio_input has a related ordering problem: it unregisters the input
+device before resetting the virtio device, while an event callback may
+still be using the input device.
 
-On Fri, Aug 14, 2026 at 5:47=E2=80=AFPM Tao Cui <cui.tao@linux.dev> wrote:
->
-> From: Tao Cui <cuitao@kylinos.cn>
->
-> The check-then-set on kvm->arch.pv_features in
-> kvm_loongarch_cpucfg_set_attr() is lockless, so two vCPUs can race
-> past the validation and set different values.  Add a spinlock to
-> serialize it.
->
-> Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-> ---
->
-> Changes in v2: use a spinlock instead of a cmpxchg loop (Bibo Mao).
-> Changes in v3: rename the lock to pv_setting_lock and place it next to
-> phyid_map_lock (Huacai Chen).
->
-> v1: https://lore.kernel.org/all/20260810081321.157258-1-cui.tao@linux.dev=
-/
-> v2: https://lore.kernel.org/all/20260813232542.2098930-1-cui.tao@linux.de=
-v/
->
->  arch/loongarch/include/asm/kvm_host.h | 1 +
->  arch/loongarch/kvm/vcpu.c             | 6 +++++-
->  arch/loongarch/kvm/vm.c               | 1 +
->  3 files changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/inclu=
-de/asm/kvm_host.h
-> index 23cfbecebbd7..3538a199aac6 100644
-> --- a/arch/loongarch/include/asm/kvm_host.h
-> +++ b/arch/loongarch/include/asm/kvm_host.h
-> @@ -125,6 +125,7 @@ struct kvm_arch {
->         unsigned int  pte_shifts[MAX_PGTABLE_LEVELS];
->         unsigned int  root_level;
->         spinlock_t    phyid_map_lock;
-> +       spinlock_t    pv_setting_lock;
->         struct kvm_phyid_map  *phyid_map;
->         /* Enabled PV features */
->         unsigned long pv_features;
-> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-> index 20c207d80e31..e47fa463a8be 100644
-> --- a/arch/loongarch/kvm/vcpu.c
-> +++ b/arch/loongarch/kvm/vcpu.c
-> @@ -1165,10 +1165,14 @@ static int kvm_loongarch_cpucfg_set_attr(struct k=
-vm_vcpu *vcpu,
->                         return -EINVAL;
->
->                 /* All vCPUs need set the same PV features */
-> +               spin_lock(&kvm->arch.pv_setting_lock);
->                 if ((kvm->arch.pv_features & LOONGARCH_PV_FEAT_UPDATED)
-> -                               && ((kvm->arch.pv_features & valid) !=3D =
-val))
-> +                               && ((kvm->arch.pv_features & valid) !=3D =
-val)) {
-> +                       spin_unlock(&kvm->arch.pv_setting_lock);
->                         return -EINVAL;
-> +               }
->                 kvm->arch.pv_features =3D val | LOONGARCH_PV_FEAT_UPDATED=
-;
-> +               spin_unlock(&kvm->arch.pv_setting_lock);
->                 return 0;
->         default:
->                 return -ENXIO;
-> diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
-> index 1317c718f896..86ba7d54e81f 100644
-> --- a/arch/loongarch/kvm/vm.c
-> +++ b/arch/loongarch/kvm/vm.c
-> @@ -76,6 +76,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long typ=
-e)
->                 return -ENOMEM;
->         }
->         spin_lock_init(&kvm->arch.phyid_map_lock);
-> +       spin_lock_init(&kvm->arch.pv_setting_lock);
->
->         kvm_init_vmcs(kvm);
->         kvm_vm_init_features(kvm);
-> --
-> 2.43.0
->
+Patch 1 moves the callback wait into the core, using the existing
+virtio_synchronize_cbs() operation. Patch 2 fixes the virtio_input teardown
+order. Patch 3 adds the missing synchronize_cbs hooks for UML, TmFIFO,
+remoteproc and virtio-vdpa. Remoteproc uses one SRCU domain per processor.
+
+The new hooks wait for callbacks already running. UML, TmFIFO and
+remoteproc still allow new callbacks after reset; fixing that is separate
+work. The event-virtqueue DMA mapping issue is also separate.
+
+Changes in v2:
+- Patch 1: move the wait into the core instead of fixing only MMIO, as
+  Michael suggested. Remove the duplicate PCI wait, preserve its shutdown
+  wait, and fix CCW callback locking. Drop the MMIO polling: reset polling
+  for v3 and newer is already in fa8833c085b6 ("virtio-mmio: add support
+  for transport version 3").
+- Patch 2: keep draining completed events when ready becomes false,
+  instead of breaking out, so teardown does not truncate an input packet.
+- Patch 3 is new, at Michael's request.
+
+I reran the 120-cycle unbind/rebind test in an arm64 KASAN guest with four
+vCPUs and a 5 ms busy delay per event. With patch 2 alone over virtio-mmio,
+reset returned with the callback still running in all 84 overlapping
+cycles. With the series, it waited in all 103. Over PCI with per-queue
+MSI-X, it waited in all 66, including runs with threadirqs. No KASAN or
+lockdep reports. These runs predate the per-rproc change, which leaves
+the tested MMIO and PCI paths unchanged. They confirmed the missing wait,
+but did not reproduce a use-after-free: with evdev attached,
+input_unregister_device() waits for an RCU grace period that the IRQ
+callback blocks.
+
+That version also passed QEMU input, rebind and shutdown checks on arm64
+MMIO and x86-64 PCI, including arm64 RT, KASAN and KCSAN builds, and x86
+UP/Tiny SRCU. A legacy INTx NIC was present for an additional x86
+shutdown check. The changed objects built with W=1 without warnings on
+arm64, x86-64, s390 and SMP UML. The per-rproc version built with W=1
+on arm64 KASAN and x86 Tiny SRCU, and passed six remoteproc callback and
+lifetime KUnit tests on each, using mock remoteproc devices.
+
+Link: https://lore.kernel.org/r/20260818040433.66986-1-kmehltretter@gmail.com
+
+Karl Mehltretter (3):
+  virtio: synchronize callbacks during device reset
+  virtio_input: stop callbacks before unregistering input device
+  virtio: implement synchronize_cbs for remaining transports
+
+ arch/um/drivers/virtio_uml.c             | 10 ++++++++++
+ drivers/platform/mellanox/mlxbf-tmfifo.c | 14 ++++++++++++++
+ drivers/remoteproc/remoteproc_core.c     | 10 ++++++++++
+ drivers/remoteproc/remoteproc_virtio.c   | 20 +++++++++++++++++---
+ drivers/s390/virtio/virtio_ccw.c         |  6 +-----
+ drivers/virtio/virtio.c                  |  2 ++
+ drivers/virtio/virtio_input.c            |  8 ++++++--
+ drivers/virtio/virtio_pci_legacy.c       |  2 --
+ drivers/virtio/virtio_pci_modern.c       |  3 ---
+ drivers/virtio/virtio_vdpa.c             | 21 ++++++++++++++++++++-
+ include/linux/remoteproc.h               |  3 +++
+ include/linux/virtio_config.h            |  6 +++---
+ 12 files changed, 86 insertions(+), 19 deletions(-)
+
+base-commit: a500db7819c50db59e55f1b4fa1c3baa5a2616f3
+-- 
+2.39.5 (Apple Git-154)
