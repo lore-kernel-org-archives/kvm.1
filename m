@@ -1,157 +1,290 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013061.outbound.protection.outlook.com [40.93.201.61])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C174432ABCA;
-	Sat,  5 Sep 2026 01:24:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788571449; cv=fail; b=h5KQd+CL6ijr4Pk2/4jiEToAfIIw/5deDlJhSDMfYru6Kp9+b4tKFxsFq6LcwCm4cgUZ5yKmNxFEIR0Y1CJC5HM5IBPCUkiJ1gTHepwkNGJJqQRVgAc7WLSbvfrDOdxoQcZ3nJtm7yrTKJMXVvXUDUnAx6Mb1+jTyiWilWJ9lV4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788571449; c=relaxed/simple;
-	bh=TTPKKL7F/VAWYrrjBXfZolYHDlBPhrIBD6v43ylBvb8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=peB1wIi4UcxH1UIPS+nyly2KjKT/AgwlT/SwY/OdkTedoAGhlxMU3h+4NkqRYzXOhaSOPdLwm8rCj0Y82essbzihVqnQboKbyo+A5XRyxb25Yg7Y/S0vGlWf3Kj/HAp5JZBaeg3tx/QwZAaPePy5muag6OzVjRR3BeUxIQ5qCYM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PlZSRZEh; arc=fail smtp.client-ip=40.93.201.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA3B2D6E58;
+	Sat,  5 Sep 2026 01:30:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788571840; cv=none; b=pS+1I7XsD0V1J2QWtV23JnYYXonpi3R0Wtluu7BUeEUfbJOnvt/YyWF8qGNcMfs4Xeck3nopnfuyZTdqOFkPH/WlO+0Gp6On9lG20gk0tP7GbiBN+5fycFmQsySv/AM6VuIta+2BL8yeXRGE4mONoMnBQR8cLOdlg1ZQ0d0Xsug=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788571840; c=relaxed/simple;
+	bh=d/CBhLFjbPlAhNAItDfQ/4uJXM2tKA1e3jC+k9LNt3g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l01bCsFzIIyfm/jJw6LQnKvlXHRIHJDxHn/7r2ms35ux+ykPBvdZF6e3Tf9xcA0lpLLySUDixYEyj32asSWD/+vDJc694xmEsxwNwwt3v1dw4jGwtBkff4bgIiLC0lV1XBFBZh2lqYjLk9RurqCedE5BaRztF2njwmhpjiC9sf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=kULah2Ng; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PlZSRZEh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wW56rLIZoBms8qTVgcPXCXbK7UeL9hLucZkTAqN6uJ5ZGaFSuPudDP30eaC32dDZygCTxDs/bNNZjU3rYtf7XSZznlS/A9yOY771s/jtSOR+PhHY9kSIhgrODYNxxnJdGO1DCjG0SuKfdOOeeGwiZPq2E031phrWLY/fX18DRFNDb7FKVKRgaaVve9pMaCUNg86cqXSRhHaqj7oSGOEbvJzi9ZZ+HICMye8HNPw5xb4OaRb23paDMXD4F+lB8Ftpn2qDu/Yz3LKHatm258nSNCUSdKiAaFI8ZQBM9r2GfWY415o0MSrY3WmatvsD4kcHIXl/6zT+ICoUk2KQdkY34A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vo2WJswMFrbVkXxA03wbntMlJhQJN3eN3yMdRHVrVAQ=;
- b=mZlfLwtUflJSFEqhvroNnVmEJVtJ7IQyMdV30x36D1R/BxSDSWN6Aa1ETwoT743f0/tXQQO0FF9IjQK5BldYEa3dxhw+X4nmydJRxwhZ9xxKdY2wb8pVKl/XMjpVkU8c1Fc0469DkxD37mTqX9jabkyaUPF1VkAYLUgjMSrTcgaqmXXP8nOQ4zWdYcBCKiGIOERKJ7C8KgB+avuJDdZkaiHY9Xa6FgSKmdEQ5fVaNdQcYLQmsgEGsFWO4vtGnc5JV/4Z4SsITIwF1rXuxE6t7SWO6qTU8/BcP+3gFafR+8wsPBYa5wU3sX6uhJc//KFUSlFa62lRFvR3Y8YNNLiYpw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vo2WJswMFrbVkXxA03wbntMlJhQJN3eN3yMdRHVrVAQ=;
- b=PlZSRZEhJBbtAisKV94ciQEoRq/TghtgpsU7x1KHeuoyiyVnwvpnXDL6S6o7ulOOtkSXyHSiOEvVRrVPB6oP/0rZ1fKQH1s9PAs3Cg86RxF+GuHfyKUSWTtG8kQ6OKeC3Dyw0dbRmRywmL7Z7z2imtZAhtmkEbPeiKuIs6Mrc+Y8c0BF73YbBNIldZzP+zHZfQZRj/HLuKtnSZ1MUiO2HHQr3JIjAeuPjDGnQUkAxhAa9/QNAHDbD/bLfBN6jkBkUdbJaQOKvvQh6YX1yFQvg4hFOMpM0jHjpdjxqxjkj3qpN3cgIi68PE5l7vS0ilb6PVj31Q+gMGEh4msS0/29rw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by MN0PR12MB6001.namprd12.prod.outlook.com (2603:10b6:208:37d::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Sat, 5 Sep
- 2026 01:24:04 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%4]) with mapi id 15.21.0360.008; Sat, 5 Sep 2026
- 01:24:04 +0000
-Date: Fri, 4 Sep 2026 22:24:03 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Logan Odell <loganodell@google.com>, arnd@arndb.de,
-	pasha.tatashin@soleen.com, rppt@kernel.org, pratyush@kernel.org,
-	graf@amazon.com, akpm@linux-foundation.org, pbonzini@redhat.com,
-	maz@kernel.org, oupton@kernel.org, seanjc@google.com,
-	bhelgaas@google.com, alex@shazbot.org, kevin.tian@intel.com,
-	dwmw2@infradead.org, baolu.lu@linux.intel.com, joro@8bytes.org,
-	will@kernel.org, robin.murphy@arm.com, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	linux-mm@kvack.org, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-pci@vger.kernel.org, iommu@lists.linux.dev
-Subject: Re: [RFC PATCH 0/3] liveupdate: Move to feature flags for LUO and
- memfd ABI compatibility
-Message-ID: <20260905012403.GX4157646@nvidia.com>
-References: <20260903023452.721732-1-loganodell@google.com>
- <20260904160009.GV4157646@nvidia.com>
- <aptFFYqcSiBdMLE8@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aptFFYqcSiBdMLE8@google.com>
-X-ClientProxiedBy: MN0P220CA0016.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:52e::26) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="kULah2Ng"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5AA9940E00E6;
+	Sat,  5 Sep 2026 01:30:34 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Z7EqV71p49rx; Sat,  5 Sep 2026 01:30:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1788571822; bh=YtdiCM8T6f78OsecQ90guY/JrJBZ0tS0yXbieswmS08=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kULah2NgfTSLlX2Udor074ue9WpiuYORPvPvOS85ijeG26D6s8FyHKB7u0BJs7LpF
+	 ZWpGJpQ1DjFUPJ/WwN3oiOJxs4AsiExWIcivL9TTkfOrVp1QU6pRvUX9Nx7oKyH7z5
+	 UbMPUy4QVBTQhpkLcU6M4rNYjcyarjoL5Ex1QAoGlM/TiId4cFdao22W8s+JJufISC
+	 F4esj/j3RCyOwQWJHRKClQIZ7yxDAtgGuQ+sjRR1SDklAohN+mnGLVnnRTbk8xJ05Y
+	 n7ngBSKqN0HwlsBGXie9J6B8c6gaET8pb5R1FS26rCrPr0YyBAcFVh/8pq1jkcQca9
+	 DMET8/9OhsqNssYHnIM8CNpttwy5+EQy6CQkJ3aW+0P1nms/9zMcwNeT/8YHDC2nQm
+	 MjjcWy0gl+nemC0RHkl9qYP+MA2YQnM3dueO3eYfv3KwZI1wFgby7gcIqwB3A2Ze5O
+	 WXwrLr2J4JIERVKVc+Ls75QFb22TILUZt8WRosY9E7V/abD4P0L3IMY8hfUS8iQyoX
+	 SgCMfbXcCyYOjlx7moNJCAezN3KQ2rrSDrGuMqIOYfpb1Gvs0oAoxDgzf+/ClVVy0f
+	 8MT0YqACHgwJf3sUyBTvH35+S9/FGS2UOlW+5rZiLW6Gs7UjWhd1RLIrAj4I/jonR4
+	 6dbFLY9/i9KALy34IeIIRxQ8=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::2a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 652B840E016C;
+	Sat,  5 Sep 2026 01:29:48 +0000 (UTC)
+Date: Fri, 4 Sep 2026 18:29:45 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	darwi@linutronix.de, linux-kernel@vger.kernel.org,
+	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH v13 4/5] x86/sev: Add support to perform RMP
+ optimizations asynchronously
+Message-ID: <20260905012945.GPaptwicVjJ-SwXYzl@fat_crate.local>
+References: <cover.1788296083.git.ashish.kalra@amd.com>
+ <a31fc8c6d3f6c6bbe50dc4542c7091b0899d3e1b.1788296083.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|MN0PR12MB6001:EE_
-X-MS-Office365-Filtering-Correlation-Id: 81f139c3-ac02-44ad-66fe-08df0aec5f6a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|23010399003|376014|366016|1800799024|4143699003|10067099003|11063799006|22082099003|18002099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	LdfjD4RvQZXTTXNl4UMGD4BTxi6Ua+7sLSu/tqNwEOItjyKFdNBQ3JV9XB0Pyh252uYBYsS5sCWFFx4kIM0iy6XBD+mQLjRo9t32F24tPIx6Mpv7u8T8/d887qw5MvQYNntrcVQClmW/Gof/Be0L/0KT0lMnvPXlz7GXpUL5F0jKUpm1QUXGY9oFg51UNSx/dzkIGP8WlhfRUKk1kfRfPv5w0PC2ANsgXWOWRRzJjYNFc1k9JDrKZP22Z9eZrQWnDxYenQrthgy+AYksc33cD8v7IhdKB41AU0N/ho2DIBzaw1nrXa0TwNKeYnL8xCvAjoNyMf//8YqzZEerlRadiSUSS9vqH1NSM2vEidHPGMSNuH4+OhGK7KcaX6+vFCmw6+xJrBRyxb5Ct0SZGNarM3M9k7/CZ5i7JPecpMs5GvHHCJ474AxTVJY6YuTOLmQvqsZB0Ykz0ZihMwQ1EYQ6PMlqZvqZ3YiQ5Ywv06uBoH/dkiL+nVza1z3MrR3STQRadg2DVovNKWRB/bO9+exGUXgQUTRcnDOBBcg55YcrM+xeAMtCEqamJuFi3ouS3GsLdfVLlUNSCebL23jVlZIRsY9yZO32A/xLvWvUspH0CbUHOqKioRUqsVvj2snPka+AOW5WGR9Pkew5rSc/Mo8AsRqh14DvkKVBYKczsEbCQ6A=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(366016)(1800799024)(4143699003)(10067099003)(11063799006)(22082099003)(18002099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?qbuHUp63eMJ6A/YT2KIsT6s/H/Pl+Z9LCDWeNq7V2byqf6KJuLdaKra6Wtcc?=
- =?us-ascii?Q?t71fCbp6CPp5uUQuQHkLsAQHEhpr02rLHTv2DFpCz5DSeQ8w7AA/PI7S8qHL?=
- =?us-ascii?Q?jBOV9UPlxppFKRplmp4DGL/PNM5cs10rZrgdc5xnvwKAykhz39QDrJ26VJS2?=
- =?us-ascii?Q?vA343+CDCOTKK1svFJRLDWs3HpsfpY6Tk0N42FroHVUUWuYUSYYII7y3F/O3?=
- =?us-ascii?Q?K/guEnJaKZxTfh4Qkl9P2za1yFq0KiV+hx+1NwVJgP10ke59v2p+LXSJ3Q7R?=
- =?us-ascii?Q?FnADhHXquvAowj7fEpV8O0SIYWxSRxx+IO1LhBTMSzv9ur3y7QTtQZpq4kqw?=
- =?us-ascii?Q?X8I3cWjDka2caivRsNnArkdeKag/dd2ijQV2FiodtDKANRUsbilnJVKU45jt?=
- =?us-ascii?Q?+iVf2W+42UcBoItG3u6tHgQmh4UtWo2pxn7iyNUqE1Z3nf72D0WVKgmszX1V?=
- =?us-ascii?Q?tpSqnOkvt1S4ldb3eTTmkMJw6JMsu+3ps5LPLbCc+rVtpgqxPr16Pb41sTQz?=
- =?us-ascii?Q?BTvp+FnLaKnR0m8gWfEgzoZp0oOi1bxg8QMs65kss61PuhaKuWRDJpTIo0pe?=
- =?us-ascii?Q?aOJjzTTESw0QjOKnpRNqCavVfdyeKyrS7trGB27tR41gnREwl8uXcahq97M2?=
- =?us-ascii?Q?IYbjz2ezV5L0Wle1uWo+qHa1B7ObHBIt0rnaOSUrkgtZoJ7UElnJP8UBt6wj?=
- =?us-ascii?Q?u/ibRXHPTgtI9kw0LR2D6DS5Y5KYSWaMRxh54NLU4HYESkitG0tS1pHhUwLb?=
- =?us-ascii?Q?Yk1HM5yTlXEcrlqc7QznNiDx+pS0ycg4s+q2AskT8ilMEE3pwLOcd8SEQ4cK?=
- =?us-ascii?Q?AYUEkBnEksfB7EsNQxhafftZrT3qTlC4kcaIfefs4XiOZWkvWs1/ykYWRCBw?=
- =?us-ascii?Q?zuhvXuWOYo5AeJGaASwtAtHKKV8a6I/PGXK7jRfIi3vSrgf6Bmw/Nh17AjCi?=
- =?us-ascii?Q?ddUtPyG4xUDLFkKD1+UvglRHPuhk8nBJ88LLA1r2+7h8HXX2DFxCJwlUyfZE?=
- =?us-ascii?Q?aKSDFeREofYN36lCAK2UaFaPHK2XBQ7qqJfsQwSAmgbcx5u3NjTpfLUinPUm?=
- =?us-ascii?Q?y0PGUQ2eC8uiqR2X9BpyrQoUOUu7Bd13Zhmj4pYNAnkDiFfxyL7m7Olu+cjL?=
- =?us-ascii?Q?LAjLg7L2R4uJm3IkwT4Rh4iS8QGkmsvXO1YgbnQoCMsOLdgMXZh/dBxHJ7Yr?=
- =?us-ascii?Q?itr49d0CPp88gktVPnzD2J6uazH3OPUlebREDF4zo8KNzUVKY2jt9P3IbMkZ?=
- =?us-ascii?Q?RTSy/EgZOiGRc1t1mfRKF0nivGWDGc/0P7aTdzyGZ/iq5h/xGiOcFcF1xvpq?=
- =?us-ascii?Q?40CTlooL4/EONkeaorZMWL9VNiNoaO+huaBR9b/yV0lSBM5pr/B0SSiBPJ3W?=
- =?us-ascii?Q?UWd8iqHIAVuwoLJpay75WkUrWI1p0Xaj2grGDjkyrlTqlmbNXHDieVpLgAA+?=
- =?us-ascii?Q?ce7sBRg23o9c63qWieK5OXPAQsTQ3XDrXv69ZpCX8ewyCe9PNHEAEpQfE7Nv?=
- =?us-ascii?Q?TjiUocVI0YZ3fhbNElcq+j99pSWDk8biwIwX5WSJ3zpk32oHZriC5tQu/kgt?=
- =?us-ascii?Q?ygNhOTsKA1tWSDBsufNyGGnCjrl91QfJ4WXyHQ/dtDRfBcwHo+CvKlz92c6d?=
- =?us-ascii?Q?Oj/b6aRvharo8Odv682hbVk3rtlISdMWCjKXiJ4ot/k29/0rMfdYMIoJN/7K?=
- =?us-ascii?Q?F49H3U1NSRoh423Ti1mWVtGS38VaAQMbj571B/ZyhQ6UAG7W?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 81f139c3-ac02-44ad-66fe-08df0aec5f6a
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2026 01:24:04.1260
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: szBZiJuW4B5U+brVPCjjBU68P/y0E05hscp7/USCLLMLFIXwEBfflJZDVQTcLGX4
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6001
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <a31fc8c6d3f6c6bbe50dc4542c7091b0899d3e1b.1788296083.git.ashish.kalra@amd.com>
 
-On Fri, Sep 04, 2026 at 10:24:21PM +0000, David Matlack wrote:
+On Wed, Sep 02, 2026 at 09:28:57PM +0000, Ashish Kalra wrote:
+> Subject: Re: [PATCH v13 4/5] x86/sev: Add support to perform RMP optimizations asynchronously
 
-> The proposal here (which is inspired by the KVM UAPI) is to ensure every
-> LUO ABI struct has 2 properties:
+s/Add support to perform/Perform/
+
+> From: Ashish Kalra <ashish.kalra@amd.com>
 > 
->  1. A field to encode options/features (e.g. u64 flags).
->  2. A way way to grow without breaking backward compatibility (e.g. so
->     we can add new fields).
+> When SNP is enabled, all writes to memory are checked to ensure memory
+> integrity. This imposes performance overhead on the whole system.
 > 
-> Each flag can mean whatever it needs to. e.g. It can indicate the
-> precence of one or more fields (i.e. new fields in the struct), or it
-> can mean a field now has a different meaning (i.e. union in the struct).
+> RMPOPT is a new instruction that minimizes the performance overhead of
+> RMP checks on the hypervisor and on non-SNP guests by allowing RMP
+> checks to be skipped for 1GB regions of memory that are known not to
+> contain any SNP guest memory.
 > 
-> This would enable adding support for new features without breaking
-> backward compatibility. Downstream users would have to ensure their
-> kernel does not start using a new feature while it can still rollback to
-> a version that does not support the new feature.
+> Add support for performing RMP optimizations asynchronously using a
+> dedicated workqueue.
+> 
+> At RMP initialization time, run an optimization pass over all physical
+> memory (up to 2TB of system RAM, starting from the lowest physical
+> memory address aligned down to a 1GB boundary), skipping RMP checks for
+> 1GB regions that do not contain SNP guest memory (excluding preassigned
+> pages such as the RMP table and firmware pages).
+> 
+> As SNP guests are launched, RMPUPDATE assigns their private pages to
+> guest-owned state; when such a page falls within an optimized 1GB
+> region, the hardware clears that region's RMPOPT optimization and RMP
+> checks resume there to protect the guest memory.
+> 
+> Since launching SNP guests clears these optimizations, perform them
+> again asynchronously using the dedicated workqueue.
+> 
+> Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
+> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Suggested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+> Suggested-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 
-This was never the biggest problem. The main issue was the functional
-behaviors of the kernel that cannot be represented simply as data in a
-struct with some flag bits.
+R-by's need to get dropped when a patch changes in more or less significant
+way.
 
-Like for instance kernel A supports memfd folio sizes far larger than
-kernel B because we fixed MAX_ORDER. You can't fix that just with
-simplistic flags.
+> @@ -561,10 +571,26 @@ static void rmpopt_disable(void)
+>  {
+>  	int cpu;
+>  
+> +	guard(mutex)(&rmpopt_wq_mutex);
+> +
+> +	/*
+> +	 * rmpopt_wq is non-NULL only after RMPOPT has been fully set up: the
+> +	 * workqueue is allocated and the RMPOPT_BASE MSRs are programmed.
+> +	 * snp_setup_rmpopt() resets it to NULL if any of those steps fail, so a
+> +	 * NULL rmpopt_wq means nothing was set up and there is nothing to tear
+> +	 * down.
+> +	 */
+> +	if (!rmpopt_wq)
 
-Jason
+Now take your patch and rip all that gunk which destroys the setup work done
+by snp_setup_rmpopt(). Instead, you init things once and do not touch them
+even if RMP optimizations are disabled.
+
+In case they get enabled again later, you simply reactivate them instead of
+doing useless setup work all over again.
+
+> +		return;
+> +
+> +	cancel_delayed_work_sync(&rmpopt_delayed_work);
+> +	destroy_workqueue(rmpopt_wq);
+> +
+>  	for_each_cpu(cpu, cpu_primary_thread_mask)
+>  		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, 0);
+>  
+> -	rmpopt_pa_start = 0;
+> +	rmpopt_pa_start = rmpopt_pa_end = 0;
+> +	rmpopt_wq = NULL;
+>  }
+>  
+>  void snp_shutdown(void)
+> @@ -595,6 +621,44 @@ static bool rmpopt_capable(void)
+>  	       cc_platform_has(CC_ATTR_HOST_SEV_SNP);
+>  }
+>  
+> +/*
+> + * RMPOPT optimizations skip RMP checks at 1GB granularity if this range of
+> + * memory does not contain any SNP guest memory.
+> + *
+> + * @pa is a system physical address; RMPOPT operates on the containing 1GB.
+> + */
+> +static void rmpopt(u64 pa)
+> +{
+> +	enum rmpopt_op_type op = RMPOPT_OP_VERIFY_AND_REPORT_STATUS;
+> +	u64 pa_start = ALIGN_DOWN(pa, SZ_1G);
+> +
+
+	/* Supported by binutils 2.48+ */
+
+> +	asm volatile(".byte 0xf2, 0x0f, 0x01, 0xfc"
+> +		     :: "a" (pa_start), "c" (op)
+> +		     : "memory", "cc");
+> +}
+
+
+
+> +
+> +/* on_each_cpu() callback: optimize the whole RMPOPT range on this CPU. */
+> +static void rmpopt_scan_range(void *arg)
+> +{
+> +	u64 pa;
+> +
+> +	for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G)
+> +		rmpopt(pa);
+> +}
+> +
+> +static void do_rmpopt_work(struct work_struct *work)
+> +{
+> +	/*
+> +	 * RMPOPT caches the results of a RMP table scan in reserved processor
+> +	 * memory, allowing future invocations to skip such costly operations.
+> +	 */
+
+We know already. Drop this comment.
+
+> +	migrate_disable();
+> +	rmpopt_scan_range(NULL);
+> +	migrate_enable();
+> +
+> +	on_each_cpu_mask(cpu_primary_thread_mask, rmpopt_scan_range, NULL, true);
+> +}
+> +
+>  void snp_setup_rmpopt(void)
+>  {
+>  	u64 rmpopt_base;
+> @@ -603,6 +667,34 @@ void snp_setup_rmpopt(void)
+>  	if (!rmpopt_capable())
+>  		return;
+>  
+> +	guard(mutex)(&rmpopt_wq_mutex);
+> +
+> +	/*
+> +	 * On re-initialization after a legacy SNP shutdown (SNP_SHUTDOWN_EX
+> +	 * with x86_snp_shutdown=0), snp_shutdown() and thus rmpopt_disable() are
+> +	 * skipped, so the workqueue, delayed work and per-CPU RMPOPT_BASE MSRs
+> +	 * are still set up and valid (SnpEn stayed set and CPU hotplug stayed
+> +	 * disabled).  Rather than re-doing the setup, which would leak the
+> +	 * existing state, just re-queue the optimization pass to re-optimize any
+> +	 * memory the previous SNP session de-optimized.
+> +	 */
+> +	if (rmpopt_wq) {
+> +		queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work, 0);
+> +		return;
+> +	}
+> +
+> +	/*
+> +	 * Create an RMPOPT-specific workqueue to avoid scheduling
+> +	 * RMPOPT workitem on the global system workqueue.
+> +	 */
+
+Why?
+
+> +	rmpopt_wq = alloc_workqueue("rmpopt_wq", WQ_UNBOUND, 1);
+> +	if (!rmpopt_wq) {
+> +		pr_err("Failed to allocate RMPOPT workqueue\n");
+> +		return;
+> +	}
+> +
+> +	INIT_DELAYED_WORK(&rmpopt_delayed_work, do_rmpopt_work);
+> +
+>  	rmpopt_pa_start = ALIGN_DOWN(PFN_PHYS(min_low_pfn), SZ_1G);
+>  	rmpopt_base = rmpopt_pa_start | MSR_AMD64_RMPOPT_ENABLE;
+>  
+> @@ -612,6 +704,23 @@ void snp_setup_rmpopt(void)
+>  	 */
+>  	for_each_cpu(cpu, cpu_primary_thread_mask)
+>  		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, rmpopt_base);
+> +
+> +	rmpopt_pa_end = ALIGN(PFN_PHYS(max_pfn), SZ_1G);
+> +
+> +	/* Limit memory scanning to 2TB of RAM */
+
+No need for that comment - we know.
+
+> +	if ((rmpopt_pa_end - rmpopt_pa_start) > SZ_2T) {
+> +		pr_info("RMPOPT coverage limited to 2TB; memory above 0x%llx not optimized\n",
+
+No need for that print - nothing we can do about it anyway.
+
+> +			rmpopt_pa_start + SZ_2T);
+> +		rmpopt_pa_end = rmpopt_pa_start + SZ_2T;
+> +	}
+> +
+> +	/*
+> +	 * Once all per-CPU RMPOPT tables have been configured, enable RMPOPT
+> +	 * optimizations on all physical memory.
+> +	 */
+
+Drop this comment too.
+
+> +	queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work, 0);
+> +
+> +	pr_info("RMPOPT optimizations enabled\n");
+>  }
+>  EXPORT_SYMBOL_FOR_MODULES(snp_setup_rmpopt, "ccp");
+>  
+> -- 
+> 2.43.0
+> 
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
