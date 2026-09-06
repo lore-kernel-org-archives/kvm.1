@@ -1,93 +1,133 @@
-Received: from out198-19.us.a.mail.aliyun.com (out198-19.us.a.mail.aliyun.com [47.90.198.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059BB14ABE;
-	Sun,  6 Sep 2026 02:45:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554133B47D7
+	for <kvm@vger.kernel.org>; Sun,  6 Sep 2026 03:42:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788662736; cv=none; b=W9D73S9jq2VLs57TCftQqfcP8lVNN/s37HkrXCBayHZDds2Q0xPH+7SbHkZH94/jVPVRlNIH7Vl4L5MOjW8JV7/l986WtR4Thak3ZcIvvFyvyvebCA0XeOznfhcVZZOxWsQgo71Kqk+/nwczCi5IsGlr+SzbhMaAvP51ogt8ba0=
+	t=1788666121; cv=none; b=RcE/UtX647t+QQDGv3HyoQC58WI6wTJMk4xAevSeixPYOGTkXjvwXC41bdeLmllb7wM3+8glUVXbnkyCX8qKBhIwKR2TvosfAr9XyG7JQgAGOzkobXrPRY7gi4jk/J0Ipt5nlsYPts3dV/HGonX7+RhsDDXHMEUuGRdOYIdfn1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788662736; c=relaxed/simple;
-	bh=MtSQk/okHkcSdRva2nRzbLImT99Tt4JP/UbLq2pgdos=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G0hpYIfM5JYKf8/mI3MXnOCtQjVhgz8JqT8pLtBrPmuaWGfs1dTnLl8rWyF8AlrU6d+X2+ZGAUOCVOUSnDDoIVZxYDz+d6PBFB3X/fqpn+QnYOkoTX8NmLt0KdYB8J3BGea1iTzsozSaBD3HwgkcRSCa9wqdYPrgRHEs8JyWR8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=47.90.198.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07916929|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.00797682-0.00203275-0.98999;FP=12673810057201397720|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037025160;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.j6fQ5R4_1788662710;
-Received: from 192.168.1.4(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.j6fQ5R4_1788662710 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Sun, 06 Sep 2026 10:45:11 +0800
-Message-ID: <669bffc9-ad08-491b-a55c-86889f4e3f11@open-hieco.net>
-Date: Sun, 6 Sep 2026 10:45:08 +0800
+	s=arc-20240116; t=1788666121; c=relaxed/simple;
+	bh=1eg7xfXvqB+X7Z1e0Md87PErbs70YQUknxBBKub28qs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PFHUiXwiajCT8EmIEzITPAlshy6Zx33WMASzXXYSH+wHrnGhHDnO6aPXwzXPE0wyMlB6nKz0qheaTCTqVTa3qiAPmEsEggVCNEo4wGNP8Wx1lsg0ryNxzGhXIazfSSbUy6OA2ttjN1TiarzLPjwgR9iW/ScROGuDZg89Ckjv6Yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QMZwTzMx; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QMZwTzMx"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-39b35105ba4so1859774a91.1
+        for <kvm@vger.kernel.org>; Sat, 05 Sep 2026 20:42:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788666120; x=1789270920; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=48OUlgZ8oJkokpD3G8IEqvdlANt4AE/H+y5S+7nUN5c=;
+        b=QMZwTzMxaDcyYtRpB+rbzJ/vLwndXnmbbn95fDYDUOxqVwqjnOEVzhw8WqdgAJCw7I
+         LCle4sGwmE7+XFxcsuAPHe0CZsBV1AzyZ5GoUkwnkFGvkdlvjRX1IfaZiGF2KwKPqZgM
+         C02Rz4R/X4SEzLEAZrtcrHvEuusFi+R6O55ESTK3lCFnVliMWtwjCbNA/2ItOKN59oQ/
+         0K4M6NOvN6TBaNOeagAjI60ZKTJw/eARciBH3fQqRNZt38ddct/dHaXynG0XpqgeA3kr
+         RYXJFP6a3o4+n8JJtWm3JtL/BDurJpMAV97H9d0HXD/uFE7fYSs5izyOJFebJWx52Rm9
+         bVWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788666120; x=1789270920;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=48OUlgZ8oJkokpD3G8IEqvdlANt4AE/H+y5S+7nUN5c=;
+        b=hO4avBdef1grayqbZ4sCyEa2xoy62Yy6vlg2h99BStOdHix4elNxOrWoLsODo5+bGy
+         IndqDyQJtucurWjSncfY/TeHO4xyX/R0L9LlOsoMkxXLyFDADKYa500GBzkx7DV0Zb11
+         3tk3Ssytaib8KsxJP/+qotxc6qR8Vu7/jZoDAOBZOTMnvRbVWcukXD4f2q83Uvy96H02
+         VVX6YQ05+DW0HDaJCBAjzNUbK6fysgKVxtlTQcjwRG4jZZ7hntFupyhvyFOcvOX/oQHV
+         N6tAQ+uYVW8GeAxSAoW9yq3AbxSMyZOA3YRWb20T7e9DrmtLWGtV8cf8oM4YTKHFP9EH
+         NOzA==
+X-Forwarded-Encrypted: i=1; AKwUvBzOO90a9exDzTv6M/h3rIOx0xFYNV9rKwDT8qw2TLd1ABvJxgjNFsI2SucNH7kDkRXhScg=@vger.kernel.org
+X-Gm-Message-State: AFuF++nv4tOZSWb//Tp/zpiNWmXCLkrtwU8zHL1gfWpTIrwpKYgOrZno
+	F7GiIMb81PqZKFH4sG2m/SAxPdnuutNUaelDuFWir8M8VG5RpoWalByy
+X-Gm-Gg: AYBFou2IOeibuI1HutAHMtFfnkhzWpyYuZRxQajI5jzQlktfxSPxKT9dLXPdvLtjkMz
+	H/fIzau5YnFutAfoT9Jkw4PtF4qL8BLK0cQVRwfrBNJP3C04uDoBUMF5SgNlroB2M0RxmlpmklJ
+	GPmC6QvWxoCJCuupCDFO+l5xxi4zpV2nApgNClN5bQbquT+1vx2GNMmQuf8gMFOYeBA8Nnc2SU0
+	NVQFe6i+LLk4wWH+bHB+dJFgL/7Q2TrBm4YcBEPsUa3RzqBWHVtGqpHPfGIWc4O71Goss1ZCQ0M
+	DpdOjFxWHBNV5Kfov7Eb4zeGYxtt0826YZyws9ToHduXBwjhOWhpnaeA3oztgdef0HitIjgJYus
+	UDVqEF4ofQRV36K4ysATrbI19PD41xi+Jqyhw7SVloVGTtiftW0mFEPR//aNmUjUezN25nlp3Cn
+	1UxZ9nWoDFimvRrfc1kqlc1MdmbTyTYCHaJ4vu0123J1XObyOAXM+1JOPPGSzNweDRKf9b1lqVm
+	QxQ/aKrZ50qAIeJHr5R4ifTLvRyYXPQ5Lt8yUwVmCpA
+X-Received: by 2002:a17:90a:da8f:b0:398:b71e:60c1 with SMTP id 98e67ed59e1d1-39b26208e7amr22343140a91.12.1788666118495;
+        Sat, 05 Sep 2026 20:41:58 -0700 (PDT)
+Received: from debian-rockchip-rock5b-rk3588.. ([27.130.10.21])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08ce4221sm22761765a91.14.2026.09.05.20.41.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 05 Sep 2026 20:41:58 -0700 (PDT)
+From: Tharit Tangkijwanichakul <tharitt97@gmail.com>
+To: Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Fuad Tabba <fuad.tabba@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Sean Christopherson <seanjc@google.com>,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kernel-mentees@lists.linux.dev,
+	skhan@linuxfoundation.org,
+	me@brighamcampbell.com,
+	jkoolstra@xs4all.nl,
+	Tharit Tangkijwanichakul <tharitt97@gmail.com>,
+	Gokul K <gokul02k@gmail.com>
+Subject: [PATCH] KVM: selftests: Fix VM leak in early return
+Date: Sun,  6 Sep 2026 03:41:43 +0000
+Message-ID: <20260906034144.14059-1-tharitt97@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/8] KVM: nSVM: Propagate hardware DecodeAssist bytes
- to VMCB12
-To: Jim Mattson <jmattson@google.com>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
- zhouyanjing@hygon.cn, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260824123954.315112-1-zhang_wei@open-hieco.net>
- <20260824123954.315112-5-zhang_wei@open-hieco.net>
- <CALMp9eR=TNUqfbNCFkxmg=O_Obcj11Tu9jAmX6Pe60qvvNx-2g@mail.gmail.com>
-Content-Language: en-US
-From: Tina Zhang <zhang_wei@open-hieco.net>
-In-Reply-To: <CALMp9eR=TNUqfbNCFkxmg=O_Obcj11Tu9jAmX6Pe60qvvNx-2g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+test_mmio_ease() returns early and skips the call to kvm_vm_free() when
+ID_AA64PFR1_EL1 is not available.
 
+Use a goto so that the early return joins the common exit path.
 
-On 9/5/2026 7:58 AM, Jim Mattson wrote:
-> On Mon, Aug 24, 2026 at 5:40 AM Tina Zhang <zhang_wei@open-hieco.net> wrote:
->>
->> +static void nested_svm_copy_insn_bytes(struct vmcb *to,
->> +                                      const struct vmcb *from)
->> +{
->> +       u8 insn_len = from->control.insn_len;
->> +
->> +       nested_svm_clear_insn_bytes(to);
-> 
-> It's not obvious to me that this clearing is necessary (except in the
-> case of the early return below). The APM does not say what happens to
-> the remaining bytes if there is a short read.
+Reported-by: Gokul K <gokul02k@gmail.com>
+Link: https://lore.kernel.org/all/20260808081050.408657-1-gokul02k@gmail.com/
+Fixes: a90aac553249 ("KVM: arm64: selftests: Test SEAs are taken to SError vector when EASE=1")
+Signed-off-by: Tharit Tangkijwanichakul <tharitt97@gmail.com>
+---
+Tested on a Rock 5B (RK3588). ID_AA64PFR1_EL1.DF2 is not implemented,
+so test_mmio_ease() takes the skip path exercised by this fix.
+---
+ tools/testing/selftests/kvm/arm64/external_aborts.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-You're right.  I had interpreted the APM as requiring the entire Guest 
-Instruction Bytes field to be cleared when rebuilding the state, but 
-that was too broad.  For a short read, the remaining bytes are not 
-defined and do not need to be cleared.  Thanks for correcting my 
-understanding.
-
-
->> +static void nested_svm_update_vmcb12_insn_bytes(struct kvm_vcpu *vcpu,
->> +                                               struct vmcb *vmcb12,
->> +                                               const struct vmcb *vmcb02)
->> +{
->> +       struct vcpu_svm *svm = to_svm(vcpu);
->> +
->> +       nested_svm_clear_insn_bytes(vmcb12);
-> 
-> Clearing here is premature. If L1 does not have
-> X86_FEATURE_DECODEASSISTS, the "Guest Instruction Bytes" fields of
-> vmcs12 should not be touched.
-
-Agreed.
-
-> 
-> Moreover, as I pointed out earlier, if L1 has
-> X86_FEATURE_DECODEASSISTS, and the VM-exit doesn't have instruction
-> bytes, you onlyhave to clear bits 7:0.
-
-Yes. I'll update it in the next version.
-
-
-Thanks,
-Tina
+diff --git a/tools/testing/selftests/kvm/arm64/external_aborts.c b/tools/testing/selftests/kvm/arm64/external_aborts.c
+index d8fe17a6cc59..7836756a38a6 100644
+--- a/tools/testing/selftests/kvm/arm64/external_aborts.c
++++ b/tools/testing/selftests/kvm/arm64/external_aborts.c
+@@ -339,7 +339,7 @@ static void test_mmio_ease(void)
+ 	pfr1 = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_ID_AA64PFR1_EL1));
+ 	if (!SYS_FIELD_GET(ID_AA64PFR1_EL1, DF2, pfr1)) {
+ 		pr_debug("Skipping %s\n", __func__);
+-		return;
++		goto done;
+ 	}
+ 
+ 	/*
+@@ -356,6 +356,7 @@ static void test_mmio_ease(void)
+ 
+ 	vcpu_inject_sea(vcpu);
+ 	vcpu_run_expect_done(vcpu);
++done:
+ 	kvm_vm_free(vm);
+ }
+ 
+-- 
+2.47.3
 
