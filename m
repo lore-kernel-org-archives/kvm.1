@@ -1,117 +1,288 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-100.mta1.migadu.com [95.215.58.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBBD3A961B;
-	Sun,  6 Sep 2026 17:25:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6DA3B71B3
+	for <kvm@vger.kernel.org>; Sun,  6 Sep 2026 17:28:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788715507; cv=none; b=VJ5bJ8tLHcegQYz3u0fl4Pw/3456IE+gubn5wTsaZhyvjq4Oz2NblgaVsuH6ieWAYSe0x870np5N3OTFuSENmUVcElWVYLExUdf7AmZli/8wAsj+vpzNjziaUfLqLR+/YLSKsJV+CZ8DS+BLiY4Ef9I+RwI5aQkNH53Qd/blknE=
+	t=1788715707; cv=none; b=DwAYMoRk1Kb+EflwBnHJ9fnZM9xPzvkLycHzQ5UPNXBSfFgYNiKdkAN1OGQFgE4Dhuuslz6f+BU0uhx0gsx4HQKpj5SxySOrzd3kmvDUI10cs96avPiKpMmNJcbHwx0fnCJ01p0sLrmyJyVCnCxswXtFUwJ5jWM20lQ3y26hl+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788715507; c=relaxed/simple;
-	bh=V6LNUOGENCLkm9ZOZOi/Vm2wFAm6FSSYMJpDKhCCdp0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k3yZhRakXbMNjnvfaIDgB3Os977ysgrzt3fPcukIxQw713sVCG/PiPSb/VXNUIBv/h7sF7Bh1oEV8kN9V+ZuPUj/juZGEZA9h8X0HZE36ab0NF24brA4put4LbcU8tyvkPyz1wBgqzjb9uCv141lHEDwcKfd34iLtaGe8LH3y78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=RSkwG/VG; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1788715707; c=relaxed/simple;
+	bh=YwGoDagFONg4c7PymmNjipFffu7Q05S+kvFKbHIFZp0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hwwi1iSHp4AfE/H+jQLlTs2UWDWouAPJNrtZNac6RdOCVuHwn0fh8+kV9aMjweGUsVw7OBEqFc9a+XXZ2pLO9uDIT3A09zfk6jWwQg12WRyt2Jk9UmHflS0dEI6EWx1UQiCrbA97TS85gEm2Gwvx2CKbD3jh64p49ZQtFSL63H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SitwtVyJ; arc=none smtp.client-ip=95.215.58.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="RSkwG/VG"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A669140E01E1;
-	Sun,  6 Sep 2026 17:25:02 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id afoUUyLUNP5x; Sun,  6 Sep 2026 17:24:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1788715492; bh=IGvIabwTQZmhND09OHm9YhbR9dwWckJV+EZ+Q9zQ28E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RSkwG/VGmy5iGQE7hiCDbut1C8EEipXMYhAP+DYVoVCCd8WQBGZZiiysip55ythaF
-	 gVXcbdRDXTBJwD1nwWTDcoFYa5jzdQM5QcxGlJFi9A6KKy/cs2TiUBxwMq0+SqB2P8
-	 7+d/0ZyIR344vOUgKMUXX0TPVVu5HE1aBm03I8xmPpsB3zTvNhmrYfSlHeoSfECHO3
-	 SE16A2ICvzY6skAaAppTDQvmH15BdukmIFafQIrWOyB3AJOLsjAQ9DKGI/Wk0mffe/
-	 nLxxuU42cg6vYk0erabVLYgIiAcpF+OKttQ5h5uw7I6yUvxzIpMlAJV6I19lgCEWxF
-	 51YCOl2ERiDclQ8RNdnaKpQwqmkWdy3+krYG33UcwCpSljE6kPX8OczYUMUpxsjNPu
-	 s3SIsWva5OeTcFqiD7nPTMWNAZg4KyaMYtjA6iM8eO1muwEMf04LnoJ3ufdJaWdA+A
-	 rWZXKjsMGdGWMQWZa7v/NGo3yeckojDpHUTQtNMpy+nw8jsXjmtpyQI4PuSdxegKTv
-	 18+Rl2Qzb6B9B72qmxQTH072CSR6WtxE8mbSf5Hxj7jcLDcpkUl6GU3scNglcfmllv
-	 l/TeRPm7qhMtLPBo6TbmOxPOKvQthXn/J+83VnRse8/5yUyDB8s+i5OIoXHTT84uVt
-	 1Y2u0EYsPM/jTssBe1twvRi8=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B710740E00B9;
-	Sun,  6 Sep 2026 17:24:18 +0000 (UTC)
-Date: Sun, 6 Sep 2026 10:24:15 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	darwi@linutronix.de, linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v13 5/5] x86/sev: Re-enable RMP optimizations on SNP
- guest shutdown
-Message-ID: <20260906172415.GSap2hv9Aa16O_tL31@fat_crate.local>
-References: <cover.1788296083.git.ashish.kalra@amd.com>
- <e8a8d0ec63bda2db61cde7cf298a4ccb6a502c20.1788296083.git.ashish.kalra@amd.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="SitwtVyJ"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=YwGoDagFONg4c7PymmNjipFffu7Q05S+kvFKbHIFZp0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788715704; v=1; x=1789320504;
+ b=SitwtVyJAZ7y8Onl26coloKvh8wZGJJyn2xDsXIZ5Q7JQPNlc3/y5+ZZ9aIM/RdzVwVdg9ue
+ CfRnhVNeJwxVW4LyXhiPynCXXc/xkHkMwNYxbosvktTCqfLA6wDt5cV7OAp2h1oeirWgOe166fz
+ 85ofdhK8NS6QhLHgMkWQX7Sc=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 459377ff36f9ef12;
+	Sun, 06 Sep 2026 17:28:24 +0000
+X-Mizu-Trace-ID: 459377ff36f9ef12
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b4a0b17359so4248e87.0
+        for <kvm@vger.kernel.org>; Sun, 06 Sep 2026 10:28:20 -0700 (PDT)
+X-Gm-Message-State: AFuF++l30L+pOK6F+SueRSTGPq+nEUrcFFCySGgyV586u2HPSCMpQtxP
+	DpdiNzILwhAe53HiAVvWp2xDtY8I9zdbANt2MKrow0Ug8+vQZ21jR3CofD8gr5osyBS1Jm0i8NG
+	fxAR4OTNtoXNOzSx/EIyXsXGiiW7fXJ4aKp8e0fsY
+X-Received: by 2002:a05:6512:2347:b0:5b4:9dba:4ecf with SMTP id
+ 2adb3069b0e04-5b74d405b3dmr98775e87.13.1788715699098; Sun, 06 Sep 2026
+ 10:28:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <e8a8d0ec63bda2db61cde7cf298a4ccb6a502c20.1788296083.git.ashish.kalra@amd.com>
+References: <20260904175550.430266-1-dongli.zhang@oracle.com> <20260904175550.430266-4-dongli.zhang@oracle.com>
+In-Reply-To: <20260904175550.430266-4-dongli.zhang@oracle.com>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Sun, 6 Sep 2026 18:27:42 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTzB3HA5CS=avLMEfV3CgYRmgWiLp7SKBBvAW0ScmxhpZg@mail.gmail.com>
+X-Gm-Features: AcwNN1VH8hihUI-lSdP6BhGDWguUGsQwGVRm6ivkEfPAVDdIwqp3LITyqIIBbeg
+Message-ID: <CA+EHjTzB3HA5CS=avLMEfV3CgYRmgWiLp7SKBBvAW0ScmxhpZg@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] KVM: selftests: Test steal time across vCPU pid
+ changes on x86
+To: Dongli Zhang <dongli.zhang@oracle.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, loongarch@lists.linux.dev, 
+	kvm-riscv@lists.infradead.org, linux-kselftest@vger.kernel.org, 
+	maz@kernel.org, oupton@kernel.org, joey.gouly@arm.com, seiden@linux.ibm.com, 
+	suzuki.poulose@arm.com, yuzenghui@huawei.com, zhaotianrui@loongson.cn, 
+	maobibo@loongson.cn, chenhuacai@kernel.org, anup@brainfault.org, 
+	atish.patra@linux.dev, seanjc@google.com, pbonzini@redhat.com, 
+	shuah@kernel.org, dwmw2@infradead.org, joe.jin@oracle.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Sep 02, 2026 at 09:29:21PM +0000, Ashish Kalra wrote:
-> +		/*
-> +		 * Perform RMP optimizations on memory freed by terminating
-> +		 * guests.  The scan is deferred, so it normally runs after
-> +		 * sev_gmem_invalidate() has converted this guest's pages back to
-> +		 * shared, and picks them up then.  A very large guest whose
-> +		 * conversion has not finished by then is picked up by a later
-> +		 * teardown's scan.
-> +		 */
+Hi Dongli,
 
-Move that comment over the function definition.
+On Fri, 4 Sept 2026 at 18:56, Dongli Zhang <dongli.zhang@oracle.com> wrote:
+>
+> Add a selftest for the case where the same vCPU fd is run from a new host
+> thread after steal time has already been enabled and updated.
 
+Since this is based on steal_time.c anyway, would it make sense to
+fold it in rather than add a separate file?
+
+steal_time.c already has the per-arch scaffolding, so the pid-change
+case could reuse the existing riscv and loongarch support (which you
+said you couldn't add here for lack of hosts) instead of duplicating
+the x86/arm64 setup. Or am I missing something?
+
+Cheers,
+/fuad
+
+
+
+>
+> Pin the vCPU thread and a busy-loop thread to CPU 0, force host-side
+> run_delay to accumulate, and run the vCPU again to observe guest steal
+> time. Then run the same vCPU fd from a newly created host thread and verify
+> that the next steal time value observed on the new thread remains monotonic
+> and sane relative to the value observed on the old thread.
+>
+> This indirectly validates that vcpu->last_steal is reset when the vCPU run
+> PID changes.
+>
+> Assisted-by: Codex:GPT-5.5
+> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+> ---
+> As I have access to only x86 and arm64 KVM hosts, I created and validated
+> the selftest on those two architectures only.
+>
+>  tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+>  .../selftests/kvm/steal_time_change_pid.c     | 162 ++++++++++++++++++
+>  2 files changed, 163 insertions(+)
+>  create mode 100644 tools/testing/selftests/kvm/steal_time_change_pid.c
+>
+> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+> index 96bab7002d39..036c28849f84 100644
+> --- a/tools/testing/selftests/kvm/Makefile.kvm
+> +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> @@ -164,6 +164,7 @@ TEST_GEN_PROGS_x86 += irq_test
+>  TEST_GEN_PROGS_x86 += mmu_stress_test
+>  TEST_GEN_PROGS_x86 += rseq_test
+>  TEST_GEN_PROGS_x86 += steal_time
+> +TEST_GEN_PROGS_x86 += steal_time_change_pid
+>  TEST_GEN_PROGS_x86 += system_counter_offset_test
+>  TEST_GEN_PROGS_x86 += pre_fault_memory_test
+>
+> diff --git a/tools/testing/selftests/kvm/steal_time_change_pid.c b/tools/testing/selftests/kvm/steal_time_change_pid.c
+> new file mode 100644
+> index 000000000000..3c39594db398
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/steal_time_change_pid.c
+> @@ -0,0 +1,162 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +/*
-> + * Delay, in milliseconds, before the RMP re-optimization pass runs after an
-> + * SNP guest is torn down.  snp_rmpopt_all_physmem() re-arms the delayed work
-> + * with mod_delayed_work() on each teardown, so the pass fires this long after
-> + * the last teardown.  This coalesces a burst of teardowns into a single scan
-> + * and gives each guest's pages time to be converted back to the shared,
-> + * hypervisor-owned state before the scan re-optimizes their 1GB regions.  The
-> + * 10 second value is a heuristic trading re-optimization latency against
-> + * scanning too eagerly.
+> + * Verify that KVM resets steal-time accounting when a vCPU fd is run from
+> + * a different host PID.
 > + */
-
-Simplify:
-
-"Delay, in milliseconds, before the RMP re-optimization pass runs after an SNP
-guest is torn down, passed as the delay to mod_delayed_work(). This coalesces
-a burst of teardowns into a single scan and gives each guest's pages time to
-be converted back to the shared, hypervisor-owned state. The 10 second value
-is a heuristic trading re-optimization latency against scanning too eagerly."
-
-
-> +#define RMPOPT_WORK_TIMEOUT	(10 * MSEC_PER_SEC)
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> +
+> +#include <pthread.h>
+> +#include <asm/kvm_para.h>
+> +#include "kvm_util.h"
+> +#include "processor.h"
+> +
+> +#define ST_GPA_BASE            (1 << 30)
+> +#define ST_SANE_DELTA_NS       (1ULL << 63)
+> +
+> +static void *st_gva;
+> +static u64 guest_stolen_time;
+> +static u64 main_steal;
+> +static u64 thread_steal;
+> +
+> +#if defined(__x86_64__)
+> +
+> +#define STEAL_TIME_SIZE        ((sizeof(struct kvm_steal_time) + 63) & ~63)
+> +
+> +static void guest_code(void)
+> +{
+> +       struct kvm_steal_time *st = st_gva;
+> +
+> +       WRITE_ONCE(guest_stolen_time, READ_ONCE(st->steal));
+> +       GUEST_SYNC(0);
+> +
+> +       WRITE_ONCE(guest_stolen_time, READ_ONCE(st->steal));
+> +       GUEST_SYNC(1);
+> +
+> +       WRITE_ONCE(guest_stolen_time, READ_ONCE(st->steal));
+> +       GUEST_DONE();
+> +}
+> +
+> +static bool steal_time_supported(struct kvm_vcpu *vcpu)
+> +{
+> +       return kvm_cpu_has(X86_FEATURE_KVM_STEAL_TIME);
+> +}
+> +
+> +static void steal_time_enable(struct kvm_vcpu *vcpu)
+> +{
+> +       vcpu_set_msr(vcpu, MSR_KVM_STEAL_TIME,
+> +                    (ulong)st_gva | KVM_MSR_ENABLED);
+> +}
+> +
+> +#else
+> +#error "steal_time_change_pid is not implemented on this architecture"
+> +#endif
+> +
+> +static void run_vcpu(struct kvm_vcpu *vcpu)
+> +{
+> +       struct ucall uc;
+> +
+> +       vcpu_run(vcpu);
+> +
+> +       switch (get_ucall(vcpu, &uc)) {
+> +       case UCALL_SYNC:
+> +       case UCALL_DONE:
+> +               break;
+> +       case UCALL_ABORT:
+> +               REPORT_GUEST_ASSERT(uc);
+> +       default:
+> +               TEST_ASSERT(false, "Unexpected exit: %s",
+> +                           exit_reason_str(vcpu->run->exit_reason));
+> +       }
+> +}
+> +
+> +static void *do_steal_time(void *arg)
+> +{
+> +       struct timespec ts, stop;
+> +
+> +       clock_gettime(CLOCK_MONOTONIC, &ts);
+> +       stop = timespec_add_ns(ts, MIN_RUN_DELAY_NS);
+> +
+> +       while (timespec_to_ns(timespec_sub(ts, stop)) < 0)
+> +               clock_gettime(CLOCK_MONOTONIC, &ts);
+> +
+> +       return NULL;
+> +}
+> +
+> +static void *vcpu_thread(void *arg)
+> +{
+> +       struct kvm_vcpu *vcpu = arg;
+> +
+> +       run_vcpu(vcpu);
+> +       sync_global_from_guest(vcpu->vm, guest_stolen_time);
+> +       thread_steal = guest_stolen_time;
+> +
+> +       return NULL;
+> +}
+> +
+> +int main(void)
+> +{
+> +       struct kvm_vcpu *vcpu;
+> +       struct kvm_vm *vm;
+> +       pthread_attr_t attr;
+> +       pthread_t thread;
+> +       cpu_set_t cpuset;
+> +       long run_delay;
+> +       long run_delay_delta;
+> +
+> +       ksft_print_header();
+> +       ksft_set_plan(1);
+> +
+> +       CPU_ZERO(&cpuset);
+> +       CPU_SET(0, &cpuset);
+> +       pthread_attr_init(&attr);
+> +       pthread_attr_setaffinity_np(&attr, sizeof(cpuset), &cpuset);
+> +       pthread_setaffinity_np(pthread_self(), sizeof(cpuset), &cpuset);
+> +
+> +       vm = vm_create_with_one_vcpu(&vcpu, guest_code);
+> +       vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS,
+> +                                   ST_GPA_BASE, 1, 1, 0);
+> +       virt_map(vm, ST_GPA_BASE, ST_GPA_BASE, 1);
+> +
+> +       st_gva = (void *)ST_GPA_BASE;
+> +       sync_global_to_guest(vm, st_gva);
+> +       memset(addr_gva2hva(vm, ST_GPA_BASE), 0, STEAL_TIME_SIZE);
+> +
+> +       TEST_REQUIRE(steal_time_supported(vcpu));
+> +
+> +       steal_time_enable(vcpu);
+> +       run_vcpu(vcpu);
+> +
+> +       run_delay = get_run_delay();
+> +       pthread_create(&thread, &attr, do_steal_time, NULL);
+> +
+> +       while (get_run_delay() - run_delay < MIN_RUN_DELAY_NS)
+> +               sched_yield();
+> +
+> +       pthread_join(thread, NULL);
+> +       run_delay_delta = get_run_delay() - run_delay;
+> +       TEST_ASSERT(run_delay_delta >= MIN_RUN_DELAY_NS,
+> +                   "Expected run_delay >= %ld, got %ld",
+> +                   MIN_RUN_DELAY_NS, run_delay_delta);
+> +
+> +       run_vcpu(vcpu);
+> +       sync_global_from_guest(vm, guest_stolen_time);
+> +       main_steal = guest_stolen_time;
+> +
+> +       TEST_ASSERT(main_steal >= MIN_RUN_DELAY_NS,
+> +                   "Expected steal time >= %ld, got %"PRIu64,
+> +                   MIN_RUN_DELAY_NS, main_steal);
+> +
+> +       pthread_create(&thread, NULL, vcpu_thread, vcpu);
+> +       pthread_join(thread, NULL);
+> +
+> +       TEST_ASSERT(thread_steal >= main_steal &&
+> +                   thread_steal - main_steal < ST_SANE_DELTA_NS,
+> +                   "Expected sane steal after vCPU pid change: "
+> +                   "old=%"PRIu64", new=%"PRIu64,
+> +                   main_steal, thread_steal);
+> +
+> +       ksft_test_result_pass("steal time remains sane across vCPU pid change\n");
+> +
+> +       pthread_attr_destroy(&attr);
+> +       kvm_vm_free(vm);
+> +       ksft_finished();
+> +}
+> --
+> 2.43.7
+>
