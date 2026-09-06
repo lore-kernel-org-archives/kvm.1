@@ -1,124 +1,190 @@
-Received: from mta1.migadu.com (out-120.mta1.migadu.com [95.215.58.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF86330D35
-	for <kvm@vger.kernel.org>; Sun,  6 Sep 2026 16:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6408D35E953;
+	Sun,  6 Sep 2026 17:04:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788713184; cv=none; b=OjBKPaHiRTuSwFe3tqvhDR1qrvUfY2PKsRVpd7cn+gS/cJXbC8BTh3WwPOT740zXtEDoIUEafEsPHidOVR1Q50ZiwT6oDefTOq5mN6ngaOXkZO6of4pSnj588cHPn+dNWMRihXg8bk5ZNj12C7yr2y9y/FKiPWJKd1XfVJLJd+w=
+	t=1788714241; cv=none; b=dvANuwySAj3gw8ylNvQbvgDKgAUMqj8FAoyPte4/wH6Ex/jTrnDk6ir4D3DhcU+DZ4QvDAjrK/cthzqUBfDkdS67e9lXMMa7UKOHPOG0qEBT/X0rW7teFRb5loiwucM+HJA1VfLXOm9YIrBPFJX3ein+yu37CT/kBG+cdtkWktQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788713184; c=relaxed/simple;
-	bh=VjfV2POx+VicV5YfJjm4exSQwpAsSb4mPjx2PR7ZFvI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sGiqFcCxcfpMccZX9KxqWGM3NxkXEmvLWI1ZDg6gMC+j3CklZ3bwkKNoORV5cIjp2p50tOFWlTBRpRBb8ypZImDMRblhKmxl4XFJm3UgElaj7k93OO8B2xikv5jnCX5syDefOfGXXpGkPopOSgTmbMkKYclCKEOCGe7aMgaMIPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vkQKVic+; arc=none smtp.client-ip=95.215.58.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788714241; c=relaxed/simple;
+	bh=MYGt/goz2YxcKBNLiTCOtDgRm7Te939HIktN81kX9u0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=IW/yXtMex1rjFnKYIgZUKvovNgdltHaVRDyInNtx1M+Dh/tB+TU5Xgrt2u/EAFgCXF5CrRddsXeqC9HNf3gB89iUyGhE7hMCPYElIcfuaMBCoMPT+lJ6lxcwQdH1f3v/80T6w/O5RBmqYF0wrRnrl8VS2QP49WQcciN+e5bnPds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DG0ZWREz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vkQKVic+"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=VjfV2POx+VicV5YfJjm4exSQwpAsSb4mPjx2PR7ZFvI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788713179; v=1; x=1789317979;
- b=vkQKVic+qgvtT9ZIc/Yib+9lUs7BuvmOU1JzhUGuMQz4OJRliVzjWxQejmfxDvgkW/PJBvrj
- Fab+2jHfBa/eIgt0lTnhsIvi71J8FKaeSgeuS6JC3CvaBxFYwbo6NTwA6MKgAX2vOxbKw5gxhM8
- BxlwHR5zHKF3ar/AoX0CI/Jk=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 3601ab0f35543f3d;
-	Sun, 06 Sep 2026 16:46:19 +0000
-X-Mizu-Trace-ID: 3601ab0f35543f3d
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b4a0b384c4so4051e87.1
-        for <kvm@vger.kernel.org>; Sun, 06 Sep 2026 09:46:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxrTZKt6/znWTF94nx+bZQcM7HaFRiZ8A8lyvV43EYrv5kPnaMRck+rVmatAF7gp1lLMjY=@vger.kernel.org
-X-Gm-Message-State: AFuF++keOK/sGSygzzuqaKy2BNVErr2YUZswmYy79sMaZnEHrv7fgef4
-	0OljsDcdrB+xz9KzWaAxtt1h6o3tHKcCw9ZVQ/ntQvKjTYFqBqLILUVGYi6ILs8GKyvqfooZMtd
-	6/yfWmbyL59vEbNB+gYTGi1oW8AWcY0XKAoIJ1iz+
-X-Received: by 2002:a05:6512:3ba7:b0:5b1:571f:715f with SMTP id
- 2adb3069b0e04-5b74d427ec9mr96688e87.3.1788713174435; Sun, 06 Sep 2026
- 09:46:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DG0ZWREz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93DEA1F00A3A;
+	Sun,  6 Sep 2026 17:03:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788714239;
+	bh=yiFg3WA8eYzFRz4XD8gs7F68jVnn0z1bYOUFWOdeVtU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=DG0ZWREzM2cZUReiwc8Hyz2YG6ief2XqF2XZtSiYfpI+xok6L1sBeUJ4tk9U0CFWP
+	 E7pQ8V1RfC6TnvQ1c2LOQ8kbeR/Aeo8t9YM8gHq3QIGbjtI+OQD3XhOe8tHfi68h04
+	 OZkzY9lpWr/36ZOKxu2Xhjg9JO7ahEVzGNlhfjpAuR2SGBEmd1oC2g960DsZfFPWTj
+	 HcrkYJNJk9ar7fsd34Fq21bSmstQsbwpVA8ejWmbkJoR34E3596uwvEU7Jf8Sh8hRE
+	 A0hEeoLsrDS2GvZrWF0wSXvcD+uXeD4zAdoNYnVjBIZoVqcUJJ1DIjKhu4hGxQu9jX
+	 jXbr635NFFTvA==
+Subject: Re: [PATCH net-next 2/6] vsock: add IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS
+From: netdev-bot+sashiko@kernel.org
+To: bobbyeshleman@gmail.com
+Cc: sgarzare@redhat.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
+ skhan@linuxfoundation.org, stefanha@redhat.com, mst@redhat.com,
+ jasowangio@gmail.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
+ shuah@kernel.org, rdunlap@infradead.org, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, sargun@sargun.me, jlinbox@meta.com,
+ bobbyeshleman@meta.com
+Date: Sun, 06 Sep 2026 17:03:58 +0000
+Message-ID: <178871423810.219967.10502012402988056292@kernel.org>
+In-Reply-To: <20260902-vsock-guest-ns-v1-2-9995383e9a8b@meta.com>
+References: <20260902-vsock-guest-ns-v1-2-9995383e9a8b@meta.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260904174419.76057-1-sascha.bischoff@arm.com>
-In-Reply-To: <20260904174419.76057-1-sascha.bischoff@arm.com>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Sun, 6 Sep 2026 17:45:37 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTzfG+y=1N3Jn5Pc8PpH0qmnmwQe5d0Z943n+PdEmY3wXQ@mail.gmail.com>
-X-Gm-Features: AcwNN1VwvQjebM9ocVZBouSeIGG6IYkrA31W30ISXubYppwaYJQVVM9dNYgL72I
-Message-ID: <CA+EHjTzfG+y=1N3Jn5Pc8PpH0qmnmwQe5d0Z943n+PdEmY3wXQ@mail.gmail.com>
-Subject: Re: [PATCH] KVM: arm64: vgic: Serialise CTRL_INIT against vCPU creation
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Cc: "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, nd <nd@arm.com>, 
-	"maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org" <oupton@kernel.org>, Joey Gouly <Joey.Gouly@arm.com>, 
-	"seiden@linux.ibm.com" <seiden@linux.ibm.com>, Suzuki Poulose <Suzuki.Poulose@arm.com>, 
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>, Sashiko <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 
-Hi Sascha,
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider:
 
-On Fri, 4 Sept 2026 at 18:45, Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
->
-> vgic_init() compares created_vcpus with online_vcpus to detect a vCPU
-> being created. However, CTRL_INIT only holds config_lock, while
-> admission of new vCPUs and updates to created_vcpus are protected by
-> kvm->lock.
->
-> A concurrent KVM_CREATE_VCPU can therefore increment created_vcpus
-> after vgic_init() checks the counters, then block on config_lock before
-> publishing the new vCPU. For a GICv4 VM, vgic_v4_init() consequently
-> sizes its vPE array using a stale online_vcpus value, leaving no vPE
-> entry for the new vCPU once its creation completes. The upcoming GICv5
-> IRS support would hit the same issue when sizing its doorbell domain.
->
-> Hold kvm->lock around CTRL_INIT. The existing counter check detects a
-> vCPU creation already in progress, while the lock prevents a new one
-> from starting until initialisation has completed.
+Critical: 0 · High: 0 · Medium: 0 · Low: 3
 
-This also brings CTRL_INIT in line with the other vgic device flows
-that serialise against vCPU creation: kvm_vgic_create(), the GICv2
-register uaccess path, and SAVE_PENDING_TABLES just below it all hold
-kvm->lock across the config_lock section.
+- [Low] Claim: the new ioctl is inert because no in-tree transport
+  implements `netns_assign_allow`, and `vsock_g2h_net_get()` /…
+- [Low] Claim: TOCTOU between `vsock_g2h_net_assign()` (which only sweeps
+  the connected hash table) and in-flight connections — a socket in…
+- [Low] Claim: the reachability gate in `vsock_assign_transport()` is
+  skipped by the `vsk->transport == new_transport` early return (so a…
 
-> Fixes: f00327731131 ("KVM: arm64: Use config_lock to protect vgic state")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Link: https://lore.kernel.org/r/20260807124506.ED85C1F000E9@smtp.kernel.org
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+--
 
-Given that f00327731131 carried a stable tag, worth a Cc: stable?
+vsock: add IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS
 
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
-Tested-by: Fuad Tabba <fuad.tabba@linux.dev>
+This adds an ioctl on /dev/vsock that moves the guest's vsock device into
+the network namespace of the calling process, gated on CAP_NET_ADMIN in the
+initial user namespace, plus a transport hook so transports can opt in.
+Sockets that can no longer reach the device after a move are reset, and the
+device falls back to init_net when the assigned namespace is destroyed.
 
-Cheers,
-/fuad
+Link: https://lore.kernel.org/all/20200427142518.uwssa6dtasrp3bfc@steredhat/
 
+No regressions to report on this one. A few areas were looked at closely
+and appear fine; they are noted below only so the review record is
+complete.
 
+> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> index 29cde17e08f3..ad11f0f56eb8 100644
+> --- a/net/vmw_vsock/af_vsock.c
+> +++ b/net/vmw_vsock/af_vsock.c
 
-> ---
->  arch/arm64/kvm/vgic/vgic-kvm-device.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/arch/arm64/kvm/vgic/vgic-kvm-device.c b/arch/arm64/kvm/vgic/vgic-kvm-device.c
-> index 90be99443df3b..219881915bf41 100644
-> --- a/arch/arm64/kvm/vgic/vgic-kvm-device.c
-> +++ b/arch/arm64/kvm/vgic/vgic-kvm-device.c
-> @@ -255,9 +255,11 @@ static int vgic_set_common_attr(struct kvm_device *dev,
->         case KVM_DEV_ARM_VGIC_GRP_CTRL: {
->                 switch (attr->attr) {
->                 case KVM_DEV_ARM_VGIC_CTRL_INIT:
-> +                       mutex_lock(&dev->kvm->lock);
->                         mutex_lock(&dev->kvm->arch.config_lock);
->                         r = vgic_init(dev->kvm);
->                         mutex_unlock(&dev->kvm->arch.config_lock);
-> +                       mutex_unlock(&dev->kvm->lock);
->                         return r;
->                 case KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES:
->                         /*
-> --
-> 2.34.1
+[ ... ]
+
+> @@ -548,6 +571,17 @@ static void vsock_deassign_transport(struct vsock_sock *vsk)
+>  	vsk->transport = NULL;
+>  }
+>  
+> +/* Return true if the loaded g2h transport honours namespace assignment. One
+> + * that does not keeps the reachability rules it had before the ioctl existed.
+> + *
+> + * Must be called with vsock_register_mutex held.
+> + */
+> +static bool vsock_g2h_netns_assignable(void)
+> +{
+> +	return transport_g2h && transport_g2h->netns_assign_allow &&
+> +	       transport_g2h->netns_assign_allow();
+> +}
+
+At this commit no in-tree transport sets .netns_assign_allow, so
+vsock_g2h_netns_assignable() is always false and vsock_g2h_net_assign()
+returns -EOPNOTSUPP, while vsock_g2h_net_get(), vsock_g2h_reachable_sk()
+and vsock_maybe_set_connected() have no callers yet.
+
+The following patch in the series adds virtio_transport_netns_assign_allow()
+and the calls into these helpers, so this is the usual core-first split
+rather than dead code.
+
+> @@ -622,6 +656,13 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
+>  		goto err;
+>  	}
+>  
+> +	if (new_transport && new_transport == transport_g2h &&
+> +	    vsock_g2h_netns_assignable() &&
+> +	    !vsock_g2h_net_reachable(sock_net(sk))) {
+> +		ret = -ENETUNREACH;
+> +		goto err;
+> +	}
+> +
+
+This gate is skipped by the preceding
+
+	if (vsk->transport && vsk->transport == new_transport) {
+		ret = 0;
+		goto err;
+	}
+
+early return, but vsock_connect() still consults
+transport->stream_allow() after vsock_assign_transport() returns, and the
+follow-up patch makes virtio_transport_stream_allow() and
+virtio_transport_seqpacket_allow() namespace aware, so a re-connect from an
+unreachable namespace is still refused with -ENETUNREACH.
+
+For SOCK_DGRAM, virtio registers only as VSOCK_TRANSPORT_F_G2H and
+virtio_transport_dgram_allow() returns false unconditionally, so a datagram
+socket never holds the assignable transport.
+
+[ ... ]
+
+> +bool vsock_maybe_set_connected(struct vsock_sock *vsk)
+> +{
+> +	struct list_head *list = vsock_connected_sockets(&vsk->remote_addr,
+> +							 &vsk->local_addr);
+> +	bool reachable;
+> +
+> +	spin_lock_bh(&vsock_table_lock);
+> +	reachable = vsock_g2h_reachable_sk(vsk);
+> +	if (reachable) {
+> +		sk_vsock(vsk)->sk_state = TCP_ESTABLISHED;
+> +		__vsock_insert_connected(list, vsk);
+> +	}
+> +	spin_unlock_bh(&vsock_table_lock);
+> +
+> +	return reachable;
+> +}
+
+[ ... ]
+
+> +static int vsock_g2h_net_assign(struct net *net)
+> +{
+[ ... ]
+> +		rcu_assign_pointer(vsock_g2h_net, net);
+> +		vsock_for_each_connected_socket(transport_g2h,
+> +						vsock_reset_unreachable_sock);
+> +	}
+
+Sockets still in TCP_SYN_SENT, and pending children, are not in the
+connected table and so are not visible to this sweep. The ordering here
+covers that case:
+
+vsock_g2h_net_assign()
+    rcu_assign_pointer(vsock_g2h_net, net);   /* store first */
+    vsock_for_each_connected_socket()         /* under vsock_table_lock */
+
+vsock_maybe_set_connected()
+    spin_lock_bh(&vsock_table_lock);
+    reachable = vsock_g2h_reachable_sk(vsk);  /* re-check under same lock */
+
+Either the insert wins the lock and the later walk sees and resets the
+socket, or the walk wins and the insert observes the new namespace and
+refuses, so a socket cannot slip into TCP_ESTABLISHED in a namespace that
+can no longer reach the device once the transport side lands.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902-vsock-guest-ns-v1-0-9995383e9a8b%40meta.com
