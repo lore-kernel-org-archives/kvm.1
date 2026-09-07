@@ -1,197 +1,261 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DB63672BD;
-	Mon,  7 Sep 2026 12:23:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E7247045E;
+	Mon,  7 Sep 2026 12:47:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788783795; cv=none; b=dMRyHFUEMvd4q0l1yaKsH2bLusJDgnoQxrVE76rec2H+UVKzyLHV+l2FusGnzZ67mbCxiSKY77QC3uq5LXSWm7mjAG1cvua9qeQYhIzFd/JGlJMQJtfKTp3NhB1lrVVYhyaY0vvVIVRD0I9HhFmn7ZOmxz3Fck8AEvVvZ5gPEEI=
+	t=1788785275; cv=none; b=birroldFJzoj0Hi8etWZKSBECeVTx1PfRFvDAnOdu+Ni/dmdlcnw75QMmc/ymLx6ijpMxtHuNw3jwbVhLDxIs28YLm1rA92cKc18sj+kTTKELa7UTrTgEVEz9aj255DxrFrfZzUqJmRsndALkRWRDuGrqCgoFMG0f53etCLmoDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788783795; c=relaxed/simple;
-	bh=wZykLYHj+j/a0wJcB2UvhET1G/28Tm4Zb5Yrz9f98Gs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sgDNUO0yb3xDehbkY2B+EVgD5xd8htYoZMz+VZSqN2nLyivRCU5RM26y0YMT64EE8q2R5mxkGvRu6+9eZhnWghipiWdPXn08psH0zoa1vaMWJGqU7hPunX8VCQukiWPuiNUb3YVnYAZTowiZBTRtoWNJgv8EZ4lpGXtpNCOUwUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=g3naaP8h; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1788785275; c=relaxed/simple;
+	bh=JC/Oe5ZF+0FMXi+tB4cSC18yJde7t7u/o1RW76OfS+E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hoeDstWoHkxTV7njG9qv7QOwardnnmW+B+G12FiKrTO97mg8eIonUgewADS72IyhQdTzD8KxFh+F1dPqsH4RuuU/fGY+vRzHG5XGchNbYlp6sXtnPypbYm7QZwDfh+MyMLDrgRqBezmWC83u2AthzVuSqHcP0zaZ3w4pR9qkCDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HsdkepCf; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="g3naaP8h"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 687B1bNI627746;
-	Mon, 7 Sep 2026 12:23:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=1oB401
-	PRChNM94BBOkC+2/OTgtouFWztcLaE/fiOs9A=; b=g3naaP8hxzYj/uqzO8A0VG
-	o2mIpjsr5spK/ZZnw2I+LSlH2Kf86hQDVnwXDWaKZ79PtAV7crImUnHf7YXg9TaJ
-	oE6ezSTpTWSwS8xm/paI1WtXS/hhIIwY+cQVdVzmkG7mUyWCe11tK3+Bfib5707T
-	1jB5Ui/jICh6WHgGV2kc/9SqYiBi634BVR9dztmyOMrQFFmudr37fuhYjCf0078M
-	fkToSfFTHH3M+5eHKu8kuLNAfUeEG9X+hpHzFURyg84550ys82VvykFvBPyAJgLX
-	aMB6GAWX/G5ariMl50wL55CJU8Jl2DiRPjJl5yCvXpcGmoIkW3lZnvWHwCLfBoyg
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ggbjrggxs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Sep 2026 12:23:08 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 687BuFbT027688;
-	Mon, 7 Sep 2026 12:23:07 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ggwsvwy8j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Sep 2026 12:23:07 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 687CN30v46072304
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 7 Sep 2026 12:23:03 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4158A2004B;
-	Mon,  7 Sep 2026 12:23:03 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E76C320043;
-	Mon,  7 Sep 2026 12:23:02 +0000 (GMT)
-Received: from [9.87.132.113] (unknown [9.87.132.113])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  7 Sep 2026 12:23:02 +0000 (GMT)
-Message-ID: <dcb5547b-a04b-4991-a581-e3784ccfe303@linux.ibm.com>
-Date: Mon, 7 Sep 2026 14:23:02 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HsdkepCf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788785273; x=1820321273;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=JC/Oe5ZF+0FMXi+tB4cSC18yJde7t7u/o1RW76OfS+E=;
+  b=HsdkepCf+LQIYqocB+bAi9asRiRnsxtL223zuIQG36b+Zng7CWGQUbLF
+   3X/9BORgtZH1FX5fueZipmOGIho/MJ7ZQjAHrPFyVmznq3d87WfmLBAXP
+   ZLcBKrqEo8555WJO7tYmatSpIr1/PK/l+K8Y6MNyqbqq7+bGaTesY1cJK
+   JKgVrPB6oYZhLgaryn/u7AVooY5qPZDM2+kunhM298LwRj+a4a9Xx+Mf8
+   RLE+hn4QQDK5C5s+Tzu+Yg16fkenAPFTk1R8sG9845CDJz74TMEb9H58G
+   ypLv1vidiZnfpUVMgB5NXog8x1sLsgV0R0xwfjuNqDLE813kdHvxxNGtI
+   Q==;
+X-CSE-ConnectionGUID: 1uRHmsC0S4qBygBCQADlzg==
+X-CSE-MsgGUID: kmckoH8RSnitY1QmgHXfhw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11898"; a="88948549"
+X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; 
+   d="scan'208";a="88948549"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2026 05:47:51 -0700
+X-CSE-ConnectionGUID: Ic2JHZ2uQV6hiLQWygpaEQ==
+X-CSE-MsgGUID: d6wLlAXvQS6/w5EN3wicBA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; 
+   d="scan'208";a="274504647"
+Received: from zhaoliu1-desk.sh.intel.com (HELO localhost) ([10.238.208.118])
+  by orviesa004.jf.intel.com with ESMTP; 07 Sep 2026 05:47:48 -0700
+Date: Mon, 7 Sep 2026 20:47:46 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>,
+	Chao Gao <chao.gao@intel.com>, Xin Li <xin@zytor.com>,
+	Sohil Mehta <sohil.mehta@intel.com>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [RFC 1/4] KVM: nVMX: Don't copy L2's CET state to L1 if VM-entry
+ didn't load it
+Message-ID: <ap6yciu1m7tz+NGv@intel.com>
+References: <20260904023105.1167376-1-zhao1.liu@intel.com>
+ <20260904023105.1167376-2-zhao1.liu@intel.com>
+ <apr02qOMhsZnXIlV@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] KVM: s390: Replace get_zeroed_page() with
- kzalloc() for the STHYI buffer
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-s390@vger.kernel.org
-References: <20260906-s390-kvm-v2-0-2cf6434e6646@kernel.org>
- <20260906-s390-kvm-v2-1-2cf6434e6646@kernel.org>
-Content-Language: en-US
-From: Janosch Frank <frankja@linux.ibm.com>
-Autocrypt: addr=frankja@linux.ibm.com; keydata=
- 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
-In-Reply-To: <20260906-s390-kvm-v2-1-2cf6434e6646@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=E7T9Y6dl c=1 sm=1 tr=0 ts=6a9eacac cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=kt7I_EveaTZZBW9BUTwA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA3MDEzMyBTYWx0ZWRfX+arVqquRJ31Y
- mcur1fAZHm1KhQjKFpEM4QT5CY3JEzwzs6kz7MSULeLhzhiSs9DY+//BC4oFwcl1Ly9dXRHVpou
- X6VXmXQl1ar9eUD5I4aNZJDx5wLN9EU=
-X-Proofpoint-ORIG-GUID: ARgD4si-5RsW5zhRgTmw5-dvPcupNIC9
-X-Proofpoint-GUID: ARgD4si-5RsW5zhRgTmw5-dvPcupNIC9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA3MDEzMyBTYWx0ZWRfXw0ZzwHzoN1qi
- RWFmUX6QSzbsv8a+zREfzUN//ueiMOlh8GTtu6CVVbstAx1PPj+NyO7Va5LqAb/35ad9NTw9Ejr
- JYEwwpM36tgawvzjDayZkpbiFzrPW3fsSRGYk4XI0WxCYKrTWT9NqE64PF1Z5GM7ITD1WlMx70d
- QAkzJk/Pu8X7lX1cf7mCxpJQYU/e2mXqhmlsLY+zQXggLjSlUZjnZeRvJGxcM7uQ1cEbf93TWVG
- CQC14GKgZsuiuBedkIOKtuaPwkOxql5o3bcK83h1YRtVUUBEmnrHUYlfMJ21TQA7rvD9ErvHsO6
- o3ePU05j5MjRRc9JOhC6HnY9cr7fyE5bay/xFwNWXdnt+pqgN6MKirXdZxGpnfoRVnY2Zyrgmsy
- kHMaUjEaThkeVKpu+FLb2v1PEXeNbMHjEfFNiLoXShRL8r5nhvOpkFIKvFAJlqpPNH95yerzK54
- Y55V0YFeE0oSYQHklpQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-07_03,2026-09-07_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 phishscore=0 spamscore=0 suspectscore=0 priorityscore=1501
- bulkscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609070133
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <apr02qOMhsZnXIlV@google.com>
 
-On 9/6/26 10:27 AM, Mike Rapoport (Microsoft) wrote:
-> handle_sthyi() allocates the buffer that receives the STHYI response
-> block before it is copied to the guest.
-> 
-> This buffer can be allocated with kmalloc() as there's nothing special
-> about it to go directly to the page allocator.
-> 
-> kmalloc() provides a better API that does not require ugly casts and
-> kfree() does not need to know the size of the freed object.
-> 
-> Performance difference between kmalloc() and __get_free_pages() is not
-> measurable as both allocators take an object/page from a per-CPU list for
-> fast path allocations.
-> 
-> For the slow path the performance is anyway determined by the amount of
-> reclaim involved rather than by what allocator is used.
-> 
-> The only goto in that function does not unwind anything, it merely skips
-> to the exit when the function code is invalid. Turn it into an early
-> return so that the buffer can be freed with __free(kfree).
-> 
-> Replace use of get_zeroed_page() with kzalloc() and free_page() with
-> kfree().
-> 
-> Assisted-by: copilot:claude-opus
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Yup, there's no alignment requirement anyway.
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+Hi Sean,
 
+Thanks for your feedback!
 
+On Fri, Sep 04, 2026 at 09:42:02AM -0700, Sean Christopherson wrote:
+> Date: Fri, 4 Sep 2026 09:42:02 -0700
+> From: Sean Christopherson <seanjc@google.com>
+> Subject: Re: [RFC 1/4] KVM: nVMX: Don't copy L2's CET state to L1 if
+>  VM-entry didn't load it
+> 
+> On Fri, Sep 04, 2026, Zhao Liu wrote:
+> > On a nested VM-exit that disables VM_EXIT_LOAD_CET_STATE, only copy L2's
+> > CET state from vmcs12 to vmcs01 if VM-entry really loaded that state,
+> > i.e. don't copy when VM-entry fails before loading guest state.
+> >
+> > The state, that L1 should see after a L2 VM-exit, depends on three
+> > things: the VM-exit load (host state) control, whether VM-entry loaded
+> > L2's state, and whether L2 ran.
+> 
+> No, it depends on four things.  The three things you listed, plus uarch-specific
+> ordering of checks and loads of guest state.  The SDM says:
+> 
+>   the following operations take place concurrently:
+>   
+>     (1) the guest-state area of the VMCS is checked to ensure that, after the
+>         VM entry completes, the state of the logical processor is consistent
+> 	with IA-32 and Intel 64 architectures;
+>     (2) processor state is loaded from the guest-state area or as specified by
+>         the VM-entry control fields; and (3) address-range monitoring is cleared.
+> 
+>   Because the checking and the loading occur concurrently, a failure may be
+>   discovered only after some state has been loaded. For this reason, the logical
+>   processor responds to such failures by loading state from the host-state area,
+>   as it would for a VM exit.
+> 
+> So KVM is well within its rights to load vmcs01 state from vmcs12 even on VM-Exit
+> due to a failed VM-Entry.  More at the very bottom (below the first diff).
 
-Looking at the kernel's sthyi.c there are a couple more locations we 
-could change:
+Yes, I agree. I think the specific way KVM handles guest state can also be
+considered "uarch-specific" and is not part of the ABI guarantee.
 
-I don't see a need for the syscall to allocate a page and the cache 
-doesn't need page allocation either. We should even be able to have them 
-byte aligned since they are never the destination for one of the 
-diagnose instructions, a kvzalloc should be fine if I didn't miss 
-something...
+> This works, but IMO is unnecessarily convoluted.  KVM doesn't need to manually
+> query vmcs12 entry controls, we can and should instead call sync_vmcs02_to_vmcs12()
+> in the failed VM-Entry path if vmcs02 has been prepared with vmcs12 state.  Then
+> the only thing that needs to be communicated to load_vmcs12_host_state() is
+> whether or not vmcs02 was prepared.  This would make KVM consistent with how it
+> handles guest state on failed VM-Entry VM-Exits that occur because of hardware's
+> consistency checks (KVM only validates a subset of guest state).
+> 
+> So I'm fairly certain it's just the below change (I also tweaked the comment about
+> CET state because it's not at all obvious why vmcs12 would hold the correct state).
 
+I tested this solution, and it passed the selftest in patch 4. Thanks!
 
-Diag224 needs a 4k aligned 31-bit physical address for some reason so 
-that needs GFP_DMA. diag204 is vmallocing anyway since subcode 7 uses 
-logical addresses.
+But when I think more deeply about what the sync_vmcs02_to_vmcs12()
+function actually does, I think there are still two points worth
+discussing:
+
+1. We call sync_vmcs02_to_vmcs12() along the vm-entry failure path; for
+   CET, this effectively overwrites the CET guest in vmcs12 with the
+   expected L2 CET state.
+
+   Per SDM 29.8, regarding VM-entry failure handling - it states:
+
+   Although this process resembles that of a VM exit, many steps taken
+   during a VM exit do not occur for these VM-entry failures:
+   • Most VM-exit information fields are not updated (see step 1 above).
+   • The valid bit in the injected-event identification field is not cleared.
+-> • The guest-state area is not modified.
+   • No MSRs are saved into the VM-exit MSR-store area.
+
+   The key point here I want to refer is that the guest state should
+   remain unchanged. And considering this case, when VM_ENTRY_LOAD_CET_STATE
+   is cleared, KVM tries to load L1's CET state to vmcs02 (vmcs01->vmcs02),
+   but sync_vmcs02_to_vmcs12() loads vmcs02 CET states back to vmcs12
+   (vmcs02->vmcs12), which changes the guest state and such vmcs12 guest
+   state is visible to L1 (so, the whole states transition path is:
+   vmcs01->vmcs02->vmcs12, the vmcs12 is changed!).
+
+2. I feel sync_vmcs02_to_vmcs12() might be doing too much. One issue is
+   it updates vmcs12->guest_activity_state based on vcpu->arch.mp_state,
+   However, the "correct" vcpu->arch.mp_state is set based on
+   vmcs12->guest_activity_state only after the VM-entry succeeds (see
+   nested_vmx_run). Therefore, in an extreme case (just code reading, not
+   tested yet), GUEST_ACTIVITY_HLT might be set to guest_activity_state,
+   but because the vm-entry fails, the value of vcpu->arch.mp_state is
+   not updated, so sync_vmcs02_to_vmcs12() re-calculates an incorrect
+   guest_activity_state.
+
+   Another issue is about vmcs12->guest_linear_address. Per SDM 29.8
+   again (the 1st point I listed above), guest_linear_address, as the
+   VM-exit information field, is not necessary to be updated.
+
+So, in short, I think sync_vmcs02_to_vmcs12() updates too much state,
+and it seems we shouldn't directly modify the guest state visible to L1
+(i.e., the guest state in vmcs12).
+
+>  	if (from_vmentry) {
+>  		failed_index = nested_vmx_load_msr(vcpu,
+>  						   vmcs12->vm_entry_msr_load_addr,
+> @@ -3758,6 +3762,9 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
+>  	 * 26.7 "VM-entry failures during or after loading guest state".
+>  	 */
+>  vmentry_fail_vmexit_guest_mode:
+> +	if (prepared_vmcs02)
+> +		sync_vmcs02_to_vmcs12(vcpu, vmcs12);
+
+Based on the two points mentioned above, does Option B (which I described
+in my cover letter) seem more reasonable? Instead of updatding almost all
+states to vmcs12, we can re-use pre_enter_* states:
+
+vmentry_fail_vmexit_guest_mode:
+     if (prepared_vmcs02)
+             vmcs_read_cet_state(vcpu, &vmx->nested.pre_vmenter_s_cet,
+				 &vmx->nested.pre_vmenter_ssp,
+				 &vmx->nested.pre_vmenter_ssp_tbl);
+
+...
+
+> -static void load_vmcs12_host_state(struct kvm_vcpu *vcpu,
+> -				   struct vmcs12 *vmcs12)
+> +static void load_vmcs12_host_state(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
+> +				   bool prepared_vmcs02)
+>  {
+>  	enum vm_entry_failure_code ignored;
+>  	struct kvm_segment seg;
+> @@ -4854,14 +4861,15 @@ static void load_vmcs12_host_state(struct kvm_vcpu *vcpu,
+>  		vmcs_write64(GUEST_BNDCFGS, 0);
+>  
+>  	/*
+> -	 * Load CET state from host state if VM_EXIT_LOAD_CET_STATE is set.
+> -	 * otherwise CET state should be retained across VM-exit, i.e.,
+> -	 * guest values should be propagated from vmcs12 to vmcs01.
+> +	 * If CET state should be retained across VM-exit, i.e. isn't loaded
+> +	 * from host state fields, and vmcs02 was prepared with guest state and
+> +	 * thus synchronized back to vmcs12 (CET state is unconditionally saved
+> +	 * on VM-Exit), then propagate the guest's values from vmcs12 to vmcs01.
+>  	 */
+>  	if (vmcs12->vm_exit_controls & VM_EXIT_LOAD_CET_STATE)
+>  		vmcs_write_cet_state(vcpu, vmcs12->host_s_cet, vmcs12->host_ssp,
+>  				     vmcs12->host_ssp_tbl);
+> -	else
+> +	else if (prepared_vmcs02)
+>  		vmcs_write_cet_state(vcpu, vmcs12->guest_s_cet, vmcs12->guest_ssp,
+>  				     vmcs12->guest_ssp_tbl);
+
+then update L1's state based on pre_vmenter_*, and keep vmcs12 guest
+states upchanged:
+
+    else if (prepared_vmcs02)
+		vmcs_write_cet_state(vcpu, vmx->nested.pre_vmenter_s_cet,
+				     vmx->nested.pre_vmenter_ssp,
+				     vmx->nested.pre_vmenter_ssp_tbl);
+
+In addition, in this way, pre_vmenter_* should also be synchronized on
+the normal exit path with sync_vmcs02_to_vmcs12().
+
+However, I’m still hesitant because this intermediate state seems too
+fragmented. But considering that vmcs12 is L1 visible — and shouldn’t
+be modified arbitrarily — maybe an intermediate state like this is
+necessary?
+
+Or maybe we should just go back to my original patch, i.e., Option A,
+which eliminates the intermediate state.
+
+> As for nitpicking the SDM, KVM doesn't *need* to wait until prepare_vmcs02()
+> completes cleanly, KVM just needs to guarantee that vmcs12 holds the correct state
+> if L2 state is loaded from vmcs12 on VM-Exit.  Because even on failure,
+> prepare_vmcs02() has already loaded (most) guest state into vmcs02.  So we could
+> sync vmcs02=>vmcs12 on any failure after switching to vmcs02, if we adjusted
+> prepare_vmcs02() to fully prepare vmcs02 before do its final consistency checks.
+> I.e. we could do the below on top.
+>
+> However, as much as I want to be pedantic on this point, I don't think we should
+> actually do the below.  I combed through the flows and can't find anything that
+> would result in loading the wrong L1 state if KVM mostly prepares vmcs02 but
+> doesn't do sync_vmcs02_to_vmcs12().  And marking vmcs02 as prepared if and only
+> if it's fully prepared is much more obviously correct.
+
+Yes, I think both approaches - whether to wait until prepare_vmcs02()
+completes cleanly or not - are consistent with the SDM; they can be
+viewed as differences in the KVM uarch implementation :-) What the user
+sees is the hardware state and the guest VMCS state as presented under
+a given load control combination.
+
+Thanks,
+Zhao
+
