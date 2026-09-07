@@ -1,107 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B56456DF3;
-	Mon,  7 Sep 2026 10:17:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F11C46D095;
+	Mon,  7 Sep 2026 10:50:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788776262; cv=none; b=gf7vqNu3CwCLSoxDfgk6vDbZjHO82306JdLUq0ozFboiXIYE3QNzKEZwXaDL8JCcRvQvHr4kgMhnq3woyRW5loZFj+FE6PwrMSUOHHHtDkLPzzwPrcHFnV6vr/b1uEeS3d8vCRrMMO2biD6HD+/pT/X6FN1YWq1u5jDago5SKRU=
+	t=1788778232; cv=none; b=p4KfL8i4fxOEZzxVGB+6bBTBEzu1Vvsn/wqhQ9xpwwz4nheT9Df9M6C1l6d/hWaxncOQhMbq7zgeAcf/BG7l7rRCgsAneistECyXiCgPgL7JPE3VwSkwzDwmbZibPKFeabeZkkevscoJTVRlEnKQPqFjUvunjb3m/pZhFBg1z5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788776262; c=relaxed/simple;
-	bh=42Rg7ViOfbYf+s905e2DzYbCDf3NmZg9ibc3fFkQGMo=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JB+ll9ckvP+nR1KI5/8mww/9BW6Hu7KXsl7H0Yk1vfflLOQHSBdMH31TgjGYJoYe8UEetxUGNbuIKKNlDLRKYX4LmyoHb3MW3Q9AuYrV7+C4G/bd04dhsndeH8sEJLCAtN4kHqh2+UhN25JdamVjCxko83y5PObo2YblV7kNKqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=chANldWt; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788778232; c=relaxed/simple;
+	bh=xg/R0kc9AI6X9zQv/IwFhI4qYI+4FJFHdQgK4QRxg+0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=sNJz2SonbKifWkI473wy48ka/UjqlYoQFVHV/Ue5GlJNtQFmMQ8RJrHGu3T/wmcNYjw48kcdOVGW/V00J07wPYRsEx9X6M8RJGomWCiI+sUNg/6xGfx0XOXX9uV8yDnB5UXq4RnaOXmtP9o2rzbNgWxzLFjHggWUVVRGszk5wOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=qfCcUQp+; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="chANldWt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 856E11F00A3A;
-	Mon,  7 Sep 2026 10:17:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788776257;
-	bh=1eDmgaL64aZNhjgY+oa0RV5ZbWl3LEZCRwly5ZERuYc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=chANldWtFUeraLfDSNgsqkUytU7uChUYpUWyKYA078IQkOLWzdkTUUA/b4r1Y6Ax4
-	 7x/CEm+YidDXkVdD6+3Ko2txpO5/q5jDaky+AgMuTz+7UzU12BX2m0czvBbj+UhHYp
-	 1PD+Tf2DWsCv48AxFhA+9KLPtoWCSzR9SPVWQ4lwYip2qqv2l7GrEkD+18x5lPjKHU
-	 CjhdgtrLGQTGcZ8f5CKQXpsZSBaqIQwQ2gF6eX3+fKLb/ClF61rQ72q7hGMkpGUl7m
-	 pYQjtIQVRXSBGBeSqXbEAYWgXZFQrwz3FgIrCHJSRNO5m6tasAXHsaDQ6FnkMQCS9d
-	 BpmuoHJvoK+6g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v17 5/7] firmware: arm_rmm: Activate the RMM
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Suzuki K Poulose" <suzuki.poulose@arm.com>
-Cc: "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org, "Marc Zyngier" <maz@kernel.org>, kvmarm@lists.linux.dev
-In-Reply-To: <20260907095942.1140734-6-suzuki.poulose@arm.com>
-References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
- <20260907095942.1140734-6-suzuki.poulose@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 07 Sep 2026 10:17:37 +0000
-Message-Id: <20260907101737.856E11F00A3A@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="qfCcUQp+"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B7F721477;
+	Mon,  7 Sep 2026 03:50:26 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 667B63F7B4;
+	Mon,  7 Sep 2026 03:50:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788778230; bh=xg/R0kc9AI6X9zQv/IwFhI4qYI+4FJFHdQgK4QRxg+0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qfCcUQp+s0PagXL636LsoBcv4v329fUXAZZ5PWD0ZSkVJuNDJiBSFUlfq5WKpgFbq
+	 2L+qd+tmn0dJjubGcbJQmuRJiXidEhXnm9E5B+b8z0fWll8uH/bAtllqUc+kSFmuDy
+	 Fc/z7vJghiT7UPA9iPncthAprKJmjS5JsQYlMApE=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Tian Zheng <zhengtian10@huawei.com>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	maz@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	yuzenghui@huawei.com,
+	wangzhou1@hisilicon.com,
+	yangjinqian1@huawei.com,
+	caijian11@h-partners.com,
+	liuyonglong@huawei.com,
+	yezhenyu2@huawei.com,
+	yubihong@huawei.com,
+	linuxarm@huawei.com,
+	joey.gouly@arm.com,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	seiden@linux.ibm.com,
+	suzuki.poulose@arm.com
+Subject: Re: [PATCH v4 3/6] KVM: arm64: Add auto DBM support for hardware dirty tracking
+Date: Mon,  7 Sep 2026 11:50:21 +0100
+Message-ID: <ap6W7bcSJ8I6lJup@LeoBrasDK>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <9bbb0a97-7e3a-4815-9619-fd72129d4878@huawei.com>
+References: <95f1ebd4-be04-4684-be68-388f752a1379@huawei.com> <anDCno9HdVI5UAls@LeoBrasDK> <2070002d-94aa-4a5b-8df1-e8e0f0fd265c@huawei.com> <anHIa5PDnF7r9EA4@LeoBrasDK> <3808f469-5403-4f2e-85f0-8c6ca13068bd@huawei.com> <anmvnclRTPS6an8e@LeoBrasDK> <aoh1vw0ZdWJf6T4q@LeoBrasDK> <ad48e628-d036-440e-955d-856c2539e568@huawei.com> <apcJ6bClZbX4BCpR@LeoBrasDK> <9bbb0a97-7e3a-4815-9619-fd72129d4878@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The macro `rmi_sro_memxfer_cmd` uses a large compound literal to=
- initialize the SRO state, forcing the compiler to allocate a ~2.2KB tempor=
-ary object on the stack.
---
+On Mon, Sep 07, 2026 at 11:17:27AM +0800, Tian Zheng wrote:
+> On 9/2/2026 1:22 AM, Leonardo Bras wrote:
+> > Hi Tian,
+> > 
+> > It was already done here, but I got sidetracked and forgot to send before.
+> > 
+> > https://lore.kernel.org/kvmarm/20260901171558.2674031-1-leo.bras@arm.com/
+> > 
+> > The relevant parts for the RO/RW -> RO/WC/WD conversion are in patches #1,
+> > #2 and #3.
+> > 
+> 
+> Hi, Leo,
+> 
+> Oh, awesome!
+> 
+> The RO/RW -> RO/WC/WD conversion is much clearer now.
+> 
+> Which means when dirty logging is not active, all pages that were
+> previously RW are now in the WD state.
 
-commit c773f8f03d602782404ec2f0103977a8f86f3b3e
-Author: Steven Price <steven.price@arm.com>
+Yes, that's how I thought the conversion would look simpler.
 
-firmware: arm_rmm: Activate the RMM
+> The WC state only appears when
+> dirty logging is actually enabled.
 
-Activate the RMM after the basic configuration. This is a memory transferri=
-ng,
-stateful operation.
+Correct! Note that for systems without enabled HAFDBS, both WC and RO will 
+behave exactly the same, faulting when memory is wrote to. That's why the 
+new helper keeps working :)
 
-> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rm=
-i.c
-> index 42c973c3a98bb..d969c8738efde 100644
-> --- a/drivers/firmware/arm_rmm/rmi.c
-> +++ b/drivers/firmware/arm_rmm/rmi.c
-[ ... ]
-> @@ -656,7 +657,19 @@ static int __init arm64_init_rmi(void)
->  	if (ret)
->  		return ret;
-> =20
-> -	return 0;
-> +	/* Activate the RMM */
-> +	sro =3D kmalloc_obj(*sro);
-> +	if (!sro)
-> +		return -ENOMEM;
-> +
-> +	ret =3D rmi_rmm_activate(sro);
+> 
+> This makes the state machine much more intuitive, and I think it aligns
+> well with Oliver's suggestion to decouple permission from dirty state at
+> the page table level.
 
-[Severity: Medium]
-Does expanding rmi_rmm_activate() here cause stack frame bloat in
-arm64_init_rmi()?
+Awesome!
 
-Looking at include/linux/arm-rmi-cmds.h, rmi_rmm_activate() calls the
-rmi_sro_memxfer_cmd() macro, which evaluates a large compound literal:
+> 
+> > > 
+> > > v5 already implements this, and I'm about to send it out shortly.
+> > > 
+> > 
+> > Oh, awesome!
+> > Please verify it against the patchset above, just in case :)
+> > 
+> > Thanks!
+> > Leo
+> > 
+> 
+> I'll review the patches in detail and verify v5 against your series.
 
-*__sro =3D (struct rmi_sro_state){ .regs =3D {__VA_ARGS__} };
+Just keep in mind that patch 5/5 is just there to try the idea, but it 
+could lay some important base for HDBSS. 
 
-This forces the compiler to allocate a ~2.2KB temporary object on the stack
-before copying it to the heap object, which defeats the purpose of the
-explicit heap allocation above. Does this risk exceeding the typical
-CONFIG_FRAME_WARN threshold of 2048 bytes on arm64 and lead to build
-warnings?
+> From what I've seen so far, performance with HDBSS looks great.
+> 
 
-> +	if (ret) {
-> +		pr_err("RMM activate failed\n");
-> +		ret =3D ret < 0 ? ret : -ENXIO;
-> +	}
-> +
-> +	kfree(sro);
-> +	return ret;
->  }
+Awesome!
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260907095942.1140=
-734-1-suzuki.poulose@arm.com?part=3D5
+Thanks,
+Leo
