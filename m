@@ -1,46 +1,46 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012049.outbound.protection.outlook.com [40.107.209.49])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010017.outbound.protection.outlook.com [52.101.201.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53165415F3A;
-	Mon,  7 Sep 2026 07:25:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E810341A928;
+	Mon,  7 Sep 2026 07:25:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.17
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788765940; cv=fail; b=nBpw4790nV9Qk81ZpTDTWji6eg/gm3qlkKJQGj2mauN4GdipIrDEITDPnuU/yV1TGzr7SYIJN11+IXqw5rLWZUYfO0KZBg94KepP6EdEnDM2AniLO3HH0qzOq/WMy+p1GLaO+fPHQR/FcmRQXwG+D4uvqm8EFhS5x8/IgSiLLsE=
+	t=1788765943; cv=fail; b=UZ3rN9P9Zs9bhTh3Y+sQboW+MvAg7ltfp/l8imqS1DatEgYjrRZdJdAttOBdy6cjy5/s5O3rGGk7JEaIuSPK04Qa64c5hCrsFM8rhqinOvmNpSfyBHFGuuUnoBjyCLtC7s8IloGqfZOsOAkYsju45a8WIvRyD0Y9G/YCAtOzvwM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788765940; c=relaxed/simple;
-	bh=wJGzYlmfGqp8k2emw7SOgEW9PK15w8sBBTkuozEozyA=;
+	s=arc-20240116; t=1788765943; c=relaxed/simple;
+	bh=g8xA/CeHWn0fR5gMmhuAeudgM8redQtek7htLUdbMYk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=X+2/iLHfhiDAFkJqFCsy5rvaCBKCJN2j+jFyFfiUc8zo3C2b6Z7EL9vEArtnMHuc1raC1bkxA+wd+f1L29mwxLkAk4pJwSdCuEC7R3/fncALQ1xDKL1TfWC44eH5MS/JOF38WSbcLjqZLmX2qCdAe2OnaTrv5UA+0PREspFI8Ik=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=kJ/SYlE9; arc=fail smtp.client-ip=40.107.209.49
+	 In-Reply-To:To:CC; b=M5aOvXiktz9aM7XtixCqGMHmUOTq7ADJLlbqtpdbx9/FhNOuIwoeHraLhejpslCOScoZ/AyvsW3WHOOf+bk1Gj821ALPy0jDMcV/N9rBVLjGfq6yI8UlrwONJYmFSjJVxXSHUdn7QmvrBNYWuD6in+Y7l9bxMAsGX/n+q6587ic=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0LOVnNTT; arc=fail smtp.client-ip=52.101.201.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="kJ/SYlE9"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0LOVnNTT"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NfrvBnC10GMNfboxw3YAzVDqawrx3d5sRlsmdOwvVjvMKdGkY+zCUDYg/10NU7XdSnb/fCKAeQD8F8wpuMKQ4WdAjW6IwH9m9wN2CTXbXbea9Lrnaxmb8kMBcnMUNDblWnj6Eut1TW3BodisOOrET2Zhp86lL0UX8e0POaNRBIBWFd9itBGHQ3jH5joYzk+mFGih/Y92lzickOvY5dYFYXkqn0zRhNgDU9ibnBBVcYvk7YkrfhQWieqxuxgngONailjoHD0RrAflE/3yYUivXxZACawHUI03G/y8ZDbzi+OBvmlxAp0DHOONU/8fjQvd5bomOmwcXGQSXI4n9c+IXw==
+ b=g9J+gzk7zB/gGQMXiVaf4grf//7+oDe1z+Et0qYC5DGEBsohX66dQ0C9+qqfsf2ioEVdA/KlBVFQYJjYctNewBDrAW7+ekz9XRvYwGg3kNzuq8/J1SbhZ3enEJyFqOnL5pTf1oGsOrdaaLr8AeZ+00h6h61XX/Ywbv9YUO0IaI2OLvzvj2+qk2GJvHSuLPeRn7lo1okdc5lpa2W9P762CboyM7LvxYH1s5zxqVbkbfFy5TRUu+xZ189Flf0K4G1jySkkeoMV2jlbnP3/tLIP2FaxASo3QS1EPs9MH4UGPMJbBWMZC5/DP9+p4Y1CBTlTFoaa6Em3VK3AMvIytUUvFw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8+VJb8KAWLEU0qNIxxBZUOcoOZcSuH3xqDz8x45AsIo=;
- b=vbnm+3oxP3daOcjfy5NNQ9vgANYFfkeOQJZF8+daQFxhWdyEr7ZXrdIu2O/ScAJUpoDfLcYhSt03iDAuIM1B4whxoKp3W+hUZVwu0g6mrP+UdlVrJnXy5CKSkUmK+Q6rjZh+BApwtk6hboaea9aYD/e/xxKZJfYSpJpy/IFYHguc7H/iFIAG+0J0pWVrB7y2xw+s1xZnSlZLV8jYVj9NwFXHuRb1XO0WD4Sb6NfFG7tgbPM137SW2dl8Z7uQ0dFgO5+rWsBEpJ8KEvcAXxknJ8pOYvvpOQSVP1lIQwPZimfzxZx5oPVyewm3hTt7Td/sKZLs3v5X7OqKc3vuWnzl4w==
+ bh=l4K3bxeZnSamcBpFP4KaOX4+XQnEc650cp29dSj74Xo=;
+ b=gfzBHxTOVgfmA9TRBvSstKa+BhEvq7ninCiEFQapjeF3NYuLXOVxPQE8HDmjx946O1ckbnx82cjiUJT/1L5ZW0QRgd01InAgeTlvpd1t2RHj8buZgwfQp8zx6uOrTZSK1vLmdctdzBWNpNkl23MDNZeqNpj6dOysITeWKxyGoL1H8VcVtyI5vYVcDNUnMi5ik8hgNlmZwq0uuarINbDde9JtP1/AqT8eB/KkGVfd+sjpN6cnkw7atbkuXZ7Q+W4PWb7z1ogjA7vywuD713/cOJN4NB/OEdksQ3aEMvhaQiqn3fiFjPNygHLbwkiOvtKlZDAT4nzgY8q6tU1OLquDcg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8+VJb8KAWLEU0qNIxxBZUOcoOZcSuH3xqDz8x45AsIo=;
- b=kJ/SYlE9Iq+fwjMSRA9zFq/VUMAc+EvkoYIzAseip3g/7mV4z6zCOXZUEMvTF7YHfJjihzar5VoQNj3v7fCA7O955L+diW5hsOGBx2fJr1MQ5yZQRAhPXPmTiZYpN2m9CjJFJ25RVO6OwtEDiIFGjhBV4HAjl15wbyeG15cxpJs=
-Received: from MN2PR11CA0028.namprd11.prod.outlook.com (2603:10b6:208:23b::33)
- by SA5PPF0EB7D076B.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8c5) with
+ bh=l4K3bxeZnSamcBpFP4KaOX4+XQnEc650cp29dSj74Xo=;
+ b=0LOVnNTTuW01PCL8QPgQrgOdtTWvLizl/9NE2PW8f+ovlYRCjkmCQzVuKzPDZexDiX7K4JYAJEFOnV/SFHrSIbazjakcNPYlL55Wdoh0EZEwxtYOUSULcYrtI+t+B6Ux47rjFt9ybbQC2NJsOaxN4KQlBhnfGyNAR7NLCesZkR0=
+Received: from IA1P220CA0016.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:464::10)
+ by LV2PR12MB999071.namprd12.prod.outlook.com (2603:10b6:408:352::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Mon, 7 Sep
- 2026 07:25:35 +0000
-Received: from BN3PEPF00022BBF.namprd04.prod.outlook.com
- (2603:10b6:208:23b:cafe::4b) by MN2PR11CA0028.outlook.office365.com
- (2603:10b6:208:23b::33) with Microsoft SMTP Server (version=TLS1_3,
+ 2026 07:25:38 +0000
+Received: from BN3PEPF00022BBC.namprd04.prod.outlook.com
+ (2603:10b6:208:464:cafe::7c) by IA1P220CA0016.outlook.office365.com
+ (2603:10b6:208:464::10) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.15 via Frontend Transport; Mon, 7
- Sep 2026 07:25:35 +0000
+ Sep 2026 07:25:38 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,17 +48,17 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN3PEPF00022BBF.mail.protection.outlook.com (10.167.248.121) with Microsoft
+ BN3PEPF00022BBC.mail.protection.outlook.com (10.167.248.118) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.406.5 via Frontend Transport; Mon, 7 Sep 2026 07:25:35 +0000
+ 15.21.406.5 via Frontend Transport; Mon, 7 Sep 2026 07:25:38 +0000
 Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Mon, 7 Sep
- 2026 02:25:31 -0500
+ 2026 02:25:35 -0500
 From: Shivank Garg <shivankg@amd.com>
-Date: Mon, 7 Sep 2026 07:24:58 +0000
-Subject: [PATCH v3 2/4] KVM: selftests: Use an allowed memory node in
- test_mbind()
+Date: Mon, 7 Sep 2026 07:24:59 +0000
+Subject: [PATCH v3 3/4] KVM: selftests: Use allowed memory nodes in
+ test_numa_allocation()
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -67,7 +67,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260907-gmem-selftests-fix-v3-2-7a4be5c1cc8a@amd.com>
+Message-ID: <20260907-gmem-selftests-fix-v3-3-7a4be5c1cc8a@amd.com>
 References: <20260907-gmem-selftests-fix-v3-0-7a4be5c1cc8a@amd.com>
 In-Reply-To: <20260907-gmem-selftests-fix-v3-0-7a4be5c1cc8a@amd.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
@@ -78,77 +78,83 @@ To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
 CC: <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, Shivank Garg <shivankg@amd.com>
 X-Mailer: b4 0.15-dev-47d62
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788765924; l=1286;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788765924; l=1507;
  i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
- bh=wJGzYlmfGqp8k2emw7SOgEW9PK15w8sBBTkuozEozyA=;
- b=xerR8Gg1d1IbkUCjOgfZDWyolx05ImS9kdmxDAIBJ9Q3M238EIU3/G2HSc8gekQpMuHyg4LdV
- ePF9TvLL8tSDfpkLkAZc46fUUJEfmB2j4/1GkECD0HqjpG0vFXOv/x6
+ bh=g8xA/CeHWn0fR5gMmhuAeudgM8redQtek7htLUdbMYk=;
+ b=SDQLdlg1+DTikZDZ4zRvSauz7xY4G419iKJBs4hXVuP24dXo67xKHBTwP2rJhY1lYLBOcRsF+
+ +IJ3OrzIUVOAyAdGAK9vtrnkkcaf8eJGbKbgLSB1boyPKGkuSupjbjd
 X-Developer-Key: i=shivankg@amd.com; a=ed25519;
  pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
 X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF00022BBF:EE_|SA5PPF0EB7D076B:EE_
-X-MS-Office365-Filtering-Correlation-Id: 10696e89-5ffc-4590-eee9-08df0cb1355d
+X-MS-TrafficTypeDiagnostic: BN3PEPF00022BBC:EE_|LV2PR12MB999071:EE_
+X-MS-Office365-Filtering-Correlation-Id: a0f8001d-4dd3-4ac2-ec97-08df0cb13759
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|1800799024|7416014|376014|82310400026|23010399003|6133799003|10067099003|11063799006|56012099006|18002099003|22082099003;
+	BCL:0;ARA:13230040|376014|7416014|82310400026|36860700016|23010399003|1800799024|6133799003|10067099003|56012099006|11063799006|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	8zgiaW8ZbTv8DM34LaPED9PJRqqM7JCtCIy9JaUDd/nPzgioIa3erb27mlcy1ShdmRyxdA9vqc9NTqPPcAOmlVww1uLrKnVgjHlSAYcwANNEOBEdZrZUbDWXVNKT6cua/eYJcnD7IvFVvyuC9in+jjY3R5f0jqn/jPHk/coeG9bswKuV1lnLbf+xxdgq1D9orc+9ecttwzygq26cdTKKzjBQ7JBbA243nKk8F4TywzuKzyFm7Q6hPnAJfwPqNzk/+JSIT98U37gZcxXixxBM70O422jbR+WrYe5h9OfHEjoN1T/Eyfv38Rb2cYi6UNu+xCbJks9+hoLNAg19T18HuwT56zJg226KKZTTZpuC8F7YHCIH0k/azYokeFZlIUUAVIfHBKTW92eJA8KqKkphkesU1rjhFY+cxN0S6YBgp2K28I7g0uuWgwYnZd+7vC43exUAPdZZGis/aBn6HlgSLvbdWc3tGP7OQDxnsnWYlUoKLF4AOJr22eO+HEkBRHsplPQij+/5LyexnU0+8KdhsQ4Rg7/OLPZZ3Ra6CyvdGb4uf5LqzHtLvYnxloN6312d7EGeEoMEcfLWwfSkXNLz8p8ivQ8guQFGASMKxQQVZ2k4GwCRY01MuV72ohun3QTWld8WOdEXhaPx2iAq2ZGGtTEBvjnV9QWxyvDLmqYe4hZRGhtIZYCFko4ZZf7PCZjAV0WL2GyCSCzq2FNQu0AEdA==
+	vwMVea0oZEX39Xvir3yLU2nhZ87W9gFBpV1BE38QRVq9fG16B3bd3jR6YWlAPWgqEpTceS7xuYokw5AuFLTpi4TSVT5Jzp6TipzZ8K8oI0l7Ad6Gc3iKWS2o2Y1MZJy+JuFu5JyRJgnwq/5IUDB89LHaXi7brv9NJfb2mSk9sLR4t0MgrTi//7VinYXhCjzertWth3ijibUuL90MAlnpCxu/zdpYasEmyONbe9yr5RXmissOl2sHSZ2fiIU76GD3f7DHYEDD4B477COCJwAQVsKv9J3TBXVPkM7sM+6AfwED+TyWOV/CC+QbbMfSqNllpf9tk06YyX+bS9fsCWo7WP2KtviCfmhzOXfpcJdFmd3MTkT+0RS5O4JErW3SOjJqAtpDt0ZEmLqYPnVSOBQ9QTdNEwPMHcdfWhRvQF414tFT72091Hy7drlvuLdZHtJVoXkTPxhH9feAHOyMspstN/5xTxVSqox88HBWvJNQ4bYSwwKgfPqcmNtdLctlS8mDALvxiOHHHa9p9kl4Ft8GrngYugktOS6QS71zg7bRm21+nA1x5Qe1ykIMiVHUG3b5tVv7EmpyGlcvjpWbTkqgWmJcsSMJvYi20SxHuoINZEk7qTKcQd0Njq/8gtWv/TFEhW5Oi+wT2mcy70vaOkBeRzaiLn6f+G8KvBwO9ehu+VZJ6p57Xa11zBnrTbe2oN6Ckrx4Xg7EUbNLquJcdgMhEA==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(7416014)(376014)(82310400026)(23010399003)(6133799003)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(36860700016)(23010399003)(1800799024)(6133799003)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	w+8aWihI/4aCZlNXYZ4+EAbMToMDzvj4+qoeKe1EhO/yuvvNwc+bUgy7iMhG156LMaOyYjqOOfXI2NDMeAq6IuKSdq1pzMHaT8KG201rv0kcpoqYJ0THOd9ezs70xqoQVRsaRb+sMxAh9mNhPCApTjj/t89+tk/Ix3IIKOoXx7t/N2MH727Ttj3354xKLhzghh7WyrQraumSBijFGXxtuqdcc3LyMYHDmlh0JbT3qh0+a5H5S2Leqw5ZbzBpk2HSOe9EyXnRBvLOzDoLaj7NbLVYuQvczBw2l9MGWeOuCjfhr8b+Ru1bvl4p9SzxiNQKj+IKQhGFOxdCrHgEc8zQ2ZqPPSXnxOt9pZXuaGspXQEnhm+4oB1t7XAzK8mvrtirZT3skdCMLE0cUoMTZtCgi2kKyGYHJqT9ZWbN8BKcMpC5tANo5n6cx1h1DvCb5UiO
+	KJFld7h6ltFN1UyR9xzFOEd565oxYw26iFHN6n89my1NXVgalcl4R2haQXE1yo08ZozdaZt1hYPNRAg1kfMhrWxmyCnJn0F/83vCJ4OKdHWiuqcYHoOjrY9PPh9Uit2csHHTlcmpzrrXasSNbpvoAJr0e9CZu5V2B02aKnAUsRUH6vmw+wib4WjRvNiko26ml3aICWzcmIW8mlK5A7w5lauEPYWuAJvTMwMcxRJzu6suiHQY938Glv+5GwAPbaYtl+WlOVG8ciGqWXj7UoyLTGX4X5JGdjUsNHsE21er9potZTrUzZGUha1dQ62eKLVBTsrWPcEFFu+5oxYd9M1RPzmd6mzlXIro9m5siTcQeLIqdOSkqIpA436zgwZzBSTpQywKjJueijDSi0geBT9AK9OFp0dR68yRAkJB/CqN+sgfTDGiGu0XRbotKjqP4Km6
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2026 07:25:35.3581
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2026 07:25:38.6860
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 10696e89-5ffc-4590-eee9-08df0cb1355d
+X-MS-Exchange-CrossTenant-Network-Message-Id: a0f8001d-4dd3-4ac2-ec97-08df0cb13759
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF00022BBF.namprd04.prod.outlook.com
+	BN3PEPF00022BBC.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF0EB7D076B
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB999071
 
-test_mbind() hardcodes node 0 and skips the test unless sysfs reports
-more than one NUMA node.  This can fail if node 0 has no memory or is
-excluded by the task's cpuset.
+test_numa_allocation() assumes that nodes 0 and 1 exist and are usable.
+That is not guaranteed on systems with sparse or memoryless nodes, or
+when a cpuset restricts the task.
 
-Pick a node from MPOL_F_MEMS_ALLOWED instead.  The test only needs one
-node, so allow it to run on single-node systems too.
+Pick two nodes from MPOL_F_MEMS_ALLOWED and use MAXNODE_FOR_MASK() when
+passing the masks to mbind().  Keep the two-node requirement because the
+test verifies that pages are allocated on different nodes.
 
 Signed-off-by: Shivank Garg <shivankg@amd.com>
 ---
- tools/testing/selftests/kvm/guest_memfd_test.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kvm/guest_memfd_test.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index b3bd03167ba8..ea8e38064e83 100644
+index ea8e38064e83..cc5abca1adae 100644
 --- a/tools/testing/selftests/kvm/guest_memfd_test.c
 +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -81,15 +81,16 @@ static void test_mbind(int fd, size_t total_size)
- 	unsigned long nodemask = 0;
- 	unsigned long maxnode = MAXNODE_FOR_MASK(nodemask);
- 	unsigned long bind_nodemask;
+@@ -127,18 +127,19 @@ static void test_mbind(int fd, size_t total_size)
+ static void test_numa_allocation(int fd, size_t total_size)
+ {
+ 	unsigned long node0_mask, node1_mask;
+-	unsigned long maxnode = 8;
++	unsigned long maxnode = MAXNODE_FOR_MASK(node0_mask);
 +	unsigned long mems_allowed;
- 	int policy;
+ 	int nid0, nid1;
+ 	void *pages[4];
+ 	int status[4];
  	char *mem;
- 	int nid;
- 	int ret;
+ 	int i;
  
 -	if (!is_multi_numa_node_system())
-+	if (!kvm_get_numa_memory_nodes(&mems_allowed))
++	if (kvm_get_numa_memory_nodes(&mems_allowed) < 2)
  		return;
  
--	nid = 0;
-+	nid = kvm_get_next_numa_node(mems_allowed, -1);
- 	bind_nodemask = BIT(nid);
+-	nid0 = 0;
+-	nid1 = 1;
++	nid0 = kvm_get_next_numa_node(mems_allowed, -1);
++	nid1 = kvm_get_next_numa_node(mems_allowed, nid0);
+ 	node0_mask = BIT(nid0);
+ 	node1_mask = BIT(nid1);
  
- 	mem = kvm_mmap(total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd);
 
 -- 
 2.43.0
