@@ -1,86 +1,77 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa2.hc1455-7.c3s2.iphmx.com (esa2.hc1455-7.c3s2.iphmx.com [207.54.90.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBA53C5DBA
-	for <kvm@vger.kernel.org>; Mon,  7 Sep 2026 21:23:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A98282F01;
+	Mon,  7 Sep 2026 21:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.54.90.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788816204; cv=none; b=jIHx+QieFozGki6sPEvA1N2eIU2jP4D+KfeXlGlPp/9N/7FZdmQGrA80JRT/UW2CaeLq5cKGv0ShhrpWAsuR6PQT8pOnxpSOibMTgAkGRId0GuJ3rdlmroM8au1kH8uqQAXVKG+RAffEW82l1npIOk4bQUI+UAtx27xldv73QxI=
+	t=1788816366; cv=none; b=siN78qMMiMXKUyxMO5rdgJzVGMQIjpofcYlOLHoWSFImjtkAXoC8elGcYVW4lKFs5wcgSA3COi6hUImKgpm8oJcj4mYdb2w0+nEKCCSu48Hy23QlMsB/PC0G1TxV+YxeoveHZsfNjkaO80KwQFyJJr2TUxii/BfuCxuSFbvRciY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788816204; c=relaxed/simple;
-	bh=Gzcz3Zkq6mIgF9nN+/RZpdn2G6QVcg2SErOL9iM3Lwo=;
+	s=arc-20240116; t=1788816366; c=relaxed/simple;
+	bh=sP6TqseWnq6F/rMwkPdxmagtSOyUxPFFpE+5Nu3dPv0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k/cTtrO03d/LeH8Hx1Ums9GxXjKlsQDKvuhQHFLUm17YH8Z7nOuKUE9UGcc+wjjZCVSKqofKje1NjuSNn63yTTGZLonleZrMPHHjtYjcjC+p+IuuIfBAdzGkSVKtNCGUAF8RY1Q00ct1bswdmW1CJopSyowHsQ7MfEldc+1PLQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dB90dpFH; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=tWsQjkTqteSyAHqA9S806JyGAtcEVme+6aSzdA+XVj2Fz15VNvh5Xcu9BtA4uXjRRTe7K4BEwm2ByTMXiItfjPVTVnXrWQPIchOtBPvsANHQPEBDTAu7amGjlTCdxPcSylsIhOIxoVdZywWqCwwOoMVSci7QeAkJQu+lngRzG6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=rYq81/pX; arc=none smtp.client-ip=207.54.90.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dB90dpFH"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4843efcbdb2so2139037f8f.2
-        for <kvm@vger.kernel.org>; Mon, 07 Sep 2026 14:23:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788816201; x=1789421001; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zj4alWZ0+Z5ViHZ+ZCYKHStoDMFk30/0JNVi4/sJSpo=;
-        b=dB90dpFHKckqTrmJjkDD5EUcDaUVt1xE4+JqKWmDR3ffIvrgUgRi0TAZJOpGZIijr3
-         r/gJhz7hTnDw0qeQtUWHPCJyMvEL5GJYheAVws5eMPQ+/xr0LhAuuMOsXifE3Ev3aN7p
-         yr25BWL5Y0XVgpuO5hLdUZU7udToKuVTxl0DxeCYuTOPpeqADHaqXa4AOQLR1GKxqPPE
-         mIaJEwlUqTmTEvBkpxsc/uOL8JUdoFiMsBzIKmjG2zLo2S04A396WnRs+D19swYmLDHr
-         s9E/nQut36rJRvxtRVcaoXwRTSnjMNWeIQYjAE5zGTXq2mGfq/awfBiz04y+azvUSlL3
-         Siag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788816201; x=1789421001;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zj4alWZ0+Z5ViHZ+ZCYKHStoDMFk30/0JNVi4/sJSpo=;
-        b=pGgTY+ZXe71ahshwzzojnNYcu0ntTDT4KHcLe+LGEbABaG9wWUX4ci1WOMEfhqMr2h
-         5mVRrIOJ7nteb5oPOMxiHzXpJf4Iz4fPrmrRi17fPCRcLEe7O2mF5++R7qTF+xpyn9aD
-         wjo8A86NWBGfZ0z9/vVuekZjOkHB2I7NfnnQfFFLQDu9t0Z0daIky38p/PchJnTeyAmN
-         ulCuo3WTATCshWBbKX/Qe2cSGD3lKhq9/40/gjh5Gi2rtfD2lRybCh/j92V12fx0CZex
-         ydoCzQe+oFCGrTHRei+hm7770H2GzCGUjCgqgSfWQGy2OUzQHjm06zVPnVRys9qnfkcF
-         Da/A==
-X-Forwarded-Encrypted: i=1; AKwUvBx0qrs2rFUXD2Rjfi5oAR5LyQvHWfknRAsGRF/7fAU9SkcVFGjXGVY1uULL5N4ngBWWhFU=@vger.kernel.org
-X-Gm-Message-State: AFuF++kEOydonHsiChOylLsrx4Rtt13m7wFURdJA+f8XRsf9UjR3Q5M4
-	YTKB8Mky04TfcNP8Vc9dgxMWNj8+Agbfit24iWFH+76sf1Wo/W+B00jh
-X-Gm-Gg: AYBFou0nkueM1JDftAx4TxL3YH0/SxfAs8IKqaxO758Lp8VMZTFd3romEOaKRJ/2dZM
-	K5NghtxHt4/Lv+fzNKxNpGkSz14up3hZUFzQy1nCJpTVv5tZEDRPcW0zLE7Jpu/5FC/HLMNm8+R
-	WPLK6rb2vNO8KUKBNFpfNXs52OXqZBrULU/4QM2EIVXQm9gb1ke2xkI3u06XLPqww9MX5sQN0d/
-	V++0ZhBssCaJxWWNsYYwNMBw343B9FXXIDYOv+eI5R75SOfg2Dttl5+Hx76vXQxiLhhKpLGXJJ0
-	KnCe/JfeSzkMO2BxRShJ/cBjzOvAHZBMwSXZkoJugxxkJoMyhImXLKTe6vYize2p24ja1MKm7Lq
-	G/fk+OHGRt4p4C9Cxzd4+mMoEkuBhI7SL9pMfK843OIQEK6JDCfVo3cqqs5SIsCyCszIQbbW7hg
-	SOW1DNIauBXuONilEBW74HIRa8qcphh350uahJ5x1TZUAaicDWrhIaiZ6IM2e442bF8QRg3Wo7w
-	VBmqWOsvn2sBxDj5c/oGAY5GgYBJx51Mj62wk67VVXN9LrKYTaD4NgJapcdFSdp+dtK/6Xafj1K
-	1HIjOdvG/LHauvcHr05TLqC4f1jWudbpNLXPMCPWO6B9MHm96oxiHssxb6THbaHUBz3BjGrn9Nb
-	opLPBRWY3E4A=
-X-Received: by 2002:a05:6000:4a0a:b0:484:3310:f39b with SMTP id ffacd0b85a97d-485872e05f9mr26354952f8f.28.1788816201067;
-        Mon, 07 Sep 2026 14:23:21 -0700 (PDT)
-Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-b0c9-3601-cdce-ba4b-d0e3-dede.310.pool.telefonica.de. [2a02:3100:b0c9:3601:cdce:ba4b:d0e3:dede])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4858ac2b4cdsm29964718f8f.16.2026.09.07.14.23.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 14:23:20 -0700 (PDT)
-Date: Mon, 7 Sep 2026 23:23:19 +0200
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowangio@gmail.com>, Gerd Hoffmann <kraxel@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rusty Russell <rusty@rustcorp.com.au>, 
-	Pawel Moll <pawel.moll@arm.com>, Cornelia Huck <cohuck@redhat.com>, 
-	Halil Pasic <pasic@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, 
-	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Hans de Goede <hansg@kernel.org>, 
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, Vadim Pasternak <vadimp@nvidia.com>, 
-	Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	virtualization@lists.linux.dev, linux-input@vger.kernel.org, linux-s390@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-um@lists.infradead.org, 
-	platform-driver-x86@vger.kernel.org, linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] virtio: synchronize callbacks during device reset
-Message-ID: <ap8rCQII9fASEosZ@gmail.com>
-References: <20260905152059.89560-1-kmehltretter@gmail.com>
- <20260907091033-mutt-send-email-mst@kernel.org>
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="rYq81/pX"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1788816369; x=1820352369;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=sP6TqseWnq6F/rMwkPdxmagtSOyUxPFFpE+5Nu3dPv0=;
+  b=rYq81/pX69B7Jyk5b/fWETw+RjKEUTLK3FXBdSCPksFZ2zsrM4yIUbOc
+   bBspliHdhx1mtdrl59Vtow7gCONuBP88Zw71TeLb9gm3dvRhPu6jpX7g2
+   IR+3NIKMKXRKaULxPgwrwNBNyGtzWf9xC5/uTK8Mh/fnJBLuv76vE1F1i
+   YJkH3hAkYlfTGLm9tGbM6R9unGQ5gJwZPJFgkKtuPWneDB4diFdXgeZXg
+   RaRfMSDbTU10wR0c/s9FZC+CFXaNBs6y5Jy0QmhMXll4eQeyQnVAbQ2TP
+   53pAHvJctMtiphi0NVY8GowPGnW4r/eVCqQAnve70XY+b/8D2DX39QiPk
+   Q==;
+X-CSE-ConnectionGUID: o1TNUDJzT3q7J2JVHWmp7A==
+X-CSE-MsgGUID: CgO76uCQRM+Xb/Nh7rh+nA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="254238655"
+X-IronPort-AV: E=Sophos;i="6.25,268,1779116400"; 
+   d="scan'208";a="254238655"
+Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
+  by esa2.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2026 06:24:58 +0900
+Received: from az2uksmgm3.o.css.fujitsu.com (unknown [10.151.22.200])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id 06CBF82040C;
+	Mon,  7 Sep 2026 21:24:54 +0000 (UTC)
+Received: from az2uksmom1.o.css.fujitsu.com (unknown [10.151.22.202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmgm3.o.css.fujitsu.com (Postfix) with ESMTPS id AAD62C00771;
+	Mon,  7 Sep 2026 21:24:53 +0000 (UTC)
+Received: from sm-arm-grace07 (unknown [10.124.178.20])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmom1.o.css.fujitsu.com (Postfix) with ESMTPS id 641E81800170;
+	Mon,  7 Sep 2026 21:24:48 +0000 (UTC)
+Date: Tue, 8 Sep 2026 06:24:45 +0900
+From: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Takayuki Okamoto <tokamoto@fujitsu.com>
+Subject: Re: [PATCH 2/2] KVM: selftests: arm64: Add 52-bit VA guest modes
+Message-ID: <ap8rnTINMJQqfYGL@sm-arm-grace07>
+References: <20260826-arm64-52bit-va-v1-0-14ec98211363@fujitsu.com>
+ <20260826-arm64-52bit-va-v1-2-14ec98211363@fujitsu.com>
+ <CA+EHjTyJpPd8HjaWBw0V6pHF9UR0w2UFmaKDe7U3O+Sj8wiyPg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -89,18 +80,83 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260907091033-mutt-send-email-mst@kernel.org>
+In-Reply-To: <CA+EHjTyJpPd8HjaWBw0V6pHF9UR0w2UFmaKDe7U3O+Sj8wiyPg@mail.gmail.com>
 
-On Mon, Sep 07, 2026 at 09:13:28AM +0100, Michael S. Tsirkin wrote:
-> got all 3 patches now. it's a good start, thanks, but they need
-> a bit more work, in particular addressing sashiko comments.
-> I'd also prefer patch 1 to be split: moving code from pci to core
-> is separate from ccw fixes.
+Hi Fuad,
+On Fri, Sep 04, 2026 at 09:45:30AM +0100, Fuad Tabba wrote:
+> Hi Itaru,
 > 
-> Pls write or at least edit commit log messages yourself,
-> after reviewing Documentation/process/coding-assistants.rst
+> On Tue, 25 Aug 2026 at 22:18, Itaru Kitayama <itaru.kitayama@fujitsu.com> wrote:
+> ...
+> > diff --git a/tools/testing/selftests/kvm/lib/arm64/processor.c b/tools/testing/selftests/kvm/lib/arm64/processor.c
+> > index 9108e14a9b5b..bcdf670c9eb8 100644
+> > --- a/tools/testing/selftests/kvm/lib/arm64/processor.c
+> > +++ b/tools/testing/selftests/kvm/lib/arm64/processor.c
+> > @@ -46,7 +46,7 @@ static u64 pud_index(struct kvm_vm *vm, gva_t gva)
+> >         u64 mask = (1UL << (vm->page_shift - 3)) - 1;
+> >
+> >         TEST_ASSERT(vm->mmu.pgtable_levels >= 4,
+> > -                   "Mode %d does not have at least 4 page table levels",
+> > +                   "Mode %d does not have >= 4 page table levels",
 > 
+> Patch 1 added this string one commit earlier. Could it go in with the
+> final wording there?
 
-Thank you for the review and feedback. I'll work on a v2 now.
+Surely, will fix in v2.
 
-Karl
+> 
+> ...
+> 
+> > @@ -298,10 +304,14 @@ struct kvm_vm *____vm_create(struct vm_shape shape)
+> >
+> >         /* Setup mode specific traits. */
+> >         switch (vm->mode) {
+> > +       case VM_MODE_P52V52_4K:
+> > +               vm->mmu.pgtable_levels = 5;
+> > +               break;
+> 
+> This is now the deepest mode, so page_fault_test.c's sizing is stale:
+> 
+>    * VM_MODE_P48V48_4K is the mode with most PT pages; let's use
+>    * twice that just in case.
+>   pt_size = 26 * guest_page_size;
+> 
+> The margin still covers it. Could pt_size come from vm->mmu.pgtable_levels?
+
+I'm not the author of the page_fault_test.c for arm64, but so I'm
+guessing here; per the comment in the test, I dont think total number of
+levels determines pt_size, rather by the addresses prepared for the
+test.
+
+This stress test does not require high virtual addresses, though should
+we update the comment while at it?
+
+Thanks,
+Itaru.
+
+> 
+> Cheers,
+> /fuad
+> 
+> 
+> >         case VM_MODE_P52V48_4K:
+> >                 vm->mmu.pgtable_levels = 4;
+> >                 break;
+> >         case VM_MODE_P52V48_64K:
+> > +       case VM_MODE_P52V52_64K:
+> >                 vm->mmu.pgtable_levels = 3;
+> >                 break;
+> >         case VM_MODE_P48V48_4K:
+> > @@ -322,6 +332,7 @@ struct kvm_vm *____vm_create(struct vm_shape shape)
+> >         case VM_MODE_P48V48_16K:
+> >         case VM_MODE_P40V48_16K:
+> >         case VM_MODE_P36V48_16K:
+> > +       case VM_MODE_P52V52_16K:
+> >                 vm->mmu.pgtable_levels = 4;
+> >                 break;
+> >         case VM_MODE_P47V47_16K:
+> >
+> > --
+> > 2.43.0
+> >
+> 
