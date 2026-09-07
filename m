@@ -1,117 +1,98 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8205347D450
-	for <kvm@vger.kernel.org>; Mon,  7 Sep 2026 11:53:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6883A46F482;
+	Mon,  7 Sep 2026 11:58:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788781999; cv=none; b=kroHdtbIWmXQkzTMeCBuzIDai7r39s3uphPYlLVj0/j8UnYsMY/O0RuzFhdLy50TijVbEH+aXlcxmMbI4H3EqY0mol+bTNxZ8UJQU0YOG+4VoEn1cOPpu44g5r9FlyO/SWgq8+tb1d6JdO0kwBl93QCU0LcvuRebKMuhqlD9j+Y=
+	t=1788782310; cv=none; b=bauTITarg4jIaCjVZ+Nw0yN18Fo4PJCtdYRQ4EelaN5zys2dnUfI7xVMVNvDHV3J7TtuP4KmSLf2Jo1YUOXPgWwoLAMEFt3uSkrw7eDaeFjg3cxU+F/K0/Oy5UnSg6EmOQiP8UBxi9zBPQDMePtDiRzgKyeTx3Hn0VPaA0vk7UU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788781999; c=relaxed/simple;
-	bh=Vj6wAw3VEEKt0qtNDScJmMYhFE4eDIBgmNJZHTaTBZs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uhRwXYvWMtFw/OCK/DxOisNlepMv8hpMQ9K5FMFW6w4V6Ha+kax/u349vevzJWFthNbuivsnyukcgINHgN8By0RpZZgCoRv39cV3XVkJVeX24fN8wphdZCg2EBOhcK9zuDf4gZpSzaVYyWW/XqFyba4Vd1rwC5Wc2ea9whL0XZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GQU0EmVF; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1788782310; c=relaxed/simple;
+	bh=gHwRph0Z5WbvmGMENEbvpJ0xv8gch4+5KPFj4oIECLs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=A4JmLWnh4PLRwxt5Qct0pzE+gJuftpastPaRW6EtXwKlZT+LeRvdNrtaZ/PSUSNxsNLdiGZxnCH7zojDItihnAcSUEkT3mySDU0tBdwVC9guYJsvRfywYXoJjdQGPdUYqrMkjBOYmrk8godrBUWDyFCE8yeMXWe3V6fLjMnxPxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=s0dj+247; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GQU0EmVF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788781998; x=1820317998;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Vj6wAw3VEEKt0qtNDScJmMYhFE4eDIBgmNJZHTaTBZs=;
-  b=GQU0EmVFLreThwlzhXq63N6wpbgHb3UEIXqRQz6tRzmdBjUscBZ8Bvl5
-   Lhk9gK7NhIZcjoBjG4eXGlkPduXNBgXDkpoL1y6ak/AO/69SD50ku3m6a
-   +gPvY8+tMJMz2srTLW2x1lb7wxBvUlX+IkNMaJv1sFmOQJP7xTt80Nn+/
-   ELwaxm/ggEQdKOefG9ldk2rHoV687xdkj7MmzXQYoNJ/eI22qz/rBGO7e
-   cI3dZeYkLDQO72kLr3VKosmaJ3Ud+I4v1Pxhq+fXxaaGpCTRxbeU6/OI6
-   UCqpatwWYUO4ckEJOWyrq0c6Gm+PM6Vww8iQ1VZA7A10V+FLrPSw6vV85
-   Q==;
-X-CSE-ConnectionGUID: f+7kZGGnT5yUym+vVdfP6A==
-X-CSE-MsgGUID: 67veK/cLTeWbkub6nCDXZg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11898"; a="93050209"
-X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; 
-   d="scan'208";a="93050209"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2026 04:53:16 -0700
-X-CSE-ConnectionGUID: w0ZAmBNKTayHnLkex/udMA==
-X-CSE-MsgGUID: YxQIvbRrTPKbq9GiHiKaGQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; 
-   d="scan'208";a="271205092"
-Received: from bradocaj-mobl.ger.corp.intel.com (HELO localhost) ([10.245.246.57])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2026 04:53:08 -0700
-Date: Mon, 7 Sep 2026 14:53:05 +0300
-From: Tony Lindgren <tony.lindgren@linux.intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Cc: Peter Xu <peterx@redhat.com>,
-	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
-	Fabiano Rosas <farosas@suse.de>, Jon Grimm <Jon.Grimm@amd.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Steven Price <steven.price@arm.com>,
-	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
-	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
-	=?iso-8859-1?Q?J=F6rg_R=F6del?=  <joro@8bytes.org>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Kishen Maloor <kishen.maloor@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Peter Fang <peter.fang@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org
-Subject: Re: [RFC PATCH v2 2/4] KVM: x86: Add optional KVM_CAP_LIVE_MIGRATION
- and KVM_MIGRATE_CMD
-Message-ID: <ap6loazXtvSCqmpR@tlindgre-MOBL1>
-References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
- <20260831071304.762939-3-tony.lindgren@linux.intel.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="s0dj+247"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C60F61476;
+	Mon,  7 Sep 2026 04:58:23 -0700 (PDT)
+Received: from [10.57.49.168] (unknown [10.57.49.168])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 19F283F7D8;
+	Mon,  7 Sep 2026 04:58:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788782307; bh=gHwRph0Z5WbvmGMENEbvpJ0xv8gch4+5KPFj4oIECLs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=s0dj+247ZGrYRAJTtXRI8Mg3u9DU79+m+Ys2NgoXAglWLE1feLSkomIwC2zA5A5ge
+	 GJPItChzLznQD61LkUo/IXNotgwIpZb3y09ZXWvl3IEnl/PvOECdXuLkcRCKyRf9pa
+	 Knr4lxm9X2/ZziKIjE+LsKu7ai1sEcwkMLIHh/1I=
+Message-ID: <30b4137b-1445-49c0-bd1c-98dbac5d70f6@arm.com>
+Date: Mon, 7 Sep 2026 12:58:22 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260831071304.762939-3-tony.lindgren@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 22/45] KVM: arm64: CCA: Handle RMI_EXIT_RIPAS_CHANGE
+Content-Language: en-GB
+To: Marc Zyngier <maz@kernel.org>, Kohei Enju <enju.kohei@fujitsu.com>
+Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <20260803134403.80630-23-steven.price@arm.com>
+ <ap49Orng5-oehc6J@FCCLS0092175.localdomain> <86fqzl4biu.wl-maz@kernel.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <86fqzl4biu.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 31, 2026 at 10:13:02AM +0300, Tony Lindgren wrote:
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-> @@ -1670,4 +1673,23 @@ struct kvm_pre_fault_memory {
->  	__u64 padding[5];
->  };
->  
-> +#define KVM_MIGRATE_SETUP		0
-> +#define KVM_MIGRATE_ITERATION		1
-> +#define KVM_MIGRATE_STOP_AND_COPY	2
-> +#define KVM_MIGRATE_ABORT		3
-> +#define KVM_MIGRATE_END			4
-> +
-> +struct kvm_transfer_buffer {
-> +	__u64 address;
-> +	__u32 size;
-> +	__u32 reserved;
-> +};
-> +
-> +struct kvm_migrate_cmd {
-> +	__u16 command;
-> +	__u16 flags;
-> +	__u32 reserved;
-> +	struct kvm_transfer_buffer buf;
-> +};
+On 07/09/2026 11:10, Marc Zyngier wrote:
+> On Mon, 07 Sep 2026 06:05:29 +0100,
+> Kohei Enju <enju.kohei@fujitsu.com> wrote:
+> 
+> [...]
+> 
+>> Although the root cause is an RMM bug, should we also guard RIPAS_SET
+>> against this no-progress case?
+> 
+> No. We really should *prevent* the kernel from using a known broken
+> RMM. Which brings me to one of my long standing request: how to we
+> enforce the minimum version of RMM that KVM is willing to work with?
 
-For the common flags, KVM_MIGRATE_CMD probably should have migration
-direction. Or maybe we could have KVM_EXPORT_CMD and KVM_IMPORT_CMD.
+(1) Do you mean the RMM ABI version ?
+(2) Or the particular build version of a given RMM firmware 
+implementation ?
 
-The migration direction is needed early for TDX. We currently pass a flag
-for delayed init for the migration destination in KVM_TDX_INIT_VM. This
-is to prevent the TD and vCPU init SEAMCALLs on the destination. The TD
-and vCPU are initialized only later on with the import calls.
+As far as (1) is considered, the kernel already sticks to a single
+version, v2.0 and doesn't support anything else. And we are fine with
+KVM/Linux supporting a single version of RMM and deprecating the
+support for older RMM versions as we decide to move on.
+
+As for (2), the RMM ABI doesn't provide any information about the
+build/fix version for a given implementation. I will raise this
+within Arm.
+
+Suzuki
+
+
+> 
+> We absolutely need to have a hard deprecation mechanism in place
+> before day-1.
+> 
+> 	M.
+> 
+
