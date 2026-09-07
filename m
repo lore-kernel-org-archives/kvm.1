@@ -1,89 +1,74 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E341936AB54
-	for <kvm@vger.kernel.org>; Mon,  7 Sep 2026 04:45:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906631DB92C
+	for <kvm@vger.kernel.org>; Mon,  7 Sep 2026 04:53:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788756302; cv=none; b=garVZ8UAsv4yIC05ZCQ2bB8bGfk0dkSQWrubk2CwHp+D/BXFnXzzMC5HsK+x5X+ATILF2o0p63jjCKUgoNMYQqfBjkZh07qDiR8u9Pm+nvW+kEIyX24fi1OsN2xAuyJWPwYSdpTHzPdhqX8gJsNy9ErX2jpX38mxEQfee5Jnim8=
+	t=1788756786; cv=none; b=ou2gsQPKKwTeVSCEZUIE98YEYToHZ0nRQXDKbJWaCk8p0Tfma1Ekc/rGig0+kV+Bdd1I9scKy5OA/6JGFxrOpmmFVTVgQE0G+0W+1TzQJqvhRXHYwWgPkCuGxyLITjCaB7GU8yQPtYQPSqz79TPkCXQiCv8l1EpEn0ZHHMnfp5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788756302; c=relaxed/simple;
-	bh=GXik8XMFxKlyNr0DJa0gcBwazjCkzO5/wY0cetFN0QA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ViQImQqwNrWUpTEGSWa4ShRhZSwpWARFJfIpCz0sTl1jYVocEGDxTP9U1wAljr2MP7Uz6APthcI8v+SWP/dYpdnNfE7VuGP3ex3DjD6752B8TfTmBJRh8AB8RDotLh7DXQDHx/QV5tn53WgYLK0Fitdj92t6RTertdxITt5TCVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UduKfR+1; arc=none smtp.client-ip=209.85.216.54
+	s=arc-20240116; t=1788756786; c=relaxed/simple;
+	bh=9EXCGpVfKBQS8nqmv2M5Um5dB6Qlnfw/r+giCzT8iM0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bG7cizsgNF/wlE3wfMpTgpAqWhw2CIId+BePVy+RVUkoCQWQ6PYy3QhFRG4+pC6ueuk6QNpa9s81iH72gv4Krng+i8oNG2Dbi0VyluhVCJuafMGa3Kb2mKir6nludX069JHVWQIKg71qVAr44X4sjXmvBmRwgAmYQPJOTQMXens=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=piX3dBx1; arc=none smtp.client-ip=209.85.216.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UduKfR+1"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-39675172593so2448145a91.2
-        for <kvm@vger.kernel.org>; Sun, 06 Sep 2026 21:45:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="piX3dBx1"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-39647184c73so3748198a91.1
+        for <kvm@vger.kernel.org>; Sun, 06 Sep 2026 21:53:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788756300; x=1789361100; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DnvU2vBpS7iNRhfGmKqIjpkiFHsnHeHr6qR8QCexTas=;
-        b=UduKfR+1N4SjTzicVqtQ7dHRjtahTW1A0ApwsHPX2zyd3lfkI0jGvOTnxmzXvuP/G9
-         mwlueZJw2W3YsaKBGi+U0RIAXIBIDitwU87vnlpWN54rq7tdpZr8MR2JwvO/ZmCTQIA1
-         ewmQXm9C6aj7p1pi8JwyIszxmIfs57JUvyH25z5gtpEHVkVOT1uXS3Be4okQ+Pr2ApNO
-         cbNYVvPX5bSDb03qd5BsuTBI9fts2WYvgwmeIFSF2IXkvfZqxJ57uKkpVZErWOMRre1y
-         ciEredKNxmWXaMetxPSs46mMVrKpSEIPC0IWuIDQnuRgStupTxbtpkjOrMVGjhP6Bnyk
-         pfcQ==
+        d=gmail.com; s=20251104; t=1788756785; x=1789361585; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/DoQ4v3sOG7iCAF7e7sOxPVMm68Lco8LL3+nPKFM7Lg=;
+        b=piX3dBx1CxIdvHXKLZTDwKKP7ZR+CFGe/mhS5HemZ+VVyNiw+w9ApZegLA6fnPb3ew
+         NWwIRzduvlcEq/PfYFmHfDn4bw9yYwXMF6bAyLrW/Te1/98sLJIZazg4m2KIRvA8kXx/
+         HBiiRBUAmtzyEWo0McTjWD8lujhQNgYFnL8ahOym07QlZfueQbfnyU9jFvz+tly/IHgn
+         I5Yn7DCNQSOlGU5cgf9dnqKIPRme+IVdJSz2rJZr88mZlmryM3x7ZEmPKsTd5BCuqeJl
+         mrkt7Cg9N09cKaqrxMKLqyxRv8iebgIF8b5kUpLAH1hp3R/VHgWXt4wZzgh1aZhrkoLE
+         6jQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788756300; x=1789361100;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DnvU2vBpS7iNRhfGmKqIjpkiFHsnHeHr6qR8QCexTas=;
-        b=UscT6LKwSpMVgd5Cp4/ni8ef1Og9fJ6vKafc43muLFU4wXLFe0h5q/9ClbaXcIJgTQ
-         bXpXUza9T6a5ldQiOz29/STLdl97WojcpgsswAkuWU8ddNOZF3DY7sropnwQk4/HPSLo
-         obyzjZD298Gf12yyetR8YhQ46khmUoKYAR8Ecbf3ca14T5XOMSzNRN8n7sC/gw7Ly+QS
-         XmObncQ0AD0deP43sGOqPeR2vaGmtPxFuHAhV9L0wKFXlmUceLUjOk1A85kXiJ+KAfI7
-         s/O6ZFImVlhATRI/cv9Res+dfAqOgVYzQukfHLkK08Ypw+arJVe4+2E72z2NUxPbt9DM
-         +Uuw==
-X-Forwarded-Encrypted: i=1; AKwUvBxydLx3InA61ehJ2ni1wKLmfAH4MiBQzeRHA/1Q0pnHLR0Ai8eoIojgkgls0GqObzPCQ/A=@vger.kernel.org
-X-Gm-Message-State: AFuF++mGQaxc1cD/ofLMPIZ1npEeyNDKM8fytY4sm48TtN5LJQsLylZh
-	4LnXagnbX+CvBLwYHLlsrzvk2Zar5uJ5LqYCFnrhNB3WJDAMYUE7Ls9/
-X-Gm-Gg: AYBFou0bJoDXD/I78lLl9zcMQaiww7BhElEYYDGQ+CAXhXNd+CrPqihbTT9/WakctkW
-	pjnN7bTOw5Se/3ZkbwkYBrv4hg2S6Yj0vK7iTTFJ2/gBc86mfSjNc+rIHZS6T0BUwAz0X2b5Dzi
-	35cBKanFHBGhbXzOs9tMHwhNN7Ad+kCC1YdkRzSv4EYmux2VmKLj142Q1Z8Sbfypir8yZmQbX4L
-	2oVCyAHrLx2wUsdRcfP8z04wr1fdqhYiAUgD43uosWdCNGs3hXi5u1SYSrrl4fapp7bWUp/bGOC
-	5DsM+gsh3QcVIRn03XRa8LBeb0y0X4SvCJfPvS14RGy1XxhK1U4Wbp+d8GlGSfc1zcxaHujyfDI
-	QVtmdXparzEZkEwFKreR0B/Et2xjL0EPL40Of/gxSnc12s/uA2gCG3C6rnS/kccgPOMyU5OzLNh
-	PIqlaOokUChiKn9YnRTXBCOMkO0Nwi9dZFCJo0HqaclHzTsNMSvySMqxgfNm21i3l/NeohbbRje
-	hyaMoVh0Uv5Yg==
-X-Received: by 2002:a17:90b:268f:b0:398:c3a3:dbd0 with SMTP id 98e67ed59e1d1-39b2612eb96mr32751634a91.8.1788756300129;
-        Sun, 06 Sep 2026 21:45:00 -0700 (PDT)
-Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339af25062sm37823751eec.16.2026.09.06.21.44.54
+        d=1e100.net; s=20251104; t=1788756785; x=1789361585;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/DoQ4v3sOG7iCAF7e7sOxPVMm68Lco8LL3+nPKFM7Lg=;
+        b=eMjk2IntrzWSIoGaDM/7ERsGelkZWFN8ddo+rDht3cbuVTCOsJvrFC9qFRoYC4rnuo
+         ICJghS9UzC6Z9jpUDda54J6Othi6HldU5ae1JfPhcDUdbJM4+TmhjDw4KWrIGupNdqc/
+         dvb0sYWnwfRJE4btKDxeiwMYJOu75v41vjE48C/SrrXY/D9Y4yNWlkNSGsKibFoqgq5H
+         1uYFPAwnyU5kP99JxG4irR/3NPe9E8d8OVibd9QSWSIwL5YT2rmgBxfurqCRZMMj8j+j
+         qy2JnMtbkxZi3k/Q7+D9W3qulGxxU9uXB1So1HjMx+1vbLzcxz8iEry9AwCdX25pULEv
+         n85w==
+X-Forwarded-Encrypted: i=1; AKwUvBzFekNUuIiz2+aTQrlYtK2WSOTJVEsArm394r/gjAESXEe0zpHUg42X+fa7jb4RMm6TXXY=@vger.kernel.org
+X-Gm-Message-State: AFuF++lBNpvFNnEojAs9vMe11yoW1ar8FXVSCwrMwQ969kn0Tycgr/oS
+	rIXMRTMY3JdUuK/q7unWZUy5HucZJoE6Mhl2btnO0R2wTN6EJGtp6MsA
+X-Gm-Gg: AYBFou07TjF4Fs2OugpD2olCEeQ2dPtQ+8tqzOTHep8A+x89ZPRlAxQPgN5t4fl0nRd
+	peIFy+rWCEwob2h7yybXoCtj5G+I7NZaJ+KQU1A0fVDZ1jch13sushtSop0zRalzEjYD+GnZ7dg
+	MNTFi/bfQzQYuFNXUxsKXydW41sWLcJFCG6DdMZpSLzo7EWxX0rXBPMKofMo9QAbuO46s/FwtCi
+	Y+IaD+aA+INRxD+5yqYSY5ZC1WE6+9qpkz5AEqcsEmIcgILqMfpPyyaCFLpK6ASN+rNxB79XC3j
+	lAPL/8nG81bKfR9//aMVZWxBTTI7Idi2EJqOTbG4jzsxyqkLXQN1RsY832By8MlE62bbiFAyHS/
+	sia3iq0Em0lVIJuI39ir1a6ET5alfPScdiP6+9Spdbt/TdssQsHfIvkCy+tE5CnXEbE2IjUhKhA
+	M561Sr6hAnu2D/sUHVZ68JUoXly6XMOHWDjJyd9jFlAMQ+JrKUZQz/zgRVl4h579grIsQitGNpY
+	Q==
+X-Received: by 2002:a17:90b:4ac5:b0:398:9beb:a2ba with SMTP id 98e67ed59e1d1-39b087fb503mr29944113a91.28.1788756784912;
+        Sun, 06 Sep 2026 21:53:04 -0700 (PDT)
+Received: from amd.ban-spse ([165.204.217.251])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339ac24d7esm37641639eec.15.2026.09.06.21.53.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Sep 2026 21:44:59 -0700 (PDT)
-From: Hemanth Selam <hemanth.selam@gmail.com>
-To: Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
+        Sun, 06 Sep 2026 21:53:04 -0700 (PDT)
+From: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+To: pbonzini@redhat.com,
+	seanjc@google.com
+Cc: shuah@kernel.org,
 	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH v2 3/3] arm64: kvm: fix typo in pauth.c comment
-Date: Mon,  7 Sep 2026 10:14:34 +0530
-Message-ID: <20260907044434.4682-4-hemanth.selam@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20260907044434.4682-1-hemanth.selam@gmail.com>
-References: <20260907044434.4682-1-hemanth.selam@gmail.com>
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	nagachaithanya9911@gmail.com
+Subject: [PATCH] KVM: selftests: Fix the never-true negative UFFD delay check
+Date: Mon,  7 Sep 2026 04:52:46 +0000
+Message-ID: <20260907045246.3783304-1-nagachaithanya9911@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -92,30 +77,47 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The comment reads "This code assumes that is is run from EL2".  The first
-"is" is not a repetition, it should be "it".
+demand_paging_test parses the -d option with strtoul() and then asserts
+that the result is not negative:
 
-v1 deleted the second "is" instead, which left the sentence without a
-subject.  Fuad Tabba pointed out the correct reading.
+	p.uffd_delay = strtoul(optarg, NULL, 0);
+	TEST_ASSERT(p.uffd_delay >= 0, "A negative UFFD delay is not supported.");
 
-Only touches a comment, no code changes.
+p.uffd_delay is a useconds_t, which is an unsigned type, so the comparison
+is always true and the assertion can never fire. GCC points this out with
+-Wtype-limits, which is enabled by -Wextra.
 
-Assisted-by: Cursor:claude-opus-5
-Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
+As a result, "-d -1" is accepted and converted to a very large unsigned
+delay, causing each demand paging fault to sleep for an unexpectedly long
+time in usleep() instead of rejecting the argument up front. The return
+value of strtoul() is not validated either, so a non-numeric argument
+such as "-d abc" is silently treated as a zero delay.
+
+Use atoi_non_negative() instead. It rejects negative values, unparsable
+input, and trailing garbage. It is already used a few lines below for -v,
+and hexadecimal input keeps working because atoi_paranoid() also passes a
+base of 0 to strtol().
+
+Fixes: 0119cb365c93 ("KVM: selftests: Add configurable demand paging delay")
+Signed-off-by: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
 ---
- arch/arm64/kvm/pauth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/kvm/demand_paging_test.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm64/kvm/pauth.c b/arch/arm64/kvm/pauth.c
-index d5eb3ae876be..bb6c42e78058 100644
---- a/arch/arm64/kvm/pauth.c
-+++ b/arch/arm64/kvm/pauth.c
-@@ -5,7 +5,7 @@
-  *
-  * Primitive PAuth emulation for ERETAA/ERETAB.
-  *
-- * This code assumes that is is run from EL2, and that it is part of
-+ * This code assumes that it is run from EL2, and that it is part of
-  * the emulation of ERETAx for a guest hypervisor. That's a lot of
-  * baked-in assumptions and shortcuts.
-  *
+diff --git a/tools/testing/selftests/kvm/demand_paging_test.c b/tools/testing/selftests/kvm/demand_paging_test.c
+index f8b3d0b68830..619a0b2be45c 100644
+--- a/tools/testing/selftests/kvm/demand_paging_test.c
++++ b/tools/testing/selftests/kvm/demand_paging_test.c
+@@ -297,8 +297,7 @@ int main(int argc, char *argv[])
+ 			p.single_uffd = true;
+ 			break;
+ 		case 'd':
+-			p.uffd_delay = strtoul(optarg, NULL, 0);
+-			TEST_ASSERT(p.uffd_delay >= 0, "A negative UFFD delay is not supported.");
++			p.uffd_delay = atoi_non_negative("UFFD delay", optarg);
+ 			break;
+ 		case 'b':
+ 			guest_percpu_mem_size = parse_size(optarg);
+-- 
+2.43.0
+
