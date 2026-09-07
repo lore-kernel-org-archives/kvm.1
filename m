@@ -1,362 +1,171 @@
-Received: from esa8.hc1455-7.c3s2.iphmx.com (esa8.hc1455-7.c3s2.iphmx.com [139.138.61.253])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010039.outbound.protection.outlook.com [52.101.85.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B89188CC9;
-	Mon,  7 Sep 2026 05:05:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.61.253
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788757555; cv=none; b=SdmdKlUbpT2wpwa5wrHaXy82QP0R9G+Y5G5Kfpip57Vl4+749JdX82p4QWGao5fPGx/YcPFCpOTm0Vwwl12Rh0t9mfMkykFUGQyBuAXT2SoVNVIkvW40wKSki5aGf2Eiz/90Y1x8l0esgpIvqPRSEj6V1hmlIG5g3t/4cY86lc4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788757555; c=relaxed/simple;
-	bh=IQzeCdqXPiby0ngwlNUJPBbYe7QKGEm+KBa/Ua7u4ZY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F6d7wOFzthqNbW07krcNoWicBtR6nlY0Q1sGxyVK2pmpjUFo8gqh4e8aGzBdJwgoaarctZLZ2+CqT4+5PM2h0LoKt1a81XF5LoHv/wWljVnii7pqZdf2LYp5RpxrAzGqcUeY9igXTTZZvggE4ANeH6OMm5bW/tAEIEnNiR9zuBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=SLL54gT4; arc=none smtp.client-ip=139.138.61.253
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED7C3FF1D0
+	for <kvm@vger.kernel.org>; Mon,  7 Sep 2026 06:39:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.39
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788763171; cv=fail; b=uZOFQmo3w7tx9lGpY6BZqeF40s087etPqbY8yi6eGTpp2NnwkT6S2dP88wB5uKfy8urS4COTtoXs0mkolKIGC2hecNCXGG2YVGMkROmIxEct1ERNVoiK2l07dkxxEh5D8xOV5tJAgVzLSO1Bu9C45efw0oy9Rp3+hFOMVORyuUo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788763171; c=relaxed/simple;
+	bh=crH+u+Jvzk9tPkYi+jkycGhsy1kcr+P+BsZp+CGZ9Js=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Eg+z0Z8yszs/HapV28hBSQr9D1XvxWgDMVITeOzX5SIEI9wm4ZWa5FHSlXuhMF6o83834l4551jz2QR91v/3qTzx1BW+CDX1683C4mte5BhKnCbo5oos5QNvrvJIOb4Odoi1rbQp+iIoKDjRFxHIYXr2yDN7O9pcpGQulfXC8q0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=cLIGRCPf; arc=fail smtp.client-ip=52.101.85.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="SLL54gT4"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1788757558; x=1820293558;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IQzeCdqXPiby0ngwlNUJPBbYe7QKGEm+KBa/Ua7u4ZY=;
-  b=SLL54gT4rW+4AWZTmQ+HxKHvhKm/xfuFQ5/vbQeVhppFBUBJYXif5KUu
-   D6BIUgRng7067RstwMqh+PRA8w73nM+Bvii6qzkeT17//HzTcyi+Dykin
-   EWG7rpX7PnBaK59r5OycIEed1LquNbCKv39tg+037weW3hLVUMCA94fWZ
-   U0cq9YKIXX4cQNApLLT1jHXOHGXH3U2yCM29wZiTdI5GuyWyY1ivWWerf
-   O83bk1DSJbtHF6EKPTYe0xOc8Te4v8u2Z3z8bUJLYCIoYoNG4NiqQwkPS
-   fiavRndNTpL/TKXq/Zr1F5J74GljTcHDonbvpWGY9QBHbrOuz2/lyF6Gy
-   w==;
-X-CSE-ConnectionGUID: O0VRRAEvTbqoXMGJe8XTdg==
-X-CSE-MsgGUID: 1IzQpRNqRbuHGQelPUlf4g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11898"; a="242115589"
-X-IronPort-AV: E=Sophos;i="6.25,266,1779116400"; 
-   d="scan'208";a="242115589"
-Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
-  by esa8.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2026 14:05:46 +0900
-Received: from az2nlsmgm3.fujitsu.com (unknown [10.150.26.205])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 0C8F8100034E;
-	Mon,  7 Sep 2026 05:05:46 +0000 (UTC)
-Received: from az2nlsmom2.o.css.fujitsu.com (unknown [10.150.26.200])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm3.fujitsu.com (Postfix) with ESMTPS id B349F180053E;
-	Mon,  7 Sep 2026 05:05:45 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.8.144.219])
-	by az2nlsmom2.o.css.fujitsu.com (Postfix) with SMTP id DF347180011B;
-	Mon,  7 Sep 2026 05:05:36 +0000 (UTC)
-Date: Mon, 7 Sep 2026 14:05:29 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v16 22/45] KVM: arm64: CCA: Handle RMI_EXIT_RIPAS_CHANGE
-Message-ID: <ap49Orng5-oehc6J@FCCLS0092175.localdomain>
-References: <20260803134403.80630-1-steven.price@arm.com>
- <20260803134403.80630-23-steven.price@arm.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="cLIGRCPf"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=M6UgQh0XrDqfkSkZIjRNolSx/G9+pybmR08Rex+VeiOK6tQV/bbbg9C98PjyiQny31AzZ+BN0MUzBOh4jEVYqYPbF6ygm07QAWkAc5rFNF5c20JIDtTPRaFkexcW2MgZiuudACAaMvgclQMRlkXJmqX7SUDR2vt1XoUPcZkW5bm4X1qliWSe0VUNC1LlDt4J74pGtwgTNPBo7Zdx8m2VoAE9QxBAzLrYiW+3ZGawTvpJrom2IgBug8xXUDLY+Q2sHyt1fjWcE22GzreUtNzDZsA1XN5Eaa/7VMaMdyctQdIWANLhmu28FctkSYMQvKEfeZxVga07w5q76pdizD4aUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7am9N624dp6yfisTYb7A5lQlHdtarFEWwpKTOos9k2A=;
+ b=A3LccbPsyAODtrdGWvv5boOoENZLdgnFdcd0maRxZxl7V4iVVobLye0jikU/u4zGEsdbkypntqn2zMvayhQZas8+PX/eKaWYtf/z4eWl15osa2JWCpGC8cLw/EU4keqi/mVhihrQfRVHeG7mjTVR2aC9DiB7ExxNCrfVtYPRYlvgH0MUlpTXGwcgwo795MFjykBr1enB6rt206rFICzbz4OKwgMY0nQdHQY8oLxVy/dqR9+TU+cDb6E02gDK7cfZzsmu2Pe0TFy7vpmeW4v/JE3eqvqkb9BGIrsWpi9Q/yEnE3V8anjYyRMCG4lMudGVSnZquxyLe527rx9GF/cKXg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7am9N624dp6yfisTYb7A5lQlHdtarFEWwpKTOos9k2A=;
+ b=cLIGRCPfMonEbbVKkll00Jg5N1q8NfZeT+FeOiAlCU22M3shvPhjib5EVf2D9sy1R6lWjbM+BsTvG3aQJlSnScTJ1KBYDOB+ozdmHlwT28L5y9AsL2sjg5OyO7O3YtS1iIDkshImehzk34aQHzbJoIQFV5U6bdwiUQBd0Vb/sKw=
+Received: from SJ0PR03CA0347.namprd03.prod.outlook.com (2603:10b6:a03:39c::22)
+ by MN0PR12MB5785.namprd12.prod.outlook.com (2603:10b6:208:374::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Mon, 7 Sep
+ 2026 06:39:25 +0000
+Received: from SJ5PEPF000001ED.namprd05.prod.outlook.com
+ (2603:10b6:a03:39c:cafe::8f) by SJ0PR03CA0347.outlook.office365.com
+ (2603:10b6:a03:39c::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.15 via Frontend Transport; Mon, 7
+ Sep 2026 06:39:25 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ5PEPF000001ED.mail.protection.outlook.com (10.167.242.201) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.406.5 via Frontend Transport; Mon, 7 Sep 2026 06:39:25 +0000
+Received: from gomati.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Mon, 7 Sep
+ 2026 01:39:22 -0500
+From: Nikunj A Dadhania <nikunj@amd.com>
+To: <kvm@vger.kernel.org>, <seanjc@google.com>, <pbonzini@redhat.com>
+CC: <thomas.lendacky@amd.com>, <bp@alien8.de>, <joao.m.martins@oracle.com>,
+	<nikunj@amd.com>, <kai.huang@intel.com>, <yosry@kernel.org>
+Subject: [PATCH v8 0/8] KVM: SVM: Add Page Modification Logging (PML) support
+Date: Mon, 7 Sep 2026 06:38:58 +0000
+Message-ID: <20260907063906.1964557-1-nikunj@amd.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260803134403.80630-23-steven.price@arm.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001ED:EE_|MN0PR12MB5785:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7d6dc6eb-241b-4e24-69fb-08df0caac274
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|376014|23010399003|1800799024|82310400026|13003099007|10067099003|11063799006|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	DJwe7DEclYxfnTp3C0DVZw97emDOjy5yfe9e+Y/b44jpwFeGhKWGebYKYHKvTZGb+/nPROzn/L9Y+DYZ2eCMtvQolHiMSPZeBI7dKtg0EaHCLLfXsh5sHVpKtp0iub/WnwUOkRTql/9OLQVWGirU/UafMquUrwIO8t60ProhUsLkDJ78gUaRO2/iccvfpMCOTG26Yaovtax/P139POQs/uiA0KfViWWEJI9FNBm3OPmzxcHQ3Xl8dRERHbqCMOT1j5r0aWFJT2T42+klbcVdiVc8N+Y2IIa+GoxrTNEoKcdzyjHNzlnAYEN4t0G0WuTvpI7Bq13QuJMKrdAciA0LOo8rHThe4WNpErPgJBo2HvI3w38JRZRdnv4US4kPmSLH3HbHwYUMeCVUIvGcLgffZ6MUeqZGK1uNiixpi1UYBnUc+Mkb6aAzxH+dvZc13+ZHG/l5GoqDrcd+HxrGtQPziac4tNb8skoQaGtVha1GLXwTLqwN86+/ywWmicQ76O2K2tFtseuRO+SBKfkShQC3gHjnlB6jQRMLCRGTJKe8XegrDxwcVIcQKb/XgcM8FHr9PSS/Hb/rbLyBMRt+w/XZwfPzSH2Yrdw1OjjfsNGr3P4nZQF6XeHz2om509HTn4XYcSemwaQMCQJ86mm18hNtK1UN7CcQJ5DtbQmaAMVxY51o72fbMOo0yYmRhWyeg8TH7N1/pQeq16CfESnWmo+hmw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(23010399003)(1800799024)(82310400026)(13003099007)(10067099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	3c/J9HVpEzPAGjhQqTiu6YiTORX+HrxmsAquqwMY7kIiwB+zwPwXTQbz7LzBmXs2FqOlYLxALMKbdRIUJ8DDcgiVaGgnP8VQ0u/7Sg3oODsklsZcA1Qh6TFWKREPDRtvF9V/gwsWZYU+EKcwyzwlBZw8OPggMbbwPM2HDggBWgJqbGYn4bieadUbwIDHqjfXcBFFwvAXR7Phc+mNw39SneIg6seFMwjvN+tNpweHvtQJajCqltIFz3yLctcxI2YZngtpmdZ2CE2fEk2tRDAQp7Xv3j4hLJ6asl1JOhl2xw7ZPynNbQNdwK/rBMcXG+1qQZs4aY69B9xn+9d91jhMosNt1ongZL+Hwk2L8wNoDRE3W5o5wKeISm2Nt8/WNSphwwipN2RUlGFmACsB9CWbhK9nzllfQ/Rneao+9GVYhcXNoLj6rmqTgCFp7gGC+ZUk
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2026 06:39:25.5275
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7d6dc6eb-241b-4e24-69fb-08df0caac274
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001ED.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5785
 
-Hi Steven,
+This series implements Page Modification Logging (PML) for guests on select
+AMD Zen6 and later processors, bringing hardware-assisted dirty logging
+support. PML is designed to track guest modified memory pages. PML enables the
+hypervisor to identify which pages in a guest's memory have been modified
+since the last checkpoint or during live migration. More details can be
+found in the latest AMD APM Volume 2 (System Programming), section
+"15.25.15 Page Modification Logging".
 
-On 08/03 14:43, Steven Price wrote:
-> The guest can request that a region of its protected address space is
-> switched between RIPAS_RAM and RIPAS_EMPTY (and back) using
-> RSI_IPA_STATE_SET. This causes a guest exit with the
-> RMI_EXIT_RIPAS_CHANGE code. We treat this as a request to convert a
-> protected region to unprotected (or back), exiting to the VMM to make
-> the necessary changes to the guest_memfd and memslot mappings. On the
-> next entry the RIPAS changes are committed by making RMI_RTT_SET_RIPAS
-> calls.
-> 
-> The VMM may wish to reject the RIPAS change requested by the guest. For
-> now it can only do this by no longer scheduling the VCPU as we don't
-> currently have a usecase for returning that rejection to the guest, but
-> by postponing the RMI_RTT_SET_RIPAS changes to entry we leave the door
-> open for adding a new ioctl in the future for this purpose.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v15:
->  * Propagate negative error returns.
-> Changes since v14:
->  * Use addition rather than bitwise OR for adding the shared_bit in
->    realm_unmap_shared_range(), this handles the case where the region
->    includes the last address (which means 'end' already has the bit
->    set).
-> Changes since v13:
->  * Switch to the new RMI_RTT_UNPROT_UNMAP range-based API.
->  * Drop ugly hack for RMM bug which errored when the RIPAS was already
->    set to the desired value.
-> Changes since v12:
->  * Switch to the new RMM v2.0 RMI_RTT_DATA_UNMAP which can unmap an
->    address range.
-> Changes since v11:
->  * Combine the "Allow VMM to set RIPAS" patch into this one to avoid
->    adding functions before they are used.
->  * Drop the CAP for setting RIPAS and adapt to changes from previous
->    patches.
-> Changes since v10:
->  * Add comment explaining the assignment of rec->run->exit.ripas_base in
->    kvm_complete_ripas_change().
-> Changes since v8:
->  * Make use of ripas_change() from a previous patch to implement
->    realm_set_ipa_state().
->  * Update exit.ripas_base after a RIPAS change so that, if instead of
->    entering the guest we exit to user space, we don't attempt to repeat
->    the RIPAS change (triggering an error from the RMM).
-> Changes since v7:
->  * Rework the loop in realm_set_ipa_state() to make it clear when the
->    'next' output value of rmi_rtt_set_ripas() is used.
-> New patch for v7: The code was previously split awkwardly between two
-> other patches.
-> ---
->  arch/arm64/include/asm/kvm_rmi.h |   6 +
->  arch/arm64/kvm/mmu.c             |   8 +-
->  arch/arm64/kvm/rmi.c             | 473 +++++++++++++++++++++++++++++++
->  3 files changed, 484 insertions(+), 3 deletions(-)
-> 
-> [...]
-> +
-> +static int ripas_change(struct kvm *kvm,
-> +			struct kvm_vcpu *vcpu,
-> +			unsigned long ipa,
-> +			unsigned long end,
-> +			enum ripas_action action,
-> +			unsigned long *top_ipa)
-> +{
-> +	struct realm *realm = &kvm->arch.realm;
-> +	phys_addr_t rd_phys = virt_to_phys(realm->rd);
-> +	phys_addr_t rec_phys;
-> +	struct kvm_mmu_memory_cache *memcache = NULL;
-> +	long ret = 0;
-> +
-> +	if (vcpu) {
-> +		rec_phys = vcpu->arch.rec.rec_phys;
-> +		memcache = &vcpu->arch.mmu_page_cache;
-> +
-> +		WARN_ON(action != RIPAS_SET);
-> +	} else {
-> +		WARN_ON(action != RIPAS_INIT);
-> +	}
-> +
-> +	while (ipa < end) {
-> +		unsigned long next = ~0;
-> +
-> +		switch (action) {
-> +		case RIPAS_INIT:
-> +			ret = rmi_rtt_init_ripas(rd_phys, ipa, end, &next);
-> +			break;
-> +		case RIPAS_SET:
-> +			ret = rmi_rtt_set_ripas(rd_phys, rec_phys, ipa, end,
-> +						&next);
-> +			break;
-> +		}
-> +
-> +		if (ret < 0)
-> +			goto out;
-> +
-> +		switch (RMI_RETURN_STATUS(ret)) {
-> +		case RMI_SUCCESS:
-> +			ipa = next;
-> +			break;
-> +		case RMI_ERROR_RTT: {
-> +			int err_level = RMI_RETURN_INDEX(ret);
-> +			int level = find_map_level(realm, ipa, end);
-> +
+The PML feature uses two new VMCB fields (PML_ADDR and PML_INDEX) and
+generates a VMEXIT when the 4KB log buffer becomes full.
 
-I have been testing this series using TF-RMM from:
-  https://git.trustedfirmware.org/TF-RMM/tf-rmm.git topics/rmm-v2.0-poc_3
+The feature is enabled by default when hardware support is detected and can
+be disabled via the 'pml' module parameter.
 
-I found that Linux repeatedly issues the same SMC_RMI_RTT_SET_RIPAS call
-[0], eventually causing a soft lockup [1].
+Changelog:
+v8:
+* Rebased on latest kvm/next
+* Drop redundant pml_addr=0 in nested_vmcb02_prepare_control() (Yosry)
+* Fix misleading comment, pml_index=-1 is hardening not stale-data
+  cleanup (Yosry, Sean)
+* Route nested SVM_EXIT_PML_FULL to KVM and treat it as unexpected
+  exit (Sean)
+* Refactor update_cpu_dirty_logging() to common code as a separate
+  pre-patch (Sean)
 
-The root cause appears to be an RMM bug fixed by:
-  https://git.trustedfirmware.org/plugins/gitiles/TF-RMM/tf-rmm.git/+/38c1de0adf66
+v7: https://lore.kernel.org/kvm/20260518045916.2988667-1-nikunj@amd.com/
+* Swap patch order to avoid adding @pml_page parameter only to remove it
+  (Sean)
+* Add Sean's prep patch to pass @vcpu to init_vmcs() instead of @vmx,
+  cleaning up all vmx->vcpu usage (Sean)
+* Drop guard(svm_vmcb01) patch; access vmcb01 directly in
+  svm_update_cpu_dirty_logging() since VMCB is just memory (Sean, Yosry)
+* Only initialize PML index on reset, leave unchanged on INIT to avoid
+  discarding unflushed entries. PML_INDEX in the control area remains valid
+  after intercepted SHUTDOWN (Sashiko, Sean, Kai)
 
-Without this fix, RMM returns RMI_ERROR_RTT at level 3. In this case,
-both err_level and level are 3. Since this is RIPAS_SET, the check below
-is skipped, realm_create_rtt_levels(realm, ipa, 3, 3, ...) is a no-op,
-and ipa does not advance. The same RMI is therefore retried
-indefinitely.
+Nikunj A Dadhania (7):
+  KVM: x86: Move PML page to common vcpu arch structure
+  KVM: x86: Carve out PML flush routine
+  KVM: VMX: Use cpu_dirty_log_size instead of enable_pml for PML checks
+  KVM: x86: Carve out common dirty logging update
+  x86/cpufeatures: Add Page modification logging
+  KVM: SVM: Use BIT_ULL for 64-bit misc_ctl bit definitions
+  KVM: SVM: Add Page modification logging support
 
-> +			/*
-> +			 * If the operation failed at deeper level than
-> +			 * what is required for the address range, this
-> +			 * implies encountering an unexpected entry,
-> +			 * (e.g., RIPAS_DESTROYED), which the RMM prevents
-> +			 * us from modifying. This is only applicable for
-> +			 * RMI_RTT_INIT_RIPAS. All the other requests
-> +			 * are generated by the Realm and thus RMM should
-> +			 * be able to allow the transition.
-> +			 */
-> +			if (action == RIPAS_INIT && WARN_ON_ONCE(err_level >= level))
-> +				return -ENXIO;
+Sean Christopherson (1):
+  KVM: VMX: Pass @vcpu, not @vmx to init_vmcs()
 
-Although the root cause is an RMM bug, should we also guard RIPAS_SET
-against this no-progress case?
+ arch/x86/include/asm/cpufeatures.h |   1 +
+ arch/x86/include/asm/kvm_host.h    |   4 +-
+ arch/x86/include/asm/svm.h         |  14 ++--
+ arch/x86/include/uapi/asm/svm.h    |   2 +
+ arch/x86/kernel/cpu/scattered.c    |   1 +
+ arch/x86/kvm/svm/nested.c          |  14 ++++
+ arch/x86/kvm/svm/sev.c             |   2 +-
+ arch/x86/kvm/svm/svm.c             | 106 ++++++++++++++++++++++++++++-
+ arch/x86/kvm/svm/svm.h             |   1 +
+ arch/x86/kvm/vmx/main.c            |   4 +-
+ arch/x86/kvm/vmx/vmx.c             |  82 +++++++---------------
+ arch/x86/kvm/vmx/vmx.h             |   9 +--
+ arch/x86/kvm/vmx/x86_ops.h         |   2 +-
+ arch/x86/kvm/x86.c                 |  48 ++++++++++++-
+ arch/x86/kvm/x86.h                 |   7 ++
+ 15 files changed, 220 insertions(+), 77 deletions(-)
 
-Thanks,
-Kohei
 
-[0]
-  SMC_RSI_VERSION                   10000 > RSI_SUCCESS 10000 10001
-  SMC_RSI_REALM_CONFIG              830e5000 > RSI_SUCCESS
-  SMC_RSI_IPA_STATE_SET             80000000 c0000000 1 0
-  SMC_RMI_RTT_SET_RIPAS             10060182000 10056e1c000 8000c000 c0000000 > RMI_ERROR_RTT 3
-  SMC_RMI_RTT_SET_RIPAS             10060182000 10056e1c000 8000c000 c0000000 > RMI_ERROR_RTT 3
-  SMC_RMI_RTT_SET_RIPAS             10060182000 10056e1c000 8000c000 c0000000 > RMI_ERROR_RTT 3
-  ... (the same SMC_RMI_RTT_SET_RIPAS call is logged repeatedly)
+base-commit: d4b7fb647204f0c81dfeae2d1a708e4d858e0c94
+-- 
+2.48.1
 
-[1]
-  [  201.945663] CPU: 113 UID: 0 PID: 8093 Comm: kvm-vcpu-0
-  [...]
-  [  201.946291] pstate: 61402009 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-  [  201.946416] pc : arm_smccc_1_2_smc+0x34/0x70
-  [  201.946430] lr : rmi_smccc_invoke+0xc0/0x108
-  [  201.946442] sp : ffff8000b59ab5e0
-  [  201.946448] x29: ffff8000b59ab690 x28: 000000008313e000 x27: 0000000000000003
-  [  201.946510] x26: 000008241cb3c000 x25: ffffffffffffffff x24: ffff8000b59ab830
-  [  201.946569] x23: ffff8000b59ab7c0 x22: 0000082419daa000 x21: 000008241cb3c000
-  [  201.946701] x20: 00000000000000fb x19: ffff8000b59ab5f8 x18: 0000000000000000
-  [  201.946740] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
-  [  201.947097] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-  [  201.947127] x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
-  [  201.947550] x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
-  [  201.947783] x5 : 0000000000000000 x4 : 00000000c0000000 x3 : 0000000000000000
-  [  201.947802] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000304
-  [  201.948305] Call trace:
-  [  201.948438]  arm_smccc_1_2_smc+0x34/0x70 (P)
-  [  201.948484]  rmi_sro_execute+0x24/0xd0
-  [  201.948571]  rmi_rtt_set_ripas.constprop.0+0x6c/0xb0
-  [  201.948698]  ripas_change+0xc4/0x1e8
-  [  201.948889]  kvm_rec_handle_request+0x190/0x308
-  [  201.948943]  check_vcpu_requests+0xcc/0x4f8
-  [  201.948960]  kvm_arch_vcpu_ioctl_run+0x208/0x7c0
-  [  201.948986]  kvm_vcpu_ioctl+0x174/0xac8
-  [  201.949062]  __arm64_sys_ioctl+0xb4/0x118
-  [  201.949089]  invoke_syscall.constprop.0+0xa8/0x100
-  [  201.949147]  do_el0_svc+0xb8/0xc8
-  [  201.949159]  el0_svc+0x48/0x1f8
-  [  201.949169]  el0t_64_sync_handler+0xa0/0xe8
-  [  201.949194]  el0t_64_sync+0x1ac/0x1b0
-
-> +
-> +			ret = realm_create_rtt_levels(realm, ipa, err_level,
-> +						      level, memcache);
-> +			if (ret)
-> +				goto out;
-> +			/* Retry with the RTT levels in place */
-> +			break;
-> +		}
-> +		default:
-> +			WARN_ON(1);
-> +			ret = -ENXIO;
-> +			goto out;
-> +		}
-> +	}
-> +
-> +out:
-> +	if (top_ipa)
-> +		*top_ipa = ipa;
-> +
-> +	return ret;
-> +}
-> +
-> +static int realm_set_ipa_state(struct kvm_vcpu *vcpu,
-> +			       unsigned long start,
-> +			       unsigned long end,
-> +			       unsigned long ripas,
-> +			       unsigned long *top_ipa)
-> +{
-> +	struct kvm *kvm = vcpu->kvm;
-> +	int ret = ripas_change(kvm, vcpu, start, end, RIPAS_SET, top_ipa);
-> +
-> +	if (!ret && ripas == RMI_EMPTY && *top_ipa != start)
-> +		realm_unmap_private_range(kvm, start, *top_ipa, false);
-> +
-> +	return ret;
-> +}
-> +
-> +static int kvm_complete_ripas_change(struct kvm_vcpu *vcpu)
-> +{
-> +	struct kvm *kvm = vcpu->kvm;
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	unsigned long base = rec->run->exit.ripas_base;
-> +	unsigned long top = rec->run->exit.ripas_top;
-> +	unsigned long ripas = rec->run->exit.ripas_value;
-> +	unsigned long top_ipa = base;
-> +	int ret;
-> +
-> +	do {
-> +		kvm_mmu_topup_memory_cache(&vcpu->arch.mmu_page_cache,
-> +					   kvm_mmu_cache_min_pages(vcpu->arch.hw_mmu));
-> +		write_lock(&kvm->mmu_lock);
-> +		ret = realm_set_ipa_state(vcpu, base, top, ripas, &top_ipa);
-> +		write_unlock(&kvm->mmu_lock);
-> +
-> +		if (ret == -ENOMEM) {
-> +			/* If no progress, then stop */
-> +			if (top_ipa == base)
-> +				break;
-> +			base = top_ipa;
-> +			continue;
-> +		}
-> +
-> +		if (WARN_RATELIMIT(ret,
-> +				   "Unable to satisfy RIPAS_CHANGE for %#lx - %#lx, ripas: %#lx\n",
-> +				   base, top, ripas))
-> +			break;
-> +
-> +		base = top_ipa;
-> +	} while (base < top);
-> +
-> +	/*
-> +	 * If this function is called again before the REC_ENTER call then
-> +	 * avoid calling realm_set_ipa_state() again by changing to the value
-> +	 * of ripas_base for the part that has already been covered. The RMM
-> +	 * ignores the contains of the rec_exit structure so this doesn't
-> +	 * affect the RMM.
-> +	 */
-> +	rec->run->exit.ripas_base = base;
-> +
-> +	return 1;
-> +}
-> +
->  int kvm_rec_handle_request(struct kvm_vcpu *vcpu)
->  {
->  	struct realm_rec *rec = &vcpu->arch.rec;
-> @@ -224,6 +695,8 @@ int kvm_rec_handle_request(struct kvm_vcpu *vcpu)
->  					vcpu_get_reg(vcpu, rt);
->  		}
->  		break;
-> +	case RMI_EXIT_RIPAS_CHANGE:
-> +		return kvm_complete_ripas_change(vcpu);
->  	default:
->  		KVM_BUG(1, vcpu->kvm, "Unhandled realm exit_reason");
->  		return -ENXIO;
-> -- 
-> 2.43.0
-> 
