@@ -1,87 +1,86 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7567450EBF3
-	for <kvm@vger.kernel.org>; Mon,  7 Sep 2026 15:57:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21FE51118B
+	for <kvm@vger.kernel.org>; Mon,  7 Sep 2026 15:57:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788796633; cv=none; b=iZm7ZfayyyTX8PATf/HEWrr/fc6a7Eh9rS9hBW8R0JgO2U2gYZCFRg8FlW0T1yCiEsYRvEg2r+Tchra8H/6dYO8VNLWOaQb2eHX3gtVFAxCTAwjd3DY37Kms5Sv5HeF44irnuoa2GD0rivVXL56rblviWW/0QnM1XFHyOkzIpY8=
+	t=1788796634; cv=none; b=VDKxgDAX/1jXfPlHivUX3kp7Q06YZKtYkuGKz2Ho3mBw219o8qBSvmyono4NCgiaKtgICf/ULz3bT5iFBxI0iFVrwysmajFQyNFRiUJDZefbKBt+3d42/49GiOqpq7ldtHZ2GlLdKFurvhWoaogI75m7+PhFV1yxcz4KIAiJ7Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788796633; c=relaxed/simple;
-	bh=YED199b63twZPfVPlCX7botRj/pf2l2Uaa6HoA0Enk0=;
+	s=arc-20240116; t=1788796634; c=relaxed/simple;
+	bh=VhSl+vgqLGjB+IiD1F5Uur29XSqE4XnTA0yGCHgFzzA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=euS8ZPeu/PrmQw5gS3DwKyQIh+lvo/3I2w0nDrGfU5BUAtQQXad2f5YKg3u0FO8CTHcxOERGy0PdK9tSj1kDslS9OEj930qrJvdLoQ/oKPFljgPTSXcJKGj57VInLJl+WWiqvhjeQbO+D7zOub88509UoX8Sp15UWFOhFoNBn4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DC0qxUvQ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LFNsBg6L; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:To:Cc; b=CuarjPg1v3Z7uTQcgHbDp652w8kG63m9U+YlZ2q/MyZxPGkhG0VIr/DUdDrOfjiLQLrrCmVlyEzkpFDj4AW13/EQ6jKIekpssYQatEUy10xEyURRm+O44/SfS5DSuYn/N1ua2YyLJneAfsoA2oXl8G8NACyAQVkSaPacAeYh9TM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YNgiTlnb; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=baqMxXko; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DC0qxUvQ";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LFNsBg6L"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YNgiTlnb";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="baqMxXko"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788796630;
+	s=mimecast20190719; t=1788796631;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LNEHRJDHdcdZeT0Nz44zT2pq9EwMvgRWKA64S1eEvDM=;
-	b=DC0qxUvQBdA8ny5wqkJA77TiePQ+V8C/U1jcOnN9ow80cLcjznF9ZGkVbdOnlV9FzIm0dP
-	qlfOzSZb+HqQqXp+k6sOY8CMlWA2uBa9LK7Ompz7RNcyuTSGaDyGbJ83JUPDlT06MyVUcz
-	Ahi2rxUTRYlfs7B72E4dzePV5t7mSns=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Z5hdb76LHaeRDjiMZ4Xz5jIByuQ8SJeJucbeRZQQXsU=;
+	b=YNgiTlnb+NgBHYZRFzUbmQR8CLa7uGE/gV1aOq+rgHa3yQsF7CPOKORDFM83AVayj8a1UL
+	xTrLaOv6nJYaMIFg9vUCOQBhT/5KmMP16yr7bpfkUYg98ZdW0e+mVzMvyTkKtDjsTdywoE
+	DEmUOghl7ur2aIuND1qQS4/nDgJ+ywc=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-41-COnlybD3ONCoE0kty6T_qA-1; Mon, 07 Sep 2026 11:57:08 -0400
-X-MC-Unique: COnlybD3ONCoE0kty6T_qA-1
-X-Mimecast-MFC-AGG-ID: COnlybD3ONCoE0kty6T_qA_1788796628
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-490a767c7dcso27377825e9.2
-        for <kvm@vger.kernel.org>; Mon, 07 Sep 2026 08:57:08 -0700 (PDT)
+ us-mta-194-47fUUlPBMM6JlM0ZERbBfA-1; Mon, 07 Sep 2026 11:57:10 -0400
+X-MC-Unique: 47fUUlPBMM6JlM0ZERbBfA-1
+X-Mimecast-MFC-AGG-ID: 47fUUlPBMM6JlM0ZERbBfA_1788796629
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-495529a93f9so36479125e9.3
+        for <kvm@vger.kernel.org>; Mon, 07 Sep 2026 08:57:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788796628; x=1789401428; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1788796629; x=1789401429; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LNEHRJDHdcdZeT0Nz44zT2pq9EwMvgRWKA64S1eEvDM=;
-        b=LFNsBg6LEFyc6ej5sRVNUZajtroxkcUwBlSAFsuZ/Tj6hhp4i4G5561c+kPqsdRzLq
-         t5+IyBspAlpemLsAvnxP+YuZPTchRTIDEXUQYm46SbIvA98PdCw/M6SKRyqnaes4baMs
-         tQmc1oqC5KLjiufMKx/4dOPeFCKznDj6j6DvmoNuQkAOzb9q3q87nzyJdlSQ2fL23A/s
-         Yku3iodrjpIY7Vt3AvUkaUZ53iDg/hunqrv0U1JrAmtofcspoY6jNmP1abTegKFTrt19
-         Lt9Ht6uHyc+rgt/l62QjkYHWgzRDqWNt+TZ5mLbzNbnaEbJRZeryMUoBP3qlEfbvegcX
-         OkEQ==
+        bh=Z5hdb76LHaeRDjiMZ4Xz5jIByuQ8SJeJucbeRZQQXsU=;
+        b=baqMxXkorh68JWhyUj0rAW5c4uqsKSM1Oi+IB38EDgoePY/s7A6s8UlWZkyBtRYHSi
+         OYfH9zA0aC3PcsiGF/NKEBBvBdVKFQnYbxpFWZA4r+F+bmusjwBxRDXlflMDYS0XsY5M
+         qm430iU7fkfEDdOh5G2UDyYwoaMmA413+GD+ko3vkVgPJujxgr7+G30Qhq0DH948mBB0
+         xsz3shQUxlFFi+O+V1HtS2L7oU3QZ+f6kcV3xxv+aicFEI59IHmjC3HZBC9Pkb+OCJtG
+         l/HAIZ/iqU1zzK24Vn6ERub/9qsOzEVGn5pnJaS5U2OnlNy57D3t+dbtv85h2OGMnTk6
+         zf1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788796628; x=1789401428;
+        d=1e100.net; s=20251104; t=1788796629; x=1789401429;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LNEHRJDHdcdZeT0Nz44zT2pq9EwMvgRWKA64S1eEvDM=;
-        b=ZErWYBzO4UTpceHoRSpBhHIwjDwl3V6+6m0aVe9eYIYz6/WwCJ7d268gV2IG/z/b+T
-         uwnJJBiutuXROcSNnrIAwtuUjLQkGwgTOt7De42T71M23g+m7p6hS1isvD661W4I/MA7
-         3RF2jIXfDyERRkVrNjiEHkQ/xTcmHylZDsBnPh8FJ+O43zHsQxXPDOAFcrRXnnRT22lu
-         lQd0kQS1z73dB8purO0ksE6uRGHIcEzq9UyPWzo8EnNR4SgEYDGVTLvtuWQW7K5C2UqE
-         tWW+2wQjuB/VPK9vdZOMJuSw2i+wJV5wiIephOka9N16PLSGKbZkxLrZAl6GipPt7BFT
-         KdIA==
-X-Forwarded-Encrypted: i=1; AKwUvBxZ9kOzTu9JkvVBWidTZM44drWs2fY87+lCi8AWUK97AWK74zIpGnX9unCFYxrtppkFpX4=@vger.kernel.org
-X-Gm-Message-State: AFuF++nLXBfWUBC0NKJBvNkql3d0VRT/BmRdYgtrxCGiNPXZ9OGZ/0bw
-	fKrmR90G1HkXX4Vig2lgwOKswq9SGGkG/5NNuxsnwWXESs4CeBM5DqMvEfmp/q8bCib27QhKsLK
-	98PEYwQtEeY4Zzt/y5uZLWHt9c0MBL5zZ9VGC8QzHgs+iFdX0hNWtnA==
-X-Gm-Gg: AYBFou14JWqLcCvXWBAOuSIsNeoBNrXv8ClHuziSR1sRDFYsRLdlci/5yjBtZN1Soma
-	0hhvM177NSsvXEmD9ia9TvKLkZlakz2gj6VyTrlRaqPfVltOGWsVVdkRaOO7LD50g6s9BsSgvHq
-	vk58v6S1tclhF0eoRUSoaSlMhPKA9mNBMJ1bWx7a/Us4faxlg9Ob57CEw7XVQwexFPU+LYfCtLD
-	MRlVspesl/ov9Br16XexNsxadVqn0dUilyudRUs5xwfMJHv1xIvSPSBSDq2MS1r03nHAhqHjj0f
-	aX5aprZpFpY+IeBu16nM4T+9olySRy3sxLSAUh5kejJsmS9OQ9p841Ijr4e0oJBuJdG1BP+sjpS
-	DfXrFVvFSObArUhFApElo1cCo1GBvaHizzk0mOiGSpw8l0bytgDZDT4vvuYfqbK2NwrKB
-X-Received: by 2002:a05:600d:4449:20b0:49d:3a:e576 with SMTP id 5b1f17b1804b1-49d003ae639mr122997525e9.5.1788796627802;
-        Mon, 07 Sep 2026 08:57:07 -0700 (PDT)
-X-Received: by 2002:a05:600d:4449:20b0:49d:3a:e576 with SMTP id 5b1f17b1804b1-49d003ae639mr122997145e9.5.1788796627429;
-        Mon, 07 Sep 2026 08:57:07 -0700 (PDT)
+        bh=Z5hdb76LHaeRDjiMZ4Xz5jIByuQ8SJeJucbeRZQQXsU=;
+        b=dOM+OSJEw3FpQO578u9mli0S6Pb1yvyUAUAG/OUMfWKEGhYrlBdl6gQQPH4PJRYv/6
+         qKDTv7tgJrv8pSHI2XlgSyDsK7yXUH3sJeaimRy0brXLL9Lhlmu7yoW6z67wmXv+a8sR
+         1W9zbFDYO7Rts3HuaQaIcef4Yvv5952Ni56A4ZDnJiN6FSFsdcgsPG4sVk6SbpOOQSgy
+         oHZ/ev7pbcvS1Ibg8Ac6D6DGlGcIHb8j1sFk1BHDRbl3YUewsIVur4jp//i6LXQWGSme
+         q+kV28xgaMEUopuhAY0go347sCYhaWj9F5BdyZcxyrHKWZGIeWEYg6EY1qczNE0Dmpmt
+         +P8w==
+X-Forwarded-Encrypted: i=1; AKwUvByFOBIoHgvV+rd82Govdy6ddJbYfBYNB3TLVvl/ldx1S5j4Ws7szM4BKvXbm2CEMyUbyng=@vger.kernel.org
+X-Gm-Message-State: AFuF++kgqpwgg9ypPO3wSUSmA5BcveH6s9SLg1WOT62xpnkgyR138KWv
+	1EDmDvwBzw59p4QFRmGoGBtzlyxW15aM5l0KuzlDV3cogHzOmssWhlKv/9HI++/DKI1wQ3yV9Jq
+	t9ZNF4s/tovfh+lv6e+mqyEwbW9PzOMiww0XJr53Adg7jVgvID2ZXqw==
+X-Gm-Gg: AYBFou2P1HCc7203RqLEcme2m55PBdY/DkWByLCLTF41nwZx6ldqtO8VFyPPfDNxxHY
+	HU7z6+rt5ygrhHIOMuwC0SBBD0XHmMkCdxgMYtezMlPRiuuUAC4jiF7dzdNG6EGNNWqyk5vIUiD
+	1tBnYhsnLAsCNofG54bbdXLcYFE64lHZaF+RCcJ1Qfs3/7Ds72Gv85GvAvL681pO2rEw1XQ9x0I
+	UGR7ZWP3ixuQO4UF31EbVpePLywjccDMrOEjgLgxQPhfE0A8RbJXV7fpWQa8w6KX/3JvPMfIoOF
+	rP0sbKH26tzziydY5N0ektCFoYWonG/J0ZG2NMb55/ZR6uFptzO34OSAIyvnp/S+6VDm3N67CE+
+	jQXoZLjTZzzlZOuVLI9C5voaYUFVJnszVenckWIi0NVSAd2/H861E9XRQZ+IHoSyNykZg
+X-Received: by 2002:a05:600c:1d1c:b0:49d:91d:d192 with SMTP id 5b1f17b1804b1-49d091dd358mr118096885e9.5.1788796629256;
+        Mon, 07 Sep 2026 08:57:09 -0700 (PDT)
+X-Received: by 2002:a05:600c:1d1c:b0:49d:91d:d192 with SMTP id 5b1f17b1804b1-49d091dd358mr118096055e9.5.1788796628557;
+        Mon, 07 Sep 2026 08:57:08 -0700 (PDT)
 Received: from lleonard-thinkpadx1carbongen13.rmtit.csb ([151.29.41.106])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cf755c22esm320477955e9.0.2026.09.07.08.57.06
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cf755c22esm320477955e9.0.2026.09.07.08.57.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 08:57:06 -0700 (PDT)
+        Mon, 07 Sep 2026 08:57:08 -0700 (PDT)
 From: Luigi Leonardi <leonardi@redhat.com>
-Date: Mon, 07 Sep 2026 17:56:59 +0200
-Subject: [PATCH v2 3/5] i386/sev: convert the guest policy properties to
- custom accessors
+Date: Mon, 07 Sep 2026 17:57:00 +0200
+Subject: [PATCH v2 4/5] i386/sev: add a get_guest_policy callback
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -90,7 +89,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260907-fix_igvm_policy-v2-3-c8c50f1dbfda@redhat.com>
+Message-Id: <20260907-fix_igvm_policy-v2-4-c8c50f1dbfda@redhat.com>
 References: <20260907-fix_igvm_policy-v2-0-c8c50f1dbfda@redhat.com>
 In-Reply-To: <20260907-fix_igvm_policy-v2-0-c8c50f1dbfda@redhat.com>
 To: qemu-devel@nongnu.org
@@ -102,77 +101,113 @@ Cc: Gerd Hoffmann <kraxel@redhat.com>,
  Luigi Leonardi <leonardi@redhat.com>
 X-Mailer: b4 0.14.3
 
-Both SEV/SEV-ES and SEV-SNP expose a "policy" object property. The
-SEV/SEV-ES one was registered as a plain uint32 pointer property, and
-the SEV-SNP setter ignored the result of the visit.
+The next patch populates the SEV-SNP ID block's policy field.
+That value must be whatever policy is currently in effect on the platform
+but there is no way to read it back: the policy can come either from an
+IGVM GUEST_POLICY header or from the command line, and the command line
+sets it directly into the SEV/SNP guest struct without going through IGVM.
+Reading it back from the platform is the only source that always reflects
+the value in effect, regardless of where it came from.
 
-Give both properties explicit getter/setter functions and check the
-return value of the visit in the setters. This is preparation for
-tracking whether the guest policy was set on the command line.
+Add a get_guest_policy callback to ConfidentialGuestSupportClass for
+this purpose. It is not yet used; the following patch wires it into the
+SNP ID block population.
 
-No functional change intended.
-
-Reviewed-by: Ani Sinha <anisinha@redhat.com>
 Signed-off-by: Luigi Leonardi <leonardi@redhat.com>
 ---
- target/i386/sev.c | 30 +++++++++++++++++++++++++-----
- 1 file changed, 25 insertions(+), 5 deletions(-)
+ backends/confidential-guest-support.c       |  9 +++++++++
+ include/system/confidential-guest-support.h |  8 ++++++++
+ target/i386/sev.c                           | 24 ++++++++++++++++++++++++
+ 3 files changed, 41 insertions(+)
 
+diff --git a/backends/confidential-guest-support.c b/backends/confidential-guest-support.c
+index d60d1f6eaa..91701f1a5f 100644
+--- a/backends/confidential-guest-support.c
++++ b/backends/confidential-guest-support.c
+@@ -46,6 +46,14 @@ static int set_guest_policy(ConfidentialGuestPolicyType policy_type,
+     return -1;
+ }
+ 
++static int get_guest_policy(ConfidentialGuestPolicyType policy_type,
++                            uint64_t *policy, Error **errp)
++{
++    error_setg(errp,
++               "Getting guest policy is not supported for this platform");
++    return -1;
++}
++
+ static int set_id_block(void *id_block, uint32_t id_block_size,
+                         void *id_auth, uint32_t id_auth_size,
+                         Error **errp)
+@@ -71,6 +79,7 @@ static void confidential_guest_support_class_init(ObjectClass *oc,
+     cgsc->check_support = check_support;
+     cgsc->set_guest_state = set_guest_state;
+     cgsc->set_guest_policy = set_guest_policy;
++    cgsc->get_guest_policy = get_guest_policy;
+     cgsc->set_id_block = set_id_block;
+     cgsc->get_mem_map_entry = get_mem_map_entry;
+ }
+diff --git a/include/system/confidential-guest-support.h b/include/system/confidential-guest-support.h
+index 6d35ddb97a..27ae0a21b6 100644
+--- a/include/system/confidential-guest-support.h
++++ b/include/system/confidential-guest-support.h
+@@ -137,6 +137,14 @@ typedef struct ConfidentialGuestSupportClass {
+     int (*set_guest_policy)(ConfidentialGuestPolicyType policy_type,
+                             uint64_t policy, Error **errp);
+ 
++    /*
++     * Get the guest policy currently configured for the confidential
++     * platform, be it from the command line or from a previous call to
++     * set_guest_policy. Its format is the same as for set_guest_policy.
++     */
++    int (*get_guest_policy)(ConfidentialGuestPolicyType policy_type,
++                            uint64_t *policy, Error **errp);
++
+     /*
+      * Set the SEV-SNP ID block and ID authentication block. These are
+      * passed to SNP_LAUNCH_FINISH to provide signed verification of the
 diff --git a/target/i386/sev.c b/target/i386/sev.c
-index b53d13e2fa..38f97fd9b2 100644
+index 38f97fd9b2..f11fdb6590 100644
 --- a/target/i386/sev.c
 +++ b/target/i386/sev.c
-@@ -2996,6 +2996,22 @@ sev_guest_class_init(ObjectClass *oc, const void *data)
-             "use legacy VM type to maintain measurement compatibility with older QEMU or kernel versions.");
+@@ -2758,6 +2758,29 @@ static int cgs_set_guest_policy(ConfidentialGuestPolicyType policy_type,
+     return 0;
  }
  
-+static void
-+sev_guest_get_policy(Object *obj, Visitor *v, const char *name,
-+                     void *opaque, Error **errp)
++static int cgs_get_guest_policy(ConfidentialGuestPolicyType policy_type,
++                                uint64_t *policy, Error **errp)
 +{
-+    visit_type_uint32(v, name, &SEV_GUEST(obj)->policy, errp);
++    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
++
++    if (policy_type != GUEST_POLICY_SEV) {
++        error_setg(errp, "SEV: Invalid guest policy type provided for SEV: %d",
++                   policy_type);
++        return -1;
++    }
++
++    if (sev_snp_enabled()) {
++        SevSnpGuestState *sev_snp_guest = SEV_SNP_GUEST(sev_common);
++
++        *policy = sev_snp_guest->kvm_start_conf.policy;
++    } else {
++        SevGuestState *sev_guest = SEV_GUEST(sev_common);
++
++        *policy = sev_guest->policy;
++    }
++    return 0;
 +}
 +
-+static void
-+sev_guest_set_policy(Object *obj, Visitor *v, const char *name,
-+                     void *opaque, Error **errp)
-+{
-+    if (!visit_type_uint32(v, name, &SEV_GUEST(obj)->policy, errp)) {
-+        return;
-+    }
-+}
-+
- static void
- sev_guest_instance_init(Object *obj)
- {
-@@ -3004,8 +3020,8 @@ sev_guest_instance_init(Object *obj)
-     sev_guest->policy = DEFAULT_GUEST_POLICY;
-     object_property_add_uint32_ptr(obj, "handle", &sev_guest->handle,
-                                    OBJ_PROP_FLAG_READWRITE);
--    object_property_add_uint32_ptr(obj, "policy", &sev_guest->policy,
--                                   OBJ_PROP_FLAG_READWRITE);
-+    object_property_add(obj, "policy", "uint32", sev_guest_get_policy,
-+                        sev_guest_set_policy, NULL, NULL);
-     object_apply_compat_props(obj);
+ static int cgs_set_id_block(void *id_block, uint32_t id_block_size,
+                             void *id_auth, uint32_t id_auth_size,
+                             Error **errp)
+@@ -2888,6 +2911,7 @@ sev_common_instance_init(Object *obj)
+     cgs->set_guest_state = cgs_set_guest_state;
+     cgs->get_mem_map_entry = cgs_get_mem_map_entry;
+     cgs->set_guest_policy = cgs_set_guest_policy;
++    cgs->get_guest_policy = cgs_get_guest_policy;
+     cgs->set_id_block = cgs_set_id_block;
+     cgs->can_rebuild_guest_state = true;
  
-     sev_guest->legacy_vm_type = ON_OFF_AUTO_AUTO;
-@@ -3044,9 +3060,13 @@ static void
- sev_snp_guest_set_policy(Object *obj, Visitor *v, const char *name,
-                          void *opaque, Error **errp)
- {
--    visit_type_uint64(v, name,
--                      (uint64_t *)&SEV_SNP_GUEST(obj)->kvm_start_conf.policy,
--                      errp);
-+    SevSnpGuestState *sev_snp_guest = SEV_SNP_GUEST(obj);
-+
-+    if (!visit_type_uint64(v, name,
-+                           (uint64_t *)&sev_snp_guest->kvm_start_conf.policy,
-+                           errp)) {
-+        return;
-+    }
- }
- 
- static char *
 
 -- 
 2.55.0
