@@ -1,165 +1,107 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6815630EF86;
-	Mon,  7 Sep 2026 10:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B56456DF3;
+	Mon,  7 Sep 2026 10:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788776087; cv=none; b=XoDMO22XyfizebwlAdFN1t5PlotRE+TvJmGFBiZz31YhwpB25tbLvzgen3ugkNFLx4xJeLjNfOUjKgvueEi8GVyXnC/BXxSFKY3twbfSPUavE0FPQZW2BVd8stv0RbshCbihXoNxCDvsUQW/rL8ZRreX/mTdbwNyEkSVszsHztM=
+	t=1788776262; cv=none; b=gf7vqNu3CwCLSoxDfgk6vDbZjHO82306JdLUq0ozFboiXIYE3QNzKEZwXaDL8JCcRvQvHr4kgMhnq3woyRW5loZFj+FE6PwrMSUOHHHtDkLPzzwPrcHFnV6vr/b1uEeS3d8vCRrMMO2biD6HD+/pT/X6FN1YWq1u5jDago5SKRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788776087; c=relaxed/simple;
-	bh=alPNpabbOnB37h6nC1cs6jjEMFraQwNKa430EfuN7Wc=;
+	s=arc-20240116; t=1788776262; c=relaxed/simple;
+	bh=42Rg7ViOfbYf+s905e2DzYbCDf3NmZg9ibc3fFkQGMo=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ofYuGM4cVxOjB8zkwMCzM3H8WSXjTrsFrrvpoEnc6oUxwGnjoeJ02qoB7nXNAfFEEyA5BeoykmO2Oq7FKCWIktGlOONrcfAjNJeRxtmGGm+68jvBw+jNAsHFoql6OqSoUQTJJKJK26y/os+Ryop8pCI3lMjjsHngO7mn6JW1Io4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L7sAG9GI; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=JB+ll9ckvP+nR1KI5/8mww/9BW6Hu7KXsl7H0Yk1vfflLOQHSBdMH31TgjGYJoYe8UEetxUGNbuIKKNlDLRKYX4LmyoHb3MW3Q9AuYrV7+C4G/bd04dhsndeH8sEJLCAtN4kHqh2+UhN25JdamVjCxko83y5PObo2YblV7kNKqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=chANldWt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L7sAG9GI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA321F00A3A;
-	Mon,  7 Sep 2026 10:14:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="chANldWt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 856E11F00A3A;
+	Mon,  7 Sep 2026 10:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788776086;
-	bh=HMZ7+XOUJoEg4tdieoBk9owPXOkII+E58FEh5Zuv0Ws=;
+	s=k20260515; t=1788776257;
+	bh=1eDmgaL64aZNhjgY+oa0RV5ZbWl3LEZCRwly5ZERuYc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=L7sAG9GInez+FbdPrTp3Js+lWe7BxeVwgnKnv/WjbUaCYbsWmGFOXMXhURa90D7hQ
-	 ZvnkCAUtqr+UcgMqjfjQu444xKCeR6IeiDHbVSWObxcoB/Kd2oGcnuKn+Guzw5/gSu
-	 QZxckv1vMf5EZP3AYrd6soBDSLFogQaMh+8l7O6zXxcdjqdoAs9T+SQd5mIZpjbVec
-	 cRQ/oSXp7bcpdEqHGOJtBiic6ZrkoIa1rD2E3UGlbxpFPFPWx8PdE3JIDhigmRXZ7B
-	 pxrrKZ/ooGE0lFQyM6GFPt/ye5Zr5sRYwCFF2JqDkvZJT9K3NztO7xxtR4nXSBCz9n
-	 L1Ejw9yzfDDpA==
+	b=chANldWtFUeraLfDSNgsqkUytU7uChUYpUWyKYA078IQkOLWzdkTUUA/b4r1Y6Ax4
+	 7x/CEm+YidDXkVdD6+3Ko2txpO5/q5jDaky+AgMuTz+7UzU12BX2m0czvBbj+UhHYp
+	 1PD+Tf2DWsCv48AxFhA+9KLPtoWCSzR9SPVWQ4lwYip2qqv2l7GrEkD+18x5lPjKHU
+	 CjhdgtrLGQTGcZ8f5CKQXpsZSBaqIQwQ2gF6eX3+fKLb/ClF61rQ72q7hGMkpGUl7m
+	 pYQjtIQVRXSBGBeSqXbEAYWgXZFQrwz3FgIrCHJSRNO5m6tasAXHsaDQ6FnkMQCS9d
+	 BpmuoHJvoK+6g==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v17 3/7] firmware: arm_rmm: Configure the RMM with the
- host's page size
+Subject: Re: [PATCH v17 5/7] firmware: arm_rmm: Activate the RMM
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Suzuki K Poulose" <suzuki.poulose@arm.com>
-Cc: kvmarm@lists.linux.dev, "Marc Zyngier" <maz@kernel.org>, kvm@vger.kernel.org, "Oliver
- Upton" <oupton@kernel.org>
-In-Reply-To: <20260907095942.1140734-4-suzuki.poulose@arm.com>
+Cc: "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org, "Marc Zyngier" <maz@kernel.org>, kvmarm@lists.linux.dev
+In-Reply-To: <20260907095942.1140734-6-suzuki.poulose@arm.com>
 References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
- <20260907095942.1140734-4-suzuki.poulose@arm.com>
+ <20260907095942.1140734-6-suzuki.poulose@arm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 07 Sep 2026 10:14:45 +0000
-Message-Id: <20260907101446.1DA321F00A3A@smtp.kernel.org>
+Date: Mon, 07 Sep 2026 10:17:37 +0000
+Message-Id: <20260907101737.856E11F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] The SMC call leaves parameters X2-X7 uninitialized, violating the =
-RMM's RES0 requirement.
-- [High] The `struct rmm_config` fields are populated using native endianne=
-ss, which breaks on Big Endian kernels.
+- [Medium] The macro `rmi_sro_memxfer_cmd` uses a large compound literal to=
+ initialize the SRO state, forcing the compiler to allocate a ~2.2KB tempor=
+ary object on the stack.
 --
 
-commit 1741e17729c2ff5e23bc8bfb00cc50a61f38ebb7
+commit c773f8f03d602782404ec2f0103977a8f86f3b3e
 Author: Steven Price <steven.price@arm.com>
-firmware: arm_rmm: Configure the RMM with the host's page size
 
-This commit adds support to configure the RMM's granule size to match the
-host's page size during kernel initialization. It reads the feature
-registers to ensure the requested page size is supported and sends the
-configuration to the RMM via an SMC call.
+firmware: arm_rmm: Activate the RMM
+
+Activate the RMM after the basic configuration. This is a memory transferri=
+ng,
+stateful operation.
 
 > diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rm=
 i.c
-> index 008a783407b4e..76f91c145e1fd 100644
+> index 42c973c3a98bb..d969c8738efde 100644
 > --- a/drivers/firmware/arm_rmm/rmi.c
 > +++ b/drivers/firmware/arm_rmm/rmi.c
-> @@ -77,6 +77,60 @@ static int rmi_read_features(void)
->  	return 0;
->  }
-> =20
-> +static int rmi_configure(void)
-> +{
-> +	unsigned long granule_feature;
-> +	unsigned long granule_size;
-> +	int ret =3D 0;
-> +	struct rmm_config *config;
-> +
-> +	switch (PAGE_SIZE) {
 [ ... ]
-> +
-> +	config =3D (struct rmm_config *)get_zeroed_page(GFP_KERNEL);
-> +	if (!config)
+> @@ -656,7 +657,19 @@ static int __init arm64_init_rmi(void)
+>  	if (ret)
+>  		return ret;
+> =20
+> -	return 0;
+> +	/* Activate the RMM */
+> +	sro =3D kmalloc_obj(*sro);
+> +	if (!sro)
 > +		return -ENOMEM;
 > +
-> +	config->rmi_granule_size =3D granule_size;
-> +
-> +	/*
-> +	 * For now we set the tracking_region_size to 0 which is the only option
-> +	 * for 4KB PAGE_SIZE (1GB for 4KB PAGE_SIZE, 32MB/512MB for 16KB/64KB).
-> +	 * TODO: Support other tracking sizes via Kconfig option for other
-> +	 * PAGE_SIZES
-> +	 */
-> +	config->tracking_region_size =3D 0;
+> +	ret =3D rmi_rmm_activate(sro);
 
-[Severity: High]
-Does this code handle endianness correctly?
+[Severity: Medium]
+Does expanding rmi_rmm_activate() here cause stack frame bloat in
+arm64_init_rmi()?
 
-The struct rmm_config fields are populated using native u64 assignments.
-On an ARM64 kernel compiled with CONFIG_CPU_BIG_ENDIAN=3Dy, this writes
-big-endian bytes into the shared memory. The RMM, which runs in little-endi=
-an
-at EL2, will misinterpret these fields.
+Looking at include/linux/arm-rmi-cmds.h, rmi_rmm_activate() calls the
+rmi_sro_memxfer_cmd() macro, which evaluates a large compound literal:
 
-Will this cause the RMM firmware to read invalid configuration values (like=
- a
-byte-swapped granule size) and fail to configure, breaking RMI support on B=
-ig
-Endian systems?
+*__sro =3D (struct rmi_sro_state){ .regs =3D {__VA_ARGS__} };
 
-> +
-> +	ret =3D rmi_rmm_config_set(virt_to_phys(config));
+This forces the compiler to allocate a ~2.2KB temporary object on the stack
+before copying it to the heap object, which defeats the purpose of the
+explicit heap allocation above. Does this risk exceeding the typical
+CONFIG_FRAME_WARN threshold of 2048 bytes on arm64 and lead to build
+warnings?
+
 > +	if (ret) {
-> +		pr_err("RMM config set failed\n");
-> +		ret =3D -EINVAL;
+> +		pr_err("RMM activate failed\n");
+> +		ret =3D ret < 0 ? ret : -ENXIO;
 > +	}
 > +
-> +	free_page((unsigned long)config);
+> +	kfree(sro);
 > +	return ret;
-> +}
-[ ... ]
-> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
-> index 2fb1f7f86d71e..9aa27697e2377 100644
-> --- a/include/linux/arm-rmi-cmds.h
-> +++ b/include/linux/arm-rmi-cmds.h
-> @@ -12,6 +12,23 @@
-> =20
->  unsigned long rmi_feat_reg(unsigned long id);
-> =20
-> +/**
-> + * rmi_rmm_config_set() - Configure the RMM
-> + * @cfg_ptr: PA of a struct rmm_config
-> + *
-> + * Sets configuration options on the RMM.
-> + *
-> + * Return: RMI return code
-> + */
-> +static inline int rmi_rmm_config_set(unsigned long cfg_ptr)
-> +{
-> +	struct arm_smccc_res res;
-> +
-> +	arm_smccc_1_1_invoke(SMC_RMI_RMM_CONFIG_SET, cfg_ptr, &res);
-
-[Severity: High]
-Does this SMC call leave parameters x2 through x7 uninitialized?
-
-The arm_smccc_1_1_invoke macro only generates inline assembly constraints
-for the explicitly provided arguments. It does not zero-pad omitted argumen=
-ts,
-leaving registers x2 through x7 with whatever was previously in them.
-
-Since the RMM firmware expects unused SMC parameters to be zero (RES0),
-could passing uninitialized values cause the RMM to reject the command
-with an INVALID_PARAMETER error and sporadically break RMM initialization?
-
-> +
-> +	return res.a0;
-> +}
+>  }
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260907095942.1140=
-734-1-suzuki.poulose@arm.com?part=3D3
+734-1-suzuki.poulose@arm.com?part=3D5
