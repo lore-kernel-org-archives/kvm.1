@@ -1,113 +1,237 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F361282F01
-	for <kvm@vger.kernel.org>; Mon,  7 Sep 2026 22:32:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292A73EEAC7
+	for <kvm@vger.kernel.org>; Mon,  7 Sep 2026 22:41:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788820377; cv=none; b=qRNtx8crOvzoPPpwOAMvM6a518fi2EXEK8mu/Sbu4Q0GTYbEM0AhuU4vjZgGiOv4/MfQzASTlWqOerUyMhAj39X2FdndGxsFrdZKdpqt2OzJkrqKfn0eG1xo4TxCs+n/WCtwFh5V3j8xCas1aOnvTqI6c4GQfYvsNEJwR7+UmP4=
+	t=1788820864; cv=none; b=dz8I839qAzm/1/YpUasZ7zge6LwUiaDqMzAy0LHUP1XpsnYeXLw/4BkG7x2iksbGzmz+xlVFTOx78LAL5T8jkSOR38NcxZRnf1Wwxjlqkp+MMPP3RJT5WT2GyCVKjmT1FoJAa/vJ+POdTb3q3v16adMznxkpLW1VDGZNXcFXWu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788820377; c=relaxed/simple;
-	bh=9RNlViBMP5gSfl6YGM7J6Ko4HkVsFl5+nPinarDZvEg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J1RXEFtiMKwUv/1MSeEvAx3OW6+bgpBSahn/QiqYO9Q4rUOhqwOIUbEhAtO2RjGEy9p30i+95kVZ/eFsiNeLKOxmF6+gjyInfUgtzYQVbJel4dVozqkN1FXBO9wyy6Mulliyn5or7kXvqQYBkySTf/159yTB6hw5zZonabx+4FE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UWm14lAR; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788820864; c=relaxed/simple;
+	bh=w6hnYrwGa6fUIEho02iLQbUb4586aB2uHSK/Hsp/sHI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WhPquq1G6pH11zCgPnzZN5PhggKWlSzfbtg5sVTW5qOVr/symBXcxGgtdmJqb6ukwKWKD82SbNbArcj+8i3xXJfswHhQ34R/g3b1uB5EgLnBfnophSAqurHP4SA0GP/ckfoG1xz0LCxVVMRAbZr2f7FGNGrgHoBzFf07yKmknNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CpNUMHaN; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tn/CXQ+o; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UWm14lAR"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49d0726ccc2so16080535e9.2
-        for <kvm@vger.kernel.org>; Mon, 07 Sep 2026 15:32:56 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CpNUMHaN";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tn/CXQ+o"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788820862;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L602+dgOHuBuqXjtZSYxQyf+Lxw66t1x8qHXG257FZg=;
+	b=CpNUMHaNfUDnX8+wCMSlcEercrwuB8Xmn8f9uH54AY9RfQCTBzY1iz3qtbQPFPhz287fva
+	dXSiJmzT5JK7bKQzPA3smh4htnsoKgYc6/Is4ZertNfsQ2OskBzlO0O+3Fxqdo/9gVsHGN
+	eJ6QzG+Y0NpZuGKZCOCPgXEbMhrd2YM=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-609-cjCfwX1HPa-fkTLDZClbtQ-1; Mon, 07 Sep 2026 18:41:00 -0400
+X-MC-Unique: cjCfwX1HPa-fkTLDZClbtQ-1
+X-Mimecast-MFC-AGG-ID: cjCfwX1HPa-fkTLDZClbtQ_1788820860
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2db3734d06dso44084005ad.0
+        for <kvm@vger.kernel.org>; Mon, 07 Sep 2026 15:41:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788820374; x=1789425174; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mnujOlryOcOB2B/LvIPxTaLmbwXh/kZV9FXNR3oxSFM=;
-        b=UWm14lARKYLQM+ND1gFensmfZyfXbYFhflN8KeZsSjpLigjKDh89DrUCkOrImEbPTF
-         JR9nLfnLiSVriZSXzabdDDA6LPWs5IAaAHFEuhGIRkdC7nIPNTT+Gq6t+uqZ3dyoVBj5
-         94mHUvmvPGJIPNcHogt1cYmeXsYkoQXixg/RxNUCa9rXuTjz8cr9Z6EhFnsC+71MFl8A
-         xdE/vOWoJ1vcWYd5/BsQ4CSoyk5H+1FbJoBzdBmilX5EKX+7Ga8xpjJFqPxELpxUXMXs
-         BwllPAFP2eVxdks/aBLXMO4h1e0Gioh6kbwG+YsZwMZZQO8wgyUJCI9S7FxqR/uAnthP
-         Wqtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788820374; x=1789425174;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=redhat.com; s=google; t=1788820860; x=1789425660; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=mnujOlryOcOB2B/LvIPxTaLmbwXh/kZV9FXNR3oxSFM=;
-        b=DZT5LdVvgG7A4Wjt9XTJQrMEhuXgWwZQtmte4OTZd9yCT8vyFRYRAJgqZDKxyKm6Ko
-         BMGwT0R5uxiXgQnzKjnHD2IlGj+uFJtyeb+Cv3NWo60TgVdd//FEf/Pf+mTkVft8OovM
-         OZSXcK/M6RPTRw0/OVRBm/C7Q9MwCc92LYF2rmOYsuT5ufqK9HDIQ5DdySiEgsVktX4Q
-         ixWDQdZeR3ox8mRe0o71pvfxli9PbpSOl560VpdEelKmHibfqKC4Ht0Hz5/X+1qJwW0Z
-         U1iiPyEe01NKOC8E2KLbvmzyDjtFrsPoJ84km1a+AdC5Wg3+jm54QykSNme2c4SYyX6X
-         CjRQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxhtCvosMeUAyTifWLP1H5nWb54hYCu2jFrmHn3HylhCIdUrtiKIgabS6thZKPKLjgFR9g=@vger.kernel.org
-X-Gm-Message-State: AFuF++nqvqRBMN5J2SH51IPh7yy9PfwOo3rQUycAN7FPZ/4lrEsyr5cc
-	zhh2iBugMEruUWtQ5d+u4ybUkc5Wa3Zveswwag/epwkeqxVrlF8R8wdb
-X-Gm-Gg: AYBFou359xE1yhbwcnCpWYaG72op1k0784kh/XKpOGSqbfXzzFhRjL951UCR9fgNdHR
-	NtkK/jkv0n8BUVVoACRyksEEKAFD0X81esIW2eZZMqR9mHMz3Ny/sE23bRYJBHYe/eNAtpi5/N7
-	UJ6yuA5a4jL8VKLXKNZTUzc7WLvwx6krgptcS407EglCfiyEkBmgvWWJ4pTdw5THCTuDe2fqM9v
-	RN8AWrMQN0DKOgjaY9k62/w/UidaQMsgufIUDbrt3pk2WWRRaQLUohcN8az+4M/88KBvdoJBneH
-	mSE1KM294DMpTkudHGVKXHrjYxbffjWkv/kK99XH6fC/PfDGTZ6SyJj7VLRYb6vZKkMrt7kEo7h
-	uZoxKwblax8V5aB8EKwSNWlzXHVJf+qhFEBXg1KEPazbFZFkhBV+6D4ubjnP+SJgtD3Cz/wo9xZ
-	rYipc/vGoPrfq6XHDW0smxDvx7CkU6Vk3CPmfKVr9AnNITx7if8i7dlaVGO9d82f+4Td+BOBpen
-	Gaxs7YShnjjY1kgw1iPMzExVFvCekOpYM3F9d7Kl7G2HpRPa/F2wFdfgU1vUwRr29htjAdyfQZ3
-	8lX6ixlfObNgURKgmd/8ZiYuc4pwheYVTOtBPtbWfQ/JBLTWEehgzFURXt87NXpkYbuu5TG2fCJ
-	b
-X-Received: by 2002:a05:600c:a0a:b0:49c:e1f1:3dd5 with SMTP id 5b1f17b1804b1-49cf81e6cebmr448618745e9.4.1788820374459;
-        Mon, 07 Sep 2026 15:32:54 -0700 (PDT)
-Received: from MacBook-Pro-von-Karl (dynamic-2a02-3100-b0c9-3601-cdce-ba4b-d0e3-dede.310.pool.telefonica.de. [2a02:3100:b0c9:3601:cdce:ba4b:d0e3:dede])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce551bf7asm289518525e9.2.2026.09.07.15.32.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 15:32:53 -0700 (PDT)
-Date: Tue, 8 Sep 2026 00:32:47 +0200
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowangio@gmail.com>, Gerd Hoffmann <kraxel@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rusty Russell <rusty@rustcorp.com.au>, 
-	Pawel Moll <pawel.moll@arm.com>, Cornelia Huck <cohuck@redhat.com>, 
-	Halil Pasic <pasic@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, 
-	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Hans de Goede <hansg@kernel.org>, 
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, Vadim Pasternak <vadimp@nvidia.com>, 
-	Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	virtualization@lists.linux.dev, linux-input@vger.kernel.org, linux-s390@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-um@lists.infradead.org, 
-	platform-driver-x86@vger.kernel.org, linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] virtio_input: stop callbacks before unregistering
- input device
-Message-ID: <ap87JrBAxjbPe_jX@gmail.com>
-References: <20260905152059.89560-1-kmehltretter@gmail.com>
- <20260905152059.89560-3-kmehltretter@gmail.com>
- <20260907174559-mutt-send-email-mst@kernel.org>
- <ap82pFlX8enNG0gZ@gmail.com>
- <20260907182153-mutt-send-email-mst@kernel.org>
+        bh=L602+dgOHuBuqXjtZSYxQyf+Lxw66t1x8qHXG257FZg=;
+        b=tn/CXQ+oas/ULJgVzaznDKIUVZ2KRzuCFHQyLPr1M1Ky0rlzG8CFl8JkHy0ihNrO62
+         035nVtvF7E0nbrtDXZbLOD1TuE0mzPkgBOhyMeZsoB+F5HsKBWcI35HdTYEWc+M5WvB7
+         EWXHhMJvxRw4ACi3xT8513Ptf/bTnI0ucAnuON3REAZ5hW6mnpBWjX+lWDUIywgc0NXK
+         V0wDE1tx2rlaL9Nk5lKKVBWQ6znCwfyjt++V+T5IUTHUnZhftUzyKzRLF+7Uj4byP1kB
+         WAO6ytCUWiO90T608JT6z+3IPSBqmpZ+3e8yNrJXU7ydlbnlnxbiH1k6GoR8w0hZyWZn
+         1IIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788820860; x=1789425660;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=L602+dgOHuBuqXjtZSYxQyf+Lxw66t1x8qHXG257FZg=;
+        b=Q0rit2BjGnGc7hkNdwWipsDjnag38MzzrQKW9t0C9a2hULY7UKMimAhBREdfUilZMB
+         WqgFej4tdY2nPwB1WfBhi9ldQjtmc70wNlw+hOUFXVgemW0bcW6GshqP3y5K6nQ8gHIW
+         FN2YTAOVSYvkIyNPZJvxL4pXoG9nwtReLm9+6j6hlLhdYZ+Iy/+XuzJn7HQGJG9nUxqG
+         ahzXiOiVqSVt1DbmKYU+pt7IjihpA/JUJVS6wUAUK+w86lNLXTayhcLuUFE2RKPTOSel
+         nb52N4R1c4+hmhDmgG/fMNT9UPn4ziiMP3zh4l8MKx0b+b3Bdr0X5s4AV6/hp8eny42B
+         j2Wg==
+X-Forwarded-Encrypted: i=1; AKwUvBxsExwB24HjjD/MzSkVKenQwYiNvYTegRnKUzzW6yqvxmrDoTtJ1zyQHZwqQ2LJGtUPifs=@vger.kernel.org
+X-Gm-Message-State: AFuF++kjzPlngWL3jeIvncP+AHwa7ydnhzi+mCSj9KNC9cgTJfx6sqgC
+	B9FHXigrdOBT6yGFTPYdig4X0CbAwe7+RIxngdYH3icbTKKz1MTcInw0c6Kvg11Iqv0dRMvbrlG
+	T6VPKBfo55Jr4aV6DPZlHyAKVZOv0yNM5iCLsMBFywS+w76HM2QFbFQ==
+X-Gm-Gg: AYBFou2wIfoVxkPjAMOQ5oxZyeWQZPTskipwr4CZIA86ejK7XUEm0ql+KolyYHdm9xa
+	fRUqw3g3+S6GLfCz9f2uKNNMbnqWZwdjlZDwmXaXaFBmTalu3MDExImoH59kPKC1fH90Kj/+I4v
+	uCmiml5Km9zB+08TBy1+fJOxI65SiZbVYVDzMgEq1dDBfnJ0yWZMf5gpBhFhVq6eDY5er38gkQ6
+	Xj2oVGlO9iCZWsO5jYO4enEZ2P4ZMBKiN26trwoT7dF+D+lHfslbWBk1NENi+a0F/AtjnEpNt47
+	z0W39KBbTVHg/EiQvn1z5FWGnSpgDazsM+C8qXHaNY+atWjum+qgkPb2k9kNsorRz/YJOSHPsqx
+	3UhRS5J6GciS+SSIegs3rYTrpJA3Waj7OYiirZBTL1A==
+X-Received: by 2002:a17:902:6ac3:b0:2ca:6c8:abd8 with SMTP id d9443c01a7336-2db127cde0fmr287844955ad.12.1788820859668;
+        Mon, 07 Sep 2026 15:40:59 -0700 (PDT)
+X-Received: by 2002:a17:902:6ac3:b0:2ca:6c8:abd8 with SMTP id d9443c01a7336-2db127cde0fmr287844615ad.12.1788820859141;
+        Mon, 07 Sep 2026 15:40:59 -0700 (PDT)
+Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db146b9691sm49351165ad.0.2026.09.07.15.40.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Sep 2026 15:40:58 -0700 (PDT)
+Message-ID: <64533fd0-5fe7-4839-8302-c5b6674bcb5a@redhat.com>
+Date: Tue, 8 Sep 2026 08:40:50 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260907182153-mutt-send-email-mst@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v17 3/7] firmware: arm_rmm: Configure the RMM with the
+ host's page size
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, sashiko-reviews@lists.linux.dev
+Cc: kvmarm@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
+ kvm@vger.kernel.org, Oliver Upton <oupton@kernel.org>
+References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
+ <20260907095942.1140734-4-suzuki.poulose@arm.com>
+ <20260907101446.1DA321F00A3A@smtp.kernel.org>
+ <bade4920-2db1-4a8a-99d1-ca2694647ec8@arm.com>
+Content-Language: en-US
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <bade4920-2db1-4a8a-99d1-ca2694647ec8@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 07, 2026 at 06:22:09PM +0100, Michael S. Tsirkin wrote:
-> > 
-> > "Assisted-by: LLM" is the form Documentation/process/coding-assistants.rst
-> > gives now.
-> > 
+Hi Suzuki,
+
+On 9/7/26 10:02 PM, Suzuki K Poulose wrote:
+> On 07/09/2026 11:14, sashiko-bot@kernel.org wrote:
+>> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+>> - [High] The SMC call leaves parameters X2-X7 uninitialized, violating the RMM's RES0 requirement.
+>> - [High] The `struct rmm_config` fields are populated using native endianness, which breaks on Big Endian kernels.
+>> -- 
+>>
+>> commit 1741e17729c2ff5e23bc8bfb00cc50a61f38ebb7
+>> Author: Steven Price <steven.price@arm.com>
+>> firmware: arm_rmm: Configure the RMM with the host's page size
+>>
+>> This commit adds support to configure the RMM's granule size to match the
+>> host's page size during kernel initialization. It reads the feature
+>> registers to ensure the requested page size is supported and sends the
+>> configuration to the RMM via an SMC call.
+>>
+>>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+>>> index 008a783407b4e..76f91c145e1fd 100644
+>>> --- a/drivers/firmware/arm_rmm/rmi.c
+>>> +++ b/drivers/firmware/arm_rmm/rmi.c
+>>> @@ -77,6 +77,60 @@ static int rmi_read_features(void)
+>>>       return 0;
+>>>   }
+>>> +static int rmi_configure(void)
+>>> +{
+>>> +    unsigned long granule_feature;
+>>> +    unsigned long granule_size;
+>>> +    int ret = 0;
+>>> +    struct rmm_config *config;
+>>> +
+>>> +    switch (PAGE_SIZE) {
+>> [ ... ]
+>>> +
+>>> +    config = (struct rmm_config *)get_zeroed_page(GFP_KERNEL);
+>>> +    if (!config)
+>>> +        return -ENOMEM;
+>>> +
+>>> +    config->rmi_granule_size = granule_size;
+>>> +
+>>> +    /*
+>>> +     * For now we set the tracking_region_size to 0 which is the only option
+>>> +     * for 4KB PAGE_SIZE (1GB for 4KB PAGE_SIZE, 32MB/512MB for 16KB/64KB).
+>>> +     * TODO: Support other tracking sizes via Kconfig option for other
+>>> +     * PAGE_SIZES
+>>> +     */
+>>> +    config->tracking_region_size = 0;
+>>
+>> [Severity: High]
+>> Does this code handle endianness correctly?
+>>
+>> The struct rmm_config fields are populated using native u64 assignments.
+>> On an ARM64 kernel compiled with CONFIG_CPU_BIG_ENDIAN=y, this writes
+>> big-endian bytes into the shared memory. The RMM, which runs in little-endian
+>> at EL2, will misinterpret these fields.
+>>
+>> Will this cause the RMM firmware to read invalid configuration values (like a
+>> byte-swapped granule size) and fail to configure, breaking RMI support on Big
+>> Endian systems?
+>>
 > 
-> really? not what i see. in which version?
+> We don't plan to support RMM for Big Endian Linux. I have now made the ARCH_SUPPORTS_RMM to depend on !CPU_BIG_ENDIAN
+> 
 
-Since v7.3-rc1. Christian Brauner proposed the change here:
+You probably need to avoid referring to CPU_BIG_ENDIAN as it's being dropped
+by PATCH[v2 13/14] in Will's series to removed unused big-endian support on
+arm64 [1].
 
-https://lore.kernel.org/r/20260701-work-coding-assistants-v1-1-a20a94d1d606@kernel.org/
-
-which became commit 816d9992d9ed
+[1] [PATCH v2 00/14] arm64: Remove unused big-endian support
+     (https://lore.kernel.org/linux-arm-kernel/20260907163726.17104-14-will@kernel.org/)
 
 Thanks,
-Karl
+Gavin
+
+>>> +
+>>> +    ret = rmi_rmm_config_set(virt_to_phys(config));
+>>> +    if (ret) {
+>>> +        pr_err("RMM config set failed\n");
+>>> +        ret = -EINVAL;
+>>> +    }
+>>> +
+>>> +    free_page((unsigned long)config);
+>>> +    return ret;
+>>> +}
+>> [ ... ]
+>>> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
+>>> index 2fb1f7f86d71e..9aa27697e2377 100644
+>>> --- a/include/linux/arm-rmi-cmds.h
+>>> +++ b/include/linux/arm-rmi-cmds.h
+>>> @@ -12,6 +12,23 @@
+>>>   unsigned long rmi_feat_reg(unsigned long id);
+>>> +/**
+>>> + * rmi_rmm_config_set() - Configure the RMM
+>>> + * @cfg_ptr: PA of a struct rmm_config
+>>> + *
+>>> + * Sets configuration options on the RMM.
+>>> + *
+>>> + * Return: RMI return code
+>>> + */
+>>> +static inline int rmi_rmm_config_set(unsigned long cfg_ptr)
+>>> +{
+>>> +    struct arm_smccc_res res;
+>>> +
+>>> +    arm_smccc_1_1_invoke(SMC_RMI_RMM_CONFIG_SET, cfg_ptr, &res);
+>>
+>> [Severity: High]
+>> Does this SMC call leave parameters x2 through x7 uninitialized?
+>>
+>> The arm_smccc_1_1_invoke macro only generates inline assembly constraints
+>> for the explicitly provided arguments. It does not zero-pad omitted arguments,
+>> leaving registers x2 through x7 with whatever was previously in them.
+>>
+>> Since the RMM firmware expects unused SMC parameters to be zero (RES0),
+>> could passing uninitialized values cause the RMM to reject the command
+>> with an INVALID_PARAMETER error and sporadically break RMM initialization?
+> 
+> Correct, I have now moved all RMI calls to smccc_1_2, making sure that
+> all the undefined arguments are initialised to 0.
+> 
+> Cheers
+> Suzuki
+> 
+> 
+>>
+>>> +
+>>> +    return res.a0;
+>>> +}
+>>
+> 
+> 
+
