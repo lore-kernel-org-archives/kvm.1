@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBDB3233941;
-	Mon,  7 Sep 2026 17:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818E9503BE1;
+	Mon,  7 Sep 2026 17:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788802488; cv=none; b=uoMoJ9owpDS0n1p5MPCm8YYVs/AiyLqaA4+NYLSkER5XQ6MSn78sU7GMeqq2MKcT4ukuZfXfkXqd3aUQIqP0y1xSetPC07zGSTSTnbz0rkSaT3h5phb1j1xSbDRJBaXjK2D9bRSg25tHAkjwtHa2p2SgS+8gpoWmM9hA3KMyNmE=
+	t=1788802570; cv=none; b=TLvAVzt+VD0iPTE6vfJEKT8H3lhcx0xqoOHVDnhUGUVxmLW0MY+OyZROHPP1XfpOHoVsatEBzXovedBedVp0rGBiRIuF5I9RrsdmOztSALPTdKQKdUjJE7KWMCELNo2ydJh2WiyY8zkG8BCsC0Cv/KBmxEp58dtRYOEN8qXgA9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788802488; c=relaxed/simple;
-	bh=S2Y7NkdMF/JC0VD1F/pWOTj6gxA6PZ3Xg9kjdawWGUM=;
+	s=arc-20240116; t=1788802570; c=relaxed/simple;
+	bh=8VnqT7iE08CTJY4ULMC9Eu/+M3/sW+uuGOyqeK8mP10=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E9RdZXmHBObFpO/0jgLrdCTdc6S5+Zo/6p+vpjM1jcuK04Ukl0pwoo3ga26oRJfP4CIKTV3Q0MiiMeLqV3Rrx93WIp45B/2so0/E5gr3EdCo2xzD76FKNgjyoT9gpR6B5TsPxA0a3glzhwIH0bMYGyh0BW2f/ipCqhMxkOfqZxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bbMqmjiy; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=d3eQ26RctJDaxCV4JuYY10xKlojukjD6T+IJBqq25AU6Wbx24I6Ya9wWMJluow1W5Tyxtl++navCH/P1o/cZyIftiB92JMIrSULtcE9+Vs0ckpYmRFb2Vox2kpmzHP7eVVaRvGSFbQtWlVNpaGBUBu1yYU6W24qpjlSaQEqvSTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jZpQO+pF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bbMqmjiy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D29541F00A3A;
-	Mon,  7 Sep 2026 17:34:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jZpQO+pF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709FC1F00A3A;
+	Mon,  7 Sep 2026 17:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788802486;
-	bh=wdMFuDfpQV1H0dd1MyGx8tJTE4v2mnJlVsbV4QfVkWE=;
+	s=k20260515; t=1788802569;
+	bh=Zl3vN9QSBS4kXKbnv5GK6BmJWTSbuAvkw/D4BzXj8Js=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=bbMqmjiyl6P/28J/ivOqI/2HOb5h4eMX4O8Agiu+v9e/3Xn1DQrE3dtNmWH/zJ8TZ
-	 U3ja9ds88N9x/fE+F70gsIuxYxBQREooLf+8L5xQqbsSHRdDnAprv38u8Mx1N68DJE
-	 IL6cbjaC4ILY9giUcDE4ePRLIPAG+isjYumu5jKYSv3yOad85PbTfTWx3uHH7mHPC0
-	 +Ju1B5vah++WUcZx5JOZ/STQFLV7FzlWhXFk97JDfbPCKXZgVSjEwiCfKr57deiTMv
-	 VwK5r4ht8BxKsT2xVFGy7OkEs9z3YE+HcM9Fscm4avln2pWCELATM7NBERtEiuvzAJ
-	 DJHnniXSoxcNw==
-Message-ID: <daa3875e-420d-4de5-9a1f-8c4138a1dbd8@kernel.org>
-Date: Mon, 7 Sep 2026 19:34:43 +0200
+	b=jZpQO+pFILLyvSqGIYr/3RAfNQi1ycmgUnPjqlG0JKdqMdt8L7yBdVNBYwR6gJQs9
+	 awJBEB1CnuL/1KjOUrWA92Pozv7PtV3R+vUTTN9g2MBdSUBTedyq0xbJmz7F4O/TBU
+	 36cJnW+1B0KCZS2vstql0Wpt5qCCeUrJYZm4iAFp73QHdOJ0mDTQVFkNXu+VFQHKoW
+	 tO3XNiKBngn7Zu0ERbNtIs3pU24cjd7AbRPoBinF4YfA+fkF+f2noFmFEaYSePsuiL
+	 8ZQrudTClF8Zt77biG2+7ZabT6xHwpQCcMv1Xhsl1LJTCjmKVH2YMXViSTGd6KPv7q
+	 NhAjqqw3wBeAw==
+Message-ID: <fd1d92d4-449a-47c3-b585-9d6105c3afb6@kernel.org>
+Date: Mon, 7 Sep 2026 19:36:04 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,15 +35,15 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] KVM: guest_memfd: Gracefully handle xarray errors
- when binding a memslot
+Subject: Re: [PATCH v3 2/4] KVM: Use goto to handle errors during memslot
+ preparation
 To: Sean Christopherson <seanjc@google.com>,
  Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  Stefan Teodorescu <fane@google.com>, Dennis Tighe <dtighe@google.com>,
  Sashiko Bot <sashiko-bot@kernel.org>, Yan Zhao <yan.y.zhao@intel.com>
 References: <20260904004342.3162959-1-seanjc@google.com>
- <20260904004342.3162959-2-seanjc@google.com>
+ <20260904004342.3162959-3-seanjc@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -90,80 +90,20 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260904004342.3162959-2-seanjc@google.com>
+In-Reply-To: <20260904004342.3162959-3-seanjc@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 9/4/26 02:43, Sean Christopherson wrote:
-> If inserting a memslot into a guest_memfd's bindings xarray fails,
-> propagate the error back to the caller, i.e. fail memslot creation as well.
-> Signalling success and continuing on with memslot creation results in
-> use-after-free, as the guest_memfd instance will remain reachable via the
-> memslot after the file is freed (kvm_gmem_release() won't nullify the file
-> pointer due to lack of a valid binding).
+> Use a goto to unwind early memslot changes if preparing for a memslot
+> operation fails.  This will allow moving the creation of guest_memfd
+> bindings into kvm_set_memslot() without needing to copy+paste the unwind
+> logic.
 > 
-> Opportunistically WARN and reject binding if KVM_MEMSLOT_GMEM_ONLY is
-> already set, partly to guard against goofs elsewhere, but mostly so that
-> KVM doesn't need to worry about clobbering flags when unwinding on failure.
+> No functional change intended.
 > 
-> Fixes: a7800aa80ea4 ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
-> Cc: stable@vger.kernel.org
-> Reported-by: Stefan Teodorescu <fane@google.com>
-> Reported-by: Dennis Tighe <dtighe@google.com>
-> Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/all/20260823135031.4F6DC1F000E9%40smtp.kernel.org
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
->  virt/kvm/guest_memfd.c | 15 +++++++++++++--
->  1 file changed, 13 insertions(+), 2 deletions(-)
-> 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index b596486d184c..0b48e9a775aa 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -612,10 +612,14 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
->  	struct inode *inode;
->  	struct file *file;
->  	int r = -EINVAL;
-> +	void *xar;
->  
->  	BUILD_BUG_ON(sizeof(gpa_t) != sizeof(offset));
->  	BUILD_BUG_ON(sizeof(gfn_t) != sizeof(slot->gmem.pgoff));
->  
-> +	if (WARN_ON_ONCE(slot->flags & KVM_MEMSLOT_GMEM_ONLY))
-> +		return -EINVAL;
-> +
->  	file = fget(fd);
->  	if (!file)
->  		return -EBADF;
-> @@ -654,7 +658,15 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
->  	if (kvm_gmem_supports_mmap(inode))
->  		slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
->  
-> -	xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
-> +	xar = xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
-> +
-> +	r = xa_is_err(xar) ? xa_err(xar) : 0;
-
-
-r = xa_err(xar);
-
-Should be sufficient, right?
-
-mm/memremap.c:pagemap_range() uses that and just avoids the intermediate xar
-value completely.
-
-r = xa_err(xa_store_range(...);
-
-> +	if (r) {
-> +		xa_store_range(&f->bindings, start, end - 1, NULL, GFP_KERNEL);
-> +		slot->gmem.file = NULL;
-> +		slot->gmem.pgoff = 0;
-> +		slot->flags &= ~KVM_MEMSLOT_GMEM_ONLY;
-> +	}
->  	filemap_invalidate_unlock(inode->i_mapping);
-
-Apart from that
 
 Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
