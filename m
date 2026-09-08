@@ -1,92 +1,112 @@
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562D73803C8
-	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 10:06:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2FA51356F;
+	Tue,  8 Sep 2026 10:33:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788861968; cv=none; b=nlUzSbSP6q9Ls8ZXKzcI43S+wXQMA4BvYmLV8KYL1WMlz902AY5EXT3Gpnj+UF3VJjCrTvt+HhlW8Dqkjt7BB+nO9L04v4kRxdu0NQH7VtnA1/oSdK/undQbmj9KysqmqiMolrOQeE6xTJ8FPDIdIWPEn+FoWrSQHAWEHe5PL3U=
+	t=1788863625; cv=none; b=S6KY2y9LLAu873rty0hZb6p8YClYW70GDP4edqfMVh0Jon75gBkLQQdqJGL0Wv/GpP3H0FJNig5HoSt5/Pd/gKSwcgPOWsUHSc6DJLN3LM2R8C11HNH11bVdqds7sOxcWpeRcVCqt/zQYCjnV0DNUD1bsbB0OjrSYVTVS1YvLOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788861968; c=relaxed/simple;
-	bh=N0MQn4fpt24h6h8SLSgCP+WfNsem+UBysijHm0dnP1I=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gIKPSL9yaZe0Jn+QdH1C3k8N7RUjINMyRT6SXRqplMu5DS4kJT4aBEaqus7j2KnZlGECus5hiz/GJ3/0pWZO6N64a3VilQtzgyew+XQP/IdksKxDa+7BMQWeF+lwHhjwcuoiCfgE6+uJAcSFV/9Qk145wV6wfpmlYu1B1a8leFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowAD3YDtN3J9qi5eoBw--.22882S2;
-	Tue, 08 Sep 2026 17:58:39 +0800 (CST)
-From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-To: Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>
-Cc: kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org
-Subject: [BUG] RISC-V: KVM: WARNING in mark_page_dirty_in_slot with dirty ring enabled
-Date: Tue,  8 Sep 2026 17:58:13 +0800
-Message-Id: <20260908095813.786-1-xujiakai2025@iscas.ac.cn>
-X-Mailer: git-send-email 2.35.1.windows.2
+	s=arc-20240116; t=1788863625; c=relaxed/simple;
+	bh=RkXapPFgSlryurKpOlWh4872DC41mH87gAnzbVVgZlc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=W8/GUwgtg7aBsELR8zAYJloDlzBs7w+dHBN93aBWyNmRo+3vPB0/SZ/M2m4qc+VKaGW/G/lmRrp8BLC8P8eWqMjWwgSTYjXJ5ZBZN417s0kH/pdc9O9xBarjjm6zS2Rc7ScwQmvwKX6eaCyNOu2yArRF5KVEZgplSywnz1P2A1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
+Received: from io.fritz.box (p200300f6af085a00d84fb33a51badfd9.dip0.t-ipconnect.de [IPv6:2003:f6:af08:5a00:d84f:b33a:51ba:dfd9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 5830B20A1DD;
+	Tue,  8 Sep 2026 12:33:41 +0200 (CEST)
+From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Cc: Michael Roth <michael.roth@amd.com>,
+	Liam Merwick <liam.merwick@oracle.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Ninad Naik <ninadnaik07@gmail.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	coconut-svsm@lists.linux.dev
+Subject: [PATCH v2 3/8] KVM: SVM: Hold SRCU while reloading guest-owned VMSAs
+Date: Tue,  8 Sep 2026 12:33:33 +0200
+Message-ID: <20260908103338.427254-4-joro@8bytes.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260908103338.427254-1-joro@8bytes.org>
+References: <20260908103338.427254-1-joro@8bytes.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-CM-TRANSID:zQCowAD3YDtN3J9qi5eoBw--.22882S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tFyxZryrZF45uFWUCr1Dtrb_yoW8Jw15pF
-	WrGrZxGrnrJw18tay2k3Z7Wa1FkrZ3Cay5Xw1DJrWDAr45Jr18AF9YgFWfZa15Cr1fta1I
-	yFWj93W7uw15ZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvmb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I
-	8E87Iv6xkF7I0E14v26rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x2
-	0xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q6rW5Mc
-	Ij6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxG
-	rwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJV
-	W8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF
-	1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6x
-	IIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvE
-	x4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnU
-	UI43ZEXa7IU56BT7UUUUU==
-X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiCRQECWqf0KYq3QAAsk
+Content-Transfer-Encoding: 8bit
 
-Hi,=0D
-=0D
-I found a crash by fuzzing KVM on RISC-V. The crash is a WARNING=0D
-in virt/kvm/kvm_main.c, mark_page_dirty_in_slot().=0D
-=0D
-The kernel is built from the riscv_kvm_queue branch of the kvm-riscv=0D
-Linux tree:=0D
-  https://github.com/kvm-riscv/linux/commits/riscv_kvm_queue/=0D
-at commit:=0D
-  9167580a3495b659656c3e0f689c4b38dacb2fb5=0D
-=0D
-I checked the current upstream tree and this does not appear to =0D
-have been fixed yet.=0D
-=0D
-I attempted a fix myself: the idea was to dirty pages against the=0D
-explicit faulting vCPU instead of going through the per-CPU "running=0D
-vCPU" used by mark_page_dirty_in_slot()/kvm_vcpu_mark_page_dirty().=0D
-However, I am not confident about the quality or correctness of that=0D
-patch, and the fuzzer did not produce a reproducer program, so I could=0D
-not verify whether the crash is actually fixed. For those reasons I=0D
-decided not to post it as a proper patch and instead report the bug=0D
-here.=0D
-=0D
-I have uploaded the kernel configuration used for the build, the kernel =0D
-crash log, and a patch I attempted to generate with the help of AI to =0D
-the following gist:=0D
-https://gist.github.com/6eanut/d3e017c17f7a5a144da90a6513773b2b=0D
-=0D
-If anyone is interested in investigating or fixing this bug, I would be =0D
-happy to provide any additional information or help that may be useful.=0D
-=0D
-Thanks,=0D
-Jiakai Xu=0D
+From: Joerg Roedel <joerg.roedel@amd.com>
+
+Take a dedicated KVM SRCU read lock around the guest-owned VMSA memslot
+and guest_memfd lookup.  This makes the reload path self-contained and
+prevents it from racing a userspace memslot replacement.
+
+Keep the lock through VMCB installation, and release it on all lookup
+failure paths.
+
+Assisted-by: LLM
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+---
+ arch/x86/kvm/svm/sev.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index c16eca9983f3..ee1bf9b4cc53 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -4037,6 +4037,7 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
+ 	unsigned long mmu_seq;
+ 	struct page *page;
+ 	kvm_pfn_t pfn;
++	int idx;
+ 
+ 	lockdep_assert_held(&svm->sev_es.snp_vmsa_mutex);
+ 
+@@ -4068,9 +4069,10 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
+ 	if (!VALID_PAGE(gpa))
+ 		return;
+ 
+-	slot = gfn_to_memslot(vcpu->kvm, gfn);
++	idx = srcu_read_lock(&kvm->srcu);
++	slot = gfn_to_memslot(kvm, gfn);
+ 	if (!slot)
+-		return;
++		goto out_unlock;
+ 
+ 	mmu_seq = kvm->mmu_invalidate_seq;
+ 	smp_rmb();
+@@ -4079,8 +4081,8 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
+ 	 * The new VMSA will be private memory guest memory, so retrieve the
+ 	 * PFN from the gmem backend.
+ 	 */
+-	if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, &page, NULL))
+-		return;
++	if (kvm_gmem_get_pfn(kvm, slot, gfn, &pfn, &page, NULL))
++		goto out_unlock;
+ 
+ 	read_lock(&kvm->mmu_lock);
+ 	/*
+@@ -4097,6 +4099,8 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
+ 	read_unlock(&kvm->mmu_lock);
+ 
+ 	kvm_release_page_clean(page);
++out_unlock:
++	srcu_read_unlock(&kvm->srcu, idx);
+ }
+ 
+ /*
+-- 
+2.53.0
 
