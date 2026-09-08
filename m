@@ -1,173 +1,188 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010031.outbound.protection.outlook.com [52.101.46.31])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDB03A984F;
-	Tue,  8 Sep 2026 08:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.31
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788855003; cv=fail; b=F8MEglIo/y3OoVLUa1Vc+5olPiWUeZ8NCEkhMOSjLUyQTk4hXocjnYf/0/ulfKX4abxJunkIIXStRYbyQiH4IOgOSaC7D1g3eVsozOogxbTe9tpirsu4xoXT9pmssNvCFp7h/jU7LMGtFho1nNoqp9UxL15tEMFE8BxmfDTYeJc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788855003; c=relaxed/simple;
-	bh=ohG9Cg+d7MMwbeAptl9YHu99fN+uiNFF3IAiDZZfNKg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HnDgK4ja7NmyMkp3XtKchE0EV9fnlpQCpXUXbpilOEbInkeysuhZ6b/STdFe78hdVCJceniRgYIByL8Dh5a81lvoJmZu1sSVO66QROnZKTj8opmdttuw4SnNiMnlwELWZC91WXSnINwXZjQbbiSYgKQax5NZ1XDSUByBWTzmpc8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HuyMl0Ap; arc=fail smtp.client-ip=52.101.46.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CED33B27C7
+	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 08:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788855274; cv=none; b=EXeR5JQ2/DfHXIht3M8663qdsYXoglOw3nUCJHRfkv4Lbo7W1X3QGkbUw2sVv9edr+/1MWZfLwg+2vZGdrEtq/tkfdf4pdTH81Ukf6bKs4jqciel6ziwtgrINWJHS1e7ua336tVhpg5jBwSPM6/+Mc3EqO7U45HzI0A5ynme/eY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788855274; c=relaxed/simple;
+	bh=p0hrqdChiW+STst7BxkT07ROO3GuAhUQ7F3vjs7ZfoY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kzCdDg8NaVJ/gxPRNiJMnQpgtUABz/f0RbyozGTFqUY2Qo3sUzb0i8ZwdRXX7H/b/MYKLgARBy8cvwWJie/jQc1b5l6gWcX7JcXSJ8zGgdU7UVb125YZRRs6xxCCFkPNID5RvipMhxtNbWhP5CEdk7GlG7zZqX9ZHwGCwfdWX9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=US2RD10N; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tIkOpaQA; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HuyMl0Ap"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=r9M98ysnIwh4hr6EQC4ebxOvhEhv0y6LPWAGRTWPX60jmVTh+u7Gj1hzqavwuTZS4vJid1tptRJHaD8A3wYICXpPYuJOhU0V6lWEI5xAumjbY5bTZEgUueKWyXdzB4fUlmMt3hUHzWY5KNFR1WQC1VbxPPXicc38Itu+9rRfYORvNl7/YtGh3sQl+DhcFb46jO1X0uzFh8QYxM837091pJxbSdtwn72fbv17x2OYiDb7JYfJ5cE1Dxwozc6q8wRMegMdNgy2uoMlOr9kZbhCsKbILfeh5yykkXI9gufcUPa/8iyul178J22dKpshAjowKioVc+4K/2mPJhRcqSMgMg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=r4tK4pomgVMTDnJep5Vcdb2TqHemBpYUt5XXHuXuM8g=;
- b=ZiphEp983wCWymuokR9VgJ1p+ZLiziPQcLY/BV1kiI/2ZhUe1IhjWXPT40MNz6IdJFLlZjVNd5GdS7qLQIKVsxBowYNw4F0AxO6xnJSRTVAy8PthvNh37TZVrFGh7HlrUxYr+j6hkXuL5jeFc+YeSyYfNklcksNhzGtO7lW1xV1cyiZzln+9clJpaHdBUdXGdIeaHh/UVHuLrLgXKX3NwOWQmW/d4BGce+L+cThei1EWGphC9YQRenSV1lm2eMpHxEkbr7wMFWEVV2xHzGdWrb9hovHjlt6IOX5OTb/m+QYq3UkGUSiawNO4R6oJHD3atmIQEH2YTBh5PPH6pMqKTw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=shazbot.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r4tK4pomgVMTDnJep5Vcdb2TqHemBpYUt5XXHuXuM8g=;
- b=HuyMl0ApBpIGASsMfKljqsVoyOmy1DQvXsaytWBDp8bSZZ2zu1imUw2iT3c4TgXyz8K9jkvs/tJI8lamGJew4weXD67540ZyAM7+9bPFlZtHY8wqEFsA96gJQYDTBUgwVOqeLKaiu3as9IVrgl54+p8wpnUpf3nhf+QRP6e/lMU=
-Received: from BN9PR03CA0794.namprd03.prod.outlook.com (2603:10b6:408:13f::19)
- by CY1PR12MB9626.namprd12.prod.outlook.com (2603:10b6:930:106::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Tue, 8 Sep
- 2026 08:09:57 +0000
-Received: from BN3PEPF00022BD0.namprd03.prod.outlook.com
- (2603:10b6:408:13f:cafe::7) by BN9PR03CA0794.outlook.office365.com
- (2603:10b6:408:13f::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.15 via Frontend Transport; Tue, 8
- Sep 2026 08:09:57 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN3PEPF00022BD0.mail.protection.outlook.com (10.167.248.166) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.406.5 via Frontend Transport; Tue, 8 Sep 2026 08:09:56 +0000
-Received: from mao-Super-Server.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Tue, 8 Sep
- 2026 03:09:53 -0500
-From: YuanShang <YuanShang.Mao@amd.com>
-To: <alex@shazbot.org>, <anthony.pighin@nokia.com>
-CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<Tiantian.Zhang@amd.com>
-Subject: [RFC PATCH] vfio/pci: Block for the upstream bridge lock in vfio_pci_core_disable()
-Date: Tue, 8 Sep 2026 16:09:46 +0800
-Message-ID: <20260908080946.2235849-1-YuanShang.Mao@amd.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="US2RD10N";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tIkOpaQA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788855271;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ACV6/WKaVrWxyqCJOW8h61Ofi+NiZkidjU4efmY89RE=;
+	b=US2RD10NfJiVcig9CjDIZn7gC7Jk7Bi8IpC7raPuFpNgkfbx40xUH4wYQiimO6fXsTAmdH
+	F7GAYqGguxsO8YHem4Hfc8TCEL3HsWjF1DUnrd9zpl6tntamHQXZKrcStwMzovhcW5B206
+	g+zFHDBOYPF6xWNyAerjYTgBZLi+euU=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-119-7qYA4_ViP4aN4BNww0autw-1; Tue, 08 Sep 2026 04:14:29 -0400
+X-MC-Unique: 7qYA4_ViP4aN4BNww0autw-1
+X-Mimecast-MFC-AGG-ID: 7qYA4_ViP4aN4BNww0autw_1788855268
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-482f2b8a116so3832052f8f.1
+        for <kvm@vger.kernel.org>; Tue, 08 Sep 2026 01:14:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1788855268; x=1789460068; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ACV6/WKaVrWxyqCJOW8h61Ofi+NiZkidjU4efmY89RE=;
+        b=tIkOpaQA4bpiwesQcqIMgAEcODWW9jUXf/chPYhRzMff8k2gNT3/EpT7ubGZR4GuVJ
+         BBb802Rm0Z4fFItBjK3nbILtOQTstCpJUls5R04RYvTX8y5SMTXC0T6IeQ3pcAnfXC/U
+         rKSacXQDymF8H9SFD+pOp2S+N1gCrSav0O8n+ivOvyNC2H4f0gaNRqU5+1DOcYAiYBkE
+         85qdCepjD47XePVAd+DuRDX1RiMaFxkErpXrYsfGBlTkerQ44U2Sk3IMV5wz6PFDbhEq
+         /M+YegBLeH8OCZa10sBMN0wGLo1D2P7lVTAKPJClhbwRHauLanDzflIcslDBGAb/ngZ9
+         9k6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788855268; x=1789460068;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ACV6/WKaVrWxyqCJOW8h61Ofi+NiZkidjU4efmY89RE=;
+        b=Wc7+qvy+weWa2qQBzdVKu+2Oc6TueQFv9iHoBLgyccoAluGMnw+xVtUHjrLJTEqMY4
+         nhly+TmRWJgJu8hICGY5seOEBdzihO/2OVR4RXkXlO1f41LnWpvj8wNCp7vU5HJsh+R3
+         1pfrvJ+D4pakNJAoiLOSLoz+VkN6QV2DdwkzMJThFXIrIuChadK72WGzz3vLyAUBuayG
+         f0ws5iA4e5hIxYYoJm2blCXzYahj6O3Csw4X2k0a5NuM7SLAE7g8/Dv0neadmPbesgyM
+         8+VGEin+DWGISCDKF1Y/JF0g1njc3rXxgFkyM0tUbUxVDUJQEQ1ABFOAAmZt5nOeUn12
+         JVkg==
+X-Forwarded-Encrypted: i=1; AKwUvByOY+53Gvg/gBp/A9H+xiJ1Rxl6S13tY8k8+5GnLfjXIPMKfAizQFLB5YMKXceTHivL2eg=@vger.kernel.org
+X-Gm-Message-State: AFuF++lPFY9ybRLML72+2A89mcZEYN9SRJf9gnNxS2vzbIdRNcmN77UA
+	pXbMVAggqApAs5BhcExrQ/k6auYxG1X8LWy8MA1JN319hfkydju24vYCwpmt/mT+QqWdXm33hUN
+	oGy32/WlGTkNBK7ZR0/LwkyxKkHcrmeleovXZaBYpMRASPaNEOdSD9w==
+X-Gm-Gg: AYBFou0gQRqAd4Y8L3ojLWstP6a+oRGWTwrm6fm+wiTy0dHRL/6ke499OBgT8bwfRZi
+	UhSeWapbdu2Ur9tVPN9IbRdprN05J30MksRqlsZvpEtnPcvczYyzZxZ0J3pLzd4AxPAXdsTPDxq
+	HoVjFRgkEmgha3mj2Pbd4R/RV2TS7jkNiA0RJfORiDRxLUdh9tMsXY2xWEWBEZkwYU95tBjXgb8
+	tbneru5lOYnyDbhQjb8QYj6gNi7lYQ4jxSnNdU2bXTAfGLU0xEwlgpmwHuClyhgEs72UsZ/BEAp
+	zDMv4xotZISv2vqIrqaNH6dl50j1FdHj78FNw0TxeACc1goKPJXreekFP6hMBTzoS6AFo/P3WfQ
+	3kM1WKHSedGO5gVR5P6lLLSE=
+X-Received: by 2002:a05:6000:1e4b:b0:485:85ed:4911 with SMTP id ffacd0b85a97d-48587291427mr22863837f8f.25.1788855268366;
+        Tue, 08 Sep 2026 01:14:28 -0700 (PDT)
+X-Received: by 2002:a05:6000:1e4b:b0:485:85ed:4911 with SMTP id ffacd0b85a97d-48587291427mr22863786f8f.25.1788855267857;
+        Tue, 08 Sep 2026 01:14:27 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-79-236.inter.net.il. [80.230.79.236])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485883a9234sm34253540f8f.14.2026.09.08.01.14.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 01:14:27 -0700 (PDT)
+Date: Tue, 8 Sep 2026 04:14:24 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Karl Mehltretter <kmehltretter@gmail.com>, dmitry.torokhov@gmail.com,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	kvm@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
+	linux-input@vger.kernel.org
+Subject: Re: [PATCH v3 2/6] virtio_ccw: always take irq_lock in the classic
+ interrupt handler
+Message-ID: <20260908041323-mutt-send-email-mst@kernel.org>
+References: <20260908053817.26065-1-kmehltretter@gmail.com>
+ <20260908053817.26065-3-kmehltretter@gmail.com>
+ <20260908055148.B600D1F00A3F@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF00022BD0:EE_|CY1PR12MB9626:EE_
-X-MS-Office365-Filtering-Correlation-Id: 405b2300-9a0d-4a53-d74f-08df0d80923d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|36860700016|23010399003|1800799024|6133799003|5023799004|10067099003|56012099006|11063799006|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	j6bcjX0kjj8lrKR7NGg0wTI3nBftDidMTDV3+JxPCpK8nsmO53Kw/rDEGUTexZDuJiQB3vGpPfRglzIwFVx5kkRd321ZCjzS+o2cM0Wb0V7CU9CWqmDkn6tTQSPT6r3NcUxlKc/QUPvwYOfbEc0PnO/RHbBMjZ1PLRQgdZnujiGYdvYifk0YXiuVydhYwkwmznBGjlwZLeGWI6RqcOLRctNhQoqbdvrhOuB1f2hbK+onLebuBfwX0IK6Th/wLMHuLIAsXgONmUi6mXvMDOC3S+UzEj1mFoelV46RtKuWQ3ekDSE8r7iAJw+HsX4ojKnd+zhYaf46F8FyBPiy9bU/rWGlSCMlhrTpzY9ty2BgDFGmvxq23Zi2jd+mCZ/qQmFe25BfUglguSaM35jf7TvBn7Ms7T++C3zjqD6l21Iho4mDUvVxX8CKJT2AJ932tHSzp4miS/Cn43/u2BWxcYFb4QU1A9yu5DTl0nMzjVSR7BM10vCkPwIWb/n9AJIZ/KN8NTurpYetHsMU8cXhAVxl3DM6YuG3IjafVTwjLqpLQzBLGifSVBO2LbpqBZ/ax7xsoIjuPzgBRbD5OSRyVPBsD+jeLi5OJ5A4X1CR6f9ruQ1GLvlxXVJjaMd6XfILknHXvyCxYhZc6zAO7onJJ+HbnQB/g4DbY3Yu/JOEHjq0vs3cKNrcKOLKw4k9f8D3Qt4oH+Wt30JpklAVlFQtlN7vaQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700016)(23010399003)(1800799024)(6133799003)(5023799004)(10067099003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	3pSF00ybQ5bsHnXbkTct8VFUw3W1QpocyrA/+TzokxRP43kLY809PayRxC+3wUNl0HF3MYaq0xn+DLlNE328CoGzAKmFC4GlnM5R5BtpCpThxaFhXR3yoqMpJ91b3I4TLfFsxepwRNLITXO297rEGipkMjNYjxhU3G92AhPerDRQA/e11KRAlL0KyDkZ9jHxTgFShgtHxSEhDhWW94oaSZLM4YQSSM8u+85OnkJ4DZXdIVWe9EEimKTA5JY2wmdTVp04/SB9rq/5oALV/fNPfM2DU1L0NZYQNk/TqqDR+i2Qt8NFgoJc3P9Fr2HT0Cdc7B6bwppHAyqthBRK/LasK5A1Hc7AAnUGayhdGQ96Bot8x6ZtaRty4SPOCo44Y40VrXKuvKrNWUnEiC7uDva51IxRHntGUc+rXWeJc7RqHKZkj98i8/7oR52HMcorEmFS
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2026 08:09:56.9972
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 405b2300-9a0d-4a53-d74f-08df0d80923d
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF00022BD0.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR12MB9626
+In-Reply-To: <20260908055148.B600D1F00A3F@smtp.kernel.org>
 
-An upstream bridge is shared by every function below it, so taking it
-with pci_dev_trylock() makes the release-time reset fail whenever two
-functions under the same bridge are released at the same time.  One
-wins the trylock and resets; the others take the goto and are handed
-back to the next user without ever being reset.  Nothing is logged.
+On Tue, Sep 08, 2026 at 05:51:48AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> 
+> Pre-existing issues:
+> - [High] The virtio interrupt handlers pass retrieved virtqueue pointers directly to `vring_interrupt()` without a NULL check. A malicious or buggy host can trigger a kernel panic by providing an invalid indicator or interrupt vector.
 
-This is easy to hit with SR-IOV, where all VFs of a device sit behind
-the same bridge.  Releasing just two VFs concurrently is already
-enough; which one wins the trylock is random between runs.
+Buggy host crashing guest is not something we worry about.
+Host denying guest service at will is exactly how cloud providers get paid.
 
-Take the bridge lock blocking instead.  The lock order (bridge, then
-device) matches pci_bus_lock(), which takes both blocking.  The
-trylock on the device itself is left alone.
-
-Concurrent releases now serialise their resets, so a teardown of many
-functions under one bridge pays one FLR settling time per function.
-
-Fixes: 962ae6892d8b ("vfio/pci: Lock upstream bridge for vfio_pci_core_disable()")
-Cc: stable@vger.kernel.org
-Signed-off-by: YuanShang <YuanShang.Mao@amd.com>
----
-Hi Alex, Anthony,
-
-Sending this as an RFC because I would like to know whether the approach
-is acceptable before going further.
-
-I hit this with SR-IOV: all VFs of a device share one upstream bridge, so
-when several VFs are released at the same time only one of them wins the
-trylock and gets reset.  The rest silently skip the reset.  Two concurrent
-releases are enough to reproduce it here.
-
-My question is whether taking the bridge lock blocking is safe.  I have
-run this without problems, but I do not fully understand what the trylock
-on the bridge was protecting against -- 962ae6892d8b added it to silence
-the unlocked-SBR warning, and it is not obvious to me whether blocking
-there can deadlock.  If there is a path I am missing, I would rather hear
-it now.
-
-An alternative would be to keep the trylock but at least log when the
-reset is skipped, since today it is completely silent.
-
-Not yet tested under lockdep; I am setting that up.
-
- drivers/vfio/pci/vfio_pci_core.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 362c375a0579..8966a5bea406 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -790,8 +790,8 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
- 	 */
- 	if (vdev->reset_works) {
- 		bridge = pci_upstream_bridge(pdev);
--		if (bridge && !pci_dev_trylock(bridge))
--			goto out_restore_state;
-+		if (bridge)
-+			pci_dev_lock(bridge);
- 		if (pci_dev_trylock(pdev)) {
- 			if (!__pci_reset_function_locked(pdev))
- 				vdev->needs_reset = false;
-@@ -801,7 +801,6 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
- 			pci_dev_unlock(bridge);
- 	}
- 
--out_restore_state:
- 	pci_restore_state(pdev);
- out:
- 	pci_disable_device(pdev);
--- 
-2.25.1
+> - [High] Lost configuration change notifications due to clearing the indicator bit after processing.
+> --
+> 
+> commit 40545ed73d4381a07a7934fddf3ac60ecd1f90d7
+> Author: Karl Mehltretter <kmehltretter@gmail.com>
+> Subject: virtio_ccw: always take irq_lock in the classic interrupt handler
+> 
+> This commit unconditionally takes the read lock on vcdev->irq_lock in 
+> virtio_ccw_int_handler() so the write side can properly synchronize with
+> the callbacks even when notification hardening is disabled.
+> 
+> > diff --git a/drivers/s390/virtio/virtio_ccw.c b/drivers/s390/virtio/virtio_ccw.c
+> > index b90299205698b..552d779980129 100644
+> > --- a/drivers/s390/virtio/virtio_ccw.c
+> > +++ b/drivers/s390/virtio/virtio_ccw.c
+> > @@ -1204,13 +1204,11 @@ static void virtio_ccw_int_handler(struct ccw_device *cdev,
+> 
+> [ ... ]
+> 
+> >  	for_each_set_bit(i, indicators(vcdev),
+> >  			 sizeof(*indicators(vcdev)) * BITS_PER_BYTE) {
+> >  		/* The bit clear must happen before the vring kick. */
+> > @@ -1219,9 +1217,7 @@ static void virtio_ccw_int_handler(struct ccw_device *cdev,
+> >  		vq = virtio_ccw_vq_by_ind(vcdev, i);
+> >  		vring_interrupt(0, vq);
+> 
+> [Severity: High]
+> This is a pre-existing issue, but is it possible for virtio_ccw_vq_by_ind()
+> to return a NULL virtqueue pointer if a malicious or buggy host provides an
+> invalid indicator?
+> 
+> Passing an unvalidated NULL pointer directly to vring_interrupt() can cause a
+> kernel panic when it is dereferenced inside more_used():
+> 
+> drivers/virtio/virtio_ring.c:vring_interrupt() {
+>     ...
+>     if (!more_used(vq)) {
+>         pr_debug("virtqueue interrupt with no work for %p\n", vq);
+>     ...
+> }
+> 
+> Similarly, in virtio_airq_handler(), airq_iv_get_ptr() can return NULL which
+> is unconditionally passed to vring_interrupt().
+> 
+> Could we add a NULL check before calling the interrupt handler?
+> 
+> >  	}
+> > -#ifdef CONFIG_VIRTIO_HARDEN_NOTIFICATION
+> >  	read_unlock(&vcdev->irq_lock);
+> > -#endif
+> >  	if (test_bit(0, indicators2(vcdev))) {
+> >  		virtio_config_changed(&vcdev->vdev);
+> >  		clear_bit(0, indicators2(vcdev));
+> >  	}
+> 
+> [Severity: High]
+> This isn't a bug introduced by this patch, but could this sequence lead to
+> lost configuration change notifications?
+> 
+> Because indicators2 is shared DMA memory updated by the host, if the host
+> triggers another configuration change in the window between test_bit() and
+> clear_bit(), it sets the bit in memory and raises a new interrupt.
+> 
+> However, the guest will then blindly execute clear_bit() and wipe out the
+> newly set notification flag. When the newly queued interrupt handler runs,
+> it will find the bit cleared and do nothing, permanently losing the event.
+> 
+> Would using test_and_clear_bit() before calling virtio_config_changed()
+> close this race window?
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260908053817.26065-1-kmehltretter@gmail.com?part=2
 
