@@ -1,262 +1,118 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932753914E2
-	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 07:04:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885EF38333A;
+	Tue,  8 Sep 2026 07:10:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788851067; cv=none; b=QpOELcDCxjEqAVBT5lNgZ/baLzd+gA2J1+R3M3yDOiFi90n//rjB76NyE/uuqloHoUEJ/tN+ayntwKtDzyQh9VpZYY/78SBlRfBh2fGCV51MeUw7k1mwLV+hkkC13jb5oxXhAmSzVUo/FrNhYRngjWR9PLKQnJBq8aAREPLIMok=
+	t=1788851455; cv=none; b=s/S9rDASnN9zWSq0yDHr5Nwmaxt/bZ1h7fEScXdwnRysESmQffeYWFN5DjruneyxreDWVt4ZdqOsz5vQOQKFOw6gSHaLHZZn9rMKwTP8lrHe46vVwksJC71JkdnTzVOJvXb71Tl5uJf4TRYzFY3fZMpOVtnZr3QLC21VVr7anFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788851067; c=relaxed/simple;
-	bh=qrkomyrl64HLPxtqsg1h0AiBeTvAcyfrPyl9zzD9wqI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tRgbQ7+wsRXK20K9gXGMNzzXiRe59aW+vpx7x4p/+bYkK/pmW6ChOi3x2PsYGZRdtCouljcOc7kLRdpKQD+E6FufQ+RFRIKE9HDJ7zQAd0mxLsQmdlivzf93Dm+E7CyP5BjclNOvMHQSs0/6O77bZp2TH4M8Yp82a23HaUedt3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PVAPFNs7; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cdjAJiAz; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788851455; c=relaxed/simple;
+	bh=mdWavgnh/x/AJO4uF1VDhCNX+mR1zYzu/G1GpTBRe8g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PaoVOaM2Q6cD2TBFOW3wjeLhXP+/F7dAdOEOOHgFX4Y7xCT2oaJZ8QBWPbJL04xiUuTLSqTn8oHcRKQgxdCWgTL2V3h85R0UTjcsGmmyIVrQYTzuX0bQzyWRtgWK7dNT/v/OWrfac22rTrx31EI3tUdPsq7Y0I7rmm96dm7PvH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EkHvieVw; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PVAPFNs7";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cdjAJiAz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788851064;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ol8taRaXNtmTj+LU+cXQwn5fB81XYMucQnFv/vJC8fU=;
-	b=PVAPFNs7m/Fc7hRZVn+eU0UkpINPLiE/gejR7Pw3FFyiOvUlgamk67HvsTe0OBhwczfqNT
-	qSwKfKLhcbCHg7Vlcg1TAIDRU064F54TWeWJhPoRx4RK93cr6HAvCsWp3yY2eyI7wMKrbo
-	k+YNZG81qXbT/wQau2CKyEk5ZzgAfy0=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-294-e1ht_qCgPRChKemjKrW6JQ-1; Tue, 08 Sep 2026 03:04:23 -0400
-X-MC-Unique: e1ht_qCgPRChKemjKrW6JQ-1
-X-Mimecast-MFC-AGG-ID: e1ht_qCgPRChKemjKrW6JQ_1788851062
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38ec0f510a9so7728146a91.2
-        for <kvm@vger.kernel.org>; Tue, 08 Sep 2026 00:04:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788851062; x=1789455862; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ol8taRaXNtmTj+LU+cXQwn5fB81XYMucQnFv/vJC8fU=;
-        b=cdjAJiAzfQ2KoImy3IZi+OEXwaJSAupltjpRyTTAJSgWJi1yVu1mivm//Df/haKRip
-         ZUMSSVQELL81xJvnuZl+dBpoqevdYaAadZKxYWa9WRDsnQ6Z8oeqiwQmTrUsKzblNDul
-         HJXZie29XNcFtX61O2tkg+/hn2LaPV9Zk66Ywlp4xLq1k/+CuSKD6u41Q02RtIsUm7Uk
-         /OOYWDFb4588x2sH4hT0kpbe322IiYGdU3bOTU4NR4qj81MNFXiU7JZFKHdQ9/cgSpES
-         zmnqRjdFYqBVY9P8Wgi+tsgkfvmwUB/oIv+qYc+q3f/CDaHTpc3MdhvMiZVxaFX3Cay0
-         GNcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788851062; x=1789455862;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ol8taRaXNtmTj+LU+cXQwn5fB81XYMucQnFv/vJC8fU=;
-        b=NaZA6KI3UDZ0MsRvxfs5x5WEezYrgSGaBGfzWWfZxiXLyhXpdfB1eTUjOvZm71s8XT
-         VfpoVAb1NnrvOO8tGT/RvYCx3ThOyTqkTzhVe3gWAQSmhdVxTSXGU2xfYrN0VtmlSVwe
-         6HffR59mpASp4YF8G6Cpaz7rSEm7PlITeEGal8sLVD2isKxUbhSZOp0qFWeYDHzlafe6
-         iJWapcbFt9FEznjXBq33jaNya+hnZYNh/8MzZrs4FHn0b8b5CyHdJDllqcinQA4jXQj3
-         otX1Ihnt9kySCA+yUquiy43D18wGm9TSG+fjkhhShhvdjUCfR2/Vz655iQhMomIbpwiJ
-         UFFw==
-X-Forwarded-Encrypted: i=1; AKwUvBw2eEUEMRiMLULJIIb6WyC4b39/XRTrrFG7ixxfx39XNdy2RMDucdcIiN6A4af+c+diY9s=@vger.kernel.org
-X-Gm-Message-State: AFuF++lPys7ImJcAGZt0X6GVXLeBOT36GxBI0mviiXpflaDcvt9PWbrx
-	li5xhNCyrhIX9SABz8Fyor1TQp36vyjNrb7Qj30xQOrWwLZi5bh3drQaplttPI09O1KZt0icR+S
-	jgdufrqhKZm+Xd/Ys+kb8mj21/YfE9X/9d8rzHfUx2Sewi3wmMh0lzw==
-X-Gm-Gg: AYBFou25Jeh6djAq0ZRs8YAlBV3QE7F0TO9CL/GT5sstIl+3ocYPlaK3azdYNF9t4zu
-	T4Wpf7/hnlo8VPFBdfkVveVpxzWN248p4hIS19MCFGNIjudj7EvMtWQm+uLJQd4UuKbSdnA2ApA
-	kuBgxZzv/qtWRMUK0ZFFquEyGWzP/9/GqKPjLL1ebZn0k1uEuZaNLheJ4USlJYlFwea/K31/Gco
-	qZ23mVHI39jDSSPanu3qfuFzoE3cEl1f9xpIhGrP6l9iJt/pMt1nqqpPhs5mV0NvCPTDiNpUZht
-	yvPaS5t8k0FiVkc7jSHSoVJ22QJoceY9tEXv/nOsXIiRcaWkcxOGHaA4jl5wFCJniz6AL2V18fz
-	xG4yuTT1WeS/qhIAfPFDiP0QqeVHxKStCxRZU9GjXQQ==
-X-Received: by 2002:a17:90b:43:b0:395:5eec:b932 with SMTP id 98e67ed59e1d1-39b26141c79mr43891706a91.11.1788851061762;
-        Tue, 08 Sep 2026 00:04:21 -0700 (PDT)
-X-Received: by 2002:a17:90b:43:b0:395:5eec:b932 with SMTP id 98e67ed59e1d1-39b26141c79mr43891602a91.11.1788851061212;
-        Tue, 08 Sep 2026 00:04:21 -0700 (PDT)
-Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08bcc081sm30955490a91.6.2026.09.08.00.04.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Sep 2026 00:04:19 -0700 (PDT)
-Message-ID: <10893135-4757-44de-91b5-180a9774d868@redhat.com>
-Date: Tue, 8 Sep 2026 17:04:08 +1000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EkHvieVw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788851454; x=1820387454;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=mdWavgnh/x/AJO4uF1VDhCNX+mR1zYzu/G1GpTBRe8g=;
+  b=EkHvieVw/1VVb3AeIbe+eNtg5gcrWh8Qv5Y3f27UocpqXPsBjp2E7egA
+   srd0zUNX4gdKhgxOpAD5pZ2RrgJ0GmOjs80FUOWVtI1prULeplaV2BWAC
+   Dj/uxeIq5KMnm+lU4r+BvMSMLGcpCb+l3aII7ttTt4BbgLYeDov6wNME6
+   1s6EcxwkQ7727dS4BCERU8B4yg3iZPgaU4TkTy9Yd2FVrFLpAjwDaVbYO
+   DQhKPjPePSN36J2IVGP/RRaaSJZ2Xatjxchha5CgY0JhX3fPDM+m/SnKO
+   X4DB9MALNu0ZPcrs72guVkYqbeXsuTytCpFEnAkMgapr+u4WKxbp1vdH8
+   A==;
+X-CSE-ConnectionGUID: hZct/MPPS/+lYi4fv1tZgw==
+X-CSE-MsgGUID: GIEeHpkMQt2A3Nq8FSOoLw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="89261917"
+X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; 
+   d="scan'208";a="89261917"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2026 00:10:53 -0700
+X-CSE-ConnectionGUID: GaW/K/4mQPCAaDXJAQ150g==
+X-CSE-MsgGUID: dF7gKv5FReGETBuTzKqxhg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; 
+   d="scan'208";a="268333197"
+Received: from zhaoliu1-desk.sh.intel.com (HELO localhost) ([10.238.208.118])
+  by fmviesa008.fm.intel.com with ESMTP; 08 Sep 2026 00:10:50 -0700
+Date: Tue, 8 Sep 2026 15:10:49 +0800
+From: "zhao1.liu" <zhao1.liu@intel.com>
+To: Hao Xiang <hao.xiang@linux.alibaba.com>
+Cc: kvm <kvm@vger.kernel.org>, linux-kernel <linux-kernel@vger.kernel.org>,
+	"xianghao.xiang" <xianghao.xiang@alibaba-inc.com>,
+	seanjc <seanjc@google.com>, pbonzini <pbonzini@redhat.com>,
+	"shannon.zhao" <shannon.zhao@linux.alibaba.com>,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH] i386/cpu: Rename CPUID feature bit AVX10_VNNI_INT to
+ AVX10_V1_AUX
+Message-ID: <ap+0+e0MKHdOC/bW@intel.com>
+References: <45146bc1-0d78-46de-8bd8-cb1ecba49fe2.hao.xiang@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 3/7] firmware: arm_rmm: Configure the RMM with the
- host's page size
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
- <20260907095942.1140734-4-suzuki.poulose@arm.com>
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20260907095942.1140734-4-suzuki.poulose@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <45146bc1-0d78-46de-8bd8-cb1ecba49fe2.hao.xiang@linux.alibaba.com>
 
-Hi Suzuki,
+On Tue, Sep 08, 2026 at 02:13:17PM +0800, Hao Xiang wrote:
+> Date: Tue, 08 Sep 2026 14:13:17 +0800
+> From: Hao Xiang <hao.xiang@linux.alibaba.com>
+> Subject: [PATCH] i386/cpu: Rename CPUID feature bit AVX10_VNNI_INT to
+>  AVX10_V1_AUX
+> X-Mailer: [Alimail-Mailagent][W4_0.2.3][v5ForWebDing][Chrome]
+> 
+> CPUID feature bit AVX10_VNNI_INT is renamed to AVX10_V1_AUX to account
+> for additional AVX10.2 isntructions sep-arated to have ”OR” sensitivity
 
-On 9/7/26 7:59 PM, Suzuki K Poulose wrote:
-> From: Steven Price <steven.price@arm.com>
+nits:
+
+s/isntructions/instructions/ - though it's a typo in spec :-(.
+s/sep-arated/separated/ - there are no line breaks here.
+
+> for platforms which may not support all of AVX10.2[*]. This CPUID bit now
+> applies to the following VNNI instructions: VPDPB[SU,UU,SS]D[,S]
+> VPDPW[SU,US,UU]D[,S], as well as the following convert in-structions:
+
+s/in-structions/instructions/
+
+> VCVT[,2]PH2[B,H]F8[,S], VCVT2PS2PHX, VCVT-BIASPH2[B,H]F8[,S],
+> VCVTHF82PH.
 > 
-> RMM v2.0 brings the ability to set the RMM's granule size. Check the
-> feature registers and configure the RMM so that it matches the host's
-> page size. This means that operations can be done with a granularity
-> equal to PAGE_SIZE.
+> [*]: Intel® Advanced Vector Extensions 10.2 Architecture Specification
+>       (rev 7.0).
 > 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Hao Xiang <hao.xiang@linux.alibaba.com>
 > ---
->   Changes since v15:
->    * Actually check the feature register for the host's page-size support.
->   Changes since v14:
->    * Move the implementation into drivers/firmware/arm_rmm.
->   Changes since v13:
->    * Moved out of KVM.
-> ---
->   drivers/firmware/arm_rmm/rmi.c | 58 ++++++++++++++++++++++++++++++++++
->   include/linux/arm-rmi-cmds.h   | 17 ++++++++++
->   2 files changed, 75 insertions(+)
-> 
-> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
-> index 008a783407b4e..76f91c145e1fd 100644
-> --- a/drivers/firmware/arm_rmm/rmi.c
-> +++ b/drivers/firmware/arm_rmm/rmi.c
-> @@ -77,6 +77,60 @@ static int rmi_read_features(void)
->   	return 0;
->   }
->   
-> +static int rmi_configure(void)
-> +{
-> +	unsigned long granule_feature;
-> +	unsigned long granule_size;
-> +	int ret = 0;
-> +	struct rmm_config *config;
-> +
-> +	switch (PAGE_SIZE) {
-> +	case SZ_4K:
-> +		granule_size = RMI_GRANULE_SIZE_4KB;
-> +		granule_feature = RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_4KB;
-> +		break;
-> +	case SZ_16K:
-> +		granule_size = RMI_GRANULE_SIZE_16KB;
-> +		granule_feature = RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_16KB;
-> +		break;
-> +	case SZ_64K:
-> +		granule_size = RMI_GRANULE_SIZE_64KB;
-> +		granule_feature = RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_64KB;
-> +		break;
-> +	default:
-> +		BUILD_BUG();
-> +	}
-> +
-> +	if (!(rmi_feat_reg(1) & granule_feature)) {
-> +		pr_err("RMM does not support %luKB granules\n",
-> +		       PAGE_SIZE >> 10);
-> +		return -ENXIO;
-> +	}
-> +
-> +	config = (struct rmm_config *)get_zeroed_page(GFP_KERNEL);
-> +	if (!config)
-> +		return -ENOMEM;
+>   arch/x86/kvm/cpuid.c         | 2 +-
+>   arch/x86/kvm/reverse_cpuid.h | 2 +-
+>   2 files changed, 2 insertions(+), 2 deletions(-)
 
-An error message is needed here.
+I hadn't renamed it before because I thought this bit's name is not
+exposed to user space, and it's enough to refer to it simply as
+"this bit". But, semantically speaking, VNNI_INT is indeed no longer
+correct. As noted in your commit message, the feature represented by
+this bit now includes more convert instructions. And more accurate
+naming is better, as it makes it easier to look up the spec.
 
-	if (!config) {
-		pr_err("Unable to alloc RMM config memory\n");
-		return -ENOMEM;
-	}
+This name change looks good to me, so
 
-> +
-> +	config->rmi_granule_size = granule_size;
-> +
-> +	/*
-> +	 * For now we set the tracking_region_size to 0 which is the only option
-> +	 * for 4KB PAGE_SIZE (1GB for 4KB PAGE_SIZE, 32MB/512MB for 16KB/64KB).
-> +	 * TODO: Support other tracking sizes via Kconfig option for other
-> +	 * PAGE_SIZES
-> +	 */
-> +	config->tracking_region_size = 0;
-> +
-> +	ret = rmi_rmm_config_set(virt_to_phys(config));
-> +	if (ret) {
-> +		pr_err("RMM config set failed\n");
-> +		ret = -EINVAL;
-> +	}
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-The error code from rmi_rmm_config_set() is indicative sometimes. Also, -ENXIO
-would be more appropriate than -EINVAL?
-
-	if (ret) {
-		pr_err("RMM config set failed (%d)\n", ret);
-		ret = -ENXIO;
-	}
-
-> +
-> +	free_page((unsigned long)config);
-> +	return ret;
-> +}
-> +
->   static int __init arm64_init_rmi(void)
->   {
->   	int ret;
-> @@ -90,6 +144,10 @@ static int __init arm64_init_rmi(void)
->   	if (ret)
->   		return ret;
->   
-> +	ret = rmi_configure();
-> +	if (ret)
-> +		return ret;
-> +
->   	return 0;
->   }
->   
-> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
-> index 2fb1f7f86d71e..9aa27697e2377 100644
-> --- a/include/linux/arm-rmi-cmds.h
-> +++ b/include/linux/arm-rmi-cmds.h
-> @@ -12,6 +12,23 @@
->   
->   unsigned long rmi_feat_reg(unsigned long id);
->   
-> +/**
-> + * rmi_rmm_config_set() - Configure the RMM
-> + * @cfg_ptr: PA of a struct rmm_config
-> + *
-> + * Sets configuration options on the RMM.
-> + *
-> + * Return: RMI return code
-> + */
-> +static inline int rmi_rmm_config_set(unsigned long cfg_ptr)
-> +{
-> +	struct arm_smccc_res res;
-> +
-> +	arm_smccc_1_1_invoke(SMC_RMI_RMM_CONFIG_SET, cfg_ptr, &res);
-> +
-> +	return res.a0;
-> +}
-> +
-
-rmi_rmm_config_set() is used for once by rmi.c::rmi_configure(), I would not expose
-rmi_rmm_config_set() by combining the logic to rmi.c::rmi_configure().
-
->   /**
->    * rmi_features() - Read feature register
->    * @index: Feature register index
+And BTW, the prefix of subject should be "KVM: x86:", referring
+"Shortlog" section of Documentation/process/maintainer-kvm-x86.rst.
 
 Thanks,
-Gavin
+Zhao
 
