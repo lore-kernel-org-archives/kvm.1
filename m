@@ -1,108 +1,139 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B037133BBD7
-	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 04:44:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F55A3559F2
+	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 05:37:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788842648; cv=none; b=Da46HlkleII6k5Onl4fk2VZm3E5Q3NWvbMdr+POzgCkELFjTYa5QoPst+vlnWzmR3bkdEVvZ8YB8z8fxOk/FTQuCxOGau5ImcsA8GBJVIcG2dv5NL9ibVgpHvaeY7zwZZLkOXpdtopms5pxMqFG7qOKJuGPLptIiayHn4DOG2aM=
+	t=1788845857; cv=none; b=l32iTKbXwjdCSgMuRkXZ4SjEnZyvLfx3NeQ/IUFwYiR0XRR2Hx1uDt898K+rOd0GhIVnYwoaDZg22jP1GeKlQSD2u48K3l603NpBaQQxyyczGVvdG5KQ+S/ZxQFxtCa+i9xtE2z52EjUokHS6iG0Z1Ea1SzbnoKBsuUx34TAiDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788842648; c=relaxed/simple;
-	bh=N93yy2cSnalyHr04bMOVeqR8AIr0fIg+uFBrS273sM4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I/I5BkwQhPlPvNAX4v8RuzTtefWB7/v9lOk51rz6KUj6OTmOePxV0QR46OPOHdPS3rNpATV7dbCJsTBAqf/qQNVK5HibF8hxyfytnIREiE+nNvrf1k4p5CWBdeKyX8/9icHDUDHEvvjwkYBwuYs5xC0XjPowowdc7L6FUtqOCu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UeWcE9T6; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1788845857; c=relaxed/simple;
+	bh=o983iJ+yESLyXRWkc/1BD1Ocd9G3iDRwnBPvJab8rdg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sMW2tD0KQbGe5fSEkXqgG44Lsfjk/OyN0UGsk2r0TcaV43Wnua7phwA8tAGxrwQIwRfeRY1+Jd9C/niQ7jroh9yBYBkGmVN/nSK3vYIZYxkhPw5XN0sIm2PzTnYYgFgDl+BrhzVKGCwV6g3YiwHRUt/YbTZuW5/5/cgA/RLbcNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nRtPjqDL; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UeWcE9T6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788842647; x=1820378647;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=N93yy2cSnalyHr04bMOVeqR8AIr0fIg+uFBrS273sM4=;
-  b=UeWcE9T62pzdr5n+F5iGCeiF9M8e4KhJUimjKWJbibt+Fcf9XtklVbSE
-   wHcAsN+2IH57kL6TDLZXEldzcQF3iFDDcf/usi+RWAWegfO4fVfUPSQ8K
-   SerGo3QsrTfykM3rptO5u2hc2JiwjR3bkIMhChIvTgtuH160brUBSisJF
-   a0WeDw+GRF/RfGw5YH+1Edb8eyVwwWFnUlaf8gk0DvJ4GW8SyubJmfY1R
-   RCKTtV/+McmDXzKp6Qwhb0UTzXqDRqG20s1AOqIxM1T9mUzaFMWCRgrzQ
-   0zfQS06cRreo38414zpdjom+qqkHjMW8/ng2yCZOMBaYWqcS0QD6+O8Vn
-   A==;
-X-CSE-ConnectionGUID: TiQdRRMnQE6GEIsKqiDAxA==
-X-CSE-MsgGUID: OVirn0/ATsWd3PvEwWhFkA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="89252794"
-X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; 
-   d="scan'208";a="89252794"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2026 21:44:06 -0700
-X-CSE-ConnectionGUID: FV5WqCjlQsukkPCCvegyAg==
-X-CSE-MsgGUID: lvYpswhFSBCI8BohBu3mwA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; 
-   d="scan'208";a="270843380"
-Received: from bradocaj-mobl.ger.corp.intel.com (HELO localhost) ([10.245.246.90])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2026 21:43:58 -0700
-Date: Tue, 8 Sep 2026 07:43:54 +0300
-From: Tony Lindgren <tony.lindgren@linux.intel.com>
-To: Artem Bityutskiy <dedekind1@gmail.com>
-Cc: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
-	Jon Grimm <Jon.Grimm@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Steven Price <steven.price@arm.com>,
-	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
-	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Kishen Maloor <kishen.maloor@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Peter Fang <peter.fang@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org
-Subject: Re: [RFC PATCH v2 2/4] KVM: x86: Add optional KVM_CAP_LIVE_MIGRATION
- and KVM_MIGRATE_CMD
-Message-ID: <ap-SihGd0fk02QV8@tlindgre-MOBL1>
-References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
- <20260831071304.762939-3-tony.lindgren@linux.intel.com>
- <ap6loazXtvSCqmpR@tlindgre-MOBL1>
- <ap64dFXpiDb_Hqxl@8bytes.org>
- <d25d652c34dedc209ccb3b758e7f624b9125eee5.camel@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nRtPjqDL"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cc439aa0078so3412393a12.0
+        for <kvm@vger.kernel.org>; Mon, 07 Sep 2026 22:37:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788845855; x=1789450655; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1dSBgu+PYO8L57iJ7mEEHE0juRfKuuMbZOsF6p43Spo=;
+        b=nRtPjqDLFDL8Dm9u9yVcF5iFwXePrUqw1emjeCP+FxmIP7ckibOeYjUeRMPnAZzQ5n
+         EVHDZTm7+BkTJ7KdQys8KoZKbK7F9/Bf1FA7XIy54Vik6B601umqeKy6sZuNxZjM6dGu
+         74rxE61GhMTUQr3c2msRbxTXuf5/kbfv4GEp4dv8tlhrIYLWFrkFNOkCJ5BcXZqjRIsV
+         qOP9A5mPZt5B/4/ccdW+HLHomUn8BDd3iVRMlEervIcFVXA4OYtPkX/aVw/F2htYS10g
+         kDHFejX7F0CDsBNycpDlKo9gnNZdKYLL2U4SfNV6YyW1hiF7W4ZVxDzQFtaNjmaclJoJ
+         gsOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788845855; x=1789450655;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1dSBgu+PYO8L57iJ7mEEHE0juRfKuuMbZOsF6p43Spo=;
+        b=jnwxQ6qRraZsDOB/gJ5syc6lxFUeXFA4HPnxC2FmNyXLj3/ycxeP3mZ1++sia2cBJR
+         a3jjJ/l0QbrmvuS2JYBbAexkEB2WwV+p+zo+U9bi5MEw+TQWZvORW9w9sJJT09orXkLq
+         Mo8RwF9LbFXOq2zhl4MvyNfIq0YRQ1vDqGa1Dy0qd6Mda9ceo8Yp4dM6cPiXHCrG5qF9
+         ZVOtPF1TPr0JlwCYbwkMhqZCrPZYVOY3bVSbOiNlDG5gD9Er5cu5RCbsR6FLHFduJDy4
+         cfhHPtVG4hQ84GQfG1CF9t6B6JNFwIVYTS3etsbii9it+vZFmq2Nxu2bmsaYSazJxbnM
+         FV1Q==
+X-Forwarded-Encrypted: i=1; AKwUvBz7rEAK4N7jRSpGztNTs2f1LMJZ6venGNH3CPNBU2plQxj5P4r4wNKtAeFnM74CYd8QpBM=@vger.kernel.org
+X-Gm-Message-State: AFuF++kNVrLxZZiKn2hiDzcYMQXnEL8LOIV+KcJ5x1sqvCwVD4zG1/uu
+	MhHYjbGPVeJWM0SZB/jvlY5wTU7tO6/3KTWGApKlOa9KvgHpiYW03M8D
+X-Gm-Gg: AYBFou1PYhX+73cRFpvOxEQ2TPZcfp4witdfE8aFMZN3C2r+WzMkpUcJnXzMwJvPDkH
+	dlLss27eZSIrutMZhPIC1ILzk0EX+rYE0l7u2JCVZyYZTcbt0B+cYYI9y8qNACPLA9wAoz02MTS
+	gHvkYD7gseVdVCKaWeRWQ38JNx9Jk4oSnpQfQGqVfwwgBjiCFkNscnnngYE9fk/Oxn3myb84Hx/
+	O6XAHov86HYaYMEc8uJHqAbvCX00frCIS+yTYO4B+IicUqHcyCKQ+bi9pscvEzy7/qyOVENNpTb
+	gqf5FEk44x0slyPyJ9ekQE5aUQiPWUx6RTdWqXZzarXZtwm+dWOqa1Xc8wox/UqsCsThnaXml8I
+	TXwShgWMyUTatBRW39VH8HceavOV9c/J9BqTeFKNaUoTYgl4uOcIxISL6l+vem5U8pOjw9l7kur
+	eWwYGXdhdLsaYDubqlevWoqt4KBMSowmB0BLNVFJh4UtFJr8Zk7DBDuiW80mHX1WazYo2sWwkQR
+	A==
+X-Received: by 2002:a17:90b:4c06:b0:396:b98b:a3c2 with SMTP id 98e67ed59e1d1-39b26116d9fmr35119666a91.8.1788845855382;
+        Mon, 07 Sep 2026 22:37:35 -0700 (PDT)
+Received: from amd.ban-spse ([165.204.217.251])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339aa33e96sm32332057eec.12.2026.09.07.22.37.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Sep 2026 22:37:35 -0700 (PDT)
+From: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Melody Wang <huibo.wang@amd.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+Subject: [PATCH] x86/svm: Avoid sign extension of SVM_EVTINJ_VALID in 64-bit expressions
+Date: Tue,  8 Sep 2026 05:37:22 +0000
+Message-ID: <20260908053722.3917934-1-nagachaithanya9911@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <d25d652c34dedc209ccb3b758e7f624b9125eee5.camel@gmail.com>
 
-On Mon, Sep 07, 2026 at 04:32:33PM +0300, Artem Bityutskiy wrote:
-> On Mon, 2026-09-07 at 15:15 +0200, Jörg Rödel wrote:
-> > The direction is always the same over a single live migration session, right?
-> > So it could be a setup flag, on the other hand having separate KVM_EXPORT_CMD
-> > and KVM_IMPORT_CMD seems to be a cleaner ABI.
+SVM_EVTINJ_VALID is defined as (1 << 31), i.e. as an int with the sign
+bit set. Whenever it is used in a 64-bit expression the int is sign
+extended, so bits 63:32 end up set as well. Two 64-bit users are
+affected.
 
-OK
+verify_exception_info() uses the macro as a mask against a 64-bit value
+when it sanity checks hypervisor supplied exception information:
+
+	u64 info = ghcb->save.sw_exit_info_2;
+	...
+	if ((info & SVM_EVTINJ_VALID) &&
+
+The mask is 0xffffffff80000000, so the check also passes when any bit of
+the error code in 63:32 is set while the valid bit itself is clear.
+
+svm_vmgexit_inject_exception() builds the value that KVM hands to an
+SEV-ES guest in GHCB SW_EXITINFO2:
+
+	u64 data = SVM_EVTINJ_VALID | SVM_EVTINJ_TYPE_EXEPT | vector;
+
+For vector == X86_TRAP_GP this yields 0xffffffff8000030d instead of
+0x000000008000030d. The field uses the EVENTINJ format, which holds the
+error code in bits 63:32, so KVM asks the guest to inject #GP with an
+error code of 0xffffffff. Linux guests only consume the error code when
+SVM_EVTINJ_VALID_ERR is set, which it is not here, so they are not
+affected in practice, but the value KVM writes is not the one it intends.
+
+Use BIT() instead, as is already done for most single bit definitions in
+this header. Every other user applies the macro to a u32, where the
+resulting bits are unchanged.
+
+Fixes: 597cfe48212a ("x86/boot/compressed/64: Setup a GHCB-based VC Exception handler")
+Fixes: c3392d0ab714 ("KVM: SVM: Provide helpers to set the error code")
+Signed-off-by: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+---
+ arch/x86/include/asm/svm.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
+index aa63431ba92c..921e6ecc4835 100644
+--- a/arch/x86/include/asm/svm.h
++++ b/arch/x86/include/asm/svm.h
+@@ -637,7 +637,7 @@ static inline void __unused_size_checks(void)
+ #define SVM_EVTINJ_TYPE_EXEPT (3 << SVM_EVTINJ_TYPE_SHIFT)
+ #define SVM_EVTINJ_TYPE_SOFT (4 << SVM_EVTINJ_TYPE_SHIFT)
  
-> Yes, the source stays the source, and the destination stays the destination
-> for the entire session.
-> 
-> This is a special case of a broader question I keep coming back to:
-> 
-> ** How much state should KVM keep about a migration session? **
-> 
-> For direction specifically, we could pass it to KVM on every call and let
-> KVM stay stateless about it, or KVM could record it once and remember it for
-> the rest of the session.
+-#define SVM_EVTINJ_VALID (1 << 31)
++#define SVM_EVTINJ_VALID BIT(31)
+ #define SVM_EVTINJ_VALID_ERR (1 << 11)
+ 
+ #define SVM_EVTINJ_RESERVED_BITS ~(SVM_EVTINJ_VEC_MASK | SVM_EVTINJ_TYPE_MASK | \
+-- 
+2.43.0
 
-Yes the "record and remember" is another option, it could be a sub-command
-something like KVM_MIGRATE_DIRECTION.
