@@ -1,230 +1,207 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB90737E5E7
-	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 05:39:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1851737A845;
+	Tue,  8 Sep 2026 05:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788845994; cv=none; b=iTfQX3VW/fUdP3pMEv+ZQrsB04WRjfA/UUo+zn/SJ3Lhfm/roUj580aZr1XEZxJjlp7+q/uIAkNhtmQMO2hfWRx39XX952vnBoNnRxigz+nNmOxy96OnNQ5MpcNmc4N0usrlJd7RarfvLvzk4DkLGHY7igu061i6vymDFqjBedQ=
+	t=1788846376; cv=none; b=FPWAXZd8sMgnldwc99bMrGF6qVTC0ppxUinPy3zVH+2B17UKh8vx/NXVGevlfZ7fscA8hWKDTH8lgzPXSIpWwQDvsvFG4KWVj5Unh2LZMTmcnwfk6EJvcp59/FgRBNH4Z0Y2NuWaRdtu2hohyDoBrbEFcQeoHTCKcRsoCEJPPBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788845994; c=relaxed/simple;
-	bh=Z1mqy3qNtdRxgKwEWqMkljOG1k4ekHUKiS2/6Ca17Yo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZJyOx2OwQTsHHrQ+7X8hICTOcyseKhsmbYbsDsWk9Cb6Q5X7GaAOtwV+0XviX8taKc/S2UKHaBgoTSiT/2phMGEodTkv64+HLPsYyiUxoYawdqBTpznvehVZj0yJHxSKbZSGTQ6R/FqOP2YEJNpxYRM93c2/lUYuzDhmFLvHa+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UmjpCI8s; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788846376; c=relaxed/simple;
+	bh=018JPSiwa1Esmp2GGb5fgmI7lze3gY3IgPSCqWkIVeY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=r0oyKu8ovM6E/vkM6CTH+SjxXG9EZ/nL6m65JpoeWPQ+B4IMGu4rsNy4OsyL6gkeEr5o9m8XAazLfQD53QjorhZ6qZyuTieVYHqxVKjFjfK6Q+U3cA1zG4Y5lxf6byT9bl+iHNcmAplArPBQxqqQQ4lWqomhwfzV5+n+z+pWfjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=uswXvC9i; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UmjpCI8s"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-49b8ce9b733so34093905e9.1
-        for <kvm@vger.kernel.org>; Mon, 07 Sep 2026 22:39:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788845988; x=1789450788; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=l0UrpxibHZnDBNXE1bN5qrJqc7sTw2Bd+aGpZLtd0Ug=;
-        b=UmjpCI8s7t3E+4yRhKMceIDOKBrqYNOKBZjVaryoL+Wx8/5meM4sQ9XpZurZfH3zlS
-         fm9dPFfnx8NWhVMpEnO10cGpwzMYuIbKyGY2YuHQfXYqFDhg6uepkDSAbaDSU9HEDtlu
-         MwjTnuF26Niwb9CNviqGtmx4WwjStW+BJ1nPjnxMHE5c1ZoVPpi7WYhT0dm2ReieAxbi
-         CEV1OpQOMg3cbWpcFghWbSrBG5sOmvQMxBpbpHBVK0haUEZzsGRlCb+OqTdIr9oBGio4
-         6sDz2wkoyVcw+4UAETBV79kQRFAvgWv6+QUPewowi4qDn3CuhbBW78rMGb81BCHJCwo1
-         IlvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788845988; x=1789450788;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=l0UrpxibHZnDBNXE1bN5qrJqc7sTw2Bd+aGpZLtd0Ug=;
-        b=NdeFzzmPRDEzsh4VTUFD6zD5buPpM7BBWk7q9N31+9XcAkLV+oJ18XGKr3XTGYFxpT
-         im0qm2/+rVWCvtsKet1IwaJLt198d/h7t/wSC0pDd1ZLbYXStBEV7txS/FZQx7WZknOp
-         FGPkwVKd6T9NRqcS7/vr2Nnnb/NvfwWiOvB1bkVcwLyN0ckAB/6YTzAjQWFEMHL3UgbX
-         EZAKN7WIufyeedjHzQ+0hSXY2hmRqfeG8Wzpb2UV+l6HB8MESgYauWSAJjOWRgqERZY5
-         6HmqtKZ7YCUvBPooM1ln2NEybYbBFvbCPJqMyNDP7v1ZbNGlRdSOE4rw35R5y+V+GQeT
-         9EYw==
-X-Forwarded-Encrypted: i=1; AKwUvBw9aPAPwKMA4l7aBPiBOLw/2fkvYjVT5CkbfcdHV5JO7ScaCWW6Tzaj+0oEdN6ItvG9OxE=@vger.kernel.org
-X-Gm-Message-State: AFuF++kdTH3Jpbsw43jL4JrHCD/loxoOIICrWu3N1tKn6qERTxBTgTRN
-	fih+wb8SVVfStk3AofRGx2E5M38+Z78mbbpbmgEFxPIOCOHAlzhJnbAN
-X-Gm-Gg: AYBFou1xduknQm/cq1HeRpe1B/2NsRxAIdBbVUUpn/u0N+2QhRqr6UxBWLA0P9qafIN
-	tk9hW16kAiWEXoCprdvNMcOu/5eDYeO4+uH2oiVzAONyOd+SGXW5oCYeEVhCbzWJ5GDveVvuefJ
-	2dO26kMx5APjq+Wwq+2XlLjsnAj1ZP4welb8kl086L85B7Yvq+R+xNnChmkv4BUDlt8D8up+ndV
-	55zzh6lTPw9KPlNB78KULRscI8bR2eVMLALIBfsYMpr2SrnqfTjCcPhPODjYs9qAGLSjC+J21F5
-	4lLaIGkpdLyq85evyLGELyEenx5Ip/lLp1jo4dD8N+j1CUZLj7a80qv58Oc7wkTgAL2PoEk/lv4
-	qwc2cA1eFpEaJTcEsmJ3uZogF9RSdboExu3JhwUXfL68akvZQ0IUUCv921A82aeU/duYmoAEZDh
-	MrijWMNj1WbpeC7fJAIF6P4kYcGN4DcsIm0ghL0bgTk+wzRyMOGutdyE2Oa5JslTubzhzPRdGTl
-	uYJThePM3LarFCPVVJcpeGZfFkqDNrQFgyDuyJ3dfawIZrXDAqzLCKrh6zLnDkifW+JoAPN4w/A
-	jpN+La9K+T7G9UK4YRnzA2GET+3fAD8=
-X-Received: by 2002:a05:600c:3587:b0:49d:17d8:abec with SMTP id 5b1f17b1804b1-49d17d8abf5mr31972855e9.21.1788845987998;
-        Mon, 07 Sep 2026 22:39:47 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-095-117-170-066.95.117.pool.telefonica.de. [95.117.170.66])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee7fec25sm523841335e9.13.2026.09.07.22.39.46
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 07 Sep 2026 22:39:47 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Gerd Hoffmann <kraxel@redhat.com>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Rusty Russell <rusty@rustcorp.com.au>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Cornelia Huck <cohuck@redhat.com>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Eric Farman <farman@linux.ibm.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Hans de Goede <hansg@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Vadim Pasternak <vadimp@nvidia.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	virtualization@lists.linux.dev,
-	linux-input@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	platform-driver-x86@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>
-Subject: [PATCH v3 6/6] virtio_vdpa: implement synchronize_cbs()
-Date: Tue,  8 Sep 2026 07:38:17 +0200
-Message-Id: <20260908053817.26065-7-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20260908053817.26065-1-kmehltretter@gmail.com>
-References: <20260908053817.26065-1-kmehltretter@gmail.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="uswXvC9i"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A5DDF1476;
+	Mon,  7 Sep 2026 22:46:09 -0700 (PDT)
+Received: from [10.57.49.168] (unknown [10.57.49.168])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5AF973F86C;
+	Mon,  7 Sep 2026 22:46:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788846373; bh=018JPSiwa1Esmp2GGb5fgmI7lze3gY3IgPSCqWkIVeY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=uswXvC9iVmPahBQvMDKTommtwYrmYay+C0FosciqsZfG6re8SIW1nfbKsbOkEi0tR
+	 g/wH4O4enKKNcsPeqpbj5dGb+aMFg25xbipsadAjFwRtVBgbLhjuVJ6k1D8O1i/zsr
+	 P4CqKXq+SpkITHmHm8qJ1/qTpstEq0PLB4Bqht20=
+Message-ID: <f65216f6-cb7b-4b76-a7cc-79b332db2bd8@arm.com>
+Date: Tue, 8 Sep 2026 06:46:05 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v17 0/7] firmware: arm_rmm: Add RMM v2.0 base RMI support
+Content-Language: en-GB
+To: Kohei Enju <enju.kohei@fujitsu.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org,
+ Mathieu Poirier <mathieu.poirier@linaro.org>
+References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
+ <ap-C6NLnxuWWTMzi@FCCLS0092175.localdomain>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <ap-C6NLnxuWWTMzi@FCCLS0092175.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-virtio_vdpa relies on the core's synchronize_rcu() fallback for callback
-synchronization. That covers IRQ handlers and sections with interrupts,
-preemption or bottom halves disabled. virtio_vdpa does not enforce any
-of those contexts when a vDPA driver invokes a callback.
+Hi Kohei-San
 
-Add an SRCU domain per device and enter it around the virtqueue and
-config callbacks. Implement synchronize_cbs() with synchronize_srcu()
-so it covers the callbacks regardless of the calling context.
+Linaro is best suited to answer this. I have Cc'ed Mathieu (and
+Lorenzo), who may be able to help you here.
 
-SRCU uses per-CPU reader accounting, avoiding a single callback lock
-shared by all queues. Cover the config callback too, as virtio-pci
-does for its config vector.
+On 08/09/2026 05:09, Kohei Enju wrote:
+> Hi Suzuki,
+> 
+> On 09/07 10:59, Suzuki K Poulose wrote:
+>> This series adds the generic firmware layer for talking to the Realm
+>> Management Monitor (RMM), as specified by the RMM v2.0-bet3
+>> specification[1]. It is the first part of the Arm CCA host support that
+>> was previously posted as part of the larger KVM series.
+>>
+>> The split allows this RMM support to be used as a base for other work,
+>> including Aneesh's PCI IDE support with Arm CCA RMM as the TSM,
+>>   without depending on the KVM Realm support that will follow as separate
+>>   series. (See more on that below)
+>>
+>> The series adds:
+>>
+>>   * The RMI SMC definitions and direct-call wrappers.
+>>
+>>   * RMM discovery and version checks during firmware init.
+>>
+>>   * RMM host configuration, including the host page size.
+>>
+>>   * Stateful RMI Operation (SRO) infrastructure for commands which the RMM
+>>     can complete across multiple SMC calls while requesting or returning
+>>     memory to the host.
+>>
+>>   * Verification that granule tracking is available at fine granularity.
+>>     Fine-grained tracking allows each granule in the system to be tracked
+>>     independently, which is required before individual granules can be
+>>     delegated. A future series will add support for dynamically supplying
+>>     memory to the RMM for this tracking.
+>>
+>>   * Support for fully firmware-managed systems, where the Granule Protection
+>>     Tables for memory regions are allocated and managed by firmware. RMM v2.0
+>>     also allows dynamic GPT creation on demand; support for that will be added
+>>     in a later series.
+>>
+>>   * Wrappers for the RMI commands that are used for managing the "Realm VM"
+>>     lifecycle. This is added in to make it easier for the on-going KVM support
+>>     to evolve in parallel pieces.
+>>
+>> If the platform firmware cannot manage the granule tracking or the GPTs, we
+>> bail out and deactivate the RMM, reclaiming any memory that we have donated.
+>>
+>> The RMM v2.0 spec introduces Stateful RMI Operations (SROs), which allow
+>> the RMM to complete an operation over several SMC calls while requesting
+>> or returning memory to the host. This allows interrupts to be handled in
+>> the middle of an operation and lets the RMM dynamically allocate memory
+>> for internal tracking purposes. For example, RMI_REC_CREATE no longer
+>> needs auxiliary granules to be provided up front, and can instead
+>> request memory during the operation.
+>>
+>> This series applies on v7.3-rc1 and a branch is available at [2]. The KVM
+>> CCA support that builds on this series is available at [3] as an integration
+>> branch. The KVM support depends on guest-memfd-in-place conversion support v12
+>> from Ackerley [4], we plan to split that into parts, which apply cleanly on
+>> v7.3-rcx without any dependency and is in progress. This will be made available
+>> as soon as it is ready. Until then [3] shows how this base series enables KVM
+>> CCA support. You may find the tf-RMM [5] and kvmtool support [6] below.
+>>
+>> [1] RMM spec : https://support.arm.com/documentation/den0137/2-0bet3/
+>> [2] This series: https://gitlab.arm.com/linux-arm/linux-cca.git cca/cca-host/fw_rmm/v17
+>> [3] KVM CCA v17 integration branch: https://gitlab.arm.com/linux-arm/linux-cca.git cca/cca-host/kvm-integration/v17
+>> [4] Gmem inplace conversion https://github.com/googleprodkernel/linux-cc/tree/guest_memfd-inplace-conversion-v12
+>> [5] TF-RMM https://git.trustedfirmware.org/TF-RMM/tf-rmm.git main (commit: 134266ae)
+> 
+> I understand that QEMU-virt is not intended to model a realistic
+> production platform and that QEMU-SBSA is generally preferred. However,
+> I sometimes use QEMU-virt to test functionality quickly because it runs
+> slightly faster than QEMU-SBSA.
+> 
+> I tested this series with QEMU-virt and found that RMM initialization
+> failed during boot:
+> 
+>    [...]
+>    INFO:    BL31: Initializing RMM
+>    INFO:    RMM init start.
+>    ERROR:   RMM init failed: -8
+>    WARNING: BL31: RMM initialization failed
+> 
+> The following TF-A revision was used:
+>    https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git master (38269bb)
+> 
+> After investigating, I found that the failure was caused by the lack of
+> a plat_rmmd_reserve_memory() implementation for the QEMU-virt platform
+> in TF-A. Adding an implementation equivalent to the QEMU-SBSA one
+> resolved the issue:
+>      https://git.trustedfirmware.org/plugins/gitiles/TF-A/trusted-firmware-a.git/+/9d594743aa4d4e8160cdf025ea7538041648972c
+> 
+> Is QEMU virt still intended to be supported as an RME emulation
+> platform? In particular, is this functionality simply not implemented
+> yet, or is there a reason why RME support is not planned for QEMU virt?
+> 
+> If this is not the appropriate place to discuss this, please let me
 
-Assisted-by: LLM
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
----
- drivers/virtio/virtio_vdpa.c | 34 +++++++++++++++++++++++++++++++---
- 1 file changed, 31 insertions(+), 3 deletions(-)
+Mathieu, Lorenzo,
 
-diff --git a/drivers/virtio/virtio_vdpa.c b/drivers/virtio/virtio_vdpa.c
-index 6bcf4567a929..f9559b6b2e0b 100644
---- a/drivers/virtio/virtio_vdpa.c
-+++ b/drivers/virtio/virtio_vdpa.c
-@@ -12,6 +12,7 @@
- #include <linux/device.h>
- #include <linux/kernel.h>
- #include <linux/slab.h>
-+#include <linux/srcu.h>
- #include <linux/uuid.h>
- #include <linux/group_cpus.h>
- #include <linux/virtio.h>
-@@ -27,6 +28,7 @@
- struct virtio_vdpa_device {
- 	struct virtio_device vdev;
- 	struct vdpa_device *vdpa;
-+	struct srcu_struct cb_srcu;
- 	u64 features;
- };
- 
-@@ -114,8 +116,11 @@ static bool virtio_vdpa_notify_with_data(struct virtqueue *vq)
- static irqreturn_t virtio_vdpa_config_cb(void *private)
- {
- 	struct virtio_vdpa_device *vd_dev = private;
-+	int idx;
- 
-+	idx = srcu_read_lock(&vd_dev->cb_srcu);
- 	virtio_config_changed(&vd_dev->vdev);
-+	srcu_read_unlock(&vd_dev->cb_srcu, idx);
- 
- 	return IRQ_HANDLED;
- }
-@@ -123,8 +128,22 @@ static irqreturn_t virtio_vdpa_config_cb(void *private)
- static irqreturn_t virtio_vdpa_virtqueue_cb(void *private)
- {
- 	struct virtqueue *vq = private;
-+	struct virtio_vdpa_device *vd_dev = to_virtio_vdpa_device(vq->vdev);
-+	irqreturn_t ret;
-+	int idx;
-+
-+	idx = srcu_read_lock(&vd_dev->cb_srcu);
-+	ret = vring_interrupt(0, vq);
-+	srcu_read_unlock(&vd_dev->cb_srcu, idx);
-+
-+	return ret;
-+}
-+
-+static void virtio_vdpa_synchronize_cbs(struct virtio_device *vdev)
-+{
-+	struct virtio_vdpa_device *vd_dev = to_virtio_vdpa_device(vdev);
- 
--	return vring_interrupt(0, vq);
-+	synchronize_srcu(&vd_dev->cb_srcu);
- }
- 
- static struct virtqueue *
-@@ -440,6 +459,7 @@ static const struct virtio_config_ops virtio_vdpa_config_ops = {
- 	.reset		= virtio_vdpa_reset,
- 	.find_vqs	= virtio_vdpa_find_vqs,
- 	.del_vqs	= virtio_vdpa_del_vqs,
-+	.synchronize_cbs = virtio_vdpa_synchronize_cbs,
- 	.get_features	= virtio_vdpa_get_features,
- 	.finalize_features = virtio_vdpa_finalize_features,
- 	.bus_name	= virtio_vdpa_bus_name,
-@@ -454,6 +474,7 @@ static void virtio_vdpa_release_dev(struct device *_d)
- 	struct virtio_vdpa_device *vd_dev =
- 	       container_of(vdev, struct virtio_vdpa_device, vdev);
- 
-+	cleanup_srcu_struct(&vd_dev->cb_srcu);
- 	kfree(vd_dev);
- }
- 
-@@ -467,6 +488,11 @@ static int virtio_vdpa_probe(struct vdpa_device *vdpa)
- 	if (!vd_dev)
- 		return -ENOMEM;
- 
-+	if (init_srcu_struct(&vd_dev->cb_srcu)) {
-+		kfree(vd_dev);
-+		return -ENOMEM;
-+	}
-+
- 	vd_dev->vdev.dev.parent = vdpa->map ? &vdpa->dev :
- 				  vdpa_get_map(vdpa).dma_dev;
- 	vd_dev->vdev.dev.release = virtio_vdpa_release_dev;
-@@ -489,10 +515,12 @@ static int virtio_vdpa_probe(struct vdpa_device *vdpa)
- 	return 0;
- 
- err:
--	if (reg_dev)
-+	if (reg_dev) {
- 		put_device(&vd_dev->vdev.dev);
--	else
-+	} else {
-+		cleanup_srcu_struct(&vd_dev->cb_srcu);
- 		kfree(vd_dev);
-+	}
- 	return ret;
- }
- 
--- 
-2.39.5 (Apple Git-154)
+Over to you folks :-)
+
+Cheers
+Suzuki
+
+
+> know :)
+> 
+> Thanks,
+> Kohei
+> 
+>> [6] kvmtool https://gitlab.arm.com/linux-arm/kvmtool-cca.git cca/kvm-v17
+>>
+>> Known issues: RMMv2.0
+>>   * RmiOpMemDonateReq:count (Uint14) is incompatible with RmiAddrRangeDesc4KB
+>>    (Uint10) and RmiAddrRangeDesc16KB (Uint12). i.e., a larger contiguous request
+>>    may not be satisfiable by the host. Arm is aware of this defect and a spec fix
+>>    is in progress.
+>>
+>>
+>> Steven Price (7):
+>>    firmware: arm_rmm: Add SMC definitions for calling the RMM
+>>    firmware: arm_rmm: Check for RMI support at init
+>>    firmware: arm_rmm: Configure the RMM with the host's page size
+>>    firmware: arm_rmm: Add support for SRO
+>>    firmware: arm_rmm: Activate the RMM
+>>    firmware: arm_rmm: Ensure the RMM has GPT entries for memory
+>>    firmware: arm_rmm: Add wrappers for Realm related RMI commands
+>>
+>>   arch/arm64/Kconfig                |   1 +
+>>   arch/arm64/kernel/cpufeature.c    |   1 +
+>>   drivers/firmware/Kconfig          |   1 +
+>>   drivers/firmware/Makefile         |   1 +
+>>   drivers/firmware/arm_rmm/Kconfig  |  26 +
+>>   drivers/firmware/arm_rmm/Makefile |   2 +
+>>   drivers/firmware/arm_rmm/rmi.c    | 819 ++++++++++++++++++++++++++++++
+>>   include/linux/arm-rmi-cmds.h      | 678 +++++++++++++++++++++++++
+>>   include/linux/arm-smccc-rmi.h     | 494 ++++++++++++++++++
+>>   9 files changed, 2023 insertions(+)
+>>   create mode 100644 drivers/firmware/arm_rmm/Kconfig
+>>   create mode 100644 drivers/firmware/arm_rmm/Makefile
+>>   create mode 100644 drivers/firmware/arm_rmm/rmi.c
+>>   create mode 100644 include/linux/arm-rmi-cmds.h
+>>   create mode 100644 include/linux/arm-smccc-rmi.h
+>>
+>> -- 
+>> 2.43.0
+>>
+
