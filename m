@@ -1,14 +1,14 @@
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2FA51356F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD8451121B;
 	Tue,  8 Sep 2026 10:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788863625; cv=none; b=S6KY2y9LLAu873rty0hZb6p8YClYW70GDP4edqfMVh0Jon75gBkLQQdqJGL0Wv/GpP3H0FJNig5HoSt5/Pd/gKSwcgPOWsUHSc6DJLN3LM2R8C11HNH11bVdqds7sOxcWpeRcVCqt/zQYCjnV0DNUD1bsbB0OjrSYVTVS1YvLOs=
+	t=1788863626; cv=none; b=Fkkl8oBYHYLl4xo4ecq9rnmc9N7nCO45MewpIoK617HEaQ6jXcIvalP2FgilzBhFVddx3ndqgJYuhtaEnZACap7wD8Opl9P5BiWdaW0ancbIU0iN0CGi3sicDF6JJHHqYPE0mGqOYs8hXxvm0ngDowcBDRGlKT/KoI1XOHjEkbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788863625; c=relaxed/simple;
-	bh=RkXapPFgSlryurKpOlWh4872DC41mH87gAnzbVVgZlc=;
+	s=arc-20240116; t=1788863626; c=relaxed/simple;
+	bh=hOX9cepHBy5fg0iuhqvQgBD+Hx48ZLl75cezIhE4b8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8/GUwgtg7aBsELR8zAYJloDlzBs7w+dHBN93aBWyNmRo+3vPB0/SZ/M2m4qc+VKaGW/G/lmRrp8BLC8P8eWqMjWwgSTYjXJ5ZBZN417s0kH/pdc9O9xBarjjm6zS2Rc7ScwQmvwKX6eaCyNOu2yArRF5KVEZgplSywnz1P2A1U=
+	 MIME-Version; b=fImz3enbiDXU5ikvpDcaTlIp7WcuKgON5Pdt4cS+M6yz4e2m3rGPkOyU+nWRor/hx4ozNjr3ALT/G8rsNfbF47yI1W7uESZanruG1COIFqFDDTu+qPGUE03jJbGOo3RSXo1py7brW5bHZK1XgKT3fE2PRrHedCK9hJITbzPBhRU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
@@ -16,7 +16,7 @@ Received: from io.fritz.box (p200300f6af085a00d84fb33a51badfd9.dip0.t-ipconnect.
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 5830B20A1DD;
+	by mail.8bytes.org (Postfix) with ESMTPSA id 3223820A1DC;
 	Tue,  8 Sep 2026 12:33:41 +0200 (CEST)
 From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
@@ -33,9 +33,9 @@ Cc: Michael Roth <michael.roth@amd.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	coconut-svsm@lists.linux.dev
-Subject: [PATCH v2 3/8] KVM: SVM: Hold SRCU while reloading guest-owned VMSAs
-Date: Tue,  8 Sep 2026 12:33:33 +0200
-Message-ID: <20260908103338.427254-4-joro@8bytes.org>
+Subject: [PATCH v2 2/8] KVM: SVM: Implement GET_AP_APIC_IDS NAE event
+Date: Tue,  8 Sep 2026 12:33:32 +0200
+Message-ID: <20260908103338.427254-3-joro@8bytes.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260908103338.427254-1-joro@8bytes.org>
 References: <20260908103338.427254-1-joro@8bytes.org>
@@ -49,64 +49,152 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <joerg.roedel@amd.com>
 
-Take a dedicated KVM SRCU read lock around the guest-owned VMSA memslot
-and guest_memfd lookup.  This makes the reload path self-contained and
-prevents it from racing a userspace memslot replacement.
+Advertise and handle the GHCB APIC ID list feature so that SNP guests can
+discover the vCPUs for which they need to create VMSAs without relying on
+INIT-SIPI.
 
-Keep the lock through VMCB installation, and release it on all lookup
-failure paths.
+Return the required page count for undersized buffers.  For sufficiently
+large requests, validate the GPA range and use KVM's SRCU-protected guest
+write path to copy an exact snapshot of the online vCPU APIC IDs.
 
 Assisted-by: LLM
 Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 ---
- arch/x86/kvm/svm/sev.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/sev-common.h |  1 +
+ arch/x86/include/uapi/asm/svm.h   |  1 +
+ arch/x86/kvm/svm/sev.c            | 67 ++++++++++++++++++++++++++++++-
+ 3 files changed, 67 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index c16eca9983f3..ee1bf9b4cc53 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -4037,6 +4037,7 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
- 	unsigned long mmu_seq;
- 	struct page *page;
- 	kvm_pfn_t pfn;
-+	int idx;
+diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+index 01a6e4dbe423..c041f85dfd5c 100644
+--- a/arch/x86/include/asm/sev-common.h
++++ b/arch/x86/include/asm/sev-common.h
+@@ -136,6 +136,7 @@ enum psc_op {
  
- 	lockdep_assert_held(&svm->sev_es.snp_vmsa_mutex);
- 
-@@ -4068,9 +4069,10 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
- 	if (!VALID_PAGE(gpa))
- 		return;
- 
--	slot = gfn_to_memslot(vcpu->kvm, gfn);
-+	idx = srcu_read_lock(&kvm->srcu);
-+	slot = gfn_to_memslot(kvm, gfn);
- 	if (!slot)
--		return;
-+		goto out_unlock;
- 
- 	mmu_seq = kvm->mmu_invalidate_seq;
- 	smp_rmb();
-@@ -4079,8 +4081,8 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
- 	 * The new VMSA will be private memory guest memory, so retrieve the
- 	 * PFN from the gmem backend.
- 	 */
--	if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, &page, NULL))
--		return;
-+	if (kvm_gmem_get_pfn(kvm, slot, gfn, &pfn, &page, NULL))
-+		goto out_unlock;
- 
- 	read_lock(&kvm->mmu_lock);
- 	/*
-@@ -4097,6 +4099,8 @@ static void __sev_snp_reload_vmsa(struct kvm_vcpu *vcpu, gpa_t gpa)
- 	read_unlock(&kvm->mmu_lock);
- 
- 	kvm_release_page_clean(page);
-+out_unlock:
-+	srcu_read_unlock(&kvm->srcu, idx);
- }
+ #define GHCB_HV_FT_SNP			BIT_ULL(0)
+ #define GHCB_HV_FT_SNP_AP_CREATION	BIT_ULL(1)
++#define GHCB_HV_FT_APIC_ID_LIST		BIT_ULL(4)
+ #define GHCB_HV_FT_SNP_MULTI_VMPL	BIT_ULL(5)
  
  /*
+diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/svm.h
+index 010a45c9f614..05e5e31e23e1 100644
+--- a/arch/x86/include/uapi/asm/svm.h
++++ b/arch/x86/include/uapi/asm/svm.h
+@@ -117,6 +117,7 @@
+ #define SVM_VMGEXIT_AP_CREATE_ON_INIT		0
+ #define SVM_VMGEXIT_AP_CREATE			1
+ #define SVM_VMGEXIT_AP_DESTROY			2
++#define SVM_VMGEXIT_GET_APIC_IDS		0x80000017ull
+ #define SVM_VMGEXIT_SNP_RUN_VMPL		0x80000018ull
+ #define SVM_VMGEXIT_SAVIC			0x8000001aull
+ #define SVM_VMGEXIT_SAVIC_REGISTER_GPA		0
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 5705723f1f41..c16eca9983f3 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -40,7 +40,9 @@
+ #define GHCB_VERSION_MAX	2ULL
+ #define GHCB_VERSION_MIN	1ULL
+ 
+-#define GHCB_HV_FT_SUPPORTED	(GHCB_HV_FT_SNP | GHCB_HV_FT_SNP_AP_CREATION)
++#define GHCB_HV_FT_SUPPORTED	(GHCB_HV_FT_SNP | \
++				 GHCB_HV_FT_SNP_AP_CREATION | \
++				 GHCB_HV_FT_APIC_ID_LIST)
+ 
+ /*
+  * The GHCB spec essentially states that all non-zero error codes other than
+@@ -3493,7 +3495,8 @@ static bool sev_es_are_required_ghcb_fields_valid(struct vcpu_svm *svm)
+ 	case SVM_VMGEXIT_AP_CREATION:
+ 		return kvm_ghcb_rax_is_valid(svm) ||
+ 		       lower_32_bits(control->exit_info_1) == SVM_VMGEXIT_AP_DESTROY;
+-		break;
++	case SVM_VMGEXIT_GET_APIC_IDS:
++		return kvm_ghcb_rax_is_valid(svm);
+ 	case SVM_VMGEXIT_MMIO_READ:
+ 	case SVM_VMGEXIT_MMIO_WRITE:
+ 	case SVM_VMGEXIT_PSC:
+@@ -4215,6 +4218,63 @@ static int sev_snp_ap_creation(struct vcpu_svm *svm)
+ 	return 0;
+ }
+ 
++struct sev_apic_id_desc {
++	u32 num_entries;
++	u32 apic_ids[];
++};
++
++static int sev_snp_get_apic_ids(struct vcpu_svm *svm)
++{
++	struct kvm_vcpu *vcpu = &svm->vcpu;
++	struct kvm *kvm = vcpu->kvm;
++	struct sev_apic_id_desc *desc;
++	unsigned int nr_vcpus, size;
++	unsigned int i;
++	gpa_t gpa, end_gpa;
++	u64 pages;
++
++	nr_vcpus = atomic_read(&kvm->online_vcpus);
++	size = sizeof(*desc) + (nr_vcpus * sizeof(desc->apic_ids[0]));
++
++	pages = vcpu->arch.regs[VCPU_REGS_RAX];
++	if (pages < PFN_UP(size)) {
++		vcpu->arch.regs[VCPU_REGS_RAX] = PFN_UP(size);
++		return 1;
++	}
++
++	gpa = svm->vmcb->control.exit_info_1;
++	if (!PAGE_ALIGNED(gpa) ||
++	    check_add_overflow(gpa, size - 1, &end_gpa) ||
++	    !page_address_valid(vcpu, gpa) ||
++	    !page_address_valid(vcpu, end_gpa & PAGE_MASK))
++		goto invalid_buffer;
++
++	desc = kvzalloc(size, GFP_KERNEL_ACCOUNT);
++	if (!desc)
++		return -ENOMEM;
++
++	desc->num_entries = nr_vcpus;
++	for (i = 0; i < nr_vcpus; i++) {
++		struct kvm_vcpu *listed_vcpu = kvm_get_vcpu(kvm, i);
++
++		if (WARN_ON_ONCE(!listed_vcpu))
++			goto invalid_buffer_free;
++		desc->apic_ids[i] = listed_vcpu->vcpu_id;
++	}
++
++	if (kvm_write_guest(kvm, gpa, desc, size))
++		goto invalid_buffer_free;
++
++	kvfree(desc);
++	return 1;
++
++invalid_buffer_free:
++	kvfree(desc);
++invalid_buffer:
++	svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
++	return 1;
++}
++
+ static int snp_handle_guest_req(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_gpa)
+ {
+ 	struct sev_data_snp_guest_request data = {0};
+@@ -4494,6 +4554,7 @@ static bool is_snp_only_vmgexit(u64 exit_code)
+ {
+ 	switch (exit_code) {
+ 	case SVM_VMGEXIT_AP_CREATION:
++	case SVM_VMGEXIT_GET_APIC_IDS:
+ 	case SVM_VMGEXIT_GUEST_REQUEST:
+ 	case SVM_VMGEXIT_EXT_GUEST_REQUEST:
+ 	case SVM_VMGEXIT_PSC:
+@@ -4665,6 +4726,8 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+ 		if (sev_snp_ap_creation(svm))
+ 			svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
+ 		return 1;
++	case SVM_VMGEXIT_GET_APIC_IDS:
++		return sev_snp_get_apic_ids(svm);
+ 	case SVM_VMGEXIT_GUEST_REQUEST:
+ 	case SVM_VMGEXIT_EXT_GUEST_REQUEST:
+ 		if (!PAGE_ALIGNED(control->exit_info_1) ||
 -- 
 2.53.0
 
