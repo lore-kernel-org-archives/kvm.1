@@ -1,110 +1,160 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0694D2EFE
-	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 09:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60F4509EF1;
+	Tue,  8 Sep 2026 09:49:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788860556; cv=none; b=QB8G0XIvewmyRU0qH063EIKmNa9ShwZvbE00GB5qtZ5JH2qCBiGAYv6rCtuT+Y2+4fEHD3tRoHNAG9LCUVCyiDyxq2Mxgd4mF72ujVk+BhzjuKsf6LjnutHqRse9bkwDwMx0AyOol9b4SHuBzO03Ktf5sS1Ojsg5oI2aG0stwZg=
+	t=1788860980; cv=none; b=iU5jUxLBCeeKSJLkFqemVdGxRDx5S/PY8bfH31aG4k1Bnhs9SujRpLcBM021EqsOvPBzQ1odVCZN8zuSJfjdtkEvvqUGM2UuCIExz8xsYPQq/P8AGQrovaMK5laczlvHz6mtyTgVfEwBUk31ErrzNKlcAyqNPxnj3hic9RVs330=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788860556; c=relaxed/simple;
-	bh=K1zoawtIHXn0RBbF60I1H1C9ybSRR5Nw0HEbVljdmi8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ukkCm1L6cXceNF5XUW+KluEXxnI/g2MpcBROTAUdKD6E9Yjyf4TDfuTQE02OHbrLd19uXR/0ymZa0A5k7QZ6smidlTFAxCJyVfCwoUOxNW99eZyHdEPw2NNn31weKY1ltpA1/o0FwcFu9GfkDaDQqCUc3wrnrPKLOnYXHo3pzko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T1xHDOyW; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788860980; c=relaxed/simple;
+	bh=kJteEwoT3OdITFopCoesbDyojoKuGSBp7kslVKQdQY0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LrIf7Wc0ugBN9c9wixRsfRgS1Daci+yhm5C+ONyGVKSd94sI8ZVsOx9geuRMXOeKnH2242ZOmAYCdicYGU5TRU9sVRmO9scMZrOJwRI0jMNL00Xso9vsHSLHt66B5B13B+yrPQOU85+6SlxKFwXkdYS17sKvYKWxwzVBLbPRvIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=bnEijS8U; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T1xHDOyW"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c2531f453eeso610995166b.3
-        for <kvm@vger.kernel.org>; Tue, 08 Sep 2026 02:42:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788860553; x=1789465353; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=pjj4FGVfbpefB5YMY5bf6wxg1EBuFtqC/RFD5ZXsYfI=;
-        b=T1xHDOyWWYuYSUrvscdDqOu4fngP3CziUuehVN2rclbRfCYnTQHLMY9s6g6vI6iSpA
-         RzUUXOTvN7NnvBWiNVBufHjoE5hCd56gJ08bLCm9NwmcbstDqS4KePRb7bhwskdnI+sO
-         KG3wPsxqtGaJoSwpN1IU5tYdIciwmy58Vx8DJqVh9cF1FfuWSSAxpx33XgKHA2Jok01J
-         Eahv/aSoaQjvuWmTzaD6MCnq9+UnAG13WpMqAKLgAkIQYrvxcDrAvVx+BdFXZ4kZdIcw
-         7EdkdYywHF8SlyYUoggeD1mTuKXCjvdYw27agBU6jCWrMXlHBg6gcYrKw6nSfKY19W0R
-         iODg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788860553; x=1789465353;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pjj4FGVfbpefB5YMY5bf6wxg1EBuFtqC/RFD5ZXsYfI=;
-        b=ckJMX50fQIDIclTq8K53+crhhSo9tr6z9fj52Vl5g1XOCld92r39JH6kjVrmm5lKJY
-         /kUWC8X7xqpxwgHDMPl5CrFlrhsA1wpQbl6s6Mx6zLk2wu69K7JRtckMClHrNgf+v66j
-         OYFvmq9Lj5gWNFB8bQA1s+a6WvbFxWA6D/6aXhvSfgXsp0pRJG2Cqm7AaQ9AKht1mWRm
-         OxjSCcHPfJEvSyvqIcH+oZIAFt4YdSuUAhsgEXIlLpfAN1BEvqkc2WzM5zWfcZOE6Rqy
-         vKNkOJ6BKOEjwXEle95tw0Eu6b74l+vkGgbYvWpgYwEWDKZzgoNUFbyXaWJ0aH+X9cbH
-         n6ZQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxQPNGa5IRudGr9Al/c/awrVOga5MvjTMrbmU387Mz1p0fe+1x+Ag/Dy6RR494OXRjQqtw=@vger.kernel.org
-X-Gm-Message-State: AFuF++mDbEdVHvwVssYq+oQ3UBCLUnE2ibEGdaiCZGK6gQHQl2MxujO2
-	ogxuEPr/OMEArrnIALFCU7wy1QA2FuJxcRFqvgNEtDVfLLD5ztpiH/Z+
-X-Gm-Gg: AYBFou3xCbJ7+PuHsjC9KthipiPbjlndgdFvXuE1FLx8i93MKjtDgKpxzvt+gfjeIvD
-	9Ro02GV3MkVoqEjULXG3yQxzpE6x35V/pYiDM6TORgHBlLjlzYOdbaGfaIk/PBhCEp2orzh855d
-	scZo2a6tNb8BaXyPHKjgox9NrPQd5TUeUsTRQSZborssSVCSA57l9FfKKMfG8bFDHO/iKGbMlP6
-	qCFaa22Zf6D/y+oprX7XgWYcqzGy77aYHTrBjkSsNCPn/hlprpllRZ090vGUd8FGPxcaSSb4rtc
-	t/fjtFnfwxao//ntGLMpo+iyNVlglqXNHPhlozqPH7Snre3GnMMlfar175r37vNdZciXkvwUaXZ
-	udXSDbuDmXy2q8Fd/3J0Gn1amWx55WZcbrlno/tn2JsvinLpq8wRZuQAZf1piXX7mX5BTPrkhq+
-	2X3+3LxWuXeCTCHek1n05m0lPlaiWeF3b9jQG2ADJdfonpMj5NfJ2vl9iaRMo5+g==
-X-Received: by 2002:a17:907:c81a:b0:c25:c67d:53cc with SMTP id a640c23a62f3a-c260c8d5829mr1740810066b.8.1788860552436;
-        Tue, 08 Sep 2026 02:42:32 -0700 (PDT)
-Received: from [10.245.244.96] ([192.198.151.45])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d5768c2sm574816666b.39.2026.09.08.02.42.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 02:42:31 -0700 (PDT)
-Message-ID: <1f1877f904d0521100d2ca656fc9f0542c46a68b.camel@gmail.com>
-Subject: Re: [PATCH v3 0/4] KVM: TDX: Validate directly configurable CPUID
- bits
-From: Artem Bityutskiy <dedekind1@gmail.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org
-Cc: seanjc@google.com, pbonzini@redhat.com, dave.hansen@linux.intel.com, 
-	andrew.cooper3@citrix.com, nik.borisov@suse.com, kas@kernel.org, 
-	rick.p.edgecombe@intel.com, xiaoyao.li@intel.com, chao.gao@intel.com
-Date: Tue, 08 Sep 2026 12:42:28 +0300
-In-Reply-To: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
-References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="bnEijS8U"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5AE741476;
+	Tue,  8 Sep 2026 02:49:33 -0700 (PDT)
+Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 685AE3F7B4;
+	Tue,  8 Sep 2026 02:49:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788860977; bh=kJteEwoT3OdITFopCoesbDyojoKuGSBp7kslVKQdQY0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=bnEijS8UoORGgws4/gA0W4HiONlIvwJMlSXD8OSU/r3dg/eT6i8+aRl9HfVheUaUS
+	 jvbmdRo2tL2vQpBZlOOwEVT3bN917GE2o282Fo2hN0lkk+zG8H03BMgZ26A3d4piwM
+	 cNK8rOVVEt5zZV461cpirSw+FvdQcp6Aynp4+T4M=
+Message-ID: <7c8b3430-e233-486e-b4fd-3c1f5d05d97d@arm.com>
+Date: Tue, 8 Sep 2026 10:49:32 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v17 2/7] firmware: arm_rmm: Check for RMI support at init
+To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
+ <20260907095942.1140734-3-suzuki.poulose@arm.com>
+ <25894d08-0fec-4dcd-9d5e-e8270ff9d26c@redhat.com>
+Content-Language: en-US
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <25894d08-0fec-4dcd-9d5e-e8270ff9d26c@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Binbin,
+On 08/09/2026 07:46, Gavin Shan wrote:
+> Hi Suzuki,
+> 
+> On 9/7/26 7:59 PM, Suzuki K Poulose wrote:
+>> From: Steven Price <steven.price@arm.com>
+>>
+>> Query the RMI version number and check if it is a compatible version.
+>> The first two feature registers are read and exposed for future code to
+>> use.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-On Thu, 2026-08-27 at 11:18 +0800, Binbin Wu wrote:
->=20
-> Specifically, this series builds a KVM-side allowlist of supported TDX
-> directly configurable CPUID bits to:
->  - Filter KVM_TDX_CAPABILITIES
->    Replace the hardcoded denylist to only report configurable bits that
->    KVM explicitly supports.
->  - Validate KVM_TDX_INIT_VM
->    Reject any configurable bit that the TDX module allows but KVM does
->    not support, as well as CPUID entries with an unexpected subleaf.
+...
 
-Today's denylist only rejects TSX and WAITPKG. Everything else is allowed.
+>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/ 
+>> arm_rmm/rmi.c
+>> new file mode 100644
+>> index 0000000000000..008a783407b4e
+>> --- /dev/null
+>> +++ b/drivers/firmware/arm_rmm/rmi.c
+>> @@ -0,0 +1,101 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * Copyright (C) 2023-2026 ARM Ltd.
+>> + */
+>> +
+>> +#include <linux/cpufeature.h>
+>> +#include <linux/memblock.h>
+>> +#include <linux/arm-rmi-cmds.h>
+>> +#include <linux/slab.h>
+>> +
+>> +#include <asm/memory.h>
+>> +#include <asm/pgtable-hwdef.h>
+>> +
+>> +/* Currently only the first 2 registers are used by Linux */
+>> +#define RMI_FEAT_REG_COUNT    2
+>> +static __ro_after_init unsigned long 
+>> rmi_feat_reg_cache[RMI_FEAT_REG_COUNT];
+>> +
+> 
+> I would drop RMI_FEAT_REG_COUNT and use ARRAY_SIZE(rmi_feat_reg_cache) 
+> in the code.
+> Besides, __ro_after_init is usually put at the last the declaration.
+> 
+> static unsigned long rmi_feat_reg_cache[RMI_FEAT_REG_COUNT] 
+> __ro_after_init;
+> 
+>> +unsigned long rmi_feat_reg(unsigned long id)
+>> +{
+>> +    if (WARN_ON(id >= RMI_FEAT_REG_COUNT))
+>> +        return 0;
+>> +
+>> +    return rmi_feat_reg_cache[id];
+>> +}
+>> +EXPORT_SYMBOL_GPL(rmi_feat_reg);
+>> +
+> 
+> I would suggest to rename 'id' to 'index' since it represents the feature
+> register index instead of feature register ID.
+> 
+> unsigned long rmi_feat_reg(unsigned long index)
+> {
+>     :
+> }
+> EXPORT_SYMBOL_GPL(rmi_feat_reg);
+> 
 
-Obviously, the TDX module allows directly setting virtual CPUID values
-only for a subset of CPUID leaves, not all of them. So "everything else"
-above is that subset minus TSX and WAITPKG.
 
-My question is: is there a feature in that "everything else" that
-causes host state clobbering today?
+>> +/*
+>> + * Note arm64_init_rmi() must be called before kvm_init_rmi() 
+>> otherwise KVM
+>> + * will not support realm guests. subsys_initcall() is called before
+>> + * module_init() (used for KVM) so this is OK.
+>> + */
+>> +subsys_initcall(arm64_init_rmi);
+>> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
+>> new file mode 100644
+>> index 0000000000000..2fb1f7f86d71e
 
-In other words, does this patch only build the infrastructure for
-addressing future clobbering issues, or does it also fix a specific
-bug?
+>> +static inline int rmi_features(unsigned long index, unsigned long *out)
+>> +{
+>> +    struct arm_smccc_res res;
+>> +
+>> +    arm_smccc_1_1_invoke(SMC_RMI_FEATURES, index, &res);
+>> +
+>> +    if (res.a0 == RMI_SUCCESS && out)
+>> +        *out = res.a1;
+>> +
+>> +    return res.a0;
+>> +}
+>> +
+> 
+> We needn't expose rmi_features() through include/linux/arm-rmi-cmds.h 
+> since it's
+> used for once in rmi.c::rmi_read_features(). I would suggest to drop it 
+> by combining
+> the code with that function.
 
-Thanks!
+Thanks for the review, I will address them in the next version.
+
+Cheers
+Suzuki
+
+
