@@ -1,157 +1,221 @@
-Received: from esa1.hc1455-7.c3s2.iphmx.com (esa1.hc1455-7.c3s2.iphmx.com [207.54.90.47])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011025.outbound.protection.outlook.com [52.101.57.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900EE23D7DF;
-	Tue,  8 Sep 2026 02:18:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.54.90.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788833933; cv=none; b=VyPl9kCOs0yPmzQUeYMVkvYqF8t0UZl4Cn1qCJq3A3+4I58R9+m2fs33g/CAtUlHsyzpxtv4LP3j1QdGjeCJYatxgXy2feDKX6QZH8ImGll7xYhlT1lddKfrXEUK4s3koXx0VYHYH4xff8aFh/N3TdXJyiGXbF18eCL37NM1LrU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788833933; c=relaxed/simple;
-	bh=H8yu5UWHpf8HMlqYH0d0maZ7HvkrMCdZ8vGMrmgBC44=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hOXgf4249YA2e4Fl9m2lcjvn/BgdC5K9uxpUTllV1dH1XzO/9mXzeqCYdMErBzB40Gg6hjDl/z/rQKhQ2q5dpbq//qPkx1Nb+8aMHBOJZrqRqndGxUXro3qSFVhZ4hRU2AHtbnj90+yF6mBLT3kSWGuq9FmmtEsg9rIC5Igj5JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=SF2TKboQ; arc=none smtp.client-ip=207.54.90.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB46435893
+	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 04:08:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788840532; cv=fail; b=RHxBgz0x+NOHXHmtk7bjxbNKZ7ipTPDBXKk38gFEFgBf6tmmy2NSaXD5hjMytfDzOBDYRXy/zAqpq+t3TbMP5iT7y5PgRzEuTzp7v5ClauU9kYaDXq3p/cmvnp5MyRKB1jFvTDncrOjycwrqMG2ExnDa/+iE7wHrGUIp7+5AEWo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788840532; c=relaxed/simple;
+	bh=YvyGNI0d513iz+g0EidjWac0SYXcsNtS9ThUh6k/qW8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=snMwiTkCs4VNeDDWHn81RuUOYUjCWW+JjIHAxKjr3k59OUMPPFsF7VpOhFfeRxxAWwN6pR4vAxRyslH9rqZ65kzjd+heZ0508YEX7yQS0UIVFD81+6Yw9ruFc2YHnZR6Yijkxn2FGr4Gau6JM21teXEQOPdWcbIl1+SNe66MGH4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=qXYXn6Er; arc=fail smtp.client-ip=52.101.57.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="SF2TKboQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1788833932; x=1820369932;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=H8yu5UWHpf8HMlqYH0d0maZ7HvkrMCdZ8vGMrmgBC44=;
-  b=SF2TKboQAKPwLc28grnT89vOP0cgRq7IsOMFSzxI2YdfzoqN57pizp3z
-   h/yJ9awYhGaicUnbgXTsmnq3uYo9pMouzo8zhu4Avd53BIoK7hLqZ62wW
-   a2hsTlOrO1AO0QT7I9iS3NL1ruC04Wse6C+r24q0KwE3NoLNeaXx5WLZQ
-   6qgXxehuMWfy+8NwMkxtUPbAWKtA+XwxNvgJwLuPgoFTkqcggUYU3eESx
-   vKI7WzcQxB/Ww3LSxCS8cPG9MEL/Nstl1xUYm3TorrO+lh63lWBrFtiRf
-   dHMrBqRd5Xv46/gUN7yH9vRhxUbKSY5lup2utuvI7hWhRMLTEeJ1smaGB
-   g==;
-X-CSE-ConnectionGUID: uxUWLKkwS26YXcfhwKFZZg==
-X-CSE-MsgGUID: AE5NkpcmRT+vPktKgbea6A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="254260801"
-X-IronPort-AV: E=Sophos;i="6.25,268,1779116400"; 
-   d="scan'208";a="254260801"
-Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
-  by esa1.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2026 11:18:50 +0900
-Received: from az2uksmgm3.o.css.fujitsu.com (unknown [10.151.22.200])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id 9B5A01C1C704;
-	Tue,  8 Sep 2026 02:18:49 +0000 (UTC)
-Received: from az2nlsmom1.o.css.fujitsu.com (unknown [10.150.26.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2uksmgm3.o.css.fujitsu.com (Postfix) with ESMTPS id 52831C00800;
-	Tue,  8 Sep 2026 02:18:49 +0000 (UTC)
-Received: from sm-arm-grace07 (unknown [10.124.178.20])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmom1.o.css.fujitsu.com (Postfix) with ESMTPS id BBF27823095;
-	Tue,  8 Sep 2026 02:18:43 +0000 (UTC)
-Date: Tue, 8 Sep 2026 11:18:40 +0900
-From: Itaru Kitayama <itaru.kitayama@fujitsu.com>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Takayuki Okamoto <tokamoto@fujitsu.com>
-Subject: Re: [PATCH 0/2] 52-bit VA guest mode ID support
-Message-ID: <ap9wgBjYEDI-27N1@sm-arm-grace07>
-References: <20260826-arm64-52bit-va-v1-0-14ec98211363@fujitsu.com>
- <CA+EHjTwPmwPTMcgQB6zt47Kz6NPMr+FkGfq2Qq+Uxu+G427OEg@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="qXYXn6Er"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EYv/6nrlQ2PNyxYKCbP8wf6IoNndYuIVM4ol839lA6J9YzIEmvhXr27wNZu1uRYTsYT6vJ97U59bSkNN9mfg99bcmKdmlecsi9+OWl+jGrMlyo4fPPPELct3T5qhhLJAEa2zcD6sz1uAKMm8vEjzbWC9AZaXRk4oVXqSD1tB9uAJ5kwl9S3nrt8HsGkIJVh1QGCbjKb7iy1itj2Wl2aqPSmFENjHWJy4+XrWQsruEaBN/me7dcKxyGJJOwFaz8cMo+cTnkBuKwoD9EsU1PIQ0F3phY3YqSsKLqjD2Fl+NAvEv+CIPbUZ6oSz4ylbKNZIYeKNhYMUEtdWa/AbKC0N5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GKcTYoko7LilK9OSnESLCr1zbwNR98VHR74gR+HVchQ=;
+ b=pvky1DX0fIYGizXf+18Qr3K0ulp8z3vQEVhJUIRWMe9HnLSJGo0l973wWjChlWZhC+TfiDoJXpJx+euaaTeBF96k7nlxzpOiUXUTX7a3rPQer0HSYZvNFFEaQTuei4g4AerID9tXP1XbRyzwT45MBqZp8N1OsOjOjcYPE4GT/ZIp6D5KJkPfg3sT2uQ6QWvEXvXN05a52J4p1d1gZ9wKxspQ9gaDNsDAY60/SYDEZExuBr4M8dPkXaXQpVDf0VvVuBAFzaIgUlG8Lr4uXuTtYFdrNTsXyZqsyPeNGpIeZAibnwSaGcWmyqJvQdyVpTMV6ejt2NzvhyohS5jtW6Y4CQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GKcTYoko7LilK9OSnESLCr1zbwNR98VHR74gR+HVchQ=;
+ b=qXYXn6Eryiqt8MNRsqS7e7A7OSkOfje84LJXZOrJncBshzEs28w9p9eCqtOLCdtHfKWFmAMREjgGzuupLUlx1FAM2eKfcsUyyMcdoADEEBcjqojnB3H4KB2kDyFeq59cSKBhhr+alKil8jkKmP/Pe5heZw/oi98wCliOYE6j5bk=
+Received: from BY1P220CA0025.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:5c3::12)
+ by DS4PR12MB9683.namprd12.prod.outlook.com (2603:10b6:8:280::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Tue, 8 Sep
+ 2026 04:08:39 +0000
+Received: from MWH0EPF000A6731.namprd04.prod.outlook.com
+ (2603:10b6:a03:5c3:cafe::21) by BY1P220CA0025.outlook.office365.com
+ (2603:10b6:a03:5c3::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.406.6 via Frontend Transport; Tue, 8
+ Sep 2026 04:08:39 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ MWH0EPF000A6731.mail.protection.outlook.com (10.167.249.23) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.406.5 via Frontend Transport; Tue, 8 Sep 2026 04:08:39 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Mon, 7 Sep
+ 2026 23:08:38 -0500
+Received: from [10.136.37.6] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.46 via Frontend
+ Transport; Mon, 7 Sep 2026 23:08:37 -0500
+Message-ID: <9a5552de-0f36-41c6-8bb6-16cbba5425b6@amd.com>
+Date: Tue, 8 Sep 2026 09:38:36 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+EHjTwPmwPTMcgQB6zt47Kz6NPMr+FkGfq2Qq+Uxu+G427OEg@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 8/8] KVM: SVM: Add Page modification logging support
+To: <sashiko-reviews@lists.linux.dev>
+CC: <kvm@vger.kernel.org>
+References: <20260907063906.1964557-1-nikunj@amd.com>
+ <20260907063906.1964557-9-nikunj@amd.com>
+ <20260907070024.4A7E11F00A3D@smtp.kernel.org>
+Content-Language: en-US
+From: "Nikunj A. Dadhania" <nikunj@amd.com>
+In-Reply-To: <20260907070024.4A7E11F00A3D@smtp.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000A6731:EE_|DS4PR12MB9683:EE_
+X-MS-Office365-Filtering-Correlation-Id: cd01001c-c1bd-42a9-1a58-08df0d5edcce
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700016|376014|23010399003|6133799003|10067099003|4143699003|11063799006|5023799004|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	Y0WMxa+WQ7feJA6np4dGPjXG5Ay67Wn/2VMxg+a+Woo8sYe3EyW0wV4q/tF8OtwBl/pcUhYNvPYT0ORDhnPnnFrn8r8W+5jlwGBagsEZmxyFVK78cJema4XJ1fUw+z2wT9dnqhSsfazUZlnfIQc8CAFIY3xEHvqdSPiFpFw4l+T26vd2HN1e0wHxGqmYpjOkykvgcSwSdTfB+u9/I+CL9OUYmSaRcY8K6Sd3g8t0O4w+PRuGvVaaQrUOVBqtU7bqJQQNc8oh+i/ar4a/IohDXY+f9VHqlVKowo7o7Fbp48ln7iJ3AtKDIdzJ990zRqNTB1rPOHdlmeB6lbLhzA+I+84rl4GKKMXPorpTvx7o4U0u5bZl29P9kyMt1aQDmNFqrTYCwe0wzvujLCqihovh9ANJf8M2I2bK08W0A2yVczO43nsKqvjJ9zsJz7gkbhRMhVE5UQ9TYsW3Y+JW/ijhPiXmlQp0LZLHbA/NVuE0w9k5TUFucDuOyeiY4KCnIlHssZ8RCdpYt0M9OP7x55Ze/PCqT7la3K1464yIsX6EHlrRVp3ZzqVPH8x/3jde797E8czL9vDTIzTBXJ6t7D8yf10VpPGSFH7r2dR8uxqN7Eh5YHvhxWHicb4GgfjXdvNeHmJz/tpSktsz1DdA7F0xpWfRFJl3GCxFVohg6AqxiWnUPhzOJTMzgYRLmXcR+nyaZsq3SXQsNHVHKG0ivdBbLQ==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700016)(376014)(23010399003)(6133799003)(10067099003)(4143699003)(11063799006)(5023799004)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	IMHEhhc5f7si5vYFo3PpmlWAkuhJ2VIttNKtwEJEAR7ugNMcH9BmONjJHKkv3TVjfR2BREWElTB4LjZeYKR93qgVP6y8km7NZ9/gVi3obuTPSuj2wu3V477IubThvSE3aOtzHX1mUuYPgYDIFCM2DSVODx7+dAbrxPKhbAqhb0yeMY7YSBDIMfUf1KVaPGjM0JTnAnWpUZszjDSao1CZOvG/Rala4+EQUrgU0W47nWPrrOGuPQYpl0Hjoj0x1KyYXYvrtozdvKFYTNnAm10h5HSe2Sje9sSJ7/kTR9DDvFLPML5GAfc2fN/pfQtITpvW3G2In83ziE5CFPhu8e1X+5P+HSAAVwT773fLfUS+3jgLCPpVrn6dioCyunJtlQb40QR/N/cKcw6dzLwnE5QuT4HWCZBZdCLT/Svl/3miFST3cDJc+SN705aryTyabU1+
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2026 04:08:39.1049
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd01001c-c1bd-42a9-1a58-08df0d5edcce
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MWH0EPF000A6731.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9683
 
-Hi Fuad,
-On Fri, Sep 04, 2026 at 09:14:36AM +0100, Fuad Tabba wrote:
-> On Tue, 25 Aug 2026 at 22:18, Itaru Kitayama <itaru.kitayama@fujitsu.com> wrote:
-> >
-> > This patch series extends the arm64 KVM selftest framework
-> > to support 52-bit guest virtual address (VA) modes in addition to
-> > the existing 52-bit physical address (PA) configurations.
-> > The motivation is to enable validation of LPA2 guest memory-management
-> > behaviour in configurations that use a 52-bit VA space.
-> > While the selftest framework already supports testing 52-bit PA
-> > configurations, it lacks the ability to exercise guests running with
-> > 52-bit virtual addresses, leaving part of the LPA2 functionality untested.
-> 
-> The series adds three 52-bit VA guest modes, but nothing in tree maps
-> a guest VA high enough to use them. The mode-iterating tests map at a
-> fixed low GVA, so pgd_index() returns 0 and only the first entry of
-> the top level is ever used.
-> 
-> What do you expect the modes to catch as they stand? The allocators
-> already take a minimum GVA, so mapping high in one of those tests
-> looks like a small change.
 
-I think at least a 4KB page is allocated for the level -1 translation table, 
-and entry 0 is populated with a Table descriptor pointing to the level 0 translation
-table. But, no it does not test a nonzero top-level index.
+
+On 9/7/2026 12:30 PM, sashiko-bot@kernel.org wrote:
+
+>> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+>> index 73f37b050d0a0..da417c4c59154 100644
+>> --- a/arch/x86/kvm/svm/nested.c
+>> +++ b/arch/x86/kvm/svm/nested.c
+>> @@ -901,6 +901,13 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
+>>       vmcb02->control.msrpm_base_pa = vmcb01->control.msrpm_base_pa;
+>>       vmcb_mark_dirty(vmcb02, VMCB_PERM_MAP);
+>>
+>> +     /*
+>> +      * PML is never enabled in hardware for L2.  Make sure that an
+>> +      * unexpected PML write would trigger a PML_FULL VM-Exit.
+>> +      */
+>> +     if (pml)
+>> +             vmcb02->control.pml_index = -1;
+> 
+> [Severity: Critical]
+> By intentionally leaving hardware PML disabled for nested L2 guests in
+> nested_vmcb02_prepare_control without informing the KVM MMU, doesn't this
+> cause all memory dirtied by L2 to be silently lost?
+
+No, kvm_mmu_page_ad_need_write_protect() returns true when
+cpu_dirty_log_size is set and the shadow page is in guest_mode,
+which forces write-protection on L2 SPTEs instead of relying on
+hardware PML. L2 dirty pages are tracked via write faults, not PML.
+This is the same approach VMX uses for nested guests.
 
 > 
-> > To address this, the series introduces new guest modes for 52-bit VA
-> > operation, adds five-level page table support where required, and
-> > performs runtime detection of host 52-bit VA capability so that
-> > LPA2-enabled guest VA tests are executed only on supported systems.
-> >
-> > Testing:
-> >
-> > Built and tested on arm64.
-> > Verified on QEMU with a V52-capable guest configuration.
-> > Confirmed correct operation of high virtual address mappings by
-> > exercising guest memory accesses in the 52-bit VA range.
+> When an L2 guest writes to memory and the host KVM has PML enabled, the KVM
+> MMU creates L2 shadow NPT SPTEs as writable but clears the D-bit. If hardware
+> PML is disabled for L2, the hardware will set the D-bit but will not log the
+> GPA, potentially leading to silent memory corruption upon live migration.
 > 
-> I could not reproduce "exercising guest memory accesses in the 52-bit
-> VA range" with anything in tree either. Could you say which test you
-> ran, which guest modes, and on what?
+> [ ... ]
+> 
+>> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+>> index 7d59d301e1e54..950c250a77b51 100644
+>> --- a/arch/x86/kvm/svm/svm.c
+>> +++ b/arch/x86/kvm/svm/svm.c
+> [ ... ]
+>> @@ -3344,6 +3376,45 @@ static int vmmcall_interception(struct kvm_vcpu *vcpu)
+>>       return kvm_emulate_hypercall(vcpu);
+>>  }
+>>
+>> +static void svm_update_cpu_dirty_logging(struct kvm_vcpu *vcpu, bool enable)
+>> +{
+>> +     struct vcpu_svm *svm = to_svm(vcpu);
+>> +     struct vmcb *vmcb01 = svm->vmcb01.ptr;
+>> +
+>> +     if (enable)
+>> +             vmcb01->control.misc_ctl |= SVM_MISC_ENABLE_PML;
+>> +     else
+>> +             vmcb01->control.misc_ctl &= ~SVM_MISC_ENABLE_PML;
+>> +
+>> +     vmcb_mark_dirty(vmcb01, VMCB_NPT);
+>> +}
+>> +
+>> +static void svm_flush_pml_buffer(struct kvm_vcpu *vcpu)
+>> +{
+>> +     struct vcpu_svm *svm = to_svm(vcpu);
+>> +     struct vmcb_control_area *control = &svm->vmcb->control;
+>> +
+>> +     /* Do nothing if PML buffer is empty */
+>> +     if (control->pml_index == PML_HEAD_INDEX)
+>> +             return;
+>> +
+>> +     kvm_flush_pml_buffer(vcpu, control->pml_index);
+>> +
+>> +     /* Reset the PML index */
+>> +     control->pml_index = PML_HEAD_INDEX;
+>> +}
+> 
+> [Severity: High]
+> Since the PML index is reset here without marking the VMCB_NPT field dirty via
+> vmcb_mark_dirty(svm->vmcb, VMCB_NPT), will the CPU hardware ignore the reset
+> and use a stale cached value?
 
-I just in guest_code() of existing one of the kselftests, mapped and 
-accessed a page at 1ULL << 49 using virt_pg_map() and on QEMU TCG mode
-as I don't currently have access to the machines LPA and LPA2 features.
+No clean bits are defined for the PML_ADDR and PML_INDEX fields, so on a
+VMRUN, hardware always loads them from the VMCB if the feature is enabled.
 
-Thanks,
-Itaru.
 > 
-> Thanks,
-> /fuad
+> This could lead to a situation where the processor continuously generates a
+> PML_FULL VMEXIT on every subsequent write because the cached index remains at
+> zero, causing guest livelock and a performance collapse.
 > 
-> > Signed-off-by: Itaru Kitayama <itaru.kitayama@fujitsu.com>
-> > Reviewed-by: Takayuki Okamoto <tokamoto@fujitsu.com>
-> > ---
-> > Itaru Kitayama (2):
-> >       KVM: selftest: arm64: Support 5-level paging in stage 1 translation table
-> >       KVM: selftests: arm64: Add 52-bit VA guest modes
-> >
-> >  .../selftests/kvm/include/arm64/processor.h        |  2 +
-> >  tools/testing/selftests/kvm/include/kvm_util.h     |  3 +
-> >  tools/testing/selftests/kvm/lib/arm64/processor.c  | 87 ++++++++++++++++++++--
-> >  tools/testing/selftests/kvm/lib/guest_modes.c      |  5 ++
-> >  tools/testing/selftests/kvm/lib/kvm_util.c         | 11 +++
-> >  5 files changed, 103 insertions(+), 5 deletions(-)
-> > ---
-> > base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
-> > change-id: 20260825-arm64-52bit-va-32f1f4cd050d
-> >
-> > Best regards,
-> > --
-> > Itaru Kitayama <itaru.kitayama@fujitsu.com>
-> >
+> [ ... ]
+>> @@ -5429,6 +5525,8 @@ struct kvm_x86_ops svm_x86_ops __initdata = {
+>>       .check_intercept = svm_check_intercept,
+>>       .handle_exit_irqoff = svm_handle_exit_irqoff,
+>>
+>> +     .update_cpu_dirty_logging = svm_update_cpu_dirty_logging,
+>> +
+>>       .deliver_interrupt = svm_deliver_interrupt,
+>>       .pi_update_irte = avic_pi_update_irte,
+>>       .setup_mce = svm_setup_mce,
+> 
+> [Severity: Medium]
+> Is there a missing implementation of .flush_pml_buffer in svm_x86_ops?
+
+No. flush_pml_buffer is not a kvm_x86_ops operation. SVM calls
+svm_flush_pml_buffer() directly from svm_handle_exit() on every
+VM exit, including SVM_EXIT_PML_FULL.
+ 
+> Without .flush_pml_buffer exported to the generic KVM x86 ops,
+> kvm_vcpu_flush_pml() might silently do nothing. This would result in
+> KVM_GET_DIRTY_LOG returning incomplete data, potentially delaying live
+> migration convergence or confusing userspace tools expecting an accurate
+> snapshot.
+
+Regards,
+Nikunj
