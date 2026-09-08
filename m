@@ -1,211 +1,92 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C6334F48F
-	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 09:58:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562D73803C8
+	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 10:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788861534; cv=none; b=n7sEi4MuR/Gjlx93J816F84xV1wg7/BJcN6LfQ8EskRuXA/AzJUTlppBEIrgbzNO2xm36+cKgoXE0lMOPeljjLFh85J3a1Ql5yClCLq+5OZ4c3DRW3ri0PDB0KtfeK87PElH8wqaPsmvnBnD0Kdr5Dr47qDCqxBz6sIqmq99GfM=
+	t=1788861968; cv=none; b=nlUzSbSP6q9Ls8ZXKzcI43S+wXQMA4BvYmLV8KYL1WMlz902AY5EXT3Gpnj+UF3VJjCrTvt+HhlW8Dqkjt7BB+nO9L04v4kRxdu0NQH7VtnA1/oSdK/undQbmj9KysqmqiMolrOQeE6xTJ8FPDIdIWPEn+FoWrSQHAWEHe5PL3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788861534; c=relaxed/simple;
-	bh=jdnp6yNqPjuDCTZ+RGAlpGfNOV6nfvpIMc/1hdBGUQw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lVTUkrTjmVIYGD6qaaE9PnXMc9l/NXnovGjUTfNmE7QHmDvjyU8VE6niPMu3db4Zp2iv5nTKYpUImFtVEusoTsC4b8Seaqj46Jm25F8B/aQtmutClrYo2X8Dn274Tg4NMloaA4+noW1p6ZxEBXrRaqUalDOdgtAkXN2S+DZV6r8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=DDvRzddx; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="DDvRzddx"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F18351476;
-	Tue,  8 Sep 2026 02:58:47 -0700 (PDT)
-Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B196C3F7B4;
-	Tue,  8 Sep 2026 02:58:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788861531; bh=jdnp6yNqPjuDCTZ+RGAlpGfNOV6nfvpIMc/1hdBGUQw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DDvRzddxJnPw2f0IFLFoxSgXh24ClydmrJHFPyrh/cBNVdqciUx47xj3duG8dJxC1
-	 FpeYXa6tw4fPaI6VUwJHlg6I2xijFxXC1vsj0zRlXgQ0Hpqa386Y6cLO3vE/lXgyOh
-	 ycmYEUsOILGyM3onZ+KubYqEHq2d9AyTKTPmEEPg=
-Message-ID: <958eee79-c776-4c63-92c5-743d9aa5ea52@arm.com>
-Date: Tue, 8 Sep 2026 10:58:48 +0100
+	s=arc-20240116; t=1788861968; c=relaxed/simple;
+	bh=N0MQn4fpt24h6h8SLSgCP+WfNsem+UBysijHm0dnP1I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gIKPSL9yaZe0Jn+QdH1C3k8N7RUjINMyRT6SXRqplMu5DS4kJT4aBEaqus7j2KnZlGECus5hiz/GJ3/0pWZO6N64a3VilQtzgyew+XQP/IdksKxDa+7BMQWeF+lwHhjwcuoiCfgE6+uJAcSFV/9Qk145wV6wfpmlYu1B1a8leFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [36.110.52.2])
+	by APP-05 (Coremail) with SMTP id zQCowAD3YDtN3J9qi5eoBw--.22882S2;
+	Tue, 08 Sep 2026 17:58:39 +0800 (CST)
+From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+To: Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>
+Cc: kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org
+Subject: [BUG] RISC-V: KVM: WARNING in mark_page_dirty_in_slot with dirty ring enabled
+Date: Tue,  8 Sep 2026 17:58:13 +0800
+Message-Id: <20260908095813.786-1-xujiakai2025@iscas.ac.cn>
+X-Mailer: git-send-email 2.35.1.windows.2
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 3/7] firmware: arm_rmm: Configure the RMM with the
- host's page size
-To: Gavin Shan <gshan@redhat.com>, sashiko-reviews@lists.linux.dev
-Cc: kvmarm@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
- kvm@vger.kernel.org, Oliver Upton <oupton@kernel.org>
-References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
- <20260907095942.1140734-4-suzuki.poulose@arm.com>
- <20260907101446.1DA321F00A3A@smtp.kernel.org>
- <bade4920-2db1-4a8a-99d1-ca2694647ec8@arm.com>
- <64533fd0-5fe7-4839-8302-c5b6674bcb5a@redhat.com>
-Content-Language: en-US
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <64533fd0-5fe7-4839-8302-c5b6674bcb5a@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-CM-TRANSID:zQCowAD3YDtN3J9qi5eoBw--.22882S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tFyxZryrZF45uFWUCr1Dtrb_yoW8Jw15pF
+	WrGrZxGrnrJw18tay2k3Z7Wa1FkrZ3Cay5Xw1DJrWDAr45Jr18AF9YgFWfZa15Cr1fta1I
+	yFWj93W7uw15ZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvmb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I
+	8E87Iv6xkF7I0E14v26rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x2
+	0xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q6rW5Mc
+	Ij6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxG
+	rwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJV
+	W8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF
+	1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6x
+	IIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvE
+	x4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnU
+	UI43ZEXa7IU56BT7UUUUU==
+X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiCRQECWqf0KYq3QAAsk
 
-On 07/09/2026 23:40, Gavin Shan wrote:
-> Hi Suzuki,
-> 
-> On 9/7/26 10:02 PM, Suzuki K Poulose wrote:
->> On 07/09/2026 11:14, sashiko-bot@kernel.org wrote:
->>> Thank you for your contribution! Sashiko AI review found 2 potential 
->>> issue(s) to consider:
->>> - [High] The SMC call leaves parameters X2-X7 uninitialized, 
->>> violating the RMM's RES0 requirement.
->>> - [High] The `struct rmm_config` fields are populated using native 
->>> endianness, which breaks on Big Endian kernels.
->>> -- 
->>>
->>> commit 1741e17729c2ff5e23bc8bfb00cc50a61f38ebb7
->>> Author: Steven Price <steven.price@arm.com>
->>> firmware: arm_rmm: Configure the RMM with the host's page size
->>>
->>> This commit adds support to configure the RMM's granule size to match 
->>> the
->>> host's page size during kernel initialization. It reads the feature
->>> registers to ensure the requested page size is supported and sends the
->>> configuration to the RMM via an SMC call.
->>>
->>>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/ 
->>>> arm_rmm/rmi.c
->>>> index 008a783407b4e..76f91c145e1fd 100644
->>>> --- a/drivers/firmware/arm_rmm/rmi.c
->>>> +++ b/drivers/firmware/arm_rmm/rmi.c
->>>> @@ -77,6 +77,60 @@ static int rmi_read_features(void)
->>>>       return 0;
->>>>   }
->>>> +static int rmi_configure(void)
->>>> +{
->>>> +    unsigned long granule_feature;
->>>> +    unsigned long granule_size;
->>>> +    int ret = 0;
->>>> +    struct rmm_config *config;
->>>> +
->>>> +    switch (PAGE_SIZE) {
->>> [ ... ]
->>>> +
->>>> +    config = (struct rmm_config *)get_zeroed_page(GFP_KERNEL);
->>>> +    if (!config)
->>>> +        return -ENOMEM;
->>>> +
->>>> +    config->rmi_granule_size = granule_size;
->>>> +
->>>> +    /*
->>>> +     * For now we set the tracking_region_size to 0 which is the 
->>>> only option
->>>> +     * for 4KB PAGE_SIZE (1GB for 4KB PAGE_SIZE, 32MB/512MB for 
->>>> 16KB/64KB).
->>>> +     * TODO: Support other tracking sizes via Kconfig option for other
->>>> +     * PAGE_SIZES
->>>> +     */
->>>> +    config->tracking_region_size = 0;
->>>
->>> [Severity: High]
->>> Does this code handle endianness correctly?
->>>
->>> The struct rmm_config fields are populated using native u64 assignments.
->>> On an ARM64 kernel compiled with CONFIG_CPU_BIG_ENDIAN=y, this writes
->>> big-endian bytes into the shared memory. The RMM, which runs in 
->>> little-endian
->>> at EL2, will misinterpret these fields.
->>>
->>> Will this cause the RMM firmware to read invalid configuration values 
->>> (like a
->>> byte-swapped granule size) and fail to configure, breaking RMI 
->>> support on Big
->>> Endian systems?
->>>
->>
->> We don't plan to support RMM for Big Endian Linux. I have now made the 
->> ARCH_SUPPORTS_RMM to depend on !CPU_BIG_ENDIAN
->>
-> 
-> You probably need to avoid referring to CPU_BIG_ENDIAN as it's being 
-> dropped
-> by PATCH[v2 13/14] in Will's series to removed unused big-endian support on
-> arm64 [1].
-> 
-> [1] [PATCH v2 00/14] arm64: Remove unused big-endian support
->      (https://lore.kernel.org/linux-arm-kernel/20260907163726.17104-14- 
-> will@kernel.org/)
-
-Thanks for the heads up, I will just ignore this one from Sashiko.
-
-Cheers
-Suzuki
-
-
-> 
-> Thanks,
-> Gavin
-> 
->>>> +
->>>> +    ret = rmi_rmm_config_set(virt_to_phys(config));
->>>> +    if (ret) {
->>>> +        pr_err("RMM config set failed\n");
->>>> +        ret = -EINVAL;
->>>> +    }
->>>> +
->>>> +    free_page((unsigned long)config);
->>>> +    return ret;
->>>> +}
->>> [ ... ]
->>>> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi- 
->>>> cmds.h
->>>> index 2fb1f7f86d71e..9aa27697e2377 100644
->>>> --- a/include/linux/arm-rmi-cmds.h
->>>> +++ b/include/linux/arm-rmi-cmds.h
->>>> @@ -12,6 +12,23 @@
->>>>   unsigned long rmi_feat_reg(unsigned long id);
->>>> +/**
->>>> + * rmi_rmm_config_set() - Configure the RMM
->>>> + * @cfg_ptr: PA of a struct rmm_config
->>>> + *
->>>> + * Sets configuration options on the RMM.
->>>> + *
->>>> + * Return: RMI return code
->>>> + */
->>>> +static inline int rmi_rmm_config_set(unsigned long cfg_ptr)
->>>> +{
->>>> +    struct arm_smccc_res res;
->>>> +
->>>> +    arm_smccc_1_1_invoke(SMC_RMI_RMM_CONFIG_SET, cfg_ptr, &res);
->>>
->>> [Severity: High]
->>> Does this SMC call leave parameters x2 through x7 uninitialized?
->>>
->>> The arm_smccc_1_1_invoke macro only generates inline assembly 
->>> constraints
->>> for the explicitly provided arguments. It does not zero-pad omitted 
->>> arguments,
->>> leaving registers x2 through x7 with whatever was previously in them.
->>>
->>> Since the RMM firmware expects unused SMC parameters to be zero (RES0),
->>> could passing uninitialized values cause the RMM to reject the command
->>> with an INVALID_PARAMETER error and sporadically break RMM 
->>> initialization?
->>
->> Correct, I have now moved all RMI calls to smccc_1_2, making sure that
->> all the undefined arguments are initialised to 0.
->>
->> Cheers
->> Suzuki
->>
->>
->>>
->>>> +
->>>> +    return res.a0;
->>>> +}
->>>
->>
->>
-> 
+Hi,=0D
+=0D
+I found a crash by fuzzing KVM on RISC-V. The crash is a WARNING=0D
+in virt/kvm/kvm_main.c, mark_page_dirty_in_slot().=0D
+=0D
+The kernel is built from the riscv_kvm_queue branch of the kvm-riscv=0D
+Linux tree:=0D
+  https://github.com/kvm-riscv/linux/commits/riscv_kvm_queue/=0D
+at commit:=0D
+  9167580a3495b659656c3e0f689c4b38dacb2fb5=0D
+=0D
+I checked the current upstream tree and this does not appear to =0D
+have been fixed yet.=0D
+=0D
+I attempted a fix myself: the idea was to dirty pages against the=0D
+explicit faulting vCPU instead of going through the per-CPU "running=0D
+vCPU" used by mark_page_dirty_in_slot()/kvm_vcpu_mark_page_dirty().=0D
+However, I am not confident about the quality or correctness of that=0D
+patch, and the fuzzer did not produce a reproducer program, so I could=0D
+not verify whether the crash is actually fixed. For those reasons I=0D
+decided not to post it as a proper patch and instead report the bug=0D
+here.=0D
+=0D
+I have uploaded the kernel configuration used for the build, the kernel =0D
+crash log, and a patch I attempted to generate with the help of AI to =0D
+the following gist:=0D
+https://gist.github.com/6eanut/d3e017c17f7a5a144da90a6513773b2b=0D
+=0D
+If anyone is interested in investigating or fixing this bug, I would be =0D
+happy to provide any additional information or help that may be useful.=0D
+=0D
+Thanks,=0D
+Jiakai Xu=0D
 
