@@ -1,318 +1,331 @@
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4CF49AA3E;
-	Tue,  8 Sep 2026 21:41:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B414B4860
+	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 22:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788903708; cv=none; b=jN9NvlEO23zsgLvMGXCqDDEYtN2+jCvg0uBoZYIPmdnRC304f6GUDGNxvLVu7u/ApjZVk/qVT5S0VfEEh399jg26aNIf/oO/dfPE9e/mx3DApPjmLDvnSB9AhzyF1T1vzpfRiVxe7OOWfrcNqUGMjy6tr0bIkTbBTWuW0ciidho=
+	t=1788905454; cv=none; b=IRfX7HZQqWsOIiLZuS2vA/zzqg2cVfjrHuntnYXLUUr8DAakyS5BajO9VDhMN2VOPXzOOnOXmzR97iWvZ8VAmaPDd3djhz8zHdyW/8HFnEVyLJMxpcojPoGYO2KPT8HU7LIUat1XysKZW73NXhlSChSHRZAekcTClVlicG37Y8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788903708; c=relaxed/simple;
-	bh=Efv4D8wC44TnZe/a4cpVdmZy71SbbHUCk9f+K+yUMSY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r17KDHNbV+cRW7x9dLBczo6Dc57FjlXQvZjcthMiBrIakz1azk2j9rgy4Z0k1mQhtqIXcMOJbXo0viJE6XIT6zhkgEzvXg7ukfIeQSD20uLcr6d6v0Zsdid5R+SOXAx98SllURhRq/bsj1UgIpLrUbttmoJtZPZu0SEwNA9mz0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=Vr30Ki0U; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=f5b9UZ6Q; arc=none smtp.client-ip=202.12.124.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1788905454; c=relaxed/simple;
+	bh=sZdQBZlI7cQwL3SPAH5xAuzbkiDkOaTNGMwUbyZ2Pak=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GRup8/rcsVPT0GpMJ9LoSHeoJFvOpoZPbZgRSrjkFXSLhQc1KvksNBtAT+q82b0ekE+up+tYIjNy0OY/rI3GnfYcl0vKutSCh/guqJpZmqNjN+Zsouck0bxQiAFT3ERiWh9M13EcA8DJMW3BW5iae9RZ8u1TXd+pwLl/z5yj3TE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=TqTME0tE; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="Vr30Ki0U";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="f5b9UZ6Q"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.stl.internal (Postfix) with ESMTP id 111E01D00082;
-	Tue,  8 Sep 2026 17:41:44 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Tue, 08 Sep 2026 17:41:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1788903703;
-	 x=1788990103; bh=FffCJLPkZUKCz3/sn0myvUMh/JbHB/ljDI1L472p1no=; b=
-	Vr30Ki0UbQnAfHvh0o8++/BTvUtoHJUnkO6xggcuEmhJb4Awk00WQWsdwuYmtSAG
-	VSq5aVnThXjedcATLS7UZtJE5lrqEayilibPmAbL9qJbu9r+RopW5EvNVPxzeiTN
-	FvDMkzYJ9eTb48nONxnljfnQsIHOkOClNPmxVFRWtzGW7BP3ACAKQOjs+/H23en6
-	py6OkLUXlsZXYUsFTWQaOZuUNau3nqpACEDsJNlhkNBTgLaUpb3muJjS5f0dKmK1
-	W0Lp8MilwT+5eDJZGEy73iVxlP7rKWB+SXuYZrbx+orRMirEQFBv+VWfpGrPI6LA
-	2uPt8aAMchl52sHh1DJApQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1788903703; x=
-	1788990103; bh=FffCJLPkZUKCz3/sn0myvUMh/JbHB/ljDI1L472p1no=; b=f
-	5b9UZ6Qlm2DOKAXhpiExwuAwyKmGJrKw0Qzm7vQz8+HVUSJFWcR2n/m4AawuRw4J
-	D+tXuG7s+FmybeK5zNX5TYzocTKI+d+UqdF37+QNJNX29XuWL6l2KDT8XALeOLlB
-	6CEMplY3Uz4P+e0GpeIIbbiD91+J3TsI7SNGU1/JobjCws2PR0PtnmJtiqVRpIHe
-	wu1QV5m4wxgFSVIybO9pfCqGDxFrnQiKTi8u9D/x7NFtPvzvkjgCBqsRnXHTfnKq
-	JV7m84bH9CX0BwRM5tRifSrW0pnoV6wXkwTX2AXlLgF76ksZxizRQj9cO79gpp94
-	fMjZC3cI8tyhV77Mtomww==
-X-ME-Sender: <xms:F4GganLCIOnPozxfbiCiwVv0p4yzb4JPC-lyjldIV-_-54-btroEdA>
-    <xme:F4Ggaqt122yvEBfu-ldUsYcC0UIzXstaoTXZRkdRFe9Ozk9mrJekEY1d1tartnXx_
-    R72XmGTXtkdXWkQo8xzo8QYWDxQps7tCsjCOnOwY62YAItY45RaiOCR>
-X-ME-Received: <xmr:F4GgakBPSCua8JfdoU2UJIvavIIWXNtHB0ZYrDVfYxvDzGjIo4XGUrz-_DWgDg>
-X-ME-Proxy-Cause: dmFkZTE8R5Im7YIGWqM3ci4zz9HIycNNzuHnY2WldoO8jC+4RIwsVww8DlyuSGwn7hOm3z
-    Z0NzQRzLrRsyKg/Op131z5QQfu5UNLam4J1MN2JRV5auwqFkHTNxrbnl1GX1rcQFdGJ/t/
-    y4Vm3d1M0AqgKmejy+seuGUYAvF+pnnXnQ4MYHzYuL172xsFtCKG/7sDji71q+eaxX0myx
-    EE5bik2JH923QSnMollWEugQlEQJu7ZQ0TDdvtQT0ZyR5JfDosXb21HN/GsSfmUxH5ZBNe
-    z1HUbicIQDVGNirWuepz7BbS0UZec3MOALqMIsNaZdb2X/BZslkdZBRbtNYRDVD9Q3hek5
-    2BuwrTgf7kiBXxRE0nrAzZPREIk/toIta1i5ZZdJw7zu8kEqlQbTMZhzp1nDtYT8xuhIjl
-    OsajFCLpOHBHwtIzIV5BUuWP0dXIjTn4N4Gi9SxTHWCpA6TNQaLzydV78aLesGsAvELRSq
-    22jY6tzYNRqI7fhRb7qcuuZWnxHsHlkt+BWjQsJHtgbMf2i33GcmJVN/3E3E8yd0UpzGWL
-    rd7B/v1DPrlhMrXcZtK+7qi+hIyGUBDtsqC1ezdy5OSGjnbSwtNWSzJiFU8X6zRA1H/iuG
-    ueXCOAhXxmp74afCJvphMFBj7BrCgwJp26oLT/k/ygZvD7FXSiX+8sF6fxaw
-X-ME-Proxy: <xmx:F4Ggai6-3TQ1kSgWGs3OghymzCt5eP3H3u_E5SQM86hazeSMnqpqlQ>
-    <xmx:F4GgasDeajRu0oTpxnXCHT5tJex81dmCJwgGPEymPSjMAOyN9cPRGA>
-    <xmx:F4Ggao5s1rVtt11Kp-JkQxJL5Bl5MYYx06goQYutLZ0746pYhPu7rg>
-    <xmx:F4GgaltsgvVat_r4OnIbVAQZH9MvLHFFRdC3S62Ir1y_Iu8Aq4QG0w>
-    <xmx:F4Ggapr79_xESg-OHCuhrSVIcHuwE2ey4QxCMNlvSywagXu1YsfEYq4Y>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 8 Sep 2026 17:41:42 -0400 (EDT)
-Date: Tue, 8 Sep 2026 15:41:40 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Shameer Kolothum Thodi <skolothumtho@nvidia.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-pci@vger.kernel.org"
- <linux-pci@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
- "kevin.tian@intel.com" <kevin.tian@intel.com>, "kbusch@meta.com"
- <kbusch@meta.com>, "michal.winiarski@intel.com"
- <michal.winiarski@intel.com>, "satyanarayana.k.v.p@intel.com"
- <satyanarayana.k.v.p@intel.com>, Sonang Patel <sonangp@nvidia.com>, Nathan
- Chen <nathanc@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
- "mike.malyshev@gmail.com" <mike.malyshev@gmail.com>, alex@shazbot.org
-Subject: Re: [RFC PATCH 00/19] vfio/pci: Handle PCI error recovery and
- report state to userspace
-Message-ID: <20260908154140.31c4f4c9@shazbot.org>
-In-Reply-To: <SJ0PR12MB86146247A7BB4F62AE75C199ABB12@SJ0PR12MB8614.namprd12.prod.outlook.com>
-References: <20260901093217.8539-1-skolothumtho@nvidia.com>
-	<20260904130927.2e234a21@shazbot.org>
-	<SJ0PR12MB861421F7FA18CA04BFE996FDABB22@SJ0PR12MB8614.namprd12.prod.outlook.com>
-	<SJ0PR12MB86146247A7BB4F62AE75C199ABB12@SJ0PR12MB8614.namprd12.prod.outlook.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="TqTME0tE"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 63CE81476;
+	Tue,  8 Sep 2026 15:10:46 -0700 (PDT)
+Received: from [10.57.49.201] (unknown [10.57.49.201])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 470BB3F7D8;
+	Tue,  8 Sep 2026 15:10:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788905450; bh=sZdQBZlI7cQwL3SPAH5xAuzbkiDkOaTNGMwUbyZ2Pak=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TqTME0tECfV4ThLPgVUqmDyqGtKCUOFUmN2VDzrCZbQl3mrDqvYslSrKH5rpZfx+P
+	 6lBRZqBz84vgso27QaPcYiSoVGorxirrWiLfhWNU3MdjDZoPeEsNxwadLARYvqdomQ
+	 KjNIYOxZQlEI8b7TK//yiFzYKrHccQcubb3Es9rA=
+Message-ID: <2228a451-bc45-4210-841e-15eb447982b4@arm.com>
+Date: Tue, 8 Sep 2026 23:10:47 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v17 4/7] firmware: arm_rmm: Add support for SRO
+Content-Language: en-GB
+To: sashiko-reviews@lists.linux.dev
+Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>,
+ kvmarm@lists.linux.dev, kvm@vger.kernel.org
+References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
+ <20260907095942.1140734-5-suzuki.poulose@arm.com>
+ <20260907101405.517191F00A3A@smtp.kernel.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260907101405.517191F00A3A@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Tue, 8 Sep 2026 10:58:49 +0000
-Shameer Kolothum Thodi <skolothumtho@nvidia.com> wrote:
+On 07/09/2026 11:14, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 4 potential issue(s) to consider:
+> - [High] Infinite loop during SRO cancellation if the RMM continues to return an unexpected MEMREQ.
+> - [High] Missing bounds check on `out_regs->a1` in `rmi_sro_donate_contig` allows an integer overflow that can erroneously free actively consumed memory.
+> - [High] The error handler for `sro->addr_count` corruption in `rmi_sro_ensure_capacity` triggers an out-of-bounds read and arbitrary free.
+> - [High] Potential infinite loop in `rmi_delegate_range` and `rmi_undelegate_range` on buggy RMM.
+> --
+> 
+> commit c980046a949a7ff8e2698f0f01373297576d9896
+> Author: Steven Price <steven.price@arm.com>
+> Subject: firmware: arm_rmm: Add support for SRO
+> 
+> This commit introduces support for RMM v2.0 Stateful RMI Operations (SRO), allowing SMCs to return with operations still in progress. It adds struct rmi_sro_state to track memory allocated but not yet consumed or reclaimed, and provides wrappers for SRO RMI commands.
+> 
+>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+>> index 76f91c145e1fd..42c973c3a98bb 100644
+>> --- a/drivers/firmware/arm_rmm/rmi.c
+>> +++ b/drivers/firmware/arm_rmm/rmi.c
+>> @@ -24,6 +25,513 @@ unsigned long rmi_feat_reg(unsigned long id)
+>>   }
+>>   EXPORT_SYMBOL_GPL(rmi_feat_reg);
+>>   
+>> +int rmi_delegate_range(phys_addr_t phys,
+>> +		       unsigned long size,
+>> +		       phys_addr_t *out_phys)
+>> +{
+>> +	long ret = 0;
+>> +	unsigned long top = phys + size;
+>> +	unsigned long out_top;
+>> +
+>> +	while (phys < top) {
+>> +		ret = rmi_granule_range_delegate(phys, top, &out_top);
+>> +		if (ret == RMI_SUCCESS)
+>> +			phys = out_top;
+> 
+> [Severity: High]
+> Could this loop indefinitely if a buggy RMM firmware returns RMI_SUCCESS but
+> does not advance out_top beyond phys?
+> 
 
-> > -----Original Message-----
-> > From: Shameer Kolothum Thodi <skolothumtho@nvidia.com>
-> > Sent: 07 September 2026 10:39
-> > To: Alex Williamson <alex@shazbot.org>
-> > Cc: kvm@vger.kernel.org; linux-pci@vger.kernel.org; linux-
-> > kernel@vger.kernel.org; jgg@ziepe.ca; kevin.tian@intel.com;
-> > kbusch@meta.com; michal.winiarski@intel.com;
-> > satyanarayana.k.v.p@intel.com; Sonang Patel <sonangp@nvidia.com>;
-> > Nathan Chen <nathanc@nvidia.com>; Matt Ochs <mochs@nvidia.com>
-> > Subject: RE: [RFC PATCH 00/19] vfio/pci: Handle PCI error recovery and report
-> > state to userspace
-> > 
-> > 
-> >   
-> > > -----Original Message-----
-> > > From: Alex Williamson <alex@shazbot.org>
-> > > Sent: 04 September 2026 20:09
-> > > To: Shameer Kolothum Thodi <skolothumtho@nvidia.com>
-> > > Cc: kvm@vger.kernel.org; linux-pci@vger.kernel.org; linux-
-> > > kernel@vger.kernel.org; jgg@ziepe.ca; kevin.tian@intel.com;
-> > > kbusch@meta.com; michal.winiarski@intel.com;
-> > > satyanarayana.k.v.p@intel.com; Sonang Patel <sonangp@nvidia.com>;
-> > > Nathan Chen <nathanc@nvidia.com>; Matt Ochs <mochs@nvidia.com>;
-> > > alex@shazbot.org
-> > > Subject: Re: [RFC PATCH 00/19] vfio/pci: Handle PCI error recovery and  
-> > report  
-> > > state to userspace
-> > >
-> > > External email: Use caution opening links or attachments
-> > >
-> > >
-> > > On Tue, 1 Sep 2026 10:31:58 +0100
-> > > Shameer Kolothum <skolothumtho@nvidia.com> wrote:
-> > >  
-> > > > Hi,
-> > > >
-> > > > Currently, vfio-pci takes almost no part in PCI error recovery. It
-> > > > implements error_detected() and neither of the other two callbacks. That
-> > > > one callback ignores the pci_channel_state_t it is given, signals the
-> > > > error eventfd, and returns PCI_ERS_RESULT_CAN_RECOVER for every error,  
-> > a  
-> > > > permanent failure included. Nothing implements slot_reset() or resume(),
-> > > > so vfio-pci never learns that the host reset the device, or that
-> > > > recovery finished.
-> > > >
-> > > > Userspace gets one eventfd signal with nothing attached to it. It cannot
-> > > > tell a non-fatal error the host recovered from apart from a permanent
-> > > > failure, and it is never told when recovery is over. With nothing to go
-> > > > on, QEMU assumes the worst and calls  
-> > > vm_stop(RUN_STATE_INTERNAL_ERROR),  
-> > > > which the VM cannot come back from.
-> > > >
-> > > > Any device assigned through vfio-pci can hit this. A non-fatal
-> > > > uncorrectable error is reported, the host AER path recovers the device
-> > > > fine, and the VM is killed anyway.
-> > > >
-> > > > This series lets userspace observe host recovery state, and keeps it off
-> > > > the device while recovery is running. With that state visible, userspace
-> > > > can decide what to do with the guest rather than assuming the worst.
-> > > >
-> > > > The approach here comes from an earlier discussion with Alex.
-> > > >
-> > > > https://lore.kernel.org/qemu-  
-> > > devel/20260707161234.23ed28db@nvidia.com/  
-> > > > https://lore.kernel.org/all/20260818083754.7ccf76d9@shazbot.org/
-> > > >
-> > > > Design
-> > > > ------
-> > > >
-> > > > The VMM watches recovery. It does not take part in it. The kernel runs
-> > > > the recovery sequence and tells userspace what happened and when it is
-> > > > done.
-> > > >
-> > > > vfio-pci already has error_detected(). This series extends it and adds
-> > > > the other two callbacks:
-> > > >
-> > > >   - error_detected() now records the channel state, blocks new device
-> > > >     access, revokes BAR mappings and exported DMA-BUFs, and quiesces
-> > > >     INTx. It still signals err_trigger as it does today. It votes on
-> > > >     severity rather than always claiming it can recover: CAN_RECOVER for
-> > > >     a non-fatal error, NEED_RESET for a frozen channel, DISCONNECT for a
-> > > >     permanent failure, and NONE if our own quiesce failed, which leaves
-> > > >     the rest of the domain alone.
-> > > >   - slot_reset() is new. It restores config state after the host has
-> > > >     reset the device. Nothing does that today, which is why a device
-> > > >     comes back from an AER reset with its config lost.
-> > > >   - resume() is new. It restores PCI_COMMAND, unblocks access and wakes
-> > > >     waiters.
-> > > >   - A new device feature reports the state and carries an eventfd.
-> > > >
-> > > > A non-fatal error gets the same quiesce as a frozen one. The host has not
-> > > > finished deciding what the error was, and can still escalate to a reset,
-> > > > so the device is not the user's again until resume() says so.
-> > > >
-> > > > The support is opt-in. Until userspace installs the recovery eventfd,
-> > > > generic vfio-pci behaves as it does today. error_detected() takes its
-> > > > existing path and signals the same eventfd. VFIO variant driver support
-> > > > is not added for now.
-> > > >
-> > > > The uAPI is VFIO_DEVICE_FEATURE_PCI_ERROR_RECOVERY. It carries the
-> > > > eventfd and reports a status word plus a sequence number, so userspace
-> > > > can tell coalesced notifications apart. IN_PROGRESS is set while a
-> > > > recovery is running. CHANNEL_FROZEN says the link went down.
-> > > > DEVICE_RESET says the host reset the device. FAILED says the device
-> > > > cannot be used again until close and reopen. ENABLED says userspace has
-> > > > opted in.
-> > > >
-> > > > A non-fatal recovery can complete before userspace reacts to the eventfd,
-> > > > so IN_PROGRESS may already be clear by the time the feature is read. Work
-> > > > from the sequence number and the status bits rather than expecting to
-> > > > catch the event while it runs.
-> > > >
-> > > > Patches
-> > > > -------
-> > > >
-> > > >   1-3    the groundwork: the recovery state fields, the open and close
-> > > >          lifecycle so a callback never sees a half built or half torn
-> > > >          down device, and the access guards the rest of the series uses
-> > > >   4-13   close the access paths one at a time: function reset, config
-> > > >          space, ioeventfd, BAR faults, BAR and ROM, interrupts, hot
-> > > >          reset, runtime PM, info queries, DMA-BUF
-> > > >   14-18  the error handler callbacks: slot reset, the INTx helpers and
-> > > >          the quiesce that uses them, then resume and error_detected
-> > > >   19     the uAPI a user opts in through
-> > > >
-> > > > Locking
-> > > > -------
-> > > >
-> > > > Blocking access is the hard part of this series, and it comes down to
-> > > > one rule.
-> > > >
-> > > >   recovery_lock can be held while publishing state, and while draining
-> > > >   operations that are already under way. It cannot be held across a reset,
-> > > >   or across anything else that reaches pci_bus_sem.
-> > > >
-> > > > The reason is the order AER arrives in. It enters the driver already
-> > > > holding device_lock, and pci_bus_sem too when the device sits under a
-> > > > bridge with a subordinate bus, and only then takes recovery_lock. A
-> > > > secondary bus reset reaches pci_bus_sem. So a vfio path which holds
-> > > > recovery_lock across a reset ends up taking those two the other way
-> > > > round.
-> > > >
-> > > > Seven places needed reshaping for this rule: device close, slot_reset(),
-> > > > open, VFIO_DEVICE_RESET, the guest triggered config space FLR,
-> > > > VFIO_DEVICE_SET_IRQS, and a guest write putting the device back in D0,
-> > > > which reaches pci_bus_sem through pcie_aspm_pm_state_change().
-> > > >
-> > > > Most access takes recovery_lock for reading and checks whether a recovery
-> > > > or a reset is blocking the device. A few places cannot take the lock and
-> > > > read that state directly instead. All of them fail safe. A stale read
-> > > > costs an extra refusal or retry, never an unguarded access.
-> > > >
-> > > > Interrupt teardown is the one deliberate exception. It flushes the global
-> > > > virqfd workqueue with recovery_lock held, which can make the hold last as
-> > > > long as a reset on another vfio device. It costs latency, not
-> > > > correctness.
-> > > >
-> > > > I am not sure this is the best way to handle it, and would welcome
-> > > > suggestions.  
-> > >
-> > >
-> > > Thanks for tackling this, Shameer.  The recovery_lock wrapping all
-> > > these accesses does make me nervous, both in lock complexity and
-> > > overhead.  Wouldn't it be a better solution to decouple the user
-> > > interface from the device by replacing the access path via SRCU then
-> > > doing zap/move/interrupt teardown?
-> > >
-> > > Such a solution would have utility beyond the error path.  We could use
-> > > it for surprise removal/DPC, we could allow a policy to remove the
-> > > device from the user on unbind, in place of or in addition to the
-> > > request eventfd we use currently.  In the error case, the intention
-> > > would be to temporarily suspend access to the device, but if it falls
-> > > off the bus after recovery, it may turn into a permanent removal.
-> > >
-> > > What do you think?  Thanks,  
-> > 
-> > Agree. As it stands, it looks not that maintainable due to the lock
-> > complexity and dependencies.  Let me look at replacing the
-> > recovery_lock with SRCU and see how that evolves.
-> > 
-> > The generalisation makes sense too. I will keep this series to the error
-> > path but make sure the mechanism is not tied to it.  
-> 
-> One more thing I want to highlight.
-> 
-> This series mostly does fail access if recovery is in progress. Config
-> space, trapped BAR read and write, the ioctls and DMA-BUF export all
-> return -EIO while access is blocked.
-> 
-> The one exception is a guest fault on an mmap'd BAR. See patch 7, where
-> it returns VM_FAULT_RETRY and waits for recovery to finish rather than
-> failing, and the reason is that failing is not currently useful to the
-> VMM. On arm64 a failed BAR fault returns a bare -EFAULT from KVM_RUN
-> with no KVM_EXIT_MEMORY_FAULT, so the VMM gets no address, cannot tell
-> which device faulted, and cannot map the failure to a device under
-> recovery.
-> 
-> (+Mike)
-> 
-> However I think it is fixable, as discussed here [1]. That proposes a
-> KVM exit to userspace with KVM_EXIT_MEMORY_FAULT, filling
-> run->memory_fault via kvm_mmu_prepare_memory_fault_exit().
-> 
-> I will take a look at the arm64 part, since that is what makes failing
-> the access actually useful. Once the VMM can resolve the address to a
-> device and query the recovery state, switching the fault path from wait
-> to fail is a minimal change, I think.
+...
 
-Yes, agreed, and the VMM should choose the policy for a given memory
-fault anyway.  The intention at the vfio-pci kernel level is that a VMM
-can actually have better error containment than a host platform by
-following the fault address to a device and deciding whether to expose
-soft or hard errors to the guest.  Thanks,
+>> +int rmi_undelegate_range(phys_addr_t phys,
+>> +			 unsigned long size)
+>> +{
+>> +	long ret = 0;
+>> +	unsigned long top = phys + size;
+>> +	unsigned long out_top;
+>> +
+>> +	while (phys < top) {
+>> +		ret = rmi_granule_range_undelegate(phys, top, &out_top);
+>> +		if (ret == RMI_SUCCESS)
+>> +			phys = out_top;
+> 
+> [Severity: High]
+> Does this undelegate loop carry the same infinite loop risk as the delegate path
+> if the hypervisor fails to advance out_top?
 
-Alex
+I have added a WARN_ON() in case these are not advanced and break out
+from the code.
+
+> 
+>> +		else if (ret == RMI_BUSY || ret == RMI_BLOCKED)
+>> +			cpu_relax();
+>> +		else
+>> +			break;
+>> +	}
+>> +
+>> +	return ret;
+>> +}
+>> +EXPORT_SYMBOL_GPL(rmi_undelegate_range);
+> 
+> [ ... ]
+> 
+>> +static int rmi_sro_donate_contig(struct rmi_sro_state *sro,
+>> +				 unsigned long sro_handle,
+>> +				 unsigned long donatereq,
+>> +				 struct arm_smccc_1_2_regs *out_regs,
+>> +				 gfp_t gfp)
+>> +{
+> 
+> [ ... ]
+> 
+>> +	rmi_op_mem_donate(sro_handle,
+>> +			  virt_to_phys(&sro->addr_list[sro->addr_count]), 1,
+>> +			  0, out_regs);
+>> +
+>> +	unsigned long donated_granules = out_regs->a1;
+>> +	unsigned long donated_size = donated_granules << PAGE_SHIFT;
+> 
+> [Severity: High]
+> Can donated_granules (out_regs->a1) be an untrusted large value from a
+> compromised or buggy RMM?
+> 
+> If out_regs->a1 is excessively large, donated_granules << PAGE_SHIFT could
+> overflow into a small integer value.
+
+I have added a check to make sure that the donated_granules <= the
+granules we passed and clamp it to the size.
+> 
+>> +
+>> +	if (donated_granules == 0) {
+>> +		/* No pages used by the RMM */
+>> +		sro->addr_count++;
+>> +	} else if (donated_size < size) {
+>> +		phys = sro->addr_list[sro->addr_count] & RMI_ADDR_RANGE_ADDR_MASK;
+>> +
+>> +		/* Not all granules used by the RMM, free the remaining pages */
+>> +		for (long i = donated_size; i < size; i += PAGE_SIZE) {
+> 
+> [Severity: High]
+> If the integer overflow described above occurs, this check
+> (donated_size < size) will incorrectly pass. Would this lead to the host
+> allocator erroneously freeing memory that the RMM might still be actively
+> using?
+> ]
+
+Addressed as above.
+
+>> +			if (state == RMI_OP_MEM_DELEGATED)
+>> +				free_delegated_page(phys + i);
+>> +			else
+>> +				__free_page(phys_to_page(phys + i));
+>> +		}
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+> 
+> [ ... ]
+> 
+>> +static int rmi_sro_reclaim(struct rmi_sro_state *sro,
+>> +			   unsigned long sro_handle,
+>> +			   struct arm_smccc_1_2_regs *out_regs)
+>> +{
+>> +	unsigned long capacity;
+>> +	int ret;
+>> +
+>> +	ret = rmi_sro_ensure_capacity(sro, 1);
+>> +	if (ret)
+>> +		rmi_sro_free(sro);
+> 
+> [Severity: High]
+> Is it safe to pass sro to rmi_sro_free() here when rmi_sro_ensure_capacity()
+> failed?
+> 
+> If rmi_sro_ensure_capacity() detects corruption and returns -EOVERFLOW because
+> sro->addr_count > RMI_MAX_ADDR_LIST, calling rmi_sro_free() passes that same
+> corrupted addr_count to the cleanup loop.
+
+Added a WARN_ON() and clamped it down to the RMI_MAX_ADDR_LIST in
+overflow cases.
+
+> 
+>> +
+>> +	capacity = RMI_MAX_ADDR_LIST - sro->addr_count;
+>> +
+
+...
+
+>> +void rmi_sro_free(struct rmi_sro_state *sro)
+>> +{
+>> +	for (int i = 0; i < sro->addr_count; i++) {
+> 
+> [Severity: High]
+> If sro->addr_count is corrupted and greater than RMI_MAX_ADDR_LIST, as caught
+> in the error path above, won't this loop use it as an upper bound, leading to
+> out-of-bounds array reads and arbitrary memory frees?
+
+As above.
+
+
+> 
+> [ ... ]
+> 
+>> +long rmi_sro_memxfer_execute(struct rmi_sro_state *sro, gfp_t gfp)
+>> +{
+>> +	unsigned long sro_handle;
+>> +	struct arm_smccc_1_2_regs *regs = &sro->regs;
+>> +	bool cancelled = false;
+>> +
+>> +	rmi_smccc_invoke(regs, regs);
+>> +
+>> +	sro_handle = regs->a1;
+>> +
+>> +	while (RMI_RETURN_STATUS(regs->a0) == RMI_INCOMPLETE) {
+>> +		bool can_cancel = RMI_RETURN_CAN_CANCEL(regs->a0);
+>> +		int ret = 0;
+>> +
+>> +		switch (RMI_RETURN_MEMREQ(regs->a0)) {
+> 
+> [ ... ]
+> 
+>> +		}
+>> +
+>> +		if (ret) {
+>> +			/*
+>> +			 * All memory donating SROs must be cancellable. So a
+>> +			 * failure in memory allocation shouldn't be an issue.
+>> +			 * However, if we encounter a random failure (e.g.,
+>> +			 * buggy RMM), don't loop forever, just give up.
+>> +			 */
+>> +			if (WARN_ON_ONCE(!can_cancel))
+>> +				return ret;
+>> +
+>> +			rmi_op_cancel(sro_handle, regs);
+>> +			cancelled = true;
+>> +
+>> +			if (WARN_ON_ONCE(RMI_RETURN_STATUS(regs->a0) != RMI_INCOMPLETE))
+>> +				return ret;
+> 
+> [Severity: High]
+> Does this sequence create an infinite loop on a buggy RMM?
+> 
+> If the RMM returns an unexpected MEMREQ and does not clear the can_cancel bit in
+> its return status after a cancellation is requested, the loop unconditionally
+> re-issues the cancel command because it does not check the local cancelled state.
+
+
+I have added the following hunk to handle this case.
+
+
+-
++                       /*
++                        * If we have already cancelled, and came back 
+here due
++                        * to an error in RECLAIM, then there is no point
++                        * in going in loops.
++                        */
++                       if (WARN_ON_ONCE(cancelled))
++                               break;
+                         rmi_op_cancel(sro_handle, regs);
+                         cancelled = true;
+
+
+>> +		}
+>> +	}
+>> +
+>> +	if (cancelled)
+>> +		return -ECANCELED;
+>> +
+>> +	return regs->a0;
+>> +}
+>> +EXPORT_SYMBOL_GPL(rmi_sro_memxfer_execute);
+>> +
+>> +/* For RMI commands that are stateful but not memory-transferring */
+>> +long rmi_sro_execute(struct arm_smccc_1_2_regs *regs)
+>> +{
+>> +	unsigned long sro_handle;
+>> +	bool cancelled = false;
+>> +
+>> +	rmi_smccc_invoke(regs, regs);
+>> +
+>> +	sro_handle = regs->a1;
+>> +
+>> +	while (RMI_RETURN_STATUS(regs->a0) == RMI_INCOMPLETE) {
+>> +		bool can_cancel = RMI_RETURN_CAN_CANCEL(regs->a0);
+>> +
+>> +		switch (RMI_RETURN_MEMREQ(regs->a0)) {
+>> +		case RMI_OP_MEM_REQ_NONE:
+>> +			rmi_op_continue(sro_handle, RMI_CONTINUE_KEEP_GOING,
+>> +					regs);
+>> +			break;
+>> +		default:
+>> +			WARN_ON_ONCE(1);
+>> +			if (!can_cancel)
+>> +				return regs->a0;
+>> +
+>> +			cancelled = true;
+>> +			rmi_op_cancel(sro_handle, regs);
+> 
+> [Severity: High]
+> Could the same infinite loop vulnerability occur here for non-memory-transferring
+> operations if the RMM continuously returns RMI_INCOMPLETE and an unexpected MEMREQ
+> without clearing can_cancel?
+
+No, a NON memory transferring SRO will always be that category. So a 
+MEMREQ cannot come. I have added a similar check as above here too.
+
+Suzuki
+
