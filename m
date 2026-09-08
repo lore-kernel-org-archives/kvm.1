@@ -1,381 +1,269 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5635E595730
-	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 22:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788907306; cv=none; b=AopsQVqcf3x7Onq2yxZLoa7TLIeFYKnCHs/mNMg1Ew6/8fBS1zod7fTlYYHZzIIJtmsUdTh3go67FiB47KA+4PZWnxlX3s24xEHLTHnfbi9r/VDCgNHkUc7++IHHtHPy+xCOBooq8JWA3vzsdtJadcF3Jchw6SCDUbi1F1sbVkQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788907306; c=relaxed/simple;
-	bh=ZN6cWP/Yb/IvBfN4GQTD664at/DhRbeG7MzN5RUyw4Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hfTiCZZQK392FT/mBY7dRMdabXdVHcgJ5hmDIPWXIvfDvXRUVnkLnNdlfRKFtxc6jUjmRPOuP0Pmu6qHm0XCzjLLjo9ARBZx1oJ+WNz0PzkwhjzXnUjBZMfrmsQcF7yQnjFjJql0quYQ3oIFIyUIyr7H6ouaYOeK8bWnoOdrkpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RxHitAmj; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=PKBMzKxl; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7EF492E28
+	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 23:12:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788909159; cv=pass; b=BN1PqJ99jKXqK686k07U2QqoNajCfE5ViHSIijcQ38EraWTWatTyo3WF/IGBA6ti8L3Vm9cp2NXk3SIpzo+4DbrS4rbvIZy+8ouk3MAGC89kSqijWvgHGgoSaLwhW9HNb/H+3d3u85+KtECzf9gIMC0V5YTqoET/LB8TnZoPhYs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788909159; c=relaxed/simple;
+	bh=gZmq25Z+awQ0y4lsukMZ+pIMcjN1YfhRCjiVRgC6fR8=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZJODqmiFjJYeyPBOflOo91uH2S+t8HhbVY5PJhoalTFN6VCnM8Dpt+8X0lusCM6piwKOUCmI1N8WAk1hVGx0zf8NagsYY7bWmDC/JFEBk7Gn7hRysCxtbOwNajWD4il/1Lo4Ax84nwyvGoTb7nueiEySKG2wFNF656Wmbvbsqxg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JmqYyQtQ; arc=pass smtp.client-ip=209.85.222.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RxHitAmj";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="PKBMzKxl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788907301;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LbRygIjj1UISKx3LvtxKvIim7ExfCkLiZ8qAFUjhHAw=;
-	b=RxHitAmjY1PIYRMV42ZOMlLSa+BRKeJbOq8sK8i0juBpAHpEgbNEO4AKp6lZECECYstu3c
-	04dSBzlJ2P+QQtda8rNA7qaxWRdc6xxiCCInRTJlck1hAGa82A8TH9CKgNiOk96h9rPXjB
-	Q5JY4yMtrjO9+lMzJbCyl8O2iX1621M=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-144--4_IwhFiMImQUDiX4td18w-1; Tue, 08 Sep 2026 18:41:40 -0400
-X-MC-Unique: -4_IwhFiMImQUDiX4td18w-1
-X-Mimecast-MFC-AGG-ID: -4_IwhFiMImQUDiX4td18w_1788907299
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc1c18c775eso6108399a12.0
-        for <kvm@vger.kernel.org>; Tue, 08 Sep 2026 15:41:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JmqYyQtQ"
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-939cc5761d4so10962285a.3
+        for <kvm@vger.kernel.org>; Tue, 08 Sep 2026 16:12:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788909156; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SV0nj4PNU3Cdk+vpHq2kpUFXPjy9ItQAsBpMpeRVbvvjFKH8kjVAP0v43dKU00zkE9
+         98kCxZhdFGUIGqqJnFUYP2/OU95W1Tx/6raXKmvyGnxG+ilCYLMrY1uy80ow/da/sps0
+         MHNiJOh3A4ffIpjHs7tmvCkMOu8HoJ7KhLxz6Xe8FS2maJuGIjs8cpuBsQvFdHKxW2jO
+         cY1tIfksvgi3KHkHmLF6g+hLMsh8dX+MrvffK2DXzDqFys8Z5xFWz3wAysVpqQOcBPjs
+         nOhx6EVJRwU3wv9WTZHRsTomBxjuCHfdH6FLmWsWSql/Bnmaa+lmLw6wjXTDm060Hw8Q
+         bqtw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=bXe1j20I+di0M3C6cOcnKJ1R5Cd+V17GNEUEr8u82pc=;
+        fh=4aYaDOrtZD5j6Z6c63R1pJvq2Y40pwlaCLNrQk8m1jU=;
+        b=UbwcMVV4y8JCd+gRk0eOIXaQWKNEtdHVkEhI8HqmZ6kuPRCbeoB8m8p0QiZddmKZZU
+         ywQOoUEh5y/tBnpB4YaL2oqSbz41o+JEP4T34a1AOTCT0z5oDqdvh49Kf0RRhkU0N2Nk
+         m2Vjhm8ZA444+gS1ReN5w9rPcnY3wwTfER1i4wENJtE1oPhsuKBRqzrs8Z+NdYWFtYLB
+         UkBxoDt23p4tW8z36PP8My47V+tH6W+ATiUl0hCbsvv8kABoU0PHp92r63Dc6PsJiZCB
+         lH4sqe7jswufS5UYwGpXVpyVEtl2Qg/DPuuk9in5Nxtzd/LVSoI9k6vn6JDqFg0Rx1OV
+         uSkA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788907299; x=1789512099; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1788909156; x=1789513956; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LbRygIjj1UISKx3LvtxKvIim7ExfCkLiZ8qAFUjhHAw=;
-        b=PKBMzKxl9zNLfQlKpEwYU8p1vjCERtrpbPVC0OuLfkN4vklzUeP4+4Sds0ui2/5UbP
-         KqaYDQ9DHO29lMERe0mIJ8QLYUo23XaK+xD5GXOW50/47tBCwxbef0iQkLpTtrhkOMIU
-         OEgIs128ZuSv9Yc1lE8H75aGaORZxefue50sTRfF/QwAvmfMv8AlXcwSvKjGxs2jD7md
-         JQg1hsOMs4nCCnH6k6xyfQXKsF+XN1Nbh53fOcmDV8Th6EkIt1HhSB8nfKs9Xaft3KC2
-         TdCMvLLt/9rIkeiBaKeCrKhI1XqwpOa3t0LDKrw3NZpY0IV+EddTJIGgu52gDb3opdKK
-         zOCQ==
+        bh=bXe1j20I+di0M3C6cOcnKJ1R5Cd+V17GNEUEr8u82pc=;
+        b=JmqYyQtQNeIrOnzlT0pkf6bmVFsv7J5F/N2i+FylmkR9o34TJRrdsBeEj3QohYyBef
+         FlWCbzRf+QH4Gq+hSUwROlCHqfbjZ8Du066oIi0Ud7KHOofKb3irykyQwVLEQfdLYsR4
+         dNwDwTvHJPls4P18W0535sas10f/C3sx8TGo9VchaRs/kdybXO1+h/H+ugqXBBs+9OvY
+         NfPLfgLaOfCtqcqs+BGe9iqmJ7ivb/2feskeKd8Mc3U0FBtoGZRWIS8/pT9ePhfhZcxM
+         YL3K6JxEJoEU+m58ER9DgngS8/Upbc7LDD6kZdJ9vXuJ6auUS2tX1UEM2O4RJ48inyqt
+         N9JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788907299; x=1789512099;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1788909156; x=1789513956;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LbRygIjj1UISKx3LvtxKvIim7ExfCkLiZ8qAFUjhHAw=;
-        b=at699hY67pvqYXtn0Urf6cc8ftdA0xeZlkMD6/JNZmJonr5TozNuR3w5gShMLcUlym
-         zSBPtLFldYUAGwlTI5oGwTssOa6iuZ6hEQb8ifhroiu0MBT3ZXhHGdtw/4cwLECdz3TC
-         r/Tf+Ujnp3uo1kL8EUbroCiROIMhH9Y+XlO1OPBBxSJ/h7ym4X/L2vUhWkdjeZfMx0zN
-         Iu8eUjwdYBnWPO0ZuFYAXYHRnVLrGZdDFwKLpYlDzGVVOS0aYFNfvnSIY2rB7oOv8II9
-         Vgi8QOtpGf+eI6SOPnSmQRx95kM26pcuuwDd4PWBTQtPu6Xyp8gJGx/HDhUPTgPJOBiu
-         ZT8Q==
-X-Forwarded-Encrypted: i=1; AKwUvBy6ZfoijdtLMJcefqpfeFcnRIz9ZNJenbDxOKkL6+t4BsQRZ5XGhDa70oQfQs0QuteOkbk=@vger.kernel.org
-X-Gm-Message-State: AFuF++nPG9LLpA035QWMl+AJKnZ1y4AKOa0PQBzJNmZl4/rLGJ0FpbO3
-	aviMV5is9Y4jM5d4GKNYKa6CdctlDh2jrmB33M7Vx9pCELawKfcx364kG5trWhPJmva8CiBRYIR
-	kFHI57i/7xsxH5Y9NKmN08PzG29wSVLwpr1bAM+sW4Sgm6UT7v3i4Yg==
-X-Gm-Gg: AYBFou2Nd4ZbG839CFausXo8kfvHb/09HQ8B5DCe1nbN25oUvE4t5SlCONvr03WUXm8
-	/on2WvK/u194JRJTAI5I+qZRAI83fi9jxQEpuq130iRrea2IwV3bsA6171GlC4FRJLYypuMYdqB
-	e3uK+MYE7GIYKddGz/9uoPHVjgNPt18nENeOryCeTRa6Pi2zNwJS8pQ024R9J/rS10VFPUaSzu7
-	Out9nE8P8kjPwe7tCYlo//4VozWHO6lG77AHRvlqSJevD5w45mwbUnqmDOXQUvmD8z2QCgWrPjA
-	UWeJRcUHC41XFhnA/VmrCof5aEDzeNeSQZjicnsjx6eQpwVSLJZGoa4qy+tF/IO+F5/wgG0lQmW
-	POld/XaIDXmBjbEjerCEYdNYe8IDW1jXavR0rVYeASQ==
-X-Received: by 2002:a17:90b:5743:b0:38e:c232:9d2c with SMTP id 98e67ed59e1d1-39b8bc9422emr7157591a91.2.1788907298752;
-        Tue, 08 Sep 2026 15:41:38 -0700 (PDT)
-X-Received: by 2002:a17:90b:5743:b0:38e:c232:9d2c with SMTP id 98e67ed59e1d1-39b8bc9422emr7157553a91.2.1788907298136;
-        Tue, 08 Sep 2026 15:41:38 -0700 (PDT)
-Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39cd20641e2sm204402a91.3.2026.09.08.15.41.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Sep 2026 15:41:36 -0700 (PDT)
-Message-ID: <52e58930-8fa4-4c75-981c-25be42d83f2d@redhat.com>
-Date: Wed, 9 Sep 2026 08:41:23 +1000
+        bh=bXe1j20I+di0M3C6cOcnKJ1R5Cd+V17GNEUEr8u82pc=;
+        b=bgV8DFaRrzD0gmFDyup+VcbzENBBK6mxJ6qaL+ATe4zWAmSv6dWhb89JaOLPpuAwyh
+         pm8Xxmu0Y6VCypBZDAaNhpUQpnjoZg3fhEgJUtP6wnX/mkChIt1RRPmy3dpHa04TWcKr
+         4QMCaLDJwO+jlFT349J1d8H1MEMSabGWXPhYiebJqhLrCSUfIALIxbUUJrX4Utu2dnzc
+         gQSKhY+pOLPuSQOy+vZY190nR31Jz/VWellmwOGUxtOFC0jXzDLFBWbw7cWxiT6YT+Pa
+         qSr85Ou/Jki9zuaiLn10Z0grZKcZkpXWC8d56Wl5GLsJQnn6860WTpAUFBrH90Uax31A
+         h8qA==
+X-Forwarded-Encrypted: i=1; AKwUvBzWmEHoJC+SfcbF/3ZaC3AkF8Bmy0yI1/xhkl9E/31EVq2IjTylDSuuAjklTXF/nFZvRNc=@vger.kernel.org
+X-Gm-Message-State: AFuF++kEwAwX0GrfEi9M6HEjDDKZcREanXe31rOcSpMIo4FaL6JDpS6K
+	20jJNt7q1//ZgltXXLve7P76dKm4ae6UW/CmWxLajTRs0skVmS2/jXzDsrgHP39IgfCBtTtsguP
+	4cuOmlIrRqZmdJmi4rDCubyuSwlOJ5B9W0phA5+se
+X-Gm-Gg: AYBFou2vih4+Fwgg011KSWa/b9WsGDUMwE7REOBmM13VSvZTeDcLT7+UaKoCTTjGhBR
+	TeGulngVCiVY4ZsfnHeVnMP0YujQWiWo1fbjnbpw16l/980MKZpV0fXyUg0pFr6/VokX5+BXpE4
+	LhpU9afFr+vsCX7R2Hw2+Bjy7Ih5HckEyYUvnvJCP5cDRLFODqeF6DVsGzL6fONUoaIQaCmPXbB
+	wX46R7sFftdqaTBJ9NDaP0iXYUy52qFPIySU103/nV8W169rcG4tUkiQYn/XuDZtKTMjWn7hthw
+	aZjosiyyhlkb3AsPPKf+xLN9e+oaaNASD5UEK8DmnH9wqtN0wmZm7xQpEDUps7m1GF5iAAVLNeF
+	D0S6Rd8h201pH5z+bnx/9ilTVl1JBhv4=
+X-Received: by 2002:a05:620a:6081:b0:936:69dc:aedf with SMTP id
+ af79cd13be357-93980370c3bmr3268519485a.16.1788909154992; Tue, 08 Sep 2026
+ 16:12:34 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 8 Sep 2026 16:12:34 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 8 Sep 2026 16:12:33 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <e5cefe2e-5cde-45c5-8d28-e64b434a0c2e@intel.com>
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
+ <20260722-tdx-selftests-v14-18-15ad654a50db@google.com> <befe73e1-3287-440e-90de-6c62f6c19d47@intel.com>
+ <CAEvNRgH00s3NWUH8EGUZq3WWweboBcUaTZs_0Cye5D=3o0OALQ@mail.gmail.com> <e5cefe2e-5cde-45c5-8d28-e64b434a0c2e@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 1/7] firmware: arm_rmm: Add SMC definitions for
- calling the RMM
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
- <20260907095942.1140734-2-suzuki.poulose@arm.com>
- <c9990440-acab-4c6c-b67f-8bde17feddce@redhat.com>
- <aca629b2-27a0-4c47-acac-87edb3b0d3d9@arm.com>
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <aca629b2-27a0-4c47-acac-87edb3b0d3d9@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Date: Tue, 8 Sep 2026 16:12:33 -0700
+X-Gm-Features: AcwNN1URYxq6dasdi_5TWC8QB03_0MMIfEhWxTak9rckb9UYchDGFf-lhLQ-wFc
+Message-ID: <CAEvNRgE8_RXfNidbddA238ScxSzf_DcuGR6P--7dKZTU81fSeQ@mail.gmail.com>
+Subject: Re: [PATCH v14 18/22] KVM: selftests: Add helpers to init TDX memory
+ and finalize VM
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Lisa Wang <wyihan@google.com>, 
+	Andrew Jones <ajones@ventanamicro.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Chao Gao <chao.gao@intel.com>, Chenyi Qiang <chenyi.qiang@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Erdem Aktas <erdemaktas@google.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, 
+	Reinette Chatre <reinette.chatre@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>, 
+	Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 9/8/26 8:37 PM, Suzuki K Poulose wrote:
-> On 08/09/2026 07:19, Gavin Shan wrote:
->> On 9/7/26 7:59 PM, Suzuki K Poulose wrote:
->>> From: Steven Price <steven.price@arm.com>
+Xiaoyao Li <xiaoyao.li@intel.com> writes:
+
+> On 8/17/2026 9:52 PM, Ackerley Tng wrote:
+>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+>>
 >>>
->>> The RMM (Realm Management Monitor) provides functionality that can be
->>> accessed by SMC calls from the host.
+>>> [...snip...]
 >>>
->>> The SMC definitions are based on DEN0137[1] version 2.0-bet3
+>>>> +static void tdx_load_private_memory(struct kvm_vm *vm)
+>>>> +{
+>>>> +	struct userspace_mem_region *region;
+>>>> +	int ctr;
+>>>> +
+>>>> +	hash_for_each(vm->regions.slot_hash, ctr, region, slot_node) {
+>>>> +		const struct sparsebit *protected_pages = region->protected_phy_pages;
+>>>> +		const gpa_t gpa_base = region->region.guest_phys_addr;
+>>>> +		const u64 hva_base = region->region.userspace_addr;
+>>>> +		const sparsebit_idx_t lowest_page_in_region = gpa_base >> vm->page_shift;
+>>>> +		void *source_pages = NULL;
+>>>> +		sparsebit_idx_t i, j;
+>>>> +
+>>>> +		if (!sparsebit_any_set(protected_pages))
 >>>
->>> [1] https://developer.arm.com/documentation/den0137/2-0bet3/
+>>> sparebit_any_set() doens't check if the input is NULL. So we need to
+>>> check it here.
 >>>
->>> Signed-off-by: Steven Price <steven.price@arm.com>
->>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> 
-> ...
-> 
->>> ---
->>>   include/linux/arm-smccc-rmi.h | 494 ++++++++++++++++++++++++++++++++++
->>>   1 file changed, 494 insertions(+)
->>>   create mode 100644 include/linux/arm-smccc-rmi.h
+>>>> +			continue;
+>>>> +
+>>>> +		TEST_ASSERT(region->region.guest_memfd != -1,
+>>>> +			    "TD private memory must be backed by guest_memfd");
+>>>> +
+>>>> +		sparsebit_for_each_set_range(protected_pages, i, j) {
+>>>> +			const u64 size_to_load = (j - i + 1) * vm->page_size;
+>>>> +			const u64 offset =
+>>>> +				(i - lowest_page_in_region) * vm->page_size;
+>>>> +			const u64 hva = hva_base + offset;
+>>>> +			const u64 gpa = gpa_base + offset;
+>>>> +
+>>>> +			if (!kvm_has_gmem_attributes)
+>>>> +				source_pages = (void *)hva;
+>>>> +
+>>>
+>>>> +			vm_mem_set_private(vm, gpa, size_to_load);
+>>>
+>>> So vm_mem_set_private() has to be called at this late stage when run
+>>> with in-place gmem. But for non in-place gmem, we can actually call
+>>> vm_mem_set_private() in __vm_phy_pages_alloc().
+>>>
+>>> Calling vm_mem_set_private() here instead of in __vm_phy_pages_alloc()
+>>> looks like a trick to me.
+>>
+>> I thought this is fine because __vm_phy_pages_alloc() seems to be a
+>> rather low-level function, where the responsibility of the function is
+>> just to allocate (for find some physical pages). Calling
+>> vm_mem_set_private() in there seems to be doing too much.
+>
+> __vm_phy_pages_alloc() takes a parameter @protected, which is used to
+> tell the allocated physical pages need to be protected(private) or not.
+> It looks weird that a page is allocated as protected but actually it is
+> still shared.
+>
+
+I think there are a few different things here:
+
+1. Finding some range of guest physical addresses for a page. This is
+   __vm_phy_pages_alloc().
+
+2. Tracking the guest physical addresses as shared or private in the
+   userspace VMM. This is setting region->protected_phy_pages.
+
+3. Creating private vs shared mappings in guest page tables. This is
+   done in __virt_pg_map().
+
+4. Transferring region->protected_phy_pages into the kernel. This is
+   either the VM or guest_memfd conversion ioctl.
+
+5. Loading private memory based on region->protected_phy_pages. This is
+   done in tdx_load_private_memory() and the SNP counterpart.
+
+So protected_phy_pages tracks all the pages that will be initialized as
+private, not the pages that are private (since vm_mem_set_private()
+doesn't update protected_phy_pages).
+
+(2) is coupled to whether the VM has protected memory in
+vm_phy_pages_alloc(). This is kind of an awkward assumption since a CoCo
+VM can have shared memory too, and especially for selftests there can be
+shared pages right from the start.
+
+However, setting protected_phy_pages in (2) and referencing in it (3),
+(4) and (5) makes sense since that's the common path, and we want the
+common path to be easy for the selftest writer.
+
+I think there could be some refactoring so that the different components
+1 through 5 are opened up for easier usage but I haven't thought about
+how it should look like and anyway I think that belongs in a separate
+series.
+
+
+Imo the direct response to looking allocated as protected but is actually
+shared is that the page was allocated as "will be loaded as private",
+and doesn't make any statement on whether it is shared or private.
+
+Does seeing protected_phy_pages as "will be loaded as private" help in
+explaining why vm_mem_set_private() is not called in
+__vm_phy_pages_alloc() but is done only in tdx_load_private_memory()?
+
+>>> That is, we cannot set the page as private
+>>> when allocating a guest physical page as protected because if doing so,
+>>> we cannot write the initial content to it.
 >>>
 >>
->> Some nitpicks below, please pick up the commits that look reasonable :)
->>
-> 
-> 
->>> +
->>> +#define RMI_RETURN_STATUS_MASK        (0xFFUL)
->>> +#define RMI_RETURN_INDEX_MASK        (0xFFUL << 8)
->>> +#define RMI_RETURN_MEMREQ_MASK        (0x3UL << 8)
->>> +#define RMI_RETURN_CAN_CANCEL_MASK    (0x1UL << 10)
->>> +
->>> +#define RMI_RETURN_STATUS(ret) FIELD_GET(RMI_RETURN_STATUS_MASK, ret)
->>> +#define RMI_RETURN_INDEX(ret)        FIELD_GET(RMI_RETURN_INDEX_MASK, ret)
->>> +#define RMI_RETURN_MEMREQ(ret) FIELD_GET(RMI_RETURN_MEMREQ_MASK, ret)
->>> +#define RMI_RETURN_CAN_CANCEL(ret) FIELD_GET(RMI_RETURN_CAN_CANCEL_MASK, ret)
->>> +
->>
->> If I'm correct enough, RMI_RETURN_{STATUS, INDEX, MEMREQ, CAN_CANEL} _MASK are used
->> for once in this header file. So we needn't explicitly expose them and combine their
->> definitions with users to fetch the corresponding fields, as below.
->>
->> #define RMI_RETURN_STATUS(ret)        FIELD_GET(GENMASK(7, 0), ret)
->> #define RMI_RETURN_INDEX(ret)        FIELD_GET(GENMASK(15, 8), ret)
->> #define RMI_RETURN_MEMREQ(ret)        FIELD_GET(GENMASK(10, 8), ret)
->> #define RMI_RETURN_CAN_CANCEL(ret)    FIELD_GEt(GENMASK(10, 10), ret)
-> 
-> I belive the header files were generated from a tool (by Steven) and
-> these would make it easier to compare with the generated header file for
-> any deviation from the spec. So, I am a bit reluctant make these
-> changes.
-> 
-> That said, I am happy to convert the mask definitions to GENMASK() for
-> consistency and readability. i.e., something like:
-> 
-> diff --git a/include/linux/arm-smccc-rmi.h b/include/linux/arm-smccc-rmi.h
-> index 3eb88caf40964..078197284415e 100644
-> --- a/include/linux/arm-smccc-rmi.h
-> +++ b/include/linux/arm-smccc-rmi.h
-> @@ -139,10 +139,10 @@
->   #define RMI_ABI_VERSION_GET_MINOR(version) ((version) & 0xFFFF)
->   #define RMI_ABI_VERSION(major, minor)      (((major) << 16) | (minor))
-> 
-> -#define RMI_RETURN_STATUS_MASK         (0xFFUL)
-> -#define RMI_RETURN_INDEX_MASK          (0xFFUL << 8)
-> -#define RMI_RETURN_MEMREQ_MASK         (0x3UL << 8)
-> -#define RMI_RETURN_CAN_CANCEL_MASK     (0x1UL << 10)
-> +#define RMI_RETURN_STATUS_MASK         GENMASK(7, 0)
-> +#define RMI_RETURN_INDEX_MASK          GENMASK(15, 8)
-> +#define RMI_RETURN_MEMREQ_MASK         GENMASK(10, 8)
-> +#define RMI_RETURN_CAN_CANCEL_MASK     BIT(10)
-> 
+>> I think calling it here isn't a trick, it's a good way to reuse all the
+>> existing code that builds up the guest image in place. In-place
+>> conversion allows you to set stuff up in shared memory and then convert
+>> everything when you're done and also populate the memory.
+>
+> This is based on the assumption of "in-place conversion". However the
+> TDX selftests should be able to run without "in-place conversion". There
+> is no hard dependency on it.
+>
+> I think this patch implements what patch 13[1] of this series says "For
+> CoCo VMs, pages that need to be private are explicitly set to private
+> before executing the VM."
+>
+> But all of this is for the case of "in-place conversion". When "in-place
+> conversion" is not supported/enabled by the kernel,
+> GUEST_MEMFD_FLAG_INIT_SHARED for Coco VMs is *not* allowed and all the
+> memory are private by default and no need to call vm_mem_set_private()
+> here at all.
+>
+> [1]
+> https://lore.kernel.org/all/20260722-tdx-selftests-v14-13-15ad654a50db@google.com/
+>
 
-Ok.
+Doing (3) as part of (5) isn't just for in-place conversion. Without
+in-place conversion, source_pages should be the address mmap()-ed from
+some non-guest_memfd memory, which by the time of
+tdx_load_private_memory(), would already be populated with whatever
+needs to be loaded. Populate needs to be called on private memory
+regardless of whether we use in-place conversions.
 
->>
->>> +#define RMI_SUCCESS            0
->>> +#define RMI_ERROR_INPUT            1
->>> +#define RMI_ERROR_REALM            2
->>> +#define RMI_ERROR_REC            3
->>> +#define RMI_ERROR_RTT            4
->>> +#define RMI_ERROR_NOT_SUPPORTED        5
->>> +#define RMI_ERROR_DEVICE        6
->>> +#define RMI_ERROR_RTT_AUX        7
->>> +#define RMI_ERROR_PSMMU_ST        8
->>> +#define RMI_ERROR_DPT            9
->>> +#define RMI_BUSY            10
->>> +#define RMI_ERROR_GLOBAL        11
->>> +#define RMI_ERROR_TRACKING        12
->>> +#define RMI_INCOMPLETE            13
->>> +#define RMI_BLOCKED            14
->>> +#define RMI_ERROR_GPT            15
->>> +#define RMI_ERROR_GRANULE        16
->>> +
->>> +#define RMI_CONTINUE_KEEP_GOING        0
->>> +#define RMI_CONTINUE_STOP        1
->>> +
->>> +#define RMI_OP_MEM_REQ_NONE        0
->>> +#define RMI_OP_MEM_REQ_DONATE        1
->>> +#define RMI_OP_MEM_REQ_RECLAIM        2
->>> +
->>> +#define RMI_DONATE_SIZE_MASK        3UL
->>> +#define RMI_DONATE_COUNT_MASK        GENMASK(15, 2)
->>> +#define RMI_DONATE_CONTIG_MASK        BIT(16)
->>> +#define RMI_DONATE_STATE_MASK        GENMASK(18, 17)
->>> +
->>> +#define RMI_DONATE_SIZE(req)        FIELD_GET(RMI_DONATE_SIZE_MASK, req)
->>> +#define RMI_DONATE_COUNT(req)        FIELD_GET(RMI_DONATE_COUNT_MASK, req)
->>> +#define RMI_DONATE_CONTIG(req) FIELD_GET(RMI_DONATE_CONTIG_MASK, req)
->>> +#define RMI_DONATE_STATE(req)        FIELD_GET(RMI_DONATE_STATE_MASK, req)
->>> +
->>
->> As above, RMI_DONATE_{SIZE, COUNT, CONTIG, STATE}_MASK are used for once in this
->> header file. So their definitions can be dropped by modifying the followup macros,
->> as below. Some enhancements are also applicable: (a) Use 'BLOCK' to indicate the
->> unit encoded in the request. (b) The macros are put into order from MSB to LSB.
->>
->> #define RMI_DONATE_STATE(req)        FIELD_GET(GENMASK(18, 17), req)
->> #define RMI_DONATE_CONTIG(req)        FIELD_GET(GENMASK(16, 16), req)
->> #define RMI_DONATE_BLOCK_COUNT(req)    FIELD_GET(GENMASK(15, 2), req)
->> #define RMI_DONATE_BLOCK_SIZE(req)    FIELD_GET(GENMASK(1, 0), req)
-> 
-> Same as above.
-> 
-
-Please rename RMI_DONATE_{SIZE, COUNT} to RMI_DONATE_BLOCK_{SIZE, COUNT} if possible.
-
->>
->>> +#define RMI_OP_MEM_DELEGATED        0
->>> +#define RMI_OP_MEM_UNDELEGATED        1
->>> +#define RMI_OP_MEM_CONDITIONAL        2
->>> +
->>
->> B4.6.40 RmiOpMemContig type is missed here and they should be used in the c code.
->>
->> #define RMI_OP_MEM_NON_CONTIG    0
->> #define RMI_OP_MEM_CONTIG    1
->>
->> In the c code, we shall have:
->>
->> if (RMI_DONATE_CONTIG(req) == RMI_OP_MEM_CONTIG)) {
->>     ...
->> } else {
->>     ...
->> }
->>
-> 
-> Does it make much sense though ? I prefer
-> 
-> if (RMI_DONATE_CONTIG(req))
-> 
-> to
-> 
-> 
-> if (RMI_DONATE_CONTIG(req) == RMI_OP_MEM_CONTIG)) {
-> 
-> 
-> than having a field for a single bit values. I am happy to change
-> this if there is strong preference to the other.
-> 
-
-The point is RMM-v2.0-bet3 expose RMI_OP_{MEM, MEM_NON}_CONTIG instead of true/false
-to indicate if the requested memory blocks are physically contiguous or not. So the
-expression 'if (RMI_DONATE_CONTIG(req) == RMI_OP_MEM_CONTIG)' is consistent to the
-RMM-v2.0-bet3 spec.
-
-  
->> Similarly, B4.6.39 RmiOpCanCancel type is missed here and they should be used in
->> the c code.
->>
->> #define RMI_OP_CANNOT_CANCEL    0
->> #define RMI_OP_CAN_CANCEL    1
->>
->> In the c code, we shall have:
->>
->> if (RMI_RETURN_CAN_CANCEL(ret) == RMI_OP_CAN_CANCEL) {
->>      ...
->> } else {
->>      ...
->> }
->>
-> 
-> Same as above.
-> 
-
-Please see above explanation.
-
->>> +#define RMI_ADDR_TYPE_NONE        0
->>> +#define RMI_ADDR_TYPE_SINGLE        1
->>> +#define RMI_ADDR_TYPE_LIST        2
->>> +
->>> +#define RMI_ADDR_RANGE_SIZE_MASK    GENMASK(1, 0)
->>> +#define RMI_ADDR_RANGE_COUNT_MASK    GENMASK(PAGE_SHIFT - 1, 2)
->>> +#define RMI_ADDR_RANGE_ADDR_MASK    (PAGE_MASK & GENMASK(51, 0))
->>> +#define RMI_ADDR_RANGE_STATE_MASK    GENMASK(63, 62)
->>> +
->>> +#define RMI_ADDR_RANGE_SIZE(ar) (FIELD_GET(RMI_ADDR_RANGE_SIZE_MASK, \
->>> +                           (ar)))
->>> +#define RMI_ADDR_RANGE_COUNT(ar) (FIELD_GET(RMI_ADDR_RANGE_COUNT_MASK, \
->>> +                           (ar)))
->>> +#define RMI_ADDR_RANGE_ADDR(ar)        ((ar) & RMI_ADDR_RANGE_ADDR_MASK)
->>> +#define RMI_ADDR_RANGE_STATE(ar) (FIELD_GET(RMI_ADDR_RANGE_STATE_MASK, \
->>> +                           (ar)))
->>> +
->>
->> I guess it wouldn't a bad idea to explictly indicate 'BLOCK' in the definitions, as
->> below. Some improvements are applicated either: (a) 'ar' is renamed to 'r'; (b) The
->> excessive parentheses are dropped to follow the patterns we already had; (c) For
->> RMI_ADDR_RANGE_ADDR(r), FIELD_GET() is used.
->>
->> #define RMI_ADDR_RANGE_BLOCK_SIZE_MASK        GENMASK(1, 0)
->> #define RMI_ADDR_RANGE_BLOCK_COUNT_MASK        GENMASK(PAGE_SHIFT - 1, 2)
->> #define RMI_ADDR_RANGE_ADDR_MASK        (PAGE_MASK & GENMASK(51, 0))
->> #define RMI_ADDR_RANGE_STATE_MASK        GENMASK(63, 62)
->>
->> #define RMI_ADDR_RANGE_BLOCK_SIZE(r) FIELD_GET(RMI_ADDR_RANGE_SIZE_MASK, r)
->> #define RMI_ADDR_RANGE_BLOCK_COUNT(r) FIELD_GET(RMI_ADDR_RANGE_COUNT_MASK, r)
->> #define RMI_ADDR_RANGE_ADDR(r) FIELD_GET(RMI_ADDR_RANGE_ADDR_MASK, r)
->> #define RMI_ADDR_RANGE_STATE(r) FIELD_GET(RMI_ADDR_RANGE_STATE_MASK, r)
-> 
-> Ack
-> 
->>
->>> +enum rmi_ripas {
->>> +    RMI_EMPTY = 0,
->>> +    RMI_RAM = 1,
->>> +    RMI_DESTROYED = 2,
->>> +    RMI_DEV = 3,
->>> +};
-> 
->>> +#define RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_4KB    BIT(0)
->>> +#define RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_16KB    BIT(1)
->>> +#define RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_64KB    BIT(2)
->>> +#define RMI_FEATURE_REGISTER_1_HASH_SHA_256    BIT(3)
->>> +#define RMI_FEATURE_REGISTER_1_HASH_SHA_384    BIT(4)
->>> +#define RMI_FEATURE_REGISTER_1_HASH_SHA_512    BIT(5)
->>> +#define RMI_FEATURE_REGISTER_1_MAX_RECS_ORDER    GENMASK(9, 6)
->>> +#define RMI_FEATURE_REGISTER_1_L0GPTSZ        GENMASK(13, 10)
->>> +#define RMI_FEATURE_REGISTER_1_PPS        GENMASK(16, 14)
->>> +
->>> +#define RMI_FEATURE_REGISTER_2_DA        BIT(0)
->>> +#define RMI_FEATURE_REGISTER_2_DA_COH        BIT(1)
->>> +#define RMI_FEATURE_REGISTER_2_VSMMU        BIT(2)
->>> +#define RMI_FEATURE_REGISTER_2_ATS        BIT(3)
->>> +#define RMI_FEATURE_REGISTER_2_PDEV_MAX_VDEVS_ORDER    GENMASK(7, 4)
->>> +#define RMI_FEATURE_REGISTER_2_VDEV_KROU    BIT(8)
->>> +#define RMI_FEATURE_REGISTER_2_NON_TEE_STREAM    BIT(9)
->>> +#define RMI_FEATURE_REGISTER_2_REALM_MAX_VDEVS_ORDER    GENMASK(14, 10)
->>> +
->>> +#define RMI_FEATURE_REGISTER_3_MAX_NUM_AUX_PLANES    GENMASK(3, 0)
->>> +#define RMI_FEATURE_REGISTER_3_RTT_PLANE        GENMASK(5, 4)
->>> +#define RMI_FEATURE_REGISTER_3_RTT_S2AP_INDIRECT    BIT(6)
->>> +
->>> +#define RMI_FEATURE_REGISTER_4_MEC_COUNT        GENMASK(63, 0)
->>> +
->>
->> We would reorder those feature register definitions from MSB ro LSB :-)
-> 
-> Ack
-> 
-> Thanks for your review.
-> 
-> Cheers
-> Suzuki
-> 
-
-Thanks,
-Gavin
-
+>>> This is the topic about how to implement the infras for in-place gmem,
+>>> not the issue of this series. Let me go read the selftest patches of
+>>> gmem in-place series and we can discuss there.
+>>>
+>>>> +			tdx_init_mem_region(vm, source_pages, gpa, size_to_load);
+>>>> +		}
+>>>> +	}
+>>>> +}
+>>>> +
+>>>> +void tdx_vm_finalize(struct kvm_vm *vm)
+>>>> +{
+>>>> +	tdx_load_private_memory(vm);
+>>>> +	tdx_vm_ioctl(vm, KVM_TDX_FINALIZE_VM, 0, NULL);
+>>>> +}
+>>>>
