@@ -1,136 +1,105 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAC657F736
-	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 16:05:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B897F56C65C;
+	Tue,  8 Sep 2026 16:19:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788883509; cv=none; b=mYb8lQDc24nIvwlqU0iTlCUDrAuTIBZfKoJexz+AmG7eJd26fZPfH+grcDaq8IsP0FRl3pKghY1oLPp7PqFtRYJPQaaFZYPVlbTta0EqDAFHgIDKV9/v2b9c+L8AnYQqIJUioRQTLMIs/JwNUWujFj3Tlm1juLovlJ7oRLsz/0k=
+	t=1788884386; cv=none; b=TUhaHetnEnjL2gg1THrJhUpogvdfUX+FyN53aXMsZgBxhAg+1yFNFJlnl9IQdFasjqWtZHyvyyFq9I7zLtIJ2tyBoLu6jKr4jRum4xBk1ozZ0z0RKdMR9N8/MTCBSLyPnMgHvt+wh5SNykeW2bmjDEkDmazqk5yVNvhyKOqOaBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788883509; c=relaxed/simple;
-	bh=sK1b5nDQtrjVKFr+o/6GwxhEgYwKp92RT5diVPkBA+U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FTo5Eo5Z/HiC3XTKgNTE1uPvREpEsSYgKqCOcuDP4BNdD2mZqrNL0oPJZrW8ykZNny5LH1z/mUP5R5uJf3inTVKCeJW6k9fPzY3q/BOSNH30dCNRjphIrB0l4nbAS55tWuNI7miCdVWKeyEuHFZMSUewxPNjLbKvzKNvQU90ivk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZfKObwWj; arc=none smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788884386; c=relaxed/simple;
+	bh=dR7gu87uNwDxeR+EZwq4z+4Id2o1CljMYJwUBZ26JdE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q9W5lOfskwJWC+iET7DdLTBf/O338DT60zf2XiApt7AVkBYbNAo68ZEN/jdCuRRYefUeK8GnFXJk1ntoUAcXa+YD1jQXdAJTHDoiF8FlRSyueUkmAsSUF17cCbkjq16r0KtiamRSW/ZnB3l2iPGyYeks+r+wpm37/e1S26IIfjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=bKLA+kcp; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZfKObwWj"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cebad4aeso80586a12.2
-        for <kvm@vger.kernel.org>; Tue, 08 Sep 2026 09:05:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788883507; x=1789488307; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=SSdpcNES+qMXGVTc/+WrAnmCz5JB/CaNe97EdcfztrE=;
-        b=ZfKObwWjNK7L05K1IvN9ICzOvstr1NZlsrbwloYMwlijiL/KhwcaIn8KXaD08mxM5M
-         p4BocJTIUF+LtbE4jvCDeA0pLStRxVf9nAKzYbKg7LRzeSylufcSUXRi5AjrLu2YgV1B
-         iZV9DoDUI1Qu/DJHf4nyG5SPoqMzFi7gO4mdr3jF+DcNEMLUhjFG7qRvxztAngXy0AKj
-         uDI7YDXbVVb3UwFZHwKdCaOAAXGLKqYcZS70YG8twwIk/HaZU9gJMoiutRp8E7e1kyMa
-         eh+M+sIpHd0CAhbXoJrzcWdLZkY6HiNB2syr77wTymo05XcGSb75S6JotjPKhhZCRR5H
-         0Zaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788883507; x=1789488307;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SSdpcNES+qMXGVTc/+WrAnmCz5JB/CaNe97EdcfztrE=;
-        b=ghpwWvpbo7EycJFwEyhlHEuLUlMeCv24TcNRd4vKHmEXEuGcxEIE46D5ujT1phjNNe
-         cWdhMdAcKIDnYpXvvMpJAC0pQv/M9vIcntKVocmglZ3ecquiuCa9RDKMZLPMKriM8Gfi
-         usrwmco6jbNoyZGPgScmazEGc0bFy9izGdtVMFrAVBGzAAdvfJe5c4+EzMaljia0FplH
-         RF+6LYkTSAuo35u5l4ckJKn6k/uuMISsYAIYljLX3tQPGi6OREEExQHJ8crNWG4Z1MpV
-         +mxNfHXR6qD1s4A5721rwRH7/ZnceVYX0o4RSJCfz+X9zxgWGndFG2pnzO/R8xqmZVG+
-         VS3w==
-X-Forwarded-Encrypted: i=1; AKwUvBwLECNUpvpEbT5aLqc7H+O6c9p0Mv004gkx/ScqDh8hiJuJ0OIf7420ZxkFRiFI19lNpSg=@vger.kernel.org
-X-Gm-Message-State: AFuF++nqSbfMiYgtJZO+nPECV6xbRjj5E8g/NsiwtkNNOskY0Vki6VmT
-	8JfiCWuMOVpOCRyW72mmPFzcdr5iaoivNv7c7LD6qLAcVuxU4xgBnWuk
-X-Gm-Gg: AYBFou3XnnBR2c2iItVWLwbEonFq+n+wJ5UsRHvUrteUHxkxZQCW3giDLn1hNOV0f18
-	DIvtUf2zSacXBnoCdjAJ7xDU7JbJ1C0vhi6B66J1vt6Yl2p3yTxVRv6D+dOl+dUr7LETmqRRLWQ
-	YkCAIxv9jdTeMwMKTjQeddAZq7sbRM+NNYv/3LwP0/JQLpI4ecpJXjXipUGdCQ/0YGYrWTH7K59
-	pPuazKnjFzUp7HlsaGVqLMsVaorJYUK9g+7V3Fu32ZyH7cUQ3P2syoWtJOaDkJ8SOFFbIRa79Jy
-	70ipl2tABLHwP7IjfUEk+xyBl1gz3YUYTyOzwZi8cIJxL5KpLt2iNlQ8r4avLkua+MUfQY5dFF9
-	hL6f3/4w1sbDo59eUmupV4LoSlQMwx4Bv9UCFTgtKXbSXcb3cxL35oIpq5ShqoIAOt3VSuUGc/R
-	A+gYG0HMyUAEHaG0rymBh7qPmMj2P+Y/zlorxFmROKFmmW05YyLpkO09BFDKXJe7uvAZ3tMOrFh
-	7IBrsaoMSsP
-X-Received: by 2002:a05:6a20:2d22:b0:3d0:f57d:c87a with SMTP id adf61e73a8af0-3dabab860f3mr994786637.0.1788883506463;
-        Tue, 08 Sep 2026 09:05:06 -0700 (PDT)
-Received: from x1c ([2405:9800:b670:b64b:3ef4:ec38:7826:6c9b])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33825669695sm14204525eec.3.2026.09.08.09.05.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 09:05:06 -0700 (PDT)
-From: Tharit Tangkijwanichakul <tharitt97@gmail.com>
-To: seanjc@google.com,
-	pbonzini@redhat.com,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	shuah@kernel.org
-Cc: hpa@zytor.com,
-	binbin.wu@linux.intel.com,
-	kai.huang@intel.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev,
-	skhan@linuxfoundation.org,
-	me@brighamcampbell.com,
-	jkoolstra@xs4all.nl,
-	Tharit Tangkijwanichakul <tharitt97@gmail.com>
-Subject: [PATCH v1 2/2] KVM: selftests: Add CR8 reserved-bit checks to set_sregs_test
-Date: Tue,  8 Sep 2026 23:04:26 +0700
-Message-ID: <20260908160426.6547-3-tharitt97@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260908160426.6547-1-tharitt97@gmail.com>
-References: <20260908160426.6547-1-tharitt97@gmail.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="bKLA+kcp"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 903C31476;
+	Tue,  8 Sep 2026 09:19:40 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 806B63F7B4;
+	Tue,  8 Sep 2026 09:19:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788884384; bh=dR7gu87uNwDxeR+EZwq4z+4Id2o1CljMYJwUBZ26JdE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bKLA+kcpxksCOfvmdrVLpPFISwpSyiOLfwWXfXkZWOp0i7GgObZfbMEBxdGq5+bmM
+	 b5On4nUY5nFQfZ8maY6lbag/3Quj5Masczbyo6SKQCFTByuvLdWVNvwXeA/2qD1GBh
+	 /uVIQpTwW0V8APMeWVfbJlWnIXEew3lp6hPxKTyY=
+Date: Tue, 8 Sep 2026 17:19:35 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Sascha Bischoff <Sascha.Bischoff@arm.com>
+Cc: "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	nd <nd@arm.com>, Catalin Marinas <Catalin.Marinas@arm.com>,
+	"will@kernel.org" <will@kernel.org>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	"maz@kernel.org" <maz@kernel.org>,
+	"oupton@kernel.org" <oupton@kernel.org>,
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Subject: Re: [PATCH 1/2] arm64: sysreg: Make write_sysreg_s() select XZR
+ without optimisation
+Message-ID: <aqA1l_86CGSeL_2B@J2N7QTR9R3>
+References: <20260904174855.76185-1-sascha.bischoff@arm.com>
+ <20260904174855.76185-2-sascha.bischoff@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260904174855.76185-2-sascha.bischoff@arm.com>
 
-Extend set_sregs_test to cover CR8. Verify that the architecturally
-allowed bits [3:0] can be set and read back, that every reserved bit
-[63:4] is rejected by KVM_SET_SREGS, and that a successful set is
-observable via KVM_GET_SREGS.
+On Fri, Sep 04, 2026 at 06:49:25PM +0100, Sascha Bischoff wrote:
+> write_sysreg_s() tests whether its local __val variable is constant when
+> deciding whether to use XZR. Compilers only recognise that __val was
+> initialised with a constant zero after constant propagation.
+> 
+> With optimisation disabled, the fallback path therefore selects an
+> arbitrary general-purpose register. This is incorrect for instructions
+> such as GIC CDEOI, where Rt must be XZR rather than a register containing
+> zero.
 
-Without the accompanying fix to kvm_is_valid_sregs(), setting a reserved
-CR8 bit is silently accepted and the read-back value diverges from the
-value written, so this test fails on an unpatched kernel and passes once
-the fix is applied.
+Which CONFIG_* option needs to be selected for that to happen?
 
-Signed-off-by: Tharit Tangkijwanichakul <tharitt97@gmail.com>
----
- tools/testing/selftests/kvm/x86/set_sregs_test.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+I'm struggling to see how other usage of __builtin_constant_p() wouldn't
+blow up in such a configuration, so knowing that would help to
+investigate and test.
 
-diff --git a/tools/testing/selftests/kvm/x86/set_sregs_test.c b/tools/testing/selftests/kvm/x86/set_sregs_test.c
-index 603226ffe437..4e7c35179438 100644
---- a/tools/testing/selftests/kvm/x86/set_sregs_test.c
-+++ b/tools/testing/selftests/kvm/x86/set_sregs_test.c
-@@ -135,6 +135,18 @@ static void test_cr_bits(struct kvm_vcpu *vcpu, u64 cr4)
- 	/* NW without CD is illegal, as is PG without PE. */
- 	TEST_INVALID_SREG_BIT(vcpu, cr0, sregs, X86_CR0_NW);
- 	TEST_INVALID_SREG_BIT(vcpu, cr0, sregs, X86_CR0_PG);
-+
-+	/* CR8 bits 3:0 are writable; bits 63:4 are reserved. */
-+	vcpu_sregs_get(vcpu, &sregs);
-+	sregs.cr8 = 0xf;
-+	rc = _vcpu_sregs_set(vcpu, &sregs);
-+	TEST_ASSERT(!rc, "Failed to set valid CR8 value 0xf");
-+
-+	vcpu_sregs_get(vcpu, &sregs);
-+	TEST_ASSERT_EQ(sregs.cr8, 0xf);
-+
-+	for (i = 4; i < 64; i++)
-+		TEST_INVALID_SREG_BIT(vcpu, cr8, sregs, BIT_ULL(i));
- }
- 
- static void test_efer_bits(struct kvm_vcpu *vcpu, u64 efer)
--- 
-2.53.0
+> Test the macro argument directly so that constant zero selects XZR
+> regardless of the optimisation level.
+> 
+> Fixes: e9ad390a4812 ("arm64/sysreg: Fix GIC CDEOI instruction encoding")
+> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+> ---
+>  arch/arm64/include/asm/sysreg.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
+> index 7aa08d59d4944..a80bede50f865 100644
+> --- a/arch/arm64/include/asm/sysreg.h
+> +++ b/arch/arm64/include/asm/sysreg.h
+> @@ -1204,7 +1204,7 @@
+>  #define write_sysreg_s(v, r) do {					\
+>  	u64 __val = (u64)(v);						\
+>  	u32 __maybe_unused __check_r = (u32)(r);			\
+> -	if (__builtin_constant_p(__val) && __val == 0)			\
+> +	if (__builtin_constant_p(v) && (u64)(v) == 0)			\
 
+It's not safe to use 'v' here, since 'v' could be an expression with
+side-effects, and we must not evaluate it multiple times.
+
+I think we should just enxcode the GIC instructions manually. While they
+are SYS/SYSL instructions, they *aren't* MSR/MRS, and using
+write_sysreg_s() is a hack.
+
+Mark.
+
+>  		asm volatile(__msr_s(r, "xzr"));			\
+>  	else								\
+>  		asm volatile(__msr_s(r, "%x0") : : "r" (__val));	\
+> -- 
+> 2.34.1
