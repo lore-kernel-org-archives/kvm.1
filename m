@@ -1,33 +1,33 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433AF598C03
-	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 18:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3425A0ACC
+	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 18:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788893911; cv=none; b=WQz8533I37qj3CPxt9va12M30amx1/HNHbigTvj8iHuu8qNoH/kZtFkI9cXOHXrQB/3UcFlHFg3u+6nEz/vG3KeSyALZ1QQl1JBfLTz5UdbfP3XnM5D4Viw3Zm8REWG6Vej/X0AHMVggrF8dE2+kuLzih/cZvRiT4cS/yXUvoNY=
+	t=1788893982; cv=none; b=fvtDV0DJNP7Loz/0uorcEk5Dx1Yw3FE/bn0qiRy8d/Ov+gLWwJgoBUgcXoBEBt+g5HaalGdOHxp+JTk0GnGBnWPh7a1sWCA4+67+oeOU1T6zUWCL184hBmozZZCAc1YNWha46XvDsAqGXA3LbhbipF5R9VNEHT6WE79W+JtC4KQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788893911; c=relaxed/simple;
-	bh=y2y7T3KAoKP/KyE/uDm2tpyR/IuJRDUtV20f/glc+I0=;
+	s=arc-20240116; t=1788893982; c=relaxed/simple;
+	bh=Tc9JHX4hqoWOLLQX7k0goxvIf3i5xPJlcUGqwkfM6Eg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GLS7oaAOJlGtWG4oz9vK7dA/V0qBpf36LqJ0UFN4KGLc2x0M2b1PTb68dUUild8QE4WNSdkO113LzTfQ+3VsYGnI2JCgQYTvppzWPNI3XvIURqU0QNHlkXZFb1T+cMvHNPDYP4tvesqS9fjZM29NaPTfgko3MP0TS9Q1/VpncVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ju0/yovn; arc=none smtp.client-ip=217.140.110.172
+	 In-Reply-To:Content-Type; b=NbbtJm/W3TOtDD3la1d1gwbhMQjAxGNvqKzdfQsM3Xl1qgn3Ka5yVlOM3shDk7y0QTCbcpWQBHYufamM6xBVXEObrFE8+uyggFZJ+pMUwEfrhx7QtZ7y/Wz7NpwmKZq1XfMweznS7yNLF2RCfxuspyPqARaMBFlVI2WjcOy4/5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=V3xAfywi; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ju0/yovn"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="V3xAfywi"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BEF7F1476;
-	Tue,  8 Sep 2026 11:58:24 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 703BF1476;
+	Tue,  8 Sep 2026 11:59:36 -0700 (PDT)
 Received: from [10.57.49.201] (unknown [10.57.49.201])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B10353F528;
-	Tue,  8 Sep 2026 11:58:27 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 639673F528;
+	Tue,  8 Sep 2026 11:59:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788893908; bh=y2y7T3KAoKP/KyE/uDm2tpyR/IuJRDUtV20f/glc+I0=;
+	t=1788893980; bh=Tc9JHX4hqoWOLLQX7k0goxvIf3i5xPJlcUGqwkfM6Eg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ju0/yovnlJCOYeq4SXLgmLOwzg4nf4S7aWebIHFJWp8+ngmDbqkoNtSAqLuIwicnS
-	 E1/g/tstnhlTxhCYpqRnrNtsH6gPbcc+Mag4k6LM7wP5waZrl7rBnB0G2Vc0i/1P46
-	 AhVfQceVon7sB2t75xRqT9oUlVPpI0NQTc5LxtbU=
-Message-ID: <f523ceb8-faa7-412d-9227-aca139e2bc1e@arm.com>
-Date: Tue, 8 Sep 2026 19:58:18 +0100
+	b=V3xAfywiOY1K7owUgQ1fIoGPe9oQO9hu5w7NivPA0xrTLaPgJszI6BrhSeftwG0ZW
+	 Jprd+f1mD0ir1X24iWayTxIK1nTh8PuDtjYO3Gq0OH8ixwXfv5mP0nsvgw/9mtsNjB
+	 GaFBaLmKeigdQ/4TY6/xrZ0CEQCnVItPag7mWxz4=
+Message-ID: <966de615-1349-43d4-b944-c36eab020e85@arm.com>
+Date: Tue, 8 Sep 2026 19:59:37 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,119 +35,106 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 12/20] KVM: arm64: CCA: Support timers in realm RECs
-To: sashiko-reviews@lists.linux.dev
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, Marc Zyngier
- <maz@kernel.org>, Oliver Upton <oupton@kernel.org>
-References: <20260908162223.1683432-1-suzuki.poulose@arm.com>
- <20260908162223.1683432-13-suzuki.poulose@arm.com>
- <20260908165643.50C501F00A3A@smtp.kernel.org>
+Subject: Re: [PATCH v17 19/20] KVM: arm64: Add VM specific callback for S2 MMU
+ operations
 Content-Language: en-GB
+To: sashiko-reviews@lists.linux.dev
+Cc: Marc Zyngier <maz@kernel.org>, kvmarm@lists.linux.dev,
+ Oliver Upton <oupton@kernel.org>, kvm@vger.kernel.org
+References: <20260908162223.1683432-1-suzuki.poulose@arm.com>
+ <20260908162223.1683432-20-suzuki.poulose@arm.com>
+ <20260908165930.561841F00A3A@smtp.kernel.org>
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20260908165643.50C501F00A3A@smtp.kernel.org>
+In-Reply-To: <20260908165930.561841F00A3A@smtp.kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 08/09/2026 17:56, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] Realm VM timers are blackholed on GICv5 hosts due to unconditional physical interrupt masking combined with disabled direct injection.
+On 08/09/2026 17:59, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> - [Critical] Mismatch between forward declarations and definitions of pKVM S2 MMU operations structs causes KVM to silently skip critical memory management and TLB flush operations.
+> - [High] `kvm_arch_flush_remote_tlbs_range` incorrectly returns 0 when the callback is NULL, bypassing the full TLB flush fallback mechanism.
+> - [Low] The `type` parameter in `kvm_vm_init_vm_s2_ops` is entirely unused.
 > --
 > 
-> commit 759ada4556cf9518a1b30ec3610b7b7833129bd9
-> Author: Steven Price <steven.price@arm.com>
+> commit 31d5dcbadc8339bf6a74dc7f2dc04dbc627760d7
+> Author: Suzuki K Poulose <suzuki.poulose@arm.com>
 > 
-> KVM: arm64: CCA: Support timers in realm RECs
+> KVM: arm64: Add VM specific callback for S2 MMU operations
 > 
-> This commit adds support for handling timers when exiting a realm REC to the
-> normal world. It implements realm_timer_irq_ops which relies on the existing
-> software resampling mechanism for Realm timer interrupts.
+> Add VM type specific S2 MMU operation backends which can be initialized per VM
+> flavor, to keep the handling cleaner.
 > 
->> diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
->> index eba84cab95d01..3eddf44f7b1dd 100644
->> --- a/arch/arm64/kvm/arch_timer.c
->> +++ b/arch/arm64/kvm/arch_timer.c
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index 67852acf7a6f8..e78a56fb73696 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
 > [ ... ]
->> @@ -1609,8 +1623,12 @@ int kvm_timer_enable(struct kvm_vcpu *vcpu)
->>   
->>   	get_timer_map(vcpu, &map);
->>   
->> -	ops = vgic_is_v5(vcpu->kvm) ? &arch_timer_irq_ops_vgic_v5 :
->> -				      &arch_timer_irq_ops;
->> +	if (vcpu_is_rec(vcpu))
->> +		ops = &realm_timer_irq_ops;
->> +	else if (vgic_is_v5(vcpu->kvm))
->> +		ops = &arch_timer_irq_ops_vgic_v5;
->> +	else
->> +		ops = &arch_timer_irq_ops;
->>   
->>   	for (int i = 0; i < nr_timers(vcpu); i++)
->>   		kvm_vgic_set_irq_ops(vcpu, timer_irq(vcpu_get_timer(vcpu, i)), ops);
+>> @@ -174,26 +190,36 @@ static bool memslot_is_logging(struct kvm_memory_slot *memslot)
+> [ ... ]
+>> +int kvm_arch_flush_remote_tlbs_range(struct kvm *kvm,
+>> +				     gfn_t gfn, u64 nr_pages)
+>> +{
+>> +	if (!kvm->arch.vm_s2_ops->vm_flush_remote_tlbs_range)
+>> +		return 0;
 > 
 > [Severity: High]
-> Will this cause Realm VM timers to be lost on a GICv5 host?
+> Should this return an error code like -EOPNOTSUPP instead of 0?
 > 
-> When a Realm VM is created on a GICv5 host, vcpu_is_rec(vcpu) takes precedence,
-> assigning realm_timer_irq_ops. However, this struct lacks the
-> .set_direct_injection callback used for hardware direct injection.
+> By returning 0 (success) when the callback is NULL, the core KVM
+> implementation in kvm_flush_remote_tlbs_range() will assume the flush
+> was successful and skip the fallback to a full TLB flush
+> (kvm_flush_remote_tlbs). This regression can lead to stale TLB entries
+> if a VM flavor explicitly omits the range callback.
 > 
-> At the same time, because vgic_is_v5(vcpu->kvm) is still true for the host,
-> other timer paths will unconditionally assume direct injection is active. For
-> example, kvm_timer_update_irq() skips software injection:
+>> +
+>> +	return kvm->arch.vm_s2_ops->vm_flush_remote_tlbs_range(kvm, gfn, nr_pages);
+>> +}
+> [ ... ]
+>> @@ -963,6 +996,18 @@ static void kvm_stage2_destroy(struct kvm_pgtable *pgt)
+>>   	KVM_PGT_FN(kvm_pgtable_stage2_destroy_pgd)(pgt);
+>>   }
+>>   
+>> +static const struct kvm_vm_s2_ops *arm64_vm_s2_ops[VM_FLAVOR_MAX] = {
+>> +	[VM_VHE] = &kvm_default_vm_s2_ops,
+>> +	[VM_NVHE] = &kvm_default_vm_s2_ops,
+>> +	[VM_PKVM] = &unprotected_pkvm_s2_ops,
+>> +	[VM_PROTECTED_PKVM] = &protected_pkvm_s2_ops,
+>> +};
 > 
-> kvm_timer_update_irq() {
->          ...
->          /* Skip injecting on GICv5 for directly injected (DVI'd) timers */
->          if (vgic_is_v5(vcpu->kvm)) {
->                  ...
->                  if (map.direct_ptimer == timer_ctx ||
->                      map.direct_vtimer == timer_ctx)
->                          return;
->          }
-> }
+> [Severity: Critical]
+> Is there a mismatch in the struct names for the pKVM operations?
 > 
-> Additionally, kvm_timer_vcpu_load_gic() unconditionally masks the physical
-> timer interrupt for GICv5 setups:
+> This array uses unprotected_pkvm_s2_ops and protected_pkvm_s2_ops,
+> but the actual populated structs defined at the end of this file are
+> named pkvm_vm_s2_ops and protected_vm_s2_ops.
 > 
-> kvm_timer_vcpu_load_gic() {
->          ...
->          phys_active |= pending;
->          phys_active |= vgic_is_v5(vcpu->kvm);
-> 
->          set_timer_irq_phys_active(ctx, phys_active);
-> }
-> 
-> Since hardware injection is not configured by the Realm ops and software
-> injection is bypassed due to the GICv5 checks, does this completely blackhole
-> timer interrupts for Realm VMs on GICv5 hardware?
+> Because of this mismatch, the array points to the zero-initialized
+> tentative definitions instead of the populated ones, meaning all function
+> pointers for pKVM guests will be silently NULL. This skips operations like
+> stage-2 unmapping, which could lead to stale TLBs and unmapped host memory
+> access.
 > 
 
-CCA doesn't support VGIC_V5. We only support VGIC_V3. I have added the 
-following patch to make sure this is mandated:
+Thanks, that is indeed a terrible mistake from my end. I have now fixed 
+this up cleanly.
 
+>> +
+>> +static void kvm_vm_init_vm_s2_ops(struct kvm *kvm, unsigned long type)
+>> +{
+>> +	kvm->arch.vm_s2_ops = arm64_vm_s2_ops[kvm->arch.vm_flavor];
+>> +}
+> 
+> [Severity: Low]
+> Is the type parameter intentionally ignored here?
 
+I will drop this, left over from the rebase :-(
 
----8>---
+> 
+> The function is passed type from kvm_init_stage2_mmu() but directly queries
+> kvm->arch.vm_flavor instead, leaving the parameter entirely unused.
+> 
 
-KVM: arm64: CCA: Mandate VGIC_V3 for Realms
-
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-
-diff --git a/arch/arm64/kvm/vgic/vgic-init.c 
-b/arch/arm64/kvm/vgic/vgic-init.c
-index 4012df6002ea6..452c085073f3e 100644
---- a/arch/arm64/kvm/vgic/vgic-init.c
-+++ b/arch/arm64/kvm/vgic/vgic-init.c
-@@ -84,6 +84,9 @@ int kvm_vgic_create(struct kvm *kvm, u32 type)
-                 !kvm_vgic_global_state.can_emulate_gicv2)
-                 return -ENODEV;
-
-+       /* Realms only support VGIC_V3 */
-+       if (kvm_vm_is_realm(kvm) && type != KVM_DEV_TYPE_ARM_VGIC_V3)
-+               return -ENODEV;
-         /*
-          * Ensure mutual exclusion with vCPU creation and any vCPU 
-ioctls by:
-
+Cheers
 Suzuki
 
 
