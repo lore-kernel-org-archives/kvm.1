@@ -1,235 +1,154 @@
-Received: from esa8.hc1455-7.c3s2.iphmx.com (esa8.hc1455-7.c3s2.iphmx.com [139.138.61.253])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013019.outbound.protection.outlook.com [40.93.196.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C46E30EF68;
-	Tue,  8 Sep 2026 07:31:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.61.253
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788852682; cv=none; b=GpE9bwmmyA8ArUbgjHKAiRyzHZpFOhPMUWgMxQpUk6XUmR2sGcrd02BrA28YVimg230FTHmLetFPFEmKIUFNKG63jZorO0Y4c4+gxca4v+nkaWt3KQcaHykvfOWjXxyECTviJ/5vEEYufQQ1vsabTgQ+dWa/8A/elij2h8FAwgg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788852682; c=relaxed/simple;
-	bh=8+quB6EjKOoEa1ZHF+bZNfsyz8/M/RI5EzR+EzA9+cI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ISCg80MYA81V7nmqKTc6aUJGp2a/n5OOysBj4gogHPZizR+3bovD4nCvXOAQlLJ/c6NXX/tq44DaCU+2qXOJq36qpmgOlIu7kBR9vk9amfWqzUOihj58US+62b6GN+Zar2/dLThNnLkWA2gebFhAef4SDIJ5NB1f89Sa/JB24Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=GXjftrs3; arc=none smtp.client-ip=139.138.61.253
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C3625B0B8;
+	Tue,  8 Sep 2026 07:48:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788853689; cv=fail; b=DV1EPDxWUBG1VWTwO7zOEBOxZzukIudDOdLr4w2828abCBhFKLbQ7xgQK7PP8OvzMWbIvHBcnjtZ43sIuhOtIbczh7ypKedojg8G5mJZJ8AhqwpRmIZZjVez+uY8Bgb5xM4iI+U866ZWTUU7rhTSV9ZLFMJ3MTNdx+3KUc6vQq4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788853689; c=relaxed/simple;
+	bh=3OmXhKI+zeTTE6qVeiJKq9WjFRO9pZqqtWonFx/iF/g=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=K6FRLQvsjK0GOwO2Nvon/+Tpd/vZX6zWrBsRm+sbJAmrH7YQFYERREVLsVV2tZVEP5kS/+9PS9OTt/guE8VlVZteAGR0/Fh8zC45TzTM8L5omD9qA0k1mEjUi4gNeEOZ3HPIW5ork0E6lsHzUgEI+JE36EsIWpJJ/c35u8qYJ7o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=C85OooSM; arc=fail smtp.client-ip=40.93.196.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="GXjftrs3"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1788852684; x=1820388684;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8+quB6EjKOoEa1ZHF+bZNfsyz8/M/RI5EzR+EzA9+cI=;
-  b=GXjftrs302h0Ganvwjmd/69WazLRY7n1KmcDrfFu+BD2G8+fSzZ0h26W
-   PYpKSMYEf2C2pfIVVAvyHiSohec61hkWpA3FbqWiI+unS8JR6X2nKi+1M
-   6YZubX48VqxvVddr5lNPIwrbufLiH21QB2G7nU5lmTC9jm75qcfF4nMqQ
-   5X6OVNqX97zs7lcoezq8LjpI0VVTY6Z/gRPmY5VK98cJqQ6vgz6MNu7ll
-   C90P9BNPRPEKLccpe/Ep2gbx7WCF+P78c4hoael6+e78gS3iulRbknmL+
-   02BWPn66Xb8OZdRy2wkLJ8yntaO2UWqvUWbFPTjdZb0D6g5d5F9LhFwa6
-   w==;
-X-CSE-ConnectionGUID: Kq+p6d2DSVaqos5cKrIXcg==
-X-CSE-MsgGUID: ruYD2ve8RGGyGwTN235FrA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="242278686"
-X-IronPort-AV: E=Sophos;i="6.25,268,1779116400"; 
-   d="scan'208";a="242278686"
-Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
-  by esa8.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2026 16:31:17 +0900
-Received: from az2nlsmgm2.o.css.fujitsu.com (unknown [10.150.26.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 1FA801C000AE;
-	Tue,  8 Sep 2026 07:31:13 +0000 (UTC)
-Received: from az2uksmom2.o.css.fujitsu.com (unknown [10.151.22.203])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id BE6DB1C002FF;
-	Tue,  8 Sep 2026 07:31:12 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.9.15.163])
-	by az2uksmom2.o.css.fujitsu.com (Postfix) with SMTP id 4C91114000F7;
-	Tue,  8 Sep 2026 07:31:05 +0000 (UTC)
-Date: Tue, 8 Sep 2026 16:30:57 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, 
-	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, 
-	gshan@redhat.com, joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com, 
-	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, 
-	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
-	lpieralisi@kernel.org, Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: Re: [PATCH v17 0/7] firmware: arm_rmm: Add RMM v2.0 base RMI support
-Message-ID: <ap-4lPkYzogPqs_V@FCCLS0092175.localdomain>
-References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
- <ap-C6NLnxuWWTMzi@FCCLS0092175.localdomain>
- <f65216f6-cb7b-4b76-a7cc-79b332db2bd8@arm.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="C85OooSM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ODwrFH2vqcE2CMomepXNXB8SSow6/ovlh3AygDjtu3jvLxvbJEpHqhTeGE2Wrrvn0+MDiWIM72t5ei46sHC/ZBW9uIsR7DkFHLdw5RcMN24qjUKJ0PmiG/pCw+d5AWsubWTK+xACjsmAsmuLnZTAJWJf1xNBzdGj22G2g5D7clLEr0eD6+YBGwnAe2kYuzLmhNhDnLjIcSQNSHpHu3OC340aGM85ey7fFQN/ynyMncWqIw1d68SvBTQrWPrgltAiStcXc42AK2B5boCslmC8Fwa3zCmL4AgkTWMFuuSNs1pAfm39xjQC8iZAQcBemrQzuTLgLFM0WFEp/xf5KMqlRg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tnioJdS4x/iMpTyA2Szchxj7c28lb7i3uTfIZ6bzYU4=;
+ b=gnrLFcM0XsZxAiM6LdPEMYFiaFPHXQsZCmvCdddqeIJoxtiYPkC/J+CezTTxSjXLrOa9wP6xiPquBbxnvQYun+d9pe5mxvgIDqCrI+8YXXMiqGONec94PDttxcmegbawHxuYAcULMNauD96Kq7kXvO87RoKCYcYHGMlXSrOlYsWVPWGPTZ6k0MpwE1KkxyTVulEVmUmsHKVjrkR8tHCyyb7SMCGmxD/0IvVzKPHhSDupp/7mQoB859J1XKQDSDquWF/yH6Bu4aMijNHGJzY0w+ZmAcSeey0frMSwngMZmkJrRn7Fho2RRK0HnVten6e4bTCIp6bTkjp/smg4GMMwDQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=zytor.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tnioJdS4x/iMpTyA2Szchxj7c28lb7i3uTfIZ6bzYU4=;
+ b=C85OooSMtoRj+fGp8XuWVtq80Bt2tPTj5TiTxvVhKm6qvnMzr6hx09JXQ7qJpZd0VM64G1k4RSxpwE+QUG0yTA4kdPk9RkY8truFzHSsPtUnAut0fZAVmEn93uG24Ogz87lswWPo2NLJVipWsOksonia0is7ZkMZ2Q+N9UyX1oQ=
+Received: from CYXPR03CA0079.namprd03.prod.outlook.com (2603:10b6:930:d3::22)
+ by CY5PR12MB6622.namprd12.prod.outlook.com (2603:10b6:930:42::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.14; Tue, 8 Sep
+ 2026 07:48:02 +0000
+Received: from CY4PEPF0000EE31.namprd05.prod.outlook.com
+ (2603:10b6:930:d3:cafe::14) by CYXPR03CA0079.outlook.office365.com
+ (2603:10b6:930:d3::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.406.7 via Frontend Transport; Tue, 8
+ Sep 2026 07:48:02 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CY4PEPF0000EE31.mail.protection.outlook.com (10.167.242.37) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.406.5 via Frontend Transport; Tue, 8 Sep 2026 07:48:01 +0000
+Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Tue, 8 Sep
+ 2026 02:47:56 -0500
+From: Sairaj Kodilkar <sarunkod@amd.com>
+To: "H. Peter Anvin" <hpa@zytor.com>, "Peter Zijlstra (Intel)"
+	<peterz@infradead.org>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, "Mathieu
+ Desnoyers" <mathieu.desnoyers@efficios.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, Sairaj Kodilkar <sarunkod@amd.com>, "Sean
+ Christopherson" <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, "Uros
+ Bizjak" <ubizjak@gmail.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <x86@kernel.org>
+CC: <vasant.hegde@amd.com>, <suravee.suthikulpanit@amd.com>
+Subject: [PATCH v4 0/2] Add support for cmpxchg16b emulation
+Date: Tue, 8 Sep 2026 13:17:37 +0530
+Message-ID: <20260908074739.10748-1-sarunkod@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <f65216f6-cb7b-4b76-a7cc-79b332db2bd8@arm.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE31:EE_|CY5PR12MB6622:EE_
+X-MS-Office365-Filtering-Correlation-Id: 66a4ccfa-d119-4185-43ed-08df0d7d8256
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|36860700016|7416014|82310400026|1800799024|376014|6133799003|3023799007|10067099003|18002099003|11063799006|56012099006|13003099007|921020;
+X-Microsoft-Antispam-Message-Info:
+	C335ZHUquCPtv7ie0bU9sh8eLEOq2S+pvO9z6PuvzB43s0FELeXbjXm4MIa5Gd5i2tYOkbOhvsTO3kei90rHKN3eJb7QHfo080Ttdd+XgErL4IwIOxDoQLYd0IAqvjEMC2SuNx5bNYr7iFhyr553lM9HjN64T4ERVrOx/9QOiv3iW1BLEMF7044CHQUdeJyOX8M3b3GoF1XgatSBI0f2gsXZKjlcwssElaKdl7G5n6yw8dF4gDMGIOjVV3VDRWgEEpZwODo/TGF2cKIHX7oV+9tNDyiTrLK/d6J+cxKUCDEYd79JczclnjqMFzdSqyrK3dHgNe69r/ymIPJcBhdbM38XkmJemEvLbDfGKVhnxlgdkbYfMH63H2gN0T8u+V8TpWON1RDjmhEQOTL9RR2LD+IccoOO6ZbOCDwBBm9bS5fhWs+OuKBbIsY+4zhBGXqeuCAlfm4qnUx7RQ/IskQUZO+IKWaD3vhALHVsU9fsUSl3jX5MOH4Rb/sUd33fb0s3RSCExLBz7dhY1h+f/EKDpfMzCRFYvORytnoqPmI+1k6/B0ehrhIdb6lxQNM7t2L1IC6/t+q3effgnlZ1DR8iDLVuquNIed9p32IZI4rOhwmA27iMFFdziSFqAiPxr3+zKBIBBERSnr6nhsjmHxxIr7wHJxU290yIWlDsUlc5WYDv5pUNWUfKm0Z9WwaW7hEr
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(7416014)(82310400026)(1800799024)(376014)(6133799003)(3023799007)(10067099003)(18002099003)(11063799006)(56012099006)(13003099007)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	/MjqjZsKtRynSEmYRb6Uo0NvfU7+OSUZH5/LGwAzjp/2Uq5mSjV9U+hFOeNLlZefmsM9SYtU6wiUjqoSiyE1CQdox0UMCQqifs/mvdI40I2aEI2GiJymBEVPw4PhW6DTN9ZiGygMbf6+YU3C+/QjOLIi0kUc/iJtaXBGolgn45Z8QuVyUYaCQZLyofjy2yClM8uY+LHsNjtbUWCcyJ9yak3R9bpLv4bbXMmL2FkWr9Cq51hTDbiS8ERh1gnTJ2TtTHDbCT0KBXnXMrC1rrIjJhMpg8+pA2EtP+voo0ETbz+4ql33naXVmROtgy/Q7qFBAbH3zN4O17FHQ8b//WGo8MHt4lQFQ0Kd9Pmmwv4spnRWwpY/sWESsu72R8Hj81GCNSPg9gaT0IhHaIeQSN4BX/eSM/4SSFtUxipUy4ZxIeC98/k7nPXVfiapmdcqCIVp
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2026 07:48:01.7790
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 66a4ccfa-d119-4185-43ed-08df0d7d8256
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EE31.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6622
 
-On 09/08 06:46, Suzuki K Poulose wrote:
-> Hi Kohei-San
-> 
-> Linaro is best suited to answer this. I have Cc'ed Mathieu (and
-> Lorenzo), who may be able to help you here.
+This series adds 128-bit compare-exchange support needed for KVM to
+emulate guest cmpxchg16b instructions.
 
-Thank you for pointing me in the right direction and Ccing Mathieu and
-Lorenzo. 
-I'll wait for their response.
+The AMD IOMMU driver updates 256-bit device table entries with two
+128-bit cmpxchg operations.  For hardware-accelerated vIOMMU, QEMU traps
+those DTE accesses to install nested page tables [1].  KVM must emulate
+guest cmpxchg16b on the trapped MMIO regions; without that, DTE access
+emulation fails.
 
-> 
-> On 08/09/2026 05:09, Kohei Enju wrote:
-> > Hi Suzuki,
-> > 
-> > On 09/07 10:59, Suzuki K Poulose wrote:
-> > > This series adds the generic firmware layer for talking to the Realm
-> > > Management Monitor (RMM), as specified by the RMM v2.0-bet3
-> > > specification[1]. It is the first part of the Arm CCA host support that
-> > > was previously posted as part of the larger KVM series.
-> > > 
-> > > The split allows this RMM support to be used as a base for other work,
-> > > including Aneesh's PCI IDE support with Arm CCA RMM as the TSM,
-> > >   without depending on the KVM Realm support that will follow as separate
-> > >   series. (See more on that below)
-> > > 
-> > > The series adds:
-> > > 
-> > >   * The RMI SMC definitions and direct-call wrappers.
-> > > 
-> > >   * RMM discovery and version checks during firmware init.
-> > > 
-> > >   * RMM host configuration, including the host page size.
-> > > 
-> > >   * Stateful RMI Operation (SRO) infrastructure for commands which the RMM
-> > >     can complete across multiple SMC calls while requesting or returning
-> > >     memory to the host.
-> > > 
-> > >   * Verification that granule tracking is available at fine granularity.
-> > >     Fine-grained tracking allows each granule in the system to be tracked
-> > >     independently, which is required before individual granules can be
-> > >     delegated. A future series will add support for dynamically supplying
-> > >     memory to the RMM for this tracking.
-> > > 
-> > >   * Support for fully firmware-managed systems, where the Granule Protection
-> > >     Tables for memory regions are allocated and managed by firmware. RMM v2.0
-> > >     also allows dynamic GPT creation on demand; support for that will be added
-> > >     in a later series.
-> > > 
-> > >   * Wrappers for the RMI commands that are used for managing the "Realm VM"
-> > >     lifecycle. This is added in to make it easier for the on-going KVM support
-> > >     to evolve in parallel pieces.
-> > > 
-> > > If the platform firmware cannot manage the granule tracking or the GPTs, we
-> > > bail out and deactivate the RMM, reclaiming any memory that we have donated.
-> > > 
-> > > The RMM v2.0 spec introduces Stateful RMI Operations (SROs), which allow
-> > > the RMM to complete an operation over several SMC calls while requesting
-> > > or returning memory to the host. This allows interrupts to be handled in
-> > > the middle of an operation and lets the RMM dynamically allocate memory
-> > > for internal tracking purposes. For example, RMI_REC_CREATE no longer
-> > > needs auxiliary granules to be provided up front, and can instead
-> > > request memory during the operation.
-> > > 
-> > > This series applies on v7.3-rc1 and a branch is available at [2]. The KVM
-> > > CCA support that builds on this series is available at [3] as an integration
-> > > branch. The KVM support depends on guest-memfd-in-place conversion support v12
-> > > from Ackerley [4], we plan to split that into parts, which apply cleanly on
-> > > v7.3-rcx without any dependency and is in progress. This will be made available
-> > > as soon as it is ready. Until then [3] shows how this base series enables KVM
-> > > CCA support. You may find the tf-RMM [5] and kvmtool support [6] below.
-> > > 
-> > > [1] RMM spec : https://support.arm.com/documentation/den0137/2-0bet3/
-> > > [2] This series: https://gitlab.arm.com/linux-arm/linux-cca.git cca/cca-host/fw_rmm/v17
-> > > [3] KVM CCA v17 integration branch: https://gitlab.arm.com/linux-arm/linux-cca.git cca/cca-host/kvm-integration/v17
-> > > [4] Gmem inplace conversion https://github.com/googleprodkernel/linux-cc/tree/guest_memfd-inplace-conversion-v12
-> > > [5] TF-RMM https://git.trustedfirmware.org/TF-RMM/tf-rmm.git main (commit: 134266ae)
-> > 
-> > I understand that QEMU-virt is not intended to model a realistic
-> > production platform and that QEMU-SBSA is generally preferred. However,
-> > I sometimes use QEMU-virt to test functionality quickly because it runs
-> > slightly faster than QEMU-SBSA.
-> > 
-> > I tested this series with QEMU-virt and found that RMM initialization
-> > failed during boot:
-> > 
-> >    [...]
-> >    INFO:    BL31: Initializing RMM
-> >    INFO:    RMM init start.
-> >    ERROR:   RMM init failed: -8
-> >    WARNING: BL31: RMM initialization failed
-> > 
-> > The following TF-A revision was used:
-> >    https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git master (38269bb)
-> > 
-> > After investigating, I found that the failure was caused by the lack of
-> > a plat_rmmd_reserve_memory() implementation for the QEMU-virt platform
-> > in TF-A. Adding an implementation equivalent to the QEMU-SBSA one
-> > resolved the issue:
-> >      https://git.trustedfirmware.org/plugins/gitiles/TF-A/trusted-firmware-a.git/+/9d594743aa4d4e8160cdf025ea7538041648972c
-> > 
-> > Is QEMU virt still intended to be supported as an RME emulation
-> > platform? In particular, is this functionality simply not implemented
-> > yet, or is there a reason why RME support is not planned for QEMU virt?
-> > 
-> > If this is not the appropriate place to discuss this, please let me
-> 
-> Mathieu, Lorenzo,
-> 
-> Over to you folks :-)
-> 
-> Cheers
-> Suzuki
-> 
-> 
-> > know :)
-> > 
-> > Thanks,
-> > Kohei
-> > 
-> > > [6] kvmtool https://gitlab.arm.com/linux-arm/kvmtool-cca.git cca/kvm-v17
-> > > 
-> > > Known issues: RMMv2.0
-> > >   * RmiOpMemDonateReq:count (Uint14) is incompatible with RmiAddrRangeDesc4KB
-> > >    (Uint10) and RmiAddrRangeDesc16KB (Uint12). i.e., a larger contiguous request
-> > >    may not be satisfiable by the host. Arm is aware of this defect and a spec fix
-> > >    is in progress.
-> > > 
-> > > 
-> > > Steven Price (7):
-> > >    firmware: arm_rmm: Add SMC definitions for calling the RMM
-> > >    firmware: arm_rmm: Check for RMI support at init
-> > >    firmware: arm_rmm: Configure the RMM with the host's page size
-> > >    firmware: arm_rmm: Add support for SRO
-> > >    firmware: arm_rmm: Activate the RMM
-> > >    firmware: arm_rmm: Ensure the RMM has GPT entries for memory
-> > >    firmware: arm_rmm: Add wrappers for Realm related RMI commands
-> > > 
-> > >   arch/arm64/Kconfig                |   1 +
-> > >   arch/arm64/kernel/cpufeature.c    |   1 +
-> > >   drivers/firmware/Kconfig          |   1 +
-> > >   drivers/firmware/Makefile         |   1 +
-> > >   drivers/firmware/arm_rmm/Kconfig  |  26 +
-> > >   drivers/firmware/arm_rmm/Makefile |   2 +
-> > >   drivers/firmware/arm_rmm/rmi.c    | 819 ++++++++++++++++++++++++++++++
-> > >   include/linux/arm-rmi-cmds.h      | 678 +++++++++++++++++++++++++
-> > >   include/linux/arm-smccc-rmi.h     | 494 ++++++++++++++++++
-> > >   9 files changed, 2023 insertions(+)
-> > >   create mode 100644 drivers/firmware/arm_rmm/Kconfig
-> > >   create mode 100644 drivers/firmware/arm_rmm/Makefile
-> > >   create mode 100644 drivers/firmware/arm_rmm/rmi.c
-> > >   create mode 100644 include/linux/arm-rmi-cmds.h
-> > >   create mode 100644 include/linux/arm-smccc-rmi.h
-> > > 
-> > > -- 
-> > > 2.43.0
-> > > 
-> 
+Patch 1: extends the x86 user CMPXCHG helpers with
+__try_cmpxchg128_user_asm() (cmpxchg16b on x86-64), wired into
+unsafe_try_cmpxchg_user().
+
+Patch 2: extends KVM CMPXCHG8B emulation to 16-byte operands (REX.W=1) and
+uses the new helper for atomic 16-byte compare-exchange on guest RAM via
+emulator_cmpxchg_emulated().
+
+You can find the KUT to test this series at [2].
+
+[1] https://github.com/AMDESE/qemu-iommu/blob/wip/for_iommufd_hw_queue-v8_amd_viommu_20260106/hw/i386/amd_viommu.c#L517
+[2] https://lore.kernel.org/kvm/20260706062153.346-1-sarunkod@amd.com/T/#u
+
+Changes since v3:
+https://lore.kernel.org/all/20260826070004.8100-1-sarunkod@amd.com/
+Patch1: Split the old value across RAX and RDX using "+a" and "+b" instead of
+	using "+A" [Dave]
+Patch 2: Use __c instead of ctx in cmpxchg macro [Sashiko]
+
+Changes since v2:
+https://lore.kernel.org/all/20260706063035.1139-1-sarunkod@amd.com/
+Patch 1: Trigger build failure if __try_cmpxchg128_user_asm is called on 32 bit
+	 machines [Sean]
+
+Sairaj Kodilkar (2):
+  x86/uaccess: Extend CMPXCHG user helpers to 128-bit operands
+  KVM: x86: Add support for cmpxchg16b emulation
+
+ arch/x86/include/asm/uaccess.h | 64 +++++++++++++++++++++++++++++++++-
+ arch/x86/kvm/emulate.c         | 50 +++++++++++++++++---------
+ arch/x86/kvm/kvm_emulate.h     |  6 ++++
+ arch/x86/kvm/x86.c             |  9 ++++-
+ 4 files changed, 111 insertions(+), 18 deletions(-)
+
+base-commit: 45c13f3f9e3bb15fd89ff2864c6f627a3b4b4229
+-- 
+2.34.1
+
