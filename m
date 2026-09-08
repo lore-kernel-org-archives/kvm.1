@@ -1,134 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D852D534441;
-	Tue,  8 Sep 2026 16:57:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788886631; cv=none; b=jvv8u4/Yz4G5tdjspwkM4kGFpExS/8smYckRQ9UJo2QPvaT/4hy34KRJfYjuXFyiD5lp7gKwVGu+TSmvGlLoZAZnEcSPunAbGv+E7NxALZtJWKaeqQZ16ZYLq1n34w4MfLNIk+1/1WUAIwvBMEd7Csh1zXZvjumohNZuCBugujw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788886631; c=relaxed/simple;
-	bh=BQ72hC7FvvdiPt6lZyLBuLAHWTl9blRiPTF8/SSIp0U=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=nSsgzI+ClzMR81vw5nU9GucjZT7ajhGfvPf8gS9AxaTXmUjLatcWrg4M31lhsGx2ukXJX7fpUOC2FFDJMri0l0KyXJUlUAD6jIuPikBC3A6+h2Pqujpk4atLrzE9PZFltnytzjG7eMLoSj1ojfSxfLLGIA2Nux98/wy6EeEPZ3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xxc2TEnn; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53EE534441
+	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 16:58:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788886715; cv=pass; b=J2VJL9AyU0iMGWx0NG6q8MTfsOXVIbs+ghYy5oKxFcHiDDX8WYgN5WVsty8oygCBxtq7TVxFVFh62W1gKnGUOK8g6hsJ1u/uwquYwiAY5F3XnySynhdUbE9RJlUn/u134apttQ/gLhz8PkBTYVpuB3cbLI88OuV/fTdjj5QH+zM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788886715; c=relaxed/simple;
+	bh=ULxa4JRrSAZB5pD9oIq2oZNnuuD6C8U1jqAHoElMSdA=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ve3FH7YI9dXJiuJ0oNoitej8VZ1PDhCnYZ4YXTeXCgfsVsDhcDkAItHX9HGQ66JGBC81rGQ5A02X9rXUpxcmmVfelJFuA9jbtaIZG9NVBn1HF8gDGrMm+fdOJMfbKQRBC/k2zeNygNwZVUpSIMMdy++jk/9+ISmXpdszjHb2Cgc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eMz+XpJH; arc=pass smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xxc2TEnn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2799B1F00A3D;
-	Tue,  8 Sep 2026 16:57:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788886629;
-	bh=eTo0a5rr1uNawzqYrn7FaCEIUiM51g4mT38NjcCOk/M=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Xxc2TEnnKlBx1BmcqUNV8fKuyxVLOpO0hZUS7/iLaxT4ibl3svLxzSF1UtQJtwBNF
-	 1GBLfQXWLlJvtwU50aP4xvQrAbGLXyqlU3ZQhglP/u3tYCkADknEE9BhbVK2xEFCg7
-	 fHnq28oy2Gt5SKifuzyzDFYpxpepJfdYSJUIlP3CfCAWt3feXCDpCnmSV0127JamB0
-	 4z2FsfRRrr71i2XCuFf913wysdWl6u6BZxsv/sTTq/wOfnBG+iIBtYTui+51ka+YUc
-	 0+Ay+M1ZwSntOfMEpe/z2bh7vV5U5k+j1JurGkNn2IbM4baF3Jyz5dVQYDL7/uFggS
-	 /xpsTSnwXSmuw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v17 16/20] KVM: arm64: CCA: Provide register list for
- unfinalized RECs
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Suzuki K Poulose" <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, "Marc Zyngier" <maz@kernel.org>, "Oliver
- Upton" <oupton@kernel.org>
-In-Reply-To: <20260908162223.1683432-17-suzuki.poulose@arm.com>
-References: <20260908162223.1683432-1-suzuki.poulose@arm.com>
- <20260908162223.1683432-17-suzuki.poulose@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 08 Sep 2026 16:57:08 +0000
-Message-Id: <20260908165709.2799B1F00A3D@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eMz+XpJH"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-90e7d9c747eso62027566d6.2
+        for <kvm@vger.kernel.org>; Tue, 08 Sep 2026 09:58:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788886702; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Oe5UuxLiJ+y2TxFTq2os5Eap7MgdQMvZK/TkpiQ17P3q2wqoI8QFSKNmWMd3DSP+KN
+         SwjCBrl1XyYrI5pmWy/WStdlkPl3aJM2+CygbxivMcYwmbLj0vH7MacP+bSJZt5xHPcW
+         QbaTm1edcRPXJQqU3bAnOI0d48C1ev8Bq9JyW9+zhxmfmX2c6oLNe6Sb1L0P9gG1OB1l
+         yx4+Lq3mgdJ5sznLZ0iVpCOtJn2YfrV9I0HU4Qc/6AyJpJTp9NdxLpdc5uKEeRVW6BQU
+         Nwil2F3pQdUGVaRaoUUB5cG8rmQyaOA8iL5FtXSFYe0nu6IZ2pM6RDQHk3zgQEdJVNjW
+         QwzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=8fcdr/hrzW8YjLnM5OVm+g395+cNXrG+fCcu71g0lZU=;
+        fh=3BXSTPGv9B8MOYh3uvEus94xsh9ixwcfqdKeTKvSM9Y=;
+        b=ouKJDicAbe9ezJaHCrAPafEWniAkjYh8LhRP8Z2Ke0llTPatOTNtr67FRRTvNwaJL9
+         gTPsgkMek7JsKIe7A3CyQavJD5cc8mr1nZJREF2fID6wHd9pf+FwMW6UVRUhcAXlPaTB
+         wG6xJG2xOa5NLKO+Yjfgq8xGwvcTRXhobetmTL8ZVXmt8pIbtWFe+9OiNsG7Taj9Bnn1
+         563N3Q4+U4TMljH5Bjr6ha0rXSOTJBWC+QbekSc/xp2GiuW91hKA/rLFUQLB6GljIGF2
+         0UVG+lxpQ21RhUSZwIVFtel2adlmGLvVyZgd0TRe4P52LcYHPy04BHZiCxmBelfgeV60
+         QNxQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788886702; x=1789491502; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8fcdr/hrzW8YjLnM5OVm+g395+cNXrG+fCcu71g0lZU=;
+        b=eMz+XpJH8AC4z0HU59N10CwiV7jWB2XkXiXfbJIdwPg9pCizkaqKgQ2pA+sDReAkRu
+         symxpB9EJaTSk3ubMMpTtNNds1xRV/H1uDJHELk26ThbzxwBw0ZicDxeurCbCsadwFE/
+         +tXRzwxQLtqQq83teNHqJZ4nd8xfGB7sLCwT/Ccir7u60wm5o+R8fFsyqG848ZI5pXsJ
+         zG8B876bNDs/OPgeecJK/ktGSxXN5IT+eJr7oB4IdTb1tjj6a5sNSTZcgtNJYBCtpJJE
+         bvRm8av7+CH9Tdmunx74W7KDnay6nWuFHB2Kidhh8mcdhtEeA5OOQvzbF4JDUEBkAC+3
+         pRtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788886702; x=1789491502;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8fcdr/hrzW8YjLnM5OVm+g395+cNXrG+fCcu71g0lZU=;
+        b=n8fCHRpe9v+858Z1CA2XQ6+y40ml+nWn/xgma5qIzQGIuKfb6C+QlEqI0EpV12oJmF
+         l7VzYAhxjcy4jqdjHAs/iQhILeuFwPb1JsMSX65Co1eL15H8qbPi/OXDgbYVCFjD65Jg
+         faD3HFYfgLbfnxt1bJQpYHpjbmCpLJ89ZiwLFVccbH2iLyo1f7TdnJYQfSzrjpvgGdGL
+         Plke9vuivFmqnLbOZvXKQtmrkEA3+4ImtXpJo4EtrnscJ2BaN4VHygK0CyqOM06rMMLB
+         2p+fMJq/hWuBkdGGmWm+/z8cUPmhSsr4nJ0LS8Jee63xVXRzqzV+k/zMUd+b/Lah/Ahw
+         yt3g==
+X-Forwarded-Encrypted: i=1; AKwUvBwt0pL5D5okpWmqNK7BGjJRIqQFCvazn2aPfy7BxeCuTi5QLsSb+M7UToXhNnu/KgcIynw=@vger.kernel.org
+X-Gm-Message-State: AFuF++mk78eZ+77Z/p0W8frWMxqwj8Ain85oNBX3wWxvCX8iL9enjabA
+	dd4d8Co7nFBn7jBoon5L7q6IlcHce1R1g/qNPgH5YZFiNp4rSEttECGwADFrm7w43ZFd+vIeRq6
+	hlOqm6LNcLuD65F95pq6J+TW+1t06DFber9eSl3nt
+X-Gm-Gg: AYBFou193PRSYOoY3RDw3X/y+EUCCeYN5NKBJyN8+MEBBWuzFadojKA9LcY0DQJGEoD
+	rBFajSl/AnY0TJ9ESeFyNcLgrTel0MZvoAYYB4qVncbRMePOKxgfx3F+65Xd4bAQQ1FRt/Cvl9w
+	sQqteS7wMvsARSEp/srWeBLQ7OjKQ1L5h+8bQW9CGiXZF8gVISV9GOd7d1egZEaV5zzMVzg5d38
+	KfkCbq9fKItS6Un+CkfBcM++miozchdPHJKLdsaOjf3nlb9/oGugUoE9i9ct7Uhlc56RuwudLD4
+	9MUTOoXB61qXe2xWqf8xJP1FE2kmmGAuVOLxTNsmr8rbrAzynHeh8AS8m+ryBFZxJBzC6RfFmwz
+	NjUutCCV2SyFpnmafN4XYOEVlsONAQug=
+X-Received: by 2002:a05:6214:c24:b0:90c:ab32:d9 with SMTP id
+ 6a1803df08f44-9103ef04cbemr59785766d6.9.1788886701269; Tue, 08 Sep 2026
+ 09:58:21 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 8 Sep 2026 09:58:20 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 8 Sep 2026 09:58:20 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260722-tdx-selftests-v14-1-15ad654a50db@google.com>
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com> <20260722-tdx-selftests-v14-1-15ad654a50db@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Date: Tue, 8 Sep 2026 09:58:20 -0700
+X-Gm-Features: AcwNN1Ul0Nx7jhJwVNNvygXIUovvrGXjOMRCxh0xNG50wROb5Y6Vd7rvg4wlMm4
+Message-ID: <CAEvNRgFgE3DFw1=zc65iMy1gNyPryVJuKPMrNF+ssXydtuEazA@mail.gmail.com>
+Subject: Re: [PATCH v14 01/22] KVM: selftests: Add macros to simplify creating
+ VM shapes for non-default types
+To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
+	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, 
+	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] Mismatch between KVM_GET_REG_LIST implementation for RECs and it=
-s commit message / comment.
---
+Lisa Wang <wyihan@google.com> writes:
 
-commit ce52f6b2727531d94e14139ee2966392538b6218
-Author: Jean-Philippe Brucker <jpb@kernel.org>
+> From: Sean Christopherson <seanjc@google.com>
+>
+> Add VM_TYPE() and __VM_SHAPE() macros to create a vm_shape structure given
+> a type (and mode), and use the macros to define VM_SHAPE_{SEV,SEV_ES,SNP}
+> shapes for x86's SEV family of VM shapes.  Providing common infrastructure
+> will avoid having to copy+paste vm_sev_create_with_one_vcpu() for TDX.
+>
+> Use the new SEV+ shapes and drop vm_sev_create_with_one_vcpu().
+>
+> Opportunistically move the existing VM_SHAPE() (now __VM_SHAPE()) macro
+> below the definitions of VM_MODE_DEFAULT so that all of the SHAPE/TYPE
+> macros are bundled together.
+>
+> No functional change intended.
+>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+>
+> [...snip...]
+>
 
-KVM: arm64: CCA: Provide register list for unfinalized RECs
-
-This commit modifies the KVM_GET_REG_LIST ioctl handler to allow fetching
-the register list for Realm Execution Contexts (RECs) before the VCPUs are
-fully finalized, provided SVE is finalized. It adjusts the size probing and
-array copying logic to prevent -EPERM errors during late REC finalization.
-
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-[ ... ]
-> @@ -1980,6 +1980,18 @@ static int kvm_arm_vcpu_set_events(struct kvm_vcpu=
- *vcpu,
->  	return __kvm_arm_vcpu_set_events(vcpu, events);
->  }
-> =20
-> +/*
-> + * Realm VCPUs can be finalized after the Realm descriptor is created.
-> + * Allow the register list for RECs before the VCPUs are finalized, but
-> + * after the SVE is finalized.
-> + */
-> +static bool kvm_arm_vcpu_reg_list_allowed(struct kvm_vcpu *vcpu)
-> +{
-> +	if (kvm_arm_vcpu_is_finalized(vcpu))
-> +		return true;
-> +	return vcpu_is_rec(vcpu);
-> +}
-
-[Severity: Medium]
-Does this logic in kvm_arm_vcpu_reg_list_allowed() unconditionally allow
-RECs, bypassing the SVE finalization check? The comment explicitly states
-"but after the SVE is finalized," yet if the VCPU is a REC, this path
-returns true regardless of the SVE finalization status.
-
-> diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
-> --- a/arch/arm64/kvm/guest.c
-> +++ b/arch/arm64/kvm/guest.c
-[ ... ]
-> @@ -616,9 +616,6 @@ static int copy_sve_reg_indices(const struct kvm_vcpu=
- *vcpu,
->  	if (!vcpu_has_sve(vcpu))
->  		return 0;
-> =20
-> -	/* Policed by KVM_GET_REG_LIST: */
-> -	WARN_ON(!kvm_arm_vcpu_sve_finalized(vcpu));
-> -
->  	/*
->  	 * Enumerate this first, so that userspace can save/restore in
->  	 * the order reported by KVM_GET_REG_LIST:
-> @@ -628,6 +625,9 @@ static int copy_sve_reg_indices(const struct kvm_vcpu=
- *vcpu,
->  		return -EFAULT;
->  	++num_regs;
-> =20
-> +	if (!kvm_arm_vcpu_sve_finalized(vcpu))
-> +		return num_regs;
-> +
-
-[Severity: Medium]
-Does this return a positive success code (num_regs) rather than an error?
-
-The commit message states that "a KVM_GET_REG_LIST call that only probes
-for the array size will now succeed even if SVE is not finalized, but that
-seems harmless since the following KVM_GET_REG_LIST with the full array
-will fail."=20
-
-Returning a positive number of registers here in copy_sve_reg_indices()
-causes the full array fetch to succeed silently instead of failing as the
-commit message claims.
-
->  	for (i =3D 0; i < slices; i++) {
->  		for (n =3D 0; n < SVE_NUM_ZREGS; n++) {
->  			reg =3D KVM_REG_ARM64_SVE_ZREG(n, i);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908162223.1683=
-432-1-suzuki.poulose@arm.com?part=3D16
+Reviewed-by: Ackerley Tng <ackerleytng@google.com>
