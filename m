@@ -1,92 +1,113 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4163769E6
-	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 08:05:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A203AE1B4
+	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 08:06:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788854705; cv=none; b=lahC4Y0tX9nHuVXncZ4uYn4FZgpKOpO01dmHMdqB4yPAK5zmui91Rv87lC3ZQzZjtmq2DVZMbGYr5rh6oQdJ6gzKk491mnoNP1Z09PkvKG9Djlg+G/kWeJCiMFy5Dxq8iufRd7RTfoSUZRKib2KZdKzG1JUQP/V6vwLF6BSvHGg=
+	t=1788854810; cv=none; b=ty52rBmji2CoIZ7fVvCZoZmczY7RScdBozqj1jqjta5fVS6MSCiD1+Rhdi2M7GonBmbyc0iAUAK1UWw/IMBMDLnSELCS9SbRlEITfUn55o1WD8dIAITbyc38CZiI00Z8fcCW1XIsPf5S1ekSt6mVTHP79PwS7/TzfmrVuCdAmDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788854705; c=relaxed/simple;
-	bh=A2d081V5u9O9db2fGR1Uw/LCtJvvhhWQH/7b76K7e9M=;
+	s=arc-20240116; t=1788854810; c=relaxed/simple;
+	bh=AivX6AuleTT2UUgXHx1AcQwy3wqdj43sykXnred/aXA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bl0VIio3dZWvU5bZyhSZbZ+VNDpNq7FGROkqXx0lx7PpKiLtLoPILdytgjNPybduMMCUoIr6DcN+Xo1GIIVnhoVFJkf4rgbofIy1x892wE1SFvrECiE34x+s+Fa9DpqJAiOyAQFvBWnbgu3I8SunFgSmX+qB0UtSdvs500T8WgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jxlqfy63; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=YWKxmSLwa2gsUdUYK4/YwMuA9luexzLv+z3Jvao/64sinifrfMCyFt7CO9ereeOmZDsEobGxcreGBbkJz7NkvZQhuOMeYeUZxzR8Zc+NdWqDN4BJEkgbA60FVeQdW4i3SmfKmKKSJOFsOBcL3nj+ML+i27j6G40f0wlKAMBzYIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=agqUC0k3; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SbMqKPWX; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jxlqfy63"
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d6ff3aca06so190075ad.0
-        for <kvm@vger.kernel.org>; Tue, 08 Sep 2026 01:05:02 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="agqUC0k3";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SbMqKPWX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788854807;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qlpA25HriXdx9v6T6FYmtvmjD7yzSHEf8Vv9SuYbJrQ=;
+	b=agqUC0k3rfHzEHi/BNs8nDCpNVfMLArazlyCV5N1zSj+YV4+qXFkO3UgmsWMOrSM2VEMd0
+	zS8IHuhyYRQpWdgHuvl3UzqHb1e04JKR5E6BCOnJZLw5Q86k8zpZQZXNzgyxIHKUMR2d2h
+	xG23I1WTxi5JtxnhSVjfoQ9Czt3GyHY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-308-Uul6tfIYNFuMIlq7q74GJg-1; Tue, 08 Sep 2026 04:06:46 -0400
+X-MC-Unique: Uul6tfIYNFuMIlq7q74GJg-1
+X-Mimecast-MFC-AGG-ID: Uul6tfIYNFuMIlq7q74GJg_1788854805
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-496bbcf7d1eso39429825e9.0
+        for <kvm@vger.kernel.org>; Tue, 08 Sep 2026 01:06:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788854702; x=1789459502; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1788854805; x=1789459605; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=N6N0od/sVrug4dpoGO2TXWMVX/OvNe36xacdNRKZ9rU=;
-        b=jxlqfy63N07ZXZ7NwDPBgDQBFsv0CVcuv8bbJ0W6fPLuZWX9+/JZecT2VKUJ+anTtt
-         fBOATkGI0QFshjy5i4aHcql27aCnZiR1W9Lx2rGE7ACsR6p091gChAYdFY5oyeI3QDNP
-         898ERq+TH5LCr+EsZksk94SIATb/Iw+Kbv8W59x140ymnTGDrd3PZn2nnW0IpPnwdA5x
-         jsvTvwDgmNKc8LBN3X/hRogAevsxoSBB1cpgDNvOGKWyM2mAEGYQNQJUfkHLYwZ66nec
-         50Tk1jbh+XFZfFZa6XyJN993J8eYzaWQkyitAn1Mwgm90NYI7F1k4sYtoG1bEXINPczR
-         KLFw==
+        bh=qlpA25HriXdx9v6T6FYmtvmjD7yzSHEf8Vv9SuYbJrQ=;
+        b=SbMqKPWXnzZ9gm+24v/NW9OSThf9QLKLRG2HDjF7RaTOJuDiedXP0CM985QD5CqHMF
+         m59SAiFH8rKerclNJCim+KtMsdfIxa3iAUtjRcBjhW04frYNpS7qARIFQ6kOxfoDXH66
+         XbXQKffei49hbSjqRcL1wCYEsfMRnL34xPLGmj6s58bNdJi55Hig2ARx8qC9mTRBjZwn
+         Kykyu8uKm0HOXBTmMsM06Pd8APNBKRPqzCl7R0yR0QR6jUzCzGWtN9XPe0dh363+f5QC
+         ZB2lSb7N5fJjS2XTduglItFeS7W+ijivHaKmOgqk1KlR4VDvUKGbX5k4akdx/Jk/HoI6
+         j0FA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788854702; x=1789459502;
+        d=1e100.net; s=20251104; t=1788854805; x=1789459605;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=N6N0od/sVrug4dpoGO2TXWMVX/OvNe36xacdNRKZ9rU=;
-        b=FthOtZR8hzcKIEgusvGAqifgEiNv2g+L8cCaqswW5TLCTOq8hdIiYIS6IQbIpa9rv0
-         B2AMV7XnqWbHfENJoZTkx/dW1E+9wQ/MurQ7kmrT53X7gJu8Wc/hd1ui5bkqsdvIrD2o
-         zeXsCOEf01IvqkjM5sx1YxcAHBqmaqQJ51KD4bKr5mYPJxu9AvngC4+k5n7ltc1dABSV
-         W8rLyuXLwUJoViehSxT80WVS9RnXHawOAyTcCDaPt95GrFsQbYtzDe7laV3Bq6C9iyY5
-         1VkFK/5ilfBL4RIA99jVkbXV6+c8v9A06y4xKdIsCdiCO7vYLs8B+1aKXMz7iNMufL11
-         HKUA==
-X-Forwarded-Encrypted: i=1; AKwUvBx79p7DA4ym75tHPmkg/VnvTzaVLhtsX+9Xs9KKbThZcubKh+WGdVM9/D3B2JZ6QNbjbpo=@vger.kernel.org
-X-Gm-Message-State: AFuF++kj5qdetWhg8ATQjbD4wRNKUV8JUkhN4eXX2OE8cqEV/rjX4HOz
-	1XZQuJSmtI5nlv1kktLfqXq0JJ5xJHzotOvhwXdcgEILSaaM68jL3N5rcsQbpnTcHg==
-X-Gm-Gg: AYBFou0o5QBmJ1G8avMpFLt2YwZmJz8T7AR91GcA6bi1sT97MyKHTafL28BYzdK/SUx
-	k7WV2Om1q+dDOI0eZPqUr8W5KW3fpDIdSBLr46tQ2/eceMSd2J39FvvHJc0DbuamgwoEFkNlX5u
-	fhd/u/4Jmf4WQB1ttGnHRv1sZcZ4SsS01cB9JgEwtewvrj99pMe1e95YCvggujwC/0T4wldxU/T
-	9Bj1Yy8MJJgDuE00uWoDuYmnSTnbTiloI90b6eGJfJ0zEzzvgKrsB30UAI8Tu436J66ScgbI4Hp
-	VLQQnD6EfJfSTrzKDmFu2My6mKpmDdAYdv77DKr2QJXEhPQg5lU2GhFL+QB8TxB7Yf7RIj9QtQp
-	SG5zFLkPXPmSrlbTUtp1+wtejMY+qTq4A6iHQKazAVnr29UgJU7H/fTwXK5plp7cdp1MI8Z70az
-	vgba0L8hgzKgqnbJIST42bG0eCWc4QwxaWp2NC4twcHWUVCCFTVx99vsMVtxo4rWLkNcDkm7aG/
-	vVSZjnj6X6grS8A1AMlgA==
-X-Received: by 2002:a17:903:1968:b0:2d5:db38:8013 with SMTP id d9443c01a7336-2db290965e6mr13546505ad.18.1788854701219;
-        Tue, 08 Sep 2026 01:05:01 -0700 (PDT)
-Received: from google.com (195.5.127.34.bc.googleusercontent.com. [34.127.5.195])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db1499d92dsm54262635ad.52.2026.09.08.01.04.56
+        bh=qlpA25HriXdx9v6T6FYmtvmjD7yzSHEf8Vv9SuYbJrQ=;
+        b=ZX5jXp4YVNW176nd3sQtmBkxljXguPTTPZS+M6r1Zwf6wBjELbaCOgik6FFeUxDpfH
+         VAi41w1Pwj77r26zt0UP0tf7O8rwwgLaUT4ulKW2mEB5o0p5krPHCvPnMJsfxmyyNHzL
+         0pbTQo/vD8fLQ5oShjDx3EiEUbnPZH7LtZYUXeZ1P3FESz0Gn15kzpaLZIhcIta0djiS
+         akUjVbcgeT/mRuis3oZUEH6SytZPOejhxjrcecbZdmAM0sDGG5DbZpDiRp3bI/YG86AC
+         /kx+hcAzbtdlo2cnW510NdQF7ImQ5RA3PCjlB/8q5LzirlcnyZNkG2IpVHtwgLgMaleS
+         HBBw==
+X-Forwarded-Encrypted: i=1; AKwUvBwJPu2ffNgKK6m1Loezd8ugAgWillZuM3xEOeswALO6JnKqHPxt3E9OZYgcI8QAPQ6kYkU=@vger.kernel.org
+X-Gm-Message-State: AFuF++k7KuEIJg0CEom05wCIxBlIRxnUtMTyj/C6NDNkMrD33AwVndMn
+	8q3CI9vN+qAW2ss2sDvCIvPHSw9FKEfzH4nF+ihHszCwk296xhBuuaB5nSfmcwXvvtvu4VCRXJM
+	6G0ZAeQpmZ9/Ui5wKU2/xxNiSKmWKpdyckk4+d4dF2OOHrvnwtz3jtg==
+X-Gm-Gg: AYBFou2apFo+ehtnNMxvfDPAlP5U2/y9jmsYPio5x825/lmjdAi1u+1avZWpU/Z7nuu
+	DUqI2gXrd3/rJ5hC2tAcGVukUeInLyXnFSongCJmJm/FZNb4zcZTrbZh5ZTf9DMtAJri4UU0axe
+	Jkv0aJSH/eANMYXi9jJCJgnmx8CKpCPKBrkCC1gqTTfv0S00qHo8YGE5mV4R6vcYCnVRr4deuRE
+	gP5OM0KJROhpSCXPrdF/qDIMRBWYUHUGpJQbu/HRfhxvAZ1PkHFMzveFSSAdduXaTFXoLER8Dfr
+	o47hU1zhWczAieYEDsOQQORcv1KSvS6+CMDuQjtVN4GYqf7Di7co4OHXcjKWpYaRfDRFCRvi67N
+	oDovyoDML3X+4rZZ/4DQN9nA=
+X-Received: by 2002:a05:600c:6209:b0:49c:fed6:cd3f with SMTP id 5b1f17b1804b1-49cfed6cd4dmr208433885e9.23.1788854804728;
+        Tue, 08 Sep 2026 01:06:44 -0700 (PDT)
+X-Received: by 2002:a05:600c:6209:b0:49c:fed6:cd3f with SMTP id 5b1f17b1804b1-49cfed6cd4dmr208433115e9.23.1788854804098;
+        Tue, 08 Sep 2026 01:06:44 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-79-236.inter.net.il. [80.230.79.236])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d08144037sm282102195e9.7.2026.09.08.01.06.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 01:04:56 -0700 (PDT)
-Date: Tue, 8 Sep 2026 08:04:53 +0000
-From: Lisa Wang <wyihan@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Chenyi Qiang <chenyi.qiang@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Erdem Aktas <erdemaktas@google.com>,
-	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Roger Wang <runanwang@google.com>,
-	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	x86@kernel.org
-Subject: Re: [PATCH v14 03/22] KVM: selftests: Initialize the TDX VM
-Message-ID: <ap_Bpe7dZm_eWsJ2@google.com>
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-3-15ad654a50db@google.com>
- <c8b7a800-58ed-4ef7-91bd-31da77763717@intel.com>
+        Tue, 08 Sep 2026 01:06:43 -0700 (PDT)
+Date: Tue, 8 Sep 2026 04:06:39 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Jason Wang <jasowangio@gmail.com>, Gerd Hoffmann <kraxel@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Rusty Russell <rusty@rustcorp.com.au>,
+	Pawel Moll <pawel.moll@arm.com>, Cornelia Huck <cohuck@redhat.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Eric Farman <farman@linux.ibm.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Hans de Goede <hansg@kernel.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Vadim Pasternak <vadimp@nvidia.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	virtualization@lists.linux.dev, linux-input@vger.kernel.org,
+	linux-s390@vger.kernel.org, kvm@vger.kernel.org,
+	linux-um@lists.infradead.org, platform-driver-x86@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>
+Subject: Re: [PATCH v3 0/6] virtio: fix and add callback synchronization hooks
+Message-ID: <20260908040141-mutt-send-email-mst@kernel.org>
+References: <20260908053817.26065-1-kmehltretter@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -95,112 +116,110 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c8b7a800-58ed-4ef7-91bd-31da77763717@intel.com>
+In-Reply-To: <20260908053817.26065-1-kmehltretter@gmail.com>
 
-On Thu, Jul 23, 2026 at 04:44:08PM +0800, Xiaoyao Li wrote:
-> > + */
-> > +#define __tdx_vm_ioctl(vm, cmd, _flags, arg)				\
-> 
-> sev uses the name __vm_sev_ioctl, I think we need to keep them consistent.
+On Tue, Sep 08, 2026 at 07:38:11AM +0200, Karl Mehltretter wrote:
+> This is v3 of the callback synchronization series. It is based on
+> Michael S. Tsirkin's linux-next branch at f49e6cf91942 ("virtio:
+> synchronize callbacks after device reset"), which already contains the
+> core change and the virtio_input teardown reorder from v2.
 
-While __vm_tdx_ioctl matches SEV, the TDX selftest follows a tdx_<scope>_*
-naming convention (1. TDX prefix, 2. Scope: VM or vCPU). I named it
-__tdx_vm_ioctl to keep the TDX codebase internally consistent.[1]
 
-Do you think we should align with SEV's naming convention instead of
-sticking with the internal TDX pattern?
+Pls note I dropped the core change for now.
+That one needs more work:
 
-[1]: https://lore.kernel.org/kvm/489f3c7b-db03-43dc-bb64-910a0fcba31e@intel.com/
+- transport changes should be separate patches from core
+  changes
 
-> > +({									\
-> > +	u64 r;								\
-> > +									\
-> > +	union {								\
-> > +		struct kvm_tdx_cmd c;					\
-> > +		unsigned long raw;					\
-> > +	} tdx_cmd = { .c = {						\
-> > +		.id = (cmd),						\
-> > +		.flags = (u32)(_flags),					\
-> > +		.data = (u64)(arg),					\
-> > +	} };								\
-> > +									\
-> > +	r = __vm_ioctl(vm, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd.raw);	\
-> > +	r ?: tdx_cmd.c.hw_error;					\
-> 
-> I know it takes the same handling from __vm_sev_ioctl(). But I think the
-> handling for hw_error is not correct, at least for TDX (I didn't check for
-> SEV).
-> 
-> the hw_error is the additional info, to tell the SEAMCALL return code, when
-> the IOCTL fails. KVM requires hw_error to be in the input, and KVM puts the
-> SEAMCALL return code into hw_error when the IOCTL fails due to SEAMCALL
-> failure. That means, when r == 0, the hw_error is always 0.
-> 
-> I think we need to provide hw_error along with r to the caller so that
-> caller can print them together.
-
-I think the value of r is not important, because the ioctl failure
-is already captured in errno.
-
-We only need to fix the return values for SEV and TDX and have
-TEST_ASSERT_* print formatted error logs with errno and hw_error.
-
-- r ?: {tdx, sev}_cmd.c.hw_error;
-+ r ? {tdx, sev}_cmd.c.hw_error : 0;
-
-> > +})
-> > +
-> > +#define tdx_vm_ioctl(vm, cmd, flags, arg)				\
-> > +({									\
-> > +	u64 ret = __tdx_vm_ioctl(vm, cmd, flags, arg);			\
-> > +									\
-> > +	if (ret) {							\
-> > +		TEST_ASSERT(!ret,					\
-> > +			    "%s failed, rc: 0x%llx errno: %i (%s)",	\
-> > +			    #cmd, (unsigned long long)ret,		\
-> > +			    errno, strerror(errno));			\
-> 
-> The if() looks silly. Why add it? And why change it from
-> __TEST_ASSERT_VM_VCPU_IOCTL() in the v13?
-> 
-> Considering the suggestion of hw_error above, I think we need to introduce
-> the TEST_ASSERT_TDX_VM_VCPU_IOCTL() which accepts additional hw_error?
-
-The reason we could not use __TEST_ASSERT_VM_VCPU_IOCTL() directly[2] is
-because it formats ther return value as %i (32-bit), whereas
-__tdx_vm_ioctl might return a u64 hardware error code.
-
-I agree with your suggestion to introduce a new
-TEST_ASSERT_TDX_VM_VCPU_IOCTL() macro to print out u64 hardware error
-code properly.
-
-[2]: https://lore.kernel.org/all/a58e2941-77f9-43cf-a54d-023506dd7eb0@linux.intel.com/
-
-> <snip>
-> > diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> > new file mode 100644
-> > index 000000000000..e1ffb67a106c
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> > @@ -0,0 +1,120 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +
-> > +#include "processor.h"
-> > +#include "tdx/tdx_util.h"
-> > +
-> > +static struct kvm_tdx_capabilities *tdx_read_capabilities(struct kvm_vm *vm)
-> 
-> make it const, is better.
-
-Thanks, noted.
-
-> > +	init_vm->attributes = attributes;
-> 
-> Besides CPUID, it only allows attributes to be configure but leave XFAM as
-> 0. I think the changelog needs to explain why we need to configure
-> attributes.
-
-Thanks, noted.
-
-> The rest of the patch looks good to me.
+- shutdown generally needs more work, it should disable
+  config in particular just like remove does.
  
+- drivers that queue work must have a shutdown callback to
+  sync it - that part can be separate patchsets
+
+
+
+
+> Patches 1 and 2 fix two bugs in virtio-ccw's existing
+> synchronize_cbs() hook. After a fallback from adapter to classic
+> interrupts it selects the wrong lock, and the classic interrupt handler
+> only takes the matching lock when notification hardening is enabled.
+> Patch 3 adds SRCU tracking for remoteproc callbacks, which can sleep.
+> Patches 4 and 5 replace the RCU fallback with synchronization against
+> the UML IRQ and the TmFIFO callback locks. The fallback already covers
+> these IRQ handlers and spinlock sections. Patch 6 adds SRCU tracking
+> in virtio_vdpa so callback synchronization does not depend on the
+> context in which the vDPA driver invokes the callback.
+> 
+> The UML, TmFIFO and remoteproc reset paths do not themselves prevent
+> new virtqueue callbacks. UML and TmFIFO only clear a status field, and
+> remoteproc does not wait for the remote side to acknowledge the reset.
+> Without notification hardening or driver-specific teardown protection,
+> callbacks can still start after reset. The new synchronization hooks
+> do not fix that. The TmFIFO hook also does not synchronize with the
+> rest of the FIFO work item outside the callback locks.
+> 
+> The virtio_input loop change from v2 (continue instead of break, so
+> events the device already completed are still delivered) and the
+> event buffer leak are sent separately.
+> 
+> Changes in v3:
+> - Rebased on Michael's linux-next branch. Dropped the core change and
+>   the virtio_input patch, which are there already.
+> - Split the virtio-ccw fixes out of the core patch, one per bug, and
+>   the transport patch into one patch per transport. The CCW and TmFIFO
+>   changes are functionally unchanged from v2.
+> - Patch 2: added a Fixes tag and described the existing shutdown
+>   case. Removed the dependency note on the core reset change.
+> - remoteproc: read the queue pointer once in rproc_vq_interrupt(), and
+>   synchronize with callbacks in __rproc_virtio_del_vqs() before
+>   freeing the queues (Sashiko). Place vq_srcu next to rvdevs so the
+>   hunk also applies to mainline, which added attach_work after index.
+> - virtio_uml: compare against UM_IRQ_ALLOC instead of a bare negative
+>   check.
+> - virtio_vdpa: use SRCU instead of a per-device rwlock, so the
+>   callback tracking uses per-CPU counters, and cover the config
+>   callback (Sashiko).
+> - Rewrote the commit messages. Corrected the RCU fallback description
+>   for UML, TmFIFO and the vDPA simulators. Dropped the claimed simulator
+>   reset race: the simulators disable bottom halves around virtqueue
+>   callbacks and serialize reset with the worker's mutex.
+> 
+> Changes in v2:
+> - Moved callback synchronization from virtio-pci into the core, as
+>   Michael suggested, and added the missing synchronize_cbs() hooks.
+> 
+> Testing: the changed objects build with W=1 without warnings, with
+> clang on arm64, x86-64 and s390 and with gcc on SMP UML, and the
+> patches also apply to current mainline and linux-next. The runtime
+> tests from v2 were not repeated on this version: the input, rebind and
+> shutdown checks on arm64 MMIO and x86 PCI covered code that is
+> unchanged here, and the remoteproc and virtio_vdpa hooks have only
+> been build-tested. No remoteproc, TmFIFO or s390 hardware was
+> available.
+> 
+> v2: https://lore.kernel.org/r/20260905152059.89560-1-kmehltretter@gmail.com
+> v1: https://lore.kernel.org/r/20260818040433.66986-1-kmehltretter@gmail.com
+> 
+> Karl Mehltretter (6):
+>   virtio_ccw: fix synchronize_cbs() after interrupt fallback
+>   virtio_ccw: always take irq_lock in the classic interrupt handler
+>   remoteproc: implement synchronize_cbs() for virtio devices
+>   um: virtio_uml: implement synchronize_cbs()
+>   platform/mellanox: mlxbf-tmfifo: implement synchronize_cbs()
+>   virtio_vdpa: implement synchronize_cbs()
+> 
+>  arch/um/drivers/virtio_uml.c             | 10 +++++++
+>  drivers/platform/mellanox/mlxbf-tmfifo.c | 15 ++++++++++
+>  drivers/remoteproc/remoteproc_core.c     | 12 ++++++++
+>  drivers/remoteproc/remoteproc_virtio.c   | 37 +++++++++++++++++++-----
+>  drivers/s390/virtio/virtio_ccw.c         |  6 +---
+>  drivers/virtio/virtio_vdpa.c             | 34 ++++++++++++++++++++--
+>  include/linux/remoteproc.h               |  3 ++
+>  7 files changed, 102 insertions(+), 15 deletions(-)
+> 
+> 
+> base-commit: f49e6cf919425cc55f10fd7cda7e0fc895df4cc0
+> -- 
+> 2.39.5 (Apple Git-154)
+
