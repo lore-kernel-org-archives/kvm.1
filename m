@@ -1,80 +1,101 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F55A3559F2
-	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 05:37:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAA637A846
+	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 05:39:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788845857; cv=none; b=l32iTKbXwjdCSgMuRkXZ4SjEnZyvLfx3NeQ/IUFwYiR0XRR2Hx1uDt898K+rOd0GhIVnYwoaDZg22jP1GeKlQSD2u48K3l603NpBaQQxyyczGVvdG5KQ+S/ZxQFxtCa+i9xtE2z52EjUokHS6iG0Z1Ea1SzbnoKBsuUx34TAiDE=
+	t=1788845983; cv=none; b=UsuLpnuIqsASZq/qHK0QfZ+tbRwKkpnmRIuYMe6lVx0RdmZG/2Ceyhpi1NpBkTifzn3qUpmAN+loqTTXF3xi1kX9c7TeAgOdIdPWUCxoaQO3snSpGnvWKe0Uncxx2PllkPemZ/WFFxExBzS6rHDOHxmy2TYjd0N2fAe7aTNz2YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788845857; c=relaxed/simple;
-	bh=o983iJ+yESLyXRWkc/1BD1Ocd9G3iDRwnBPvJab8rdg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sMW2tD0KQbGe5fSEkXqgG44Lsfjk/OyN0UGsk2r0TcaV43Wnua7phwA8tAGxrwQIwRfeRY1+Jd9C/niQ7jroh9yBYBkGmVN/nSK3vYIZYxkhPw5XN0sIm2PzTnYYgFgDl+BrhzVKGCwV6g3YiwHRUt/YbTZuW5/5/cgA/RLbcNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nRtPjqDL; arc=none smtp.client-ip=209.85.215.181
+	s=arc-20240116; t=1788845983; c=relaxed/simple;
+	bh=TCgPEL0DIPtoJrnu9N8c+v3mKdDbypOHTaZzZn4UrHw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=f15E/MByp1hNNJbAJLWG4TbPxc40uBkUezwpVzSgVvFB7x/3BzeeIo2J9T6AIJw2JjzzPVGmMYZxI2Q2j7HyrvnBhxKbTWT3/2SPPVC6qO73LIFm7sHkWsaA4SaPW788AiLr+zQsspaBo4hQiKENYFlmB2WYsViKCoBEn16SqaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ohgUi+Bi; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nRtPjqDL"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cc439aa0078so3412393a12.0
-        for <kvm@vger.kernel.org>; Mon, 07 Sep 2026 22:37:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ohgUi+Bi"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-49b0d78a801so42196695e9.2
+        for <kvm@vger.kernel.org>; Mon, 07 Sep 2026 22:39:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788845855; x=1789450655; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788845977; x=1789450777; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1dSBgu+PYO8L57iJ7mEEHE0juRfKuuMbZOsF6p43Spo=;
-        b=nRtPjqDLFDL8Dm9u9yVcF5iFwXePrUqw1emjeCP+FxmIP7ckibOeYjUeRMPnAZzQ5n
-         EVHDZTm7+BkTJ7KdQys8KoZKbK7F9/Bf1FA7XIy54Vik6B601umqeKy6sZuNxZjM6dGu
-         74rxE61GhMTUQr3c2msRbxTXuf5/kbfv4GEp4dv8tlhrIYLWFrkFNOkCJ5BcXZqjRIsV
-         qOP9A5mPZt5B/4/ccdW+HLHomUn8BDd3iVRMlEervIcFVXA4OYtPkX/aVw/F2htYS10g
-         kDHFejX7F0CDsBNycpDlKo9gnNZdKYLL2U4SfNV6YyW1hiF7W4ZVxDzQFtaNjmaclJoJ
-         gsOA==
+        bh=69M0Zjk6fuHd53vao9gFafQcNB6wevMJ2l/Q6J8x1Ec=;
+        b=ohgUi+BiQmHpomizhYpg/IL8m5w9FmnfjscMHO+przxJ8Qe1B6b5bg3eb65wG17s+g
+         se4F04vsyZ8HCCX5a9+kqNJ4vaM/yDuchrC7DVphRwPzLcreEOqHSZYC8adxZPk4MNnS
+         0auC1PCfRwDgEhxS6/1pxXch5ZDufyg9jS8fNBeVAusDBEN45heVHfMfxDE9A8kzGyRr
+         eS0OkdH6QEqnXJNK1Dr47c+kG3JGlT+WPBvVY/+ohMuEz2tXlJncc522FT2BDXvfupV9
+         F+2weaBwqSdE/Zrjl9bwvBxPCLxWoohT+ks7s7+N4K0mVNd9gxQUocb/8VTXNvO+9xpy
+         yGqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788845855; x=1789450655;
+        d=1e100.net; s=20251104; t=1788845977; x=1789450777;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=1dSBgu+PYO8L57iJ7mEEHE0juRfKuuMbZOsF6p43Spo=;
-        b=jnwxQ6qRraZsDOB/gJ5syc6lxFUeXFA4HPnxC2FmNyXLj3/ycxeP3mZ1++sia2cBJR
-         a3jjJ/l0QbrmvuS2JYBbAexkEB2WwV+p+zo+U9bi5MEw+TQWZvORW9w9sJJT09orXkLq
-         Mo8RwF9LbFXOq2zhl4MvyNfIq0YRQ1vDqGa1Dy0qd6Mda9ceo8Yp4dM6cPiXHCrG5qF9
-         ZVOtPF1TPr0JlwCYbwkMhqZCrPZYVOY3bVSbOiNlDG5gD9Er5cu5RCbsR6FLHFduJDy4
-         cfhHPtVG4hQ84GQfG1CF9t6B6JNFwIVYTS3etsbii9it+vZFmq2Nxu2bmsaYSazJxbnM
-         FV1Q==
-X-Forwarded-Encrypted: i=1; AKwUvBz7rEAK4N7jRSpGztNTs2f1LMJZ6venGNH3CPNBU2plQxj5P4r4wNKtAeFnM74CYd8QpBM=@vger.kernel.org
-X-Gm-Message-State: AFuF++kNVrLxZZiKn2hiDzcYMQXnEL8LOIV+KcJ5x1sqvCwVD4zG1/uu
-	MhHYjbGPVeJWM0SZB/jvlY5wTU7tO6/3KTWGApKlOa9KvgHpiYW03M8D
-X-Gm-Gg: AYBFou1PYhX+73cRFpvOxEQ2TPZcfp4witdfE8aFMZN3C2r+WzMkpUcJnXzMwJvPDkH
-	dlLss27eZSIrutMZhPIC1ILzk0EX+rYE0l7u2JCVZyYZTcbt0B+cYYI9y8qNACPLA9wAoz02MTS
-	gHvkYD7gseVdVCKaWeRWQ38JNx9Jk4oSnpQfQGqVfwwgBjiCFkNscnnngYE9fk/Oxn3myb84Hx/
-	O6XAHov86HYaYMEc8uJHqAbvCX00frCIS+yTYO4B+IicUqHcyCKQ+bi9pscvEzy7/qyOVENNpTb
-	gqf5FEk44x0slyPyJ9ekQE5aUQiPWUx6RTdWqXZzarXZtwm+dWOqa1Xc8wox/UqsCsThnaXml8I
-	TXwShgWMyUTatBRW39VH8HceavOV9c/J9BqTeFKNaUoTYgl4uOcIxISL6l+vem5U8pOjw9l7kur
-	eWwYGXdhdLsaYDubqlevWoqt4KBMSowmB0BLNVFJh4UtFJr8Zk7DBDuiW80mHX1WazYo2sWwkQR
-	A==
-X-Received: by 2002:a17:90b:4c06:b0:396:b98b:a3c2 with SMTP id 98e67ed59e1d1-39b26116d9fmr35119666a91.8.1788845855382;
-        Mon, 07 Sep 2026 22:37:35 -0700 (PDT)
-Received: from amd.ban-spse ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339aa33e96sm32332057eec.12.2026.09.07.22.37.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 22:37:35 -0700 (PDT)
-From: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Melody Wang <huibo.wang@amd.com>,
+        bh=69M0Zjk6fuHd53vao9gFafQcNB6wevMJ2l/Q6J8x1Ec=;
+        b=X57SxBYtp4BiEGt16LRmOftsHY505Bl+77E6yYjqhI7H5YIgIUsPIKdDTnRCJCmSAI
+         fs13VflIoO8o/qY/MUUwQeTh4u3BO7pEz+Es2JwvSiNjUzqdn2D5W5NfDqXHfF+uw/WS
+         SebbIjc8GVOw5b/rzHLQVumH6DpeUvmamyQf6NiZaVdDpX08ZYLRVPVDZdoo6uotIW6C
+         ylbXvxuSx2RTEpYVNd+ooGZJBMxmJvRh2A7J1H51m6bXIGDNyuyPxZd66N6i26r+l/f+
+         zikWfp34GJQg6deXXZD7HjZ9AVV5Q5RH1lqOrCgH20jLwUkDyGIDqMoGvTgY+Nky8j3x
+         W7RQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxOG49oO083XaR/ukVvhCdCSY2gjw7a8Dqa0Ra1itL805pZmb7pN4oVtWA0PnnVWHQDwsQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++nlf94zLyWS2/0dqYWy0Kx0+idhTAxzrl1OsNFp3tRSrzpWJSqY
+	Qw9rE+fHFfLhVG4qhiWeo2naWh/Nx/VzX/q9lCn1rcJ6MLAbmvWslNbS
+X-Gm-Gg: AYBFou2UOyk+a09r8HUhDVPl2jUPp8kVHB4Tr7wxEZGI82xKZL2HFWh+I1VT/DKODy5
+	OccWfGUyfxKM0A1k63gImVeyh+2wv4FM4gVkjJE/FVevaK7D3M0FhDZGLWKRPIpAQ+g5IzTLJLg
+	+CXc7IQ/qQygdtPzn/MOFxXpkBN+qCb5rpWoFnHYcoDNu36q2z/Z1SsJc3B96q3Gtd8DdYZ2jBv
+	ava9rZHGCjnPBPORgIGX9ubnpsYZcaKe1dlDcUBwWWqEtnQDpvDkqOLQ4z6p8gq01wFYA17v9Qr
+	Ox2DshEzFIB7g1/dkDsQUfscQHkorJMzhFCGQwFPWZJkGOc0P2r04pfUfgIj/sglN/+3Sm6MkSZ
+	gq2J9bEdAHmOroseOIyxuPVdeCpvlXB2vBYS9EJdkghK06yGhzLANC10lbh9eSLbBJRCAey4+bQ
+	/Duk8g0F/jcBdm2jlQT8U86JfsS0WSjVE4N9+1qdXa49AhDh0/Tyozv9K5+cTN5yksx6lcd0zp5
+	Zz1P4vOPc7fTOd1Q8zQUrm3c5hyDucmauiGdyyV8vE89WGyJDgN/1ey3wnwV+M2mWKboJReEVas
+	GuLMz6tJPFbMV3e/QEbSBXXKNTDz8CPH6VtP3t3wiQ==
+X-Received: by 2002:a05:600c:4e46:b0:49b:910c:7703 with SMTP id 5b1f17b1804b1-49cf823f160mr260148885e9.9.1788845977155;
+        Mon, 07 Sep 2026 22:39:37 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-095-117-170-066.95.117.pool.telefonica.de. [95.117.170.66])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee7fec25sm523841335e9.13.2026.09.07.22.39.35
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 07 Sep 2026 22:39:36 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Gerd Hoffmann <kraxel@redhat.com>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Rusty Russell <rusty@rustcorp.com.au>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Cornelia Huck <cohuck@redhat.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Eric Farman <farman@linux.ibm.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Hans de Goede <hansg@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Vadim Pasternak <vadimp@nvidia.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	virtualization@lists.linux.dev,
+	linux-input@vger.kernel.org,
+	linux-s390@vger.kernel.org,
 	kvm@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	platform-driver-x86@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
-Subject: [PATCH] x86/svm: Avoid sign extension of SVM_EVTINJ_VALID in 64-bit expressions
-Date: Tue,  8 Sep 2026 05:37:22 +0000
-Message-ID: <20260908053722.3917934-1-nagachaithanya9911@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>
+Subject: [PATCH v3 0/6] virtio: fix and add callback synchronization hooks
+Date: Tue,  8 Sep 2026 07:38:11 +0200
+Message-Id: <20260908053817.26065-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -83,57 +104,90 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-SVM_EVTINJ_VALID is defined as (1 << 31), i.e. as an int with the sign
-bit set. Whenever it is used in a 64-bit expression the int is sign
-extended, so bits 63:32 end up set as well. Two 64-bit users are
-affected.
+This is v3 of the callback synchronization series. It is based on
+Michael S. Tsirkin's linux-next branch at f49e6cf91942 ("virtio:
+synchronize callbacks after device reset"), which already contains the
+core change and the virtio_input teardown reorder from v2.
 
-verify_exception_info() uses the macro as a mask against a 64-bit value
-when it sanity checks hypervisor supplied exception information:
+Patches 1 and 2 fix two bugs in virtio-ccw's existing
+synchronize_cbs() hook. After a fallback from adapter to classic
+interrupts it selects the wrong lock, and the classic interrupt handler
+only takes the matching lock when notification hardening is enabled.
+Patch 3 adds SRCU tracking for remoteproc callbacks, which can sleep.
+Patches 4 and 5 replace the RCU fallback with synchronization against
+the UML IRQ and the TmFIFO callback locks. The fallback already covers
+these IRQ handlers and spinlock sections. Patch 6 adds SRCU tracking
+in virtio_vdpa so callback synchronization does not depend on the
+context in which the vDPA driver invokes the callback.
 
-	u64 info = ghcb->save.sw_exit_info_2;
-	...
-	if ((info & SVM_EVTINJ_VALID) &&
+The UML, TmFIFO and remoteproc reset paths do not themselves prevent
+new virtqueue callbacks. UML and TmFIFO only clear a status field, and
+remoteproc does not wait for the remote side to acknowledge the reset.
+Without notification hardening or driver-specific teardown protection,
+callbacks can still start after reset. The new synchronization hooks
+do not fix that. The TmFIFO hook also does not synchronize with the
+rest of the FIFO work item outside the callback locks.
 
-The mask is 0xffffffff80000000, so the check also passes when any bit of
-the error code in 63:32 is set while the valid bit itself is clear.
+The virtio_input loop change from v2 (continue instead of break, so
+events the device already completed are still delivered) and the
+event buffer leak are sent separately.
 
-svm_vmgexit_inject_exception() builds the value that KVM hands to an
-SEV-ES guest in GHCB SW_EXITINFO2:
+Changes in v3:
+- Rebased on Michael's linux-next branch. Dropped the core change and
+  the virtio_input patch, which are there already.
+- Split the virtio-ccw fixes out of the core patch, one per bug, and
+  the transport patch into one patch per transport. The CCW and TmFIFO
+  changes are functionally unchanged from v2.
+- Patch 2: added a Fixes tag and described the existing shutdown
+  case. Removed the dependency note on the core reset change.
+- remoteproc: read the queue pointer once in rproc_vq_interrupt(), and
+  synchronize with callbacks in __rproc_virtio_del_vqs() before
+  freeing the queues (Sashiko). Place vq_srcu next to rvdevs so the
+  hunk also applies to mainline, which added attach_work after index.
+- virtio_uml: compare against UM_IRQ_ALLOC instead of a bare negative
+  check.
+- virtio_vdpa: use SRCU instead of a per-device rwlock, so the
+  callback tracking uses per-CPU counters, and cover the config
+  callback (Sashiko).
+- Rewrote the commit messages. Corrected the RCU fallback description
+  for UML, TmFIFO and the vDPA simulators. Dropped the claimed simulator
+  reset race: the simulators disable bottom halves around virtqueue
+  callbacks and serialize reset with the worker's mutex.
 
-	u64 data = SVM_EVTINJ_VALID | SVM_EVTINJ_TYPE_EXEPT | vector;
+Changes in v2:
+- Moved callback synchronization from virtio-pci into the core, as
+  Michael suggested, and added the missing synchronize_cbs() hooks.
 
-For vector == X86_TRAP_GP this yields 0xffffffff8000030d instead of
-0x000000008000030d. The field uses the EVENTINJ format, which holds the
-error code in bits 63:32, so KVM asks the guest to inject #GP with an
-error code of 0xffffffff. Linux guests only consume the error code when
-SVM_EVTINJ_VALID_ERR is set, which it is not here, so they are not
-affected in practice, but the value KVM writes is not the one it intends.
+Testing: the changed objects build with W=1 without warnings, with
+clang on arm64, x86-64 and s390 and with gcc on SMP UML, and the
+patches also apply to current mainline and linux-next. The runtime
+tests from v2 were not repeated on this version: the input, rebind and
+shutdown checks on arm64 MMIO and x86 PCI covered code that is
+unchanged here, and the remoteproc and virtio_vdpa hooks have only
+been build-tested. No remoteproc, TmFIFO or s390 hardware was
+available.
 
-Use BIT() instead, as is already done for most single bit definitions in
-this header. Every other user applies the macro to a u32, where the
-resulting bits are unchanged.
+v2: https://lore.kernel.org/r/20260905152059.89560-1-kmehltretter@gmail.com
+v1: https://lore.kernel.org/r/20260818040433.66986-1-kmehltretter@gmail.com
 
-Fixes: 597cfe48212a ("x86/boot/compressed/64: Setup a GHCB-based VC Exception handler")
-Fixes: c3392d0ab714 ("KVM: SVM: Provide helpers to set the error code")
-Signed-off-by: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
----
- arch/x86/include/asm/svm.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Karl Mehltretter (6):
+  virtio_ccw: fix synchronize_cbs() after interrupt fallback
+  virtio_ccw: always take irq_lock in the classic interrupt handler
+  remoteproc: implement synchronize_cbs() for virtio devices
+  um: virtio_uml: implement synchronize_cbs()
+  platform/mellanox: mlxbf-tmfifo: implement synchronize_cbs()
+  virtio_vdpa: implement synchronize_cbs()
 
-diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-index aa63431ba92c..921e6ecc4835 100644
---- a/arch/x86/include/asm/svm.h
-+++ b/arch/x86/include/asm/svm.h
-@@ -637,7 +637,7 @@ static inline void __unused_size_checks(void)
- #define SVM_EVTINJ_TYPE_EXEPT (3 << SVM_EVTINJ_TYPE_SHIFT)
- #define SVM_EVTINJ_TYPE_SOFT (4 << SVM_EVTINJ_TYPE_SHIFT)
- 
--#define SVM_EVTINJ_VALID (1 << 31)
-+#define SVM_EVTINJ_VALID BIT(31)
- #define SVM_EVTINJ_VALID_ERR (1 << 11)
- 
- #define SVM_EVTINJ_RESERVED_BITS ~(SVM_EVTINJ_VEC_MASK | SVM_EVTINJ_TYPE_MASK | \
+ arch/um/drivers/virtio_uml.c             | 10 +++++++
+ drivers/platform/mellanox/mlxbf-tmfifo.c | 15 ++++++++++
+ drivers/remoteproc/remoteproc_core.c     | 12 ++++++++
+ drivers/remoteproc/remoteproc_virtio.c   | 37 +++++++++++++++++++-----
+ drivers/s390/virtio/virtio_ccw.c         |  6 +---
+ drivers/virtio/virtio_vdpa.c             | 34 ++++++++++++++++++++--
+ include/linux/remoteproc.h               |  3 ++
+ 7 files changed, 102 insertions(+), 15 deletions(-)
+
+
+base-commit: f49e6cf919425cc55f10fd7cda7e0fc895df4cc0
 -- 
-2.43.0
-
+2.39.5 (Apple Git-154)
