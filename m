@@ -1,156 +1,170 @@
-Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B52E5A0ADA
-	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 19:06:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4393959E33E
+	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 19:13:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.76
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788894376; cv=pass; b=o0APyTO4KsLUi76G4Zr2mYLppEs7Sg6zyb7dopCauw4UIqtqY5jwUV1OlHzIMC3fuTN23vwWeZIGuNI3H1r15xse42TGR41BmXJ1l5SVSRdGYW413pAfH2e5WdZRrqSQN0yCBpb4ECg3plTIix8UdH4tP7W1nO03LofN9yh2J2I=
+	t=1788894794; cv=pass; b=axxlmE+UTbPWGgJjOHLPi7upylTRCAax/O7zjSh62T1Pkr+G/6TQ9rzs9r18Og1wPcn4HzfOweIPuD+fCbYPBtb7xlJOGAiIrbOsOx14sh/l+INNH3SVomnF+SR+awMvhwCBJ3IZsWJ4oiisrDCAMc+y+0OSZfQgbyI93hKbpBk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788894376; c=relaxed/simple;
-	bh=JxAv9A35o8tRcwxKjZO94SBS9xDo9RgjGVk4mfstMJQ=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m082W5D3cqktyPubtPvZXQyzrqFkCD18Xq3I81wL0EM0i6G4oaweN0uCzg+9/orXNV6e2verZPDcqLfaTB7+QJhgapi+Qj1F+Q2umwn2IvckJB3lc47EL7O8ySzZtnuncgNh/zGUSVteWhwzjPBVaIRsJpO19UvKouG1CCMmwGg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oC67sJca; arc=pass smtp.client-ip=74.125.224.47
+	s=arc-20240116; t=1788894794; c=relaxed/simple;
+	bh=i+PUh1GNjddjRlItZQFpQ9yZWIJbJi9QYvWdoApv6Ts=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sIx8EFRdXPgGbyWDV0OKBZCA0UhlvvU4M8JuUdfseGENZUa3kVeGIyIg6LklB+K4xReQ1i3/xVIbzk1k032dYtg4NWJcRpx27ar9dUk+1U9db6FjGjyPS3Vo0yqyCEAyGytOhlHk/57ZKDAW8XjgpBC/gnhKzG2iH5uim6GWr+0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VjPz4+3V; arc=pass smtp.client-ip=74.125.228.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oC67sJca"
-Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-66fa10f35caso4567561d50.3
-        for <kvm@vger.kernel.org>; Tue, 08 Sep 2026 12:06:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788894374; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VjPz4+3V"
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a6141a61c0so29760a12.1
+        for <kvm@vger.kernel.org>; Tue, 08 Sep 2026 12:13:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788894790; cv=none;
         d=google.com; s=arc-20260327;
-        b=Y7PHZ5jXlBQzCqbefZ9CAISFL55hs/JVbUOafiZkLoghqlliJftCtg0+fIH8kVOM2k
-         cnmzsiNF+iqbOiGo7s/pOHzqMVqHUtx0/jQ4dXb51Kay5GimMQpAjP9vr2Fob+Mceomu
-         1YBmSynzLkSt6Us8f0yXgRi1WTGIgP0mPA9DmYDqkLWJSNRHM4OQ+MV1lm7uu2vxHgd0
-         vaXQgGit/EjkzC3qsru2iRRTJRWG91VwWXws2fy89MFQA4ZFYTSkeZwy6/8lqnMhU188
-         SZAy8LTrmtcFnXd8+XHG3qYTNFeaSLMgf8Xe8VLAnv2fn79+hGdFB+A5yGgBDjSxPkm4
-         p5Ag==
+        b=LR51elwVX1XbnsrHwSYrsNK9SI+PoWSWfO5S7oDWX1n50AHaYIA0JlF11ydUJzZYtA
+         /fEMqaIbbddDB2Vy7Hs+sonnUYCMmJCfSo/CE5lT4+EwndzLMmLZnclZj7JK3ae4Do1x
+         9C9oi2toL8snRAD7ljqqswX/vbNaItN6HowOO3M5kxs1yqhSWIgo6WaeJAWjssWRCzhA
+         KkNwWmEHLKmit5qxL66UDXVskn68qjvNVMdK2WyBt6hlFpQvbw8Q0OObRpcR+kFK8o2p
+         TjFnliFchoZobk9i7EI6V7qAEx2259EcDzU8P1iMObSWHkq6rz69A3Us0hxqom0Qc5dO
+         rMIw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:dkim-signature;
-        bh=hhSMn73HXnZUeqqhpj5wjt1oII0fZ8bLb8+fuULddR0=;
-        fh=JmyTgRXjGy9m6FrbwtaCqzdfx9qWGmCGtdnd56JSY6I=;
-        b=Pa8pFUSXtFcuJaNdSHCd6pMqNuKV5CjgLKuyJT936OFZeJpPtOa/yePUF13j3CNkoi
-         MSGi4GV8F9Y+MPA5olZVgj7WJPV1YGe6bgAYJCeWy/W1ODmnSLP0fO0fvEN7qJr56eyC
-         YRM08BrXWZSNo5a7XjwKSppo4xa35+sAcaH9Y2z8quo2ENQy5DzAn9ULOUsHwqBZlizk
-         u7UlRX11htmyrjSJfywGRsQotNJ5xqXDMYn34yt3X/Qys8fwW0HEglHL15hf5j5uvk5O
-         moQBo3riGSODBILVG1qja+5nzvRXikaXhWTDz1+z88U3RYHDniw0eqULak6UaMEeZFoq
-         zpgQ==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AM+XuJvHrqKZpdS1uMi2WfLrc4OBcDJEv34L7k2GPeo=;
+        fh=XC3dZaIv/VKww573JcuLkI23xOxxLuHRP+u4O4JucTs=;
+        b=R49wUGkOvQkOyNZAEIcb2SQmYVixkrHo819jcqk75sJvxjDqLghl31eGjsoG/tHeYg
+         KJB/+RwYCalsiC3QgXEBM9UQng5OfydL/DAS8beGCJfDeS/qBJLhA7jWaNLCLJH/UpXy
+         Co/FetkWdJS7YkjAuyBvUlm24WUR75LOVJd9NkYRLki8QOLT3HlwQYu83khwASlb3IrI
+         tK4v59nQoCtqPj6MBZ2v4SDUQ6xxvUta+puzE6tlm4AhZ3jytjD3qXAVddpQUQ81XzT4
+         qbgld1my3A+G4XBJakNzgMWcqKs9pjfUpjwiatAmd2J3KDpDZipInc2qkhQQBXZrjRn0
+         J+oQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788894374; x=1789499174; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788894790; x=1789499590; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:mime-version:references:in-reply-to:from:from:to:cc:subject
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=hhSMn73HXnZUeqqhpj5wjt1oII0fZ8bLb8+fuULddR0=;
-        b=oC67sJcaorDh1kjqjpVLuyalUhep2NkbBs6C69vF3ZQ737maXmCGNC9HR3wVUUAu+p
-         IAPvdYi/hi9bOlyBUQWZuPxCac8/CSOfLY9V0PgProfNxs7AkRsoF/xQT1d7G1xlMbdq
-         Va/ZeX03But8KMlDOphJyp+FtdcpWSI/61ioT5egU/rUM2n8wo1p/BPvkMicwzBTXcrl
-         JOSAK3NFI/Mk3LQppqpEbN20vNgVLOk+xkmMx3+tOY3y4S64Cl2Uh7ZjiH1RT8yIRH8z
-         XJgWT6NsQmdCVTkpjN1EdoCGffm0mte2KnEI61rF2cVh4AhUIIxfRGylQ+5hYMKyTbnH
-         yb1g==
+        bh=AM+XuJvHrqKZpdS1uMi2WfLrc4OBcDJEv34L7k2GPeo=;
+        b=VjPz4+3Vu+RZbDsH1o7nFaL9KaXSKC/4ED1RdbR1W/Nk16RR7l2CXQJRaKKRZ6U4PT
+         tVwViYwKISmNzfKI8d23S8IGM6pzKwF8IyQJReRL0cPub/B1Goa/HsY6JOQc9FZbvKsm
+         BMfsZqw7m2jTAHZqLfBro8WZ95HFos1mLCkySVzvHkcQr7xDwywD6TA0QyZpH/EfTHLq
+         WaE3/rRo6tOE3+ltuIL/kcFzI93546/TeViqkWurFNyx1qt6XySbSoK1wuktS+MSzk7o
+         i16KV7aIYFrknUsViCk6HRPwNZ8C7apBxeJG0QcIaXEuzGaECrQjVb4oZcNWkFqYj9Du
+         NLDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788894374; x=1789499174;
+        d=1e100.net; s=20251104; t=1788894790; x=1789499590;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:mime-version:references:in-reply-to:from:x-gm-gg
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=hhSMn73HXnZUeqqhpj5wjt1oII0fZ8bLb8+fuULddR0=;
-        b=Lk1JI21pBih47nAwVjug7rgo1lZoWT4Z8cqn91OnjNy3cSDjADwkDcEX10hfVBFM0z
-         rgK37KE3A2rbJqzYFcpLx9LSFB9mFA0VUInXRPw/1yviGLTw73S4OR1Jzd7ktjqr9fB7
-         SnNIgkao9M8LdkOuyFnvt9TgaK9xXj2+jQFF/whbd7TPJ2LQ/CpYDz2iy3uAfpZUliYX
-         mNd+dVFnvaXQ1SbzXU+OozKzB6BEcU3+hP3NKkbOySD11m0QtA30yYmhRdQUTzpSIfYh
-         YWgf5+wmmskHKJ99memBAD9mdW5JEn1TK9hAV3f0fJsqJlLeHZVkHdNXC512ZyqwsRqO
-         x2PQ==
-X-Gm-Message-State: AFuF++l8TF+bN8HluBlX/lV7MEZifSwYkbfVP6iD/7m2Cc4vuaptW6IP
-	vee69MpOzkUesoCEGEueM1RHQ7y3CrL2SRu0oXkO5Q1DDSs0NU30SvEBMcOC5Yem+S5G6jkNNsK
-	YlRtXv/+8KqnnNMUMwVjXRSuHsz36dhMvyFdJ+hV/
-X-Gm-Gg: AYBFou24ulfDcZUy89+PaWXBulARUruIFvpQbAHKjDm+fF6uoYvIsNfjtwhLiYsEw0k
-	L196bkW1dupH9DTu2qdzp08R/MPTY2Is0KHhUzKsblaP/NPWevxtNR5V3OR8+/bQbkhnCSw3j/3
-	pMsxut6N8TSGGwml4eLpDhDUhjIIpzBhDub0yHGLJNyksoMWW5TDWoLuqeNivjM+U+DMg5io5n2
-	P/LUYTC8/2xyMtc8YKPSyl12xnBJpuYGAmnk4h2IQSRKVTzgYEg56TNg1V/DsQF6wlqzWefpJ1y
-	I2qairjIq2/c19tbBLSCKoomH9gFETI+HcIUebdZwwNSouoPI1OBpQwbiy/wnccJB3CvMxwgslT
-	l+7tRzMX9yniVvFrdu+My9pBzqNEmRwC3i75GOaS9TA==
-X-Received: by 2002:a05:690e:4143:b0:668:42d:95e5 with SMTP id
- 956f58d0204a3-66fb58f1410mr10675130d50.4.1788894372039; Tue, 08 Sep 2026
- 12:06:12 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 8 Sep 2026 12:06:11 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 8 Sep 2026 12:06:11 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <ae783977c1eaa34d2910f76dac1437c7aad47d93.camel@intel.com>
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-4-15ad654a50db@google.com> <ae783977c1eaa34d2910f76dac1437c7aad47d93.camel@intel.com>
+        bh=AM+XuJvHrqKZpdS1uMi2WfLrc4OBcDJEv34L7k2GPeo=;
+        b=ed8dcUrnjid1aMVNbWxzwVqWh8w4RX2/2AXnQwoXs6u+rHBwmcrExvLHTzuxz7ydQ5
+         PfJKqVEP0J6ZxK+M5HEbbn6k9mmNd3rPFJVt7q7rPziZOlyIn0CWPKBsxO9Mx3yAT+mU
+         AUrug8uCOetkn8PDWhljPfBz59Oj3rylRhN96aBn9d4R20FoQErWeV4MIlDiSKahihBT
+         aqeVAGWJqe5pMo2RBZdngH28SY40FumZbEbxQ6ufG+E3RgoddQorrOdR8Qeb9HJBwr17
+         Hh/zcZRp7grL9CDZmmtHRw1X2U1/p0kAv6Gdl9C9yHEsHmJQN9RVMG8jRLhjAEqRW99D
+         NyiA==
+X-Forwarded-Encrypted: i=1; AKwUvBwCuXerMioGca6i5Sn/eg+fu2YRMTI0T5zMaiUo0JxrLwqqfy6XJClWr2s3GwMCSAWo7dM=@vger.kernel.org
+X-Gm-Message-State: AFuF++ntMt2A+xw88LMqOLMvhi61ehePE4unQaIl3+WIWAsLwTDGRUhH
+	0QY7tWJhTFfrBdFPS8qQuaygUyhSYe2wfTGGHviKoDd1784R8/40TH+imKHb8Y2NnA+en+ul1G9
+	Ukn/A8WUQU3WmKa4WzGOFb/t2RDJDncSkaQpbupcs
+X-Gm-Gg: AYBFou1ISyZFrWRHb4ivXeIhPmGrbrIQYCDY+qUax87ZS3ZHlMTjn8MIZRmL8wa9DcW
+	hY4AFe7EmGRIIxqn7Zr8ue1ByJMK5XiH81tEOTezt+9FXs6zVYfwSeo3ULw4+vFWNTfz8jh9Fhc
+	Jc8+DRyrQs5zcxe4M49HtVDvRWbGuYnG08E490XOz2Zp8VRO2/UISEfse/oG/OCxCRlQ1TiYlGn
+	R8Pkp9K6ESOqjN8b2XCTz5BjRxu6HDWBvQQp4JktDbHt3jnwrmCEunqwkEhB+mTLevxZOxbgFAA
+	QIBmznQ+NYwZpf77os0TBmez4tAwzRM2aIXtJhmhxviKxMEeDvcTMVg=
+X-Received: by 2002:a05:6402:1f06:b0:6a6:7385:3eac with SMTP id
+ 4fb4d7f45d1cf-6a98ea6695fmr7436a12.11.1788894789633; Tue, 08 Sep 2026
+ 12:13:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 8 Sep 2026 12:06:11 -0700
-X-Gm-Features: AcwNN1XsGt_fUaARpEZcGvQCOF1lLG5Qg2IcdgK2WB2r0fv2QH8UPnIsl3MEqiA
-Message-ID: <CAEvNRgHB9Vhwe4kOGYUn3piw3dw8zqSgVQX2VonoWCYPw-TaWA@mail.gmail.com>
-Subject: Re: [PATCH v14 04/22] KVM: selftests: TDX: Use KVM_TDX_CAPABILITIES
- to validate TDs' attribute configuration
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "Aktas, Erdem" <erdemaktas@google.com>, 
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>, "shuah@kernel.org" <shuah@kernel.org>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "afranji@google.com" <afranji@google.com>, 
-	"kas@kernel.org" <kas@kernel.org>, "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	"ira.weiny@intel.com" <ira.weiny@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"Chatre, Reinette" <reinette.chatre@intel.com>, 
-	"isaku.yamahata@intel.com" <isaku.yamahata@intel.com>, "seanjc@google.com" <seanjc@google.com>, 
-	"pratikrajesh.sampat@amd.com" <pratikrajesh.sampat@amd.com>, "oupton@kernel.org" <oupton@kernel.org>, 
-	"wyihan@google.com" <wyihan@google.com>, "sagis@google.com" <sagis@google.com>, "Gao, Chao" <chao.gao@intel.com>, 
-	"Wang, Roger" <runanwang@google.com>, 
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, 
-	"ajones@ventanamicro.com" <ajones@ventanamicro.com>, "Qiang, Chenyi" <chenyi.qiang@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "jmcrey@google.com" <jmcrey@google.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>
+References: <20260908132838.2116068-1-jmattson@google.com> <CADrL8HW3Q=8eBf-=h6BAPdUN_X1Z_-KG=i5a5rA2kF+V4JURww@mail.gmail.com>
+In-Reply-To: <CADrL8HW3Q=8eBf-=h6BAPdUN_X1Z_-KG=i5a5rA2kF+V4JURww@mail.gmail.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Tue, 8 Sep 2026 12:12:57 -0700
+X-Gm-Features: AcwNN1WICV71coBtmvzzLnIk4EtMFsoM2wm7296OoHvg6Zg2kiR6KXAOxhndtII
+Message-ID: <CALMp9eRJXozpUpdOhqDCWn7VbqHb9G9hn4aZnxS_fef4ad1yTg@mail.gmail.com>
+Subject: Re: [PATCH] KVM: nVMX: Don't flush shadow VMCS12 to guest memory
+ during vCPU teardown
+To: James Houghton <jthoughton@google.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-"Edgecombe, Rick P" <rick.p.edgecombe@intel.com> writes:
-
-> On Wed, 2026-07-22 at 23:13 +0000, Lisa Wang wrote:
->> +static void tdx_check_attributes(struct kvm_vm *vm, u64 attributes)
->> +{
->> +	struct kvm_tdx_capabilities *tdx_cap;
->> +
->> +	tdx_cap =3D tdx_read_capabilities(vm);
->> +
->> +	/* Make sure all the attributes are reported as supported */
->> +	TEST_ASSERT_EQ(attributes & tdx_cap->supported_attrs, attributes);
+On Tue, Sep 8, 2026 at 10:35=E2=80=AFAM James Houghton <jthoughton@google.c=
+om> wrote:
 >
-> I think this patch actually does nothing because attributes is passed in =
-as 0?
-> So 0 & supported =3D=3D 0. It does exercise KVM_TDX_CAPABILITIES as claim=
-ed, but so
-> does tdx_filter_cpuid(). So for a minimal support, we could probably drop=
- this
-> patch.
+> On Tue, Sep 8, 2026 at 6:54=E2=80=AFAM Jim Mattson <jmattson@google.com> =
+wrote:
+> >
+> > When a vCPU is destroyed while L2 is active, KVM synthesizes a nested
+> > VM-Exit, which flushes the cached shadow VMCS12 back to guest memory:
+> >
+> >   vmx_vcpu_free()
+> >   |-> nested_vmx_free_vcpu()
+> >       |-> vmx_leave_nested()
+> >           |-> nested_vmx_vmexit(vcpu, -1, 0, 0)
+> >               |-> nested_flush_cached_shadow_vmcs12()
+> >                   |-> kvm_write_guest_cached()
+> >                       |-> __copy_to_user(ghc->hva, ...)
+> >
+> > During process exit, do_exit() calls exit_mm() before closing file
+> > descriptors, so vCPU destruction runs with current->mm =3D=3D NULL on a
+> > borrowed lazy TLB active_mm. If the borrowed address space has a writab=
+le
+> > mapping at ghc->hva, __copy_to_user() corrupts an unrelated task's memo=
+ry.
+> >
+> > Skip the flush when KVM synthesizes a VM-exit with vm_exit_reason =3D=
+=3D -1
+> > (e.g. during vCPU teardown or SMM entry). In these paths, KVM forces th=
+e
+> > vCPU out of guest mode internally--no architectural VM-exit is delivere=
+d
+> > to L1.
+> >
+> > Fixes: 61ada7488ffd ("KVM: nVMX: Cache shadow vmcs12 on VMEntry and flu=
+sh to memory on VMExit")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Jim Mattson <jmattson@google.com>
 >
+> Hi Jim,
+>
+> This patch looks good for a stable backport, but I feel this kind of
+> bug could easily happen again with the current API.
+>
+> One simple thing that would have prevented this would be to:
+> 1. Change kvm_write_guest_cached() (and related) to take the vcpu
+> instead of the kvm, and
+> 2. Check that vcpu->mm =3D=3D current->mm before doing the uaccess.
+>
+> This wouldn't be as suitable for a backport, but I think it's better
+> for preventing similar classes of bugs. I'm sure you (and
+> Paolo/Sean/others) will have better ideas. What do you think?
 
-For more context, Isaku suggested this in [1], but after all the changes
-tdx_read_capabilities() is already used in the tdx_init_vm() so I think
-we're good to drop this patch.
+There seems to be some awareness of this issue within KVM, so that may
+not be necessary. Also, as Sashiko points out, we have issues with
+reads as well as writes. I don't know how many choke points we'd have
+to test.
 
-[1] https://lore.kernel.org/all/20220901012853.GF2711697@ls.amr.corp.intel.=
-com/
->> +}
->> +
->> =C2=A0void tdx_init_vm(struct kvm_vm *vm, u64 attributes)
->> =C2=A0{
->> =C2=A0	struct kvm_tdx_init_vm *init_vm;
->> @@ -112,6 +122,8 @@ void tdx_init_vm(struct kvm_vm *vm, u64 attributes)
->> =C2=A0	memcpy(&init_vm->cpuid, cpuid, kvm_cpuid2_size(cpuid->nent));
->> =C2=A0	free(cpuid);
->>
->> +	tdx_check_attributes(vm, attributes);
->> +
->> =C2=A0	init_vm->attributes =3D attributes;
->>
->> =C2=A0	tdx_vm_ioctl(vm, KVM_TDX_INIT_VM, 0, init_vm);
+AFAICT (with AI assistance), all of the current problems are rooted in
+the following call to nested_vmx_vmexit():
+
+void vmx_leave_nested(struct kvm_vcpu *vcpu)
+{
+        if (is_guest_mode(vcpu)) {
+                vcpu->arch.nested_run_pending =3D 0;
+                nested_vmx_vmexit(vcpu, -1, 0, 0);
+        }
+        free_nested(vcpu);
+}
+
+On the SVM side, there is no comparable faux VM-exit. Instead of
+calling nested_svm_vmexit(), the teardown of SVM nested state is an
+open-coded sequence. Maybe something like that would work better for
+VMX?
