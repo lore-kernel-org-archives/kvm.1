@@ -1,129 +1,116 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA10637F8C7
-	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 05:51:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D7B3806C2;
+	Tue,  8 Sep 2026 05:52:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788846714; cv=none; b=g0hJ5wsSYAD/52rFSS321CXyMmya1i+YAsiWfBZIEYua80YZLSRAfKS/Bl7+nbN/NSYnbZOQYYJ2rfrOYxUnT8SvVseecbHJvEV+CA9JsWWORZCgn8is+npzAkYY6NMR4bW155mzM1wKC+KH2hyfmcaK/A5KwJBS7rc1szk5lb0=
+	t=1788846721; cv=none; b=O2Mvux+4hkR4crhGVTeNfD+gPZOzdOhobSvIlT+HKOY8Jx7m9Gyr8nQTihJxApONx3o5n74SBy4d7z/szQWJgVMp97go9tMHEHPV2fpAc1BaBuyNF6rDmickwoAJ9sZqqR6dzf4+E6FKYNbhO1h0YxblplHm/8R9Tzuh5dgQ/T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788846714; c=relaxed/simple;
-	bh=o3eeGsX+yszXtSqzF2DLz1DisqDubEqdKzbb+20VdL8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pBGrWh1zneq1mDdfvokVGPGGDQH8fhdtQ01wV7ukfy+iFnARj2D2PUQiw9ANlW5pOUa/WQCixwii5MElFPwh7QHNoHhy5TzvoN0OMDyeU0Yp/r2LKPakwmRJ71CDRpZRh3+dNm7hU67LzOMm9QgSq4l2EYBrqI92GujcvNOj6Kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=myf7IeX/; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788846721; c=relaxed/simple;
+	bh=IQY618A+x2/mtzibgqxPgCZjSbsB2PlQ+GltbeJBgx8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=I/VojavZN+DmH4/lawIe0/iMjGNg9rNYr39c6klIzDmixC9jjAH86g6v/1aYgodHqLJAZOltS/YH69XAQFyf2kw3XjgNA5V5st8biJWB+7Z+ySFBj+fCXudGBzwazlMB/pcsFTxVPq3Sp+VnlOgKbYlAhJA5yYN8eJGmSj2RwPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bhTRDwyG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="myf7IeX/"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cc1c3c90074so3496064a12.2
-        for <kvm@vger.kernel.org>; Mon, 07 Sep 2026 22:51:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788846711; x=1789451511; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=eU2hqSZpbBss3ZrupUP6xipFsBQw4quqy4F00JT4x5Q=;
-        b=myf7IeX/+05Y3Tn1izrcmERgQS8Vfx6CVF6FW3ngqTaIdFSiIdG16WmihxH0YLjCCX
-         Gy5ceEaTSeNICeWToDHgXky4GkNV/P+0GHiJCu2v0PokfndhnE5qBcPjE4jcEIVVwkgv
-         CAj9wlbIlc/uweyvXM+mZOx2mdYUbxWVbfBiUnZn+AprpUtRpjXLMT3QUUCtxs8OCfKe
-         NzBtJmRAvJNrra8/hQ4X7VAz2+FTlXAzjgbFC7oiYBui0VffFPqUpQuOCuTSaBtLBG9q
-         IY27exNrhER6cm0kNq6kana4Uqp5MOkgL8AQtzg7Ffj7J0gT5TkbeET83r+hXzwwH/kb
-         UeGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788846711; x=1789451511;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eU2hqSZpbBss3ZrupUP6xipFsBQw4quqy4F00JT4x5Q=;
-        b=Pw1pYxgp0bSJAmNubByBEmQvLuIvO45Thn4oaWD7V7F9pevGIvQi9VEaFBO5GPtUP0
-         Qz5EyQoJYIqPSNX0T01YdSif8dDJf28kzY5jYGLX0BMc039z1usAlijalWpG0IOGhFi7
-         sEIwnNJvTv5sUnoDUraB+Y1Ed/Cg+wCdhWKgRErj0/yphKwIDrTWSeMiBLJbCQ1xiBGK
-         WdOb0euzvz9h5Hd8dU1JOvGkfOl/op2qwYS+TmunObGvhB+IKRPnoumathjOQylHm8TO
-         /RyJ5EEKKlqbOPtrx+R8OZDByc14Wjqw7ZSV5ykKW63twrhfZy/poTibpC0EYbVR1EiI
-         xMcw==
-X-Gm-Message-State: AFuF++mfS1UoyaV1DoOKGXF3h3AXCN+xM/blxkt3UVFJ9UiOUI7bIc5s
-	KcU6wSYdHYbRIn8rRn6CgimgnJ4wHr5D/4RPqdMlg5rQT1PNmm+UDKfJ
-X-Gm-Gg: AYBFou2olEL0sc6dypKaaegJeu05MViSYUEKTS2AXI/AF1pSBp+FlpUbxJ3o3o2IFXm
-	jf/w4u5kwlf0RD8WuW6T9p849X8orivAaPsDb30cn6f2zbhxHhGrS6RCbGdgJXCI3K6Y4W922rO
-	nBWLUKhkx/Eurat1rbTcPy8RiqXi8pMGRBGnEoeXwThD8z8A6i9fgUMO6WWFQf+/ZP9EkS6MQ7r
-	MO+FzZ7OStjpxS4wECrL2bjAEGxmGL8zQsk2PKWKa9gutWuGHVgpnWt4yuo1G58XJ6UI1/YI+Gp
-	CIELkexRM0IaDwUz41MR33pXJ3asumF6xNFtHrP5pe2NiNfTa/giTcp+W0zyUq/zpMdgmrHzw2n
-	lpwS0rAWBWKoy4IUB0+6Dz+puMBtwaug6JishIttgQSomAcAgKb69rbcpiiuR8YlnOjYzgsDaUi
-	qJujfnljZw3i1DFjfxtvoIlcDssap7obV+fiYO7ywfhTKTNz4nGdm2JWBzMr9zJTPWBrMcqoNkF
-	YodN5CYubb2eA==
-X-Received: by 2002:a05:6a21:648f:b0:3d1:5c01:e6cc with SMTP id adf61e73a8af0-3da39f7bf83mr40842064637.10.1788846711161;
-        Mon, 07 Sep 2026 22:51:51 -0700 (PDT)
-Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339a534df1sm37719041eec.7.2026.09.07.22.51.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 22:51:50 -0700 (PDT)
-From: Hemanth Selam <hemanth.selam@gmail.com>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	"Oliver O'Halloran" <oohall@gmail.com>,
-	Geoff Levand <geoff@infradead.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Shuah Khan <shuah@kernel.org>
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 2/2] powerpc: fix repeated words in comments
-Date: Tue,  8 Sep 2026 11:21:33 +0530
-Message-ID: <20260908055133.16469-3-hemanth.selam@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20260908055133.16469-1-hemanth.selam@gmail.com>
-References: <20260908055133.16469-1-hemanth.selam@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bhTRDwyG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49DF1F00A3A;
+	Tue,  8 Sep 2026 05:51:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788846720;
+	bh=EbNNWxYRveX7ae0z/qAwKZmp5cu2H1GROL1unsbWTH0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=bhTRDwyGHKtnWrPiuZOZpDs+VPz5PKXpyBOqjzADjiiDXeD1N/r6XGgOC8OpdkTNB
+	 UykZq+eQ/RnsBAhGo5FKqSZNsxvc+Ef5WNKcJ5s3KcOIqFBlTMrDkSv5R9U9m/1luv
+	 nkb14al8avBklALmO/95neErDaNgQifJts7n7jPAHHTTY+vLUy4CWSVEUrY/AYDl7+
+	 NPsiMAAuK+hvyS8E17UKZivVFfI5NtacBawG3zIhncd5tVRcRR3hPpOiCm19isRExm
+	 eNPKEH7haHh9lcRIKBB+7IJhllMB7PUZNbIjEni3G3gxMpIr9EhrRiBDDJqJrINw3Q
+	 budfO4lZm5LYg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 6/6] virtio_vdpa: implement synchronize_cbs()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Karl Mehltretter" <kmehltretter@gmail.com>
+Cc: "Vasily Gorbik" <gor@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>, dmitry.torokhov@gmail.com, linux-input@vger.kernel.org, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, kvm@vger.kernel.org
+In-Reply-To: <20260908053817.26065-7-kmehltretter@gmail.com>
+References: <20260908053817.26065-1-kmehltretter@gmail.com>
+ <20260908053817.26065-7-kmehltretter@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 08 Sep 2026 05:51:59 +0000
+Message-Id: <20260908055159.E49DF1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Drop words accidentally written twice, reported by checkpatch.pl as a
-possible repeated word.  Only touches comments, no code changes.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Assisted-by: Cursor:claude-opus-5
-Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
----
- arch/powerpc/kernel/paca.c             | 2 +-
- arch/powerpc/sysdev/xics/xics-common.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Pre-existing issues:
+- [High] Possible Use-After-Free of virtqueue memory in callback during fin=
+d_vqs error handling
+--
 
-diff --git a/arch/powerpc/kernel/paca.c b/arch/powerpc/kernel/paca.c
-index 0e263b97e016..2e0c5bac250d 100644
---- a/arch/powerpc/kernel/paca.c
-+++ b/arch/powerpc/kernel/paca.c
-@@ -101,7 +101,7 @@ static void *__init alloc_shared_lppaca(unsigned long size, unsigned long limit,
- /*
-  * See asm/lppaca.h for more detail.
-  *
-- * lppaca structures must must be 1kB in size, L1 cache line aligned,
-+ * lppaca structures must be 1kB in size, L1 cache line aligned,
-  * and not cross 4kB boundary. A 1kB size and 1kB alignment will satisfy
-  * these requirements.
-  */
-diff --git a/arch/powerpc/sysdev/xics/xics-common.c b/arch/powerpc/sysdev/xics/xics-common.c
-index c3fa539a9898..c2486b43c5cc 100644
---- a/arch/powerpc/sysdev/xics/xics-common.c
-+++ b/arch/powerpc/sysdev/xics/xics-common.c
-@@ -384,7 +384,7 @@ int xics_set_irq_type(struct irq_data *d, unsigned int flow_type)
- 	 * the corresponding descriptor bits mind you but those will in turn
- 	 * affect the resend function when re-enabling an edge interrupt.
- 	 *
--	 * Set set the default to edge as explained in map().
-+	 * Set the default to edge as explained in map().
- 	 */
- 	if (flow_type == IRQ_TYPE_DEFAULT || flow_type == IRQ_TYPE_NONE)
- 		flow_type = IRQ_TYPE_EDGE_RISING;
--- 
-2.48.1
+commit 05a7e5947030bc4c942e05c96bf1d657ed426d56
+Author: Karl Mehltretter <kmehltretter@gmail.com>
 
+virtio_vdpa: implement synchronize_cbs()
+
+virtio_vdpa relies on the core's synchronize_rcu() fallback for callback
+synchronization. This commit adds an SRCU domain per device and implements
+synchronize_cbs() with synchronize_srcu() to cover the callbacks regardless
+of the calling context.
+
+> diff --git a/drivers/virtio/virtio_vdpa.c b/drivers/virtio/virtio_vdpa.c
+> index 6bcf4567a9292..f9559b6b2e0b6 100644
+> --- a/drivers/virtio/virtio_vdpa.c
+> +++ b/drivers/virtio/virtio_vdpa.c
+[ ... ]
+> @@ -123,8 +128,22 @@ static irqreturn_t virtio_vdpa_config_cb(void *priva=
+te)
+>  static irqreturn_t virtio_vdpa_virtqueue_cb(void *private)
+>  {
+>  	struct virtqueue *vq =3D private;
+> +	struct virtio_vdpa_device *vd_dev =3D to_virtio_vdpa_device(vq->vdev);
+
+[Severity: High]
+This is a pre-existing issue, but could this callback be invoked
+concurrently on a freed vq, leading to a use-after-free when
+dereferencing vq->vdev?
+
+During driver probe, if virtio_vdpa_find_vqs() successfully creates some
+virtqueues but fails on a subsequent one, it jumps to err_setup_vq and
+calls virtio_vdpa_del_vqs():
+
+drivers/virtio/virtio_vdpa.c:virtio_vdpa_find_vqs() {
+    ...
+err_setup_vq:
+	virtio_vdpa_del_vqs(vdev);
+    ...
+}
+
+This tears down the previously created virtqueues. However, the callback is
+not cleared with set_vq_cb(..., NULL), nor does it synchronize with pending
+or concurrently running interrupt handlers (such as vp_vdpa_vq_handler).
+
+Could a spurious or device-initiated interrupt occurring right before or
+during vring_del_virtqueue(vq) race and cause virtio_vdpa_virtqueue_cb()
+to dereference the freed vq structure when accessing vq->vdev?
+
+> +	irqreturn_t ret;
+> +	int idx;
+> +
+> +	idx =3D srcu_read_lock(&vd_dev->cb_srcu);
+> +	ret =3D vring_interrupt(0, vq);
+> +	srcu_read_unlock(&vd_dev->cb_srcu, idx);
+> +
+> +	return ret;
+> +}
+> +
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908053817.2606=
+5-1-kmehltretter@gmail.com?part=3D6
