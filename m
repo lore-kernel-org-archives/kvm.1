@@ -1,237 +1,258 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from esa8.hc1455-7.c3s2.iphmx.com (esa8.hc1455-7.c3s2.iphmx.com [139.138.61.253])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292A73EEAC7
-	for <kvm@vger.kernel.org>; Mon,  7 Sep 2026 22:41:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D2926056C;
+	Tue,  8 Sep 2026 01:44:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.61.253
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788820864; cv=none; b=dz8I839qAzm/1/YpUasZ7zge6LwUiaDqMzAy0LHUP1XpsnYeXLw/4BkG7x2iksbGzmz+xlVFTOx78LAL5T8jkSOR38NcxZRnf1Wwxjlqkp+MMPP3RJT5WT2GyCVKjmT1FoJAa/vJ+POdTb3q3v16adMznxkpLW1VDGZNXcFXWu4=
+	t=1788831864; cv=none; b=s1kOAAla5Spmb87MJnTO50nn91qkdN6E3cU3fgmsawKVKUUF/JAtD5zmKGBJfhspVDAWdywOw0HQm61e+9zNtvR6RZYppueY4rA4Ck/wR4AWXLnedk5+A3Qwf8MmUdYhpbmGvea6bGj5E5q2OuUn3WUzvHYqJobZbIB+6/qikW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788820864; c=relaxed/simple;
-	bh=w6hnYrwGa6fUIEho02iLQbUb4586aB2uHSK/Hsp/sHI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WhPquq1G6pH11zCgPnzZN5PhggKWlSzfbtg5sVTW5qOVr/symBXcxGgtdmJqb6ukwKWKD82SbNbArcj+8i3xXJfswHhQ34R/g3b1uB5EgLnBfnophSAqurHP4SA0GP/ckfoG1xz0LCxVVMRAbZr2f7FGNGrgHoBzFf07yKmknNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CpNUMHaN; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tn/CXQ+o; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788831864; c=relaxed/simple;
+	bh=LvzJtPnZANUsV5VdV340HGark2+yZ1Mwn3pRAiG/vvU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a+0edtI7TugmLrdTYb47poYCJ1jFS5vALPNQ+znL6xCNDUGdQpwvtGn2TaQMTSsYV/4AD2zLfFBB8j5mCrTAiRT8Op4A9PEQpsHeZEI/NTAtnbxa8qQ0YIFqlnIwNoOGT6zcmY9SWfl3gmTnqc29LlxvhZvSFpxIegCyJ377hwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=c4h9H2kF; arc=none smtp.client-ip=139.138.61.253
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CpNUMHaN";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tn/CXQ+o"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788820862;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L602+dgOHuBuqXjtZSYxQyf+Lxw66t1x8qHXG257FZg=;
-	b=CpNUMHaNfUDnX8+wCMSlcEercrwuB8Xmn8f9uH54AY9RfQCTBzY1iz3qtbQPFPhz287fva
-	dXSiJmzT5JK7bKQzPA3smh4htnsoKgYc6/Is4ZertNfsQ2OskBzlO0O+3Fxqdo/9gVsHGN
-	eJ6QzG+Y0NpZuGKZCOCPgXEbMhrd2YM=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-cjCfwX1HPa-fkTLDZClbtQ-1; Mon, 07 Sep 2026 18:41:00 -0400
-X-MC-Unique: cjCfwX1HPa-fkTLDZClbtQ-1
-X-Mimecast-MFC-AGG-ID: cjCfwX1HPa-fkTLDZClbtQ_1788820860
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2db3734d06dso44084005ad.0
-        for <kvm@vger.kernel.org>; Mon, 07 Sep 2026 15:41:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788820860; x=1789425660; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=L602+dgOHuBuqXjtZSYxQyf+Lxw66t1x8qHXG257FZg=;
-        b=tn/CXQ+oas/ULJgVzaznDKIUVZ2KRzuCFHQyLPr1M1Ky0rlzG8CFl8JkHy0ihNrO62
-         035nVtvF7E0nbrtDXZbLOD1TuE0mzPkgBOhyMeZsoB+F5HsKBWcI35HdTYEWc+M5WvB7
-         EWXHhMJvxRw4ACi3xT8513Ptf/bTnI0ucAnuON3REAZ5hW6mnpBWjX+lWDUIywgc0NXK
-         V0wDE1tx2rlaL9Nk5lKKVBWQ6znCwfyjt++V+T5IUTHUnZhftUzyKzRLF+7Uj4byP1kB
-         WAO6ytCUWiO90T608JT6z+3IPSBqmpZ+3e8yNrJXU7ydlbnlnxbiH1k6GoR8w0hZyWZn
-         1IIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788820860; x=1789425660;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=L602+dgOHuBuqXjtZSYxQyf+Lxw66t1x8qHXG257FZg=;
-        b=Q0rit2BjGnGc7hkNdwWipsDjnag38MzzrQKW9t0C9a2hULY7UKMimAhBREdfUilZMB
-         WqgFej4tdY2nPwB1WfBhi9ldQjtmc70wNlw+hOUFXVgemW0bcW6GshqP3y5K6nQ8gHIW
-         FN2YTAOVSYvkIyNPZJvxL4pXoG9nwtReLm9+6j6hlLhdYZ+Iy/+XuzJn7HQGJG9nUxqG
-         ahzXiOiVqSVt1DbmKYU+pt7IjihpA/JUJVS6wUAUK+w86lNLXTayhcLuUFE2RKPTOSel
-         nb52N4R1c4+hmhDmgG/fMNT9UPn4ziiMP3zh4l8MKx0b+b3Bdr0X5s4AV6/hp8eny42B
-         j2Wg==
-X-Forwarded-Encrypted: i=1; AKwUvBxsExwB24HjjD/MzSkVKenQwYiNvYTegRnKUzzW6yqvxmrDoTtJ1zyQHZwqQ2LJGtUPifs=@vger.kernel.org
-X-Gm-Message-State: AFuF++kjzPlngWL3jeIvncP+AHwa7ydnhzi+mCSj9KNC9cgTJfx6sqgC
-	B9FHXigrdOBT6yGFTPYdig4X0CbAwe7+RIxngdYH3icbTKKz1MTcInw0c6Kvg11Iqv0dRMvbrlG
-	T6VPKBfo55Jr4aV6DPZlHyAKVZOv0yNM5iCLsMBFywS+w76HM2QFbFQ==
-X-Gm-Gg: AYBFou2wIfoVxkPjAMOQ5oxZyeWQZPTskipwr4CZIA86ejK7XUEm0ql+KolyYHdm9xa
-	fRUqw3g3+S6GLfCz9f2uKNNMbnqWZwdjlZDwmXaXaFBmTalu3MDExImoH59kPKC1fH90Kj/+I4v
-	uCmiml5Km9zB+08TBy1+fJOxI65SiZbVYVDzMgEq1dDBfnJ0yWZMf5gpBhFhVq6eDY5er38gkQ6
-	Xj2oVGlO9iCZWsO5jYO4enEZ2P4ZMBKiN26trwoT7dF+D+lHfslbWBk1NENi+a0F/AtjnEpNt47
-	z0W39KBbTVHg/EiQvn1z5FWGnSpgDazsM+C8qXHaNY+atWjum+qgkPb2k9kNsorRz/YJOSHPsqx
-	3UhRS5J6GciS+SSIegs3rYTrpJA3Waj7OYiirZBTL1A==
-X-Received: by 2002:a17:902:6ac3:b0:2ca:6c8:abd8 with SMTP id d9443c01a7336-2db127cde0fmr287844955ad.12.1788820859668;
-        Mon, 07 Sep 2026 15:40:59 -0700 (PDT)
-X-Received: by 2002:a17:902:6ac3:b0:2ca:6c8:abd8 with SMTP id d9443c01a7336-2db127cde0fmr287844615ad.12.1788820859141;
-        Mon, 07 Sep 2026 15:40:59 -0700 (PDT)
-Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db146b9691sm49351165ad.0.2026.09.07.15.40.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Sep 2026 15:40:58 -0700 (PDT)
-Message-ID: <64533fd0-5fe7-4839-8302-c5b6674bcb5a@redhat.com>
-Date: Tue, 8 Sep 2026 08:40:50 +1000
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="c4h9H2kF"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1788831862; x=1820367862;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=LvzJtPnZANUsV5VdV340HGark2+yZ1Mwn3pRAiG/vvU=;
+  b=c4h9H2kFVWROXM9QA4JudcPP3nkljDf+rCqmTToaNse7lKDTTLcv1Xyc
+   XzBjCu2BBdAVBNsPeXJjEI/h6nABLldSXNKHuGFIjAH6/mv7Y1WnjEBI5
+   B5imRaDyJ6KLtASl4kn+4fTHmUAwiW/iFQNmcofDtxdVWjY+9by4DDEUY
+   QhiANIDFNFj2+dfdhViExXWzlwWBriVTneL5YOKWTCb921WSJqhw5yRM7
+   qSFnnKrJ6odys017Y2LwYd1UbJpgAfOkcjm9dniDSzsj094RIt2M1DQYw
+   g3JX9khH97x1zG908dpN36PWMqF0aZ2fx+hmaO4a0i3t7m13MbfS3oqJr
+   w==;
+X-CSE-ConnectionGUID: o/LawgO/T+OvnN2FulMluw==
+X-CSE-MsgGUID: vfpNLy7aSyO4Fu9FXW84+w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="242226078"
+X-IronPort-AV: E=Sophos;i="6.25,268,1779116400"; 
+   d="scan'208";a="242226078"
+Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
+  by esa8.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2026 10:44:20 +0900
+Received: from az2uksmgm1.o.css.fujitsu.com (unknown [10.151.22.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id E8F2B1002B9C;
+	Tue,  8 Sep 2026 01:44:19 +0000 (UTC)
+Received: from az2nlsmom2.o.css.fujitsu.com (unknown [10.150.26.200])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id 9D52E8D29D2;
+	Tue,  8 Sep 2026 01:44:19 +0000 (UTC)
+Received: from sm-arm-grace07 (unknown [10.124.178.20])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmom2.o.css.fujitsu.com (Postfix) with ESMTPS id 0B0EE18002CD;
+	Tue,  8 Sep 2026 01:44:13 +0000 (UTC)
+Date: Tue, 8 Sep 2026 10:44:10 +0900
+From: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Takayuki Okamoto <tokamoto@fujitsu.com>
+Subject: Re: [PATCH 1/2] KVM: selftest: arm64: Support 5-level paging in
+ stage 1 translation table
+Message-ID: <ap9oag87vZiuTVer@sm-arm-grace07>
+References: <20260826-arm64-52bit-va-v1-0-14ec98211363@fujitsu.com>
+ <20260826-arm64-52bit-va-v1-1-14ec98211363@fujitsu.com>
+ <CA+EHjTy6EH-d=O+dtRdWdTUkS0zkXeW=auxiK6N5Dc-yihrYRw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 3/7] firmware: arm_rmm: Configure the RMM with the
- host's page size
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, sashiko-reviews@lists.linux.dev
-Cc: kvmarm@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
- kvm@vger.kernel.org, Oliver Upton <oupton@kernel.org>
-References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
- <20260907095942.1140734-4-suzuki.poulose@arm.com>
- <20260907101446.1DA321F00A3A@smtp.kernel.org>
- <bade4920-2db1-4a8a-99d1-ca2694647ec8@arm.com>
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <bade4920-2db1-4a8a-99d1-ca2694647ec8@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+EHjTy6EH-d=O+dtRdWdTUkS0zkXeW=auxiK6N5Dc-yihrYRw@mail.gmail.com>
 
-Hi Suzuki,
-
-On 9/7/26 10:02 PM, Suzuki K Poulose wrote:
-> On 07/09/2026 11:14, sashiko-bot@kernel.org wrote:
->> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
->> - [High] The SMC call leaves parameters X2-X7 uninitialized, violating the RMM's RES0 requirement.
->> - [High] The `struct rmm_config` fields are populated using native endianness, which breaks on Big Endian kernels.
->> -- 
->>
->> commit 1741e17729c2ff5e23bc8bfb00cc50a61f38ebb7
->> Author: Steven Price <steven.price@arm.com>
->> firmware: arm_rmm: Configure the RMM with the host's page size
->>
->> This commit adds support to configure the RMM's granule size to match the
->> host's page size during kernel initialization. It reads the feature
->> registers to ensure the requested page size is supported and sends the
->> configuration to the RMM via an SMC call.
->>
->>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
->>> index 008a783407b4e..76f91c145e1fd 100644
->>> --- a/drivers/firmware/arm_rmm/rmi.c
->>> +++ b/drivers/firmware/arm_rmm/rmi.c
->>> @@ -77,6 +77,60 @@ static int rmi_read_features(void)
->>>       return 0;
->>>   }
->>> +static int rmi_configure(void)
->>> +{
->>> +    unsigned long granule_feature;
->>> +    unsigned long granule_size;
->>> +    int ret = 0;
->>> +    struct rmm_config *config;
->>> +
->>> +    switch (PAGE_SIZE) {
->> [ ... ]
->>> +
->>> +    config = (struct rmm_config *)get_zeroed_page(GFP_KERNEL);
->>> +    if (!config)
->>> +        return -ENOMEM;
->>> +
->>> +    config->rmi_granule_size = granule_size;
->>> +
->>> +    /*
->>> +     * For now we set the tracking_region_size to 0 which is the only option
->>> +     * for 4KB PAGE_SIZE (1GB for 4KB PAGE_SIZE, 32MB/512MB for 16KB/64KB).
->>> +     * TODO: Support other tracking sizes via Kconfig option for other
->>> +     * PAGE_SIZES
->>> +     */
->>> +    config->tracking_region_size = 0;
->>
->> [Severity: High]
->> Does this code handle endianness correctly?
->>
->> The struct rmm_config fields are populated using native u64 assignments.
->> On an ARM64 kernel compiled with CONFIG_CPU_BIG_ENDIAN=y, this writes
->> big-endian bytes into the shared memory. The RMM, which runs in little-endian
->> at EL2, will misinterpret these fields.
->>
->> Will this cause the RMM firmware to read invalid configuration values (like a
->> byte-swapped granule size) and fail to configure, breaking RMI support on Big
->> Endian systems?
->>
+Hi Fuad,
+On Fri, Sep 04, 2026 at 09:38:39AM +0100, Fuad Tabba wrote:
+> Hi Itaru,
 > 
-> We don't plan to support RMM for Big Endian Linux. I have now made the ARCH_SUPPORTS_RMM to depend on !CPU_BIG_ENDIAN
+> The usual subject prefix in the tree is "KVM: arm64: selftests:", for
+> this patch and the next one.
+
+Sure. Fix in v2.
+> On Tue, 25 Aug 2026 at 22:18, Itaru Kitayama <itaru.kitayama@fujitsu.com> wrote:
+> >
+> > Add p4d_index() for when 5-level paging required, i.e., V52 guest mode
+> > IDs. With the index helper function, _virt_pg_map() handles 5-level
 > 
+> Only VM_MODE_P52V52_4K has five levels. The 16K and 64K V52 modes get
+> four and three, so this is for the 4K granule rather than for V52
+> modes as a class.
 
-You probably need to avoid referring to CPU_BIG_ENDIAN as it's being dropped
-by PATCH[v2 13/14] in Will's series to removed unused big-endian support on
-arm64 [1].
+Yes, understood. Will update the commit log.
 
-[1] [PATCH v2 00/14] arm64: Remove unused big-endian support
-     (https://lore.kernel.org/linux-arm-kernel/20260907163726.17104-14-will@kernel.org/)
+> 
+> ...
+> 
+> >  u64 *virt_get_pte_hva_at_level(struct kvm_vm *vm, gva_t gva, int level)
+> >  {
+> > +       int start_level = 4 - vm->mmu.pgtable_levels;
+> >         u64 *ptep;
+> >
+> > +       TEST_ASSERT(level >= start_level && level <= 3,
+> > +                   "Invalid translation level %d, valid range is %d-3",
+> > +                   level, start_level);
+> > +
+> >         if (!vm->mmu.pgd_created)
+> >                 goto unmapped_gva;
+> >
+> >         ptep = addr_gpa2hva(vm, vm->mmu.pgd) + pgd_index(vm, gva) * 8;
+> >         if (!ptep)
+> >                 goto unmapped_gva;
+> > -       if (level == 0)
+> > +       /*
+> > +        * Stage-1 translation starts at level -1 for a five-level page
+> > +        * table, and at levels 0, 1, or 2 for four-, three-, or two-level
+> > +        * page tables, respectively.
+> > +        */
+> > +       if (level == start_level)
+> 
+> 
+> This changes what level means for the existing three-level modes:
+> level 0 used to return the top-level entry and now trips the assert,
+> level 1 used to return the leaf and now returns the top level. No
+> caller in tree asks for either of those two levels, and the new
+> numbering matches the architecture.
+
+Yes, as you checked this change won't break current tests, so if you
+have better comments I will replace it with yours.
+
+> 
+> ...
+> 
+> > @@ -321,12 +356,14 @@ void aarch64_vcpu_setup(struct kvm_vcpu *vcpu, struct kvm_vcpu_init *init)
+> >         case VM_MODE_PXXVYY_4K:
+> >                 TEST_FAIL("AArch64 does not support 4K sized pages "
+> >                           "with ANY-bit physical address ranges");
+> > +       case VM_MODE_P52V52_64K:
+> 
+> These VM_MODE_ enumerators arrive in patch 2, so this patch does not
+> build on its own:
+> 
+>   lib/arm64/processor.c:359:7: error: use of undeclared identifier
+> 'VM_MODE_P52V52_64K'; did you mean 'VM_MODE_P52V48_64K'?
+>   lib/arm64/processor.c:360:7: error: duplicate case value 'VM_MODE_P52V48_64K'
+> 
+> There are other build errors from the same cause. Could you move the
+> enum values and their vm_guest_mode_string()/vm_guest_mode_params[]
+> entries into this patch, or a new one altogether?
+
+Yes, I have rearranged the series to avoid this.
+
+> 
+> >         case VM_MODE_P52V48_64K:
+> >         case VM_MODE_P48V48_64K:
+> >         case VM_MODE_P40V48_64K:
+> >         case VM_MODE_P36V48_64K:
+> >                 tcr_el1 |= TCR_TG0_64K;
+> >                 break;
+> > +       case VM_MODE_P52V52_16K:
+> >         case VM_MODE_P52V48_16K:
+> >         case VM_MODE_P48V48_16K:
+> >         case VM_MODE_P40V48_16K:
+> > @@ -334,6 +371,7 @@ void aarch64_vcpu_setup(struct kvm_vcpu *vcpu, struct kvm_vcpu_init *init)
+> >         case VM_MODE_P36V47_16K:
+> >                 tcr_el1 |= TCR_TG0_16K;
+> >                 break;
+> > +       case VM_MODE_P52V52_4K:
+> >         case VM_MODE_P52V48_4K:
+> >         case VM_MODE_P48V48_4K:
+> >         case VM_MODE_P40V48_4K:
+> > @@ -348,6 +386,9 @@ void aarch64_vcpu_setup(struct kvm_vcpu *vcpu, struct kvm_vcpu_init *init)
+> >
+> >         /* Configure output size */
+> >         switch (vm->mode) {
+> > +       case VM_MODE_P52V52_4K:
+> > +       case VM_MODE_P52V52_16K:
+> > +       case VM_MODE_P52V52_64K:
+> >         case VM_MODE_P52V48_4K:
+> >         case VM_MODE_P52V48_16K:
+> >         case VM_MODE_P52V48_64K:
+> > @@ -578,6 +619,42 @@ static u32 max_ipa_for_page_size(u32 vm_ipa, u32 gran,
+> >                 return min(vm_ipa, 48U);
+> >  }
+> >
+> > +u32 aarch64_get_supported_va_size(void)
+> 
+> This repeats aarch64_get_supported_page_sizes() below it and builds a
+> second probe VM one line after the first. Could it take a u32 *va
+> out-param, so both ID registers come off the one vCPU?
+> 
+> VARange is the 52-bit VA indicator for the 64K granule only, so a bare
+> 52 or 48 reads as granule-independent. The caller in patch 2 only uses
+> it for 64K, so nothing is wrong today.
+
+Yes, I've dropped the _va_size() function and instead, expanded a bit
+as you suggested the aarch64_get_supported_page_sizes() to check if vcpu
+can address upto 52-bit VA space or not (48-bit max). 
 
 Thanks,
-Gavin
-
->>> +
->>> +    ret = rmi_rmm_config_set(virt_to_phys(config));
->>> +    if (ret) {
->>> +        pr_err("RMM config set failed\n");
->>> +        ret = -EINVAL;
->>> +    }
->>> +
->>> +    free_page((unsigned long)config);
->>> +    return ret;
->>> +}
->> [ ... ]
->>> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
->>> index 2fb1f7f86d71e..9aa27697e2377 100644
->>> --- a/include/linux/arm-rmi-cmds.h
->>> +++ b/include/linux/arm-rmi-cmds.h
->>> @@ -12,6 +12,23 @@
->>>   unsigned long rmi_feat_reg(unsigned long id);
->>> +/**
->>> + * rmi_rmm_config_set() - Configure the RMM
->>> + * @cfg_ptr: PA of a struct rmm_config
->>> + *
->>> + * Sets configuration options on the RMM.
->>> + *
->>> + * Return: RMI return code
->>> + */
->>> +static inline int rmi_rmm_config_set(unsigned long cfg_ptr)
->>> +{
->>> +    struct arm_smccc_res res;
->>> +
->>> +    arm_smccc_1_1_invoke(SMC_RMI_RMM_CONFIG_SET, cfg_ptr, &res);
->>
->> [Severity: High]
->> Does this SMC call leave parameters x2 through x7 uninitialized?
->>
->> The arm_smccc_1_1_invoke macro only generates inline assembly constraints
->> for the explicitly provided arguments. It does not zero-pad omitted arguments,
->> leaving registers x2 through x7 with whatever was previously in them.
->>
->> Since the RMM firmware expects unused SMC parameters to be zero (RES0),
->> could passing uninitialized values cause the RMM to reject the command
->> with an INVALID_PARAMETER error and sporadically break RMM initialization?
+Itaru.
 > 
-> Correct, I have now moved all RMI calls to smccc_1_2, making sure that
-> all the undefined arguments are initialised to 0.
-> 
-> Cheers
-> Suzuki
+> Cheers,
+> /fuad
 > 
 > 
->>
->>> +
->>> +    return res.a0;
->>> +}
->>
-> 
-> 
-
+> > +{
+> > +       struct kvm_vcpu_init preferred_init = {};
+> > +       int kvm_fd, vm_fd, vcpu_fd, err;
+> > +       u64 val;
+> > +       u32 va_range;
+> > +       struct kvm_one_reg reg = {
+> > +               .id     = KVM_ARM64_SYS_REG(SYS_ID_AA64MMFR2_EL1),
+> > +               .addr   = (u64)&val,
+> > +       };
+> > +
+> > +       kvm_fd = open_kvm_dev_path_or_exit();
+> > +       vm_fd = __kvm_ioctl(kvm_fd, KVM_CREATE_VM, NULL);
+> > +       TEST_ASSERT(vm_fd >= 0, KVM_IOCTL_ERROR(KVM_CREATE_VM, vm_fd));
+> > +
+> > +       vcpu_fd = ioctl(vm_fd, KVM_CREATE_VCPU, 0);
+> > +       TEST_ASSERT(vcpu_fd >= 0, KVM_IOCTL_ERROR(KVM_CREATE_VCPU, vcpu_fd));
+> > +
+> > +       err = ioctl(vm_fd, KVM_ARM_PREFERRED_TARGET, &preferred_init);
+> > +       TEST_ASSERT(err == 0, KVM_IOCTL_ERROR(KVM_ARM_PREFERRED_TARGET, err));
+> > +
+> > +       err = ioctl(vcpu_fd, KVM_ARM_VCPU_INIT, &preferred_init);
+> > +       TEST_ASSERT(err == 0, KVM_IOCTL_ERROR(KVM_ARM_VCPU_INIT, err));
+> > +
+> > +       err = ioctl(vcpu_fd, KVM_GET_ONE_REG, &reg);
+> > +       TEST_ASSERT(err == 0, KVM_IOCTL_ERROR(KVM_GET_ONE_REG, err));
+> > +
+> > +       va_range = FIELD_GET(ID_AA64MMFR2_EL1_VARange, val);
+> > +
+> > +       close(vcpu_fd);
+> > +       close(vm_fd);
+> > +       close(kvm_fd);
+> > +
+> > +       return va_range >= ID_AA64MMFR2_EL1_VARange_52 ? 52 : 48;
+> > +}
+> > +
+> >  void aarch64_get_supported_page_sizes(u32 ipa, u32 *ipa4k,
+> >                                       u32 *ipa16k, u32 *ipa64k)
+> >  {
+> >
+> > --
+> > 2.43.0
+> >
