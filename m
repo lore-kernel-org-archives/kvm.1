@@ -1,13 +1,14 @@
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B027511E94;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B1D7513565;
 	Tue,  8 Sep 2026 10:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788863626; cv=none; b=dTBMxTjJFJJDGbf4T1qofiGyhQaErqD5yziaaiE0B4b797V7nXLm5OidpGmIeBg9HS7NIrFBlEsVnxyWT6UGuNbhulK7A/QH++5GWi5uJr2tfJwRf1bE2d/T6RnuWqVdIQWLtBVGD/7Nw9iFNardnYCHNZBwY6COZq14h0Z7D9A=
+	t=1788863626; cv=none; b=NvqGx6PYCxYG5WKWRaDYOqol547BnPvgcUp6Byp0RD1dOwxMbO+4SG4ADL/SYqzGWnnTkIQKJDnqs11cUXjTuacOF39rXGEeNtSQiKEOTnxIMCccX2Eqhb7rcifDQKaoqhQcL0nXvkQEvPKmkI2xVN74lGSTMfC5NjObOSPEt94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788863626; c=relaxed/simple;
-	bh=TAR/+kHednxrxzylj9Ii7imx5KDUfn6/JXlxX+CWCs4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=je5/UPTMvL7w/TdaTmYxMBuYgY2Zn35wp63/wgEBHLCwwMQS7oGjIPtXVRyRchb5c/XF+U3Yn8JU4jPmO+xu2aCN+ePNMYB2XIq5NgW0vprDGnipx3dcsKO4qjXExDjreDHSwiHVzWxeYIF26qTX0UTKNxcI3cKk0pM29OceHvc=
+	bh=3U1p75q0QikEpCOFC6SMg7yKgMt6FVSnWoRhJCHVLQ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HriadWktAVALVzYz7c7BdxdfBGyYG/70ipG+KBrumrd5SOyzOK8WFnUNVvkbJNp1g/E4/K/JXcWN3Dy2K3Az6t/j8jtRjtNrrZNYEbmIgCvSPwqznboLDA8gR7Zt+QgchWM/IW5p/x7fMLAoNcrYjwO2gQV1fEbm1idg1zoNpfQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
@@ -15,8 +16,8 @@ Received: from io.fritz.box (p200300f6af085a00d84fb33a51badfd9.dip0.t-ipconnect.
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id D3CA72085C1;
-	Tue,  8 Sep 2026 12:33:40 +0200 (CEST)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 0C42F20A1D8;
+	Tue,  8 Sep 2026 12:33:41 +0200 (CEST)
 From: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>
@@ -32,10 +33,12 @@ Cc: Michael Roth <michael.roth@amd.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	coconut-svsm@lists.linux.dev
-Subject: [PATCH v2 0/8] KVM: SVM: Support direct setting of VMSA for SEV-SNP guests
-Date: Tue,  8 Sep 2026 12:33:30 +0200
-Message-ID: <20260908103338.427254-1-joro@8bytes.org>
+Subject: [PATCH v2 1/8] KVM: SEV: Document SNP direct VMSA userspace ABI
+Date: Tue,  8 Sep 2026 12:33:31 +0200
+Message-ID: <20260908103338.427254-2-joro@8bytes.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260908103338.427254-1-joro@8bytes.org>
+References: <20260908103338.427254-1-joro@8bytes.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,93 +49,109 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <joerg.roedel@amd.com>
 
-Hi,
+Document the VMSA launch-update page type, the vCPU-scoped state get and
+set commands, and the VM-scoped direct-VMSA capability in one place.
 
-here is the updated version of KVM-AMD changes to allow user-space to
-directly set the boot VMSA (direct-vmsa) for an SEV-SNP virtual
-machine.
+Describe the ordering and argument requirements for enabling direct-VMSA
+mode, and contrast its VMSA allocation and measurement behavior with the
+legacy launch flow.
 
-The direct-vmsa support is required for stable launch measurements
-when loading the initial SEV-SNP guest image from an IGVM file.
-Without this support KVM measures a VMSA at a fixed GPA for every
-VCPU, which makes the launch measurement dependent on the number of
-VCPUs. Besides that the current KVM VMSA-allocation behavior poses
-challenges for live migration of SEV-SNP VMs. The current behavior is
-fully preserved when direct-vmsa is not used.
+Assisted-by: LLM
+---
+ .../virt/kvm/x86/amd-memory-encryption.rst    | 66 ++++++++++++++++++-
+ 1 file changed, 64 insertions(+), 2 deletions(-)
 
-For a longer justification have a look at this email from the v1
-thread:
-	
-	https://lore.kernel.org/kvm/aiqwjn2DVOumfr3T@8bytes.org/
-
-One of the main concerns with the previous version was the user-space
-API, which has changed significantly in v2. The API now consists of
-three parts:
-
-	- A new KVM_CAP_SNP_DIRECT_VMSA VM-level capability which can
-	  be queried and enabled from user-space. When user-space
-	  enabled the capability, KVM will no longer allocate VMSA
-	  pages when creating VCPUs. This means that the capability
-	  can only be enabled before any VCPUs are created.
-
-	- Allow VMSA pages in SNP launch updates. This was already
-	  present in the previous version, but has different semantics
-	  now. In this version all it does is adding the VMSA pages to
-	  the initial image and the launch measurement. 
-	
-	- A new per-VCPU MEM_ENC operation to get and set the VMSA and
-	  GHCB addresses of a VCPU. User-space will use this operation
-	  to set the GPA of the launch VMSA of the VCPUs, but can
-	  also query and set the addresses during runtime. 
-
-	  This operation is designed to support the requirements of
-	  future live-migration support, which needs to be able to set
-	  and get VMSA as well as GHCB addresses. Since this
-	  functionality is a superset of the operation needed for
-	  direct-vmsa support, it goes the extra mile and allows
-	  import and export of all SEV-SNP specific VCPU state.
-
-For v2 I heavily used AI (codex with gpt-5.6-sol medium) and countless
-iterations with manual review and testing. All changes are reviewed by
-me, tested with KVM selftests, and booting an SVSM (as far as it
-gets without planes support). Lockdep was enabled during testing as
-well.
-
-Please review.
-
--Joerg
-
-Joerg Roedel (8):
-  KVM: SEV: Document SNP direct VMSA user-space ABI
-  KVM: SVM: Implement GET_AP_APIC_IDS NAE event
-  KVM: SVM: Hold SRCU while reloading guest-owned VMSAs
-  KVM: SEV: Add direct VMSA capability
-  KVM: SEV: Allow VMSA pages in SNP launch updates
-  KVM: SEV: Add SNP vCPU state get and set commands
-  KVM: selftests: Test the SNP APIC-ID-list GHCB request
-  KVM: selftests: Test SNP vCPU state and direct VMSA launch
-
- .../virt/kvm/x86/amd-memory-encryption.rst    |  66 ++-
- arch/x86/include/asm/kvm-x86-ops.h            |   1 +
- arch/x86/include/asm/kvm_host.h               |   1 +
- arch/x86/include/asm/sev-common.h             |   1 +
- arch/x86/include/uapi/asm/kvm.h               |  13 +
- arch/x86/include/uapi/asm/svm.h               |   1 +
- arch/x86/kvm/svm/sev.c                        | 287 +++++++++++-
- arch/x86/kvm/svm/svm.c                        |  23 +
- arch/x86/kvm/svm/svm.h                        |   2 +
- arch/x86/kvm/x86.c                            |   6 +
- include/uapi/linux/kvm.h                      |   2 +
- tools/testing/selftests/kvm/Makefile.kvm      |   2 +
- tools/testing/selftests/kvm/include/x86/sev.h |  49 ++
- .../selftests/kvm/x86/sev_snp_apic_id_test.c  | 180 ++++++++
- .../kvm/x86/sev_snp_direct_vmsa_test.c        | 421 ++++++++++++++++++
- 15 files changed, 1039 insertions(+), 16 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/x86/sev_snp_apic_id_test.c
- create mode 100644 tools/testing/selftests/kvm/x86/sev_snp_direct_vmsa_test.c
-
-
-base-commit: df2908090cda368b01ff43709f51890076c56157
+diff --git a/Documentation/virt/kvm/x86/amd-memory-encryption.rst b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+index bd04a908a8db..427b673c3832 100644
+--- a/Documentation/virt/kvm/x86/amd-memory-encryption.rst
++++ b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+@@ -536,6 +536,7 @@ Returns: 0 on success, < 0 on error, -EAGAIN if caller should retry
+ where the allowed values for page_type are #define'd as::
+ 
+         KVM_SEV_SNP_PAGE_TYPE_NORMAL
++        KVM_SEV_SNP_PAGE_TYPE_VMSA
+         KVM_SEV_SNP_PAGE_TYPE_ZERO
+         KVM_SEV_SNP_PAGE_TYPE_UNMEASURED
+         KVM_SEV_SNP_PAGE_TYPE_SECRETS
+@@ -544,7 +545,68 @@ where the allowed values for page_type are #define'd as::
+ See the SEV-SNP spec [snp-fw-abi]_ for further details on how each page type is
+ used/measured.
+ 
+-20. KVM_SEV_SNP_LAUNCH_FINISH
++``KVM_SEV_SNP_PAGE_TYPE_VMSA`` creates VMSA pages as part of the measured
++initial image.  A request must contain exactly one 4 KiB VMSA page, but the
++command may be used multiple times.  Creating a VMSA page does not associate it
++with a vCPU; use ``KVM_SEV_SNP_SET_VCPU_STATE`` on the intended vCPU file
++descriptor before launch finish to make that association.  KVM treats the
++VMSA contents as guest-owned data, but requires VMPL 0 and a ``sev_features``
++value that matches the VM's configured VMSA features.
++
++20. KVM_SEV_SNP_GET_VCPU_STATE / KVM_SEV_SNP_SET_VCPU_STATE
++------------------------------------------------------------
++
++These commands get or set the VMSA and GHCB addresses for the vCPU on whose
++file descriptor the command is issued.  Unlike the other SEV commands,
++userspace must issue KVM_MEMORY_ENCRYPT_OP on a vCPU file descriptor.  The
++capability is reported as ``KVM_CAP_SNP_VCPU_STATE``.
++
++Parameters (in/out): struct kvm_sev_snp_vcpu_state
++
++Returns: 0 on success, -negative on error
++
++::
++
++        #define KVM_SEV_SNP_VCPU_STATE_VMSA_VALID        _BITULL(0)
++        #define KVM_SEV_SNP_VCPU_STATE_GHCB_VALID        _BITULL(1)
++
++        struct kvm_sev_snp_vcpu_state {
++                __u64 valid_fields;
++                __u64 vmsa_gpa;
++                __u64 ghcb_gpa;
++                __u64 pad[5];           /* Must be zero */
++        };
++
++``KVM_SEV_SNP_GET_VCPU_STATE`` returns the current addresses and sets the
++corresponding bit in ``valid_fields`` for each valid address.
++
++``KVM_SEV_SNP_SET_VCPU_STATE`` sets addresses whose validity bits are present
++and invalidates addresses whose bits are absent.  The command must be issued
++after launch start and before KVM_SEV_SNP_LAUNCH_FINISH, and the VM must have
++enabled ``KVM_CAP_SNP_DIRECT_VMSA``.  A valid VMSA GPA must be backed by
++guest_memfd and populated.  The GPA must be 4-KiB aligned.  A valid GHCB
++address is copied without inspecting its backing page.  Nonzero reserved
++fields or unknown validity bits are rejected.
++
++``KVM_CAP_SNP_DIRECT_VMSA`` is a VM-scoped capability that selects direct-VMSA
++mode.  Userspace enables it with ``KVM_ENABLE_CAP`` on an SNP VM before
++creating any vCPUs.  ``flags`` and all elements of ``args`` must be zero.
++Enabling the capability on a non-SNP VM or after creating a vCPU is rejected.
++
++In direct-VMSA mode, KVM does not allocate a KVM-owned VMSA when a vCPU is
++created and does not generate or measure one at launch finish.  All launch
++VMSAs are owned and supplied by userspace.  Valid VMSAs selected with
++``KVM_SEV_SNP_SET_VCPU_STATE`` are preserved, while vCPUs without a valid VMSA
++have no runnable VMSA until the guest uses SNP AP creation to supply one.  If
++the capability is not enabled, launch finish retains the legacy behavior of
++generating and measuring a KVM-owned VMSA for every vCPU.  VMSAs that were
++measured but not selected remain ordinary valid pages in the initial image.
++
++Direct VMSAs make the launch measurement independent of KVM's selected VMSA
++GPA and of the configured vCPU count.  This gives VMMs a stable launch
++measurement across hypervisors.
++
++21. KVM_SEV_SNP_LAUNCH_FINISH
+ -----------------------------
+ 
+ After completion of the SNP guest launch flow, the KVM_SEV_SNP_LAUNCH_FINISH
+@@ -572,7 +634,7 @@ Returns: 0 on success, -negative on error
+ See SNP_LAUNCH_FINISH in the SEV-SNP specification [snp-fw-abi]_ for further
+ details on the input parameters in ``struct kvm_sev_snp_launch_finish``.
+ 
+-21. KVM_SEV_SNP_ENABLE_REQ_CERTS
++22. KVM_SEV_SNP_ENABLE_REQ_CERTS
+ --------------------------------
+ 
+ The KVM_SEV_SNP_ENABLE_REQ_CERTS command will configure KVM to exit to
 -- 
 2.53.0
 
