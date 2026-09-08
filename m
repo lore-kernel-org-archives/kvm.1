@@ -1,319 +1,464 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010054.outbound.protection.outlook.com [52.101.85.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A9A3B2FD0;
-	Tue,  8 Sep 2026 20:21:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788898864; cv=none; b=g5u0oFwBGS3gJhucL1FTycsaBSTyYi09M4rWy4D9JH6c8R9LJSaMYwCodrrY+ZywSpDZVwdFjqtx5y+dVtNGraFNh12+ngYVhUgTfd+DrnGs/bJpCqpuzlJB/08+IJumn3WrweXjBKyGaCzu0ubK+DTZ9+6ha0g1kK+wz4ysIJU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788898864; c=relaxed/simple;
-	bh=kPVMWaJCwo1lhrTWXad/wqA8hcD1f6brZZ1kpIuur1c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lcIRzwwOx48RTwkHoU58T3dO9AsJBufp5Nt4Iivx8DcPEkSSAINpFJcQD0QZp7ohW0P8UlZ1Zo9ecP62O3HvlDp8crc0n5w7W/EBmwsyHsFp1u6l1n9UeiEnKbKQ7jATOSsJCk+WzmT2xK3iELz2/u0A2m7lZgWD4oujt7kBkBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AEp1REBG; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63AE83AD506;
+	Tue,  8 Sep 2026 20:21:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788898904; cv=fail; b=QsX3uK+uN8d1VES3Rg/spzAGA+0mlzTBB7sxGvgfQdvvh5ub87uBR8Rv66YhwDboxTYOoqSa+fxv9lvPXk9w3k2RprrgkHJm6eAyxHMNLLV2NOsjzI73VFecyT9kkTP39c0cEl80fE0Qw+PQJKN8+qaT9kysBlbletTVeKCFvTk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788898904; c=relaxed/simple;
+	bh=7pD6pARJdIJRZ00pL/L2SyWQaomwFg6znBtY5rXtcm0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=cq1WBqOidQnC0x/S6FRnf1Nkt2b5wCkpHG2qqe48Vf9x/X7A3K85lQrdQaycUc7WX7GL5nWzjDYMNTbO6hxRb+CACYFawT4I4Py2JQr1utKfyKzHfthgBncOJP7Fae5//fPyTLhPwOlkv5VcDRLux3CMBEzgeqdt54RXhYdeWv8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Wy0Xh/aj; arc=fail smtp.client-ip=52.101.85.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AEp1REBG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F2A1F00A3D;
-	Tue,  8 Sep 2026 20:20:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788898862;
-	bh=MOMisn73rdVVhY8+AjzvTNNmNUkAEb20IWBzE7CPZUU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=AEp1REBGH+pakt3xHUNX2JKqVONYzgzvgZGlCes8VpWTcWPNIU+TMTKT2sVwlEKVf
-	 3d3HkthAX1FMsxxuYzx8BEFXz0VIq1fV7vOp89w+HJFBkSkxQzPGw8pf6KjunCOEha
-	 aAStY4j8dulgMJGDKYfg6byPl0UaLo7QmScwkKnJQEb6SoGID7WBqLjmi9Q6nJiQDi
-	 mFJrZqwN9amg72vbTmq5g4P0vaGZ3NaK3J55pnKuUo/GxMyGPJDy7MEpcYr2/8hWSF
-	 tX/1SpYavP4hBrQt3jwlo8PTcuszTSW3joN1et5kS8WFYzcq8/vxvnduS3NkwS0fQ2
-	 k0/tNEa3pZ2VQ==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 08 Sep 2026 21:01:43 +0100
-Subject: [PATCH 39/39] mm/vma: introduce and use vma[_flags]_can_gup()
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Wy0Xh/aj"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nlSCTG2UuxYbJGGnIpc38Mpbtx/7p30Itt4CQqq6Qc0s3mbOHhsLipNYp7fxGQuknbByLf8FHdOq9rnmzfJxLtajwqchgNMDjatI1AQIrNHTN//e413ZWT+EURMzmfLZbULKjZeZvJsfc9ihvYqB9OomCXU5Rm+YEKSlIqdYvMuknSsj4nK3oG8jGsx3bk3RQt0KM24e9zR0C/qucguVEjfawwQkYtQB2FPFX8i+is6yyQyFKEy/PRAmEeVANp+a6YkUfVzr7slkb+bqhGWIFD7779JWk1fPhasvGlIhOAljqNgzTUXqMvl3Tqq5I+iPcUgl09qhL3Ua/ui/kg5sxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sR0EvDNjwTTfEJKUyvoPK03o+jSk5eldygJpyXob21U=;
+ b=cCQO56iPsPR4F8EtKh2Ih1+2/isGII3oq8ZUXW+Z49J0TYc6uk2us820udKNzmDrqbZHiMaXLqnEg7MkeBL9QuCipUikxfwJ2iwp0CJXJW9jdLmJBxK9Mojjl1y+Vfh6D+MAxJ2DyGKhOoJuiNoJUvYt0DULptBAHBySrZnsr0i/Goeq5vrfwA9m5aG0z/75sRW32pyGZ75fwVaMgIc5cYS6Rpi4CF1k7lPIq8fDnQNP/gA7sj0lDqdkokflKI+g+rBS3u5tGj4Ibvu9+Gn3cXhPuI7bVXfo3UJeH7Uyz6mRWx3lVHtGNeSbNY+9INxXOTkHvPfnT/ArP3uwl8F52Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sR0EvDNjwTTfEJKUyvoPK03o+jSk5eldygJpyXob21U=;
+ b=Wy0Xh/ajal8bsQqHy/RV4YGzjDMN7EBDdNPTwssKe7YURi11FPQsLz03Bq1boFCR2X+RHuoT4vd4kG8sQSEwiuicRaq+XayJpudzfpWPXOFaWld1giVTPXvE9qEtd1pJIP8rd8a3bAHBZA6eMMXKCZq6cUv1GriYZlP/dh2e+oU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
+ by DM6PR12MB4283.namprd12.prod.outlook.com (2603:10b6:5:211::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.7; Tue, 8 Sep 2026
+ 20:21:35 +0000
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::ae6a:9bdd:af5b:e9ad%5]) with mapi id 15.21.0406.005; Tue, 8 Sep 2026
+ 20:21:35 +0000
+Message-ID: <4b940989-1c27-49a5-8112-d9f991ad1d48@amd.com>
+Date: Tue, 8 Sep 2026 15:21:31 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 4/5] x86/sev: Add support to perform RMP optimizations
+ asynchronously
+To: Borislav Petkov <bp@alien8.de>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+ x86@kernel.org, hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
+ thomas.lendacky@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net,
+ ardb@kernel.org, pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+ KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
+ ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
+ rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
+ pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
+ nikunj@amd.com, darwi@linutronix.de, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1788296083.git.ashish.kalra@amd.com>
+ <a31fc8c6d3f6c6bbe50dc4542c7091b0899d3e1b.1788296083.git.ashish.kalra@amd.com>
+ <20260905012945.GPaptwicVjJ-SwXYzl@fat_crate.local>
+Content-Language: en-US
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+Autocrypt: addr=ashish.kalra@amd.com; keydata=
+ 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
+In-Reply-To: <20260905012945.GPaptwicVjJ-SwXYzl@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: CH0PR03CA0233.namprd03.prod.outlook.com
+ (2603:10b6:610:e7::28) To BL3PR12MB9049.namprd12.prod.outlook.com
+ (2603:10b6:208:3b8::21)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260908-b4-mmap-prepare-vma-flag-sanify-v1-39-dacf19cce22b@kernel.org>
-References: <20260908-b4-mmap-prepare-vma-flag-sanify-v1-0-dacf19cce22b@kernel.org>
-In-Reply-To: <20260908-b4-mmap-prepare-vma-flag-sanify-v1-0-dacf19cce22b@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
- David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Jonathan Corbet <corbet@lwn.net>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
- Paul Moore <paul@paul-moore.com>, 
- Stephen Smalley <stephen.smalley.work@gmail.com>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- "Martin K. Petersen" <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>, 
- Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, 
- Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, 
- Peter Xu <peterx@redhat.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
- Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
- Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
- Catalin Marinas <catalin.marinas@arm.com>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, 
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Albert Ou <aou@eecs.berkeley.edu>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Janosch Frank <frankja@linux.ibm.com>, 
- Claudio Imbrenda <imbrenda@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Andreas Larsson <andreas@gaisler.com>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, 
- Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, 
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
- Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Xu Xin <xu.xin16@zte.com.cn>, 
- Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
- Miklos Szeredi <miklos@szeredi.hu>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
- linux-rdma@vger.kernel.org, selinux@vger.kernel.org, 
- linux-sound@vger.kernel.org, bpf@vger.kernel.org, 
- linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
- linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
- linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
- fuse-devel@lists.linux.dev, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6584; i=ljs@kernel.org;
- h=from:subject:message-id; bh=kPVMWaJCwo1lhrTWXad/wqA8hcD1f6brZZ1kpIuur1c=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLIWZG6vmyVSwLU385PLJLOsm8wrPI48vnjnyrRcyfpXr
- QZ5rW9tO0pZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCR5KWMDE9+ar3kPPvQ5u7F
- 6lzR+P7LZzmWGP6c93zVo4ye57oHDxox/BU80L30947zd/l2STndnSQ2b77G82v3+VnlD9utDXp
- utJEDAA==
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|DM6PR12MB4283:EE_
+X-MS-Office365-Filtering-Correlation-Id: c9f573d8-7b8c-40f2-aafa-08df0de6c78c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|366016|6133799003|3023799007|10067099003|4143699003|56012099006|11063799006|5023799004|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	Q2FfnsftOyWoIPgu7CulPRE9uzRDA/lgPQX7cBOiJO1O1et3Qq6BIO6xvZzIPwtMvOBprqsDjRIvdNfn6xG1cEMZrSADbbhM5jcbTKszUx/7iuTQe/T8GzKE2ZPNf7gy/mxm8JnsiOH6wL+xkE27tteM2se+rGvWKlirFsxkaYI3tOZ+7f12MRfpW1WfU+fGOTSApkDTXoOmJOrN1VCpjXXgKe/59oMtYE4EX5chmCQYh1i+8Po93qmKMWGQGqIQGyq2KsNbGO3bT3HAnETYzFmSnWV6X4+wdzFxI6Kr1ae8QzZs2NMlL7KB72tdNs6/TL1fDlhyVb+e0RzUMki/bsre6KVZ8TrDlJfr5X8AIAOsucutGKEWiQSmBoftale6eEeelDqIJyYZCKzeYKTiv17Mp2qvF7Mz60RmFzeUITPPmI59NGOlKnBTbWtOcDSL+UIZ7zQXnyY4xNMjXSf4hEeyw61v9vZb8MI6sPzMyhZ0IRqci4JWegYYs7jHFcrrl9ydwdm9QkzsEU+gtS44UQWYDALpnk6jgJPt+eyPrMyqIHiWoJCIWnSAQvX0+3odnLvtNU8GutTbDLxJbgJFc0HaV5mXwakFhG83PyzCA93FlM/FAqGbYrjdd2lQH8cJ2ho6XDmORhpDi+nvRVt/Yi9l6beWYrrAu1mImK7R4ms=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(366016)(6133799003)(3023799007)(10067099003)(4143699003)(56012099006)(11063799006)(5023799004)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MlkvQ1VaVWhBWUJDM0dLcXlNdHFWQkFYVzN6dE1vSVBwdUtqV3ZFaUowZHRj?=
+ =?utf-8?B?QWdXcTRoY1VSYlk3ODNDRno1ZktvR3BDM0xueU1PaU1mTjFvRE56QU90OGxo?=
+ =?utf-8?B?cmczajljOFlpUmM1MXllMlJQbFExUFA4RWpmQUY5bU96U2p3SFhhV1hHNGQ2?=
+ =?utf-8?B?b3R5VytUblpQMG1MdE9SbW4veEZ4L3k0YVRLU1I5dTZnNXlXWlpuWTlYY0pw?=
+ =?utf-8?B?YVlKUWh4b3FXWlhhVytneEtsSEYvUUpNaEJBWFNvZlMzamwveDl0b0N6Y2Fa?=
+ =?utf-8?B?czN5TVVBNE9NMU1qVlE2SndicTZ6Z1VCSVU0V2JRRFRHRHFHZWNYd1hLOTNn?=
+ =?utf-8?B?Nkg5NHBiSmhEWXgwSnZaSkMrY0txdHZJREtvQklGQTdSOFNJLy94RmYvVWFn?=
+ =?utf-8?B?WXFLSjBOZ1U2cXdFM3dWN25POEZaUGNTOFVxQkd1V0RaZ045Y2Mxa016a014?=
+ =?utf-8?B?TEFYb2hITXFvajhQcnpLOFRvKzBjaTMxMW1yOEdjMlFqR0wwSzdBUVlRU0pt?=
+ =?utf-8?B?cTk1VWdjS2R5Vmk3MXozUGloNVY3M3k3M1V3ZDFsZmZybGlEV3JsMVlKbG1h?=
+ =?utf-8?B?UlJqQkdBdEN5WERTRDlXbkF2bC9Pa2kxeFpwUkN5VVVIc1pGZ1Vsb1ZReXZ4?=
+ =?utf-8?B?allTWVRRdUwwcjlydjlSUEZ2Ykc5RmN4UWlQckZYdWdia3JYMks5RnFwT0g1?=
+ =?utf-8?B?QUhFTDRIc1o5R3hJandHSUFCUHBXUmh2UUVibE5mWWRBRnYvUGp0UjVGR2lt?=
+ =?utf-8?B?VkFBQUtTY2hXUXpOck4rVXQ2MW82OFV1emxYT1V5K3o3R2hoTEFSaXo3dmx3?=
+ =?utf-8?B?amJ2Z0llNXBKek1Ob1E4Q2lWeHQ4VlpkbnFBeHUrajNEQzRnN3JZRkQ4MnUw?=
+ =?utf-8?B?YlhFVjFuK3ArYlprUVg0Mi9aMFBtWXZlVHhFVUpZN2UrUnA0U3JaNVFGNHlK?=
+ =?utf-8?B?QTVpa2daU3czLzBmSG1oTDNlZ0c0d2pPa0ZOK3lvMXQwT3hvaU1JMk1TY0c2?=
+ =?utf-8?B?NVZzVjBmbUNZODdBVmRuU1dUQXFERmsrbUJtMThtVHQwUUYydk9HZFFNYUJV?=
+ =?utf-8?B?WVhQeldMQjlLK0VSRnN6M21DZEZ2dnBDYnZlR0ZabG9JTWdtMS81VElqcWRV?=
+ =?utf-8?B?LzlzMzZNRk0zMjl4Q251OTZxdWFaVVEyVVVHYm5oSm9VTUhOTGcwT0FkVDY2?=
+ =?utf-8?B?d2g1NzZBejNWUmlnc1hYWWlGMm0zS3hOaWZtUmo2R0VOb2tacmNwOU9QOE10?=
+ =?utf-8?B?YlVUZUlmbjNQa1l3M3RYRG5WYWRYaFYwZ2NUZzNud0xBTE9HL3JtaSsvbTBO?=
+ =?utf-8?B?STJtb0dhcjRON1F3ZUhobndrUk0vQW1lcThLSDhkV2Nmb0NnaWJqL2N1ZVlJ?=
+ =?utf-8?B?QVBKZ0ZZZUFsYzFHMGNuOWc4dFlYL3ZBS3Z1dE9kUENNYlRCZ1JvSzVod3Uy?=
+ =?utf-8?B?Z2lwcVcvWU1qdXd3Mm1zTWIrZXVQRXNhREJLWE5Pb041dFJNcGJlRkpJQlZy?=
+ =?utf-8?B?VkNwMnZzZjFUMGhZZjRDY1MvV3piUkEzMDc0cEN2OUsrYUVHNjE5M0VMWGNZ?=
+ =?utf-8?B?dUdWVHJrSnI1QUhEV1hPTjRpcmRDc2tRbzlUOWpwVXZlbkh1Sk9VZ1l0RWtF?=
+ =?utf-8?B?WlNpcnFvdEJ2eGdpTm8vaUVWUnNrOWVBdEZOcHljbXNmNjFDYTRvKzYxWU41?=
+ =?utf-8?B?ck4yYk00WlNzSEJyQUp3QU0zVktUUDYrTTJtNnNPaHo3S3lLL2tDS0pqRVZq?=
+ =?utf-8?B?eklwNXhWYnBBMFdPS1VBcUhmUXVBSWpIZ3lPc0RycUYxb2NnbHJHMnNoTXZO?=
+ =?utf-8?B?aU1ZMzdiQXJlVTdFelYveFFIb2Zta3E4NmRWT3lVejh1akRhbWZyOTRnU1Vh?=
+ =?utf-8?B?cVhRbTUvbnl4aXVwaktLbU0yRVp4SUc3WTR2dUZXWmxYTXRJMzBIblIrbUNp?=
+ =?utf-8?B?QkZZODc5L0V0RFdaTFByMk8xMnZPeDEzZW8rdytGWFgvMDBlekFhSGkwMFBC?=
+ =?utf-8?B?cVVWWWtJNUsyWmw1YkZmRVViM2NOVW9xTW84eERkdWhVNDJVaytzdmI5NEpJ?=
+ =?utf-8?B?YUgvZjRReS82SjlMUzVlRHJyUGZIelRhcFc3bnNjb2xRSjZWRGhyNytBY1NR?=
+ =?utf-8?B?QkxDTXBNUC9qckNJT3hoNWZVakdhNU12YndHZzl3MmpvVEhuNkpoVUI0TEVQ?=
+ =?utf-8?B?Q0ovSUduUlRON1o0dWcvTWVyUWJhdWl2a2RSUTY1cG92clBxUCtNWHQ4NDNQ?=
+ =?utf-8?B?MXdGZTlaTldqMU1uUXRGUy9PM3k4Ly9JSVA2MUFobG9LWmhYV1kxQitZaG1y?=
+ =?utf-8?Q?efPk05Kc5CE30GmYc6?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9f573d8-7b8c-40f2-aafa-08df0de6c78c
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2026 20:21:35.3986
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hREltv1bIz4/USJqgncg8L4+YHayY6SBoTBXaBWLPoXb5PoZOU+lIrQ2jopP2w2eWTfCryQsZ+LTrMwBmNqi8w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4283
 
-GUP cannot be used for VMAs which set VMA_IO_BIT - because memory-mapped
-I/O must not be accessed on the user's behalf - or VMA_PFNMAP_BIT - because
-PFN maps have no folios which the kernel is permitted to access.
+Hello Boris,
 
-Rather than keeping these checks open-coded, abstract them to
-vma_flags_can_gup() and its VMA wrapper vma_can_gup().
+On 9/4/2026 8:29 PM, Borislav Petkov wrote:
+> On Wed, Sep 02, 2026 at 09:28:57PM +0000, Ashish Kalra wrote:
+>> Subject: Re: [PATCH v13 4/5] x86/sev: Add support to perform RMP optimizations asynchronously
+> 
+> s/Add support to perform/Perform/
+> 
+>> From: Ashish Kalra <ashish.kalra@amd.com>
+>>
+>> When SNP is enabled, all writes to memory are checked to ensure memory
+>> integrity. This imposes performance overhead on the whole system.
+>>
+>> RMPOPT is a new instruction that minimizes the performance overhead of
+>> RMP checks on the hypervisor and on non-SNP guests by allowing RMP
+>> checks to be skipped for 1GB regions of memory that are known not to
+>> contain any SNP guest memory.
+>>
+>> Add support for performing RMP optimizations asynchronously using a
+>> dedicated workqueue.
+>>
+>> At RMP initialization time, run an optimization pass over all physical
+>> memory (up to 2TB of system RAM, starting from the lowest physical
+>> memory address aligned down to a 1GB boundary), skipping RMP checks for
+>> 1GB regions that do not contain SNP guest memory (excluding preassigned
+>> pages such as the RMP table and firmware pages).
+>>
+>> As SNP guests are launched, RMPUPDATE assigns their private pages to
+>> guest-owned state; when such a page falls within an optimized 1GB
+>> region, the hardware clears that region's RMPOPT optimization and RMP
+>> checks resume there to protect the guest memory.
+>>
+>> Since launching SNP guests clears these optimizations, perform them
+>> again asynchronously using the dedicated workqueue.
+>>
+>> Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
+>> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+>> Suggested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+>> Suggested-by: Borislav Petkov (AMD) <bp@alien8.de>
+>> Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+>> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+> 
+> R-by's need to get dropped when a patch changes in more or less significant
+> way.
 
-This is useful as there are a number of additional places within the kernel
-that need to check whether a mapping can be accessed via GUP.
+Tom and Dave gave their R-by's on v12/v13 series, so probably i will keep their
+R-b's.
 
-Therefore, update all such occurrences.
+> 
+>> @@ -561,10 +571,26 @@ static void rmpopt_disable(void)
+>>  {
+>>  	int cpu;
+>>  
+>> +	guard(mutex)(&rmpopt_wq_mutex);
+>> +
+>> +	/*
+>> +	 * rmpopt_wq is non-NULL only after RMPOPT has been fully set up: the
+>> +	 * workqueue is allocated and the RMPOPT_BASE MSRs are programmed.
+>> +	 * snp_setup_rmpopt() resets it to NULL if any of those steps fail, so a
+>> +	 * NULL rmpopt_wq means nothing was set up and there is nothing to tear
+>> +	 * down.
+>> +	 */
+>> +	if (!rmpopt_wq)
+> 
+> Now take your patch and rip all that gunk which destroys the setup work done
+> by snp_setup_rmpopt(). Instead, you init things once and do not touch them
+> even if RMP optimizations are disabled.
+> 
+> In case they get enabled again later, you simply reactivate them instead of
+> doing useless setup work all over again.
+> 
 
-While here, drop a reference to 'special' and replace a use of the
-deprecated VMA flags API in vma_dump_size().
+So, you want me to set up once, never tear down, on re-enable just reactivate. 
 
-No functional change intended.
+So rmpopt_disable() should stop destroying the workqueue, clearing the RMPOPT_BASE MSRs, and resetting pa_start/pa_end.
 
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- fs/coredump.c      |  4 ++--
- include/linux/mm.h | 29 +++++++++++++++++++++++++++++
- mm/gup.c           |  7 +++----
- mm/hmm.c           |  3 +--
- mm/memory.c        | 14 ++++++++------
- mm/mempolicy.c     |  3 ++-
- 6 files changed, 45 insertions(+), 15 deletions(-)
+One thing i need to handle here: The current rmpopt_disable() clears the MSRs for a reason: it runs only on a full SNP
+shutdown (SnpEn cleared), right before cpu_hotplug_enable(). Once hotplug is back on, a primary thread can offline -> online
+and lose its RMPOPT_BASE (reset to 0, no cpuhp callback - which is only safe because hotplug is disabled while SNP is active).
+If we simply stop clearing MSRs but keep the current re-init fast-path that skips MSR programming, a re-init after such a cycle 
+could run rmpopt() on a core with RMPOPT_BASE=0.
 
-diff --git a/fs/coredump.c b/fs/coredump.c
-index fb21fb6703dd..9f729c594c47 100644
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -1616,8 +1616,8 @@ static unsigned long vma_dump_size(struct vm_area_struct *vma,
- 		return 0;
- 	}
- 
--	/* Do not dump I/O mapped devices or special mappings */
--	if (vma->vm_flags & VM_IO)
-+	/* Do not dump memory-mapped I/O, which may have side effects on read. */
-+	if (vma_test(vma, VMA_IO_BIT))
- 		return 0;
- 
- 	/* By default, dump shared memory if mapped from an anonymous file. */
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index b5784685272a..1902d4c77481 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1777,6 +1777,35 @@ static inline bool vma_is_persistent(const struct vm_area_struct *vma)
- 	return vma_flags_is_persistent(&vma->flags);
- }
- 
-+/**
-+ * vma_flags_can_gup() - Do the specified VMA flags permit GUP to access the
-+ * mapping's pages?
-+ * @flags: The VMA flags to test.
-+ *
-+ * GUP cannot access pages belonging to mappings whose pages are not permitted
-+ * to be accessed (VMA_PFNMAP_BIT) and must not manipulate or provide access to
-+ * memory-mapped I/O ranges to users (VMA_IO_BIT).
-+ *
-+ * Returns: true if GUP may access pages from the mapping, otherwise false.
-+ */
-+static inline bool vma_flags_can_gup(const vma_flags_t *flags)
-+{
-+	return !vma_flags_test_any(flags, VMA_IO_BIT, VMA_PFNMAP_BIT);
-+}
-+
-+/**
-+ * vma_can_gup() - May GUP obtain pages from @vma?
-+ * @vma: The VMA to test.
-+ *
-+ * See vma_flags_can_gup() for details.
-+ *
-+ * Returns: true if GUP may access pages from the mapping, otherwise false.
-+ */
-+static inline bool vma_can_gup(const struct vm_area_struct *vma)
-+{
-+	return vma_flags_can_gup(&vma->flags);
-+}
-+
- /**
-  * vma_kernel_pagesize - Default page size granularity for this VMA.
-  * @vma: The user mapping.
-diff --git a/mm/gup.c b/mm/gup.c
-index 66b306911703..f4d0cfcb602b 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -1204,7 +1204,7 @@ static int check_vma_flags(struct vm_area_struct *vma, unsigned long gup_flags)
- 	int foreign = (gup_flags & FOLL_REMOTE);
- 	bool vma_anon = vma_is_anonymous(vma);
- 
--	if (vm_flags & (VM_IO | VM_PFNMAP))
-+	if (!vma_can_gup(vma))
- 		return -EFAULT;
- 
- 	if ((gup_flags & FOLL_ANON) && !vma_anon)
-@@ -1955,7 +1955,7 @@ int __mm_populate(unsigned long start, unsigned long len, int ignore_errors)
- 		 * range with the first VMA. Also, skip undesirable VMA types.
- 		 */
- 		nend = min(end, vma->vm_end);
--		if (vma->vm_flags & (VM_IO | VM_PFNMAP))
-+		if (!vma_can_gup(vma))
- 			continue;
- 		if (nstart < vma->vm_start)
- 			nstart = vma->vm_start;
-@@ -2017,8 +2017,7 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
- 			break;
- 
- 		/* protect what we can, including chardevs */
--		if ((vma->vm_flags & (VM_IO | VM_PFNMAP)) ||
--		    !(vm_flags & vma->vm_flags))
-+		if (!vma_can_gup(vma) || !(vm_flags & vma->vm_flags))
- 			break;
- 
- 		if (pages) {
-diff --git a/mm/hmm.c b/mm/hmm.c
-index 2f1e98c6b644..e9569b82a1f0 100644
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -595,8 +595,7 @@ static int hmm_vma_walk_test(unsigned long start, unsigned long end,
- 	struct hmm_range *range = hmm_vma_walk->range;
- 	struct vm_area_struct *vma = walk->vma;
- 
--	if (!(vma->vm_flags & (VM_IO | VM_PFNMAP)) &&
--	    vma->vm_flags & VM_READ)
-+	if (vma_can_gup(vma) && vma_test(vma, VMA_READ_BIT))
- 		return 0;
- 
- 	/*
-diff --git a/mm/memory.c b/mm/memory.c
-index 9a38c7d4cc40..cb56d67b17ca 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2417,11 +2417,11 @@ static bool vm_mixed_zeropage_allowed(struct vm_area_struct *vma)
- 	 * be problematic as soon as the zeropage gets replaced by a different
- 	 * page due to vma->vm_ops->pfn_mkwrite, because what's mapped would
- 	 * now differ to what GUP looked up. FSDAX is incompatible to
--	 * FOLL_LONGTERM and VM_IO is incompatible to GUP completely (see
--	 * check_vma_flags).
-+	 * FOLL_LONGTERM and memory-mapped I/O is incompatible to GUP completely
-+	 * (see vma_can_gup()).
- 	 */
- 	return vma->vm_ops && vma->vm_ops->pfn_mkwrite &&
--	       (vma_is_fsdax(vma) || vma->vm_flags & VM_IO);
-+	       (vma_is_fsdax(vma) || vma_test(vma, VMA_IO_BIT));
- }
- 
- static int validate_page_before_insert(struct vm_area_struct *vma,
-@@ -7116,7 +7116,8 @@ int follow_pfnmap_start(struct follow_pfnmap_args *args)
- 	if (unlikely(address < vma->vm_start || address >= vma->vm_end))
- 		goto out;
- 
--	if (!(vma->vm_flags & (VM_IO | VM_PFNMAP)))
-+	/* Only mappings GUP cannot handle are followed here. */
-+	if (vma_can_gup(vma))
- 		goto out;
- retry:
- 	pgdp = pgd_offset(mm, address);
-@@ -7310,8 +7311,9 @@ static int __access_remote_vm(struct mm_struct *mm, unsigned long addr,
- 			}
- 
- 			/*
--			 * Check if this is a VM_IO | VM_PFNMAP VMA, which
--			 * we can access using slightly different code.
-+			 * GUP failed, perhaps because this is a mapping it
-+			 * cannot handle (see vma_can_gup()) - such mappings may
-+			 * provide access via vm_ops->access() instead.
- 			 */
- 			bytes = 0;
- #ifdef CONFIG_HAVE_IOREMAP_PROT
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index aeb99c5933cb..ed444061631c 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -2011,7 +2011,8 @@ SYSCALL_DEFINE5(get_mempolicy, int __user *, policy,
- 
- bool vma_migratable(struct vm_area_struct *vma)
- {
--	if (vma->vm_flags & (VM_IO | VM_PFNMAP))
-+	/* Pages which GUP cannot obtain cannot be migrated either. */
-+	if (!vma_can_gup(vma))
- 		return false;
- 
- 	/*
+So the fix is: keep the setup allocated once, but make setup always (re)program RMPOPT_BASE — then we never need to clear it on
+disable, and the cycle case is covered on re-init. Proposed fix: 
 
--- 
-2.55.0
+  /* full shutdown: just stop a pending pass; leave the setup intact */
+  static void rmpopt_disable(void)
+  {
+        guard(mutex)(&rmpopt_wq_mutex);
+        cancel_delayed_work_sync(&rmpopt_delayed_work);
+  }
 
+  void snp_setup_rmpopt(void)
+  {
+        ...
+        if (!rmpopt_capable())
+                return;
+        guard(mutex)(&rmpopt_wq_mutex);
+
+        /* allocate the workqueue exactly once, keep it for the kernel's life */
+        if (!rmpopt_wq) {
+                rmpopt_wq = alloc_workqueue(...);   /* or use system_unbound_wq, see below */
+                if (!rmpopt_wq) { pr_err(...); return; }
+                INIT_DELAYED_WORK(&rmpopt_delayed_work, do_rmpopt_work);
+        }
+
+        /* always (re)program MSRs + range, so a hotplug cycle across a full
+           shutdown can't leave a core with a stale RMPOPT_BASE */
+        rmpopt_pa_start = ALIGN_DOWN(PFN_PHYS(min_low_pfn), SZ_1G);
+        rmpopt_base = rmpopt_pa_start | MSR_AMD64_RMPOPT_ENABLE;
+        for_each_cpu(cpu, cpu_primary_thread_mask)
+                wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, rmpopt_base);
+        rmpopt_pa_end = ALIGN(PFN_PHYS(max_pfn), SZ_1G);
+        if ((rmpopt_pa_end - rmpopt_pa_start) > SZ_2T)
+                rmpopt_pa_end = rmpopt_pa_start + SZ_2T;
+
+        queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work, 0);
+        pr_info("RMPOPT optimizations enabled\n");
+  }
+
+
+>> +		return;
+>> +
+>> +	cancel_delayed_work_sync(&rmpopt_delayed_work);
+>> +	destroy_workqueue(rmpopt_wq);
+>> +
+>>  	for_each_cpu(cpu, cpu_primary_thread_mask)
+>>  		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, 0);
+>>  
+>> -	rmpopt_pa_start = 0;
+>> +	rmpopt_pa_start = rmpopt_pa_end = 0;
+>> +	rmpopt_wq = NULL;
+>>  }
+>>  
+>>  void snp_shutdown(void)
+>> @@ -595,6 +621,44 @@ static bool rmpopt_capable(void)
+>>  	       cc_platform_has(CC_ATTR_HOST_SEV_SNP);
+>>  }
+>>  
+>> +/*
+>> + * RMPOPT optimizations skip RMP checks at 1GB granularity if this range of
+>> + * memory does not contain any SNP guest memory.
+>> + *
+>> + * @pa is a system physical address; RMPOPT operates on the containing 1GB.
+>> + */
+>> +static void rmpopt(u64 pa)
+>> +{
+>> +	enum rmpopt_op_type op = RMPOPT_OP_VERIFY_AND_REPORT_STATUS;
+>> +	u64 pa_start = ALIGN_DOWN(pa, SZ_1G);
+>> +
+> 
+> 	/* Supported by binutils 2.48+ */
+> 
+>> +	asm volatile(".byte 0xf2, 0x0f, 0x01, 0xfc"
+>> +		     :: "a" (pa_start), "c" (op)
+>> +		     : "memory", "cc");
+>> +}
+> 
+> 
+> 
+>> +
+>> +/* on_each_cpu() callback: optimize the whole RMPOPT range on this CPU. */
+>> +static void rmpopt_scan_range(void *arg)
+>> +{
+>> +	u64 pa;
+>> +
+>> +	for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G)
+>> +		rmpopt(pa);
+>> +}
+>> +
+>> +static void do_rmpopt_work(struct work_struct *work)
+>> +{
+>> +	/*
+>> +	 * RMPOPT caches the results of a RMP table scan in reserved processor
+>> +	 * memory, allowing future invocations to skip such costly operations.
+>> +	 */
+> 
+> We know already. Drop this comment.
+> 
+>> +	migrate_disable();
+>> +	rmpopt_scan_range(NULL);
+>> +	migrate_enable();
+>> +
+>> +	on_each_cpu_mask(cpu_primary_thread_mask, rmpopt_scan_range, NULL, true);
+>> +}
+>> +
+>>  void snp_setup_rmpopt(void)
+>>  {
+>>  	u64 rmpopt_base;
+>> @@ -603,6 +667,34 @@ void snp_setup_rmpopt(void)
+>>  	if (!rmpopt_capable())
+>>  		return;
+>>  
+>> +	guard(mutex)(&rmpopt_wq_mutex);
+>> +
+>> +	/*
+>> +	 * On re-initialization after a legacy SNP shutdown (SNP_SHUTDOWN_EX
+>> +	 * with x86_snp_shutdown=0), snp_shutdown() and thus rmpopt_disable() are
+>> +	 * skipped, so the workqueue, delayed work and per-CPU RMPOPT_BASE MSRs
+>> +	 * are still set up and valid (SnpEn stayed set and CPU hotplug stayed
+>> +	 * disabled).  Rather than re-doing the setup, which would leak the
+>> +	 * existing state, just re-queue the optimization pass to re-optimize any
+>> +	 * memory the previous SNP session de-optimized.
+>> +	 */
+>> +	if (rmpopt_wq) {
+>> +		queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work, 0);
+>> +		return;
+>> +	}
+>> +
+>> +	/*
+>> +	 * Create an RMPOPT-specific workqueue to avoid scheduling
+>> +	 * RMPOPT workitem on the global system workqueue.
+>> +	 */
+> 
+> Why?
+> 
+
+A full‑physmem RMPOPT pass is a warm‑up scan plus an IPI fan‑out over up to 2TB. The default system_wq is per‑CPU and concurrency‑managed,
+a long‑running item there runs on the queueing CPU's worker pool and can stall (or be stalled by) other work on that pool. So we wanted it
+off system_wq and use a dedicated RMPOPT specific workqueue.
+
+Another thing i looked at is for long-running unbound work, probably the standard shared queue is system_unbound_wq, which is probably built
+for this use case and won't clog the per-CPU system_wq.
+
+If we switch to it, there's no workqueue to allocate or free — the setup/teardown "gunk" disappears entirely (static
+DECLARE_DELAYED_WORK, queue/mod_delayed_work(system_unbound_wq, …)), which satisfies your "init once, don't touch." 
+
+Additionally, with system_unbound_wq and a static delayed_work there's no pointer to guard, and queue/mod/cancel are already
+synchronized by the workqueue core, so rmpopt_wq_mutex can also be dropped.
+
+Thanks,
+Ashish
+
+>> +	rmpopt_wq = alloc_workqueue("rmpopt_wq", WQ_UNBOUND, 1);
+>> +	if (!rmpopt_wq) {
+>> +		pr_err("Failed to allocate RMPOPT workqueue\n");
+>> +		return;
+>> +	}
+>> +
+>> +	INIT_DELAYED_WORK(&rmpopt_delayed_work, do_rmpopt_work);
+>> +
+>>  	rmpopt_pa_start = ALIGN_DOWN(PFN_PHYS(min_low_pfn), SZ_1G);
+>>  	rmpopt_base = rmpopt_pa_start | MSR_AMD64_RMPOPT_ENABLE;
+>>  
+>> @@ -612,6 +704,23 @@ void snp_setup_rmpopt(void)
+>>  	 */
+>>  	for_each_cpu(cpu, cpu_primary_thread_mask)
+>>  		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, rmpopt_base);
+>> +
+>> +	rmpopt_pa_end = ALIGN(PFN_PHYS(max_pfn), SZ_1G);
+>> +
+>> +	/* Limit memory scanning to 2TB of RAM */
+> 
+> No need for that comment - we know.
+> 
+>> +	if ((rmpopt_pa_end - rmpopt_pa_start) > SZ_2T) {
+>> +		pr_info("RMPOPT coverage limited to 2TB; memory above 0x%llx not optimized\n",
+> 
+> No need for that print - nothing we can do about it anyway.
+> 
+>> +			rmpopt_pa_start + SZ_2T);
+>> +		rmpopt_pa_end = rmpopt_pa_start + SZ_2T;
+>> +	}
+>> +
+>> +	/*
+>> +	 * Once all per-CPU RMPOPT tables have been configured, enable RMPOPT
+>> +	 * optimizations on all physical memory.
+>> +	 */
+> 
+> Drop this comment too.
+> 
+>> +	queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work, 0);
+>> +
+>> +	pr_info("RMPOPT optimizations enabled\n");
+>>  }
+>>  EXPORT_SYMBOL_FOR_MODULES(snp_setup_rmpopt, "ccp");
+>>  
+>> -- 
+>> 2.43.0
+>>
+> 
