@@ -1,135 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20DF37F8C3;
-	Tue,  8 Sep 2026 05:51:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA10637F8C7
+	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 05:51:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788846711; cv=none; b=u98tFt7GfWAv6pOvn70DgRuYcHV4UfgTdsjm2nmSBF9N/WsfYcpJAEFfEznPrPtez/j3NVtz7tHrCxdPG6nNkTGHBOd4Zzh3FPnyDxu4oC/U0Q0CT2TEAO9tkgsouSshAYfDnHBz/lplItRwZfpGeeaAv9fW/PAZPsoYtRhCY3s=
+	t=1788846714; cv=none; b=g0hJ5wsSYAD/52rFSS321CXyMmya1i+YAsiWfBZIEYua80YZLSRAfKS/Bl7+nbN/NSYnbZOQYYJ2rfrOYxUnT8SvVseecbHJvEV+CA9JsWWORZCgn8is+npzAkYY6NMR4bW155mzM1wKC+KH2hyfmcaK/A5KwJBS7rc1szk5lb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788846711; c=relaxed/simple;
-	bh=OwB/eT4bbpJG64S+bIEyw2qbVoQ3OzIelzPB6ZVRSr0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=KTv2PKR4qUK1ajvSqCN+RKwLBkK/5eoqfsQbR20eXuX7hcS0TESQ9yRTC1R8BioPrJxGZa2lV+oZWTLX87uAG4HPCC6FYsgQoxl0KgoILW8NWKyaMW4oPDoIiQFgyC4Yf8UOJCyRl4bGKaIQ1nfMavs2dl97+5f4CBGsQ4Sx2es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n06WYkQj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788846714; c=relaxed/simple;
+	bh=o3eeGsX+yszXtSqzF2DLz1DisqDubEqdKzbb+20VdL8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pBGrWh1zneq1mDdfvokVGPGGDQH8fhdtQ01wV7ukfy+iFnARj2D2PUQiw9ANlW5pOUa/WQCixwii5MElFPwh7QHNoHhy5TzvoN0OMDyeU0Yp/r2LKPakwmRJ71CDRpZRh3+dNm7hU67LzOMm9QgSq4l2EYBrqI92GujcvNOj6Kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=myf7IeX/; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n06WYkQj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B600D1F00A3F;
-	Tue,  8 Sep 2026 05:51:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788846709;
-	bh=ly+qtwtWNEfXvsOk8yhjt5DKACS0dSQy5XKEW5+XSe8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=n06WYkQjJq1zJKJaLlf26u9qp8zXbMknl61OsfEirEPCOvHwOKs32L3oTaZt+/2S+
-	 Ge0UbG85ne+mh3/inRL4fSfx3wxFMOmyH/jGSeQpkAxKFIAyBYRMBiKoQmxWpvSRUQ
-	 9eHwyFn7A+gSBqfhtLVV6MTg4eFPMvf7/zKOuqQaNXXrGRMgGsOVLLg9u24QitIEPI
-	 33aR6TWX09TLArBQqby+B+aGs81oMNEAeDdZJNSngFAorkRpJjm3YhmVrUfHfaig1K
-	 dS/LWhPt5voIFYE0yDRv0NGS6fP86yv8j1CmSWVuq6Xahf5fEE0CrOhz0Atqt8l83o
-	 WRywK84fZGaSQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 2/6] virtio_ccw: always take irq_lock in the classic
- interrupt handler
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Karl Mehltretter" <kmehltretter@gmail.com>
-Cc: dmitry.torokhov@gmail.com, "Christian Borntraeger" <borntraeger@linux.ibm.com>, kvm@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Vasily
- Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org, linux-input@vger.kernel.org
-In-Reply-To: <20260908053817.26065-3-kmehltretter@gmail.com>
-References: <20260908053817.26065-1-kmehltretter@gmail.com>
- <20260908053817.26065-3-kmehltretter@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 08 Sep 2026 05:51:48 +0000
-Message-Id: <20260908055148.B600D1F00A3F@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="myf7IeX/"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cc1c3c90074so3496064a12.2
+        for <kvm@vger.kernel.org>; Mon, 07 Sep 2026 22:51:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788846711; x=1789451511; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=eU2hqSZpbBss3ZrupUP6xipFsBQw4quqy4F00JT4x5Q=;
+        b=myf7IeX/+05Y3Tn1izrcmERgQS8Vfx6CVF6FW3ngqTaIdFSiIdG16WmihxH0YLjCCX
+         Gy5ceEaTSeNICeWToDHgXky4GkNV/P+0GHiJCu2v0PokfndhnE5qBcPjE4jcEIVVwkgv
+         CAj9wlbIlc/uweyvXM+mZOx2mdYUbxWVbfBiUnZn+AprpUtRpjXLMT3QUUCtxs8OCfKe
+         NzBtJmRAvJNrra8/hQ4X7VAz2+FTlXAzjgbFC7oiYBui0VffFPqUpQuOCuTSaBtLBG9q
+         IY27exNrhER6cm0kNq6kana4Uqp5MOkgL8AQtzg7Ffj7J0gT5TkbeET83r+hXzwwH/kb
+         UeGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788846711; x=1789451511;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=eU2hqSZpbBss3ZrupUP6xipFsBQw4quqy4F00JT4x5Q=;
+        b=Pw1pYxgp0bSJAmNubByBEmQvLuIvO45Thn4oaWD7V7F9pevGIvQi9VEaFBO5GPtUP0
+         Qz5EyQoJYIqPSNX0T01YdSif8dDJf28kzY5jYGLX0BMc039z1usAlijalWpG0IOGhFi7
+         sEIwnNJvTv5sUnoDUraB+Y1Ed/Cg+wCdhWKgRErj0/yphKwIDrTWSeMiBLJbCQ1xiBGK
+         WdOb0euzvz9h5Hd8dU1JOvGkfOl/op2qwYS+TmunObGvhB+IKRPnoumathjOQylHm8TO
+         /RyJ5EEKKlqbOPtrx+R8OZDByc14Wjqw7ZSV5ykKW63twrhfZy/poTibpC0EYbVR1EiI
+         xMcw==
+X-Gm-Message-State: AFuF++mfS1UoyaV1DoOKGXF3h3AXCN+xM/blxkt3UVFJ9UiOUI7bIc5s
+	KcU6wSYdHYbRIn8rRn6CgimgnJ4wHr5D/4RPqdMlg5rQT1PNmm+UDKfJ
+X-Gm-Gg: AYBFou2olEL0sc6dypKaaegJeu05MViSYUEKTS2AXI/AF1pSBp+FlpUbxJ3o3o2IFXm
+	jf/w4u5kwlf0RD8WuW6T9p849X8orivAaPsDb30cn6f2zbhxHhGrS6RCbGdgJXCI3K6Y4W922rO
+	nBWLUKhkx/Eurat1rbTcPy8RiqXi8pMGRBGnEoeXwThD8z8A6i9fgUMO6WWFQf+/ZP9EkS6MQ7r
+	MO+FzZ7OStjpxS4wECrL2bjAEGxmGL8zQsk2PKWKa9gutWuGHVgpnWt4yuo1G58XJ6UI1/YI+Gp
+	CIELkexRM0IaDwUz41MR33pXJ3asumF6xNFtHrP5pe2NiNfTa/giTcp+W0zyUq/zpMdgmrHzw2n
+	lpwS0rAWBWKoy4IUB0+6Dz+puMBtwaug6JishIttgQSomAcAgKb69rbcpiiuR8YlnOjYzgsDaUi
+	qJujfnljZw3i1DFjfxtvoIlcDssap7obV+fiYO7ywfhTKTNz4nGdm2JWBzMr9zJTPWBrMcqoNkF
+	YodN5CYubb2eA==
+X-Received: by 2002:a05:6a21:648f:b0:3d1:5c01:e6cc with SMTP id adf61e73a8af0-3da39f7bf83mr40842064637.10.1788846711161;
+        Mon, 07 Sep 2026 22:51:51 -0700 (PDT)
+Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339a534df1sm37719041eec.7.2026.09.07.22.51.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Sep 2026 22:51:50 -0700 (PDT)
+From: Hemanth Selam <hemanth.selam@gmail.com>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	"Oliver O'Halloran" <oohall@gmail.com>,
+	Geoff Levand <geoff@infradead.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Shuah Khan <shuah@kernel.org>
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 2/2] powerpc: fix repeated words in comments
+Date: Tue,  8 Sep 2026 11:21:33 +0530
+Message-ID: <20260908055133.16469-3-hemanth.selam@gmail.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20260908055133.16469-1-hemanth.selam@gmail.com>
+References: <20260908055133.16469-1-hemanth.selam@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+Drop words accidentally written twice, reported by checkpatch.pl as a
+possible repeated word.  Only touches comments, no code changes.
 
-Pre-existing issues:
-- [High] The virtio interrupt handlers pass retrieved virtqueue pointers di=
-rectly to `vring_interrupt()` without a NULL check. A malicious or buggy ho=
-st can trigger a kernel panic by providing an invalid indicator or interrup=
-t vector.
-- [High] Lost configuration change notifications due to clearing the indica=
-tor bit after processing.
---
+Assisted-by: Cursor:claude-opus-5
+Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
+---
+ arch/powerpc/kernel/paca.c             | 2 +-
+ arch/powerpc/sysdev/xics/xics-common.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-commit 40545ed73d4381a07a7934fddf3ac60ecd1f90d7
-Author: Karl Mehltretter <kmehltretter@gmail.com>
-Subject: virtio_ccw: always take irq_lock in the classic interrupt handler
+diff --git a/arch/powerpc/kernel/paca.c b/arch/powerpc/kernel/paca.c
+index 0e263b97e016..2e0c5bac250d 100644
+--- a/arch/powerpc/kernel/paca.c
++++ b/arch/powerpc/kernel/paca.c
+@@ -101,7 +101,7 @@ static void *__init alloc_shared_lppaca(unsigned long size, unsigned long limit,
+ /*
+  * See asm/lppaca.h for more detail.
+  *
+- * lppaca structures must must be 1kB in size, L1 cache line aligned,
++ * lppaca structures must be 1kB in size, L1 cache line aligned,
+  * and not cross 4kB boundary. A 1kB size and 1kB alignment will satisfy
+  * these requirements.
+  */
+diff --git a/arch/powerpc/sysdev/xics/xics-common.c b/arch/powerpc/sysdev/xics/xics-common.c
+index c3fa539a9898..c2486b43c5cc 100644
+--- a/arch/powerpc/sysdev/xics/xics-common.c
++++ b/arch/powerpc/sysdev/xics/xics-common.c
+@@ -384,7 +384,7 @@ int xics_set_irq_type(struct irq_data *d, unsigned int flow_type)
+ 	 * the corresponding descriptor bits mind you but those will in turn
+ 	 * affect the resend function when re-enabling an edge interrupt.
+ 	 *
+-	 * Set set the default to edge as explained in map().
++	 * Set the default to edge as explained in map().
+ 	 */
+ 	if (flow_type == IRQ_TYPE_DEFAULT || flow_type == IRQ_TYPE_NONE)
+ 		flow_type = IRQ_TYPE_EDGE_RISING;
+-- 
+2.48.1
 
-This commit unconditionally takes the read lock on vcdev->irq_lock in=20
-virtio_ccw_int_handler() so the write side can properly synchronize with
-the callbacks even when notification hardening is disabled.
-
-> diff --git a/drivers/s390/virtio/virtio_ccw.c b/drivers/s390/virtio/virti=
-o_ccw.c
-> index b90299205698b..552d779980129 100644
-> --- a/drivers/s390/virtio/virtio_ccw.c
-> +++ b/drivers/s390/virtio/virtio_ccw.c
-> @@ -1204,13 +1204,11 @@ static void virtio_ccw_int_handler(struct ccw_dev=
-ice *cdev,
-
-[ ... ]
-
->  	for_each_set_bit(i, indicators(vcdev),
->  			 sizeof(*indicators(vcdev)) * BITS_PER_BYTE) {
->  		/* The bit clear must happen before the vring kick. */
-> @@ -1219,9 +1217,7 @@ static void virtio_ccw_int_handler(struct ccw_devic=
-e *cdev,
->  		vq =3D virtio_ccw_vq_by_ind(vcdev, i);
->  		vring_interrupt(0, vq);
-
-[Severity: High]
-This is a pre-existing issue, but is it possible for virtio_ccw_vq_by_ind()
-to return a NULL virtqueue pointer if a malicious or buggy host provides an
-invalid indicator?
-
-Passing an unvalidated NULL pointer directly to vring_interrupt() can cause=
- a
-kernel panic when it is dereferenced inside more_used():
-
-drivers/virtio/virtio_ring.c:vring_interrupt() {
-    ...
-    if (!more_used(vq)) {
-        pr_debug("virtqueue interrupt with no work for %p\n", vq);
-    ...
-}
-
-Similarly, in virtio_airq_handler(), airq_iv_get_ptr() can return NULL which
-is unconditionally passed to vring_interrupt().
-
-Could we add a NULL check before calling the interrupt handler?
-
->  	}
-> -#ifdef CONFIG_VIRTIO_HARDEN_NOTIFICATION
->  	read_unlock(&vcdev->irq_lock);
-> -#endif
->  	if (test_bit(0, indicators2(vcdev))) {
->  		virtio_config_changed(&vcdev->vdev);
->  		clear_bit(0, indicators2(vcdev));
->  	}
-
-[Severity: High]
-This isn't a bug introduced by this patch, but could this sequence lead to
-lost configuration change notifications?
-
-Because indicators2 is shared DMA memory updated by the host, if the host
-triggers another configuration change in the window between test_bit() and
-clear_bit(), it sets the bit in memory and raises a new interrupt.
-
-However, the guest will then blindly execute clear_bit() and wipe out the
-newly set notification flag. When the newly queued interrupt handler runs,
-it will find the bit cleared and do nothing, permanently losing the event.
-
-Would using test_and_clear_bit() before calling virtio_config_changed()
-close this race window?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908053817.2606=
-5-1-kmehltretter@gmail.com?part=3D2
