@@ -1,65 +1,65 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28513DF59
-	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 05:39:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDC837D104
+	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 05:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788845985; cv=none; b=JTGoHnPXgCjg3C0k9+RE4QqEezik7FRoG5Hs3Jt+N0lEyc1ZGaGi5KfQZmtDycJcpfAoCL/rYWrI/CzpTkOHUWVHM6jJp/EGpiDn2W79Z6As5PQnEvu0t7y5II6EIzWIoJmWOpjOktmInlBHjZYUZhzyNWK0uns2TatxtL/KecA=
+	t=1788845987; cv=none; b=VLMo5sXpCbIflG0h9dUR0hIcTdiiW/S6jskO9WKyt9j0Eq58SSEeE7kRS9x1F8Flw7TwdVZjJD0yJf3/7Hgpw3cWdlthrRVk8vNrkPlU0Y+USMmAXbKkC0pheWyuUrZLLxS/QuyZGoniU/k/Jl0lcf8xS/O3C9u4J8P0aM2e0Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788845985; c=relaxed/simple;
-	bh=faRvsNO+3ng5yp7scD2ooEy+g3RDxAsErW36M1n5UGc=;
+	s=arc-20240116; t=1788845987; c=relaxed/simple;
+	bh=aHcAwCFI8yTOgrqgZxZPyZpx9kC63bQn/NwjoFN18eI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ccoD9hRlhNfMGVSgvPXetpgaJbCHtPgUmq/nL9dMjiWqimaHhfvmnvHeNASiGZJNf7sklS2AxAjU7z7BfOeYfjxYFIts6jFJguSmudS+2lHo174h94fsdK8K+sRYgC3IrFWm+oClFNjCnGOTCZbkAadG/JrrQrel76HCb9/pfbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m3xFggSd; arc=none smtp.client-ip=209.85.128.42
+	 MIME-Version; b=PR95abXfHj7+vy34OVNc0T2D1hBjedrEw7c48kJPdajMbPaJyBQoh7htECipLl/WESJZZFSnCTYi+23aAIxs7GRuR2SIm4jgsR6CEmOsJ9bkFfH/oy4LkVYVr8ZOJ4AHi+Aw+h6ZKBBKiiuJNNNhEhVQfwuRWGn4CZL/vCnE9xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SaSVNzwj; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m3xFggSd"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-49d036e0e99so15115255e9.1
-        for <kvm@vger.kernel.org>; Mon, 07 Sep 2026 22:39:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SaSVNzwj"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-47ddf7b09e5so4787236f8f.1
+        for <kvm@vger.kernel.org>; Mon, 07 Sep 2026 22:39:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788845979; x=1789450779; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788845981; x=1789450781; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=0Ry5IsRI3u6+OA2QrlJEuTetR9sltFKry3tbM/33hEE=;
-        b=m3xFggSdQQMBIZKvFKAVdG3FM6JbMZdD5AVitmU25Sw/nIYzpGh1jHuCl3u2qGnSX5
-         wbtEyT9jpSW+bzep6HhLaFnJGg+uDwbTI4v3MFZuRwitHS179JMx27LRgxfUmzjeuh8u
-         +PpXBYa0itQd4NkhxDzXKxEzcT7QpViN3cEn/UOjBjcS2hFhiMH0xf/H6FLLVfK2etrL
-         +6kvJ15Pc2chJKXRTmHAZtnE2V1p6uhYPT4S5n3usGkcuIoLmnyT7BS7Oec6UosEJoNm
-         qopxOEO/xlQyz0VI7aZSKdbbY4XX2t+2jeEWcqHt4j5goH0tv34Gaml7bxbJSjE4beak
-         mg+A==
+        bh=RUNN4pXUiIqbT553r7BwzJCI10zpfzMw6DzVR+9Z+tQ=;
+        b=SaSVNzwjc/QkT/T8KwoXzG+8FahuRTRm3nYoWB5hzA1LJomjd3MSZ/fGAXSsM9inIh
+         r+P6z+Y4jLr8e8Z22g2f4ST2/kVfIcze+g+Q1YwgMgXvVI4udoYC5gE4MbcggeyR0J25
+         Vhcc76tjaplrJ5hHHdDoVz4u78ZHWjS0mII5RJZ1YZJKOx8ThoySSjTO1XQlWCX9x1ZW
+         oN/cy4uMbbZin85U94JAeAN3oeLa2kqTilU8meMyL7ObquYLLSk35BESg4DK873fh089
+         41SQt4dfSmv6+jhis2z/jXd/Dt8HTxBKI1gjBW9l2JMjXe+DGuUdGqKoAwQK+T5uTHn6
+         loaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788845979; x=1789450779;
+        d=1e100.net; s=20251104; t=1788845981; x=1789450781;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0Ry5IsRI3u6+OA2QrlJEuTetR9sltFKry3tbM/33hEE=;
-        b=FuiUn2FzXxbzTc+dFpsZK+z/kMq6dEC+ajtyMIkD2QBSrzqa0Ab8GW7lUN710fVJsW
-         iPf1ELMFrvUWwhwYBqzCJuCbFh5nn8eH+z4dQ0ommDgD92F2LjlFNt7ho/Up80ftEkNF
-         KIY4XAD2Ibwm2fkz2YN6mETtcFLVn/xMaZz8Q9TQHuj5c3LjT06BCf46t5ZjSDrAE+l/
-         zRT9xW0tQR7mC198y2l6167uhxIEoUCwgrVtYfGbzR+s3eJ4dfFOddhZszQgJEZQZ4ty
-         pueD+Ggk9Ve0DgP50KsPKEC8Q/1F8pEKdt3kRq2afHENIyui3tcE6i9IjUe6WUZ5gY5N
-         TliQ==
-X-Forwarded-Encrypted: i=1; AKwUvByzmXL4upuMkJMPasBr6UwJKznru/STa0b41JlGqe/rVIME2CRpwRlUwUXUOsPaMXG7P4I=@vger.kernel.org
-X-Gm-Message-State: AFuF++m18Z1ifB+XoJ39NpaZx+oIZPIvAeVZQXVqRrh/0IbbCp+UpFjY
-	kWOuabLEH6oa8As8f00OKgydiej7Qum1wCZSSdNkfBRGXcTQbMnnnvtn
-X-Gm-Gg: AYBFou3iAnN6Bcj9hwzNWajXxvL/Y6O97hiwahefglb6Xn5wOACajM7tOgvnKSXcV7D
-	wf2DmXlF3oLiBDCEaIAuKjz7GR3Dvwx5t+damrX4P6zto4RWM35B4DCxxyYdG8605lb3EViqleL
-	UCvx671hPxLYgHN3Wom9cIVtA73cuwLCcMdveu2ppR+R+8YHepjg61dralhJe3ev8AF/a9PQtDQ
-	5TbyyU3yFHUgU1Z4OpnhRU8n7DXTI/8co7auuJD/UtcfI2WX4OWbve/S09zDu/jrg1wFi1OylIt
-	/RnFvjvCLmCnT4mPF2V8zgywPAyFYuFfrltmP1IsGKG648ba6MpW0GwnG/5H1kdFPx5kytdU/as
-	YisRAxLWW0Ler8o2KVRW3Zphg7ygBqmvc1tqPjGhuvMNPjY6icEdcFRaXWNJN1/RvYkdZfc8/Lm
-	ejdZWhKaOWy4+X3vFOV1qNVqXyuZs+dyzTzU/cUO7yl7b3o8MTOGv8AwVOnJdydZkdDPReaS6Ra
-	EHJqnK+eKzrz+6Aqq6vAOQJzlF1J5mHvDvAAGmFKWPkDdl6f8iFtxbxKV6kj46vEsre9kQjQJpQ
-	n1O99Air4Kk6arLidEZRXzF6hLKfElSN9Qhvrk+Zjg==
-X-Received: by 2002:a05:600c:6748:b0:49c:fc6c:bdfa with SMTP id 5b1f17b1804b1-49cfc6cbfa2mr234336305e9.17.1788845978942;
-        Mon, 07 Sep 2026 22:39:38 -0700 (PDT)
+        bh=RUNN4pXUiIqbT553r7BwzJCI10zpfzMw6DzVR+9Z+tQ=;
+        b=sPx/M6ax1m8cszq/QnRmwRm7daEOSL/m6oLx4BmGakQVpWOS2Y7HJGOziwe6eV/aLZ
+         539NC0VTHFDRlTjiTKUxfN7GpJBO5wWo2S4sx6PvyPIZ2QXCtibyrzavVIBhZoMxfC9e
+         ZDgdRfJaaICY3S87wSzbTAYAaX5kye5ogyeDQhAu9CjTt37B5SnH4rXxbl8jG4VoUJ4V
+         idTKxhAjaWivLyw/FRE4VmygCqm/gLKYjL4qcNBNmvunFi+aEnc+64QYSl2dMDIg8/D3
+         4Xx6HZCIkBvGAbS4kwRVhaT6Cjml6V3XfUMH+vdMGmJ6QvB3VQN8M0BfheEF43x5FAc2
+         Ww1g==
+X-Forwarded-Encrypted: i=1; AKwUvBxY5BL9rb5XKJ/gYJFo3fpBS36UHRNxiWg+1N1FB4e8psaUrkQdIf4GpDC0ufzkzRbpLOg=@vger.kernel.org
+X-Gm-Message-State: AFuF++n5Pn2/YyC68QSZfJvung0q4Q4iK/YDvmYcBqj6gD6BTS1OYL/T
+	aeT836V9lEapU4ml3tjlszI+JnmEgsbt82NNVZt4NMVjSUfXapaeG0vY
+X-Gm-Gg: AYBFou2mM6LsAbKIDgLiWAs07XyqNls+veNljdaB7K2X8rICo02sLwrBhczCuR1NcB2
+	mKnHISuV/u00RTfEEjxcP4ZLPOme5+8NzAq0XYoVGdh26pJ67R4Ac81vnJKeAetqVIacje6H3IS
+	QG9YlVfdORzlvtvI6cKVg7tSURRIpMFXxnq3O2aHsE1W8HOz2nKclUde1/zgxVFMI/DMpAZg9QH
+	M8btnLDDn0GrBOq8HvKD7+dZIjc76Lri6p5s/iIdCDjRKdUy7MF/XgI5URs0DSEqPYDkrusteiS
+	UUIPqPpw0nRosfwpIaw1y65fNZMHcXGvC5OmqAf1LP9rmDt1y2j9SFKAUotRYP+OZx/L3jDzC0J
+	RnrkiVLoywdPNCOkyZ0EukRI36bSdBKq5QlESQwSKuj+Kj9OmCoKCM+NzZbD8B4EXAZvdkzMgJL
+	f5ESA0tXufpt17XOFoPhsTkK1LGPkyx0lH/H0xy1vhzZhcmayAYnVFxOhZY7b5PQyQitXjiUvO3
+	juLZh+OwHzL0ChiBF3qvtfyl/FfU4GuNWxOLmBBc/AMT0kpwdn0AOECimiVaQJRbO0MeMx8A3oM
+	8H/IEW8JeZqdnxRFfyBCmsnHMEv1njc=
+X-Received: by 2002:a05:600c:3b21:b0:49c:ee01:8c53 with SMTP id 5b1f17b1804b1-49cf820ab3dmr263600185e9.2.1788845980825;
+        Mon, 07 Sep 2026 22:39:40 -0700 (PDT)
 Received: from localhost.localdomain (dynamic-095-117-170-066.95.117.pool.telefonica.de. [95.117.170.66])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee7fec25sm523841335e9.13.2026.09.07.22.39.37
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee7fec25sm523841335e9.13.2026.09.07.22.39.39
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 07 Sep 2026 22:39:38 -0700 (PDT)
+        Mon, 07 Sep 2026 22:39:40 -0700 (PDT)
 From: Karl Mehltretter <kmehltretter@gmail.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>,
 	Jason Wang <jasowangio@gmail.com>,
@@ -94,9 +94,9 @@ Cc: Karl Mehltretter <kmehltretter@gmail.com>,
 	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Christian Borntraeger <borntraeger@linux.ibm.com>,
 	Sven Schnelle <svens@linux.ibm.com>
-Subject: [PATCH v3 1/6] virtio_ccw: fix synchronize_cbs() after interrupt fallback
-Date: Tue,  8 Sep 2026 07:38:12 +0200
-Message-Id: <20260908053817.26065-2-kmehltretter@gmail.com>
+Subject: [PATCH v3 2/6] virtio_ccw: always take irq_lock in the classic interrupt handler
+Date: Tue,  8 Sep 2026 07:38:13 +0200
+Message-Id: <20260908053817.26065-3-kmehltretter@gmail.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20260908053817.26065-1-kmehltretter@gmail.com>
 References: <20260908053817.26065-1-kmehltretter@gmail.com>
@@ -108,39 +108,55 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-virtio_ccw_synchronize_cbs() assumes the device uses adapter interrupts
-when vcdev->airq_info is not NULL. If registering adapter indicators
-fails, virtio_ccw_find_vqs() falls back to classic interrupts but can
-leave airq_info set.
+virtio_ccw_int_handler() takes vcdev->irq_lock around its
+vring_interrupt() calls only when VIRTIO_HARDEN_NOTIFICATION is enabled.
 
-With VIRTIO_HARDEN_NOTIFICATION enabled,
-virtio_ccw_int_handler() invokes callbacks under vcdev->irq_lock.
-synchronize_cbs() instead takes the indicator area lock, so it does
-not synchronize with those callbacks.
+The virtio shutdown path calls synchronize_cbs() even when notification
+hardening is disabled. virtio_reset_device() now does so after the
+transport reset too.
 
-Use vcdev->is_thinint, which the fallback clears, to select the lock.
-Keep the airq_info check because is_thinint can be set before the
-first find_vqs() call, when airq_info is still NULL.
+For classic interrupts, synchronize_cbs() takes vcdev->irq_lock for
+writing, but the interrupt handler does not take the matching read
+lock in that configuration. synchronize_cbs() can return while a
+callback is still running.
 
-Fixes: 3a232277c1ac ("virtio-ccw: implement synchronize_cbs()")
+Take the read lock unconditionally so the write side can synchronize
+with the callbacks.
+
+Fixes: 8bd2fa086a04 ("virtio: break and reset virtio devices on device_shutdown()")
 Assisted-by: LLM
 Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 ---
- drivers/s390/virtio/virtio_ccw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/s390/virtio/virtio_ccw.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
 diff --git a/drivers/s390/virtio/virtio_ccw.c b/drivers/s390/virtio/virtio_ccw.c
-index bab6cad3fd5c..b90299205698 100644
+index b90299205698..552d77998012 100644
 --- a/drivers/s390/virtio/virtio_ccw.c
 +++ b/drivers/s390/virtio/virtio_ccw.c
-@@ -1062,7 +1062,7 @@ static void virtio_ccw_synchronize_cbs(struct virtio_device *vdev)
- 	struct virtio_ccw_device *vcdev = to_vc_device(vdev);
- 	struct airq_info *info = vcdev->airq_info;
- 
--	if (info) {
-+	if (vcdev->is_thinint && info) {
- 		/*
- 		 * This device uses adapter interrupts: synchronize with
- 		 * vring_interrupt() called by virtio_airq_handler()
+@@ -1204,13 +1204,11 @@ static void virtio_ccw_int_handler(struct ccw_device *cdev,
+ 			vcdev->err = -EIO;
+ 	}
+ 	virtio_ccw_check_activity(vcdev, activity);
+-#ifdef CONFIG_VIRTIO_HARDEN_NOTIFICATION
+ 	/*
+ 	 * Paired with virtio_ccw_synchronize_cbs() and interrupts are
+ 	 * disabled here.
+ 	 */
+ 	read_lock(&vcdev->irq_lock);
+-#endif
+ 	for_each_set_bit(i, indicators(vcdev),
+ 			 sizeof(*indicators(vcdev)) * BITS_PER_BYTE) {
+ 		/* The bit clear must happen before the vring kick. */
+@@ -1219,9 +1217,7 @@ static void virtio_ccw_int_handler(struct ccw_device *cdev,
+ 		vq = virtio_ccw_vq_by_ind(vcdev, i);
+ 		vring_interrupt(0, vq);
+ 	}
+-#ifdef CONFIG_VIRTIO_HARDEN_NOTIFICATION
+ 	read_unlock(&vcdev->irq_lock);
+-#endif
+ 	if (test_bit(0, indicators2(vcdev))) {
+ 		virtio_config_changed(&vcdev->vdev);
+ 		clear_bit(0, indicators2(vcdev));
 -- 
 2.39.5 (Apple Git-154)
