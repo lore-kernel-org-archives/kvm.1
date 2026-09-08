@@ -1,125 +1,216 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E353F7A9F
-	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 08:21:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3785941F5DF
+	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 08:26:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788855681; cv=none; b=Py1h4atAxiS9WoWpRLTllps/knNSnZYEAaZXpICseWRA+BY9X+PArmPp0IOOje9LUtc0pe9uPk9y1CGGAli5kAAVqIcA4cXqwUxcXIKFdeKBv16Lqf/wpDB9vEagYSUtUSjQfZMKl9DdEw2dKY3Kp0vgWQjeiKB+EAupeZ7DG9k=
+	t=1788855966; cv=none; b=cGHaC26adsmi3PnZZRusxzDizpY43AtbKAQUDOLeJX7APX6CAhgLwBjHtYVGEQtPSOA3RmFg1Ux6sj4BMS2bm/dGMIev0lSdzZEHwyoGN2hIngOydohVSmkN7bSaGJEXLMApIbiJ9FXaTPy87GTIljx6JQeV6bbfjQA2CBgb/gA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788855681; c=relaxed/simple;
-	bh=i4kh6i2BZaYouLE4tK2A8P3iVu2aviVW1LmNw6U5Xe8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=kbCoXYoVcQK+iry4Jq/BxFKgSazlECeRP/fRywP9mllf/OxQHnwHUWZfW3qTvuUG/h0vBx97B51DFJ9PxiSOc1GU3QpjG19psyC+x1gk0w/hM2Y3rvDFXU2A6ykNnFVunUyTHKTeMFXP3LiBqiMjsI9q0NhgnHAoS0XFcvYF47c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eEoR4R76; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788855966; c=relaxed/simple;
+	bh=mtlzNqSHslbgTL1E+s1EGrdbdVuzUh95XoEfQxCcoHY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gri6CCH/U5vGNJG0M0lUYMoEsE+jPedk34PmR6Vz68ne5eEm2dnJVP34Q7nHntbWtePJlMWHnAIkVhvn+Nnv6sCdH6JM8wT2cqY/u0gRFPRSbzCNwxuwMe1d3FVPmkJBRV7/3JsM4nxoTYxD2YqZcMIsufoK2P/htWxcT8SdU5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QUKW+cRB; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=OVKQQ9sj; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eEoR4R76"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C8B1F00ACA;
-	Tue,  8 Sep 2026 08:21:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788855679;
-	bh=FhBMNFzK5znGtaAWkoePm2AullCEolq7jwr4mJd2QVc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eEoR4R76GGVGpBQE+Zl6Rtk7DtdOtwn06DC0nrbrB6+dHkmW2tHVmj3+mqEynK3gl
-	 4IymnpCK1ixE05LcSgLitlDurYSDD4G6Q7HwA+PDrkTiki1P86+MPh86VlroUw/IXZ
-	 fWkbBnt1TrJwlDt5EJr70e9Vt1PtLpZ4sXhrhVAMfFMwieWNQA4VScaoQ4YkN2UvKI
-	 OXU00Chbiz1zA6cqBEsFszd4sPYwuPnsH2sHjksrO2gqQqAri/8jdusd1BTTYnB0Qe
-	 Sx5rMjdZHu7TlI8ao6XW4/I/OgK8tQzXVf/3Sjurp7m/SqP9T/lV2o5NVhAsPOh/OU
-	 B+sdrUxVM/dfA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 2/2] KVM: x86: Add support for cmpxchg16b emulation
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sairaj Kodilkar" <sarunkod@amd.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260908074739.10748-3-sarunkod@amd.com>
-References: <20260908074739.10748-1-sarunkod@amd.com>
- <20260908074739.10748-3-sarunkod@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 08 Sep 2026 08:21:18 +0000
-Message-Id: <20260908082118.F1C8B1F00ACA@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QUKW+cRB";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="OVKQQ9sj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788855962;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/cIx/FN1ld5ZUnvvOO4W6SfTMNv+qsyUKpor9qdoZ3s=;
+	b=QUKW+cRB1vgNMh8fgJCHLMmXMprE18hgjlH8ruQ4mKP0QEdME0Bd1bp6oFUehRhSOObasJ
+	J7EmHViJb1sqrLkkZGzcUu5I1kKHZvnXtnF8P6Ekqhe3jfIfD5aRcz6JqZzj3963hxYzOu
+	DKEer3pEpYfvnVv+cuhlM2gVxZon2X0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-178-XRMxs4y7NsKuUmNlaVsKxA-1; Tue, 08 Sep 2026 04:26:00 -0400
+X-MC-Unique: XRMxs4y7NsKuUmNlaVsKxA-1
+X-Mimecast-MFC-AGG-ID: XRMxs4y7NsKuUmNlaVsKxA_1788855959
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49cf4cc2125so21412605e9.2
+        for <kvm@vger.kernel.org>; Tue, 08 Sep 2026 01:26:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1788855959; x=1789460759; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/cIx/FN1ld5ZUnvvOO4W6SfTMNv+qsyUKpor9qdoZ3s=;
+        b=OVKQQ9sjja2u+cSgzrZlhyMDC+wSccriL5b/zmv9m0Q6TYe/JodaodnbrRDcvXq+OY
+         PQZfXr3LVuJnYwYUnjNCctoMxJZza9Z8WVzIE8K5QObjCixThyQ2fLymQRglfTBWocHh
+         rWTfnV7AzHmOs2wDU5sVactymzJcNk1xU6IEuFXEGsqyUTQDKWQJGTjQZH9NSqhn59mf
+         fHIZ60pj6OLtUDI/1mkxNxKJbQPOb9USZQkkMWx4boDEz+kf9FEPDKYlv05pHma+yH1o
+         3eiUxGEmQUxOS/AcmSuX+fdAW+0Y2OhtFjap02uU1PsQCZWEOGi54qeDxsRmMbqBJwoW
+         TwPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788855959; x=1789460759;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/cIx/FN1ld5ZUnvvOO4W6SfTMNv+qsyUKpor9qdoZ3s=;
+        b=a6ceM52/E0Wu8lJjU+Ntk+dZZr8gyhJZDSK1orsP+QLaYYKpW5v8J2Mv9BWsYMFWsA
+         /mp8jxzq5LFQGRnmnxo02mPpP0DgDa1sfbkv7a/rjIJh1CS7JjhGGQaLBsey7NcgknSu
+         4LIfOhDKJPilAujwZeA+UdxadJv/UZErMLVvoRsochUD67DCxwc2bnpar9AKlQjb2kW5
+         hSYLwGgmd72VlZF1dH4ftQl3+TSgHWnN+QLGC7GQoxPDWJqC0JwH9GftALp+s/2ESkz/
+         xdpQ9eCPTyAmpBG96vQ0c+DADvUCcyjhsmRQ/ZRSf+GAF+9KiFT7UdUxb4S3pPwQ1VLS
+         YO0A==
+X-Forwarded-Encrypted: i=1; AKwUvBxrnwcLW78842j7O7mYE7pewCP5SkiKdGHSF+iAJq4pN97PMPtdm8lyrJy0LD0EHUMCLCw=@vger.kernel.org
+X-Gm-Message-State: AFuF++n+o71LAVXbF/okkA3LC2a57bzDngyDzBUQ/fnQ5cuSjEj8tRIZ
+	WqCZX6kXL8tb6XK28Z7fT53ipeUFVEempdqi9jfCj5DfL05uEhHx8jxUaULUuZyPCyr9qabQVT4
+	NeYE8BQpjWpLVjSA25Q15bQ/914Nj3KIwHy9Ypse5VGkqR24yGlw+pw==
+X-Gm-Gg: AYBFou0zjOb7QZrr15RtCbC1txkeUMgLOxJMVyzYWI2bKUriPCqL+Jc2xlF9wXM+VUc
+	YZcs2y+iYGRsgZymB0vwclC3urHUs2tyoTMjq0JXRrKrkKRw9sB3vROumhcO7hpuUMeBWFLiOop
+	vhJdWwQ3ox7uYgGG6tipIwOsvlwhw7xESPiXAYokDlCQJ6CZbGpZ9gy1WhmrrWh4YqtQ0i9xNOy
+	RxFeRQY5SJoLq3Jaz7M61cMoAUfeft+PU6rDRiaBlqUo4VO1HSKwFm2khWPLTVXIJVMwN01wYfj
+	OyngJ3FW7W9u7HntedOdLz4WhysRXuoVQTTmkjbrYmNaDE/3lTr3x04NAVQEpgqDNnmAY3Og9sh
+	q8THBMW3lURUaQq4PQl7sgE8=
+X-Received: by 2002:a05:600c:c4aa:b0:49c:e3c3:5efd with SMTP id 5b1f17b1804b1-49cf8241a84mr469629015e9.9.1788855959344;
+        Tue, 08 Sep 2026 01:25:59 -0700 (PDT)
+X-Received: by 2002:a05:600c:c4aa:b0:49c:e3c3:5efd with SMTP id 5b1f17b1804b1-49cf8241a84mr469628205e9.9.1788855958792;
+        Tue, 08 Sep 2026 01:25:58 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-79-236.inter.net.il. [80.230.79.236])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d04fe7f9dsm275644125e9.0.2026.09.08.01.25.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 01:25:58 -0700 (PDT)
+Date: Tue, 8 Sep 2026 04:25:53 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Jason Wang <jasowangio@gmail.com>, Gerd Hoffmann <kraxel@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Rusty Russell <rusty@rustcorp.com.au>,
+	Pawel Moll <pawel.moll@arm.com>, Cornelia Huck <cohuck@redhat.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Eric Farman <farman@linux.ibm.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Hans de Goede <hansg@kernel.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Vadim Pasternak <vadimp@nvidia.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	virtualization@lists.linux.dev, linux-input@vger.kernel.org,
+	linux-s390@vger.kernel.org, kvm@vger.kernel.org,
+	linux-um@lists.infradead.org, platform-driver-x86@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>
+Subject: Re: [PATCH v3 0/6] virtio: fix and add callback synchronization hooks
+Message-ID: <20260908042440-mutt-send-email-mst@kernel.org>
+References: <20260908053817.26065-1-kmehltretter@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260908053817.26065-1-kmehltretter@gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] Missing guest CPUID check for X86_FEATURE_CX16 allows guest to i=
-nvoke CMPXCHG16B emulation regardless of guest capabilities.
---
+On Tue, Sep 08, 2026 at 07:38:11AM +0200, Karl Mehltretter wrote:
+> This is v3 of the callback synchronization series. It is based on
+> Michael S. Tsirkin's linux-next branch at f49e6cf91942 ("virtio:
+> synchronize callbacks after device reset"), which already contains the
+> core change and the virtio_input teardown reorder from v2.
 
-commit 17ba312dad40f9de38e63207a6f7c861db26c57a
-Author: Sairaj Kodilkar <sarunkod@amd.com>
-Subject: KVM: x86: Add support for cmpxchg16b emulation
 
-This commit extends cmpxchg8b emulation in KVM to support the cmpxchg16b
-instruction when the destination memory is 128-bit and REX.W is set. This
-addresses an emulation failure where guests, such as the AMD IOMMU driver,
-use 128-bit cmpxchg operations on MMIO regions.
+Thanks I applied since this looks like a net improvement.
+Pls keep iterating on the core change.
+If you want to take a stab at some of the pre-existing issues -
+will be welcome.
+Pls do note which patches were tested and which were not.
 
-Link: https://github.com/AMDESE/qemu-iommu/blob/wip/for_iommufd_hw_queue-v8=
-_amd_viommu_20260106/hw/i386/amd_viommu.c#L517
+> Patches 1 and 2 fix two bugs in virtio-ccw's existing
+> synchronize_cbs() hook. After a fallback from adapter to classic
+> interrupts it selects the wrong lock, and the classic interrupt handler
+> only takes the matching lock when notification hardening is enabled.
+> Patch 3 adds SRCU tracking for remoteproc callbacks, which can sleep.
+> Patches 4 and 5 replace the RCU fallback with synchronization against
+> the UML IRQ and the TmFIFO callback locks. The fallback already covers
+> these IRQ handlers and spinlock sections. Patch 6 adds SRCU tracking
+> in virtio_vdpa so callback synchronization does not depend on the
+> context in which the vDPA driver invokes the callback.
+> 
+> The UML, TmFIFO and remoteproc reset paths do not themselves prevent
+> new virtqueue callbacks. UML and TmFIFO only clear a status field, and
+> remoteproc does not wait for the remote side to acknowledge the reset.
+> Without notification hardening or driver-specific teardown protection,
+> callbacks can still start after reset. The new synchronization hooks
+> do not fix that. The TmFIFO hook also does not synchronize with the
+> rest of the FIFO work item outside the callback locks.
+> 
+> The virtio_input loop change from v2 (continue instead of break, so
+> events the device already completed are still delivered) and the
+> event buffer leak are sent separately.
+> 
+> Changes in v3:
+> - Rebased on Michael's linux-next branch. Dropped the core change and
+>   the virtio_input patch, which are there already.
+> - Split the virtio-ccw fixes out of the core patch, one per bug, and
+>   the transport patch into one patch per transport. The CCW and TmFIFO
+>   changes are functionally unchanged from v2.
+> - Patch 2: added a Fixes tag and described the existing shutdown
+>   case. Removed the dependency note on the core reset change.
+> - remoteproc: read the queue pointer once in rproc_vq_interrupt(), and
+>   synchronize with callbacks in __rproc_virtio_del_vqs() before
+>   freeing the queues (Sashiko). Place vq_srcu next to rvdevs so the
+>   hunk also applies to mainline, which added attach_work after index.
+> - virtio_uml: compare against UM_IRQ_ALLOC instead of a bare negative
+>   check.
+> - virtio_vdpa: use SRCU instead of a per-device rwlock, so the
+>   callback tracking uses per-CPU counters, and cover the config
+>   callback (Sashiko).
+> - Rewrote the commit messages. Corrected the RCU fallback description
+>   for UML, TmFIFO and the vDPA simulators. Dropped the claimed simulator
+>   reset race: the simulators disable bottom halves around virtqueue
+>   callbacks and serialize reset with the worker's mutex.
+> 
+> Changes in v2:
+> - Moved callback synchronization from virtio-pci into the core, as
+>   Michael suggested, and added the missing synchronize_cbs() hooks.
+> 
+> Testing: the changed objects build with W=1 without warnings, with
+> clang on arm64, x86-64 and s390 and with gcc on SMP UML, and the
+> patches also apply to current mainline and linux-next. The runtime
+> tests from v2 were not repeated on this version: the input, rebind and
+> shutdown checks on arm64 MMIO and x86 PCI covered code that is
+> unchanged here, and the remoteproc and virtio_vdpa hooks have only
+> been build-tested. No remoteproc, TmFIFO or s390 hardware was
+> available.
+> 
+> v2: https://lore.kernel.org/r/20260905152059.89560-1-kmehltretter@gmail.com
+> v1: https://lore.kernel.org/r/20260818040433.66986-1-kmehltretter@gmail.com
+> 
+> Karl Mehltretter (6):
+>   virtio_ccw: fix synchronize_cbs() after interrupt fallback
+>   virtio_ccw: always take irq_lock in the classic interrupt handler
+>   remoteproc: implement synchronize_cbs() for virtio devices
+>   um: virtio_uml: implement synchronize_cbs()
+>   platform/mellanox: mlxbf-tmfifo: implement synchronize_cbs()
+>   virtio_vdpa: implement synchronize_cbs()
+> 
+>  arch/um/drivers/virtio_uml.c             | 10 +++++++
+>  drivers/platform/mellanox/mlxbf-tmfifo.c | 15 ++++++++++
+>  drivers/remoteproc/remoteproc_core.c     | 12 ++++++++
+>  drivers/remoteproc/remoteproc_virtio.c   | 37 +++++++++++++++++++-----
+>  drivers/s390/virtio/virtio_ccw.c         |  6 +---
+>  drivers/virtio/virtio_vdpa.c             | 34 ++++++++++++++++++++--
+>  include/linux/remoteproc.h               |  3 ++
+>  7 files changed, 102 insertions(+), 15 deletions(-)
+> 
+> 
+> base-commit: f49e6cf919425cc55f10fd7cda7e0fc895df4cc0
+> -- 
+> 2.39.5 (Apple Git-154)
 
-> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-> index c1b21282187f3..535842336d766 100644
-> --- a/arch/x86/kvm/emulate.c
-> +++ b/arch/x86/kvm/emulate.c
-
-[ ... ]
-
-> @@ -2184,24 +2184,36 @@ static int em_call_near_abs(struct x86_emulate_ct=
-xt *ctxt)
-
-[ ... ]
-
->  static int em_cmpxchg8b(struct x86_emulate_ctxt *ctxt)
->  {
-
-[ ... ]
-
-> -	if (ctxt->dst.bytes =3D=3D 16)
-> +	if (WARN_ON_ONCE(8 + !!(ctxt->rex_bits & REX_W) * 8 !=3D ctxt->dst.byte=
-s))
->  		return X86EMUL_UNHANDLEABLE;
-> =20
-> -	if (((u32) (old >> 0) !=3D (u32) reg_read(ctxt, VCPU_REGS_RAX)) ||
-> -	    ((u32) (old >> 32) !=3D (u32) reg_read(ctxt, VCPU_REGS_RDX))) {
-> -		*reg_write(ctxt, VCPU_REGS_RAX) =3D (u32) (old >> 0);
-> -		*reg_write(ctxt, VCPU_REGS_RDX) =3D (u32) (old >> 32);
-> -		ctxt->eflags &=3D ~X86_EFLAGS_ZF;
-> -	} else {
-> -		ctxt->dst.val64 =3D ((u64)reg_read(ctxt, VCPU_REGS_RCX) << 32) |
-> -			(u32) reg_read(ctxt, VCPU_REGS_RBX);
-> -
-> -		ctxt->eflags |=3D X86_EFLAGS_ZF;
-> -	}
-> +	if (!(ctxt->rex_bits & REX_W))
-> +		em_cmpxchg8b_16b(ctxt, 32, 64);
-> +#ifdef CONFIG_X86_64
-> +	else
-> +		em_cmpxchg8b_16b(ctxt, 64, 128);
-
-[Severity: Medium]
-Does this unconditionally allow a guest to invoke cmpxchg16b emulation
-without checking if the guest CPUID actually supports X86_FEATURE_CX16?
-
-If a hypervisor intentionally hides the CX16 CPUID feature to mimic older
-hardware, it seems a guest could still execute a 128-bit cmpxchg targeting
-an MMIO address, trapping to KVM and triggering this unconditional emulation
-path in em_cmpxchg8b().
-
-This appears to violate KVM guidelines requiring guest-visible features to =
-be
-discoverable and adhere to the guest CPUID configuration, which can break
-live migration capability negotiation. Could we add a capability check for
-X86_FEATURE_CX16 before performing the 128-bit emulation?
-
-> +#endif
->  	return X86EMUL_CONTINUE;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908074739.1074=
-8-1-sarunkod@amd.com?part=3D2
