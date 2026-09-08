@@ -1,201 +1,135 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F53E519929;
-	Tue,  8 Sep 2026 10:43:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45ECD5221ED
+	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 10:49:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788864214; cv=none; b=TUcFEf/1tBTgR76xQqWDX+JT7te41JKaaY6tLgWpw+qWetrP0TbfHOJ547ov87KS3WeTB61yYVxghfHoX6qff+uVo6LNedQ9HVgut2Mk3haxJYrSscgoQvHGnynhbDrPoMNZOoUMoomdKYhhMepnZDiYINUeKXaG7F8vyEfSIPQ=
+	t=1788864577; cv=none; b=Xgue9JPAGPGg4VN9+nSY63m+ykQkqKE/1bfLDEFLqfmriXPsrEdMiprrmWTINJU+pQjr0EdfiwAiLpDSoAUddeFxdb674oPjJgFUjMGMsp0m6xkicbFBDOu3OB7pw6+wTq0RW1wbvtqcoFnkhitRZxQQIWnN/5bkpGPlpyrS4jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788864214; c=relaxed/simple;
-	bh=qWSAnx/2m4XMAWGRUdW5OZ4UAA1+skg43ZENO1oTeMw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m0eTGagFjfeOBUqbuxvjgAB3CQ0agid048+kmWcFXnFFijDioT9XxrDn/uZr+goWY2Ihjsk7Hc25v3tsC3KljWzqFmIXq5SQIEOls4e3StnwH9O//MQWn+wR5S9SjZoB9oZUaJ7b1hHypC7Un8mAgVwH+q2TmeLvXY/2ulRIihg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=G/vHDFqX; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1788864577; c=relaxed/simple;
+	bh=3ESfzKxigBzI7MbibUfUdTFC9HvgFR+KIHgNABQE51c=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=pykb1gagEhQW73OvdL8jGDPuPwZjo4HeMRMBiAykhcQ1yNioyYAFHiA+BKpldgVcZLxAL9W/vRIXHyF+0GdkQFS3W2pAZHxu9+bCwE7W2o1wR0xM4MD437AQltnCC5WRp2CEnLflJz30u4lmKVUArIKtFcjUfjILN+wXhZQL8aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VerKfno2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="G/vHDFqX"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 600F01476;
-	Tue,  8 Sep 2026 03:43:28 -0700 (PDT)
-Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 725653F528;
-	Tue,  8 Sep 2026 03:43:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788864212; bh=qWSAnx/2m4XMAWGRUdW5OZ4UAA1+skg43ZENO1oTeMw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=G/vHDFqX/gKrcuszE3VshjePNe3v4uqUSjCOjN8C4AXE0ccvtSMqJKDdEcsBh8QIr
-	 4DQjNn9aFLMivvaX4bP08uncghR2Xgf+kYmaYVJ5OEX+xkdNgQTtow8PoqMjBd6urp
-	 0OOBLobpwlJVfXtrye5nKnBPb70udqw48c915/Qg=
-Message-ID: <27d26c01-f00e-4ef3-b262-63cbe06e85ff@arm.com>
-Date: Tue, 8 Sep 2026 11:43:28 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VerKfno2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5520B1F00A3A;
+	Tue,  8 Sep 2026 10:49:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788864573;
+	bh=OkaR47eVJ9sboA4LyZDdFV1z8oWa7iLII/R9TTKaezs=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=VerKfno2eHTGP2Lqh52Vntd6Y/9RHPsj7+awgiJ2tEKmUfdVZJNxX3dKMgGcOGlpo
+	 f4JuSh643CgHH5rAynVDG/qpislJl3dPWzFH0SviM8f5vRl5J1JGf62udL2P31k2NT
+	 3Y7Cc+fyOC5lqPICxYvwEAU+Rha2Bo2eWRi//kaXIrHPvVTxh3ipkVBNSCRkCKOECG
+	 DcBd6/zp9ClZj/PuWx/noW2GCIWRXmJRX722OyLalNb0wKoxPSAqMVTMfG4z1PBqWo
+	 1l+mG7OxBpnETvJMhTHZ9CXI3zJCPPeAeymqQcppedppJ/TACnNKRqK9tVNCrJ7Kxu
+	 1vhmVR0+QpbJQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 6/8] KVM: SEV: Add SNP vCPU state get and set
+ commands
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260908103338.427254-7-joro@8bytes.org>
+References: <20260908103338.427254-1-joro@8bytes.org>
+ <20260908103338.427254-7-joro@8bytes.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 08 Sep 2026 10:49:28 +0000
+Message-Id: <20260908104933.5520B1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 3/7] firmware: arm_rmm: Configure the RMM with the
- host's page size
-To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
- <20260907095942.1140734-4-suzuki.poulose@arm.com>
- <10893135-4757-44de-91b5-180a9774d868@redhat.com>
-Content-Language: en-US
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <10893135-4757-44de-91b5-180a9774d868@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 08/09/2026 08:04, Gavin Shan wrote:
-> Hi Suzuki,
-> 
-> On 9/7/26 7:59 PM, Suzuki K Poulose wrote:
->> From: Steven Price <steven.price@arm.com>
->>
->> RMM v2.0 brings the ability to set the RMM's granule size. Check the
->> feature registers and configure the RMM so that it matches the host's
->> page size. This means that operations can be done with a granularity
->> equal to PAGE_SIZE.
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> ---
->>   Changes since v15:
->>    * Actually check the feature register for the host's page-size 
->> support.
->>   Changes since v14:
->>    * Move the implementation into drivers/firmware/arm_rmm.
->>   Changes since v13:
->>    * Moved out of KVM.
->> ---
->>   drivers/firmware/arm_rmm/rmi.c | 58 ++++++++++++++++++++++++++++++++++
->>   include/linux/arm-rmi-cmds.h   | 17 ++++++++++
->>   2 files changed, 75 insertions(+)
->>
->> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/ 
->> arm_rmm/rmi.c
->> index 008a783407b4e..76f91c145e1fd 100644
->> --- a/drivers/firmware/arm_rmm/rmi.c
->> +++ b/drivers/firmware/arm_rmm/rmi.c
->> @@ -77,6 +77,60 @@ static int rmi_read_features(void)
->>       return 0;
->>   }
->> +static int rmi_configure(void)
->> +{
->> +    unsigned long granule_feature;
->> +    unsigned long granule_size;
->> +    int ret = 0;
->> +    struct rmm_config *config;
->> +
->> +    switch (PAGE_SIZE) {
->> +    case SZ_4K:
->> +        granule_size = RMI_GRANULE_SIZE_4KB;
->> +        granule_feature = RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_4KB;
->> +        break;
->> +    case SZ_16K:
->> +        granule_size = RMI_GRANULE_SIZE_16KB;
->> +        granule_feature = RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_16KB;
->> +        break;
->> +    case SZ_64K:
->> +        granule_size = RMI_GRANULE_SIZE_64KB;
->> +        granule_feature = RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_64KB;
->> +        break;
->> +    default:
->> +        BUILD_BUG();
->> +    }
->> +
->> +    if (!(rmi_feat_reg(1) & granule_feature)) {
->> +        pr_err("RMM does not support %luKB granules\n",
->> +               PAGE_SIZE >> 10);
->> +        return -ENXIO;
->> +    }
->> +
->> +    config = (struct rmm_config *)get_zeroed_page(GFP_KERNEL);
->> +    if (!config)
->> +        return -ENOMEM;
-> 
-> An error message is needed here.
-> 
->      if (!config) {
->          pr_err("Unable to alloc RMM config memory\n");
->          return -ENOMEM;
->      }
-> 
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] KVM_SEV_SNP_GET_VCPU_STATE silently hides the configured VMSA GPA =
+during transient MMU invalidations, causing state loss during live migratio=
+n.
+- [High] KVM_SEV_SNP_SET_VCPU_STATE incorrectly rejects valid 2MB-aligned V=
+MSA GPAs.
+--
 
-I can add that, doesn't hurt.
+commit ccc907edf743bac6d650ebf0b64bb61800fedfea
+Author: Joerg Roedel <joerg.roedel@amd.com>
 
->> +
->> +    config->rmi_granule_size = granule_size;
->> +
->> +    /*
->> +     * For now we set the tracking_region_size to 0 which is the only 
->> option
->> +     * for 4KB PAGE_SIZE (1GB for 4KB PAGE_SIZE, 32MB/512MB for 
->> 16KB/64KB).
->> +     * TODO: Support other tracking sizes via Kconfig option for other
->> +     * PAGE_SIZES
->> +     */
->> +    config->tracking_region_size = 0;
->> +
->> +    ret = rmi_rmm_config_set(virt_to_phys(config));
->> +    if (ret) {
->> +        pr_err("RMM config set failed\n");
->> +        ret = -EINVAL;
->> +    }
-> 
-> The error code from rmi_rmm_config_set() is indicative sometimes. Also, 
-> -ENXIO
-> would be more appropriate than -EINVAL?
-> 
->      if (ret) {
->          pr_err("RMM config set failed (%d)\n", ret);
->          ret = -ENXIO;
->      }
-> 
+KVM: SEV: Add SNP vCPU state get and set commands
 
-Ack
+Add KVM_SEV_SNP_GET_VCPU_STATE and KVM_SEV_SNP_SET_VCPU_STATE as
+vCPU-scoped KVM_MEMORY_ENCRYPT_OP commands and advertise
+KVM_CAP_SNP_VCPU_STATE.
 
->> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
->> index 2fb1f7f86d71e..9aa27697e2377 100644
->> --- a/include/linux/arm-rmi-cmds.h
->> +++ b/include/linux/arm-rmi-cmds.h
->> @@ -12,6 +12,23 @@
->>   unsigned long rmi_feat_reg(unsigned long id);
->> +/**
->> + * rmi_rmm_config_set() - Configure the RMM
->> + * @cfg_ptr: PA of a struct rmm_config
->> + *
->> + * Sets configuration options on the RMM.
->> + *
->> + * Return: RMI return code
->> + */
->> +static inline int rmi_rmm_config_set(unsigned long cfg_ptr)
->> +{
->> +    struct arm_smccc_res res;
->> +
->> +    arm_smccc_1_1_invoke(SMC_RMI_RMM_CONFIG_SET, cfg_ptr, &res);
->> +
->> +    return res.a0;
->> +}
->> +
-> 
-> rmi_rmm_config_set() is used for once by rmi.c::rmi_configure(), I would 
-> not expose
-> rmi_rmm_config_set() by combining the logic to rmi.c::rmi_configure().
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 7a9ef1bc54e9d..3e0727e251a93 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+[ ... ]
+> @@ -2585,6 +2587,89 @@ static int snp_launch_update_vmsa(struct kvm *kvm,=
+ struct kvm_sev_cmd *argp)
+>  	return ret;
+>  }
+> =20
+> +static int snp_get_vcpu_state(struct kvm_vcpu *vcpu,
+> +			      struct kvm_sev_cmd *argp)
+> +{
+> +	struct vcpu_svm *svm =3D to_svm(vcpu);
+> +	struct kvm *kvm =3D vcpu->kvm;
+> +	struct kvm_sev_snp_vcpu_state state =3D {};
+> +
+> +	if (!is_sev_snp_guest(vcpu))
+> +		return -ENOTTY;
+> +	if (!to_kvm_sev_info(kvm)->snp_context)
+> +		return -EINVAL;
+> +
+> +	guard(mutex)(&svm->sev_es.snp_vmsa_mutex);
+> +
+> +	if (VALID_PAGE(svm->sev_es.snp_guest_vmsa_gpa) &&
+> +	    VALID_PAGE(svm->vmcb->control.vmsa_pa)) {
 
-Ack
+[Severity: High]
+Does this safely handle transient MMU invalidations?
 
-Thank you for the review
+When a concurrent host MMU invalidation (e.g., from page migration) overlaps
+with a VMSA reload, __sev_snp_reload_vmsa() will hit the retry path and set
+vmsa_pa to INVALID_PAGE while correctly queuing KVM_REQ_VMSA_PAGE_RELOAD.
 
-Cheers
-Suzuki
+If userspace queries the state to migrate the VM during this window, this
+check evaluates to false because vmsa_pa is INVALID_PAGE. Consequently, it
+returns VMSA_VALID =3D 0 even though snp_guest_vmsa_gpa is correctly
+configured. Can this cause the configured VMSA GPA to be silently
+dropped and lead to state loss on the destination VM?
 
+> +		state.vmsa_gpa =3D svm->sev_es.snp_guest_vmsa_gpa;
+> +		state.valid_fields |=3D KVM_SEV_SNP_VCPU_STATE_VMSA_VALID;
+> +	}
+[ ... ]
+> +static int snp_set_vcpu_state(struct kvm_vcpu *vcpu,
+> +			      struct kvm_sev_cmd *argp)
+> +{
+[ ... ]
+> +	if (state.valid_fields & KVM_SEV_SNP_VCPU_STATE_VMSA_VALID) {
+> +		if (!PAGE_ALIGNED(state.vmsa_gpa) ||
+> +		    !page_address_valid(vcpu, state.vmsa_gpa) ||
+> +		    IS_ALIGNED(state.vmsa_gpa, PMD_SIZE))
 
+[Severity: High]
+Is it intended to reject perfectly valid 4KB-aligned VMSA GPAs if they happ=
+en
+to fall on a 2MB boundary?
+
+A guest OS or userspace VMM linearly allocating memory might naturally land=
+ on
+a 2MB-aligned address (e.g., 0x200000). The IS_ALIGNED(state.vmsa_gpa,
+PMD_SIZE) condition evaluates to true for these addresses and rejects them
+with -EINVAL, which can cause sporadic VM boot or migration failures.
+
+> +			return -EINVAL;
+> +	}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908103338.4272=
+54-1-joro@8bytes.org?part=3D6
