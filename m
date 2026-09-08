@@ -1,176 +1,231 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0821E52ED42
-	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 13:34:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F6E5592F0
+	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 13:57:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788874495; cv=none; b=qvU8OBtDvsw5CYLg8J0zkBiNZysvMAAhvtcET6P2F6C5+PHTZq30ZPYec9Kic2anjvNi5FpIa2L4flEssZAfVDuVbRjao7EdtTsOf2I+UAaguZ7D4JdRlB+Khnsat55x0tLHibXGFrHJxDSvs2aidJm4iAFFSIRAvqYphFGbKtM=
+	t=1788875870; cv=none; b=TbBuLJnMKPdjHjP1ztgQ1mqWq8wlnD3jjjF+5w1HVEL5Pv+BIIh6jQEbYBTt/5KI+YKJBUEYDirgT1080F794cv6tumpYN0LKV5kqK6P92hnCAyPx9XkEPsq0CI96SGjFO5IPbckB8k/ydbWGsi0VbrPFJc+NG+6Ik9mun6KT7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788874495; c=relaxed/simple;
-	bh=7Wddo+fD0swIzF4dXTBlpMKytInTharTjwZn2tx67OU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=biFFg8Fn1Hp2SBmI0q/A/vMlfY81BVMlVQqZUMWNDzaueOXKazri+O0F+u5qlKfTeM3LHGOEUI7WVhGD2zJAxXpyd+RCBXN6xmW8wABffS1DQLGdZxB4Qmu61uPgREhJ1ZY0TxOY6C486aTNpmE/M6yB/1eXtgtmn1MEZnvQcRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OzS187LK; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788875870; c=relaxed/simple;
+	bh=tighKdMR8Lgbv/xo3fjP9RI7hKrpgyFmA3ivO5QDzV4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=RcfmEU4LYud242OUsbXmfpUYDFURVH3+krdPavrHFgYDohmWrBDLGw+IFZd7nu1PKXcHV9o/b2YLeMZrCsO3xQkIORcuUYioIkIHn+mdpHALQBzISpWVGMcz868HC8qDuAmWUbcuC7qxyayY8nSS/E+swJC2v4e4JZr9VzTvw7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GRTnyk8Q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OzS187LK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788874475;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=RRoN2KDjRYUqGQ6oqCABS6BHuNVftn8VOXlRsqF+JoM=;
-	b=OzS187LKfUvpywnEer4V1Xwd+FkCAT9Kw3miL5cpmNfXalsZaso+RCO51luMy9Cj6XDj/D
-	pkQyBXi3/wVoUDZUP4qcUmrHAVOO2+40KMqZ/l2ddx4PxAQOAxtUGqHmNzynhXiRu6VcQy
-	95W3I6EqCvSFwB61ajiCuZNjIkhJvfs=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-683-rK8nRPTDMmWj2E2eN-LQmA-1; Tue,
- 08 Sep 2026 09:34:33 -0400
-X-MC-Unique: rK8nRPTDMmWj2E2eN-LQmA-1
-X-Mimecast-MFC-AGG-ID: rK8nRPTDMmWj2E2eN-LQmA_1788874472
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8BBC2195E919
-	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 13:34:32 +0000 (UTC)
-Received: from [100.90.56.12] (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9C1121955F11;
-	Tue,  8 Sep 2026 13:34:31 +0000 (UTC)
-Message-ID: <81253f32-39fb-4e47-bedf-f5ab7d8e18a6@redhat.com>
-Date: Tue, 8 Sep 2026 15:34:29 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GRTnyk8Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D14C01F00A3A;
+	Tue,  8 Sep 2026 13:57:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788875857;
+	bh=fleFc6m3iJVrIMrmIEfOlVn047psFV56wYl75Uo9EAU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=GRTnyk8Qs4lHLJIrAGpPidNLIu6lK2vaaNn0tc6aw7SosJpKtBw0XRQmwzkUYPaEG
+	 WYeBfHMImPw+h/M1bKc2Boo2p+0PqmDvXHOexN8Csqadiwnw0Vcxs5YKH4FJDaZaSg
+	 DJb92lmd9SN28VQM0AFSgXs1A9hb2tCosb3fstVf4IdMMFE5JIYkwkZkwT2TFXnKFo
+	 3MnnBhFN/aIlCx1DlLcPedAHuoMSAN7DQOJr5DiNvdAz+Ch439WNJ4KCdYgH8nc+o+
+	 49pnaDGmCSumCTP0BKPHKz2LuhW6ddyFh/Z+VdcIcx+e8wOrh8TKc2qBEfWAG2duys
+	 cDatNwimu+Dpg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] KVM: nVMX: Don't flush shadow VMCS12 to guest memory
+ during vCPU teardown
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jim Mattson" <jmattson@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260908132838.2116068-1-jmattson@google.com>
+References: <20260908132838.2116068-1-jmattson@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 08 Sep 2026 13:57:36 +0000
+Message-Id: <20260908135736.D14C01F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v2] svm: Add SMI handler for
- svm_intr_intercept_mix_smi test
-To: Ryosuke Yasuoka <ryasuoka@redhat.com>
-Cc: kvm@vger.kernel.org, Maxim Levitsky <mlevitsk@redhat.com>
-References: <20260820-add_smi_handler-v2-1-80d7316d5dde@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20260820-add_smi_handler-v2-1-80d7316d5dde@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On 8/20/26 10:49, Ryosuke Yasuoka wrote:
-> L1 intercepts L2's SMI and the SMI is still pending at L0. When L1
-> re-enables GIF via stgi(), L0 delivers the SMI to L1.
-> 
-> If SMBASE has not been relocated and no SMI handler has been installed,
-> L1 enters SMM and executes garbage at the default entry point, causing
-> an abort.
-> 
-> Install a trivial SMI handler at the default SMBASE entry point so L1
-> can return from SMM.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
-Applied, with an extra note that you can't have multiple processors 
-using the same SMBASE area at the same time.
+Pre-existing issues:
+- [Critical] Live migration during SMM with an active nested guest overwrit=
+es L2 state (e.g. RIP/RSP) with stale data from the hardware shadow VMCS.
+- [High] Live migration during SMM with nested shadow VMCS enabled causes a=
+ Triple Fault on the destination.
+- [High] During vCPU teardown, __nested_vmx_vmexit() unconditionally loads =
+L1 host state, triggering a cross-process memory read via load_pdptrs() wit=
+h a borrowed active_mm.
+--
 
-Paolo
+commit 15d3183acc0011b1c1063bab25d832a346f7a45c
+Author: Jim Mattson <jmattson@google.com>
 
-> 
-> Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
-> Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
-> ---
-> Changes in v2:
-> - Update commit messages and comments based on Maxim feedback.
-> - No code updates
-> - Link to v1: https://lore.kernel.org/r/20260818133445.8688-1-ryasuoka@redhat.com
-> ---
->   x86/svm_tests.c | 28 ++++++++++++++++++++++++++++
->   1 file changed, 28 insertions(+)
-> 
-> diff --git a/x86/svm_tests.c b/x86/svm_tests.c
-> index ccbab1d0..639da786 100644
-> --- a/x86/svm_tests.c
-> +++ b/x86/svm_tests.c
-> @@ -3543,8 +3543,36 @@ static void svm_intr_intercept_mix_smi_guest(struct svm_test *test)
->   	report(0, "must not reach here");
->   }
->   
-> +#define SMBASE	0x30000
-> +#define SMBASE_ENTRY	(SMBASE + 0x8000)
-> +#define RSM_OPCODE	0xaa0f
-> +
-> +/*
-> + * Install a trivial SMI handler at the default SMBASE entry point as a
-> + * fallback for when SMBASE has not been relocated and no SMI handler has
-> + * been installed. Without this, entering SMM executes garbage at the
-> + * default entry point and aborts.
-> + *
-> + * If running with a firmware that supports SMM, it will relocate SMBASE
-> + * and install its own handler, so the handler installed here will be
-> + * safely ignored.
-> + *
-> + * The default SMBASE (0x30000) region is safe to write to: flat.lds places
-> + * all sections starting at 4MB, and the page allocator starts after edata.
-> + */
-> +static void install_smi_handler(void)
-> +{
-> +	WRITE_ONCE(*(u16 *)SMBASE_ENTRY, RSM_OPCODE);
-> +}
-> +
->   static void svm_intr_intercept_mix_smi(void)
->   {
-> +	/*
-> +	 * L1 intercepts L2's SMI and the SMI is still pending at L0.
-> +	 * When L1 re-enables GIF via stgi(), L0 delivers the SMI to L1.
-> +	 */
-> +	install_smi_handler();
-> +
->   	vmcb_set_intercept(INTERCEPT_SMI);
->   	vmcb->control.int_ctl &= ~V_INTR_MASKING_MASK;
->   	test_set_guest(svm_intr_intercept_mix_smi_guest);
-> 
-> ---
-> base-commit: 033ab80d18bca31a6e428b877518883c90c3a2aa
-> change-id: 20260820-add_smi_handler-063b3d117141
-> 
-> Best regards,
+KVM: nVMX: Don't flush shadow VMCS12 to guest memory during vCPU teardown
 
+When a vCPU is destroyed while L2 is active, KVM synthesizes a nested VM-Ex=
+it.
+During this process exit, the vCPU destruction runs with a borrowed lazy TL=
+B=20
+active_mm, so skipping the shadow VMCS12 flush prevents __copy_to_user()=20
+from corrupting an unrelated task's memory.
+
+> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> index 151873407abd3..33dc8a07019f8 100644
+> --- a/arch/x86/kvm/vmx/nested.c
+> +++ b/arch/x86/kvm/vmx/nested.c
+> @@ -5121,21 +5121,28 @@ void __nested_vmx_vmexit(struct kvm_vcpu *vcpu, u=
+32 vm_exit_reason,
+>  	if (likely(!vmx->fail)) {
+>  		sync_vmcs02_to_vmcs12(vcpu, vmcs12);
+> =20
+> -		if (vm_exit_reason !=3D -1)
+> +		if (vm_exit_reason !=3D -1) {
+>  			prepare_vmcs12(vcpu, vmcs12, vm_exit_reason,
+>  				       exit_intr_info, exit_qualification,
+>  				       exit_insn_len);
+> =20
+> -		/*
+> -		 * Must happen outside of sync_vmcs02_to_vmcs12() as it will
+> -		 * also be used to capture vmcs12 cache as part of
+> -		 * capturing nVMX state for snapshot (migration).
+> -		 *
+> -		 * Otherwise, this flush will dirty guest memory at a
+> -		 * point it is already assumed by user-space to be
+> -		 * immutable.
+> -		 */
+> -		nested_flush_cached_shadow_vmcs12(vcpu, vmcs12);
+> +			/*
+> +			 * Must happen outside of sync_vmcs02_to_vmcs12() as it will
+> +			 * also be used to capture vmcs12 cache as part of
+> +			 * capturing nVMX state for snapshot (migration).
+> +			 *
+> +			 * Otherwise, this flush will dirty guest memory at a
+> +			 * point it is already assumed by user-space to be
+> +			 * immutable.
+> +			 *
+> +			 * Do not flush when vm_exit_reason =3D=3D -1 (e.g. forced exit
+> +			 * on vCPU teardown or SMM entry). On teardown, KVM may run
+> +			 * with current->mm =3D=3D NULL on a borrowed lazy TLB mm,
+> +			 * where writing guest memory would corrupt an unrelated
+> +			 * task. Nothing can observe the flush in that case anyway.
+> +			 */
+> +			nested_flush_cached_shadow_vmcs12(vcpu, vmcs12);
+> +		}
+>  	} else {
+>  		/*
+>  		 * The only expected VM-instruction error is "VM entry with
+
+[Severity: High]
+This is a pre-existing issue, but since this patch handles vCPU teardown wi=
+th
+a borrowed active_mm, does the later call to load_vmcs12_host_state() in
+__nested_vmx_vmexit() have a similar issue?
+
+During vCPU teardown, __nested_vmx_vmexit() unconditionally loads L1 host
+state:
+
+arch/x86/kvm/vmx/nested.c:__nested_vmx_vmexit() {
+    ...
+    load_vmcs12_host_state(vcpu, vmcs12);
+    ...
+}
+
+If the L1 host state uses PAE paging, nested_vmx_load_cr3() triggers the
+PDPTR load:
+
+arch/x86/kvm/vmx/nested.c:nested_vmx_load_cr3() {
+    ...
+    if (reload_pdptrs && !nested_ept && is_pae_paging(vcpu) &&
+        CC(!load_pdptrs(vcpu, cr3))) {
+    ...
+}
+
+This executes a memory read using copy_from_user() in the context of the
+borrowed active_mm:
+
+arch/x86/kvm/regs.c:load_pdptrs() {
+    ...
+    ret =3D kvm_vcpu_read_guest_page(vcpu, gpa_to_gfn(real_gpa), pdpte,
+                                   cr3 & GENMASK(11, 5), sizeof(pdpte));
+    ...
+}
+
+Could this cross-process memory read cause destructive side-effects if it h=
+its
+a memory-mapped I/O (MMIO) region in the unrelated task?
+
+
+[Severity: Critical]
+This is a pre-existing issue, but does skipping the shadow VMCS12 flush on
+SMM entry (where vm_exit_reason =3D=3D -1) cause data corruption during live
+migration?
+
+In __nested_vmx_vmexit(), need_vmcs12_to_shadow_sync is prevented from being
+set on SMM entry because of the vm_exit_reason check:
+
+arch/x86/kvm/vmx/nested.c:__nested_vmx_vmexit() {
+    ...
+    if ((vm_exit_reason !=3D -1) &&
+        (enable_shadow_vmcs || nested_vmx_is_evmptr12_valid(vmx)))
+        vmx->nested.need_vmcs12_to_shadow_sync =3D true;
+    ...
+}
+
+If live migration is initiated while in SMM, vmx_get_nested_state() treats
+the hardware shadow VMCS as authoritative:
+
+arch/x86/kvm/vmx/nested.c:vmx_get_nested_state() {
+    ...
+    else if (enable_shadow_vmcs)
+        copy_shadow_to_vmcs12(vmx);
+    ...
+}
+
+Since need_vmcs12_to_shadow_sync was not set, doesn't this overwrite the
+correctly synced vmcs12 with stale data from the hardware shadow VMCS,
+resulting in guest state rollback (e.g., RIP/RSP)?
+
+
+[Severity: High]
+This isn't a bug introduced by this patch, but is there a Triple Fault risk
+during live migration in SMM with nested shadow VMCS enabled?
+
+Because is_guest_mode is false in SMM, the shadow_vmcs12 is omitted from the
+migration stream:
+
+arch/x86/kvm/vmx/nested.c:vmx_get_nested_state() {
+    ...
+    if (is_guest_mode(vcpu) &&
+        nested_cpu_has_shadow_vmcs(vmcs12) &&
+        vmcs12->vmcs_link_pointer !=3D INVALID_GPA)
+        kvm_state.size +=3D sizeof(user_vmx_nested_state->shadow_vmcs12);
+    ...
+}
+
+On the destination, vmx_set_nested_state() skips restoring shadow_vmcs12 and
+returns early:
+
+arch/x86/kvm/vmx/nested.c:vmx_set_nested_state() {
+    ...
+    if (!(kvm_state->flags & KVM_STATE_NESTED_GUEST_MODE))
+        return 0;
+    ...
+}
+
+When the guest leaves SMM, vmx_leave_smm() checks the revision ID of the
+zeroed shadow_vmcs12:
+
+arch/x86/kvm/vmx/vmx.c:vmx_leave_smm() {
+    ...
+    /* Triple fault if the state is invalid.  */
+    if (nested_vmx_check_restored_vmcs12(vcpu) < 0)
+        return 1;
+    ...
+}
+
+Could this zeroed buffer fail the revision ID check and induce a Triple Fau=
+lt?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908132838.2116=
+068-1-jmattson@google.com?part=3D1
