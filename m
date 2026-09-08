@@ -1,231 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010063.outbound.protection.outlook.com [52.101.84.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F6E5592F0
-	for <kvm@vger.kernel.org>; Tue,  8 Sep 2026 13:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788875870; cv=none; b=TbBuLJnMKPdjHjP1ztgQ1mqWq8wlnD3jjjF+5w1HVEL5Pv+BIIh6jQEbYBTt/5KI+YKJBUEYDirgT1080F794cv6tumpYN0LKV5kqK6P92hnCAyPx9XkEPsq0CI96SGjFO5IPbckB8k/ydbWGsi0VbrPFJc+NG+6Ik9mun6KT7Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788875870; c=relaxed/simple;
-	bh=tighKdMR8Lgbv/xo3fjP9RI7hKrpgyFmA3ivO5QDzV4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=RcfmEU4LYud242OUsbXmfpUYDFURVH3+krdPavrHFgYDohmWrBDLGw+IFZd7nu1PKXcHV9o/b2YLeMZrCsO3xQkIORcuUYioIkIHn+mdpHALQBzISpWVGMcz868HC8qDuAmWUbcuC7qxyayY8nSS/E+swJC2v4e4JZr9VzTvw7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GRTnyk8Q; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980BC534479;
+	Tue,  8 Sep 2026 14:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788876025; cv=fail; b=KqcygOjABKUP0ut60erR8Tl4Skf3lEBL6PH642R4aWcJIXtR244RknWeo0ATQBMl/UetZ9odkM8vA2ZGPRuaJndDvna3mklOIlCqo8Ioq3Fxskvm2gVc6/nd0Pqsw0SwD/thQVNiPFwXPH/kNgBSPGaE+W5dXjmx2hzFcjOfZT8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788876025; c=relaxed/simple;
+	bh=waIpQmoq5R6jA5xLKOAzBdBp8AVQJeDaJnKQNm8YfmQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=k8cCv4E917kLvM1T+Nqys1OeYdWg063Qv0iGH7d3Dp6LJvgPGe+OE4mKxL9YNjNHRTEuM3rRmH4FYHC8N1Y3RB8csrvrlysMI+zFFlKEYZ7455pjsX7xJWJWGFxoPFUQMl5c0UOpv+YaFsekWC4iU+vbzamoIuia9X/ijecSUSU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=LsPZeIUa; arc=fail smtp.client-ip=52.101.84.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GRTnyk8Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D14C01F00A3A;
-	Tue,  8 Sep 2026 13:57:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788875857;
-	bh=fleFc6m3iJVrIMrmIEfOlVn047psFV56wYl75Uo9EAU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=GRTnyk8Qs4lHLJIrAGpPidNLIu6lK2vaaNn0tc6aw7SosJpKtBw0XRQmwzkUYPaEG
-	 WYeBfHMImPw+h/M1bKc2Boo2p+0PqmDvXHOexN8Csqadiwnw0Vcxs5YKH4FJDaZaSg
-	 DJb92lmd9SN28VQM0AFSgXs1A9hb2tCosb3fstVf4IdMMFE5JIYkwkZkwT2TFXnKFo
-	 3MnnBhFN/aIlCx1DlLcPedAHuoMSAN7DQOJr5DiNvdAz+Ch439WNJ4KCdYgH8nc+o+
-	 49pnaDGmCSumCTP0BKPHKz2LuhW6ddyFh/Z+VdcIcx+e8wOrh8TKc2qBEfWAG2duys
-	 cDatNwimu+Dpg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: nVMX: Don't flush shadow VMCS12 to guest memory
- during vCPU teardown
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jim Mattson" <jmattson@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260908132838.2116068-1-jmattson@google.com>
-References: <20260908132838.2116068-1-jmattson@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 08 Sep 2026 13:57:36 +0000
-Message-Id: <20260908135736.D14C01F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="LsPZeIUa"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fB4HPNJeZCSZwCEi8rWaazcFCGc3JaLFRjmQV+AvquKIzpwjusTwkDW7Ulb5VfaQLnboP1AbWEZ6oAQ1ffJFFjvuvoqTjxHaRFkHG1MhOQZexPryTauc6FvbmpWUhsokkxjJNAuh3qxRJ4/72jQ3zKe0R//SrKNOcdZusPioSZh5YKrTmcICzOMS2ga+KHfbQk1iUiAj2s+zgpOZBP/lD0Q6ZKpN8riELYK/FJMiLK0Fw2y7MHlU4QYX1k1uQY9KPSUvaKHu+DO3cg8ZXiR63Z4u4r00hV0b9uZ4dl9V/XaIIDI444FMbgNWGptl/x2PBh+I8AkNmaHYHeN3RR/riw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=i+3mAT781mGIvB+1fiA3UdLXL7Miso7We4dTW9K3CEM=;
+ b=ww10BkKjErsfHa1QBL6jwZpZSReDH/G4y+iSb9Boe5LPR0W+ypS2qOl/J79+0AKkCqMoH9MUoYcL+vd5G89zqlh7J2HJEE9jADdA4AGyXaEw9uaa3O8ehdRkgq/gJ5xKesyd7tzjl9Gd53p7DL822chS91yms6hxrWHORIUEVJ8CasgM0Qaw3fn0yqU3eO9C6oYXexaoxyet2xHy34du16oSW/RHng+WYCUGOpoeHtzkKntInIURbov+IRtMngJfBq43cYpampECTzGEuxoEKnc1uAJuEiY+RZmk9d7SMqkcTuEBvvHQVw7JdeYRFf7n81yhDo0eBN85ipcdJBz1bQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=i+3mAT781mGIvB+1fiA3UdLXL7Miso7We4dTW9K3CEM=;
+ b=LsPZeIUaA8svkhaZw+S8E2Uv4BArWhwqSpEJM19RYiaRyWGf5J4WWOQV0vbdUiMHlHFkN5OlDyn4W1/NXHxUcPzfdPSNdw2P29olU5h/6g5gVJUlLX54NCKnEMBm67o/aSXOFZweZJFIzKjnRdX8OYFT26Np1wURn3febAVwVlKGVrnKNkB1FhVi6XkAbdN50pMPevsNz1k7dmzGhBYJcPuWy+gEs6Fv8qhtT3iruVaM9FTptHIICWX0yD35QgruvQnom/LALWoaYlzPqC9PKdaFXg01tjWwcjNaIEm4RYyE8RwwXAJ6o6wDo4tZFC8V70UZTMNMYndRs6q2pYMxXA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
+ (2603:10a6:150:319::13) by GV2PR04MB11959.eurprd04.prod.outlook.com
+ (2603:10a6:150:2f1::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Tue, 8 Sep
+ 2026 14:00:08 +0000
+Received: from GVXPR04MB12290.eurprd04.prod.outlook.com
+ ([fe80::1739:3404:2175:33dd]) by GVXPR04MB12290.eurprd04.prod.outlook.com
+ ([fe80::1739:3404:2175:33dd%3]) with mapi id 15.21.0382.012; Tue, 8 Sep 2026
+ 14:00:08 +0000
+Date: Tue, 8 Sep 2026 17:00:05 +0300
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
+To: Abdifatah Suruur <suruurism@gmail.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alex Williamson <alex@shazbot.org>
+Subject: Re: [PATCH v3] vfio/fsl-mc: prevent read-only region mappings from
+ becoming writable
+Message-ID: <advmj7drj6kfokjqoy47p4rrcq2c6ungrt422vyi7aqxubtsel@os3ba72l6pqk>
+References: <20260903092912.444-1-suruurism@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260903092912.444-1-suruurism@gmail.com>
+X-ClientProxiedBy: AM8P251CA0002.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21b::7) To GVXPR04MB12290.eurprd04.prod.outlook.com
+ (2603:10a6:150:319::13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12290:EE_|GV2PR04MB11959:EE_
+X-MS-Office365-Filtering-Correlation-Id: 69b0e023-f2ac-4f6d-d587-08df0db17e2d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|19092799006|10067099003|11063799006|5023799004|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	tH95O3YnQc2cZYIkDv1OV3ByZK7gFkAnG+/5IT0yAhWLpUPSgQPfcPbaUtB7zmgdvXKJrtubN8ERGpF0w9IGFh6dbmaKxQWIx+MxV+2H/dh0g/DMqJsLHIXGKMgYJd2+dA51voQui6COYUitKZYQkSuYMwR5ei8G4q4p/Vq/3UUunakehW9wnd+R1vNHa3OhlSiYrv12WpOvRMxpkBQvkbtfk87yjxYSspyjlAb7QGmaNYUViuk8Zx1Grx6bJluTT2inHnXi/7KDYNCuMtiNJie/RyZ2FHRIYTh+W0ZqxPKBPTGC54/huammHqu1cR1Aly4T242mKuUEv+bhbw79iPDFeJJcZsVDMYhXmaZc2pnNigFX5C1YvCbcpgbc8wMwV1CSgUmhnc9AVSs0pTeYjb5tCi/a7QfVbvvkygNpbvbProR4jh3jhJhfbodpapHPpUWbuyCAB1L2/eukt1HmMCL3oH1DVwt2yW6dDvUMdjMiRGJOwGbaFNPdDvuOZ67QFY9Jtth/ja2/4shi5XbWCqmpqcWl+1DFJPN0lUP28zMuhGleYWEucgl9xaIQyN+2Vc4tJXv1mLo++K2wU4H/3pBv3CM/1Nry7v+K2kH24I6XwEy0gspzBH7VWqjLNQlZV4W7cBpt9zFl79DhwECuZo0jWeesh5lkCGfhys51EAo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12290.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(19092799006)(10067099003)(11063799006)(5023799004)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?bdv+Sa9NsWuMabOEsAXyNz1Vs6i9wCvtXc9ZipYAixllXEZNfWKIymk9+qAl?=
+ =?us-ascii?Q?RNEAO7vaIaXpydLQolc1VE6yAb+mAjZZ+W8rddxtKuljrE66WnV0byfDGuFX?=
+ =?us-ascii?Q?IbDNNkaTrnekYerMROE4C+Rq/xzuQcoUNu/lCU5X3i1vC0Zyr2dIwaKjMlRU?=
+ =?us-ascii?Q?gTjsrZQ7quMvgA3NJqRXVkisdig9oElptgyIQa7RIVsikx6eFjul+xAYhk7e?=
+ =?us-ascii?Q?XkgyL1Z9dr7IBubdtcz85R1jZTOgyQjh0C6jNxmcDQhQ3yhI0nuWu/N3Nq8X?=
+ =?us-ascii?Q?DdE06pzfcriRb5J0cfexHCbLXRTEJTL+D1K+zf1jomI8Fwt3+lV5lhGfzM6D?=
+ =?us-ascii?Q?gtc8a+Y5u0af1yHHYa3P4u1r+cjeOQ54Xb6P1aEn9MKM2DE5O2tfhRVU9PFW?=
+ =?us-ascii?Q?tom2gqFnvmakfZG24rgpNizn0f6iLZQH8LkUbNgShZLDHVLq7A9vJXsCPUDi?=
+ =?us-ascii?Q?C7Qr7jxyPLbPIPQX8niMS0h+tZ2eWijqMhlLomXjcAyod79pnHsMpoUe0pa9?=
+ =?us-ascii?Q?Z1bp3QABND2ULUQ+tqdAPT84g9okfVvkOqi/c2KCr86dEl1HpI5bMBsdGarE?=
+ =?us-ascii?Q?Ld1C/PZMb4011xP6oj4d7BfDqdt6U1DB+lPLg1gg71YpnCLW5baRB5yOJsck?=
+ =?us-ascii?Q?b6ja/2+OGxWKOHSlkiE6ynJlGNRkJeUzvZIQjzZcm+OT+b7kLH5jjMLETgJz?=
+ =?us-ascii?Q?kqesvIa8hAGxSWd9LEWX311rTyzwjS5H0gewiwg5jb+q2ggHM0GOdNH24ebU?=
+ =?us-ascii?Q?aZ4cgIDstx63HO6FZMQ7wF/TomhSTzjrq0SPbxn1BrNWHpxsAT97gJJOuMvO?=
+ =?us-ascii?Q?RDDQoMzFpy6r4nXD17aQtXS3TNIdw8qO26qYhClXNIDIsUA5SnnWDXm+Z+TF?=
+ =?us-ascii?Q?2o7LyANEfXzHiPnfAH52S2RnbGb6l6dB0+PApNLyzoXJ/UHh9/sShiJ5gYNE?=
+ =?us-ascii?Q?wNbwzweENt0t82yueBXinG4YAmqppQammJrG44dnwEJULkB3+ol7QukwRcWL?=
+ =?us-ascii?Q?iKu0o8lD2vAVVFcC4FWVFRxYXWrES5BYqgf0LfFeikgWVvqPHSEppN2pPoiy?=
+ =?us-ascii?Q?dBT+U5FAUCgeO/mpxX5UABIqPUh5/90KDKz7lAfo6fsH75YvKLpHFrg4FB9r?=
+ =?us-ascii?Q?tdZuWoIGrtLDfhAXZ4fWqtYPqS1TL49aS+dJgm7Lb2N/zmtFuzE1IeZRt0Do?=
+ =?us-ascii?Q?byRw12liz0EaAbPmywG0EBndNIJt/jOKU5uQLduU7pGN+j69Bs1xRDZ3x/ho?=
+ =?us-ascii?Q?XtTcWBK3XNUzFVZcCaBt7pXyVgYbQUirxq1nWd1oU4u4bvEXD7iAVypK8L0Y?=
+ =?us-ascii?Q?hAYZcH/U0dT4FXDVMKCA8qhGOzqchuwagbI2PSJys72yX/LOIXUNnzmn8BdW?=
+ =?us-ascii?Q?a6FtNSInlrDSlyDi70dJ4tAajtOd+3Kb9xM5FJbHYh0SlpOuMrAzBi9p3JPD?=
+ =?us-ascii?Q?/1HuUDHrBnALISssekeB+pOXT5V7HQYi1D/ybex3qTlZfWH5715eL4mF9UPj?=
+ =?us-ascii?Q?Z13Vn6LGmR8GcZkDITc4EAxicVLLepDCZHRUFgeF8HQu6WMo9kNYZlYZTjbH?=
+ =?us-ascii?Q?bMbzPyCygUcLHPVdbFiZOaHVuPzO4OOIn9xUPfvJCsKwraBk7U9kACbOpCaT?=
+ =?us-ascii?Q?fWO/ZpEyM1CiflQJd6zWiThoSAQY6e4Itw0IpFsH9dligmX3nRqZ/wM0oc+4?=
+ =?us-ascii?Q?PSblN04Kf46HDOfINoUVn2nXCncYWiSmY+sD4p507sFgs7z/dTbZeN3CAdAh?=
+ =?us-ascii?Q?ptDCIelRhw=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 69b0e023-f2ac-4f6d-d587-08df0db17e2d
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12290.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2026 14:00:08.8273
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8uQlPPvHM2NIiiyOTr16MaS22QqMjbG09jqXUbpqhxZsBpvJUvW9QHGgCXpDv5MEFBm14sWnTIu4vtLHj3BCPg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11959
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+On Thu, Sep 03, 2026 at 12:29:12PM +0300, Abdifatah Suruur wrote:
+> vfio_fsl_mc_mmap() rejects writable mappings of regions without the
+> WRITE flag, but leaves VM_MAYWRITE set.  Userspace can map such a region
+> read-only and then upgrade the mapping to writable with mprotect().
+> 
+> Clear VM_MAYWRITE for regions without the WRITE flag, as i915 does for
+> its read-only objects and as fixed in drm/vc4 (CVE-2026-68445),
+> drm/panthor (CVE-2024-53071) and commit a5edadbae57e ("ptp: vmclock:
+> prevent read-only mappings from becoming writable").
+> 
+> Note this is defensive hardening: the fsl-mc bus publishes all device
+> regions with the WRITE flag set, so no device can currently reach the
+> read-only path.  The guard costs nothing and keeps the mmap() interface
+> honest if a read-only region ever appears.
+> 
+> Fixes: 67247289688d4 ("vfio/fsl-mc: Allow userspace to MMAP fsl-mc device MMIO regions")
+> Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
 
-Pre-existing issues:
-- [Critical] Live migration during SMM with an active nested guest overwrit=
-es L2 state (e.g. RIP/RSP) with stale data from the hardware shadow VMCS.
-- [High] Live migration during SMM with nested shadow VMCS enabled causes a=
- Triple Fault on the destination.
-- [High] During vCPU teardown, __nested_vmx_vmexit() unconditionally loads =
-L1 host state, triggering a cross-process memory read via load_pdptrs() wit=
-h a borrowed active_mm.
---
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
 
-commit 15d3183acc0011b1c1063bab25d832a346f7a45c
-Author: Jim Mattson <jmattson@google.com>
-
-KVM: nVMX: Don't flush shadow VMCS12 to guest memory during vCPU teardown
-
-When a vCPU is destroyed while L2 is active, KVM synthesizes a nested VM-Ex=
-it.
-During this process exit, the vCPU destruction runs with a borrowed lazy TL=
-B=20
-active_mm, so skipping the shadow VMCS12 flush prevents __copy_to_user()=20
-from corrupting an unrelated task's memory.
-
-> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-> index 151873407abd3..33dc8a07019f8 100644
-> --- a/arch/x86/kvm/vmx/nested.c
-> +++ b/arch/x86/kvm/vmx/nested.c
-> @@ -5121,21 +5121,28 @@ void __nested_vmx_vmexit(struct kvm_vcpu *vcpu, u=
-32 vm_exit_reason,
->  	if (likely(!vmx->fail)) {
->  		sync_vmcs02_to_vmcs12(vcpu, vmcs12);
-> =20
-> -		if (vm_exit_reason !=3D -1)
-> +		if (vm_exit_reason !=3D -1) {
->  			prepare_vmcs12(vcpu, vmcs12, vm_exit_reason,
->  				       exit_intr_info, exit_qualification,
->  				       exit_insn_len);
-> =20
-> -		/*
-> -		 * Must happen outside of sync_vmcs02_to_vmcs12() as it will
-> -		 * also be used to capture vmcs12 cache as part of
-> -		 * capturing nVMX state for snapshot (migration).
-> -		 *
-> -		 * Otherwise, this flush will dirty guest memory at a
-> -		 * point it is already assumed by user-space to be
-> -		 * immutable.
-> -		 */
-> -		nested_flush_cached_shadow_vmcs12(vcpu, vmcs12);
-> +			/*
-> +			 * Must happen outside of sync_vmcs02_to_vmcs12() as it will
-> +			 * also be used to capture vmcs12 cache as part of
-> +			 * capturing nVMX state for snapshot (migration).
-> +			 *
-> +			 * Otherwise, this flush will dirty guest memory at a
-> +			 * point it is already assumed by user-space to be
-> +			 * immutable.
-> +			 *
-> +			 * Do not flush when vm_exit_reason =3D=3D -1 (e.g. forced exit
-> +			 * on vCPU teardown or SMM entry). On teardown, KVM may run
-> +			 * with current->mm =3D=3D NULL on a borrowed lazy TLB mm,
-> +			 * where writing guest memory would corrupt an unrelated
-> +			 * task. Nothing can observe the flush in that case anyway.
-> +			 */
-> +			nested_flush_cached_shadow_vmcs12(vcpu, vmcs12);
-> +		}
->  	} else {
->  		/*
->  		 * The only expected VM-instruction error is "VM entry with
-
-[Severity: High]
-This is a pre-existing issue, but since this patch handles vCPU teardown wi=
-th
-a borrowed active_mm, does the later call to load_vmcs12_host_state() in
-__nested_vmx_vmexit() have a similar issue?
-
-During vCPU teardown, __nested_vmx_vmexit() unconditionally loads L1 host
-state:
-
-arch/x86/kvm/vmx/nested.c:__nested_vmx_vmexit() {
-    ...
-    load_vmcs12_host_state(vcpu, vmcs12);
-    ...
-}
-
-If the L1 host state uses PAE paging, nested_vmx_load_cr3() triggers the
-PDPTR load:
-
-arch/x86/kvm/vmx/nested.c:nested_vmx_load_cr3() {
-    ...
-    if (reload_pdptrs && !nested_ept && is_pae_paging(vcpu) &&
-        CC(!load_pdptrs(vcpu, cr3))) {
-    ...
-}
-
-This executes a memory read using copy_from_user() in the context of the
-borrowed active_mm:
-
-arch/x86/kvm/regs.c:load_pdptrs() {
-    ...
-    ret =3D kvm_vcpu_read_guest_page(vcpu, gpa_to_gfn(real_gpa), pdpte,
-                                   cr3 & GENMASK(11, 5), sizeof(pdpte));
-    ...
-}
-
-Could this cross-process memory read cause destructive side-effects if it h=
-its
-a memory-mapped I/O (MMIO) region in the unrelated task?
+Thanks!
 
 
-[Severity: Critical]
-This is a pre-existing issue, but does skipping the shadow VMCS12 flush on
-SMM entry (where vm_exit_reason =3D=3D -1) cause data corruption during live
-migration?
-
-In __nested_vmx_vmexit(), need_vmcs12_to_shadow_sync is prevented from being
-set on SMM entry because of the vm_exit_reason check:
-
-arch/x86/kvm/vmx/nested.c:__nested_vmx_vmexit() {
-    ...
-    if ((vm_exit_reason !=3D -1) &&
-        (enable_shadow_vmcs || nested_vmx_is_evmptr12_valid(vmx)))
-        vmx->nested.need_vmcs12_to_shadow_sync =3D true;
-    ...
-}
-
-If live migration is initiated while in SMM, vmx_get_nested_state() treats
-the hardware shadow VMCS as authoritative:
-
-arch/x86/kvm/vmx/nested.c:vmx_get_nested_state() {
-    ...
-    else if (enable_shadow_vmcs)
-        copy_shadow_to_vmcs12(vmx);
-    ...
-}
-
-Since need_vmcs12_to_shadow_sync was not set, doesn't this overwrite the
-correctly synced vmcs12 with stale data from the hardware shadow VMCS,
-resulting in guest state rollback (e.g., RIP/RSP)?
-
-
-[Severity: High]
-This isn't a bug introduced by this patch, but is there a Triple Fault risk
-during live migration in SMM with nested shadow VMCS enabled?
-
-Because is_guest_mode is false in SMM, the shadow_vmcs12 is omitted from the
-migration stream:
-
-arch/x86/kvm/vmx/nested.c:vmx_get_nested_state() {
-    ...
-    if (is_guest_mode(vcpu) &&
-        nested_cpu_has_shadow_vmcs(vmcs12) &&
-        vmcs12->vmcs_link_pointer !=3D INVALID_GPA)
-        kvm_state.size +=3D sizeof(user_vmx_nested_state->shadow_vmcs12);
-    ...
-}
-
-On the destination, vmx_set_nested_state() skips restoring shadow_vmcs12 and
-returns early:
-
-arch/x86/kvm/vmx/nested.c:vmx_set_nested_state() {
-    ...
-    if (!(kvm_state->flags & KVM_STATE_NESTED_GUEST_MODE))
-        return 0;
-    ...
-}
-
-When the guest leaves SMM, vmx_leave_smm() checks the revision ID of the
-zeroed shadow_vmcs12:
-
-arch/x86/kvm/vmx/vmx.c:vmx_leave_smm() {
-    ...
-    /* Triple fault if the state is invalid.  */
-    if (nested_vmx_check_restored_vmcs12(vcpu) < 0)
-        return 1;
-    ...
-}
-
-Could this zeroed buffer fail the revision ID check and induce a Triple Fau=
-lt?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260908132838.2116=
-068-1-jmattson@google.com?part=3D1
