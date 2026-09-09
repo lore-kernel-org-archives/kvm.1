@@ -1,149 +1,151 @@
-Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B623BB670
-	for <kvm@vger.kernel.org>; Wed,  9 Sep 2026 22:41:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3F73033D6
+	for <kvm@vger.kernel.org>; Wed,  9 Sep 2026 22:59:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788993713; cv=pass; b=IWrig3zTukN1LysUURq0WvjXfxSd7sdyHbcoRdHDUyGQ+sbDTi79ywErRhoEREM2obDvqZTjV4gyRyapNztvyCQ1NIlyOu5rDS8mhIY9CpGiR1hioKV3ujEJzO777tW5njQLETwc6OdKb/86XyWlVw6NwCAvxUwCJh/do1uoecE=
+	t=1788994761; cv=pass; b=NKlR1z4jEYPZ8C+IESWxy67uEYfnMrCS+Bpz5oDI+M8YRchGKtuAxNQNUDcQCkVJmwm7CXJxl9Ujn4F6cIRnYXO8Uzs/XGWv47hisaZTGl9WySk2pvUdqhnEt3VM5GF5BdPMUly0TT+QcnM7rfawbHp5EsgsxL4dMbWftoeUypE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788993713; c=relaxed/simple;
-	bh=NTWMXK3qBllEwS5xxNNJmOXFEuix2lqI2KW5LUWH0nk=;
+	s=arc-20240116; t=1788994761; c=relaxed/simple;
+	bh=YPar0ShThsM4Q1BDllzdHh7vLirwTr2RgYkhOXfVWaQ=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=szgeAsOcESTiWUv6YsukGrdcVp6Z7wM7F3KG9f8VLF0Wb/JjxG4i+TN2Rrtl6UHE6nQjGm2z4XVbS6x8Yoe5fcS+1zWau/WIrE0WnhifCY4KkGcZK8DxT6EB6V44fwuDuY1FM2rvp2olkHOcyDabW7R9NdcPKFaijLNMd+HX2D0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B1wsTIOp; arc=pass smtp.client-ip=74.125.230.140
+	 To:Cc:Content-Type; b=W6Pl+a5ZVe/eAcMQZFPPkue/eJmshbpLgLh9vVu8BKefzpGFRGEEAlERVicK/OhwQ6OZZW8PQ7L5lpBvSylDWU3U8NtbGFpJF4Zb0/UUKE4knIcrbc+EYcc952Wz6Ocrg7/Ogua657wF+tLqmdYiQGkQ/B2vctxpsjlvIvO5Nv0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YBxkolYd; arc=pass smtp.client-ip=209.85.219.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B1wsTIOp"
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-9106feddbdfso11168716d6.0
-        for <kvm@vger.kernel.org>; Wed, 09 Sep 2026 15:41:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788993702; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YBxkolYd"
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-90e9ad1a373so3342206d6.0
+        for <kvm@vger.kernel.org>; Wed, 09 Sep 2026 15:59:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788994747; cv=none;
         d=google.com; s=arc-20260327;
-        b=XACMcUL4MsjhN8L0BEWCT9usEg9LL1UK/DxJiLWIWjxr2q85zoQufp+u3IyEfiWAmy
-         Eo8ZA9sdF4QdIvMU/6Xfw7aj0HXtvioKhH7Vi5edeUIRl1CKcyu1pd/nmWO850V9d1i0
-         giTBC9avvTXdzOtUV+bqqOvYWd1gMK7jNCVPxpigYx4BmEtVeAQZ8nwLUN+FPXM1Nz2q
-         V865g6bQh2bHyhAykpR92Udc+8eduufGwsOo8SbLYp8vEQn7v3xAKekCEGAUdYrlYdf5
-         QsizQHmJDOfZ3FmOniMqmzjVdTtyOhvBsLKjwyYV2R2vx+Mi+E4qX+YbpIGkpwJT9hAy
-         GZ/g==
+        b=Pr38hEsM0ogIUt1umxB0mUccEpnqlb/vhPFIwm/jUNrQotm6S0o9F+M+zi34gpt8uD
+         6PdC/vc/Rcw+qQjkST5E1gCTcMOZIJHPWh0wThYqdKqvnpLpGhAqEEv3wWT6/3n4YrAq
+         A2LK90Ty5JjaiN/gcYRfF+tIXrzmLFUr1YtTHEjWpYjq+MKnA1IsfedX5DCatZwvPNpF
+         mRWHYae8AYy2kXsGYVmshwAmFVoCHZgaiakW/CIHV5spmighUWauXKxcM/kT4iJNg1Kp
+         2eO4/bxATQ9RdbuGolCJ1yXQKd6iIGRM80zAqeTCUO/KMpHtV52Gfl6zC96gCnASfESN
+         eCpg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=K7y90OKfcw5Kem65C7oA0LNo0uX7jIHf03YJVGFM0dg=;
-        fh=6ODpmutqqNYbUev31tvz0Dhullk8wqpDJ2vEGerOgPo=;
-        b=SOE+j7v2QlBS/ZHgt6PA5XPi+ERa9e1NBlUwM680Nr7wwv/u9xFUbtFqx+4+kvx+52
-         u+vjHWZD8d6XQEYoYr1k2c3aBsiN0FwRI5fiUnBbxBMTPGtNg7KGgqB+xKZxYl6xVK6D
-         5eUg+yt2ul1DjuIUJEyUQnHmw3g+4vGBsBMCsEFLDBNTO6h1O1egCUXQXaDxaOmmuIA6
-         j8gKkYZaJ7EtbBdsKaIzJKGJXXRrHN5hsfkGvOnirktofUZCTDgQVBoeYPlD1P7rj3NZ
-         JE8zZSMY2abCsn7CQMZjShBXgC/BwdT8YZIOUL8jBboW5CJKVdc3qefwQImTWH0+0n/p
-         MXOg==;
+        bh=Vw1OtfwMpNDQ32I6eviEJFWmodV7bi1grLL7dzsITvw=;
+        fh=ADr7nJYrdOxFMY31++/XCyzQ0kjNVtflFqVLhsszdd0=;
+        b=FBbmxCkYFzlphK9DStLdCWNBb6g5O5pCmeZpcgY/YQfCc+Z6ijuoEkrcjksN4tSwNA
+         h25LA9QCPJaWxPqFqwg5yhDpkVPrUweAgORFTzGMO8a9bI8O/9FZ0+lz63cfJWK7FNzN
+         LQEKnJr2korrtR5eJRuaLeE600qCl80hEaDsiXiyuIM83NfIicOSOdSNs4pYjige0HdN
+         aHn4nR7bDN3z0Ed9yteWklO4ABJnG7QU1kPt5yjCvvkItPiNNprm0CWfPFOG2CzysOt+
+         SvYfmbxHJMYHXJRdwRprkwDeaTmLXPN1bTbtHehpK6v0IRsjeWTVg+bqKReZGV5oNa8O
+         c8OQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788993702; x=1789598502; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788994747; x=1789599547; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=K7y90OKfcw5Kem65C7oA0LNo0uX7jIHf03YJVGFM0dg=;
-        b=B1wsTIOpTTLlRdyo7iOhxu0xe7fGNCpeKh3IhkHQfmjdIC4vSh6klkJjA9Hw9ARivp
-         cD7RzR4wahiryhTPoisN++V70pgym/VMBkIJzv9kKixE0wDdeXx+6ORRFW6qHEcj0a9F
-         9IduYeH5U5u5+iHrDCciPTIE95Tc4Fla3FRLWBN86FLKfL8xAxru/Pn8g3FMrb2INcMP
-         O0Jmn4RtYzNY+YjeDk5WduALFQWr6lL8i5G8FVHJRf1LcoR331P/MhaP2kEHDaY4ltlr
-         qlC5KyzMf19Le8nP/1i3mz3ERyJu2AqimoJpTNK4CSNRxRoQe8J/aaNEaAY4nZRrCXMA
-         jArQ==
+        bh=Vw1OtfwMpNDQ32I6eviEJFWmodV7bi1grLL7dzsITvw=;
+        b=YBxkolYd5LJFyn3mordy/6VYhHmRZuxtFq0eCaSUlbBpwC+NsfuRNAlLzwR01UuzRh
+         uJz5IiV9oGBIGrZe00rY4Znj35F2UOkN/qsIXj18RJYqnSid5RsXusEXyGjP4trIubDz
+         Gl5ZwQPoqtgFXX4vE3+Ars4E6ztqyEa/TpjU6PSDDsmu2KkYW1aPOWu+S4luzBlEVTTJ
+         JZhAUr2nt+MmzRT8lJ09YrgSmSLzS0+XoamfeO8OTdUeFbn1BY67+hbwta5xQPoWS+o8
+         enz29BdweOS7aBbPlciP7b2C09omsVzXzdeMKfpP/15jJ8KBWF5pFp/w87Z686EZxWzT
+         hWzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788993702; x=1789598502;
+        d=1e100.net; s=20251104; t=1788994747; x=1789599547;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=K7y90OKfcw5Kem65C7oA0LNo0uX7jIHf03YJVGFM0dg=;
-        b=hth9jTo5okuWaAJ2fplBtTxfoALs5UvCL+DHqcN9RI/A8ySR6kdUM3b39gSDDzqLti
-         hPEYgtNK4wPnJopZgGf8KLjwHaUsM/EhXsrPObpqmQ4IKsWmGTeZWeC+oMaBlmamuUDt
-         fcoPoeuJ3nUjfq+2ZKQEMIhLDOXYc5tf/7Usm4iL2fQpBY4wZrq9quIBH5EsGaBdPPJY
-         D25n7go3DmL4k4hiV2/Dwmqpzwj8wxE4xTjXqpNDZA598R+o+9fduK7OavNFxbPhrqov
-         pd1/8FHJ+loBlQNUHlLtsxHn6nE+47rFOBRaUdDBVa+1GGvcMyy4I17kl3TWsVNdNCcU
-         phew==
-X-Gm-Message-State: AFuF++ks3ObuXRglIwO2oFD0cp8Ryjkj5W097DJfAHIuLsYvZWGUMis+
-	DL5UKziEtU5jPAXAP2bMJ5IhorsT9uoz2804gpTqVMX+WQthPCjJSeps2qvpvqVy4UROR2A74KK
-	BaklsX4U7On5TCXrm5LgiHAxwe8LppJHSh4/gZ+MY
-X-Gm-Gg: AYBFou3PZUIiXC1ScctwlQrQx0ivmDsXt2mf0XDJ9UPGTwyzUmIVf2/jAqNOSQJZbsY
-	YENGBuUV6AwgTiOQIBs0JwqKPOpdZJTLaOfvXA1jJ+n1OOo0OXYPungJJG5N5gl7G47/HAGasf9
-	UYPT/cfccBbJIi2sVtJLyiMh4ZjSoMQxJSSJUNz5ZyrguF3llKIe6XJ328IKN64PVYmibHDFcpG
-	UdunkxCvnjhZQUCwxbasXN2rpA9VxyUnmVoIZTOGa776cJFcQxbsss9w7kjlr+cUZxQApu9M/1Q
-	yKyRgf9iyvzECk7ulEeSqA18S7wDf+FBcMZDSNWx+aITUZpBjZNZVMIb0IyjKHnQ0Wd4VYk0adr
-	jipEnzePPm2kdtA/esf5ezAPTIxszbklC/3fTLQLw
-X-Received: by 2002:a05:6214:4891:b0:910:345b:954a with SMTP id
- 6a1803df08f44-9106b448140mr149416676d6.37.1788993697090; Wed, 09 Sep 2026
- 15:41:37 -0700 (PDT)
+        bh=Vw1OtfwMpNDQ32I6eviEJFWmodV7bi1grLL7dzsITvw=;
+        b=IzXkLKL+qfREm7/bjkciUrD2cwXp1oNnZtIXZBzHNQODgMQ4t4+K8V6J+atl+ZGCZ/
+         3F9CIOelzb36qk6PG4kaIhG48R+0lg8wL8CwcVp9/HIW+KP5NrYLcoA/85GT7W47RVhr
+         SyW95IGxHOPKTJlbnR2Q24pi6VDOi7G69OdFUk/NF2qbsb+AbY/lgaHR24tvEHBtwXbw
+         c52EhR+ftepAdmJ65g6qKYXEb/mCM6LGzArgnmjKByxfM0qg0Ar35KTFntOYM3FIobLn
+         cx78VuFaAiYenrv6sYEO8BrquvsCibcbQfQzz5+vC1E+lPCdflJIM+SJPm5N+JNFNqX2
+         R+4g==
+X-Gm-Message-State: AFuF++k0eHWekjlTJN92nmUYBzdh4NE/qRZ8LwfI8NpKhlWuvNgVX1j1
+	lFSPis8EKzLXtpimwpQvMRj80l68EHvBIxcgyVJhmW3opO9XJwZJh7MReKsfKm9r+ikoxm7sdUk
+	7HmtaTuuMUhSjVdw31Y2C2EZ4IoLDjlZneqfcmJkS
+X-Gm-Gg: AYBFou3xxkZSk/YYL8Ha7pIDw28FFSwKLkHyeC5ppCeKEy8C+dBFzuAirUpSJoVElgE
+	PP7hjnvS3+S5CD2b6zVoj7ETTFL34C9wp2noqtOxjFue9mfvmIrlv4/LD+gD4aXlsWgHWNa467U
+	XgKgduIXQp/LUEvauICYZ1cPkw4Y3jqm/M81BsnuuezwHUs79za6ndDZDNhEpxwVP8+rUzd0RvI
+	Vh2clHlI0TsVs1Ut0D26cOJLivqOaCkVyWNlQWJ7vzleXBDDInWMJdGwrkVC8/qGt0N4ic4yUcm
+	sujj3rOS9J58WftTCBiyRAvBNqyQnt9UECcrKriflMlLryMnHFaz+XGyG1QZLwKMz7yMTBKZkRK
+	XIz6MjjksQiPh7+W9dkxcRpFj+bcUY3wXj2A3vvtowA==
+X-Received: by 2002:a05:6214:4992:b0:910:3923:cc73 with SMTP id
+ 6a1803df08f44-912029a7735mr22957386d6.28.1788994746438; Wed, 09 Sep 2026
+ 15:59:06 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 9 Sep 2026 15:41:36 -0700
+ HTTPREST; Wed, 9 Sep 2026 15:59:05 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 9 Sep 2026 15:41:35 -0700
+ HTTPREST; Wed, 9 Sep 2026 15:59:05 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260902194657.79075-1-gourry@gourry.net>
-References: <20260902194657.79075-1-gourry@gourry.net>
+In-Reply-To: <daa3875e-420d-4de5-9a1f-8c4138a1dbd8@kernel.org>
+References: <20260904004342.3162959-1-seanjc@google.com> <20260904004342.3162959-2-seanjc@google.com>
+ <daa3875e-420d-4de5-9a1f-8c4138a1dbd8@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 9 Sep 2026 15:41:35 -0700
-X-Gm-Features: AcwNN1WgHJXiyXU_ZBa_1-DE36OkQO7Bg_jMLCkg3DfJNHdXNcM4XNk-5IPdjJI
-Message-ID: <CAEvNRgHWyBaBpZ4Bem1Eu86b-cuEA7NkyjxTJ4D3FnpGe1B2Yg@mail.gmail.com>
-Subject: Re: [PATCH 0/5] KVM: guest_memfd: bind backing memory to a NUMA node
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, pbonzini@redhat.com, 
-	seanjc@google.com, akpm@linux-foundation.org, david@kernel.org, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
-	apopple@nvidia.com, shuah@kernel.org
+Date: Wed, 9 Sep 2026 15:59:05 -0700
+X-Gm-Features: AcwNN1UaHhYdKckV1NwaFmURD33h2SSWZ23mfYpB8hlAgaooFjI5AU1EE7X-JOY
+Message-ID: <CAEvNRgF6EsMc4iLSM_VZP-5fGGwKv1YJxf-D7Z+DVANTJhxiYw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] KVM: guest_memfd: Gracefully handle xarray errors
+ when binding a memslot
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Stefan Teodorescu <fane@google.com>, Dennis Tighe <dtighe@google.com>, 
+	Sashiko Bot <sashiko-bot@kernel.org>, Yan Zhao <yan.y.zhao@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Gregory Price <gourry@gourry.net> writes:
-
-> guest_memfd allocates its folios through a per-inode shared mempolicy.
->
-> Today that policy can only be set after the fact, with mbind() on a host
-> mmap of the fd. That requires the fd to be mappable, and it cannot reach
-> folios that are only ever guest-faulted. Neither holds for a
-> non-mappable (confidential) guest_memfd.
->
-> Add GUEST_MEMFD_FLAG_BIND_NODE and a node field to struct
-> kvm_create_guest_memfd. When set, KVM builds an MPOL_BIND policy for the
-> requested node and installs it over the whole inode, so every folio is
-> allocated there with no userspace mbind().
->
-
-Instead of a custom API to ensure all guest_memfd allocations come from
-a single node, how about these options?
-
-1. Using cgroups/cpuset to constrain allocations (could be troublesome
-   if the guest memory is not preallocated, unless the vCPU threads are
-   running with the cpuset config)
-
-2. Process-level NUMA policy
-
-3. Why not request the guest_memfd to be mmap-able just to be able to
-   set a memory policy?
-
-4. How about something like fbind() that takes an fd and offset range
-   instead of mbind(), which has a prerequisite on mmap()?
-
-This doesn't exist yet, but I'm hoping to discuss this at LPC 2026:
-
-5. What if you could pass an fd representing a mount to guest_memfd at
-   creation time, so to make all the allocations come from a single node
-
-    Step 1: Create a tmpfs mount, specify mpol for mount to MPOL_BIND
-    Step 2: Get some fd representing the tmpfs mount, hand that to
-            guest_memfd at creation time
-    Step 3: guest_memfd allocations will always come from that tmpfs
-            mount, and abide by that tmpfs mount's memory policy.
-
-May I know more about the use case behind this new feature?
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
 >
 > [...snip...]
 >
+>> -	xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
+>> +	xar = xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
+>> +
+>> +	r = xa_is_err(xar) ? xa_err(xar) : 0;
+>
+>
+> r = xa_err(xar);
+>
+> Should be sufficient, right?
+>
+> mm/memremap.c:pagemap_range() uses that and just avoids the intermediate xar
+> value completely.
+>
+> r = xa_err(xa_store_range(...);
+>
+>> +	if (r) {
+>> +		xa_store_range(&f->bindings, start, end - 1, NULL, GFP_KERNEL);
+>> +		slot->gmem.file = NULL;
+>> +		slot->gmem.pgoff = 0;
+>> +		slot->flags &= ~KVM_MEMSLOT_GMEM_ONLY;
+
+Was wondering if the changelog should explain why not move
+xa_store_range() before setting up these 3 fields that need undoing.
+
+IIUC the reason is that other parts of gmem code expect any slots in
+bindings to have a non-NULL gmem.file?
+
+>> +	}
+>>  	filemap_invalidate_unlock(inode->i_mapping);
+>
+> Apart from that
+>
+> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+>
+
++1 on using xa_err() directly.
+
+Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+
+> --
+> Cheers,
+>
+> David
