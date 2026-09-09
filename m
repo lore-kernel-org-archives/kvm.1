@@ -1,211 +1,150 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449AF3A83A9;
-	Wed,  9 Sep 2026 10:01:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF5252D2AA;
+	Wed,  9 Sep 2026 10:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788948063; cv=none; b=dfAItVhyHdwhnZ4YA8Bd0WcLWgvcQDg2Zib0eioiFfimpESSWfReAJB8qn2nNgEkH1N+hV0iksLPic3PRSCoyyDasf/qwWId+ugVFgWrOf3zaT94UxQsRcwXrQw5vBpctAjI3yspDvXSbbH+uZsAlRZDIMuP7OVgruMh7QikGwI=
+	t=1788950943; cv=none; b=DqD/c9XrTZVu22XkbLyeDpXxaOM44jZ75lZZ+s5ytoZGO0ezqhEunwAa6dxWl2oyJkDiZ64DW7Eyu+PRA7mUxvyBK/VRaA6HTTIgQDhJiH9nu6iD3rCO12AHAMrsM81Uhz52YX7Wv7w6va13uiEAkgpn6I/FqdXFvugtLMtd9Zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788948063; c=relaxed/simple;
-	bh=B6Qt25OuTqtkuGvzWvj8Twbkq9CimBvAvLdJgqS40FM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LM6FBqEQtuQB7EMhNC4A1rQjdNGdYv0cQK5O0txnzYGwHQou/bKqntv/BFQlx+jduWvm2SjTKRQ4L581dCr0VzvWkHIN4AdBDmsaaH5iAl36l8IDuk83ovIb67tmjHcqB5U003EQaVVdSt4mWg/Ew4Ggcr5ZeJBFKrpabeFxx7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PXQ1fCUc; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1788950943; c=relaxed/simple;
+	bh=zeocLTVX1WnILnL9Rh4q8tqHjE8N5oOKBQYluFzfuQQ=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rDAY2brmHeG1OHGOVS5ShSMpc3oTSPy5pQZHMvUp7egyXCkCuV0uW3LgiXecVFaTp+1if+gP5N2gHzjYmM+Y5oJ1FTpNezUAm5u+FL47zPRyjZiioOuIpDnTVpg7IoCpwYdR6pQZGXzS9tZM2VXbINkejKzVYjVAKvIGo25LMno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PZSuHxkK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PXQ1fCUc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788948062; x=1820484062;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=B6Qt25OuTqtkuGvzWvj8Twbkq9CimBvAvLdJgqS40FM=;
-  b=PXQ1fCUcVX0iFx11SGn+B1B1x/PzkDXvFKFpHy7SHV+vZRq7mMDfKKdb
-   AA2yBkxVsJ98wynZvKH1jMLAh74hCLItslnJebZmaYSVn/mDzqn5fTmoH
-   ICwx3xtsrHamFrgjyiifPrn/F4Yl5lMUCLWwRT54GpTqMTdwxT343i+1q
-   WuYi7xHQ6HIVKI/D+yLkR6FTT+PVXBwNl+jkqgpwuAal1k3q+QeEhWqZB
-   GgZjQRmrzF1zHSmVA/73Ct1qEzQ1htno5lQY9VTWE5TieAnGq0RGpc54h
-   5bhibWnm6TCWJ9q2mVa2sXugEZ32gVxHz1A6x03L/G9vJGgP4PLes8cAF
-   A==;
-X-CSE-ConnectionGUID: SvXKLweWTSagjJurKqYB/A==
-X-CSE-MsgGUID: vEcryGXQQTGIsIT6CsfT3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="89237242"
-X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; 
-   d="scan'208";a="89237242"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 03:01:01 -0700
-X-CSE-ConnectionGUID: WRGhmTRgTD6KrriTyAUNvQ==
-X-CSE-MsgGUID: QefQ/gXsSpu454ncGvo6XQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; 
-   d="scan'208";a="269519407"
-Received: from unknown (HELO [10.238.208.122]) ([10.238.208.122])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 03:00:56 -0700
-Message-ID: <07cf5761-48fe-40b7-9310-b64712f5e314@intel.com>
-Date: Wed, 9 Sep 2026 18:00:53 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PZSuHxkK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C930C1F00A3A;
+	Wed,  9 Sep 2026 10:49:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788950941;
+	bh=da8Hbv3HviqmJ9T7cSFKFabYHW62tTClS0GobnwfGcI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=PZSuHxkKFO7ggcmK3I1z8YELYgZEcp910adYB1oLiU21I9eAnNoQALMw9c+AG3QaL
+	 4MkKytGdy/Rn0rP0L7wGnaRnDOdebbTbGxVd8DevtyCV3m/lIhIjCeqYzsL7qoX0Qf
+	 n5hTXSZ1KvCWKxZqToXyY95Z/1ie69rcvJtNmATBuP6BnTXH6HXwz3MPLvABwjVXia
+	 blFLwPIUx/x6NMy59YU9dJ4Cm4NEc50fdN7KysP7Ox30xaLW/KhFgohKxBE/SPtzkt
+	 a++w0iO9pMP8KLrHxBy/79J+OHy4ilpPHgeKFbjVh0UbMSwcpWVt1sxfAOzqB4JaNh
+	 3+ZtKMJuLR6Qg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1x4FrP-00000006dmG-1oSc;
+	Wed, 09 Sep 2026 10:48:59 +0000
+Date: Wed, 09 Sep 2026 11:48:58 +0100
+Message-ID: <86zexq3dk5.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Kohei Enju <enju.kohei@fujitsu.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
+	kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	will@kernel.org,
+	catalin.marinas@arm.com,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	steven.price@arm.com,
+	aneesh.kumar@kernel.org,
+	oupton@kernel.org,
+	gshan@redhat.com,
+	joey.gouly@arm.com,
+	tabba@google.com,
+	yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev,
+	gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com,
+	alpergun@google.com,
+	fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com,
+	lpieralisi@kernel.org
+Subject: Re: [PATCH v17 06/20] KVM: arm64: CCA: Add a new mode for supporting Realm guests
+In-Reply-To: <aqDFcgzXOTWUkPtp@FCCLS0092175.localdomain>
+References: <20260908162223.1683432-1-suzuki.poulose@arm.com>
+	<20260908162223.1683432-7-suzuki.poulose@arm.com>
+	<aqDFcgzXOTWUkPtp@FCCLS0092175.localdomain>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 03/22] KVM: selftests: Initialize the TDX VM
-To: Ackerley Tng <ackerleytng@google.com>, Lisa Wang <wyihan@google.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
- Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>,
- Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-3-15ad654a50db@google.com>
- <c8b7a800-58ed-4ef7-91bd-31da77763717@intel.com>
- <ap_Bpe7dZm_eWsJ2@google.com>
- <CAEvNRgFHTAPYTVQ8a_PVdFLqQ8z07Uep2XhA9r_Ypw+D0WAC8w@mail.gmail.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <CAEvNRgFHTAPYTVQ8a_PVdFLqQ8z07Uep2XhA9r_Ypw+D0WAC8w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: enju.kohei@fujitsu.com, suzuki.poulose@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On 9/9/2026 2:08 AM, Ackerley Tng wrote:
-> Lisa Wang <wyihan@google.com> writes:
+On Wed, 09 Sep 2026 04:26:41 +0100,
+Kohei Enju <enju.kohei@fujitsu.com> wrote:
 > 
->> On Thu, Jul 23, 2026 at 04:44:08PM +0800, Xiaoyao Li wrote:
->>>> + */
->>>> +#define __tdx_vm_ioctl(vm, cmd, _flags, arg)				\
->>>
->>> sev uses the name __vm_sev_ioctl, I think we need to keep them consistent.
->>
->> While __vm_tdx_ioctl matches SEV, the TDX selftest follows a tdx_<scope>_*
->> naming convention (1. TDX prefix, 2. Scope: VM or vCPU). I named it
->> __tdx_vm_ioctl to keep the TDX codebase internally consistent.[1]
->>
->> Do you think we should align with SEV's naming convention instead of
->> sticking with the internal TDX pattern?
->>
->> [1]: https://lore.kernel.org/kvm/489f3c7b-db03-43dc-bb64-910a0fcba31e@intel.com/
->>
+> Hi Suzuki,
 > 
-> Given that __vm_sev_ioctl and __tdx_vm_ioctl aren't likely to appear
-> next to each other, I think it's better to have the tdx prefix earlier
-> to keep the TDX code consistent. To move things along, I think we could
-> continue as-is and not swap to align with sev.
+> On 09/08 17:22, Suzuki K Poulose wrote:
+> > Add an explicit mode to support Arm CCA guests.
+> > 
+> > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > ---
+> >  Documentation/admin-guide/kernel-parameters.txt | 3 +++
+> >  arch/arm64/include/asm/kvm_host.h               | 1 +
+> >  arch/arm64/kvm/arm.c                            | 5 +++++
+> >  3 files changed, 9 insertions(+)
+> > 
+> > diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> > index 68647ff4bdd24..1afe3df3b923e 100644
+> > --- a/Documentation/admin-guide/kernel-parameters.txt
+> > +++ b/Documentation/admin-guide/kernel-parameters.txt
+> > @@ -3256,6 +3256,9 @@ Kernel parameters
+> >  			nested: VHE-based mode with support for nested
+> >  				virtualization. Requires at least ARMv8.4
+> >  				hardware (with FEAT_NV2).
+> > +			rmm: Support for running confidential guests in Realm
+> > +			     world using RMM, as defined by Arm Confidential
+> > +			     Compute Architecture (CCA)
+> >  
+> >  			Defaults to VHE/nVHE based on hardware support. Setting
+> >  			mode to "protected" will disable kexec and hibernation
+> > diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> > index b2e99c5cb1cd3..31ae9d8d8e92f 100644
+> > --- a/arch/arm64/include/asm/kvm_host.h
+> > +++ b/arch/arm64/include/asm/kvm_host.h
+> > @@ -69,6 +69,7 @@ enum kvm_mode {
+> >  	KVM_MODE_DEFAULT,
+> >  	KVM_MODE_PROTECTED,
+> >  	KVM_MODE_NV,
+> > +	KVM_MODE_RMM,
+> >  	KVM_MODE_NONE,
+> >  };
+> >  #ifdef CONFIG_KVM
+> > diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> > index 9af3bbb2f8c24..50f0adfadab38 100644
+> > --- a/arch/arm64/kvm/arm.c
+> > +++ b/arch/arm64/kvm/arm.c
+> > @@ -3264,6 +3264,11 @@ static int __init early_kvm_mode_cfg(char *arg)
+> >  		return 0;
+> >  	}
+> >  
+> > +	if (strcmp(arg, "rmm") == 0 && !WARN_ON(!is_kernel_in_hyp_mode())) {
+> > +		kvm_mode = KVM_MODE_RMM;
+> > +		return 0;
+> > +	}
 > 
-> (The sev functions actually look kind of inconsistent in sev.h, but
-> that's a discussion for another series.)
-
-Yeah, either adjusting this patch to follow SEV or renaming existing SEV
-MACROs is OK.
-
-Keep the patch as-is and leave the SEV work to future are OK.
-
->>>> +({									\
->>>> +	u64 r;								\
->>>> +									\
->>>> +	union {								\
->>>> +		struct kvm_tdx_cmd c;					\
->>>> +		unsigned long raw;					\
->>>> +	} tdx_cmd = { .c = {						\
->>>> +		.id = (cmd),						\
->>>> +		.flags = (u32)(_flags),					\
->>>> +		.data = (u64)(arg),					\
->>>> +	} };								\
->>>> +									\
->>>> +	r = __vm_ioctl(vm, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd.raw);	\
->>>> +	r ?: tdx_cmd.c.hw_error;					\
->>>
->>> I know it takes the same handling from __vm_sev_ioctl(). But I think the
->>> handling for hw_error is not correct, at least for TDX (I didn't check for
->>> SEV).
->>>
->>> the hw_error is the additional info, to tell the SEAMCALL return code, when
->>> the IOCTL fails. KVM requires hw_error to be in the input, and KVM puts the
->>> SEAMCALL return code into hw_error when the IOCTL fails due to SEAMCALL
->>> failure. That means, when r == 0, the hw_error is always 0.
->>>
->>> I think we need to provide hw_error along with r to the caller so that
->>> caller can print them together.
->>
->> I think the value of r is not important, because the ioctl failure
->> is already captured in errno.
->>
->> We only need to fix the return values for SEV and TDX and have
->> TEST_ASSERT_* print formatted error logs with errno and hw_error.
->>
->> - r ?: {tdx, sev}_cmd.c.hw_error;
->> + r ? {tdx, sev}_cmd.c.hw_error : 0;
->>
-
-No. It is not correct because hw_error can be 0 when r != 0.
-
-> I didn't look in detail, perhaps Lisa could look into these:
+> Does this make NV support and CCA Realm VM support mutually exclusive?
 > 
-> + What are the possible values of r? Is it always going to be 1 on
->   error?
-> + Is r always positive or negative?
-> + Is tdx_cmd.c.hw_error always positive or negative? It's probably not
->   one of the standard Linux errors, right?
+> Until the v16 series, we could run Realm VMs with:
+>   'kvm-arm.mode=nested'
 > 
-> Perhaps squashing hw_error together with a retval conflates the two.
-> 
-> In the lower-level __tdx_vm_ioctl() we could pass a hw_error and have
-> the macro set hw_error? That will allow the caller to print both.
+> As far as the AArch64 architecture is concerned, there does not seem to
+> be a reason to make them mutually exclusive. I am therefore wondering
+> whether this restriction is intentional.
 
-yeah. This idea can work.
+I have a hack somewhere that will allow this, but this requires to
+change the above to be a capability mask rather than a simple
+enumeration. I'll see if I can spin that as a separate series.
 
->>>> +})
->>>> +
->>>> +#define tdx_vm_ioctl(vm, cmd, flags, arg)				\
->>>> +({									\
->>>> +	u64 ret = __tdx_vm_ioctl(vm, cmd, flags, arg);			\
->>>> +									\
->>>> +	if (ret) {							\
->>>> +		TEST_ASSERT(!ret,					\
->>>> +			    "%s failed, rc: 0x%llx errno: %i (%s)",	\
->>>> +			    #cmd, (unsigned long long)ret,		\
->>>> +			    errno, strerror(errno));			\
->>>
->>> The if() looks silly. Why add it? And why change it from
->>> __TEST_ASSERT_VM_VCPU_IOCTL() in the v13?
->>>
->>> Considering the suggestion of hw_error above, I think we need to introduce
->>> the TEST_ASSERT_TDX_VM_VCPU_IOCTL() which accepts additional hw_error?
->>
->> The reason we could not use __TEST_ASSERT_VM_VCPU_IOCTL() directly[2] is
->> because it formats ther return value as %i (32-bit), whereas
->> __tdx_vm_ioctl might return a u64 hardware error code.
->>
+	M.
 
-Since we cannot simply use hw_error to replace ret, there will be not 32bit
-vs 64bit issue. But ...
-
->> I agree with your suggestion to introduce a new
->> TEST_ASSERT_TDX_VM_VCPU_IOCTL() macro to print out u64 hardware error
->> code properly.
-
-... if we want to print hw_error as well, we still need a new macro.
-
->> [2]: https://lore.kernel.org/all/a58e2941-77f9-43cf-a54d-023506dd7eb0@linux.intel.com/
->>
-> 
-> Is tdx_vm_ioctl() the only place where TEST_ASSERT_TDX_VM_VCPU_IOCTL()
-> is going to be used though? If so, maybe we should defer introducing
-> TEST_ASSERT_TDX_VM_VCPU_IOCTL() till later.
-
-I think tdx_vcpu_ioctl() will use it as well?
-
-> I think the issue with if (ret) is just that TEST_ASSERT(!ret) already
-> does that same check, and so we can drop the if (ret) part.
-> 
+-- 
+Without deviation from the norm, progress is not possible.
