@@ -1,139 +1,167 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C8D442105
-	for <kvm@vger.kernel.org>; Wed,  9 Sep 2026 21:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72D14825AC
+	for <kvm@vger.kernel.org>; Wed,  9 Sep 2026 22:27:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788990832; cv=none; b=kPvo7JqnRByKTSoZiAkAhfyhmRCNCsNF2xl5np7CG2L2WX+/Gl41TE7fX9PI0wV2tDWJIf05F03lR0TtIHCc6QANCY+uLtIwetZqwgGMJCKBDhENWIfZTPx65r2jtwGIt32p68bFe9gcm2o8C5IM2ZDD9M2g+AJyb8YnslhvJw0=
+	t=1788992870; cv=none; b=JHlr8LKDQ1y+TPwhIIEipHvVC298FXRGeCJbuixjDlNR7fAePcLPdyHK/MXokl/VsjyFhkDtKpJni5x5AUubZpjPErPPa8bwIODYu+wxjwAZMdgaIoCW2tjQKVKBgDA3RVpxIBQdyUe68AeyAkKesOOkmx8BR940lbfPWrvUZyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788990832; c=relaxed/simple;
-	bh=0/fvsUiPrwSradNfHPbewbh86ElFh0GYdyKxkNvocQ0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YUOU3LlJoZbrexH2Chm+ktoOUcOmRp4scJwL5V7NC7wrgrbxsUmuhgfyBOc+y1Ax4uTZcDayHtDSifqyhmMZNIw9ue2tKMz1pzagW+Ijlk1z1zmQBtPyGuQBN2KlG4rRR2mL7cEwT6A5QbPTU5G/eZ+PDg6kcYNm0WRl5E3ll0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UuSsoGAz; arc=none smtp.client-ip=209.85.215.197
+	s=arc-20240116; t=1788992870; c=relaxed/simple;
+	bh=mqKexKRlmNDFLQEIvT7Y9z7FUD+hpM8xK3PiP7gpeMA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=peWWj+asuyaEpApOIre5LexpJGerAmoskMar4l3sSgoZS26hqTt6gQdqxgNzGUhqDFQo+po5UJfnG8QMl8G19Fzm/NUS0j6DvpPYc7z+4IHwtuwTCEd1phpO2s+AFAFpZgLFXFVHxoetC/lm0y/7B2um2WzngFrdqm7uGJI0tm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kh99ibga; arc=none smtp.client-ip=209.85.215.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UuSsoGAz"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc132709c76so8736720a12.3
-        for <kvm@vger.kernel.org>; Wed, 09 Sep 2026 14:53:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kh99ibga"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cc4aa02a269so624250a12.2
+        for <kvm@vger.kernel.org>; Wed, 09 Sep 2026 15:27:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788990822; x=1789595622; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=S0GhsBKioJjDRrC3kQo/MvHb6RZ/KMlhVtpCXE0/7VQ=;
-        b=UuSsoGAzOxW0v0Q1GjJJlVA1BFy4910AJUA5vyeiekdJYXfhD56s7EJWTnKSgmJp+y
-         zPoO9vaJEoFvdll5J3ZKQLdH05WEzqsjPCyRDUEeBU96sQMvpyI2HdE9aRC1gU70yCfl
-         AFqogndIx1BohYm2aCCUjdH5e5XT6bi/4vUuSp5POyYrtIWDyYVccTr9NH8koBzj4e9E
-         E/nLt/X+1NlJu6fPfRAPfvmUYw6ZDvfFiUhWzDBrfbEbg8TC6ILXfCPlr9VWpxHO1/k7
-         IkyTQiiDpVtsbmcX6EOyDT60gFKTpcRsxdKvpIUZvk15xgiWy+hMmDdU+IxkCbzG08BC
-         fQbw==
+        d=google.com; s=20251104; t=1788992867; x=1789597667; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=R5cPdTAC3boYVm13Avr5IgzIz8D8z9d9W6rfo2545Nc=;
+        b=kh99ibgak5G4QcwI18d3owe7OazqpalonXOzIn1u7ixcsAtGPBuMJCV+wPTfPW93Zx
+         5JksmleUaj1HYW/wzEHI2D7v9CmTZtfkIiSlyT80XG9h2rxjfb52L4g/WatVXsHrBLWG
+         1WVAi7zbp75wITpZVE11ectc+xUDt80kn7K7i59MnZd04nCFZ14rkLjUqTV2MzN/a+WU
+         E4ehGWy/30sShjczlgoS/41orH8pVxldORcj2zpMcG+Z69cojlCKBlwpbn8Hta4j598P
+         nvSc/iOw2dto3nnFLL26kQY/IebWj9RYNDPGaHYsksBBDaIdjlVn9qTnJdhfn29zUrxP
+         E2Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788990822; x=1789595622;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=S0GhsBKioJjDRrC3kQo/MvHb6RZ/KMlhVtpCXE0/7VQ=;
-        b=H1T+y3Xk+pNP+NMu/fcG5O/uQrdweHThUaGZ+PIld5DxkWkBlIe5AYQzX2PnBauZHF
-         oqxv9rjw/xgZy4pkdYwg2r9jsARZM2W4w2gpeWmmDbjgSTxwf5UhnuNXbtaySV/A7ri6
-         K7Gg+AAgCFlufoIMv/SHRYikI3sWsCsqPmN8ShZA67SMh/vv/RZcV1VTcUcezOzcbE8E
-         BOGjAZk7/ch/qKMo4nF6GDjY1eNceBQF0bicjgqBUY0xc3vReyNTq9Zj9FVy1vRyt4Jt
-         iYOmLMWwpVPsJ0RlvHuySIAqvCPGKAhFv9vCeqlky29x+3L4pW8paELkP09GCdlI/H73
-         ZTiw==
-X-Forwarded-Encrypted: i=1; AKwUvBzxuNV/axDVPu7tLP/jL20wgRQ0b4Iylz04LtnxhrT5SmCt/+XxAjmf7qQpDIFe9Ri6Ws8=@vger.kernel.org
-X-Gm-Message-State: AFuF++mWyUw9pFz/df+V9wLzgUFwWN+eg4P4uiSU+8VvbCEKLCwwTE+e
-	SpPl358Czd+DYu7sTApJCyH+lnpaDo40dV37Z+q9fnUAvBE0oPIrEXjAz4un8BDEaBr2KsDHr8v
-	Ef0bO0A==
-X-Received: from pgar19.prod.google.com ([2002:a05:6a02:2e93:b0:cc4:3485:76b1])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:93a1:b0:3da:c10c:6aa6
- with SMTP id adf61e73a8af0-3dacbd6eacdmr5805086637.1.1788990822413; Wed, 09
- Sep 2026 14:53:42 -0700 (PDT)
-Date: Wed, 9 Sep 2026 14:53:41 -0700
-In-Reply-To: <b0035ada-8760-4c43-aac5-264d6b1d0099@kernel.org>
+        d=1e100.net; s=20251104; t=1788992867; x=1789597667;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=R5cPdTAC3boYVm13Avr5IgzIz8D8z9d9W6rfo2545Nc=;
+        b=bQrtacwqNr6LwPUvcazydL87miyC+Z45lExIlPafaJm+XmVTSHEhnk5uFzc/Ns2mR0
+         bWiQ+DyXCXZI++1Sr0XZQZ+cj5daQqjwYgUKuxQXk2MW77lUX6LqXyX6/lAZg48Eu2t5
+         vPI14vZMmcVoYIs2/SG01ugj2VFcVpGBk+eV4sIVsfb2SNv/6xJ8czoudH1iQK8k/xuU
+         IqkVTyJyznaOIyr8THKiwppYfTH+IyYsMpXBpOZW7dneMCUhoS+7ROE+2OSD3ycFcgO8
+         Ou1Gkzu/DXHhJs2+RDVYyMv1TtvvmyP8Q51Ju9i8AD6LAtYcy4p7BlQzosh+R8X9yHx4
+         eY8A==
+X-Forwarded-Encrypted: i=1; AKwUvBxhjMoIYYwxh5pCXCAAWcBCz/NEaNX704e4CSplIP6I43P6hcBdrTTk/lrOPR+yI4ycOeo=@vger.kernel.org
+X-Gm-Message-State: AFuF++mH2InmG/nTcb8WQNciAj2B7PYn9oSHY7Qd5otCzyA7RNyZYRjw
+	r1MxO/9j0w1YtMsAF94J7YIL78Ea23ow9yyozMVKzqAeih5noGRRl8fWdurFzgJ2kg==
+X-Gm-Gg: AYBFou1KeFgu7L1rYY+ANHJU6OmM50jNunVO7TuFLgj+Yf+X1JSjZNOzczGSZeiL6r9
+	tzH/QDZRn7T31NGewQ0xLy+TJb3T0KJ1hgH9ywWlMOwHKJCDS+WfBbJVcr6bPsHTs1GEQA4IqEe
+	xyIwreJIiRl21Mxn/y2GEffKyqvQYqYUgsQVs6QPx00DnJ5Vpsyd+ys4H6USdNEbbUBbUicu5H+
+	LvtwHyyFjYYl/cKSeD+agQiTqnUwxt0OIcpQ1c06ft+7buOXnFt1Uwrr2WuCqqcQY3Mwf4Q6zT+
+	ZABVXbzDcnU4j/heELiPme/5LWBM6e/fPZr8XrCe92v64s0DUODJdEre+okF2ZqQTNv7ehlPjNs
+	SpgmB8wr19pOOadsgF0MbbbddndcrDVGlNk2vU4Wb2QHyd/GPMh80hSeP01o72L65QOrbXmjcNN
+	OGVLuX4YvZDLPYlHQErXPzNrRbGGVNssSTzlH+RQXLamDqBMY3BfiqSAjkoWAu69a8BjsQxcd5m
+	5YJ7k595mpdaI0hjJZn0QZO0TXMtmQ82jDdcZlX
+X-Received: by 2002:a17:90b:4cce:b0:38f:240d:b857 with SMTP id 98e67ed59e1d1-39b260dd4e9mr60322664a91.2.1788992866367;
+        Wed, 09 Sep 2026 15:27:46 -0700 (PDT)
+Received: from google.com (192.150.203.35.bc.googleusercontent.com. [35.203.150.192])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d7738ce41sm1598219a91.3.2026.09.09.15.27.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 15:27:45 -0700 (PDT)
+Date: Wed, 9 Sep 2026 22:27:42 +0000
+From: David Matlack <dmatlack@google.com>
+To: Alex Williamson <alex.williamson@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm <kvm@vger.kernel.org>,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH 1/4] vfio: Reject a second cdev open before mutating
+ shared device state
+Message-ID: <aqHdXvfcfCJbLajM@google.com>
+References: <20260901215358.2421359-1-alex.williamson@nvidia.com>
+ <20260901215358.2421359-2-alex.williamson@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260904004342.3162959-1-seanjc@google.com> <20260904004342.3162959-4-seanjc@google.com>
- <b0035ada-8760-4c43-aac5-264d6b1d0099@kernel.org>
-Message-ID: <aqHVZdnf28ZuSNLA@google.com>
-Subject: Re: [PATCH v3 3/4] KVM: guest_memfd: Establish memslot<=>guest_memfd
- bindings *after* memslot is ready
-From: Sean Christopherson <seanjc@google.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Stefan Teodorescu <fane@google.com>, Dennis Tighe <dtighe@google.com>, 
-	Sashiko Bot <sashiko-bot@kernel.org>, Yan Zhao <yan.y.zhao@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260901215358.2421359-2-alex.williamson@nvidia.com>
 
-On Mon, Sep 07, 2026, David Hildenbrand (Arm) wrote:
-> On 9/4/26 02:43, Sean Christopherson wrote:
+On 2026-09-01 03:53 PM, Alex Williamson wrote:
+> The cdev single-open check lives in vfio_df_open(), which runs at the
+> end of the bind ioctl, after vfio_df_ioctl_bind_iommufd() has already
+> updated state shared across all opens: vfio_df_check_token() can set
+> the PF vf_token and vfio_df_get_kvm_safe() records the caller's KVM
+> pointer in device->kvm and takes a reference.
 > 
-> > +		if (WARN_ON_ONCE(change != KVM_MR_CREATE))
-> > +			goto err_bind;
-
-This is buggy, it fails to set 'r', i.e. will signal success but not actually do
-anything (or worse, half-do something?).  I'm just going to delete this sanity
-check, as there are already existing sanity checks that save KVM from the worst
-case scenario.  More below.
-
-> > +
-> > +		r = kvm_gmem_bind(kvm, new, gmem_fd, gmem_offset);
-> > +		if (r)
-> > +			goto err_bind;
-> > +	}
-> > +
-> >  	/*
-> >  	 * For DELETE and MOVE, the working slot is now active as the INVALID
-> >  	 * version of the old slot.  MOVE is particularly special as it reuses
-> > @@ -1965,6 +1975,13 @@ static int kvm_set_memslot(struct kvm *kvm,
-> >  
-> >  	return 0;
-> >  
-> > +err_bind:
-> > +	if (new) {
+> A second cdev bind of an already-open device runs both, only to be
+> rejected in vfio_df_open().  The error path clears device->kvm and
+> drops the reference, tearing down the current opener's KVM association
+> and potentially resulting in an unbalanced reference on close or
+> premature release, while the vf_token remains clobbered.
 > 
-> We'd never end up here with !new, right?
-
-Correct.  I added the check on "new" partly because it felt so wrong to not have
-such a check, but also to guard against any future usage of the unwinding.
-
-Oof, but calling kvm_arch_free_memslot() is safe only for CREATE operations.  For
-FLAGS_ONLY operations, x86 and PPC reuse arch metadata, i.e. trying to unwind
-prepartion for FLAGS_ONLY would do more harm than good.
-
-So rather than try to provide a goto sequence, I'll add a prep patch to restrict
-the kvm_gmem_bind() call to CREATE (which is a nop because it's dead code for
-MOVE and FLAGS_ONLY), and then this patch can do:
-
-	if (change == KVM_MR_CREATE && (new->flags & KVM_MEM_GUEST_MEMFD)) {
-		r = kvm_gmem_bind(kvm, new, gmem_fd, gmem_offset);
-		if (r) {
-			kvm_arch_free_memslot(kvm, new);
-			kvm_destroy_dirty_bitmap(new);
-			goto err;
-		}
-	}
-
-That addresses the new-can't-be-NULL concern as well as the duplicate code concern,
-and can also address the bad sanity check above by adjusting the TODO comment in
-kvm_commit_memory_region() about what needs to happen if/when dirty logging is
-supported (KVM needs to rebind() here, not do separate bind()+unbind() calls).
-
-And of course calling kvm_destroy_dirty_bitmap() is dead code until dirty logging
-of guest_memfd memslots is supported, but it's harmless and IMO far less risky than
-hoping future us remembers to add the call when dirty logging support comes along.
-
-> > +		kvm_arch_free_memslot(kvm, new);
-> > +
-> > +		if (new->dirty_bitmap && (!old || !old->dirty_bitmap))
-> > +			kvm_destroy_dirty_bitmap(new);
+> Move the single-open check into vfio_df_ioctl_bind_iommufd() ahead of
+> both mutations, so a bind that cannot complete leaves the current
+> opener's state untouched.  df->group is NULL on this path, so a
+> non-zero open_count is exactly what vfio_df_open() rejected.  The test
+> in vfio_df_open() becomes redundant and is removed.
 > 
-> That's essentially the cleanup path in kvm_prepare_memory_region().
+> Return -EBUSY rather than -EINVAL here.  The arguments are not invalid,
+> the device is in use, which could be a transient condition due to a
+> delayed fput if the prior user is terminated.  This provides
+> compatibility with the group path, where a group open returns -EBUSY,
+> and users may choose bounded polling to detect such a transient
+> condition.
 > 
-> I guess with some more reshuffling we could have a single dirty bitmap cleanup
-> path in this code.
+> Fixes: 839e692fa4eb ("vfio: Make vfio_df_open() single open for device cdev path")
+> Fixes: 5fcc26969a16 ("vfio: Add VFIO_DEVICE_BIND_IOMMUFD")
+> Fixes: 86624ba3b522 ("vfio/pci: Do vf_token checks for VFIO_DEVICE_BIND_IOMMUFD")
+> Assisted-by: claude-opus-4-8
+> Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+
+Can you add a regression test for this?
+
+The VF token clobbering can be reproduced in vfio_pci_sriov_uapi_test:
+
+diff --git a/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c b/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c
+index 19d657d00b75..de8408b90a25 100644
+--- a/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c
++++ b/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c
+@@ -157,6 +157,42 @@ TEST_F(vfio_pci_sriov_uapi_test, override_token)
+        ASSERT_COND_VF_CREATION(ret);
+ }
+
++TEST(failed_second_open_does_not_clobber_token)
++{
++       struct vfio_pci_device *pf = NULL, *pf_second_fd = NULL, *vf = NULL;
++       struct iommu *iommu;
++       int ret;
++
++       iommu = iommu_init("iommufd");
++       if (!iommu)
++               SKIP(return, "iommufd mode not supported");
++
++       /* Create and bind PF using UUID_1 */
++       ret = device_init(pf_bdf, iommu, UUID_1, &pf);
++       ASSERT_EQ(ret, 0);
++
++       /*
++        * Attempt to open the same PF again and bind it with a *different*
++        * token (UUID_2). This must fail with EBUSY because it's a second open.
++        */
++       ret = device_init(pf_bdf, iommu, UUID_2, &pf_second_fd);
++       ASSERT_EQ(ret, -EBUSY);
++
++       /*
++        * Attempt to initialize a VF using the original PF token (UUID_1).
++        * If the failed open above clobbered the PF's token (i.e. updated it to
++        * UUID_2), this VF initialization will fail.
++        */
++       ret = device_init(vf_bdf, iommu, UUID_1, &vf);
++       ASSERT_EQ(ret, 0);
++
++       device_cleanup(vf);
++       if (pf_second_fd)
++               device_cleanup(pf_second_fd);
++       device_cleanup(pf);
++       iommu_cleanup(iommu);
++}
++
+ static void vf_teardown(void)
+ {
+        /*
