@@ -1,239 +1,149 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF8E5335A0;
-	Wed,  9 Sep 2026 11:22:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A7D5437F6;
+	Wed,  9 Sep 2026 11:24:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788952974; cv=none; b=DVjHnZpgcbU1lk6etTyB/UTopxaqLMyrCVLwF/X5r2lgX6kKWlLh4vIJFE86jEurHKs+aVfUHbvGFd6mc2kSDXNP6nQUMS2qcfJtQp5vBG1NzcbTG5E/NWlAAMNOedPnwVuqhD+jNxvR2ezbkQACs19VD4YXINJDrPkrgzUVx1w=
+	t=1788953057; cv=none; b=k5Sm/S0LLatTsp2Eh5irZhKMgjylOuvxwFXuj5MTvPqLqLBx2hFKn6+Yv3DLA2mQXEuf993gAtp/lFqBxnEt+SHZCLDevDoHXzD5pRAbax5ulhMyqY0qr9i3ON2NL9tNTNXYNV6O5JTuPRVMR6Q8rkS0SNjedYmhChaFjsQCOzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788952974; c=relaxed/simple;
-	bh=kinm3Lg4z5yoRj1Tro37HQhxU5KP1NYaneCQVQniSFA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D6B6V9xdNrkLtwX/P/w1GIzjFTaIW+c24fufVzsqER0wd6BbXu/yZmMbozTsmvNgHdfMYDMZgxvqiUiYVTBkisBpvH4NsbTAk0EGFf9z5GrZCmSt0I6yPNJBmwsq+HIpWjH0/tpZJFhHGuNYmJpEU1Fq0PiHDC+85sopHYEV/oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qhguwTuN; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1788953057; c=relaxed/simple;
+	bh=y74L0DLhbdt+Ower+oXr1Vl+Ik+e0ELSA4xWXm212qs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TXdXuSNMOB2RwaMtjCMIZaIGfSL4+Onsk6d+HqiLfbMo8ebw6pEh6nj9Ix28hPTi5ABVAUF8h8m8Nd/VdoQ5PDe0tNRVNRdn7wAJEJzBAHc97yLkGAzgFW9SltcPh/jzMNRwY25Lgq6rGLlBRv4eOxV+9w5nO2BKc3g0rW5PEec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=XNqERASC; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qhguwTuN"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 689B1duw2666182;
-	Wed, 9 Sep 2026 11:22:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=/8IaYv
-	CFo6fz+OwPEEmckG3lCFihAL43nD3n3f2T7Gc=; b=qhguwTuN778X3cOaWWW1OU
-	aeZ7AJr5+u/cvNAs7RIOnmqYZbMjHAKojx4nXE/wh5sMGNOH6xbbXBYRV6W5CP5m
-	1LfKeLsLqhxoM/rtvfSFecMgjFvQaVkTmtglAbnTNxS9dCCPH/KKlDVi1+BNFW8b
-	A4InRafmKCz6Cv0j8uRLUCdygzECd2S/44yMh+FBsFGBpXzX182KSY9KbjvUJx3R
-	Y9u7hnBxycqsfJ6mB5bAL8bE1MRjX8qA9TLrZaAXWBKpiTNyT5Ad1gPC1O2J0Q1o
-	sK1AZgxMslVpj/H1udTip6Q7YBFvLBe6aJ93X/kYeUNT6ud7ShMMaO3pvDg3tNaA
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ggbjrw4cr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Sep 2026 11:22:15 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 689AfLZI023073;
-	Wed, 9 Sep 2026 11:22:14 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ggxdk1xnq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Sep 2026 11:22:14 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 689BM9Ka46072296
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 9 Sep 2026 11:22:10 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D56142004B;
-	Wed,  9 Sep 2026 11:22:09 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 84D262004D;
-	Wed,  9 Sep 2026 11:22:09 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.224.75.30])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Wed,  9 Sep 2026 11:22:09 +0000 (GMT)
-Date: Wed, 9 Sep 2026 13:22:07 +0200
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand
- <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-        Jonathan Corbet
- <corbet@lwn.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jason
- Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-        Peter
- Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo
- Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, Mark Rutland
- <mark.rutland@arm.com>,
-        Nick Piggin <npiggin@gmail.com>, Arnd Bergmann
- <arnd@arndb.de>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Marc
- Zyngier <maz@kernel.org>,
-        Christian Borntraeger
- <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Gerald Schaefer
- <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily
- Gorbik <gor@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Alexander Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org
-Subject: Re: [PATCH 27/39] mm: rename is_vm_hugetlb_page() to
- vma_is_hugetlb()
-Message-ID: <20260909130141.2c5d250d@p-imbrenda>
-In-Reply-To: <20260908-b4-mmap-prepare-vma-flag-sanify-v1-27-dacf19cce22b@kernel.org>
-References: <20260908-b4-mmap-prepare-vma-flag-sanify-v1-0-dacf19cce22b@kernel.org>
-	<20260908-b4-mmap-prepare-vma-flag-sanify-v1-27-dacf19cce22b@kernel.org>
-Organization: IBM
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="XNqERASC"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B23621691;
+	Wed,  9 Sep 2026 04:24:10 -0700 (PDT)
+Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4F8C13F528;
+	Wed,  9 Sep 2026 04:24:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788953054; bh=y74L0DLhbdt+Ower+oXr1Vl+Ik+e0ELSA4xWXm212qs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XNqERASChp/Zp7Dp+uULGdCu5WA7QNGKEVyJWabIpdbt8Y78BBxn4OORUFIRldKuI
+	 1cu+VTjUhYFKXb/5zHsKA3zVVIKksgKzB2m/zOGShHJqd4k8sZxmp2/sZBRIhZECs5
+	 68eDhqzMxdiHZM71Q3QwzE6Oz5yh79foLy6c1Zxk=
+Message-ID: <6c899477-40a9-443b-8f0a-0fb85beca3b3@arm.com>
+Date: Wed, 9 Sep 2026 12:24:09 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v17 02/20] KVM: arm64: Avoid including linux/kvm_host.h in
+ kvm_pgtable.h
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev,
+ gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
+ alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
+ lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260908162223.1683432-1-suzuki.poulose@arm.com>
+ <20260908162223.1683432-3-suzuki.poulose@arm.com>
+ <CA+EHjTzGeHCWV=ooEv-P79NNqTDi-A+7y5BFvZRR0z8RwavoeA@mail.gmail.com>
+Content-Language: en-US
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <CA+EHjTzGeHCWV=ooEv-P79NNqTDi-A+7y5BFvZRR0z8RwavoeA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=E7T9Y6dl c=1 sm=1 tr=0 ts=6aa14167 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=OpMjZilIJQQ69o6v8fAA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA5MDEyMiBTYWx0ZWRfXySxVHdsN1ufG
- wxjpHwj2VKPdL+MdVQie3JyfabMJU/26wLQwlGWO0QZf5MNW6jvmMiP9yN+m5dAuCWYjRliYhq4
- TcA4SKzj97ajqgowLAlPjKHLqae4ogE=
-X-Proofpoint-ORIG-GUID: 9hCeolFJXa7mLi7YIHynK8hgkmct4qqF
-X-Proofpoint-GUID: H6kaRUBVX1M87FU8LUMUUE3VPbQB106q
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA5MDEyMiBTYWx0ZWRfXwfSodi+GpBAe
- EWgvlM2SUJLuFEu9GHXrLlP2p81ohn4dYO/6vEBPnJTS7AYCF12oOwWJKBdy11FngCnfzjafrml
- x7eCREr73cwTqFnu6IA00UumMxG+FNDgYEdClHlPwbc1pNySdmscuIEFgiyEscAMb5CvqHCngH4
- 9etlThpWCx68gjVkvvt+o9hbhSMj/PU4F8xWzqFViAnbRaCUuf1D7Td9B3JQ4Vtu0fpb5dCBdIH
- aSEttzOvUQ4yhnFMkS4XYCLLFCOA4y1iHeW0G8CMS66W75wzs1pMgXqxvCQixpiQnCtN4jJpwxz
- MYPEBvggS/svZxLrh5QF1aQ4q+brQniNhqPP/TzsUGdpI+461ReTNyBLe9RDMDx4OF5Tcq5JaVY
- mAc/mvm2bod5UBNrSuH+QS/D5oV2zUf4Ngzn1gtQhCitsLJX3IgoC1sGFmMRvwFXIVDA1tW6YwN
- 6ze7nzFRPTPgnrVQ3SQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-08_03,2026-09-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 phishscore=0 spamscore=0 suspectscore=0 priorityscore=1501
- bulkscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609090122
 
-On Tue, 08 Sep 2026 21:01:31 +0100
-"Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
-
-[please note that I had to prune the CC list quite aggressively because
-my SMTP server was not happy]
-
-> The is_vm_hugetlb_page() predicate is badly named - the mapping can span
-> more than a page and it is inconsistent with other VMA predicates that
-> typically are prefixed by vma_.
+On 09/09/2026 12:22, Fuad Tabba wrote:
+> On Tue, 8 Sept 2026 at 17:22, Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>>
+>> From: Steven Price <steven.price@arm.com>
+>>
+>> To avoid future include cycles, drop the linux/kvm_host.h include in
+>> kvm_pgtable.h and include the lightweight headers required for the types
+>> and inline helpers used there. Additionally provide a forward
+>> declaration for struct kvm_s2_mmu as it's only used as a pointer in this
+>> file.
+>>
+>> Both pgtable.c and kvm_pkvm.h relied on the indirect inclusion of
+>> kvm_host.h, so make that explicit.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>> New patch in v13
 > 
-> Rename to vma_is_hugetlb() for consistency, and while we're here update
-> some VM_BUG_ON_VMA() to VM_WARN_ON_ONCE_VMA() as to avoid unnecessary
-> oopses.
+> Is this meant to be here (the "New in patch 13")?
+
+Just trying to carry the legacy, but yes, you're right. I could remove
+it. v13, is so ancient now :-)
+
+
 > 
-> No functional change intended.
+> Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+
+Cheers
+Suzuki
+
+
 > 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Cheers,
+> /fuad
+> 
+> 
+>> ---
+>>   arch/arm64/include/asm/kvm_pgtable.h | 6 +++++-
+>>   arch/arm64/include/asm/kvm_pkvm.h    | 2 +-
+>>   arch/arm64/kvm/hyp/pgtable.c         | 1 +
+>>   3 files changed, 7 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/arm64/include/asm/kvm_pgtable.h b/arch/arm64/include/asm/kvm_pgtable.h
+>> index 41a8687938eb6..c2e4b29e605fc 100644
+>> --- a/arch/arm64/include/asm/kvm_pgtable.h
+>> +++ b/arch/arm64/include/asm/kvm_pgtable.h
+>> @@ -8,9 +8,13 @@
+>>   #define __ARM64_KVM_PGTABLE_H__
+>>
+>>   #include <linux/bits.h>
+>> -#include <linux/kvm_host.h>
+>> +#include <linux/kvm_types.h>
+>> +#include <linux/rbtree_types.h>
+>> +#include <linux/rcupdate.h>
+>>   #include <linux/types.h>
+>>
+>> +struct kvm_s2_mmu;
+>> +
+>>   #define KVM_PGTABLE_FIRST_LEVEL                -1
+>>   #define KVM_PGTABLE_LAST_LEVEL         3
+>>
+>> diff --git a/arch/arm64/include/asm/kvm_pkvm.h b/arch/arm64/include/asm/kvm_pkvm.h
+>> index beea00e693a0a..54a618d887fa4 100644
+>> --- a/arch/arm64/include/asm/kvm_pkvm.h
+>> +++ b/arch/arm64/include/asm/kvm_pkvm.h
+>> @@ -7,9 +7,9 @@
+>>   #define __ARM64_KVM_PKVM_H__
+>>
+>>   #include <linux/arm_ffa.h>
+>> +#include <linux/kvm_host.h>
+>>   #include <linux/memblock.h>
+>>   #include <linux/scatterlist.h>
+>> -#include <asm/kvm_host.h>
+>>   #include <asm/kvm_pgtable.h>
+>>
+>>   /* Maximum number of VMs that can co-exist under pKVM. */
+>> diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
+>> index b74dd5ce1efd3..f48253b9d88b5 100644
+>> --- a/arch/arm64/kvm/hyp/pgtable.c
+>> +++ b/arch/arm64/kvm/hyp/pgtable.c
+>> @@ -8,6 +8,7 @@
+>>    */
+>>
+>>   #include <linux/bitfield.h>
+>> +#include <linux/kvm_host.h>
+>>   #include <asm/kvm_pgtable.h>
+>>   #include <asm/stage2_pgtable.h>
+>>
+>> --
+>> 2.43.0
+>>
 
-for s390:
-
-Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-
-but please see the comment below
-
-> ---
->  arch/arm64/kvm/mmu.c                      |  4 ++--
->  arch/powerpc/mm/book3s64/radix_tlb.c      |  6 +++---
->  arch/powerpc/mm/nohash/e500_hugetlbpage.c |  2 +-
->  arch/powerpc/mm/nohash/tlb.c              |  2 +-
->  arch/riscv/kvm/mmu.c                      |  2 +-
->  arch/riscv/mm/tlbflush.c                  |  2 +-
->  arch/s390/mm/gmap_helpers.c               |  6 +++---
->  arch/sparc/mm/init_64.c                   |  2 +-
->  drivers/gpu/drm/drm_gpusvm.c              |  2 +-
->  fs/coredump.c                             |  2 +-
->  fs/hugetlbfs/inode.c                      |  2 +-
->  fs/proc/task_mmu.c                        |  8 ++++----
->  include/asm-generic/tlb.h                 |  2 +-
->  include/linux/hugetlb.h                   |  4 ++--
->  include/linux/mm.h                        | 19 ++++++++++++++++---
->  include/linux/rmap.h                      |  2 +-
->  kernel/events/core.c                      |  2 +-
->  kernel/sched/fair.c                       |  2 +-
->  mm/gup.c                                  |  4 ++--
->  mm/huge_memory.c                          |  2 +-
->  mm/hugetlb.c                              | 14 +++++++-------
->  mm/internal.h                             |  2 +-
->  mm/madvise.c                              |  4 ++--
->  mm/memory.c                               | 12 ++++++------
->  mm/mempolicy.c                            |  2 +-
->  mm/migrate_device.c                       |  2 +-
->  mm/mmap.c                                 |  2 +-
->  mm/mmu_gather.c                           |  2 +-
->  mm/mprotect.c                             |  2 +-
->  mm/mremap.c                               |  6 +++---
->  mm/page_vma_mapped.c                      |  4 ++--
->  mm/pagewalk.c                             |  2 +-
->  mm/swapfile.c                             |  2 +-
->  mm/userfaultfd.c                          | 26 +++++++++++++-------------
->  mm/vma.c                                  |  8 ++++----
->  mm/vmscan.c                               |  2 +-
->  tools/testing/vma/include/stubs.h         |  2 +-
->  37 files changed, 92 insertions(+), 79 deletions(-)
-
-[...]
-
-> diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
-> index ff63ffb1dbd2..3f6783b93e67 100644
-> --- a/arch/s390/mm/gmap_helpers.c
-> +++ b/arch/s390/mm/gmap_helpers.c
-> @@ -102,7 +102,7 @@ __context_unsafe(/* pte_unmap_unlock() not instrumented */)
->  
->  	/* Find the vm address for the guest address */
->  	vma = vma_lookup(mm, vmaddr);
-> -	if (!vma || is_vm_hugetlb_page(vma))
-> +	if (!vma || vma_is_hugetlb(vma))
->  		return;
->  
->  	/* Get pointer to the page table entry */
-> @@ -139,7 +139,7 @@ void gmap_helper_discard(struct mm_struct *mm, unsigned long vmaddr, unsigned lo
->  		vma = find_vma_intersection(mm, vmaddr, end);
->  		if (!vma)
->  			return;
-> -		if (!is_vm_hugetlb_page(vma))
-> +		if (!vma_is_hugetlb(vma))
->  			zap_vma_range(vma, vmaddr, min(end, vma->vm_end) - vmaddr);
->  		vmaddr = vma->vm_end;
->  	}
-> @@ -247,7 +247,7 @@ static int __gmap_helper_unshare_zeropages(struct mm_struct *mm)
->  		 * proof to catch unexpected zeropages in other mappings and
->  		 * fail.
->  		 */
-> -		if ((vma->vm_flags & VM_PFNMAP) || is_vm_hugetlb_page(vma))
-> +		if ((vma->vm_flags & VM_PFNMAP) || vma_is_hugetlb(vma))
-
-Would it be possible to replace this ^ with !vma_can_gup() ?
-
-(obviously not in this patch, since vma_can_gup() is only introduced at
-the end of the series)
-
->  			continue;
->  		addr = vma->vm_start;
->  
-
-[...]
