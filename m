@@ -1,50 +1,33 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60DC3ACEF3;
-	Wed,  9 Sep 2026 08:48:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC88E188CC9;
+	Wed,  9 Sep 2026 08:55:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788943712; cv=none; b=rI6Ic7xbMl1/Bc2gF9nLRxJZFl1tjsRSxzDbMLi3gLSeeJrwhwKWpD2vqBdXWkPaH5LbJLDSF26NcZ+TT4x9HOoY3OOFnijzZehVIrWhgMaJeTEnM3/JSlP8Ntj/3hEGwmcPNZ3TCMsVeVoXULKeYThNvT43sNm05ukP0YuJ7fc=
+	t=1788944137; cv=none; b=PXmGmW+a1+OLohe47iASqz1vFqg/8oiEIEvh02T6DUTJB0nZ8D/CJcLiwCy3Qv7TA2FtguZswhadivUgJOReACzyQ/cLMDhySv/RgOaMDZeP2GdSnfw2F7RYOimcT65zdd+zww+65WuIpF79nfIfvQI8taatUCyfW7PojP+SwJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788943712; c=relaxed/simple;
-	bh=DCHInLOpuVYT2OPb99YcDwYJQo/A3HqChJTfUp9WlFI=;
+	s=arc-20240116; t=1788944137; c=relaxed/simple;
+	bh=lJDJz6lETRllb1wBQU19zV4OLNHqoK3MIQ/bs71SEBo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k1pWlAFTpqwVzgwMYv72wuJbNFZJitsOo9+Y5WfChvjZElsVRR4nHGHiBU1yEAWAATScQizMSc9eXE4MKcev79nQrLmEkeaqNpeqLqfASsw1FKOdunWCikcPEaahw8ie9afgpTYSvZb0YYjIjbHoehqn7nER53cmM/WeTWI8nao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jBWU5pIe; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 In-Reply-To:Content-Type; b=bfZ27OhOEjj0BJifuRD/FJMUR9c1VRKA844cQ/BZXJyk8k6JVseep2YE6qv++ZOReF/3NgA7/1s5S2vFAdahjas+f8EbzvPAJJKwwujcwI1PRWB2PpHtEEsmPXgBhm4/WabgrnHBQAXvBKEwLAmaRL/xnG2irM/YYe40FzhY+Go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=LZXOxeag; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jBWU5pIe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788943711; x=1820479711;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=DCHInLOpuVYT2OPb99YcDwYJQo/A3HqChJTfUp9WlFI=;
-  b=jBWU5pIep5C72YJJajPSsvQoXeNukJiK5NnvL22mJkKzGJML5pgPinPG
-   xXIt8OKpFs/cH4bHB2R/pvfdAwgq98OhA6ZUEWbfU4uHAKXlHyDYZNDFE
-   dHKbBHgkybNcSXPxZlVhwX+K9Ha3z++VKvv03yiDXKizdx3FQLvP20H34
-   Z7i7JM49qM756WmQEuSchF7Zd+H0gupLonudNUTBfQrBlBWYUL9t8sqvH
-   OZyZ25rLGoDkL/iKZwJ6H8GCvTbLHASK5RLmW+CI/TgpExseZ/DZI6oZj
-   Ri+pKDEqW1fq4WIvRReh/XFTfcML35NK1pExcAcXHmxkX9c3gW4beenGf
-   A==;
-X-CSE-ConnectionGUID: eEOutWsKQQ6pME588lvmkQ==
-X-CSE-MsgGUID: IxtQZTs0SNCZuOyatXqT/g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="89379280"
-X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; 
-   d="scan'208";a="89379280"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 01:48:30 -0700
-X-CSE-ConnectionGUID: lBl90SwYTu2Y3bbZYE3nSQ==
-X-CSE-MsgGUID: +QJIzFUjR9uKPvOU/ktOlw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; 
-   d="scan'208";a="271240166"
-Received: from unknown (HELO [10.238.2.139]) ([10.238.2.139])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 01:48:28 -0700
-Message-ID: <473c5507-045f-454c-b6d1-76d2a390f413@linux.intel.com>
-Date: Wed, 9 Sep 2026 16:48:25 +0800
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="LZXOxeag"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 60CB31576;
+	Wed,  9 Sep 2026 01:55:31 -0700 (PDT)
+Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 66B0E3F7B4;
+	Wed,  9 Sep 2026 01:55:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788944135; bh=lJDJz6lETRllb1wBQU19zV4OLNHqoK3MIQ/bs71SEBo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LZXOxeaghjFTVejUYIz42ta9EdC/XzJtbaXMq7kG5rYlpmWL0I9CHrpcDsUMw5j67
+	 5DyX181jUhzTNqnqD+cX0PchoWXiDxLuhN6TGcCTQxw7rTSd4wSUfayizASiLuT7tB
+	 xCbp4eyGD/aT2RavQKL3aJGnaTJ6x+WQzEe/PeHM=
+Message-ID: <aa928fb0-1aad-4244-8b03-85a87db35dad@arm.com>
+Date: Wed, 9 Sep 2026 09:55:30 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,118 +35,117 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/4] KVM: TDX: Validate directly configurable CPUID
- bits
-To: Artem Bityutskiy <dedekind1@gmail.com>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc: "Gao, Chao" <chao.gao@intel.com>, "seanjc@google.com"
- <seanjc@google.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "kas@kernel.org" <kas@kernel.org>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>,
- "nik.borisov@suse.com" <nik.borisov@suse.com>
-References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
- <32b51faabf60f6e87d9fdebbf2c3fe5a45fbff1c.camel@gmail.com>
- <58c185c82658819454a9950f37c6424226a098bb.camel@intel.com>
- <5faff363852572d59e34c876173d73c93734bd3c.camel@gmail.com>
+Subject: Re: [PATCH v17 7/7] firmware: arm_rmm: Add wrappers for Realm related
+ RMI commands
+To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
+ <20260907095942.1140734-8-suzuki.poulose@arm.com>
+ <de7e2d98-2faa-4e16-8164-d7247d31dbd5@redhat.com>
 Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <5faff363852572d59e34c876173d73c93734bd3c.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <de7e2d98-2faa-4e16-8164-d7247d31dbd5@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 9/9/2026 2:52 PM, Artem Bityutskiy wrote:
-> On Tue, 2026-09-08 at 22:31 +0000, Edgecombe, Rick P wrote:
->> We are kind of discussing what recommendations we should give about how
->> msr_preservation.pdf should be defined for new CPUID bit based features. So
->> saying to follow msr_preservation.pdf is self referential.
-> 
-> OK, thanks for elaborating. The e-mail was vague about that.
-> 
->> Again, please do not treat the TDX specs as something to be handed down and
->> "followed". I think this is something to get used to for TDX. I mean, upstream
->> never wants to adapt to platform arch that fits awkwardly, but it's even tougher
->> to swallow when the arch is mostly SW defined. And further, the people working
->> on the TDX arch want to hear such requirements from upstream.
-> 
-> Agreed, that matches my understanding. Reminders are useful in general,
-> but this was not that case.
-> 
->> Here, the thing to discuss is how TDX should define new features that will
->> clobber host state (e.g. bits that would appear in msr_preservation.pdf as not
->> being preserved).
+On 09/09/2026 08:15, Gavin Shan wrote:
+> On 9/7/26 7:59 PM, Suzuki K Poulose wrote:
+>> From: Steven Price <steven.price@arm.com>
 >>
->> There have been several PUCK discussions on the problem this series is tackling,
->> and actually several attempts to solve the problem during the base series. More
->> recently a host clobbering control was proposed that attempted to make it safe,
->> but it was not accepted. That proposal brought up the topic of whether having
->> select states clobbered was actually an unproven optimization.
+>> Introduce wrappers for the RMI functions needed for creating and
+>> managing realm guests. This will be used by the KVM to manage the
+>> Realms
 >>
->> Now that we are moving back to an allow list type solution, what guidance should
->> we give on this other surfaced topic. Since TDX shares some save/restore logic
->> with normal VMs, we should have it work well with that code. So forgetting about
->> the performance optimization question, how to have it work in a sensible way
->> with the shared code paths.
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> ---
+>> Changes since v16:
+>>    * Split into a separate patch and move away from arch/arm64 to
+>>      include/linux/.
+>>    * Also moved into the firmware_rmm series from the KVM CCA support.
+>>      This is done in a hope to reduce the merge conflicts and make
+>>      the KVM CCA upstreaming in independent parallel chunks
+>> ---
+>>   include/linux/arm-rmi-cmds.h | 453 +++++++++++++++++++++++++++++++++++
+>>   1 file changed, 453 insertions(+)
+>>
+>> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
+>> index 79e2c1f165112..746257d77dd61 100644
+>> --- a/include/linux/arm-rmi-cmds.h
+>> +++ b/include/linux/arm-rmi-cmds.h
+>> @@ -222,4 +222,457 @@ static inline long 
+>> rmi_granule_range_undelegate(unsigned long base,
+>>       return ret;
+>>   }
+>> +/**
+>> + * rmi_rtt_data_map_init() - Create a protected mapping with data 
+>> contents
+>                                  
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 > 
-> Rick,
-> 
-> In general, the TDX case and the VMX case behaving the same way is
-> best. I thought that consistency is always obviously a good thing,
-> but let me acknowledge it explicitly.
-> 
-> I was trying to dig deeper into the proposal and analyze it.
-> 
-> <cite>
-> The proposal is to have TDX simply match VMX behavior, i.e. on return
-> from TDH.VP.ENTER, state that VMX would restore from the VMCS host
-> fields is restored, and state that VMX would leave as the guest value
-> is clobbered.  That keeps a single model for VMM, and means enabling a
-> new feature for TDs requires the same work flow as enabling it for VMX.
-> </cite>
-> 
-> My point was that hardware behaves differently for VMX guests and for
-> the VMM<->TDX. This is not about following "boss specs", it is what the
-> SDM describes.
-> 
-> For VMX, the VMCS host-state area is loaded by hardware on VM exit
-> (SDM 27.5). For SEAMCALL and SEAMRET, the SDM seems to say they operate
-> like an SMM VM exit and a VM entry returning from SMM (SDM 35.1), and
-> those save state into the guest-state area of the transfer VMCS
-> (SDM 34.15.2.2).
-> 
-> VMX:
->   VM entry = load guest state from guest-state area
->   VM exit  = save guest state into guest-state area,
->              load host state from host-state area
-> 
-> TDX:
->   SEAMCALL = save host state into SEAM VMCS guest-state area,
->              load module state from SEAM VMCS host-state area
->   SEAMRET  = restore host state from SEAM VMCS guest-state area
-> 
-> I may be reading the SDM wrong, let me know.
+> s/Create a protected mapping with data contents/Create a mappings in 
+> protected IPA with known contents
 
-That's my understanding too.
+Ack.
 
 > 
-> So there are differences, and I was hoping to:
-> - Be corrected if I misinterpret the SDM and how things work.
-> - Get comments on whether the proposal took this into account.
-> - Get comments on how this affects, or does not affect, the proposal.
+> With this, it's consistently counterpart of the comments for 
+> rmi_rtt_data_map().
+> 
+>
+>
 
-For host state clobbering behavior, we cares about the values of the host (VMX
-root mode) after SEAMRET.
+...
 
-When there is a control/field for "load host state from host-state area", I
-think there are two cases: 
-- If there is the corresponding control/field for "load guest state from
-  guest-state area", the TDX module could leverage it.
-- If there is no such corresponding control/field for "load guest state from
-  guest-state area", the TDX module could do it in software way to mimic it.
 
-So from the view of the VMM, it can have the aligned behavior on host state
-clobbering behavior.
+> 
+> The nested if statements can be avoided if we have:
+> 
+>      if (ret != RMI_SUCCESS)
+>          return ret;
+> 
+>      if (out_top)
+>          *out_top = regs.a1;
+>      if (out_range)
+>          *out_range = regs.a2;
+>      if (out_count)
+>          *out_count = regs.a3;
+> 
+>      return RMI_SUCCESS;
 
+Done for all of them.
+
+...
+>> +/**
+>> + * rmi_realm_activate() - Active a realm
+>> + * @rd: PA of the RD
+>> + *
+>> + * Mark a realm as Active signalling that creation is complete and 
+>> allowing
+>                                                           ^^^^^^^^
+> 
+> s/complete/completed ?
+
+I have changed this :
+
+  /**
+- * rmi_realm_activate() - Active a realm
++ * rmi_realm_activate() - Activate a realm
+   * @rd: PA of the RD
+   *
+- * Mark a realm as Active signalling that creation is complete and allowing
++ * Mark a realm as Active, signalling that creation is completed, allowing
+   * execution of the realm.
+
+Addressed the rest of the comments.
+
+Thank you for your detailed look at the patches, much appreciated !
+
+Cheers
+Suzuki
