@@ -1,149 +1,196 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BEFA3F107B
-	for <kvm@vger.kernel.org>; Wed,  9 Sep 2026 09:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F2846F4BD
+	for <kvm@vger.kernel.org>; Wed,  9 Sep 2026 09:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788946297; cv=none; b=rKLuUR8vtuHp7nzjgu7JlnblhDG2uQ4Sek6NL8ecv+6r+6ws2UpjubzI3kBgWwJtHcdKKFPmMl8zSBFNJsfGnLzpUFRK7EQTtrkvBjD75uzhN4ITPt2nUiEtfyLeZCKibcO215G60HQX7y5nhOBRKFnVR0QAMjggJ6czVrr6GjU=
+	t=1788946975; cv=none; b=Iy+CUGTEFZ/YyuLqJGEfKOlBZy59/qsqd9x6lxBlnIiWkBWLmfiJFZLduujgFbbMkk2HW/N3M615w+X6L0BOk+M4GS/3VvCcAaTp4lKsVC7QIuLWmIIVxeZ/MKfmyx0JUlwHCfj/zOupou44k1J0IGDrqw7lpHw/FxoBom8vzJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788946297; c=relaxed/simple;
-	bh=fuoAB2W9w/LNlrG/Jj51Au8lymZ1Gmb1S0kRWD6QVYY=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=jSzTQ1RUr8LqTlS6xjS/fre8/OqINM4B5HeVNgMBvuvK9pFQ578xNoWEQ5tLLdNFx3efYmOekS53XuDz7mt3vmCqSnO2iLblN/osD/q5/Vdz97coJyKIuOg2ku8AQ7MjORU/KFQZCN3iVUfuljicd2d3MvDCwxLtfnK6Op+WzlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8AxS_BpJ6FqBCEKAA--.29410S3;
-	Wed, 09 Sep 2026 17:31:21 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJAxmM1lJ6FqDtwdAA--.63355S2;
-	Wed, 09 Sep 2026 17:31:17 +0800 (CST)
-Subject: Re: [PATCH] LoongArch: KVM: Add hypercall crash support
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-References: <20260909085350.2046788-1-maobibo@loongson.cn>
- <20260909091354.7FBC71F00A3A@smtp.kernel.org>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <1c3461bb-f99b-12c8-9cee-5b50b27b1487@loongson.cn>
-Date: Wed, 9 Sep 2026 17:30:59 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1788946975; c=relaxed/simple;
+	bh=nAQBbg9Zs0y2Qf9x9IGuBTOq7gf12GSRPT0y06wSXn0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=RwnuGbLn5qi2v25UeSYxHhleceKKqWvsyxgV+CEeer5OAV6QLJq/JwouAx72T9c+nTH8Km59/g6e47LuLrmLRtIv57t/51hDweInSMiNnxN5cWFiE/s+MuibOMdkasxu3TH/XEqhZsGRycTKjDJJr5c727zDfa2jyBbv1P917EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NlmZT3s+; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=QCFGw+SJ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NlmZT3s+";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="QCFGw+SJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788946971;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=k5ADtFhBnmPz3rZHAoQiP2HyIk15/rYOjED5HrGOPIQ=;
+	b=NlmZT3s+IakJBW3DPywyLqFFZTNROyT1ARcnQ2igyj95nUmocZNsHcbpW+yzaukS+dHybo
+	nGYp+XnB0zyXt7wDQktoH4lOX1vgAsxD4glu3CMKG5UNjXvwRHqP7Ijn3SddPJ1nBilGjc
+	H1TEKXKth6iFPbjRs27EpyLb/Kl2I6w=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-582-OjjCGND9PdeFKoVFtupzIw-1; Wed, 09 Sep 2026 05:42:50 -0400
+X-MC-Unique: OjjCGND9PdeFKoVFtupzIw-1
+X-Mimecast-MFC-AGG-ID: OjjCGND9PdeFKoVFtupzIw_1788946969
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6a7fa60bbadso3362684a12.1
+        for <kvm@vger.kernel.org>; Wed, 09 Sep 2026 02:42:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1788946969; x=1789551769; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-disposition:content-type
+         :mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=k5ADtFhBnmPz3rZHAoQiP2HyIk15/rYOjED5HrGOPIQ=;
+        b=QCFGw+SJfPxIDCqTpfCv2NEOh0vlyj52QvOzFgdo59VK41YNPq8B3yu0ri3nbUuz8l
+         3djv6MSjiHbyocxf3u6W/d11iX+ReS8l4RB+IXDgGV5y5YUZr6cSXgA/87Nh8ISBVZVy
+         174p/zVVb8dTfueBDrbFqmddMu/kGBwC3DLPDjSaKDiVs6U4Hbld/5KT6SAMyfDW0jzL
+         2F+SInIXXmMSe6PWNL0bUxH7vDN577PS90IYINKE2plovfm4Zh3er8fh9XU5GHsyukHy
+         rbs4BAwnQFSS/dYUxlGi4GZ6MCKP8on+I9ahubDDpWpv5ibhVVH61xOX330x0jaP0Wsi
+         iqOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788946969; x=1789551769;
+        h=content-transfer-encoding:content-disposition:content-type
+         :mime-version:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=k5ADtFhBnmPz3rZHAoQiP2HyIk15/rYOjED5HrGOPIQ=;
+        b=WbOtpK16PmKUurUc59p0Jnc1Hk/Qb1HdOIGNAfJ4gNb3Otfrqy0c9jxdfXD8e9WfVG
+         9yI9Avp+f/FrEENSgiitDcyiA+q6bbjrCZfWlpHnklF6qBBtgHK1YQP0dXtEcOZD0ZWs
+         Wcc9xX3c/TvhZK0nY7vpEa12ImP9jcIbquNtY1+U8VHD/23oONYpCRav7iOm/qVxI88V
+         0VCFBieaw2E5uHDAlF3DXF9Ty4JHsr+b7OAuM/xRpxYMV3s68bxzj3TGiJ6IzBCNx28n
+         9fiXNrgWN34Tgr2ymtryzTFc71fa3pR2kqDcYO+c4RKfmKSY6/9EKHIPylx6EcEAonQT
+         5Kqg==
+X-Gm-Message-State: AFuF++nEb5fgUTuVIlhvVkD2zPHoK1CWfuSlSOl2FFGYCu2j+80CJaw7
+	PuMHb6MY+dgYVYEctZ4/x5cAHZks/9r9mg0Kx3RbuMi1lzRpWgEIWCqtgq2bP6ARGg4jijwVy7W
+	HhCbMXMBKCCD8Uj4/H7J4YnE3b3AsoXdEfCmSBxGONSGcPY3qia5j2g==
+X-Gm-Gg: AYBFou27rEoe/ayXfa1NRfp49OOywXik+7nu90sDWQ1YxgqOV+EDnJevr/l7KO2fX8p
+	tBy6I2/1WxOX1HElVy5PEGO4iWOgv/5x0cVN0oDdojMEp1RcFmow7bqdeuHi+BsIpHfJAoHBMIm
+	cd7WgxymXCdGWPZeGVbN+GOXk+QBSxoexL/X3yGVPhC4+8O86/gNosfi2AUap94RieVOt8anagj
+	vBN+avsKtlPjIQWs6uGFnxP6wNynshHStJ9VJ2ZOfGB1UFVzkMQwIZ9UL6rdDbd6pT4blhfAR4t
+	hGhVyzusrTKmm0w4SsKWD+tYAeNBQWDDHh45k5FY9IE+pHTAyig+HPtKOXTuIN1pMPv8wDaV1gN
+	Nd7UFBxYTIrAwTS/DWri6QM8=
+X-Received: by 2002:a05:6402:2552:b0:6a7:ea54:390 with SMTP id 4fb4d7f45d1cf-6a7ea542471mr11986147a12.33.1788946968902;
+        Wed, 09 Sep 2026 02:42:48 -0700 (PDT)
+X-Received: by 2002:a05:6402:2552:b0:6a7:ea54:390 with SMTP id 4fb4d7f45d1cf-6a7ea542471mr11986120a12.33.1788946968355;
+        Wed, 09 Sep 2026 02:42:48 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-79-236.inter.net.il. [80.230.79.236])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a9857ce120sm1226086a12.4.2026.09.09.02.42.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 02:42:47 -0700 (PDT)
+Date: Wed, 9 Sep 2026 05:42:45 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	astellman@stellman-greene.com, dongli.zhang@oracle.com,
+	eperezma@redhat.com, graf@amazon.com, kmehltretter@gmail.com,
+	linfeng.sun.dev@gmail.com, lvivier@redhat.com, mst@redhat.com,
+	nikhilljatt@gmail.com, physicalmtea@gmail.com,
+	xiongweimin@kylinos.cn, yuz08559@gmail.com
+Subject: [GIT PULL] vhost,vdpa,virtio: fixes
+Message-ID: <20260909054245-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260909091354.7FBC71F00A3A@smtp.kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxmM1lJ6FqDtwdAA--.63355S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxurWUXw4DKrWfCr45uF1rAFc_yoWrXFW5pF
-	1xAF4kGrWfGr1xCan5J39F9w4UZFn7Cr1FgFyjkrWfAF4Y9FyrAr1Fyr4DCF90qw18Wa40
-	vFnYk39Iv3Z8twbCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
-	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
-	67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
-	AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
-	F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF
-	1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
-	xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
-	1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8cz
-	VUUUUUU==
+X-Mutt-Fcc: =sent
 
+The following changes since commit df2908090cda368b01ff43709f51890076c56157:
 
+  Linux 7.3-rc2 (2026-09-06 15:07:20 -0700)
 
-On 2026/9/9 下午5:13, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [High] The KVM_LOONGARCH_VM_FEAT_CRASH capability cannot be discovered by userspace due to a missing case in kvm_vm_feature_has_attr().
-> - [High] The KVM_FEATURE_CRASH capability is silently enabled by default, violating KVM cross-architecture rules and breaking live migration with older VMMs.
-> --
-> 
-> commit db8910e8d85912033e28dc04e11026a25b4bdbb8
-> Author: Bibo Mao <maobibo@loongson.cn>
-> 
-> LoongArch: KVM: Add hypercall crash support
->      
-> This commit adds a generic pvpanic-like hypercall for LoongArch KVM to
-> notify the VMM about VM crashes. It provides a direct, low-level crash
-> method that is useful when the CPU hardware context or kernel stack is
-> corrupted.
-> 
->> diff --git a/arch/loongarch/include/uapi/asm/kvm.h b/arch/loongarch/include/uapi/asm/kvm.h
->> index cd0b5c11ca9c2..b222bfc480427 100644
->> --- a/arch/loongarch/include/uapi/asm/kvm.h
->> +++ b/arch/loongarch/include/uapi/asm/kvm.h
->> @@ -106,6 +106,7 @@ struct kvm_fpu {
->>   #define  KVM_LOONGARCH_VM_FEAT_PTW		8
->>   #define  KVM_LOONGARCH_VM_FEAT_MSGINT		9
->>   #define  KVM_LOONGARCH_VM_FEAT_PV_PREEMPT	10
->> +#define  KVM_LOONGARCH_VM_FEAT_CRASH		11
-> 
-> [Severity: High]
-> Does this omission prevent userspace from discovering the capability?
-> 
-> This feature is defined here, but it appears to be missing from the
-> switch statement in kvm_vm_feature_has_attr() in arch/loongarch/kvm/vm.c.
-> If a VMM queries this via KVM_HAS_DEVICE_ATTR, won't it hit the default
-> branch and return -ENXIO, falsely indicating the feature is unavailable?
-yes, one line patch is missing in kvm_vm_feature_has_attr(), such as
-diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
-index e5d10ceb5e67..9bf4b3bb8f25 100644
---- a/arch/loongarch/kvm/vm.c
-+++ b/arch/loongarch/kvm/vm.c
-@@ -164,6 +164,7 @@ static int kvm_vm_feature_has_attr(struct kvm *kvm, 
-struct kvm_device_attr *attr
-         case KVM_LOONGARCH_VM_FEAT_PV_IPI:
-         case KVM_LOONGARCH_VM_FEAT_PV_PREEMPT:
-         case KVM_LOONGARCH_VM_FEAT_PV_STEALTIME:
-+       case KVM_LOONGARCH_VM_FEAT_CRASH:
-                 if (kvm_vm_support(&kvm->arch, attr->attr))
-                         return 0;
-                 return -ENXIO;
+are available in the Git repository at:
 
-> 
-> [ ... ]
-> 
->> diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
->> index 6dabb227a7321..e5d10ceb5e67f 100644
->> --- a/arch/loongarch/kvm/vm.c
->> +++ b/arch/loongarch/kvm/vm.c
->> @@ -49,8 +49,9 @@ static void kvm_vm_init_features(struct kvm *kvm)
->>   		kvm->arch.kvm_features |= BIT(KVM_LOONGARCH_VM_FEAT_PMU);
->>   
->>   	/* Enable all PV features by default */
->> -	kvm->arch.pv_features |= BIT(KVM_FEATURE_IPI);
->> +	kvm->arch.pv_features |= BIT(KVM_FEATURE_IPI) | BIT(KVM_FEATURE_CRASH);
->>   	kvm->arch.kvm_features |= BIT(KVM_LOONGARCH_VM_FEAT_PV_IPI);
->> +	kvm->arch.kvm_features |= BIT(KVM_LOONGARCH_VM_FEAT_CRASH);
-> 
-> [Severity: High]
-> Could this regression break live migration with older VMMs?
-> 
-> Currently, KVM_FEATURE_CRASH is unconditionally enabled for all new VMs.
-> If an older VMM that does not support the crash hypercall runs on this
-> kernel, and the guest executes KVM_HCALL_CRASH, the VMM will receive an
-pv_features is enabled by default, VMM can detect kernel capability and 
-set pv_features before booting VM.
+  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
 
-Regards
-Bibo Mao
-> unrecognized KVM_EXIT_SYSTEM_EVENT of type KVM_SYSTEM_EVENT_CRASH.
-> 
-> This usually causes an older VMM to ungracefully abort the VM. KVM
-> cross-architecture rules require new guest-visible features and exit
-> reasons to be off by default, relying on explicit VMM opt-in during
-> capability negotiation.
-> 
->>   	if (kvm_pvtime_supported()) {
->>   		kvm->arch.pv_features |= BIT(KVM_FEATURE_PREEMPT);
->>   		kvm->arch.pv_features |= BIT(KVM_FEATURE_STEAL_TIME);
-> 
+for you to fetch changes up to 48a4ee65e677559776349128e6a81a6041986c99:
+
+  vduse: return compat ioctl results directly (2026-09-08 03:58:27 -0400)
+
+----------------------------------------------------------------
+vhost,vdpa,virtio: fixes
+
+Just a ton of small fixes all over the place.
+
+Also includes virtio and virtio-rng MAINTAINERS updates.
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+----------------------------------------------------------------
+Alexander Graf (1):
+      virtio_ring: fix stale descriptor flags after a failed packed add
+
+Andrew Stellman (1):
+      virtio-pci: return IRQ_HANDLED after non-zero ISR
+
+Dongli Zhang (2):
+      vhost-scsi: use kvzalloc for vq array allocation
+      vhost-scsi: clamp max_io_vqs module parameter
+
+Eugenio Pérez (1):
+      virtio: add Eugenio Pérez as Maintainer
+
+Jia Jia (4):
+      virtio_console: do not free control-out buffers on remove
+      vhost/vdpa: reject VRING_NUM larger than device max
+      vduse: validate virtqueue alignment
+      vhost: invalidate vring access on IOTLB transitions
+
+Karl Mehltretter (2):
+      virtio: fix use-after-free in unregister_virtio_device()
+      virtio_input: stop callbacks before unregistering input device
+
+Laurent Vivier (1):
+      MAINTAINERS: Add a section for virtio-rng
+
+Linfeng Sun (4):
+      vdpa_sim_blk: reject out-of-range sector starts
+      vdpa_sim_net: check TX pull result before RX copy
+      vhost: limit outstanding IOTLB misses per virtqueue
+      vduse: return compat ioctl results directly
+
+Nikhil (1):
+      vduse: do not take dev->rwsem in the virtqueue kick path
+
+Xiong Weimin (8):
+      virtio_mmio: disable IRQ wake before free_irq
+      vdpa/pds: check virtqueue notify mapping
+      vdpa: alibaba: Keep DRIVER_OK clear if IRQ setup fails
+      vdpa: solidrun: Free IRQs after request failure
+      vdpa: ifcvf: Put device on unsupported feature error
+      vdpa: octeon_ep: Check dev_set_name() in dev add
+      virtio-vdpa: Use queue id when setting vq affinity
+      virtio_input: reset device if input_register_device() fails
+
+Yu Zhang (2):
+      vhost-vdpa: don't install the eventfd_ctx_fdget() error in config_ctx
+      vhost-vdpa: protect config_ctx from being freed under the config callback
+
+ MAINTAINERS                              | 13 ++++-
+ drivers/char/virtio_console.c            | 21 ++++++-
+ drivers/vdpa/alibaba/eni_vdpa.c          |  5 +-
+ drivers/vdpa/ifcvf/ifcvf_main.c          |  3 +-
+ drivers/vdpa/octeon_ep/octep_vdpa_main.c |  2 +
+ drivers/vdpa/pds/vdpa_dev.c              |  6 ++
+ drivers/vdpa/solidrun/snet_main.c        |  6 +-
+ drivers/vdpa/vdpa_sim/vdpa_sim_blk.c     |  3 +-
+ drivers/vdpa/vdpa_sim/vdpa_sim_net.c     |  7 ++-
+ drivers/vdpa/vdpa_user/vduse_dev.c       | 36 +++++++++---
+ drivers/vhost/net.c                      |  2 +
+ drivers/vhost/scsi.c                     | 49 +++++++++++-----
+ drivers/vhost/vdpa.c                     | 88 +++++++++++++++++++++--------
+ drivers/vhost/vhost.c                    | 95 ++++++++++++++++++++++++++++++--
+ drivers/vhost/vhost.h                    |  4 ++
+ drivers/vhost/vsock.c                    |  2 +
+ drivers/virtio/virtio.c                  |  2 +-
+ drivers/virtio/virtio_input.c            |  9 ++-
+ drivers/virtio/virtio_mmio.c             | 16 +++++-
+ drivers/virtio/virtio_pci_common.c       |  4 +-
+ drivers/virtio/virtio_ring.c             | 38 +++++++++++--
+ drivers/virtio/virtio_vdpa.c             |  5 +-
+ 22 files changed, 342 insertions(+), 74 deletions(-)
 
