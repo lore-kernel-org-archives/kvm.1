@@ -1,165 +1,149 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B1A48EC66
-	for <kvm@vger.kernel.org>; Wed,  9 Sep 2026 22:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788992980; cv=none; b=ruwXBZbRyK+HYR9wz4hr6Ox+djaGRmyEMzbPaa3IdmrxG6LMnK/iGdUXhCpePXI2UFvGc6RTGy7p7t4gzK9WlmVMybq1As/HbOpvzVnmx/IR880l+OArzg5iCwH/RqUpfxKTv3JnI49bvTZvOMKE0nwv4E3esa0V6R3ZNvU+DVQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788992980; c=relaxed/simple;
-	bh=ZV6Mh6j+3Oal9AupKdhwuwolXUKq6vHqqrWhfLQuh5I=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=imle1vEWeXzLypNMmuZf12oxgNzGr++3YWnGya+9ho/08usKK0rkBnvMOnbbGBV4/0xyqEh6Sof+I8GeNInXYTYvJXFJ5w+XbiSRP/IoDb39iRRv9B/h0IBvGAaQXs5QnFtLkweMvzSrhV5YrfosnB03lyhiAK71oOK/acDBa4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p2zOvSa7; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B623BB670
+	for <kvm@vger.kernel.org>; Wed,  9 Sep 2026 22:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.140
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788993713; cv=pass; b=IWrig3zTukN1LysUURq0WvjXfxSd7sdyHbcoRdHDUyGQ+sbDTi79ywErRhoEREM2obDvqZTjV4gyRyapNztvyCQ1NIlyOu5rDS8mhIY9CpGiR1hioKV3ujEJzO777tW5njQLETwc6OdKb/86XyWlVw6NwCAvxUwCJh/do1uoecE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788993713; c=relaxed/simple;
+	bh=NTWMXK3qBllEwS5xxNNJmOXFEuix2lqI2KW5LUWH0nk=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=szgeAsOcESTiWUv6YsukGrdcVp6Z7wM7F3KG9f8VLF0Wb/JjxG4i+TN2Rrtl6UHE6nQjGm2z4XVbS6x8Yoe5fcS+1zWau/WIrE0WnhifCY4KkGcZK8DxT6EB6V44fwuDuY1FM2rvp2olkHOcyDabW7R9NdcPKFaijLNMd+HX2D0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B1wsTIOp; arc=pass smtp.client-ip=74.125.230.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p2zOvSa7"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38e8fee6af3so8529255a91.1
-        for <kvm@vger.kernel.org>; Wed, 09 Sep 2026 15:29:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B1wsTIOp"
+Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-9106feddbdfso11168716d6.0
+        for <kvm@vger.kernel.org>; Wed, 09 Sep 2026 15:41:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788993702; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XACMcUL4MsjhN8L0BEWCT9usEg9LL1UK/DxJiLWIWjxr2q85zoQufp+u3IyEfiWAmy
+         Eo8ZA9sdF4QdIvMU/6Xfw7aj0HXtvioKhH7Vi5edeUIRl1CKcyu1pd/nmWO850V9d1i0
+         giTBC9avvTXdzOtUV+bqqOvYWd1gMK7jNCVPxpigYx4BmEtVeAQZ8nwLUN+FPXM1Nz2q
+         V865g6bQh2bHyhAykpR92Udc+8eduufGwsOo8SbLYp8vEQn7v3xAKekCEGAUdYrlYdf5
+         QsizQHmJDOfZ3FmOniMqmzjVdTtyOhvBsLKjwyYV2R2vx+Mi+E4qX+YbpIGkpwJT9hAy
+         GZ/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=K7y90OKfcw5Kem65C7oA0LNo0uX7jIHf03YJVGFM0dg=;
+        fh=6ODpmutqqNYbUev31tvz0Dhullk8wqpDJ2vEGerOgPo=;
+        b=SOE+j7v2QlBS/ZHgt6PA5XPi+ERa9e1NBlUwM680Nr7wwv/u9xFUbtFqx+4+kvx+52
+         u+vjHWZD8d6XQEYoYr1k2c3aBsiN0FwRI5fiUnBbxBMTPGtNg7KGgqB+xKZxYl6xVK6D
+         5eUg+yt2ul1DjuIUJEyUQnHmw3g+4vGBsBMCsEFLDBNTO6h1O1egCUXQXaDxaOmmuIA6
+         j8gKkYZaJ7EtbBdsKaIzJKGJXXRrHN5hsfkGvOnirktofUZCTDgQVBoeYPlD1P7rj3NZ
+         JE8zZSMY2abCsn7CQMZjShBXgC/BwdT8YZIOUL8jBboW5CJKVdc3qefwQImTWH0+0n/p
+         MXOg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788992964; x=1789597764; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1788993702; x=1789598502; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7eyMhrUmuo9vm1PIzya+RISiwkOlHJHTI6TE5UtYn+g=;
-        b=p2zOvSa7qBa4M94Uy8LuMIGgeCmqcNZhmZbXhgpyMkzSoVkDYajtZUbmWQmAESH40N
-         oqAQiCrSHDQG4zn1SwDGhj/U34rkZIJ5BoVK6nocdKLl4HwOwDn6ahYXi8++9QoXXBlK
-         Bzjek9nqoG4E5oC7Ub2z0pkayWmky4k8NiqbmYOGzeg2+cZef6JkON0ajv7uKMvcTKRG
-         fbjfcaQhvHqHFxP0m7I7D7luMtvM/wyNjoojg4G880WieXSh4Nusps6xMmJH0n6qpEeh
-         9iTLYHWhZq3mJEfiKYPqrji9P+dhWafG31hfYn0b673Jcbx9kHqXzMKOOpj3phBVJ6YT
-         FOTQ==
+        bh=K7y90OKfcw5Kem65C7oA0LNo0uX7jIHf03YJVGFM0dg=;
+        b=B1wsTIOpTTLlRdyo7iOhxu0xe7fGNCpeKh3IhkHQfmjdIC4vSh6klkJjA9Hw9ARivp
+         cD7RzR4wahiryhTPoisN++V70pgym/VMBkIJzv9kKixE0wDdeXx+6ORRFW6qHEcj0a9F
+         9IduYeH5U5u5+iHrDCciPTIE95Tc4Fla3FRLWBN86FLKfL8xAxru/Pn8g3FMrb2INcMP
+         O0Jmn4RtYzNY+YjeDk5WduALFQWr6lL8i5G8FVHJRf1LcoR331P/MhaP2kEHDaY4ltlr
+         qlC5KyzMf19Le8nP/1i3mz3ERyJu2AqimoJpTNK4CSNRxRoQe8J/aaNEaAY4nZRrCXMA
+         jArQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788992964; x=1789597764;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1788993702; x=1789598502;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=7eyMhrUmuo9vm1PIzya+RISiwkOlHJHTI6TE5UtYn+g=;
-        b=EhsCXUMGZhMy5LBkalG59co46hNyT7cZEyNKk9lJWb3sVbjyF3m90SVGjcgeQ4stNd
-         OX61o+WALaP/ZxaXhrgyianMVH2FwA49vlxYyRz4fhTHheYSwfEl28HGDiyQqG2cDzNu
-         OUG8TxZ9cUJAmTXawt1E6QnvAJVJytqISDIGAwMNvBtG9ytbWLatC7af3zqikiqPDMdN
-         bvhaA3FUP7xQO//eKef5BXiPPrlAUNSB/eTz5ucIiJTbAbA0fgae9Zz6R31vvf1GXt44
-         azFg49dXti5uKTY4V/EICy55OkVuHj3CArCfyLY/6BAW6EYJCIxoxJ+UKnYm0KaYulYo
-         cwmg==
-X-Forwarded-Encrypted: i=1; AKwUvBwydAgqpb3GzNJHxBjid0stogEWs4hsGe+wf8yh/rzxTyQGUX25qOZPCX3IqWYRuGWzRT8=@vger.kernel.org
-X-Gm-Message-State: AFuF++kUtMHmPh/zfdIo4yIDxIgqr6R3WvmPI8/MFcjcXkpeRGFxbW+3
-	g71oGZaOfT1LjmdoybXti8V3biJK4poeBW6U2LAWjPXG2IeRnxg9/wgNL3XC4zbWvAHdFBtwB/w
-	Wb4jrxA==
-X-Received: from pjbmj18.prod.google.com ([2002:a17:90b:3692:b0:39b:a309:1626])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1a88:b0:38f:efed:5448
- with SMTP id 98e67ed59e1d1-39b2619138bmr53743124a91.8.1788992963477; Wed, 09
- Sep 2026 15:29:23 -0700 (PDT)
-Date: Wed, 9 Sep 2026 15:29:22 -0700
-In-Reply-To: <9abeed40-bcdc-48d9-8cbb-cb87154bb9f6@intel.com>
+        bh=K7y90OKfcw5Kem65C7oA0LNo0uX7jIHf03YJVGFM0dg=;
+        b=hth9jTo5okuWaAJ2fplBtTxfoALs5UvCL+DHqcN9RI/A8ySR6kdUM3b39gSDDzqLti
+         hPEYgtNK4wPnJopZgGf8KLjwHaUsM/EhXsrPObpqmQ4IKsWmGTeZWeC+oMaBlmamuUDt
+         fcoPoeuJ3nUjfq+2ZKQEMIhLDOXYc5tf/7Usm4iL2fQpBY4wZrq9quIBH5EsGaBdPPJY
+         D25n7go3DmL4k4hiV2/Dwmqpzwj8wxE4xTjXqpNDZA598R+o+9fduK7OavNFxbPhrqov
+         pd1/8FHJ+loBlQNUHlLtsxHn6nE+47rFOBRaUdDBVa+1GGvcMyy4I17kl3TWsVNdNCcU
+         phew==
+X-Gm-Message-State: AFuF++ks3ObuXRglIwO2oFD0cp8Ryjkj5W097DJfAHIuLsYvZWGUMis+
+	DL5UKziEtU5jPAXAP2bMJ5IhorsT9uoz2804gpTqVMX+WQthPCjJSeps2qvpvqVy4UROR2A74KK
+	BaklsX4U7On5TCXrm5LgiHAxwe8LppJHSh4/gZ+MY
+X-Gm-Gg: AYBFou3PZUIiXC1ScctwlQrQx0ivmDsXt2mf0XDJ9UPGTwyzUmIVf2/jAqNOSQJZbsY
+	YENGBuUV6AwgTiOQIBs0JwqKPOpdZJTLaOfvXA1jJ+n1OOo0OXYPungJJG5N5gl7G47/HAGasf9
+	UYPT/cfccBbJIi2sVtJLyiMh4ZjSoMQxJSSJUNz5ZyrguF3llKIe6XJ328IKN64PVYmibHDFcpG
+	UdunkxCvnjhZQUCwxbasXN2rpA9VxyUnmVoIZTOGa776cJFcQxbsss9w7kjlr+cUZxQApu9M/1Q
+	yKyRgf9iyvzECk7ulEeSqA18S7wDf+FBcMZDSNWx+aITUZpBjZNZVMIb0IyjKHnQ0Wd4VYk0adr
+	jipEnzePPm2kdtA/esf5ezAPTIxszbklC/3fTLQLw
+X-Received: by 2002:a05:6214:4891:b0:910:345b:954a with SMTP id
+ 6a1803df08f44-9106b448140mr149416676d6.37.1788993697090; Wed, 09 Sep 2026
+ 15:41:37 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 9 Sep 2026 15:41:36 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 9 Sep 2026 15:41:35 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260902194657.79075-1-gourry@gourry.net>
+References: <20260902194657.79075-1-gourry@gourry.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
- <20260827031837.2863609-2-binbin.wu@linux.intel.com> <55488b92-66a8-45e5-ad0f-8fed63ce1187@intel.com>
- <a30741f8-b99b-4f36-80a5-4688c2578d99@linux.intel.com> <6b565572-b316-4e86-906d-f150c896fe21@intel.com>
- <84891108-55be-48c1-9993-c730a5334d5b@linux.intel.com> <cfe57e67-49ce-47d7-b20b-a29e23fe16d4@intel.com>
- <d8012e9acbe3c733b082c87fdbe9f229a8f7750c.camel@intel.com> <9abeed40-bcdc-48d9-8cbb-cb87154bb9f6@intel.com>
-Message-ID: <aqHdwkOFVR4XoS2M@google.com>
-Subject: Re: [PATCH v3 1/4] KVM: TDX: Track configurable CPUID bits allowed by KVM
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>, 
-	Chao Gao <chao.gao@intel.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Date: Wed, 9 Sep 2026 15:41:35 -0700
+X-Gm-Features: AcwNN1WgHJXiyXU_ZBa_1-DE36OkQO7Bg_jMLCkg3DfJNHdXNcM4XNk-5IPdjJI
+Message-ID: <CAEvNRgHWyBaBpZ4Bem1Eu86b-cuEA7NkyjxTJ4D3FnpGe1B2Yg@mail.gmail.com>
+Subject: Re: [PATCH 0/5] KVM: guest_memfd: bind backing memory to a NUMA node
+To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
+Cc: kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com, pbonzini@redhat.com, 
+	seanjc@google.com, akpm@linux-foundation.org, david@kernel.org, 
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, shuah@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Sep 10, 2026, Xiaoyao Li wrote:
-> On 9/9/2026 5:13 AM, Edgecombe, Rick P wrote:
-> >>>> In the end, they might be disallowed to be configured to TDs because KVM
-> >>>> doesn't allow them for VMX VMs. This is also the point I want to discuss.
-> >>>> Do we really want to make such restriction that KVM cannot enable/allow a
-> >>>> feature for TDs unless KVM first enables/allows it for VMX VMs? What's
-> >>>> reason behind it?
-> >>> Sean mentioned it that "generally speaking, KVM shouldn't allow features
-> >>> that KVM doesn't support for non-TDX VMs" in
-> >>> https://lore.kernel.org/kvm/aj1fi_0SBxMK5WOB@google.com/
-> >> For existing features, it might make some sense. But for new features, I
-> >> don't think so. It defines the enabling order for new features that we must
-> >> enable a feature for non-TDX VMs first and then TDs. And people might want
-> >> to bypass this rule by abusing the TDX_CFG_EXTRA_F() when only one line of
-> >> TDX_CFG_EXTRA_F() is enough to enable a feature for TDs but more effort
-> >> required to enable it for non-TDX VMs.
-> >>
-> >> Maybe I miss somthing. I would like to see stronger reasons for such decision.
-> > I think "generally speaking" means, it's not a hard rule.
+Gregory Price <gourry@gourry.net> writes:
 
-Ya.
- 
-> > As for why to prefer it, I think we would normally want regulars VMs and TDs to
-> > work similarly. Especially those that have some of the virtualization handled by
-> > KVM. But TDX module's behavior of a feature can conform to KVM's only if KVM's
-> > already exists. Take for example split lock detection. The normal VM KVM support
-> > initially went through several iterations of design. Separately, TDX ended up
-> > with a different solution. Imagine if we had enabled the TDX arch one, before
-> > solving the general KVM problems. Then we would end up with two different
-> > behaviors, or a worse KVM behavior as it tries to conform to TDX module's
-> > behavior.
-> > 
-> > So we need to at least solve a feature at that level before deciding KVM's
-> > handling of it. This could be done while enabling the feature for TDX only, but
-> > often would involve solving the problems for normal VMs too. In the end, it's
-> > the generic KVM behavior that needs to be solved before enabling the feature.
-> > 
-> > Ideally we could consider normal VM and TD at the same time. I expect we will
-> > start doing that after this series is in place. Not a hard rule, but a norm.
+> guest_memfd allocates its folios through a per-inode shared mempolicy.
+>
+> Today that policy can only be set after the fact, with mbind() on a host
+> mmap of the fd. That requires the fd to be mappable, and it cannot reach
+> folios that are only ever guest-faulted. Neither holds for a
+> non-mappable (confidential) guest_memfd.
+>
+> Add GUEST_MEMFD_FLAG_BIND_NODE and a node field to struct
+> kvm_create_guest_memfd. When set, KVM builds an MPOL_BIND policy for the
+> requested node and installs it over the whole inode, so every folio is
+> allocated there with no userspace mbind().
+>
 
-Eh, I'm with Xiaoyao.  Yeah, *ideally* we'd magically enable everything everywhere
-all at once.  In reality, different VM types are going to support features at
-different times.  More importantly, as Xiaoyao points out below in #1, unless we
-enable everyting in a single patch, which is probably a terrible idea in most cases,
-we'll still end up with staged/progressive enabling, i.e. we still need to have
-patches that selectively enable and advertise a feature only for the VM types
-that actually support the feature.
+Instead of a custom API to ensure all guest_memfd allocations come from
+a single node, how about these options?
 
-This is all quite similar to Intel and AMD feature enabling being done at different
-times.  The biggest difference is that Intel and AMD are mutually exclusive and
-so KVM_GET_SUPPORTED_CPUID always reports the correct information, but TDX already
-provides KVM_TDX_CAPABILITIES, so AFAICT we still get accurate reporting for TDX,
-just in a slightly different way.
+1. Using cgroups/cpuset to constrain allocations (could be troublesome
+   if the guest memory is not preallocated, unless the vCPU threads are
+   running with the cpuset config)
 
-> I don't think "split lock detection" is a good example. We are discussing
-> virtualizing a feature, or allowing a feature to be exposed to non-TDX and TDX
-> guests. While "split lock detection" is not a virtualizable feature and how KVM
-> handles it is all about how KVM fixes the architectural flaw of it.
+2. Process-level NUMA policy
 
-Yep.  If there are actual decisions to be made, versus simply adhering to the
-architecture, then we'll need to incorporate the needs/abilities of flavors of
-VMs KVM supports.  But for feature virtualization where right vs. wrong is
-dictated by hardware specs, there really isn't anything we can do in KVM to affect
-the guest-visible behavior (beyond things like performance characteristics, but
-those aren't ABI in any case).
+3. Why not request the guest_memfd to be mmap-able just to be able to
+   set a memory policy?
 
-> Generally, I agree with your point that we need to think at higher level before
-> KVM deciding to support virtualizing a feature. But after the generic level
-> consideration is done, there can be different orders:
-> 
-> 1. allow a feature for non-TDX VMs and TDs at same time. i.e., in one patch or
-> in a single series.
-> 
-> 2. allow a feature for non-TDX VMs first and then TDs. This can be due to by
-> that time TDX's spec for the feature has not been defined/finalized.
-> 
-> 3. allow a feature for TDs first and then non-TDX VMs. This can be due to it
-> requires more effort/patches to support virtualizing a feature for non-TDX VMs.
-> 
-> Usually allowing a feature for TDs requires far less efforts than for non-TDX
-> VMs, because most of the virtualization work is done by TDX module. E.g., for
-> TDs, KVM usually only needs to add code to restore the host states that are not
-> restored by TDX module. However for non-TDX VMs, KVM needs to do more: emulate
-> the architectural behavior of the MSRs, context switch states, and the nested
-> handling, etc. It's likely that a series to enable a feature for non-TDX VMs
-> spends several Linux releases to finally get merged. Making TDX support depends
-> on it seems not that necessary.
+4. How about something like fbind() that takes an fd and offset range
+   instead of mbind(), which has a prerequisite on mmap()?
+
+This doesn't exist yet, but I'm hoping to discuss this at LPC 2026:
+
+5. What if you could pass an fd representing a mount to guest_memfd at
+   creation time, so to make all the allocations come from a single node
+
+    Step 1: Create a tmpfs mount, specify mpol for mount to MPOL_BIND
+    Step 2: Get some fd representing the tmpfs mount, hand that to
+            guest_memfd at creation time
+    Step 3: guest_memfd allocations will always come from that tmpfs
+            mount, and abide by that tmpfs mount's memory policy.
+
+May I know more about the use case behind this new feature?
+
+>
+> [...snip...]
+>
