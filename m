@@ -1,111 +1,141 @@
-Received: from mta1.migadu.com (out-119.mta1.migadu.com [95.215.58.119])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2E65476D9
-	for <kvm@vger.kernel.org>; Wed,  9 Sep 2026 11:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.119
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FD753ECF8;
+	Wed,  9 Sep 2026 11:52:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788954654; cv=none; b=FHn1D+9DfgouKrPpxwmC5ls6Q0Hps46z4tgXlHox8zsSaPOsW2rMMeDZlunCItwZmb4Biqj+xH7BJ73RJrtJjEM8fAaNmCB47HCEoUigEiZUXcK6NaJqsoYeOgRsbBKMqATCxTbB8EM980PLochh03L6pb1q+zOjvErDleeXJgE=
+	t=1788954730; cv=none; b=Au6Kmu12oiHyz9O8W7lTYYuVavYaf/9ugpVpYlmOt3uyrvxbHCE0jNzIuc8sc4Xf4aAk/JsP7302IG2SGh0Q6Ukxf3PVuM8gXoxa8wyRtV4+2kL7RrzM4dhrtc9Vp2vIqfUFe1y3zr+chAUfjMoA0+H1y9pzva66sHsazYA4cXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788954654; c=relaxed/simple;
-	bh=lhd4O74gwsv5JUZ/uKSFuctonDDlwjfg2EWm9I6bTEE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EFhw1VhEhAR55vFIx/ouRA62DnzxBHlAhVfPGnExXaVsDH2rYfW5e4XNxLyovzI9PBcYFcZUjdOpKLyq2P9TidwS0RBFvdGSBOPrB7ceZKU9imhCLdBJo1Z0gtacAySXSNF8KCGD9RUpbezM+KhQEbHL2ivY3DLwG3m48Ue4AUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nXmrx6hw; arc=none smtp.client-ip=95.215.58.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788954730; c=relaxed/simple;
+	bh=2vyi1ZM3AtA2rx0F5ICpxmrqDzaZPmSJCKlrDhxuxaI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eIKvSIEVqzEi5oEHLEEiE0Ci4NtxsWViAi20AQamz8z+YEwnsCWGJ5tajULgeUYFL5tzqjSqb+OtUbIT9+MDeONRTzhnvhgCvqP/uY2QY3rsvr/PY7yVEJWILckwypnI6sWGtvTdaoEcJ1zz/8pQLWKXqe090aNt4I/O/QtHqzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=LMahlmWr; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nXmrx6hw"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=lhd4O74gwsv5JUZ/uKSFuctonDDlwjfg2EWm9I6bTEE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788954651; v=1; x=1789559451;
- b=nXmrx6hwuiZGIj2p09oVpWNf1UKQTt9ekvrofgLz5VEQS5BJUrCOHl2zTQww8BwivRjqHsJj
- cH1wRSNIOzp6lTWWHYiBx5y2q8/u5tvV9eXNmh8xJaUoLw938QJM0l1URPbwpZ2AP+K4hMsGRJF
- IEaueHwmrGPyJ68+/C1ten6k=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 11836091cf8d995c;
-	Wed, 09 Sep 2026 11:50:51 +0000
-X-Mizu-Trace-ID: 11836091cf8d995c
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b4a0b384b7so6005e87.0
-        for <kvm@vger.kernel.org>; Wed, 09 Sep 2026 04:50:46 -0700 (PDT)
-X-Gm-Message-State: AFuF++mWfdk0xsadFUof05S4i2laqxkhQU5yqbjBMSpHIguQSj3bhG6x
-	CxD/N1tVeBHGAF+ycesAhXPkp/KPF0+bJBjazLaGnDCvCGo2JEf+nkCUzTrDyw+Aj/yBstvsA4j
-	LINbbml/TRSpZDnPob2aFyZdl9DA94SgvPRJC6tbN
-X-Received: by 2002:a05:6512:288:b0:5b7:78bc:ec07 with SMTP id
- 2adb3069b0e04-5b778bcee15mr42626e87.14.1788954646115; Wed, 09 Sep 2026
- 04:50:46 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="LMahlmWr"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 43E221477;
+	Wed,  9 Sep 2026 04:52:04 -0700 (PDT)
+Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D1C1B3F528;
+	Wed,  9 Sep 2026 04:52:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1788954727; bh=2vyi1ZM3AtA2rx0F5ICpxmrqDzaZPmSJCKlrDhxuxaI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LMahlmWr+Jeo63JcaLXAkkURJxGLjmJfNWrb8zwoRFFLoK/h5UsOWMaBdZU0SO25i
+	 vpPIG/pGA4VOt4wjXeY1ZDuVeyB5w2+UPEOCPZU5uxNym4pNc8LwxX6LY5R1i/6rwx
+	 i7iT7eFwrbeBj8Ohl7pAWkvgLDWOJAY9P/HsUp/o=
+Message-ID: <6152fc41-65f0-460f-90b4-1454c11bcba6@arm.com>
+Date: Wed, 9 Sep 2026 12:52:03 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260908162223.1683432-1-suzuki.poulose@arm.com> <20260908162223.1683432-19-suzuki.poulose@arm.com>
-In-Reply-To: <20260908162223.1683432-19-suzuki.poulose@arm.com>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Wed, 9 Sep 2026 12:50:09 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTzxVTAMVkO5RaSmE72vgNpuZfX-51=46YDok+vHuwrROA@mail.gmail.com>
-X-Gm-Features: AcwNN1WWLxfR9jlqCMbRmgHnokAuxADv4gMqiBhtQwGNJdoCg0QCSKPNnqFHjlI
-Message-ID: <CA+EHjTzxVTAMVkO5RaSmE72vgNpuZfX-51=46YDok+vHuwrROA@mail.gmail.com>
-Subject: Re: [PATCH v17 18/20] KVM: arm64: Reuse kvm_stage2_unmap_range in kvm_unmap_gfn_range
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, 
-	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, 
-	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, 
-	joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, 
-	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, 
-	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
-	lpieralisi@kernel.org, enju.kohei@fujitsu.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v17 10/20] KVM: arm64: coco: Disable Steal time accounting
+ for coco guests
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev,
+ gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
+ alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
+ lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260908162223.1683432-1-suzuki.poulose@arm.com>
+ <20260908162223.1683432-11-suzuki.poulose@arm.com>
+ <CA+EHjTw9ReyvsNT=y+-P6ng7VQ6Pvz9PFK9bO71qvTR1pOxx5Q@mail.gmail.com>
+Content-Language: en-US
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <CA+EHjTw9ReyvsNT=y+-P6ng7VQ6Pvz9PFK9bO71qvTR1pOxx5Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, 8 Sept 2026 at 17:23, Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
->
-> In preparation for adding VM specific backends for stage2 operation,
-> switch to kvm_stage2_unmap_range() instead of __unmap_stage2_range()
-> from the kvm_unmap_gfn_range(). Drop the bail out check for protected
-> VMs and defer that to the one in kvm_stage2_unmap_range(). Later we
-> would replace the logic in kvm_stage2_unmap_range() with VM specific
-> backends.
->
-> No functional changes intended.
->
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+On 09/09/2026 12:45, Fuad Tabba wrote:
+> Hi Suzuki,
+> 
+> On Tue, 8 Sept 2026 at 17:23, Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>>
+>> PVTIME support is advertised by KVM_CAP_STEAL_TIME, which doesn't take into
+>> account the kvm instance. Even with that, a VMM could skip the CAP check and
+>> proceed to configure the PVTIME as we don't do further check on the DEVICE_CTRL.
+>> Tighten this up by passing the KVM instance around wherever possible and
+>> catch things early
+>>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> 
+> ...
+> 
+>> -bool kvm_arm_pvtime_supported(void)
+>> +bool kvm_arm_pvtime_supported(struct kvm *kvm)
+>>   {
+>> -       return !!sched_info_on();
+>> +       return !!sched_info_on() && (!kvm || !kvm_vm_is_confidential(kvm));
+>>   }
+> 
+> I think it would be better to leave KVM_CAP_STEAL_TIME reported and
+> instead reject the configuration for these VMs, returning -EPERM from
+> the KVM_ARM_VCPU_PVTIME_CTRL attr. A capability query should report
+> what the kernel supports, not whether a given VM may use it; gating it
+> per-VM here is also inconsistent, since the !kvm clause leaves the
+> system-fd cap at 1 while the VM-fd cap reads 0. And -EPERM says that
 
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 
-Cheers,
-/fuad
+But isn't that we want from a VMM perspective ? i.e., enable PVTIME if
+it is supported for the given VM (type). Rather than PVTIME is supported
+by the KVM, so I can go enable it by default. But, we endup getting a
+failure while we enable it. I encountered this with kvmtool, where
+CAP_STEAL_TIME is reported true and even the HAS_DEVICE_ATTR goes
+through fine, but SET_DEVICE_ATTR seemed to fail.
+
+Isn't it better to allow the VM to decide if the capability is supported
+for the given VM type, like we are doing for other capabilities ?
+
+> steal-time exists but isn't permitted for a confidential VM, whereas
+> -ENXIO reads as "no such feature".
+
+Cheers
+Suzuki
 
 
-> ---
->  arch/arm64/kvm/mmu.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 9ba86450fe4af..67852acf7a6f8 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -2436,12 +2436,12 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->
->  bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
->  {
-> -       if (!kvm->arch.mmu.pgt || kvm_vm_is_protected(kvm))
-> +       if (!kvm->arch.mmu.pgt)
->                 return false;
->
-> -       __unmap_stage2_range(&kvm->arch.mmu, range->start << PAGE_SHIFT,
-> -                            (range->end - range->start) << PAGE_SHIFT,
-> -                            range->may_block);
-> +       kvm_stage2_unmap_range(&kvm->arch.mmu, range->start << PAGE_SHIFT,
-> +                               (range->end - range->start) << PAGE_SHIFT,
-> +                               range->may_block);
->
->         kvm_nested_s2_unmap(kvm, range->may_block);
->         return false;
-> --
-> 2.43.0
->
+> 
+> Cheers,
+> /fuad
+> 
+>>
+>>   int kvm_arm_pvtime_set_attr(struct kvm_vcpu *vcpu,
+>> @@ -81,7 +81,7 @@ int kvm_arm_pvtime_set_attr(struct kvm_vcpu *vcpu,
+>>          int ret = 0;
+>>          int idx;
+>>
+>> -       if (!kvm_arm_pvtime_supported() ||
+>> +       if (!kvm_arm_pvtime_supported(kvm) ||
+>>              attr->attr != KVM_ARM_VCPU_PVTIME_IPA)
+>>                  return -ENXIO;
+>>
+>> @@ -110,7 +110,7 @@ int kvm_arm_pvtime_get_attr(struct kvm_vcpu *vcpu,
+>>          u64 __user *user = (u64 __user *)attr->addr;
+>>          u64 ipa;
+>>
+>> -       if (!kvm_arm_pvtime_supported() ||
+>> +       if (!kvm_arm_pvtime_supported(vcpu->kvm) ||
+>>              attr->attr != KVM_ARM_VCPU_PVTIME_IPA)
+>>                  return -ENXIO;
+>>
+>> @@ -126,7 +126,7 @@ int kvm_arm_pvtime_has_attr(struct kvm_vcpu *vcpu,
+>>   {
+>>          switch (attr->attr) {
+>>          case KVM_ARM_VCPU_PVTIME_IPA:
+>> -               if (kvm_arm_pvtime_supported())
+>> +               if (kvm_arm_pvtime_supported(vcpu->kvm))
+>>                          return 0;
+>>          }
+>>          return -ENXIO;
+>> --
+>> 2.43.0
+>>
+
