@@ -1,73 +1,74 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from esa1.hc1455-7.c3s2.iphmx.com (esa1.hc1455-7.c3s2.iphmx.com [207.54.90.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5680F2E229F;
-	Wed,  9 Sep 2026 01:53:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710902FBDE0;
+	Wed,  9 Sep 2026 02:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.54.90.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788918802; cv=none; b=O7/KHnUXGeaadwrQcaZugRgs/AxF2eOTDtjTKq5GQf7fka6EIxN8X7VMWfHcDu3YZrEpwt+8npBDqiHJkBuFliKKUf5+lZo1Oko7RyOocax4QAhr54Jv3XXTyqaVkeuqNSxUdPk/3IoXfQAs/Emy18wmHkXlJa9XEQagQDCoBKQ=
+	t=1788919307; cv=none; b=ZTyXHf/PHsjogwcwBv9eJVfJxK8TUtESYLWc3muO1U4g6zA4kTtMehO0/7wx46Va8nwk/JAZcMD92JiKpPEqzMXH8Z9P0y2OmVgDgm+lPJZgV7uZjpx9QfOA9x+ctGgEhKXXgHBRvE32Gd1NFCxPmOC/Ycnkkg/7XzgYBbcGNrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788918802; c=relaxed/simple;
-	bh=7DrbTt0IzkCllsja452BCL3xroRKJmVPC6YFP2vBfj4=;
+	s=arc-20240116; t=1788919307; c=relaxed/simple;
+	bh=bbB4RUYDKYq3jbJ4FgwHlLtWkDggDt/sjiYHzIdvoYc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qM63QxHOslBVqwxpMtWbJB4e7roXPTMFgg8vks7MM7hsJV//TWwv+J8+vKnHHwBoGKMbMdlaKYgFNIu7QB6lzVhXY/8M9Eyrm/TgZpYm0woOLMmmzjWLN/d4KscJRUs70qiClW7V3saYCvSw5C0B82BXKcx6qdD7kEdxZ6REp0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=fAOIEoJa reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=OxtZgr41c0C2nVHoA5NToxS7Tg8r4atfXZpXk86TsUgUoAtoeytgbqJmFKmhopwRgutMxbUoKiHYPOFoTBsm4G04QioB/gCwYjzylqgKGFiNwM9zUrgTffCWiK5TYZ2qZqxMPGsi2hKt0mPsPAu3UUvCg2mlD4sxGqFJD18gi8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=pEiZmdXo; arc=none smtp.client-ip=207.54.90.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="fAOIEoJa"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id CCF6B40E015D;
-	Wed,  9 Sep 2026 01:53:17 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id JntrNfHcO6X8; Wed,  9 Sep 2026 01:53:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1788918785; bh=JKFSKtJABr8R3dcGxNXFu7BWTYdeMQYuM0L/vU9gMVU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fAOIEoJaWFwpHEXMoCkuRZisSwP/rvzOfavyw8VtswWf8lpYhbmBEoPzCy6NH4UMi
-	 pJj9R8QmxKUVXrc4YJnh/WnX3SLTayl8TNaW9lLKcYIf584HoLkovST//xqrbY5fju
-	 btCTtlbKHKR4tHikmf8YdzwnzC45/93Inm7hqaQweZUtBcSCbSQGT2cfJxRqHxtEPO
-	 BLTaJwDEuNS10/nxinNjhmZjr5yFWQAwnGfvUzsPIheBpTLS0PxGhJpbb4BtV84QS1
-	 P70q63xNNCrkeEE/OBpDdX5r+ZDyH0wljNgDYKQX3+QJG0vld1bxlXJfZ3s0apZM4b
-	 BQTPB5gcUuWWTdc3lSTjmm9oNfU2JPmOYogD+aGg7Uyw1nNzPmZZ9L23VIrpau5crU
-	 qm+crU7T71oWR6gJul2uvGFc4grKQvqFbw0XiDjOX+dn5vL2ayUYuN1tQbJ+7VcnMh
-	 zqhu/Ha/wPuMxwAt+jt7hFHkwHiluIvx1ehTHWjGkF38fGtisjIEQVG/JicT/HQVkT
-	 EUbM0cF6JkW+txggiwXAqC6t3zsK2Vqc8MYKNSva4anPgCHm808H0z/j6vO8ICOvTf
-	 e/wKMvg1ZDcbIKRcecONvTonH+k5z6XjtQeCck3UJbzm4jqXAjTqNpG3exAtCrZTNG
-	 0M3CvilkFl7c79KGCnOBqCag=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="pEiZmdXo"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1788919306; x=1820455306;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bbB4RUYDKYq3jbJ4FgwHlLtWkDggDt/sjiYHzIdvoYc=;
+  b=pEiZmdXo6KzK9peTZEJAA1Fp9SKJ19rNuEA0PcimlEXWOPN9fFKrLrDP
+   b7aZrWTXnk3ae+oGu6exRqZp/KMWo9+WS2Dj0HmcOwxi9CbJXFvJr6ILD
+   A1wbDZlAXOF+usGG8UYhDNUxhXmFrS1AG6WhxlL0G+9BKzrfJkH7LydkT
+   E6qU/3Hz4eCHxTAz1zLlr4dqCS0FIXrgfx0MnC3fftEaxAurcsj6Oc2iV
+   vMkmwYHr5Oi3YckgtPesJ2eNsa552Em2Yg7+f53rLYIXlDKhInFiWfFR/
+   3hC7X3vke36zT+kWnAibOIe99M70V6yvgdjEiB4w2zHoWEbo4Xw3T4syl
+   A==;
+X-CSE-ConnectionGUID: XOuVOTgkT2SImpDEBlvOBA==
+X-CSE-MsgGUID: TjG1rYArQsOYJ6VxTCCKhQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="254389063"
+X-IronPort-AV: E=Sophos;i="6.25,270,1779116400"; 
+   d="scan'208";a="254389063"
+Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
+  by esa1.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 11:01:38 +0900
+Received: from az2nlsmgm4.fujitsu.com (unknown [10.150.26.204])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 78F6640E01E1;
-	Wed,  9 Sep 2026 01:52:31 +0000 (UTC)
-Date: Tue, 8 Sep 2026 18:52:28 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	darwi@linutronix.de, linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v13 4/5] x86/sev: Add support to perform RMP
- optimizations asynchronously
-Message-ID: <20260909015228.GBaqC73LJDUow_Xu6v@fat_crate.local>
-References: <cover.1788296083.git.ashish.kalra@amd.com>
- <a31fc8c6d3f6c6bbe50dc4542c7091b0899d3e1b.1788296083.git.ashish.kalra@amd.com>
- <20260905012945.GPaptwicVjJ-SwXYzl@fat_crate.local>
- <4b940989-1c27-49a5-8112-d9f991ad1d48@amd.com>
+	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 14E0A100037E;
+	Wed,  9 Sep 2026 02:01:38 +0000 (UTC)
+Received: from az2nlsmom3.fujitsu.com (unknown [10.150.26.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm4.fujitsu.com (Postfix) with ESMTPS id BBF2710000AE;
+	Wed,  9 Sep 2026 02:01:37 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.9.24.243])
+	by az2nlsmom3.fujitsu.com (Postfix) with SMTP id 1B0021001531;
+	Wed,  9 Sep 2026 02:01:28 +0000 (UTC)
+Date: Wed, 9 Sep 2026 11:01:25 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Gavin Shan <gshan@redhat.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, maz@kernel.org, will@kernel.org, catalin.marinas@arm.com, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, steven.price@arm.com, 
+	aneesh.kumar@kernel.org, oupton@kernel.org, joey.gouly@arm.com, tabba@google.com, 
+	yuzenghui@huawei.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, 
+	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
+	lpieralisi@kernel.org
+Subject: Re: [PATCH v17 3/7] firmware: arm_rmm: Configure the RMM with the
+ host's page size
+Message-ID: <aqC8b6cwbSNsV7-U@FCCLS0092175.localdomain>
+References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
+ <20260907095942.1140734-4-suzuki.poulose@arm.com>
+ <10893135-4757-44de-91b5-180a9774d868@redhat.com>
+ <ap--9pJdD_Y_j1aY@FCCLS0092175.localdomain>
+ <9706a0b9-b686-4502-bfae-08aabe05fb84@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -76,146 +77,197 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <4b940989-1c27-49a5-8112-d9f991ad1d48@amd.com>
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <9706a0b9-b686-4502-bfae-08aabe05fb84@redhat.com>
 
-On Tue, Sep 08, 2026 at 03:21:31PM -0500, Kalra, Ashish wrote:
-> >> Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
-> >> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-> >> Suggested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-> >> Suggested-by: Borislav Petkov (AMD) <bp@alien8.de>
-> >> Reviewed-by: Ackerley Tng <ackerleytng@google.com>
-> >> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-> >=20
-> > R-by's need to get dropped when a patch changes in more or less signi=
-ficant
-> > way.
->=20
-> Tom and Dave gave their R-by's on v12/v13 series, so probably i will ke=
-ep their
-> R-b's.
+Good day Gavin,
 
-Tom gave you a R-by on v12 before I asked you to axe off a bunch of stuff=
- from
-that patch. Dave gave you a R-by to this revision which is still under
-discussion and you wanna keep it regardless.
+On 09/08 20:59, Gavin Shan wrote:
+> Hi Kohei,
+> 
+> On 9/8/26 6:00 PM, Kohei Enju wrote:
+> > Hi Gavin,
+> > 
+> > On 09/08 17:04, Gavin Shan wrote:
+> > > Hi Suzuki,
+> > > 
+> > > On 9/7/26 7:59 PM, Suzuki K Poulose wrote:
+> > > > From: Steven Price <steven.price@arm.com>
+> > > > 
+> > > > RMM v2.0 brings the ability to set the RMM's granule size. Check the
+> > > > feature registers and configure the RMM so that it matches the host's
+> > > > page size. This means that operations can be done with a granularity
+> > > > equal to PAGE_SIZE.
+> > > > 
+> > > > Signed-off-by: Steven Price <steven.price@arm.com>
+> > > > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > > > ---
+> > > >    Changes since v15:
+> > > >     * Actually check the feature register for the host's page-size support.
+> > > >    Changes since v14:
+> > > >     * Move the implementation into drivers/firmware/arm_rmm.
+> > > >    Changes since v13:
+> > > >     * Moved out of KVM.
+> > > > ---
+> > > >    drivers/firmware/arm_rmm/rmi.c | 58 ++++++++++++++++++++++++++++++++++
+> > > >    include/linux/arm-rmi-cmds.h   | 17 ++++++++++
+> > > >    2 files changed, 75 insertions(+)
+> > > > 
+> > > > diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+> > > > index 008a783407b4e..76f91c145e1fd 100644
+> > > > --- a/drivers/firmware/arm_rmm/rmi.c
+> > > > +++ b/drivers/firmware/arm_rmm/rmi.c
+> > > > @@ -77,6 +77,60 @@ static int rmi_read_features(void)
+> > > >    	return 0;
+> > > >    }
+> > > > +static int rmi_configure(void)
+> > > > +{
+> > > > +	unsigned long granule_feature;
+> > > > +	unsigned long granule_size;
+> > > > +	int ret = 0;
+> > > > +	struct rmm_config *config;
+> > > > +
+> > > > +	switch (PAGE_SIZE) {
+> > > > +	case SZ_4K:
+> > > > +		granule_size = RMI_GRANULE_SIZE_4KB;
+> > > > +		granule_feature = RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_4KB;
+> > > > +		break;
+> > > > +	case SZ_16K:
+> > > > +		granule_size = RMI_GRANULE_SIZE_16KB;
+> > > > +		granule_feature = RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_16KB;
+> > > > +		break;
+> > > > +	case SZ_64K:
+> > > > +		granule_size = RMI_GRANULE_SIZE_64KB;
+> > > > +		granule_feature = RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_64KB;
+> > > > +		break;
+> > > > +	default:
+> > > > +		BUILD_BUG();
+> > > > +	}
+> > > > +
+> > > > +	if (!(rmi_feat_reg(1) & granule_feature)) {
+> > > > +		pr_err("RMM does not support %luKB granules\n",
+> > > > +		       PAGE_SIZE >> 10);
+> > > > +		return -ENXIO;
+> > > > +	}
+> > > > +
+> > > > +	config = (struct rmm_config *)get_zeroed_page(GFP_KERNEL);
+> > > > +	if (!config)
+> > > > +		return -ENOMEM;
+> > > 
+> > > An error message is needed here.
+> > > 
+> > > 	if (!config) {
+> > > 		pr_err("Unable to alloc RMM config memory\n");
+> > > 		return -ENOMEM;
+> > > 	}
+> > 
+> > I largely agree with your suggestions, and they look reasonable to me.
+> > 
+> > However, wouldn't this be redundant? Since __GFP_NOWARN is not set, the
+> > page allocator would normally emit an allocation failure warning with a
+> > stack trace anyway.
+> > 
+> > I don't have a strong preference, but as per "14) Allocating memory" in
+> > the coding style, I believe it would be considered unnecessary.
+> > 
+> 
+> You're correct that the error message is most likely redundant here and we
+> needn't it. However, it's notable the allocation failure warning and stack
+> trace isn't 100% raised when looking at mm/page_alloc.c::warn_alloc(). At least,
+> it depends on !__ratelimit(&nopage_rs) even it's less likely to happen. Similarly,
 
-There's a R-by Ackerley which you carry at least since v5:
+Indeed. I understand your point.
 
-https://lore.kernel.org/r/6f1ec3d8ebcf3aaceccc099c07d0deb545dd4ab9.177913=
-3590.git.ashish.kalra@amd.com
+> there are conditions to raise a warning and stack track in case of the injected
+> allocation error in lib/fault-inject.c::fail_dump().
 
-to which Ackerley is STILL GIVING YOU review feedback ON THAT SAME THREAD=
-:
+Thanks for the detailed explanation.
 
-https://lore.kernel.org/r/CAEvNRgGfyb7zvZ1u1j7YLomD%2BJdAxnVW36gtvNG9gxgZ=
-80vMyQ@mail.gmail.com
+Thanks,
+Kohei
 
-and yet you're still debating.
-
-From where I'm standing, it looks like you don't understand how those tag=
-s
-should be used.
-
-Do you need to go refresh up on the docs:
-
-"Both Tested-by and Reviewed-by tags, once received on mailing list from =
-tester
-or reviewer, should be added by author to the applicable patches when sen=
-ding
-next versions.  However if the patch has changed substantially in followi=
-ng
-version, these tags might not be applicable anymore and thus should be re=
-moved.
-Usually removal of someone's Acked-by, Tested-by or Reviewed-by tags shou=
-ld be
-mentioned in the patch changelog with an explanation (after the '---'
-separator)."
-
-?
-
-You're using Suggested-by tags also willy-nilly:
-
-"A Suggested-by: tag indicates that the patch idea is suggested by the pe=
-rson
-named and ensures credit to the person for the idea: if we diligently cre=
-dit
-our idea reporters, they will, hopefully, be inspired to help us again in=
- the
-future. Note, this is one of only three tags you might be able to use wit=
-hout
-explicit permission of the person named (see 'Tagging people requires
-permission' below for details)."
-
-So all 4 people have suggested this patch?
-
-No, ofc not. You have simply received review comments from them which you=
-'ve
-decided to integrate into your patch. This doesn't need a Suggested-by ta=
-g.
-This is normal patch review process. You should try it sometimes.
-
-And this is damn well documented but you're still debating.
-
-Well, you can debate all you want - those patches are not going anywhere =
-until
-you do them right. This is solely your call.
-
-> So the fix is: keep the setup allocated once, but make setup always
-> (re)program RMPOPT_BASE =E2=80=94 then we never need to clear it on dis=
-able, and the
-> cycle case is covered on re-init. Proposed fix:=20
-
-Yes, you basically do the *minimal* work that is absolutely necessary and
-leave everything else untouched because it is unnecessary complication to=
- all
-the code and if one is going to toggle SNP and hotplug, then one has bigg=
-er
-problems than some leftover facilities.
-
-> A full=E2=80=91physmem RMPOPT pass is a warm=E2=80=91up scan plus an IP=
-I fan=E2=80=91out over up to 2TB. The default system_wq is per=E2=80=91CP=
-U and concurrency=E2=80=91managed,
-> a long=E2=80=91running item there runs on the queueing CPU's worker poo=
-l and can stall (or be stalled by) other work on that pool. So we wanted =
-it
-> off system_wq and use a dedicated RMPOPT specific workqueue.
->=20
-> Another thing i looked at is for long-running unbound work, probably th=
-e standard shared queue is system_unbound_wq, which is probably built
-> for this use case and won't clog the per-CPU system_wq.
-
-You can't:
-
-system_unbound_wq =3D alloc_workqueue("events_unbound", WQ_UNBOUND | __WQ=
-_DEPRECATED, WQ_MAX_ACTIVE);
-								   ^^^^^^^^^^^^^^^
-
-	__WQ_DEPRECATED         =3D 1 << 19, /* internal: workqueue is deprecate=
-d */
-
-So if you do an unbound workqueue and then block migration around it, you=
-'re
-basically doing a WQ_PERCPU one. So why don't you do one of those and dro=
-p the
-migration toggles around it?
-
-All this talking is to get you to get the hint that *whatever* you do, it
-needs to have a good comment above it explaining why it has been chosen t=
-his
-way. Or put that info in the commit message.
-
-So that people who look at that code in the future, can change it after
-knowing why.
-
-And you should not do excessive commenting - it suffices if you put a cou=
-ple
-of key comments which explain non-trivial things only. The rest people ca=
-n
-figure out by simply reading the code.
-
---=20
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> 
+> Thanks,
+> Gavin
+> 
+> > Thanks,
+> > Kohei
+> > 
+> > > 
+> > > > +
+> > > > +	config->rmi_granule_size = granule_size;
+> > > > +
+> > > > +	/*
+> > > > +	 * For now we set the tracking_region_size to 0 which is the only option
+> > > > +	 * for 4KB PAGE_SIZE (1GB for 4KB PAGE_SIZE, 32MB/512MB for 16KB/64KB).
+> > > > +	 * TODO: Support other tracking sizes via Kconfig option for other
+> > > > +	 * PAGE_SIZES
+> > > > +	 */
+> > > > +	config->tracking_region_size = 0;
+> > > > +
+> > > > +	ret = rmi_rmm_config_set(virt_to_phys(config));
+> > > > +	if (ret) {
+> > > > +		pr_err("RMM config set failed\n");
+> > > > +		ret = -EINVAL;
+> > > > +	}
+> > > 
+> > > The error code from rmi_rmm_config_set() is indicative sometimes. Also, -ENXIO
+> > > would be more appropriate than -EINVAL?
+> > > 
+> > > 	if (ret) {
+> > > 		pr_err("RMM config set failed (%d)\n", ret);
+> > > 		ret = -ENXIO;
+> > > 	}
+> > > 
+> > > > +
+> > > > +	free_page((unsigned long)config);
+> > > > +	return ret;
+> > > > +}
+> > > > +
+> > > >    static int __init arm64_init_rmi(void)
+> > > >    {
+> > > >    	int ret;
+> > > > @@ -90,6 +144,10 @@ static int __init arm64_init_rmi(void)
+> > > >    	if (ret)
+> > > >    		return ret;
+> > > > +	ret = rmi_configure();
+> > > > +	if (ret)
+> > > > +		return ret;
+> > > > +
+> > > >    	return 0;
+> > > >    }
+> > > > diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
+> > > > index 2fb1f7f86d71e..9aa27697e2377 100644
+> > > > --- a/include/linux/arm-rmi-cmds.h
+> > > > +++ b/include/linux/arm-rmi-cmds.h
+> > > > @@ -12,6 +12,23 @@
+> > > >    unsigned long rmi_feat_reg(unsigned long id);
+> > > > +/**
+> > > > + * rmi_rmm_config_set() - Configure the RMM
+> > > > + * @cfg_ptr: PA of a struct rmm_config
+> > > > + *
+> > > > + * Sets configuration options on the RMM.
+> > > > + *
+> > > > + * Return: RMI return code
+> > > > + */
+> > > > +static inline int rmi_rmm_config_set(unsigned long cfg_ptr)
+> > > > +{
+> > > > +	struct arm_smccc_res res;
+> > > > +
+> > > > +	arm_smccc_1_1_invoke(SMC_RMI_RMM_CONFIG_SET, cfg_ptr, &res);
+> > > > +
+> > > > +	return res.a0;
+> > > > +}
+> > > > +
+> > > 
+> > > rmi_rmm_config_set() is used for once by rmi.c::rmi_configure(), I would not expose
+> > > rmi_rmm_config_set() by combining the logic to rmi.c::rmi_configure().
+> > > 
+> > > >    /**
+> > > >     * rmi_features() - Read feature register
+> > > >     * @index: Feature register index
+> > > 
+> > > Thanks,
+> > > Gavin
+> > > 
+> > 
+> 
