@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F099566C42;
-	Wed,  9 Sep 2026 14:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDC3583AAC;
+	Wed,  9 Sep 2026 14:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788962945; cv=none; b=r9+tpx/6Q+bMOd5gzR0bOIAbRzLwVVXDOM5xxAmTs6frGzlVlbrx26unfCNk0LVDTB1+EEFnsdAJqjLBLrhaie/fnlKbAqi1YvMGq2x+v8MV6MSRUr59N3BxNodo2Wys6ofpMdSGes9uifacsXFh8ei7hNJA238mOhtqsFPJcw4=
+	t=1788963388; cv=none; b=RJps9qNcELEg/3uh7Yyl7x4ktuBR+9j4XqSAbNSHhGmq0VS5Sy1+0tz83gO2G4XLgn69BF+Fo9ez0mqUp+RW6CrEqvPi/tFcxwL6V3vWOUrNTqr7RL7C2HsB8iONj5cqwSoXMpuzmz9uQxla63USbLESdBztcL8DPYbCkKxr3nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788962945; c=relaxed/simple;
-	bh=P3EfSrpuAdYfCz60uI/5joMJf29OS8uCpi4UP3UQYXk=;
+	s=arc-20240116; t=1788963388; c=relaxed/simple;
+	bh=Ajz1rJ5KBJT1yIFYYR2VWa+5UalEnz9sbBhzO/i/5EI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DWuLVU6YMSvnCDYku7wwYtV5b7uOWFn5zJ+2fI91YtuAk3g11v9hy4dEvlQd0oTGVGPx01SEbxkV3MxkE1uxfv8XjqeRapxlFy2Us+MttYBOnbI5J5RX4u7ADMAAH1TEQQ5t+Di8+EZkfPyBPKhqiPGdr4yB8uJy7JaRL057K0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GFQSIBtr; arc=none smtp.client-ip=198.175.65.15
+	 In-Reply-To:Content-Type; b=FLD+MetkW2jd8IXxcE5TZF7/hDX/JQpmhSIyKjYUhJTnzBVk0zFFeXjwrcU+minxho6CzC8o37ZY5dQ9WwEWSmYrNC4a8oYJ29H57W1TIV+FCjZUNV+0cx+OYcq+52b3Ogl2lUEOt2/WvE946dQdlt9PvRhQbkiL3wQxjYkjh6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k9mVS/hk; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GFQSIBtr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k9mVS/hk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788962945; x=1820498945;
+  t=1788963386; x=1820499386;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=P3EfSrpuAdYfCz60uI/5joMJf29OS8uCpi4UP3UQYXk=;
-  b=GFQSIBtrWOL8e1Lkdo9k2d12HUm8X/EXsBLcGIu/aZlxdEN0s/2carxB
-   awXYQJiSGJyZYqnAGDa0+WqqfwPhz91OQp7OGCIy6Niy3u077JGzsqqjs
-   d8yt3vu1E4qYkipn2MEqWgraBiSYVn1gywcfY135H+UOnkB6+qXlv/4d6
-   b3Cy3C4CSBjXEDYLdYhpSrXUC/myjQDvuK9YlR743oG9FPYp03lYT66X6
-   /2dpecPZYcleN/p19KjYMMLD8BOTdSLs8o1Cc2NlSVMidyjyopx+NZtQg
-   3mMJbDOI/EK3a5G2mZUOmBtg74MTQsXBJzmWO+9t7NxsGl//qLdsZyZRS
-   w==;
-X-CSE-ConnectionGUID: BzFBkH+xRF2vAxVfeYdHww==
-X-CSE-MsgGUID: /XfDsCy+RRyViWB2kbA6yg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="93083011"
+  bh=Ajz1rJ5KBJT1yIFYYR2VWa+5UalEnz9sbBhzO/i/5EI=;
+  b=k9mVS/hk+Av88zZ+eK0b4AHIK5v2hRlUoMHsu0qa12bhk26mmhZ5L2bA
+   wSpML87t+LAYtjhI6FAJW+k5tZBmrUYGm8dAcVGqZb76VB3CDT+z+k0F2
+   rlLkEC4HRUKQhJ1Zgb9rLlaay+4qfE5cxTip1//YvT7gATw1yOO/D7jCd
+   l25QSlhmAKZBRfk7ETrEKlrAYbn9tdbdl3lFSowFYPRX6TgZJ7kjVfmLb
+   rVK33aKtAd2/J34MqGSWdn6ga4BfSXNrn7AksfKVX668rGzJl6aDf3M3o
+   ExKDtI75vN3HKRLifBgbqAMyCTCgRmcmph6VJO7PM9WUvKrvfK+9qiXn3
+   A==;
+X-CSE-ConnectionGUID: 7C7ykG/fQQaG3O91jxsVjw==
+X-CSE-MsgGUID: 3XuLat8aSd2nXxK6PKm9rg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="93083954"
 X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; 
-   d="scan'208";a="93083011"
+   d="scan'208";a="93083954"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 07:08:52 -0700
-X-CSE-ConnectionGUID: r4WLywhwSs+kYXhZGw3FPA==
-X-CSE-MsgGUID: DsJDVKgmRdWDHpKT7+9YQQ==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 07:16:26 -0700
+X-CSE-ConnectionGUID: /TQ4Gg0HQv61WSeSli/eWA==
+X-CSE-MsgGUID: Y843hWh1TxmAwZoMh6dxyw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; 
-   d="scan'208";a="276556725"
+   d="scan'208";a="276558245"
 Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 07:08:49 -0700
-Message-ID: <1e311e04-6632-40f8-b73e-69773b9201aa@intel.com>
-Date: Wed, 9 Sep 2026 22:08:46 +0800
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 07:16:23 -0700
+Message-ID: <a0a748f2-50fb-4605-9f35-ce534d378361@intel.com>
+Date: Wed, 9 Sep 2026 22:16:21 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] KVM: x86/mmu: Use KVM's max TDP level to determine
- need for 32-bit TDP root
+Subject: Re: [PATCH v3 2/3] KVM: VMX: Explicitly track TDX VMs' root level
+ instead of guessing it from CPUID
 To: Sean Christopherson <seanjc@google.com>,
  Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -61,50 +61,55 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  <kai.huang@intel.com>, Yan Zhao <yan.y.zhao@intel.com>,
  Binbin Wu <binbin.wu@linux.intel.com>
 References: <20260902230932.2760127-1-seanjc@google.com>
- <20260902230932.2760127-2-seanjc@google.com>
+ <20260902230932.2760127-3-seanjc@google.com>
 Content-Language: en-US
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260902230932.2760127-2-seanjc@google.com>
+In-Reply-To: <20260902230932.2760127-3-seanjc@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 9/3/2026 7:09 AM, Sean Christopherson wrote:
-> When checking to see if KVM needs to allocate a TDP PAE root that's 32-bit
-> addressable, query KVM's overall max TDP level, not the vCPU-specific TDP
-> level, as the logic is specific to using NPT on 32-bit hosts.  Querying the
-> vCPU's alleged TDP level is flawed and confusing, as KVM selects between
-> 4-level vs. 5-level based on the guest's MAXPHYADDR, and MAXPHYADDR isn't
-> yet configured (via CPUID) when the vCPU is being created.
+> Explicitly track the root level for TDX VMs instead of trying to infer the
+> depth of the paging tree based on an individual vCPU's CPUID information.
+> Applying KVM's existing logic to select the root level to TDX is flawed as
+> nothing *requires* userspace to fill in the correct guest.MAXPHYADDR for a
+> vCPU's CPUID.  Guessing at the correct root level is also ridiculous given
+> that userspace has already told KVM the root level during TD initialization.
 > 
-> I.e. as is, it would *appear* that KVM is violating its own rules with
-> respect to changing guest CPUID (see kvm_mmu_after_set_cpuid()).  In
-> practice, the flaw is benign as the goal is purely to see if KVM needs to
-> use PAE-paging; whether KVM will use 4-level vs. 5-level is irrelevant.
+> Relying on userspace to set the expected/correct CPUID lets a misbehaving
+> userspace trip the KVM_BUG_ON() in tdx_load_mmu_pgd() by configuring guest
+> CPUID to use an "incorrect" guest.MAXPHYADDR.
 > 
-> More importantly, avoiding kvm_mmu_get_tdp_level() during vCPU creation
-> will allow hardening KVM's handling of S-EPT mirror root level.
+> Don't use kvm_gfn_direct_bits() to infer the mirror root level, as the
+> connection between TDX's one and only "direct" bit and the predetermined
+> root level is a TDX implementation detail.  I.e. avoid baking in the
+> assumption that there is exactly one "direct bits", that the one bit is a
+> pivot between normal and mirror roots, and that the pivot bit is the most
+> significant bit of the effective GPA space.  For the same reason, set the
+> root level and direct bits in TDX code, i.e. don't provide a helper in the
+> MMU, because from the MMU's perspective, they are two separate concepts.
 > 
-> For all intents and purposes, no functional change intended.
+> Keep gfn_direct_bits even though it can be trivially derived from
+> mirror_root_level as saving a whole eight bytes per VM is meaningless,
+> keeping the TDX details buried in TDX would require a kvm_x86_ops hook, and
+> the value is queried fairly often and in hot paths.
 > 
+> And for the moment, keep the S-bit sanity check in tdx_load_mmu_pgd(), even
+> though it really only needs to ensure the incoming level matches the
+> preconfigured mirror root level.  Because KVM manually configures the
+> S-bit location, there's technically a risk that the S-bit location and
+> mirror root level could get out of sync.  That can be addressed by more
+> programmatically computing the S-bit, but that doesn't need to be done now.
+> 
+> Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+> Cc: Kai Huang <kai.huang@intel.com>
+> Cc: Yan Zhao <yan.y.zhao@intel.com>
+> Fixes: 20d913729c11 ("KVM: x86/mmu: Taking guest pa into consideration when calculate tdp level")
+> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Tested-by: Yan Zhao <yan.y.zhao@intel.com>
+> Tested-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-
-> ---
->  arch/x86/kvm/mmu/mmu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index 064ecc33b926..c9a684151420 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -6834,7 +6834,7 @@ static int __kvm_mmu_create(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu, struct k
->  	 * other exception is for shadowing L1's 32-bit or PAE NPT on 64-bit
->  	 * KVM; that horror is handled on-demand by mmu_alloc_special_roots().
->  	 */
-> -	if (tdp_enabled && kvm_mmu_get_tdp_level(vcpu) > PT32E_ROOT_LEVEL)
-> +	if (tdp_enabled && kvm_mmu_get_max_tdp_level() > PT32E_ROOT_LEVEL)
->  		return 0;
->  
->  	page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_DMA32);
-
