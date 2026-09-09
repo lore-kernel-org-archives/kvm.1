@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E01271443;
-	Wed,  9 Sep 2026 15:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C1F57ED98;
+	Wed,  9 Sep 2026 15:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788969152; cv=none; b=E4pYGxvAeXctgUfSChXP2uElrmS1zaKHrXAeE7Utw7vGXkiefa27/p7RfrtEDzbgGA26y+U13Jy4A1MdKuZmQ3FD+FQnGcK2i8v1HJP3yen4h5PDLMWXgZfzAZntY9dA5dIe2s7g3BDdumIM/pO21oN1xybzKJv26Ocn2wlNgd4=
+	t=1788969279; cv=none; b=QJSLqWb6P3hhSwPQr7yFYRVg8YnNsHXuc3jtxJc3AALVc/ypPJOufLk8MbjakTbS6qLv8eqkaltgj/s2kg1yhUCSe6QjJeIs8U5mkx4UspUT2vyNjyAAv/KCPRhMhkFAFFSErbO6aoNNRMCllV3uM0I4Us3RK+LUFotRL2n1B1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788969152; c=relaxed/simple;
-	bh=8uu58u3aS8UdObhf3RPlu8z4SvBJfQNrl35A4FAtf+c=;
+	s=arc-20240116; t=1788969279; c=relaxed/simple;
+	bh=4tmuZy0j5vGxvsm2FOetliQpL82hSpmRGpvP0VKkcoM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nve7ur9+CagV3V0ai2EyBacfxY0V+PavLsABEr+CmH3WAdETKhCr5ledykvC2mUZ1YnKgQ04mi4VYmDFQJ/80cyCr41JSuyhcUzxAcb80LqmFFR9Qzjh6f4mgVVCT/kIMVkR7y8Gl4lYii6Iqk8pPJWPenawWJWAu9RBeZqmt/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FQBsMdka; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=DA2qCyOcfqx1Ze395hwl7znTFJ5Hm951om2eUqJrmfAVjTHFy7gYqQjTq+vddOudnIJ/qkH5rCwdn9y++sGcp5rICifXwUo2fVlaEf5gVxx0tHWVBhOUdnZ8QoXHkdaFk30VSJAvnq0WUHe62KlfauOSs4Q66olIXbr8OOz3B+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bo/nwc6d; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FQBsMdka"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D481F00A3A;
-	Wed,  9 Sep 2026 15:52:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bo/nwc6d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE9E1F00A3A;
+	Wed,  9 Sep 2026 15:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788969150;
-	bh=u91uFesTnFbGp/0SROsL3Fce0KUie7u3CWxoraS7oAQ=;
+	s=k20260515; t=1788969278;
+	bh=o582C2XKLMWHOHeMahz3iW/6hgf1cGSAiI6ze6eSDVo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=FQBsMdka6q3yJt4PU5XM/w8brLU7gUN6lqri9XYHBVnNyH62B5rbtWvnsDcuDDstR
-	 yUYGausmecFcZ01xcp9jcXh6Ho5wsTQC/KHLYEhhxTdAcpoZL5xbh02s+2mdoJKJ3H
-	 Cp0MTYHR4h+lAxicsGveorC67zzpo0UPgSBxoxYCK68UEpTQW1y77SCx6ZwpV/csrz
-	 raXx29Z1Se41gtjEI1U2vIhXIn7MET8plb8HrdSDx/6+Iyyu8xI3OQ7cdLk6+LSork
-	 xm7TREyRSVsrnCKckGjwZONbqeCoEzk9VmOK+gkVKpkdILm+SY4p/AoaYniCXdOkqG
-	 ruQAOmRiKrwxg==
-Message-ID: <13f2c56c-b55b-4245-8190-7038f4eab98f@kernel.org>
-Date: Wed, 9 Sep 2026 17:52:10 +0200
+	b=bo/nwc6dS99ISeSpfGwn+iPwXI9V9uwQ4onbV0KtT2I/oMD4xZ5Xgd6icDQxHE53D
+	 1QHdm7AwvJw6FLfmN0QtUcnvlAQnsrS2d6N/8pJmkKUJ/XHHMKVJaSAgDG5IIXnzi7
+	 sbV/X8VlO7038kF1MC9CnN+7QRmws3kfAtkYR/08G4TRQnrrHmbhkQsKrATTir9Hdv
+	 6Jx8KDhSTrH7DWq9IU1lCWsur9ORkdIT8FIovsCuu53xEHAZbQINr7dQ4jBN480huT
+	 X1ZNDPsTpIsDY3dJcV8Z7usILLGTfa24PnjkNL6g9aIUrKBbUO+RGYolago2/t5buD
+	 1Di4Pnhtbw5bQ==
+Message-ID: <b6b5e12a-c3aa-4e73-9fc0-d7200141e0e0@kernel.org>
+Date: Wed, 9 Sep 2026 17:54:19 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 18/45] KVM: guest_memfd: Handle lru_add fbatch
- refcounts during conversion safety check
+Subject: Re: [PATCH v12 17/45] KVM: guest_memfd: Return early if range already
+ has requested attributes
 To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
  binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
  jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
@@ -70,9 +70,9 @@ To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
+ linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
 References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
- <20260830-gmem-inplace-conversion-v12-18-85e5fd25252a@google.com>
+ <20260830-gmem-inplace-conversion-v12-17-85e5fd25252a@google.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,47 +119,44 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-18-85e5fd25252a@google.com>
+In-Reply-To: <20260830-gmem-inplace-conversion-v12-17-85e5fd25252a@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-
-> +
->  static bool kvm_gmem_has_outstanding_references(struct inode *inode,
->  						pgoff_t start, size_t nr_pages,
->  						pgoff_t *err_index)
->  {
-> +	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
->  	struct address_space *mapping = inode->i_mapping;
->  	pgoff_t last = start + nr_pages - 1;
->  	bool has_outstanding = false;
-> @@ -570,17 +589,12 @@ static bool kvm_gmem_has_outstanding_references(struct inode *inode,
->  	folio_batch_init(&fbatch);
->  
->  	next = start;
-> -	while (has_outstanding && filemap_get_folios(mapping, &next, last, &fbatch)) {
-> +	while (!has_outstanding && filemap_get_folios(mapping, &next, last, &fbatch)) {
->  		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
->  			struct folio *folio = fbatch.folios[i];
->  
-> -			/*
-> -			 * Outstanding references are anything other than those
-> -			 * from the page cache, plus 1 temporary reference held
-> -			 * by filemap_get_folios() in the folio batch.
-> -			 */
-> -			if (folio_ref_count(folio) != folio_nr_pages(folio) + 1) {
-> -				has_outstanding = true;
-> +			has_outstanding = __folio_has_outstanding_references(folio, &drained);
-> +			if (has_outstanding) {
->  				*err_index = max(start, folio->index);
->  				break;
->  			}
+On 8/31/26 02:25, Ackerley Tng via B4 Relay wrote:
+> From: Ackerley Tng <ackerleytng@google.com>
 > 
+> Provide a function to check that a range has given attributes.
+> 
+> Optimize setting memory attributes by returning early if all pages in the
+> requested range already have the requested attributes.
+> 
+> Reviewed-by: Fuad Tabba <tabba@google.com>
+> Tested-by: Shivank Garg <shivankg@amd.com>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
+>  virt/kvm/guest_memfd.c | 23 ++++++++++++++++++++++-
+>  1 file changed, 22 insertions(+), 1 deletion(-)
+> 
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index d14a7024bdc7b..ac8e0c6d6e942 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -98,6 +98,24 @@ static bool kvm_gmem_is_shared_mem(struct inode *inode, pgoff_t index)
+>  	return !kvm_gmem_is_private_mem(inode, index);
+>  }
+>  
+> +static bool kvm_gmem_range_has_attributes(struct inode *inode,
+> +					  pgoff_t index, size_t nr_pages,
+> +					  u64 attributes)
 
-Having the folio.c bits go upstream early is certainly cleaner; without Hugh's
-series an ack from MM maintainers would have been sufficient, though.
+"has_attributes" could be confused with "has any attributes", not "has exactly
+these matching attributes and no others".
 
-In any case, on the revised patch with only guest_memfd changes:
+Anyhow, I'm out of puff for naming suggestions today and this gets the hob done
+;) (kvm_gmem_range_has_matching_attributes is a bit mouthful)
 
 Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
