@@ -1,273 +1,479 @@
-Received: from esa1.hc1455-7.c3s2.iphmx.com (esa1.hc1455-7.c3s2.iphmx.com [207.54.90.47])
+Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710902FBDE0;
-	Wed,  9 Sep 2026 02:01:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.54.90.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AB43451A6;
+	Wed,  9 Sep 2026 03:00:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788919307; cv=none; b=ZTyXHf/PHsjogwcwBv9eJVfJxK8TUtESYLWc3muO1U4g6zA4kTtMehO0/7wx46Va8nwk/JAZcMD92JiKpPEqzMXH8Z9P0y2OmVgDgm+lPJZgV7uZjpx9QfOA9x+ctGgEhKXXgHBRvE32Gd1NFCxPmOC/Ycnkkg/7XzgYBbcGNrU=
+	t=1788922858; cv=none; b=qq6DS0dfVGJVbSJcnVtj1acs9pBGLovKsGlTNRO+Ua5XhFt0Q+fsIrjxyjKk4/09woLDqkOjBu4xFr90BY8xYGSXTrVYiS7+7K53iyu5oiR3/DpxkrWU7KiYuXeKFDRUyoreTyN1h5JyIV+a+rGtWly8rxUBs6ytzjPX223xc60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788919307; c=relaxed/simple;
-	bh=bbB4RUYDKYq3jbJ4FgwHlLtWkDggDt/sjiYHzIdvoYc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OxtZgr41c0C2nVHoA5NToxS7Tg8r4atfXZpXk86TsUgUoAtoeytgbqJmFKmhopwRgutMxbUoKiHYPOFoTBsm4G04QioB/gCwYjzylqgKGFiNwM9zUrgTffCWiK5TYZ2qZqxMPGsi2hKt0mPsPAu3UUvCg2mlD4sxGqFJD18gi8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=pEiZmdXo; arc=none smtp.client-ip=207.54.90.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	s=arc-20240116; t=1788922858; c=relaxed/simple;
+	bh=IniTHKgJF+PdPyvfkLSfxkdu74+9/FyzhUudHP9aLKo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gEKaHX8QUP+oWX15IkoRNcpn9bv8YEN2d4aTuKCotDcIM3enQhdH9+ARFeTZdcn+gM0sbUkg/U2JMhuHbYgel8sxmLTVq9X7y2mknb/Z51ofXVltRXN33UfldiZCJ1LHuPBB9aa1tAkPnK6By6zaO3CAuUDu2347oZ9ADqVo3cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=efJYS7ww; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=I9kMiBV9; arc=none smtp.client-ip=202.12.124.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="pEiZmdXo"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1788919306; x=1820455306;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bbB4RUYDKYq3jbJ4FgwHlLtWkDggDt/sjiYHzIdvoYc=;
-  b=pEiZmdXo6KzK9peTZEJAA1Fp9SKJ19rNuEA0PcimlEXWOPN9fFKrLrDP
-   b7aZrWTXnk3ae+oGu6exRqZp/KMWo9+WS2Dj0HmcOwxi9CbJXFvJr6ILD
-   A1wbDZlAXOF+usGG8UYhDNUxhXmFrS1AG6WhxlL0G+9BKzrfJkH7LydkT
-   E6qU/3Hz4eCHxTAz1zLlr4dqCS0FIXrgfx0MnC3fftEaxAurcsj6Oc2iV
-   vMkmwYHr5Oi3YckgtPesJ2eNsa552Em2Yg7+f53rLYIXlDKhInFiWfFR/
-   3hC7X3vke36zT+kWnAibOIe99M70V6yvgdjEiB4w2zHoWEbo4Xw3T4syl
-   A==;
-X-CSE-ConnectionGUID: XOuVOTgkT2SImpDEBlvOBA==
-X-CSE-MsgGUID: TjG1rYArQsOYJ6VxTCCKhQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="254389063"
-X-IronPort-AV: E=Sophos;i="6.25,270,1779116400"; 
-   d="scan'208";a="254389063"
-Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
-  by esa1.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 11:01:38 +0900
-Received: from az2nlsmgm4.fujitsu.com (unknown [10.150.26.204])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 14E0A100037E;
-	Wed,  9 Sep 2026 02:01:38 +0000 (UTC)
-Received: from az2nlsmom3.fujitsu.com (unknown [10.150.26.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm4.fujitsu.com (Postfix) with ESMTPS id BBF2710000AE;
-	Wed,  9 Sep 2026 02:01:37 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.9.24.243])
-	by az2nlsmom3.fujitsu.com (Postfix) with SMTP id 1B0021001531;
-	Wed,  9 Sep 2026 02:01:28 +0000 (UTC)
-Date: Wed, 9 Sep 2026 11:01:25 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Gavin Shan <gshan@redhat.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev, maz@kernel.org, will@kernel.org, catalin.marinas@arm.com, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, steven.price@arm.com, 
-	aneesh.kumar@kernel.org, oupton@kernel.org, joey.gouly@arm.com, tabba@google.com, 
-	yuzenghui@huawei.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, 
-	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
-	lpieralisi@kernel.org
-Subject: Re: [PATCH v17 3/7] firmware: arm_rmm: Configure the RMM with the
- host's page size
-Message-ID: <aqC8b6cwbSNsV7-U@FCCLS0092175.localdomain>
-References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
- <20260907095942.1140734-4-suzuki.poulose@arm.com>
- <10893135-4757-44de-91b5-180a9774d868@redhat.com>
- <ap--9pJdD_Y_j1aY@FCCLS0092175.localdomain>
- <9706a0b9-b686-4502-bfae-08aabe05fb84@redhat.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="efJYS7ww";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="I9kMiBV9"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.stl.internal (Postfix) with ESMTP id 727D21D000BC;
+	Tue,  8 Sep 2026 23:00:50 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Tue, 08 Sep 2026 23:00:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1788922850;
+	 x=1789009250; bh=D+BZO96VXQc4mcrTxfMW5zqyl9vnXNmoRoLNhpV9O5c=; b=
+	efJYS7wwAg1yNQxXQ8MdMS32di16eljJdLQFnDRnXtudNcflnOMFK8KcwvZd6V2G
+	drJDk/WYTDFQtKkmCS4FCcanWoV8w2CrIRQOkSrjbK7ok6c8at9La9MRQM0hG3Cq
+	eSgeXXf2atBIN3/xUJNNdXZCFtgGzdguvfpbjEHWUmqlF4om6hYXE5cuPdN6C1Cl
+	1Xk/CHWhjwDs/p5rZ8iZq9s0aPqzWvoEOnNGAVofkLQRYulhJ9P5rd/+jJ6mkMra
+	Ep84g1qkMend3YpzFv20Px4raZxBcK5gf/bUBaflvlLxKvrTQCm5AfTBGrFbKzs5
+	78/E6YEjFjwhwcxoMQ31qA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1788922850; x=
+	1789009250; bh=D+BZO96VXQc4mcrTxfMW5zqyl9vnXNmoRoLNhpV9O5c=; b=I
+	9kMiBV9FQelUk2cOi8osi32A1nWY2Vu71mWL+vBeKOyp15xvmDZtGT8BmDZ0KZTQ
+	T+UMriOtsTX3hzcKmOVzEsLvlVctLF4X/osGc66NB8qeKwASidl9SdyFO7iPMecA
+	RAnjuUPnr+em6jRDSRyDCAnUz4AvGuypvhJ1p0mcgzQbaWkC50Edc7LBhZNBunwP
+	ujGoAxihMFFUvppqOnlYO9uGbA49XGJSJqsCU9Ka5ituAehWIGArchJiVNX9Ew3S
+	7tdW4pY21k5qG/8xK19ih5T6VEKcGBYA9QR+aPw09aj74mSAPWGHHP943YWOkdn/
+	lICCyblh78eo3IK1/NH1Q==
+X-ME-Sender: <xms:4cugaiy9nW1Jzcewu8ugnSvVCmhvZG6rb9W0azVEMv_qtIgy5cBfyg>
+    <xme:4cugagm4qI36cdI3FhIW1-uekj4oOhysSrzifzG7DVVLotuvlYJ0C-i88d6HuQqzH
+    vrmr8VvYKEBtqS6aw001l5MCAghOmV93lBkQJKq-FCT6TJHzIQLJLBN>
+X-ME-Received: <xmr:4cugajDPTXmfOJYPSHKn6YyyTntxNCyJN3O8RwDiagKXI1knb85RBeSiLnXzLA>
+X-ME-Proxy-Cause: dmFkZTErtGPGJLJyrnX820yDvt5y2ctmG9Wx57Kw6pfWxLYjkRU3wVDuQ4EyBDyj1Lp7uU
+    yt52n2RqmLt4dGwWqpPNASVm1cSeAR/qLBbDdl74WbmELHyCJovN7PK/qCcyIBjH2vFpuP
+    Qt7M781wReerfBokqR7/U3GJBLr1w0wHs0oJ0PzPGjWPgsHBKtpyW0xiP9RPmOha0M8RN7
+    hRMAPZ6J39WzlAU3T33+4DsDPPxEuFcK8SaI1P30Rys9Bc6HSzDhkKcNuDLaplKiYpkvzs
+    sjPqPsYpYIhhdXVtBh/WVAgUCwDq9OmrzGKnOnJlyQi+SaDW+c27S6EYIKtFVlzkau3wKx
+    2kxGnmgobePjupi81fm04GGexR/BhL6Y6z7lGIl2lmvDJ8BVPNeYonkzPPAWUFtzwR14p4
+    ajaZ3x8YS1rJy27vNKMtUHReASlhWXOTGUA94oDlRWNRtGf4k2wWRQghA7qTVzzw8pXNnY
+    AWHF+xoBUeCKx1DcIrCUc87ezOHdlCxADlvHUd8eYUfUtZls46X60jwGLU/3rJJGjfuGxH
+    8YLasLM+aPU/1fPuSxnewygvEUurRbayI8OAKv21hwBqx7Vgis77zG05Aec/ETiPHd0VoE
+    LiQpBUu5zmfQfk9vJbc5EMeXRHbg0V2QFuoq3S1TVrQWOv8148wl3y+3pkGg
+X-ME-Proxy: <xmx:4cugaldts6ehyMsJ9vuSarWFFWuBrZFZ9ujaeoDVsz7-Lu6iOuRfRQ>
+    <xmx:4cugahrVZnezkmRx7TwNJY9RiuXhtclxnjLlrLtR_vouvbCBiIUhAg>
+    <xmx:4cugahLIBWrl525dQG6NwKTPJZ4ZiukuBxD-XTq0Tg1qAExwxduP1Q>
+    <xmx:4cugaqRxQ23N57aRTi1eG87e-ctIkhxpfizfFromyfFB3wPWw-fL9Q>
+    <xmx:4sugakpKNGfEvkLVsWBkyN7k8ibuSKbQ3z9rGUlbLkgBrJjjrYD2UPuW>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 8 Sep 2026 23:00:47 -0400 (EDT)
+Date: Tue, 8 Sep 2026 21:00:44 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Zhi Wang <zhiw@nvidia.com>
+Cc: <dakr@kernel.org>, <acourbot@nvidia.com>, <jgg@nvidia.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <jhubbard@nvidia.com>,
+ <ecourtney@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
+ <kjaju@nvidia.com>, <alkumar@nvidia.com>, <ankita@nvidia.com>,
+ <aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+ <nova-gpu@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <zhiwang@kernel.org>, <kvm@vger.kernel.org>, alex@shazbot.org
+Subject: Re: [PATCH 12/13] vfio/nvidia-vgpu: add the NVIDIA vGPU VFIO
+ variant driver
+Message-ID: <20260908210044.6514a092@shazbot.org>
+In-Reply-To: <20260905081116.106613-13-zhiw@nvidia.com>
+References: <20260905081116.106613-1-zhiw@nvidia.com>
+	<20260905081116.106613-13-zhiw@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <9706a0b9-b686-4502-bfae-08aabe05fb84@redhat.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Good day Gavin,
+On Sat, 5 Sep 2026 11:11:15 +0300
+Zhi Wang <zhiw@nvidia.com> wrote:
 
-On 09/08 20:59, Gavin Shan wrote:
-> Hi Kohei,
+> NVIDIA vGPU VFs require their open, reset, and close lifecycle to be
+> coordinated with the PF-side nova-core driver.
 > 
-> On 9/8/26 6:00 PM, Kohei Enju wrote:
-> > Hi Gavin,
-> > 
-> > On 09/08 17:04, Gavin Shan wrote:
-> > > Hi Suzuki,
-> > > 
-> > > On 9/7/26 7:59 PM, Suzuki K Poulose wrote:
-> > > > From: Steven Price <steven.price@arm.com>
-> > > > 
-> > > > RMM v2.0 brings the ability to set the RMM's granule size. Check the
-> > > > feature registers and configure the RMM so that it matches the host's
-> > > > page size. This means that operations can be done with a granularity
-> > > > equal to PAGE_SIZE.
-> > > > 
-> > > > Signed-off-by: Steven Price <steven.price@arm.com>
-> > > > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> > > > ---
-> > > >    Changes since v15:
-> > > >     * Actually check the feature register for the host's page-size support.
-> > > >    Changes since v14:
-> > > >     * Move the implementation into drivers/firmware/arm_rmm.
-> > > >    Changes since v13:
-> > > >     * Moved out of KVM.
-> > > > ---
-> > > >    drivers/firmware/arm_rmm/rmi.c | 58 ++++++++++++++++++++++++++++++++++
-> > > >    include/linux/arm-rmi-cmds.h   | 17 ++++++++++
-> > > >    2 files changed, 75 insertions(+)
-> > > > 
-> > > > diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
-> > > > index 008a783407b4e..76f91c145e1fd 100644
-> > > > --- a/drivers/firmware/arm_rmm/rmi.c
-> > > > +++ b/drivers/firmware/arm_rmm/rmi.c
-> > > > @@ -77,6 +77,60 @@ static int rmi_read_features(void)
-> > > >    	return 0;
-> > > >    }
-> > > > +static int rmi_configure(void)
-> > > > +{
-> > > > +	unsigned long granule_feature;
-> > > > +	unsigned long granule_size;
-> > > > +	int ret = 0;
-> > > > +	struct rmm_config *config;
-> > > > +
-> > > > +	switch (PAGE_SIZE) {
-> > > > +	case SZ_4K:
-> > > > +		granule_size = RMI_GRANULE_SIZE_4KB;
-> > > > +		granule_feature = RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_4KB;
-> > > > +		break;
-> > > > +	case SZ_16K:
-> > > > +		granule_size = RMI_GRANULE_SIZE_16KB;
-> > > > +		granule_feature = RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_16KB;
-> > > > +		break;
-> > > > +	case SZ_64K:
-> > > > +		granule_size = RMI_GRANULE_SIZE_64KB;
-> > > > +		granule_feature = RMI_FEATURE_REGISTER_1_RMI_GRAN_SZ_64KB;
-> > > > +		break;
-> > > > +	default:
-> > > > +		BUILD_BUG();
-> > > > +	}
-> > > > +
-> > > > +	if (!(rmi_feat_reg(1) & granule_feature)) {
-> > > > +		pr_err("RMM does not support %luKB granules\n",
-> > > > +		       PAGE_SIZE >> 10);
-> > > > +		return -ENXIO;
-> > > > +	}
-> > > > +
-> > > > +	config = (struct rmm_config *)get_zeroed_page(GFP_KERNEL);
-> > > > +	if (!config)
-> > > > +		return -ENOMEM;
-> > > 
-> > > An error message is needed here.
-> > > 
-> > > 	if (!config) {
-> > > 		pr_err("Unable to alloc RMM config memory\n");
-> > > 		return -ENOMEM;
-> > > 	}
-> > 
-> > I largely agree with your suggestions, and they look reasonable to me.
-> > 
-> > However, wouldn't this be redundant? Since __GFP_NOWARN is not set, the
-> > page allocator would normally emit an allocation failure warning with a
-> > stack trace anyway.
-> > 
-> > I don't have a strong preference, but as per "14) Allocating memory" in
-> > the coding style, I believe it would be considered unnecessary.
-> > 
+> Add a VFIO PCI variant driver that binds NVIDIA devices only through
+> driver_override and rejects non-VFs. Delegate instance lifecycle
+> operations to nova-core, present the firmware-selected device and
+> subsystem IDs in configuration-space reads, and adjust the reported BAR1
+> aperture to the assigned profile. Use vfio-pci-core for the remaining
+> VFIO operations.
 > 
-> You're correct that the error message is most likely redundant here and we
-> needn't it. However, it's notable the allocation failure warning and stack
-> trace isn't 100% raised when looking at mm/page_alloc.c::warn_alloc(). At least,
-> it depends on !__ratelimit(&nopage_rs) even it's less likely to happen. Similarly,
-
-Indeed. I understand your point.
-
-> there are conditions to raise a warning and stack track in case of the injected
-> allocation error in lib/fault-inject.c::fail_dump().
-
-Thanks for the detailed explanation.
-
-Thanks,
-Kohei
-
+> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+> ---
+>  drivers/vfio/pci/Kconfig              |   2 +
+>  drivers/vfio/pci/Makefile             |   2 +
+>  drivers/vfio/pci/nvidia-vgpu/Kconfig  |  16 ++
+>  drivers/vfio/pci/nvidia-vgpu/Makefile |   2 +
+>  drivers/vfio/pci/nvidia-vgpu/main.c   | 253 ++++++++++++++++++++++++++
+>  5 files changed, 275 insertions(+)
+>  create mode 100644 drivers/vfio/pci/nvidia-vgpu/Kconfig
+>  create mode 100644 drivers/vfio/pci/nvidia-vgpu/Makefile
+>  create mode 100644 drivers/vfio/pci/nvidia-vgpu/main.c
 > 
-> Thanks,
-> Gavin
-> 
-> > Thanks,
-> > Kohei
-> > 
-> > > 
-> > > > +
-> > > > +	config->rmi_granule_size = granule_size;
-> > > > +
-> > > > +	/*
-> > > > +	 * For now we set the tracking_region_size to 0 which is the only option
-> > > > +	 * for 4KB PAGE_SIZE (1GB for 4KB PAGE_SIZE, 32MB/512MB for 16KB/64KB).
-> > > > +	 * TODO: Support other tracking sizes via Kconfig option for other
-> > > > +	 * PAGE_SIZES
-> > > > +	 */
-> > > > +	config->tracking_region_size = 0;
-> > > > +
-> > > > +	ret = rmi_rmm_config_set(virt_to_phys(config));
-> > > > +	if (ret) {
-> > > > +		pr_err("RMM config set failed\n");
-> > > > +		ret = -EINVAL;
-> > > > +	}
-> > > 
-> > > The error code from rmi_rmm_config_set() is indicative sometimes. Also, -ENXIO
-> > > would be more appropriate than -EINVAL?
-> > > 
-> > > 	if (ret) {
-> > > 		pr_err("RMM config set failed (%d)\n", ret);
-> > > 		ret = -ENXIO;
-> > > 	}
-> > > 
-> > > > +
-> > > > +	free_page((unsigned long)config);
-> > > > +	return ret;
-> > > > +}
-> > > > +
-> > > >    static int __init arm64_init_rmi(void)
-> > > >    {
-> > > >    	int ret;
-> > > > @@ -90,6 +144,10 @@ static int __init arm64_init_rmi(void)
-> > > >    	if (ret)
-> > > >    		return ret;
-> > > > +	ret = rmi_configure();
-> > > > +	if (ret)
-> > > > +		return ret;
-> > > > +
-> > > >    	return 0;
-> > > >    }
-> > > > diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
-> > > > index 2fb1f7f86d71e..9aa27697e2377 100644
-> > > > --- a/include/linux/arm-rmi-cmds.h
-> > > > +++ b/include/linux/arm-rmi-cmds.h
-> > > > @@ -12,6 +12,23 @@
-> > > >    unsigned long rmi_feat_reg(unsigned long id);
-> > > > +/**
-> > > > + * rmi_rmm_config_set() - Configure the RMM
-> > > > + * @cfg_ptr: PA of a struct rmm_config
-> > > > + *
-> > > > + * Sets configuration options on the RMM.
-> > > > + *
-> > > > + * Return: RMI return code
-> > > > + */
-> > > > +static inline int rmi_rmm_config_set(unsigned long cfg_ptr)
-> > > > +{
-> > > > +	struct arm_smccc_res res;
-> > > > +
-> > > > +	arm_smccc_1_1_invoke(SMC_RMI_RMM_CONFIG_SET, cfg_ptr, &res);
-> > > > +
-> > > > +	return res.a0;
-> > > > +}
-> > > > +
-> > > 
-> > > rmi_rmm_config_set() is used for once by rmi.c::rmi_configure(), I would not expose
-> > > rmi_rmm_config_set() by combining the logic to rmi.c::rmi_configure().
-> > > 
-> > > >    /**
-> > > >     * rmi_features() - Read feature register
-> > > >     * @index: Feature register index
-> > > 
-> > > Thanks,
-> > > Gavin
-> > > 
-> > 
-> 
+> diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
+> index 296bf01e185e..b48d8d1af42a 100644
+> --- a/drivers/vfio/pci/Kconfig
+> +++ b/drivers/vfio/pci/Kconfig
+> @@ -74,4 +74,6 @@ source "drivers/vfio/pci/qat/Kconfig"
+>  
+>  source "drivers/vfio/pci/xe/Kconfig"
+>  
+> +source "drivers/vfio/pci/nvidia-vgpu/Kconfig"
+> +
+>  endmenu
+> diff --git a/drivers/vfio/pci/Makefile b/drivers/vfio/pci/Makefile
+> index 6138f1bf241d..f3498e541555 100644
+> --- a/drivers/vfio/pci/Makefile
+> +++ b/drivers/vfio/pci/Makefile
+> @@ -24,3 +24,5 @@ obj-$(CONFIG_NVGRACE_GPU_VFIO_PCI) += nvgrace-gpu/
+>  obj-$(CONFIG_QAT_VFIO_PCI) += qat/
+>  
+>  obj-$(CONFIG_XE_VFIO_PCI) += xe/
+> +
+> +obj-$(CONFIG_NVIDIA_VGPU_VFIO_PCI) += nvidia-vgpu/
+> diff --git a/drivers/vfio/pci/nvidia-vgpu/Kconfig b/drivers/vfio/pci/nvidia-vgpu/Kconfig
+> new file mode 100644
+> index 000000000000..098822d32380
+> --- /dev/null
+> +++ b/drivers/vfio/pci/nvidia-vgpu/Kconfig
+> @@ -0,0 +1,16 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +config NVIDIA_VGPU_VFIO_PCI
+> +	tristate "VFIO support for the NVIDIA vGPU"
+> +	depends on NOVA_CORE && PCI_IOV
+> +	select VFIO_PCI_CORE
+> +	help
+> +	  This option enables VFIO (Virtual Function I/O) support for
+> +	  NVIDIA virtual GPUs (vGPU). It allows the assignment of a virtual
+> +	  GPU instance to userspace applications via VFIO, typically used
+> +	  with hypervisors such as KVM and device emulators like QEMU.
+> +
+> +	  The NVIDIA vGPU allows a physical GPU to be partitioned into
+> +	  multiple virtual GPUs, each of which can be passed to a virtual
+> +	  machine as a PCI device using the standard VFIO infrastructure.
+> +
+> +	  If you don't know what to do here, say N.
+> diff --git a/drivers/vfio/pci/nvidia-vgpu/Makefile b/drivers/vfio/pci/nvidia-vgpu/Makefile
+> new file mode 100644
+> index 000000000000..193cc801a081
+> --- /dev/null
+> +++ b/drivers/vfio/pci/nvidia-vgpu/Makefile
+> @@ -0,0 +1,2 @@
+> +obj-$(CONFIG_NVIDIA_VGPU_VFIO_PCI) += nvidia-vgpu-vfio-pci.o
+> +nvidia-vgpu-vfio-pci-y := main.o
+> diff --git a/drivers/vfio/pci/nvidia-vgpu/main.c b/drivers/vfio/pci/nvidia-vgpu/main.c
+> new file mode 100644
+> index 000000000000..d8626644f952
+> --- /dev/null
+> +++ b/drivers/vfio/pci/nvidia-vgpu/main.c
+> @@ -0,0 +1,253 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +#include <linux/module.h>
+> +#include <linux/overflow.h>
+> +#include <linux/pci.h>
+> +#include <linux/pid.h>
+> +#include <linux/vfio_pci_core.h>
+> +#include <drm/nvidia_vgpu.h>
+> +
+> +static int nvidia_vgpu_fb_bar_index(struct pci_dev *pdev)
+> +{
+> +	if (pci_resource_flags(pdev, 0) & IORESOURCE_MEM_64)
+> +		return 2;
+> +	return 1;
+> +}
+> +
+> +struct nvidia_vgpu_pci_core_device {
+> +	struct vfio_pci_core_device core_device;
+> +	struct nvidia_vgpu_type_info type_info;
+> +	unsigned int gfid;
+> +};
+> +
+
+This is more commonly called an "sbdf".  Also, consider some comments.
+
+> +static inline unsigned int nvidia_vgpu_vf_dbdf(struct pci_dev *vf)
+> +{
+> +	return ((u32)pci_domain_nr(vf->bus) << 16) | pci_dev_id(vf);
+> +}
+> +
+> +static int nvidia_vgpu_open_device(struct vfio_device *core_vdev)
+> +{
+> +	struct nvidia_vgpu_pci_core_device *nvdev = container_of(
+> +		core_vdev, struct nvidia_vgpu_pci_core_device, core_device.vdev);
+> +	struct pci_dev *vf = to_pci_dev(core_vdev->dev);
+> +	struct nvidia_vgpu_type_info type_info;
+> +	int ret;
+> +
+> +	if (!vf->is_virtfn)
+> +		return -ENODEV;
+
+This is redundant to the probe check.
+
+> +
+> +	ret = vfio_pci_core_enable(&nvdev->core_device);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = nvidia_vgpu_open(pci_physfn(vf), nvdev->gfid,
+> +			       nvidia_vgpu_vf_dbdf(vf), task_tgid_nr(current),
+> +			       &type_info);
+> +	if (ret) {
+> +		vfio_pci_core_disable(&nvdev->core_device);
+> +		return ret;
+> +	}
+> +
+> +	nvdev->type_info = type_info;
+> +	pci_dbg(vf, "vgpu open: dev_id=0x%x subsys_id=0x%x bar1_length=0x%llx\n",
+> +		type_info.pci_dev_id, type_info.pci_subsys_id,
+> +		type_info.bar1_length);
+> +	vfio_pci_core_finish_enable(&nvdev->core_device);
+> +	return 0;
+> +}
+> +
+> +static void nvidia_vgpu_close_device(struct vfio_device *core_vdev)
+> +{
+> +	struct nvidia_vgpu_pci_core_device *nvdev = container_of(
+> +		core_vdev, struct nvidia_vgpu_pci_core_device, core_device.vdev);
+> +	struct pci_dev *vf = to_pci_dev(core_vdev->dev);
+> +
+> +	nvidia_vgpu_close(pci_physfn(vf), nvdev->gfid);
+> +	vfio_pci_core_close_device(core_vdev);
+> +}
+> +
+> +static ssize_t nvidia_vgpu_pci_read_config(struct vfio_device *core_vdev,
+> +					   char __user *buf, size_t count,
+> +					   loff_t *ppos)
+> +{
+> +	struct nvidia_vgpu_pci_core_device *nvdev = container_of(
+> +		core_vdev, struct nvidia_vgpu_pci_core_device, core_device.vdev);
+> +	struct nvidia_vgpu_type_info *ti = &nvdev->type_info;
+> +	loff_t pos = *ppos & VFIO_PCI_OFFSET_MASK;
+> +	size_t register_offset;
+> +	loff_t copy_offset;
+> +	size_t copy_count;
+> +	__le16 val16;
+> +	int ret;
+> +
+> +	ret = vfio_pci_core_read(core_vdev, buf, count, ppos);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	if (vfio_pci_core_range_intersect_range(pos, count, PCI_DEVICE_ID,
+> +						sizeof(val16), &copy_offset,
+> +						&copy_count, &register_offset)) {
+> +		val16 = cpu_to_le16(ti->pci_dev_id);
+> +		if (copy_to_user(buf + copy_offset,
+> +				 (void *)&val16 + register_offset, copy_count))
+> +			return -EFAULT;
+> +	}
+
+Just stuff the device ID into vconfig, it's already read from there.
+
+> +
+> +	if (vfio_pci_core_range_intersect_range(pos, count, PCI_SUBSYSTEM_ID,
+> +						sizeof(val16), &copy_offset,
+> +						&copy_count, &register_offset)) {
+> +		val16 = cpu_to_le16(ti->pci_subsys_id);
+> +		if (copy_to_user(buf + copy_offset,
+> +				 (void *)&val16 + register_offset, copy_count))
+> +			return -EFAULT;
+> +	}
+
+There's possibly an argument to be made that subsystem ID could be read
+from vconfig by default too so it could be pre-filled after
+vfio_config_init(), ie. after vfio_pci_core_enable().  The only reason
+it might change would be if firmware was updated, but a firmware update
+through vfio that changes the subsystem ID would be pretty sketchy
+already.
+
+> +
+> +	return count;
+> +}
+> +
+> +static ssize_t nvidia_vgpu_pci_read(struct vfio_device *core_vdev,
+> +				    char __user *buf, size_t count,
+> +				    loff_t *ppos)
+> +{
+> +	unsigned int index = VFIO_PCI_OFFSET_TO_INDEX(*ppos);
+> +
+> +	if (index == VFIO_PCI_CONFIG_REGION_INDEX)
+> +		return nvidia_vgpu_pci_read_config(core_vdev, buf, count, ppos);
+> +
+> +	return vfio_pci_core_read(core_vdev, buf, count, ppos);
+> +}
+> +
+> +static int nvidia_vgpu_bar1_size(struct nvidia_vgpu_pci_core_device *nvdev,
+> +				 u64 *size)
+> +{
+> +	if (check_shl_overflow(nvdev->type_info.bar1_length, 20, size))
+> +		return -EOVERFLOW;
+> +
+> +	return 0;
+> +}
+> +
+> +static int nvidia_vgpu_get_region_info(struct vfio_device *core_vdev,
+> +				       struct vfio_region_info *info,
+> +				       struct vfio_info_cap *caps)
+> +{
+> +	int ret;
+> +
+> +	ret = vfio_pci_ioctl_get_region_info(core_vdev, info, caps);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (info->index == nvidia_vgpu_fb_bar_index(
+> +		to_pci_dev(core_vdev->dev)) && info->size) {
+> +		struct nvidia_vgpu_pci_core_device *nvdev = container_of(
+> +			core_vdev, struct nvidia_vgpu_pci_core_device,
+> +			core_device.vdev);
+> +		u64 vgpu_bar1;
+> +
+> +		ret = nvidia_vgpu_bar1_size(nvdev, &vgpu_bar1);
+> +		if (ret)
+> +			return ret;
+> +
+> +		if (vgpu_bar1 && vgpu_bar1 < info->size)
+> +			info->size = vgpu_bar1;
+> +	}
+
+So we're changing the reported BAR1 size, but just trusting that
+userspace honors that size for read/write/mmap?  Again, consider some
+comments.
+
+> +
+> +	return 0;
+> +}
+> +
+> +static long nvidia_vgpu_pci_ioctl(struct vfio_device *core_vdev,
+> +				  unsigned int cmd, unsigned long arg)
+> +{
+> +	if (cmd == VFIO_DEVICE_RESET) {
+> +		struct nvidia_vgpu_pci_core_device *nvdev = container_of(
+> +			core_vdev, struct nvidia_vgpu_pci_core_device,
+> +			core_device.vdev);
+> +		struct pci_dev *vf = to_pci_dev(core_vdev->dev);
+> +		int ret;
+> +
+> +		ret = nvidia_vgpu_reset(pci_physfn(vf), nvdev->gfid);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return vfio_pci_core_ioctl(core_vdev, cmd, arg);
+
+What about reset invoked through FLR?  Would this be better served
+through .reset_prepare and .reset_done?
+
+> +}
+> +
+> +static const struct vfio_device_ops nvidia_vgpu_pci_ops = {
+> +	.name		= "nvidia-vgpu-vfio-pci",
+> +	.init		= vfio_pci_core_init_dev,
+> +	.release	= vfio_pci_core_release_dev,
+> +	.open_device	= nvidia_vgpu_open_device,
+> +	.close_device	= nvidia_vgpu_close_device,
+> +	.ioctl		= nvidia_vgpu_pci_ioctl,
+> +	.get_region_info_caps = nvidia_vgpu_get_region_info,
+> +	.device_feature	= vfio_pci_core_ioctl_feature,
+> +	.read		= nvidia_vgpu_pci_read,
+> +	.write		= vfio_pci_core_write,
+> +	.mmap		= vfio_pci_core_mmap,
+> +	.request	= vfio_pci_core_request,
+> +	.match		= vfio_pci_core_match,
+> +	.match_token_uuid = vfio_pci_core_match_token_uuid,
+> +	.bind_iommufd	= vfio_iommufd_physical_bind,
+> +	.unbind_iommufd	= vfio_iommufd_physical_unbind,
+> +	.attach_ioas	= vfio_iommufd_physical_attach_ioas,
+> +	.detach_ioas	= vfio_iommufd_physical_detach_ioas,
+> +};
+> +
+> +static int nvidia_vgpu_pci_probe(struct pci_dev *pdev,
+> +				 const struct pci_device_id *id)
+> +{
+> +	struct nvidia_vgpu_pci_core_device *nvdev;
+> +	int vf_id;
+> +	int ret;
+> +
+> +	if (!pdev->is_virtfn)
+> +		return -ENODEV;
+
+This driver needs to bind to what it matches in the id table, we don't
+have a policy for userspace to pick a 2nd best variant driver.
+hisi_acc handles a similar situation where only the VFs are supported
+for the migration feature of the variant driver.  The PF needs to be
+supported here and bind to a vfio-pci-core passthrough ops structure.
+
+We should probably define a PCI_DRIVER_OVERRIDE_DEVICE_VFIO variant
+that allows a class code to be specified so we aren't using this for
+all 10de: devices.  I'm hoping that class code is for a 3D accelerator
+or the like rather than VGA class (a VF can't technically support a
+legacy endpoint anyway), but we need to consider what existing devices
+that currently use vfio-pci would now be bound to this driver and what
+module option features they might use.  Thanks,
+
+Alex
+
+> +
+> +	vf_id = pci_iov_vf_id(pdev);
+> +	if (vf_id < 0)
+> +		return vf_id;
+> +
+> +	nvdev = vfio_alloc_device(nvidia_vgpu_pci_core_device, core_device.vdev,
+> +				  &pdev->dev, &nvidia_vgpu_pci_ops);
+> +	if (IS_ERR(nvdev))
+> +		return PTR_ERR(nvdev);
+> +
+> +	nvdev->gfid = vf_id + 1;
+> +	dev_set_drvdata(&pdev->dev, &nvdev->core_device);
+> +	ret = vfio_pci_core_register_device(&nvdev->core_device);
+> +	if (ret)
+> +		goto out_put_vdev;
+> +
+> +	return 0;
+> +
+> +out_put_vdev:
+> +	vfio_put_device(&nvdev->core_device.vdev);
+> +	return ret;
+> +}
+> +
+> +static void nvidia_vgpu_pci_remove(struct pci_dev *pdev)
+> +{
+> +	struct vfio_pci_core_device *core_device = dev_get_drvdata(&pdev->dev);
+> +
+> +	vfio_pci_core_unregister_device(core_device);
+> +	vfio_put_device(&core_device->vdev);
+> +}
+> +
+> +static const struct pci_device_id nvidia_vgpu_pci_table[] = {
+> +	/* Placeholder: match all NVIDIA VFs (vendor 0x10de) */
+> +	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_NVIDIA, PCI_ANY_ID) },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(pci, nvidia_vgpu_pci_table);
+> +
+> +static struct pci_driver nvidia_vgpu_pci_driver = {
+> +	.name		= "nvidia-vgpu-vfio-pci",
+> +	.id_table	= nvidia_vgpu_pci_table,
+> +	.probe		= nvidia_vgpu_pci_probe,
+> +	.remove		= nvidia_vgpu_pci_remove,
+> +	.driver_managed_dma = true,
+> +};
+> +module_pci_driver(nvidia_vgpu_pci_driver);
+> +
+> +MODULE_DESCRIPTION("NVIDIA vGPU vfio-pci driver");
+> +MODULE_LICENSE("GPL");
+> +MODULE_IMPORT_NS("NOVA_CORE_VGPU");
+
