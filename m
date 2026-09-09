@@ -1,255 +1,62 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6F1472F70;
-	Wed,  9 Sep 2026 08:39:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A2A47A0C2;
+	Wed,  9 Sep 2026 08:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788943192; cv=none; b=a/LPzucL5a47qCGS0RzK3pqOQVWWXyT1lGWLwhTMclRyigPV5b+NWPPMhvk5vyuf4V4o9wO4BqHpjFmHE/bbvVW9uPE/ks0jF9xOba/P47cRUJTvS+ZXvozf76AxhrN1rilcS85f8SmBsk/Z5Nr1h/E+RLalHDKdaL1xiI6CX6U=
+	t=1788943231; cv=none; b=KrZxpB9DZaZ4any5eLON5nkluDOM+rMyVmpRy4TQC8BfLG5v1FVsMJWY8yLcwW5nbZOnfp+wp4RfQGTQGlKbmgRneNrLsnwU0fxKbE7UCWRIbr8SetgCmI7O12mzCPel3yJfei/qhhdOZinwNJPZWEPSNLHHm4+VRLySTSxSuaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788943192; c=relaxed/simple;
-	bh=4AbRZtzIP0uW3AJ/+JRlRVpE4lXeH9HEYiTBXBQIq3Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iRQRjR+Abw8wtALcDXMr3cbTiqJWVBmqUIjnO2g3NuUq7wYbpXM1kOp79XhMJSHv7SSF+l7e3+/xhg3k/0DlZHY6CVoXLUeEpYCMJ5rRMwuUMeTwafcNjAf489z331hKZuR7vISbjxUr7swTvZRzs53K3jJGIqZZcrPNhi2OdAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=NMyI6wZw; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="NMyI6wZw"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 550F91576;
-	Wed,  9 Sep 2026 01:39:46 -0700 (PDT)
-Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EA4CB3F7B4;
-	Wed,  9 Sep 2026 01:39:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1788943190; bh=4AbRZtzIP0uW3AJ/+JRlRVpE4lXeH9HEYiTBXBQIq3Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NMyI6wZw/NCEboJ0abFf86U+oE5eeHU5OnDFOA34ZhcJmQgj2tu+TMkY/Jqa6vCAH
-	 5WbTkaag4OZl2gI9STO3lNgNnp5ZZ0eiePe9zoh6YBfoHF4xNy4fOkfQeSMvbhWkJi
-	 IXP4CYnGuUCfaiQU5p/mFXtnkEceufCppARjFk50=
-Message-ID: <44f02c8c-db52-4f3e-b5d9-f25c1c8c5f0b@arm.com>
-Date: Wed, 9 Sep 2026 09:39:45 +0100
+	s=arc-20240116; t=1788943231; c=relaxed/simple;
+	bh=2EEqqBaySonKRbNZhYOSFRx7U6u4g8OCjSV+MEHvFsk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IhEW3ixS1JFb5PxxRtcjHLUFz10fCp99Kvgj6eYWOdRxp9umPBthjW03n7kriNZ4/L7dSZYCfQrA5Db85n9clTBwfC9+FjYv2AMn5XzDJmiy9x5N6XYpLc2/mru2WOutb4DEts5dxfSvjs+zjnYgbxHpRJ3hYtufWSJLm5VYamw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8Axj9F0G6FqSBwKAA--.29361S3;
+	Wed, 09 Sep 2026 16:40:20 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowJAxHs90G6FqXdIdAA--.30773S2;
+	Wed, 09 Sep 2026 16:40:20 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>,
+	kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] LoongArch: KVM: Code cleanup with MSI intterupt injection
+Date: Wed,  9 Sep 2026 16:32:57 +0800
+Message-Id: <20260909083259.1910290-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v17 1/7] firmware: arm_rmm: Add SMC definitions for
- calling the RMM
-To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260907095942.1140734-1-suzuki.poulose@arm.com>
- <20260907095942.1140734-2-suzuki.poulose@arm.com>
- <c9990440-acab-4c6c-b67f-8bde17feddce@redhat.com>
- <aca629b2-27a0-4c47-acac-87edb3b0d3d9@arm.com>
- <52e58930-8fa4-4c75-981c-25be42d83f2d@redhat.com>
-Content-Language: en-US
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <52e58930-8fa4-4c75-981c-25be42d83f2d@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJAxHs90G6FqXdIdAA--.30773S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-On 08/09/2026 23:41, Gavin Shan wrote:
-> On 9/8/26 8:37 PM, Suzuki K Poulose wrote:
->> On 08/09/2026 07:19, Gavin Shan wrote:
->>> On 9/7/26 7:59 PM, Suzuki K Poulose wrote:
->>>> From: Steven Price <steven.price@arm.com>
->>>>
->>>> The RMM (Realm Management Monitor) provides functionality that can be
->>>> accessed by SMC calls from the host.
->>>>
->>>> The SMC definitions are based on DEN0137[1] version 2.0-bet3
->>>>
->>>> [1] https://developer.arm.com/documentation/den0137/2-0bet3/
->>>>
->>>> Signed-off-by: Steven Price <steven.price@arm.com>
->>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->>
->> ...
->>
->>>> ---
->>>>   include/linux/arm-smccc-rmi.h | 494 ++++++++++++++++++++++++++++++ 
->>>> ++++
->>>>   1 file changed, 494 insertions(+)
->>>>   create mode 100644 include/linux/arm-smccc-rmi.h
->>>>
->>>
->>> Some nitpicks below, please pick up the commits that look reasonable :)
->>>
->>
->>
->>>> +
->>>> +#define RMI_RETURN_STATUS_MASK        (0xFFUL)
->>>> +#define RMI_RETURN_INDEX_MASK        (0xFFUL << 8)
->>>> +#define RMI_RETURN_MEMREQ_MASK        (0x3UL << 8)
->>>> +#define RMI_RETURN_CAN_CANCEL_MASK    (0x1UL << 10)
->>>> +
->>>> +#define RMI_RETURN_STATUS(ret) FIELD_GET(RMI_RETURN_STATUS_MASK, ret)
->>>> +#define RMI_RETURN_INDEX(ret)        
->>>> FIELD_GET(RMI_RETURN_INDEX_MASK, ret)
->>>> +#define RMI_RETURN_MEMREQ(ret) FIELD_GET(RMI_RETURN_MEMREQ_MASK, ret)
->>>> +#define RMI_RETURN_CAN_CANCEL(ret) 
->>>> FIELD_GET(RMI_RETURN_CAN_CANCEL_MASK, ret)
->>>> +
->>>
->>> If I'm correct enough, RMI_RETURN_{STATUS, INDEX, MEMREQ, CAN_CANEL} 
->>> _MASK are used
->>> for once in this header file. So we needn't explicitly expose them 
->>> and combine their
->>> definitions with users to fetch the corresponding fields, as below.
->>>
->>> #define RMI_RETURN_STATUS(ret)        FIELD_GET(GENMASK(7, 0), ret)
->>> #define RMI_RETURN_INDEX(ret)        FIELD_GET(GENMASK(15, 8), ret)
->>> #define RMI_RETURN_MEMREQ(ret)        FIELD_GET(GENMASK(10, 8), ret)
->>> #define RMI_RETURN_CAN_CANCEL(ret)    FIELD_GEt(GENMASK(10, 10), ret)
->>
->> I belive the header files were generated from a tool (by Steven) and
->> these would make it easier to compare with the generated header file for
->> any deviation from the spec. So, I am a bit reluctant make these
->> changes.
->>
->> That said, I am happy to convert the mask definitions to GENMASK() for
->> consistency and readability. i.e., something like:
->>
->> diff --git a/include/linux/arm-smccc-rmi.h b/include/linux/arm-smccc- 
->> rmi.h
->> index 3eb88caf40964..078197284415e 100644
->> --- a/include/linux/arm-smccc-rmi.h
->> +++ b/include/linux/arm-smccc-rmi.h
->> @@ -139,10 +139,10 @@
->>   #define RMI_ABI_VERSION_GET_MINOR(version) ((version) & 0xFFFF)
->>   #define RMI_ABI_VERSION(major, minor)      (((major) << 16) | (minor))
->>
->> -#define RMI_RETURN_STATUS_MASK         (0xFFUL)
->> -#define RMI_RETURN_INDEX_MASK          (0xFFUL << 8)
->> -#define RMI_RETURN_MEMREQ_MASK         (0x3UL << 8)
->> -#define RMI_RETURN_CAN_CANCEL_MASK     (0x1UL << 10)
->> +#define RMI_RETURN_STATUS_MASK         GENMASK(7, 0)
->> +#define RMI_RETURN_INDEX_MASK          GENMASK(15, 8)
->> +#define RMI_RETURN_MEMREQ_MASK         GENMASK(10, 8)
->> +#define RMI_RETURN_CAN_CANCEL_MASK     BIT(10)
->>
-> 
-> Ok.
-> 
->>>
->>>> +#define RMI_SUCCESS            0
->>>> +#define RMI_ERROR_INPUT            1
->>>> +#define RMI_ERROR_REALM            2
->>>> +#define RMI_ERROR_REC            3
->>>> +#define RMI_ERROR_RTT            4
->>>> +#define RMI_ERROR_NOT_SUPPORTED        5
->>>> +#define RMI_ERROR_DEVICE        6
->>>> +#define RMI_ERROR_RTT_AUX        7
->>>> +#define RMI_ERROR_PSMMU_ST        8
->>>> +#define RMI_ERROR_DPT            9
->>>> +#define RMI_BUSY            10
->>>> +#define RMI_ERROR_GLOBAL        11
->>>> +#define RMI_ERROR_TRACKING        12
->>>> +#define RMI_INCOMPLETE            13
->>>> +#define RMI_BLOCKED            14
->>>> +#define RMI_ERROR_GPT            15
->>>> +#define RMI_ERROR_GRANULE        16
->>>> +
->>>> +#define RMI_CONTINUE_KEEP_GOING        0
->>>> +#define RMI_CONTINUE_STOP        1
->>>> +
->>>> +#define RMI_OP_MEM_REQ_NONE        0
->>>> +#define RMI_OP_MEM_REQ_DONATE        1
->>>> +#define RMI_OP_MEM_REQ_RECLAIM        2
->>>> +
->>>> +#define RMI_DONATE_SIZE_MASK        3UL
->>>> +#define RMI_DONATE_COUNT_MASK        GENMASK(15, 2)
->>>> +#define RMI_DONATE_CONTIG_MASK        BIT(16)
->>>> +#define RMI_DONATE_STATE_MASK        GENMASK(18, 17)
->>>> +
->>>> +#define RMI_DONATE_SIZE(req)        FIELD_GET(RMI_DONATE_SIZE_MASK, 
->>>> req)
->>>> +#define RMI_DONATE_COUNT(req)        
->>>> FIELD_GET(RMI_DONATE_COUNT_MASK, req)
->>>> +#define RMI_DONATE_CONTIG(req) FIELD_GET(RMI_DONATE_CONTIG_MASK, req)
->>>> +#define RMI_DONATE_STATE(req)        
->>>> FIELD_GET(RMI_DONATE_STATE_MASK, req)
->>>> +
->>>
->>> As above, RMI_DONATE_{SIZE, COUNT, CONTIG, STATE}_MASK are used for 
->>> once in this
->>> header file. So their definitions can be dropped by modifying the 
->>> followup macros,
->>> as below. Some enhancements are also applicable: (a) Use 'BLOCK' to 
->>> indicate the
->>> unit encoded in the request. (b) The macros are put into order from 
->>> MSB to LSB.
->>>
->>> #define RMI_DONATE_STATE(req)        FIELD_GET(GENMASK(18, 17), req)
->>> #define RMI_DONATE_CONTIG(req)        FIELD_GET(GENMASK(16, 16), req)
->>> #define RMI_DONATE_BLOCK_COUNT(req)    FIELD_GET(GENMASK(15, 2), req)
->>> #define RMI_DONATE_BLOCK_SIZE(req)    FIELD_GET(GENMASK(1, 0), req)
->>
->> Same as above.
->>
-> 
-> Please rename RMI_DONATE_{SIZE, COUNT} to RMI_DONATE_BLOCK_{SIZE, COUNT} 
-> if possible.
+Here is to remove some unnecessary parameter checking when injecting
+MSI interrupt, include MSI level parameter and vcpu::arch::dmsintc_state
+NULL pointer etc.
 
-Sorry, forgot to add that, I have renamed RMI_{DONATE,ADDR_RANGE}_SIZE
-=> RMI_{*}_BLOCK_SIZE, left  the _COUNT as it is.
+Bibo Mao (2):
+  LoongArch: KVM: Remove parameter line when inject MSI
+  LoongArch: KVM: Remove duplicated checking with DMSI irq injection
 
-> 
->>>
->>>> +#define RMI_OP_MEM_DELEGATED        0
->>>> +#define RMI_OP_MEM_UNDELEGATED        1
->>>> +#define RMI_OP_MEM_CONDITIONAL        2
->>>> +
->>>
->>> B4.6.40 RmiOpMemContig type is missed here and they should be used in 
->>> the c code.
->>>
->>> #define RMI_OP_MEM_NON_CONTIG    0
->>> #define RMI_OP_MEM_CONTIG    1
->>>
->>> In the c code, we shall have:
->>>
->>> if (RMI_DONATE_CONTIG(req) == RMI_OP_MEM_CONTIG)) {
->>>     ...
->>> } else {
->>>     ...
->>> }
->>>
->>
->> Does it make much sense though ? I prefer
->>
->> if (RMI_DONATE_CONTIG(req))
->>
->> to
->>
->>
->> if (RMI_DONATE_CONTIG(req) == RMI_OP_MEM_CONTIG)) {
->>
->>
->> than having a field for a single bit values. I am happy to change
->> this if there is strong preference to the other.
->>
-> 
-> The point is RMM-v2.0-bet3 expose RMI_OP_{MEM, MEM_NON}_CONTIG instead 
-> of true/false
-> to indicate if the requested memory blocks are physically contiguous or 
-> not. So the
-> expression 'if (RMI_DONATE_CONTIG(req) == RMI_OP_MEM_CONTIG)' is 
-> consistent to the
-> RMM-v2.0-bet3 spec.
-
-Agree, but the values are intuitively assigned to indicate whether it is
-1/0. I personally think if (RMI_DONATE_CONTIG(req)) is good enough. But
-to be consistent with the spec, I will change them.
+ arch/loongarch/include/asm/kvm_dmsintc.h |  3 +--
+ arch/loongarch/include/asm/kvm_pch_pic.h |  2 +-
+ arch/loongarch/kvm/intc/dmsintc.c        | 19 +++----------------
+ arch/loongarch/kvm/intc/pch_pic.c        |  6 +++---
+ arch/loongarch/kvm/irqfd.c               |  6 +++---
+ 5 files changed, 11 insertions(+), 25 deletions(-)
 
 
-Cheers
-Suzuki
+base-commit: df2908090cda368b01ff43709f51890076c56157
+-- 
+2.39.3
+
