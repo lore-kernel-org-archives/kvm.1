@@ -1,163 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6015650ED;
-	Wed,  9 Sep 2026 15:40:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788968422; cv=none; b=Z+Bm9ffwGXEsc/JBO5L9ANmI7PgzQ3mnICftiYfjtyErznLY9VCDlS/130yExj/YZNsaWPOinucrrY2QEE4z6RAiyH5J3b1oqKE8efXp0YKM8hlZsm//jyqrn5aiIZAahMvvPirUtwPVOUKw7fdzEuVVWjLLWQjbz83MoMw4mDQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788968422; c=relaxed/simple;
-	bh=OTpD1mn++QZ6cnu/XQdOkc8XsknDB0Wm8sUuOPNTh+g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PyMNCtlU0ByJfui+vLt27A7oib1QEahPfYXGxD9sCGeyAVSGIj9bypt0ti0DU+9JKurOJtmchmkXnsYLn1sH8Vy5CrWnF8zUJd+Iu+7hNyWoQSljGemAcynZ+KdorWS7/L6qUEJuJYVFaqBk3wkEvdmwaNJrxvENXXwdNfMjwYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b67FWDHV; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C4755C1D2
+	for <kvm@vger.kernel.org>; Wed,  9 Sep 2026 15:42:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.140
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788968527; cv=pass; b=nATfpT+YiZ6aMF8alMW0gUXijEtlTXVM1g7QWCLjE1JOPIPs+X2A/PQxV89IIAU3gUvBpCjWj0Hw7LV3KbSQ/UqkJxsuNcFeeQvnVeTgvjcwAfy/OZhsr+rohdpU6bRtI1mrVi6r3B2NGpvQfIiUToyIvhbb/SY73M+0ltI1YwA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788968527; c=relaxed/simple;
+	bh=LlddFKck7Cbtl7cf66qSmn1rFxhlvvhQVK4P3MceWSs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BvnzLC+uW3zWcFrnTOewupY0fsFJLEkb0sKUU+L/qqAg+aA8FF6YhVGCThNL32lAwzsrAQloAyB0cfiUDHB6W1D3AAnGORvH7iSnBy2821y6kJGA5Wc+p4L8B0huZeDk8UfMzNgsz5io594zYSNaXwI1Xvdr3z/ZNyS/chamrYE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gFp+D/Q4; arc=pass smtp.client-ip=74.125.228.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b67FWDHV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5D41F00A3A;
-	Wed,  9 Sep 2026 15:40:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788968421;
-	bh=AXYYQlIGAZBrAHu4CUr6VQDiXrusLKFHKO4tw/xbR/o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=b67FWDHVrvKlADudVooPhLmJOQAbQa4r/JfwC9gUSiN2XwdjDzXh8PDhLIbwBJ2Bl
-	 N6Vzk3XSxn9iwept0h4EbsT1QjEwa1ArTZoWsrAUs3sRxTkLtG3u6Tqn48pqVF4w42
-	 Hbr0VynPh2dln0S6/KgjarMmfPtDZf/8puPSLa3d6dAowUIbor3F3E8wZW4gfkHAy7
-	 ioBnUGH/HGUgh73jIHLXiP9er2c5LG71oVhLkOGVgFSr+kjgVMlPqHXLGlxCQA7ZS5
-	 LcMe5V5KBReJ3ihsKdA8eubDNI8HqYBjN9XKnu0HuBHiiD05yVhAVNYtvLFO27T70K
-	 2JOkNN9/OsV+Q==
-Message-ID: <26f620c7-043a-4cb3-a74b-29069bded0dd@kernel.org>
-Date: Wed, 9 Sep 2026 17:40:00 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gFp+D/Q4"
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f9f0b23so234451466b.0
+        for <kvm@vger.kernel.org>; Wed, 09 Sep 2026 08:42:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788968524; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Uult9L+LmgHffArLDMhZIdLpyR7V/J8fFJ1DgiPaqeuUk3CtqPjfmk/ICYOLARjQQn
+         r7lTbPo3LYxUAFODuKIShgHXvg3iGzvk52pTlNkFPKOI6pC8ZxPGWZUOVCDUwNuBnN/+
+         m04toh4mRqnvt7Jy8IMMA04wazqLYngvTMlepPWFN/MFfIzv7PUPLye3H1H2FqGxZNTf
+         OQDbEo1Aqzxk5Ca+v72j/J6ri8KTeh9AHU5KJEEkhPbl3UXP2SdPMnIIvORXvCHuDNto
+         +huo7hKXPaP8BMKDg2ieOjO+D2goSD9eBWoR7nYFlPOLXq0oDxvv40xpTTYiN1GR3mhb
+         bYug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=N3dn5TYGV5agCqPjCqQ+csmVjiwwOdvOPtqg6BBzXUE=;
+        fh=xE9SHO9kY2g2dxPx2flvWqwto0k9pG5z/CO+/+6r7N4=;
+        b=Xhu5OvAw0fGzOuEib1D2xY3K4u7C6xmkPxaZ8HH1LzawTzvF01te18F2Eerx+IFAGb
+         4nlruXJdgkwdrLFV9E8Z9RNeY9nM54dfuJZUeGwnQy4PU4saEDTnv8M2CMPQg2XiBt7Q
+         /1PS76RcJ/Tqvmr7C18nMnA8q4lxElnAUyEvlEZG60zrzcXTX4XbMH6UopiDdDDq6GR3
+         v2xdEGa253J2eHkSNNBKovokARdvRV1sMU7bkSP/F2BfOLtmnTsYC5sZs6QZbJTCRVyL
+         sqdC7Dwx2AX4cfqFCA4MMAvvxcogpBUGyjStELBcuJqK6it60GrWYQKeg4IdPWVOz0iO
+         R/NA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788968524; x=1789573324; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=N3dn5TYGV5agCqPjCqQ+csmVjiwwOdvOPtqg6BBzXUE=;
+        b=gFp+D/Q4gaxjW4e/OzUW0g2ckUttmqsGaa6iEXeGkvxFAeReBu/hVepaaNsUtFGubB
+         3WlY8ae+rOlXhtwXpYrPdgMa6iy7j46VI7fo8iGuLQS6m5VHs9Z8jI2ZpJ5PXSdfVNC0
+         noWTYEDlL5ffY8A8VX9JOREWfDERgHq4mUK9PheDcsdg5YUQdzuO24AY1+OhF9f1U5+h
+         jt39GJQwPSRjJxoE5hkKtjCivZFyhFr34cHMZWBGgfL++tgiL/H3v+NM1tF3Ea2y2E7x
+         JKuNyfiYJM6ecCTQ0p0Ha707/IebONSrj8gj2oilMWiUOlByBfZtb2rIl+yssIfh0j+s
+         Dvhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788968524; x=1789573324;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=N3dn5TYGV5agCqPjCqQ+csmVjiwwOdvOPtqg6BBzXUE=;
+        b=djUDcD40xytS3yJQADTeUaP4N5n6IwV0yyNq7aYuMSsjPapcopg/I+HhO/dB8YB9cp
+         or08amRyCKge9eZc18R/cZc+NMb6bN54O2qdfLEwkeciybIBbvnoXB1vh750ytyqcnWc
+         LmkD7YWt1ILSANPGaFW13qcDmT4caDZOFfs1NZVloBdWdB0lGiYwTlLQSmw8dQapFqf3
+         mS8B+My9c11nFYYiyZX+ptgbDhlWtUXX6L52JtrdnuLw6jP14SxuwfMSmwYHh1rZBH0o
+         /+ljxhEmcYCDWScmGJXnt2BMo0ixmnW/0xr/l0z3hqAKTMezIn53r4p9n6QARNdPJzUt
+         SJ7Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxlFDd2A3U6VnFVFsz/6HpEqfUaCzFcw3P1m7GsGBnup/kBOg16n0BHx/EKt6sj/G73K5s=@vger.kernel.org
+X-Gm-Message-State: AFuF++lwJeAXfX+Gnxztq111zL/qC/o/s/8mxDDGMSfbjxgfIhn/a+67
+	7MtIUYIDdXkTYp1HViRfeX33dpL8gS7OAsEQVxFSMRipea36tO16+CCSCJaqYtgUICJg+1s2dhK
+	0e2rnGSriL+uTChhnd1RqHi5nj2KdnVL87E2xFKuHrkkik5SH8w7asqoa
+X-Gm-Gg: AYBFou1E0PLrIzR+BRulNJz26xkdAaptB8iJMWxYkwXIkeW5GAZq+6FLFFLwqvNL78o
+	GBTkcnx9RpSm3h1JgqxHdShJrcszjHRGOTRUdrHLAN39QDco2j5YtUihQg775h1pji0m3j05b8t
+	COeQC5bsbCmyOMr2mz3o7kPmhSCwNngljcvyRPTuozbKVCh0TXeVEZAV3ZXhVPItfHFesrb/KGq
+	wk2vue2bedvWIHWDsSf5Rfah9gkGAexP2ZB9/KCoRFxxYJ4jVdL5i7+ewU+wiY7ErsA4RmHl1xI
+	weTBDKjgsrNH6JG+jX/0nAEZIHe0ApiyaaS8VJS8JU0oQ3MOHHdeLZCYbfhK0Vy4JOKSu2ozJ5Y
+	K4a4VCFqtwd6ZAkxJAqA33D3w9otar87m3qsS+Wg6xX1F6hH2Atu+hE2gwr08llz3Xy0=
+X-Received: by 2002:a17:907:c817:b0:c26:3190:2965 with SMTP id
+ a640c23a62f3a-c292b1369bdmr624367366b.12.1788968523659; Wed, 09 Sep 2026
+ 08:42:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 12/45] KVM: guest_memfd: Always fault from guest_memfd
- if in-place conversion is enabled
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
- oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com,
- rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com,
- steven.price@arm.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Fuad Tabba <fuad.tabba@linux.dev>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com>
- <20260830-gmem-inplace-conversion-v12-12-85e5fd25252a@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260830-gmem-inplace-conversion-v12-12-85e5fd25252a@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260908132838.2116068-1-jmattson@google.com> <CADrL8HW3Q=8eBf-=h6BAPdUN_X1Z_-KG=i5a5rA2kF+V4JURww@mail.gmail.com>
+ <CALMp9eRJXozpUpdOhqDCWn7VbqHb9G9hn4aZnxS_fef4ad1yTg@mail.gmail.com>
+In-Reply-To: <CALMp9eRJXozpUpdOhqDCWn7VbqHb9G9hn4aZnxS_fef4ad1yTg@mail.gmail.com>
+From: James Houghton <jthoughton@google.com>
+Date: Wed, 9 Sep 2026 08:41:27 -0700
+X-Gm-Features: AcwNN1Ukhgq6q__G7rqPGKWnJ807asXYRqEwL6FyIEahxFvLlFuJPzatqI0LcmU
+Message-ID: <CADrL8HW89mwdaXKv700G1LS2ymWY7CoGV9VBF8QZWkPPC3eUaw@mail.gmail.com>
+Subject: Re: [PATCH] KVM: nVMX: Don't flush shadow VMCS12 to guest memory
+ during vCPU teardown
+To: Jim Mattson <jmattson@google.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/31/26 02:25, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> If a guest_memfd memslot is created but the guest_memfd does not have the
-> GUEST_MEMFD_FLAG_MMAP set, KVM still fulfils guest faults by looking up the
-> memslot's userspace_addr.
-> 
-> Set KVM_MEMSLOT_GMEM_ONLY if in-place conversion is enabled so that the
-> guest_memfd's memory will be used for both shared and private memory. With
-> in-place conversion, guest_memfd will be the only backing memory for the
-> memslot.
-> 
-> No validation is performed to require userspace_addr to be a mapping from
-> the associated guest_memfd because even after validation, userspace is free
-> to remap something else at the provided userspace_addr.
-> 
-> userspace_addr will still be used by functions like kvm_read_guest(), and
-> if userspace_addr does not match up with the corresponding memory in the
-> memslot's guest_memfd (whether userspace_addr points to the wrong offset or
-> some non-guest_memfd memory, etc), that is a user error.
-> 
-> Requiring both shared and private memory to come from the only associated
-> guest_memfd simplifies invalidation in stage 2 page tables. On a PUNCH_HOLE
-> operation on a guest_memfd, the invalidation is now guaranteed to be
-> invalidating only memory mapped from the given guest_memfd.
-> 
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
+On Tue, Sep 8, 2026 at 12:13=E2=80=AFPM Jim Mattson <jmattson@google.com> w=
+rote:
+>
+> On Tue, Sep 8, 2026 at 10:35=E2=80=AFAM James Houghton <jthoughton@google=
+.com> wrote:
+> > Hi Jim,
+> >
+> > This patch looks good for a stable backport, but I feel this kind of
+> > bug could easily happen again with the current API.
+> >
+> > One simple thing that would have prevented this would be to:
+> > 1. Change kvm_write_guest_cached() (and related) to take the vcpu
+> > instead of the kvm, and
+> > 2. Check that vcpu->mm =3D=3D current->mm before doing the uaccess.
+> >
+> > This wouldn't be as suitable for a backport, but I think it's better
+> > for preventing similar classes of bugs. I'm sure you (and
+> > Paolo/Sean/others) will have better ideas. What do you think?
+>
+> There seems to be some awareness of this issue within KVM, so that may
+> not be necessary. Also, as Sashiko points out, we have issues with
+> reads as well as writes. I don't know how many choke points we'd have
+> to test.
+>
+> AFAICT (with AI assistance), all of the current problems are rooted in
+> the following call to nested_vmx_vmexit():
+>
+> void vmx_leave_nested(struct kvm_vcpu *vcpu)
+> {
+>         if (is_guest_mode(vcpu)) {
+>                 vcpu->arch.nested_run_pending =3D 0;
+>                 nested_vmx_vmexit(vcpu, -1, 0, 0);
+>         }
+>         free_nested(vcpu);
+> }
+>
+> On the SVM side, there is no comparable faux VM-exit. Instead of
+> calling nested_svm_vmexit(), the teardown of SVM nested state is an
+> open-coded sequence. Maybe something like that would work better for
+> VMX?
 
-Yeah, that matches what we discussed in the call
+Maybe, but I don't think I'd feel any better about it (because the
+change is still KVM/x86-specific).
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Thinking harder about this, I think it is always invalid to call
+`copy_to_user()` if `current->mm` is NULL. The riscv implementation[1]
+seems to require `current->mm` to be non-NULL. So I'd be much happier
+with a check in `__access_ok()` that `current->mm !=3D NULL`, but I'm
+not 100% sure that is okay.
 
--- 
-Cheers,
+I'm also trying to think a little bit harder about the exact mechanism
+that causes the memory corruption. I think for `active_mm` (and
+therefore the loaded page tables/CR3) to be different than the mm we
+destroyed in `exit_mm()`, there must have been a context switch to the
+victim user process and then back to the dying process after
+`exit_mm()`. Right?
 
-David
+[1] See arch/riscv/include/asm/uaccess.h
