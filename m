@@ -1,76 +1,76 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11F13C1D63
-	for <kvm@vger.kernel.org>; Wed,  9 Sep 2026 21:42:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7CF3E40F4
+	for <kvm@vger.kernel.org>; Wed,  9 Sep 2026 21:52:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788990157; cv=none; b=lvjgNhc/0JP6ndnp/rJnFUYGfPvzC5Ztb5E5XM8/fHR1XgiI91ZvvepgMwK70vFfZK1FCb2PLbxJnFtHghPWXNlGFNAAfD9hcjsRw+fnGDTSRZw4x/GP2c6pTtAejdjQy/QdD3gUG3fX48dQ73+EVltgyV4iI94xZKmPTBIeDM8=
+	t=1788990734; cv=none; b=mqToyKIhu5ezAEjpBVupjkoEudkdCFVciHBoklPVr4h4/2m9sZi2U4fuaNGUuAdabTCf6E/12G1rhFsDFKQsU9VMkJDu2kyXtfsg1nqfu1c0n6/d6CdQSyx2vuTgqZHNkJDKi1qMRLefzM2vMhzv7QuK4AT55BqJTDRC817IFMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788990157; c=relaxed/simple;
-	bh=+IKffq9pprORu/KuX01+OiN5RXzgXZE/Rip7wpReN3M=;
+	s=arc-20240116; t=1788990734; c=relaxed/simple;
+	bh=qQbPsCR7zQtDIHPUVuibU2H+q8UKY7xlBbVL4dX7Wy0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i/k/QLCFe8fPWqRhQFFQ0ZJYufL3+5Mlxb2b+29tHNJv4/Cpw97jtOiX1dColb7S9rx/yEgqtKydHKY4vDB0HJRwFZXIbb3A/qVtE/Yr3YPM6VcwrF/6YRYuemZ+dPe02PA5gF66lg3oouAzfP/OUjk2SvMqayk2i5aoyz9hQj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vS/j6iG8; arc=none smtp.client-ip=74.125.227.140
+	 Content-Type:Content-Disposition:In-Reply-To; b=tfx1EZKJtCJK+yyxj/UCqZKZkRc7OJCcLsDxL6Mk8dCQ81px2WxyPr74VMHih/0GT8nGDYxp8R5nEM+HLp02AbINc8/iaKzIUWdZBsb1C9TYifkkdiRbsY8ISksdvCSDZRe6pe5QroNZXxqRyWTjse+WVVoIbJ5H/YUJC20yBo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tkSZ3yG0; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vS/j6iG8"
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2db22383fe8so7084815ad.2
-        for <kvm@vger.kernel.org>; Wed, 09 Sep 2026 14:42:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tkSZ3yG0"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2d8f265cbe6so54955225ad.0
+        for <kvm@vger.kernel.org>; Wed, 09 Sep 2026 14:52:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788990147; x=1789594947; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788990723; x=1789595523; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=qfRs/dMSlypvbxykgYdrURTYGjZtEsKfNPrWbGMlcPA=;
-        b=vS/j6iG8qRxU9peeTkAmySsmp/RWuH0vYV5eFq1bgbrKisXYGbKuie/1/EdTUpOypw
-         +E7UgYJFyE9EHFMWEbE9obC68U+g/LdltFLbMBUiTJEtpgJ0gGh6kTlUHl2fbPZd7qfe
-         3YjN48sGoWaUbaML8G1jsNzt1GZ5MuRPgh41ChKBlC+mfWx7TVR5/BTArLwhftwArq2q
-         z8D5kFoFqQb4dRb+6C7ddDZymeTdWjSSlgtqOji7Hq9kU6xT8ZvKdpsMNdEUkBs9og0l
-         4PbTS7zIDiKX7VIBJXHu1IAbFwTlbAU+pCV0PeSiannWerJK+OOtGF5/EwWHluOBHQqT
-         R2yA==
+        bh=bCamGyjjkDxfDn1PqRtYYcfreXW3ECF8AiZuRQhHSQo=;
+        b=tkSZ3yG03OeuR6jJKSDNfi1a4ayqiLdL2cRKDuMckJQhM/Qr0UtsnMfOvSiAnnSDen
+         LGkgnIskP9l65sUNndGW5pi3sy+7n5xq3WXCzGuewYLoU9BGqdbCZq0CCZSLsGrxgpCj
+         UNaItggDMNiUTFqpWKkDe+n6RXDvk6lGjpq7Ef1OEScrIa91/VVun9SuYaOIoEt8qYCB
+         rRGK6D+vsasCbw8wcU9Yjhr81TjzJpC1Ze2MqJKQsrKCzKMx0xS96vyosDvBlYuP4XMs
+         VMGowAZ9jYAqnElWIUKJ2L/AvFRgWs+v3FuMHQVs6RLfQ+JvkZLEI3FR5BRHMPovfeS6
+         jmCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788990147; x=1789594947;
+        d=1e100.net; s=20251104; t=1788990723; x=1789595523;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=qfRs/dMSlypvbxykgYdrURTYGjZtEsKfNPrWbGMlcPA=;
-        b=Dwn9f/4w9qNvDUbq06TBRycdYCjJ+9dnCzfch8QtMznmkoLslZIBOMWsOyCZigx36V
-         Ch6jYmSq8mvnQY8+qNsuXi79O0ukMf638kqfZKejLxqxkppVCbHsRVmaC2niMsd8C5ws
-         Vhzm7CmMhMOX5I4qZrh4EbBFLQ5M4i9VccnbKTkwx8vQF0jlsR9pV7XS/FS8wM55HUFk
-         ALGZzDk49Dxwz8986WtiH2QHKMGv0XrCzH9aMu1Dhw1ubSiCMsxq2AGs3TwYQbtyeJoO
-         RqSJ0xVbCqF+bDJsihohRVAcbRnxovBgpD3kIEYUpUrmNa3nTQSOD8BnczEuYntX1kfD
-         kjGQ==
-X-Forwarded-Encrypted: i=1; AKwUvByvL47e+JrdhCLCukIUs6nUMekbUH40s2Raf0rINtfGEgT6h3X8BPmgBU+NWU03Rh6jXQY=@vger.kernel.org
-X-Gm-Message-State: AFuF++mj4TaAnfgOO9oCpTetAzjcDKojQUXIRmlLPOqlakDE2ay3LggO
-	H/lZ0N3K9Ww/6ZGv8PwP7zxVwGR3sHWjZ3Fgfl4LtE3tY28DIa/m2nIURB41ivsI0w==
-X-Gm-Gg: AYBFou31P1Kgl5W9zCsTO9XoHjzTbqTWySg8v2fYNB6ZJvZ+e5FomJ6ZnDdmyYRGMo8
-	lesADkVdMMW52IZUAKwjOdRV0b+kJildN1gRS9aFUt9Dw0jy7A3YTxJB9qnxusoJO9lIDbXjWJO
-	KZaj71SKRt5KaAUqQIy5XU7HFvA5JyzJUekJKeCWJ5z7x8dJQfQ9h4U0Tt4dRmnFI3J6Lg5PdBY
-	Olgb/3AZyGPd3MZ07T+iSTmc+mhKXnjzQTyDluCNYpzQonK+KTNBreBJbjjljbXdRSTfo98vIMY
-	3Gxyj53REJ24aKdUDkuXLtrmMM0lqcI8OsSd6HxgBhavnuXEFlj5iF2YO2dtGoacWbWsULt4jBD
-	8PxdkDlj6eBeP1Z3Xc0H/+9ARcwT5A1/VhsEXxllzzSIhFA1Kimvw7rwj/nYPQocUg+G9IDaWXA
-	GaINaqrVL/xOMmdy+agS+MC8boTOnLYJiWyAtDd/UicG+FNmVWXDYFNSJRA4dmGPbhth5UToYKa
-	vvS96Ady9k4TXcg3Ovi7mt3MbUoBL972ciuZ90g+zUwInhTVsA=
-X-Received: by 2002:a17:90b:1d0d:b0:37f:fdc8:71b4 with SMTP id 98e67ed59e1d1-39d709e6ed4mr5411396a91.2.1788990146322;
-        Wed, 09 Sep 2026 14:42:26 -0700 (PDT)
-Received: from google.com (192.150.203.35.bc.googleusercontent.com. [35.203.150.192])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d7738ce41sm1430549a91.3.2026.09.09.14.42.22
+        bh=bCamGyjjkDxfDn1PqRtYYcfreXW3ECF8AiZuRQhHSQo=;
+        b=kHdkw3V6hSl2O8yoDcqp57ib2Jz4ljU2L55TRhj4yjjTMKZp7KuD7839OkiVq1UzVo
+         FkTFH3GLO1EredlCoz6xGr43ATm4OQKVqxMlIO9tXIuk1yLuz32gF29fADOeuInd3nPN
+         NysQcEq1yUffHy7CQ0ltDgthvfBsONz5gtunpXcotYEGYXWXZf5mD5MzX0EHeBrE2QWD
+         ovY3Kx9EFFuMSm7gSzhLhyIi9Ae1HmUMz+Bv30Ob/Rm5tMFsDO3xJ+Lv89iNvX2xfO4I
+         CbhQrKBkbme2Lyu8+1YBt5b50yJGrP0gr1QgsaysfG32NbCzhlws6HH+votkgln3/ggc
+         wADA==
+X-Forwarded-Encrypted: i=1; AKwUvBwtOUirrq8oqZMsK5ctSB4GxlD1mLW+2yBrw0P6jt5SJWZYio2KxHhKaUEOHBcgrY9OOzQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++mvlBfI9TLr5YT3AeWZTcxKHJw1N5v7m8x3TvPi0JKmH2vlvV/c
+	ReDUUp6ladjS6bitFLsaUEgEr9M8L7Z0nFQ1dB/38dA1AjVj/w9ufu1YunMCGFq0DA==
+X-Gm-Gg: AYBFou1XfAi0TyHjwkZgAUi0+tH2imRi3IsW+9znF2OVDG4+T/uFIo4Ik6PwKHnn3hN
+	YQ48RqEeHrm7buSFzPPF4DJO0IZb6x5wXQK4J1qmn7y/KEDZtXW9b1BQJqe4Bn2RAMyc2eaqOgw
+	QA1HXEpz+dgiwERpU0ZNXnSzqocv6ONLO94CKkmIZ73sHUnOjxgmF74fDkw8FdqgaD9XdpUmiJe
+	jeFdigqPTIxGpGjDmQY155omd6PDEHbMxcZNSBfB/KSWjiCZMr8mJ88cgC1crBJAdsrullelWCi
+	Ny7yTcd3SAalHZ8TSahECMUui8rB76AL6gbV6XNmcJwqwSy639JwHxwZ/OkKvfjApC5/1YrCNOw
+	a+sLbQOVmNEL6TgfyULjTAMsdPHhBmhA1K3K02SR4KrKS3AdzBrIasbaFi9DLOWP+HDkdZ3CMwG
+	IXE4Pouupbl196sIrJyQII5eoECL0JNuglj8J3DmqrpQwquH+sCHCLty07v1+NysbnihqpS0e1a
+	8miA9MWDg12QyfkFJW6XFhLUP/lj0f1zYxiHVIB
+X-Received: by 2002:a17:902:da4d:b0:2dd:8e5:28d with SMTP id d9443c01a7336-2dd08e5053bmr43507235ad.8.1788990722587;
+        Wed, 09 Sep 2026 14:52:02 -0700 (PDT)
+Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dcffa9827dsm15047155ad.66.2026.09.09.14.52.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 14:42:22 -0700 (PDT)
-Date: Wed, 9 Sep 2026 21:42:18 +0000
+        Wed, 09 Sep 2026 14:52:01 -0700 (PDT)
+Date: Wed, 9 Sep 2026 21:51:58 +0000
 From: David Matlack <dmatlack@google.com>
 To: Alex Williamson <alex.williamson@nvidia.com>
 Cc: Alex Williamson <alex@shazbot.org>, kvm <kvm@vger.kernel.org>,
 	linux-kernel <linux-kernel@vger.kernel.org>,
 	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
 	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH 3/4] selftests/vfio: Extend mix_and_match timeout to 90s
-Message-ID: <aqHSuljynlgmVxmN@google.com>
+Subject: Re: [PATCH 4/4] selftests/vfio: Extend timeout for runner executions
+Message-ID: <aqHU_nqICBENMI7B@google.com>
 References: <20260901215358.2421359-1-alex.williamson@nvidia.com>
- <20260901215358.2421359-4-alex.williamson@nvidia.com>
+ <20260901215358.2421359-5-alex.williamson@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -79,44 +79,25 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260901215358.2421359-4-alex.williamson@nvidia.com>
+In-Reply-To: <20260901215358.2421359-5-alex.williamson@nvidia.com>
 
 On 2026-09-01 03:53 PM, Alex Williamson wrote:
-> Systems with firmware first error handling can see heavy SMM load
-> as a result of the mix_and_match induced IOMMU errors.  For devices
-> like igb that get wedged on these errors, the resulting FLR is delayed
-> waiting for the transaction pending register to clear, which never
-> occurs.  However, due to the background SMM, the backoff delays in
-> PCI code wildly exceed their timeouts.  As a result, the whole test
-> can report failure.
+> When executed via the runner, ie. run_kselftest.sh, tests are subject
+> to a default 45s timeout.  None of the igb, ioatdma, or nv_falcon
+> drivers can run the vfio_pci_driver_test within this window.
 > 
-> Extend the mix_and_match timeout to a value shown to complete reliably
-> on such systems, with ~2x margin.
+> The igb driver is the worst due to the device getting wedged from bad
+> DMAs in mix_and_match and requiring the full transaction pending
+> delay prior to FLR.
 > 
-> Assisted-by: Qwen3.8-27B
+> This is even further exacerbated when the system implements
+> firmware-first error handling and the transaction pending scheduled
+> delays are preempted beyond expectations by SMIs.
+> 
+> Worst case observed runtime for the whole vfio_pci_driver_test on
+> such a setup is 450s.  Round up to 600s.
+> 
+> Assisted-by: GPT-5.5
 > Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
 
-With the caveat that shortlog should be "vfio: selftests: ...",
-
 Reviewed-by: David Matlack <dmatlack@google.com>
-
-> ---
->  tools/testing/selftests/vfio/vfio_pci_driver_test.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/vfio/vfio_pci_driver_test.c b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
-> index 761bf117d624..1d532f944cee 100644
-> --- a/tools/testing/selftests/vfio/vfio_pci_driver_test.c
-> +++ b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
-> @@ -190,7 +190,7 @@ TEST_F(vfio_pci_driver_test, send_msi)
->  	ASSERT_EQ(1, value);
->  }
->  
-> -TEST_F(vfio_pci_driver_test, mix_and_match)
-> +TEST_F_TIMEOUT(vfio_pci_driver_test, mix_and_match, 90)
->  {
->  	u64 value;
->  	int i;
-> -- 
-> 2.53.0
-> 
