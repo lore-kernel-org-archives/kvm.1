@@ -1,143 +1,166 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83863583ACC;
-	Wed,  9 Sep 2026 16:39:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0393A583ACC;
+	Wed,  9 Sep 2026 16:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788971973; cv=none; b=Iw+Fv0BtODg8YK/LhTKDYrBJ5dLhxImAD1fC32MsHNJzf/WB9b6tOSuf7aPLitBQ+5a0kPcgG7cAahhDrkXONErWHJzWBzylKpD+CyGSYZAf+6PgJyJ/g7ML2MPtwIadgxzKMhkI/IeekW3ZGQKYJwGGWQiNYOMN6zVyIYpCfFw=
+	t=1788971983; cv=none; b=ANI5O0C818VfxwxNIMVIM76jh11EDpfwpWh8uG1o11ZemDvG5V+I6+rqgnWxlpoi1edvVgHh8bxlx0uvNnAbKd6DO7VCi/ORY42Sm01Eeqa+jMNZkLlsxsoVkrK+S3HDVK8whmEyc0O3VvR0yJhcRHKOoMgxOgfMsDPwWV9t7Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788971973; c=relaxed/simple;
-	bh=obXuPcRvkWnzIqN2joo9otws3rNTJVbnzqTcEFBqsOc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i2zY82ecG+a7o312KHDC1QJWf+1/RFpDFGaVFfAbvTTLtRoIP5UZY5dFlEx1cCv2bHDeSE0W6XBCF4rgFegLTMJg88d0BAZ4bRYPVTsFqmqLbsDkEPtkNS6IiDJxCJdBWmtu0diRwXIwS4sF9GwJajk2KY1sHRfc3LIWWPrkOMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b2uq2HLz; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1788971983; c=relaxed/simple;
+	bh=pIDXAc8n5rCwfY00O1emkjXRT0qj9W6LxzK1ndPe5cA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jleU9xaz+H69NnB+2qTsXauKXcZ6t+V7wFnE5SS2KFRZxbxLaw7Yx21JSO19Whe2kWVkukZCwOKrw9mK7wNu5gNhqYg22AQufs6OmfFrxUGSo0zPd5BR8KuCJgENUEWRFO2gGg33hdtp1gG4wbsW6OiYN3IObcC+BVs7RQerZBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mbQ+o5Kc; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b2uq2HLz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788971972; x=1820507972;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=obXuPcRvkWnzIqN2joo9otws3rNTJVbnzqTcEFBqsOc=;
-  b=b2uq2HLznKciKEpcZrnbxqOe94bmqm8kN8ZLa47uUrz/PgYW42SYok4/
-   fdBlhn4rDjNWwM8AhoZZksGqzO20PY0T+OpGVrGrtdb85/AgxOm0l7eNu
-   EbGl815/2+a6DReev/KXO9GGkmVPOOcDs11bYDr54AcjgCk6Uba83JI9e
-   UP+tXUamKQq2joLlD7+ocL3BD5vOCQy9afXD8v8yAKrYTnKAceYFpnEha
-   RlFFvr5PuSbW9NAcO2VgCczLv4R4tbp5wQa0ueBDeNqhtDPSWgrUFlctk
-   6heLyM/UtXm+oc3ieiSFdsMENBOdAO+U1A/HkjXWXcSUPRZXRHmoZ2YeA
-   Q==;
-X-CSE-ConnectionGUID: 0vG9qwnAQwq4d1ePdZPkCA==
-X-CSE-MsgGUID: Fw8+/4U1QKOFmbWnkAmnQQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="100568508"
-X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; 
-   d="scan'208";a="100568508"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 09:39:31 -0700
-X-CSE-ConnectionGUID: HabaXO0NQt61xU7HEnWKBQ==
-X-CSE-MsgGUID: Qk+eQ6riTfqE8EPsCXm74g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; 
-   d="scan'208";a="273343716"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 09:39:28 -0700
-Message-ID: <9abeed40-bcdc-48d9-8cbb-cb87154bb9f6@intel.com>
-Date: Thu, 10 Sep 2026 00:39:25 +0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mbQ+o5Kc"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 689B1iVY3839788;
+	Wed, 9 Sep 2026 16:39:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=a5iJwZH/C5crXJxQS3Xb797pc9AYFK
+	l4Bix9FKZMfpU=; b=mbQ+o5KcqSDdKEyiuYPhxzHbEoU+RnYhYbM7BxT1yMufW8
+	cY6doDF9+58RjyZocf42SxyZPtKQ89nweF2cHYTwzDEYEj64Wk4pjBVP0D0YtNn5
+	ilCvNxCdIXRoVvDyEJQwG5/dPk4rfYAMFvt+D2cC1BwRgfS7erAFp8IGa2LxSvlz
+	243skpsfvwWkEAgp7yTMY2wc4YLtFdHhhvuwyeJCCrLLTmX9bvWlqt6tO42PfBxi
+	erOy37k/U5RKGt/USmEvxyUzjVb8KWlApR9OSuS71aTYSTUX5lKWVRNKNrV0NNHB
+	vsmBPRFxEEKLwiC41+dKDD7xZHAtVxBNzJ8DskOA==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ggbhf6rrs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 09 Sep 2026 16:39:37 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 689GQEOm023349;
+	Wed, 9 Sep 2026 16:39:36 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gh03yk54f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 09 Sep 2026 16:39:36 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 689GdYE747776028
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 9 Sep 2026 16:39:34 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7848B20043;
+	Wed,  9 Sep 2026 16:39:34 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8BF3520040;
+	Wed,  9 Sep 2026 16:39:32 +0000 (GMT)
+Received: from Gautams-MacBook-Pro.local (unknown [9.39.30.71])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  9 Sep 2026 16:39:32 +0000 (GMT)
+Date: Wed, 9 Sep 2026 22:09:29 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+Cc: pbonzini@redhat.com, seanjc@google.com, shuah@kernel.org,
+        kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KVM: selftests: Fix the never-true negative UFFD delay
+ check
+Message-ID: <aqGLwQQZ9FQ5qCtG@Gautams-MacBook-Pro.local>
+References: <20260907045246.3783304-1-nagachaithanya9911@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] KVM: TDX: Track configurable CPUID bits allowed by
- KVM
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>
-Cc: "kas@kernel.org" <kas@kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "nik.borisov@suse.com" <nik.borisov@suse.com>,
- "seanjc@google.com" <seanjc@google.com>, "Gao, Chao" <chao.gao@intel.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>
-References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
- <20260827031837.2863609-2-binbin.wu@linux.intel.com>
- <55488b92-66a8-45e5-ad0f-8fed63ce1187@intel.com>
- <a30741f8-b99b-4f36-80a5-4688c2578d99@linux.intel.com>
- <6b565572-b316-4e86-906d-f150c896fe21@intel.com>
- <84891108-55be-48c1-9993-c730a5334d5b@linux.intel.com>
- <cfe57e67-49ce-47d7-b20b-a29e23fe16d4@intel.com>
- <d8012e9acbe3c733b082c87fdbe9f229a8f7750c.camel@intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <d8012e9acbe3c733b082c87fdbe9f229a8f7750c.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260907045246.3783304-1-nagachaithanya9911@gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: TQOT7jT9L61QURCLz4-YRtoazKCQrZva
+X-Authority-Analysis: v=2.4 cv=RIaD2Yi+ c=1 sm=1 tr=0 ts=6aa18bca cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=pGLkceISAAAA:8
+ a=VnNF1IyMAAAA:8 a=V1kCjGv-ZFlEZ27KLaEA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA5MDE4NCBTYWx0ZWRfX3V+KSTzTH8WD
+ b2cduup5S192jBnOw1bNszzE/cTDG2Ay5RcOBEbhhRWRcjYeJhefAb01163hoWgUXF3zqyE9/Fy
+ MM4NFe4UWtsCwTi+42ucxvTSmeIRPM8=
+X-Proofpoint-ORIG-GUID: UNsCqmGcdIxFbDuYUo7aU4jokU66j3yD
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA5MDE4NCBTYWx0ZWRfXz7r/lxPnEkwk
+ fr7Vb1q8Ct15kSv1fvEpa166lrtjJWGWEDWNL1YYZy7e4DDQo7GuGXOarcEUmzOEkpio0KFCcqk
+ SVooiR1+rrkzINsqyNamM7iVMBVk6S9GOTCwP7xb79I5NRwipsddOSwA+YIwL/G3QGDLPrVQ35M
+ 1i8/xNQ4SvyeuJ/oakOS4wZv09bndTr/F6JoWUCFXPWeldxD26iHVYO04yszBgvn1itzVgSAPx6
+ 5sDgefcH68yVAB0LzTgFy0LLPItxg43BsS6xD4td8hsz03ISL5CEu+U+NJKUHMOp3uGSnUOIyKJ
+ ldrOJCvGPp4GxQi2Yiz0usfWsQh/3SagKboW2ndEuexpgLOF3WPmyhkEfBKR+mB0E9jKy2eh1Zw
+ xRoC0ZFFm9RVosNlxuppBEhayjsl+G1iLp1V6CTgNX2qpuSH8+MMOnjjWIMjfZULJLjeP8cIatF
+ Y4OS0AmFY26Ob9YCUDA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-08_03,2026-09-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 suspectscore=0 malwarescore=0 priorityscore=1501 bulkscore=0
+ adultscore=0 phishscore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609090184
 
-On 9/9/2026 5:13 AM, Edgecombe, Rick P wrote:
->>>> In the end, they might be disallowed to be configured to TDs because KVM
->>>> doesn't allow them for VMX VMs. This is also the point I want to discuss.
->>>> Do we really want to make such restriction that KVM cannot enable/allow a
->>>> feature for TDs unless KVM first enables/allows it for VMX VMs? What's
->>>> reason behind it?
->>> Sean mentioned it that "generally speaking, KVM shouldn't allow features
->>> that KVM doesn't support for non-TDX VMs" in
->>> https://lore.kernel.org/kvm/aj1fi_0SBxMK5WOB@google.com/
->> For existing features, it might make some sense. But for new features, I
->> don't think so. It defines the enabling order for new features that we must
->> enable a feature for non-TDX VMs first and then TDs. And people might want
->> to bypass this rule by abusing the TDX_CFG_EXTRA_F() when only one line of
->> TDX_CFG_EXTRA_F() is enough to enable a feature for TDs but more effort
->> required to enable it for non-TDX VMs.
->>
->> Maybe I miss somthing. I would like to see stronger reasons for such decision.
-> I think "generally speaking" means, it's not a hard rule.
+On Mon, Sep 07, 2026 at 04:52:46AM +0000, Chaithanya Lagisetty wrote:
+> demand_paging_test parses the -d option with strtoul() and then asserts
+> that the result is not negative:
 > 
-> As for why to prefer it, I think we would normally want regulars VMs and TDs to
-> work similarly. Especially those that have some of the virtualization handled by
-> KVM. But TDX module's behavior of a feature can conform to KVM's only if KVM's
-> already exists. Take for example split lock detection. The normal VM KVM support
-> initially went through several iterations of design. Separately, TDX ended up
-> with a different solution. Imagine if we had enabled the TDX arch one, before
-> solving the general KVM problems. Then we would end up with two different
-> behaviors, or a worse KVM behavior as it tries to conform to TDX module's
-> behavior.
+> 	p.uffd_delay = strtoul(optarg, NULL, 0);
+> 	TEST_ASSERT(p.uffd_delay >= 0, "A negative UFFD delay is not supported.");
 > 
-> So we need to at least solve a feature at that level before deciding KVM's
-> handling of it. This could be done while enabling the feature for TDX only, but
-> often would involve solving the problems for normal VMs too. In the end, it's
-> the generic KVM behavior that needs to be solved before enabling the feature.
+> p.uffd_delay is a useconds_t, which is an unsigned type, so the comparison
+> is always true and the assertion can never fire. GCC points this out with
+> -Wtype-limits, which is enabled by -Wextra.
 > 
-> Ideally we could consider normal VM and TD at the same time. I expect we will
-> start doing that after this series is in place. Not a hard rule, but a norm.
+> As a result, "-d -1" is accepted and converted to a very large unsigned
+> delay, causing each demand paging fault to sleep for an unexpectedly long
+> time in usleep() instead of rejecting the argument up front. The return
+> value of strtoul() is not validated either, so a non-numeric argument
+> such as "-d abc" is silently treated as a zero delay.
+> 
+> Use atoi_non_negative() instead. It rejects negative values, unparsable
+> input, and trailing garbage. It is already used a few lines below for -v,
+> and hexadecimal input keeps working because atoi_paranoid() also passes a
+> base of 0 to strtol().
+> 
+> Fixes: 0119cb365c93 ("KVM: selftests: Add configurable demand paging delay")
+> Signed-off-by: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+> ---
+>  tools/testing/selftests/kvm/demand_paging_test.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/kvm/demand_paging_test.c b/tools/testing/selftests/kvm/demand_paging_test.c
+> index f8b3d0b68830..619a0b2be45c 100644
+> --- a/tools/testing/selftests/kvm/demand_paging_test.c
+> +++ b/tools/testing/selftests/kvm/demand_paging_test.c
+> @@ -297,8 +297,7 @@ int main(int argc, char *argv[])
+>  			p.single_uffd = true;
+>  			break;
+>  		case 'd':
+> -			p.uffd_delay = strtoul(optarg, NULL, 0);
+> -			TEST_ASSERT(p.uffd_delay >= 0, "A negative UFFD delay is not supported.");
+> +			p.uffd_delay = atoi_non_negative("UFFD delay", optarg);
+>  			break;
+>  		case 'b':
+>  			guest_percpu_mem_size = parse_size(optarg);
+> -- 
+> 2.43.0
+> 
 
-I don't think "split lock detection" is a good example. We are discussing
-virtualizing a feature, or allowing a feature to be exposed to non-TDX and TDX
-guests. While "split lock detection" is not a virtualizable feature and how KVM
-handles it is all about how KVM fixes the architectural flaw of it.
+With this patch applied, the test fails as intended:
 
-Generally, I agree with your point that we need to think at higher level before
-KVM deciding to support virtualizing a feature. But after the generic level
-consideration is done, there can be different orders:
+# ./demand_paging_test -d -1
+Random seed: 0x236c0ed9
 
-1. allow a feature for non-TDX VMs and TDs at same time. i.e., in one patch or
-in a single series.
+==== Test Assertion Failure ====
+  include/test_util.h:236: num >= 0
+  pid=3674565 tid=3674565 errno=0 - Success
+     1  0x00000000004010d0: atoi_non_negative at test_util.h:236
+     2   (inlined by) main at demand_paging_test.c:300
+     3  0x00007f907d9f05b4: ?? ??:0
+     4  0x00007f907d9f0667: ?? ??:0
+     5  0x0000000000401374: _start at ??:?
+  UFFD delay must be non-negative, got '-1'
 
-2. allow a feature for non-TDX VMs first and then TDs. This can be due to by
-that time TDX's spec for the feature has not been defined/finalized.
 
-3. allow a feature for TDs first and then non-TDX VMs. This can be due to it
-requires more effort/patches to support virtualizing a feature for non-TDX VMs.
-
-Usually allowing a feature for TDs requires far less efforts than for non-TDX
-VMs, because most of the virtualization work is done by TDX module. E.g., for
-TDs, KVM usually only needs to add code to restore the host states that are not
-restored by TDX module. However for non-TDX VMs, KVM needs to do more: emulate
-the architectural behavior of the MSRs, context switch states, and the nested
-handling, etc. It's likely that a series to enable a feature for non-TDX VMs
-spends several Linux releases to finally get merged. Making TDX support depends
-on it seems not that necessary.
+Tested-by: Gautam Menghani <gautam@linux.ibm.com>
+Reviewed-by: Gautam Menghani <gautam@linux.ibm.com>
