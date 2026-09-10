@@ -1,120 +1,114 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333581E51E0;
-	Thu, 10 Sep 2026 02:28:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07AA26E165
+	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 02:37:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789007324; cv=none; b=gRC7QNoX0i1xuFuj2azG/Bxdug12BGDfrO3fy0MODBpGqqh3hnYQWa5cKVmYWtovm4B62hWRWnvfwnZQBSCQQ2CYMBfZMANW3jZz6bsd4+fYwD9WuKrzsFQzHgh7zJ/XtCUMwXTe2co5k0R4KEl9zxZPLo/6WPEytTfEtpqpoFU=
+	t=1789007850; cv=none; b=LSrsMzCR22pE5kV+n4WuUOe+Rw1hQaRuW+vn6fvwR/HXR4CsbToJHCtThfxxkR26Ih3zOfwYFsfje0a9EDPzm+Tvom6iSzQ4ce0eCSG6aCXiyTTGlf83JAReybfkQ63TVuPorownK1YeHvsRcXoBUDaFdZ4lHCcZl5g0y1ly20U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789007324; c=relaxed/simple;
-	bh=UBSpuyJsPE0uoRnsrElhGkVCTU1HAJNQjUftLVPTZk8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OWjGx+SVc3wAKXNfXc1bB/lQHaS5Np76MGAiKGtUYLlFXuoD7zO+wSlJ/xNlfV2mRE8CZ55vBm9o7wvWAQej+Q0WU6pa36t+47Bz5klSKtGi4CSKod7RfSnrUT+zBRrNVb9cb6PKtqHq129Rt0VL0PqjwHVSNOYXkTupX0JODCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8BxLNLXFaJqpGgKAA--.30092S3;
-	Thu, 10 Sep 2026 10:28:39 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJBxKs7WFaJqj0geAA--.31709S2;
-	Thu, 10 Sep 2026 10:28:38 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: WANG Xuerui <kernel@xen0n.name>,
-	Tao Cui <cui.tao@linux.dev>,
-	kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] LoongArch: KVM: Allow to set pv_feature until vCPU run
-Date: Thu, 10 Sep 2026 10:21:18 +0800
-Message-Id: <20260910022118.2339780-1-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
+	s=arc-20240116; t=1789007850; c=relaxed/simple;
+	bh=fnzkdWiJjnqYYEQ2Vi2ivKVAn0qEsmfj5a+9QuyNniw=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=ujH7yslAfjClA6UlCUzNK9I9tIG7tFhOexV7C144ucWOPAGuFOcZJBGq3oijSvTchgQ0NitaG0lsQLkz/3UIFCFvzXV6ccpJ4NCN7RWxXYtndYj6PMn1qI1He9kIgmiI4DrkYjkab2Sgel0cRc/N10isIsSCqtQnv5uQ+ok5DUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XISPUgrQ; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XISPUgrQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF77D1F000FF;
+	Thu, 10 Sep 2026 02:37:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789007849;
+	bh=r15PspO1rIdQMFCt3PB0pMXQ/JRFKd/F1OGYNXpB/TY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=XISPUgrQmcSq3JL+2GBxCnvbZ7rolAzwr7YWa+53aZwPLFam02LgNPqFKHJBLu1cy
+	 qd+arL/edndiMlpCLhVSnJ709huWsjVc8bp/0ASA8S1MCAu5aTHszfu01xKjETRgg6
+	 DE6GDoFqxrH8jKtG7mUWzwKh9rD1eOV5WK4ZLGC6C+2Gu5YCde22KpDaDtYI3z/Yo5
+	 4PuK2N7/aOhg0OksX8CTa4aWR5/jABDLdAO5n2vlXbHILEep5gR2FpDm4twIqtH3ph
+	 TTxNytBeZi1+LpQYokjJTED/kkg1RcFwZrVfmcg+jtS5jWJov0WeCtfqKDhjfPjQ90
+	 IrtQ+Fuj2BHhg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] LoongArch: KVM: Allow to set pv_feature until vCPU
+ run
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Bibo Mao" <maobibo@loongson.cn>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260910022118.2339780-1-maobibo@loongson.cn>
+References: <20260910022118.2339780-1-maobibo@loongson.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 10 Sep 2026 02:37:28 +0000
+Message-Id: <20260910023728.DF77D1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxKs7WFaJqj0geAA--.31709S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
 
-Now pv_feature can be set only once, there is problem with VM migration.
-Where it is set when vCPU is created and after migration, here it is
-allowed to set for many times, until vCPU starts to run.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] A per-vCPU guard (`has_run`) is incorrectly used to protect a VM-w=
+ide state (`kvm->arch.pv_features`), allowing runtime mutation and conflict=
+ing configurations across vCPUs.
+--
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
-v1 ... v2:
-  1. Rename ran_atleast_once with has_run for simplity.
-  2. Rebase on the latest version where there is pv_setting_lock
-     protection when modify pv_features of VM.
----
- arch/loongarch/include/asm/kvm_host.h |  3 ++-
- arch/loongarch/kvm/vcpu.c             | 15 ++++++++++++---
- 2 files changed, 14 insertions(+), 4 deletions(-)
+commit c74c65cf1934e410a4858855575161a3136ee9d8
+Author: Bibo Mao <maobibo@loongson.cn>
 
-diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
-index 65d91c3ce313..4ee1a29a5ea0 100644
---- a/arch/loongarch/include/asm/kvm_host.h
-+++ b/arch/loongarch/include/asm/kvm_host.h
-@@ -164,7 +164,6 @@ enum emulation_result {
- #define KVM_LARCH_SWCSR_LATEST	(0x1 << 3)
- #define KVM_LARCH_HWCSR_USABLE	(0x1 << 4)
- 
--#define LOONGARCH_PV_FEAT_UPDATED	BIT_ULL(63)
- #define LOONGARCH_PV_FEAT_MASK		(BIT(KVM_FEATURE_IPI) |		\
- 					 BIT(KVM_FEATURE_PREEMPT) |	\
- 					 BIT(KVM_FEATURE_STEAL_TIME) |	\
-@@ -250,6 +249,8 @@ struct kvm_vcpu_arch {
- 	struct dmsintc_state dmsintc_state;
- 	/* cpucfg */
- 	u32 cpucfg[KVM_MAX_CPUCFG_REGS];
-+	/* VCPU ran at least once */
-+	bool has_run;
- 
- 	/* paravirt steal time */
- 	struct {
-diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-index 8e028be3f0a9..dbf87ac5252b 100644
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -1166,12 +1166,17 @@ static int kvm_loongarch_cpucfg_set_attr(struct kvm_vcpu *vcpu,
- 
- 		/* All vCPUs need set the same PV features */
- 		spin_lock(&kvm->arch.pv_setting_lock);
--		if ((kvm->arch.pv_features & LOONGARCH_PV_FEAT_UPDATED)
--				&& ((kvm->arch.pv_features & valid) != val)) {
-+		if ((kvm->arch.pv_features & valid) == val) {
-+			spin_unlock(&kvm->arch.pv_setting_lock);
-+			return 0;
-+		}
-+
-+		if (vcpu->arch.has_run) {
- 			spin_unlock(&kvm->arch.pv_setting_lock);
- 			return -EINVAL;
- 		}
--		kvm->arch.pv_features = val | LOONGARCH_PV_FEAT_UPDATED;
-+
-+		kvm->arch.pv_features = val;
- 		spin_unlock(&kvm->arch.pv_setting_lock);
- 		return 0;
- 	default:
-@@ -1858,6 +1863,10 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
- 	int r = -EINTR;
- 	struct kvm_run *run = vcpu->run;
- 
-+	/* Mark this VCPU ran at least once */
-+	if (!vcpu->arch.has_run)
-+		vcpu->arch.has_run = true;
-+
- 	if (vcpu->mmio_needed) {
- 		if (!vcpu->mmio_is_write)
- 			kvm_complete_mmio_read(vcpu, run);
+LoongArch: KVM: Allow to set pv_feature until vCPU run
 
-base-commit: df2908090cda368b01ff43709f51890076c56157
--- 
-2.39.3
+This commit modifies the KVM LoongArch PV feature configuration so that
+features can be configured multiple times until the vCPU has run, which
+helps with VM migration.
 
+> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+> index 8e028be3f0a97..dbf87ac5252b6 100644
+> --- a/arch/loongarch/kvm/vcpu.c
+> +++ b/arch/loongarch/kvm/vcpu.c
+> @@ -1166,12 +1166,17 @@ static int kvm_loongarch_cpucfg_set_attr(struct k=
+vm_vcpu *vcpu,
+> =20
+>  		/* All vCPUs need set the same PV features */
+>  		spin_lock(&kvm->arch.pv_setting_lock);
+> -		if ((kvm->arch.pv_features & LOONGARCH_PV_FEAT_UPDATED)
+> -				&& ((kvm->arch.pv_features & valid) !=3D val)) {
+> +		if ((kvm->arch.pv_features & valid) =3D=3D val) {
+> +			spin_unlock(&kvm->arch.pv_setting_lock);
+> +			return 0;
+> +		}
+
+[Severity: High]
+Can conflicting configurations silently overwrite the shared
+kvm->arch.pv_features without returning an error here, given the removed
+LOONGARCH_PV_FEAT_UPDATED cross-vCPU enforcement logic?
+
+> +
+> +		if (vcpu->arch.has_run) {
+>  			spin_unlock(&kvm->arch.pv_setting_lock);
+>  			return -EINVAL;
+>  		}
+
+[Severity: High]
+Since kvm->arch.pv_features is a VM-wide state, is it safe to use the
+per-vCPU guard vcpu->arch.has_run here in kvm_loongarch_cpucfg_set_attr()?
+
+If a userspace process configures VCPU0 with features A and starts it
+(vcpu0->arch.has_run becomes true), and while VCPU0 is running, userspace
+configures VCPU1 (which has not run yet) with conflicting features B:
+
+Because vcpu1->arch.has_run is false, wouldn't the ioctl succeed and
+overwrite kvm->arch.pv_features with B?
+
+This would override VCPU0's configuration and mutate the shared state
+while VCPU0 is running, which can lead to a state-machine mismatch and
+data race since kvm->arch.pv_features is accessed locklessly by running
+vCPUs.
+
+> -		kvm->arch.pv_features =3D val | LOONGARCH_PV_FEAT_UPDATED;
+> +
+> +		kvm->arch.pv_features =3D val;
+>  		spin_unlock(&kvm->arch.pv_setting_lock);
+>  		return 0;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260910022118.2339=
+780-1-maobibo@loongson.cn?part=3D1
