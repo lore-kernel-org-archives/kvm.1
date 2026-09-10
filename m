@@ -1,81 +1,71 @@
-Received: from mta1.migadu.com (out-133.mta1.migadu.com [95.215.58.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8AE380FF5
-	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 03:06:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.133
+Received: from outbound.baidu.com (mx21.baidu.com [220.181.3.85])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 5A80230D3E8;
+	Thu, 10 Sep 2026 03:27:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.181.3.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789009582; cv=none; b=K/Dtd7vJ1spAUqqnoCO0JIRitfh5IMtQYqWakCYBkL0h/3ZxCq0d5Q6jv8uiw+BdLzH1lzZTfx48hEBXyDY/V+DBWGLRbDLkjFSE5HNupvAgId/8cnGB6WVpPshm33R2J2z5nYElt69ghOw4UKvU769BSUzDde1D+KcL469faOU=
+	t=1789010832; cv=none; b=B97Cds4m30VXszDXpab4m16HXR+Rpp1HJAIecjbCKnsv/M6sQbqc1XatdcSHcbF9F9KrNY0g61t3xQVDX5l7uJN63mx4nXcAtp1zfJBTIBDejJQyMKXOYH1u/PFaLEoMSC1eeD9cFhfHVX9VVT1OoZMu4OKDCr+7ciURaUQuUu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789009582; c=relaxed/simple;
-	bh=jF2jIwRiFm/34mwc93YKOP3RWvChYPHbleFmFoZs/g0=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=mKoXjl9EWnGn5N8sfkdZIuzPy1mMf+ZHuljrLrExGhSo8hw3558T1fn666nc0ufcC7ZyGMsVanHCKKD7GFPVoqh+xAIIdJ0n3ki6YBswtj60gTLHiMg49yCwcxfxRpmuGtcDhrQEHENn6E6nzPUhzn+aUZMv4I9fxwIc/bpJeWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vgH5wo9+; arc=none smtp.client-ip=95.215.58.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789010832; c=relaxed/simple;
+	bh=/57swxbDPD9CIzmdqxln9B7ejn8OZf1LvKv8n2SX6Ww=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=YIzfXBUMwzDMoqIm0Mmg/7JqqEMi5fOvP3EKJajnrwveU7aIoiU7o+OCSoNoDrhIoHqRsKZzwX5VgofnWAD+03H6Zp5pSfbraQ9sMjzm/tTumCg9CiptPXLcPORFtnj7vv9snoxPB2xWHi3Ju3nSCUyL2PSbWCBuE68s+YjdkMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b=S+wdeqg/; arc=none smtp.client-ip=220.181.3.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vgH5wo9+"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=jF2jIwRiFm/34mwc93YKOP3RWvChYPHbleFmFoZs/g0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789009566; v=1; x=1789614366;
- b=vgH5wo9+oT82lp7DcDYEZ28+NtkZ3zBUXfVeeLjDtP9EZj9RY7L4h9OfFTEOSEbt+TkxIIYp
- CGb91tXW9QOAK7iX7NqiJQRm2OB20n2YO32itMwJAaUIPtEZq1lB41wZeZyRBbBr1pQ/TcGS8vu
- fKiP1LHXLEI6rGlBOajGnBHY=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 40f81e90980f7168;
-	Thu, 10 Sep 2026 03:06:06 +0000
-X-Mizu-Trace-ID: 40f81e90980f7168
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <fb08279a-eb1b-44b1-b4af-f354fb81f112@linux.dev>
-Date: Thu, 10 Sep 2026 11:06:02 +0800
+	dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b="S+wdeqg/"
+X-MD-Sfrom: lirongqing@baidu.com
+X-MD-SrcIP: 172.31.3.12
+From: "Li,Rongqing" <lirongqing@baidu.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: Paolo Bonzini <pbonzini@redhat.com>, "kvm@vger.kernel.org"
+	<kvm@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Yanfei Xu <yanfei.xu@bytedance.com>
+Subject: =?gb2312?B?tPC4tDogWz8/Pz9dIFJlOiBbUEFUQ0hdIEtWTTogaXJxY2hpcDogYWxsb2Nh?=
+ =?gb2312?Q?te_routing_entries_in_chunks?=
+Thread-Topic: [????] Re: [PATCH] KVM: irqchip: allocate routing entries in
+ chunks
+Thread-Index: AQHdP4nPMJSwZhpxoEya8LeDdyKjobbGckGAgACvyzA=
+Date: Thu, 10 Sep 2026 03:26:54 +0000
+Message-ID: <7d6d2449013a4435b71148177820e26d@baidu.com>
+References: <20260908120133.2381-1-lirongqing@baidu.com>
+ <aqH6YcHWk_GmJlqF@google.com>
+In-Reply-To: <aqH6YcHWk_GmJlqF@google.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: cui.tao@linux.dev, WANG Xuerui <kernel@xen0n.name>, kvm@vger.kernel.org,
- loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] LoongArch: KVM: Code cleanup with MSI intterupt
- injection
-To: Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>
-References: <20260909083259.1910290-1-maobibo@loongson.cn>
-From: Tao Cui <cui.tao@linux.dev>
-In-Reply-To: <20260909083259.1910290-1-maobibo@loongson.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
+	s=selector1; t=1789010816;
+	bh=/57swxbDPD9CIzmdqxln9B7ejn8OZf1LvKv8n2SX6Ww=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
+	b=S+wdeqg/inVkLnNgRLpIa4ZoK3LYiwIEy1wKTmSG8telaJgDrmKK2F2lJy9D4W8qp
+	 f/v9N+Np8+Y7QNotwNr857VTftfivwPGruSK9ZhcwNaNosNyY+mdrie3roFVy3xZMr
+	 UEKXcLH9l5EJELeAjwvrAq99PGNJcTB31KXS9Mm7Qa4kMjxuJT2WkaIgkjPJ5Wi9uU
+	 OmTNxojvX1/AihSjWETgSZHtnx+PSFES0ZEMe+ZKUEkRI6MIP3FXCbUHBsg+NYfZLn
+	 pa9B+nVlBGZhOCjp0zyxLS0xwrTdKUuzmaLb3X7WBEWj/rwSOzAvr3FHsjjWL+sVhF
+	 nG/E/zn/c3PQw==
 
-Hi, Bibo
-
-在 2026/9/9 16:32, Bibo Mao 写道:
-> Here is to remove some unnecessary parameter checking when injecting
-> MSI interrupt, include MSI level parameter and vcpu::arch::dmsintc_state
-> NULL pointer etc.
-> 
-> Bibo Mao (2):
->   LoongArch: KVM: Remove parameter line when inject MSI
->   LoongArch: KVM: Remove duplicated checking with DMSI irq injection
-> 
->  arch/loongarch/include/asm/kvm_dmsintc.h |  3 +--
->  arch/loongarch/include/asm/kvm_pch_pic.h |  2 +-
->  arch/loongarch/kvm/intc/dmsintc.c        | 19 +++----------------
->  arch/loongarch/kvm/intc/pch_pic.c        |  6 +++---
->  arch/loongarch/kvm/irqfd.c               |  6 +++---
->  5 files changed, 11 insertions(+), 25 deletions(-)
-> 
-> 
-> base-commit: df2908090cda368b01ff43709f51890076c56157
-
-The series looks good to me.
-
-Reviewed-by: Tao Cui <cuitao@kylinos.cn>
-
-Minor question: kvm_set_msi() now returns -EINVAL for !level instead
-of -1. Since MSI is edge-triggered, returning 0 to ignore a deassert
-would also work, though nothing looks at the return value today.
-
-
+DQoNCj4gUGxlYXNlIGxvb2sgYXQgWWFuZmVpJ3Mgc2VyaWVzIGFuZCBoZWxwIGNvbWUgdG8gYW4g
+YWdyZWVtZW50IG9uIGhvdyBiZXN0IHRvIGZpeA0KPiB0aGlzLiAgSSBhbSB0cnlpbmcgdG8gZ2V0
+IHRvIFlhbmZlaSdzIHNlcmllcywgYW5kIG5vcm1hbGx5IHdvdWxkIHRha2UgYSBjbG9zZSBsb29r
+DQo+IGF0IGJvdGgsIGJ1dCBJIGFtIGV4dHJlbWVseSBzaG9ydCBvbiBjeWNsZXMgYXQgdGhlIG1v
+bWVudC4NCj4gDQo+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC8yMDI2MDUyNTAzNTI0Mi4x
+MDcyNjQtMS15YW5mZWkueHVAYnl0ZWRhbmNlLg0KPiBjb20NCj4gDQpIaSBTZWFuLA0KDQpUaGFu
+a3MgZm9yIHBvaW50aW5nIG1lIHRvIFlhbmZlaSdzIHNlcmllcy4gSSBhZ3JlZSB0aGF0IGJvdGgg
+YXBwcm9hY2hlcw0KYWltIHRvIHJlZHVjZSB0aGUgYWxsb2NhdGlvbiBvdmVyaGVhZCBpbiBLVk1f
+U0VUX0dTSV9ST1VUSU5HKCkuDQoNCk9uZSBtYWluIGNvbmNlcm4gd2l0aCB1c2luZyBrdmFsbG9j
+KCkgZm9yIHRoZSBlbnRpcmUgcm91dGluZyBlbnRyeSBhcnJheSBpcw0KdGhhdCwgdW5kZXIgc2V2
+ZXJlIG1lbW9yeSBmcmFnbWVudGF0aW9uLCBpdCBtYXkgZmFsbCBiYWNrIHRvIHZtYWxsb2MoKS4N
+ClRoZSB2bWFsbG9jKCkgcGF0aCBjYW4gaGF2ZSByZWxhdGl2ZWx5IGhpZ2ggYW5kIGxlc3MgcHJl
+ZGljdGFibGUgb3ZlcmhlYWQsDQplc3BlY2lhbGx5IHdoZW4gcm91dGluZyB0YWJsZXMgYXJlIHVw
+ZGF0ZWQgZnJlcXVlbnRseSB3aGVuIGd1ZXN0IE9TIGlzDQpydW5uaW5nIGlycWJhbGFuY2UuDQoN
+ClRoYW5rcw0KW0xpLFJvbmdxaW5nXSANCg==
