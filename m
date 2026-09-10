@@ -1,136 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126ED39E176;
-	Thu, 10 Sep 2026 11:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD873DE431
+	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 11:09:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789038481; cv=none; b=WIC6dQ9zt5At8+h7CilBC+/+6fHKL7IrbPPIB/ae0w55xNk0m8ilCY6jNo6sQCdUKGja49/RlZ/jiFAYalWPHa/BzOyehpEFpn8Yx39vNE9WJSYh5UchwZ9JaKXCH5mtTkIkykyj1Fb7cCr8Rq5FhaklhpMb+oP0EuGEFhcFW3Q=
+	t=1789038592; cv=none; b=dfR9bTjCUST1K3nF2ykCdRoqVa+D7lNuxJS0lTFgocaGW4kdH2t7UrNAEQ5/6V5GvCWp0CaYK58mMHQkqpWuQgNi9sYHveefDRY83nHIFRk/3fSDmr28WBj5KAC0T64s1tannGFGYgVF2C/K2ZojL3oHFkb4TqDtXUif19bprYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789038481; c=relaxed/simple;
-	bh=84+oR30GxZWMS2DW4eRhUhMxgbLN7VR3M8VVQ5tUTJU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EjkaeM0nljiXKy3MK1ZkbG4gxiVuitqGoPWxBW3xZSQ0/J4pZF9WqtPd01H6KLPOyOAIiATQt3W3JLZN/LG1qt6RrSsq2HAe68XBtRATTwV+Fq7LmZx0qjRnoHbicuJ79LYptP0RXveI5cLwQO6ICdqBJwB8fe2yg0Jb4EHmPa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UfY+BBiU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789038592; c=relaxed/simple;
+	bh=Eo81uOdJ+VH0txQFT7CDWDmJC3Wu6IIZvi7ALvkgXzU=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=hvypzMrllt63Hb2QU9t7UjBq4M9Gl8yvToljDmxt6KlaSHiXxp7trJWdxHFNRwHt16sMbferQLsafSEPCYZtKrxEbAHFG2Zk9vEaLDaNXmHL8hfFVabjYmNuvP3MWscPn4h2qqh91hvPD+6sDxgy5D6SENBtnNqqEe42Sllt3iM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ajYJdw4t; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UfY+BBiU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6AB01F000FF;
-	Thu, 10 Sep 2026 11:07:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789038479;
-	bh=pCce3z8dCVOONWkuUk8CK4oY+wdLNQBPcWJtewhDSRE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UfY+BBiU3GmNgRgmnmlEVQehpWmEe6l86q3IxlwNWdQOeajZTek9GZluUhB+HWPpl
-	 ZUMpUSW4rTr6yoabrHmMs71qKbsBXqcJWBE7a0xczru8ePO5yh+L3rzSheSHvNPqEW
-	 5jc21Yg2bOquawBDYkm2pXvYjuB/fLxQFnAA9Tlis1zCXUW5VaQzOH/bXisEQMdeGo
-	 0eqTHhaNNVQgs2/X7Krzkzc18IAblcwPYjYpiQA62vH+OP0H7lRaN408h2QTybMQ78
-	 yoWNU+D7kzbTs08abGRCeZbCDNqXI7WXPYPJeOyz2c4hkikZnOCWGCkWydxGtAFrOg
-	 QcND5/OLUro9g==
-Message-ID: <4f90d69e-e1a5-40ee-a3ef-38e38c1efb8a@kernel.org>
-Date: Thu, 10 Sep 2026 13:07:43 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ajYJdw4t"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cea4bfd1so861805a12.0
+        for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 04:09:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789038588; x=1789643388; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=8QbTTWk563brFKzUulM5hzJdIlUHhbe3RJ1vb+Th/iE=;
+        b=ajYJdw4teckvPm1NNseabla1HsidOImL0DbGNDMgfy+nS9LhksOvln/KTRyuC2PlML
+         BGmBJvnDvf2mEzl/XXGbRisGAXunAFN2FVU5gcyXvcNXYDmvJV9swEdFRoyXsWqaZKzs
+         STlZsZCeo7rdyNzeePAUodffnccLCf1WUMvABUQemnP/D0Bo+gE10erJSXZ+QeKUUWPb
+         DKNGcpIQPQAOocNzKoH4JuUPAQJz9goxqnpcJMUn+/VYvP/yxHx5xDU9CoHA+TjF1axk
+         RHDAoYhYAPlmL8e3drNTe92czh4tQ7VJfz4hEMppUJ04gr++U81qw/Yk55yeaqjoFrA8
+         NTvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789038588; x=1789643388;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8QbTTWk563brFKzUulM5hzJdIlUHhbe3RJ1vb+Th/iE=;
+        b=sQnKPbAmGK26lIzUBNrhkZBhZUVXps2oet5tfjj7Xtbtk2lecO87W+cI+uk0fjaxY6
+         33gcZt4SfXeCyBlaaqa+0wBIHEiTItyKh7sriHbDRKvTgLaT2hfr6CG0PR5c4WVZpwoA
+         5JyEn5juYdbLtLVUe/ekq7L/rFmm+IMtBaxU7wL5thhG6+mdqixCU/vqQDPcP8NAvtXS
+         dxU647ChcfUa/Q58l1tKjP+9C+VC8wS2Nru2h3W1py92wYSbthQ+Pe5jSGcwUcqwbbl5
+         FtAvCdlT+aqvwz0oElKUEDG8GupmvWQRYMSALmuXP/5W+n0iKzoj4JvvZpiYYUuwZbTG
+         HGlw==
+X-Forwarded-Encrypted: i=1; AKwUvBxJ9hwOdePPrWwjZ4oZMy+pNlcGykhcIQb4FDcJ+7PBzzKhsTD5nrpEzNTex6317GLdwaw=@vger.kernel.org
+X-Gm-Message-State: AFuF++kRYro3ZoFwv/TloiGfl1wj5mPZKKH+mZYX/sn50GvxvGCQCi/J
+	gczeZBktcPGoy6EFJw5I0jmsge9VlN56KaaDJIkaLPOc6hZjkP6I7Ws0
+X-Gm-Gg: AYBFou1XplgGiisPJIGGGb3pTyMQY91TK2DQpwnazW3P3ryYjO+SVcbJ3YDZSFDzBpe
+	NnWH8pim5d3fRjOUYEMH515arkaETKKkzjbIOwZxoWdoOVH+YpuGTF5D4r8l4lESDcBzNrxlt+A
+	21/qZZ5PhnBs1XEOIhWMhujQe3V4/OMaOxl/DgMqXJgFPt3NpZufvm7Dwf2R7v2sv9s5H8mZ8It
+	me+m7pBjdKiIe1kaxAQRq8EuFDcJ2raEOyvg3C+KlXef13h9RgSx71zDP8hXR4BYvLjafAMp4nO
+	YmfJpP0ibR5aWLux6/zrvMF2zIZPnDS8wcOyITCLv4E4ZcaTN39jpSPVBb4En5UuEuTPFksGcF9
+	WO9RC2U5ME6KG4t7Glq9Ssahpv0f+sZdlJJMcUWiCJS9ztsuMWecaPQPuY6jXuuKFCQHbJY2SbR
+	NjFrCgu8vIQkYyBINA25+lSWu5icgYu3dqzzz3f++YI0e6vF3pc523EoMqrbg6Ar+FSRlbnadDE
+	ofpQDYUARLUwUfNnZxbNAM8rLw9JKb7wg4Bi/EcFE5JDMOhKwvk9pM=
+X-Received: by 2002:a17:90a:ec8b:b0:399:1b64:e0d7 with SMTP id 98e67ed59e1d1-39d70bb1bd0mr11082578a91.19.1789038588475;
+        Thu, 10 Sep 2026 04:09:48 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1432424d27asm68881202c88.2.2026.09.10.04.09.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2026 04:09:47 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, Atish Patra <atish.patra@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>, David Hildenbrand <david@kernel.org>, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, loongarch@lists.linux.dev, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, Itaru Kitayama <itaru.kitayama@fujitsu.com>, Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 11/20] KVM: selftests: Initialize vm->memslots[] with invalid memslots during creation
+In-Reply-To: <20260902164123.2546762-12-seanjc@google.com>
+Date: Thu, 10 Sep 2026 16:39:02 +0530
+Message-ID: <7bkt1hyp.ritesh.list@gmail.com>
+References: <20260902164123.2546762-1-seanjc@google.com> <20260902164123.2546762-12-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v3 15/21] x86: mm: skip collapse_pud_page() when
- CONFIG_X86_DIRECT_GBPAGES disabled
-To: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
- Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
- <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonas Bonn <jonas@southpole.se>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- Stafford Horne <shorne@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
- linux-openrisc@vger.kernel.org
-References: <20260902-dummy_ptxp3-v3-0-5d8f5b17c25c@arm.com>
- <20260902-dummy_ptxp3-v3-15-5d8f5b17c25c@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260902-dummy_ptxp3-v3-15-5d8f5b17c25c@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 9/2/26 13:56, Yeoreum Yun wrote:
-> The behaviour of pXd_page() will change with generic compile-time folded
-> page tables by disallowing its use and triggering a compile-time error
-> when it's used improperly, ensuring that the actual pXd_page() is used
-> instead.
-> 
-> To prepare fot that, skip collapse_pud_page() when
+Sean Christopherson <seanjc@google.com> writes:
 
-s/fot/for/
+> Initialize vm->memslots[] with an invalid memslots value during very
+> initial VM creation so that failure to configure the core memory regions
+> generates an immediate assert instead of potential weirdness, e.g. if slot0
+> is coincidentally valid.  This will also allow hardening the region APIs to
+> guard overriding a region's memslot multiple times.
+>
 
-Agreed that Dave's patch is better :)
+Sure. Looks good overall. Please feel free to add:
 
--- 
-Cheers,
-
-David
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
