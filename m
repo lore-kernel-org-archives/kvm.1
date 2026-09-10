@@ -1,128 +1,192 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D8336EAA4
-	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 16:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBE53B38BF
+	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 16:46:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789058778; cv=none; b=eIk/wth62QPdtpGNmU4UlBCijnQ4ky9Xyt6zV9hm5IBXM3HhUjDX8XNwBUfWob7K/RRq3VKLZvQeQKIPJkQXWWATHTG5bXCfTdj3tCJRUcrIWqtfA9SAH4N6wncShsfmSgKQ6ubTg54GXQ5AlLhAbt/eWWy+msH2s2apSdYAn6M=
+	t=1789058801; cv=none; b=HBXANDaevyyhGlQcA9jh2TIde9V0RHsMZu1BEGoSZ9msttgbBwo8P4/C7uNwUUInF6+cv/Hkw8YWp9pHDXH1UizUgn4qDwF6zVeEPLy4/RgQuHGdxEghjeiC8lMAcQMFKXF4R0FAJu4tORSV54+YrBUtau8alpJqJtbVYBFvJqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789058778; c=relaxed/simple;
-	bh=qwzvrooIaFmIrsAn3/12pZV97iu+crcrRCs4qw8jnN0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=HPFPD3PIPI6onKOn8k7jNrnEXppHn+rP5uZCz79JW+zxCYP+pxGsrFO0whh1pqp3q/KPonnmM1OHeyX1s5Zr0dz6Mu7ZuvP37dz+1LHaMPtiTUm3YEGkJoEv7GK2KuQGmXym9AiS8DX3OP74+suN1iO7Q0VqMANeuYZO4mdR9Do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ETYNVEQd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789058801; c=relaxed/simple;
+	bh=MtoWeA55Bs2YjWy/YgwYvBdXP31YZOiX0PTrX4B18d8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=rubbA78RJKSQMr9yRJ2G8ZGzPiVVpAh06c1SX6N82+Gbyckld0IY75IJSkcoE4bA9j2tRVT/yn9ixMRWUOQXVuIsghbsIYLR0iYpbq8TQD++jccqFNxBPs4F0NPfh/LApJKI/fHq4YgeknkrhX6NlH54bUOysBQ+q/dhTxbqrgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aG7d8IC4; arc=none smtp.client-ip=209.85.210.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ETYNVEQd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A61E1F000FF;
-	Thu, 10 Sep 2026 16:46:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789058771;
-	bh=ObZIpnME0U8IbYU2DzSosQKUJ+lP2Xh9Z9Pfz0/SNs8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ETYNVEQdhNd05/aenA+town7Yko5aavK5xGXtJ7MPDxgpTb1CQ3yf/KKKRnLclo64
-	 b08KYPmQOeG2+i4215CEkXwNK5RKoTjt3BvUgAgTFAooHvUpo7IO+qy0aUp+4v/WFR
-	 K13bLnS9eyCXxpgecglRsbXKadpR1f3Drn612lfr+6VjxzXy7V036URn8Nl9BajDTs
-	 rRPteSP0xs3Ujbu/Soj/l90ZIQOhotx5znqDpwsqoXCdAud0Wfqyi9o80mL9gS+RJ5
-	 22hK6Umd/WGhGH9Rq3VbTx8HUxnedQi7v572xesXVS8abSpt3bw0mTK3yj/z1eOcYj
-	 l1JJLniTINxBw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC 09/10] KVM: x86: Add guarded_by annotations for
- kvm_arch, kvm_hv, and ioapic
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Marco Elver" <elver@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260910162343.4092060-10-elver@google.com>
-References: <20260910162343.4092060-1-elver@google.com>
- <20260910162343.4092060-10-elver@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 10 Sep 2026 16:46:11 +0000
-Message-Id: <20260910164611.8A61E1F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aG7d8IC4"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-86a6f4ba619so722727b3a.1
+        for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 09:46:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789058793; x=1789663593; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jsW6Qm+aSslCH5e3RaevgVxgzzrweE8oFKyJCoFEERE=;
+        b=aG7d8IC4FF0PMgQfjYp8hrJvorS062Yoo7NoVchEAOHoh673DnAYxMyvi37c5au/AQ
+         fCjRSXGHsat/LcTdjl4trxkVvGH7VvP4yn9isXze+Z0r/1vmgwA4vSMPsgY1OkifSM6C
+         /NHNlUPyASOS6FgpDGhxLN1NJ/8ifc137xNZ4Md3Lg/JelldGw8v6TbXadGTeo8WbC83
+         79p1ZlnomWxKZg36O7jilSMyL2Z9oJZq2nNNPa6LSpSoQjhswQGGCyfAbLxSx7fGLQC8
+         NGrHjScBkMUkiBsG5RScySCu00MyRPdBuOaPrcKWE0pUxmyLdArPyS/b1rSA08KqDwFP
+         Gk3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789058793; x=1789663593;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jsW6Qm+aSslCH5e3RaevgVxgzzrweE8oFKyJCoFEERE=;
+        b=AT+PUnyCmra1fmF+sxEtSGHsmDBXqTtGHJpPDrffEX/lJV7UAwuS811vlxRkxaDU6Z
+         ma4J6eMhJKi7dIwrnKGOvH7UQBape9nODNhBvKXYK5q1KGPBo3CiacIbJIRNxEEIvgyG
+         9yHfpzuh2KM6UkuPAmZdTnv5f+MZuIUS25p9AoLSDc3iO+Y5LBmiXcGoEzxyq/pLebke
+         5ISoCLobDCOboY91S0x2uZsELKtvx0Jxb/JEMMvhgmPP+tKniL1Pfiyf4FKFki6T/8hk
+         DiQswiEVYcKjiWXdgRav45Z0qQxqTxOMPtiM1gaCWGAnRKCJLqCteFfERJedQBaRkti/
+         YeTg==
+X-Forwarded-Encrypted: i=1; AKwUvBxm1/9oIwrWS4qgfk11QvBdHR2W2X5EyZBtfvpFVJM9JIwxF4dB82vY8EliN1mM7/7dNM4=@vger.kernel.org
+X-Gm-Message-State: AFuF++n29lYj3d4+z7HB3l5T1sIePpCbZ/L1rpYJVix9M9sDUHdJ07WE
+	Lsj5TrWX8ztPNkzMQqsgoA4Bgmb/bS7SxwpSK4ZsCCzygzr11adQTT3O1QQN+pf68Pfk+qqc3tF
+	2MSRrDQ==
+X-Received: from pgte26.prod.google.com ([2002:a65:689a:0:b0:cc4:bede:3dc7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:b40a:b0:3d3:ae1f:d7f3
+ with SMTP id adf61e73a8af0-3da3a0763d2mr68289720637.19.1789058792902; Thu, 10
+ Sep 2026 09:46:32 -0700 (PDT)
+Date: Thu, 10 Sep 2026 09:46:32 -0700
+In-Reply-To: <20260910162343.4092060-2-elver@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260910162343.4092060-1-elver@google.com> <20260910162343.4092060-2-elver@google.com>
+Message-ID: <aqLe6FcPZIgj2RA6@google.com>
+Subject: Re: [PATCH RFC 01/10] KVM: x86/pmu: Acquire SRCU in
+ pmc_is_event_allowed() to protect filter lookup
+From: Sean Christopherson <seanjc@google.com>
+To: Marco Elver <elver@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Thu, Sep 10, 2026, Marco Elver wrote:
+> Dereferencing kvm->arch.pmu_event_filter via srcu_dereference() requires
+> holding kvm->srcu to guard against concurrent filter replacement and
+> freeing by kvm_vm_ioctl_set_pmu_event_filter().
+> 
+> Counter reprogramming can reach pmc_is_event_allowed() without holding
+> kvm->srcu. Specifically, on AMD SVM, toggling EFER.SVME via KVM_SET_SREGS
+> or KVM_SET_SREGS2 triggers synchronous counter reprogramming outside of
+> any SRCU read-side critical section:
+> 
+>   kvm_vcpu_ioctl(KVM_SET_SREGS{,2})
+>     kvm_vcpu_ioctl_x86_set_sregs{,2}()
+>       __set_sregs_common()
+>         kvm_x86_call(set_efer)()
+>           svm_set_efer()
+>             svm_pmu_handle_nested_transition()
+>               __svm_pmu_handle_nested_transition(..., defer=false)
+>                 __kvm_pmu_reprogram_counters()
+>                   kvm_pmu_handle_event()
+>                     reprogram_counter()
+>                       pmc_is_event_allowed()
+>                         srcu_dereference(kvm->arch.pmu_event_filter, &kvm->srcu)
+> 
+> If userspace concurrently updates the filter (KVM_SET_PMU_EVENT_FILTER),
+> a concurrent free and subsequent use-after-free is possible.
+> 
+> Protect filter lookups directly in pmc_is_event_allowed():
+> 1. check rcu_access_pointer() first for the common fast path;
+> 2. acquire guard(srcu)(&kvm->srcu) only when a filter is present;
+> 3. drop redundant outer srcu_read_lock() in kvm_pmu_trigger_event().
+> 
+> Found with Clang context analysis.
+> 
+> Fixes: a02a25a65246 ("KVM: x86/pmu: Reprogram Host/Guest-Only counters on nested transitions")
+> Signed-off-by: Marco Elver <elver@google.com>
+> ---
+>  arch/x86/kvm/pmu.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+> index a7d60c8785cd..3ad1e696edca 100644
+> --- a/arch/x86/kvm/pmu.c
+> +++ b/arch/x86/kvm/pmu.c
+> @@ -536,6 +536,11 @@ static bool pmc_is_event_allowed(struct kvm_pmc *pmc)
+>  	struct kvm_x86_pmu_event_filter *filter;
+>  	struct kvm *kvm = pmc->vcpu->kvm;
+>  
+> +	if (!rcu_access_pointer(kvm->arch.pmu_event_filter))
+> +		return true;
+> +
+> +	guard(srcu)(&kvm->srcu);
+> +
+>  	filter = srcu_dereference(kvm->arch.pmu_event_filter, &kvm->srcu);
+>  	if (!filter)
+>  		return true;
+> @@ -1132,7 +1137,7 @@ static void kvm_pmu_trigger_event(struct kvm_vcpu *vcpu,
+>  	DECLARE_BITMAP(bitmap, X86_PMC_IDX_MAX);
+>  	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+>  	struct kvm_pmc *pmc;
+> -	int i, idx;
+> +	int i;
+>  
+>  	BUILD_BUG_ON(sizeof(pmu->global_ctrl) * BITS_PER_BYTE != X86_PMC_IDX_MAX);
+>  
+> @@ -1145,14 +1150,12 @@ static void kvm_pmu_trigger_event(struct kvm_vcpu *vcpu,
+>  			     (unsigned long *)&pmu->global_ctrl, X86_PMC_IDX_MAX))
+>  		return;
+>  
+> -	idx = srcu_read_lock(&vcpu->kvm->srcu);
+>  	kvm_for_each_pmc(pmu, pmc, i, bitmap) {
+>  		if (!pmc_is_event_allowed(pmc) || !cpl_is_matched(pmc))
+>  			continue;
+>  
+>  		kvm_pmu_incr_counter(pmc);
+>  	}
+> -	srcu_read_unlock(&vcpu->kvm->srcu, idx);
+>  }
 
-New issues:
-- [Low] Mixing goto-based error handling and scope-based cleanup in the sam=
-e function.
+I would very strongly prefer to fix this in __set_sregs_common():
 
-Pre-existing issues:
-- [High] Lockless traversal of the global vm_list can race with VM creation=
- and destruction.
---
+diff --git a/arch/x86/kvm/regs.c b/arch/x86/kvm/regs.c
+index 8f66438989e4..2ce16e96d796 100644
+--- a/arch/x86/kvm/regs.c
++++ b/arch/x86/kvm/regs.c
+@@ -571,9 +571,10 @@ static bool kvm_is_valid_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
+ static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs,
+ 			      int *mmu_reset_needed, bool update_pdptrs)
+ {
+-	int idx;
+ 	struct desc_ptr dt;
+ 
++	guard(srcu)(&vcpu->kvm->srcu);
++
+ 	if (!kvm_is_valid_sregs(vcpu, sregs))
+ 		return -EINVAL;
+ 
+@@ -605,13 +606,9 @@ static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs,
+ 	*mmu_reset_needed |= kvm_read_cr4(vcpu) != sregs->cr4;
+ 	kvm_x86_call(set_cr4)(vcpu, sregs->cr4);
+ 
+-	if (update_pdptrs) {
+-		idx = srcu_read_lock(&vcpu->kvm->srcu);
+-		if (is_pae_paging(vcpu)) {
+-			load_pdptrs(vcpu, kvm_read_cr3(vcpu));
+-			*mmu_reset_needed = 1;
+-		}
+-		srcu_read_unlock(&vcpu->kvm->srcu, idx);
++	if (update_pdptrs && is_pae_paging(vcpu)) {
++		load_pdptrs(vcpu, kvm_read_cr3(vcpu));
++		*mmu_reset_needed = 1;
+ 	}
+ 
+ 	kvm_set_segment(vcpu, &sregs->cs, VCPU_SREG_CS);
 
-commit b3fea266e46bae40374748855ac1c207f8a8f74f
-Author: Marco Elver <elver@google.com>
-
-    KVM: x86: Add guarded_by annotations for kvm_arch, kvm_hv, and ioapic
-   =20
-    Add __guarded_by annotations to a subset of fields across x86 state
-    (struct kvm_hv, struct kvm_arch, and struct kvm_ioapic) where the
-    protecting locks reside in the same struct scope. Mark deliberate
-    lockless updates with data_race().
-
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index de7c6eb1a64f5..af03911f0c4fa 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -9813,8 +9813,8 @@ int kvm_arch_enable_virtualization_cpu(void)
->  			 * you may have some problem.  Solving this issue is
->  			 * left as an exercise to the reader.
->  			 */
-> -			kvm->arch.last_tsc_nsec =3D 0;
-> -			kvm->arch.last_tsc_write =3D 0;
-> +			data_race(kvm->arch.last_tsc_nsec =3D 0);
-> +			data_race(kvm->arch.last_tsc_write =3D 0);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does this lockless traversal=
- of
-the global vm_list in kvm_arch_enable_virtualization_cpu() race with VM
-creation and destruction?
-
-If a user concurrently creates a VM (kvm_create_vm) or destroys a VM
-(kvm_destroy_vm) while CPU hotplug is running via kvm_online_cpu(), the
-list_add() or list_del() executed under kvm_lock will race with this traver=
-sal.
-This can potentially lead to list corruption, use-after-free, or infinite
-loops.
-
-While this patch masks static analyzer warnings by adding data_race()
-annotations here, shouldn't the broader list traversal safety be addressed?
-
-[ ... ]
-
-> @@ -9927,8 +9927,8 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long=
- type)
->  	kvm->arch.enable_pmu =3D enable_pmu && !kvm->arch.has_protected_pmu;
-> =20
->  #if IS_ENABLED(CONFIG_HYPERV)
-> -	spin_lock_init(&kvm->arch.hv_root_tdp_lock);
-> -	kvm->arch.hv_root_tdp =3D INVALID_PAGE;
-> +	scoped_guard(spinlock_init, &kvm->arch.hv_root_tdp_lock)
-> +		kvm->arch.hv_root_tdp =3D INVALID_PAGE;
-
-[Severity: Low]
-Does introducing scoped_guard() here mix scope-based cleanup with goto-based
-error handling in the same function?
-
-kvm_arch_init_vm() already relies on goto labels (e.g., goto out_uninit_mmu,
-goto out_cleanup_page_track) for its error paths. According to the subsystem
-coding standards, a function must exclusively use either goto-based cleanup=
- or
-scope-based cleanup helpers, but never mix both to prevent confusing owners=
-hip
-semantics and lifecycle bugs.
-
-Could this be kept as goto-based, or should the entire function be converted
-to scope-based cleanup?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260910162343.4092=
-060-1-elver@google.com?part=3D9
+>  
+>  void kvm_pmu_instruction_retired(struct kvm_vcpu *vcpu)
+> -- 
+> 2.55.0.1003.g10538fe699-goog
+> 
