@@ -1,110 +1,105 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D81560ABF
-	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 17:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CD75505D1
+	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 17:59:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789063008; cv=none; b=WPloA4dhhhTZx0qpmAiNuUtC9doPCkn1rrPPwquAAIrm2V2lNJtyKBONG5jyJudUN/aTJgiMQzrc5q3LAiKyiaHXdZK6xRZsfTssaPl6WlGaeGWkAbUSdaO81/XutN/IVI/TlwfXJSZf/fDgHVfXGlOhsQ+YabESKF+lKaOIL4Y=
+	t=1789063159; cv=none; b=KxDqHj558yxSgI0uVpfLGZjxkITV43CAzHs/cm9oGbw3r5UBHCnmcxGaUS6Ya7SBwvgNYX9UCgReF8X0UbN83BySgwNPV3i/n9sFBalrR50M9w/dH/d8XK256/KXq47N8D0oT6ZINja2TEl5WFtBh+hYVpQt5ZoJpw4RJZeRpIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789063008; c=relaxed/simple;
-	bh=xLDdELpaZ92ME6nkeZN2fNUTDVi3mQx5ZlLrH57VYP0=;
+	s=arc-20240116; t=1789063159; c=relaxed/simple;
+	bh=iihdVpeTD7xqvFs81N5pzrr3yHNO8lXqn++m5NS1tpY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Content-Type; b=aN4712lqpJvmAG421yVygjBedB/uWu5N5vYC+Tf9BSVofRqQhsEa8ryhSSxhHbhvJJrVS4ikwqi/4EE003sD6WmYb4dYz2YzueeXWB6dMnLBrXYtC0d1j+eKOGN8zey+IttXi2mhCzLQlNFrHv53Zf/Um/RihtzwnnKL9JPnPIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tea7fuoo; arc=none smtp.client-ip=209.85.215.200
+	 To:Content-Type; b=GS9aPbE9EbFZy6leO0dyYlqdcwPCiErS9YGm8nBbgz9oAAnXRQzuIoLWW1x3Asi2WIVsgN6MLXP5ElcniXKVdoDEJKIKov9kP74vjAhu+hCsExFTUyi1exhooWeyJwtY+qu3S4X2Cz/Rd2iGGzyP9OO67x1JPgjfKcJCT0WuDLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qp0PeyC1; arc=none smtp.client-ip=209.85.214.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tea7fuoo"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cb6cf425e86so104385a12.1
-        for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 10:56:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qp0PeyC1"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2dd188e16a2so13029395ad.2
+        for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 10:59:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789063005; x=1789667805; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789063157; x=1789667957; darn=vger.kernel.org;
         h=content-type:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=X3fQxh9g5ajoX8Y1OGK5G6oHwPA/wuRadJNv+BCxKRo=;
-        b=tea7fuooeBGrrANqJxhyTk9V3lHc70XXj09YsyU6fy0rAV6AinDB/L2b6L5FId48dO
-         mbw0X5bljgCDfu157xeETUhzZ992dQ6Oj3aXjIFeh61XLsIYn6iSbeuPe0f7Fctau1VE
-         kdFaLlgHROL9Q4zOGxPPAdSeFPFrZmGHWWkv7hS6BnOavsvGhT8kAPDrzQMACo56nUbh
-         vhRm87T2jwvhnAg2AZPt3eedPAANW5ZgaBeR0lL1mWjlNhG+6zA6AHVWXJtuLv4nL1R4
-         YxTWUNtAWY5XVkoWKoB+qB7Q2Hjc2wETGtFKN3zbIcoDrARbXVnrW2spoYGM6Rv4C+53
-         g0Qg==
+        bh=VdUk7xT6Q2S0XYOIdYUuypvFM5moeaGi7+AJeTxN8N4=;
+        b=Qp0PeyC1s/TlCYvWFn3xsZc47//NfWkIAzttYA+mbNnTss7pmMXJpRYv4tU+ObTZN+
+         x680/ndDKtd4iof2E5/Npt/XrEqItRPArY0pUeRjKh5RvXjdCqn0ssDE9bCrX9UFjShk
+         DpNQ+mSlH+FyvQKJYI9+11ES0TOChqQk3jfmF93W8v5rk77jOoDfdiq8uN91LZgjOE2B
+         dOMDDM9j3So7ee/tFy9tEIRtpd/YOEokwpbVSIWJqvedhbsZLD1DkkuKNcPS/vdiVGdj
+         c9l/hiXm+Z6gTnufOs+N9ybQmPtk0sCF9wEOpWNaSu/khgVuVxJwMn+MooE2lbgxZG0K
+         4yXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789063005; x=1789667805;
+        d=1e100.net; s=20251104; t=1789063157; x=1789667957;
         h=content-type:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=X3fQxh9g5ajoX8Y1OGK5G6oHwPA/wuRadJNv+BCxKRo=;
-        b=CtB/yPfBA2A80xlYhIihXpT8X1c9KgWdiMqScj0LM9d6wEpeV+MjhnHwwlFloyyiSX
-         2hq305ZMIH06pnjjFIlpz0hLAIrtECNtDNfG06jgUx5JVlrcOmRmtiRgWohBn4tuzjHP
-         VMdYC6XPwH1jgl6ifZNYxBkndJZ+76pWUqFFtyIuD2HVjJgvM1+CHXzRM0CUNiAk0mUT
-         oO6r8A6HT17P2TTbAYCcbmBI8SbGxDvbwvlJK7XxI2RopEh5rUVIfj/RlMx8h9hdK3Tn
-         GSjIHWpdfMy7PiVYAeLtaU+yRqIk2/aQJhB9mBIpalSGrTqFHmWlQH2d6Fi92zskPSzV
-         wkLA==
-X-Forwarded-Encrypted: i=1; AKwUvBxZEWnUO6X/STcqSGbm4NT56nYRZXWcYrGUjnTXHue6UUM2kM/9eB1GhXYYocd/CpSHgOk=@vger.kernel.org
-X-Gm-Message-State: AFuF++ndXB3psqfzaVF5AwAgAJy9SI5zZ0Tuf4poH9dsoKX4yBE3l1fJ
-	zg3Mt8OH5GlFAlw39wwxTWxr48Dqihnph1YEnjrdwGZO/BuDREL+ZY0u58HWDFW0oCM4IVQCvoc
-	sqN7oiQ==
-X-Received: from pgmm13.prod.google.com ([2002:a05:6a02:550d:b0:cc4:a477:43cc])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:bea6:b0:3cd:9bb1:c6f5
- with SMTP id adf61e73a8af0-3daed1fa6f1mr77071637.10.1789063004860; Thu, 10
- Sep 2026 10:56:44 -0700 (PDT)
-Date: Thu, 10 Sep 2026 10:56:44 -0700
-In-Reply-To: <anTB6ksbUs18FEf1@google.com>
+        bh=VdUk7xT6Q2S0XYOIdYUuypvFM5moeaGi7+AJeTxN8N4=;
+        b=my/+HljMyCtCTEkD4eW7pSmRWjAvQkPS2HCXiQh23fWjjQBD0R86Rdx2MbU4Jy6pby
+         87xJFoXJl2jvxP0W/SHamELehMZ2eGsw8ZyFgvv2X/gv8SuKuPA6Hpg55cPjZcGA6BZV
+         B1LoSjTP9TVj1ZmYTAuJsLmUCSCJP86CVGgVAKx7b9EbQD+eKFZTRtyzxHPpkigmQ82F
+         Jri1icd764p1l0KteWEgcMI1Qz09TMCrBZfRHRMBk7m5TgDPoDfXo+1cQxZLLIYr1I4+
+         zK5mdV/3uhxgeHDNiaSB2InHXXaXrgVjRRKyXRibaXTgmZWcNLjrpSnoXvSB4478+hx4
+         OsSQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxB1YAC5phqMm3Z1NCj2DRLtKOP/sgPRKGBS5A4Nj+BTPNmkyQ/qScTjdugWTCsCcMAJyw=@vger.kernel.org
+X-Gm-Message-State: AFuF++llHjR9S3fLamlUcW2qiZLbho7hlZHpPmq4uMFlPYkWIoH6XvW0
+	mxlyO1ri9lCkIdrayTskmkHOkRHLLbwIpNfevaG+tqlhNM2zCO8jLWDSV/dXs0Nw5wHCOmLSOtF
+	W/i3iIg==
+X-Received: from pleg13.prod.google.com ([2002:a17:902:e38d:b0:2c9:b703:3bfb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ce8b:b0:2d7:2edd:d140
+ with SMTP id d9443c01a7336-2dd2a1c3e42mr9017035ad.3.1789063156725; Thu, 10
+ Sep 2026 10:59:16 -0700 (PDT)
+Date: Thu, 10 Sep 2026 10:59:16 -0700
+In-Reply-To: <20260806233609.212337-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260508231353.406465-1-seanjc@google.com> <anTB6ksbUs18FEf1@google.com>
-Message-ID: <aqLvXM5SPPlQePXs@google.com>
-Subject: Re: [PATCH v3 0/9] perf/x86: Don't write PEBS_ENABLED on KVM transitions
+References: <20260806233609.212337-1-seanjc@google.com>
+Message-ID: <aqLv9GwBNymyHs8q@google.com>
+Subject: Re: [PATCH v6 00/51] x86: Try to wrangle PV clocks vs. TSC
 From: Sean Christopherson <seanjc@google.com>
-To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	James Clark <james.clark@linaro.org>, linux-perf-users@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Jim Mattson <jmattson@google.com>, Mingwei Zhang <mizhang@google.com>, 
-	Stephane Eranian <eranian@google.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>
+To: Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
+	Jan Kiszka <jan.kiszka@siemens.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, 
+	Daniel Lezcano <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	John Stultz <jstultz@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Miroslav Lichvar <mlichvar@redhat.com>, x86@kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, Michael Kelley <mhklinux@outlook.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, 
+	David Woodhouse <dwmw@amazon.co.uk>, David Woodhouse <dwmw2@infradead.org>, 
+	Thomas Gleixner <tglx@linutronix.de>
 Content-Type: text/plain; charset="us-ascii"
 
 On Thu, Aug 06, 2026, Sean Christopherson wrote:
-> On Fri, May 08, 2026, Sean Christopherson wrote:
-> > Sean Christopherson (9):
-> >   perf/x86/intel: Ensure guest PEBS path doesn't set unwanted
-> >     PERF_GLOBAL_CTRL bits
-> >   perf/x86/intel: Don't write PEBS_ENABLED on host<=>guest xfers if CPU
-> >     has isolation
-> >   perf/x86/intel: Don't context switch DS_AREA (and PEBS config) if PEBS
-> >     is unused
-> >   perf/x86/intel: Make @data a mandatory param for
-> >     intel_guest_get_msrs()
-> >   perf/x86/intel: Invert names of intel_ctrl_{guest,host}_mask
-> >   perf/x86: KVM: Have perf define a dedicated struct for getting guest
-> >     PEBS data
-> >   perf/x86/intel: KVM: Handle cross-mapped PEBS PMCs entirely within KVM
-> >   KVM: VMX: Drop a redundant pmu->global_ctrl check when processing
-> >     pebs_enable
-> >   KVM: VMX: Only tell perf to enable PEBS counters for fully enabled
-> >     PMCs
-> > 
-> >  arch/x86/events/core.c            |  5 +-
-> >  arch/x86/events/intel/core.c      | 92 +++++++++++++++++++------------
-> >  arch/x86/events/intel/lbr.c       |  2 +-
-> >  arch/x86/events/perf_event.h      |  7 ++-
-> >  arch/x86/include/asm/kvm_host.h   |  9 ---
-> >  arch/x86/include/asm/perf_event.h | 11 +++-
-> >  arch/x86/kvm/vmx/pmu_intel.c      | 28 +++++++---
-> >  arch/x86/kvm/vmx/vmx.c            | 10 ++--
-> >  arch/x86/kvm/vmx/vmx.h            | 15 ++++-
-> >  9 files changed, 114 insertions(+), 65 deletions(-)
+> The primary goal of this series to fix flaws with SNP and TDX guests where a
+> PV clock provided by the untrusted hypervisor is used instead of the secure
+> TSC that is controlled by trusted firmware.
 > 
-> Ping.  This still applies on Linus' tree and against tip/master.
+> The secondary goal is modernize running under KVM.  Currently, KVM guests will
+> use TSC for clocksource, but not sched_clock.  And Linux-as-a-KVM-guest doesn't
+> support paravirt enumeration of the TSC/APIC frequencies, even though QEMU
+> provides that information by default.
+> 
+> The tertiary goal is to clean up the PV clock code to deduplicate logic across
+> hypervisors, and to hopefully make it all easier to maintain going forward.
+> 
+> The quaternary goal is to clean up the TSC calibration code, which was made
+> stupidly hard to follow by hypervisor code mixing in with the native
+> calibration routines, instead of being implemented as a pure alternative.
+> 
+> Note, the VMware and Xen changes still probably should get acks from those
+> maintainers, as my understanding of what they're trying to do may be flawed.
 
-Ping again.  This fixes a real issue and IMO provides much-needed improvements
-for the KVM<=>perf APIs.
+This (thankfully) still applies cleanly.  What can I do to help move this forward?
