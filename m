@@ -1,33 +1,33 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F183B3D667D;
-	Thu, 10 Sep 2026 10:05:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853093A7F45;
+	Thu, 10 Sep 2026 10:21:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789034743; cv=none; b=H01EL34jnHAu9GAYL70WcKc1BQmvhjOi3PrR9hcJr+TEB7Y0/lK5HyWQhmmmJuHm2Sbn40Ugp4+S3YUNAMJbfbpdqJM5iV2fsLK/K/h3v5IICKM/Qz2UMRCy/e9HUYNsb6jdeeghdC/dkIQZKtOBGa6YN87qRYThOi/2sxqdO8A=
+	t=1789035697; cv=none; b=fq7RDvi2+dg3WeskYoK28XmKosWsGXyirRZv2JHiyh2mvvq+fVKOq4yImaDf+/CGX8Rq0CsJD98LxttWvorDNanJEPWjWkzSp19rQpVDFQS85R2hqWQ4Ct0avsTJyBr3WbW/3MKotd3IHjmSq2qCyjTsZCIHdy3I2Qfvubtp128=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789034743; c=relaxed/simple;
-	bh=3z0WN4zi1UJFms75zdwhQXh4Qlgba5XU53bM7EcRgQc=;
+	s=arc-20240116; t=1789035697; c=relaxed/simple;
+	bh=NdJwICU4hKphndkhJfKo4meJGdIZvN650SafLlOB/BM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=REgr2EKzHmDrVQ78r0ArI/VNnJ49rwMYyyl45ol6WNh+PJwQefvkK5A4eNY+tuVrOFVGyOJTUyiP1Nda4oPb9o+TYnoqxTVJqonn1a0hmY/QzWb7HZHmlW7SQtI16J4krtTUO91QMyZH28zUfsV9k9zUH5yBBsa957fgjpcIhUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QzBHpLL7; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=gEKFmEtlk1HFN8SIrdSA9kC/DopyPcymRnUAbOWzkTqJeoxWiacGjO+yAMX6JQ7fouoxrHaK7BhPBvxd/Z7255UZLtl+V4ooNs/nVwNm54ctUyF7FogWQ7DcPWPIBrUBS28f6LRaSL+WUNDes+FubZakNVp9divq7FWRXjOSd/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=k//7Ud38; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QzBHpLL7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A3C1F000FF;
-	Thu, 10 Sep 2026 10:05:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789034729;
-	bh=foN56LOD6/Sr9Fuua4UGrrARCTUwXc66j3xzHR63FGE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=QzBHpLL73o0QRHBq1BtDWHfKhjgH7vYQlOQTmd/7CsBCnteHkCGmQ//nhe1xBe+XC
-	 B+J/EOTATm18+r68ByFk08E1DHO/jGR+rAnUx1rseFVGhpIozwzwFhzDF7sOLJLeQ+
-	 I9XUGlHlf+t7B+P5tn0YTppgcLchcfIELLFXodhjEkX4ufh+VLtkzkBdboHmg+39OE
-	 6g/BYc6mcelHh8Dvj1YRbZL2cncQvh7KDpBKn2qNLUqTx/qsd0Ozx7Dp6POJfFAdiR
-	 tfvp/PiJB/ZsLE17ZTAn6ACIgPYGEels8eKnoLC09LSAs9Q4EgK8NWvE4szHuqmUUQ
-	 HqOFKQ1qoF9QQ==
-Message-ID: <e0120f1a-d53b-46a3-9542-030212250135@kernel.org>
-Date: Thu, 10 Sep 2026 12:05:15 +0200
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="k//7Ud38"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 51C7D143D;
+	Thu, 10 Sep 2026 03:21:31 -0700 (PDT)
+Received: from [10.0.129.245] (unknown [10.0.129.245])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 899BA3F7B4;
+	Thu, 10 Sep 2026 03:21:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789035695; bh=NdJwICU4hKphndkhJfKo4meJGdIZvN650SafLlOB/BM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=k//7Ud38dQTnvnKQxVZAcd73FhyR9Iv9bKLlrmoT04DSSuniGXJGJi8nFSmCLEuE8
+	 fX11Ow/pTfdIBC/fgh+DTGC9ZRproSkmFOyVb9rmmwngQfXyaH/MYJCYNZcxFenoQH
+	 YnDm/TS+rtBLyZhhM83WRgOUSjTOe3zhZn+o0zjo=
+Message-ID: <b7a8e864-d7a3-4765-8b62-c5452766769d@arm.com>
+Date: Thu, 10 Sep 2026 11:21:29 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,157 +35,124 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/9] KVM: guest_memfd: implement folio migration for
- non-confidential VMs
-To: Shivank Garg <shivankg@amd.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Shuah Khan <shuah@kernel.org>, Chao Peng <chao.p.peng@linux.intel.com>,
- Nikunj A Dadhania <nikunj@amd.com>, Michael Roth <michael.roth@amd.com>,
- Pankaj Gupta <pankaj.gupta@amd.com>, Ackerley Tng <ackerleytng@google.com>,
- Sean Christopherson <seanjc@google.com>,
- Vishal Annapurve <vannapurve@google.com>,
- Nikita Kalyazin <nikita.kalyazin@linux.dev>,
- Patrick Roy <patrick.roy@linux.dev>, Pratik Sampat <prsampat@amd.com>,
- Ashish Kalra <Ashish.Kalra@amd.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Peter Shier <pshier@google.com>,
- Jim Mattson <jmattson@google.com>, Ricardo Koller <ricarkol@google.com>,
- Ira Weiny <iweiny@kernel.org>, Fuad Tabba <fuad.tabba@linux.dev>
-Cc: linux-fsdevel@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20260805-shivank-gmem-migrate-v3-0-00d8bdec4e1d@amd.com>
- <20260805-shivank-gmem-migrate-v3-3-00d8bdec4e1d@amd.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260805-shivank-gmem-migrate-v3-3-00d8bdec4e1d@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v17 04/20] KVM: arm64: Refactor the vcpu_load to allow for
+ VM specific callbacks
+Content-Language: en-GB
+To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260908162223.1683432-1-suzuki.poulose@arm.com>
+ <20260908162223.1683432-5-suzuki.poulose@arm.com>
+ <a0c5c373-b5c2-4ad2-9e53-ede58c392972@redhat.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <a0c5c373-b5c2-4ad2-9e53-ede58c392972@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 8/5/26 08:40, Shivank Garg wrote:
-> Implement kvm_gmem_migrate_folio() using filemap_migrate_folio() for
-> non-confidential VMs but don't enable it yet. guest_memfd mappings
-> are still marked unmovable, so MM never calls it.
+On 10/09/2026 05:00, Gavin Shan wrote:
+> Hi Suzuki,
 > 
-> MM invokes ->migrate_folio() callback with folios already locked and
-> acquires the invalidate lock afterwards. kvm_gmem_punch_hole() takes
-> the invalidate lock before locking folios during truncation, so
-> taking invalidate lock in migration callback can cause an ABBA-deadlock
-> situation. Use filemap_invalidate_trylock_shared() to avoid this.
+> On 9/9/26 2:22 AM, Suzuki K Poulose wrote:
+>> Based on a work by Marc Zyngier
+>>
+>> To keep the VCPU load/put handling cleaner with the different kinds of 
+>> VM types,
+>> we are about to introduce VM specific callbacks to do just the right 
+>> thing.
+>> In preparation for that, make some refactoring to add the change easier.
+>>
+>> No functional changes intended.
+>>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> ---
+>>   arch/arm64/kvm/arm.c | 46 +++++++++++++++++++++++++++-----------------
+>>   1 file changed, 28 insertions(+), 18 deletions(-)
+>>
 > 
-> A subsequent patch adds an opt-in flag to change the mapping to
-> movable and enable migration. Non-confidential VMs can use
-> host-side copy via folio_mc_copy(), whereas confidential VMs will
-> require firmware-assisted copying before they can opt in.
+> Nitpicks below, none of them are introduced by this patch itself. In 
+> either way:
 > 
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
->  virt/kvm/guest_memfd.c | 36 ++++++++++++++++++++++++++++++++++--
->  1 file changed, 34 insertions(+), 2 deletions(-)
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+
+Thank you !
+
 > 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 169f75f95433..583341d593c9 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -488,13 +488,45 @@ static struct file_operations kvm_gmem_fops = {
->  	.fallocate	= kvm_gmem_fallocate,
->  };
->  
-> +#ifdef CONFIG_MIGRATION
->  static int kvm_gmem_migrate_folio(struct address_space *mapping,
->  				  struct folio *dst, struct folio *src,
->  				  enum migrate_mode mode)
->  {
-> -	WARN_ON_ONCE(1);
-> -	return -EINVAL;
-> +	struct inode *inode = mapping->host;
-> +	pgoff_t start, end;
-> +	int ret;
-> +
-> +	/*
-> +	 * Migration invokes ->migrate_folio() while holding the folio lock.
-> +	 * Use a non-blocking trylock to avoid inverting the lock order with
-> +	 * truncation, which takes the invalidate lock before locking the
-> +	 * folios.
-> +	 */
-> +	if (!filemap_invalidate_trylock_shared(mapping))
-> +		return -EAGAIN;
-> +
-> +	start = src->index;
-> +	end = start + folio_nr_pages(src);
-> +
-> +	kvm_gmem_invalidate_start(inode, start, end);
-> +
-> +	/*
-> +	 * For non-confidential guests the folio is host-readable, so
-> +	 * filemap_migrate_folio() can copy the contents itself via
-> +	 * folio_mc_copy().
-> +	 * For confidential guests, this would need firmware assistance.
-> +	 */
+>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>> index 67f1ff9bc4fbe..51fc651267157 100644
+>> --- a/arch/arm64/kvm/arm.c
+>> +++ b/arch/arm64/kvm/arm.c
+>> @@ -683,14 +683,11 @@ static bool kvm_vcpu_should_clear_twe(struct 
+>> kvm_vcpu *vcpu)
+>>       return single_task_running();
+>>   }
+>> -void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+>> +static void vcpu_prepare_mmu(struct kvm_vcpu *vcpu)
+>>   {
+>>       struct kvm_s2_mmu *mmu;
+>>       int *last_ran;
+>> -    if (is_protected_kvm_enabled())
+>> -        goto nommu;
+>> -
+>>       if (vcpu_has_nv(vcpu))
+>>           kvm_vcpu_load_hw_mmu(vcpu);
+>> @@ -720,10 +717,33 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, 
+>> int cpu)
+>>           kvm_call_hyp(__kvm_flush_cpu_context, mmu);
+>>           *last_ran = vcpu->vcpu_idx;
+>>       }
+>> +}
+>> +
+>> +static void vcpu_set_wfx_traps(struct kvm_vcpu *vcpu)
+>> +{
+>> +    if (kvm_vcpu_should_clear_twe(vcpu))
+>> +        vcpu->arch.hcr_el2 &= ~HCR_TWE;
+>> +    else
+>> +        vcpu->arch.hcr_el2 |= HCR_TWE;
+>> +
+>> +    if (kvm_vcpu_should_clear_twi(vcpu))
+>> +        vcpu->arch.hcr_el2 &= ~HCR_TWI;
+>> +    else
+>> +        vcpu->arch.hcr_el2 |= HCR_TWI;
+>> +}
+>> +
+> 
+> It seems FIELD_MODIFY() can be applied here if no visible constraints 
+> exist:
+> 
+>      FIELD_MODIFY(HCR_TWE, vcpu->arch.hcr_el2, ! 
+> kvm_vcpu_should_clear_twe(vcpu));
+>      FIELD_MODIFY(HCR_TWI, vcpu->arch.hcr_el2, ! 
+> kvm_vcpu_should_clear_twi(vcpu));
 
-I think this is all more closely related to mapping_inaccessible().
+I would leave this out for now. Can be a separate patch
 
-If accessible, this is just trivially true that we can support this.
+> 
+>> +static void vcpu_load_pvtime(struct kvm_vcpu *vcpu)
+>> +{
+>> +    if (kvm_arm_is_pvtime_enabled(&vcpu->arch))
+>> +        kvm_make_request(KVM_REQ_RECORD_STEAL, vcpu);
+>> +}
+>> +
+>> +void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+>> +{
+>> +    if (!is_protected_kvm_enabled())
+>> +        vcpu_prepare_mmu(vcpu);
+>>
+> 
+> I think we probably try to depend on kvm->arch.vm_flavor instead
+> of !is_protected_kvm_enabled().
+> 
+>      struct kvm *kvm = vcpu->kvm;
+> 
+>      if (kvm_vm_is_protected(kvm) || kvm_vm_flavor_eq(kvm, VM_PKVM))
+>          vcpu_prepare_mmu(vcpu);
 
-So I would not comment on what to do for confidential VMs for now, and limit it
-only to the shared-only case where pages are accessible.
+This will be removed as part of the call back in the next patch.
 
--- 
-Cheers,
-
-David
+Cheers
+Suzuki
