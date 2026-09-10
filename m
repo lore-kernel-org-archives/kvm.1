@@ -1,198 +1,278 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9AC4BB26C
-	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 16:03:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744034AEBED;
+	Thu, 10 Sep 2026 16:15:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789056239; cv=none; b=Qf115LUeFzjGLsgqoowznHMxM1a9LgE/iFjO1LB+VtLDe5yb+RFKig+Jif+rxN1UNDeGVMQGJp6gTbQTIx5ZyTV4aOfYPYh4d7COlhnE1vBWjsJTMd+RMV6iqLoow/a8wrcCcElkpmzeHMpqZreSeZNLrN3BmIrx2bEeY9fs9Os=
+	t=1789056917; cv=none; b=vGVUKzgQHqfFTymDavrSF7Y0tHtdgt/1eF2PX3NxxG5SVqTWJA4Ud8Hl5auYnce9Hr93noN9k2GQ6YeHp9/bitl4H2zK+fmVI+gkUQkTeYR8vZoRaqCU9QjrwQGNeQ/dyIWzrgWPH6ENCPw93tA7pVjLdXQnhghuxzoeN1oQQyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789056239; c=relaxed/simple;
-	bh=AHkASD+KT9hovr17X9EfCxN+oDA7ZS7vi9iIUeCFVhs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tQV5uaTZgJNPaihupdmbow8IQMdxvIYeudks7anyGnOq4TFcVmDR8zRWBd4hJADcGZBHY3tgnlLeFgoxD7qW4nHklOdYMMp6tQRfELF1mEQU34zo+1iNjacJ9vXEwlHJWpgT38ocW1vmBvjKbbf3e5qb4rj+PptsN/4sWmtTmMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iuhY13a8; arc=none smtp.client-ip=209.85.215.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1789056917; c=relaxed/simple;
+	bh=gTz12jkJbmkcu/dc9jIRm7p1HVrJCG1a7M0nlEBn7xM=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RZ4VvOqouE4lw1BMePaGz0PsPKSXh7dam6V6hd2vnj/T3HOK0R1hGums5BNpE8IAdpNO0EZDf46GO9C69dO8so7yzxd0mqhVMdOAny36n9ZxTrSrQza5WDPd9pzprcVycAYTYJPQ6yXcRM50Oq35zMulFghHPGet9FWLUovl538=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=KwaVR830; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Y2KOBCiA; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=mpuVyHLN; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=9piyWGci; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iuhY13a8"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c89704da8c7so2576a12.0
-        for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 09:03:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789056237; x=1789661037; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PjpQmguvZKqFc40yaCCUF9DxHpcHtd3drRjNMUjWpE8=;
-        b=iuhY13a80KGseO7HZmuA3y94fmHZB0TSKy1X56JoxJyaiXkGKyG10ot87xmhbpxJP6
-         W8fA5QrJKRypQSa+l9BxY//kK8JoC6TiQnGWZr9E3EoWzmtEplTg30Ke8A/yT2pXivDv
-         6b8B4rJf2oLbGheKWXq54phZ3mmC8j8fjWTLtjPFl0QezZRlrU0G6x6gr7eqOM4SwiOK
-         kij6G5FSKnBbmQcXWtfwFby5h8YCVznkRdrXf9Ce6oGz75L1eb25lEoOSirVkGdN2PKO
-         DOIoP2NXZX1D80e9v01orGBOtvq5EfCzmZpnzN2kVluOH8O29+1M24CNDR5Dn8H2mXdL
-         Pnrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789056237; x=1789661037;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PjpQmguvZKqFc40yaCCUF9DxHpcHtd3drRjNMUjWpE8=;
-        b=AvTjju38DIs0EBSA4MYdMZ55X8xS59FwL7b29Ih1Ccnq4HpdpRwwNYou4ed9J7xtzF
-         yynvZWFVcatxJX72q3rHej66oemzbxiPjXAIvk/FjsblAcM/Vycz+x6Zaw3Ed+gayeXI
-         NASJzCLm5aNaqbbGHotfXlMXBLH3rC5GeGhjk6k5np3ZMcAj1+XMcYAj2UlyV6J+x+UU
-         yQEYFh/6mjYL5ZXof9L0kThZ24I1XqU7EXVJZqhRTVgj3AUvDOaKNTJ7eTCn3JZvUORg
-         axrYjafGUxpyFKdynCCspRxFzW7njg/1qNK1T4AdN2/K6BVzkBnMxxsGU85Y5Xvsrd/R
-         ZE4g==
-X-Forwarded-Encrypted: i=1; AKwUvBy6u5Q99o6BfCjhtjYU7TrWZvwuDZZzXhpabBCYlE05U9oowb8d3bF0N0z2DQN2Fxjg1Cs=@vger.kernel.org
-X-Gm-Message-State: AFuF++l0G0Vk1v06k4zYYWNYIfXRqKGHJKWhebQ/jJzWJGdBEVLpTLwy
-	GJc2dtDvVC3GI8UUqdi2PRC5L4lTz0EhOlmaIrG6/iy4L26gRzUC9eN4XPHcN9YZIgf5I1mUtNx
-	I4VVlnQ==
-X-Received: from pgmh20.prod.google.com ([2002:a63:5754:0:b0:cc4:3b01:7730])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:4303:b0:3c3:7179:a640
- with SMTP id adf61e73a8af0-3dacbd6e061mr12520616637.3.1789056236336; Thu, 10
- Sep 2026 09:03:56 -0700 (PDT)
-Date: Thu, 10 Sep 2026 09:03:55 -0700
-In-Reply-To: <20260905011956.GA856309@nvidia.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="KwaVR830";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Y2KOBCiA";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="mpuVyHLN";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="9piyWGci"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2393621A5E;
+	Thu, 10 Sep 2026 16:15:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789056909; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1BRmfG56H5zmUlLl5HniRsrUYDdv+UxK+dNlQeMPFvk=;
+	b=KwaVR83038tEY0UY9Duk1VEc71qo6WCRjE1S3O0gvKvuRCHG42+lMQg4Pv852Z53umQGu9
+	VjGqLOb8QDmQNHY+2pNnRCnchni2H/fLzJXN2LYO/8zb7Dml+uH7yZSNc2VlGsdDCBFr9Y
+	l0PoG4YOAdgBCejTL9J/aXLrVyXMWP8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789056909;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1BRmfG56H5zmUlLl5HniRsrUYDdv+UxK+dNlQeMPFvk=;
+	b=Y2KOBCiAAtdbnR/fQhgCwIyKQWjWRx5/MHZPkKS6JrT5lfmwIstj6yrNTcNtSkn1IjAs+v
+	GHOsOOnR5zkk3ABw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789056905; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1BRmfG56H5zmUlLl5HniRsrUYDdv+UxK+dNlQeMPFvk=;
+	b=mpuVyHLNNXhUFU5ob5GDulqEeEvAe2B+tWAEc61ZlcFtZbOHlmYL7q6wFi3kOqkSIwp3Ht
+	msadrbgiCHFI4GA0IxWkHwKY/M7tpBtTeLmcFIGhmKuIAwlBoNOJaJIZvf59DD9Qi3MCQU
+	UDhNrT5e0m3ndCGGYllbX1Aw/alKddc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789056905;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1BRmfG56H5zmUlLl5HniRsrUYDdv+UxK+dNlQeMPFvk=;
+	b=9piyWGciurkgdy/ysqgbRaXReyK2r/tyxBU+KMNlNZL9Ptz0yRCS4W8TV3rMCbOjiQ6xhI
+	/pU/nXC+a01PjLDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 917381326D;
+	Thu, 10 Sep 2026 16:15:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id oqY5IoXXompKQQAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Thu, 10 Sep 2026 16:15:01 +0000
+Date: Thu, 10 Sep 2026 18:15:01 +0200
+Message-ID: <87qzj1jd6i.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Doug Gilbert <dgilbert@interlog.com>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K. Petersen" <mkp@kernel.org>,
+	Jaya Kumar <jayalk@intworks.biz>,
+	Simona Vetter <simona@ffwll.ch>,
+	Helge Deller <deller@gmx.de>,
+	Sebastian Reichel <sre@kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry@kernel.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Nick Piggin <npiggin@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Anup Patel <anup@brainfault.org>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Michal Hocko <mhocko@kernel.org>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	selinux@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	fuse-devel@lists.linux.dev
+Subject: Re: [PATCH 12/39] ALSA: pcm: use vm_insert_page() to map PCM status page
+In-Reply-To: <20260908-b4-mmap-prepare-vma-flag-sanify-v1-12-dacf19cce22b@kernel.org>
+References: <20260908-b4-mmap-prepare-vma-flag-sanify-v1-0-dacf19cce22b@kernel.org>
+	<20260908-b4-mmap-prepare-vma-flag-sanify-v1-12-dacf19cce22b@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <anphyjFv3FhF61iB@google.com> <2vxzpkzo51wg.fsf@kernel.org>
- <anssOQFNZ2LfihbU@google.com> <2vxzik5f311e.fsf@kernel.org>
- <anyObKiZIhfok5mk@google.com> <2vxzqzjz1x5f.fsf@kernel.org>
- <aoMcqp0gr06YXAPU@google.com> <2vxzy0e3zgqz.fsf@kernel.org>
- <aoSCCTTBn9D5hqzk@google.com> <20260905011956.GA856309@nvidia.com>
-Message-ID: <aqLU653FXjJjhbop@google.com>
-Subject: Re: [PATCH v4 05/11] KVM: LUO: Support VM preservation across live updates
-From: Sean Christopherson <seanjc@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>, Tarun Sahu <tarunsahu@google.com>, ackerleytng@google.com, 
-	fuad.tabba@linux.dev, Andrew Morton <akpm@linux-foundation.org>, dmatlack@google.com, 
-	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, sagis@google.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	linux-kselftest@vger.kernel.org, andre.przywara@arm.com, michael.roth@amd.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, will@kernel.org, 
-	vannapurve@google.com, maz@kernel.org, fvdl@google.com, kvm@vger.kernel.org, 
-	oliver.upton@linux.dev, kvmarm@lists.linux.dev, alexandru.elisei@arm.com, 
-	skhawaja@google.com, aneesh.kumar@kernel.org, linux-doc@vger.kernel.org, 
-	David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, kexec@lists.infradead.org, 
-	suzuki.poulose@arm.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Level: 
+X-Spam-Score: 0.20
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [0.20 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	FORGED_RECIPIENTS(2.00)[m:ljs@kernel.org,m:akpm@linux-foundation.org,m:liam@infradead.org,m:vbabka@kernel.org,m:jannh@google.com,m:david@kernel.org,m:rppt@kernel.org,m:surenb@google.com,m:corbet@lwn.net,m:gregkh@linuxfoundation.org,m:dennis.dalessandro@cornelisnetworks.com,m:leon@kernel.org,m:paul@paul-moore.com,m:stephen.smalley.work@gmail.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:eddyz87@gmail.com,m:memxor@gmail.com,m:ziy@nvidia.com,m:baolin.wang@linux.alibaba.com,m:nico.pache@linux.dev,m:ryan.roberts@arm.com,m:dev.jain@arm.com,m:baohua@kernel.org,m:lance.yang@linux.dev,m:usama.arif@linux.dev,m:kas@kernel.org,m:dgilbert@interlog.com,m:James.Bottomley@HansenPartnership.com,m:mkp@kernel.org,m:jayalk@intworks.biz,m:simona@ffwll.ch,m:deller@gmx.de,m:sre@kernel.org,m:jhubbard@nvidia.com,m:mhiramat@kernel.org,m:peterz@infradead.org,m:tglx@kernel.org,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:acme@kernel.org,m:namhyung@kernel.org,m:mark.rutlan
+ d@arm.com,m:harry@kernel.org,m:vincent.guittot@linaro.org,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:airlied@gmail.com,m:will@kernel.org,m:aneesh.kumar@kernel.org,m:npiggin@gmail.com,m:arnd@arndb.de,m:muchun.song@linux.dev,m:willy@infradead.org,m:maz@kernel.org,m:oupton@kernel.org,m:catalin.marinas@arm.com,m:maddy@linux.ibm.com,m:anup@brainfault.org,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:borntraeger@linux.ibm.com,m:frankja@linux.ibm.com,m:imbrenda@linux.ibm.com,m:agordeev@linux.ibm.com,m:gerald.schaefer@linux.ibm.com,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:davem@davemloft.net,m:andreas@gaisler.com,m:brauner@kernel.org,m:matthew.brost@intel.com,m:joshua.hahnjy@gmail.com,m:gourry@gourry.net,m:ying.huang@linux.alibaba.com,m:apopple@nvidia.com,m:chrisl@kernel.org,m:shikemeng@huaweicloud.com,m:nphamcs@gmail.com,s:miklos@szeredi.hu,s:bpf@vger.kernel.org,s:kvm@vger.kernel.org,s:linux-arch@vger.kernel.org,s:linux-doc@vger.kernel.org,s:linux-fbdev@v
+ ger.kernel.org,s:linux-fsdevel@vger.kernel.org,s:linux-kernel@vger.kernel.org,s:linux-perf-users@vger.kernel.org,s:linux-rdma@vger.kernel.org,s:linux-s390@vger.kernel.org,s:linux-scsi@vger.kernel.org,s:linux-sound@vger.kernel.org,s:linux-trace-kernel@vger.kernel.org,s:linux-usb@vger.kernel.org,s:selinux@vger.kernel.org,s:sparclinux@vger.kernel.org,s:xu.xin16@zte.com.cn];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linux-foundation.org,infradead.org,kernel.org,google.com,suse.de,suse.com,lwn.net,linuxfoundation.org,cornelisnetworks.com,ziepe.ca,paul-moore.com,gmail.com,perex.cz,iogearbox.net,nvidia.com,linux.alibaba.com,linux.dev,arm.com,interlog.com,HansenPartnership.com,intworks.biz,ffwll.ch,gmx.de,redhat.com,alien8.de,linux.intel.com,surriel.com,linaro.org,arndb.de,suse.cz,linux.ibm.com,brainfault.org,dabbelt.com,eecs.berkeley.edu,davemloft.net,gaisler.com,zeniv.linux.org.uk,intel.com,sk.com,gourry.net,tencent.com,huaweicloud.com,lge.com,cmpxchg.org,zte.com.cn,szeredi.hu,kvack.org,vger.kernel.org,lists.freedesktop.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
+	R_RATELIMIT(0.00)[to_ip_from(RLy48hcyj894bwq9jghcmf9wpe)];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[135];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
 
-On Fri, Sep 04, 2026, Jason Gunthorpe wrote:
-> On Tue, Aug 18, 2026 at 09:02:17AM -0700, Sean Christopherson wrote:
-> > The rule is thou shalt not break userspace.  Whether or not the
-> > breakage is the result of an explicit ABI change is irrelevant.
+On Tue, 08 Sep 2026 22:01:16 +0200,
+Lorenzo Stoakes (ARM) wrote:
 > 
-> I argued strongly for this simpler approach, I will write here the
-> reasoning I gave.
+> There's no need to keep a fault handler around for this, instead map on
+> mmap.
 > 
-> Firstly, "live update" is not uABI per-say. It is not "userspace
-> breaking", and it is not a "regression". It is an internal kernel
-> mechanism to allow the kernel to self-upgrade. In the industry it is
-> typical any of these hitless update/patch/etc schemes to only work
-> between a few tightly controlled version pairs.
+> While we're here, rename area to vma to be consistent.
 > 
-> Asking upstream to carry a full matrix of every single version pair
-> ever released is massive over-engineering and cost on upstream
-> maintainers. Refusing to do this is not a uABI breakage, it is not a
-> regression, it is simply a lack of a feature.
+> This correctly makes the mapping a mixed map mapping.
 > 
-> I think upstream should start by agreeing to only support forward
-> going upgrades within a single stable branch. If live update becomes a
-> success then maybe we could do from a stable branch to the immediate
-> next stable branch too. I don't know.
+> This works towards establishing the invariant that only PFN mapped or mixed
+> map mappings may clear the VM_MAYWRITE flag. The status page mapping clears
+> VM_MAYWRITE, so it must be kernel-owned; the control page mapping remains
+> writable and is left fault-based.
+> 
+> The assumption is made that the struct pcm_mmap_status structure is at most
+> a page in size, which is asserted as a build bug.
+> 
+> This is safe to assume, as the size of the structure is 56 bytes at most.
+> 
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-From that perspective, what I am proposing actually goes a step further.  I'm
-saying don't commit to supporting *any* specific versions in upstream.  Express
-the feature requirements in the serialization payloads, and let userspace sort
-out what kernels are compatible based on their actual usage.  The kernel may need
-to provide additional discovery mechanisms, e.g. so that userspace can probe to
-see what is supported, but discovery is usually fairly simple to implement and
-maintain.
+Acked-by: Takashi Iwai <tiwai@suse.de>
 
-> This alone is already much more powerful than live patching.
-> 
-> The balancing issue here is the impact on the kernel subsystems
-> adopting luo. Every time you change anything about the internal
-> function of the subystem you now have to go test a massive version
-> pair matrix to make sure everything works? No thanks.
 
-No, the subsystem just needs to make sure that it serializes its data using the
-defined ABI (where ABI here means the format of the payload and the meaning of
-any flags in the header).  That should be *easier* for maintainers to handle than
-trying to support arbitrary versions, because it eliminates subjectivity and
-having to make judgment calls or remember magic version numbers.
+thanks,
 
-> Luo is very invasive and a huge PITA at the best of times. It doesn't
-> need to be even worse.
-> 
-> > It's probably fine for Google and other large companies that tightly
-> > control their kernels and use cases, and have the resources to
-> > juggle the resulting complexity, e.g. have kernel engineers on staff
-> > to track feature and dependencies, coordinate and plan kernel
-> > upgrades, etc.
-> 
-> Every downstream that wants to support luo is going to necessarily
-> severely restrict the version pairs that can work. Like a RH type
-> distro may only support it for 9.1.x -> 9.1.x+1 - they can carry the
-> cost of figuring out how to manage their patching and compatability
-> matrix on their own with the tools upstream provides.
-> 
-> > engineers on staff to help them thread the needle you describe
-> > above.  And if supporting live update as a general feature for all
-> > users of the kernel isn't being factored into design considerations,
-> > then that needs to change, otherwise this is all dead in the water.
-> 
-> General uses can use upstream and do CVE upgrades within a single
-> stable branch. That's good enough, lets start there. We don't need to
-> boil the ocean.
-
-We're in violent agreement on this point, I think we just disagree on how to
-express compatibility.
-
-> > I also don't see the point.  Maintaining a rigid save/restore ABI is
-> > annoying, but it's not _hard_ (or at least, not _that_ hard),
-> > especially if there's a set
-> 
-> I was told KVM had the smallest luo footprint of everything, so
-> perhaps your perspective is different.
-
-Only because KVM already has a massive ABI surface for save/restore.  If you
-want to convince me that magic version numbers are the right approach, then show
-me how KVM's existing save/restore support would be made "better" and easier to
-maintain by throwing away all of KVM's save/restore uAPI and replacing it with a
-versioning scheme.
-
-> In other places luo becomes coupled to the internal datastructures of
-> the kernel, we literally have to preserve lots of kernel memory
-> utterly unchanged without any kind of serialization at all. 
-
-Have to, or choose to?  I have a very, very hard time believing that it's infeasible
-to define a serialization format that is decoupled from kernel internals.
-
-> This inevitably creates restrictions on the evolution of the kernel in
-> general if we can no longer change in-kernel architecture because it would
-> make some data structure incompatible with a kernel 10 years old.
-
-Only if the relevant subsystem defined a poor save/restore ABI in the first place.
-
-> There is also a need for *downgrade*. Meaning the N+1 kernel has to
-> strictly emulate the limitations and capabilities of the N kernel so
-> it can be rolled back. Can you imagine the nightmare of trying to
-> codify the feature progression for every single kernel release forever
-> in some impossible scheme to enable this? Again, no thanks.
-> 
-> So, what upstream can reasonably do, that still provides real value
-> without severely burdening every subsystem, is upgrades within a
-> stable kernel branch only.
-> 
-> If some distro or CSP wants to do more, they can deal with it. They
-> have a far, far simpler problem because they can exactly lock down
-> their version pairs to a very small universe. They don't need a single
-> kernel that can emulate 10 different releases of behaviors
-> concurrently.
-> 
-> Jason
+Takashi
