@@ -1,50 +1,36 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-133.mta1.migadu.com [95.215.58.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9FF380FE7;
-	Thu, 10 Sep 2026 02:54:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8AE380FF5
+	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 03:06:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789008859; cv=none; b=IK2nqaHfX5/Fcm2IyWB1v8zAp9KE53yIaAQlriB/pJa5ce5JyM+oj1rEbdSlGxkqTjkx9boPwMpg3PRYGPIKQMu+0ZsbHDlC4sMtBjCfRInjJ/D0Ks0WsXFSvzTjnf+utAHlJ88yUvav+LDuepZB9z92xoP/BBTC6Vf0wyLMj/U=
+	t=1789009582; cv=none; b=K/Dtd7vJ1spAUqqnoCO0JIRitfh5IMtQYqWakCYBkL0h/3ZxCq0d5Q6jv8uiw+BdLzH1lzZTfx48hEBXyDY/V+DBWGLRbDLkjFSE5HNupvAgId/8cnGB6WVpPshm33R2J2z5nYElt69ghOw4UKvU769BSUzDde1D+KcL469faOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789008859; c=relaxed/simple;
-	bh=HGlDXlBt3pN8x4AkolGiec06428RJ9t20jtNntk0E1I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IOgWy4X4O3y25SUWcC9OdFHIX5WQZt0JNsSqMr6aVdtvTtJ4By5A0kJkhPenvSdHdk/1j6bMFWclvhuPhD30rW/uJOTThJ/xMWStvrbgn9s/hzyGkohsumm+ZuaZvrve5JgfzY+isu6yyR7Ix3MjNK/K+rHecM8MJSiecG8Bo7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DuvZaVD3; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1789009582; c=relaxed/simple;
+	bh=jF2jIwRiFm/34mwc93YKOP3RWvChYPHbleFmFoZs/g0=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=mKoXjl9EWnGn5N8sfkdZIuzPy1mMf+ZHuljrLrExGhSo8hw3558T1fn666nc0ufcC7ZyGMsVanHCKKD7GFPVoqh+xAIIdJ0n3ki6YBswtj60gTLHiMg49yCwcxfxRpmuGtcDhrQEHENn6E6nzPUhzn+aUZMv4I9fxwIc/bpJeWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vgH5wo9+; arc=none smtp.client-ip=95.215.58.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DuvZaVD3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789008858; x=1820544858;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=HGlDXlBt3pN8x4AkolGiec06428RJ9t20jtNntk0E1I=;
-  b=DuvZaVD3CZu2cwZByhOfY4mRI7tNTcetZLIMB8copWkRHEXG57TnY2h7
-   1s4IgGsiXVoNEEhWPDfQn3d2Rtc3Ur24Rb2S4XdXikleAuVlzMBcXYAoj
-   Eg539Ymp2QsclW/99sCb09sA9FdkSB1oGfT1TDhPfONprO08YcrwH5Gp1
-   9ULIrWRcn6xJNRIpDphBxVS4uULK2KNppH2+Y6bbq6e/23h1mELMehwrd
-   pJqNYnDTdbhNr+cxhBQXaoC3zx/nE/jno8snk3IasVzw8kCM9gY0BjVAY
-   TeEgjZf0hikt6du7/1qo4HpVITPnlxaSdQmEUVDadGyqfaZvIWmTdQbJm
-   Q==;
-X-CSE-ConnectionGUID: /dK0gpr8TyaOY1YW0PuvCA==
-X-CSE-MsgGUID: HDyfk02/RWixwGAcpzixpQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="93140419"
-X-IronPort-AV: E=Sophos;i="6.25,271,1779174000"; 
-   d="scan'208";a="93140419"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 19:54:17 -0700
-X-CSE-ConnectionGUID: mEJEYVcrTHChDWvBhq++4g==
-X-CSE-MsgGUID: Rhzhej6vTyC+A5EngLnXQw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,271,1779174000"; 
-   d="scan'208";a="309749712"
-Received: from unknown (HELO [10.238.2.139]) ([10.238.2.139])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 19:54:15 -0700
-Message-ID: <b3132b8b-5f3e-442c-9346-16738f82722d@linux.intel.com>
-Date: Thu, 10 Sep 2026 10:54:12 +0800
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vgH5wo9+"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=jF2jIwRiFm/34mwc93YKOP3RWvChYPHbleFmFoZs/g0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789009566; v=1; x=1789614366;
+ b=vgH5wo9+oT82lp7DcDYEZ28+NtkZ3zBUXfVeeLjDtP9EZj9RY7L4h9OfFTEOSEbt+TkxIIYp
+ CGb91tXW9QOAK7iX7NqiJQRm2OB20n2YO32itMwJAaUIPtEZq1lB41wZeZyRBbBr1pQ/TcGS8vu
+ fKiP1LHXLEI6rGlBOajGnBHY=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 40f81e90980f7168;
+	Thu, 10 Sep 2026 03:06:06 +0000
+X-Mizu-Trace-ID: 40f81e90980f7168
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <fb08279a-eb1b-44b1-b4af-f354fb81f112@linux.dev>
+Date: Thu, 10 Sep 2026 11:06:02 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,108 +38,44 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/4] KVM: TDX: Validate directly configurable CPUID
- bits
-To: Artem Bityutskiy <dedekind1@gmail.com>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc: "Gao, Chao" <chao.gao@intel.com>, "seanjc@google.com"
- <seanjc@google.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "kas@kernel.org" <kas@kernel.org>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>,
- "nik.borisov@suse.com" <nik.borisov@suse.com>
-References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
- <32b51faabf60f6e87d9fdebbf2c3fe5a45fbff1c.camel@gmail.com>
- <58c185c82658819454a9950f37c6424226a098bb.camel@intel.com>
- <5faff363852572d59e34c876173d73c93734bd3c.camel@gmail.com>
- <473c5507-045f-454c-b6d1-76d2a390f413@linux.intel.com>
- <b227e4b40c45b090eee627e6a4d8f314297996ff.camel@gmail.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <b227e4b40c45b090eee627e6a4d8f314297996ff.camel@gmail.com>
+Cc: cui.tao@linux.dev, WANG Xuerui <kernel@xen0n.name>, kvm@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] LoongArch: KVM: Code cleanup with MSI intterupt
+ injection
+To: Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>
+References: <20260909083259.1910290-1-maobibo@loongson.cn>
+From: Tao Cui <cui.tao@linux.dev>
+In-Reply-To: <20260909083259.1910290-1-maobibo@loongson.cn>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/9/2026 7:20 PM, Artem Bityutskiy wrote:
-> On Wed, 2026-09-09 at 16:48 +0800, Binbin Wu wrote:
->>> VMX:
->>>   VM entry = load guest state from guest-state area
->>>   VM exit  = save guest state into guest-state area,
->>>              load host state from host-state area
->>>
->>> TDX:
->>>   SEAMCALL = save host state into SEAM VMCS guest-state area,
->>>              load module state from SEAM VMCS host-state area
->>>   SEAMRET  = restore host state from SEAM VMCS guest-state area
->>>
->>> I may be reading the SDM wrong, let me know.
->>
->> That's my understanding too.
-> 
-> Good, thanks for confirming.
-> 
->>>
->>> So there are differences, and I was hoping to:
->>> - Be corrected if I misinterpret the SDM and how things work.
->>> - Get comments on whether the proposal took this into account.
->>> - Get comments on how this affects, or does not affect, the proposal.
->>
->> For host state clobbering behavior, we cares about the values of the host (VMX
->> root mode) after SEAMRET.
->>
->> When there is a control/field for "load host state from host-state area", I
->> think there are two cases: 
->> - If there is the corresponding control/field for "load guest state from
->>   guest-state area", the TDX module could leverage it.
->> - If there is no such corresponding control/field for "load guest state from
->>   guest-state area", the TDX module could do it in software way to mimic it.
->>
->> So from the view of the VMM, it can have the aligned behavior on host state
->> clobbering behavior.
-> 
-> Now I see what you mean: make msr_preservation.pdf follow the same rule
-> as the VMX host-state restore, and let the TDX module help where HW behaves
-> differently (call this SW restore vs HW restore via VMCS).
-> 
-> That sounds good to me.
-> 
-> My only doubt is whether it can be guaranteed in every case. A HW restore
-> happens after a SW restore.
-> 
-> E.g., IA32_DEBUGCTL - HW clears it on VM exit (SDM 30.5.1), so whatever
-> TDX module puts there on the exit path, will be overwritten. Not that this
-> is an issue today, just using this as an example.
+Hi, Bibo
 
-But SEAMRET is actually a VM Entry, I think these special cases are during VM Exit.
-For a VM entry, the TDX module should be able to set whatever valid values for host. 
+在 2026/9/9 16:32, Bibo Mao 写道:
+> Here is to remove some unnecessary parameter checking when injecting
+> MSI interrupt, include MSI level parameter and vcpu::arch::dmsintc_state
+> NULL pointer etc.
+> 
+> Bibo Mao (2):
+>   LoongArch: KVM: Remove parameter line when inject MSI
+>   LoongArch: KVM: Remove duplicated checking with DMSI irq injection
+> 
+>  arch/loongarch/include/asm/kvm_dmsintc.h |  3 +--
+>  arch/loongarch/include/asm/kvm_pch_pic.h |  2 +-
+>  arch/loongarch/kvm/intc/dmsintc.c        | 19 +++----------------
+>  arch/loongarch/kvm/intc/pch_pic.c        |  6 +++---
+>  arch/loongarch/kvm/irqfd.c               |  6 +++---
+>  5 files changed, 11 insertions(+), 25 deletions(-)
+> 
+> 
+> base-commit: df2908090cda368b01ff43709f51890076c56157
 
-> 
-> But I'd guess there would be only few problematic cases (if any).
-> 
-> Then you wrote this:
-> 
-> <cite>
-> FRED is a useful concrete example.  Under VMX, the FRED host state in
-> IA32_FRED_CONFIG, IA32_FRED_STKLVLS, IA32_FRED_RSP1-3 and
-> IA32_FRED_SSP1-3 is covered by the VMCS host-state area, so the TDX module
-> is expected to restore these MSRs on TDH.VP.ENTER return.  IA32_FRED_RSP0
-> and IA32_PL0_SSP (a.k.a. IA32_FRED_SSP0) are handled by software, so the
-> TDX module is expected to clobber them on TDH.VP.ENTER return.
-> </cite>
-> 
-> That one reads as obviously right to me. If VMX and TDX differed in how
-> IA32_FRED_RSP0 and IA32_PL0_SSP are handled, that would be a red flag.
-> 
-> Did you go through all the MSRs and check that the VMX and TDX behavior
-> matches today?
+The series looks good to me.
 
-Not yet.
-This topic is put in the cover letter for discussions.
-And the patch series itself doesn't depend on conclusion of the discussions.
+Reviewed-by: Tao Cui <cuitao@kylinos.cn>
 
-> 
-> Thanks!
+Minor question: kvm_set_msi() now returns -EINVAL for !level instead
+of -1. Since MSI is edge-triggered, returning 0 to ignore a deassert
+would also work, though nothing looks at the return value today.
+
 
