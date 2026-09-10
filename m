@@ -1,223 +1,112 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCD93A1696
-	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 16:38:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BE04AA1D5
+	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 16:39:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789058322; cv=none; b=jL8hzQ44op1t6WDuffbGwqIUO6BXwOy7T6wqD6y3xJdmjxbJ6h1J/M4V+YMkCKjo+0UDEJxoCMERWEcENVC5VK2CI3e2koC8FfFtyfrCE3WsGcR6WIRwHPFD/UrC/roF0Rf9KujRjzD9nK8lBbtfAG57MmJOtQ0P41HGc7MdZwg=
+	t=1789058366; cv=none; b=n8bo94tUuSzhLpoFC5avzZ1Ajd5tehDPoSojOEOaN5qQCSas53qJjsYKX2feg5cwS8B5gO9ht8QLuo40G2P/2TKgICyopRBVmrKspP3dcFY9XE4Ezw+xb8Xj2kwEE30qrJQDv66V/jQZ+ZsE6rH22CAnEy+YKOxzac/riYDOUhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789058322; c=relaxed/simple;
-	bh=cRUce6TKrSWMsa9ZsOkBFnWjOLHEVLQY4P6V2RCGZLU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aF5Jjv4VU+SO8UV1Nl68m4vz8ukqq2OFLJKd8WbtNUcaGm5s5DtSLp8ZFC/E9u7LGDVIFSfrcu/lnOUDcEBEyB7KoYYRzmwzkZpBGce7JjJws97VPbkl5GrnvgWh10r66+ntAh3tFQZ+GU/oNLdD41x8kJHXyJKlE4YrPGUHsgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZRA72GH3; arc=none smtp.client-ip=209.85.215.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1789058366; c=relaxed/simple;
+	bh=QHg1I0gCEGJS928tReZCq2rBEr/c+wfPdEk7Ytl0Pv4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=c9YI6sRqFrwaJm995yMjjKNzbLORO3lSRghvPgrIhbvrpdXzfvmyjKYpRhMqDV/Uj9/oK8p8bNDoiHpDGwmuCH2aBt9LTXH/y0+XfqQcQe0X7Rtz7s0RgW6WrxpwbKTM08zu0AC54IEK2oyxdeCppVb4n5O17kZrlEU9D/jB+Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cgbZiGVL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZRA72GH3"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc1ca15334cso30835a12.1
-        for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 09:38:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789058317; x=1789663117; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=pLO/yg2gAb4tQ7ZA84YrrqYOhPHyp8iAfdCQyiFWl6A=;
-        b=ZRA72GH31VhqUx1dhrDvNvVehw9dkxCL1nNc/DiA3e2J5uz4tfgwDVUksBQlgzXjj6
-         cZNNMT+cDgjVeyGzGwKcIHrKnOe+Kdlt9JDC4PXAFiuNBWTLMBgxEukSMPXnGBUZOjDF
-         1LPNu21wixT3LCjgYiznxw5JziAlwqi7aMdSQy7MKswz70nELNL4FrzRfVCHfY/ovy8s
-         QfS74Iygd3NeyVxDMmXjcLDhEEOOa6+nWZVNmlAg/M9hN/yOevtde5X94vGCmyAfk5Kc
-         2uf6xSLpxYjA5f7XRRU8ibr+zv8aIeIsqFnqKtvig/XrBl3uiV0+z1j4C9bv2IQBVrwK
-         Rk1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789058317; x=1789663117;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pLO/yg2gAb4tQ7ZA84YrrqYOhPHyp8iAfdCQyiFWl6A=;
-        b=EwhPqOqIeR4GhZ9zmqDyLFi9uKtFGQ0p+mku+e7A9IPNPf/T9D4y99kG6fsnsPUPuz
-         99KUymiX1ouBJD/CmZto/Gd8Ikbg8F1vnWMRh3womQsUvuTekHWtbl70b00O6zVTj4Hy
-         meBYZln4f8Uk+ktdLGsc7ja1xRxhns+Kjv8m3x/pvB3jTxC/1oJ5nz2TI+SoZw/GdJ1d
-         4JAQiHTung4X3e5luPc1d01xFdJ9+//lPbSUD9cE9Byj6o42jMz5vDeHvspPpDkgOCBT
-         En9xlhd+GbofYukH/KMZIGYwI4SWyUH9AjPjw4U1yRQBIqlx9OVDTBLUvFBXZnQlN25J
-         bG7A==
-X-Forwarded-Encrypted: i=1; AKwUvBxDB7vOQjfBSXcvfLuVHJGS8+pWqE4+XA2xnCbfQ76QaxQTc7UgG8hyjTXf60kzEaRXJ+g=@vger.kernel.org
-X-Gm-Message-State: AFuF++nK2thWf5ZhGKi8Gq9Ypms4NHQExA0Ky0p12rQZRliDuYD0MoTi
-	ToNqYbqiLzQdoloEUUx4fIRLyY3NnvkqdngmKLDdDXmYU3P+7mt8SW9kpmgL5/SZ3jseZibR/A4
-	ECQBNjA==
-X-Received: from pgmo17.prod.google.com ([2002:a63:5d51:0:b0:cc2:7a40:4d51])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:9397:b0:3c3:a3f4:5485
- with SMTP id adf61e73a8af0-3da39cff434mr71061363637.6.1789058317301; Thu, 10
- Sep 2026 09:38:37 -0700 (PDT)
-Date: Thu, 10 Sep 2026 09:38:36 -0700
-In-Reply-To: <20260910162343.4092060-5-elver@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cgbZiGVL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4339C1F000FF;
+	Thu, 10 Sep 2026 16:39:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789058363;
+	bh=Nn29dckseSn3y/WG/5IG8ZSDtUgYofhnab485gAq6ug=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=cgbZiGVLNoqHLbbI4dfevdWrT6lg8phMlNfrOFVU7C+ejKXlRUZt4Kv6jUDbbd00t
+	 3kIpNNKYK4QMGcih0pWjiYT47FgePINB6IKvR96xNQhPrE7AnfeizvYSC6ycaiozbW
+	 Y9Pad8SBKaXEUdyKP5SMFMlyY1yk33iMTA2yu1BJ1JlmmIqdNaT2ujNjhgRC81Pfsu
+	 eyNpoeT7WmJRam2yj+NYn2Esp+XKkPWw956gZ1k0TP+mPkJufTdbu5wFHbZgB8DAhp
+	 VZH3w/sQZT0MOBKvXnfWOmCMwKkfZ+GKW24F/FRrjBaPCupIxT7TmCJDovhZqQJELA
+	 DaySZo1pQ9SZQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RFC 02/10] KVM: Allow reading memslots while holding
+ slots_arch_lock
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Marco Elver" <elver@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260910162343.4092060-3-elver@google.com>
+References: <20260910162343.4092060-1-elver@google.com>
+ <20260910162343.4092060-3-elver@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 10 Sep 2026 16:39:22 +0000
+Message-Id: <20260910163923.4339C1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260910162343.4092060-1-elver@google.com> <20260910162343.4092060-5-elver@google.com>
-Message-ID: <aqLdDIGPaclTYpjU@google.com>
-Subject: Re: [PATCH RFC 04/10] KVM: Refactor kvm_handle_hva_range() to avoid
- conditional mmu_lock
-From: Sean Christopherson <seanjc@google.com>
-To: Marco Elver <elver@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Sep 10, 2026, Marco Elver wrote:
-> Refactor kvm_handle_hva_range() to check for overlapping memslots
-> upfront via interval_tree_iter_first() instead of tracking found
-> memslots inside the range iteration with a 'found_memslot' flag and
-> conditionally acquiring and releasing mmu_lock.
-> 
-> This simplifies the control flow by cleanly decoupling the search for
-> overlapping memslots from the subsequent walk. It also separates the
-> lockless path from the serialized path into distinct branches,
-> eliminating the conditional locking, which subsequently enables Clang
-> context analysis to validate locking in this function.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] The lockdep condition incorrectly allows reading memslots with o=
+nly slots_arch_lock, bypassing SRCU protection and exposing a data race on =
+slots->generation.
+--
 
-At the cost of duplicating code and adding overhead when there is a relevant
-memslot.  I'm not wedded to the exact implementation, but IMO this is not at all
-an improvement.  Without a clear explanation of what value is added by enabling
-Clang to "validate locking", I don't see any justificatoin for the change.
+commit b005b5fdc7c30e96c15ac0330a0485909dc26ee9
+Author: Marco Elver <elver@google.com>
 
-> No functional change intended.
-> 
-> Signed-off-by: Marco Elver <elver@google.com>
-> ---
->  virt/kvm/kvm_main.c | 94 ++++++++++++++++++++++++++++-----------------
->  1 file changed, 58 insertions(+), 36 deletions(-)
-> 
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 65eb26a0520d..f7bfa2d32507 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -558,31 +558,14 @@ static void kvm_null_fn(void)
->  	     node;							     \
->  	     node = interval_tree_iter_next(node, start, last))	     \
->  
-> -static __always_inline kvm_mn_ret_t kvm_handle_hva_range(struct kvm *kvm,
-> -							 const struct kvm_mmu_notifier_range *range)
-> +static __always_inline bool __kvm_handle_hva_range_walk(struct kvm *kvm,
-> +							const struct kvm_mmu_notifier_range *range)
->  {
-> -	struct kvm_mmu_notifier_return r = {
-> -		.ret = false,
-> -		.found_memslot = false,
-> -	};
->  	struct kvm_gfn_range gfn_range;
->  	struct kvm_memory_slot *slot;
->  	struct kvm_memslots *slots;
-> -	int i, idx;
-> -
-> -	if (WARN_ON_ONCE(range->end <= range->start))
-> -		return r;
-> -
-> -	/* A null handler is allowed if and only if on_lock() is provided. */
-> -	if (WARN_ON_ONCE(IS_KVM_NULL_FN(range->on_lock) &&
-> -			 IS_KVM_NULL_FN(range->handler)))
-> -		return r;
-> -
-> -	/* on_lock will never be called for lockless walks */
-> -	if (WARN_ON_ONCE(range->lockless && !IS_KVM_NULL_FN(range->on_lock)))
-> -		return r;
-> -
-> -	idx = srcu_read_lock(&kvm->srcu);
-> +	bool ret = false;
-> +	int i;
->  
->  	for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
->  		struct interval_tree_node *node;
-> @@ -620,28 +603,67 @@ static __always_inline kvm_mn_ret_t kvm_handle_hva_range(struct kvm *kvm,
->  			gfn_range.slot = slot;
->  			gfn_range.lockless = range->lockless;
->  
-> -			if (!r.found_memslot) {
-> -				r.found_memslot = true;
-> -				if (!range->lockless) {
-> -					KVM_MMU_LOCK(kvm);
-> -					if (!IS_KVM_NULL_FN(range->on_lock))
-> -						range->on_lock(kvm);
-> +			ret |= range->handler(kvm, &gfn_range);
-> +		}
-> +	}
-> +
-> +	return ret;
-> +}
->  
-> -					if (IS_KVM_NULL_FN(range->handler))
-> -						goto mmu_unlock;
-> -				}
-> -			}
-> -			r.ret |= range->handler(kvm, &gfn_range);
-> +static __always_inline kvm_mn_ret_t kvm_handle_hva_range(struct kvm *kvm,
-> +							 const struct kvm_mmu_notifier_range *range)
-> +{
-> +	struct kvm_mmu_notifier_return r = {
-> +		.ret = false,
-> +		.found_memslot = false,
-> +	};
-> +	struct kvm_memslots *slots;
-> +	int i, idx;
-> +
-> +	if (WARN_ON_ONCE(range->end <= range->start))
-> +		return r;
-> +
-> +	/* A null handler is allowed if and only if on_lock() is provided. */
-> +	if (WARN_ON_ONCE(IS_KVM_NULL_FN(range->on_lock) &&
-> +			 IS_KVM_NULL_FN(range->handler)))
-> +		return r;
-> +
-> +	/* on_lock will never be called for lockless walks */
-> +	if (WARN_ON_ONCE(range->lockless && !IS_KVM_NULL_FN(range->on_lock)))
-> +		return r;
-> +
-> +	idx = srcu_read_lock(&kvm->srcu);
-> +
-> +	for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
-> +		slots = __kvm_memslots(kvm, i);
-> +		if (interval_tree_iter_first(&slots->hva_tree, range->start, range->end - 1)) {
-> +			r.found_memslot = true;
-> +			break;
->  		}
->  	}
->  
-> -	if (range->flush_on_ret && r.ret)
-> -		kvm_flush_remote_tlbs(kvm);
-> +	if (!r.found_memslot)
-> +		goto out;
-> +
-> +	if (range->lockless) {
-> +		r.ret = __kvm_handle_hva_range_walk(kvm, range);
-> +		if (range->flush_on_ret && r.ret)
-> +			kvm_flush_remote_tlbs(kvm);
-> +	} else {
-> +		KVM_MMU_LOCK(kvm);
-> +		if (!IS_KVM_NULL_FN(range->on_lock))
-> +			range->on_lock(kvm);
-> +
-> +		if (!IS_KVM_NULL_FN(range->handler))
-> +			r.ret = __kvm_handle_hva_range_walk(kvm, range);
-> +
-> +		if (range->flush_on_ret && r.ret)
-> +			kvm_flush_remote_tlbs(kvm);
->  
-> -mmu_unlock:
-> -	if (r.found_memslot && !range->lockless)
->  		KVM_MMU_UNLOCK(kvm);
-> +	}
->  
-> +out:
->  	srcu_read_unlock(&kvm->srcu, idx);
->  
->  	return r;
-> -- 
-> 2.55.0.1003.g10538fe699-goog
-> 
+KVM: Allow reading memslots while holding slots_arch_lock
+
+The commit adds a lockdep exception to allow reading memslots with only
+slots_arch_lock held. It states that holding either slots_lock or
+slots_arch_lock guarantees memslots cannot be modified concurrently.
+
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 03bfc92864b6e..5ed8260ef01f3 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -1089,6 +1089,7 @@ static inline struct kvm_memslots *__kvm_memslots(s=
+truct kvm *kvm, int as_id)
+>  	as_id =3D array_index_nospec(as_id, KVM_MAX_NR_ADDRESS_SPACES);
+>  	return srcu_dereference_check(kvm->memslots[as_id], &kvm->srcu,
+>  			lockdep_is_held(&kvm->slots_lock) ||
+> +			lockdep_is_held(&kvm->slots_arch_lock) ||
+                        ^^^^^^^^
+[Severity: Medium]
+Does holding slots_arch_lock safely guarantee the memslots cannot be
+modified concurrently?
+
+The commit message states "Holding either lock guarantees that memslots
+cannot be concurrently modified," however in kvm_swap_active_memslots() in
+virt/kvm/kvm_main.c, slots_arch_lock is explicitly released before
+slots->generation is mutated:
+
+virt/kvm/kvm_main.c:kvm_swap_active_memslots() {
+    ...
+	rcu_assign_pointer(kvm->memslots[as_id], slots);
+	spin_unlock(&kvm->mn_invalidate_lock);
+
+	/*
+	 * Acquired in kvm_set_memslot. Must be released before synchronize
+	 * SRCU below in order to avoid deadlock with another thread
+	 * acquiring the slots_arch_lock in an srcu critical section.
+	 */
+	mutex_unlock(&kvm->slots_arch_lock);
+
+	synchronize_srcu_expedited(&kvm->srcu);
+    ...
+	slots->generation =3D gen;
+}
+
+If a reader uses this new lockdep exception in __kvm_memslots() to read the
+memslots structure (and specifically slots->generation) relying solely on
+slots_arch_lock, won't that reader race with this plain write, bypassing
+SRCU protection entirely?
+
+>  			!refcount_read(&kvm->users_count));
+>  }
+>
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260910162343.4092=
+060-1-elver@google.com?part=3D2
