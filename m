@@ -1,81 +1,66 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012043.outbound.protection.outlook.com [52.101.43.43])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011029.outbound.protection.outlook.com [40.107.208.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEE549E137;
-	Thu, 10 Sep 2026 22:57:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982082FDC28;
+	Thu, 10 Sep 2026 23:03:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.29
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789081057; cv=fail; b=eIJKJ7Zpf4kzRyKkOK51LblsQZyapLp9Q7K4bvsrvhhAnPOvE11sWQXdklIxaPVsJ+UFeWLY1pDranqDdXm8O8ImTnkO1O7yCIIhbWh4n80EwwGEmtmN6ZdQN/hAaPS7I82RLe1aAYtDuxBENTowZXzwsUGc+8+sLLvyWAqw7sA=
+	t=1789081391; cv=fail; b=o6Ut8hDpQhM0A3AU68xy92zApq0+OWIgKxJ28+zgMByRKnNgYdD1jvuD3XQFeaoReTi3aRZsTse/JZWffQWVLSkndaH0pIT+8QRTLiCZ2J6xHfqrv4JFoDrnu1XxjFZY4KsQmchupgj3sIE1Ouv4mJQ/875dMg8iJ/Iy0lwJqDA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789081057; c=relaxed/simple;
-	bh=0ZbClFGgCSL0JRWvHxN5K3htcBHprUnmii+Nb2DrAmA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=EhFK+xg38Rhl7S4e0UDURXilQ9k6/zUJtrkP1f/nj0iLvLC4x6Z1R2eVtHqW/fU3dJIbWHl9VRk9Qf8o3OBI1cSAIaWkZzseiOTMlSL1PakhkgFeEELW6T9tqkYRikozMIUcsJRhAJQk9vjb9e62T1zhxRVP6e3EAOiESS6w/pE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oyjwQlTw; arc=fail smtp.client-ip=52.101.43.43
+	s=arc-20240116; t=1789081391; c=relaxed/simple;
+	bh=m/sLVDRbR06rrPkW0e6uUJGwocfoWzo7LzJahCZ9pEg=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=ixFYEzChrf39zFzOJ0E9WsfxL94n5trOEVshDlaFuZYI/3Tk+HoHYPeadfapAMooGZG59Ach99vu0p+E742a8XqwBa3VUNlQOd3d+UxWNsrpNWBPUTe9RlK63H0kgoyXleB4eLM1k1/SlkHyIhRbA796es5yBtSNTvKtNVwAP4w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qwikrO3b; arc=fail smtp.client-ip=40.107.208.29
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oyjwQlTw"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qwikrO3b"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qQjj39L4OIymJtFEXdkNgxI0nQkcHpiWHcZUTvuTVPN17ZKrKPXbIFG/WvFT3dxXkKgv9nSbW4jRBTGS+NZZbxi+UKL2fY2qM6GknC/Cd21scJoGi6REb6uLyuvQPPYx510fRjjX9vBUfm8PGDoG8z/CiVqC6pYVo03jGndUCRVWjkxtfpzlK1q4uoI8qWdFSzebqX8sNz9+hZIJRJdMEMEUZRsbGx3aUBB3TB+PHpkqvXxdI18EF+WDx8plAYLGG1B8hTkjrzLh/UzqdYnHQRHnrOuKjWUlDmCS0J+cMtw8SbpB3luJfwwz6GJzXKLMIvIASYkoO7pxezpU99oCwQ==
+ b=apo/JKWBu5HmHo1OeZRD3OUZjj1PC/U3Ywu3HoCJB0Mq8bixz37NaveSikAjWepZ4STyUMem/FV2m+6AjboCUXk3EL6VsMEAsFmo2BGnMZREh+R6dKR2DFCtI6in25zUjJTT7N8u/bDJcVGc5p1tNsi9o8yGJvaQashmR3ZS0SPvJvIwwBItyxam8D55bqpxKS5NtDN9ugq7iGj6y/cWRJvZV29TDMKo7DpfDOiF78riVTnEzZCj8G6Hv7ylDX785CsEQgTLmdFHGxco6X2DJG450fVbkzoy9gieSybUBm2chPDIPphw+YusAn/+2JXHp/1wqTymEIztmttS7itLNA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ag53OsvdHGBUIgQF6RYGdy69fiQDTevZ1Y5ABCjO8N8=;
- b=EBemnTOgD/yaoe/Uzb59KN23nGkJf9/vxz+q/2T5Cx1sGcgzfNTqhFx7JIUe4EBf6nmk+K3A45AUMaOcJSYsuwAyXnvqDZaGKIE0LLrSVxmJYn1EIPwNxdp8fk77/gZ7neWRGUlqhngspeV89m5ztNZ+hxtBb3qGXbcik4shNwFaV4RB82+4HoxRxBJ8IkPDtmVUJ00Or8IvH2QeBJUEUEt9j6LXAzz2/xdmhLBsNxMAZyNKJ06147usRwUYR8M5ISr445NL0q19udIsfEuZD+reRlGw1nl8nMAHvrBMR1GAjiz4vHHc2YzKLIGQBOKmXBFa1q0CJiHVC036FsM6qQ==
+ bh=Q6SYS1Fdvd9DwfIjeToZsCPQeXOh/CiSAVBeyZ1LTek=;
+ b=FcBZrR+eprOyQFY3bBH32saQczptxVTb33ndDNBkGhM4Q5qCEObbHE17xnEApxso1HCVGH8W+wgw+TL0j+IyBEdGvhtA2zXn0Q7LV0Ub6mmX5aZgZxRFh6X/oku+kttjB7OgJ6xJVC7ekfD6hfcJ2TEPwY/Y/QbKbkl3pTvpz4s+qzTLK+sNL4etqtwOCIcHLtwslvA8vEyTCV7apsvtxisu7ETKqRiUfTQbG/jVxXxVCOZDTF9vAiMV4e1GnDHLtKzOmEoMQp3msskgvgOK6QgYHepvafrj7S5wtieR/x5IYXCoX8wU9VtVPtXFCuqiVrHZ6IApkUr5o4Tq1dyu1g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ag53OsvdHGBUIgQF6RYGdy69fiQDTevZ1Y5ABCjO8N8=;
- b=oyjwQlTwUYrjKykJRsKa8sqhPd+EXg8rm16AloxZ+BPzbwqE9KLWm1u9ZIbGzMImqeTIQNoi+wEPPGJuwIE1BqlGC9U/xCtaGV68YnfJm3N1eslRHmfn+G/LGJqa9jF3q2n7kB6MqQhE47B4iPYVhYsvv2rxHAOfDWYCLRttCWbo4pJwXMJN+8yR6r5eB+1dHJVaNoLU1HsKSDjHLLpRVXC+jGty0KOfQaPkJJIgu7z3dvcU0eY/pXmnRxqOYxZANAq0fTt/qP+jZVLWcMDRNhlR0Gh4zm3o9Iyh1q9t0ZmDr1w2m24MRbiVeRK5zf1TQfDPBQHBnJkBJ5g/3CismA==
+ bh=Q6SYS1Fdvd9DwfIjeToZsCPQeXOh/CiSAVBeyZ1LTek=;
+ b=qwikrO3b1q9w74oXjG+galBqQmBpd50Q6wOQK2h7QwAj12v7rba8wDUKbEyn/w+ql1Ptd8Ppnp9n0/Ryu470RrQeroi/asWCq08b6CMJe+TBh0W4WDNS+WMjMRcMos0au96WZoPz5UeIIx++ROhJyHjfixJE2kLJ85EdkTnjyP6tQ3H7wZ2KYQLzIaO+7LJuefS4Gp9fMW85t1+rc1ykkAdO0+1fjqsivhZGpqf6WPnq47APGBH3soQi1t2wUEby598FevA21hIyC+OfkYrIEtUbw9oiXIRCT+cCZPDG/fw0Lr23sfPc7oWxgSIv0xwcOkO8DBbEpaW/d9gOTWkMFQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by SN7PR12MB7912.namprd12.prod.outlook.com
- (2603:10b6:806:341::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Thu, 10 Sep
- 2026 22:57:31 +0000
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0406.007; Thu, 10 Sep 2026
- 22:57:29 +0000
-Date: Thu, 10 Sep 2026 19:57:28 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: David Matlack <dmatlack@google.com>,
-	Logan Odell <loganodell@google.com>, arnd@arndb.de,
-	pasha.tatashin@soleen.com, rppt@kernel.org, pratyush@kernel.org,
-	graf@amazon.com, akpm@linux-foundation.org, pbonzini@redhat.com,
-	maz@kernel.org, oupton@kernel.org, bhelgaas@google.com,
-	alex@shazbot.org, kevin.tian@intel.com, dwmw2@infradead.org,
-	baolu.lu@linux.intel.com, joro@8bytes.org, will@kernel.org,
-	robin.murphy@arm.com, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	linux-mm@kvack.org, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-pci@vger.kernel.org, iommu@lists.linux.dev
-Subject: Re: [RFC PATCH 0/3] liveupdate: Move to feature flags for LUO and
- memfd ABI compatibility
-Message-ID: <20260910225728.GB857650@nvidia.com>
-References: <20260904160009.GV4157646@nvidia.com>
- <aptFFYqcSiBdMLE8@google.com>
- <20260905012403.GX4157646@nvidia.com>
- <aqIAtOoew-_6jw29@google.com>
- <20260910143448.GD3968357@nvidia.com>
- <aqLOWkuVKccR-I7W@google.com>
- <20260910171210.GF3968357@nvidia.com>
- <aqMgjXfTJ8u3n7Kj@google.com>
- <20260910221832.GH3968357@nvidia.com>
- <aqMyXE-fD-UN6w5L@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqMyXE-fD-UN6w5L@google.com>
-X-ClientProxiedBy: YT4P288CA0049.CANP288.PROD.OUTLOOK.COM
- (2603:10b6:b01:d2::6) To CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12)
+Received: from LV3PR12MB9411.namprd12.prod.outlook.com (2603:10b6:408:215::20)
+ by DS0PR12MB8018.namprd12.prod.outlook.com (2603:10b6:8:149::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.7; Thu, 10 Sep
+ 2026 23:03:02 +0000
+Received: from LV3PR12MB9411.namprd12.prod.outlook.com
+ ([fe80::98b7:86de:b69:2a15]) by LV3PR12MB9411.namprd12.prod.outlook.com
+ ([fe80::98b7:86de:b69:2a15%6]) with mapi id 15.21.0406.007; Thu, 10 Sep 2026
+ 23:03:02 +0000
+From: Alex Williamson <alex.williamson@nvidia.com>
+To: kees@kernel.org
+Cc: Alex Williamson <alex.williamson@nvidia.com>,
+	luto@amacapital.net,
+	wad@chromium.org,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alex Williamson <alex@shazbot.org>,
+	matlack@google.com,
+	kvm@vger.kernel.org
+Subject: [PATCH] selftests/harness: Drain the test process group after a timeout
+Date: Thu, 10 Sep 2026 17:02:52 -0600
+Message-ID: <20260910230254.1198094-1-alex.williamson@nvidia.com>
+X-Mailer: git-send-email 2.53.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CH0P223CA0013.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:610:116::30) To LV3PR12MB9411.namprd12.prod.outlook.com
+ (2603:10b6:408:215::20)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -83,82 +68,174 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|SN7PR12MB7912:EE_
-X-MS-Office365-Filtering-Correlation-Id: ce92fa94-ed34-4200-3035-08df0f8ee425
+X-MS-TrafficTypeDiagnostic: LV3PR12MB9411:EE_|DS0PR12MB8018:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8ecbceb1-7ad9-4514-3074-08df0f8faa4d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|366016|10067099003|18002099003|22082099003|11063799006|4143699003|56012099006;
+	BCL:0;ARA:13230040|1800799024|376014|23010399003|366016|56012099006|11063799006|10067099003|6133799003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	QA5RbieWk9Ug+h6zWar2Mc7zFSemvkKfp7HRhyfGIrPhb9Swufb/L5VxDNe9UnBlPG7C4zaO7N77kov1G2MXp/BQD0gB8YM6lERETqN5AmHywB/xQiXIF0DI8rxKyxziXW3cLYQRJjPZJcByoxMI82d+LUmb98IuWR7pJH6CZhK6ccah6go2otxB4In2Nm6QmaOQloA5TU0VNW1G9yGJdH9SyHSrogOIABj2ReLMnRzdBj3an4ef5YruBjK0WCWaG26hFOOsjFZXknmQCT/pdCI+WU0WndryKHq1tnmAoAHy+BBADwReJdop24LlNvCwInWA2ofHd92waGuXSMfLyxxHiLl0AkQevAyPusMYOwF67/DIWdiI3Cda3RzSwRjzyZCimuI1f7StdHHVXtZcziB68D8c6SwSJpFC9qHpusn4mFjRFEH9unYStnmPXhpzZxEGcFUAd4X9a9abKN1sffNMILcICPATwYB1eCXmmzfHlk78izHDM2grnaRWeyt710IuGJrQTL8YPwmEn4hFwI97J3+LTqAomlP1cLd+A1pyEc4cWO3kRhJPoqQW1Xw2f0b9fh97PmW3+Qy9qsZ+sT3ShqUNNoAWfPiB0+8gEcRcwG1MqNtjTl/8vuqehDFgILU3qds9xCdYcviy2yWZKQ6xsSFwjTJGoWUTowkf/KY=
+	FGwI+rMmMWeoqnMJtnpIpWEGp+8ClMOud9HcopVg0wVCt2/Xn9ZFIBgNL2sx8fjveiHKB56Mlt0lAMjklJ2SWgzRcna8csdxEs/HDpdmxY424SE1qlfvCDXyTVjmKX0xl8KIQw8TIs3USpL0xat04ObpUhtO316zWPqqqjSwUm2CbsNVeQaFHwVDpVFY+p9df0ENfJ2vB059qzQTNSCpKrAFwtXEBaSoLddXq6AXlKaW0CMYIBE2MNnSBvYgK4u9bU4xRn2s6MYlgO6D3acLqyy2EQOIkC+FU0tWTUTvwO7YYw8f39Q0yB/JLtFy9Md5DOd8LbyoBZIh/s5dB4O2zquEI2wwfPpyDRCGOfqCxuFJNxONkyGk5kuHsR6aFQ4r3LSKcw/Yqv6HRtqDdXzTBEsOm/CYCqbArVzqfuUWKGIERUsC6nG7hhVs48f6c3dh6wtdU4pJj6circCGZllCdn9p3HvIedBjpIt6bhzQ6h1lE2A8cWa1JdmNdQN7/m2DENRGeXob/MwWfp+gvl66Dr89mk9/H08qoaYOMy1pRcOfN+6DPOh1Xs0gVbwNHyAML9Odl1pz+uV536eCc7cM0YSj/REZegClOt3+7MK4YErTc/w/jSYsYgYsK4ZmFlX4xbEdixWH1WW+N12awompyckn1NHkA4q6md6aqyKU+A0=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(366016)(10067099003)(18002099003)(22082099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(366016)(56012099006)(11063799006)(10067099003)(6133799003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xKifFiTJRwDydIcyBACTq2CVlVVavCLWXlYEMG5cDpfXg+uZLvtv8DgCFQyu?=
- =?us-ascii?Q?stwFGtikYizqj53H+XhXC5iby3knbe0TPa+XDnrC0qhY78BxXLQGbHjGU88l?=
- =?us-ascii?Q?lnM/R/ICjDBginJNOm1YcIk8uOGGvGz88oj8EkuMGlhAicMc83dZcVzfVYLa?=
- =?us-ascii?Q?RkTJgp25VXB7bg08TbQnYGc5QlKh/LkhUs+8Jto2EynWM7dNY9ksvPi1aVey?=
- =?us-ascii?Q?PV81xV4MAPCZRa64EXIe/unhXQ8u6/SVbjLP+b9OtFprOWofRlDK8jBTfnaq?=
- =?us-ascii?Q?1syBxj9RRhp5suR3SnBKFKw0Mhx2zB3m6HyCVAD5t+aE62gbbxE25ytDI7AJ?=
- =?us-ascii?Q?1QC5Y2Dao7z/hqJZmSePELPCel3w5lU7p5X/OMfUERxSRHWh+USZZE3xJGKb?=
- =?us-ascii?Q?U/hxlmfmrUOegjaIZCDy0R/a3Yseg+SxFBNXN9LGekVGqjwBkSSCbOQ3hAFU?=
- =?us-ascii?Q?GWjYPWkxNbjbV9raHxQmd9gN8bdPZ8xy+EKjDQCjIW2APjiRMzHQMkW+eGUW?=
- =?us-ascii?Q?WF09yhOEhxlQvLhASHwwRoshyQjaahWBCANyG6lloaLcb15LPFaRchKOTSrC?=
- =?us-ascii?Q?rSSrjs2D4d0TMyue2IxDiHbq2XL+E5pd5HQ//MMehfQvf6dhli/EhomZkwwH?=
- =?us-ascii?Q?Q3kWh8oXj7uEraVAIZDVLiZD2znKam2r5E63t/xpAIqtmTNuP86ITWjUUR8J?=
- =?us-ascii?Q?TAECWin57jZHBw/a1+dxddv9NNOoxebQVk3Zorfk58XPjqH6QOEbLaqra1Jw?=
- =?us-ascii?Q?rgO0PuxSM1w28zFiMjt3RHDXZyCYwBKQYyVKNar2V5HYzBq2vOMbWUd0f/Yc?=
- =?us-ascii?Q?rc18xxd8T88hpL9I6rEx0m2SXeU74uJB4COS0fij4qPS2yZAyH2zJpaPGmtM?=
- =?us-ascii?Q?YdMFLVauX9fjhHbKiKzC/E68pWrbUIw49vzYUqzJCq4MuW0aPna3+1YEiw/n?=
- =?us-ascii?Q?JteQMFsTi2pJkl6rsTVnSjEcpx+3IfNuHw7x4DxlHTlAEbdydD3Zrr1mCnRO?=
- =?us-ascii?Q?YH1wXAJIXO2Csvzg3TtcFZeuQozbcXeo/V0ePGwjr4SQZlpaRA4DfN4XyHyt?=
- =?us-ascii?Q?EryXaStlowlthfZWrcM2ydc6Zh+5hoWspUQSxu+4TWj4gtQNAMOfVzVHvL0t?=
- =?us-ascii?Q?H+qqelTGH30cYyDW893uGtKr+futVavzQwhPpsc1EPlrkz1z/ny3zdsgZVfP?=
- =?us-ascii?Q?NZEaqz5PUeRARySqOQ0v3BZBEFlyL1LaVO+CZuiUDFH/7Ip+1E/KIBPJyONh?=
- =?us-ascii?Q?Azj2MUr1ykkUO7JVnLsbYOg78IkBquukFrHiWmZlZMwAxcsxoyVacwUq48nY?=
- =?us-ascii?Q?1Jf13ana/1AXX5Gg1mfS5aVrMkiY7ATcWRtMskN49LeVoKP2k4ROAlnr5JWn?=
- =?us-ascii?Q?CG3zbuVf2/w6kmOM280wgBUrsrbtWUi+jhXa44qFcuhW8zWpRodZI3s2BIOs?=
- =?us-ascii?Q?tCGXF0B7zQ5QzZGD2t6WNhI0ymASqCz9SdThPoayyj5WzPualijIG7pmyVya?=
- =?us-ascii?Q?HcQxHlwmtxGLDj6pwCifqQeaOeypzf+hs7CqnNdV4QgHf1B1J/wG7KoeMg5t?=
- =?us-ascii?Q?nb8JVFrdsxTSC+6Smf+WxcROG+JD3vNRvTApd344LzsztgVQDtlBqqeBjPfe?=
- =?us-ascii?Q?uv6wZSgV9nPnTJuX2ck5JqtZNCQLfJ+o5WuEdkm74iXgHzODji/76f6MYfzk?=
- =?us-ascii?Q?yQXq6MzWFenULbiHkrhioxId20iiE9v1e6HnSwdOKyQx2lVB?=
+	=?us-ascii?Q?wcGIhhBnA8qDiAlO0tOZHnz2716CjqoCeISAakC4maALYeqAiw4Um9ZHkUqt?=
+ =?us-ascii?Q?ejULpIPB30Of5qMwDh8jnZSuPgXTAuDi1i25yD3ta/mA0HXLtyU4rZUzG4zq?=
+ =?us-ascii?Q?yhCUSflvZUedDstAPDNvuFCij7V0NNoIGvPFhoXpUDPTuILx+C9q1lIqB2PL?=
+ =?us-ascii?Q?cb8WUaVDDo0wNAxIk6neCmNm8ghLTnuIZx5kaBIUjuI9Iamw9bSwzxGIIzTd?=
+ =?us-ascii?Q?vt/3Nm5POjVtdvX4Vp3DfB+nvjDAO7vEGLJbxyUvJBW6TGc4oB5CPc5YO5rx?=
+ =?us-ascii?Q?KKTgiYsmmcbyiyxw1oglL5LdDcdPQCsnoLtHdxTHXMPhvpEjQiYC7WXDq1EX?=
+ =?us-ascii?Q?ow1ovdUijoJkOpXzpNq5gFXDFQMFDdA3BJpFvtI9ZzZhLpxp5NrsCIZsAspw?=
+ =?us-ascii?Q?VB0cXvfh3YQVXMHZshiml9RdBMqsHAse17ke5eWuU+VuisVw18NdJyW+US1n?=
+ =?us-ascii?Q?F6yB3bYkohIFRYxPSyi3Qvtfr/E8lfXZaGUez1k0xcZDXtYLGOLMx1FD6Bqs?=
+ =?us-ascii?Q?MUFCc8HJ266JfLjUJg0a1EA372C4G3VTxc1ALqdvgmO4nTofgVww0y2rPtym?=
+ =?us-ascii?Q?lkPokLsJGqnwhpyu4c0bWE67faCF2hjPRx7RuZnZ/o8+jEySOR7An3+2kaya?=
+ =?us-ascii?Q?1ynmwjyAX7EvuzEyeK8npAjstF+ZdbgxVmq+1YvpoE0yez5+LzPLzFDGjb0P?=
+ =?us-ascii?Q?8BCzM5wOkZNFOcVYoDF2Z295Op5WJoMFR5ELHFvujXAZtFeEOY3NZoLE8g2D?=
+ =?us-ascii?Q?VSZGe27S8c4/7djxWVFRb81mQ8gpbg5psiwfd2ldkJER3ec2Hwkj6qfU5eLn?=
+ =?us-ascii?Q?msWLqIKXQ7z+LSX+MfrUzhxDdLhmfn8KqEGVMwAZHPyRuAK79og7kNAQ4zM2?=
+ =?us-ascii?Q?4A2rBeKRZGziDx5bCeniY60+jqgtCSi8xsetCd7HYaMjoV2V/nZT2/Pqq6wn?=
+ =?us-ascii?Q?PvSfaFLdZbIJkA7AFkCNTjcV80AmGdy1D2ZKH6+KcBCmoh22pDXF0YZsXV00?=
+ =?us-ascii?Q?HSJanW1PH4RuBlsZpfa68PyztOodOmWador0kndj1JAvCnBoceZDZTnE+sSc?=
+ =?us-ascii?Q?dEpUeEhU4BQNIwuHfa8J9Lv0WEF5h7brM/rldaPErqUtOMiNwqY9Cb6e+qI8?=
+ =?us-ascii?Q?0XQ5UJwFRuCHjzcx1XmajCh+il4s9VbstTU60sY0AQJjLrcDw0niExKwh6Af?=
+ =?us-ascii?Q?z1WgeURz+wIxI9e0WgWseegAavhSKSJzL4jyPhbCux2n6ZJ42qbFdTy4K3tV?=
+ =?us-ascii?Q?X07XD1wjaZX482qbKYF+7MzmhVXnF2lEuAkYeylJAH8TUt7WNIe4x17+qGgj?=
+ =?us-ascii?Q?GFS5A++uUDedwqawhpPpkqWueF3i1sJ9UovXACBorioIA+59Y+h9yolJQL2L?=
+ =?us-ascii?Q?Z2fNsjZrNG0JVWH+4rFaSewTxa9tC3CummuK7vS98DqK1M4ltsRIyTvB5Dj0?=
+ =?us-ascii?Q?1dGcd15i2ohYQBrR1Z45aFy7ku6NRwq/w9bMWM03EJW/uzWfqSxItnA6wdBm?=
+ =?us-ascii?Q?BWuH4GBfPL17edUfX/laidBhdsbkb1/4a3Q6LULiQ2ihfZq3jOhIiNKTvqvD?=
+ =?us-ascii?Q?hS48tKy+WEju+wVV8JNUoVL9lgntJbrJeJp2IFSXmc2LdcRqfyGC1cfQPIBG?=
+ =?us-ascii?Q?kDCHBW3KnYZsPbX1zA9chmB6lj50fx+7RQvahHFRXC08Re8EM12BvXLKwbN5?=
+ =?us-ascii?Q?FlX/E5N+APVI40P4PC+usRdavFMEvGepC0rcBop3vvoIn1n78ysijRTW1MOI?=
+ =?us-ascii?Q?3PkMEv8GRg=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ce92fa94-ed34-4200-3035-08df0f8ee425
-X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8ecbceb1-7ad9-4514-3074-08df0f8faa4d
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9411.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 22:57:29.8056
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 23:03:02.4395
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hUtyDIBMFosI+6EJYNaCdR9Y6eTdR2zGFy6vAHrPkLLhm+Ol8YVTdvcRoaSmMQJb
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7912
+X-MS-Exchange-CrossTenant-UserPrincipalName: j3YWgHRHWLkpg+8Y56Q5VioGcUIErHeLbG7Oqckfq/VZ51/d31EN/F/nR+br8GDAz/u+qkbE0NJj9PauRJuicQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8018
 
-On Thu, Sep 10, 2026 at 03:42:36PM -0700, Sean Christopherson wrote:
-> On Thu, Sep 10, 2026, Jason Gunthorpe wrote:
-> > Sean's initial email was asking for strict never-break ABI compatability
-> > rules on top, and that is what I've been reacting to.
-> 
-> No, I was never asking for that.  I think we just have a different interpretation
-> of ABI, or rather are talking about different pieces of ABI.
-> 
-> I am still asking for never-break serialization format compatibility, i.e. the
-> more literal save/restore ABI.  I'm not asking for full backwards/forwards
-> compatibility across all kernels version, i.e. the higher level "kernel" ABI.
-> 
-> To phrase things differently: I am a-ok if kernels are inherently incompatible
-> because they fundamentally operate differently and/or support different features.
-> I am not ok if we end up with incompatible kernels because the save/restore
-> interfaces and payloads are poorly designed, lack abstraction, etc.  
+The harness runs each test in a child that it forks in __run_test().
+That child's PID is saved as t->pid and the child calls setpgrp() to
+make itself the leader of a new process group, PGID.  For a fixture
+test, that child only runs the TEST_F() wrapper.  The wrapper forks a
+*grandchild* to run the fixture body (ie., FIXTURE_SETUP -> test ->
+FIXTURE_TEARDOWN), and that grandchild is what actually acquires
+resources such as a vfio device fd.  The grandchild inherits the
+group, so t->pid and the grandchild share PGID, t->pid.
 
-I can more agree with this, it is mostly what I thought we'd end up
-doing anyhow with version numbers and growing the structs not
-replacing them.
+On timeout __wait_for_test() kills that whole group with
+kill(-(t->pid), SIGKILL), but at best only t->pid is reaped by
+waitpid().  The grandchild exits asynchronously, while the harness
+proceeds to the next tests.  Any resources required by those next
+tests that are still owned exclusively by the grandchild process
+result in a cascade of failures through those subsequent tests.
 
-So you still end up with a version label (string I guess?) because we
-can break it from time to time, just the version should have the
-feature mechanism layered under it? I'm fine with that
+Instead, the harness needs to not only actively reap t->pid itself,
+but it needs to poll the process group to provide time for the
+grandchild, and any processes it may have created, to exit.
 
-Jason
+Additionally the harness itself needs to avoid getting blocked by an
+uninterruptible test process, therefore process reaping is bounded to
+5s, which allows completion of longer running release paths, such as
+those including device resets in vfio-pci.
+
+Assisted-by: LLM
+Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+---
+ tools/testing/selftests/kselftest_harness.h | 49 +++++++++++++++++----
+ 1 file changed, 41 insertions(+), 8 deletions(-)
+
+diff --git a/tools/testing/selftests/kselftest_harness.h b/tools/testing/selftests/kselftest_harness.h
+index 29a19bc87084..4e479c8cb49e 100644
+--- a/tools/testing/selftests/kselftest_harness.h
++++ b/tools/testing/selftests/kselftest_harness.h
+@@ -80,6 +80,7 @@ static inline void __kselftest_memset_safe(void *s, int c, size_t n)
+ #define KSELFTEST_PRIO_XFAIL   20001
+ 
+ #define TEST_TIMEOUT_DEFAULT 30
++#define TEST_TIMEOUT_DRAIN_MS 5000
+ 
+ /* Utilities exposed to the test definitions */
+ #ifndef TH_LOG_STREAM
+@@ -981,8 +982,7 @@ static void __wait_for_test(struct __test_metadata *t)
+ 	 */
+ 	int status = KSFT_FAIL << 8;
+ 	struct pollfd poll_child;
+-	int ret, child, childfd;
+-	bool timed_out = false;
++	int ret, child = 0, childfd;
+ 
+ 	childfd = syscall(__NR_pidfd_open, t->pid, 0);
+ 	if (childfd == -1) {
+@@ -1004,9 +1004,46 @@ static void __wait_for_test(struct __test_metadata *t)
+ 			t->name);
+ 		return;
+ 	} else if (ret == 0) {
+-		timed_out = true;
++		int elapsed_ms = 0;
++
+ 		/* signal process group */
+ 		kill(-(t->pid), SIGKILL);
++
++		/*
++		 * wait(2): "A child that terminates, but has not been waited
++		 * for becomes a "zombie"...  As long as a zombie is not removed
++		 * from the system via a wait, it will consume a slot in the
++		 * kernel process table..."  Therefore, wait for the wrapper
++		 * process to exit and only then poll whether the process group
++		 * also still exists.  Only when the process group is no longer
++		 * found are all the processes exited.
++		 */
++		for (;;) {
++			if (child != t->pid) {
++				child = waitpid(t->pid, &status, WNOHANG);
++				if (child == -1 && errno != EINTR)
++					break;
++			}
++
++			if (child == t->pid &&
++			    kill(-(t->pid), 0) == -1 && errno == ESRCH)
++				break;
++
++			if (elapsed_ms >= TEST_TIMEOUT_DRAIN_MS) {
++				fprintf(TH_LOG_STREAM,
++					"# %s: process group not reaped %dms after timeout SIGKILL (task stuck in D state?); continuing\n",
++					t->name, TEST_TIMEOUT_DRAIN_MS);
++				break;
++			}
++
++			usleep(10 * 1000);
++			elapsed_ms += 10;
++		}
++
++		t->exit_code = KSFT_FAIL;
++		fprintf(TH_LOG_STREAM,
++			"# %s: Test terminated by timeout\n", t->name);
++		return;
+ 	}
+ 	child = waitpid(t->pid, &status, WNOHANG);
+ 	if (child == -1 && errno != EINTR) {
+@@ -1017,11 +1054,7 @@ static void __wait_for_test(struct __test_metadata *t)
+ 		return;
+ 	}
+ 
+-	if (timed_out) {
+-		t->exit_code = KSFT_FAIL;
+-		fprintf(TH_LOG_STREAM,
+-			"# %s: Test terminated by timeout\n", t->name);
+-	} else if (WIFEXITED(status)) {
++	if (WIFEXITED(status)) {
+ 		if (WEXITSTATUS(status) == KSFT_SKIP ||
+ 		    WEXITSTATUS(status) == KSFT_XPASS ||
+ 		    WEXITSTATUS(status) == KSFT_XFAIL) {
+-- 
+2.53.0
+
