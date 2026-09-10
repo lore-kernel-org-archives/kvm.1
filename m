@@ -1,226 +1,185 @@
-Received: from mail-oa2-f12.google.com (mail-oa2-f12.google.com [74.125.231.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8024C576EC1
-	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 18:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789063895; cv=pass; b=NuFi1Ol4ihNLr0dL6xaqHlP4tKD30Om/aFxtTfXdW9W23tbb0/QqwO4N2Zd/VuBn/M6KpY1L5JyDursr5I71rV24ZHpi5yWQwSyUHPRnFWJdYKUVVWZe+CgeMc36+6qUeJolgtLXG9cy3WwpbS4so/FGSzkUQ2rVlj3OfWqqFRY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789063895; c=relaxed/simple;
-	bh=NT0Z/LF1SMhtkavx81DR2GGYYK6aB7iX5ZVgmCMPgvQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lKpO1BSIzXanHX4ajKDZSE6HacXj4ByF/Y8M6raJW30UmgHDCGpvXrvRaMRP7HNYG2cD1IwRxEdsZfsmY4qG1WKi9pLFnqdex1DkU+aM7UksFArlbOFE269RwpOgYpG5+BpV3Q9yswVsST7hP/UtbCNY6s4ySfoIdURRMYiD67U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FKybIG7v; arc=pass smtp.client-ip=74.125.231.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2961772602;
+	Thu, 10 Sep 2026 18:29:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789064949; cv=none; b=knsu9VIsra9Zjsh1AYalTtdaUI2LLlGPkjZ9TWn0vjJ0YnNEVafGEm1gEGpaiq3PM+6W4vIe39g9pqpw1iYxNvUYNJJZ/r9XD/Xple8oxaE4KY0MTcqiZXzkcB3LR4/LTDAv/zKTfAwZ9CK3aK7uI/irV3frdHX62z87UJr65vA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789064949; c=relaxed/simple;
+	bh=cmYjXvdsYciBd0lCZ2ltm/dpXQelBMN3JS54FvQBC4s=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pkQsBX56j7BhqvGFD5H4HybFbeONSqn23SaYtf/Yb5gpHKf1KMQntfEKbALviIFst9BVxLd2/pYCfZJuls8lh8vkPqp+bSlryNPSybggHAs8Cg0fdfbe8i70VIJvrwLXGxtnVOF0Q4Law/34RHPMxvoHjQf6XmH8XsONg/2PAjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NXvXgKs9; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FKybIG7v"
-Received: by mail-oa2-f12.google.com with SMTP id 586e51a60fabf-47b5043f191so4253fac.3
-        for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 11:11:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789063890; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bLKdw77dJV+CTxm7PbmI5Pkl7VnId9b5nyAZFM8A1LYFWcM93mORMiyWzpsvSqhQZl
-         zc48PZUUxfa19BvLqe829EelWMnKnsJMZ97nH4guH8VOM03NRpWHfOW38KRpovV6b7xe
-         UT6BDAyaSfdi684Lj4lerm1HkTAVTUpmxy11JsyIqiVVp8ICxzvN08fUFKLzFH0decit
-         TuL+INsBpR4j9DN7jt95z6ogBrLoRAlzZRvCNJWySVIfjDL246QFVjdT8/ljQud5ozXM
-         QNGoiJfLY5iZQs1D9RguPWQ3Dv6TcxrcFGl85FtwuSY0FhATjsFQO5l0LjulfW/8XSDi
-         Bemw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gxuS67QpsgmiVo7SJODgVn7jNGL8PaTVeXELBYXj9Vc=;
-        fh=l6wMJfSvlv2V9QtxtbYOKBwpPA30SS7ilYlMG+xq1U4=;
-        b=ldrc2b/SDT0DLIHA4eTSp/w2YZ+ewarBv552uYeShu459qOxM+Mwb4Bin7hAtR+zuj
-         ymLpIQL6BwjcJSAEHswneoN3Yc8JFSciKkT3jxdf95fjQyoa8uGxxkdu3xrNcnx0ZWZQ
-         3nbDMGoWBi/YO+oU39DpPhrgQaAZM5+pfEDDFSAsz92Raq1sRc9FTuGJFs7B7NGJqoPY
-         yC0pi1+IIBWHtY23VNRuoie5IDpSayGQmqIHCW/KpPYUOPWj0N/7K3rgTnvOhEM2B/Gw
-         PI79dScs1VHKnNpLnL2XhEI5tElyFaT51x8IKBwW74gk4BZVzjxUzRKwEHudMCLgJ7QG
-         ItAQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789063890; x=1789668690; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gxuS67QpsgmiVo7SJODgVn7jNGL8PaTVeXELBYXj9Vc=;
-        b=FKybIG7vbPrID6z1nHaj6kVvqnRQk9kvLUdCSO2+2ma9Rrzv9SNsMhpf6H6ntsMUds
-         JkyN3NfvnmjEM6fiuIEbDJ9ubreYKGMr4WB5YW+WP8daIgGmV93h2QhGZncGxUruNTVl
-         xb2WebfNbk637VrINs16GyzSfy6Udi4tcRoeH/5/HvD6JJC39vardYEfjksmVtn+eq90
-         6nNKA546KE5FFVTONnyAW7NH0ZI0JriDM3YVglc1gMZq/J8BylnjF7IuIBmBXSUxR5sk
-         pKWbcKzTldmYVXmq15a181+DQWmWqY+Hy9X3XmqX1apU7j5PpWG+JMXCx6tSMMlVkN1h
-         l9ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789063890; x=1789668690;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gxuS67QpsgmiVo7SJODgVn7jNGL8PaTVeXELBYXj9Vc=;
-        b=Oc+sSlJ27hqRV0UQgQ193joSvMVyIhEPfGFQa0BWR62S5M0akeEtnBAYLCxQ56PGt3
-         AqeZCSJVvD1SAdOxqozBThgu/DF+kHHPnpuTS87h000DiXn10cZwv0LOigYizqega/JE
-         mmzpS/Y2Cp9/oK6Z5/cRf1k0OVdjxxZX2RMNG41Phe1tZ2gsNX+UuXGt2XmiNAZoPOSC
-         Ah42ZgdoqFRg/8C6gAvOxw/MTDdLq6pZ1+KZ90BdBb9AdU9qhlxAQgcSpOkaKMLWzZlZ
-         p6xsVuQi1/pdlJRhp5HAWB+GuoeESsMirDmPZ3z13sj2iiYKJa0iHB96lJmqxjqpw1+B
-         3KWw==
-X-Forwarded-Encrypted: i=1; AKwUvBzlBtDUkHQZsNm2T5C/KxfMvpaiFLTqe0uPzuiRyR1R/qmKRMMCIQgZGmNVE0MjVTiBNmo=@vger.kernel.org
-X-Gm-Message-State: AFuF++kgZ7pTLGJFQ+mrN8X+ivgGK/a69XxE+ofdAr4qrTnzgp9FvoR/
-	7j0pOM12LA3gjTxs8c/6p1n3A1SLnu5483wCoHW+Z+UpT2QZzQh4TZe8Wgy7sABkkaObw8WyMyy
-	O7lbDR6K1LJ8xX4kj8biHuXIqyDVr7yU=
-X-Gm-Gg: AYBFou2d87GQwpqbESfRyrt4dDmfFdKURbUrTA47xqIwtU219Qof0R/OWRGZia5Ntkr
-	gDag4owDfp/UFDRoIdk/oInw+GQ3X3N3v+q0i5tw2rsi4QOo47w7C0ysCieBa1qHy5g6oB1iQ0+
-	uiUCvEVBESZr3i929B05zrTwxpT49h0OU+Oij0AERtO9OHQNUDIfDkPrRCsQqZvzZAgVbhJHniH
-	PXJtx2c8t1wOD45WHFtmRhFZ857i71bIz7wupGkxOql9y/lnYsoonCyCwThzujeKKgQtDKyFLQi
-	R3lTYbDcUiSLASeGnka1AOf5fpynCAwQTRxK2/encmzQ8Phm26YU3Vg=
-X-Received: by 2002:a05:6820:55d3:20b0:6b1:ac4f:f708 with SMTP id
- 006d021491bc7-6c0bc1d3ad3mr241038eaf.17.1789063890425; Thu, 10 Sep 2026
- 11:11:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NXvXgKs9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789064945; x=1820600945;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=cmYjXvdsYciBd0lCZ2ltm/dpXQelBMN3JS54FvQBC4s=;
+  b=NXvXgKs9FoV0GkG0tV7mevwh7iWTPEJGYAT8oAK+Y6CxUgIIKMUMtb6e
+   JNOhw5FZiyPxL8jwFqTun4Kh+GU7bBOHr7BKxDoO8zMNybpKOO4C+HiAX
+   OVJVSGILL86OwmXpx8m023HcKxTc1Q3wucm8KsP0JZk/3hKOUVCUws1W/
+   5MmzQtsyNW5krsMUgl00yq9Li3wWklN4Afnkhi0ETMkA0qOaxKjEpSaHl
+   h3sKYNxe1lmOoyPsfw1XoVtFTXDNtXP3ENDV+t0FDw7uwd0EVWKXC3sUe
+   SNnRXwJL3qjIlzOmbpHLOTQpE9yPNCNayohhIxjmNGKGvdXfeV+3TZnEw
+   g==;
+X-CSE-ConnectionGUID: 7nYHbbR9TLS8TNnyMvMWWw==
+X-CSE-MsgGUID: 5kPQSpn5R2OCWYFbfUwcrw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="100118692"
+X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; 
+   d="scan'208";a="100118692"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 11:28:57 -0700
+X-CSE-ConnectionGUID: 4y2rpa5DRmaalaZAHZWkcA==
+X-CSE-MsgGUID: 2lUi3idNRgOaMgZ/izzXoA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; 
+   d="scan'208";a="265511323"
+Received: from vverma7-desk1.amr.corp.intel.com (HELO [192.168.1.200]) ([10.125.111.227])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 11:28:57 -0700
+From: Vishal Verma <vishal.l.verma@intel.com>
+Date: Thu, 10 Sep 2026 12:28:40 -0600
+Subject: [PATCH] x86/tdx: Remove the early #VE handler
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260908-b4-mmap-prepare-vma-flag-sanify-v1-0-dacf19cce22b@kernel.org>
- <20260908-b4-mmap-prepare-vma-flag-sanify-v1-11-dacf19cce22b@kernel.org>
-In-Reply-To: <20260908-b4-mmap-prepare-vma-flag-sanify-v1-11-dacf19cce22b@kernel.org>
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
-Date: Thu, 10 Sep 2026 14:11:18 -0400
-X-Gm-Features: AcwNN1XLr_yN2lEzELD3PcXDse2cuW9BBHCwsQpnROCV_SxzPvFmiqhSaiK704I
-Message-ID: <CAEjxPJ7hXSi=oLtQPV+7GEvN+txfYwZ-u-v_EysNHM0gSGNrCw@mail.gmail.com>
-Subject: Re: [PATCH 11/39] selinux: reject writable opens of policy file, drop
- mmap shared/write check
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, Jaroslav Kysela <perex@perex.cz>, 
-	Takashi Iwai <tiwai@suse.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>, Simona Vetter <simona@ffwll.ch>, 
-	Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
-	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Miklos Szeredi <miklos@szeredi.hu>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, 
-	linux-sound@vger.kernel.org, bpf@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
-	fuse-devel@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260910-b4-tdx_remove_early_ve_handler-v1-1-bf47a4d360c5@intel.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWNUQqDMBAFryL73UCMkkqvUkrQ5KVNsVo2Vizi3
+ V3bvzfwmFkpgxMyXYqVGHPKaRwEylNB/tEOd6gUhMloY3VjGtXVagqLY7zGGQ4t918nQ76hB6u
+ zL2tb+aijrUgkb0ZMyy9wvf05f7on/HRYadt2bNswd4IAAAA=
+X-Change-ID: 20260828-b4-tdx_remove_early_ve_handler-7c1463cf0f63
+To: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, 
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+ Kiryl Shutsemau <kas@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+ kvm@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>, 
+ Andi Kleen <ak@linux.intel.com>
+X-Mailer: b4 0.16-dev-62088
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3634;
+ i=vishal.l.verma@intel.com; h=from:subject:message-id;
+ bh=cmYjXvdsYciBd0lCZ2ltm/dpXQelBMN3JS54FvQBC4s=;
+ b=owGbwMvMwCXGf25diOft7jLG02pJDFmLvr1omWodErDFZtrfyZPX8Be+Z6q7lCtZwmGZ6J51/
+ JnmV5f6jlIWBjEuBlkxRZa/ez4yHpPbns8TmOAIM4eVCWQIAxenAEykKZWRYU6JE3OoT0Dd0w15
+ QQFR0ktzVwtv/PbJame8YsvbOS+jexj+WSzwenkpoe/pFJvL1+IW/1+zze73Hce9KnxnrnnfMns
+ cyAEA
+X-Developer-Key: i=vishal.l.verma@intel.com; a=openpgp;
+ fpr=F8682BE134C67A12332A2ED07AFA61BEA3B84DFF
 
-On Tue, Sep 8, 2026 at 4:07=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.or=
-g> wrote:
->
-> The policy file has no write method and is exposed read-only (S_IRUGO in
-> selinux_files[]), yet sel_open_policy() performs no open mode check, so a
-> CAP_DAC_OVERRIDE caller can open it O_RDWR. Reject FMODE_WRITE at open, a=
-s
-> kernfs does.
->
-> The file can then never be mapped with FMODE_WRITE, so do_mmap() always
-> clears VM_MAYWRITE and VM_SHARED for MAP_SHARED mappings and the VM_SHARE=
-D
-> check in sel_mmap_policy() cannot be reached. Remove it.
->
-> This also stops sel_mmap_policy() clearing VM_MAYWRITE on a mapping that =
-is
-> neither a PFN map nor a mixed map, ahead of the core enforcing that only
-> such mappings may do so.
->
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+tdx_early_handle_ve() emulates port I/O for #VEs taken before
+idt_setup_early_traps() installs the real #VE gate. Per commit
+32e72854fa5f ("x86/tdx: Port I/O: Add early boot support"), it exists to
+support earlyprintk's serial driver.
 
-We should likely do something similar for the other sel_open_*() and
-sel_mmap_*() functions too.
-In particular, truncation of the status file can bring down systemd
-since it is mapped by libselinux.
+"earlyprintk=" and "earlycon=" are both early_param() handlers, so no
+console can be registered before parse_early_param(), which runs from
+setup_arch(), after idt_setup_early_traps() has replaced the early IDT.
+Nothing in the window between idt_setup_early_handler() and
+idt_setup_early_traps() does port I/O, so this emulation doesn't ever
+get called.
 
-Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Remove the handler. Any #VE in the early window now falls through to
+early_fixup_exception(), as it previously did for #VEs that were not I/O
+instructions.
 
-> ---
->  security/selinux/selinuxfs.c | 11 +++--------
->  1 file changed, 3 insertions(+), 8 deletions(-)
->
-> diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
-> index c7d91476971c..545a6f89f9e7 100644
-> --- a/security/selinux/selinuxfs.c
-> +++ b/security/selinux/selinuxfs.c
-> @@ -340,6 +340,9 @@ static int sel_open_policy(struct inode *inode, struc=
-t file *filp)
->         struct policy_load_memory *plm =3D NULL;
->         int rc;
->
-> +       if (filp->f_mode & FMODE_WRITE)
-> +               return -EACCES;
-> +
->         rc =3D avc_has_perm(current_sid(), SECINITSID_SECURITY,
->                           SECCLASS_SECURITY, SECURITY__READ_POLICY, NULL)=
-;
->         if (rc)
-> @@ -424,14 +427,6 @@ static const struct vm_operations_struct sel_mmap_po=
-licy_ops =3D {
->
->  static int sel_mmap_policy(struct file *filp, struct vm_area_struct *vma=
-)
->  {
-> -       if (vma->vm_flags & VM_SHARED) {
-> -               /* do not allow mprotect to make mapping writable */
-> -               vm_flags_clear(vma, VM_MAYWRITE);
-> -
-> -               if (vma->vm_flags & VM_WRITE)
-> -                       return -EACCES;
-> -       }
-> -
->         vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
->         vma->vm_ops =3D &sel_mmap_policy_ops;
->
->
-> --
-> 2.55.0
->
+Found with the help of an LLM observing that the real IDT is installed
+before parse_early_param(). LLMs were also used to verify this. On a TDX
+guest booted with earlyprintk, a counter added to tdx_early_handle_ve()
+for testing remained 0 after boot.
+
+Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+---
+ arch/x86/include/asm/tdx.h |  4 ----
+ arch/x86/coco/tdx/tdx.c    | 22 ----------------------
+ arch/x86/kernel/head64.c   |  3 ---
+ 3 files changed, 29 deletions(-)
+
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 89e97d5761d8..495154a7d77d 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -75,8 +75,6 @@ bool tdx_handle_virt_exception(struct pt_regs *regs, struct ve_info *ve);
+ 
+ void tdx_halt(void);
+ 
+-bool tdx_early_handle_ve(struct pt_regs *regs);
+-
+ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport);
+ 
+ int tdx_mcall_extend_rtmr(u8 index, u8 *data);
+@@ -91,8 +89,6 @@ void __init tdx_dump_td_ctls(u64 td_ctls);
+ static inline void tdx_early_init(void) { };
+ static inline void tdx_halt(void) { };
+ 
+-static inline bool tdx_early_handle_ve(struct pt_regs *regs) { return false; }
+-
+ #endif /* CONFIG_INTEL_TDX_GUEST */
+ 
+ #if defined(CONFIG_KVM_GUEST) && defined(CONFIG_INTEL_TDX_GUEST)
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index f904a636d449..9bc78cb28710 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -755,28 +755,6 @@ static int handle_io(struct pt_regs *regs, struct ve_info *ve)
+ 	return ve_instr_len(ve);
+ }
+ 
+-/*
+- * Early #VE exception handler. Only handles a subset of port I/O.
+- * Intended only for earlyprintk. If failed, return false.
+- */
+-__init bool tdx_early_handle_ve(struct pt_regs *regs)
+-{
+-	struct ve_info ve;
+-	int insn_len;
+-
+-	tdx_get_ve_info(&ve);
+-
+-	if (ve.exit_reason != EXIT_REASON_IO_INSTRUCTION)
+-		return false;
+-
+-	insn_len = handle_io(regs, &ve);
+-	if (insn_len < 0)
+-		return false;
+-
+-	regs->ip += insn_len;
+-	return true;
+-}
+-
+ void tdx_get_ve_info(struct ve_info *ve)
+ {
+ 	struct tdx_module_args args = {};
+diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
+index fd28b53dbac5..7b8b13f45454 100644
+--- a/arch/x86/kernel/head64.c
++++ b/arch/x86/kernel/head64.c
+@@ -166,9 +166,6 @@ void __init do_early_exception(struct pt_regs *regs, int trapnr)
+ 	    trapnr == X86_TRAP_VC && handle_vc_boot_ghcb(regs))
+ 		return;
+ 
+-	if (trapnr == X86_TRAP_VE && tdx_early_handle_ve(regs))
+-		return;
+-
+ 	early_fixup_exception(regs, trapnr);
+ }
+ 
+
+---
+base-commit: df2908090cda368b01ff43709f51890076c56157
+change-id: 20260828-b4-tdx_remove_early_ve_handler-7c1463cf0f63
+
+Best regards,
+--  
+Vishal Verma <vishal.l.verma@intel.com>
+
