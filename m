@@ -1,113 +1,103 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25B61DF261
-	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 00:11:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53922030A
+	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 00:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788999066; cv=none; b=DkfgHC5luXtrnkR20gJjnxsHTVjqN01AHOjelmDQIGjTUZvAnaBTX4u3LBEkGoVrgIx2izNqUMyukQv6cEBy9I9Y6nhSQfLQPbbuz5+RO85W11/yIVLEk1H+nWvNsRdizpjh08Ro45dex3K0QelXaE9jpuGfYuuwGXruTe5Qp/U=
+	t=1788999758; cv=none; b=XVjuDK4e8/PWJPFzSWwwJ7m7+oR2ZCRuuIQRvo3btG5BzewIlP6PoLOQuSndH31pO1jCGZVbJRWLK1j5uNfR+WUza1EESkFYOw3EkoloFTxebgEn/mvVUHe9rkFQtVtjU6/oiRXXvONbIXomyimJVp8ey1858stwtJ58kFM4ykg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788999066; c=relaxed/simple;
-	bh=VDLmoDIcL1Xt7Kp2f3U72+7cH7yphKfih/EsGanwd7E=;
+	s=arc-20240116; t=1788999758; c=relaxed/simple;
+	bh=3o4xptYxHv9M/QtLWA+QTUbItiWelQPkDFS5pTa+dyI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=U0CYR5yC4IEfI82YzVAuyVE1fAFSNeuR8tPEO/9O+bEyAWhW4LUG6N3fLpJH1fnkyF8TEJD5SuoNS77R0Zck3hMvpBrRAi5TkqzHIfrXXppT0elLrFVTqi5Ep5aMp86s1P2NsW31lqkAAgnPPUpuTk8LBYMj52LwkN9zIhOUzDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EOfCKkki; arc=none smtp.client-ip=209.85.216.69
+	 To:Cc:Content-Type; b=VBTMd30R0E7MlAFygM+mdDw/g49vcxJmSSwhTPnQX7kWhVAZjz4jI013Hax9fuRcbqtS8ShcjYMLoapVlzK7Twlk7uXt2E+836CkzXp8WoZs3eSV17YU7vvUhRQZ2Rlyi/CsApVzpU+4bMDyiN69ZnwjDwTRmLctKJW1BkulZLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GXhP3gFb; arc=none smtp.client-ip=209.85.214.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EOfCKkki"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-398fe469aa0so10673253a91.2
-        for <kvm@vger.kernel.org>; Wed, 09 Sep 2026 17:11:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GXhP3gFb"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cfa4e4684bso63763145ad.2
+        for <kvm@vger.kernel.org>; Wed, 09 Sep 2026 17:22:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788999064; x=1789603864; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788999756; x=1789604556; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1EXqKImLUULHLFVFsB/u00A+rhPp4MpgJ1nYtLoaJb0=;
-        b=EOfCKkkiSqtY0lBCDf4Hooa3Dl6AYs7wpKzjclE9+jOa4R4spGqqct4yny8X84ZtsA
-         bs5aGnHH2d554Jh9YfmoJb/lRCDGKCCYJsjAZzVns6JjVkvGjVoH4UzawOxZRqfcaVX9
-         gYl4Ug/GA9qqy8/Oaq7VDM70H05lUu1JHiLGIh7RNwPcP3Vwn1e40QoPzPnWidG03Jaq
-         bsJzyT6Zn8nSt6ZQoEd0qJOybtaahknoimSjobV0vD2w8keaMNIwpL7QmQVGeJ7fAuQj
-         Q9dCm16m+b/C7jFay71W8oUKGzYUST9ieLYAbuBx0qt1gljRSaRuDhfVaFZ6DLrpGQ/4
-         jqmw==
+        bh=9SZpxMxEIpdJaZosn8BHIlAE54o/S+silvCTYXeRcHI=;
+        b=GXhP3gFbDWlmTm62MsyQzNar60RorXyT9GJBPf3tiA8ARuUdnZWsty06y5JZYIsRxY
+         xPp77THvD7EOFQnNpfHbSkYl4Xzpj6cKJaWsTgrKhVxwfjD/jzee9ECyz+2+ajjuPs0Q
+         OoouK6yabM/jQXHc/94Xy1QlW7t2J7G6Magvx80v9mugCdt4pjKi9rm13HhpnY067Cyr
+         YofXz0Eh+/nYyjh6dCCME/V42gp2qzlDJeTntsAHts7wTNOL8gkMbmH21698QxNmtqVe
+         qrzHjhQNm529dPFZzB3Rmaf+YbMgiibI66F0sJSEIZPya+WRaOT1qKPISCqN1/6ZGNf5
+         +Zhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788999064; x=1789603864;
+        d=1e100.net; s=20251104; t=1788999756; x=1789604556;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=1EXqKImLUULHLFVFsB/u00A+rhPp4MpgJ1nYtLoaJb0=;
-        b=NmLLfvYhFsC70vpCAH6TTpMrCc8I7rHCoC1T2bf1vbqvIbOais2gnx394YEGJAwLYS
-         r9Mrew7fa23DRxHSiPTmu/Evo/93vd41IyqcpCxwr2sbaKqY6ByqDXueD7k7V9Cw+E9N
-         jzvv1RaTvLgYpuggY/eWZSd0mdLepENWUYJTftCz2EHiXG8+WVUBVHpS6/aAuY6t5xkM
-         4XkqLSn3V0GSKIcvfZKTJ5TlBMwfXike1coRzauiOTTTt4rB5/hWW9fKJF0AdGrByOR/
-         vKqjKM6X0P4C+csz+L5bhNfL3pFxwcSjI3UxS32KSNUSBg3g7PeT3Sde+zBMFGqkzQY+
-         FvRw==
-X-Forwarded-Encrypted: i=1; AKwUvBzX/bc0WNLUPwbPa/VvEijzmQjFtTrPpWhUB/DnPN/NuSnRUdoQJ1j8huYM0IF7lR44TyA=@vger.kernel.org
-X-Gm-Message-State: AFuF++mpO0ARZQ+/0iUmN5ISNH58klGoQa1rSyPcjDHK2KZeegZmD1Nv
-	riWDtWdDQB2Dp/NQHsdhat0u9Z+gCKTDuKeQ6U0jO3yOeDP+K0wu61o6/1Yp545FTicxpzPU12K
-	x1TnXbw==
-X-Received: from pjsb18.prod.google.com ([2002:a17:90a:be92:b0:39b:2614:3bfc])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d403:b0:39b:61f1:8032
- with SMTP id 98e67ed59e1d1-39d70ae19f2mr6011471a91.16.1788999063274; Wed, 09
- Sep 2026 17:11:03 -0700 (PDT)
-Date: Wed, 9 Sep 2026 17:11:02 -0700
-In-Reply-To: <CAEvNRgF6EsMc4iLSM_VZP-5fGGwKv1YJxf-D7Z+DVANTJhxiYw@mail.gmail.com>
+        bh=9SZpxMxEIpdJaZosn8BHIlAE54o/S+silvCTYXeRcHI=;
+        b=XwWGskLVi9FL+472EjxAqzerpzr+AYT+ctCq+3W2zffjyMqxhUfIZ2CD4Obw0Wprkn
+         Bq15ecNtm2hFYw5khqZlzSqjb/GIgZn0mckqDJLqr3tRO2fqfnjHhnt5BXL6Pc4BDa+X
+         G4fnwnBh4t97AtgpYIu/h/xg+Kncbe9DhvWzGVt/a9A7CBrCMwPM1lN3mFTiFqxHLirs
+         9OfCqsbe9JWVdiSMqupJvYX9nMo4GuJWaH3o1wgm1tVbgFOYz2sA6szv85N6iPloO0eN
+         X2n+JNt2tKhPqwEMv3K0+IZnfxWdE3nHHK8w2SdOgRWq8RC5/DWyp9k9irj8rAaV7aAt
+         3Y/g==
+X-Forwarded-Encrypted: i=1; AKwUvBzgGI1ut0vDFmUMFhvX6IJZrfDuunMs7n1Rq92ZK7ewQvUQSM3QuynRQcehctPcMuUJOns=@vger.kernel.org
+X-Gm-Message-State: AFuF++nzxG/Ma1qiRpgmBEflRcB7Wg7b7y8RL8w/abfPdFptqNDFJkbe
+	2ga2AqHSye6WCR0BIMWCvml3AFRKIVukDYODOBTekkHWDRyBce2rIU4gqrGy1S5slSNHx3J2qkP
+	pqlG3oQ==
+X-Received: from plw7.prod.google.com ([2002:a17:903:45c7:b0:2cf:ca4d:25e3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3c27:b0:2d9:b60d:7755
+ with SMTP id d9443c01a7336-2db125cd34bmr576611005ad.1.1788999755288; Wed, 09
+ Sep 2026 17:22:35 -0700 (PDT)
+Date: Wed, 9 Sep 2026 17:22:34 -0700
+In-Reply-To: <9a5552de-0f36-41c6-8bb6-16cbba5425b6@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260904004342.3162959-1-seanjc@google.com> <20260904004342.3162959-2-seanjc@google.com>
- <daa3875e-420d-4de5-9a1f-8c4138a1dbd8@kernel.org> <CAEvNRgF6EsMc4iLSM_VZP-5fGGwKv1YJxf-D7Z+DVANTJhxiYw@mail.gmail.com>
-Message-ID: <aqH1lvIscO8ybcKR@google.com>
-Subject: Re: [PATCH v3 1/4] KVM: guest_memfd: Gracefully handle xarray errors
- when binding a memslot
+References: <20260907063906.1964557-1-nikunj@amd.com> <20260907063906.1964557-9-nikunj@amd.com>
+ <20260907070024.4A7E11F00A3D@smtp.kernel.org> <9a5552de-0f36-41c6-8bb6-16cbba5425b6@amd.com>
+Message-ID: <aqH4SpA_567soglf@google.com>
+Subject: Re: [PATCH v8 8/8] KVM: SVM: Add Page modification logging support
 From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Stefan Teodorescu <fane@google.com>, 
-	Dennis Tighe <dtighe@google.com>, Sashiko Bot <sashiko-bot@kernel.org>, 
-	Yan Zhao <yan.y.zhao@intel.com>
+To: "Nikunj A. Dadhania" <nikunj@amd.com>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Sep 09, 2026, Ackerley Tng wrote:
-> "David Hildenbrand (Arm)" <david@kernel.org> writes:
+On Tue, Sep 08, 2026, Nikunj A. Dadhania wrote:
 > 
-> >
-> > [...snip...]
-> >
-> >> -	xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
-> >> +	xar = xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
-> >> +
-> >> +	r = xa_is_err(xar) ? xa_err(xar) : 0;
-> >
-> >
-> > r = xa_err(xar);
-> >
-> > Should be sufficient, right?
-> >
-> > mm/memremap.c:pagemap_range() uses that and just avoids the intermediate xar
-> > value completely.
-> >
-> > r = xa_err(xa_store_range(...);
-> >
-> >> +	if (r) {
-> >> +		xa_store_range(&f->bindings, start, end - 1, NULL, GFP_KERNEL);
-> >> +		slot->gmem.file = NULL;
-> >> +		slot->gmem.pgoff = 0;
-> >> +		slot->flags &= ~KVM_MEMSLOT_GMEM_ONLY;
 > 
-> Was wondering if the changelog should explain why not move
-> xa_store_range() before setting up these 3 fields that need undoing.
+> On 9/7/2026 12:30 PM, sashiko-bot@kernel.org wrote:
+> 
+> >> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> >> index 73f37b050d0a0..da417c4c59154 100644
+> >> --- a/arch/x86/kvm/svm/nested.c
+> >> +++ b/arch/x86/kvm/svm/nested.c
+> >> @@ -901,6 +901,13 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
+> >>       vmcb02->control.msrpm_base_pa = vmcb01->control.msrpm_base_pa;
+> >>       vmcb_mark_dirty(vmcb02, VMCB_PERM_MAP);
+> >>
+> >> +     /*
+> >> +      * PML is never enabled in hardware for L2.  Make sure that an
+> >> +      * unexpected PML write would trigger a PML_FULL VM-Exit.
+> >> +      */
+> >> +     if (pml)
+> >> +             vmcb02->control.pml_index = -1;
+> > 
+> > [Severity: Critical]
+> > By intentionally leaving hardware PML disabled for nested L2 guests in
+> > nested_vmcb02_prepare_control without informing the KVM MMU, doesn't this
+> > cause all memory dirtied by L2 to be silently lost?
+> 
+> No, kvm_mmu_page_ad_need_write_protect() returns true when
+> cpu_dirty_log_size is set and the shadow page is in guest_mode,
+> which forces write-protection on L2 SPTEs instead of relying on
+> hardware PML. L2 dirty pages are tracked via write faults, not PML.
+> This is the same approach VMX uses for nested guests.
 
-Ya, I'll add some context.  The TL;DR is "look at patch 3".
-
-> IIUC the reason is that other parts of gmem code expect any slots in
-> bindings to have a non-NULL gmem.file?
-
-Not just gmem code, all of KVM.  The instant the binding is created, the memslot
-becomes reachable.  Because KVM manages memslots through SRCU-protected pointers,
-for all intents and purposes memslots must be immutable if they are reachable,
-otherwise readers could see half-baked state, e.g. a memslot with a gmem file but
-the wrong pgoff.
+And FWIW, because Sashiko's hallucinations made me double check, this series
+doesn't advertise PML to L1, i.e. doesn't need to implement and wire up
+kvm_x86_nested_ops.write_log_dirty() for SVM.
