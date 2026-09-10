@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF6F371887;
-	Thu, 10 Sep 2026 14:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C214A46D0A0;
+	Thu, 10 Sep 2026 14:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789048823; cv=none; b=DL7BvwUptjAKEex0SF/P5qYyVxDeMD9PSr0Acdre2qxukJAd5e7UPkP6O5cxXDHtjJbOJLN4FegmS9oflihC3XbABw3F//bCn8bx9eQGhZjSkLaRZLdN4xaD00gJUDXoLvB+4yIOy4qAkk63O2v7BEQUjBs5Nq/1x2Di9UPoNZs=
+	t=1789049146; cv=none; b=lpdw5kIY2WgSgdEIDkoCgMQQFtCe2vTbZGTXSz1jdMxjm8Lbpat43oDBwIy5n2Lnx63R/GyGKVghi0P6pHVmIpXaN54R/sSWtJX00pkz0sbmkhWy0uGej9pZE91E3tMIKCOPezLemY9AcFC/SflqR2OMhq6oK2Y2svIGygFsyzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789048823; c=relaxed/simple;
-	bh=lW2OA7JFzcItqiHBDEdTfCM3atEBHPxZsWHpqHKTM2s=;
+	s=arc-20240116; t=1789049146; c=relaxed/simple;
+	bh=sjtmy2p2wdjuUNejH3/RjfbpmPb2S2/naDgBFlc3ICk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TOCD7l+0zn0sg8u+Zuk1hhUxEmKG5ILSIHeMWEbGegGVW+jtUisKB6eL/bTofJHMo7sL45TO7G7y8eI6gF/+K0/KfAnM8plAswTz32wdLpqMLr15rE0rZHkOEXOMMXLH+bjCcPh4jRkiErx3m9DYRireHASLm3yK93CCaOBOWtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=blwkdE5Q; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=JWqpdVLKRS56tx1HU7vW6nhWbTapeTe5SBKVgQJgZxadRNbkNt0g43sx8+1MqXzzsa8ol5gfPfwMALcwe2VEJuwt3b7XHzw7lvwfYO5UGWDBX6Ge5VIQ2t9bXWxpDK7lw67M/ysU179dT2YPJmjom60bSEYmVBuMyu8+NFuVZyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CGpYPw3z; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="blwkdE5Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC131F000FF;
-	Thu, 10 Sep 2026 14:00:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CGpYPw3z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 885AF1F00898;
+	Thu, 10 Sep 2026 14:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789048822;
-	bh=en3cnLSz3rou/qEMJvX8ynI+F/sbMoUWhXxA8YlL6Ro=;
+	s=k20260515; t=1789049144;
+	bh=HpY/0qr1NmSJmaEjfxtlR2WtShxMgTAWgjuD+oZDOjg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=blwkdE5QaCyKLuWw769dVAe7GqgyZGrHD9jp61Y7efv6M8KCj8uE12v4fDkaUrPMY
-	 HvQzf0ChhszWc5zTCCOihSbPLfFivsmBe4jmZ0EqbUnvmOgjqugMRsoXSECB4SD3qO
-	 /BXgi69/v2LxgFq6yYk8MlrrJnzW10TrVlGIc+HmH1k8viT8RdpEMwMtWz0OknlCES
-	 vDY1+zDfG7X9NZHoRWvjpd50yrPjlDNT2BSSdLRL/OlVYYlqxP5SFSEDdHxoG/xFQS
-	 bzfwkcR80B7EcfF8xQIZJCGvVS4IsyDj9SLCmaSXBNG6OxAcEwXKd6pbqh7WEb1d2/
-	 iCZ1b4nRh/aEQ==
-Message-ID: <580e45c7-7f4e-4fbd-b73d-3bbd048fbc6b@kernel.org>
-Date: Thu, 10 Sep 2026 16:00:13 +0200
+	b=CGpYPw3zqBXNmNmA9nnlmU0xXRzgHMea+gRGS9PR09mQpB7WK6Ti0Gu0r8PIshKd8
+	 tj2Arc7mmoBkKdeCgkiId7UyWjO9G+eUcJnDTDBUja0fkPKDdozGja+MTDzSCKD7mx
+	 ZQrwI8PFlfPymduhXGGwsaSxd4lbtbwaJ2NneYRVxPgb3JINq53ezzfp/Jv2KdwWDW
+	 +Rn1VGv7Ciw5xIV03BbXHPtfz5W5V0n35VGX61F0KO1lRNDqekEcxNy0q6C3Vut9Na
+	 QBoCGageiJ6XRJFlhNSZCgbZvOjyTNuZ4TEnJ+Lo4Ef085NsYhvZ1KHMrLrJzlI0ok
+	 UmzzUzvg7pXMg==
+Message-ID: <6285ebc9-fee5-4f51-9ce6-b840f9dba65a@kernel.org>
+Date: Thu, 10 Sep 2026 16:05:36 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -37,18 +37,15 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 0/5] KVM: guest_memfd: bind backing memory to a NUMA node
 To: Gregory Price <gourry@gourry.net>
-Cc: Ackerley Tng <ackerleytng@google.com>, linux-mm@kvack.org,
- kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+Cc: linux-mm@kvack.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
  linux-kernel@vger.kernel.org, kernel-team@meta.com, pbonzini@redhat.com,
  seanjc@google.com, akpm@linux-foundation.org, ziy@nvidia.com,
  matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
  byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
  shuah@kernel.org
 References: <20260902194657.79075-1-gourry@gourry.net>
- <CAEvNRgHWyBaBpZ4Bem1Eu86b-cuEA7NkyjxTJ4D3FnpGe1B2Yg@mail.gmail.com>
- <aqHkVKvons1tBs1O@gourry-fedora-PF4VCD3F>
- <0386eb30-0e0c-4d8c-abfe-86161b9e3d1f@kernel.org>
- <aqKxk2Marnz1HU4G@gourry-fedora-PF4VCD3F>
+ <9b67424d-70e5-442b-9ec7-22b1d3db12f4@kernel.org>
+ <aqKzIO3DD66Dhkdw@gourry-fedora-PF4VCD3F>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -95,52 +92,41 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aqKxk2Marnz1HU4G@gourry-fedora-PF4VCD3F>
+In-Reply-To: <aqKzIO3DD66Dhkdw@gourry-fedora-PF4VCD3F>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 9/10/26 15:39, Gregory Price wrote:
-> On Thu, Sep 10, 2026 at 01:32:08PM +0200, David Hildenbrand (Arm) wrote:
+On 9/10/26 15:40, Gregory Price wrote:
+> On Thu, Sep 10, 2026 at 01:30:04PM +0200, David Hildenbrand (Arm) wrote:
+>> On 9/2/26 21:46, Gregory Price wrote:
+>>> guest_memfd allocates its folios through a per-inode shared mempolicy.
 >>>
->>> the eventual intent is to enable this for fully confidential,
->>> host-unmapped guest, isolated to a particular memory device.
->>>
->>> Requiring a mapping to get node-placement is quite defeating the point.
+>>> Today that policy can only be set after the fact, with mbind() on a host
+>>> mmap of the fd. That requires the fd to be mappable, and it cannot reach
+>>> folios that are only ever guest-faulted. Neither holds for a
+>>> non-mappable (confidential) guest_memfd.
 >>
->> You only need a VMA, not actually mapped/faulted pages. So I don't immediately
->> see the problem?
+>> That looks like an investment into a mechanism we will soon consider legacy, so
+>> I am not convinced this is the right approach?
 >>
 > 
-> There is no VMA here - only an inode (GMEM_I), which is where the
-> shared policy hangs off of.
-> 
-> So yeah, if there was a vma, that's i suppose the missing component
-> needed to hook up userland mempolicy to all of this - but I would have
-> thought creating a VMA for guest_memfd is hacky and confusing (since its
-> intent is to basically not have a VMA).
+> Hm, I think i've missed recent work in this space / this context.
+> Any suggested reading here? Don't want to eat too much of your time.
 
-The VMA is irrelevant, you just don't want to fault in the pages. In fact, you'd
-only need the VMA while setting the policy. (similar to shmem)
+So the big development happening right now is in-place conversion (having shared
+and private pages managed in guest_memfd):
 
-> 
-> Is there a series I missed that was proposing this?
-I recall that we definitely discussed this in on of our meetings, but I don't
-remember whether we decided to not fully support this case given that in-place
-conversation is on the horizon.
+https://lore.kernel.org/r/20260830-gmem-inplace-conversion-v12-0-85e5fd25252a@google.com
 
-I think you can open a private-only guest_memfd with GUEST_MEMFD_FLAG_MMAP, and
-it will reject to fault-in any pages, but GUEST_MEMFD_FLAG_MMAP also changes the
-way memory pages are obtained:
 
-"When the KVM MMU performs a PFN lookup to service a guest fault and the backing
-guest_memfd has the GUEST_MEMFD_FLAG_MMAP set, then the fault will always be
-consumed from guest_memfd, regardless of whether it is a shared or a private fault".
+The final series where we added mempolicy support should be:
 
-For shared-only that makes perfect sense. For private-only, where shared memory
-pages would come from a user VMA, this wouldn't really work.
+https://lore.kernel.org/linux-mm/20250827175247.83322-2-shivankg@amd.com/
 
-But I don't know how your case would look like (where are shared pages? are
-there any ever?)
+(I think you are aware of that, you commented on some)
+
+See my other reply regarding the use of GUEST_MEMFD_FLAG_MMAP on private-only
+guest_memfd.
 
 -- 
 Cheers,
