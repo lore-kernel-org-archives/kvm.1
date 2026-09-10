@@ -1,149 +1,205 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCAB34F255
-	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 15:25:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789053961; cv=none; b=f8CztaKyUKG0N2M+7oiQFZodMSpvmyWW7Fq8JTgkVk8ObdfHKYcNZdGieWW7B+tkozuu0Wc3s7Pshl6PMbHzGpkhrnK3HmTzThoxWyo1+brhviudXZ5Hfz6WYrwbmWpmYwoyB+8q7Dk3qCRUp4XUEHImuXbAtUSXpuqA7HofjIY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789053961; c=relaxed/simple;
-	bh=iVHagnSj52SSDGfWURYA7aZ0jsmXs7SEp2cys4WB3Nk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rBHq91lnjYyNjjiuIDA2lVEiNTDF+hWeiF0q59zRnvfoEqGFVjuSIKq1R6AVTAHAwnHKd0sWLJxF4UNsfZ36GuGR43k53pmQdtbzqSC3l2irklsiVjgPPijv5BfatKhOCWqbrh30ppDDCzvQi7LGZdPrJbtJzOg5ouufhQClo3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KUxVEcu2; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3705238DC62
+	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 15:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789054132; cv=pass; b=ij197XDmjVSpKniO1QOVf6P2TiR6b0mdcTCwzxd3YJF9OyL16lX3AIK+JsNg87fJSCW1IKEqfSNlh9NBJA4O4DXnfoVP3MZgCSRke/I3roriOKKzYWtO4cRcHZ4Dsiz6gAQmvGTPNlMq+ucqgWl8NaceI4T2W83wh9r1jaXLIFU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789054132; c=relaxed/simple;
+	bh=sK5LSHGIGZlB9DMKSpDtTjwOaQaXmlgy6xbFtQvnkdY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f4if9sDLKYrTSGKYX9wa/uTZigtOqhW+S3/IUzqsAxnbzwnur8pd+NPIrjKg3Kz4vfgmppy8H+s5uCqZ/4TUVFIXcsMrmHlofu9vTn1PpKc7BYX0Yh31kEF1fol2PP4pBakDsQ+tkynwI2FO2gg3m7XybYw2g0BagI/QcnVsmcc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ijIzt/fi; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=S70WqCOS; arc=pass smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KUxVEcu2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8504E1F000FF;
-	Thu, 10 Sep 2026 15:25:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789053959;
-	bh=a1P5yuhAThkPH9p7+kQC4YGisEhAZ4B6kbnlFW12LJ0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KUxVEcu2dlfEugLZ1mwsIkBCVBVB7XcHRfnSprCSPZUbkAzBo3zCkaFy+1dSfGIMA
-	 DVIEdkkEZ60+vkYWil/ujGS5ItvuxwUeebdQZcji9k2WnJWpHgdy+mk/meCeY7RwTU
-	 83EabbcAVpMD5eRUIJDAK/T83eoWuPyZCmGnMDujAM1usXeEZN10CAkG86lWiwIBa/
-	 qcCskBaIaTWoG0iZImkg+6MrWNA8nwohLQaEPXHpPiQfjiGH4OUFVvLIFAfFYvtMY3
-	 tEeWzWTKLlklQPNGcomk3giztRI3ZRjKHIR9BNEM2qo9UlSMzODeQvDPSimDT4KKbf
-	 DjjwwqCOWjDlA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] RISC-V: KVM: Avoid synchronous IPIs on VMID rollover
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Wenlong Li" <wenlongli486@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260910151227.986678-1-wenlongli486@gmail.com>
-References: <20260910151227.986678-1-wenlongli486@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 10 Sep 2026 15:25:59 +0000
-Message-Id: <20260910152559.8504E1F000FF@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ijIzt/fi";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="S70WqCOS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789054130;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=076K/ng/C7NGSTThkWi9CGLJINd0G0+FkkGArXx2vNw=;
+	b=ijIzt/fi7DZCcODYk5K6n2uh1zEUjPX9ejmvXqh37YVIgxUEhjR2OOhEVXrmTh+YFFbDeO
+	uLLbwcEOBk/kDT0XROVm0BC+3ZJwAWISC8Ae/TcqEn1lIws0YMcxdCcGxIx6DmBxttirBo
+	MptdGrvT70+DmMf0LLKLqh3Q0a0Zats=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-501-qFmOiiNTMi2LK1yzHxarZg-1; Thu, 10 Sep 2026 11:28:48 -0400
+X-MC-Unique: qFmOiiNTMi2LK1yzHxarZg-1
+X-Mimecast-MFC-AGG-ID: qFmOiiNTMi2LK1yzHxarZg_1789054127
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4855e47d062so4758901f8f.1
+        for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 08:28:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789054127; cv=none;
+        d=google.com; s=arc-20260327;
+        b=iPhh3QBX7y+4h3J9EJkJVqMYjbc5N9uMc53WEsfjqCz0XxznXSqAhJkDEnXvl3Q5Cp
+         gJVlT57VPPkXwbm1tNVJLGrilphdkMv6C3KcVIjMqoxF5NwaTA8/r88Tt+Z42PkuQrz2
+         bvICXK8kHGJseWw/ykvKrFI/Y+y6RwAWnPxKuVwq2HsNFZXuNYIl6/x7o1CrnnLXoLog
+         YwRh/xuFgKpxUJe4qoffZ1lxDO9pCdm5uxQkV9E6CoUeZIVwu6PBO8KCvchczbyJz5Ax
+         U5CAxL2p2pfwKI4QuxXHW0x2TbKnjue3y5mCe2rJk2xgM068a/M/CwkynMuHcHzbTWpH
+         qRVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=076K/ng/C7NGSTThkWi9CGLJINd0G0+FkkGArXx2vNw=;
+        fh=1Ln8ZJmiRhv85jqMwYwSYR7hDaaDKN+ozq+H+vuX6FY=;
+        b=e74hMSaABUi27aY9JeygYvzpLa5Dpa71HtUm57SVlGFdfqf5AstCUe02kKgrLU1sFD
+         U84JuKoaPG+IGjW6k6jAMEa23YP158tHisiIP3qjlqqhOEj3QuO93n+7UMkhFcR2Nsoc
+         zQBVLHYhmXAgsqTdDvPf6wOFF1y+X/4YnG13+3nYodjMK512ZXc/Nt243t/QGq7HlBQM
+         7880hQ2N6wwos2x9lrEfT62aabP2HTjxRKmi7FPqxfoWCJaux2qjBt9wevb5KNcwO0B3
+         6voOINrsnJHyXCRH5KXtMe/joHR/HeKWK+tOgXjjlBrRGGlBsr350M6YBs/Q+Yps8Xwe
+         eZmw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1789054127; x=1789658927; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=076K/ng/C7NGSTThkWi9CGLJINd0G0+FkkGArXx2vNw=;
+        b=S70WqCOSp0PhjD0L8G8aKplL/JV0pBKnbEdklY+9IN1LXVzMn164Fuee6feCoenYNY
+         AbLbWhy58DTl12eV3HsxqZhHUePFO50wt+ToHevQgT5rMQiRnatQhCe7SjHI797g5NPX
+         uOCDAGYC7APoczWwGJECGG9aXlG+cWD/zW6YTif8f6HA98m0I0amrYZHuyN6vW/HiUeZ
+         p+l34fOSqyohyoERso1zCFwccWcSi5ZqcUfeuEXiS9cjK/nh7iJHwzn4j488NiFSldvN
+         +eD9iE6oqUVS3MrnT5ia+Uc85Gg30t9ydRTHRUq2kou6F6sjcxjoCuVIYWB7UTscb2RF
+         Ij/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789054127; x=1789658927;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=076K/ng/C7NGSTThkWi9CGLJINd0G0+FkkGArXx2vNw=;
+        b=XdW7n949siKETt8HYwg+BYk5eB0g/9zPfeio2BAU5kIlOou/9MWinPkiNMlN7TO5+u
+         +heOJGTqgfj6pGaRBikWLtVLFvO+YsdT9D67JY/223F7Vs1snXPfgxK7L30ocIfmjqEv
+         NzCkEXiZNcsjiSKGPiBLsYRlb73sQaqT0Lj1mlEMg3t6Qdv/kbUg+Er6fHpimLMn2pZf
+         ebiVfApmhaI++O6+lx/13FS2wzQ1Cj3GYfqGoQZ9qC1LkQDRgu8k3fpgSGYD9qFXGZNP
+         HHUOUrBdhQk3zwOIlJFwhkeMIufCFbDLnRdTe7k8XXTYmVecxJwafTal9NNQap3gMktx
+         jJNw==
+X-Forwarded-Encrypted: i=1; AKwUvByr393wHeW+5c3BOKNoM2Zh0OAWzpeFIoV5rGKnrd2OmPRpE3Xiysvfq7cnyjca5epudAg=@vger.kernel.org
+X-Gm-Message-State: AFuF++kYFDIgub7OO8E62YeCA6P2fM/LDmxkn8wqykQbirX3c9eVY9X2
+	kL8jGcJNnH0ml1dq/vYBRMzkP3N0Jcys/k8ZODA8KyVJ9DDCejRXdSD7SHpOj9UhC/9r1oMbz+p
+	m01BkSSduj3KyeQxTH/DjgXXL6MRH770kC+bQzyyc4QsuOj9gfeTyR8I0yNXDBB0TWHC2UrQefE
+	uvAqr2yrsTYGyqDGVtEO50FVFSfMeA
+X-Gm-Gg: AYBFou19pTn4HrVXFpxTK3ceYZyISxR2E/YHZYanSFrUmnW5wzu3IRC91izAE8j7jlZ
+	udjxKVoQCwVooRI0f/OlmBQU7txhBRAYoqkQXDvkfJ31/WpAhA4p17CvHvuSThbxKpMGPW32/Qs
+	166qTbgIUCanj3KxQIXpuqY4ap7cJwXZdcfh6QWZPzHoYuFCzfsByZv/HcVSvMZf8G+1JTCsELZ
+	wNM9GxgWORhr5OOybtjZgK9WBzLBB4AoS+zAL8NWAcOUZZMlk7tSQ+AENbTKQ==
+X-Received: by 2002:a05:6000:144d:b0:485:b067:c685 with SMTP id ffacd0b85a97d-485b067c8d1mr9124015f8f.33.1789054127049;
+        Thu, 10 Sep 2026 08:28:47 -0700 (PDT)
+X-Received: by 2002:a05:6000:144d:b0:485:b067:c685 with SMTP id
+ ffacd0b85a97d-485b067c8d1mr9123973f8f.33.1789054126556; Thu, 10 Sep 2026
+ 08:28:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260910112027.34581-1-flyingpeng@tencent.com> <aqLBQ8AXe189POtS@google.com>
+In-Reply-To: <aqLBQ8AXe189POtS@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 10 Sep 2026 17:28:34 +0200
+X-Gm-Features: AcwNN1U8O40Ww9hx_OcsSMWU6_zJWfhOZC5LvscRaRWGXLRPd7fZqQ78nZ6_Zj8
+Message-ID: <CABgObfY+8Z8p4DDhfs0mBAshR22j03iEF047abKTsB-aDZeb2Q@mail.gmail.com>
+Subject: Re: [PATCH] KVM: Simplify backwards dirty ring batch check
+To: Sean Christopherson <seanjc@google.com>
+Cc: Peng Hao <flyingpenghao@gmail.com>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Critical] Race condition during VMID rollover allows vCPU to enter guest=
- with stale hardware VMID, breaking memory isolation.
---
+On Thu, Sep 10, 2026 at 4:40=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Thu, Sep 10, 2026, Peng Hao wrote:
+> > The backwards coalescing path shifts mask left and back right to check
+> > whether moving the batch base would discard set bits.  The shift fits i=
+f
+> > the distance is no greater than the number of leading zeroes in mask.
+> >
+> > Use that directly.  Convert delta to u64 before negating it so that a
+> > positive delta, including one that wrapped to S64_MIN, is rejected by t=
+he
+> > unsigned comparison without invoking signed overflow.  Use __builtin_cl=
+zl()
+> > to match the unsigned long type of mask on both 32-bit and 64-bit build=
+s.
+> >
+> > Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+>
+> LOL, Paolo definitely has a different sense of "simple" when it comes to =
+bitwise
+> math.
 
-commit f9683a31ea50a94b9a73a513d36b5718f5b167c1
-Author: Wenlong Li <wenlongli486@gmail.com>
-RISC-V: KVM: Avoid synchronous IPIs on VMID rollover
+I am not sure *when* I suggested that. I cannot honestly exclude it,
+for the reason you express, :) but it probably was before
+include/linux/overflow.h.  Because...
 
-This commit makes VMID rollover lazy to avoid synchronous cross-CPU IPIs on
-all online CPUs. It tracks active and reserved software VMIDs, performing
-pending local HFENCE.GVMAs on the next VMID activation before guest entry.
+> > -                             /* Backwards visit, careful about overflo=
+ws! */
+> > -                             if (delta > -BITS_PER_LONG && delta < 0 &=
+&
+> > -                             (mask << -delta >> -delta) =3D=3D mask) {
+> > +                             /* Backwards visit, but do not discard se=
+t bits. */
+>
+> IMO, this really needs a more verbose comment.
+>
+> > +                             if (-(u64)delta <=3D __builtin_clzl(mask)=
+) {
 
-> diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-> index e062ca19f9d8f..85542c1a5ec3f 100644
-> --- a/arch/riscv/kvm/vcpu.c
-> +++ b/arch/riscv/kvm/vcpu.c
-> @@ -943,14 +943,14 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  			continue;
->  		ret =3D 1;
-> =20
-> -		kvm_riscv_gstage_vmid_update(vcpu);
-> -
->  		ret =3D kvm_riscv_check_vcpu_requests(vcpu);
->  		if (ret <=3D 0)
->  			continue;
-> =20
->  		preempt_disable();
-> =20
-> +		kvm_riscv_gstage_vmid_update(vcpu);
-> +
+... I love it, but it's unreadable. The "mask << -delta >> -delta"
+basically means no overflow on shift left. So just write
 
-[Severity: Critical]
-Does moving kvm_riscv_gstage_vmid_update() after kvm_riscv_check_vcpu_reque=
-sts()
-create a window where a vCPU misses a pending request?
+if (!check_shl_overflow(mask, -delta, shifted_mask)) {
+    cur_offset =3D next_offset;
+    mask =3D shifted_mask | 1;
+}
 
-Later in kvm_arch_vcpu_ioctl_run(), the vCPU checks for pending requests:
+and the clz magic, if desired, goes in include/linux/overflow.h. A lot
+more complicated now:
 
-    if (kvm_riscv_gstage_vmid_ver_changed(&vcpu->kvm->arch.vmid) ||
-        kvm_request_pending(vcpu) ||
-        xfer_to_guest_mode_work_pending()) {
-        vcpu->mode =3D OUTSIDE_GUEST_MODE;
+i#define __check_shl_choose(_int, _ll)                                  \
+        __builtin_choose_expr(sizeof(_a) <=3D sizeof(unsigned int) &&     \
+                              sizeof(*_d) <=3D sizeof(unsigned int),      \
+                              (_int), (_ll))
 
-If another vCPU updates the shared VMID generation locklessly,
-kvm_request_pending() can evaluate to false here if the KVM_REQ_UPDATE_HGATP
-request from the other vCPU has not yet been written. This would allow the
-vCPU to enter the guest with a stale hardware VMID.
+  #define check_shl_overflow(a, s, d) __must_check_overflow(({          \
+        typeof(a) _a =3D (a);                                             \
+        typeof(s) _s =3D (s);                                             \
+        typeof(d) _d =3D (d);                                             \
+        unsigned int _width =3D __check_shl_choose(32, 64);               \
+        unsigned int _bits =3D 8 * sizeof(*_d);                           \
+        unsigned int _dst_bits =3D _bits -                                \
+                                 is_signed_type(typeof(*_d));           \
+        unsigned int _adj =3D _width - _dst_bits;                         \
+        unsigned int _clz =3D __check_shl_choose(                         \
+                _a ? __builtin_clz((unsigned int)_a) : 32,              \
+                _a ? __builtin_clzll((unsigned long long)_a) : 64);     \
+        bool _overflow;                                                 \
+                                                                        \
+        BUILD_BUG_ON(is_signed_type(typeof(_a)));                       \
+        BUILD_BUG_ON(is_signed_type(typeof(*_d)) &&                     \
+                     sizeof(*_d) <=3D sizeof(_a));                        \
+                                                                        \
+        _overflow =3D (sizeof(_a) > sizeof(*_d) && _clz < _adj) ||        \
+                (u64)_s >=3D min_t(u64, _bits, _clz - _adj + 1);          \
+        if (!_overflow)                                                 \
+                *_d =3D (typeof(*_d))_a << _s;                            \
+        _overflow;                                                      \
+  }))
 
->  		/* Update AIA HW state before entering guest */
->  		ret =3D kvm_riscv_vcpu_aia_update(vcpu);
+(The BUILD_BUG_ON would be more restrictive than the current
+implementation, but IMO would be a good idea anyway to avoid having to
+think about sign extensions).
 
-[ ... ]
+So yeah, I think I must pass on the opportunity and leave the current code.=
+..
 
-> diff --git a/arch/riscv/kvm/vmid.c b/arch/riscv/kvm/vmid.c
-> index c15bdb1dd8bef..7b86a6fbe4a69 100644
-> --- a/arch/riscv/kvm/vmid.c
-> +++ b/arch/riscv/kvm/vmid.c
-> @@ -201,31 +201,31 @@ void kvm_riscv_gstage_vmid_update(struct kvm_vcpu *=
-vcpu)
+Paolo
 
-[ ... ]
-
-> +	/*
-> +	 * Publish the CPU-local active identity only after the required
-> +	 * local invalidation is complete.
-> +	 */
-> +	atomic64_set(active, vmid);
-> +
-> +	raw_spin_unlock_irqrestore(&vmid_lock, flags);
-
-[Severity: Critical]
-Is it safe to update the admission state and drop the lock here before=20
-issuing the HGATP update request?
-
-If the current vCPU drops the lock, another vCPU can observe the new=20
-generation, update its own admission state, and bypass the=20
-KVM_REQ_UPDATE_HGATP check since the request has not yet been made. The=20
-second vCPU would then proceed to enter the guest.
-
-> +
-> +	/*
-> +	 * A new software VMID may contain a different hardware VMID, so
-> +	 * request an HGATP update for every vCPU in the VM.
-> +	 */
-> +	if (vmid_changed) {
-> +		kvm_for_each_vcpu(i, v, vcpu->kvm)
-> +			kvm_make_request(KVM_REQ_UPDATE_HGATP, v);
->  	}
-
-[Severity: Critical]
-Since this cross-vCPU request is issued locklessly, can this cause a=20
-regression where two VMs might share the same hardware VMID?
-
-Because the second vCPU mentioned above advertises the new VMID in its=20
-admission state but still runs with the old hardware VMID in the guest, the=
-=20
-old hardware VMID is no longer protected. It could be immediately=20
-reallocated to another VM, breaking spatial isolation.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260910151227.9866=
-78-1-wenlongli486@gmail.com?part=3D1
