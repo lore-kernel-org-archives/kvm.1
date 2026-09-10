@@ -1,149 +1,198 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D6F472F95;
-	Thu, 10 Sep 2026 11:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC775473C8D;
+	Thu, 10 Sep 2026 11:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789039937; cv=none; b=s0aPGqTonIWHkvqtdlgIvLEUMcPfO1RZyVZul32Y3lJJ3TccvzE6SRVUD3tcocWcCKOzWdOEg2ZjvM0NSAxD4Cfkg2NZABZO/Y7dhpZg56+Vwjwbf2vYJbMYx1UTcYv9UWhq8pgiWYPmrByd+6ManBAH8ilQyborWPaIn9vQYXU=
+	t=1789039944; cv=none; b=nf/6NRGyO9Kx+ViN5Wum8pZ8rAeF/3nqMwXBLDQROjJcp3kIgDqb2IS4v1y9vMAK+XVmLeQccEVHgDZa4pmw13Kc2PQJ561JpTxOly2Mxl8euHUOE1+JjDZtYz2HRatieyVcjmbqT0LcTUt7oRuQfTiBZ3RONTn8W39WGjXKGyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789039937; c=relaxed/simple;
-	bh=EuV5QIX2mAp12NIU28Nd25M4uUJSmYTi7bD3oeSAC3A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qGZYV8+Ynfo6zIWGIb09KWqs6ZW1Gb5DqbDD5F0WwIjS9/ebUM26Hf6BSWrx0wFHls9msdnW5NS6TS5bG6XB29HRyiwVJ040NuCqdaTYZCqm92vu4K0PvBST1OBxPWsdRTja1zpjc6ORlAGgHqc+7g+56DNI2etH1qvjvUiP/xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nq7aTfP6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789039944; c=relaxed/simple;
+	bh=guuQ7wwKZUwLx7UiZZC1ZQd84JB6TuOKX2Pp/HhqaJo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uzxhkavNdf5UGVmuuZ00S888geWViyioliPA911phmkyXCYZrjUkJHZWWa50cJST5vUCpYOg4JZ6ue6q+/XJ1cHahky/oynGdex3umiHYDMQnbacaJ6vgfW+GplahpfIUO8ChMnB3qYjcB/P0uEfixfgx7ur/nzkZHy7+H5tFvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Do01+mJx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nq7aTfP6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33991F000FF;
-	Thu, 10 Sep 2026 11:32:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Do01+mJx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDDA91F000FF;
+	Thu, 10 Sep 2026 11:32:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789039935;
-	bh=MUiE/SGANYmf8vtQog79LZ93gRF429+dekDwpOi8Koc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Nq7aTfP6tBPV9eSggpwSR/rrMKqYSL6MC2Z55EKE55t+xwqBzKxM+9gvpQOk9S6Rn
-	 PsEJX1wndnKviOpfAS40eS5HlNnlT6iJ/JAbhrIhI+AD84w56r+H/lYTbkA3Fl7XKw
-	 8RGFi0sFpZRaS7kZmDvkHwUaUWVv6HWG3sJk818BFz7rS4FaxfYxxrRw8MfR3Yeblh
-	 fpG6G3GmBWTCdsMFoyZOEwxDie2RarDYhFh4UoAMuNYNXM8uBVRCe37/oMsd9nt7Mm
-	 5f8e8jnPCKVe48CxyKMQAKZ1NxijCLSf2n5zKgf2BWeX+PDo7Nnt/D1VMAVjWG082V
-	 vOOStZGsLB16g==
-Message-ID: <0386eb30-0e0c-4d8c-abfe-86161b9e3d1f@kernel.org>
-Date: Thu, 10 Sep 2026 13:32:08 +0200
+	s=k20260515; t=1789039940;
+	bh=/5lV9MjZaztRFYg3vjhl4EG1VZR677irc2LZYKqH59o=;
+	h=From:To:Cc:Subject:Date;
+	b=Do01+mJxQK7jBMq7wXc+aGa3oVXgUc/D8bf5MwNfGyp6PIDB8UuEpWjggru5ypmtf
+	 nBaCMotsiYv0Eg5mC7xqgenQiTBsuBWLuW0QO9ZuJusO543nVsWxQJR6/zWL5u+WSn
+	 ndS9CKhoq2TttJuRAWbhq2P3ql/6GVzemrnkc2YLksyoEW6vsSLnKnpwiT3X3F3sVe
+	 vHsVOp0UrX5Y7Y/eh1lcnifR+HsBzGBubdxs1eoqT2QLyeW5jq6NhZKhr/amlQgyDa
+	 eumkFL9s6PUQTAgaCXaVF7L8IK9eIzIkfRzTgmbmcmBBg7Q5tz5DuzuulLFw4Vmva5
+	 m0eqXfQCr/Wig==
+From: Leon Romanovsky <leon@kernel.org>
+To: Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Alex Williamson <alex@shazbot.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	=?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	iommu@lists.linux.dev,
+	Tushar Dave <tdave@nvidia.com>,
+	linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org,
+	linux-rdma@vger.kernel.org,
+	kvm@vger.kernel.org,
+	Matt Evans <matt@ozlabs.org>
+Subject: [PATCH v5 00/18] PCI/P2PDMA: Route peer-to-peer DMA by TLP class
+Date: Thu, 10 Sep 2026 14:31:55 +0300
+Message-ID: <20260910-fix-p2p-acs-v4-0-v5-0-856087f63c0d@nvidia.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] KVM: guest_memfd: bind backing memory to a NUMA node
-To: Gregory Price <gourry@gourry.net>, Ackerley Tng <ackerleytng@google.com>
-Cc: linux-mm@kvack.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com, pbonzini@redhat.com,
- seanjc@google.com, akpm@linux-foundation.org, ziy@nvidia.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
- shuah@kernel.org
-References: <20260902194657.79075-1-gourry@gourry.net>
- <CAEvNRgHWyBaBpZ4Bem1Eu86b-cuEA7NkyjxTJ4D3FnpGe1B2Yg@mail.gmail.com>
- <aqHkVKvons1tBs1O@gourry-fedora-PF4VCD3F>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aqHkVKvons1tBs1O@gourry-fedora-PF4VCD3F>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20260821-fix-p2p-acs-v4-0-e72455e3a261
+X-Mailer: b4 0.15-dev-18f8f
+Content-Transfer-Encoding: 8bit
 
-On 9/10/26 01:10, Gregory Price wrote:
-> On Wed, Sep 09, 2026 at 03:41:35PM -0700, Ackerley Tng wrote:
->> Gregory Price <gourry@gourry.net> writes:
->>
->>> guest_memfd allocates its folios through a per-inode shared mempolicy.
->>>
->>> Today that policy can only be set after the fact, with mbind() on a host
->>> mmap of the fd. That requires the fd to be mappable, and it cannot reach
->>> folios that are only ever guest-faulted. Neither holds for a
->>> non-mappable (confidential) guest_memfd.
->>>
->>> Add GUEST_MEMFD_FLAG_BIND_NODE and a node field to struct
->>> kvm_create_guest_memfd. When set, KVM builds an MPOL_BIND policy for the
->>> requested node and installs it over the whole inode, so every folio is
->>> allocated there with no userspace mbind().
->>>
->>
->> Instead of a custom API to ensure all guest_memfd allocations come from
->> a single node, how about these options?
->>
->> 1. Using cgroups/cpuset to constrain allocations (could be troublesome
->>    if the guest memory is not preallocated, unless the vCPU threads are
->>    running with the cpuset config)
->>
->> 2. Process-level NUMA policy
->>
-> 
-> for 1 and 2:
-> 
-> the intent is to put the guest memory on the target node, not all system
-> memory for a given process.  so the scope here is not the same.
-> 
-> in fact at that granularity, the desired node may not even have eligible
-> memory to host the task's memory.
-> 
->> 3. Why not request the guest_memfd to be mmap-able just to be able to
->>    set a memory policy?
->>
-> 
-> the eventual intent is to enable this for fully confidential,
-> host-unmapped guest, isolated to a particular memory device.
-> 
-> Requiring a mapping to get node-placement is quite defeating the point.
+PCI P2PDMA applies Request and Completion Redirect throughout both paths.
+This misclassifies asymmetric and nested switches, and reports one answer
+for every kind of TLP.
 
-You only need a VMA, not actually mapped/faulted pages. So I don't immediately
-see the problem?
+Three ACS controls act on TLP attributes the client chooses rather than
+on the topology: Translation Blocking and Direct Translated P2P act on
+a Request's Address Type, and Completion Redirect skips Completions carrying
+Relaxed Ordering.
 
--- 
-Cheers,
+Evaluate each direction at the path divergence, decide every class from the
+one walk, expose the provider to dma-buf importers, and let mlx5 ask rather
+than assume.
 
-David
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+---
+Changes in v5:
+- Rebase on the posted fixes.
+- Dropped tags from changed patches.
+- Remove Egress Control Vector interpretation and coverage.
+- Keep enabled Egress Control conservative as a Request redirect.
+- Use pci_dbg()/dev_dbg() for diagnostics and drop the "debug" prefix.
+- Removed code comments from "Document the pdev->p2pdma lifetime and RCU
+  rules" patch and reduced description to actual lifetime explanation.
+- Added note that Linux assumes that TLPs are in strict-ordering and
+  untranslated.
+- Added code to calculate p2p paths per-TLP type.
+- Converted mlx5 to use that new proposed API.
+- Link to https://patch.msgid.link/20260821-fix-p2p-acs-v4-0-v4-0-94426b96de73@nvidia.com
+
+Changes in v4:
+- Reject ACS Violations and unreadable routing state instead of treating
+  them as host-bridge redirects
+- Added Tested-by tags from Tushar Dave
+- Added support to asymmetric ACS routing
+- Limited redirect checks to the two ports at the path divergence
+- Added standalone ACS routing diagnostics for hardware retesting
+- Dropped " PCI: Account for Direct Translated P2P in ACS isolation checks" patch
+- Link to v3: https://patch.msgid.link/20260811-fix-p2p-acs-v3-0-efc488ee7c03@nvidia.com
+
+Changes in v3:
+- Fixed pci_p2pdma_add_resource() error unwinding
+- Made pdev->p2pdma teardown wait unconditionally for RCU readers
+- Restricted pci_p2pmem_find_many() to pool-backed providers
+- Documented the pdev->p2pdma lifetime and RCU rules
+- Fixed calc_map_type_and_dist() handling of the verbose argument
+- Required the ACS port and target to share a bus before indexing the
+  Egress Control Vector
+- Gave pci_acs_enabled() and pci_acs_path_enabled() a scope, so the ACS
+  Direct Translated P2P rule no longer stops pci_enable_pasid() from
+  enabling PASID
+- Dropped "Report ACS ports when the paths share no upstream bridge":
+  the mapping type cannot change without a shared upstream bridge, so
+  the pci=disable_acs_redir= hint was not actionable there and the ACS
+  walk only cost config space reads
+- Folded the Request Redirect rule into pci_acs_rr_ineffective(), so
+  pci_acs_flags_enabled() and the Intel SPT PCH quirk share one copy
+- Renamed pci_acs_egress_ctrl_set() to pci_acs_egress_ctrl_is_set(), it
+  reads the bit rather than setting it
+- Reworded the blocked-path warning: ACS may also leave the direct route
+  indeterminate rather than blocked
+- Added KUnit coverage for the shared-bus guard, a device with no ACS
+  capability and an unreadable ACS Control register
+- Added the missing Fixes: tags, a second one on the
+  pci_p2pdma_add_resource() unwinding fix (the dangling devres action
+  dates to f58ef9d1d135) and one on the Egress Control isolation change
+- Link to v2: https://patch.msgid.link/20260806-fix-p2p-acs-v2-0-0cec14812965@nvidia.com
+
+Changes in v2:
+- Added Logan's ROB tags
+- Added commas in Documentation patch
+- Link to v1: https://patch.msgid.link/20260802-fix-p2p-acs-v1-0-a7c5eb64fff6@nvidia.com
+
+---
+Leon Romanovsky (18):
+      PCI/P2PDMA: Document pdev->p2pdma lifetime rules
+      PCI/P2PDMA: Document the TLP attribute assumptions
+      PCI/P2PDMA: Derive routing from directional ACS controls
+      PCI: Reject unreadable ACS controls in isolation checks
+      PCI/P2PDMA: Evaluate ACS controls at the path divergence
+      PCI/P2PDMA: Document directional ACS routing
+      PCI/P2PDMA: Collect the path's ACS controls before deciding
+      PCI/P2PDMA: Answer routing per TLP class
+      PCI/P2PDMA: Route Relaxed Ordering Completions directly
+      PCI/P2PDMA: Reject Translated Requests blocked by Translation Blocking
+      PCI/P2PDMA: Route Translated Requests under Direct Translated P2P
+      PCI/P2PDMA: Log detailed ACS routing diagnostics
+      PCI/P2PDMA: Add KUnit tests for the ACS routing decisions
+      PCI/P2PDMA: Test the ACS P2P routing walk
+      PCI: Add KUnit coverage for ACS isolation checks
+      PCI/P2PDMA: Document TLP-class routing
+      dma-buf: Let importers ask how peer-to-peer traffic is routed
+      RDMA/mlx5: Ask P2PDMA whether ATS takes a direct peer-to-peer route
+
+ Documentation/admin-guide/kernel-parameters.txt   |   9 +-
+ Documentation/driver-api/pci/p2pdma.rst           |  69 +++
+ drivers/dma-buf/dma-buf-mapping.c                 |  41 +-
+ drivers/dma-buf/dma-buf.c                         |   1 +
+ drivers/infiniband/core/uverbs.h                  |   1 -
+ drivers/infiniband/core/uverbs_std_types_dmabuf.c |   7 +-
+ drivers/infiniband/hw/mlx5/mlx5_ib.h              |  36 +-
+ drivers/infiniband/hw/mlx5/mr.c                   |  40 ++
+ drivers/pci/Kconfig                               |  15 +
+ drivers/pci/Makefile                              |   1 +
+ drivers/pci/p2pdma.c                              | 637 +++++++++++++++++++---
+ drivers/pci/pci.c                                 |   7 +-
+ drivers/pci/pci.h                                 |  26 +
+ drivers/pci/pci_acs_test.c                        | 609 +++++++++++++++++++++
+ drivers/pci/quirks.c                              |   6 +-
+ drivers/vfio/pci/vfio_pci_dmabuf.c                |   8 +-
+ include/linux/dma-buf-mapping.h                   |   4 +-
+ include/linux/dma-buf.h                           |   5 +
+ include/linux/pci-p2pdma.h                        |  57 +-
+ 19 files changed, 1440 insertions(+), 139 deletions(-)
+---
+base-commit: 08dbfad3f5040f5bdb6c529da20d6d4e81fefd72
+change-id: 20260821-fix-p2p-acs-v4-0-e72455e3a261
+prerequisite-message-id: <20260830-batch-p2p-fixes-v1-0-5044e8dfbe2e@nvidia.com>
+prerequisite-patch-id: 6b25c7fcf164cdfc14e9fac5b908d97fcf6509d7
+prerequisite-patch-id: 0d083c281001365aae4b35544cf28891a6ab9a96
+prerequisite-patch-id: bfd9dabf271f3cc9a3a61f46387d20c20311363d
+prerequisite-patch-id: fad0275efc722830fc591509506c0a5e4f581073
+prerequisite-patch-id: 0c83bee688fec1f6d1564654df7c630fa6a4a978
+
+Best regards,
+--  
+Leon Romanovsky <leonro@nvidia.com>
+
