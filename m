@@ -1,193 +1,226 @@
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
+Received: from mail-oa2-f12.google.com (mail-oa2-f12.google.com [74.125.231.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6E73655FC
-	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 18:04:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8024C576EC1
+	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 18:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.76
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789063443; cv=pass; b=Ch7CoUfy0NGXE3yxLYTGWWL8ejZWK7Njv5PGXMHjGOdrO4vo1Z8KMfUtLZdUfM1D4ZQQvKeb1M4KkVuqHpDp9wZZh/z89SV/P6pkWUoF5Hwj4yLDIGuSUnakLbkcN1ZFgfcW+iUhn3YjImHvBLOnq+T2wNob6l1TxCl6kXIVKHE=
+	t=1789063895; cv=pass; b=NuFi1Ol4ihNLr0dL6xaqHlP4tKD30Om/aFxtTfXdW9W23tbb0/QqwO4N2Zd/VuBn/M6KpY1L5JyDursr5I71rV24ZHpi5yWQwSyUHPRnFWJdYKUVVWZe+CgeMc36+6qUeJolgtLXG9cy3WwpbS4so/FGSzkUQ2rVlj3OfWqqFRY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789063443; c=relaxed/simple;
-	bh=Ah0Y8dKK3ONQwTech3fUqo224sZ77BjP0hgfw0DpEFc=;
+	s=arc-20240116; t=1789063895; c=relaxed/simple;
+	bh=NT0Z/LF1SMhtkavx81DR2GGYYK6aB7iX5ZVgmCMPgvQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jSrbHWduTvr/rnBcck3LgMEd0F7+SuuGn2PxsdcZzoNT9b3uL9UFP7oree5JV2P3i+LGxr5bAA7MTwZ1hhbapkIpKb1gz9YYTAqskWpBUokalBmuI7mv1lXRN/yVtD0B5gGZs1/QJ6jj60jRWwnQsXJ/NLiG44kD78Yy2JultQE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=idTv6K8X; arc=pass smtp.client-ip=74.125.230.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=lKpO1BSIzXanHX4ajKDZSE6HacXj4ByF/Y8M6raJW30UmgHDCGpvXrvRaMRP7HNYG2cD1IwRxEdsZfsmY4qG1WKi9pLFnqdex1DkU+aM7UksFArlbOFE269RwpOgYpG5+BpV3Q9yswVsST7hP/UtbCNY6s4ySfoIdURRMYiD67U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FKybIG7v; arc=pass smtp.client-ip=74.125.231.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="idTv6K8X"
-Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-5307425f44bso329221cf.1
-        for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 11:04:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789063440; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FKybIG7v"
+Received: by mail-oa2-f12.google.com with SMTP id 586e51a60fabf-47b5043f191so4253fac.3
+        for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 11:11:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789063890; cv=none;
         d=google.com; s=arc-20260327;
-        b=BcDrcYoiZhabZZ+iAfKNYoF2CBv0PkqwMRUnqvGdnGoH3+VFsrTjShIIg5M3JYKj0q
-         3tTZTXCTXeVU44Nf33vt+eW5p3EWYBdHh0E8HOzwczcTQLCrEjgry9gBMvblAdmg5OlZ
-         FtogHCdnPIyAbzWuw3DzhYcYayG1JRMONBds/Lz5rMRYfFLD8nWu/A67wFnXWw/oD25T
-         Q8er0uGT46uvdlWPkScDacfVuoXkAxpCPy8irCWuYCJVAvvbcey1wWpRrje07jWbaHlU
-         I1MTI6uQ+xg6k6JsZ5mYOPRu7yb0bBZmQpPLCTnRJJB4FoKB3fukKw+G5EPZqlqdI4vB
-         e8/w==
+        b=bLKdw77dJV+CTxm7PbmI5Pkl7VnId9b5nyAZFM8A1LYFWcM93mORMiyWzpsvSqhQZl
+         zc48PZUUxfa19BvLqe829EelWMnKnsJMZ97nH4guH8VOM03NRpWHfOW38KRpovV6b7xe
+         UT6BDAyaSfdi684Lj4lerm1HkTAVTUpmxy11JsyIqiVVp8ICxzvN08fUFKLzFH0decit
+         TuL+INsBpR4j9DN7jt95z6ogBrLoRAlzZRvCNJWySVIfjDL246QFVjdT8/ljQud5ozXM
+         QNGoiJfLY5iZQs1D9RguPWQ3Dv6TcxrcFGl85FtwuSY0FhATjsFQO5l0LjulfW/8XSDi
+         Bemw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=lU4Ni6nVNz3cbuwIORrLsfK7gF/gdk70J0L4MX46lSc=;
-        fh=JM1bP/DellM+Q6HsbxNoFyPUPOAetBmeje+K7gN41E8=;
-        b=hh1Ni5Nqc6ycWtLVHEF7vqzWHCSNFyWNxWeROc6dUrSB2tO1s9t67vWAK3W6B60h0q
-         bclddKWA1+20qPG6Sl2W29t2ll8f73Vr4hU7tIWWaC/wqATD8IV+qH6xjX8zcaTJFgDn
-         B7uQe2/D0Glnh5QKljA7WBg/ZXd9IUYnB/gJc/TQuQd7ZjUKFnkk2d6FtkDzwt2/3+4e
-         xIaDUdA6ngDHc4WuVP99abo+qkaKyk8Q7tBnTmJ3uCMd/7A5m78mHnbZde6RXhf4RA3p
-         b3QRu7jEsQS4A/NZ+cfC4SuZbPTog1RKEdlomcJHwfIFqwetRoe8UjxkPxl/oj706thw
-         eyHA==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gxuS67QpsgmiVo7SJODgVn7jNGL8PaTVeXELBYXj9Vc=;
+        fh=l6wMJfSvlv2V9QtxtbYOKBwpPA30SS7ilYlMG+xq1U4=;
+        b=ldrc2b/SDT0DLIHA4eTSp/w2YZ+ewarBv552uYeShu459qOxM+Mwb4Bin7hAtR+zuj
+         ymLpIQL6BwjcJSAEHswneoN3Yc8JFSciKkT3jxdf95fjQyoa8uGxxkdu3xrNcnx0ZWZQ
+         3nbDMGoWBi/YO+oU39DpPhrgQaAZM5+pfEDDFSAsz92Raq1sRc9FTuGJFs7B7NGJqoPY
+         yC0pi1+IIBWHtY23VNRuoie5IDpSayGQmqIHCW/KpPYUOPWj0N/7K3rgTnvOhEM2B/Gw
+         PI79dScs1VHKnNpLnL2XhEI5tElyFaT51x8IKBwW74gk4BZVzjxUzRKwEHudMCLgJ7QG
+         ItAQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789063440; x=1789668240; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lU4Ni6nVNz3cbuwIORrLsfK7gF/gdk70J0L4MX46lSc=;
-        b=idTv6K8XG4mHilS5g5JM8jvsmztymfIy8555Ifim3Gd0pA0wPxNTX6lxgxhOCu9y1J
-         8ejezbOZ99kprCSVr1BuOgg91bNkebL6wfRSY1W+8xY/TIY+7y/+krL3GeVXm1M0TFni
-         05RLYvfcZuS0jV7TuQ/aPVLcuDz7Y7o9oojzLwsqZiCksP/A07BMzA7JQzNkhFhex2mE
-         P9+hW7HpO1Rq3/Awd2++HYPFJorCS/s96S31vzz2JDrs25FMkU1Id4fSPzOc0j7n3OXH
-         Y6eLxmSk5lnwI+KcptqcidfOxy4F4320xK6SLqgt54ZVqGgYv+H4qGiAovK91aoWpALY
-         L5iQ==
+        d=gmail.com; s=20251104; t=1789063890; x=1789668690; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gxuS67QpsgmiVo7SJODgVn7jNGL8PaTVeXELBYXj9Vc=;
+        b=FKybIG7vbPrID6z1nHaj6kVvqnRQk9kvLUdCSO2+2ma9Rrzv9SNsMhpf6H6ntsMUds
+         JkyN3NfvnmjEM6fiuIEbDJ9ubreYKGMr4WB5YW+WP8daIgGmV93h2QhGZncGxUruNTVl
+         xb2WebfNbk637VrINs16GyzSfy6Udi4tcRoeH/5/HvD6JJC39vardYEfjksmVtn+eq90
+         6nNKA546KE5FFVTONnyAW7NH0ZI0JriDM3YVglc1gMZq/J8BylnjF7IuIBmBXSUxR5sk
+         pKWbcKzTldmYVXmq15a181+DQWmWqY+Hy9X3XmqX1apU7j5PpWG+JMXCx6tSMMlVkN1h
+         l9ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789063440; x=1789668240;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=lU4Ni6nVNz3cbuwIORrLsfK7gF/gdk70J0L4MX46lSc=;
-        b=VJLMyTYQCFuTuwNzE7uxvRChoFCmHcvzEXZpZ3n7O0dkOJ9NC6pJTpomYYBZayFcWv
-         Rz3yj1sgu5aGevi9cMGuL778dEHB/ezUe1UuValx4KZwGJiMxBJCvB8rz0bKpIHESNS+
-         SVr3OVB4VxMaUK9GIkWkPRJ6IWEkWY5ONSHfp2wyn73MNgGuQkw8S5s80OJ0PawwWNSt
-         zwxe/33VtLNJtsiwOo4J+XIbuG9yf0U4WlwlIToThpVJNKZjWAxkoDXh4mTrC570suzB
-         7zW2ND1X3YiEwWn4VaysZknR9otQzZrTmQVVK+/pMQbO3BzSjxCG5rKEEG0/0DadcRsc
-         x/fw==
-X-Gm-Message-State: AFuF++nLqFF8865pLRKvvXOtdE+ZHuRKqkQGPK0/6Mj/taI8mJDOAitF
-	3DuB8+O1/1bE/sxoqjrl7ba3l3HjrrXSMIMKR+dLbYlX3IIA8N/rPQM8yCj290x3r2mHT2pnk2M
-	DHXgBL8zbgwS+XUFh0Hju7L0J1JGktoQdEOahgExv9XQsSrY7+1vXu2Qs
-X-Gm-Gg: AYBFou0ZmwJvToMwDTQFitIroK1efuG+l3q9v3jhyM+ygyU4aaa/X1hXfLVJgsP8iyA
-	EMdcVBqMf7DnVgxZGp/PBZre7ARziLnpzoz/s8j8c++cZ4Uzg4jXRf77GHKAcp1TR/xa6+QeEwE
-	Md0aTl2pESIyx+lkmCpBGhujQr6aVTI3Q9fkG+z01apiNVQ5jecQeYxVqvahsDIwd78Py0nc/y4
-	IXSvgJ07+JAWRCUTxlfr46OkZNNcw4NdQbduy93VanmN3GRIadhGYcAETrKO7mJQhzj3qrW+gHi
-	oE0iQAk0FSGUjQ4DzomkSX3qtk8gecO/3dzFuhYui4HICp4zOAgBcxc=
-X-Received: by 2002:a05:622a:343:b0:52b:4ec6:52ba with SMTP id
- d75a77b69052e-530c958404amr977721cf.6.1789063439266; Thu, 10 Sep 2026
- 11:03:59 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1789063890; x=1789668690;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gxuS67QpsgmiVo7SJODgVn7jNGL8PaTVeXELBYXj9Vc=;
+        b=Oc+sSlJ27hqRV0UQgQ193joSvMVyIhEPfGFQa0BWR62S5M0akeEtnBAYLCxQ56PGt3
+         AqeZCSJVvD1SAdOxqozBThgu/DF+kHHPnpuTS87h000DiXn10cZwv0LOigYizqega/JE
+         mmzpS/Y2Cp9/oK6Z5/cRf1k0OVdjxxZX2RMNG41Phe1tZ2gsNX+UuXGt2XmiNAZoPOSC
+         Ah42ZgdoqFRg/8C6gAvOxw/MTDdLq6pZ1+KZ90BdBb9AdU9qhlxAQgcSpOkaKMLWzZlZ
+         p6xsVuQi1/pdlJRhp5HAWB+GuoeESsMirDmPZ3z13sj2iiYKJa0iHB96lJmqxjqpw1+B
+         3KWw==
+X-Forwarded-Encrypted: i=1; AKwUvBzlBtDUkHQZsNm2T5C/KxfMvpaiFLTqe0uPzuiRyR1R/qmKRMMCIQgZGmNVE0MjVTiBNmo=@vger.kernel.org
+X-Gm-Message-State: AFuF++kgZ7pTLGJFQ+mrN8X+ivgGK/a69XxE+ofdAr4qrTnzgp9FvoR/
+	7j0pOM12LA3gjTxs8c/6p1n3A1SLnu5483wCoHW+Z+UpT2QZzQh4TZe8Wgy7sABkkaObw8WyMyy
+	O7lbDR6K1LJ8xX4kj8biHuXIqyDVr7yU=
+X-Gm-Gg: AYBFou2d87GQwpqbESfRyrt4dDmfFdKURbUrTA47xqIwtU219Qof0R/OWRGZia5Ntkr
+	gDag4owDfp/UFDRoIdk/oInw+GQ3X3N3v+q0i5tw2rsi4QOo47w7C0ysCieBa1qHy5g6oB1iQ0+
+	uiUCvEVBESZr3i929B05zrTwxpT49h0OU+Oij0AERtO9OHQNUDIfDkPrRCsQqZvzZAgVbhJHniH
+	PXJtx2c8t1wOD45WHFtmRhFZ857i71bIz7wupGkxOql9y/lnYsoonCyCwThzujeKKgQtDKyFLQi
+	R3lTYbDcUiSLASeGnka1AOf5fpynCAwQTRxK2/encmzQ8Phm26YU3Vg=
+X-Received: by 2002:a05:6820:55d3:20b0:6b1:ac4f:f708 with SMTP id
+ 006d021491bc7-6c0bc1d3ad3mr241038eaf.17.1789063890425; Thu, 10 Sep 2026
+ 11:11:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260804165748.1060476-1-aaronlewis@google.com>
- <20260804165748.1060476-5-aaronlewis@google.com> <an-YyQV-CtoulEHr@google.com>
-In-Reply-To: <an-YyQV-CtoulEHr@google.com>
-From: Aaron Lewis <aaronlewis@google.com>
-Date: Thu, 10 Sep 2026 11:03:47 -0700
-X-Gm-Features: AcwNN1W4du2QOxeHX0by0NkLn6FRfzeSxfPAq7O1Ig_qsUsAWbd5EQz_G-0wS-I
-Message-ID: <CAAAPnDGbnoaNDsa8-p9aM=Gj8QG36_5QVgEW0DR3+GOEB0BkAw@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] vfio: selftests: Allow a size for vfio_dma_mapping_perf_test
-To: David Matlack <dmatlack@google.com>
-Cc: kvm@vger.kernel.org, alex@shazbot.org, jgg@nvidia.com
+References: <20260908-b4-mmap-prepare-vma-flag-sanify-v1-0-dacf19cce22b@kernel.org>
+ <20260908-b4-mmap-prepare-vma-flag-sanify-v1-11-dacf19cce22b@kernel.org>
+In-Reply-To: <20260908-b4-mmap-prepare-vma-flag-sanify-v1-11-dacf19cce22b@kernel.org>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
+Date: Thu, 10 Sep 2026 14:11:18 -0400
+X-Gm-Features: AcwNN1XLr_yN2lEzELD3PcXDse2cuW9BBHCwsQpnROCV_SxzPvFmiqhSaiK704I
+Message-ID: <CAEjxPJ7hXSi=oLtQPV+7GEvN+txfYwZ-u-v_EysNHM0gSGNrCw@mail.gmail.com>
+Subject: Re: [PATCH 11/39] selinux: reject writable opens of policy file, drop
+ mmap shared/write check
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, Jaroslav Kysela <perex@perex.cz>, 
+	Takashi Iwai <tiwai@suse.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>, Simona Vetter <simona@ffwll.ch>, 
+	Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, 
+	Peter Xu <peterx@redhat.com>, Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, 
+	linux-sound@vger.kernel.org, bpf@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
+	fuse-devel@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> > For example, both the test size and the test harness options can be set
-> > like this:
-> >
-> > ./vfio_dma_mapping_perf_test -b 16G -a "-v vfio_type1_iommu_memfd_hugetlb_1gb"
+On Tue, Sep 8, 2026 at 4:07=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.or=
+g> wrote:
 >
-> I tried this out and it's a little clunky to work with. Especially -h.
-> Plus it's quite a bit of code in the test to deal with the different
-> argv arrays and parse everything...
+> The policy file has no write method and is exposed read-only (S_IRUGO in
+> selinux_files[]), yet sel_open_policy() performs no open mode check, so a
+> CAP_DAC_OVERRIDE caller can open it O_RDWR. Reject FMODE_WRITE at open, a=
+s
+> kernfs does.
 >
-> Here are the other options I think we should consider:
+> The file can then never be mapped with FMODE_WRITE, so do_mmap() always
+> clears VM_MAYWRITE and VM_SHARED for MAP_SHARED mappings and the VM_SHARE=
+D
+> check in sel_mmap_policy() cannot be reached. Remove it.
 >
->  1. Abandon the kselftest_harness for this test and manually replicate
->     across the different IOMMU modes and memory types. I don't love this
->     since it will differ from other VFIO selftests, we'll need to
->     reinvent the test fixture replication, and we lose the TAP output.
+> This also stops sel_mmap_policy() clearing VM_MAYWRITE on a mapping that =
+is
+> neither a PFN map nor a mixed map, ahead of the core enforcing that only
+> such mappings may do so.
 >
->  2. Add first-class support to kselftest_harness for custom test
->     arguments. I ran it through Gemini and it came up with something
->     relatively clean [1].
->
->  3. Just use an environment variable for this one argument. This would
->     be extremely simple to implement and use.
->
->  4. Have the test look up how many HugeTLB pages are free on the system
->     and just use all of them. You can control how much memory the test
->     uses by controlling how many HugeTLB pages are allocated on the
->     system.
->
-> What are your thoughts?
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-I like the idea of #2, having the test harness support command line
-arguments in selftests.
+We should likely do something similar for the other sel_open_*() and
+sel_mmap_*() functions too.
+In particular, truncation of the status file can bring down systemd
+since it is mapped by libselinux.
 
-I ended up going with a struct interface rather than a macro one, but
-the idea is basically the same.  That allows tests to easily add
-command line parameters, and still use the test harness so the test
-looks the same as the other selftests.  The other thing I liked was
-that this solution made the command line look sane again, and allows
-me to filter out tests with the selftest harness command line options.
+Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
 
+> ---
+>  security/selinux/selinuxfs.c | 11 +++--------
+>  1 file changed, 3 insertions(+), 8 deletions(-)
 >
-> [1]
->   In kselftest_harness.h:
+> diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
+> index c7d91476971c..545a6f89f9e7 100644
+> --- a/security/selinux/selinuxfs.c
+> +++ b/security/selinux/selinuxfs.c
+> @@ -340,6 +340,9 @@ static int sel_open_policy(struct inode *inode, struc=
+t file *filp)
+>         struct policy_load_memory *plm =3D NULL;
+>         int rc;
 >
->     #ifndef OPT_CUSTOM_STR
->     # define OPT_CUSTOM_STR ""
->     # define OPT_CUSTOM_HANDLER(opt, optarg) KSFT_FAIL
->     # define OPT_CUSTOM_HELP()
->     #endif
+> +       if (filp->f_mode & FMODE_WRITE)
+> +               return -EACCES;
+> +
+>         rc =3D avc_has_perm(current_sid(), SECINITSID_SECURITY,
+>                           SECCLASS_SECURITY, SECURITY__READ_POLICY, NULL)=
+;
+>         if (rc)
+> @@ -424,14 +427,6 @@ static const struct vm_operations_struct sel_mmap_po=
+licy_ops =3D {
 >
->     // Modify test_harness_argv_check()
->     static int test_harness_argv_check(int argc, char **argv)
->     {
->         int opt;
->         char optstring[128] = "dhlF:f:V:v:t:T:r:";
->         // Safely append OPT_CUSTOM_STR to optstring
->         strncat(optstring, OPT_CUSTOM_STR, sizeof(optstring) - strlen(optstring) - 1);
->
->         while ((opt = getopt(argc, argv, optstring)) != -1) {
->             switch (opt) {
->                 /* ... existing core cases ... */
->                 case 'h':
->                     fprintf(stderr, "Usage: %s [-h|-l|-d] [-t|-T|-v|-V|-f|-F|-r name]\n...", argv[0]);
->                     OPT_CUSTOM_HELP();
->                     return KSFT_SKIP;
->
->                 default:
->                     if (OPT_CUSTOM_HANDLER(opt, optarg) == KSFT_PASS)
->                         break;
->                     return KSFT_FAIL;
->             }
->         }
->         return KSFT_PASS;
->     }
->
->   In vfio_dma_mapping_perf_test.c (before #include "kselftest_harness.h"):
->
->     static void opt_custom_help(void) {
->         fprintf(stderr, "\t-b bytes Specify the size of the DMA region...\n");
->     }
->
->     static int opt_custom_handler(int opt, char *optarg) {
->         if (opt == 'b') {
->             test_params.size = parse_size(optarg);
->             return KSFT_PASS;
->         }
->         return KSFT_FAIL;
->     }
->
->     #define OPT_CUSTOM_STR "b:"
->     #define OPT_CUSTOM_HANDLER(opt, optarg) opt_custom_handler(opt, optarg)
->     #define OPT_CUSTOM_HELP() opt_custom_help()
->
->     #include "kselftest_harness.h"
+>  static int sel_mmap_policy(struct file *filp, struct vm_area_struct *vma=
+)
+>  {
+> -       if (vma->vm_flags & VM_SHARED) {
+> -               /* do not allow mprotect to make mapping writable */
+> -               vm_flags_clear(vma, VM_MAYWRITE);
+> -
+> -               if (vma->vm_flags & VM_WRITE)
+> -                       return -EACCES;
+> -       }
+> -
+>         vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
+>         vma->vm_ops =3D &sel_mmap_policy_ops;
 >
 >
-
-Cheers,
-Aaron
+> --
+> 2.55.0
+>
