@@ -1,173 +1,148 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F0D46EF9F
-	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 19:14:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789067660; cv=none; b=a7IWXvOLatNqmTbnX5pXqb1Y4guLIZ67Vaebvbd3bhiCjONogKxKtdwnrvkZ7baC1Qib4EQu8LIunm0jG0WqEuuUgigKP09iGPz2/3CrVMwUFgQxsXO//IziSFsTY+fiXiSaMuopaC8yQ8pPJ3he4P2hKUqjJty73FT7LpQfz2U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789067660; c=relaxed/simple;
-	bh=FqUfnO60l6okYiwM4VWfFq9KvwuGV4cZ59aEc2ZKs5w=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NH7YC61F5PRePejrighS1pbos6WBTCV4bU19umV3FPf/pVGUxpRHexWJqchoy26ZQxWTDaptVAsOfMCtqLYuaT5nmStTQd1G3EtWFbZXIk2RYfwgwFxEEIkUf4t7c/EkxIyDxiFskqLTQTkyVzPx8j3OzOY4lkHoLC0OIl9g0JU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Jw82HjPu; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69BDF49BD6B
+	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 19:20:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789068026; cv=pass; b=nfKer7EDRtlEJeuTopCqMg2JrRoxUkXZXy+0QqNzO3Q+Pap4edvnAYbgthPpJdaK9NeZ0RdyYltrylnSsqcPN3oxLJGxQ2mWSr5ZnFcKV+kkDNtRDZCj/kQVFO9D7SQhtZ4wbrH9xXi6Dod1VXeU3RbT9HT3KwYzdkq1S/S3i0g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789068026; c=relaxed/simple;
+	bh=fiGuXF8pnYZgt9VLhaHvZD8ERe5p+iX/cvkRE6nZgx0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HtZ12fWQCNiaRUCKwfkMdFmOG3cEANrqVTbRC4GayMFr9wzXNH4UrIPlbeOqKEGK1xuaarSsABmq5QhZJWaDaUjmzVECP8ub+UFdyf0oGtdDbVySfLhVSExZAahBqaiLrDbEwW3PjwZMBRIJw7T4STpJ+0RRoTn2OsFmXYyqtF8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J2cliDoy; arc=pass smtp.client-ip=74.125.224.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Jw82HjPu"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d9336581a2so211555ad.3
-        for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 12:14:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J2cliDoy"
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-671061b015eso64279d50.1
+        for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 12:20:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789068024; cv=none;
+        d=google.com; s=arc-20260327;
+        b=enylHl5Jf7zjnpY6Zu38Z0S832JHJs3vAIeFlIaweWatEHPNylMG0yekuDVdeLxNcm
+         MQaUnja/0kVfZ2HjZvPuPucyGIkdncWjuDs/6PZ1c4eHpm9at2I3FsxE2MaBG4IzwJIk
+         wiOBLLJWGcxoQnAydlHfIL4Nc4+bt0z+CaemLaCPNVju1/9V6qDZmk46k6wjnwPNOkRd
+         hUsi5C2uK3EGE+NfJPod67SdHkwP1tZGNY+td1cPCDj1iKoEijWeIihCjVRA789BfymI
+         kga+1U8KJyhdaZtU/HiJAcBw5HBKEDzhIDpTLWoxbq4Uz/5h7S54PYatf5hUuUDau0AG
+         RyUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=b6AZ6dwl+nPhR9lRn8ryaNJ3HAjOQF7wNnV4eGAN9b4=;
+        fh=S7g22fLGgVjpJGMfFUJUZRgA2/FFfTs/7rH+2iwkokc=;
+        b=LMkCEVJgL2Tq5xRjMmH6wbdHp2RT6aWbrXeoJnOADTGu7ahKwLV702dnSP7dpJXfr3
+         qb3WW8sMyBwPxwA7zAkwr004WyysXLMR2kQn5V6iERdvk3+M/9dQ7rPsUCxboR58f4Sf
+         v7xeHLTGJ7OlWqtSXZ3SV4GAz0xk6Lc/qkKgfc+MqRgXJF7k7ZW87PYP00vYStVGoAw0
+         +zFok+FEJmbIC4y7oun/YinwaptQ+bKJ61k0IshsZFeExtyjKuIbTrYZHtr8K0Nl1WZx
+         WATKlOl3VC9R/eZbxqWWhVPcUsnZTruiLy3FxgJyRQpDyYtrM9nPH7pgxZBo3HtLrfMS
+         dx2g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789067658; x=1789672458; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=37ZIH47KtSaQZ8vEucDa+UZuBoEfIorK83eyPZ+bYGw=;
-        b=Jw82HjPu7ODPKsLrcuh62e75Abquyn/F0WvCmMuamN61j99+UcPfj/I37X0qjviBli
-         jkx/xh+Y0wVz0zO2p9E/oamWbv/URQyHrO9Pl8PM42SFjFebiAvIrl+wkG53zgtqR/w0
-         UF4YxFWO+uMbYJa8QisKWTzorTzBlTeUF4b1my9kVUiTXC7N/oB4znkivSaLmwIM/+tG
-         lWv5s83YFv58RHTyzc772cCRn5wL+drZrMRjXWG54vWNtoBbDcIjEegMoyAWAsWI6/N7
-         oqZn/rmC1JqGSXwvmYIhiwi3biqWhMkCopYkTz1pP6jLW6mG7RSCacyFPabWeQZ1THX+
-         mrXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789067658; x=1789672458;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1789068024; x=1789672824; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=37ZIH47KtSaQZ8vEucDa+UZuBoEfIorK83eyPZ+bYGw=;
-        b=i5X9C6uUXFzffQJ7p+sTpmXKQxf4ZN1sElT0V2c+SOHvdmwLnmZz0TWQ7pBziSkLJY
-         IP6dwKyQLSXvW2U6XGXehyC8Fashg5A6n4AxFYYiGsNh89ITYrndBrhwHCSjh7/n8BQt
-         a5+qljpeO7Q9ShGIOmfL/1FNV8sF9GmYtX0Rqs3xHLViDoG3Hs70ELr/kJl3ukl5lP/2
-         /v7NKPErYve7hzgwjUh9y5vcIxql1ayZA5TcVDSBYD2IW7CHxuYK0uGP2vHsEVldZbhz
-         6uillOW0NQia4vUNGQNive1iTV6LHlFP4XKXCqnEiBdMdgOz66Lj4FxPggrzIkM1pIiK
-         ZPbQ==
-X-Forwarded-Encrypted: i=1; AKwUvByKXzvfQeKTaJvI9KhDDqqmIKiDo6bga/ZiiMLCT9NXMfsvexWbXOMeJ8QmLNxpL9l4Uto=@vger.kernel.org
-X-Gm-Message-State: AFuF++kY4iRYSa7/7KDIwWxUe2Wlz6uk5zETiz7nAEGRBMtDrueUT328
-	vEGaMpEazoeA24twFVX2jYkYr6M/OtCELyS5dhD6WWrV7EYzp1cIQdhShcDlBSO31yWoCPuhVIV
-	bk2rvhg==
-X-Received: from pltt21.prod.google.com ([2002:a17:902:d155:b0:2db:36c9:8778])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:98f:b0:2dd:1701:3b6e
- with SMTP id d9443c01a7336-2dd2a357fc6mr15756725ad.16.1789067658128; Thu, 10
- Sep 2026 12:14:18 -0700 (PDT)
-Date: Thu, 10 Sep 2026 12:14:17 -0700
-In-Reply-To: <CADrL8HWRjzzs7YmNkGDYQWDnygw=OcdgqCWCOfdt9af0-XwvVw@mail.gmail.com>
+        bh=b6AZ6dwl+nPhR9lRn8ryaNJ3HAjOQF7wNnV4eGAN9b4=;
+        b=J2cliDoyTkgg80jsWjGdwBZTk4xzKHYzUEYJLMIlEYq+eRQIxv1EcfV0W5LrGb0G8L
+         daKbDeKtNSZl8Blo5/yHpNVU2PBal3O75AYKJXJ6yZ5eZOX3fRA49IEs3JiJinAMT9Fo
+         IV6tZG9kFA1vmGu7lEUAtT0da/ScwQTAO2+Gq9tgBY7gVZ18DaGhPZ3CGRCqiiTLqM1l
+         Tkbhw7IgRd6Hw4l153FTB9cYnxRMZlmU4egZW3Sjj0d3UiTfsg0quCBBys7OiFis6M3M
+         PB0tmJR1luJyn2GsilfVLpYbuGgWsFwvuEqIHIjfQobC125FqW+hPl3inxfIsx+kC9td
+         5EBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789068024; x=1789672824;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=b6AZ6dwl+nPhR9lRn8ryaNJ3HAjOQF7wNnV4eGAN9b4=;
+        b=CoZ0JVQYJhhPpHmqA10a1p39cr9aEa6nBNsFF5duYgAROOOtf00t+aWTK2J3LriMyI
+         QAl70sHptJd3Dx5u6rPdxhyBDjXM5KhGnYHm62ejPVdSfOkHSkPNIMstjXRYHKiy2AQK
+         cvRUMQS8YmyaxMTppk26ZQ3ECxGRsxGRpqWknkDPDrvXN85yXm/wSeV2R/fajykKnxwg
+         CanZhzOLpR2TnLtrRDhIPWTCXBTxpIW6DPGDkI+aFj69La7mqYuqHEEMauogY8A8SzSH
+         cpyG0haPzE5IQmDvgXSYFDQDnV40xqdaHRo2QwQsXjUx6szZnWgOhVpk/UT12JBD6atr
+         fSNw==
+X-Forwarded-Encrypted: i=1; AKwUvBxHkynPIb3BqVbjIP1sZnd02uYluWcKx9DeLh3VEDPfVFXuApSrDGy6rxBXSf32yDZtXME=@vger.kernel.org
+X-Gm-Message-State: AFuF++kRQSsEW8RvTidNJud3BPiM6E66EVBRG8Lv6znHQD95vmipWTcB
+	XKNRq/c/irpYXDL+1J8KD+kVnc4m436wsUI3d9gSkSTjMy39OCYFKkoOMm7v3raXQ24D/3bv1C+
+	A8TcUrJnVWJC8ru9hIj9W+9wL1/vKn18SNc5wKS22
+X-Gm-Gg: AYBFou18tPsilPW3efuEQldO6f9NVxbiqbNhB2txPYSLDqenKmQ+KYnVEY3ccnSZ1wC
+	1wwPKEqBbv9CEcYQmYJju3wzdRHE9pn3pje4DtkFBBDtGr/amo9Xfy04tiRvL6hqT1HfbZ6C3Tj
+	C/1/yOyCFHyZE+nHZl3mhBMZKSugfQRikSXngLl9vBcJBo9sdXnor6GQWsJl3h0UDBfAHsrUAxU
+	Yxvnyi6t2pCUUlWsSeKOqu6vLfoPCbKm+Vtsiv84b2zEr4suFT7HA30th9jflIskOI/sPadL5DK
+	2F5FErAV/NGJpvk6yqEkHB9rPKFWsiLXXWaeFs+X772pLEXY7guI8eYJO8/n2+G+AtCAvekjOFF
+	bqKmc/b1PKak=
+X-Received: by 2002:a05:690e:80b:10b0:66f:c1bc:c097 with SMTP id
+ 956f58d0204a3-6712476c288mr382065d50.95.1789068023584; Thu, 10 Sep 2026
+ 12:20:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260908132838.2116068-1-jmattson@google.com> <CADrL8HW3Q=8eBf-=h6BAPdUN_X1Z_-KG=i5a5rA2kF+V4JURww@mail.gmail.com>
- <CALMp9eRJXozpUpdOhqDCWn7VbqHb9G9hn4aZnxS_fef4ad1yTg@mail.gmail.com>
- <aqGsukcRG6khmxpt@google.com> <CADrL8HWRjzzs7YmNkGDYQWDnygw=OcdgqCWCOfdt9af0-XwvVw@mail.gmail.com>
-Message-ID: <aqMBidJ_96qroogH@google.com>
-Subject: Re: [PATCH] KVM: nVMX: Don't flush shadow VMCS12 to guest memory
- during vCPU teardown
-From: Sean Christopherson <seanjc@google.com>
-To: James Houghton <jthoughton@google.com>
-Cc: Jim Mattson <jmattson@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+References: <20260910162343.4092060-1-elver@google.com> <aqLhHOrXsa30PBVU@google.com>
+In-Reply-To: <aqLhHOrXsa30PBVU@google.com>
+From: Marco Elver <elver@google.com>
+Date: Thu, 10 Sep 2026 21:19:46 +0200
+X-Gm-Features: AcwNN1XEJG4HFWxM40HlnJmqF0_xrl9dxVW2S0hyaOIau8OztfJYTNDdG5jUhc0
+Message-ID: <CANpmjNNF44Y_k-Jbx6TikXgTnhE3G_aRDFXAABosZexOkn0jeg@mail.gmail.com>
+Subject: Re: [PATCH RFC 00/10] KVM: Enable Clang Context Analysis
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Sep 10, 2026, James Houghton wrote:
-> On Wed, Sep 9, 2026 at 12:00=E2=80=AFPM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> > If the above works for PPC, then KVM can nuke memslots before calling i=
-nto
-> > kvm_arch_destroy_vm().  x86's asinine memslot deletion in kvm_arch_dest=
-roy_vm()
-> > needs to be addressed, but that code exists purely to do vm_munmap(), a=
-nd can
-> > and should be moved to kvm_arch_free_memslot().
+On Thu, 10 Sept 2026 at 18:55, Sean Christopherson <seanjc@google.com> wrote:
+> On Thu, Sep 10, 2026, Marco Elver wrote:
+> > Enable compiler-based static context analysis [1] for x86 KVM, along with
+> > prerequisite lock annotations in virt/kvm.
 > >
-> > All that said, I'm not sure this aggressive fix is the right thing to s=
-end to
-> > stable@.  For that, James' suggestion of hardening KVM's usage of
-> > __copy_{to,from}_user() seems like the best blend of being comprehensiv=
-e without
-> > being overly invasive/risky.
->=20
-> This seems kind of nightmareish to backport; there are a lot of
-> copy_*_user() callsites that will need updating. Maybe I have a
-> different idea of the diff you're suggesting.
-
-Nah, it's not many, because it's only the __copy_{to,from}_user{,inatomic}(=
-) usage
-that needs handling.  Everything else is strictly scoped to an ioctl, where=
- (a)
-current->mm can't be NULL and (b) KVM doesn't make any assumption about the=
- address
-space.
-
-At a glance, it's 11 total: 5 in virt/kvm, 4 in vmx.c, and 2 in PPC's book3=
-s_64_mmu_radix.c.
-Well, plus 4 more to also harden {,__}kvm_{get,put}_guest().
-
-And even if that number were doubled or tripled, the backports would still =
-be
-relatively easy.  The overwhelming majority won't conflict, and the few tha=
-t do
-should be trivial to resolve (more than likely, simply drop the change).
-
-> I wish we could just change the uaccess primitives, like
-> {,__}access_ok(), to check that `current->mm` is not NULL (and WARN
-> and return -EFAULT if it is NULL).
-
-That wouldn't help at all in this case, because the access_ok() check is do=
-ne
-when memslots are modified.  Which is the crux of KVM's problems: KVM decou=
-ples
-the initial checks from the accesses, relying on kvm->mm to
-
-And even if we hardened all of the uaccess helpers, we'd _still_ have probl=
-ems,
-because it's not just a NULL current->mm that's problematic.  The last refe=
-rence
-to a VM file, i.e. to struct kvm, can be put by a different _process_.  I.e=
-. KVM
-still needs to guard against reading/writing guest memory using a valid, no=
-n-NULL
-current->mm that isn't kvm->mm.  That can't be genericized in the uaccess A=
-PIs,
-because the rule that only a specific address space can be used is very muc=
-h unique
-to KVM.
-
-> That diff is also not trivial to backport; many arch implementations woul=
-d
-> need updating. I have half a mind to send an RFC patch to linux-mm@ to se=
-e
-> what they think. :)
->=20
-> > So, as an immediate set of changes, what if we do this over ~5 patches,=
- with patches
-> > 1 and 2 tagged for stable@?
+> > During the initial annotation pass, context analysis uncovered a missing
+> > SRCU read-side critical section in x86 PMU filter lookups; patch 1 fixes
+> > this bug.
 > >
-> >   1. Add kvm_copy_{to,from}_user{,_inatomic)() and return -EFAULT if cu=
-rrent->mm
-> >      is not kvm->mm.
->=20
-> SGTM. This is not mutually exclusive with the generic uaccess changes
-> I'm suggesting above. If this is actually reasonably backportable,
-> sure let's backport it.
->=20
-> >   2. Hack-a-fix PPC's kvm_arch_flush_shadow_all().
-> >   3. Do x86's vm_munmap() in kvm_arch_free_memslot().
-> >   4. Nuke memslots before calling kvm_arch_destroy_vm().
-> >   5. Change the current->mm checks in kvm_copy_{to,from}_user{,_inatomi=
-c)() to
-> >      WARN_ON_ONCE() on failure.
+> > The remainder of the series is strictly non-functional: it establishes
+> > basic function annotations, guarded_by annotations on core structs, and
+> > straightforward refactorings in hva/gfn range walks and guest_memfd to
+> > eliminate conditional locking patterns that cannot be tracked statically.
 > >
-> > And then in the near-ish future, take things a step further and do:
+> > Annotating the MMU (mmu/mmu.c, mmu/tdp_mmu.c), i8259, and Xen requires
+> > more invasive changes and is deferred to follow-ups.
 > >
-> >   6. Fix the vmx_leave_nested() trainwreck.
-> >   7. Harden the common kvm_{read,write}_guest family of APIs even furth=
-er by
-> >      adding an early WARN_ON_ONCE() on current->mm !=3D kvm->mm, i.e. t=
-o detect
-> >      bad KVM behavior as additional defense-in-depth.
->=20
-> This all SGTM, thanks Sean.
+> > [1] https://docs.kernel.org/next/dev-tools/context-analysis.html
+>
+> ...
+>
+> >  43 files changed, 745 insertions(+), 236 deletions(-)
+>
+> For me, there needs to be a _lot_ more explanation of what this buys us to justify
+> the extra annotations and ongoing maintenance burden.  And to a lesser extent, why
+> we should rework code to play nice with context analysis
+
+Patch 1 is an example of what this buys: static checking shifts left
+and prevents bugs from actually being committed. Context analysis can
+be seen as an extension of kernel C, improving its safety, and the
+nice thing is it can be enabled incrementally (no rewrites in other
+languages needed, though yielding modest safety gains at a fraction of
+the cost). A side-effect is compiler-checked documentation
+(annotations), which helps humans and robots reading & writing kernel
+code.
+
+The question is simple: is the cost of ongoing maintenance with
+context analysis greater than the cost of the bugs it prevents?
+
+> (I assume we can simply
+> opt-out on a per-function basis if we don't want to play nice?).
+
+Yes with __context_unsafe(/* explanation */) attribute, or
+context_unsafe(...) expressions.
+
+> I'd also like to see what the MMU changes look like before committing to supporting
+> this.
+
+If you're not entirely opposed, a v2 can include that.
