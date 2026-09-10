@@ -1,56 +1,56 @@
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7473452D2D9
-	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 16:24:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A46A4FECF6
+	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 16:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789057452; cv=none; b=Uxp2krGRY1/zJski5DhO48WXjsaedmnk5e1s8FLCS0vlNc9o68E97U2xYxtXDoO9dPj/bkviIYhFN/9lZ5WyUf5aG7quN5hSqwWERf7F1LYDBc5LocfrBHV3kTSNKgMgBwflEwadkReov9ShteboE2pENgHBeGwcldfbrjFC8/U=
+	t=1789057455; cv=none; b=bhQHKV2Hdf65ZKrtle9NnMfLSas2S75WwKIsliFK76tGjg4xLpUQKfjjkmilToWu0UCqNsacX6cK95jPow5J0mhdUowr2uOqtDmaH7ChKCX1MVsuEHYoHYhd4CCcmeVuCR8jvKtB8htrmR8heFys1LeisY6T2cH92HPgslvr4Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789057452; c=relaxed/simple;
-	bh=Uw18xgi0BxdfHnCsIhuDM+SwgIYJ0SP8g/ovgWkILJA=;
+	s=arc-20240116; t=1789057455; c=relaxed/simple;
+	bh=pxrnsvzW8MKgeFG0MarEtyI0HnlG7oA7pNmC3DpRc9U=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=o+lhtkKPmyHaSjv0+L4Y/mRDSpEVPt/Yxvo/0eXZdrry81WXrYzaZH8TgHrBBAr2ZECFFKTlMEFHi0R5gyWVf4rF7X1CSAQQ4nU9BA1YOgSxmuNqnjFbesbJeLN2yOTap2OWHGxebFmXCXSRAvTvjBprq3qEtDn/5+H7CuGlZc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--elver.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q7TAiWc8; arc=none smtp.client-ip=209.85.218.71
+	 To:Cc:Content-Type; b=XNM/3f8YWGoCSUAZe6B8sEO5DmEN/oaxw1ooS41HLSOfKhbJWZv7P7z1iuVRW7gFjjFbVZhAgvk/Gc1iXN/FhOSvWnToPriG6/yblJrKmT/GlSI+YP6KJmuIEDtgnk0uOiWvC9D9WL2EZ6G8+Hee8d8s/LUl8j1Z4bohmjKAfeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--elver.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oIKkq3Jp; arc=none smtp.client-ip=209.85.128.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--elver.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q7TAiWc8"
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c2942fa0995so168318166b.1
-        for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 09:24:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oIKkq3Jp"
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49953abe51fso70575e9.1
+        for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 09:24:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789057446; x=1789662246; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789057449; x=1789662249; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=KnZriOrx76oWc7IbFKP8WTxfBR0BHG1CwkYJSO6Ivsw=;
-        b=q7TAiWc8wCSCe26DpL8+PXoZ6NhrB/sxGstZdjN4DZ4OgqGfMRBRDTuYXsbmD5ETCV
-         0uQHtb1IuQycvP4jRYZrOQIMGJHwg1Yrr3A0bUMuB2rXiHaItDTPchvAbTPfy/D8UsBS
-         q3Sej2ZQXqbcxDPp3S3D3Bh5WEVFerAlyn++tJET6deY23IxFb523leFG69VHZoHVQ6k
-         Wjs0wZEv/fAnM+ngBoomLa9LG2eq4isiwwA+x03XAWtNc4PR3uV3H/DE7XrE/5+u254n
-         wfZmxZUiC2d9Yg4v23GLMtVUR91BAQY/oGr/lPGiPyYiPLgzeeaNicnqwHDoeqxgrhV2
-         Loeg==
+        bh=eHI1zbWWi1BOEuhxInEo9eXwbPIfP+RyCmucdS/YFCg=;
+        b=oIKkq3Jp0ry6K0DsHLDkf84OH4pYLX+kknjykm17cdBxO2SIuUe2jmB5SlSaX5JfGc
+         Fv7YeiWWQHr7bAuUuUDKoGDyhCyXF1fnjC0UZuUhWBFo55H67c+ZSw/1bs9/1druy6X1
+         Ea2D8yXPWlcWeXKt5f5wfE7y3+ZJyf0Y6iDiK5RlH8j3CrPVtmyeV63rKYSAqfOPq+Nh
+         qIIzE7eMAALtaxVmKsNph7p5KSpJWMX4t7wIjeinimv4OsBHI9OAipvGYbHlz6CzOY1e
+         SjlojdwUctVwIOu3meiAMyXM+tQbe5xLSlmHFTmtm+941L6YybKtm+Ni8WwqO6B1iuHp
+         azNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789057446; x=1789662246;
+        d=1e100.net; s=20251104; t=1789057449; x=1789662249;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KnZriOrx76oWc7IbFKP8WTxfBR0BHG1CwkYJSO6Ivsw=;
-        b=KGCJS+TnL+wYDGrxOX+f+r5dCItTYk0uFOdIwCJ6r4IHyxpvSlne7zaHq4hA7kJSYV
-         7uGazQ8hoTP2Cb/f1qtc7fQQJDrlKOT8ZLoxwFlvakqgQIv3D1xQKCI54FsPTwCnrO+g
-         4XUM+MjU4y20GrzFJGctehB0fON5bgxkY8HJMi8mryVHVknEjMBnc9zpiW30qfBYLI75
-         U4drCZ7NH2BtNVSEYfetwv9SWQh5bsQhdq86VWSQbkSjIEPp5btsj9aRlzZYDZTHJkSY
-         RPQsq3hUD4yJQvmYYpZBlq0o8f76qxEwFYTNi6vDCD4rNdPqzDrTWs3z+bClE4ugBYin
-         4Zxg==
-X-Forwarded-Encrypted: i=1; AKwUvBwEKG0YAuLkl9yoZuBo30hRw0j+WYRXu7WmwP60gQc4vfMwbkL8csIKfeCDfG9zfwrKtM0=@vger.kernel.org
-X-Gm-Message-State: AFuF++mt2HLdf00sTujAVFlI/WjOJex+GL6mgRffN9Cl+cXEGXoCPbmq
-	8rwibE98jpdoz+TAsXIVEOvrYr9NybsNCN8/Qo87MOSSzly3r+KItXqCip0zhSaZKJw1k0TfoFm
-	38w==
-X-Received: from ejcey15.prod.google.com ([2002:a17:907:b8f:b0:c25:1e06:d698])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:9709:b0:c1c:4e36:eec6
- with SMTP id a640c23a62f3a-c260ca22ce1mr1766102666b.18.1789057445690; Thu, 10
- Sep 2026 09:24:05 -0700 (PDT)
-Date: Thu, 10 Sep 2026 16:21:42 +0000
+        bh=eHI1zbWWi1BOEuhxInEo9eXwbPIfP+RyCmucdS/YFCg=;
+        b=WFHc0jMhH3AHvtvBxP47r6eph2gmhqfCBp28ViOXUx3zR7VI7ZgpIU43Tx+pS+Egny
+         4NBDSEIjM5yjtSmKpZ63M2N8DBRgx0yYsWuH8h4c9+0El6nptSk2RKxQb/LSX4PkADMh
+         xensSubVMl76ZF8YJlcqWHzmcVixt3Vnw9SfXn8gl1okZCteL4D7JFAANKIdI3O+0Oj/
+         AcxPEXBU4pU4l4frtZX7KKoaGx0iwQcSyfwJhEmeNvO0drbY9Cf0yli5u5+aqTvj2Uk9
+         kqQYOqo2dnci4Jt552qjAERw0eX0IEc5R2f5DcMGmpuMqRvRX2y/mZspDmealNFb05iu
+         FC3A==
+X-Forwarded-Encrypted: i=1; AKwUvBw/vxoEXw6THgWGKWqorRpvV/UwfJbOAYzqCAMbvHpx2Ojl8CO64B+8Aw/Y1HsvGQVXkSU=@vger.kernel.org
+X-Gm-Message-State: AFuF++lLa4HVKecOzADpXDg8jL6SBBZh9TM2CqXTq64rG3G5vPl7uh/N
+	sjiDsdKazkMEyix83Pp9ya06wJ2QEXebtJxr7bhQAI+uAakZKsUlm/t9+/ShwOJiEQNRpNL5YUA
+	3Zg==
+X-Received: from wmhj22.prod.google.com ([2002:a05:600c:3016:b0:49d:1474:3527])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:1c29:b0:49c:fc6c:be03
+ with SMTP id 5b1f17b1804b1-49cfc6cc06cmr410272355e9.26.1789057448808; Thu, 10
+ Sep 2026 09:24:08 -0700 (PDT)
+Date: Thu, 10 Sep 2026 16:21:43 +0000
 In-Reply-To: <20260910162343.4092060-1-elver@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260910162343.4092060-1-elver@google.com>
 X-Mailer: git-send-email 2.55.0.1003.g10538fe699-goog
-Message-ID: <20260910162343.4092060-10-elver@google.com>
-Subject: [PATCH RFC 09/10] KVM: x86: Add guarded_by annotations for kvm_arch,
- kvm_hv, and ioapic
+Message-ID: <20260910162343.4092060-11-elver@google.com>
+Subject: [PATCH RFC 10/10] KVM: x86: Enable CONTEXT_ANALYSIS with opt-outs
 From: Marco Elver <elver@google.com>
 To: elver@google.com
 Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -73,162 +72,52 @@ Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Add __guarded_by annotations to a subset of fields across x86 state
-(struct kvm_hv, struct kvm_arch, and struct kvm_ioapic) where the
-protecting locks reside in the same struct scope. Mark deliberate
-lockless updates with data_race().
+Enable Clang context analysis (-Wthread-safety) for x86 KVM.
+
+Because virt/kvm/ objects are built directly into the x86 KVM module,
+this also enables checking for common KVM sources.
+
+Temporarily opt out sources that require more invasive annotations:
+mmu/mmu.c, mmu/tdp_mmu.c, i8259.c, and xen.c.
 
 No functional change intended.
 
 Signed-off-by: Marco Elver <elver@google.com>
 ---
- arch/x86/include/asm/kvm_host.h | 32 ++++++++++++++++----------------
- arch/x86/kvm/ioapic.c           |  4 ++--
- arch/x86/kvm/ioapic.h           | 16 ++++++++--------
- arch/x86/kvm/x86.c              |  8 ++++----
- 4 files changed, 30 insertions(+), 30 deletions(-)
+ arch/x86/kvm/Makefile                    | 8 ++++++++
+ scripts/context-analysis-suppression.txt | 1 +
+ 2 files changed, 9 insertions(+)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 683bb8bf43a9..a0d2d6c08e47 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1073,20 +1073,20 @@ struct kvm_hv {
- 	struct mutex hv_lock;
- 	u64 hv_guest_os_id;
- 	u64 hv_hypercall;
--	u64 hv_tsc_page;
-+	u64 hv_tsc_page __guarded_by(&hv_lock);
- 	enum hv_tsc_page_status hv_tsc_page_status;
+diff --git a/arch/x86/kvm/Makefile b/arch/x86/kvm/Makefile
+index 0474604ab8a1..a93b54b00ae2 100644
+--- a/arch/x86/kvm/Makefile
++++ b/arch/x86/kvm/Makefile
+@@ -1,5 +1,13 @@
+ # SPDX-License-Identifier: GPL-2.0
  
- 	/* Hyper-v based guest crash (NT kernel bugcheck) parameters */
--	u64 hv_crash_param[HV_X64_MSR_CRASH_PARAMS];
--	u64 hv_crash_ctl;
-+	u64 hv_crash_param[HV_X64_MSR_CRASH_PARAMS] __guarded_by(&hv_lock);
-+	u64 hv_crash_ctl __guarded_by(&hv_lock);
++CONTEXT_ANALYSIS := y
++
++# Opt out x86 objects pending context annotations:
++CONTEXT_ANALYSIS_mmu/mmu.o             := n
++CONTEXT_ANALYSIS_mmu/tdp_mmu.o         := n
++CONTEXT_ANALYSIS_i8259.o               := n
++CONTEXT_ANALYSIS_xen.o                 := n
++
+ ccflags-y += -I $(srctree)/arch/x86/kvm
+ ccflags-$(CONFIG_KVM_WERROR) += -Werror
  
- 	struct ms_hyperv_tsc_page tsc_ref;
- 
- 	struct idr conn_to_evt;
- 
--	u64 hv_reenlightenment_control;
--	u64 hv_tsc_emulation_control;
--	u64 hv_tsc_emulation_status;
-+	u64 hv_reenlightenment_control __guarded_by(&hv_lock);
-+	u64 hv_tsc_emulation_control __guarded_by(&hv_lock);
-+	u64 hv_tsc_emulation_status __guarded_by(&hv_lock);
- 	u64 hv_invtsc_control;
- 
- 	/* How many vCPUs have VP index != vCPU index */
-@@ -1232,15 +1232,15 @@ struct kvm_arch {
- 	 * preemption-disabled region, so it must be a raw spinlock.
- 	 */
- 	raw_spinlock_t tsc_write_lock;
--	u64 last_tsc_nsec;
--	u64 last_tsc_write;
--	u32 last_tsc_khz;
--	u64 last_tsc_offset;
--	u64 cur_tsc_nsec;
--	u64 cur_tsc_write;
--	u64 cur_tsc_offset;
--	u64 cur_tsc_generation;
--	int nr_vcpus_matched_tsc;
-+	u64 last_tsc_nsec __guarded_by(&tsc_write_lock);
-+	u64 last_tsc_write __guarded_by(&tsc_write_lock);
-+	u32 last_tsc_khz __guarded_by(&tsc_write_lock);
-+	u64 last_tsc_offset __guarded_by(&tsc_write_lock);
-+	u64 cur_tsc_nsec __guarded_by(&tsc_write_lock);
-+	u64 cur_tsc_write __guarded_by(&tsc_write_lock);
-+	u64 cur_tsc_offset __guarded_by(&tsc_write_lock);
-+	u64 cur_tsc_generation __guarded_by(&tsc_write_lock);
-+	int nr_vcpus_matched_tsc __guarded_by(&tsc_write_lock);
- 
- 	u32 default_tsc_khz;
- 	bool user_set_tsc;
-@@ -1370,7 +1370,7 @@ struct kvm_arch {
- #endif
- 
- #if IS_ENABLED(CONFIG_HYPERV)
--	hpa_t	hv_root_tdp;
-+	hpa_t	hv_root_tdp __guarded_by(&hv_root_tdp_lock);
- 	spinlock_t hv_root_tdp_lock;
- 	struct hv_partition_assist_pg *hv_pa_pg;
- #endif
-diff --git a/arch/x86/kvm/ioapic.c b/arch/x86/kvm/ioapic.c
-index d6865e557abe..7affe2584036 100644
---- a/arch/x86/kvm/ioapic.c
-+++ b/arch/x86/kvm/ioapic.c
-@@ -739,11 +739,11 @@ int kvm_ioapic_init(struct kvm *kvm)
- 	ioapic = kzalloc_obj(struct kvm_ioapic, GFP_KERNEL_ACCOUNT);
- 	if (!ioapic)
- 		return -ENOMEM;
--	spin_lock_init(&ioapic->lock);
- 	INIT_DELAYED_WORK(&ioapic->eoi_inject, kvm_ioapic_eoi_inject_work);
- 	INIT_HLIST_HEAD(&ioapic->mask_notifier_list);
- 	kvm->arch.vioapic = ioapic;
--	kvm_ioapic_reset(ioapic);
-+	scoped_guard(spinlock_init, &ioapic->lock)
-+		kvm_ioapic_reset(ioapic);
- 	kvm_iodevice_init(&ioapic->dev, &ioapic_mmio_ops);
- 	ioapic->kvm = kvm;
- 	mutex_lock(&kvm->slots_lock);
-diff --git a/arch/x86/kvm/ioapic.h b/arch/x86/kvm/ioapic.h
-index 81b576513116..1f87396c0a79 100644
---- a/arch/x86/kvm/ioapic.h
-+++ b/arch/x86/kvm/ioapic.h
-@@ -70,19 +70,19 @@ union kvm_ioapic_redirect_entry {
- 
- struct kvm_ioapic {
- 	u64 base_address;
--	u32 ioregsel;
--	u32 id;
--	u32 irr;
-+	u32 ioregsel __guarded_by(&lock);
-+	u32 id __guarded_by(&lock);
-+	u32 irr __guarded_by(&lock);
- 	u32 pad;
--	union kvm_ioapic_redirect_entry redirtbl[IOAPIC_NUM_PINS];
--	unsigned long irq_states[IOAPIC_NUM_PINS];
-+	union kvm_ioapic_redirect_entry redirtbl[IOAPIC_NUM_PINS] __guarded_by(&lock);
-+	unsigned long irq_states[IOAPIC_NUM_PINS] __guarded_by(&lock);
- 	struct kvm_io_device dev;
- 	struct kvm *kvm;
- 	spinlock_t lock;
--	struct rtc_status rtc_status;
-+	struct rtc_status rtc_status __guarded_by(&lock);
- 	struct delayed_work eoi_inject;
--	u32 irq_eoi[IOAPIC_NUM_PINS];
--	u32 irr_delivered;
-+	u32 irq_eoi[IOAPIC_NUM_PINS] __guarded_by(&lock);
-+	u32 irr_delivered __guarded_by(&lock);
- 
- 	/* reads protected by irq_srcu, writes by irq_lock */
- 	struct hlist_head mask_notifier_list;
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 9893705d0dfa..5d4b2c7aa9b8 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -9813,8 +9813,8 @@ int kvm_arch_enable_virtualization_cpu(void)
- 			 * you may have some problem.  Solving this issue is
- 			 * left as an exercise to the reader.
- 			 */
--			kvm->arch.last_tsc_nsec = 0;
--			kvm->arch.last_tsc_write = 0;
-+			data_race(kvm->arch.last_tsc_nsec = 0);
-+			data_race(kvm->arch.last_tsc_write = 0);
- 		}
- 
- 	}
-@@ -9927,8 +9927,8 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
- 	kvm->arch.enable_pmu = enable_pmu && !kvm->arch.has_protected_pmu;
- 
- #if IS_ENABLED(CONFIG_HYPERV)
--	spin_lock_init(&kvm->arch.hv_root_tdp_lock);
--	kvm->arch.hv_root_tdp = INVALID_PAGE;
-+	scoped_guard(spinlock_init, &kvm->arch.hv_root_tdp_lock)
-+		kvm->arch.hv_root_tdp = INVALID_PAGE;
- #endif
- 
- 	kvm_apicv_init(kvm);
+diff --git a/scripts/context-analysis-suppression.txt b/scripts/context-analysis-suppression.txt
+index 1c51b6153f08..666c4ca54708 100644
+--- a/scripts/context-analysis-suppression.txt
++++ b/scripts/context-analysis-suppression.txt
+@@ -17,6 +17,7 @@ src:*include/net/*
+ src:*include/linux/bit_spinlock.h=emit
+ src:*include/linux/cleanup.h=emit
+ src:*include/linux/kref.h=emit
++src:*include/linux/kvm_host.h=emit
+ src:*include/linux/list*.h=emit
+ src:*include/linux/local_lock*.h=emit
+ src:*include/linux/lockdep.h=emit
 -- 
 2.55.0.1003.g10538fe699-goog
 
