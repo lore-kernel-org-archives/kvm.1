@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053AF34750D;
-	Thu, 10 Sep 2026 02:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9FF380FE7;
+	Thu, 10 Sep 2026 02:54:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789008790; cv=none; b=VSuic4AGozqH44kUT/cbSUBUZukpnwbR5zGefkAFqqM1487hshsOF3FulfxgZJHv7s95Q/smIoRyrMFC63wuR2I6n4CkrY+9flnDfPQ+kc43QoBlB5ryB/WYT780aaSiEb0lTmX4bAH3DvhfUm7aRU9wN4zpStwNsln9l6/GgX0=
+	t=1789008859; cv=none; b=IK2nqaHfX5/Fcm2IyWB1v8zAp9KE53yIaAQlriB/pJa5ce5JyM+oj1rEbdSlGxkqTjkx9boPwMpg3PRYGPIKQMu+0ZsbHDlC4sMtBjCfRInjJ/D0Ks0WsXFSvzTjnf+utAHlJ88yUvav+LDuepZB9z92xoP/BBTC6Vf0wyLMj/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789008790; c=relaxed/simple;
-	bh=ZNSDFcR9xZcUPah6kMHTbXLMt0r/jAU6wMb7+a+Agww=;
+	s=arc-20240116; t=1789008859; c=relaxed/simple;
+	bh=HGlDXlBt3pN8x4AkolGiec06428RJ9t20jtNntk0E1I=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AhYxfFvU/c4zc8DFzCbKYrM9Uz3EHDlEjqv/XY1XernBXPcIG5fVkgwpfO40bc8q9iaAbJkwOYU72vAmU2h9VqSpYxl0473b4NB1n5OsyWe7p0GcZoobBTFveh1u55ThfeRGD3NngbjvG8qR+A84j1pNdFMbMQHdY0CsVGC2qqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gETUZdRO; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 In-Reply-To:Content-Type; b=IOgWy4X4O3y25SUWcC9OdFHIX5WQZt0JNsSqMr6aVdtvTtJ4By5A0kJkhPenvSdHdk/1j6bMFWclvhuPhD30rW/uJOTThJ/xMWStvrbgn9s/hzyGkohsumm+ZuaZvrve5JgfzY+isu6yyR7Ix3MjNK/K+rHecM8MJSiecG8Bo7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DuvZaVD3; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gETUZdRO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DuvZaVD3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789008789; x=1820544789;
+  t=1789008858; x=1820544858;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=ZNSDFcR9xZcUPah6kMHTbXLMt0r/jAU6wMb7+a+Agww=;
-  b=gETUZdROQPaQSfIK69exQh9IhhwYYzMP5QfAWK0hGKeBfL2Ya8fcdq5b
-   ilI30SziiH+VGdU3OlRp0USjzDPh9w4V6C2RWGoMpyUSfFpcCrPbQ7iql
-   JIEUL9pT4h/xq8SHztGc//vmrD2rBP+bHfvr0pEzHuScgEJD/eIVpE9aY
-   MNeOWNEKxYviQYTjRkp/fj7KkkTHVpq3kpl1yKR5Z8VzTPCLAPKTsWgc1
-   uRz4Tw3OqpVomDMlqUgTVYQzJDbRBrYRPgdOSkI27eat8qu1FZ2Ohcc01
-   7caNbtuBgQDgFKl9qvVepVkpPNJT8drfHIhLWl4V0cdpupX3c947ej1yV
+  bh=HGlDXlBt3pN8x4AkolGiec06428RJ9t20jtNntk0E1I=;
+  b=DuvZaVD3CZu2cwZByhOfY4mRI7tNTcetZLIMB8copWkRHEXG57TnY2h7
+   1s4IgGsiXVoNEEhWPDfQn3d2Rtc3Ur24Rb2S4XdXikleAuVlzMBcXYAoj
+   Eg539Ymp2QsclW/99sCb09sA9FdkSB1oGfT1TDhPfONprO08YcrwH5Gp1
+   9ULIrWRcn6xJNRIpDphBxVS4uULK2KNppH2+Y6bbq6e/23h1mELMehwrd
+   pJqNYnDTdbhNr+cxhBQXaoC3zx/nE/jno8snk3IasVzw8kCM9gY0BjVAY
+   TeEgjZf0hikt6du7/1qo4HpVITPnlxaSdQmEUVDadGyqfaZvIWmTdQbJm
    Q==;
-X-CSE-ConnectionGUID: TayZ3JZgSpiX8jmdjBn6jg==
-X-CSE-MsgGUID: 5AHybgb9Qu2JH5RAIdN2DA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="106818187"
+X-CSE-ConnectionGUID: /dK0gpr8TyaOY1YW0PuvCA==
+X-CSE-MsgGUID: HDyfk02/RWixwGAcpzixpQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="93140419"
 X-IronPort-AV: E=Sophos;i="6.25,271,1779174000"; 
-   d="scan'208";a="106818187"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 19:53:09 -0700
-X-CSE-ConnectionGUID: entTxNr5TDCEv2YWLqXTjw==
-X-CSE-MsgGUID: DrUr9IbpQpKwqWC2KM5Atg==
+   d="scan'208";a="93140419"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 19:54:17 -0700
+X-CSE-ConnectionGUID: mEJEYVcrTHChDWvBhq++4g==
+X-CSE-MsgGUID: Rhzhej6vTyC+A5EngLnXQw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,271,1779174000"; 
-   d="scan'208";a="296459852"
-Received: from unknown (HELO [10.238.208.122]) ([10.238.208.122])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 19:53:06 -0700
-Message-ID: <94b3473c-7e44-4f6f-8721-b43ff4e2c423@intel.com>
-Date: Thu, 10 Sep 2026 10:53:03 +0800
+   d="scan'208";a="309749712"
+Received: from unknown (HELO [10.238.2.139]) ([10.238.2.139])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 19:54:15 -0700
+Message-ID: <b3132b8b-5f3e-442c-9346-16738f82722d@linux.intel.com>
+Date: Thu, 10 Sep 2026 10:54:12 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,66 +52,108 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] KVM: TDX: Track configurable CPUID bits allowed by
- KVM
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "seanjc@google.com" <seanjc@google.com>
-Cc: "Gao, Chao" <chao.gao@intel.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "kas@kernel.org" <kas@kernel.org>,
- "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+Subject: Re: [PATCH v3 0/4] KVM: TDX: Validate directly configurable CPUID
+ bits
+To: Artem Bityutskiy <dedekind1@gmail.com>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
  "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: "Gao, Chao" <chao.gao@intel.com>, "seanjc@google.com"
+ <seanjc@google.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "kas@kernel.org" <kas@kernel.org>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
  "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "nik.borisov@suse.com" <nik.borisov@suse.com>,
- "andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>
+ "andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>,
+ "nik.borisov@suse.com" <nik.borisov@suse.com>
 References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
- <20260827031837.2863609-2-binbin.wu@linux.intel.com>
- <55488b92-66a8-45e5-ad0f-8fed63ce1187@intel.com>
- <a30741f8-b99b-4f36-80a5-4688c2578d99@linux.intel.com>
- <6b565572-b316-4e86-906d-f150c896fe21@intel.com>
- <84891108-55be-48c1-9993-c730a5334d5b@linux.intel.com>
- <cfe57e67-49ce-47d7-b20b-a29e23fe16d4@intel.com>
- <d8012e9acbe3c733b082c87fdbe9f229a8f7750c.camel@intel.com>
- <9abeed40-bcdc-48d9-8cbb-cb87154bb9f6@intel.com>
- <aqHdwkOFVR4XoS2M@google.com>
- <c967dc3eb6b128055e415bae45d1c14a52dc4acd.camel@intel.com>
+ <32b51faabf60f6e87d9fdebbf2c3fe5a45fbff1c.camel@gmail.com>
+ <58c185c82658819454a9950f37c6424226a098bb.camel@intel.com>
+ <5faff363852572d59e34c876173d73c93734bd3c.camel@gmail.com>
+ <473c5507-045f-454c-b6d1-76d2a390f413@linux.intel.com>
+ <b227e4b40c45b090eee627e6a4d8f314297996ff.camel@gmail.com>
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <c967dc3eb6b128055e415bae45d1c14a52dc4acd.camel@intel.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <b227e4b40c45b090eee627e6a4d8f314297996ff.camel@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 9/10/2026 7:18 AM, Edgecombe, Rick P wrote:
-> On Wed, 2026-09-09 at 15:29 -0700, Sean Christopherson wrote:
->>   Yeah, *ideally* we'd magically enable everything everywhere all at once.  In
->> reality, different VM types are going to support features at different times. 
->> More importantly, as Xiaoyao points out below in #1, unless we enable
->> everyting in a single patch, which is probably a terrible idea in most cases,
->> we'll still end up with staged/progressive enabling, i.e. we still need to
->> have patches that selectively enable and advertise a feature only for the VM
->> types that actually support the feature.
+On 9/9/2026 7:20 PM, Artem Bityutskiy wrote:
+> On Wed, 2026-09-09 at 16:48 +0800, Binbin Wu wrote:
+>>> VMX:
+>>>   VM entry = load guest state from guest-state area
+>>>   VM exit  = save guest state into guest-state area,
+>>>              load host state from host-state area
+>>>
+>>> TDX:
+>>>   SEAMCALL = save host state into SEAM VMCS guest-state area,
+>>>              load module state from SEAM VMCS host-state area
+>>>   SEAMRET  = restore host state from SEAM VMCS guest-state area
+>>>
+>>> I may be reading the SDM wrong, let me know.
 >>
->> This is all quite similar to Intel and AMD feature enabling being done at
->> different times.  The biggest difference is that Intel and AMD are mutually
->> exclusive and so KVM_GET_SUPPORTED_CPUID always reports the correct
->> information, but TDX already provides KVM_TDX_CAPABILITIES, so AFAICT we still
->> get accurate reporting for TDX, just in a slightly different way.
-> I think this actually surfaces another problem with TD-first enabling.
-> KVM_TDX_CAPABILITIES only returns the directly configurable bits. Then recall,
-> KVM_TDX_GET_CPUID returns the actual TDX module's view of CPUID bits to
-> userspace. Then userspace calls KVM_SET_CPUID to actually put them on KVM's vcpu
-> so they can match between Qemu, KVM and TDX
+>> That's my understanding too.
 > 
-> So if a bit is enabled for KVM_TDX_CAPABILITIES, but not yet in
-> KVM_GET_SUPPORTED_CPUID. How should userspace interpret KVM_GET_SUPPORTED_CPUID?
-> It can ignore it for TDX, but that is how it can find the PV bits today.>
-> If we have a TD first feature, it could be a documentation update on how to
-> interpret it. Or we could stuff the PV bits somewhere else for TDX and say to
-> ignore KVM_GET_SUPPORTED_CPUID for TDX. I think we don't need to solve it before
-> we begin filtering like this series has.
+> Good, thanks for confirming.
+> 
+>>>
+>>> So there are differences, and I was hoping to:
+>>> - Be corrected if I misinterpret the SDM and how things work.
+>>> - Get comments on whether the proposal took this into account.
+>>> - Get comments on how this affects, or does not affect, the proposal.
+>>
+>> For host state clobbering behavior, we cares about the values of the host (VMX
+>> root mode) after SEAMRET.
+>>
+>> When there is a control/field for "load host state from host-state area", I
+>> think there are two cases: 
+>> - If there is the corresponding control/field for "load guest state from
+>>   guest-state area", the TDX module could leverage it.
+>> - If there is no such corresponding control/field for "load guest state from
+>>   guest-state area", the TDX module could do it in software way to mimic it.
+>>
+>> So from the view of the VMM, it can have the aligned behavior on host state
+>> clobbering behavior.
+> 
+> Now I see what you mean: make msr_preservation.pdf follow the same rule
+> as the VMX host-state restore, and let the TDX module help where HW behaves
+> differently (call this SW restore vs HW restore via VMCS).
+> 
+> That sounds good to me.
+> 
+> My only doubt is whether it can be guaranteed in every case. A HW restore
+> happens after a SW restore.
+> 
+> E.g., IA32_DEBUGCTL - HW clears it on VM exit (SDM 30.5.1), so whatever
+> TDX module puts there on the exit path, will be overwritten. Not that this
+> is an issue today, just using this as an example.
 
-The PV bits reported in KVM_GET_SUPPORTED_CPUID are the bits supported for
-non-TDX VMs. Only some of them are actually supported for TDX. I would suggest
-reporting TDX supported PV CPUIDs in KVM_TDX_CAPABILITIES as well.
+But SEAMRET is actually a VM Entry, I think these special cases are during VM Exit.
+For a VM entry, the TDX module should be able to set whatever valid values for host. 
+
+> 
+> But I'd guess there would be only few problematic cases (if any).
+> 
+> Then you wrote this:
+> 
+> <cite>
+> FRED is a useful concrete example.  Under VMX, the FRED host state in
+> IA32_FRED_CONFIG, IA32_FRED_STKLVLS, IA32_FRED_RSP1-3 and
+> IA32_FRED_SSP1-3 is covered by the VMCS host-state area, so the TDX module
+> is expected to restore these MSRs on TDH.VP.ENTER return.  IA32_FRED_RSP0
+> and IA32_PL0_SSP (a.k.a. IA32_FRED_SSP0) are handled by software, so the
+> TDX module is expected to clobber them on TDH.VP.ENTER return.
+> </cite>
+> 
+> That one reads as obviously right to me. If VMX and TDX differed in how
+> IA32_FRED_RSP0 and IA32_PL0_SSP are handled, that would be a red flag.
+> 
+> Did you go through all the MSRs and check that the VMX and TDX behavior
+> matches today?
+
+Not yet.
+This topic is put in the cover letter for discussions.
+And the patch series itself doesn't depend on conclusion of the discussions.
+
+> 
+> Thanks!
 
