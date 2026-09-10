@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4A045D932;
-	Thu, 10 Sep 2026 11:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D6F472F95;
+	Thu, 10 Sep 2026 11:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789039813; cv=none; b=DXhh+to4B39PuWiI8kFIb0+FFFsFJEZThCweh5MBRCKFw0HEK3pgiAyIz8wrrkpQtCEDFPEflP9vPVFcsf6jijkULYYj7RilruqHkxHKPmiFHvYkfh4r9oLdmWaAoaIahfX2JtUgR/jQXem2xckDs4vRaF5F17exMfBKbd/NWis=
+	t=1789039937; cv=none; b=s0aPGqTonIWHkvqtdlgIvLEUMcPfO1RZyVZul32Y3lJJ3TccvzE6SRVUD3tcocWcCKOzWdOEg2ZjvM0NSAxD4Cfkg2NZABZO/Y7dhpZg56+Vwjwbf2vYJbMYx1UTcYv9UWhq8pgiWYPmrByd+6ManBAH8ilQyborWPaIn9vQYXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789039813; c=relaxed/simple;
-	bh=/G2oy6VvWgqzhhGWGDc5hUkeWhIlMJyWPCN22E56evg=;
+	s=arc-20240116; t=1789039937; c=relaxed/simple;
+	bh=EuV5QIX2mAp12NIU28Nd25M4uUJSmYTi7bD3oeSAC3A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CRIbSprssLSIMTGS5XqzZmuqzr/RU5BE+z9kQfAsMZ+z1/6TNVBiTuI1LwevTkvK0ybeEAz43B9Dt9g8i9B5LZV1GR6786JA59ENDVodCzA2pdSBaDOdqan0fD9dPVQziJLIdDXM5jAYgw1/bnB/kg1AyB0TVAIzXOyYks0HAZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d7aVNPj5; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=qGZYV8+Ynfo6zIWGIb09KWqs6ZW1Gb5DqbDD5F0WwIjS9/ebUM26Hf6BSWrx0wFHls9msdnW5NS6TS5bG6XB29HRyiwVJ040NuCqdaTYZCqm92vu4K0PvBST1OBxPWsdRTja1zpjc6ORlAGgHqc+7g+56DNI2etH1qvjvUiP/xM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nq7aTfP6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d7aVNPj5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 225031F000FF;
-	Thu, 10 Sep 2026 11:30:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nq7aTfP6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33991F000FF;
+	Thu, 10 Sep 2026 11:32:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789039811;
-	bh=vmh1GKz1N11M+N8xmDUZhkm9CqjUcOyixUe/5x259k4=;
+	s=k20260515; t=1789039935;
+	bh=MUiE/SGANYmf8vtQog79LZ93gRF429+dekDwpOi8Koc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=d7aVNPj5I4IEFe1KJKsAvmQcC3+y06BptG1oBLhAOq9y20CRIwdceap4yWL+m1S//
-	 R46hgMinxVOwvajxh0odbLxPoUdIfa58DOTFbDodhDUfbfPpFPVNI9Rr5khsA+SRw2
-	 JFvbFIiuLHc7l+K6kj5aiMCUs/rpn/y3BhHxwdtInWTOBnoZ8EnO4hb/0UBJK/VVaT
-	 TvrreBW2VpKUJVDOihSi/PV5MIwpGuj9B1M3YZKlGDj/t/AO0xuJ1XBfYq2gNoW5bI
-	 /WgP8CAGLtb9kZfMDYMfzwXa88epd5AL4WN3hKmaqalWZF7H0NDGIE7Y0kc4uO7H9O
-	 B4IjvUUQnt0Jg==
-Message-ID: <9b67424d-70e5-442b-9ec7-22b1d3db12f4@kernel.org>
-Date: Thu, 10 Sep 2026 13:30:04 +0200
+	b=Nq7aTfP6tBPV9eSggpwSR/rrMKqYSL6MC2Z55EKE55t+xwqBzKxM+9gvpQOk9S6Rn
+	 PsEJX1wndnKviOpfAS40eS5HlNnlT6iJ/JAbhrIhI+AD84w56r+H/lYTbkA3Fl7XKw
+	 8RGFi0sFpZRaS7kZmDvkHwUaUWVv6HWG3sJk818BFz7rS4FaxfYxxrRw8MfR3Yeblh
+	 fpG6G3GmBWTCdsMFoyZOEwxDie2RarDYhFh4UoAMuNYNXM8uBVRCe37/oMsd9nt7Mm
+	 5f8e8jnPCKVe48CxyKMQAKZ1NxijCLSf2n5zKgf2BWeX+PDo7Nnt/D1VMAVjWG082V
+	 vOOStZGsLB16g==
+Message-ID: <0386eb30-0e0c-4d8c-abfe-86161b9e3d1f@kernel.org>
+Date: Thu, 10 Sep 2026 13:32:08 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -36,14 +36,16 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 0/5] KVM: guest_memfd: bind backing memory to a NUMA node
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+To: Gregory Price <gourry@gourry.net>, Ackerley Tng <ackerleytng@google.com>
+Cc: linux-mm@kvack.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
  linux-kernel@vger.kernel.org, kernel-team@meta.com, pbonzini@redhat.com,
  seanjc@google.com, akpm@linux-foundation.org, ziy@nvidia.com,
  matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
  byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
  shuah@kernel.org
 References: <20260902194657.79075-1-gourry@gourry.net>
+ <CAEvNRgHWyBaBpZ4Bem1Eu86b-cuEA7NkyjxTJ4D3FnpGe1B2Yg@mail.gmail.com>
+ <aqHkVKvons1tBs1O@gourry-fedora-PF4VCD3F>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -90,21 +92,56 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260902194657.79075-1-gourry@gourry.net>
+In-Reply-To: <aqHkVKvons1tBs1O@gourry-fedora-PF4VCD3F>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 9/2/26 21:46, Gregory Price wrote:
-> guest_memfd allocates its folios through a per-inode shared mempolicy.
+On 9/10/26 01:10, Gregory Price wrote:
+> On Wed, Sep 09, 2026 at 03:41:35PM -0700, Ackerley Tng wrote:
+>> Gregory Price <gourry@gourry.net> writes:
+>>
+>>> guest_memfd allocates its folios through a per-inode shared mempolicy.
+>>>
+>>> Today that policy can only be set after the fact, with mbind() on a host
+>>> mmap of the fd. That requires the fd to be mappable, and it cannot reach
+>>> folios that are only ever guest-faulted. Neither holds for a
+>>> non-mappable (confidential) guest_memfd.
+>>>
+>>> Add GUEST_MEMFD_FLAG_BIND_NODE and a node field to struct
+>>> kvm_create_guest_memfd. When set, KVM builds an MPOL_BIND policy for the
+>>> requested node and installs it over the whole inode, so every folio is
+>>> allocated there with no userspace mbind().
+>>>
+>>
+>> Instead of a custom API to ensure all guest_memfd allocations come from
+>> a single node, how about these options?
+>>
+>> 1. Using cgroups/cpuset to constrain allocations (could be troublesome
+>>    if the guest memory is not preallocated, unless the vCPU threads are
+>>    running with the cpuset config)
+>>
+>> 2. Process-level NUMA policy
+>>
 > 
-> Today that policy can only be set after the fact, with mbind() on a host
-> mmap of the fd. That requires the fd to be mappable, and it cannot reach
-> folios that are only ever guest-faulted. Neither holds for a
-> non-mappable (confidential) guest_memfd.
+> for 1 and 2:
+> 
+> the intent is to put the guest memory on the target node, not all system
+> memory for a given process.  so the scope here is not the same.
+> 
+> in fact at that granularity, the desired node may not even have eligible
+> memory to host the task's memory.
+> 
+>> 3. Why not request the guest_memfd to be mmap-able just to be able to
+>>    set a memory policy?
+>>
+> 
+> the eventual intent is to enable this for fully confidential,
+> host-unmapped guest, isolated to a particular memory device.
+> 
+> Requiring a mapping to get node-placement is quite defeating the point.
 
-That looks like an investment into a mechanism we will soon consider legacy, so
-I am not convinced this is the right approach?
-
+You only need a VMA, not actually mapped/faulted pages. So I don't immediately
+see the problem?
 
 -- 
 Cheers,
