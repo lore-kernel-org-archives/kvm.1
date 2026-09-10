@@ -1,25 +1,24 @@
 Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ECB745D901;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EDA2475340;
 	Thu, 10 Sep 2026 11:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.0.225.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789041268; cv=none; b=uHgkirf1lpsT73n7/jH6OQ1tMbt9xvHE/FPWgfjl0O/grabTFCCjOZt3irB2ed9++wyal4AWc6Qhrs8z0CbSBAIuYtaofyO0rwlItp5lPLl/yCKOw4PpNK9SWi3EZH2V8jK94Sedty9PxqGpgH4KG5/3/sEV06Te4kwWadWxcNY=
+	t=1789041269; cv=none; b=HR7XWdoUu5Ec8gEgCo7ftrZMJrgfaO8ov5sWfx3T/qeqeCQb1PdrxN9aU2uYbGtfLJdYTMydzB9gyAIL7wIArox9JlJvC6m9wLugKMqtwxBSYRyXDEmAz7xPOzEgon3hsGAx0dPqCF6oZ+JYmCxi0n8qxO3ZkCiKMSa5YIDXvjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789041268; c=relaxed/simple;
-	bh=Hn/KxxUjDNzpfGZXYLAInba45oWKIe7ah1ghdoo0ALs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=avlU0UusK8qo7C9oeP3T24m2btIJYqp1buANbj8dRXeKVyC7s4Q4jTrqbZIRd+mc4Sa+f1iV6d6jwxLn4Ri4G23AfzupkSbayb1/SmxQ+uOAJ2Y28In/r96DdDhYslG1YcKEZnlhn7MXeFKTzORbX7uThe9r3vDIK9Fjfly9Yvo=
+	s=arc-20240116; t=1789041269; c=relaxed/simple;
+	bh=CJC9ywMuYuiGmx/uuUQuxVxShXesv6iUvPs4QakHY3o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tcBcmNH6JPYUtXzww9XYkeLRsKykhknxvZNFnal12/+9qiea0jWYEHM7XiXkdZJGbVbAIMNAf9Uc5Le0VmNU25WAun5fketnzIQSE58ACPtAfWtv54eD7PHkT2wozPkujWVUcwP7QA0taF/o9OsaO/36Jwwu7qtEF8xouzv/BMo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=210.0.225.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
 Received: from zhaoxin.com (unknown [127.0.0.1])
-	by mx1.zhaoxin.com (MTA) with ESMTP id 4hgbgf0ZM6zbKSsr;
+	by mx1.zhaoxin.com (MTA) with ESMTP id 4hgbgf1SffzbKSsv;
 	Thu, 10 Sep 2026 19:54:22 +0800 (CST)
 Received: from zhaoxin.com (unknown [10.28.208.166])
-	by mx1.zhaoxin.com (MTA) with ESMTP id 4hgbgd5q6Wzb0tj9;
-	Thu, 10 Sep 2026 19:54:21 +0800 (CST)
+	by mx1.zhaoxin.com (MTA) with ESMTP id 4hgbgc5xCVzb0tj9;
+	Thu, 10 Sep 2026 19:54:20 +0800 (CST)
 Received: from ewan-server.tailb932da.ts.net (ewan-server.tailb932da.ts.net [10.28.24.2])
-	by zhaoxin.com (8.30) with ESMTP0ae0167815692b8cef0d94c23f3e50e2
+	by zhaoxin.com (8.30) with ESMTPe5982129177edb7275ec6bd2632d50e2
 	Thu, 10 Sep 2026 19:54:20 +0800
 X-Eyou-Smtpauth: ewanhai-oc@zhaoxin.com
 X-Eyou-EnvelopeSender: ewanhai-oc@zhaoxin.com
@@ -34,12 +33,10 @@ Cc: Shuah Khan <shuah@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	ewanhai@zhaoxin.com,
 	cobechen@zhaoxin.com
-Subject: [PATCH v2 2/9] KVM: selftests: Use host_cpu_is_intel_compatible for mediated PMU
-Date: Thu, 10 Sep 2026 19:54:07 +0800
-Message-Id: <20260910115414.3015260-3-ewanhai-oc@zhaoxin.com>
+Subject: [PATCH v2 0/9] KVM: selftests: Add Zhaoxin CPU support
+Date: Thu, 10 Sep 2026 19:54:05 +0800
+Message-Id: <20260910115414.3015260-1-ewanhai-oc@zhaoxin.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260910115414.3015260-1-ewanhai-oc@zhaoxin.com>
-References: <20260910115414.3015260-1-ewanhai-oc@zhaoxin.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -51,35 +48,57 @@ X-Eyou-Sender: <ewanhai-oc@zhaoxin.com>
 
 From: Frank Zhu <frankzhu@zhaoxin.com>
 
-kvm_is_mediated_pmu_enabled() returns kvm_amd's enable_mediated_pmu
-module parameter unless the host CPU is Intel.  Zhaoxin CPUs implement
-VMX-compatible virtualization and are handled by KVM's VMX backend, so
-on Zhaoxin hosts the helper wrongly reports kvm_amd's parameter.
+This series adds Zhaoxin CPU support to the KVM x86 selftests.
 
-Gate the check on host_cpu_is_intel_compatible so that Zhaoxin CPUs,
-like Intel CPUs, query kvm_intel's enable_mediated_pmu instead.  This
-does not change behavior on Intel, and AMD and other non-Intel-
-compatible CPUs still fall back to kvm_amd's parameter.
+Zhaoxin CPUs use the "CentaurHauls" and "  Shanghai  " vendor strings
+and implement VMX-compatible virtualization, so KVM handles them via
+its VMX backend.  Several selftests currently assume a CPU is either
+Intel or AMD, which makes them misbehave or skip on Zhaoxin hosts.
 
-Signed-off-by: Frank Zhu <frankzhu@zhaoxin.com>
----
- tools/testing/selftests/kvm/include/x86/processor.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Patch 1 adds Zhaoxin detection and the compatibility flag. Patch 2
+updates the mediated PMU parameter lookup. Patches 3-5 and 7 apply the
+compatibility flag to VMX-backed paths. Patch 6 handles feature MSR
+testing without PDCM, patch 8 handles Zhaoxin's #GP error-code behavior,
+and patch 9 checks APIC-access virtualization support.
 
-diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index 5d2be3399..df368232c 100644
---- a/tools/testing/selftests/kvm/include/x86/processor.h
-+++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -1454,7 +1454,7 @@ static inline bool kvm_is_pmu_enabled(void)
- 
- static inline bool kvm_is_mediated_pmu_enabled(void)
- {
--	if (host_cpu_is_intel)
-+	if (host_cpu_is_intel_compatible)
- 		return get_kvm_intel_param_bool("enable_mediated_pmu");
- 
- 	return get_kvm_amd_param_bool("enable_mediated_pmu");
+Frank Zhu (9):
+  KVM: selftests: Add Zhaoxin CPU detection support
+  KVM: selftests: Use host_cpu_is_intel_compatible for mediated PMU
+  KVM: selftests: nx_huge_pages_test: Add TDP detection for Zhaoxin CPUs
+  KVM: selftests: vmx_exception_with_invalid_guest_state: Support
+    Zhaoxin CPUs
+  KVM: selftests: fix_hypercall_test: Add Zhaoxin CPU support
+  KVM: selftests: Skip PERF_CAPABILITIES vCPU checks without PDCM
+  KVM: selftests: feature_msrs_test: Extend MSR_IA32_UCODE_REV quirk to
+    Zhaoxin
+  KVM: selftests: nested_exceptions_test: Add Zhaoxin CPU support
+  KVM: selftests: vmx_apic_access_test: Check APIC virtualization
+    support
+
+ .../testing/selftests/kvm/include/x86/processor.h | 10 +++++++++-
+ tools/testing/selftests/kvm/include/x86/vmx.h     |  1 +
+ tools/testing/selftests/kvm/lib/x86/processor.c   |  8 +++++++-
+ tools/testing/selftests/kvm/lib/x86/vmx.c         | 15 +++++++++++++++
+ .../testing/selftests/kvm/x86/feature_msrs_test.c | 15 ++++++++++++++-
+ .../selftests/kvm/x86/fix_hypercall_test.c        |  2 +-
+ .../selftests/kvm/x86/nested_exceptions_test.c    |  4 +++-
+ .../selftests/kvm/x86/vmx_apic_access_test.c      |  1 +
+ .../x86/vmx_exception_with_invalid_guest_state.c  |  2 +-
+ 9 files changed, 52 insertions(+), 6 deletions(-)
+
+Changes since v1:
+- Rebase the series onto kvm-x86/next.
+- Spell out Zhaoxin in helper, macro, and patch names.
+- Add a new patch (2/9) to use host_cpu_is_intel_compatible in
+  kvm_is_mediated_pmu_enabled() so Zhaoxin CPUs look up the mediated
+  PMU parameter from kvm_intel.
+- Reword the Zhaoxin CPU detection commit message to document the new
+  host_cpu_is_intel_compatible flag.
+- Expand the nested_exceptions_test commit message to explain why
+  Zhaoxin CPUs leave EXT clear for the #GP generated when vectoring
+  an injected #SS.
+
+base-commit: 76671054f9a1ff6abb976583cd8da37650acdc97
 -- 
 2.34.1
-
 
