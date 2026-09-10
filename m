@@ -1,485 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD99F3BADB2;
-	Thu, 10 Sep 2026 09:04:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686563E0C47
+	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 09:40:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789031088; cv=none; b=uSNuD/jfEZXMj7330Pl4XE8/eX/1Mga6VP0rW0mhU8KyHkIL5SgG9x0z8QPDdu7is35ct7bl2PdORcw1O6UURfeVGLTkBsd61VeRko2z6K0dvtghHK3h5RalAhBkrw33qv2B3JXbXPSI6yNxoitycohKF/wKA9tr2nnaVMZV22U=
+	t=1789033237; cv=none; b=BgVCsIvBXgjGUTQJ2EIo9KJLTTuoCJB/+lRvZ3b1dd9k+ZaeOuRpj6mn1kTMFOk7CARrbjOrmU/NR0BTlWTsz+PeItiFcLVQ1/LBluJcXKtJTYpvCo1u9O53lOhCF32GVSMOnJ5e1dX7Svs885deksF0A0G74FgodeXtwmX7Zpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789031088; c=relaxed/simple;
-	bh=k0suo/TtB67EEH6np0sjRyDNLi7c6gvhMrFggub9PZ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KDicUrRJ4PiO1SPyTi0odzKBr7eHrwZTUiN2PwzI4iK+ajlh3mZ+5VqJWz8HhtuMFQDJC0uikw9LZlIhpfM9GDnQlGfrn3uxVrEhmYURxDjT9Ava+/V9LACdw4g6Tv4eYPNwgt8ahuACuG5aapgRh0YUBWSZN7dOwMjTTae5F/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CykK8PpZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789033237; c=relaxed/simple;
+	bh=2U05edltdc65w78+ZV5IWr4TVwXUEOtUfX+tKTehz0M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nYg/EG5U/V0M05Yz7hOGV+ixeex7ELhZ5kh+KnI0BZWQSUiD7XkHm1/d2XXwQlM3MPkauBU06jWMDP/I5CSXsEhT2AWmnPsoUg72fGwkGsv7WVyLI/sLffMCzYa0FPYEp3Rvo9X4k8L7Lm1CT0rvD241/K2VSRT0cGAizOXcS6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NKZ5cacA; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=c0uJv6DC; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CykK8PpZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E481F000FF;
-	Thu, 10 Sep 2026 09:04:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789031086;
-	bh=12PQgsgrSBMhJiTZn1CaiDRAflZPBEAmfiFO1v4vyYc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CykK8PpZIyASLenIBcPVyiRuH8NfM3g33NY2WSo5tU7IhFgBcKsMmnMczB+/mWhk2
-	 8Fhi9/QKvgJmQfKjYaksoJFWXOt+FB/KdUApexq4o5cHoKcpr53FS74k8BrlJ804Bp
-	 nK47PM4opm94q1FrK7+yV6k2x/t47HsCh+6oRY11KZJ/5R5vmLo8XtcpLRjI/dCy0s
-	 urYK+dItPtvWl/hK5v9ACT1cXOY3WRu4KOuKGFp5GHfBTS6t2d1Ke5aJQE6p1weh61
-	 kwdV1QE4+80K7J927Cmi8F1S0lfz1ZzLgQFnt2zhsgf/0CRS8U/HotsXC7JgbD1q08
-	 U9+83MIOUH5Jg==
-Date: Thu, 10 Sep 2026 10:04:37 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Oliver Upton <oupton@kernel.org>, Fuad Tabba <tabba@google.com>, 
-	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Jack Thomson <jackabt@amazon.com>, Jack Thomson <jackabt.amazon@gmail.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Vincent Donnefort <vdonnefort@google.com>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Sean Christopherson <seanjc@google.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Leo Soares Passos <Leo.Bras@arm.com>
-Subject: Re: [PATCH 1/8] KVM: arm64: Propagate and use esr in s2fd when
- handling guest aborts
-Message-ID: <aqJx0NOJxq_7H_dF@gremlin>
-References: <20260825-kvm-arm-prefault-v1-0-befe8947702e@kernel.org>
- <20260825-kvm-arm-prefault-v1-1-befe8947702e@kernel.org>
- <86wlst7b4x.wl-maz@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NKZ5cacA";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="c0uJv6DC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789033232;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J/H7/x7jrZUwe3gjvxEalG5iN9U5i6+Y9YANROw43qY=;
+	b=NKZ5cacAcuN7mbpNR4iCohIwEwYtwjhyns25Kft60c9AryPxgSIDVnK8pc1JboskiqBWA7
+	qktrlSsfDTePoUwiq9eHeUwwDcgUV56eHKcZzUCG7GV6H6nIqpKepM4OVpe5FG4NMbe5GS
+	VpgXBPPA0e55OVHxkA0M6TJYslBrXs0=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-57-O0dNc8e7PC2ktNF2QRVd_w-1; Thu, 10 Sep 2026 05:40:29 -0400
+X-MC-Unique: O0dNc8e7PC2ktNF2QRVd_w-1
+X-Mimecast-MFC-AGG-ID: O0dNc8e7PC2ktNF2QRVd_w_1789033228
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2db050d469fso12266775ad.0
+        for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 02:40:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1789033228; x=1789638028; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=J/H7/x7jrZUwe3gjvxEalG5iN9U5i6+Y9YANROw43qY=;
+        b=c0uJv6DClKjJoMAyAxZHU7xVKL8bv6skzLXafrrrdmpEyq3FG+LauladmMQDN3gCgs
+         QFNJ5gRdTUdw+yDcs6CCLpN/dPPMDjHfyAmO+N+taJT/qUW6R+ybwwGp3bWjteKNmYam
+         mRBUyp+kV1G9PL0N8AUHCmiZDnzun/Nc/PcmX6+v4B/GGKEpzXMllad2abKX0SnSod7y
+         KtoB6Lw2tujPfxQCnf9A5/Wf1XQJI0s+hBBOVrrTbnMfhKVOweOicKztoyKHNeQ4FldQ
+         mIWaJ8ak+mLcaEjUBwfWH6ddKSo4a5TwfqZxUXh3EOOrqGlkIo+RavA+wqQN86wWSdA0
+         VxGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789033228; x=1789638028;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=J/H7/x7jrZUwe3gjvxEalG5iN9U5i6+Y9YANROw43qY=;
+        b=QSjjpE1fibcIGXrBm5EJyNQcnfZ+Kq2h0h28l9sRP07yklESfDTlNfnrvbTFptE0zM
+         IcECXilAacoO1TRJeT3cF6PmhwgF0Btu7TDfG/gmJnAcQIts3HXt0px6jA7IGPStC54S
+         jjNV5b79Wou6Ds6SqX1SuUFbWaKzZC9zMC1x+GAbgJgoevpp6O7j+BcWyWHAQUlORORj
+         WbNHLmTuhRhbg7LN76t/aL6BqbOA6b1HKNSOE0a6L8TcbWAQglfM3exRr+M0n43cKY1A
+         WqL2N36iX0VBByyxyo5WB62bNaZZQ0CI+bRg8NOuSVK8YzQIBDH7qmyHEpms7U5g9giq
+         tfxw==
+X-Forwarded-Encrypted: i=1; AKwUvBzjjkcBakRBdavMFZpnxPXgT+3dncEXN3CjTHUWYrn2XP1ytiCeCV+cuM/nh5BaOoNPJuM=@vger.kernel.org
+X-Gm-Message-State: AFuF++mNFDU9w649Sq2YudA9r8T8/DQGcT/+90hP0vHFadBMQW0IsTvo
+	Tyrn1NIwtpyN2nT86wOXLp8CQIjhO9QjQ76D590XaoYUX09KWxRY/bYyjxTiafE8B/udbYgdfjn
+	CxfLyWqhZX/9U3Zqurdtk15yo0l1/n2bR8n7MIH03GkcSJMkwza1Qlg==
+X-Gm-Gg: AYBFou1TIf4U8MZsYVOi5jUA02+wr8nEhGDB07PhwmhutNbJh9Oio0RkLBxIOMgazIE
+	SJkDI2GYe7G6rZmhPU9KiDDMmPEXDRzH5Cv5f4BmX4t18n3bI6/OmkvWxU8mzlSxIViXKUD+ZUq
+	lOLz8T/12SrAXKvz3EeTxgpFCJ543KCMXeKaZxo1wpX+myI5dywbPqSGxX4I827oRJzmJVZOmsK
+	0ZRJvqRLMUvSfYTOirLc8f/UIlqkJQkROZKo4TjI41dFuZ4QtCILdX4OZg+HAKfSV3VokttOek/
+	/CeGSIFwtcOEB7fXh5ZGsMPW876Epy42/kpYa9JI4NH61Mw55JOLfxqpAhcdDC+lqK7B7xWWHJZ
+	3rzIQpNCm3wTB10ZUPw1TbU81ZyeGPZEFSkCq7Kq0pA==
+X-Received: by 2002:a17:90b:4490:b0:398:baa7:4c2f with SMTP id 98e67ed59e1d1-39d77a08755mr3066637a91.5.1789033228074;
+        Thu, 10 Sep 2026 02:40:28 -0700 (PDT)
+X-Received: by 2002:a17:90b:4490:b0:398:baa7:4c2f with SMTP id 98e67ed59e1d1-39d77a08755mr3066617a91.5.1789033227578;
+        Thu, 10 Sep 2026 02:40:27 -0700 (PDT)
+Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d80f0068esm3343502a91.10.2026.09.10.02.40.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Sep 2026 02:40:26 -0700 (PDT)
+Message-ID: <472daa5d-19e5-41f1-9650-44e0245bc1f0@redhat.com>
+Date: Thu, 10 Sep 2026 19:40:13 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <86wlst7b4x.wl-maz@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v17 06/20] KVM: arm64: CCA: Add a new mode for supporting
+ Realm guests
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260908162223.1683432-1-suzuki.poulose@arm.com>
+ <20260908162223.1683432-7-suzuki.poulose@arm.com>
+ <e66698e1-e582-4ff8-9881-4ddda5bc1d94@redhat.com>
+ <40d3312a-c695-44ed-857a-fc6bf293f3e6@arm.com>
+Content-Language: en-US
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <40d3312a-c695-44ed-857a-fc6bf293f3e6@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 10, 2026 at 09:39:58AM +0100, Marc Zyngier wrote:
-> On Tue, 25 Aug 2026 17:00:35 +0100,
-> "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
-> >
-> > kvm_handle_guest_abort() establishes a kvm_s2_fault_desc data structure,
-> > s2fd, to store and propagate state to either pkvm_mem_abort(), gmem_abort()
-> > or user_mem_abort() handlers.
-> >
-> > Each of these, however, examines the Exception Syndrome Register (ESR) via
-> > s2fd->vcpu.
-> >
-> > Introduce an s2fd->esr field to abstract this and propagate it to callers.
-> >
-> > The value of this (beyond refactoring) is to be able to later generate
-> > faults with a synthetic esr, specifically to implement stage 2 page table
-> > pre-faulting.
-> >
-> > Abstract esr-specific predicates and helpers to the esr.h header and either
-> > have vcpu wrappers call these, or eliminate them if they are not used
-> > elsewhere.
-> >
-> > Provide kvm_s2_fault_is_[write,exec,perm]() helpers for convenience.
-> >
-> > Since kvm_s2_fault_map() either sets perm_fault_granule to the permission
-> > fault granule or 0 if not a permission fault, implement
-> > kvm_s2_perm_fault_granule() to do this directly.
-> >
-> > Abort handlers which use kvm_s2_fault_desc - gmem_abort() and
-> > user_mem_abort() - now only reference s2fd->esr and do not look it up in
-> > any other way, which makes it safe to pass a synthetic s2fd->esr value to
-> > these functions.
->
-> Please split this. ESR helpers in one patch, hacking the MMU code to
-> use it in another, s2fd->esr stuff last.
+On 9/10/26 6:43 PM, Suzuki K Poulose wrote:
+> On 10/09/2026 06:53, Gavin Shan wrote:
+>> Hi Suzuki,
+>>
+>> On 9/9/26 2:22 AM, Suzuki K Poulose wrote:
+>>> Add an explicit mode to support Arm CCA guests.
+>>>
+>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>> ---
+>>>   Documentation/admin-guide/kernel-parameters.txt | 3 +++
+>>>   arch/arm64/include/asm/kvm_host.h               | 1 +
+>>>   arch/arm64/kvm/arm.c                            | 5 +++++
+>>>   3 files changed, 9 insertions(+)
+>>>
+>>> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/ Documentation/admin-guide/kernel-parameters.txt
+>>> index 68647ff4bdd24..1afe3df3b923e 100644
+>>> --- a/Documentation/admin-guide/kernel-parameters.txt
+>>> +++ b/Documentation/admin-guide/kernel-parameters.txt
+>>> @@ -3256,6 +3256,9 @@ Kernel parameters
+>>>               nested: VHE-based mode with support for nested
+>>>                   virtualization. Requires at least ARMv8.4
+>>>                   hardware (with FEAT_NV2).
+>>> +            rmm: Support for running confidential guests in Realm
+>>> +                 world using RMM, as defined by Arm Confidential
+>>> +                 Compute Architecture (CCA)
+>>>
+>>
+>> I'm not sure, but 'realm' would be more appropriate name. rmm (Real Management Monitor) is
+>> the term limited to the firmware to me. Besides, we have been using 'realm' broadly in this
+>> series like kvm_vm_is_realm(), kvm_realm_state() and so on.
+> 
+> May be. But we use the "mode" of the hypervisor in question here, mostly. e.g., nvhe, vhe, protected etc. So, I went with RMM (in favor
+> of CCA). Does that make sense ? Also, we rely on firmware/arm_rmm for
+> the support. So, it kind of make sense to keep it "rmm" ?
+> 
 
-Ack will do!
+Ok, lets keep 'rmm' unless somebody else has better suggestion.
 
->
-> >
-> > No functional change intended.
-> >
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> >  arch/arm64/include/asm/esr.h         | 129 +++++++++++++++++++++++++----------
-> >  arch/arm64/include/asm/kvm_emulate.h |  52 ++++----------
-> >  arch/arm64/kvm/mmu.c                 |  80 +++++++++++++---------
-> >  3 files changed, 156 insertions(+), 105 deletions(-)
-> >
-> > diff --git a/arch/arm64/include/asm/esr.h b/arch/arm64/include/asm/esr.h
-> > index f816f5d77f1a..162e90c832e9 100644
-> > --- a/arch/arm64/include/asm/esr.h
-> > +++ b/arch/arm64/include/asm/esr.h
-> > @@ -437,6 +437,32 @@
-> >  #ifndef __ASSEMBLER__
-> >  #include <asm/types.h>
-> >
-> > +static inline u8 esr_trap_get_class(unsigned long esr)
->
-> nit: there is no notion of trap here. This is simply extracting the EC
-> from the ESR. My personal (and wholly unreliable) taste would be to go
-> for something like esr_get_ec().
+> Cheers
+> Suzuki
+> 
 
-Ack will change!
+Thanks,
+Gavin
 
->
-> I appreciate that you are simply propagating the names used in KVM,
-> but they were pretty poor the first place, and have only been kept to
-> avoid churn.
-
-Yeah, when in Rome etc. :)
-
->
-> Also, 'inline' is a bit of a problem given that the callers are
-> __always_inline for good reasons (see 5c37f1ae1c3358).
-
-Ack will fix up.
-
->
-> > +{
-> > +	return ESR_ELx_EC(esr);
-> > +}
-> > +
-> > +static inline bool esr_trap_is_iabt(unsigned long esr)
-> > +{
-> > +	return esr_trap_get_class(esr) == ESR_ELx_EC_IABT_LOW;
-> > +}
-> > +
-> > +static inline bool esr_abt_is_s1ptw(unsigned long esr)
-> > +{
-> > +	return esr & ESR_ELx_S1PTW;
-> > +}
-> > +
-> > +/* Always check for S1PTW *before* using this. */
-> > +static inline bool esr_dabt_is_write(unsigned long esr)
-> > +{
-> > +	return esr & ESR_ELx_WNR;
-> > +}
-> > +
-> > +static inline bool esr_dabt_is_cm(unsigned long esr)
-> > +{
-> > +	return esr & ESR_ELx_CM;
-> > +}
-> > +
-> >  static inline unsigned long esr_brk_comment(unsigned long esr)
-> >  {
-> >  	return esr & ESR_ELx_BRK64_ISS_COMMENT_MASK;
-> > @@ -460,75 +486,104 @@ static inline bool esr_is_ubsan_brk(unsigned long esr)
-> >  	return (esr_brk_comment(esr) & ~UBSAN_BRK_MASK) == UBSAN_BRK_IMM;
-> >  }
-> >
-> > +static inline u8 esr_fsc_get_fault(unsigned long esr)
-> > +{
-> > +	return esr & ESR_ELx_FSC;
-> > +}
-> > +
-> >  static inline bool esr_fsc_is_translation_fault(unsigned long esr)
-> >  {
-> > -	esr = esr & ESR_ELx_FSC;
-> > +	const u8 fault = esr_fsc_get_fault(esr);
-> >
-> > -	return (esr == ESR_ELx_FSC_FAULT_L(3)) ||
-> > -	       (esr == ESR_ELx_FSC_FAULT_L(2)) ||
-> > -	       (esr == ESR_ELx_FSC_FAULT_L(1)) ||
-> > -	       (esr == ESR_ELx_FSC_FAULT_L(0)) ||
-> > -	       (esr == ESR_ELx_FSC_FAULT_L(-1));
-> > +	return (fault == ESR_ELx_FSC_FAULT_L(3)) ||
-> > +	       (fault == ESR_ELx_FSC_FAULT_L(2)) ||
-> > +	       (fault == ESR_ELx_FSC_FAULT_L(1)) ||
-> > +	       (fault == ESR_ELx_FSC_FAULT_L(0)) ||
-> > +	       (fault == ESR_ELx_FSC_FAULT_L(-1));
->
-> I really think we could do without this sort of churn.
-
-Sure, will avoid the var name changes etc. on respin.
-
->
-> >  }
-> >
-> >  static inline bool esr_fsc_is_permission_fault(unsigned long esr)
-> >  {
-> > -	esr = esr & ESR_ELx_FSC;
-> > +	const u8 fault = esr_fsc_get_fault(esr);
-> >
-> > -	return (esr == ESR_ELx_FSC_PERM_L(3)) ||
-> > -	       (esr == ESR_ELx_FSC_PERM_L(2)) ||
-> > -	       (esr == ESR_ELx_FSC_PERM_L(1)) ||
-> > -	       (esr == ESR_ELx_FSC_PERM_L(0));
-> > +	return (fault == ESR_ELx_FSC_PERM_L(3)) ||
-> > +	       (fault == ESR_ELx_FSC_PERM_L(2)) ||
-> > +	       (fault == ESR_ELx_FSC_PERM_L(1)) ||
-> > +	       (fault == ESR_ELx_FSC_PERM_L(0));
-> >  }
-> >
-> >  static inline bool esr_fsc_is_access_flag_fault(unsigned long esr)
-> >  {
-> > -	esr = esr & ESR_ELx_FSC;
-> > +	const u8 fault = esr_fsc_get_fault(esr);
-> >
-> > -	return (esr == ESR_ELx_FSC_ACCESS_L(3)) ||
-> > -	       (esr == ESR_ELx_FSC_ACCESS_L(2)) ||
-> > -	       (esr == ESR_ELx_FSC_ACCESS_L(1)) ||
-> > -	       (esr == ESR_ELx_FSC_ACCESS_L(0));
-> > +	return (fault == ESR_ELx_FSC_ACCESS_L(3)) ||
-> > +	       (fault == ESR_ELx_FSC_ACCESS_L(2)) ||
-> > +	       (fault == ESR_ELx_FSC_ACCESS_L(1)) ||
-> > +	       (fault == ESR_ELx_FSC_ACCESS_L(0));
-> >  }
-> >
-> >  static inline bool esr_fsc_is_excl_atomic_fault(unsigned long esr)
-> >  {
-> > -	esr = esr & ESR_ELx_FSC;
-> > -
-> > -	return esr == ESR_ELx_FSC_EXCL_ATOMIC;
-> > +	return esr_fsc_get_fault(esr) == ESR_ELx_FSC_EXCL_ATOMIC;
-> >  }
-> >
-> >  static inline bool esr_fsc_is_addr_sz_fault(unsigned long esr)
-> >  {
-> > -	esr &= ESR_ELx_FSC;
-> > +	const u8 fault = esr_fsc_get_fault(esr);
-> > +
-> > +	return (fault == ESR_ELx_FSC_ADDRSZ_L(3)) ||
-> > +	       (fault == ESR_ELx_FSC_ADDRSZ_L(2)) ||
-> > +	       (fault == ESR_ELx_FSC_ADDRSZ_L(1)) ||
-> > +	       (fault == ESR_ELx_FSC_ADDRSZ_L(0)) ||
-> > +	       (fault == ESR_ELx_FSC_ADDRSZ_L(-1));
-> > +}
-> > +
-> > +static inline bool esr_abt_is_exec_fault(unsigned long esr)
-> > +{
-> > +	return esr_trap_is_iabt(esr) && !esr_abt_is_s1ptw(esr);
-> > +}
-> >
-> > -	return (esr == ESR_ELx_FSC_ADDRSZ_L(3))	||
-> > -	       (esr == ESR_ELx_FSC_ADDRSZ_L(2))	||
-> > -	       (esr == ESR_ELx_FSC_ADDRSZ_L(1)) ||
-> > -	       (esr == ESR_ELx_FSC_ADDRSZ_L(0))	||
-> > -	       (esr == ESR_ELx_FSC_ADDRSZ_L(-1));
-> > +static inline bool esr_abt_is_sea(unsigned long esr)
-> > +{
-> > +	const u8 fault = esr_fsc_get_fault(esr);
-> > +
-> > +	switch (fault) {
-> > +	case ESR_ELx_FSC_EXTABT:
-> > +	case ESR_ELx_FSC_SEA_TTW(-1) ... ESR_ELx_FSC_SEA_TTW(3):
-> > +	case ESR_ELx_FSC_SECC:
-> > +	case ESR_ELx_FSC_SECC_TTW(-1) ... ESR_ELx_FSC_SECC_TTW(3):
-> > +		return true;
-> > +	default:
-> > +		return false;
-> > +	}
-> > +}
-> > +
-> > +/* Not valid for negative levels. */
-> > +static inline u64 esr_fsc_get_level(unsigned long esr)
-> > +{
-> > +	return esr & ESR_ELx_FSC_LEVEL;
-> >  }
->
-> If that's such an unreliable helper, why is it exposed to everyone
-> instead of being kept local to the single caller?
-
-That's a fair point :) will open code instead.
-
->
-> >
-> >  static inline bool esr_fsc_is_sea_ttw(unsigned long esr)
-> >  {
-> > -	esr = esr & ESR_ELx_FSC;
-> > +	const u8 fault = esr_fsc_get_fault(esr);
-> >
-> > -	return (esr == ESR_ELx_FSC_SEA_TTW(3)) ||
-> > -	       (esr == ESR_ELx_FSC_SEA_TTW(2)) ||
-> > -	       (esr == ESR_ELx_FSC_SEA_TTW(1)) ||
-> > -	       (esr == ESR_ELx_FSC_SEA_TTW(0)) ||
-> > -	       (esr == ESR_ELx_FSC_SEA_TTW(-1));
-> > +	return (fault == ESR_ELx_FSC_SEA_TTW(3)) ||
-> > +	       (fault == ESR_ELx_FSC_SEA_TTW(2)) ||
-> > +	       (fault == ESR_ELx_FSC_SEA_TTW(1)) ||
-> > +	       (fault == ESR_ELx_FSC_SEA_TTW(0)) ||
-> > +	       (fault == ESR_ELx_FSC_SEA_TTW(-1));
-> >  }
-> >
-> >  static inline bool esr_fsc_is_secc_ttw(unsigned long esr)
-> >  {
-> > -	esr = esr & ESR_ELx_FSC;
-> > +	const u8 fault = esr_fsc_get_fault(esr);
-> >
-> > -	return (esr == ESR_ELx_FSC_SECC_TTW(3)) ||
-> > -	       (esr == ESR_ELx_FSC_SECC_TTW(2)) ||
-> > -	       (esr == ESR_ELx_FSC_SECC_TTW(1)) ||
-> > -	       (esr == ESR_ELx_FSC_SECC_TTW(0)) ||
-> > -	       (esr == ESR_ELx_FSC_SECC_TTW(-1));
-> > +	return (fault == ESR_ELx_FSC_SECC_TTW(3)) ||
-> > +	       (fault == ESR_ELx_FSC_SECC_TTW(2)) ||
-> > +	       (fault == ESR_ELx_FSC_SECC_TTW(1)) ||
-> > +	       (fault == ESR_ELx_FSC_SECC_TTW(0)) ||
-> > +	       (fault == ESR_ELx_FSC_SECC_TTW(-1));
-> >  }
-> >
-> >  /* Indicate whether ESR.EC==0x1A is for an ERETAx instruction */
-> > diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-> > index a3c1928bdf74..811d7a68a9f9 100644
-> > --- a/arch/arm64/include/asm/kvm_emulate.h
-> > +++ b/arch/arm64/include/asm/kvm_emulate.h
-> > @@ -411,18 +411,13 @@ static __always_inline int kvm_vcpu_dabt_get_rd(const struct kvm_vcpu *vcpu)
-> >
-> >  static __always_inline bool kvm_vcpu_abt_iss1tw(const struct kvm_vcpu *vcpu)
-> >  {
-> > -	return !!(kvm_vcpu_get_esr(vcpu) & ESR_ELx_S1PTW);
-> > +	return esr_abt_is_s1ptw(kvm_vcpu_get_esr(vcpu));
-> >  }
-> >
-> >  /* Always check for S1PTW *before* using this. */
-> >  static __always_inline bool kvm_vcpu_dabt_iswrite(const struct kvm_vcpu *vcpu)
-> >  {
-> > -	return kvm_vcpu_get_esr(vcpu) & ESR_ELx_WNR;
-> > -}
-> > -
-> > -static inline bool kvm_vcpu_dabt_is_cm(const struct kvm_vcpu *vcpu)
-> > -{
-> > -	return !!(kvm_vcpu_get_esr(vcpu) & ESR_ELx_CM);
-> > +	return esr_dabt_is_write(kvm_vcpu_get_esr(vcpu));
-> >  }
-> >
-> >  static __always_inline unsigned int kvm_vcpu_dabt_get_as(const struct kvm_vcpu *vcpu)
-> > @@ -438,17 +433,12 @@ static __always_inline bool kvm_vcpu_trap_il_is32bit(const struct kvm_vcpu *vcpu
-> >
-> >  static __always_inline u8 kvm_vcpu_trap_get_class(const struct kvm_vcpu *vcpu)
-> >  {
-> > -	return ESR_ELx_EC(kvm_vcpu_get_esr(vcpu));
-> > +	return esr_trap_get_class(kvm_vcpu_get_esr(vcpu));
-> >  }
-> >
-> >  static inline bool kvm_vcpu_trap_is_iabt(const struct kvm_vcpu *vcpu)
-> >  {
-> > -	return kvm_vcpu_trap_get_class(vcpu) == ESR_ELx_EC_IABT_LOW;
-> > -}
-> > -
-> > -static inline bool kvm_vcpu_trap_is_exec_fault(const struct kvm_vcpu *vcpu)
-> > -{
-> > -	return kvm_vcpu_trap_is_iabt(vcpu) && !kvm_vcpu_abt_iss1tw(vcpu);
-> > +	return esr_trap_is_iabt(kvm_vcpu_get_esr(vcpu));
-> >  }
-> >
-> >  static __always_inline u8 kvm_vcpu_trap_get_fault(const struct kvm_vcpu *vcpu)
-> > @@ -468,26 +458,9 @@ bool kvm_vcpu_trap_is_translation_fault(const struct kvm_vcpu *vcpu)
-> >  	return esr_fsc_is_translation_fault(kvm_vcpu_get_esr(vcpu));
-> >  }
-> >
-> > -static inline
-> > -u64 kvm_vcpu_trap_get_perm_fault_granule(const struct kvm_vcpu *vcpu)
-> > -{
-> > -	unsigned long esr = kvm_vcpu_get_esr(vcpu);
-> > -
-> > -	BUG_ON(!esr_fsc_is_permission_fault(esr));
-> > -	return BIT(ARM64_HW_PGTABLE_LEVEL_SHIFT(esr & ESR_ELx_FSC_LEVEL));
-> > -}
-> > -
-> >  static __always_inline bool kvm_vcpu_abt_issea(const struct kvm_vcpu *vcpu)
-> >  {
-> > -	switch (kvm_vcpu_trap_get_fault(vcpu)) {
-> > -	case ESR_ELx_FSC_EXTABT:
-> > -	case ESR_ELx_FSC_SEA_TTW(-1) ... ESR_ELx_FSC_SEA_TTW(3):
-> > -	case ESR_ELx_FSC_SECC:
-> > -	case ESR_ELx_FSC_SECC_TTW(-1) ... ESR_ELx_FSC_SECC_TTW(3):
-> > -		return true;
-> > -	default:
-> > -		return false;
-> > -	}
-> > +	return esr_abt_is_sea(kvm_vcpu_get_esr(vcpu));
-> >  }
-> >
-> >  static __always_inline int kvm_vcpu_sys_get_rt(struct kvm_vcpu *vcpu)
-> > @@ -496,9 +469,9 @@ static __always_inline int kvm_vcpu_sys_get_rt(struct kvm_vcpu *vcpu)
-> >  	return ESR_ELx_SYS64_ISS_RT(esr);
-> >  }
-> >
-> > -static inline bool kvm_is_write_fault(struct kvm_vcpu *vcpu)
-> > +static inline bool esr_abt_is_write_fault(unsigned long esr)
-> >  {
-> > -	if (kvm_vcpu_abt_iss1tw(vcpu)) {
-> > +	if (esr_abt_is_s1ptw(esr)) {
-> >  		/*
-> >  		 * Only a permission fault on a S1PTW should be
-> >  		 * considered as a write. Otherwise, page tables baked
-> > @@ -511,13 +484,18 @@ static inline bool kvm_is_write_fault(struct kvm_vcpu *vcpu)
-> >  		 * first), then a permission fault to allow the flags
-> >  		 * to be set.
-> >  		 */
-> > -		return kvm_vcpu_trap_is_permission_fault(vcpu);
-> > +		return esr_fsc_is_permission_fault(esr);
-> >  	}
-> >
-> > -	if (kvm_vcpu_trap_is_iabt(vcpu))
-> > +	if (esr_trap_is_iabt(esr))
-> >  		return false;
-> >
-> > -	return kvm_vcpu_dabt_iswrite(vcpu);
-> > +	return esr_dabt_is_write(esr);
-> > +}
-> > +
-> > +static inline bool kvm_is_write_fault(struct kvm_vcpu *vcpu)
-> > +{
-> > +	return esr_abt_is_write_fault(kvm_vcpu_get_esr(vcpu));
-> >  }
-> >
-> >  static inline unsigned long kvm_vcpu_get_mpidr_aff(struct kvm_vcpu *vcpu)
-> > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> > index 74e7e7f7564c..30d605e87b01 100644
-> > --- a/arch/arm64/kvm/mmu.c
-> > +++ b/arch/arm64/kvm/mmu.c
-> > @@ -1603,12 +1603,38 @@ struct kvm_s2_fault_desc {
-> >  	struct kvm_s2_trans	*nested;
-> >  	struct kvm_memory_slot	*memslot;
-> >  	unsigned long		hva;
-> > +	unsigned long		esr;
-> >  };
-> >
-> > +static bool kvm_s2_fault_is_perm(const struct kvm_s2_fault_desc *s2fd)
-> > +{
-> > +	return esr_fsc_is_permission_fault(s2fd->esr);
-> > +}
-> > +
-> > +static bool kvm_s2_fault_is_exec(const struct kvm_s2_fault_desc *s2fd)
-> > +{
-> > +	return esr_abt_is_exec_fault(s2fd->esr);
-> > +}
-> > +
-> > +static bool kvm_s2_fault_is_write(const struct kvm_s2_fault_desc *s2fd)
-> > +{
-> > +	return esr_abt_is_write_fault(s2fd->esr);
-> > +}
-> > +
-> > +static u64 kvm_s2_perm_fault_granule(const struct kvm_s2_fault_desc *s2fd)
-> > +{
-> > +	u64 level;
-> > +
-> > +	if (!kvm_s2_fault_is_perm(s2fd))
-> > +		return 0;
-> > +	level = esr_fsc_get_level(s2fd->esr);
-> > +	return BIT(ARM64_HW_PGTABLE_LEVEL_SHIFT(level));
-> > +}
-> > +
-> >  static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
-> >  {
-> >  	bool write_fault, exec_fault;
-> > -	bool perm_fault = kvm_vcpu_trap_is_permission_fault(s2fd->vcpu);
-> > +	const bool perm_fault = kvm_s2_fault_is_perm(s2fd);
->
-> Please don't randomly introduce const local variables. I understand
-> the benefit, but *if* we want to go down that road, then we do it for
-> all the predicates, as a separate series, because this obviously
-> applies to {exec,write}_fault as well.
-
-Ack, force of habit :) will avoid on respin.
-
->
-> Thanks,
->
-> 	M.
->
-> --
-> Without deviation from the norm, progress is not possible.
-
---
-Cheers, Lorenzo
