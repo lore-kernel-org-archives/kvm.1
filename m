@@ -1,103 +1,105 @@
 Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53922030A
-	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 00:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093CF2D7DC6
+	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 00:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788999758; cv=none; b=XVjuDK4e8/PWJPFzSWwwJ7m7+oR2ZCRuuIQRvo3btG5BzewIlP6PoLOQuSndH31pO1jCGZVbJRWLK1j5uNfR+WUza1EESkFYOw3EkoloFTxebgEn/mvVUHe9rkFQtVtjU6/oiRXXvONbIXomyimJVp8ey1858stwtJ58kFM4ykg=
+	t=1789000046; cv=none; b=cZfHgcFP9DhS8YwjccRtm81Jds/lhVenktdak0Bqn9PUxPajFe4R5JL5OF6Qw8Cy2+oPiNNADwqv216ABqLDPjw30+RaeBliXXujEN2YXuCWb2U9sTzgWzyi0aCHEqOkeGCB96Yzf2SDqGFTYUEZKijcYvRbc5nx1snX6qHoEDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788999758; c=relaxed/simple;
-	bh=3o4xptYxHv9M/QtLWA+QTUbItiWelQPkDFS5pTa+dyI=;
+	s=arc-20240116; t=1789000046; c=relaxed/simple;
+	bh=W/cQoJNpCMvhT/b6a6u/tSJdTecPVVcp+05IoAxGuKA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VBTMd30R0E7MlAFygM+mdDw/g49vcxJmSSwhTPnQX7kWhVAZjz4jI013Hax9fuRcbqtS8ShcjYMLoapVlzK7Twlk7uXt2E+836CkzXp8WoZs3eSV17YU7vvUhRQZ2Rlyi/CsApVzpU+4bMDyiN69ZnwjDwTRmLctKJW1BkulZLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GXhP3gFb; arc=none smtp.client-ip=209.85.214.197
+	 To:Cc:Content-Type; b=cfOzBl1OjWHFFnZUvIojjprfjN8AwZa44e0KeqKzVogiEc8DKat9f6D2EysAheavyBoZYgr8PqWajmRjdser1LVMCBx0lDGJUQyEHKSLhV8fqPOOP28IoLPFs2+VHRJMlGsOPnGD6gNeP40aeGYDsO/39F5DTstk5INVicv3B+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PbUnAEEx; arc=none smtp.client-ip=209.85.214.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GXhP3gFb"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cfa4e4684bso63763145ad.2
-        for <kvm@vger.kernel.org>; Wed, 09 Sep 2026 17:22:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PbUnAEEx"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2ccb6823efcso66473675ad.0
+        for <kvm@vger.kernel.org>; Wed, 09 Sep 2026 17:27:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788999756; x=1789604556; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789000044; x=1789604844; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=9SZpxMxEIpdJaZosn8BHIlAE54o/S+silvCTYXeRcHI=;
-        b=GXhP3gFbDWlmTm62MsyQzNar60RorXyT9GJBPf3tiA8ARuUdnZWsty06y5JZYIsRxY
-         xPp77THvD7EOFQnNpfHbSkYl4Xzpj6cKJaWsTgrKhVxwfjD/jzee9ECyz+2+ajjuPs0Q
-         OoouK6yabM/jQXHc/94Xy1QlW7t2J7G6Magvx80v9mugCdt4pjKi9rm13HhpnY067Cyr
-         YofXz0Eh+/nYyjh6dCCME/V42gp2qzlDJeTntsAHts7wTNOL8gkMbmH21698QxNmtqVe
-         qrzHjhQNm529dPFZzB3Rmaf+YbMgiibI66F0sJSEIZPya+WRaOT1qKPISCqN1/6ZGNf5
-         +Zhw==
+        bh=p8JHNVACgZQItEORarLzV/z1PEss/g3cX3jzovh/lk8=;
+        b=PbUnAEExmovGEajL6NhjjxfLfji05OgqzSc4vwM92DyZXyWvWjVNVAkffB0H2zsKLK
+         OSwJDFrw2p+lyq5hIpz65AV9fT2WLLU1kXWepTW1DaEtfgfoLb6Vyglkz3axBIJ4XSdS
+         C0UwmRiwLGy4aaNv9XN41f3nRBxfJ9rLqDukC045kjnXl3FkRmk05xIHPPFG5BS3qaw+
+         Citka/2OGOaGef6QPdstHPoqv1+0Ons31adlCGyB43M9We2Vm9RsN2ZazdbKLBGLymaD
+         JUl5ftx4Ych04vcPilxrwjD5GMRel7sN1ym9QXZ25DsqWRSG8LgjNcqNKH0CAj3dwbwC
+         wQAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788999756; x=1789604556;
+        d=1e100.net; s=20251104; t=1789000044; x=1789604844;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=9SZpxMxEIpdJaZosn8BHIlAE54o/S+silvCTYXeRcHI=;
-        b=XwWGskLVi9FL+472EjxAqzerpzr+AYT+ctCq+3W2zffjyMqxhUfIZ2CD4Obw0Wprkn
-         Bq15ecNtm2hFYw5khqZlzSqjb/GIgZn0mckqDJLqr3tRO2fqfnjHhnt5BXL6Pc4BDa+X
-         G4fnwnBh4t97AtgpYIu/h/xg+Kncbe9DhvWzGVt/a9A7CBrCMwPM1lN3mFTiFqxHLirs
-         9OfCqsbe9JWVdiSMqupJvYX9nMo4GuJWaH3o1wgm1tVbgFOYz2sA6szv85N6iPloO0eN
-         X2n+JNt2tKhPqwEMv3K0+IZnfxWdE3nHHK8w2SdOgRWq8RC5/DWyp9k9irj8rAaV7aAt
-         3Y/g==
-X-Forwarded-Encrypted: i=1; AKwUvBzgGI1ut0vDFmUMFhvX6IJZrfDuunMs7n1Rq92ZK7ewQvUQSM3QuynRQcehctPcMuUJOns=@vger.kernel.org
-X-Gm-Message-State: AFuF++nzxG/Ma1qiRpgmBEflRcB7Wg7b7y8RL8w/abfPdFptqNDFJkbe
-	2ga2AqHSye6WCR0BIMWCvml3AFRKIVukDYODOBTekkHWDRyBce2rIU4gqrGy1S5slSNHx3J2qkP
-	pqlG3oQ==
-X-Received: from plw7.prod.google.com ([2002:a17:903:45c7:b0:2cf:ca4d:25e3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3c27:b0:2d9:b60d:7755
- with SMTP id d9443c01a7336-2db125cd34bmr576611005ad.1.1788999755288; Wed, 09
- Sep 2026 17:22:35 -0700 (PDT)
-Date: Wed, 9 Sep 2026 17:22:34 -0700
-In-Reply-To: <9a5552de-0f36-41c6-8bb6-16cbba5425b6@amd.com>
+        bh=p8JHNVACgZQItEORarLzV/z1PEss/g3cX3jzovh/lk8=;
+        b=S8UF/lPWEHQlNqcbMSVxLSC6NJ759vK/zMVu8ePBqL75WHjptLhHDu3/ZLKG5V6CB0
+         oLaGgm1oB+ySZ3WoBX8C3HOhGr/P3IWYz6rj3Xsh6gKtLScBmJWhFngF+zZMkmD7Y+A/
+         5DKmswKKVFP9+qRdUXETceXpMWKhZII04IJZXnwIEMftOyhhRFD0kaZo6Hr/mWKTgRFV
+         4T6G4wCPmIg9iHku/Fxx1H1F9ky4ulq9QmxJubO1och+bqJwG7lkTT4OViVItEkSFfBm
+         U6yBno3LPq2dc3ruOOnxXvKarO+CyfJzVVJmzGzDehkc/S5TTBMGiCNldnFWQlTSUizn
+         yOhw==
+X-Forwarded-Encrypted: i=1; AKwUvBxxRw3tSU0gtY2MxVxzXA8pexKDwkFeNpm+m6y4KlOvy52fVb5i9YUrGj7b7v216/zPLco=@vger.kernel.org
+X-Gm-Message-State: AFuF++kkhoeXppaDWhD3mbr2cPrCyIbCS/vJvGZnbcmLQKP/UuWYqt8U
+	iddT9eOkKj8t1+DzrK1G/5THx8eGBqOikXa/6VBPi+9+GRZ6kl1BQ8qnBnbnGA7NSB2dUff3qrk
+	6PWjjmA==
+X-Received: from pjqo21.prod.google.com ([2002:a17:90a:ac15:b0:39b:7935:6c42])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4d87:b0:380:540:d499
+ with SMTP id 98e67ed59e1d1-39b26100bfdmr51740780a91.6.1789000043798; Wed, 09
+ Sep 2026 17:27:23 -0700 (PDT)
+Date: Wed, 9 Sep 2026 17:27:23 -0700
+In-Reply-To: <20260908160426.6547-2-tharitt97@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260907063906.1964557-1-nikunj@amd.com> <20260907063906.1964557-9-nikunj@amd.com>
- <20260907070024.4A7E11F00A3D@smtp.kernel.org> <9a5552de-0f36-41c6-8bb6-16cbba5425b6@amd.com>
-Message-ID: <aqH4SpA_567soglf@google.com>
-Subject: Re: [PATCH v8 8/8] KVM: SVM: Add Page modification logging support
+References: <20260908160426.6547-1-tharitt97@gmail.com> <20260908160426.6547-2-tharitt97@gmail.com>
+Message-ID: <aqH5azSkQJVXg3ef@google.com>
+Subject: Re: [PATCH v1 1/2] KVM: x86: Reject reserved CR8 bits in KVM_SET_SREGS
 From: Sean Christopherson <seanjc@google.com>
-To: "Nikunj A. Dadhania" <nikunj@amd.com>
-Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+To: Tharit Tangkijwanichakul <tharitt97@gmail.com>
+Cc: pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, shuah@kernel.org, hpa@zytor.com, 
+	binbin.wu@linux.intel.com, kai.huang@intel.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org, 
+	me@brighamcampbell.com, jkoolstra@xs4all.nl
 Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Sep 08, 2026, Nikunj A. Dadhania wrote:
+On Tue, Sep 08, 2026, Tharit Tangkijwanichakul wrote:
+> kvm_is_valid_sregs() validates the incoming CR0, CR4, and efer values but
+> never checks CR8.
 > 
+> When userspace passes a CR8 value with any of the
+> reserved bits [63:4] set, __set_sregs_common() forwards it to
+> kvm_set_cr8(), which rejects the reserved bits and returns early. That
+> return value is not checked, so the ioctl reports success while the
+> requested value is silently dropped. A subsequent KVM_GET_SREGS then
+> returns a CR8 different from the one userspace believed it had written.
 > 
-> On 9/7/2026 12:30 PM, sashiko-bot@kernel.org wrote:
+> Factor the reserved-bit check out into kvm_is_valid_cr8() and use it both
+> in kvm_set_cr8() and in kvm_is_valid_sregs().
 > 
-> >> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> >> index 73f37b050d0a0..da417c4c59154 100644
-> >> --- a/arch/x86/kvm/svm/nested.c
-> >> +++ b/arch/x86/kvm/svm/nested.c
-> >> @@ -901,6 +901,13 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
-> >>       vmcb02->control.msrpm_base_pa = vmcb01->control.msrpm_base_pa;
-> >>       vmcb_mark_dirty(vmcb02, VMCB_PERM_MAP);
-> >>
-> >> +     /*
-> >> +      * PML is never enabled in hardware for L2.  Make sure that an
-> >> +      * unexpected PML write would trigger a PML_FULL VM-Exit.
-> >> +      */
-> >> +     if (pml)
-> >> +             vmcb02->control.pml_index = -1;
-> > 
-> > [Severity: Critical]
-> > By intentionally leaving hardware PML disabled for nested L2 guests in
-> > nested_vmcb02_prepare_control without informing the KVM MMU, doesn't this
-> > cause all memory dirtied by L2 to be silently lost?
-> 
-> No, kvm_mmu_page_ad_need_write_protect() returns true when
-> cpu_dirty_log_size is set and the shadow page is in guest_mode,
-> which forces write-protection on L2 SPTEs instead of relying on
-> hardware PML. L2 dirty pages are tracked via write faults, not PML.
-> This is the same approach VMX uses for nested guests.
+> Fixes: 2f5bb3fe5835 ("KVM: x86: Move the bulk of register specific code from x86.c to regs.c")
 
-And FWIW, because Sashiko's hallucinations made me double check, this series
-doesn't advertise PML to L1, i.e. doesn't need to implement and wire up
-kvm_x86_nested_ops.write_log_dirty() for SVM.
+Heh, this goes back much further than just moving code around, all the way to:
+
+  6aa8b732ca01 ("[PATCH] kvm: userspace interface")
+
+which did this in kvm_vcpu_ioctl_set_sregs():
+
+  6aa8b732ca01 (Avi Kivity         2006-12-10 02:21:36 -0800 2109)        vcpu->cr8 = sregs->cr8;
+
+I suppose one could argue that:
+
+  Fixes: 7017fc3d1a12 ("KVM: Define and use cr8 access functions")
+
+is more appropriate, since this specific behavior was introduced then.  I'll
+probably just shove both in there and massage the changelog to explain the history.
+
+No need for a v2, I'll fixup when applying.  Thanks!
