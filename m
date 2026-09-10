@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4673D1CA8;
-	Thu, 10 Sep 2026 09:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4BE35202C;
+	Thu, 10 Sep 2026 09:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789034306; cv=none; b=JRSHgCLSNSGjEQYg22XUkJq1dYI6IVTmsKP6RyFj71mfOnI4pXmpD6SPwpfTBBu6LhypkfRxzMy/Gcpf2RCgt/TOIumKw3dOW4D4qEuAJFj26qpiR1NxndVEb62y/BgYop+Er1qjpibvq8nHOvf/hOSpYmi8/uvKEEdoMtWkF1Q=
+	t=1789034350; cv=none; b=se2aXF8QOaMovvWIVLv6OQLBDeSP0beHIm48QUsZM1KFcGQXxhQuOHmdh5kcEuAYyle2aMrG64gU3WV2Tc/VcVwE5VgVfL+o5GuIQkS/8C/3N6NW/iWqBULfuH0TmDV3BQpxnxS6QCwX+C/FvucYEhervK5yPRUyHd7PzHeZyl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789034306; c=relaxed/simple;
-	bh=i1iGnO2jLZ+E8QVOhOJd6QekAN+lQ5WC5ZETlQ+nHaE=;
+	s=arc-20240116; t=1789034350; c=relaxed/simple;
+	bh=fpSdg5Ex7QRSWoXO1/VxBlB62YDI7zyawiewGoJwkZ8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CbgEIUZxBAUCGlMwMznZtkCi1wnpfEXWSO3FhoEtpVZZssV3Zvwe4XvRrA8YgoWMhzOBx6sbTiHFcjehR43VskTtYwPPlAt2LyKG1xwmuWumsVwhIO/K9N5i+6DHHeNZTZA+bs1iVf/yh121vJopnFxb8wKVZf4Sk5/BvI3UgtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LrOGHh3N; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=iYrLI48p5NQl24wOpfZxvcOi5apCTNERVQxa02kzLr+SoKSFIptrdehS8cXhFwYPedNVDQJFZ5Ybb+fBtQtPOegVTfw0cLKM2SwfzztY3Z5OQDYbDJKpSbzyThziMAv4h6gXIHi/NLaISNcGX9KfzjgJIptgUEBl5H9EiK+5Gxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Btbp/DdQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LrOGHh3N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBD821F000FF;
-	Thu, 10 Sep 2026 09:58:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Btbp/DdQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D81C1F000FF;
+	Thu, 10 Sep 2026 09:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789034304;
-	bh=mioPuWYQDLrb+YQYF+a6jlDq2OqbhOCoGkf+EICrOg0=;
+	s=k20260515; t=1789034349;
+	bh=7E7qL9hnMJksX9Fno6BkugSVMdHcPZ0KaVrs7NYY16s=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LrOGHh3NXCbcHPXaYr8Nvp5QUtBTzcIX3pfYfimfLhnYi7CdEm2LS5aK8GxbBNmNT
-	 IANyxLqPfYNsKWyFC97tXQpZ2lHS6QOrl4iGdvNl1fXdOlWkzL5rBp7fCCvO1AbH7y
-	 VMXxWnagNCgzAt+9Ds6gwUt3VjVJ1E4poXNg3baVpQUPPykCw8EKXv7lw82++xmtWw
-	 9m+J3aT4qA3bA8XF10ZlY9+ht8wjY2bamG5QcJhhLdhPb1XrN0OTDd5qIHb+BCcsMM
-	 /OSi9FEgXDVkdkH7U7nEGUqAwNosUntKwQR3ONWe9YSdLs4LPm++GcDCS5AGaOVK8D
-	 cEFhPKrFZQ96w==
-Message-ID: <0b8c746e-544b-4ec0-91dd-d5e10e1920dd@kernel.org>
-Date: Thu, 10 Sep 2026 11:58:09 +0200
+	b=Btbp/DdQDkYguPGE72KqFMmtU62PXLGOhJ0BVA4TjekaMJ7fvAebinZO9+OCzfBGl
+	 bVNJxH1goP4pUSAi8DwHCvmb7/XxSnj55za6Aw4mxJxj0Qxf8WdK06Nvlk8ir/G2PG
+	 nv3oFP9VVn680YlbepBhluTI4FNqlR2RIac40sfu4z83Dfn7Gs5AnVNYH1AERlO8g/
+	 O/uuq4aKITSnB3CCUCm5KnAiMgGtfX8KByqU3ga68/mWbWbRsGCbQ43yYIMZvxVY8P
+	 6uYoKpLcmcjvXsLJkv8mBTwkXPQJo2m+p2ofMj5WVjmvyVYMna8FhMIvfDN8Tf+KW0
+	 17DPj/qdtxCfA==
+Message-ID: <dedad87b-909d-4d14-b914-ff2e28c414ce@kernel.org>
+Date: Thu, 10 Sep 2026 11:58:53 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/9] KVM: guest_memfd: folio migration for
- non-confidential VMs
+Subject: Re: [PATCH v3 1/9] KVM: guest_memfd: take the invalidate lock when
+ unbinding a dying file
 To: Shivank Garg <shivankg@amd.com>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -67,6 +67,7 @@ Cc: linux-fsdevel@vger.kernel.org, linux-coco@lists.linux.dev,
  linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
  Sashiko <sashiko-bot@kernel.org>
 References: <20260805-shivank-gmem-migrate-v3-0-00d8bdec4e1d@amd.com>
+ <20260805-shivank-gmem-migrate-v3-1-00d8bdec4e1d@amd.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -113,126 +114,52 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260805-shivank-gmem-migrate-v3-0-00d8bdec4e1d@amd.com>
+In-Reply-To: <20260805-shivank-gmem-migrate-v3-1-00d8bdec4e1d@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 8/5/26 08:40, Shivank Garg wrote:
-> guest_memfd folios are currently always marked unmovable, so the kernel cannot
-> perform memory compaction, offlining, etc. This is unavoidable for
-> confidential VMs (SEV-SNP, TDX), since memory is encrypted and copying it
-> needs firmware assistance. However, for non-confidential VMs (like
-> Firecracker), we can migrate the folios.
-
-Yes.
-
+> kvm_gmem_unbind() skips mapping->invalidate_lock when the guest_memfd
+> file is already dying. All other paths that modify f->bindings hold
+> that lock.
 > 
-> This series enables folio migration for non-confidential guest_memfd and
-> also lays the groundwork for migrating confidential guest_memfd later.
-> Once firmware-assisted copying support is available, those VMs can be
-> made movable, the confidential folio content can be copied separately,
-> and the destination folio marked with FOLIO_CONTENT_COPIED[4] so
-> __migrate_folio() skips the host-side folio_mc_copy().
+> kvm_gmem_invalidate_{start,end}() checks f->bindings independently to
+> decide whether to begin or end KVM MMU invalidations. So, the bindings
+> must remain stable between the two calls. If a binding is removed in that
+> window, start increments mmu_invalidate_in_progress but end does not
+> decrement it. Example, unbind race with memory failure:
 > 
-> Testing
-> -------
-> Host: 7.2-rc6+(c21bb419386) + this, AMD EPYC ZEN 3, 2 NUMA nodes
+>   CPU 0: memory failure               CPU 1: memslot delete
+>   ----------------------------------  ---------------------------
+>                                       (guest_memfd file is dying)
+>   kvm_gmem_error_folio()
+>     kvm_gmem_invalidate_start()
+>       finds binding
+>       mmu_invalidate_in_progress++
+>                                       kvm_gmem_unbind()
+>                                         get_file_active() fails
+>                                         store NULL in bindings
+>     kvm_gmem_invalidate_end()
+>       no binding found
+>       counter stays elevated
 > 
-> - KVM selftest: allocate folios on node 0, migrate them to node 1 and
->   back and verify resulting NUMA node and the folio contents at each
->   step.
+> mmu_invalidate_retry() then returns 1 forever, so guest page faults
+> retry without ever installing a mapping and the guest hangs.
 > 
-> - Firecracker [1]: booted a microVM backed by guest_memfd. While the
->   guest was running, forced host-side migration of its folios via
->   migratepages(8) and explicit move_pages(2) of guest_memfd
->   pages. Verify with /proc/firecracker_pid/numa_maps.
+> Take the invalidate lock in the dying-file path too. This prevents unbind
+> from removing a binding and leaking mmu_invalidate_in_progress. This is
+> safe because any caller that reaches this path holds slots_lock, so
+> kvm_gmem_release() cannot nullify the slots->gmem.file, until
+> kvm_gmem_unbind() finishes.
 > 
-> Notes
-> -----
-> - Sashiko pointed out a pre-existing ABBA deadlock between
->   kvm_gmem_error_folio() and truncation. It's being addressed separately
->   by Hao Zhang. [2][3]
-> 
-> [1] https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding
->     In builder.rs, add GUEST_MEMFD_FLAG_MIGRATABLE to bit-2 and pass it instead
->     of GUEST_MEMFD_FLAG_NO_DIRECT_MAP to vm.create_guest_memfd().
-> [2] https://lore.kernel.org/all/ambEdSPjerZIVN0b@192.168.1.215/
-> [3] https://sashiko.dev/#/patchset/20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95%40amd.com
-> [4] https://lore.kernel.org/all/20260630-shivank-batch-migrate-offload-v6-1-da95d7e8b8a2@amd.com
-> 
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/all/20260728092027.225CF1F000E9@smtp.kernel.org
+> Fixes: ae431059e75d ("KVM: guest_memfd: Remove bindings on memslot deletion when gmem is dying")
 > Signed-off-by: Shivank Garg <shivankg@amd.com>
 > ---
-> Changes in v3:
-> - Fix unbalanced mmu_invalidate_in_progress count unbinding dying guest_memfd. (Sashiko)
-> - Fix maxnode handling in xapic_ipi_test selftest.
-> - Add GUEST_MEMFD_FLAG_MIGRATABLE documentation
-> - Replace open-coded sizeof() * 8 calculation with BITS_PER_TYPE()
-> - Add get_numa_mem_nodes() and use  MPOL_F_MEMS_ALLOWED for allowed NUMA ndoes
->   instead of hardcoded NUMA node IDs. (Sashiko)
-> - Extend migration selftest to verify rejection without MIGRATABLE flag and
->   move repeated checks into common helpers.
-> - Drop RFC tag.
-> - Link to v2: https://lore.kernel.org/r/20260728-shivank-gmem-migrate-v2-0-269ac1f84e2b@amd.com
-> 
-> Changes in v2:
-> - Make folio migration opt-in through GUEST_MEMFD_FLAG_MIGRATABLE,
->   preserving unmovable behavior if userspace don't explictly ask. (Alexandru, David, Sean)
-> - Add kvm_arch_supports_gmem_migration() so arch can control whether
->   GUEST_MEMFD_FLAG_MIGRATABLE is advertised.
-> - Allocate movable folios with GFP_HIGHUSER_MOVABLE. (David)
-> - Keep guest_memfd unevictable. (David, Sashiko, Sean)
-> - Split migrate_folio() implementation and enablement as separate patches.
-> - Update selftest with new flag.
-> - Link to v1: https://lore.kernel.org/r/20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com
-> 
-> ---
-> Shivank Garg (9):
->       KVM: guest_memfd: take the invalidate lock when unbinding a dying file
->       mm: split AS_UNMOVABLE back out of AS_INACCESSIBLE
->       KVM: guest_memfd: implement folio migration for non-confidential VMs
->       KVM: guest_memfd: add GUEST_MEMFD_FLAG_MIGRATABLE
 
-
-As discussed, we should for now just always enable it and not expose such a
-flag. The hope is that use cases that need migration disabled can just find a
-way for kvm to tell guest_memfd about that internally ... or we'll add a
-GUEST_MEMFD_FLAG_UNMIGRATABLE or whatever later.
-
-With migration in place, as also discussed, it would be interesting to
-investigate what it would take for these shared-only (no conversion) and
-migratable guest_memfd instances to support THPs.
-
-I'd assume we might have to teach
-
-1) guest_memfd / KVM parts about this, although I recall that most of it should
-be there
-
-2) Unlock guest_memfd in khugeapged
-
-We disallowed khugepaged entirely in commit
-
-commit dd085fe9a8ebfc5d10314c60452db38d2b75e609
-Author: Deepanshu Kartikey <kartikey406@gmail.com>
-Date:   Sat Feb 14 05:45:35 2026 +0530
-
-    mm: thp: deny THP for files on anonymous inodes
-
-    file_thp_enabled() incorrectly allows THP for files on anonymous inodes
-    (e.g. guest_memfd and secretmem). These files are created via
-    alloc_file_pseudo(), which does not call get_write_access() and leaves
-    inode->i_writecount at 0. Combined with S_ISREG(inode->i_mode) being
-    true, they appear as read-only regular files when
-    CONFIG_READ_ONLY_THP_FOR_FS is enabled, making them eligible for THP
-    collapse.
-
-It will also be interesting to figure out how well khugepaged would collapse
-guest_memfd when most folios are not actually faulted into the user page tables.
-
-collapse_scan_file() does not seem to worry about whether folios are actually
-mapped, just if they are present in the page cache.
-
-Which might mean that as long as guestmemfd is mmap'ed, it might just work.
-
+This was sent independently in the meantime, correct? (or was it included in
+this series, IOW what's the expected patch flow)
 
 -- 
 Cheers,
