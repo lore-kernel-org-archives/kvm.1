@@ -1,123 +1,110 @@
 Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33A856B874
-	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 17:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D81560ABF
+	for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 17:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789062782; cv=none; b=nsdMV9KZ8xoQATTi/LmBFBgRewQWcmh95bDNmofGzwmopSNjHfCMAHQPqhJIxxVs+5bJYoNz1lTyU2CNrasZ8ncuQvJAb+Y88U5R6Qa6BfgX3uHVRZiqsGPGUMVp6QDXJ+hRl6GKRnBFbAqNcbthqwyZy6sjrbFPbTw0eMJlZVs=
+	t=1789063008; cv=none; b=WPloA4dhhhTZx0qpmAiNuUtC9doPCkn1rrPPwquAAIrm2V2lNJtyKBONG5jyJudUN/aTJgiMQzrc5q3LAiKyiaHXdZK6xRZsfTssaPl6WlGaeGWkAbUSdaO81/XutN/IVI/TlwfXJSZf/fDgHVfXGlOhsQ+YabESKF+lKaOIL4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789062782; c=relaxed/simple;
-	bh=F1AhUpdyLeWHtrKpd/UDZADKHVtrhEyMQ0u/xpc106U=;
+	s=arc-20240116; t=1789063008; c=relaxed/simple;
+	bh=xLDdELpaZ92ME6nkeZN2fNUTDVi3mQx5ZlLrH57VYP0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=uwVHXTQLt9uk8bE6PR+AgfNicPskq71wjJpoDAo8BP2Jp2/znqqCE/CuwmkVKaoJmeCsWm83W+cogC38cjBSCbE4Kw3vSmH5PGkKxlMnrWJwQpO6f7oGi5ERcnBoz6E+c+UUpyeLGhfD37Qokr89GuqzFcxkAHvZ/gKmlzsdYSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Mymna27d; arc=none smtp.client-ip=209.85.215.200
+	 To:Content-Type; b=aN4712lqpJvmAG421yVygjBedB/uWu5N5vYC+Tf9BSVofRqQhsEa8ryhSSxhHbhvJJrVS4ikwqi/4EE003sD6WmYb4dYz2YzueeXWB6dMnLBrXYtC0d1j+eKOGN8zey+IttXi2mhCzLQlNFrHv53Zf/Um/RihtzwnnKL9JPnPIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tea7fuoo; arc=none smtp.client-ip=209.85.215.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Mymna27d"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc1cade6b71so56953a12.0
-        for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 10:52:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tea7fuoo"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cb6cf425e86so104385a12.1
+        for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 10:56:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789062760; x=1789667560; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
+        d=google.com; s=20251104; t=1789063005; x=1789667805; darn=vger.kernel.org;
+        h=content-type:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=KNwJScdUp/8QFucQGIGI1lh8CTxCfWXPp+xk+LwMhHk=;
-        b=Mymna27dc1cFFsexJ9+VSbcXG+fw9srJHeRnlEI/NEGjNzSDaRSFTHTtD2YUlsS3he
-         wb9k/3jOW+DovghSjhObmcgKmJVdXF7f4S1eblztpxS0VyZQ4n2zwKIvpsrXpgk1/dUi
-         sAVZrCM8YdMqwg7oSR+qAXVhd8wGkOXC/GD8+ngTVEKc8S3Zrra4gLhZnvNULd+MQ2vV
-         jVlkdvgxW7vSNfHzsQ0fcv0tn2TjMClR5pZv3mwcUof0aktKY53wrUib4EImbKdhb4iD
-         lZaTH5Rp3KdPJkLMfUYwquDF/iDmsR6igtjP7JTITUdPJlx2aZc0j7jHsa8X48bJBfvZ
-         Zj/Q==
+        bh=X3fQxh9g5ajoX8Y1OGK5G6oHwPA/wuRadJNv+BCxKRo=;
+        b=tea7fuooeBGrrANqJxhyTk9V3lHc70XXj09YsyU6fy0rAV6AinDB/L2b6L5FId48dO
+         mbw0X5bljgCDfu157xeETUhzZ992dQ6Oj3aXjIFeh61XLsIYn6iSbeuPe0f7Fctau1VE
+         kdFaLlgHROL9Q4zOGxPPAdSeFPFrZmGHWWkv7hS6BnOavsvGhT8kAPDrzQMACo56nUbh
+         vhRm87T2jwvhnAg2AZPt3eedPAANW5ZgaBeR0lL1mWjlNhG+6zA6AHVWXJtuLv4nL1R4
+         YxTWUNtAWY5XVkoWKoB+qB7Q2Hjc2wETGtFKN3zbIcoDrARbXVnrW2spoYGM6Rv4C+53
+         g0Qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789062760; x=1789667560;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
+        d=1e100.net; s=20251104; t=1789063005; x=1789667805;
+        h=content-type:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KNwJScdUp/8QFucQGIGI1lh8CTxCfWXPp+xk+LwMhHk=;
-        b=fSN7ACzYOY+IJ7NTykOFJDbfobti8fnIsmshKuNk+FGxrskrTwyJgHJEyyYuGUEVCY
-         UkwdRphMxCU8r+PJ0PkHLYt/s/aGWbLaRo3b6wEj/5Uh3OdycH9RCIQEYDvrEekPzwRG
-         drScF3WqOo9+HwouuNL7lTSJqJs1XtlV4WqtHguBIeOs4TOSk7jBgUkIYonO+dzV0DVe
-         LJXE8fM6FUUJtsD5DPNLQFCYICI8bnkiI/PIwyybS64WspXrUKPB1vRHgAVfirEz4UeJ
-         LxleNUQ6p4sOJ9VPSD61ybhj0b7FXAdqwKeZZ5OEiqyftmm1cdfBblANQQ5jhCAIqHrQ
-         4a5A==
-X-Forwarded-Encrypted: i=1; AKwUvBxLztPylHTsiwqnyxFy6+992VylfgorusL5beFpijvRV0lxwCzTPwoiU1o5OTMSQnyJ+kI=@vger.kernel.org
-X-Gm-Message-State: AFuF++l5HvntzYBfT1jHmzsSNcUtAoYInYzbb+9qs3tf6JNxVTuUxo58
-	YQPLPTUThAEP1PUU+ilhsj6whQN6w7asdf8NC4XOkXr9zg1Y/ByiFhLZjtyBYB1rZH0zoQlio68
-	3yNFGig==
-X-Received: from pgbj13-n1.prod.google.com ([2002:a05:6a02:61cd:10b0:cbe:95c8:8245])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:748b:b0:3d3:ad6e:9cdf
- with SMTP id adf61e73a8af0-3daeafd8941mr565329637.13.1789062760098; Thu, 10
- Sep 2026 10:52:40 -0700 (PDT)
-Date: Thu, 10 Sep 2026 10:52:39 -0700
-In-Reply-To: <CANpmjNOZPFQ9FcaA6+GH9PZ8DRyEMYW3+FKBO9B3d2CY+2C-5w@mail.gmail.com>
+        bh=X3fQxh9g5ajoX8Y1OGK5G6oHwPA/wuRadJNv+BCxKRo=;
+        b=CtB/yPfBA2A80xlYhIihXpT8X1c9KgWdiMqScj0LM9d6wEpeV+MjhnHwwlFloyyiSX
+         2hq305ZMIH06pnjjFIlpz0hLAIrtECNtDNfG06jgUx5JVlrcOmRmtiRgWohBn4tuzjHP
+         VMdYC6XPwH1jgl6ifZNYxBkndJZ+76pWUqFFtyIuD2HVjJgvM1+CHXzRM0CUNiAk0mUT
+         oO6r8A6HT17P2TTbAYCcbmBI8SbGxDvbwvlJK7XxI2RopEh5rUVIfj/RlMx8h9hdK3Tn
+         GSjIHWpdfMy7PiVYAeLtaU+yRqIk2/aQJhB9mBIpalSGrTqFHmWlQH2d6Fi92zskPSzV
+         wkLA==
+X-Forwarded-Encrypted: i=1; AKwUvBxZEWnUO6X/STcqSGbm4NT56nYRZXWcYrGUjnTXHue6UUM2kM/9eB1GhXYYocd/CpSHgOk=@vger.kernel.org
+X-Gm-Message-State: AFuF++ndXB3psqfzaVF5AwAgAJy9SI5zZ0Tuf4poH9dsoKX4yBE3l1fJ
+	zg3Mt8OH5GlFAlw39wwxTWxr48Dqihnph1YEnjrdwGZO/BuDREL+ZY0u58HWDFW0oCM4IVQCvoc
+	sqN7oiQ==
+X-Received: from pgmm13.prod.google.com ([2002:a05:6a02:550d:b0:cc4:a477:43cc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:bea6:b0:3cd:9bb1:c6f5
+ with SMTP id adf61e73a8af0-3daed1fa6f1mr77071637.10.1789063004860; Thu, 10
+ Sep 2026 10:56:44 -0700 (PDT)
+Date: Thu, 10 Sep 2026 10:56:44 -0700
+In-Reply-To: <anTB6ksbUs18FEf1@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260910162343.4092060-1-elver@google.com> <20260910162343.4092060-3-elver@google.com>
- <aqLbHvD5lqQP8PRd@google.com> <CANpmjNOZPFQ9FcaA6+GH9PZ8DRyEMYW3+FKBO9B3d2CY+2C-5w@mail.gmail.com>
-Message-ID: <aqLuZ9gGzK07R_Ei@google.com>
-Subject: Re: [PATCH RFC 02/10] KVM: Allow reading memslots while holding slots_arch_lock
+References: <20260508231353.406465-1-seanjc@google.com> <anTB6ksbUs18FEf1@google.com>
+Message-ID: <aqLvXM5SPPlQePXs@google.com>
+Subject: Re: [PATCH v3 0/9] perf/x86: Don't write PEBS_ENABLED on KVM transitions
 From: Sean Christopherson <seanjc@google.com>
-To: Marco Elver <elver@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	James Clark <james.clark@linaro.org>, linux-perf-users@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>, Mingwei Zhang <mizhang@google.com>, 
+	Stephane Eranian <eranian@google.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Sep 10, 2026, Marco Elver wrote:
-> On Thu, 10 Sept 2026 at 18:30, Sean Christopherson <seanjc@google.com> wrote:
-> >
-> > On Thu, Sep 10, 2026, Marco Elver wrote:
-> > > kvm_swap_active_memslots() updates kvm->memslots[as_id] while holding both
-> > > kvm->slots_lock and kvm->slots_arch_lock. Holding either lock guarantees
-> > > that memslots cannot be concurrently modified.
-> >
-> > Sure, but that's irrelevant.  The goal of the srcu_dereference_check() is to
-> > ensure that readers see a stable view of the VM's overall memory, not simply that
-> > kvm->memslots can't be written.
+On Thu, Aug 06, 2026, Sean Christopherson wrote:
+> On Fri, May 08, 2026, Sean Christopherson wrote:
+> > Sean Christopherson (9):
+> >   perf/x86/intel: Ensure guest PEBS path doesn't set unwanted
+> >     PERF_GLOBAL_CTRL bits
+> >   perf/x86/intel: Don't write PEBS_ENABLED on host<=>guest xfers if CPU
+> >     has isolation
+> >   perf/x86/intel: Don't context switch DS_AREA (and PEBS config) if PEBS
+> >     is unused
+> >   perf/x86/intel: Make @data a mandatory param for
+> >     intel_guest_get_msrs()
+> >   perf/x86/intel: Invert names of intel_ctrl_{guest,host}_mask
+> >   perf/x86: KVM: Have perf define a dedicated struct for getting guest
+> >     PEBS data
+> >   perf/x86/intel: KVM: Handle cross-mapped PEBS PMCs entirely within KVM
+> >   KVM: VMX: Drop a redundant pmu->global_ctrl check when processing
+> >     pebs_enable
+> >   KVM: VMX: Only tell perf to enable PEBS counters for fully enabled
+> >     PMCs
+> > 
+> >  arch/x86/events/core.c            |  5 +-
+> >  arch/x86/events/intel/core.c      | 92 +++++++++++++++++++------------
+> >  arch/x86/events/intel/lbr.c       |  2 +-
+> >  arch/x86/events/perf_event.h      |  7 ++-
+> >  arch/x86/include/asm/kvm_host.h   |  9 ---
+> >  arch/x86/include/asm/perf_event.h | 11 +++-
+> >  arch/x86/kvm/vmx/pmu_intel.c      | 28 +++++++---
+> >  arch/x86/kvm/vmx/vmx.c            | 10 ++--
+> >  arch/x86/kvm/vmx/vmx.h            | 15 ++++-
+> >  9 files changed, 114 insertions(+), 65 deletions(-)
 > 
-> Functionally, this is irrelevant for readers. But under lockdep it
-> isn't for writers: srcu_dereference_check() (with lockdep) asserts
-> that the srcu reader-lock is held, or the condition 'c' holds, which
-> here is holding any of the writer locks.
+> Ping.  This still applies on Linus' tree and against tip/master.
 
-No, the rules for writing kvm->memslots is that *both* are held.
-
-> > > Allow reading memslots in __kvm_memslots() when kvm->slots_arch_lock is
-> > > held.
-> >
-> > Why?
-> 
-> Holding any of the writer locks guarantees no concurrent modification;
-> therefore, if any writer lock is held, it's not required that the srcu
-> reader-lock is held. There are few places where only either slots_lock
-> or slots_arch_lock is held, which is sufficient for reading.
-
-Yes, but with caveats.  And more importantly, pure readers really shouldn't be
-taking slots_arch_lock, because either it's overkill and will generate unnecessary
-lock content, or the alleged reader is doing more than just reading.
-
-Holding just slots_arch_lock *could* be fine, depending on the usage, but those
-details matter, which is why I asked "why".  I want to know exactly why we should
-relax the locking rules.
-
-Ah, poking around the code, I suspect that the motivation is
-kvm_enable_external_write_tracking()?  Which grabs __kvm_memslots() but only
-holds slots_arch_lock, i.e. would get a lockdep splat if someone with KVMGT ran
-with lockdep enabled.
-
-That thing isn't a pure reader.  It only reads the actual kvm->memslots pointer,
-but it writes to each of the slots metadata.
-
-So, allowing __kvm_memslots() to be called with just slot_arch_lock is ok in
-this situation, and if my guess is right, necessary to fix a false positive.  But
-I'm on the fence as to whether or not we generally want to allow that, versus
-taking kvm->srcu in kvm_enable_external_write_tracking() even though strictly
-speaking it's unnecessary.
+Ping again.  This fixes a real issue and IMO provides much-needed improvements
+for the KVM<=>perf APIs.
