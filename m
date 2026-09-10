@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34A63B14B6;
-	Thu, 10 Sep 2026 10:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F183B3D667D;
+	Thu, 10 Sep 2026 10:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789034634; cv=none; b=YI9zCO20JhIgXqtVDw16guS1qHLSrxgns2khmHpk8NfoxbAEoDkGi+1wzsZ1QK73UcteDTOQq5+hzDNdYTJr9Bvw+vS8RECC7vKaT2BHZjocpa8Xge18mawSO2ZLAG7KXJAhzAC1fA1lt9j/5s//9F/zgF6lN0UB3rEcakJ26b8=
+	t=1789034743; cv=none; b=H01EL34jnHAu9GAYL70WcKc1BQmvhjOi3PrR9hcJr+TEB7Y0/lK5HyWQhmmmJuHm2Sbn40Ugp4+S3YUNAMJbfbpdqJM5iV2fsLK/K/h3v5IICKM/Qz2UMRCy/e9HUYNsb6jdeeghdC/dkIQZKtOBGa6YN87qRYThOi/2sxqdO8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789034634; c=relaxed/simple;
-	bh=hlvb4WNjzMB0gRvMldagX4Uhid9PpyKhPjjmMAyVjvs=;
+	s=arc-20240116; t=1789034743; c=relaxed/simple;
+	bh=3z0WN4zi1UJFms75zdwhQXh4Qlgba5XU53bM7EcRgQc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sBEEdlqWvCZIvsTAg+6QatyHSB1mv5eSSbsBJ7yyLCKVBsMo8IBz5bnqusL/IgECTsYcV2kxfqqgkcnniu6g06+KnTBI7EBcB9SZCA1tTw+k6FiUoZ0Hb8i4bOs09zGS/P4LKILg3zksQrLQDcNYeaP5EWl5Cu4Q93ldpXUpjVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KSilTxny; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=REgr2EKzHmDrVQ78r0ArI/VNnJ49rwMYyyl45ol6WNh+PJwQefvkK5A4eNY+tuVrOFVGyOJTUyiP1Nda4oPb9o+TYnoqxTVJqonn1a0hmY/QzWb7HZHmlW7SQtI16J4krtTUO91QMyZH28zUfsV9k9zUH5yBBsa957fgjpcIhUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QzBHpLL7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KSilTxny"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 107771F000FF;
-	Thu, 10 Sep 2026 10:03:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QzBHpLL7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A3C1F000FF;
+	Thu, 10 Sep 2026 10:05:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789034622;
-	bh=d6X874Xrr4USoK1MTGkxBCcI6O6k/kEejm0Rs8M2xgI=;
+	s=k20260515; t=1789034729;
+	bh=foN56LOD6/Sr9Fuua4UGrrARCTUwXc66j3xzHR63FGE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=KSilTxnykwDLR+U3kjOVLr+CmFJNrFBj+ywnUwLG4EDY6T7i9rZ0/XFHJRAUxB8Cg
-	 uqldP1L+oOYwVYS+nTPu9ABsJ/c4y13h6g8tMTZP05a5LhHIQGcJgTz7N4er5qin/P
-	 TdDYrSZqPhFpvfWNrCv2w8cKPMKZ2pjwRnlmep6cVJr8RB8MUjJ8ZYY7H4eN8GF7tm
-	 z1qahItZ9O9f5fZTHZnfmxkt4xxnbxtyNAUDI3cGONITin5oQR90wv7UX+e7Nn0Tcf
-	 +q+DIRfuBfX1UoO8t5Ai2ZyWKSJvKhnAtfQjvp3VJ7tFGlZDMAkXCkaCAaLqSainrz
-	 cD2P0SJBso/cg==
-Message-ID: <8fa1b403-99b0-4508-b705-f9e93c6bf0c8@kernel.org>
-Date: Thu, 10 Sep 2026 12:03:28 +0200
+	b=QzBHpLL73o0QRHBq1BtDWHfKhjgH7vYQlOQTmd/7CsBCnteHkCGmQ//nhe1xBe+XC
+	 B+J/EOTATm18+r68ByFk08E1DHO/jGR+rAnUx1rseFVGhpIozwzwFhzDF7sOLJLeQ+
+	 I9XUGlHlf+t7B+P5tn0YTppgcLchcfIELLFXodhjEkX4ufh+VLtkzkBdboHmg+39OE
+	 6g/BYc6mcelHh8Dvj1YRbZL2cncQvh7KDpBKn2qNLUqTx/qsd0Ozx7Dp6POJfFAdiR
+	 tfvp/PiJB/ZsLE17ZTAn6ACIgPYGEels8eKnoLC09LSAs9Q4EgK8NWvE4szHuqmUUQ
+	 HqOFKQ1qoF9QQ==
+Message-ID: <e0120f1a-d53b-46a3-9542-030212250135@kernel.org>
+Date: Thu, 10 Sep 2026 12:05:15 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,7 +35,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/9] mm: split AS_UNMOVABLE back out of AS_INACCESSIBLE
+Subject: Re: [PATCH v3 3/9] KVM: guest_memfd: implement folio migration for
+ non-confidential VMs
 To: Shivank Garg <shivankg@amd.com>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -65,7 +66,7 @@ Cc: linux-fsdevel@vger.kernel.org, linux-coco@lists.linux.dev,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
 References: <20260805-shivank-gmem-migrate-v3-0-00d8bdec4e1d@amd.com>
- <20260805-shivank-gmem-migrate-v3-2-00d8bdec4e1d@amd.com>
+ <20260805-shivank-gmem-migrate-v3-3-00d8bdec4e1d@amd.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -112,168 +113,77 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260805-shivank-gmem-migrate-v3-2-00d8bdec4e1d@amd.com>
+In-Reply-To: <20260805-shivank-gmem-migrate-v3-3-00d8bdec4e1d@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 8/5/26 08:40, Shivank Garg wrote:
-> Commit 27e6a24a4cf3 ("mm, virt: merge AS_UNMOVABLE and AS_INACCESSIBLE")
-> folded the two flags into one, on the grounds that guest_memfd was the
-> only user and always set both. But the two flags were added for
-> different reasons and guard different things:
+> Implement kvm_gmem_migrate_folio() using filemap_migrate_folio() for
+> non-confidential VMs but don't enable it yet. guest_memfd mappings
+> are still marked unmovable, so MM never calls it.
 > 
->   AS_UNMOVABLE (0003e2a41468) marks a mapping whose folios cannot be
->   migrated.
+> MM invokes ->migrate_folio() callback with folios already locked and
+> acquires the invalidate lock afterwards. kvm_gmem_punch_hole() takes
+> the invalidate lock before locking folios during truncation, so
+> taking invalidate lock in migration callback can cause an ABBA-deadlock
+> situation. Use filemap_invalidate_trylock_shared() to avoid this.
 > 
->   AS_INACCESSIBLE (c72ceafbd12c) marks a mapping whose contents must
->   not be directly R/W accessed. Its only job is to stop
->   truncate_inode_partial_folio() from zeroing the folio.
-> 
-> The merge assumed unmovable and inaccessible were the same thing.
-> This cannot express a mapping that is inaccessible yet still movable,
-> which is exactly what guest_memfd wants.
-> 
-> Reintroduce AS_UNMOVABLE and restore the original split: truncate keeps
-> checking AS_INACCESSIBLE, while migration and compaction go back to
-> checking AS_UNMOVABLE.
-> 
-> Currently guest_memfd sets both, so the resulting flags and behaviour
-> are unchanged. Preparatory change to support folio migration for
-> non-confidential guest_memfd VMs.
+> A subsequent patch adds an opt-in flag to change the mapping to
+> movable and enable migration. Non-confidential VMs can use
+> host-side copy via folio_mc_copy(), whereas confidential VMs will
+> require firmware-assisted copying before they can opt in.
 > 
 > Signed-off-by: Shivank Garg <shivankg@amd.com>
 > ---
->  include/linux/pagemap.h | 24 ++++++++++++++++++++----
->  mm/compaction.c         | 12 ++++++------
->  mm/migrate.c            |  2 +-
->  virt/kvm/guest_memfd.c  |  1 +
->  4 files changed, 28 insertions(+), 11 deletions(-)
+>  virt/kvm/guest_memfd.c | 36 ++++++++++++++++++++++++++++++++++--
+>  1 file changed, 34 insertions(+), 2 deletions(-)
 > 
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 2c3718d592d6..a7dcaa66e4e3 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -210,6 +210,7 @@ enum mapping_flags {
->  	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
->  	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
->  				   account usage to user cgroups */
-> +	AS_UNMOVABLE = 11,	/* The mapping cannot be moved, ever */
->  	/* Bits 16-25 are used for FOLIO_ORDER */
->  	AS_FOLIO_ORDER_BITS = 5,
->  	AS_FOLIO_ORDER_MIN = 16,
-> @@ -322,11 +323,10 @@ static inline void mapping_clear_stable_writes(struct address_space *mapping)
->  static inline void mapping_set_inaccessible(struct address_space *mapping)
->  {
->  	/*
-> -	 * It's expected inaccessible mappings are also unevictable. Compaction
-> -	 * migrate scanner (isolate_migratepages_block()) relies on this to
-> -	 * reduce page locking.
-> +	 * The mapping's contents must not be accessed by the CPU through
-> +	 * the kernel direct map or other internal paths (e.g. zeroing of
-> +	 * pages during truncation).
->  	 */
-> -	set_bit(AS_UNEVICTABLE, &mapping->flags);
->  	set_bit(AS_INACCESSIBLE, &mapping->flags);
->  }
->  
-> @@ -335,6 +335,22 @@ static inline bool mapping_inaccessible(const struct address_space *mapping)
->  	return test_bit(AS_INACCESSIBLE, &mapping->flags);
->  }
->  
-> +static inline void mapping_set_unmovable(struct address_space *mapping)
-> +{
-> +	/*
-> +	 * It's expected unmovable mappings are also unevictable. Compaction
-> +	 * migrate scanner (isolate_migratepages_block()) relies on this to
-> +	 * reduce page locking.
-> +	 */
-> +	set_bit(AS_UNEVICTABLE, &mapping->flags);
-> +	set_bit(AS_UNMOVABLE, &mapping->flags);
-> +}
-> +
-> +static inline bool mapping_unmovable(const struct address_space *mapping)
-> +{
-> +	return test_bit(AS_UNMOVABLE, &mapping->flags);
-> +}
-> +
->  static inline void mapping_set_writeback_may_deadlock_on_reclaim(struct address_space *mapping)
->  {
->  	set_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
-> diff --git a/mm/compaction.c b/mm/compaction.c
-> index f08765ade014..e6b0fdfaf79d 100644
-> --- a/mm/compaction.c
-> +++ b/mm/compaction.c
-> @@ -1133,22 +1133,22 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
->  		if (((mode & ISOLATE_ASYNC_MIGRATE) && is_dirty) ||
->  		    (mapping && is_unevictable)) {
->  			bool migrate_dirty = true;
-> -			bool is_inaccessible;
-> +			bool is_unmovable;
->  
->  			/*
->  			 * Only folios without mappings or that have
->  			 * a ->migrate_folio callback are possible to migrate
->  			 * without blocking.
->  			 *
-> -			 * Folios from inaccessible mappings are not migratable.
-> +			 * Folios from unmovable mappings are not migratable.
->  			 *
->  			 * However, we can be racing with truncation, which can
->  			 * free the mapping that we need to check. Truncation
->  			 * holds the folio lock until after the folio is removed
->  			 * from the page so holding it ourselves is sufficient.
->  			 *
-> -			 * To avoid locking the folio just to check inaccessible,
-> -			 * assume every inaccessible folio is also unevictable,
-> +			 * To avoid locking the folio just to check unmovable,
-> +			 * assume every unmovable folio is also unevictable,
->  			 * which is a cheaper test.  If our assumption goes
->  			 * wrong, it's not a correctness bug, just potentially
->  			 * wasted cycles.
-> @@ -1161,9 +1161,9 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
->  				migrate_dirty = !mapping ||
->  						mapping->a_ops->migrate_folio;
->  			}
-> -			is_inaccessible = mapping && mapping_inaccessible(mapping);
-> +			is_unmovable = mapping && mapping_unmovable(mapping);
->  			folio_unlock(folio);
-> -			if (!migrate_dirty || is_inaccessible)
-> +			if (!migrate_dirty || is_unmovable)
->  				goto isolate_fail_put;
->  		}
->  
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index dd15a84b2a52..d4dcd7f142ce 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -1101,7 +1101,7 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
->  
->  	if (!mapping)
->  		rc = migrate_folio(mapping, dst, src, mode);
-> -	else if (mapping_inaccessible(mapping))
-> +	else if (mapping_unmovable(mapping))
->  		rc = -EOPNOTSUPP;
->  	else if (mapping->a_ops->migrate_folio)
->  		/*
 > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 45cbdf4801ec..169f75f95433 100644
+> index 169f75f95433..583341d593c9 100644
 > --- a/virt/kvm/guest_memfd.c
 > +++ b/virt/kvm/guest_memfd.c
-> @@ -593,6 +593,7 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
->  	inode->i_size = size;
->  	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
->  	mapping_set_inaccessible(inode->i_mapping);
-> +	mapping_set_unmovable(inode->i_mapping);
+> @@ -488,13 +488,45 @@ static struct file_operations kvm_gmem_fops = {
+>  	.fallocate	= kvm_gmem_fallocate,
+>  };
+>  
+> +#ifdef CONFIG_MIGRATION
+>  static int kvm_gmem_migrate_folio(struct address_space *mapping,
+>  				  struct folio *dst, struct folio *src,
+>  				  enum migrate_mode mode)
+>  {
+> -	WARN_ON_ONCE(1);
+> -	return -EINVAL;
+> +	struct inode *inode = mapping->host;
+> +	pgoff_t start, end;
+> +	int ret;
+> +
+> +	/*
+> +	 * Migration invokes ->migrate_folio() while holding the folio lock.
+> +	 * Use a non-blocking trylock to avoid inverting the lock order with
+> +	 * truncation, which takes the invalidate lock before locking the
+> +	 * folios.
+> +	 */
+> +	if (!filemap_invalidate_trylock_shared(mapping))
+> +		return -EAGAIN;
+> +
+> +	start = src->index;
+> +	end = start + folio_nr_pages(src);
+> +
+> +	kvm_gmem_invalidate_start(inode, start, end);
+> +
+> +	/*
+> +	 * For non-confidential guests the folio is host-readable, so
+> +	 * filemap_migrate_folio() can copy the contents itself via
+> +	 * folio_mc_copy().
+> +	 * For confidential guests, this would need firmware assistance.
+> +	 */
 
-For shared-only guest_memfd, is there even a reason to mark it as
-mapping_set_inaccessible() ?
+I think this is all more closely related to mapping_inaccessible().
 
-mapping_inaccessible() is only used in truncation and compaction logic.
+If accessible, this is just trivially true that we can support this.
 
-Wouldn't we want compaction to work here?
-
-IOW, for shared-only with migration support, can't we just not do
-mapping_set_inaccessible() ?
+So I would not comment on what to do for confidential VMs for now, and limit it
+only to the shared-only case where pages are accessible.
 
 -- 
 Cheers,
