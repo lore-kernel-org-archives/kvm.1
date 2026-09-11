@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0314C4BEE38
-	for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 21:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620703FBEA5
+	for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 22:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789163881; cv=none; b=cO0GzH1z5Hl87kwM/o5jqBvZeTLAD0tg3pYHP70XiKJmoQVUrqlPBBIE5Oz1KVJQA2uDYWLfE3LL6gYrzOnBAXhIhbXy0jsbrRqWqXptFUNhSYJATnSE7dfWomj4PLG9baC8g4U5YLHNs2YvkfAT7LeGf6Xke467iX1iNwHvprM=
+	t=1789164047; cv=none; b=K4G8SxlAv0Esl0eGUJAnQLZO+4DOW/c98hSitGxX0CUqyYXw2Az5zPSH4ZdB6jqgvgpJTOCYDv0O6gtWkrPkUsnmqFlAI+g5dYw20sLlwE5CyR+2nHDkt3wpAFor1V0Ge+bEkyhyveXjnrU48dQEfZtqc4G9lhEJqZ4q6vWbiFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789163881; c=relaxed/simple;
-	bh=cugIrnP8XXPx3PXpzjtol/JdQ1SNtUlFeqV8IbS8pEM=;
+	s=arc-20240116; t=1789164047; c=relaxed/simple;
+	bh=+5pg4FELgyt6vRWC7r7H4Cp5ff/vh4icYvx4AK3qnLM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=VOKhUcVRhPxvfHDpgbtlh+qxUk5O3BO7fdW694kotO99ZwRud8cmYPd/CRJkKe9iuMS1+H63bGZM75HKgoeMqNzOE7JmTqnODxz0M/J996tjnbk1VNNcgYJXO6820DriU9zygAFuo5tPRfLOCNyHnyX/8xsUe29XAuWyyHbU3Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WVLJZ3p1; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=U0srbKAbB3aEK2X8w/x2F+x9QM81yGCTgCUVuB5GfRmkP0M0TVY1iBdWCRav2+K2+DFrqNEdEkr5LcpPAQbuDmB/hWXNLFfRiuenEXuPKqQ6qhQK2Nr537KBn9//zVRHiL7pDsF5aBoZVyQ1ZrnNnRwmdGSSF5GWj6IZuGPwWfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D11oYMhf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WVLJZ3p1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C04F1F000FF;
-	Fri, 11 Sep 2026 21:57:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D11oYMhf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A4A91F000FF;
+	Fri, 11 Sep 2026 22:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789163879;
-	bh=8H9nE3nCLJKESu8SCd3yLRe1CyYAJh/iY4WWcLK0DLg=;
+	s=k20260515; t=1789164046;
+	bh=kaIA/EIdh+pEBQeFZwHJXOCKZZhlXwePP+kUz/G4OEg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WVLJZ3p1gUCQli9GDFJHMBz94xFYwdrf59mHKYdPot/ch6cuQH+PHZ/STJ9ifCpx0
-	 bjcrsE7J0aDS7CjJpiDHlXoZvp4AwWM3oNXfCAlP9km672EayCltWEbh4pIsaTNrvo
-	 Nl0LUyR2atzbvaNDAGi4hjLrrTFibwNI8UjMXJ4pqh9HfpoDz5MVpmvBRaPp55bVlm
-	 YPdUukQcfhR4bFz0DFjWJ0sdLHxX4nmINfw99HL2qF1tmWckYuY52ilRZV8gKQIMdw
-	 dJtbEpRMaGoXrjFcZIYCg5IQDarujkMq4ulQ6RQ2hStsGfcru9oy9i1eOo3vXi6H0T
-	 /Ffm/pYUX4cbg==
+	b=D11oYMhfLUvvC3My/wT/wqXTJDUkzGWcvT55mn7nB2SLDBb4phs3bTFAsyq4m6mwW
+	 8V43tsR2U087+fFTVqXkrqZdygV0kFdrt7qW1hn9ZVgOrEAEIwcmU/1s81EoeVMEVZ
+	 4JyK+lZBwx7u/3/NToHRm53wuSFl2nSb0BC+3NP+eXU487CK92pKDHLIlKuPZDvBlg
+	 vSkJ/DWkFac3pO6gRF3878dCWs5/pNQiOD+vALvcfA8vSBh9IqQSFOmV3/hw6M2G6+
+	 8CqjAsDBJqr2ciu08cscLrIjpb+rTf1BGypODzivz4n6DHPPtJR8bNP1svQ99caP0z
+	 6dPfWqNMWEkdg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v10 05/28] x86/cea: Use array indexing to simplify
- exception stack access
+Subject: Re: [PATCH v10 02/28] KVM: VMX: Initialize VM entry/exit FRED
+ controls in vmcs_config
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Sohil Mehta" <sohil.mehta@intel.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260911213659.2025974-6-sohil.mehta@intel.com>
+In-Reply-To: <20260911213659.2025974-3-sohil.mehta@intel.com>
 References: <20260911213659.2025974-1-sohil.mehta@intel.com>
- <20260911213659.2025974-6-sohil.mehta@intel.com>
+ <20260911213659.2025974-3-sohil.mehta@intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 11 Sep 2026 21:57:58 +0000
-Message-Id: <20260911215759.6C04F1F000FF@smtp.kernel.org>
+Date: Fri, 11 Sep 2026 22:00:45 +0000
+Message-Id: <20260911220046.1A4A91F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,71 +47,64 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] Unnecessary out-of-line function calls and runtime bounds checks=
- introduced in highly performance-sensitive #VC exception entry paths.
+- [Critical] `vmx_check_entry_exit_pairs` incorrectly validates multi-bit e=
+xit controls, silently accepting partial feature enablement and exposing th=
+e host to privilege escalation.
 --
 
-commit 6ef3745e3d1d46a5989ce999cb84609a2d082888
+commit 2bf701245fc6586c07b00b47292677b65ee2dec9
 Author: Xin Li (Intel) <xin@zytor.com>
 
-x86/cea: Use array indexing to simplify exception stack access
+KVM: VMX: Initialize VM entry/exit FRED controls in vmcs_config
 
-Refactors struct cea_exception_stacks to leverage array indexing for
-exception stack access, improving code clarity. Converts
-__this_cpu_ist_{bottom,top}_va() from macros to functions.
+This commit sets up VM entry and exit FRED controls in the global
+vmcs_config to ensure guest FRED state is saved and loaded correctly.
+It also adds a check to the existing consistency framework.
 
-> diff --git a/arch/x86/mm/cpu_entry_area.c b/arch/x86/mm/cpu_entry_area.c
-> index 9fa371af8abc7..a47dfd686bd33 100644
-> --- a/arch/x86/mm/cpu_entry_area.c
-> +++ b/arch/x86/mm/cpu_entry_area.c
-> @@ -18,6 +18,26 @@ static DEFINE_PER_CPU_PAGE_ALIGNED(struct entry_stack_=
-page, entry_stack_storage)
->  static DEFINE_PER_CPU_PAGE_ALIGNED(struct exception_stacks, exception_st=
-acks);
->  DEFINE_PER_CPU(struct cea_exception_stacks*, cea_exception_stacks);
+[ ... ]
+
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index b4aec4218b7da..062631e2dd376 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -2778,6 +2778,8 @@ static int setup_vmcs_config(struct vmcs_config *vm=
+cs_conf,
+>  		u32 entry_control;
+>  		u64 exit_control;
+>  	} const vmcs_entry_exit2_pairs[] =3D {
+> +		{ VM_ENTRY_LOAD_IA32_FRED,
+> +			SECONDARY_VM_EXIT_SAVE_IA32_FRED | SECONDARY_VM_EXIT_LOAD_IA32_FRED },
+
+[Severity: Critical]
+Can this multi-bit mask bypass the validation logic in
+vmx_check_entry_exit_pairs?
+
+Looking at how vmx_check_entry_exit_pairs validates these fields:
+
+#define vmx_check_entry_exit_pairs(pairs, entry_controls, exit_controls) \
+...
+	if (!(entry_controls & n_ctrl) =3D=3D !(exit_controls & x_ctrl))     \
+		continue;
+
+If the hardware or an L0 hypervisor provides only one of the two FRED exit
+bits, a bitwise AND against the multi-bit x_ctrl mask will still be non-zer=
+o.
+
+This makes !(exit_controls & x_ctrl) evaluate to 0, which matches the entry
+side, bypassing the inconsistency check entirely.
+
+Could this allow KVM to be partially configured without returning -EIO?
+
+If only one of the exit controls is enabled, could the host resume execution
+after a VM-exit with guest-controlled FRED MSRs?
+
+Would this result in a privilege escalation by allowing the next host
+interrupt to execute arbitrary guest-controlled code in host context?
+
+>  	};
 > =20
-> +/*
-> + * Typically invoked by entry code, so must be noinstr.
-> + */
-> +noinstr unsigned long __this_cpu_ist_bottom_va(enum exception_stack_orde=
-ring stack)
-> +{
-> +	struct cea_exception_stacks *s;
-> +
-> +	BUILD_BUG_ON(ESTACK_DF !=3D 0);
-> +	BUG_ON(stack >=3D N_EXCEPTION_STACKS);
-
-[Severity: Medium]
-Does moving these helpers from macros in the header to out-of-line functions
-introduce an unintended performance regression?
-
-Because the functions are defined out-of-line in a different translation un=
-it,
-the compiler cannot statically evaluate the BUG_ON(stack >=3D N_EXCEPTION_S=
-TACKS)
-bounds checks nor inline the pointer math.
-
-This incurs a penalty of multiple function calls and dynamic checks in
-performance-sensitive #VC exception entry paths. For example, hot paths like
-is_vc2_stack() in arch/x86/coco/sev/vc-handle.c repeatedly call these funct=
-ions,
-which are evaluated on every #VC exception:
-
-arch/x86/coco/sev/vc-handle.c:is_vc2_stack() {
-    ...
-    return (sp >=3D __this_cpu_ist_bottom_va(ESTACK_VC2) &&
-            sp < __this_cpu_ist_top_va(ESTACK_VC2));
-}
-
-Could this regression in a noinstr entry path be avoided by defining these
-helpers as static __always_inline in the header instead?
-
-> +
-> +	s =3D __this_cpu_read(cea_exception_stacks);
-> +
-> +	return (unsigned long)&s->event_stacks[stack].stack;
-> +}
+>  	memset(vmcs_conf, 0, sizeof(*vmcs_conf));
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260911213659.2025=
-974-1-sohil.mehta@intel.com?part=3D5
+974-1-sohil.mehta@intel.com?part=3D2
