@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29404A4984;
-	Fri, 11 Sep 2026 21:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A820A4570D1;
+	Fri, 11 Sep 2026 21:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789162855; cv=none; b=byweZD9DRk64ZTbYBkmDa3WkpnOIAVV8qSG9i6F2l07U2FPx4O0Ob4LRrJxfqybvkc2MwNorwC4xBeASgXg3GYLASw/zR6yG5PJSzjsENpiMvCJpYZliWw0FA7ahJOkReHL9kG+Hpfd0fk7V6OKU4X7pG7E30AxyKfgW4jNs974=
+	t=1789162861; cv=none; b=F6768CZNp1k8X6dm6eljMIzOMgQiHMviskUKeCkDx46BStdn2RrYLbuWK4itFzPsDgi4vGoA7MhqgyOD/3d9WAq/4drRYRGQh8U9NXjM3vY6rKtbayu4zE7vTXP5nPgO8uVXSlZjWp+JL16MOxJ24cgmC2oivpBuFvq+tLMVdP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789162855; c=relaxed/simple;
-	bh=OHMvTxwx8WmR6ep9J+RcwSCq9HXroTytnAPdrb0CwxQ=;
+	s=arc-20240116; t=1789162861; c=relaxed/simple;
+	bh=0qNqsEIyAeCzzxembfEaW2mKNJ3cFGzdVIOVID9El58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MepujKYpWKYFRKZO8Cz+lqHgvE16/pWuKKO9iysKg6WVI4OqByR5qqkZ6RXKc24oAPjoRUFqym+Lw1WiYT8XeZRSwwFVdfqpUctkvP9Y9lUbbA+HuriH8+ATYMzd5QhYeaKMfGbRIVqTRGj7DokOOMMWww4cTIMLg0j6dsVjSZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UIsZfn0p; arc=none smtp.client-ip=192.198.163.19
+	 MIME-Version; b=kNklHi4UaAhOIm0ZE+6diklH4QjbsOmZiY/F+7fO4zBE7dyTKmgfHOzFWeP/MqL1hQbObozLUoyQopRrEqW+ioZlrAMfkvYrgLroFNyeL2QqMpDsnGGb4SKeTpyFzu/0dYKR7fod6mBDZRLkDlLZ9oVveO6ipFNEaeHsg0AqWlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kZ/o2cdh; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UIsZfn0p"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kZ/o2cdh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789162853; x=1820698853;
+  t=1789162860; x=1820698860;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=OHMvTxwx8WmR6ep9J+RcwSCq9HXroTytnAPdrb0CwxQ=;
-  b=UIsZfn0pcUJC8hTk+GVxybkdVVRvjgbz/A3Jl2cL7SHywjDOwgnsGs7v
-   t993GrT2yj5oi3SITv3lDqKImT+tkmP8n5T3JRu5sGastGd0HcMOr8oDU
-   p6TdqYLMqX6z6LQQdqL1abqYN4VeB0b87DetFDdI+s8mxDn48ZVnMLMsF
-   p3ooMIVPnMXV++CSfwV+q65y1W/sU9kLWRBG/LvDiZwDhr2XTqeLxVwcj
-   Xv+XkMJZEBWKjQo4WDVjg8OkOp69+5PpblGxYh4Jtjv0GQL83j6AWTs+p
-   4ZSbqlf/KEWwmGMvsWlBJIncrT4jqiHgJzNu2ryEW4clxIx8zPq6x+IOL
-   A==;
-X-CSE-ConnectionGUID: eentJmiLTZGnHjBUdN99vg==
-X-CSE-MsgGUID: cbqcUK3jQg+TlaCuK/Vzfg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="88572502"
+  bh=0qNqsEIyAeCzzxembfEaW2mKNJ3cFGzdVIOVID9El58=;
+  b=kZ/o2cdhQxkHcbDuNrnUAvs4Vn4KrTMJ7sXJaDLzyivPlOB9xhrRtL8V
+   ws9150JdfKZCI1a5SbAN5l/+sjvB/jCOm2TogpXULRMnN18YELEnrc87f
+   E8LTthh06ci/mFFm7CL795bBn87izfFjEQBSYvl+1+bzl9c0iEIJy32eE
+   Wi/mkmAtiYmgAozXl8KKNBTdVDsqAYLTEb47OnX+F3AedGMFwqE+jaoFA
+   CkHAdvOnTBaXyJHmuZnwwkSeT3C1bvLqrG3r7uHT9F2H50rKBbLgPctw5
+   Ycytcj+NDUwmLb/2AOpeVrA1zOkHChDfEUjLcR+lvrAW0lZhz7Prpv9NV
+   Q==;
+X-CSE-ConnectionGUID: R5k87XRkTZa1uIpx7VfmOg==
+X-CSE-MsgGUID: r0lTKtFORIS2fqpJQwmokg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="88572525"
 X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
-   d="scan'208";a="88572502"
+   d="scan'208";a="88572525"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 14:40:52 -0700
-X-CSE-ConnectionGUID: CvQRHx7pQQOiI64O8Vt9mA==
-X-CSE-MsgGUID: je4Zy9atSymj2NENkdBA/A==
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 14:40:59 -0700
+X-CSE-ConnectionGUID: 72scEmk5SxeR29gVwOMcew==
+X-CSE-MsgGUID: jkbnjOJjQ0GfAT3RPsq5hQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
-   d="scan'208";a="272004040"
+   d="scan'208";a="272004049"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by orviesa007.jf.intel.com with ESMTP; 11 Sep 2026 14:40:51 -0700
+  by orviesa007.jf.intel.com with ESMTP; 11 Sep 2026 14:40:58 -0700
 From: Sohil Mehta <sohil.mehta@intel.com>
 To: kvm@vger.kernel.org,
 	x86@kernel.org
@@ -72,9 +72,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v10 07/28] KVM: VMX: Initialize VMCS FRED fields
-Date: Fri, 11 Sep 2026 14:36:37 -0700
-Message-ID: <20260911213659.2025974-8-sohil.mehta@intel.com>
+Subject: [PATCH v10 08/28] KVM: VMX: Set FRED MSR intercepts
+Date: Fri, 11 Sep 2026 14:36:38 -0700
+Message-ID: <20260911213659.2025974-9-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260911213659.2025974-1-sohil.mehta@intel.com>
 References: <20260911213659.2025974-1-sohil.mehta@intel.com>
@@ -88,180 +88,145 @@ Content-Transfer-Encoding: 8bit
 
 From: "Xin Li (Intel)" <xin@zytor.com>
 
-Initialize host VMCS FRED fields with host FRED MSRs' value and
-guest VMCS FRED fields to 0.
+On a userspace MSR filter change, set FRED MSR intercepts.
 
-FRED CPU state is managed in 9 new FRED MSRs:
-        IA32_FRED_CONFIG,
-        IA32_FRED_STKLVLS,
-        IA32_FRED_RSP0,
-        IA32_FRED_RSP1,
-        IA32_FRED_RSP2,
-        IA32_FRED_RSP3,
-        IA32_FRED_SSP1,
-        IA32_FRED_SSP2,
-        IA32_FRED_SSP3,
-as well as a few existing CPU registers and MSRs:
-        CR4.FRED,
-        IA32_STAR,
-        IA32_KERNEL_GS_BASE,
-        IA32_PL0_SSP (also known as IA32_FRED_SSP0).
+Because the following eight FRED MSRs,
+        MSR_IA32_FRED_RSP[123], MSR_IA32_FRED_STKLVLS,
+        MSR_IA32_FRED_SSP[123], MSR_IA32_FRED_CONFIG,
+are used by the kernel itself to take an exception at any time, they
+should be context-switched by Intel VT-x automatically in order to
+preserve the FRED architectural invariant that there should NEVER be
+a "gap" during which it is unsafe to take an exception.
 
-CR4, IA32_KERNEL_GS_BASE and IA32_STAR are already well managed.
-Except IA32_FRED_RSP0 and IA32_FRED_SSP0, all other FRED CPU state
-MSRs have corresponding VMCS fields in both the host-state and
-guest-state areas.  So KVM just needs to initialize them, and with
-proper VM entry/exit FRED controls, a FRED CPU will keep tracking
-host and guest FRED CPU state in VMCS automatically.
+KVM leverages Intel VT-x hardware to automatically context switch the
+eight FRED MSRs using:
+
+  1) Dedicated host and guest VMCS fields for each MSR.
+
+  2) VM-entry/exit controls to manage the automated loading and saving
+     of the eight FRED MSRs.
+
+Consequently, passing these MSRs through to the guest would only add
+unnecessary handling code without benefit.
+
+Both MSR_IA32_FRED_RSP0 and MSR_IA32_FRED_SSP0 (aka MSR_IA32_PL0_SSP)
+are dedicated for userspace event delivery, IOW they are NOT used in
+any kernel event delivery and the execution of ERETS.  Thus KVM can
+run safely with guest values in the two MSRs.  As a result, save and
+restore of their guest values are deferred until vCPU context switch,
+Host MSR_IA32_FRED_RSP0 is restored upon returning to userspace, and
+Host MSR_IA32_PL0_SSP is managed with XRSTORS/XSAVES.
+
+MSR_IA32_PL0_SSP (aka MSR_IA32_FRED_SSP0) is part of CET supervisor
+state, but all four FRED SSP MSRs are architecturally visible on any
+processor that enumerates FRED.  Even if CET is absent, these MSRs
+remain accessible via RDMSR/WRMSR, though FRED transitions will not
+use them.
+
+Intercept MSR_IA32_PL0_SSP if CET shadow stacks are unsupported (even
+with FRED present).  Since this MSR is rarely accessed and ignored by
+XSAVES in this configuration, interception avoids the overhead of
+manually context switching the hardware MSR during vcpu_load/put.
+
+This behavior is consistent with the current setup in
+vmx_recalc_msr_intercepts(), so no change is needed to the interception
+logic for MSR_IA32_PL0_SSP.
 
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
-Reviewed-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 ---
 v10:
- - s/rdmsrl/rdmsrq (Chao)
- - Remove a terse comment which doesn't help at all (Sean).
- - Replace direct, raw use of __this_cpu_ist_top_va() with a self-
-   explanatory this_cpu_fred_rsp() helper for better readability (Sean).
- - Add cpu_feature_enabled(X86_FEATURE_FRED) to patch out accesses to
-   VMCS FRED fields (Sean).
- - Remove "#ifdef CONFIG_X86_64" after switching to this_cpu_fred_rsp()
-   (Sean).
+ - Improve the commit message and code comment with an explanation
+   from hpa (Chao Gao and Dave Hansen).
 ---
- arch/x86/include/asm/kvm_host.h |  3 +++
- arch/x86/include/asm/vmx.h      | 32 ++++++++++++++++++++++++++++++++
- arch/x86/kvm/vmx/vmx.c          | 33 +++++++++++++++++++++++++++++++++
- 3 files changed, 68 insertions(+)
+ arch/x86/kvm/vmx/vmx.c | 67 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 683bb8bf43a9..8d3999772ac2 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -294,6 +294,9 @@ struct kvm_host_values {
- 	u64 xss;
- 	u64 s_cet;
- 	u64 arch_capabilities;
-+
-+	u64 fred_config;
-+	u64 fred_stklvls;
- };
- extern struct kvm_host_values kvm_host;
- 
-diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
-index 682f09933612..4720619f09ac 100644
---- a/arch/x86/include/asm/vmx.h
-+++ b/arch/x86/include/asm/vmx.h
-@@ -306,12 +306,44 @@ enum vmcs_field {
- 	GUEST_BNDCFGS_HIGH              = 0x00002813,
- 	GUEST_IA32_RTIT_CTL		= 0x00002814,
- 	GUEST_IA32_RTIT_CTL_HIGH	= 0x00002815,
-+	GUEST_IA32_FRED_CONFIG		= 0x0000281a,
-+	GUEST_IA32_FRED_CONFIG_HIGH	= 0x0000281b,
-+	GUEST_IA32_FRED_RSP1		= 0x0000281c,
-+	GUEST_IA32_FRED_RSP1_HIGH	= 0x0000281d,
-+	GUEST_IA32_FRED_RSP2		= 0x0000281e,
-+	GUEST_IA32_FRED_RSP2_HIGH	= 0x0000281f,
-+	GUEST_IA32_FRED_RSP3		= 0x00002820,
-+	GUEST_IA32_FRED_RSP3_HIGH	= 0x00002821,
-+	GUEST_IA32_FRED_STKLVLS		= 0x00002822,
-+	GUEST_IA32_FRED_STKLVLS_HIGH	= 0x00002823,
-+	GUEST_IA32_FRED_SSP1		= 0x00002824,
-+	GUEST_IA32_FRED_SSP1_HIGH	= 0x00002825,
-+	GUEST_IA32_FRED_SSP2		= 0x00002826,
-+	GUEST_IA32_FRED_SSP2_HIGH	= 0x00002827,
-+	GUEST_IA32_FRED_SSP3		= 0x00002828,
-+	GUEST_IA32_FRED_SSP3_HIGH	= 0x00002829,
- 	HOST_IA32_PAT			= 0x00002c00,
- 	HOST_IA32_PAT_HIGH		= 0x00002c01,
- 	HOST_IA32_EFER			= 0x00002c02,
- 	HOST_IA32_EFER_HIGH		= 0x00002c03,
- 	HOST_IA32_PERF_GLOBAL_CTRL	= 0x00002c04,
- 	HOST_IA32_PERF_GLOBAL_CTRL_HIGH	= 0x00002c05,
-+	HOST_IA32_FRED_CONFIG		= 0x00002c08,
-+	HOST_IA32_FRED_CONFIG_HIGH	= 0x00002c09,
-+	HOST_IA32_FRED_RSP1		= 0x00002c0a,
-+	HOST_IA32_FRED_RSP1_HIGH	= 0x00002c0b,
-+	HOST_IA32_FRED_RSP2		= 0x00002c0c,
-+	HOST_IA32_FRED_RSP2_HIGH	= 0x00002c0d,
-+	HOST_IA32_FRED_RSP3		= 0x00002c0e,
-+	HOST_IA32_FRED_RSP3_HIGH	= 0x00002c0f,
-+	HOST_IA32_FRED_STKLVLS		= 0x00002c10,
-+	HOST_IA32_FRED_STKLVLS_HIGH	= 0x00002c11,
-+	HOST_IA32_FRED_SSP1		= 0x00002c12,
-+	HOST_IA32_FRED_SSP1_HIGH	= 0x00002c13,
-+	HOST_IA32_FRED_SSP2		= 0x00002c14,
-+	HOST_IA32_FRED_SSP2_HIGH	= 0x00002c15,
-+	HOST_IA32_FRED_SSP3		= 0x00002c16,
-+	HOST_IA32_FRED_SSP3_HIGH	= 0x00002c17,
- 	PIN_BASED_VM_EXEC_CONTROL       = 0x00004000,
- 	CPU_BASED_VM_EXEC_CONTROL       = 0x00004002,
- 	EXCEPTION_BITMAP                = 0x00004004,
 diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 2a2218e0983b..dc80ca5f804d 100644
+index dc80ca5f804d..09bbbc680aa7 100644
 --- a/arch/x86/kvm/vmx/vmx.c
 +++ b/arch/x86/kvm/vmx/vmx.c
-@@ -1562,6 +1562,12 @@ void vmx_vcpu_load_vmcs(struct kvm_vcpu *vcpu, int cpu)
- 				    (unsigned long)(cpu_entry_stack(cpu) + 1));
- 		}
+@@ -4304,6 +4304,72 @@ static void vmx_recalc_pmu_msr_intercepts(struct kvm_vcpu *vcpu)
+ 				  MSR_TYPE_RW, intercept);
+ }
  
-+		if (cpu_feature_enabled(X86_FEATURE_FRED) && kvm_cpu_cap_has(X86_FEATURE_FRED)) {
-+			vmcs_write64(HOST_IA32_FRED_RSP1, this_cpu_fred_rsp(FRED_STACK_LEVEL_1));
-+			vmcs_write64(HOST_IA32_FRED_RSP2, this_cpu_fred_rsp(FRED_STACK_LEVEL_2));
-+			vmcs_write64(HOST_IA32_FRED_RSP3, this_cpu_fred_rsp(FRED_STACK_LEVEL_3));
-+		}
++static void vmx_set_intercept_for_fred_msr(struct kvm_vcpu *vcpu)
++{
++	bool intercept = !guest_cpu_cap_has(vcpu, X86_FEATURE_FRED);
 +
- 		vmx->loaded_vmcs->cpu = cpu;
++	if (!kvm_cpu_cap_has(X86_FEATURE_FRED))
++		return;
++
++	/*
++	 * Because the following eight FRED MSRs,
++	 * 	MSR_IA32_FRED_RSP[123], MSR_IA32_FRED_STKLVLS,
++	 * 	MSR_IA32_FRED_SSP[123], MSR_IA32_FRED_CONFIG,
++	 * are used by the kernel itself to take an exception at any time, they
++	 * should be context-switched by Intel VT-x automatically in order to
++	 * preserve the FRED architectural invariant that there should NEVER be
++	 * a "gap" during which it is unsafe to take an exception.
++	 *
++	 * KVM leverages Intel VT-x hardware to automatically context switch the
++	 * eight FRED MSRs using:
++	 *
++	 *   1) Dedicated host and guest VMCS fields for each MSR.
++	 *
++	 *   2) VM-entry/exit controls to manage the automated loading and saving
++	 *      of the eight FRED MSRs.
++	 *
++	 * Consequently, passing these MSRs through to the guest would only add
++	 * unnecessary handling code without benefit.
++	 */
++	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_RSP1, MSR_TYPE_RW, intercept);
++	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_RSP2, MSR_TYPE_RW, intercept);
++	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_RSP3, MSR_TYPE_RW, intercept);
++	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_STKLVLS, MSR_TYPE_RW, intercept);
++	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_SSP1, MSR_TYPE_RW, intercept);
++	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_SSP2, MSR_TYPE_RW, intercept);
++	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_SSP3, MSR_TYPE_RW, intercept);
++	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_CONFIG, MSR_TYPE_RW, intercept);
++
++	/*
++	 * MSR_IA32_FRED_RSP0 and MSR_IA32_PL0_SSP (aka MSR_IA32_FRED_SSP0) are
++	 * designed for event delivery while executing in userspace.  Since KVM
++	 * operates entirely in kernel mode (CPL is always 0 after any VM exit),
++	 * it can safely retain and operate with guest-defined values for these
++	 * MSRs.
++	 *
++	 * Disabling interception of the two MSRs offers two advantages:
++	 *   1) Simplicity: Eliminates dedicated MSR handling code.
++	 *   2) Performance: Avoids frequent VM-exits since the two MSRs are
++	 *      per user thread variables and frequently accessed.
++	 *
++	 * MSR_IA32_PL0_SSP (aka MSR_IA32_FRED_SSP0) is part of CET supervisor
++	 * state, but all four FRED SSP MSRs are architecturally visible on any
++	 * processor that enumerates FRED.  Even if CET is absent, these MSRs
++	 * remain accessible via RDMSR/WRMSR, though FRED transitions will not
++	 * use them.
++	 *
++	 * Intercept MSR_IA32_PL0_SSP if CET shadow stacks are unsupported (even
++	 * with FRED present).  Since this MSR is rarely accessed and ignored by
++	 * XSAVES in this configuration, interception avoids the overhead of
++	 * manually context switching the hardware MSR during vcpu_load/put.
++	 *
++	 * This behavior is consistent with the current setup in
++	 * vmx_recalc_msr_intercepts(), so no change is needed to the interception
++	 * logic for MSR_IA32_PL0_SSP.
++	 */
++	vmx_set_intercept_for_msr(vcpu, MSR_IA32_FRED_RSP0, MSR_TYPE_RW, intercept);
++}
++
+ static void vmx_recalc_msr_intercepts(struct kvm_vcpu *vcpu)
+ {
+ 	bool intercept;
+@@ -4371,6 +4437,7 @@ static void vmx_recalc_msr_intercepts(struct kvm_vcpu *vcpu)
  	}
- }
-@@ -4500,6 +4506,17 @@ void vmx_set_constant_host_state(struct vcpu_vmx *vmx)
- 	 */
- 	vmcs_write16(HOST_DS_SELECTOR, 0);
- 	vmcs_write16(HOST_ES_SELECTOR, 0);
-+
-+	if (cpu_feature_enabled(X86_FEATURE_FRED) && kvm_cpu_cap_has(X86_FEATURE_FRED)) {
-+		/* FRED CONFIG and STKLVLS are the same on all CPUs */
-+		vmcs_write64(HOST_IA32_FRED_CONFIG, kvm_host.fred_config);
-+		vmcs_write64(HOST_IA32_FRED_STKLVLS, kvm_host.fred_stklvls);
-+
-+		/* Linux doesn't support kernel shadow stacks, thus SSPs are 0s */
-+		vmcs_write64(HOST_IA32_FRED_SSP1, 0);
-+		vmcs_write64(HOST_IA32_FRED_SSP2, 0);
-+		vmcs_write64(HOST_IA32_FRED_SSP3, 0);
-+	}
- #else
- 	vmcs_write16(HOST_DS_SELECTOR, __KERNEL_DS);  /* 22.2.4 */
- 	vmcs_write16(HOST_ES_SELECTOR, __KERNEL_DS);  /* 22.2.4 */
-@@ -5030,6 +5047,17 @@ static void init_vmcs(struct vcpu_vmx *vmx)
- 	}
  
- 	vmx_setup_uret_msrs(vmx);
-+
-+	if (cpu_feature_enabled(X86_FEATURE_FRED) && kvm_cpu_cap_has(X86_FEATURE_FRED)) {
-+		vmcs_write64(GUEST_IA32_FRED_CONFIG, 0);
-+		vmcs_write64(GUEST_IA32_FRED_RSP1, 0);
-+		vmcs_write64(GUEST_IA32_FRED_RSP2, 0);
-+		vmcs_write64(GUEST_IA32_FRED_RSP3, 0);
-+		vmcs_write64(GUEST_IA32_FRED_STKLVLS, 0);
-+		vmcs_write64(GUEST_IA32_FRED_SSP1, 0);
-+		vmcs_write64(GUEST_IA32_FRED_SSP2, 0);
-+		vmcs_write64(GUEST_IA32_FRED_SSP3, 0);
-+	}
- }
+ 	vmx_recalc_pmu_msr_intercepts(vcpu);
++	vmx_set_intercept_for_fred_msr(vcpu);
  
- static void __vmx_vcpu_reset(struct kvm_vcpu *vcpu)
-@@ -8883,6 +8911,11 @@ __init int vmx_hardware_setup(void)
- 
- 	kvm_caps.inapplicable_quirks &= ~KVM_X86_QUIRK_IGNORE_GUEST_PAT;
- 
-+	if (cpu_feature_enabled(X86_FEATURE_FRED) && kvm_cpu_cap_has(X86_FEATURE_FRED)) {
-+		rdmsrq(MSR_IA32_FRED_CONFIG, kvm_host.fred_config);
-+		rdmsrq(MSR_IA32_FRED_STKLVLS, kvm_host.fred_stklvls);
-+	}
-+
- 	return 0;
- }
- 
+ 	/*
+ 	 * x2APIC and LBR MSR intercepts are modified on-demand and cannot be
 -- 
 2.43.0
 
