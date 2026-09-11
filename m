@@ -1,67 +1,83 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0E14CDA32;
-	Fri, 11 Sep 2026 21:43:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2424D09F4;
+	Fri, 11 Sep 2026 21:43:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789162983; cv=none; b=pdF96lCLNxVWBjkvHzTu3FSBt3YWBz9+BToVWsZbiWKWv5mJcfQUeiKB/yyoqHX8BN8e72oeOnWr/cnbn7/iXTk1Obuja1lz88jj+R4qawm2pEdkfh9PxOUruxZ5+jVrEjm/GGPS1ywy6DTmzVTn80XjN36Oc0bVtfsa3yeMVxo=
+	t=1789162991; cv=none; b=L9IKEG69qNs5IyeQSKdxpoTTJDcGmOq58vS4caOtSvndsIBxQeAFRFynfsP2EAwxHoDzB7qRO5T28Wdb2w0cv33F8GBE/A/GqStGFzr9vyOC8Ui4PVFkwRHcWhT/TKFqw0kYglg2wy/4NP5VTehyyvt27OXvDyX+n/xLI6sNXOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789162983; c=relaxed/simple;
-	bh=aaXOPQbq48m88qeVdupw4McY4U5cCAz+q7LTvfeNhJk=;
+	s=arc-20240116; t=1789162991; c=relaxed/simple;
+	bh=71Nyn+QFU6de0oC7XG8VEGVcvldUvlJUjtOuNukoA6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CR1fnCGv31cV3rdrml24m7V6fdPtqklIKyAncE2RY5qiVPSOvlz7csUKBEX5tToi3Rz2abBYHfgkf2WQtC4SwV/OjncihtofEa+Vwi51XNTXoN2J+1AkFBAyJVvkD/5gpCYXaR/zUst/Mz6PlJ3UblLqSUUMOlO3EKsiEyXGcPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=MG19UGXs; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
+	 MIME-Version; b=uLHqoBjkO3QZYupwox1cpA4S+cT1Mf8xWqcPRjWkxrWOh+feL6GOt6CWNw/A+d2XBh7Y8cARaFM++JsYuGig2KBzD+IZSRdehtWMKID+59Cl5FJkNXXetEs33KOQDpR6PqFeesDy7ODti/vCwXI7aD0FS0As1weZibEmgGSMsKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hgVrVZhn; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="MG19UGXs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1789162968;
-	bh=yllrj2VR4aQiAi0gpWalSGnQ7ApbEsrowLHc9tpqOvI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MG19UGXs0CEDu/ozXyEF4/Y/kLzCmbwrw21REpQjg2BKnsZ2va37GdpBgRcFdmW/+
-	 W1QrBZx308kskMHh5SZ+ek0/k5OUhWPboEqVsNvSnpDUs9FxA4sw8hnOYiy+yD1fT/
-	 47k4qxYlYD7y47+vXJdB5y8u/cqQM3hjPgz6TgwWuJScAkF5SyjG6Us+x+NjnwA+Pz
-	 l06JwlMYMYhoFHA13C4m3vJgARWoIG6K0YKNN+PxPr57r/157Z4plyitHnn6lQ18qa
-	 wB+QOWugiRsZ6v5id8rjiYtfJmot7ObbnU8l7qctltuEvFQZBRFiVfl1J833HS5+zd
-	 GwIf4qsGMjbqA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4hhSh727qKz4wSj;
-	Sat, 12 Sep 2026 07:42:46 +1000 (AEST)
-From: Matt Evans <matt@ozlabs.org>
-To: Alex Williamson <alex@shazbot.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Alex Mastro <amastro@fb.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Longfang Liu <liulongfang@huawei.com>
-Cc: Mahmoud Adam <mngyadam@amazon.de>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hgVrVZhn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789162988; x=1820698988;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=71Nyn+QFU6de0oC7XG8VEGVcvldUvlJUjtOuNukoA6w=;
+  b=hgVrVZhnyyduFDR6nVVtLWehWg98VAr8I6h7rBb9++jmS9BU0zuKWY8r
+   T9x0q5ouLCsuyo2Cn7UzvhrSNbglGimiQy0uDf8k2ePdcaaJBD57C3LnJ
+   KidcegtcUl2mUgeiM8xq4uEjycLNssGoI0Nd5E2quuRipgQgSnO32Lbju
+   Epd5XlAphs5cjDLYIxImrgTHGwwp0WH1EAfbS58V6ow2fhrLHubjAwkT9
+   MpifDfxYKLW/RXgy9J/KcJepXhKiHuMkTen+tfUpmh2QjQKXIUprO815e
+   NUj2ZI2dXAWxqnB1QVoHePJZxayYUebXwpN5Snx3eqpzx+hBW4ybaUx4j
+   g==;
+X-CSE-ConnectionGUID: rFXqRsa/QdW67MQv495gVA==
+X-CSE-MsgGUID: RYY15F+qSqKdwy/Rdje/Sw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="88572845"
+X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
+   d="scan'208";a="88572845"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 14:43:07 -0700
+X-CSE-ConnectionGUID: c9zPwHakSkKyLxUkSI6ZhQ==
+X-CSE-MsgGUID: iJLCVNdhQ+214cc5otv54g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
+   d="scan'208";a="272004253"
+Received: from sohilmeh.sc.intel.com ([172.25.103.65])
+  by orviesa007.jf.intel.com with ESMTP; 11 Sep 2026 14:43:06 -0700
+From: Sohil Mehta <sohil.mehta@intel.com>
+To: kvm@vger.kernel.org,
+	x86@kernel.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Xin Li <xin@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Shivansh Dhiman <shivansh.dhiman@amd.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Chao Gao <chao.gao@intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	Zhao Liu <zhao1.liu@intel.com>,
+	Yosry Ahmed <yosry@kernel.org>,
 	David Matlack <dmatlack@google.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: [PATCH v6 9/9] vfio/pci: Permanently revoke a DMABUF on request
-Date: Fri, 11 Sep 2026 22:41:57 +0100
-Message-ID: <20260911214200.33793-10-matt@ozlabs.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260911214200.33793-1-matt@ozlabs.org>
-References: <20260911214200.33793-1-matt@ozlabs.org>
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v10 21/28] KVM: nVMX: Handle FRED VMCS fields in nested VMX context
+Date: Fri, 11 Sep 2026 14:36:51 -0700
+Message-ID: <20260911213659.2025974-22-sohil.mehta@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260911213659.2025974-1-sohil.mehta@intel.com>
+References: <20260911213659.2025974-1-sohil.mehta@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,403 +86,469 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Expand the VFIO DMABUF revocation state to three states:
-Not revoked, temporarily revoked, and permanently revoked.
+From: "Xin Li (Intel)" <xin@zytor.com>
 
-The first two are for existing transient revocation, e.g. across a
-function reset, and the DMABUF is put into the last in response to a
-new VFIO feature VFIO_DEVICE_FEATURE_DMA_BUF_REVOKE.
+Extend nested VMX context management to include FRED-related VMCS fields,
+enabling proper handling of FRED state during nested virtualization.
 
-VFIO_DEVICE_FEATURE_DMA_BUF_REVOKE passes a DMABUF by fd and requests
-that the DMABUF is permanently revoked.  On success, it's guaranteed
-that the buffer can never be imported/attached/mmap()ed in future,
-and that dynamic imports have been cleanly unmapped.
+Because KVM always sets SECONDARY_VM_EXIT_SAVE_IA32_FRED, FRED MSRs are
+always saved to vmcs02.  However an L1 VMM may choose to clear this bit,
+i.e., not to save FRED MSRs to vmcs12.  This is not a problem when the L1
+VMM sets SECONDARY_VM_EXIT_LOAD_IA32_FRED, as KVM then immediately loads
+host FRED MSRs of vmcs12 to guest FRED MSRs of vmcs01.  However if the L1
+VMM clears SECONDARY_VM_EXIT_LOAD_IA32_FRED, KVM should retain FRED MSRs
+to run the L1 VMM.
 
-This is useful for lifecycle management, to reclaim VFIO PCI BAR
-ranges previously delegated to a subordinate client process: by
-revoking, the driver process can ensure that the loaned resources are
-made inaccessible when the client is deemed "done".  The original
-DMABUF is defunct, and BAR resources can then be safely re-exported
-for use by new clients.
+To propagate guest FRED MSRs from vmcs02 to vmcs01, save them in
+sync_vmcs02_to_vmcs12() regardless of whether
+SECONDARY_VM_EXIT_SAVE_IA32_FRED is set in vmcs12.  Then, use the saved
+values to set guest FRED MSRs in vmcs01 within load_vmcs12_host_state()
+when !nested_cpu_load_host_fred_state().
 
-Refactor the revocation code out of vfio_pci_dma_buf_move() to a
-function common to move and the new feature request path.  Note: this
-now only calls dma_buf_invalidate_mappings()/dma_resv_wait_timeout()
-on the revoke path, whereas vfio_pci_dma_buf_move() originally called
-them for both revoke and (unnecessarily) un-revoke.
-
-Signed-off-by: Matt Evans <matt@ozlabs.org>
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 ---
- drivers/vfio/pci/vfio_pci_core.c   |   6 +-
- drivers/vfio/pci/vfio_pci_dmabuf.c | 177 ++++++++++++++++++++++-------
- drivers/vfio/pci/vfio_pci_priv.h   |  19 +++-
- include/uapi/linux/vfio.h          |  24 ++++
- 4 files changed, 184 insertions(+), 42 deletions(-)
+v10:
+ - Simplify nested FRED MSRs update with read/write helpers (Chao).
+ - Add other FRED MSRS to MSR bitmap nested filtering (Chao).
+ - Add {ORIGINAL,INJECTED}_EVENT_DATA to shadow fields in a separate
+   patch (Sean).
+ - Add a new parameter to load_vmcs12_host_state() to indicate the call
+   is from a failed VM entry.
+ - Update exception status member variable nested to is_nested (Sean).
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 711ef54fd91e..911e248aa764 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -1640,6 +1640,8 @@ int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
- 		return vfio_pci_core_feature_token(vdev, flags, arg, argsz);
- 	case VFIO_DEVICE_FEATURE_DMA_BUF:
- 		return vfio_pci_core_feature_dma_buf(vdev, flags, arg, argsz);
-+	case VFIO_DEVICE_FEATURE_DMA_BUF_REVOKE:
-+		return vfio_pci_core_feature_dma_buf_revoke(vdev, flags, arg, argsz);
- 	default:
- 		return -ENOTTY;
+v9:
+ - Rebase to kvm-x86/next.
+ - Guard FRED state save/restore with guest_cpu_cap_has(vcpu,
+   X86_FEATURE_FRED) (syzbot & Chao).
+---
+ arch/x86/kvm/vmx/capabilities.h |   5 ++
+ arch/x86/kvm/vmx/nested.c       | 107 ++++++++++++++++++++++++++++++--
+ arch/x86/kvm/vmx/nested.h       |  17 +++++
+ arch/x86/kvm/vmx/vmcs.h         |  11 ++++
+ arch/x86/kvm/vmx/vmcs12.c       |  18 ++++++
+ arch/x86/kvm/vmx/vmcs12.h       |  39 ++++++++++++
+ arch/x86/kvm/vmx/vmx.h          |  23 +++++++
+ 7 files changed, 214 insertions(+), 6 deletions(-)
+
+diff --git a/arch/x86/kvm/vmx/capabilities.h b/arch/x86/kvm/vmx/capabilities.h
+index 9cca65b226fd..74456f4533e9 100644
+--- a/arch/x86/kvm/vmx/capabilities.h
++++ b/arch/x86/kvm/vmx/capabilities.h
+@@ -82,6 +82,11 @@ static inline bool cpu_has_vmx_basic_no_hw_errcode_cc(void)
+ 	return	vmcs_config.basic & VMX_BASIC_NO_HW_ERROR_CODE_CC;
+ }
+ 
++static inline bool cpu_has_vmx_nested_exception(void)
++{
++	return vmcs_config.basic & VMX_BASIC_NESTED_EXCEPTION;
++}
++
+ static inline bool cpu_has_virtual_nmis(void)
+ {
+ 	return vmcs_config.pin_based_exec_ctrl & PIN_BASED_VIRTUAL_NMIS &&
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 6576935b9d43..83e846fb3fc8 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -812,6 +812,15 @@ static inline bool nested_vmx_prepare_msr_bitmap(struct kvm_vcpu *vcpu,
+ 	nested_vmx_merge_msr_bitmaps_rw(MSR_FS_BASE);
+ 	nested_vmx_merge_msr_bitmaps_rw(MSR_GS_BASE);
+ 	nested_vmx_merge_msr_bitmaps_rw(MSR_KERNEL_GS_BASE);
++	nested_vmx_merge_msr_bitmaps_rw(MSR_IA32_FRED_RSP0);
++	nested_vmx_merge_msr_bitmaps_rw(MSR_IA32_FRED_RSP1);
++	nested_vmx_merge_msr_bitmaps_rw(MSR_IA32_FRED_RSP2);
++	nested_vmx_merge_msr_bitmaps_rw(MSR_IA32_FRED_RSP3);
++	nested_vmx_merge_msr_bitmaps_rw(MSR_IA32_FRED_STKLVLS);
++	nested_vmx_merge_msr_bitmaps_rw(MSR_IA32_FRED_SSP1);
++	nested_vmx_merge_msr_bitmaps_rw(MSR_IA32_FRED_SSP2);
++	nested_vmx_merge_msr_bitmaps_rw(MSR_IA32_FRED_SSP3);
++	nested_vmx_merge_msr_bitmaps_rw(MSR_IA32_FRED_CONFIG);
+ #endif
+ 	nested_vmx_merge_msr_bitmaps_rw(MSR_IA32_SPEC_CTRL);
+ 	nested_vmx_merge_msr_bitmaps_write(MSR_IA32_PRED_CMD);
+@@ -1356,9 +1365,11 @@ static int vmx_restore_vmx_basic(struct vcpu_vmx *vmx, u64 data)
+ 	const u64 feature_bits = VMX_BASIC_DUAL_MONITOR_TREATMENT |
+ 				 VMX_BASIC_INOUT |
+ 				 VMX_BASIC_TRUE_CTLS |
+-				 VMX_BASIC_NO_HW_ERROR_CODE_CC;
++				 VMX_BASIC_NO_HW_ERROR_CODE_CC |
++				 VMX_BASIC_NESTED_EXCEPTION;
+ 
+-	const u64 reserved_bits = GENMASK_ULL(63, 57) |
++	const u64 reserved_bits = GENMASK_ULL(63, 59) |
++				  BIT_ULL(57) |
+ 				  GENMASK_ULL(47, 45) |
+ 				  BIT_ULL(31);
+ 
+@@ -2599,6 +2610,8 @@ static void prepare_vmcs02_early(struct vcpu_vmx *vmx, struct loaded_vmcs *vmcs0
+ 			     vmcs12->vm_entry_instruction_len);
+ 		vmcs_write32(GUEST_INTERRUPTIBILITY_INFO,
+ 			     vmcs12->guest_interruptibility_info);
++		if (cpu_has_vmx_fred())
++			vmcs_write64(INJECTED_EVENT_DATA, vmcs12->injected_event_data);
+ 		vmx->loaded_vmcs->nmi_known_unmasked =
+ 			!(vmcs12->guest_interruptibility_info & GUEST_INTR_STATE_NMI);
+ 	} else {
+@@ -2632,6 +2645,30 @@ static void vmcs_write_cet_state(struct kvm_vcpu *vcpu, u64 s_cet,
  	}
-@@ -1850,7 +1852,7 @@ static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
+ }
  
- 	dma_resv_lock(priv->dmabuf->resv, NULL);
++static void vmcs_read_fred_msrs(struct vmcs_fred_msrs *msrs)
++{
++	msrs->fred_config = vmcs_read64(GUEST_IA32_FRED_CONFIG);
++	msrs->fred_rsp1 = vmcs_read64(GUEST_IA32_FRED_RSP1);
++	msrs->fred_rsp2 = vmcs_read64(GUEST_IA32_FRED_RSP2);
++	msrs->fred_rsp3 = vmcs_read64(GUEST_IA32_FRED_RSP3);
++	msrs->fred_stklvls = vmcs_read64(GUEST_IA32_FRED_STKLVLS);
++	msrs->fred_ssp1 = vmcs_read64(GUEST_IA32_FRED_SSP1);
++	msrs->fred_ssp2 = vmcs_read64(GUEST_IA32_FRED_SSP2);
++	msrs->fred_ssp3 = vmcs_read64(GUEST_IA32_FRED_SSP3);
++}
++
++static void vmcs_write_fred_msrs(struct vmcs_fred_msrs *msrs)
++{
++	vmcs_write64(GUEST_IA32_FRED_CONFIG, msrs->fred_config);
++	vmcs_write64(GUEST_IA32_FRED_RSP1, msrs->fred_rsp1);
++	vmcs_write64(GUEST_IA32_FRED_RSP2, msrs->fred_rsp2);
++	vmcs_write64(GUEST_IA32_FRED_RSP3, msrs->fred_rsp3);
++	vmcs_write64(GUEST_IA32_FRED_STKLVLS, msrs->fred_stklvls);
++	vmcs_write64(GUEST_IA32_FRED_SSP1, msrs->fred_ssp1);
++	vmcs_write64(GUEST_IA32_FRED_SSP2, msrs->fred_ssp2);
++	vmcs_write64(GUEST_IA32_FRED_SSP3, msrs->fred_ssp3);
++}
++
+ static void prepare_vmcs02_rare(struct vcpu_vmx *vmx, struct vmcs12 *vmcs12)
+ {
+ 	struct hv_enlightened_vmcs *hv_evmcs = nested_vmx_evmcs(vmx);
+@@ -2755,6 +2792,10 @@ static void prepare_vmcs02_rare(struct vcpu_vmx *vmx, struct vmcs12 *vmcs12)
+ 				     vmcs12->guest_ssp, vmcs12->guest_ssp_tbl);
  
--	if (priv->revoked) {
-+	if (priv->status != VFIO_PCI_DMABUF_OK) {
- 		pr_debug_ratelimited("%s VA 0x%lx, pgoff 0x%lx: DMABUF revoked/cleaned up\n",
- 				     __func__, vmf->address, vma->vm_pgoff);
- 		dma_resv_unlock(priv->dmabuf->resv);
-@@ -1878,7 +1880,7 @@ static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
- 	down_read(&vdev->memory_lock);
- 	/* Re-test revocation status under dmabuf_lock */
- 	down_read(&vdev->dmabuf_lock);
--	if (!priv->revoked) {
-+	if (priv->status == VFIO_PCI_DMABUF_OK) {
- 		int pres = vfio_pci_dma_buf_find_pfn(vdev, priv, vma,
- 						     vmf->address,
- 						     order, &pfn);
-diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-index 1c85c15290d4..7cda2bd00d25 100644
---- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-+++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-@@ -19,7 +19,7 @@ static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
- 	if (!attachment->peer2peer)
- 		return -EOPNOTSUPP;
+ 	set_cr4_guest_host_mask(vmx);
++
++	if (guest_cpu_cap_has(&vmx->vcpu, X86_FEATURE_FRED) &&
++	    nested_cpu_load_guest_fred_state(vmcs12))
++		vmcs_write_fred_msrs(&vmcs12->guest_fred_msrs);
+ }
  
--	if (priv->revoked)
-+	if (READ_ONCE(priv->status) != VFIO_PCI_DMABUF_OK)
- 		return -ENODEV;
+ /*
+@@ -2821,6 +2862,10 @@ static int prepare_vmcs02(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
+ 		vmcs_write64(GUEST_IA32_PAT, vcpu->arch.pat);
+ 	}
  
- 	if (!dma_buf_attach_revocable(attachment))
-@@ -44,7 +44,7 @@ static int vfio_pci_dma_buf_mmap(struct dma_buf *dmabuf, struct vm_area_struct *
- 	 * still safe because the fault handler ultimately prevents
- 	 * access to a revoked buffer if it isn't caught here.
- 	 */
--	if (priv->revoked)
-+	if (READ_ONCE(priv->status) != VFIO_PCI_DMABUF_OK)
- 		return -ENODEV;
++	if (guest_cpu_cap_has(vcpu, X86_FEATURE_FRED) &&
++	    (!vmx->vcpu.arch.nested_run_pending || !nested_cpu_load_guest_fred_state(vmcs12)))
++		vmcs_write_fred_msrs(&vmx->nested.pre_vmenter_fred_msrs);
++
+ 	vcpu->arch.tsc_offset = kvm_calc_nested_tsc_offset(
+ 			vcpu->arch.l1_tsc_offset,
+ 			vmx_get_l2_tsc_offset(vcpu),
+@@ -3630,7 +3675,8 @@ static int nested_vmx_check_permission(struct kvm_vcpu *vcpu)
+ }
+ 
+ static void load_vmcs12_host_state(struct kvm_vcpu *vcpu,
+-				   struct vmcs12 *vmcs12);
++				   struct vmcs12 *vmcs12,
++				   bool from_failed_vmentry);
+ 
+ /*
+  * If from_vmentry is false, this is being called from state restore (either RSM
+@@ -3680,6 +3726,10 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
+ 				    &vmx->nested.pre_vmenter_ssp,
+ 				    &vmx->nested.pre_vmenter_ssp_tbl);
+ 
++	if (guest_cpu_cap_has(vcpu, X86_FEATURE_FRED) &&
++	    (!vmx->vcpu.arch.nested_run_pending || !nested_cpu_load_guest_fred_state(vmcs12)))
++		vmcs_read_fred_msrs(&vmx->nested.pre_vmenter_fred_msrs);
++
  	/*
- 	 * Make clear that anything with an offset adjustment is
-@@ -101,7 +101,7 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment *attachment,
+ 	 * Stash L1's CR3, so that in the event of a "late" VM-Fail, i.e. a
+ 	 * VM-Fail detected by hardware but not KVM, KVM can unwind its
+@@ -3794,7 +3844,7 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
  
- 	dma_resv_assert_held(priv->dmabuf->resv);
+ 	nested_put_vmcs12_pages(vcpu);
  
--	if (priv->revoked)
-+	if (priv->status != VFIO_PCI_DMABUF_OK)
- 		return ERR_PTR(-ENODEV);
+-	load_vmcs12_host_state(vcpu, vmcs12);
++	load_vmcs12_host_state(vcpu, vmcs12, true);
+ 	vmcs12->vm_exit_reason = exit_reason.full;
+ 	if (enable_shadow_vmcs || nested_vmx_is_evmptr12_valid(vmx))
+ 		vmx->nested.need_vmcs12_to_shadow_sync = true;
+@@ -3983,6 +4033,8 @@ static void vmcs12_save_pending_event(struct kvm_vcpu *vcpu,
+ 	u32 idt_vectoring;
+ 	unsigned int nr;
  
- 	ret = dma_buf_phys_vec_to_sgt(attachment, priv->provider,
-@@ -224,7 +224,7 @@ int vfio_pci_dma_buf_find_pfn(struct vfio_pci_core_device *vdev,
- 	/* This prevents the dmabuf revocation state from changing under us */
- 	lockdep_assert_held(&vdev->dmabuf_lock);
++	vmcs12->original_event_data = 0;
++
+ 	/*
+ 	 * Per the SDM, VM-Exits due to double and triple faults are never
+ 	 * considered to occur during event delivery, even if the double/triple
+@@ -4021,6 +4073,13 @@ static void vmcs12_save_pending_event(struct kvm_vcpu *vcpu,
+ 				vcpu->arch.exception.error_code;
+ 		}
  
--	if (unlikely(priv->vdev != vdev || priv->revoked))
-+	if (unlikely(priv->vdev != vdev || priv->status != VFIO_PCI_DMABUF_OK))
- 		return -ENODEV;
- 
- 	if (rounded_page_addr < vma->vm_start || rounded_page_end > vma->vm_end) {
-@@ -365,7 +365,8 @@ static int vfio_pci_dmabuf_export(struct vfio_pci_core_device *vdev,
- 
- 	down_write(&vdev->dmabuf_lock);
- 	dma_resv_lock(priv->dmabuf->resv, NULL);
--	priv->revoked = vdev->bars_revoked;
-+	priv->status = vdev->bars_revoked ? VFIO_PCI_DMABUF_TEMP_REVOKED :
-+		VFIO_PCI_DMABUF_OK;
- 	list_add_tail(&priv->dmabufs_elm, &vdev->dmabufs);
- 	dma_resv_unlock(priv->dmabuf->resv);
- 	up_write(&vdev->dmabuf_lock);
-@@ -498,7 +499,7 @@ int vfio_pci_dma_buf_iommufd_map(struct dma_buf_attachment *attachment,
- 		return -EOPNOTSUPP;
- 
- 	priv = attachment->dmabuf->priv;
--	if (priv->revoked)
-+	if (priv->status != VFIO_PCI_DMABUF_OK)
- 		return -ENODEV;
- 
- 	/* More than one range to iommufd will require proper DMABUF support */
-@@ -676,6 +677,63 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
++		if ((vmcs12->vm_entry_controls & VM_ENTRY_IA32E_MODE) &&
++		    (vmcs12->guest_cr4 & X86_CR4_FRED) &&
++		    (vcpu->arch.exception.is_nested))
++			idt_vectoring |= VECTORING_INFO_NESTED_EXCEPTION_MASK;
++
++		vmcs12->original_event_data = vcpu->arch.exception.event_data;
++
+ 		vmcs12->idt_vectoring_info_field = idt_vectoring;
+ 	} else if (vcpu->arch.nmi_injected) {
+ 		vmcs12->idt_vectoring_info_field =
+@@ -4744,6 +4803,15 @@ static void sync_vmcs02_to_vmcs12(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12)
+ 	vmcs_read_cet_state(&vmx->vcpu, &vmcs12->guest_s_cet,
+ 			    &vmcs12->guest_ssp,
+ 			    &vmcs12->guest_ssp_tbl);
++
++	if (guest_cpu_cap_has(vcpu, X86_FEATURE_FRED)) {
++		vmcs_read_fred_msrs(&vmx->nested.at_vmexit_fred_msrs);
++
++		if (nested_cpu_save_guest_fred_state(vmcs12))
++			memcpy(&vmcs12->guest_fred_msrs,
++			       &vmx->nested.at_vmexit_fred_msrs,
++			       sizeof(struct vmcs_fred_msrs));
++	}
  }
- #endif /* CONFIG_VFIO_PCI_DMABUF */
  
-+/* Set the DMABUF's revocation status (OK or temporarily/permanently revoked) */
-+static void vfio_pci_dma_buf_set_status(struct vfio_pci_dma_buf *priv,
-+					enum vfio_pci_dma_buf_status new_status)
-+{
-+	bool was_revoked;
+ /*
+@@ -4788,6 +4856,21 @@ static void prepare_vmcs12(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
+ 
+ 		vmcs12->vm_exit_intr_info = exit_intr_info;
+ 		vmcs12->vm_exit_instruction_len = exit_insn_len;
 +
-+	/*
-+	 * Changes to the DMABUF's revocation status are synchronised
-+	 * using dmabuf_lock:
-+	 */
-+	lockdep_assert_held_write(&priv->vdev->dmabuf_lock);
-+
-+	if (priv->status == VFIO_PCI_DMABUF_PERM_REVOKED ||
-+	    priv->status == new_status)
-+		return;
-+
-+	dma_resv_lock(priv->dmabuf->resv, NULL);
-+	was_revoked = (priv->status == VFIO_PCI_DMABUF_TEMP_REVOKED);
-+
-+	if (new_status != VFIO_PCI_DMABUF_OK) {
-+		priv->status = new_status; /* Temp or permanently revoked */
-+
-+		if (was_revoked) {
-+			/*
-+			 * TEMP_REVOKED is being upgraded to
-+			 * PERM_REVOKED.  The buffer is already gone,
-+			 * don't wait on it again.
-+			 */
-+			dma_resv_unlock(priv->dmabuf->resv);
-+			return;
-+		}
-+		dma_buf_invalidate_mappings(priv->dmabuf);
-+		dma_resv_wait_timeout(priv->dmabuf->resv,
-+				      DMA_RESV_USAGE_BOOKKEEP, false,
-+				      MAX_SCHEDULE_TIMEOUT);
-+		dma_resv_unlock(priv->dmabuf->resv);
-+		kref_put(&priv->kref, vfio_pci_dma_buf_done);
-+		wait_for_completion(&priv->comp);
-+		unmap_mapping_range(priv->dmabuf->file->f_mapping,
-+				    0, 0, true);
 +		/*
-+		 * Re-arm the registered kref reference and the
-+		 * completion so the post-revoke state matches the
-+		 * post-creation state.  An un-revoke followed by a
-+		 * new mapping needs the kref to be non-zero before
-+		 * kref_get(), and vfio_pci_dma_buf_cleanup()
-+		 * delegates its drain back through this revoke
-+		 * path on a possibly-already-revoked dma-buf.
++		 * When there is a valid original event, the exiting event is a nested
++		 * event during delivery of the earlier original event.
++		 *
++		 * FRED event delivery reflects this relationship by setting the value
++		 * of the nested exception bit of VM-exit interruption information
++		 * (aka exiting-event identification) to that of the valid bit of the
++		 * IDT-vectoring information (aka original-event identification).
 +		 */
-+		kref_init(&priv->kref);
-+		reinit_completion(&priv->comp);
-+	} else {
-+		priv->status = VFIO_PCI_DMABUF_OK;
-+		dma_resv_unlock(priv->dmabuf->resv);
-+	}
-+}
++		if ((vmcs12->idt_vectoring_info_field & VECTORING_INFO_VALID_MASK) &&
++		    (vmcs12->vm_entry_controls & VM_ENTRY_IA32E_MODE) &&
++		    (vmcs12->guest_cr4 & X86_CR4_FRED))
++			vmcs12->vm_exit_intr_info |= INTR_INFO_NESTED_EXCEPTION_MASK;
 +
- void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revoked)
- {
- 	struct vfio_pci_dma_buf *priv;
-@@ -688,38 +746,9 @@ void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool revoked)
- 	list_for_each_entry_safe(priv, tmp, &vdev->dmabufs, dmabufs_elm) {
- 		if (!get_file_active(&priv->dmabuf->file))
- 			continue;
--
--		if (priv->revoked != revoked) {
--			dma_resv_lock(priv->dmabuf->resv, NULL);
--			if (revoked)
--				priv->revoked = true;
--			dma_buf_invalidate_mappings(priv->dmabuf);
--			dma_resv_wait_timeout(priv->dmabuf->resv,
--					      DMA_RESV_USAGE_BOOKKEEP, false,
--					      MAX_SCHEDULE_TIMEOUT);
--			dma_resv_unlock(priv->dmabuf->resv);
--			if (revoked) {
--				kref_put(&priv->kref, vfio_pci_dma_buf_done);
--				wait_for_completion(&priv->comp);
--				unmap_mapping_range(priv->dmabuf->file->f_mapping,
--						    0, 0, true);
--				/*
--				 * Re-arm the registered kref reference and the
--				 * completion so the post-revoke state matches the
--				 * post-creation state.  An un-revoke followed by a
--				 * new mapping needs the kref to be non-zero before
--				 * kref_get(), and vfio_pci_dma_buf_cleanup()
--				 * delegates its drain back through this revoke
--				 * path on a possibly-already-revoked dma-buf.
--				 */
--				kref_init(&priv->kref);
--				reinit_completion(&priv->comp);
--			} else {
--				dma_resv_lock(priv->dmabuf->resv, NULL);
--				priv->revoked = false;
--				dma_resv_unlock(priv->dmabuf->resv);
--			}
--		}
-+		vfio_pci_dma_buf_set_status(priv, revoked ?
-+					    VFIO_PCI_DMABUF_TEMP_REVOKED :
-+					    VFIO_PCI_DMABUF_OK);
- 		fput(priv->dmabuf->file);
- 	}
- 	up_write(&vdev->dmabuf_lock);
-@@ -747,10 +776,80 @@ void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev)
- 			continue;
+ 		vmcs12->vmx_instruction_info = vmcs_read32(VMX_INSTRUCTION_INFO);
  
- 		list_del_init(&priv->dmabufs_elm);
--		priv->vdev = NULL;
-+		WRITE_ONCE(priv->vdev, NULL);
- 		vfio_device_put_registration(&vdev->vdev);
- 		fput(priv->dmabuf->file);
- 	}
- 	up_write(&vdev->dmabuf_lock);
- 	up_write(&vdev->memory_lock);
- }
-+
-+#ifdef CONFIG_VFIO_PCI_DMABUF
-+int vfio_pci_core_feature_dma_buf_revoke(
-+	struct vfio_pci_core_device *vdev, u32 flags,
-+	struct vfio_device_feature_dma_buf_revoke __user *arg,
-+	size_t argsz)
-+{
-+	struct vfio_device_feature_dma_buf_revoke db_revoke;
-+	struct vfio_pci_dma_buf *priv;
-+	struct dma_buf *dmabuf;
-+	int ret;
-+
-+	if (!vdev->pci_ops || !vdev->pci_ops->get_dmabuf_phys)
-+		return -EOPNOTSUPP;
-+
-+	ret = vfio_check_feature(flags, argsz,
-+				 VFIO_DEVICE_FEATURE_SET,
-+				 sizeof(db_revoke));
-+	if (ret != 1)
-+		return ret;
-+
-+	if (copy_from_user(&db_revoke, arg, sizeof(db_revoke)))
-+		return -EFAULT;
-+
-+	dmabuf = dma_buf_get(db_revoke.dmabuf_fd);
-+	if (IS_ERR(dmabuf))
-+		return PTR_ERR(dmabuf);
-+
-+	priv = dmabuf->priv;
-+	/*
-+	 * Sanity-check the DMABUF is really a vfio_pci_dma_buf _and_
-+	 * relates to the VFIO device it was provided with.
-+	 *
-+	 * If the DMABUF relates to this vdev then priv->vdev is
-+	 * stable because this open fd prevents cleanup.
-+	 *
-+	 * If it relates to a different vdev, reading priv->vdev might
-+	 * race with a concurrent cleanup on that device.  But if so,
-+	 * it points to a non-matching vdev or NULL and is unusable
-+	 * either way.
-+	 */
-+	if (dmabuf->ops != &vfio_pci_dmabuf_ops ||
-+	    READ_ONCE(priv->vdev) != vdev) {
-+		ret = -ENODEV;
-+		goto out_put_buf;
-+	}
-+
-+	/*
-+	 * memory_lock(R) is taken to stop vfio_pci_dev_set_hot_reset()
-+	 * from getting it and then blocking all devices in the dev_set behind
-+	 * this revoke's drain.
-+	 */
-+	down_read(&vdev->memory_lock);
-+	down_write(&vdev->dmabuf_lock);
-+	if (priv->status == VFIO_PCI_DMABUF_PERM_REVOKED) {
-+		ret = -EBADFD;
-+	} else {
-+		vfio_pci_dma_buf_set_status(priv,
-+					    VFIO_PCI_DMABUF_PERM_REVOKED);
-+		ret = 0;
-+	}
-+	up_write(&vdev->dmabuf_lock);
-+	up_read(&vdev->memory_lock);
-+
-+out_put_buf:
-+	dma_buf_put(dmabuf);
-+
-+	return ret;
-+}
-+#endif /* CONFIG_VFIO_PCI_DMABUF */
-diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
-index cd432f52c38f..9cf66c19f798 100644
---- a/drivers/vfio/pci/vfio_pci_priv.h
-+++ b/drivers/vfio/pci/vfio_pci_priv.h
-@@ -23,6 +23,12 @@ struct vfio_pci_ioeventfd {
- 	bool			test_mem;
- };
- 
-+enum vfio_pci_dma_buf_status {
-+	VFIO_PCI_DMABUF_OK = 0,
-+	VFIO_PCI_DMABUF_TEMP_REVOKED = 1,
-+	VFIO_PCI_DMABUF_PERM_REVOKED = 2,
-+};
-+
- struct vfio_pci_dma_buf {
- 	struct dma_buf *dmabuf;
- 	struct vfio_pci_core_device *vdev;
-@@ -35,7 +41,7 @@ struct vfio_pci_dma_buf {
- 	struct kref kref;
- 	struct completion comp;
- 	unsigned long vma_pgoff_adjust;
--	u8 revoked : 1;
-+	enum vfio_pci_dma_buf_status status;
- };
- 
- bool vfio_pci_intx_mask(struct vfio_pci_core_device *vdev);
-@@ -148,6 +154,10 @@ void vfio_pci_set_vma_ops(struct vm_area_struct *vma);
- int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
- 				  struct vfio_device_feature_dma_buf __user *arg,
- 				  size_t argsz);
-+int vfio_pci_core_feature_dma_buf_revoke(
-+	struct vfio_pci_core_device *vdev, u32 flags,
-+	struct vfio_device_feature_dma_buf_revoke __user *arg,
-+	size_t argsz);
- #else
- static inline int
- vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
-@@ -156,6 +166,13 @@ vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
- {
- 	return -ENOTTY;
- }
-+static inline int vfio_pci_core_feature_dma_buf_revoke(
-+	struct vfio_pci_core_device *vdev, u32 flags,
-+	struct vfio_device_feature_dma_buf_revoke __user *arg,
-+	size_t argsz)
-+{
-+	return -ENOTTY;
-+}
- #endif
- 
- #endif
-diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-index 5de618a3a5ee..8c1d50275a41 100644
---- a/include/uapi/linux/vfio.h
-+++ b/include/uapi/linux/vfio.h
-@@ -1534,6 +1534,30 @@ struct vfio_device_feature_dma_buf {
+ 		/*
+@@ -4814,8 +4897,10 @@ static void prepare_vmcs12(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
+  * This function should be called when the active VMCS is L1's (vmcs01).
   */
- #define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
+ static void load_vmcs12_host_state(struct kvm_vcpu *vcpu,
+-				   struct vmcs12 *vmcs12)
++				   struct vmcs12 *vmcs12,
++				   bool from_failed_vmentry)
+ {
++	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 	enum vm_entry_failure_code ignored;
+ 	struct kvm_segment seg;
  
-+/**
-+ * Given a dma_buf fd previously exported from the same device by
-+ * VFIO_DEVICE_FEATURE_DMA_BUF, a SET of this feature requests that
-+ * access to the corresponding DMABUF is immediately and permanently
-+ * revoked.  On successful return, the buffer is not accessible
-+ * through any mmap() or dma-buf import.  The buffer is permanently
-+ * disabled, and VFIO refuses all map, mmap, attach, etc. requests.
-+ *
-+ * Return: 0 on success, -1 and errno is set on failure:
-+ *
-+ *  EBADF, EINVAL: dmabuf_fd is not a DMABUF fd.
-+ *  EOPNOTSUPP: The VFIO device does not support DMABUF export.
-+ *  ENODEV: The DMABUF was not exported from this device.
-+ *  EBADFD: The DMABUF is already permanently revoked.
-+ *
-+ * Additionally, common errors can occur: EFAULT accessing the struct,
-+ * or EINVAL requesting an unsupported feature op.
-+ */
-+#define VFIO_DEVICE_FEATURE_DMA_BUF_REVOKE 13
+@@ -4890,6 +4975,14 @@ static void load_vmcs12_host_state(struct kvm_vcpu *vcpu,
+ 		WARN_ON_ONCE(__kvm_emulate_msr_write(vcpu, MSR_CORE_PERF_GLOBAL_CTRL,
+ 						     vmcs12->host_ia32_perf_global_ctrl));
+ 
++	if (guest_cpu_cap_has(vcpu, X86_FEATURE_FRED)) {
++		if (nested_cpu_load_host_fred_state(vmcs12)) {
++			vmcs_write_fred_msrs(&vmcs12->host_fred_msrs);
++		} else if (!from_failed_vmentry) {
++			vmcs_write_fred_msrs(&vmx->nested.at_vmexit_fred_msrs);
++		}
++	}
 +
-+struct vfio_device_feature_dma_buf_revoke {
-+	__s32	dmabuf_fd;
+ 	/* Set L1 segment info according to Intel SDM
+ 	    27.5.2 Loading Host Segment and Descriptor-Table Registers */
+ 	seg = (struct kvm_segment) {
+@@ -5209,7 +5302,7 @@ void __nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
+ 						       vmcs12->vm_exit_intr_error_code,
+ 						       KVM_ISA_VMX);
+ 
+-		load_vmcs12_host_state(vcpu, vmcs12);
++		load_vmcs12_host_state(vcpu, vmcs12, false);
+ 
+ 		/*
+ 		 * Process events if an injectable IRQ or NMI is pending, even
+@@ -7370,6 +7463,8 @@ static void nested_vmx_setup_basic(struct nested_vmx_msrs *msrs)
+ 		msrs->basic |= VMX_BASIC_INOUT;
+ 	if (cpu_has_vmx_basic_no_hw_errcode_cc())
+ 		msrs->basic |= VMX_BASIC_NO_HW_ERROR_CODE_CC;
++	if (cpu_has_vmx_nested_exception())
++		msrs->basic |= VMX_BASIC_NESTED_EXCEPTION;
+ }
+ 
+ static void nested_vmx_setup_cr_fixed(struct nested_vmx_msrs *msrs)
+diff --git a/arch/x86/kvm/vmx/nested.h b/arch/x86/kvm/vmx/nested.h
+index 371fc3498b12..dc5a1e9cb4e9 100644
+--- a/arch/x86/kvm/vmx/nested.h
++++ b/arch/x86/kvm/vmx/nested.h
+@@ -272,6 +272,23 @@ static inline bool nested_cpu_has_encls_exit(struct vmcs12 *vmcs12)
+ 	return nested_cpu_has2(vmcs12, SECONDARY_EXEC_ENCLS_EXITING);
+ }
+ 
++static inline bool nested_cpu_load_guest_fred_state(struct vmcs12 *vmcs12)
++{
++	return vmcs12->vm_entry_controls & VM_ENTRY_LOAD_IA32_FRED;
++}
++
++static inline bool nested_cpu_save_guest_fred_state(struct vmcs12 *vmcs12)
++{
++	return nested_cpu_has_secondary_vm_exit_controls(vmcs12) &&
++	       vmcs12->secondary_vm_exit_controls & SECONDARY_VM_EXIT_SAVE_IA32_FRED;
++}
++
++static inline bool nested_cpu_load_host_fred_state(struct vmcs12 *vmcs12)
++{
++	return nested_cpu_has_secondary_vm_exit_controls(vmcs12) &&
++	       vmcs12->secondary_vm_exit_controls & SECONDARY_VM_EXIT_LOAD_IA32_FRED;
++}
++
+ /*
+  * if fixed0[i] == 1: val[i] must be 1
+  * if fixed1[i] == 0: val[i] must be 0
+diff --git a/arch/x86/kvm/vmx/vmcs.h b/arch/x86/kvm/vmx/vmcs.h
+index ca341c59bab1..58af10f73789 100644
+--- a/arch/x86/kvm/vmx/vmcs.h
++++ b/arch/x86/kvm/vmx/vmcs.h
+@@ -52,6 +52,17 @@ struct vmcs_controls_shadow {
+ 	u64 tertiary_exec;
+ };
+ 
++struct vmcs_fred_msrs {
++	u64 fred_config;
++	u64 fred_rsp1;
++	u64 fred_rsp2;
++	u64 fred_rsp3;
++	u64 fred_stklvls;
++	u64 fred_ssp1;
++	u64 fred_ssp2;
++	u64 fred_ssp3;
 +};
 +
- /* -------- API for Type1 VFIO IOMMU -------- */
+ /*
+  * Track a VMCS that may be loaded on a certain CPU. If it is (cpu!=-1), also
+  * remember whether it was VMLAUNCHed, and maintain a linked list of all VMCSs
+diff --git a/arch/x86/kvm/vmx/vmcs12.c b/arch/x86/kvm/vmx/vmcs12.c
+index 9d64a89aff00..837cb3d568c3 100644
+--- a/arch/x86/kvm/vmx/vmcs12.c
++++ b/arch/x86/kvm/vmx/vmcs12.c
+@@ -67,6 +67,24 @@ static const u16 kvm_supported_vmcs12_field_offsets[] __initconst = {
+ 	FIELD64(HOST_IA32_EFER, host_ia32_efer),
+ 	FIELD64(HOST_IA32_PERF_GLOBAL_CTRL, host_ia32_perf_global_ctrl),
+ 	FIELD64(SECONDARY_VM_EXIT_CONTROLS, secondary_vm_exit_controls),
++	FIELD64(INJECTED_EVENT_DATA, injected_event_data),
++	FIELD64(ORIGINAL_EVENT_DATA, original_event_data),
++	FIELD64(GUEST_IA32_FRED_CONFIG, guest_ia32_fred_config),
++	FIELD64(GUEST_IA32_FRED_RSP1, guest_ia32_fred_rsp1),
++	FIELD64(GUEST_IA32_FRED_RSP2, guest_ia32_fred_rsp2),
++	FIELD64(GUEST_IA32_FRED_RSP3, guest_ia32_fred_rsp3),
++	FIELD64(GUEST_IA32_FRED_STKLVLS, guest_ia32_fred_stklvls),
++	FIELD64(GUEST_IA32_FRED_SSP1, guest_ia32_fred_ssp1),
++	FIELD64(GUEST_IA32_FRED_SSP2, guest_ia32_fred_ssp2),
++	FIELD64(GUEST_IA32_FRED_SSP3, guest_ia32_fred_ssp3),
++	FIELD64(HOST_IA32_FRED_CONFIG, host_ia32_fred_config),
++	FIELD64(HOST_IA32_FRED_RSP1, host_ia32_fred_rsp1),
++	FIELD64(HOST_IA32_FRED_RSP2, host_ia32_fred_rsp2),
++	FIELD64(HOST_IA32_FRED_RSP3, host_ia32_fred_rsp3),
++	FIELD64(HOST_IA32_FRED_STKLVLS, host_ia32_fred_stklvls),
++	FIELD64(HOST_IA32_FRED_SSP1, host_ia32_fred_ssp1),
++	FIELD64(HOST_IA32_FRED_SSP2, host_ia32_fred_ssp2),
++	FIELD64(HOST_IA32_FRED_SSP3, host_ia32_fred_ssp3),
+ 	FIELD(PIN_BASED_VM_EXEC_CONTROL, pin_based_vm_exec_control),
+ 	FIELD(CPU_BASED_VM_EXEC_CONTROL, cpu_based_vm_exec_control),
+ 	FIELD(EXCEPTION_BITMAP, exception_bitmap),
+diff --git a/arch/x86/kvm/vmx/vmcs12.h b/arch/x86/kvm/vmx/vmcs12.h
+index bb2f406be63d..c4c5cd3722a5 100644
+--- a/arch/x86/kvm/vmx/vmcs12.h
++++ b/arch/x86/kvm/vmx/vmcs12.h
+@@ -191,6 +191,27 @@ struct __packed vmcs12 {
+ 	u16 host_gs_selector;
+ 	u16 host_tr_selector;
+ 	u16 guest_pml_index;
++	u16 padding16[1]; /* align to 64-bit boundary */
++	struct vmcs_fred_msrs guest_fred_msrs;
++#define guest_ia32_fred_config	guest_fred_msrs.fred_config
++#define guest_ia32_fred_rsp1	guest_fred_msrs.fred_rsp1
++#define guest_ia32_fred_rsp2	guest_fred_msrs.fred_rsp2
++#define guest_ia32_fred_rsp3	guest_fred_msrs.fred_rsp3
++#define guest_ia32_fred_stklvls	guest_fred_msrs.fred_stklvls
++#define guest_ia32_fred_ssp1	guest_fred_msrs.fred_ssp1
++#define guest_ia32_fred_ssp2	guest_fred_msrs.fred_ssp2
++#define guest_ia32_fred_ssp3	guest_fred_msrs.fred_ssp3
++	struct vmcs_fred_msrs host_fred_msrs;
++#define host_ia32_fred_config	host_fred_msrs.fred_config
++#define host_ia32_fred_rsp1	host_fred_msrs.fred_rsp1
++#define host_ia32_fred_rsp2	host_fred_msrs.fred_rsp2
++#define host_ia32_fred_rsp3	host_fred_msrs.fred_rsp3
++#define host_ia32_fred_stklvls	host_fred_msrs.fred_stklvls
++#define host_ia32_fred_ssp1	host_fred_msrs.fred_ssp1
++#define host_ia32_fred_ssp2	host_fred_msrs.fred_ssp2
++#define host_ia32_fred_ssp3	host_fred_msrs.fred_ssp3
++	u64 injected_event_data;
++	u64 original_event_data;
+ };
  
- /**
+ /*
+@@ -373,6 +394,24 @@ static inline void vmx_check_vmcs12_offsets(void)
+ 	CHECK_OFFSET(host_gs_selector, 992);
+ 	CHECK_OFFSET(host_tr_selector, 994);
+ 	CHECK_OFFSET(guest_pml_index, 996);
++	CHECK_OFFSET(guest_ia32_fred_config, 1000);
++	CHECK_OFFSET(guest_ia32_fred_rsp1, 1008);
++	CHECK_OFFSET(guest_ia32_fred_rsp2, 1016);
++	CHECK_OFFSET(guest_ia32_fred_rsp3, 1024);
++	CHECK_OFFSET(guest_ia32_fred_stklvls, 1032);
++	CHECK_OFFSET(guest_ia32_fred_ssp1, 1040);
++	CHECK_OFFSET(guest_ia32_fred_ssp2, 1048);
++	CHECK_OFFSET(guest_ia32_fred_ssp3, 1056);
++	CHECK_OFFSET(host_ia32_fred_config, 1064);
++	CHECK_OFFSET(host_ia32_fred_rsp1, 1072);
++	CHECK_OFFSET(host_ia32_fred_rsp2, 1080);
++	CHECK_OFFSET(host_ia32_fred_rsp3, 1088);
++	CHECK_OFFSET(host_ia32_fred_stklvls, 1096);
++	CHECK_OFFSET(host_ia32_fred_ssp1, 1104);
++	CHECK_OFFSET(host_ia32_fred_ssp2, 1112);
++	CHECK_OFFSET(host_ia32_fred_ssp3, 1120);
++	CHECK_OFFSET(injected_event_data, 1128);
++	CHECK_OFFSET(original_event_data, 1136);
+ }
+ 
+ extern u16 vmcs12_field_offsets[] __ro_after_init;
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index 14fd3f57d5c1..cc1e4038cd44 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -182,6 +182,29 @@ struct nested_vmx {
+ 	u64 pre_vmenter_ssp;
+ 	u64 pre_vmenter_ssp_tbl;
+ 
++	/*
++	 * Used to snapshot FRED MSRs that may NOT be saved to vmcs12 as specified
++	 * in the VM-Exit controls of vmcs12 configured by L1 VMM.
++	 *
++	 * FRED MSRs are *always* saved into vmcs02 because KVM always sets
++	 * SECONDARY_VM_EXIT_SAVE_IA32_FRED.  However an L1 VMM may choose to clear
++	 * this bit, resulting in FRED MSRs not being propagated to vmcs12 from
++	 * vmcs02.  When the L1 VMM sets SECONDARY_VM_EXIT_LOAD_IA32_FRED, this is
++	 * not a problem, since KVM then immediately loads the host FRED MSRs of
++	 * vmcs12 to the guest FRED MSRs of vmcs01.
++	 *
++	 * But if the L1 VMM clears SECONDARY_VM_EXIT_LOAD_IA32_FRED, KVM should
++	 * retain the FRED MSRs, i.e., propagate the guest FRED MSRs of vmcs02 to
++	 * the guest FRED MSRs of vmcs01.
++	 *
++	 * This structure stores guest FRED MSRs that an L1 VMM opts not to save
++	 * during VM-Exits from L2 to L1.  These MSRs may still be retained for
++	 * running the L1 VMM if SECONDARY_VM_EXIT_LOAD_IA32_FRED is cleared in
++	 * vmcs12.
++	 */
++	struct vmcs_fred_msrs pre_vmenter_fred_msrs;
++	struct vmcs_fred_msrs at_vmexit_fred_msrs;
++
+ 	u16 vpid02;
+ 	u16 last_vpid;
+ 
 -- 
-2.50.1 (Apple Git-155)
+2.43.0
 
