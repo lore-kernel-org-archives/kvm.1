@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4327130EF92;
-	Fri, 11 Sep 2026 21:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD5F486431;
+	Fri, 11 Sep 2026 21:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789162828; cv=none; b=tvERtwPq7PpodxBcL4gfK98SRyKcynZLK0bnuBZuJrtSYXGQ6Z16eJic/8c5I8PQ7fQqpDxzpwPOpo049nRRpJ5cBSqKoJncNwagokZp4jxSjnL+X69ZA6caLpco9Oiuw6glOvHuX6uXQDDadQv1K+SwdpngW8kdkeT0S+z4ufs=
+	t=1789162837; cv=none; b=RP9DsMLsXD1A3FWCubxFpGvFr2j5vrsQSJsBD6IrevgZ3ts4vR7pgox1Lj5hSjba5edNTPclh1moeOrmpCB+yjG/wFPeaxqOZQjFvC6eJl1V7pd+uPnF3XwjbUKj3BMFdGR0k8BRL65snlSAvWJcdEBWZGNubVH3S8ElZwqFmls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789162828; c=relaxed/simple;
-	bh=iwxzmH2iihIdxmWRlG66weRogxbaF6jOqwKQ+MUSomg=;
+	s=arc-20240116; t=1789162837; c=relaxed/simple;
+	bh=GrFbnV7U/VzUxcfB10Sq6sd5UMQx0UKgx6eLIPtlYPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i8IN93VD24CIcjEcUB9E8HOwR8IDTL+IpC8X7/sx54O9OdEvVgP427pp0r4DN04Hd2Jt39vVtRsij1XPvkCvdkr9ym883LpNllNY5k3AWuOQ07jWq+IAxOF39kyLNMh5uJcJG2vgc4N86pkjYMfhynck9m8cjTlqyEpXcVGxZig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QZDc4pF4; arc=none smtp.client-ip=192.198.163.19
+	 MIME-Version; b=mxJ/wY6BBhr8smBENXV72axkbPOyyeL0IW4V4e654lPR/xmjEyeEIqWJG/Ld6ukVd9ytjrudlXA3ANXg8VpRWxGyHvS3M0P6tIfpJjt2ZwNsZd8vCVLbRnJRfgRJ2imhJUpNX2RXblqM8vmJuT++czwKUbOqA9BNdqn7xg/UVTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HXxXXw9X; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QZDc4pF4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HXxXXw9X"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789162826; x=1820698826;
+  t=1789162835; x=1820698835;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=iwxzmH2iihIdxmWRlG66weRogxbaF6jOqwKQ+MUSomg=;
-  b=QZDc4pF4jORHItwb0yKyxClFNk2CfRlJ+gu1h6q0M+cb1zTRVttuEYUL
-   BIK2nx4almUTuvlor9aizqAlKTcnQR5RbMmw1/2Xvxp7j+UODwmeaE+WG
-   c3Yxyd4o6Qno5MepG4xF7HcryBMhMo4mSLThebCjry0avkbfPLNetLJkp
-   Q2p/fUfgthBnwdPafSf2WiKadyWC6V+Y2hOGDQ8uibyZD5hlvgoT36BBb
-   FSeQer0uWGmIQGLF1nPkjmaHfKMXOeNk/pz5alb8cddeXFnALSmkXY/3d
-   cvTYm3emhBssPve4mFtdfdAAaqUe7I6EfTY8+2OVJptyMKIVvXYgMDQdq
-   w==;
-X-CSE-ConnectionGUID: EBuzjFpxQq+8PB4NW925Ww==
-X-CSE-MsgGUID: xITvrzZZRaWsUw+2wUjFYw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="88572454"
+  bh=GrFbnV7U/VzUxcfB10Sq6sd5UMQx0UKgx6eLIPtlYPU=;
+  b=HXxXXw9Xs/ZVkH/Brcu2n3BwiIJ2cwpYA6wqdFMlgM31+FYAUdNfgsqe
+   +Ox8rRdcBLTsFqz7wmGdvHt+d7uPD3cV2Djvy6ePm90RakK+UZqXNb4Ar
+   92prs7Tr03trn8lMV+U/oxAbP5llMMqonlTecaP2gKDdVB/LBs8j+nj+i
+   7EPev6d9OOnXyDsezZ9TOF5+Stigeawg7ula68uo5Aw+99HGYtl9/v+Ot
+   EjahTm3CfUB6eyw3SVpljBMr78quGbzPT77AZTuo7vWwHcqMcsN2YVr7p
+   wySC8Y6mtnJlxPhCSGqLg7yT+tSrIpLQpmZ9AEGUe/2npLi6WnS56ZvbO
+   Q==;
+X-CSE-ConnectionGUID: mrIUKlG8TW6TwVkzOSPNyQ==
+X-CSE-MsgGUID: uMZdbgSCSOKDlzVum+Gclg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="88572468"
 X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
-   d="scan'208";a="88572454"
+   d="scan'208";a="88572468"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 14:40:26 -0700
-X-CSE-ConnectionGUID: Zx4jX7Y9RVSk51JgqfnD6A==
-X-CSE-MsgGUID: 9k7Bz6UBSBGNtPMZSs8tvg==
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 14:40:34 -0700
+X-CSE-ConnectionGUID: e718XIOpSsu3rVM5kUdI0g==
+X-CSE-MsgGUID: wmeAbYCiSgCsu98P0SiNnA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
-   d="scan'208";a="272003956"
+   d="scan'208";a="272003989"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by orviesa007.jf.intel.com with ESMTP; 11 Sep 2026 14:40:25 -0700
+  by orviesa007.jf.intel.com with ESMTP; 11 Sep 2026 14:40:33 -0700
 From: Sohil Mehta <sohil.mehta@intel.com>
 To: kvm@vger.kernel.org,
 	x86@kernel.org
@@ -72,9 +72,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v10 04/28] x86/cea: Prefix event stack names with ESTACK_
-Date: Fri, 11 Sep 2026 14:36:34 -0700
-Message-ID: <20260911213659.2025974-5-sohil.mehta@intel.com>
+Subject: [PATCH v10 05/28] x86/cea: Use array indexing to simplify exception stack access
+Date: Fri, 11 Sep 2026 14:36:35 -0700
+Message-ID: <20260911213659.2025974-6-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260911213659.2025974-1-sohil.mehta@intel.com>
 References: <20260911213659.2025974-1-sohil.mehta@intel.com>
@@ -88,225 +88,170 @@ Content-Transfer-Encoding: 8bit
 
 From: "Xin Li (Intel)" <xin@zytor.com>
 
-Add the ESTACK_ prefix to event stack names to improve clarity and
-readability.  Without the prefix, names like DF, NMI, and DB are too
-brief and potentially ambiguous.
+Refactor struct cea_exception_stacks to leverage array indexing for
+exception stack access, improving code clarity and eliminating the
+need for the ESTACKS_MEMBERS() macro.
 
-This renaming also prepares for converting __this_cpu_ist_top_va from
-a macro into a function that accepts an enum exception_stack_ordering
-argument, without requiring changes to existing callsites.
+Convert __this_cpu_ist_{bottom,top}_va() from macros to functions,
+allowing removal of the now-obsolete CEA_ESTACK_BOT and CEA_ESTACK_TOP
+macros.
+
+Also drop CEA_ESTACK_SIZE, which just duplicated EXCEPTION_STKSZ.
 
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 ---
 v10:
- - No change
----
- arch/x86/coco/sev/noinstr.c           |  4 ++--
- arch/x86/coco/sev/vc-handle.c         |  2 +-
- arch/x86/include/asm/cpu_entry_area.h | 26 +++++++++++++-------------
- arch/x86/kernel/cpu/common.c          | 10 +++++-----
- arch/x86/kernel/dumpstack_64.c        | 14 +++++++-------
- arch/x86/kernel/fred.c                |  6 +++---
- arch/x86/kernel/traps.c               |  2 +-
- arch/x86/mm/cpu_entry_area.c          | 12 ++++++------
- arch/x86/mm/fault.c                   |  2 +-
- 9 files changed, 39 insertions(+), 39 deletions(-)
+ - Check if the stack argument is within the array bounds of
+   event_stacks (Boris).
 
-diff --git a/arch/x86/coco/sev/noinstr.c b/arch/x86/coco/sev/noinstr.c
-index e1e03f12fc7b..8a695ab67821 100644
---- a/arch/x86/coco/sev/noinstr.c
-+++ b/arch/x86/coco/sev/noinstr.c
-@@ -31,7 +31,7 @@ static __always_inline bool on_vc_stack(struct pt_regs *regs)
- 	if (ip_within_syscall_gap(regs))
- 		return false;
- 
--	return ((sp >= __this_cpu_ist_bottom_va(VC)) && (sp < __this_cpu_ist_top_va(VC)));
-+	return ((sp >= __this_cpu_ist_bottom_va(ESTACK_VC)) && (sp < __this_cpu_ist_top_va(ESTACK_VC)));
- }
- 
- /*
-@@ -83,7 +83,7 @@ void noinstr __sev_es_ist_exit(void)
- 	/* Read IST entry */
- 	ist = __this_cpu_read(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC]);
- 
--	if (WARN_ON(ist == __this_cpu_ist_top_va(VC)))
-+	if (WARN_ON(ist == __this_cpu_ist_top_va(ESTACK_VC)))
- 		return;
- 
- 	/* Read back old IST entry and write it to the TSS */
-diff --git a/arch/x86/coco/sev/vc-handle.c b/arch/x86/coco/sev/vc-handle.c
-index 96b62b49b2b5..134c14b489ef 100644
---- a/arch/x86/coco/sev/vc-handle.c
-+++ b/arch/x86/coco/sev/vc-handle.c
-@@ -871,7 +871,7 @@ static enum es_result vc_handle_exitcode(struct es_em_ctxt *ctxt,
- 
- static __always_inline bool is_vc2_stack(unsigned long sp)
- {
--	return (sp >= __this_cpu_ist_bottom_va(VC2) && sp < __this_cpu_ist_top_va(VC2));
-+	return (sp >= __this_cpu_ist_bottom_va(ESTACK_VC2) && sp < __this_cpu_ist_top_va(ESTACK_VC2));
- }
- 
- static __always_inline bool vc_from_invalid_context(struct pt_regs *regs)
+v9:
+ - Refactor first and then export in a separate patch (Dave Hansen).
+---
+ arch/x86/include/asm/cpu_entry_area.h | 52 ++++++++++++---------------
+ arch/x86/kernel/dumpstack_64.c        |  4 +--
+ arch/x86/mm/cpu_entry_area.c          | 22 +++++++++++-
+ 3 files changed, 45 insertions(+), 33 deletions(-)
+
 diff --git a/arch/x86/include/asm/cpu_entry_area.h b/arch/x86/include/asm/cpu_entry_area.h
-index 462fc34f1317..d0f884c28178 100644
+index d0f884c28178..509e52fc3a0f 100644
 --- a/arch/x86/include/asm/cpu_entry_area.h
 +++ b/arch/x86/include/asm/cpu_entry_area.h
-@@ -18,19 +18,19 @@
+@@ -16,6 +16,19 @@
+ #define VC_EXCEPTION_STKSZ	0
+ #endif
  
++/*
++ * The exception stack ordering in [cea_]exception_stacks
++ */
++enum exception_stack_ordering {
++	ESTACK_DF,
++	ESTACK_NMI,
++	ESTACK_DB,
++	ESTACK_MCE,
++	ESTACK_VC,
++	ESTACK_VC2,
++	N_EXCEPTION_STACKS
++};
++
  /* Macro to enforce the same ordering and stack sizes */
  #define ESTACKS_MEMBERS(guardsize, optional_stack_size)		\
--	char	DF_stack_guard[guardsize];			\
--	char	DF_stack[EXCEPTION_STKSZ];			\
--	char	NMI_stack_guard[guardsize];			\
--	char	NMI_stack[EXCEPTION_STKSZ];			\
--	char	DB_stack_guard[guardsize];			\
--	char	DB_stack[EXCEPTION_STKSZ];			\
--	char	MCE_stack_guard[guardsize];			\
--	char	MCE_stack[EXCEPTION_STKSZ];			\
--	char	VC_stack_guard[guardsize];			\
--	char	VC_stack[optional_stack_size];			\
--	char	VC2_stack_guard[guardsize];			\
--	char	VC2_stack[optional_stack_size];			\
--	char	IST_top_guard[guardsize];			\
-+	char	ESTACK_DF_stack_guard[guardsize];		\
-+	char	ESTACK_DF_stack[EXCEPTION_STKSZ];		\
-+	char	ESTACK_NMI_stack_guard[guardsize];		\
-+	char	ESTACK_NMI_stack[EXCEPTION_STKSZ];		\
-+	char	ESTACK_DB_stack_guard[guardsize];		\
-+	char	ESTACK_DB_stack[EXCEPTION_STKSZ];		\
-+	char	ESTACK_MCE_stack_guard[guardsize];		\
-+	char	ESTACK_MCE_stack[EXCEPTION_STKSZ];		\
-+	char	ESTACK_VC_stack_guard[guardsize];		\
-+	char	ESTACK_VC_stack[optional_stack_size];		\
-+	char	ESTACK_VC2_stack_guard[guardsize];		\
-+	char	ESTACK_VC2_stack[optional_stack_size];		\
-+	char	ESTACK_IST_top_guard[guardsize];		\
+ 	char	ESTACK_DF_stack_guard[guardsize];		\
+@@ -39,37 +52,22 @@ struct exception_stacks {
  
- /* The exception stacks' physical storage. No guard pages required */
- struct exception_stacks {
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index a3df21d26460..99ec284fb829 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -2372,12 +2372,12 @@ static inline void setup_getcpu(int cpu)
- static inline void tss_setup_ist(struct tss_struct *tss)
- {
- 	/* Set up the per-CPU TSS IST stacks */
--	tss->x86_tss.ist[IST_INDEX_DF] = __this_cpu_ist_top_va(DF);
--	tss->x86_tss.ist[IST_INDEX_NMI] = __this_cpu_ist_top_va(NMI);
--	tss->x86_tss.ist[IST_INDEX_DB] = __this_cpu_ist_top_va(DB);
--	tss->x86_tss.ist[IST_INDEX_MCE] = __this_cpu_ist_top_va(MCE);
-+	tss->x86_tss.ist[IST_INDEX_DF]	= __this_cpu_ist_top_va(ESTACK_DF);
-+	tss->x86_tss.ist[IST_INDEX_NMI]	= __this_cpu_ist_top_va(ESTACK_NMI);
-+	tss->x86_tss.ist[IST_INDEX_DB]	= __this_cpu_ist_top_va(ESTACK_DB);
-+	tss->x86_tss.ist[IST_INDEX_MCE]	= __this_cpu_ist_top_va(ESTACK_MCE);
- 	/* Only mapped when SEV-ES is active */
--	tss->x86_tss.ist[IST_INDEX_VC] = __this_cpu_ist_top_va(VC);
-+	tss->x86_tss.ist[IST_INDEX_VC]	= __this_cpu_ist_top_va(ESTACK_VC);
- }
- #else /* CONFIG_X86_64 */
- static inline void tss_setup_ist(struct tss_struct *tss) { }
-diff --git a/arch/x86/kernel/dumpstack_64.c b/arch/x86/kernel/dumpstack_64.c
-index 6c5defd6569a..40f51e278171 100644
---- a/arch/x86/kernel/dumpstack_64.c
-+++ b/arch/x86/kernel/dumpstack_64.c
-@@ -73,7 +73,7 @@ struct estack_pages {
- 	 PFN_DOWN(CEA_ESTACK_OFFS(st) + CEA_ESTACK_SIZE(st) - 1)] = {	\
- 		.offs	= CEA_ESTACK_OFFS(st),				\
- 		.size	= CEA_ESTACK_SIZE(st),				\
--		.type	= STACK_TYPE_EXCEPTION + ESTACK_ ##st, }
-+		.type	= STACK_TYPE_EXCEPTION + st, }
- 
- /*
-  * Array of exception stack page descriptors. If the stack is larger than
-@@ -83,12 +83,12 @@ struct estack_pages {
-  */
- static const
- struct estack_pages estack_pages[CEA_ESTACK_PAGES] ____cacheline_aligned = {
--	EPAGERANGE(DF),
--	EPAGERANGE(NMI),
--	EPAGERANGE(DB),
--	EPAGERANGE(MCE),
--	EPAGERANGE(VC),
--	EPAGERANGE(VC2),
-+	EPAGERANGE(ESTACK_DF),
-+	EPAGERANGE(ESTACK_NMI),
-+	EPAGERANGE(ESTACK_DB),
-+	EPAGERANGE(ESTACK_MCE),
-+	EPAGERANGE(ESTACK_VC),
-+	EPAGERANGE(ESTACK_VC2),
+ /* The effective cpu entry area mapping with guard pages. */
+ struct cea_exception_stacks {
+-	ESTACKS_MEMBERS(PAGE_SIZE, EXCEPTION_STKSZ)
++	struct {
++		char stack_guard[PAGE_SIZE];
++		char stack[EXCEPTION_STKSZ];
++	} event_stacks[N_EXCEPTION_STACKS];
++	char IST_top_guard[PAGE_SIZE];
  };
  
- static __always_inline bool in_exception_stack(unsigned long *stack, struct stack_info *info)
-diff --git a/arch/x86/kernel/fred.c b/arch/x86/kernel/fred.c
-index 117aa06d25ca..1c452a389a70 100644
---- a/arch/x86/kernel/fred.c
-+++ b/arch/x86/kernel/fred.c
-@@ -84,7 +84,7 @@ void cpu_init_fred_rsps(void)
- 	       FRED_STKLVL(X86_TRAP_DF,  FRED_DF_STACK_LEVEL));
+-/*
+- * The exception stack ordering in [cea_]exception_stacks
+- */
+-enum exception_stack_ordering {
+-	ESTACK_DF,
+-	ESTACK_NMI,
+-	ESTACK_DB,
+-	ESTACK_MCE,
+-	ESTACK_VC,
+-	ESTACK_VC2,
+-	N_EXCEPTION_STACKS
+-};
+-
+-#define CEA_ESTACK_SIZE(st)					\
+-	sizeof(((struct cea_exception_stacks *)0)->st## _stack)
+-
+-#define CEA_ESTACK_BOT(ceastp, st)				\
+-	((unsigned long)&(ceastp)->st## _stack)
+-
+-#define CEA_ESTACK_TOP(ceastp, st)				\
+-	(CEA_ESTACK_BOT(ceastp, st) + CEA_ESTACK_SIZE(st))
+-
+ #define CEA_ESTACK_OFFS(st)					\
+-	offsetof(struct cea_exception_stacks, st## _stack)
++	offsetof(struct cea_exception_stacks, event_stacks[st].stack)
  
- 	/* The FRED equivalents to IST stacks... */
--	wrmsrq(MSR_IA32_FRED_RSP1, __this_cpu_ist_top_va(DB));
--	wrmsrq(MSR_IA32_FRED_RSP2, __this_cpu_ist_top_va(NMI));
--	wrmsrq(MSR_IA32_FRED_RSP3, __this_cpu_ist_top_va(DF));
-+	wrmsrq(MSR_IA32_FRED_RSP1, __this_cpu_ist_top_va(ESTACK_DB));
-+	wrmsrq(MSR_IA32_FRED_RSP2, __this_cpu_ist_top_va(ESTACK_NMI));
-+	wrmsrq(MSR_IA32_FRED_RSP3, __this_cpu_ist_top_va(ESTACK_DF));
+ #define CEA_ESTACK_PAGES					\
+ 	(sizeof(struct cea_exception_stacks) / PAGE_SIZE)
+ 
++extern unsigned long __this_cpu_ist_top_va(enum exception_stack_ordering stack);
++extern unsigned long __this_cpu_ist_bottom_va(enum exception_stack_ordering stack);
++
+ #endif
+ 
+ #ifdef CONFIG_X86_32
+@@ -144,10 +142,4 @@ static __always_inline struct entry_stack *cpu_entry_stack(int cpu)
+ 	return &get_cpu_entry_area(cpu)->entry_stack_page.stack;
  }
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 30aa8369957e..8afd607a5873 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -1075,7 +1075,7 @@ asmlinkage __visible noinstr struct pt_regs *vc_switch_off_ist(struct pt_regs *r
  
- 	if (!get_stack_info_noinstr(stack, current, &info) || info.type == STACK_TYPE_ENTRY ||
- 	    info.type > STACK_TYPE_EXCEPTION_LAST)
--		sp = __this_cpu_ist_top_va(VC2);
-+		sp = __this_cpu_ist_top_va(ESTACK_VC2);
+-#define __this_cpu_ist_top_va(name)					\
+-	CEA_ESTACK_TOP(__this_cpu_read(cea_exception_stacks), name)
+-
+-#define __this_cpu_ist_bottom_va(name)					\
+-	CEA_ESTACK_BOT(__this_cpu_read(cea_exception_stacks), name)
+-
+ #endif
+diff --git a/arch/x86/kernel/dumpstack_64.c b/arch/x86/kernel/dumpstack_64.c
+index 40f51e278171..93b10b264e53 100644
+--- a/arch/x86/kernel/dumpstack_64.c
++++ b/arch/x86/kernel/dumpstack_64.c
+@@ -70,9 +70,9 @@ struct estack_pages {
  
- sync:
- 	/*
+ #define EPAGERANGE(st)							\
+ 	[PFN_DOWN(CEA_ESTACK_OFFS(st)) ...				\
+-	 PFN_DOWN(CEA_ESTACK_OFFS(st) + CEA_ESTACK_SIZE(st) - 1)] = {	\
++	 PFN_DOWN(CEA_ESTACK_OFFS(st) + EXCEPTION_STKSZ - 1)] = {	\
+ 		.offs	= CEA_ESTACK_OFFS(st),				\
+-		.size	= CEA_ESTACK_SIZE(st),				\
++		.size	= EXCEPTION_STKSZ,				\
+ 		.type	= STACK_TYPE_EXCEPTION + st, }
+ 
+ /*
 diff --git a/arch/x86/mm/cpu_entry_area.c b/arch/x86/mm/cpu_entry_area.c
-index 575f863f3c75..9fa371af8abc 100644
+index 9fa371af8abc..a47dfd686bd3 100644
 --- a/arch/x86/mm/cpu_entry_area.c
 +++ b/arch/x86/mm/cpu_entry_area.c
-@@ -151,15 +151,15 @@ static void __init percpu_setup_exception_stacks(unsigned int cpu)
- 	 * by guard pages so each stack must be mapped separately. DB2 is
- 	 * not mapped; it just exists to catch triple nesting of #DB.
- 	 */
--	cea_map_stack(DF);
--	cea_map_stack(NMI);
--	cea_map_stack(DB);
--	cea_map_stack(MCE);
-+	cea_map_stack(ESTACK_DF);
-+	cea_map_stack(ESTACK_NMI);
-+	cea_map_stack(ESTACK_DB);
-+	cea_map_stack(ESTACK_MCE);
+@@ -18,6 +18,26 @@ static DEFINE_PER_CPU_PAGE_ALIGNED(struct entry_stack_page, entry_stack_storage)
+ static DEFINE_PER_CPU_PAGE_ALIGNED(struct exception_stacks, exception_stacks);
+ DEFINE_PER_CPU(struct cea_exception_stacks*, cea_exception_stacks);
  
- 	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT)) {
- 		if (cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT)) {
--			cea_map_stack(VC);
--			cea_map_stack(VC2);
-+			cea_map_stack(ESTACK_VC);
-+			cea_map_stack(ESTACK_VC2);
- 		}
- 	}
- }
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 45b99c3b1442..f6ee1cc3f125 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -677,7 +677,7 @@ page_fault_oops(struct pt_regs *regs, unsigned long error_code,
- 		 * and then double-fault, though, because we're likely to
- 		 * break the console driver and lose most of the stack dump.
- 		 */
--		call_on_stack(__this_cpu_ist_top_va(DF) - sizeof(void*),
-+		call_on_stack(__this_cpu_ist_top_va(ESTACK_DF) - sizeof(void*),
- 			      handle_stack_overflow,
- 			      ASM_CALL_ARG3,
- 			      , [arg1] "r" (regs), [arg2] "r" (address), [arg3] "r" (&info));
++/*
++ * Typically invoked by entry code, so must be noinstr.
++ */
++noinstr unsigned long __this_cpu_ist_bottom_va(enum exception_stack_ordering stack)
++{
++	struct cea_exception_stacks *s;
++
++	BUILD_BUG_ON(ESTACK_DF != 0);
++	BUG_ON(stack >= N_EXCEPTION_STACKS);
++
++	s = __this_cpu_read(cea_exception_stacks);
++
++	return (unsigned long)&s->event_stacks[stack].stack;
++}
++
++noinstr unsigned long __this_cpu_ist_top_va(enum exception_stack_ordering stack)
++{
++	return __this_cpu_ist_bottom_va(stack) + EXCEPTION_STKSZ;
++}
++
+ static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, _cea_offset);
+ 
+ static __always_inline unsigned int cea_offset(unsigned int cpu)
+@@ -132,7 +152,7 @@ static void __init percpu_setup_debug_store(unsigned int cpu)
+ 
+ #define cea_map_stack(name) do {					\
+ 	npages = sizeof(estacks->name## _stack) / PAGE_SIZE;		\
+-	cea_map_percpu_pages(cea->estacks.name## _stack,		\
++	cea_map_percpu_pages(cea->estacks.event_stacks[name].stack,	\
+ 			estacks->name## _stack, npages, PAGE_KERNEL);	\
+ 	} while (0)
+ 
 -- 
 2.43.0
 
