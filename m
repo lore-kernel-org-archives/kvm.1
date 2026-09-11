@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367524A0F0F;
-	Fri, 11 Sep 2026 21:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29404A4984;
+	Fri, 11 Sep 2026 21:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789162844; cv=none; b=tL8GJ05X42Gf0i65h6JypTMKy4ts+4ZZ3rHDx05yD4uGksxE+vC4r7kWSfN6lLZgeilKecUXECPF18LZAyCUDM4+1gJpUGFWDfe+TptlxcfVBSt8JHjKYcTgbSOe/0JkZTWivs+NSXgN+Vebsyyok3su8W3WxB9JvtSVRLig5UY=
+	t=1789162855; cv=none; b=byweZD9DRk64ZTbYBkmDa3WkpnOIAVV8qSG9i6F2l07U2FPx4O0Ob4LRrJxfqybvkc2MwNorwC4xBeASgXg3GYLASw/zR6yG5PJSzjsENpiMvCJpYZliWw0FA7ahJOkReHL9kG+Hpfd0fk7V6OKU4X7pG7E30AxyKfgW4jNs974=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789162844; c=relaxed/simple;
-	bh=w6qxiFwdlREk3h/Q9LuqQ/wTCx279xrP36NXKR5c2R0=;
+	s=arc-20240116; t=1789162855; c=relaxed/simple;
+	bh=OHMvTxwx8WmR6ep9J+RcwSCq9HXroTytnAPdrb0CwxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a5jgXCV/DcnvMryn4hquOcJtljTUmt8owgAsS5bNGLjUw+xDLeWwcTATmuC3e49kzqVFVRk7MfFdZ3YfdHReZ7V6v19x3r342IqjNtNKKBiAhH6QPrm0aEK71Qs63GJDbntO6cj7WjkAfhL7gd3dVJr7CU6hNkUJtMZotybvkqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UM9L0qJ8; arc=none smtp.client-ip=192.198.163.19
+	 MIME-Version; b=MepujKYpWKYFRKZO8Cz+lqHgvE16/pWuKKO9iysKg6WVI4OqByR5qqkZ6RXKc24oAPjoRUFqym+Lw1WiYT8XeZRSwwFVdfqpUctkvP9Y9lUbbA+HuriH8+ATYMzd5QhYeaKMfGbRIVqTRGj7DokOOMMWww4cTIMLg0j6dsVjSZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UIsZfn0p; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UM9L0qJ8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UIsZfn0p"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789162842; x=1820698842;
+  t=1789162853; x=1820698853;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=w6qxiFwdlREk3h/Q9LuqQ/wTCx279xrP36NXKR5c2R0=;
-  b=UM9L0qJ8x4mkRYyQ0OEA2ZU2AIfQ+vwgYFIyktB1YYlGYtr2Zagye9BH
-   pPMqCt6rQhmzzKqGEOqKwkcwpqMw8BOvB3gpztzgr8M9FNNkoMQr1wM5W
-   EFeoOKvbjyLhTNKcHpkSfckomTQAtXEvV7ud/RmuzGpCX35z+2C1HNJUJ
-   hIjr4msCv19WRkd/QQySEwC1rNmh6J9sdigaBsYHvZR9mO02JkrDlSf/S
-   ZWWF1m5xCx+oCEGvzJe42U/jwYueMQpjOpmIUaheEBVXAwEe1bYisM+Jf
-   pMzqdV+TDaOHTGLp1B9KauzFT+w8VDE1iHtxLWNfnHScVuUM3Qk7PHjER
-   g==;
-X-CSE-ConnectionGUID: z96k+3+HSwOsQKUbL3ZicQ==
-X-CSE-MsgGUID: OrTpFGyvQ6iTgu00DeVLIA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="88572484"
+  bh=OHMvTxwx8WmR6ep9J+RcwSCq9HXroTytnAPdrb0CwxQ=;
+  b=UIsZfn0pcUJC8hTk+GVxybkdVVRvjgbz/A3Jl2cL7SHywjDOwgnsGs7v
+   t993GrT2yj5oi3SITv3lDqKImT+tkmP8n5T3JRu5sGastGd0HcMOr8oDU
+   p6TdqYLMqX6z6LQQdqL1abqYN4VeB0b87DetFDdI+s8mxDn48ZVnMLMsF
+   p3ooMIVPnMXV++CSfwV+q65y1W/sU9kLWRBG/LvDiZwDhr2XTqeLxVwcj
+   Xv+XkMJZEBWKjQo4WDVjg8OkOp69+5PpblGxYh4Jtjv0GQL83j6AWTs+p
+   4ZSbqlf/KEWwmGMvsWlBJIncrT4jqiHgJzNu2ryEW4clxIx8zPq6x+IOL
+   A==;
+X-CSE-ConnectionGUID: eentJmiLTZGnHjBUdN99vg==
+X-CSE-MsgGUID: cbqcUK3jQg+TlaCuK/Vzfg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="88572502"
 X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
-   d="scan'208";a="88572484"
+   d="scan'208";a="88572502"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 14:40:42 -0700
-X-CSE-ConnectionGUID: 93hrEfdsTqmTNdCVcTCXAA==
-X-CSE-MsgGUID: wD5yX24cRgeYyN93LVyqrA==
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 14:40:52 -0700
+X-CSE-ConnectionGUID: CvQRHx7pQQOiI64O8Vt9mA==
+X-CSE-MsgGUID: je4Zy9atSymj2NENkdBA/A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
-   d="scan'208";a="272004001"
+   d="scan'208";a="272004040"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by orviesa007.jf.intel.com with ESMTP; 11 Sep 2026 14:40:41 -0700
+  by orviesa007.jf.intel.com with ESMTP; 11 Sep 2026 14:40:51 -0700
 From: Sohil Mehta <sohil.mehta@intel.com>
 To: kvm@vger.kernel.org,
 	x86@kernel.org
@@ -72,9 +72,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v10 06/28] x86/fred: Export this_cpu_fred_rsp() for KVM usage
-Date: Fri, 11 Sep 2026 14:36:36 -0700
-Message-ID: <20260911213659.2025974-7-sohil.mehta@intel.com>
+Subject: [PATCH v10 07/28] KVM: VMX: Initialize VMCS FRED fields
+Date: Fri, 11 Sep 2026 14:36:37 -0700
+Message-ID: <20260911213659.2025974-8-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260911213659.2025974-1-sohil.mehta@intel.com>
 References: <20260911213659.2025974-1-sohil.mehta@intel.com>
@@ -84,113 +84,184 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: "Xin Li (Intel)" <xin@zytor.com>
 
-Introduce and export this_cpu_fred_rsp() to provide KVM with a self-
-explanatory interface for retrieving per-CPU FRED regular stacks for
-stack levels 1->3.
+Initialize host VMCS FRED fields with host FRED MSRs' value and
+guest VMCS FRED fields to 0.
 
-FRED introduced new fields in the VMCS host-state area for stack levels
-1–>3 (HOST_IA32_FRED_RSP[123]), which correspond to the per-CPU FRED
-regular stacks for stack levels 1->3.  KVM must populate these fields
-each time a vCPU is loaded onto a CPU to ensure a complete valid FRED
-event delivery context immediately after any VM-Exits.
+FRED CPU state is managed in 9 new FRED MSRs:
+        IA32_FRED_CONFIG,
+        IA32_FRED_STKLVLS,
+        IA32_FRED_RSP0,
+        IA32_FRED_RSP1,
+        IA32_FRED_RSP2,
+        IA32_FRED_RSP3,
+        IA32_FRED_SSP1,
+        IA32_FRED_SSP2,
+        IA32_FRED_SSP3,
+as well as a few existing CPU registers and MSRs:
+        CR4.FRED,
+        IA32_STAR,
+        IA32_KERNEL_GS_BASE,
+        IA32_PL0_SSP (also known as IA32_FRED_SSP0).
+
+CR4, IA32_KERNEL_GS_BASE and IA32_STAR are already well managed.
+Except IA32_FRED_RSP0 and IA32_FRED_SSP0, all other FRED CPU state
+MSRs have corresponding VMCS fields in both the host-state and
+guest-state areas.  So KVM just needs to initialize them, and with
+proper VM entry/exit FRED controls, a FRED CPU will keep tracking
+host and guest FRED CPU state in VMCS automatically.
 
 Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+Reviewed-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 ---
 v10:
+ - s/rdmsrl/rdmsrq (Chao)
+ - Remove a terse comment which doesn't help at all (Sean).
  - Replace direct, raw use of __this_cpu_ist_top_va() with a self-
    explanatory this_cpu_fred_rsp() helper for better readability (Sean).
+ - Add cpu_feature_enabled(X86_FEATURE_FRED) to patch out accesses to
+   VMCS FRED fields (Sean).
+ - Remove "#ifdef CONFIG_X86_64" after switching to this_cpu_fred_rsp()
+   (Sean).
 ---
- arch/x86/include/asm/fred.h | 10 ++++++++++
- arch/x86/kernel/fred.c      | 24 +++++++++++++++++++++---
- 2 files changed, 31 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  3 +++
+ arch/x86/include/asm/vmx.h      | 32 ++++++++++++++++++++++++++++++++
+ arch/x86/kvm/vmx/vmx.c          | 33 +++++++++++++++++++++++++++++++++
+ 3 files changed, 68 insertions(+)
 
-diff --git a/arch/x86/include/asm/fred.h b/arch/x86/include/asm/fred.h
-index 18a2f811c358..85b851f16bae 100644
---- a/arch/x86/include/asm/fred.h
-+++ b/arch/x86/include/asm/fred.h
-@@ -35,6 +35,13 @@
- 
- #ifndef __ASSEMBLER__
- 
-+enum fred_stack_level {
-+	FRED_STACK_LEVEL_0,
-+	FRED_STACK_LEVEL_1,
-+	FRED_STACK_LEVEL_2,
-+	FRED_STACK_LEVEL_3
-+};
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 683bb8bf43a9..8d3999772ac2 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -294,6 +294,9 @@ struct kvm_host_values {
+ 	u64 xss;
+ 	u64 s_cet;
+ 	u64 arch_capabilities;
 +
- #ifdef CONFIG_X86_FRED
- #include <linux/kernel.h>
- #include <linux/sched/task_stack.h>
-@@ -105,6 +112,8 @@ static __always_inline void fred_update_rsp0(void)
- 		__this_cpu_write(fred_rsp0, rsp0);
++	u64 fred_config;
++	u64 fred_stklvls;
+ };
+ extern struct kvm_host_values kvm_host;
+ 
+diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
+index 682f09933612..4720619f09ac 100644
+--- a/arch/x86/include/asm/vmx.h
++++ b/arch/x86/include/asm/vmx.h
+@@ -306,12 +306,44 @@ enum vmcs_field {
+ 	GUEST_BNDCFGS_HIGH              = 0x00002813,
+ 	GUEST_IA32_RTIT_CTL		= 0x00002814,
+ 	GUEST_IA32_RTIT_CTL_HIGH	= 0x00002815,
++	GUEST_IA32_FRED_CONFIG		= 0x0000281a,
++	GUEST_IA32_FRED_CONFIG_HIGH	= 0x0000281b,
++	GUEST_IA32_FRED_RSP1		= 0x0000281c,
++	GUEST_IA32_FRED_RSP1_HIGH	= 0x0000281d,
++	GUEST_IA32_FRED_RSP2		= 0x0000281e,
++	GUEST_IA32_FRED_RSP2_HIGH	= 0x0000281f,
++	GUEST_IA32_FRED_RSP3		= 0x00002820,
++	GUEST_IA32_FRED_RSP3_HIGH	= 0x00002821,
++	GUEST_IA32_FRED_STKLVLS		= 0x00002822,
++	GUEST_IA32_FRED_STKLVLS_HIGH	= 0x00002823,
++	GUEST_IA32_FRED_SSP1		= 0x00002824,
++	GUEST_IA32_FRED_SSP1_HIGH	= 0x00002825,
++	GUEST_IA32_FRED_SSP2		= 0x00002826,
++	GUEST_IA32_FRED_SSP2_HIGH	= 0x00002827,
++	GUEST_IA32_FRED_SSP3		= 0x00002828,
++	GUEST_IA32_FRED_SSP3_HIGH	= 0x00002829,
+ 	HOST_IA32_PAT			= 0x00002c00,
+ 	HOST_IA32_PAT_HIGH		= 0x00002c01,
+ 	HOST_IA32_EFER			= 0x00002c02,
+ 	HOST_IA32_EFER_HIGH		= 0x00002c03,
+ 	HOST_IA32_PERF_GLOBAL_CTRL	= 0x00002c04,
+ 	HOST_IA32_PERF_GLOBAL_CTRL_HIGH	= 0x00002c05,
++	HOST_IA32_FRED_CONFIG		= 0x00002c08,
++	HOST_IA32_FRED_CONFIG_HIGH	= 0x00002c09,
++	HOST_IA32_FRED_RSP1		= 0x00002c0a,
++	HOST_IA32_FRED_RSP1_HIGH	= 0x00002c0b,
++	HOST_IA32_FRED_RSP2		= 0x00002c0c,
++	HOST_IA32_FRED_RSP2_HIGH	= 0x00002c0d,
++	HOST_IA32_FRED_RSP3		= 0x00002c0e,
++	HOST_IA32_FRED_RSP3_HIGH	= 0x00002c0f,
++	HOST_IA32_FRED_STKLVLS		= 0x00002c10,
++	HOST_IA32_FRED_STKLVLS_HIGH	= 0x00002c11,
++	HOST_IA32_FRED_SSP1		= 0x00002c12,
++	HOST_IA32_FRED_SSP1_HIGH	= 0x00002c13,
++	HOST_IA32_FRED_SSP2		= 0x00002c14,
++	HOST_IA32_FRED_SSP2_HIGH	= 0x00002c15,
++	HOST_IA32_FRED_SSP3		= 0x00002c16,
++	HOST_IA32_FRED_SSP3_HIGH	= 0x00002c17,
+ 	PIN_BASED_VM_EXEC_CONTROL       = 0x00004000,
+ 	CPU_BASED_VM_EXEC_CONTROL       = 0x00004002,
+ 	EXCEPTION_BITMAP                = 0x00004004,
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 2a2218e0983b..dc80ca5f804d 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -1562,6 +1562,12 @@ void vmx_vcpu_load_vmcs(struct kvm_vcpu *vcpu, int cpu)
+ 				    (unsigned long)(cpu_entry_stack(cpu) + 1));
+ 		}
+ 
++		if (cpu_feature_enabled(X86_FEATURE_FRED) && kvm_cpu_cap_has(X86_FEATURE_FRED)) {
++			vmcs_write64(HOST_IA32_FRED_RSP1, this_cpu_fred_rsp(FRED_STACK_LEVEL_1));
++			vmcs_write64(HOST_IA32_FRED_RSP2, this_cpu_fred_rsp(FRED_STACK_LEVEL_2));
++			vmcs_write64(HOST_IA32_FRED_RSP3, this_cpu_fred_rsp(FRED_STACK_LEVEL_3));
++		}
++
+ 		vmx->loaded_vmcs->cpu = cpu;
  	}
  }
+@@ -4500,6 +4506,17 @@ void vmx_set_constant_host_state(struct vcpu_vmx *vmx)
+ 	 */
+ 	vmcs_write16(HOST_DS_SELECTOR, 0);
+ 	vmcs_write16(HOST_ES_SELECTOR, 0);
 +
-+unsigned long this_cpu_fred_rsp(enum fred_stack_level lvl);
- #else /* CONFIG_X86_FRED */
- static __always_inline unsigned long fred_event_data(struct pt_regs *regs) { return 0; }
- static inline void cpu_init_fred_exceptions(void) { }
-@@ -112,6 +121,7 @@ static inline void cpu_init_fred_rsps(void) { }
- static inline void fred_complete_exception_setup(void) { }
- static inline void fred_sync_rsp0(unsigned long rsp0) { }
- static inline void fred_update_rsp0(void) { }
-+static inline unsigned long this_cpu_fred_rsp(enum fred_stack_level lvl) { return 0; }
- #endif /* CONFIG_X86_FRED */
- #endif /* !__ASSEMBLER__ */
- 
-diff --git a/arch/x86/kernel/fred.c b/arch/x86/kernel/fred.c
-index 1c452a389a70..68947c53a494 100644
---- a/arch/x86/kernel/fred.c
-+++ b/arch/x86/kernel/fred.c
-@@ -1,5 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #include <linux/kernel.h>
-+#include <linux/kvm_types.h>
- 
- #include <asm/desc.h>
- #include <asm/fred.h>
-@@ -69,6 +70,23 @@ void cpu_init_fred_exceptions(void)
- 	setup_clear_cpu_cap(X86_FEATURE_SYSCALL32);
- }
- 
-+unsigned long this_cpu_fred_rsp(enum fred_stack_level lvl)
-+{
-+	switch (lvl) {
-+	case FRED_STACK_LEVEL_0:
-+		return __this_cpu_read(fred_rsp0);
-+	case FRED_STACK_LEVEL_1:
-+		return __this_cpu_ist_top_va(ESTACK_DB);
-+	case FRED_STACK_LEVEL_2:
-+		return __this_cpu_ist_top_va(ESTACK_NMI);
-+	case FRED_STACK_LEVEL_3:
-+		return __this_cpu_ist_top_va(ESTACK_DF);
-+	default:
-+		BUG();
++	if (cpu_feature_enabled(X86_FEATURE_FRED) && kvm_cpu_cap_has(X86_FEATURE_FRED)) {
++		/* FRED CONFIG and STKLVLS are the same on all CPUs */
++		vmcs_write64(HOST_IA32_FRED_CONFIG, kvm_host.fred_config);
++		vmcs_write64(HOST_IA32_FRED_STKLVLS, kvm_host.fred_stklvls);
++
++		/* Linux doesn't support kernel shadow stacks, thus SSPs are 0s */
++		vmcs_write64(HOST_IA32_FRED_SSP1, 0);
++		vmcs_write64(HOST_IA32_FRED_SSP2, 0);
++		vmcs_write64(HOST_IA32_FRED_SSP3, 0);
 +	}
-+}
-+EXPORT_SYMBOL_FOR_KVM(this_cpu_fred_rsp);
-+
- /* Must be called after setup_cpu_entry_areas() */
- void cpu_init_fred_rsps(void)
- {
-@@ -84,7 +102,7 @@ void cpu_init_fred_rsps(void)
- 	       FRED_STKLVL(X86_TRAP_DF,  FRED_DF_STACK_LEVEL));
+ #else
+ 	vmcs_write16(HOST_DS_SELECTOR, __KERNEL_DS);  /* 22.2.4 */
+ 	vmcs_write16(HOST_ES_SELECTOR, __KERNEL_DS);  /* 22.2.4 */
+@@ -5030,6 +5047,17 @@ static void init_vmcs(struct vcpu_vmx *vmx)
+ 	}
  
- 	/* The FRED equivalents to IST stacks... */
--	wrmsrq(MSR_IA32_FRED_RSP1, __this_cpu_ist_top_va(ESTACK_DB));
--	wrmsrq(MSR_IA32_FRED_RSP2, __this_cpu_ist_top_va(ESTACK_NMI));
--	wrmsrq(MSR_IA32_FRED_RSP3, __this_cpu_ist_top_va(ESTACK_DF));
-+	wrmsrq(MSR_IA32_FRED_RSP1, this_cpu_fred_rsp(FRED_STACK_LEVEL_1));
-+	wrmsrq(MSR_IA32_FRED_RSP2, this_cpu_fred_rsp(FRED_STACK_LEVEL_2));
-+	wrmsrq(MSR_IA32_FRED_RSP3, this_cpu_fred_rsp(FRED_STACK_LEVEL_3));
+ 	vmx_setup_uret_msrs(vmx);
++
++	if (cpu_feature_enabled(X86_FEATURE_FRED) && kvm_cpu_cap_has(X86_FEATURE_FRED)) {
++		vmcs_write64(GUEST_IA32_FRED_CONFIG, 0);
++		vmcs_write64(GUEST_IA32_FRED_RSP1, 0);
++		vmcs_write64(GUEST_IA32_FRED_RSP2, 0);
++		vmcs_write64(GUEST_IA32_FRED_RSP3, 0);
++		vmcs_write64(GUEST_IA32_FRED_STKLVLS, 0);
++		vmcs_write64(GUEST_IA32_FRED_SSP1, 0);
++		vmcs_write64(GUEST_IA32_FRED_SSP2, 0);
++		vmcs_write64(GUEST_IA32_FRED_SSP3, 0);
++	}
  }
+ 
+ static void __vmx_vcpu_reset(struct kvm_vcpu *vcpu)
+@@ -8883,6 +8911,11 @@ __init int vmx_hardware_setup(void)
+ 
+ 	kvm_caps.inapplicable_quirks &= ~KVM_X86_QUIRK_IGNORE_GUEST_PAT;
+ 
++	if (cpu_feature_enabled(X86_FEATURE_FRED) && kvm_cpu_cap_has(X86_FEATURE_FRED)) {
++		rdmsrq(MSR_IA32_FRED_CONFIG, kvm_host.fred_config);
++		rdmsrq(MSR_IA32_FRED_STKLVLS, kvm_host.fred_stklvls);
++	}
++
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
