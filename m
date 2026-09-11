@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AC44BEE3B;
-	Fri, 11 Sep 2026 21:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADA54BEE57;
+	Fri, 11 Sep 2026 21:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789163033; cv=none; b=cqNWP+L0dLIM+0dVkiygbw9khuTfU4RiUjaTchAepKLHYIoBRjGxypzjC+4cZWeVACG5spgDbGE4iBt+pCkbRoTnZ7P3FkyGkjDH/ypM0FmmVUpWk/U7PMY+YOpVsHpSBBeYPNWoRBgp/oFo1MqgoZkL2TgqmzwUUk+iA4j5b3s=
+	t=1789163045; cv=none; b=DkAVwliNiOEUIsVZOgjtu7SAgzLYVw5fI7XxDUu2RI67llILLCWfQFwcpJiWLyYcTm46snhftlXwTa6UhPHB2pAJ3CSRWF9/b0PtlMx+QTDEuWt6JBNHGNZruUG2Tr3Wdx24q76tzAROkZotJY2h+wjiiZl64foD5fC9lKxTSbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789163033; c=relaxed/simple;
-	bh=xTcz+8SJvIkx43QiWYnGAhgtbnaSw9N12NLUCq9wllo=;
+	s=arc-20240116; t=1789163045; c=relaxed/simple;
+	bh=LmGadgze0iyyl8KmfsawwtBrbsoXIrl6uQyMW4y3r3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qT+RxCosfa/Te+9xk82AZlEn2KOmN8E2didb2qFRMtpRvWg8EKqh6wtw+Du+Ug1LoLF0wTGtIpTfah6pbwxLpI/FgA3ulFHgDFyL2IVBrVLpmFuMv04W2yKLCEpRr8V8v/vlflVq1VKjdti1csn80DR3iaKGsz9LTgoEsAYK60M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mf/Unxai; arc=none smtp.client-ip=192.198.163.19
+	 MIME-Version; b=VCqDA/jbZlUhX9QZH7ey5hplgGCqIc69oEt6CWOwg4TALWE6NKMRpwRsVBYERVovjo1VBp4jNx43KQCK4FC4XJ6SPxwtpnuEAXonvT5bPklnfJStTeYYYYC8R79EK9We6D/4Osneh8FBvyzjApRZhsvUWWlF3/KlbHN8ovN5XjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z9b2m6EZ; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mf/Unxai"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z9b2m6EZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789163033; x=1820699033;
+  t=1789163043; x=1820699043;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=xTcz+8SJvIkx43QiWYnGAhgtbnaSw9N12NLUCq9wllo=;
-  b=mf/Unxaiz1DR/1r0oGmSqq5aPv5BqtVoFEc6HWkq1h25VZOd7mfarb9z
-   K5kftWMOGO9ioM++88KvNdm+JGoa/OgYxBCVHJqhGfj1mEJ6EbffEaMso
-   u18B6pl+3aXK4bsaJJRmZnR862Et8exCfjW67hgZY/1yS2drhilSPBEhE
-   bKCtQ/QLaeEw7Povv2Q+5mCOAmY+/xiLzcq9Kb0Ercgat6f2nXPdXSHz/
-   bw6Kt+LIn86kEv7NRj+pvIXu9vFoRnoTvCqXIRagcBv8Es66yAcuTHpzj
-   M1clH34fvO2CIv2iVRBnioOD3E4WbrsGhwD3eN2n20BAXEYVUdMrrZUQ/
-   Q==;
-X-CSE-ConnectionGUID: NnPAQhLfSJyAWH8Dv4n3rA==
-X-CSE-MsgGUID: 9vEqNf/kTTqRY5jEPaKWrw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="88572932"
+  bh=LmGadgze0iyyl8KmfsawwtBrbsoXIrl6uQyMW4y3r3w=;
+  b=Z9b2m6EZuym78oVOD8Om+0C0bzQaymYMQOi+CnkF0snD73YurPt8MLoO
+   QjGOFk9RsDjS0HDjzns9dIhLk9uzyBQaTsJuUsysmzKH794Ftn9RnCtEc
+   4lo3Bhr5YAv7DrYYnUL8hb1oePisXh+Uln5EKNB47N3ddf12QjVyjuxNu
+   KXf0vi7FlTEISyjxeHtbvFfAz3fvuU79FSKVPAyDXpBFwWtI3WiRFJn5w
+   Y1/s3mPag/HOycV0vnTGcfczbFQHs13xtSgmmCp6BPA3EsC85d5YcTr5b
+   GSNqj3NkggVJ5+ZT2PiXD/AgkGCvi6wSGTlYQ6+zkTBI8DhgozlugQvfv
+   g==;
+X-CSE-ConnectionGUID: Bs34d6RqQkmpeU+iTaKcTA==
+X-CSE-MsgGUID: z80VRbzwQ1SFMMPlk/YUSQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="88572951"
 X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
-   d="scan'208";a="88572932"
+   d="scan'208";a="88572951"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 14:43:52 -0700
-X-CSE-ConnectionGUID: ZxDSJ2FLRzyNkuPE9JxAcQ==
-X-CSE-MsgGUID: G+1GdaUyRFuRBOyaOwsMhw==
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 14:44:02 -0700
+X-CSE-ConnectionGUID: okdgUtZUQJm5ZcdU0+n7zA==
+X-CSE-MsgGUID: IDGTdOTqTxa49fLmP4obww==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
-   d="scan'208";a="272004368"
+   d="scan'208";a="272004440"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by orviesa007.jf.intel.com with ESMTP; 11 Sep 2026 14:43:51 -0700
+  by orviesa007.jf.intel.com with ESMTP; 11 Sep 2026 14:44:01 -0700
 From: Sohil Mehta <sohil.mehta@intel.com>
 To: kvm@vger.kernel.org,
 	x86@kernel.org
@@ -72,9 +72,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v10 26/28] KVM: selftests: Add FRED MSRs to msrs_test
-Date: Fri, 11 Sep 2026 14:36:56 -0700
-Message-ID: <20260911213659.2025974-27-sohil.mehta@intel.com>
+Subject: [PATCH v10 27/28] KVM: selftests: Add a new VM guest mode to run user level code
+Date: Fri, 11 Sep 2026 14:36:57 -0700
+Message-ID: <20260911213659.2025974-28-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260911213659.2025974-1-sohil.mehta@intel.com>
 References: <20260911213659.2025974-1-sohil.mehta@intel.com>
@@ -86,138 +86,141 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Xin Li <xin@zytor.com>
+From: "Xin Li (Intel)" <xin@zytor.com>
 
-Add FRED MSR coverage to msrs_test, including the FRED RSP0-3, SSP0-3,
-STKLVLS and CONFIG MSRs.
+Add a new VM guest mode VM_MODE_PXXV48_4K_USER to set the user bit of
+guest page table entries, thus allow user level code to run in guests.
 
-Signed-off-by: Xin Li <xin@zytor.com>
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 ---
 v10:
- - New patch.
+ - Treat as new patch (last posted in v2).
 ---
- tools/arch/x86/include/asm/msr-index.h        |  2 +
- .../selftests/kvm/include/x86/processor.h     |  1 +
- tools/testing/selftests/kvm/x86/msrs_test.c   | 52 ++++++++++++++++++-
- 3 files changed, 53 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kvm/include/kvm_util.h  |  1 +
+ tools/testing/selftests/kvm/lib/kvm_util.c      |  5 ++++-
+ tools/testing/selftests/kvm/lib/x86/processor.c | 16 ++++++++++++----
+ 3 files changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/tools/arch/x86/include/asm/msr-index.h b/tools/arch/x86/include/asm/msr-index.h
-index 18c4be75e927..14632e29f981 100644
---- a/tools/arch/x86/include/asm/msr-index.h
-+++ b/tools/arch/x86/include/asm/msr-index.h
-@@ -64,6 +64,8 @@
- #define MSR_IA32_FRED_SSP3	0x1d3			/* Level 3 shadow stack pointer */
- #define MSR_IA32_FRED_CONFIG	0x1d4			/* Entrypoint and interrupt stack level */
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index 5a7a455b5387..981adfcbd5fa 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -191,6 +191,7 @@ enum vm_guest_mode {
+ 	VM_MODE_P40V48_16K,
+ 	VM_MODE_P40V48_64K,
+ 	VM_MODE_PXXVYY_4K,	/* For 48-bit or 57-bit VA, depending on host support */
++	VM_MODE_PXXVYY_4K_USER,	/* For 48bits VA but ANY bits PA with USER bit set */
+ 	VM_MODE_P47V64_4K,
+ 	VM_MODE_P44V64_4K,
+ 	VM_MODE_P36V48_4K,
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index 9ddc047d5c27..e79fddedaf39 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -210,6 +210,7 @@ const char *vm_guest_mode_string(u32 i)
+ 		[VM_MODE_P40V48_16K]	= "PA-bits:40,  VA-bits:48, 16K pages",
+ 		[VM_MODE_P40V48_64K]	= "PA-bits:40,  VA-bits:48, 64K pages",
+ 		[VM_MODE_PXXVYY_4K]	= "PA-bits:ANY, VA-bits:48 or 57, 4K pages",
++		[VM_MODE_PXXVYY_4K_USER]= "PA-bits:ANY, VA-bits:48,  4K user pages",
+ 		[VM_MODE_P47V64_4K]	= "PA-bits:47,  VA-bits:64,  4K pages",
+ 		[VM_MODE_P44V64_4K]	= "PA-bits:44,  VA-bits:64,  4K pages",
+ 		[VM_MODE_P36V48_4K]	= "PA-bits:36,  VA-bits:48,  4K pages",
+@@ -246,6 +247,7 @@ const struct vm_guest_mode_params vm_guest_mode_params[] = {
+ 	[VM_MODE_P40V48_16K]	= { 40, 48,  0x4000, 14 },
+ 	[VM_MODE_P40V48_64K]	= { 40, 48, 0x10000, 16 },
+ 	[VM_MODE_PXXVYY_4K]	= {  0,  0,  0x1000, 12 },
++	[VM_MODE_PXXVYY_4K_USER]= {  0,  0,  0x1000, 12 },
+ 	[VM_MODE_P47V64_4K]	= { 47, 64,  0x1000, 12 },
+ 	[VM_MODE_P44V64_4K]	= { 44, 64,  0x1000, 12 },
+ 	[VM_MODE_P36V48_4K]	= { 36, 48,  0x1000, 12 },
+@@ -337,6 +339,7 @@ struct kvm_vm *____vm_create(struct vm_shape shape)
+ 		vm->mmu.pgtable_levels = 3;
+ 		break;
+ 	case VM_MODE_PXXVYY_4K:
++	case VM_MODE_PXXVYY_4K_USER:
+ #ifdef __x86_64__
+ 		kvm_get_cpu_address_width(&vm->pa_bits, &vm->va_bits);
+ 		kvm_init_vm_address_properties(vm);
+@@ -355,7 +358,7 @@ struct kvm_vm *____vm_create(struct vm_shape shape)
+ 			vm->mmu.pgtable_levels = 4;
+ 		}
+ #else
+-		TEST_FAIL("VM_MODE_PXXVYY_4K not supported on non-x86 platforms");
++		TEST_FAIL("VM_MODE_PXXVYY_4K(_USER) not supported on non-x86 platforms");
+ #endif
+ 		break;
+ 	case VM_MODE_P47V64_4K:
+diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+index d31fa81ea075..51d713c4c9de 100644
+--- a/tools/testing/selftests/kvm/lib/x86/processor.c
++++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+@@ -167,6 +167,9 @@ bool kvm_is_tdp_enabled(void)
+ static void virt_mmu_init(struct kvm_vm *vm, struct kvm_mmu *mmu,
+ 			  struct pte_masks *pte_masks)
+ {
++	TEST_ASSERT(vm->mode == VM_MODE_PXXVYY_4K || vm->mode == VM_MODE_PXXVYY_4K_USER,
++		    "Unknown or unsupported guest mode: 0x%x", vm->mode);
++
+ 	/* If needed, create the top-level page table. */
+ 	if (!mmu->pgd_created) {
+ 		mmu->pgd = vm_alloc_page_table(vm);
+@@ -181,7 +184,7 @@ static void virt_mmu_init(struct kvm_vm *vm, struct kvm_mmu *mmu,
  
-+#define FRED_CONFIG_RESERVED		(BIT_ULL(2) | GENMASK_ULL(5, 4) | BIT_ULL(11))
-+
- /* Intel MSRs. Some also available on other CPUs */
- #define MSR_TEST_CTRL				0x00000033
- #define MSR_TEST_CTRL_SPLIT_LOCK_DETECT_BIT	29
-diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index 6e6f70035508..916646cb4d89 100644
---- a/tools/testing/selftests/kvm/include/x86/processor.h
-+++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -195,6 +195,7 @@ struct kvm_x86_cpu_feature {
- #define	X86_FEATURE_SPEC_CTRL		KVM_X86_CPU_FEATURE(0x7, 0, EDX, 26)
- #define	X86_FEATURE_ARCH_CAPABILITIES	KVM_X86_CPU_FEATURE(0x7, 0, EDX, 29)
- #define	X86_FEATURE_PKS			KVM_X86_CPU_FEATURE(0x7, 0, ECX, 31)
-+#define	X86_FEATURE_FRED		KVM_X86_CPU_FEATURE(0x7, 1, EAX, 17)
- #define	X86_FEATURE_XTILECFG		KVM_X86_CPU_FEATURE(0xD, 0, EAX, 17)
- #define	X86_FEATURE_XTILEDATA		KVM_X86_CPU_FEATURE(0xD, 0, EAX, 18)
- #define	X86_FEATURE_XSAVES		KVM_X86_CPU_FEATURE(0xD, 1, EAX, 3)
-diff --git a/tools/testing/selftests/kvm/x86/msrs_test.c b/tools/testing/selftests/kvm/x86/msrs_test.c
-index f7e39bf887ad..6e2d8b8f1bd3 100644
---- a/tools/testing/selftests/kvm/x86/msrs_test.c
-+++ b/tools/testing/selftests/kvm/x86/msrs_test.c
-@@ -60,9 +60,23 @@ static const u64 u64_val = 0xaaaa5555aaaa5555ull;
- #define MSR_TEST_CANONICAL(msr, feat)					\
- 	__MSR_TEST(msr, #msr, canonical_val, NONCANONICAL, 0, feat)
+ void virt_arch_pgd_alloc(struct kvm_vm *vm)
+ {
+-	TEST_ASSERT(vm->mode == VM_MODE_PXXVYY_4K,
++	TEST_ASSERT(vm->mode == VM_MODE_PXXVYY_4K || vm->mode == VM_MODE_PXXVYY_4K_USER,
+ 		    "Unknown or unsupported guest mode: 0x%x", vm->mode);
  
-+#define MSR_TEST_CANONICAL2(msr, feat, f2)				\
-+	____MSR_TEST(msr, #msr, canonical_val, NONCANONICAL, 0, feat, f2, false)
-+
- #define MSR_TEST_KVM(msr, val, rsvd, feat)				\
- 	____MSR_TEST(KVM_REG_ ##msr, #msr, val, rsvd, 0, feat, feat, true)
+ 	struct pte_masks pte_masks = (struct pte_masks){
+@@ -239,6 +242,8 @@ static u64 *virt_create_upper_pte(struct kvm_vm *vm,
+ 		*pte = PTE_PRESENT_MASK(mmu) | PTE_READABLE_MASK(mmu) |
+ 		       PTE_WRITABLE_MASK(mmu) | PTE_EXECUTABLE_MASK(mmu) |
+ 		       PTE_ALWAYS_SET_MASK(mmu);
++		if (vm->mode == VM_MODE_PXXVYY_4K_USER)
++			*pte |= PTE_USER_MASK(mmu);
+ 		if (current_level == target_level)
+ 			*pte |= PTE_HUGE_MASK(mmu) | (gpa & PHYSICAL_PAGE_MASK);
+ 		else
+@@ -266,7 +271,7 @@ void __virt_pg_map(struct kvm_vm *vm, struct kvm_mmu *mmu, gva_t gva,
+ 	u64 *pte = &mmu->pgd;
+ 	int current_level;
  
-+/* FRED RSPs are 64-byte aligned, thus bits 5:0 are all zero */
-+static const u64 fred_rsp_canonical_val = canonical_val + 0xbc0;
-+
-+/*
-+ * FRED SSP[123] are 8-byte aligned, thus bits 2:0 are all zero.
-+ *
-+ * For legacy reasons, FRED SSP0 is allowed to be 4-byte aligned, but treat
-+ * it as 8-byte aligned to simplify the tests.
-+ */
-+static const u64 fred_ssp_canonical_val = canonical_val + 0xbc8;
-+
- /*
-  * The main struct must be scoped to a function due to the use of structures to
-  * define features.  For the global structure, allocate enough space for the
-@@ -388,8 +402,9 @@ static void test_msrs(void)
- 		MSR_TEST2(MSR_IA32_S_CET, CET_ENDBR_EN, CET_RESERVED, IBT, SHSTK),
- 		MSR_TEST2(MSR_IA32_U_CET, CET_SHSTK_EN, CET_RESERVED, SHSTK, IBT),
- 		MSR_TEST2(MSR_IA32_U_CET, CET_ENDBR_EN, CET_RESERVED, IBT, SHSTK),
--		MSR_TEST_CANONICAL(MSR_IA32_PL0_SSP, SHSTK),
--		MSR_TEST(MSR_IA32_PL0_SSP, canonical_val, canonical_val | 1, SHSTK),
-+		MSR_TEST_CANONICAL2(MSR_IA32_PL0_SSP, SHSTK, FRED),
-+		MSR_TEST2(MSR_IA32_PL0_SSP, canonical_val, canonical_val | 1, SHSTK, FRED),
-+		MSR_TEST2(MSR_IA32_PL0_SSP, canonical_val, canonical_val | 1, FRED, SHSTK),
- 		MSR_TEST_CANONICAL(MSR_IA32_PL1_SSP, SHSTK),
- 		MSR_TEST(MSR_IA32_PL1_SSP, canonical_val, canonical_val | 1, SHSTK),
- 		MSR_TEST_CANONICAL(MSR_IA32_PL2_SSP, SHSTK),
-@@ -398,10 +413,35 @@ static void test_msrs(void)
- 		MSR_TEST(MSR_IA32_PL3_SSP, canonical_val, canonical_val | 1, SHSTK),
+-	TEST_ASSERT(vm->mode == VM_MODE_PXXVYY_4K,
++	TEST_ASSERT(vm->mode == VM_MODE_PXXVYY_4K || vm->mode == VM_MODE_PXXVYY_4K_USER,
+ 		    "Unknown or unsupported guest mode: 0x%x", vm->mode);
  
- 		MSR_TEST_KVM(GUEST_SSP, canonical_val, NONCANONICAL, SHSTK),
+ 	TEST_ASSERT((gva % pg_size) == 0,
+@@ -316,6 +321,9 @@ void __virt_pg_map(struct kvm_vm *vm, struct kvm_mmu *mmu, gva_t gva,
+ 		*pte |= PTE_C_BIT_MASK(mmu);
+ 	else
+ 		*pte |= PTE_S_BIT_MASK(mmu);
 +
-+		MSR_TEST_CANONICAL(MSR_IA32_FRED_RSP0, FRED),
-+		MSR_TEST(MSR_IA32_FRED_RSP0, fred_rsp_canonical_val, fred_rsp_canonical_val | 1, FRED),
-+		MSR_TEST_CANONICAL(MSR_IA32_FRED_RSP1, FRED),
-+		MSR_TEST(MSR_IA32_FRED_RSP1, fred_rsp_canonical_val, fred_rsp_canonical_val | 2, FRED),
-+		MSR_TEST_CANONICAL(MSR_IA32_FRED_RSP2, FRED),
-+		MSR_TEST(MSR_IA32_FRED_RSP2, fred_rsp_canonical_val, fred_rsp_canonical_val | 4, FRED),
-+		MSR_TEST_CANONICAL(MSR_IA32_FRED_RSP3, FRED),
-+		MSR_TEST(MSR_IA32_FRED_RSP3, fred_rsp_canonical_val, fred_rsp_canonical_val | 7, FRED),
-+
-+		MSR_TEST_CANONICAL2(MSR_IA32_FRED_SSP0, FRED, SHSTK),
-+		MSR_TEST2(MSR_IA32_FRED_SSP0, fred_ssp_canonical_val, fred_ssp_canonical_val | 1, SHSTK, FRED),
-+		MSR_TEST2(MSR_IA32_FRED_SSP0, fred_ssp_canonical_val, fred_ssp_canonical_val | 1, FRED, SHSTK),
-+		MSR_TEST_CANONICAL(MSR_IA32_FRED_SSP1, FRED),
-+		MSR_TEST(MSR_IA32_FRED_SSP1, fred_ssp_canonical_val, fred_ssp_canonical_val | 2, FRED),
-+		MSR_TEST_CANONICAL(MSR_IA32_FRED_SSP2, FRED),
-+		MSR_TEST(MSR_IA32_FRED_SSP2, fred_ssp_canonical_val, fred_ssp_canonical_val | 4, FRED),
-+		MSR_TEST_CANONICAL(MSR_IA32_FRED_SSP3, FRED),
-+		MSR_TEST(MSR_IA32_FRED_SSP3, fred_ssp_canonical_val, fred_ssp_canonical_val | 7, FRED),
-+
-+		MSR_TEST(MSR_IA32_FRED_STKLVLS, 0xe41be41be41be41b, 0, FRED),
-+
-+		MSR_TEST_CANONICAL(MSR_IA32_FRED_CONFIG, FRED),
-+		MSR_TEST(MSR_IA32_FRED_CONFIG, canonical_val, canonical_val | FRED_CONFIG_RESERVED, FRED),
- 	};
++	if (vm->mode == VM_MODE_PXXVYY_4K_USER)
++		*pte |= PTE_USER_MASK(mmu);
+ }
  
- 	const struct kvm_x86_cpu_feature feat_none = X86_FEATURE_NONE;
- 	const struct kvm_x86_cpu_feature feat_lm = X86_FEATURE_LM;
-+	const struct kvm_x86_cpu_feature feat_fred = X86_FEATURE_FRED;
+ void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa)
+@@ -372,7 +380,7 @@ static u64 *__vm_get_page_table_entry(struct kvm_vm *vm,
+ 	TEST_ASSERT(*level >= PG_LEVEL_NONE && *level <= mmu->pgtable_levels,
+ 		    "Invalid PG_LEVEL_* '%d'", *level);
  
- 	/*
- 	 * Create three vCPUs, but run them on the same task, to validate KVM's
-@@ -432,6 +472,14 @@ static void test_msrs(void)
- 	 * immutable once the vCPU has been run.
- 	 */
- 	for (idx = 0; idx < ARRAY_SIZE(__msrs); idx++) {
-+		/*
-+		 * Feature word 0x7:1:EAX used by FRED doesn't exist on some CPU
-+		 * models, simply skip clearing FRED feature bit.
-+		 */
-+		if (!memcmp(&msrs[idx].feature, &feat_fred, sizeof(feat_fred)) &&
-+		    !kvm_cpu_has(X86_FEATURE_FRED))
-+			continue;
-+
- 		/*
- 		 * Don't clear LM; selftests are 64-bit only, and KVM doesn't
- 		 * honor LM=0 for MSRs that are supposed to exist if and only
+-	TEST_ASSERT(vm->mode == VM_MODE_PXXVYY_4K,
++	TEST_ASSERT(vm->mode == VM_MODE_PXXVYY_4K || vm->mode == VM_MODE_PXXVYY_4K_USER,
+ 		    "Unknown or unsupported guest mode: 0x%x", vm->mode);
+ 	TEST_ASSERT(sparsebit_is_set(vm->vpages_valid, (gva >> vm->page_shift)),
+ 		    "Invalid virtual address, gva: 0x%lx", gva);
+@@ -645,7 +653,7 @@ static void vcpu_init_sregs(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_sregs sregs;
+ 
+-	TEST_ASSERT(vm->mode == VM_MODE_PXXVYY_4K,
++	TEST_ASSERT(vm->mode == VM_MODE_PXXVYY_4K || vm->mode == VM_MODE_PXXVYY_4K_USER,
+ 		    "Unknown or unsupported guest mode: 0x%x", vm->mode);
+ 
+ 	/* Set mode specific system register values. */
 -- 
 2.43.0
 
