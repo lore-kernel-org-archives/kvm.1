@@ -1,157 +1,355 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from esa1.hc1455-7.c3s2.iphmx.com (esa1.hc1455-7.c3s2.iphmx.com [207.54.90.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0185D3559D6
-	for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 05:11:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663D441D4F7;
+	Fri, 11 Sep 2026 06:30:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.54.90.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789103512; cv=none; b=s9kw5VqOVDVoMR+f4/q4yYItqUrNe1MnFNio8XblX7QcMt0L0nSZJbZY/no0p0OjBaHSCjPRuL1f9/NtokxkolG0cp3q7FeIO5XbfF9DbyXNJNkMAqnX4vv4t8uyL5ogfzji8s86t65ywraL14sZZ7+5S7ssFrRHg8D16sl4uIo=
+	t=1789108268; cv=none; b=aaOF6sBZyA9c+QO3cZDX3FiFx+dEpzpV0LhwYZM2y3nAWWgrLjd7s5Cxbr9j+I4ZPtgw9EfzZ5q7kvymjFRFYr9rE7ckxRnPjiaosobFnWZUnb9dC6pkxIYb1Vls5Xo/p4YfxX6DEJ+Jw46aZSUkcncbLEkPw1tzItVB6gOCg0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789103512; c=relaxed/simple;
-	bh=n1kH2uWiJhVGNczU2jxYw7CBHv4kIWMvsjIHmcs/NSU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=a4we7VUqbmOy5RyfNlCooTphJEMdkQZXVuRgaj8a4SvR9/CPYu/WuACJXkSUdshUVH38YqTXu5No3+wXcoMqrMpq55zVoLxMXBdD8BS9Ug8fHkLf4aIW+012aaPinUybT2ox20d1/pRTh0edTp8kxvwLJA6I8JirnPPk9KBM/C8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aue4WPFF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789108268; c=relaxed/simple;
+	bh=q/pW8h/N0enhEz6yI8RqrLTylBO6eOp7WlEF+vKc/CA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sJcJQXA0PR8x2ykQm6cHxJL2N6tJljZ+Xo3Ily5zPYSw7oUGk/vn+jzQXKCg1t4jhblDg4YWHkU30QTRIhRghovKwDpZLqLYMoUGSsy6u3JOqu2CvViE75+znp8YzL8xIRbRGfRKfcNu1SuVjLXImR5FtWfAFVLMhu2dGZtdRho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=HKJAjEp4; arc=none smtp.client-ip=207.54.90.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aue4WPFF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E7981F000FF;
-	Fri, 11 Sep 2026 05:11:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789103510;
-	bh=2zsGdJgrWT9f2U8vDYwknXos3Y19kG5lTNnVD8omHzI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=aue4WPFFqsC9BegryxcM0zAZ74NDH98meCGWLHFHHVyLidupF9iUJj4rFhBVBgN4J
-	 qM2hIJNdbAOF/gIMfJmy/bOul/cgR7kAUOMhiLwcKlqVzptrkdmpY8WBEfAsr7bs7J
-	 +1KTXL/YnE+aDQdXymrElTh+bdgmUMfwT1HKxx64OxY72T3GeRgdjcbv4tobUkWifo
-	 s7imNI1Z1GkxTflpaIcQG1Fp0in4jcfHsQ7n3Gu1i42EnEL+dWxChkW3WRgVp12A8s
-	 SinhhZJCq+8d3ZdCsubJUVgw6uGYdtQXNwiFmd9p99cWnRQFxKmrUb+0O9f6//SKKf
-	 buPNQq7jL2cdQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC 3/3] KVM: PPC: Book3S HV nestedv2: cap max vcpus to PAPR
- limit
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?Uml0ZXNoIEhhcmphbmkgKElCTSk=?= <ritesh.list@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <e2c1ef05eaa19beb28a3db08fb697a80528cd43a.1789099725.git.ritesh.list@gmail.com>
-References: <cover.1789099725.git.ritesh.list@gmail.com>
- <e2c1ef05eaa19beb28a3db08fb697a80528cd43a.1789099725.git.ritesh.list@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 11 Sep 2026 05:11:49 +0000
-Message-Id: <20260911051150.6E7981F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="HKJAjEp4"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1789108262; x=1820644262;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=q/pW8h/N0enhEz6yI8RqrLTylBO6eOp7WlEF+vKc/CA=;
+  b=HKJAjEp4LPCaBb+krOi14RWbkxZat+pia4gcc5oErAwfFz87pcWVXMQx
+   XbbD2pEDpLEgpmGATx31FW3tyqaKEnyYIr9YYrPNrBKysmo8eIqJNLNqT
+   D5qfal9Ujf06hM6VCW9PrahlYMgY4uJBTDCYcnypvo2xSLae927Z+c7si
+   Bd88OFHDFHtKADQ73jeOTLZUfvj/Fg5XddBl0wGA05xNK6MwHqH3oBn/R
+   aUZEcvMce4iSW5rcGtjYGYCBOjRKcLxZUJ50YdX++5HtGcEVs//axh5Ia
+   oevJNdy4lFatZSjACOQIK+UkwEzgVk0uyxpNgnrxFL/noWRfWugCasTFH
+   A==;
+X-CSE-ConnectionGUID: YKY5mcwaTJSnanZMISmrXQ==
+X-CSE-MsgGUID: SSEsNMGdS5i790l1ZSF50w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="254698298"
+X-IronPort-AV: E=Sophos;i="6.27,96,1786978800"; 
+   d="scan'208";a="254698298"
+Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
+  by esa1.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 15:30:54 +0900
+Received: from az2uksmgm4.o.css.fujitsu.com (unknown [10.151.22.201])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id F1CCBC023F4;
+	Fri, 11 Sep 2026 06:30:53 +0000 (UTC)
+Received: from az2nlsmom1.o.css.fujitsu.com (unknown [10.150.26.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmgm4.o.css.fujitsu.com (Postfix) with ESMTPS id A4B6C1400347;
+	Fri, 11 Sep 2026 06:30:53 +0000 (UTC)
+Received: from sm-arm-grace07 (unknown [10.124.178.20])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmom1.o.css.fujitsu.com (Postfix) with ESMTPS id 116F98288EA;
+	Fri, 11 Sep 2026 06:30:44 +0000 (UTC)
+Date: Fri, 11 Sep 2026 15:30:41 +0900
+From: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>, Fuad Tabba <tabba@google.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Jack Thomson <jackabt@amazon.com>,
+	Jack Thomson <jackabt.amazon@gmail.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Leo Soares Passos <Leo.Bras@arm.com>
+Subject: Re: [PATCH 8/8] KVM: selftests: Add nested pre-fault test for arm64
+Message-ID: <aqOgEQKBGH-YqGr3@sm-arm-grace07>
+References: <20260825-kvm-arm-prefault-v1-0-befe8947702e@kernel.org>
+ <20260825-kvm-arm-prefault-v1-8-befe8947702e@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260825-kvm-arm-prefault-v1-8-befe8947702e@kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+Hi Lorenzo,
 
-New issues:
-- [Low] Build failure on non-HV configurations (e.g. BookE or PR-only build=
-s) due to undeclared identifier KVM_MAX_VCPU_IDS_NESTEDv2.
+On Tue, Aug 25, 2026 at 05:00:42PM +0100, Lorenzo Stoakes (ARM) wrote:
+> From: Jack Thomson <jackabt@amazon.com>
+> 
+> Add an arm64 nested-virt selftest for KVM_PRE_FAULT_MEMORY. The guest
+> enters vEL1 and exits to userspace with a nested/shadow stage-2 MMU as
+> the vCPU's last-run context.
+> 
+> Before prefaulting, userspace enables HCR_EL2.VM and points VTTBR_EL2 at
+> an empty nested stage-2 root. A prefault implementation that incorrectly
+> treats the userspace GPA as an L2 IPA will fail the ioctl; the correct
+> path targets the canonical stage-2 and succeeds.
+> 
+> Restore the original nested state before resuming the guest, then touch
+> the prefaulted range to check that vEL1 still runs correctly.
+> 
+> Signed-off-by: Jack Thomson <jackabt@amazon.com>
+> [ljs: partial progress, >4 KiB pgsize, commit msg, comment fixups]
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+>  tools/testing/selftests/kvm/Makefile.kvm           |   1 +
+>  .../selftests/kvm/arm64/nv_pre_fault_memory_test.c | 206 +++++++++++++++++++++
+>  2 files changed, 207 insertions(+)
 
-Pre-existing issues:
-- [High] The patch correctly caps the reported KVM capabilities for nestedv=
-2 maximum vCPUs and vCPU IDs to 2048, but it fails to enforce this limit du=
-ring actual vCPU creation. A malicious userspace can bypass the capability =
-check and pass a vcpu_id >=3D 2048, causing the L0 hypervisor to reject it =
-and triggering an unbounded pr_err() log spam in the host kernel.
---
+I wonder whether this selftest can use functions Wei-Lin proposed
+some time ago [1]: 20260325003620.2214766-1-weilin.chang@arm.com
+or would you prefer this test as propose, since it is clear as 
+to what needs to be done to enter L2. 
 
-commit 603e4503cd207cc17d84e5e865ff47b744a57762
-Author: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Thanks,
+Itaru.
 
-KVM: PPC: Book3S HV nestedv2: cap max vcpus to PAPR limit
-
-This commit limits the maximum number of vCPUs and vCPU IDs reported by KVM
-for nestedv2 guests to 2048, as dictated by the PAPR specification. It upda=
-tes
-KVM_CAP_NR_VCPUS, KVM_CAP_MAX_VCPUS, and KVM_CAP_MAX_VCPU_ID when
-kvmhv_is_nestedv2() is true.
-
-> diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/a=
-sm/kvm_host.h
-> index 2d139c8075773..d48232557259c 100644
-> --- a/arch/powerpc/include/asm/kvm_host.h
-> +++ b/arch/powerpc/include/asm/kvm_host.h
-> @@ -37,6 +37,7 @@
->  #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
->  #include <asm/kvm_book3s_asm.h>		/* for MAX_SMT_THREADS */
->  #define KVM_MAX_VCPU_IDS	(MAX_SMT_THREADS * KVM_MAX_VCORES)
-> +#define KVM_MAX_VCPU_IDS_NESTEDv2	2048	/* PAPR H_GUEST_CREATE_VCPU vcpuI=
-d */
-> =20
->  /*
->   * Limit the nested partition table to 4096 entries (because that's what
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index 9194cf492d1ca..cf620b6534de6 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -663,12 +663,18 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, l=
-ong ext)
->  			r =3D min(num_present_cpus(), KVM_MAX_VCPUS);
->  		else
->  			r =3D min(num_online_cpus(), KVM_MAX_VCPUS);
-> +		if (kvmhv_is_nestedv2())
-> +			r =3D min(r, KVM_MAX_VCPU_IDS_NESTEDv2);
-
-[Severity: Low]
-Will this cause a build failure on non-HV configurations?
-
-Since KVM_MAX_VCPU_IDS_NESTEDv2 is defined inside an
-#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE block in asm/kvm_host.h, but the
-KVM_CAP_NR_VCPUS case in kvm_vm_ioctl_check_extension() sits outside of that
-#ifdef block, using it unconditionally here could result in an undeclared
-identifier error for builds without HV support (like BookE or PR-only).
-
->  		break;
->  	case KVM_CAP_MAX_VCPUS:
->  		r =3D KVM_MAX_VCPUS;
-> +		if (kvmhv_is_nestedv2())
-> +			r =3D min(r, KVM_MAX_VCPU_IDS_NESTEDv2);
->  		break;
->  	case KVM_CAP_MAX_VCPU_ID:
->  		r =3D KVM_MAX_VCPU_IDS;
-> +		if (kvmhv_is_nestedv2())
-> +			r =3D min(r, KVM_MAX_VCPU_IDS_NESTEDv2);
-
-[Severity: High]
-This is a pre-existing issue, but does capping the reported capability prev=
-ent
-userspace from actually creating vCPUs with IDs >=3D 2048?
-
-While this patch fixes the capability reporting, a malicious userspace proc=
-ess
-can still bypass the capability check and pass a vcpu_id >=3D 2048 to the
-KVM_CREATE_VCPU ioctl.
-
-If this happens, it appears kvm_arch_vcpu_precreate() in
-arch/powerpc/kvm/powerpc.c will still allow it:
-
-int kvm_arch_vcpu_precreate(struct kvm *kvm, unsigned int id)
-{
-	return 0;
-}
-
-This could cause the L0 hypervisor to reject it in
-kvmhv_nestedv2_vcpu_create() in arch/powerpc/kvm/book3s_hv_nestedv2.c, which
-contains an unratelimited pr_err() log:
-
-	rc =3D plpar_guest_create_vcpu(0, vcpu->kvm->arch.lpid, vcpu->vcpu_id);
-
-	if (rc !=3D H_SUCCESS) {
-		pr_err("KVM: Create Guest vcpu hcall failed, rc=3D%ld\n", rc);
-
-Could this be used by an unprivileged host user with /dev/kvm access to
-trigger an unbounded log spam and cause a local Denial of Service (DoS)?
-Should architecture-specific bounds checking be added to
-kvm_arch_vcpu_precreate() to reject vcpu_ids >=3D KVM_MAX_VCPU_IDS_NESTEDv2
-before proceeding with vCPU creation?
-
->  		break;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1789099725.gi=
-t.ritesh.list@gmail.com?part=3D3
+> 
+> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+> index 66a9a4e62888..1e0edd0f99f7 100644
+> --- a/tools/testing/selftests/kvm/Makefile.kvm
+> +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> @@ -173,6 +173,7 @@ TEST_GEN_PROGS_arm64 += arm64/debug-exceptions
+>  TEST_GEN_PROGS_arm64 += arm64/hello_el2
+>  TEST_GEN_PROGS_arm64 += arm64/host_sve
+>  TEST_GEN_PROGS_arm64 += arm64/hypercalls
+> +TEST_GEN_PROGS_arm64 += arm64/nv_pre_fault_memory_test
+>  TEST_GEN_PROGS_arm64 += arm64/external_aborts
+>  TEST_GEN_PROGS_arm64 += arm64/mmio_sign_ext
+>  TEST_GEN_PROGS_arm64 += arm64/page_fault_test
+> diff --git a/tools/testing/selftests/kvm/arm64/nv_pre_fault_memory_test.c b/tools/testing/selftests/kvm/arm64/nv_pre_fault_memory_test.c
+> new file mode 100644
+> index 000000000000..b3833aea2a34
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/arm64/nv_pre_fault_memory_test.c
+> @@ -0,0 +1,206 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * nv_pre_fault_memory_test - Test KVM_PRE_FAULT_MEMORY on a vCPU whose
+> + * last-run context is nested.
+> + *
+> + * The guest starts at vEL2, mirrors its EL2 translation regime into the
+> + * real EL1 registers, drops HCR_EL2.TGE and ERETs to vEL1, then exits to
+> + * userspace from vEL1 so that the vCPU's last-run context selects a
+> + * shadow stage-2 MMU. Userspace then enables an empty nested stage-2
+> + * before prefaulting. Prefaulting must target the canonical stage-2,
+> + * regardless of the vCPU's nested state.
+> + */
+> +#include "kvm_util.h"
+> +#include "processor.h"
+> +#include "test_util.h"
+> +#include "ucall.h"
+> +
+> +#include <asm/sysreg.h>
+> +#include <linux/sizes.h>
+> +
+> +#define TEST_MEM_SLOT		10
+> +#define NESTED_S2_ROOT_SLOT	11
+> +#define TEST_MEM_SIZE		SZ_2M
+> +#define TEST_MEM_GPA		SZ_1G
+> +#define NESTED_S2_ROOT_GPA	(TEST_MEM_GPA + TEST_MEM_SIZE)
+> +
+> +struct nested_s2_state {
+> +	u64 hcr_el2;
+> +	u64 vttbr_el2;
+> +};
+> +
+> +static void guest_el1_code(void)
+> +{
+> +	u64 offset;
+> +
+> +	GUEST_ASSERT_EQ(get_current_el(), 1);
+> +
+> +	/* Exit to userspace with the vEL1 (nested) context live. */
+> +	GUEST_SYNC(1);
+> +
+> +	/*
+> +	 * Touch the prefaulted range. vstage-2 is disabled, so the shadow
+> +	 * stage-2 is a 1:1 view of the canonical IPA space.
+> +	 */
+> +	for (offset = 0; offset < TEST_MEM_SIZE; offset += SZ_4K)
+> +		READ_ONCE(*(u64 *)(TEST_MEM_GPA + offset));
+> +
+> +	GUEST_DONE();
+> +}
+> +
+> +static void guest_code(void)
+> +{
+> +	u64 sp;
+> +
+> +	GUEST_ASSERT_EQ(get_current_el(), 2);
+> +
+> +	/*
+> +	 * Mirror the EL2 translation regime into the real EL1 registers so
+> +	 * that vEL1 runs on the test's stage-1 page tables. With E2H=1, the
+> +	 * _EL1 accessors read the EL2 registers, and the _EL12 accessors
+> +	 * write the real EL1 registers.
+> +	 */
+> +	write_sysreg_s(read_sysreg(sctlr_el1), SYS_SCTLR_EL12);
+> +	write_sysreg_s(read_sysreg(tcr_el1), SYS_TCR_EL12);
+> +	write_sysreg_s(read_sysreg(ttbr0_el1), SYS_TTBR0_EL12);
+> +	write_sysreg_s(read_sysreg(mair_el1), SYS_MAIR_EL12);
+> +	write_sysreg_s(read_sysreg(cpacr_el1), SYS_CPACR_EL12);
+> +
+> +	/* Run vEL1 on the same stack. */
+> +	asm volatile("mov %0, sp" : "=r"(sp));
+> +	write_sysreg(sp, sp_el1);
+> +
+> +	/*
+> +	 * Drop TGE so that vEL1 is a nested context rather than host EL0.
+> +	 * KVM backs it with a shadow stage-2 MMU even though vstage-2 is
+> +	 * disabled (HCR_EL2.VM=0).
+> +	 */
+> +	write_sysreg(read_sysreg(hcr_el2) & ~HCR_EL2_TGE, hcr_el2);
+> +	isb();
+> +
+> +	write_sysreg(PSR_MODE_EL1h | PSR_F_BIT | PSR_I_BIT | PSR_A_BIT |
+> +		     PSR_D_BIT, spsr_el2);
+> +	write_sysreg((u64)guest_el1_code, elr_el2);
+> +	asm volatile("eret");
+> +
+> +	GUEST_ASSERT(false);
+> +}
+> +
+> +static void pre_fault(struct kvm_vcpu *vcpu, u64 gpa, u64 size)
+> +{
+> +	struct kvm_pre_fault_memory range = {
+> +		.gpa = gpa,
+> +		.size = size,
+> +	};
+> +	int ret;
+> +
+> +	do {
+> +		ret = __vcpu_ioctl(vcpu, KVM_PRE_FAULT_MEMORY, &range);
+> +	} while ((!ret && range.size) ||
+> +		 (ret < 0 && (errno == EINTR || errno == EAGAIN)));
+> +
+> +	TEST_ASSERT(!ret, "KVM_PRE_FAULT_MEMORY failed, ret: %d errno: %d",
+> +		    ret, errno);
+> +	TEST_ASSERT_EQ(range.size, 0);
+> +}
+> +
+> +static struct nested_s2_state enable_empty_nested_s2(struct kvm_vcpu *vcpu)
+> +{
+> +	struct nested_s2_state state = {
+> +		.hcr_el2 = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2)),
+> +		.vttbr_el2 = vcpu_get_reg(vcpu,
+> +					   KVM_ARM64_SYS_REG(SYS_VTTBR_EL2)),
+> +	};
+> +
+> +	TEST_ASSERT(!(state.hcr_el2 & HCR_EL2_TGE),
+> +		    "vCPU should be in nested/vEL1 context");
+> +
+> +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_VTTBR_EL2),
+> +		     NESTED_S2_ROOT_GPA);
+> +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2),
+> +		     state.hcr_el2 | HCR_EL2_VM);
+> +
+> +	return state;
+> +}
+> +
+> +static void restore_nested_s2(struct kvm_vcpu *vcpu,
+> +			      struct nested_s2_state *state)
+> +{
+> +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2), state->hcr_el2);
+> +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_VTTBR_EL2),
+> +		     state->vttbr_el2);
+> +}
+> +
+> +int main(void)
+> +{
+> +	struct nested_s2_state s2;
+> +	struct kvm_vcpu_init init;
+> +	struct kvm_vcpu *vcpu;
+> +	struct kvm_vm *vm;
+> +	struct ucall uc;
+> +	u64 npages;
+> +
+> +	TEST_REQUIRE(kvm_check_cap(KVM_CAP_ARM_EL2));
+> +	TEST_REQUIRE(kvm_check_cap(KVM_CAP_PRE_FAULT_MEMORY));
+> +
+> +	vm = vm_create(1);
+> +
+> +	kvm_get_default_vcpu_target(vm, &init);
+> +	init.features[0] |= BIT(KVM_ARM_VCPU_HAS_EL2);
+> +	vcpu = aarch64_vcpu_add(vm, 0, &init, guest_code);
+> +	kvm_arch_vm_finalize_vcpus(vm);
+> +
+> +	npages = TEST_MEM_SIZE / vm->page_size;
+> +	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, TEST_MEM_GPA,
+> +				    TEST_MEM_SLOT, npages, 0);
+> +	virt_map(vm, TEST_MEM_GPA, TEST_MEM_GPA, npages);
+> +
+> +	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS,
+> +				    NESTED_S2_ROOT_GPA, NESTED_S2_ROOT_SLOT,
+> +				    vm_adjust_num_guest_pages(vm->mode, 1), 0);
+> +
+> +	/* Run the guest until it has ERET'd from vEL2 to vEL1. */
+> +	vcpu_run(vcpu);
+> +	switch (get_ucall(vcpu, &uc)) {
+> +	case UCALL_SYNC:
+> +		TEST_ASSERT_EQ(uc.args[1], 1);
+> +		break;
+> +	case UCALL_ABORT:
+> +		REPORT_GUEST_ASSERT(uc);
+> +		break;
+> +	default:
+> +		TEST_FAIL("Unhandled ucall: %ld", uc.cmd);
+> +	}
+> +
+> +	/*
+> +	 * The vCPU's last-run context is vEL1, backed by a shadow stage-2
+> +	 * MMU. Enable nested stage-2 with an empty root so that the ioctl
+> +	 * fails if it tries to interpret the userspace GPA as an L2 IPA.
+> +	 *
+> +	 * Prefault in two halves so that the second ioctl exercises a
+> +	 * repeated shadow-MMU attach and canonical stage-2 swap.
+> +	 *
+> +	 * (Note that an implementation that wrongly populates shadow
+> +	 * stage-2 page tables would not be caught as userland can't
+> +	 * inspect these.)
+> +	 */
+> +	s2 = enable_empty_nested_s2(vcpu);
+> +	pre_fault(vcpu, TEST_MEM_GPA, TEST_MEM_SIZE / 2);
+> +	pre_fault(vcpu, TEST_MEM_GPA + TEST_MEM_SIZE / 2, TEST_MEM_SIZE / 2);
+> +	restore_nested_s2(vcpu, &s2);
+> +
+> +	/* Resume at vEL1 and touch the prefaulted range. */
+> +	vcpu_run(vcpu);
+> +	switch (get_ucall(vcpu, &uc)) {
+> +	case UCALL_DONE:
+> +		break;
+> +	case UCALL_ABORT:
+> +		REPORT_GUEST_ASSERT(uc);
+> +		break;
+> +	default:
+> +		TEST_FAIL("Unhandled ucall: %ld", uc.cmd);
+> +	}
+> +
+> +	kvm_vm_free(vm);
+> +	return 0;
+> +}
+> 
+> -- 
+> 2.55.0
+> 
