@@ -1,98 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9F0459AFC;
-	Fri, 11 Sep 2026 09:17:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B171E459AE6;
+	Fri, 11 Sep 2026 09:18:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789118226; cv=none; b=rk3CdJbAEYbjXbKbEFqWjHaFAG/jk1s0yT9l6kdMCBs4iCY+EM1Z9DNI3pppwbwEG2aalQXIAxCSUlomM8rsq4b5f5jChKR3pwiWReAJ94m3aq2XEx84SXr2b+WvbA/lHpPJqBo9315w7R+XfVfykQ05sANJi1iNmNK80RjuNIU=
+	t=1789118293; cv=none; b=bcT2vTB3nGzvRcaCl4tD/kwq1l5K3unONkO8pWLxSqheT8GWxZc8OSIO3w8fRZQW7z3ULJev97WAi8ZgslWy77pgZCKhvd8mpazG3InJxbyd2Wc8ubKC88fPPpK2ZkGRm1+ZAxhnZcXtVPyGTJ/722gFALnPD3zTuWTDjaWKye8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789118226; c=relaxed/simple;
-	bh=y4VNhJAktDNpssOv4fj1+dd7jYwgGkHIusbvYWB/ZOM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rFSPKPmEtEUspzHucKGJD+E7Dx7A3ThjHqLk1bs4EMSS00faxE3gLejT+nhWiiM+X280Jy78y5Gm+w3szyy+AqKvSanxkIshocG+rjn9dZgUO2SjfMdamz45gk2qW7HzJO0ziDUAxJrLq9MPakRc1IhlJ2DIIKbnlU8xwdaT+MU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RbxSeSbZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789118293; c=relaxed/simple;
+	bh=F4gYdBbmajqkyCINPzu7zVwcdxrJlsDCWKhr3p++93k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SMXdRe5T2OF6MXuwEcJEkbS6EBrUEhIeFeccDAK97hK/iirEopIe5ln7CDgl24wgmgqcNu0z8P+4jni3TChgSQjY12XP8HtbvedzH/XJBtxz4ONcfKWvT4WFEIQv5GJcoX/BdgDUVj6b6+GLeC7d1vtvvCXt8/xuKQqZ3fH1i/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cKjeL3h4; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RbxSeSbZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461631F00893;
-	Fri, 11 Sep 2026 09:16:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789118224;
-	bh=9sp1kFZZ0O6uT9i63Hix+4jeTVWCdlo9frW6hVcqvPU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RbxSeSbZZUU0Ne8WJuZalWlgBdFvk4xRMp9Ec5R+eTdN31MG6FizPvealsA8XcP1v
-	 zNS5ieOGImLE2jalyPZo4vsiTdEfdUkdB7GmVkBOf1vxa4SHkKXsGBTvg0avzvhGGg
-	 deKE1DrgNkIX1pL2e9ZZ9QtOCasm9rCQZwiwcuv9+jAyGAYazY/1fZfbAtrB+Zh3ej
-	 NWcg19p2iAlvNl7WI95KE38yDNvPQOt8/ixv+HzhfDYf0JZnCUmE7FuSKFKpOvbPZu
-	 vwVSPh+NomvlJ4fIvsfBXc71GY1MwJdG0NzylODt5gOCTZANrP/D3O723K3yAQCT+4
-	 JhYiRwBiB3F2w==
-Date: Fri, 11 Sep 2026 10:16:55 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Fuad Tabba <tabba@google.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Jack Thomson <jackabt@amazon.com>, Jack Thomson <jackabt.amazon@gmail.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Vincent Donnefort <vdonnefort@google.com>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Sean Christopherson <seanjc@google.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Leo Soares Passos <Leo.Bras@arm.com>
-Subject: Re: [PATCH 0/8] KVM: arm64: Add KVM_PRE_FAULT_MEMORY support
-Message-ID: <aqPGWNxm0rOMRaXw@gremlin>
-References: <20260825-kvm-arm-prefault-v1-0-befe8947702e@kernel.org>
- <CA+EHjTw=7M+ac5UCfM5yPmuX8RuqZN08TLfXAmTLbQgmuhNWtw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cKjeL3h4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789118292; x=1820654292;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=F4gYdBbmajqkyCINPzu7zVwcdxrJlsDCWKhr3p++93k=;
+  b=cKjeL3h4cMrXQMYZQFCNkOx3Qwhjz1mofLO5X/wGpZffn4/8DHBgsK/D
+   qsHcKYeG/QhjcoeMXSwdEt9bbjH8lDommF9nXkkB/4YJc1Tdxn6qFqmbv
+   QgdZfW+Nq4EZrJsj/Z19bKN3JRo9h7lPxg+eBlcsCwxNzTDdMg41P8WMW
+   /XAk6BpmVHcY7HVpILFlUCFDJx62kfGiJ1MkcjcflfAwfF2npbWyDobC6
+   g0k3EKViwjiRqDaABuueyR6Ni2a9a2tXS08lWBsYgbz7HiFiv88xDdXNM
+   VBtRdsGuY2oDPBjcDszGxT8zmyACtfZ4llu4BDcpZP875PvbApxJzbrje
+   A==;
+X-CSE-ConnectionGUID: zavHJylTQcK5ZYtluKCF+g==
+X-CSE-MsgGUID: qez/0h88TW+fM9Ee8B8vgg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="89450907"
+X-IronPort-AV: E=Sophos;i="6.27,97,1787036400"; 
+   d="scan'208";a="89450907"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 02:18:11 -0700
+X-CSE-ConnectionGUID: LGX/EWeHSPeVzgyLApP5NA==
+X-CSE-MsgGUID: IuTtAxozTIW46d9/CqObww==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,97,1787036400"; 
+   d="scan'208";a="238127"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 02:17:54 -0700
+Message-ID: <9eee9ca8-3818-435f-ae09-78b241050e9e@intel.com>
+Date: Fri, 11 Sep 2026 17:17:51 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+EHjTw=7M+ac5UCfM5yPmuX8RuqZN08TLfXAmTLbQgmuhNWtw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 01/44] KVM: guest_memfd: Optimize away conversion
+ overheads via dead-code elimination
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, willy@infradead.org,
+ wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com,
+ pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org,
+ liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
+ Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Fuad Tabba <fuad.tabba@linux.dev>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260910-gmem-inplace-conversion-v13-0-dd6fbf94f4e1@google.com>
+ <20260910-gmem-inplace-conversion-v13-1-dd6fbf94f4e1@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260910-gmem-inplace-conversion-v13-1-dd6fbf94f4e1@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 10, 2026 at 07:44:25PM +0100, Fuad Tabba wrote:
-> Hi Lorenzo,
->
-> On Tue, 25 Aug 2026 at 17:01, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
-> >
-> > This series implements the KVM stage 2 page table pre-faulting feature for
-> > arm64.
->
-> I know there's likely going to be a V2, but FWIW, I tested this series
-> as follows (finally managed to get protected mode running on my Mac):
->
-> QEMU (arm64, -cpu max,pauth=off):
-> - Protected-mode host, boots non-protected and protected guests
-> - pre_fault_memory_test on a non-protected host, VHE and nVHE, all 13
-> guest modes
-> - nv_pre_fault_memory_test with kvm-arm.mode=nested
->
-> FVP (AEM, FEAT_NV2):
-> - nv_pre_fault_memory_test with kvm-arm.mode=nested
->
-> Apple M4 hardware, running as a KVM host at EL2 under Apple's nested
-> virtualization (nVHE only):
-> - pre_fault_memory_test, anonymous and anonymous_thp backing, over the five
->   guest modes available there (the IPA is capped at 40 bits and the 64K
->   granule isn't implemented)
-> - with kvm-arm.mode=protected, pre_fault_memory_test skips on
->   KVM_CAP_PRE_FAULT_MEMORY, so the pKVM exclusion holds on a live pKVM host
->
-> Tested-by: Fuad Tabba < fuad.tabba@linux.dev>
-> (happy to retest again when you respin)
-
-Perfect, much appreciated thanks! :)
-
-I won't carry the tags forward to v2 just in case anything breaks there, so
-appreciate you taking another run at the v2 also thanks! :)
-
->
-> Cheers,
-> /fuad
-
---
-Cheers, Lorenzo
+On 9/11/2026 7:55 AM, Ackerley Tng via B4 Relay wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> Add and use kvm_arch_has_gmem_convert() to guard guest_memfd's invocation
+> of arch hooks related to converting memory between private and shared, as
+> only one half of the x86 CoCo duo needs the runtime hooks (any pre-work is
+> pure overhead for TDX).  At this exact moment, the overhead is negligible,
+> but that will change when in-place conversion comes along, at which point
+> to-shared conversions will "need" to find all affected folios prior to
+> calling into arch code.  In quotes because very technically that work could
+> be pushed to arch code, but that would bleed guest_memfd details into arch
+> code and would be far worse than adding yet another kvm_arch_has... hook.
+> 
+> Opportunistically provide the kvm_arch_gmem_make_private() declaration, and
+> rely on dead-code elimination to eliminate the call to non-existent code
+> when CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT=n.
+> 
+> Reported-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Closes: https://lore.kernel.org/all/1ec08cd8-3072-4753-ad5e-cd34956647f8@linux.intel.com
+> Suggested-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
