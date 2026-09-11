@@ -1,69 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF8E43DEBC;
-	Fri, 11 Sep 2026 10:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1072A429022;
+	Fri, 11 Sep 2026 10:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789123040; cv=none; b=LkPr4AxK1b/KfhBVCaqas3zgR8Y+xtpGrqYrn5ZSCcEgZ5xehsN0OooyLyUQfh2riirU6tD4SSC3t56fZNJz+xBFRvY9ZHd9lyS3tFwKxgFLpXz+vged/hpIYUGr3OPwOY0TSeDTmLkpTZwxoBmbHM0LEGrZcxlU62tTXhVAmWg=
+	t=1789123230; cv=none; b=dJFFmlxGZKs5GDcvn3rt+MglDR5KsMzE/1xxuCAdF2hFVK/lgvNmYRph+31WsEQo47M5M/PskGQ/LkwxultBFFXnFkN+fwUMdLEvqVGVAVYDC4KmJg9Eq0bVQvMZib04ARXZyvwa0XXmL8sqtB2TWlpfHEdPtTQ0M5Nh2WGoe0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789123040; c=relaxed/simple;
-	bh=Zj6VBx/ShSOg/ofBg8MaQUi1PFJSwwejRlQRLC6bEK4=;
+	s=arc-20240116; t=1789123230; c=relaxed/simple;
+	bh=IiEQ0BKGFmjdBJsAyKSi8ODDvxrbZRR4OCV+oVSjHk0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k2prNsuthqNGP+xIhdFQL29AcB6PcStJ9jvRQ8Bz7358XrQtUWav6PYIqTQ7888oUF0bVBRN+OOouJ0nHWFsL4YC0IyO+stGiraqbb/3et6BjtFWWy0oCJfgbRr1CxasjsQaT1bBSkI5IsbT5nz4k/0Gj0upyHQ3yZJxjvSyjfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DKTk2e/y; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=jyD3i4SR7AnXhD4JwTR1uWfEO9wfgDQUO+YM+Q/Ix4/eeRI1gEAunX4Y1j8y6lmjl1/cLfhXOr0bqcmpPkxGXEpfe6pd/QICjLoHMR5AZ9eEhwbN/IJ7ozS9+WNyqg51je6UKYgyuAbLC0LT3ZMmkRptw1zRvj1JMSWWgF8J8HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UP52FZqC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DKTk2e/y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C561F00898;
-	Fri, 11 Sep 2026 10:37:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UP52FZqC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A691F00898;
+	Fri, 11 Sep 2026 10:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789123032;
-	bh=+2HrtVafR8OcAx49ufL9H8GmxuAw4u1l8/SSkfwNfsE=;
+	s=k20260515; t=1789123228;
+	bh=lUSkqZbTE55uSpACypE/uCyL1WoB3V9bNkFmhvRfym0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DKTk2e/ycvYCdub4YkABnLZRfBGdjGKB2HcmUCT2c6T9PDaRB1SwnSDZErG30/ig2
-	 0YB1iECX0mzpK4IOtuzHy4Fo+5J2hkQ2wXfmxVJ/l96+oLX1tSuvr/u6JB1lNgrNhG
-	 Kx/IemPWbu2dr/YbNCTlLGgvqgdzsF0EnmFvXyZDXPP/UdcfzLO/BGrxH6gXlExfO4
-	 JGYJzJFw5BpgOdtJESGcmAn3jpxppHmSHhp2I4sdvgxsE0Gwxa2gDgWUBU3Z3DRtWQ
-	 NAvQXre87Bdw2aOvyxljT/qIQhZe3udB0YL8GTBR48CvJqLu/cB+vuVB/WlgwAZ5FQ
-	 eJ3M1RoNPFjPw==
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 753961980052;
-	Fri, 11 Sep 2026 06:37:09 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-09.internal (MEProxy); Fri, 11 Sep 2026 06:37:10 -0400
-X-ME-Sender: <xms:1NmjasoEJqirEUNEwABFkjzturF0KpXyGBWj7Fwy2S9sB9vAuS7aZQ>
-    <xme:1NmjarYh3vMF1wVKzggsRyhMmbqfLXn5SL1EzLxjOf4wjt3w0vA1ReUSabyrPuArn
-    XIqKHaE0u2tGknHVN780HhqW5cYhri0GYoPHxLweItgT1swN36ssWQ>
-X-ME-Received: <xmr:1Nmjav79RJpxbzxrijxlnwoO-dFsmfUa4nY3yt_Vbc0DNkodiiqZYejt8BM>
-X-ME-Proxy-Cause: dmFkZTGyGEM0rlMbrekGelzPyrgxDtaD0RwJW120HE24VizydBvm/r6RoCj4O8FOhfnUe6
-    9ExYL8FSafpFaUsrj/UjeSg6HgXfUr1JDlEWINQUh0ADGu21g6NYjgsfodzQfRWVk/aq3m
-    zJxge4gvzziUSpDcbyzvVfks2TDakAvbxPnjyi9Q0mGN99/lfiscu///v8x3dfFUn6JiAw
-    MN/m4hSLIU2TPE+zR2vhXQvj1udNT6515VDkx737OmbJZPg0jVmZs/uy0zp7H66TyKHELB
-    VArTxaa1cWblXsxZa6D3GNEDlvKxs7zSvA1ficFZ6cnf3vC5CTTJDSjVFEhKa2240K3ALs
-    6qllgaUuO35veKV776cX/BWXnBYv60Vk8a6xdrzJhTDPXYA7NW+87HKEaF3MAP3IAJZ9wy
-    VC6Rze2XtXBH8nv2Y94q1j5L2ggxLKPQ3gQh2GOKzTghjPlY51+Upf//G9+fLxDgXLgS1t
-    uL1SPTe2/E8arX9g46mYfQNnJLOO7ZlhfXlyAt+O4RMUkzt9HUT959SlQZkAgxMySfGIBT
-    Ir9RER45UT/RLdNfCdb9/SeCN2Z57Of/w5ltSXzEkEbzzdnZwTstLOIeu+8QOYHVdC2G4l
-    9EnZrCrRFb35hXscwM8x3YwjlJYgAsNsjYc2yNH5oRliwHqDgQbb/+h8Q7Ww
-X-ME-Proxy: <xmx:1NmjamTw1HdJ6DfYF_MRnZrH9JOQxaf-0o58JIfRo9xU59exJmk1-A>
-    <xmx:1NmjavvxikWedCMYkh_8ZsIVH_QX6VXH0EPtSHPhUIIr8pIp6Jx5sA>
-    <xmx:1NmjaoZA6zLDKDx7Rdz1tkdmxY8zdNJjCHK-A-lihqyww-XTI0DeNQ>
-    <xmx:1Nmjap_mUM_0j4nidK5MvjOXLoUHXvuA7bwSIibBiRo4qdlHuTbD4g>
-    <xmx:1dmjakppHIY4-36P-tIO1jSFLyocap6FWqduBu5pY6E4_LxYfrkTvXsN>
+	b=UP52FZqCPPB+GNo0sZG6EkVJvqjJ5TR25pguMMmOAbKRAnzCdTxPCEtPbSAVgg1Y2
+	 6J13HP7tqQabJbtSEfDvlc7apHZYwovm3E0uArTbygnGVMNXebLwTC4jps2cVgT6vb
+	 AxuYLlUI63CR3svowEfwPEZaFacNMKdcwgrIHXogpVGladAGK44fasyoZq1r189jdC
+	 vNs9RNEAkWSI18ZnuOl/lYSMyggwsUa6w9PVy+mwf0GhoX2+v/4Xeomxamv2EqsVYU
+	 sH7bz4MOg/1VF/VadD/F2QuwdN1DCVlPIl4IWwBLJBGkvbEhSuokdFOyqhVq7tHkqb
+	 DmCsRA7MbRiWw==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 9DA911980052;
+	Fri, 11 Sep 2026 06:40:25 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Fri, 11 Sep 2026 06:40:26 -0400
+X-ME-Sender: <xms:mdqjascGLpyQNGTJuoeTwQFB4QvCzkJlEMAH4TZiYERMTdUfLZ-weA>
+    <xme:mdqjalx8tQGp1H3mSDXPVilrLn8jzY0CtcThX830715JOyCWJnDfLEGFFB5iBOz7o
+    l3Sk-YSYzNWFZ5r4szdplcsUG5Uilr_NLIkwK_Hxmgap8im65fbzSWO>
+X-ME-Received: <xmr:mdqjatKle09rojiENpg5Wguhcy41MOWL4dPGUUgpUC6ic_owLdafCh6KiGc>
+X-ME-Proxy-Cause: dmFkZTFKI6Zr9CjzLxLqyJzT3JRY5JwkA1lWfK3TvZqZ9sYlz5wHC7130aDfdqLwTH66Ex
+    tPF/yEmDz2dA0FPJ1n2RuACC17hauHED7q3qO4y6giRHbDoP5gb6SZmDn9TJzu6oVzsEDH
+    7khVCy1vH528X3OwBqLkkIslm5/QS8JnTC+u2xlepeJdAyn4Pc3CbyETy03cO0tD0ENYdw
+    bOM4jmAzdG+/Kbef96dOcG0H6KWamgNHjxeRvijSaBIzeF55YyjBIP4FcB2uCtGbp0Unou
+    1ah7uqHtWFFgeU5fbm3RQquARXXQz4ItKK4pK5pdpBMKXnA1LEsbzW19fk/DFQuX8tD/CH
+    +QbxZBRoDDqoqpw1KwR6zfquXDc26+yUjl/4MK/rQFrf/zaFziEZQnwf0VIt29rKc+2tCV
+    bU20K3hBI1IuXdr34wp3aTfbCjuPk0vKapTEb8PGOkYTckKK8U9ESDkTgtEW4wZasFmXoC
+    wtINEiXnUdYmSdXZg24+uwgNslL2UJs4aOYyUYgXDVYkXFLHtdXI3429w5qSX0LdR+m854
+    zaHQNA3HBgVJCEoSQ9bEurs3be3cHzdo4ecsWo08WzRnkqCcBcFKbeNC+AxlJaOKgL2N4t
+    75P7pKefRhocuHS/yieeL+DCt7rBcLX/DJcUwMd+Y0OwLSsxKFuVJeUPYK4w
+X-ME-Proxy: <xmx:mdqjauul65uDN0qvoKSFL-ipuCNlrl_-urRV4xL-RI7yQjvL6ekzJQ>
+    <xmx:mdqjavROXO2MoJo2HceUwaTbXKkGBXlhcoC6mj3iQgGZOl_ix9uxTg>
+    <xmx:mdqjavQTsz9tjmSG4vAj-sK_UGw4mqtSg67I4opMxKiiI6RyZPZXsQ>
+    <xmx:mdqjarrSGHb4WPsQD5rA598sHBiLrVb2RDD4QkS7ts-q96s6Acrz4w>
+    <xmx:mdqjavAgw_bWZwqlRQMyU3QGIlcj1p9jJ6LVmQQzxJGBar42sBKb4RZi>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 11 Sep 2026 06:37:08 -0400 (EDT)
-Date: Fri, 11 Sep 2026 11:37:07 +0100
+ 11 Sep 2026 06:40:24 -0400 (EDT)
+Date: Fri, 11 Sep 2026 11:40:23 +0100
 From: Kiryl Shutsemau <kas@kernel.org>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "Verma, Vishal L" <vishal.l.verma@intel.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "ak@linux.intel.com" <ak@linux.intel.com>
-Subject: Re: [PATCH] x86/tdx: Remove the early #VE handler
-Message-ID: <aqPTIyi--7f2Fzxm@thinkstation>
-References: <20260910-b4-tdx_remove_early_ve_handler-v1-1-bf47a4d360c5@intel.com>
- <b41da075607d1eaa9d96eddbf3acc24502edd604.camel@intel.com>
+To: Vishal Verma <vishal.l.verma@intel.com>
+Cc: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org
+Subject: Re: [PATCH 1/2] x86/tdx: Move port I/O definitions to a shared header
+Message-ID: <aqPabLf9yHwBjBHm@thinkstation>
+References: <20260910-b4-tdx_earlyprintk_tdcalls-v1-0-4b2b1bf9001b@intel.com>
+ <20260910-b4-tdx_earlyprintk_tdcalls-v1-1-4b2b1bf9001b@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -72,57 +71,23 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b41da075607d1eaa9d96eddbf3acc24502edd604.camel@intel.com>
+In-Reply-To: <20260910-b4-tdx_earlyprintk_tdcalls-v1-1-4b2b1bf9001b@intel.com>
 
-On Thu, Sep 10, 2026 at 08:39:47PM +0000, Edgecombe, Rick P wrote:
-> On Thu, 2026-09-10 at 12:28 -0600, Vishal Verma wrote:
-> > tdx_early_handle_ve() emulates port I/O for #VEs taken before
-> > idt_setup_early_traps() installs the real #VE gate. Per commit
-> > 32e72854fa5f ("x86/tdx: Port I/O: Add early boot support"), it exists to
-> > support earlyprintk's serial driver.
-> > 
-> > "earlyprintk=" and "earlycon=" are both early_param() handlers, so no
-> > console can be registered before parse_early_param(), which runs from
-> > setup_arch(), after idt_setup_early_traps() has replaced the early IDT.
-> > Nothing in the window between idt_setup_early_handler() and
-> > idt_setup_early_traps() does port I/O, so this emulation doesn't ever
-> > get called.
-> > 
-> > Remove the handler. Any #VE in the early window now falls through to
-> > early_fixup_exception(), as it previously did for #VEs that were not I/O
-> > instructions.
-> > 
-> > Found with the help of an LLM observing that the real IDT is installed
-> > before parse_early_param(). LLMs were also used to verify this. On a TDX
-> > guest booted with earlyprintk, a counter added to tdx_early_handle_ve()
-> > for testing remained 0 after boot.
+On Thu, Sep 10, 2026 at 04:34:08PM -0600, Vishal Verma wrote:
+> In preparation for switching early_printk to use direct TDVMCALLs for
+> I/O, factor out the PORT_READ and PORT_WRITE definitions from
+> arch/x86/coco/tdx/tdx.c into arch/x86/include/asm/shared/tdx.h, and
+> namespace them with 'TDVMCALL_'.
 > 
-> The logic and history makes sense to me. I'm surprised early printk is not
-> useful this early.
+> The decompressor also used 0/1 literals in its tdx_io_{in,out} helpers -
+> switch those to use the new definitions.
 > 
-> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+> Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
-Rick, could you actually test it?
+Nice cleanup!
 
-Are we sure there's no other port I/O in before idt_setup_early_traps()?
-
-I don't see anything direct, but exception path is different story.
-
-native_machine_emergency_restart() does port I/O for BOOT_KBD which
-seems to be reachable and leads to #VE with the patch:
-
-machine_emergency_restart()
-  __machine_emergency_restart(1)
-    machine_ops.emergency_restart()
-      native_machine_emergency_restart()
-        reboot_type == BOOT_ACPI (default)
-	acpi_reboot()
-	reboot_type = BOOT_KBD
-  	  kb_wait()
-            inb(0x64) --> #VE
-
-Could you check if the patch changes panic() behaviour in the window
-before idt_setup_early_traps()?
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
