@@ -1,84 +1,84 @@
 Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C36E4A64E5;
-	Fri, 11 Sep 2026 17:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F583B774F;
+	Fri, 11 Sep 2026 17:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789148251; cv=none; b=hQr6k95wWIBj9l92IVhYVdJ5uuQGJjn9jKhY2b32FEfEssPb55aekd9k1wipWVH6i/gMzL3h4hJPY0qYnCpcLVHcUem+L3Uq6SSXmes56BmAz2EmUbWDDZK7fJ6h6fOsOCZFx7+oO49iPEHzP0C2HREZxUBK7qJ2RXtUd1BQKZM=
+	t=1789148257; cv=none; b=hA8mtVdhMJyILFCoTnM3LAKzzSQSLNJbI2/1PLWoNJaFuZR7uTQ+ice47SIAHQQEbTPLxTaIUDH866VN3oM8Wjs6SZxFB4veT/5dNoRqsxo5q8mydf+gg5eXWHukH5EUvcPrC/U+4EzbnzgLLbGiWpKtKZEx5wDpV0fPMiitB8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789148251; c=relaxed/simple;
-	bh=9rps6h8CX3751Qigsrs1xRzB6UGeygYwEZZG5N3pHZA=;
+	s=arc-20240116; t=1789148257; c=relaxed/simple;
+	bh=IfUf5bhdsp3i58h20osRlj0QOHgnCdIwkD+fXvDHsSk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p1KhJM09GJoqkyy01LKoD/BXh8D+QZspMhh6ta3L07bbp9DQNm2H2CFhQJGM5MBTbrf4PFBatwGC08LyVCQtHWkQkfYVZaxzfPXdp6L2/YEZANX5WrtnsKNPkHKZJJaFBbPAyZGu8oYsOw3GuZTUA/eG/FvYnRlwapBJ07joDgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=i+DNEFnn; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=EGE5eaFg; arc=none smtp.client-ip=103.168.172.157
+	 MIME-Version:Content-Type; b=h17k0XsbmbVJr1rY05sK83Uh910BV1UVMoJDCp8P2WaxodV/0/TF+fyN+bQzmA+hW9cWpcqT5MeKJ+yefYvGKbE41GZRxNLSW2GlMV+lKyIWgoGC2AIP0ti1sC907Zfr9PfNcQCpkqWr0DEliHm5L8wH6LG+OtYMfj1Bi3I1edM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=kLCh+rhg; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HUdFzEqu; arc=none smtp.client-ip=103.168.172.157
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="i+DNEFnn";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="EGE5eaFg"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 2A8B21400179;
-	Fri, 11 Sep 2026 13:37:27 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="kLCh+rhg";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HUdFzEqu"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 289AB1400105;
+	Fri, 11 Sep 2026 13:37:34 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Fri, 11 Sep 2026 13:37:27 -0400
+  by phl-compute-05.internal (MEProxy); Fri, 11 Sep 2026 13:37:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1789148247;
-	 x=1789234647; bh=tYootpTuFhcQH2BtMYvaYBKyL5HjOxl59QyXB39Yyfc=; b=
-	i+DNEFnnrq7SSV9DULKTlUojV3D+Ds6AS1PDLqUrgNNvMRCWI+khLoah1pfPamNk
-	ddA0t2na4MVaGmCs3AE4d3tdVFaIJxj0XINUSTOOmwHobQoQ9qo4ODwbjCkeOyb3
-	lpbPq2wtYYV6JsYAubO/BN6Bu8r1dap9fk0jTfwlIYmCtDJpsKg553BjwpvEPgSE
-	mpDBWuFin44JJiiiBQR68rZmfI6Qk04TR7ld0nozWZNEJZFQVSo1pccMqi9j8OU3
-	CDHuhF1KWP760fpxtgwo4RYr2U7Ij/ZIOIPSj3P/n4/LkCubc56fHoMfcgmG/NmT
-	TvbtHyOKcgdGPDpJMDetog==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1789148254;
+	 x=1789234654; bh=dn+whNK9KW4i24+5IVCOlGsZ9V7xXiYoCVoWBTRHEg0=; b=
+	kLCh+rhg5Jwm7GI9jy3Hg+7neNEDAWEnCGLYFWi/mbrg3Cbq0I+EdvqIurWszZCE
+	G4URZyHu5sdWX8zAAtmzMGecqZxlM4yLbD5tOd4JLGPkrfTqONzeUP103eEDebzz
+	isUV3ZXWS7oWu0VxGlQvjqlRz7xqnDf/w8o6K0jkDo1edCP0h/MtbnXS2XHx/rPq
+	LVJeW5i9AhKlLPB0w7WJRS5QxxXVAVERKp9XAsIF77vBL0bzvZVr+jcymSSfAxYv
+	kWGL4UGxzdlgx8XbPQJ/PqAVN0uOPxWuKsOm0abe5QDnV37FstZpzDm+IJQTii5P
+	K7QWzG8jp9xPfh/YW6RT7A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789148247; x=
-	1789234647; bh=tYootpTuFhcQH2BtMYvaYBKyL5HjOxl59QyXB39Yyfc=; b=E
-	GE5eaFgmW5NpQ1TPnG6ie8x8MdobPzJfu0oB4Fh/Crq5jBEVq88nLF1PR/nvQp5Y
-	5XAMSZK2CymFOvkWa9jQc7uMyshmaSJJvNdBmLrnbJZMk3gITOQzebLMC3+ll/vC
-	wbDRRR+mcVrmxdBZxDwThvccWSSMNqgZuyGQb69cjgTP9tWX+/QP5iJjHur0KTor
-	q8DXCFd2nsAjedR7p8YS4BKLkEYGMzTEoLrtedRtI+kXMaksGb0JE3CphVR2pfb5
-	d+HTL5UYpfMdcRfcN9Fh7cfKcr7AAA0jXVnFdcsYtZyvz6Ja/f81FS4j1bItJXV3
-	tdtB9HBRVJgZqd7QwBe3A==
-X-ME-Sender: <xms:VjykavzqmtZUF8iSnH_m91NH5nLE-qTa1Od0XMUH-QYrTOdJYvXTxw>
-    <xme:VjykagnlUZu6qdervo4Ip5HqH16k-EXWHPtpGEMxgrj2obUhCyP3Px2XK19OqulYm
-    nU_R_mhcfmigh3Z_p8n8py7cwp_nLKzfb0yjoN8V5sRX1QurgSopO4>
-X-ME-Received: <xmr:VjykaglqZg77cAtyOUudJ7oBun62rlxqXm5BXTi9Elvbwxa17Jm1fYbqmDAMfg>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789148254; x=
+	1789234654; bh=dn+whNK9KW4i24+5IVCOlGsZ9V7xXiYoCVoWBTRHEg0=; b=H
+	UdFzEqu4Rp73UIQuuUbbuJ2yLmNlPoLrg8sAfDl1A2kPTosohsRzwLRnxpdxTCHQ
+	aE+LeL/0VDsPtkRlLMyrDJNCRdkDusDhJYukCbbsPq8zvOa3WGF1IxykxRe9Mbuk
+	+W8lNpUEhCMmWA/3Zn7QKaWlA19XuqlsNbAUEkwpUvazTIwhKg06/cl7khF/sU3f
+	oC6DGngvhZm6K1Mo4G1L2WNAlqA17hjHMwOaTKUuETg9cuXIEhEaE9CAAhF2+Dau
+	o48MAoaI1LU0apJIlIVOf1WAS9T4fH10IVTci0YC/9omXZ34ZKXSLI+jiVWIeDbL
+	ZFChb6BEgWVIif/CPdwTQ==
+X-ME-Sender: <xms:XjykaqCERV7XNCs5gOr8DAs42i9uvYxEOxU1q2SWlrwJdCyRmn_vgA>
+    <xme:Xjykat2nLoBGwiPFIknvL5dMXxDkl0nrJ-zbNZnm4gt--7rVKXr5-dB5W3cYVyen1
+    VacA6vpG3eBVONrKX_gFp2iG4U5dDFUo_iTQjcXu7atrRlC_QrdeA>
+X-ME-Received: <xmr:Xjykak3W30qAqeJ7Bd5_4LQYH-O_vIfaZQGQ8CLQ1CuQS3hNixnmn0ne7d2DzA>
 X-ME-Proxy-Cause: dmFkZTELuHWubJnO/bcf4GIqjr5C5hrBSy34IQGrjCXpQ41u01AFzYuVhs2L024veMtT0C
     srDYoAgF+BlWZc8PCxuwt11cQHZNF73Wj00inz7fgb8xPW5xkaEF8RdCfnNf3ab0fmzJMg
     C3PMs6E2obWspbzxrecHDABJMXKhj2m2LUbfBJLGKvAIMilK3SIEEld9CmK8NrHN7UmEot
     ZDJWS8bQa3+/CYg8WRv0V+ifvsiR7SODySMQ7EvyZ0JrB5yvK+i6KLkggdCFO+Mz2tp8u+
-    YlMFidlUu+tKmNg2ZtEfHTreTEXQHa4EBtzEDuWkccElky+/dL+jlkx8u4q3GaxxltLfOA
-    2K0XMeagmE9wnAvPuG6+oOdUuJVxoVnMvZAI8tahpfI2EylkXMhak9XHXcPlexn8Fd0+/Q
-    O81Tkuj8nejTkVV14RTIGz1E2c/M1lYf1vJsQOqhpIQvbNSiLknHhDUykURwSpT956ejWP
-    3B0HWjUYKDtZKUmwlFdb8t5aJTqcxnind+uUWiW9J/3npmPPq0A6X/uFFAP3TC+cyQG1ev
-    IZttuyuGF+YL8lD7zk4snA0DZB7j3zaKoQ5gbG8jSnIFY7NN/2H2WA//EQoNwHLltjVmVT
-    gfI+8oNYBMoF9yG9bt3JAachICcyxRGyhWYXsOo6FpgnwsgegkJIya5q2voQ
-X-ME-Proxy: <xmx:VjykaqxaW0LaFU4-ru1ZUGu76j8TmU9AavMvY74Zxh1Onsz90CZv5g>
-    <xmx:VjykatqZ9CB8Zyq6BXGXdoNaMm0bZSNoskr5nFNxPQuJfjZxYbnZMQ>
-    <xmx:Vjykah5iJaq78oJBhAujw1mjyz-q-0ldA-rieBujF8BUqYxTT4MXlw>
-    <xmx:VjykaseW_Wr9GeU86tauJpbwIYxq6iWjyJgp45WnMS9htspcGUpAEg>
-    <xmx:VzykaumqIM76yj9lFZossRH8Nfckq5udb3LL8OfZrlAJqJINlg1YN1KI>
+    YlMFidlUu+tKmNg2ZtEfHTreTEXQHa4EBtzEDuWkccElky+/dL+jlkx8u4q3GaxxltLfG9
+    5PP2qk4duv6qdTx2qgiJXGfqLLV+7GY2vTUnd9pVffuyGqJyjkfnUSds6vSKMT1JuJ7ggb
+    qN3zPuzg6wVuio7yLp2xf2s1yM3fxbKddPsotbWIpv707JdrRChvLCG7pOTr2WLxYwRefd
+    FXpSl3O/mQ7s00lwIHMfDQPDO02gZ7b7Mn+/nEgyGuryHvfMWLIGe+aJFhM4RLxgMPpeYp
+    e3DL7M+Q/v6P2yayoc/hhklYqf0Pjlwn+DAfwXidhgTucgrkKGUzPaKMMzJ58WTY7nObrM
+    MPtzyFC6FWrEvT6KiF+mbdXQUM416umvW3LWMpieDWZKnlbxwtbMC5Q8f+pg
+X-ME-Proxy: <xmx:XjykaqCLA-BFmmlbQsKBHslOiR7AjL66daix5L-hM01aX3cCOTpVjA>
+    <xmx:Xjykar6pfBYZIiRoEpEJPTOO7MbE9-1pwDrYozcceRiaVHFoUn3qpw>
+    <xmx:XjykajL-itHlkHujTYIvwx-EZ9qPw94A5ll9d3-rIETyDPldcVYwXQ>
+    <xmx:XjykaksD67UPaOVyoiYPJcUBHdx6iJdLwSD0DL1kViBTA4Ipe3qPHw>
+    <xmx:Xjykah1AWBbnpf7FImYxk8ve0LUc01dEC-aFPxptssvw-Y1itnp13fZg>
 Feedback-ID: i03f14258:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 11 Sep 2026 13:37:25 -0400 (EDT)
-Date: Fri, 11 Sep 2026 11:37:21 -0600
+ 11 Sep 2026 13:37:33 -0400 (EDT)
+Date: Fri, 11 Sep 2026 11:37:24 -0600
 From: Alex Williamson <alex@shazbot.org>
 To: Longfang Liu <liulongfang@huawei.com>
 Cc: <alex.williamson@redhat.com>, <jgg@nvidia.com>, <kvm@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>, alex@shazbot.org
-Subject: Re: [PATCH v3 3/3] hisi_acc_vfio_pci: reject live migration on 64KB
- page with QM_HW_V3 hardware
-Message-ID: <20260911113721.35d7383d@shazbot.org>
-In-Reply-To: <20260831090951.844569-4-liulongfang@huawei.com>
+Subject: Re: [PATCH v3 1/3] hisi_acc_vfio_pci: fix live migration enable
+ conditions for PF passthrough
+Message-ID: <20260911113724.00d3f79a@shazbot.org>
+In-Reply-To: <20260831090951.844569-2-liulongfang@huawei.com>
 References: <20260831090951.844569-1-liulongfang@huawei.com>
-	<20260831090951.844569-4-liulongfang@huawei.com>
+	<20260831090951.844569-2-liulongfang@huawei.com>
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -89,56 +89,118 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 31 Aug 2026 17:09:51 +0800
+On Mon, 31 Aug 2026 17:09:49 +0800
 Longfang Liu <liulongfang@huawei.com> wrote:
 
-> In the scenario combining QM_HW_V3 hardware with 64KB large pages, the
-> device functional region and migration registers share the BAR2 physical
-> page, resulting in a lack of isolation that triggers security issues.
-> More critically, since KVM does not support the specific 16-byte read/write
-> instructions used by the guest driver, operating under the KVM emulated
-> device scheme will lead to Guest kernel calltrace issues.
-> To prevent Guest exceptions and avoid security vulnerabilities, the
-> driver directly disables live migration functionality in this scenario.
-> This ensures the system fails cleanly with an error early during startup,
-> while other configuration modes remain unaffected and can still utilize
-> passthrough functionality normally.
+> When a PF device is bound to the live migration driver in passthrough mode,
+> it cannot support live migration functionality, and key pointers will
+> remain uninitialized. Although most migration functions within the driver
+> are unreachable, low-level error handling callbacks may be triggered
+> directly, causing a crash due to null pointer dereference.
+> The fix involves adding validity checks at three entry points: device
+> probe, error handling, and migration initialization. If the pointer is
+> invalid, the operation is exited or rejected directly to avoid crashes,
+> while redundant internal checks are removed.
 > 
 > Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
 > Signed-off-by: Longfang Liu <liulongfang@huawei.com>
 > ---
->  drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
+>  .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 24 ++++++++++++++-----
+>  1 file changed, 18 insertions(+), 6 deletions(-)
 > 
 > diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> index 4abed2e49986..4f12cab96545 100644
+> index 86362ec424a5..e95d0ab0f11a 100644
 > --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
 > +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> @@ -1210,6 +1210,23 @@ static int hisi_acc_vf_qm_init(struct hisi_acc_vf_core_device *hisi_acc_vdev)
->  	else
->  		hisi_acc_vdev->drv_mode = HW_ACC_MIG_VF_CTRL;
+> @@ -1154,9 +1154,14 @@ static void hisi_acc_vf_pci_reset_prepare(struct pci_dev *pdev)
+>  {
+>  	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
+>  	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
+> -	struct device *dev = &qm->pdev->dev;
+> +	struct device *dev = &pdev->dev;
+>  	u32 delay = 0;
 >  
-> +	/*
-> +	 * On VF_CTRL hardware, BAR2 holds 32KB functional + 32KB
-> +	 * migration registers. When the host page exceeds 32KB, the
-> +	 * two share one physical page and cannot be isolated by mmap.
-> +	 * Reject the open so QEMU fails cleanly at startup.
-> +	 */
-> +	if (hisi_acc_vdev->drv_mode == HW_ACC_MIG_VF_CTRL) {
-> +		resource_size_t func_len =
-> +			pci_resource_len(vf_dev, VFIO_PCI_BAR2_REGION_INDEX) >> 1;
-> +
-> +		if (func_len < PAGE_SIZE) {
-> +			dev_err(&vf_dev->dev,
-> +				"migration not supported on 64KB pages with QM_HW_V3\n");
-> +			return -EINVAL;
-> +		}
+> +	if (!qm || !qm->io_base) {
+> +		dev_err(dev, "PF QM not available for reset\n");
+> +		return;
 > +	}
 > +
+>  	/* All reset requests need to be queued for processing */
+>  	while (test_and_set_bit(QM_RESETTING, &qm->misc_ctl)) {
+>  		msleep(1);
+> @@ -1174,8 +1179,12 @@ static void hisi_acc_vf_pci_aer_reset_done(struct pci_dev *pdev)
+>  	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
+>  	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
+>  
+> -	if (hisi_acc_vdev->set_reset_flag)
+> -		clear_bit(QM_RESETTING, &qm->misc_ctl);
+> +	if (hisi_acc_vdev->set_reset_flag) {
+> +		if (qm && qm->io_base)
+> +			clear_bit(QM_RESETTING, &qm->misc_ctl);
+> +		else
+> +			dev_err(&pdev->dev, "PF QM not available for reset done\n");
+> +	}
 
-Sashiko correctly identifies that this breaks any assignment on 64K
-pages, which is contradictory to the comment that indicates this is
-only intended to disable migration support.  This should instead be
-invoking the non-migration path in the probe function.  Thanks,
+set_reset_flag is only set by reset_prepare, which per the previous
+chunk can only occur if qm && qm->io_base, so this chunk is redundant.
+Why not just promote the mig_ops tests in both?
+
+>  
+>  	if (!hisi_acc_vdev->core_device.vdev.mig_ops)
+>  		return;
+> @@ -1565,6 +1574,11 @@ static int hisi_acc_vfio_pci_migrn_init_dev(struct vfio_device *core_vdev)
+>  	struct pci_dev *pdev = to_pci_dev(core_vdev->dev);
+>  	struct hisi_qm *pf_qm = hisi_acc_get_pf_qm(pdev);
+>  
+> +	if (!pf_qm) {
+> +		dev_err(&pdev->dev, "PF driver not loaded, cannot enable migration\n");
+> +		return -ENODEV;
+> +	}
+
+This function is only reached via hisi_acc_vfio_pci_migrn_ops, which is
+already validated in probe to have a pf_qm with version >= QM_HW_V3.
+
+> +
+>  	hisi_acc_vdev->vf_id = pci_iov_vf_id(pdev) + 1;
+>  	hisi_acc_vdev->pf_qm = pf_qm;
+>  	hisi_acc_vdev->vf_dev = pdev;
+> @@ -1670,13 +1684,11 @@ static int hisi_acc_vfio_pci_probe(struct pci_dev *pdev, const struct pci_device
+>  	struct hisi_acc_vf_core_device *hisi_acc_vdev;
+>  	const struct vfio_device_ops *ops = &hisi_acc_vfio_pci_ops;
+>  	struct hisi_qm *pf_qm;
+> -	int vf_id;
+>  	int ret;
+>  
+>  	pf_qm = hisi_acc_get_pf_qm(pdev);
+>  	if (pf_qm && pf_qm->ver >= QM_HW_V3) {
+> -		vf_id = pci_iov_vf_id(pdev);
+> -		if (vf_id >= 0)
+> +		if (pdev->is_virtfn)
+>  			ops = &hisi_acc_vfio_pci_migrn_ops;
+>  		else
+>  			pci_warn(pdev, "migration support failed, continue with generic interface\n");
+
+This is not reachable as a VF:
+
+static struct hisi_qm *hisi_acc_get_pf_qm(struct pci_dev *pdev)
+{
+        struct hisi_qm  *pf_qm;
+        struct pci_driver *pf_driver;
+
+        if (!pdev->is_virtfn)
+                return NULL;
+
+
+pf_qm is NULL, the branch is never taken for a PF.  Also:
+
+int pci_iov_vf_id(struct pci_dev *dev)
+{
+        struct pci_dev *pf;
+
+        if (!dev->is_virtfn)
+                return -EINVAL;
+
+So even the redundant test is already here.  What are you trying to
+accomplish in this chunk?  Thanks,
 
 Alex
