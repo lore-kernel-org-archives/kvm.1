@@ -1,47 +1,47 @@
 Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013004.outbound.protection.outlook.com [40.107.201.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BAE0457E55;
-	Fri, 11 Sep 2026 17:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA043A8384;
+	Fri, 11 Sep 2026 17:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.4
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789146291; cv=fail; b=lbpzqSnqX4cDcPYekAkJTymqxPreHwCQR0AwhAgXHMbBtnUeO57R/8puht4MH5XDsZwEs5GHLagOWQFvIHAgDA6eJKh6KbTuaRfhgG8v690EX8/ORjT2md8nj6Yio7m6+yLDZstbWvI65vk1pivcSkGGumFT7LJPLLSzMpuUvRM=
+	t=1789146293; cv=fail; b=MW4mi49FMQBBxeMauNLC2gusR1pN1irfw49Tm2FYvsQcLL+Sb9o6YYkMlo3JxH+kTN4OThpo1zFV59pr8px/8CuD5q1QeuArycPxBp+9eLPy/xOZua0l1yvV41DO9MfG4GsfBtC+XnI2PNWCdypqlW1hyRbe3RZ6j6IvtyfZEb0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789146291; c=relaxed/simple;
-	bh=H377nt6u0NYX7UVd9XucaRcJG0QmIoIOsWALm46xKF4=;
+	s=arc-20240116; t=1789146293; c=relaxed/simple;
+	bh=hQ5j4HxCSpOnb4hynrIOTlk4ifBtW0XBWCRK99T+zaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bMD+cssZZAjw0TtxGD5hZxdV6w4hykXzLxIxTwmKm7sMSE1kOvi8SeGdt5YxVPZwVgyDVIJxyE7QT8YoWihO3w6VLARZs8EqQH78qoPEbDVmpcfphJNqAT1l7OvyvA7vwCODkb9E/xoZoVkDrJuxJqi/Guunuk1Zl5q/ASvVrJY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=JSF+R1xO; arc=fail smtp.client-ip=40.107.201.4
+	 Content-Type:MIME-Version; b=F91+8DE3bHB8ihy0EYxapf7Dy+oTWsMbyJgw3b6OQDrA3yLlaJmUNhHsvuBBFCIYri1dMxyv2OB1q0XX/pNBLnGnhsIWOKMevkVdb3vDmYh6NQV9uTJUgxf6JPzQxeFD62+9LTplkl8eFH2orPDL27ocwL3erIXYqFfc5xp/dTY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QrQ57Unc; arc=fail smtp.client-ip=40.107.201.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="JSF+R1xO"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QrQ57Unc"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=r5QgDm/Ue4ePFg4cOGjtcoOBiHHCsRPEklUa38U0E7xy9VemPKOJcBvJZaz40Ol3XUQQYYBpiZyfW8WnxjayMcUIlAqmUknButiNh2AUIPltTJJ8cXc+ZzZor5BHuhLwBl8/NaHdQU/K36BavGCsVZwTO4UxzM2mUqoSdXJpKg6fiAYD+WKkroKEevyspcElmswx9MRU7Y/whrptdbrhEz7z6MAxHVZJO2D6hFFTxlgcmusltxyn6SbXOP7c6WOA6ZL6CWrnN6c9OTw18X/WyF7m/c6Emw+pZ6Vl8PyZni2DqY7MKu1R+KZfyNiZQdNdgMbVmb8vHkNRsuJqACBiiA==
+ b=TboffqbYv4QQK2/KDWLry7v/fQuSOpQqbbdxmdE/C39nZilFWBuppj8bwLxEM6WOzgo5aN+3EQsKUwPiKCBkfnc6nlFQrtjZ0Ocy7mFoHyuiv5WwjYacz130OR3QaFmgv8yJBritMeuoYYGuvHD6GuZcJ8x7dsGy5IuqziSlG+RtUOl+gPVSREJlBWG/nyxSdkzy9mjxL4wKlKov9NfaMZptUoLwKx1K4iDnS0tnQSbey+Puvd3lNmYiHDLGvpPhFEntQlfnIPe/ZKBTsv24UGwfOIaK2wvjBey7+/8SqFJMmUF44a0KEg0gMjcxlCL9PeK2B9JzfTgsz17DzURTEw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OaGMMJx/LWZGDPE96zRNDK2htNpyCjvqiJD3ujVj/II=;
- b=uFG6XVKDBXNhT/Wp3EkPWNUVn/qtIg1WVrKnHPfCU/WPhvGw3PAndu58LA7B5KSrrWv2M6QIJEz+vKfG/g8t413LWJHLmI7rOm0tTTZwWg0vHuI6U6sbhdBA5mZl7I+GpKJuIINGizufqgJJmD87tL7wdBVwUbaU3mIxb/pYjHJ20y7O+Z/hp2z2xUGyN/rja75xB0mgj42zKL2NbG+QOESAAPYcr4V/wPdILFFn0gOCien2THvWCEvQO+nOhOdwSt4U0lZFjIRkGePHYk6H5xGAyGhv0CAfCmN2N1ROGYNkkTUDTLE42N1Ufen5S7wyLPXVBfcewN56ciROIbOQuA==
+ bh=uKnloLd2iA0rVp3xdsFkHbbe8p6D9CXvh+k63Q6ysU0=;
+ b=wRVwk6iSts6+gHcHPtNgY5VTBOz6nl9N2F4M5g2nhNtbumFF1FBAQQPkk3iYAwrDHod3hpEzPDuefH/HrBeX3kRaI6V8s3dfufmtnAk3pk0C37dlCis+Eh2aNsqjKlMFKdfEY5Sda6ur5yDAR0rcLm2NKUfK0Ts9f6RkSPHinjqcM+EJD1dyHhl/jMCsPbrQk/Xkf6dDQUFBsTAbdOwtIAjQIdCQUTl2fbizsvToSHvC9ASbdgxE7EbwQfX/e/m9BOKkzI6OGm9cOe7+k8gNbOnNYp/j2AkDmjGz+Pl2C0RdanYaZJ05LqyMSYNfBaLMd3OIWbFxTFSnh3Wh3KDwJQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OaGMMJx/LWZGDPE96zRNDK2htNpyCjvqiJD3ujVj/II=;
- b=JSF+R1xOJwrKcHjuhdqYeVg9MCQLtbeCFIqLkOEV8sN731H650esHgVcBHWhh1P/AN7xLGImGFOB4O9mJ8xKXP6cc6vkx4zNqHZFFrDNZSPmG+vRMzo2JMj785K3sz/yBOhuZsaKfjCflX80BkeP3WWMf64MTg84M6PdQC3Z3l7kWjhL7hwUkTx8EBA2ihIwzDqgWVcibG6arBuNyk5AF5SV5mZdG8G3WKovs0tZ2Shy1RNxbvhJQt6h5znu+/toTrD7w5PNWFbEN9iOUxIfvygSlj7NCFq3+Kc42OMwDWUwp26MQDFa7lL+dtIq6v91Ss+OjrsDdqNLyTtOaJkA4A==
+ bh=uKnloLd2iA0rVp3xdsFkHbbe8p6D9CXvh+k63Q6ysU0=;
+ b=QrQ57UncGTaZR9+0w6kX5Pcx8qKxgvp3dCegJ2M/mzVotU1zASSr5qd9XQV8clB2+/FHO+TW7/rV6jtul00FV/6T+n6gyFniFztApoLWc8KjhRq+7VriPQaMdkP0Z3FOkRH7PSmtXKcjr1kdapOeTN6n40jNDGl/xXuNIwdwjarvz7QmPO/FGYTjpa05IMlynWPXYwzDgrKH2zRpkJWvI2DUEEk3j3iOiXBvSceStjuM6K2LgxlJec2IY+z+O3ElEtsPcRzAtvm26KDewHB6BzvSYh9GBCiLqRzDevNnAM+KZnyZxTVjpgeg5TJEoY6TZ+TeLMf4y8RjEgbreXIouQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from LV3PR12MB9411.namprd12.prod.outlook.com (2603:10b6:408:215::20)
  by CH3PR12MB9343.namprd12.prod.outlook.com (2603:10b6:610:1c0::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Fri, 11 Sep
- 2026 17:04:44 +0000
+ 2026 17:04:43 +0000
 Received: from LV3PR12MB9411.namprd12.prod.outlook.com
  ([fe80::98b7:86de:b69:2a15]) by LV3PR12MB9411.namprd12.prod.outlook.com
  ([fe80::98b7:86de:b69:2a15%6]) with mapi id 15.21.0406.007; Fri, 11 Sep 2026
- 17:04:44 +0000
+ 17:04:43 +0000
 From: Alex Williamson <alex.williamson@nvidia.com>
 To: Alex Williamson <alex@shazbot.org>,
 	kvm <kvm@vger.kernel.org>
@@ -51,9 +51,9 @@ Cc: Alex Williamson <alex.williamson@nvidia.com>,
 	Kevin Tian <kevin.tian@intel.com>,
 	Yi Liu <yi.l.liu@intel.com>,
 	David Matlack <dmatlack@google.com>
-Subject: [PATCH v2 3/4] vfio: selftests: Extend mix_and_match timeout to 90s
-Date: Fri, 11 Sep 2026 11:04:26 -0600
-Message-ID: <20260911170429.1642480-4-alex.williamson@nvidia.com>
+Subject: [PATCH v2 2/4] vfio: selftests: Verify a failed second open preserves the vf_token
+Date: Fri, 11 Sep 2026 11:04:25 -0600
+Message-ID: <20260911170429.1642480-3-alex.williamson@nvidia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260911170429.1642480-1-alex.williamson@nvidia.com>
 References: <20260911170429.1642480-1-alex.williamson@nvidia.com>
@@ -70,90 +70,153 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LV3PR12MB9411:EE_|CH3PR12MB9343:EE_
-X-MS-Office365-Filtering-Correlation-Id: 980990ad-e2b2-4068-7134-08df1026c6d5
+X-MS-Office365-Filtering-Correlation-Id: 748daf69-c9f8-46d9-ffe1-08df1026c60c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|11063799006|56012099006|10067099003|6133799003|22082099003|18002099003;
+	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|11063799006|56012099006|3023799007|10067099003|6133799003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	BpYg2b9Zyn0+9yGoR/7WsRCvc+r0KfJWESbbvaWU3J9h+IAMuZ5LYejyrRoJe9oLSdVnYUX0fMB0YkLo+MmYSdoeuG8UmARxgMAPBUFa9+Li/7BC8WizhcAQ4I2ATnqqfBI/2x3U8SwqeguPHhAjIfFo3G0k2eqD7Y8ZuU8Luvuvk/oW8P4cd43MvJJD8eIlo1/NVk28IbCY7pSCFNO6x4i+doLcaeMIPp4xgWSi3IKSEf3nubom5vKDVfXwiboma+xd2rMptVUF9VSSP5OYPt42+SOvjMY0DD+kS3yHkIBaczjrNwMQgBwb15J2duCAAExDGgC9cS36+fXNzDlKGsRgFqFnO2Uy4Q5UBoAAnoMx8msqMWwbCJW0puwcdByp7BMQ0qEo6DQi339aYZ3yQ587H8o3HCjqL4losj6OKlgZIPlm5nNd1VwVNh/f95gHpWuqfKli6efs6pUqfnmmA10MMPuBGP3iU2uTtYeDKsDrL6DXeYE/GHcWAV/OFQWTc+aTUX9FmyW07Xlnrhu9P7TqTjaQww2qOYBffcgNWBpGKnz5AU4LbCSgkwgrXkCSDWwZyaIjczVtUDHinzpr3n8RNb0RNHN3Fc469AgCRWrtKs6DmZPzCIuAV6IeZlW6ndo5t3qG0CK223YbouKwd/eihgCj+LZCg1Af5diCA8Y=
+	HsGvfE413w9IbJuT/fXF5A75st6FinO2sDMEAFHzWzsAVVrvIlpmixiMK3/Ww0L/qymNoKcLJPON8Hxpr9+7oa/UKBHeZLtM02Xq9LrViBeyRCFw0gZSt9RzaHaK5Lllsyu9setRW5sHdwM5dto3wLMD68r0kiFXMCVvtr/007Q++65yW+BuzfUtsp4xRlgFIBpQSVe7W4CInbDd0DP7YogQ0P4BDY8Cpe+phIuE+b8MUnDNfzcmSJP9YgJsQpjdIrAcIWV3BzVl1JrZcd1RT+/FcvKmXZVmwEn+2jgmW5ynBnRmyuv/tDWnFdNDNxwiJuUGX8duj4e7Te4BbnYxdnAIiTWoGdItRQtLMnlVTV9rWXNp7WbsATESiMruZU4h2E6zNs7fhf8OMGGv0F7w3RqvhQHoWHKahuh1zJJ8tCJvPNt7RRVOf4AoNAUiks1PuqTund6/4m5sOctOT9udJluqazufcixAUaAntw+XEtRoRh4I7NBkVoQINzWhZBMbLhp8Ag/nuBLvyJV6cBJ4JmHwZAnCe0LlVKCoBANKPLewZNitk6CoN4hheKaBkM1/p86t10II0YBb5VTnr5VeHx3TFaI3StZCgh2LMpfFk04+SCKc5+WnSJGmFeFjh/vYy3tgDN1MX9dikosXvfoFf4U/RAGzhZxQC90ElycbICc=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(11063799006)(56012099006)(10067099003)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(11063799006)(56012099006)(3023799007)(10067099003)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?VV5sATtnvilzu9mu3v0wM2oQm8GKhNqV0NeNbPo0FPx0qWP3uSQpjEp0cxEE?=
- =?us-ascii?Q?DRyTw95b/PFuK+KN+zS9Uq4IUr2xFHiRkRQx0esQdKgtHyUb0XV2r0EKwoJQ?=
- =?us-ascii?Q?90wYf4K/cOIlen6nrpaQOVruyoFPyF4oI2VJ8oiHHHqm6Xb9xQFRCKHb3QCq?=
- =?us-ascii?Q?9SbVLdzrFBS8Je8u+rOX4vAhqtn7OLBH22MjCd5o+pA6E5OiRES7CtRv3Awi?=
- =?us-ascii?Q?qzVJ0YBvifs6+Igs9NBP5gm3fOxOqTF+QQGp0GOJZKKhZ7uCvXAnGnzEAwk8?=
- =?us-ascii?Q?j5AiRcBdEvKOe5Wv6aeXQsLH/twKnIH4j3eeo6xvl3fOdIPfv9DdPil1PIMn?=
- =?us-ascii?Q?Pkw/FZjzvI9K+sw9GoYHRCZzaPUtP0c/9ha86aFH8UD14j7IvcZ3G1TIx4qt?=
- =?us-ascii?Q?FjSPWnEW+FGnB9nX+QNwQPhKCz45Hx6H0eAPHHEJps7HuyMKS4lN6WrIJqKJ?=
- =?us-ascii?Q?JD9C2U2Zrp9kYfizpQQDOigLml7pPsIaZ+kNHOfLxbQH8A5FLrKN8oQ1O4+y?=
- =?us-ascii?Q?abykGZenKFeVgIFoucmwEavrErXTBEcXyRYx7XwffpYXXYmJG8VUCPHhTt6e?=
- =?us-ascii?Q?R8I8eCxGNpNzt6ZHCzL6KGoddL2asAHCjEguib5lZGWymRKRmzVpngDN30wK?=
- =?us-ascii?Q?ty4Yx+WxmqBeVxgTYYJWAAvs5XAB62COHxStmKFFxgKSg4orcg+dRFJCVa7Z?=
- =?us-ascii?Q?x93M5gKxGzCv+wkV3pFBhMkSNyXDWXLYlG6KmZuqNKOn4kWw6HQSERYRlE2+?=
- =?us-ascii?Q?od7oN8I7hHc8Xsj1de4solEgWY1RjEMZfDQ1quIjYNUNWpD9QAwe2lOfbk35?=
- =?us-ascii?Q?E4XT5Rb4tg5avfPSgZsxcCFi8WZg1IW6DZo0kmbJMY2e85l+hCyBYG7yrIgI?=
- =?us-ascii?Q?xllxVdbvLK/UvyEdrAWcv8zyan760tENJa7thXyQ7o0u7YfW/RqeKKxNrtTE?=
- =?us-ascii?Q?5n2yxssfsHbOjfJ0j2YsT2qWebgulyvxEMnDjly62kPwTp3c54HmEgybeN2I?=
- =?us-ascii?Q?4OdtwkAnZHELFSYubFLsfk4aj0nNKStUJTur3TgsSIUWFuP6CD1dkrxSemRk?=
- =?us-ascii?Q?asA7ldcN7b+X2iDhuN2hoNCrQmqA5O2/Z3x8AQ6+j9ijvLx+cv+TUMKR3LuH?=
- =?us-ascii?Q?vV4zs9jP48mM022mz46UwfHFk06W8DDALzE/pQqRlkJ7G1ijkm8kHpHlHfCE?=
- =?us-ascii?Q?G/RcDC5QRdto49vjfDIuX0GZphwlD9lLX752NEVBt9umbknRRKovED+VD7YO?=
- =?us-ascii?Q?bRUqRiE3AueIkHd5YjZFLbkmqINzY2lzsBTKHn0RSUrWrBOsbIBCOqlA3rNM?=
- =?us-ascii?Q?j3RFyHoECFY+8EDeE0pdWDNMICjGdPo13w4V5EwDdl+gFAe3GVQPIJGQn/gh?=
- =?us-ascii?Q?RBwy4nVsh+qc5ekMCNq733BHEg8jfOUIYJZOabkM3+9r767YSFA6nGW6rCFR?=
- =?us-ascii?Q?+oNz/zZnuymKx/QlJinVKOOmORRez9Bo+mTxyaC8k7vnDBpuW1MxVVSPWh5U?=
- =?us-ascii?Q?h/WudVLV900Rub02vtSMDRh51odF8fEOjPMP+WTLpCd8GASZ3j543xD/pIYQ?=
- =?us-ascii?Q?4mp7mh0jh/yFpvKumabLBbwfRiBcLI/T8rCB6KJTK33T3d5jvTiDZXEKDWbp?=
- =?us-ascii?Q?HAV+tsCQ5IL0ld81Wyd5PISEualUmEuH3pj4xTDAwHmmku/ba6k51hnpEi4F?=
- =?us-ascii?Q?XrpeYzThNluRHJ4qgKfU3Hqyjo4c9xDQD5FTs9PrDaa64xWRhnTFDylvsV8+?=
- =?us-ascii?Q?90ZxfBOVIg=3D=3D?=
+	=?us-ascii?Q?Ot9dxieR0/gXts3TqVN6DX8ipUqOZ61OmSx9+A5r6VdEWYiPzcOftVdFHFFT?=
+ =?us-ascii?Q?IiwbzY8Qs0RkeXAdd8lFbxkhU5u4jIsAvzK8iHu+2TZWEPCrh5MfcldpZt6z?=
+ =?us-ascii?Q?j/2TAhSTf5aV5q1T7ZAg+0ru+AZm97hxvVxHebX2kad4SyCtiLHXFah2wdRP?=
+ =?us-ascii?Q?5HX8VNK2PQo7gGFVIVRQWJ4fJlv8KHeaLZB2y7LYZGLCelPQKsvkklBB5djv?=
+ =?us-ascii?Q?vcIZMaftQ+r4LhFqMtOaonO440SSsmNCJHqU5IuSBE3wk7OOI08gRVUN7Hx2?=
+ =?us-ascii?Q?NRyluHH9cKiPVxO15xyd6c9uxqRRxega1xHOtPBI/283lkZ2KtOA6i0zAYOJ?=
+ =?us-ascii?Q?AgQnO98wwtWB/1INu3YKYUIaIs8IYWo7Lk6ILPKCv6/tYjYAeTCub7YrZdS2?=
+ =?us-ascii?Q?+RUlsqQdrcPE5xXr2FIn0Wtz2eR2RMGvPfUdxK4g+bK6Du9NRiKRzjx8QDq9?=
+ =?us-ascii?Q?s2KeyuHUdtdN/wvJynGZXQ9yHX71dGq4ay0E8dx6gYcE5FX625nkWR876nQx?=
+ =?us-ascii?Q?US1P95jhM0X1qBfWjKpQ77UUsPXcXcks8Z11zroWjnIGtDpABD/dT3Bqm03t?=
+ =?us-ascii?Q?ozVeLl2HA7cQgZjTYJCvd5X8RDhbNfj71gzicPCfS2ZQoBVTYwUF3FBvkr2p?=
+ =?us-ascii?Q?Shk8XiKDTGP2psUJtJj8lq9Deu8Od795IBLM+OQSPN8e/1J/m87SJ5+QrJph?=
+ =?us-ascii?Q?MBh2XDHTdB9ZH9c4RD0u/x/DIEqp8INJQErugur1OqB7jsSlkADroz0t4atv?=
+ =?us-ascii?Q?X9A+FZ0fRVhxWGfawd3cRDYgcwbZ+TvFo/hjva768AZgkb84H6ds4SCPRUEx?=
+ =?us-ascii?Q?27f2CstjxIQRzLYiw1Fs0ybqOPOae2asjhqLxhx7fl06rm+/NpidhdJxsGwE?=
+ =?us-ascii?Q?XrVOXQdN8ZzyN4/ApSyrVH5Hd9Mc4PNMPj7BIsSPPFOCDEHDZ73YJxso6OT7?=
+ =?us-ascii?Q?0yLTA2wb2YuaDFlzblgNzOB8MwvE3eUQiC5ZHTQkgqTCyJQb5DVXJsSwFvB6?=
+ =?us-ascii?Q?JNKZlVTTdYoz6xzzuz91S76k0HqGpDef8b4KgI1ZV1DUIRiwI4frQHrrhjhW?=
+ =?us-ascii?Q?E4LP3mh2Wg83sofRBUGRv/wPZh2iM7QB5FyEXOi4PQ1QVL7ttXbC4rkEMe37?=
+ =?us-ascii?Q?uKo3mkwhGHeOfV804+b4MGqiWUQw8SebwfQVm78/VonctWtJcPP8UefVlE5J?=
+ =?us-ascii?Q?adWMTi22XexxW1KMseQ6U8umTTHDvZU9reGH79xQxum7ULe0SfQmr7XslZNL?=
+ =?us-ascii?Q?plIw5Dqd6sjDJ730SRVR6tNvSTpf3FzImJ4xTH80rXbRmE51c29ybjGzCT8X?=
+ =?us-ascii?Q?YWv+fzc/Jn/Ci+cn7IZgT/+ylUTKRQLD4dvhcVn8SRD0Rt7wWsiDFUCiZ6UV?=
+ =?us-ascii?Q?g1qTTfiblzUAkPNU+Xm6ef3FKNk0ova5SF6hodtmlXTy1taObd2LWns7vgtL?=
+ =?us-ascii?Q?MPD9zELfQeuCg3CeM9m5ahPkqLX1z3DcxN1nHxV+3Iyqf7ou9Q1z7GJ6eyeb?=
+ =?us-ascii?Q?99S95Wv7cp+JYioqCuZu/JoogMWvVTjE0PLfLVIUgKAyYHtOfla/JTcmo4nP?=
+ =?us-ascii?Q?Gpsdch/HWSEaqSWsBgT76bK41ed/QGzsti8BHDPOs6FZZKBmOsWRcu7TeCHw?=
+ =?us-ascii?Q?QA/wkkKICJpB4XqXIOuqBxp/fULmr4k1LnwwNlAJNXBLChFjjOA+ifpX2DEk?=
+ =?us-ascii?Q?XlOwo/7w7C0YpSJZ0jaahmunRi69dfo3TqqaZk0cc1Fc8usInk5r6YiLjVej?=
+ =?us-ascii?Q?eg15hLMGoA=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 980990ad-e2b2-4068-7134-08df1026c6d5
+X-MS-Exchange-CrossTenant-Network-Message-Id: 748daf69-c9f8-46d9-ffe1-08df1026c60c
 X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9411.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2026 17:04:44.2715
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2026 17:04:42.9056
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XVSoBMI0+D7Gvj0mRLjG+jrcLdMTuSEX65fuIPRUzQfN0SdnRIDSkcanL3tM10VFv3IwyO80Ya9RPNchBQyK1A==
+X-MS-Exchange-CrossTenant-UserPrincipalName: i/Y2H1CEPiOMYXAPfU8ahTCEDBGWPevlNNI6evzdl0aD7WpMxiNrOcVrUvVjt78itYh9hGUGe5B4avQlQC6mIQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9343
 
-Systems with firmware first error handling can see heavy SMM load
-as a result of the mix_and_match induced IOMMU errors.  For devices
-like igb that get wedged on these errors, the resulting FLR is delayed
-waiting for the transaction pending register to clear, which never
-occurs.  However, due to the background SMM, the backoff delays in
-PCI code wildly exceed their timeouts.  As a result, the whole test
-can report failure.
+The cdev path enforces a single open per device and rejects a second
+bind of an already open device.  That rejection must happen before the
+bind can mutate state shared across opens, notably the PF vf_token, so
+that a bind which cannot complete leaves the current opener's state
+untouched.
 
-Extend the mix_and_match timeout to a value shown to complete reliably
-on such systems, with ~2x margin.
+Add a regression test that binds a PF with one token, attempts a
+second bind of the same PF with a different token, then initializes a
+VF with the original token.  The VF init succeeds only if the second
+bind left the PF vf_token intact; a regression that clobbered it to
+the second token would make the VF init fail.
 
+Additionally add a second separate test that enforces the -EBUSY
+errno on second open so that the vf_token clobber and errno testing
+are independent.
+
+These hazards are specific to the cdev/iommufd single-open path, so
+the tests run only in iommufd mode.
+
+Suggested-by: David Matlack <dmatlack@google.com>
 Assisted-by: LLM
-Reviewed-by: David Matlack <dmatlack@google.com>
 Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
 ---
- tools/testing/selftests/vfio/vfio_pci_driver_test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../selftests/vfio/vfio_pci_sriov_uapi_test.c | 57 +++++++++++++++++++
+ 1 file changed, 57 insertions(+)
 
-diff --git a/tools/testing/selftests/vfio/vfio_pci_driver_test.c b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
-index 761bf117d624..1d532f944cee 100644
---- a/tools/testing/selftests/vfio/vfio_pci_driver_test.c
-+++ b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
-@@ -190,7 +190,7 @@ TEST_F(vfio_pci_driver_test, send_msi)
- 	ASSERT_EQ(1, value);
+diff --git a/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c b/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c
+index 19d657d00b75..b57e4498443f 100644
+--- a/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c
++++ b/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c
+@@ -157,6 +157,63 @@ TEST_F(vfio_pci_sriov_uapi_test, override_token)
+ 	ASSERT_COND_VF_CREATION(ret);
  }
  
--TEST_F(vfio_pci_driver_test, mix_and_match)
-+TEST_F_TIMEOUT(vfio_pci_driver_test, mix_and_match, 90)
++TEST(failed_second_open_does_not_clobber_token)
++{
++	struct vfio_pci_device *pf = NULL, *pf_second_fd = NULL, *vf = NULL;
++	struct iommu *iommu;
++	int ret;
++
++	iommu = iommu_init("iommufd");
++
++	/* Create and bind PF using UUID_1 */
++	ret = device_init(pf_bdf, iommu, UUID_1, &pf);
++	ASSERT_EQ(ret, 0);
++
++	/*
++	 * Attempt to open the same PF again and bind it with a *different*
++	 * token (UUID_2).  Return value intentionally unenforced.
++	 */
++	device_init(pf_bdf, iommu, UUID_2, &pf_second_fd);
++
++	/*
++	 * Attempt to initialize a VF using the original PF token (UUID_1).
++	 * If the failed open above clobbered the PF's token (i.e. updated it to
++	 * UUID_2), this VF initialization will fail.
++	 */
++	ret = device_init(vf_bdf, iommu, UUID_1, &vf);
++	ASSERT_EQ(ret, 0);
++
++	device_cleanup(vf);
++	device_cleanup(pf_second_fd);
++	device_cleanup(pf);
++	iommu_cleanup(iommu);
++}
++
++TEST(failed_second_open_returns_ebusy)
++{
++	struct vfio_pci_device *pf = NULL, *pf_second_fd = NULL;
++	struct iommu *iommu;
++	int ret;
++
++	iommu = iommu_init("iommufd");
++
++	/* Create and bind PF using UUID_1 */
++	ret = device_init(pf_bdf, iommu, UUID_1, &pf);
++	ASSERT_EQ(ret, 0);
++
++	/*
++	 * Attempt to open the same PF again and bind it with a *different*
++	 * token (UUID_2). This must fail with EBUSY because it's a second open.
++	 * Previously failed with EINVAL.
++	 */
++	ret = device_init(pf_bdf, iommu, UUID_2, &pf_second_fd);
++	ASSERT_EQ(ret, -EBUSY);
++
++	device_cleanup(pf_second_fd);
++	device_cleanup(pf);
++	iommu_cleanup(iommu);
++}
++
+ static void vf_teardown(void)
  {
- 	u64 value;
- 	int i;
+ 	/*
 -- 
 2.53.0
 
