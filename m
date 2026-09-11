@@ -1,67 +1,83 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DA34C14E0;
-	Fri, 11 Sep 2026 21:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F894A4EEF;
+	Fri, 11 Sep 2026 21:42:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789162957; cv=none; b=m7oWuCQeqz4X1Pj6RQy/CCfeurpWcOZkE1iJEKnOLQ+o1DXt3BCUDOcNBMKSMd+EquvSH13Ve3HEpCQ08gP9cpoUhAbRMC7iPFPQs5WQbhE7BZxuyNrEKtpUNQkWw0BopmS2tpIn1cM6wtdEi8NQdokY8rD6Xbwm7xOH051kJI8=
+	t=1789162962; cv=none; b=ZumEhhBGIuoP+9MButw0jT+bYZDPHBv6Ic0+41fvRo+eaML6KtGqbFvA0ORPV1MAmXZrn9q0tUp8rgoFsRItgYmkKQmnEeZgYq0biDLjSHhXnkAdxM4O+ULELCUt5NBaSdT6Q4jQEfhSb8dxI32y0LvT0XzYHu1O14xOrqMA9RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789162957; c=relaxed/simple;
-	bh=0XFD1whNWCTFCvxaQfwV7VZ0rsYelDUhazHKpyDGA4U=;
+	s=arc-20240116; t=1789162962; c=relaxed/simple;
+	bh=3sP2mJ0al+FQWnF7v1VPsurp6m4st9PEmZ6qJPKe5j4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e/m7KOMSj5Xvh1Luyi/utm1a/AScfz2eRKAklVAkVZFZ8A7uPEdcu3iufS0ZPNLC5KJCic66bn/Dh5qhPqf+Te9ExGvesaApy0uLLg8pE+gAkECmhFbAjKuVnUoVjInjp8qHWWt92dhCU3OlWI+YgpO7BCz1NzaN0Zr3kaha4n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=n7LFis2S; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
+	 MIME-Version; b=eyAZKdmnl87JvLLJ57un9CyaHT1AkhMxoIbfv6ucpFhipbp8oUPKS/3yaBk1WGLzaCFbigIBH+k3Io7zbtBpzpMblO/4NDlvuh9SvT07whSrtVj6x9C1LteUhG2Uo41ZM1qVQ5S+RLCrTKzcs3DH29QN2k/Dfs47SnJhlJcLK9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EL2Ipan8; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="n7LFis2S"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1789162941;
-	bh=wYX7sVfn/jIz1d7rDgCW0XYymt2OtnurD+VDcymRpr8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n7LFis2SsWkUCJW1yKDHL4Wg0hhLZP0y0HPKpyW6YHDTVXU6XLA0RzinMrO4SMxpQ
-	 mONMqWpSlcq+W+/znn3IO6Neb+FBuVZpmAQU2z2mx2BkFZhox7stS/FK6T6D8M0s8G
-	 EkxLjXgkJ/2QydoJ9N69IWzBynZomr+SvXWw3fkyuOIvpWiri3qhWlyoDLRNwQgY4T
-	 gAVEhElvyOhdTodh+wnukUjWmorGRj/nRE9oRL+wxllOcMvZ602Ko1YRM+tHR0imVi
-	 29zfnJe7NdC+UowFP6OBW+YbDdb9fVdhNAoEy4TWhc3AVlmIv3XcQQd5t8kFif9vMz
-	 +3WfildXmPU8Q==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4hhSgc2dD7z4wbr;
-	Sat, 12 Sep 2026 07:42:19 +1000 (AEST)
-From: Matt Evans <matt@ozlabs.org>
-To: Alex Williamson <alex@shazbot.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Alex Mastro <amastro@fb.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Longfang Liu <liulongfang@huawei.com>
-Cc: Mahmoud Adam <mngyadam@amazon.de>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EL2Ipan8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789162960; x=1820698960;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=3sP2mJ0al+FQWnF7v1VPsurp6m4st9PEmZ6qJPKe5j4=;
+  b=EL2Ipan8F58WRhROwV+29KPoZBuTTKfF7Bvticez+1jKpSCe2HRGpVJ4
+   hhRs5Y9ff9NiD295aqkr5rLjhNGXZe3i0OEDAP5TL/HWJHkJhv1eckEGt
+   1GIwTLW8NA821xYxi6ciIHen8tsjbaESjsUKXmRJBselatOFLgx5y82oi
+   Xkp90dwICyZ6URr040i0bpTt1CCC9ECJ9xulBqJ3sDkCVpDi46k/ggjw3
+   nnGVd+EK8TpNwbRMeOo7QSWYupfLzqrG70lAWRlMicpCtPRsvKCWPSAFx
+   3SH4GZ5ULf1WOHwdyEb8liYCeeVx+H1OT9aomN32nQDYylabdze/wc6Vp
+   A==;
+X-CSE-ConnectionGUID: u87Euv9HSDmMDKBqpDB1Vw==
+X-CSE-MsgGUID: vREBGFATSzatUyNH92gZoQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="88572783"
+X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
+   d="scan'208";a="88572783"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 14:42:39 -0700
+X-CSE-ConnectionGUID: Dk6T9qCIT1uwJxJZnZK4ww==
+X-CSE-MsgGUID: 9aBkbqPdSGCwym1ORCPn2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
+   d="scan'208";a="272004193"
+Received: from sohilmeh.sc.intel.com ([172.25.103.65])
+  by orviesa007.jf.intel.com with ESMTP; 11 Sep 2026 14:42:38 -0700
+From: Sohil Mehta <sohil.mehta@intel.com>
+To: kvm@vger.kernel.org,
+	x86@kernel.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Xin Li <xin@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Shivansh Dhiman <shivansh.dhiman@amd.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Chao Gao <chao.gao@intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	Zhao Liu <zhao1.liu@intel.com>,
+	Yosry Ahmed <yosry@kernel.org>,
 	David Matlack <dmatlack@google.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: [PATCH v6 4/9] vfio/pci: Add a helper to look up PFNs for DMABUFs
-Date: Fri, 11 Sep 2026 22:41:52 +0100
-Message-ID: <20260911214200.33793-5-matt@ozlabs.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260911214200.33793-1-matt@ozlabs.org>
-References: <20260911214200.33793-1-matt@ozlabs.org>
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v10 18/28] KVM: VMX: Dump FRED context in dump_vmcs()
+Date: Fri, 11 Sep 2026 14:36:48 -0700
+Message-ID: <20260911213659.2025974-19-sohil.mehta@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260911213659.2025974-1-sohil.mehta@intel.com>
+References: <20260911213659.2025974-1-sohil.mehta@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,249 +86,121 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add vfio_pci_dma_buf_find_pfn(), which a VMA fault handler can use to
-find a PFN.
+From: "Xin Li (Intel)" <xin@zytor.com>
 
-This supports multi-range DMABUFs, which typically would be used to
-represent scattered spans but might even represent overlapping or
-aliasing spans of PFNs.
+Add FRED related VMCS fields to dump_vmcs() to dump FRED context.
 
-Because this is intended to be used in vfio_pci_core.c, we also need
-to expose the struct vfio_pci_dma_buf in the vfio_pci_priv.h header.
-
-This move also adds a new member, vma_pgoff_adjust; this is consumed
-by vfio_pci_dma_buf_find_pfn(), but will be set in a future commit.
-Add it now to reduce the number of functions touched by later commits.
-
-Signed-off-by: Matt Evans <matt@ozlabs.org>
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 ---
- drivers/vfio/pci/vfio_pci_dmabuf.c | 166 ++++++++++++++++++++++++++---
- drivers/vfio/pci/vfio_pci_priv.h   |  21 ++++
- 2 files changed, 174 insertions(+), 13 deletions(-)
+v10:
+ - Test the secondary VM-exit controls in the dump_vmcs()
+---
+ arch/x86/kvm/vmx/vmx.c | 43 +++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 36 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-index 847ee5cc78e7..9f10b10fc436 100644
---- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-+++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-@@ -9,19 +9,6 @@
- 
- MODULE_IMPORT_NS("DMA_BUF");
- 
--struct vfio_pci_dma_buf {
--	struct dma_buf *dmabuf;
--	struct vfio_pci_core_device *vdev;
--	struct list_head dmabufs_elm;
--	size_t size;
--	struct phys_vec *phys_vec;
--	struct p2pdma_provider *provider;
--	u32 nr_ranges;
--	struct kref kref;
--	struct completion comp;
--	u8 revoked : 1;
--};
--
- static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
- 				   struct dma_buf_attachment *attachment)
- {
-@@ -106,6 +93,159 @@ static const struct dma_buf_ops vfio_pci_dmabuf_ops = {
- 	.release = vfio_pci_dma_buf_release,
- };
- 
-+int vfio_pci_dma_buf_find_pfn(struct vfio_pci_core_device *vdev,
-+			      struct vfio_pci_dma_buf *priv,
-+			      struct vm_area_struct *vma,
-+			      unsigned long fault_addr,
-+			      unsigned int order,
-+			      unsigned long *out_pfn)
-+{
-+	/*
-+	 * Given a VMA (start, end, pgoffs) and a fault address,
-+	 * search the corresponding DMABUF's phys_vec[] to find the
-+	 * range representing the address's offset into the VMA, and
-+	 * its PFN.  vdev must be the device that the DMABUF priv was
-+	 * exported from; vdev->dmabuf_lock must be held, and priv
-+	 * must not be revoked.
-+	 *
-+	 * The phys_vec[] ranges represent contiguous spans of VAs
-+	 * upwards from the buffer offset 0; the actual PFNs might be
-+	 * in any order, overlap/alias, etc.  Calculate an offset of
-+	 * the desired page given VMA start/pgoff and address, then
-+	 * search upwards from 0 to find which span contains it.
-+	 *
-+	 * On success, a valid PFN for a page sized by 'order' is
-+	 * returned into out_pfn.
-+	 *
-+	 * Failure occurs if:
-+	 * - A hugepage would cross the edge of the VMA,
-+	 * - A hugepage isn't entirely contained within a range
-+	 *   (including where it straddles the boundary between
-+	 *   ranges),
-+	 * - We find a range, but the final PFN isn't aligned to the
-+	 *   requested order.
-+	 *
-+	 * Upon failure, -ERANGE is returned and the caller is
-+	 * expected to try again with a smaller order, which will
-+	 * eventually succeed.
-+	 *
-+	 * It's suboptimal if DMABUFs are created with neighbouring
-+	 * ranges that are physically contiguous, since hugepages
-+	 * can't straddle range boundaries.  (The construction of the
-+	 * ranges should merge them in this case.)
-+	 *
-+	 * Finally, vma_pgoff_adjust is used with a DMABUF created for
-+	 * a VFIO BAR mmap: a BAR mapped with vm_pgoff > 0 creates a
-+	 * DMABUF such that byte 0 of the VMA corresponds to byte 0 of
-+	 * the DMABUF and byte 'vm_pgoff << PAGE_SHIFT' into the BAR.
-+	 * To avoid double-offsetting in this scenario, subtracting
-+	 * vma_pgoff_adjust from this (non-zero) vm_pgoff generates
-+	 * the effective offset.  This also removes the VFIO region
-+	 * index encoded in vm_pgoff for VFIO BAR mmaps.
-+	 */
-+
-+	const unsigned long pagesize = PAGE_SIZE << order;
-+	unsigned long vma_off = (vma->vm_pgoff - priv->vma_pgoff_adjust) <<
-+				 PAGE_SHIFT;
-+	unsigned long rounded_page_addr = ALIGN_DOWN(fault_addr, pagesize);
-+	unsigned long rounded_page_end = rounded_page_addr + pagesize;
-+	unsigned long fault_offset;
-+	unsigned long fault_offset_end;
-+	unsigned long range_start_offset = 0;
-+	unsigned int i;
-+	int ret;
-+
-+	if (unlikely(!vdev))
-+		return -ENODEV;
-+
-+	/* This prevents the dmabuf revocation state from changing under us */
-+	lockdep_assert_held(&vdev->dmabuf_lock);
-+
-+	if (unlikely(priv->vdev != vdev || priv->revoked))
-+		return -ENODEV;
-+
-+	if (rounded_page_addr < vma->vm_start || rounded_page_end > vma->vm_end) {
-+		if (order > 0)
-+			return -ERANGE;
-+
-+		/* A fault address outside of the VMA is absurd. */
-+		dev_warn_ratelimited(
-+			&vdev->pdev->dev,
-+			"Fault addr 0x%lx outside VMA 0x%lx-0x%lx\n",
-+			fault_addr, vma->vm_start, vma->vm_end);
-+		return -EFAULT;
-+	}
-+
-+	/*
-+	 * fault_offset[_end] is the span within the DMABUF
-+	 * corresponding to the faulting page:
-+	 */
-+	if (unlikely(check_add_overflow(rounded_page_addr - vma->vm_start,
-+					vma_off, &fault_offset) ||
-+		     check_add_overflow(fault_offset, pagesize,
-+					&fault_offset_end)))
-+		return -EFAULT;
-+
-+	/*
-+	 * Iterate over ranges in the buffer, summing their lengths:
-+	 * range_start_offset represents the current range's starting
-+	 * offset in the buffer (from 0 upwards).
-+	 *
-+	 * A failure for order == 0 is unexpected, and triggers a
-+	 * fault/warn.
-+	 */
-+	ret = (order == 0) ? -EFAULT : -ERANGE;
-+
-+	for (i = 0; i < priv->nr_ranges; i++) {
-+		size_t range_len = priv->phys_vec[i].len;
-+
-+		/* Early exit if range starts after the page end */
-+		if (fault_offset_end <= range_start_offset)
-+			break;
-+
-+		if (fault_offset >= range_start_offset &&
-+		    fault_offset_end <= range_start_offset + range_len) {
-+			/*
-+			 * The faulting page is wholly contained
-+			 * within the span represented by this range,
-+			 * so validate PFN alignment for the order.
-+			 * The if() condition ensures the pfn
-+			 * arithmetic won't overflow.
-+			 */
-+			unsigned long pfn =
-+				((fault_offset - range_start_offset) +
-+				 priv->phys_vec[i].paddr) >> PAGE_SHIFT;
-+
-+			if (IS_ALIGNED(pfn, 1 << order)) {
-+				*out_pfn = pfn;
-+				ret = 0;
-+			}
-+			/*
-+			 * Else order > 0; ERANGE retries with smaller
-+			 * order
-+			 */
-+			break;
-+		}
-+		range_start_offset += range_len;
-+	}
-+
-+	if (order == 0 && ret != 0)
-+		/*
-+		 * The address fell outside of the span represented by
-+		 * the (concatenated) ranges.  As setup of a mapping
-+		 * ensures that the VMA is <= the total size of the
-+		 * ranges this should never happen.  If it does, warn
-+		 * and SIGBUS.
-+		 */
-+		dev_warn_ratelimited(
-+			&vdev->pdev->dev,
-+			"No range for addr 0x%lx, order %d: VMA 0x%lx-0x%lx pgoff 0x%lx, %u ranges, size 0x%zx\n",
-+			fault_addr, order, vma->vm_start, vma->vm_end,
-+			vma->vm_pgoff, priv->nr_ranges, priv->size);
-+
-+	return ret;
-+}
-+
- /*
-  * This is a temporary "private interconnect" between VFIO DMABUF and iommufd.
-  * It allows the two co-operating drivers to exchange the physical address of
-diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
-index fca9d0dfac90..48d9f574a3df 100644
---- a/drivers/vfio/pci/vfio_pci_priv.h
-+++ b/drivers/vfio/pci/vfio_pci_priv.h
-@@ -23,6 +23,20 @@ struct vfio_pci_ioeventfd {
- 	bool			test_mem;
- };
- 
-+struct vfio_pci_dma_buf {
-+	struct dma_buf *dmabuf;
-+	struct vfio_pci_core_device *vdev;
-+	struct list_head dmabufs_elm;
-+	size_t size;
-+	struct phys_vec *phys_vec;
-+	struct p2pdma_provider *provider;
-+	u32 nr_ranges;
-+	struct kref kref;
-+	struct completion comp;
-+	unsigned long vma_pgoff_adjust;
-+	u8 revoked : 1;
-+};
-+
- bool vfio_pci_intx_mask(struct vfio_pci_core_device *vdev);
- void vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev);
- 
-@@ -114,6 +128,13 @@ static inline bool vfio_pci_is_vga(struct pci_dev *pdev)
- 	return (pdev->class >> 8) == PCI_CLASS_DISPLAY_VGA;
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index cd041381b322..3a3315a7fc11 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -1501,6 +1501,9 @@ static void vmx_write_guest_fred_rsp0(struct vcpu_vmx *vmx, u64 data)
+ 	vmx_write_guest_host_msr(vmx, MSR_IA32_FRED_RSP0, data,
+ 				 &vmx->msr_guest_fred_rsp0);
  }
++#else
++/* Make sure it builds on 32-bit */
++static u64 vmx_read_guest_fred_rsp0(struct vcpu_vmx *vmx) { return 0; }
+ #endif
  
-+int vfio_pci_dma_buf_find_pfn(struct vfio_pci_core_device *vdev,
-+			      struct vfio_pci_dma_buf *priv,
-+			      struct vm_area_struct *vma,
-+			      unsigned long address,
-+			      unsigned int order,
-+			      unsigned long *out_pfn);
-+
- #ifdef CONFIG_VFIO_PCI_DMABUF
- int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
- 				  struct vfio_device_feature_dma_buf __user *arg,
+ static void grow_ple_window(struct kvm_vcpu *vcpu)
+@@ -6727,7 +6730,7 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 	u32 vmentry_ctl, vmexit_ctl;
+ 	u32 cpu_based_exec_ctrl, pin_based_exec_ctrl, secondary_exec_control;
+-	u64 tertiary_exec_control;
++	u64 tertiary_exec_control, secondary_vmexit_ctl;
+ 	unsigned long cr4;
+ 	int efer_slot;
+ 
+@@ -6738,6 +6741,8 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
+ 
+ 	vmentry_ctl = vmcs_read32(VM_ENTRY_CONTROLS);
+ 	vmexit_ctl = vmcs_read32(VM_EXIT_CONTROLS);
++	secondary_vmexit_ctl = cpu_has_secondary_vmexit_ctrls() ?
++			       vmcs_read64(SECONDARY_VM_EXIT_CONTROLS) : 0;
+ 	cpu_based_exec_ctrl = vmcs_read32(CPU_BASED_VM_EXEC_CONTROL);
+ 	pin_based_exec_ctrl = vmcs_read32(PIN_BASED_VM_EXEC_CONTROL);
+ 	cr4 = vmcs_readl(GUEST_CR4);
+@@ -6784,6 +6789,16 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
+ 	vmx_dump_sel("LDTR:", GUEST_LDTR_SELECTOR);
+ 	vmx_dump_dtsel("IDTR:", GUEST_IDTR_LIMIT);
+ 	vmx_dump_sel("TR:  ", GUEST_TR_SELECTOR);
++	if (vmentry_ctl & VM_ENTRY_LOAD_IA32_FRED)
++		pr_err("FRED guest: config=0x%016llx, stack_levels=0x%016llx\n"
++		       "RSP0=0x%016llx, RSP1=0x%016llx\n"
++		       "RSP2=0x%016llx, RSP3=0x%016llx\n",
++		       vmcs_read64(GUEST_IA32_FRED_CONFIG),
++		       vmcs_read64(GUEST_IA32_FRED_STKLVLS),
++		       vmx_read_guest_fred_rsp0(vmx),
++		       vmcs_read64(GUEST_IA32_FRED_RSP1),
++		       vmcs_read64(GUEST_IA32_FRED_RSP2),
++		       vmcs_read64(GUEST_IA32_FRED_RSP3));
+ 	efer_slot = vmx_find_loadstore_msr_slot(&vmx->msr_autoload.guest, MSR_EFER);
+ 	if (vmentry_ctl & VM_ENTRY_LOAD_IA32_EFER)
+ 		pr_err("EFER= 0x%016llx\n", vmcs_read64(GUEST_IA32_EFER));
+@@ -6835,6 +6850,16 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
+ 	       vmcs_readl(HOST_TR_BASE));
+ 	pr_err("GDTBase=%016lx IDTBase=%016lx\n",
+ 	       vmcs_readl(HOST_GDTR_BASE), vmcs_readl(HOST_IDTR_BASE));
++	if (secondary_vmexit_ctl & SECONDARY_VM_EXIT_LOAD_IA32_FRED)
++		pr_err("FRED host: config=0x%016llx, stack_levels=0x%016llx\n"
++		       "RSP0=0x%016lx, RSP1=0x%016llx\n"
++		       "RSP2=0x%016llx, RSP3=0x%016llx\n",
++		       vmcs_read64(HOST_IA32_FRED_CONFIG),
++		       vmcs_read64(HOST_IA32_FRED_STKLVLS),
++		       (unsigned long)task_stack_page(current) + THREAD_SIZE,
++		       vmcs_read64(HOST_IA32_FRED_RSP1),
++		       vmcs_read64(HOST_IA32_FRED_RSP2),
++		       vmcs_read64(HOST_IA32_FRED_RSP3));
+ 	pr_err("CR0=%016lx CR3=%016lx CR4=%016lx\n",
+ 	       vmcs_readl(HOST_CR0), vmcs_readl(HOST_CR3),
+ 	       vmcs_readl(HOST_CR4));
+@@ -6860,25 +6885,29 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
+ 	pr_err("*** Control State ***\n");
+ 	pr_err("CPUBased=0x%08x SecondaryExec=0x%08x TertiaryExec=0x%016llx\n",
+ 	       cpu_based_exec_ctrl, secondary_exec_control, tertiary_exec_control);
+-	pr_err("PinBased=0x%08x EntryControls=%08x ExitControls=%08x\n",
+-	       pin_based_exec_ctrl, vmentry_ctl, vmexit_ctl);
++	pr_err("PinBased=0x%08x EntryControls=0x%08x\n",
++	       pin_based_exec_ctrl, vmentry_ctl);
++	pr_err("ExitControls=0x%08x SecondaryExitControls=0x%016llx\n",
++	       vmexit_ctl, secondary_vmexit_ctl);
+ 	pr_err("ExceptionBitmap=%08x PFECmask=%08x PFECmatch=%08x\n",
+ 	       vmcs_read32(EXCEPTION_BITMAP),
+ 	       vmcs_read32(PAGE_FAULT_ERROR_CODE_MASK),
+ 	       vmcs_read32(PAGE_FAULT_ERROR_CODE_MATCH));
+-	pr_err("VMEntry: intr_info=%08x errcode=%08x ilen=%08x\n",
++	pr_err("VMEntry: intr_info=%08x errcode=%08x ilen=%08x event_data=%016llx\n",
+ 	       vmcs_read32(VM_ENTRY_INTR_INFO_FIELD),
+ 	       vmcs_read32(VM_ENTRY_EXCEPTION_ERROR_CODE),
+-	       vmcs_read32(VM_ENTRY_INSTRUCTION_LEN));
++	       vmcs_read32(VM_ENTRY_INSTRUCTION_LEN),
++	       kvm_cpu_cap_has(X86_FEATURE_FRED) ? vmcs_read64(INJECTED_EVENT_DATA) : 0);
+ 	pr_err("VMExit: intr_info=%08x errcode=%08x ilen=%08x\n",
+ 	       vmcs_read32(VM_EXIT_INTR_INFO),
+ 	       vmcs_read32(VM_EXIT_INTR_ERROR_CODE),
+ 	       vmcs_read32(VM_EXIT_INSTRUCTION_LEN));
+ 	pr_err("        reason=%08x qualification=%016lx\n",
+ 	       vmcs_read32(VM_EXIT_REASON), vmcs_readl(EXIT_QUALIFICATION));
+-	pr_err("IDTVectoring: info=%08x errcode=%08x\n",
++	pr_err("IDTVectoring: info=%08x errcode=%08x event_data=%016llx\n",
+ 	       vmcs_read32(IDT_VECTORING_INFO_FIELD),
+-	       vmcs_read32(IDT_VECTORING_ERROR_CODE));
++	       vmcs_read32(IDT_VECTORING_ERROR_CODE),
++	       kvm_cpu_cap_has(X86_FEATURE_FRED) ? vmcs_read64(ORIGINAL_EVENT_DATA) : 0);
+ 	pr_err("TSC Offset = 0x%016llx\n", vmcs_read64(TSC_OFFSET));
+ 	if (secondary_exec_control & SECONDARY_EXEC_TSC_SCALING)
+ 		pr_err("TSC Multiplier = 0x%016llx\n",
 -- 
-2.50.1 (Apple Git-155)
+2.43.0
 
