@@ -1,148 +1,252 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mail-10630.protonmail.ch (mail-10630.protonmail.ch [79.135.106.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8CD5A514A;
-	Fri, 11 Sep 2026 20:25:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852975A5157
+	for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 20:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789158352; cv=none; b=kAefPXl2kHvwy/DRfM1ubnLjoGGrKNjN+WZcJI0q5VePF/yH5cgNy+8/qX5fvOf5vVoXD1lFDUSBx0NfLWs4hdxCexT939iTtg7mrUnFvg0f4GOAG6+xrYcqWjTpGxMAaDC7d1cM0M6kqwektlGEIuqQr6v/c7G2JQ1TgylEmBo=
+	t=1789158783; cv=none; b=iJ0O9QhN/WXjb9VXU+OmOvgwtD5riKX3njN8G/2HD4EhFgVVEXp5ddpDAl5FlcmfPf3gpmnQbMu42JyxwTyL6h4snPDwlQ34EkatgtOAMkO6K2A2bJfZOVo0RhqwZsGigZHystuyMxvFjpzH6lgNGGBs+lElj1ets0gAw6cdDh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789158352; c=relaxed/simple;
-	bh=kCZ9BYVNK8rc9obpr11/3bgaAsYGL+1TeyyaBbMaCZI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pA/EL9yCeR/g7FDWbckdHc5Z0xLPOP1aN6JF2f78Jn+tLZHyq5Q71/zlXhd/gwImRGmRcx5T6Y30/Ui7KYl+yu5n0MV5/ELkOvZeEm9kc3yNV0V/vtHmzvdGCyPOj5wRvBOOWoS9o1nGVc7lJmhMmAQteE4rbGtyySv216X/AzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kOxHKqeu; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1789158783; c=relaxed/simple;
+	bh=TPYsUdgRymaB/Jt1f1Dboojd4rRWJZ4bSVGb2nI9CZ0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VlNAhX9D72vE+S0ABPBCxMEYIkOe+fK2v2LhB2B+uce/x2AOdQypEIa04Q7aHLTedB6dvIEIL2eCMR1UxmxQ4MKDVPg2mlYnj11CwPbR5P/iPZVSWWhRqXIAbZIPvDnu+HxjltfqyEE44GwnLBrutSBJuEBhGMWTwtdORVfq6fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=T0iYv8Wn; arc=none smtp.client-ip=79.135.106.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kOxHKqeu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789158349; x=1820694349;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=kCZ9BYVNK8rc9obpr11/3bgaAsYGL+1TeyyaBbMaCZI=;
-  b=kOxHKqeuyV3LjyqxEbdRr1DK540cy2se5O4xp+yumQo+iA6dg0faTDzd
-   pGkikoUSrDQgG825BYaiTwjdGyTB0T5bKKZafypIyQEw8YNqsaJ0fQRuR
-   3SSMfMKakyXL+KP+L6qPhwFU4nGOcctIwDUYNc2EOFSMD5N+56J/C6TUf
-   /wG9YO9LICn9hBTl527p9t+owyMMm3PVHUa3HcTfcKRHU+QackCl/+g5O
-   v1GcBQaypu1DLQnXIPtbhksApOm0ys7KkK74eADEJCcSFoNvI6lYogGqq
-   ItKg6cmtV6xxIbhqmMWH30tjuvoRW0tqUO7LN90agX0FEe8s9NUR/c+cu
-   g==;
-X-CSE-ConnectionGUID: N3Dj5MbjQXqSfgQRPNTdIw==
-X-CSE-MsgGUID: oagpUC8uTj+q4OnVo3ks0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="88568321"
-X-IronPort-AV: E=Sophos;i="6.27,97,1787036400"; 
-   d="scan'208";a="88568321"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 13:25:45 -0700
-X-CSE-ConnectionGUID: mzHLDUlsQY6c3yGYli/YWA==
-X-CSE-MsgGUID: n3KA9XEoRL2PCqJdXkYAgg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,97,1787036400"; 
-   d="scan'208";a="269409116"
-Received: from smithj1-mobl2.amr.corp.intel.com (HELO [10.125.108.26]) ([10.125.108.26])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 13:25:44 -0700
-Message-ID: <0aee9055-9cfb-4047-8fdf-024964d123d1@intel.com>
-Date: Fri, 11 Sep 2026 13:25:43 -0700
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="T0iYv8Wn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1789158769; x=1789417969;
+	bh=2UNrRvIefflL8160ndAwQCyY+CDVeSgpUPFUddt7R/I=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=T0iYv8WnoWmlPd2GQm6HQyylr/jallsl4CbybgDBJ//cOE/jPmg5/KAUjZnSUh0xe
+	 lUl6awbcc8S2vGOqgLTVDG2pwih9i+HmofQC6HKtjZtvLGAANgZD2OjDEGjb5U/Dln
+	 m5gPnguhp8Ilk7qJdzq5wsPz26iTjYueejQak78Tz99OJZyD3dArGy0EbKbCzIekY+
+	 v/yPGnPGDb1yuxHoWvReFu+uW5ohbCUGie7jMc2GfZlItPySBtyyO/HSRiBD5hG1K/
+	 a2NAhOxqtZZP2xey1VlpK5JSWg0vFO/4M17+VIPOaIo4aipBDbT94eCmPiG7dW0pfG
+	 /qVcTn0fw6qbQ==
+Date: Fri, 11 Sep 2026 20:32:45 +0000
+To: pbonzini@redhat.com
+From: David Ballesteros <davimaba.v@proton.me>
+Cc: kvm@vger.kernel.org, security@kernel.org, David Ballesteros <davimaba.v@proton.me>
+Subject: [PATCH v2 0/2] KVM: unbounded per-VM kernel memory growth via KVM_SET_MEMORY_ATTRIBUTES
+Message-ID: <20260911203238.30088-1-davimaba.v@proton.me>
+In-Reply-To: <20260911184819.101123-1-davimaba.v@proton.me>
+References: <20260911184819.101123-1-davimaba.v@proton.me>
+Feedback-ID: 219068424:user:proton
+X-Pm-Message-ID: 1ce0421cc612824da54f48a848361712086e0822
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] x86/early_printk: Avoid #VE emulation for TDX guest
- serial output
-To: Vishal Verma <vishal.l.verma@intel.com>, x86@kernel.org,
- Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org
-References: <20260910-b4-tdx_earlyprintk_tdcalls-v1-0-4b2b1bf9001b@intel.com>
- <20260910-b4-tdx_earlyprintk_tdcalls-v1-2-4b2b1bf9001b@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260910-b4-tdx_earlyprintk_tdcalls-v1-2-4b2b1bf9001b@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 9/10/26 15:34, Vishal Verma wrote:
-> +/* Substitute the hypercall accessors, but only in an actual TDX guest */
-> +static __init void early_serial_tdx_init(void)
-> +{
-> +	if (!cpu_feature_enabled(X86_FEATURE_TDX_GUEST))
-> +		return;
-> +
-> +	static_call_update(serial_in, tdx_serial_in);
-> +	static_call_update(serial_out, tdx_serial_out);
-> +}
-> +#else
-> +static inline void early_serial_tdx_init(void) { }
-> +#endif /* CONFIG_INTEL_TDX_GUEST */
-> +
->  static int early_serial_putc(unsigned char ch)
->  {
->  	unsigned timeout = 0xffff;
-> @@ -160,6 +204,9 @@ static __init void early_serial_init(char *s)
->  	unsigned long baud = DEFAULT_BAUD;
->  	char *e;
->  
-> +	/* Must be before early_serial_hw_init(), which does port I/O */
-> +	early_serial_tdx_init();
+Fair bot, you win.  The clear-path bound bypass was real, and v2 of
+this series exists because the automated review caught it before a
+human did.
 
-I really don't like the idea of putting any code in here. How about just
-adding a case to setup_early_printk(). Perhaps:
+Changes in v2 (thanks to the sashiko review of v1):
 
-#ifdef CONFIG_TDX_GUEST
-	if (!strncmp(buf, "tdx", 3)) {
-		early_serial_tdx_init();
-		early_serial_init(buf + 3);
-		early_console_register(&early_serial_console, keep);
-	}
-#endif
+- Reworked the clear path to erase-only iteration over present
+  entries.  v1 could bypass the bound: a clear of a partially
+  populated range went through xa_reserve() for every GFN in the
+  range with no bound check, so alternating set/clear of huge
+  ranges materialized kernel memory without limit.  Erasing cannot
+  allocate, so clears are now failure-free by construction and
+  bounded by the population they actually remove.  Runtime-verified:
+  eight consecutive clears of a 2^52-GFN range containing a
+  populated GFN leave Slab unchanged (v1 grew it to ENOMEM).
+- The per-VM counter is now maintained incrementally (sets charge the
+  full range, conservatively; clears subtract the exact number of
+  entries erased) and a full rescan runs only on the ENOMEM path.
+  This removes the O(array population) cost per mutating ioctl from
+  v1, which was significant for legitimate confidential-VM workloads
+  converting small ranges on a large array.  Runtime-verified: 50
+  alternating 4 KiB set/clear conversions at a near-full array take
+  0.01 ms each.
+- Added guard(rcu)() to the rescan helper for consistency with
+  kvm_range_has_memory_attributes() and to satisfy lockdep.
+- No change to patch 2.
 
-Then folks can just use earlyprintk=tdx.
+On the other review points: the 128 GiB budget value remains a
+deliberate trade-off, discussed under "Why a constant and not a
+derived bound" below; and the other KVM xarrays do not share this
+exposure because their indices are bounded by construction
+(vcpu_array by the KVM_MAX_VCPUS check in KVM_CREATE_VCPU, gmem
+bindings by KVM_MEM_SLOTS_NUM), unlike mem_attr_array whose index
+range is the user-chosen GFN range itself.
+
+
+Affected version/commit: v7.2-rc5 (commit 699594e8888d is not needed here;
+verified on v7.2-rc5 as of 2026-09-09 and on v6.18.48; the code paths are
+unchanged between them and present in mainline. The ioctl was introduced
+in v6.8 with the per-page memory attributes series).
+
+Problem
+-------
+
+kvm_vm_ioctl_set_mem_attributes() (virt/kvm/kvm_main.c) validates the
+user-provided range only for representability (zero size, 64-bit wrap,
+alignment, supported attributes) and not for magnitude.  With attributes
+!=3D 0, kvm_vm_set_mem_attributes() then walks every GFN in the range:
+
+        for (i =3D start; i < end; i++) {
+                r =3D xa_reserve(&kvm->mem_attr_array, i, GFP_KERNEL_ACCOUN=
+T);
+                if (r)
+                        goto out_unlock;
+                cond_resched();
+        }
+
+xa_reserve() materializes the full root-to-leaf path of xa_nodes for each
+GFN even though the GFNs need no backing memory and no memslots need to
+exist.  Each xa_node is 576 bytes from radix_tree_node_cachep; densely
+filled, the tree costs ~9.3 bytes per GFN.  On ENOMEM the loop bails out
+without undoing prior reservations, and the only release path is
+kvm_destroy_vm(); the memory is therefore retained across calls and lives
+for as long as the VM fd.
+
+Additionally, the intended memcg accounting does not take effect: the
+nodes are allocated with GFP_NOWAIT in xas_alloc(), gaining __GFP_ACCOUNT
+only when the xarray carries XA_FLAGS_ACCOUNT, which kvm does not set
+(kvm_create_vm() uses plain xa_init()).  Measured: a process inside a
+cgroup limited to 256 MiB grew host SReclaimable by ~450 MiB while its
+memory.current stayed at ~488 KiB.
+
+Triggering conditions
+---------------------
+
+- An unprivileged user with write access to /dev/kvm (sysfs default and
+  the common udev default are 0666).
+- A VM whose type sets private memory support: sw protected VM
+  (CONFIG_KVM_SW_PROTECTED_VM, depends on EXPERT), TDX or SNP.
+- No memslots, no guest memory and no guest CPUs are required.
+- Verified outcomes on v6.18.48 (KASAN builds, isolated VMs):
+  * ~9.29 bytes/GFN and ~75 MiB/s of sustained growth per VM; linear
+    scaling with parallel VMs (4 VMs: 3.56x).
+  * global OOM killing unrelated third-party processes while the
+    attacker's own memcg stays uncharged.
+  * when all surviving processes are OOM-disabled, select_bad_process()
+    finds no candidate and the kernel panics ("System is deadlocked on
+    memory", mm/oom_kill.c).  Reproduced twice.
+  * one ioctl holds kvm->slots_lock for the whole reservation loop, so a
+    large range blocks KVM_GET_DIRTY_LOG and memslot updates of that VM
+    for the duration (measured GET_DIRTY_LOG latency 1us -> 7.7ms with a
+    single concurrent call); KVM_RUN is unaffected.
+  * replicated through a real container runtime (podman/crun) with
+    --memory 512m: the container grew host slab by ~450 MiB while its
+    memory.current stayed at ~488 KiB.
+
+Reproducer status
+-----------------
+
+A reproducer is available on request (KVM_CREATE_VM + the ioctl in a
+loop, plus slab/ accounting measurement), but following security-bugs.rst i=
+t is
+not attached to this report.
+
+Test environment
+----------------
+
+All dynamic results were collected in isolated inspection VMs on a
+single AMD host with nested virtualization enabled
+(kvm_amd nested=3D1): QEMU -cpu host, Debian 13 guests, guest kernels
+built from the audited tree (v6.18.48) and from v7.2-rc5 with
+CONFIG_KVM_SW_PROTECTED_VM=3Dy / CONFIG_KVM_AMD=3Dy / CONFIG_EXPERT=3Dy and
+KASAN (with CONFIG_KASAN_VMALLOC=3Dy where noted); the PoC runs as root
+inside the guest, host networking restricted (user-mode net,
+restrict=3Don).  Nothing in the host kernels themselves was modified or
+attacked.  The container replication used podman 5.4.2/crun inside the
+guest with the host kernel having the gate enabled (a stock host kernel
+without KVM_SW_PROTECTED_VM rejects KVM_CREATE_VM and the surface is
+absent, as expected).
+
+Proposed fix
+------------
+
+Attached as 0001-v3.patch (checkpatch clean, build warning-free on
+v7.2-rc5, runtime-verified on v7.2-rc5): it bounds the total number of
+materialized attribute entries per VM to KVM_MEM_ATTR_MAX_GFNS (2^25
+GFNs =3D 128 GiB of GPA, ~300 MiB of xa_nodes), enforced under
+kvm->slots_lock after the idempotency early-out.  A per-VM counter is
+resynchronized from the xarray only when an ioctl mutates the array
+(ENOMEM partials, successful sets and clears), so idempotent re-sets
+and rejected requests stay O(1) =E2=80=94 runtime-verified: a 4 KiB idempot=
+ent
+re-set on an exhausted VM returns in ~4us; a fresh range on an
+exhausted VM is rejected with -ENOSPC in ~17us; the bound cuts growth
+at 2^25 GFNs.
+
+Patch 2/2 restores the intended accounting with a one-liner; it
+attributes the memory but does not bound it (see the analysis below):
+
+-       xa_init(&kvm->mem_attr_array);
++       xa_init_flags(&kvm->mem_attr_array, XA_FLAGS_ACCOUNT);
+
+Design notes for reviewers: the budget value (2^25 GFNs) is a trade-off
+=E2=80=94 it is well above any current consumer's usage but small next to t=
+he
+GPA space TDX/SNP guests can have; a tunable or a symmetric decrement on
+clear are alternatives if maintainers prefer.  The -ENOSPC errno
+distinguishes the bound from the malformed-input -EINVAL paths.
+
+Why a constant and not a derived bound?
+
+We considered bounding materialization by what the VM has actually
+declared instead of a constant, and rejected it because the declaration
+itself is not proportional.  Two candidate signals:
+
+- Memslot coverage ("reject ranges not covered by any memslot"):
+  semantically attractive =E2=80=94 attributes on unbacked GFNs are inert s=
+tate
+  with no consumer (kvm_handle_gfn_range only walks real memslots), and
+  the only in-tree consumer (tools/testing/selftests/kvm, private_mem_
+  conversions_test.c) sets attributes strictly inside its gmem memslot.
+  But it is not a bound: a memslot requires only a MAP_NORESERVE userspace
+  VMA (no committed pages); its kernel cost is the lpage_info metadata
+  (4 bytes/entry, __vcalloc proportional to npages: ~16 MiB for a
+  maximum 8 TiB memslot) while the same memslot's GPA span materializes
+  ~19.9 GiB of xa_nodes =E2=80=94 a ~1200:1 amplification of declared metad=
+ata.
+  Three or four maximum-size NORESERVE memslots suffice to exhaust a
+  64 GiB host.  As a semantic follow-up that eliminates the zero-setup
+  variant of the attack it is worth considering on top of the bound.
+
+- Sum of memslot pages as a dynamic budget: same flaw =E2=80=94 the attacke=
+r
+  raises his own budget by declaring free memslots; without a constant
+  the ceiling becomes the physical address space.
+
+Per-VM accounting to the caller's memcg (patch 2/2) attributes the
+memory but bounds only cgroup-limited tenants; with the common
+/dev/kvm 0666 default and unlimited cgroups it does not bound the host.
+Hence the layering we propose: accounting (2/2) + hard per-VM bound
+(1/2), with memslot-coverage rejection as an optional semantic layer
+the maintainers may prefer on top.
+
+Mitigations
+-----------
+
+- Restrict /dev/kvm (mode 0660 root:kvm) where the default 0666 is in
+  place.
+- Monitor SReclaimable and /sys/kernel/slab/radix_tree_node/objects, not
+  SUnreclaim: the growth is reclaimable-accounted and never reclaimed.
+- Per-tenant memcg limits do NOT mitigate the common path today (see
+  above), which is why the counter bound is the effective fix.
+
+Notes
+-----
+
+- Not verified: the TDX/SNP hardware paths end-to-end (no hardware);
+  the software-protected path was verified end-to-end on both versions.
+
+--
+2.55.0
+
+
