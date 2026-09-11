@@ -1,108 +1,53 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525D4478861
-	for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 12:39:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D4C377AA8;
+	Fri, 11 Sep 2026 12:43:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789130379; cv=none; b=r4xkfhsxYsPOVxiiEEBJTLF18uJurjwNHl/vZyAd1FQzP29cbdapKor4Hymays2nU8lCWqXuy6u9YVwdwRNs4SIOUvczSvxnfvFpCO33lnHUkMbCn6FGqnt+3X3aGbt1w2V6Hvzfi+18aY8UdJgpXQnt3IYYdjXnBb8JaX0pfag=
+	t=1789130592; cv=none; b=PmgX6oAE81tFX4GMfZgLg4Fhu9UryYLW4jObfDFMl9i+M1cdLdwvEzdNfMxLFkwVbWeFk4qphwvHxJNNKcofXGWN+eAvabiuJ9h9uwdH5qGu6yV+q1cW1ApoYL2E9xp6IJ+e7SEdT/KgGgEqOSBH9c8Grro+Pjr7CU013/faWtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789130379; c=relaxed/simple;
-	bh=GDdmUOvL5qIET19hhzGDg8z0c0RlAlMuQVYPy1uq+Hw=;
+	s=arc-20240116; t=1789130592; c=relaxed/simple;
+	bh=AYEkP013J/2d/muDFR6I2PEvoL5OJnQHcQnfIXL8Gdw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ruN8VG+q1Koum351YKi7eS+hdF0QiOIcWPMit4XiPEBKnpTLuXKzHbReXZc7EjU8rgEt7haBuqYIDlGRB21YdZtLKxQ5bstZqeYd1U6oFHOXI0PhRp7/nVHRI53NPYiAITLuG+vE8++dLdSy/9gHW03ENFMRYvfNM/5JDixZMuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MxtqT1iy; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=gMfz6rRw; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=sI2Osc2ZKoFRRv/J5ZqKiwdyIGtmJCVo/o9t1iTQQ8IzYFK3bXFE0UEclDYDXo9lrqTzmrCLytpWtxlfMtsgqKhysDzoGH7RlptSxe6rOlZONCChsGw1joTbaPAptELmtIa8IlsiMMmaBYGfYX+mUVJ1IR2KPQ9GTXhA0+EBEUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Y7t2/5La; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MxtqT1iy";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="gMfz6rRw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789130373;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3o3AUP2GR4e8bKS56CF9rGMsnzBPpsvQ/7QSZVFmj6g=;
-	b=MxtqT1iyLvIMbsg69wDC3iwbEuaPPQqn6okc4ie5s65UB2TMd0dGT0SNfMh/mc8yjMv/oO
-	oV0s5uv70q2OK4rCuRoCbJjY2ApLy5PhJz7lY3//drmcc4pOhT6PPHN+oeRqDE/jyzh3R7
-	qFgUd9GVVjsxC7KYy6vczjR15DkHHoI=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-297-4LJqGBpjPue0mEUUtnDzuQ-1; Fri, 11 Sep 2026 08:39:32 -0400
-X-MC-Unique: 4LJqGBpjPue0mEUUtnDzuQ-1
-X-Mimecast-MFC-AGG-ID: 4LJqGBpjPue0mEUUtnDzuQ_1789130371
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49e661c6440so2199365e9.3
-        for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 05:39:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789130371; x=1789735171; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3o3AUP2GR4e8bKS56CF9rGMsnzBPpsvQ/7QSZVFmj6g=;
-        b=gMfz6rRw+DBxRU4YO78zqKqIWImeitBaqF31uPDXFMaByCH8yHoXRrAj3JroA9oN84
-         SLx+bbW9/UPf4/8Hd9ch+NgwmlgzwlcxXVUw6FOYQ8Cz4Ru7oqR9jnshWW8zpa/zlTpn
-         SjAP20UUp/cTbbIjE699Dh41l07Q/isXezQ5xIMAZmYuO2bVsJza6EL/xDTwujd8V2/q
-         /onCMmHbVdYho0u2448KfoszrDucZJbicPUzxY5bteJne9p4mjgmwyd7ptzmjm/aadSS
-         Od+VUBAbWX+Wcu5ZcsSk4YjdPMD0QKIJ5m0K4+S7Dpem5KZ+NgTRmkW2LL1a0+gzrUZ7
-         GUaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789130371; x=1789735171;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3o3AUP2GR4e8bKS56CF9rGMsnzBPpsvQ/7QSZVFmj6g=;
-        b=rSMO6OW07X1iNmIS0Cn0ENT+887EOe4bgkYA8Q9TOWhIWNE9XDFtKcO5HR6flnXUgB
-         73Jhvmf7gB2neevby1U8+CO6b2z7PuzXXMZULKsWQwvd57tdk/QtAiITAdfCAs2VqZD+
-         jpqZuTU4b/JKgl7vrjae52CbvzCLYll9+F0ch+iCAcBXiSpkkd6cJQHwnN3QcI2tkpz0
-         6hsXQBtpSJxVRbK/+fbNNBAikZ1n84gcC3jn4NQsPGJ37tXtiN4ZgQq7luvMLAfQFkgS
-         vn4gaHuItklHVgjw+kKwHHTT6dDfwMxZW7ysI1jhXf7aA30hdFo9qfygkUGIAQp3VRTe
-         YPmQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxUze39MkqXOF63hOCGsUulZotvLmXmJs43QZu1lh/MNwkHj3ANlrgpAWHEEvFk9jG1nOA=@vger.kernel.org
-X-Gm-Message-State: AFuF++kFaxx4Bs+zHZ/vmA7E7XAfgEGlWo9p+8yReCatu1mRN38cOzEl
-	ERa1PEvrraXI0Zhl7aq3XVIOTmVVfaKkltsPFbVeBGCj9OO6D1N7ZaCDWSrKW+FNGLMFH2gF4Pb
-	WNG5YuoF+5bvJkkUi91lzxYHcFB8uTQfGbhnPmpLlhUT2UtT1zS1ULw==
-X-Gm-Gg: AYBFou1jDh+qlXfdQGoxnxTXo319VytU67XazO7YJj1gFbHifqyiymXGlaeTOZAmDCv
-	H12UKS6ECgNmlia5jsEBzuVxaVGnNeyVvWgb+XWVMF1DEP7BwQZd1sqslJ0QgL6AWQwpcLQEZit
-	QEGZvjA5p8Q5z6NTSXzj1W0mzdGuErkbK/Wdd2eIShW1HUIeAxnx47WzQGWqhxVDQzZukiNko2x
-	WsWT/XEADuVLAgHOrNRYQQnn7SlyUSM1cFQWgmUnxCqmWsqDmOyIHg63opE51WfRvO1OEUzwjif
-	tAVtiYI1iGXI3ScQlVj3wpH6sHUlZawIGddUv9puSEahjAhAw/589b+asTh895vt52KNYp2HC7R
-	Ml+NHYiCc/y67pcGmPM46bdQ=
-X-Received: by 2002:a05:600d:4452:20b0:499:b65d:124f with SMTP id 5b1f17b1804b1-49e6198c2aemr35357955e9.11.1789130370692;
-        Fri, 11 Sep 2026 05:39:30 -0700 (PDT)
-X-Received: by 2002:a05:600d:4452:20b0:499:b65d:124f with SMTP id 5b1f17b1804b1-49e6198c2aemr35357705e9.11.1789130370161;
-        Fri, 11 Sep 2026 05:39:30 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-79-236.inter.net.il. [80.230.79.236])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e6420de77sm22739175e9.3.2026.09.11.05.39.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2026 05:39:29 -0700 (PDT)
-Date: Fri, 11 Sep 2026 08:39:25 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: Jason Wang <jasowangio@gmail.com>, Gerd Hoffmann <kraxel@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Rusty Russell <rusty@rustcorp.com.au>,
-	Pawel Moll <pawel.moll@arm.com>, Cornelia Huck <cohuck@redhat.com>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Eric Farman <farman@linux.ibm.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Vadim Pasternak <vadimp@nvidia.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	virtualization@lists.linux.dev, linux-input@vger.kernel.org,
-	linux-s390@vger.kernel.org, kvm@vger.kernel.org,
-	linux-um@lists.infradead.org, platform-driver-x86@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] virtio: synchronize callbacks during device reset
-Message-ID: <20260911083848-mutt-send-email-mst@kernel.org>
-References: <20260905152059.89560-1-kmehltretter@gmail.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Y7t2/5La"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4485B1655;
+	Fri, 11 Sep 2026 05:43:06 -0700 (PDT)
+Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 17A4F3F7B4;
+	Fri, 11 Sep 2026 05:43:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789130589; bh=AYEkP013J/2d/muDFR6I2PEvoL5OJnQHcQnfIXL8Gdw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Y7t2/5Lam2g8qRhPXwbiismNNJmPzYkbs1njyR8gmpp7Vck5F0dEP+USPHwGkVj4y
+	 zyEVPrSL46la0hde1suMA5O66hKqdPYQmIy0jLuQtj8JZiZhItI8liJqlOlZKutbU7
+	 R7cp0KjoRS0TqixmTVP9fKudIHZb6fIM75NhVQfI=
+Date: Fri, 11 Sep 2026 13:42:57 +0100
+From: Wei-Lin Chang <weilin.chang@arm.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
+	Itaru Kitayama <itaru.kitayama@fujitsu.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Fuad Tabba <tabba@google.com>, Joey Gouly <joey.gouly@arm.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Jack Thomson <jackabt@amazon.com>, Jack Thomson <jackabt.amazon@gmail.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Vincent Donnefort <vdonnefort@google.com>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Sean Christopherson <seanjc@google.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Leo Soares Passos <Leo.Bras@arm.com>
+Subject: Re: [PATCH 8/8] KVM: selftests: Add nested pre-fault test for arm64
+Message-ID: <g45xmukndzivuxowpjxlajrjzx2ljevliroenbx4h4wgrnpoi6@eozuucl3usi3>
+References: <20260825-kvm-arm-prefault-v1-0-befe8947702e@kernel.org>
+ <20260825-kvm-arm-prefault-v1-8-befe8947702e@kernel.org>
+ <aqOgEQKBGH-YqGr3@sm-arm-grace07>
+ <aqPIUtNTJFwUvJME@gremlin>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -111,58 +56,185 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260905152059.89560-1-kmehltretter@gmail.com>
+In-Reply-To: <aqPIUtNTJFwUvJME@gremlin>
 
-On Sat, Sep 05, 2026 at 05:20:56PM +0200, Karl Mehltretter wrote:
-> A virtqueue callback can outlive virtio_reset_device() and race with a
-> driver freeing the state it uses. The reset helper documents that no
-> callbacks remain in progress, but that depends on the transport:
-> virtio-pci waits in vp_reset(), while virtio-mmio does not.
+On Fri, Sep 11, 2026 at 10:32:17AM +0100, Lorenzo Stoakes (ARM) wrote:
+> +cc Wei-Lin
 > 
-> virtio_input has a related ordering problem: it unregisters the input
-> device before resetting the virtio device, while an event callback may
-> still be using the input device.
+> On Fri, Sep 11, 2026 at 03:30:41PM +0900, Itaru Kitayama wrote:
+> > Hi Lorenzo,
+> >
+> > On Tue, Aug 25, 2026 at 05:00:42PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > > From: Jack Thomson <jackabt@amazon.com>
+> > >
+> > > Add an arm64 nested-virt selftest for KVM_PRE_FAULT_MEMORY. The guest
+> > > enters vEL1 and exits to userspace with a nested/shadow stage-2 MMU as
+> > > the vCPU's last-run context.
+> > >
+> > > Before prefaulting, userspace enables HCR_EL2.VM and points VTTBR_EL2 at
+> > > an empty nested stage-2 root. A prefault implementation that incorrectly
+> > > treats the userspace GPA as an L2 IPA will fail the ioctl; the correct
+> > > path targets the canonical stage-2 and succeeds.
+> > >
+> > > Restore the original nested state before resuming the guest, then touch
+> > > the prefaulted range to check that vEL1 still runs correctly.
+> > >
+> > > Signed-off-by: Jack Thomson <jackabt@amazon.com>
+> > > [ljs: partial progress, >4 KiB pgsize, commit msg, comment fixups]
+> > > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > > ---
+> > >  tools/testing/selftests/kvm/Makefile.kvm           |   1 +
+> > >  .../selftests/kvm/arm64/nv_pre_fault_memory_test.c | 206 +++++++++++++++++++++
+> > >  2 files changed, 207 insertions(+)
+> >
+> > I wonder whether this selftest can use functions Wei-Lin proposed
+> > some time ago [1]: 20260325003620.2214766-1-weilin.chang@arm.com
+> > or would you prefer this test as propose, since it is clear as
+> > to what needs to be done to enter L2.
 > 
-> Patch 1 moves the callback wait into the core, using the existing
-> virtio_synchronize_cbs() operation. Patch 2 fixes the virtio_input teardown
-> order. Patch 3 adds the missing synchronize_cbs hooks for UML, TmFIFO,
-> remoteproc and virtio-vdpa. Remoteproc uses one SRCU domain per processor.
-> 
-> The new hooks wait for callbacks already running. UML, TmFIFO and
-> remoteproc still allow new callbacks after reset; fixing that is separate
-> work. The event-virtqueue DMA mapping issue is also separate.
-> 
-> Changes in v2:
-> - Patch 1: move the wait into the core instead of fixing only MMIO, as
->   Michael suggested. Remove the duplicate PCI wait, preserve its shutdown
->   wait, and fix CCW callback locking. Drop the MMIO polling: reset polling
->   for v3 and newer is already in fa8833c085b6 ("virtio-mmio: add support
->   for transport version 3").
-> - Patch 2: keep draining completed events when ready becomes false,
->   instead of breaking out, so teardown does not truncate an input packet.
-> - Patch 3 is new, at Michael's request.
-> 
-> I reran the 120-cycle unbind/rebind test in an arm64 KASAN guest with four
-> vCPUs and a 5 ms busy delay per event. With patch 2 alone over virtio-mmio,
-> reset returned with the callback still running in all 84 overlapping
-> cycles. With the series, it waited in all 103. Over PCI with per-queue
-> MSI-X, it waited in all 66, including runs with threadirqs. No KASAN or
-> lockdep reports. These runs predate the per-rproc change, which leaves
-> the tested MMIO and PCI paths unchanged. They confirmed the missing wait,
-> but did not reproduce a use-after-free: with evdev attached,
-> input_unregister_device() waits for an RCU grace period that the IRQ
-> callback blocks.
-> 
-> That version also passed QEMU input, rebind and shutdown checks on arm64
-> MMIO and x86-64 PCI, including arm64 RT, KASAN and KCSAN builds, and x86
-> UP/Tiny SRCU. A legacy INTx NIC was present for an additional x86
-> shutdown check. The changed objects built with W=1 without warnings on
-> arm64, x86-64, s390 and SMP UML. The per-rproc version built with W=1
-> on arm64 KASAN and x86 Tiny SRCU, and passed six remoteproc callback and
-> lifetime KUnit tests on each, using mock remoteproc devices.
-> 
-> Link: https://lore.kernel.org/r/20260818040433.66986-1-kmehltretter@gmail.com
+> I think if these aren't merged yet then that could be a follow up?
 
-I posted a version of patch 1, split up, just to give direction.
-Feel free to take over it, or test and ack. Thanks a lot for your work!
+This selftest doesn't require setting up L1's stage-2 for L2, so to me
+the current approach is okay.
 
+[...]
+
+> > > +static void guest_code(void)
+> > > +{
+> > > +	u64 sp;
+> > > +
+> > > +	GUEST_ASSERT_EQ(get_current_el(), 2);
+> > > +
+> > > +	/*
+> > > +	 * Mirror the EL2 translation regime into the real EL1 registers so
+> > > +	 * that vEL1 runs on the test's stage-1 page tables. With E2H=1, the
+> > > +	 * _EL1 accessors read the EL2 registers, and the _EL12 accessors
+> > > +	 * write the real EL1 registers.
+> > > +	 */
+> > > +	write_sysreg_s(read_sysreg(sctlr_el1), SYS_SCTLR_EL12);
+> > > +	write_sysreg_s(read_sysreg(tcr_el1), SYS_TCR_EL12);
+> > > +	write_sysreg_s(read_sysreg(ttbr0_el1), SYS_TTBR0_EL12);
+> > > +	write_sysreg_s(read_sysreg(mair_el1), SYS_MAIR_EL12);
+> > > +	write_sysreg_s(read_sysreg(cpacr_el1), SYS_CPACR_EL12);
+
+Just FYI, the at.c selftest uses a macro for these.
+
+> > > +
+> > > +	/* Run vEL1 on the same stack. */
+> > > +	asm volatile("mov %0, sp" : "=r"(sp));
+> > > +	write_sysreg(sp, sp_el1);
+> > > +
+> > > +	/*
+> > > +	 * Drop TGE so that vEL1 is a nested context rather than host EL0.
+> > > +	 * KVM backs it with a shadow stage-2 MMU even though vstage-2 is
+> > > +	 * disabled (HCR_EL2.VM=0).
+> > > +	 */
+> > > +	write_sysreg(read_sysreg(hcr_el2) & ~HCR_EL2_TGE, hcr_el2);
+> > > +	isb();
+> > > +
+> > > +	write_sysreg(PSR_MODE_EL1h | PSR_F_BIT | PSR_I_BIT | PSR_A_BIT |
+> > > +		     PSR_D_BIT, spsr_el2);
+> > > +	write_sysreg((u64)guest_el1_code, elr_el2);
+> > > +	asm volatile("eret");
+> > > +
+> > > +	GUEST_ASSERT(false);
+> > > +}
+> > > +
+
+[...]
+
+> > > +
+> > > +static struct nested_s2_state enable_empty_nested_s2(struct kvm_vcpu *vcpu)
+> > > +{
+> > > +	struct nested_s2_state state = {
+> > > +		.hcr_el2 = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2)),
+> > > +		.vttbr_el2 = vcpu_get_reg(vcpu,
+> > > +					   KVM_ARM64_SYS_REG(SYS_VTTBR_EL2)),
+> > > +	};
+> > > +
+> > > +	TEST_ASSERT(!(state.hcr_el2 & HCR_EL2_TGE),
+> > > +		    "vCPU should be in nested/vEL1 context");
+> > > +
+> > > +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_VTTBR_EL2),
+> > > +		     NESTED_S2_ROOT_GPA);
+> > > +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2),
+> > > +		     state.hcr_el2 | HCR_EL2_VM);
+> > > +
+> > > +	return state;
+> > > +}
+> > > +
+> > > +static void restore_nested_s2(struct kvm_vcpu *vcpu,
+> > > +			      struct nested_s2_state *state)
+> > > +{
+> > > +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2), state->hcr_el2);
+> > > +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_VTTBR_EL2),
+> > > +		     state->vttbr_el2);
+> > > +}
+> > > +
+> > > +int main(void)
+> > > +{
+> > > +	struct nested_s2_state s2;
+> > > +	struct kvm_vcpu_init init;
+> > > +	struct kvm_vcpu *vcpu;
+> > > +	struct kvm_vm *vm;
+> > > +	struct ucall uc;
+> > > +	u64 npages;
+> > > +
+
+[...]
+
+> > > +
+> > > +	/*
+> > > +	 * The vCPU's last-run context is vEL1, backed by a shadow stage-2
+> > > +	 * MMU. Enable nested stage-2 with an empty root so that the ioctl
+> > > +	 * fails if it tries to interpret the userspace GPA as an L2 IPA.
+> > > +	 *
+> > > +	 * Prefault in two halves so that the second ioctl exercises a
+> > > +	 * repeated shadow-MMU attach and canonical stage-2 swap.
+> > > +	 *
+> > > +	 * (Note that an implementation that wrongly populates shadow
+> > > +	 * stage-2 page tables would not be caught as userland can't
+> > > +	 * inspect these.)
+> > > +	 */
+> > > +	s2 = enable_empty_nested_s2(vcpu);
+> > > +	pre_fault(vcpu, TEST_MEM_GPA, TEST_MEM_SIZE / 2);
+> > > +	pre_fault(vcpu, TEST_MEM_GPA + TEST_MEM_SIZE / 2, TEST_MEM_SIZE / 2);
+> > > +	restore_nested_s2(vcpu, &s2);
+
+Sorry I don't get what enable_empty_nested_s2(), restore_nested_s2()
+brings to the test?
+
+After quickly going through the prefault implementation there isn't
+anything about it that is nested related, how would giving L2 an empty
+stage-2 translation affect the outcome if it misinterprets the GPA as an
+L2 IPA?
+
+In other words would there be potential false positives if we don't call
+these functions?
+
+Thanks,
+Wei-Lin Chang
+
+> > > +
+> > > +	/* Resume at vEL1 and touch the prefaulted range. */
+> > > +	vcpu_run(vcpu);
+> > > +	switch (get_ucall(vcpu, &uc)) {
+> > > +	case UCALL_DONE:
+> > > +		break;
+> > > +	case UCALL_ABORT:
+> > > +		REPORT_GUEST_ASSERT(uc);
+> > > +		break;
+> > > +	default:
+> > > +		TEST_FAIL("Unhandled ucall: %ld", uc.cmd);
+> > > +	}
+> > > +
+> > > +	kvm_vm_free(vm);
+> > > +	return 0;
+> > > +}
+> > >
+> > > --
+> > > 2.55.0
+> > >
+> 
+> --
+> Cheers, Lorenzo
