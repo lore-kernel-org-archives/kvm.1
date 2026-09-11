@@ -1,185 +1,165 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012046.outbound.protection.outlook.com [52.101.48.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF1234D4E9;
-	Fri, 11 Sep 2026 14:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789137068; cv=fail; b=nKh9Cuan90P6+HT3iLbqAAUXW8qKAuGkilmNSFpeDt/KxkmpHydZlOj5SZNQ8K4bQQxP7KaD4HWIiTLKOUbH4J4vQfCSCUGvjFU7nCiRUjvU9T2Uq+bisp0tzBcNqDxhk8AV8D1YFqvsIo+dk2pEx8GKvZcRvJtJvnn7w9kx6UI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789137068; c=relaxed/simple;
-	bh=W7SyiPxJscMxBroKi0U5ZuqPCVLZ/q0QyP8hcKQzDJs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=bW4yWSZDQuqnO4nsreR3WRxXCwke5hapeV+gztCjEj73Fx0CkACWx88C77+m8RLY3xU4XupZXUSaPl9TGZpyyHUoR1jPUMZD5XoS65bhKLbahBcB6Ris+eKy1FH4f1diHCvr17sxBzXyKuuu++RTMXFGBmQqnQDGLSqadzLaOGk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=D1rBB3gg; arc=fail smtp.client-ip=52.101.48.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37292364E98
+	for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 14:42:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789137766; cv=none; b=e7SltJX7GfPfIQLKCRawZUlNrYrfOh/IZPR45l504speYZYpel4vGVMzsYV8hIq3I20m1v6pYIPCY2VVyTza8Z6kYR4m77ZLrsRTJpvQk21mABms0UsAUnARBS2zaJYFMXc28qjQmxvx3WLK5DJU6Ms5JcpnPZid4zSwbFd02p8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789137766; c=relaxed/simple;
+	bh=q72VP5n2ZqcEGQgXeUc2xgK/v4cYAsj+QPvCunTuwVY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Z7OdekhaliQvMc0OObTnITuIXJBd1KgdZHWADvjaL0rB+9V+ym84z9fHp4+W/xB53NJF0qP5iweKCndF6lUwzps8bfBnjOlw8TNwSIkwZBBGB/9qe0TGQ7R01BzsarWY8piANKA3qWGKMfVb+TbupTyAzQLkdqfd6GroaAZmToc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Oa3P+L8h; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="D1rBB3gg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JatsJRqu1DoHoOvTrc8FauQKfwRXHbMCKMglcFr7kTTZgUkOtgQ0z1ZyXCWYV3oeGb5V/PwqlVE8ShlCazZcMoz30r+2dmC2pslOpAGzZrJP8WE5rRExP82KRgK9rueFGRD7aNx6/KjZ7YsOWZ6qzJW4g5ag+lWnG60EhncqtwAa5kyhWE2f6ZUpQMLhJetGRucshxdXMCdJz0ZyF5mmFTnbN6gMT7eAC8ERyksRoSjn8ulcn+lm9BEXkNQRFsJ2Dxm9+YLP8N6+EGmh1M5dnM9L/6cuQUnFAtm2cB3BopudozRS2SdnuWt7CyonKI4bIrNiC+vYFPKlhz5d5rKzSw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6JWgc0q+12jv5kIAv32LIGY1YmVkec7CyzTR2C4Uiww=;
- b=v8ITyOfPqPPRpPbroVLIZ7h1mKvepjv9kKDxObeBnqnqP/LA9L1QJUY4tRna0qb2dhcAoFbRKqrMVXam5xCG6aUxvaNN1cJCxZ0HyLD20Nfxs8J0eSBFXheaP2Qw9uxD+tXs6OHHzwYtXl0EMiKArzySarPYVBTA4V0mG0mgW/qoiBiBOkfMkjsNvXE4Vu89MRJtMK328C7n1StcKH56a50yZZd2+172ZkPe3/JAhUKGKGxBNE92VoaVQp/k0xryQEoyYjD8SyITLIq4h00HMZsojNu26zkptt3BzneawKNQfhIE6IQdDW970v2pBMV6nHJATT3yTj5CmSYipH3t+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6JWgc0q+12jv5kIAv32LIGY1YmVkec7CyzTR2C4Uiww=;
- b=D1rBB3ggJiSYfIrSwUwUiQBSGXKNiDSNqdbUAp6Mfgsl8JOcrC4Z7s+sl7TdyjY8jiB0230W2AFgUML5z5JxEdBzDIzUmPi8xLsUemyG6WfDdiMOXJ0YyXlwufOOoqHt1D3dVV1JyWR6yvKzt6rLDek5tFOHJaRcCf1owkTLfxpk9g73MHICgef6YSUVnMd9yf4XXR1smCUV2RrzBgRm2Jq1+JZhMRmguXM5wF012cZWaSmZbScTSVA6yhilCeo9nPP9bWFJ2YVQC6RFWHoIOibBFH8evAkNt8Jbag96A3sO2f0B2V0hGICTw5Rn6vzT5pGVHmmt+MSPni0amHl9Aw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by DS7PR12MB8252.namprd12.prod.outlook.com
- (2603:10b6:8:ee::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Fri, 11 Sep
- 2026 14:30:56 +0000
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0406.007; Fri, 11 Sep 2026
- 14:30:56 +0000
-Date: Fri, 11 Sep 2026 11:30:55 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: David Matlack <dmatlack@google.com>,
-	Logan Odell <loganodell@google.com>, arnd@arndb.de,
-	pasha.tatashin@soleen.com, rppt@kernel.org, pratyush@kernel.org,
-	graf@amazon.com, akpm@linux-foundation.org, pbonzini@redhat.com,
-	maz@kernel.org, oupton@kernel.org, bhelgaas@google.com,
-	alex@shazbot.org, kevin.tian@intel.com, dwmw2@infradead.org,
-	baolu.lu@linux.intel.com, joro@8bytes.org, will@kernel.org,
-	robin.murphy@arm.com, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	linux-mm@kvack.org, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-pci@vger.kernel.org, iommu@lists.linux.dev
-Subject: Re: [RFC PATCH 0/3] liveupdate: Move to feature flags for LUO and
- memfd ABI compatibility
-Message-ID: <20260911143055.GI3968357@nvidia.com>
-References: <20260905012403.GX4157646@nvidia.com>
- <aqIAtOoew-_6jw29@google.com>
- <20260910143448.GD3968357@nvidia.com>
- <aqLOWkuVKccR-I7W@google.com>
- <20260910171210.GF3968357@nvidia.com>
- <aqMgjXfTJ8u3n7Kj@google.com>
- <20260910221832.GH3968357@nvidia.com>
- <aqMyXE-fD-UN6w5L@google.com>
- <20260910225728.GB857650@nvidia.com>
- <aqQF0gz3Q2weDyEd@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqQF0gz3Q2weDyEd@google.com>
-X-ClientProxiedBy: YT4PR01CA0209.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:ad::6) To CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Oa3P+L8h"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-49e63568bfbso6803105e9.2
+        for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 07:42:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1789137762; x=1789742562; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jtpnUSLeT4ed4dWoaotfN7ey6FZzLAllCqnmIx1g6CU=;
+        b=Oa3P+L8hS5uNkz4niILTnDU6g1KqJOSl07IepB97cothgdPCtzuCqnHr/Ris3t2ZR8
+         sGkTWTi39H/kGliiNFSxa0pUXav5NACiZBUbIZqFUI13DgVISvAq88kOck1kbYFi11tk
+         s4sImAXrp0+0BrBPFV/bgoXbfYPSQ2U9tgUBOoKcPrjPzdYEpkQ8wEGQ4piPm1CBnpGW
+         R2CENzSyKArysWyQJOek25TAS9jAHzB1dD5oxZNEiOsAc6HGliIqUVV7lpvk0PnnfgQR
+         HmYYuiyKuLCBKsQJkovTAhy31kk/CGgXmHzLt5NI98yDOS9OC9W6h6M8cThDQ67eYvP3
+         dvbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789137762; x=1789742562;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jtpnUSLeT4ed4dWoaotfN7ey6FZzLAllCqnmIx1g6CU=;
+        b=bBuCar1Ns4JvAwyiW0CR0Ot0X6Z1YS/HP848+RyweeTwb6fKfr/tHp3cwDG7PRVDUv
+         /j2dUk/mvlT8lkio6PWQ4n/iQp8dTlT+fa51yHO7pvqXJP0/ho47sroniZqiNmf/GnOg
+         WFyYCN0CjEY2UFs2K4qL1VdJM5RskDkb92OJ9KNOTzepH/wY4GWnucSWkfNKS5feqYXw
+         FceP8DN4NHPR/XOEtvISWDsPq2G3FOjzCJuWN2N7rJIASeND1DQBA5js2z4sT9CIBH48
+         c7RBzIoAAIch78m5bm3+sVdSSERoywiIHkBRGE9bFhdH5eKonsIs0TyXD3cOIq/L98rl
+         RVRg==
+X-Forwarded-Encrypted: i=1; AKwUvBw2Cx1NH93rbW7ZBZulD3hSdciOrnShCfUIw07GwMeWdFh2i8+VwaP26BbbW37hkuZtV6c=@vger.kernel.org
+X-Gm-Message-State: AFuF++kHkpMREh7ZkqcQlF6YB3ye7hKx5pcz6Fhw9SDcDG8Th0i1CvWd
+	Y7FBnGrILLmnPtqBvycrszhUEJ1eiap4VTS/SjWzdnlX6/7xHtIqbJOqZfJvcbzwO8o=
+X-Gm-Gg: AYBFou3yJHpPPCAN3fImfrml0SYTKCVFI/85pxZCEMQM/EnWKSBAGN/dZ0TifaeHJp+
+	zgBOP61EM6Fz3+DSsgZtsu6VVWdXVFxnQ5ZSuAwXH9hVykcdgktGtO/TfiHTNo9o/7vprPkOZsG
+	Wu5tpNyCYdC6UNn6JNixnLxUMwMmWvqALh4KJvoC1g2a7RWs5mj/L1DrjKC0iVzFFJn77gJSpNF
+	Xmvx6bSaaywUs6s+W2K3TCEG1gp/jTTmtm9qsLcPuSVCMeHetN1HN6ecCD/k/6k2J5iLz49t6bp
+	P1DC0MOLRrtErHK86j4npcqwu+ZP+/Ex36q5TDWEbvwAn9d0ir1fTfj5QmhSQ+Aue94da0rwats
+	vNAKqocq8fYjV+UgVKQbPFisVogNhAVnQewgATvxIw5q/MHtOSb552QFD5lmGeIcyrL8IIF0tm6
+	o+RI1hX+Zf0j5ouTveuNQvd+ljHUKjnyBxtvHETaOBLDaeqk32JrPHiDS30ZRsp7zBP1Una/GX+
+	L+CFA==
+X-Received: by 2002:a05:600c:1f8d:b0:499:be2d:c290 with SMTP id 5b1f17b1804b1-49e6198933cmr55970145e9.9.1789137762240;
+        Fri, 11 Sep 2026 07:42:42 -0700 (PDT)
+Received: from localhost.localdomain ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e60ababd5sm107038405e9.4.2026.09.11.07.42.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Sep 2026 07:42:41 -0700 (PDT)
+From: Petr Pavlu <petr.pavlu@suse.com>
+To: Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>
+Cc: Xin Li <xin@zytor.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	linux-s390@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-integrity@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/6] module: Limit ELF includes in linux/module.h to uapi/linux/elf.h
+Date: Fri, 11 Sep 2026 16:40:30 +0200
+Message-ID: <20260911-module-include-elf-v2-0-954c732975fb@suse.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|DS7PR12MB8252:EE_
-X-MS-Office365-Filtering-Correlation-Id: a6b36284-652c-4b5a-e818-08df10114ac4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|23010399003|10067099003|18002099003|22082099003|56012099006|4143699003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	SXp8vPtbTfaMZVLqOqy3IAF0OFu3bMCVGn6CpsMkK/4RtsuMjPTr9zH+dhhmblSe/5E2N4nSJCKno7QmigSF/kc43w+9TZPA9pLOP14LYd2lf3JMHGXfaasbgOtq+yoY5/NsO6jrVAeT8+9UsTCiay0jiynEvQ8vG3pylW//pNojBLyBJdz7ioUKnLVnB1cqPBPjjUdr22DkzXzc/p5+sYqcjjEj1ZIYTzxS7WdR8JskY6/A/j+Z/dp6b0RpERjXkR8VSGy8FbRqkw+NrUs4RMaCZ8hZ9fuj9Wif5TuW/m7tuvAuviaWwRpE6s6rKXGQiO3aRyTjBG1xWWekmp8xW5hVghi2gN8frfQJJ1mZda45MUx3fJZBrOWX0KGOb6XGW913tLpxlLIn4X42sormcXBPNc/vaThGePKkACOXoRBHHFTINJIdRqxXYGDW0R/Xs4GPuH+XcMtpeVCE9wd6pCfVysKVeTiN+I6a9AYbrSvqT9biSk+RrfRVeDY5Du6gAZqH52GLfPjBkp9CTHjr+r+toWwo8RSo3AIO0mwam+Id9sgHvCF5b5eyXwq6dpJo7RYPWtrntrwxU9jf5K6gnHHJ1rPZ1/HjKJWqX4bZSbbLzSqe0OS9xp56hLohcoIszK3ffL1yC2WlTtuJF3f65oQLp0CAjoop8vVeb3DrK6s=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(23010399003)(10067099003)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ghB2DcEsdWgi62cVM61E9/HCSdw1IZLsmUrF8vvQo8mSPNVs9tjTqbxYY4XP?=
- =?us-ascii?Q?VFI3YjSpwQGKVN7itFHcnQjFmiHcdKp/GRrkL4A/uK/VBrQg3sc2EBIDW8qV?=
- =?us-ascii?Q?J6NYE0/vDdvczHaBraxmXICk0/eX+Sycjkn6dWpekYklN4+WUhRPoFdhCVUO?=
- =?us-ascii?Q?+reoDNZCfzCsUxHtF2X91YskRAFVcvcN5roaUXZYPaG9RPmXaomauGQgPNXs?=
- =?us-ascii?Q?JZVPsist2AE6oCXx6OkM/764f+zEPPPWD6X5PURagxPT85eDEXlx3FwdKyQ+?=
- =?us-ascii?Q?sBBxFnyWvxwNSbx3F/jAd7/M81lBF3Lbvxtb25b6ra3oaNClJQmxYjoUPDbh?=
- =?us-ascii?Q?B+g2ru9uTy34dahO2DoEuO8BNU/P4PiOQ22zIZzP6BfeWVtrDSwSV38waXb8?=
- =?us-ascii?Q?fNbh+xWX1UJ1ERJradrhGmGst4mZWyzV6XUmysU+xPJjgiBROAf67n2Gv31E?=
- =?us-ascii?Q?10+pl/WYLU6r6ydm5ymd8MGq1IwedO4i77ivihcgxeJJEgvNWPJ371Xd3Dln?=
- =?us-ascii?Q?xtABfJ8USf8C1/YDOUPwWucArc6uEyMvbF4TjGen//bv+JfNlsyUXfrZ95Ne?=
- =?us-ascii?Q?S/YwX4Q+uWITjM7jmtUEtEsmoBKCmWGeaNL/ZErtFwzSwY/dZQda9EbAg/sd?=
- =?us-ascii?Q?0+sdhWZ4Cne6NcdjsLixnEKUNqpNALIrcV/5CJc7mlXorptfuCxWhNaBeh5L?=
- =?us-ascii?Q?ZMkhBRiP+Xe+PGffgoAcvRjCWQq650TNbgYEjrVRyhtFxvRzLMA+rPUJ6dKL?=
- =?us-ascii?Q?M25uBDpJnwatwxt9T6gbPT/DPKnDg5oQVmTeA6L/DSMj0+qnVOlToEWO1UHp?=
- =?us-ascii?Q?88fdz5s166tEm6ckyKmfrikSaom6NsZsjjfcAZBg33QhIv4Ll5as7kyf4E7X?=
- =?us-ascii?Q?mvKnwSWNEZCRoCLBoerJJbpxjd/OvrHvP2oFcNBuy+Lzy/CPPLK52wzILGD9?=
- =?us-ascii?Q?YLp7w586tOPux7TqBWteTsqr8fokN0hAFtsJWyNGb9aeIk26pyiIhPxBXFrk?=
- =?us-ascii?Q?HI2RBhSvV6B9i8xUGTw29+FE6kqSV8mmBEmgy/3GwOxFV5f9jmqK0aNRRIWF?=
- =?us-ascii?Q?yFrBAy6uvtW/jt89xHVOAmoT/skHAuBBCQ/VvZGYTCM0o/6vXvhsGmoNURaS?=
- =?us-ascii?Q?4/mlpNETDtZeYinnj7ZrKhpbSsytxxoJUqgLb/yXjNSgMmTIAYF8HeMuGlwI?=
- =?us-ascii?Q?p2Cfwu6NXmg8I6T+lRb7nVMBRfIJvRNKQosQULqS0rxnY8FinrwFPsOxxeWJ?=
- =?us-ascii?Q?+MMaSLIPdbgp6UJ1dHcbQWvzNv1rgxLH2IPsUvOBApIuA3hIbAT3wuwfYWja?=
- =?us-ascii?Q?Sm+O4nC76wV2azqgTikZtGz/S8CXU7TR3SIkqqQCwicRDwjMWYML5lI1f5Tf?=
- =?us-ascii?Q?mYwuVBBlUSL5OtTTJ+pVekR68FgBQwRLLMwvH0HRLL0hwb4lyQ+Mnwn2lpm9?=
- =?us-ascii?Q?x/TyXt98o6uhIskuUfsowxyBKbpFC2tL6bj0aYRMGvxastydhCJXj5RwMhpS?=
- =?us-ascii?Q?1t8tS/ncXwVldlJKNERbAfKtkqOFbwoBhJ2o61mxgpjmk497R0k+WzUUFVqV?=
- =?us-ascii?Q?cmWYzQUgTVgo4wfvOWBtvxLtlL6rwp60q12Ifh/JAhvRhVtABKPJqwCxC2xd?=
- =?us-ascii?Q?Y1ZR6U22XEqFH/BHUGtTtsh4whUIMIm0ZGVL7kihMiU2tTROuJtQOjwoe8oY?=
- =?us-ascii?Q?UgMu2qwgq3SggZlyFY+GcHk+Wo2xnu51BPUPjT6j4Um/YwQG?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a6b36284-652c-4b5a-e818-08df10114ac4
-X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2026 14:30:56.5809
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fepAJgBwHzlnlaplDdx21RzSTHuRRaAOoEUjIOR801XfaDEqdtz6pCjdlrZMAWCB
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8252
+Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20260816-module-include-elf-a9c10c041867
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 11, 2026 at 06:44:50AM -0700, Sean Christopherson wrote:
-> On Thu, Sep 10, 2026, Jason Gunthorpe wrote:
-> > On Thu, Sep 10, 2026 at 03:42:36PM -0700, Sean Christopherson wrote:
-> > > On Thu, Sep 10, 2026, Jason Gunthorpe wrote:
-> > > > Sean's initial email was asking for strict never-break ABI compatability
-> > > > rules on top, and that is what I've been reacting to.
-> > > 
-> > > No, I was never asking for that.  I think we just have a different interpretation
-> > > of ABI, or rather are talking about different pieces of ABI.
-> > > 
-> > > I am still asking for never-break serialization format compatibility, i.e. the
-> > > more literal save/restore ABI.  I'm not asking for full backwards/forwards
-> > > compatibility across all kernels version, i.e. the higher level "kernel" ABI.
-> > > 
-> > > To phrase things differently: I am a-ok if kernels are inherently incompatible
-> > > because they fundamentally operate differently and/or support different features.
-> > > I am not ok if we end up with incompatible kernels because the save/restore
-> > > interfaces and payloads are poorly designed, lack abstraction, etc.  
-> > 
-> > I can more agree with this, it is mostly what I thought we'd end up
-> > doing anyhow with version numbers and growing the structs not
-> > replacing them.
-> > 
-> > So you still end up with a version label (string I guess?) because we
-> > can break it from time to time, 
->    
-> Why bother with a label/string?  I don't understand what it buys us; I see only
-> pain.  Make the features discoverable and punt on all of the "is this pile of
-> insanity my company has created compatible with this other pile of insanity?" to
-> layers above the kernel.
+linux/module.h appears in roughly 15k #include directives across the
+kernel. This makes it a "hot" header, so it should avoid pulling in
+unnecessary definitions.
 
-It is one layer above, the serialization ends up with 10 memfds a
-couple iommus, kvm, pci device, etc, etch. Each one starts with a
-string label saying what it even is - to dispatch it to the proper
-de-serialization code, then some detail about where it is (eg a handle
-to recover a FD later) and then the actual object serialization
-data itself.
+The header currently includes linux/elf.h but this is largely unnecessary
+because it requires only the base ELF structures, such as Elf_Ehdr and
+Elf_Sym, which are declared in uapi/linux/elf.h.
 
-So the features are fine to handle the ABI within the object and a
-memfd-v1, memfd-v2 is fine to handle labeling the object within the
-stream and gives us an option to reboot the ABI if some reason comes
-up someday.
+Replace the linux/elf.h include with uapi/linux/elf.h. On x86_64_defconfig,
+including linux/module.h alone results in 2.2 MB of preprocessed data. This
+change reduces that to 1.5 MB.
 
-If features are a perfect success then we will never need to go beyond
-memfd-v1. I'm just saying we should have the option and plan for it.
+The first five patches are cleanups to avoid relying on declarations being
+indirectly provided through linux/module.h -> linux/elf.h. These patches
+are mostly independent and can go through their respective trees if
+preferred, except for the cpufeature patch, which depends on the preceding
+s390 cleanup. The final module patch depends on all of these changes.
 
-Jason
+It is hard to identify all files that indirectly reference something only
+through linux/module.h -> linux/elf.h. The changes were build-tested with
+allmodconfig on arm, arm64, m68k, mips, powerpc64, riscv, s390, x86_64.
+
+---
+Changes in v2:
+- Rebase on top of v7.3-rc2.
+- Add the missing include of linux/slab.h in
+  drivers/virt/coco/arm-cca-guest/arm-cca-guest.c.
+- Remove the asm/mmu_context.h include from asm/elf.h on s390.
+- Add the missing include of linux/elf.h in linux/cpufeature.h, reported by
+  the kernel test robot.
+- Clean up commit descriptions.
+- Link to v1: https://patch.msgid.link/20260707153819.4172541-1-petr.pavlu@suse.com
+
+---
+Petr Pavlu (6):
+      x86: Avoid indirect includes through linux/module.h -> linux/elf.h
+      s390: Avoid indirect includes through linux/module.h -> linux/elf.h
+      drivers: Include linux/slab.h for kmalloc() functions
+      s390: Remove the asm/mmu_context.h include from asm/elf.h
+      cpufeature: Include asm/elf.h for ELF_PLATFORM
+      module: Limit ELF includes in linux/module.h to uapi/linux/elf.h
+
+ arch/s390/include/asm/elf.h                     | 1 -
+ arch/s390/kernel/nospec-branch.c                | 1 +
+ arch/s390/kernel/processor.c                    | 1 +
+ arch/s390/mm/mmap.c                             | 1 +
+ arch/x86/entry/entry_fred.c                     | 1 +
+ arch/x86/entry/syscall_32.c                     | 1 +
+ arch/x86/kernel/cpu/intel.c                     | 1 +
+ arch/x86/kernel/fpu/xstate.c                    | 2 +-
+ arch/x86/kernel/process.c                       | 1 +
+ arch/x86/kernel/signal.c                        | 1 +
+ drivers/char/tpm/tpm_crb_ffa.c                  | 1 +
+ drivers/s390/char/uvdevice.c                    | 2 ++
+ drivers/virt/coco/arm-cca-guest/arm-cca-guest.c | 1 +
+ include/linux/cpufeature.h                      | 1 +
+ include/linux/module.h                          | 4 ++--
+ 15 files changed, 16 insertions(+), 4 deletions(-)
+---
+base-commit: df2908090cda368b01ff43709f51890076c56157
+change-id: 20260816-module-include-elf-a9c10c041867
