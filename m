@@ -1,87 +1,109 @@
-Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73294BEE53
-	for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 22:14:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187E0439F62
+	for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 22:14:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789164844; cv=none; b=DiEEv0ENVmIidZUkBvjOr9At6ggntZ2mwGfxiqXNhCfgv5G1V+Zl2aI0KLvRMnSciHUhOr4AP8fUaGbgD7lmq+nnR9MohtPALtZbeKwzOPB6mHnzUVuNNxrnAiURs7ZwCDoL78skpkXtaHFvERfNU8ZVKk/F1zPlWNZ0k2Y6EAY=
+	t=1789164877; cv=none; b=HZE+YZGJL6af8ss9ymN9H6iIwYQMdBQE+JjtPIr8/KNUtL4GcsTkH6KdsT3d4/iQzknYLzHQ01k0r+9GF+Xy6488rkVJ8GCb8ZUsHulbkYrvnA+2xbNjx++si0Yu+shMY74syw/WITU5GCts8TWCskvK7vufwRcRhDiu39aRMdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789164844; c=relaxed/simple;
-	bh=Ny189n2TGusj1130uHhO6qanQTICxllt6KynpLu9dEc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KbA9q7ODKexPFt4TC9W//jikWlNm0xKQSLDCHyd6yUojyVR6N8wD1rNaNrJHM1ff1GuQCGLifvF55+Wo1FdNmvKIRTMMO6qci4fZ1f92wq4Sjnr92l3MoquqdAzxmD2nIEZZ6wzC1Sf1Pk5FcP152izofXZJcEDFtWyV7Pd6E2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=HTjDYZUN; arc=none smtp.client-ip=109.224.244.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1789164877; c=relaxed/simple;
+	bh=mwW23+BzBDe+67yBdFyL5lAUIK/XQnEZQtkrKHgZMwM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=svAU3YpF2Wl3LFVUP72Qh/fVWi1Ib5GwG/Nz2iqxUvf33Fyshdk7eMgSU9A0jgB3gl29tsA1hDvz1n6ixx2FW3t2RyL17LlZYzIRRLvVccYWOgVVdVUJZXx8ydmO0XyVJ7Y7RWj+Be0iSOC3kiyYReN+bsirTjXc8QkweUpE/yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bIKxlqDM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="HTjDYZUN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1789164833; x=1789424033;
-	bh=mvyrkVm8V5Pc7U36SGBMBgg98PKVGXtLlkL0BnXwbh0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=HTjDYZUNIGklV0wPCOFvRmo3IfBvmC6hoJqpQb+2hQQ/GzeX3YWn5awhC/GZzVoe1
-	 aALQm86un3IpE6nUUO4ToVswCcFhQQikKWqOn10n60maksdVhR873pkyMnNN4oHjme
-	 0Lz+OgEnhti6tnODafczICLB+MeDp59CDYH+iBdEE5O+qFAtc2rIOcgFtQ/Sz7Fp+5
-	 IgFOyFijT9FKI67J2dsJOodBH8+sdT2Y3wTL6N7IMTb1KfWXoY1GwuFSBS5xhqGPU+
-	 TjDleb3BTakjCpvleZwNzw3cGhbgeHFZHVd0UAajU/PAIzFl+mMqQigkM+c118ehyT
-	 rpIfe6Px+stAw==
-Date: Fri, 11 Sep 2026 22:13:49 +0000
-To: pbonzini@redhat.com
-From: David Ballesteros <davimaba.v@proton.me>
-Cc: kvm@vger.kernel.org, security@kernel.org, David Ballesteros <davimaba.v@proton.me>
-Subject: [PATCH v2 2/2] KVM: Account mem_attr_array nodes to the caller's memcg
-Message-ID: <20260911221302.53013-3-davimaba.v@proton.me>
-In-Reply-To: <20260911221302.53013-1-davimaba.v@proton.me>
-References: <20260911184819.101123-1-davimaba.v@proton.me> <20260911203238.30088-1-davimaba.v@proton.me> <20260911221302.53013-1-davimaba.v@proton.me>
-Feedback-ID: 219068424:user:proton
-X-Pm-Message-ID: 6ddf08285af46ae0594137e0333cb1a9114884df
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bIKxlqDM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B500B1F000FF;
+	Fri, 11 Sep 2026 22:14:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789164868;
+	bh=mRs5i/rebltySkSYK0btbiVJSGXf5n3O0jUplJ8o5Dw=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=bIKxlqDMoUzyYgeGfdg2P9rPaKXy2/RrCd8xgnPQkcK0RLvarQxlM9m+64Qas8rq3
+	 aYZCkQbuupP5yEJIF1bI8f+eX2eusL1xErkQncMMlxB1+VeDz652Q4YjRABgoAEsQY
+	 F20418tmVfo+FKMwIZm1p+0eBv+6sNt1s5H8i3Y2ZMmTg4xpY85gpZITZiVMPvwnUo
+	 Lct2oCJnmKwzBOrPUWOsxeCWrvDi5TyJw4T5mIqh8erSIhCZbi6tcm4qLi1ZEJkETF
+	 Nxj6fY+frQajkrAr1Vqa5o7MaGlAXgZjOCko+OFXJtFkfox+b2XYslp2ozT+abjEJS
+	 C4iymo6gghymw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v10 15/28] KVM: x86: Include CR4.FRED in the emulator
+ CR4 write mask
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sohil Mehta" <sohil.mehta@intel.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260911213659.2025974-16-sohil.mehta@intel.com>
+References: <20260911213659.2025974-1-sohil.mehta@intel.com>
+ <20260911213659.2025974-16-sohil.mehta@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 11 Sep 2026 22:14:28 +0000
+Message-Id: <20260911221428.B500B1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-kvm_vm_set_mem_attributes() passes GFP_KERNEL_ACCOUNT when reserving
-xarray entries, but the nodes are allocated by xas_alloc() with
-GFP_NOWAIT, which only adds __GFP_ACCOUNT when the xarray carries
-XA_FLAGS_ACCOUNT.  mem_attr_array is initialized with plain xa_init(),
-so the flag is never set and the nodes are never charged to the caller:
-measured on v6.18.48 and v7.2-rc5, a process inside a cgroup limited to
-256 MiB grew host SReclaimable by ~450 MiB while its memory.current
-stayed at ~488 KiB.  Per-tenant memcg limits therefore do not contain
-the growth described in the previous patch.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] `mk_cr4_64` erroneously attempts to preserve the upper bits of C=
+R4, contradicting x86 architecture and breaking future higher-order CR4 bit=
+s.
+--
 
-Set XA_FLAGS_ACCOUNT so that the intended accounting takes effect.
-This is a mitigation, not a bound (it does not limit growth); both
-patches are needed to bound and attribute the memory.
+commit 3026fdc333b24532424b51db68dd9e65b0a1065c
+Author: Xin Li <xin@zytor.com>
 
-Runtime-verified on v6.18.48 (KASAN build, isolated VM): with this flag,
-a process in a cgroup with memory.max=3D256M is contained by the cgroup
-limit (allocation fails cleanly and, at the limit, the memcg OOM killer
-selects the attacker itself) instead of exhausting global memory, and
-cgroup memory.current tracks the materialized nodes one to one.
+KVM: x86: Include CR4.FRED in the emulator CR4 write mask
 
-Found by an AI-assisted security audit.
+This commit updates the emulator's CR4 write mask to accommodate the FRED
+enablement bit, expanding CR4 support to use its higher 32 bits when the
+feature is present.
 
-Fixes: 5a475554db1e ("KVM: Introduce per-page memory attributes")
-Assisted-by: Claude-Code:GLM-5.3-flash KASAN KCSAN
-Signed-off-by: David Ballesteros <davimaba.v@proton.me>
----
---- a/virt/kvm/kvm_main.c=092026-07-26 16:45:48.000000000 -0500
-+++ b/virt/kvm/kvm_main.c=092026-09-10 14:20:00.000000000 -0500
-@@ -1117,7 +1117,7 @@
- =09xa_init(&kvm->vcpu_array);
- #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
--=09xa_init(&kvm->mem_attr_array);
-+=09xa_init_flags(&kvm->mem_attr_array, XA_FLAGS_ACCOUNT);
- =09kvm->mem_attr_gfn_count =3D 0;
- #endif
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
 
- =09INIT_LIST_HEAD(&kvm->gpc_list);
+[ ... ]
 
+> @@ -5552,11 +5552,17 @@ static int emulator_set_dr(struct x86_emulate_ctx=
+t *ctxt, int dr,
+>  	return kvm_set_dr(emul_to_vcpu(ctxt), dr, value);
+>  }
+> =20
+> -static u64 mk_cr_64(u64 curr_cr, u32 new_val)
+> +static u64 mk_cr0_64(u64 curr_cr, u32 new_val)
+>  {
+>  	return (curr_cr & ~((1ULL << 32) - 1)) | new_val;
+>  }
+> =20
+> +static u64 mk_cr4_64(struct kvm_vcpu *vcpu, u64 curr_cr, u64 new_val)
+> +{
+> +	u32 shift =3D guest_cpu_cap_has(vcpu, X86_FEATURE_FRED) ? 33 : 32;
+> +	return (curr_cr & ~((1ULL << shift) - 1)) | new_val;
+> +}
+
+[Severity: Medium]
+Does this bitwise logic incorrectly preserve the upper bits of CR4?
+
+The x86 architecture specifies that a 64-bit MOV to CR4 overwrites the enti=
+re
+register, and a 32-bit MOV to CR4 clears the upper 32 bits. The val passed
+into emulator_set_cr() already contains the correct architectural value
+(zero-extended if 32-bit, or the full 64-bit value).
+
+By preserving bits above the shift boundary, this could prevent a guest from
+clearing future higher-order CR4 bits once they are set. Since the bitwise
+AND mask will preserve the 1 from curr_cr and OR it with the new value, tho=
+se
+upper bits would remain permanently set if they were already present.
+
+Could emulator_set_cr() simply pass val directly to kvm_set_cr4() without
+attempting to merge it with the current CR4 value?
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260911213659.2025=
+974-1-sohil.mehta@intel.com?part=3D15
