@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CFF19DF62
-	for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 05:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0185D3559D6
+	for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 05:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789103360; cv=none; b=OUYLuZ2OtiYZVWNqyazNbwKfdDPVAX1HkfnpPuFkGys6JLL2ewdSyZeAOVm/OP5g4MFP0Uu98z9GeZ/JZqS7WAndRBnJEewE+SVP25OQel4JrsU+T/nzeSOImWfkIxfE809L5qtzpn1fCtknXMeX/9ilbBHlP9gp6ov2XsaU06w=
+	t=1789103512; cv=none; b=s9kw5VqOVDVoMR+f4/q4yYItqUrNe1MnFNio8XblX7QcMt0L0nSZJbZY/no0p0OjBaHSCjPRuL1f9/NtokxkolG0cp3q7FeIO5XbfF9DbyXNJNkMAqnX4vv4t8uyL5ogfzji8s86t65ywraL14sZZ7+5S7ssFrRHg8D16sl4uIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789103360; c=relaxed/simple;
-	bh=NP+N16WTR2RkVW23azPQsK/6e90/lf5TDjj/kqrBV6A=;
+	s=arc-20240116; t=1789103512; c=relaxed/simple;
+	bh=n1kH2uWiJhVGNczU2jxYw7CBHv4kIWMvsjIHmcs/NSU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ZwPQ76FagxR0Sa06rUdam9pl6RXYLpubuto/Y9h4rfC/rM0+J1k9JP9bnB22FbfBEMqWlfTSfRlBHHRb4qWbn8l+gOvYIHzOCKlKVgzc05dQLF/LfapPdVspjQ8CBywPyY8mwP8Wv44guqRVVkJjyG4FdGZ1CeqMkwJN7fG3tl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ht7u6qnr; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=a4we7VUqbmOy5RyfNlCooTphJEMdkQZXVuRgaj8a4SvR9/CPYu/WuACJXkSUdshUVH38YqTXu5No3+wXcoMqrMpq55zVoLxMXBdD8BS9Ug8fHkLf4aIW+012aaPinUybT2ox20d1/pRTh0edTp8kxvwLJA6I8JirnPPk9KBM/C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aue4WPFF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ht7u6qnr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D671F000FF;
-	Fri, 11 Sep 2026 05:09:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aue4WPFF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E7981F000FF;
+	Fri, 11 Sep 2026 05:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789103359;
-	bh=Az4sQKwf8i6mPFkJJvUq2rYEYTMhxgBT1Y7+ccn4ULk=;
+	s=k20260515; t=1789103510;
+	bh=2zsGdJgrWT9f2U8vDYwknXos3Y19kG5lTNnVD8omHzI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ht7u6qnr7waUKB/M2be2zUHexnhyqqv3ORmSFr4WotmyhwRTy2+6YBD20qqKkKUUI
-	 lwo3bLNSx1cf8PaU5iolyFH57gSnlj4vvetpJu0hJDxT2IILuqhz/HX1uYiKhjDrJ1
-	 wSV+KOuOKfy/5x77R94XeiJ20gkET3Cjg4R1lOOhLQ6pPG01ZwMpaS7/WrOBRc9cco
-	 EOBclEgzYkKzb6WpQ5307G2jkFeaIf28jLGnH4U90WB+nQq937ZgQk6OblF9jb9JZw
-	 1ukzgSIRlIo3XpwawKNm6UgO4yTSa3OSd11xlF8DFTxbWDbNfsTncN4rlOXr/1rUbf
-	 T8m9axsTvqf9w==
+	b=aue4WPFFqsC9BegryxcM0zAZ74NDH98meCGWLHFHHVyLidupF9iUJj4rFhBVBgN4J
+	 qM2hIJNdbAOF/gIMfJmy/bOul/cgR7kAUOMhiLwcKlqVzptrkdmpY8WBEfAsr7bs7J
+	 +1KTXL/YnE+aDQdXymrElTh+bdgmUMfwT1HKxx64OxY72T3GeRgdjcbv4tobUkWifo
+	 s7imNI1Z1GkxTflpaIcQG1Fp0in4jcfHsQ7n3Gu1i42EnEL+dWxChkW3WRgVp12A8s
+	 SinhhZJCq+8d3ZdCsubJUVgw6uGYdtQXNwiFmd9p99cWnRQFxKmrUb+0O9f6//SKKf
+	 buPNQq7jL2cdQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC 2/3] KVM: PPC: Book3S: Don't call __ffs() on an empty
- pending_exceptions bitmap
+Subject: Re: [RFC 3/3] KVM: PPC: Book3S HV nestedv2: cap max vcpus to PAPR
+ limit
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?Uml0ZXNoIEhhcmphbmkgKElCTSk=?= <ritesh.list@gmail.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <3578c377329d39a4a9063c24496d2ac4c31a169d.1789099725.git.ritesh.list@gmail.com>
+In-Reply-To: <e2c1ef05eaa19beb28a3db08fb697a80528cd43a.1789099725.git.ritesh.list@gmail.com>
 References: <cover.1789099725.git.ritesh.list@gmail.com>
- <3578c377329d39a4a9063c24496d2ac4c31a169d.1789099725.git.ritesh.list@gmail.com>
+ <e2c1ef05eaa19beb28a3db08fb697a80528cd43a.1789099725.git.ritesh.list@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 11 Sep 2026 05:09:18 +0000
-Message-Id: <20260911050919.23D671F000FF@smtp.kernel.org>
+Date: Fri, 11 Sep 2026 05:11:49 +0000
+Message-Id: <20260911051150.6E7981F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -49,106 +49,109 @@ Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
 New issues:
-- [High] The patch introduces a Time-of-Check to Time-of-Use (TOCTOU) vulne=
-rability by reading `*pending` twice without `READ_ONCE()`, failing to full=
-y prevent the undefined behavior it intends to fix.
+- [Low] Build failure on non-HV configurations (e.g. BookE or PR-only build=
+s) due to undeclared identifier KVM_MAX_VCPU_IDS_NESTEDv2.
 
 Pre-existing issues:
-- [High] The exact same `__ffs(0)` undefined behavior bug exists in the `bo=
-oke.c` architecture variant but was omitted from this fix.
+- [High] The patch correctly caps the reported KVM capabilities for nestedv=
+2 maximum vCPUs and vCPU IDs to 2048, but it fails to enforce this limit du=
+ring actual vCPU creation. A malicious userspace can bypass the capability =
+check and pass a vcpu_id >=3D 2048, causing the L0 hypervisor to reject it =
+and triggering an unbounded pr_err() log spam in the host kernel.
 --
 
-commit 2aea5bb81e74db6e15dcd388923821301dd8cce8
+commit 603e4503cd207cc17d84e5e865ff47b744a57762
 Author: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-KVM: PPC: Book3S: Don't call __ffs() on an empty pending_exceptions bitmap
+KVM: PPC: Book3S HV nestedv2: cap max vcpus to PAPR limit
 
-This patch adds a check to ensure the pending_exceptions bitmap is not empty
-before calling __ffs() in the Book3S KVM PPC code. This prevents undefined
-behavior that previously caused arbitrary interrupt delivery and guest hang=
-s.
+This commit limits the maximum number of vCPUs and vCPU IDs reported by KVM
+for nestedv2 guests to 2048, as dictated by the PAPR specification. It upda=
+tes
+KVM_CAP_NR_VCPUS, KVM_CAP_MAX_VCPUS, and KVM_CAP_MAX_VCPU_ID when
+kvmhv_is_nestedv2() is true.
 
-> diff --git a/arch/powerpc/kvm/book3s.c b/arch/powerpc/kvm/book3s.c
-> index 2efbe05caed76..e4152e9a0d967 100644
-> --- a/arch/powerpc/kvm/book3s.c
-> +++ b/arch/powerpc/kvm/book3s.c
-> @@ -401,17 +401,19 @@ int kvmppc_core_prepare_to_enter(struct kvm_vcpu *v=
-cpu)
->  	if (vcpu->arch.pending_exceptions)
->  		printk(KERN_EMERG "KVM: Check pending: %lx\n", vcpu->arch.pending_exce=
-ptions);
->  #endif
-> -	priority =3D __ffs(*pending);
-> -	while (priority < BOOK3S_IRQPRIO_MAX) {
-> -		if (kvmppc_book3s_irqprio_deliver(vcpu, priority) &&
-> -		    clear_irqprio(vcpu, priority)) {
-> -			clear_bit(priority, &vcpu->arch.pending_exceptions);
-> -			break;
-> -		}
-> +	if (*pending) {
-> +		priority =3D __ffs(*pending);
+> diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/a=
+sm/kvm_host.h
+> index 2d139c8075773..d48232557259c 100644
+> --- a/arch/powerpc/include/asm/kvm_host.h
+> +++ b/arch/powerpc/include/asm/kvm_host.h
+> @@ -37,6 +37,7 @@
+>  #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+>  #include <asm/kvm_book3s_asm.h>		/* for MAX_SMT_THREADS */
+>  #define KVM_MAX_VCPU_IDS	(MAX_SMT_THREADS * KVM_MAX_VCORES)
+> +#define KVM_MAX_VCPU_IDS_NESTEDv2	2048	/* PAPR H_GUEST_CREATE_VCPU vcpuI=
+d */
+> =20
+>  /*
+>   * Limit the nested partition table to 4096 entries (because that's what
+> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> index 9194cf492d1ca..cf620b6534de6 100644
+> --- a/arch/powerpc/kvm/powerpc.c
+> +++ b/arch/powerpc/kvm/powerpc.c
+> @@ -663,12 +663,18 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, l=
+ong ext)
+>  			r =3D min(num_present_cpus(), KVM_MAX_VCPUS);
+>  		else
+>  			r =3D min(num_online_cpus(), KVM_MAX_VCPUS);
+> +		if (kvmhv_is_nestedv2())
+> +			r =3D min(r, KVM_MAX_VCPU_IDS_NESTEDv2);
+
+[Severity: Low]
+Will this cause a build failure on non-HV configurations?
+
+Since KVM_MAX_VCPU_IDS_NESTEDv2 is defined inside an
+#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE block in asm/kvm_host.h, but the
+KVM_CAP_NR_VCPUS case in kvm_vm_ioctl_check_extension() sits outside of that
+#ifdef block, using it unconditionally here could result in an undeclared
+identifier error for builds without HV support (like BookE or PR-only).
+
+>  		break;
+>  	case KVM_CAP_MAX_VCPUS:
+>  		r =3D KVM_MAX_VCPUS;
+> +		if (kvmhv_is_nestedv2())
+> +			r =3D min(r, KVM_MAX_VCPU_IDS_NESTEDv2);
+>  		break;
+>  	case KVM_CAP_MAX_VCPU_ID:
+>  		r =3D KVM_MAX_VCPU_IDS;
+> +		if (kvmhv_is_nestedv2())
+> +			r =3D min(r, KVM_MAX_VCPU_IDS_NESTEDv2);
 
 [Severity: High]
-Does this read *pending twice without READ_ONCE() and introduce a=20
-Time-of-Check to Time-of-Use (TOCTOU) vulnerability?
+This is a pre-existing issue, but does capping the reported capability prev=
+ent
+userspace from actually creating vCPUs with IDs >=3D 2048?
 
-The KVM_INTERRUPT ioctl can be invoked concurrently by a host userspace
-thread. It calls kvm_arch_vcpu_unlocked_ioctl(), which does not hold
-vcpu->mutex, and proceeds to kvmppc_core_dequeue_external() where it
-clears bits in vcpu->arch.pending_exceptions locklessly using the atomic
-clear_bit().
+While this patch fixes the capability reporting, a malicious userspace proc=
+ess
+can still bypass the capability check and pass a vcpu_id >=3D 2048 to the
+KVM_CREATE_VCPU ioctl.
 
-Since the compiler can emit two separate memory loads for *pending, if the
-last pending bit is cleared by a concurrent KVM_INTERRUPT ioctl between
-the if (*pending) check and the __ffs(*pending) evaluation, could the
-second load read 0 and still trigger the __ffs(0) undefined behavior this
-patch intends to fix?
+If this happens, it appears kvm_arch_vcpu_precreate() in
+arch/powerpc/kvm/powerpc.c will still allow it:
 
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does the same __ffs(0)
-undefined behavior still exist in the BookE architecture variant?
-
-Looking at kvmppc_core_check_exceptions() in arch/powerpc/kvm/booke.c:
-
-arch/powerpc/kvm/booke.c:kvmppc_core_check_exceptions() {
-    ...
-    priority =3D __ffs(*pending);
-    while (priority < BOOKE_IRQPRIO_MAX) {
-    ...
+int kvm_arch_vcpu_precreate(struct kvm *kvm, unsigned int id)
+{
+	return 0;
 }
 
-This is called unconditionally by kvmppc_core_prepare_to_enter() on every
-VM entry:
+This could cause the L0 hypervisor to reject it in
+kvmhv_nestedv2_vcpu_create() in arch/powerpc/kvm/book3s_hv_nestedv2.c, which
+contains an unratelimited pr_err() log:
 
-arch/powerpc/kvm/booke.c:kvmppc_core_prepare_to_enter() {
-    ...
-    kvmppc_core_check_exceptions(vcpu);
-    ...
-}
+	rc =3D plpar_guest_create_vcpu(0, vcpu->kvm->arch.lpid, vcpu->vcpu_id);
 
-Since there is no check against 0, it appears __ffs(0) is executed on every
-guest entry when no exceptions are pending on BookE guests. Should a similar
-fix be applied to booke.c as well?
+	if (rc !=3D H_SUCCESS) {
+		pr_err("KVM: Create Guest vcpu hcall failed, rc=3D%ld\n", rc);
 
-> +		while (priority < BOOK3S_IRQPRIO_MAX) {
-> +			if (kvmppc_book3s_irqprio_deliver(vcpu, priority) &&
-> +			    clear_irqprio(vcpu, priority)) {
-> +				clear_bit(priority, &vcpu->arch.pending_exceptions);
-> +				break;
-> +			}
-> =20
-> -		priority =3D find_next_bit(pending,
-> -					 BITS_PER_BYTE * sizeof(*pending),
-> -					 priority + 1);
-> +			priority =3D find_next_bit(pending,
-> +						 BITS_PER_BYTE * sizeof(*pending),
-> +						 priority + 1);
-> +		}
->  	}
-> =20
->  	/* Tell the guest about our interrupt status */
+Could this be used by an unprivileged host user with /dev/kvm access to
+trigger an unbounded log spam and cause a local Denial of Service (DoS)?
+Should architecture-specific bounds checking be added to
+kvm_arch_vcpu_precreate() to reject vcpu_ids >=3D KVM_MAX_VCPU_IDS_NESTEDv2
+before proceeding with vCPU creation?
+
+>  		break;
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1789099725.gi=
-t.ritesh.list@gmail.com?part=3D2
+t.ritesh.list@gmail.com?part=3D3
