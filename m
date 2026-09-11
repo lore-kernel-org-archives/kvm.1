@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802844CE698;
-	Fri, 11 Sep 2026 21:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61203497B73;
+	Fri, 11 Sep 2026 21:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789163001; cv=none; b=dt4R17zMURJK6+MT+fc9VFPTTipcTDkmykVvi3RfsarbQwtlkQDavgUsx1gxgGTjPM54OHfiChQFogWYM8FKePl8uDo+VPVG7bmL2oh8XhxxwfMN1I2gQ/Aly8EDWCGBwsRIngipsqFsNuKYoaqURDtGCjZs6pEuOVwiKM83Vn4=
+	t=1789163007; cv=none; b=WiuUY4S8PcaDvnZDY5SJeSw2gWcDqvZopxC7sBctZnCO4T0H/M7rgffoYZCJ28IYjBMb4YaCgtjmKhR1ZR2NmuM7y0753ZmuyRqwZm4x36caRhaqwtFXobtLuD2D+FfJUgvmsDMR71PFTvQ8ALVpzQ8kWz0+YshAFOLKzQTsA/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789163001; c=relaxed/simple;
-	bh=0aEzJ9qwYXcpOA7/qPgBgBQcHtUuHRHVJ72QgY84zwE=;
+	s=arc-20240116; t=1789163007; c=relaxed/simple;
+	bh=qBPhaYL2eGX6F2cOv/irJ12oCM1yADz+gsM+AZjtzgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RiZxrgF8u9vSCG2rPYCjuYvrATsGnfJf61Q1ZciLMPnUxydiLKqbtGQdJHf7TmCWM2IHR00Gc4t/PF8O7JafPq+yBe5PUeF1eoOWNYKMA85Q5Wnu4MiyghZZPXVWHJVruvNsVApAfXmL0OrCcsePjXmWUoaDPba4SstFabr9+n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J1/9DqHs; arc=none smtp.client-ip=192.198.163.19
+	 MIME-Version; b=PT+fay4ZzWvNdXzbentf1dlYWtn2HUissGSVcoYjC4Vo1ODk8+M24q9IZ3kqhiNLgontuSBbcLhCbjjUtqXQkNPPl6FAF9HKolpSqoUUOfDuBZfFTMvS9Lje9QCNuthG/TXdnhSW/5Y/SYQqvbAyLwPOgjpWWXW2O3vBnOGWLFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d+uig2S+; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J1/9DqHs"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d+uig2S+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789162999; x=1820698999;
+  t=1789163007; x=1820699007;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=0aEzJ9qwYXcpOA7/qPgBgBQcHtUuHRHVJ72QgY84zwE=;
-  b=J1/9DqHs+lTkPrJb+K0+AIzd+2kvKJcOy4Z4oNYNF/n1kJjM/VGL1emf
-   r2kCp+Xl+Y1CSYd37WVJSd9lJdlM1cE0jtNNJUR35U56YhyudSVSDN6km
-   l50tL6S3NVSDfvZEyTebyNdp0kNDUEIq41lEr7YoZ+5n6HOsMwc7i1xSa
-   XyeVeEcFe+0KUfkbCimiMWom1R+yp9l52P6rDvHBSZvoL0bEMHhjmKfAR
-   MWI4a2RDxyeiUVv7gCvL7V5fjJPAPid3DP0zeXdoaHE2GNkMJ9aoQvB90
-   ekDaldI7dpIS3VyzRmqtTmxpw722oAwegO0ldHE8GpDf5HhGdwY5qxkyj
+  bh=qBPhaYL2eGX6F2cOv/irJ12oCM1yADz+gsM+AZjtzgI=;
+  b=d+uig2S+Ka+1zlFcEB5HkIIqBQuRhGZ5eyXL/R+xcGrrDZTFVCz+5LC+
+   P0PAXaXaqov7HRk9sK/Xf2v5Kz/KvVk3TRDl47yPJL2wcYGUTWwx/VS+v
+   Ietnp4k79Bkf671y9JffWNa1bEdKV6kFiCUA2mVEZC//RqMLJmDEn925Q
+   99sVmB1QmQdPM9pBh+wZsXXmTo9y3/0RdkklLIZv0dvh3XaWIaBrXAr+a
+   UeDd6rUgJQ3ZiHoash/+8w8MEs77+NcRJPmP962cWapAHO/3v96d2c41Q
+   AviwOgapv6frjb0J8P+81IXmT8gmnNQHCNrCqfaXMdvUyBjRGyWNxE+KI
    A==;
-X-CSE-ConnectionGUID: qKTGQkaQSZODc0ETiHjxZg==
-X-CSE-MsgGUID: 3JGofwiXRrWctlR+7DGd/g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="88572863"
+X-CSE-ConnectionGUID: jC/7S4gtT4iT/CIyeAAXBA==
+X-CSE-MsgGUID: XkArfR/iToaBkcpVOD8zSA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="88572891"
 X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
-   d="scan'208";a="88572863"
+   d="scan'208";a="88572891"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 14:43:17 -0700
-X-CSE-ConnectionGUID: fez44+cgTimXe6COkdDh3w==
-X-CSE-MsgGUID: wAoWrDJYQcymWLvmGGesAw==
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 14:43:26 -0700
+X-CSE-ConnectionGUID: tpv0T0VbS6u+iEi5b0S7pg==
+X-CSE-MsgGUID: 4/IXgPddSYSdHTELRhhzAw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
-   d="scan'208";a="272004276"
+   d="scan'208";a="272004289"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by orviesa007.jf.intel.com with ESMTP; 11 Sep 2026 14:43:16 -0700
+  by orviesa007.jf.intel.com with ESMTP; 11 Sep 2026 14:43:25 -0700
 From: Sohil Mehta <sohil.mehta@intel.com>
 To: kvm@vger.kernel.org,
 	x86@kernel.org
@@ -72,9 +72,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v10 22/28] KVM: nVMX: Restrict event data VMCS fields to FRED-supported hosts
-Date: Fri, 11 Sep 2026 14:36:52 -0700
-Message-ID: <20260911213659.2025974-23-sohil.mehta@intel.com>
+Subject: [PATCH v10 23/28] KVM: nVMX: Shadow ORIGINAL_EVENT_DATA and INJECTED_EVENT_DATA fields
+Date: Fri, 11 Sep 2026 14:36:53 -0700
+Message-ID: <20260911213659.2025974-24-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260911213659.2025974-1-sohil.mehta@intel.com>
 References: <20260911213659.2025974-1-sohil.mehta@intel.com>
@@ -86,36 +86,40 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Xin Li <xin@zytor.com>
+From: "Xin Li (Intel)" <xin@zytor.com>
 
-Prevent L1 from accessing the ORIGINAL_EVENT_DATA and INJECTED_EVENT_DATA
-VMCS fields via VMREAD or VMWRITE when FRED support is disabled or not
-present in KVM.
+Add ORIGINAL_EVENT_DATA and INJECTED_EVENT_DATA to the list of shadowed
+VMCS fields.
 
-Signed-off-by: Xin Li <xin@zytor.com>
+Shadowing these fields allows the L1 hypervisor to access them without
+triggering a VM-exit to L0, optimizing performance for nested
+virtualization workloads that frequently query or inject event data.
+
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 ---
 v10:
  - Split out of "KVM: nVMX: Guard SHADOW_FIELD_R[OW] macros with VMX
-   feature checks" and renamed (Sean).
+   feature checks" (Sean).
 ---
- arch/x86/kvm/vmx/vmcs12.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kvm/vmx/vmcs_shadow_fields.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/kvm/vmx/vmcs12.c b/arch/x86/kvm/vmx/vmcs12.c
-index 837cb3d568c3..67c730e31465 100644
---- a/arch/x86/kvm/vmx/vmcs12.c
-+++ b/arch/x86/kvm/vmx/vmcs12.c
-@@ -222,6 +222,9 @@ static __init bool cpu_has_vmcs12_field(unsigned int idx)
- 	case HOST_SSP:
- 	case HOST_INTR_SSP_TABLE:
- 		return cpu_has_load_cet_ctrl();
-+	VMCS12_CASE64(ORIGINAL_EVENT_DATA):
-+	VMCS12_CASE64(INJECTED_EVENT_DATA):
-+		return cpu_has_vmx_fred();
+diff --git a/arch/x86/kvm/vmx/vmcs_shadow_fields.h b/arch/x86/kvm/vmx/vmcs_shadow_fields.h
+index 67e821c2be6d..bdd56f3ca6c3 100644
+--- a/arch/x86/kvm/vmx/vmcs_shadow_fields.h
++++ b/arch/x86/kvm/vmx/vmcs_shadow_fields.h
+@@ -74,6 +74,10 @@ SHADOW_FIELD_RW(HOST_GS_BASE, host_gs_base)
+ /* 64-bit */
+ SHADOW_FIELD_RO(GUEST_PHYSICAL_ADDRESS, guest_physical_address)
+ SHADOW_FIELD_RO(GUEST_PHYSICAL_ADDRESS_HIGH, guest_physical_address)
++SHADOW_FIELD_RO(ORIGINAL_EVENT_DATA, original_event_data)
++SHADOW_FIELD_RO(ORIGINAL_EVENT_DATA_HIGH, original_event_data)
++SHADOW_FIELD_RW(INJECTED_EVENT_DATA, injected_event_data)
++SHADOW_FIELD_RW(INJECTED_EVENT_DATA_HIGH, injected_event_data)
+ #endif
  
- 	/* KVM always emulates PML and the VMX preemption timer in software. */
- 	case GUEST_PML_INDEX:
+ #undef SHADOW_FIELD_RO
 -- 
 2.43.0
 
