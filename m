@@ -1,270 +1,98 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22533F8251;
-	Fri, 11 Sep 2026 08:42:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9F0459AFC;
+	Fri, 11 Sep 2026 09:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789116163; cv=none; b=P36BqfyrmrV6pUwBtul9UUMPi6crQ7Ifr/4s0xWkVNqhRS6zr5GIJOWJNFUNGwCp9Rg4PK9MzBWlvm/dHgV/f4+Mipsy33LxK6tr5vMZhTtqYE8CeaUieoGQ+5GJqoWujJd69KsBrG6s9NSwnZMiy+Fo/gwu2JUptRzzoWJUsjA=
+	t=1789118226; cv=none; b=rk3CdJbAEYbjXbKbEFqWjHaFAG/jk1s0yT9l6kdMCBs4iCY+EM1Z9DNI3pppwbwEG2aalQXIAxCSUlomM8rsq4b5f5jChKR3pwiWReAJ94m3aq2XEx84SXr2b+WvbA/lHpPJqBo9315w7R+XfVfykQ05sANJi1iNmNK80RjuNIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789116163; c=relaxed/simple;
-	bh=iv6WXsuNLWOqYnR9+0U05E1cTju+vdVPl2MKcQ0AA2w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B76QXJQV0TMLUnI3aHjBhSdbDda58ac4k01cPS7W4At8zrWPxLq03/MMZSFDbY8R7njQkmL1J1niJ6I8YvzAlCyhuw+TskpvAdzACs8ffXdk253yVKvPlwP92vUq0gQaFmmNIXrCGUYr7wwJFN4pt8TYtQ7VE07MbyENSNo9Mo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=rdSjRkCz; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=KY/8X1Ez; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1789118226; c=relaxed/simple;
+	bh=y4VNhJAktDNpssOv4fj1+dd7jYwgGkHIusbvYWB/ZOM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rFSPKPmEtEUspzHucKGJD+E7Dx7A3ThjHqLk1bs4EMSS00faxE3gLejT+nhWiiM+X280Jy78y5Gm+w3szyy+AqKvSanxkIshocG+rjn9dZgUO2SjfMdamz45gk2qW7HzJO0ziDUAxJrLq9MPakRc1IhlJ2DIIKbnlU8xwdaT+MU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RbxSeSbZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="rdSjRkCz";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="KY/8X1Ez"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 95C7421B8B;
-	Fri, 11 Sep 2026 08:42:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1789116155; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I9RPtXPkTH2l0Ce0h0ao/G3WKgQIi0rqtLxtBRCg9co=;
-	b=rdSjRkCzOk4/4RzKflhPuzujpGtPl6d1z9BKM0n4C0aHaOt87Zlt0Ugdo34JCc16R1qzWK
-	6amzm7zZPLsnQDCNJUW3hShbWLmOruSWh/JeOlNlBVz+n9Z8xgsJa6Ujc2DdAFOjrQsn6+
-	sjq/iiMO24gqMmhUEzvMtfF4Ank529g=
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1789116151; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I9RPtXPkTH2l0Ce0h0ao/G3WKgQIi0rqtLxtBRCg9co=;
-	b=KY/8X1EzbOsW7wb7+YFo5Q0K65gPFDoNRB04IkuLEe190SKIzPrNbNIQ78T3CntjxOf1ml
-	6V+BnJ5VLsCDVXgNDFEk2ExYUrsZd17BB9YZ4y3xbfbyDv+tN6QHZzbKXDB72ua7mHhNop
-	QZPO2JRX3/uHmGE5ngZ7gbc18zGk/sw=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E9BF5132D3;
-	Fri, 11 Sep 2026 08:42:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id sSe+N/a+o2rmFAAAD6G6ig
-	(envelope-from <jgross@suse.com>); Fri, 11 Sep 2026 08:42:30 +0000
-From: Juergen Gross <jgross@suse.com>
-To: linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	linux-hyperv@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: Juergen Gross <jgross@suse.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	xen-devel@lists.xenproject.org
-Subject: [PATCH v5 03/17] x86/msr: Minimize usage of native_*() msr access functions
-Date: Fri, 11 Sep 2026 10:41:57 +0200
-Message-ID: <20260911084211.3149957-4-jgross@suse.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260911084211.3149957-1-jgross@suse.com>
-References: <20260911084211.3149957-1-jgross@suse.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RbxSeSbZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461631F00893;
+	Fri, 11 Sep 2026 09:16:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789118224;
+	bh=9sp1kFZZ0O6uT9i63Hix+4jeTVWCdlo9frW6hVcqvPU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=RbxSeSbZZUU0Ne8WJuZalWlgBdFvk4xRMp9Ec5R+eTdN31MG6FizPvealsA8XcP1v
+	 zNS5ieOGImLE2jalyPZo4vsiTdEfdUkdB7GmVkBOf1vxa4SHkKXsGBTvg0avzvhGGg
+	 deKE1DrgNkIX1pL2e9ZZ9QtOCasm9rCQZwiwcuv9+jAyGAYazY/1fZfbAtrB+Zh3ej
+	 NWcg19p2iAlvNl7WI95KE38yDNvPQOt8/ixv+HzhfDYf0JZnCUmE7FuSKFKpOvbPZu
+	 vwVSPh+NomvlJ4fIvsfBXc71GY1MwJdG0NzylODt5gOCTZANrP/D3O723K3yAQCT+4
+	 JhYiRwBiB3F2w==
+Date: Fri, 11 Sep 2026 10:16:55 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Fuad Tabba <tabba@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Jack Thomson <jackabt@amazon.com>, Jack Thomson <jackabt.amazon@gmail.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Vincent Donnefort <vdonnefort@google.com>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Sean Christopherson <seanjc@google.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Leo Soares Passos <Leo.Bras@arm.com>
+Subject: Re: [PATCH 0/8] KVM: arm64: Add KVM_PRE_FAULT_MEMORY support
+Message-ID: <aqPGWNxm0rOMRaXw@gremlin>
+References: <20260825-kvm-arm-prefault-v1-0-befe8947702e@kernel.org>
+ <CA+EHjTw=7M+ac5UCfM5yPmuX8RuqZN08TLfXAmTLbQgmuhNWtw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -6.80
-X-Spam-Level: 
-X-Spamd-Result: default: False [-6.80 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.997];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_COUNT_TWO(0.00)[2];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	TO_DN_SOME(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLfdszjqhz8kzzb9uwpzdm8png)];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+EHjTw=7M+ac5UCfM5yPmuX8RuqZN08TLfXAmTLbQgmuhNWtw@mail.gmail.com>
 
-In order to prepare for some MSR access function reorg work, switch
-most users of native_{read|write}_msr[_safe]() to the more generic
-rdmsr*()/wrmsr*() variants.
+On Thu, Sep 10, 2026 at 07:44:25PM +0100, Fuad Tabba wrote:
+> Hi Lorenzo,
+>
+> On Tue, 25 Aug 2026 at 17:01, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+> >
+> > This series implements the KVM stage 2 page table pre-faulting feature for
+> > arm64.
+>
+> I know there's likely going to be a V2, but FWIW, I tested this series
+> as follows (finally managed to get protected mode running on my Mac):
+>
+> QEMU (arm64, -cpu max,pauth=off):
+> - Protected-mode host, boots non-protected and protected guests
+> - pre_fault_memory_test on a non-protected host, VHE and nVHE, all 13
+> guest modes
+> - nv_pre_fault_memory_test with kvm-arm.mode=nested
+>
+> FVP (AEM, FEAT_NV2):
+> - nv_pre_fault_memory_test with kvm-arm.mode=nested
+>
+> Apple M4 hardware, running as a KVM host at EL2 under Apple's nested
+> virtualization (nVHE only):
+> - pre_fault_memory_test, anonymous and anonymous_thp backing, over the five
+>   guest modes available there (the IPA is capped at 40 bits and the 64K
+>   granule isn't implemented)
+> - with kvm-arm.mode=protected, pre_fault_memory_test skips on
+>   KVM_CAP_PRE_FAULT_MEMORY, so the pKVM exclusion holds on a live pKVM host
+>
+> Tested-by: Fuad Tabba < fuad.tabba@linux.dev>
+> (happy to retest again when you respin)
 
-For now this will have some intermediate performance impact with
-paravirtualization configured when running on bare metal, but this
-is a prereq change for the planned direct inlining of the rdmsr/wrmsr
-instructions with this configuration.
+Perfect, much appreciated thanks! :)
 
-The main reason for this switch is the planned move of the MSR trace
-function invocation from the native_*() functions to the generic
-rdmsr*()/wrmsr*() variants. Without this switch the users of the
-native_*() functions would lose the related tracing entries.
+I won't carry the tags forward to v2 just in case anything breaks there, so
+appreciate you taking another run at the v2 also thanks! :)
 
-Note that the Xen related MSR access functions will not be switched,
-as these will be handled after the move of the trace hooks.
+>
+> Cheers,
+> /fuad
 
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Acked-by: Sean Christopherson <seanjc@google.com>
-Acked-by: Wei Liu <wei.liu@kernel.org>
-Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
----
- arch/x86/hyperv/ivm.c          |  2 +-
- arch/x86/kernel/cpu/mshyperv.c |  4 ++--
- arch/x86/kernel/kvmclock.c     |  2 +-
- arch/x86/kvm/svm/svm.c         | 16 ++++++++--------
- arch/x86/xen/pmu.c             |  4 ++--
- 5 files changed, 14 insertions(+), 14 deletions(-)
-
-diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
-index 2ce4dfe53472..a74f121f2a02 100644
---- a/arch/x86/hyperv/ivm.c
-+++ b/arch/x86/hyperv/ivm.c
-@@ -328,7 +328,7 @@ int hv_snp_boot_ap(u32 apic_id, unsigned long start_ip, unsigned int cpu)
- 	savesegment(ds, vmsa->ds.selector);
- 	hv_populate_vmcb_seg(vmsa->ds, vmsa->gdtr.base);
- 
--	vmsa->efer = native_read_msr(MSR_EFER);
-+	vmsa->efer = rdmsrq(MSR_EFER);
- 
- 	vmsa->cr4 = native_read_cr4();
- 	vmsa->cr3 = __native_read_cr3();
-diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index e1388ed27384..53ac4ef53929 100644
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -114,7 +114,7 @@ u64 hv_para_get_synic_register(unsigned int reg)
- {
- 	if (WARN_ON(!ms_hyperv.paravisor_present || !hv_is_synic_msr(reg)))
- 		return ~0ULL;
--	return native_read_msr(reg);
-+	return rdmsrq(reg);
- }
- 
- /*
-@@ -124,7 +124,7 @@ void hv_para_set_synic_register(unsigned int reg, u64 val)
- {
- 	if (WARN_ON(!ms_hyperv.paravisor_present || !hv_is_synic_msr(reg)))
- 		return;
--	native_write_msr(reg, val);
-+	wrmsrq(reg, val);
- }
- 
- u64 hv_get_msr(unsigned int reg)
-diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-index cb3d0ca1fa22..6ddef8b5426a 100644
---- a/arch/x86/kernel/kvmclock.c
-+++ b/arch/x86/kernel/kvmclock.c
-@@ -219,7 +219,7 @@ static void kvm_setup_secondary_clock(void)
- void kvmclock_disable(void)
- {
- 	if (msr_kvm_system_time)
--		native_write_msr(msr_kvm_system_time, 0);
-+		wrmsrq(msr_kvm_system_time, 0);
- }
- 
- static void __init kvmclock_init_mem(void)
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 91f5a5344529..5e5bbecb8020 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -412,12 +412,12 @@ static void svm_init_erratum_383(void)
- 		return;
- 
- 	/* Use _safe variants to not break nested virtualization */
--	if (native_read_msr_safe(MSR_AMD64_DC_CFG, &val))
-+	if (rdmsrq_safe(MSR_AMD64_DC_CFG, &val))
- 		return;
- 
- 	val |= (1ULL << 47);
- 
--	native_write_msr_safe(MSR_AMD64_DC_CFG, val);
-+	wrmsrq_safe(MSR_AMD64_DC_CFG, val);
- 
- 	erratum_383_found = true;
- }
-@@ -470,8 +470,8 @@ static void svm_init_os_visible_workarounds(void)
- 		return;
- 
- 	if (!this_cpu_has(X86_FEATURE_OSVW) ||
--	    native_read_msr_safe(MSR_AMD64_OSVW_ID_LENGTH, &len) ||
--	    native_read_msr_safe(MSR_AMD64_OSVW_STATUS, &status))
-+	    rdmsrq_safe(MSR_AMD64_OSVW_ID_LENGTH, &len) ||
-+	    rdmsrq_safe(MSR_AMD64_OSVW_STATUS, &status))
- 		len = status = 0;
- 
- 	if (status == READ_ONCE(osvw_status) && len >= READ_ONCE(osvw_len))
-@@ -2112,7 +2112,7 @@ static bool is_erratum_383(void)
- 	if (!erratum_383_found)
- 		return false;
- 
--	if (native_read_msr_safe(MSR_IA32_MC0_STATUS, &value))
-+	if (rdmsrq_safe(MSR_IA32_MC0_STATUS, &value))
- 		return false;
- 
- 	/* Bit 62 may or may not be set for this mce */
-@@ -2123,11 +2123,11 @@ static bool is_erratum_383(void)
- 
- 	/* Clear MCi_STATUS registers */
- 	for (i = 0; i < 6; ++i)
--		native_write_msr_safe(MSR_IA32_MCx_STATUS(i), 0);
-+		wrmsrq_safe(MSR_IA32_MCx_STATUS(i), 0);
- 
--	if (!native_read_msr_safe(MSR_IA32_MCG_STATUS, &value)) {
-+	if (!rdmsrq_safe(MSR_IA32_MCG_STATUS, &value)) {
- 		value &= ~(1ULL << 2);
--		native_write_msr_safe(MSR_IA32_MCG_STATUS, value);
-+		wrmsrq_safe(MSR_IA32_MCG_STATUS, value);
- 	}
- 
- 	/* Flush tlb to evict multi-match entries */
-diff --git a/arch/x86/xen/pmu.c b/arch/x86/xen/pmu.c
-index 5f50a3ee08f5..37512df8b8f2 100644
---- a/arch/x86/xen/pmu.c
-+++ b/arch/x86/xen/pmu.c
-@@ -324,7 +324,7 @@ static u64 xen_amd_read_pmc(int counter)
- 		u64 val;
- 
- 		msr = amd_counters_base + (counter * amd_msr_step);
--		native_read_msr_safe(msr, &val);
-+		rdmsrq_safe(msr, &val);
- 		return val;
- 	}
- 
-@@ -350,7 +350,7 @@ static u64 xen_intel_read_pmc(int counter)
- 		else
- 			msr = MSR_IA32_PERFCTR0 + counter;
- 
--		native_read_msr_safe(msr, &val);
-+		rdmsrq_safe(msr, &val);
- 		return val;
- 	}
- 
--- 
-2.55.0
-
+--
+Cheers, Lorenzo
