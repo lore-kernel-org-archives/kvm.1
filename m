@@ -1,114 +1,153 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D7D471CF9;
-	Fri, 11 Sep 2026 09:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624D246D2B4;
+	Fri, 11 Sep 2026 09:21:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789118397; cv=none; b=XjmN9P3Cv5tUJL+1//wIIiqztXSabJ+HJr7uEIPnYGxYt1xuZtPNqIwXhcy/25Se96nNbid8iH+DHrCTU9It9Z+kDqdDs4JJHdRV+JYvx3svbqFIwQnqAidu0HJ0v73E63h5PBw6kXD3vkdSM3oSXfi45QhGzxvOFUlF4VJ/ggQ=
+	t=1789118487; cv=none; b=ZxVDnhLQdZ642MxfZZuEAF3A2r+fIV4flbzg5FhC8PHG0EmDFKY4KsrQkc6otqEGDwOmnQ/Q4ML3zthSfaw4eqyhHnY2rZHEg9BLGm3xaOXpYO4c3SSC9qOKhgUSUHUrg/DUXj2RA43G3iBcy4JpQ1JJClBta7zxf0joMfTqRHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789118397; c=relaxed/simple;
-	bh=x4HjFt9hC9MVbkBet+CRb0bKBH7jlDEbqN+Sd6H1xzQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Kf4sjjJZgBuF2ovSUX86aT7NCeUlK4RoprS5AClvSZceEPtqwndlEZkHqaBujFUlBpdHextArFC9JRobTQMKmyn5A6kRvLOEdaaOWIlkO/XiTo05GHwlOzJRWBzrf9SAJTVfe4DxHFm03uAA4MZ9Sg22vlQtEtlhBIdKXKLxzLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J7qvj7a5; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1789118487; c=relaxed/simple;
+	bh=sSPYvXAS+pe2UihmOVkjAmU6fCndo2uXYrc7/3ZTM9c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HEJjl14wx4aXe1u4Yo3JAIH/RWuZ5U3OZdRuRiZLWJE3A8o/51gz8aLZlyIuCR1sjWodglQUvT+50u6AFBMm/wPz0TD5G8Z0Um/B/1H/2u1BGRZH4il6zwBQZV4G221Jw9jEBI9/ZtywXemgos5eqSgvFN5k7YWOTS3fDjWbpOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a33dLmzY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J7qvj7a5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789118395; x=1820654395;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=x4HjFt9hC9MVbkBet+CRb0bKBH7jlDEbqN+Sd6H1xzQ=;
-  b=J7qvj7a55nlLrV5x7REGY6PdWmij4sDhuUixRXnOnHmi7PV3dHfgquLy
-   utap1X+l4qw2A8jykIaxyuJmvn8HlGu3/s8Re/Sp54sbzJ67cXqvEOqBP
-   4ru65v2MeziGVcIc4cKtuj5aFlZwhUH8bjJV5aCqi14sXfLsUN/4rVVic
-   wNHQBxuuHx8WywjDGrCJ6+srpezu+6NF33lyQBekAIFDIS8zUP+q3KeV9
-   2pfA+FSguBd4+QPcCMM3uUfXYC4OmQk2dAHV4lWKGelJ0lGJub4nks+rf
-   M4SnsrNyz+vFc3gPyGyHehpVdEqQufCCobEaHQ/5AiOROPnXcPhNvS3kk
-   A==;
-X-CSE-ConnectionGUID: rCwkunblS4S+foQUGV0AIg==
-X-CSE-MsgGUID: TkiKeaWATF+YU3Eoc90KDQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="89451016"
-X-IronPort-AV: E=Sophos;i="6.27,97,1787036400"; 
-   d="scan'208";a="89451016"
-Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 02:19:54 -0700
-X-CSE-ConnectionGUID: MskVPNAUQaecybhe4vi6ug==
-X-CSE-MsgGUID: MyILX2DsQcKOmEi/YU31iQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,97,1787036400"; 
-   d="scan'208";a="238657"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 02:19:37 -0700
-Message-ID: <e84d09bf-2c15-4d2b-967f-e6ae47d0e87c@intel.com>
-Date: Fri, 11 Sep 2026 17:19:34 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a33dLmzY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FD41F000FF;
+	Fri, 11 Sep 2026 09:21:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789118486;
+	bh=oxmQxrsMeqRHqVktx/UJ3IdFFga7UWvSUavLJ9XkLmA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=a33dLmzYgclcf+h0y1zqNlrGUlx91lz83YB4ZqpgXrK6Ah+8Nfvau6tKK5KdEeuXd
+	 Dfux531lNaQrUZMYOx9mE3Xt+SJyYT3Pwf9INrmJCjVcmS7PtuCuEgssXaoy11URi7
+	 c+LKdnXUxnNCN5p/xbRkldiKd+FCoUjVVSduevBHRfHWphQ8t8yFEh4xouPXLw8FpX
+	 2qWA0Te2CVaU90nRBs5wkVVdMm9L249BMMjiauBEXlRIY4oo8tsN/QABKSQLOHUcAh
+	 GqOfOlHIhfM6MquRJ5kSTkCwA4s/52KTfnhDM1/pqee+JhU+Vr4vdo4VVRuVcauEpS
+	 S9SKCJgqbS/mg==
+Date: Fri, 11 Sep 2026 10:21:17 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Fuad Tabba <tabba@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Jack Thomson <jackabt@amazon.com>, Jack Thomson <jackabt.amazon@gmail.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Vincent Donnefort <vdonnefort@google.com>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Sean Christopherson <seanjc@google.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Leo Soares Passos <Leo.Bras@arm.com>
+Subject: Re: [PATCH 8/8] KVM: selftests: Add nested pre-fault test for arm64
+Message-ID: <aqPH7yjXOIfCOpmE@gremlin>
+References: <20260825-kvm-arm-prefault-v1-0-befe8947702e@kernel.org>
+ <20260825-kvm-arm-prefault-v1-8-befe8947702e@kernel.org>
+ <CA+EHjTy8m=b8D6sLOTv3AW05vXqFPRrTYvG7-t3D64Vt1+jAWQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 07/44] KVM: Rename kvm_mem_is_private() to
- kvm_is_private_gfn()
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, willy@infradead.org,
- wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com,
- pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org,
- liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, tarunsahu@google.com,
- Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Fuad Tabba <fuad.tabba@linux.dev>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260910-gmem-inplace-conversion-v13-0-dd6fbf94f4e1@google.com>
- <20260910-gmem-inplace-conversion-v13-7-dd6fbf94f4e1@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260910-gmem-inplace-conversion-v13-7-dd6fbf94f4e1@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+EHjTy8m=b8D6sLOTv3AW05vXqFPRrTYvG7-t3D64Vt1+jAWQ@mail.gmail.com>
 
-On 9/11/2026 7:55 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> Rename kvm_mem_is_private() to kvm_is_private_gfn() to prepare for in-place
-> conversion, where there will be two lookup functions,
-> kvm_vm_is_private_gfn() and kvm_gmem_is_private_gfn().
-> 
-> This renaming allows consistent prefixing of "vm" vs "gmem" for
-> kvm_*_is_private_gfn(), as opposed to kvm_gmem_mem_is_private(), which
-> looks like a typo.
-> 
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+On Thu, Sep 10, 2026 at 07:57:03PM +0100, Fuad Tabba wrote:
+> Hi,
+>
+> On Tue, 25 Aug 2026 at 17:02, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+> ..
+> > +int main(void)
+> > +{
+> > +       struct nested_s2_state s2;
+> > +       struct kvm_vcpu_init init;
+> > +       struct kvm_vcpu *vcpu;
+> > +       struct kvm_vm *vm;
+> > +       struct ucall uc;
+> > +       u64 npages;
+> > +
+> > +       TEST_REQUIRE(kvm_check_cap(KVM_CAP_ARM_EL2));
+>
+> Would test_supports_el2() work better here? It honours the NV=0
+> opt-out, and since HAS_EL2 is set unconditionally below, NV=0 doesn't
+> disable this test as things stand.
+
+That sounds sensible :) Will fix on respin.
+
+>
+> Cheers,
+> /fuad
+>
+> > +       TEST_REQUIRE(kvm_check_cap(KVM_CAP_PRE_FAULT_MEMORY));
+> > +
+> > +       vm = vm_create(1);
+> > +
+> > +       kvm_get_default_vcpu_target(vm, &init);
+> > +       init.features[0] |= BIT(KVM_ARM_VCPU_HAS_EL2);
+> > +       vcpu = aarch64_vcpu_add(vm, 0, &init, guest_code);
+> > +       kvm_arch_vm_finalize_vcpus(vm);
+> > +
+> > +       npages = TEST_MEM_SIZE / vm->page_size;
+> > +       vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, TEST_MEM_GPA,
+> > +                                   TEST_MEM_SLOT, npages, 0);
+> > +       virt_map(vm, TEST_MEM_GPA, TEST_MEM_GPA, npages);
+> > +
+> > +       vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS,
+> > +                                   NESTED_S2_ROOT_GPA, NESTED_S2_ROOT_SLOT,
+> > +                                   vm_adjust_num_guest_pages(vm->mode, 1), 0);
+> > +
+> > +       /* Run the guest until it has ERET'd from vEL2 to vEL1. */
+> > +       vcpu_run(vcpu);
+> > +       switch (get_ucall(vcpu, &uc)) {
+> > +       case UCALL_SYNC:
+> > +               TEST_ASSERT_EQ(uc.args[1], 1);
+> > +               break;
+> > +       case UCALL_ABORT:
+> > +               REPORT_GUEST_ASSERT(uc);
+> > +               break;
+> > +       default:
+> > +               TEST_FAIL("Unhandled ucall: %ld", uc.cmd);
+> > +       }
+> > +
+> > +       /*
+> > +        * The vCPU's last-run context is vEL1, backed by a shadow stage-2
+> > +        * MMU. Enable nested stage-2 with an empty root so that the ioctl
+> > +        * fails if it tries to interpret the userspace GPA as an L2 IPA.
+> > +        *
+> > +        * Prefault in two halves so that the second ioctl exercises a
+> > +        * repeated shadow-MMU attach and canonical stage-2 swap.
+> > +        *
+> > +        * (Note that an implementation that wrongly populates shadow
+> > +        * stage-2 page tables would not be caught as userland can't
+> > +        * inspect these.)
+> > +        */
+> > +       s2 = enable_empty_nested_s2(vcpu);
+> > +       pre_fault(vcpu, TEST_MEM_GPA, TEST_MEM_SIZE / 2);
+> > +       pre_fault(vcpu, TEST_MEM_GPA + TEST_MEM_SIZE / 2, TEST_MEM_SIZE / 2);
+> > +       restore_nested_s2(vcpu, &s2);
+> > +
+> > +       /* Resume at vEL1 and touch the prefaulted range. */
+> > +       vcpu_run(vcpu);
+> > +       switch (get_ucall(vcpu, &uc)) {
+> > +       case UCALL_DONE:
+> > +               break;
+> > +       case UCALL_ABORT:
+> > +               REPORT_GUEST_ASSERT(uc);
+> > +               break;
+> > +       default:
+> > +               TEST_FAIL("Unhandled ucall: %ld", uc.cmd);
+> > +       }
+> > +
+> > +       kvm_vm_free(vm);
+> > +       return 0;
+> > +}
+> >
+> > --
+> > 2.55.0
+> >
+
+--
+Cheers, Lorenzo
