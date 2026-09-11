@@ -1,91 +1,84 @@
-Received: from esa1.hc1455-7.c3s2.iphmx.com (esa1.hc1455-7.c3s2.iphmx.com [207.54.90.47])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE58F3C456F;
-	Fri, 11 Sep 2026 02:08:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.54.90.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531B6353A71
+	for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 04:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789092534; cv=none; b=e7DPlAlGTVxo9Eg+mwgNvV/KacxyQK3sk+aVmS8TmDyrXUNUwSUypzIHXOJMLDWLEjHtoJrDDnCKUnasmPb7uSaOOCuf+sAvxfnHDyrrMPkpOZ0NkPH6IfmZYoaZQH2yU34qCAPH1Z5WiLPQQtDX1PlvTbD6VfgBNxgWhURJU+o=
+	t=1789100619; cv=none; b=Cwr3ijV6flu+iWpN6D6LfjMs1922xRgMi9gINMtfKgq8qMqbwvy9QR3wQ1zTvc4y/duqqPwXn0eSRj5FFOOwmy0phCNd1uL8D7VRzdyir1abVGQN6bZNPxamYyS5O3VN9UuZLQ9zXVoEvWkcrDbc6yaF7G2iS63RpscVgn3Pbt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789092534; c=relaxed/simple;
-	bh=AaXl/L7lLDt00UQl/RtkISnRqi4t27mRDo6Utp1VaFI=;
+	s=arc-20240116; t=1789100619; c=relaxed/simple;
+	bh=So+5Ctl6gocLk0GPLDgBmcFeH0F2hJcGVy/VqGIpxxg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MlHVhxECc+qvLjTB2zmUkSKWYloyO6saL5yHzrF++NeIjNtsVQyiFmf2uB27au7d51MZtNSJnjxBQRWCjBmQKUZ9ucA0fgmbCi4/aK9L8iefyTw/x2r9j0iQ7b5UBFCKrKYv10Cat6KZYRoQhsPiAdy/Dl2Jw/2PuK6PuU4wao4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=AdGCFArn; arc=none smtp.client-ip=207.54.90.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=luahUcYwdKCiOStAvQbGE5h8x2XWlPIWQ4HFf8GBWQfgvJOZtkEV+x+adspNvceS7LbDRfjvXRTaSz5Ox34H/2LvOHHtKVSEVXqfWnJIZESDi6p9C0+KS6wYqbOkklW+58fYQyeFGxfzbK9pmlHkGNUDjsjYCkBuh/vhTNCE6+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EqmyQieE; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="AdGCFArn"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1789092537; x=1820628537;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EqmyQieE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789100618; x=1820636618;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=AaXl/L7lLDt00UQl/RtkISnRqi4t27mRDo6Utp1VaFI=;
-  b=AdGCFArnF/bOu22BeR97u9BbyQyoLvskimXLpW/2am96yngK89tdAXyS
-   7P0NQjrLYKcLI/hV7aJIfSlhHBCedqpTbxEUGaukd69v7q/Nw/74xDu6R
-   vBvGWlY2a6FhzPE6gCtncX9v2+QiK8hCl4xDTJj3/BgqikITMiJx0sJQ+
-   cx07gXIHciJI7wRWYAsB46e2AFH2QNFubjRH+Xm/9oZKhFgOHQad2BIDO
-   RE7/DN957z57MTp5CBWwgH1ian0m0stOEKMqwUMFfG3NGTWgec36Lj5Nl
-   l+poNELZo1L2lin8Cf05nqztLupaCMjNufMj6lffOh7l5IzAgo7PWClTq
-   g==;
-X-CSE-ConnectionGUID: 8Nx2mnasTvGjLzudmDDBTA==
-X-CSE-MsgGUID: TLNjMs4vTXOQ8b1jpnQjdw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="254663319"
-X-IronPort-AV: E=Sophos;i="6.27,96,1786978800"; 
-   d="scan'208";a="254663319"
-Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
-  by esa1.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 11:08:45 +0900
-Received: from az2uksmgm2.o.css.fujitsu.com (unknown [10.151.22.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id 05E95C023F2;
-	Fri, 11 Sep 2026 02:08:41 +0000 (UTC)
-Received: from az2uksmom2.o.css.fujitsu.com (unknown [10.151.22.203])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2uksmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id B022E18000DB;
-	Fri, 11 Sep 2026 02:08:40 +0000 (UTC)
-Received: from sm-arm-grace07 (unknown [10.124.178.20])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2uksmom2.o.css.fujitsu.com (Postfix) with ESMTPS id 7F15A14000E9;
-	Fri, 11 Sep 2026 02:08:31 +0000 (UTC)
-Date: Fri, 11 Sep 2026 11:08:28 +0900
-From: Itaru Kitayama <itaru.kitayama@fujitsu.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Ritesh Harjani <ritesh.list@gmail.com>, Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
+  bh=So+5Ctl6gocLk0GPLDgBmcFeH0F2hJcGVy/VqGIpxxg=;
+  b=EqmyQieEQ/ghRGZb7KnpvXzl46uXpXJMmRCg9Fhb8ztmzfcQyf0eVRCO
+   QfMHqE0p6etw2qoOMbEGUoR+fuNov4jKviggDLLtjlHqa+jKNTK6qLv3k
+   fDKqpZvlERZE2wrkggW2F20wi0oTkM+RR2nlk/oa1lwDzWkiJKpgyv/aH
+   HUU0cH3cE7HF1k7pj/d2Rknrgk+z+ScGztmw05vrYEH6pdnWAMpYPSJ7V
+   dzp6vBxASlc1gukoI1jvAFL4KXKEJH+PHTtG5DksNtSdhecksKFm59QH2
+   ocCivDzdW9l3Gd/rl5V1qzXAZ0POOxuJ0Dut+a0dxkAi8OMglqPd2ZlYQ
+   Q==;
+X-CSE-ConnectionGUID: Y6Ze/4S6QJemMZ7KSFI/2Q==
+X-CSE-MsgGUID: SxlvpF5LSQe4jEzHun8BQw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="112333768"
+X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; 
+   d="scan'208";a="112333768"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 21:23:37 -0700
+X-CSE-ConnectionGUID: o0TqcZDeROexlek1J9BMTQ==
+X-CSE-MsgGUID: F62moAh3Qt6uSgQliMfDqw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; 
+   d="scan'208";a="277060570"
+Received: from wgawrons-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.183])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 21:23:29 -0700
+Date: Fri, 11 Sep 2026 07:23:25 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Kishen Maloor <kishen.maloor@intel.com>
+Cc: Artem Bityutskiy <dedekind1@gmail.com>,
+	=?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
 	Paolo Bonzini <pbonzini@redhat.com>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Atish Patra <atish.patra@linux.dev>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	David Hildenbrand <david@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org, loongarch@lists.linux.dev,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 12/20] KVM: selftests: Add APIs to override memory
- region types with custom memslots
-Message-ID: <aqNinDKVoKUSNwXe@sm-arm-grace07>
-References: <20260902164123.2546762-1-seanjc@google.com>
- <20260902164123.2546762-13-seanjc@google.com>
- <5x0d1hj1.ritesh.list@gmail.com>
- <aqLZrk6m3NgugzBU@google.com>
+	Sean Christopherson <seanjc@google.com>,
+	Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+	Jon Grimm <Jon.Grimm@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Steven Price <steven.price@arm.com>,
+	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
+	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Peter Fang <peter.fang@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org
+Subject: Re: [RFC PATCH v2 2/4] KVM: x86: Add optional KVM_CAP_LIVE_MIGRATION
+ and KVM_MIGRATE_CMD
+Message-ID: <aqOCPVoFAFMv8ZYo@tlindgre-MOBL1>
+References: <20260831071304.762939-3-tony.lindgren@linux.intel.com>
+ <ap6loazXtvSCqmpR@tlindgre-MOBL1>
+ <ap64dFXpiDb_Hqxl@8bytes.org>
+ <d25d652c34dedc209ccb3b758e7f624b9125eee5.camel@gmail.com>
+ <ap-SihGd0fk02QV8@tlindgre-MOBL1>
+ <4c07e70e-7639-4141-b602-1c09c9c7510c@intel.com>
+ <aqEDQ5Qrv724gGzN@tlindgre-MOBL1>
+ <0cf5b79e-521d-4c7c-97f2-673c51d42bbd@intel.com>
+ <aqJPLEX51DSCF1zC@tlindgre-MOBL1>
+ <be09b02d-c993-40ad-a690-753a7a50677c@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -94,70 +87,61 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aqLZrk6m3NgugzBU@google.com>
+In-Reply-To: <be09b02d-c993-40ad-a690-753a7a50677c@intel.com>
 
-On Thu, Sep 10, 2026 at 09:24:14AM -0700, Sean Christopherson wrote:
-> On Thu, Sep 10, 2026, Ritesh Harjani wrote:
-[...]
-> > May I suggest few changes in the naming of these APIs:
+On Thu, Sep 10, 2026 at 06:40:04PM -0700, Kishen Maloor wrote:
+> On 9/9/26 11:33 PM, Tony Lindgren wrote:
+> > On Wed, Sep 09, 2026 at 06:11:11PM -0700, Kishen Maloor wrote:
+> > ...
+> >>
+> >> As mentioned above, that is a destination launch time directive that we needn't
+> >> conflate with a migration/transfer session role.
 > > 
-> > static inline void vm_override_mem_region(struct kvm_vm *vm,
-> > 					      enum kvm_mem_region_type type,
-> > 					      u32 slot)
-> > {
-> > 	TEST_ASSERT(vm->memslots[type] == KVM_INVALID_MEMSLOT,
-> > 		    "Memory region type '%u' was already overridden with slot=%u",
-> > 		    type, vm->memslots[type]);
-> > 
-> > 	vm->memslots[type] = slot;
-> > }
-> > 
-> > static inline void vm_override_add_mem_region_flags(struct kvm_vm *vm,
-> > 					    enum kvm_mem_region_type type,
-> > 					    enum vm_mem_backing_src_type src_type,
-> > 					    gpa_t gpa, u32 slot, u64 npages,
-> > 					    u32 flags)
-> > {
-> > 	vm_override_mem_region(vm, type, slot);
-> > 	vm_userspace_mem_region_add(vm, src_type, gpa, slot, npages, flags);
-> > }
-> > 
-> > static inline void vm_override_add_mem_region(struct kvm_vm *vm,
-> > 					  enum kvm_mem_region_type type,
-> > 					  enum vm_mem_backing_src_type src_type,
-> > 					  gpa_t gpa, u32 slot, u64 npages)
-> > {
-> > 	vm_override_add_mem_region_flags(vm, type, src_type, gpa, slot, npages, 0);
-> > }
-> > 
-> > Those "_add_" and "_flags" in the function names easily gives away
-> > the difference in the APIs, rather than differentiating via "__".
+> > It's still the same role though. Yes we can set it on init, but would
+> > be nice to have some generic way to do it for qemu -incoming.
 > 
-> I am strongly against postfixes like "_flags".  We do use postfixes for the VM
-> creation APIs, e.g. vm_create_barebones(), vm_create_with_vcpus(), etc., but only
-> because there are so many possible combinations that differentiating through
-> underscores is completely infeasible (unless we forced callers to regurgitate
-> huge amounts of boilerplace and/or had an absurd number of params), and because
-> the collection of APIs is tree-like, as opposed to a single linear chain of APIs.
+> I'd separate these.
 > 
-> For this, there is a much more finite set of possibilities, and the set of APIs
-> is a direct liner chain (no underscores => __ => ____).
+> On the role: it seems we agree on recording roles per-session. My only point
+> then is that a VM created through the delayed_init flow doesn't additionally
+> need a destination role recorded for it if SETUP will assert one when the
+> migration is kicked off.
 > 
-> I agree that not capturing that {,__}vm_override_mem_region() adds a userspace
-> memory region isn't ideal, but due to the term "memory region" already being
-> somewhat overloaded, I don't want to have "add" in the name as I think that will
-> make it harder to differentiate between the "enum kvm_mem_region_type" APIs and
-> the "userspace memory region" APIs.
-> 
-> And IMO it's totally fine for a function name to express what the API does at a
-> higher level, without capturing the exact operations in explicit detail.  E.g.
-> __vm_create() (and even ____vm_create()) obviously does a lot more than literally
-> KVM_VM_CREATE.
+> On generic plumbing for -incoming: is this about KVM_TDX_INIT_VM_F_DELAY_INIT?
+> A generic mechanism would make sense to me if the flag were consumed by generic
+> KVM code, but that isn't the case here. Userspace has to make a
+> vendor-specific VM-init call like KVM_TDX_INIT_VM anyway, with the flag passed
+> on that call. So I'm not sure what a generic version would add, unless you have
+> something else in mind.
 
-As I have been looking at the direct liner chain of vm_create() for some
-time, I agree with Sean. To create with a non-default guest mode ID, we have to
-start with those underscored functions, but I still prefer short function
-names.
+So we could add a SETUP subcommand SET_ROLE or SET_INCOMING. The
+implementation could store the role at least initially. And if we want to
+set the role with KVM_TDX_INIT_VM, we could recycle the role bit there.
 
-Thanks,
-Itaru.
+> > Just brainstorming.. I wonder if we need two things though. A source vs
+> > destination role. And then at some point possibly later on also a data
+> > transfer direction enumeration similar to what Linux has in
+> > include/linux/dma-direction.h.
+> > 
+> > We already need to make use of the QEMU return-path for the migration key
+> > exchange. What if some hardware needs to make use of KVM_TRANSFER_MEMORY
+> > from source to destination, and after that back from destination to source
+> > to ack the transfer? Sure this is just speculation, I'm not aware of this
+> > need right now.
+> > 
+> > In any case with handling the source vs destination role, the enumeration
+> > for data direction can be added to the transfer flags later on as needed.
+> > No need to try to stuff the data direction flag there until really needed.
+> 
+> Agree on deferring such an enumeration. More generally though, the session
+> role determines which operations are permitted, and it seems like vendor code
+> could be expected to handle those in context.
+> 
+> The TDX architecture already has a destination-to-source example:
+> TDH.IMPORT.ABORT emits an abort token on the destination that
+> TDH.EXPORT.ABORT consumes on the source. So KVM on the source would dispatch
+> to its export-abort path and let the vendor layer decide what to do with
+> the buffer. This doesn't require a direction flag.
+
+Yes agreed with the role we can handle migration related transfers both
+ways at least for TDX.
