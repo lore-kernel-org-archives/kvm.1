@@ -1,67 +1,83 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF754A4EE3;
-	Fri, 11 Sep 2026 21:42:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA54497B62;
+	Fri, 11 Sep 2026 21:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789162952; cv=none; b=ilbKU50kB1bzGVRgzPSE8+lfUXe8ixu65Umuk7i5qeAtD+237yOuXzv0cfmAVYZjArvOgK1Kba6kbJ4vv0oC1/F6TVNArcs5JQ3QqnOx6k2pg4hpbw5BACIcanZUHyNZCmxSgp3w+wf7T8zUtjfpEc3+dVDZOwGy3vZFqTI3Tds=
+	t=1789162954; cv=none; b=tNcvM7Rl44XXWKHCaQlgrZTs/I5B4Lyb7/ptBCyRproZoZKdOFfbi2dHPcolScoWzZf+/tEnzGafJkLjf+FmB+SyI+h94sKm3oABq5YyRP7RoCXjDZdGbG+B+9sSezDHeSYd1MDls7+BqPiCOrpxjNK4UTTnCNn7rgmq10u8BdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789162952; c=relaxed/simple;
-	bh=5RdCZNMgNLfr29PauX5gyRyLvmezJI9ZfbsCenjulE0=;
+	s=arc-20240116; t=1789162954; c=relaxed/simple;
+	bh=g9xfFIN1eybrlbdeBNPLXC5TVFM8Kvup/yimqq6mDiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uHuurLaPXYuw54sFYohLi8Caekb4uEfTviDt9ssvhcGRoqWpWmdkG/8fLb9Qs6dznehbeaCUN2GUzfGOpvCu5pRK3rPLEl1C84M1S88AXzq9VjllCssBJIU38EiUlQZPhtGG9HBb5Ji8q2BWzrb4mP/2lPhBMdtbxPlLUScyTxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=lwuYwEPq; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
+	 MIME-Version; b=kpjByyOnh0XRfa0SxTphKnOAJafMpGC6Mzlokusd7vsTt5Q1ZWqpE/AYPVgwxKvfHAONUm2j9kzWHGzv9zs0v7LFijM5zMhqK98pA1loieJYpfHqOn8BjRrh+r7Pd/lweHWWmdgd0nboapuSaeLkMldQyDg15DoY+4YG0StnPFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZfqffOTl; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="lwuYwEPq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1789162935;
-	bh=5xcnpoD35EmZCq5dKKq2f9x4jElF9sti9rbyWs0IsIw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lwuYwEPqv19Pwy6bNYoMfy5/6A76BjqcJ+5RPM9dK0OY4mzZ7ZJpkR7/ANowRW+SW
-	 J8CEkuPHtummX3ZvxQnKWNvrcTQuUw97ShxcYxhJT2V/OWKJo0VJVAvq4nQC+LRVXN
-	 wsMhlYvP3pJa+dCAHsgJWqaMiK5SYBp7e3mzTIWKtHfV2oSb+C2uXmKCKMM7CF2ldQ
-	 WXcpt3Mw8sq7VQDtOHpa7zZYbJZggZNGH1hFCz1BUqRCrmFDNb+xrNOFQCW2ADRHzF
-	 8YfFhCv3yi12ZSRDsQA6qZgLCpCmWZ9GY4252AOGDoG7NrLhpiU9tADQuDodFKvnoL
-	 rA/WGqjqYUFDw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4hhSgV6hGgz4wDJ;
-	Sat, 12 Sep 2026 07:42:14 +1000 (AEST)
-From: Matt Evans <matt@ozlabs.org>
-To: Alex Williamson <alex@shazbot.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Alex Mastro <amastro@fb.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Longfang Liu <liulongfang@huawei.com>
-Cc: Mahmoud Adam <mngyadam@amazon.de>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZfqffOTl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789162951; x=1820698951;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=g9xfFIN1eybrlbdeBNPLXC5TVFM8Kvup/yimqq6mDiY=;
+  b=ZfqffOTlUxhn0j2kCulcfMstar/88d4h+yHPpX9vKTgAfDl+YrCgKtQR
+   jyLJ1AEJahySKsJkgApija3ogvAmDBxYHEPOqJlCSGTCx2abnbvaFln5X
+   uI/c/asrkwEWZ8y+Yj65teC04kHtRAS0RewDUiEP24MbfwjvdvKSvADxO
+   Fiawzv1peI1AsP5j/JlKfpP+EXczf+mnUosnOV7mfPRCmhgtKapxKDB/X
+   0Uz7vFL2Nc/Zft+BB8tGc8lsstXeIjUFyFHkydIRu5605lIu74twN4Y7Y
+   E72gXZuqdN1T8+bGQQepXdhpNdieXJoSBZ9nxdTtM0UL63mfOpx3NUN8i
+   A==;
+X-CSE-ConnectionGUID: 8W4BmMHFQwKWgHPfItMKfw==
+X-CSE-MsgGUID: TsOAfeA5Tiym3g6Dcx+aHA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="88572765"
+X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
+   d="scan'208";a="88572765"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 14:42:30 -0700
+X-CSE-ConnectionGUID: 5H0pNPuTQ0m24jT5LNwtgw==
+X-CSE-MsgGUID: TycCSzVRQPWm6hxDCswdhg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
+   d="scan'208";a="272004180"
+Received: from sohilmeh.sc.intel.com ([172.25.103.65])
+  by orviesa007.jf.intel.com with ESMTP; 11 Sep 2026 14:42:29 -0700
+From: Sohil Mehta <sohil.mehta@intel.com>
+To: kvm@vger.kernel.org,
+	x86@kernel.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Xin Li <xin@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Shivansh Dhiman <shivansh.dhiman@amd.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Chao Gao <chao.gao@intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	Zhao Liu <zhao1.liu@intel.com>,
+	Yosry Ahmed <yosry@kernel.org>,
 	David Matlack <dmatlack@google.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: [PATCH v6 3/9] dma-buf: Export dma_buf_set_name()
-Date: Fri, 11 Sep 2026 22:41:51 +0100
-Message-ID: <20260911214200.33793-4-matt@ozlabs.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260911214200.33793-1-matt@ozlabs.org>
-References: <20260911214200.33793-1-matt@ozlabs.org>
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v10 17/28] KVM: x86: Handle CR4.FRED when emulating RSM
+Date: Fri, 11 Sep 2026 14:36:47 -0700
+Message-ID: <20260911213659.2025974-18-sohil.mehta@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260911213659.2025974-1-sohil.mehta@intel.com>
+References: <20260911213659.2025974-1-sohil.mehta@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,128 +86,72 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-dma_buf_set_name() originally took a __user string to duplicate for
-the buffer name.  Make this function a generic set-name helper, taking
-a kernel-allocated string.
+Clear CR4.FRED before CR0.PG when leaving long mode on RSM, and restore
+it only after CR0.PG has been set, the same way CR4.PCIDE is already
+handled in both directions.
 
-Wrap this by a new dma_buf_set_name_user() to support the existing
-ioctl path for a user-provided string.
+SMI delivery saves all 64 bits of CR4 and RSM restores them so CR4.FRED
+survives SMM. But KVM emulates RSM as a series of individual register
+writes, and so drives the vCPU through an intermediate state with
+CR4.FRED set and EFER.LMA clear. kvm_set_cr4() rejects that combination,
+so RSM of a 64-bit FRED guest fails with X86EMUL_UNHANDLEABLE.
 
-Signed-off-by: Matt Evans <matt@ozlabs.org>
+Note, SMI delivery needs no such handling, as enter_smm() clears CR4 in
+full via the vendor callback rather than kvm_set_cr4().
+
+Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 ---
- drivers/dma-buf/dma-buf.c | 58 ++++++++++++++++++++++++++++++---------
- include/linux/dma-buf.h   |  2 ++
- 2 files changed, 47 insertions(+), 13 deletions(-)
+v10:
+ - New patch
+---
+ arch/x86/kvm/smm.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
-index d504c636dc29..8129ea11ff58 100644
---- a/drivers/dma-buf/dma-buf.c
-+++ b/drivers/dma-buf/dma-buf.c
-@@ -405,31 +405,29 @@ static __poll_t dma_buf_poll(struct file *file, poll_table *poll)
- }
+diff --git a/arch/x86/kvm/smm.c b/arch/x86/kvm/smm.c
+index 656a38dad7e7..a504e93fc5f5 100644
+--- a/arch/x86/kvm/smm.c
++++ b/arch/x86/kvm/smm.c
+@@ -435,10 +435,10 @@ static int rsm_enter_protected_mode(struct kvm_vcpu *vcpu,
  
- /**
-- * dma_buf_set_name - Set a name to a specific dma_buf to track the usage.
-- * It could support changing the name of the dma-buf if the same
-- * piece of memory is used for multiple purpose between different devices.
-+ * dma_buf_set_name_user - Set a dma_buf's name from a user string
-+ *
-+ * The string is up to DMA_BUF_NAME_LEN long, including the terminator.
-  *
-  * @dmabuf: [in]     dmabuf buffer that will be renamed.
-  * @buf:    [in]     A piece of userspace memory that contains the name of
-  *                   the dma-buf.
-  *
-- * Returns 0 on success. If the dma-buf buffer is already attached to
-- * devices, return -EBUSY.
-- *
-+ * Returns 0 on success, and any previously-set name is freed.
-  */
--static long dma_buf_set_name(struct dma_buf *dmabuf, const char __user *buf)
-+static long dma_buf_set_name_user(struct dma_buf *dmabuf, const char __user *buf)
- {
- 	char *name = strndup_user(buf, DMA_BUF_NAME_LEN);
-+	int ret;
+ 	/*
+ 	 * First enable PAE, long mode needs it before CR0.PG = 1 is set.
+-	 * Then enable protected mode.	However, PCID cannot be enabled
+-	 * if EFER.LMA=0, so set it separately.
++	 * Then enable protected mode. However, PCID and FRED cannot be
++	 * enabled if EFER.LMA=0, so set them separately.
+ 	 */
+-	bad = kvm_set_cr4(vcpu, cr4 & ~X86_CR4_PCIDE);
++	bad = kvm_set_cr4(vcpu, cr4 & ~(X86_CR4_PCIDE | X86_CR4_FRED));
+ 	if (bad)
+ 		return X86EMUL_UNHANDLEABLE;
  
- 	if (IS_ERR(name))
- 		return PTR_ERR(name);
+@@ -446,7 +446,7 @@ static int rsm_enter_protected_mode(struct kvm_vcpu *vcpu,
+ 	if (bad)
+ 		return X86EMUL_UNHANDLEABLE;
  
--	spin_lock(&dmabuf->name_lock);
--	kfree(dmabuf->name);
--	dmabuf->name = name;
--	spin_unlock(&dmabuf->name_lock);
-+	ret = dma_buf_set_name(dmabuf, name);
-+	if (ret)
-+		kfree(name);
+-	if (cr4 & X86_CR4_PCIDE) {
++	if (cr4 & (X86_CR4_PCIDE | X86_CR4_FRED)) {
+ 		bad = kvm_set_cr4(vcpu, cr4);
+ 		if (bad)
+ 			return X86EMUL_UNHANDLEABLE;
+@@ -599,10 +599,14 @@ int emulator_leave_smm(struct x86_emulate_ctxt *ctxt)
+ 		struct kvm_segment cs_desc;
+ 		unsigned long cr4;
  
--	return 0;
-+	return ret;
- }
+-		/* Zero CR4.PCIDE before CR0.PG.  */
++		/*
++		 * Zero CR4.PCIDE and CR4.FRED before CR0.PG, as neither can
++		 * be set while EFER.LMA is 0, and clearing CR0.PG clears
++		 * EFER.LMA.
++		 */
+ 		cr4 = kvm_read_cr4(vcpu);
+-		if (cr4 & X86_CR4_PCIDE)
+-			kvm_set_cr4(vcpu, cr4 & ~X86_CR4_PCIDE);
++		if (cr4 & (X86_CR4_PCIDE | X86_CR4_FRED))
++			kvm_set_cr4(vcpu, cr4 & ~(X86_CR4_PCIDE | X86_CR4_FRED));
  
- #if IS_ENABLED(CONFIG_SYNC_FILE)
-@@ -578,7 +576,7 @@ static long dma_buf_ioctl(struct file *file,
- 
- 	case DMA_BUF_SET_NAME_A:
- 	case DMA_BUF_SET_NAME_B:
--		return dma_buf_set_name(dmabuf, (const char __user *)arg);
-+		return dma_buf_set_name_user(dmabuf, (const char __user *)arg);
- 
- #if IS_ENABLED(CONFIG_SYNC_FILE)
- 	case DMA_BUF_IOCTL_EXPORT_SYNC_FILE:
-@@ -854,6 +852,40 @@ void dma_buf_put(struct dma_buf *dmabuf)
- }
- EXPORT_SYMBOL_NS_GPL(dma_buf_put, "DMA_BUF");
- 
-+/**
-+ * dma_buf_set_name - Set a dma_buf's name
-+ * It could support changing the name of the dma-buf if the same piece
-+ * of memory is used for multiple purpose between different devices.
-+ *
-+ * @dmabuf: [in]     dmabuf buffer that will be renamed.
-+ * @name:   [in]     The name of the dma-buf, allocated with kmalloc() or
-+ *                   similar.  This takes ownership of the allocation
-+ *                   on success, which will be kfree()d when the
-+ *                   dmabuf is released or a new name assigned.
-+ *
-+ * Returns 0 on success, -EINVAL if the name is NULL, or -E2BIG if the
-+ * name exceeds DMA_BUF_NAME_LEN.
-+ */
-+int dma_buf_set_name(struct dma_buf *dmabuf, char *name)
-+{
-+	if (!name)
-+		return -EINVAL;
-+
-+	/* dmabuffs_dname() won't use the string if the length
-+	 * (including terminator) exceeds DMA_BUF_NAME_LEN:
-+	 */
-+	if (strlen(name) >= DMA_BUF_NAME_LEN)
-+		return -E2BIG;
-+
-+	spin_lock(&dmabuf->name_lock);
-+	kfree(dmabuf->name);
-+	dmabuf->name = name;
-+	spin_unlock(&dmabuf->name_lock);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_NS_GPL(dma_buf_set_name, "DMA_BUF");
-+
- static int dma_buf_wrap_sg_table(struct sg_table **sg_table)
- {
- 	struct scatterlist *to_sg, *from_sg;
-diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
-index d1203da56fc5..14d3950b63c8 100644
---- a/include/linux/dma-buf.h
-+++ b/include/linux/dma-buf.h
-@@ -570,6 +570,8 @@ int dma_buf_fd(struct dma_buf *dmabuf, int flags);
- struct dma_buf *dma_buf_get(int fd);
- void dma_buf_put(struct dma_buf *dmabuf);
- 
-+int dma_buf_set_name(struct dma_buf *dmabuf, char *name);
-+
- struct sg_table *dma_buf_map_attachment(struct dma_buf_attachment *,
- 					enum dma_data_direction);
- void dma_buf_unmap_attachment(struct dma_buf_attachment *, struct sg_table *,
+ 		/* A 32-bit code segment is required to clear EFER.LMA.  */
+ 		memset(&cs_desc, 0, sizeof(cs_desc));
 -- 
-2.50.1 (Apple Git-155)
+2.43.0
 
