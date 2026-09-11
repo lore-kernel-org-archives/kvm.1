@@ -1,144 +1,213 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011006.outbound.protection.outlook.com [52.101.57.6])
+Received: from mail-244116.protonmail.ch (mail-244116.protonmail.ch [109.224.244.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449E54BB27F;
-	Fri, 11 Sep 2026 18:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789151838; cv=fail; b=HSIMsg+3TqF21mH0RKxbEZJBC3alp1/9x8Ype00qqphhqPZBDX0HtKga5m6EsIJeYCQaLxETkH4PP66Bu8mwLnfJ+psrjdEIbpAaM3G8s49casGKEiMkcyPyPQ3E3FPGIxr2v/4PWcl9l69d8Ej0ZwdJ/lKPeY71UMbDm2JPnDw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789151838; c=relaxed/simple;
-	bh=02JrbgqYBOwxI/g50S9BYYQPwWbeKD7kWGby63JM4XQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=hy/i+1p4xZ9sXNIM/HILj/HuCA0h8NorNe5qCg9LPwEkj+uGlgXIRQxcPZL7dt0Avdfp+h882qy6aQ9l65e12LDXy6LJtlmEnmngXi09q2V4Tiqnc6iBqLZZA/iaPgKt5nZoHPibal4sFz965LT1O5B875OBORyB7MQLZ8XNYZA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NmJck1KS; arc=fail smtp.client-ip=52.101.57.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027CC3EB0FB
+	for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 18:48:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.116
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789152524; cv=none; b=ZltxlBIMTXlbkVZCPRn/poBBENH4B7xmQcZfonAXcE4tNEayhYaA2tsaftieEEuP7Bzyw30qGcCLEnLhoEwtS74SrjEU91G/FwhH99HYdkzNhY3szDAnnXWks8bIslr/tN8GkreaUJusF4n1/99OzbT8ZT9lvdeZUyjLZHcmqAs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789152524; c=relaxed/simple;
+	bh=R0cSHGTivImm5E2vhTmLqFFMFlDkkoGYSYYd9PSSEe8=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=cAsmcs071A+vGM7DkA323L3f6g3XKZMARA9wzg2rsUdzl4U0zG6bUz9vF6oTWvYWp6JJP3c32Kn8pq0Yrn7iedb8WGon3t9OHFy8z+BLJLUkKtbxocu8Ju5LhaaUKaoIVK6HInBx46j30KbwXNzo/ul6yV3/jIHdTFGAmGRxLxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bfCKR6cJ; arc=none smtp.client-ip=109.224.244.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NmJck1KS"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sokZFVE5ENZl7c0EOKywJJr6rjpoOoUk+LRmRfVzjR8iAPQ4inOJTPODhpc/Ce5KOESCHFuYsb3PqYMBGV9Kx3f5uMdLDNS89mQ7Dc9ui8eAbR+/0g5g0Ku517vo4ADuM0PTcUaWx2XJCyNx7BMVfup+F4N8C8XokhWiTa7bXYl6jtySAq4TAY0rA1uODoq+teYbVlx2GeO6FvOInDTNaMKdyNz0mrOKUwIkh1XhTKneqYXewbXwDkrJiox8OrBQ2z7k6VzT/Rk/rtEZS9iPFzZHfGha3PbSVfoGBFnMoeStzQ7nCe6nkWaPf0PhMEKh3+qebybI3hZZEoV2Obxjyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=c++UqhlxuyFJ2zbr0GadNQoPo9l6Nsqgw5wxAf6DDCM=;
- b=xXiaN7VzbA3M+zM6LIcHwgLrhS0/YJgjKJme1dos5NvCH5NMUrPtCuIo8kMgYCcpFQdqoFKIMTynt/D23eZnp4zFwUK1pNBpe+mSGuFNA00ulwfHSVe3tYl+S0pP2R9NPYgrp611Mv7Iom+kOZxCsxowJxfxgGNaWIXimkEqwEsvWHMnodlesKJG7dumAoi0z7ITw6KBnPHWS/MCZKRf0aLN9KIIOyQQHXONP/6pvCBUiQMvFANZkHYCoSX5h6vKu303XpTaaLIXJMyzWcrvw+bAJm69xoPRoLXyPyR0Krby4wTj3ArU+RAwM43512Sa58ipOLrdyKGz+jEa/gkaNQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c++UqhlxuyFJ2zbr0GadNQoPo9l6Nsqgw5wxAf6DDCM=;
- b=NmJck1KSNlhCwzn7Oay7ruL6IDYi6ISqefzto3Eqc8t7ga9iCSogl9I5jOpo+51d9xRSwrYGGQjE6DX8ETsfAIpz7G00ku32S7fuoIiUbFCuJzUamOtRy3ZYjWmcI+PBjetKj/chCJKxQO/Z2KmccnsEpqifypicUPaOeA+bvIbq9EKq3dtq3Q0Vmnf3VkXe92ZIkQXvwwZONCl2OGMrqgNcL8lgb6CZ7znP6Swf8EyCX1blGY0/F7JAaDfUakbWM9oDQidks4KvzGzdZ+DO/2AyhbgYuI3gWtb3wpwsI3l+K14P6uchPLmKUhOlfaIMidEnhinO23cPyFtBLGc5kw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by CY8PR12MB7539.namprd12.prod.outlook.com
- (2603:10b6:930:96::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.10; Fri, 11 Sep
- 2026 18:37:04 +0000
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0406.007; Fri, 11 Sep 2026
- 18:37:04 +0000
-Date: Fri, 11 Sep 2026 15:37:03 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: linux-rdma@vger.kernel.org, kvm@vger.kernel.org
-Subject: Re: [PATCH v5 08/10] vfio: selftests: Add mlx5 driver - HW init and
- command interface
-Message-ID: <20260911183703.GA1350659@nvidia.com>
-References: <8-v5-4cacb99249f6+1b4-mlx5st_jgg@nvidia.com>
- <20260910235832.4B4E51F000FF@smtp.kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260910235832.4B4E51F000FF@smtp.kernel.org>
-X-ClientProxiedBy: YT4PR01CA0278.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:109::19) To CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bfCKR6cJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=w5zwmdb55verxdk52baibi64lm.protonmail; t=1789152509; x=1789411709;
+	bh=85r3YDwJ6NVUqAA9xIMn3dcEER15Rxl+yNUrR4aU65A=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=bfCKR6cJZKwtOEMouLOgQU3NEbGRh8r+YF2/Gn0Dm0Y0RehNg+7gZp352iw4x/Mlw
+	 Tbf/I/tIMUm5s5u+7oF0+bhyT8m0vZaA+6RGKZnBRgIlcXnCqdDKAR4x9NWPeHjXQF
+	 W2ziYipVShBMxlke4Z6c+y7tLk8HwOI5BAhJs9GE20B3pj9k27WPG/6t3Rv+WMq04d
+	 MfuHQEFnsMQm1SLcNHGeNFHr6XCIBzSIKriq70hWEl3g1/6eXRjXhWYDpL++yYBkrT
+	 ssDhV6r2seISaZsX5Fa9mk+55aDYU5JD+3rzS8QCzK4oa4UIl7A/Y1IZog1j109s5T
+	 pWTwjuBy2d2iQ==
+Date: Fri, 11 Sep 2026 18:48:26 +0000
+To: pbonzini@redhat.com
+From: David Ballesteros <davimaba.v@proton.me>
+Cc: kvm@vger.kernel.org, security@kernel.org, David Ballesteros <davimaba.v@proton.me>
+Subject: [PATCH 0/2] KVM: unbounded per-VM kernel memory growth via KVM_SET_MEMORY_ATTRIBUTES
+Message-ID: <20260911184819.101123-1-davimaba.v@proton.me>
+Feedback-ID: 219068424:user:proton
+X-Pm-Message-ID: 6d8039135b8db9d42eb0b1f244cb100afd4ef3c3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|CY8PR12MB7539:EE_
-X-MS-Office365-Filtering-Correlation-Id: b3acfe91-161d-48bd-d2d5-08df1033ad18
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|23010399003|10067099003|6133799003|18002099003|22082099003|56012099006|4143699003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	OxoZsrP4Dw9p3HTgq1jHYNdodPBx2s8FPt/lMMdSJDHJ9mywOq/pAdYZchocM2OTjvXo3ECcohMU+Max+QxVDREnOEZ08OmotTelZYbEUYJziFawiVNnxL6AZvQbb9YgLwGBCW126DFC0tPSehqvFxKyJiJM2EDbqnVAhzN8K8tkcPrp6PrExtNWEowZQIH6qbrHox1Z9omlXvoALi4fDw4RqtmO6mYxwhtETcFwjZ1XZKt5DSAr8R0uXR0Not/a4pQ0iTFRPhiE1VqEk98DT9jTgBUQ/iIoaAyR+mJl4TqEcd9Q1ney/5Sgm6mve7ZlydWp64aG9l4WgyvB/XRXZ6do3G0L59Nn7ggikY7ufyJVnmBlOgbwARIXEalWw9Ktsb1S5o42FrOhrDWR6TlptXVi81fjU6m/JZ+Z/bVv0Hr16FwTOwUOaitWotI6zdcbmac5knO3dMFUGsyqp2o5kUwPPPXuoDSuNwz0ZTX4aMj2XITgFIjuwE0222lfHNAPlcFfJBmy1Sc3eSSSml7RmvT2iRdtKq3HDtyoVXV80RvLrpKEjkUB+6RenLAtxsXFHTGcj0xDssGqLjc2QZmzs6lTiORuXBpNQpJRwFNeGOWcuSinKphAyg1srITPK6hBNljOPZRfxIBr0lwNYwyaOopg3v6Cbc0QehwF57lj+Bg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(23010399003)(10067099003)(6133799003)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?tkX5QuN2YNxxzOoqoIDdV9BjxHA5jMq6f0VwrmLwa3Ysk0nXmFpuAwwt8zIm?=
- =?us-ascii?Q?MHgfxhjajeiTE7ng7Gn1qmunBEWz3+aaFL27qnncJQTzBiHP4vKQJt9lbRCa?=
- =?us-ascii?Q?jx4de+CxSI+8WoAznorW1qj9bQMFWwAFy0fmEwSxgPlPYEVqHnT1mZLJnl8c?=
- =?us-ascii?Q?ptQhIkb5GN78Yxy6bRpMI7n516tzuEw+xS/tjwu966gRJ2XeAb2oVRQnmmG9?=
- =?us-ascii?Q?2cenWKPl0Qg9Dagowb1kHMkze++nt8A6ows2C2puJ27G+j96huDRVI7YFYdI?=
- =?us-ascii?Q?2nhLTHGRFjTcgC5EGiIcZaHfdtawVaJLdDMMIFe8plAEU+Wo4ozladFv2f3F?=
- =?us-ascii?Q?pvpkGbkiI4C+i+qpPbZYynueY4rmc+tv3gA7XFHXAHSOG0mfQWy4B2uL3dPU?=
- =?us-ascii?Q?HGvlSA7icjKDHWpM1P9oSG8EreWPBM8TIQTD66aUm92AgnDMlw3DX+Mv7uyz?=
- =?us-ascii?Q?nYgHaqBydidRjCjNXIoOgWU6VHulWeFjPJ8e+wA5jtGHasljAXnadohMHGtU?=
- =?us-ascii?Q?W4BEmUeM4nApRx+ijQDXj47uZtS4KZQopFuxH15DMWh2k6fLBRYbkIm6NaFJ?=
- =?us-ascii?Q?ixdaVl4tVLtny2Aa4ZXWqCHjBl01t4uEktk224F+IOl5lGwluwIqwd9lRlny?=
- =?us-ascii?Q?Hpd+G2qlLeqSr+rCWzkku/6Q5mGcwqwAuAb4RYiwWTcmIwSaGBFJ2ofe3OPx?=
- =?us-ascii?Q?Z5pONNXUMXY+DNAsMM98NHfLt9jbAcZ4KOzmRJ4xmxZnjBxG8QPlGaPFVh1X?=
- =?us-ascii?Q?8eeGbb8FZ0qgpz/wBkuM2BwPvSI3YH2y4LORLz7tRDsJrDOOwzV/WNv1kGn2?=
- =?us-ascii?Q?2ZE40ZjPaM7LPpO558Y3p/fT+IrJfi/ZXHngMTScIPFOpeQr6RIwE3YrynQ0?=
- =?us-ascii?Q?Lb1k6HW/TNxtUextDajHJJqSbbCehZD2foafDsRKQ3Kd4V+PDVNhUXRwD3DH?=
- =?us-ascii?Q?jrZwRHG/2FnpZ6HGjbJHqqEit4E6FYZBOJBlXYnG2dUHR9ZfJrAqHaFfcS/j?=
- =?us-ascii?Q?acM7Ex/RarZtBag4Py1/gMGm/ehDRCIPZsIS+wLvdZI90rpJPlOaLzjjEJTB?=
- =?us-ascii?Q?S6U4lJ/mg7kkIL7RLVCnZMmdHG081T80ZPjZdwjY4MjciXeKc/8Qg3ECRdXn?=
- =?us-ascii?Q?95+tjm2yHpiyrI2O5uxny+Mpt2YvGomCHFYqvZYFXKJQSDrVuObPG+zxAeMl?=
- =?us-ascii?Q?kl9lE3aXoe4ZYU5f64gZJz3cbeV1OaU78WoevSi1PhgXrfM2+4bnVbA41yS8?=
- =?us-ascii?Q?Mb2/w5d1xdO0xliqee+/2Yr/qwIhlEqlxne4YdPQC3i4cDgLSwMk+DYr1qa3?=
- =?us-ascii?Q?aB8hnMqcBH6IH/XDNUvxFrpH5IY8rT7bubo4NA7ALTnAg1plb0igiiR1kq/4?=
- =?us-ascii?Q?f8Fs+hUKa81sfhFZqySlJTg/lTVu4LdeYVofxdnRqR1+NUOicJ6z/CPLsLTu?=
- =?us-ascii?Q?QjLf0YhohYBKSts344TNKUbT31Iv9hIO3SmJzAOFqo1BlYiCoIaMtisZwtnz?=
- =?us-ascii?Q?IKHVGvAHZFTSoldO3/9E2hteBSjkUqUsLw2cv4t6PEefShuPRhnnMBJ5SckW?=
- =?us-ascii?Q?QIvcfrgeBFyr8Li+LSaWLweP6bmINwPsCkoxrwSvX/9GX5lFuhdgIrmujcxl?=
- =?us-ascii?Q?7lcOGBzkWBY8yFk6F6uzT2kTDzDeZrP2PUr6ZhMGnWdEbue3aWhe+JXuNlfC?=
- =?us-ascii?Q?SsSPG/ojmYIqdy1C1glQsfA7R/IdQa6l2gB8VH1nFDjKR54u?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b3acfe91-161d-48bd-d2d5-08df1033ad18
-X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2026 18:37:04.4197
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: J3ndzEkfs0X3UDoTeqbXuuM133WBulHjy/i9+sf+kSpZPoxSABTLwSX8WU7qldbC
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7539
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 10, 2026 at 11:58:31PM +0000, sashiko-bot@kernel.org wrote:
-> > +static void mlx5st_query_fl_caps(struct mlx5st_device *dev)
-> > +{
-> > +	u32 out[MLX5_ST_SZ_DW(query_hca_cap_out)] = {};
-> > +	u32 in[MLX5_ST_SZ_DW(query_hca_cap_in)] = {};
-> > +	bool fl_roce_en, fl_roce_dis;
-> > +
-> > +	/* Query RoCE capabilities */
-> > +	MLX5_SET(query_hca_cap_in, in, opcode, MLX5_CMD_OP_QUERY_HCA_CAP);
-> > +	MLX5_SET(query_hca_cap_in, in, op_mod,
-> > +		 MLX5_SET_HCA_CAP_OP_MOD_ROCE | HCA_CAP_OPMOD_GET_CUR);
-> 
-> [Severity: Medium]
-> Does the MLX5_SET_HCA_CAP_OP_MOD_ROCE constant need to be shifted left by 1?
-> 
-> If the constant is defined as 0x4, passing it unshifted results in an op_mod
-> of 5. This causes the hardware to interpret bits 15:1 as capability type 2
-> (MLX5_CAP_ODP) instead of RoCE, causing the driver to query the wrong
-> capabilities.
 
-This looks correct, I will fix it and repost
+Affected version/commit: v7.2-rc5 (commit 699594e8888d is not needed here;
+verified on v7.2-rc5 as of 2026-09-09 and on v6.18.48; the code paths are
+unchanged between them and present in mainline. The ioctl was introduced
+in v6.8 with the per-page memory attributes series).
 
-For the others, the driver does not validate fw information (aka hardening)
+Problem
+-------
 
-Jason
+kvm_vm_ioctl_set_mem_attributes() (virt/kvm/kvm_main.c) validates the
+user-provided range only for representability (zero size, 64-bit wrap,
+alignment, supported attributes) and not for magnitude.  With attributes
+!=3D 0, kvm_vm_set_mem_attributes() then walks every GFN in the range:
+
+        for (i =3D start; i < end; i++) {
+                r =3D xa_reserve(&kvm->mem_attr_array, i, GFP_KERNEL_ACCOUN=
+T);
+                if (r)
+                        goto out_unlock;
+                cond_resched();
+        }
+
+xa_reserve() materializes the full root-to-leaf path of xa_nodes for each
+GFN even though the GFNs need no backing memory and no memslots need to
+exist.  Each xa_node is 576 bytes from radix_tree_node_cachep; densely
+filled, the tree costs ~9.3 bytes per GFN.  On ENOMEM the loop bails out
+without undoing prior reservations, and the only release path is
+kvm_destroy_vm(); the memory is therefore retained across calls and lives
+for as long as the VM fd.
+
+Additionally, the intended memcg accounting does not take effect: the
+nodes are allocated with GFP_NOWAIT in xas_alloc(), gaining __GFP_ACCOUNT
+only when the xarray carries XA_FLAGS_ACCOUNT, which kvm does not set
+(kvm_create_vm() uses plain xa_init()).  Measured: a process inside a
+cgroup limited to 256 MiB grew host SReclaimable by ~450 MiB while its
+memory.current stayed at ~488 KiB.
+
+Triggering conditions
+---------------------
+
+- An unprivileged user with write access to /dev/kvm (sysfs default and
+  the common udev default are 0666).
+- A VM whose type sets private memory support: sw protected VM
+  (CONFIG_KVM_SW_PROTECTED_VM, depends on EXPERT), TDX or SNP.
+- No memslots, no guest memory and no guest CPUs are required.
+- Verified outcomes on v6.18.48 (KASAN builds, isolated VMs):
+  * ~9.29 bytes/GFN and ~75 MiB/s of sustained growth per VM; linear
+    scaling with parallel VMs (4 VMs: 3.56x).
+  * global OOM killing unrelated third-party processes while the
+    attacker's own memcg stays uncharged.
+  * when all surviving processes are OOM-disabled, select_bad_process()
+    finds no candidate and the kernel panics ("System is deadlocked on
+    memory", mm/oom_kill.c).  Reproduced twice.
+  * one ioctl holds kvm->slots_lock for the whole reservation loop, so a
+    large range blocks KVM_GET_DIRTY_LOG and memslot updates of that VM
+    for the duration (measured GET_DIRTY_LOG latency 1us -> 7.7ms with a
+    single concurrent call); KVM_RUN is unaffected.
+  * replicated through a real container runtime (podman/crun) with
+    --memory 512m: the container grew host slab by ~450 MiB while its
+    memory.current stayed at ~488 KiB.
+
+Reproducer status
+-----------------
+
+A reproducer is available on request (KVM_CREATE_VM + the ioctl in a
+loop, plus slab/ accounting measurement), but following security-bugs.rst i=
+t is
+not attached to this report.
+
+Test environment
+----------------
+
+All dynamic results were collected in isolated inspection VMs on a
+single AMD host with nested virtualization enabled
+(kvm_amd nested=3D1): QEMU -cpu host, Debian 13 guests, guest kernels
+built from the audited tree (v6.18.48) and from v7.2-rc5 with
+CONFIG_KVM_SW_PROTECTED_VM=3Dy / CONFIG_KVM_AMD=3Dy / CONFIG_EXPERT=3Dy and
+KASAN (with CONFIG_KASAN_VMALLOC=3Dy where noted); the PoC runs as root
+inside the guest, host networking restricted (user-mode net,
+restrict=3Don).  Nothing in the host kernels themselves was modified or
+attacked.  The container replication used podman 5.4.2/crun inside the
+guest with the host kernel having the gate enabled (a stock host kernel
+without KVM_SW_PROTECTED_VM rejects KVM_CREATE_VM and the surface is
+absent, as expected).
+
+Proposed fix
+------------
+
+Attached as 0001-v3.patch (checkpatch clean, build warning-free on
+v7.2-rc5, runtime-verified on v7.2-rc5): it bounds the total number of
+materialized attribute entries per VM to KVM_MEM_ATTR_MAX_GFNS (2^25
+GFNs =3D 128 GiB of GPA, ~300 MiB of xa_nodes), enforced under
+kvm->slots_lock after the idempotency early-out.  A per-VM counter is
+resynchronized from the xarray only when an ioctl mutates the array
+(ENOMEM partials, successful sets and clears), so idempotent re-sets
+and rejected requests stay O(1) =E2=80=94 runtime-verified: a 4 KiB idempot=
+ent
+re-set on an exhausted VM returns in ~4us; a fresh range on an
+exhausted VM is rejected with -ENOSPC in ~17us; the bound cuts growth
+at 2^25 GFNs.
+
+Patch 2/2 restores the intended accounting with a one-liner; it
+attributes the memory but does not bound it (see the analysis below):
+
+-       xa_init(&kvm->mem_attr_array);
++       xa_init_flags(&kvm->mem_attr_array, XA_FLAGS_ACCOUNT);
+
+Design notes for reviewers: the budget value (2^25 GFNs) is a trade-off
+=E2=80=94 it is well above any current consumer's usage but small next to t=
+he
+GPA space TDX/SNP guests can have; a tunable or a symmetric decrement on
+clear are alternatives if maintainers prefer.  The -ENOSPC errno
+distinguishes the bound from the malformed-input -EINVAL paths.
+
+Why a constant and not a derived bound?
+
+We considered bounding materialization by what the VM has actually
+declared instead of a constant, and rejected it because the declaration
+itself is not proportional.  Two candidate signals:
+
+- Memslot coverage ("reject ranges not covered by any memslot"):
+  semantically attractive =E2=80=94 attributes on unbacked GFNs are inert s=
+tate
+  with no consumer (kvm_handle_gfn_range only walks real memslots), and
+  the only in-tree consumer (tools/testing/selftests/kvm, private_mem_
+  conversions_test.c) sets attributes strictly inside its gmem memslot.
+  But it is not a bound: a memslot requires only a MAP_NORESERVE userspace
+  VMA (no committed pages); its kernel cost is the lpage_info metadata
+  (4 bytes/entry, __vcalloc proportional to npages: ~16 MiB for a
+  maximum 8 TiB memslot) while the same memslot's GPA span materializes
+  ~19.9 GiB of xa_nodes =E2=80=94 a ~1200:1 amplification of declared metad=
+ata.
+  Three or four maximum-size NORESERVE memslots suffice to exhaust a
+  64 GiB host.  As a semantic follow-up that eliminates the zero-setup
+  variant of the attack it is worth considering on top of the bound.
+
+- Sum of memslot pages as a dynamic budget: same flaw =E2=80=94 the attacke=
+r
+  raises his own budget by declaring free memslots; without a constant
+  the ceiling becomes the physical address space.
+
+Per-VM accounting to the caller's memcg (patch 2/2) attributes the
+memory but bounds only cgroup-limited tenants; with the common
+/dev/kvm 0666 default and unlimited cgroups it does not bound the host.
+Hence the layering we propose: accounting (2/2) + hard per-VM bound
+(1/2), with memslot-coverage rejection as an optional semantic layer
+the maintainers may prefer on top.
+
+Mitigations
+-----------
+
+- Restrict /dev/kvm (mode 0660 root:kvm) where the default 0666 is in
+  place.
+- Monitor SReclaimable and /sys/kernel/slab/radix_tree_node/objects, not
+  SUnreclaim: the growth is reclaimable-accounted and never reclaimed.
+- Per-tenant memcg limits do NOT mitigate the common path today (see
+  above), which is why the counter bound is the effective fix.
+
+Notes
+-----
+
+- Not verified: the TDX/SNP hardware paths end-to-end (no hardware);
+  the software-protected path was verified end-to-end on both versions.
+
+--
+2.47.0
+
+
