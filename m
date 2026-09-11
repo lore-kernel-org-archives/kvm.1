@@ -1,147 +1,163 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531B6353A71
-	for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 04:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21219356744
+	for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 04:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789100619; cv=none; b=Cwr3ijV6flu+iWpN6D6LfjMs1922xRgMi9gINMtfKgq8qMqbwvy9QR3wQ1zTvc4y/duqqPwXn0eSRj5FFOOwmy0phCNd1uL8D7VRzdyir1abVGQN6bZNPxamYyS5O3VN9UuZLQ9zXVoEvWkcrDbc6yaF7G2iS63RpscVgn3Pbt4=
+	t=1789102150; cv=none; b=Ez0CJ8q/LH6zPWES1oJXYCtFPzhQY5aqhuR9zPa/66oZDIHgjUpjQTVaEdDFcUkU8q2Kw47JNrTiDpOrZ5gPglAt0qr1LFObQ3R9aMHNLqjIDPOqn76VEq3YgOqj96rqKB1U/wWXqzjbMHJTyttTtD78AjDkCz9m3b5Kr/Tab9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789100619; c=relaxed/simple;
-	bh=So+5Ctl6gocLk0GPLDgBmcFeH0F2hJcGVy/VqGIpxxg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=luahUcYwdKCiOStAvQbGE5h8x2XWlPIWQ4HFf8GBWQfgvJOZtkEV+x+adspNvceS7LbDRfjvXRTaSz5Ox34H/2LvOHHtKVSEVXqfWnJIZESDi6p9C0+KS6wYqbOkklW+58fYQyeFGxfzbK9pmlHkGNUDjsjYCkBuh/vhTNCE6+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EqmyQieE; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1789102150; c=relaxed/simple;
+	bh=sP/zm+viOpOqrBPed60qECqw/COkU+NGYRtxu1lz3dQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YZrb66k6DkiUKHMEiCjIukVM2Rm0qzVHTeY4Sg1ZlIiVrP25GXjUWqsq1DyGQoAxpM3ckLqgY6Uyh2pcK2itDmrS0d2qIGGXFTVvWZW5VO2m9KIOrQXEe9gGgEgX/n2/05c+alDd+g9r9r4br5EpOdZZxNicKaIeuChWj6R4tPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PhkAkem0; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EqmyQieE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789100618; x=1820636618;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=So+5Ctl6gocLk0GPLDgBmcFeH0F2hJcGVy/VqGIpxxg=;
-  b=EqmyQieEQ/ghRGZb7KnpvXzl46uXpXJMmRCg9Fhb8ztmzfcQyf0eVRCO
-   QfMHqE0p6etw2qoOMbEGUoR+fuNov4jKviggDLLtjlHqa+jKNTK6qLv3k
-   fDKqpZvlERZE2wrkggW2F20wi0oTkM+RR2nlk/oa1lwDzWkiJKpgyv/aH
-   HUU0cH3cE7HF1k7pj/d2Rknrgk+z+ScGztmw05vrYEH6pdnWAMpYPSJ7V
-   dzp6vBxASlc1gukoI1jvAFL4KXKEJH+PHTtG5DksNtSdhecksKFm59QH2
-   ocCivDzdW9l3Gd/rl5V1qzXAZ0POOxuJ0Dut+a0dxkAi8OMglqPd2ZlYQ
-   Q==;
-X-CSE-ConnectionGUID: Y6Ze/4S6QJemMZ7KSFI/2Q==
-X-CSE-MsgGUID: SxlvpF5LSQe4jEzHun8BQw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="112333768"
-X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; 
-   d="scan'208";a="112333768"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 21:23:37 -0700
-X-CSE-ConnectionGUID: o0TqcZDeROexlek1J9BMTQ==
-X-CSE-MsgGUID: F62moAh3Qt6uSgQliMfDqw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; 
-   d="scan'208";a="277060570"
-Received: from wgawrons-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.183])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 21:23:29 -0700
-Date: Fri, 11 Sep 2026 07:23:25 +0300
-From: Tony Lindgren <tony.lindgren@linux.intel.com>
-To: Kishen Maloor <kishen.maloor@intel.com>
-Cc: Artem Bityutskiy <dedekind1@gmail.com>,
-	=?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PhkAkem0"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cea4bfd1so383486a12.0
+        for <kvm@vger.kernel.org>; Thu, 10 Sep 2026 21:49:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789102148; x=1789706948; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1rljTI1Abbl24POJ+IsSXHYVg7wGa229jkDx+f0b6sA=;
+        b=PhkAkem0Q8N6k5XSk60PlXEMkUIyQB2w08rYre9JHMDfvkS0wGpZsdbft5MA9qlNOm
+         PjQJVzDYYa2eY0XkkARW0CZ4vjjvMEVHA4LV9G56djiTZH8fx/5f1A+w3w/kAQUdXDZu
+         3+XbIuugQjybN3oF9mO2K6QHtbaInWWZD3lL2NBgX4B9xI6ZvQZxqViGyedwmtc2zKC6
+         qDWrIsyyBNXh+X/xxb5RHEBfvCZuxaY9cckdxPsAhzVY+iNSeBxN7j/9gLzjlYtGREVe
+         yjY07kJuv5JrVaLDIf7a0t/DVVSeRSBoi4oXs3gVckKh0Au/2TzGPNcTq9HtFbX9W2Z4
+         XueA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789102148; x=1789706948;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1rljTI1Abbl24POJ+IsSXHYVg7wGa229jkDx+f0b6sA=;
+        b=LVsXM8v4Pxx2sy1lHqlZjdyUicnFn6EC9QrrPzKD56howF0m6nB85kBXPAud9r934E
+         A3+UdeDH2Nm3AeITg+J/FYhXOTBRPJrBu7CkpJSg7Yly+W1RknUZYWBVrF3E7EJlJFfx
+         KsB4M6qjzSJfVUARtTK0vCjnES1loKaY3eTzyR3OHrztcKT3X0jwht1oSB+4NbRPNKk0
+         TlMicXXxJxw+Z6ooIodgeGrAdA6G/yF9CWzF6HvbZOXbZVmnAsVQya4+3l3XJ5xVJx9x
+         bEUrjCdvJ62cjsX0Tbcfl9zTH/O2J4qoHoNpSMaWknf5eqBgdJXnIY1TgK7jMx6FoQ20
+         JS5g==
+X-Gm-Message-State: AFuF++mK2mGsbpPggo5miuNV8a2ckYnUuVCVznOrKRPIqKGx9kbupQD0
+	kt2vDExG5XnZTDrYX6nN1/kyuMUHIJ5FmAfiQCp2B+y+b8zaywRsAbA1e4c53ZvB
+X-Gm-Gg: AYBFou2c5iNDC0r8UJEjxjdVg7IhxQL7tV4UB0Raai6Ib2WawGC1bdUnPB3tT1WqDb1
+	TOK92Afk5j52R/NDqscOseZZP5DvtQ8Z484AAir0/kukPNOHmQYoW1mIEID73WDHAM9nEODMaLJ
+	BNrzIBo/jIn5484auL2ckLx2tx6HQAk14dHLOWevKQ54XB9j8R9xPrfpi55YEo3xwCSWVqIwie3
+	xVQLgDlTmDY8U5aQu1VM/MCeuy9vYlJXOG2jwfqfHaaZxda5MAkKupNj9B/X9xdaILVwTZRWwfK
+	lNWLbw4iROIEr+JGGI/XANVso1fgQRqnSjKI0SWjdn51B4Ghm9Ae2iYc6lP9URlVKXCK+1CenWd
+	+mnThbZ9y2mw7IMGdC+j+iD6JoRS3k8dwCLta/9BsDnz4jmR+fO8Mgxw8yLYy6DDSna3pPxKI20
+	CYh88fnb/fEKjO1jERyeGjuF06WsE/q2clIr4NA8T7+CLri9aI6u5bp4dfsIfasdFCn9rEmC5AL
+	S6zrgRVQsBjKBoJqugUztXeH27xGWok3jjinfzzSS43I+6r1LFfQuehxjh8Xw==
+X-Received: by 2002:a05:6a20:9f92:b0:3d3:af44:ee12 with SMTP id adf61e73a8af0-3daed51e280mr4405652637.27.1789102148350;
+        Thu, 10 Sep 2026 21:49:08 -0700 (PDT)
+Received: from pve-server.rlab ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4f1e434sm2883077eec.22.2026.09.10.21.49.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2026 21:49:07 -0700 (PDT)
+From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+To: kvm@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
-	Jon Grimm <Jon.Grimm@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Steven Price <steven.price@arm.com>,
-	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
-	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Peter Fang <peter.fang@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org
-Subject: Re: [RFC PATCH v2 2/4] KVM: x86: Add optional KVM_CAP_LIVE_MIGRATION
- and KVM_MIGRATE_CMD
-Message-ID: <aqOCPVoFAFMv8ZYo@tlindgre-MOBL1>
-References: <20260831071304.762939-3-tony.lindgren@linux.intel.com>
- <ap6loazXtvSCqmpR@tlindgre-MOBL1>
- <ap64dFXpiDb_Hqxl@8bytes.org>
- <d25d652c34dedc209ccb3b758e7f624b9125eee5.camel@gmail.com>
- <ap-SihGd0fk02QV8@tlindgre-MOBL1>
- <4c07e70e-7639-4141-b602-1c09c9c7510c@intel.com>
- <aqEDQ5Qrv724gGzN@tlindgre-MOBL1>
- <0cf5b79e-521d-4c7c-97f2-673c51d42bbd@intel.com>
- <aqJPLEX51DSCF1zC@tlindgre-MOBL1>
- <be09b02d-c993-40ad-a690-753a7a50677c@intel.com>
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Anushree Mathur <anushree.mathur@linux.ibm.com>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Harsh Prateek Bora <harshpb@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Subject: [PATCH v4 0/3] KVM: selftests: add powerpc support
+Date: Fri, 11 Sep 2026 10:18:51 +0530
+Message-Id: <cover.1789097569.git.ritesh.list@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <be09b02d-c993-40ad-a690-753a7a50677c@intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 10, 2026 at 06:40:04PM -0700, Kishen Maloor wrote:
-> On 9/9/26 11:33 PM, Tony Lindgren wrote:
-> > On Wed, Sep 09, 2026 at 06:11:11PM -0700, Kishen Maloor wrote:
-> > ...
-> >>
-> >> As mentioned above, that is a destination launch time directive that we needn't
-> >> conflate with a migration/transfer session role.
-> > 
-> > It's still the same role though. Yes we can set it on init, but would
-> > be nice to have some generic way to do it for qemu -incoming.
-> 
-> I'd separate these.
-> 
-> On the role: it seems we agree on recording roles per-session. My only point
-> then is that a VM created through the delayed_init flow doesn't additionally
-> need a destination role recorded for it if SETUP will assert one when the
-> migration is kicked off.
-> 
-> On generic plumbing for -incoming: is this about KVM_TDX_INIT_VM_F_DELAY_INIT?
-> A generic mechanism would make sense to me if the flag were consumed by generic
-> KVM code, but that isn't the case here. Userspace has to make a
-> vendor-specific VM-init call like KVM_TDX_INIT_VM anyway, with the flag passed
-> on that call. So I'm not sure what a generic version would add, unless you have
-> something else in mind.
+PATCH v3 -> PATCH v4:
+==================
+- Rebased on top of Sean's new page allocator patch series v2 [1]
+  This allowed to drop and patch-2 since it will now come from Sean's
+  v2.
+- Addressed review comments from Sean - squashed patches 6-10 in patch-1 of
+  this.
+- Dropped patch-5 to print vcpu_id when KVM_CREATE_VCPU ioctl fails.
+- Added additional patch-3 to this series to allow dirty_log_test to run on all
+  big-endian machines.
 
-So we could add a SETUP subcommand SET_ROLE or SET_INCOMING. The
-implementation could store the role at least initially. And if we want to
-set the role with KVM_TDX_INIT_VM, we could recycle the role bit there.
+[1]: https://lore.kernel.org/kvm/20260902164123.2546762-1-seanjc@google.com/
+[v3]: https://lore.kernel.org/linuxppc-dev/2d2c46be7f051c7f1c645afaec67f57067d37a81.1781093720.git.ritesh.list@gmail.com/
 
-> > Just brainstorming.. I wonder if we need two things though. A source vs
-> > destination role. And then at some point possibly later on also a data
-> > transfer direction enumeration similar to what Linux has in
-> > include/linux/dma-direction.h.
-> > 
-> > We already need to make use of the QEMU return-path for the migration key
-> > exchange. What if some hardware needs to make use of KVM_TRANSFER_MEMORY
-> > from source to destination, and after that back from destination to source
-> > to ack the transfer? Sure this is just speculation, I'm not aware of this
-> > need right now.
-> > 
-> > In any case with handling the source vs destination role, the enumeration
-> > for data direction can be added to the transfer flags later on as needed.
-> > No need to try to stuff the data direction flag there until really needed.
-> 
-> Agree on deferring such an enumeration. More generally though, the session
-> role determines which operations are permitted, and it seems like vendor code
-> could be expected to handle those in context.
-> 
-> The TDX architecture already has a destination-to-source example:
-> TDH.IMPORT.ABORT emits an abort token on the destination that
-> TDH.EXPORT.ABORT consumes on the source. So KVM on the source would dispatch
-> to its export-abort path and let the vendor layer decide what to do with
-> the buffer. This doesn't require a direction flag.
+Testing updates:
+================
+I have done some fair amount of testing of the selftests both on real HW and
+using various combinations on qemu (powernv+LE (default), pseries+cap-nested-hv,
+pseries+cap-nested-papr, powernv+BE). There were few powerpc kvm kernel fixes
+which were identified as part of this work. I will send those patches separately
+as those anyway needs to go in separately.
 
-Yes agreed with the role we can handle migration related transfers both
-ways at least for TDX.
+<pasted snippet of cover letter from previous versions>
+=======================================================
+
+Hi All,
+
+This series primarly adds KVM selftests support for powerpc (64-bit, BookS,
+radix MMU).
+
+This patch series is originally Nick's work. I have mainly only rebased it on
+the latest upstream tree. Since the rebase required few changes to all the four
+patches (Patch 1-4), I have dropped the earlier Acked-by from Michael Ellerman.
+
+Since the last series was posted three years ago [1], I am resetting the version
+to RFC. This rebase was done as part of a larger effort to improve the selftests
+infrastructure for Linux on PowerPC tree. Thanks to Harsh and Maddy for their
+help on this.
+
+Nicholas Piggin (1):
+  KVM: PPC: selftests: add support for powerpc
+
+Ritesh Harjani (IBM) (2):
+  KVM: PPC: selftests: powerpc enable kvm_create_max_vcpus test
+  KVM: selftests: Use LE bitops for dirty bitmaps on all big-endian
+    hosts
+
+ MAINTAINERS                                   |   2 +
+ tools/testing/selftests/kvm/Makefile          |   2 +-
+ tools/testing/selftests/kvm/Makefile.kvm      |  10 +
+ tools/testing/selftests/kvm/dirty_log_test.c  |  12 +-
+ .../testing/selftests/kvm/include/kvm_util.h  |   9 +
+ .../selftests/kvm/include/powerpc/hcall.h     |  17 +
+ .../kvm/include/powerpc/kvm_util_arch.h       |  22 +
+ .../selftests/kvm/include/powerpc/ppc_asm.h   |  32 ++
+ .../selftests/kvm/include/powerpc/processor.h |  39 ++
+ .../selftests/kvm/include/powerpc/ucall.h     |  21 +
+ .../selftests/kvm/kvm_create_max_vcpus.c      |   8 +-
+ tools/testing/selftests/kvm/lib/guest_modes.c |  20 +-
+ tools/testing/selftests/kvm/lib/kvm_util.c    |   8 +
+ .../selftests/kvm/lib/powerpc/handlers.S      |  93 ++++
+ .../testing/selftests/kvm/lib/powerpc/hcall.c |  45 ++
+ .../selftests/kvm/lib/powerpc/processor.c     | 512 ++++++++++++++++++
+ .../testing/selftests/kvm/lib/powerpc/ucall.c |  22 +
+ 17 files changed, 862 insertions(+), 12 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/include/powerpc/hcall.h
+ create mode 100644 tools/testing/selftests/kvm/include/powerpc/kvm_util_arch.h
+ create mode 100644 tools/testing/selftests/kvm/include/powerpc/ppc_asm.h
+ create mode 100644 tools/testing/selftests/kvm/include/powerpc/processor.h
+ create mode 100644 tools/testing/selftests/kvm/include/powerpc/ucall.h
+ create mode 100644 tools/testing/selftests/kvm/lib/powerpc/handlers.S
+ create mode 100644 tools/testing/selftests/kvm/lib/powerpc/hcall.c
+ create mode 100644 tools/testing/selftests/kvm/lib/powerpc/processor.c
+ create mode 100644 tools/testing/selftests/kvm/lib/powerpc/ucall.c
+
+--
+2.39.5
+
