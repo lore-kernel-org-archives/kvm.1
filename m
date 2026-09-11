@@ -1,330 +1,163 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65DCF3803C2;
-	Fri, 11 Sep 2026 09:32:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7CE39768F;
+	Fri, 11 Sep 2026 09:38:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789119147; cv=none; b=qQTnb9jvKu79Q4l0vGuCBCyQJQQoENAIQEKiMKjvwrqiSSWhWNJVbbtykg6Qx48neqT7GFwojHLtk6L6yE6d9DzGXeU8qC5B7wCX0MAbprFhw2DDrogrDsgHduSmTV/dlcSZ/Gf/uUPXENREpA/yxBxpSYliCY934DZ8+p4/LZM=
+	t=1789119489; cv=none; b=Ga0b24vCLW0SAwgWQddX5y3wxwP9TGyeCbIjYYTVSM7T6orBfVE1XawxkcW85MkOGMRDX+sRaCbuux1s3Wij5zz8NQOTMitdYosOOPoy4YFfkh6Ty71EW0AzaHQYteWI8o3El+wiBMpTTdfMWM3UyL0hM49kVohQtGtURokA9n4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789119147; c=relaxed/simple;
-	bh=Yih7f6/tNVBNBYGkVJA3bfFcNrZN2aPjeDZKrvcepGM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YwIaUWckVM7dktqcALVxfcaakL8erycw/k8wFtg9+EAhAakRSiwLhRumyd5NMaxx/fFxLrHYhGszeFTrLMS5dQ7ReeJePMRY/+9fVQ6elRemqqyTx2C3ujt0Kjui4YXKcwJCJjNWvsQLtA+iNYPybA3+6JT5Sj3FwGdykZ9Kw3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PyVXNLha; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789119489; c=relaxed/simple;
+	bh=sb6ClNqSQhPq2ZVhuU+8klKUwkLjODKU96QOOaqi6Cw=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=hAUe8WxEDOonDVIo3OzRL4HImhO1d9ZMNENjjmVvPvvBOWhgL/4+yoLeJvbuXs1Gi4mQniwFw2zCFZEKJvztZAIZGanE87Hpi/xZ+hPZHD83ANL9tfk6TIRhOrFsxBv3coqpUogi0VCHfz1Yt8OODoWE1335oAWZFtCRiXYIWHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DM9yb6wk; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PyVXNLha"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA7C1F000FF;
-	Fri, 11 Sep 2026 09:32:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789119146;
-	bh=AAnYNMY4qKWEt8VqW/gq+QbhtFwungyZcJ3iIQPiMA8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PyVXNLhamoEGYHMpL3Q4rsa62whZA3bWfw9FqxNQ9ZIkavOuDy970b4hzpf2VW5dg
-	 665PYTj+s7h/ZpnGzvIrO7TazHzP/S34FTp1JgiopifMNbEFVlz8LjHjFudfClI06S
-	 fTx1a+taFDlr6OMVCRlomCP09wbk7mrAuXNG3PuHZNmqmO8PmURwzsInlvjuYwC0MY
-	 kfDOwkFljeuVcpEWeZkbjNn2zn2wGDhTWG/JupNmCyWYIItr98C4LEgrD5I8aUCAui
-	 H4W2AMiROm14Ib7hqF0UXbne1UGnoeMO6gi2gMDXWquReVHt2aM95Kmicp6nwQXife
-	 ZCpaJ+H/2FLyQ==
-Date: Fri, 11 Sep 2026 10:32:17 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Itaru Kitayama <itaru.kitayama@fujitsu.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Fuad Tabba <tabba@google.com>, Joey Gouly <joey.gouly@arm.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Jack Thomson <jackabt@amazon.com>, Jack Thomson <jackabt.amazon@gmail.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Vincent Donnefort <vdonnefort@google.com>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Sean Christopherson <seanjc@google.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Leo Soares Passos <Leo.Bras@arm.com>, 
-	Wei-Lin Chang <weilin.chang@arm.com>
-Subject: Re: [PATCH 8/8] KVM: selftests: Add nested pre-fault test for arm64
-Message-ID: <aqPIUtNTJFwUvJME@gremlin>
-References: <20260825-kvm-arm-prefault-v1-0-befe8947702e@kernel.org>
- <20260825-kvm-arm-prefault-v1-8-befe8947702e@kernel.org>
- <aqOgEQKBGH-YqGr3@sm-arm-grace07>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DM9yb6wk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789119488; x=1820655488;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version:content-id;
+  bh=sb6ClNqSQhPq2ZVhuU+8klKUwkLjODKU96QOOaqi6Cw=;
+  b=DM9yb6wkIw6H/4OUaxjgfsWqnlyifFSzuJm4auThBBtBwc0mV354yWRx
+   XtVaPKQt14wWQTHxwmAuXrNtLuI74H7+XGOopmobWMGCbssTFCTgK70GN
+   xPc/0fvgWUsW06yKDHuGJmgGIjUvm1V7dS7+MPTBjbLpMhgWAOSeQFKK8
+   CXvQwBVdRUh7PB3vVnm8I4Hbb6wYWM1MRgDUtsgLsesnWkjK2NOk6/5wg
+   tMkfigA95OrdDDeQGjA0+DXpjVm+sYk7WNYD5sMczGNu5j/1W9HF8+vvK
+   A11b1psKdcGb9tZV65ASr1A+m9roMLitbGJqHxiKH0mDnGtQeJfczTkfU
+   w==;
+X-CSE-ConnectionGUID: lv8LjnQ/RM2Ip6FtGVq2QA==
+X-CSE-MsgGUID: o8V6DDF0TnKqW/TDijK+BA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="115120614"
+X-IronPort-AV: E=Sophos;i="6.27,97,1787036400"; 
+   d="scan'208";a="115120614"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 02:38:07 -0700
+X-CSE-ConnectionGUID: SRo+o97pTgCUDHnSfx1bsQ==
+X-CSE-MsgGUID: d5IlSxrWQfGb/hpk+vV9Sw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,97,1787036400"; 
+   d="scan'208";a="296857533"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.158])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 02:37:41 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Fri, 11 Sep 2026 12:37:38 +0300 (EEST)
+To: Juergen Gross <jgross@suse.com>
+cc: LKML <linux-kernel@vger.kernel.org>, x86@kernel.org, 
+    linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+    kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+    linux-edac@vger.kernel.org, linux-pci@vger.kernel.org, 
+    linux-pm@vger.kernel.org, linux-coco@lists.linux.dev, 
+    linux-acpi@vger.kernel.org, linux-ide@vger.kernel.org, 
+    dri-devel@lists.freedesktop.org, linux-crypto@vger.kernel.org, 
+    linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+    linux-mtd@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
+    linux-fbdev@vger.kernel.org, Thomas Gleixner <tglx@kernel.org>, 
+    Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+    Dave Hansen <dave.hansen@linux.intel.com>, 
+    "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, 
+    Arnaldo Carvalho de Melo <acme@kernel.org>, 
+    Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+    Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+    Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+    Adrian Hunter <adrian.hunter@intel.com>, 
+    James Clark <james.clark@linaro.org>, 
+    "K. Y. Srinivasan" <kys@microsoft.com>, 
+    Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+    Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
+    Sean Christopherson <seanjc@google.com>, 
+    Paolo Bonzini <pbonzini@redhat.com>, Ajay Kaher <ajay.kaher@broadcom.com>, 
+    Alexey Makhalov <alexey.makhalov@broadcom.com>, 
+    Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+    Josh Poimboeuf <jpoimboe@kernel.org>, 
+    Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Pu Wen <puwen@hygon.cn>, 
+    Tony Luck <tony.luck@intel.com>, 
+    Reinette Chatre <reinette.chatre@intel.com>, 
+    Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>, 
+    Babu Moger <babu.moger@amd.com>, Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>, 
+    Vitaly Kuznetsov <vkuznets@redhat.com>, Andy Lutomirski <luto@kernel.org>, 
+    Bjorn Helgaas <bhelgaas@google.com>, 
+    "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+    Kiryl Shutsemau <kas@kernel.org>, 
+    Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+    Boris Ostrovsky <boris.ostrovsky@oracle.com>, Len Brown <lenb@kernel.org>, 
+    Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
+    David Airlie <airlied@redhat.com>, Olivia Mackall <olivia@selenic.com>, 
+    Herbert Xu <herbert@gondor.apana.org.au>, 
+    Viresh Kumar <viresh.kumar@linaro.org>, Huang Rui <ray.huang@amd.com>, 
+    Mario Limonciello <mario.limonciello@amd.com>, 
+    Perry Yuan <perry.yuan@amd.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+    Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
+    Yazen Ghannam <yazen.ghannam@amd.com>, Linus Walleij <linusw@kernel.org>, 
+    Bartosz Golaszewski <brgl@kernel.org>, Guenter Roeck <linux@roeck-us.net>, 
+    Artem Bityutskiy <artem.bityutskiy@linux.intel.com>, 
+    Artem Bityutskiy <dedekind1@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+    Miquel Raynal <miquel.raynal@bootlin.com>, 
+    Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+    Ashok Raj <ashok.raj.linux@gmail.com>, Hans de Goede <hansg@kernel.org>, 
+    Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>, 
+    Xi Pardee <xi.pardee@linux.intel.com>, 
+    Daniel Lezcano <daniel.lezcano@kernel.org>, 
+    Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, 
+    Helge Deller <deller@gmx.de>, xen-devel@lists.xenproject.org, 
+    linux-geode@lists.infradead.org, Michael Kelley <mhklinux@outlook.com>
+Subject: Re: [PATCH v3 12/13] treewide: convert rdmsrq() from a macro to an
+ inline function
+In-Reply-To: <20260911074530.3140830-13-jgross@suse.com>
+Message-ID: <b2baa471-0f6b-84e8-bda1-ae0964b72b04@linux.intel.com>
+References: <20260911074530.3140830-1-jgross@suse.com> <20260911074530.3140830-13-jgross@suse.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqOgEQKBGH-YqGr3@sm-arm-grace07>
+Content-Type: multipart/mixed; BOUNDARY="8323328-1162080221-1789119116=:1171"
+Content-ID: <b9134b99-a885-4c62-2abd-7195415a52e3@linux.intel.com>
 
-+cc Wei-Lin
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-On Fri, Sep 11, 2026 at 03:30:41PM +0900, Itaru Kitayama wrote:
-> Hi Lorenzo,
->
-> On Tue, Aug 25, 2026 at 05:00:42PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > From: Jack Thomson <jackabt@amazon.com>
-> >
-> > Add an arm64 nested-virt selftest for KVM_PRE_FAULT_MEMORY. The guest
-> > enters vEL1 and exits to userspace with a nested/shadow stage-2 MMU as
-> > the vCPU's last-run context.
-> >
-> > Before prefaulting, userspace enables HCR_EL2.VM and points VTTBR_EL2 at
-> > an empty nested stage-2 root. A prefault implementation that incorrectly
-> > treats the userspace GPA as an L2 IPA will fail the ioctl; the correct
-> > path targets the canonical stage-2 and succeeds.
-> >
-> > Restore the original nested state before resuming the guest, then touch
-> > the prefaulted range to check that vEL1 still runs correctly.
-> >
-> > Signed-off-by: Jack Thomson <jackabt@amazon.com>
-> > [ljs: partial progress, >4 KiB pgsize, commit msg, comment fixups]
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> >  tools/testing/selftests/kvm/Makefile.kvm           |   1 +
-> >  .../selftests/kvm/arm64/nv_pre_fault_memory_test.c | 206 +++++++++++++++++++++
-> >  2 files changed, 207 insertions(+)
->
-> I wonder whether this selftest can use functions Wei-Lin proposed
-> some time ago [1]: 20260325003620.2214766-1-weilin.chang@arm.com
-> or would you prefer this test as propose, since it is clear as
-> to what needs to be done to enter L2.
+--8323328-1162080221-1789119116=:1171
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-ID: <085b47bf-864b-9802-2915-a51186e45c40@linux.intel.com>
 
-I think if these aren't merged yet then that could be a follow up?
+On Fri, 11 Sep 2026, Juergen Gross wrote:
 
->
-> Thanks,
-> Itaru.
->
-> >
-> > diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-> > index 66a9a4e62888..1e0edd0f99f7 100644
-> > --- a/tools/testing/selftests/kvm/Makefile.kvm
-> > +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> > @@ -173,6 +173,7 @@ TEST_GEN_PROGS_arm64 += arm64/debug-exceptions
-> >  TEST_GEN_PROGS_arm64 += arm64/hello_el2
-> >  TEST_GEN_PROGS_arm64 += arm64/host_sve
-> >  TEST_GEN_PROGS_arm64 += arm64/hypercalls
-> > +TEST_GEN_PROGS_arm64 += arm64/nv_pre_fault_memory_test
-> >  TEST_GEN_PROGS_arm64 += arm64/external_aborts
-> >  TEST_GEN_PROGS_arm64 += arm64/mmio_sign_ext
-> >  TEST_GEN_PROGS_arm64 += arm64/page_fault_test
-> > diff --git a/tools/testing/selftests/kvm/arm64/nv_pre_fault_memory_test.c b/tools/testing/selftests/kvm/arm64/nv_pre_fault_memory_test.c
-> > new file mode 100644
-> > index 000000000000..b3833aea2a34
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/kvm/arm64/nv_pre_fault_memory_test.c
-> > @@ -0,0 +1,206 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +/*
-> > + * nv_pre_fault_memory_test - Test KVM_PRE_FAULT_MEMORY on a vCPU whose
-> > + * last-run context is nested.
-> > + *
-> > + * The guest starts at vEL2, mirrors its EL2 translation regime into the
-> > + * real EL1 registers, drops HCR_EL2.TGE and ERETs to vEL1, then exits to
-> > + * userspace from vEL1 so that the vCPU's last-run context selects a
-> > + * shadow stage-2 MMU. Userspace then enables an empty nested stage-2
-> > + * before prefaulting. Prefaulting must target the canonical stage-2,
-> > + * regardless of the vCPU's nested state.
-> > + */
-> > +#include "kvm_util.h"
-> > +#include "processor.h"
-> > +#include "test_util.h"
-> > +#include "ucall.h"
-> > +
-> > +#include <asm/sysreg.h>
-> > +#include <linux/sizes.h>
-> > +
-> > +#define TEST_MEM_SLOT		10
-> > +#define NESTED_S2_ROOT_SLOT	11
-> > +#define TEST_MEM_SIZE		SZ_2M
-> > +#define TEST_MEM_GPA		SZ_1G
-> > +#define NESTED_S2_ROOT_GPA	(TEST_MEM_GPA + TEST_MEM_SIZE)
-> > +
-> > +struct nested_s2_state {
-> > +	u64 hcr_el2;
-> > +	u64 vttbr_el2;
-> > +};
-> > +
-> > +static void guest_el1_code(void)
-> > +{
-> > +	u64 offset;
-> > +
-> > +	GUEST_ASSERT_EQ(get_current_el(), 1);
-> > +
-> > +	/* Exit to userspace with the vEL1 (nested) context live. */
-> > +	GUEST_SYNC(1);
-> > +
-> > +	/*
-> > +	 * Touch the prefaulted range. vstage-2 is disabled, so the shadow
-> > +	 * stage-2 is a 1:1 view of the canonical IPA space.
-> > +	 */
-> > +	for (offset = 0; offset < TEST_MEM_SIZE; offset += SZ_4K)
-> > +		READ_ONCE(*(u64 *)(TEST_MEM_GPA + offset));
-> > +
-> > +	GUEST_DONE();
-> > +}
-> > +
-> > +static void guest_code(void)
-> > +{
-> > +	u64 sp;
-> > +
-> > +	GUEST_ASSERT_EQ(get_current_el(), 2);
-> > +
-> > +	/*
-> > +	 * Mirror the EL2 translation regime into the real EL1 registers so
-> > +	 * that vEL1 runs on the test's stage-1 page tables. With E2H=1, the
-> > +	 * _EL1 accessors read the EL2 registers, and the _EL12 accessors
-> > +	 * write the real EL1 registers.
-> > +	 */
-> > +	write_sysreg_s(read_sysreg(sctlr_el1), SYS_SCTLR_EL12);
-> > +	write_sysreg_s(read_sysreg(tcr_el1), SYS_TCR_EL12);
-> > +	write_sysreg_s(read_sysreg(ttbr0_el1), SYS_TTBR0_EL12);
-> > +	write_sysreg_s(read_sysreg(mair_el1), SYS_MAIR_EL12);
-> > +	write_sysreg_s(read_sysreg(cpacr_el1), SYS_CPACR_EL12);
-> > +
-> > +	/* Run vEL1 on the same stack. */
-> > +	asm volatile("mov %0, sp" : "=r"(sp));
-> > +	write_sysreg(sp, sp_el1);
-> > +
-> > +	/*
-> > +	 * Drop TGE so that vEL1 is a nested context rather than host EL0.
-> > +	 * KVM backs it with a shadow stage-2 MMU even though vstage-2 is
-> > +	 * disabled (HCR_EL2.VM=0).
-> > +	 */
-> > +	write_sysreg(read_sysreg(hcr_el2) & ~HCR_EL2_TGE, hcr_el2);
-> > +	isb();
-> > +
-> > +	write_sysreg(PSR_MODE_EL1h | PSR_F_BIT | PSR_I_BIT | PSR_A_BIT |
-> > +		     PSR_D_BIT, spsr_el2);
-> > +	write_sysreg((u64)guest_el1_code, elr_el2);
-> > +	asm volatile("eret");
-> > +
-> > +	GUEST_ASSERT(false);
-> > +}
-> > +
-> > +static void pre_fault(struct kvm_vcpu *vcpu, u64 gpa, u64 size)
-> > +{
-> > +	struct kvm_pre_fault_memory range = {
-> > +		.gpa = gpa,
-> > +		.size = size,
-> > +	};
-> > +	int ret;
-> > +
-> > +	do {
-> > +		ret = __vcpu_ioctl(vcpu, KVM_PRE_FAULT_MEMORY, &range);
-> > +	} while ((!ret && range.size) ||
-> > +		 (ret < 0 && (errno == EINTR || errno == EAGAIN)));
-> > +
-> > +	TEST_ASSERT(!ret, "KVM_PRE_FAULT_MEMORY failed, ret: %d errno: %d",
-> > +		    ret, errno);
-> > +	TEST_ASSERT_EQ(range.size, 0);
-> > +}
-> > +
-> > +static struct nested_s2_state enable_empty_nested_s2(struct kvm_vcpu *vcpu)
-> > +{
-> > +	struct nested_s2_state state = {
-> > +		.hcr_el2 = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2)),
-> > +		.vttbr_el2 = vcpu_get_reg(vcpu,
-> > +					   KVM_ARM64_SYS_REG(SYS_VTTBR_EL2)),
-> > +	};
-> > +
-> > +	TEST_ASSERT(!(state.hcr_el2 & HCR_EL2_TGE),
-> > +		    "vCPU should be in nested/vEL1 context");
-> > +
-> > +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_VTTBR_EL2),
-> > +		     NESTED_S2_ROOT_GPA);
-> > +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2),
-> > +		     state.hcr_el2 | HCR_EL2_VM);
-> > +
-> > +	return state;
-> > +}
-> > +
-> > +static void restore_nested_s2(struct kvm_vcpu *vcpu,
-> > +			      struct nested_s2_state *state)
-> > +{
-> > +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2), state->hcr_el2);
-> > +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_VTTBR_EL2),
-> > +		     state->vttbr_el2);
-> > +}
-> > +
-> > +int main(void)
-> > +{
-> > +	struct nested_s2_state s2;
-> > +	struct kvm_vcpu_init init;
-> > +	struct kvm_vcpu *vcpu;
-> > +	struct kvm_vm *vm;
-> > +	struct ucall uc;
-> > +	u64 npages;
-> > +
-> > +	TEST_REQUIRE(kvm_check_cap(KVM_CAP_ARM_EL2));
-> > +	TEST_REQUIRE(kvm_check_cap(KVM_CAP_PRE_FAULT_MEMORY));
-> > +
-> > +	vm = vm_create(1);
-> > +
-> > +	kvm_get_default_vcpu_target(vm, &init);
-> > +	init.features[0] |= BIT(KVM_ARM_VCPU_HAS_EL2);
-> > +	vcpu = aarch64_vcpu_add(vm, 0, &init, guest_code);
-> > +	kvm_arch_vm_finalize_vcpus(vm);
-> > +
-> > +	npages = TEST_MEM_SIZE / vm->page_size;
-> > +	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, TEST_MEM_GPA,
-> > +				    TEST_MEM_SLOT, npages, 0);
-> > +	virt_map(vm, TEST_MEM_GPA, TEST_MEM_GPA, npages);
-> > +
-> > +	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS,
-> > +				    NESTED_S2_ROOT_GPA, NESTED_S2_ROOT_SLOT,
-> > +				    vm_adjust_num_guest_pages(vm->mode, 1), 0);
-> > +
-> > +	/* Run the guest until it has ERET'd from vEL2 to vEL1. */
-> > +	vcpu_run(vcpu);
-> > +	switch (get_ucall(vcpu, &uc)) {
-> > +	case UCALL_SYNC:
-> > +		TEST_ASSERT_EQ(uc.args[1], 1);
-> > +		break;
-> > +	case UCALL_ABORT:
-> > +		REPORT_GUEST_ASSERT(uc);
-> > +		break;
-> > +	default:
-> > +		TEST_FAIL("Unhandled ucall: %ld", uc.cmd);
-> > +	}
-> > +
-> > +	/*
-> > +	 * The vCPU's last-run context is vEL1, backed by a shadow stage-2
-> > +	 * MMU. Enable nested stage-2 with an empty root so that the ioctl
-> > +	 * fails if it tries to interpret the userspace GPA as an L2 IPA.
-> > +	 *
-> > +	 * Prefault in two halves so that the second ioctl exercises a
-> > +	 * repeated shadow-MMU attach and canonical stage-2 swap.
-> > +	 *
-> > +	 * (Note that an implementation that wrongly populates shadow
-> > +	 * stage-2 page tables would not be caught as userland can't
-> > +	 * inspect these.)
-> > +	 */
-> > +	s2 = enable_empty_nested_s2(vcpu);
-> > +	pre_fault(vcpu, TEST_MEM_GPA, TEST_MEM_SIZE / 2);
-> > +	pre_fault(vcpu, TEST_MEM_GPA + TEST_MEM_SIZE / 2, TEST_MEM_SIZE / 2);
-> > +	restore_nested_s2(vcpu, &s2);
-> > +
-> > +	/* Resume at vEL1 and touch the prefaulted range. */
-> > +	vcpu_run(vcpu);
-> > +	switch (get_ucall(vcpu, &uc)) {
-> > +	case UCALL_DONE:
-> > +		break;
-> > +	case UCALL_ABORT:
-> > +		REPORT_GUEST_ASSERT(uc);
-> > +		break;
-> > +	default:
-> > +		TEST_FAIL("Unhandled ucall: %ld", uc.cmd);
-> > +	}
-> > +
-> > +	kvm_vm_free(vm);
-> > +	return 0;
-> > +}
-> >
-> > --
-> > 2.55.0
-> >
+> Today rdmsrq() is a macro using its second parameter as the target for
+> storing the read MSR value.
+>=20
+> Convert rdmsrq() to an inline function returning the MSR value.
+>=20
+> The users have been converted using the following semantic patch:
+>=20
+>   // Options: --include-headers
+>=20
+>   virtual patch
+>   virtual report
+>=20
+>   @@
+>   expression msr, val;
+>   @@
+>   (
+>   - rdmsrq(msr,val)
+>   + val =3D rdmsrq(msr)
+>   )
+>=20
+> Signed-off-by: Juergen Gross <jgross@suse.com>
+> Acked-by: Damien Le Moal <dlemoal@kernel.org>      # ATA
 
---
-Cheers, Lorenzo
+Acked-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>=09=09# pdx86
+
+What is the plan for merging this?
+
+> Reviewed-by: Michael Kelley <mhklinux@outlook.com> # Hyper-V
+
+--=20
+ i.
+--8323328-1162080221-1789119116=:1171--
