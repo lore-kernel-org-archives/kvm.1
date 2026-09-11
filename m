@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AB0497B96;
-	Fri, 11 Sep 2026 21:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AC44BEE3B;
+	Fri, 11 Sep 2026 21:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789163024; cv=none; b=CKurdllmC9MNI4aaJKdoIT0gE/kV1cOiotqEK+WugnKW3ZSx8K5m29lG+KxDPWhbGpMH5TZgNJL39YuOMRAX5IiGkEv5MUKiDZfj/aJeAy7E//b+VCP+S94vqbi+jfMph86a77O2azC6L36DE77E5iDCHRUDaxk1jKL5D8d6Gnk=
+	t=1789163033; cv=none; b=cqNWP+L0dLIM+0dVkiygbw9khuTfU4RiUjaTchAepKLHYIoBRjGxypzjC+4cZWeVACG5spgDbGE4iBt+pCkbRoTnZ7P3FkyGkjDH/ypM0FmmVUpWk/U7PMY+YOpVsHpSBBeYPNWoRBgp/oFo1MqgoZkL2TgqmzwUUk+iA4j5b3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789163024; c=relaxed/simple;
-	bh=u/9qQB+51ZA54dIgotA961NlEY+IOivKPseuq1clEso=;
+	s=arc-20240116; t=1789163033; c=relaxed/simple;
+	bh=xTcz+8SJvIkx43QiWYnGAhgtbnaSw9N12NLUCq9wllo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=De+3/5J1Uy+T5BLTICj8p2HAb9/l6oP1q0kBqAwUJI0VG+7GOaMyacpsbc6PsZHXJGPhmEOU6wLPURRnNrR/D5NznXIsIofqlRTax7AXrPgjVpWsKX3LQsXmtE2HUPz9SPNUIkhOr2UH5RPQMYO+2BXyZTrbYGQznQl7C9Nz/QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HajxN4B2; arc=none smtp.client-ip=192.198.163.19
+	 MIME-Version; b=qT+RxCosfa/Te+9xk82AZlEn2KOmN8E2didb2qFRMtpRvWg8EKqh6wtw+Du+Ug1LoLF0wTGtIpTfah6pbwxLpI/FgA3ulFHgDFyL2IVBrVLpmFuMv04W2yKLCEpRr8V8v/vlflVq1VKjdti1csn80DR3iaKGsz9LTgoEsAYK60M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mf/Unxai; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HajxN4B2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mf/Unxai"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789163022; x=1820699022;
+  t=1789163033; x=1820699033;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=u/9qQB+51ZA54dIgotA961NlEY+IOivKPseuq1clEso=;
-  b=HajxN4B2UqebvQxhsydi1k/6lR0QsUt4wcM67H/JX1955XIhEnlbqZ6P
-   Ff5mKo+dZ6VVX7ywjtuoWCVhDogzkZpBW+ptxOcWs6H26p6LoBfixF1nj
-   rxM5iGyO0l85JX7pEaGbc0x0f/xiYSwPHcGQ9TSx+D+DhaHdY4r3ZapOR
-   cmgsHiNot5KVVRcVb7+pionJ0NA5APB80fk8bqrNVIH6JXxUEQ9bhtzbo
-   B3nHhStA3PaYUs0HfJaqoIuIf8BcZGbO4JqHhE+7taVtACXgsbvTWwNS+
-   PW0Ytb+7t7fmhETWK78yPUeb12Z8OmqAZS+64fU3e51nbjDA96P/0cdD3
-   w==;
-X-CSE-ConnectionGUID: dC7GaMFESViUi8k0ryGxCg==
-X-CSE-MsgGUID: S2v95pE/SDC3Oh0C178IyQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="88572919"
+  bh=xTcz+8SJvIkx43QiWYnGAhgtbnaSw9N12NLUCq9wllo=;
+  b=mf/Unxaiz1DR/1r0oGmSqq5aPv5BqtVoFEc6HWkq1h25VZOd7mfarb9z
+   K5kftWMOGO9ioM++88KvNdm+JGoa/OgYxBCVHJqhGfj1mEJ6EbffEaMso
+   u18B6pl+3aXK4bsaJJRmZnR862Et8exCfjW67hgZY/1yS2drhilSPBEhE
+   bKCtQ/QLaeEw7Povv2Q+5mCOAmY+/xiLzcq9Kb0Ercgat6f2nXPdXSHz/
+   bw6Kt+LIn86kEv7NRj+pvIXu9vFoRnoTvCqXIRagcBv8Es66yAcuTHpzj
+   M1clH34fvO2CIv2iVRBnioOD3E4WbrsGhwD3eN2n20BAXEYVUdMrrZUQ/
+   Q==;
+X-CSE-ConnectionGUID: NnPAQhLfSJyAWH8Dv4n3rA==
+X-CSE-MsgGUID: 9vEqNf/kTTqRY5jEPaKWrw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="88572932"
 X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
-   d="scan'208";a="88572919"
+   d="scan'208";a="88572932"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 14:43:42 -0700
-X-CSE-ConnectionGUID: 755rMGAsRjuRGYyz/NwHjg==
-X-CSE-MsgGUID: X5BupmnMQd61URu1z532xQ==
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 14:43:52 -0700
+X-CSE-ConnectionGUID: ZxDSJ2FLRzyNkuPE9JxAcQ==
+X-CSE-MsgGUID: G+1GdaUyRFuRBOyaOwsMhw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
-   d="scan'208";a="272004338"
+   d="scan'208";a="272004368"
 Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by orviesa007.jf.intel.com with ESMTP; 11 Sep 2026 14:43:41 -0700
+  by orviesa007.jf.intel.com with ESMTP; 11 Sep 2026 14:43:51 -0700
 From: Sohil Mehta <sohil.mehta@intel.com>
 To: kvm@vger.kernel.org,
 	x86@kernel.org
@@ -72,9 +72,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v10 25/28] KVM: nVMX: Enable VMX FRED controls
-Date: Fri, 11 Sep 2026 14:36:55 -0700
-Message-ID: <20260911213659.2025974-26-sohil.mehta@intel.com>
+Subject: [PATCH v10 26/28] KVM: selftests: Add FRED MSRs to msrs_test
+Date: Fri, 11 Sep 2026 14:36:56 -0700
+Message-ID: <20260911213659.2025974-27-sohil.mehta@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260911213659.2025974-1-sohil.mehta@intel.com>
 References: <20260911213659.2025974-1-sohil.mehta@intel.com>
@@ -86,62 +86,138 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Xin Li (Intel)" <xin@zytor.com>
+From: Xin Li <xin@zytor.com>
 
-Permit use of VMX FRED controls in nested VMX now that support for nested
-FRED is implemented.
+Add FRED MSR coverage to msrs_test, including the FRED RSP0-3, SSP0-3,
+STKLVLS and CONFIG MSRs.
 
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Signed-off-by: Xin Li <xin@zytor.com>
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
-Reviewed-by: Chao Gao <chao.gao@intel.com>
 ---
 v10:
- - Remove an obsolete comment (Chao).
+ - New patch.
 ---
- arch/x86/kvm/vmx/nested.c | 10 +++-------
- arch/x86/kvm/vmx/vmx.c    |  1 +
- 2 files changed, 4 insertions(+), 7 deletions(-)
+ tools/arch/x86/include/asm/msr-index.h        |  2 +
+ .../selftests/kvm/include/x86/processor.h     |  1 +
+ tools/testing/selftests/kvm/x86/msrs_test.c   | 52 ++++++++++++++++++-
+ 3 files changed, 53 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 3e0a1ed6440d..4fad9728a2ea 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -7371,12 +7371,8 @@ static void nested_vmx_setup_exit_ctls(struct vmcs_config *vmcs_conf,
+diff --git a/tools/arch/x86/include/asm/msr-index.h b/tools/arch/x86/include/asm/msr-index.h
+index 18c4be75e927..14632e29f981 100644
+--- a/tools/arch/x86/include/asm/msr-index.h
++++ b/tools/arch/x86/include/asm/msr-index.h
+@@ -64,6 +64,8 @@
+ #define MSR_IA32_FRED_SSP3	0x1d3			/* Level 3 shadow stack pointer */
+ #define MSR_IA32_FRED_CONFIG	0x1d4			/* Entrypoint and interrupt stack level */
  
- 	if (msrs->exit_ctls_high & VM_EXIT_ACTIVATE_SECONDARY_CONTROLS) {
- 		msrs->secondary_exit_ctls = vmcs_conf->vmexit_2nd_ctrl;
--		/*
--		 * As the secondary VM exit control is always loaded, do not
--		 * advertise any feature in it to nVMX until its nVMX support
--		 * is ready.
--		 */
--		msrs->secondary_exit_ctls &= 0;
-+		msrs->secondary_exit_ctls &= SECONDARY_VM_EXIT_SAVE_IA32_FRED |
-+					     SECONDARY_VM_EXIT_LOAD_IA32_FRED;
- 	}
- }
++#define FRED_CONFIG_RESERVED		(BIT_ULL(2) | GENMASK_ULL(5, 4) | BIT_ULL(11))
++
+ /* Intel MSRs. Some also available on other CPUs */
+ #define MSR_TEST_CTRL				0x00000033
+ #define MSR_TEST_CTRL_SPLIT_LOCK_DETECT_BIT	29
+diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+index 6e6f70035508..916646cb4d89 100644
+--- a/tools/testing/selftests/kvm/include/x86/processor.h
++++ b/tools/testing/selftests/kvm/include/x86/processor.h
+@@ -195,6 +195,7 @@ struct kvm_x86_cpu_feature {
+ #define	X86_FEATURE_SPEC_CTRL		KVM_X86_CPU_FEATURE(0x7, 0, EDX, 26)
+ #define	X86_FEATURE_ARCH_CAPABILITIES	KVM_X86_CPU_FEATURE(0x7, 0, EDX, 29)
+ #define	X86_FEATURE_PKS			KVM_X86_CPU_FEATURE(0x7, 0, ECX, 31)
++#define	X86_FEATURE_FRED		KVM_X86_CPU_FEATURE(0x7, 1, EAX, 17)
+ #define	X86_FEATURE_XTILECFG		KVM_X86_CPU_FEATURE(0xD, 0, EAX, 17)
+ #define	X86_FEATURE_XTILEDATA		KVM_X86_CPU_FEATURE(0xD, 0, EAX, 18)
+ #define	X86_FEATURE_XSAVES		KVM_X86_CPU_FEATURE(0xD, 1, EAX, 3)
+diff --git a/tools/testing/selftests/kvm/x86/msrs_test.c b/tools/testing/selftests/kvm/x86/msrs_test.c
+index f7e39bf887ad..6e2d8b8f1bd3 100644
+--- a/tools/testing/selftests/kvm/x86/msrs_test.c
++++ b/tools/testing/selftests/kvm/x86/msrs_test.c
+@@ -60,9 +60,23 @@ static const u64 u64_val = 0xaaaa5555aaaa5555ull;
+ #define MSR_TEST_CANONICAL(msr, feat)					\
+ 	__MSR_TEST(msr, #msr, canonical_val, NONCANONICAL, 0, feat)
  
-@@ -7392,7 +7388,7 @@ static void nested_vmx_setup_entry_ctls(struct vmcs_config *vmcs_conf,
- 		VM_ENTRY_IA32E_MODE |
- #endif
- 		VM_ENTRY_LOAD_IA32_PAT | VM_ENTRY_LOAD_BNDCFGS |
--		VM_ENTRY_LOAD_CET_STATE;
-+		VM_ENTRY_LOAD_CET_STATE | VM_ENTRY_LOAD_IA32_FRED;
- 	msrs->entry_ctls_high |=
- 		(VM_ENTRY_ALWAYSON_WITHOUT_TRUE_MSR | VM_ENTRY_LOAD_IA32_EFER |
- 		 VM_ENTRY_LOAD_IA32_PERF_GLOBAL_CTRL);
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 3a3315a7fc11..f673cd4e8956 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -8150,6 +8150,7 @@ static void nested_vmx_cr_fixed1_bits_update(struct kvm_vcpu *vcpu)
++#define MSR_TEST_CANONICAL2(msr, feat, f2)				\
++	____MSR_TEST(msr, #msr, canonical_val, NONCANONICAL, 0, feat, f2, false)
++
+ #define MSR_TEST_KVM(msr, val, rsvd, feat)				\
+ 	____MSR_TEST(KVM_REG_ ##msr, #msr, val, rsvd, 0, feat, feat, true)
  
- 	entry = kvm_find_cpuid_entry_index(vcpu, 0x7, 1);
- 	cr4_fixed1_update(X86_CR4_LAM_SUP,    eax, feature_bit(LAM));
-+	cr4_fixed1_update(X86_CR4_FRED,       eax, feature_bit(FRED));
++/* FRED RSPs are 64-byte aligned, thus bits 5:0 are all zero */
++static const u64 fred_rsp_canonical_val = canonical_val + 0xbc0;
++
++/*
++ * FRED SSP[123] are 8-byte aligned, thus bits 2:0 are all zero.
++ *
++ * For legacy reasons, FRED SSP0 is allowed to be 4-byte aligned, but treat
++ * it as 8-byte aligned to simplify the tests.
++ */
++static const u64 fred_ssp_canonical_val = canonical_val + 0xbc8;
++
+ /*
+  * The main struct must be scoped to a function due to the use of structures to
+  * define features.  For the global structure, allocate enough space for the
+@@ -388,8 +402,9 @@ static void test_msrs(void)
+ 		MSR_TEST2(MSR_IA32_S_CET, CET_ENDBR_EN, CET_RESERVED, IBT, SHSTK),
+ 		MSR_TEST2(MSR_IA32_U_CET, CET_SHSTK_EN, CET_RESERVED, SHSTK, IBT),
+ 		MSR_TEST2(MSR_IA32_U_CET, CET_ENDBR_EN, CET_RESERVED, IBT, SHSTK),
+-		MSR_TEST_CANONICAL(MSR_IA32_PL0_SSP, SHSTK),
+-		MSR_TEST(MSR_IA32_PL0_SSP, canonical_val, canonical_val | 1, SHSTK),
++		MSR_TEST_CANONICAL2(MSR_IA32_PL0_SSP, SHSTK, FRED),
++		MSR_TEST2(MSR_IA32_PL0_SSP, canonical_val, canonical_val | 1, SHSTK, FRED),
++		MSR_TEST2(MSR_IA32_PL0_SSP, canonical_val, canonical_val | 1, FRED, SHSTK),
+ 		MSR_TEST_CANONICAL(MSR_IA32_PL1_SSP, SHSTK),
+ 		MSR_TEST(MSR_IA32_PL1_SSP, canonical_val, canonical_val | 1, SHSTK),
+ 		MSR_TEST_CANONICAL(MSR_IA32_PL2_SSP, SHSTK),
+@@ -398,10 +413,35 @@ static void test_msrs(void)
+ 		MSR_TEST(MSR_IA32_PL3_SSP, canonical_val, canonical_val | 1, SHSTK),
  
- #undef cr4_fixed1_update
- }
+ 		MSR_TEST_KVM(GUEST_SSP, canonical_val, NONCANONICAL, SHSTK),
++
++		MSR_TEST_CANONICAL(MSR_IA32_FRED_RSP0, FRED),
++		MSR_TEST(MSR_IA32_FRED_RSP0, fred_rsp_canonical_val, fred_rsp_canonical_val | 1, FRED),
++		MSR_TEST_CANONICAL(MSR_IA32_FRED_RSP1, FRED),
++		MSR_TEST(MSR_IA32_FRED_RSP1, fred_rsp_canonical_val, fred_rsp_canonical_val | 2, FRED),
++		MSR_TEST_CANONICAL(MSR_IA32_FRED_RSP2, FRED),
++		MSR_TEST(MSR_IA32_FRED_RSP2, fred_rsp_canonical_val, fred_rsp_canonical_val | 4, FRED),
++		MSR_TEST_CANONICAL(MSR_IA32_FRED_RSP3, FRED),
++		MSR_TEST(MSR_IA32_FRED_RSP3, fred_rsp_canonical_val, fred_rsp_canonical_val | 7, FRED),
++
++		MSR_TEST_CANONICAL2(MSR_IA32_FRED_SSP0, FRED, SHSTK),
++		MSR_TEST2(MSR_IA32_FRED_SSP0, fred_ssp_canonical_val, fred_ssp_canonical_val | 1, SHSTK, FRED),
++		MSR_TEST2(MSR_IA32_FRED_SSP0, fred_ssp_canonical_val, fred_ssp_canonical_val | 1, FRED, SHSTK),
++		MSR_TEST_CANONICAL(MSR_IA32_FRED_SSP1, FRED),
++		MSR_TEST(MSR_IA32_FRED_SSP1, fred_ssp_canonical_val, fred_ssp_canonical_val | 2, FRED),
++		MSR_TEST_CANONICAL(MSR_IA32_FRED_SSP2, FRED),
++		MSR_TEST(MSR_IA32_FRED_SSP2, fred_ssp_canonical_val, fred_ssp_canonical_val | 4, FRED),
++		MSR_TEST_CANONICAL(MSR_IA32_FRED_SSP3, FRED),
++		MSR_TEST(MSR_IA32_FRED_SSP3, fred_ssp_canonical_val, fred_ssp_canonical_val | 7, FRED),
++
++		MSR_TEST(MSR_IA32_FRED_STKLVLS, 0xe41be41be41be41b, 0, FRED),
++
++		MSR_TEST_CANONICAL(MSR_IA32_FRED_CONFIG, FRED),
++		MSR_TEST(MSR_IA32_FRED_CONFIG, canonical_val, canonical_val | FRED_CONFIG_RESERVED, FRED),
+ 	};
+ 
+ 	const struct kvm_x86_cpu_feature feat_none = X86_FEATURE_NONE;
+ 	const struct kvm_x86_cpu_feature feat_lm = X86_FEATURE_LM;
++	const struct kvm_x86_cpu_feature feat_fred = X86_FEATURE_FRED;
+ 
+ 	/*
+ 	 * Create three vCPUs, but run them on the same task, to validate KVM's
+@@ -432,6 +472,14 @@ static void test_msrs(void)
+ 	 * immutable once the vCPU has been run.
+ 	 */
+ 	for (idx = 0; idx < ARRAY_SIZE(__msrs); idx++) {
++		/*
++		 * Feature word 0x7:1:EAX used by FRED doesn't exist on some CPU
++		 * models, simply skip clearing FRED feature bit.
++		 */
++		if (!memcmp(&msrs[idx].feature, &feat_fred, sizeof(feat_fred)) &&
++		    !kvm_cpu_has(X86_FEATURE_FRED))
++			continue;
++
+ 		/*
+ 		 * Don't clear LM; selftests are 64-bit only, and KVM doesn't
+ 		 * honor LM=0 for MSRs that are supposed to exist if and only
 -- 
 2.43.0
 
