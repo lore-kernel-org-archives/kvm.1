@@ -1,43 +1,43 @@
-Received: from mail-10630.protonmail.ch (mail-10630.protonmail.ch [79.135.106.30])
+Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852975A5157
-	for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 20:32:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397F1389104
+	for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 20:33:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789158783; cv=none; b=iJ0O9QhN/WXjb9VXU+OmOvgwtD5riKX3njN8G/2HD4EhFgVVEXp5ddpDAl5FlcmfPf3gpmnQbMu42JyxwTyL6h4snPDwlQ34EkatgtOAMkO6K2A2bJfZOVo0RhqwZsGigZHystuyMxvFjpzH6lgNGGBs+lElj1ets0gAw6cdDh4=
+	t=1789158791; cv=none; b=tlgH4xjouZoszpfXWceHOKlnGMxFhZz4JQYe1uZurxDIy5cBmpcor6D704whvgppsaedFRKhfm7hFxYP5OVBdhgAjCqi2FHmtZjzNCajFFiW8pLCLEcwIONcngtIIIP1sY9+5R1F70+ZQ+bCpx6FfCJlJa3+DJvqHYlrilKskHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789158783; c=relaxed/simple;
-	bh=TPYsUdgRymaB/Jt1f1Dboojd4rRWJZ4bSVGb2nI9CZ0=;
+	s=arc-20240116; t=1789158791; c=relaxed/simple;
+	bh=BkYk7hww98ZGIYoquLfB5qut8TtRQsvfJ0cFbY3jea0=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VlNAhX9D72vE+S0ABPBCxMEYIkOe+fK2v2LhB2B+uce/x2AOdQypEIa04Q7aHLTedB6dvIEIL2eCMR1UxmxQ4MKDVPg2mlYnj11CwPbR5P/iPZVSWWhRqXIAbZIPvDnu+HxjltfqyEE44GwnLBrutSBJuEBhGMWTwtdORVfq6fU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=T0iYv8Wn; arc=none smtp.client-ip=79.135.106.30
+	 MIME-Version:Content-Type; b=XWDU5CXDHBIQKiQEDoDr/dJ8jW3Ek8lKs7AQ8J0i1FdG8ibWvjE3Zul9N0l1EfPIwGzZAGOaCBz6tG46MqS0L6Er2q7P+8/o+8+o3POXbpTo+Q9HOk3nnsNeLRK0EQoZBjQ0/BQB76oKWPVLy+C9btnBK7nrV73bGGum6DXiBW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=gxQsEH3R; arc=none smtp.client-ip=109.224.244.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="T0iYv8Wn"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="gxQsEH3R"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1789158769; x=1789417969;
-	bh=2UNrRvIefflL8160ndAwQCyY+CDVeSgpUPFUddt7R/I=;
+	s=protonmail; t=1789158776; x=1789417976;
+	bh=HB2LkcBu2qjZFjXjjyRksviXgwbkHJ1EXJPX/Aw2qZQ=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=T0iYv8WnoWmlPd2GQm6HQyylr/jallsl4CbybgDBJ//cOE/jPmg5/KAUjZnSUh0xe
-	 lUl6awbcc8S2vGOqgLTVDG2pwih9i+HmofQC6HKtjZtvLGAANgZD2OjDEGjb5U/Dln
-	 m5gPnguhp8Ilk7qJdzq5wsPz26iTjYueejQak78Tz99OJZyD3dArGy0EbKbCzIekY+
-	 v/yPGnPGDb1yuxHoWvReFu+uW5ohbCUGie7jMc2GfZlItPySBtyyO/HSRiBD5hG1K/
-	 a2NAhOxqtZZP2xey1VlpK5JSWg0vFO/4M17+VIPOaIo4aipBDbT94eCmPiG7dW0pfG
-	 /qVcTn0fw6qbQ==
-Date: Fri, 11 Sep 2026 20:32:45 +0000
+	b=gxQsEH3RLbRdOHDy3dSTZFhGPjwIxsVrbhIkZRIb4p9ugKiq0qrNHXCeTrqI9tNwQ
+	 QSnH6+Qfsfpk2MWqcmI2TA5LlnSO+GiwI+poPpX9Q1MSwcEDaRjn3IFEi0J2EBwqv8
+	 Ukw1NqhZB/P9cMLcPNREwlsYijHDYAv3pwpzypj0OfPBoMxgxAn6lHsH22Q57z4uqF
+	 gquC4ZmoE/ZAgylDQviwMVfYfynRlxs0LwtKdm708ukxasz8uRYQvbn1I0oxZOL8MK
+	 NSfUn0LAOC+SdAKmqA5wRz1kNI0mev98wrwSTlFgGFY/PtbWYJ4UIL5XVU74BV8S5G
+	 ettXKF8dbcn/Q==
+Date: Fri, 11 Sep 2026 20:32:51 +0000
 To: pbonzini@redhat.com
 From: David Ballesteros <davimaba.v@proton.me>
 Cc: kvm@vger.kernel.org, security@kernel.org, David Ballesteros <davimaba.v@proton.me>
-Subject: [PATCH v2 0/2] KVM: unbounded per-VM kernel memory growth via KVM_SET_MEMORY_ATTRIBUTES
-Message-ID: <20260911203238.30088-1-davimaba.v@proton.me>
+Subject: [PATCH v2 1/2] KVM: Bound per-VM GFN materialization in KVM_SET_MEMORY_ATTRIBUTES
+Message-ID: <20260911203238.30088-2-davimaba.v@proton.me>
 In-Reply-To: <20260911184819.101123-1-davimaba.v@proton.me>
 References: <20260911184819.101123-1-davimaba.v@proton.me>
 Feedback-ID: 219068424:user:proton
-X-Pm-Message-ID: 1ce0421cc612824da54f48a848361712086e0822
+X-Pm-Message-ID: 8da44a8a3c81c4dd4ce5297df1508179c36b267b
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,206 +47,220 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Fair bot, you win.  The clear-path bound bypass was real, and v2 of
-this series exists because the automated review caught it before a
-human did.
+KVM_SET_MEMORY_ATTRIBUTES validates the user-provided range only for
+representability (zero size, 64-bit wrap, alignment, supported
+attributes) and not for magnitude.  kvm_vm_set_mem_attributes() then
+walks every GFN in the range with xa_reserve(), which materializes the
+full root-to-leaf path of xa_nodes (~9.3 bytes of kernel memory per GFN)
+even though the GFNs need no backing memory and no memslots need to
+exist.  On ENOMEM the loop bails out without undoing prior reservations,
+and the only release path is kvm_destroy_vm(), so an unprivileged user
+with access to /dev/kvm on a VM with private memory support (sw
+protected, TDX or SNP) accumulates kernel memory across calls until the
+host runs out of memory: measured outcomes include the OOM killer
+selecting unrelated third-party processes while the attacker's own
+memcg stays uncharged, and a kernel panic ("System is deadlocked on
+memory") when all surviving processes are OOM-disabled.  A single ioctl
+also holds kvm->slots_lock for the whole loop, blocking
+KVM_GET_DIRTY_LOG and memslot updates of that VM for its duration.
 
-Changes in v2 (thanks to the sashiko review of v1):
+Bound the number of attribute entries materialized per VM to
+KVM_MEM_ATTR_MAX_GFNS (2^25 GFNs, i.e. 128 GiB of GPA, ~300 MiB of
+xa_nodes), enforced under kvm->slots_lock after the idempotency
+early-out.
 
-- Reworked the clear path to erase-only iteration over present
-  entries.  v1 could bypass the bound: a clear of a partially
-  populated range went through xa_reserve() for every GFN in the
-  range with no bound check, so alternating set/clear of huge
-  ranges materialized kernel memory without limit.  Erasing cannot
-  allocate, so clears are now failure-free by construction and
-  bounded by the population they actually remove.  Runtime-verified:
-  eight consecutive clears of a 2^52-GFN range containing a
-  populated GFN leave Slab unchanged (v1 grew it to ENOMEM).
-- The per-VM counter is now maintained incrementally (sets charge the
-  full range, conservatively; clears subtract the exact number of
-  entries erased) and a full rescan runs only on the ENOMEM path.
-  This removes the O(array population) cost per mutating ioctl from
-  v1, which was significant for legitimate confidential-VM workloads
-  converting small ranges on a large array.  Runtime-verified: 50
-  alternating 4 KiB set/clear conversions at a near-full array take
-  0.01 ms each.
-- Added guard(rcu)() to the rescan helper for consistency with
-  kvm_range_has_memory_attributes() and to satisfy lockdep.
-- No change to patch 2.
+Clearing requests are reworked to never touch the reservation path:
+erasing an entry cannot allocate, so a clear iterates only the present
+entries in the range and erases them.  This closes a bypass of the
+bound found in review of v1 (thanks to the sashiko reviewer): a clear
+of a partially populated range used to reserve every GFN in the range
+without any bound check, so alternating set/clear of huge ranges could
+materialize kernel memory without limit.  It also makes clears
+allocation-failure-free by construction.
 
-On the other review points: the 128 GiB budget value remains a
-deliberate trade-off, discussed under "Why a constant and not a
-derived bound" below; and the other KVM xarrays do not share this
-exposure because their indices are bounded by construction
-(vcpu_array by the KVM_MAX_VCPUS check in KVM_CREATE_VCPU, gmem
-bindings by KVM_MEM_SLOTS_NUM), unlike mem_attr_array whose index
-range is the user-chosen GFN range itself.
+The per-VM counter is maintained incrementally: sets charge the full
+range (overcounting overlapping requests, which is conservative for a
+bound), clears subtract the exact number of entries erased, and a full
+rescan runs only on the ENOMEM path, where partial reservations are
+retained and the exact count is otherwise unknown.  This keeps every
+non-failing ioctl O(present entries touched) instead of O(array
+population), which matters for confidential-VM workloads converting
+small ranges when the array is large.
 
+Build-tested warning-free on v7.2-rc5.  Runtime-verified on v7.2-rc5
+(KASAN build, isolated VM): the bound stops growth with a clean
+-ENOSPC at 2^25 GFNs; repeated clears of huge (up to 2^52-GFN) ranges
+that include a populated GFN leave Slab unchanged instead of growing
+it; 50 alternating 4 KiB set/clear conversions at a near-full array
+complete in 0.01 ms each; clearing a range returns budget exactly (a
+fresh range of the freed size is accepted afterwards).
 
-Affected version/commit: v7.2-rc5 (commit 699594e8888d is not needed here;
-verified on v7.2-rc5 as of 2026-09-09 and on v6.18.48; the code paths are
-unchanged between them and present in mainline. The ioctl was introduced
-in v6.8 with the per-page memory attributes series).
+Found by an AI-assisted security audit.
 
-Problem
--------
-
-kvm_vm_ioctl_set_mem_attributes() (virt/kvm/kvm_main.c) validates the
-user-provided range only for representability (zero size, 64-bit wrap,
-alignment, supported attributes) and not for magnitude.  With attributes
-!=3D 0, kvm_vm_set_mem_attributes() then walks every GFN in the range:
-
-        for (i =3D start; i < end; i++) {
-                r =3D xa_reserve(&kvm->mem_attr_array, i, GFP_KERNEL_ACCOUN=
-T);
-                if (r)
-                        goto out_unlock;
-                cond_resched();
-        }
-
-xa_reserve() materializes the full root-to-leaf path of xa_nodes for each
-GFN even though the GFNs need no backing memory and no memslots need to
-exist.  Each xa_node is 576 bytes from radix_tree_node_cachep; densely
-filled, the tree costs ~9.3 bytes per GFN.  On ENOMEM the loop bails out
-without undoing prior reservations, and the only release path is
-kvm_destroy_vm(); the memory is therefore retained across calls and lives
-for as long as the VM fd.
-
-Additionally, the intended memcg accounting does not take effect: the
-nodes are allocated with GFP_NOWAIT in xas_alloc(), gaining __GFP_ACCOUNT
-only when the xarray carries XA_FLAGS_ACCOUNT, which kvm does not set
-(kvm_create_vm() uses plain xa_init()).  Measured: a process inside a
-cgroup limited to 256 MiB grew host SReclaimable by ~450 MiB while its
-memory.current stayed at ~488 KiB.
-
-Triggering conditions
----------------------
-
-- An unprivileged user with write access to /dev/kvm (sysfs default and
-  the common udev default are 0666).
-- A VM whose type sets private memory support: sw protected VM
-  (CONFIG_KVM_SW_PROTECTED_VM, depends on EXPERT), TDX or SNP.
-- No memslots, no guest memory and no guest CPUs are required.
-- Verified outcomes on v6.18.48 (KASAN builds, isolated VMs):
-  * ~9.29 bytes/GFN and ~75 MiB/s of sustained growth per VM; linear
-    scaling with parallel VMs (4 VMs: 3.56x).
-  * global OOM killing unrelated third-party processes while the
-    attacker's own memcg stays uncharged.
-  * when all surviving processes are OOM-disabled, select_bad_process()
-    finds no candidate and the kernel panics ("System is deadlocked on
-    memory", mm/oom_kill.c).  Reproduced twice.
-  * one ioctl holds kvm->slots_lock for the whole reservation loop, so a
-    large range blocks KVM_GET_DIRTY_LOG and memslot updates of that VM
-    for the duration (measured GET_DIRTY_LOG latency 1us -> 7.7ms with a
-    single concurrent call); KVM_RUN is unaffected.
-  * replicated through a real container runtime (podman/crun) with
-    --memory 512m: the container grew host slab by ~450 MiB while its
-    memory.current stayed at ~488 KiB.
-
-Reproducer status
------------------
-
-A reproducer is available on request (KVM_CREATE_VM + the ioctl in a
-loop, plus slab/ accounting measurement), but following security-bugs.rst i=
-t is
-not attached to this report.
-
-Test environment
-----------------
-
-All dynamic results were collected in isolated inspection VMs on a
-single AMD host with nested virtualization enabled
-(kvm_amd nested=3D1): QEMU -cpu host, Debian 13 guests, guest kernels
-built from the audited tree (v6.18.48) and from v7.2-rc5 with
-CONFIG_KVM_SW_PROTECTED_VM=3Dy / CONFIG_KVM_AMD=3Dy / CONFIG_EXPERT=3Dy and
-KASAN (with CONFIG_KASAN_VMALLOC=3Dy where noted); the PoC runs as root
-inside the guest, host networking restricted (user-mode net,
-restrict=3Don).  Nothing in the host kernels themselves was modified or
-attacked.  The container replication used podman 5.4.2/crun inside the
-guest with the host kernel having the gate enabled (a stock host kernel
-without KVM_SW_PROTECTED_VM rejects KVM_CREATE_VM and the surface is
-absent, as expected).
-
-Proposed fix
-------------
-
-Attached as 0001-v3.patch (checkpatch clean, build warning-free on
-v7.2-rc5, runtime-verified on v7.2-rc5): it bounds the total number of
-materialized attribute entries per VM to KVM_MEM_ATTR_MAX_GFNS (2^25
-GFNs =3D 128 GiB of GPA, ~300 MiB of xa_nodes), enforced under
-kvm->slots_lock after the idempotency early-out.  A per-VM counter is
-resynchronized from the xarray only when an ioctl mutates the array
-(ENOMEM partials, successful sets and clears), so idempotent re-sets
-and rejected requests stay O(1) =E2=80=94 runtime-verified: a 4 KiB idempot=
-ent
-re-set on an exhausted VM returns in ~4us; a fresh range on an
-exhausted VM is rejected with -ENOSPC in ~17us; the bound cuts growth
-at 2^25 GFNs.
-
-Patch 2/2 restores the intended accounting with a one-liner; it
-attributes the memory but does not bound it (see the analysis below):
-
--       xa_init(&kvm->mem_attr_array);
-+       xa_init_flags(&kvm->mem_attr_array, XA_FLAGS_ACCOUNT);
-
-Design notes for reviewers: the budget value (2^25 GFNs) is a trade-off
-=E2=80=94 it is well above any current consumer's usage but small next to t=
-he
-GPA space TDX/SNP guests can have; a tunable or a symmetric decrement on
-clear are alternatives if maintainers prefer.  The -ENOSPC errno
-distinguishes the bound from the malformed-input -EINVAL paths.
-
-Why a constant and not a derived bound?
-
-We considered bounding materialization by what the VM has actually
-declared instead of a constant, and rejected it because the declaration
-itself is not proportional.  Two candidate signals:
-
-- Memslot coverage ("reject ranges not covered by any memslot"):
-  semantically attractive =E2=80=94 attributes on unbacked GFNs are inert s=
-tate
-  with no consumer (kvm_handle_gfn_range only walks real memslots), and
-  the only in-tree consumer (tools/testing/selftests/kvm, private_mem_
-  conversions_test.c) sets attributes strictly inside its gmem memslot.
-  But it is not a bound: a memslot requires only a MAP_NORESERVE userspace
-  VMA (no committed pages); its kernel cost is the lpage_info metadata
-  (4 bytes/entry, __vcalloc proportional to npages: ~16 MiB for a
-  maximum 8 TiB memslot) while the same memslot's GPA span materializes
-  ~19.9 GiB of xa_nodes =E2=80=94 a ~1200:1 amplification of declared metad=
-ata.
-  Three or four maximum-size NORESERVE memslots suffice to exhaust a
-  64 GiB host.  As a semantic follow-up that eliminates the zero-setup
-  variant of the attack it is worth considering on top of the bound.
-
-- Sum of memslot pages as a dynamic budget: same flaw =E2=80=94 the attacke=
-r
-  raises his own budget by declaring free memslots; without a constant
-  the ceiling becomes the physical address space.
-
-Per-VM accounting to the caller's memcg (patch 2/2) attributes the
-memory but bounds only cgroup-limited tenants; with the common
-/dev/kvm 0666 default and unlimited cgroups it does not bound the host.
-Hence the layering we propose: accounting (2/2) + hard per-VM bound
-(1/2), with memslot-coverage rejection as an optional semantic layer
-the maintainers may prefer on top.
-
-Mitigations
------------
-
-- Restrict /dev/kvm (mode 0660 root:kvm) where the default 0666 is in
-  place.
-- Monitor SReclaimable and /sys/kernel/slab/radix_tree_node/objects, not
-  SUnreclaim: the growth is reclaimable-accounted and never reclaimed.
-- Per-tenant memcg limits do NOT mitigate the common path today (see
-  above), which is why the counter bound is the effective fix.
-
-Notes
------
-
-- Not verified: the TDX/SNP hardware paths end-to-end (no hardware);
-  the software-protected path was verified end-to-end on both versions.
-
---
-2.55.0
-
+Fixes: 5a475554db1e ("KVM: Introduce per-page memory attributes")
+Assisted-by: Claude-Code:GLM-5.3-flash KASAN KCSAN
+Signed-off-by: David Ballesteros <davimaba.v@proton.me>
+---
+--- a/virt/kvm/kvm_main.c=092026-07-26 16:45:48.000000000 -0500
++++ b/virt/kvm/kvm_main.c=092026-09-11 15:10:52.234761758 -0500
+@@ -1117,6 +1117,7 @@
+ =09xa_init(&kvm->vcpu_array);
+ #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+ =09xa_init(&kvm->mem_attr_array);
++=09kvm->mem_attr_gfn_count =3D 0;
+ #endif
+=20
+ =09INIT_LIST_HEAD(&kvm->gpc_list);
+@@ -2533,6 +2534,34 @@
+ =09return kvm_arch_pre_set_memory_attributes(kvm, range);
+ }
+=20
++/*
++ * Return the number of GFNs with a materialized entry in mem_attr_array.
++ * Serialization against modifications is provided by kvm->slots_lock.
++ */
++static unsigned long kvm_count_mem_attr_entries(struct kvm *kvm)
++{
++=09XA_STATE(xas, &kvm->mem_attr_array, 0);
++=09unsigned long count =3D 0;
++=09void *entry;
++
++=09guard(rcu)();
++=09xas_for_each(&xas, entry, ULONG_MAX) {
++=09=09if (xa_is_retry(entry)) {
++=09=09=09xas_pause(&xas);
++=09=09=09continue;
++=09=09}
++=09=09if (entry)
++=09=09=09count++;
++
++=09=09if (need_resched()) {
++=09=09=09xas_pause(&xas);
++=09=09=09cond_resched();
++=09=09}
++=09}
++
++=09return count;
++}
++
+ /* Set @attributes for the gfn range [@start, @end). */
+ static int kvm_vm_set_mem_attributes(struct kvm *kvm, gfn_t start, gfn_t e=
+nd,
+ =09=09=09=09     unsigned long attributes)
+@@ -2555,6 +2584,7 @@
+ =09=09.may_block =3D true,
+ =09};
+ =09unsigned long i;
++=09unsigned long freed =3D 0;
+ =09void *entry;
+ =09int r =3D 0;
+=20
+@@ -2569,13 +2599,56 @@
+ =09=09goto out_unlock;
+=20
+ =09/*
++=09 * Clearing never materializes entries: erasing cannot allocate, so
++=09 * there is no reservation phase, no bound to enforce and no way to
++=09 * fail partway through.  Iterate the present entries only (absent
++=09 * spans are skipped by the xarray walk) and erase them; xa_erase()
++=09 * takes the xa_lock per entry and node frees are RCU-deferred, so
++=09 * the iterator is safe under the RCU lock while kvm->slots_lock
++=09 * excludes other writers.
++=09 */
++=09if (!attributes) {
++=09=09XA_STATE(xas, &kvm->mem_attr_array, start);
++
++=09=09kvm_handle_gfn_range(kvm, &pre_set_range);
++
++=09=09guard(rcu)();
++=09=09xas_for_each(&xas, entry, end - 1) {
++=09=09=09if (xa_is_retry(entry)) {
++=09=09=09=09xas_pause(&xas);
++=09=09=09=09continue;
++=09=09=09}
++=09=09=09xa_erase(&kvm->mem_attr_array, xas.xa_index);
++=09=09=09freed++;
++=09=09=09cond_resched();
++=09=09}
++
++=09=09kvm_handle_gfn_range(kvm, &post_set_range);
++
++=09=09/* Exactly @freed entries left the array; no resync needed. */
++=09=09kvm->mem_attr_gfn_count -=3D freed;
++=09=09mutex_unlock(&kvm->slots_lock);
++
++=09=09return 0;
++=09}
++
++=09/*
++=09 * Bound the number of materialized GFNs per VM.  See the comment on
++=09 * KVM_MEM_ATTR_MAX_GFNS.
++=09 */
++=09if (kvm->mem_attr_gfn_count + (end - start) > KVM_MEM_ATTR_MAX_GFNS) {
++=09=09r =3D -ENOSPC;
++=09=09goto out_unlock;
++=09}
++
++=09/*
+ =09 * Reserve memory ahead of time to avoid having to deal with failures
+ =09 * partway through setting the new attributes.
+ =09 */
+ =09for (i =3D start; i < end; i++) {
+ =09=09r =3D xa_reserve(&kvm->mem_attr_array, i, GFP_KERNEL_ACCOUNT);
+ =09=09if (r)
+-=09=09=09goto out_unlock;
++=09=09=09goto enomem_resync;
+=20
+ =09=09cond_resched();
+ =09}
+@@ -2591,6 +2664,24 @@
+=20
+ =09kvm_handle_gfn_range(kvm, &post_set_range);
+=20
++=09/*
++=09 * Charge the full range: overlapping requests may overcount, which
++=09 * is conservative for a bound and keeps this O(1) instead of a
++=09 * rescan of the array.
++=09 */
++=09kvm->mem_attr_gfn_count +=3D end - start;
++=09mutex_unlock(&kvm->slots_lock);
++
++=09return 0;
++
++enomem_resync:
++=09/*
++=09 * Reservations made so far are retained; recount to restore the
++=09 * invariant that the counter matches the array population.  This is
++=09 * the only path that can leave the counter stale, and it is rare by
++=09 * construction (it requires ENOMEM under the bound).
++=09 */
++=09kvm->mem_attr_gfn_count =3D kvm_count_mem_attr_entries(kvm);
+ out_unlock:
+ =09mutex_unlock(&kvm->slots_lock);
+=20
+--- a/include/linux/kvm_host.h=092026-07-26 16:45:48.000000000 -0500
++++ b/include/linux/kvm_host.h=092026-09-10 14:22:15.505353725 -0500
+@@ -573,6 +573,13 @@
+  * This number must be determined not to exceed such limits.
+  */
+ #define KVM_MEM_MAX_NR_PAGES ((1UL << 31) - 1)
++/*
++ * Hardening bound: maximum number of GFNs with a materialized entry in
++ * mem_attr_array per VM (~300 MiB of xa_nodes at 2^25).  Without it,
++ * KVM_SET_MEMORY_ATTRIBUTES grows the array without limit (~9.3 bytes of
++ * kernel memory per GFN) on GFNs with no backing memory.
++ */
++#define KVM_MEM_ATTR_MAX_GFNS=09(1UL << 25)
+=20
+ /*
+  * Since at idle each memslot belongs to two memslot sets it has to contai=
+n
+@@ -874,6 +881,7 @@
+ #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+ =09/* Protected by slots_lock (for writes) and RCU (for reads) */
+ =09struct xarray mem_attr_array;
++=09unsigned long mem_attr_gfn_count;
+ #endif
+ =09char stats_id[KVM_STATS_NAME_SIZE];
+ };
 
