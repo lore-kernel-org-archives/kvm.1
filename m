@@ -1,199 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7059A4A8FEC;
-	Fri, 11 Sep 2026 17:54:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573AF322C6D
+	for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 18:10:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789149284; cv=none; b=aKtg2rgat9HzkwiE8jha72lJSaC6NVuFk80iGZUBJQxVP1GRdMaX6QQtR9m0Gy5UgrWzv/iVr0+79KgFDPNA7ZkHWNZeIAvRO5boYJkdDoBAV15pQQkHo7NnleJqSkNhVkYffFYcV3QDRpuc6d11FTQhOJaiT1+9LlAyqKYD0xE=
+	t=1789150224; cv=none; b=tLfELuygTqxC667KO3qI28iPWqP0P9YsvjupD7kwGxwvA6GYwuQo8P9mHaaovPVTh7SD4htQELigK5l2RwvpRhzYYRJf+nUrObC4kJbeZSHEJgF4oFcVl4nnWnwcMzfWTmkoW3W941jt5FOPC5DWUvgA+8peMBJOZtvzldCM7lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789149284; c=relaxed/simple;
-	bh=oT2HAQRYlBxYWXZEJgDhIx6sNDjZsCE9IaHCPNajnNI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gMGV6YWZF2aFmna3PGzcIZN+DzjlO9t+JSuAex66A6+rQRicnrPQRFwtmwRBhLA8tMw78HbaZuoCmNA97Hmv9AJuuqH+D6jHHEA6aAjNwNUFGcaOqR+5YoTgmpgP+n6xQKDhkuJFP44fGgDojbUQWXZiMHBHAGMasQ+NbOt10x8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R/PEF628; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789150224; c=relaxed/simple;
+	bh=pwGqM/+vkkzFyVI/JsfB/s0Y3ZhUGDk2RXiK+bDPZ8o=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=leqjZZ1p7D2T0NDrN20kC5adrFmUblvAkPhj0UbFAc2n7dB9AfSxhbdFQamNB4yqneVNdHiUXPFC0ARY9ZFi33OC9ME2/XXgHT7NOLyFrgjPYFiYmTE9dGegGSpXLKprvIw5ZzIuZQ2iaAhwVcRAGr0snWgsw6pHUdE62rbJJIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MJGBsGOL; arc=none smtp.client-ip=209.85.216.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R/PEF628"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E7A1F000FF;
-	Fri, 11 Sep 2026 17:54:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789149283;
-	bh=4FwTYwpGmaK+5ispCEK7HH92jJqAfeRrVmWamTSNnqs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=R/PEF628C82R18CCBiTVgSxDDQxOmmbSQCnHAqmpckaTKvXRHHjbFndk35q0VJwbm
-	 kb2jEKyMa0SLgFgUCZjypSy8TU4f91YFYaL79LnYDkmD5YZ7AL7XoikZdUl97oCh3x
-	 QlUxYbS81ijVUF5fVhlk944TP7D2LmZtxTQuDrzP5dxAVnzOZPYc7bhPn+cxm0sUWh
-	 B4hxxUT5Cc5n6F5+/wjf5RtfTI0VG6FXcU6ZU4ZIB3MMKn1qFBNrVgDZdCZnR5hRoj
-	 ktqkGCSA0q7dC/KO31sDOWJ1h+hudAjLc0nPKfhMCyskclXeDI5VaQY7ZPVta2w4Q2
-	 g7mHI+jtqwWgA==
-Date: Fri, 11 Sep 2026 12:54:37 -0500
-From: Serge Hallyn <sergeh@kernel.org>
-To: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>, ashish.kalra@amd.com,
-	michael.roth@amd.com, nsaenz@amazon.com, anelkz@amazon.de,
-	James.Bottomley@hansenpartnership.com,
-	Melody Wang <huibo.wang@amd.com>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org,
-	x86@kernel.org, coconut-svsm@lists.linux.dev, joerg.roedel@amd.com
-Subject: Re: [PATCH 29/60] kvm: Implement KVM_CREATE_PLANE ioctl
-Message-ID: <aqRAXTdtUY_Yt8zJ@shallyn-amd>
-References: <20260608144252.351443-1-joro@8bytes.org>
- <20260608144252.351443-30-joro@8bytes.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MJGBsGOL"
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3968bb86fb7so1532603a91.2
+        for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 11:10:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789150216; x=1789755016; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=vRIpRvEbMMuUyHQQxsZ0NfIJDkuNXQPXZTlmMz1Dzfo=;
+        b=MJGBsGOL1Vx5T6qgQDRTvsJIxInyquLyKVSC/qnMOScZrZcEgx4T2oqJ3WDUKdg5D9
+         LDJD/LvJBtCmoPIMWA1s68nEMamgKE/2cMjfkqzTfAB1/etNNhRYdiK/f5yyB9Kbuj/O
+         wnwOkY/5MhWTdpbUlxHOcoVoehgFqcVvZr8i+DfKwNBW1Hy/W40zJ0ADs7//MW4zsbji
+         DcL/ZXLxFyZqBJ19Py/IxBnLrDf6HnMoZzHa2EdnOitvlsbJ/NSeQz4EJLNLfa7G64XI
+         lyTgjxJlnWUZQ9X/hF/ggE4Dwrmaqe6Vo11E9l6VJtygoBuwUZ9desx3LNvinXdebafH
+         ZUtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789150216; x=1789755016;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vRIpRvEbMMuUyHQQxsZ0NfIJDkuNXQPXZTlmMz1Dzfo=;
+        b=W/GoMSA8etwj0bWYBoAelj9XoqoowFtOiRRZzWl1CO09NUDfPnxkPNa6b0EU+OLKT7
+         4XmQMnHGt63xMYjx5FCZ/D+4Ju8V84Nmfx7Oc8w05nn1XwvwI0S8v3aZNuUf+yIQEF7q
+         CBLhNHto0ZFIjBdaZgYiKMwD8Vm5CKwqySwKC6skVTuNDTRuskd24hMyBsKwBtgGyYKP
+         tQLnB1tq0aPko5GzYspFinB4DU2XR8ndtPL16CLR+2FP9Xt2D+OQLqaMTn7fyUkponVu
+         4pdiwVaGZ5wPAPno3fppzyU0fhTqXCr3z3xBrAjioFDL3EQbzXO9/d8z8nDAExI2Wo+q
+         5WIg==
+X-Forwarded-Encrypted: i=1; AKwUvBz0tzWHweGSa27nr7KQI/uNH4sYW+d3pV5K8Cuyx+ixfxaxHEAz4z+g9KYmStklH9/bX5A=@vger.kernel.org
+X-Gm-Message-State: AFuF++m/VbR4rQvNaf3EgB5wG2vpFxJbgu5KcPA7S5peOvw812RqcdBw
+	xecVSqUdNx5wkQ36YXt8TCNaah4DMSbqdF+gLTw49Q/tYaUyTm3rowNIGH6aShZLsB7uyMU6IbQ
+	U7OiHxg==
+X-Received: from pjdn62.prod.google.com ([2002:a17:90a:2cc4:b0:39d:a3ec:2af1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3e50:b0:38e:9ef9:eb97
+ with SMTP id 98e67ed59e1d1-39d9c1d8f30mr10349194a91.16.1789150215466; Fri, 11
+ Sep 2026 11:10:15 -0700 (PDT)
+Date: Fri, 11 Sep 2026 11:10:14 -0700
+In-Reply-To: <CALMp9eSG0F9yv_KfYpWk58Ko6ZPcVArijguF=JF61NVVnuAVVQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260608144252.351443-30-joro@8bytes.org>
+Mime-Version: 1.0
+References: <20260908132838.2116068-1-jmattson@google.com> <CADrL8HW3Q=8eBf-=h6BAPdUN_X1Z_-KG=i5a5rA2kF+V4JURww@mail.gmail.com>
+ <CALMp9eRJXozpUpdOhqDCWn7VbqHb9G9hn4aZnxS_fef4ad1yTg@mail.gmail.com>
+ <aqGsukcRG6khmxpt@google.com> <CALMp9eSG0F9yv_KfYpWk58Ko6ZPcVArijguF=JF61NVVnuAVVQ@mail.gmail.com>
+Message-ID: <aqREBvLRKgD5cGgk@google.com>
+Subject: Re: [PATCH] KVM: nVMX: Don't flush shadow VMCS12 to guest memory
+ during vCPU teardown
+From: Sean Christopherson <seanjc@google.com>
+To: Jim Mattson <jmattson@google.com>
+Cc: James Houghton <jthoughton@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 08, 2026 at 04:42:21PM +0200, Jörg Rödel wrote:
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> 
-> Add a new VM ioctl to create a new plane. It returns a new file
-> descriptor which supports per-plane ioctls.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> Co-developed-by: Joerg Roedel <joerg.roedel@amd.com>
-> Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-> ---
->  include/uapi/linux/kvm.h |  2 ++
->  virt/kvm/kvm_main.c      | 75 ++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 77 insertions(+)
-> 
-> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> index 813f964a6dc1..24e34b8e4819 100644
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-> @@ -1355,6 +1355,8 @@ struct kvm_s390_keyop {
->  #define KVM_GET_DEVICE_ATTR	  _IOW(KVMIO,  0xe2, struct kvm_device_attr)
->  #define KVM_HAS_DEVICE_ATTR	  _IOW(KVMIO,  0xe3, struct kvm_device_attr)
->  
-> +#define KVM_CREATE_PLANE	  _IO(KVMIO, 0xe4)
-> +
->  /*
->   * ioctls for vcpu fds
->   */
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 5a0277e2ac7c..03a44ff62f0f 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -4843,6 +4843,34 @@ static long kvm_vcpu_compat_ioctl(struct file *filp,
->  }
->  #endif
->  
-> +static long kvm_plane_ioctl(struct file *filp, unsigned int ioctl,
-> +			    unsigned long arg)
-> +{
-> +	struct kvm_plane *plane = filp->private_data;
-> +
-> +	if (plane->kvm->mm != current->mm || plane->kvm->vm_dead)
-> +		return -EIO;
-> +
-> +	switch (ioctl) {
-> +	default:
-> +		return -ENOTTY;
-> +	}
-> +}
-> +
-> +static int kvm_plane_release(struct inode *inode, struct file *filp)
-> +{
-> +	struct kvm_plane *plane = filp->private_data;
-> +
-> +	kvm_put_kvm(plane->kvm);
-> +	return 0;
-> +}
-> +
-> +static struct file_operations kvm_plane_fops = {
-> +	.unlocked_ioctl = kvm_plane_ioctl,
-> +	.release = kvm_plane_release,
-> +	KVM_COMPAT(kvm_plane_ioctl),
-> +};
-> +
->  static int kvm_device_mmap(struct file *filp, struct vm_area_struct *vma)
->  {
->  	struct kvm_device *dev = filp->private_data;
-> @@ -5288,6 +5316,49 @@ static int kvm_vm_ioctl_get_stats_fd(struct kvm *kvm)
->  	return fd;
->  }
->  
-> +static int kvm_vm_ioctl_create_plane(struct kvm *kvm, unsigned id)
-> +{
-> +	struct kvm_plane *plane;
-> +	struct file *file;
-> +	int r, fd;
-> +
-> +	if (id >= kvm_arch_max_planes(kvm) ||
-> +	    WARN_ON_ONCE(id >= KVM_MAX_PLANES))
-> +		return -EINVAL;
-> +
-> +	guard(mutex)(&kvm->lock);
-> +	if (kvm->planes[id])
-> +		return -EEXIST;
-> +
-> +	fd = get_unused_fd_flags(O_CLOEXEC);
-> +	if (fd < 0)
-> +		return fd;
-> +
-> +	plane = kvm_create_plane(kvm, id);
-> +	if (!plane) {
-> +		r = -ENOMEM;
-> +		goto put_fd;
-> +	}
-> +
-> +	kvm_get_kvm(kvm);
-> +	file = anon_inode_getfile("kvm-plane", &kvm_plane_fops, plane, O_RDWR);
-> +	if (IS_ERR(file)) {
-> +		r = PTR_ERR(file);
-> +		goto put_kvm;
-> +	}
-> +
-> +	fd_install(fd, file);
-> +	return fd;
-> +
-> +put_kvm:
-> +	kvm_put_kvm(kvm);
-> +	kvm_destroy_one_plane(plane);
+On Fri, Sep 11, 2026, Jim Mattson wrote:
+> On Wed, Sep 9, 2026 at 12:00=E2=80=AFPM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> >
+> > So, as an immediate set of changes, what if we do this over ~5 patches,=
+ with patches
+> > 1 and 2 tagged for stable@?
+>=20
+> By "we" here, you do mean the Royal "we," right?
 
-I believe shashiko is right here, and I don't see it changed in a later
-patch:  kvm->planes[id] will still point to the now-freed plane.
-Probably best if kvm_destroy_one_plane(plane) sets that to NULL itself
-after freeing the plane.
+Correct.
 
-> +put_fd:
-> +	put_unused_fd(fd);
-> +	return r;
-> +}
-> +
-> +
->  #define SANITY_CHECK_MEM_REGION_FIELD(field)					\
->  do {										\
->  	BUILD_BUG_ON(offsetof(struct kvm_userspace_memory_region, field) !=		\
-> @@ -5306,6 +5377,9 @@ static long kvm_vm_ioctl(struct file *filp,
->  	if (kvm->mm != current->mm || kvm->vm_dead)
->  		return -EIO;
->  	switch (ioctl) {
-> +	case KVM_CREATE_PLANE:
-> +		r = kvm_vm_ioctl_create_plane(kvm, arg);
-> +		break;
->  	case KVM_CREATE_VCPU:
->  		r = kvm_vm_ioctl_create_vcpu(kvm, arg);
->  		break;
-> @@ -6676,6 +6750,7 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
->  	kvm_chardev_ops.owner = module;
->  	kvm_vm_fops.owner = module;
->  	kvm_vcpu_fops.owner = module;
-> +	kvm_plane_fops.owner = module;
->  	kvm_device_fops.owner = module;
->  
->  	kvm_preempt_ops.sched_in = kvm_sched_in;
-> -- 
-> 2.53.0
-> 
+> I just want to confirm that you aren't expecting anything from me. :)
+
+Do you happen to have a selftest for this?  Even if it's half-baked.  I'll =
+take
+anything you have, at this point I just want a way to test the changes.
