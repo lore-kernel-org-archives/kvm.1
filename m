@@ -1,53 +1,53 @@
-Received: from pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.1.125])
+Received: from pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com [34.218.115.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4CA3C1412;
-	Fri, 11 Sep 2026 17:45:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.1.125
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06DF4A68A0;
+	Fri, 11 Sep 2026 17:46:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.218.115.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789148732; cv=none; b=XTFsGSzqErN15PI0lUUV3pYBafZ7wD3YBHYk9ueacNpoRBqpKBnDV+KM8axud4peEYd3llBlRE51l46oV9jit0DEiP0NggabHrVtsoj7S3qadq6ekdJaDw0axppgD9v2fyFaDf67farsamZSQtEdf1b9sx1g6ixcvtzhIfi8gPk=
+	t=1789148764; cv=none; b=gw6//7GdwHzF9OK426ew6B+hUga4vrGaERwYVfcKZxfWr6ZLEwcGQRlmnKZ9gphvCj8BmzG4mjfWHu2dnnXuf+CnjL7nxFn6FANak8ZKiwQK2+5GIc7p5RAhBPNb555G9lGA5mLTTN0mMvfnbxkjZzemIrAsak0E66tTWIH8xeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789148732; c=relaxed/simple;
-	bh=N0xMLmQWTfo32a7EoonV5A+AHDG36d/UGOK+UwGgnus=;
+	s=arc-20240116; t=1789148764; c=relaxed/simple;
+	bh=6Jm+/yA08ADWx8YuefYsn7Jfo5CbJtNY4gBhQGkg/n8=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KLaYRRnTjB87OcvhJ+/f4m3YrhuOI1+aOCCzonfUrW6t2TIAFPMZbDb37E6BJr8VJZN0qvmQc6gNSPYWFlXxnFy+A4ECmr7Jpx6KVnTrolia9KMCqUdBI5vtqWER7wAJNHJDvJzdYUKqHaFtIXjDp499uDDrs98TCiuQg0IPqZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=a2c795US; arc=none smtp.client-ip=44.246.1.125
+	 MIME-Version:Content-Type; b=FAQ37zvqHiTZMebBNUNPaZvPyFhcbDUa8CTOMklx7T4U4U44VW3/LkCcSg8dQNhdHNbt+RwGpYigwr9YbKeX8FWWBNmOWDHwa1SNNRecbceN4bkD60yVykqMxaxNL+4IEVM+MXKRxiQVI2/QMme7p0iurIZY/rDtsQwmVSSy/JQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=sMtp+Vln; arc=none smtp.client-ip=34.218.115.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="a2c795US"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="sMtp+Vln"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1789148729; x=1820684729;
+  t=1789148762; x=1820684762;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=asf+3vYzEZL5yRPty1Oajrmz0lrx99bnZzGiGsft6Lo=;
-  b=a2c795USGgaVQzkOpUoZLzds+MwEMc0eNWfSk8oSB6O86WnGx6AoU+59
-   w2L52eWlDuFXolB/u96l73cQ8/aAIFORERMDjXc5LGJSuGdZYDI42KUUA
-   0UY16jXS2SUTA8RY5dy26LuOXMe1zMVpSTUkJO449VmJh561kiKgsFpmx
-   GKVh+T4Jn6l3+vzSQSws4pIifrQKFCuPjS8UAtlqQw7F5Kj3GCyEQNhS1
-   6NKaGBar8TWOdEVPaHKQ1yJaJJUOllNiodrJqs9ViHonhhKWqyaQ2jJeV
-   26tSIACtUwzxc15/dZXLuB+J/1JK/BMDaqV3AydtdkLIBnMMq+THXNK49
-   g==;
-X-CSE-ConnectionGUID: P13SAVyuQE2ytQPa9TSm4w==
-X-CSE-MsgGUID: h4qo6XZUQdqa3N6FPu4lDg==
+  bh=uG/E/cyk03CM0gEHgOG/UKkzaznPxEh34D8eww4v9Bk=;
+  b=sMtp+VlnB6z205i3Ecl3rpTJbfomut7os2MWVyQe63f89r7MTM+rVdHH
+   BhJK9cgUDyu3It5pzqERidA0WMMQrHxGSGCoU/JVmMLSzBTk9XkK+GNnQ
+   w1KhsjhPPhyIiQyMCLsSAnw1VSXPiR7E+xtAT15gPYwfQXh6PfsEyiJbr
+   3pKGHwg/99uLAsA35yvGYBg017kIiV2KrRJ+Z1jM/fhxqXqsQOnLzAg9V
+   vqrJklBqlq3IWKCW2OTJ9dZv549xgj5sgsFriIAlboFmLdORc/moXzxTU
+   iM1RnxSjiOsXpUx2Aptn698O8RqvlP8xsvGXLwiSkME6MMuj2Z/O3p+Ol
+   w==;
+X-CSE-ConnectionGUID: jKIpnsKwRmC2bq01T329Vw==
+X-CSE-MsgGUID: 3bWMuIMSTQSq3/49ZGqnNA==
 X-IronPort-AV: E=Sophos;i="6.27,97,1787011200"; 
-   d="scan'208";a="28450871"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 17:45:26 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:18050]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.4.34:2525] with esmtp (Farcaster)
- id 60b44e65-d9c1-4d2f-8af6-1b829b845994; Fri, 11 Sep 2026 17:45:26 +0000 (UTC)
-X-Farcaster-Flow-ID: 60b44e65-d9c1-4d2f-8af6-1b829b845994
+   d="scan'208";a="28234943"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 17:46:00 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.105:21540]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.43.236:2525] with esmtp (Farcaster)
+ id 24028455-f724-4a4f-9274-2dc7c3f15751; Fri, 11 Sep 2026 17:46:00 +0000 (UTC)
+X-Farcaster-Flow-ID: 24028455-f724-4a4f-9274-2dc7c3f15751
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
- Fri, 11 Sep 2026 17:45:26 +0000
+ Fri, 11 Sep 2026 17:46:00 +0000
 Received: from dev-dsk-sakacpav-1a-480d1124.eu-west-1.amazon.com
  (172.19.96.155) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.46; Fri, 11 Sep 2026
- 17:45:23 +0000
+ 17:45:57 +0000
 From: Pavol Sakac <sakacpav@amazon.de>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Tejun Heo
 	<tj@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich
@@ -57,9 +57,9 @@ CC: <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>, "Andy
 	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, Bjorn Helgaas
 	<bhelgaas@google.com>, <linux-pci@vger.kernel.org>, Alex Williamson
 	<alex@shazbot.org>, <kvm@vger.kernel.org>, <nh-open-source@amazon.com>
-Subject: [RFC PATCH 3/8] sysfs: add opt-in staged directory creation and publication
-Date: Fri, 11 Sep 2026 19:43:35 +0200
-Message-ID: <20260911174414.97060-3-sakacpav@amazon.de>
+Subject: [RFC PATCH 4/8] driver core: Register opted-in devices through the staged sysfs path
+Date: Fri, 11 Sep 2026 19:43:36 +0200
+Message-ID: <20260911174414.97060-4-sakacpav@amazon.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260911-vfopt-s5-v1-0-fa4cacdb6ca8@amazon.de>
 References: <20260911-vfopt-s5-v1-0-fa4cacdb6ca8@amazon.de>
@@ -71,179 +71,194 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D038UWC002.ant.amazon.com (10.13.139.238) To
+X-ClientProxiedBy: EX19D036UWB001.ant.amazon.com (10.13.139.133) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Wire the kernfs staged mechanism into sysfs without touching a single
-population entry point. struct kobject gains one opt-in bit, sd_staged,
-in the existing state bitfield hole, so no struct grows. When it is set,
-sysfs_create_dir_ns() builds the directory with
-kernfs_create_dir_ns_staged(); because kobj->sd is valid throughout the
-window, every existing population path runs verbatim and staging lives
-entirely below them in kernfs. The kobj->sd store becomes
-smp_store_release() for every kobject, eager paths included, ordering
-the node's initialisation before the pointer's publication.
+dev_set_sysfs_staged() opts a device in to staged registration before
+device_add(). struct device gains one flag, DEV_FLAG_SYSFS_STAGED, in
+the existing flags bitmap, so the struct does not grow.
 
-sysfs_publish_dir() performs the staged-to-visible transition via
-kernfs_publish(). It is __must_check like its sibling directory
-creators, because an ignored publication failure leaves a permanently
-invisible directory. The only modular caller anticipated is the KUnit
-suite a later patch in this series adds, so the export is scoped with
-EXPORT_SYMBOL_IF_KUNIT().
+device_add() stays a single code path with a staged bracket: it arms
+staged creation once the parent kobject is resolved, everything it builds
+in between lands in the staged subtree through unchanged code, and after
+device_pm_add() sysfs_publish_dir() makes the whole subtree visible in
+one step, before anything announces the device. bus_add_device() defers
+its bus-klist insertion until just after publication, because
+driver_attach() walks that klist and must not see a not-yet-published
+device.
+
+A class device with no parent lands under a class glue directory and
+needs no special casing: cleanup_glue_dir() cannot see a staged child
+through kobject_has_children(), but since commit ac43432cb1f5 ("driver
+core: Fix use-after-free and double free on glue directory") that gate
+also requires the caller's reference to be the last one, and a staged
+device holds two.
+
+Two transients are new and bounded. A symlink pointing at this device
+from an already-published directory resolves -ENOENT until publication,
+and an eager device_add() nested under the still-staged device fires its
+KOBJ_ADD before its own path resolves. Neither opt-in reaches that
+second case; code the opt-in caller does not control can, through the
+two wakeup-source routes named in the uevent-deferral patch. Both close
+at publication, before the ancestor's own KOBJ_ADD. The symlink
+transient announces nothing; the nested child's KOBJ_ADD does announce
+a path that does not yet resolve, and a later commit defers and replays
+exactly these events. Opt-in is therefore appropriate for devices
+whose nested children, if any, tolerate being fully registered,
+enumerable and bindable, while their sysfs tree is not yet visible.
+
+Publish-side code reads the kobject's sd_staged snapshot rather than this
+flag, which is free to change once device_add() has sampled it.
 
 Assisted-by: LLM
 Signed-off-by: Pavol Sakac <sakacpav@amazon.de>
 ---
- fs/sysfs/dir.c          | 52 ++++++++++++++++++++++++++++++++++++++---
- include/linux/kobject.h | 25 ++++++++++++++++++++
- include/linux/sysfs.h   |  6 +++++
- 3 files changed, 80 insertions(+), 3 deletions(-)
+ drivers/base/base.h    |  1 +
+ drivers/base/bus.c     | 29 ++++++++++++++++++++++++++++-
+ drivers/base/core.c    | 27 +++++++++++++++++++++++++++
+ include/linux/device.h | 11 +++++++++++
+ 4 files changed, 67 insertions(+), 1 deletion(-)
 
-diff --git a/fs/sysfs/dir.c b/fs/sysfs/dir.c
-index ffdcd4153c58..1694c01e8b84 100644
---- a/fs/sysfs/dir.c
-+++ b/fs/sysfs/dir.c
-@@ -11,6 +11,7 @@
+diff --git a/drivers/base/base.h b/drivers/base/base.h
+index f5d608f4aaa5..5c8266dad7f8 100644
+--- a/drivers/base/base.h
++++ b/drivers/base/base.h
+@@ -157,6 +157,7 @@ static inline void auxiliary_bus_init(void) { }
+ struct kobject *virtual_device_parent(void);
  
- #define pr_fmt(fmt)	"sysfs: " fmt
+ int bus_add_device(struct device *dev);
++void bus_add_device_publish(struct device *dev);
+ void bus_probe_device(struct device *dev);
+ void bus_remove_device(struct device *dev);
+ void bus_notify(struct device *dev, enum bus_notifier_event value);
+diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+index d17bd91490ee..f5af3b1e2ee3 100644
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -588,7 +588,16 @@ int bus_add_device(struct device *dev)
+ 	if (error)
+ 		goto out_subsys;
  
-+#include <kunit/visibility.h>
- #include <linux/fs.h>
- #include <linux/kobject.h>
- #include <linux/slab.h>
-@@ -56,18 +57,63 @@ int sysfs_create_dir_ns(struct kobject *kobj, const struct ns_common *ns)
- 
- 	kobject_get_ownership(kobj, &uid, &gid);
- 
--	kn = kernfs_create_dir_ns(parent, kobject_name(kobj), 0755, uid, gid,
--				  kobj, ns);
-+	if (kobject_sd_staged(kobj))
-+		kn = kernfs_create_dir_ns_staged(parent, kobject_name(kobj),
-+						 0755, uid, gid, kobj, ns);
-+	else
-+		kn = kernfs_create_dir_ns(parent, kobject_name(kobj), 0755,
-+					  uid, gid, kobj, ns);
- 	if (IS_ERR(kn)) {
- 		if (PTR_ERR(kn) == -EEXIST)
- 			sysfs_warn_dup(parent, kobject_name(kobj));
- 		return PTR_ERR(kn);
- 	}
- 
--	kobj->sd = kn;
+-	klist_add_tail(&dev->p->knode_bus, &sp->klist_devices);
 +	/*
-+	 * Publish the node with release semantics: every initialisation of
-+	 * @kn above is ordered before the pointer store, so a task that
-+	 * learns of @kobj through a synchronising handoff (registration
-+	 * locks, a uevent, a notifier) observes a fully initialised node.
-+	 * The kernfs staged funnel re-verifies the flags it routes on under
-+	 * its mutex, so its pre-lock advisory reads decide nothing.
++	 * A staged device must not appear on the bus klist (walked by
++	 * driver_attach()) until it has been published, or a driver could bind
++	 * to a not-yet-visible device.  Defer the insertion to
++	 * bus_add_device_publish().  The sp reference taken above is held until
++	 * device removal in both cases, and bus_remove_device() already
++	 * tolerates a never-inserted knode_bus via klist_node_attached().
 +	 */
-+	smp_store_release(&kobj->sd, kn);
++	if (!kobject_sd_staged(&dev->kobj))
++		klist_add_tail(&dev->p->knode_bus, &sp->klist_devices);
  	return 0;
+ 
+ out_subsys:
+@@ -603,6 +612,24 @@ int bus_add_device(struct device *dev)
+ 	return error;
  }
  
 +/**
-+ * sysfs_publish_dir - make a staged kobject directory visible
-+ * @kobj: object whose staged directory is to be published
++ * bus_add_device_publish - finish bus registration deferred past publication
++ * @dev: the now-published staged device
 + *
-+ * Completes the staged creation begun by sysfs_create_dir_ns() when
-+ * kobject_set_sd_staged() armed it: links the directory and everything
-+ * populated beneath it into the parent and activates it in a single step.
-+ * On a name collision the standard duplicate-name warning is emitted,
-+ * matching sysfs_create_dir_ns().
-+ *
-+ * Return: 0 on success, -EEXIST on a name collision, -ENOENT if the parent
-+ * went away, or -EINVAL on misuse (WARN).  On failure the subtree stays staged
-+ * and is removed by the caller's normal error unwind
-+ * (kobject_del()/sysfs_remove_dir()).
++ * Performs the bus klist insertion bus_add_device() deferred for a staged
++ * device; see the comment there.
 + */
-+int sysfs_publish_dir(struct kobject *kobj)
++void bus_add_device_publish(struct device *dev)
 +{
-+	int ret;
++	struct subsys_private *sp = bus_to_subsys(dev->bus);
 +
-+	if (WARN_ON(!kobj || !kobj->sd))
-+		return -EINVAL;
++	if (!sp)
++		return;
 +
-+	ret = kernfs_publish(kobj->sd);
-+	if (ret == -EEXIST) {
-+		struct kernfs_node *parent = kernfs_get_parent(kobj->sd);
-+
-+		sysfs_warn_dup(parent, kobject_name(kobj));
-+		kernfs_put(parent);
-+	}
-+	return ret;
++	klist_add_tail(&dev->p->knode_bus, &sp->klist_devices);
++	subsys_put(sp);
 +}
-+EXPORT_SYMBOL_IF_KUNIT(sysfs_publish_dir);
 +
  /**
-  *	sysfs_remove_dir - remove an object's directory.
-  *	@kobj:	object.
-diff --git a/include/linux/kobject.h b/include/linux/kobject.h
-index 55e37a5d405e..938ff5ff747e 100644
---- a/include/linux/kobject.h
-+++ b/include/linux/kobject.h
-@@ -75,12 +75,37 @@ struct kobject {
- 	unsigned int state_add_uevent_sent:1;
- 	unsigned int state_remove_uevent_sent:1;
- 	unsigned int uevent_suppress:1;
-+	/* see kobject_set_sd_staged() */
-+	unsigned int sd_staged:1;
+  * bus_probe_device - probe drivers for a new device
+  * @dev: device to probe
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 5dea641cbdb6..caba5610a04d 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -3740,6 +3740,14 @@ int device_add(struct device *dev)
+ 	if (kobj)
+ 		dev->kobj.parent = kobj;
  
- #ifdef CONFIG_DEBUG_KOBJECT_RELEASE
- 	struct delayed_work	release;
- #endif
++	/*
++	 * Glue-dir parents are safe: cleanup_glue_dir() only reaps a glue
++	 * dir whose kref is 1, and this device holds a glue-dir reference
++	 * from get_device_parent() for the whole staged window.  Assigned
++	 * unconditionally so a reused kobject cannot carry a stale bit.
++	 */
++	kobject_set_sd_staged(&dev->kobj, dev_sysfs_staged(dev));
++
+ 	/* use parent numa_node */
+ 	if (parent && (dev_to_node(dev) == NUMA_NO_NODE))
+ 		set_dev_node(dev, dev_to_node(parent));
+@@ -3773,6 +3781,25 @@ int device_add(struct device *dev)
+ 		goto DPMError;
+ 	device_pm_add(dev);
+ 
++	/*
++	 * Publish the staged directory before anything makes the device
++	 * observable: the /sys/dev entry, the devtmpfs node,
++	 * BUS_NOTIFY_ADD_DEVICE, the KOBJ_ADD uevent and driver probing all
++	 * follow.  Once published, the deferred bus klist insertion puts the
++	 * device where driver_attach() can see it.  (The outside-in symlinks
++	 * whose target is this device -- class/bus/ACPI -- are created earlier
++	 * and resolve only at publication.)  Children added by notify hooks
++	 * inside the staged window were created staged-interior and are
++	 * published together with this device; their uevents may precede
++	 * their sysfs visibility.
++	 */
++	if (kobject_sd_staged(&dev->kobj)) {
++		error = sysfs_publish_dir(&dev->kobj);
++		if (error)
++			goto DevAttrError;
++		bus_add_device_publish(dev);
++	}
++
+ 	if (MAJOR(dev->devt)) {
+ 		error = device_create_file(dev, &dev_attr_dev);
+ 		if (error)
+diff --git a/include/linux/device.h b/include/linux/device.h
+index aee79fd6b32b..74701a8aa9d2 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -599,6 +599,15 @@ struct device_physical_location {
+  *		ancestor device.
+  * @DEV_FLAG_OFFLINE_DISABLED: If set, the device is permanently online.
+  * @DEV_FLAG_OFFLINE: Set after successful invocation of bus type's .offline().
++ * @DEV_FLAG_SYSFS_STAGED: Opt in to staged sysfs registration.  device_add()
++ *		then builds the device's sysfs directory and all content added
++ *		before the publication point invisibly and off the sysfs root
++ *		lock, and publishes it in one step before the device becomes
++ *		observable to userspace or to drivers.  The per-device
++ *		sysfs-root lock cost stops scaling with the number of nodes in
++ *		the directory, which matters when many devices (for example
++ *		SR-IOV virtual functions) are registered in parallel.
++ *		Must be set before device_add().
+  * @DEV_FLAG_COUNT: Number of defined struct_device_flags.
+  */
+ enum struct_device_flags {
+@@ -612,6 +621,7 @@ enum struct_device_flags {
+ 	DEV_FLAG_OF_NODE_REUSED = 7,
+ 	DEV_FLAG_OFFLINE_DISABLED = 8,
+ 	DEV_FLAG_OFFLINE = 9,
++	DEV_FLAG_SYSFS_STAGED = 10,
+ 
+ 	DEV_FLAG_COUNT
  };
+@@ -829,6 +839,7 @@ __create_dev_flag_accessors(dma_coherent, DEV_FLAG_DMA_COHERENT);
+ __create_dev_flag_accessors(of_node_reused, DEV_FLAG_OF_NODE_REUSED);
+ __create_dev_flag_accessors(offline_disabled, DEV_FLAG_OFFLINE_DISABLED);
+ __create_dev_flag_accessors(offline, DEV_FLAG_OFFLINE);
++__create_dev_flag_accessors(sysfs_staged, DEV_FLAG_SYSFS_STAGED);
  
-+/**
-+ * kobject_set_sd_staged - arm staged sysfs directory creation
-+ * @kobj: object whose directory creation mode is being set
-+ * @staged: true to create the directory staged (invisible)
-+ *
-+ * Set before kobject_add(); read by sysfs_create_dir_ns() at add time and
-+ * by the caller's publish path afterwards.  The bit is the snapshot of
-+ * what sysfs honored at add time; publish paths must read it, not
-+ * whatever live state armed it, so the query cannot race the
-+ * registration.  The bit is never cleared: a kobject re-added after
-+ * kobject_del() is staged again and requires another sysfs_publish_dir().
-+ */
-+static inline void kobject_set_sd_staged(struct kobject *kobj, bool staged)
-+{
-+	kobj->sd_staged = staged;
-+}
-+
-+/* see kobject_set_sd_staged() */
-+static inline bool kobject_sd_staged(const struct kobject *kobj)
-+{
-+	return kobj->sd_staged;
-+}
-+
- __printf(2, 3) int kobject_set_name(struct kobject *kobj, const char *name, ...);
- __printf(2, 0) int kobject_set_name_vargs(struct kobject *kobj, const char *fmt, va_list vargs);
+ #undef __create_dev_flag_accessors
  
-diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
-index b1a3a1e6ad09..b537a5b52e1a 100644
---- a/include/linux/sysfs.h
-+++ b/include/linux/sysfs.h
-@@ -397,6 +397,7 @@ struct sysfs_ops {
- #ifdef CONFIG_SYSFS
- 
- int __must_check sysfs_create_dir_ns(struct kobject *kobj, const struct ns_common *ns);
-+int __must_check sysfs_publish_dir(struct kobject *kobj);
- void sysfs_remove_dir(struct kobject *kobj);
- int __must_check sysfs_rename_dir_ns(struct kobject *kobj, const char *new_name,
- 				     const struct ns_common *new_ns);
-@@ -507,6 +508,11 @@ static inline int sysfs_create_dir_ns(struct kobject *kobj, const struct ns_comm
- 	return 0;
- }
- 
-+static inline int sysfs_publish_dir(struct kobject *kobj)
-+{
-+	return 0;
-+}
-+
- static inline void sysfs_remove_dir(struct kobject *kobj)
- {
- }
 -- 
 2.47.3
 
