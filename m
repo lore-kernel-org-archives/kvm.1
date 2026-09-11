@@ -1,129 +1,168 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F1E49F10B
-	for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 16:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA3149E5D0;
+	Fri, 11 Sep 2026 16:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789142834; cv=none; b=PQ4M9q6dkbNeQhK/jIsV8Vo8GSElagkuMMv8BlFJC6qvcdZTmPfykxBOsPn7UZtAkgIHZgHrpR1D3RukKfzj4aWqNoZ5/1PLrQ6K0uAHIuMso2cLzHco+M12z+aHsPBJ6Uw8KJ8xhTDXWJHiK6JGkbMBOKNNC8VbDbU7y5ibsdo=
+	t=1789143271; cv=none; b=uganEGkBdZFd6Zn303U1bs0zhbo+sPcInlBOWFECV/kNnBV1jE79Se+9j8DYb01qAncQ+lR98HonmLYJWDO6V72SQUee0QWP0yUV0RJNTzfl8RS6mXmOItUBUPC2HqLs2rLkm+y73BYE8xVZ14v/d4AhVvj/5jbyXn881XPoF50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789142834; c=relaxed/simple;
-	bh=nuPrr44xoLc5kroY0NPcpA+oexmOZCCdbxfk5MsRnDo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ILjXHThfYJ1qqRS/JAJVcythw5OIJjaYLVrWRegbDFuq1wegftu0cQG/hDDl4LZfRJErfbwZV3atKOcHlutQRGbaEk/v+ZtXdS7wMn1XWQ1D+63Yn+DQpMkruUCexXpE15ijVw2ToVyQXWRtKCDsCNGraDtPJOyVyN/a/e3JyGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PiGWeHLH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789143271; c=relaxed/simple;
+	bh=4GQBiBIo+qcJsJlKDNYaahbdSDXXKK0YlvpfTJ8GarI=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oXc43a4yN9CI4/DX/1qvYZh77Y+9MxEicke/aRrp5ldvxGajls1GL7LKLZ0gYkViBF4D/2Alxwkbh5519cYXXRBbXmAQO6US1qif8/H8OeQ3RQC3GnVnm52ru/9s0o24MzXqVQRZhV+6IOB+WRQvRNTeg42itywts2wI2R8J338=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nhLJkpW8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PiGWeHLH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78A81F00898;
-	Fri, 11 Sep 2026 16:07:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nhLJkpW8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA15B1F00898;
+	Fri, 11 Sep 2026 16:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789142833;
-	bh=7yntamAm4HFt+Ol6oW5LWlb7ORis3DGYSxiR5vOlA6o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PiGWeHLHijq0oj8loday66evISa5m/DyZA71+lGPHf+m15EJCKkIVpd/QaGLjEVmD
-	 qmPV4uAHENRGCR9KNHzLimClSEBfxnp2aBdNZNA/gJoHzshIoHTry9xUEKs/uTQofm
-	 WFS3WgU3NNV3/4+YsNZv+gI0SOKyCHMSxlBUFW0ISrf6nZn/lHi0nwLPR0KR7KmYKQ
-	 dsfAYVUuLMooN8xtQBQF+fxL/ucmRjXBxFfyAQJGOm+1cqoknaPWw/VYm3zXV1Pzad
-	 g/R25P+pW+6Dh+xlosDY/toMQhblGNHT2YSqcDeDUJQ2MvJcLtemhv3QyuF0KkWG1E
-	 wZhFsf9cLkjWQ==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.ams.internal (Postfix) with ESMTP id E7BBD1980058;
-	Fri, 11 Sep 2026 12:07:09 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Fri, 11 Sep 2026 12:07:11 -0400
-X-ME-Sender: <xms:LSekaqfOOgdUAUHe_Opc04lUpxM9CYQD3_5SMMzprsELWwjlVCcD6g>
-    <xme:LSekas-i0NrLNxBRElPMwbVM3wSO-veTVfYOkoZdSO_llr8f0EZTTepuAs4Faudmq
-    tO8UdVJPljEysJNGzvTF281-NYSjZUhVLSWWeG2nQls5IOkUrrqnzt6>
-X-ME-Received: <xmr:LSekaqNrjoB7WzL3ERPr30A-IjMV-AsPRuKwQDYQhgnnaAqpCPDNNYy3ac4>
-X-ME-Proxy-Cause: dmFkZTEPuk0FYyYX5UeRrgeA9QObt28HeMOiTkxCK5r8Pm5mtPalFZB2LAGwFWc2RIJttg
-    GIcbMwkaDwxinkh4hr4VhDlnc6+H9gUFMNlvck0zocxFnTQz5FA88BLQeTtC0tYarXx7vr
-    wNyJZoxXwbuzvbPWn4Qiwuf2zUU5hY6CrDN3KkYSvA0X0NqWnXeHVFRPGiVYaT9U/C7Tev
-    jICeUzM5dF7TbpWScaOI0GjVbKlIHKF7FfaFBLH5pdHh1hGEf3vv+h216Ez6rHJNjYnYbg
-    JPMqYvHkB13D5O52II8d6N9iaz1fWTuHrXsQ2TDjTdsePreSFlYF+kVfg99EdRC9HkCWiV
-    jR42Ipdw8wUtH4pgw+3yhbUjaFw76Bk0d/vX1LPebwNCHcBz+o6zSGmgCSkl7q+2iLg3xm
-    YzTdSyt98+K8pZaLNjPvL3SpMTZ8YiwB14zkDAEUF3g9Z4d2ntTQWzz0CW/6+THclx6g66
-    4nz3xNO97fggwr3cOybpFpP1lmKxjQwdNbv640T+dslVM00pyNv/uQAoalwvYeuDtjEMvZ
-    6SOISttLdcJg7rXq2vhoGkGWXt9PdT08LX0OivX+eSYl5pwRqgUFBMa0KRbSxqlgu5ZNL1
-    t9K36ACvCXjSU/oDttzTy9mr5SXM8+kwLMN5NvbKmmCfQ6dj4c1rE/+2HTXQ
-X-ME-Proxy: <xmx:LSekaqXdtqfWZr0DzYbXei2R6Kh-pnG78pYw_dvVZchKAtoY3mTH8A>
-    <xmx:LSekaqhc0bnkamGSsjh7bPhlyWeQ819kuMQGP-DunJqF_bqbnLzNPA>
-    <xmx:LSekai8aOlbB4KsglDjECC6TJH2GurieEY8lcnGS4n55ossZNwH9BQ>
-    <xmx:LSekapRpPeUkLs_Mr43uRsFQlrOWX5gX4sygGyynwBEO6u2J-XtYNg>
-    <xmx:LSekaptJVIl1nSekvmisoraIM91RUe-yf7AM-zVgR0lYWKjRMMAgUpiQ>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 11 Sep 2026 12:07:08 -0400 (EDT)
-Date: Fri, 11 Sep 2026 17:07:07 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Verma, Vishal L" <vishal.l.verma@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "ak@linux.intel.com" <ak@linux.intel.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH] x86/tdx: Remove the early #VE handler
-Message-ID: <aqQmNeXQv05SK86g@thinkstation>
-References: <20260910-b4-tdx_remove_early_ve_handler-v1-1-bf47a4d360c5@intel.com>
- <b41da075607d1eaa9d96eddbf3acc24502edd604.camel@intel.com>
- <aqPTIyi--7f2Fzxm@thinkstation>
- <93b41dce8d7a9b4f28bfed2a51f919eebec9b7f5.camel@intel.com>
+	s=k20260515; t=1789143269;
+	bh=hHOxwJzdAOdqO5u2s6Tk+2w3Xe4vyjxHhTA47EDAalw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=nhLJkpW8p1NUcjeRDycANyW1eSFa2JlEyTfLerpmub7R6YEfUxNSdUrm6xNF2eZOy
+	 TRdx/N8VZfMtQifNxw1m1TkbgnMC1OIc7/qMhZbx0ke5zsQQCRx7zu3nuR+sN3S9B7
+	 Tx1u/rlTY/k4ObYn//tTOnmBPv6YVCY2wHsc/dymkLZ9FBO7MsHxi6ADi06Vaaobro
+	 E3mEGIfLS+jjfzBiMx14C5bEpCvnyoIvEiTsx374Fl4elQWfGtAnxPc8S8d8i+g4gF
+	 L5WXaoOdHjd0G94mDOICUaNs7qa1DlUQ1ragp+UqGqXRzBXboS74dt4pEXPyg440Ay
+	 I7UUS+xCxqvvw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1x53tT-00000007qHf-2NtI;
+	Fri, 11 Sep 2026 16:14:27 +0000
+Date: Fri, 11 Sep 2026 17:14:27 +0100
+Message-ID: <86fqzf7okc.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	will@kernel.org,
+	catalin.marinas@arm.com,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	steven.price@arm.com,
+	aneesh.kumar@kernel.org,
+	oupton@kernel.org,
+	gshan@redhat.com,
+	joey.gouly@arm.com,
+	tabba@google.com,
+	yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev,
+	gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com,
+	alpergun@google.com,
+	fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com,
+	lpieralisi@kernel.org,
+	enju.kohei@fujitsu.com
+Subject: Re: [PATCH v17 03/20] KVM: arm64: Track the type of VM in kvm_arch
+In-Reply-To: <20260908162223.1683432-4-suzuki.poulose@arm.com>
+References: <20260908162223.1683432-1-suzuki.poulose@arm.com>
+	<20260908162223.1683432-4-suzuki.poulose@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <93b41dce8d7a9b4f28bfed2a51f919eebec9b7f5.camel@intel.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: suzuki.poulose@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Fri, Sep 11, 2026 at 03:24:34PM +0000, Edgecombe, Rick P wrote:
-> On Fri, 2026-09-11 at 11:37 +0100, Kiryl Shutsemau wrote:
-> > > Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> > 
-> > Rick, could you actually test it?
+On Tue, 08 Sep 2026 17:22:06 +0100,
+Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
 > 
-> I didn't test it myself, but discussed with Vishal his testing.
+> KVM arm64 has different types of VMs with all the different modes in which the
+> hypervisor code can be run. e.g., VHE, nVHE, PKVM etc. Then there is protected
+> VM and normal VMs with PKVM. We might soon add other types, e.g., Arm CCA Realm.
+> So in an effort to make the handling of these different types of VMs a bit more
+> friendlier to the eyes, add a VM flavor to the kvm_arch and we could then add
+> handlers for different operations based on the VM type.
 > 
-> > 
-> > Are we sure there's no other port I/O in before idt_setup_early_traps()?
+> Keep the flavor initialisation at the beginning to allow for the detection
+> early enough and fail out on any unsupported requests. (e.g., protected on !PKVM)
 > 
-> It was a concern that some other feature besides early printk might use port io.
-> But none were found. Andi's recollection was that he hit something that needed
-> this, but this may have been with some older changed early printk behavior.
+> With that, use the vm_flavor to detect if a VM is protected VM on PKVM.
 > 
-> > 
-> > I don't see anything direct, but exception path is different story.
-> > 
-> > native_machine_emergency_restart() does port I/O for BOOT_KBD which
-> > seems to be reachable and leads to #VE with the patch:
-> > 
-> > machine_emergency_restart()
-> >   __machine_emergency_restart(1)
-> >     machine_ops.emergency_restart()
-> >       native_machine_emergency_restart()
-> >         reboot_type == BOOT_ACPI (default)
-> > 	acpi_reboot()
-> > 	reboot_type = BOOT_KBD
-> >   	  kb_wait()
-> >             inb(0x64) --> #VE
+> Based on a patch by Marc Zyngier
 > 
-> Is BOOT_KBD something that you think could be hit from a TDX guest?
+> Suggested-by: Marc Zyngier <maz@kernel.org>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> ---
+>  arch/arm64/include/asm/kvm_host.h | 12 ++++++++++--
+>  arch/arm64/kvm/arm.c              | 27 ++++++++++++++++++++++++---
+>  arch/arm64/kvm/hyp/nvhe/pkvm.c    |  2 +-
+>  arch/arm64/kvm/pkvm.c             |  1 -
+>  4 files changed, 35 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> index 27fe0cd5b2d7a..d0dccc9ad6aa8 100644
+> --- a/arch/arm64/include/asm/kvm_host.h
+> +++ b/arch/arm64/include/asm/kvm_host.h
+> @@ -257,7 +257,6 @@ struct kvm_protected_vm {
+>  	pkvm_handle_t handle;
+>  	struct kvm_hyp_memcache teardown_mc;
+>  	struct kvm_hyp_memcache stage2_teardown_mc;
+> -	bool is_protected;
+>  	bool is_created;
+>  
+>  	/*
+> @@ -306,9 +305,18 @@ enum fgt_group_id {
+>  	__NR_FGT_GROUP_IDS__
+>  };
+>  
+> +enum kvm_arm_vm_flavor {
+> +	VM_NVHE,
+> +	VM_VHE,
+> +	VM_PKVM,		/* Normal guests on PKVM */
+> +	VM_PROTECTED_PKVM,	/* Protected VM */
+> +	VM_FLAVOR_MAX,
+> +};
+> +
 
-It is the first fallback from default BOOT_ACPI failure. But it is just
-an example of port I/O I found.
+My original design did introduce classes of VMs, which I definitely
+want to retain so that we don't pointlessly differentiate CCA VMs from
+pKVM protected guests when at all possible. Realms are protected VMs,
+full stop.
 
-> > Could you check if the patch changes panic() behaviour in the window
-> > before idt_setup_early_traps()?
-> 
-> Can you describe more what you are imagining? panic() doing early printk or some
-> other port io? Wondering if you have some more specific hunch.
+With that in mind, this should read:
 
-I don't see panic() triggering early printk, but I see potential path to
-other port I/O as pointed above.
+enum kvm_arm_vm_flavor {
+	VM_NVHE,
+	VM_VHE,
+	VM_PKVM,		/* Normal guests on PKVM */
+	MARKER(__VM_FLAVOR_PROTECTED__),
+	VM_PROTECTED_PKVM,	/* Protected VM */
+	VM_REALM,		/* CCA */
+	VM_FLAVOR_MAX,
+};
 
-I have vague recollection that I tried to remove it before, but
-something stopped me.
+>  struct kvm_arch {
+>  	struct kvm_s2_mmu mmu;
+>  
+> +	enum kvm_arm_vm_flavor vm_flavor;
+>  	/*
+>  	 * Fine-Grained UNDEF, mimicking the FGT layout defined by the
+>  	 * architecture. We track them globally, as we present the
+> @@ -1504,7 +1512,7 @@ struct kvm *kvm_arch_alloc_vm(void);
+>  
+>  #define __KVM_HAVE_ARCH_FLUSH_REMOTE_TLBS_RANGE
+>  
+> -#define kvm_vm_is_protected(kvm)	(is_protected_kvm_enabled() && (kvm)->arch.pkvm.is_protected)
+> +#define kvm_vm_is_protected(kvm)	((kvm)->arch.vm_flavor == VM_PROTECTED_PKVM)
+
+and this should read ((kvm)->arch.vm_flavor >= __VM_FLAVOR_PROTECTED__).
+
+Thanks,
+
+	M.
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Without deviation from the norm, progress is not possible.
