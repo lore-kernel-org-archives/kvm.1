@@ -1,140 +1,151 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D76F352003
-	for <kvm@vger.kernel.org>; Sat, 12 Sep 2026 09:04:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EDB400DF6
+	for <kvm@vger.kernel.org>; Sat, 12 Sep 2026 09:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789203850; cv=none; b=D/E4sbAmLC+veoI6pR3QMmcZXUW2fC5swOOUMEyP8t/iAAgNmVIXuVdJxcT7o7tvOiIf6iudDNJW3HFU56+llSPmLpkX+E1NV0FhdvkI3RT2BPiGqvBIIWEbAwW7AmCkrGS9DhqtcucLKcFF8PWA1h20ci6CyOmCLAyje7NDIOs=
+	t=1789203890; cv=none; b=ecyFk1TEaW7r9McK/LtU0gkiLXKgXwaMzXopmOaKmSABRDM0dqLozuHXz3SBmfwFN69qRK8hRgsavj5rA16Kg3LWBMyvTIMsH2JJCFBxPLA9id+GEb0BqymMheRI6SQk4EDd4qKzF1gx5cAtjrmKJzh1A2zgpupbHGNCHz6aCEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789203850; c=relaxed/simple;
-	bh=xD8JxPHjaxpnElNEZUSN/58hUhREedKqk8QVI12u0wI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bu5TKt3c75urpY/NxbkkJ8LdAv48V9xIue6X3WLM5+RhcyGhQkbW6UBW39B9y89GgaJddczis0eSp/GMhYkkbP/zrMc1n+XzDEggniuDT6jVoJXoOksBK4Hgv9fl0HyUjbbxsxHEMg2B8Wc0sf3V/2lA+lFX+ihjo2Ul6TZrZ/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=acWvDJE1; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1789203890; c=relaxed/simple;
+	bh=T2GpveXf86xU4PJdOWIIi5lBw5gHgOvqTYsANeAQESM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PPOz0CtlseDCamN0l0FR+esBTk3gRqCWQpK/vblQaB791FUKAiHLUi6HS0y2G7GwCBN6PgbSjjkrtR401EUazCBdzLE78THc6HNuGhanqVIeZ2mt/kbUSge+do03rMzydqEvDXNT7fBmnPiVFDtz4g0Rbd8c6JrTLpgzx6f/cXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kqbLTT9J; arc=none smtp.client-ip=74.125.227.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="acWvDJE1"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BBC041713;
-	Sat, 12 Sep 2026 02:03:59 -0700 (PDT)
-Received: from [10.57.10.2] (unknown [10.57.10.2])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 707EA3F7D8;
-	Sat, 12 Sep 2026 02:04:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789203843; bh=xD8JxPHjaxpnElNEZUSN/58hUhREedKqk8QVI12u0wI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=acWvDJE1P4c7LpHpXJeu4VfOKgzzxw9uroFrn2jkgYpCuXwxs0uC67ManQRSFsXjS
-	 VlKJXNjzEqcrLHygX2oJ9oZ/qkE0EtmF4/vLYp9nnFPYmjZrr8dvvVXKYe5UeHnUMF
-	 MFDAZ1pir4u0iqMXw4nI/WuEvyCsUr3jlqugY76o=
-Message-ID: <a50e377b-4ba0-4d08-8176-e5003d44223c@arm.com>
-Date: Sat, 12 Sep 2026 10:04:00 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kqbLTT9J"
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-39b31b4281eso636662a91.2
+        for <kvm@vger.kernel.org>; Sat, 12 Sep 2026 02:04:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789203888; x=1789808688; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=i5SaSEoCo9RleDHysc9IxVyTl6w7IzP28iEqT/KO1Rk=;
+        b=kqbLTT9JTLyQIoa+DfxYHVB3Jc2De4iPTrYPsf9c0C3rFuVlfoCC5MP1EO/hlV5U3Q
+         Gsx9UTTI8fGOT0rMXX0VWCgon5dKgM8g1W0slKMn56QLJCaypjrPZS09okkb6P9AkpnY
+         lE1Oa1o9KQNQQz1KfIO1SiWUYlxhAv2MEq6EwU6qDEhRK4OskN7jmm6+l+6dZLCuL7fn
+         jk081qsUNRpqCykNU2Tq0e96fLELWoebdBgIkSsSLGgpqrqYB9AIK+hJKP05S8quOzGO
+         szQsJ686ubH2H8cLlcItJw12GHe5u9GsbxkWaxg4HRcUggL2Iyrn2uPA7MNJQNihm/t0
+         PRdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789203888; x=1789808688;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=i5SaSEoCo9RleDHysc9IxVyTl6w7IzP28iEqT/KO1Rk=;
+        b=LtnUsI1a9EWvsAys7ySYeuc3fNqfjrQjj0RRjBnzXyVWNgqKJFY6IAaXcLlQn+vA4j
+         KB25tlfRBipAHh0GD76WBiJk2CzThqvrbHwovf3EdQTmK5RuHpMN5Us7rgv4PI8COhNX
+         oYglz9Rhfk3WYsshllrG8Z9mAzrWcCIQrbAkgzTvqE4r/rMVXNxXcl6ZuDEUQgSIxcO3
+         JBI7QLu4DJloYpuxKClrOkksX0u7misvRoUz6wddNdWfvs08jMzM/S9P0BQEj7ynLs0z
+         OFR5JE87WfrlNt346TJoKxRzEZEJ3W59sTVMAUWdLJE1B0zDdTNOFdELatTDO83Vodld
+         iSyQ==
+X-Forwarded-Encrypted: i=1; AKwUvByMljWhszv3yVdMu6koIp810SFHgOEAuYjl1+9GUHNsDcodsOXzNn67MJEheCg5Ea7hfjw=@vger.kernel.org
+X-Gm-Message-State: AFuF++n7fB4/QB69WCsL5XsXEXeCQ15KukhKK9sP7pbNsJDinkb3M3T/
+	Cn2I//4nRZFcrFAZgIyoL+dY8qcJWDTMOWRpeVt4DXO5JVnxxVBqkQyPRUlVrg==
+X-Gm-Gg: AYBFou2xCMizz7Q97GDbc9yOiN9xeg3zEwO80LU6LbrEiFiSzFoMq8+RkHqgC3Ta8Fi
+	n7rIwo3ZOwZBei9K2oME9LjAOy2DZcAFANyIU3qnHsYLxLSgIjcFI4tXxwv57dp8L7Wpv/uY9n+
+	45b0FIex7IJXPnALvFyL3mPzy6J0t1UU7+WTtVNzea/l1ZVUSmxAq5N7lmtIhMlcX70KHOcHSNU
+	JQt9Zzh14NzpCbd6d/+7uP8cmdTiEZVJKsKyYOjjxPfZHwb7quL0+Jz8ggU9gtHphD6u5EKFXci
+	Ue9HCWOUvGVAb5KolrDw1vV5tab5tKUzDzeWXMDDnYw9QfzUaBrGuucWcsUE6MdOcDVyfat2qep
+	dcWawOD6D/A73363Zz6DYy9Ttbp4QWYwdfvkL/HPv1V1wCYMO7XeOHwVounpb8vrNAfVXrjP+BJ
+	gyHgtvCSvBO37nfgeadTzyb8z+MPEIsmO+27v3EO3vf0LufbkOczjuOvvVgg0MSwWrbv1Ndok=
+X-Received: by 2002:a17:90b:5246:b0:398:d2a0:87ff with SMTP id 98e67ed59e1d1-39d9bc67660mr14176109a91.1.1789203888155;
+        Sat, 12 Sep 2026 02:04:48 -0700 (PDT)
+Received: from gmail.com ([188.253.12.32])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4f7390csm12345338eec.26.2026.09.12.02.04.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 12 Sep 2026 02:04:47 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: mst@redhat.com,
+	jasowangio@gmail.com,
+	michael.christie@oracle.com,
+	pbonzini@redhat.com,
+	stefanha@redhat.com,
+	eperezma@redhat.com
+Cc: virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] vhost-scsi: do not relock event vq mutex on send_evt fallback
+Date: Sat, 12 Sep 2026 17:04:20 +0800
+Message-Id: <20260912090420.47439-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18 1/7] firmware: arm_rmm: Add SMC definitions for
- calling the RMM
-Content-Language: en-GB
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org, Oliver Upton <oupton@kernel.org>,
- kvmarm@lists.linux.dev, Marc Zyngier <maz@kernel.org>
-References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
- <20260912083611.2513845-2-suzuki.poulose@arm.com>
- <20260912084556.2B68E1F00893@smtp.kernel.org>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20260912084556.2B68E1F00893@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 12/09/2026 09:45, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Low] Usage of GENMASK and BIT macros for 64-bit masks causes Undefined Behavior on 32-bit architectures
+vhost_scsi_send_evt() is called with the event virtqueue mutex held.
+If the worker is gone, the fallback currently calls
+vhost_scsi_complete_events(), which tries to acquire the same mutex again
+and deadlocks the caller.
 
-RMM is only supported for ARM64. But, given this is a header file, I 
-could fix them to ULL
+Split event completion into a helper for callers that already hold the
+mutex and a locking wrapper for the event worker. Use the helper on the
+fallback path.
 
-Cheers
-Suzuki
+Link: https://lore.kernel.org/all/20260905005352.1E5B01F00A3D@smtp.kernel.org/
+Fixes: b1b2ce58ed23 ("vhost-scsi: Handle vhost_vq_work_queue failures for events")
+Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+---
+Sashiko AI flagged this while reviewing
+the vhost-scsi event queue fix.
+This is a pre-existing self-deadlock. It was reproduced in a follow-up test.
 
-> --
-> 
-> commit cfdd0e3f2fb70671ab2dbb64f06ca56946732456
-> Author: Steven Price <steven.price@arm.com>
-> 
-> firmware: arm_rmm: Add SMC definitions for calling the RMM
-> 
-> This commit introduces SMC definitions for calling the Realm Management Monitor
-> (RMM) from the host. The definitions are based on the ARM RMM specification
-> version 2.0-bet3.
-> 
-> Link: https://developer.arm.com/documentation/den0137/2-0bet3/
-> 
->> diff --git a/include/linux/arm-smccc-rmi.h b/include/linux/arm-smccc-rmi.h
->> new file mode 100644
->> index 0000000000000..214d6228dfc22
->> --- /dev/null
->> +++ b/include/linux/arm-smccc-rmi.h
-> 
-> [ ... ]
-> 
->> +#define RMI_ADDR_TYPE_NONE		0
->> +#define RMI_ADDR_TYPE_SINGLE		1
->> +#define RMI_ADDR_TYPE_LIST		2
->> +
->> +#define RMI_ADDR_RANGE_STATE_MASK	GENMASK(63, 62)
->> +#define RMI_ADDR_RANGE_ADDR_MASK	GENMASK(51, PAGE_SHIFT)
-> 
-> [Severity: Low]
-> Can the use of GENMASK for bit positions >= 32 cause undefined behavior on
-> 32-bit architectures?
-> 
-> The GENMASK macro evaluates to unsigned long, which is 32 bits wide on 32-bit
-> architectures. Shifting by 32 or more results in truncation or an
-> out-of-bounds shift.
-> 
-> Would it be better to use GENMASK_ULL here for these 64-bit masks?
-> 
->> +#define RMI_ADDR_RANGE_COUNT_MASK	GENMASK(PAGE_SHIFT - 1, 2)
->> +#define RMI_ADDR_RANGE_BLOCK_SIZE_MASK	GENMASK(1, 0)
-> 
-> [ ... ]
-> 
->> +enum rmi_ripas {
->> +	RMI_EMPTY = 0,
->> +	RMI_RAM = 1,
->> +	RMI_DESTROYED = 2,
->> +	RMI_DEV = 3,
->> +};
->> +
->> +#define RMI_NO_MEASURE_CONTENT	0
->> +#define RMI_MEASURE_CONTENT	1
->> +
->> +#define RMI_FEATURE_REGISTER_0_S2OASZ			GENMASK(40, 33)
->> +#define RMI_FEATURE_REGISTER_0_L0GPT_BLOCK_DELEGATE	BIT(32)
-> 
-> [Severity: Low]
-> Similarly, will this GENMASK and BIT usage trigger the same undefined behavior
-> when evaluated as unsigned long? Using GENMASK_ULL and BIT_ULL might avoid this.
-> 
->> +#define RMI_FEATURE_REGISTER_0_PMU_NUM_CTRS		GENMASK(31, 27)
->> +#define RMI_FEATURE_REGISTER_0_PMU			BIT(26)
-> 
-> [ ... ]
-> 
->> +#define RMI_FEATURE_REGISTER_3_RTT_S2AP_INDIRECT	BIT(6)
->> +#define RMI_FEATURE_REGISTER_3_RTT_PLANE		GENMASK(5, 4)
->> +#define RMI_FEATURE_REGISTER_3_MAX_NUM_AUX_PLANES	GENMASK(3, 0)
->> +
->> +#define RMI_FEATURE_REGISTER_4_MEC_COUNT		GENMASK(63, 0)
-> 
-> [Severity: Low]
-> Could GENMASK_ULL(63, 0) be used here as well?
-> 
->> +
->> +#define RMI_MEM_CATEGORY_CONVENTIONAL		0
->> +#define RMI_MEM_CATEGORY_DEV_NCOH		1
-> 
+Trigger: vq->worker == NULL. vhost_vq_work_queue() then returns false,
+and a subsequent vhost_scsi_do_plug() call deadlocks. I do not know what
+normal condition gets us here; the normal vhost-scsi worker detach/reset
+paths do not reach this code. The only reproduction I could come up with
+was killing the vhost-scsi worker. This still looks like a low-probability
+condition.
 
+ drivers/vhost/scsi.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 7a1f39a32..7c905e9ad 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -630,19 +630,26 @@ vhost_scsi_do_evt_work(struct vhost_scsi *vs, struct vhost_scsi_evt *evt)
+ 	vhost_scsi_log_write(vq, vq_log, log_num);
+ }
+ 
+-static void vhost_scsi_complete_events(struct vhost_scsi *vs, bool drop)
++/* Caller must hold the event virtqueue mutex. */
++static void __vhost_scsi_complete_events(struct vhost_scsi *vs, bool drop)
+ {
+-	struct vhost_virtqueue *vq = &vs->vqs[VHOST_SCSI_VQ_EVT].vq;
+ 	struct vhost_scsi_evt *evt, *t;
+ 	struct llist_node *llnode;
+ 
+-	mutex_lock(&vq->mutex);
+ 	llnode = llist_del_all(&vs->vs_event_list);
+ 	llist_for_each_entry_safe(evt, t, llnode, list) {
+ 		if (!drop)
+ 			vhost_scsi_do_evt_work(vs, evt);
+ 		vhost_scsi_free_evt(vs, evt);
+ 	}
++}
++
++static void vhost_scsi_complete_events(struct vhost_scsi *vs, bool drop)
++{
++	struct vhost_virtqueue *vq = &vs->vqs[VHOST_SCSI_VQ_EVT].vq;
++
++	mutex_lock(&vq->mutex);
++	__vhost_scsi_complete_events(vs, drop);
+ 	mutex_unlock(&vq->mutex);
+ }
+ 
+@@ -1829,7 +1836,7 @@ vhost_scsi_send_evt(struct vhost_scsi *vs, struct vhost_virtqueue *vq,
+ 
+ 	llist_add(&evt->list, &vs->vs_event_list);
+ 	if (!vhost_vq_work_queue(vq, &vs->vs_event_work))
+-		vhost_scsi_complete_events(vs, true);
++		__vhost_scsi_complete_events(vs, true);
+ }
+ 
+ static void vhost_scsi_evt_handle_kick(struct vhost_work *work)
