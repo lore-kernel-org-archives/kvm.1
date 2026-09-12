@@ -1,129 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53B2429CC8;
-	Sat, 12 Sep 2026 11:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C3847CA6D;
+	Sat, 12 Sep 2026 13:15:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789213412; cv=none; b=mEtJhfIlnn8MouITUXFNEDO0h1qnEDEM6XbpiUElQwr/tCp0IACiNgqrQWBA8P6QI6J3iGmubHSCf49FcZhm9ibxiI+ShMZtTCfyjTuFf3vTJjjZcSzsbmA5qdZhCOLgxKbsXEMnm3YsCBWgpWrKR3HwzU/ghsHBRsjBTsO9MsA=
+	t=1789218907; cv=none; b=hsGd0ZnwqR+TfAtZwINePfJGH42fOPpFbNZRRaYwUP5317iU7hAEinGsNsGEsTgWYu05a9awWTG6Ndt5iY6lorOxHNziyuaXip/+LaF9UVZjxFZrDVBkdi5zD1AY3JMWQvI4l6GAOzcHtH86yOhDtpdeGdCmroJS2WeVsC/0Fp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789213412; c=relaxed/simple;
-	bh=TAAuZOGr/85DV5+Z7Dz9SB0m4XeycxoHFiH1U0fo8xQ=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hif06+coYyq0h58X8epoQmqy+9Z9fBWQy40O+rAbAp2pfAM2A7r7tRfOBhMj3zgIL2M3mp1kq+c0U18LANpmvRnyxs0VIwWJ70XGMTH1jaeBVuc/QA2JfeOUM0sb79zDCnzpEFgQ9PkUJ3nmlsYLzqxrQ2BEoj9tzsnm611+Z9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cK5XlgfP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789218907; c=relaxed/simple;
+	bh=aEqQPAM8IpJbzV5TaPpdI3LfTzG8+rxefu/liAzV82U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BpaKr+FwTF9ktyKXc5ZQ7kz6JoTCkOCmqMSa2ZJrrHvWNMtZ3U7K7jKUx0iA9LlcXG87rL9PycTn5CLvkhdVlGky9dGA8TNfJ9ZeNTKJastXR6q2h9xGqjUEO/KTErgoYYtDc8QoeNrc6hOjUXRLeVNi0bSsmzD6HyVA+GkNICY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j+Qc4Gz1; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cK5XlgfP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A781F00893;
-	Sat, 12 Sep 2026 11:43:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789213411;
-	bh=FluqXzh5k5qC80kIPbMVeqGTxq2K8dL/fFXy6Ui0ioU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=cK5XlgfPkupYP5E+vsxJ+64JEO2JtLPlE15k4Mh8bZmBOf41g0Y7tUKKpNBn4dZi5
-	 +dQGE5QpQwpwGkmBB/TV1FaS0Chj+kAm75gtK1QNRdX6dQ98Twu9fuQfV51yd2rBh3
-	 aHk4owDnHeAaYPsu61BKSShioTRuwr52FvDxJusrvPBfe8dNMD8w2r4TYC9gY/7tH8
-	 W+pun973OiWgJ+Ceb2yzNOB1ZTFgfXAAnvTY7bqI79eOHgXwK5ZPjDZcaKupHT4JW2
-	 G8tYUYsdxUr0OiePQztZ33u56eWGo8bhIfchdyLD/h8M10IpI+U931IcCKBr/MLW+K
-	 /mM8xwPF3/6jw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1x5M8n-000000085Bb-05E5;
-	Sat, 12 Sep 2026 11:43:29 +0000
-Date: Sat, 12 Sep 2026 12:43:28 +0100
-Message-ID: <86ecey7l0f.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steffen Eiden <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Grapentin <gra@linux.ibm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Friedrich Welter <fritz@linux.ibm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Gautam Gala <ggala@linux.ibm.com>,
-	Hariharan Mari <hari55@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-	Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v7 11/23] KVM: arm64: Share arm64 code with s390
-In-Reply-To: <20260902124152.438647-C-seiden@linux.ibm.com>
-References: <20260831144802.834315-1-seiden@linux.ibm.com>
-	<20260831144802.834315-12-seiden@linux.ibm.com>
-	<87se3tmlrv.wl-maz@kernel.org>
-	<20260901084037.185345-C-seiden@linux.ibm.com>
-	<87mru0m76g.wl-maz@kernel.org>
-	<20260902124152.438647-C-seiden@linux.ibm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j+Qc4Gz1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789218905; x=1820754905;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=aEqQPAM8IpJbzV5TaPpdI3LfTzG8+rxefu/liAzV82U=;
+  b=j+Qc4Gz1dOM6Rp4SVqLi0x8sGZf9iMFZn4N7uYYz9nUZMKROQ6NefWY5
+   aClBudoNr+ayyPgU+RzMJLzMmn5bt1YPoeCPGBXAEMCdFT6vWuVioyQTm
+   1E8mtTuyNySUK59t0JRI4V9SsYi1GbyFWTL0JhtOgioUhyjcmj/awK3SD
+   mhkJKyVqggSKq1EqjbI4PPfQ/LN5WxBMOQNnnfWHiFg59Fww6ZctTai8Y
+   kFZPdkVHAPc5Cf9mG1WkH7+CKoUf8PDrFAnnkktMY1FGCVvLEOglO2Kli
+   3xJMsFeFdOuD26z5wMyrQAquO59zL4L5+6XMDeoumEjKShznnBJJpVQ4L
+   A==;
+X-CSE-ConnectionGUID: 2amq7eqXR7CZVLbGzrPYsQ==
+X-CSE-MsgGUID: Y2TUhAf5TaeuFVOYUYyQPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="89669187"
+X-IronPort-AV: E=Sophos;i="6.27,99,1787036400"; 
+   d="scan'208";a="89669187"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2026 06:15:04 -0700
+X-CSE-ConnectionGUID: yHcfrC34RlGyL6jJfZeyIA==
+X-CSE-MsgGUID: wnRtCPr7Q8yzVRpKQ3wmdQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,99,1787036400"; 
+   d="scan'208";a="268901516"
+Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.239])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2026 06:15:01 -0700
+Date: Sat, 12 Sep 2026 16:14:59 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Pavol Sakac <sakacpav@amazon.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Tejun Heo <tj@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Xu Yang <xu.yang_2@nxp.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+	Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
+	nh-open-source@amazon.com
+Subject: Re: [RFC PATCH 5/8] drivers: base: test: Add KUnit suite for staged
+ sysfs registration
+Message-ID: <aqVQU6hbDPE5zOm-@ashevche-desk.local>
+References: <20260911-vfopt-s5-v1-0-fa4cacdb6ca8@amazon.de>
+ <20260911174414.97060-5-sakacpav@amazon.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: seiden@linux.ibm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, agordeev@linux.ibm.com, gra@linux.ibm.com, arnd@arndb.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, david@kernel.org, fritz@linux.ibm.com, tabba@google.com, ggala@linux.ibm.com, hari55@linux.ibm.com, hca@linux.ibm.com, brueckner@linux.ibm.com, iii@linux.ibm.com, frankja@linux.ibm.com, joey.gouly@arm.com, nrb@linux.ibm.com, oss@nina.schoetterlglausch.eu, oupton@kernel.org, pbonzini@redhat.com, seanjc@google.com, suzuki.poulose@arm.com, svens@linux.ibm.com, Ulrich.Weigand@de.ibm.com, gor@linux.ibm.com, will@kernel.org, yuzenghui@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260911174414.97060-5-sakacpav@amazon.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, 02 Sep 2026 13:41:52 +0100,
-Steffen Eiden <seiden@linux.ibm.com> wrote:
+On Fri, Sep 11, 2026 at 07:43:37PM +0200, Pavol Sakac wrote:
+> Add a staged_device KUnit suite under its own
+> CONFIG_STAGED_DEVICE_KUNIT_TEST symbol exercising the staged mechanism.
+> kobject_add() on a kobject with ->sd_staged builds the directory staged
+> but does not publish it, since only device_add() does, so the tests
+> drive the window directly: stage, then populate and observe, then
+> sysfs_publish_dir(). The cases cover publication of plain, named-group
+> and merged-group content, the failure modes of publication itself, abort
+> without publication, foreign-thread access, concurrent windows including
+> two that share one hashed staged mutex, glue-directory sharing, and
+> bus-klist membership by the time device_add() returns. The suite also
+> covers the KERNFS_STAGED_TOP/KERNFS_HAS_MMAP aliasing on a staged
+> mmap-capable bin file.
+> 
+> The publication-misuse cases intentionally trigger the publication
+> guards' WARN backtraces, and the duplicate-name cases trigger
+> sysfs_warn_dup() splats: those backtraces are expected output of a
+> passing run, not failures. The suite is therefore unsuitable for
+> runners that set panic_on_warn, which turns the first intentional splat
+> into a panic, and does not follow KUNIT_ALL_TESTS: it runs only when its
+> symbol is enabled explicitly.
 
-[...]
+...
 
-> So my suggestion is:
-> 
-> For series 1 (and 2) s390 has its own, local implementation of
-> handle_exit without sharing any code with arm64 in regard to EC
-> 
-> When s390 has all the relevant code available (likely series 3) s390 can
-> switch to using most (if not all) EC handling code used by
-> arm_exit_handlers implemented in handle_exit.c.
-> 
-> This can be done without a mixed patch:
-> 
-> 1. Mark arm64 handle_exit.c as shared (roughly the first 400Loc w/o
->    includes) - s390 will not use it after this patch.
-> 2. remove the handle exit code from s390's handle_exit.c and include the
->    new generated handle_exit.inc
-> 
-> This approach brings us further into the share architecture not only code
-> approach you meantrioned in the comments regarding sys-regs. (I or
-> Andreas will provide a solution for this later :) ) 
-> 
-> Is that OK with you, what do you think?
+>  drivers/base/test/.kunitconfig         |    1 +
 
-I *think* that's OK. I just want to make sure that in the long run, we
-don't end-up with pointless divergence.
+Same question, why is this file got modified?
 
-Thanks,
+...
 
-	M.
+> +++ b/drivers/base/test/.kunitconfig
+> @@ -1,3 +1,4 @@
+>  CONFIG_KUNIT=y
+>  CONFIG_DM_KUNIT_TEST=y
+>  CONFIG_GLUE_DIR_KUNIT_TEST=y
+> +CONFIG_STAGED_DEVICE_KUNIT_TEST=y
+
+It seems this series is based on some other series?
 
 -- 
-Without deviation from the norm, progress is not possible.
+With Best Regards,
+Andy Shevchenko
+
+
