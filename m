@@ -1,261 +1,166 @@
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0F735BDA4
-	for <kvm@vger.kernel.org>; Sat, 12 Sep 2026 06:50:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789195808; cv=none; b=UGlZmOuD/OiQG5jNjgixkIL+xc4CAywTP4iHhnlctLKakxr2yzqlY+QhdwubxOTzk+kP72fkaC9zgtZNxm56IYWE+vEPvxXpMoGChgKbA87QjwWshkwOBpmkvjPAS86XnFzQlgGHpi+V56DTGFetL3aGZb9YlnnansQ2nTjd25k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789195808; c=relaxed/simple;
-	bh=sCdpZe2i/QHdtW679jX9SdR4a7+kZzZrKxfkIQPem7s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gngIQsORXLEBqxqTwdL/s4LtJDoLhXqlCY/ToJje04Ho13arhoNB3mgrXINr/BCsppRmQ6jewA3jzLTa9tAPefOH8aP8CmqUraoK18zRLgWoPiiPaRyTjmdpeDLajnFjuXLmduHXzgctC+plwLzD5PuH6ziKBltP+EWuUxDRZ4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Bssf86yg; arc=none smtp.client-ip=74.125.228.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07A3367F36
+	for <kvm@vger.kernel.org>; Sat, 12 Sep 2026 07:19:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.225.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789197593; cv=pass; b=jOAQ87QG/tt2u0rcl7EbaFjfCcPjLNle+xYcY7bTSo4ybw9InSm9Noq5uabBZipdcprp4GMxBvhHU8+teXk6hxP15XQYP3N69B2rJUgEAQ9BezqEj1Vz+I+UNeG9u2y3HinrdnlgSqeBikYVIqd9PdxSj06XRGxpaN0R0z98kOU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789197593; c=relaxed/simple;
+	bh=pGpH0+ouhnwwNkJU6TGm2wYa4a8DQmd3BmREAcSC/hY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NIB/H7E28A7PD/25KhoISkWSQ5vIxyHuZCMzE7LRz7DJgq2Eiu7TrjQGeUFT64xTMJcHqKBt7SQyzRlwBwlghlpm8fHc3Qa3+RFbe22LvZutPySDhEjoO/TVmS0aU9kjHyl6gzFwSjG8Q4/qa/QUNmgh7Y9Rs9ZGoH3lLuz5O0c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=ZsRwpwIa; arc=pass smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Bssf86yg"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c29703cb470so122812466b.0
-        for <kvm@vger.kernel.org>; Fri, 11 Sep 2026 23:50:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="ZsRwpwIa"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f6350f89so125652f8f.3
+        for <kvm@vger.kernel.org>; Sat, 12 Sep 2026 00:19:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789197590; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Rf61PNHIFaUxh61HSnW9AvMQpnos9Rn2p2NNUte3hmZvZl2eNHKaaA9XxnsjIQ+3jN
+         xl+lwE9O9kq2aJWn6kqZIsWPzeaOdgJG5ftYPrrKAwA5vgGMUURwJqXg8vW71wbwBz2u
+         8BKpF7rxyWyboH2wxr/eY/Lul84gEE4ar3nTQvWVEjcMMOxg5+2RNSBCqxk0Mc7RbwVU
+         q7XjGmWTNGjohXC3gMfeS4s6vPkefsqWnmDciBlhhtccH6fFo7wzHhb1rQYNkoze3Ssq
+         SRm3fQ06a1i6wtd0f4qJKiWP7cFDCYdUVKBVe8R42BtVcXTmZ2qgMBKrrPC7q+ypXGEb
+         EmpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9RWV49ckuigD55nYwZZoBmV/ryAALoCGfcRf1WteUKA=;
+        fh=uuf3L40LSQ6dj3BRXuSQeb/Pk89c6tSWxBHLRsMT/1g=;
+        b=n2qzDN3lb3dXdTg//Fqy0fGTTcSmRZ+jd+m+xArv1ZeaGeXSioabtX34KwEVuWfWG/
+         rzKEyTTf1iV1JCLAcude+5JlnY2txAtuWkiyFaLQbw4MF6MslSRXh7zrUY3C8TsVp8jS
+         UdS0wPmMGl2k8cQ/T9q6MUJQuuFfaF1B8KdRMWeArVt7d7pmTvBRpMYdayXCkw8Lhx+d
+         LOsnEHuBQKf5sEk+TUoe6Cpib6MAihjt2JKbPunHbkdLw2AbhVwthpsdX9PDQb4R3bhd
+         yidh2LsjRDp63cc0t2GxWjg4znjHvHlphwbjTENF3L0JUhOJlaqeHTKe9S1Fi7H8ekIb
+         fESA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1789195804; x=1789800604; darn=vger.kernel.org;
-        h=content-type:in-reply-to:autocrypt:from:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=sCdpZe2i/QHdtW679jX9SdR4a7+kZzZrKxfkIQPem7s=;
-        b=Bssf86ygnNcIOdpsdU4WXEa1ReCtbz3TI1Wl3uGEaUZtS7UPlvJQrdmweV/MNyXtEl
-         yGbLEIYe+cLmLKuv+fwPCHwsvj40VRZWz9OC2opd2HS2aJf5O8QRupaW4mP3h9l0kgiB
-         qwuThS3MR1F28jCuJ6i/q/7Ao0ozfRzUGV6h5Tg7P76wGtS37F0fzm1PxjbHCcuBxR1y
-         ug094VTjCBsXaH8STSHhVxJLtrKA1saOnfhOfI5M+mIWlfzt2Gd0Qsb3oXu39qLrQiCs
-         7RD+fZP6KLagHedMyx1Y9LtmElGDv0phG8KeQiztLO3T5sHAkprIzEpewBrtsiG/HtUz
-         s61w==
+        d=brainfault.org; s=google; t=1789197590; x=1789802390; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9RWV49ckuigD55nYwZZoBmV/ryAALoCGfcRf1WteUKA=;
+        b=ZsRwpwIa85u1zXhnKFyhmzRZJ32K7oQ82tXuZRnTAuOJFpF3e2vAs0Wsq9D4/7Bunh
+         dul2WJQOWT1kDjXgbdxK9VdoErOhu9mS0b//FHbmCk3VnG3bJn10dKkc8yNHtkAX1RZR
+         yFIUGW43t/1e+pKSWCR2wM0aDjIVI03mtIOc9B9fbw0b7oLZJwUYuDgoIuPShlV6S3TB
+         8vYO/wfDkUoCWc45Io7S9EiPSWM4QCOmoQV7a3HHiWKB1Ns77iyclvjMcUyqzQmHYVcD
+         XKaknhxaBZnBW9ocUQPJD+qJDUPMD+tcc/tBuCIXU6t5dOJJ64qdsFyZS6ttaWQmYLBf
+         Y4ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789195804; x=1789800604;
-        h=content-type:in-reply-to:autocrypt:from:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+        d=1e100.net; s=20251104; t=1789197590; x=1789802390;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sCdpZe2i/QHdtW679jX9SdR4a7+kZzZrKxfkIQPem7s=;
-        b=K/koAAbSbQDYZfCbyBw6hsFUzZZd6QelcovWj4hkT1k+5AEYZve6JSGDhadc2uXX0w
-         hNBF5Qei7LM2Lv48Hd3FhrDAgMvgfV11KNgQGfPxB2m+Jed76cPgVSsAJd3y8EFUHuKp
-         NGbD8Ep9ouNHpUCPZdgp1rflxXW3R1aTTmH8e8vpQxW8+7K5kE0/Q5FVV8I8Gfw/VMRh
-         ev1gRk//YagH5baKhPjfXDdwppvf+APccHWD8Bq5qcb8Hi7PINHfPuZzCRgAEaqTBRpf
-         68leiGQ9L7cdrw8pBtE6WwviHO1BkLwSKDdDFw9BETwU0DfH0kwQGYcKbIdH/Rad6RbO
-         JZgg==
-X-Forwarded-Encrypted: i=1; AKwUvBy5G7C3SlcfhL9fgZ/veOgjMbrV2sJot9FzqyLAkmCZwKavluyZQO1Xo2DNvB8q9ZWc8to=@vger.kernel.org
-X-Gm-Message-State: AFuF++llzV9QaQMZiDbAY+IETCEKdDsZYhpZDFMI3Sf/4aGjTZTFswnj
-	rByahq0wiqcLpqqLdEqx8sLWeGiJxGJWnTjdc+DOUnCt05ltCJROwgNHZBhS8qsNLWM=
-X-Gm-Gg: AYBFou2ysx1nLpzXvTMjnE1Pc6ImZJq/j4lPihzaFqEKH0cGdnNs11Pay0BuVxrJ3XH
-	kncf5yEUj4oYExZ6DnDWns23IcLj63xQkbFzC3ghSc0BbTLBRps2ANjqtZSIytYA60G985ElILb
-	pPSVJR93IUyLc4uvkFwB4LRsdp9qPzF2L7l/GsU2uA0ChTKZWh/e40QfvVlV3kJWLSeBm7FojEM
-	HfhYk18prpJ18JC4sfF1iWVo9T+vXweMIfvb2Iz2/CMpQeGH3ytiia9NSdRmiTjbxfhHyrGNgCn
-	b9ldNLOqAclaZbQoHwgEdTnrareu7IjfNbFwYwojlBa60vsvLG4fQjZAvFiTknB9Mw372kV7wGn
-	HWsrMCIKcv4Rm4hieoGJ7CO4JqhWOwCvO/h1RZ2Yvz66OiZf48WG84XePOlAaROtgh55Bjt7KJW
-	HRhOPgXV576F1kEEVuAYUQOgnqVU7BVoIGvwfO0BbpByZrF8+P6OjDAjc1jA0c6Qy03MYJ0TA7v
-	Afs2MvKDzl4tU5joe8UzXTeqhJYMW/2e7U/KL3H6hsuGSch0e3bZafCWazW5u2XcTXJJHQu7pZS
-	WPagm5Bi007bvmiD9wKzWo3p
-X-Received: by 2002:a17:906:f591:b0:c29:462b:f917 with SMTP id a640c23a62f3a-c29666f739cmr698707866b.14.1789195804064;
-        Fri, 11 Sep 2026 23:50:04 -0700 (PDT)
-Received: from ?IPV6:2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112? (2a00-12d0-af5d-ad01-5d3f-14e6-9bcb-5112.ip.tng.de. [2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2965c4e1ffsm159761166b.7.2026.09.11.23.50.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Sep 2026 23:50:03 -0700 (PDT)
-Message-ID: <1e2adc53-87f4-42f3-8eda-cce828009e88@suse.com>
-Date: Sat, 12 Sep 2026 08:50:02 +0200
+        bh=9RWV49ckuigD55nYwZZoBmV/ryAALoCGfcRf1WteUKA=;
+        b=MLAjQX168vRKeMqhPHhsJrVJ8GU9qOdZhd+FLuTG8nmqOulWhqGXlXqugPzfw8TEOr
+         8kMjJgWZoiXZ9HUxybwCuLmNQeMYVmZA15Sm3nIEeUt7c95QHfmscj8iYiEd7WyMAQa5
+         MQk/q7N21BrCGF9Iwca1MuZtrjpCWgXHjaBkVolJZR2rhVjljNILJUJLG8BvyKkN+P7f
+         5Pko1ZIAX/kYT9RSlLL9l1xQLMLYPUcw5eNMwlfuMcJa8DXLwGxy/vrfBPfvrHj3LuvA
+         T/JIMRUzf9Hq2gcuj4/tsGkUyjkm7nFVzdVVhZrPvYPRjTKbMKeTPO6ffoy9wOjrDCBz
+         qshA==
+X-Forwarded-Encrypted: i=1; AKwUvBx6owOauEOnL+vLSUqJ+k9+rsQMiTfhfyXyfJZOeDSQhtQtbHw/hNZAFLwjaej8mFxtqaY=@vger.kernel.org
+X-Gm-Message-State: AFuF++k2///8/FcVhXFwt5LCjG4v20LwvTTaAHB290FB2jDfM6+GOacr
+	7+GFIBk8S9d0Ha5soOHjTrE60aTNoyEIn4AYZp0qFonBhaP95B8JPhD8f4DHn88sZh+xeEMAowG
+	PupZQmrkTjKYyOKlYtMKunaicE5emTdJxt07pvNaI5TNE+APhLQGex+w=
+X-Gm-Gg: AYBFou0A6YLYpYeoItWHYcKB1osl1nZ0IePjLIzSQHc4zdcl33UDiKKYMUBsvAgIh4b
+	ABdrfu+A2Lxdtw9eVBYKhL9rnMIfwSGh3VWFcNZD4ydE2+lKpSmRqNMxSY/iXWk4rt6RvU5UgQ2
+	Y76/EWmp24L9Zy0yT9b3WXyCobvTC3lA0mohOVAOJXTFWV3nN3bK1fnYr5i4ckIYbZPlP7/XZ7U
+	gMUfUtLfo5nAvz90aXoC/I2fJQuZsvXP+p1buDR05DNPNebIN5thK2ywYwYLE4AX8rnaSSNywTs
+	LVOdfhn9lE6U5HKyGeBvrwHiOsayYlE8kti5I/K5rqBcmrGIcGnmQ6dNi8ss5zMDn475SGGUu1o
+	lIqWn0R4xj9Pf541oaHIJq7MqJw/E8qPEi0iQ7b/L+B3Db6GNPzdwPZ2K7aVKOiNHUtzzfbGqWq
+	g=
+X-Received: by 2002:a05:6000:702:b0:486:f600:8e6b with SMTP id
+ ffacd0b85a97d-486f6be9493mr1750445f8f.14.1789197589863; Sat, 12 Sep 2026
+ 00:19:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 13/13] x86/msr: Simplify some rdmsrq() use cases
-To: Shreshth Srivastava <shreshth.srivastava@intel.com>,
- linux-kernel@vger.kernel.org, x86@kernel.org,
- linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Cc: acme@kernel.org, adrian.hunter@intel.com,
- alexander.shishkin@linux.intel.com, bp@alien8.de,
- dave.hansen@linux.intel.com, decui@microsoft.com, haiyangz@microsoft.com,
- hpa@zytor.com, irogers@google.com, james.clark@linaro.org, jolsa@kernel.org,
- kas@kernel.org, kys@microsoft.com, longli@microsoft.com,
- mark.rutland@arm.com, mhklinux@outlook.com, mingo@redhat.com,
- namhyung@kernel.org, pbonzini@redhat.com, peterz@infradead.org,
- rick.p.edgecombe@intel.com, seanjc@google.com, tglx@kernel.org,
- wei.liu@kernel.org
-References: <20260821105709.1671132-1-jgross@suse.com>
- <20260911213310.381839-1-shreshth.srivastava@intel.com>
-Content-Language: en-US
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-Autocrypt: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <20260911213310.381839-1-shreshth.srivastava@intel.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------faqU8D6UM6LZgyWtdNphe2F6"
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------faqU8D6UM6LZgyWtdNphe2F6
-Content-Type: multipart/mixed; boundary="------------dL8jxm9dVU7kKr5WHApU9RgD";
- protected-headers="v1"
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-To: Shreshth Srivastava <shreshth.srivastava@intel.com>,
- linux-kernel@vger.kernel.org, x86@kernel.org,
- linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Cc: acme@kernel.org, adrian.hunter@intel.com,
- alexander.shishkin@linux.intel.com, bp@alien8.de,
- dave.hansen@linux.intel.com, decui@microsoft.com, haiyangz@microsoft.com,
- hpa@zytor.com, irogers@google.com, james.clark@linaro.org, jolsa@kernel.org,
- kas@kernel.org, kys@microsoft.com, longli@microsoft.com,
- mark.rutland@arm.com, mhklinux@outlook.com, mingo@redhat.com,
- namhyung@kernel.org, pbonzini@redhat.com, peterz@infradead.org,
- rick.p.edgecombe@intel.com, seanjc@google.com, tglx@kernel.org,
- wei.liu@kernel.org
-Message-ID: <1e2adc53-87f4-42f3-8eda-cce828009e88@suse.com>
-Subject: Re: [PATCH v3 13/13] x86/msr: Simplify some rdmsrq() use cases
-References: <20260821105709.1671132-1-jgross@suse.com>
- <20260911213310.381839-1-shreshth.srivastava@intel.com>
-In-Reply-To: <20260911213310.381839-1-shreshth.srivastava@intel.com>
-
---------------dL8jxm9dVU7kKr5WHApU9RgD
-Content-Type: multipart/mixed; boundary="------------VU1m0sOTKOmOlXUOKddZrxGl"
-
---------------VU1m0sOTKOmOlXUOKddZrxGl
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-
-T24gMTEuMDkuMjYgMjM6MzMsIFNocmVzaHRoIFNyaXZhc3RhdmEgd3JvdGU6DQo+IEhpIEp1
-ZXJnZW4sDQo+IA0KPiBJJ20gd29ya2luZyBvbiBhIHYzIG9mIERhdmUncyAieDg2L21zcjog
-Q29uc29saWRhdGUgbmF0aXZlL3BhcmF2aXJ0IE1TUg0KPiBmdW5jdGlvbnMiIHNlcmllcyBv
-biB0b3Agb2YgeW91cnMsIHNvIEkgdHJpZWQgdGVzdGluZyB0aGlzIHBhdGNoLg0KDQpZb3Ug
-c2hvdWxkIGxvb2sgYXQgWzFdIGFuZCBbMl0gYXMgd2VsbC4NCg0KPiANCj4gV2hpbGUgSSdt
-IGhlcmU6IHlvdSBtZW50aW9uZWQgeW91J2Qgc2VuZCBhIFYzIGFmdGVyIHJjMSBpZiBjb25m
-bGljdHMNCj4gdHVybmVkIHVwLiBJcyB0aGF0IHN0aWxsIHRoZSBwbGFuPyBJIHdhc24ndCBz
-dXJlIHdoZXRoZXIgdG8gYmFzZSBvbiB2Mg0KPiBwbHVzIHRoZSByZXNwaW5zIG9mIDQgYW5k
-IDEzLCBvciB3YWl0Lg0KDQpJIGRpZCBzZW5kIG91dCBWMyB5ZXN0ZXJkYXkgWzNdLg0KDQo+
-IA0KPiBNb3N0IG9mIHRoZSBjb2RlIHRoaXMgdG91Y2hlcyBjYW4ndCBydW4gb24gbXkgYm94
-LCBzbyBJIGNvbXBhcmVkIGNvbXBpbGVkDQo+IG91dHB1dCBpbnN0ZWFkLiBCdWlsdCBwYXRj
-aGVzIDEtMTIsIHRoZW4gMS0xMywgd2l0aCB0aGUgc2FtZSAuY29uZmlnIGFuZA0KPiBjb21w
-aWxlciwgYW5kIGRpZmZlZCAib2JqZHVtcCAtZCIgb3V0cHV0IGZvciBldmVyeSAubyBpbiBi
-b3RoIHRyZWVzLiBBbGwNCj4gOTM5NiBvYmplY3RzIGNhbWUgb3V0IGlkZW50aWNhbC4gVGhl
-IDEtMTMga2VybmVsIGJvb3RzIGZpbmUgdW5kZXIgS1ZNLg0KPiANCj4gT25seSB0cmllZCB0
-aGUgb25lIGNvbmZpZzogeDg2XzY0LCBnY2MgMTEuNS4wLA0KPiBDUFVfU1VQX3tJTlRFTCxB
-TUQsWkhBT1hJTn09eSwgSFlQRVJWPXksIEtWTV9JTlRFTD15LCBLVk1fSU5URUxfVERYPXku
-DQo+IA0KPiBUZXN0ZWQtYnk6IFNocmVzaHRoIFNyaXZhc3RhdmEgPHNocmVzaHRoLnNyaXZh
-c3RhdmFAaW50ZWwuY29tPg0KDQpUaGFua3MuDQoNCg0KSnVlcmdlbg0KDQpbMV06IGh0dHBz
-Oi8vbG9yZS5rZXJuZWwub3JnL2xrbWwvMjAyNjA5MTEwNzUyMTYuMzE0MjMwOS0xLWpncm9z
-c0BzdXNlLmNvbS9ULyN0DQpbMl06IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xrbWwvMjAy
-NjA5MTEwODQyMTEuMzE0OTk1Ny0xLWpncm9zc0BzdXNlLmNvbS9ULyN0DQpbM106IGh0dHBz
-Oi8vbG9yZS5rZXJuZWwub3JnL2xrbWwvMjAyNjA5MTEwNzQ1MzAuMzE0MDgzMC0xLWpncm9z
-c0BzdXNlLmNvbS9ULyN0DQo=
---------------VU1m0sOTKOmOlXUOKddZrxGl
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
+References: <20260826064117.58029-1-min_halo@163.com>
+In-Reply-To: <20260826064117.58029-1-min_halo@163.com>
+From: Anup Patel <anup@brainfault.org>
+Date: Sat, 12 Sep 2026 12:49:37 +0530
+X-Gm-Features: AcwNN1WADS_UyMRbl-o6HEs2JIz2PBNtpUz7lA9SsGRbmoy5E-S50JL4uCJxHNQ
+Message-ID: <CAAhSdy1AugX4AiU6xj1R3SQ9bRsRFBNu6=_aYM=G9SMkXN8Ghg@mail.gmail.com>
+Subject: Re: [PATCH] RISC-V: KVM: Fix sdata leak and stale snapshot_addr in snapshot_set_shmem
+To: Zongmin Zhou <min_halo@163.com>
+Cc: atish.patra@linux.dev, pjw@kernel.org, palmer@dabbelt.com, 
+	aou@eecs.berkeley.edu, alex@ghiti.fr, ajones@ventanamicro.com, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Zongmin Zhou <zhouzongmin@kylinos.cn>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+On Wed, Aug 26, 2026 at 12:11=E2=80=AFPM Zongmin Zhou <min_halo@163.com> wr=
+ote:
+>
+> From: Zongmin Zhou <zhouzongmin@kylinos.cn>
+>
+> A guest may call SBI_PMU_SNAPSHOT_SET_SHMEM repeatedly. Each call
+> overwrites kvpmu->sdata without freeing the old buffer (memory leak),
+> and if a later kvm_vcpu_write_guest() fails, the error path frees
+> sdata but leaves snapshot_addr stale. A subsequent
+> SBI_PMU_COUNTER_START then passes the INVALID_GPA check and crashes
+> the host with a NULL buffer in kvm_vcpu_read_guest().
+>
+> Fix this by clearing the previously installed snapshot area before
+> installing a new one, which keeps sdata and snapshot_addr consistent.
+> The SBI spec suggests a single invocation but defines no error code
+> for repeated calls, so KVM must tolerate them.
+>
+> Fixes: c2f41ddbcdd756 ("RISC-V: KVM: Implement SBI PMU Snapshot feature")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
 
-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
-kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
-=3DeeAB
------END PGP PUBLIC KEY BLOCK-----
+LGTM.
 
---------------VU1m0sOTKOmOlXUOKddZrxGl--
+Reviewed-by: Anup Patel <anup@brainfault.org>
 
---------------dL8jxm9dVU7kKr5WHApU9RgD--
+Queued this patch as fix for Linux-7.3-rcX
 
---------------faqU8D6UM6LZgyWtdNphe2F6
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+Thanks,
+Anup
 
------BEGIN PGP SIGNATURE-----
 
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmqk9hsFAwAAAAAACgkQsN6d1ii/Ey/S
-1wf/QTQ5woUenjuZ7QkJEXIuWDT7pJrQQt4dQPrJUah9M9GRZ1uIegM3263zRi5Yv09bbadrYuM3
-oLSnH3FWqDCembBNmlwXTlL+fkoRnIoAZZUApZHUyVZDqQZmyfjPpogjHlUhDfwnKZMJYRX5P/rH
-AilfznPtW63O4zPeeCDF/q803mUv3UBxtP9PA4+Bhta4b9zcRpSHouBFVgOj/Eq6uj4bs9YPdYvE
-jUpqgPbVXQzL6HUq79PPAUxs/Is+2tusB7d/OwA4UzeY0VN8Ky6zeJNAOv7xMxiFZeVh8RZ5Dk5w
-ak4YEaJmufWhu4w8Bgx3uV5J/SvArlMv2MnItpdDew==
-=kgkG
------END PGP SIGNATURE-----
-
---------------faqU8D6UM6LZgyWtdNphe2F6--
+> ---
+>  arch/riscv/kvm/vcpu_pmu.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
+> index 752f1014d633e7d67f69c27b72088ed560c187ac..14f73490f12cbc5a8547859f0=
+d1bb1170d89403b 100644
+> --- a/arch/riscv/kvm/vcpu_pmu.c
+> +++ b/arch/riscv/kvm/vcpu_pmu.c
+> @@ -454,6 +454,14 @@ int kvm_riscv_vcpu_pmu_snapshot_set_shmem(struct kvm=
+_vcpu *vcpu, unsigned long s
+>                 }
+>         }
+>
+> +       /*
+> +        * Clear any previously installed snapshot area to avoid leaking
+> +        * the old sdata and to keep sdata/snapshot_addr consistent if
+> +        * the re-install fails below.
+> +        */
+> +       if (kvpmu->snapshot_addr !=3D INVALID_GPA)
+> +               kvm_pmu_clear_snapshot_area(vcpu);
+> +
+>         kvpmu->sdata =3D kzalloc(snapshot_area_size, GFP_ATOMIC | __GFP_A=
+CCOUNT);
+>         if (!kvpmu->sdata) {
+>                 sbiret =3D SBI_ERR_FAILURE;
+> --
+> 2.34.1
+>
+>
+> No virus found
+>                 Checked by Hillstone Network AntiVirus
+>
