@@ -1,199 +1,163 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974252D8382;
-	Sat, 12 Sep 2026 01:54:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD19A35F18B
+	for <kvm@vger.kernel.org>; Sat, 12 Sep 2026 05:53:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789178069; cv=none; b=jn4vVbyLmvkb9cyUXnF+4OIQY9b6M8yWHRdauu462evi2XOuIMfwfI3VntWlyfScRzsWNsrPj4QugHkYHfM6gNPakKvyHgVws36gqMjnFsmzxUYghoPK95/ded6pOJqhitDPeWeaeP0aZSZRn5a4IeFdLaDtYFVjaUz89+X5yTI=
+	t=1789192384; cv=none; b=rfaV4V8FxcnCv6pcr/Fi1iLRRr2SjhBSWAP9OuqCylkmJWgXxPB5yVMDRrNk/In1VAtcVynU1hGEzE6wqCOQZ08DIcYMCphvXUz+YBNBk7GIVxNYY7PBESMUwkHZly+VIoI6eeNTW/wii/K8+KgtdPEEABk0EKvJXDslPn9THwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789178069; c=relaxed/simple;
-	bh=t6dgR5XfqJ0LsltNbLwKaLG/YP51jLxudDTfG9Vn5+0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D8QTya0kY9MasqEvF5HTw96EKEtLGqGIgFRwOq2NdNhd1sohnl4YIwUsWO8pXpzxhJNDIexC16k3LL/yojZRVOxH/d7+z32aN7nNPHxiHooJWRnLxR31s79HAlTwzLTtAhciTGsVOkXFj9dxEiNdkM5q9pYY2bce495eZSM2qfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=lMOrdW7F; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1789192384; c=relaxed/simple;
+	bh=Vdsd0+liAiYVOiW+hrdEdgsiU3r9OsVIG2puvFA6Ptg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=SMj6YC4SP6HKjWPcMWgtPdXcVtgGnbdthI1i6UDP/3i75QhFCdo1bJ1Ua25vwN0R+dKg98gt85c4uY1pVUv1+dDSAQQPXc/oMtBzZdkps31UvmPWCnLbNrLJabcWyi5OXic+igBkeeo2nuID4QsG7+qQrV5tcZ/DPNqY5DMQNo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=A2FqoytX; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="lMOrdW7F"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id CE3BC40E00B8;
-	Sat, 12 Sep 2026 01:54:23 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id L3BtR2rSBdQj; Sat, 12 Sep 2026 01:54:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1789178053; bh=E4RlSrzg6+x+KQPg9VIPKMj8UpFsQcBzm8LnjlJfedo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lMOrdW7F5Dg6yRxHpiWee8ljes06YDidY7lRkB4S6Mp8B2wp/k+FfiBjWOJJQwOch
-	 3bII5XSBuVbiin6Obf7co5Vht5XQ1gELOXlfvI8J38tsxfBM+jM+kH0aG8/JrCVaVa
-	 AG4KO24Po0OUvS2cudXhP5SuklXtm9vVtivvAnKWS2lOZQcztNgvWEbIFjt4c1g798
-	 tt1+6sAposoAOKZodPCtTO8L+oSJOUvQf1b5RX1Fer9DbcxZ2Bx7rd00X86LsHNX+7
-	 LEAN3SkEQ4VEdlIWF8ASTCcGr7owv5PXP4IukBlboX/jkIYA1IdYU3UqV6+rLNTCrG
-	 tH53U64r5LJc7EvLRSacL40FEAZE64PFkYAhzCn1DUBSpieQnvjqUnNAyrwuwWEO0h
-	 SlByQOq3sJX+sgCBJPPcizKKGG3gG7itKNoc7aJCuZMbATmpMsoNImA2dLYGWvaTRO
-	 4a8HY0yQiDXXVGVv5Emxcy3uvIPe2hEKkOuMqXbufnocnq5rs9ufd1ipPBti1ab+e5
-	 CnUMOaiLCRjTy31/mXIjoHSCYAP5HM/tJFOiJvxHpl2PBE3v+DGx91kRR+tg1F3vsL
-	 rDpBlDLi7Vy8PHlxcMirIcUil/7jkS3WKMSasMxwSBtmJyeSjzOPqFpIMxB+6lpRc2
-	 bKUepEeNNVb3aB21PA+BGjCQ=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1a])
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="A2FqoytX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789192379;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UgljSemThQOtOsTysjE4U+NLvcvT+dhG3CA8+WOGtRY=;
+	b=A2FqoytXC15b9Fos44Ek2mlS1UBYJiAW+Vq4y1fLGFIs2E5+5i8r4pqJQwIbD3EP4Ldzm0
+	gaWmVQE7vyBerf1AgRibRPNSyBu9yiHWE1EgEdGQWt06zEEh593dRPWFdyHBDLATcVB4Up
+	3OPGocaerfYnyCWhDoaCJTq25kmJ5x8=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-4VR2GVmnOWelIIfDhX0nRA-1; Sat,
+ 12 Sep 2026 01:52:52 -0400
+X-MC-Unique: 4VR2GVmnOWelIIfDhX0nRA-1
+X-Mimecast-MFC-AGG-ID: 4VR2GVmnOWelIIfDhX0nRA_1789192366
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id EA01B40E016C;
-	Sat, 12 Sep 2026 01:53:39 +0000 (UTC)
-Date: Fri, 11 Sep 2026 18:53:36 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	darwi@linutronix.de, linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v14 4/5] x86/sev: Perform RMP optimizations asynchronously
-Message-ID: <20260912015336.GJaqSwoBGnp4Zl-jC4@fat_crate.local>
-References: <cover.1788984053.git.ashish.kalra@amd.com>
- <1e3d0edb6b275e33fa6f76b0c31db9e999d9a270.1788984053.git.ashish.kalra@amd.com>
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 864C91954B11;
+	Sat, 12 Sep 2026 05:52:46 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.44.22.5])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 683AA1800345;
+	Sat, 12 Sep 2026 05:52:45 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+	id 122C821E6A04; Sat, 12 Sep 2026 07:52:43 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: <qemu-devel@nongnu.org>,  <kvm@vger.kernel.org>,  <pbonzini@redhat.com>,
+  <berrange@redhat.com>,  <pankaj.gupta@amd.com>,
+  <isaku.yamahata@intel.com>,  <xiaoyao.li@intel.com>,
+  <chao.p.peng@linux.intel.com>,  <david@kernel.org>,
+  <ashish.kalra@amd.com>,  <ackerleytng@google.com>,
+  <lpieralisi@kernel.org>
+Subject: Re: [PATCH v2 07/19] accel/kvm: Add CGS option to control in-place
+ conversion support
+In-Reply-To: <sudqwq5bnygtkqc2cio6rq5khrfi252jcs6jq6i3uzblgtvgq7@3upjx5k5bp7s>
+	(Michael Roth's message of "Fri, 11 Sep 2026 12:22:45 -0500")
+References: <20260908205236.838281-1-michael.roth@amd.com>
+	<20260908205236.838281-8-michael.roth@amd.com>
+	<878q5bosi3.fsf@pond.sub.org>
+	<sudqwq5bnygtkqc2cio6rq5khrfi252jcs6jq6i3uzblgtvgq7@3upjx5k5bp7s>
+Date: Sat, 12 Sep 2026 07:52:43 +0200
+Message-ID: <87pkyj3tjo.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1e3d0edb6b275e33fa6f76b0c31db9e999d9a270.1788984053.git.ashish.kalra@amd.com>
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Thu, Sep 10, 2026 at 10:00:08PM +0000, Ashish Kalra wrote:
->  void snp_setup_rmpopt(void)
->  {
->  	u64 rmpopt_base;
-> @@ -591,6 +648,30 @@ void snp_setup_rmpopt(void)
->  	if (!rmpopt_capable())
->  		return;
->  
-> +	guard(mutex)(&rmpopt_wq_mutex);
-> +
-> +	/*
-> +	 * Set up once: the workqueue and RMPOPT_BASE MSRs are left in place on
-> +	 * shutdown, so a later re-initialization just re-queues the optimization
-> +	 * pass rather than redoing the setup.
-> +	 */
-> +	if (rmpopt_wq) {
-> +		queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work, 0);
-> +		return;
-> +	}
+Michael Roth <michael.roth@amd.com> writes:
 
-No, this is not how this is done. This is a *setup* function but you also use
-it to start the workqueue if it has been allocated already. So it should
-either setup or start but not both.
+> On Wed, Sep 09, 2026 at 08:20:36AM +0200, Markus Armbruster wrote:
+>> Michael Roth <michael.roth@amd.com> writes:
+>> 
+>> > For confidential guests, guest_memfd is currently used only for private
+>> > guest memory, and normal guest memory comes from the configured memory
+>> > backend just as it does for a non-confidential guest. It is now possible
+>> > to use the same physical memory to back a particular GPA regardless of
+>> > whether it is in a shared or private state. This avoids the need to
+>> > rely on discarding memory between shared/private conversions (to avoid
+>> > doubled memory usage), and is intended to be the primary mode of using
+>> > guest_memfd for confidential guests moving forward, and future features
+>> > like hugepage support will likely require it.
+>> >
+>> > Add an option to enable this support. Since ConfidentialGuestSupport is
+>> > already used to track some guest_memfd-related functionality (e.g.
+>> > whether it is required for the configured machine), similarly introduce
+>> > this option as a property of ConfidentialGuestSupport.
+>> >
+>> > Also add the KVM-specific checks to enable this support, but leave the
+>> > option disabled until other required changes are implemented for
+>> > CGS variants that intend to make use of KVM's in-place conversion
+>> > support.
+>> >
+>> > While technically the convert-in-place option could be introduced as an
+>> > SEV-specific option, it is a given that TDX will also be introducing
+>> > in-place conversion support based on the same guest_memfd kernel
+>> > infrastructure, so introduce it via a new
+>> > ConfidentialGuestSupportProperties base class that other confidential VM
+>> > implementations can utilized for common options.
+>> >
+>> > Signed-off-by: Michael Roth <michael.roth@amd.com>
+>> 
+>> [...]
+>> 
+>> > diff --git a/qapi/qom.json b/qapi/qom.json
+>> > index 909add4299..20d6fefb04 100644
+>> > --- a/qapi/qom.json
+>> > +++ b/qapi/qom.json
+>> > @@ -1005,6 +1005,21 @@
+>> >    'if': 'CONFIG_IGVM',
+>> >    'data': { 'file': 'str' } }
+>> >  
+>> > +##
+>> > +# @ConfidentialGuestSupportProperties:
+>> > +#
+>> > +# Properties for ConfidentialGuestSupport base class.
+>> > +#
+>> > +# @convert-in-place: If true, the same physical pages are reused
+>> > +#     when memory is converted between shared and private states.
+>> > +#     If false (default), separate allocations are used depending
+>> > +#     on whether the page is private or shared.
+>> 
+>> Any guidance on when to enable @convert-in-place?
+>
+> A lot of it boils down to more Confidential Compute architectures
+> now requiring it for new features (hugepage support and SEV-TIO will
+> require it for instance). convert-in-place=true maps more closely to
+> a normal VM, and not having more complicated memory management
+> requirements avoids additional complications up the stack (like
+> accounting for instances where memory usage might balloon passed
+> expected resource limits due to needing to management multiple
+> memory allocations for a given GPA range).
+>
+> convert-in-place=false will likely become a legacy path unless other
+> use-case arise, but they'd probably need to be super-duper useful
+> to warrant enabling new things on top of it going forward.
 
-So what you do is, you try to allocate the workqueue. If it fails, you clear
-X86_FEATURE_RMPOPT so that rmpopt_capable() is false and that can be your
-start_workqueue function.
+What are the use cases for false *now*?
 
-This way you get rid of all that
+Can a change from false to true upset a guest?
 
-	if (rmpopt_wq) 
+> I'll try to work something along that line into the guest-memfd.rst
+> I proposed for Peter's series and add/reference that as part of this
+> patch.
+>
+>> 
+>> > +#
+>> > +# Since: 11.2
+>> > +##
+>> > +{ 'struct': 'ConfidentialGuestSupportProperties',
+>> > +  'data': { '*convert-in-place': 'bool' } }
+>> > +
+>> >  ##
+>> >  # @SevCommonProperties:
+>> >  #
 
-sprinkles everywhere.
+[...]
 
-> +
-> +	/*
-> +	 * Use a dedicated per-CPU workqueue so the potentially lengthy warm-up
-> +	 * scan does not tie up a shared workqueue worker.
-> +	 */
-> +	rmpopt_wq = alloc_workqueue("rmpopt_wq", WQ_PERCPU, 1);
-> +	if (!rmpopt_wq) {
-> +		pr_err("Failed to allocate RMPOPT workqueue\n");
-> +		return;
-> +	}
-> +
-> +	INIT_DELAYED_WORK(&rmpopt_delayed_work, do_rmpopt_work);
-> +
->  	rmpopt_pa_start = ALIGN_DOWN(PFN_PHYS(min_low_pfn), SZ_1G);
->  	rmpopt_base = rmpopt_pa_start | MSR_AMD64_RMPOPT_ENABLE;
->  
-> @@ -600,6 +681,15 @@ void snp_setup_rmpopt(void)
->  	 */
->  	for_each_cpu(cpu, cpu_primary_thread_mask)
->  		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, rmpopt_base);
-> +
-> +	rmpopt_pa_end = ALIGN(PFN_PHYS(max_pfn), SZ_1G);
-> +
-> +	if ((rmpopt_pa_end - rmpopt_pa_start) > SZ_2T)
-> +		rmpopt_pa_end = rmpopt_pa_start + SZ_2T;
-> +
-> +	queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work, 0);
-> +
-> +	pr_info("RMPOPT optimizations enabled\n");
->  }
->  EXPORT_SYMBOL_FOR_MODULES(snp_setup_rmpopt, "ccp");
-
-There is no ccp driver patch calling this so this export needs to happen when
-you're actually adding the ccp code.
-
-Same thing for the snp_rmpopt_all_physmem() export to kvm-amd.
-
-Looking at this more, I would like to get rid of the snp_setup_rmpopt() export
-and have this function do the necessary setup stuff from an initcall in this
-file. This way you set up the stuff at kernel init time and have everything
-ready to go.
-
-Then the ccp will *only* call a function which is called snp_enable_rmpopt()
-after it has enabled SNP. That function simply enables the workqueue.
-
-And then kvm-amd can call that function too so we end up with one export.
-
-Oh, and you can zap those comments while at it:
-
-diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-index ca99617142be..c8ba71431a5e 100644
---- a/arch/x86/virt/svm/sev.c
-+++ b/arch/x86/virt/svm/sev.c
-@@ -619,7 +619,6 @@ static void rmpopt(u64 pa)
- 		     : "memory", "cc");
- }
- 
--/* on_each_cpu() callback: optimize the whole RMPOPT range on this CPU. */
- static void rmpopt_scan_range(void *arg)
- {
- 	u64 pa;
-@@ -632,7 +631,7 @@ static void do_rmpopt_work(struct work_struct *work)
- {
- 	/*
- 	 * Warm up the RMPOPT cache on this pinned per-CPU worker with interrupts
--	 * on, so the IRQ-disabled fan-out below only issues cache-hit RMPOPTs.
-+	 * enabled, so the IRQ-disabled fan-out below only issues cache-hit RMPOPTs.
- 	 */
- 	rmpopt_scan_range(NULL);
- 
-@@ -649,11 +648,6 @@ void snp_setup_rmpopt(void)
- 
- 	guard(mutex)(&rmpopt_wq_mutex);
- 
--	/*
--	 * Set up once: the workqueue and RMPOPT_BASE MSRs are left in place on
--	 * shutdown, so a later re-initialization just re-queues the optimization
--	 * pass rather than redoing the setup.
--	 */
- 	if (rmpopt_wq) {
- 		queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work, 0);
- 		return;
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
