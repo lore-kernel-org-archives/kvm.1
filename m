@@ -1,198 +1,150 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F153176EE
-	for <kvm@vger.kernel.org>; Sun, 13 Sep 2026 07:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942F839F18A;
+	Sun, 13 Sep 2026 09:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789284349; cv=none; b=ck/vsQL31zhEhwrpyrjEtgR7h4jIIl0Qnyp0Z7yIT41cEilxfutC3Xx5/M3iMAIwzSybcnDB/RKgCfJX29J0yPKFjifLu9NU1Ip57sRCvQ8lIyPh+t/kv3PpGnFCAPrs4BtOsAyYXSUatndaMLl0Wz7Ml0XD8YXQAXQBlfyuA7Y=
+	t=1789290301; cv=none; b=fm2vsDXdc+59oIWlY65/9R7pCmVbGq4S5S4lOaaxQQqOAtpVesw7VJr5aVXfPDJTa0nMfgbFAN/8AgUbM2NQGfxJjJQusM1cG9LlNCFP0vQl81tUSgBP6GYx6FSu+CuG+EJXaSznZp8RVJ9f3ObV2Y/71oNhYld86F4YnqULTKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789284349; c=relaxed/simple;
-	bh=bjty2YYG7hoCIPrZzGpl/b+rjNWSeb4L91CM4/cA830=;
+	s=arc-20240116; t=1789290301; c=relaxed/simple;
+	bh=Dsndxo3+qVqKKZIUmlmab7L5vQJlLdAT5KEh3sPsFXQ=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=J2zmVd/4NQGvLEEIJ+tHMRq4ikS6sTcQbYv0tbxp94aMQouGbl8Z2nmErR/PpQIwuGgj11DNHWSmKr3Xhlu1AlyChAQtNGSe0/XjORALRK8XWKIyHRLwXq31dUtjKl43Y35mlIo7sxOZVgssNcZMhaam2S0kmpUtKVpwUqWv3Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BKzk0x+U; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=fqoZPH2m6UizW5jQRMSWgsYbUpB3nAjxjElA6klSyZakdQnSa1hfyN2oIISt+vuoCxq3GRD4/+WlcWP0SCx+tiSPWi1aU4674t/TM48p+n2MGsN4bXs+fbrhJBpJB3sVIY/CbE7TmsGPZILNb95yJooXCRNgJ8/8ALcVWXQO+DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CJecyfNy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BKzk0x+U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3CC61F000FF;
-	Sun, 13 Sep 2026 07:25:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CJecyfNy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8221F00893;
+	Sun, 13 Sep 2026 09:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789284348;
-	bh=rhJXi4XEyHhRRVva2SeMl6cO3mPPCSH5o9FvxrcZSSA=;
+	s=k20260515; t=1789290292;
+	bh=i3WTkn4ip9oDL3Xp9oedA5FdQRKAHjRR0cO6alLKD54=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BKzk0x+U4aj/OVQOq80esUjPLpwg5pcGy27iNSevP+9F75Mwu052uu43k3Tbb5FTz
-	 xV46RlQLuvHCWBd4UtP2CRJDjsaCpbnMeuvl5qjhKWns8JZkyPYuIriyODnV6Oz8cq
-	 zlxlOU73HIR+jOdzDtgduFUHKXXhnyRtADi02CnPI12CXuvhEYfz0JcBM0l82zO1WT
-	 vlOGLByZBA6ErHAEenXLp242woOUTCQ2updEaDLxJKKR00TadypEZE16EhuYvxU2uT
-	 bQFieDZOWxIVAL4jaBtw7FV3NpRtv3IrHr5a/E4nn8OZPjwiyu6rgaJkKtIZFBvwdG
-	 2tVpSSzT/LOFA==
+	b=CJecyfNyVVpztAXh/kBo7gBouqBPpVWhazSda7nE2pOmsPAmykyXcAK7pqA1E5rWG
+	 T5ZLv4Nlx8JfIQPCda51CTyvAGpLLROwMkFp3bpCLDq7RvH3OQ7A1FgGgYCUft3BFe
+	 s8mdNorpzfxFJi+hy8UQjiyRlNlJLWEfhvnkkyGHsr8PFRWqC7vVtPIhOQgGf0OEXm
+	 vEe8nX7SHw5IIMF7jf9rhTQ3LV9pLVVPao09RlXpHZkAgnmybjZWDo2JimGUllh4AF
+	 dCqSH6DFV7sBYociifAZXq6a5CAYNa7cm3LgA9ZnOASmun/KFSgYXQncRQiYvcdYn9
+	 QAHyeYS6MPJvQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 2/2] RISC-V: KVM: Recover gstage huge page mappings
- during disable-dirty-log
+Subject: Re: [PATCH] vhost-scsi: do not relock event vq mutex on send_evt
+ fallback
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Wang Yechao" <wang.yechao255@zte.com.cn>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260913070352.3626956-3-wang.yechao255@zte.com.cn>
-References: <20260913070352.3626956-1-wang.yechao255@zte.com.cn>
- <20260913070352.3626956-3-wang.yechao255@zte.com.cn>
+To: "Jia Jia" <physicalmtea@gmail.com>
+Cc: virtualization@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>, "Eugenio
+ Perez" <eperezma@redhat.com>, kvm@vger.kernel.org
+In-Reply-To: <20260912090420.47439-1-physicalmtea@gmail.com>
+References: <20260912090420.47439-1-physicalmtea@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 13 Sep 2026 07:25:47 +0000
-Message-Id: <20260913072547.E3CC61F000FF@smtp.kernel.org>
+Date: Sun, 13 Sep 2026 09:04:51 +0000
+Message-Id: <20260913090452.2B8221F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] Arithmetic subtraction of pfn_pte(..., 0) corrupts custom memory t=
-ype bits (e.g., T-Head PMA) in make_huge_pte().
-- [High] Missing congruent alignment check for host page size leads to misa=
-ligned guest superpages and guest crashes.
-- [Medium] Flawed boundary checks and loop advancement logic prematurely sk=
-ip valid memory ranges during huge page recovery.
+
+Pre-existing issues:
+- [Critical] vhost_scsi_do_evt_work() accesses vq->iov[out] without verifyi=
+ng that the guest actually provided an input buffer, leading to arbitrary u=
+ser-space memory corruption.
+- [High] Events are processed in LIFO order instead of FIFO, which can caus=
+e state corruption for hotplug/hotunplug sequences.
 --
 
-commit 83685cea613e39b130969d813c4ab2e7f3ad286f
-Author: Wang Yechao <wang.yechao255@zte.com.cn>
+commit 05830c30fc2e4dc682c270a9b487ae5abb66218b
+Author: Jia Jia <physicalmtea@gmail.com>
 
-RISC-V: KVM: Recover gstage huge page mappings during disable-dirty-log
+vhost-scsi: do not relock event vq mutex on send_evt fallback
+   =20
+This commit resolves a deadlock during fallback event handling when the vho=
+st
+worker has disconnected. It splits event completion into an internal unlock=
+ed
+helper and a locked wrapper to safely reuse the completion path.
+   =20
+Link: https://lore.kernel.org/all/20260905005352.1E5B01F00A3D@smtp.kernel.o=
+rg/
 
-When dirty logging is enabled, the gstage mappings are split into
-4K pages to track dirty pages. If the migration fails or is canceled,
-this patch recovers the gstage huge page mappings when dirty logging is
-disabled to keep the VM's performance consistent.
-
-> diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
-> index e5002cb9cbef1..b9414a62c3e04 100644
-> --- a/arch/riscv/kvm/gstage.c
-> +++ b/arch/riscv/kvm/gstage.c
-
-[ ... ]
-
-> @@ -369,6 +369,73 @@ bool kvm_riscv_gstage_split_huge(struct kvm_gstage *=
-gstage,
->  	return need_flush;
+> diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+> index 4f8c0260bc9e7..42abf18291b75 100644
+> --- a/drivers/vhost/scsi.c
+> +++ b/drivers/vhost/scsi.c
+> @@ -660,19 +660,26 @@ vhost_scsi_do_evt_work(struct vhost_scsi *vs, struc=
+t vhost_scsi_evt *evt)
+>  	vhost_scsi_log_write(vq, vq_log, log_num);
 >  }
 > =20
-> +static inline unsigned long make_huge_pte(unsigned long child_pte, int i=
-ndex,
-> +					  unsigned long child_page_size)
-> +{
-> +	unsigned long huge_pte =3D child_pte;
-> +	unsigned long child_pfn_offset;
-> +
-> +	child_pfn_offset =3D index * (child_page_size / PAGE_SIZE);
-> +	huge_pte -=3D pte_val(pfn_pte(child_pfn_offset, __pgprot(0)));
+> -static void vhost_scsi_complete_events(struct vhost_scsi *vs, bool drop)
+> +/* Caller must hold the event virtqueue mutex. */
+> +static void __vhost_scsi_complete_events(struct vhost_scsi *vs, bool dro=
+p)
+>  {
+> -	struct vhost_virtqueue *vq =3D &vs->vqs[VHOST_SCSI_VQ_EVT].vq;
+>  	struct vhost_scsi_evt *evt, *t;
+>  	struct llist_node *llnode;
+> =20
+> -	mutex_lock(&vq->mutex);
+>  	llnode =3D llist_del_all(&vs->vs_event_list);
+>  	llist_for_each_entry_safe(evt, t, llnode, list) {
 
 [Severity: High]
-Does subtracting pfn_pte(..., 0) corrupt custom memory type bits on T-Head
-CPUs?
+This is a pre-existing issue, but does this loop deliver events to the guest
+in reverse order?
 
-On RISC-V platforms with T-Head extensions, pfn_pte() with __pgprot(0)
-automatically applies custom memory attribute bits because the initial
-protection value is 0. Subtracting this value inadvertently subtracts these
-high memory bits from the PTE rather than just the shifted PFN.
+The events are added to vs_event_list using llist_add(), which constructs a
+last-in, first-out list. Because lnode is retrieved locklessly with
+llist_del_all(), and the iteration happens without first calling
+llist_reverse_order(), the events appear to be processed from newest to
+oldest.
 
-Could this corrupt the huge PTE, potentially clearing required attribute bi=
-ts
-or underflowing into the PFN bits, resulting in an invalid guest mapping?
+Could this cause state corruption for hotplug and hotunplug sequences? For
+example, if a device is plugged and then rapidly unplugged, the guest might
+receive the unplug event first and the plug event second, leaving it
+erroneously believing the device is still present.
 
-> +
-> +	return huge_pte;
+>  		if (!drop)
+>  			vhost_scsi_do_evt_work(vs, evt);
+
+[Severity: Critical]
+This is a pre-existing issue, but can this function access out-of-bounds or
+stale memory if the guest provides an empty input buffer?
+
+Looking at vhost_scsi_do_evt_work() in drivers/vhost/scsi.c, the code uses
+vhost_get_vq_desc() which populates vq->iov:
+
+    head =3D vhost_get_vq_desc(vq, vq->iov,
+            ARRAY_SIZE(vq->iov), &out, &in,
+            vq_log, &log_num);
+    ...
+    if ((vq->iov[out].iov_len !=3D sizeof(struct virtio_scsi_event))) {
+        vq_err(vq, "Expecting virtio_scsi_event, got %zu bytes\n",
+                vq->iov[out].iov_len);
+
+If a guest submits a descriptor chain with only read-only descriptors,
+vhost_get_vq_desc() sets in =3D 0. The out variable holds the count of
+read-only descriptors, meaning the first writable descriptor expected by the
+host would be at index out.
+
+Does the length check above access vq->iov[out].iov_len without verifying
+that in > 0?
+
+If in is 0, vq->iov[out] was not populated by vhost_get_vq_desc() and
+contains stale data from a previous request. Could a malicious guest use
+this to force the kernel to write the event structure to a previously
+legitimate but now hot-unplugged host virtual address via the
+__copy_to_user() call later in the function?
+
+>  		vhost_scsi_free_evt(vs, evt);
+>  	}
 > +}
 
 [ ... ]
-
-> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> index 6035b5ec95039..8e76187abd89a 100644
-> --- a/arch/riscv/kvm/mmu.c
-> +++ b/arch/riscv/kvm/mmu.c
-
-[ ... ]
-
-> +static void mmu_recover_huge_pages(struct kvm *kvm, int slot)
-> +{
-
-[ ... ]
-
-> +	while (addr < end) {
-> +		/*
-> +		 * If a very large memslot is mapped exclusively with
-> +		 * 4KB host pages, or too many hugepages need to recover,
-> +		 * release the kvm->mmu_lock to prevent starvation and
-> +		 * lockup detector warnings.
-> +		 */
-> +		cond_resched_rwlock_write(&kvm->mmu_lock);
-> +
-> +		if (!kvm->arch.pgd)
-> +			break;
-> +
-> +		hva =3D gfn_to_hva(kvm, addr >> PAGE_SHIFT);
-> +		page_size =3D get_hva_mapping_size(kvm, hva);
-
-[Severity: High]
-Does the host mapping size need to be validated against the memslot alignme=
-nt
-before attempting recovery?
-
-The loop fetches the host's mapping size but fails to validate it against
-fault_supports_gstage_huge_mapping(..., page_size). If the host mapping is
-1GB, KVM accepts this size without re-verifying that the memslot supports 1=
-GB
-mappings (for example, if GPA and HVA are congruently aligned for 2MB but n=
-ot
-for 1GB).
-
-Because the size is not validated for congruent alignment, could subtracting
-the offset in make_huge_pte() leave a base PFN that is misaligned for the
-superpage size, producing an architecturally invalid PTE?
-
-> +		if (page_size =3D=3D PAGE_SIZE) {
-> +			addr +=3D page_size;
-> +			continue;
-> +		}
-> +
-> +		range_start =3D ALIGN_DOWN(addr, page_size);
-> +		range_end =3D range_start + page_size;
-> +
-> +		/*
-> +		 * Make sure the recover range [range_start, range_end)
-> +		 * is within the slot range.
-> +		 */
-> +		if (range_start < start || range_end > end) {
-> +			addr =3D range_end;
-
-[Severity: Medium]
-If the host mapping size is 1GB but the memslot does not start on a 1GB
-boundary, range_start < start evaluates to true. Does advancing addr
-unconditionally to range_end entirely skip over valid memory that could have
-been recovered with smaller huge pages?
-
-> +			continue;
-> +		}
-> +
-> +		out_size =3D mmu_recover_huge_pages_range(&gstage, page_size,
-> +							range_start, range_end);
-> +
-> +		if (out_size > page_size)
-> +			page_size =3D out_size;
-> +
-> +		addr =3D range_start + page_size;
-
-[Severity: Medium]
-If out_size is larger than the original page_size (for instance, 1GB vs 2MB=
-),
-does adding it to range_start (which was aligned only to the smaller size)
-result in a misaligned addr that skips memory in the next loop iteration?
-
-> +	}
-> +
-> +	write_unlock(&kvm->mmu_lock);
-> +}
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260913070352.3626=
-956-1-wang.yechao255@zte.com.cn?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260912090420.4743=
+9-1-physicalmtea@gmail.com?part=3D1
