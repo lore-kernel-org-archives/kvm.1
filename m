@@ -1,346 +1,287 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from www5210.sakura.ne.jp (www5210.sakura.ne.jp [133.167.8.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BD23E4C7F;
-	Sun, 13 Sep 2026 10:26:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB2634EF07;
+	Sun, 13 Sep 2026 15:56:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=133.167.8.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789295220; cv=none; b=iFZKM5U1Um0ubd/wl6DxZLOazu/WepAfrwC4GCxdp1+VuKu72f9QZ+hsPE847dnY4oZNXGw11dukGZa/DoVC8N4VtxpDA+TaRjSzZEeAKBaQwH80Zve5eLlHKJ1bsKlp9vPRbOJ42u5HvO54mGe0GxDs49DJlK22othO7ujnVp4=
+	t=1789314963; cv=none; b=Hkx4mp6Mow+ZketEfnSLA9Na/DcAVZSzMHGdUd+WCIgnnxYEJ44Qimf/xwjx/yPUYH+aV6XEKSUqJYst8wZP4HqodWo30EML9u6SKU/0LhNDsJWS4L8cS+CjGPnWmnM773pezLBtF8zEaXJHn2Nz7DMlINZ+FsndyKyJBIUEIW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789295220; c=relaxed/simple;
-	bh=ZLX8NOH1OUjVKH2KjlT+1+vvXSxFp3Df20ZPxwvYFCw=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jct6SrrCItim2rvPrw9xKSbh10gTtRhyODSPc9cdw0UV1q4Y5vYEGEmOxBCqnSe76MZPH7NQNSDHVLGYyeF/in9GK4ZHw3lcCOyzra3Z1+4bw+hITztJsmUYMFyi9HFApvYH2uBUDmL9meggoiNQu+Kl03wkaVBNtnMvfWhs3Ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HxcoM8ZX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789314963; c=relaxed/simple;
+	bh=pEfW/VbURYIZsZ9HlQySG8Xf/is+jgd7kBTjwCkD7QY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bD9fhmi8KsqdNc5AYsfOUFe9rl9T4zDI8IBLZznopJJk5Z6PpXpwe7yj+h8uNHQ3qGTSVivCr/F3GSsn+gzo2fSWRgaoWn3E1jRRy0nucxJVq1E7UKnVAQS/sMU6oldfFVRVtDrkdM6VRZ0BFXI7QO8Y9058/lHwtLeq5sEO0bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mgml.me; spf=pass smtp.mailfrom=mgml.me; dkim=pass (2048-bit key) header.d=mgml.me header.i=@mgml.me header.b=op50g2uf; arc=none smtp.client-ip=133.167.8.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mgml.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mgml.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HxcoM8ZX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E9A1F000FF;
-	Sun, 13 Sep 2026 10:26:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789295206;
-	bh=CCyNmu1S4QSxghM5bhyr4PoubfLL8i9XAe0yigjLH6Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=HxcoM8ZXxZaNZrIj6+HVVWW1vHAG6K1S39AqGPxOTk0cJ2yrto7ofHs/WDrKv30n0
-	 8qd9TV37KTpXM9g/QdqQlp/GQAbfxi3l3g2wvy/BZJLOQoGHNHjJmzdWMtb4bZFs7J
-	 N2tR268wkupaNarLFzulRr8hj1RAXL2Zk/WC+rc0+EoKYwYoPf4NtNLY7NRdX2MdZP
-	 tpyk8+nh8A+CQ2+mWVHf1IZog4NM7nEra4hS5sjJVE1cZjNPoBXMbVgaNujyFAgeu/
-	 v5roWW+0X+HDJLoyS3Qo+5xqSw6PUbD6uR46WaLCcuak1FhJ0py0M5tWiJLVGQJc8I
-	 aZENK3W1L1Svw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1x5hQ3-00000008GZK-37Ow;
-	Sun, 13 Sep 2026 10:26:43 +0000
-Date: Sun, 13 Sep 2026 11:26:43 +0100
-Message-ID: <867bkp78gs.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	will@kernel.org,
-	catalin.marinas@arm.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	steven.price@arm.com,
-	aneesh.kumar@kernel.org,
-	oupton@kernel.org,
-	gshan@redhat.com,
-	joey.gouly@arm.com,
-	tabba@google.com,
-	yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev,
-	gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com,
-	alpergun@google.com,
-	fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com,
-	lpieralisi@kernel.org,
-	enju.kohei@fujitsu.com
-Subject: Re: [PATCH v17 05/20] KVM: arm64: Add vcpu load/put call backs for flavors
-In-Reply-To: <20260908162223.1683432-6-suzuki.poulose@arm.com>
-References: <20260908162223.1683432-1-suzuki.poulose@arm.com>
-	<20260908162223.1683432-6-suzuki.poulose@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=mgml.me header.i=@mgml.me header.b="op50g2uf"
+Received: from fedora (p3233127-ipxg00b01tokaisakaetozai.aichi.ocn.ne.jp [180.17.90.127])
+	(authenticated bits=0)
+	by www5210.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 68DFtZE8020593
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Mon, 14 Sep 2026 00:55:48 +0900 (JST)
+	(envelope-from k@mgml.me)
+DKIM-Signature: a=rsa-sha256; bh=YaEIAsiwhSGLcvDX/PKpeIusk3/ck+HYp/Kt6VDFGOU=;
+        c=relaxed/relaxed; d=mgml.me;
+        h=From:Message-ID:To:Subject:Date;
+        s=rs20250315; t=1789314948; v=1;
+        b=op50g2ufd4frQQDgZVkqVDJTjaTFaafx+G0OjrUFOOrjdB7etMvwqzBKSrT/plJN
+         1fcr5OrPqVJ7e4/MuVA50EX1slB8ZhesMjexskbwBReq41e4OIQWi3u/uak49/WG
+         1cWT4TnycSF59sVDNhj05OewT7k+1eAR5fS/Tov9ljEc41tGwoOfQH+BJZQRn3+I
+         jD3bjwUF1BNOlhDSLKKYNFLPD4px7lAVccqwNTneeLaWI9QUjNEImhQruNrzeDz/
+         cSwyFnHBYxFdBIsknQbkK8/+rRfO5/AK7le7jrFnNopqO0hZM8fsC3CTYTxgohat
+         BVKwN8EI9uZ+5+nBXnDTkA==
+From: Kenta Akagi <k@mgml.me>
+To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, stable@vger.kernel.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+        David Matlack <dmatlack@google.com>, Kenta Akagi <k@mgml.me>
+Subject: [PATCH 5.15.y v3 3/7] KVM: x86/mmu: Derive shadow MMU page role from parent
+Date: Mon, 14 Sep 2026 00:55:19 +0900
+Message-ID: <20260913155523.7423-4-k@mgml.me>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260913155523.7423-1-k@mgml.me>
+References: <20260913155523.7423-1-k@mgml.me>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: suzuki.poulose@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, 08 Sep 2026 17:22:08 +0100,
-Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
-> 
-> Add VM flavor specific handlers for VCPU load/put, in an effort to make it
-> easier to follow the code.
-> 
-> Based on a patch by Marc Zyngier
-> 
-> Suggested-by: Marc Zyngier <maz@kernel.org>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> ---
->  arch/arm64/include/asm/kvm_host.h |   6 ++
->  arch/arm64/kvm/arm.c              | 156 ++++++++++++++++++++++--------
->  2 files changed, 123 insertions(+), 39 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> index d0dccc9ad6aa8..b2e99c5cb1cd3 100644
-> --- a/arch/arm64/include/asm/kvm_host.h
-> +++ b/arch/arm64/include/asm/kvm_host.h
-> @@ -150,6 +150,11 @@ struct kvm_vmid {
->  	atomic64_t id;
->  };
->  
-> +struct kvm_vcpu_ops {
-> +	void (*vcpu_load)(struct kvm_vcpu *vcpu, int cpu);
-> +	void (*vcpu_put)(struct kvm_vcpu *vcpu);
-> +};
-> +
->  struct kvm_s2_mmu {
->  	struct kvm_vmid vmid;
->  
-> @@ -854,6 +859,7 @@ struct vncr_tlb;
->  
->  struct kvm_vcpu_arch {
->  	struct kvm_cpu_context ctxt;
-> +	const struct kvm_vcpu_ops *vcpu_ops;
->  
->  	/*
->  	 * Guest floating point state
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 51fc651267157..9af3bbb2f8c24 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -74,6 +74,8 @@ struct kvm_ioctl_cap_map {
->  	long ext;
->  };
->  
-> +static const struct kvm_vcpu_ops *arm64_vcpu_ops[VM_FLAVOR_MAX];
-> +
->  /* Make KVM_CAP_NR_VCPUS the reference for features we always supported */
->  #define KVM_CAP_ARM_BASIC	KVM_CAP_NR_VCPUS
->  
-> @@ -569,6 +571,8 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
->  	mutex_unlock(&vcpu->mutex);
->  #endif
->  
-> +	vcpu->arch.vcpu_ops = arm64_vcpu_ops[vcpu->kvm->arch.vm_flavor];
-> +
->  	/* Force users to call KVM_ARM_VCPU_INIT */
->  	vcpu_clear_flag(vcpu, VCPU_INITIALIZED);
->  
-> @@ -738,36 +742,72 @@ static void vcpu_load_pvtime(struct kvm_vcpu *vcpu)
->  		kvm_make_request(KVM_REQ_RECORD_STEAL, vcpu);
->  }
->  
-> +static void vhe_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
-> +{
-> +	vcpu_prepare_mmu(vcpu);
-> +	/*
-> +	 * The timer must be loaded before the vgic to correctly set up physical
-> +	 * interrupt deactivation in nested state (e.g. timer interrupt).
-> +	 */
-> +	kvm_timer_vcpu_load(vcpu);
-> +	kvm_vgic_load(vcpu);
-> +	kvm_vcpu_load_debug(vcpu);
-> +	kvm_vcpu_load_fgt(vcpu);
-> +	kvm_vcpu_load_vhe(vcpu);
-> +	kvm_arch_vcpu_load_fp(vcpu);
-> +	kvm_vcpu_pmu_restore_guest(vcpu);
-> +
-> +	vcpu_load_pvtime(vcpu);
-> +	vcpu_set_wfx_traps(vcpu);
-> +	vcpu_set_pauth_traps(vcpu);
-> +}
-> +
-> +static void nvhe_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
-> +{
-> +	vcpu_prepare_mmu(vcpu);
-> +	/*
-> +	 * The timer must be loaded before the vgic to correctly set up physical
-> +	 * interrupt deactivation in nested state (e.g. timer interrupt).
-> +	 */
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-This comment makes no sense here -- it is strictly for VHE, which is
-the only mode to implement NV. Same thing for the pKVM vcpu_load().
+commit 2e65e842c57d72e9a573ba42bc2055b7f626ea1f upstream.
 
-> +	kvm_timer_vcpu_load(vcpu);
-> +	kvm_vgic_load(vcpu);
-> +	kvm_vcpu_load_debug(vcpu);
-> +	kvm_vcpu_load_fgt(vcpu);
-> +	kvm_arch_vcpu_load_fp(vcpu);
-> +	kvm_vcpu_pmu_restore_guest(vcpu);
-> +
-> +	vcpu_load_pvtime(vcpu);
-> +	vcpu_set_wfx_traps(vcpu);
-> +	vcpu_set_pauth_traps(vcpu);
-> +}
-> +
-> +static void pkvm_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
-> +{
-> +	/*
-> +	 * The timer must be loaded before the vgic to correctly set up physical
-> +	 * interrupt deactivation in nested state (e.g. timer interrupt).
-> +	 */
-> +	kvm_timer_vcpu_load(vcpu);
-> +	kvm_vgic_load(vcpu);
-> +	kvm_vcpu_load_debug(vcpu);
-> +	kvm_vcpu_load_fgt(vcpu);
-> +	kvm_arch_vcpu_load_fp(vcpu);
-> +	kvm_vcpu_pmu_restore_guest(vcpu);
-> +
-> +	vcpu_load_pvtime(vcpu);
-> +	vcpu_set_wfx_traps(vcpu);
-> +
-> +	kvm_call_hyp_nvhe(__pkvm_vcpu_load,
-> +			  vcpu->kvm->arch.pkvm.handle,
-> +			  vcpu->vcpu_idx, vcpu->arch.hcr_el2);
-> +	kvm_call_hyp(__vgic_v3_restore_vmcr_aprs,
-> +		     &vcpu->arch.vgic_cpu.vgic_v3);
+Instead of computing the shadow page role from scratch for every new
+page, derive most of the information from the parent shadow page.  This
+eliminates the dependency on the vCPU root role to allocate shadow page
+tables, and reduces the number of parameters to kvm_mmu_get_page().
 
-This can also be turned into a kvm_call_hyp_nvhe().
+Preemptively split out the role calculation to a separate function for
+use in a following commit.
 
-> +}
-> +
->  void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
->  {
-> -	if (!is_protected_kvm_enabled())
-> -		vcpu_prepare_mmu(vcpu);
-> -
->  	vcpu->cpu = cpu;
-> -	/*
-> -	 * The timer must be loaded before the vgic to correctly set up physical
-> -	 * interrupt deactivation in nested state (e.g. timer interrupt).
-> -	 */
-> -	kvm_timer_vcpu_load(vcpu);
-> -	kvm_vgic_load(vcpu);
-> -	kvm_vcpu_load_debug(vcpu);
-> -	kvm_vcpu_load_fgt(vcpu);
-> -	if (has_vhe())
-> -		kvm_vcpu_load_vhe(vcpu);
-> -	kvm_arch_vcpu_load_fp(vcpu);
-> -	kvm_vcpu_pmu_restore_guest(vcpu);
-> -
-> -	vcpu_load_pvtime(vcpu);
-> -	vcpu_set_wfx_traps(vcpu);
-> -	vcpu_set_pauth_traps(vcpu);
-> -
-> -	if (is_protected_kvm_enabled()) {
-> -		kvm_call_hyp_nvhe(__pkvm_vcpu_load,
-> -				  vcpu->kvm->arch.pkvm.handle,
-> -				  vcpu->vcpu_idx, vcpu->arch.hcr_el2);
-> -		kvm_call_hyp(__vgic_v3_restore_vmcr_aprs,
-> -			     &vcpu->arch.vgic_cpu.vgic_v3);
-> -	}
-> +	vcpu->arch.vcpu_ops->vcpu_load(vcpu, cpu);
->  
->  	if (!cpumask_test_cpu(cpu, vcpu->kvm->arch.supported_cpus))
->  		vcpu_set_on_unsupported_cpu(vcpu);
-> @@ -775,28 +815,44 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
->  	vcpu->arch.pid = pid_nr(vcpu->pid);
->  }
->  
-> -void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
-> +static void vhe_vcpu_put(struct kvm_vcpu *vcpu)
->  {
-> -	if (is_protected_kvm_enabled()) {
-> -		kvm_call_hyp(__vgic_v3_save_aprs, &vcpu->arch.vgic_cpu.vgic_v3);
-> -		kvm_call_hyp_nvhe(__pkvm_vcpu_put);
-> -
-> -		/* __pkvm_vcpu_put implies a sync of the state */
-> -		if (!kvm_vm_is_protected(vcpu->kvm))
-> -			vcpu_set_flag(vcpu, PKVM_HOST_STATE_DIRTY);
-> -	}
-> -
->  	kvm_vcpu_put_debug(vcpu);
->  	kvm_arch_vcpu_put_fp(vcpu);
-> -	if (has_vhe())
-> -		kvm_vcpu_put_vhe(vcpu);
-> +	kvm_vcpu_put_vhe(vcpu);
->  	kvm_timer_vcpu_put(vcpu);
->  	kvm_vgic_put(vcpu);
->  	kvm_vcpu_pmu_restore_host(vcpu);
->  	if (vcpu_has_nv(vcpu))
->  		kvm_vcpu_put_hw_mmu(vcpu);
->  	kvm_arm_vmid_clear_active();
-> +}
->  
-> +static void nvhe_vcpu_put(struct kvm_vcpu *vcpu)
-> +{
-> +	kvm_vcpu_put_debug(vcpu);
-> +	kvm_arch_vcpu_put_fp(vcpu);
-> +	kvm_timer_vcpu_put(vcpu);
-> +	kvm_vgic_put(vcpu);
-> +	kvm_vcpu_pmu_restore_host(vcpu);
-> +	kvm_arm_vmid_clear_active();
-> +}
-> +
-> +static void pkvm_vcpu_put(struct kvm_vcpu *vcpu)
-> +{
-> +	kvm_call_hyp(__vgic_v3_save_aprs, &vcpu->arch.vgic_cpu.vgic_v3);
+Note that when calculating the MMU root role, we can take
+@role.passthrough, @role.direct, and @role.access directly from
+@vcpu->arch.mmu->root_role. Only @role.level and @role.quadrant still
+must be overridden for PAE page directories, when shadowing 32-bit
+guest page tables with PAE page tables.
 
-Same thing here about kvm_call_hyp_nvhe().
+No functional change intended.
 
-> +	kvm_call_hyp_nvhe(__pkvm_vcpu_put);
-> +
-> +	/* __pkvm_vcpu_put implies a sync of the state */
-> +	if (!kvm_vm_is_protected(vcpu->kvm))
-> +		vcpu_set_flag(vcpu, PKVM_HOST_STATE_DIRTY);
-> +
-> +	nvhe_vcpu_put(vcpu);
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: David Matlack <dmatlack@google.com>
+Message-Id: <20220516232138.1783324-5-dmatlack@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Kenta Akagi <k@mgml.me>
+---
+ arch/x86/kvm/mmu/mmu.c         | 99 ++++++++++++++++++++++------------
+ arch/x86/kvm/mmu/paging_tmpl.h |  9 ++--
+ 2 files changed, 71 insertions(+), 37 deletions(-)
 
-I'm not overly fond of this. Yes, that was in my original patch. But
-for example, we end-up calling kvm_arm_vmid_clear_active() for pKVM.
-This is harmless, but conceptually wrong.
-
-I'd rather you expand the whole thing.
-
-> +}
-> +
-> +void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
-> +{
-> +	vcpu->arch.vcpu_ops->vcpu_put(vcpu);
->  	vcpu_clear_on_unsupported_cpu(vcpu);
->  	vcpu->cpu = -1;
->  }
-> @@ -2136,6 +2192,28 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
->  	}
->  }
->  
-> +static const struct kvm_vcpu_ops vhe_vcpu_ops = {
-> +	.vcpu_load = vhe_vcpu_load,
-> +	.vcpu_put = vhe_vcpu_put,
-> +};
-> +
-> +static const struct kvm_vcpu_ops nvhe_vcpu_ops = {
-> +	.vcpu_load = nvhe_vcpu_load,
-> +	.vcpu_put = nvhe_vcpu_put,
-> +};
-> +
-> +static const struct kvm_vcpu_ops pkvm_vcpu_ops = {
-> +	.vcpu_load = pkvm_vcpu_load,
-> +	.vcpu_put = pkvm_vcpu_put,
-> +};
-> +
-> +static const struct kvm_vcpu_ops *arm64_vcpu_ops[] = {
-> +	[VM_VHE] = &vhe_vcpu_ops,
-> +	[VM_NVHE] = &nvhe_vcpu_ops,
-> +	[VM_PKVM] = &pkvm_vcpu_ops,
-> +	[VM_PROTECTED_PKVM] = &pkvm_vcpu_ops,
-
-nit: my OCD-self wants to align all the '=' signs vertically...
-
-Thanks,
-
-	M.
-
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 9f193b1620a9..b0504d40ac8c 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -2075,33 +2075,15 @@ static void clear_sp_write_flooding_count(u64 *spte)
+ 	__clear_sp_write_flooding_count(sptep_to_sp(spte));
+ }
+ 
+-static struct kvm_mmu_page *kvm_mmu_get_page(struct kvm_vcpu *vcpu,
+-					     gfn_t gfn,
+-					     gva_t gaddr,
+-					     unsigned level,
+-					     bool direct,
+-					     unsigned int access)
++static struct kvm_mmu_page *kvm_mmu_get_page(struct kvm_vcpu *vcpu, gfn_t gfn,
++					     union kvm_mmu_page_role role)
+ {
+ 	bool direct_mmu = vcpu->arch.mmu->direct_map;
+-	union kvm_mmu_page_role role;
+ 	struct hlist_head *sp_list;
+-	unsigned quadrant;
+ 	struct kvm_mmu_page *sp;
+ 	int collisions = 0;
+ 	LIST_HEAD(invalid_list);
+ 
+-	role = vcpu->arch.mmu->mmu_role.base;
+-	role.level = level;
+-	role.direct = direct;
+-	if (role.direct)
+-		role.gpte_is_8_bytes = true;
+-	role.access = access;
+-	if (!direct_mmu && vcpu->arch.mmu->root_level <= PT32_ROOT_LEVEL) {
+-		quadrant = gaddr >> (PAGE_SHIFT + (PT64_PT_BITS * level));
+-		quadrant &= (1 << ((PT32_PT_BITS - PT64_PT_BITS) * level)) - 1;
+-		role.quadrant = quadrant;
+-	}
+-
+ 	sp_list = &vcpu->kvm->arch.mmu_page_hash[kvm_page_table_hashfn(gfn)];
+ 	for_each_valid_sp(vcpu->kvm, sp, sp_list) {
+ 		if (sp->gfn != gfn) {
+@@ -2119,7 +2101,7 @@ static struct kvm_mmu_page *kvm_mmu_get_page(struct kvm_vcpu *vcpu,
+ 			 * Unsync pages must not be left as is, because the new
+ 			 * upper-level page will be write-protected.
+ 			 */
+-			if (level > PG_LEVEL_4K && sp->unsync)
++			if (role.level > PG_LEVEL_4K && sp->unsync)
+ 				kvm_mmu_prepare_zap_page(vcpu->kvm, sp,
+ 							 &invalid_list);
+ 			continue;
+@@ -2157,14 +2139,14 @@ static struct kvm_mmu_page *kvm_mmu_get_page(struct kvm_vcpu *vcpu,
+ 
+ 	++vcpu->kvm->stat.mmu_cache_miss;
+ 
+-	sp = kvm_mmu_alloc_page(vcpu, direct);
++	sp = kvm_mmu_alloc_page(vcpu, role.direct);
+ 
+ 	sp->gfn = gfn;
+ 	sp->role = role;
+ 	hlist_add_head(&sp->hash_link, sp_list);
+-	if (!direct) {
++	if (!role.direct) {
+ 		account_shadowed(vcpu->kvm, sp);
+-		if (level == PG_LEVEL_4K && rmap_write_protect(vcpu, gfn))
++		if (role.level == PG_LEVEL_4K && rmap_write_protect(vcpu, gfn))
+ 			kvm_flush_remote_tlbs_with_address(vcpu->kvm, gfn, 1);
+ 	}
+ 	trace_kvm_mmu_get_page(sp, true);
+@@ -2176,6 +2158,54 @@ static struct kvm_mmu_page *kvm_mmu_get_page(struct kvm_vcpu *vcpu,
+ 	return sp;
+ }
+ 
++static union kvm_mmu_page_role kvm_mmu_child_role(u64 *sptep, bool direct, unsigned int access)
++{
++	struct kvm_mmu_page *parent_sp = sptep_to_sp(sptep);
++	union kvm_mmu_page_role role;
++
++	role = parent_sp->role;
++	role.level--;
++	role.access = access;
++	role.direct = direct;
++
++	/*
++	 * If the guest has 4-byte PTEs then that means it's using 32-bit,
++	 * 2-level, non-PAE paging. KVM shadows such guests with PAE paging
++	 * (i.e. 8-byte PTEs). The difference in PTE size means that KVM must
++	 * shadow each guest page table with multiple shadow page tables, which
++	 * requires extra bookkeeping in the role.
++	 *
++	 * Specifically, to shadow the guest's page directory (which covers a
++	 * 4GiB address space), KVM uses 4 PAE page directories, each mapping
++	 * 1GiB of the address space. @role.quadrant encodes which quarter of
++	 * the address space each maps.
++	 *
++	 * To shadow the guest's page tables (which each map a 4MiB region), KVM
++	 * uses 2 PAE page tables, each mapping a 2MiB region. For these,
++	 * @role.quadrant encodes which half of the region they map.
++	 *
++	 * Note, the 4 PAE page directories are pre-allocated and the quadrant
++	 * assigned in mmu_alloc_root(). So only page tables need to be handled
++	 * here.
++	 */
++	if (!role.gpte_is_8_bytes) {
++		WARN_ON_ONCE(role.level != PG_LEVEL_4K);
++		role.quadrant = (sptep - parent_sp->spt) % 2;
++	}
++
++	return role;
++}
++
++static struct kvm_mmu_page *kvm_mmu_get_child_sp(struct kvm_vcpu *vcpu,
++						 u64 *sptep, gfn_t gfn,
++						 bool direct, unsigned int access)
++{
++	union kvm_mmu_page_role role;
++
++	role = kvm_mmu_child_role(sptep, direct, access);
++	return kvm_mmu_get_page(vcpu, gfn, role);
++}
++
+ static void shadow_walk_init_using_root(struct kvm_shadow_walk_iterator *iterator,
+ 					struct kvm_vcpu *vcpu, hpa_t root,
+ 					u64 addr)
+@@ -3043,8 +3073,7 @@ static int direct_map(struct kvm_vcpu *vcpu, gpa_t gpa, u32 error_code,
+ 		if (is_shadow_present_pte(*it.sptep))
+ 			continue;
+ 
+-		sp = kvm_mmu_get_page(vcpu, base_gfn, it.addr,
+-				      it.level - 1, true, ACC_ALL);
++		sp = kvm_mmu_get_child_sp(vcpu, it.sptep, base_gfn, true, ACC_ALL);
+ 
+ 		link_shadow_page(vcpu, it.sptep, sp);
+ 		if (is_tdp && huge_page_disallowed &&
+@@ -3438,13 +3467,18 @@ static int mmu_check_root(struct kvm_vcpu *vcpu, gfn_t root_gfn)
+ 	return ret;
+ }
+ 
+-static hpa_t mmu_alloc_root(struct kvm_vcpu *vcpu, gfn_t gfn, gva_t gva,
++static hpa_t mmu_alloc_root(struct kvm_vcpu *vcpu, gfn_t gfn, int quadrant,
+ 			    u8 level)
+ {
+-	bool direct = vcpu->arch.mmu->mmu_role.base.direct;
++	union kvm_mmu_page_role role = vcpu->arch.mmu->mmu_role.base;
+ 	struct kvm_mmu_page *sp;
+ 
+-	sp = kvm_mmu_get_page(vcpu, gfn, gva, level, direct, ACC_ALL);
++	role.level = level;
++
++	if (!role.gpte_is_8_bytes)
++		role.quadrant = quadrant;
++
++	sp = kvm_mmu_get_page(vcpu, gfn, role);
+ 	++sp->root_count;
+ 
+ 	return __pa(sp->spt);
+@@ -3478,8 +3512,8 @@ static int mmu_alloc_direct_roots(struct kvm_vcpu *vcpu)
+ 		for (i = 0; i < 4; ++i) {
+ 			WARN_ON_ONCE(IS_VALID_PAE_ROOT(mmu->pae_root[i]));
+ 
+-			root = mmu_alloc_root(vcpu, i << (30 - PAGE_SHIFT),
+-					      i << 30, PT32_ROOT_LEVEL);
++			root = mmu_alloc_root(vcpu, i << (30 - PAGE_SHIFT), i,
++					      PT32_ROOT_LEVEL);
+ 			mmu->pae_root[i] = root | PT_PRESENT_MASK |
+ 					   shadow_me_mask;
+ 		}
+@@ -3587,8 +3621,7 @@ static int mmu_alloc_shadow_roots(struct kvm_vcpu *vcpu)
+ 			root_gfn = pdptrs[i] >> PAGE_SHIFT;
+ 		}
+ 
+-		root = mmu_alloc_root(vcpu, root_gfn, i << 30,
+-				      PT32_ROOT_LEVEL);
++		root = mmu_alloc_root(vcpu, root_gfn, i, PT32_ROOT_LEVEL);
+ 		mmu->pae_root[i] = root | pm_mask;
+ 	}
+ 
+diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
+index fd3f2c5bb7ed..003383e2a309 100644
+--- a/arch/x86/kvm/mmu/paging_tmpl.h
++++ b/arch/x86/kvm/mmu/paging_tmpl.h
+@@ -704,8 +704,9 @@ static int FNAME(fetch)(struct kvm_vcpu *vcpu, gpa_t addr,
+ 		if (!is_shadow_present_pte(*it.sptep)) {
+ 			table_gfn = gw->table_gfn[it.level - 2];
+ 			access = gw->pt_access[it.level - 2];
+-			sp = kvm_mmu_get_page(vcpu, table_gfn, addr,
+-					      it.level-1, false, access);
++			sp = kvm_mmu_get_child_sp(vcpu, it.sptep, table_gfn,
++						  false, access);
++
+ 			/*
+ 			 * We must synchronize the pagetable before linking it
+ 			 * because the guest doesn't need to flush tlb when
+@@ -763,8 +764,8 @@ static int FNAME(fetch)(struct kvm_vcpu *vcpu, gpa_t addr,
+ 		drop_large_spte(vcpu, it.sptep);
+ 
+ 		if (!is_shadow_present_pte(*it.sptep)) {
+-			sp = kvm_mmu_get_page(vcpu, base_gfn, addr,
+-					      it.level - 1, true, direct_access);
++			sp = kvm_mmu_get_child_sp(vcpu, it.sptep, base_gfn,
++						  true, direct_access);
+ 			link_shadow_page(vcpu, it.sptep, sp);
+ 			if (huge_page_disallowed && req_level >= it.level)
+ 				account_huge_nx_page(vcpu->kvm, sp);
 -- 
-Without deviation from the norm, progress is not possible.
+2.53.0
+
