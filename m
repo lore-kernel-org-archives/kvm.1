@@ -1,23 +1,23 @@
-Received: from out28-100.mail.aliyun.com (out28-100.mail.aliyun.com [115.124.28.100])
+Received: from out28-76.mail.aliyun.com (out28-76.mail.aliyun.com [115.124.28.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC383CCFC3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8B73CE4B1;
 	Sun, 13 Sep 2026 06:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.100
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789281850; cv=none; b=P2DpiQnA6LoKweagfgAHYcnzAc5CQt/27MFH0GlVlodHiE77WEglCZHZL89sZfsXtI5JKnQW0z51XTbxun9AptgMQej9QMDIud9JSUk0nAUSYT4oilUOA1GbpQ9hNBjM4gtIoKCbCv7ob+1+GcYIRYtTbJrN22D4Y+yxHFXOlRY=
+	t=1789281851; cv=none; b=IyNdYt30ra1faqGn+Nun8Kjiz8bFpyqDxZ/8Mo0P27+XcputPf9UvUiQUTblPDy1ezasfvG+sl6OjRmmPOyuu6DGeddEpERgdew9NgdW2brKB6VSKuHlHa2ifUbs/Q63T1so/ZLsh3lWpfffI487DmcjmIigkyzyvpwO+QSjJPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789281850; c=relaxed/simple;
-	bh=Xy41Bjt+bpyCveYMpZtEZsxyU2/dDe7yzWPeYB43fIA=;
+	s=arc-20240116; t=1789281851; c=relaxed/simple;
+	bh=dW4DJNLMCH4uZFukJQIzEui5AYhWPdLIA68PknajtkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rDTyZlTht+Et0W86nNFbVyfwWMP2xi6arVSKREWwqHeG4isCes9V0CE6aFPDzqFzasBPP7ioZc3KtyUMctooD3ylXYCRamolNEBXBzD6Wv4cIh3jkUdgFY8ZX8hEhspRBVD2PXFZ2wDzMrBWDCKNtZpujw83E+oKNFEJeli8l5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.100
+	 MIME-Version; b=ITUQfnH2nU1A25Owt6Do8z2GzD8A5m6kUfWtlAcHBT855NqeQ7qEZsyuqiXJxs9Zby7QFZs8sKVcogUpianb4btmcMwKa4Yyx6qZW14DTWoTKzUPHSIDIqdg0MSO+IdbzIMccT2jChT35P38z2JFIJ7UMckz9Cd9hl4gVb8/mFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436261|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00353135-0.000619334-0.995849;FP=18044637592384392947|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam033037026024;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.jCORvoa_1789281838;
-Received: from localhost.localdomain(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.jCORvoa_1789281838 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436259|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00168881-1.14418e-05-0.9983;FP=10359167794406952873|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam033037006180;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.jCORvpt_1789281839;
+Received: from localhost.localdomain(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.jCORvpt_1789281839 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Sun, 13 Sep 2026 14:43:58 +0800
+          Sun, 13 Sep 2026 14:44:00 +0800
 From: Tina Zhang <zhang_wei@open-hieco.net>
 To: Sean Christopherson <seanjc@google.com>,
 	Jim Mattson <jmattson@google.com>,
@@ -27,9 +27,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	zhouyanjing@hygon.cn,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 6/8] KVM: nSVM: Use emulator bytes for synthesized nested #NPF
-Date: Sun, 13 Sep 2026 14:43:46 +0800
-Message-ID: <f991a17dc1833f94bd6b01a777ddbde1c934933b.1789281096.git.zhang_wei@open-hieco.net>
+Subject: [PATCH v6 8/8] KVM: selftests: Add nested SVM DecodeAssists test
+Date: Sun, 13 Sep 2026 14:43:48 +0800
+Message-ID: <016ecb3a3187b20fac299f1c2cb15aac01358412.1789281096.git.zhang_wei@open-hieco.net>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <cover.1789281096.git.zhang_wei@open-hieco.net>
 References: <cover.1789281096.git.zhang_wei@open-hieco.net>
@@ -41,151 +41,609 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Preserve the bytes used by the emulator when synthesizing a data #NPF.
-Reuse the fetch cache only when the fault is the current emulator
-exception, identified by fault == &ctxt->exception.
+Add a focused nested SVM selftest for DecodeAssists.  Verify that KVM
+exposes the feature to L1 and synthesizes EXITINFO for representative
+MOV CR/DR, CLTS, INTn, INVLPG, and INVLPGA intercepts.
 
-Add an emulator accessor to copy cached instruction bytes, checking
-the RIP and cache bounds.  These checks alone do not establish that
-the cache belongs to the current emulation.
+Exercise instruction bytes for hardware and synthesized #NPF/#PF exits.
+Cover a synthesized #NPF that follows a hardware #NPF in the same emulated
+instruction, an unreadable instruction tail that leaves only the cached
+opcode, and the absence of bytes for an instruction-fetch #PF.  Modify the
+MOVSB opcode while its MMIO read is pending to verify that the emulator's
+cached bytes are preserved.
 
-Write the cached bytes directly to VMCB02 and fetch any missing tail
-through the instruction-fetch helper.  If the tail cannot be read,
-report only the bytes already available.  For SEV guests, retain only
-the cached bytes because KVM cannot fetch plaintext guest instructions.
+Inject a userspace #PF while an MMIO read is pending.  Verify that after
+MMIO completion, L1 receives instruction bytes from the current RIP,
+not the previous instruction's emulator cache.
+
+The synthesized OUTSB #NPF and userspace-injected #PF cases run by
+default.  The forced-emulation #PF and instruction-intercept cases
+require kvm.force_emulation_prefix=1.
 
 Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
 ---
- arch/x86/kvm/emulate.c     | 22 ++++++++++++++++++++++
- arch/x86/kvm/kvm_emulate.h |  3 +++
- arch/x86/kvm/svm/nested.c  | 34 ++++++++++++++++++++++++++++++++--
- 3 files changed, 57 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/include/x86/processor.h     |   1 +
+ .../kvm/x86/svm_nested_decode_assists_test.c  | 547 ++++++++++++++++++
+ 3 files changed, 549 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/x86/svm_nested_decode_assists_test.c
 
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index 1dfece6af81e..5017a9aa1d4b 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -913,6 +913,28 @@ static __always_inline int do_insn_fetch_bytes(struct x86_emulate_ctxt *ctxt,
- 		return X86EMUL_CONTINUE;
- }
- 
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 96bab7002d39..bb55a8c32c42 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -118,6 +118,7 @@ TEST_GEN_PROGS_x86 += x86/vmx_preemption_timer_test
+ TEST_GEN_PROGS_x86 += x86/svm_vmcall_test
+ TEST_GEN_PROGS_x86 += x86/svm_int_ctl_test
+ TEST_GEN_PROGS_x86 += x86/svm_nested_clear_efer_svme
++TEST_GEN_PROGS_x86 += x86/svm_nested_decode_assists_test
+ TEST_GEN_PROGS_x86 += x86/svm_nested_shutdown_test
+ TEST_GEN_PROGS_x86 += x86/svm_nested_soft_inject_test
+ TEST_GEN_PROGS_x86 += x86/svm_nested_vmcb12_gpa
+diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+index 6e6f70035508..e9d745a2c131 100644
+--- a/tools/testing/selftests/kvm/include/x86/processor.h
++++ b/tools/testing/selftests/kvm/include/x86/processor.h
+@@ -220,6 +220,7 @@ struct kvm_x86_cpu_feature {
+ #define	X86_FEATURE_LBRV		KVM_X86_CPU_FEATURE(0x8000000A, 0, EDX, 1)
+ #define	X86_FEATURE_NRIPS		KVM_X86_CPU_FEATURE(0x8000000A, 0, EDX, 3)
+ #define X86_FEATURE_TSCRATEMSR          KVM_X86_CPU_FEATURE(0x8000000A, 0, EDX, 4)
++#define X86_FEATURE_DECODEASSISTS       KVM_X86_CPU_FEATURE(0x8000000A, 0, EDX, 7)
+ #define X86_FEATURE_PAUSEFILTER         KVM_X86_CPU_FEATURE(0x8000000A, 0, EDX, 10)
+ #define X86_FEATURE_PFTHRESHOLD         KVM_X86_CPU_FEATURE(0x8000000A, 0, EDX, 12)
+ #define	X86_FEATURE_V_VMSAVE_VMLOAD	KVM_X86_CPU_FEATURE(0x8000000A, 0, EDX, 15)
+diff --git a/tools/testing/selftests/kvm/x86/svm_nested_decode_assists_test.c b/tools/testing/selftests/kvm/x86/svm_nested_decode_assists_test.c
+new file mode 100644
+index 000000000000..9f729e8542f2
+--- /dev/null
++++ b/tools/testing/selftests/kvm/x86/svm_nested_decode_assists_test.c
+@@ -0,0 +1,547 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * The caller is responsible for ensuring that the fetch cache belongs to
-+ * the current instruction.  Matching EIP alone does not guarantee this.
++ * Test KVM's virtualization of SVM DecodeAssists for nested guests.
 + */
-+unsigned int x86_emulator_copy_insn_bytes(struct x86_emulate_ctxt *ctxt,
-+					  unsigned long eip, u8 *bytes,
-+					  unsigned int max_bytes)
++
++#include "test_util.h"
++#include "kvm_util.h"
++#include "processor.h"
++#include "svm_util.h"
++
++#define TEST_INT_VECTOR 0x81
++
++/* Any canonical virtual address that is never mapped by the selftest VM. */
++#define PF_TEST_GVA BIT_ULL(40)
++#define PF_FETCH_TEST_GVA BIT_ULL(41)
++
++#define OUTSB_OPCODE 0x6e
++#define MOVSB_OPCODE 0xa4
++#define NOP_OPCODE 0x90
++#define BOUNDARY_OUTSB_CODE_SIZE 15
++#define TEST_IOPM_SIZE (3 * PAGE_SIZE)
++
++static u8 npf_target[PAGE_SIZE] __aligned(PAGE_SIZE);
++static u8 mmio_source[PAGE_SIZE] __aligned(PAGE_SIZE);
++static u8 boundary_outsb_code[2 * PAGE_SIZE] __aligned(PAGE_SIZE);
++
++static void l2_read_code(void)
 +{
-+	unsigned int nr_bytes;
-+
-+	if (!ctxt || ctxt->eip != eip ||
-+	    ctxt->fetch.end < ctxt->fetch.data ||
-+	    ctxt->fetch.end > ctxt->fetch.data + sizeof(ctxt->fetch.data))
-+		return 0;
-+
-+	nr_bytes = min_t(unsigned int, ctxt->fetch.end - ctxt->fetch.data,
-+			 max_bytes);
-+	memcpy(bytes, ctxt->fetch.data, nr_bytes);
-+	return nr_bytes;
++	asm volatile("mov (%0), %%rax" : : "r"(&npf_target) : "rax", "memory");
++	GUEST_FAIL("L2 read did not cause a nested page fault");
 +}
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(x86_emulator_copy_insn_bytes);
 +
- /* Fetch next part of the instruction being emulated. */
- #define insn_fetch(_type, _ctxt)					\
- ({	_type _x;							\
-diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
-index d05558ef28ae..5361d42e6e05 100644
---- a/arch/x86/kvm/kvm_emulate.h
-+++ b/arch/x86/kvm/kvm_emulate.h
-@@ -528,6 +528,9 @@ enum x86_intercept {
- };
- 
- int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int emulation_type);
-+unsigned int x86_emulator_copy_insn_bytes(struct x86_emulate_ctxt *ctxt,
-+					  unsigned long eip, u8 *bytes,
-+					  unsigned int max_bytes);
- bool x86_page_table_writing_insn(struct x86_emulate_ctxt *ctxt);
- #define EMULATION_FAILED -1
- #define EMULATION_OK 0
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 5cb6a9d6907b..2dc515d73eb6 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -93,13 +93,13 @@ static u8 nested_svm_get_insn_bytes_len(struct kvm_vcpu *vcpu, u8 max_bytes)
- }
- 
- static u8 nested_svm_fetch_insn_bytes(struct kvm_vcpu *vcpu, u8 *bytes,
--				      u8 max_bytes)
-+				      u8 count, u8 max_bytes)
- {
- 	struct x86_exception e;
- 	gva_t rip = kvm_get_linear_rip(vcpu);
--	u8 count = 0;
- 
- 	max_bytes = nested_svm_get_insn_bytes_len(vcpu, max_bytes);
-+	count = min(count, max_bytes);
- 
- 	while (count < max_bytes) {
- 		gva_t addr = rip + count;
-@@ -125,6 +125,31 @@ static u8 nested_svm_fetch_insn_bytes(struct kvm_vcpu *vcpu, u8 *bytes,
- 	return count;
- }
- 
-+static void nested_svm_prepare_synthesized_insn_bytes(struct kvm_vcpu *vcpu)
++static void l2_outsb_code(void)
 +{
-+	struct vcpu_svm *svm = to_svm(vcpu);
-+	struct vmcb *vmcb02 = svm->nested.vmcb02.ptr;
-+	struct x86_emulate_ctxt *ctxt = vcpu->arch.emulate_ctxt;
-+	u8 max_bytes = sizeof(vmcb02->control.insn_bytes);
-+	u8 count;
++	asm volatile("mov %0, %%rsi\n\t"
++		     "mov $0x80, %%dx\n\t"
++		     "outsb"
++		     : : "r"(&npf_target) : "rsi", "rdx", "memory");
++	GUEST_FAIL("L2 OUTSB did not cause a nested page fault");
++}
 +
-+	nested_svm_invalidate_vmcb02_insn_bytes(svm);
++extern u8 l2_movsb_insn[];
 +
-+	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_DECODEASSISTS))
++static void l2_movsb_code(void)
++{
++	asm volatile("mov %0, %%rsi\n\t"
++		     "mov %1, %%rdi\n\t"
++		     "l2_movsb_insn:\n\t"
++		     "movsb"
++		     : : "r"(&mmio_source), "r"(&npf_target)
++		     : "rsi", "rdi", "memory");
++	GUEST_FAIL("L2 MOVSB did not cause a nested page fault");
++}
++
++extern u8 l2_userspace_pf_insn[];
++
++static void l2_userspace_pf_code(void)
++{
++	asm volatile("movzbl (%0), %%eax\n\t"
++		     "l2_userspace_pf_insn:\n\t"
++		     "nop"
++		     : : "r"(&mmio_source) : "rax", "memory");
++	GUEST_FAIL("Userspace-injected #PF was not intercepted by L1");
++}
++
++static void l2_pf_code(void)
++{
++	asm volatile("mov (%0), %%rax"
++		     : : "r"(PF_TEST_GVA) : "rax", "memory");
++	GUEST_FAIL("L2 access to an unmapped VA did not #PF");
++}
++
++static void l2_fep_pf_code(void)
++{
++	asm volatile(KVM_FEP "mov (%0), %%rax"
++		     : : "r"(PF_TEST_GVA) : "rax", "memory");
++	GUEST_FAIL("L2 forced-emulated access to an unmapped VA did not #PF");
++}
++
++static void l2_fep_mov_from_cr4_code(void)
++{
++	asm volatile(KVM_FEP "mov %%cr4, %%r10" : : : "r10");
++	GUEST_FAIL("L2 forced-emulated MOV-from-CR4 was not intercepted");
++}
++
++static void l2_fep_mov_to_dr7_code(void)
++{
++	asm volatile("mov %%dr7, %%rax\n\t"
++		     "mov %%rax, %%rbx\n\t"
++		     KVM_FEP "mov %%rbx, %%dr7" : : : "rax", "rbx");
++	GUEST_FAIL("L2 forced-emulated MOV-to-DR7 was not intercepted");
++}
++
++static void l2_fep_clts_code(void)
++{
++	asm volatile(KVM_FEP "clts" : : : "memory");
++	GUEST_FAIL("L2 forced-emulated CLTS was not intercepted");
++}
++
++static void l2_fep_int_code(void)
++{
++	asm volatile(KVM_FEP "int %0" : : "i"(TEST_INT_VECTOR));
++	GUEST_FAIL("L2 forced-emulated INTn was not intercepted");
++}
++
++static void l2_fep_invlpg_code(void)
++{
++	asm volatile(KVM_FEP "invlpg (%0)" : : "r"(&npf_target) : "memory");
++	GUEST_FAIL("L2 forced-emulated INVLPG was not intercepted");
++}
++
++static void l2_fep_invlpga_code(void)
++{
++	asm volatile(KVM_FEP "invlpga"
++		     : : "a"(&npf_target), "c"(0) : "memory");
++	GUEST_FAIL("L2 forced-emulated INVLPGA was not intercepted");
++}
++
++struct instruction_intercept_test {
++	const char *name;
++	void (*code)(void);
++	u64 intercept;
++	u32 intercept_cr;
++	u32 intercept_dr;
++	u64 exit_code;
++	u64 exit_info_1;
++	u64 exit_info_1_mask;
++	bool check_rax;
++	u64 rax;
++};
++
++static const struct instruction_intercept_test instruction_intercept_tests[] = {
++	{
++		.name = "MOV-from-CR4",
++		.code = l2_fep_mov_from_cr4_code,
++		.intercept_cr = BIT(INTERCEPT_CR4_READ),
++		.exit_code = SVM_EXIT_READ_CR4,
++		.exit_info_1 = BIT_ULL(63) | 10,
++		.exit_info_1_mask = ~0ULL,
++	}, {
++		.name = "MOV-to-DR7",
++		.code = l2_fep_mov_to_dr7_code,
++		.intercept_dr = BIT(INTERCEPT_DR7_WRITE),
++		.exit_code = SVM_EXIT_WRITE_DR7,
++		.exit_info_1 = 3,
++		.exit_info_1_mask = ~0ULL,
++	}, {
++		.name = "CLTS",
++		.code = l2_fep_clts_code,
++		.intercept_cr = BIT(INTERCEPT_CR0_WRITE),
++		.exit_code = SVM_EXIT_WRITE_CR0,
++		.exit_info_1_mask = BIT_ULL(63),
++	}, {
++		.name = "INTn",
++		.code = l2_fep_int_code,
++		.intercept = BIT_ULL(INTERCEPT_INTn),
++		.exit_code = SVM_EXIT_SWINT,
++		.exit_info_1 = TEST_INT_VECTOR,
++		.exit_info_1_mask = ~0ULL,
++	}, {
++		.name = "INVLPG",
++		.code = l2_fep_invlpg_code,
++		.intercept = BIT_ULL(INTERCEPT_INVLPG),
++		.exit_code = SVM_EXIT_INVLPG,
++		.exit_info_1 = (u64)&npf_target,
++		.exit_info_1_mask = ~0ULL,
++	}, {
++		.name = "INVLPGA",
++		.code = l2_fep_invlpga_code,
++		.intercept = BIT_ULL(INTERCEPT_INVLPGA),
++		.exit_code = SVM_EXIT_INVLPGA,
++		.exit_info_1_mask = ~0ULL,
++		.check_rax = true,
++		.rax = (u64)&npf_target,
++	},
++};
++
++static void assert_decode_assist_insn_bytes(struct vmcb *vmcb)
++{
++	GUEST_ASSERT(vmcb->control.insn_len);
++	GUEST_ASSERT(vmcb->control.insn_len <=
++		     sizeof(vmcb->control.insn_bytes));
++	GUEST_ASSERT(!memcmp(vmcb->control.insn_bytes,
++			     (void *)vmcb->save.rip,
++			     vmcb->control.insn_len));
++}
++
++static void assert_full_decode_assist_insn_bytes(struct vmcb *vmcb)
++{
++	GUEST_ASSERT_EQ(vmcb->control.insn_len,
++			sizeof(vmcb->control.insn_bytes));
++	assert_decode_assist_insn_bytes(vmcb);
++}
++
++static void prepare_l2_for_vmrun(struct svm_test_data *svm, gva_t rip)
++{
++	struct vmcb *vmcb = svm->vmcb;
++
++	vmcb->save.rip = rip;
++	vmcb->save.rsp = (u64)svm->stack;
++}
++
++static void run_intercept_test(struct svm_test_data *svm,
++			       const struct instruction_intercept_test *test)
++{
++	struct vmcb *vmcb = svm->vmcb;
++	struct vmcb_control_area *control = &vmcb->control;
++	u64 expected_exit_info_1 = test->exit_info_1 & test->exit_info_1_mask;
++
++	control->intercept |= test->intercept;
++	control->intercept_cr |= test->intercept_cr;
++	control->intercept_dr |= test->intercept_dr;
++
++	control->exit_info_1 = ~0ULL;
++	prepare_l2_for_vmrun(svm, (u64)test->code);
++
++	run_guest(vmcb, svm->vmcb_gpa);
++
++	__GUEST_ASSERT(control->exit_code == test->exit_code,
++		       "%s: expected exit code %#lx, got %#lx",
++		       test->name, (unsigned long)test->exit_code,
++		       (unsigned long)control->exit_code);
++	__GUEST_ASSERT((control->exit_info_1 & test->exit_info_1_mask) ==
++		       expected_exit_info_1,
++		       "%s: expected EXITINFO1 %#lx with mask %#lx, got %#lx",
++		       test->name, (unsigned long)expected_exit_info_1,
++		       (unsigned long)test->exit_info_1_mask,
++		       (unsigned long)control->exit_info_1);
++	__GUEST_ASSERT(!control->insn_len,
++		       "%s: expected no instruction bytes, got %u",
++		       test->name, control->insn_len);
++
++	if (test->check_rax)
++		__GUEST_ASSERT(vmcb->save.rax == test->rax,
++			       "%s: expected rAX %#lx, got %#lx",
++			       test->name, (unsigned long)test->rax,
++			       (unsigned long)vmcb->save.rax);
++
++	control->intercept &= ~test->intercept;
++	control->intercept_cr &= ~test->intercept_cr;
++	control->intercept_dr &= ~test->intercept_dr;
++}
++
++static void test_instruction_intercepts(struct svm_test_data *svm)
++{
++	int i;
++
++	if (!is_forced_emulation_enabled)
 +		return;
 +
-+	max_bytes = nested_svm_get_insn_bytes_len(vcpu, max_bytes);
-+	count = x86_emulator_copy_insn_bytes(ctxt, kvm_rip_read(vcpu),
-+					     vmcb02->control.insn_bytes, max_bytes);
-+	if (!is_sev_guest(vcpu))
-+		count = nested_svm_fetch_insn_bytes(vcpu,
-+						    vmcb02->control.insn_bytes,
-+						    count, max_bytes);
-+	vmcb02->control.insn_len = count;
-+
-+	svm->nested.vmcb02_insn_bytes_valid = true;
++	for (i = 0; i < ARRAY_SIZE(instruction_intercept_tests); i++)
++		run_intercept_test(svm, &instruction_intercept_tests[i]);
 +}
 +
- static void nested_svm_update_vmcb12_insn_bytes(struct kvm_vcpu *vcpu,
- 						struct vmcb *vmcb12,
- 						const struct vmcb *vmcb02)
-@@ -149,6 +174,7 @@ static void nested_svm_update_vmcb12_insn_bytes(struct kvm_vcpu *vcpu,
- 		vmcb12->control.insn_len =
- 			nested_svm_fetch_insn_bytes(vcpu,
- 						    vmcb12->control.insn_bytes,
-+						    0,
- 						    max_bytes);
- 	else
- 		nested_svm_invalidate_insn_bytes(vmcb12);
-@@ -163,6 +189,8 @@ static void nested_svm_inject_npf_exit(struct kvm_vcpu *vcpu,
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	struct vmcb *vmcb = svm->vmcb;
-+	struct x86_emulate_ctxt *ctxt = vcpu->arch.emulate_ctxt;
-+	bool from_emulation = ctxt && fault == &ctxt->exception;
- 	u64 fault_stage;
- 
- 	/*
-@@ -192,6 +220,8 @@ static void nested_svm_inject_npf_exit(struct kvm_vcpu *vcpu,
- 
- 	if (from_hardware)
- 		nested_svm_set_vmcb02_insn_bytes_valid(svm);
-+	else if (from_emulation && !(fault->error_code & PFERR_FETCH_MASK))
-+		nested_svm_prepare_synthesized_insn_bytes(vcpu);
- 	else
- 		svm->nested.vmcb02_insn_bytes_valid = false;
- 	nested_svm_vmexit(svm);
++static void test_hardware_npf(struct svm_test_data *svm, gpa_t npf_gpa)
++{
++	struct vmcb *vmcb = svm->vmcb;
++
++	prepare_l2_for_vmrun(svm, (u64)l2_read_code);
++	run_guest(vmcb, svm->vmcb_gpa);
++	GUEST_ASSERT_EQ(vmcb->control.exit_code, SVM_EXIT_NPF);
++	GUEST_ASSERT_EQ(vmcb->control.exit_info_2, npf_gpa);
++	assert_decode_assist_insn_bytes(vmcb);
++}
++
++/*
++ * The IOIO intercept causes L0 to emulate OUTSB before accessing its source
++ * operand.  The emulated read then faults on L1's NPT, resulting in a
++ * KVM-synthesized #NPF.
++ */
++static void test_synthesized_npf(struct svm_test_data *svm, gpa_t npf_gpa)
++{
++	struct vmcb *vmcb = svm->vmcb;
++
++	prepare_l2_for_vmrun(svm, (u64)l2_outsb_code);
++	run_guest(vmcb, svm->vmcb_gpa);
++	GUEST_ASSERT_EQ(vmcb->control.exit_code, SVM_EXIT_NPF);
++	GUEST_ASSERT_EQ(vmcb->control.exit_info_2, npf_gpa);
++	assert_full_decode_assist_insn_bytes(vmcb);
++}
++
++/*
++ * MOVSB first reads from MMIO, causing a hardware #NPF that L0 emulates.
++ * After userspace completes the read, the emulated destination write faults
++ * on L1's NPT.  The new #NPF must not reuse the original hardware exit's GPA.
++ * Userspace replaces MOVSB with NOP while the read is pending.  DecodeAssist
++ * must retain the cached MOVSB bytes instead of re-reading the opcode.
++ */
++static void test_synthesized_npf_after_hardware_npf(struct svm_test_data *svm,
++						    gpa_t npf_gpa)
++{
++	struct vmcb *vmcb = svm->vmcb;
++	u8 insn_bytes[sizeof(vmcb->control.insn_bytes)];
++
++	memcpy(insn_bytes, l2_movsb_insn, sizeof(insn_bytes));
++	GUEST_ASSERT_EQ(insn_bytes[0], MOVSB_OPCODE);
++	prepare_l2_for_vmrun(svm, (u64)l2_movsb_code);
++	run_guest(vmcb, svm->vmcb_gpa);
++	GUEST_ASSERT_EQ(vmcb->control.exit_code, SVM_EXIT_NPF);
++	GUEST_ASSERT_EQ(vmcb->control.exit_info_2, npf_gpa);
++	GUEST_ASSERT_EQ(vmcb->save.rip, (u64)l2_movsb_insn);
++	GUEST_ASSERT_EQ(l2_movsb_insn[0], NOP_OPCODE);
++	GUEST_ASSERT_EQ(vmcb->control.insn_len, sizeof(insn_bytes));
++	GUEST_ASSERT(!memcmp(vmcb->control.insn_bytes, insn_bytes,
++			     sizeof(insn_bytes)));
++}
++
++/*
++ * OUTSB is the final byte of a mapped code page, and the following page is
++ * not present in L2's page tables.  DecodeAssist byte fetching must stop at
++ * the page boundary and report only the OUTSB opcode.
++ */
++static void test_synthesized_npf_truncated(struct svm_test_data *svm,
++					   gpa_t npf_gpa)
++{
++	struct vmcb *vmcb = svm->vmcb;
++
++	prepare_l2_for_vmrun(svm,
++			     (u64)&boundary_outsb_code[PAGE_SIZE -
++						       BOUNDARY_OUTSB_CODE_SIZE]);
++	run_guest(vmcb, svm->vmcb_gpa);
++	GUEST_ASSERT_EQ(vmcb->control.exit_code, SVM_EXIT_NPF);
++	GUEST_ASSERT_EQ(vmcb->control.exit_info_2, npf_gpa);
++	GUEST_ASSERT_EQ(vmcb->save.rip,
++			(u64)&boundary_outsb_code[PAGE_SIZE - 1]);
++	GUEST_ASSERT_EQ(vmcb->control.insn_len, 1);
++	GUEST_ASSERT_EQ(vmcb->control.insn_bytes[0], OUTSB_OPCODE);
++}
++
++static void test_hardware_intercepted_pf(struct svm_test_data *svm)
++{
++	struct vmcb *vmcb = svm->vmcb;
++
++	prepare_l2_for_vmrun(svm, (u64)l2_pf_code);
++	run_guest(vmcb, svm->vmcb_gpa);
++	GUEST_ASSERT_EQ(vmcb->control.exit_code, SVM_EXIT_EXCP_BASE + PF_VECTOR);
++	GUEST_ASSERT_EQ(vmcb->control.exit_info_2, PF_TEST_GVA);
++	GUEST_ASSERT(!(vmcb->control.exit_info_1 & PFERR_PRESENT_MASK));
++	GUEST_ASSERT(!(vmcb->control.exit_info_1 & PFERR_FETCH_MASK));
++	assert_decode_assist_insn_bytes(vmcb);
++}
++
++static void test_hardware_intercepted_fetch_pf(struct svm_test_data *svm)
++{
++	struct vmcb *vmcb = svm->vmcb;
++
++	prepare_l2_for_vmrun(svm, PF_FETCH_TEST_GVA);
++	run_guest(vmcb, svm->vmcb_gpa);
++	GUEST_ASSERT_EQ(vmcb->control.exit_code, SVM_EXIT_EXCP_BASE + PF_VECTOR);
++	GUEST_ASSERT_EQ(vmcb->control.exit_info_2, PF_FETCH_TEST_GVA);
++	GUEST_ASSERT(!(vmcb->control.exit_info_1 & PFERR_PRESENT_MASK));
++	GUEST_ASSERT(vmcb->control.exit_info_1 & PFERR_FETCH_MASK);
++	GUEST_ASSERT_EQ(vmcb->control.insn_len, 0);
++}
++
++static void test_synthesized_pf(struct svm_test_data *svm)
++{
++	struct vmcb *vmcb = svm->vmcb;
++
++	if (!is_forced_emulation_enabled)
++		return;
++
++	prepare_l2_for_vmrun(svm, (u64)l2_fep_pf_code);
++	run_guest(vmcb, svm->vmcb_gpa);
++	GUEST_ASSERT_EQ(vmcb->control.exit_code, SVM_EXIT_EXCP_BASE + PF_VECTOR);
++	GUEST_ASSERT_EQ(vmcb->control.exit_info_2, PF_TEST_GVA);
++	GUEST_ASSERT(!(vmcb->control.exit_info_1 & PFERR_PRESENT_MASK));
++	GUEST_ASSERT(!(vmcb->control.exit_info_1 & PFERR_FETCH_MASK));
++	assert_full_decode_assist_insn_bytes(vmcb);
++}
++
++/* The pending MMIO instruction must complete before reflecting userspace #PF. */
++static void test_userspace_injected_pf_during_emulation(struct svm_test_data *svm)
++{
++	struct vmcb *vmcb = svm->vmcb;
++
++	prepare_l2_for_vmrun(svm, (u64)l2_userspace_pf_code);
++	run_guest(vmcb, svm->vmcb_gpa);
++	GUEST_ASSERT_EQ(vmcb->control.exit_code, SVM_EXIT_EXCP_BASE + PF_VECTOR);
++	GUEST_ASSERT_EQ(vmcb->control.exit_info_1, 0);
++	GUEST_ASSERT_EQ(vmcb->control.exit_info_2, PF_TEST_GVA);
++	GUEST_ASSERT_EQ(vmcb->save.rip, (u64)l2_userspace_pf_insn);
++	GUEST_ASSERT_EQ(vmcb->save.rax, 0x5a);
++	assert_full_decode_assist_insn_bytes(vmcb);
++	GUEST_ASSERT_EQ(vmcb->control.insn_bytes[0], NOP_OPCODE);
++}
++
++static void l1_guest_code(struct svm_test_data *svm, gpa_t npf_gpa,
++			  gpa_t iopm_gpa)
++{
++	struct vmcb *vmcb = svm->vmcb;
++
++	GUEST_ASSERT(this_cpu_has(X86_FEATURE_DECODEASSISTS));
++
++	generic_svm_setup(svm, l2_read_code);
++	vmcb->control.iopm_base_pa = iopm_gpa;
++
++	vmcb->control.intercept |= BIT_ULL(INTERCEPT_IOIO_PROT);
++	vmcb->control.intercept_exceptions |= 1U << PF_VECTOR;
++
++	test_hardware_npf(svm, npf_gpa);
++	test_synthesized_npf(svm, npf_gpa);
++	test_synthesized_npf_after_hardware_npf(svm, npf_gpa);
++	test_synthesized_npf_truncated(svm, npf_gpa);
++	test_hardware_intercepted_pf(svm);
++	test_hardware_intercepted_fetch_pf(svm);
++	test_synthesized_pf(svm);
++	test_userspace_injected_pf_during_emulation(svm);
++	test_instruction_intercepts(svm);
++
++	GUEST_DONE();
++}
++
++static void build_boundary_outsb_code(u8 *code)
++{
++	u64 source = (u64)&npf_target;
++
++	/* movabs $npf_target, %rsi */
++	code[0] = 0x48;
++	code[1] = 0xbe;
++	memcpy(&code[2], &source, sizeof(source));
++
++	/* mov $0x80, %dx; outsb */
++	code[10] = 0x66;
++	code[11] = 0xba;
++	code[12] = 0x80;
++	code[13] = 0x00;
++	code[14] = OUTSB_OPCODE;
++}
++
++static void prepare_boundary_outsb_code(struct kvm_vm *vm)
++{
++	gva_t code_gva = (gva_t)&boundary_outsb_code[PAGE_SIZE -
++						      BOUNDARY_OUTSB_CODE_SIZE];
++
++	build_boundary_outsb_code(addr_gva2hva(vm, code_gva));
++}
++
++static void queue_userspace_pf(struct kvm_vcpu *vcpu)
++{
++	struct kvm_vcpu_events events;
++
++	vcpu_events_get(vcpu, &events);
++	TEST_ASSERT(!events.exception.pending && !events.exception.injected,
++		    "Unexpected exception before userspace #PF injection");
++	TEST_ASSERT(events.flags & KVM_VCPUEVENT_VALID_PAYLOAD,
++		    "KVM_CAP_EXCEPTION_PAYLOAD was not enabled");
++
++	events.exception.pending = true;
++	events.exception.nr = PF_VECTOR;
++	events.exception.has_error_code = true;
++	events.exception.error_code = 0;
++	events.exception_has_payload = true;
++	events.exception_payload = PF_TEST_GVA;
++	vcpu_events_set(vcpu, &events);
++}
++
++static void complete_mmio_read(struct kvm_vcpu *vcpu, gpa_t expected_gpa,
++			       u8 value)
++{
++	if (vcpu->run->exit_reason == KVM_EXIT_IO) {
++		struct ucall uc;
++
++		if (get_ucall(vcpu, &uc) == UCALL_ABORT)
++			REPORT_GUEST_ASSERT(uc);
++	}
++
++	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_MMIO);
++	TEST_ASSERT(!vcpu->run->mmio.is_write,
++		    "Expected an MMIO read, got a write");
++	TEST_ASSERT_EQ(vcpu->run->mmio.phys_addr, expected_gpa);
++	TEST_ASSERT_EQ(vcpu->run->mmio.len, 1);
++	vcpu->run->mmio.data[0] = value;
++}
++
++static void assert_ucall_done(struct kvm_vcpu *vcpu)
++{
++	struct ucall uc;
++	u64 actual;
++
++	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
++	actual = get_ucall(vcpu, &uc);
++	if (actual == UCALL_ABORT)
++		REPORT_GUEST_ASSERT(uc);
++
++	TEST_ASSERT_EQ(actual, UCALL_DONE);
++}
++
++int main(int argc, char *argv[])
++{
++	gva_t svm_gva, npf_gva, boundary_page_gva, iopm_gva;
++	gpa_t npf_gpa, mmio_source_gpa, mmio_gpa, iopm_gpa;
++	struct userspace_mem_region *region;
++	struct kvm_vcpu *vcpu;
++	struct kvm_vm *vm;
++	u8 *movsb_insn;
++	u64 *pte;
++
++	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM));
++	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_NPT));
++	TEST_REQUIRE(this_cpu_has(X86_FEATURE_DECODEASSISTS));
++	TEST_ASSERT(kvm_cpu_has(X86_FEATURE_DECODEASSISTS),
++		    "KVM failed to expose DecodeAssists");
++	TEST_REQUIRE(kvm_has_cap(KVM_CAP_EXCEPTION_PAYLOAD));
++
++	vm = vm_create_with_one_vcpu(&vcpu, l1_guest_code);
++	vm_enable_cap(vm, KVM_CAP_EXCEPTION_PAYLOAD, 1);
++	prepare_boundary_outsb_code(vm);
++	vm_enable_npt(vm);
++	vcpu_alloc_svm(vm, &svm_gva);
++	iopm_gva = vm_alloc_pages(vm, TEST_IOPM_SIZE / PAGE_SIZE);
++	iopm_gpa = addr_gva2gpa(vm, iopm_gva);
++	memset(addr_gva2hva(vm, iopm_gva), 0, TEST_IOPM_SIZE);
++	npf_gva = (gva_t)&npf_target;
++	npf_gpa = addr_gva2gpa(vm, npf_gva);
++
++	tdp_identity_map_default_memslots(vm);
++	pte = tdp_get_pte(vm, npf_gpa);
++	*pte &= ~PTE_PRESENT_MASK(&vm->stage2_mmu);
++	region = memslot2region(vm, 0);
++	mmio_gpa = region->region.guest_phys_addr +
++		   region->region.memory_size + PAGE_SIZE;
++	mmio_source_gpa = addr_gva2gpa(vm, (gva_t)&mmio_source);
++	pte = tdp_get_pte(vm, mmio_source_gpa);
++	*pte = (*pte & ~PHYSICAL_PAGE_MASK) | mmio_gpa;
++
++	boundary_page_gva = (gva_t)&boundary_outsb_code[PAGE_SIZE];
++	pte = vm_get_pte(vm, boundary_page_gva);
++	*pte &= ~PTE_PRESENT_MASK(&vm->mmu);
++
++	vcpu_args_set(vcpu, 3, svm_gva, npf_gpa, iopm_gpa);
++
++	/* Complete the MOVSB source read. */
++	vcpu_run(vcpu);
++	complete_mmio_read(vcpu, mmio_gpa, 0xa5);
++	movsb_insn = addr_gva2hva(vm, (gva_t)l2_movsb_insn);
++	TEST_ASSERT_EQ(movsb_insn[0], MOVSB_OPCODE);
++	movsb_insn[0] = NOP_OPCODE;
++	vcpu_run(vcpu);
++	complete_mmio_read(vcpu, mmio_gpa, 0x5a);
++	queue_userspace_pf(vcpu);
++	vcpu_run(vcpu);
++	assert_ucall_done(vcpu);
++
++	kvm_vm_free(vm);
++	return 0;
++}
 -- 
 2.43.7
-
