@@ -1,189 +1,159 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E749D468C12;
-	Mon, 14 Sep 2026 12:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7B6495048;
+	Mon, 14 Sep 2026 12:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789390209; cv=none; b=P/CfFwKRGXaIEj+FS2xahgdyuJep9R07/Na1rUudcYyYLfMjE9JOVAE+Cmc+Kb+J38EMXVrxiYFfr1oNNormyw+9cnGLky5JgI/gpLvLX28DYnLpkB8eKqyN2eZJOUZP/zbzkxj2xgT0SUHK8I0+fQR3aInkNuCVJFk2sOsVNGo=
+	t=1789390216; cv=none; b=CLiNjKv3a0JKzXSR+071ZnaJaH/Pad6QFyeKKhBzYlSkw6sZ4v0Af+czjQPYDBLPUXSxoM9UFUAnMKHuvqJ/rJo2ALnh+W6ALutnJ6p7KbdtkXQ3g+xIk0PqIll9Vagowd4LSuaAEmfYpJ17uiuSXyDKHCAbFnro3a/INAJIiyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789390209; c=relaxed/simple;
-	bh=J5+LWQZ2Pw7GZdx7OrTUfZuKENGPDom0WJ29M3Y/A08=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HgGv7fm/ggQftjF0PwF48OGtMkpyy2xbDPW8rof6HvYfVQoiqCVJzFm+3s1NrovBXNf9R3zZhGk/cyB1XyqdnaHMPXanvGVaq0yP4MQBuyKYZxLXvnKvO+f/ZRYO5xODFVwLCiHnW7UgGFpt6guDJU/9XzfFakXJ4GKq5UCjycM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kzv3MTv9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789390216; c=relaxed/simple;
+	bh=5tI1zpY8zLkyej9QbvMpvvC2TbxtSZN804gH9X3K+F8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A8wDDiE0EczCvlJHp8XyLxyvJG3IVEV8xvNNsNZLFknszxZbX0SvwwjtvDm8JWvfg4Xg0DWPV1qvr1uyuxIf4XYLnhFa5RID5fDf/QHbxyjGtgmEHaVu7z/yefDG4j9D3I3qgd8J5REyAmMVKHnNNg/wMuSlikA6b11mkFxU+mQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WBGGVmxO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kzv3MTv9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D411F008A0;
-	Mon, 14 Sep 2026 12:50:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WBGGVmxO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE0E1F0089D;
+	Mon, 14 Sep 2026 12:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789390206;
-	bh=M67P/7heE2Mo2dh13Rp/Xbz4pdwd47nfGB122TYaZO8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Kzv3MTv9G365yCOp7cZk3m1qFsw9IR5dpIVAnxfe4qVYWb14sEDkTI0ECSuAAWVQm
-	 CU61ag/pNTMR0KU5S81okPgXIdzr1bygNHPMmiE47jbqBgQhlngXu4C5C+mQrV2oix
-	 BWbfn2onei0y0BqdzrFo9hyQe/gx/L1EECESRD1wYB1mNkWZpAquM0OVmeqevF5d1F
-	 OBng9K8VTMPr814/qM5ZM+nLn0rxNk8XXjaGNiajfjhklt24WvW9fPSJ9SD5UwqFCN
-	 9sk4ZO1kMNy9EAYZjGMfAzxXOIAN9A4jfJZ+EUkpN7d4FfSdrb6TcrOXIO60uHMxnz
-	 7OomvAb31F3Zw==
-From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-To: Steven Rostedt <rostedt@goodmis.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	x86@kernel.org
-Cc: Jinchao Wang <wangjinchao600@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org
-Subject: [PATCH v16 02/13] KVM: x86: Prevent host DR7 debug register leak into guest OS on NMI
-Date: Mon, 14 Sep 2026 21:49:59 +0900
-Message-ID: <178939019982.94750.4441254006258061798.stgit@devnote2>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <178939017565.94750.9431053336761330458.stgit@devnote2>
-References: <178939017565.94750.9431053336761330458.stgit@devnote2>
-User-Agent: StGit/0.19
+	s=k20260515; t=1789390213;
+	bh=0KtDUE8QALpUJLh3cgBbWg1ocfjcrZvSFipwaQH4psI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WBGGVmxOUCEh3LMm77M0VRx1+J+hDYYDfi9zOUc4kWZFJId3IhvguKBreC/qR0ter
+	 CQrsPrSD7gyL953Fccu8ukkFeSgc4F2UJcQR7mcb9I6Uwc3FublSEM9i92aofhTSur
+	 VozJDOfsIu7Fo9Jyh+v8qGZZKaGlMU1lY+cewReSvzimsh7yFSh/P45rflbt1Yu/A+
+	 uP7Cw0TQo+9nVuFxou8mg2bTfh6sLx/KrRnZm1TGcQwtKZn9PjFY0eVYTMqcKtrUC+
+	 42oFM9g3Z/+cKHQ0tKI6HynatUWCyTn2sNsq36Kh+MZlEmMFuWCL939rnXIp+z8kHh
+	 i+o/qTsTEqgkw==
+Date: Mon, 14 Sep 2026 13:50:07 +0100
+From: Sudeep Holla <sudeep.holla@kernel.org>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+	Sudeep Holla <sudeep.holla@kernel.org>, will@kernel.org,
+	catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+Subject: Re: [PATCH v18 4/7] firmware: arm_rmm: Add support for SRO
+Message-ID: <20260914-talkative-healthy-pogona-334c03@sudeepholla>
+References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
+ <20260912083611.2513845-5-suzuki.poulose@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260912083611.2513845-5-suzuki.poulose@arm.com>
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+On Sat, Sep 12, 2026 at 09:36:07AM +0100, Suzuki K Poulose wrote:
+> RMM v2.0 introduces the concept of "Stateful RMI Operations" (SRO). This
+> means that an SMC can return with an operation still in progress. The
+> host is expected to continue the operation until it reaches a conclusion
+> (either success or failure). During this process the RMM can request
+> additional memory ('donate') or hand memory back to the host
+> ('reclaim'). The host can request an in progress operation is cancelled,
+> but still continue the operation until it has completed (otherwise the
+> incomplete operation may cause future RMM operations to fail).
+> 
+> The SRO is tracked using a struct rmi_sro_state object which keeps track
+> of any memory which has been allocated but not yet consumed by the RMM
+> or reclaimed from the RMM. This allows the memory to be reused in a
+> future request within the same operation. It will also permit an
+> operation to be done in a context where memory allocation may be
+> difficult (e.g. atomic context) with the option to abort the operation
+> and retry the memory allocation outside of the atomic context. The
+> memory stored in the struct rmi_sro_state object can then be reused on
+> the subsequent attempt.
+> 
+> Wrappers for SRO RMI commands are also provided here because they depend
+> on the rmi_sro_execute() implementation added by this patch.
+> Delegate/undelegate handles are also added here because they now use the
+> SRO/stateful command infrastructure and are also used for the memory
+> DONATE/RECLAIM flows.
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> Co-Developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-When KVM enters a guest OS, host hardware breakpoints are disabled
-before running the guest. However, an NMI can occur during guest
-execution, where local_db_save() or arch_install_hw_breakpoint()
-can be invoked.
+[...]
 
-In particular, if local_db_save() or arch_install_hw_breakpoint()
-is executed from NMI, hardware DR7 can be modified or restored with
-host breakpoint settings, leaking host breakpoints into the guest OS
-or clobbering the guest's debug registers.
+> +static int rmi_sro_donate_noncontig(struct rmi_sro_state *sro,
+> +				    unsigned long sro_handle,
+> +				    unsigned long donatereq,
+> +				    struct arm_smccc_1_2_regs *out_regs,
+> +				    gfp_t gfp)
+> +{
+> +	unsigned long block_size_fld = RMI_DONATE_BLOCK_SIZE(donatereq);
+> +	unsigned long block_size = rmi_addr_block_size_to_bytes(block_size_fld);
+> +	unsigned long count = RMI_DONATE_COUNT(donatereq);
+> +	unsigned long state = RMI_DONATE_STATE(donatereq);
+> +	unsigned long found = 0;
+> +	unsigned long donated_granules;
+> +	unsigned long granules_per_block = block_size >> PAGE_SHIFT;
+> +	unsigned long consumed_blocks;
+> +	int addr_list_start = sro->addr_count;
+> +
+> +	int ret;
+> +
+> +	for (int i = 0; i < addr_list_start && found < count; i++) {
+> +		unsigned long entry = sro->addr_list[i];
+> +
+> +		if (RMI_ADDR_RANGE_BLOCK_SIZE(entry) == block_size_fld &&
+> +		    RMI_ADDR_RANGE_COUNT(entry) == 1 &&
+> +		    RMI_ADDR_RANGE_STATE(entry) == state) {
+> +			addr_list_start--;
+> +			swap(sro->addr_list[addr_list_start],
+> +			     sro->addr_list[i]);
+> +			found++;
+> +			i--;
+> +		}
+> +	}
+> +
+> +	ret = rmi_sro_ensure_capacity(sro, count - found);
+> +	if (ret)
+> +		return ret;
+> +
+> +	while (found < count) {
+> +		unsigned long addr_range;
+> +		void *virt = alloc_pages_exact(block_size, gfp);
+> +		phys_addr_t phys;
+> +
+> +		if (!virt)
+> +			return -ENOMEM;
+> +
+> +		phys = virt_to_phys(virt);
+> +
+> +		if (state == RMI_OP_MEM_DELEGATED) {
 
-Introduce a per-CPU flag, cpu_dr_in_guest, to indicate that the CPU
-is executing in guest mode. Set this flag in vcpu_enter_guest()
-during entering the guest with disabling host breakpoints.
-If this flag is set, local_db_save() and local_db_restore() return
-immediately, and arch_install_hw_breakpoint() returns an error.
-In addition, protect cpu_dr_in_guest in within_cpu_entry() to
-prevent recursive #DB exceptions.
+Based on my understanding, rmi_sro_memxfer_execute() is an exported function
+and can be invoked by any module. The donatereq argument appears to accept one
+of three operations:
 
-Fixes: f85d40160691 ("KVM: X86: Disable hardware breakpoints unconditionally before kvm_x86->run()")
-Assisted-by: Antigravity:gemini-3.8-flash
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
----
-Changes in v16:
- - Newly added.
----
- arch/x86/include/asm/debugreg.h |    6 ++++++
- arch/x86/kernel/hw_breakpoint.c |   10 ++++++++++
- arch/x86/kvm/x86.c              |    7 +++++++
- 3 files changed, 23 insertions(+)
+RMI_OP_MEM_DELEGATED
+RMI_OP_MEM_UNDELEGATED
+RMI_OP_MEM_CONDITIONAL
 
-diff --git a/arch/x86/include/asm/debugreg.h b/arch/x86/include/asm/debugreg.h
-index 854d82b88ff4..50f830972698 100644
---- a/arch/x86/include/asm/debugreg.h
-+++ b/arch/x86/include/asm/debugreg.h
-@@ -18,6 +18,7 @@
- #define DR7_FIXED_1	0x00000400
- 
- DECLARE_PER_CPU(unsigned long, cpu_dr7);
-+DECLARE_PER_CPU(bool, cpu_dr_in_guest);
- 
- #ifndef CONFIG_PARAVIRT_XXL
- /*
-@@ -129,6 +130,9 @@ static __always_inline unsigned long local_db_save(void)
- {
- 	unsigned long dr7;
- 
-+	if (this_cpu_read(cpu_dr_in_guest))
-+		return 0;
-+
- 	if (cpu_feature_enabled(X86_FEATURE_HYPERVISOR) && !hw_breakpoint_active())
- 		return 0;
- 
-@@ -157,6 +161,8 @@ static __always_inline void local_db_restore(unsigned long dr7)
- 	 * not be good.
- 	 */
- 	barrier();
-+	if (this_cpu_read(cpu_dr_in_guest))
-+		return;
- 	if (dr7)
- 		set_debugreg(dr7, 7);
- }
-diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
-index f846c15f21ca..68de7ed79d88 100644
---- a/arch/x86/kernel/hw_breakpoint.c
-+++ b/arch/x86/kernel/hw_breakpoint.c
-@@ -40,6 +40,9 @@
- DEFINE_PER_CPU(unsigned long, cpu_dr7);
- EXPORT_PER_CPU_SYMBOL(cpu_dr7);
- 
-+DEFINE_PER_CPU(bool, cpu_dr_in_guest);
-+EXPORT_PER_CPU_SYMBOL_GPL(cpu_dr_in_guest);
-+
- /* Per cpu debug address registers values */
- static DEFINE_PER_CPU(unsigned long, cpu_debugreg[HBP_NUM]);
- 
-@@ -102,6 +105,9 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
- 
- 	lockdep_assert_irqs_disabled();
- 
-+	if (this_cpu_read(cpu_dr_in_guest))
-+		return -EBUSY;
-+
- 	for (i = 0; i < HBP_NUM; i++) {
- 		struct perf_event **slot = this_cpu_ptr(&bp_per_reg[i]);
- 
-@@ -316,6 +322,10 @@ static inline bool within_cpu_entry(unsigned long addr, unsigned long end)
- 		if (within_area(addr, end, (unsigned long)&per_cpu(cpu_dr7, cpu),
- 				sizeof(cpu_dr7)))
- 			return true;
-+		if (within_area(addr, end,
-+				(unsigned long)&per_cpu(cpu_dr_in_guest, cpu),
-+				sizeof(cpu_dr_in_guest)))
-+			return true;
- 	}
- 
- 	return false;
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 79468ddfe473..5e046924ab76 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -8318,6 +8318,9 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 
- 	kvm_load_xfeatures(vcpu, true);
- 
-+	this_cpu_write(cpu_dr_in_guest, true);
-+	barrier();
-+
- 	if (unlikely(vcpu->arch.switch_db_regs &&
- 		     !(vcpu->arch.switch_db_regs & KVM_DEBUGREG_AUTO_SWITCH))) {
- 		set_debugreg(DR7_FIXED_1, 7);
-@@ -8400,6 +8403,10 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		kvm_update_dr7(vcpu);
- 	}
- 
-+	barrier();
-+	this_cpu_write(cpu_dr_in_guest, false);
-+	barrier();
-+
- 	/*
- 	 * If the guest has used debug registers, at least dr7
- 	 * will be disabled while returning to the host.
+Currently, the check confirming the state is RMI_OP_MEM_DELEGATED occurs
+relatively late in the function execution. It seems this function is 
+explicitly designed to handle only RMI_OP_MEM_DELEGATED.
 
+Given that this is an exported interface, would it make sense to
+fail-fast by moving this validation to the very beginning of the function?
+Even if RMI_OP_MEM_CONDITIONAL is intended for future use, it should 
+probably be rejected as invalid for now. Also, it is not clear why the
+current check is inside the loop while the state itself doesn't get
+modified.
+
+If this is a valid concern, the same architectural pattern should likely be
+applied to rmi_sro_donate_contig().
+
+-- 
+Regards,
+Sudeep
