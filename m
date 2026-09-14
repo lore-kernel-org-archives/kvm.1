@@ -1,107 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96CC7381EA9
-	for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 18:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411FF39280A;
+	Mon, 14 Sep 2026 18:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789410257; cv=none; b=Cuc7PdM4LDrYJHs+Uqh7fZRU8Fea4Mk7FkAfjrLipPupJgTtL3dNMsQ3NS/CmaXgwTo6o4zGIoP6jwH4ribceDDoYP7LPjcPderS+omy/DdbN3hKMwnz3WON4aPaacXSb8pcPwd6wonNfrS4ZcgujGNToxIRR85+JTftLBU9cBQ=
+	t=1789410638; cv=none; b=gLZ0hcFIXJVFYDGoOV9FX/vNYNgRNvPqdxsjafuc0o4nmWpm1GQqKkoEOjhMSgovAFuVTtLXFLcYCWe6nAd8rG9wjEcENi2XhZd12fraWpU3lu+UoiBAyf4TfBiSlaClU4M3QRZs9ilfUAdSMlhwRep66RQ9osAKDatbiGoh25o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789410257; c=relaxed/simple;
-	bh=dGW+X/liPfgw64pPe+WajoEJA9nILyzUVSIP75uQkRg=;
+	s=arc-20240116; t=1789410638; c=relaxed/simple;
+	bh=TN+rut0I1XYvZcnHuZOYCeZgZ5ZDU9HMLBazCYUtiaI=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=EBbo0wV99PWtFCHDCZ9JnMYTjanqMFk+FYaQoa4baY4VS6TDI56zWjq2IKFf+AzlHTDgk0+rXFtyEUK5oGHsWzHPXreNDlY9S0Ko9M3zDpaE/3E4ePE5OJHtiBiZTvBWMijb9+pYaQhAgkaiUFF3/PB5HFxhHWx7dWNr7CIvzQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fG+EeLGM; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=nfu/83BpM8acZ6Y1qVaeWgvRgzvll15r6w8RURo7PkeDNaQ2ClJMRJwJmQm1vc2t9E0MyXIE8HmsRIdLHUaxA77mHBYh5yztiq1z9lIRim22byBBd8urH36SIiItlzxjiuL16RilQhMW/aE17s54mTlhQV6vRBYIYyh6VA1NQao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oyFQdnAS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fG+EeLGM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D4011F000FF;
-	Mon, 14 Sep 2026 18:24:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oyFQdnAS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A96A41F000FF;
+	Mon, 14 Sep 2026 18:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789410256;
-	bh=yWPc5MBaUgrrDgZ6ixZIstffpF0yrQ9HrwrFNUkJQI8=;
+	s=k20260515; t=1789410635;
+	bh=TN+rut0I1XYvZcnHuZOYCeZgZ5ZDU9HMLBazCYUtiaI=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=fG+EeLGM3/pII7eZIBtuLRkjPmjEuc+s0AC86AoqEkwx/OCuXNg4ZLQehllqyBFiB
-	 vBMTzJFvq8BpfxqapQys84XE88ZydyNoI4a9lYz7XkLFX9th+GWQGxYbC5PU/xKahz
-	 ++UluP7rqQBWKcrPMIFkVmEyaENNag2SxzLjfdbioPj82nsDqtmZCwCa0Tvd1yoWb7
-	 jhx5rfDggTeDQyltRhAxO2XfOcNkRfXBT/wZoXO1xkyMaBq+qgUwunRTZsW7bP13E9
-	 w1WNwmHm60JV3pLpdulIqmMUHzDWIKZQCttd/7KE8m0Jnm1FTYJY4M88TTf17zZwJT
-	 UWND3U9jsSJdw==
+	b=oyFQdnASfXCoqxdHmJN4QRLPsnyvPPxQBO2GkpDeKHWyug/cFf+euE/Ozwv7xUFjP
+	 W0ohIRVky6dZsmeNFG1kVANPLsKu8TwJrTFg6UxT/wLKIObhicSrRbbGhLK7NgNFjJ
+	 VoNTBcd3XurHyBBmqnk+pFKMEvJZ+YfAuYbnmSsRGPcwLlMq2vcCsaWQRtmDcdlnuK
+	 +5LVVeRNeh6NP4iO4Op3Yi6FM5ydSw0WI5B60Eyo7qHD5LhbRWGkKkaRNuYwKNQBHb
+	 8zmPu0v8eZSThhVpun7VL/zCnZrsK5AiJ1g33+Q9cW7PJrSQJspNAxdDVBO53TJfXB
+	 oJLrdN/a1Wm1A==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/5] KVM: Reject attempts to lock all vCPUs if vCPU
- creation is in-progress
+Subject: Re: [PATCH v2 13/40] ALSA: pcm: use vm_insert_page() to map PCM
+ status page
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260914181223.289061-2-seanjc@google.com>
-References: <20260914181223.289061-1-seanjc@google.com>
- <20260914181223.289061-2-seanjc@google.com>
+To: =?utf-8?b?TG9yZW56byBTdG9ha2VzIChBUk0p?= <ljs@kernel.org>
+Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org, linux-trace-kernel@vger.kernel.org, linux-scsi@vger.kernel.org, linux-perf-users@vger.kernel.org, "Marc
+ Zyngier" <maz@kernel.org>, "Alexander Gordeev" <agordeev@linux.ibm.com>, bpf@vger.kernel.org, linux-rdma@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-s390@vger.kernel.org, "Vasily
+ Gorbik" <gor@linux.ibm.com>, selinux@vger.kernel.org, "Christian
+ Borntraeger" <borntraeger@linux.ibm.com>, kvmarm@lists.linux.dev
+In-Reply-To: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-13-7d9781ed5361@kernel.org>
+References: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org>
+ <20260914-b4-mmap-prepare-vma-flag-sanify-v2-13-7d9781ed5361@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 14 Sep 2026 18:24:15 +0000
-Message-Id: <20260914182416.4D4011F000FF@smtp.kernel.org>
+Date: Mon, 14 Sep 2026 18:30:34 +0000
+Message-Id: <20260914183034.A96A41F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] Redundant manual check for vCPU creation left behind in ARM VGIC in=
-itialization.
---
+> There's no need to keep a fault handler around for this, instead map on
+> mmap.
+>=20
+> While we're here, rename area to vma to be consistent.
+>=20
+> This correctly makes the mapping a mixed map mapping.
+>=20
+> This works towards establishing the invariant that only PFN mapped or mix=
+ed
+> map mappings may clear the VM_MAYWRITE flag. The status page mapping clea=
+rs
+> VM_MAYWRITE, so it must be kernel-owned; the control page mapping remains
+> writable and is left fault-based.
+>=20
+> The assumption is made that the struct pcm_mmap_status structure is at mo=
+st
+> a page in size, which is asserted as a build bug.
+>=20
+> This is safe to assume, as the size of the structure is 56 bytes at most.
+>=20
+> Acked-by: Takashi Iwai <tiwai@suse.de>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-commit 62db20a1fe5b1f9f44f668c005957e7cf68b7547
-Author: Sean Christopherson <seanjc@google.com>
-
-KVM: Reject attempts to lock all vCPUs if vCPU creation is in-progress
-
-This commit updates KVM to reject attempts to lock all vCPUs while vCPU
-creation is in progress by adding checks inside kvm_trylock_all_vcpus()
-and kvm_lock_all_vcpus(). It also opportunistically drops existing manual
-checks that precede or follow locking all vCPUs.
-
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 65eb26a0520d8..78cc090435be5 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -1363,6 +1363,9 @@ int kvm_trylock_all_vcpus(struct kvm *kvm)
-> =20
->  	lockdep_assert_held(&kvm->lock);
-> =20
-> +	if (kvm_is_vcpu_creation_in_progress(kvm))
-> +		return -EBUSY;
-> +
-
-[Severity: Low]
-Was the manual check in arch/arm64/kvm/vgic/vgic-init.c missed during the
-cleanup of redundant in-progress vCPU creation checks?
-
-The commit message notes that existing manual checks are being dropped, but
-in kvm_vgic_create(), there is still a manual check immediately following t=
-he
-kvm_trylock_all_vcpus() call:
-
-arch/arm64/kvm/vgic/vgic-init.c:kvm_vgic_create() {
-        ...
-        ret =3D kvm_trylock_all_vcpus(kvm);
-        if (ret)
-                return ret;
-
-        ret =3D -EBUSY;
-        if (kvm->created_vcpus !=3D atomic_read(&kvm->online_vcpus))
-                goto out_unlock;
-        ...
-}
-
-Because this condition is now evaluated inside the preceding
-kvm_trylock_all_vcpus() call, this manual check in kvm_vgic_create() appears
-to be left as dead code and will never evaluate to true.
-
->  	kvm_for_each_vcpu(i, vcpu, kvm)
->  		if (!mutex_trylock_nest_lock(&vcpu->mutex, &kvm->lock))
->  			goto out_unlock;
+Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260914181223.2890=
-61-1-seanjc@google.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260914-b4-mmap-pr=
+epare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org?part=3D13
+
