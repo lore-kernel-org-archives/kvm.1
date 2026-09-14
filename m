@@ -1,99 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E8C81724;
-	Mon, 14 Sep 2026 07:44:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689053B0AE7;
+	Mon, 14 Sep 2026 08:19:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789371846; cv=none; b=XB9F6gxK9sAPg3XkVCfyEwSd4zk1TwuYyEAZSM63tq+lN9lymCJPV0YKCKFh4uCz1pDEGnOecNgijJxG+d1FFpz6V3lpW4M0ammg42i3ndZ/2sbVu4ZdK3bw4dqD/xaUDzZtDPoSjWOj1TqcAoPh9h9JmcOu+lZmaAQttsPXu54=
+	t=1789373976; cv=none; b=dka2qd+33V6RTQzZ3SiGeakTYiNZ3WBs68TPdEn8DDPg+RSPkJ9cTKKSSt3cMyvhGQq6OpwzeFe5UAd3bjuWjvcmZPiu6q09dNRNCdxX4q7IiuzmnWnvmRNDPo7G73LDPMti5J3t1pHdywFskD14wUoV+j0RPBfVeka0KyeOiS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789371846; c=relaxed/simple;
-	bh=LPv6WKphIl01nIpZXcRte1gWv7DmEQhxm2gkpyDARrA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=nmHLWoq/5F14maRBZDyAJAUeg413hhD4sB0v2VcY5rnvZCgSNtiKV8nF+++A5DB14vrZPEGuHN1mNz0x8Co5WeFujsMpDcIoi0kF+YDvRzUl8R9h+O7jhPwF8sOG8JqQtDwewlNTax11Q7N6USZxdR7rqrNCzpLpXo4T/lCGGcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DnHEbkbR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789373976; c=relaxed/simple;
+	bh=m0ynvs3ASpXg1FC+68FV0PXhWfrNCCs02XWVdpFI/DQ=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=LCbHDmn5Mokbs0SvnuYbCd5tCkWPMx5Gq5SFin9P1x4I4fZqJqbqPpQ7D8OtqVXzYYSyPqazEpf1BSyvIzK/8t3939CIkE/Mpert9ltS9cJsZJqwVNBE10kZsKqZDSw17LRNdDQosoaGVzyJnVeOD7iywzl9ZnQ0XsiJ70P00xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=qn7Y86S7; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DnHEbkbR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D220E1F000FF;
-	Mon, 14 Sep 2026 07:44:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789371845;
-	bh=5P3hP3y9yVIlvg/iA2khdJEuM4+4ZoX7xT/j7z4g1ok=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DnHEbkbRsyCB6wYVS5eLk1mqaj9h8UPbxxLDbfQl7RWclo3oFu1NRzbKuLca7JX3T
-	 NeyXv4U1kEmDwEeYsikG/bu40pmXY8dII5QSSsmgjQNhxbAxIptyx4gOBk17qK7Bov
-	 APPEg4jhvrJQOlEStN9tadacI8OT4k2yf0UvbmSpZ2DqVKnu1uOkzAGBopP3RO4l7M
-	 HMp3naxGBdxKJILmOUGDoO42kFi+I9AT/3WcTngyOafyDxdeBf/RUDiCC4d5zJpOPi
-	 XqylIQahZZt2gY/eSfLRAeH9nqYu+n4eDCbyXywov5d1SP77pqWR3j2IGq5Q9X3Cpq
-	 0vUo/O3gkMK5g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/3] KVM: arm64: selftests: Support five-level
- stage-1 page tables
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Itaru Kitayama" <itaru.kitayama@fujitsu.com>
-Cc: kvmarm@lists.linux.dev, "Marc Zyngier" <maz@kernel.org>, kvm@vger.kernel.org, "Oliver
- Upton" <oupton@kernel.org>
-In-Reply-To: <20260914-arm64-52bit-va-v2-1-3911cb9d4ad4@fujitsu.com>
-References: <20260914-arm64-52bit-va-v2-0-3911cb9d4ad4@fujitsu.com>
- <20260914-arm64-52bit-va-v2-1-3911cb9d4ad4@fujitsu.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 14 Sep 2026 07:44:04 +0000
-Message-Id: <20260914074404.D220E1F000FF@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="qn7Y86S7"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2155F1570;
+	Mon, 14 Sep 2026 01:19:30 -0700 (PDT)
+Received: from [10.0.128.139] (unknown [10.0.128.139])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 347C73F7B4;
+	Mon, 14 Sep 2026 01:19:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789373973; bh=m0ynvs3ASpXg1FC+68FV0PXhWfrNCCs02XWVdpFI/DQ=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=qn7Y86S79uT/YwzISi20g2289oLffqODkAmnxFgB2/f7TGFSQH0pkD3Flpjb9goCV
+	 JVxc5wzSGZPvwfsvk8giDVPvJZb6nSQiZf9vHgvAswACRxWTw5hI/Q8OEqEP2oUPT0
+	 WdpXR2joVP3TKazZtFh5ODPYF2WekqdLue2DS+xI=
+Message-ID: <1fca136f-5802-449a-81f1-3a76c31a2f74@arm.com>
+Date: Mon, 14 Sep 2026 09:19:29 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18 4/7] firmware: arm_rmm: Add support for SRO
+Content-Language: en-GB
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
+ <20260912083611.2513845-5-suzuki.poulose@arm.com>
+ <f00d01d1-8df0-4865-8e52-c85171cf4ca5@redhat.com>
+ <4f18aa66-2296-4b63-87f5-6ab493faecbc@arm.com>
+In-Reply-To: <4f18aa66-2296-4b63-87f5-6ab493faecbc@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] The `type` array in `pte_dump` is missing the entry for P4D, causin=
-g it to print an empty string for level 0.
---
+On 14/09/2026 07:22, Suzuki K Poulose wrote:
+> Hi Gavin
+> 
+> Thank you for the review, I will address most of them. Responses inline.
+> 
+> On 14/09/2026 06:04, Gavin Shan wrote:
+>> On 9/12/26 6:36 PM, Suzuki K Poulose wrote:
+>>> RMM v2.0 introduces the concept of "Stateful RMI Operations" (SRO). This
+>>> means that an SMC can return with an operation still in progress. The
+>>> host is expected to continue the operation until it reaches a conclusion
+>>> (either success or failure). During this process the RMM can request
+>>> additional memory ('donate') or hand memory back to the host
+>>> ('reclaim'). The host can request an in progress operation is cancelled,
+>>> but still continue the operation until it has completed (otherwise the
+>>> incomplete operation may cause future RMM operations to fail).
+>>>
+>>> The SRO is tracked using a struct rmi_sro_state object which keeps track
+>>> of any memory which has been allocated but not yet consumed by the RMM
+>>> or reclaimed from the RMM. This allows the memory to be reused in a
+>>> future request within the same operation. It will also permit an
+>>> operation to be done in a context where memory allocation may be
+>>> difficult (e.g. atomic context) with the option to abort the operation
+>>> and retry the memory allocation outside of the atomic context. The
+>>> memory stored in the struct rmi_sro_state object can then be reused on
+>>> the subsequent attempt.
+>>>
+>>> Wrappers for SRO RMI commands are also provided here because they depend
+>>> on the rmi_sro_execute() implementation added by this patch.
+>>> Delegate/undelegate handles are also added here because they now use the
+>>> SRO/stateful command infrastructure and are also used for the memory
+>>> DONATE/RECLAIM flows.
+>>>
+>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>> Co-Developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> 
+> 
+> 
+>>> ---
+>>>   drivers/firmware/arm_rmm/rmi.c | 586 +++++++++++++++++++++++++++++++++
+>>>   include/linux/arm-rmi-cmds.h   |  41 +++
+>>>   2 files changed, 627 insertions(+)
+>>>
+>>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/ 
+>>> arm_rmm/rmi.c
+>>> index 5b0e342ce3d58..4f9898ece7547 100644
+>>> --- a/drivers/firmware/arm_rmm/rmi.c
+>>> +++ b/drivers/firmware/arm_rmm/rmi.c
+> 
+>>
+>> I would drop rmi_granule_range_{delegate, undelegate}() by combining 
+>> their logics to
+>> their only callers rmi_{delegate, undelegate}_range(). More details 
+>> are provided for
+>> rmi_{delegate, undelegate}_range() in the below.
+> 
+> Ack
 
-commit ec0c73a180f67ed464cb14e88f74413194ff828e
-Author: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+I have moved them closer, but kept the logic separate, since this is not
+a simple RMI call.
 
-KVM: arm64: selftests: Support five-level stage-1 page tables
+Cheers
+Suzuki
 
-This commit adds support for five-level stage-1 page tables in the ARM64
-KVM selftests. It extends the page-table helpers and level validation to
-handle the new architectural level -1. This enables testing 52-bit VA
-configurations with a 4K translation granule.
-
-> diff --git a/tools/testing/selftests/kvm/lib/arm64/processor.c b/tools/te=
-sting/selftests/kvm/lib/arm64/processor.c
-> index 01325bf4d36fc..b589368bf8222 100644
-> --- a/tools/testing/selftests/kvm/lib/arm64/processor.c
-> +++ b/tools/testing/selftests/kvm/lib/arm64/processor.c
-
-[ ... ]
-
-> @@ -214,7 +249,7 @@ u64 *virt_get_pte_hva_at_level(struct kvm_vm *vm, gva=
-_t gva, int level)
->  			goto unmapped_gva;
->  		break;
->  	default:
-> -		TEST_FAIL("Page table levels must be 2, 3, or 4");
-> +		TEST_FAIL("Page table levels must be 2, 3, 4, or 5");
->  	}
-> =20
->  	return ptep;
-
-[Severity: Low]
-Does this change miss updating the string names in pte_dump()?
-
-Looking at pte_dump() in tools/testing/selftests/kvm/lib/arm64/processor.c,
-the type array maps the translation level to its string name:
-
-	static const char * const type[] =3D { "", "pud", "pmd", "pte" };
-
-When the test framework is compiled with DEBUG and dumps a 5-level page
-table, virt_arch_dump() calculates the starting level for pte_dump() as 0.
-Since the array was not updated to include "p4d", debug output for level 0
-will print an empty string instead of "p4d".
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260914-arm64-52bi=
-t-va-v2-0-3911cb9d4ad4@fujitsu.com?part=3D1
