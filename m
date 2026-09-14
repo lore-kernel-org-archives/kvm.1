@@ -1,129 +1,159 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE4B37A827
-	for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 05:06:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789362395; cv=none; b=li5Kuo0G+E8eJIFcbR3DMlm8kt0M8UIXfDQbJ1K0cNqKZf7Il2g+vikbtOsA1KHPVJbY04QESIHMwxO/PJBj+Qk4vbZ3B0zNuSkMcEoBPxFZdmVn2tvnE6CnadAaKP+TEgsqjJKxXgdwagv8sWrKzBpIIIEy3pyrmIQxuoNXlX4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789362395; c=relaxed/simple;
-	bh=E9cc/135TTwNgjmAOrXJSDfGY3OksbkbWgtTU95PGtw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nlcxmAZKWCEiqdbqbeG1plqslwQu1DXJ+27XNj7GGSxWkyHYXnTYf5Lp7W/wEYCKRxxX06MP3TCcylKIGDMrNz5+9xs5sKP+tiGWiUeIAQSwfIqg+e2iQNSjwx4c0FE/C0mWuQHBSp0uZkDWBv6gfvazlMsDKg3LfuRMPBsKAG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BJEt1Jmp; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jONv2xl3; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA3B378838
+	for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 05:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789362859; cv=pass; b=lJ2dLEw7x2JFeiy+LjvMujCbtuM1cy0vVDGn7166R3D8Zh2mgJgJmWsue5Lq4lDk/bWLKbR5G5+AiuXQwBN07QA4qGFiuPwmjz7BzWeqq1eB8yzCW3ZzaWvua5QaxDgtJ0y2l7oAiGbat3LqPBNfvpHOVBfXb01ZGoJ8CSBrXLE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789362859; c=relaxed/simple;
+	bh=txys08ETjEf856Lf5y0MJ/SEqvDMNnRTDlYpklG067o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l/v/6OcpepJodiQCGsKSGBkleekfZn3tngI/xYGyNTEvFJVerxcxNPWIUjII2HYjxbv8M37WgUzr4yg9SNtML/XM4o9PXBy0JCf+5p4YfDyOW/TKo94RWYHaQEnwQouoH241FqOah0TdNwdkzfxP7L/Vp2G1Y3wqw9rbdwGLCP8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=Aj2lb8zs; arc=pass smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BJEt1Jmp";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="jONv2xl3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789362392;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CTGrNcFkd0r7wvxM+LayJdDhB/Bf4MUfRoY837NnKYo=;
-	b=BJEt1JmpXP5HajgyfS0nzT5tA38UGP/ujuQ8xwXwelDEEJBwZBV0O2xpgNj7vuUGtGjWXl
-	4F6DygIBKSTWq5Rtp5HSmhMphpnyTU1FwQQ32bsF9SW+YX+ZiRjt873vRq5nbTngwLLxzg
-	ioyHdpJ6n+Avt4x7hXkFgGbUzm/Y1CE=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-614-ZeNX3QVSMOmODpbCG8g-3w-1; Mon, 14 Sep 2026 01:06:30 -0400
-X-MC-Unique: ZeNX3QVSMOmODpbCG8g-3w-1
-X-Mimecast-MFC-AGG-ID: ZeNX3QVSMOmODpbCG8g-3w_1789362389
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc4e496e5c3so827142a12.0
-        for <kvm@vger.kernel.org>; Sun, 13 Sep 2026 22:06:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="Aj2lb8zs"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-49e717c9841so8297145e9.0
+        for <kvm@vger.kernel.org>; Sun, 13 Sep 2026 22:14:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789362855; cv=none;
+        d=google.com; s=arc-20260327;
+        b=FEwMvKzimCjiH1xMzr3P9rZAbyihaT89Y4sNlKSDlnd4HTnCG/QhcW9BLcCBxtFuVi
+         loYaZzeE1nDLks7evYrCk+onrg5N2AcWQmwvVCiQ71ppOQrkQGqj4yqXZPSVTA3xd/DW
+         hXMXQs9k4zDnRZPa5JuRwR6W11HNyUQPTYh9/9zgRn9hT6BO/e1xr7sR7YT8BfB7Dg+u
+         u8Kst8RF08fGKsSaWJLPM7DY48eRa0VIj0mT0m2Mg/14ibnHV3LOm6EHfs8ceT+G/7yC
+         nYjn0HeLrzac8NqXaeP+Ch07Ly1VjKkBkpgkoeGKnpmg3n6qBcTvu66JxEc0DnXdxLhu
+         uOBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=u1vq0Y3VWCX7lyWdlee9zNWImptkP5hflAUk9JcRAgU=;
+        fh=w2gUdlnhau8hHy3WsLAOFuANbimiCtIJsflvLCe0hTA=;
+        b=RIo/kXKMrYxcTwAlwXtvuiAcYw1wymMCnua3kRGLt+yI9p+5AjR4fuNq9Ff2NL8bg0
+         rRgAChh57JvKMpJTNzd+D3OWl6/4UHIqpIEbysdnSlWWO1hs+/JZe7hv/WBFLVnMCfOp
+         7FH+xIEjC+mhVi3U6ZwKvHdPU1BZmpsALbVuahHvK0PJ4osOLJfgy9DD50FDrqxY1Xoo
+         nypHKoZPmwwMU2/2U5vRbBVyqWYheUtHscIbKDZ0NBgni6yFinDQVXXYg7ukpdMtSXIF
+         HbqWB3QnEgghN2PSqY3JZykrrWgT4VpEgmg5Ft+XvO3yB73XgFi/b3augdAeaoxWYlvp
+         y44A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789362389; x=1789967189; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CTGrNcFkd0r7wvxM+LayJdDhB/Bf4MUfRoY837NnKYo=;
-        b=jONv2xl35EG2/+qy0VdG3Q/3pfknoJI6h2Sh6K+TjGumlrdNc/oe/ryUIbSioqvm3a
-         ukZIuXlEtHDAw/yf1JAa4zgsHCkUt4NPiUXl9ti+EqZU4qlUmrRVuCIS57le6C5k6bx6
-         d6ywc2fcqOZoNMWJy2PSI13c8a7h4HbFYEIaQcBRKBTifiuuVAmlV8Q/VSoJDLrgVLcq
-         9CTsY0kEJloK3smmaWxFHg/CVnTfzktQxT2xfZdtzioeKLwoRrQmTT78CARSRq/MKwdL
-         UD4qBtnXDmw0efmmecXIC5ac897s20/3VpwJao6HgY7gRKD7CG+zSxI4IKb27ZmPE0Es
-         B9gg==
+        d=brainfault.org; s=google; t=1789362855; x=1789967655; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=u1vq0Y3VWCX7lyWdlee9zNWImptkP5hflAUk9JcRAgU=;
+        b=Aj2lb8zsdf0cKJmeb9ML8/3uaFZZ4C4nhc9SHY7Dj7yGCkAOVVWFnAEvxzLFB3Iolr
+         yHEK6u06hqAuiwsfoEuY4ESPeNCNnzalH6jp372nEJppgpcKfEI3vqRpeEqGovkQJ4oj
+         8ijz2GRWLdHptVVpzKKIuShSOEzafS2oSJ0TiXClHCvOp7YpNvMVFKrx3YBJuQ1tZYFl
+         D4MMbyFqVYDQpiSgEN5XOrDEU6uHUegvRsVyo8r/lkebdOLxqSCn3hgNT+fM+3yWGxT9
+         854Cps9XIpLDpZ6+ByZWF6zK3FvBb29Zw7ju73cfOtmWjNbPRAmQzQbjfJbqrgbsyf8X
+         doRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789362389; x=1789967189;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CTGrNcFkd0r7wvxM+LayJdDhB/Bf4MUfRoY837NnKYo=;
-        b=c9zeS328AQiR2DIrkHLZOL2W1d1tcXkRvQIHdnRg8dlCSSd2ogMA2KfIVLbnBf78PR
-         si9NITv11vNtwq0l7I3OLZVs8pw1pUkpq02hzZwOU1VXh1bG56maeDyqyLq8c+SJ3KMD
-         F3zIDgPaGm5fDNIS3g0nwRWUJz57HeBvlp2sZ8SMF4w0BAsv6NH4DD0lCVkcl+sX4ZBM
-         APnJZ/2GeJCKNe1jO8Caa0uBS5jYWNzUQIjEuDZwpp5vQjmVpc/xZz9OJtrfpd7vjczW
-         iRuTiy19sES78GSG6+hBInnYmNukimpMv80W1niwPeUdmkwo8Vh2NlGuotDLhPRxD/St
-         kjyA==
-X-Forwarded-Encrypted: i=1; AKwUvBxuoEWSxsZ3CRDjLtOn+vMT1MBdUOlQQcesqNHtSzvD+i0Qwgfyth/H26+aECdfSCx6QrQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++k0BJi0EmloCCSDRJmMcBOZk3afbRgpHa1LOekfzXN/nu/seFhZ
-	MzIA/PbPM1AGnMNLOQQboV3SIyqBR+a48RuRV1c+X+dGY3ny4vxf1fr1MMdOd8RbvqEXiNOmW5K
-	yNqJhaRa3sBS7BIdPyS25h+undJpdrLcx0XT8nM9ikzMcQkIrSilm5A==
-X-Gm-Gg: AYBFou0moH8NW/J2GMw6cK7TmVWt/DvphmkkkbPD0P+EuRX3FbliD4EWL5z6Hw90l40
-	IcgOQpZiQn8NslkTR4DM6BxKN2DXJjRDTj6REOa+B/xavnjp3SjHKDc1+BKcM/5fo2mPjQyyXuk
-	X3JjITnJ5hGBDdENgmd83IbLB1IfpA6Ynw/s435gg3TGEyAHYXlGvrXBwOeCp9bfRlGe0eA5VxW
-	vJf6EAEICesHOoIAhVja9aOKnI4F3nGiTgEzx7g20LbA+jgw+Z2ijNHInptdGATI+SHn0J1MLMC
-	cE+EM0pARJtuvLXb6NnNVCx1ouPstTXNIA3xp1f2p10vzt3z6wV230JvMTk9IDuLlH5XO/d5lqd
-	MPlz5omFnSf21/Cmt5iCguixwS6skSAujlNJrFOtHeg==
-X-Received: by 2002:a05:6a20:7290:b0:3d1:2dc5:7d37 with SMTP id adf61e73a8af0-3db4039c82cmr2007614637.3.1789362388808;
-        Sun, 13 Sep 2026 22:06:28 -0700 (PDT)
-X-Received: by 2002:a05:6a20:7290:b0:3d1:2dc5:7d37 with SMTP id adf61e73a8af0-3db4039c82cmr2007526637.3.1789362388369;
-        Sun, 13 Sep 2026 22:06:28 -0700 (PDT)
-Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc4c654b5b0sm4167221a12.13.2026.09.13.22.06.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 13 Sep 2026 22:06:27 -0700 (PDT)
-Message-ID: <e15dff15-74d5-459c-98ed-0473a7761c69@redhat.com>
-Date: Mon, 14 Sep 2026 15:06:15 +1000
+        d=1e100.net; s=20251104; t=1789362855; x=1789967655;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=u1vq0Y3VWCX7lyWdlee9zNWImptkP5hflAUk9JcRAgU=;
+        b=Ft32Wk95q8vLNlBYRqV8s50LEsj15UrF3ph5Lg62aJ9f6JfBV5NM1vCHlPYgFL74XA
+         4pSHSZKhytJG0yWjov51feLkDyC3b1LnGWxDv5mtKh5xWKEki6NcDoMD6Y0gttm0udNh
+         AD7LMb+tgsX+MZP5DiKiuXxneWzzWBqOMcaBdhd5Djzj14UYVda4txDarySuuytgVDfK
+         ztm+lZHi5Yoj4fweeJPGFqYYsmfKEA2L/sU7kjLk/OjhjPq6O9TDx0RF1db6r+lmarTb
+         u5aJtTLZ6e4XyE4sMNxEVrJaBC2M/+3vJZBhvWT+Ms/oAhTyU1MCfJyiaa6EgmjZ320e
+         xPAg==
+X-Forwarded-Encrypted: i=1; AKwUvBwlO1MADMElPzg3jzgeh4g+hWnwSJhr8lOnl1KhEXBcM7hrQzv22wBP4wFvT22zXgAyiUg=@vger.kernel.org
+X-Gm-Message-State: AFuF++m078QpZGL3iam88OBQfc+bmoVttnIZWcniQRAjq4Hqu/hnPXgB
+	RYphD7Nk9WHB1DRiqGpXO0OVereUGXQ2KVhZ2KEH8Mzvpm6jzrD2ptC9lgsIh9xxQH7ipLubGbg
+	faOfYJyNXjCCe9dqNeDUTOvAY4sy2JeSCdP5fJmiHKA==
+X-Gm-Gg: AYBFou3jVlTaL9hK16WdpUB4PidZ3MNKI498EdP6C/RZx/db/VFsN3//j+35tncliqX
+	HEGZ6pseQ+rlgEb51IliQD3uDzWH6TX3Qe/jIc7h20qqTagPwcFvyPQGmwiVSr7ezD//z18yWlA
+	u/g9rZLA0QxAKXeQ/mitflCd5ftYUlvWIt9meplOP9oMeu3HhTpAlZCpiFblanO1+drohusGmmb
+	OX6ZvqC9LmToPGPUiOusjVlbUrv0MdZpaASvjWZnxvriTTk2eAlnIwFP2obVox0wfD1jKQnYIuJ
+	DXRt51qSJJrSSLvg4dUfQup37A+JZ6yDr4FFO7uw3TJGJ0CtYsheaj04CjwZCrkZ7m8wQA5dnlD
+	zrfJsE3IzoE2oIwJxJ1qzdNtHzEbFm4DkXyOoV0CrKNFAyAv0BJKoBC4nGUFal7CvefImge2B1g
+	==
+X-Received: by 2002:a05:600c:19c9:b0:49e:6e7c:d895 with SMTP id
+ 5b1f17b1804b1-49e7a678d7dmr8979885e9.26.1789362855198; Sun, 13 Sep 2026
+ 22:14:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18 5/7] firmware: arm_rmm: Activate the RMM
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
- <20260912083611.2513845-6-suzuki.poulose@arm.com>
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20260912083611.2513845-6-suzuki.poulose@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260914031146.446157-1-tanchi25@mails.ucas.ac.cn>
+In-Reply-To: <20260914031146.446157-1-tanchi25@mails.ucas.ac.cn>
+From: Anup Patel <anup@brainfault.org>
+Date: Mon, 14 Sep 2026 10:44:04 +0530
+X-Gm-Features: AcwNN1Xv9Q24Kz2JNPc5ElbJduPG-W_3pjLhuvmorF4ZD7AGszu1UnXv2VgFblg
+Message-ID: <CAAhSdy3m8iBXiJF_=syKKm-JYpW3ou8P4FpWNB0_a-t+_dTuAg@mail.gmail.com>
+Subject: Re: [PATCH] RISC-V: KVM: Fix HSM hart status error propagation
+To: Tan Chi <tanchi25@mails.ucas.ac.cn>
+Cc: Atish Patra <atish.patra@linux.dev>, kvm-riscv@lists.infradead.org, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Andrew Jones <ajones@ventanamicro.com>, kvm@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/12/26 6:36 PM, Suzuki K Poulose wrote:
-> From: Steven Price <steven.price@arm.com>
-> 
-> Activate the RMM after the basic configuration. This is a memory transferring,
-> stateful operation.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+On Mon, Sep 14, 2026 at 8:42=E2=80=AFAM Tan Chi <tanchi25@mails.ucas.ac.cn>=
+ wrote:
+>
+> kvm_sbi_hsm_vcpu_get_status() returns SBI_ERR_INVALID_PARAM when
+> the requested hart does not exist. However, the HART_STATUS case
+> returns from the SBI handler without storing this error in
+> retdata->err_val.
+>
+> As a result, a guest querying the status of a non-existent hart
+> observes SBI_SUCCESS instead of SBI_ERR_INVALID_PARAM.
+>
+> Use the common SBI error handling path for HART_STATUS after
+> saving a valid hart state in retdata->out_val. This preserves
+> the returned error when kvm_sbi_hsm_vcpu_get_status() fails.
+>
+> Fixes: bae0dfd74e01 ("RISC-V: KVM: Modify SBI extension handler to return=
+ SBI error code")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Tan Chi <tanchi25@mails.ucas.ac.cn>
+
+Good catch.
+
+Reviewed-by: Anup Patel <anup@brainfault.org>
+
+Queued this patch as fix for Linux-7.3-rcX
+
+Thanks,
+Anup
+
 > ---
-> Changes since v17:
->   * Inline RMM_ACTIVATE command and remove the definitions from arm-rmi-cmds.h
->   * Use scope-based cleanup to free sro object
-> Changes since v16:
->   * Split into a new patch
-> ---
->   drivers/firmware/arm_rmm/rmi.c | 14 +++++++++++++-
->   1 file changed, 13 insertions(+), 1 deletion(-)
-> 
-
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-
+>  arch/riscv/kvm/vcpu_sbi_hsm.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/riscv/kvm/vcpu_sbi_hsm.c b/arch/riscv/kvm/vcpu_sbi_hsm.=
+c
+> index f26207f84bab..06a15629c26b 100644
+> --- a/arch/riscv/kvm/vcpu_sbi_hsm.c
+> +++ b/arch/riscv/kvm/vcpu_sbi_hsm.c
+> @@ -95,9 +95,9 @@ static int kvm_sbi_ext_hsm_handler(struct kvm_vcpu *vcp=
+u, struct kvm_run *run,
+>                 ret =3D kvm_sbi_hsm_vcpu_get_status(vcpu);
+>                 if (ret >=3D 0) {
+>                         retdata->out_val =3D ret;
+> -                       retdata->err_val =3D 0;
+> +                       ret =3D 0;
+>                 }
+> -               return 0;
+> +               break;
+>         case SBI_EXT_HSM_HART_SUSPEND:
+>                 switch (lower_32_bits(cp->a0)) {
+>                 case SBI_HSM_SUSPEND_RET_DEFAULT:
+>
+> base-commit: df2908090cda368b01ff43709f51890076c56157
+> --
+> 2.53.0
+>
