@@ -1,59 +1,59 @@
-Received: from esa9.hc1455-7.c3s2.iphmx.com (esa9.hc1455-7.c3s2.iphmx.com [139.138.36.223])
+Received: from esa8.hc1455-7.c3s2.iphmx.com (esa8.hc1455-7.c3s2.iphmx.com [139.138.61.253])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2A53E1CE1;
-	Mon, 14 Sep 2026 07:31:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.36.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A173EF0AA;
+	Mon, 14 Sep 2026 07:31:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.61.253
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789371074; cv=none; b=tVVSk8d7O1/Ydsf/k+Waimw4V82L7Mz41qhrLjDRg6p9DSM9XQCFT4bFwhiTaJirGoPx3LjPKe8zlkNErFT1DiGzpB8Sp9VSiJC8ciBh4Tk5Lf538sXGLEF6aipOnlY4J/yHTYcsfBJmCAYes9c7jXNSYQGFDtlKrvCxkJsyCfM=
+	t=1789371083; cv=none; b=p1xANvhykI2S9NsUCWa13EOfMGBRLaw+Fwc9COr0BkGcnd+ekTKNDI8dPmJFZbfRCNqTFUAmJEgj6LE6W+NijcDCm1QGAMDNwVqsTHgnQpZPcObwC7NAWv1iVKe8o5Rkypa3TWbqsNRfwGpFAKOMcuDEVCxVsdJwaxqLqgm6SdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789371074; c=relaxed/simple;
-	bh=5/qH9WQH0xnxZiSwc57XSnnm6CjMDXhHBj4pLQbDsZk=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=oBOsuQ7E9NBekRKHLWBQdYRoY6//D04onUMf03WDJw5Bpf0vX8mY0NRkRIZXZ0+yY/FBfvx1LG+PlBmx/uUD3StjnVsp+ortkTT2Pu/8OxWLVZeWc3qykijicrvrv5q0z9cIY/X1wXzc5uzR01IphHztqboc5BsM5a3K3J/HYa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=q53rWFx3; arc=none smtp.client-ip=139.138.36.223
+	s=arc-20240116; t=1789371083; c=relaxed/simple;
+	bh=womlNSebg8YA4nRh21CzpVYFz8+Hr298oHktq30HrIc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=HuDKyQ4b9PuiyqIBBMHZUfDosVrZvn6HHxlPVqMTYfXTRJEcgvb6Q4dGptPbk1S/BHlEnzTNrMliBIvrUasVK5MCLEEB/duo2wLWevQqHJNXubs1en9An9XGSRiK9Kg+uV1wl1t5+3Pna33bt4fvaU49FqEuNheecYiyyZUVJlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=enbU1d3H; arc=none smtp.client-ip=139.138.61.253
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="q53rWFx3"
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="enbU1d3H"
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1789371072; x=1820907072;
-  h=from:subject:date:message-id:mime-version:
-   content-transfer-encoding:to:cc;
-  bh=5/qH9WQH0xnxZiSwc57XSnnm6CjMDXhHBj4pLQbDsZk=;
-  b=q53rWFx33peYG2ja8yAHvZ9cwyK1hSHm8QH9uPM/kiUAtzKI11W7CvY8
-   hh9i41UlgerMlDU++bdm+egyq6d9IvwPu8JGm1sfYEsN7smzzotmr8Dr1
-   UlNEypukUbGxb2gjWHNBX6abKd96CDtWvwg9iUhOgQ0C2cI2FZNkwfH9r
-   qsLFSyvNNtAMcDIvui33D9dAVXgwJ+VcTCMgR2NUOSawe6Ot9edgDJ8fN
-   ILXMU7pRRJN8MaRATITObUKQwVYiD6bOvkp7mrNLjNVHqzR8FLvv4n4+p
-   hOtd+IaaPzY/3sG3N8NUBd9D8c3CPgQukH4MPx7/Fccq2JPpszcGqaTK5
+  t=1789371082; x=1820907082;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=womlNSebg8YA4nRh21CzpVYFz8+Hr298oHktq30HrIc=;
+  b=enbU1d3HhXlAqqjbhv73tHsenwQKo0mAvekQD2YX9bM7MnitE93NyyXD
+   +Zu26utgBf5S9kXt3jkAqQ1i69ELlnHcUqKKNEgXxjvywXIKmQ3sX29hV
+   KegWaTMvCTUhC+qq+fJq1IVQJ4kwbjSNpcOu/XnYmg51mN40wvYih8q8u
+   w6GufGAka2dMEQlM/DIRe6SXgXoDrCSKGNK1Ul5CiN4Z3mptWgc2RvYRn
+   6mMyDmyQ7D6QEWWbRm4pmElzAwIDiN+DFlz566YjbzZCc9a+nrfYkePd6
+   hb5wepCrrCttfTd/GLuBzGRr7dqRmcmZ+TF2ssQpAcpJxBy10R1S7QJ17
    A==;
-X-CSE-ConnectionGUID: vy+R9QidReCnrqDAwfuhiQ==
-X-CSE-MsgGUID: HJZ/aiUAS/64Qr3Av5XdEg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11904"; a="242463258"
+X-CSE-ConnectionGUID: W5OpWn2dTrSpeB3XcGa0Jg==
+X-CSE-MsgGUID: WG+yyqp5QgG+JOV8WbCERA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11904"; a="242934180"
 X-IronPort-AV: E=Sophos;i="6.27,102,1786978800"; 
-   d="scan'208";a="242463258"
-Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
-  by esa9.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2026 16:31:03 +0900
-Received: from az2uksmgm4.o.css.fujitsu.com (unknown [10.151.22.201])
+   d="scan'208";a="242934180"
+Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
+  by esa8.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2026 16:31:14 +0900
+Received: from az2nlsmgm1.o.css.fujitsu.com (unknown [10.150.26.203])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id 9954082071A;
-	Mon, 14 Sep 2026 07:31:03 +0000 (UTC)
+	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 4261C1C0008F;
+	Mon, 14 Sep 2026 07:31:14 +0000 (UTC)
 Received: from az2nlsmom2.o.css.fujitsu.com (unknown [10.150.26.200])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by az2uksmgm4.o.css.fujitsu.com (Postfix) with ESMTPS id 3DD2C14003FD;
-	Mon, 14 Sep 2026 07:31:03 +0000 (UTC)
+	by az2nlsmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id E6194C0041B;
+	Mon, 14 Sep 2026 07:31:13 +0000 (UTC)
 Received: from [127.0.1.1] (unknown [10.124.178.20])
-	by az2nlsmom2.o.css.fujitsu.com (Postfix) with ESMTP id 65571180012C;
-	Mon, 14 Sep 2026 07:30:57 +0000 (UTC)
+	by az2nlsmom2.o.css.fujitsu.com (Postfix) with ESMTP id 2ED2718005CF;
+	Mon, 14 Sep 2026 07:31:07 +0000 (UTC)
 From: Itaru Kitayama <itaru.kitayama@fujitsu.com>
-Subject: [PATCH v2 0/3] 52-bit VA guest mode ID support
-Date: Mon, 14 Sep 2026 16:30:43 +0900
-Message-Id: <20260914-arm64-52bit-va-v2-0-3911cb9d4ad4@fujitsu.com>
+Date: Mon, 14 Sep 2026 16:30:45 +0900
+Subject: [PATCH v2 2/3] KVM: arm64: selftests: Add 52-bit VA guest modes
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,11 +62,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAKOip2oC/12NQQ6CMBBFr0Jm7Zh2gAZdeQ/DAkorQwKYtjQaw
- t2lGDcuX/L++yt449h4uGYrOBPZ8zztQKcMdN9MD4Pc7QwkSImKSmzcqAosqeWAscGcrLSF7kQ
- pOthHT2csv47gvf6yX9rB6JAqyejZh9m9j8cok/eLq/94lChQFkZfKpIyV/nNLgMHv5z1PEK9b
- dsHgk4c3MAAAAA=
-X-Change-ID: 20260825-arm64-52bit-va-32f1f4cd050d
+Message-Id: <20260914-arm64-52bit-va-v2-2-3911cb9d4ad4@fujitsu.com>
+References: <20260914-arm64-52bit-va-v2-0-3911cb9d4ad4@fujitsu.com>
+In-Reply-To: <20260914-arm64-52bit-va-v2-0-3911cb9d4ad4@fujitsu.com>
 To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
  Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>, 
  Steffen Eiden <seiden@linux.ibm.com>, 
@@ -78,81 +76,188 @@ Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
  linux-kernel@vger.kernel.org, Itaru Kitayama <itaru.kitayama@fujitsu.com>, 
  Takayuki Okamoto <tokamoto@fujitsu.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789371056; l=3154;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789371056; l=7290;
  i=itaru.kitayama@fujitsu.com; s=20260825; h=from:subject:message-id;
- bh=5/qH9WQH0xnxZiSwc57XSnnm6CjMDXhHBj4pLQbDsZk=;
- b=Vrji+rOz7LhmW6GdQCEDDXWddYrkAdBps2e04+1rLpswYZDXxv+ahTbGMs9yqV0gtrDVHhhwN
- LFHDUSJNmUnDuyYdXr8NBnwbrjHCUMRBlvptVI8wlBP+R+wwItjuMqR
+ bh=womlNSebg8YA4nRh21CzpVYFz8+Hr298oHktq30HrIc=;
+ b=wTuHb/dS7hr29G0OtUzlZDfl79+46Cbk0yFnl9e4puuQrjhbhmUbzlNa/yy6l6LdB6ryEMc9l
+ 7YLLQPUCnwRCJ+gNyMBWNgdlyM+KM2lepReJ+JlYGbd6yfyiOcIfAaU
 X-Developer-Key: i=itaru.kitayama@fujitsu.com; a=ed25519;
  pk=g9bTnr9giRP7JwNSZHy+OMLQZBEUtSE9tUnXso0hH1Y=
 
-This patch series extends the arm64 KVM selftest framework
-to support 52-bit guest virtual address (VA) modes in addition to
-the existing 52-bit physical address (PA) configurations.
-The motivation is to enable validation of LPA2 guest memory-management
-behaviour in configurations that use a 52-bit VA space.
-While the selftest framework already supports testing 52-bit PA
-configurations, it lacks the ability to exercise guests running with
-52-bit virtual addresses, leaving part of the LPA2 functionality untested.
-To address this, the series introduces new guest modes for 52-bit VA
-operation, adds five-level page table support where required, and
-performs runtime detection of host 52-bit VA capability so that
-LPA2-enabled guest VA tests are executed only on supported systems.
+Add guest modes for 52-bit VA operation with the 4K, 16K, and 64K
+translation granules, using five, four, and three page-table levels,
+respectively.
 
-Testing:
-
-Built and ran lpa_test on QEMU with 52-bit VA support. 
-The test verified shared mappings at low and high guest virtual addresses, 
-then remapped the high VA to a different GPA and verified that 
-the mappings remained independent.
+Extend the existing guest-mode capability probe to read
+ID_AA64MMFR2_EL1 from the same probe vCPU. Use VARange only when
+determining 52-bit VA support for the 64K granule.
 
 Signed-off-by: Itaru Kitayama <itaru.kitayama@fujitsu.com>
 Reviewed-by: Takayuki Okamoto <tokamoto@fujitsu.com>
 ---
-Changes in v2:
-- Reorganize the series so that each patch builds independently.
-- Move all P52V52 mode definitions and uses into the same patch.
-- Use the standard "KVM: arm64: selftests:" subject prefix.
-- Reuse one probe VM and vCPU for IPA and 64K VA capability detection.
-- Make the VARange result explicitly specific to the 64K granule.
-- Clarify that only the 4K P52V52 mode uses five page-table levels.
-- Link to v1: https://patch.msgid.link/20260826-arm64-52bit-va-v1-0-14ec98211363@fujitsu.com
+ tools/testing/selftests/kvm/include/arm64/processor.h |  2 +-
+ tools/testing/selftests/kvm/include/kvm_util.h        |  3 +++
+ tools/testing/selftests/kvm/lib/arm64/processor.c     | 15 ++++++++++++++-
+ tools/testing/selftests/kvm/lib/guest_modes.c         |  7 +++++--
+ tools/testing/selftests/kvm/lib/kvm_util.c            | 11 +++++++++++
+ 5 files changed, 34 insertions(+), 4 deletions(-)
 
-To: Marc Zyngier <maz@kernel.org>
-To: Oliver Upton <oupton@kernel.org>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-To: Joey Gouly <joey.gouly@arm.com>
-To: Steffen Eiden <seiden@linux.ibm.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: Zenghui Yu <yuzenghui@huawei.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-To: Sean Christopherson <seanjc@google.com>
-To: Shuah Khan <shuah@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: kvmarm@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Cc: linux-kselftest@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
+diff --git a/tools/testing/selftests/kvm/include/arm64/processor.h b/tools/testing/selftests/kvm/include/arm64/processor.h
+index 7457503df956..4ab00a7e6efb 100644
+--- a/tools/testing/selftests/kvm/include/arm64/processor.h
++++ b/tools/testing/selftests/kvm/include/arm64/processor.h
+@@ -169,7 +169,7 @@ enum {
+ 			   (v) == VECTOR_SYNC_LOWER_32)
+ 
+ void aarch64_get_supported_page_sizes(u32 ipa, u32 *ipa4k,
+-				      u32 *ipa16k, u32 *ipa64k);
++				      u32 *ipa16k, u32 *ipa64k, u32 *va64k);
+ 
+ void vm_init_descriptor_tables(struct kvm_vm *vm);
+ void vcpu_init_descriptor_tables(struct kvm_vcpu *vcpu);
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index 5a7a455b5387..1c268fa994aa 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -184,6 +184,9 @@ enum vm_guest_mode {
+ 	VM_MODE_P52V48_4K,
+ 	VM_MODE_P52V48_16K,
+ 	VM_MODE_P52V48_64K,
++	VM_MODE_P52V52_4K,
++	VM_MODE_P52V52_16K,
++	VM_MODE_P52V52_64K,
+ 	VM_MODE_P48V48_4K,
+ 	VM_MODE_P48V48_16K,
+ 	VM_MODE_P48V48_64K,
+diff --git a/tools/testing/selftests/kvm/lib/arm64/processor.c b/tools/testing/selftests/kvm/lib/arm64/processor.c
+index b589368bf822..9915f25f0287 100644
+--- a/tools/testing/selftests/kvm/lib/arm64/processor.c
++++ b/tools/testing/selftests/kvm/lib/arm64/processor.c
+@@ -356,12 +356,14 @@ void aarch64_vcpu_setup(struct kvm_vcpu *vcpu, struct kvm_vcpu_init *init)
+ 	case VM_MODE_PXXVYY_4K:
+ 		TEST_FAIL("AArch64 does not support 4K sized pages "
+ 			  "with ANY-bit physical address ranges");
++	case VM_MODE_P52V52_64K:
+ 	case VM_MODE_P52V48_64K:
+ 	case VM_MODE_P48V48_64K:
+ 	case VM_MODE_P40V48_64K:
+ 	case VM_MODE_P36V48_64K:
+ 		tcr_el1 |= TCR_TG0_64K;
+ 		break;
++	case VM_MODE_P52V52_16K:
+ 	case VM_MODE_P52V48_16K:
+ 	case VM_MODE_P48V48_16K:
+ 	case VM_MODE_P40V48_16K:
+@@ -369,6 +371,7 @@ void aarch64_vcpu_setup(struct kvm_vcpu *vcpu, struct kvm_vcpu_init *init)
+ 	case VM_MODE_P36V47_16K:
+ 		tcr_el1 |= TCR_TG0_16K;
+ 		break;
++	case VM_MODE_P52V52_4K:
+ 	case VM_MODE_P52V48_4K:
+ 	case VM_MODE_P48V48_4K:
+ 	case VM_MODE_P40V48_4K:
+@@ -383,6 +386,9 @@ void aarch64_vcpu_setup(struct kvm_vcpu *vcpu, struct kvm_vcpu_init *init)
+ 
+ 	/* Configure output size */
+ 	switch (vm->mode) {
++	case VM_MODE_P52V52_4K:
++	case VM_MODE_P52V52_16K:
++	case VM_MODE_P52V52_64K:
+ 	case VM_MODE_P52V48_4K:
+ 	case VM_MODE_P52V48_16K:
+ 	case VM_MODE_P52V48_64K:
+@@ -614,7 +620,7 @@ static u32 max_ipa_for_page_size(u32 vm_ipa, u32 gran,
+ }
+ 
+ void aarch64_get_supported_page_sizes(u32 ipa, u32 *ipa4k,
+-				      u32 *ipa16k, u32 *ipa64k)
++				      u32 *ipa16k, u32 *ipa64k, u32 *va64k)
+ {
+ 	struct kvm_vcpu_init preferred_init;
+ 	int kvm_fd, vm_fd, vcpu_fd, err;
+@@ -652,6 +658,13 @@ void aarch64_get_supported_page_sizes(u32 ipa, u32 *ipa4k,
+ 	*ipa16k = max_ipa_for_page_size(ipa, gran, ID_AA64MMFR0_EL1_TGRAN16_NI,
+ 					ID_AA64MMFR0_EL1_TGRAN16_52_BIT);
+ 
++	reg.id = KVM_ARM64_SYS_REG(SYS_ID_AA64MMFR2_EL1);
++	err = ioctl(vcpu_fd, KVM_GET_ONE_REG, &reg);
++	TEST_ASSERT(err == 0, KVM_IOCTL_ERROR(KVM_GET_ONE_REG, err));
++
++	*va64k = FIELD_GET(ID_AA64MMFR2_EL1_VARange, val) >=
++		ID_AA64MMFR2_EL1_VARange_52 ? 52 : 48;
++
+ 	close(vcpu_fd);
+ 	close(vm_fd);
+ 	close(kvm_fd);
+diff --git a/tools/testing/selftests/kvm/lib/guest_modes.c b/tools/testing/selftests/kvm/lib/guest_modes.c
+index 7a96c43b5704..8d2748145f8f 100644
+--- a/tools/testing/selftests/kvm/lib/guest_modes.c
++++ b/tools/testing/selftests/kvm/lib/guest_modes.c
+@@ -20,11 +20,14 @@ void guest_modes_append_default(void)
+ #ifdef __aarch64__
+ 	{
+ 		unsigned int limit = kvm_check_cap(KVM_CAP_ARM_VM_IPA_SIZE);
+-		u32 ipa4k, ipa16k, ipa64k;
++		u32 ipa4k, ipa16k, ipa64k, va64k;
+ 		int i;
+ 
+-		aarch64_get_supported_page_sizes(limit, &ipa4k, &ipa16k, &ipa64k);
++		aarch64_get_supported_page_sizes(limit, &ipa4k, &ipa16k, &ipa64k, &va64k);
+ 
++		guest_mode_append(VM_MODE_P52V52_4K, ipa4k >= 52);
++		guest_mode_append(VM_MODE_P52V52_16K, ipa16k >= 52);
++		guest_mode_append(VM_MODE_P52V52_64K, ipa64k >= 52 && va64k >= 52);
+ 		guest_mode_append(VM_MODE_P52V48_4K, ipa4k >= 52);
+ 		guest_mode_append(VM_MODE_P52V48_16K, ipa16k >= 52);
+ 		guest_mode_append(VM_MODE_P52V48_64K, ipa64k >= 52);
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index 9ddc047d5c27..bc3ed034e203 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -203,6 +203,9 @@ const char *vm_guest_mode_string(u32 i)
+ 		[VM_MODE_P52V48_4K]	= "PA-bits:52,  VA-bits:48,  4K pages",
+ 		[VM_MODE_P52V48_16K]	= "PA-bits:52,  VA-bits:48, 16K pages",
+ 		[VM_MODE_P52V48_64K]	= "PA-bits:52,  VA-bits:48, 64K pages",
++		[VM_MODE_P52V52_4K]	= "PA-bits:52,  VA-bits:52,  4K pages",
++		[VM_MODE_P52V52_16K]	= "PA-bits:52,  VA-bits:52, 16K pages",
++		[VM_MODE_P52V52_64K]	= "PA-bits:52,  VA-bits:52, 64K pages",
+ 		[VM_MODE_P48V48_4K]	= "PA-bits:48,  VA-bits:48,  4K pages",
+ 		[VM_MODE_P48V48_16K]	= "PA-bits:48,  VA-bits:48, 16K pages",
+ 		[VM_MODE_P48V48_64K]	= "PA-bits:48,  VA-bits:48, 64K pages",
+@@ -239,6 +242,9 @@ const struct vm_guest_mode_params vm_guest_mode_params[] = {
+ 	[VM_MODE_P52V48_4K]	= { 52, 48,  0x1000, 12 },
+ 	[VM_MODE_P52V48_16K]	= { 52, 48,  0x4000, 14 },
+ 	[VM_MODE_P52V48_64K]	= { 52, 48, 0x10000, 16 },
++	[VM_MODE_P52V52_4K]	= { 52, 52,  0x1000, 12 },
++	[VM_MODE_P52V52_16K]	= { 52, 52,  0x4000, 14 },
++	[VM_MODE_P52V52_64K]	= { 52, 52, 0x10000, 16 },
+ 	[VM_MODE_P48V48_4K]	= { 48, 48,  0x1000, 12 },
+ 	[VM_MODE_P48V48_16K]	= { 48, 48,  0x4000, 14 },
+ 	[VM_MODE_P48V48_64K]	= { 48, 48, 0x10000, 16 },
+@@ -306,10 +312,14 @@ struct kvm_vm *____vm_create(struct vm_shape shape)
+ 
+ 	/* Setup mode specific traits. */
+ 	switch (vm->mode) {
++	case VM_MODE_P52V52_4K:
++		vm->mmu.pgtable_levels = 5;
++		break;
+ 	case VM_MODE_P52V48_4K:
+ 		vm->mmu.pgtable_levels = 4;
+ 		break;
+ 	case VM_MODE_P52V48_64K:
++	case VM_MODE_P52V52_64K:
+ 		vm->mmu.pgtable_levels = 3;
+ 		break;
+ 	case VM_MODE_P48V48_4K:
+@@ -330,6 +340,7 @@ struct kvm_vm *____vm_create(struct vm_shape shape)
+ 	case VM_MODE_P48V48_16K:
+ 	case VM_MODE_P40V48_16K:
+ 	case VM_MODE_P36V48_16K:
++	case VM_MODE_P52V52_16K:
+ 		vm->mmu.pgtable_levels = 4;
+ 		break;
+ 	case VM_MODE_P47V47_16K:
 
----
-Itaru Kitayama (3):
-      KVM: arm64: selftests: Support five-level stage-1 page tables
-      KVM: arm64: selftests: Add 52-bit VA guest modes
-      KVM: arm64: selftests: Test 52-bit guest virtual addresses
-
- tools/testing/selftests/kvm/Makefile.kvm           |   1 +
- tools/testing/selftests/kvm/arm64/lpa_test.c       | 124 +++++++++++++++++++++
- .../selftests/kvm/include/arm64/processor.h        |   3 +-
- tools/testing/selftests/kvm/include/kvm_util.h     |   3 +
- tools/testing/selftests/kvm/lib/arm64/processor.c  |  60 +++++++++-
- tools/testing/selftests/kvm/lib/guest_modes.c      |   7 +-
- tools/testing/selftests/kvm/lib/kvm_util.c         |  11 ++
- 7 files changed, 200 insertions(+), 9 deletions(-)
----
-base-commit: 28924df2a08f440c73991b83028032c901de2ae4
-change-id: 20260825-arm64-52bit-va-32f1f4cd050d
-
-Best regards,
---  
-Itaru Kitayama <itaru.kitayama@fujitsu.com>
+-- 
+2.43.0
 
