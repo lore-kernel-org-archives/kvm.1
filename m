@@ -1,278 +1,364 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF03490C02
-	for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 17:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789408755; cv=none; b=VFB01lbXQMDjQSL8n/jw59WvNqRJERVmjvnLZkqSY0wDCCdpdf/110MxEvj+9xlYBvMtbZ5EErGl9zZmEhZTmOtMXcCQJ08E0p6oFSCWBwHwlGL2Fwg6v/hZIWrvTEuxZjHLcoRSBvM52xpCpMImQXMQ9qgr164VxoAz1DPjQAI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789408755; c=relaxed/simple;
-	bh=MAbY5Mo0nA/K3I7UcMf6Tq7Zry9LDS+V2lgnsG3lpJI=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=KGVqDXLufLq9c/vMfqUhnIVt0aBeGxCjZ3a1/cADV7YK4Vx9AuCgWH5ammnA/Q2qG2GXb7sLv51nXM20DWJUYmw5atXY+YqQVqhv5Iws7ZFH/1ULPPL7aaN/5UQlIKIGh+i72waIP3zFtkR3snesqh+epcPUOqORZdFJfetqovA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Wqw53wQz; arc=none smtp.client-ip=209.85.210.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3465F49BD91;
+	Mon, 14 Sep 2026 18:10:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.6
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789409429; cv=fail; b=C4eHoYCC44YBL/si8wjELbkmkyQqSvBazGib8+ddLHPLvrtx8zirth+XdRkITTi5UX3NAsOvsq9lTi+hFTeim8jTENJvZClYep12ZqyEFgUqvjrKLc/HiQvcauwfREewBg9YrOsLC4B2jFU9VvHe172STSt/uHxlnz4WnGoif5o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789409429; c=relaxed/simple;
+	bh=2Vp1cSstBcy/dsf1S4XKvO3FOntuMxUpyXVl4Bo+wrw=;
+	h=Content-Type:Message-ID:Date:From:Subject:To:CC:References:
+	 In-Reply-To:MIME-Version; b=q4pfSqX3pSo9X9x9/V9aLgMaPx51c8IsQHR6d2Ywn/Xft2lsajqjKueQvtf7RO61S1W+gEF9NWCBjz/9jKfjSH50MKl/A6MA3Kpdi+3b0X2D92i+Z55EZtnveGQzb5f2pgug3ck1IeOf4FwrP3hU1Uoq1nuy6yp9l4oCDVufNLM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d5NS0a57; arc=fail smtp.client-ip=192.198.163.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Wqw53wQz"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-869b8d63e28so4397525b3a.0
-        for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 10:59:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789408753; x=1790013553; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1qU26IOiWMcfPB8mP9bmkpZumVUbxtT4Rtb9K/TXxTM=;
-        b=Wqw53wQz3WoOiHYhLGrku+Jqo7I8yhviX1x6rij9Bx1rQSoxnkAtjY5+GPdHxoK5eC
-         tCUSphJTyzjtXVzEcVGi6vjIR48r6O07VlHlsOGPhP+FRO889+UDKBkqinXu0gTHls3T
-         2HXQ0QXJkeuJDXqUeRRQXp9rSAnOK7J5xD9CSjSbABiRywmIzBKObQR+qSDNBUt5Qe1U
-         NTNwT4xADYVYpE0Zqvb4U869SW++PSkj6NtkpkwyWGhBKdGdf/uQEDr1oaFRAsY/00Cf
-         00k5iNdloYc66c3EnshgiwBwaN2KqBnxatdSfySSIQNu7lD/pjULAQR6MoEMvt27MkJY
-         yeEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789408753; x=1790013553;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1qU26IOiWMcfPB8mP9bmkpZumVUbxtT4Rtb9K/TXxTM=;
-        b=Db3XTM/p9iwiE19jzxir/UffEZmMj6h9R9STCW7Gk4xBKc3vQtg0KUbubyJGkChY4+
-         LQgBE3MvUQMbsMfHPeuYKvHekWwi3emQlFGZKYORVuKNhzBSmCb9W4dE0xEpPxbgJjY1
-         uKGoy55FSKR/gkwCbbZ/XMHzZVBPJctgIdZZvScGMCSV/Dt3rjuK3EXoA8BiD09mcAKL
-         lAzZepCnM34+C1K2sPBgjSc8/BGmBnjS2v7zHbv15IHsyVIsB6T+xB0eICRexB2t/TOP
-         9hM9QCKJXGuke7PM4lNIqHIlXzscS5TrMjiFD/xfaLcA7Bq2tgOxOCfGAh6AiJzHRnck
-         PAvg==
-X-Forwarded-Encrypted: i=1; AKwUvBwLS3RcVm8dFOu/oopd65Fs8BZYqSOmpgMWpXm94+XzHlTAKZX5aN+SHhtwINf/+D69ASA=@vger.kernel.org
-X-Gm-Message-State: AFuF++lSbcQYCh5QGMG/3G6IPIOVFbiYRMldxY7qXoJsPlOIhFKf2a9N
-	nRA+fxiiEM40rLpUutzoItiILt+9TtknRdpciEDPE1JOm5djwjQL+sWC7qUOFFqsVXTeip4c2gE
-	Uo5e1JP6TAPqnSg==
-X-Received: from pfiy1.prod.google.com ([2002:a05:6a00:1901:b0:86a:3526:1712])
- (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:6017:b0:868:9662:5137 with SMTP id d2e1a72fcca58-86f8394024fmr7147163b3a.11.1789408752631;
- Mon, 14 Sep 2026 10:59:12 -0700 (PDT)
-Date: Mon, 14 Sep 2026 10:59:12 -0700
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d5NS0a57"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789409425; x=1820945425;
+  h=message-id:date:from:subject:to:cc:references:
+   in-reply-to:mime-version;
+  bh=2Vp1cSstBcy/dsf1S4XKvO3FOntuMxUpyXVl4Bo+wrw=;
+  b=d5NS0a5790BVBArsCN6/d8ssNtDjMq/wiz/GuUSeEpBYvoHkNd06xDyJ
+   l6DF5nao7lcUbWNItpkFyiasoS8eOzUL1TkshRZ7uW6avXWSvfR9gCXIx
+   sgAw3rXfQW40dgDwNYfcPNwM0L8doORTg3ZdsnPrxOe+LqQi8qP2z5lnp
+   PodsniF8txD/KRIk0+Yo0+xPC8YFw9ncrGMg+WGMvLTJI1z0f65i+IkjI
+   +RQ24z7we4X12rcKcx8J3KMwB1cT7ADc24RO/H7HRwm8LufLWpb+7X8UN
+   4Y3g8/8lgRy1aKcNKiY31XyfMQ6odtZaKncJ10mnbLa1SyiI0CoZS/oEg
+   A==;
+X-CSE-ConnectionGUID: fASeqwRzQCKaWl7/51CwuA==
+X-CSE-MsgGUID: yVEDzHn5R2ihGb1ZbRSkMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="277198"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="diff'?scan'208";a="277198"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa116.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2026 11:10:19 -0700
+X-CSE-ConnectionGUID: uNwj/2XJT+G76EXZkjFnYw==
+X-CSE-MsgGUID: g48XJsvXTCO/MjEra/UnHQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="diff'?scan'208";a="266502735"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2026 11:10:18 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Mon, 14 Sep 2026 11:10:18 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Mon, 14 Sep 2026 11:10:18 -0700
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.10) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Mon, 14 Sep 2026 11:10:18 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hRJM0aKGcPMoFZhNv6+6HzYYqHOtbcPd4Lmye6B4kAiGRjcuTrVXbqqmgrxZjBHm/BpLlO7ndiKU15UL+QJB4J5zqQTEHv24zWuBTgUTgKDw2aDqnelcQnKDUYSeJemleh3T3dOLXONtzLhAi2d3n92izbXjVCamMUfvFKymzNfIcqKjrK1P67Um7K6Bg0+06ucpiHfXelEMtFRwY4p6t8tbeQkfqCTclpyy6tD2jRt9Jd5ewYFdT1D+jInMSGYG4mXAeO1FpO+nHznjpLeplRzA8v3x+nZml8rIRzbpOM0EQwf70ezFQ4/FQ7PUPWWVe9iYBzwsB89vlyn10jI3hA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Nxv5sh+Ls2KOCzluIeZbN9B1rJK4scKqo3GduotlrHw=;
+ b=EOAAzrwpG9jXO/ot4wDj6mDYwsvKjoScx43RL4pQTsylMxZLIi5xo0+H41xPp4S5ebQm0SnhtbhrgVKcl4+hiI30c5mAW14NODP49hQng4DJC+Z4IDG5FhoGX0ZAHYFupAEbaKJB78dYBXEM32i7ZtrVmiG8cs0Qe9Uo3/LwapaqltYQrfI9REAXpO9BhVz1BzD7q2bgEZP+KF588Bha9MDs5MrZ8/4gtxmlfl8QhtvS5YBBJGPFSbl2eHgK/bp+8CSYuzyQ1Pr5+SBIt+AvcdAm02B3MkshjPmqXJgqUBNpSo2XdCo4qeSD0e1JGJ02qwpXOZuEJfPo1/ehKa3TRw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7925.namprd11.prod.outlook.com (2603:10b6:8:f8::18) by
+ IA3PR11MB9373.namprd11.prod.outlook.com (2603:10b6:208:57f::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.406.12; Mon, 14 Sep 2026 18:10:11 +0000
+Received: from DS0PR11MB7925.namprd11.prod.outlook.com
+ ([fe80::60af:89a0:65dc:9c84]) by DS0PR11MB7925.namprd11.prod.outlook.com
+ ([fe80::60af:89a0:65dc:9c84%7]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
+ 18:10:11 +0000
+Content-Type: multipart/mixed;
+	boundary="------------YbDS0kCkoMt40GBAU4DJsL1y"
+Message-ID: <e6220b0e-0f5c-435f-823e-318b527eee8a@intel.com>
+Date: Mon, 14 Sep 2026 17:43:28 +0000
+User-Agent: Mozilla Thunderbird
+From: "Chang S. Bae" <chang.seok.bae@intel.com>
+Subject: Re: [PATCH v4 4/7] KVM: VMX: Implement LASS violation check
+To: Sohil Mehta <sohil.mehta@intel.com>, <kvm@vger.kernel.org>,
+	<x86@kernel.org>
+CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>, Shuah Khan
+	<shuah@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, Peter Zijlstra
+	<peterz@infradead.org>, Kai Huang <kai.huang@intel.com>, Fuad Tabba
+	<fuad.tabba@linux.dev>, Chao Gao <chao.gao@intel.com>, Yosry Ahmed
+	<yosry@kernel.org>, Claudio Imbrenda <imbrenda@linux.ibm.com>, David Matlack
+	<dmatlack@google.com>, Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>,
+	Kishen Maloor <kishen.maloor@intel.com>, Rick Edgecombe
+	<rick.p.edgecombe@intel.com>, <linux-kernel@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>
+References: <20260806011536.4172258-1-sohil.mehta@intel.com>
+ <20260806011536.4172258-5-sohil.mehta@intel.com>
+Content-Language: en-US
+In-Reply-To: <20260806011536.4172258-5-sohil.mehta@intel.com>
+X-ClientProxiedBy: SJ0PR03CA0136.namprd03.prod.outlook.com
+ (2603:10b6:a03:33c::21) To DS0PR11MB7925.namprd11.prod.outlook.com
+ (2603:10b6:8:f8::18)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.1032.g73a4cd73de-goog
-Message-ID: <20260914175912.3338133-1-jmattson@google.com>
-Subject: [PATCH] Documentation: KVM: x86: document KVM_GET_*/KVM_SET_* ordering
-From: Jim Mattson <jmattson@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7925:EE_|IA3PR11MB9373:EE_
+X-MS-Office365-Filtering-Correlation-Id: de737558-13b6-4bcd-9b9e-08df128b6ab2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|6049299003|1800799024|376014|23010399003|7416014|366016|22082099003|18002099003|4053099003|4143699003|11063799006|10067099003|56012099006;
+X-Microsoft-Antispam-Message-Info: i3vppJECHKNeQyB56/YTs1Tm+y4wT9kWF8q9EVQj5o91Akvy7dHU4XPxtPGzGVtlHHDzkD7Bj6jN3xc9aHSSA4EmNmz6KbTSf7hHA7iKDrhGxE1ynuG+WNsJI48BXC+BOYP+zRw/ctrQeQUS15baziCUww0qDrD3XE8W79pBxVArN8q1dhLvJ/u0jNjihgZH+Wgs9++4dLKAOhSOEmmnvByOOWWOkANR+tDjScV1Zr12P5NSvKpR/icx+uMxdLRs9GShmeEk+mof7ekV/IerrdsdurkcHyC0Dd7loGd7GBvU6ybf2UTLMY3/HJgMAA8SSIIoPnIQK413BYoK/7GaPumyL+VQjun1ah5UOXxjYeZRBhVapnYEV6sXggKVJGUfQCNM00t6gHQVaKnIyXLhVO8+WSnffS2PYqQ4owwOAI243q2PeheZ6EGjLRwC7W74Ki3qZtXLPbFkItkVmVXDOmw+8BHyIAf3Wh6LwUNBQzR9MLT8aD0ZKFJYqo6nMo1tNpr+vAP6KGV2b4kBZdMpNgmtNEhsKLKYc+dTpxA8FBUlV7RY2OhwyaQTb+zg1T9z0Zcb2khL8fXFGv+ZCnoCzfwrL0Jac7ChCfcjtHoXnpmMaJ4vR6m5ZERmmNqhilrJphhpi9lyJ42LIguIag0ewrQR3JlS/3gB80LU5HyGlUg=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7925.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(6049299003)(1800799024)(376014)(23010399003)(7416014)(366016)(22082099003)(18002099003)(4053099003)(4143699003)(11063799006)(10067099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q2locURQUXBla0tJeU94VHU3TzZ2V1hKTFVTU2lBKzBHZkpEakNveW9DcWZ4?=
+ =?utf-8?B?VlNUOEE2TlduTy8zcnVaVmpEK2VlWGNUTGRZWStUOFhSVTh1NnZneEt3Z2xY?=
+ =?utf-8?B?cEdQd0FTOHJnN0VFRDh2L1Q2cXBXYTBRQk5raEJrZHh4REJQcjA4eEZKZWpk?=
+ =?utf-8?B?WHRlUlVKNGxBb0RaQURycFVKTEo2aWNkKzY1cWQra0thZTBydUV2eG9OMkZh?=
+ =?utf-8?B?T3J5YTYxQVpqbjBZZFY2ckluM3Z2R3BINkdQS1RrY1RnQXdiM0VPdlRDa2p4?=
+ =?utf-8?B?VzZKNWhvNnQxM3BPODhpbVZ0MUlHbk9yUWhrbHR6VGk3ckZ0SHRyMEJvWm9Y?=
+ =?utf-8?B?VGJtaHZpcVJTekZGSU9PKzY4QkZ6NlFpWitQRmEvWHNETnlnTEVSYXZoT2JZ?=
+ =?utf-8?B?L1RPVmYwS0lwajc5MVVCN2x2YW14M1Z5R2gwV3F0bUFpSnY3WDFBQXVubjhM?=
+ =?utf-8?B?aTlJWGxaUzQxTFJNTEE3R0NlRi9XaTdXMkpOS0V3M0pxamJtV2htQm9PQVR6?=
+ =?utf-8?B?OUhXMW1FTUxvUUJKanpJbFNWY0lDOVhqN3A2dzhnSUVjV1h6K2JFMTcwc0Y4?=
+ =?utf-8?B?NWpvUHgyY3UrTHBES3VBeWQ2OGJ4NWR5UXBreFNFL0ttdTdzbWlseHNNV2pK?=
+ =?utf-8?B?dzhpbUVwc0g3Y1ptTmVJVXZMT0VBYXltd3pmOElhODFWTVNKUHJjbDE5VHBX?=
+ =?utf-8?B?a212eFNOOFZxSjJvRWkvZFp5ZlVsNVlBbWtmc2IyTjROYUF6L1d6Smxjazl1?=
+ =?utf-8?B?eGZLL1M4N1BSRkpCY0UrTUpwd1lyOWdiUk9ITlVpT3BlbVJGVFp3d3VveE00?=
+ =?utf-8?B?YUJvekdvUXYwMWZVdFIyYW9Ld2trd3dkblpZOG1YTDU4TTJoR3Z1aWhDOTFu?=
+ =?utf-8?B?b2tsMXpRa3Vtb1kwSHR1V2YxSGUwTEFIUFJxbmRqTmlXNFRRK25xUjdxR2Jv?=
+ =?utf-8?B?dEMwQ1FsZCs1aU84OGx0enBmdVRQVU5CRFY3YW5EakdGSTFmeGx2MEpGZXJ4?=
+ =?utf-8?B?MjJhQ3BtQjR1Z2ZvU1dNRmdHZWVoQy9IOEowaDdFUmtQdW93cHJLcWNOYUZZ?=
+ =?utf-8?B?RkJkQTNldTU5Q1pKaGdVcXFuYnhvRStySFUzdFdlVWdzZjU0VktTM0NBWTVI?=
+ =?utf-8?B?QkE2dENkNmhqTllTTURCaVAyNE9lSC9oS2E2MHRURCtnWmJxV2lOSEk4TDF4?=
+ =?utf-8?B?T0dZYktpOEl2WGxCbGY4dENqL29tTWJGY3BVVklUTGtmeXRObXUzN0ZkVHFo?=
+ =?utf-8?B?clRXNTl0OVh5SGRiSlg0YzhBMktJNkpwSFUvUzlxdlp2dUJZSzlnZi9pTEVz?=
+ =?utf-8?B?QjBRZUxMUndlcDdGTHJpYk5Kdzc4NzVyS0lMZ2s3ZCtUZ0VWRGFHSTFFRFh4?=
+ =?utf-8?B?RDlqY296MDExdFhjVjM4RnF4bmZLMTNKSXNsbm4zR3hpaTZENGhaS3FLWmxt?=
+ =?utf-8?B?OFNIYk84RkJhMW9VM3BlY1E5a3BIODdDR3UrbWU1L1ZxVTNOV3RUeitsdDVn?=
+ =?utf-8?B?Qlo2RmpKQ3o3L3RvVmViS2NtVURaSldrRHJLbnhkdEV2WFFEL1VEQlp4M0dz?=
+ =?utf-8?B?N1dlaEo4dWRHcWdqUitsSDg2OTkybldhRnFjazNmQlc2emJzVHpDL3pLRnFE?=
+ =?utf-8?B?RzQvcjlpWWdMNnk0SW15dEFBREtqK1J1Q3J0eWdvbkp4QitKTVRlWVNoZ1dC?=
+ =?utf-8?B?UjlMbnpwejlobmd0ZVRlYUZseFdaL01BaCtrRUF1UTRldVFUYnJ5MjFiY2ps?=
+ =?utf-8?B?cjFUbFNxYkMxdnRyTFAvRnFoa1V3VEJWeXdibHdRejVtUHQwODFsMmhsMlNC?=
+ =?utf-8?B?aERsR3g0b2hmdHgrUlZJT1QrbmxQVFNxN3p1OFQ2c3FKRHZyci9nUmlBVG9a?=
+ =?utf-8?B?ZS9ObkdNWG9vOU5nazVYRXRyTUJmdGg2RUtxMldvVjcxZVQraElzSW15Mkhm?=
+ =?utf-8?B?UWRubEVGZ00ycEFHYXZhd3didW03UlZSMjZLZmttQUVtRVBLR2RXSWd2aWJt?=
+ =?utf-8?B?Q3VvcEQ2bm9USE5nazhxNFE2VzRxY3BpRGpJVnE3YWN0bit5bC9SblNqbnJX?=
+ =?utf-8?B?czZMS0UwRUhhR3NzOWZPeHYzQzFVcHdUc3VpWVh5RVFTeCt6WHlNRzJaL25l?=
+ =?utf-8?B?QmU0Y3N3S0UvWm1OQlQrNjgrbStmcWJyU2dwcmZkRGJDdmwrYVZPRU9rdnlo?=
+ =?utf-8?B?MXRlc3BHanJXUkNIaWllZWk2VEJNMVllUUtzQWlaNmFKYmVpZTIyMXdyVHk1?=
+ =?utf-8?B?Z3BiMG1MNTVTODlNNzJlRk9NeVNWUCtFeXE5Q1ZJV2FIQ0EyUWNQalpUZC93?=
+ =?utf-8?B?TWpkUVRzQzdZYlNqSHowcE9xdmJiYkxOSnZnMDVjUTVYRFZQUU9sdz09?=
+X-Exchange-RoutingPolicyChecked: zJIHwrUx95d4ykmXH/4kVEjkUFQkcsQbN+q1AeEBXCI7lMWFxTwACcEtFmkvrSAIM5HefQFYNAGGm3jWxHEbJqjeKJTBJD++hwvmXhIboMTb7ywlNjDDCZhnASflrq2AMMXMpLNOZSab46vic5Hbirb6FHPln0lW2DYAyITP+j8iXe0fld8Hsu0Yl8EsyTAhsT0KhdP2FSwQxTq5N3nhpB/nWR4MH6/EivsyCcGlwK2oZSfdnSp7oihE3k6tBO9OGmpvWCYxnkHHEQNykXN/HeMUO6WDTxuAMyheHSLWYzgt59bzhIgFLvPNKFxagCUsQ4LbYae98rLmUavf3W+xuA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: de737558-13b6-4bcd-9b9e-08df128b6ab2
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7925.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 18:10:11.3091
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WrHWzRSWQE6kXbNAAV8atoS5ByrnEBQgm/65XndWVhu2ELNXuH2lsdf/RGJg2JoHdAAwPPbgoa//qqgc3i/hZFyCe6j8hnf/ylQqcGvhudw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB9373
+X-OriginatorOrg: intel.com
 
-KVM does not define a total order for the ioctls that save and restore
-guest state, but the ioctls are not fully independent either.  On the
-save path, some getters perturb state that another getter reports.  On
-the restore path, some setters validate their input against state that
-another setter installs, and some setters overwrite state that another
-setter has already written.  One pair of restore constraints is a
-cycle, which forces userspace to issue KVM_SET_MSRS twice.
+--------------YbDS0kCkoMt40GBAU4DJsL1y
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Replace the TBD in the x86 section of "Known KVM API problems" with the
-partial order that is known to matter, and with the reason for each
-constraint.  Note that a misordered getter fails silently, while a
-misordered setter usually fails with -EINVAL.
+On 8/5/2026 6:15 PM, Sohil Mehta wrote:
+> 
+> +bool vmx_is_lass_violation(struct kvm_vcpu *vcpu, gva_t gva,
+> +			   unsigned int size, unsigned int flags)
+> +{
+> +	const bool is_supervisor_address = !!(gva & BIT_ULL(63));
+> +	const bool implicit_supervisor = !!(flags & X86EMUL_F_IMPLICIT);
+> +	const bool fetch = !!(flags & X86EMUL_F_FETCH);
+> +
+> +	if (!kvm_is_cr4_bit_set(vcpu, X86_CR4_LASS) || !is_long_mode(vcpu))
+> +		return false;
+> +
+> +	/*
+> +	 * INVLPG isn't subject to LASS, e.g. to allow invalidating userspace
+> +	 * addresses without toggling RFLAGS.AC.  Branch targets aren't subject
+> +	 * to LASS in order to simplify far control transfers (the subsequent
+> +	 * fetch will enforce LASS as appropriate).
+> +	 */
+> +	if (flags & (X86EMUL_F_BRANCH | X86EMUL_F_INVLPG))
+> +		return false;
+> +
+> +	if (!implicit_supervisor && vmx_get_cpl(vcpu) == 3)
+> +		return is_supervisor_address;
+> +
+> +	/*
+> +	 * LASS enforcement for supervisor-mode data accesses depends on SMAP
+> +	 * being enabled, and like SMAP ignores explicit accesses if RFLAGS.AC=1.
+> +	 */
+> +	if (!fetch) {
+> +		if (!kvm_is_cr4_bit_set(vcpu, X86_CR4_SMAP))
+> +			return false;
+> +
+> +		if (!implicit_supervisor && (kvm_get_rflags(vcpu) & X86_EFLAGS_AC))
+> +			return false;
+> +	}
+> +
+> +	/*
+> +	 * The entire access must be in the appropriate address space.  Note,
+> +	 * if LAM is supported, @gva has already been untagged, so barring a
+> +	 * massive architecture change to expand the canonical address range,
+> +	 * it's impossible for a user access to straddle user and supervisor
+> +	 * address spaces.
+> +	 */
+> +	if (size && !((gva + size - 1) & BIT_ULL(63)))
+> +		return true;
+> +
+> +	return !is_supervisor_address;
+> +}
 
-Assisted-by: LLM
-Signed-off-by: Jim Mattson <jmattson@google.com>
----
- Documentation/virt/kvm/api.rst | 179 ++++++++++++++++++++++++++++++++-
- 1 file changed, 178 insertions(+), 1 deletion(-)
+This looks like an essential piece for the check introduced in the 
+series. I could follow the logic, and it looks sane to me. If allowed,
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index e0430cc750c9..9181dfcd7251 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -9659,4 +9659,181 @@ available.
- Ordering of KVM_GET_*/KVM_SET_* ioctls
- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- 
--TBD
-+KVM does not define a total order for the ioctls that save and restore
-+guest state, and most pairs of them really are independent.  A few are
-+not.  When saving, some getters modify state that another getter
-+reports.  When restoring, some setters validate their input against
-+state that another setter installs, and some setters overwrite state
-+that another setter has already written.
-+
-+The constraints below are the ones that are known to matter on x86.
-+They form a partial order, so any topological sort of them will do.
-+One pair of restore constraints points in both directions, and forces
-+userspace to issue ``KVM_SET_MSRS`` twice.
-+
-+Note the difference in failure mode.  A getter that runs too late
-+silently returns perturbed state, and the damage is only visible in the
-+restored guest.  A setter that runs too early usually fails outright
-+with ``-EINVAL``.
-+
-+Saving state
-+~~~~~~~~~~~~
-+
-+* **Get the MP state before any other vCPU state.**
-+  ``KVM_GET_MP_STATE`` calls ``kvm_apic_accept_events()``, which latches
-+  a pending INIT or SIPI.  Completing an INIT resets the vCPU, and
-+  completing a SIPI sets CS and RIP.  Either can also trigger a nested
-+  VM-exit, which overwrites most of the vCPU state.  On Intel, both an
-+  INIT and a SIPI can exit, and the VM-exit MSR-store list also writes
-+  guest memory.  On AMD, only an INIT can exit.  Every other vCPU
-+  getter must therefore run after ``KVM_GET_MP_STATE``.
-+
-+* **Get the irqchip state before the local APIC state.**
-+  ``KVM_GET_IRQCHIP`` clears from the reported I/O APIC IRR every
-+  edge-triggered IRQ that KVM has already delivered to a local APIC, on
-+  the assumption that ``KVM_GET_LAPIC`` will pick it up.  If the local
-+  APIC is read first, an IRQ delivered between the two reads appears in
-+  neither snapshot and is lost.  The opposite order can at worst
-+  duplicate such an IRQ, which is the safer failure.  The constraint
-+  applies only to a full in-kernel irqchip, because ``KVM_GET_IRQCHIP``
-+  returns ``-ENXIO`` in split-irqchip mode.
-+
-+* **Get the local APIC state last among the vCPU getters.**
-+  On Intel, ``KVM_GET_LAPIC`` drains the posted-interrupt requests into
-+  the IRR, so it reports the most complete view of pending interrupts.
-+  Any source of interrupts that is still live when it runs can add to
-+  the IRR afterwards, and that addition is not saved.
-+
-+* **Get all vCPU state before the final pass over guest memory.**
-+  On Intel, a nested VM-exit out of ``KVM_GET_MP_STATE`` writes guest
-+  memory through the VM-exit MSR-store list.  A guest page copied
-+  before that write is stale.
-+
-+Two constraints that older userspace still carries no longer apply:
-+
-+* ``KVM_GET_MSRS`` no longer has to precede ``KVM_GET_LAPIC``.  Before
-+  commit e800decd9c0a ("KVM: x86: Only reset TSC Deadline Timer in
-+  apic_timer_expired on KVM_RUN"), a ``vcpu_load()`` on a vCPU with
-+  APICv and the VMX preemption timer could restart the hv timer, find
-+  the deadline expired, inject the interrupt, and zero
-+  ``MSR_IA32_TSCDEADLINE``.  A ``vcpu_load()`` between the two getters
-+  therefore lost the interrupt and the deadline together.
-+
-+* ``KVM_GET_VCPU_EVENTS`` no longer has to precede ``KVM_GET_SREGS``,
-+  ``KVM_GET_SREGS2`` or ``KVM_GET_DEBUGREGS``.  When
-+  ``KVM_CAP_EXCEPTION_PAYLOAD`` is disabled, KVM delivers the payload of
-+  a pending #PF or #DB into CR2 or DR6 before it reports the exception,
-+  because userspace might not preserve the payload across a migration.
-+  Before commit d0ad1b05bbe6 ("KVM: x86: Defer non-architectural deliver
-+  of exception payload to userspace read"), only ``KVM_GET_VCPU_EVENTS``
-+  delivered it, so a CR2 or DR6 read first was stale.  All four getters
-+  now deliver it, and therefore agree in any order.
-+
-+Userspace that runs on older kernels should keep both orders.  Enabling
-+``KVM_CAP_EXCEPTION_PAYLOAD`` is worthwhile in any case, because it
-+stops KVM from delivering the payload early at all.
-+
-+One more hazard is not an ordering constraint, because it depends on
-+elapsed time rather than on sequence.  ``KVM_GET_CLOCK`` and a read of
-+``MSR_IA32_TSC`` describe the same instant only if little time passes
-+between them.  Userspace that needs a time-invariant value should
-+prefer the ``KVM_VCPU_TSC_OFFSET`` attribute of ``KVM_VCPU_TSC_CTRL``
-+over ``MSR_IA32_TSC``.
-+
-+Restoring state
-+~~~~~~~~~~~~~~~
-+
-+* **Set CPUID and the feature MSRs first.**  KVM freezes the virtual CPU
-+  model once the vCPU has run or once it is in guest mode.  After that,
-+  ``KVM_SET_CPUID2`` and writes to the immutable feature MSRs, which
-+  include the ``MSR_IA32_VMX_*`` MSRs, only succeed if they do not
-+  change anything.  Because ``KVM_SET_NESTED_STATE`` can put the vCPU
-+  into guest mode, userspace that writes the VMX capability MSRs after
-+  restoring nested state will fail to restore an L2 guest.  CPUID also
-+  gates the validation performed by ``KVM_SET_SREGS``,
-+  ``KVM_SET_XCRS``, ``KVM_SET_NESTED_STATE`` and the ``MSR_IA32_APICBASE``
-+  and ``MSR_IA32_XFD`` writes.
-+
-+* **Set the TSC frequency before the TSC.**  A host write of
-+  ``MSR_IA32_TSC`` computes a TSC offset, and a scaling ratio if TSC
-+  scaling is in use, from the current guest TSC frequency.
-+
-+* **Set MSR_IA32_FEATURE_CONTROL before the rest of the vCPU state.**  A
-+  host write of zero to this MSR forces the vCPU out of VMX operation.
-+  That discards the nested state, and replaces the register state with
-+  the L1 host state if the vCPU was running L2.  Only a write of zero
-+  has this effect; clearing individual bits, including the VMXON bits,
-+  does not.  The hazard therefore belongs to userspace that resets a
-+  vCPU before it restores one.
-+
-+* **Set the special registers before the nested state.**  This
-+  constraint is specific to SVM, where the live register state is the L2
-+  state.  ``KVM_SET_NESTED_STATE`` rejects a saved guest mode unless
-+  EFER.SVME is already set, it validates the live CR0, and it reloads
-+  the CR3 that ``KVM_SET_SREGS`` installed.  On VMX the L2 control
-+  registers come from the VMCS12 instead.
-+
-+* **Set the APIC base and the special registers before the local APIC
-+  state.**  Changing the APIC enable or x2APIC bit resets the APIC ID,
-+  which would clobber the ID restored by ``KVM_SET_LAPIC``.  Separately,
-+  the CR8 field of ``KVM_SET_SREGS`` carries only bits 7:4 of the task
-+  priority register, so a CR8 write after ``KVM_SET_LAPIC`` clears TPR
-+  bits 3:0.
-+
-+* **Set the irqchip state before the local APIC state.**
-+  ``KVM_SET_IRQCHIP`` re-injects the restored I/O APIC IRR into the
-+  local APICs.  ``KVM_SET_LAPIC`` must run afterwards so that it
-+  overwrites the IRR wholesale; otherwise those interrupts are
-+  delivered twice.
-+
-+* **Set the XSAVE state before MSR_IA32_XFD.**  ``KVM_SET_XSAVE`` clears
-+  from the incoming header every state component that the current XFD
-+  value disables.  Writing XFD first therefore discards the state of
-+  those components.
-+
-+* **Set the special registers before the MP state.**  ``KVM_SET_SREGS``
-+  forces a boot-strap processor whose incoming state looks like a reset
-+  state back to ``KVM_MP_STATE_RUNNABLE``.
-+
-+* **Set the clock last.**  ``KVM_SET_CLOCK`` establishes the kvmclock
-+  epoch, and should run as close as possible to the moment the vCPUs
-+  resume.  The per-vCPU ``MSR_KVM_SYSTEM_TIME`` and
-+  ``MSR_KVM_WALL_CLOCK`` writes only record the guest page address, so
-+  they must precede it.
-+
-+* **Place KVM_SET_VCPU_EVENTS on the correct side of the nested
-+  state.**  For a vCPU in guest mode it has to run afterwards, on both
-+  vendors, because it writes the interrupt shadow and the NMI mask into
-+  the VMCS or the VMCB that is currently loaded, and the nested one
-+  becomes current only once ``KVM_SET_NESTED_STATE`` has entered guest
-+  mode.  A vCPU in SMM needs the opposite order, but on Intel only:
-+  ``KVM_SET_NESTED_STATE`` rejects the saved ``smm.flags`` unless the
-+  vCPU is already in SMM, and only ``KVM_SET_VCPU_EVENTS`` puts it
-+  there.  The AMD nested state has no equivalent field, because SMM
-+  saves and restores the nested state through SMRAM instead.  The two
-+  cases never coincide, because SMM temporarily disables VMX operation,
-+  so a single call always suffices.
-+
-+The vendors disagree about the registers.  On SVM the live register
-+state *is* the L2 state, so ``KVM_SET_REGS`` and ``KVM_SET_SREGS`` have
-+to run before ``KVM_SET_NESTED_STATE``.  On VMX the L2 RIP and RSP come
-+from the VMCS12, which ``KVM_SET_NESTED_STATE`` reloads, so
-+``KVM_SET_REGS`` is better issued afterwards.  Portable userspace can
-+write the registers on both sides of ``KVM_SET_NESTED_STATE``.
-+
-+KVM_SET_MSRS has to be issued twice
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+``KVM_SET_LAPIC`` sits between two MSR writes that cannot be combined
-+into one call.
-+
-+``MSR_IA32_APICBASE`` has to precede it.  Changing the APIC enable bit
-+or the x2APIC bit resets the APIC ID, which would discard the ID that
-+``KVM_SET_LAPIC`` restored.
-+
-+``MSR_IA32_TSCDEADLINE`` has to follow it.  A write to that MSR is
-+dropped unless the LVT timer is already in TSC-deadline mode, and only
-+``KVM_SET_LAPIC`` establishes the mode.  In the other direction,
-+``KVM_SET_LAPIC`` cancels the timer and zeroes any deadline that is
-+already armed.  The deadline is an absolute guest TSC value, so
-+``MSR_IA32_TSC`` has to be restored before it as well.
+   Reviewed-by: Chang S. Bae <chang.seok.bae@intel.com>
 
-base-commit: 827751b699b79a6e569983359c02dce67f81b94c
--- 
-2.55.0.1032.g73a4cd73de-goog
+The code also looks to be written according to Sean's comment in:
 
+   https://lore.kernel.org/kvm/ZNwOYdy3AC12MI52@google.com
+
+Yes, this could be a matter of taste as taking and going to maintain the 
+code. But as a reader looking at this, the logic was not that easy to 
+capture at a high level.
+
+So what the the bottom half code does seems to be something like:
+
+   if in user mode,
+       violated if gva is a supervisor address
+
+   if in supervisor mode,
+       if LASS enforcement is applicable,
+           violated if either gva or its access end is an user address
+
+Maybe the high-level logic could be highlighted first. Attached a diff 
+to help figuring out that option just in case. Feel free to ignore if it 
+doesn't matter that much.
+
+Thanks,
+Chang
+--------------YbDS0kCkoMt40GBAU4DJsL1y
+Content-Type: text/x-patch; charset="UTF-8"; name="tmp.diff"
+Content-Disposition: attachment; filename="tmp.diff"
+Content-Transfer-Encoding: base64
+
+ZGlmZiAtLWdpdCBhL2FyY2gveDg2L2t2bS92bXgvbWFpbi5jIGIvYXJjaC94ODYva3ZtL3ZteC9t
+YWluLmMKaW5kZXggNGM1MmFiOGQwNzg2Li41ZTJhNzAzZTRiZTYgMTAwNjQ0Ci0tLSBhL2FyY2gv
+eDg2L2t2bS92bXgvbWFpbi5jCisrKyBiL2FyY2gveDg2L2t2bS92bXgvbWFpbi5jCkBAIC0xMDMx
+LDYgKzEwMzEsNyBAQCBzdHJ1Y3Qga3ZtX3g4Nl9vcHMgdnRfeDg2X29wcyBfX2luaXRkYXRhID0g
+ewogCS52Y3B1X2RlbGl2ZXJfc2lwaV92ZWN0b3IgPSBrdm1fdmNwdV9kZWxpdmVyX3NpcGlfdmVj
+dG9yLAogCiAJLmdldF91bnRhZ2dlZF9hZGRyID0gdm14X2dldF91bnRhZ2dlZF9hZGRyLAorCS5p
+c19sYXNzX3Zpb2xhdGlvbiA9IHZteF9pc19sYXNzX3Zpb2xhdGlvbiwKIAogCS5tZW1fZW5jX2lv
+Y3RsID0gdnRfb3BfdGR4X29ubHkobWVtX2VuY19pb2N0bCksCiAJLnZjcHVfbWVtX2VuY19pb2N0
+bCA9IHZ0X29wX3RkeF9vbmx5KHZjcHVfbWVtX2VuY19pb2N0bCksCmRpZmYgLS1naXQgYS9hcmNo
+L3g4Ni9rdm0vdm14L25lc3RlZC5jIGIvYXJjaC94ODYva3ZtL3ZteC9uZXN0ZWQuYwppbmRleCAx
+NTE4NzM0MDdhYmQuLjNhZDUzNzRkNDVmYyAxMDA2NDQKLS0tIGEvYXJjaC94ODYva3ZtL3ZteC9u
+ZXN0ZWQuYworKysgYi9hcmNoL3g4Ni9rdm0vdm14L25lc3RlZC5jCkBAIC01MzA4LDExICs1MzA4
+LDEyIEBAIGludCBnZXRfdm14X21lbV9hZGRyZXNzKHN0cnVjdCBrdm1fdmNwdSAqdmNwdSwgdW5z
+aWduZWQgbG9uZyBleGl0X3F1YWxpZmljYXRpb24sCiAJCQkqcmV0ID0gb2ZmOwogCiAJCSpyZXQg
+PSB2bXhfZ2V0X3VudGFnZ2VkX2FkZHIodmNwdSwgKnJldCwgMCk7Ci0JCS8qIExvbmcgbW9kZTog
+I0dQKDApLyNTUygwKSBpZiB0aGUgbWVtb3J5IGFkZHJlc3MgaXMgaW4gYQotCQkgKiBub24tY2Fu
+b25pY2FsIGZvcm0uIFRoaXMgaXMgdGhlIG9ubHkgY2hlY2sgb24gdGhlIG1lbW9yeQotCQkgKiBk
+ZXN0aW5hdGlvbiBmb3IgbG9uZyBtb2RlIQorCQkvKgorCQkgKiBMb25nIG1vZGU6ICNHUCgwKS8j
+U1MoMCkgaWYgdGhlIG1lbW9yeSBhZGRyZXNzIGlzIGluIGEKKwkJICogbm9uLWNhbm9uaWNhbCBm
+b3JtLCBvciBpZiB0aGUgYWNjZXNzIHZpb2xhdGVzIExBU1MuCiAJCSAqLwotCQlleG4gPSBpc19u
+b25jYW5vbmljYWxfYWRkcmVzcygqcmV0LCB2Y3B1LCAwKTsKKwkJZXhuID0gaXNfbm9uY2Fub25p
+Y2FsX2FkZHJlc3MoKnJldCwgdmNwdSwgMCkgfHwKKwkJICAgICAgdm14X2lzX2xhc3NfdmlvbGF0
+aW9uKHZjcHUsICpyZXQsIGxlbiwgMCk7CiAJfSBlbHNlIHsKIAkJLyoKIAkJICogV2hlbiBub3Qg
+aW4gbG9uZyBtb2RlLCB0aGUgdmlydHVhbC9saW5lYXIgYWRkcmVzcyBpcwpAQCAtNjExNyw3ICs2
+MTE4LDcgQEAgc3RhdGljIGludCBoYW5kbGVfaW52dnBpZChzdHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUp
+CiAJaWYgKHR5cGUgIT0gVk1YX1ZQSURfRVhURU5UX0FMTF9DT05URVhUICYmICFvcGVyYW5kLnZw
+aWQpCiAJCXJldHVybiBuZXN0ZWRfdm14X2ZhaWwodmNwdSwgVk1YRVJSX0lOVkFMSURfT1BFUkFO
+RF9UT19JTlZFUFRfSU5WVlBJRCk7CiAKLQkvKiBMQU0gZG9lc24ndCBhcHBseSB0byBhZGRyZXNz
+ZXMgdGhhdCBhcmUgaW5wdXRzIHRvIFRMQiBpbnZhbGlkYXRpb24uICovCisJLyogTEFNIGFuZCBM
+QVNTIGRvbid0IGFwcGx5IHRvIGFkZHJlc3NlcyB0aGF0IGFyZSBpbnB1dHMgdG8gVExCIGludmFs
+aWRhdGlvbi4gKi8KIAlpZiAodHlwZSA9PSBWTVhfVlBJRF9FWFRFTlRfSU5ESVZJRFVBTF9BRERS
+ICYmCiAJICAgIGlzX25vbmNhbm9uaWNhbF9pbnZscGdfYWRkcmVzcyhvcGVyYW5kLmdsYSwgdmNw
+dSkpCiAJCXJldHVybiBuZXN0ZWRfdm14X2ZhaWwodmNwdSwgVk1YRVJSX0lOVkFMSURfT1BFUkFO
+RF9UT19JTlZFUFRfSU5WVlBJRCk7CmRpZmYgLS1naXQgYS9hcmNoL3g4Ni9rdm0vdm14L3NneC5j
+IGIvYXJjaC94ODYva3ZtL3ZteC9zZ3guYwppbmRleCA3NzFjNzVhNTgzNDMuLjRhYzMwNWVkNmRl
+YSAxMDA2NDQKLS0tIGEvYXJjaC94ODYva3ZtL3ZteC9zZ3guYworKysgYi9hcmNoL3g4Ni9rdm0v
+dm14L3NneC5jCkBAIC0zOSw3ICszOSw4IEBAIHN0YXRpYyBpbnQgc2d4X2dldF9lbmNsc19ndmEo
+c3RydWN0IGt2bV92Y3B1ICp2Y3B1LCB1bnNpZ25lZCBsb25nIG9mZnNldCwKIAkJZmF1bHQgPSB0
+cnVlOwogCX0gZWxzZSBpZiAobGlrZWx5KGlzXzY0X2JpdF9tb2RlKHZjcHUpKSkgewogCQkqZ3Zh
+ID0gdm14X2dldF91bnRhZ2dlZF9hZGRyKHZjcHUsICpndmEsIDApOwotCQlmYXVsdCA9IGlzX25v
+bmNhbm9uaWNhbF9hZGRyZXNzKCpndmEsIHZjcHUsIDApOworCQlmYXVsdCA9IGlzX25vbmNhbm9u
+aWNhbF9hZGRyZXNzKCpndmEsIHZjcHUsIDApIHx8CisJCQl2bXhfaXNfbGFzc192aW9sYXRpb24o
+dmNwdSwgKmd2YSwgc2l6ZSwgMCk7CiAJfSBlbHNlIHsKIAkJKmd2YSAmPSAweGZmZmZmZmZmOwog
+CQlmYXVsdCA9IChzLnVudXNhYmxlKSB8fApkaWZmIC0tZ2l0IGEvYXJjaC94ODYva3ZtL3ZteC92
+bXguYyBiL2FyY2gveDg2L2t2bS92bXgvdm14LmMKaW5kZXggYjY2MzQ2MzdmMWNhLi4wYTQ5ZGM5
+MmViNDkgMTAwNjQ0Ci0tLSBhL2FyY2gveDg2L2t2bS92bXgvdm14LmMKKysrIGIvYXJjaC94ODYv
+a3ZtL3ZteC92bXguYwpAQCAtODYwNCw2ICs4NjA0LDY5IEBAIGd2YV90IHZteF9nZXRfdW50YWdn
+ZWRfYWRkcihzdHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUsIGd2YV90IGd2YSwgdW5zaWduZWQgaW50IGZs
+YWdzCiAJcmV0dXJuIChzaWduX2V4dGVuZDY0KGd2YSwgbGFtX2JpdCkgJiB+QklUX1VMTCg2Mykp
+IHwgKGd2YSAmIEJJVF9VTEwoNjMpKTsKIH0KIAorc3RhdGljIGJvb2wgaXNfdXNlcl9tb2RlKHN0
+cnVjdCBrdm1fdmNwdSAqdmNwdSwgdW5zaWduZWQgaW50IGZsYWdzKQoreworCXJldHVybiAhKGZs
+YWdzICYgWDg2RU1VTF9GX0lNUExJQ0lUKSAmJiB2bXhfZ2V0X2NwbCh2Y3B1KSA9PSAzOworfQor
+CitzdGF0aWMgYm9vbCBpc19zdXBlcnZpc29yX2FkZHJlc3MoZ3ZhX3QgZ3ZhKQoreworCXJldHVy
+biBndmEgJiBCSVRfVUxMKDYzKTsKK30KKworLyoKKyAqIFRoZSBlbnRpcmUgYWNjZXNzIG11c3Qg
+YmUgaW4gdGhlIGFwcHJvcHJpYXRlIGFkZHJlc3Mgc3BhY2UuICBOb3RlLCBpZiBMQU0gaXMKKyAq
+IHN1cHBvcnRlZCwgQGd2YSBoYXMgYWxyZWFkeSBiZWVuIHVudGFnZ2VkLCBzbyBiYXJyaW5nIGEg
+bWFzc2l2ZSBhcmNoaXRlY3R1cmUKKyAqIGNoYW5nZSB0byBleHBhbmQgdGhlIGNhbm9uaWNhbCBh
+ZGRyZXNzIHJhbmdlLCBpdCdzIGltcG9zc2libGUgZm9yIGEgdXNlcgorICogYWNjZXNzIHRvIHN0
+cmFkZGxlIHVzZXIgYW5kIHN1cGVydmlzb3IgYWRkcmVzcyBzcGFjZXMuCisgKi8KK3N0YXRpYyBi
+b29sIGlzX3VzZXJfYWRkcmVzcyhndmFfdCBndmEsIHVuc2lnbmVkIGludCBzaXplKQoreworCXJl
+dHVybiAhaXNfc3VwZXJ2aXNvcl9hZGRyZXNzKGd2YSkgfHwgKHNpemUgJiYgIWlzX3N1cGVydmlz
+b3JfYWRkcmVzcyhndmEgKyBzaXplIC0gMSkpOworfQorCisvKgorICogTEFTUyBlbmZvcmNlbWVu
+dCBmb3Igc3VwZXJ2aXNvci1tb2RlIGRhdGEgYWNjZXNzZXMgZGVwZW5kcyBvbiBiZWluZyBlbmFi
+bGVkLAorICogYW5kIGxpa2UgU01BUCBpZ25vcmVzIGV4cGxpY2l0IGFjY2Vzc2VzIGlmIFJGTEFH
+Uy5BQz0xLgorICovCitzdGF0aWMgYm9vbCBpc19sYXNzX2VuZm9yY2VkKHN0cnVjdCBrdm1fdmNw
+dSAqdmNwdSwgdW5zaWduZWQgaW50IGZsYWdzKQoreworCWlmIChmbGFncyAmIFg4NkVNVUxfRl9G
+RVRDSCkKKwkJcmV0dXJuIHRydWU7CisKKwlpZiAoIWt2bV9pc19jcjRfYml0X3NldCh2Y3B1LCBY
+ODZfQ1I0X1NNQVApKQorCQlyZXR1cm4gZmFsc2U7CisKKwlpZiAoIShmbGFncyAmIFg4NkVNVUxf
+Rl9JTVBMSUNJVCkgJiYgKGt2bV9nZXRfcmZsYWdzKHZjcHUpICYgWDg2X0VGTEFHU19BQykpCisJ
+CXJldHVybiBmYWxzZTsKKworCXJldHVybiB0cnVlOworfQorCitib29sIHZteF9pc19sYXNzX3Zp
+b2xhdGlvbihzdHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUsIGd2YV90IGd2YSwKKwkJCSAgIHVuc2lnbmVk
+IGludCBzaXplLCB1bnNpZ25lZCBpbnQgZmxhZ3MpCit7CisJaWYgKCFrdm1faXNfY3I0X2JpdF9z
+ZXQodmNwdSwgWDg2X0NSNF9MQVNTKSB8fCAhaXNfbG9uZ19tb2RlKHZjcHUpKQorCQlyZXR1cm4g
+ZmFsc2U7CisKKwkvKgorCSAqIElOVkxQRyBpc24ndCBzdWJqZWN0IHRvIExBU1MsIGUuZy4gdG8g
+YWxsb3cgaW52YWxpZGF0aW5nIHVzZXJzcGFjZQorCSAqIGFkZHJlc3NlcyB3aXRob3V0IHRvZ2ds
+aW5nIFJGTEFHUy5BQy4gIEJyYW5jaCB0YXJnZXRzIGFyZW4ndCBzdWJqZWN0CisJICogdG8gTEFT
+UyBpbiBvcmRlciB0byBzaW1wbGlmeSBmYXIgY29udHJvbCB0cmFuc2ZlcnMgKHRoZSBzdWJzZXF1
+ZW50CisJICogZmV0Y2ggd2lsbCBlbmZvcmNlIExBU1MgYXMgYXBwcm9wcmlhdGUpLgorCSAqLwor
+CWlmIChmbGFncyAmIChYODZFTVVMX0ZfQlJBTkNIIHwgWDg2RU1VTF9GX0lOVkxQRykpCisJCXJl
+dHVybiBmYWxzZTsKKworCWlmIChpc191c2VyX21vZGUodmNwdSwgZmxhZ3MpKSB7CisJCXJldHVy
+biBpc19zdXBlcnZpc29yX2FkZHJlc3MoZ3ZhKTsKKwl9IGVsc2UgeworCQlpZiAoIWlzX2xhc3Nf
+ZW5mb3JjZWQodmNwdSwgZmxhZ3MpKQorCQkJcmV0dXJuIGZhbHNlOworCQlyZXR1cm4gaXNfdXNl
+cl9hZGRyZXNzKGd2YSwgc2l6ZSk7CisJfQorfQorCiBzdGF0aWMgdW5zaWduZWQgaW50IHZteF9o
+YW5kbGVfaW50ZWxfcHRfaW50cih2b2lkKQogewogCXN0cnVjdCBrdm1fdmNwdSAqdmNwdSA9IGt2
+bV9nZXRfcnVubmluZ192Y3B1KCk7CmRpZmYgLS1naXQgYS9hcmNoL3g4Ni9rdm0vdm14L3ZteC5o
+IGIvYXJjaC94ODYva3ZtL3ZteC92bXguaAppbmRleCBkYzg1MTdmMTViYzQuLjQzZGY3MjVhNzdm
+MCAxMDA2NDQKLS0tIGEvYXJjaC94ODYva3ZtL3ZteC92bXguaAorKysgYi9hcmNoL3g4Ni9rdm0v
+dm14L3ZteC5oCkBAIC0zOTcsNiArMzk3LDkgQEAgdTY0IHZteF9nZXRfbDJfdHNjX211bHRpcGxp
+ZXIoc3RydWN0IGt2bV92Y3B1ICp2Y3B1KTsKIAogZ3ZhX3Qgdm14X2dldF91bnRhZ2dlZF9hZGRy
+KHN0cnVjdCBrdm1fdmNwdSAqdmNwdSwgZ3ZhX3QgZ3ZhLCB1bnNpZ25lZCBpbnQgZmxhZ3MpOwog
+Citib29sIHZteF9pc19sYXNzX3Zpb2xhdGlvbihzdHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUsIGd2YV90
+IGd2YSwKKwkJCSAgIHVuc2lnbmVkIGludCBzaXplLCB1bnNpZ25lZCBpbnQgZmxhZ3MpOworCiB2
+b2lkIHZteF91cGRhdGVfY3B1X2RpcnR5X2xvZ2dpbmcoc3RydWN0IGt2bV92Y3B1ICp2Y3B1KTsK
+IAogdTY0IHZteF9nZXRfc3VwcG9ydGVkX2RlYnVnY3RsKHN0cnVjdCBrdm1fdmNwdSAqdmNwdSwg
+Ym9vbCBob3N0X2luaXRpYXRlZCk7CmRpZmYgLS1naXQgYS9hcmNoL3g4Ni9rdm0veDg2LmMgYi9h
+cmNoL3g4Ni9rdm0veDg2LmMKaW5kZXggNzY2MmY2OTAxYTk1Li5jZDIxZGRhMjdjMDMgMTAwNjQ0
+Ci0tLSBhL2FyY2gveDg2L2t2bS94ODYuYworKysgYi9hcmNoL3g4Ni9rdm0veDg2LmMKQEAgLTEw
+NzU4LDcgKzEwNzU4LDcgQEAgaW50IGt2bV9oYW5kbGVfaW52cGNpZChzdHJ1Y3Qga3ZtX3ZjcHUg
+KnZjcHUsIHVuc2lnbmVkIGxvbmcgdHlwZSwgZ3ZhX3QgZ3ZhKQogCXN3aXRjaCAodHlwZSkgewog
+CWNhc2UgSU5WUENJRF9UWVBFX0lORElWX0FERFI6CiAJCS8qCi0JCSAqIExBTSBkb2Vzbid0IGFw
+cGx5IHRvIGFkZHJlc3NlcyB0aGF0IGFyZSBpbnB1dHMgdG8gVExCCisJCSAqIExBTSBhbmQgTEFT
+UyBkb24ndCBhcHBseSB0byBhZGRyZXNzZXMgdGhhdCBhcmUgaW5wdXRzIHRvIFRMQgogCQkgKiBp
+bnZhbGlkYXRpb24uCiAJCSAqLwogCQlpZiAoKCFwY2lkX2VuYWJsZWQgJiYgKG9wZXJhbmQucGNp
+ZCAhPSAwKSkgfHwK
+
+--------------YbDS0kCkoMt40GBAU4DJsL1y--
