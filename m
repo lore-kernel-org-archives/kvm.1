@@ -1,182 +1,200 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11020111.outbound.protection.outlook.com [52.101.84.111])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D1D418A28;
-	Mon, 14 Sep 2026 09:09:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.111
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789376985; cv=fail; b=cXy3+X0op2s+vPF+dnhelF9h8SErbmsXthZOtj993ijLs7tW/o7M+AM8f9dtYMxARx2kcfrD3fvDT7qq+Oo+y1Dqq+rY1zLkSFBFnNn3OS6aWlbTZdAwRWt/JNjbPGw7ASzsLP8tXCJXeg7KxsOOkiiI6VDjXZimiHyqr7RbiuY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789376985; c=relaxed/simple;
-	bh=7g91hpexYY8p3HOXvm0qQ7jCeIyztxC3EHHATB77uys=;
-	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=cMIyk5L675uhzvWZ/u56Hyjo0AbIO6qA85/ofnOmd5toYVH5302V06cAd9g4FMQfdEveWRT/UiSWLddWpezn5n6c5qjJ9Lr3H91mrdfpY0x/2wks32T/1pRnfNezmPAunEmppUNB5HVZ9cY0oGbdas40MfPNEp3CyQ8nbAFTCig=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=v2Iio+bu; arc=fail smtp.client-ip=52.101.84.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366CE36657B
+	for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 09:50:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789379430; cv=none; b=olOLcw6BM0hINSwfYuHyOkCGXiY0a+3F7UsdEvFXyaQCASZ8ogSoxhF/3Ex/IDBobXRFMrsuPNhDa28wKKKAfFBfannm1lN9+cJ8FGV83R6l/27jxciQRyReg6Y1VqRQ5N3EPMVRIQFgMjVo+TmFZdTson/C05kYVOUPGNinTQw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789379430; c=relaxed/simple;
+	bh=kylQFAzh35/Kr/cF4hIu5aA/58qReMn3tf26L0Lxe+Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HFFMBG5H22UVEhtDCahp1zBc840lf6koxrsi1G2PD74A0vABDy9gu275csWL7Qe+LM0+pHQU6eKwRKr8OpaeB6tIUDbVQvYPBkK7U7RrjwZ77yy34twu+tm4MUr+7POwpCLh2gXQN1zXfTpdxkKiXrRrhFGRzVK6n3F6p1mkAiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NbsVGoz8; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=K4z2P0ZI; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="v2Iio+bu"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MsY6c1M3Vj5HfuKwxAfZroO12VvTAl8/mk0W6kTLC1E5bM7nfnMnJyRJ8igswdPtvhW9Iot/mqhq1Yt0eIoIOdoLdMoJoAbk7Dn7E3SEDtpyzJX8NtTmiNSLrokv2PRfuZtzRWpACSkzqb5Xrpd4KDJu5sbmhBx3uBOx+Jq1SZkgf7H/h+Hu7EBmwred0A/TuVuCZ2DoPGMB/MVQ3ggWfCXopIVU9m2xr39YYLVqATJIOeMh7agzM4KO8dclclotqBK6AmgavqTmI1XEyxJ6t4ZRa9V3P4I2TmMWBWGGhX2MqSM9gMPt3Ti2nuC9a4CNuM+MUw6lLQ+Buto1Csd52g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AjBbYrREW9PrsATP8b1WZ3ZEp8OSqeUVYJXR5ChDgsQ=;
- b=Ij3XzaBComYEcj3YKicda5URWvpyoPFLW8A3HC+0CAowLOqoI320DqsIxZoe9vHVd8VqlixiW6Y+NF7UszBuCIMlA9QDVXZ+XmnpQr3RaiU5SI5SzMlnH5PQMUlV1+zqGc3fPUOQM+b/3U4zCB/0C9xwlWM1HTEiU2k/Ec10pHuT/VUFoYwYoQCYfZlQP98Az+CpFv1uwYqBx09HO5wFh/SnyI5oY44ooBd3g8EOGosdPuRvgYpoiJgO8xtV+RBcVEghA0ELvsqDV8bVuK550MkfhJLf3zlI/pQnGdJ99NaXhdJOKewi129ocq4PgS+tYBIzVcOJEw/+ISzuyjx9Dg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AjBbYrREW9PrsATP8b1WZ3ZEp8OSqeUVYJXR5ChDgsQ=;
- b=v2Iio+buqwLgeEGuXbMdhAmyyK4wGRkX7wxP7Rtx8L5W1yDVUjDTUbYwraDLL1afJwi0B5kSgyr2i1rjzJVmzmzpjdYHgnYy9vrNfeSWsgKg4mGxNkC9Bc18nqfsifD4EzrxJfuSqFe3TrmRwi60z7Y5Q8t4Ifl7GvwmNeHhTNCvlpOXTgYpzmoI9j/SmSyub6AMOXvvytt1FC7R7NgCKS4qwr/pDnxONQZSAketF2tLWABRVdrqF52fpagAeSFCBC+wu/hRzjzmoo3H/DCA5KUwO2D4i4Dnoj4ysQgCyZU5/FINZa/fgIhMB65tIcwix3JIVkIXUI36dQHUCsotvw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12) by GVXPR08MB11716.eurprd08.prod.outlook.com
- (2603:10a6:150:316::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.7; Mon, 14 Sep
- 2026 09:09:37 +0000
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8%7]) with mapi id 15.21.0428.004; Mon, 14 Sep 2026
- 09:09:37 +0000
-Message-ID: <ea805767-9e3f-455a-a4d6-828063aaf2f4@virtuozzo.com>
-Date: Mon, 14 Sep 2026 12:09:35 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/5] vhost/vsock: add support for VHOST_RESET_OWNER and
- CPR migration
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, netdev@vger.kernel.org, sgarzare@redhat.com,
- stefanha@redhat.com, dongli.zhang@oracle.com, maciej.szmigiero@oracle.com,
- bchaney@akamai.com, mark.kanda@oracle.com, ptikhomirov@virtuozzo.com,
- den@openvz.org
-References: <20260724114542.734623-1-andrey.drobyshev@virtuozzo.com>
- <20260730194858-mutt-send-email-mst@kernel.org>
- <f8646e25-7e81-4f19-aecc-a040caac1103@virtuozzo.com>
-Content-Language: en-US
-In-Reply-To: <f8646e25-7e81-4f19-aecc-a040caac1103@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR2P281CA0088.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9b::13) To VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NbsVGoz8";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="K4z2P0ZI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789379428;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GS5txPMa8dcMMZaluUjmTNiCxS+esxKMHPUrHUieImQ=;
+	b=NbsVGoz8R2on7SV+rhwtAVTRz8nvr+UmgLB7+pXm+2ovzDiZSefXhFzjzr+J8hRJ8Kt6og
+	ogzkw6fA/qynID0smZERG1r0lzNZnS5gg+7/Ja/QXudCBRYPbdZN8oPr47XPl16PSYy/z9
+	RzPfKzJqwTlBZQbC7jRcHXbciOJiQc4=
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
+ [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-427-Kvv3byCEPAKx5fwfcFATzQ-1; Mon, 14 Sep 2026 05:50:25 -0400
+X-MC-Unique: Kvv3byCEPAKx5fwfcFATzQ-1
+X-Mimecast-MFC-AGG-ID: Kvv3byCEPAKx5fwfcFATzQ_1789379424
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc132709c76so4091545a12.3
+        for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 02:50:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1789379424; x=1789984224; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GS5txPMa8dcMMZaluUjmTNiCxS+esxKMHPUrHUieImQ=;
+        b=K4z2P0ZI751g6O1022D1CCaiILnXhh+a7PrmmbQVktwoLCFN67l7BWtxmDxlAgNtLK
+         ANDszsmSzYPVcHBVVGzm29GGsCWZ8ZyIU6JgN9ua9e2d1Bgbw5wGZZGeMgMCgjNTJADD
+         BxRZeGkVFXE9j3tKIY9nSPPubRwC8UVcBkTQLYXWcHQTWZpa2RiqtayJ7L9QFVl6Dz6x
+         MPrabX899CF5MLWP8DYBNP9J3pHI5bRU+df/SWfkH4malHOmKFgrrIde4JUD9sSMUNzQ
+         F2YZuhRUhye0QBjvl3mjZ92TMOc5LaKKUDo/doiftqNnvOr9JPfTTTD8l6YUcFexgFz/
+         r2OQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789379424; x=1789984224;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GS5txPMa8dcMMZaluUjmTNiCxS+esxKMHPUrHUieImQ=;
+        b=tGnv5EnQbrzKDNF9IVX/emsYGKqV2lDeOPM/7J6h6xEeNLqfMqq1MNZPfq2KWyr/FE
+         whWQQserAQP7sUFHoJgco74MwPGLKoyidx2B98I4z+pwuMRo+ljS0H9rgBWd0GXHBu1X
+         9ndxt01mPPxfSoNBe+75k6//pqmljwD2lW5s2WqZ623TnajCzBewS56aJMKZtQCiREjf
+         wtmyn2zL7F8TKZrXDnNk1ra0vDtQ/F4gUM7VUkddXVNmYSCdJ9d6rmHkIlSOe0rPaHow
+         pWbmrrCyVKcNimjvKNl1wK4iauX+kMUHfzhVZltqFs3w7yUF+fSIAHRzaVI+iVgSHY8j
+         9MVQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxKcylgPW3cOwD2PhnLpZD90tdtFmqmZVPHk01I+KAsanea6bYlAzZW9o8omXdrbAVYGLE=@vger.kernel.org
+X-Gm-Message-State: AFuF++kTnyeWn/MuMfC7uU3s+As79zMYXsbEkjRJEZXB2X+MPuFkKl6v
+	W0aNVreBDmsQMbHhREnEo0rG8yejhKQiUocacwwX50ix08p8W4vbwPpl51W+ztU3WF93ryFyr0I
+	aC88usfUuZb4xiBBDTdsm+OYSCRS4N1y2lN5+eYhcGXlD4vKJAKuUKQ==
+X-Gm-Gg: AYBFou24OUzBAnVNdB/WLg2+M0ay7yCKtLYY3acHY3HwR++wdnGMc/QSLXsw5r+Mk8Q
+	eE0ktTnlM586z+/MW1BAbA5aF5L0w8WyVQoF/MVQHrghkFhZrA0PUqnkNs95NwMWgPv7YM//G/L
+	WDaDj2OEpl1nNMHegqGyx1up9x4nzmGkUj1r5ElEzL+ZZZj3XpC1ldf7kF5nPdXcTNV8nmOVS33
+	4vevTSCvjMMbMEGXhnPD7r5bIrUDIp2WELJXs2a5hqz3FYwWnP/T3dFL3a/nGiR2eGKJMf4Wb/f
+	H4QhsUEju8O9PtGnVUHMCUNDvOW5GKZHAgAaW+BJu74EaOWU0zYFL4q92KNcL3mXymFuMzZ/EdP
+	GR4RxYdplYfnQSARjQufgDi/Fo4V4DMnKQzTvoQw7LA==
+X-Received: by 2002:a05:6a20:7f9c:b0:3c3:7ac4:dac0 with SMTP id adf61e73a8af0-3db4052063emr3632225637.13.1789379424389;
+        Mon, 14 Sep 2026 02:50:24 -0700 (PDT)
+X-Received: by 2002:a05:6a20:7f9c:b0:3c3:7ac4:dac0 with SMTP id adf61e73a8af0-3db4052063emr3632178637.13.1789379423970;
+        Mon, 14 Sep 2026 02:50:23 -0700 (PDT)
+Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4efc398sm30439434eec.19.2026.09.14.02.50.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Sep 2026 02:50:23 -0700 (PDT)
+Message-ID: <25706923-8e9c-4785-a80d-b138478ad374@redhat.com>
+Date: Mon, 14 Sep 2026 19:50:12 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|GVXPR08MB11716:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4285dd62-d162-43fe-b717-08df123fe67b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|23010399003|1800799024|56012099006|4143699003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	5vZmZ+nxFc0/w4pkobR4eQKBsP6JTYx1bICloLA+njwD0iWla1GmWawiDZcvxgUqqLlLPKXZqBwdJiE4G5r2ud+mqhoj6obnEYZTyK9Ly3+8Kx3s1yvanItpdB1Zn8cFmcUYRhnCqJfIHgX8mWjaC9Peza+AAIliDVT55j4UILZxx7+UafjLHi05EpTavKOTlM1Vhci7bf0vLpilV6dlJoAtMotBWqGy2nWX1zLam9K+q0C0YeRZV1u/SVXc45amz+vIOapaSf786QF+KFcMQsWnsT3lc2Mbu7OqWE2CH/vpGpuLYKRDsfRo4WSRZHbGBGTipfUaegv/KFndICzYafemZEbo7dFyGu1+tO7CWRWjNn2hWO7GGMCLXE0c0DA/xX2RoxMHZDnb6e3Q13534hU9MUE95BL9QolkPfQl4esJBQRJrGcM4x706tLMNWMhJ32xSUCSGFHGj3FRX3c3rrmVWQcJ+341fa/DuzUMnjhkiU6N+EmA+TuP+UokpvpNylnxvVnyy3wlRW77ThJXHowvuFDY7tKCcL3xGGYHVkxrrLS23uPM7WyN2q9HFEKMEG6q3+irg/wkz61ikG/9QhbXU0B1DCZDWHLzyEXFpS+v0pXqr7XWE6EAXRxn3VeoOjMWVvscPYwhLaMx/yvdx/u3BZYwS2aS/7OJqGKr2WA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(23010399003)(1800799024)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dzRyQUlXZUkza2hXRFhZMGdvYVQvSlhXcFJOSTRHQnRUMjMrSC9BTGdXQUd5?=
- =?utf-8?B?N3dvaWphQmpTeHBVOE4xMVU4dU5GUjI1V05SNlZXK3dGRmRwYXI5Smt5U2dT?=
- =?utf-8?B?UzZFYys1M3ZpY2VIRDFqcWJOdzhlb3NuY1I5NjNqRlFRaEJhK3I1bnFZMi9v?=
- =?utf-8?B?U2Z3d3RkWGtKdXE2QkV3RFhMbEhLT3NCN3R3cGpYNlFaSUVCK1FTc0NRRGtt?=
- =?utf-8?B?VjZrelF5b3RhNjg2TnRGQitITjZQKzRUejFJWGV2ZnlQRFZtWTArRk95MXZK?=
- =?utf-8?B?dE55OTBjcE9zaXFMb1hXS0lQOElPSHRJd0pjaTlyS1BpRWFRYldGbEMwTlhL?=
- =?utf-8?B?VzVVTk1wWlRpTnk5QUp5d0RUNXQ2SmMrY0NFZDl3VFBkR2NRZmRIbVNZMGd2?=
- =?utf-8?B?enpzTDdtc3B3QWpPbEhnNmlyRFlNRTJPMk9tcU5Kb082Z0NqaGdKZFNjZE9V?=
- =?utf-8?B?OW1GTVBTVlQrQ3BMQW42SUM5d3Z3RmlPMDVMb3FJZyt4R2Z1VzJwcnVRd2Yz?=
- =?utf-8?B?b3RoWklKVjRsbENmbERIMFNoWkh6eHZYQzQ2NDJ4YXA2eHRra3pXak1LMDZU?=
- =?utf-8?B?NjUvL250Q05sWUJJWEltZEVkMVNvVVRWVTFWcXBZUVpRejIwQ1d6bHZ6V3Vu?=
- =?utf-8?B?KzBqTytLdklGaS9VSmZ4ZkdZL3VSaFlqZXRhZ3BuYVNJeW9PdXZrU1l2QlFl?=
- =?utf-8?B?UDVLOWhSSUZIT2tHOGlrUDVkNWYzZ3BYNVJSOU1NL0UxSm1oMEhhMDVXRWxP?=
- =?utf-8?B?ZTVXMnM4ckkySWozcmI0b1JBbXhleU5oa3libXZaSWh2dm43RGRjUHJUckUz?=
- =?utf-8?B?Yncrd01yZGw0TkR6WGdQRkZaUkswYjFaYmtpK2JremZ5WHFTRTZYYkorVVZT?=
- =?utf-8?B?bHlJeHVKMm9YSm5VQ3NhN1V4S1cvZGQzNE81anJuVW53dTA4Um0vdnVmQ1dN?=
- =?utf-8?B?LzBJT1VPUnNBRGVYZHIycW5XM0RQaXNDRU9wZFZEaGErOTZXY1Fwd3cxUmhP?=
- =?utf-8?B?MWYyUStTc2J5Q0IxWkVwL0o1MDJ3TkE3Q3pIVXBFbjg3dDhyRVZlaDZJSkFr?=
- =?utf-8?B?ak9iZVQ2VEFRQWFRak5tdnc2ZlIwcEZCMWFaaUtsWjVIcnFEV1VrMkNIR1M0?=
- =?utf-8?B?eWwvMXJaalRlY3grck5uU3VwR09YNUF0ck9yYVQzOEdaMzdUTDVkdGFnM0pn?=
- =?utf-8?B?Qkp3ckw4czcrNXBGOWY5RGVWZ1hleXdlV01PSFpycEFHbVlRWk5UM3hkbml4?=
- =?utf-8?B?WmY5bnV3c2J6cm83alR4QlFCa2hBT280STlPTGpmekI5cy9NK29qN21ONm5j?=
- =?utf-8?B?NWgyb3I5MFNRRVNTRklhdTNTQThIQVZaTnpBYnc0R0J0YlR5SWt1MUlUYmpK?=
- =?utf-8?B?dHVEUkpYTGVyQlU0Y1FZZTJoSFNaQlJJMGVCeXdFWGZvR3YxYmpmdEJLVzFt?=
- =?utf-8?B?UXVZVzdzRUhwOHptc0RTNjZnd1Rpc3VoRHlZRU9Dd3dhSEx1WVJFKytHT2Vt?=
- =?utf-8?B?OVlqeWNiVmhtY2s4TTRLdGNHbFd0M2Zmb2V2d0gyRHh6NlRGT2RvM05ySHNT?=
- =?utf-8?B?b3I4UGhTZ3JjZ0NCbElqRFN0NzhlMmhiSzZXWG4vY3hVaGpFa1VRRGVFalFU?=
- =?utf-8?B?eEZYWXQrWk5lV3JOODdDdHAyV1BYeEpTaFJLQ0xQU0s3Q0trenQ3QkdBR1NM?=
- =?utf-8?B?Rlp0WGlwUUVVWFZUbWhjd3JDeTJ5ZURiZnZIUnQ0bkFvZ3dJN0xCak9TWEtO?=
- =?utf-8?B?bmpPamZiNDczeVk0eU42WEcvRW5DTUFya3VNbnhmbVpCalh1YkxWa2ZHUjBE?=
- =?utf-8?B?SHVEWjMrQ2N0TVFjOHRwTldybmFSYy9VS1ptQ3dxZWdoUUp5aUEvN0JNaTha?=
- =?utf-8?B?WmRRTVJtMmFuOXVpNGYyM0VRMGNwb3N5a0VoY3FqNFhxTktuSEY0akN3YTd3?=
- =?utf-8?B?OS9sbE5hV0FXTFpyeUluZ2ZUNGViL0dCNUhGdVI5Q0tlUzlTeHIxbTN5SW0v?=
- =?utf-8?B?a3NYN0E5WUNwWmVHLzhwd05WbHc4Y3VFRUJsS3ZPaklvVTZUSmlXQlpZNWZZ?=
- =?utf-8?B?NVExeVp0QUtScktsaXJScndBY0IwNnFaajVmZW5tZTlaeTZkT3FaQUZFV1ZO?=
- =?utf-8?B?QVN1UUFpWmpEU1lQd2RrS3B1TEJNVGVhZVFSOHFDTTY3TnUvTHlQYkhxdGJE?=
- =?utf-8?B?dHNxZnpkdXNmeDRvS2pLUkNsSEtwOVN0bkxFMDZTQU84Vjl6KzUreEY3TEZv?=
- =?utf-8?B?UHl5NmZFRDFsQksvQzJvd1FtVkJLMUpNclRzM0VkYmwzV2htT3Ywc3J4Q0Fi?=
- =?utf-8?B?bjZVVUVYeUlOQVI0THpMblJGeG9mK2RWczVWUGlsK2VIb0p1OWo0dnovWHNv?=
- =?utf-8?Q?x4ob2+LHlFsb2ric=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4285dd62-d162-43fe-b717-08df123fe67b
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 09:09:37.0232
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FJrLB2tBFxO6yCI2T8ZMKCVMgHQrcl4a+sEro2wZrKeC2V6SuyP8Vam5k5aCDYuohvYa/cocVqCVOMUYj4NMUQpyIKorrfMCPm0Mvfp2Glc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR08MB11716
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18 4/7] firmware: arm_rmm: Add support for SRO
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
+ <20260912083611.2513845-5-suzuki.poulose@arm.com>
+ <f00d01d1-8df0-4865-8e52-c85171cf4ca5@redhat.com>
+ <4f18aa66-2296-4b63-87f5-6ab493faecbc@arm.com>
+Content-Language: en-US
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <4f18aa66-2296-4b63-87f5-6ab493faecbc@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 7/31/26 11:31 AM, Andrey Drobyshev wrote:
-> On 7/31/26 2:49 AM, Michael S. Tsirkin wrote:
->> On Fri, Jul 24, 2026 at 02:45:37PM +0300, Andrey Drobyshev wrote:
->>> v5 -> v6:
+Hi Suzuki,
+
+On 9/14/26 4:22 PM, Suzuki K Poulose wrote: 
+> On 14/09/2026 06:04, Gavin Shan wrote:
+>> On 9/12/26 6:36 PM, Suzuki K Poulose wrote:
+>>> RMM v2.0 introduces the concept of "Stateful RMI Operations" (SRO). This
+>>> means that an SMC can return with an operation still in progress. The
+>>> host is expected to continue the operation until it reaches a conclusion
+>>> (either success or failure). During this process the RMM can request
+>>> additional memory ('donate') or hand memory back to the host
+>>> ('reclaim'). The host can request an in progress operation is cancelled,
+>>> but still continue the operation until it has completed (otherwise the
+>>> incomplete operation may cause future RMM operations to fail).
 >>>
->>>   * Patch 4:
->>>     - make sync+flush conditional by adding a bool 'sync' param to the
->>>       chain, as suggested by Michael:
->>>         vhost_dev_reset_owner()
->>>           vhost_dev_cleanup()
->>>             vhost_workers_free()
+>>> The SRO is tracked using a struct rmi_sro_state object which keeps track
+>>> of any memory which has been allocated but not yet consumed by the RMM
+>>> or reclaimed from the RMM. This allows the memory to be reused in a
+>>> future request within the same operation. It will also permit an
+>>> operation to be done in a context where memory allocation may be
+>>> difficult (e.g. atomic context) with the option to abort the operation
+>>> and retry the memory allocation outside of the atomic context. The
+>>> memory stored in the struct rmi_sro_state object can then be reused on
+>>> the subsequent attempt.
 >>>
->>>     - reword commit message and comment;
->>>     - drop Fixes;
+>>> Wrappers for SRO RMI commands are also provided here because they depend
+>>> on the rmi_sro_execute() implementation added by this patch.
+>>> Delegate/undelegate handles are also added here because they now use the
+>>> SRO/stateful command infrastructure and are also used for the memory
+>>> DONATE/RECLAIM flows.
 >>>
->>>   * Patch 5:
->>>     - add 'sync' param to vhost_dev_reset_owner() call.
->>>
->>> v5: https://lore.kernel.org/virtualization/20260720102241.371610-1-andrey.drobyshev@virtuozzo.com
->>
->> does not apply for me is this for net next?
->> in that case
->>
->> Acked-by: Michael S. Tsirkin <mst@redhat.com>
->>
+>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>> Co-Developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+
+scripts/checkpatch.pl recommends s/Co-Developed-by/Co-developed-by, the same
+format issue exists in other patches and please double check.
+
+>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > 
-> The series is based on tag v7.2-rc1.  However I think the reason it
-> doesn't apply is you already have v5 of this series queued in
-> mst/linux-next, commits ddb0918e36c4^..ad5b642c84d0, with your S-o-b.
 > 
-> So you might roll it back and take v6 instead (only commits 4 and 5
-> differ), or leave v5 in the tree, or I can send you v5->v6 difference
-> separately.  Whichever you prefer.
+> 
+>>> ---
+>>>   drivers/firmware/arm_rmm/rmi.c | 586 +++++++++++++++++++++++++++++++++
+>>>   include/linux/arm-rmi-cmds.h   |  41 +++
+>>>   2 files changed, 627 insertions(+)
+>>>
+>>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/ arm_rmm/rmi.c
+>>> index 5b0e342ce3d58..4f9898ece7547 100644
+>>> --- a/drivers/firmware/arm_rmm/rmi.c
+>>> +++ b/drivers/firmware/arm_rmm/rmi.c
 
-Friendly ping.
+[...]
 
-I noticed that these patches were queued in your linux-next tree, but
-got dropped afterwards and never made it to your last PR (used to be
-ddb0918e36c4^..ad5b642c84d0).  To be clear: the series targets your
-vhost tree, not net-next tree.  Since it applies cleanly on your current
-vhost branch - please let me know if it's ready or there's smth else
-that should be fixed.
+>>> +
+>>> +static void rmi_op_continue(unsigned long sro_handle, unsigned long flags,
+>>> +                struct arm_smccc_1_2_regs *out_regs)
+>>> +{
+>>> +    *out_regs = (struct arm_smccc_1_2_regs) {
+>>> +        SMC_RMI_OP_CONTINUE, sro_handle, flags
+>>> +    };
+>>> +
+>>> +    rmi_smccc_invoke(out_regs);
+>>> +}
+>>> +
+>>
+>> The pattern 'regs' is used in some of the 'struct arm_smccc_1_2_regs' arguments
+>> or variables in this series, which is incosistent to the existing patterns which
+>> is either 'args' or 'res' by searching the source files using 'git grep arm_smccc_1_2_regs'.
+>> So I would suggest we have the fixed the pattern 'args' :-)
+> 
+> 
+> I would prefer to keep it "regs" as, unlike the smccc_1_1 calls, we
+> pass "arm_smccc_1_2_regs" for both arguments and results. In this case
+> we are using a single structure, so, to avoid the confusion, I
+> intentionally used regs
+> 
+
+It's fine to keep "regs" pattern, then the only place using "args" is
+rmi_smccc_invoke(). I think the variable or argument names in rmi_smccc_invoke()
+can be improved there to use "regs" pattern. With this, we have the unified
+pattern "regs".
+
+static inline void rmi_smccc_invoke(struct arm_smccc_1_2_regs *pregs)
+{
+         struct arm_smccc_1_2_regs regs = *pregs;
+		:
+}
 
 Thanks,
-Andrey
+Gavin
+
