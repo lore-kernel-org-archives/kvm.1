@@ -1,183 +1,206 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012048.outbound.protection.outlook.com [40.93.195.48])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1214C486434;
-	Mon, 14 Sep 2026 16:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789405020; cv=fail; b=B6VcAUGdRc3Rwkv9QLFRYqzCtG1wXewMguEFhYf3OhMjBURIP7ZAgDpKQu0AMbnDo0rLzjIcjyENojJX6U1EFzv2owko0koxZIPrdxNYmlYmHXqkqwEk3DfwfudpkN4rW/yZ1VKDdJl43H0yP5AwJjAo/njte48kbwDZmP7inDw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789405020; c=relaxed/simple;
-	bh=rYCSK3206pe5ziTIZoOZ+zjMoYbKxb7HIrU0GGMUJGY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nbdueyaO00fYGraJB/wc5lvm+pnV9dRIT7kuS//L9rO59Xwm9QVkFCHF0cR2fwJAiwRQdiOY8jOGJusU4BJgBcSWQ9Xn9jFU4JCGVQsWSGMky+0AAMJE4xU3pkx5P1oodwszRjolizAGBXQfMsn7Ojgt1hT0GBypdpYzqH6mPmI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=OxrKeYvt; arc=fail smtp.client-ip=40.93.195.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3103A494810;
+	Mon, 14 Sep 2026 17:03:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789405428; cv=none; b=ZoeDBGZReyU6AesSm5jh+G0gYhNOiaPV5iciICxr0NwSalJRhh0H4ZZj+nQG5ZDMszVuNf2eS5zOze0YqQwqb4DssmLdChhhIdyK2u825fvhmgG6d/MX7OixZU99EaZJeWc8kFJzXjb4WGhnskKdGHCaUgpn/ky6PUI0ki0vx4c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789405428; c=relaxed/simple;
+	bh=QuH48MOOeTPbUjuBK2hnIMw+7mXuZpBYtySaJvk0oVQ=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=SK3uHpQA4syJj2TqLtJVm1gtn9n4uiwgNPHDGoNeJgqr/MWyqHe94iFJNafM7GiZqkx8TVlL9mvX1TvUgPxyezJn4j38W1AO0A81QNOVQgl89sHnJVML/NRcjFpquSmOI511Z9KuNRSETktdsreeKDrx5qCL1MK9aRjhw1fw+3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bDigJBaW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="OxrKeYvt"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MRLMkrssheInSOprriTz8YABuf6caWORcSzeviXb5MfLztleCHKKuoOJ8R7cXVACL04GYXhZiNqb9wyqrXfVkKLL5nOm8Zwu/0PN9DIKJMVuga1EN5SyjzzfRazDR/XdssAnHd6U5q0Pkf+oBQ/BkB7erOCKH0TalKoEZDc1uy5zYysmvzicUr2tcZRDPzciv5/HbTLcLOhBK1QX1lvOc2q26dx5Q4JbTfW3HNI5uwTkmFOkFI1gR0oQRH3+mujT6e3Z4AAdLGeXLp3R0+Z3J9vtgsthxWrhD5LcoB5s+cVMDUsCV6NVELQGo2plTdi5DEDUT2XG5AnUjgsgEuYqTA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4dMjLS0RPL8LEf3RJwJO1f0yXEpQq4jLYuc8dQZHfls=;
- b=Q+bDDppzY1faynt2Ol6qRGz8/kzhjar7FZUYBRN7SzJxnRlYpA99nCuNOsJJxU/GcmiJUkXGhLAD3xCR/trtGaoUoKebBh68e9Zg4tykuAL+EXYiRTzxPT9cO1bkO3WrZ0VIZahD7tu5WIvAQax01EwAqRYPsSxAMsWQP34znx88H7mjUKZqHkEtgVA1KZlBF3Y5uhvrSJndTtmKw6guIEr//VTQOIs4TwgwYpFD686oI5cq7bxrWx4IgueKKpE/vzRmAmHCAZAsf9kXlzhiJIP9ix94vWg+rMvIpc419b7S9JBfyqF0+/45T4pnP+LGO8nbx7NE2L0Js2jOKzd8HQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4dMjLS0RPL8LEf3RJwJO1f0yXEpQq4jLYuc8dQZHfls=;
- b=OxrKeYvtCnkqxeRh1cK9XGQjdTgYV1BdXf6LlctAj8hBieVcWrnBgXJuQ31Kr2KA3L4DbiUddzTsjG5RKdWrvakQq0OqI5LtUANsoHiXJ6oeLEA3X21AVkN9IQweR6/cm2zI+i3t3EYbGAZQwtbMm4qEqlhvW+fLwKmlrJ7NE4g=
-Received: from BL1PR13CA0225.namprd13.prod.outlook.com (2603:10b6:208:2bf::20)
- by DS0PR12MB6413.namprd12.prod.outlook.com (2603:10b6:8:ce::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
- 2026 16:56:47 +0000
-Received: from LV8PEPF0000005F.namprd02.prod.outlook.com
- (2603:10b6:208:2bf:cafe::31) by BL1PR13CA0225.outlook.office365.com
- (2603:10b6:208:2bf::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.8 via Frontend Transport; Mon, 14
- Sep 2026 16:56:46 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- LV8PEPF0000005F.mail.protection.outlook.com (10.167.245.137) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.428.7 via Frontend Transport; Mon, 14 Sep 2026 16:56:46 +0000
-Received: from speedway8455host.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 14 Sep
- 2026 11:56:45 -0500
-From: "Pratik R. Sampat" <prsampat@amd.com>
-To: <kvm@vger.kernel.org>, <x86@kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <seanjc@google.com>, <pbonzini@redhat.com>,
-	<thomas.lendacky@amd.com>, <kim.phillips@amd.com>, <nikunj@amd.com>,
-	<michael.roth@amd.com>, <ashish.kalra@amd.com>, <prsampat@amd.com>
-Subject: [PATCH 3/3] x86/sev: Add guest support for Enhanced SMT Protection
-Date: Mon, 14 Sep 2026 16:55:56 +0000
-Message-ID: <56d81f0c1527c8291733aaea72fb70742fb96719.1789399214.git.prsampat@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1789399214.git.prsampat@amd.com>
-References: <cover.1789399214.git.prsampat@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bDigJBaW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DB81F00893;
+	Mon, 14 Sep 2026 17:03:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789405426;
+	bh=A87ZZ4ZIXjG25h+E/VgyFT4YOkcYOB31l8j6x/jC1qg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=bDigJBaWcUieLj1MdiBerCeiv1ArOtysznjXNFW+qSZ6/N08feViBK/fnj7+7MKYz
+	 akB8iJsUGfs/nbcGue7bLaOCToWV0XnqcODHLAgjGqaGI3JJlzz+bj1MA5WVFyFsd/
+	 ysCe11s7Al8tVGlYXymoyLcnwYwAYR2HR5mvETK3xbuJuN/pltU9HE+U1bNPkZDtMY
+	 qATizpjNC2xHH0z6qQWDh0UYCZkaGCR7uN2SGyRBp6V/pAq8Rzh8tbEHyruTYCxBLX
+	 D5j1ST3uHQUEDn+SiDQUQLPK6hm2mgZlFaGKCwoXuJ7eLeTzhPEzyLkH1i1pAsuKPq
+	 x9L4W1nGwCfTA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 08/40] mm: add mmap action for discontiguous kernel
+ page mapping
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?TG9yZW56byBTdG9ha2VzIChBUk0p?= <ljs@kernel.org>
+Cc: linux-s390@vger.kernel.org, bpf@vger.kernel.org, "Marc Zyngier" <maz@kernel.org>, kvm@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, linux-rdma@vger.kernel.org, selinux@vger.kernel.org, "Christian
+ Borntraeger" <borntraeger@linux.ibm.com>, linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, kvmarm@lists.linux.dev, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, linux-scsi@vger.kernel.org, "Vasily
+ Gorbik" <gor@linux.ibm.com>, "Oliver Upton" <oupton@kernel.org>, dri-devel@lists.freedesktop.org
+In-Reply-To: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-8-7d9781ed5361@kernel.org>
+References: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org>
+ <20260914-b4-mmap-prepare-vma-flag-sanify-v2-8-7d9781ed5361@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 14 Sep 2026 17:03:44 +0000
+Message-Id: <20260914170344.B2DB81F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PEPF0000005F:EE_|DS0PR12MB6413:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4090a5b0-90e1-4b48-63f1-08df1281294c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700016|23010399003|1800799024|82310400026|10067099003|56012099006|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	/418UIsTlNdPXLPDpZ3P7TH4O99EQzfxcWxpH8ZYpFlFLhFm4Eh5RL6XS4mOkULQXtBAP++iaD3AFLX1WqiX1JSmFLkOSb2rGn5geoHWOlHXT0K/deZ9Tg/tr3M8/XN9Ic09jsCiXrSJYcM6hdO7FuJ+vqM/UTsygDBjFnLsfuDvxnOCwBREZWgQwDDFP6TToHRJrPy7oxi6AV12ai4uXQjTGjo4cet5US2sT1NcTD5ogDhqhw6qNqxogp/+1ImIj5hio6eqf8pWQilWLHcZ/c1YQHjJ2GRjauTPz4N4qOjJaKXmsBCM/yHliSqcj8wahxPS3AgHGI3Q6VlWu7LLG/GJqReTv6eExIL9ih4boiq7YZ9wZME1Pa5u2fZ/jOlH21tRdppXmeLaufndgIQRtT6pqiBAjVx9QmtGj0fIpGVJpR2DIYly1oR/ksGCy9zl7XjMzXDT3nrtkGwAOaU+EdqAGKgtXJDXGNN5bUPXNsjhHa6Wqk5A+U0sQvSSxjKhvbSRhStiCdER6KRJcajw1FI7bJTSEweUxRCmMKJv5QOXi2i4K+aX8Wu3/eEWLEYH0Bhm4SVvbzcz4p2utARbMzwZo7WcHaYwO9B5h+xZIo+BvhVp7zNf4H53I/fmv/fXecSfRxQwy0kssCpw7LRuZewPg+z1M6U+JbzGBNE5T2bF0iDW3pxgDBjeNwOvN5d4sm+qLmf0M9No68R/XODaKA==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700016)(23010399003)(1800799024)(82310400026)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	TLj7j6Yt9lPITUUjsmm4VyckGf6pALOzllwudOpQ174h5tz3j1YoAJ/ZRxV311UlHqbCqyqtbv4JPQ1E+n6Ye86G0nYnrTxmNuF75+7cx7uPjcsBucTPI1t9+40gEjwYwAIK/1joIT8nez77DMB5Fbew4n/F7ImybY6qJxJHekGntreX0+dfbq5zT0DyTbNZflI3ydv1Tgxubpw4NAeTPUuJqKDWaJEWqfzJ1FaYwsDKlb5aAP1+qzPqczsCrzSVP/jsk6k16GGf7ICtEB/+LPSgHHcvpB4kzfij/97If+lD/X56NaPw/B3bJxWBcabnAGFIo9P1p1UyeeAt8ciE2bi5x/6u0MCTqegP+lVg7KKnvZLyewnVoj3IZpd0067odATBtDRcGpyFYNEXsGVnX6ue896EUz7qBm4QE9cZtTa0dqSF0lJ3te9mc3eaVd+N
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 16:56:46.2376
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4090a5b0-90e1-4b48-63f1-08df1281294c
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	LV8PEPF0000005F.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6413
 
-Enhanced SMT Protection requires every VMSA to carry the vCPU's identity
-and the mask of SMT siblings it may co-run with. The guest builds the
-VMSA itself when bringing up an AP, so populate both fields there, before
-the page is turned into a VMSA and while it is still writable.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [High] `discontig_kernel_map_page()` silently maps entire compound pages =
+instead of single pages and maps incorrect memory when passed a tail page.
+- [Medium] API design causes an unavoidable memory leak if a driver allocat=
+es state in `ops->init()` and a subsequent failure occurs.
+- [Low] Missing NULL check for the `ops` struct before dereferencing it in =
+validation code.
+--
 
-Fully set the sibling mask so that all threads of the same guest trust
-each other.
+commit d5639a50ca1090febd85053c26c1f0a170b51deb
+Author: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Date:   Mon Sep 14 14:57:28 2026 +0000
 
-Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
----
- arch/x86/boot/compressed/sev.c   |  2 +-
- arch/x86/coco/sev/core.c         | 13 +++++++++++++
- arch/x86/include/asm/msr-index.h |  4 +++-
- 3 files changed, 17 insertions(+), 2 deletions(-)
+    mm: add mmap action for discontiguous kernel page mapping
 
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index c6512f2ea31e..44bc14ee27c6 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -188,7 +188,7 @@ bool sev_es_check_ghcb_fault(unsigned long address)
- 				 MSR_AMD64_SNP_RESERVED_BIT13 |		\
- 				 MSR_AMD64_SNP_RESERVED_BIT15 |		\
- 				 MSR_AMD64_SNP_SECURE_AVIC |		\
--				 MSR_AMD64_SNP_RESERVED_BITS19_22 |	\
-+				 MSR_AMD64_SNP_RESERVED_BITS20_22 |	\
- 				 MSR_AMD64_SNP_RESERVED_MASK)
- 
- #ifdef CONFIG_AMD_SECURE_AVIC
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index cc292d7c6fd1..730cff2700d4 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -89,6 +89,7 @@ static const char * const sev_status_feat_names[] = {
- 	[MSR_AMD64_SNP_VMSA_REG_PROT_BIT]	= "VMSARegProt",
- 	[MSR_AMD64_SNP_SMT_PROT_BIT]		= "SMTProt",
- 	[MSR_AMD64_SNP_SECURE_AVIC_BIT]		= "SecureAVIC",
-+	[MSR_AMD64_SNP_ESMT_PROT_BIT]		= "ESMTProt",
- 	[MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT]	= "IBPBOnEntry",
- };
- 
-@@ -849,6 +850,18 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip, unsigned
- 	vmsa->vmpl		= snp_vmpl;
- 	vmsa->sev_features	= sev_status >> 2;
- 
-+	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP) &&
-+	    (sev_status & MSR_AMD64_SNP_ESMT_PROT)) {
-+		vmsa->vcpu_id = apic_id;
-+		/*
-+		 * The mask fully set puts every vCPU in one group, so any two
-+		 * of them may be co-resident. A legal ESMTP sibling must
-+		 * also match on ASID, so the sibling of a vCPU in guest mode is
-+		 * always either another vCPU of this same guest or idle.
-+		 */
-+		vmsa->vcpu_sibling_mask = U32_MAX;
-+	}
-+
- 	/* Populate AP's TSC scale/offset to get accurate TSC values. */
- 	if (cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC)) {
- 		vmsa->tsc_scale = snp_tsc_scale;
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index fbcb3313e946..6fd26151d146 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -745,7 +745,9 @@
- #define MSR_AMD64_SNP_SMT_PROT		BIT_ULL(MSR_AMD64_SNP_SMT_PROT_BIT)
- #define MSR_AMD64_SNP_SECURE_AVIC_BIT	18
- #define MSR_AMD64_SNP_SECURE_AVIC	BIT_ULL(MSR_AMD64_SNP_SECURE_AVIC_BIT)
--#define MSR_AMD64_SNP_RESERVED_BITS19_22 GENMASK_ULL(22, 19)
-+#define MSR_AMD64_SNP_ESMT_PROT_BIT	19
-+#define MSR_AMD64_SNP_ESMT_PROT	BIT_ULL(MSR_AMD64_SNP_ESMT_PROT_BIT)
-+#define MSR_AMD64_SNP_RESERVED_BITS20_22 GENMASK_ULL(22, 20)
- #define MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT	23
- #define MSR_AMD64_SNP_IBPB_ON_ENTRY	BIT_ULL(MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT)
- #define MSR_AMD64_SNP_RESV_BIT		24
--- 
-2.43.0
+This commit introduces a new mmap action allowing drivers to map discontigu=
+ous=20
+kernel pages. It adds discontig_kernel_page_ops for defining the mapping=20
+operation, including initialization and page retrieval logic. Helpers are=20
+provided to map single pages, ranges, or compound pages.
 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index a1f2d375cf7d8..2a92193ac6a5e 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+[ ... ]
+> @@ -4647,10 +4647,55 @@ static inline void mmap_action_map_kernel_pages_f=
+ull(struct vm_area_desc *desc,
+> +static inline void
+> +discontig_kernel_map_page(struct discontig_kernel_page_state *state,
+> +			  struct page *page)
+> +{
+> +	struct folio *folio =3D page_folio(page);
+> +
+> +	if (folio_test_large(folio)) {
+> +		VM_WARN_ON_ONCE(page !=3D folio_page(folio, 0));
+> +		state->action =3D DISCONTIG_KERNEL_PAGE_MAP_COMPOUND_PAGE;
+> +		state->__folio =3D folio;
+> +		state->__nr_pages =3D min(state->nr_pages_remain,
+> +					folio_nr_pages(folio));
+
+[Severity: High]
+If a driver passes a tail page here intending to map just that specific pag=
+e,=20
+does this unintentionally escalate the mapping to the entire compound page?
+
+The API discards the specific page pointer and sets up a folio mapping
+instead. Even though there is a warning when passing a tail page, the code
+proceeds to map starting from the head page in apply_discontig_action(),
+which could expose unrequested kernel memory to userspace.
+
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 448342883e9da..42f0845172471 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+[ ... ]
+> +int map_discontig_kernel_pages_prepare(struct vm_area_desc *desc)
+> +{
+> +	const struct mmap_action *action =3D &desc->action;
+> +	const struct discontig_kernel_page_ops *ops =3D
+> +		action->map_kernel_discontig.ops;
+> +
+> +	/* At minimum need to be able to get pages. */
+> +	if (WARN_ON_ONCE(!ops->get))
+
+[Severity: Low]
+Is it possible for the ops pointer to be NULL here?
+
+If a driver erroneously sets up a discontiguous mapping action but passes a
+NULL ops pointer, dereferencing ops->get will cause a panic before the
+intended validation warning can trigger.
+
+> +		return -EINVAL;
+> +
+> +	__map_kernel_pages_prepare(desc);
+> +	return 0;
+> +}
+> +
+> +static int apply_discontig_action(struct vm_area_struct *vma,
+> +				  struct discontig_kernel_page_state *state)
+> +{
+> +	unsigned long nr_pages =3D state->__nr_pages;
+> +	unsigned long addr =3D state->addr;
+> +	unsigned long i;
+[ ... ]
+> +	/* Compound folio - have to iterate through each page. */
+> +	for (i =3D 0; i < nr_pages; i++, addr +=3D PAGE_SIZE) {
+> +		struct page *page =3D folio_page(state->__folio, i);
+
+[Severity: High]
+As mentioned above, if a tail page was passed to discontig_kernel_map_page(=
+),
+this loop always starts mapping from the head page (i =3D 0) of the folio.
+
+Could this map the wrong memory into userspace if the caller specifically
+requested a tail page?
+
+> +		int err;
+> +
+> +		err =3D insert_page(vma, addr, page, vma->vm_page_prot,
+> +				  /*mkwrite=3D*/false);
+> +		if (err)
+> +			return err;
+> +	}
+> +	return 0;
+> +}
+> +
+> +int map_discontig_kernel_pages_complete(struct vm_area_struct *vma,
+> +					struct mmap_action *action)
+> +{
+> +	const struct discontig_kernel_page_ops *ops =3D
+> +		action->map_kernel_discontig.ops;
+> +	struct discontig_kernel_page_state state =3D {
+> +		.start =3D vma->vm_start,
+> +		.end =3D vma->vm_end,
+> +		.addr =3D vma->vm_start,
+> +		.pgoff =3D vma->vm_pgoff,
+> +		.nr_pages_mapped =3D 0,
+> +		.nr_pages_remain =3D vma_pages(vma),
+> +		.vm_private_data =3D vma->vm_private_data,
+> +		.private =3D action->map_kernel_discontig.init_private,
+> +	};
+> +	int err =3D 0;
+> +
+> +	if (ops->init)
+> +		err =3D ops->init(vma->vm_private_data, &state.private);
+> +	if (err)
+> +		return err;
+> +
+> +	do {
+> +		unsigned long end, pgoff_end;
+> +		unsigned long nr_pages;
+> +
+> +		/* Default to abort. */
+> +		state.action =3D DISCONTIG_KERNEL_PAGE_ABORT;
+> +		err =3D ops->get(&state);
+> +		if (err || state.action =3D=3D DISCONTIG_KERNEL_PAGE_ABORT)
+> +			return err;
+
+[Severity: Medium]
+Does this error path leak memory if a driver allocated state in ops->init()?
+
+The commit message mentions that any state established by ops->init() is
+released in vm_ops->close. However, if an error occurs here (or below in
+apply_discontig_action), the function returns immediately.
+
+Since state is a local variable on the stack, and the driver's close callba=
+ck
+only receives the vma (which has no access to state.private), it appears any
+memory assigned to *private would be permanently leaked.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260914-b4-mmap-pr=
+epare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org?part=3D8
