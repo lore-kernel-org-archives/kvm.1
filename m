@@ -1,53 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AE045FFA2;
-	Mon, 14 Sep 2026 12:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB4946D560;
+	Mon, 14 Sep 2026 12:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789387452; cv=none; b=RKSkKZJoQa1e3IpuFPt2JQdqSihhRUhmhx/d9eLW8+Dl3zRxAOfpiV1eXQiGxSTcCjI1/32He90jx6LUTtr2ipfyMZ7AaVwYxj2qbfL3wL4yw+SEYuOZbFaHpuldLrGX5UEFq2AFMOyBcUlBKBG/tzIyptQDw6TxAJP9+LxECXg=
+	t=1789387454; cv=none; b=S6QZ/AGHC8v3EF/PCuznc38T58H81hgiDiDtMBi/bkBQabHbHTNdwwN9Qu51kEWMpf7Fmv30V7l0zPcDWTwURtw31rwrOKkavGJdyK3s/XCLTyn0CPeDdoHB3Y7MNIr3f3iNtOOr8+QtNHQuI9X8QaXs+pSSIUpJSYI3xqqhlXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789387452; c=relaxed/simple;
-	bh=kCYV9CElak+J1g77IvQxlloHjoeV9dqKukLcVJsi5n4=;
+	s=arc-20240116; t=1789387454; c=relaxed/simple;
+	bh=Zhfp8mk7kOl/7Ot+EE9qOhhKFJQoRYbVnyAkD8oHJbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B+z7GYcW7kBsfYyfn7RkMOgD8hz8bzwgVdoSbBweiuku1XRv+wBMyrxZd2Iod5pgM7kCzOsUpqvy08WtAOETERJaKGINnh4Cb46kvrZ3L8oV874YDP4NnXo5ZTI29f1q/WdetDCOToF9Eq3N8cA96cQObbNwtC6FRwRexVKS0lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kNoC9Hjs; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=ehBNnisojn4KqT6jZeMG/6hHsuloxcJlgGcG8+SVb3NYcJWhMc3KeWNTqqca5tkMmU9GoLuIdhO424c41jc6+eILipZyQiRaBqDuV0oFx/yCULlPStS9Z2+oh2vhQIK/kMRnwLqN8eDv3V65DHoyy2dfVHiljhk6aMqWRlpTGeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HTQxasZD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kNoC9Hjs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C181F00898;
-	Mon, 14 Sep 2026 12:04:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HTQxasZD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7424E1F00893;
+	Mon, 14 Sep 2026 12:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789387450;
-	bh=u+yDfqBxNt5OV+T6PZqZiS7nL1HytwBiRDoPfzTD1/Q=;
+	s=k20260515; t=1789387452;
+	bh=lzGg9rI22MhcwX1aQHvZ6JRIjUo2SVdjqa4Tz4rXGgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kNoC9Hjsk5euB/8R3Y3e6c58cblZuCb9WSV/bAunrUbAP6QCtDufxeFEKiDDg16c9
-	 IlmD1NAspyhsZ0KaRSkzwQOA4o2gRL7Uxsb3Wa6N7eZgeQpdD3BoN1qYo5OOj5CFU6
-	 y9F2Xbu/131+3E1DKVuemYmvs5ZjV5745ZutD6gdPRb3Up9YthnbSAdBBfv09QA6g4
-	 1EKMIxA+zXyjHNaebznEnI3xzg3X9X0pY15kR5KKcaylTjUq7a2rP492zcHBk4jYUv
-	 R20IJaxo1Kxrby87qmgEN6nSWK1gXUtgQOo9VI03tIvtC4/5Js6yGWccWWFYT9GnKg
-	 h0KOUbOBdw6VQ==
+	b=HTQxasZDH0gTt0LyFNMY8tEZcsUiBEO1nIpv0CLnVeSU2uKIao4nyU+J85DABBV0n
+	 MgvzJHQojXKFzlOIfDKrS1MIzJ8XX27jqADxK9wI1jBppOJnBA3iDS6QP7HkN2d2wH
+	 iSsSRorasu73m9VdJJqtnNGqN95fyprSToU50dfH3cbuz+6rwypVSthpxK+NteGPkj
+	 CGOXa5yfoE7AcGOHNHA+aBOdbYMrr2zqdY79VSUsbryIyKx7tXL4hgaXuEh4AdQB0l
+	 D2WK6iqOESLULLyXuWaWdu+Bvji+yojTYcPet6AMf6FaCxEekAGP+PabikpXJWhXd8
+	 uS1C6c8dOJziw==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1x65Ps-00000008bDm-3VrX;
-	Mon, 14 Sep 2026 12:04:08 +0000
+	id 1x65Pu-00000008bE1-3N2I;
+	Mon, 14 Sep 2026 12:04:10 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: Oliver Upton <oupton@kernel.org>,
-	Karl Mehltretter <kmehltretter@gmail.com>
-Cc: kvmarm@lists.linux.dev,
+	Like Xu <like.xu.linux@gmail.com>
+Cc: jiaqiyan@google.com,
+	kvmarm@lists.linux.dev,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-doc@vger.kernel.org,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [PATCH] Documentation: KVM: Fix the struct kvm_arm_device_addr name
-Date: Mon, 14 Sep 2026 13:04:08 +0100
-Message-ID: <178938739484.3215146.11955163340723222437.b4-ty@b4>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] KVM: selftests: arm64: Make sea_to_user skip cleanly
+Date: Mon, 14 Sep 2026 13:04:10 +0100
+Message-ID: <178938739500.3215146.4451146948664705585.b4-ty@b4>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260905090655.40683-1-kmehltretter@gmail.com>
-References: <20260905090655.40683-1-kmehltretter@gmail.com>
+In-Reply-To: <20260818112920.26252-1-likexu@tencent.com>
+References: <20260818112920.26252-1-likexu@tencent.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -57,20 +55,30 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: oupton@kernel.org, kmehltretter@gmail.com, kvmarm@lists.linux.dev, pbonzini@redhat.com, kvm@vger.kernel.org, corbet@lwn.net, linux-doc@vger.kernel.org, skhan@linuxfoundation.org, rdunlap@infradead.org
+X-SA-Exim-Rcpt-To: oupton@kernel.org, like.xu.linux@gmail.com, jiaqiyan@google.com, kvmarm@lists.linux.dev, pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Sat, 05 Sep 2026 11:06:55 +0200, Karl Mehltretter wrote:
-> KVM_ARM_SET_DEVICE_ADDR takes struct kvm_arm_device_addr; the document
-> names it struct kvm_arm_device_address, which does not exist.
+On Tue, 18 Aug 2026 19:29:17 +0800, Like Xu wrote:
+> This series hardens the arm64 sea_to_user selftest so that it reports a
+> clean skip on hosts that cannot actually run it, instead of aborting or
+> silently passing.
 > 
-> Use the real name.
+> The test drives a real recoverable memory UER through APEI EINJ and
+> expects the guest to consume the poison and exit to userspace with
+> KVM_EXIT_ARM_SEA. That relies on host and firmware support that is not
+> present everywhere, and each unmet dependency is now turned into a skip:
+> 
+> [...]
 
 Applied to next, thanks!
 
-[1/1] Documentation: KVM: Fix the struct kvm_arm_device_addr name
-      commit: 068df88a7d8900fedda1621435518c0f2db9e53a
+[1/3] KVM: selftests: arm64: Fix EINJ handling in sea_to_user
+      commit: 05fd5844cc83c1a51b0a38113a7ee196a69bda1d
+[2/3] KVM: selftests: arm64: Skip sea_to_user without 1GB hugepages
+      commit: 2665ac1063e71f23888091a0bdb1b96297bd0370
+[3/3] KVM: selftests: arm64: Skip sea_to_user when EINJ places no poison
+      commit: 754c7b7d45074337972c5c3ad76ed9e7b103e5d0
 
 Cheers,
 
