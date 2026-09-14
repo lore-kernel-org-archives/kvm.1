@@ -1,175 +1,151 @@
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1845B367B84;
-	Mon, 14 Sep 2026 18:12:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220D049CF26
+	for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 18:12:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789409548; cv=none; b=JRoz0XJEQ3sKAm7XEwVU0JEZAwU3BHzaWZ0Wdv4bLHV8A2uiejAePJ2bir/3VteQs3oolQozJwySIHmshB+9zUuOnTTDef58U09gt24GstfJONOVaHzpDXUFzSQYxBPoTf0EgMbluAyivvN7ZRDJMn/Sgu4rRBrj7kR9miPKr+0=
+	t=1789409555; cv=none; b=BzhvY0nDDSddegs3KM7CoXLKKCyGQKJZAYy3G+TP2PUBMHgMkZ0I9Zgy5e0+6yfu+vEJwtNyGxaAtiL/6WQeJL00fIuOlZtk7i1e8SOEdptkhG/7KFjS0gScffoZAy31kcFKfpKWRBg5+B8suTkYXWehjgiQGYe0/oU/glQOkOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789409548; c=relaxed/simple;
-	bh=IeXpUMO76ygdrOAltxPvlm2Z7418oPYikyabhnuUduM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eM17FZT8t+iijyWqs7CZ7imEZeNnsGZgwXK6YEM1PJc8VcMK6NdTWuJfMh2/1oQ4qdY+Hc1hooPD8xN/ARoro/FDxcOJq1np7ZhTVIS+c01VN/csNYkrYykAU18BoEZkwe6pnaeOKE7jrZIKsa5kZP84NoNnqJmC3hQnCJ9l0UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=ZYeeXvki; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NYhHjGWW; arc=none smtp.client-ip=202.12.124.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1789409555; c=relaxed/simple;
+	bh=x0QuQ7B46vZSLWuhvb7Pej5iUeD3ReCFBUcJ7PEUjmM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=RPM8A8O1G4rJNrdZe9msZ3fuWZNG/gwaC5LK12M8xcLJgO76iigVzYsPbxKD5qPqcT07W0dlxsB7ddLD/uFd0429ix9DEUw4+MM8DBd7sPqvIwdxdQbLoRP8FqaossprVOrzropF0RSji3Ru1s6kFcmGQrGRuwKzaFsIp7ifmEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=n6TzLXHb; arc=none smtp.client-ip=209.85.210.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="ZYeeXvki";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NYhHjGWW"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id CDBA71D0010E;
-	Mon, 14 Sep 2026 14:12:21 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Mon, 14 Sep 2026 14:12:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1789409541;
-	 x=1789495941; bh=uhgt2UjAMH82kPft487TQbOtNSFV2LQEnnMytprdY1A=; b=
-	ZYeeXvkicwFVMITURRnA49FSnVibbeLFPHJ46HHQqNGOIxcuZ78GwYrfTTX7HvO4
-	u6x7Z37Fwnc+EQzntgf0fIEh3yfCKkCsxRdWjr9Seoa8VBpwD3zDcSgq+HyiqtA5
-	SLLo+8so+GgFsxnsvRx9JVFncLmreu+7sfAwPeBD4Le0v10lYas49hAkXk5RmkU7
-	v6Sg/5DxA7Vh/hUb8x6ZV7nREG/TPilHgcilZSmnFsUDUfRb4e5/GV0UzPQfN85h
-	585JOc9UHQmxPtqTLtf7nX7BYVgw/fPqGmY9pOLGT0J2ZBtgICLXxJfT2vHqYhix
-	cUuwyaiTMMJ/wPzyWiWgZQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789409541; x=
-	1789495941; bh=uhgt2UjAMH82kPft487TQbOtNSFV2LQEnnMytprdY1A=; b=N
-	YhHjGWWydaa2JAaM3UMHFmqWfc0O5I6UVCoARBktG2NTkq9UrRIhU5Hgz2bhbhak
-	kECEEg741zZJXTCI3XQOp/wyS4MpWDfWfI4Uc+V19yvNSP/4c3Tf6MbzzYSrKf8X
-	NoxpkzV0uhuyt6yvV7y0ZFHXJsVfBM6eGdUa7d1CfHRmmcojj2VaNF1rZCQ6a+EB
-	y0l58yKMHEble+gRF4g1s5MM/l909RzPOnd3v/26MVTTN39SshOiflZaHmknsoHr
-	zBjtlPjVelvy3KoIur++L/urQpW8LoA0U6FbcVXNZWGvz8/A86GIRjYJti8b5HLp
-	OVD7TsP3/DfhfCF4szDfg==
-X-ME-Sender: <xms:BTmoalZZ9eZ0IGGQaGBUirZJLjLG5fNWXLjPpk9NGNdnBlq0h0UI7Q>
-    <xme:BTmoavmq1dDE-As-K1Gg4VL2WDr4_dulKiD6U9pGFdZokMIVfSaClPkWxdCFI7Pm-
-    G2JGchhIT4_yvL6IKNUq4uSz8-wS6rfqlL7B7A5grJwnuUYflwc6w>
-X-ME-Received: <xmr:BTmoauyXTueIF8wekbV25ToGpeHHY7x8Y6BASM8_GnVBrd-lg2XCT8bRbKuv2A>
-X-ME-Proxy-Cause: dmFkZTF2uaYefa6Q6cBEHpcthDToSxPokXFkhkFwYdlt/0NLvJ9XjZ6IvfeAvtLc7dVOTy
-    sAHmM2qdAY2xkDTRwXe/+MUpe8DXgx0mdFN8/08msGRTpqW7Bo4+i0m4TxZHgt/h8vtSVw
-    C+ZQ6zbTx8uQV9gzDOEo4qBbRyscO3VixkxVExJzSR/TbhJAx8SIIpuocPP2GIATPG5wIi
-    2CKBzChTdqtxdGdeion4TvtdVWmIk+BndE8umHXcpPVf1iu8wi8EzLchC2jj30jqgNkmE9
-    nPdKwC0EO1nzELx56VTA/qWb6ScSHwOEJCTi0c80+yCmKhGuLESTci2da2CGUlle1+kldy
-    40UCaR5Dcqj0nN+u6QOmJ2cBUf7TGuxwUFwtFlNvn/1sKtIOMn5gJMUeazme9RyiQd7Evs
-    FKYVq2rKMVmtCvVcKDusfG5p6Rg2TRQ9oWBTp00+xF/H5PraiVhYIfVtEMboaP/Q4vNPQ8
-    inJymWt79SBWIolbgqMCEkp0omkgVSnLjuV71tG/8Si6/z+UkgdN0jGJUPM45QisJIiA/y
-    MNicVsrpESGws8tNZIbM6kC80dmkiU1JtgD84Oy8Lz1NIVAIuKt+D7KKfkmgXpwd+3GwON
-    zkir8DLR4zaUcfoh7apXN1x3/dgb1JJg4sxkYWODJXVmVDK8O3sKXkj3uDzg
-X-ME-Proxy: <xmx:BTmoaovUFWyO6umvgb4OOoOXnfvn1879nl0_SRvuLvwOwmwXIBNRuQ>
-    <xmx:BTmoai8RNEz_9d6l-ZJR5HAGzZ2vKDSSCC9JzoOYNr4QDN-njPsBSA>
-    <xmx:BTmoav2gZN28vgWjr-M8e-2G0gJtR8uc8TKqYdrCInekBVBNy-Cu-g>
-    <xmx:BTmoaofBKBotiaEMezZDo9l6KLi43kGTmKoxyDrx5Iaap1KbxWFY3w>
-    <xmx:BTmoasQ9spvY5LS3k3J20Ye9BIsXvyhf07KpdgYqtREDJHhGsevf2P8Q>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 14 Sep 2026 14:12:19 -0400 (EDT)
-Date: Mon, 14 Sep 2026 12:12:17 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Jason Gunthorpe" <jgg@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
- <acourbot@nvidia.com>, <yishaih@nvidia.com>, <skolothumtho@nvidia.com>,
- <kevin.tian@intel.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
- <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
- <jhubbard@nvidia.com>, <ecourtney@nvidia.com>, <cjia@nvidia.com>,
- <smitra@nvidia.com>, <kjaju@nvidia.com>, <alkumar@nvidia.com>,
- <ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
- <targupta@nvidia.com>, <nova-gpu@lists.linux.dev>,
- <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>,
- <kvm@vger.kernel.org>, alex@shazbot.org
-Subject: Re: [PATCH 12/13] vfio/nvidia-vgpu: add the NVIDIA vGPU VFIO
- variant driver
-Message-ID: <20260914121217.70fa0d93@shazbot.org>
-In-Reply-To: <DLCRZLO06SIO.LS7TWQXIPZSQ@kernel.org>
-References: <20260905081116.106613-1-zhiw@nvidia.com>
-	<20260905081116.106613-13-zhiw@nvidia.com>
-	<DLCRZLO06SIO.LS7TWQXIPZSQ@kernel.org>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="n6TzLXHb"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-86a74698972so4126444b3a.0
+        for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 11:12:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789409549; x=1790014349; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:reply-to:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Vrq15StmiM1CTIka90pdQUrQi6qd2fHaKI/Mz3n+CgQ=;
+        b=n6TzLXHbYJ1jVtp596d/POf/6h2dWOS8arTo+unEBbLgR8KTq3gA3PtIQ4zeTZiat6
+         b6DXUWkKiL/IhjOylG2yz384swPPztJHNcDMdYjp7gnLRzx5DwjqeJfg+2NF95Ok8FL4
+         RL/+SwEI6l06HAMUCSx1rVeH3WjgF3/lMEW9ApREwLISzY2kqQQWkA2DbVqwE6WYLQ+V
+         BXeULoVOfYgFoD6n3nORnDgpYlJ/Ge8IffzqY6cIZ2WLbTCimfHe+6jTpXCCK3y5px4V
+         xVxm6/RAI2+iKtu3gpribISYGp68y2MSQUBedc9GC6CIOYd+9jf/TsIxaoogDfPjqVx6
+         +Bmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789409549; x=1790014349;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Vrq15StmiM1CTIka90pdQUrQi6qd2fHaKI/Mz3n+CgQ=;
+        b=lV6G6HqBm2OYcKeEkyShbsX5EYxupIhzlCrtM9D4sqchsuP1vvTmFz09sdiCGuxD49
+         pG9nglZWYjlFrmihkTHZB0PRCo24wxMF7oC7JkuE7ZlGGQwxvHO2GJ4KV8r1BQIorRHl
+         IoZt79QiHm/9ry5vaiDdynVfBJqEf36frZ9hXsHK/33P/xMdEKabaY+eGBamRezr+exx
+         HoBOnDWGGTMt+0NVUqZ2Mb7dhaS5/ubAA5WNCpVAWVmdRYi6OTcdqf74zXenx7+sllPE
+         w7hhPjUUT4zuVgNLEzpeKAw/OoSTx4EuC+y+OLU7q2LCbajIKYsLuZISMx1ZO/kSevA4
+         3QDQ==
+X-Gm-Message-State: AFuF++kVoFCIyPvZyrNb+4tmoeg4MVJOCsZidwFoq8Hn/vfB/H3Lb2Gm
+	INuGYY/1bpEJ50XmOxIAIQnt8aM5sjT+l06HTGhRPiWn4qn9V1QA+EOvznMnQ2aAbHKj7tkOyQO
+	ik0InBg==
+X-Received: from pfbcp14.prod.google.com ([2002:a05:6a00:348e:b0:848:4e44:7f19])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4195:b0:86c:a9a8:844f
+ with SMTP id d2e1a72fcca58-86f831591d9mr8229457b3a.1.1789409549392; Mon, 14
+ Sep 2026 11:12:29 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Mon, 14 Sep 2026 11:12:22 -0700
+In-Reply-To: <20260914181223.289061-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260914181223.289061-1-seanjc@google.com>
+X-Mailer: git-send-email 2.55.0.1032.g73a4cd73de-goog
+Message-ID: <20260914181223.289061-5-seanjc@google.com>
+Subject: [PATCH 4/5] Revert "KVM: Check for duplicate vcpu_id as early as possible"
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jean-Christophe Guillain <jean-christophe@guillain.net>, 
+	"=?UTF-8?q?Pawe=C5=82=20S?=" <spawel523@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Danilo,
+Now that KVM uses kvm_get_vcpu_by_id() to check for an existing vCPU ID
+before doing any meaningful work, which was made possible by holding
+kvm->lock for the entirety of vCPU creation, revert the now-redundant
+"early" vCPU ID tracking.  The claims about the impact of kvm->vcpu_ids on
+the memory footprint were a wee bit wrong: the worst case scenario isn't
+256 bytes per VM, it's 256 "unsigned longs" per VM, i.e. 2048 bytes per VM.
 
-On Fri, 11 Sep 2026 22:39:16 +0200
-"Danilo Krummrich" <dakr@kernel.org> wrote:
+Increasing the size of "struct kvm" by 2048 nearly doubled the total size
+on many architectures, and tripped x86's KVM_SANITY_CHECK_VM_STRUCT_SIZE,
+which was added to detect this *exact* scenario, where a single change
+significantly increased the size of "struct kvm".  I.e. attempting to build
+KVM with CONFIG_DEBUG_KERNEL=3Dn fails on x86 (the build failures got misse=
+d
+because all build bots apparently test only CONFIG_DEBUG_KERNEL=3Dy kernels=
+,
+and maintainers' test flows were similarly lacking).
 
-> Hi Alex, Jason, Zhi,
-> 
-> On Sat Sep 5, 2026 at 10:11 AM CEST, Zhi Wang wrote:
-> > NVIDIA vGPU VFs require their open, reset, and close lifecycle to be
-> > coordinated with the PF-side nova-core driver.  
-> 
-> [...]
-> 
-> >  drivers/vfio/pci/nvidia-vgpu/main.c   | 253 ++++++++++++++++++++++++++  
-> 
-> This is going to be a longer response; sorry about this in advance.
-> 
-> Looking at the FFI boundary introduced in the previous patch, I'm concerned that
-> it translates the driver model relationships we've expressed through Rust's
-> ownership and lifetime model back into raw pointers and lifetime assumptions
-> that callers must uphold. It also introduces manual lifecycle management across
-> the boundary, rather than preserving nova-core's RAII-based ownership model.
-> 
-> I think implementing the NVIDIA vGPU driver in Rust would let us preserve those
-> relationships across the interface, make lifecycle management less error-prone,
-> and fit naturally alongside nova-core and nova-drm.
-[snip]
-> 
-> If you've made it this far, thanks for reading through this long write-up. I
-> hope you find it useful. Please let me know if you have any questions or
-> thoughts.
+This reverts commit 97d65b544f48b2ee49f6aea32145e3e7969955dc.
 
-I can't really say I made it this far with comprehension, but thanks
-for the effort ;)
+Fixes: 97d65b544f48 ("KVM: Check for duplicate vcpu_id as early as possible=
+")
+Reported-by: Jean-Christophe Guillain <jean-christophe@guillain.net>
+Closes: https://lore.kernel.org/all/56a4bc35ee605588b7cc36c8e45c12b5f3b506c=
+b.camel@guillain.net
+Reported-by: Pawe=C5=82 S <spawel523@gmail.com>
+Closes: https://lore.kernel.org/all/CABD%3DWFOS4j4hDv%2BpW-eEM9HAM2q2GY_iYd=
+AG%2BqvYcUEinUrcQQ@mail.gmail.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ include/linux/kvm_host.h | 1 -
+ virt/kvm/kvm_main.c      | 5 -----
+ 2 files changed, 6 deletions(-)
 
-The one piece here that I can actually review is [5], where
-dev_get_drvdata() is replaced with a vfio-pci-core struct pointer
-embedded in the struct pci_dev, which is a non-starter as far as having
-a common PCI-core shared by various drivers.
-
-Maybe Dave Airlie can share some experience here with a Rust driver
-growing up within a subsystem for a non-Rust-literate maintainer.
-
-My concerns are of course who is going to review the Rust vfio-pci
-variant drivers from a vfio perspective, not just a drm driver
-viewpoint.  Who is going to be responsive when the interfaces break and
-monitor vfio proactively to prevent such breakages, and how do we avoid
-derailing feature development in the core code base.  Can a Rust
-vfio-pci variant driver be self-contained, or to what extent does it
-impose on the framework, such as the drvdata idiom.
-
-FWIW, AI can only go so far to support reviews.  Having the code
-insight to ask the right questions is essential.  A human in the loop
-is a requirement.
-
-Additionally, if we can't narrow the device matching to only the
-Nova-core supported VFs, then this variant driver must immediately
-provide feature parity of vfio-pci with pass-through to vfio-pci-core
-for matched devices.  Libvirt selects a best matching variant driver by
-modalias with our override scheme.
-
-I'd also like to hear from other core vfio contributors.  Thanks,
-
-Alex
-
-
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=poc/vgpu
-> [2] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/commit/?id=484316d855e3d61873122c295feb9a7457eeca21
-> [3] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/commit/?id=6292c1de7f0758dd31496a454b4034507f38bd40
-> [4] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/commit/?id=efac2cec97eab36edd01a2fe79aea67a04bd8842
-> [5] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/commit/?id=76b3bfd6386a01f338780e1a37b5bad3f5a48d31
-> [6] https://lore.kernel.org/lkml/20260303-rust-pci-sriov-v3-1-4443c35f0c88@redhat.com/
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 03bfc92864b6..6aab167bf482 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -791,7 +791,6 @@ struct kvm {
+ 	/* The current active memslot set for each address space */
+ 	struct kvm_memslots __rcu *memslots[KVM_MAX_NR_ADDRESS_SPACES];
+ 	struct xarray vcpu_array;
+-	DECLARE_BITMAP(vcpu_ids, KVM_MAX_VCPU_IDS);
+ 	/*
+ 	 * Protected by slots_lock, but can be read outside if an
+ 	 * incorrect answer is acceptable.
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index d5524ac8c5cf..985af39b980a 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -4185,15 +4185,11 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm=
+, unsigned long id)
+ 	if (kvm_get_vcpu_by_id(kvm, id))
+ 		return -EEXIST;
+=20
+-	if (WARN_ON_ONCE(test_bit(id, kvm->vcpu_ids)))
+-		return -EEXIST;
+-
+ 	r =3D kvm_arch_vcpu_precreate(kvm, id);
+ 	if (r)
+ 		return r;
+=20
+ 	kvm->created_vcpus++;
+-	__set_bit(id, kvm->vcpu_ids);
+=20
+ 	vcpu =3D kmem_cache_zalloc(kvm_vcpu_cache, GFP_KERNEL_ACCOUNT);
+ 	if (!vcpu) {
+@@ -4276,7 +4272,6 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, =
+unsigned long id)
+ 	kmem_cache_free(kvm_vcpu_cache, vcpu);
+ vcpu_decrement:
+ 	kvm->created_vcpus--;
+-	__clear_bit(id, kvm->vcpu_ids);
+ 	return r;
+ }
+=20
+--=20
+2.55.0.1032.g73a4cd73de-goog
 
