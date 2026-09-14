@@ -1,77 +1,343 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9254415B76;
-	Mon, 14 Sep 2026 21:09:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789420144; cv=none; b=McuZqfmgoc3NVwgjgl5nSbJxIgwhVUfQvDuJpG9GmodEzKaZUhqhG6YNcGh0giHCdytth+pn0Sjrywx3+JCWSdh4wsqlj/hoh+mx2Zh3iuHeEuvxEXYeeWoGo+910DnD0OAzqZdDLKpyHnyaiLMt20MIgi89VpOw22mrKNLQCD0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789420144; c=relaxed/simple;
-	bh=QNKiHNVVQITS2ZEMsnVYihCQciysFQAVe9ZcKtFzzs8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=nhskfEaj40oNOqZpTiFeZtl7Q6wSMs5v7l0zgzbYD5vEYHOKNrN3+x6ErbTLRJblXyYiAzOinw48hhtAT3W0et5E+JavVJb3/P0tOctEFkW/Y7oymp4gtJyRmH+pj/MyOzLEVxvdqHMdBS+F7LuFJMMFyeFwwJ2oNbPMm01nn1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nA4osmvt; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F96411A04
+	for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 21:16:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789420609; cv=pass; b=bOMgQlaJkAxoI/3wxJ6WXV4yQhvfM+jdZH15tb4hMkjegjFr4fX5uc/3gG5EZbe1zb/8XDhmV4fmcLx8Emn453jp8Mcv63P97r1iBV1Q4bYNZ93O92pVTMG7WFLKtS+lZ6GouwV63WhGE/aV2LIXhnmWB1uX2GNpwX8s791YB+Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789420609; c=relaxed/simple;
+	bh=n31Ma7+KWLGZ53xfxdD4huj/g6IficrcnEKN22gWA4U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HRG9y0IxROc7jk0cSoVPVxwVfIh1EOgEPdfuI8zBttqkDJAuhvAVKgZn4tBcDB0YJfQStKAyCOckOPrHC/cfW3F1odb4vGKSZU0eRYqujsrnRVzabTh0GqXmd3nmpP2qX6a+AlGohZdMSGlI4E5GSOOTVqtBTT64JNYvRQEBnP0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Jjj9zdAz; arc=pass smtp.client-ip=74.125.228.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nA4osmvt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD02F1F000FF;
-	Mon, 14 Sep 2026 21:09:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789420143;
-	bh=QNKiHNVVQITS2ZEMsnVYihCQciysFQAVe9ZcKtFzzs8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=nA4osmvt+3w2NX7xPPnlIGpN/7wQ/mMwDj4YJIz1fLA9C6hm2m5WCMN4Ok0ZGUe7T
-	 aV0ebLen3kqvvcsMfRkLpWDzRi8Nhr1V58kpnVXc9EtxLIkrhsJVg0V9j88mTpWgKE
-	 dFNp8LYZQyige5E8unVZ1kI06p3hcagR5LU4Abch7PopNvmCAKAXwzADbaOQ2c92is
-	 i2VXn2hig+Q2RBbpaYY4atRjmwA4wkD0FxeQBV1VUT+jEtEU+2RGUsLxgVt4g9BP9v
-	 weFmhlhM8qNO3b56CJlgO0oY+1lFqL+dRIdOGvWXLFJlck+DxhFXFPILGXCVyAjeWn
-	 /rANuoit+rUEg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 23/40] mm/mlock: clear VMA_LOCKED_MASK over mmap
- callback
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?TG9yZW56byBTdG9ha2VzIChBUk0p?= <ljs@kernel.org>
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, bpf@vger.kernel.org, kvmarm@lists.linux.dev, linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-scsi@vger.kernel.org, "Marc
- Zyngier" <maz@kernel.org>, linux-s390@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>, selinux@vger.kernel.org, linux-rdma@vger.kernel.org, "Christian
- Borntraeger" <borntraeger@linux.ibm.com>, dri-devel@lists.freedesktop.org, "Vasily
- Gorbik" <gor@linux.ibm.com>, "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org
-In-Reply-To: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-23-7d9781ed5361@kernel.org>
-References: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org>
- <20260914-b4-mmap-prepare-vma-flag-sanify-v2-23-7d9781ed5361@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 14 Sep 2026 21:09:02 +0000
-Message-Id: <20260914210902.BD02F1F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Jjj9zdAz"
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a6141a61c0so13a12.1
+        for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 14:16:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789420605; cv=none;
+        d=google.com; s=arc-20260327;
+        b=i29juX64jEdxk9rLZDaZFaupsr9J9mZdKMHr7x/xIy5xheDE3jcoTv1U1bWNCb1YYh
+         igOWd9hJbVQGLIVY/BLvtaxCfJcl2fZzJaCUNe7XhG181MI3TWPmQYmVS8ZXN7QdGo9R
+         cjO5OhBUV24W7Tw8Dx6KT9ag/1S1r/ypDp5kBfx045QfI5HJaGZxA9pYnjk1TZdayIoR
+         QToTXG9dV+1RNFQwr6VOyLXqU+VMaftHwV1iLdyzLBBIupmQQ5rnpTaQi3PmESc5DYd7
+         Y49+cFEVTVLgtB9UyTi4wlw8eAhhQV5f2S2IyAcTuo57wwXoYsi8mqYJiB9NsP9p0g4t
+         GtpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=eeC6WkjWwzuT32tJiZ9pB1qr6n1OgtKzG5VypeJxifs=;
+        fh=SYXsNSMweIj8CwHt7UOqgDyn771Kix2uPjy6p+ywscs=;
+        b=Hg/5nSg5FwR3GtrbxWwLm9+mI1SRUbnRylDkeObOVxwh/K9cInPbk8A9OyGwGwDENM
+         /8yq3wuOuy+ohd+55iG6aDlcZuumROih+HvUo1307KLNH/SUQ+dL+Al1G/rsPmfAVM5x
+         pUT5jYLOoKkmoMGnjxewm0sMujDjej2msRqL3QspkkR4jgpERBLfqWndTvUeYQ5jyK5S
+         pBIbAK/E6ihhgnCHpsFmZao/iuEsjRYb4jPcL4imnzXpjkIuIcuUWWt3LgpGnkEe1bce
+         yJBcawi2H5Bsjexc0LVfjCYNwiF5SK+UDOQcnXxWvuDBfbztdYO3Zs7rwdtQaONYz5bw
+         Ahgg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789420605; x=1790025405; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eeC6WkjWwzuT32tJiZ9pB1qr6n1OgtKzG5VypeJxifs=;
+        b=Jjj9zdAz7vweOTPprgbw1+Z0kEPbH3M7/yxmrHZgCwWIB9VH48LIHUANhLIFlXrCro
+         21jawGFS9rk0MD4wlM+018RtGidYd+2wgffYRuM0uKcGZc8L0T/rakq61b8b/TW15gKq
+         QaJgvYeWd13PX+g/rXqvJbFu+LVnfXG8g7G1ymAdT26n8fng+rQ1BQyMce2IJIZcLVRh
+         /TzCfLCezpIUCmhykZ+yxH16RGqR/uuikHfAWvjZYZryWahjeTfnJJYY1C4Bvv+zi1su
+         rO71KBhb2YA7VCFwNqLID+EvHJB3qybTVyd+yGEs3LxDE/HyCfiXHekn9bY9YOB5asap
+         SaAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789420605; x=1790025405;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eeC6WkjWwzuT32tJiZ9pB1qr6n1OgtKzG5VypeJxifs=;
+        b=RMW9RjyvQC4gN1xVmajfYOyhghxQx/pEf7Rk/vKTV+T3XzdJelob4c9hwXj+WACEm+
+         DQy4gCqSjwBTVhAEIGUSs+E5Ofs7yYCJ3BeTxa1xY99cCVGgD9yfwlL7bvIGxXUAL16B
+         MjDFWDqq7L/5wsBcKFlKePQBjJsgHt7mAmowo/7RECXI7b1s3LJnXJCzeiKSVGK+Y/75
+         M8HpXNdvnjfcTRZAAFmVTp92dTTLfyezh9Kd39I5oYMGAE/Ob0pVv7B/+7MTTxtWHo5A
+         Kj8OxhOvAB2kUo5mQJL8eNZBIXqLNCBnDWhbsOUBVGgpLaNvaJEcmDeRg8DVy2N5GLUd
+         9tAA==
+X-Forwarded-Encrypted: i=1; AKwUvBz1/Y03VQ0LqUuUDLjfflF+FDihpH/ZEEy/6fWlzRqFm9I1KpcP6/bgSN6e+8eW8Xni6YE=@vger.kernel.org
+X-Gm-Message-State: AFuF++ltuqpGjt5lLdgYw9FuUckna+h7DSKJmmG5912f1MU5ySvGs2F9
+	gTfdYx1f1LcUbXSg0SE476xJ32mJZHQZ9yKaq41YURSkSLiM8l4xzNrLvk0QdkND4LWS9jGDp1i
+	Xqykh/inSXaBtDbh+UCHStZxUrciDBDVYLYmG+lAQ
+X-Gm-Gg: AYBFou2Kl7p4ffVxlXqnBb3r4jT4Sy7arLE96OP6BhpcAtaPxu+ZR0A6imkuleNN1s+
+	thTmq8LRuW2XBqh25axUIync6I3Q7Pg7kpm9Azk43tORGe9ssQfj/xKSXhC125Ggau6y/pftPz1
+	6qcV4t3xVmNqIUyr7ArHJiMKu/uW8zCeUNDJN8eWwKAdBC177hi5qxYwOUoNm4ojyZETI5ZNY6U
+	VdQ5n5tKp8eNfr71cnmfmv+poXtYiuRM0Fo/LtZXe1IcEwSYkuqybVZgZzXLnKfth31uTxjqOuW
+	xwGbAY23L53/RSfkdPtbl6wne97pacbnuGJ/Pp42zPdmrGiC/53P4co=
+X-Received: by 2002:aa7:c38f:0:b0:6a7:453c:a166 with SMTP id
+ 4fb4d7f45d1cf-6aa0749c8f5mr7106a12.1.1789420604685; Mon, 14 Sep 2026 14:16:44
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <cover.1789281096.git.zhang_wei@open-hieco.net> <2cb3eb8fa88f2992b895b68010874fa3261c3a37.1789281096.git.zhang_wei@open-hieco.net>
+In-Reply-To: <2cb3eb8fa88f2992b895b68010874fa3261c3a37.1789281096.git.zhang_wei@open-hieco.net>
+From: Jim Mattson <jmattson@google.com>
+Date: Mon, 14 Sep 2026 14:16:31 -0700
+X-Gm-Features: AcwNN1XV3bxP1cVuBoSTgK_SyNWJVjXdXiEEXWOxJWPehr9GBRjFNWmcolwNHHI
+Message-ID: <CALMp9eSSiQWq+ZLaF3mJ5=NmTxXYxsYudC3umr5hL7HQQgq36Q@mail.gmail.com>
+Subject: Re: [PATCH v6 5/8] KVM: nSVM: Fetch DecodeAssist bytes for
+ synthesized faults
+To: Tina Zhang <zhang_wei@open-hieco.net>
+Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, zhouyanjing@hygon.cn, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Currently there's a confusing mess around VMA_LOCKED_BIT and
-> VMA_LOCKONFAULT_BIT.
->=20
-> It is permitted for drivers to set any flags they like, with the VMA
-> already possessing lock flags.
->=20
-> This results in the absurd situation of a VMA possessing both
-> VMA_SPECIAL_FLAGS and VMA_LOCKED_MASK flags, which is not permitted.
->=20
-> This has resulted in mlock_vma_folio() having a very silly check for this
-> scenario to work around it.
->=20
-> There is no need for this - just clear the flags before invoking the hook
-> and reinstate them afterwards if they are required.
->=20
-> Nothing relies upon this being set during the mmap operation.
->=20
-> mmap_prepare is unaffected by this so requires no fix.
->=20
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+On Sat, Sep 12, 2026 at 11:44=E2=80=AFPM Tina Zhang <zhang_wei@open-hieco.n=
+et> wrote:
+>
+> Hardware-reflected #NPF and #PF VM-Exits can propagate instruction bytes
+> from VMCB02, but KVM-synthesized exits have no hardware-provided state fo=
+r
+> the current exit.
+>
+> Add kvm_fetch_guest_virt() as a wrapper around the generic guest virtual
+> memory helper that applies instruction-fetch permissions.  When a
+> synthesized data #NPF or #PF has no valid VMCB02 instruction bytes, fetch
+> up to 15 bytes from L2's RIP while constructing VMCB12.  Preserve the byt=
+es
+> already read if a subsequent read cannot be completed.
+>
+> Limit each read to the current page so that linear address boundaries can
+> be checked before continuing.  Outside 64-bit mode, truncate each address
+> to 32 bits and limit the window at the code-segment limit.  In 64-bit mod=
+e,
+> stop at a non-canonical address.
+>
+> Do not attempt the fallback for SEV guests, as KVM cannot read encrypted
+> guest memory directly.
+>
+> Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
+> ---
+>  arch/x86/kvm/svm/nested.c | 64 +++++++++++++++++++++++++++++++++++++--
+>  arch/x86/kvm/x86.c        | 23 +++++++++++---
+>  arch/x86/kvm/x86.h        |  3 ++
+>  3 files changed, 83 insertions(+), 7 deletions(-)
+>
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index fba230058870..5cb6a9d6907b 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -78,22 +78,80 @@ static void nested_svm_invalidate_vmcb02_insn_bytes(s=
+truct vcpu_svm *svm)
+>         svm->nested.vmcb02_insn_bytes_valid =3D false;
+>  }
+>
+> +static u8 nested_svm_get_insn_bytes_len(struct kvm_vcpu *vcpu, u8 max_by=
+tes)
+> +{
+> +       if (!is_64_bit_mode(vcpu)) {
+> +               u32 eip =3D kvm_rip_read(vcpu);
+> +               u32 limit =3D to_svm(vcpu)->vmcb->save.cs.limit;
+> +
+> +               if (eip > limit)
+> +                       return 0;
+> +               max_bytes =3D min_t(u64, max_bytes, (u64)limit - eip + 1)=
+;
+> +       }
+> +
+> +       return max_bytes;
+> +}
+> +
+> +static u8 nested_svm_fetch_insn_bytes(struct kvm_vcpu *vcpu, u8 *bytes,
+> +                                     u8 max_bytes)
+> +{
+> +       struct x86_exception e;
+> +       gva_t rip =3D kvm_get_linear_rip(vcpu);
+> +       u8 count =3D 0;
+> +
+> +       max_bytes =3D nested_svm_get_insn_bytes_len(vcpu, max_bytes);
+> +
+> +       while (count < max_bytes) {
+> +               gva_t addr =3D rip + count;
+> +               u8 chunk;
+> +
+> +               if (!is_64_bit_mode(vcpu))
+> +                       addr =3D (u32)addr;
+> +               else if (is_noncanonical_address(addr, vcpu, 0))
+> +                       break;
+> +
+> +               /*
+> +                * Read one page at a time to recheck the linear address =
+at each
+> +                * boundary.
+> +                */
+> +               chunk =3D min_t(unsigned int, max_bytes - count,
+> +                             PAGE_SIZE - offset_in_page(addr));
+> +               if (kvm_fetch_guest_virt(vcpu, addr, bytes + count,
+> +                                        chunk, &e) !=3D X86EMUL_CONTINUE=
+)
+> +                       break;
+> +               count +=3D chunk;
+> +       }
+> +
+> +       return count;
+> +}
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Hmmm...You added the wrapper I suggested, but you still have the loop
+I don't like. See my comments on the wrapper, below.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260914-b4-mmap-pr=
-epare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org?part=3D23
 
+>  static void nested_svm_update_vmcb12_insn_bytes(struct kvm_vcpu *vcpu,
+>                                                 struct vmcb *vmcb12,
+>                                                 const struct vmcb *vmcb02=
+)
+>  {
+>         struct vcpu_svm *svm =3D to_svm(vcpu);
+> +       const u8 max_bytes =3D sizeof(vmcb12->control.insn_bytes);
+>
+>         if (!guest_cpu_cap_has(vcpu, X86_FEATURE_DECODEASSISTS))
+>                 goto out;
+>
+> -       if (!nested_svm_vmexit_supports_insn_bytes(vmcb02) ||
+> -           !svm->nested.vmcb02_insn_bytes_valid) {
+> +       if (!nested_svm_vmexit_supports_insn_bytes(vmcb02)) {
+>                 nested_svm_invalidate_insn_bytes(vmcb12);
+>                 goto out;
+>         }
+>
+> -       nested_svm_copy_insn_bytes(vmcb12, vmcb02);
+> +       if (svm->nested.vmcb02_insn_bytes_valid) {
+> +               nested_svm_copy_insn_bytes(vmcb12, vmcb02);
+> +               goto out;
+> +       }
+> +
+> +       if (!is_sev_guest(vcpu))
+> +               vmcb12->control.insn_len =3D
+> +                       nested_svm_fetch_insn_bytes(vcpu,
+> +                                                   vmcb12->control.insn_=
+bytes,
+> +                                                   max_bytes);
+> +       else
+> +               nested_svm_invalidate_insn_bytes(vmcb12);
+>
+>  out:
+>         svm->nested.vmcb02_insn_bytes_valid =3D false;
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 4b3681796c75..735b67781d55 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -4848,9 +4848,24 @@ static int kvm_read_guest_virt_helper(gva_t addr, =
+void *val, unsigned int bytes,
+>  }
+>
+>  /* used for instruction fetching */
+> -static int kvm_fetch_guest_virt(struct x86_emulate_ctxt *ctxt,
+> -                               gva_t addr, void *val, unsigned int bytes=
+,
+> -                               struct x86_exception *exception)
+> +int kvm_fetch_guest_virt(struct kvm_vcpu *vcpu, gva_t addr, void *val,
+> +                        unsigned int bytes, struct x86_exception *except=
+ion)
+> +{
+> +       u64 access =3D PFERR_FETCH_MASK;
+> +
+> +       if (kvm_x86_call(get_cpl)(vcpu) =3D=3D 3)
+> +               access |=3D PFERR_USER_MASK;
+> +
+> +       memset(exception, 0, sizeof(*exception));
+> +       return kvm_read_guest_virt_helper(addr, val, bytes, vcpu, access,
+> +                                         exception);
+> +}
+> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_fetch_guest_virt);
+
+To make this work the way I envisioned it, you need to add an out
+variable, unsigned int *bytes_read, to kvm_read_guest_virt_helper():
+
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -4818,7 +4818,8 @@ gpa_t kvm_mmu_gva_to_gpa_system(struct kvm_vcpu
+*vcpu, gva_t gva,
+
+ static int kvm_read_guest_virt_helper(gva_t addr, void *val, unsigned
+int bytes,
+                                      struct kvm_vcpu *vcpu, u64 access,
+-                                     struct x86_exception *exception)
++                                     struct x86_exception *exception,
++                                     unsigned int *bytes_read)
+ {
+        struct kvm_pagewalk *gva_walk =3D &vcpu->arch.gva_walk;
+        void *data =3D val;
+@@ -4830,8 +4831,10 @@ static int kvm_read_guest_virt_helper(gva_t
+addr, void *val, unsigned int bytes,
+                unsigned toread =3D min(bytes, (unsigned)PAGE_SIZE - offset=
+);
+                int ret;
+
+-               if (gpa =3D=3D INVALID_GPA)
+-                       return X86EMUL_PROPAGATE_FAULT;
++               if (gpa =3D=3D INVALID_GPA) {
++                       r =3D X86EMUL_PROPAGATE_FAULT;
++                       goto out;
++               }
+                ret =3D kvm_vcpu_read_guest_page(vcpu, gpa >> PAGE_SHIFT, d=
+ata,
+                                               offset, toread);
+                if (ret < 0) {
+@@ -4844,6 +4847,8 @@ static int kvm_read_guest_virt_helper(gva_t
+addr, void *val, unsigned int bytes,
+                addr +=3D toread;
+        }
+ out:
++       if (bytes_read)
++               *bytes_read =3D data - val;
+        return r;
+ }
+
+Then, kvm_fetch_guest_virt() should return the number of bytes read
+rather than an X86_EMUL_* code.
+
+That should allow you to eliminate the loop in nested_svm_fetch_insn_bytes(=
+).
+
+
+
+> +static int emulator_fetch_guest_virt(struct x86_emulate_ctxt *ctxt,
+> +                                    gva_t addr, void *val,
+> +                                    unsigned int bytes,
+> +                                    struct x86_exception *exception)
+>  {
+>         struct kvm_vcpu *vcpu =3D emul_to_vcpu(ctxt);
+>         struct kvm_pagewalk *gva_walk =3D &vcpu->arch.gva_walk;
+> @@ -5817,7 +5832,7 @@ static const struct x86_emulate_ops emulate_ops =3D=
+ {
+>         .write_gpr           =3D emulator_write_gpr,
+>         .read_std            =3D emulator_read_std,
+>         .write_std           =3D emulator_write_std,
+> -       .fetch               =3D kvm_fetch_guest_virt,
+> +       .fetch               =3D emulator_fetch_guest_virt,
+>         .read_emulated       =3D emulator_read_emulated,
+>         .write_emulated      =3D emulator_write_emulated,
+>         .cmpxchg_emulated    =3D emulator_cmpxchg_emulated,
+> diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+> index 0f5919b092e4..f03419a79a11 100644
+> --- a/arch/x86/kvm/x86.h
+> +++ b/arch/x86/kvm/x86.h
+> @@ -356,6 +356,9 @@ static inline void adjust_tsc_offset_host(struct kvm_=
+vcpu *vcpu, s64 adjustment)
+>  int kvm_read_guest_virt(struct kvm_vcpu *vcpu,
+>         gva_t addr, void *val, unsigned int bytes,
+>         struct x86_exception *exception);
+> +int kvm_fetch_guest_virt(struct kvm_vcpu *vcpu, gva_t addr, void *val,
+> +                        unsigned int bytes,
+> +                        struct x86_exception *exception);
+>
+>  int kvm_write_guest_virt_system(struct kvm_vcpu *vcpu,
+>         gva_t addr, void *val, unsigned int bytes,
+> --
+> 2.43.7
+>
