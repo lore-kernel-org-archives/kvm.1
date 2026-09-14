@@ -1,73 +1,59 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from esa9.hc1455-7.c3s2.iphmx.com (esa9.hc1455-7.c3s2.iphmx.com [139.138.36.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282593B0AE7;
-	Mon, 14 Sep 2026 07:21:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2A53E1CE1;
+	Mon, 14 Sep 2026 07:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.36.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789370501; cv=none; b=qLptgJricnrZ7OJJomGKxMNyWaumDxo/uNBqv15m27rhFhx3LAFu1Gu5Wc9HBQFM40kqk2ezdYPIwlyfzCuhRd7WVGWHcXrdzeKzTSZMEGFYCnzFe8x3lATMfENJ6AVRbBA8zZWtWhna1ukHgsyXzxM/szRdB2rInzxXL86nRzE=
+	t=1789371074; cv=none; b=tVVSk8d7O1/Ydsf/k+Waimw4V82L7Mz41qhrLjDRg6p9DSM9XQCFT4bFwhiTaJirGoPx3LjPKe8zlkNErFT1DiGzpB8Sp9VSiJC8ciBh4Tk5Lf538sXGLEF6aipOnlY4J/yHTYcsfBJmCAYes9c7jXNSYQGFDtlKrvCxkJsyCfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789370501; c=relaxed/simple;
-	bh=CeqCwB4utSXB+w/N3KGLmyefG+SuUJSVkxFO4em5gog=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N9ZNDDUetX+6lEGpuykEqIrATix66KBLmPaMmcSuV7TK5BvoROlFIpT2gO8Igcvn6l6FUyiV9hIh6IIqlmE6z+AwjQuXlUSN9VzuSQUUW8PFkWz1hRQvep4WbSiC1oLgImXuoXJ2Slw8HBTNE7RXVO7nWUPtWrbvGqZaKI0EJ1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Qz4mXj5P; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1789371074; c=relaxed/simple;
+	bh=5/qH9WQH0xnxZiSwc57XSnnm6CjMDXhHBj4pLQbDsZk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=oBOsuQ7E9NBekRKHLWBQdYRoY6//D04onUMf03WDJw5Bpf0vX8mY0NRkRIZXZ0+yY/FBfvx1LG+PlBmx/uUD3StjnVsp+ortkTT2Pu/8OxWLVZeWc3qykijicrvrv5q0z9cIY/X1wXzc5uzR01IphHztqboc5BsM5a3K3J/HYa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=q53rWFx3; arc=none smtp.client-ip=139.138.36.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Qz4mXj5P"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68E61cs81243088;
-	Mon, 14 Sep 2026 07:21:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Hd43wX
-	kwN06QPvygSuX05VSZMVrtZafK/VMRVp/tNMk=; b=Qz4mXj5PVVegwcxVBw5ENv
-	SdDVM0U+j1ip/ukhXZpFIIkkW0MOeYVmbjnq1s3fPGDedxWPvg6gyglKlWme7Xoc
-	xvhAAoSpNkxmh51nh3+bp1pMYrygBpAjUBUJK1aDjTZlWPcki1mu+i88jR2IGaCt
-	7jPOAfuNmGMd+rGIog48cIR+K7MZKhIvMZskrs2J/cEMmLMpIK3R9MsLFNbM0s8z
-	QQmMGZ3wcfoNvK6J+FTo1xkG5s11dMk7pRe6sUwFDiWB1+Oax+ks4zIgnJKD/oA2
-	mSKnNLfJaekqh3GBeju+T0IHLsVR6i2I67P4ADf35/IPxUZ7Fe13zKCR+UKIwzrQ
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmxcuqk8s-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 14 Sep 2026 07:21:00 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68E5o6KM1751657;
-	Mon, 14 Sep 2026 07:21:00 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gnj2jvk60-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Sep 2026 07:21:00 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68E7Kw4c32965104
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 14 Sep 2026 07:20:58 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 365CF2004F;
-	Mon, 14 Sep 2026 07:20:58 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D62BA20040;
-	Mon, 14 Sep 2026 07:20:52 +0000 (GMT)
-Received: from Linuxdev.ibmuc.com (unknown [9.43.93.83])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 14 Sep 2026 07:20:52 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: leixiang <leixiang@kylinos.cn>
-Cc: seanjc@google.com, pbonzini@redhat.com, stable@vger.kernel.org,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Suresh Warrier <warrier@linux.ibm.com>,
-        Paul Mackerras <paulus@ozlabs.org>, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Set irqfd->producer only on success
-Date: Mon, 14 Sep 2026 12:50:51 +0530
-Message-ID: <178919368040.441103.17640401400836975796.b4-ty@linux.ibm.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260709055755.31297-1-leixiang@kylinos.cn>
-References: <ak59frQUBl9Gs3Qn@google.com> <20260709055755.31297-1-leixiang@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="q53rWFx3"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1789371072; x=1820907072;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=5/qH9WQH0xnxZiSwc57XSnnm6CjMDXhHBj4pLQbDsZk=;
+  b=q53rWFx33peYG2ja8yAHvZ9cwyK1hSHm8QH9uPM/kiUAtzKI11W7CvY8
+   hh9i41UlgerMlDU++bdm+egyq6d9IvwPu8JGm1sfYEsN7smzzotmr8Dr1
+   UlNEypukUbGxb2gjWHNBX6abKd96CDtWvwg9iUhOgQ0C2cI2FZNkwfH9r
+   qsLFSyvNNtAMcDIvui33D9dAVXgwJ+VcTCMgR2NUOSawe6Ot9edgDJ8fN
+   ILXMU7pRRJN8MaRATITObUKQwVYiD6bOvkp7mrNLjNVHqzR8FLvv4n4+p
+   hOtd+IaaPzY/3sG3N8NUBd9D8c3CPgQukH4MPx7/Fccq2JPpszcGqaTK5
+   A==;
+X-CSE-ConnectionGUID: vy+R9QidReCnrqDAwfuhiQ==
+X-CSE-MsgGUID: HJZ/aiUAS/64Qr3Av5XdEg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11904"; a="242463258"
+X-IronPort-AV: E=Sophos;i="6.27,102,1786978800"; 
+   d="scan'208";a="242463258"
+Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
+  by esa9.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2026 16:31:03 +0900
+Received: from az2uksmgm4.o.css.fujitsu.com (unknown [10.151.22.201])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id 9954082071A;
+	Mon, 14 Sep 2026 07:31:03 +0000 (UTC)
+Received: from az2nlsmom2.o.css.fujitsu.com (unknown [10.150.26.200])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmgm4.o.css.fujitsu.com (Postfix) with ESMTPS id 3DD2C14003FD;
+	Mon, 14 Sep 2026 07:31:03 +0000 (UTC)
+Received: from [127.0.1.1] (unknown [10.124.178.20])
+	by az2nlsmom2.o.css.fujitsu.com (Postfix) with ESMTP id 65571180012C;
+	Mon, 14 Sep 2026 07:30:57 +0000 (UTC)
+From: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+Subject: [PATCH v2 0/3] 52-bit VA guest mode ID support
+Date: Mon, 14 Sep 2026 16:30:43 +0900
+Message-Id: <20260914-arm64-52bit-va-v2-0-3911cb9d4ad4@fujitsu.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -75,46 +61,98 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE0MDA5OCBTYWx0ZWRfX/OSjqh4Hyfq9
- ysTVC0+y8xyuP6Vh7NuWNTcDwlpvZN8bQ1WNqBBZvmJkZMtZArwh50gKV8iEE/MHHaxan9QE0QM
- lzrTEo4xL79JlfeyG9jO42kGI3PoZy8=
-X-Proofpoint-ORIG-GUID: o-9M6jW4VltOCLoYxFRp36SN05Fh8v67
-X-Proofpoint-GUID: opa0Df-h4njrn0h1niVtQ7wHVyRfMB4j
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE0MDA5OCBTYWx0ZWRfXyhiAkVXfvuVX
- CbqWED9hWuqTkWBqfAiY1UoArWRSC4anuQdD1ImVzU/jWfLWF8W1tfp8Qy661TW8a5oVFQmidXB
- TOK3/O7yOUAGXmyX6Fu06MV0SIu91tYsvgmzQCA4ga3tb3urOCfRLHbUSnQANAiH+krh+FXApQP
- QLOGxgR3RZFmXBFRqkUZK1Q86VUqQrgD5NqPZ4eGsK1iQ7yLRg4XEtq56q+89jrO2UNCEggNseg
- 2SUx6PPsUusqXUuIYe+niOwVfCxHroDCYLCZnkqAoKowv7j635lUByCkZvMnISJwcNwVRvEC72O
- 8ARzZJqsEd9+pLYHDt39PNn72cQFSoQvyGQ2c0KQC2YKDkZ8muu1YjNXY4hCSI3XrlFpcXjD/pL
- APkgtYsWnJGegG198GMk8LF8J0QApLZNMYtHOYQgSM3Yvqp5PuuzASHCAF1sDUhJIS2qo95wRRz
- JyLx02Si+GhKCD6WgDA==
-X-Authority-Analysis: v=2.4 cv=F+7C5ahN c=1 sm=1 tr=0 ts=6aa7a05d cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=f1hmvgOKX2ZYp0PRnOwA:9 a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-14_02,2026-09-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 phishscore=0 clxscore=1015 malwarescore=0
- lowpriorityscore=0 bulkscore=0 spamscore=0 impostorscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609140098
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKOip2oC/12NQQ6CMBBFr0Jm7Zh2gAZdeQ/DAkorQwKYtjQaw
+ t2lGDcuX/L++yt449h4uGYrOBPZ8zztQKcMdN9MD4Pc7QwkSImKSmzcqAosqeWAscGcrLSF7kQ
+ pOthHT2csv47gvf6yX9rB6JAqyejZh9m9j8cok/eLq/94lChQFkZfKpIyV/nNLgMHv5z1PEK9b
+ dsHgk4c3MAAAAA=
+X-Change-ID: 20260825-arm64-52bit-va-32f1f4cd050d
+To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+ Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>, 
+ Steffen Eiden <seiden@linux.ibm.com>, 
+ Suzuki K Poulose <suzuki.poulose@arm.com>, 
+ Zenghui Yu <yuzenghui@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Shuah Khan <shuah@kernel.org>, Sean Christopherson <seanjc@google.com>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+ kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Itaru Kitayama <itaru.kitayama@fujitsu.com>, 
+ Takayuki Okamoto <tokamoto@fujitsu.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789371056; l=3154;
+ i=itaru.kitayama@fujitsu.com; s=20260825; h=from:subject:message-id;
+ bh=5/qH9WQH0xnxZiSwc57XSnnm6CjMDXhHBj4pLQbDsZk=;
+ b=Vrji+rOz7LhmW6GdQCEDDXWddYrkAdBps2e04+1rLpswYZDXxv+ahTbGMs9yqV0gtrDVHhhwN
+ LFHDUSJNmUnDuyYdXr8NBnwbrjHCUMRBlvptVI8wlBP+R+wwItjuMqR
+X-Developer-Key: i=itaru.kitayama@fujitsu.com; a=ed25519;
+ pk=g9bTnr9giRP7JwNSZHy+OMLQZBEUtSE9tUnXso0hH1Y=
 
-On Thu, 09 Jul 2026 13:57:52 +0800, leixiang wrote:
-> Set irqfd->producer only after kvmppc_set_passthru_irq() succeeds to
-> avoid leaving a dangling pointer on failure. The bypass manager does
-> not register a failed producer, so the pointer is never cleared.
-> 
-> 
+This patch series extends the arm64 KVM selftest framework
+to support 52-bit guest virtual address (VA) modes in addition to
+the existing 52-bit physical address (PA) configurations.
+The motivation is to enable validation of LPA2 guest memory-management
+behaviour in configurations that use a 52-bit VA space.
+While the selftest framework already supports testing 52-bit PA
+configurations, it lacks the ability to exercise guests running with
+52-bit virtual addresses, leaving part of the LPA2 functionality untested.
+To address this, the series introduces new guest modes for 52-bit VA
+operation, adds five-level page table support where required, and
+performs runtime detection of host 52-bit VA capability so that
+LPA2-enabled guest VA tests are executed only on supported systems.
 
-Applied to powerpc/fixes.
+Testing:
 
-[1/1] KVM: PPC: Book3S HV: Set irqfd->producer only on success
-      https://git.kernel.org/powerpc/c/1144454ea22290d7c6998a2af6239e5995476afc
+Built and ran lpa_test on QEMU with 52-bit VA support. 
+The test verified shared mappings at low and high guest virtual addresses, 
+then remapped the high VA to a different GPA and verified that 
+the mappings remained independent.
 
-cheers
+Signed-off-by: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+Reviewed-by: Takayuki Okamoto <tokamoto@fujitsu.com>
+---
+Changes in v2:
+- Reorganize the series so that each patch builds independently.
+- Move all P52V52 mode definitions and uses into the same patch.
+- Use the standard "KVM: arm64: selftests:" subject prefix.
+- Reuse one probe VM and vCPU for IPA and 64K VA capability detection.
+- Make the VARange result explicitly specific to the 64K granule.
+- Clarify that only the 4K P52V52 mode uses five page-table levels.
+- Link to v1: https://patch.msgid.link/20260826-arm64-52bit-va-v1-0-14ec98211363@fujitsu.com
+
+To: Marc Zyngier <maz@kernel.org>
+To: Oliver Upton <oupton@kernel.org>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+To: Joey Gouly <joey.gouly@arm.com>
+To: Steffen Eiden <seiden@linux.ibm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+To: Zenghui Yu <yuzenghui@huawei.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+To: Sean Christopherson <seanjc@google.com>
+To: Shuah Khan <shuah@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: kvmarm@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+---
+Itaru Kitayama (3):
+      KVM: arm64: selftests: Support five-level stage-1 page tables
+      KVM: arm64: selftests: Add 52-bit VA guest modes
+      KVM: arm64: selftests: Test 52-bit guest virtual addresses
+
+ tools/testing/selftests/kvm/Makefile.kvm           |   1 +
+ tools/testing/selftests/kvm/arm64/lpa_test.c       | 124 +++++++++++++++++++++
+ .../selftests/kvm/include/arm64/processor.h        |   3 +-
+ tools/testing/selftests/kvm/include/kvm_util.h     |   3 +
+ tools/testing/selftests/kvm/lib/arm64/processor.c  |  60 +++++++++-
+ tools/testing/selftests/kvm/lib/guest_modes.c      |   7 +-
+ tools/testing/selftests/kvm/lib/kvm_util.c         |  11 ++
+ 7 files changed, 200 insertions(+), 9 deletions(-)
+---
+base-commit: 28924df2a08f440c73991b83028032c901de2ae4
+change-id: 20260825-arm64-52bit-va-32f1f4cd050d
+
+Best regards,
+--  
+Itaru Kitayama <itaru.kitayama@fujitsu.com>
+
