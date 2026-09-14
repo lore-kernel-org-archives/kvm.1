@@ -1,202 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010046.outbound.protection.outlook.com [52.101.85.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D7845C701;
-	Mon, 14 Sep 2026 16:18:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789402688; cv=none; b=EGl3geq8bxehDa7B/5atL5uoHMlwpxazu4zo+mqmibl6u0bbwEk1GFgvZdw2W3faywJh5Fz6NrsKkogDyh9IBm6k3dUKHKCO5hDELTT8wmRM7VALZpk6zjqbSvB3Fg6GUvPsOSoWGGuHrtA3HoKxhZfd7SslpzMg19WLZZm4pRo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789402688; c=relaxed/simple;
-	bh=1owmOdr4P0WV06uy2lm39eCfjnzfe9vtxRt7Pr4+Irc=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=LZuo9OOVDAFbjhDZEgJhGOkxHMv475e0ZfQG0cWYTXNfIcSaZn9Wy14NwgKtVul9H+x/231wq7RgN4ilDuLU6cu5WijrjO9CUQW2bZIgrXoJ1Xtdm0+ejmrBSBsofiPhZdsGAJXpOpWUn91JUPKyqOWGkKs52XM2y7modPar2/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AzSMaKiH; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A42622A80D
+	for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 16:22:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789402978; cv=fail; b=ac+yTgabv+/nSf9jN12aFl+d8LAftKfaQtvNvoxjt67m4W6lVH57sCh+PbCBzDrXxeou+7/VhecFk89KRvGSD4JsirT8exm3ZQvyNBjEdxrhz1w/pIJlaVpq9JnEXfCANuUYMBl77h985dLnQp5mZuzPQYuWVeUxvwD4QzSiqdg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789402978; c=relaxed/simple;
+	bh=XVcYec0R0fhguK9CLAob9mByVDeX8LcfS4F2sfwu7VA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lx2yTPjatbeKzpEjC7K0SSsXPcONmbl5CD9diTdvOXCj/8V2q7X79AXc+Nyff1pD0B0lkGg/pUpFnGQH3aoFAKR0MMqb0ImsMC2kUVTlwGbdwkhNFnSDWyeAbyIq2eFZDbnh4Pj91szRdb+ivOxVG0Q+o0giQnO89uUAYPN9Gy8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=v+CZkxmM; arc=fail smtp.client-ip=52.101.85.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AzSMaKiH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2594A1F000FF;
-	Mon, 14 Sep 2026 16:18:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789402687;
-	bh=9od9Up32sF6E9LMweXBSOobe1mrdOP2km13EpNw1aaI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=AzSMaKiHvPImX3wB6bWcLxw3ylXaQMX+dybvo62fPF2shgf6NhQAs+k1WCQ5tWo4y
-	 ONhgtm+5rmM0ilTwVlkaNoTbsJvo5yP4RJn2/z8P5hkM/4DAeHIExQ/1JSKYrvmm6Q
-	 XYW5fxIlIN2hgjWVe/QrjDI9nqIiII5bWdGLuX/+k8yvSRJHKCAfRaFA4CiLx00cf8
-	 4i8jzLBhNhfME7yLhgRhoA2/gkFtw0DBRG7skQT3AHrhXN9wK1CQRnIUZWSgQ7mmEj
-	 gR94eX8m1v/RyPdglBpSBLb4F03AMeO4z1TfGlGll4K0bBmes6V8p7s6cSvnlKQm6s
-	 ZhttbbKt88/Pg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 04/40] mm: consistently validate VMA state after
- mmap[_prepare] hooks
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?TG9yZW56byBTdG9ha2VzIChBUk0p?= <ljs@kernel.org>
-Cc: linux-scsi@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, dri-devel@lists.freedesktop.org, "Heiko
- Carstens" <hca@linux.ibm.com>, selinux@vger.kernel.org, kvmarm@lists.linux.dev, linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, kvm@vger.kernel.org, "Oliver
- Upton" <oupton@kernel.org>, "Christian Borntraeger" <borntraeger@linux.ibm.com>, "Marc
- Zyngier" <maz@kernel.org>, linux-rdma@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org
-In-Reply-To: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-4-7d9781ed5361@kernel.org>
-References: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org>
- <20260914-b4-mmap-prepare-vma-flag-sanify-v2-4-7d9781ed5361@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 14 Sep 2026 16:18:05 +0000
-Message-Id: <20260914161806.2594A1F000FF@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="v+CZkxmM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AH/9t2A9BQtBF7G/lRWhPahQLY+m7kXcEGnBZ4WINOwXVhBwG9yXZ9L3lqJEHTGmyMO7x4yy5oSY7pxdEm1RsMybH5MzpAVTTvhiQ0MuVFGceojNRZh8L+oWhVAaOu6SeM9NXfsLJEcu2TWJFWYPj+IJNS3qrAp6ZqvFgLMNG7DrbI3jBAtZdpyGV4zVejqOuVX3vQYk3A9LCGOVkHW02EL7S8Xosf6TbC/Pf42R2Cf5sskjLj4f7rxccD86ej/wVfT4naBpJUpphLINlD+p0HEbOGiGbzgrIL/R2NIzlwmCkQ6VEs7j5mXKZOMvzxyb9M+hX7Nvp0L08wWer1kEnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qKpcSUf3lmM6JS2Wp10QBayw21bHqfrDl67kjUt1EUU=;
+ b=GONhhgrUN/p5gwdnPEZ1HgKn2QIf4KLaxfo/RJZhtbHQorT+7zWM4vr/hQ5eDuhgUoG+VTrCS2RmJqrrbtWihYNkTRP1wAdDrFMl8a2zknAZyEXP3/1fXzrkshUbgl5rJmLpLIUNg9qmqphbDNXlHi0lUs/VqNre0uODrRy1AlLjmWQHVlQip086JhopoTJl987NDQMJD4oaamrbb8lMQtNmysynUC3kfgdsO938iFY6G63ULom9mjIHAewIJmBAzauuGwbvqXtuzd+hc3zEBQNrfGxtkxj1jBQG/IvQPZU1RTDRnYqVabXtLDwjzQ2hL3nTJ6qXYsEr9X2bBqmWgg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qKpcSUf3lmM6JS2Wp10QBayw21bHqfrDl67kjUt1EUU=;
+ b=v+CZkxmMxtLMWZCHxvu9uYw4Obsnh5IWZobmCqkX4+Zwxt1pyW9ONpLk2H1hfy+u2c3Cf9ER35RYONczNuqoQg+/y5mq/C7tJuItSWQm6/199bA3PljFCEtw38OzQkvZFzuSWBa75eQdmen+wyXFFuIbdduGf7+aL4a5tsJkPHo=
+Received: from BLAPR03CA0116.namprd03.prod.outlook.com (2603:10b6:208:32a::31)
+ by IA0PPF7D094C5BF.namprd12.prod.outlook.com (2603:10b6:20f:fc04::bd4) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
+ 2026 16:22:50 +0000
+Received: from BN1PEPF00018549.namprd05.prod.outlook.com
+ (2603:10b6:208:32a:cafe::89) by BLAPR03CA0116.outlook.office365.com
+ (2603:10b6:208:32a::31) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.406.12 via Frontend Transport; Mon,
+ 14 Sep 2026 16:22:50 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN1PEPF00018549.mail.protection.outlook.com (10.167.248.8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.428.7 via Frontend Transport; Mon, 14 Sep 2026 16:22:50 +0000
+Received: from speedway8455host.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 14 Sep
+ 2026 11:22:49 -0500
+From: "Pratik R. Sampat" <prsampat@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: <kvm@vger.kernel.org>, <michael.roth@amd.com>, <thomas.lendacky@amd.com>,
+	<ashish.kalra@amd.com>, <pbonzini@redhat.com>, <prsampat@amd.com>
+Subject: [PATCH 0/2] i386/sev: Enhanced SMT Protection for SEV-SNP guests
+Date: Mon, 14 Sep 2026 16:22:42 +0000
+Message-ID: <cover.1789399242.git.prsampat@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF00018549:EE_|IA0PPF7D094C5BF:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2fa0560e-aed3-4b61-6a50-08df127c6bcb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|376014|36860700016|23010399003|6133799003|56012099006|11063799006|18002099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	Y3zYRHBhQDnBOlUbkFg6UF6WJXW1NJ1AY2B7fRGT08VKTZa3CySed/ne7/A3YJVl+eN280xOmaMcu6M7u0l2qLgCEZ/TSi2bCYi2fY4/EMRB/wYkAO7u6LVZQQaIOFCcRUG01/eO6+CcyZDhplURlyNyhS83yf/H5K0Yt2RW4jli8ffMF2uW3X/JAtkRmD5Fcz1G/ezwlH0eYJvoV8SD2hjoaVajRZk0XUO99c67ew4/0ROUldi+MATwx4jUdT3ClhYy8XV2EKJvx+gDVdA7RH5S5GC9BCc8YNezAQ0vadII/M6+5yGqshzSrkjcfWSZQzJltuMXeGYc1ZnvzpBiRyAm4gIdHjpiNu9CHYOCZcGsIllyRAmc7BF7BUsDeMu6y3dBNAeQdJQC+nW+SiuarS6HmqvgaoFNgNVOy+Pun4fYXGqUd2EkFi6sckcxt0iboIAowsc/T77OIOv99A5U6Poc7aF+sWq/enHVdHgr8Ra4F1H0hlC/hW003udZ0yOhXYMF6LcKZ0vLrrZo0zxNzra376cU8OfNuj0UlAy9h4TiOuV+H2mqWGHoet1tJg7RlR6f4TDNvagK2FEUkT+mNXsmZctzQNRUl9UU8G3tUi+3UcVA10GKsZS1fwR3Rs3HWCNX3T1cR1VNihzSNVDAWJOaljJ/fx65H0ipHdHW8CN031K61DBO4i7iZFqajTYGdH+SfCuMFr2V1PHNV3EyqQ==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(36860700016)(23010399003)(6133799003)(56012099006)(11063799006)(18002099003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	H90IlwxZl09bYfZPgrlJ3d3y08MtdnH/zZF0tfiAslH9hHBIPnvPxWK6cuf99THN1PcjKoPB5iVThwtOba07mawXv1s5kKmY2c0K4RjQkg+cZXNNVZVEnK3WvykaX4kDYRD69T01vU42JzIenKVZpAMn8RGqb/FCZ+8Z6n0Ll/CbdgjglPFClx1eAoISp/x0KuLx03VZT+XWmnGB2Lh9mGHuGXv/v6yiajWhorVBsQ5Rux6uvDXOlOsDDTStNa1rMLmTae+f6AAXDMXYMb7XzUW/SnuzeQH6Snlq1PUvqIXfJ8COeMPfi2KbzcJO04A1ugMN4oq4MNd+1lBL/NU/LlGT1esd/a1oBjJrNCBbAN1H/Z2cgzfOfQXM4QEohpS8/y53fajXMp3GYvaUXZuf0C8D7Xr91YEYWh2eLchv4KzQJjyFkDVaJBItDD+02vxL
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 16:22:50.3202
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2fa0560e-aed3-4b61-6a50-08df127c6bcb
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF00018549.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPF7D094C5BF
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
+Enhanced SMT Protection (ESMTP) is an SEV-SNP feature that lets a guest
+constrain what runs on the sibling thread of the core its vCPUs execute
+on. Each vCPU's VMSA carries a VCPU_ID and a VCPU_SIBLING_MASK, and
+hardware admits a VMRUN only when the sibling thread is idle in host
+mode or is running a vCPU that the mask permits.
 
-New issues:
-- [High] Premature execution of vma_close() before unmap_region() during va=
-lidation failure creates a Use-After-Free race window.
-- [High] Restoring vma->vm_start before calling unmap_region() on the valid=
-ation error path leaves orphaned PTEs, causing permanent UAF.
+This series adds support for to opt-in esmtp support from KVM and
+engages core scheduling onto the vCPUs to bundle trusted siblings in one
+group.
 
-Pre-existing issues:
-- [High] mmap_validate() fails to check if a driver erroneously sets VMA_WR=
-ITE_BIT on a mapping without VMA_MAYWRITE_BIT, allowing read-only files to =
-be mapped writable.
-- [High] mmap_validate() fails to check if a driver alters vma->vm_end, whi=
-ch silently corrupts the maple tree.
---
+Usage
+-----
+Requires patched Linux and edk2 builds. Launch an SEV-SNP guest with
+ESMTP enabled on the sev-snp-guest object:
 
-commit d07b85544000595b057fc1ff43289af0359a7b6c
-Author: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+  -object sev-snp-guest,id=sev0,cbitpos=51,reduced-phys-bits=1,esmtp=on
 
-mm: consistently validate VMA state after mmap[_prepare] hooks
+ESMTP is opt-in because it carries a performance cost as VMRUN stalls
+until the sibling runs work from a trusted vCPU or is in idle.
 
-This patch generalizes VMA state validation checks for both mmap_prepare
-and legacy mmap hooks. It aims to ensure that drivers do not violate
-invariants, such as altering the VMA start address or creating writable
-mappings on read-only files, and adds validations for insert_vm_struct().
+The guest reports the feature in dmesg among the SNP feature names:
 
-> diff --git a/mm/internal.h b/mm/internal.h
-> index fe576d468af45..1ed11eaf276a7 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-[ ... ]
-> @@ -239,26 +260,16 @@ static inline int mmap_file(struct file *file, stru=
-ct vm_area_struct *vma)
->  	 */
->  	if (unlikely(err || !vma->vm_ops))
->  		vma->vm_ops =3D &vma_dummy_vm_ops;
-> +	if (unlikely(err))
-> +		return err;
-> =20
-> -	return err;
-> -}
-> -
-> -/*
-> - * If the VMA has a close hook then close it, and since closing it might=
- leave
-> - * it in an inconsistent state which makes the use of any hooks suspect,=
- clear
-> - * them down by installing dummy empty hooks.
-> - */
-> -static inline void vma_close(struct vm_area_struct *vma)
-> -{
-> -	if (vma->vm_ops && vma->vm_ops->close) {
-> -		vma->vm_ops->close(vma);
-> -
-> -		/*
-> -		 * The mapping is in an inconsistent state, and no further hooks
-> -		 * may be invoked upon it.
-> -		 */
-> -		vma->vm_ops =3D &vma_dummy_vm_ops;
-> +	err =3D mmap_hook_validate(prev_start, &prev_flags, vma);
-> +	if (unlikely(err)) {
-> +		vma->vm_start =3D prev_start;
+  # dmesg | grep -i SEV
 
-[Severity: High]
-If a driver's legacy mmap hook erroneously decreases vma->vm_start (expandi=
-ng
-the VMA downwards) and populates PTEs in that expanded range,
-mmap_hook_validate() catches the violation. By forcing vma->vm_start back to
-prev_start here before __mmap_new_file_vma() invokes unmap_region(), doesn't
-that initialize the unmap operation with the smaller, restored address rang=
-e?
-This would cause unmap_region() to skip the expanded PTEs, leaving them
-orphaned and causing a permanent use-after-free since the backing memory ge=
-ts
-freed. Should the unmap occur before restoring the start address?
+Pratik R. Sampat (2):
+  i386/sev: Introduce Enhanced SMT Protection for SEV-SNP
+  i386/sev: Add core scheduling for ESMTP enabled guests
 
-> +		vma_close(vma);
+ qapi/qom.json     |  9 ++++++-
+ target/i386/sev.c | 62 +++++++++++++++++++++++++++++++++++++++++++++++
+ target/i386/sev.h |  1 +
+ 3 files changed, 71 insertions(+), 1 deletion(-)
 
-[Severity: High]
-Is it safe to invoke vma_close() here immediately on validation failure?
-If a driver successfully populates page tables (for example, via
-remap_pfn_range) but fails the mmap_hook_validate() checks, calling
-vma_close() frees driver memory prematurely. Since unmap_region() is not
-called until mmap_file() returns to __mmap_new_file_vma(), hardware PTEs
-remain populated while the backing resources are freed, creating a
-use-after-free race window.
+-- 
+2.43.0
 
->  	}
-> +
-> +	return err;
->  }
-> =20
->  /* unmap_vmas is in mm/memory.c */
-> diff --git a/mm/vma.c b/mm/vma.c
-> index dc74b3d721cc5..626a18c08a269 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-[ ... ]
-> @@ -2777,6 +2762,76 @@ static void __mmap_complete(struct mmap_state *map=
-, struct vm_area_struct *vma)
->  	vma_set_page_prot(vma);
->  }
-> =20
-> +/* Check to ensure that the VMA flags of a newly mapped VMA are sane. */
-> +static int mmap_validate_vma_flags(const vma_flags_t *flags)
-> +{
-[ ... ]
-> +/* Check to ensure a driver hasn't done something crazy. */
-> +static int mmap_validate(unsigned long prev_start,
-> +			 unsigned long curr_start,
-> +			 const vma_flags_t *prev_flags,
-> +			 const vma_flags_t *curr_flags)
-> +{
-> +	bool was_maywrite, is_maywrite;
-> +
-> +	/* Drivers cannot alter the address of the VMA. */
-> +	if (WARN_ON_ONCE(prev_start !=3D curr_start))
-> +		return -EINVAL;
-
-[Severity: High]
-This isn't a bug introduced by this patch, but since the patch aims to
-implement comprehensive VMA state validation after mmap hooks, shouldn't it
-also verify that the end address (vma->vm_end) remains unmodified? If a
-buggy driver alters vm_end, the VMA object's bounds will mismatch the maple
-tree node's pre-allocated bounds. This structural inconsistency corrupts
-the maple tree and can lead to kernel panics later.
-
-> +
-> +	was_maywrite =3D vma_flags_test(prev_flags, VMA_MAYWRITE_BIT);
-> +	is_maywrite =3D vma_flags_test(curr_flags, VMA_MAYWRITE_BIT);
-> +
-> +	/* A driver may not make a previously unwritable mapping writable. */
-> +	if (WARN_ON_ONCE(!was_maywrite && is_maywrite))
-> +		return -EINVAL;
-
-[Severity: High]
-This is a pre-existing issue, but this check appears to bypass a critical
-condition. It only evaluates VMA_MAYWRITE_BIT. If a malicious or buggy
-driver bitwise-ORs VMA_WRITE_BIT into vma->flags in its mmap hook without
-setting VMA_MAYWRITE_BIT, wouldn't it bypass this check completely? This
-could allow a read-only file mapping to be committed with VM_WRITE set,
-granting hardware write permissions and allowing an unprivileged user to
-overwrite read-only files.
-
-> +
-> +	return mmap_validate_vma_flags(curr_flags);
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260914-b4-mmap-pr=
-epare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org?part=3D4
