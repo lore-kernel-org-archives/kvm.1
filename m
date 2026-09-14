@@ -1,166 +1,126 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097E0446066;
-	Mon, 14 Sep 2026 12:14:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E283E266581;
+	Mon, 14 Sep 2026 12:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789388046; cv=none; b=U6TCtJlAsAEt5SA+cva1BEAdheTQnmqN5kiz3pkSHvj5Q56LyfPNIgWUoWKbAPcKy4V1AkAuVdUhwaXB35Gqqcr1OBPKhWV5fIxfrfVWDTztDIP+hlfdZ9FOX182y0XGUROc9voM5F9axDcWThPcxcs0nySkWTaS2EjYBFMQJgc=
+	t=1789388076; cv=none; b=ulqv1XoxNDYdN/mhVS7pvDJZJMgqlM/ZDX1+tZoQ2Y72902pF21uuE5zy+TRS7Dvq765Ar1lj7Ztz0iWAMmade3pThp27FDxWYEkzOX7p1O1yh8AcLc/g4JvTNsV//GqIn7isMpEDyveM2s0FofzlG34V9rvbkOGwFrFPIaRWcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789388046; c=relaxed/simple;
-	bh=KQcD7ybHb9EH/g4an3ybWreK7NtJgH39BxZcqpEasco=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j9ooz3KsptR0/hqH+JicKanqr+fdV91c5ogNBVOCvF4RqXZyfHK0aYAmep9KClIdDwUT+Er6pXIlIowtLUhbRut3jPKXCFSEJcV9ubjjuKZd8FwfJeJUNJ6tzM47m3IG4w+YwvQ5ptX5ugY2B59QRaWMm2w380zOY6pu7V3Njlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=HvuVKhwL; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
+	s=arc-20240116; t=1789388076; c=relaxed/simple;
+	bh=Lb2U+Qjg0FOhevP72PEMfWG3oZbrQRvL5HyYRSZ/OMw=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=vAxG6AIxM0ouONjVu59RclLYzx0DBFwarFBzLt3BrTQwvS0pwNVJs87J3WtduF3nTKBzOM4HDhf/f6+qrT2T1e3GkjjaCZG915DnpaL5GcL1XKiPyxoFm9Lo/roBt2FmquPMWJZkaBLzYM9sZ6XA8sU8sX5hcSz+lXZVNF0gZAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XLx+f33K; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="HvuVKhwL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1789388026;
-	bh=+Z+8q8Y7PKeF8cylK/vBWxaeMrcPKioUqaIkfs3jFUI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HvuVKhwLt4XaqqjwXFMayGAETLjfAb0T6qgAsd5l5uEC3/JqEtlr0aAz4ivLNFa1Q
-	 wN4+/9SSD79HoN4yRs7FCMbuuSiwFqdH4pID3QJLrsKxWaCKsTY+RqwN5RkdHhyq8E
-	 OicCblvD2Wqp94izGrep+3isQFnBaj3srrSlFyTi+Jc/tdKV6zXSiZPmgVNgaJnThy
-	 izhURc9OKgEWeGg+gE94ntmeKIgZhzOTeTGvvQHpyHMDS1kqe7PTTU8KxEMSwV5riN
-	 Giu6X14a6b6Yy65cd7Meu40vCGmNDBbGgl1DGktAloM2QwFO65216KWYY/mySrSirz
-	 JqVYXxt1c1C0g==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4hk3w060kMz4wKF;
-	Mon, 14 Sep 2026 22:13:36 +1000 (AEST)
-Message-ID: <f21c409d-5675-4c87-8b16-850bcb9474df@ozlabs.org>
-Date: Mon, 14 Sep 2026 13:13:36 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XLx+f33K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4CE21F000FF;
+	Mon, 14 Sep 2026 12:14:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789388074;
+	bh=Au9nOhJdOpOmK1doC0fKnrZ3TVQV8EGKIlaNxxFqOds=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=XLx+f33Kb410TYqG8kpcWC2WM586NfW+ncjLPJKh3khwSu7FzpVKeOUyEy0QkXS49
+	 kS3OpdvnFSSxwT16ZRlXJsQXSoY7WCP3CyeMqYTrYY2pEXWMNluTxSKf0LJ7xSfzPC
+	 bRxzKHYR6SP644uurxNFbEUN9E5U0Fn7e1YTBjevESBHTxYX/5IB3bDTXR35aoK4y7
+	 QxWYCjoryIU+ua9vGu1GIafo48JtTaLjnhpNhsAttHxMoKKBGSqgktUIHhiff6kvDi
+	 l3n5jan3QCES60740uEX+8JCHhKqz6uEqQCMnJqRZawJaRWp27vke0SJaEV1azFdnU
+	 sF+x7x77teg8Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v10 07/20] KVM: arm64: PMU: Recreate events after reset
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Akihiko Odaki" <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: "Marc Zyngier" <maz@kernel.org>, kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>, kvmarm@lists.linux.dev
+In-Reply-To: <20260914-hybrid-v10-7-92788053a691@rsg.ci.i.u-tokyo.ac.jp>
+References: <20260914-hybrid-v10-0-92788053a691@rsg.ci.i.u-tokyo.ac.jp>
+ <20260914-hybrid-v10-7-92788053a691@rsg.ci.i.u-tokyo.ac.jp>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 14 Sep 2026 12:14:33 +0000
+Message-Id: <20260914121433.C4CE21F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 9/9] vfio/pci: Permanently revoke a DMABUF on request
-To: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alex Williamson <alex@shazbot.org>, Alex Mastro <amastro@fb.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
- Kevin Tian <kevin.tian@intel.com>, Pranjal Shrivastava <praan@google.com>,
- Longfang Liu <liulongfang@huawei.com>, Mahmoud Adam <mngyadam@amazon.de>,
- David Matlack <dmatlack@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
- Ankit Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
- linux-pci@vger.kernel.org
-References: <20260911214200.33793-1-matt@ozlabs.org>
- <20260911214200.33793-10-matt@ozlabs.org> <20260913165244.GW13683@unreal>
- <20260914113647.GL3968357@nvidia.com> <20260914115456.GY13683@unreal>
-Content-Language: en-GB
-From: Matt Evans <matt@ozlabs.org>
-In-Reply-To: <20260914115456.GY13683@unreal>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Hi Leon,
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Deferred PMU event recreation corrupts PMU counter reset values by=
+ writing back stale perf_event counts into freshly reset system registers.
+--
 
-On 14/09/2026 12:54, Leon Romanovsky wrote:
-> On Mon, Sep 14, 2026 at 08:36:47AM -0300, Jason Gunthorpe wrote:
->> On Sun, Sep 13, 2026 at 07:52:44PM +0300, Leon Romanovsky wrote:
->>> On Fri, Sep 11, 2026 at 10:41:57PM +0100, Matt Evans wrote:
->>>> Expand the VFIO DMABUF revocation state to three states:
->>>> Not revoked, temporarily revoked, and permanently revoked.
->>>
->>> The thing is that "temporarily revoked" is actually the standard
->>> invalidate_mappings/move_notify mechanism of DMABUF, which wasn't good
->>> for VFIO.
->>
->> I think temporarily revokes here means it is revoked from a dmabuf
->> perspective
-> 
-> My guess is that this is more of a "change owner" operation than a
-> revoke operation.
-> 
-> The main issue here is that we have to guess the semantics instead of
-> having a properly named and documented operation. 
+commit a8710b2a9555c20c3e81b98a0509dda9d3d93f2e
+Author: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
-Apologies if the cover letter for the series and patch commit message 
-(which cover this) are unclear about the motivations and semantics.  On 
-the commit message, can you suggest clarifications:
+KVM: arm64: PMU: Recreate events after reset
 
-"This is useful for lifecycle management, to reclaim VFIO PCI BAR
-ranges previously delegated to a subordinate client process: by
-revoking, the driver process can ensure that the loaned resources are
-made inaccessible when the client is deemed "done".  The original
-DMABUF is defunct, and BAR resources can then be safely re-exported
-for use by new clients."
+This commit defers the destruction and recreation of PMU events until the
+vCPU thread runs, setting a flag during system register reset to stop and
+reprogram the backing perf events.
 
-Given what I'll explain below, do give suggestions please.  There is 
-more context in the cover letter (the volume of which I didn't think 
-appropriate for the commit message).
+> diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
+> index a5ccb6ae44d5f..8530cc907b56c 100644
+> --- a/arch/arm64/kvm/pmu-emul.c
+> +++ b/arch/arm64/kvm/pmu-emul.c
+[ ... ]
+> @@ -900,7 +906,16 @@ u64 kvm_pmu_get_pmceid(struct kvm_vcpu *vcpu, bool p=
+mceid1)
+> =20
+>  void kvm_vcpu_reload_pmu(struct kvm_vcpu *vcpu)
+>  {
+> +	struct kvm_pmu *pmu =3D &vcpu->arch.pmu;
+>  	u64 mask =3D kvm_pmu_implemented_counter_mask(vcpu);
+> +	int i;
+> +
+> +	if (pmu->events_need_recreate) {
+> +		for (i =3D 0; i < KVM_ARMV8_PMU_MAX_COUNTERS; i++)
+> +			kvm_pmu_stop_counter(kvm_vcpu_idx_to_pmc(vcpu, i));
 
-> As Christian pointed
-> out, the patches describe what they are doing well, but they do not
-> explain why they are doing it.
+[Severity: High]
+Does this corrupt the architectural reset state of the PMU counters?
 
-His comment may be warranted on the other, new, patch for DMABUF name, 
-but I don't think this applies here.
+If a guest VM triggers a warm reset, kvm_reset_sys_regs() resets the PMU
+counters to their architectural reset state and then calls
+kvm_pmu_request_recreate().
 
->> Just that VFIO can make it's internal dmabuf work again, there won't
->> be a notification to any importer or an expectation that something
->> like iommufd will re-establish mapping automatically.
->>
->> This is principally a kernel self protection mechanism where the
->> userspace was expected to have removed the dmabuf before issuing a
->> reset/etc. If they didn't then the kernel plonks it and userspace gets
->> a mess to clean up.
-> 
-> Revoke/invalidate means that the importer should stop accessing the
-> buffer provided by the exporter. It does not specify what the exporter
-> should do afterwards.
-> 
-> So I still think that "temporarily revoked" is closer to
-> invalidate_mappings, with some additional dma-buf documentation to lose
-> the expectation that the buffer will become available again.
+On the next vCPU entry, kvm_vcpu_reload_pmu() iterates over all PMCs and ca=
+lls
+kvm_pmu_stop_counter(). However, kvm_pmu_stop_counter() is designed for dyn=
+amic
+disablement. It preserves the counter by reading the current sysreg value,
+adding the accumulated perf_event count, and writing the sum back to the
+sysreg:
 
-You are right in indicating in your previous email that the "temporarily 
-revoked" state is the old "revoked" state.
+arch/arm64/kvm/pmu-emul.c:kvm_pmu_stop_counter() {
+    ...
+    val =3D kvm_pmu_get_pmc_value(pmc);
+    reg =3D counter_index_to_reg(pmc->idx);
+    __vcpu_assign_sys_reg(vcpu, reg, val);
+    ...
+}
 
- From the DMABUF importer interactions, there's _still_ only "revoked or 
-not revoked" state.  No changes there.
+Will this sequence overwrite the freshly reset counter value with the sum of
+the reset value and the stale perf_event count from the previous run?
 
- From this VFIO exporter's perspective, the change is to add a "sticky" 
-revoked state.
+> +
+> +		pmu->events_need_recreate =3D false;
+> +	}
+> =20
+>  	__vcpu_rmw_sys_reg(vcpu, PMOVSSET_EL0, &=3D, mask);
+>  	__vcpu_rmw_sys_reg(vcpu, PMINTENSET_EL1, &=3D, mask);
+> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+> index 42b6705bc21d1..1a57e07cec9a4 100644
+> --- a/arch/arm64/kvm/sys_regs.c
+> +++ b/arch/arm64/kvm/sys_regs.c
+> @@ -5390,7 +5390,7 @@ void kvm_reset_sys_regs(struct kvm_vcpu *vcpu)
+>  	set_bit(KVM_ARCH_FLAG_ID_REGS_INITIALIZED, &kvm->arch.flags);
+> =20
+>  	if (kvm_vcpu_has_pmu(vcpu))
+> -		kvm_make_request(KVM_REQ_RELOAD_PMU, vcpu);
+> +		kvm_pmu_request_recreate(vcpu);
+>  }
 
-The thing (as per UAPI docs, again I hope there's no guessing needed) 
-that the new third state gives is that a) userspace can explicitly 
-request it via the new ioctl/feature, and b) it is guaranteed not to be 
-spuriously or intentionally undone by anyone else.
-
-E.g. reset:  temporarily revoke, then un-revoke.   New ioctl: 
-permanently revoke, such that something like a subsequent reset isn't 
-going to undo it and make the DMABUF usable again.
-
-The usage scenario is:
-
-1. Process A exports DMABUF from VFIO device.  (Proc A is the 
-"orchestrator" here.)
-2. Process A sends fd to process B.
-3. Process B maps it, or hands it on, etc.
-4. Process A eventually decides the buffer is finished with/lifecycle 
-done/wants to reuse that BAR range for something else.  It permanently 
-revokes the DMABUF.
-5. Hopefully this isn't a surprise to B (some cooperation has given it 
-up first) but either way, B now cannot access the BAR range anymore. 
-This does not _need_ cooperation, so if B becomes malicious, or crashes, 
-etc. A can still revoke it.
-6. That BAR range is reused for something unrelated.
-
-
-HTH,
-
-
-Matt
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260914-hybrid-v10=
+-0-92788053a691@rsg.ci.i.u-tokyo.ac.jp?part=3D7
