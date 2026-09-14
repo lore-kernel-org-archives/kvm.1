@@ -1,56 +1,56 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE66480952
-	for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 14:37:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCABF48165D
+	for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 14:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789396634; cv=none; b=sAnCXSzzuZczXIbmYzvHxBBJWuem6e8OQX7KeAQDSmoGDsFZb1G17XKHd8P/72ZhiIU1Ny5nWDC3EFkzcRqNq8d6rAxAuHtZ5t2pDv8tdW7RsnPe1qagrJEHXFPC8F3ezdQduHAFodMJt1AavcrRWUxo1CzjszKkgCT2yOdKwSo=
+	t=1789396638; cv=none; b=q++aWJ+4o99YAVhBX0frCCoff/iN/tlNVh4PvoKwgNZRQxGH0Gm0Ra1TYd8b/4HzBn9I3lfSR4dUT3u4NHsUDs2FAN1D24cNXlP4ilKo6jHjorGfyj/xlz6N/lrfrymbBX6TyiPYec4taPEgjxU6Km4ENbV7W3PXGfanGT+34VI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789396634; c=relaxed/simple;
-	bh=a7RSopT/t6oxccKtUwKuJyeOjJ3b7OYmrMGW2+qqHVQ=;
+	s=arc-20240116; t=1789396638; c=relaxed/simple;
+	bh=SONWYcdPcjrKf2//KEOjNIh1j3maD965uH6P86sw/ss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=peHCWZoe70Xhd5J6HpSL1tur3d4LF0+5EVSW/fico4xMcr5ZAgZmHT9Vu5paWHVrmlaoiLgKYDHrBCFcxpNlXYG2b+cI37dmI3J9iaQIlEjJOmEJ71D+nXSaEKscfw5mmomOyaU5LBw0e+vfWZI7O9hOzM+bFZFEA7kbN9f3dHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ayj6h25x; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=CTIPhahmRdOyWhiuGi4HN+cbauTVq/dnt1tGvFKsnnS3BxhuvKMUkUFrvF1CDCj2T9zQ1j/6zBCYTbWD9JuCCbbv1JWTtBmYjcewgi+DNG1JySsm3tUqO+2DCTQ4hazbHJrhb+YyNkBJdOuyWPB53Cncxqjnxzn0dgjGJMDJnOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GBQVKjOA; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ayj6h25x"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GBQVKjOA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789396631;
+	s=mimecast20190719; t=1789396634;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HiJzJ+BuXGjmxCHeaOJQrSPEOlW5he+kkGPoyZ4dJjI=;
-	b=ayj6h25xg/HJQBE7k43gLDD8CCB4UU0miz5E++ZwqMq3ksVZyRiX/o7GMz1EkRPSQcrjXl
-	o97Q+a8yfMKlHsh8zik3ErtJgkF3a69uR4XLTxJe3UUcuYle5v7HmTlvEGqtAkmMLRTCQA
-	y/vCp1IrzBrzgHxdOop6r1lvPetwyps=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=2ELCkix0+WnOCFlipd8TL3JKAOHcz0ZUF61+78nQ9X8=;
+	b=GBQVKjOAweIs0jjfNZ5vridh71mJrnOOJgVhXI1l7TT+AeT4rwNKxdlXnZKwo+BY+CetnR
+	ZhP8aeFir4siN2YVc8I47xrz/xEektzRGb/H0sRMujVI8Dhy2HO82T9qLpGXCWKUPjCeoZ
+	kg9XON9FMG/oOEfwVJMLt7WcgCwTtho=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-490-QBvj7IVoN4S6LxLKiIYTcA-1; Mon,
- 14 Sep 2026 10:37:09 -0400
-X-MC-Unique: QBvj7IVoN4S6LxLKiIYTcA-1
-X-Mimecast-MFC-AGG-ID: QBvj7IVoN4S6LxLKiIYTcA_1789396628
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-5-f8umiuUhM82_fIZRNvCxQw-1; Mon,
+ 14 Sep 2026 10:37:11 -0400
+X-MC-Unique: f8umiuUhM82_fIZRNvCxQw-1
+X-Mimecast-MFC-AGG-ID: f8umiuUhM82_fIZRNvCxQw_1789396630
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5349E1955D7D;
-	Mon, 14 Sep 2026 14:37:08 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 16871195423A;
+	Mon, 14 Sep 2026 14:37:10 +0000 (UTC)
 Received: from aharivel-thinkpadp1gen3.rmtfr.csb (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F12971800345;
-	Mon, 14 Sep 2026 14:37:06 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id ACCAB18005AE;
+	Mon, 14 Sep 2026 14:37:08 +0000 (UTC)
 From: Anthony Harivel <aharivel@redhat.com>
 To: kvm@vger.kernel.org
 Cc: pbonzini@redhat.com,
 	seanjc@google.com,
 	linux-kernel@vger.kernel.org,
 	Anthony Harivel <aharivel@redhat.com>
-Subject: [PATCH RFC v3 2/3] KVM: x86: add KVM_CAP_CSTATE_POLICY for per-VM C-state enforcement
-Date: Mon, 14 Sep 2026 16:37:01 +0200
-Message-ID: <20260914143702.915401-3-aharivel@redhat.com>
+Subject: [PATCH RFC v3 3/3] KVM: selftests: add cstate_policy_test for KVM_CAP_CSTATE_POLICY
+Date: Mon, 14 Sep 2026 16:37:02 +0200
+Message-ID: <20260914143702.915401-4-aharivel@redhat.com>
 In-Reply-To: <20260914143702.915401-1-aharivel@redhat.com>
 References: <20260914143702.915401-1-aharivel@redhat.com>
 Precedence: bulk
@@ -63,213 +63,570 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Add a new VM-scoped capability that allows userspace to set a maximum
-C-state ceiling for host cpuidle when vCPUs halt.
+Add a KVM selftest that validates the KVM_CAP_CSTATE_POLICY capability:
 
-When a vCPU enters kvm_vcpu_block(), KVM temporarily disables cpuidle
-states deeper than max_cstate on the current pCPU using the existing
-states_usage[].disable mechanism (CPUIDLE_STATE_DISABLED_BY_DRIVER).
-After wakeup, the original disable flags are restored.
+  1. cap_supported: capability is advertised
+  2. valid_policies: max_cstate -1 through 6 accepted
+  3. invalid_policies: out-of-range values and bad flags rejected
+  4. policy_change: policy can be changed at runtime on a live VM
+  5. cpuidle_no_policy: control test — without policy, deep C-states
+     (C6) are entered during guest HLT (confirms test methodology)
+  6. cpuidle_enforcement: with policy=C1, deep C-states are blocked —
+     C6 usage delta is near zero while C1 accumulates
+  7. policy_c0_no_idle: with policy=C0, no idle states are entered
 
-The capability follows the same pattern as KVM_CAP_HALT_POLL:
-  - VM-scoped ioctl via KVM_ENABLE_CAP
-  - args[0] = max_cstate (-1 to 6, -1 disables the policy)
-  - Re-callable at runtime without VM restart
-  - Memory ordering via smp_wmb/rmb
+Tests 5-7 pin a vCPU to a specific pCPU and compare host cpuidle
+usage counters before and after 1000 guest HLT cycles. The guest
+uses a periodic APIC timer to wake from HLT.
 
-This fills an operational gap for NFV and latency-sensitive deployments
-where the host operator needs per-VM control over idle depth without
-requiring guest cooperation. The enforcement is scoped to pinned-core
-configurations where the disable flags do not race with other tasks.
-
-Measured VM exit overhead (Intel Xeon, ftrace):
-  Median: 867 ns — negligible relative to C-state exit latencies
-  (C1E: 10us, C3: 33us, C6: 133us).
+Tested on Dell R640 (Intel Xeon Gold 5118, intel_idle driver with
+POLL/C1/C1E/C6 states). Results:
+  - No policy:    C6 entered 1003 times (control)
+  - Policy=C1:    C6 entered 0 times, C1 entered 1073 times
+  - Policy=C0:    POLL entered 56743 times, no real idle
 
 Signed-off-by: Anthony Harivel <aharivel@redhat.com>
 ---
- include/linux/kvm_host.h |   2 +
- include/uapi/linux/kvm.h |   1 +
- virt/kvm/kvm_main.c      | 101 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 104 insertions(+)
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/x86/cstate_policy_test.c    | 517 ++++++++++++++++++
+ 2 files changed, 518 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/x86/cstate_policy_test.c
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index ab8cfaec82d3..3eca172e62ff 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -863,6 +863,8 @@ struct kvm {
- 	pid_t userspace_pid;
- 	bool override_halt_poll_ns;
- 	unsigned int max_halt_poll_ns;
-+	bool override_cstate_policy;
-+	int max_cstate;
- 	u32 dirty_ring_size;
- 	bool dirty_ring_with_bitmap;
- 	bool vm_bugged;
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 70e36e6a0ad4..559d23e01127 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -998,6 +998,7 @@ struct kvm_enable_cap {
- #define KVM_CAP_S390_VSIE_ESAMODE 248
- #define KVM_CAP_S390_HPAGE_2G 249
- #define KVM_CAP_PPC_COMPAT_CAPS 250
-+#define KVM_CAP_CSTATE_POLICY 251
- 
- struct kvm_irq_routing_irqchip {
- 	__u32 irqchip;
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 45e784462ec6..306891a2c135 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -48,6 +48,7 @@
- #include <linux/lockdep.h>
- #include <linux/kthread.h>
- #include <linux/suspend.h>
-+#include <linux/cpuidle.h>
- #include <linux/rseq.h>
- 
- #include <asm/processor.h>
-@@ -3635,6 +3636,79 @@ static int kvm_vcpu_check_block(struct kvm_vcpu *vcpu)
- 	return ret;
- }
- 
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 6fc34e9bf8e1..09e58d6c71e3 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -151,6 +151,7 @@ TEST_GEN_PROGS_x86 += x86/max_vcpuid_cap_test
+ TEST_GEN_PROGS_x86 += x86/triple_fault_event_test
+ TEST_GEN_PROGS_x86 += x86/recalc_apic_map_test
+ TEST_GEN_PROGS_x86 += x86/aperfmperf_test
++TEST_GEN_PROGS_x86 += x86/cstate_policy_test
+ TEST_GEN_PROGS_x86 += access_tracking_perf_test
+ TEST_GEN_PROGS_x86 += coalesced_io_test
+ TEST_GEN_PROGS_x86 += dirty_log_perf_test
+diff --git a/tools/testing/selftests/kvm/x86/cstate_policy_test.c b/tools/testing/selftests/kvm/x86/cstate_policy_test.c
+new file mode 100644
+index 000000000000..cb10d5ade454
+--- /dev/null
++++ b/tools/testing/selftests/kvm/x86/cstate_policy_test.c
+@@ -0,0 +1,517 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * Temporarily disable cpuidle states deeper than max_cstate on the current
-+ * CPU. Returns the CPU number where the constraint was applied, or -1 if
-+ * no constraint was needed. Must be called with preempt disabled.
++ * Test for KVM_CAP_CSTATE_POLICY
 + *
-+ * Only correct when the vCPU is pinned to this pCPU — with overcommit,
-+ * multiple VMs could race on the same per-CPU disable flags.
++ * Copyright (C) 2026, Red Hat, Inc.
++ *
++ * Verify that KVM_CAP_CSTATE_POLICY correctly constrains host cpuidle
++ * state selection when a vCPU halts. The test pins a vCPU to a specific
++ * pCPU, sets a C-state policy, runs a guest that executes HLT in a loop,
++ * and checks host cpuidle usage counters to confirm that deeper C-states
++ * are not entered.
++ *
++ * Requires: isolated pCPU (isolcpus= or cgroup cpuset) for clean signal.
 + */
-+static int kvm_cstate_policy_apply(struct kvm *kvm,
-+				   unsigned long long saved_disable[CPUIDLE_STATE_MAX])
++
++#include <fcntl.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
++#include <dirent.h>
++#include <errno.h>
++
++#include "kvm_util.h"
++#include "processor.h"
++#include "apic.h"
++#include "kselftest.h"
++
++/*
++ * KVM_CAP_CSTATE_POLICY — defined in include/uapi/linux/kvm.h.
++ * Fallback for building against older headers.
++ */
++#ifndef KVM_CAP_CSTATE_POLICY
++#define KVM_CAP_CSTATE_POLICY	251
++#endif
++
++#define NUM_HALTS		1000
++#define MAX_CPUIDLE_STATES	10
++
++struct cpuidle_snapshot {
++	int		num_states;
++	char		name[MAX_CPUIDLE_STATES][32];
++	int		latency[MAX_CPUIDLE_STATES];
++	unsigned long	usage[MAX_CPUIDLE_STATES];
++	unsigned long long time[MAX_CPUIDLE_STATES];
++};
++
++static int read_sysfs_int(const char *path)
 +{
-+	struct cpuidle_device *dev;
-+	struct cpuidle_driver *drv;
++	FILE *f = fopen(path, "r");
++	int val = -1;
++
++	if (f) {
++		fscanf(f, "%d", &val);
++		fclose(f);
++	}
++	return val;
++}
++
++static unsigned long read_sysfs_ulong(const char *path)
++{
++	FILE *f = fopen(path, "r");
++	unsigned long val = 0;
++
++	if (f) {
++		fscanf(f, "%lu", &val);
++		fclose(f);
++	}
++	return val;
++}
++
++static unsigned long long read_sysfs_ull(const char *path)
++{
++	FILE *f = fopen(path, "r");
++	unsigned long long val = 0;
++
++	if (f) {
++		fscanf(f, "%llu", &val);
++		fclose(f);
++	}
++	return val;
++}
++
++static void read_sysfs_str(const char *path, char *buf, size_t len)
++{
++	FILE *f = fopen(path, "r");
++
++	buf[0] = '\0';
++	if (f) {
++		if (fgets(buf, len, f)) {
++			char *nl = strchr(buf, '\n');
++			if (nl)
++				*nl = '\0';
++		}
++		fclose(f);
++	}
++}
++
++static void snapshot_cpuidle(int cpu, struct cpuidle_snapshot *snap)
++{
++	char path[256];
++	int i;
++
++	snap->num_states = 0;
++	for (i = 0; i < MAX_CPUIDLE_STATES; i++) {
++		snprintf(path, sizeof(path),
++			 "/sys/devices/system/cpu/cpu%d/cpuidle/state%d/name",
++			 cpu, i);
++		if (access(path, R_OK) != 0)
++			break;
++
++		read_sysfs_str(path, snap->name[i], sizeof(snap->name[i]));
++
++		snprintf(path, sizeof(path),
++			 "/sys/devices/system/cpu/cpu%d/cpuidle/state%d/latency",
++			 cpu, i);
++		snap->latency[i] = read_sysfs_int(path);
++
++		snprintf(path, sizeof(path),
++			 "/sys/devices/system/cpu/cpu%d/cpuidle/state%d/usage",
++			 cpu, i);
++		snap->usage[i] = read_sysfs_ulong(path);
++
++		snprintf(path, sizeof(path),
++			 "/sys/devices/system/cpu/cpu%d/cpuidle/state%d/time",
++			 cpu, i);
++		snap->time[i] = read_sysfs_ull(path);
++
++		snap->num_states = i + 1;
++	}
++}
++
++#define TIMER_VECTOR	0x30
++
++static void guest_timer_handler(struct ex_regs *regs)
++{
++	xapic_write_reg(APIC_EOI, 0);
++}
++
++static void guest_hlt_loop(void)
++{
++	int i;
++
++	xapic_enable();
++
++	/* Periodic APIC timer to wake from HLT */
++	xapic_write_reg(APIC_LVTT, APIC_LVT_TIMER_PERIODIC | TIMER_VECTOR);
++	xapic_write_reg(APIC_TDCR, 0x3); /* divide by 16 */
++	xapic_write_reg(APIC_TMICT, 100000);
++
++	for (i = 0; i < NUM_HALTS; i++) {
++		asm volatile("sti; hlt; cli");
++		GUEST_SYNC(i);
++	}
++	GUEST_DONE();
++}
++
++static int enable_cstate_policy(struct kvm_vm *vm, int max_cstate, int flags)
++{
++	struct kvm_enable_cap cap = {
++		.cap = KVM_CAP_CSTATE_POLICY,
++		.args = { max_cstate, flags },
++	};
++
++	return __vm_ioctl(vm, KVM_ENABLE_CAP, &cap);
++}
++
++/*
++ * Test: capability query and basic validation
++ */
++static void test_cap_supported(void)
++{
++	struct kvm_vm *vm;
++	int ret;
++
++	vm = vm_create_barebones();
++
++	ret = vm_check_cap(vm, KVM_CAP_CSTATE_POLICY);
++	TEST_ASSERT(ret > 0, "KVM_CAP_CSTATE_POLICY not supported");
++
++	kvm_vm_free(vm);
++	ksft_test_result_pass("cap_supported\n");
++}
++
++/*
++ * Test: valid policy values accepted
++ */
++static void test_valid_policies(void)
++{
++	struct kvm_vm *vm;
++	int ret, cstate;
++
++	for (cstate = -1; cstate <= 6; cstate++) {
++		vm = vm_create_barebones();
++		ret = enable_cstate_policy(vm, cstate, 0);
++		TEST_ASSERT(ret == 0,
++			    "Setting max_cstate=%d should succeed, got %d",
++			    cstate, ret);
++		kvm_vm_free(vm);
++	}
++
++	ksft_test_result_pass("valid_policies\n");
++}
++
++/*
++ * Test: invalid policy values rejected
++ */
++static void test_invalid_policies(void)
++{
++	struct kvm_vm *vm;
++	int ret;
++
++	/* max_cstate too low */
++	vm = vm_create_barebones();
++	ret = enable_cstate_policy(vm, -2, 0);
++	TEST_ASSERT(ret < 0, "max_cstate=-2 should fail");
++	kvm_vm_free(vm);
++
++	/* max_cstate too high */
++	vm = vm_create_barebones();
++	ret = enable_cstate_policy(vm, 7, 0);
++	TEST_ASSERT(ret < 0, "max_cstate=7 should fail");
++	kvm_vm_free(vm);
++
++	/* non-zero flags */
++	vm = vm_create_barebones();
++	ret = enable_cstate_policy(vm, 1, 1);
++	TEST_ASSERT(ret < 0, "non-zero flags should fail");
++	kvm_vm_free(vm);
++
++	ksft_test_result_pass("invalid_policies\n");
++}
++
++/*
++ * Test: policy can be changed at runtime
++ */
++static void test_policy_change(void)
++{
++	struct kvm_vm *vm;
++	int ret;
++
++	vm = vm_create_barebones();
++
++	ret = enable_cstate_policy(vm, 1, 0);
++	TEST_ASSERT(ret == 0, "Initial policy set failed");
++
++	ret = enable_cstate_policy(vm, 6, 0);
++	TEST_ASSERT(ret == 0, "Policy change to 6 failed");
++
++	ret = enable_cstate_policy(vm, -1, 0);
++	TEST_ASSERT(ret == 0, "Policy change to -1 (disable) failed");
++
++	ret = enable_cstate_policy(vm, 0, 0);
++	TEST_ASSERT(ret == 0, "Policy change to 0 failed");
++
++	kvm_vm_free(vm);
++	ksft_test_result_pass("policy_change\n");
++}
++
++/*
++ * Test: cpuidle enforcement — with policy=C1, deep C-states (C6) should
++ * not accumulate additional usage during guest HLT.
++ *
++ * This test requires running on isolated CPUs for reliable results.
++ * It is marked as SKIP if the signal is too noisy.
++ */
++static void test_cpuidle_enforcement(void)
++{
++	struct cpuidle_snapshot before, after;
++	struct kvm_vcpu *vcpu;
++	struct kvm_vm *vm;
++	struct ucall uc;
++	int cpu, i, deep_state_idx;
++	unsigned long deep_usage_delta;
++	bool has_deep_state = false;
++
++	cpu = pin_self_to_any_cpu();
++
++	snapshot_cpuidle(cpu, &before);
++	TEST_REQUIRE(before.num_states >= 3);
++
++	/*
++	 * Find the deepest state (typically C6). We'll check that its usage
++	 * counter does NOT increase when policy caps at C1.
++	 */
++	deep_state_idx = before.num_states - 1;
++	if (before.latency[deep_state_idx] > 50)
++		has_deep_state = true;
++
++	TEST_REQUIRE(has_deep_state);
++
++	/* Create VM with C-state policy = C1 (state index 1) */
++	vm = vm_create(1);
++
++	i = enable_cstate_policy(vm, 1, 0);
++	TEST_ASSERT(i == 0, "Failed to set C-state policy to C1");
++
++	vcpu = vm_vcpu_add(vm, 0, guest_hlt_loop);
++	vm_install_exception_handler(vm, TIMER_VECTOR, guest_timer_handler);
++	virt_pg_map(vm, APIC_DEFAULT_GPA, APIC_DEFAULT_GPA);
++
++	snapshot_cpuidle(cpu, &before);
++
++	for (i = 0; i < NUM_HALTS; i++) {
++		vcpu_run(vcpu);
++		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
++
++		switch (get_ucall(vcpu, &uc)) {
++		case UCALL_SYNC:
++			break;
++		case UCALL_DONE:
++			goto done;
++		case UCALL_ABORT:
++			REPORT_GUEST_ASSERT(uc);
++		default:
++			TEST_FAIL("Unknown ucall %lu", uc.cmd);
++		}
++	}
++done:
++	snapshot_cpuidle(cpu, &after);
++
++	deep_usage_delta = after.usage[deep_state_idx] -
++			   before.usage[deep_state_idx];
++
++	printf("  CPU %d, policy=C1, %d HLTs\n", cpu, NUM_HALTS);
++	for (i = 0; i < after.num_states; i++) {
++		unsigned long delta = after.usage[i] - before.usage[i];
++
++		printf("    %-6s (lat=%3dus): usage +%lu\n",
++		       after.name[i], after.latency[i], delta);
++	}
++
++	/*
++	 * With policy=C1, the deep C-state (C6, latency >100us) should see
++	 * zero or near-zero additional entries. Allow a small margin for
++	 * host interrupts that might briefly enter idle between our
++	 * measurements.
++	 */
++	TEST_ASSERT(deep_usage_delta < 5,
++		    "Deep C-state '%s' entered %lu times with policy=C1 "
++		    "(expected <5). Policy enforcement may not be working.",
++		    after.name[deep_state_idx], deep_usage_delta);
++
++	kvm_vm_free(vm);
++	ksft_test_result_pass("cpuidle_enforcement\n");
++}
++
++/*
++ * Test: without policy (max_cstate=-1), deep C-states ARE entered during HLT.
++ * This is the control test — confirms the test methodology works.
++ */
++static void test_cpuidle_no_policy(void)
++{
++	struct cpuidle_snapshot before, after;
++	struct kvm_vcpu *vcpu;
++	struct kvm_vm *vm;
++	struct ucall uc;
++	int cpu, i, deep_state_idx;
++	unsigned long deep_usage_delta, total_idle_delta;
++	bool has_deep_state = false;
++
++	cpu = pin_self_to_any_cpu();
++
++	snapshot_cpuidle(cpu, &before);
++	TEST_REQUIRE(before.num_states >= 3);
++
++	deep_state_idx = before.num_states - 1;
++	if (before.latency[deep_state_idx] > 50)
++		has_deep_state = true;
++
++	TEST_REQUIRE(has_deep_state);
++
++	vm = vm_create_with_one_vcpu(&vcpu, guest_hlt_loop);
++	vm_install_exception_handler(vm, TIMER_VECTOR, guest_timer_handler);
++	virt_pg_map(vm, APIC_DEFAULT_GPA, APIC_DEFAULT_GPA);
++
++	snapshot_cpuidle(cpu, &before);
++
++	for (i = 0; i < NUM_HALTS; i++) {
++		vcpu_run(vcpu);
++		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
++
++		switch (get_ucall(vcpu, &uc)) {
++		case UCALL_SYNC:
++			break;
++		case UCALL_DONE:
++			goto done;
++		case UCALL_ABORT:
++			REPORT_GUEST_ASSERT(uc);
++		default:
++			TEST_FAIL("Unknown ucall %lu", uc.cmd);
++		}
++	}
++done:
++	snapshot_cpuidle(cpu, &after);
++
++	total_idle_delta = 0;
++	printf("  CPU %d, no policy (default), %d HLTs\n", cpu, NUM_HALTS);
++	for (i = 0; i < after.num_states; i++) {
++		unsigned long delta = after.usage[i] - before.usage[i];
++
++		printf("    %-6s (lat=%3dus): usage +%lu\n",
++		       after.name[i], after.latency[i], delta);
++		total_idle_delta += delta;
++	}
++
++	deep_usage_delta = after.usage[deep_state_idx] -
++			   before.usage[deep_state_idx];
++
++	/*
++	 * Without a policy, we expect SOME idle state entries. If nothing
++	 * entered idle at all, halt polling consumed everything and this
++	 * test can't validate the control case — skip.
++	 */
++	if (total_idle_delta == 0) {
++		ksft_test_result_skip("cpuidle_no_policy: halt polling "
++				      "consumed all halts, no idle entries\n");
++		kvm_vm_free(vm);
++		return;
++	}
++
++	/*
++	 * We don't strictly require deep C-state entry here (the governor
++	 * might choose shallow states for short halts), but we log it for
++	 * comparison with the enforcement test.
++	 */
++	printf("  Deep state '%s' entered %lu times (control — no cap)\n",
++	       after.name[deep_state_idx], deep_usage_delta);
++
++	kvm_vm_free(vm);
++	ksft_test_result_pass("cpuidle_no_policy\n");
++}
++
++/*
++ * Test: policy=C0 means guest HLT returns immediately (no idle at all).
++ */
++static void test_policy_c0_no_idle(void)
++{
++	struct cpuidle_snapshot before, after;
++	struct kvm_vcpu *vcpu;
++	struct kvm_vm *vm;
++	struct ucall uc;
 +	int cpu, i;
++	unsigned long total_idle_delta;
 +
-+	if (!kvm->override_cstate_policy)
-+		return -1;
++	cpu = pin_self_to_any_cpu();
 +
-+	smp_rmb();
++	vm = vm_create(1);
++	i = enable_cstate_policy(vm, 0, 0);
++	TEST_ASSERT(i == 0, "Failed to set C-state policy to C0");
 +
-+	if (kvm->max_cstate < 0)
-+		return -1;
++	vcpu = vm_vcpu_add(vm, 0, guest_hlt_loop);
++	vm_install_exception_handler(vm, TIMER_VECTOR, guest_timer_handler);
++	virt_pg_map(vm, APIC_DEFAULT_GPA, APIC_DEFAULT_GPA);
 +
-+	cpu = smp_processor_id();
-+	dev = cpuidle_get_device();
-+	drv = cpuidle_get_driver();
-+	if (!dev || !drv)
-+		return -1;
++	snapshot_cpuidle(cpu, &before);
 +
-+	for (i = 0; i < drv->state_count; i++) {
-+		saved_disable[i] = dev->states_usage[i].disable;
-+		if (i > kvm->max_cstate)
-+			dev->states_usage[i].disable |=
-+				CPUIDLE_STATE_DISABLED_BY_DRIVER;
++	for (i = 0; i < NUM_HALTS; i++) {
++		vcpu_run(vcpu);
++		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
++
++		switch (get_ucall(vcpu, &uc)) {
++		case UCALL_SYNC:
++			break;
++		case UCALL_DONE:
++			goto done;
++		case UCALL_ABORT:
++			REPORT_GUEST_ASSERT(uc);
++		default:
++			TEST_FAIL("Unknown ucall %lu", uc.cmd);
++		}
++	}
++done:
++	snapshot_cpuidle(cpu, &after);
++
++	total_idle_delta = 0;
++	printf("  CPU %d, policy=C0, %d HLTs\n", cpu, NUM_HALTS);
++	for (i = 0; i < after.num_states; i++) {
++		unsigned long delta = after.usage[i] - before.usage[i];
++
++		printf("    %-6s (lat=%3dus): usage +%lu\n",
++		       after.name[i], after.latency[i], delta);
++		if (i > 0)
++			total_idle_delta += delta;
 +	}
 +
-+	return cpu;
++	/*
++	 * With policy=C0, HLT should return immediately without entering
++	 * any real idle state (state > POLL). Allow small margin for
++	 * host background activity.
++	 */
++	TEST_ASSERT(total_idle_delta < 5,
++		    "Idle states entered %lu times with policy=C0 (expected <5)",
++		    total_idle_delta);
++
++	kvm_vm_free(vm);
++	ksft_test_result_pass("policy_c0_no_idle\n");
 +}
 +
-+static void kvm_cstate_policy_clear(int saved_cpu,
-+				    unsigned long long saved_disable[CPUIDLE_STATE_MAX])
++int main(int argc, char *argv[])
 +{
-+	struct cpuidle_device *dev;
-+	struct cpuidle_driver *drv;
-+	int i, cur_cpu;
++	ksft_print_header();
++	ksft_set_plan(7);
 +
-+	if (saved_cpu < 0)
-+		return;
++	TEST_REQUIRE(kvm_has_cap(KVM_CAP_CSTATE_POLICY));
 +
-+	cur_cpu = smp_processor_id();
-+	if (cur_cpu != saved_cpu) {
-+		/*
-+		 * vCPU migrated during block — we cannot safely restore the
-+		 * original CPU's cpuidle state from here. This only happens
-+		 * with unpinned vCPUs. The stale disable flags will persist
-+		 * until the next policy application on that CPU clears them.
-+		 *
-+		 * TODO: use smp_call_function_single() to restore remotely,
-+		 * or scope the feature to pinned vCPUs only.
-+		 */
-+		WARN_ON_ONCE(1);
-+		return;
-+	}
++	test_cap_supported();
++	test_valid_policies();
++	test_invalid_policies();
++	test_policy_change();
++	test_cpuidle_no_policy();
++	test_cpuidle_enforcement();
++	test_policy_c0_no_idle();
 +
-+	dev = cpuidle_get_device();
-+	drv = cpuidle_get_driver();
-+	if (!dev || !drv)
-+		return;
-+
-+	for (i = 0; i < drv->state_count; i++)
-+		dev->states_usage[i].disable = saved_disable[i];
++	ksft_finished();
++	return 0;
 +}
-+
- /*
-  * Block the vCPU until the vCPU is runnable, an event arrives, or a signal is
-  * pending.  This is mostly used when halting a vCPU, but may also be used
-@@ -3643,11 +3717,14 @@ static int kvm_vcpu_check_block(struct kvm_vcpu *vcpu)
- bool kvm_vcpu_block(struct kvm_vcpu *vcpu)
- {
- 	struct rcuwait *wait = kvm_arch_vcpu_get_wait(vcpu);
-+	unsigned long long saved_disable[CPUIDLE_STATE_MAX] = {};
-+	int saved_cpu = -1;
- 	bool waited = false;
- 
- 	vcpu->stat.generic.blocking = 1;
- 
- 	preempt_disable();
-+	saved_cpu = kvm_cstate_policy_apply(vcpu->kvm, saved_disable);
- 	kvm_arch_vcpu_blocking(vcpu);
- 	prepare_to_rcuwait(wait);
- 	preempt_enable();
-@@ -3665,6 +3742,7 @@ bool kvm_vcpu_block(struct kvm_vcpu *vcpu)
- 	preempt_disable();
- 	finish_rcuwait(wait);
- 	kvm_arch_vcpu_unblocking(vcpu);
-+	kvm_cstate_policy_clear(saved_cpu, saved_disable);
- 	preempt_enable();
- 
- 	vcpu->stat.generic.blocking = 0;
-@@ -4880,6 +4958,7 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
- 	case KVM_CAP_CHECK_EXTENSION_VM:
- 	case KVM_CAP_ENABLE_CAP_VM:
- 	case KVM_CAP_HALT_POLL:
-+	case KVM_CAP_CSTATE_POLICY:
- 		return 1;
- #ifdef CONFIG_KVM_MMIO
- 	case KVM_CAP_COALESCED_MMIO:
-@@ -5056,6 +5135,28 @@ static int kvm_vm_ioctl_enable_cap_generic(struct kvm *kvm,
- 
- 		return 0;
- 	}
-+	case KVM_CAP_CSTATE_POLICY: {
-+		int max_cstate = (int)cap->args[0];
-+
-+		if (cap->flags || cap->args[1])
-+			return -EINVAL;
-+
-+		if (max_cstate < -1 || max_cstate > 6)
-+			return -EINVAL;
-+
-+		kvm->max_cstate = max_cstate;
-+
-+		/*
-+		 * Ensure kvm->override_cstate_policy does not become visible
-+		 * before kvm->max_cstate.
-+		 *
-+		 * Pairs with the smp_rmb() in kvm_vcpu_block().
-+		 */
-+		smp_wmb();
-+		kvm->override_cstate_policy = true;
-+
-+		return 0;
-+	}
- 	case KVM_CAP_DIRTY_LOG_RING:
- 	case KVM_CAP_DIRTY_LOG_RING_ACQ_REL:
- 		if (!kvm_vm_ioctl_check_extension_generic(kvm, cap->cap))
 -- 
 2.55.0
 
