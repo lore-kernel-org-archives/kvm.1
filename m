@@ -1,56 +1,56 @@
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEB749C4DB
-	for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 18:12:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A1B49DB87
+	for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 18:12:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789409557; cv=none; b=alf16TxUXuOQWPXzUJL6quCJXAEztEPnw58PIE1F20BuX0Z8nzGYdPesDAsbsqVcIFm+fgtSFdlKw3Gh9gxh7tzJPW1G4LtXL5PsrnL6x9KB3LEpmyP1WUlpkUiXF4z2negHBWvHJIFegNlt/lwZqVinpPcAO9d81bUeceWdIc4=
+	t=1789409558; cv=none; b=B6IKV+gHjMSSzFb6Kx/OVB7aFWFHZIaI2Se2kVnXT0vi7W/mc9TMASmzviW01MgRs5UQsrkTktj3u3lwivm1Bw1k6QVXJvbFn6CTLrmWqasbFDr5YtAm8Z8Zb8jh6g8ittT8Arf2C4At/OI9zg9jhuVziW/3Osh08XNTwoNvxOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789409557; c=relaxed/simple;
-	bh=/IdUyLNiMdGu0jrgGR9Q1GZN+1EphXX7mT7YjuCIqIw=;
+	s=arc-20240116; t=1789409558; c=relaxed/simple;
+	bh=dJrvpB5i1rMlVAI+qV3aDnzI33qsio45lawj5JfEjHs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QG54mk6u9/45XqC7XaJfoiO5MCdXIJxy8bRzqnHS3kX0PxUB870YGvG6pDffqx9kkMskLRALU8tNoTHC2QycxAYg/mkXyxfafJi9GypC2fioTqPFcP0ewCzcu0i4v1OXM2utKN/KsqGEIYildFTOEehSE6bpWC8S/ddx7TE910U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mOugi3ZT; arc=none smtp.client-ip=209.85.216.71
+	 To:Cc:Content-Type; b=lRVRavCBtGrKZnL1RpSiX8x4P2O0q+Ea1E2/B7ECJ1U4dOP7EZ0AGpzquu8/mjmK/BwRo6C1O2OcBgSuCWdv6gAeuUxm7JTaYPiqO+YSJrJqgi2sdBBJEqZ7eOvvnpvFZ8tYL9TE3Yu160523v2gMj9cGKCo4e3Fzxh0ZUYDNAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ll3QclfO; arc=none smtp.client-ip=209.85.216.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mOugi3ZT"
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38e54b6556aso4594092a91.2
-        for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 11:12:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ll3QclfO"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-39de4e72b33so2038649a91.2
+        for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 11:12:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789409548; x=1790014348; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789409552; x=1790014352; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=ZO1urm4Fark0kk4FfGgKDyyN0dzql0DO01I8NkWQ2as=;
-        b=mOugi3ZTM5REKyYD+tE/9Q04x+mflskhf479f69cTl7Yr6Nyv+PWK3CMeK9UGmx2bP
-         1n8no7kk9inVZcah97wDhRyQbeSoYa4Q/pcARGYpbFCBPRbXLB7ggxHuIbd/BPicP6EK
-         0GKRIQp5Ij4RIXgy0kxTj82aklzOj7Ttjq+lryAPBzZkk3RNX66Ucdbf9LuO8V3UIsdo
-         2WAi8bcWnPb8VSlIct6/A73YvLU6Hg6ENRC78biexQFPceRKistP5zCtwpzqGFX44TnF
-         KdJ0Mwi2mR+OvpHKuV93EwBUEOfJQN84kxg5C7Bompyp5qkcN+e4fTaj/TTUoiWKcb8b
-         KxAA==
+        bh=eILuU/ujF/gCxOipJ6aAt7TsmD8PW8XQkQA4cx27AIY=;
+        b=ll3QclfObzQf89D5n0MifPRcHjYAPY8zYA1imWEzyXbIBgBF73qzGNuQny0cTx/z9V
+         gJtZLdKJCLQYt9JykqMC7qt/3HYW0YBl2DYyYSB5JmdukUz026bZpY95atFn75EsV2KF
+         CbUO8svIDspuK4reDoj0cNUd6EncsHvvBFKxKa+eJhyNS5aQ8Zs8wxE0+Uo+w5xiQPDe
+         0s/KJKd1Ht+XUeR8xo0IZGesiy3P9gRw5G+YnG6p8B5y9JRsap2+XLKJ+jhJ+XoXr9dj
+         q0in9xGGsDXmqEhjP97w9vlPXv0VQJ07dMXk0ai0/pUncWstt1n59I8tYZYyd55WJuXU
+         hUwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789409548; x=1790014348;
+        d=1e100.net; s=20251104; t=1789409552; x=1790014352;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ZO1urm4Fark0kk4FfGgKDyyN0dzql0DO01I8NkWQ2as=;
-        b=qloTdHbc7/UNdXb/WLldn/vy8x6CnqsNVkO5RMP24iLmXt8W85+QmmQtEvpXcFDJSe
-         /cXFUpytPzuRnON3ZGV5zhyWz5siL+IQo7nITH7eEbL94yAn3kKA9e1VZtfcqeRakX5T
-         c0BOo2yDaBnnE8LckSJA9QVtsB+ieRoP8Iul+naje0O5kBrsSGuyoHwufavciaq6Uq9d
-         aVoJZ5UcHzgrgYvVFA47A2AnwJNp+OBwB0tBXMKqt87HqWQAaGIm+oJhnrmBctKeXgA8
-         wSOd9uVs4osBYHjIAcT3weFBqFK4AIBB+hZcoRHB8bLznjCLxu4RAwOirDojs4RumRK+
-         8KWw==
-X-Gm-Message-State: AFuF++mXc2o/l+6c7TezUqmR3Bu52J7VQs+lbSbf4fImydmuPk84Tay6
-	g0jeJzNGzTkdIJjsii4CJ6Ome/lkUlx26RuFW2zabWG4d+2d4IouIAUJb/GVG2p0M68BEihjiCP
-	NtYNpFg==
-X-Received: from pjbkx24.prod.google.com ([2002:a17:90b:2298:b0:39d:c134:415])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4fc1:b0:39d:fce7:f63a
- with SMTP id 98e67ed59e1d1-39dfce7f7fbmr1445324a91.6.1789409548252; Mon, 14
- Sep 2026 11:12:28 -0700 (PDT)
+        bh=eILuU/ujF/gCxOipJ6aAt7TsmD8PW8XQkQA4cx27AIY=;
+        b=QUcctbg0ytcZrpWdrq2qKJELqiSGbVV8q8ChrH1K5WG9DCHMDPZgVVks33QWDYURpb
+         h65GyJsKWL3qRHL1oFve7pck5O5BElnjWaUFBz5h8+gX5QZNOwO9NFjKsqHzK3hOBWZR
+         dHuluYe2U2pYS4zvd+v6hwmrYumNICRuxpFSU2keEHMdOwVf9ph8Uqtl83a7Gf3NEHH7
+         EMGAQU943TcoZ7IZ6A3T58RTsjkGDEo1j+qFMOjv12ZoL+lSAGmNxa4sWGhPApFIhP0g
+         pp2U56OlXOh1THl3mEzVHmyh8s6mtAwvyNq5DHUbJ22ispsxBgO3fVy+nWLxinqB2Fnw
+         vRxQ==
+X-Gm-Message-State: AFuF++nOsRMaylw9iCP9N0oiJG880QyVa/NpQf3m+8qx1wg4QKf7GSf4
+	zY9pxWcyBAQg/AjMbi4f/szp4t3vkQEGbKnq+2PKgkxvgdHLTmamlqIRHSB23pSWzNv80Hf2cMc
+	R5R30Nw==
+X-Received: from pjso8.prod.google.com ([2002:a17:90a:c088:b0:398:ba84:67d7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:17c8:b0:396:65dd:4093
+ with SMTP id 98e67ed59e1d1-39dec04f9d9mr6872853a91.14.1789409550513; Mon, 14
+ Sep 2026 11:12:30 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Mon, 14 Sep 2026 11:12:21 -0700
+Date: Mon, 14 Sep 2026 11:12:23 -0700
 In-Reply-To: <20260914181223.289061-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260914181223.289061-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.1032.g73a4cd73de-goog
-Message-ID: <20260914181223.289061-4-seanjc@google.com>
-Subject: [PATCH 3/5] KVM: Move check for existing vCPU ID to the top of vCPU creation
+Message-ID: <20260914181223.289061-6-seanjc@google.com>
+Subject: [PATCH 5/5] KVM: WARN if vCPU creation is in-progress when locking
+ all vCPUs
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -69,48 +70,38 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	"=?UTF-8?q?Pawe=C5=82=20S?=" <spawel523@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Now that kvm->lock is held for the entirety of vCPU creation, check for a
-conflicting vCPU ID at the begnning of vCPU creation, before the arch
-precreate() hook is invoked.  This will allow reverting commit 97d65b544f48
-("KVM: Check for duplicate vcpu_id as early as possible").  For now, keep
-the redundant vcpu_ids tracking as a sanity check.
-
-No functional change intended (absent KVM bugs, checking vcpu_ids and
-walking kvm_get_vcpu_by_id() should yield the same result).
+Now that KVM holds kvm->lock for the entirety of vCPU creation, from when
+created_vcpus is incremented until the new vCPU is fully onlined, WARN if
+the impossible happens and KVM somehow sees a discrepancy between the
+number of vCPUs "created" and "onlined".
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- virt/kvm/kvm_main.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ virt/kvm/kvm_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index c17cc8dd371b..d5524ac8c5cf 100644
+index 985af39b980a..e66d9761ee49 100644
 --- a/virt/kvm/kvm_main.c
 +++ b/virt/kvm/kvm_main.c
-@@ -4182,7 +4182,10 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
- 	if (kvm->created_vcpus >= kvm->max_vcpus)
- 		return -EINVAL;
+@@ -1363,7 +1363,7 @@ int kvm_trylock_all_vcpus(struct kvm *kvm)
  
--	if (test_bit(id, kvm->vcpu_ids))
-+	if (kvm_get_vcpu_by_id(kvm, id))
-+		return -EEXIST;
-+
-+	if (WARN_ON_ONCE(test_bit(id, kvm->vcpu_ids)))
- 		return -EEXIST;
+ 	lockdep_assert_held(&kvm->lock);
  
- 	r = kvm_arch_vcpu_precreate(kvm, id);
-@@ -4221,11 +4224,6 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
- 			goto arch_vcpu_destroy;
- 	}
+-	if (kvm_is_vcpu_creation_in_progress(kvm))
++	if (WARN_ON_ONCE(kvm_is_vcpu_creation_in_progress(kvm)))
+ 		return -EBUSY;
  
--	if (WARN_ON_ONCE(kvm_get_vcpu_by_id(kvm, id))) {
--		r = -EEXIST;
--		goto unlock_vcpu_destroy;
--	}
--
- 	/*
- 	 * Set the vCPU's index *before* the vCPU is reachable by other tasks.
- 	 * Unwind the index back to -1 on failure so that KVM can use the index
+ 	kvm_for_each_vcpu(i, vcpu, kvm)
+@@ -1389,7 +1389,7 @@ int kvm_lock_all_vcpus(struct kvm *kvm)
+ 
+ 	lockdep_assert_held(&kvm->lock);
+ 
+-	if (kvm_is_vcpu_creation_in_progress(kvm))
++	if (WARN_ON_ONCE(kvm_is_vcpu_creation_in_progress(kvm)))
+ 		return -EBUSY;
+ 
+ 	kvm_for_each_vcpu(i, vcpu, kvm) {
 -- 
 2.55.0.1032.g73a4cd73de-goog
 
