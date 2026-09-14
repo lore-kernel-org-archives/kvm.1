@@ -1,33 +1,33 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FBEB33A9DA;
-	Mon, 14 Sep 2026 06:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5056E22A7F6;
+	Mon, 14 Sep 2026 06:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789366984; cv=none; b=XY0MeZ4sTMdUjsc+HhJbz2egGO7/eh9r/D8aFqU1ie52vajEE12IIO63WQX6usUuIlYeabjiKNTG0hI9cEXS59xrtVE39+kMQxO7v0OH4yKIs/TyvIfTwZl2X5Nk0mJ2akbxe4jisMoLbnEb450VEKEnxFNCCds46cQW1Dd/RDA=
+	t=1789367664; cv=none; b=J3RxK2MnI1eNL/SBmC1Qp11g8E5jjure0fxttO4HNr5wqNBOrsX/aeKWmbSPgutwQUtlao5mQ4m7Qho9tPF3xjc6tYlrzh3LJVsCtyySIIHCrij54EfAJBuFb+UNalmxPXre07kTpzIkUd1PZt1xMUv5WR7goj5RRktRJSzCXmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789366984; c=relaxed/simple;
-	bh=A33RJV2D0AN0N24mCbcvU4G5DcOAvXGh3mPfTyTsEU8=;
+	s=arc-20240116; t=1789367664; c=relaxed/simple;
+	bh=3UFhIq4QHq9TytrWQywRZzXOkkTaNlRDCVMLHz/qIj0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kwS02GkC24/zTHOH6S8r3ohqDcXbxRmhRzSJ4C3qGGggbaZoVLW+v+CnOSJmu6qRdkmBY8Xx8GNH4DVlohJNLWlyBDp5SjvLy6ODTsMovwBvO3RmzrDw4C8BEwNkw0Hsz2QwMnp+6MSdbzN3p4UMO5TWIxVDuJMf9AHBQTkj2HY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=op48qBzZ; arc=none smtp.client-ip=217.140.110.172
+	 In-Reply-To:Content-Type; b=m1cFxjEHMYW+JwnhdTChF4wTwHfCgqEiPgiybAd4ztRA0q7q7fMSt9Zo00CKEOs+1YC94sNh0f9ypeGiWfINE2mvoy0l11GwWW7v4n0t09BP1xTAWl32aP5NL/DH7sOW9ymvfehOCf6bAZaVwwimV6GnNJyMqoJVyIEE9EBap6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=MK8BiM95; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="op48qBzZ"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="MK8BiM95"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EF8FD1570;
-	Sun, 13 Sep 2026 23:22:56 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 09A641570;
+	Sun, 13 Sep 2026 23:34:18 -0700 (PDT)
 Received: from [10.57.10.40] (unknown [10.57.10.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AEF083F7B4;
-	Sun, 13 Sep 2026 23:22:57 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C28623F7B4;
+	Sun, 13 Sep 2026 23:34:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789366980; bh=A33RJV2D0AN0N24mCbcvU4G5DcOAvXGh3mPfTyTsEU8=;
+	t=1789367661; bh=3UFhIq4QHq9TytrWQywRZzXOkkTaNlRDCVMLHz/qIj0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=op48qBzZwgyfzF0VPAvSFLZzpF+trv27JNawXFVF37FvxQcTi/T7McDrcQdOOdqnR
-	 82revSNtVjf5WuXwOqH8296xhdLN6t0a4jwy5DE4u9ztN6VUJH0fqQjATMhu26amVa
-	 gYrvzph+gXtKvfYuEiUsh3aj1Dh1G/kspPvLWsWY=
-Message-ID: <4f18aa66-2296-4b63-87f5-6ab493faecbc@arm.com>
-Date: Mon, 14 Sep 2026 07:22:56 +0100
+	b=MK8BiM95/KvV+tBcwk8Ima8+QslWVJKy2xivHr6522TXYYXfDNC/qhggcF5gATKdR
+	 TrrjiHONVKxa17sth4M+XYpVIG6qhwn4cZl8lIPEQxa9SjrixubT0ENswtzTlv5p5Y
+	 PaCRo9aJG3WP7tak+IsS8z2yN/Q22Li8OhMIbb3s=
+Message-ID: <a9587df6-b866-4d3b-880e-638537a96e3a@arm.com>
+Date: Mon, 14 Sep 2026 07:34:17 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,7 +35,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18 4/7] firmware: arm_rmm: Add support for SRO
+Subject: Re: [PATCH v18 3/7] firmware: arm_rmm: Configure the RMM with the
+ host's page size
 Content-Language: en-GB
 To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
 Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
@@ -46,283 +47,86 @@ Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
  sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
  WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
 References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
- <20260912083611.2513845-5-suzuki.poulose@arm.com>
- <f00d01d1-8df0-4865-8e52-c85171cf4ca5@redhat.com>
+ <20260912083611.2513845-4-suzuki.poulose@arm.com>
+ <6d204c05-1338-4ee5-9ac9-5d9447e329ee@redhat.com>
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <f00d01d1-8df0-4865-8e52-c85171cf4ca5@redhat.com>
+In-Reply-To: <6d204c05-1338-4ee5-9ac9-5d9447e329ee@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hi Gavin
-
-Thank you for the review, I will address most of them. Responses inline.
-
-On 14/09/2026 06:04, Gavin Shan wrote:
+On 14/09/2026 02:21, Gavin Shan wrote:
 > On 9/12/26 6:36 PM, Suzuki K Poulose wrote:
->> RMM v2.0 introduces the concept of "Stateful RMI Operations" (SRO). This
->> means that an SMC can return with an operation still in progress. The
->> host is expected to continue the operation until it reaches a conclusion
->> (either success or failure). During this process the RMM can request
->> additional memory ('donate') or hand memory back to the host
->> ('reclaim'). The host can request an in progress operation is cancelled,
->> but still continue the operation until it has completed (otherwise the
->> incomplete operation may cause future RMM operations to fail).
+>> From: Steven Price <steven.price@arm.com>
 >>
->> The SRO is tracked using a struct rmi_sro_state object which keeps track
->> of any memory which has been allocated but not yet consumed by the RMM
->> or reclaimed from the RMM. This allows the memory to be reused in a
->> future request within the same operation. It will also permit an
->> operation to be done in a context where memory allocation may be
->> difficult (e.g. atomic context) with the option to abort the operation
->> and retry the memory allocation outside of the atomic context. The
->> memory stored in the struct rmi_sro_state object can then be reused on
->> the subsequent attempt.
+>> RMM v2.0 brings the ability to set the RMM's granule size. Check the
+>> feature registers and configure the RMM so that it matches the host's
+>> page size. This means that operations can be done with a granularity
+>> equal to PAGE_SIZE.
 >>
->> Wrappers for SRO RMI commands are also provided here because they depend
->> on the rmi_sro_execute() implementation added by this patch.
->> Delegate/undelegate handles are also added here because they now use the
->> SRO/stateful command infrastructure and are also used for the memory
->> DONATE/RECLAIM flows.
->>
+>> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 >> Signed-off-by: Steven Price <steven.price@arm.com>
->> Co-Developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 >> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-
-
-
 >> ---
->>   drivers/firmware/arm_rmm/rmi.c | 586 +++++++++++++++++++++++++++++++++
->>   include/linux/arm-rmi-cmds.h   |  41 +++
->>   2 files changed, 627 insertions(+)
+>>   Changes since v17:
+>>    * Move rmi_config_set() out of the header file.
+>>    * Print the error message for rmi_config_set if it fails
+>>   Changes since v15:
+>>    * Actually check the feature register for the host's page-size 
+>> support.
+>>   Changes since v14:
+>>    * Move the implementation into drivers/firmware/arm_rmm.
+>>   Changes since v13:
+>>    * Moved out of KVM.
+>> ---
+>>   drivers/firmware/arm_rmm/rmi.c | 79 ++++++++++++++++++++++++++++++++++
+>>   1 file changed, 79 insertions(+)
 >>
 >> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/ 
 >> arm_rmm/rmi.c
->> index 5b0e342ce3d58..4f9898ece7547 100644
+>> index 2fd538c937dca..5b0e342ce3d58 100644
 >> --- a/drivers/firmware/arm_rmm/rmi.c
 >> +++ b/drivers/firmware/arm_rmm/rmi.c
-
-> 
-> I would drop rmi_granule_range_{delegate, undelegate}() by combining 
-> their logics to
-> their only callers rmi_{delegate, undelegate}_range(). More details are 
-> provided for
-> rmi_{delegate, undelegate}_range() in the below.
-
-Ack
-
-
-> 
->> +int rmi_delegate_range(phys_addr_t phys,
->> +               unsigned long size,
->> +               phys_addr_t *out_phys)
->> +{
->> +    long ret = 0;
->> +    unsigned long top = phys + size;
->> +    unsigned long out_top;
->> +
->> +    while (phys < top) {
->> +        ret = rmi_granule_range_delegate(phys, top, &out_top);
->> +
->> +        if (ret == RMI_SUCCESS) {
->> +            /* Buggy RMM ? */
->> +            if (WARN_ON(out_top <= phys)) {
->> +                rmi_undelegate_range(top - size, size);
-> 
-> [top - size, size] is incorrect because we may be delegating a sub-range 
-> of the
-> range of granules. It's actually the caller's responsibility to 
-> undelegate the
-> graunles that have been delegated.
-> 
->              if (WARN_ON(out_top <= phys)) {
->                  ret = -ENXIO;
->                  break;
->              }
-
-Agree, I have done this already based on Sashiko review, and added a 
-comment too.
-
-
-
-> 
->> +/*
->> + * Convert the RmiAddrBlockSize to actual size. This is used in 
->> RmiDonateReq
->> + * and RmiAddrRangeDesc*.
->> + */
->> +static unsigned long rmi_addr_block_size_to_bytes(unsigned long 
->> block_size_fld)
->> +{
->> +    return BIT(ARM64_HW_PGTABLE_LEVEL_SHIFT(3 - block_size_fld));
->> +}
->> +
->> +/*
->> + * free_addr_range: Free memory described by the address range entry, 
->> which may
->> + *            be partially consumed by RMM.
+>> @@ -35,6 +35,25 @@ static int rmi_features(unsigned long index, 
+>> unsigned long *out)
+>>       return args.a0;
+>>   }
+>> +/**
+>> + * rmi_rmm_config_set() - Configure the RMM
+>> + * @cfg_ptr: PA of a struct rmm_config
 >> + *
->> + * @entry: RMI_ADDR_RANGE descriptor
->> + * @consumed_size: Page aligned size consumed by the RMM from the 
->> address range.
+>> + * Sets configuration options on the RMM.
 >> + *
->> + * If the state of the address is DELEGATED, undelegate it back, 
->> before freeing.
->> + * Leaks the memory if we cannot undelegate the range.
+>> + * Return: RMI return code
 >> + */
->> +static void free_addr_range(unsigned long entry, unsigned long 
->> consumed_size)
+>> +static int rmi_rmm_config_set(unsigned long cfg_ptr)
 >> +{
->> +    unsigned long phys = RMI_ADDR_RANGE_ADDR(entry);
->> +    unsigned long block_size_fld = RMI_ADDR_RANGE_BLOCK_SIZE(entry);
->> +    unsigned long count = RMI_ADDR_RANGE_COUNT(entry);
->> +    unsigned long state = RMI_ADDR_RANGE_STATE(entry);
->> +    unsigned long size = rmi_addr_block_size_to_bytes(block_size_fld) 
->> * count;
->> +
->> +    WARN_ON(!PAGE_ALIGNED(phys) || !PAGE_ALIGNED(consumed_size));
->> +
->> +    /* Adjust the address and size for partially consumed entry */
->> +    phys += consumed_size;
->> +    size -= consumed_size;
->> +    /*
->> +     * Undelegate the pages back if required. If we can't
->> +     * change them back, leak the pages.
->> +     */
->> +    if (state == RMI_OP_MEM_DELEGATED &&
->> +        WARN_ON(rmi_undelegate_range(phys, size)))
->> +        return;
->> +    free_pages_exact(phys_to_virt(phys), size);
->> +}
->> +
->> +static void rmi_op_continue(unsigned long sro_handle, unsigned long 
->> flags,
->> +                struct arm_smccc_1_2_regs *out_regs)
->> +{
->> +    *out_regs = (struct arm_smccc_1_2_regs) {
->> +        SMC_RMI_OP_CONTINUE, sro_handle, flags
+>> +    struct arm_smccc_1_2_regs regs = {
+>> +        SMC_RMI_RMM_CONFIG_SET, cfg_ptr,
 >> +    };
 >> +
->> +    rmi_smccc_invoke(out_regs);
+>> +    rmi_smccc_invoke(&regs);
+>> +
+>> +    return regs.a0;
 >> +}
 >> +
 > 
-> The pattern 'regs' is used in some of the 'struct arm_smccc_1_2_regs' 
-> arguments
-> or variables in this series, which is incosistent to the existing 
-> patterns which
-> is either 'args' or 'res' by searching the source files using 'git grep 
-> arm_smccc_1_2_regs'.
-> So I would suggest we have the fixed the pattern 'args' :-)
-
-
-I would prefer to keep it "regs" as, unlike the smccc_1_1 calls, we
-pass "arm_smccc_1_2_regs" for both arguments and results. In this case
-we are using a single structure, so, to avoid the confusion, I
-intentionally used regs
-
-> 
-
->> +
->> +int rmi_free_delegated_page(phys_addr_t phys)
->> +{
->> +    if (WARN_ON_ONCE(rmi_undelegate_page(phys))) {
->> +        /* Undelegate failed: leak the page */
->> +        return -EBUSY;
->> +    }
->> +
->> +    free_page((unsigned long)phys_to_virt(phys));
->> +
->> +    return 0;
->> +}
->> +EXPORT_SYMBOL_GPL(rmi_free_delegated_page);
->> +
-> 
-> I would move rmi_free_delegated_page() right after rmi_undelegate_range().
+> The comments for rmi_rmm_config_set() can be dropped since its logic is 
+> simply enough and
+> the code is self-explainning. Besides, I would move this right before 
+> its only caller
+> rmi_configure().
 
 Ack
 
-
->> +
->> +static int rmi_sro_donate_noncontig(struct rmi_sro_state *sro,
->> +                    unsigned long sro_handle,
->> +                    unsigned long donatereq,
->> +                    struct arm_smccc_1_2_regs *out_regs,
->> +                    gfp_t gfp)
->> +{
->> +    unsigned long block_size_fld = RMI_DONATE_BLOCK_SIZE(donatereq);
->> +    unsigned long block_size = 
->> rmi_addr_block_size_to_bytes(block_size_fld);
->> +    unsigned long count = RMI_DONATE_COUNT(donatereq);
->> +    unsigned long state = RMI_DONATE_STATE(donatereq);
->> +    unsigned long found = 0;
->> +    unsigned long donated_granules;
->> +    unsigned long granules_per_block = block_size >> PAGE_SHIFT;
->> +    unsigned long consumed_blocks;
->> +    int addr_list_start = sro->addr_count;
->> +
->          ^^^^^^
 > 
-> Unecessary blank line.
+> I would suggest drop this function by combining its logics into the only 
+> caller
+> rmi_configure(), seeing below for more details.
 
-Removed
-
-...
-
->> +
->> +void rmi_sro_free(struct rmi_sro_state *sro)
->> +{
->> +    /* Handle the worse */
->> +    if (WARN_ON(sro->addr_count < 0))
->> +        return;
->> +
->> +    if (WARN_ON(sro->addr_count > RMI_MAX_ADDR_LIST))
->> +        sro->addr_count = RMI_MAX_ADDR_LIST;
->> +
->> +    for (int i = 0; i < sro->addr_count; i++)
->> +        free_addr_range(sro->addr_list[i], 0);
->> +
->> +    sro->addr_count = 0;
->> +}
->> +EXPORT_SYMBOL_GPL(rmi_sro_free);
->> +
->> +long rmi_sro_memxfer_execute(struct rmi_sro_state *sro, gfp_t gfp)
->> +{
->> +    struct arm_smccc_1_2_regs *regs = &sro->regs;
->> +    bool cancelled = false;
->> +    unsigned long sro_handle;
->> +
->> +    rmi_smccc_invoke(regs);
->> +
->> +    sro_handle = regs->a1;
->> +    while (RMI_RETURN_STATUS(regs->a0) == RMI_INCOMPLETE) {
->> +        bool can_cancel = RMI_RETURN_CAN_CANCEL(regs->a0) == 
->> RMI_OP_CAN_CANCEL;
->> +        int ret = 0;
->> +
->> +        switch (RMI_RETURN_MEMREQ(regs->a0)) {
->> +        case RMI_OP_MEM_REQ_NONE:
->> +            rmi_op_continue(sro_handle, RMI_CONTINUE_KEEP_GOING,
->> +                    regs);
->> +            break;
->> +        case RMI_OP_MEM_REQ_DONATE:
->> +            ret = rmi_sro_donate(sro, sro_handle, regs->a2, regs,
->> +                         gfp);
->> +            break;
->> +        case RMI_OP_MEM_REQ_RECLAIM:
->> +            ret = rmi_sro_reclaim(sro, sro_handle, regs);
->> +            break;
->> +        default:
->> +            ret = WARN_ON_ONCE(1);
->> +            break;
-> 
-> "ret = WARN_ON_ONCE(1)" is same to "ret = true". I guess we would return
-> -EINVAL here.
-> 
->              WARN_ON_ONCE(1);
->              ret = -EINVAL;
->              break;
-
-Ack, this should be -ENXIO
+That looks a bit odd in the middle of a function, given the argument 
+setting. I have moved it closer to the configure().
 
 Cheers
+Suzuki
+
 
