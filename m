@@ -1,202 +1,150 @@
-Received: from mta0.migadu.com (out-134.mta0.migadu.com [91.218.175.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012018.outbound.protection.outlook.com [52.101.48.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4151844238E
-	for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 11:55:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.134
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789386952; cv=none; b=qjgw39pQOXctJg4jvxjk2PuCt8kbkDEXKOpBhMfTYXVTA2O8X5Z547QMNjlJqb4Fdh5EXdV+0kHBFCoYn5yeWzXNPWKroqwm7j10OuE9nggkQs9nnBALV+LubqgvB5FuFEydK6Mzu/HDJREjs34R09luJPtBLGa+1NyU/60jV/c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789386952; c=relaxed/simple;
-	bh=HAh6LWtciOn8v6l3PjIIaLJbIazmwCoFjvScDX9gmwU=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:
-	 In-Reply-To:References; b=ee42kNpoY52+zHY4Sr4smksZDGbW7czKqqzMKhPE5C1nua+GS8VRxrIpDirWoKCCKT8o50SyWUAozpQ0sPqREQTZsLcpr4fZ3qvmnYzsZNplg4cGmNYRfc9Yd03erfKPJuFyp8Ea3JU2mA+0USNBJNYgpF2EW1n/PYUOP73+pVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MT5twhMv; arc=none smtp.client-ip=91.218.175.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D264477F1;
+	Mon, 14 Sep 2026 11:58:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789387119; cv=fail; b=TF/THDz4/z6I4O/h/Pu99yieVcpoBcise9mcRnIb6TcyTqPaYjy088HTNyaBpEgmEJkAzwPFcNQG9xNnmrlETzbgBZ/3NS1aOHKhby2ZXlnmblp0IGFUp+1VPE6x/nLQvuJHaNsF8xhhxVFtHqogGbTq0TwMUPub8hB1u8Sg+q4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789387119; c=relaxed/simple;
+	bh=EEhP98U/7jA/RPBHeH/yKTHaz1xEStqUWSShV0+v78Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=dO1D+0COTyu338Lskn86W3zQdoOrRPO2OEbcTRiu79+QJyslCanjT7d1GnNJ7OC63RwisH8D4jzORq4I3sCCrkneHlNdAuX1agvpo/4FJK25qiQdhuYwHr3iDc1kvQqGp2UIKGmjaaDZi0/ZthK0+yu73cSqJ8um75O76CE4F5I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CgCe2wFR; arc=fail smtp.client-ip=52.101.48.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MT5twhMv"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=HAh6LWtciOn8v6l3PjIIaLJbIazmwCoFjvScDX9gmwU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789386947; v=1; x=1789991747;
- b=MT5twhMvEQKu7Whxa815oYetJYoxzPf9CWTgUeSWjIKPMm/gXemjE0GoyepdEc95+0uRr/Yg
- MU0ZJKdhF1P5qIXge0mnC/s2ASmeEgByilUDtpo6s0YReqkweinseD/0/SNETu10XhLJDrVXSJc
- kA4rbQLjPbdtnxuwpUhMp6ds=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 17e21db79ff49fa5;
-	Mon, 14 Sep 2026 11:55:47 +0000
-X-Mizu-Trace-ID: 17e21db79ff49fa5
-X-Migadu-Flow: FLOW_OUT
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CgCe2wFR"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rw6qEoLFA7R+w22i4hSqBt/P5glYHW2FdGuWh5qLbfwxwDxBLwvCJxOIIpP943YQ+0zGWYB0fx9bbuj9MTONHsHeBqnW74d9N0X962V31niF5BU3zFp3q2KJTcekctPkcP3i3/9O0gw6sckOpCSmojwo9qXHecZR+FwDc+fSR6MEAyvXThHw+8wTijwNP/Jjrt6LGYiJhhknarN8B7/bt7ol5rJhr2Ck9h280Lzm6huY9kiVITbhASz1aP9NzCNEhPc98rOSippK0wkc7LFIoJykOxRsrHZRwDFJa38atJht6cApe2inlBBbYEt/pc8gcGLaws3+XxJ0yzpTX2GgUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EEhP98U/7jA/RPBHeH/yKTHaz1xEStqUWSShV0+v78Q=;
+ b=pc8+EhYZCphTwBFqw7NVurV2otE+4oOW/25cBXM44raXfX4MbL8gmLWv4fGY6bgEwAJ60LxjW3uVwyTNB1bkd5x+xtXPoGigcXdaYldzKCnsIsvfMJue5WrqbSyyHex15HTrLuUOmTgoOpi+pc0pJFsRjcv213OQYu5iOAhDkGKjIc09NT6aHprpKA7vgjpVuscNZuuvrsjs7RN/uui+GPEiV2iB5OrDo3iwSdtP4uzIG+8BHwgMqbyfbfn7M6HR6sfPdpDWYV7FUwDRto+7ZtHWuhGXvEBTVH2nm2J2d2xobdXClcamq8i4rqlGgYjupSnDoOE1pJFVBa1szLi9Xg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EEhP98U/7jA/RPBHeH/yKTHaz1xEStqUWSShV0+v78Q=;
+ b=CgCe2wFRC9ROmICysPjils6bGE7UnnyK71l2oPqQPvFl56jckaOYm45S2U78Qb7iKXUyi418vEOfRWLoPgBU6NiMjPV6R1gs5Dve1icywDzXcgFmyx7pSn3RIOrgCXZtTNdNjf1IDWka1gqWe1JxcwZTVEUqsQCsWq0fm5GUjmGVTkjBSTVk+4VZD3qGjBflZsIQobs8I/32rzdLPxmNXJybBklcbyFR1VSkuYF1eundDJQvBu7stvFRkaSzwBpUUk6/mJjCl9zEmc78aIWllPzW3Ml+e2EyubPF/ga85KAoWuPBQik36wcA5BS8y/ZAIN3UjxAwji9Z0zvUN//luA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12) by DS4PR12MB106381.namprd12.prod.outlook.com
+ (2603:10b6:8:4f2::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
+ 2026 11:58:27 +0000
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
+ 11:58:27 +0000
+Date: Mon, 14 Sep 2026 08:58:26 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Matt Evans <matt@ozlabs.org>, Alex Williamson <alex@shazbot.org>,
+	Alex Mastro <amastro@fb.com>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Longfang Liu <liulongfang@huawei.com>,
+	Mahmoud Adam <mngyadam@amazon.de>,
+	David Matlack <dmatlack@google.com>,
+	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	kvm@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v6 9/9] vfio/pci: Permanently revoke a DMABUF on request
+Message-ID: <20260914115826.GM3968357@nvidia.com>
+References: <20260911214200.33793-1-matt@ozlabs.org>
+ <20260911214200.33793-10-matt@ozlabs.org>
+ <20260913165244.GW13683@unreal>
+ <20260914113647.GL3968357@nvidia.com>
+ <20260914115456.GY13683@unreal>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260914115456.GY13683@unreal>
+X-ClientProxiedBy: BN9P220CA0006.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:408:13e::11) To CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 14 Sep 2026 11:55:44 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-From: "Zqiang" <qiang.zhang@linux.dev>
-Message-ID: <54054db90fe06708c2c4109a1b0747a47e52cae5@linux.dev>
-TLS-Required: No
-Subject: Re: [syzbot] [kvm?] WARNING in kvm_put_kvm (3)
-To: "syzbot" <syzbot+d4faf7db59e11f6fd1ab@syzkaller.appspotmail.com>,
- frederic@kernel.org, jiangshanlai@gmail.com, josh@joshtriplett.org,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- mathieu.desnoyers@efficios.com, paulmck@kernel.org, pbonzini@redhat.com,
- rcu@vger.kernel.org, rostedt@goodmis.org, seanjc@google.com,
- shpark061104@gmail.com, syzkaller-bugs@googlegroups.com,
- work@onurozkan.dev
-In-Reply-To: <6aa79c42.4c28b7d0.c1bba.0014.GAE@google.com>
-References: <6aa79c42.4c28b7d0.c1bba.0014.GAE@google.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|DS4PR12MB106381:EE_
+X-MS-Office365-Filtering-Correlation-Id: a90b3f00-356a-4c51-b5c6-08df12577cfa
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|376014|7416014|1800799024|10067099003|4143699003|56012099006|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	nyYuZJYWJ5LcTgnAv4PJ1QdlANP/SNLQQT/xKD4UfA3PB/JQxVWIIPASI2gIrK85JWG4nBSVTvDi94U5KvIJ4eoBpvFfwQXV1HO7XZ1GEzytw99A+D98wN58V/v1hVIfCzEV329ySJm0w8WcQqsNzkqmebVcjgUNAb0cohJubw7IWesem9Gdw6zDFs+VFn5U83glDipkV0Euxvb4P/j/1fVE6BzLX74hhYqIpLfJ8Ua1bVs7A/HiDNwbxLswiuSeIwUce2u25jCGxGGGvMDUGPvWb/tCPHuH1morUtCNUdl+dtM887Kcc8PPesZyPzimwytj/nfYv1XJvHx0wZMINwU2QvhPXHpPwQl/LYIpXSpEfW1L5mURiXKTBZJFghBt9BcU+C9TokQK0BZ4kLDLVxJAPZilvnZUN3Sf2x/pC5jni8rSoGMtFOosx2Pu/oliBqhna7W8srdbHyuiD7ZT3DWK2KfAAKOV7xdUHIUCA7jvwbrPbswyhm76Js0g5/JcGvWELStUVlnHDiUIMTJeh/NoGHEDFmp5ygNTckcr5mpym2JBOB9dknSUQYjlE1CS8Bp7oXl2Kj8dd4TNNM55IRL63mXBhXniGEkExeYWka07+u3xFDiy9VHC18mq4TDlYuLAJ27m3AWzr9h5qeL1Qep7A3gaYn/xsd1FvAsxIBg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(7416014)(1800799024)(10067099003)(4143699003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?/UFKE9jLcbz7o8HrcavQ2N0n2L3zRlQm49M4Fi2DrpbCT1NzauA7/AgTMESK?=
+ =?us-ascii?Q?0NoyqAGtSZYYPY0Ev9UZl7KAha7C7mH5dP4MT40/Xpwm+e2pGe91qkALQvH6?=
+ =?us-ascii?Q?0N/YZju6ePCrTIvheI9KU2K5SdvHjbk16bDRXonbT/nhjqo8xm8JYWn7FkF9?=
+ =?us-ascii?Q?PBLldcQmUkQh5NYz1131nKeQfyOQrRzOLCfV/SHEbQ867AtvPBlDwA2RjoLV?=
+ =?us-ascii?Q?WGeGg58hf7JEiYt9B2VFV8InKzvWU8j+QOi7xLeVQH0Scz618BBcSXUh0Dto?=
+ =?us-ascii?Q?3loi2HRwqP57T3Pr0+FaCQU9W/pSZ9qY5XEK6RXQAuznGuUf6RBKQnWZBCm0?=
+ =?us-ascii?Q?bSH/Df61k1di1U26kUkeb8YrKABg4ymc5TwbkTfj8tQ7j90/A5TKRSTrM+hx?=
+ =?us-ascii?Q?zU4LuXyOf5db/Tdk1Msabqk1M0R0q3zoegqXH/C4IlEFTzQDSC3zgf95SdRq?=
+ =?us-ascii?Q?S85OiByGvLSHstPovOowDXzCloahQQ75Lk/QRHSnyMg7NJPRl7sdTUBLzCiW?=
+ =?us-ascii?Q?9I02xauP+93Tx2KK5uxmlT7yQdqegCqCDi4hsOleHcyq6uKO1U59N1FsrL55?=
+ =?us-ascii?Q?IaDj2yior3cYbN72zc7s8NjYqEFuz988RkBYueJlApIEVRMoCpAd2el03WVe?=
+ =?us-ascii?Q?bg08TMT+QoMCHG+YUPX83wG8XDwQPQoDZEE+DltOBvcd1TemIQ1W2z+nKEXz?=
+ =?us-ascii?Q?SL6aBlRp4BUa3Zm2D2Jep941ax8wx8k7n4/WSEkNGPgEyFMYXLoq5CUX2iem?=
+ =?us-ascii?Q?YR/EGmy2L56MuUHbsVCZAmJf+xJ0CYLP+sMIeqcGNC8scHKwhSu5DMz6a+W8?=
+ =?us-ascii?Q?d99uVl5m2O31pgkCdnr6mp7pS0BiVLELmoIUBNVobvajnAwlQpiynbY7i3Nd?=
+ =?us-ascii?Q?OgMI6Y85eDpGgMeBraf4uc/BgRy+pQupAObcoMSzzwRW2HK+1vPF5KPmGra9?=
+ =?us-ascii?Q?C5kuXK7AjsWeZaTl4UrzgupMXqVu+ltKAHL2hOhcWRyfhcwBhbhpNjCitkxz?=
+ =?us-ascii?Q?ULQCTBmMFNROm3U4z4K1GBVTZaTwqXRT8Dj+K40QuxPTwSw+OtNE2YTYLElG?=
+ =?us-ascii?Q?iGKrMns/I0toJROHbt0G5+Z3AAmFwl6RXSoZbeaxXRV3hRqzWcQKPJ21TahM?=
+ =?us-ascii?Q?xletBskhiRp6gY5GmEVadaikrJeLkJSKDKm3cnVBLgciSwd9cvIFfGnLhdsU?=
+ =?us-ascii?Q?Ljp7tAeNzpOQItOm8ipV4/HUDEIkelD3ta36ueKyruCxt764yeWZtZy5mNyP?=
+ =?us-ascii?Q?CRft7WIR5LtzmfDFq9VrSy/PpqsYwH2oQh3o0NMQGKgmF9hMAO37QWTYSqey?=
+ =?us-ascii?Q?cWmxcTCo9RqSEP2KGbER7fE8rhX0amtDskKxjJqXuSE0UkJCZO8F7jtnb3in?=
+ =?us-ascii?Q?63/FJaXcuGk+TKgleAXhWGt3WvwY1dCSJfgf2WZLgAo8JaF1WHIX7acc2ESw?=
+ =?us-ascii?Q?8Qv2PI24ppeozhkHO+Eo0U8Tmtj3VYecgnWqR0l+EWuo/ZfzHJIaAf5PRfwY?=
+ =?us-ascii?Q?o88+RB+a3/3gjdMNPEbcy2tQjSnt7CTIFDqeUDsCyPsBST4Zkr04rw4vG6qG?=
+ =?us-ascii?Q?ySLGrAEhrMIc+8pLm027IkGmkFuPP2aqNOVSH0lkCV40ApU8A8HU5/hfBwVD?=
+ =?us-ascii?Q?ncrly2xqUYiKsrH6t8ezbOXVipmdMncpz8nbyM8z23dmGl6XzhNcMA9j09fR?=
+ =?us-ascii?Q?hCG/dRlok5Zh3hQXjDV7qcrNl/G14nIrqLU1hlAJ1Zld5fu2?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a90b3f00-356a-4c51-b5c6-08df12577cfa
+X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 11:58:27.8973
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pigDf6XW7d9gqnqDOJASFGgs/6qoJXdi2VGy03YTccLMqBs9tKIZjojnT4VBH1Cy
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB106381
 
->=20
->=20syzbot has found a reproducer for the following issue on:
->=20
->=20HEAD commit: 50d05c7c76c9 Merge tag 'landlock-7.3-rc3' of git://git.k=
-er..
-> git tree: upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=3D1779e925580=
-000
-> kernel config: https://syzkaller.appspot.com/x/.config?x=3D5e4e3a0e188a=
-497e
-> dashboard link: https://syzkaller.appspot.com/bug?extid=3Dd4faf7db59e11=
-f6fd1ab
-> compiler: Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~=
-exp1~20260613092250.77), Debian LLD 22.1.8
-> userspace arch: i386
-> syz repro: https://syzkaller.appspot.com/x/repro.syz?x=3D14ef08c9580000
-> C reproducer: https://syzkaller.appspot.com/x/repro.c?x=3D10f9e92558000=
-0
->=20
->=20Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/daf497619736/d=
-isk-50d05c7c.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/748fbd82f647/vmli=
-nux-50d05c7c.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/e61c59099d07=
-/bzImage-50d05c7c.xz
->=20
->=20IMPORTANT: if you fix the issue, please add the following tag to the =
-commit:
-> Reported-by: syzbot+d4faf7db59e11f6fd1ab@syzkaller.appspotmail.com
->=20
->=20------------[ cut here ]------------
-> timer_delete_sync(&sdp->delay_work) && rcu_segcblist_n_cbs(&sdp->srcu_c=
-blist)
-> WARNING: kernel/rcu/srcutree.c:707 at cleanup_srcu_struct+0x3d6/0x8b0 k=
-ernel/rcu/srcutree.c:706, CPU#0: syz.0.4746/16077
+On Mon, Sep 14, 2026 at 02:54:56PM +0300, Leon Romanovsky wrote:
 
-This should be fixed:
-https://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu.git
-91153bd0ee7f ("srcu: Fix WARN_ON() for rcu_segcblist_n_cbs() in cleanup_s=
-rcu_struct()")
+> So I still think that "temporarily revoked" is closer to
+> invalidate_mappings, with some additional dma-buf documentation to lose
+> the expectation that the buffer will become available again.
 
-Thanks
-Zqiang
+It really isn't, there is no expectation her that the importer has to
+put things back like with move.
 
+From a DMABUF API this is very much just plain revoke.
 
-
-> Modules linked in:
-> CPU: 0 UID: 0 PID: 16077 Comm: syz.0.4746 Not tainted syzkaller #0 PREE=
-MPT(full)=20
->=20Hardware name: Google Google Compute Engine/Google Compute Engine, BI=
-OS Google 07/24/2026
-> RIP: 0010:cleanup_srcu_struct+0x3d6/0x8b0 kernel/rcu/srcutree.c:706
-> Code: fd 8b 00 48 83 7d 00 00 4c 8b 74 24 10 0f 85 dd 03 00 00 41 ff c5=
- 41 83 e5 0f 41 83 fd 07 0f 86 e2 fe ff ff e9 ab 00 00 00 90 <0f> 0b 90 4=
-c 8d b5 00 02 00 00 4c 89 f3 48 c1 eb 03 48 b8 00 00 00
-> RSP: 0018:ffffc90002e2fc10 EFLAGS: 00010206
-> RAX: 1ffffd1ffff8ff4d RBX: 0000607edafad980 RCX: dffffc0000000000
-> RDX: 0000000000000001 RSI: ffffffff8e475f59 RDI: 00000000ffffffff
-> RBP: ffffe8ffffc7f980 R08: ffffffff907a2b7f R09: 1ffffffff20f456f
-> R10: dffffc0000000000 R11: fffffbfff20f4570 R12: ffff88802b081000
-> R13: 0000000000000000 R14: ffffe8ffffc7fa68 R15: 1ffffffff1ce91de
-> FS: 0000000000000000(0000) GS:ffff888124cd2000(0063) knlGS:000000005731=
-0480
-> CS: 0010 DS: 002b ES: 002b CR0: 0000000080050033
-> CR2: 0000000000000000 CR3: 0000000073e86000 CR4: 00000000003526f0
-> Call Trace:
->  <TASK>
->  kvm_destroy_vm virt/kvm/kvm_main.c:1303 [inline]
->  kvm_put_kvm+0x9cb/0xb50 virt/kvm/kvm_main.c:1332
->  kvm_vm_release+0x43/0x50 virt/kvm/kvm_main.c:1355
->  __fput+0x418/0xa50 fs/file_table.c:512
->  task_work_run+0x1d9/0x270 kernel/task_work.c:233
->  resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
->  __exit_to_user_mode_loop kernel/entry/common.c:70 [inline]
->  exit_to_user_mode_loop+0x204/0x770 kernel/entry/common.c:101
->  __exit_to_user_mode_prepare include/linux/irq-entry-common.h:207 [inli=
-ne]
->  syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:230=
- [inline]
->  syscall_exit_to_user_mode include/linux/entry-common.h:336 [inline]
->  __do_fast_syscall_32+0x437/0x6a0 arch/x86/entry/syscall_32.c:294
->  do_fast_syscall_32+0x33/0x70 arch/x86/entry/syscall_32.c:316
->  entry_SYSENTER_compat_after_hwframe+0x84/0x8e
-> RIP: 0023:0xf7f470ec
-> Code: 90 85 d2 74 0a 89 ce 81 e6 ff 0f 00 00 89 32 85 c0 74 05 c1 e9 0c=
- 89 08 31 c0 5e 5d c3 90 0f 1f 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c=
-3 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 58 b8
-> RSP: 002b:00000000ffa0002c EFLAGS: 00000206 ORIG_RAX: 00000000000001b4
-> RAX: 0000000000000000 RBX: 0000000000000003 RCX: 000000000000001e
-> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-> RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
-> R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
->  </TASK>
-> ----------------
-> Code disassembly (best guess):
->  0: 90 nop
->  1: 85 d2 test %edx,%edx
->  3: 74 0a je 0xf
->  5: 89 ce mov %ecx,%esi
->  7: 81 e6 ff 0f 00 00 and $0xfff,%esi
->  d: 89 32 mov %esi,(%rdx)
->  f: 85 c0 test %eax,%eax
->  11: 74 05 je 0x18
->  13: c1 e9 0c shr $0xc,%ecx
->  16: 89 08 mov %ecx,(%rax)
->  18: 31 c0 xor %eax,%eax
->  1a: 5e pop %rsi
->  1b: 5d pop %rbp
->  1c: c3 ret
->  1d: 90 nop
->  1e: 0f 1f 00 nopl (%rax)
->  21: 51 push %rcx
->  22: 52 push %rdx
->  23: 55 push %rbp
->  24: 89 e5 mov %esp,%ebp
->  26: 0f 34 sysenter
->  28: cd 80 int $0x80
-> * 2a: 5d pop %rbp <-- trapping instruction
->  2b: 5a pop %rdx
->  2c: 59 pop %rcx
->  2d: c3 ret
->  2e: 90 nop
->  2f: 90 nop
->  30: 90 nop
->  31: 90 nop
->  32: 90 nop
->  33: 90 nop
->  34: 90 nop
->  35: 90 nop
->  36: 90 nop
->  37: 90 nop
->  38: 90 nop
->  39: 90 nop
->  3a: 90 nop
->  3b: 90 nop
->  3c: 90 nop
->  3d: 90 nop
->  3e: 58 pop %rax
->  3f: b8 .byte 0xb8
->=20
->=20---
-> If you want syzbot to run the reproducer, reply with:
-> #syz test: git://repo/address.git branch-or-commit-hash
-> If you attach or paste a git patch, syzbot will apply it before testing=
-.
->
+Jason
