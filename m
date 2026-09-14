@@ -1,189 +1,202 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BFC2FFF90
-	for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 14:35:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784FE48035F
+	for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 14:37:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789396551; cv=none; b=lRoMeobJK3LA7d2k9krDESoXCLa+sXsLxF1ENxUAua+Pi2qH1ldM4fnl/91dUw/SZ3+eMIhuK2sTkNd02VCPHLEJJPyrzRiyO4ZZBLEDUrYB6DQtMIMLb6coAG27Zxcbbf+rNMtQCrHnSgYUWhXHKXMTV/dfZn8ZpKbqAKKShiw=
+	t=1789396630; cv=none; b=M/d+iLWVp9xn76LNv6LTNYC5d+Otr8fH4R2sra/P6Vdfz7DvyD34iwGYHFCUDZEi7ZYJN0VjXpIFe9AhtlUIgKXGaHtc4G1fwPpl+1MBy1qhnKxvq27smatZnCytpdVrvZuHaRa1HX/zkgEKAgsQq0r7pGjaC0CSxWBTFABOPaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789396551; c=relaxed/simple;
-	bh=LglaGc1H0R+sxZA6wiKDg7CCL2SBWvqlpF/H4iHUw3I=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=IwFLBdGr1lmxRW7C07wLPgAv/qg0H1wa+y/YgvUaPUCyFrVY+eSDKG99A67+NrEYMeqD7mO1eWKmPttCzE8d5e3V88d2v2xIbQ+yCvT7s0RBA29fjZpmz2GSNIZJjW1BqFigVZyNILTIu59mw0MFGAd3PBHYOmLJimijjBYome8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LtvLjXah; arc=none smtp.client-ip=209.85.216.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1789396630; c=relaxed/simple;
+	bh=y7SAg8QZDph5pEHRtiQuQJaS0nQLmEWANAnP5dns2+U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=leAK+rNQ8V8t8j3cM1FUlfN4ZAKTfWcmgBXmIftY9rmeuQ7NbDdB8F+uJ5A/FIFXzXpEEkNtS23hSLfJerb4PukDvctGRvHY0WNy+KtM0dhfegU96jogWRKgMndxFWBs8xK1P5dzoBFFis9dxNuBC966KBSFA2lX9VQaZoPBAyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PiFoAQ8y; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LtvLjXah"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-398dc3d8f0fso4715135a91.0
-        for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 07:35:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789396549; x=1790001349; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LpPRVgi7aIALsRKspaYc+kGuwDrBnRXT3lk0rEcHOXU=;
-        b=LtvLjXahCCiUglmMqRe8i5nUW1Xi3A62sVdLhtjxNGcwPyiC/ckUMG5Elscgs2f+80
-         GFiBdV/Hip1iLa64dzcGQmt5ImwJ4kgL+Ixyl7QAKzqAQyXo5FyvwXrPCmPOXHe4mWWG
-         bzclg9uXHNG2F3Aeo6sLHUAzsgtmTFFu6iAs8oTSL7T7KBX0n8bFw1mXAiP5l/uCq8ci
-         MinbxRnX377igCzZJJfxkrG3NPHP6e+7UIpLGTrKPeqgKOjjh4ZhogGMtRjIk/YUb5tS
-         ahDQsj0uzrmx42f7VHS/un1H04zgHLUW9hwNbcWGKwf3chdQNa1XCOP0hQWflaoOqPJw
-         XhsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789396549; x=1790001349;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LpPRVgi7aIALsRKspaYc+kGuwDrBnRXT3lk0rEcHOXU=;
-        b=ak8YbBoFdU507CyHZL7pVfOUVwzKDamSVpn6igLtd5Q0Cv/MIcnuElaIX0A1XeJv/i
-         3e/EwMXRZSPdgSxhxLFAY0GtKh/SazLjZCUm7PnVCrltv3aqpxxJAeOT3/OJzWRGOzXs
-         SSWcFZcyOThIPs31c9dv5/Di0H7VTcXLiAYiNXd+MDqppRI/BXdhbqIs1+pGdhLMkl+5
-         UkgCVQR+lN5VF5RqOTQ8SE58ahpgy4W68vM3vaBfC2bdHKfUN6/6TT/Y8Qav2JKJEhQG
-         bhta6L9d79KnzdMbMOg2OlBuc16T+38yogqw+Hb7oNLeCBwu94vteNvxBjmAdcVXxBXZ
-         xIdg==
-X-Forwarded-Encrypted: i=1; AKwUvBw5GZvtbmVGHKfTO3+Udkzsb9MkZMoEqovWT6kqn65cS79X3wvpptE6MVZQ2o8RfwvlpiQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++mWo1rIB+Lu53TxvSpHSrAjA0Di7s5VLjhM8PHDhfM9Z3b4jKWL
-	GfMiy/eVZ6RNRTZl1X28bH1l1z12E4DZWWbd8v5U2hvZCFACJXGRHfm6uP0zE49uPIIe5HaYl5X
-	0H65OwA==
-X-Received: from pjbin5.prod.google.com ([2002:a17:90b:4385:b0:39d:8c01:3e57])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2790:b0:398:9beb:a2b7
- with SMTP id 98e67ed59e1d1-39dd56bdc08mr8132347a91.25.1789396549085; Mon, 14
- Sep 2026 07:35:49 -0700 (PDT)
-Date: Mon, 14 Sep 2026 07:35:48 -0700
-In-Reply-To: <178939019982.94750.4441254006258061798.stgit@devnote2>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PiFoAQ8y"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789396627;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=tyEM0wAZLk2nDaOpdE4k3vnfO8I2SVdsuSadoby1hAw=;
+	b=PiFoAQ8ynuXETjWj+A7TyVZD6DC4X/YJvRI7MxcrKNCF7K0bXac/hLc71n934HZZ4e/jAP
+	8tXHI+IqlznOMIfL9ceGvw48csb4pzjeJ4tgdcuWS2aZX9bu64T+NStPcABTms8/2Oh45+
+	xPukPd9Qyt6h1LaQspWWLVw7OfnBzp8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-193-sHr_iKrlPD-v9UyfmYmgJw-1; Mon,
+ 14 Sep 2026 10:37:05 -0400
+X-MC-Unique: sHr_iKrlPD-v9UyfmYmgJw-1
+X-Mimecast-MFC-AGG-ID: sHr_iKrlPD-v9UyfmYmgJw_1789396625
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CE8A11955D98;
+	Mon, 14 Sep 2026 14:37:04 +0000 (UTC)
+Received: from aharivel-thinkpadp1gen3.rmtfr.csb (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 787E218004D2;
+	Mon, 14 Sep 2026 14:37:03 +0000 (UTC)
+From: Anthony Harivel <aharivel@redhat.com>
+To: kvm@vger.kernel.org
+Cc: pbonzini@redhat.com,
+	seanjc@google.com,
+	linux-kernel@vger.kernel.org,
+	Anthony Harivel <aharivel@redhat.com>
+Subject: [PATCH RFC v3 0/3] KVM: x86: per-VM C-state policy enforcement (KVM_CAP_CSTATE_POLICY)
+Date: Mon, 14 Sep 2026 16:36:59 +0200
+Message-ID: <20260914143702.915401-1-aharivel@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <178939017565.94750.9431053336761330458.stgit@devnote2> <178939019982.94750.4441254006258061798.stgit@devnote2>
-Message-ID: <aqgGRKOE138ePqmX@google.com>
-Subject: Re: [PATCH v16 02/13] KVM: x86: Prevent host DR7 debug register leak
- into guest OS on NMI
-From: Sean Christopherson <seanjc@google.com>
-To: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@kernel.org>, x86@kernel.org, Jinchao Wang <wangjinchao600@gmail.com>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H . Peter Anvin" <hpa@zytor.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Ian Rogers <irogers@google.com>, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Mon, Sep 14, 2026, Masami Hiramatsu (Google) wrote:
-> From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> 
-> When KVM enters a guest OS, host hardware breakpoints are disabled
-> before running the guest. However, an NMI can occur during guest
-> execution, where local_db_save() or arch_install_hw_breakpoint()
-> can be invoked.
-> 
-> In particular, if local_db_save() or arch_install_hw_breakpoint()
-> is executed from NMI, hardware DR7 can be modified or restored with
-> host breakpoint settings, leaking host breakpoints into the guest OS
-> or clobbering the guest's debug registers.
+This is v3 of the RFC for KVM_CAP_CSTATE_POLICY, a new VM-scoped
+capability that lets userspace set a maximum C-state ceiling per VM.
 
-Not for local_db_save(), at least not AFAICT.  On VM-Exit, both Intel and AMD
-purge DR7, i.e. load 0x400, so local_db_save() => local_db_restore() is more or
-less a nop.  Even if that weren't the case, actually saving/restoring DR7 would
-be the right thing to do, in any context.
+Changes since v2 (RFC, design questions only):
+  - Implemented Option A from v2 design discussion: temporarily toggle
+    cpuidle states_usage[].disable on the pinned pCPU before/after
+    kvm_vcpu_block(). Uses CPUIDLE_STATE_DISABLED_BY_DRIVER flag.
+  - Added KVM selftest (7 tests, all passing on bare metal).
+  - Added QEMU prototype (not in this series -- separate tree).
+  - Answered design questions from v2 based on implementation experience.
 
-> Introduce a per-CPU flag, cpu_dr_in_guest, to indicate that the CPU
-> is executing in guest mode. Set this flag in vcpu_enter_guest()
-> during entering the guest with disabling host breakpoints.
-> If this flag is set, local_db_save() and local_db_restore() return
-> immediately, and arch_install_hw_breakpoint() returns an error.
-> In addition, protect cpu_dr_in_guest in within_cpu_entry() to
-> prevent recursive #DB exceptions.
-> 
-> Fixes: f85d40160691 ("KVM: X86: Disable hardware breakpoints unconditionally before kvm_x86->run()")
-> Assisted-by: Antigravity:gemini-3.8-flash
-> Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> ---
-> Changes in v16:
->  - Newly added.
-> ---
->  arch/x86/include/asm/debugreg.h |    6 ++++++
->  arch/x86/kernel/hw_breakpoint.c |   10 ++++++++++
->  arch/x86/kvm/x86.c              |    7 +++++++
->  3 files changed, 23 insertions(+)
-> 
-> diff --git a/arch/x86/include/asm/debugreg.h b/arch/x86/include/asm/debugreg.h
-> index 854d82b88ff4..50f830972698 100644
-> --- a/arch/x86/include/asm/debugreg.h
-> +++ b/arch/x86/include/asm/debugreg.h
-> @@ -18,6 +18,7 @@
->  #define DR7_FIXED_1	0x00000400
->  
->  DECLARE_PER_CPU(unsigned long, cpu_dr7);
-> +DECLARE_PER_CPU(bool, cpu_dr_in_guest);
->  
->  #ifndef CONFIG_PARAVIRT_XXL
->  /*
-> @@ -129,6 +130,9 @@ static __always_inline unsigned long local_db_save(void)
->  {
->  	unsigned long dr7;
->  
-> +	if (this_cpu_read(cpu_dr_in_guest))
-> +		return 0;
+Changes since v1:
+  - Corrected internal flow: enforcement goes through kvm_vcpu_halt() +
+    cpuidle constraint, not inline MWAIT execution.
+  - Expanded design questions with concrete enforcement options.
 
-This is broken.  If an NMI hits between KVM writing cpu_dr_in_guest and clearing
-DR7, and there are active breakpoints, then local_db_save() won't disable breakpoints
-as it should, and the relevant code in exc_nmi() will run with breakpoints enabled.
+== Problem ==
 
-	kvm_load_xfeatures(vcpu, true);
+Cloud operators running NFV workloads want to reduce energy consumption
+by disabling halt-polling (halt_poll_ns=0). This lets vCPUs enter real
+idle states instead of busy-looping, saving power.
 
-	this_cpu_write(cpu_dr_in_guest, true);
-	barrier();
+However, disabling halt-polling is system-wide and ALL VMs on the host
+lose halt-polling. The kernel cpuidle governor then picks deep C-states
+(C6, ~133us wakeup) by default, which hurts latency-sensitive VMs.
 
-  <NMI here is problematic>
+There is no per-VM mechanism to say: "save power on batch VMs, but keep
+wakeup latency low on this latency-sensitive VM."
 
-	if (unlikely(vcpu->arch.switch_db_regs &&
-		     !(vcpu->arch.switch_db_regs & KVM_DEBUGREG_AUTO_SWITCH))) {
-		set_debugreg(DR7_FIXED_1, 7);
-		set_debugreg(vcpu->arch.eff_db[0], 0);
+Existing knobs are all system-wide or not VM-aware:
+  - intel_idle.max_cstate: system-wide kernel parameter
+  - /sys/devices/system/cpu/cpuN/cpuidle/stateN/disable: per-CPU, not VM-aware
+  - halt_poll_ns: system-wide, all or nothing
 
-> +
->  	if (cpu_feature_enabled(X86_FEATURE_HYPERVISOR) && !hw_breakpoint_active())
->  		return 0;
->  
-> @@ -157,6 +161,8 @@ static __always_inline void local_db_restore(unsigned long dr7)
->  	 * not be good.
->  	 */
->  	barrier();
-> +	if (this_cpu_read(cpu_dr_in_guest))
-> +		return;
->  	if (dr7)
->  		set_debugreg(dr7, 7);
->  }
-> diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
-> index f846c15f21ca..68de7ed79d88 100644
-> --- a/arch/x86/kernel/hw_breakpoint.c
-> +++ b/arch/x86/kernel/hw_breakpoint.c
-> @@ -40,6 +40,9 @@
->  DEFINE_PER_CPU(unsigned long, cpu_dr7);
->  EXPORT_PER_CPU_SYMBOL(cpu_dr7);
->  
-> +DEFINE_PER_CPU(bool, cpu_dr_in_guest);
-> +EXPORT_PER_CPU_SYMBOL_GPL(cpu_dr_in_guest);
-> +
->  /* Per cpu debug address registers values */
->  static DEFINE_PER_CPU(unsigned long, cpu_debugreg[HBP_NUM]);
->  
-> @@ -102,6 +105,9 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
->  
->  	lockdep_assert_irqs_disabled();
->  
-> +	if (this_cpu_read(cpu_dr_in_guest))
-> +		return -EBUSY;
+== Solution ==
 
-If we decide this is how to fix arch_install_hw_breakpoint() clobbering DRs from
-NMI context, I would rather have more generic flag to tell perf that KVM is about
-to enter the guest, e.g. so that we don't have to separately solve the same problem
-for other perf events:
+KVM_CAP_CSTATE_POLICY: a VM-scoped ioctl (same pattern as
+KVM_CAP_HALT_POLL) that constrains cpuidle state selection when
+vCPUs halt.
 
-https://lore.kernel.org/all/3585d823-00f3-46ae-a799-b62a95743e76@linux.intel.com
+  args[0] = max_cstate:
+    -1 = disabled (default, no constraint)
+     0 = force C0 (HLT returns immediately, no idle)
+     1 = cap at C1 (~2us wakeup)
+     6 = cap at C6 (effectively unrestricted)
+
+When a vCPU enters kvm_vcpu_block(), KVM disables cpuidle states
+deeper than max_cstate on the current pCPU (preempt-disabled), then
+restores after wakeup. The capability is re-callable at runtime --
+policy changes take effect on the next vCPU HLT without VM restart.
+
+== Test results ==
+
+Tested on Dell R640 (Intel Xeon Gold 5118, intel_idle driver with
+POLL/C1/C1E/C6 states).
+
+KVM selftest (7/7 pass):
+
+  ok 1 cap_supported
+  ok 2 valid_policies
+  ok 3 invalid_policies
+  ok 4 policy_change
+  ok 5 cpuidle_no_policy
+  ok 6 cpuidle_enforcement
+  ok 7 policy_c0_no_idle
+
+Selftest cpuidle counters (1000 guest HLTs per test):
+
+                  No policy     Policy=C1     Policy=C0
+  POLL usage:     +0            +0            +56,743
+  C1 usage:       +3            +1,073        +0
+  C1E usage:      +70           +0            +0
+  C6 usage:       +1,003        +0            +0
+
+Multi-VM demo (2 VMs, 60s, same host, turbostat):
+
+                  VM-A (policy=C1)    VM-B (no policy)
+  C1 residency:   98-99%              0%
+  C6 residency:   0%                  54-99%
+
+The enforcement is clear: VM-A stays in C1 while VM-B on the same
+host goes deep into C6.
+
+== Design decisions (answers to v2 questions) ==
+
+(a) Enforcement mechanism: Option A (toggle states_usage[].disable)
+    works correctly for pinned-core NFV configurations. The disable
+    flags are set/cleared with preemption disabled, so no migration
+    race. A WARN_ON_ONCE guards against unexpected CPU changes.
+
+(b) VMCS toggling: not needed for v1 -- enforcement works within the
+    existing HLT exit path. MWAIT interception is a separate concern
+    for a future series if cpu-pm=on integration is desired.
+
+(c) MWAIT hint mapping: not needed for v1 -- the policy operates on
+    cpuidle state indices, which the intel_idle driver maps to
+    hardware C-states. This is the same abstraction sysfs uses.
+
+(d) halt_poll_ns interaction: orthogonal as expected. halt_poll_ns
+    controls spin duration before idle; max_cstate controls idle
+    depth after polling. Both knobs work together.
+
+(e) Per-vCPU vs per-VM: starting with per-VM. Per-vCPU can be added
+    later as a separate capability if needed.
+
+== Scope ==
+
+This v3 is scoped to pinned-core configurations (NFV, DPDK). A
+per-task cpuidle constraint (Option C from v2) would cover all cases
+including overcommit, but requires cpuidle subsystem changes. Happy
+to pursue that if maintainers prefer, but Option A covers the
+immediate customer need.
+
+== QEMU prototype (separate tree) ==
+
+A working QEMU patch adds -accel kvm,cstate-policy=N. Available at:
+  https://github.com/aharivel/qemu/tree/kvm-cstate-policy
+
+== Series ==
+
+  [1/3] cpuidle: export cpuidle_devices for KVM module access
+  [2/3] KVM: x86: add KVM_CAP_CSTATE_POLICY capability
+  [3/3] KVM: selftests: add cstate_policy_test
+
+Anthony Harivel (3):
+  cpuidle: export cpuidle_devices for KVM C-state policy enforcement
+  KVM: x86: add KVM_CAP_CSTATE_POLICY for per-VM C-state enforcement
+  KVM: selftests: add cstate_policy_test for KVM_CAP_CSTATE_POLICY
+
+ drivers/cpuidle/cpuidle.c                     |   1 +
+ include/linux/kvm_host.h                      |   2 +
+ include/uapi/linux/kvm.h                      |   1 +
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/x86/cstate_policy_test.c    | 517 ++++++++++++++++++
+ virt/kvm/kvm_main.c                           | 101 ++++
+ 6 files changed, 623 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/x86/cstate_policy_test.c
+
+-- 
+2.55.0
+
