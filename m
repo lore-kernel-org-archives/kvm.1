@@ -1,139 +1,186 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637EB33F58B
-	for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 17:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12ED481256
+	for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 17:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789405866; cv=none; b=BhiksUWKmT6M2iijnGhTDtMYaLXhaeVDEO9reTt8onkfQb82rK8r3YEtDJ09RdDVxRALyE9mBXlN26HQyVzPP78uCq5dZu7QrqzPDet05bKFeUk3rMd1h70iJYOuEWfm3TlL12RfgJuhrROz/wrx9BORqkvLljOz1ldmdj8FmLY=
+	t=1789405997; cv=none; b=uN4afDz92BxFYU8l9LiKXVvUXwe0iysbfYKe5JkB2T4sAC0/u9ArwIBcvyJ5tOY989P5dwGFVY8h4mcyumW4wAV73DOAjMZ2j4nnwYocjswT2myy2aWgzcw3J9tVQUsw7yzqLFjoJ0tabTx0CiTbe5SbKd1K88IWWKlW/08TtWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789405866; c=relaxed/simple;
-	bh=Z88Leqtb87gnVIW5YMZdRyfxdeqO2DtaII5dFzY9mfk=;
+	s=arc-20240116; t=1789405997; c=relaxed/simple;
+	bh=PO/TAgjSz60/wq3uc4eCjqprL6ZUR5xOTIzaFPJo3kk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=WsZuM8jG2YH9PuhGi0g/vZDRB+cRPHly8NIj6AUL0wlhpvzFrj8kE+Zmsqu/KL31ryI7/x3KpOL0kb+u844mN6MQweaWKl35mbZO3iP4YiS1WxBo7CvGXa7XbzOIqWrmdaVvoDUJSLWSJGvr/mWKX6c/NcjNm3GfpjGtZdoyD7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q8J1mjuP; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=qn+8OaDqJys7tbVUkFf6YBtJj+Otgt2W0+h03fm4MAiq+0nPcQToOMdHaI++XHVG0tw9CnyOWYiLWwnxZFwT0CBXfSxKAikcpHwCHIILwql+Zy6qqyxNUNPFzvn0CW4HN+7wNf9DtBu6wUEFi9moyBcbjjA1kZLu6XPsfOhjonc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PEYmBf05; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q8J1mjuP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8181F000FF;
-	Mon, 14 Sep 2026 17:11:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PEYmBf05"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BC41F000FF;
+	Mon, 14 Sep 2026 17:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789405865;
-	bh=ZRnT4qKCcY56+UiI9ak/ncGwk+E7ZG2Qd1Utz77ZEfI=;
+	s=k20260515; t=1789405996;
+	bh=1YBrXDTRUp7lWVBOmr3gnu6g6nLlSB/AQx4bDtI0TDU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Q8J1mjuPPuRXDX11X30+qb4PI2V/Yaut4XAgJmC2HvWaTyXWlaZC6l4kyVhauEcan
-	 75AsmykmbRIfvJyEnT2LrppO90FRrYtgEAfe1Q/deKCJ7lg8pT7sJzCUVV124krq16
-	 ygkC6Wc0LQAYtRMRBTv3Q8ypZG5dV+NkaH43ZV2XGGYvZ2Lj79ppwspxKC2Mo/2wYn
-	 TTCAzTJ0MaM6rYyb0GVg3pz0nt7x/Tx1ShVR5MhG4k7QE64tv5x9elQb5WVV20YNaI
-	 M3NMV8jOUzSHxba3HugCUp/ME4MmFZfqKkepqU40vlogno1Pp1PgNbD0Of1qZHfmX1
-	 p4CaMkNCL5wtA==
+	b=PEYmBf05sYl2pu51BX9AOpLQu6v7avrVa6psQuOU1JPPtfW9kU9lLepMfZDwqUFFG
+	 3zMhu/GevbhQ9Ps9uDXVMx+m3LLiLzlQdyh6JF2NNnuX58fSx/Ljyp4z0yP9rLZ2IS
+	 uAguccyi9FkDOEBgbUhVZRf/fwAw6+RPydveGNe8+uWZN6iU5AjoXJreWD1iQeYhqA
+	 tqrWzRFhFFDqvacNZpXQVCuTKKmzP6OSC9r4B7TFSZIr4s9tBBTvXo0Z78D52TJAKK
+	 H4i6euk/KUvEUhUXnGX3+WBjfBuQAqVSRvWwaeR8iYa+WKQIhKLzV3WzDoMNySuGv9
+	 zQh7+WaiCgX5Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/3] x86/sev: Add guest support for Enhanced SMT
+Subject: Re: [PATCH 2/3] KVM: SVM: Add host support for Enhanced SMT
  Protection
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Pratik R. Sampat" <prsampat@amd.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <56d81f0c1527c8291733aaea72fb70742fb96719.1789399214.git.prsampat@amd.com>
+In-Reply-To: <df22a9879871f5f926ff74b203e06b58ed505503.1789399214.git.prsampat@amd.com>
 References: <cover.1789399214.git.prsampat@amd.com>
- <56d81f0c1527c8291733aaea72fb70742fb96719.1789399214.git.prsampat@amd.com>
+ <df22a9879871f5f926ff74b203e06b58ed505503.1789399214.git.prsampat@amd.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 14 Sep 2026 17:11:04 +0000
-Message-Id: <20260914171104.CD8181F000FF@smtp.kernel.org>
+Date: Mon, 14 Sep 2026 17:13:15 +0000
+Message-Id: <20260914171316.43BC41F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [High] Hyper-V SEV-SNP AP boot path entirely ignores ESMT, leaving VMSA f=
-ields as zeroes.
-- [Low] The tools header for msr-index.h was not synchronized with the kern=
-el header changes.
+- [High] MSR_AMD64_IDLE_WAKEUP_ICR is only programmed for online CPUs durin=
+g module load without CPU hotplug locks, breaking ESMTP on hotplugged CPUs.
+- [High] Immediate retry on ESMTP_ILLSIB and ESMTP_TIMEOUT exits with cond_=
+resched() causes a kernel livelock and violates SRCU locking invariants.
+- [Medium] Missing teardown of MSR_AMD64_IDLE_WAKEUP_ICR on KVM module unlo=
+ad leads to permanent spurious IPIs.
 --
 
-commit 8604f276ddd2e9fc69ba0b3ddf175ec09324c70a
+commit 6679aa4cd87f7de484f6cabf547ea6d6220bfceb
 Author: Pratik R. Sampat <prsampat@amd.com>
 
-x86/sev: Add guest support for Enhanced SMT Protection
+KVM: SVM: Add host support for Enhanced SMT Protection
 
-This commit enables guest support for Enhanced SMT Protection by
-populating the vCPU's identity and SMT sibling mask in the VMSA during
-AP bringup. The sibling mask is fully set to allow threads of the same
-guest to be co-resident.
+This commit introduces support for Enhanced SMT Protection (ESMTP) to prote=
+ct
+SEV-SNP guests from SMT side channels. It adds logic to program the host's
+wakeup IPIs and handles three new non-fatal VMRUN exits (ESMTP_ILLSIB,
+ESMTP_TIMEOUT, ESMTP_RETRY) by yielding the CPU.
 
-> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-> index ecd77d3217f3c..acf25eca1a5c9 100644
-> --- a/arch/x86/coco/sev/core.c
-> +++ b/arch/x86/coco/sev/core.c
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 944aaea6501f2..9bafb671a8b7f 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
 [ ... ]
-> @@ -849,6 +850,18 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsig=
-ned long start_ip, unsigned
->  	vmsa->vmpl		=3D snp_vmpl;
->  	vmsa->sev_features	=3D sev_status >> 2;
+> @@ -3045,6 +3059,30 @@ static const char * __init sev_str_feature_state(b=
+ool is_supported, bool is_usable)
+>  	return is_supported ? is_usable ? "enabled" : "unusable" : "disabled";
+>  }
 > =20
-> +	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP) &&
-> +	    (sev_status & MSR_AMD64_SNP_ESMT_PROT)) {
-> +		vmsa->vcpu_id =3D apic_id;
-> +		/*
-> +		 * The mask fully set puts every vCPU in one group, so any two
-> +		 * of them may be co-resident. A legal ESMTP sibling must
-> +		 * also match on ASID, so the sibling of a vCPU in guest mode is
-> +		 * always either another vCPU of this same guest or idle.
-> +		 */
-> +		vmsa->vcpu_sibling_mask =3D U32_MAX;
-> +	}
+> +static bool sev_esmtp_setup_wakeup_icr(void)
+> +{
+> +	unsigned int cpu, sibling;
+> +	bool wrmsr_success =3D true;
 > +
->  	/* Populate AP's TSC scale/offset to get accurate TSC values. */
->  	if (cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC)) {
+> +	for_each_online_cpu(cpu) {
+> +		for_each_cpu(sibling, topology_sibling_cpumask(cpu)) {
 
 [Severity: High]
-Does the Hyper-V SEV-SNP AP boot path also need to initialize ESMT fields?
+Could this break ESMTP on hotplugged CPUs?
 
-Looking at hv_snp_boot_ap() in arch/x86/hyperv/ivm.c, the VMSA is initializ=
-ed
-without the new ESMT fields:
+This loop only touches currently online CPUs during module load and does so
+without holding cpus_read_lock(). Because this is a one-time invocation
+during module init, any CPU brought online after the KVM module is loaded
+will lack the required MSR programming.
 
-arch/x86/hyperv/ivm.c:hv_snp_boot_ap() {
-    ...
-	vmsa->vmpl =3D 0;
-	vmsa->sev_features =3D sev_status >> 2;
+Hardware will then fail to wake the sibling upon CC6 idle, causing VMRUN
+to indefinitely stall and trigger ESMTP_TIMEOUT exits on those hotplugged
+CPUs.
 
-	ret =3D snp_set_vmsa(vmsa, true);
-    ...
-}
+> +			u64 icr;
+> +			int ret;
+> +
+> +			if (sibling =3D=3D cpu)
+> +				continue;
+> +
+> +			icr =3D (u64)per_cpu(x86_cpu_to_apicid, sibling) << 32;
+> +			icr |=3D LOCAL_TIMER_VECTOR & 0xff;
+> +			ret =3D wrmsrq_safe_on_cpu(cpu, MSR_AMD64_IDLE_WAKEUP_ICR, icr);
+> +			if (ret)
+> +				wrmsr_success =3D false;
+> +		}
+> +	}
+> +
+> +	return wrmsr_success;
+> +}
+> +
+>  void __init sev_hardware_setup(void)
+>  {
+>  	unsigned int eax, ebx, ecx, edx, sev_asid_count, sev_es_asid_count;
+[ ... ]
+> @@ -3221,6 +3259,10 @@ void __init sev_hardware_setup(void)
+> =20
+>  	if (sev_snp_enabled && tsc_khz && cpu_feature_enabled(X86_FEATURE_SNP_S=
+ECURE_TSC))
+>  		sev_supported_vmsa_features |=3D SVM_SEV_FEAT_SECURE_TSC;
+> +
+> +	if (sev_snp_enabled && cpu_feature_enabled(X86_FEATURE_AMD_ESMTP) &&
+> +	    sev_esmtp_setup_wakeup_icr())
+> +		sev_supported_vmsa_features |=3D SVM_SEV_FEAT_ESMTP;
 
-If a Hyper-V SEV-SNP guest with >1 vCPUs is booted with ESMT enabled, the A=
-Ps
-will be launched with a sibling mask of 0. A mask of 0 does not intersect w=
-ith
-any other mask, which could prevent the AP from being co-scheduled with any
-sibling, leading to a hardware violation or a failure to boot APs.
+[Severity: Medium]
+Will this lead to permanent spurious IPIs when the KVM module is unloaded?
 
-> diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-=
-index.h
-> index ee9fb820a1cd7..638867e7b4ec2 100644
-> --- a/arch/x86/include/asm/msr-index.h
-> +++ b/arch/x86/include/asm/msr-index.h
-> @@ -745,7 +745,9 @@
->  #define MSR_AMD64_SNP_SMT_PROT		BIT_ULL(MSR_AMD64_SNP_SMT_PROT_BIT)
->  #define MSR_AMD64_SNP_SECURE_AVIC_BIT	18
->  #define MSR_AMD64_SNP_SECURE_AVIC	BIT_ULL(MSR_AMD64_SNP_SECURE_AVIC_BIT)
-> -#define MSR_AMD64_SNP_RESERVED_BITS19_22 GENMASK_ULL(22, 19)
-> +#define MSR_AMD64_SNP_ESMT_PROT_BIT	19
-> +#define MSR_AMD64_SNP_ESMT_PROT	BIT_ULL(MSR_AMD64_SNP_ESMT_PROT_BIT)
-> +#define MSR_AMD64_SNP_RESERVED_BITS20_22 GENMASK_ULL(22, 20)
+MSR_AMD64_IDLE_WAKEUP_ICR is programmed globally on all online CPUs to send=
+ a
+local timer IPI when a CPU enters CC6 idle. However, I don't see a teardown
+path (like in sev_hardware_unsetup) restoring this MSR to zero.=20
 
-[Severity: Low]
-Does tools/arch/x86/include/asm/msr-index.h need to be synchronized with
-these changes?
+After the KVM module is unloaded, the CPUs will permanently continue sending
+spurious local timer IPIs to their siblings upon idling, which could cause
+host power regressions and prevent deep sleep.
 
-Currently, MSR_AMD64_SNP_RESERVED_BITS19_22 remains defined in the tools
-header without the ESMT_PROT definitions. This missed synchronization could
-lead to inconsistencies or warnings when building tools that depend on this
-header.
+>  }
+> =20
+>  void sev_hardware_unsetup(void)
+[ ... ]
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index e2be2cd86c320..0b128f7911348 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+[ ... ]
+> @@ -3732,6 +3732,13 @@ static int svm_handle_exit(struct kvm_vcpu *vcpu, =
+fastpath_t exit_fastpath)
+>  		return 0;
+>  	}
+> =20
+> +	if (svm->vmcb->control.exit_code =3D=3D SVM_EXIT_ESMTP_RETRY ||
+> +	    svm->vmcb->control.exit_code =3D=3D SVM_EXIT_ESMTP_ILLSIB ||
+> +	    svm->vmcb->control.exit_code =3D=3D SVM_EXIT_ESMTP_TIMEOUT) {
+> +		cond_resched();
+> +		return 1;
+> +	}
+
+[Severity: High]
+Does this immediate retry create a kernel livelock and violate SRCU invaria=
+nts?
+
+If the runqueue has no other tasks (TIF_NEED_RESCHED is false), cond_resche=
+d()
+does nothing. The vCPU immediately attempts VMRUN again, hits the exact same
+hardware conflict, and exits again. This creates a tight spin loop that can
+peg the host CPU at 100% utilization.
+
+Additionally, if a task is pending, cond_resched() yields the CPU while
+holding KVM's SRCU read lock, because svm_handle_exit() is invoked within
+the vcpu_enter_guest() SRCU critical section. This would stall
+synchronize_srcu() indefinitely and bypass KVM's safe
+xfer_to_guest_mode_handle_work() protocol.
+
+> +
+>  	if (exit_fastpath !=3D EXIT_FASTPATH_NONE)
+>  		return 1;
+>
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1789399214.gi=
-t.prsampat@amd.com?part=3D3
+t.prsampat@amd.com?part=3D2
