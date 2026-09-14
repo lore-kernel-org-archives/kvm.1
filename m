@@ -1,627 +1,336 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A397C35674E
-	for <kvm@vger.kernel.org>; Mon, 14 Sep 2026 05:46:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455AB3B9DAB;
+	Mon, 14 Sep 2026 06:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789364785; cv=none; b=kOGkylLjid9x7UFQHTA19o03PAXkHdnYadX3MegOKxOHQnhno0hxW8OJzdNHbPRuREweOd3QGFjyUupTtUM9VRTrWMpI2iy5S1sgezw5u1/RcQytHCpivRny48VjHYzCSI4tDZO/cmP87gaN58R0oMhcoAnCk6ZQxAU6TLizQxU=
+	t=1789366052; cv=none; b=KkrRfzbRmFR7v4sglzEmsTSaD3i3/mssSx2QJWkW8kq4u1owZPdkZA55eCjI34z4Un95yCVFRIRl01nzCvJuoUrWSU23ElvGqgA9PjF9t0ekEfeoEeUbwdya9Vm0ZtZZ9eTn7bz4HQ1znBL54zrYfS6ym1PkKIEhsN/Q2Ll/ac0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789364785; c=relaxed/simple;
-	bh=5QhzlNik2vb8WTv+Whr0AIXM6Glk/gD+Fu1duuDW/RM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FGsAxp/cgM2D11UhgKhdeUBRuHYuwvIdf/TK5z4sH6wBwsXwkh/bNcZI8oEPOQXN0m9EgPhFoaJRmCl4IOmvapHTj7rHMiEuT7qIpPPq3+g5zkY6oJCroUuOXcxQNtDFOPbGjBUCbOhO24mWfYG04+qbHRF1p+kT5Hb4Adhykpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Oj78Vep7; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=oqHWD5Ss; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Oj78Vep7";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="oqHWD5Ss"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789364782;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4YoZj7ULUnXFEUqLzayKbTSzQn3c5hbr/5knd21qzAo=;
-	b=Oj78Vep72fcZDtcnB+z9Qfb/2D/xGcNgjf0YdE6lBNiQIz/Uyz3jOhut3NIQ5CUX+geMPT
-	/8+oP03vGQpJM53Pndy1gEwTBv2nxwBPMoGPXUSVr0Pp896G1544hQZeUflcs/WfsYWs3Y
-	0P3M/U4fRbRknobcMF2JmU/uj34NvUE=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-412-wzM48OSePkyYdZPUXn-fiw-1; Mon, 14 Sep 2026 01:46:20 -0400
-X-MC-Unique: wzM48OSePkyYdZPUXn-fiw-1
-X-Mimecast-MFC-AGG-ID: wzM48OSePkyYdZPUXn-fiw_1789364779
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39b77130a7fso5398237a91.2
-        for <kvm@vger.kernel.org>; Sun, 13 Sep 2026 22:46:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789364779; x=1789969579; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4YoZj7ULUnXFEUqLzayKbTSzQn3c5hbr/5knd21qzAo=;
-        b=oqHWD5Ssinkzr5CNNLm6tX+ob2hDDjBEy07q6mE1mp60vaCNes2N2ieQq1Y+ywmOX+
-         WHhDWsAEERT3Uu7oadZAWWiAblPiR85ZzEXhBnrNhkzxw0n2D6Z1NAbS6sp/XpGx0hdV
-         aqRET5OjWz0aLcabiAqjgCxjrGRthGMSqLnwQLRhsQ5b0hIv3KWaqvzk4EVeAxUEG+pU
-         Ynz40pJ6zQ0Ig2FtrFVIFNj+nOuPk0dUtS08UkO1oGhhdsyWKtbuYwJAp5Fccd1xG0t5
-         OPbA1cmXkKEf5RCGopJsAUiOIjMNVu4S6BSUZq0oVh1J8sY9j8b2yyVlp8iq6V7024qT
-         Wqjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789364779; x=1789969579;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4YoZj7ULUnXFEUqLzayKbTSzQn3c5hbr/5knd21qzAo=;
-        b=HInDIdJ7+yfcevtEk39YCvg5I4Z+ybMhfQtByIAK+sr2h8nO6MFD51rxVjlu+T7Gje
-         DtGodIEa+l2GpGxwJbs18xzmooXor/Kn4Vq2LsF9rUrzKLM1HEvmpcwCZUanyEOvVV0A
-         QxO+Oja/WoqdUwMavAuOw9103mnYDFROLwLX3tYDkILmjtgeu3RS6B6ydDQvlpasWwnS
-         N5jG5Mxk/xcSjKsR4Ce8l5KadPCRia/OJOdEHxto2p6H9GFbMWfZC1BKOWUeSsnIqPfh
-         1yJgkw3kSkwCZF44wSv40uNHXXCEIOxeZ4B5xRV6IkgLZD3geNCSXPw2hJw76sr8qdaY
-         6Nrg==
-X-Forwarded-Encrypted: i=1; AKwUvBwLhKPtGezQbcAa5I5aVJxPhXMe01XDIpcGNHlEVRsxBEZqiMDu+G+AUFmmNzYmB90YZhg=@vger.kernel.org
-X-Gm-Message-State: AFuF++kQHzUYknnEECfy8KaLgJJBKqiQbhJtNdQoWYXsuhrfSlrhvv7v
-	zSV6Tv1I5Ht+6frWVyA3OEkNH+M5yw+WrD4d6Kf12Q0eUE+kh2cnlH1nlT8c0eA0aqYQUeYtfEP
-	z0gDnuzAlyrvElREywhcZGmJ7OhVOGqItzHtIBgRkV9AGo94v1ItaOA==
-X-Gm-Gg: AYBFou0gs1057/LQdlUvZzvyDztXSiNsxCg4ZZZipRDDehKsvNvM4FNnK2sNeHprmtj
-	4E7Wy4XG40qOcSvDMCMLr4K1zjl0lFOjWDPhlQnPJSJgsn92YVlXpACHobfQhgHXhdzZrls+k6g
-	76QTEn61jzAs4pMcDWU/Q1Rj5n+9COpG6HOKSw1q4Endx7Dw+e3L1XUrLNw6D19hrYTCrXcz0Lg
-	wQAQtc3eEzYHVnj5aGzRryVN5683Q4ZOoxpFwLYCu7xkmAt69QK6x8+tlobjXUr6RiVp7xKzDPw
-	Y69u+iNXCLXVyO1vn/Dn66fBrWUj57msc/mz3YzPHS2Yh6xnS6EYzxwp38QTQeucW5O+QNUfbW5
-	tGqjkt6aSlivr2bOfnyGpdo75gMEQGpAd7n8pLZHQ9A==
-X-Received: by 2002:a17:90b:39cc:b0:39d:b769:3067 with SMTP id 98e67ed59e1d1-39debdffe17mr2617489a91.0.1789364779231;
-        Sun, 13 Sep 2026 22:46:19 -0700 (PDT)
-X-Received: by 2002:a17:90b:39cc:b0:39d:b769:3067 with SMTP id 98e67ed59e1d1-39debdffe17mr2617413a91.0.1789364778584;
-        Sun, 13 Sep 2026 22:46:18 -0700 (PDT)
-Received: from [192.168.68.52] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d9d8aa131sm5474141a91.2.2026.09.13.22.46.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 13 Sep 2026 22:46:17 -0700 (PDT)
-Message-ID: <54ac0609-f111-45fb-9c82-3095ddbed006@redhat.com>
-Date: Mon, 14 Sep 2026 15:46:06 +1000
+	s=arc-20240116; t=1789366052; c=relaxed/simple;
+	bh=9QQwe3/yWy/849S5t4QOrJMBq3wx5eEEu+qT4ZiMmzI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XCfCctfVQvD8VhgWeAhUR4+dpX8dAavwS7zrBEpjT1Iik4rwj+elRf2l+Je0aDf1+mBAeM7KE9v3tsYGSEE+Sjy9zGHB9MepSaXDIJ6Z6w+Kg/slXijGLseD0v+QdOtf9Om9lhz5NJsGaIy5XgjrRzPTHh/cqv7B7yBGJ9y3eWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4hjvnQ03vdz5B0rY;
+	Mon, 14 Sep 2026 14:07:22 +0800 (CST)
+Received: from szxl2zmapp06.zte.com.cn ([10.1.32.108])
+	by mse-fl1.zte.com.cn with SMTP id 68E67HUR010007;
+	Mon, 14 Sep 2026 14:07:17 +0800 (+08)
+	(envelope-from wang.yechao255@zte.com.cn)
+Received: from localhost.localdomain (unknown [10.234.74.162])
+	by smtp (Zmail) with SMTP;
+	Mon, 14 Sep 2026 14:07:19 +0800
+X-Zmail-TransId: 3e816aa78f1701c-a089b
+X-Zmail-LocalSMTP: 1
+X-ZMAIL-USEORIGINALEMLTOOUTBOUND: 1
+X-Zmail-RealSender: wang.yechao255@zte.com.cn
+From: Wang Yechao <wang.yechao255@zte.com.cn>
+To: Anup Patel <anup@brainfault.org>, kvm@vger.kernel.org,
+        kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Atish Patra <atish.patra@linux.dev>,
+        Alexandre Ghiti <alex@ghiti.fr>,
+        Wang Yechao <wang.yechao255@zte.com.cn>
+Subject: [PATCH v5 2/2] RISC-V: KVM: Recover gstage huge page mappings during disable-dirty-log
+Date: Mon, 14 Sep 2026 13:59:18 +0800
+Message-ID: <20260914055936.3672758-3-wang.yechao255@zte.com.cn>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20260914055936.3672758-1-wang.yechao255@zte.com.cn>
+References: <20260914055936.3672758-1-wang.yechao255@zte.com.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18 7/7] firmware: arm_rmm: Add wrappers for Realm related
- RMI commands
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
- <20260912083611.2513845-8-suzuki.poulose@arm.com>
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20260912083611.2513845-8-suzuki.poulose@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-MAIL:mse-fl1.zte.com.cn 68E67HUR010007
+X-TLS: YES
+X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Mon, 14 Sep 2026 14:07:22 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6AA78F19.000/4hjvnQ03vdz5B0rY
 
-On 9/12/26 6:36 PM, Suzuki K Poulose wrote:
-> From: Steven Price <steven.price@arm.com>
-> 
-> Introduce wrappers for the RMI functions needed for creating and
-> managing realm guests. This will be used by the KVM to manage the
-> Realms
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> ---
-> Changes since v17:
->    * Avoid nesting if conditions for output populating RMI calls
->    * Clean up comments
->    * Always use arm_smccc_1_2_invoke() for RMI calls.
-> Changes since v16:
->    * Split into a separate patch and move away from arch/arm64 to
->      include/linux/.
->    * Also moved into the firmware_rmm series from the KVM CCA support.
->      This is done in a hope to reduce the merge conflicts and make
->      the KVM CCA upstreaming in independent parallel chunks
-> ---
->   include/linux/arm-rmi-cmds.h | 461 +++++++++++++++++++++++++++++++++++
->   1 file changed, 461 insertions(+)
-> 
+When dirty logging is enabled, the gstage mappings are split into
+4K pages to track dirty pages. If the migration fails or is canceled,
+in order to keep the VM's performance consistent with that before
+dirty logging was enabled, the gstage huge page mappings are recoverd
+when dirty logging is disabled.
 
-One nitpick for rmi_rtt_data_unmap() below. With it addressed:
+With this patch, dirty_log_perf_test shows a decrease in the number of
+vCPU faults:
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
+$ perf stat -e kvm:kvm_page_fault \
+./dirty_log_perf_test -s anonymous_hugetlb_1gb -v 1 -e -b 1G
 
-> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
-> index 27a0c56944976..fd7ef7e82b246 100644
-> --- a/include/linux/arm-rmi-cmds.h
-> +++ b/include/linux/arm-rmi-cmds.h
-> @@ -76,4 +76,465 @@ long rmi_sro_execute(struct arm_smccc_1_2_regs *regs);
->   	__ret;								\
->   })
->   
-> +/**
-> + * rmi_rtt_data_map_init() - Create a mapping at protected IPA, copying contents
-> + *			     from a given non-secure source granule.
-> + * @rd: PA of the RD
-> + * @data: PA of the target granule mapped in the guest
-> + * @ipa: IPA at which the granule @data will be mapped in the guest
-> + * @src: PA of the source granule with contents
-> + * @flags: RMI_MEASURE_CONTENT if the contents should be measured
-> + *
-> + * Create a mapping from Protected IPA space to conventional memory, copying
-> + * contents from a Non-secure Granule provided by the caller.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rtt_data_map_init(unsigned long rd, unsigned long data,
-> +					 unsigned long ipa, unsigned long src,
-> +					 unsigned long flags)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_DATA_MAP_INIT, rd, data, ipa, src, flags
-> +	};
-> +
-> +	return rmi_sro_execute(&regs);
-> +}
-> +
-> +/**
-> + * rmi_rtt_data_map() - Create mappings in protected IPA range with unknown contents
-> + * @rd: PA of the RD
-> + * @base: Base of the target IPA range
-> + * @top: Top of the target IPA range
-> + * @flags: Flags
-> + * @oaddr: Output address set descriptor
-> + * @out_top: Top address of range which was processed.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rtt_data_map(unsigned long rd,
-> +				    unsigned long base,
-> +				    unsigned long top,
-> +				    unsigned long flags,
-> +				    unsigned long oaddr,
-> +				    unsigned long *out_top)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_DATA_MAP, rd, base, top, flags, oaddr
-> +	};
-> +	long ret;
-> +
-> +	ret = rmi_sro_execute(&regs);
-> +
-> +	if (ret == RMI_SUCCESS && out_top)
-> +		*out_top = regs.a1;
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * rmi_rtt_data_unmap() - Remove mappings to conventional memory at a protected
-> + *			  IPA range
-> + * @rd: PA of the RD
-> + * @base: Base of the target IPA range
-> + * @top: Top of the target IPA range
-> + * @flags: Flags
-> + * @oaddr: Output address set descriptor
-> + * @out_top: Returns top IPA of range which has been unmapped
-> + * @out_range: Output address range
-> + * @out_count: Number of entries in output address list
-> + *
-> + * Removes mappings to convention memory with a target Protected IPA range.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rtt_data_unmap(unsigned long rd,
-> +				      unsigned long base,
-> +				      unsigned long top,
-> +				      unsigned long flags,
-> +				      unsigned long oaddr,
-> +				      unsigned long *out_top,
-> +				      unsigned long *out_range,
-> +				      unsigned long *out_count)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_DATA_UNMAP, rd, base, top, flags, oaddr
-> +	};
-> +	long ret;
-> +
-> +	ret = rmi_sro_execute(&regs);
-> +
-> +	if (ret == RMI_SUCCESS) {
-> +		if (out_top)
-> +			*out_top = regs.a1;
-> +		if (out_range)
-> +			*out_range = regs.a2;
-> +		if (out_count)
-> +			*out_count = regs.a3;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
+Before: 1,574,460    kvm:kvm_page_fault
+After : 788,048      kvm:kvm_page_fault
 
-The unnecessary if statements could be avoided by:
+Signed-off-by: Wang Yechao <wang.yechao255@zte.com.cn>
+---
+ arch/riscv/include/asm/kvm_gstage.h |   4 +
+ arch/riscv/kvm/gstage.c             |  67 +++++++++++++++
+ arch/riscv/kvm/mmu.c                | 123 +++++++++++++++++++++++++++-
+ 3 files changed, 193 insertions(+), 1 deletion(-)
 
-	if (ret != RMI_SUCCESS)
-		return ret;
-
-	if (out_top)
-		*out_top = regs.a1;
-	if (out_range)
-		*out_range = regs.a2;
-	if (out_count)
-		*out_count = regs.a3;
-
-	return RMI_SUCCESS;
-
-> +/**
-> + * rmi_psci_complete() - Complete pending PSCI command
-> + * @calling_rec: PA of the calling REC
-> + * @status: Status of the PSCI request
-> + *
-> + * Completes a pending PSCI command.
-> + *
-> + * Return: RMI return code
-> + */
-> +static inline long rmi_psci_complete(unsigned long calling_rec,
-> +				     unsigned long status)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_PSCI_COMPLETE, calling_rec, status,
-> +	};
-> +
-> +	rmi_smccc_invoke(&regs);
-> +	return regs.a0;
-> +}
-> +
-> +/**
-> + * rmi_realm_activate() - Activate a realm
-> + * @rd: PA of the RD
-> + *
-> + * Mark a realm as Active, signalling that creation is completed, allowing
-> + * execution of the realm.
-> + *
-> + * Return: RMI return code
-> + */
-> +static inline long rmi_realm_activate(unsigned long rd)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_REALM_ACTIVATE, rd,
-> +	};
-> +
-> +	rmi_smccc_invoke(&regs);
-> +	return regs.a0;
-> +}
-> +
-> +/**
-> + * rmi_realm_create() - Create a realm
-> + * @rd: PA of the RD
-> + * @params: PA of realm parameters
-> + * @sro: Preallocated SRO context
-> + *
-> + * Create a new realm using the given parameters.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_realm_create(unsigned long rd, unsigned long params,
-> +				    struct rmi_sro_state *sro)
-> +{
-> +	return rmi_sro_memxfer_cmd(sro, GFP_KERNEL,
-> +				   SMC_RMI_REALM_CREATE, rd, params);
-> +}
-> +
-> +/**
-> + * rmi_realm_terminate() - Terminate a realm
-> + * @rd: PA of the RD
-> + * @sro: Preallocated SRO context
-> + *
-> + * Terminates a realm, moving it into a ZOMBIE state
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_realm_terminate(unsigned long rd,
-> +				       struct rmi_sro_state *sro)
-> +{
-> +	return rmi_sro_memxfer_cmd(sro, GFP_KERNEL,
-> +				   SMC_RMI_REALM_TERMINATE, rd);
-> +}
-> +
-> +/**
-> + * rmi_realm_destroy() - Destroy a realm
-> + * @rd: PA of the RD
-> + * @sro: Preallocated SRO context
-> + *
-> + * Destroys a realm, all objects belonging to the realm must be destroyed first.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_realm_destroy(unsigned long rd,
-> +				     struct rmi_sro_state *sro)
-> +{
-> +	return rmi_sro_memxfer_cmd(sro, GFP_KERNEL,
-> +				   SMC_RMI_REALM_DESTROY, rd);
-> +}
-> +
-> +/**
-> + * rmi_rec_create() - Create a REC
-> + * @rd: PA of the RD
-> + * @rec: PA of the target REC
-> + * @params: PA of REC parameters
-> + * @sro: Allocated SRO context to be used
-> + *
-> + * Create a REC using the parameters specified in the struct rec_params pointed
-> + * to by @params.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rec_create(unsigned long rd,
-> +				  unsigned long rec,
-> +				  unsigned long params,
-> +				  struct rmi_sro_state *sro)
-> +{
-> +	long ret;
-> +
-> +	sro->addr_count = 0;
-> +	sro->regs = (struct arm_smccc_1_2_regs) {
-> +		SMC_RMI_REC_CREATE, rd, rec, params
-> +	};
-> +	ret = rmi_sro_memxfer_execute(sro, GFP_KERNEL);
-> +	rmi_sro_free(sro);
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * rmi_rec_destroy() - Destroy a REC
-> + * @rec: PA of the target REC
-> + * @sro: Allocated SRO context to be used
-> + *
-> + * Destroys a REC. The REC must not be running.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rec_destroy(unsigned long rec,
-> +				   struct rmi_sro_state *sro)
-> +{
-> +	return rmi_sro_memxfer_cmd(sro, GFP_KERNEL, SMC_RMI_REC_DESTROY, rec);
-> +}
-> +
-> +/**
-> + * rmi_rec_enter() - Enter a REC
-> + * @rec: PA of the target REC
-> + * @run_ptr: PA of RecRun structure
-> + *
-> + * Starts (or continues) execution within a REC.
-> + *
-> + * Return: RMI return code
-> + */
-> +static inline long rmi_rec_enter(unsigned long rec, unsigned long run_ptr)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_REC_ENTER, rec, run_ptr,
-> +	};
-> +
-> +	rmi_smccc_invoke(&regs);
-> +	return regs.a0;
-> +}
-> +
-> +/**
-> + * rmi_rtt_create() - Creates an RTT
-> + * @rd: PA of the RD
-> + * @rtt: PA of the target RTT
-> + * @ipa: Base of the IPA range described by the RTT
-> + * @level: Depth of the RTT within the tree
-> + *
-> + * Creates an RTT (Realm Translation Table) at the specified level for the
-> + * translation of the specified address within the realm.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rtt_create(unsigned long rd, unsigned long rtt,
-> +				  unsigned long ipa, long level)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_CREATE, rd, rtt, ipa, level
-> +	};
-> +
-> +	return rmi_sro_execute(&regs);
-> +}
-> +
-> +/**
-> + * rmi_rtt_destroy() - Destroy an RTT
-> + * @rd: PA of the RD
-> + * @ipa: Base of the IPA range described by the RTT
-> + * @level: RTT level
-> + * @out_rtt: Pointer to write the PA of the RTT which was destroyed
-> + * @out_top: Pointer to write the top IPA of non-live RTT entries, from entry
-> + * at which the RTT walk terminated.
-> + *
-> + * Destroys an RTT. The RTT must be non-live, i.e. none of the entries in the
-> + * table are in ASSIGNED or TABLE state.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code.
-> + */
-> +static inline long rmi_rtt_destroy(unsigned long rd,
-> +				   unsigned long ipa,
-> +				   long level,
-> +				   unsigned long *out_rtt,
-> +				   unsigned long *out_top)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_DESTROY, rd, ipa, level
-> +	};
-> +	long ret = rmi_sro_execute(&regs);
-> +
-> +	if (ret != RMI_SUCCESS)
-> +		return ret;
-> +
-> +	if (out_rtt)
-> +		*out_rtt = regs.a1;
-> +	if (out_top)
-> +		*out_top = regs.a2;
-> +
-> +	return RMI_SUCCESS;
-> +}
-> +
-> +/**
-> + * rmi_rtt_fold() - Fold an RTT
-> + * @rd: PA of the RD
-> + * @ipa: Base of the IPA range described by the RTT
-> + * @level: Depth of the RTT within the tree
-> + * @out_rtt: Pointer to write the PA of the RTT which was destroyed
-> + *
-> + * Folds an RTT. If all entries with the RTT are 'homogeneous' the RTT can be
-> + * folded into the parent and the RTT destroyed.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rtt_fold(unsigned long rd, unsigned long ipa,
-> +				long level, unsigned long *out_rtt)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_FOLD, rd, ipa, level
-> +	};
-> +	long ret = rmi_sro_execute(&regs);
-> +
-> +	if (ret == RMI_SUCCESS && out_rtt)
-> +		*out_rtt = regs.a1;
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * rmi_rtt_init_ripas() - Set RIPAS for new realm
-> + * @rd: PA of the RD
-> + * @base: Base of target IPA region
-> + * @top: Top of target IPA region
-> + * @out_top: Top IPA of range whose RIPAS was modified
-> + *
-> + * Sets the RIPAS of a target IPA range to RAM, for a realm in the NEW state.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rtt_init_ripas(unsigned long rd, unsigned long base,
-> +				      unsigned long top, unsigned long *out_top)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_INIT_RIPAS, rd, base, top
-> +	};
-> +	long ret = rmi_sro_execute(&regs);
-> +
-> +	if (ret == RMI_SUCCESS && out_top)
-> +		*out_top = regs.a1;
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * rmi_rtt_unprot_map() - Map unprotected granules into a realm
-> + * @rd: PA of the RD
-> + * @base: Base IPA of the mapping
-> + * @top: Top of the target IPA range
-> + * @flags: Flags
-> + * @oaddr: Output address set descriptor
-> + * @out_top: Top IPA of range which has been mapped
-> + *
-> + * Create mappings to memory within a target unprotected IPA range.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rtt_unprot_map(unsigned long rd,
-> +				      unsigned long base,
-> +				      unsigned long top,
-> +				      unsigned long flags,
-> +				      unsigned long oaddr,
-> +				      unsigned long *out_top)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_UNPROT_MAP, rd, base, top, flags, oaddr
-> +	};
-> +	long ret = rmi_sro_execute(&regs);
-> +
-> +	if (ret == RMI_SUCCESS && out_top)
-> +		*out_top = regs.a1;
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * rmi_rtt_set_ripas() - Set RIPAS for an running realm
-> + * @rd: PA of the RD
-> + * @rec: PA of the REC making the request
-> + * @base: Base of target IPA region
-> + * @top: Top of target IPA region
-> + * @out_top: Pointer to write top IPA of range whose RIPAS was modified
-> + *
-> + * Completes a request made by the realm to change the RIPAS of a target IPA
-> + * range.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rtt_set_ripas(unsigned long rd, unsigned long rec,
-> +				     unsigned long base, unsigned long top,
-> +				     unsigned long *out_top)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_SET_RIPAS, rd, rec, base, top
-> +	};
-> +	long ret = rmi_sro_execute(&regs);
-> +
-> +	if (ret == RMI_SUCCESS && out_top)
-> +		*out_top = regs.a1;
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * rmi_rtt_unprot_unmap() - Remove mappings within an unprotected IPA range
-> + * @rd: PA of the RD
-> + * @base: Base IPA of the mapping
-> + * @top: Top of the target IPA range
-> + * @flags: Flags
-> + * @oaddr: Output address set descriptor
-> + * @out_top: Top IPA which has been unmapped
-> + * @out_range: Output address range
-> + * @out_count: Number of entries in output address list
-> + *
-> + * Removes mappings to memory within a target unprotected IPA range.
-> + *
-> + * Return: 0 on success, positive RMI result code or negative Linux error code
-> + */
-> +static inline long rmi_rtt_unprot_unmap(unsigned long rd,
-> +					unsigned long base,
-> +					unsigned long top,
-> +					unsigned long flags,
-> +					unsigned long oaddr,
-> +					unsigned long *out_top,
-> +					unsigned long *out_range,
-> +					unsigned long *out_count)
-> +{
-> +	struct arm_smccc_1_2_regs regs = {
-> +		SMC_RMI_RTT_UNPROT_UNMAP, rd, base, top, flags, oaddr
-> +	};
-> +	long ret = rmi_sro_execute(&regs);
-> +
-> +	if (ret != RMI_SUCCESS)
-> +		return ret;
-> +
-> +	if (out_top)
-> +		*out_top = regs.a1;
-> +	if (out_range)
-> +		*out_range = regs.a2;
-> +	if (out_count)
-> +		*out_count = regs.a3;
-> +
-> +	return RMI_SUCCESS;
-> +}
-> +
->   #endif
-
-Thanks,
-Gavin
+diff --git a/arch/riscv/include/asm/kvm_gstage.h b/arch/riscv/include/asm/kvm_gstage.h
+index aaf080ba1b77..6dd0a96b336f 100644
+--- a/arch/riscv/include/asm/kvm_gstage.h
++++ b/arch/riscv/include/asm/kvm_gstage.h
+@@ -68,6 +68,10 @@ bool kvm_riscv_gstage_split_huge(struct kvm_gstage *gstage,
+ 				 struct kvm_mmu_memory_cache *pcache,
+ 				 gpa_t addr, u32 target_level, bool flush);
+ 
++bool kvm_riscv_gstage_recover_huge(struct kvm_gstage *gstage, gpa_t addr,
++				   unsigned long target_page_size,
++				   unsigned long *page_size);
++
+ enum kvm_riscv_gstage_op {
+ 	GSTAGE_OP_NOP = 0,	/* Nothing */
+ 	GSTAGE_OP_CLEAR,	/* Clear/Unmap */
+diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
+index e5002cb9cbef..2bbe052b9780 100644
+--- a/arch/riscv/kvm/gstage.c
++++ b/arch/riscv/kvm/gstage.c
+@@ -369,6 +369,73 @@ bool kvm_riscv_gstage_split_huge(struct kvm_gstage *gstage,
+ 	return need_flush;
+ }
+ 
++static inline unsigned long make_huge_pte(unsigned long child_pte, int index,
++					  unsigned long child_page_size)
++{
++	unsigned long huge_pte = child_pte;
++	unsigned long child_pfn_offset;
++
++	child_pfn_offset = index * (child_page_size / PAGE_SIZE);
++	huge_pte -= (child_pfn_offset << _PAGE_PFN_SHIFT);
++
++	return huge_pte;
++}
++
++bool kvm_riscv_gstage_recover_huge(struct kvm_gstage *gstage, gpa_t addr,
++				   unsigned long target_page_size,
++				   unsigned long *page_size)
++{
++	u32 current_level = gstage->pgd_levels - 1;
++	pte_t *next_ptep = (pte_t *)gstage->pgd;
++	u32 target_level, out_level;
++	pte_t *ptep, *child_ptep;
++	unsigned long huge_pte;
++	bool recovered = false;
++	int ret, i;
++
++	out_level = 0;
++	ret = gstage_page_size_to_level(gstage, target_page_size, &target_level);
++	if (ret)
++		goto out;
++
++	while (current_level >= target_level) {
++		ptep = (pte_t *)&next_ptep[gstage_pte_index(gstage, addr, current_level)];
++
++		out_level = current_level;
++		if (!pte_val(ptep_get(ptep)))
++			goto out;
++
++		/* The mapping is already a huge page mapping. */
++		if (gstage_pte_leaf(ptep)) {
++			recovered = true;
++			goto out;
++		}
++
++		next_ptep = (pte_t *)gstage_pte_page_vaddr(ptep_get(ptep));
++		current_level--;
++	}
++
++	for (i = 0; i < PTRS_PER_PTE; i++) {
++		child_ptep = (pte_t *)&next_ptep[i];
++		if (!gstage_pte_leaf(child_ptep))
++			continue;
++
++		huge_pte = make_huge_pte(pte_val(ptep_get(child_ptep)),
++					 i, target_page_size / PTRS_PER_PTE);
++		set_pte(ptep, __pte(huge_pte));
++		gstage_tlb_flush(gstage, target_level, addr);
++		put_page(virt_to_page(next_ptep));
++		recovered = true;
++
++		break;
++	}
++
++out:
++	gstage_level_to_page_size(gstage, out_level, page_size);
++
++	return recovered;
++}
++
+ bool kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
+ 			     pte_t *ptep, u32 ptep_level, enum kvm_riscv_gstage_op op)
+ {
+diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+index 6035b5ec9503..cb1d9d275bc6 100644
+--- a/arch/riscv/kvm/mmu.c
++++ b/arch/riscv/kvm/mmu.c
+@@ -19,6 +19,8 @@
+ static bool __read_mostly eager_page_split = true;
+ module_param(eager_page_split, bool, 0644);
+ 
++static void mmu_recover_huge_pages(struct kvm *kvm, int slot);
++
+ static void mmu_wp_memory_region(struct kvm *kvm, int slot)
+ {
+ 	struct kvm_memslots *slots = kvm_memslots(kvm);
+@@ -241,17 +243,44 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
+ 				const struct kvm_memory_slot *new,
+ 				enum kvm_mr_change change)
+ {
++	bool log_dirty_pages = new && new->flags & KVM_MEM_LOG_DIRTY_PAGES;
++
+ 	/*
+ 	 * At this point memslot has been committed and dirty pages will be
+ 	 * tracked while the memory slot is write protected.
+ 	 */
+-	if (change != KVM_MR_DELETE && new->flags & KVM_MEM_LOG_DIRTY_PAGES) {
++	if (log_dirty_pages) {
++		if (change == KVM_MR_DELETE)
++			return;
++
+ 		if (kvm_dirty_log_manual_protect_and_init_set(kvm))
+ 			return;
++
+ 		mmu_wp_memory_region(kvm, new->id);
+ 
+ 		if (READ_ONCE(eager_page_split))
+ 			mmu_split_memory_region(kvm, new->id);
++
++	} else {
++		/*
++		 * Only when change == KVM_MR_FLAGS_ONLY, this branch handles the
++		 * disable-dirty-log case. For other changes (KVM_MR_CREATE,
++		 * KVM_MR_DELETE, KVM_MR_MOVE), there is no need to recover
++		 * huge pages.
++		 */
++		if (change != KVM_MR_FLAGS_ONLY)
++			return;
++
++		/*
++		 * Recover huge page mappings in the slot now that dirty logging
++		 * is disabled, i.e. now that KVM does not have to track guest
++		 * writes at 4KiB granularity.
++		 *
++		 * Dirty logging might be disabled by userspace if an ongoing VM
++		 * live migration is cancelled and the VM must continue running
++		 * on the source.
++		 */
++		mmu_recover_huge_pages(kvm, new->id);
+ 	}
+ }
+ 
+@@ -810,3 +839,95 @@ void kvm_riscv_mmu_update_hgatp(struct kvm_vcpu *vcpu)
+ 	if (!kvm_riscv_gstage_vmid_bits())
+ 		kvm_riscv_local_hfence_gvma_all();
+ }
++
++static void mmu_recover_huge_pages_range(struct kvm_gstage *gstage,
++					 unsigned long page_size,
++				         gpa_t range_start,
++					 gpa_t range_end)
++{
++	phys_addr_t start = range_start;
++	phys_addr_t end = range_end;
++	unsigned long out_sz = 0;
++	bool recovered = true;
++
++	/*
++	 *  Recover 2MB hugepages mapping within the range.
++	 */
++	while (start < end) {
++		recovered &= kvm_riscv_gstage_recover_huge(gstage, start,
++							   PMD_SIZE, &out_sz);
++		start += out_sz;
++	}
++
++	/*
++	 * If 1GB hugepages are desired, try to recover the whole range
++	 * as one 1GB hugepages mapping.
++	 */
++	if (recovered && (page_size == PUD_SIZE)) {
++		start = range_start;
++		kvm_riscv_gstage_recover_huge(gstage, start, PUD_SIZE, &out_sz);
++	}
++}
++
++static void mmu_recover_huge_pages(struct kvm *kvm, int slot)
++{
++	struct kvm_memslots *slots = kvm_memslots(kvm);
++	struct kvm_memory_slot *memslot = id_to_memslot(slots, slot);
++	unsigned long hva = gfn_to_hva(kvm, memslot->base_gfn);
++	phys_addr_t start = memslot->base_gfn << PAGE_SHIFT;
++	phys_addr_t end = (memslot->base_gfn + memslot->npages) << PAGE_SHIFT;
++	phys_addr_t addr = start;
++	struct kvm_gstage gstage;
++	unsigned long page_size;
++	phys_addr_t range_start;
++	phys_addr_t range_end;
++
++	kvm_riscv_gstage_init(&gstage, kvm);
++
++	write_lock(&kvm->mmu_lock);
++
++	while (addr < end) {
++		/*
++		 * If a very large memslot is mapped exclusively with
++		 * 4KB host pages, or too many hugepages need to recover,
++		 * release the kvm->mmu_lock to prevent starvation and
++		 * lockup detector warnings.
++		 */
++		cond_resched_rwlock_write(&kvm->mmu_lock);
++
++		if (!kvm->arch.pgd)
++			break;
++
++		hva = gfn_to_hva(kvm, addr >> PAGE_SHIFT);
++		page_size = get_hva_mapping_size(kvm, hva);
++		if (page_size == PAGE_SIZE) {
++			addr += page_size;
++			continue;
++		}
++
++		page_size = hugetlb_mapping_size(memslot, hva, page_size);
++		if (page_size == PAGE_SIZE) {
++			addr += page_size;
++			continue;
++		}
++
++		range_start = ALIGN_DOWN(addr, page_size);
++		range_end = range_start + page_size;
++
++		/*
++		 * Make sure the recover range [range_start, range_end)
++		 * is within the slot range.
++		 */
++		if (range_start < start || range_end > end) {
++			addr = range_end;
++			continue;
++		}
++
++		mmu_recover_huge_pages_range(&gstage, page_size,
++					     range_start, range_end);
++
++		addr = range_end;
++	}
++
++	write_unlock(&kvm->mmu_lock);
++}
+-- 
+2.27.0
 
