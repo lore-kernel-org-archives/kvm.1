@@ -1,199 +1,108 @@
-Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256654534BB;
-	Mon, 14 Sep 2026 11:48:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C917440A16;
+	Mon, 14 Sep 2026 11:54:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789386492; cv=none; b=tXzJpp/KiiFMdKazr4oquf/XQqapH5U14EnsjZVVadJu1PxfyfgrQ2WreimGZiq5294+Dkxdlo2KzElH1p20pAbXxS+kKIxMEoXcx/E4K8vZKe9MI2h3ophmCH7l9fs4P7nu6Geb8gLNsqlDNshd+uzChOTRGSzRoj7jn4v6dv0=
+	t=1789386900; cv=none; b=hc8f+kJ+5IOsRIJRxF2z98L8kIVu5WRg9qVu86gBLIAozZ87WQfjKPJravIwrCik54lrKMH/MNsR3bo0RmisxS6ZaZeZ81n2s/kvRZeix3r5m0lrfVxEy+4HGOezUwkRl4iTHKXamixePG82au2QlT27AvLerUhjvMXrMQWEUwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789386492; c=relaxed/simple;
-	bh=ySVw3BtQ8VdlSvwcAcvu2VldK45kYaHXHC6yP9WKKsg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Z3tYZIM+bKN5mT0NembYb10YdwI/OdHfKiC4SsISiydeP9+NKiqH77xmjROyFGk8Sj89w/DGxi/TnyU/mmpVG7kqIiW+bOQiPWHlFlOj56ik3JYLCEruACfYGNF5ybnsnvBINk/aeoe12y2wysgVQiuPvdapRfynMhcbZd7ZSCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=SXuEO2sa; arc=none smtp.client-ip=49.212.243.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
+	s=arc-20240116; t=1789386900; c=relaxed/simple;
+	bh=frX//QIduH8kMIeCT3Ozdj2L7RcSLwxZOIDPR2NunME=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uGP/DkZ2SOxGmfd+ZALPWxXlIkTRKNP/ayZTPppikBl57xroLWPriyt9UrSkv21ZdOJ0u39vXMDJDLVN18WOB1MMXF7wArUpPOTvkyu1GD/pJtU9fuzPKNqqY5ZvH9EOC2HdnNj01LOOuxFEw7bcGxxAMiM86IgIhuTXshGOKEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M7wNU7Iw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="SXuEO2sa"
-Received: from h183.csg.ci.i.u-tokyo.ac.jp (h183.csg.ci.i.u-tokyo.ac.jp [133.11.54.183])
-	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 68EBfjsJ084060
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 14 Sep 2026 20:41:57 +0900 (JST)
-	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=iW6paRDU1WuHVvPa2Tan4+ENXAFGhAHh39Stpx/lGEU=;
-        c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
-        h=From:Message-Id:To:Subject:Date;
-        s=rs20250326; t=1789386117; v=1;
-        b=SXuEO2saKk20YD2hI4Bd3B6I1m3y39IXjKSDYVMyTHJVPMTQG/DWMsTfg5ROC63a
-         jQn/hizniPKxQGoa4QtbRLVEU85+E7s2+daO7YVK9mG9QtCn58S1tOauNKKtiSV2
-         rgA9ixQDTlU1/m0K8LG0USQ6+PyjRjdGcSGYV1qGyESosnCt3e+dw6Ii5Bv8hD/0
-         e19rtNxCti9KLIb+3XRWxOaN7rt0DXQJs+t1yWxfjNxqRebhgPZGzMpvOugpvHoi
-         RSX+sNZyTMEjUyAPfeRllhhiUhdOq0z8rIfdEgfUVkAEW7O39oHByZAhKO/t0Tnu
-         QykA1SOKzEoWPoyc1NtBKQ==
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Mon, 14 Sep 2026 20:40:56 +0900
-Subject: [PATCH v10 17/20] KVM: arm64: PMU: Pass the target CPU to
- kvm_pmu_probe_armpmu()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M7wNU7Iw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 773C61F00898;
+	Mon, 14 Sep 2026 11:54:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789386899;
+	bh=mzslbS9s57kHQk5KhGmaTOWstnEBnslT4LYp80HR5nQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=M7wNU7Iw1O/OBF9URQRc/i9iZNutJqNfPaElMBTKqIKZPckpJAmhf7f0gLTCu1HMt
+	 tMF7nnZqUHw7m4Q6qqhICroNBaY486sD0k/9xXK+kQZKWIf03oC5NPZb6udvbFfXAx
+	 uH9dQsLagA9St5ZWmgflKNogNNb7bUoyJMV2Na1k3ecddBe1ghAx8IqK9DNNEyT59z
+	 vBhTwYPX12IMLAPO4zDprisBauaJ/Yl8+H2rZ+89XAnU99qBmV8unZn7HZ+ufwajJQ
+	 YvybuH36cRfFJdBuDgjwQMkMRrTa3ZlgAOlnxPSTxnWtid0iAU8HJx9IoK7U2P4fUQ
+	 S3w2vJ3Nt0ulA==
+Date: Mon, 14 Sep 2026 14:54:56 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Matt Evans <matt@ozlabs.org>, Alex Williamson <alex@shazbot.org>,
+	Alex Mastro <amastro@fb.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Longfang Liu <liulongfang@huawei.com>,
+	Mahmoud Adam <mngyadam@amazon.de>,
+	David Matlack <dmatlack@google.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	kvm@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v6 9/9] vfio/pci: Permanently revoke a DMABUF on request
+Message-ID: <20260914115456.GY13683@unreal>
+References: <20260911214200.33793-1-matt@ozlabs.org>
+ <20260911214200.33793-10-matt@ozlabs.org>
+ <20260913165244.GW13683@unreal>
+ <20260914113647.GL3968357@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260914-hybrid-v10-17-92788053a691@rsg.ci.i.u-tokyo.ac.jp>
-References: <20260914-hybrid-v10-0-92788053a691@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20260914-hybrid-v10-0-92788053a691@rsg.ci.i.u-tokyo.ac.jp>
-To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-        Joey Gouly <joey.gouly@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Zenghui Yu <yuzenghui@huawei.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
-        Yury Norov <yury.norov@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Steffen Eiden <seiden@linux.ibm.com>, Fuad Tabba <tabba@google.com>,
-        Shannon Zhao <shannon.zhao@linaro.org>,
-        Andrew Jones <drjones@redhat.com>
-Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
-        devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
-        Fuad Tabba <fuad.tabba@linux.dev>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4142;
- i=odaki@rsg.ci.i.u-tokyo.ac.jp; h=from:subject:message-id;
- bh=ySVw3BtQ8VdlSvwcAcvu2VldK45kYaHXHC6yP9WKKsg=;
- b=owGbwMvMwCWmMbc20y1CyJDxtFoSQ9byu2U355cuY5z6LYFNdSLDjY2nWNJbHYwqTMv2haonR
- tcq65h3lLIwiHExyIopsqQU7ebWiK79VJgQ3wIzh5UJZAgDF6cATGRWH8M/bSkpMyOu3ZuiUyKv
- s+34fcnmwj2ftH1hDPOTZrcb/JjQwciwrdDrxrf1b/cXzY3MPyxivDqlxUfFsIJ1b3pkRcrOA5O
- 5AQ==
-X-Developer-Key: i=odaki@rsg.ci.i.u-tokyo.ac.jp; a=openpgp;
- fpr=AEDC03C9AF734F2EC26A7BFFA4BAEAA73536753C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260914113647.GL3968357@nvidia.com>
 
-kvm_pmu_probe_armpmu() currently samples the current CPU internally,
-which ties the helper to default PMU selection.
+On Mon, Sep 14, 2026 at 08:36:47AM -0300, Jason Gunthorpe wrote:
+> On Sun, Sep 13, 2026 at 07:52:44PM +0300, Leon Romanovsky wrote:
+> > On Fri, Sep 11, 2026 at 10:41:57PM +0100, Matt Evans wrote:
+> > > Expand the VFIO DMABUF revocation state to three states:
+> > > Not revoked, temporarily revoked, and permanently revoked.
+> > 
+> > The thing is that "temporarily revoked" is actually the standard
+> > invalidate_mappings/move_notify mechanism of DMABUF, which wasn't good
+> > for VFIO.
+> 
+> I think temporarily revokes here means it is revoked from a dmabuf
+> perspective
 
-Move that policy to kvm_arm_set_default_pmu() by passing
-raw_smp_processor_id() from the caller, and make the helper search for
-the pPMU covering an explicit CPU. Move the helper above
-kvm_pmu_create_perf_event() so later code can reuse it when creating
-PMU events for a VCPU's current pCPU.
+My guess is that this is more of a "change owner" operation than a
+revoke operation.
 
-This preserves the existing default PMU selection behavior while
-preparing fixed-counters-only mode to select a pPMU at runtime.
+The main issue here is that we have to guess the semantics instead of
+having a properly named and documented operation. As Christian pointed
+out, the patches describe what they are doing well, but they do not
+explain why they are doing it.
 
-Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
----
- arch/arm64/kvm/pmu-emul.c | 72 +++++++++++++++++++++++------------------------
- 1 file changed, 35 insertions(+), 37 deletions(-)
+> 
+> Just that VFIO can make it's internal dmabuf work again, there won't
+> be a notification to any importer or an expectation that something
+> like iommufd will re-establish mapping automatically.
+> 
+> This is principally a kernel self protection mechanism where the
+> userspace was expected to have removed the dmabuf before issuing a
+> reset/etc. If they didn't then the kernel plonks it and userspace gets
+> a mess to clean up.
 
-diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
-index 05b48be05abd..ccd268d76235 100644
---- a/arch/arm64/kvm/pmu-emul.c
-+++ b/arch/arm64/kvm/pmu-emul.c
-@@ -694,6 +694,23 @@ static int kvm_map_pmu_event(struct arm_pmu *pmu, unsigned int eventsel)
- 	return eventsel;
- }
- 
-+static struct arm_pmu *kvm_pmu_probe_armpmu(int cpu)
-+{
-+	struct arm_pmu_entry *entry;
-+	struct arm_pmu *pmu;
-+
-+	guard(rcu)();
-+
-+	list_for_each_entry_rcu(entry, &arm_pmus, entry) {
-+		pmu = entry->arm_pmu;
-+
-+		if (cpumask_test_cpu(cpu, &pmu->supported_cpus))
-+			return pmu;
-+	}
-+
-+	return NULL;
-+}
-+
- /**
-  * kvm_pmu_create_perf_event - create a perf event for a counter
-  * @pmc: Counter context
-@@ -823,42 +840,6 @@ void kvm_host_pmu_init(struct arm_pmu *pmu)
- 	list_add_tail_rcu(&entry->entry, &arm_pmus);
- }
- 
--static struct arm_pmu *kvm_pmu_probe_armpmu(void)
--{
--	struct arm_pmu_entry *entry;
--	struct arm_pmu *pmu;
--	int cpu;
--
--	guard(rcu)();
--
--	/*
--	 * It is safe to use a stale cpu to iterate the list of PMUs so long as
--	 * the same value is used for the entirety of the loop. Given this, and
--	 * the fact that no percpu data is used for the lookup there is no need
--	 * to disable preemption.
--	 *
--	 * It is still necessary to get a valid cpu, though, to probe for the
--	 * default PMU instance as userspace is not required to specify a PMU
--	 * type. In order to uphold the preexisting behavior KVM selects the
--	 * PMU instance for the core during vcpu init. A dependent use
--	 * case would be a user with disdain of all things big.LITTLE that
--	 * affines the VMM to a particular cluster of cores.
--	 *
--	 * In any case, userspace should just do the sane thing and use the UAPI
--	 * to select a PMU type directly. But, be wary of the baggage being
--	 * carried here.
--	 */
--	cpu = raw_smp_processor_id();
--	list_for_each_entry_rcu(entry, &arm_pmus, entry) {
--		pmu = entry->arm_pmu;
--
--		if (cpumask_test_cpu(cpu, &pmu->supported_cpus))
--			return pmu;
--	}
--
--	return NULL;
--}
--
- static u64 __compute_pmceid(struct arm_pmu *pmu, bool pmceid1)
- {
- 	u32 hi[2], lo[2];
-@@ -1098,7 +1079,24 @@ static void kvm_arm_set_pmu(struct kvm *kvm, struct arm_pmu *arm_pmu)
-  */
- int kvm_arm_set_default_pmu(struct kvm *kvm)
- {
--	struct arm_pmu *arm_pmu = kvm_pmu_probe_armpmu();
-+	/*
-+	 * It is safe to use a stale cpu to iterate the list of PMUs so long as
-+	 * the same value is used for the entirety of the loop. Given this, and
-+	 * the fact that no percpu data is used for the lookup there is no need
-+	 * to disable preemption.
-+	 *
-+	 * It is still necessary to get a valid cpu, though, to probe for the
-+	 * default PMU instance as userspace is not required to specify a PMU
-+	 * type. In order to uphold the preexisting behavior KVM selects the
-+	 * PMU instance for the core during vcpu init. A dependent use
-+	 * case would be a user with disdain of all things big.LITTLE that
-+	 * affines the VMM to a particular cluster of cores.
-+	 *
-+	 * In any case, userspace should just do the sane thing and use the UAPI
-+	 * to select a PMU type directly. But, be wary of the baggage being
-+	 * carried here.
-+	 */
-+	struct arm_pmu *arm_pmu = kvm_pmu_probe_armpmu(raw_smp_processor_id());
- 
- 	if (!arm_pmu)
- 		return -ENODEV;
+Revoke/invalidate means that the importer should stop accessing the
+buffer provided by the exporter. It does not specify what the exporter
+should do afterwards.
 
--- 
-2.55.0
+So I still think that "temporarily revoked" is closer to
+invalidate_mappings, with some additional dma-buf documentation to lose
+the expectation that the buffer will become available again.
 
+Thanks
+
+> 
+> Jason
