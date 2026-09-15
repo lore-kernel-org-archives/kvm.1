@@ -1,530 +1,206 @@
-Received: from mail-oo2-f39.google.com (mail-oo2-f39.google.com [74.125.231.167])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF960399CF5
-	for <kvm@vger.kernel.org>; Tue, 15 Sep 2026 20:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.167
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789505356; cv=none; b=JS1O+VyRJ5gWw3vFx/8f+6XigFCR3oRqtyayCAVjuzxfhoneAi0YVcjfWBT8+VJMsUjrz6ciKfiU5QfySRYZpMIrycCJ2qIdMQUiN3Ao4vTzmt2U2DVEDtm3laeF+3CFR++CV8LgmbaU+u1rRJVNFrjNZh08Ie5OSTB1xwDMSO0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789505356; c=relaxed/simple;
-	bh=xiy3uuwgOHBBri452+JL4Vt4WIDUgqIZlxhGFJQr+sw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Aa7DNatfE8TnMzQQQDWOnhXJhdhy76BIkA3nLRqf1fCoG4khvTxTDj20tNDS6jdoMAsbS1NZfiCfzegUEe9wFnL2KTE2ZQbi1o/Qm8zjVbeAOzX2sQPi78YYzebCUfMLDVsFHefOlupVpi9w8J5Hwg6EhmOwTzUiotgAwEYb8gQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=COeZG8bQ; arc=none smtp.client-ip=74.125.231.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E315437DE85;
+	Tue, 15 Sep 2026 20:54:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789505648; cv=fail; b=Mw4hmUbfiH4UMQdLIQaqkGo+LeUi5RIcS6Mk2YIBEH3PKc7okvv+p2/NUQKF4pwbPmWkYCWEnsX/b5fGCks/2kPTUIaN+ntsja6ygUcflDGNb7SEXokUKpiMzMbGFW/tTV6TE380rBid2uOTvTvvdC+SVFmRZ2uSY44s/oO1fEc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789505648; c=relaxed/simple;
+	bh=UD4QLuDTDYlUGPxhxZBj8ZRd70zhdu+42cGvvqXZk5o=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=pd8PqeT3G4ptv55H4p0HPWGpLr8rX2QAdshK+bGZIwWO5msZy9qrpQ1gLfg2iCGU3HL+pf/TN6dZwif6g1JMCbRplLbbh2FFgOBfjwryVo/CpRfaAGDPnPmkkjmFI8eLKt+f5TFn9vb3xySILiIaqUXAYthILs7v2VFYUsAE3W8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b1/WzXdz; arc=fail smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="COeZG8bQ"
-Received: by mail-oo2-f39.google.com with SMTP id 46e09a7af769-80a854e5b3cso116322a34.0
-        for <kvm@vger.kernel.org>; Tue, 15 Sep 2026 13:49:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789505352; x=1790110152; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6IK+LU2O84IhqYJRZEA4u3jHVfZJj7gfbzfjDu5m17Q=;
-        b=COeZG8bQxZlFcb1+rQZsdlg8f9EqEBXeDzFwpO0tzU017nzqfIUyjkzCqNjxiWPPCj
-         P4LehQhcwZE9p/nxXzpQLSO7wd6gmCaNkNYQJ4/Z4EUxpDkAchsXiKdUXYeN5qDOVQaV
-         zi28H1SLgFd77PnGtj9I/UGiYBnPi0tgBCDIff+jl+xKd5cYMSgj1Bj0nBjI7sH3WyHs
-         FQf+2MKfDsGL1ILfWgsCRRchnXqhwwivgWBuRrG1VcPM9SZLm3eJu1TMif/JuBfRtcWw
-         5Exs822tj6xAr0qgAXRGkvRd5aOzpw8TF8VvyWSXdFj6ZLthXO2iVJ0qqUfzg73Qgh8Y
-         jytg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789505352; x=1790110152;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6IK+LU2O84IhqYJRZEA4u3jHVfZJj7gfbzfjDu5m17Q=;
-        b=zqBudgreYf4dXhbuEw8fCj1fa0ID8AQCrVRWbg+D/WFe5JjJKR37WYSTrJwJnEd9+Y
-         C2gdtrQ1wZ973uG7OPFClRKkrXtfyHhr7fUSyzLvQKktC9o37s5ByIWjjuT/74myOwEu
-         Lz4LXHMds7X2vapNCVFsxX7eFA1UP5esRbBCAaBMQbG27GSPW80BesMjVX24RKkD3/cy
-         ndxtgU5I8pURr3lAsNrqGgTj7MGgc97eKt61x0q4IsOj3LKTcQXl4KOspLBpGnOLyNzQ
-         iJaRdpheqtHVtbiAxhWg7eEW5nJTTGZfWlGOjrFHN+czwH8TjtjuJHgFzabIAbxSNbbv
-         nWfA==
-X-Forwarded-Encrypted: i=1; AKwUvBwoIV0uC8wbJH6mObKvDSde+r/2U4/EmtLjE8u19ZrgnYYN5lKpaA73yiDv6bUHAbtJjl8=@vger.kernel.org
-X-Gm-Message-State: AFuF++mb37nfO+o+62Gn0Vsv8zm0xS3CXckfbGP20C005vm8JCI3MI1g
-	4BSYBtr7QlRRB5Kkt87rdsfOn0IrLqIGy9kLifG8J5YLFO46zsPJkXHi
-X-Gm-Gg: AYBFou3+w6iVjuHANm7r3ljQlijBSaHIaFBLK0XzLQWMAHvG58ic0LLF3XJS9ComG6V
-	XQL0DDcHV2vybq1P67vBJ2V1426XtJaAWBxM0aZ3UXSna8cAgyQoxgnmRQFoSSwTOH2ZdDWgHig
-	mfRWUVcFgfX9v+04Xk8vAiwUrfN9CcnPFIvKvyagh42ZrZkv74E0ePvJsC5OBrNf3Q0hWDFHV62
-	ob3fprw8+tgluQ6x22VN9ImqxXRW3GtLT6bKrmJhifglWK8s2u6x5+obECfSifrcFw3inUrzgMx
-	gWfn+HVTDPlMXg5mu/1+pnUY+NWL7AKmdD0cR0JkF+9fuuZ/DFag3pV2fjdh5RUG1x3nJ920QU1
-	su3Z+3K+Y4rKCiM8g+IdA9DLuQqW8SH95zJquwO/hAHrg8Ni12MEjFtJ/ns8vsHRiLuugLc/xG4
-	nv6oO2dXkmzEBNJQFg8JoCGwort2ibdvLDcB1mTYJdpDEZ20p6G1NlNcFjBgfhRQAWC9yKlCbF5
-	ibOeKtXEtfdq22EOvBx
-X-Received: by 2002:a05:6830:6503:b0:7e6:d0ad:5254 with SMTP id 46e09a7af769-80b2cfc865fmr187652a34.8.1789505352445;
-        Tue, 15 Sep 2026 13:49:12 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:4a::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-80b078ccc9asm530621a34.22.2026.09.15.13.49.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 13:49:11 -0700 (PDT)
-Date: Tue, 15 Sep 2026 13:49:08 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Shuah Khan <shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	sargun@sargun.me, jlinbox@meta.com,
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next 2/6] vsock: add IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS
-Message-ID: <aqmvRNclcmBVhEAS@devvm29614.prn0.facebook.com>
-References: <20260902-vsock-guest-ns-v1-0-9995383e9a8b@meta.com>
- <20260902-vsock-guest-ns-v1-2-9995383e9a8b@meta.com>
- <aqlTlFvQL34-WViB@sgarzare-redhat>
- <CAGxU2F40HzYrnnv_bK9_LYC-LPWLg7kGeeg0LD07CTWO7WfnqQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b1/WzXdz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789505647; x=1821041647;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=UD4QLuDTDYlUGPxhxZBj8ZRd70zhdu+42cGvvqXZk5o=;
+  b=b1/WzXdz9/ms/tMWrPix6w9Nc2fjEBF9NQBj+gvzMVVvQ4TqbL789Wwf
+   qw77notqGhcEviMg0UQ6yspXvAi4gKr6fP9kpLc4pMXIm40/MHEEkjyGr
+   taUrmjltRIp6NzAN10fiv0N84/jigjN6+H0b4kuoz3qWmOBFJst70T1hX
+   yjaA4Xwxt9pDl6JXcmdCIlB06TqVqWCNJ8xMksgcfp2EoqzPeVevdVop1
+   /TilGR6HkU8cx1nN2P2uISWetu9B3Jsh2mpuS4KRK3s3cb9RWDFbT6OwL
+   QLDwofiMdpdbRhDygZ1sirWFtRS+Usk6x2/iJHYl0wbUgQAGElu0mvy7U
+   Q==;
+X-CSE-ConnectionGUID: rUznrgnLRK20ZzQ3wFlB+A==
+X-CSE-MsgGUID: Bkqg2rQ2TZ2N18unkBw0ZA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="89898960"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="89898960"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 13:54:06 -0700
+X-CSE-ConnectionGUID: BMSq47zISmePrlZGwAhk/g==
+X-CSE-MsgGUID: ec4lBGZbSm+jl2Qgb6/fMg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="276874801"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 13:54:05 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 15 Sep 2026 13:54:05 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Tue, 15 Sep 2026 13:54:05 -0700
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.18) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 15 Sep 2026 13:54:03 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nbvG39c/mjCHQWwDj6ftp93bRT7bCiFPjgt8cC6aoXB6bjBiMgKl1cOETVhrjQYQSgWfGQvez3+ZcHWdkZb+i3WKv/j1Illl/O3BX9oeU5w0QyPl59nFYjmyrP5pBFWpzeQPq8G5gj2dKWnEFfW5f9hs/RhmJx3cnAm2aQTsupl3VEaPRN/mlNo43xsHWOoczOHV69D2WGrOn4OSY/wJLhOt8bgsBMR/zoHKloKPCRwuDtrpFpGM51lwmUENOIBwELg+/ivlmEMi7JZy66Qz5Rjv0+KYIl2BIxVoaZasrgoilQp5NAsWW8nxvKtcmQyyD7HsnB+WW3XJyKDLTmaFgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UD4QLuDTDYlUGPxhxZBj8ZRd70zhdu+42cGvvqXZk5o=;
+ b=aLmhmSjzVWOjDsHDnFNkqyZasqeMZV3h6h6YwF7X74iZ7IDIYyJAu56U82PG4aH7xjYVfWjNe/Mjpx1UF4iN81GyeOSxGCgeUGp3pw5tLGuO/BG8Qftrmpo1+eihG9rVJC+sXsrmTaSKF9odo9PdOTPGBdkDM6N7tw2M23pkrMCn+fvqcETd1ocLh39kj+27Cw/6YEAqSivXEWNCWQJc/fIhBSRuh9SpAfGy1BR1phpczuWawx9f8ANgSXS392Cf4FiQJahwGUvxUfzeW0jecvOGDZkftR/Codnj6/tGDvWY8zOkFP7DH+fQiF2VZ/C/q29yYGF8pJDV3gRg0fPeaA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6771.namprd11.prod.outlook.com (2603:10b6:510:1b5::20)
+ by DS0PR11MB8081.namprd11.prod.outlook.com (2603:10b6:8:15c::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Tue, 15 Sep
+ 2026 20:54:01 +0000
+Received: from PH7PR11MB6771.namprd11.prod.outlook.com
+ ([fe80::effa:162e:c9c9:a1b4]) by PH7PR11MB6771.namprd11.prod.outlook.com
+ ([fe80::effa:162e:c9c9:a1b4%4]) with mapi id 15.21.0406.007; Tue, 15 Sep 2026
+ 20:54:01 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>
+CC: "Gao, Chao" <chao.gao@intel.com>, "Xu, Yilun" <yilun.xu@intel.com>, "Duan,
+ Zhenzhong" <zhenzhong.duan@intel.com>, "kas@kernel.org" <kas@kernel.org>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>, "Li, Xiaoyao"
+	<xiaoyao.li@intel.com>, "Maloor, Kishen" <kishen.maloor@intel.com>, "Hunter,
+ Adrian" <adrian.hunter@intel.com>, "tony.lindgren@linux.intel.com"
+	<tony.lindgren@linux.intel.com>, "Mehta, Sohil" <sohil.mehta@intel.com>,
+	"Fang, Peter" <peter.fang@intel.com>, "nik.borisov@suse.com"
+	<nik.borisov@suse.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>
+Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Configure add-on features on TDX
+ module init
+Thread-Topic: [PATCH v2 2/5] x86/virt/tdx: Configure add-on features on TDX
+ module init
+Thread-Index: AQHdRPzQX5taAxNGkkCppHYESMqxcrbQHrAA
+Date: Tue, 15 Sep 2026 20:54:01 +0000
+Message-ID: <2f6ac9afef52386fc491145222ea46e54c24a73f.camel@intel.com>
+References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
+	 <20260915102658.713079-3-yilun.xu@linux.intel.com>
+In-Reply-To: <20260915102658.713079-3-yilun.xu@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.44.4-0ubuntu2.1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB6771:EE_|DS0PR11MB8081:EE_
+x-ms-office365-filtering-correlation-id: 4296a2d1-9a56-4c56-110f-08df136b788c
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|7416014|366016|23010399003|376014|1800799024|38070700021|11063799006|56012099006|4143699003|10067099003|22082099003|18002099003;
+x-microsoft-antispam-message-info: CAfQuGdxfYxa6rwU2joBBa2bw4oJdd1GSp8Io8+TeKlF/schCgUEc+4jGxMY4kEsv3IV/vsqImKiZJSHcb2VNNUi/wyDZ+x04nEcFDuLTfVbwqZueGk5+U2aOIf7PQQshylyoSF0JY8Ao2I3EAFwvaM1otJXgFAzCQX20T8zyY0xMlq1dsORXwvvp36Bqgha4/JJ2n3WoNTnnjpJlZ+rLjDj7tgou0mg6y1Q8b3CA6LL5ZubRu+twDr0slo+ygsEpIsucWVt4DCM8Z2PcJMfwd/CMJVjAy+2poWfAqkAwXIZxJi/DFT1iqqMe+B27811bPgvMyjDDXIDjMSOnpzPX/9jPfNy9cuBR583XmKC7hHg9T1rYXxSJmL+hImxzUuMxDBPA4IW9tBdPu2cG7gdheQRAPyOzjfahWwyclQYIJ2ewoG4dYbYQVFOpDwbsQWXDDx7dcWpvuLVEJC9myLwqvT2IZyWr8R/lmsNbJrRdIBVniWSnWBcWmXI/JKNgnIm0esMY0l5VDmRaq/MYwsYW9yoq0m9Tcrf7wyvOhr79JpRNCv3ZOx+pWc1tltkCEytvawvnhDqZjRoKLFy5ufhmmHjOKDTLb6PmXgvcFR/gBAibzy2sJFi2jcIM38KzE8ipuh//3MOBtf6TKNC03tM9VqH45srbEicH9LKZUfTs1Sk8jO7g0aVKj5EOzr1dynWWEejc3/e6wHnSHczNE8WLd+Fmuayd9zprsprYYE7PBY=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6771.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(23010399003)(376014)(1800799024)(38070700021)(11063799006)(56012099006)(4143699003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?M0RpcW1vQjJpdmtQRlhiVnR0Vmx5ckRGWTRiZnJYT0h3ZmRGaHJWcTBBN1Vn?=
+ =?utf-8?B?Tng1czlCL0ZIRWV1UFBnZ0VPOHYxQlU4c3UvWVZnNVk0L0x1d2dtM0d3aHRp?=
+ =?utf-8?B?OUxNc08vUE1TcFhiQXIwdys3TlR4YmEwMm9ZbkxnM1VHaTMrVm9RdVdIMWg4?=
+ =?utf-8?B?eXNJay9ZMlpIUEFPemVFeGM4UjFWL2RBZ1dTSnRtT05YQXdRVWVNMmRKQW5I?=
+ =?utf-8?B?R0VkTnJSVURhU0g2K280Uy9UWWhTanZiYU56R2ZqMU5mOE5hT0FXU0V6b3pI?=
+ =?utf-8?B?SVBKNkt2RzlXWEpGM2tIRUo4Z1M2Q3dpNEwrb2J0eXBIYXlpU0ovVDV3b1Zt?=
+ =?utf-8?B?N3FpK09WOHdjQVZQYU80YWZoMFljb0NERDFNcld0aVpLU0NNcWpKRzNxeFFP?=
+ =?utf-8?B?Sm1lc3Fta29rS2Z3QVJKbEV5amJMckdCK1IrckJXdGlnOVJmR1lHR0Q4bmNP?=
+ =?utf-8?B?ZFcvaTk3RDROYXFHS3FadGtaekVnb1ptT08zdXZESVRGWVgraFRxZXh4emx4?=
+ =?utf-8?B?RzFCcEhSUTdISE1HYXVtTlJVWmJBL25QNEVjNjk4Qk9tcUZPQ3dmZnIvSnp3?=
+ =?utf-8?B?TisxTVhXajBISkZjUkVPZ1Y2S0N2Um9Ebjd5Ni9jUjdqNlplWVh0SHlYbWpX?=
+ =?utf-8?B?N3EvVUJzQ0VuM2ZrWitDa3hlTjhOWVFmMXBZWEozM3QvYUdMQ1FFM1NsV3h2?=
+ =?utf-8?B?bG5SaGYzUVJHZng2M1pzbktucEZEM0RPMzg3ZHlHNnNrZStsWWQ1YzJpVldr?=
+ =?utf-8?B?Y0I1WStDb1l4Rmw2eE82NStsWmw3ZEtWUWM0ZFZueUk4N212WTNWQjNPQmpN?=
+ =?utf-8?B?blVoZzdNMnJLWlYzak9TTnBTQ21SWjV5d3YyVnNqTk5XTTNaY1BBeUpZTkJQ?=
+ =?utf-8?B?OElXNEVRcXJJTDZ6NVFVRHNGOHNVRFRpR3A5eThLYWhRdFN5ZWVDdWN5MHZO?=
+ =?utf-8?B?RjNLdy8zWHBMcHZ0TkNGS1lKVExWOE81Y21PQUZxTm5hVDFoMWVkNi9RcjFX?=
+ =?utf-8?B?TDlpSG1aS3ZjZGJmdlFVVlpOMmlwZHRIV0NVc1FYVG9kUWFxN3o1RFl6NXUv?=
+ =?utf-8?B?aGFTcGptaFNMSUZ0dFZvS2Y1R09jN1J5UC81UnpyUFo0VWhib0FTc3E0TWth?=
+ =?utf-8?B?TlExYk9FMFlmVHZURkZKUGZ4SFljeXBVQlJCcGtTT0lRV1VLeFdPQVhZYy9l?=
+ =?utf-8?B?ellORmxPM2R4aG1qMUM5Ym1HM2hvbngyWTRsMUxBVnNHM0tmbXJUZFAram9C?=
+ =?utf-8?B?KzJtZ1hjQUFVdytKMUNnWTJSMmphUFVQMFQ5cCthamZaS0k5WnhqZEdSZlNu?=
+ =?utf-8?B?NXRmSXlZcjZtdGlwZkpnMU15UDIvYVlSd0ZqWnBTU0Z1bEU0d2lqb1VFYkov?=
+ =?utf-8?B?K2w5cEZHd3Rld1NVVExyLy91U2RvRTRmdm52MkxzKzBUTWtNTk1CcENJTWZq?=
+ =?utf-8?B?Rm02NjJpL0tZQ1lkSFhNUUtEL3BNRE5pbmJ5WWtnbVQwNk5wbFJKS3FUQmVM?=
+ =?utf-8?B?c1pRWTFkcTdjLzZ5c0swM3BkQkJ5TkhBOTZ2MGZjOEwwTkpQQVFpVHZSaHpC?=
+ =?utf-8?B?VERKKzlXU1VPSHdQNFoxcWRSb3YxYldhd2JiU0dETEl0SjFjbUxQK0tZdnI1?=
+ =?utf-8?B?VU9yUnZnd1YyL3dPd3UzSFJ0RllERktNM05OcFNKRHhGN1JYSEwwZitTN1ow?=
+ =?utf-8?B?dFFGRzBYVGsxdEZEbWlUQW51Z1ZqTGxxeXdxbUpMZE9TK25ZaDBrQkowcUFF?=
+ =?utf-8?B?R3ZuT0hnQ1BvMnJ1cjRKMDZFa2pkRFVrT29oT1puZ1ZGV2ZwVlh0eDdkM1Vk?=
+ =?utf-8?B?c0MvalVSMEgxRzN5VThkN3AySnVmQkJkTHZWeEkxQzZRbVJuZnEzMUFiSmE0?=
+ =?utf-8?B?VklScG9aN2pEb1luWlBFVnRYNVE5K052TEIvV0VYYlVIUlFaSGozZU9ITGRV?=
+ =?utf-8?B?T2VwQW41QXhlTEFFWGNZbnBLTHluQitVbzVESkppRDhIMGhDelZod3dqU3ZX?=
+ =?utf-8?B?Mnp2TVpVK2J1MjhHQ0ZUeFNPOGdDSERsRHRrVEFCUDJWNENyVS9ZQUY1MEFi?=
+ =?utf-8?B?UHlWbnZUVHllMmtUQTE0ZjFHd1FQbHh1ZGNxQWFnNnhIWDBSQTJtME5zSzRM?=
+ =?utf-8?B?MGJMTUVDazNxa1VIN29Ubm9BSjJGUWZKek1BQ016UmxGNEs0UXByUGl6OTc4?=
+ =?utf-8?B?RFZzQW8zWlhBRnRDMnRmZHZMRUU4TzIwSCtkRkNrWnBaMkhBY2Zxa21VMmxL?=
+ =?utf-8?B?OWVicm13RDM0TjRRWE5FU0JvRDNDS3FXWHh5M1NBVThtbzFudTN6TnpQRFBs?=
+ =?utf-8?B?UEljSEhHb0FDYnpiTE5qOGp2UmpLQTJUMXZKMTBvNWxSZ1lnSlFEWW5RQ1dO?=
+ =?utf-8?Q?Z3Xcst0OSoywYSdY=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9A782F42EA45BC4DBDB182E7F197E1E1@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGxU2F40HzYrnnv_bK9_LYC-LPWLg7kGeeg0LD07CTWO7WfnqQ@mail.gmail.com>
+X-Exchange-RoutingPolicyChecked: rDVqTKXPOK43xNBKNZCSg3jUbMPvd+szvm6vCUEePZ+s7lpIQspsRx257JT6oHLjgO9tt6EXO7njlyhnE42JodEK5m0wqYw7qUVECjdFCSEAYhRUU5dG0GUwHJWivbVhgWVCAI/avRUrZ8uxd7XN9DG+V+U2OGwfJACuadHnSbFc8AOPhe6dsbhLSGtClIz75mmpPky7ExsCSd+E/7jPvs851wmXm9ATPCF1ucW2vNApwg9+pAFks/pokuffjmpKKOrWIXvNr0wVTkDkRPgB9MEy2N+aPuWV9NsYMoOATJ8U2lXTEsCqayCp4sIlYpsJcfQL682uv/xChaPZi1JeOg==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6771.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4296a2d1-9a56-4c56-110f-08df136b788c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Sep 2026 20:54:01.4242
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 2mzNCJKElbuS+P903fuvdGHGqenGJ4Qycs26Gi1jBV6Kv7/ANKNKY5KXklcxy8WCHUjPx9USEcjyvasTwfsZcgF64xChD4NOkXRfsWwoKrI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8081
+X-OriginatorOrg: intel.com
 
-On Tue, Sep 15, 2026 at 05:45:04PM +0200, Stefano Garzarella wrote:
-> On Tue, 15 Sept 2026 at 17:28, Stefano Garzarella <sgarzare@redhat.com> wrote:
-> >
-> > On Wed, Sep 02, 2026 at 04:00:48PM -0700, Bobby Eshleman wrote:
-> > >From: Bobby Eshleman <bobbyeshleman@meta.com>
-> > >
-> > >Namespaces let a host isolate a VM's vsock traffic to a specific
-> > >namespace, but in a guest vsock traffic cannot be isolated to a
-> > >namespace. The vsock device is hardcoded to global mode and can't be
-> > >moved into a local-mode namespace.
-> > >
-> > >Introduce ioctl IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS on /dev/vsock that
-> >
-> > We already discussed about netlink, but I'm not sure how much work can
-> > take, here just another alternative, what about adding
-> > /proc/sys/net/vsock/g2h_owner sysctl that can be read/write where:
-> > 0 - no owner
-> > 1 - owner
-> >
-> > 0 -> 1 transition, move the device in the new nets
-> > 1 -> 0 transition, reset back to init_ns
-> >
-> > >gives userspace a way to move the device to the calling pid's namespace.
-> > >The call requires CAP_NET_ADMIN in the root user namespace. A privileged
-> > >user wishing to "unassign" the device can move it to the init_netns,
-> > >which is hardcoded to global mode (so no unassign call is necessary).
-> > >
-> > >A getter to read the current assignment back was considered, returning
-> > >either the namespace's net_cookie or its nsfs inode number, but neither
-> > >seemed useful enough to bake into the uAPI now. It can be added later if
-> > >a user turns up that needs it.
-> > >
-> > >Add a transport hook to indicate support for guest namespacing, so that
-> > >transports may opt in/out. A transport that opts out keeps the
-> > >reachability rules it had before this ioctl existed.
-> > >
-> > >Sockets are reset when the underlying device moves to a different
-> > >namespace, so as to prevent reachability from the previous and now
-> > >disallowed namespace.
-> > >
-> > >Following the approach of netdevs, the device returns to init_net when
-> > >its namespace is removed. Care is taken to not break flows when the
-> > >device is inside a global namespace that is being torn down and alive
-> > >sockets are in a different global namespace. In this scenario, the
-> > >device's netns getter pre-emptively falls back to the init_net (always
-> > >global) so that these flows are not disrupted. If init_netns ever
-> > >supports local-mode in the future, this logic will have to be changed.
-> > >
-> > >Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-> > >Link: https://lore.kernel.org/all/20200427142518.uwssa6dtasrp3bfc@steredhat/
-> > >Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-> > >---
-> > > Documentation/admin-guide/sysctl/net.rst |  18 +++
-> > > include/net/af_vsock.h                   |   7 ++
-> > > include/uapi/linux/vm_sockets.h          |   6 +
-> > > net/vmw_vsock/af_vsock.c                 | 198 ++++++++++++++++++++++++++++++-
-> > > 4 files changed, 228 insertions(+), 1 deletion(-)
-> > >
-> > >diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
-> > >index e586e17fc7a5..1e9c0d2be7b8 100644
-> > >--- a/Documentation/admin-guide/sysctl/net.rst
-> > >+++ b/Documentation/admin-guide/sysctl/net.rst
-> > >@@ -515,6 +515,24 @@ their hosts. The behavior of VSOCK sockets in a network namespace is determined
-> > > by the namespace's mode (``global`` or ``local``), which controls how CIDs
-> > > (Context IDs) are allocated and how sockets interact across namespaces.
-> > >
-> > >+In a guest, the vsock device owned by the guest-to-host (G2H) transport belongs
-> > >+to one network namespace at a time. The ``IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS``
-> > >+ioctl on ``/dev/vsock`` moves it to the namespace of the calling process, which
-> > >+requires ``CAP_NET_ADMIN`` in the initial user namespace. The namespace's mode
-> > >+decides who may then use the device:
-> > >+
-> > >+- ``global`` - every ``global`` mode namespace may use it.
-> > >+- ``local`` - only that namespace may use it, which reserves the connection to
-> > >+  the host for it alone.
-> > >+
-> > >+The device starts out in the initial namespace, so until the ioctl is issued
-> > >+nothing has moved and no mode has changed.
-> > >+
-> > >+Connections made before the move, from a namespace that can no longer reach the
-> > >+device, are reset. The device returns to the initial namespace when the
-> > >+namespace it was moved to is deleted, so assigning it to the initial namespace
-> > >+is how an assignment is undone.
-> > >+
-> > > ns_mode
-> > > -------
-> > >
-> > >diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
-> > >index 87fdec60ba45..64c4b205a11b 100644
-> > >--- a/include/net/af_vsock.h
-> > >+++ b/include/net/af_vsock.h
-> > >@@ -190,6 +190,9 @@ struct vsock_transport {
-> > >
-> > >       /* Zero-copy. */
-> > >       bool (*msgzerocopy_allow)(void);
-> > >+
-> > >+      /* True if the transport honours IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS. */
-> >
-> > "if the G2H transport ..."
-> >
-> > >+      bool (*netns_assign_allow)(void);
-> >
-> > What about having just a bool (and maybe we should do the same for
-> > msgzerocopy_allow())?
-> >
-> > > };
-> > >
-> > > /**** CORE ****/
-> > >@@ -235,6 +238,10 @@ void vsock_for_each_connected_socket(const struct vsock_transport *transport,
-> > > int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk);
-> > > bool vsock_find_cid(unsigned int cid);
-> > > void vsock_linger(struct sock *sk);
-> > >+struct net *vsock_g2h_net_get(void);
-> > >+bool vsock_g2h_net_reachable(struct net *net);
-> > >+bool vsock_g2h_reachable_sk(struct vsock_sock *vsk);
-> > >+bool vsock_maybe_set_connected(struct vsock_sock *vsk);
-> > >
-> > > /**** TAP ****/
-> > >
-> > >diff --git a/include/uapi/linux/vm_sockets.h b/include/uapi/linux/vm_sockets.h
-> > >index e05280e41522..894b0d65b458 100644
-> > >--- a/include/uapi/linux/vm_sockets.h
-> > >+++ b/include/uapi/linux/vm_sockets.h
-> > >@@ -195,6 +195,12 @@ struct sockaddr_vm {
-> > >
-> > > #define IOCTL_VM_SOCKETS_GET_LOCAL_CID                _IO(7, 0xb9)
-> > >
-> > >+/* Assign the guest's vsock device to the network namespace of the calling
-> > >+ * process. Requires CAP_NET_ADMIN in the initial user namespace. To undo an
-> > >+ * assignment, assign the device to the initial network namespace.
-> > >+ */
-> > >+#define IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS     _IO(7, 0xba)
-> > >+
-> > > /* MSG_ZEROCOPY notifications are encoded in the standard error format,
-> > >  * sock_extended_err. See Documentation/networking/msg_zerocopy.rst in
-> > >  * kernel source tree for more details.
-> > >diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-> > >index 29cde17e08f3..ad11f0f56eb8 100644
-> > >--- a/net/vmw_vsock/af_vsock.c
-> > >+++ b/net/vmw_vsock/af_vsock.c
-> > >@@ -130,6 +130,24 @@
-> > >  *       a different transport that *does* support local mode. For
-> > >  *       example, virtio-vsock may not support local mode, but the socket
-> > >  *       may still accept a connection from vhost-vsock which does.
-> > >+ *
-> > >+ * - A guest has a single vsock device, owned by the guest->host transport.
-> > >+ *   IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS on /dev/vsock assigns it to the
-> > >+ *   namespace of the caller. It starts out in init_net. The mode rules then
-> > >+ *   decide who may use it, and which namespace packets from the host are
-> > >+ *   delivered to:
-> > >+ *
-> > >+ *   - assigned to a global mode namespace - every global mode namespace may
-> > >+ *     use it. Until the ioctl is issued nothing has moved and no mode has
-> > >+ *     changed, so the default is the behaviour that predates it.
-> > >+ *   - assigned to a local mode namespace - only that namespace may use it.
-> > >+ *     This is how a nested VM is isolated from the rest of the guest.
-> > >+ *
-> > >+ *   Connections made before an assignment, from a namespace that can no
-> > >+ *   longer reach the device, are reset.
-> > >+ *
-> > >+ *   No reference is taken on the assigned namespace. As is done for netdevs,
-> > >+ *   the device is moved back to init_net when that namespace is destroyed.
-> > >  */
-> > >
-> > > #include <linux/compat.h>
-> > >@@ -208,6 +226,11 @@ static const struct vsock_transport *transport_dgram;
-> > > static const struct vsock_transport *transport_local;
-> > > static DEFINE_MUTEX(vsock_register_mutex);
-> > >
-> > >+/* Network namespace of the g2h device. Protected by
-> > >+ * vsock_register_mutex/RCU.
-> > >+ */
-> > >+static struct net __rcu *vsock_g2h_net = RCU_INITIALIZER(&init_net);
-> > >+
-> > > /**** UTILS ****/
-> > >
-> > > /* Each bound VSocket is stored in the bind hash table and each connected
-> > >@@ -548,6 +571,17 @@ static void vsock_deassign_transport(struct vsock_sock *vsk)
-> > >       vsk->transport = NULL;
-> > > }
-> > >
-> > >+/* Return true if the loaded g2h transport honours namespace assignment. One
-> > >+ * that does not keeps the reachability rules it had before the ioctl existed.
-> > >+ *
-> > >+ * Must be called with vsock_register_mutex held.
-> > >+ */
-> > >+static bool vsock_g2h_netns_assignable(void)
-> > >+{
-> > >+      return transport_g2h && transport_g2h->netns_assign_allow &&
-> > >+             transport_g2h->netns_assign_allow();
-> > >+}
-> > >+
-> > > /* Assign a transport to a socket and call the .init transport callback.
-> > >  *
-> > >  * Note: for connection oriented socket this must be called when vsk->remote_addr
-> > >@@ -622,6 +656,13 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
-> > >               goto err;
-> > >       }
-> > >
-> > >+      if (new_transport && new_transport == transport_g2h &&
-> > >+          vsock_g2h_netns_assignable() &&
-> > >+          !vsock_g2h_net_reachable(sock_net(sk))) {
-> > >+              ret = -ENETUNREACH;
-> > >+              goto err;
-> > >+      }
-> > >+
-> > >       /* We increase the module refcnt to prevent the transport unloading
-> > >        * while there are open sockets assigned to it.
-> > >        */
-> > >@@ -710,6 +751,140 @@ bool vsock_find_cid(unsigned int cid)
-> > > }
-> > > EXPORT_SYMBOL_GPL(vsock_find_cid);
-> > >
-> > >+/* Return the g2h devices' namespace with a reference held, or NULL if that
-> > >+ * namespace is being destroyed.
-> > >+ */
-> > >+struct net *vsock_g2h_net_get(void)
-> > >+{
-> > >+      struct net *assigned;
-> > >+      struct net *net;
-> > >+
-> > >+      rcu_read_lock();
-> > >+      assigned = rcu_dereference(vsock_g2h_net);
-> > >+      net = maybe_get_net(assigned);
-> > >+
-> > >+      /* !net means the net is about to be destroyed, at which point the g2h
-> > >+       * device will move to the init_net.  If the init_net and the dying net
-> > >+       * are both global mode, we use the init_net as a fallback to avoid
-> > >+       * disrupting global-mode flows. The per-net destructor hook will
-> > >+       * eventually move the g2h device to the init_net anyway.
-> > >+       */
-> > >+      if (!net && vsock_net_check_mode(&init_net, assigned))
-> > >+              net = get_net(&init_net);
-> > >+      rcu_read_unlock();
-> > >+
-> > >+      return net;
-> > >+}
-> > >+EXPORT_SYMBOL_GPL(vsock_g2h_net_get);
-> > >+
-> > >+bool vsock_g2h_net_reachable(struct net *net)
-> > >+{
-> > >+      bool reachable;
-> > >+
-> > >+      rcu_read_lock();
-> > >+      reachable = vsock_net_check_mode(net, rcu_dereference(vsock_g2h_net));
-> > >+      rcu_read_unlock();
-> > >+
-> > >+      return reachable;
-> > >+}
-> > >+EXPORT_SYMBOL_GPL(vsock_g2h_net_reachable);
-> > >+
-> > >+bool vsock_g2h_reachable_sk(struct vsock_sock *vsk)
-> > >+{
-> > >+      const struct vsock_transport *t = vsk->transport;
-> > >+
-> > >+      if (!t || !t->netns_assign_allow || !t->netns_assign_allow())
-> > >+              return true;
-> 
-> Can we have a single helper and call it with t or transport_g2h here
-> and where vsock_g2h_netns_assignable() is used?
-
-Yep, sounds good.
-
-> 
-> > >+
-> > >+      return vsock_g2h_net_reachable(sock_net(sk_vsock(vsk)));
-> > >+}
-> > >+EXPORT_SYMBOL_GPL(vsock_g2h_reachable_sk);
-> >
-> > This seems used only in af_vsock.c
-> >
-> > >+
-> > >+/* Move @vsk to TCP_ESTABLISHED and into the connected table, unless the device
-> > >+ * has moved to a namespace @vsk cannot reach. Returns false without doing
-> > >+ * either in that case.
-> > >+ *
-> > >+ * vsock_g2h_net_assign() resets the sockets it finds in the same table under
-> > >+ * the same lock. Either vsock_g2h_net_assign() sees the vsk in the table and
-> > >+ * resets it, or it does not see the @vsk in the table and this function
-> > >+ * refuses to add it. This avoids netns assignment racing with outstanding
-> > >+ * connection responses and incoming connection requests.
-> > >+ */
-> > >+bool vsock_maybe_set_connected(struct vsock_sock *vsk)
-> > >+{
-> > >+      struct list_head *list = vsock_connected_sockets(&vsk->remote_addr,
-> > >+                                                       &vsk->local_addr);
-> > >+      bool reachable;
-> > >+
-> > >+      spin_lock_bh(&vsock_table_lock);
-> > >+      reachable = vsock_g2h_reachable_sk(vsk);
-> > >+      if (reachable) {
-> > >+              sk_vsock(vsk)->sk_state = TCP_ESTABLISHED;
-> > >+              __vsock_insert_connected(list, vsk);
-> > >+      }
-> > >+      spin_unlock_bh(&vsock_table_lock);
-> > >+
-> > >+      return reachable;
-> > >+}
-> > >+EXPORT_SYMBOL_GPL(vsock_maybe_set_connected);
-> > >+
-> > >+static void vsock_reset_unreachable_sock(struct sock *sk)
-> > >+{
-> > >+      if (vsock_g2h_net_reachable(sock_net(sk)))
-> > >+              return;
-> > >+
-> > >+      sk->sk_state = TCP_CLOSE;
-> > >+      sk->sk_err = ECONNRESET;
-> > >+      sk_error_report(sk);
-> >
-> > Should we send the reset to the other peer too?
-> >
-> > Or avoid to set TCP_CLOSE, so the user will see the error and close it?
-> >
-> > >+}
-> > >+
-> > >+/* Move the g2h device to @net. Returns -ENODEV if no g2h transport is loaded
-> > >+ * and -EOPNOTSUPP if the loaded one cannot be moved.
-> > >+ */
-> > >+static int vsock_g2h_net_assign(struct net *net)
-> > >+{
-> > >+      int ret = 0;
-> > >+
-> > >+      mutex_lock(&vsock_register_mutex);
-> > >+      if (!transport_g2h) {
-> > >+              ret = -ENODEV;
-> > >+      } else if (!vsock_g2h_netns_assignable()) {
-> > >+              ret = -EOPNOTSUPP;
-> > >+      } else {
-> > >+              /* See vsock_maybe_set_connected() comment about synchronizing
-> > >+               * with connecting sockets.
-> > >+               */
-> > >+              rcu_assign_pointer(vsock_g2h_net, net);
-> > >+              vsock_for_each_connected_socket(transport_g2h,
-> > >+                                              vsock_reset_unreachable_sock);
-> > >+      }
-> > >+      mutex_unlock(&vsock_register_mutex);
-> > >+
-> > >+      return ret;
-> > >+}
-> > >+
-> > >+/* Move the g2h device back to init_net if it lives in @net, which is about to
-> > >+ * be destroyed.
-> > >+ */
-> > >+static void vsock_g2h_net_reset(struct net *net)
-> > >+{
-> > >+      bool reset = false;
-> > >+
-> > >+      /* Avoid taking the mutex if the namespaces don't match. */
-> > >+      if (likely(rcu_access_pointer(vsock_g2h_net) != net))
-> > >+              return;
-> > >+
-> > >+      mutex_lock(&vsock_register_mutex);
-> > >+      if (rcu_access_pointer(vsock_g2h_net) == net) {
-> > >+              rcu_assign_pointer(vsock_g2h_net, &init_net);
-> > >+              reset = true;
-> > >+      }
-> > >+      mutex_unlock(&vsock_register_mutex);
-> > >+
-> > >+      if (reset)
-> > >+              synchronize_rcu();
-> > >+}
-> > >+
-> > > static struct sock *vsock_dequeue_accept(struct sock *listener)
-> > > {
-> > >       struct vsock_sock *vlistener;
-> > >@@ -2745,6 +2920,15 @@ static long vsock_dev_do_ioctl(struct file *filp,
-> > >                       retval = -EFAULT;
-> > >               break;
-> > >
-> > >+      case IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS:
-> > >+              if (!capable(CAP_NET_ADMIN)) {
-> > >+                      retval = -EPERM;
-> > >+                      break;
-> > >+              }
-> > >+
-> > >+              retval = vsock_g2h_net_assign(current->nsproxy->net_ns);
-> > >+              break;
-> > >+
-> > >       default:
-> > >               retval = -ENOIOCTLCMD;
-> > >       }
-> > >@@ -2978,6 +3162,7 @@ static __net_init int vsock_sysctl_init_net(struct net *net)
-> > >
-> > > static __net_exit void vsock_sysctl_exit_net(struct net *net)
-> > > {
-> > >+      vsock_g2h_net_reset(net);
-> >
-> > Why calling this in the sysctl_exit ?
-> >
-> > >       vsock_sysctl_unregister(net);
-> > > }
-> > >
-> > >@@ -3104,13 +3289,21 @@ EXPORT_SYMBOL_GPL(vsock_core_register);
-> > >
-> > > void vsock_core_unregister(const struct vsock_transport *t)
-> > > {
-> > >+      bool g2h_net_reset = false;
-> > >+
-> > >       mutex_lock(&vsock_register_mutex);
-> > >
-> > >       if (transport_h2g == t)
-> > >               transport_h2g = NULL;
-> > >
-> > >-      if (transport_g2h == t)
-> > >+      if (transport_g2h == t) {
-> > >               transport_g2h = NULL;
-> > >+              /* The device is gone, so is its namespace assignment. */
-> > >+              if (rcu_access_pointer(vsock_g2h_net) != &init_net) {
-> > >+                      rcu_assign_pointer(vsock_g2h_net, &init_net);
-> > >+                      g2h_net_reset = true;
-> > >+              }
-> > >+      }
-> > >
-> > >       if (transport_dgram == t)
-> > >               transport_dgram = NULL;
-> > >@@ -3119,6 +3312,9 @@ void vsock_core_unregister(const struct vsock_transport *t)
-> > >               transport_local = NULL;
-> > >
-> > >       mutex_unlock(&vsock_register_mutex);
-> > >+
-> > >+      if (g2h_net_reset)
-> > >+              synchronize_rcu();
-> >
-> > Why we need this? (I'd add also a comment with the reason)
-> >
-> > > }
-> > > EXPORT_SYMBOL_GPL(vsock_core_unregister);
-> > >
-> > >
-> > >--
-> > >2.53.0-Meta
-> > >
-> 
+T24gVHVlLCAyMDI2LTA5LTE1IGF0IDE4OjI2ICswODAwLCBYdSBZaWx1biB3cm90ZToNCj4gQEAg
+LTEwMTIsMTIgKzEwMjEsMjIgQEAgc3RydWN0IHRkbXJfaW5mb19wYV9hcnJheSB7DQo+IMKgc3Rh
+dGljIF9faW5pdCBpbnQgdGR4X3N5c19jb25maWcoc3RydWN0IHRkbXJfaW5mb19wYV9hcnJheSAq
+dGRtcl9wYV9hcnJheSwNCj4gwqAJCQkJIHVuc2lnbmVkIGludCBucl90ZG1yX3BhLCB1NjQgZ2xv
+YmFsX2tleWlkKQ0KPiDCoHsNCj4gKwl1NjQgYWRkb25fZmVhdHVyZXMwID0gZ2V0X3RkeF9hZGRv
+bl9mZWF0dXJlczAoKTsNCj4gwqAJc3RydWN0IHRkeF9tb2R1bGVfYXJncyBhcmdzID0gew0KPiDC
+oAkJLnJjeCA9IF9fcGEodGRtcl9wYV9hcnJheSksDQo+IMKgCQkucmR4ID0gbnJfdGRtcl9wYSwN
+Cj4gwqAJCS5yOCA9IGdsb2JhbF9rZXlpZCwNCj4gwqAJfTsNCg0KSXQgc2VlbXMgaW5jb25zaXN0
+ZW50IHRoYXQgZ2xvYmFsX2tleWlkIGlzIHBhc3NlZCBpbiBldmVuIHRob3VnaCBpdCBpcyBiYXNp
+Y2FsbHkNCmdsb2JhbCBzdGF0ZSwgd2hpbGUgYWRkb25fZmVhdHVyZXMwIGlzIHJldHJpZXZlZCBm
+cm9tIHRoZSBnbG9iYWwgc3RhdGUuIFBhc3NpbmcNCnRoZSByZXN1bHQgb2YgZ2V0X3RkeF9hZGRv
+bl9mZWF0dXJlczAoKSBpbiBmcm9tIHRoZSBjYWxsZXIgZG9lc24ndCBtYWtlIGEgdG9uIG9mDQpz
+ZW5zZS4gQW5kIHdlIGFscmVhZHkgcmVmZXJlbmNlIHRkeF9nbG9iYWxfa2V5aWQgZ2xvYmFsbHkg
+ZnJvbSBhbm90aGVyIHNlYW1jYWxsDQp3cmFwcGVyLiBTbyBJJ2QgdGhpbmsgZHJvcHBpbmcgdGhl
+IGFyZyB3aGVuIHlvdSBjcmVhdGUgdGhlIHdyYXBwZXIgd291bGQgYmUgYmVzdA0KaW4gdGhlIGVu
+ZC4NCg0KVGhlIHNtYWxsZXN0IGNoYW5nZSB0byBzdGF5IGNvbnNpc3RlbnQgd291bGQgYmUgZ28g
+YWRkIGFuIGFkZG9uX2ZlYXR1cmVzMCBhcmcgdG8NCnRkeF9zeXNfY29uZmlnKCksIGJ1dCBpdCdz
+IGhhcmQgdG8ganVzdGlmeSBhcyBnb29kIGNvZGUuIEknZCBtYXliZSBnbyB3aXRoIHRoZQ0KZ2xv
+YmFsX2tleWlkIGNoYW5nZSBhbmQgaXQgcHJvYmFibHkgaXMgYSBzZXBhcmF0ZSBwYXRjaCwgYnV0
+IHdlIGFyZSBicnVzaGluZyB1cA0KYWdhaW5zdCBtaXhpbmcgY2xlYW51cCBhbmQgZmVhdHVyZSBl
+bmFibGluZy4uLiB0aG91Z2h0cz8NCg0KDQo+IMKgDQo+ICsJLyoNCj4gKwkgKiBVc2UgU0VBTUNB
+TEwgdmVyc2lvbiAxIHRoYXQgc3VwcG9ydHMgYWRkLW9uIGZlYXR1cmVzIGlmIGFueSBhcmUNCj4g
+KwkgKiByZXF1ZXN0ZWQuIE90aGVyd2lzZSB1c2UgdmVyc2lvbiAwIGZvciBiYWNrd2FyZCBjb21w
+YXRpYmlsaXR5Lg0KPiArCSAqLw0KPiArCWlmIChhZGRvbl9mZWF0dXJlczApIHsNCj4gKwkJYXJn
+cy5yOSA9IGFkZG9uX2ZlYXR1cmVzMDsNCj4gKwkJYXJncy52ZXJzaW9uID0gMTsNCj4gKwl9DQo+
+ICsNCj4gwqAJcmV0dXJuIHNlYW1jYWxsX3ByZXJyKFRESF9TWVNfQ09ORklHLCAmYXJncyk7DQo+
+IMKgfQ0KDQo=
