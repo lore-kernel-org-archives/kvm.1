@@ -1,123 +1,95 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-155.mta0.migadu.com [91.218.175.155])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270CA374E40;
-	Tue, 15 Sep 2026 08:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7473D490BE7
+	for <kvm@vger.kernel.org>; Tue, 15 Sep 2026 08:44:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789461804; cv=none; b=UDmIXQwNfQCvZo9UdnvzVYLcKYgVFVrC29xDeU47ruHrCN3dUy7ULkDO65wC+GKiipulVCshJsYgNM1H+QLG+ec7Qex0FiifgV4cVsuBSteFbViim1U3tBg5YCz9SkEhh6widJy5LL0FeNar/PauOWv08bCmjDa/C/eQAHUuGhQ=
+	t=1789461887; cv=none; b=E5hJxpHGD6xT6Cw6Q8SvZM6SIUtdWXCPN6iRu2lW8j3YRXPQySJUb+y24YqgBcL6ZVCylMqncjEOg4CJArchyD/SGgI9rOS1TciV5veaLFyWVSfNeodvC83k1PtnmZ1OTXwZPAMX9CKe9VXtTKDG/yELGbTzbeHXTycb1Lcv7EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789461804; c=relaxed/simple;
-	bh=cyRG1T2PDPHf7Ppda6R4nWqA/AhxSLime81k93QDI4o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EascnJf2jUsQ1+e5RI3p4ayF5yZY+/Z6UKtB2aijh8cv8YsbviPiDjAeANeNvH+1esKJZSKUOXB4d3jbDVVM02aAye/gvER4vbzKME34X/XHuBTb3C7zAzf+g5819vSDJmDqBpwIwO8sV99TA1O7PYXaiDujHBxQrYTi/7+dzvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VlvIT/GE; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1789461887; c=relaxed/simple;
+	bh=5VNjXBdl2JBF32g6/pFWNc4t2873DtQP3kDUrQxNzQc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=edQTRmK/YLQywzi1Ng2SV/o7Yq+lgSMOzczDUtu0ETlMrttkc3Pq+i7KYoyp4XLmshaBcnPmUpgAqkCfy9H/Cdm58hgqAexZD3YjQGvbUWx1NtIjObGwxdYvyoT0Dxj4ZGKSq1YuwiHED9flNcaOyTEfgXG4jMZw8eWdHTAI1Nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=diFC/f5l; arc=none smtp.client-ip=91.218.175.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VlvIT/GE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789461802; x=1820997802;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=cyRG1T2PDPHf7Ppda6R4nWqA/AhxSLime81k93QDI4o=;
-  b=VlvIT/GEVxOWZ2tnkpIWo6Q5+aVFSGuc6FIaKuTQy0JOHTVO+M+vTuFV
-   nSSGqRo2+0wwurWOLcic/+//2NZ7gwBUa90wsjB5VKo9eVnvHLa/Pnnq/
-   MapUZrMNOHDOWDMUGcpv+CmQBHQK81Nmra62/opqUO8rBq+IChx/hnKT/
-   Rg3dTy+MM0gj2QRRD+sTaSraLPFV5sBwJ9EVyarpQlwincB0Jlh+erqRE
-   UflDdv5OjHwlj0l2nIQRYQLIQmUPFnFuL8Z6jmBn+fxEmVKoafJ8xVVOv
-   IiTX1E0Z78nugpBUkBE5761dcMe+99jm6hUeWUqlhglM3POqC88KHRWKC
-   g==;
-X-CSE-ConnectionGUID: Kf9x3PViSeOVEIl2WTPf3g==
-X-CSE-MsgGUID: BTCX2F/RSle0Rb/mOvFIOA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="90024768"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="90024768"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 01:43:22 -0700
-X-CSE-ConnectionGUID: OyZntYNITX+nXcX5R7EO1w==
-X-CSE-MsgGUID: 2wD6B4vlSpSOQa7VbCzv3Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="273410897"
-Received: from unknown (HELO [10.238.2.139]) ([10.238.2.139])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 01:43:11 -0700
-Message-ID: <93667a03-f7ae-46eb-82f5-8167f74f16c2@linux.intel.com>
-Date: Tue, 15 Sep 2026 16:43:07 +0800
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="diFC/f5l"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=5VNjXBdl2JBF32g6/pFWNc4t2873DtQP3kDUrQxNzQc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789461882; v=1; x=1790066682;
+ b=diFC/f5lFbLNJYpoWifyzgIGcvjI9vZzJNepeCiqnWVLfh+Cn90Du9CxuGt+eXqsZzKfGZWa
+ jypgTva2rJCEb3uFvn0yAusc/U8liDil5UwFczBDjxUKl9tMl+19rRlUs0ikchveX2g5lLcale0
+ Xu8dY1wItei6OGfaHDyrwCA8=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id c21aa090cc761614;
+	Tue, 15 Sep 2026 08:44:42 +0000
+X-Mizu-Trace-ID: c21aa090cc761614
+X-Migadu-Flow: FLOW_OUT
+From: Fuad Tabba <fuad.tabba@linux.dev>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Will Deacon <will@kernel.org>,
+	Fuad Tabba <tabba@google.com>,
+	kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] KVM: Replace VCPU_RUN with KVM_RUN in comments and docs
+Date: Tue, 15 Sep 2026 09:44:38 +0100
+Message-Id: <20260915084441.3846947-1-fuad.tabba@linux.dev>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 09/28] KVM: VMX: Save/restore guest FRED RSP0
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "Mehta, Sohil" <sohil.mehta@intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "x86@kernel.org"
- <x86@kernel.org>
-Cc: "corbet@lwn.net" <corbet@lwn.net>,
- "andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>,
- "luto@kernel.org" <luto@kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
- "dmatlack@google.com" <dmatlack@google.com>,
- "seanjc@google.com" <seanjc@google.com>, "xin@zytor.com" <xin@zytor.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "shivansh.dhiman@amd.com" <shivansh.dhiman@amd.com>,
- "skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "nikunj@amd.com" <nikunj@amd.com>, "hpa@zytor.com" <hpa@zytor.com>,
- "tglx@kernel.org" <tglx@kernel.org>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "bp@alien8.de" <bp@alien8.de>, "Gao, Chao" <chao.gao@intel.com>,
- "Liu, Zhao1" <zhao1.liu@intel.com>, "dwmw@amazon.co.uk" <dwmw@amazon.co.uk>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
- "yosry@kernel.org" <yosry@kernel.org>
-References: <20260911213659.2025974-1-sohil.mehta@intel.com>
- <20260911213659.2025974-10-sohil.mehta@intel.com>
- <dd7b17e4-8d84-426a-9962-3ae693dcf401@linux.intel.com>
- <22c2c3f67198185a8e3a6bda43e4f12b78305cbf.camel@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <22c2c3f67198185a8e3a6bda43e4f12b78305cbf.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/15/2026 12:14 AM, Edgecombe, Rick P wrote:
-> On Mon, 2026-09-14 at 15:04 +0800, Binbin Wu wrote:
->>> Note, an equivalent TDX side implementation is missing. No TDX module
->>> with FRED support exists yet so this would be an issue for future
->>> platforms. A generic discussion regarding this is ongoing at:
->>> https://lore.kernel.org/kvm/20260827031837.2863609-1-binbin.wu@linux.intel.com/
->>
->> For old KVM versions, we want to defer the opt-in design or backport decision.
->> (
->> https://lore.kernel.org/kvm/c6b240bd-3c45-4abe-b17c-72a1a7da582f@linux.intel.co
->> m/)
->>
->> We may finally choose to backport the TDX CPUID filtering patch series to
->> stable kernels. If this patch series lands first, should we add FRED in the
->> deny list for TDX as a temporary solution to avoid having some version(s) that
->> allow FRED for TDX without FRED support in KVM?
-> 
-> The specific FRED problem starts with FRED host usage + TDX, so I don't think
-> there is a reason to tie and temporary fixups to VMX FRED support, in any case.
-> Or were you thinking to blame userspace for not respecting
-> KVM_GET_SUPPORTED_CPUID, which would change after this series? 
+Hi folks,
 
-My concern is if there is a release x with this patch set, but the release is not
-a LTS/stable kernel branch. Then backporting of TDX CPUID filtering patch series
-will skip this release. When the TDX module with FRED support released and work
-with the kernel release, it will have problem.
+This one has been bugging me for a while. Five comments and doc lines
+name a VCPU_RUN ioctl (KVM_VCPU_RUN in book3s_hv.c, VCPU RUN in
+kvm_host.h). The ioctl that enters the guest is KVM_RUN.
+
+The patches are independent and split by tree, one each for generic
+KVM, KVM/arm64 and Book3S HV, so each can go through its own
+maintainer. Nothing else in the tree refers to the ioctl by a wrong
+name.
+
+Based on Linux 7.3-rc3 (fd73f4a665989).
+
+Cheers,
+/fuad
+
+Fuad Tabba (3):
+  KVM: Fix comments that refer to the non-existent VCPU_RUN ioctl
+  KVM: arm64: Fix references to the non-existent VCPU_RUN ioctl
+  KVM: PPC: Book3S HV: Fix comment naming a non-existent KVM_VCPU_RUN
+    ioctl
+
+ Documentation/virt/kvm/arm/pkvm.rst | 2 +-
+ arch/arm64/kvm/arm.c                | 2 +-
+ arch/powerpc/kvm/book3s_hv.c        | 2 +-
+ include/linux/kvm_host.h            | 2 +-
+ virt/kvm/kvm_main.c                 | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
 
 
-> 
-> Since there are plenty of released kernels with FRED host support already, I'd
-> think to wait until we settle the opt-in question. Which doesn't seem like it
-> should be too much longer. It will be less thrash.
+base-commit: fd73f4a6659897191fa0d40695fe370925dd3780
+-- 
+2.39.5
 
-OK
