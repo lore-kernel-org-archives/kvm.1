@@ -1,91 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7773F3B6BF4;
-	Tue, 15 Sep 2026 13:37:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750A6340A6B
+	for <kvm@vger.kernel.org>; Tue, 15 Sep 2026 14:04:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789479455; cv=none; b=JlJi/c+O1vAm6Py/xrLSdcdUT+kWV41AiE7S5AR2cI7MpQ7PmQA251csl4pi2+uFnP6msv8aO8E5Fu60C1XIiWzpB/zZu1Erd4T25tSXSibFXpF8r6lyz/eBgXf/046IImP8qDZtLsQc2bbvjKUDAaS2jw/waPuzCw0rtsuhpGU=
+	t=1789481093; cv=none; b=tar2OymAYL2sMMmI7wAKnJHpAAd5EW+radRNUDNI6Q7oN4cshlTUjFjrjYqUpxp4yY/PAGlRqXTqoO0yoej3Rp5czFY6CHdBDe3OxaG/HJFi5kNo3KVHAe6QCuA+jVy1ttO4349nf+twLSN0tY7CWk0Fp1eCUC7yb0ZhdfNe87Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789479455; c=relaxed/simple;
-	bh=XbkzJmU+ohpQZw6QRlajImSOTkSJ3D6nxxEIRSVEvsQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P19/y94E4lbIlz2odaPrqumPSepBSozZOFbxoUaNoK5LoT4wzfXItSJWYQgWn74agV1j6t1brDSaL+HOzf4Q35bq0WIyz+huMo8DFM/xJdodKnCDhmcPFcXwE5SQ2DAA9n6dJ8up/AeD8Sy//n4zkW50R8TkBchKTR0lAw7seic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RvFjMZIS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789481093; c=relaxed/simple;
+	bh=0gJ11eK6vyMd1f9poJ8vcFJX9j9y0Pob+2gbkGLs9ew=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=XTR21jZKcoFUxiRc2hGRrKpPj8G0PhpMBsRSiarkcbWTMvR6aDxtqh8RfTHXUd78iVgBiw+7wx83FzCJjNZBK56AR4JOBW1v5ejtJSUxFWbGGn2qtBXPOFnouwto3aaE81wWGDygxuwRJMFg94vOzVZr9UpdHAoNdFnq16wASP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NFAdIlR0; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RvFjMZIS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439941F00893;
-	Tue, 15 Sep 2026 13:37:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789479453;
-	bh=BM51LqCTQKkxQjHuUWYfXlc+A3jyZ7CPDkL+FFiZnQU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RvFjMZISrAofoxatI3txRLvKezud9CwyRisHK6u/f7qV4yUT2+fhG50Licn4tOFTn
-	 aUpbIemAcM0nYY73vFMmlmR1G3bd+rt/EKqZZnRrCEtiulHGzVYlo1mfwJKw5wEt1L
-	 veYt//N/IyOSrGXAkw1MeTdTZ2AM54UXpTGiPVffI88yWhxPkdAceI85FeCNds2r4u
-	 sMz8bBUFz776GaC6PwE+AI/nJ0iZQZZSS6dOKyITBPk7GK5hUpSLwFzs/e94djAAI5
-	 B1VOzp9xLYXS5P36Ut/yF0LzCU8F2BPhT15C5ehGRRkZgEiLj+ihYaoD/RGFGUzvdG
-	 Nl076XXX2qyeQ==
-Date: Tue, 15 Sep 2026 16:37:29 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Cc: Zhiping Zhang <zhipingz@meta.com>, kvm@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH v13 0/5] vfio/dma-buf: add TPH support for peer-to-peer
- access - ping
-Message-ID: <20260915133729.GO13683@unreal>
-References: <20260731211601.3033906-1-zhipingz@meta.com>
- <CAH3zFs0vQidHOWif_LmS0=65S9iiCo7yGibqLvFT5jadjj8wVA@mail.gmail.com>
- <CAH3zFs2XnH6gT0fO4=WLi4x1SL2+Y0S=Jo45SWkR=unPegQ8Hw@mail.gmail.com>
- <CAH3zFs2X8=x-XMXhwC7_aUZivCCPQOSuyXMy-ryKqxLEFY9u-Q@mail.gmail.com>
- <c0c8dea4-1571-482e-be33-f965c7c357d2@amd.com>
- <20260915113752.GK13683@unreal>
- <92950084-ddd1-4868-a81a-bfe214184122@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NFAdIlR0"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2dd753a52bbso24125965ad.0
+        for <kvm@vger.kernel.org>; Tue, 15 Sep 2026 07:04:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789481091; x=1790085891; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ANfnbIvY5HHUWypRItLWP/OqJoXyH8gPZpwc115le6o=;
+        b=NFAdIlR0pH7f6RKqyNQtJVW44jLxxeFbp8GfJbuW1Ruly5eK/hRhx+TB+XTWsPJILA
+         ShqIlDV1YZVBV7MjYoGT/M6twQ7z8h0vzdZZT0sffVOwFqudYM05YNhwFFmpUlyk75zh
+         ULzz54TfZ//Z+Mbqou5HGvOo3yuV6zs+AEwO6iXkMeCrCLf9Puo42qqHhBWdWtdmbx6S
+         6hxQKNVeEa/uof48yivUXcJnkTwWw5VtOekvlshFmRaEweVPpZOdwbuStkhj0mFBc+b+
+         azfH9gPMcyramvQAMt5fFlK3R3QfVDRZAQ+8gm8lJaF6mZBtb0NFgxm9ZGNSgPaqEZZo
+         q63w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789481091; x=1790085891;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ANfnbIvY5HHUWypRItLWP/OqJoXyH8gPZpwc115le6o=;
+        b=x7E2Xe22VVtnx/1YHuXj/EIcugTZQgW8eFqdoVP3J974Cssxn1vKbBqyRY6XC6bW3p
+         CaF6s7YA6RfgJjYPguq7qyLca4s4Yeoadi6GR59I3WX5Rsl/P7x1HNx3aSIMM3QTLxPf
+         LlwI/SIq3oDaPLwivpVP0bwR1oioOdn2zP1j9ckF06V9Qxn9tcr4gCZksET9h/6BiUG6
+         rN3UZl+TfU3e9xHUXAeuIBqnrKkNowpinQdfdwpevua/PQAjw5SZMFCwoxbt+Wbs3AFe
+         ew7+GWPj9T398XGi2A5YMckuETSY8Eo3ZZobiHTyZMpSz7ygkOmTk4WKsIJtSPQDd1Rt
+         VbtA==
+X-Forwarded-Encrypted: i=1; AKwUvByA+J+n0Da+uESYbRsKxxjhnTpBAtXbfg75HHS0gen/yuXw037gb/qUnd4GByXK6H/u4Gg=@vger.kernel.org
+X-Gm-Message-State: AFuF++kTZ/B3nmMgP9ouoE8opG+GPImZtTj5NgDo4VhPP/Za7CZz8n0Y
+	bi0rwcKpgB/Dv6iE9AepA7kAjBGGTN96V6d5VZ01dtHa0xy9ofQo/8zlnBMLEhxmjM7C2507Cii
+	z3pXaLQ==
+X-Received: from plq6.prod.google.com ([2002:a17:903:2f86:b0:2db:7a1f:5d7e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d488:b0:2d7:f0:896b
+ with SMTP id d9443c01a7336-2dd6c6c0d27mr131092555ad.13.1789481090362; Tue, 15
+ Sep 2026 07:04:50 -0700 (PDT)
+Date: Tue, 15 Sep 2026 07:04:49 -0700
+In-Reply-To: <c5076e4a-0335-4ed1-8049-a3ddf486ea03@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <92950084-ddd1-4868-a81a-bfe214184122@amd.com>
+Mime-Version: 1.0
+References: <20260806011536.4172258-1-sohil.mehta@intel.com>
+ <20260806011536.4172258-5-sohil.mehta@intel.com> <e6220b0e-0f5c-435f-823e-318b527eee8a@intel.com>
+ <c5076e4a-0335-4ed1-8049-a3ddf486ea03@intel.com>
+Message-ID: <aqlQgQgnLDf2CHqx@google.com>
+Subject: Re: [PATCH v4 4/7] KVM: VMX: Implement LASS violation check
+From: Sean Christopherson <seanjc@google.com>
+To: Sohil Mehta <sohil.mehta@intel.com>
+Cc: "Chang S. Bae" <chang.seok.bae@intel.com>, kvm@vger.kernel.org, x86@kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"H . Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Kai Huang <kai.huang@intel.com>, 
+	Fuad Tabba <fuad.tabba@linux.dev>, Chao Gao <chao.gao@intel.com>, 
+	Yosry Ahmed <yosry@kernel.org>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+	David Matlack <dmatlack@google.com>, Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>, 
+	Kishen Maloor <kishen.maloor@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Sep 15, 2026 at 02:59:43PM +0200, Christian König wrote:
-> On 9/15/26 13:37, Leon Romanovsky wrote:
-> > On Fri, Sep 11, 2026 at 09:58:28AM +0200, Christian König wrote:
-> >> Hi Zhiping,
-> >>
-> >> sorry I'm completely underwater at the moment and don't have time to take another look at the full set.
-> >>
-> >> But IIRC you already fixed my documentation requirements and skimming over the patch once more I can't see anything wrong of hand.
-> >>
-> >> So feel free to add Acked-by: Christian König <christian.koenig@amd.com> to patch "dma-buf: add optional get_pci_tph() callback" and push it upstream through the VFIO channels.
-> > 
-> > Christian,
-> > 
-> > I'm slightly confused here. In the other thread, you expressed concerns
-> > about having PCI details common to every device in the P2P world in the
-> > dma-buf code, but here you seem fine with adding a niche P2P feature.
+On Mon, Sep 14, 2026, Sohil Mehta wrote:
+> > Yes, this could be a matter of taste as taking and going to maintain the 
+> > code. But as a reader looking at this, the logic was not that easy to 
+> > capture at a high level.
+> >
 > 
-> That one is only using u16 and u8 types and has no dependency on the PCI subsystem whatsoever.
-> 
-> Giving those adjacent information sounds perfectly fine to me, we just can't have any hard dependency on PCI subsystem types or functions.
-> 
-> DMA-buf itself is massively used with vendor specific P2P interconnects, PCI P2P is just a special case of that.
+> At first look, I found it a bit hard to follow as well. But instead of
+> splitting out the logic into 4 static functions (which have limited
+> value to the rest of the file), how about we add a high level comment on
+> top of the function?
 
-You are looking at it from the DRM perspective. Outside the DRM world, PCI is
-THE interconnect, everything else is a special case :).
-
-Thanks
-
+This is a great idea!
+ 
+> I'll let Sean comment whether he prefers to change anything here or
+> leave it as-is.
 > 
-> Regards,
-> Christian.
-> 
-> > 
-> > Thanks,
+> Note, some function names in the proposed diff could be misleading. For
+> example, is_user_mode() checks the IMPLICIT flag in addition to the CPL
+> which feels odd. And, is_lass_enforced() seems like a generic LASS check
+> but in reality it only covers the supervisor data rule.
+
+Yeah, this is my thinking as well.  In most cases, I would agree that we should
+make the high-level concept as easy to follow as possible.  But helpers like
+these, and even is_user_address() vs. is_supervisor_address(), highlight why I
+think we should keep the more open-coded version in this particular case.  IMO,
+the control flow isn't hard to follow because of poor coding/design, it's hard
+to follow because the actual behavior of the CPU is complex and subtle.
+
+So for me, this is more of a feature, not a bug.  I.e. I *want* to force readers
+to slow down a bit, because while the basic gist is indeed very straightforward,
+I think the resulting code is actively misleading if we bury the complexity and
+subtlety in helpers.
+
+That said, I love Sohil's idea of adding a function comment.  Someting along the
+lines of "The basic flow is this: <example>, but the actual behavior is far more
+subtle due to many exceptions and edge cases".
