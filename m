@@ -1,60 +1,50 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6C13A0B3B;
-	Tue, 15 Sep 2026 08:38:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270CA374E40;
+	Tue, 15 Sep 2026 08:43:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789461535; cv=none; b=Ld6sLk+ry7U0clv6laKpIBC93ShoeoWHUJr12YmIpKTJ8k0BWIqoUm4CnC12AClmeIDcIea/Ww4Df1dFRzERLptFrFhs9Se3qDCP9sEL7o2jFNalyo1NxFdMXhnHo6pdu1DEUwe9qTYGh6x+GnkBB1B8kRYGy1clZlyeEJWvVLU=
+	t=1789461804; cv=none; b=UDmIXQwNfQCvZo9UdnvzVYLcKYgVFVrC29xDeU47ruHrCN3dUy7ULkDO65wC+GKiipulVCshJsYgNM1H+QLG+ec7Qex0FiifgV4cVsuBSteFbViim1U3tBg5YCz9SkEhh6widJy5LL0FeNar/PauOWv08bCmjDa/C/eQAHUuGhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789461535; c=relaxed/simple;
-	bh=zNKy/IzJ6qU7dVGDGyF1IZC2cGwnLBmyfREtiaXVX7Q=;
+	s=arc-20240116; t=1789461804; c=relaxed/simple;
+	bh=cyRG1T2PDPHf7Ppda6R4nWqA/AhxSLime81k93QDI4o=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VX77HUrX6fpV9NAOkKLCOMdKijmqMpE6DqTXma/5kt2CAtPwPb04PSmAliSIPBoh7ErOt4c45ayEjLrsqJSlNmYBjOJY1UPkAXTlnd7GzgnmGoT1qU6qgPSz2L4ClHfT/QIqpqe3T9mGvcnq8twEvW+Xvr83G8IgmdVvRls9XKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ipEX5J/u; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=EascnJf2jUsQ1+e5RI3p4ayF5yZY+/Z6UKtB2aijh8cv8YsbviPiDjAeANeNvH+1esKJZSKUOXB4d3jbDVVM02aAye/gvER4vbzKME34X/XHuBTb3C7zAzf+g5819vSDJmDqBpwIwO8sV99TA1O7PYXaiDujHBxQrYTi/7+dzvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VlvIT/GE; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ipEX5J/u"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68F71SYm150551;
-	Tue, 15 Sep 2026 08:38:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=k3FH4x
-	5L80jGTzVXyd1FgcnuV1kZzhrBCb0yGo4D9cc=; b=ipEX5J/ugvexfodCIvoUbm
-	IRSxsEOyc04z5U5T9epHAnVnptHmf5S5gLqHb2heAYKh0AUyJEV8DKCLZVt6DCI1
-	dIZUS7+2bh5wXsTFMfGpeTt5X7cLf9YtXkYH06TLO/XUjYzHZjPsSweMdte+m9JA
-	UgSG3T9FXECuzDu7uaPgO6RnQE4nxLgdrbJq59fWOG0kUthilXgPmi0Gs/ZI/TJS
-	GNufu21fxC+IL9ehtxWv99biuNPeUk9jUEvgzpW0nq+5SB4xmV+ZAtwU4fTOpRfx
-	RKUCPWi20HatHvKjz3eR+VU/97lvP8chCgwo2v7xIxq2dVmvI3fP0NzWW9JABpvw
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmxf4x3uc-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 15 Sep 2026 08:38:35 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68F6ZI6B3613555;
-	Tue, 15 Sep 2026 08:38:34 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gpywerjvs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Sep 2026 08:38:34 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68F8cVhw41222544
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 15 Sep 2026 08:38:31 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 136492004B;
-	Tue, 15 Sep 2026 08:38:31 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4578A20040;
-	Tue, 15 Sep 2026 08:38:29 +0000 (GMT)
-Received: from [9.123.2.177] (unknown [9.123.2.177])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 15 Sep 2026 08:38:29 +0000 (GMT)
-Message-ID: <647f3494-1e79-43ea-a8ed-157b3f0e6c54@linux.ibm.com>
-Date: Tue, 15 Sep 2026 14:08:28 +0530
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VlvIT/GE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789461802; x=1820997802;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=cyRG1T2PDPHf7Ppda6R4nWqA/AhxSLime81k93QDI4o=;
+  b=VlvIT/GEVxOWZ2tnkpIWo6Q5+aVFSGuc6FIaKuTQy0JOHTVO+M+vTuFV
+   nSSGqRo2+0wwurWOLcic/+//2NZ7gwBUa90wsjB5VKo9eVnvHLa/Pnnq/
+   MapUZrMNOHDOWDMUGcpv+CmQBHQK81Nmra62/opqUO8rBq+IChx/hnKT/
+   Rg3dTy+MM0gj2QRRD+sTaSraLPFV5sBwJ9EVyarpQlwincB0Jlh+erqRE
+   UflDdv5OjHwlj0l2nIQRYQLIQmUPFnFuL8Z6jmBn+fxEmVKoafJ8xVVOv
+   IiTX1E0Z78nugpBUkBE5761dcMe+99jm6hUeWUqlhglM3POqC88KHRWKC
+   g==;
+X-CSE-ConnectionGUID: Kf9x3PViSeOVEIl2WTPf3g==
+X-CSE-MsgGUID: BTCX2F/RSle0Rb/mOvFIOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="90024768"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="90024768"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 01:43:22 -0700
+X-CSE-ConnectionGUID: OyZntYNITX+nXcX5R7EO1w==
+X-CSE-MsgGUID: 2wD6B4vlSpSOQa7VbCzv3Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="273410897"
+Received: from unknown (HELO [10.238.2.139]) ([10.238.2.139])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 01:43:11 -0700
+Message-ID: <93667a03-f7ae-46eb-82f5-8167f74f16c2@linux.intel.com>
+Date: Tue, 15 Sep 2026 16:43:07 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,107 +52,72 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Avoid triggering an extra interrupt
- for a vCPU
-To: Gautam Menghani <gautam@linux.ibm.com>, maddy@linux.ibm.com,
-        npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org,
-        tpearson@raptorengineering.com
-Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260915060146.33410-1-gautam@linux.ibm.com>
+Subject: Re: [PATCH v10 09/28] KVM: VMX: Save/restore guest FRED RSP0
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "Mehta, Sohil" <sohil.mehta@intel.com>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "x86@kernel.org"
+ <x86@kernel.org>
+Cc: "corbet@lwn.net" <corbet@lwn.net>,
+ "andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>,
+ "luto@kernel.org" <luto@kernel.org>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+ "dmatlack@google.com" <dmatlack@google.com>,
+ "seanjc@google.com" <seanjc@google.com>, "xin@zytor.com" <xin@zytor.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "mingo@redhat.com" <mingo@redhat.com>,
+ "shivansh.dhiman@amd.com" <shivansh.dhiman@amd.com>,
+ "skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "nikunj@amd.com" <nikunj@amd.com>, "hpa@zytor.com" <hpa@zytor.com>,
+ "tglx@kernel.org" <tglx@kernel.org>,
+ "peterz@infradead.org" <peterz@infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "bp@alien8.de" <bp@alien8.de>, "Gao, Chao" <chao.gao@intel.com>,
+ "Liu, Zhao1" <zhao1.liu@intel.com>, "dwmw@amazon.co.uk" <dwmw@amazon.co.uk>,
+ "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+ "yosry@kernel.org" <yosry@kernel.org>
+References: <20260911213659.2025974-1-sohil.mehta@intel.com>
+ <20260911213659.2025974-10-sohil.mehta@intel.com>
+ <dd7b17e4-8d84-426a-9962-3ae693dcf401@linux.intel.com>
+ <22c2c3f67198185a8e3a6bda43e4f12b78305cbf.camel@intel.com>
 Content-Language: en-US
-From: Narayana Murty N <nnmlinux@linux.ibm.com>
-In-Reply-To: <20260915060146.33410-1-gautam@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <22c2c3f67198185a8e3a6bda43e4f12b78305cbf.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: WBWQJk8CS2rSJ-gzFi8ni3i-Z7ly88h2
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE1MDEyMiBTYWx0ZWRfX+e06gwGvGJ43
- o5vMknaE4HWsvQ4+Dkdc6cCZ8qDrltltDnAeAhUFugJi1CQNpF+acI6xqKMXQeZtFWdVnjjrJQx
- 37cg0wN8bP5x54atR9GxV7JwZ6t2c6g=
-X-Authority-Analysis: v=2.4 cv=cvgOAF4i c=1 sm=1 tr=0 ts=6aa9040c cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
- a=yKAn6K1XAAAA:8 a=_AprYWD3AAAA:8 a=VnNF1IyMAAAA:8 a=C-dYcwNCrXqwm9yQvhYA:9
- a=QEXdDO2ut3YA:10 a=6M1ixcW_PCWoKiWyFx5v:22 a=fKH2wJO7VO9AkD4yHysb:22
-X-Proofpoint-ORIG-GUID: Kady2yuf0ChdC2klB7QZEB5XWAWuVf-r
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE1MDEyMiBTYWx0ZWRfX0AvzrU1jlVxj
- vLPICeDcq1FCC6OdIyT4skJOrGWoT6patSLqr5YYZFjr5ACAnX1fdKzRrJPTL+TCk/GS9oGyaNi
- bOvQIOVGSXx/XxSv+MJWqxEcvgvaPRZuK951EzEakhxA3InbVBVNEb6QDj179F1ZZrQ+INUzW15
- 1OR3TY+CFL8alyV86bITAup+9odiN4d0DwxpFmXECWEmnLSV8X6XHxICCHRBQ8YmF1o+up4I1K+
- FVMrwLUAj7Dlek4O97bxB6Hsz7Hdy9KGOatmfcLx0+8ucqHELQHwNariGZLYhWq+7XIeo30zx5b
- DB8hpWnK3Hq0eSu9Ro4S+gJBQJs+wnIObeuCLxG8xGZfFUcXVqd5SFhTgN9mBoJK1eTi1M6fvpn
- a5pm1tL7YrE52bPcXmte6Cs3Hdn3wn+76PmaphsZPEM4sg7MmarFktXzW9s+x2xZFX2whb3JHuS
- 58pVoGWKNCwAm3brXwA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-15_02,2026-09-14_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 lowpriorityscore=0 clxscore=1011 priorityscore=1501
- suspectscore=0 bulkscore=0 impostorscore=0 phishscore=0 spamscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609150122
 
-Hi Gautam,
+On 9/15/2026 12:14 AM, Edgecombe, Rick P wrote:
+> On Mon, 2026-09-14 at 15:04 +0800, Binbin Wu wrote:
+>>> Note, an equivalent TDX side implementation is missing. No TDX module
+>>> with FRED support exists yet so this would be an issue for future
+>>> platforms. A generic discussion regarding this is ongoing at:
+>>> https://lore.kernel.org/kvm/20260827031837.2863609-1-binbin.wu@linux.intel.com/
+>>
+>> For old KVM versions, we want to defer the opt-in design or backport decision.
+>> (
+>> https://lore.kernel.org/kvm/c6b240bd-3c45-4abe-b17c-72a1a7da582f@linux.intel.co
+>> m/)
+>>
+>> We may finally choose to backport the TDX CPUID filtering patch series to
+>> stable kernels. If this patch series lands first, should we add FRED in the
+>> deny list for TDX as a temporary solution to avoid having some version(s) that
+>> allow FRED for TDX without FRED support in KVM?
+> 
+> The specific FRED problem starts with FRED host usage + TDX, so I don't think
+> there is a reason to tie and temporary fixups to VMX FRED support, in any case.
+> Or were you thinking to blame userspace for not respecting
+> KVM_GET_SUPPORTED_CPUID, which would change after this series? 
 
-On 15/09/26 11:31 AM, Gautam Menghani wrote:
-> A huge number of spurious interrupts can be seen immediately after a KVM
-> on PowerNV guest boots up in XIVE mode.
-> 
-> $ cat /proc/interrupts  | grep SPU
-> SPU:     223705     192439     273526     147623   Spurious interrupts
-> 
-> This bug was introduced by commit ecd10702baae5 ("KVM: PPC: Book3S HV:
-> Handle pending exceptions on guest entry with MSR_EE"). The root cause
-> is that when there is an interrupt pending for a vCPU
-> (xive_interrupt_pending() returns true) and MSR_EE is disabled for the
-> vCPU, LPCR_MER ends up getting set for the VCPU. When the vCPU starts
-> running, the XIVE hardware presents the pending interrupt to the vCPU
-> (since the KVM guest has native XIVE support) and then a second spurious
-> interrupt gets presented to the vCPU due to the LPCR_MER bit being set.
-I agree that we should avoid setting LPCR_MER when the pending interrupt 
-will already be delivered natively by XIVE on PowerNV.
-> 
-> Fix this behaviour by not queuing up any extra interrupts with LPCR_MER
-> if there is an interrupt already pending in the case of KVM on PowerNV.
-> This reduces the number of spurious interrupts drastically.
-> 
-> Fixes: ecd10702baae5 ("KVM: PPC: Book3S HV: Handle pending exceptions on guest entry with MSR_EE")
-> Cc: stable@vger.kernel.org #6.8+
-> Reported-by: Timothy Pearson <tpearson@raptorengineering.com>
-> Closes: https://lore.kernel.org/linuxppc-dev/582904882.11159.1786719390349.JavaMail.zimbra@raptorengineeringinc.com
-> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-> ---
->   arch/powerpc/kvm/book3s_hv.c | 5 ++---
->   1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 7667563fb9ff..fda3767ebc9e 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -4937,9 +4937,8 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
->   
->   	if (!nested) {
->   		kvmppc_core_prepare_to_enter(vcpu);
-The current code handles two different indications of an external interrupt:
-> -		if (test_bit(BOOK3S_IRQPRIO_EXTERNAL,
-> -			     &vcpu->arch.pending_exceptions) ||
-> -		    xive_interrupt_pending(vcpu)) {
-> +		if (!xive_interrupt_pending(vcpu) && test_bit(BOOK3S_IRQPRIO_EXTERNAL,
-> +							      &vcpu->arch.pending_exceptions)) {
->   			/*
->   			 * For nested HV, don't synthesize but always pass MER,
->   			 * the L0 will be able to optimise that more
-This means xive_interrupt_pending() now gates the entire block, 
-including the BOOK3S_IRQPRIO_EXTERNAL handling, rather than only 
-avoiding the LPCR_MER which causes the duplicate interrupt.
+My concern is if there is a release x with this patch set, but the release is not
+a LTS/stable kernel branch. Then backporting of TDX CPUID filtering patch series
+will skip this release. When the TDX module with FRED support released and work
+with the kernel release, it will have problem.
 
-Also, the changelog describes the issue as specific to KVM on PowerNV, 
-while this condition also affects the pSeries/nested handling in the 
-same block.
 
-Thanks,
-Narayana Murty N
+> 
+> Since there are plenty of released kernels with FRED host support already, I'd
+> think to wait until we settle the opt-in question. Which doesn't seem like it
+> should be too much longer. It will be less thrash.
+
+OK
