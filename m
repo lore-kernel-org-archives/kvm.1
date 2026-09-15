@@ -1,450 +1,530 @@
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo2-f39.google.com (mail-oo2-f39.google.com [74.125.231.167])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0544533372A;
-	Tue, 15 Sep 2026 20:49:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF960399CF5
+	for <kvm@vger.kernel.org>; Tue, 15 Sep 2026 20:49:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789505349; cv=none; b=P1fVf7vWpXsK79rR5FVlDOYQtfygICVgXcmjK0gIgWxhdvcHkgVG2tNYIjMVH3Afu2NCEgeIHGfBStVjEiQtlatrmqeAjwgNwJzgVQ/CxnR0V7m93iqQra1R4GdeZtAL696rKNeSFJ/3V1cj3hhF8/DjxB56PdzW57HL703W8uQ=
+	t=1789505356; cv=none; b=JS1O+VyRJ5gWw3vFx/8f+6XigFCR3oRqtyayCAVjuzxfhoneAi0YVcjfWBT8+VJMsUjrz6ciKfiU5QfySRYZpMIrycCJ2qIdMQUiN3Ao4vTzmt2U2DVEDtm3laeF+3CFR++CV8LgmbaU+u1rRJVNFrjNZh08Ie5OSTB1xwDMSO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789505349; c=relaxed/simple;
-	bh=2rHiOpM1SWmmCWtl/HeTmj+udtNeazIbAVgh/06NKiQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZMlZge2UbufAxyx8+ZH3O+ahtiiiRSIFeHeTPjTcLkrlwE1FNBN5eoLEhYgfC3dq3V/r3epqGlh/B3y1HQT8ueIlFYug4GudlWNNjmh2idufVrD1RNHCGhAFog67aepvy3djl9OqO9DPfW6yLk+01iUagzdkmIW3oOe1PUeqlNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=S0XjJj46; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FBVeIXN9; arc=none smtp.client-ip=202.12.124.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1789505356; c=relaxed/simple;
+	bh=xiy3uuwgOHBBri452+JL4Vt4WIDUgqIZlxhGFJQr+sw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Aa7DNatfE8TnMzQQQDWOnhXJhdhy76BIkA3nLRqf1fCoG4khvTxTDj20tNDS6jdoMAsbS1NZfiCfzegUEe9wFnL2KTE2ZQbi1o/Qm8zjVbeAOzX2sQPi78YYzebCUfMLDVsFHefOlupVpi9w8J5Hwg6EhmOwTzUiotgAwEYb8gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=COeZG8bQ; arc=none smtp.client-ip=74.125.231.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="S0XjJj46";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FBVeIXN9"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id E8AA87A019A;
-	Tue, 15 Sep 2026 16:49:04 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Tue, 15 Sep 2026 16:49:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1789505344;
-	 x=1789591744; bh=Yu3kwCeYKncFj2yvTs8psD8GdjcBGRTHyepDYo8UUHQ=; b=
-	S0XjJj46BMnulHOgquahdQXs9mFuZne1ZLNp33Xd/mArwF4m2Fs++B9xP025Q0Hy
-	F+DtgIrbCRwMqoDcl6MoQrUMcJ8CFm/ADFO6+iLIKrI7eqpPsTqCXQ7r9St6+TRY
-	CdjXnYhwCEXf+B7H8GPXmWgCQQcCzpLGoPOnDER5hfCBrfh0k00dQc/heaRti0/r
-	7ZoowdPnGlH5VbBXS2uQ8Mv6qpiov1oKtj6+YH8CGsEoE6FOWDSObNma4C5gAbX5
-	NHd6HqZtWknYrQWRymzSsa9TCei19l10z5XjPB73KJOFIR/6ykOGjsRB7g5RRsSo
-	uo8YezYVyzw6J1xaARM1/w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789505344; x=
-	1789591744; bh=Yu3kwCeYKncFj2yvTs8psD8GdjcBGRTHyepDYo8UUHQ=; b=F
-	BVeIXN9d2DdRi4eF/1h8zMnymRIuYXlwsLLj0B7g8FfQ52dM/zj1emLJH5Z9aCPV
-	VIDvTjw8LV4193li4aJWNYqdBfWWa5Z7gcpRbylJPQXcQycnMR9QEfuDG4DnZvtV
-	FmR2Q2iNQgVNBKk/hduJibIWJRsDxCyIayc5xNKgMQ0k8iHXvXxAPZJHsnRtmUZB
-	aN+kidz81vSiO8Kr3ACx3BF6gGQ4EegNWH1N4lZFxrw1zhmGgZCsWCAv7mq7MsZL
-	Uv906A6slGgzFGINTCSkG+gTqK1Qz74wzjZ/JVAB50GQ5Xge7j5SsjpW7ZyiTsTX
-	mgslCg/NpETbge4vo2Dww==
-X-ME-Sender: <xms:QK-pamdRWFATRVgAfgXeX7NSCi_EhiKHVd20JIkJAd4bdRGM-ifu3Q>
-    <xme:QK-paswZfWNKelufFb9cL8fXDqfw-p8KEv74s5ETUAf7jZHYmGurZSYA9vDxxv9Vc
-    0Ld1hyx9g4BQ8Iw0S3JReXGUViJYIDYDa2Q2c0bFVxg-UMUwM6tJ9U>
-X-ME-Received: <xmr:QK-par98J-XQfx-ZgF7fwOJciyOK0Bo5wot8vpvaVi1F3TSNV_bSHjRU8_5cNQ>
-X-ME-Proxy-Cause: dmFkZTEuF6bmHZCvCsnfNQtR2pOXNN9GBfAHzsleUwWU/Ky3k3ztGS8DqFsBQkAvAifzeZ
-    +3OLgbKjr4Ahgl2Rz4LjksHmK+nPokDADeJ7RC8EmXDCKC56DD/0lZctu/0lv1YIWeFWhL
-    0/QisnnHF3SR6dbciZO9DHXaM/SU8g7j44RQRNJnUhMgTlvyN3JSgOTiBbPulouLlarjKk
-    Q6zyyRV2daCAHKnXse+tbtCRkc7NOP7bOsLpl+AIUSQYCbGO9uhNjsX2fQWE0BAFn5RGZK
-    GaFWfhudUGaBA0bXAqDA9WkrRnenU4OErsupN76W8AfxfHM7nK4suUyRffTwF/yInlkkt/
-    H1lr0zQ3AbBqIJid3B3ZDrfVL+Jw7BLrqoSUWOHJ9zubi9VUYOZ0PAPoLPD/79H29FN0zU
-    QtEKUb82Yx+PAXO+DICkI8JXytWRTCKxlabITZwiiyHOE191ExOmAYhpWhU7/YDA5n77wy
-    NjeusLBXHcsUYOP/FYGqUSLyVbNW9n2DmXuu1bdxBiIEx7Ocoxc0wZT+YcowXJc1675CXc
-    wlgmk3BWetlB2knLZdbKRmfIT0xq8kdU8H//O8bU+ofDC4lu72UN88ofChN/G/Vip1NInn
-    3dNOY18zp/NTxY49BWeK6qnPQsgukLLKo7cQcePrCM/zX1z211fh/mUYfPGw
-X-ME-Proxy: <xmx:QK-paqy4bN46-gSxfMfV9pzNmCgMyui-EYFl7yQU3aMH_IkzK2LPSg>
-    <xmx:QK-pajoB4yStycydEGpqIumtb9RXT2w3mu166GGZdfGt6z8iFk_0eA>
-    <xmx:QK-pajoZPO68iDFSbicntOf-M1yV3Y18VJKoXmfwbhRDtIee-7_iXQ>
-    <xmx:QK-parBCeY9-3ZhpmZ-u8k8PtxqLvPTrFKDJj8XJTZnmFVkoFQ734A>
-    <xmx:QK-papWGpn8S2q_eydKHAiGT_m7f-82FywlZq8ajFF5XEHqze-AgyOgT>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 15 Sep 2026 16:49:03 -0400 (EDT)
-Date: Tue, 15 Sep 2026 14:49:01 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Zhiping Zhang <zhipingz@meta.com>
-Cc: Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, Jason
- Gunthorpe <jgg@ziepe.ca>, Bjorn Helgaas <bhelgaas@google.com>,
- kvm@vger.kernel.org, linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
- dri-devel@lists.freedesktop.org, alex@shazbot.org
-Subject: Re: [PATCH v13 0/5] vfio/dma-buf: add TPH support for peer-to-peer
- access - ping
-Message-ID: <20260915144901.554f905f@shazbot.org>
-In-Reply-To: <CAH3zFs3=t3rNDDjUsCAekfhEGOJPyx-YXKta7NdHy3kBKU_RHQ@mail.gmail.com>
-References: <20260731211601.3033906-1-zhipingz@meta.com>
-	<CAH3zFs0vQidHOWif_LmS0=65S9iiCo7yGibqLvFT5jadjj8wVA@mail.gmail.com>
-	<CAH3zFs2XnH6gT0fO4=WLi4x1SL2+Y0S=Jo45SWkR=unPegQ8Hw@mail.gmail.com>
-	<CAH3zFs2X8=x-XMXhwC7_aUZivCCPQOSuyXMy-ryKqxLEFY9u-Q@mail.gmail.com>
-	<c0c8dea4-1571-482e-be33-f965c7c357d2@amd.com>
-	<CAH3zFs3=t3rNDDjUsCAekfhEGOJPyx-YXKta7NdHy3kBKU_RHQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="COeZG8bQ"
+Received: by mail-oo2-f39.google.com with SMTP id 46e09a7af769-80a854e5b3cso116322a34.0
+        for <kvm@vger.kernel.org>; Tue, 15 Sep 2026 13:49:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789505352; x=1790110152; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6IK+LU2O84IhqYJRZEA4u3jHVfZJj7gfbzfjDu5m17Q=;
+        b=COeZG8bQxZlFcb1+rQZsdlg8f9EqEBXeDzFwpO0tzU017nzqfIUyjkzCqNjxiWPPCj
+         P4LehQhcwZE9p/nxXzpQLSO7wd6gmCaNkNYQJ4/Z4EUxpDkAchsXiKdUXYeN5qDOVQaV
+         zi28H1SLgFd77PnGtj9I/UGiYBnPi0tgBCDIff+jl+xKd5cYMSgj1Bj0nBjI7sH3WyHs
+         FQf+2MKfDsGL1ILfWgsCRRchnXqhwwivgWBuRrG1VcPM9SZLm3eJu1TMif/JuBfRtcWw
+         5Exs822tj6xAr0qgAXRGkvRd5aOzpw8TF8VvyWSXdFj6ZLthXO2iVJ0qqUfzg73Qgh8Y
+         jytg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789505352; x=1790110152;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6IK+LU2O84IhqYJRZEA4u3jHVfZJj7gfbzfjDu5m17Q=;
+        b=zqBudgreYf4dXhbuEw8fCj1fa0ID8AQCrVRWbg+D/WFe5JjJKR37WYSTrJwJnEd9+Y
+         C2gdtrQ1wZ973uG7OPFClRKkrXtfyHhr7fUSyzLvQKktC9o37s5ByIWjjuT/74myOwEu
+         Lz4LXHMds7X2vapNCVFsxX7eFA1UP5esRbBCAaBMQbG27GSPW80BesMjVX24RKkD3/cy
+         ndxtgU5I8pURr3lAsNrqGgTj7MGgc97eKt61x0q4IsOj3LKTcQXl4KOspLBpGnOLyNzQ
+         iJaRdpheqtHVtbiAxhWg7eEW5nJTTGZfWlGOjrFHN+czwH8TjtjuJHgFzabIAbxSNbbv
+         nWfA==
+X-Forwarded-Encrypted: i=1; AKwUvBwoIV0uC8wbJH6mObKvDSde+r/2U4/EmtLjE8u19ZrgnYYN5lKpaA73yiDv6bUHAbtJjl8=@vger.kernel.org
+X-Gm-Message-State: AFuF++mb37nfO+o+62Gn0Vsv8zm0xS3CXckfbGP20C005vm8JCI3MI1g
+	4BSYBtr7QlRRB5Kkt87rdsfOn0IrLqIGy9kLifG8J5YLFO46zsPJkXHi
+X-Gm-Gg: AYBFou3+w6iVjuHANm7r3ljQlijBSaHIaFBLK0XzLQWMAHvG58ic0LLF3XJS9ComG6V
+	XQL0DDcHV2vybq1P67vBJ2V1426XtJaAWBxM0aZ3UXSna8cAgyQoxgnmRQFoSSwTOH2ZdDWgHig
+	mfRWUVcFgfX9v+04Xk8vAiwUrfN9CcnPFIvKvyagh42ZrZkv74E0ePvJsC5OBrNf3Q0hWDFHV62
+	ob3fprw8+tgluQ6x22VN9ImqxXRW3GtLT6bKrmJhifglWK8s2u6x5+obECfSifrcFw3inUrzgMx
+	gWfn+HVTDPlMXg5mu/1+pnUY+NWL7AKmdD0cR0JkF+9fuuZ/DFag3pV2fjdh5RUG1x3nJ920QU1
+	su3Z+3K+Y4rKCiM8g+IdA9DLuQqW8SH95zJquwO/hAHrg8Ni12MEjFtJ/ns8vsHRiLuugLc/xG4
+	nv6oO2dXkmzEBNJQFg8JoCGwort2ibdvLDcB1mTYJdpDEZ20p6G1NlNcFjBgfhRQAWC9yKlCbF5
+	ibOeKtXEtfdq22EOvBx
+X-Received: by 2002:a05:6830:6503:b0:7e6:d0ad:5254 with SMTP id 46e09a7af769-80b2cfc865fmr187652a34.8.1789505352445;
+        Tue, 15 Sep 2026 13:49:12 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:4a::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-80b078ccc9asm530621a34.22.2026.09.15.13.49.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 13:49:11 -0700 (PDT)
+Date: Tue, 15 Sep 2026 13:49:08 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Shuah Khan <shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	sargun@sargun.me, jlinbox@meta.com,
+	Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next 2/6] vsock: add IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS
+Message-ID: <aqmvRNclcmBVhEAS@devvm29614.prn0.facebook.com>
+References: <20260902-vsock-guest-ns-v1-0-9995383e9a8b@meta.com>
+ <20260902-vsock-guest-ns-v1-2-9995383e9a8b@meta.com>
+ <aqlTlFvQL34-WViB@sgarzare-redhat>
+ <CAGxU2F40HzYrnnv_bK9_LYC-LPWLg7kGeeg0LD07CTWO7WfnqQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGxU2F40HzYrnnv_bK9_LYC-LPWLg7kGeeg0LD07CTWO7WfnqQ@mail.gmail.com>
 
-On Mon, 14 Sep 2026 09:44:57 -0700
-Zhiping Zhang <zhipingz@meta.com> wrote:
-
-> Thanks Christian -- no worries on the bandwidth, I'll add the Acked-by
-> to patch 3.
->=20
-> Hi Alex, Jason, Bjorn,
->=20
-> Could you help with reviews on patch 4 (vfio/pci) and patch 5
-> (RDMA/mlx5), plus acks on patches 1-2 (PCI TPH core) so the set can
-> travel whole if it goes through the VFIO tree, which is the route
-> Christian suggests?
->=20
-> I've also rebased the set onto 7.3 (base 5225b8eec4c9) and retested on
-> hardware -- PCIe analyzer captures confirming the requested ST and PH
-> on outbound TLPs, no splats.
->=20
-> One thing to decide: upstream took 13 for
-> VFIO_DEVICE_FEATURE_ZPCI_ERROR after v13 went out, so
-> VFIO_DEVICE_FEATURE_DMA_BUF_TPH becomes 14 in the respin -- let me
-> know if you'd rather it be something else.
->=20
-> I'll post v14 after I hear from you. Delta from v13 is the rebase,
-> that feature-number move, and nothing else functional.
-
-IIRC, we're pretty well settled on the vfio-pci front.  The feature
-number does need to be iterated to the next available.  We still need
-acks from PCI and mlx5, and given the extent of the mlx5 changes I
-expect I need to provide a branch for Jason/Leon once I merge it.
-Thanks,
-
-Alex
-
-
-> On Fri, Sep 11, 2026 at 12:58=E2=80=AFAM Christian K=C3=B6nig
-> <christian.koenig@amd.com> wrote:
-> > =20
-> > > =20
-> > Hi Zhiping,
+On Tue, Sep 15, 2026 at 05:45:04PM +0200, Stefano Garzarella wrote:
+> On Tue, 15 Sept 2026 at 17:28, Stefano Garzarella <sgarzare@redhat.com> wrote:
 > >
-> > sorry I'm completely underwater at the moment and don't have time to ta=
-ke another look at the full set.
+> > On Wed, Sep 02, 2026 at 04:00:48PM -0700, Bobby Eshleman wrote:
+> > >From: Bobby Eshleman <bobbyeshleman@meta.com>
+> > >
+> > >Namespaces let a host isolate a VM's vsock traffic to a specific
+> > >namespace, but in a guest vsock traffic cannot be isolated to a
+> > >namespace. The vsock device is hardcoded to global mode and can't be
+> > >moved into a local-mode namespace.
+> > >
+> > >Introduce ioctl IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS on /dev/vsock that
 > >
-> > But IIRC you already fixed my documentation requirements and skimming o=
-ver the patch once more I can't see anything wrong of hand.
+> > We already discussed about netlink, but I'm not sure how much work can
+> > take, here just another alternative, what about adding
+> > /proc/sys/net/vsock/g2h_owner sysctl that can be read/write where:
+> > 0 - no owner
+> > 1 - owner
 > >
-> > So feel free to add Acked-by: Christian K=C3=B6nig <christian.koenig@am=
-d.com> to patch "dma-buf: add optional get_pci_tph() callback" and push it =
-upstream through the VFIO channels.
+> > 0 -> 1 transition, move the device in the new nets
+> > 1 -> 0 transition, reset back to init_ns
 > >
-> > Regards,
-> > Christian.
+> > >gives userspace a way to move the device to the calling pid's namespace.
+> > >The call requires CAP_NET_ADMIN in the root user namespace. A privileged
+> > >user wishing to "unassign" the device can move it to the init_netns,
+> > >which is hardcoded to global mode (so no unassign call is necessary).
+> > >
+> > >A getter to read the current assignment back was considered, returning
+> > >either the namespace's net_cookie or its nsfs inode number, but neither
+> > >seemed useful enough to bake into the uAPI now. It can be added later if
+> > >a user turns up that needs it.
+> > >
+> > >Add a transport hook to indicate support for guest namespacing, so that
+> > >transports may opt in/out. A transport that opts out keeps the
+> > >reachability rules it had before this ioctl existed.
+> > >
+> > >Sockets are reset when the underlying device moves to a different
+> > >namespace, so as to prevent reachability from the previous and now
+> > >disallowed namespace.
+> > >
+> > >Following the approach of netdevs, the device returns to init_net when
+> > >its namespace is removed. Care is taken to not break flows when the
+> > >device is inside a global namespace that is being torn down and alive
+> > >sockets are in a different global namespace. In this scenario, the
+> > >device's netns getter pre-emptively falls back to the init_net (always
+> > >global) so that these flows are not disrupted. If init_netns ever
+> > >supports local-mode in the future, this logic will have to be changed.
+> > >
+> > >Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+> > >Link: https://lore.kernel.org/all/20200427142518.uwssa6dtasrp3bfc@steredhat/
+> > >Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+> > >---
+> > > Documentation/admin-guide/sysctl/net.rst |  18 +++
+> > > include/net/af_vsock.h                   |   7 ++
+> > > include/uapi/linux/vm_sockets.h          |   6 +
+> > > net/vmw_vsock/af_vsock.c                 | 198 ++++++++++++++++++++++++++++++-
+> > > 4 files changed, 228 insertions(+), 1 deletion(-)
+> > >
+> > >diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
+> > >index e586e17fc7a5..1e9c0d2be7b8 100644
+> > >--- a/Documentation/admin-guide/sysctl/net.rst
+> > >+++ b/Documentation/admin-guide/sysctl/net.rst
+> > >@@ -515,6 +515,24 @@ their hosts. The behavior of VSOCK sockets in a network namespace is determined
+> > > by the namespace's mode (``global`` or ``local``), which controls how CIDs
+> > > (Context IDs) are allocated and how sockets interact across namespaces.
+> > >
+> > >+In a guest, the vsock device owned by the guest-to-host (G2H) transport belongs
+> > >+to one network namespace at a time. The ``IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS``
+> > >+ioctl on ``/dev/vsock`` moves it to the namespace of the calling process, which
+> > >+requires ``CAP_NET_ADMIN`` in the initial user namespace. The namespace's mode
+> > >+decides who may then use the device:
+> > >+
+> > >+- ``global`` - every ``global`` mode namespace may use it.
+> > >+- ``local`` - only that namespace may use it, which reserves the connection to
+> > >+  the host for it alone.
+> > >+
+> > >+The device starts out in the initial namespace, so until the ioctl is issued
+> > >+nothing has moved and no mode has changed.
+> > >+
+> > >+Connections made before the move, from a namespace that can no longer reach the
+> > >+device, are reset. The device returns to the initial namespace when the
+> > >+namespace it was moved to is deleted, so assigning it to the initial namespace
+> > >+is how an assignment is undone.
+> > >+
+> > > ns_mode
+> > > -------
+> > >
+> > >diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+> > >index 87fdec60ba45..64c4b205a11b 100644
+> > >--- a/include/net/af_vsock.h
+> > >+++ b/include/net/af_vsock.h
+> > >@@ -190,6 +190,9 @@ struct vsock_transport {
+> > >
+> > >       /* Zero-copy. */
+> > >       bool (*msgzerocopy_allow)(void);
+> > >+
+> > >+      /* True if the transport honours IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS. */
 > >
-> > On 9/10/26 23:46, Zhiping Zhang wrote: =20
-> > > Hi Christian,
+> > "if the G2H transport ..."
+> >
+> > >+      bool (*netns_assign_allow)(void);
+> >
+> > What about having just a bool (and maybe we should do the same for
+> > msgzerocopy_allow())?
+> >
+> > > };
 > > >
-> > > Third ping on this series. The only patch still without review is 3/5,
-> > > which adds an optional get_pci_tph() callback to dma_buf_ops:
+> > > /**** CORE ****/
+> > >@@ -235,6 +238,10 @@ void vsock_for_each_connected_socket(const struct vsock_transport *transport,
+> > > int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk);
+> > > bool vsock_find_cid(unsigned int cid);
+> > > void vsock_linger(struct sock *sk);
+> > >+struct net *vsock_g2h_net_get(void);
+> > >+bool vsock_g2h_net_reachable(struct net *net);
+> > >+bool vsock_g2h_reachable_sk(struct vsock_sock *vsk);
+> > >+bool vsock_maybe_set_connected(struct vsock_sock *vsk);
 > > >
-> > > https://lore.kernel.org/kvm/20260731211601.3033906-4-zhipingz@meta.co=
-m/
+> > > /**** TAP ****/
 > > >
-> > > It lets an exporter report the PCIe TPH steering tag for a
-> > > peer-to-peer mapping. The callback is optional -- exporters that don't
-> > > implement it behave exactly as today -- and nothing else in dma-buf
-> > > changes.
+> > >diff --git a/include/uapi/linux/vm_sockets.h b/include/uapi/linux/vm_sockets.h
+> > >index e05280e41522..894b0d65b458 100644
+> > >--- a/include/uapi/linux/vm_sockets.h
+> > >+++ b/include/uapi/linux/vm_sockets.h
+> > >@@ -195,6 +195,12 @@ struct sockaddr_vm {
 > > >
-> > > The rest of the series is settled: Chengwen acked patch 2, the
-> > > automated review is clean, and there are no open comments from v12.
-> > > Alex is holding his ack until the dma-buf side has been looked at, so
-> > > this one callback is gating the whole series.
+> > > #define IOCTL_VM_SOCKETS_GET_LOCAL_CID                _IO(7, 0xb9)
 > > >
-> > > If you have concerns about the API shape or the locking, I'll respin.
-> > > If someone else should review the dma-buf side, tell me who and I'll
-> > > take it there. Otherwise I'll check with Alex and Jason next week on
-> > > how to proceed, since 7.3 is in rc and the next window is about a
-> > > month out.
+> > >+/* Assign the guest's vsock device to the network namespace of the calling
+> > >+ * process. Requires CAP_NET_ADMIN in the initial user namespace. To undo an
+> > >+ * assignment, assign the device to the initial network namespace.
+> > >+ */
+> > >+#define IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS     _IO(7, 0xba)
+> > >+
+> > > /* MSG_ZEROCOPY notifications are encoded in the standard error format,
+> > >  * sock_extended_err. See Documentation/networking/msg_zerocopy.rst in
+> > >  * kernel source tree for more details.
+> > >diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> > >index 29cde17e08f3..ad11f0f56eb8 100644
+> > >--- a/net/vmw_vsock/af_vsock.c
+> > >+++ b/net/vmw_vsock/af_vsock.c
+> > >@@ -130,6 +130,24 @@
+> > >  *       a different transport that *does* support local mode. For
+> > >  *       example, virtio-vsock may not support local mode, but the socket
+> > >  *       may still accept a connection from vhost-vsock which does.
+> > >+ *
+> > >+ * - A guest has a single vsock device, owned by the guest->host transport.
+> > >+ *   IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS on /dev/vsock assigns it to the
+> > >+ *   namespace of the caller. It starts out in init_net. The mode rules then
+> > >+ *   decide who may use it, and which namespace packets from the host are
+> > >+ *   delivered to:
+> > >+ *
+> > >+ *   - assigned to a global mode namespace - every global mode namespace may
+> > >+ *     use it. Until the ioctl is issued nothing has moved and no mode has
+> > >+ *     changed, so the default is the behaviour that predates it.
+> > >+ *   - assigned to a local mode namespace - only that namespace may use it.
+> > >+ *     This is how a nested VM is isolated from the rest of the guest.
+> > >+ *
+> > >+ *   Connections made before an assignment, from a namespace that can no
+> > >+ *   longer reach the device, are reset.
+> > >+ *
+> > >+ *   No reference is taken on the assigned namespace. As is done for netdevs,
+> > >+ *   the device is moved back to init_net when that namespace is destroyed.
+> > >  */
 > > >
-> > > Thanks,
-> > > Zhiping
+> > > #include <linux/compat.h>
+> > >@@ -208,6 +226,11 @@ static const struct vsock_transport *transport_dgram;
+> > > static const struct vsock_transport *transport_local;
+> > > static DEFINE_MUTEX(vsock_register_mutex);
 > > >
-> > > On Wed, Sep 2, 2026 at 1:53=E2=80=AFPM Zhiping Zhang <zhipingz@meta.c=
-om> wrote: =20
-> > >>
-> > >> Hi Christian,
-> > >>
-> > >> Another ping on this series for your attention. Pls see below for mo=
-re details.
-> > >>
-> > >> Thanks,
-> > >> Zhiping
-> > >>
-> > >> On Fri, Aug 14, 2026 at 11:08=E2=80=AFAM Zhiping Zhang <zhipingz@met=
-a.com> wrote: =20
-> > >>>
-> > >>>  Hi Christian,
-> > >>>
-> > >>> A gentle ping on this series, especially patch 3, which adds the
-> > >>> optional dma-buf get_pci_tph() callback. Could you please review th=
-is
-> > >>> when you have a chance?
-> > >>>
-> > >>> https://lore.kernel.org/linux-pci/20260731211601.3033906-4-zhipingz=
-@meta.com/
-> > >>>
-> > >>> Thanks,
-> > >>> Zhiping
-> > >>>
-> > >>>
-> > >>> On Fri, Jul 31, 2026 at 2:22=E2=80=AFPM Zhiping Zhang <zhipingz@met=
-a.com> wrote: =20
-> > >>>>
-> > >>>> This series adds TLP Processing Hints (TPH) support to the VFIO dm=
-a-buf
-> > >>>> export path, allowing importing drivers (e.g. mlx5) to use the
-> > >>>> exporter's steering tag when performing peer-to-peer DMA into a
-> > >>>> VFIO-owned device.
-> > >>>>
-> > >>>> There is no separate in-tree vendor kernel driver for the target d=
-evice:
-> > >>>> vfio-pci is the in-tree driver and the targeted device is managed
-> > >>>> from userspace via VFIO passthrough. That is why the ST has to flow
-> > >>>> through a uAPI: userspace owns the device and its ST table, so it =
-is the
-> > >>>> entity that can configure a meaningful value for a given dma-buf. =
-The
-> > >>>> kernel-visible participants are still in-tree: vfio-pci exports the
-> > >>>> dma-buf and mlx5 imports it.
-> > >>>>
-> > >>>> On the effect: the endpoint's PCIe ingress block uses the ST as
-> > >>>> an in-band instruction for the incoming P2P TLP -- selecting a tar=
-get
-> > >>>> cache partition and, on writes, an in-flight operation on the data
-> > >>>> before it lands. The dma-buf callback keeps this opaque to the
-> > >>>> framework -- only the producer (userspace owner of the VFIO device)
-> > >>>> and the consumer (endpoint block) need to interpret the value. The
-> > >>>> dma-buf get_pci_tph callback itself is optional, but workloads that
-> > >>>> depend on the endpoint's in-flight operation need it because fallb=
-ack
-> > >>>> does not produce the same result.
-> > >>>>
-> > >>>> The dma-buf hook is intentionally generic and discoverable rather =
-than
-> > >>>> a private side channel. The exporter owns the completing address
-> > >>>> space for the dma-buf and decides whether it can provide a meaning=
-ful
-> > >>>> ST/PH tuple for that completer; the dma-buf core keeps the tuple o=
-paque,
-> > >>>> and importers merely request the namespace they support and place =
-the
-> > >>>> returned value on generated TLPs. Exporters that cannot derive a
-> > >>>> meaningful tuple simply return -EOPNOTSUPP.
-> > >>>>
-> > >>>> TPH is advisory: a steering tag that is not honored on the path (f=
-or
-> > >>>> example an intermediate routing element that does not forward the =
-TPH
-> > >>>> prefix) is ignored and the request completes as an ordinary,
-> > >>>> non-TPH transaction (PCIe Base 6.4 sec 2.2.7.1). This series there=
-fore
-> > >>>> targets the same-Root-Port / common-switch topology, where the ST
-> > >>>> reaches the completer; cross-Root-Port P2P is best-effort and is n=
-ot
-> > >>>> gated in the uAPI, since supplying an unused ST is harmless and th=
-ere
-> > >>>> is no discoverable "TPH routing" capability to test against.
-> > >>>>
-> > >>>> Patch 1 folds the reserved 0b10 "TPH Completer Supported" encoding=
- into
-> > >>>> "not supported" in get_rp_completer_type(), so only architected va=
-lues
-> > >>>> can reach the TPH Requester Enable field. It was previously posted
-> > >>>> standalone to linux-pci; per Alex Williamson's v12 review it now t=
-ravels
-> > >>>> with the series, which removes the cross-tree ordering dependency =
-and
-> > >>>> lets review tooling apply the series as posted.
-> > >>>> Patch 2 adds small PCI/TPH type helpers so drivers can query the e=
-nabled
-> > >>>> TPH requester mode and the device's TPH Completer Supported field
-> > >>>> without reaching into pci_dev internals (and so callers in
-> > >>>> CONFIG_PCIE_TPH=3Dn builds get a clean fallback). pcie_tph_complet=
-er_type()
-> > >>>> applies the same reserved-encoding fold as get_rp_completer_type(),
-> > >>>> inlined locally so the helper is self-contained.
-> > >>>> Patch 3 adds the optional dma_buf_ops::get_pci_tph callback plus t=
-he
-> > >>>> dma_buf_get_pci_tph() importer wrapper so importers can fetch TPH
-> > >>>> metadata from an exporter under dmabuf->resv.
-> > >>>> Patch 4 implements get_pci_tph in vfio-pci and adds the new uAPI
-> > >>>> (VFIO_DEVICE_FEATURE_DMA_BUF_TPH) for userspace to attach the meta=
-data.
-> > >>>> Patch 5 wires up the mlx5 RDMA driver as a consumer. It also enfor=
-ces the
-> > >>>> dma_buf_get_pci_tph() steering-tag lifetime: the tag is only valid=
- for the
-> > >>>> mapping it was queried against, and the mkey's TPH fields cannot be
-> > >>>> reprogrammed in place. mlx5 therefore records the registration-tim=
-e tuple
-> > >>>> and re-queries after each dma-buf mapping is established under
-> > >>>> dmabuf->resv; unchanged tuples continue with the existing mkey, wh=
-ile
-> > >>>> changed or missing tuples fail the remap rather than continue with=
- a
-> > >>>> stale hint. For vfio-pci BAR dma-bufs this is expected to be a no-=
-op
-> > >>>> because invalidation is revoke/quiesce, not movement to a new back=
-ing
-> > >>>> placement, and the userspace-provided tuple is not changed by the
-> > >>>> revoke/un-revoke path.
-> > >>>>
-> > >>>> Build-tested with both CONFIG_PCIE_TPH=3Dy and CONFIG_PCIE_TPH=3Dn.
-> > >>>> Functional validation on the target topology: PCIe analyzer captur=
-es
-> > >>>> on the P2P TLPs confirm the ST emitted by mlx5 matches the value
-> > >>>> configured through VFIO_DEVICE_FEATURE_DMA_BUF_TPH, and the end-to=
--end
-> > >>>> P2P workload only produces results consistent with the endpoint's
-> > >>>> ST-selected in-flight operation. For example, with userspace
-> > >>>> configuring 8-bit ST=3D0xf0 and PH=3D2, an analyzer capture of a p=
-eer-to-
-> > >>>> peer MWr64 shows "STP MWr64 TC=3D0 OHC=3D2 ..." followed by "OHC-B
-> > >>>> ST=3DF0h PH=3D2 HV=3D1":
-> > >>>> (TLP Captures)
-> > >>>> 08000260 -> STP MWr64 TC=3D0 OHC=3D2 TS=3D0 Attr=3D0 L=3D8
-> > >>>> F0000004 -> RID=3D4h:0h.0h EP- Tag=3DF0h
-> > >>>> E0200000 -> AddrH=3D000020E0h
-> > >>>> 00080006 -> AddrL=3D06000800h
-> > >>>> 90F00000 -> OHC-B ST=3DF0h PH=3D2 HV=3D1 AMA=3D0 AV-
-> > >>>>
-> > >>>> The dma-buf get_pci_tph interface has also been exercised by a sec=
-ond,
-> > >>>> independent importer: a different vendor's NIC whose driver is not=
- yet
-> > >>>> upstream, locally taught to call dma_buf_get_pci_tph(). A PCIe ana=
-lyzer
-> > >>>> confirmed the ST it placed on outbound P2P TLPs matches the value
-> > >>>> configured through VFIO_DEVICE_FEATURE_DMA_BUF_TPH, the same resul=
-t as
-> > >>>> with mlx5. Two unrelated importer drivers exercising the callback
-> > >>>> end-to-end shows the interface is not tied to a single consumer. T=
-hat
-> > >>>> importer change is out-of-tree and not part of this series. For th=
-at
-> > >>>> second importer, with userspace configuring 8-bit ST=3D0xe0 and PH=
-=3D0,
-> > >>>> an analyzer capture shows:
-> > >>>> (TLP Captures)
-> > >>>> 08200260 -> STP MWr64 TC=3D0 OHC=3D2 TS=3D1 Attr=3D0 L=3D8
-> > >>>> 4E00004C -> RID=3D4Ch:0h.0h EP- Tag=3D4Eh
-> > >>>> 00170000 -> AddrH=3D00001700h
-> > >>>> 00200006 -> AddrL=3D06002000h
-> > >>>> 10E00000 -> OHC-B ST=3DE0h PH=3D0 HV=3D1 AMA=3D0 AV-
-> > >>>>
-> > >>>> Changes since v12:
-> > >>>>   Patch 1 (PCI/TPH, new to the series): the reserved-encoding fold,
-> > >>>>   previously posted standalone to linux-pci [1], is now the first =
-patch
-> > >>>>   here (Alex Williamson). Sashiko could not apply v12 because of t=
-hat
-> > >>>>   external dependency; with the fold in-series and the mlx5 leak f=
-ix in
-> > >>>>   linux-next, v13 has none. The code is unchanged from the standal=
-one
-> > >>>>   v3; the Fixes: tag is dropped, since no code path can reach the
-> > >>>>   reserved encoding today and the patch is hardening rather than a=
- fix
-> > >>>>   for observed silicon.
-> > >>>>
-> > >>>>   Patch 2 (PCI/TPH): inline the reserved-encoding fold in
-> > >>>>   pcie_tph_completer_type() rather than calling the helper that ea=
-rlier
-> > >>>>   folding revisions added; that helper was dropped in folding v3 p=
-er
-> > >>>>   Bjorn Helgaas and Wei Huang.
-> > >>>>
-> > >>>>   Patch 3 (dma-buf): no functional change.
-> > >>>>
-> > >>>>   Patch 4 (vfio/pci): also gate the DMA_BUF_TPH feature on
-> > >>>>   vdev->pci_ops->get_dmabuf_phys, matching
-> > >>>>   vfio_pci_core_feature_dma_buf(). Without it PROBE reported the f=
-eature
-> > >>>>   as supported on a device that advertises TPH Completer support b=
-ut
-> > >>>>   cannot export a vfio dma-buf at all, so nothing could ever carry=
- the
-> > >>>>   metadata (Alex Williamson, who raised this to uAPI-affecting
-> > >>>>   severity).
-> > >>>>
-> > >>>>   Patch 5 (mlx5): keep the !dev->st early-out in mlx5_st_alloc_ind=
-ex()
-> > >>>>   ahead of the pcie_tph_get_cpu_st() call, so splitting out
-> > >>>>   mlx5_st_alloc_index_by_tag() neither adds an ACPI _DSM invocatio=
-n on
-> > >>>>   devices without ST support nor changes the errno userspace sees =
-when
-> > >>>>   the _DSM lookup fails (Alex Williamson). The commit message now
-> > >>>>   describes this rather than presenting the split as a pure extrac=
-tion.
-> > >>>>
-> > >>>> Previous link:
-> > >>>> v12: https://lore.kernel.org/linux-pci/20260715204008.3911275-1-zh=
-ipingz@meta.com/
-> > >>>> v11: https://lore.kernel.org/linux-pci/20260702181025.2694961-1-zh=
-ipingz@meta.com/
-> > >>>> v10: https://lore.kernel.org/linux-pci/20260630224328.3218796-1-zh=
-ipingz@meta.com/
-> > >>>> v9: https://lore.kernel.org/dri-devel/20260622184211.2229399-1-zhi=
-pingz@meta.com/
-> > >>>> v8: https://lore.kernel.org/dri-devel/20260615065912.2177918-1-zhi=
-pingz@meta.com/
-> > >>>> v7: https://lore.kernel.org/dri-devel/20260611161546.4075580-1-zhi=
-pingz@meta.com/
-> > >>>> v6: https://lore.kernel.org/dri-devel/20260608185646.4085127-1-zhi=
-pingz@meta.com/
-> > >>>> v5: https://lore.kernel.org/dri-devel/20260526144401.1485788-1-zhi=
-pingz@meta.com/
-> > >>>> v4: https://lore.kernel.org/linux-pci/20260519201401.1558410-1-zhi=
-pingz@meta.com/
-> > >>>> v3: https://lore.kernel.org/linux-pci/20260512184755.4137227-1-zhi=
-pingz@meta.com/
-> > >>>> v2: https://lore.kernel.org/linux-pci/20260430200704.352228-1-zhip=
-ingz@meta.com/
-> > >>>>
-> > >>>> Zhiping Zhang (5):
-> > >>>>   PCI/TPH: treat reserved 0b10 completer encoding as unsupported
-> > >>>>   PCI/TPH: Add requester/completer type helpers
-> > >>>>   dma-buf: add optional get_pci_tph() callback
-> > >>>>   vfio/pci: implement get_pci_tph and DMA_BUF_TPH feature
-> > >>>>   RDMA/mlx5: get tph for p2p access when registering dma-buf mr
-> > >>>>
-> > >>>>  drivers/dma-buf/dma-buf.c                     |  32 ++++
-> > >>>>  drivers/infiniband/hw/mlx5/main.c             |   1 +
-> > >>>>  drivers/infiniband/hw/mlx5/mlx5_ib.h          |  11 ++
-> > >>>>  drivers/infiniband/hw/mlx5/mr.c               | 151 +++++++++++++=
-++++-
-> > >>>>  drivers/infiniband/hw/mlx5/odp.c              |   7 +
-> > >>>>  .../net/ethernet/mellanox/mlx5/core/lib/st.c  |  52 +++++-
-> > >>>>  drivers/pci/tph.c                             |  55 ++++++-
-> > >>>>  drivers/vfio/pci/vfio_pci_core.c              |   3 +
-> > >>>>  drivers/vfio/pci/vfio_pci_dmabuf.c            | 120 +++++++++++++-
-> > >>>>  drivers/vfio/pci/vfio_pci_priv.h              |  13 ++
-> > >>>>  include/linux/dma-buf.h                       |  25 +++
-> > >>>>  include/linux/mlx5/driver.h                   |  15 ++
-> > >>>>  include/linux/pci-tph.h                       |   8 +
-> > >>>>  include/uapi/linux/vfio.h                     |  43 +++++
-> > >>>>  14 files changed, 517 insertions(+), 19 deletions(-)
-> > >>>>
-> > >>>> --
-> > >>>> 2.53.0-Meta
-> > >>>> =20
-> > =20
+> > >+/* Network namespace of the g2h device. Protected by
+> > >+ * vsock_register_mutex/RCU.
+> > >+ */
+> > >+static struct net __rcu *vsock_g2h_net = RCU_INITIALIZER(&init_net);
+> > >+
+> > > /**** UTILS ****/
+> > >
+> > > /* Each bound VSocket is stored in the bind hash table and each connected
+> > >@@ -548,6 +571,17 @@ static void vsock_deassign_transport(struct vsock_sock *vsk)
+> > >       vsk->transport = NULL;
+> > > }
+> > >
+> > >+/* Return true if the loaded g2h transport honours namespace assignment. One
+> > >+ * that does not keeps the reachability rules it had before the ioctl existed.
+> > >+ *
+> > >+ * Must be called with vsock_register_mutex held.
+> > >+ */
+> > >+static bool vsock_g2h_netns_assignable(void)
+> > >+{
+> > >+      return transport_g2h && transport_g2h->netns_assign_allow &&
+> > >+             transport_g2h->netns_assign_allow();
+> > >+}
+> > >+
+> > > /* Assign a transport to a socket and call the .init transport callback.
+> > >  *
+> > >  * Note: for connection oriented socket this must be called when vsk->remote_addr
+> > >@@ -622,6 +656,13 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
+> > >               goto err;
+> > >       }
+> > >
+> > >+      if (new_transport && new_transport == transport_g2h &&
+> > >+          vsock_g2h_netns_assignable() &&
+> > >+          !vsock_g2h_net_reachable(sock_net(sk))) {
+> > >+              ret = -ENETUNREACH;
+> > >+              goto err;
+> > >+      }
+> > >+
+> > >       /* We increase the module refcnt to prevent the transport unloading
+> > >        * while there are open sockets assigned to it.
+> > >        */
+> > >@@ -710,6 +751,140 @@ bool vsock_find_cid(unsigned int cid)
+> > > }
+> > > EXPORT_SYMBOL_GPL(vsock_find_cid);
+> > >
+> > >+/* Return the g2h devices' namespace with a reference held, or NULL if that
+> > >+ * namespace is being destroyed.
+> > >+ */
+> > >+struct net *vsock_g2h_net_get(void)
+> > >+{
+> > >+      struct net *assigned;
+> > >+      struct net *net;
+> > >+
+> > >+      rcu_read_lock();
+> > >+      assigned = rcu_dereference(vsock_g2h_net);
+> > >+      net = maybe_get_net(assigned);
+> > >+
+> > >+      /* !net means the net is about to be destroyed, at which point the g2h
+> > >+       * device will move to the init_net.  If the init_net and the dying net
+> > >+       * are both global mode, we use the init_net as a fallback to avoid
+> > >+       * disrupting global-mode flows. The per-net destructor hook will
+> > >+       * eventually move the g2h device to the init_net anyway.
+> > >+       */
+> > >+      if (!net && vsock_net_check_mode(&init_net, assigned))
+> > >+              net = get_net(&init_net);
+> > >+      rcu_read_unlock();
+> > >+
+> > >+      return net;
+> > >+}
+> > >+EXPORT_SYMBOL_GPL(vsock_g2h_net_get);
+> > >+
+> > >+bool vsock_g2h_net_reachable(struct net *net)
+> > >+{
+> > >+      bool reachable;
+> > >+
+> > >+      rcu_read_lock();
+> > >+      reachable = vsock_net_check_mode(net, rcu_dereference(vsock_g2h_net));
+> > >+      rcu_read_unlock();
+> > >+
+> > >+      return reachable;
+> > >+}
+> > >+EXPORT_SYMBOL_GPL(vsock_g2h_net_reachable);
+> > >+
+> > >+bool vsock_g2h_reachable_sk(struct vsock_sock *vsk)
+> > >+{
+> > >+      const struct vsock_transport *t = vsk->transport;
+> > >+
+> > >+      if (!t || !t->netns_assign_allow || !t->netns_assign_allow())
+> > >+              return true;
+> 
+> Can we have a single helper and call it with t or transport_g2h here
+> and where vsock_g2h_netns_assignable() is used?
 
+Yep, sounds good.
+
+> 
+> > >+
+> > >+      return vsock_g2h_net_reachable(sock_net(sk_vsock(vsk)));
+> > >+}
+> > >+EXPORT_SYMBOL_GPL(vsock_g2h_reachable_sk);
+> >
+> > This seems used only in af_vsock.c
+> >
+> > >+
+> > >+/* Move @vsk to TCP_ESTABLISHED and into the connected table, unless the device
+> > >+ * has moved to a namespace @vsk cannot reach. Returns false without doing
+> > >+ * either in that case.
+> > >+ *
+> > >+ * vsock_g2h_net_assign() resets the sockets it finds in the same table under
+> > >+ * the same lock. Either vsock_g2h_net_assign() sees the vsk in the table and
+> > >+ * resets it, or it does not see the @vsk in the table and this function
+> > >+ * refuses to add it. This avoids netns assignment racing with outstanding
+> > >+ * connection responses and incoming connection requests.
+> > >+ */
+> > >+bool vsock_maybe_set_connected(struct vsock_sock *vsk)
+> > >+{
+> > >+      struct list_head *list = vsock_connected_sockets(&vsk->remote_addr,
+> > >+                                                       &vsk->local_addr);
+> > >+      bool reachable;
+> > >+
+> > >+      spin_lock_bh(&vsock_table_lock);
+> > >+      reachable = vsock_g2h_reachable_sk(vsk);
+> > >+      if (reachable) {
+> > >+              sk_vsock(vsk)->sk_state = TCP_ESTABLISHED;
+> > >+              __vsock_insert_connected(list, vsk);
+> > >+      }
+> > >+      spin_unlock_bh(&vsock_table_lock);
+> > >+
+> > >+      return reachable;
+> > >+}
+> > >+EXPORT_SYMBOL_GPL(vsock_maybe_set_connected);
+> > >+
+> > >+static void vsock_reset_unreachable_sock(struct sock *sk)
+> > >+{
+> > >+      if (vsock_g2h_net_reachable(sock_net(sk)))
+> > >+              return;
+> > >+
+> > >+      sk->sk_state = TCP_CLOSE;
+> > >+      sk->sk_err = ECONNRESET;
+> > >+      sk_error_report(sk);
+> >
+> > Should we send the reset to the other peer too?
+> >
+> > Or avoid to set TCP_CLOSE, so the user will see the error and close it?
+> >
+> > >+}
+> > >+
+> > >+/* Move the g2h device to @net. Returns -ENODEV if no g2h transport is loaded
+> > >+ * and -EOPNOTSUPP if the loaded one cannot be moved.
+> > >+ */
+> > >+static int vsock_g2h_net_assign(struct net *net)
+> > >+{
+> > >+      int ret = 0;
+> > >+
+> > >+      mutex_lock(&vsock_register_mutex);
+> > >+      if (!transport_g2h) {
+> > >+              ret = -ENODEV;
+> > >+      } else if (!vsock_g2h_netns_assignable()) {
+> > >+              ret = -EOPNOTSUPP;
+> > >+      } else {
+> > >+              /* See vsock_maybe_set_connected() comment about synchronizing
+> > >+               * with connecting sockets.
+> > >+               */
+> > >+              rcu_assign_pointer(vsock_g2h_net, net);
+> > >+              vsock_for_each_connected_socket(transport_g2h,
+> > >+                                              vsock_reset_unreachable_sock);
+> > >+      }
+> > >+      mutex_unlock(&vsock_register_mutex);
+> > >+
+> > >+      return ret;
+> > >+}
+> > >+
+> > >+/* Move the g2h device back to init_net if it lives in @net, which is about to
+> > >+ * be destroyed.
+> > >+ */
+> > >+static void vsock_g2h_net_reset(struct net *net)
+> > >+{
+> > >+      bool reset = false;
+> > >+
+> > >+      /* Avoid taking the mutex if the namespaces don't match. */
+> > >+      if (likely(rcu_access_pointer(vsock_g2h_net) != net))
+> > >+              return;
+> > >+
+> > >+      mutex_lock(&vsock_register_mutex);
+> > >+      if (rcu_access_pointer(vsock_g2h_net) == net) {
+> > >+              rcu_assign_pointer(vsock_g2h_net, &init_net);
+> > >+              reset = true;
+> > >+      }
+> > >+      mutex_unlock(&vsock_register_mutex);
+> > >+
+> > >+      if (reset)
+> > >+              synchronize_rcu();
+> > >+}
+> > >+
+> > > static struct sock *vsock_dequeue_accept(struct sock *listener)
+> > > {
+> > >       struct vsock_sock *vlistener;
+> > >@@ -2745,6 +2920,15 @@ static long vsock_dev_do_ioctl(struct file *filp,
+> > >                       retval = -EFAULT;
+> > >               break;
+> > >
+> > >+      case IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS:
+> > >+              if (!capable(CAP_NET_ADMIN)) {
+> > >+                      retval = -EPERM;
+> > >+                      break;
+> > >+              }
+> > >+
+> > >+              retval = vsock_g2h_net_assign(current->nsproxy->net_ns);
+> > >+              break;
+> > >+
+> > >       default:
+> > >               retval = -ENOIOCTLCMD;
+> > >       }
+> > >@@ -2978,6 +3162,7 @@ static __net_init int vsock_sysctl_init_net(struct net *net)
+> > >
+> > > static __net_exit void vsock_sysctl_exit_net(struct net *net)
+> > > {
+> > >+      vsock_g2h_net_reset(net);
+> >
+> > Why calling this in the sysctl_exit ?
+> >
+> > >       vsock_sysctl_unregister(net);
+> > > }
+> > >
+> > >@@ -3104,13 +3289,21 @@ EXPORT_SYMBOL_GPL(vsock_core_register);
+> > >
+> > > void vsock_core_unregister(const struct vsock_transport *t)
+> > > {
+> > >+      bool g2h_net_reset = false;
+> > >+
+> > >       mutex_lock(&vsock_register_mutex);
+> > >
+> > >       if (transport_h2g == t)
+> > >               transport_h2g = NULL;
+> > >
+> > >-      if (transport_g2h == t)
+> > >+      if (transport_g2h == t) {
+> > >               transport_g2h = NULL;
+> > >+              /* The device is gone, so is its namespace assignment. */
+> > >+              if (rcu_access_pointer(vsock_g2h_net) != &init_net) {
+> > >+                      rcu_assign_pointer(vsock_g2h_net, &init_net);
+> > >+                      g2h_net_reset = true;
+> > >+              }
+> > >+      }
+> > >
+> > >       if (transport_dgram == t)
+> > >               transport_dgram = NULL;
+> > >@@ -3119,6 +3312,9 @@ void vsock_core_unregister(const struct vsock_transport *t)
+> > >               transport_local = NULL;
+> > >
+> > >       mutex_unlock(&vsock_register_mutex);
+> > >+
+> > >+      if (g2h_net_reset)
+> > >+              synchronize_rcu();
+> >
+> > Why we need this? (I'd add also a comment with the reason)
+> >
+> > > }
+> > > EXPORT_SYMBOL_GPL(vsock_core_unregister);
+> > >
+> > >
+> > >--
+> > >2.53.0-Meta
+> > >
+> 
