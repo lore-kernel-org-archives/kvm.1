@@ -1,327 +1,152 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2514CA78E;
-	Tue, 15 Sep 2026 16:03:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE05D4BA1D8
+	for <kvm@vger.kernel.org>; Tue, 15 Sep 2026 16:08:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789488186; cv=none; b=Ht3MpiNtgPZ+ohhpRHI3nKat15S/1a2na7FXhn0M2IAWxYCEVm02o3kclL+mSy1Ra1lyPVi/3dEs57AvCk3g92Mz9YwNbkCth+tmwjCX+Rry9R+x2Ffbja0AcVo/jsioAssJKl2yOaSwNFTAfe/MGEkJUbqHGRiLfmLhxlY2BCk=
+	t=1789488538; cv=none; b=Y8T1yBxFKmhTVUbjnTIduB7OLOgUG5z9Vryh9KT00y6WjfxHFaEGj+6KTzpQKIBKtnHx/rkAGfbt3xrPIxt9KGocK1ARFywjQSKzGun6a2zZiDobRAUvL98CmMkmRUOZpiCLL/mtuukYIKV7PirgkaQVel3CYca569E3QtL2LRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789488186; c=relaxed/simple;
-	bh=mmi6VEWU9VuEsCf9DcQoojukGEJWWKDyBgEMumw2iIQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KybOZup20uzUCdlbupduuTvliTRF+8YZYlC2vZurUkYXdzIQ+uMWg/OGaMqhoB8vOsbLYAiy79RTfjJUSEMGlI/RYXsAr4xRo0BmIcIGDs0oKGIA1R9DMiww0FhVkUtE1MUqoPP7DGbkcKWeoAayXmuFrLBAYFsb2D/dzl6Y1+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=bdFSVjp8; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1789488538; c=relaxed/simple;
+	bh=TaD3IKHcoZf0PQ+wUUh3mHvOgYZf6uXYuUZRFHNcE+Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=a4E6I2Auj9j2ZMqD2FozpippRq7QXangzanATefiLayt+VxBtEqLynhko3MgAlzaf0VuxEyodKkIwDP9ISCLOFwkhGGSBdf5zFZ1RIY8OApD4fmIWnnFKXtkWkEM57yi5szGrgCQW0XYKZ9/IZE7vU6IkBPbQMBjxV7/YiQijPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=DKPT1Y6M; arc=none smtp.client-ip=74.125.228.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="bdFSVjp8"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8DC0C1D70;
-	Tue, 15 Sep 2026 09:02:58 -0700 (PDT)
-Received: from ewhatever.cambridge.arm.com (ewhatever.cambridge.arm.com [10.2.197.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 5B2393F882;
-	Tue, 15 Sep 2026 09:02:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789488182; bh=mmi6VEWU9VuEsCf9DcQoojukGEJWWKDyBgEMumw2iIQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bdFSVjp8EvWuv6uNe0bC1gC3Jff0pK6fz9Hf2o4MnE+98QgymeO15EnDC9P22GGd9
-	 l7vgRs+WZmKl8iEr0eiPGo0S9vdQKjdb/zyvk5zuQbJyG2rWdBKbDjEwx30+Nr9HaI
-	 cSyJ2tI8Du1VTwP83+HE99Yfxy+noLq2+HtENGyI=
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: maz@kernel.org,
-	will@kernel.org,
-	catalin.marinas@arm.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	steven.price@arm.com,
-	aneesh.kumar@kernel.org,
-	oupton@kernel.org,
-	gshan@redhat.com,
-	joey.gouly@arm.com,
-	tabba@google.com,
-	yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev,
-	gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com,
-	alpergun@google.com,
-	fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com,
-	lpieralisi@kernel.org,
-	enju.kohei@fujitsu.com,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [PATCH v18 23/23] KVM: arm64: CCA: Control user register access for Realms
-Date: Tue, 15 Sep 2026 17:01:41 +0100
-Message-ID: <20260915160141.3543048-24-suzuki.poulose@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260915160141.3543048-1-suzuki.poulose@arm.com>
-References: <20260915160141.3543048-1-suzuki.poulose@arm.com>
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="DKPT1Y6M"
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a98604f6b4so5118362a12.2
+        for <kvm@vger.kernel.org>; Tue, 15 Sep 2026 09:08:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1789488531; x=1790093331; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cj8iWYGkmy9fr6Sp+MjBMi0cvssqzarl8Tgut8FUMEc=;
+        b=DKPT1Y6M92md+bQyFQsx6CorRSMuXX8r2ZAhx8PuP2sk+j8hKNgc1gsrOZN3CzIifx
+         63s+LWP2y6cRyR9RZg6B5wYeaddUIA/vY0smyLFOrSRvZsl3vXp5AlLrnrIHSV22ERgh
+         pzoUu/wo9Y7lAt0B1Akktl1mBR+KR+NKyfSmA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789488531; x=1790093331;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=cj8iWYGkmy9fr6Sp+MjBMi0cvssqzarl8Tgut8FUMEc=;
+        b=fY7jFbKFj5XVw7GDF054rkDrc0zwqaKAeAh/S4zfcMaADPHsNCkoPgMex8JuXN4MXH
+         yiAkRatvmDh6hIDhEHw1C56Ps10koWAv3fGynU+5LyJB5aFvjpHVkq/KkZNVUYdzN3zq
+         ocikTFf5tniEI/ETGHAx4jNGsQpFKz6pVommn0WtwB/8khtDnsXCxu7gDNCKfNYfgge3
+         XiWNw7S+bmrPMAbeYwyWyW6AoUgKUi713SfSfwifzwyyl7WiSbPs4ff8BKTLR+gIlE6s
+         BFCTPbneQFZTjUx+oeQK0i0pC2G0yU3NIdyGvcaelEvBJYhVO0leSzvIwkKSrCEqGHO9
+         SdfA==
+X-Forwarded-Encrypted: i=1; AKwUvByH5HntGgqqzknXiZ313qma1FAXfSeZb2n1DJ1C6vII6JKCfPazCozuEPAXPp09xfyvfqU=@vger.kernel.org
+X-Gm-Message-State: AFuF++l+vzTJxageo50xeIlOU8UTg9PW8VDE9pVES5TnWQ+MbM7/t07n
+	ThuYV7i15d74NN4EJk7Czi/vCzoTL/XQ4HQPkdx8Non4X9dnyCZbFUtiS1UEjyWopUuRdmCjLJK
+	kFGdDfNE=
+X-Gm-Gg: AYBFou0/5184SzMmY430pHFRTMUdXDHBRcUhVkmtSGBFIll5YJKWcs+eGNSWNkqlGOs
+	Jv6zA7hEfDTYJrKreUEAI/QfeVR+ZI5dec43953wNWHcYPS7iXNRuF+r/NAs+VtXC0Bo7Ti3Kd7
+	TM7hQMrIEcv6Q0v3dNdtcfphlXh2iXiNhb7QRcWulH3DuIFjC/hCO9s+EAMG5yzSPT/aRsp5YJa
+	z1c5/jZowv6DkXLZS6NUbR+RgIWIVH9AQYO8vX/r+v7NhyfJ5BL+WfGi8Kd5UL1YWaIl2srEH28
+	YV8fTD0zK2ZwBAVj5EfYsCXm6IXwD76GXPtdMTp/gwdiOWpEjbOvg2Z+/g7gn2OSQmMBW837B4F
+	bIAoogkha70zrqXhWU7DY+NkGrjlRvyQzZwJL/PjFR42WHPThPJqMOBcAy1a9DIuCjFRCXm3iF8
+	ENQX/41FhfQIbb40XRAGnz23AIftLh3T8wonok5NyIoa6rCovfWKb6W3EmTXWVrpjOgYaJI+XbW
+	sVHNKdgK1JSBctZqd2t/g54kx+g/AqpKWA9DWBSH83VCaQs
+X-Received: by 2002:a05:6402:21db:b0:6a7:ee55:dcce with SMTP id 4fb4d7f45d1cf-6a9f63d97admr4411852a12.29.1789488531022;
+        Tue, 15 Sep 2026 09:08:51 -0700 (PDT)
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com. [74.125.228.76])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a9b58f8528sm6150621a12.5.2026.09.15.09.08.50
+        for <kvm@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Sep 2026 09:08:50 -0700 (PDT)
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a99cd5115bso5812758a12.3
+        for <kvm@vger.kernel.org>; Tue, 15 Sep 2026 09:08:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzkAWGc4ac31NDBga6Q+0wQTogb6sgbQWuaZpKLU3qH64XOeNYClSCWCczrSXxbhKk3pSk=@vger.kernel.org
+X-Received: by 2002:a17:907:cd0d:b0:c29:439b:d5c1 with SMTP id
+ a640c23a62f3a-c29b86141b9mr553591866b.16.1789488168046; Tue, 15 Sep 2026
+ 09:02:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
+In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 15 Sep 2026 09:02:31 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjeamU=_RYT9cR3dZJ2N-Teo-N1+aYh7jwhrB=iWXD0cg@mail.gmail.com>
+X-Gm-Features: AcwNN1WK06t9f9BcKFBIanysXcyUXK4eRICuH4x14s60AdlpF6ijCATIYaYAAvQ
+Message-ID: <CAHk-=wjeamU=_RYT9cR3dZJ2N-Teo-N1+aYh7jwhrB=iWXD0cg@mail.gmail.com>
+Subject: Re: [PATCH RFC POC 00/50] file: handle files on syscall exit
+To: Christian Brauner <brauner@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jann Horn <jannh@google.com>, Jan Kara <jack@suse.cz>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Oleg Nesterov <oleg@redhat.com>, linux-alpha@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-um@lists.infradead.org, Jens Axboe <axboe@kernel.dk>, io-uring@vger.kernel.org, 
+	netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-gpio@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, bpf@vger.kernel.org, 
+	David Airlie <airlied@redhat.com>, virtualization@lists.linux.dev, kvm@vger.kernel.org, 
+	kexec@lists.infradead.org, linux-hyperv@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+On Tue, 15 Sept 2026 at 04:31, Christian Brauner <brauner@kernel.org> wrote:
+>
+> TL;DR, this lets arch code handle fd install and cleanup. fd_prepare()
+> allocates a descriptor like get_unused_fd_flags() does and records it in
+> a slot on the task. fd_stage() attaches the file to that slot and
+> returns the number.
 
-The RMM restricts the access to the register states that the host can
-read/modify for a given Realm.
+Honestly, I am *not* a fan. At all.
 
-e.g., At VCPU creation, can modify GPRS (x0-x30) and PC.
-      While servicing SMCCC calls via RSI_HOST_CALL or servicing PSCI requests.
-      MMIO emulation in the unprotected space.
+I think this adds complexity rather than removing it.
 
-Additionally we use the sysreg configuration to advertise/configure the following
-Realm parameters, which are required before the Realm Descriptor is created:
- - SVE Vector Length
- - Number of HW Breakpoints/Watchpoints
- - PMU Counters.
+The diffstat tells a story:
 
-Thus KVM also additionally allows access to ID_AA64DFR0_EL1 and SVE_VLS for
-the configuration of Realm creation paramters.
+>  106 files changed, 962 insertions(+), 861 deletions(-)
 
-The RMM makes similar restrictions for reading of the guest's registers
-(this is *confidential* compute after all), however we don't impose the
-restriction here. This allows the VMM to read (stale) values from the
-registers which might be useful to read back the initial values even if
-the RMM doesn't provide the latest version. For migration of a realm VM,
-a new interface will be needed so that the VMM can receive an
-(encrypted) blob of the VM's state.
+in how this adds a hundred lines more than it deletes.
 
-Reflect the above in KVM_GET_REG_LIST, KVM_SET_ONE_REG calls.
+But to make things worse, it adds them in bad places: low-level
+architecture assembly code.
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Reviewed-by: Joey Gouly <joey.gouly@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
----
-Changes since v17:
-  - Merge related changes into one single patch for the user set/get registers
-    I have retained the Review tags, as the code hasn't changed, just the patches
-    were merged into a single one with the same tags.
-  - Limit KVM_GET_REG_LIST to the allowed CORE registers.
+Those extra lines are *not* making complicated code simpler. Quite the
+reverse. They are taking fairly straightforward "just deal with errors
+with normal cleanup in the place where it makes sense" and makes the
+*straightforward* case simpler, while making the big picture more
+complicated and subtle, and adding new code to places that are not
+simple and just blindly do somethign that makes no sense in that
+context.
 
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
----
- arch/arm64/kvm/guest.c      | 63 +++++++++++++++++++++++++++++++++++++
- arch/arm64/kvm/hypercalls.c |  4 +--
- arch/arm64/kvm/sys_regs.c   | 29 +++++++++++++----
- 3 files changed, 88 insertions(+), 8 deletions(-)
+IOW: it's more code, and it's more abstraction, and it DOES NOT HELP.
 
-diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
-index c3ca369882273..4ec95810ca89b 100644
---- a/arch/arm64/kvm/guest.c
-+++ b/arch/arm64/kvm/guest.c
-@@ -73,6 +73,25 @@ static u64 core_reg_offset_from_id(u64 id)
- 	return id & ~(KVM_REG_ARCH_MASK | KVM_REG_SIZE_MASK | KVM_REG_ARM_CORE);
- }
- 
-+static bool kvm_realm_validate_core_reg(u64 off)
-+{
-+	/*
-+	 * Note that GPRs can only sometimes be controlled by the VMM.
-+	 * For PSCI only X0-X6 are used, higher registers are ignored (restored
-+	 * from the REC).
-+	 * For HOST_CALL all of X0-X30 are copied to the RsiHostCall structure.
-+	 * For emulated MMIO X0 is always used.
-+	 * PC can only be set before the realm is activated.
-+	 */
-+	switch (off) {
-+	case KVM_REG_ARM_CORE_REG(regs.regs[0]) ...
-+	     KVM_REG_ARM_CORE_REG(regs.regs[30]):
-+	case KVM_REG_ARM_CORE_REG(regs.pc):
-+		return true;
-+	}
-+	return false;
-+}
-+
- static int core_reg_size_from_offset(const struct kvm_vcpu *vcpu, u64 off)
- {
- 	int size;
-@@ -553,6 +572,9 @@ static int copy_core_reg_indices(const struct kvm_vcpu *vcpu,
- 		u64 reg = KVM_REG_ARM64 | KVM_REG_ARM_CORE | i;
- 		int size = core_reg_size_from_offset(vcpu, i);
- 
-+		if (vcpu_is_rec(vcpu) && !kvm_realm_validate_core_reg(i))
-+			continue;
-+
- 		if (size < 0)
- 			continue;
- 
-@@ -598,6 +620,9 @@ static unsigned long num_sve_regs(const struct kvm_vcpu *vcpu)
- 	if (!vcpu_has_sve(vcpu))
- 		return 0;
- 
-+	if (kvm_vm_is_realm(vcpu->kvm))
-+		return 1; /* KVM_REG_ARM64_SVE_VLS */
-+
- 	if (!kvm_arm_vcpu_sve_finalized(vcpu))
- 		return 1; /* KVM_REG_ARM64_SVE_VLS */
- 
-@@ -625,6 +650,10 @@ static int copy_sve_reg_indices(const struct kvm_vcpu *vcpu,
- 		return -EFAULT;
- 	++num_regs;
- 
-+	/* For Realms only support SVE_VLS */
-+	if (kvm_vm_is_realm(vcpu->kvm))
-+		return num_regs;
-+
- 	if (!kvm_arm_vcpu_sve_finalized(vcpu))
- 		return num_regs;
- 
-@@ -705,6 +734,11 @@ int kvm_arm_get_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
- 	if ((reg->id & ~KVM_REG_SIZE_MASK) >> 32 != KVM_REG_ARM64 >> 32)
- 		return -EINVAL;
- 
-+	/*
-+	  * We don't filter out the register reads for Realms, like we do for
-+	  * the user writes. We expose junk data for the VMM instead of
-+	  * denying the requests.
-+	  */
- 	switch (reg->id & KVM_REG_ARM_COPROC_MASK) {
- 	case KVM_REG_ARM_CORE:	return get_core_reg(vcpu, reg);
- 	case KVM_REG_ARM_FW:
-@@ -716,12 +750,41 @@ int kvm_arm_get_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
- 	return kvm_arm_sys_reg_get_reg(vcpu, reg);
- }
- 
-+#define KVM_REG_ARM_ID_AA64DFR0_EL1	ARM64_SYS_REG(3, 0, 0, 5, 0)
-+/*
-+ * The RMI ABI only enables setting some GPRs and PC. The selection of GPRs
-+ * that are available depends on the Realm state and the reason for the last
-+ * exit.  All other registers are reset to architectural or otherwise defined
-+ * reset values by the RMM, except for a few configuration fields that
-+ * correspond to Realm parameters.
-+ */
-+static bool validate_realm_set_reg(struct kvm_vcpu *vcpu,
-+				   const struct kvm_one_reg *reg)
-+{
-+	if ((reg->id & KVM_REG_ARM_COPROC_MASK) == KVM_REG_ARM_CORE) {
-+		u64 off = core_reg_offset_from_id(reg->id);
-+
-+		return kvm_realm_validate_core_reg(off);
-+	} else {
-+		switch (reg->id) {
-+		case KVM_REG_ARM_ID_AA64DFR0_EL1:
-+		case KVM_REG_ARM64_SVE_VLS:
-+			return true;
-+		}
-+	}
-+
-+	return false;
-+}
-+
- int kvm_arm_set_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
- {
- 	/* We currently use nothing arch-specific in upper 32 bits */
- 	if ((reg->id & ~KVM_REG_SIZE_MASK) >> 32 != KVM_REG_ARM64 >> 32)
- 		return -EINVAL;
- 
-+	if (kvm_vm_is_realm(vcpu->kvm) && !validate_realm_set_reg(vcpu, reg))
-+		return -EINVAL;
-+
- 	switch (reg->id & KVM_REG_ARM_COPROC_MASK) {
- 	case KVM_REG_ARM_CORE:	return set_core_reg(vcpu, reg);
- 	case KVM_REG_ARM_FW:
-diff --git a/arch/arm64/kvm/hypercalls.c b/arch/arm64/kvm/hypercalls.c
-index b11b8821c9fbc..2b1e6fdeb4d5c 100644
---- a/arch/arm64/kvm/hypercalls.c
-+++ b/arch/arm64/kvm/hypercalls.c
-@@ -414,14 +414,14 @@ void kvm_arm_teardown_hypercalls(struct kvm *kvm)
- 
- int kvm_arm_get_fw_num_regs(struct kvm_vcpu *vcpu)
- {
--	return ARRAY_SIZE(kvm_arm_fw_reg_ids);
-+	return vcpu_is_rec(vcpu) ? 0 : ARRAY_SIZE(kvm_arm_fw_reg_ids);
- }
- 
- int kvm_arm_copy_fw_reg_indices(struct kvm_vcpu *vcpu, u64 __user *uindices)
- {
- 	int i;
- 
--	for (i = 0; i < ARRAY_SIZE(kvm_arm_fw_reg_ids); i++) {
-+	for (i = 0; i < kvm_arm_get_fw_num_regs(vcpu); i++) {
- 		if (put_user(kvm_arm_fw_reg_ids[i], uindices++))
- 			return -EFAULT;
- 	}
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index 44aae52c473d7..520cec19f49fa 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -5638,18 +5638,18 @@ int kvm_arm_sys_reg_set_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg
- 				    sys_reg_descs, ARRAY_SIZE(sys_reg_descs));
- }
- 
--static unsigned int num_demux_regs(void)
-+static inline unsigned int num_demux_regs(struct kvm_vcpu *vcpu)
- {
--	return CSSELR_MAX;
-+	return vcpu_is_rec(vcpu) ? 0 : CSSELR_MAX;
- }
- 
--static int write_demux_regids(u64 __user *uindices)
-+static int write_demux_regids(struct kvm_vcpu *vcpu, u64 __user *uindices)
- {
- 	u64 val = KVM_REG_ARM64 | KVM_REG_SIZE_U32 | KVM_REG_ARM_DEMUX;
- 	unsigned int i;
- 
- 	val |= KVM_REG_ARM_DEMUX_ID_CCSIDR;
--	for (i = 0; i < CSSELR_MAX; i++) {
-+	for (i = 0; i < num_demux_regs(vcpu); i++) {
- 		if (put_user(val | i, uindices))
- 			return -EFAULT;
- 		uindices++;
-@@ -5693,11 +5693,28 @@ static bool copy_reg_to_user(const struct sys_reg_desc *reg, u64 __user **uind)
- 	return true;
- }
- 
-+static inline bool kvm_realm_sys_reg_hidden_user(const struct kvm_vcpu *vcpu,
-+						 u64 reg)
-+{
-+	if (!vcpu_is_rec(vcpu))
-+		return false;
-+
-+	switch (reg) {
-+	case SYS_ID_AA64DFR0_EL1:
-+	case SYS_PMCR_EL0:
-+		return false;
-+	}
-+	return true;
-+}
-+
- static int walk_one_sys_reg(const struct kvm_vcpu *vcpu,
- 			    const struct sys_reg_desc *rd,
- 			    u64 __user **uind,
- 			    unsigned int *total)
- {
-+	if (kvm_realm_sys_reg_hidden_user(vcpu, reg_to_encoding(rd)))
-+		return 0;
-+
- 	/*
- 	 * Ignore registers we trap but don't save,
- 	 * and for which no custom user accessor is provided.
-@@ -5735,7 +5752,7 @@ static int walk_sys_regs(struct kvm_vcpu *vcpu, u64 __user *uind)
- 
- unsigned long kvm_arm_num_sys_reg_descs(struct kvm_vcpu *vcpu)
- {
--	return num_demux_regs()
-+	return num_demux_regs(vcpu)
- 		+ walk_sys_regs(vcpu, (u64 __user *)NULL);
- }
- 
-@@ -5748,7 +5765,7 @@ int kvm_arm_copy_sys_reg_indices(struct kvm_vcpu *vcpu, u64 __user *uindices)
- 		return err;
- 	uindices += err;
- 
--	return write_demux_regids(uindices);
-+	return write_demux_regids(vcpu, uindices);
- }
- 
- #define KVM_ARM_FEATURE_ID_RANGE_INDEX(r)			\
--- 
-2.43.0
+And yes, most of the well-maintained modern platforms (read: x86 and
+arm64) use the generic infrastructure and they don't show that
+low-level asm effect. So for those cases, it's mainly just  that added
+conceptual complexity and a new odd rule - and makes a *successful*
+system call go through that "extra work" and indirection phase that it
+didn't use to go through.
 
+So it just spreads out the work, and moves it to a less obvious place.
+
+All for the very questionable advantage that you can now randomly add
+a file descriptor without the few lines of fairly straightforward
+rollback.
+
+IOW, I do not see a single real upside to this, and I see immediate
+downsides to it, and a more abstract complicated machinery.
+
+I do *not* see why we woudl want to make this be a "every system call
+exit" kind of thing. If there are places that think it's complicated
+to do, they could have *their* local little stack of fd's pending. Why
+force it onto the low-level system call entry for every system call
+when there are only a small handful of actual real cases (the vfs
+itself, and random ioctl's by odd driver subsystems).
+
+              Linus
