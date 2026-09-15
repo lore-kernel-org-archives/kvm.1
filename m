@@ -1,141 +1,186 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A5B370D61;
-	Tue, 15 Sep 2026 07:49:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD845394EB7;
+	Tue, 15 Sep 2026 07:54:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789458566; cv=none; b=hpzufyiIdigwvJ5pQxDqdbukTlcNb+kdxo3xSP3G3nYG6GINv7QzUnqKikg/EoET3lOSMDnilpSd7pqLSK5krr7i/YI3s/Nx9lgc8pDNGCfr0C1ZDwxxkG4ZRuL4QNbjR2vAp43eALNj0bG6aWeCx2d/lnGC6Q98vXaYQtklj1g=
+	t=1789458883; cv=none; b=Zismas3jsTRhqqlivAMMe0b00KqBA7ghzxLVhMYdZGgcdwldGTHOsmcHihP2so2EQkI1rhT/OyLnPVrq3G5RQxWwz1iicqBXinnHDPDa0NhGgRYRS9FFIJ8rrrr5h6vs+EFGWdbTXzAKtEnSZMamixK6vXe7zhmlbfM0N7KYdLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789458566; c=relaxed/simple;
-	bh=8pvbPSyUBoXoiNRSZd/AgneInHnjQJD4W+ps0lyWU/4=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=BvVvUYR/LYMrH1qBhzd38j6nN5l5aqdlDuONDKwOCaH+lPdlgAjkysq2qyPnnc0vwzNaXcTofOejB4iIT4sQn4zWzBKcweDzZa1Bw8uXVFhMDgR+ScFvUjD1rjoloo4JUg501NBRqi1Dt+j/xC6OoT8Jjci4exHRJPaav42rTRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EogKDIsJ; arc=none smtp.client-ip=192.198.163.17
+	s=arc-20240116; t=1789458883; c=relaxed/simple;
+	bh=+5UWXHwJeOt0Hc8dPnMATDTS2OAN7EFFOL08oPuC3l8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=beR6iyAmypbJkbUdCfG0oKnmRG7rKnGTS7IhtvgUMpgC0XuS6FbBUNIxRzCQT3ZVkAdrWcjatReunoaVC/vmJhp2861ZBoIdgVIILgftst5EDoL0c2vqrStdm/aZYRsjrKtoz9d3Rxgkp6TMBbiLf1Fa2rHqaYEG00vogRuyzUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bFyiLNRv; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EogKDIsJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bFyiLNRv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789458565; x=1820994565;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=8pvbPSyUBoXoiNRSZd/AgneInHnjQJD4W+ps0lyWU/4=;
-  b=EogKDIsJlfaUY40AEPaunv3EJt5aAeYb8Jmb8dgbNNWwQrv8osZDeXIB
-   CoSgLxJnSy8zefib4uM3Hdq4I+DlBECljForQ+rmG2vIAlCzN9RuGQs5o
-   oJ7jsruyh9o4ZjLeuIMjPsgLh+wYpOakXuodVzhRAETm+LwTGoGdS/fRC
-   9blaj8vUyM1YhQ+oS9KhTHyhe4croam7TRKD826fBhc0SRkhVbmeH4hUw
-   7LGOpU2QjoiQ5QBprKtIpV64ekb88KJ09usRwBLQvUIVtebJVWzCKwPdP
-   cBqWjSkt0jeZ5PCkvL5A3272er65JtCRL1rUqPkUFsbvK5dX2hwgEXcmc
-   A==;
-X-CSE-ConnectionGUID: ic8YrX2xSaO2j5tHy765GQ==
-X-CSE-MsgGUID: FoTOmTOTQ7aKdMev2hJymQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="89685533"
+  t=1789458882; x=1820994882;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=+5UWXHwJeOt0Hc8dPnMATDTS2OAN7EFFOL08oPuC3l8=;
+  b=bFyiLNRvDLGWDXsWOmLi6wcgU48iluxZoq+2vlCTsHMVph1xRKQUDmsO
+   lQivLj4H51ZxujJ0/dzzSo4AR8XAhMVZdpKyvVKeUNxIsKXp5N4+nMRU6
+   iafCy3hhvoqZg3aNAPnxhJm6dWm2q0G5adH4IkICXPjvIe7toaT3zOXF8
+   /EafiHk5alnT827ec0AAnv6xhTizblgLTeLNZRq3UDERyHxtq9x8KR4g0
+   f1qgrmjeIxWvWMcxu7I+gQFHYbSXp7rGG0zfH/Ps8Lyx5t1ReGHMhGuSK
+   68szQ+jOl+AitDBT8+PswRjzIW4RdOljCDyEYFMHF5Lj2Ptb6ytcgK3w7
+   w==;
+X-CSE-ConnectionGUID: zdEUbtUTSzGdwsfTok4qRw==
+X-CSE-MsgGUID: eP1XA8zjTtK17IaLGmHlIg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="101163762"
 X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="89685533"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 00:49:24 -0700
-X-CSE-ConnectionGUID: d21aHF9ATyu/oCW7FyCLlw==
-X-CSE-MsgGUID: BIxnNc2CSwyPGCzolTatQg==
+   d="scan'208";a="101163762"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 00:54:41 -0700
+X-CSE-ConnectionGUID: ntZYtCX7R7KkXpBIwLfNWw==
+X-CSE-MsgGUID: 496booTBRXe/ga0RmXoyoA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="302770261"
-Received: from unknown (HELO [10.238.2.139]) ([10.238.2.139])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 00:49:21 -0700
-Message-ID: <8181bb5d-6081-4051-a083-24624d3bfdf3@linux.intel.com>
-Date: Tue, 15 Sep 2026 15:49:19 +0800
+   d="scan'208";a="269205397"
+Received: from allen-box.sh.intel.com ([10.239.48.101])
+  by fmviesa010.fm.intel.com with ESMTP; 15 Sep 2026 00:54:36 -0700
+From: Lu Baolu <baolu.lu@linux.intel.com>
+To: iommu@lists.linux.dev,
+	x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org
+Cc: Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	yilun.xu@linux.intel.com,
+	xiaoyao.li@intel.com,
+	Chao Gao <chao.gao@intel.com>,
+	linux-kernel@vger.kernel.org,
+	Lu Baolu <baolu.lu@linux.intel.com>
+Subject: [PATCH 0/5] iommu/vt-d: Introduce trusted DMA initialization support
+Date: Tue, 15 Sep 2026 15:42:28 +0800
+Message-ID: <20260915074235.1219183-1-baolu.lu@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] KVM: TDX: Track configurable CPUID bits allowed by
- KVM
-From: Binbin Wu <binbin.wu@linux.intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "seanjc@google.com" <seanjc@google.com>, "Li, Xiaoyao"
- <xiaoyao.li@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc: "kas@kernel.org" <kas@kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "nik.borisov@suse.com" <nik.borisov@suse.com>, "Gao, Chao"
- <chao.gao@intel.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>
-References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
- <20260827031837.2863609-2-binbin.wu@linux.intel.com>
- <55488b92-66a8-45e5-ad0f-8fed63ce1187@intel.com>
- <a30741f8-b99b-4f36-80a5-4688c2578d99@linux.intel.com>
- <6b565572-b316-4e86-906d-f150c896fe21@intel.com>
- <84891108-55be-48c1-9993-c730a5334d5b@linux.intel.com>
- <249dcccf2353181f595547d19a07232fded71023.camel@intel.com>
- <a018a58f-76af-43a7-930b-943a9a5c0a9d@linux.intel.com>
-Content-Language: en-US
-In-Reply-To: <a018a58f-76af-43a7-930b-943a9a5c0a9d@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/3/2026 12:25 AM, Binbin Wu wrote:
-> On 9/3/2026 12:22 AM, Edgecombe, Rick P wrote:
->> On Thu, 2026-09-03 at 00:19 +0800, Binbin Wu wrote:
->>>> I see. You added patch 2 because without it QEMU breaks. While for
->>>> EST/TM2/SDBG/XTPR/DCA, QEMU doesn't break after they are turned to
->>>> non-configurable. QEMU cannot represent all the userspace VMM. It still has
->>>> the potential to breaks other userspace VMMs.
->>>
->>> I think the risk is pretty low.
->>> I am not sure if Sean could provide some insight about this in google's
->>> userspace VMM.
->>
->> Can't we fix the issue if we are wrong?
-> 
-> I think it could be fixed to add the missing bits (if any) as bug fix.
+Hi,
 
-Directly configurable feature bits that KVM doesn't support for non-TDX VMs
-fall into five categories:
+This series adds Intel VT-d trusted extension support to the host Intel
+IOMMU driver as groundwork for TEE I/O trusted DMA (e.g. TDX Connect).
 
-1) Features that are forced to 0 when #VE is reduced, or they lack KVM's
-   support for associated MSRs:
-   EST, TM2, SDBG, DCA, ACPI, ACC (TM), RDT_A, RDT_M, TME, PCONFIG.
+The trusted extension introduces a parallel, extension-specific path for
+trusted DMA assets used by confidential device assignment. Existing VT-d
+functionality remains unchanged for regular host DMA paths.
 
-2) Features tied to MSR_IA32_MISC_ENABLE, whose corresponding
-   IA32_MISC_ENABLE bit can't be set from a TD's point of view when
-   TDCS.TD_CTLS.REDUCE_VE is set:
-   CID, PBE.
+From the TDX Connect architecture perspective, VT-d is enhanced with:
 
-3) Host state clobbering features that KVM doesn't support for TDX:
-   HLE, RTM, WAITPKG, FRED.
+  1) Trusted DMA translation root table
+     - A second root-table address register, restricted to SEAM SAI.
+     - Programmed by the TDX module with the root of TDX-managed DMA
+       translation tables for TD-assigned devices.
 
-Features in categories 1-3 should not be added to the allow list.
+  2) Trusted invalidation queue
+     - A second invalidation-queue address register plus dedicated
+       head/tail registers, also restricted to SEAM SAI.
 
-4) Features that are simply unsupported and thus don't need to be in the
-   allow list:
-   PREFETCHWT1 (Xeon Phi only), PSN (not implemented by TDX-capable
-   CPUs), AMX-TRANSPOSE (never implemented on any Intel platform), and
-   RAO_INT (defined only for "future processors").
+  3) IOTLB / DID isolation
+     - When TDX Connect is enabled, VT-d restricts VMM DID usage and
+       reserves the DID MSB namespace bit for TDX-module use.
 
-5) Features that are added to the allow list via TDX_CFG_EXTRA_F():
-   MWAIT, XTPR, HT, CORE_CAPABILITIES.
+This posting focuses on VT-d-side enablement only: it enables those
+extension-defined resources and control points while preserving existing
+host VT-d behavior for non-trusted flows. Higher-layer integration
+(TDX guest/device flows) will be posted separately.
 
-   XTPR can be exposed to a TD, but it never takes effect in the
-   underlying hardware when the guest changes IA32_MISC_ENABLE[23].
+The trusted IOMMU extensions establish an architecture where only
+TEE-I/O DMA requests can access TD private memory, and only the TDX
+module can configure TEE-I/O access-control permissions. The host
+allocates memory for data structures used by the TDX module to 
+manage trusted DMA, then requests the TDX module (via SEAMCALL) to
+enable the extension in each IOMMU. 
 
-   CORE_CAPABILITIES really belongs to category 1, but it's special
-   because older specs defined it as a fixed-1 bit, so userspace VMMs
-   may try to enable it based on stale knowledge.  Add it to the allow
-   list to accommodate the legacy TDX module definition.  Reporting
-   CORE_CAPABILITIES as directly configurable also lets userspace infer
-   that the bit is no longer fixed-1, and correct its stale knowledge.
-   Keep MSR_IA32_CORE_CAPS unsupported for TDX guests because existing
-   TDX users have no guest access to MSR_IA32_CORE_CAPS.
+Non-TEE-I/O DMA requests are unaffected and continue to be managed 
+by the host through existing IOMMU interfaces.
 
-With the features in category 5 in the allow list, it shouldn't break
-userspace.
+Patch Breakdown:
 
-If no objection, the next version will still limit the allow list to the
-capabilities KVM supported for non-TDX VMs, with a few exceptions listed
-in category 5.
+- Patch 1: Implements low-level SEAMCALL wrappers (TDH.IOMMU.SETUP/CLEAR)
+  to interface with the TDX module.
+- Patch 2: Parses platform global metadata fields to calculate required
+  IOMMU metadata page requirements.
+- Patch 3: Introduces the core driver entry points.
+- Patch 4: Implements the metadata page allocation and SEAMCALL
+  sequences required to configure and release IOMMU units in trusted
+  mode.
+- Patch 5: Restricts the domain ID (DID) space allocated to the host by
+  reserving the MSB for exclusive use by the TDX module.
+
+ABI History:
+
+TDH.IOMMU.CLEAR previously required the host to provide, as input, the
+parameter page used for TDH.IOMMU.SETUP. This ABI has changed to remove
+that requirement. Because this ABI change is not yet public, it may
+cause confusion when referring to the ABI specification.
+
+Reference:
+
+Implementation details follow the interfaces and behavior defined in the
+TDX Connect Application Binary Interface (ABI) Reference Specification
+and Intel TDX Connect Architecture Specification:
+
+Link: https://cdrdv2.intel.com/v1/dl/getContent/858625 # [1]
+Link: https://www.intel.com/content/www/us/en/content-details/862706/intel-tdx-connect-architecture-specification.html # [2]
+
+This is part of the effort to implement the TDX PCIe Link Encryption
+feature, which includes the following components:
+
+[ ] TDX module extensions initialization, posted in [3]
+[X] Introduce trusted DMA initialization support
+[ ] SEAMCALL helpers for TDX PCIe Link Encryption
+[ ] PCIe Link Encryption Establishment via TDX platform services
+
+A full preview of these dependencies and follow-up changes is avaiable
+at [4].
+
+Link: https://lore.kernel.org/r/20260618081355.3253581-1-yilun.xu@linux.intel.com # [3]
+Link: https://github.com/intel-staging/tdx/tree/tdisp_phase1 # [4]
+
+Please review. Any feedback is highly appreciated.
+
+Thanks,
+Baolu
+
+Lu Baolu (5):
+  x86/virt/tdx: Add SEAMCALL wrappers for IOMMU setup/clear
+  x86/virt/tdx: Read global metadata for trusted IOMMU
+  iommu/vt-d: Add interfaces for trusted DMA initialization
+  iommu/vt-d: Add helpers to set up and tear down TDX extensions
+  iommu/vt-d: Reserve MSB of domain ID space for TDX module
+
+ drivers/iommu/intel/Kconfig                 |  14 ++
+ drivers/iommu/intel/Makefile                |   1 +
+ arch/x86/include/asm/tdx.h                  |   3 +
+ arch/x86/include/asm/tdx_global_metadata.h  |   5 +
+ arch/x86/virt/vmx/tdx/tdx.h                 |   2 +
+ drivers/iommu/intel/iommu.h                 |  24 ++
+ include/linux/dmar.h                        |  12 +
+ arch/x86/virt/vmx/tdx/tdx.c                 |  56 +++++
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  20 ++
+ drivers/iommu/intel/dmar.c                  |   3 +
+ drivers/iommu/intel/iommu.c                 |  11 +
+ drivers/iommu/intel/tdxc.c                  | 248 ++++++++++++++++++++
+ 12 files changed, 399 insertions(+)
+ create mode 100644 drivers/iommu/intel/tdxc.c
+
+-- 
+2.43.0
 
