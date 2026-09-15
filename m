@@ -1,32 +1,33 @@
-Received: from mta0.migadu.com (out-155.mta0.migadu.com [91.218.175.155])
+Received: from mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7473D490BE7
-	for <kvm@vger.kernel.org>; Tue, 15 Sep 2026 08:44:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BD4496D48
+	for <kvm@vger.kernel.org>; Tue, 15 Sep 2026 08:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789461887; cv=none; b=E5hJxpHGD6xT6Cw6Q8SvZM6SIUtdWXCPN6iRu2lW8j3YRXPQySJUb+y24YqgBcL6ZVCylMqncjEOg4CJArchyD/SGgI9rOS1TciV5veaLFyWVSfNeodvC83k1PtnmZ1OTXwZPAMX9CKe9VXtTKDG/yELGbTzbeHXTycb1Lcv7EA=
+	t=1789461893; cv=none; b=sfg4pkUy1uyEB0fQD3oHwmFFnefMJf95SPXCWEQjwk9XNxegSu6z6AIyqdKNT8ycDADkpO3n2lkTertr84fL8L57PhNTn6M/EjE5ctK9PdLNbVnlEBazOMSMn4k1h7EeSI7vW+5qLvjpKWllezVxROnKZaxGvoMINQ9DdW57UjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789461887; c=relaxed/simple;
-	bh=5VNjXBdl2JBF32g6/pFWNc4t2873DtQP3kDUrQxNzQc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=edQTRmK/YLQywzi1Ng2SV/o7Yq+lgSMOzczDUtu0ETlMrttkc3Pq+i7KYoyp4XLmshaBcnPmUpgAqkCfy9H/Cdm58hgqAexZD3YjQGvbUWx1NtIjObGwxdYvyoT0Dxj4ZGKSq1YuwiHED9flNcaOyTEfgXG4jMZw8eWdHTAI1Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=diFC/f5l; arc=none smtp.client-ip=91.218.175.155
+	s=arc-20240116; t=1789461893; c=relaxed/simple;
+	bh=cfJHLD9q9zHmMljo9vPmqqbTUt1+su2cEdMIw8eDGo0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=XeOrnH1YCNWqSGZJ2PUilwKls8KPjUCJmY9Ksb7yfRuJ8UdbFRKQZuP0/ZgdZermfbIVwOooShW9c13bmjvOI5B2XdbRfjeNVy0QrvRbjtbiBGYSY0A7PZgP8fE5NDkDsgjMFdWN/Dkg8YjIYQyxt2J3v1+eggxPncPmrDrhPeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wWIoWV5c; arc=none smtp.client-ip=91.218.175.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="diFC/f5l"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wWIoWV5c"
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=5VNjXBdl2JBF32g6/pFWNc4t2873DtQP3kDUrQxNzQc=;
+DKIM-Signature: a=rsa-sha256; bh=cfJHLD9q9zHmMljo9vPmqqbTUt1+su2cEdMIw8eDGo0=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789461882; v=1; x=1790066682;
- b=diFC/f5lFbLNJYpoWifyzgIGcvjI9vZzJNepeCiqnWVLfh+Cn90Du9CxuGt+eXqsZzKfGZWa
- jypgTva2rJCEb3uFvn0yAusc/U8liDil5UwFczBDjxUKl9tMl+19rRlUs0ikchveX2g5lLcale0
- Xu8dY1wItei6OGfaHDyrwCA8=
+ t=1789461887; v=1; x=1790066687;
+ b=wWIoWV5cpeF748EZKF4qUjmySh+AeOazXhk3ZpzY9g4wi78jsEF6B7/+HQb3FJKrpDn30guD
+ Jbh65kcGcmxMcaRUxAxNVQUNgX09uNekzmWpiofDl1xfyETXnYybGmTVNM500yHhsrX6RnhjhcD
+ 9J2Bcb3uhcqMz7YIJAgT33SI=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id c21aa090cc761614;
-	Tue, 15 Sep 2026 08:44:42 +0000
-X-Mizu-Trace-ID: c21aa090cc761614
+Received: by smtp.migadu.com with ESMTPS id 53447c2444ce877a;
+	Tue, 15 Sep 2026 08:44:46 +0000
+X-Mizu-Trace-ID: 53447c2444ce877a
 X-Migadu-Flow: FLOW_OUT
 From: Fuad Tabba <fuad.tabba@linux.dev>
 To: Paolo Bonzini <pbonzini@redhat.com>,
@@ -47,10 +48,12 @@ Cc: Sean Christopherson <seanjc@google.com>,
 	linux-doc@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/3] KVM: Replace VCPU_RUN with KVM_RUN in comments and docs
-Date: Tue, 15 Sep 2026 09:44:38 +0100
-Message-Id: <20260915084441.3846947-1-fuad.tabba@linux.dev>
+Subject: [PATCH 1/3] KVM: Fix comments that refer to the non-existent VCPU_RUN ioctl
+Date: Tue, 15 Sep 2026 09:44:39 +0100
+Message-Id: <20260915084441.3846947-2-fuad.tabba@linux.dev>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20260915084441.3846947-1-fuad.tabba@linux.dev>
+References: <20260915084441.3846947-1-fuad.tabba@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -59,37 +62,42 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi folks,
+Neither the VCPU_RUN in kvm_main.c nor the VCPU RUN in kvm_host.h names
+an ioctl that exists. The one that enters the guest is KVM_RUN, so refer
+to it by that name.
 
-This one has been bugging me for a while. Five comments and doc lines
-name a VCPU_RUN ioctl (KVM_VCPU_RUN in book3s_hv.c, VCPU RUN in
-kvm_host.h). The ioctl that enters the guest is KVM_RUN.
+Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
+---
+ include/linux/kvm_host.h | 2 +-
+ virt/kvm/kvm_main.c      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-The patches are independent and split by tree, one each for generic
-KVM, KVM/arm64 and Book3S HV, so each can go through its own
-maintainer. Nothing else in the tree refers to the ioctl by a wrong
-name.
-
-Based on Linux 7.3-rc3 (fd73f4a665989).
-
-Cheers,
-/fuad
-
-Fuad Tabba (3):
-  KVM: Fix comments that refer to the non-existent VCPU_RUN ioctl
-  KVM: arm64: Fix references to the non-existent VCPU_RUN ioctl
-  KVM: PPC: Book3S HV: Fix comment naming a non-existent KVM_VCPU_RUN
-    ioctl
-
- Documentation/virt/kvm/arm/pkvm.rst | 2 +-
- arch/arm64/kvm/arm.c                | 2 +-
- arch/powerpc/kvm/book3s_hv.c        | 2 +-
- include/linux/kvm_host.h            | 2 +-
- virt/kvm/kvm_main.c                 | 2 +-
- 5 files changed, 5 insertions(+), 5 deletions(-)
-
-
-base-commit: fd73f4a6659897191fa0d40695fe370925dd3780
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 03bfc92864b6e..acae5a61e7f8f 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -562,7 +562,7 @@ static inline int kvm_vcpu_exiting_guest_mode(struct kvm_vcpu *vcpu)
+ 	/*
+ 	 * The memory barrier ensures a previous write to vcpu->requests cannot
+ 	 * be reordered with the read of vcpu->mode.  It pairs with the general
+-	 * memory barrier following the write of vcpu->mode in VCPU RUN.
++	 * memory barrier following the write of vcpu->mode in KVM_RUN.
+ 	 */
+ 	smp_mb__before_atomic();
+ 	return cmpxchg(&vcpu->mode, IN_GUEST_MODE, EXITING_GUEST_MODE);
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 65eb26a0520d8..cc391b0666a6d 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -470,7 +470,7 @@ static void kvm_vcpu_destroy(struct kvm_vcpu *vcpu)
+ 	kvm_dirty_ring_free(&vcpu->dirty_ring);
+ 
+ 	/*
+-	 * No need for rcu_read_lock as VCPU_RUN is the only place that changes
++	 * No need for rcu_read_lock as KVM_RUN is the only place that changes
+ 	 * the vcpu->pid pointer, and at destruction time all file descriptors
+ 	 * are already gone.
+ 	 */
 -- 
 2.39.5
 
