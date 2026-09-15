@@ -1,87 +1,157 @@
-Received: from smtpout1.mo2.mail-out.ovh.net (smtpout1.mo2.mail-out.ovh.net [79.137.123.219])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135AE3C1D5F;
-	Tue, 15 Sep 2026 13:22:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.137.123.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5DE3B8BDA
+	for <kvm@vger.kernel.org>; Tue, 15 Sep 2026 13:27:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789478540; cv=none; b=PsAadafQsaU6xnxVU1mgZU1ZKbDEfQ3agnAJ+vtOLytFMCxXaifNOwbx+Xsyh8cuQiVjreJePj13h/T8tw61U6OgiGzShCxxgk9lu59sO8Y3Den9DVHYSb1i6WEUfeRFMAtbdnvNCCqqa3vUaMOY/88m8J3jQF9llt2ajGOKnNY=
+	t=1789478856; cv=none; b=ogkNi+NUMlo1tUlF5L1GlzLhM66RwxJDML3JAFvicuy3o2jwuhFia3guiSXLnHcCX3EtaIKqvBWPNhXbxeqQqY6/UqkMQxwIRFjVD76AQQ6ePSaJvtvR5ks8zEJ8/BInT9nA1VR/Zex09qoL/9fpnL+x+NsrFLs6N13w22LF+T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789478540; c=relaxed/simple;
-	bh=fjkxha1w+DbRNLwQvMI8D2L1jhJNUKlbrJxlN7jIlKg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lMC8n1doZxzFvhXzyM9pT5FUlaU1/Pm4FpwOU79rSwtJXrpZlhxM6NwsVuxHc48XqdSsNZKbJ14xMqNAXOrKl18BOzs2GJpqbJg4RkwzvKTbZD+U33gkKu98p8rw5C7qSQWYQulqD6lkwLA5BUsAPue5K0O7C9mTwz074bhcgnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=guillain.net; spf=pass smtp.mailfrom=guillain.net; dkim=pass (2048-bit key) header.d=guillain.net header.i=@guillain.net header.b=IBJLAyxs; arc=none smtp.client-ip=79.137.123.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=guillain.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=guillain.net
+	s=arc-20240116; t=1789478856; c=relaxed/simple;
+	bh=qRDN0fnnW4RIfCr9ySb4XRCE0fAhBJXlZ7AaHfCZ+i4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=ZkUmkB+05MMajygFAmGUpgS1w+6sQrpjAGE14QEzYQdrxLnd7NFeSglIMiNj/TOqSExxurDkyCc/+uawg4rd6FFjmp6tCt+WWSFxqO31R8F0tZfIcDyUK3QlEwPfb08/V2XZzyDyt+Pvkia7IDfuhwj8wFnC0UUVZz54+H53yJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=muQWiVDy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=guillain.net header.i=@guillain.net header.b="IBJLAyxs"
-Received: from director3.derp.mail-out.ovh.net (director3.derp.mail-out.ovh.net [79.137.60.223])
-	by mo2.mail-out.ovh.net (Postfix) with ESMTPS id 4hkjBk6b6Bz43Bd;
-	Tue, 15 Sep 2026 13:13:34 +0000 (UTC)
-Received: from director3.derp.mail-out.ovh.net (director3.derp.mail-out.ovh.net. [127.0.0.1])
-        by director3.derp.mail-out.ovh.net (inspect_sender_mail_agent) with SMTP
-        for <spawel523@gmail.com>; Tue, 15 Sep 2026 13:13:34 +0000 (UTC)
-Received: from mta11.priv.ovhmail-u1.ea.mail.ovh.net (unknown [10.109.231.192])
-	by director3.derp.mail-out.ovh.net (Postfix) with ESMTPS id 4hkjBk5GhGz1xpR;
-	Tue, 15 Sep 2026 13:13:34 +0000 (UTC)
-Received: from guillain.net (unknown [10.1.6.7])
-	(Authenticated sender: jean-christophe@guillain.net)
-	by mta11.priv.ovhmail-u1.ea.mail.ovh.net (Postfix) with ESMTPSA id 1BED99A1C15;
-	Tue, 15 Sep 2026 13:13:34 +0000 (UTC)
-Authentication-Results:garm.ovh; auth=pass (GARM-99G0033130615f-ceed-48a1-8e19-f74172358026,
-                    92EFA8A7CA5D864B02AA08C4C94B13685DEDE1A8) smtp.auth=jean-christophe@guillain.net
-X-OVh-ClientIp:78.242.135.166
-Message-ID: <ace9a9492e7e0cacf854af610854764c566aaca3.camel@guillain.net>
-Subject: Re: [PATCH 0/5] KVM: Serialize vCPU creation and revert vcpu_ids
- tracking
-From: Jean-Christophe Guillain <jean-christophe@guillain.net>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- =?UTF-8?Q?Pawe=C5=82?= S	 <spawel523@gmail.com>
-Date: Tue, 15 Sep 2026 15:13:33 +0200
-In-Reply-To: <20260914181223.289061-1-seanjc@google.com>
-References: <20260914181223.289061-1-seanjc@google.com>
-Autocrypt: addr=jean-christophe@guillain.net; prefer-encrypt=mutual;
- keydata=mDMEaEmXaBYJKwYBBAHaRw8BAQdA1qyia8WH1pu6T8sC99WNMyKXooD/SVqJXsJOcnIux
- w20N0plYW4tQ2hyaXN0b3BoZSBHdWlsbGFpbiA8amVhbi1jaHJpc3RvcGhlQGd1aWxsYWluLm5ldD
- 6IlgQTFgoAPhYhBDk2+TsBtH9ETCTubi9QTbKhgBdPBQJoSZdoAhsBBQkSzAMABQsJCAcCBhUKCQg
- LAgQWAgMBAh4BAheAAAoJEC9QTbKhgBdPrq0A/icNhFTYLybFWWq1B42UvJLGs18MNRiT5aLdFv3R
- DfHVAQCvzsLrC/qz4rOyIpDzeb0biOu3fiDTcyvV3kPiu3xTDA==
-Content-Type: text/plain; charset="UTF-8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="muQWiVDy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285931F0089B;
+	Tue, 15 Sep 2026 13:27:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789478854;
+	bh=CZHZsKeYsul45RbpVJTRy+Fv03/aFg3qaGU1KJ6jwFg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=muQWiVDyB4JB7dRXeWIImaXOti29oPBGsCBY+JXvN51W7dOFfGndzjbdyp1wYYVkW
+	 3CmdZPIURbZ0EVuWmJA+ZVsTVoJznJO0P0c5IRWHAtpqEMpXfxyzpnbJZ31z3SDFWt
+	 65Qr99dmjD+ei5uM9EyXNYyZQrqYutGUfMOczKCa5BzQte/rJGWkaI93KZ9h32Q0nc
+	 1oNoOkEp8NsqD9yUE5drrsWkfICe4RjvZRvkrmeEOYEm6+bBFgj0gZCWAZpQ5BYGRs
+	 D8f9wdq/H0HHw9HcLz0/NnRylAVxW+2fbAOuCaY1yyJ138bA7SHP5xymfHexHNEsnl
+	 VGrN5BmVbh1Vg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/1] cpuidle: add per-CPU latency_limit_ns sysfs
+ attribute
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Anthony Harivel" <aharivel@redhat.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260915131310.1053834-2-aharivel@redhat.com>
+References: <20260915131310.1053834-1-aharivel@redhat.com>
+ <20260915131310.1053834-2-aharivel@redhat.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+Date: Tue, 15 Sep 2026 13:27:33 +0000
+Message-Id: <20260915132734.285931F0089B@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-x-ovh-tracer-id: 4935382244483943228
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTEaEanT6JS4IZxmbohpxZ+NZ0ZO5kRjEjm2F3QpeZU3e8QQe5w9r5nryv6f7VkSGHvyh28lwWJ6244qbNSdq9sh094CCYBnu1FyF7c9NJvMJfSrA/MHG4v2Gomy0QMSmfmfZAjhXQhet4Qgg+ueekaJ25/6eb1CKm3YIIIyMK6GBgRBpDqQTzzamNiu3dSBEEg5AAtKOAaHpovr2cfse+648CG9UC7+tinjF/27W43fP1oYRvCSfAHG/05l8NH30Nul3kZtYXDeMVOh3X84xvGsxx1AQKxm66xWv2R6zybxxK3RCcJd0VGPeH2Cgjb1m3Yl5b1z7a9B6bGl1hdPYRB9GlQhFD+k+cXBt4F6oisE6FkDpOQ6miuzQZWO1Z0XEYN+TYy5aDfuEtdwFqHFElIaMplJ8va9MkU8gEuKF77yfASNgnuIQ3ui2KNoae4JWFe3MUM0J2z+CtONG2sjsf0f3KICETTFzTVAzEMf18nxk40AM5d8Sfn7Dod9v/MhXLYqPPKe5kU/w9drwWIrlINtyTA7Lq9RLDUiy13snsfdcTVQI0cEFRmRlucQn8iGDaso8c77yIHwOt4UWzx3Cxe2HauNh19hKap/ugO5qZyDfNxqxCj43cbO7PF7EKf4bgMJOGWxVSHrvvK3L2seMRpbSOn89zf8WRrAtDmIDvPXBw
-DKIM-Signature: a=rsa-sha256; bh=fjkxha1w+DbRNLwQvMI8D2L1jhJNUKlbrJxlN7jIlKg=;
- c=relaxed/relaxed; d=guillain.net; h=From; s=ovhmo31693-selector1;
- t=1789478015; v=1;
- b=IBJLAyxsoylAFO57NOnVh0r550ZdzFQcNQzRR/t1FuMOIQ/+u0LIre7rel8VJZ2O3mMWWGDA
- kK5mNEmL7NXZnec3Eim9K7ixwmsb/TaaY4LZThHTfw0pxCZcmE4Iiq9iX4B6f1o6SB1I5DdndYD
- Tl0wTM1fm4YIWow8FeSKrJ2u9F85Jo8LL8uO/ptJXIFj6YcsKRp9nZiALYmPTE8PkHxbghZ7DZQ
- 9V+ID9tupaq3/owahx7C8lAdzQs4U5eXa4yJpSSQRGdTLqw7kmPjAAQq+qKdqyAjk0ffKIpwPmP
- aGbv9GqYkjWCGOCSa2ehG8wfiYayMQFyE0TdZCFAMVIsA==
 
-Hi Sean,
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Medium] cpuidle: redundant sysfs UAPI bypasses PM QoS framework
+- [Medium] cpuidle: TOCTOU data race in latency_limit_ns evaluation
+- [Medium] cpuidle: deferred enforcement of latency_limit_ns due to missing=
+ wakeup
+--
 
-I tested the full series with the configuration that originally
-triggered the build failure (CONFIG_DEBUG_KERNEL=3Dn, CONFIG_KASAN=3Dn).
+commit 392083e97e8c2f4fec9d7c53da59689554ffca38
+Author: Anthony Harivel <aharivel@redhat.com>
+cpuidle: add per-CPU latency_limit_ns sysfs attribute
 
-The kernel builds successfully, and I booted the resulting kernel and
-started two QEMU/KVM VMs without any issues.
+This commit introduces a new per-CPU sysfs attribute, latency_limit_ns, to
+set an upper bound on exit latency for idle states. It modifies
+cpuidle_governor_latency_req() to cap the latency constraint using this new
+value.
 
-Tested-by: Jean-Christophe Guillain <jean-christophe@guillain.net>
+> diff --git a/drivers/cpuidle/governor.c b/drivers/cpuidle/governor.c
+> --- a/drivers/cpuidle/governor.c
+> +++ b/drivers/cpuidle/governor.c
+[ ... ]
+> @@ -119,5 +121,11 @@ s64 cpuidle_governor_latency_req(unsigned int cpu)
+>  	if (device_req > global_req)
+>  		device_req =3D global_req;
+> =20
+> -	return (s64)device_req * NSEC_PER_USEC;
+> +	result =3D (s64)device_req * NSEC_PER_USEC;
+> +
+> +	dev =3D per_cpu(cpuidle_devices, cpu);
+> +	if (dev && dev->latency_limit_ns && dev->latency_limit_ns < result)
+> +		result =3D dev->latency_limit_ns;
 
-Thanks for the fix !
+[Severity: Medium]
+Is it possible that this introduces a duplicate per-CPU sysfs attribute for
+capping exit latency?
 
-Cheers,
-Jean-Christophe Guillain
+The exact capability seems to already exist via the PM QoS framework
+(/sys/devices/system/cpu/cpuN/power/pm_qos_resume_latency_us).
+
+By creating an uncoordinated interface, could this bypass PM QoS tracking a=
+nd
+hide the constraint from other subsystems that query PM QoS?
+
+[Severity: Medium]
+Could this result in TOCTOU data races or torn reads since
+dev->latency_limit_ns is evaluated locklessly three times without READ_ONCE=
+()?
+
+If a concurrent sysfs write increases the value between the bounds check and
+the assignment, might it bypass the PM QoS limit constraint, allowing the C=
+PU
+to incorrectly enter a deeper idle state?
+
+Also, on 32-bit architectures, could these unprotected 64-bit reads and wri=
+tes
+be torn?
+
+> +
+> +	return result;
+>  }
+> diff --git a/drivers/cpuidle/sysfs.c b/drivers/cpuidle/sysfs.c
+> --- a/drivers/cpuidle/sysfs.c
+> +++ b/drivers/cpuidle/sysfs.c
+[ ... ]
+> @@ -207,8 +207,44 @@ static void cpuidle_sysfs_release(struct kobject *ko=
+bj)
+>  	complete(&kdev->kobj_unregister);
+>  }
+> =20
+> +static ssize_t show_latency_limit_ns(struct cpuidle_device *dev, char *b=
+uf)
+> +{
+> +	return sysfs_emit(buf, "%llu\n", dev->latency_limit_ns);
+> +}
+> +
+> +static ssize_t store_latency_limit_ns(struct cpuidle_device *dev,
+> +				       const char *buf, size_t count)
+> +{
+> +	u64 value;
+> +	int err;
+> +
+> +	if (!capable(CAP_SYS_ADMIN))
+> +		return -EPERM;
+> +
+> +	err =3D kstrtou64(buf, 0, &value);
+> +	if (err)
+> +		return err;
+> +
+> +	dev->latency_limit_ns =3D value;
+> +
+> +	return count;
+
+[Severity: Medium]
+When this limit is updated, should we be sending an IPI or wakeup to the
+target CPU?
+
+If the CPU is currently in a deep idle state with an exit latency greater t=
+han
+the new limit, it might not exit the C-state until the next hardware interr=
+upt.
+
+This seems to defer the enforcement of the latency constraint, whereas PM Q=
+oS
+normally handles this by calling wake_up_all_idle_cpus().
+
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260915131310.1053=
+834-2-aharivel@redhat.com?part=3D1
