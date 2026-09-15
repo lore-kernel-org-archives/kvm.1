@@ -1,162 +1,99 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7F744682E;
-	Tue, 15 Sep 2026 07:55:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667D63A5E9F
+	for <kvm@vger.kernel.org>; Tue, 15 Sep 2026 08:04:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789458905; cv=none; b=tD/STLlSvg0e0DPyuyQNOvXX6jTL9VYQZaD3jSXUFGjXpEsU7u8699WP1RrgY/HcqVt8spOcsQfuE+KdX21/PtHRoAynULCBsnJESmQye4p9ll5uAp79drWv9kPExAlu/fqB7hzuF4d0rS8rXOzLDb+pCnERM1X32HkV5dmJjvs=
+	t=1789459491; cv=none; b=oqoZ1N1rxZRhwIGKRQ/61GDG/NonT65p45jrPD4cgFC3VWXdLBsI0j3WXRBCyumSpP4nb2TVbJ09AFFeX9g+QTl155hM5qrL0LjRClQlRpMDreXJIjdD0RPAi1Hwp5V1qn/XqIYdJfTGZk8zESBxwtH9GmfelZO7LMtWz5KOyK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789458905; c=relaxed/simple;
-	bh=75MOes6SzozZa83TP0M7XKvyRkKiNnMyJKwfpsv2ODE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GUb2kIuYja1rkcMvCDpPo9ArSv9pU/sF+OOT19dz+nxVYEEBQiZVcPxCFCtjl6cg4qNvHrh6cPUE/+RBgUjBFxUvxJKHR9j0ONBQLzVHayhNfrQy8XAIGUJEAjBhgT+oJQchoEP6MKZimowmBAfh7T1igOGauFY/BGZDFr60BH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bQ+0mAnD; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1789459491; c=relaxed/simple;
+	bh=M9C13sMEhKp6VAGCd0Tlwx3P5oizXOctLFDHBySfqTA=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=lkx7TJQJyX9X1DnrwEXuAfUhzLxWc2uAv9jPkkPAKQko22Hr8D2nrxMQTJHMuR1FMXzVtaoGAA3MG/ptON9UuVsswU6aEfHTuChtW9JO85a+EiWV0mEI3NJSQ0dUA6t/vxzw4JxqmtdkejPC1FGHnqtHUledxg6yDqKOI7vWNIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jH0w84PO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bQ+0mAnD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789458904; x=1820994904;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=75MOes6SzozZa83TP0M7XKvyRkKiNnMyJKwfpsv2ODE=;
-  b=bQ+0mAnDeZgwNQaxB8FkgJumCUIC8TyFaZukVHYWnZsAMESX0MYMsFNt
-   8abQf/Fr2K+6bE28GOl3tAiBXIDgYgjC91vrtfjb0WqxSEiUYLBS/vuld
-   NpX8mzL95zUt/XFqrwau8aGLSOorX8D1Qcm9BrAlQdh/ftEVLu13AHYUU
-   O8MFw+BQZWxy3RG5yJDERArB9/YrnFvJb5zuYoUeP/xyno0HBdaMnv95J
-   E2QrGwKw23M+ZMpJboHtuPJPHy81dJDKk+hzENNT4ODYcZAT1RBOnjrrL
-   jSTT6qATDEzDMowlIcizEzj1E6ypvmENSL2cEMoGe5giRs1WfRP2zN0hu
-   g==;
-X-CSE-ConnectionGUID: tt/GNuybQ0uSuQHRtXEddQ==
-X-CSE-MsgGUID: DO3qN1X4T66rGPOYJNOCfA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="101163814"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="101163814"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 00:55:04 -0700
-X-CSE-ConnectionGUID: rT2cmXajScm8cB7jjgCycw==
-X-CSE-MsgGUID: v+wc3xDfRfazH5AHB9Wo9A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="269205548"
-Received: from allen-box.sh.intel.com ([10.239.48.101])
-  by fmviesa010.fm.intel.com with ESMTP; 15 Sep 2026 00:55:00 -0700
-From: Lu Baolu <baolu.lu@linux.intel.com>
-To: iommu@lists.linux.dev,
-	x86@kernel.org,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org
-Cc: Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	yilun.xu@linux.intel.com,
-	xiaoyao.li@intel.com,
-	Chao Gao <chao.gao@intel.com>,
-	linux-kernel@vger.kernel.org,
-	Lu Baolu <baolu.lu@linux.intel.com>
-Subject: [PATCH 5/5] iommu/vt-d: Reserve MSB of domain ID space for TDX module
-Date: Tue, 15 Sep 2026 15:42:33 +0800
-Message-ID: <20260915074235.1219183-6-baolu.lu@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260915074235.1219183-1-baolu.lu@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jH0w84PO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D960B1F000FF;
+	Tue, 15 Sep 2026 08:04:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789459490;
+	bh=saf/ROKuPaHFIKqukLEd1/mVOz6LPJF7wYw3HVTpqLA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=jH0w84POwU/loJnyFdTQh21JlCAidadB9cS+ukf+zoKYdeBmRGPTjozKMD4i4gztu
+	 RzVr0HzwOZfc7yEdHK/H0p9RaPavexTZGUV8U5GLEcXgIbbbyHK5DbHiBKHZp8k2XZ
+	 7ennXDvYgT6TZ5y5blDukdJjMp/RquQRyZDI7sOGVDc2mv/qz1pP+TjmxjyKyc07yB
+	 RMwuA863CP1xSXlzC3Ljs+c6/+mMYCvaiOtwh54ri0WoUBv7Yka7HUQC0lkccwwXSL
+	 hUsyVA1xO/Ch07KBrQ36SIN4wEx/akbjBYjgbfMVAtKpveaEH4dh4fiS8dodS0wJGu
+	 CzsB5pr1DxTKg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 4/5] iommu/vt-d: Add helpers to set up and tear down TDX
+ extensions
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Lu Baolu" <baolu.lu@linux.intel.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260915074235.1219183-5-baolu.lu@linux.intel.com>
 References: <20260915074235.1219183-1-baolu.lu@linux.intel.com>
+ <20260915074235.1219183-5-baolu.lu@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 15 Sep 2026 08:04:49 +0000
+Message-Id: <20260915080449.D960B1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-When an Intel IOMMU is enabled for TDX Connect, the VT-d DID namespace
-must be split so the TDX module can use the MSB-tagged half for trusted
-DMA translations, while the host/VMM uses the lower half.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] iommu: bounds check uses PAGE_SIZE while allocation uses SZ_4K
+--
 
-After TDH.IOMMU.SETUP succeeds, restrict host domain ID allocation to the
-lower half of the DID space by capping max_domain_id to ndoms / 2. Before
-applying the cap, verify that no allocated domain IDs already exist in
-the upper half; if they do, abort bring-up and roll back the per-IOMMU
-TDX setup.
+commit 4edc662d667d9a3f034b902dc510d5238c7c24a5
+Author: Lu Baolu <baolu.lu@linux.intel.com>
 
-On teardown, restore max_domain_id to the full DID range.
+iommu/vt-d: Add helpers to set up and tear down TDX extensions
 
-This matches Intel TDX Connect architecture requirements for IOTLB/DID
-isolation between TEE and non-TEE translations.
+This commit implements per-IOMMU TDX Connect bring-up and tear-down helpers.
+It allocates and populates the IOMMU_MT parameter layout required by
+TDH.IOMMU.SETUP, and handles initialization completion and rollback.
 
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
----
- drivers/iommu/intel/tdxc.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+> diff --git a/drivers/iommu/intel/tdxc.c b/drivers/iommu/intel/tdxc.c
+> index 559c752a15273..b5dfdeeb23dba 100644
+> --- a/drivers/iommu/intel/tdxc.c
+> +++ b/drivers/iommu/intel/tdxc.c
 
-diff --git a/drivers/iommu/intel/tdxc.c b/drivers/iommu/intel/tdxc.c
-index b5dfdeeb23db..1ca03257d456 100644
---- a/drivers/iommu/intel/tdxc.c
-+++ b/drivers/iommu/intel/tdxc.c
-@@ -129,6 +129,7 @@ static struct tdxc_pages *tdxc_alloc_mt_pages(struct intel_iommu *iommu,
- 
- static int intel_iommu_bringup_tdxc(struct intel_iommu *iommu, unsigned int nr_pages)
- {
-+	unsigned long ndoms = cap_ndoms(iommu->cap);
- 	struct dmar_drhd_unit *drhd = iommu->drhd;
- 	u64 r, tdx_iommu_id;
- 
-@@ -144,6 +145,10 @@ static int intel_iommu_bringup_tdxc(struct intel_iommu *iommu, unsigned int nr_p
- 	if (!iommu_mt)
- 		return -ENOMEM;
- 
-+	guard(mutex)(&iommu->did_lock);
-+	if (ida_find_first_range(&iommu->domain_ida, ndoms >> 1, ndoms - 1) > 0)
-+		return -EBUSY;
-+
- 	guard(mutex)(&iommu->tdx_lock);
- 	r = tdh_iommu_setup(drhd->reg_base_addr, iommu_mt->root, &tdx_iommu_id);
- 	/* TDX Extension is not supported on this iommu. Nothing to do. */
-@@ -154,17 +159,27 @@ static int intel_iommu_bringup_tdxc(struct intel_iommu *iommu, unsigned int nr_p
- 		return -EFAULT;
- 	}
- 
-+	/*
-+	 * Intel TDX Connect Architecture Specification, Section 2.2 Trusted DMA
-+	 *
-+	 * When IOMMU is enabled to support TDX Connect, the IOMMU restricts
-+	 * the VMM’s DID setting, reserving the MSB bit for the TDX module. The
-+	 * TDX module always sets this reserved bit on the trusted DMA table.
-+	 */
-+	iommu->max_domain_id = ndoms >> 1;
- 	iommu->tdx_iommu_id = tdx_iommu_id;
- 	iommu->mt_pages = no_free_ptr(iommu_mt);
- 
--	/* Bring-up is not complete yet; report as unsupported for now. */
--	return -EOPNOTSUPP;
-+	pr_info("%s: trusted DMA for TEE/IO initialized\n", iommu->name);
-+
-+	return 0;
- }
- 
- static void intel_iommu_teardown_tdxc(struct intel_iommu *iommu)
- {
- 	u64 r;
- 
-+	guard(mutex)(&iommu->did_lock);
- 	guard(mutex)(&iommu->tdx_lock);
- 
- 	if (!iommu->mt_pages)
-@@ -179,6 +194,7 @@ static void intel_iommu_teardown_tdxc(struct intel_iommu *iommu)
- 	free_mt_pages(iommu->mt_pages);
- 	iommu->mt_pages = NULL;
- 	iommu->tdx_iommu_id = 0;
-+	iommu->max_domain_id = cap_ndoms(iommu->cap);
- }
- 
- void intel_tdxc_exit(void)
--- 
-2.43.0
+[ ... ]
 
+> +static struct tdxc_pages *tdxc_alloc_mt_pages(struct intel_iommu *iommu,
+> +					      unsigned int nr_mt_pages)
+> +{
+> +	unsigned int nr_entries =3D nr_mt_pages + IQ_BUFFERS_NUM;
+> +	struct tdxc_pages *array;
+> +
+> +	if (!nr_mt_pages || nr_mt_pages > (PAGE_SIZE / sizeof(u64) - IQ_BUFFERS=
+_NUM))
+
+[Severity: Low]
+Does this bounds check use the wrong size macro? It restricts nr_mt_pages
+based on PAGE_SIZE, but the corresponding root array allocation below is
+hardcoded to SZ_4K. Should this check use SZ_4K to match the allocation siz=
+e?
+
+> +		return NULL;
+> +
+> +	array =3D kzalloc_obj(*array);
+> +	if (!array)
+> +		return NULL;
+> +
+> +	array->root =3D iommu_alloc_pages_node_sz(iommu->node, GFP_KERNEL, SZ_4=
+K);
+> +	if (!array->root)
+> +		goto free_array;
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260915074235.1219=
+183-1-baolu.lu@linux.intel.com?part=3D4
