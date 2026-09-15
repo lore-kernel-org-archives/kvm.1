@@ -1,191 +1,234 @@
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF01A4A5C2A
-	for <kvm@vger.kernel.org>; Tue, 15 Sep 2026 17:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E663EEAF8;
+	Tue, 15 Sep 2026 17:49:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789494217; cv=none; b=CbQMEJiGBUcV1qlRa74+nFFXt6BINH3ZMyjI6weu4qU+sEnppR+MiHlnPw+WD2/rb82uhKJ5B1Iw38vIlHJ1Slqjve6Sk2jNFQ+Blousltb7IYGXGQH1FuILcgjP0pgsHPyWixK3dUaBJ5qRk/tiazx52vw6kQ6lCg3umStcMps=
+	t=1789494546; cv=none; b=oS606BiELOybExMsvg5OPOpm1kLZ9u2Fq+6MAx9WYMBdCx3mgARw0oZSU+hpEDrd/b27WE2IhijZfEQMwbtt9xqxCoK71tRHp1E97YBh+wi2PcjqJAdbCzJvgHIlCC68BT+QYRJGr4dTmVHvBSvXNWN1exs/rarnWLP3stYgS/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789494217; c=relaxed/simple;
-	bh=2Qb0/zNGbWdfLqIl2/hEdN2XdIGVrGsupUwvjhaalpI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fdZg86QmNouTf4CyM2KnbA/2e9/YIyvaCEr0wAs4G2zYWfwzgWaxTduLWl+WL0SoMCPOtepv6j/03/O55QEUexfRCIExew/13Bs6tT2rl/7tTNCHj138bKaNRtuIGY9dn+fkgg1D/enkZv+RJlohDl4ei+OGy76aHGBdzjIKo1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CXQVWNfr; arc=none smtp.client-ip=209.85.210.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789494546; c=relaxed/simple;
+	bh=tIOnU1MTP6xV2VV7knVj8q85l9UIZ6omydtjOabHinE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Lm1qUwAeOGpd56FeSyFm4xAGtfRHC55BQcEdcFWyaA4chbqUB24WRHvuwkc0aOp4lpBYbsN7GbN2CoTOA5Wzx006ZESOYXVRBw8Y8LfcZnGPJ16y61jT21KzE6eGAPIYPIdtQch8FVOICanzCrjIswXF7tNsnBT1Z6hU3ni1yX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=SyvaDvlC; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CXQVWNfr"
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7f4df360cc9so1060717a34.1
-        for <kvm@vger.kernel.org>; Tue, 15 Sep 2026 10:43:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789494208; x=1790099008; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UT4ouAJLFU2Y0pobOZCiwGU7eYX5lu0wzqAZh/2lqXU=;
-        b=CXQVWNfrRZ4GnugKS8hGIPnD7dMR/gXzEetZyPwZSE2DDKUsfZtdlzj98QdyrAwIDI
-         /bORgxtSnHh89UNA+O88gYJAFws1ttU0Dbf97zY37lcazcji8aJ01U8/BFi8urW3/NvK
-         KewIyg3ns3zr5KfncK3SudwyiqJqLg+VYranZ8FKw1PueJdAvCfsKjz2NKISQGCiyC9f
-         WY94ZVtxsKqIHFrpInLlVuG73iNhY8YXqbEe4LKHPDpuKCgluVzIrw+4Lm5m8wuOtEXF
-         fdr3nYXbs9PwnJZtyNzMUWagftl/N5lYOlokb6k0uau/bMWxDWIxDpXzsckTYHXZJe7t
-         QuAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789494208; x=1790099008;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UT4ouAJLFU2Y0pobOZCiwGU7eYX5lu0wzqAZh/2lqXU=;
-        b=QyAHHJPLVrHgTws52EysMXAmTIN2J7pr1vGI+PSdV+4bHp71RWcnlOglbEk6HMbQUa
-         khrbDoOE86tP/ZHh7cKZQLlYcHHxxWJRgTSzZm17eHc+S4NlFtmgC4u18X6Z5BmcYRUb
-         Vp6CoGC6VKjAPv4iZoDDdORoZPMyyGQlj5iENQE8T/bGqco2MH2ZHWNMItbr6H+pLqGm
-         6cyQBaV/GKjeUTO2G8pPKtk40KDhjzFodUnh/8PJ/c7koeGSgMn7bxSorJrV1QLXATSA
-         kW+N4y/RDHETZcXV6zSh3bG94JwOb5uZIeXcpcD2+AfHlG2YRqzYvnR7DPKDKsekX8NF
-         2mbw==
-X-Forwarded-Encrypted: i=1; AKwUvBwo5x0Y/w4+iSC2rjKi3A5TC1wXi2TgkW/Tmcd+xP36nqiwW4T/IQX/GnFUcRKCBqyk7to=@vger.kernel.org
-X-Gm-Message-State: AFuF++lu0ZIQHR/Qh83kANCdbO2b3acaKRHb1apvhSe67bFhO/hH344J
-	RhzFXxZShEaDwhvPrm9d9A49TXbEdEkMbv+JoWVFBSO/MD0MdpdwfaZ+
-X-Gm-Gg: AYBFou0gTW4/wBc92EYertPmUpJZRjJNR5dPHjSfLjmVGTY/ZjFoF6JQuosPMfqyXlF
-	wsQfFhxwR9/ty4mrli5HvuDUzCCc1jCdOGuErmOm2pFQP0F48ysiUnwwmBapaBhAtedmRffdkeC
-	rqbUP//6aCfuq8SaunLIZahfsh5geEeqKg94LfbLx9dkMpSzFxUsiebKqXog0RMA2WeW49ENxxF
-	E9t6xDYVfynrOKG/f3hJYHFiX6Vg6PB8RBD7hn2xxMP3Ws7lTOVRZWzY3RXqpZ2FVWCwg1kSkDJ
-	2AfLvrl61XKP4gkKba+tPPJssNI/6Ayek+xnHEpQnDHJ4k6YLTwsS52lLkGrsT7xuHWuE8ZZq/T
-	ni7BJcKVF4hcasfI/b0nsg43Tuj48BjRqahOIkTWa5FpHjv5zQX1/0kMf9Vj92yrGxkkxVjAOFU
-	hM73CAOXBzIhtQyJLre9+cQ6uuGhX359tRLDum0DaqsNNJr7UtJZoJvq/PXBzJis1dJS5Z2SyCa
-	sf13ewelZio3H9BCFr3
-X-Received: by 2002:a9d:7d8d:0:b0:804:36ec:d875 with SMTP id 46e09a7af769-809823dcba1mr2371764a34.4.1789494207629;
-        Tue, 15 Sep 2026 10:43:27 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:50::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-80505548bbfsm12975740a34.18.2026.09.15.10.43.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 10:43:27 -0700 (PDT)
-Date: Tue, 15 Sep 2026 10:43:23 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Shuah Khan <shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	sargun@sargun.me, jlinbox@meta.com,
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next 0/6] vsock: assign the guest vsock device to a
- network namespace
-Message-ID: <aqmDuxMuEN5lS/0J@devvm29614.prn0.facebook.com>
-References: <20260902-vsock-guest-ns-v1-0-9995383e9a8b@meta.com>
- <apqGcFDFm9_Wtw4q@sgarzare-redhat>
- <apsANK7ySuRzzK0V@devvm29614.prn0.facebook.com>
- <aqkaTXHDf5nfPL9w@sgarzare-redhat>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="SyvaDvlC"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8A110153B;
+	Tue, 15 Sep 2026 10:49:00 -0700 (PDT)
+Received: from [192.168.1.148] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 670C93F7B4;
+	Tue, 15 Sep 2026 10:49:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789494544; bh=tIOnU1MTP6xV2VV7knVj8q85l9UIZ6omydtjOabHinE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SyvaDvlCTGucSv4noTWyrNiGQg0jG1bM+Y2Y7PhfKXtEkzoXn90D3+laJXePekIDT
+	 80C+vbRqd6Q+vXRTqBb1FBtZuus221dG620E7nvSnz71bPOZlSgLh6+klMZj03Lule
+	 0pOBtHK0ECS4SdvNQMgx0sGW+rVyXmEcpW0IGJqE=
+Message-ID: <7c26c860-0543-459e-974b-72c59af261f9@arm.com>
+Date: Tue, 15 Sep 2026 18:48:59 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqkaTXHDf5nfPL9w@sgarzare-redhat>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18 01/23] KVM: arm64: protected VM: Handle set_one_reg
+ CNTVCT_EL0/CNTPCT_EL0
+Content-Language: en-GB
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org,
+ catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+ Marc Zyngier <maz@krenel.org>
+References: <20260915160141.3543048-1-suzuki.poulose@arm.com>
+ <20260915160141.3543048-2-suzuki.poulose@arm.com>
+ <86o6dy5uob.wl-maz@kernel.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <86o6dy5uob.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 15, 2026 at 12:16:47PM +0200, Stefano Garzarella wrote:
-> On Fri, Sep 04, 2026 at 10:30:28AM -0700, Bobby Eshleman wrote:
-> > On Fri, Sep 04, 2026 at 10:55:17AM +0200, Stefano Garzarella wrote:
-> > > On Wed, Sep 02, 2026 at 04:00:46PM -0700, Bobby Eshleman wrote:
-> > > > vsock network namespaces let a host put each VM in a namespace of its
-> > > > own. A guest has no equivalent yet. It has a single G2H device that
-> > > > cannot be assigned to a network namespace.
-> > > 
-> > > Thanks for this, I'll do a proper review next week, in the mean time some
-> > > comments below:
-> > > 
-> > > >
-> > > > This series lets a guest move that device into a network namespace. A
-> > > > new ioctl on /dev/vsock, IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS, assigns the
-> > > > device to the namespace of the calling process. The namespace's existing
-> > > 
-> > > Why an ioctl?
-> > > 
-> > > I'm asking because I'd like to know if you've already considered any
-> > > alternatives (sysfs, netlink, etc.)
-> > > 
-> > > How do you think the ioctl should be used? Should we provide an userspace
-> > > tool, or extending some existing tools?
-> > > 
-> > > Thanks,
-> > > Stefano
-> > 
-> > Really only because /dev/vsock exists and the prior series used it.
+On 15/09/2026 17:46, Marc Zyngier wrote:
+> On Tue, 15 Sep 2026 17:01:19 +0100,
+> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+>>
+>> Protected VMs doesn't allow setting offsets for virtual and phyiscal
+>> counters, as the offset is always fixed to 0. The VM ioclt is filtered
+>> out based on the cap. However we don't prevent the userspace from trying
+>> to write to the CNTVCT/CNTPCT registers. This would lead to KVM triggering
+>> a WARN() in timer_set_offset() as the vm_offset pointer is set to NULL.
+>>
+>> Fix this by always "fixing" the timer offsets to 0 and marking that the
+>> timer offset is set in the kvm->arch.flags at pKVM init time. The
+>> userspace cannot use the KVM_ARM_SET_COUNTER_OFFSET, as it is blocked for a
+>> protected VM.
+>>
+>> A userspace writing to the SYS_CNT*CT would observe success, without
+>> any real effect. This was chosen over preventing the writes to these
+>> registers and returning -EPERM.
+>>
+>> With that, we always have a valid vm_offset pointer, remove the checks for
+>> vm_offset == NULL.
+>>
+>> Reported by Sashiko here
+>> https://lore.kernel.org/all/20260908164641.416911F00A3A@smtp.kernel.org
+>>
+>> Fixes: f7d05ee84a6a ("KVM: arm64: Prevent host from managing timer offsets for protected VMs")
+>> Suggested-by: Marc Zyngier <maz@krenel.org>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> ---
+>>   arch/arm64/kvm/arch_timer.c    | 15 +++++----------
+>>   arch/arm64/kvm/arm.c           | 15 +++++++++++++++
+>>   arch/arm64/kvm/hyp/nvhe/pkvm.c | 26 +++++++++++++-------------
+>>   include/kvm/arm_arch_timer.h   |  3 +--
+>>   4 files changed, 34 insertions(+), 25 deletions(-)
+>>
+>> diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
+>> index 6ac3321f4c575..dda020da4c9c7 100644
+>> --- a/arch/arm64/kvm/arch_timer.c
+>> +++ b/arch/arm64/kvm/arch_timer.c
+>> @@ -1079,14 +1079,10 @@ static void timer_context_init(struct kvm_vcpu *vcpu, int timerid)
+>>   
+>>   	ctxt->timer_id = timerid;
+>>   
+>> -	if (!kvm_vm_is_protected(vcpu->kvm)) {
+>> -		if (timerid == TIMER_VTIMER)
+>> -			ctxt->offset.vm_offset = &kvm->arch.timer_data.voffset;
+>> -		else
+>> -			ctxt->offset.vm_offset = &kvm->arch.timer_data.poffset;
+>> -	} else {
+>> -		ctxt->offset.vm_offset = NULL;
+>> -	}
+>> +	if (timerid == TIMER_VTIMER)
+>> +		ctxt->offset.vm_offset = &kvm->arch.timer_data.voffset;
+>> +	else
+>> +		ctxt->offset.vm_offset = &kvm->arch.timer_data.poffset;
+>>   
+>>   	hrtimer_setup(&ctxt->hrtimer, kvm_hrtimer_expire, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_HARD);
+>>   
+>> @@ -1110,8 +1106,7 @@ void kvm_timer_vcpu_init(struct kvm_vcpu *vcpu)
+>>   		timer_context_init(vcpu, i);
+>>   
+>>   	/* Synchronize offsets across timers of a VM if not already provided */
+>> -	if (!vcpu_is_protected(vcpu) &&
+>> -	    !test_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET, &vcpu->kvm->arch.flags)) {
+>> +	if (!test_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET, &vcpu->kvm->arch.flags)) {
+>>   		timer_set_offset(vcpu_vtimer(vcpu), kvm_phys_timer_read());
+>>   		timer_set_offset(vcpu_ptimer(vcpu), 0);
+>>   	}
+>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+>> index 8b080804bc90b..7c88508cac8a1 100644
+>> --- a/arch/arm64/kvm/arm.c
+>> +++ b/arch/arm64/kvm/arm.c
+>> @@ -214,6 +214,20 @@ static int kvm_arm_default_max_vcpus(void)
+>>   	return vgic_present ? kvm_vgic_get_max_vcpus() : KVM_MAX_VCPUS;
+>>   }
+>>   
+>> +/*
+>> + * Fix the counter offset to 0 for Protected VMs and mark the
+>> + * offset flag. The user can't set the offset via KVM_ARM_SET_COUNTER_OFFSET.
+>> + */
+>> +static void kvm_arch_fix_timer_offsets(struct kvm *kvm)
+>> +{
+>> +	if (!kvm_vm_is_protected(kvm))
+>> +		return;
+>> +
+>> +	/* Fix the counter offset to 0 and mark the offset initialised */
+>> +	kvm->arch.timer_data.poffset = kvm->arch.timer_data.voffset = 0;
+>> +	set_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET, &kvm->arch.flags);
+>> +}
+>> +
+>>   /**
+>>    * kvm_arch_init_vm - initializes a VM data structure
+>>    * @kvm:	pointer to the KVM struct
+>> @@ -267,6 +281,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+>>   
+>>   	kvm_vgic_early_init(kvm);
+>>   
+>> +	kvm_arch_fix_timer_offsets(kvm);
+>>   	kvm_timer_init_vm(kvm);
 > 
-> Yeah, I vaguely remember that we may have discussed switching to netlink in
-> that thread, but I can't find it.
+> This should all be moved to the timer code.
 > 
-> > 
-> > Considering netlink, it might be the better option because there is a
-> > lot of prior art solving problems we might have in the future. For
-> > example, I was thinking about when users suddenly lose access to vsock,
-> > with just the current assign ioctl there is no way for apps or users to
-> > figure out why this happened. We can have an ioctl() setter for user,
-> > but in netdev world users can actually get a notification via netlink as
-> > to which namespace the device went to and what its ifindex is there (see
-> > __dev_change_net_namespace() for the RTM_DELLINK and RTM_NEWLINK
-> > messages). There is probably more, but that's the case that comes to
-> > mind.
+>>   
+>>   	/* The maximum number of VCPUs is limited by the host's GIC model */
+>> diff --git a/arch/arm64/kvm/hyp/nvhe/pkvm.c b/arch/arm64/kvm/hyp/nvhe/pkvm.c
+>> index 459bd9eb7e4bc..e7b38eff63bd1 100644
+>> --- a/arch/arm64/kvm/hyp/nvhe/pkvm.c
+>> +++ b/arch/arm64/kvm/hyp/nvhe/pkvm.c
+>> @@ -528,19 +528,19 @@ static int init_pkvm_hyp_vcpu(struct pkvm_hyp_vcpu *hyp_vcpu,
+>>   	hyp_vcpu->vcpu.arch.cflags = READ_ONCE(host_vcpu->arch.cflags);
+>>   	hyp_vcpu->vcpu.arch.mp_state.mp_state = KVM_MP_STATE_STOPPED;
+>>   
+>> -	if (!pkvm_hyp_vcpu_is_protected(hyp_vcpu)) {
+>> -		/*
+>> -		 * Timer offsets are pointing to the untrusted KVM copy,
+>> -		 * which is pinned in __pkvm_init_vm() for the VM life time.
+>> -		 * It is worth noting that hyp_vm->host_kvm points to an EL2
+>> -		 * linear map address and timer_get_offset() will use
+>> -		 * kern_hyp_va() which is safe as it is idempotent.
+>> -		 */
+>> -		vcpu_vtimer(&hyp_vcpu->vcpu)->offset.vm_offset =
+>> -			&hyp_vm->host_kvm->arch.timer_data.voffset;
+>> -		vcpu_ptimer(&hyp_vcpu->vcpu)->offset.vm_offset =
+>> -			&hyp_vm->host_kvm->arch.timer_data.poffset;
+>> -	}
+>> +	/*
+>> +	 * Timer offsets are pointing to the untrusted KVM copy,
+>> +	 * which is pinned in __pkvm_init_vm() for the VM life time.
+>> +	 * It is worth noting that hyp_vm->host_kvm points to an EL2
+>> +	 * linear map address and timer_get_offset() will use
+>> +	 * kern_hyp_va() which is safe as it is idempotent.
+>> +	 * Also for protected VMs the offset is fixed to 0 and is prevented
+>> +	 * from changing.
+>> +	 */
+>> +	vcpu_vtimer(&hyp_vcpu->vcpu)->offset.vm_offset =
+>> +		&hyp_vm->host_kvm->arch.timer_data.voffset;
+>> +	vcpu_ptimer(&hyp_vcpu->vcpu)->offset.vm_offset =
+>> +		&hyp_vm->host_kvm->arch.timer_data.poffset;
 > 
-> netlink seems like the right way to go, do you think it'll be a real pain to
-> implement?
+> I don't think this is right. Protected guests have no offset, and this
+> needs to be ensured by the hypervisor. Here, the host can change the
+> offset any time it wants, and that's not acceptable.
 
-It is really not bad... it'll include a yaml spec in
-Documentation/netlink/specs/ of call names and perms, a new target for
-generated code in the Makefile, a handler, and then
-tools/net/ynl/ynl-regen.sh generates the plumbing.
+Ah, you're right. :facepalm:
 
 > 
-> > 
-> > > 
-> > > > ns_mode then decides who may use it: a "global" namespace shares the
-> > > > device with every other global namespace, and a "local" namespace keeps
-> > > > the host connection to itself. The device starts out in the initial
-> > > > namespace, so until the ioctl is issued nothing has moved and no mode
-> > > > has changed. There is no explicit unassign as assigning the device back
-> > > > to the initial namespace is equivalent.
-> > > >
-> > > > The ioctl requires CAP_NET_ADMIN in the initial user namespace.
-> > > >
-> > > > Connections that can no longer reach the device after a move are reset,
-> > > > so that a namespace which has lost access cannot keep using a socket it
-> > > > opened while it still had access. Following netdevs, the device returns
-> > > > to the initial namespace when the namespace it was moved to is deleted.
-> > > >
-> > > > Transports opt in through a new netns_assign_allow callback. Only
-> > > > virtio-vsock implements it here.
-> > > 
-> > > Why? (Not asking to support all the others, asking to explain the reason or
-> > > ask helps from others to extend it)
-> > > 
-> > > Thanks,
-> > > Stefano
-> > 
-> > Sure, can add a note here about extending it. I just didn't want to
-> > implement code without having an environment allowing me to test it.
+>>   
+>>   	ret = pkvm_vcpu_init_sysregs(hyp_vcpu);
+>>   	if (ret)
+>> diff --git a/include/kvm/arm_arch_timer.h b/include/kvm/arm_arch_timer.h
+>> index bc6f2fdd7ad33..4f0aa3bb69f45 100644
+>> --- a/include/kvm/arm_arch_timer.h
+>> +++ b/include/kvm/arm_arch_timer.h
+>> @@ -176,8 +176,7 @@ static inline bool has_cntpoff(void)
+>>   		if (__ctxt) {						\
+>>   			struct arch_timer_offset *ato = &__ctxt->offset;\
+>>   									\
+>> -			if (ato->vm_offset)				\
+>> -				off += *KERN_HYP_VA(ato->vm_offset);	\
+>> +			off += *KERN_HYP_VA(ato->vm_offset);		\
+>>   			if (ato->vcpu_offset)				\
+>>   				off += *KERN_HYP_VA(ato->vcpu_offset);	\
+>>   		}							\
 > 
-> It's fine, I'm not asking you to do it ;-)
+> And as you drop the previous hunk, this also needs to be restored to
+> its original state.
+
+Ack.
+
+Suzuki
+
+
 > 
-> Sorry again for the delay, I hope to review this series today/tomorrow.
-> 
-> Thanks,
-> Stefano
+> 	M.
 > 
 
-No rush!
-
-Thanks,
-Bobby
