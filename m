@@ -1,275 +1,152 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8565647DFBF;
-	Tue, 15 Sep 2026 21:20:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789507243; cv=none; b=Y5NPfAezzhT0Ag34inYnhvzP3Vp7Qkz8J0/ZRygMitKcESY34I+zdycGAspNlTN8B4kxCizSb/Z3FDVj4zRq6YNO9peo1CS5yVIIEGRi9OInzAB/PkHdcK8pUH0G/YyxrG6XDhenjlzYhso6RL1/IlR+j2wWNppyI1KNmCJvauA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789507243; c=relaxed/simple;
-	bh=LQViG0hlKh0Tbf4uhF7NC8leV+Z7xLVTw+9GggXNijo=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=JLbQhAOqGNTegV1rzxJMjJ8SOUOt8czsDJogfEvCK1qJFdOrLeFMwqVJgZWoGLEtMH1r6T6XHLKM8sHIk1k/rJ9lOirLo38YiN9VU3oRqWprrOJyJsRoeq9lBxtVSSnW4NeeIMNrXQsc5yj0oBaQEXwaN7aUGhZuv8ZQamdLP0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=hkwBkU3a; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010005.outbound.protection.outlook.com [52.101.85.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CC73BFAC0
+	for <kvm@vger.kernel.org>; Tue, 15 Sep 2026 21:27:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.5
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789507665; cv=fail; b=Mu7pqB/GjVrwPB+/8FYAzhT3FenWIICxIWdIrqsoPA8MwrL2itWYYdWf+dnF73d0PFxjbURJTV+fDcS78obcbI+VSmla53/ZP8X8a4/V9C+j7tN9MLnb/6AAtJUwPcVWjL26jphzKXODIMk8C40415rNT3/pNG8REUsi930WZq4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789507665; c=relaxed/simple;
+	bh=lXJ6UKcN/c8GyoOlQceygGwQT/e7Dx4sueOeFJ34fk4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xw3Vhp5Ttli1t/w70GaxQ6EBlMheQzwr4aoq8D3GQK5eA+DeTwlkcK03msgkj1V2GyY7R1e4TQuCvOzUr2NLmpMzRvkcC+YToKsRAxWp1/NoqLLKU3wZm1jQZg8wXC+sC80B8CEOV/PGKPRuIEX5scyAUCrSJ9N0Tfv6L4Zve20=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=fail (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ThkECefV reason="signature verification failed"; arc=fail smtp.client-ip=52.101.85.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="hkwBkU3a"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 225E7152B;
-	Tue, 15 Sep 2026 14:20:37 -0700 (PDT)
-Received: from [10.57.8.111] (unknown [10.57.8.111])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A8AD03F882;
-	Tue, 15 Sep 2026 14:20:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789507240; bh=LQViG0hlKh0Tbf4uhF7NC8leV+Z7xLVTw+9GggXNijo=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=hkwBkU3aFMqKBvDmwcRh6Tkk9Rni4bu0ypgZpHfVxY46D9MrHa4yS37nopz6Vu+c/
-	 SHYBn8EzwiQmOWxeT8dLnP3ghvUbBI3VphIT+JwjCcKhuFMtAKYZJZS+f89bJOrgpm
-	 Wp54UDD7mSaWbIvDkhTYu6I1At0dZjkaZHrxk7Ls=
-Message-ID: <a4e7e6c3-d325-4f35-a17c-e02791cca326@arm.com>
-Date: Tue, 15 Sep 2026 22:20:36 +0100
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ThkECefV"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XpXufWX7jBBCH1o8uHQy/1fK6M/OkzCw35nXwSsfbgDAwnYYt/DFC7KuFWRvRria4ypnseNbfU5b1RA+ydZ/HMm5HvUjdeULV3b4dTxUvGiOQTSVo2Wy2RBr/l6ku4KVp7s7ceT4lOg5R9Kj53R+C1cPaJS4N+Vd8ivZCZpjuNGm0B21ynUf0BHg/yK/ingC635K+DhApVn7KYF8LrH+jE3E5dtcooTw/fijroptksiO4UUElaY+3U/xqJWRKFznlL03A5kpAkWtw7tNurfzh/JfmuPdDcxZv8O598LKXxO5erNF6/tPKDHnJ5E3AhEm5G2qN4ZmfX2EOEzF9AQasw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=J2XM9bJ5LJOvmtgoeKz3wOHAAxZEbHdzwp/+D1Ye7TA=;
+ b=rdKqUSwgAdksfDJZF/sqlgguj7GyQSSqCOIbPcY2TUFh35n3LBJTyMZVeZpZRtNa1J76VLDtMgWvUHs91qiizEsy/L+aWx4FwppvefuE1tvhffKTOnHW2AfTzGI/FyGNmfXBRGERm9zYoiGrp2anY2yFE5As5K2fBKpm29P20xneWGTuujLgaJbfpJVChxL0o9WYzquJds2BUx7vL0rkNxETW3IUayQvdAnrkZ86smWn1ezxdpxrL+idfbXP8EawNZQEuV7wKuck1/Nl5xQTmp9JmloCIk7Ges6BpEYXxDxPR4J8QqsO5rpd834t9ZpEdo898WqTKdWFsUNEsyK5DQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=J2XM9bJ5LJOvmtgoeKz3wOHAAxZEbHdzwp/+D1Ye7TA=;
+ b=ThkECefVWAPF5JyaKQvuVp6aWB8/nnKkYRjTLOQrTb/4tba5kG/L/kBvlz4XpA7FcsIPhrpXdeF0K3v9ADgo2lUQSbFqJgeX/11hZSLbWb1SLmdJu03wOFOjOE7yu9s4TobtamU034Tm+MQ4c3JuQ/YtBWgvpQqSq2gjotprQqE=
+Received: from CH2PR18CA0038.namprd18.prod.outlook.com (2603:10b6:610:55::18)
+ by PH7PR12MB8780.namprd12.prod.outlook.com (2603:10b6:510:26b::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Tue, 15 Sep
+ 2026 21:27:38 +0000
+Received: from BN5PEPF0004698A.namprd02.prod.outlook.com
+ (2603:10b6:610:55:cafe::99) by CH2PR18CA0038.outlook.office365.com
+ (2603:10b6:610:55::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.9 via Frontend Transport; Tue, 15
+ Sep 2026 21:27:38 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN5PEPF0004698A.mail.protection.outlook.com (10.167.245.39) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.428.7 via Frontend Transport; Tue, 15 Sep 2026 21:27:38 +0000
+Received: from localhost (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 15 Sep
+ 2026 16:27:36 -0500
+Date: Tue, 15 Sep 2026 16:01:06 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+CC: <berrange@redhat.com>, <kchamart@redhat.com>,
+	<pierrick.bouvier@oss.qualcomm.com>, <peter.maydell@linaro.org>,
+	<mst@redhat.com>, <cohuck@redhat.com>, <pbonzini@redhat.com>,
+	<eblake@redhat.com>, <armbru@redhat.com>, <lorenzo.pieralisi@linaro.org>,
+	<gshan@redhat.com>, <enju.kohei@fujitsu.com>, <qemu-devel@nongnu.org>,
+	<qemu-arm@nongnu.org>, <kvm@vger.kernel.org>
+Subject: Re: [RFC v4 02/24] target/arm/kvm: Return immediately on error in
+ kvm_arch_init()
+Message-ID: <rocrppdlgvg6jcolhnlt7z7ilqmthepim66ujg4e5diayw2gmg@s345fbhx3sov>
+References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
+ <20260903193611.1058589-3-mathieu.poirier@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18 01/23] KVM: arm64: protected VM: Handle set_one_reg
- CNTVCT_EL0/CNTPCT_EL0
-Content-Language: en-GB
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org,
- catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
- Marc Zyngier <maz@krenel.org>
-References: <20260915160141.3543048-1-suzuki.poulose@arm.com>
- <20260915160141.3543048-2-suzuki.poulose@arm.com>
- <86o6dy5uob.wl-maz@kernel.org> <7c26c860-0543-459e-974b-72c59af261f9@arm.com>
-In-Reply-To: <7c26c860-0543-459e-974b-72c59af261f9@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260903193611.1058589-3-mathieu.poirier@linaro.org>
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN5PEPF0004698A:EE_|PH7PR12MB8780:EE_
+X-MS-Office365-Filtering-Correlation-Id: bf34ce9d-6921-465c-b825-08df13702a8d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|23010399003|7416014|376014|82310400026|1800799024|6133799003|10067099003|4143699003|56012099006|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	LSe5yxPsnqu9iNG59bdcNXh6tLHOovbNJ//42tgbkWmCzJmDL3EnmsahtfuKW/IZW9JZpxr9HHM8p/M4keoWKgSLJGc12A0IV4m4trB9DkD8QIrwUXTDNFErRDIw4TEz6p1EkwSGCFKp5dgtmi4lG/l9hy/INl8Z4y+NZf6LbDP0mcl7Yf9Bvl/qWt6/01VGXu1xmh3T9TKWDvyiPxh87A6iNR0iME3fNPhR5uUDwUU2glBOq06OhsplY3T0xIgClKXZv7B4+ZOdCigvPzFP0NHe8CRIyHgQnO1brPgoEBB78F2bBdPtJe+Pxz51Fpopu186MTED+Ty0ZzyktESCEixhlAI0F4Gp8Ec7J7d28YcBOxfHv8/+qw/w8M0irgQIrHVDxQG1oxcNW1KSXCR3t/tda+lQA81Y3fsnFTa/BVxva6rRVs/RZ2Fojhh+mN6MHOIlKYvR6J123+0tvYuBixfC5PGmWLdIdP7JcwJ0dkEodlAtfzHF1bEdkKR38OJqOCMW6bNvizBheWkLvTxYyzFgqOB0zh93YqHkBxpTnJzFf1nmN4/mzCFwe7rRr6aTBihTPGLdEfjJuqFw2TivKCanuBJ5z3GIcmSs2xkHhNc4sFffeo7zfi4rUzVkIy73bJN4i+L2mnbi1B0Obp3pmOPi+D45yhhHiOll6nPrZGuxe3Iv8sNevCpl0CT/JlMLUn9o8mQQp4xxTY8bsFc3/g==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(7416014)(376014)(82310400026)(1800799024)(6133799003)(10067099003)(4143699003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	dAJwi8ba9AuRmWI7e3A1D0bQxtY7zNYh1T4sNAlbSqV9SZ4NG6WVXHG+H+9nWG3yYLCTxXeHs7pF72Ff2hP9nKQ2+rCqmCoz+ARcyO+D9WE4vEcivIq2Rdde9Y4kV/eFXwMlS5WV26Y8tNnxt5kZqnDgPSLFGXjiX3n3bCT+fX6Ph25AVJTBDJWwogPawSjCAx55QZgLAe3ac/rHvzG9pzR7x4LOm9KR5l0aW1bZ9KjPKdMz5qIKk5zbUHVtRICoslSd6aPRcwNzk8LncA4OX17FN1PsaF9F8Qk1Cy6OmDXOqqHmQYMbYJGkBerN7eeb122inYmoQeHybw6sRXRuMFjRkY081iwNMT58Hb6N3ZLLpgnzyOd+6XJSdrI7rszEqFK5uO+zg9aRYtVV0mucRgQL0oFN7pQug44Q8jIyENu+eQ1LcOsg5t1rq3XKcadE
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2026 21:27:38.0627
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: bf34ce9d-6921-465c-b825-08df13702a8d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN5PEPF0004698A.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8780
 
-On 15/09/2026 18:48, Suzuki K Poulose wrote:
-> On 15/09/2026 17:46, Marc Zyngier wrote:
->> On Tue, 15 Sep 2026 17:01:19 +0100,
->> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
->>>
->>> Protected VMs doesn't allow setting offsets for virtual and phyiscal
->>> counters, as the offset is always fixed to 0. The VM ioclt is filtered
->>> out based on the cap. However we don't prevent the userspace from trying
->>> to write to the CNTVCT/CNTPCT registers. This would lead to KVM 
->>> triggering
->>> a WARN() in timer_set_offset() as the vm_offset pointer is set to NULL.
->>>
->>> Fix this by always "fixing" the timer offsets to 0 and marking that the
->>> timer offset is set in the kvm->arch.flags at pKVM init time. The
->>> userspace cannot use the KVM_ARM_SET_COUNTER_OFFSET, as it is blocked 
->>> for a
->>> protected VM.
->>>
->>> A userspace writing to the SYS_CNT*CT would observe success, without
->>> any real effect. This was chosen over preventing the writes to these
->>> registers and returning -EPERM.
->>>
->>> With that, we always have a valid vm_offset pointer, remove the 
->>> checks for
->>> vm_offset == NULL.
->>>
->>> Reported by Sashiko here
->>> https://lore.kernel.org/all/20260908164641.416911F00A3A@smtp.kernel.org
->>>
->>> Fixes: f7d05ee84a6a ("KVM: arm64: Prevent host from managing timer 
->>> offsets for protected VMs")
->>> Suggested-by: Marc Zyngier <maz@krenel.org>
->>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->>> ---
->>>   arch/arm64/kvm/arch_timer.c    | 15 +++++----------
->>>   arch/arm64/kvm/arm.c           | 15 +++++++++++++++
->>>   arch/arm64/kvm/hyp/nvhe/pkvm.c | 26 +++++++++++++-------------
->>>   include/kvm/arm_arch_timer.h   |  3 +--
->>>   4 files changed, 34 insertions(+), 25 deletions(-)
->>>
->>> diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
->>> index 6ac3321f4c575..dda020da4c9c7 100644
->>> --- a/arch/arm64/kvm/arch_timer.c
->>> +++ b/arch/arm64/kvm/arch_timer.c
->>> @@ -1079,14 +1079,10 @@ static void timer_context_init(struct 
->>> kvm_vcpu *vcpu, int timerid)
->>>       ctxt->timer_id = timerid;
->>> -    if (!kvm_vm_is_protected(vcpu->kvm)) {
->>> -        if (timerid == TIMER_VTIMER)
->>> -            ctxt->offset.vm_offset = &kvm->arch.timer_data.voffset;
->>> -        else
->>> -            ctxt->offset.vm_offset = &kvm->arch.timer_data.poffset;
->>> -    } else {
->>> -        ctxt->offset.vm_offset = NULL;
->>> -    }
->>> +    if (timerid == TIMER_VTIMER)
->>> +        ctxt->offset.vm_offset = &kvm->arch.timer_data.voffset;
->>> +    else
->>> +        ctxt->offset.vm_offset = &kvm->arch.timer_data.poffset;
->>>       hrtimer_setup(&ctxt->hrtimer, kvm_hrtimer_expire, 
->>> CLOCK_MONOTONIC, HRTIMER_MODE_ABS_HARD);
->>> @@ -1110,8 +1106,7 @@ void kvm_timer_vcpu_init(struct kvm_vcpu *vcpu)
->>>           timer_context_init(vcpu, i);
->>>       /* Synchronize offsets across timers of a VM if not already 
->>> provided */
->>> -    if (!vcpu_is_protected(vcpu) &&
->>> -        !test_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET, &vcpu->kvm- 
->>> >arch.flags)) {
->>> +    if (!test_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET, &vcpu->kvm- 
->>> >arch.flags)) {
->>>           timer_set_offset(vcpu_vtimer(vcpu), kvm_phys_timer_read());
->>>           timer_set_offset(vcpu_ptimer(vcpu), 0);
->>>       }
->>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->>> index 8b080804bc90b..7c88508cac8a1 100644
->>> --- a/arch/arm64/kvm/arm.c
->>> +++ b/arch/arm64/kvm/arm.c
->>> @@ -214,6 +214,20 @@ static int kvm_arm_default_max_vcpus(void)
->>>       return vgic_present ? kvm_vgic_get_max_vcpus() : KVM_MAX_VCPUS;
->>>   }
->>> +/*
->>> + * Fix the counter offset to 0 for Protected VMs and mark the
->>> + * offset flag. The user can't set the offset via 
->>> KVM_ARM_SET_COUNTER_OFFSET.
->>> + */
->>> +static void kvm_arch_fix_timer_offsets(struct kvm *kvm)
->>> +{
->>> +    if (!kvm_vm_is_protected(kvm))
->>> +        return;
->>> +
->>> +    /* Fix the counter offset to 0 and mark the offset initialised */
->>> +    kvm->arch.timer_data.poffset = kvm->arch.timer_data.voffset = 0;
->>> +    set_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET, &kvm->arch.flags);
->>> +}
->>> +
->>>   /**
->>>    * kvm_arch_init_vm - initializes a VM data structure
->>>    * @kvm:    pointer to the KVM struct
->>> @@ -267,6 +281,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned 
->>> long type)
->>>       kvm_vgic_early_init(kvm);
->>> +    kvm_arch_fix_timer_offsets(kvm);
->>>       kvm_timer_init_vm(kvm);
->>
->> This should all be moved to the timer code.
->>
->>>       /* The maximum number of VCPUs is limited by the host's GIC 
->>> model */
->>> diff --git a/arch/arm64/kvm/hyp/nvhe/pkvm.c b/arch/arm64/kvm/hyp/ 
->>> nvhe/pkvm.c
->>> index 459bd9eb7e4bc..e7b38eff63bd1 100644
->>> --- a/arch/arm64/kvm/hyp/nvhe/pkvm.c
->>> +++ b/arch/arm64/kvm/hyp/nvhe/pkvm.c
->>> @@ -528,19 +528,19 @@ static int init_pkvm_hyp_vcpu(struct 
->>> pkvm_hyp_vcpu *hyp_vcpu,
->>>       hyp_vcpu->vcpu.arch.cflags = READ_ONCE(host_vcpu->arch.cflags);
->>>       hyp_vcpu->vcpu.arch.mp_state.mp_state = KVM_MP_STATE_STOPPED;
->>> -    if (!pkvm_hyp_vcpu_is_protected(hyp_vcpu)) {
->>> -        /*
->>> -         * Timer offsets are pointing to the untrusted KVM copy,
->>> -         * which is pinned in __pkvm_init_vm() for the VM life time.
->>> -         * It is worth noting that hyp_vm->host_kvm points to an EL2
->>> -         * linear map address and timer_get_offset() will use
->>> -         * kern_hyp_va() which is safe as it is idempotent.
->>> -         */
->>> -        vcpu_vtimer(&hyp_vcpu->vcpu)->offset.vm_offset =
->>> -            &hyp_vm->host_kvm->arch.timer_data.voffset;
->>> -        vcpu_ptimer(&hyp_vcpu->vcpu)->offset.vm_offset =
->>> -            &hyp_vm->host_kvm->arch.timer_data.poffset;
->>> -    }
->>> +    /*
->>> +     * Timer offsets are pointing to the untrusted KVM copy,
->>> +     * which is pinned in __pkvm_init_vm() for the VM life time.
->>> +     * It is worth noting that hyp_vm->host_kvm points to an EL2
->>> +     * linear map address and timer_get_offset() will use
->>> +     * kern_hyp_va() which is safe as it is idempotent.
->>> +     * Also for protected VMs the offset is fixed to 0 and is prevented
->>> +     * from changing.
->>> +     */
->>> +    vcpu_vtimer(&hyp_vcpu->vcpu)->offset.vm_offset =
->>> +        &hyp_vm->host_kvm->arch.timer_data.voffset;
->>> +    vcpu_ptimer(&hyp_vcpu->vcpu)->offset.vm_offset =
->>> +        &hyp_vm->host_kvm->arch.timer_data.poffset;
->>
->> I don't think this is right. Protected guests have no offset, and this
->> needs to be ensured by the hypervisor. Here, the host can change the
->> offset any time it wants, and that's not acceptable.
+On Thu, Sep 03, 2026 at 01:35:49PM -0600, Mathieu Poirier wrote:
+> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > 
-> Ah, you're right. :facepalm:
+> Returning an error to kvm_init() is fatal anyway, no need to continue
+> the initialization.
 > 
->>
->>>       ret = pkvm_vcpu_init_sysregs(hyp_vcpu);
->>>       if (ret)
->>> diff --git a/include/kvm/arm_arch_timer.h b/include/kvm/arm_arch_timer.h
->>> index bc6f2fdd7ad33..4f0aa3bb69f45 100644
->>> --- a/include/kvm/arm_arch_timer.h
->>> +++ b/include/kvm/arm_arch_timer.h
->>> @@ -176,8 +176,7 @@ static inline bool has_cntpoff(void)
->>>           if (__ctxt) {                        \
->>>               struct arch_timer_offset *ato = &__ctxt->offset;\
->>>                                       \
->>> -            if (ato->vm_offset)                \
->>> -                off += *KERN_HYP_VA(ato->vm_offset);    \
->>> +            off += *KERN_HYP_VA(ato->vm_offset);        \
->>>               if (ato->vcpu_offset)                \
->>>                   off += *KERN_HYP_VA(ato->vcpu_offset);    \
->>>           }                            \
->>
->> And as you drop the previous hunk, this also needs to be restored to
->> its original state.
+> Leave the `ret` variable in the function scope because it will be reused
+> when adding RME support.
 > 
-> Ack.
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> Reviewed-by: Philippe Mathieu-Daud� <philmd@oss.qualcomm.com>
+> Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+> ---
+>  target/arm/kvm.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
 > 
-> Suzuki
+> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+> index d40a6a985914..ed99be7fd80c 100644
+> --- a/target/arm/kvm.c
+> +++ b/target/arm/kvm.c
+> @@ -596,7 +596,7 @@ int kvm_arch_get_default_type(MachineState *ms)
+>  
+>  int kvm_arch_init(MachineState *ms, KVMState *s)
+>  {
+> -    int ret = 0;
+> +    int ret;
+>      /* For ARM interrupt delivery is always asynchronous,
+>       * whether we are using an in-kernel VGIC or not.
+>       */
+> @@ -618,7 +618,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+>          !kvm_check_extension(s, KVM_CAP_ARM_IRQ_LINE_LAYOUT_2)) {
+>          error_report("Using more than 256 vcpus requires a host kernel "
+>                       "with KVM_CAP_ARM_IRQ_LINE_LAYOUT_2");
+> -        ret = -EINVAL;
+> +        return -EINVAL;
+>      }
+>  
+>      if (kvm_check_extension(s, KVM_CAP_ARM_NISV_TO_USER)) {
 
-
-This is how it looks like now, reworked.
-
-
-diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
-index 6ac3321f4c575..1c8fac222a643 100644
---- a/arch/arm64/kvm/arch_timer.c
-+++ b/arch/arm64/kvm/arch_timer.c
-@@ -1110,8 +1110,7 @@ void kvm_timer_vcpu_init(struct kvm_vcpu *vcpu)
-                 timer_context_init(vcpu, i);
-
-         /* Synchronize offsets across timers of a VM if not already 
-provided */
--       if (!vcpu_is_protected(vcpu) &&
--           !test_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET, 
-&vcpu->kvm->arch.flags)) {
-+       if (!test_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET, 
-&vcpu->kvm->arch.flags)) {
-                 timer_set_offset(vcpu_vtimer(vcpu), kvm_phys_timer_read());
-                 timer_set_offset(vcpu_ptimer(vcpu), 0);
-         }
-@@ -1133,6 +1132,15 @@ void kvm_timer_init_vm(struct kvm *kvm)
-          */
-         for (int i = 0; i < NR_KVM_TIMERS; i++)
-                 kvm->arch.timer_data.ppi[i] = get_vgic_ppi(kvm, 
-default_ppi[i]);
-+
-+       /*
-+        * For the protected VMs, fix the counter offset to 0 by marking the
-+        * KVM_ARCH_FLAG_VM_COUNTER_OFFSET. This would also prevent 
-userspace
-+        * writes to CNTVCT_ELO & CNTPCT_EL0.
-+        * The user can't set the offset via vm ioctl 
-KVM_ARM_SET_COUNTER_OFFSET.
-+        */
-+       if (kvm_vm_is_protected(kvm))
-+               set_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET, &kvm->arch.flags);
-  }
-
-  void kvm_timer_cpu_up(void)
-
-
+There's a error_report("Failed to enable KVM_CAP_ARM_NISV_TO_USER cap")
+under here as well that doesn't have a return -EINVAL after this patch.
+Is that intentional?
