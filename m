@@ -1,36 +1,35 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010022.outbound.protection.outlook.com [52.101.85.22])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011005.outbound.protection.outlook.com [52.101.62.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32CF493642;
-	Wed, 16 Sep 2026 23:50:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198555013B9;
+	Wed, 16 Sep 2026 23:50:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.5
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789602639; cv=fail; b=n9XTTQxaYg5HuMS7y4g0ca6Gl2GlsRlB3laWZ56Mo61TIe9O3nm3XEEUiutOTi8z31JL2RhFkNyCsGhaHSReWgiwXtHb6u5Q/auDmA7+bhQwgTwiGOK/vkvUZFN8q/XSGRThnlVHATigw90gsrs/H4BuGWcMtcINThZowi0u/S4=
+	t=1789602643; cv=fail; b=Egkv7IpLWPey7wfeQOyBz/7UlQuUyOUjy2V34JU9XiUffH1fwpJJmvzJBy3EpWRla48EuiKNbvMG9yRGKLMTIG65w5pCjImf/AP6sIvsmbYq0u1WzPEL8loyDFtf6/m4X9vCp5B+VKcnZX5uNMy8OR+a64ZD0S2jhWm1uzPIXR4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789602639; c=relaxed/simple;
-	bh=Iqjflo6TX46WeHN1KS5E7XcLiGqysXxYuCsVOrhhJzU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cStg6pFJF/IhDyuazmXaYhPvCBalT1p4p6QJYp8fzQ3DANQ1x49VPuk76/zcODl2kxj6Sgw/X6wfzGPvzXb699FIBK9jJ2WW6iUn5yjUAJz7tI4AasRUEiSg7knWZsFaguc5gtlqFRnAxKJzP05nkqGjVedyDz27QSn7acfCrxk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UWpz1PYa; arc=fail smtp.client-ip=52.101.85.22
+	s=arc-20240116; t=1789602643; c=relaxed/simple;
+	bh=UfcYrdEEjTPjgAV0jp+B5djlFBDLYq88639IPHoM4gA=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=jOOfmulPfKImWXnilaOFkTYStpM60lUVTBb10LjWbJdEQoU+M5Y2pwUknm2Ez/wvYw4nrWabVQqwBsUgSgI21vtwYw5z5sPGeDy1SansZ5JRZmBu7uNS6w5c2iCePxycT3ZErlwcrd7H2akGseIgO1W3X2wAOTiVP5XxY4NZCYk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=k+epJGbN; arc=fail smtp.client-ip=52.101.62.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UWpz1PYa"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="k+epJGbN"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nV3g0Wo6jE9k5gM2AJL9dbZd/B6EeiFcidq7ZAwTI2QTY4t9QDaAmttREkbaEZdNeNC+jbPSbl1sZwSEk/3MvZJeUTlY1DNGtvWRp25BWBwg81y643EUibRCDZpordfsGUo/nar9c/WS0jBqe+KvNaz4KNyoMrgDLCVHbGALM+X+cuNQ/WzKlU+7HEnvFmvV4oD5rA2Evsr1ONvTVcdnT4nsRL6g5JFA1xl2IyDNtamz6kiX93WNu1vQCgkErxc1DxAymup/jNz9OYPob4eX2MtoPnokQw0Sz81okfUo298OWH5YHOFcSnNixAtzSzNsLFUHSHCY9Y/w9UCkNARlCg==
+ b=wDkseqEk7Mee9eeyEdYhl0b87KNtq1tDs3MPp86jDAfRh+9B12rud9A1czXBRTwOdhhx45cZZo2rlJzbIg4wo/99v+U2wjZ6CjS+Z+P8qCOIFiHGRF2CbQUhqaLLuYZ10iuBcoyKhe9zuYvVZYMCnMODt81Z+J2FrdjGHWo6W7/UnBx89QIUJL5yM18Pmau49tgl2KA/Vj79/+fW2p75ogIRT7qEBNXQoJa+bqKrE5HSibcI0CcnOyK48CA4dwxZOQQ4MeCO3bg8s5fxyTJap37ab0nQ5ylubYOUK6/tqZi216ouSsgy140cLU4m2D6eIg4TIVNJLCDMbsWLHNSKvw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=860bdk9Pb/Vt2uOrYuT0CkTJWSkcidH1oqBzCGWFwOY=;
- b=Y4fslPCXuhXAd0rKIExvkf4RWzFSUXJCSuN3H14oOKHQabUnU/fqsDNa+q/2A39zG43YwTFa7w7NJDisFiBZUtq2mejJf5VMzPbX1XQ+2sCAC6WxAHS+EvY35d4OWr/uNvqEpkcaPt80vyokj0r+SNaNsmhn2P2Bb9tU7QRVmwLf40JU2hPqt14cFe/wMxU5jTA6386yTO0sRvT63BiXCf+dmhp/h7EWbweF6QI892d9UDDg7eg8oD7fN9pFaVtwAGMLFRX2zvsMS2SsXXEZwTKl4FOyLq9kouQziccOYqtu/TmyKxpm9xwdQ8yAqYqIW6if3HhlVzqfUdQx+XyvlQ==
+ bh=N4ELZApdgCYwKoE9nuLd68Yv2tEHsnuFqFQ/QV/1sV4=;
+ b=vBx+y6cHsogcMU5gMDKeNrYbJP8r4UXjEDL7LmgIlPo9kbsqsbHa4txrOv1H+e18XPzcgq2QxZW0L1r8dnh/wgNjkU+sY+l7WryP9QBVSpc9lzVMRwxPpbg7BzSnLI0tSB97uMBj2DSCMbOcWVr2qJNwlIwMnj3CU2ELtS4rkxEGcN1OWNcazsLjtwkOTBqybutfYk3lQNHqB7GG9Km4vCM7tsFuzDYjvOiFC4Ik9Dx2+oo1h7OlQg5MxVVJPIWl57b3UeImharYe+k2ZjG7G962qSg7ManfPmpyRYfUpNMtA0GP0KV7uHx1ZmzviVZncabW52egmmBG2RdwYxCTGQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=860bdk9Pb/Vt2uOrYuT0CkTJWSkcidH1oqBzCGWFwOY=;
- b=UWpz1PYaeZeBta1ZlT2AM6cn6Hye+pSeHYD+60nw/q23l8K1dsYGvqn3meYqgg0EvMW+vjqDNM5tT9TEQlj5NHOOV6paiB1kcdiazegBn85DiepI60wTmYuo5EneDCjyuXh/kNGr+MTsBLdE6agCkbiD0TzIzj6DS9L85kgyX1UyLg7eWAZeGyxC9ynqzzsJdQikY6vkdiLGCn7OrT6DKthQWkVVHMBcwQxfINPhsW7lz1Ct4qFs6wZxgCUW9j9gQ7c1/0aQVbr8Pc7rF/RAWBLnnLVFPnfmTN2nVNa533HKAVRXfU5ZaVlUqtZ/ScV/zvfuBX6Mo9PjsvMyFBT/Wg==
+ bh=N4ELZApdgCYwKoE9nuLd68Yv2tEHsnuFqFQ/QV/1sV4=;
+ b=k+epJGbNZLUwmeEE/XGGtVIfuje+0JfcASsioJ0gLPnddy9mXEQJiAkCeFjlyCGd/XnZpNZTaHEQiJr9sj2x1hX/Hlsmx2c/DaVwTAxvvSzZnj5b63dvxcx89buCLMyFqm4GbgubYFNxsFcy5FBB+bj1oLnHlo28Yy1IZAh2EUO2tDq2cET8T/55fFTegPsggIU+BR3pteHE1bQ0a9qREU2QFamZfQ+enz/uuoYmsJ9OBAKoLKRN7S7jS3ddH01jO/BHoSrDx6RFW5NYhW/akFVvUQL+aGba78QXsEbFe9TJoxngEFrVKaiznOUivrJHTu60io2JsGux0CIjNlX3zw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CHBPR12MB731189.namprd12.prod.outlook.com
@@ -55,15 +54,13 @@ To: Alex Williamson <alex@shazbot.org>,
 	Shuah Khan <shuah@kernel.org>,
 	Tariq Toukan <tariqt@nvidia.com>
 Cc: patches@lists.linux.dev
-Subject: [PATCH v6 06/10] vfio: selftests: Allow drivers to specify required region size
-Date: Wed, 16 Sep 2026 20:49:54 -0300
-Message-ID: <6-v6-8af36cf7b73f+e2-mlx5st_jgg@nvidia.com>
-In-Reply-To: <0-v6-8af36cf7b73f+e2-mlx5st_jgg@nvidia.com>
-References:
+Subject: [PATCH v6 00/10] mlx5 support for VFIO self test
+Date: Wed, 16 Sep 2026 20:49:48 -0300
+Message-ID: <0-v6-8af36cf7b73f+e2-mlx5st_jgg@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BN9PR03CA0600.namprd03.prod.outlook.com
- (2603:10b6:408:10d::35) To CHBPR12MB731189.namprd12.prod.outlook.com
+X-ClientProxiedBy: MN0PR04CA0007.namprd04.prod.outlook.com
+ (2603:10b6:208:52d::12) To CHBPR12MB731189.namprd12.prod.outlook.com
  (2603:10b6:610:33d::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -73,198 +70,177 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|IA4PR12MB9787:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7b3211c6-9bcf-463c-fc2b-08df144d3833
+X-MS-Office365-Filtering-Correlation-Id: f364323d-8ec0-4662-8074-08df144d383f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|23010399003|366016|921020|6133799003|10067099003|11063799006|56012099006|22082099003|18002099003;
+	BCL:0;ARA:13230040|376014|1800799024|23010399003|366016|921020|6133799003|3023799007|10067099003|11063799006|56012099006|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	HXaBnyo642812nBnXpCk2wk12Lf/nYvh9RL8p5/FzC+C/LGoMViRq7A7ODvQIihadU2JWFcOgHhhsU9W99T5KcAWRfc9vANd2E9L5bkypVKjGR2p7Ah/LgBoJ1pZpdKpY2fLdYGCaqyMVcmyqekXL0etJ5lELYESiQx8+4TcbtDh9JC48J+JpU4grHm2gpaPsOvb0ybxQEHP4QeUfthSfe9+QRj1ppORrs7xyPCzKlKysQpXJBTt28DTqyGrzya8XN8nC1/F0jeE9DANzJaJva0PTJXCx+SOAUTLcmaVD6w6f9UX3v8zxkIlCMVUCesFq2bfaFWWEMgrp++Pbn/oaSzUlSvFgmE41ws4t9Q0khvhbOlI/zbW2ljZOazRUjQj5XbWSyC4q6T1zagmsWAGrtU99SVDfiZ9P7zNB5Mjaj+lGoutyIHIm8nC3n9ARwnMgBH7nZCi8c1PWKnSJcuUKKWX4DcYZKjjlvLVc12q6jzOhTJccITAFfk/W8KnxINSLsPuyEqBK5LOBE6DeJGq2EKhc7mf/KCrCrRadbRWczrCX90sFKhtEFraHbVh9Mtbg/5rmS2BX4RY8BDk7mejSghtSUYyRgyVPFAzHsYLm4Dko8THv7unVFrEO4eNDKdsRfu6BNlL5nJSF8wXHPvK3isnGiefWhasdHMPLtZWIPtuxluIYUIDfyf98ErG6/TpPRdfnzDztCJhat6AlAJ0Kg==
+	FulYhCJPGrTtSNmOoysgx0lVuj448brslYiWzqPzQq+zjB9A0VrkP5Hu7ytOy8gm08Fq5GIo7vWyJ9KRvi6freZJY1fETENgqfnmnQuxTPPk2G3ybUoBXFNOnKl1wnRAciGUYuYf34pBjeFghPVlJQCPInE5hU1DjcqsVNItx6F53Diw0Qsgt82VFwHL9cshMMrvsiJilr5dHaq28q1OAo082NjCF4sZNHfCRtRjB0gkl0z8xaj8v44fIt3HAnqsXai3H8SrSGY8/dIyxmoVTqscqY0XPiqA53doqzdTFnyOm+0A521RfWuyYQtLWdXOP7kotNCispWmv1Zh5EcdnJvyc1ZH1WrSD1YMS8PhRM/SbOOXr8l9Xob6xfUv9JDe0C/FaktUyBp6N8i1ouQg8QwP9c2XM3qu7u77ghPKg/f8DQkFt0sFOmva03YJim6updP5vilIiz0rdRSsfLGo+2LiAlJhmc6ApnnfSg32QeTEtY+TVYRIvNJH7JH9QQJs8VdLNpcuCoDsXWLdvLS0iuDv0VW0bcolJdBOLmn/OB5v4A7BrtwWsJyeAodjP8pdXcTxBU10gTx3rDzfM9y/gMeuB9VSGYaHCL8XRsoKPB+N3FGGE1bq9huDCLzCEY6FgA9WWw02TfgOVhS9klg+gA8cy1SuyE6LuVZAB/0ZaFP32Th1OCjn2KekXFRRJoCSF5i5/0CscTVcRSOHGJyxKg==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(366016)(921020)(6133799003)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(366016)(921020)(6133799003)(3023799007)(10067099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vg781n3b0mGnsksTHKTFuB1dmsr60pgOyhKQdNAQlE+GwN8K7O1evWIMfgLX?=
- =?us-ascii?Q?ioGNnpA6uA39IVSgyI/Y3HfwddkWoTIvUyYKXRSvAfsv6+lgYdlT1HI1D0gj?=
- =?us-ascii?Q?noRriAdXSg6mNKmN58znVKpnPUEM1cAsuzso7gP7VUr6N60/+lNAhOXWRLuL?=
- =?us-ascii?Q?Hu0ttWBqjPwXSMoy8gpqkovGr8aGU14Buzjw5w+vTViTChGAyjGVIQsnhzrb?=
- =?us-ascii?Q?pq1UpndrJ1Sg7FOXUHkWXA2VA4i0dqZIBtw3TyI96QmGLO9+7HkVxcQsaXkA?=
- =?us-ascii?Q?ZnL4j6tOzP7ftGnOw+zxJGvdT4Src7GKEOrvFrNYR52ogKyHy0MEJXBU+eA6?=
- =?us-ascii?Q?7InYtY/LsDuieBDrhTVSJKJLhLuzvCDrjjK4COr+ytdvU1+KGWqjm9xI34Gb?=
- =?us-ascii?Q?kxV+F/6cEBjTnPs2GQk9nDn7s+HArwEa6qRUPbGFepMi6iMLHJb6GMJg5JKj?=
- =?us-ascii?Q?UhgMEQmsNEdEBccPcDFANdMu7NkpIFSN6SzWu3p2QApAIQlkhV2FbtVOoJf4?=
- =?us-ascii?Q?GsQW33Ys1pexjDznjZAI2sQDt5SMEAvaJyFIv8O+AaWEiMe30YGzyVKYv5Ag?=
- =?us-ascii?Q?Oaci7il9RF6gaE6Ed88sdHVA0tv9QKW95SsxRylcPWWjJFind68tqhJ/PgUs?=
- =?us-ascii?Q?bCDeNT7Lm+nVnQMwcy7k7VtOdMLmReQdSCq5YY9BxNNpZllN64j0k/ZOGJiE?=
- =?us-ascii?Q?6T4aRrL4Y8uakGed1dTpRF6s9gQXN7DWyky0PibXazQZDKcrYPPksOdqzsRw?=
- =?us-ascii?Q?buLFQduUf13IyvUcXThdBSvUF8Rxj7yN4F7Q8S2Bin3lPRmxYAuxhmvZ+G1i?=
- =?us-ascii?Q?V2bc1zWLbEoxjfgIP6kmOoT4IjQCoUcWzVIVcjjriaWRS1xOlX0pCRylSTcc?=
- =?us-ascii?Q?RtJ6hyqMjbOxZaMGVfJK09PP6O4eBDCcex2lTXrIupZJH+uQKarJTwFetdJw?=
- =?us-ascii?Q?RbOjahgbOItkEicgZVsqjwki0g+qgWIlEJOgJH4sYnHNQdxwKUj0cXL36EOe?=
- =?us-ascii?Q?YlIv0/t4WqlfHXRKddFiSifF0tLKrBW20d6dVhCP4b+/D6wSrEQ80brUCYyN?=
- =?us-ascii?Q?dIi6wZQzwtA/LQ371ILUypSF0r8uRef6OMT12HG7A9p2ZA/NEq7BwXGVM94x?=
- =?us-ascii?Q?1txm4FOkCsCuHfhk6zuRZ6Hs13bBukTVMI4nD7YW71vqnx5J5Qmq0Cxh3SY9?=
- =?us-ascii?Q?SUG92GAwPN7IrnzGRYE0qJCA4ziaXEtzKqjlQcRPX7mVADlCWJFsZ9fApBV0?=
- =?us-ascii?Q?bmPcJ1cMxAfU01NFb3Daag6gzA8HmU/YnHbUaSy++oR0vnkkexOFcsP8xejX?=
- =?us-ascii?Q?y7jkxcqdZFRpzU536ftOoel/fvIbHHh9r5KXCO4+XzHTsv402lItXKQKjf7J?=
- =?us-ascii?Q?Ymv/4yLu3brbhmtUFRLpCd1LF+dSDuUgO2I9IT90mhsE4GGbI6kvGg55mLI3?=
- =?us-ascii?Q?7/G0P6WQ6P+zXyPupT83g7Ml5tpHqjCtEnXmWlfhY8u6mQM3lx3ufbK8herG?=
- =?us-ascii?Q?VDAkGKkZ8wYH4o0oWeH4W08WP8iSS4e4gTBM2ck5dw9YsvvFszqnT1jvB9xn?=
- =?us-ascii?Q?S1Xj6sJNNIo14MVLNJjP9B6XF41okL4VAyY5c6XP7iMLo7TsLdPBk6HDPLPE?=
- =?us-ascii?Q?DbVropQnZF+9rNsvVc1rOozwTkp6vLfm1P6X6JPVcDwd6MFzHsVRIHAOOenI?=
- =?us-ascii?Q?jNiBoHrbD3+KgoqEs1g77gi/agztSntU0h3mr1ZZamvL1kce?=
+	=?us-ascii?Q?B7F5O38nHhaberKs6NhUIznZTXF0MmAsPdY3oHfwP/7XC6Bdj6y2kTMzdtTD?=
+ =?us-ascii?Q?41FzVjuzmLWY0DK4zKZ5hQVuXBD15ACEq0lICxLhpU2/oH8L7a91mZkDp3dn?=
+ =?us-ascii?Q?kwyfCPT5eIRqUm4FdOoJdIhRGuxQxkEt0nYgXVXxpQBPHEuUnSammr5QPDnj?=
+ =?us-ascii?Q?Cz/SHmnOj2w+CzdrVOQhiarY5mEsFc0T5sREDPv1eRje9gvhNCDHgZM70v54?=
+ =?us-ascii?Q?qDod3IkUXBXEpymTpZJaweE36H7TME+hF+bOxnLYFqUasYEWc+Spg6WHjygh?=
+ =?us-ascii?Q?0IDl4nxWZQGSkAcLndbZSvPSeti4DeTjUBN3AnltJshjeGcMxsW/kYHLGqH2?=
+ =?us-ascii?Q?iBaO4si+u+aXcbbHRyMH0TjFZshFVUNn4XAB8y0HPZkzY5q2z0uJtEFUP7vl?=
+ =?us-ascii?Q?pAGz9qxWN0Yw/kNjVcN7wsXLqQDOThj3iRzITkn/f98FaoDuHCHeBmxEeLhm?=
+ =?us-ascii?Q?K2i33sgy7pbJX3VBaYHY94k/L12TmftBsetG77XXMnQd5OoJ/EbnK8UoH+Sz?=
+ =?us-ascii?Q?mgxdJCdLoAC5RSyaB0U5uCGXjuCvixctEmQlfdsG+f7h5oWe1Nxl8Pz82hVe?=
+ =?us-ascii?Q?psppBiqiPhgZ+EsdkqS9szxG7rb2rDDFBVHok1XqKzriKSLnoESmqTlUY8OF?=
+ =?us-ascii?Q?MOTndpifObYZG7oAu5gvsJvZgDIJdf+yDBaXZJ5SoZzLi+fuJpci2vjVAVV+?=
+ =?us-ascii?Q?9dwVcl8/IpapitZ/bhHLrd4CPcwmSLFOun88tlUmYLnIQ+Ys1F9Q8s75kMSz?=
+ =?us-ascii?Q?TKZeNkJMgFpJhDFHvLktNf2F/seu8/wU6fQYGKioO+sqkX9fdV793LXfMMQq?=
+ =?us-ascii?Q?ti8k3fRaAxnr86krgbwFMSTf7l2VUp0L8bCfkl/+vuANg0+3DVm2Lw14RPBE?=
+ =?us-ascii?Q?uiqQcsrmgS/vlxMHSRcHRAG8bhfuJ2MfPnbnS8F4+RwDb+Yfbir6boBRqScV?=
+ =?us-ascii?Q?2pnk+nFORDUp60heNoK4oRjuRGeSlSrWyHCxm4z2X+Mw7kIHrl8Yg6zPc9xC?=
+ =?us-ascii?Q?IHDXesB2vosnL3mpLJAYOfCidt7qc/sWLLPdZjGCH7+v90esjM1tpRKT1GOo?=
+ =?us-ascii?Q?d0IQARKI/GIsl1XrT/Erkbgqvx6sXrcDXURDO11DKe37qMTNNDZ414QaZvzB?=
+ =?us-ascii?Q?nCzUd8VsTTIaCHWGWNfBiWHYZen+/iYNZGRo3lxzjj1h1POfvoIEtIRYcVzE?=
+ =?us-ascii?Q?tRejLXJEt6ha8DnHe9gt/viq28Bd2gZ+q+TqNkpl+ODd+AlTS3CmCIL1Nyzb?=
+ =?us-ascii?Q?K5hKdGC8asZ9r0zdUM6qn0EOxjUm1hSdc2oLoDw9fdkJLNjaCyBhQxJPJu+c?=
+ =?us-ascii?Q?AtRbg3WGIziM0Z+XFiCHpGPuR+fN8HaZA/ejjcnYe5OnU2MVGKA60DJAuTqC?=
+ =?us-ascii?Q?nITowD3PFC0moNwDWZNCVDWaOImHVMEockU7LJeQChhu32gPB4+PAxq3G8Cl?=
+ =?us-ascii?Q?mem6JKB9ZhbZDAoGg9NJlnJXKXnhXTt3+m+h6RPF+24occF5tqSULBksc/0h?=
+ =?us-ascii?Q?ON4uen5+CwBdrc05Fw0bWMadsnwu+fSMnZWFfnEex3pulXWMQGVsZDe5JzaN?=
+ =?us-ascii?Q?7zLlN6sw/j/klbDZMlJMU90K/krEESaRgHKrnB+wGEoa5zF91mDOfGCMZJC4?=
+ =?us-ascii?Q?jY5uer3FgFnCPKYRT+RHTIf0MxcjekQLH91G6mamJPieHXhP3GDR1UpT27G4?=
+ =?us-ascii?Q?T2fUWhT9OXu5M8VuXfzlpr5AsSZtHRKxFGgpH8tOXVAAC6wC?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b3211c6-9bcf-463c-fc2b-08df144d3833
+X-MS-Exchange-CrossTenant-Network-Message-Id: f364323d-8ec0-4662-8074-08df144d383f
 X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 23:49:59.8508
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 23:49:59.9191
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FCaHnfyheHMHi3Tzs281kQhLccWgUnFjn0xQOSL3w3il5E5DY5pAHYajtVuPpO6H
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4kOxHnZhMyrm+3dbFqE5Q/IxBaAmAdfVi1pLYxMbUVhawVyvHHlenMnBipSoUMEm
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR12MB9787
 
-Add a region_size field to struct vfio_pci_driver_ops so drivers can
-declare how much DMA-mapped region they need. The mlx5 driver will need
-~18MB for firmware pages. Existing drivers pass in the sizeof their state
-struct. Since drivers all use only their declared state we can use the
-value directly and remove the SZ_2M hard coding.
+Add an mlx5 driver to VFIO self test. This is largely a remix of the
+existing VFIO mlx5 driver in rdma-core. It uses an RDMA loopback QP
+to issue RDMA WRITE operations which effectively perform memory
+copies using DMA. Since mlx5 has a stable programming ABI this
+should work on devices from CX5 to current HW. The device FW must
+support the QP loopback configuration.
 
-Assisted-by: Claude:claude-opus-4.6
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
----
- tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c         | 1 +
- tools/testing/selftests/vfio/lib/drivers/igb/igb.c         | 1 +
- tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c       | 1 +
- .../selftests/vfio/lib/drivers/nv_falcon/nv_falcon.c       | 1 +
- .../selftests/vfio/lib/include/libvfio/vfio_pci_driver.h   | 6 ++++++
- tools/testing/selftests/vfio/lib/iova_allocator.c          | 7 ++++++-
- tools/testing/selftests/vfio/lib/vfio_pci_driver.c         | 4 ++++
- tools/testing/selftests/vfio/vfio_pci_driver_test.c        | 3 ++-
- 8 files changed, 22 insertions(+), 2 deletions(-)
+Also support send_msi by arming completion events of the RDMA WRITE
+to trigger MSI delivery.
 
-diff --git a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-index 19d9630b24c23f..40b8541b588eee 100644
---- a/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-+++ b/tools/testing/selftests/vfio/lib/drivers/dsa/dsa.c
-@@ -418,6 +418,7 @@ static void dsa_send_msi(struct vfio_pci_device *device)
- 
- const struct vfio_pci_driver_ops dsa_ops = {
- 	.name = "dsa",
-+	.region_size = sizeof(struct dsa_state),
- 	.probe = dsa_probe,
- 	.init = dsa_init,
- 	.remove = dsa_remove,
-diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-index fd9e05d77ea4b4..2fafcc9f51c020 100644
---- a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-+++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-@@ -576,6 +576,7 @@ static void igb_send_msi(struct vfio_pci_device *device)
- 
- const struct vfio_pci_driver_ops igb_ops = {
- 	.name = "igb",
-+	.region_size = sizeof(struct igb),
- 	.probe = igb_probe,
- 	.init = igb_init,
- 	.remove = igb_remove,
-diff --git a/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c b/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c
-index a871b935542bad..c9b28365c5eb6b 100644
---- a/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c
-+++ b/tools/testing/selftests/vfio/lib/drivers/ioat/ioat.c
-@@ -226,6 +226,7 @@ static void ioat_send_msi(struct vfio_pci_device *device)
- 
- const struct vfio_pci_driver_ops ioat_ops = {
- 	.name = "ioat",
-+	.region_size = sizeof(struct ioat_state),
- 	.probe = ioat_probe,
- 	.init = ioat_init,
- 	.remove = ioat_remove,
-diff --git a/tools/testing/selftests/vfio/lib/drivers/nv_falcon/nv_falcon.c b/tools/testing/selftests/vfio/lib/drivers/nv_falcon/nv_falcon.c
-index c08aa81c44f417..6958877ad4638f 100644
---- a/tools/testing/selftests/vfio/lib/drivers/nv_falcon/nv_falcon.c
-+++ b/tools/testing/selftests/vfio/lib/drivers/nv_falcon/nv_falcon.c
-@@ -775,6 +775,7 @@ static int nv_falcon_memcpy_wait(struct vfio_pci_device *device)
- 
- const struct vfio_pci_driver_ops nv_falcon_ops = {
- 	.name = "nv_falcon",
-+	.region_size = sizeof(struct gpu_device),
- 	.probe = nv_falcon_probe,
- 	.init = nv_falcon_init,
- 	.remove = nv_falcon_remove,
-diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h
-index e5ada209b1d102..547369c5cff95a 100644
---- a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h
-+++ b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_driver.h
-@@ -9,6 +9,12 @@ struct vfio_pci_device;
- struct vfio_pci_driver_ops {
- 	const char *name;
- 
-+	/*
-+	 * Size of the driver's state structure overlaid on
-+	 * device->driver.region.vaddr
-+	 */
-+	u64 region_size;
-+
- 	/**
- 	 * @probe() - Check if the driver supports the given device.
- 	 *
-diff --git a/tools/testing/selftests/vfio/lib/iova_allocator.c b/tools/testing/selftests/vfio/lib/iova_allocator.c
-index 4a660f636f4972..a8e5815a1b165c 100644
---- a/tools/testing/selftests/vfio/lib/iova_allocator.c
-+++ b/tools/testing/selftests/vfio/lib/iova_allocator.c
-@@ -13,8 +13,10 @@
- 
- #include <linux/iommufd.h>
- #include <linux/limits.h>
-+#include <linux/log2.h>
- #include <linux/mman.h>
- #include <linux/overflow.h>
-+#include <linux/sizes.h>
- #include <linux/types.h>
- #include <linux/vfio.h>
- 
-@@ -50,7 +52,10 @@ void iova_allocator_cleanup(struct iova_allocator *allocator)
- iova_t iova_allocator_alloc(struct iova_allocator *allocator, size_t size)
- {
- 	VFIO_ASSERT_GT(size, 0, "Invalid size arg, zero\n");
--	VFIO_ASSERT_EQ(size & (size - 1), 0, "Invalid size arg, non-power-of-2\n");
-+
-+	VFIO_ASSERT_LE(size, rounddown_pow_of_two(SIZE_MAX),
-+		       "Invalid size arg, too large (%zu)\n", size);
-+	size = roundup_pow_of_two(size);
- 
- 	for (;;) {
- 		struct iommu_iova_range *range;
-diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
-index 5e65434d2318b2..64135ac43877e9 100644
---- a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
-+++ b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
-@@ -32,6 +32,10 @@ void vfio_pci_driver_probe(struct vfio_pci_device *device)
- 			continue;
- 
- 		device->driver.ops = ops;
-+
-+		VFIO_ASSERT_NE(ops->region_size, 0);
-+		device->driver.region.size =
-+			round_up(ops->region_size, getpagesize());
- 	}
- }
- 
-diff --git a/tools/testing/selftests/vfio/vfio_pci_driver_test.c b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
-index 761bf117d624f8..2bd949aafd7316 100644
---- a/tools/testing/selftests/vfio/vfio_pci_driver_test.c
-+++ b/tools/testing/selftests/vfio/vfio_pci_driver_test.c
-@@ -87,7 +87,8 @@ FIXTURE_SETUP(vfio_pci_driver_test)
- 	driver = &self->device->driver;
- 
- 	region_setup(self->iommu, self->iova_allocator, &self->memcpy_region, SZ_1G);
--	region_setup(self->iommu, self->iova_allocator, &driver->region, SZ_2M);
-+	region_setup(self->iommu, self->iova_allocator, &driver->region,
-+		     driver->region.size);
- 
- 	/* Any IOVA that doesn't overlap memcpy_region and driver->region. */
- 	self->unmapped_iova = iova_allocator_alloc(self->iova_allocator, SZ_1G);
+mlx5 device startup is very complex and most of this code is just
+booting the device, with a smaller amount for operating the QP.
+
+This entire series was coded by Claude Code in about 4 days. It
+used about 4.5M output tokens, 30 individual sessions and 5600 lines
+of AI-generated .md files. I spent an annoying amount of time
+de-slopping and cleaning its work product to make it presentable.
+However, previous VFIO drivers have taken on the order of 1-2
+months to write, so getting one in a week is pretty remarkable.
+
+For those interested, the flow I used was broadly a prompt sequence
+sort of like:
+
+ - Hey Claude, go look at the falcon series, VFIO self test, the
+   mlx5 driver, rdma-core and some PDF documentation and make a
+   plan to put mlx5 under the selftest.
+ - Write an rdma-core application using the built-in VFIO provider
+   that can do the required memcpy operations that vfio selftests
+   wants.
+   (This resulted in a 1k loc C file that compiled and ran the
+    first time but had a few bugs related to device programming
+    that the AI resolved.)
+ - Replace the rdma-core components with open-coded versions to
+   create a fully stand-alone program that does the DMA memcpy.
+ - Review and audit the thing.
+ [Pause and de-slop it]
+ - Make it work on a PF too (this is surprisingly hard!).
+ [Move to a kernel tree and copy all the .md files and .c program
+  it made]
+ - Hey Claude, look at all this stuff and make a broad plan to
+   actually build a VFIO self test.
+ - Here is my 1 sentence advice on what each patch should look
+   like, make a detailed plan to make a patch for every one.
+ [Pause and polish the patch plans]
+ - Execute plan X then commit it [pause and de-slop each patch,
+   repeat].
+ [Review and final polish]
+
+v6:
+ - Rebase on v7.3-rc3
+ - Correct some minor sashiko remarks
+v5: https://patch.msgid.link/r/0-v5-4cacb99249f6+1b4-mlx5st_jgg@nvidia.com
+ - Rebase on v7.3-rc1
+ - Adjust how region_size is computed to min it to getpagesize()
+v4: https://patch.msgid.link/r/0-v4-021df3fb5a3f+98e-mlx5st_jgg@nvidia.com
+ - Rebase on vfio next, update igb and falcon
+ - Move rounding to iova_allocator_alloc()
+ - Remove arm barrier changes
+v3: https://patch.msgid.link/r/0-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com
+ - Move max into vfio_pci_driver_probe()
+ - Rebase on v7.2-rc3
+v2: https://patch.msgid.link/r/0-v2-72e9640932fd+2c64-mlx5st_jgg@nvidia.com
+ - Rebase on v7.1-rc3, drop falcon patches
+ - dev_dbg checks the format string even in non debug builds
+ - Sort includes
+ - Adjust comments/commit messageas
+ - Use linux/pci_ids.h
+ - Compute the driver.max_memcpy_size the same as mlx5 kernel driver, it
+   should be GBs now on most devices
+ - Put region_size into all drivers instead of allowing 0
+v1: https://patch.msgid.link/r/0-v1-dc5fa250ca1d+3213-mlx5st_jgg@nvidia.com
+-
+Jason Gunthorpe (10):
+  net/mlx5: Add IFC structures for CQE and WQE
+  net/mlx5: Move HW constant groups from device.h/cq.h to mlx5_ifc.h
+  net/mlx5: Extract MLX5_SET/GET macros into mlx5_ifc_macros.h
+  net/mlx5: Add ONCE and MMIO accessor variants to mlx5_ifc_macros.h
+  selftests: Add additional kernel functions to tools/include/
+  vfio: selftests: Allow drivers to specify required region size
+  vfio: selftests: Add dev_dbg
+  vfio: selftests: Add mlx5 driver - HW init and command interface
+  vfio: selftests: Add mlx5 driver - data path and memcpy ops
+  vfio: selftests: mlx5 driver - add send_msi support
+
+ include/linux/mlx5/cq.h                       |   10 -
+ include/linux/mlx5/device.h                   |  231 +-
+ include/linux/mlx5/mlx5_ifc.h                 |  178 ++
+ include/linux/mlx5/mlx5_ifc_macros.h          |  185 ++
+ tools/arch/arm64/include/asm/barrier.h        |    4 +
+ tools/arch/x86/include/asm/barrier.h          |    5 +
+ tools/include/asm-generic/io.h                |   28 +
+ tools/include/asm/barrier.h                   |    8 +
+ tools/include/linux/stddef.h                  |   10 +
+ .../selftests/vfio/lib/drivers/dsa/dsa.c      |    1 +
+ .../selftests/vfio/lib/drivers/igb/igb.c      |    1 +
+ .../selftests/vfio/lib/drivers/ioat/ioat.c    |    1 +
+ .../selftests/vfio/lib/drivers/mlx5/mlx5.c    | 1928 +++++++++++++++++
+ .../selftests/vfio/lib/drivers/mlx5/mlx5_hw.h |  114 +
+ .../vfio/lib/drivers/mlx5/mlx5_ifc.h          |    1 +
+ .../vfio/lib/drivers/mlx5/mlx5_ifc_fpga.h     |    1 +
+ .../vfio/lib/drivers/mlx5/mlx5_ifc_macros.h   |    1 +
+ .../vfio/lib/drivers/nv_falcon/nv_falcon.c    |    1 +
+ .../lib/include/libvfio/vfio_pci_device.h     |   11 +
+ .../lib/include/libvfio/vfio_pci_driver.h     |    6 +
+ .../selftests/vfio/lib/iova_allocator.c       |    7 +-
+ tools/testing/selftests/vfio/lib/libvfio.mk   |    1 +
+ .../selftests/vfio/lib/vfio_pci_driver.c      |    6 +
+ .../selftests/vfio/vfio_pci_driver_test.c     |    3 +-
+ 24 files changed, 2501 insertions(+), 241 deletions(-)
+ create mode 100644 include/linux/mlx5/mlx5_ifc_macros.h
+ create mode 100644 tools/include/linux/stddef.h
+ create mode 100644 tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5.c
+ create mode 100644 tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5_hw.h
+ create mode 120000 tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5_ifc.h
+ create mode 120000 tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5_ifc_fpga.h
+ create mode 120000 tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5_ifc_macros.h
+
+
+base-commit: fd73f4a6659897191fa0d40695fe370925dd3780
 -- 
 2.43.0
 
