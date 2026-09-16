@@ -1,151 +1,177 @@
-Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C06495AD6
-	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 19:06:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789585639; cv=pass; b=CKwtQboWN0USAlxwW/FtnEfWo53bmDQnEp9IWyjZGwZR8uwy3pz7mfvfWkheQV8VAURqnw9Fhjmk4InyGSSxQVV5B1vBo0PQNMV7zBOrnRNk74bKQhgeHCRQmMe5vxr7eORAzHN0AtHYgtSE30/txOApgc20ewH/Arl6blAtfPk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789585639; c=relaxed/simple;
-	bh=YFbcwtgNuX0U1EJKvV9Ul//2Ots1PofZrH0PIe/ShVY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CaIMa4pSmNK4rGp6ITd4Xs4dR6QWM0qLc/cArfDypRS3mBec4eyjuNZ7jKZl1Lfjt9IXvsxUVYINyAua7UG28+1yiXzDp6HZCNAHrTUF81wYtllUcMtsle2h3z17TK6V8y5accH5vkNsPNxdIvaxR/N8xoKo1n6FJo0zgVEzv78=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UEwPAwcB; arc=pass smtp.client-ip=74.125.228.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163D649A3D6
+	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 19:13:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789586044; cv=none; b=Z2NZ8t2DmZWYgONtLAkbc2xZdOxdhVaPBcMvzp6TBnUFcgk/R0rRVF7i+4SRQV8v3DTWsy8on9+Ar3HLhglVd/mr3Yr6pUpVTi8z41asIeQTa4t0NPfvyYZKU5nsIrrgPUsiiAwkC1oo4UojC/t978asi900LGGASMdlB1Wv9Mk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789586044; c=relaxed/simple;
+	bh=grwLO1oGGakIcjyeBqZgaIPwJ051uAvHakl+Xbh/guE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=j7C58paJeZkizCS3uU6KYq78qiJXDeu8KBtvFJIUtFPS8DDIMDgwQy3qXIkdvt27+whsJ5PR62oz//ii9ymqxc+ouiRtlg3mixvInX7BpsTzX0XOcoJ9qtJWGA/jFMcoX6qpY95N4F67ND9uyeC59Ov9lqtQ++dCQ2Cw1OO9T5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CO3K1TFz; arc=none smtp.client-ip=209.85.216.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UEwPAwcB"
-Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a613a6bcd8so1676a12.0
-        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 12:06:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789585605; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pTsG65MM81tyGUqcqBSeWLsWg6QrjSD3uxqF0hg6QRkDLrrBzLzXz3heRu/rcJ4Qkl
-         LsZ95V4huOPIYQZAyB3BJphQE6zVznFucOir39IBTkLmw0Gf0wjUkmZdAqSPz3T+1qFm
-         F+j5VXCjkNqVTN4CJmBFO4h+AjCZJ8mLlQTMNSFoX53JLPlSQlzteX8aORbj/fM4hDj+
-         GOu4MQb7f48qvOrb1kiWoJOlsY9lBYMKeJwaqV62Bg6FDfvqDMK0JB6rhYBYSAybGqpo
-         nQiq/b91FTO6rknkf/lAe/SqBW1VnjAtSqKz4a986I2DlGtOretK203o/8EuKSi1jQP4
-         kTeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=i8q6HHOe1ZAhbklRTyDXKcKv9K3nDwMAOUFrm0T0XXw=;
-        fh=+KhJXm6nk+M1C+T0z5d4VGG9eIwKwdg4EHnnXyQP+vo=;
-        b=Z9K5ixR6SaI8wz5NWlLkmlGajuLif4Uax7TmWfPg2fsCHTPEuVGbp38d0mtBkwvwRQ
-         AkBHmjwaulFk8aJVxmXOmBymj+bpoD1OEN1O2qwU9kBsf9VLrnk4C84sEhlPxNVukslB
-         1Jlz5ejBIC4slir1ZRjUAUEZCEft/cZo1rETqYd8eE8IA8hlhNtkXyY9KL1X2NfyZKXW
-         UePfEmnxVCv1bm8lwxqjuhkC7AcM9xYnx6gS69GojWDY0fqE8j3Sqp57ieJJHSUYkSKG
-         XGn3SdeIVBi6W4Ho11pY5AMhbProM7rrVSmFCq/eUrXLplfV/16XtT86ABtLKzcW5BOb
-         rg/w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CO3K1TFz"
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39b77130a7fso39166a91.2
+        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 12:13:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789585605; x=1790190405; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=i8q6HHOe1ZAhbklRTyDXKcKv9K3nDwMAOUFrm0T0XXw=;
-        b=UEwPAwcBGKJp7rc++RIRYesLfdQ+S0085lWyBL4LDVLhOtVwvpIJeN+Wx9285wB3Eg
-         QXvzFPLMQPkUP7HFHWag25Xiy0mo01/6MHF66S9mjVK/w6FWsjMki9G6icmnv8HJKPSi
-         Ab9Kd9DkOJPjfdVWXg9xpvgUX6bLY1AOOY4vZOCFso+hX/285VODKZULbSOoRUSHtHez
-         5H9cTXObDWc7XVlq4KgzSTzjCEnUvHEcwZ9DUTRsigiPjkO0ViiK5MCvsKOXbO7Y/v0M
-         7KjjbxNRsFatmNhtrpYdkYmndMo7tNg8Rtbe+MYTOjTrNnHa1jkuU/qiqG3m+83aRVdR
-         MeGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789585605; x=1790190405;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1789586032; x=1790190832; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=i8q6HHOe1ZAhbklRTyDXKcKv9K3nDwMAOUFrm0T0XXw=;
-        b=V03HdveG+0OGCPnavvu+pPEK+oBg4EQ8ULPl0T6H7mxSDI5Pc92B2GocXVHYQOPdxb
-         bd5RpbPYPZzIjE49+3g0ckx51dB25CCCmwySWCCUA2+Bdv4JK9SGSjh8DrkE3NWYxMFe
-         EU5Eqrs9HN6iC0lubw4dizBs/0mFKl1Z31f0e/v8B1zUR54L8EhqlOASWpAYnrhqnLWv
-         kpqlnUv74n9s64p+WGXAR/zxYeM6wUo6QUrk/GHQ+PrHrzQFL4EteW2LmqGXjHsXKTLb
-         U4HCvveV5SbR/tKGMgKQ23MXsrH+duLhNehIwddne5IEONkEkFdpR8hzecvQ0TR9fBXB
-         cYCQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwZkypq7stNRj84DwAb2CuC58JbicpreEoEoUvJeAgfbXhjdlgF9GAEXC01Q6pDr96Nl/E=@vger.kernel.org
-X-Gm-Message-State: AFuF++kbGHtnwbjy0hxpK+E5VVSle7l+LF2tMCgyL/Ek6Bisa5rTbhpb
-	Z+sTn2nmRpfIuTFhhsf6uSKJpeMMABWh6GirUee7pNSTjrqxiVzQgkTLjofnoscqhUINtEgf2sv
-	MNhaIB29JJg4r4iufxy+ek+yqjsHgrbH6fyFL5ZWC
-X-Gm-Gg: AYBFou2xFq8kbTs4Yf49vfZkHiY/FB+qFp52I1Og8QmE4+7UCI7Izo607cRVKNPzEOx
-	mD0pb6207Tw8v+SBdJ5lJtZZbtgkAIWatakGaADGC9SJhAJMiTlm//ykLHDYMJfpIzvH9U1tyyL
-	37JgHoCoFDb+4i2Vi9x77MbnEIpnEvumocwHOMk3HdmwdvJKtJnbCKbc6UpW9T/U0q93yBMRBE0
-	HeQ44sX/gbbdA7bRnhKOeuNUqFa4G1JFB8g4bGa8STy271Blc9TfX2MFHRfQs3KKyKiHYJGkfsX
-	l3WjEsPQ3isPPxNduoFOCyFQmmXLs2+YoEmok2cb7FWIEWbBNfa+JKA=
-X-Received: by 2002:a05:6402:b2e:b0:6a7:453c:a166 with SMTP id
- 4fb4d7f45d1cf-6aa37503e67mr7027a12.1.1789585604831; Wed, 16 Sep 2026 12:06:44
- -0700 (PDT)
+        bh=TmeBzkTcsvJUd+BuTZhEbp8GE3iyf2+WK+kS+r8qWE4=;
+        b=CO3K1TFzCHBozy5GfMmpnNUpJZ/H/28OPscBZfMkmOCH1H3tI248sQF6FCZJYiiwJm
+         n4zBnAw+CCaKi9aBxwTFvp2W0WmKvtTPQeFQHp+JbX4ov+sx1HKazSmRK7aphQH7EJd8
+         NoKDlfT0IaI7P/zmMqFhYYlcAH3rIXHcgnimVt6I4ZInl0fMZa8Mk6XwR3Zj3JnUmsLQ
+         UeMSVTQkil/QU9iKZGZOBoVNasbMYXjtvL2c7AOlMMWZuxdG2RMxeha3nuZ5scOpZoDd
+         KYP6HGi91qVBx6K7fW4WNkeCn+0B8t72eYLBh+VzD1ockKC53CrYEK8uGGsp/qhp5VCi
+         kp/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789586032; x=1790190832;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=TmeBzkTcsvJUd+BuTZhEbp8GE3iyf2+WK+kS+r8qWE4=;
+        b=DwzA98KRgrWPnmH7WU8JjXFimOtajfxVcLUbveIEKwXiYpwWcgXe/368bJOsV1boDJ
+         J47aAkeZof6KPhFVhrhCtxwtRaizmGIhTjlsGTGWlU2VmY2ovsJusq/q9arjGdlvwMn3
+         3Fd4QzG5ad/IuNITMUVjtOLOSjuc1LgSbcMn7vrV/kTGEgURsDsFdqVVUOzUTYytiiGm
+         kDAXivTCSlr13eGLvpYUXUnwnpWWx2YdWzdIZvnJyCELFR2o3w619IEjrPDwKRRzDlj6
+         FnszXKHSe63WONaTXEKpAXlgoXfkbF7bZqEc4za4+lPV2raOt9YJng1MtJtYNqmLHzQZ
+         DRDw==
+X-Forwarded-Encrypted: i=1; AKwUvBwYaGswAG05WDWYAVjVWqCfbjkBoaeZzbuOG3LFkVYZU/hNnr7E7MqWjJj3uzWT90rAUZw=@vger.kernel.org
+X-Gm-Message-State: AFuF++kB7kDST40U3FxMOXmRrGqR8TM752KjEnSWj0qcY70J5ITxNI1d
+	7+H9yNTvIXTBwW4eWUWi8ehDJqVAzDer7OeJ9WQ6Samd7J5/NhXp5ymQ/8obHbcuFoPA09zm8SK
+	VdPPxqQ==
+X-Received: from pjqt13.prod.google.com ([2002:a17:90a:ae0d:b0:398:9c5e:d8f2])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3ccb:b0:39e:433:23b5
+ with SMTP id 98e67ed59e1d1-39e1e24f9f4mr8606870a91.5.1789586032240; Wed, 16
+ Sep 2026 12:13:52 -0700 (PDT)
+Date: Wed, 16 Sep 2026 12:13:51 -0700
+In-Reply-To: <aqnNAsGF_iUQsVX1@com-75606>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <cover.1789281096.git.zhang_wei@open-hieco.net>
- <fc88f299f41c99ddb5851c24d97970dc29584876.1789281096.git.zhang_wei@open-hieco.net>
- <CALMp9eSv77sBcfYpPJm4Uk+9CePV7YMdYXhvBHKHSvacnnRBUA@mail.gmail.com> <3451f275-d88d-4db9-acb9-ca80d717df7a@open-hieco.net>
-In-Reply-To: <3451f275-d88d-4db9-acb9-ca80d717df7a@open-hieco.net>
-From: Jim Mattson <jmattson@google.com>
-Date: Wed, 16 Sep 2026 12:06:30 -0700
-X-Gm-Features: AcwNN1Vb7avB1LnW1gDR4-nqujxfy2WLNfEbAl-1PKaPYp4bwb_CEzgH4WJPJXA
-Message-ID: <CALMp9eS690dzVm+H55U23g8r3Qwbk4V-=vp-J4Ajvh-iC4J_4g@mail.gmail.com>
-Subject: Re: [PATCH v6 1/8] KVM: x86: Provide INVLPG linear address to
- intercept handlers
-To: Tina Zhang <zhang_wei@open-hieco.net>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, zhouyanjing@hygon.cn, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260915222625.99965-1-kylebot@openai.com> <20260915224104.4EB441F000FF@smtp.kernel.org>
+ <aqnNAsGF_iUQsVX1@com-75606>
+Message-ID: <aqrqb-lz2f0gCwuF@google.com>
+Subject: Re: [PATCH v3] KVM: x86: Restrict saved GPA writes to hardware write faults
+From: Sean Christopherson <seanjc@google.com>
+To: Kyle Zeng <kylebot@openai.com>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Sep 15, 2026 at 5:26=E2=80=AFPM Tina Zhang <zhang_wei@open-hieco.ne=
-t> wrote:
->
->
->
-> On 9/15/2026 2:23 AM, Jim Mattson wrote:
-> > What if __linearize() fails?
->
-> This was also my concern with using __linearize() in v5, which is why I
-> initially calculated the address directly. I wasn't sure how to handle
-> its failures when we only need the address for EXITINFO1.
->
-> Simply propagating the error seems questionable, since em_invlpg()
-> itself skips the invalidation on failure and returns X86EMUL_CONTINUE.
->
-> Would either of these approaches make sense?
-> Option 1: Factor the address calculation out into a helper shared by
-> __linearize() and get_invlpg_linear_addr(), leaving the checks in
-> __linearize().
->
-> Option 2: Extend the existing flags argument to __linearize() with an
-> option to calculate the address without performing access checks.
->
-> Both would avoid duplicating the address calculation or modifying
-> ctxt->exception just to obtain the address for EXITINFO1.
->
-> Do you have a preference, or another approach in mind?
+On Tue, Sep 15, 2026, Kyle Zeng wrote:
+> On Tue, Sep 15, 2026 at 10:41:03PM +0000, sashiko-bot@kernel.org wrote:
+> > > @@ -6454,7 +6456,18 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+> > >  
+> > >  		/* With shadow page tables, cr2 contains a GVA or nGPA. */
+> > >  		if (vcpu->arch.mmu->root_role.direct) {
+> > > -			ctxt->gpa_available = true;
+> > > +			ctxt->gpa_access = ACC_READ_MASK;
+> > > +			/*
+> > > +			 * Always allow writes for SEV guests, as the guest's
+> > > +			 * page tables are encrypted, i.e. KVM can't walk the
+> > > +			 * guest's page tables and so must always use the GPA
+> > > +			 * from the initial fault.  Restricting use of the GPA
+> > > +			 * to the access type that faulted would prevent KVM
+> > > +			 * from emulating RMW operations for SEV guests.
+> > > +			 */
+> > > +			if ((emulation_type & EMULTYPE_PF_WRITE) ||
+> > > +			    (cpu_feature_enabled(X86_FEATURE_SVM) && is_sev_guest(vcpu)))
+> > 
+> > [Severity: High]
+> > Could this lead to an out-of-bounds read and type confusion?
+ 
+...
 
-I think a comment should suffice.
+> Is there a configuration that gets past the initialization checks and
+> demonstrates an incorrect access? I'd like to establish that before
+> treating this as a functional issue.
 
-EXITINFO1 should be the address that INVLPG would have used if it hadn't
-been intercepted, and the address that INVLPG would have used is exactly
-what __linearize() computes--even on the 'bad:' path.
+Eh, doesn't matter, my suggestion was terrible.  I forgot that is_sev_guest()
+needs to check embedded data; I was thinking of TDX and SNP VMs, which have
+dedicated VM types.
 
-I know it looks like I asked the exception-return question as a "test," but
-I actually just realized the additional benefit of my suggestion to use
-__linearize() here rather than open-coding an alternative: em_invlpg()
-makes an identical call, so the two must agree.
+I think the right way to handle this is to track if a VM has protected page
+tables.  That'd also help communicate/document why KVM has this weird behavior.
 
-The APM, as usual, doesn't really cover the details of the corner cases,
-but on the Intel side, the SDM says this about the exit qualification field
-for INVLPG intercepts:
+Untested...
 
-  If the INVLPG source operand specifies an unusable segment, the linear
-  address specified in the exit qualification will match the linear address
-  that the INVLPG would have used if no VM exit occurred. This address is
-  not architecturally defined and may be implementation-specific.
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 30ffaa65f589..90c950c12900 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1166,6 +1166,7 @@ struct kvm_arch {
+ 	u8 mmu_valid_gen;
+ 	u8 vm_type;
+ 	bool has_private_mem;
++	bool has_protected_page_tables;
+ 	bool has_protected_state;
+ 	bool has_protected_eoi;
+ 	bool has_protected_pmu;
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index b56c39c53c98..7f544658b1cc 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2955,6 +2955,7 @@ void sev_vm_init(struct kvm *kvm)
+ 		kvm->arch.has_protected_state = true;
+ 		fallthrough;
+ 	case KVM_X86_SEV_VM:
++		kvm->arch.has_protected_page_tables = true;
+ 		kvm->arch.pre_fault_allowed = !kvm->arch.has_private_mem;
+ 		to_kvm_sev_info(kvm)->need_init = true;
+ 		break;
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 014545c1839b..35022f308e06 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -616,6 +616,7 @@ int tdx_vm_init(struct kvm *kvm)
+ {
+ 	struct kvm_tdx *kvm_tdx = to_kvm_tdx(kvm);
+ 
++	kvm->arch.has_protected_page_tables = true;
+ 	kvm->arch.has_protected_state = true;
+ 	/*
+ 	 * TDX Module doesn't allow the hypervisor to modify the EOI-bitmap,
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index f36b952624c8..7e5e2e587086 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -33,7 +33,6 @@
+ #include "lapic.h"
+ #include "xen.h"
+ #include "smm.h"
+-#include "svm/svm.h"
+ 
+ #include <linux/clocksource.h>
+ #include <linux/timekeeping.h>
+@@ -6412,15 +6411,14 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ 		if (vcpu->arch.mmu->root_role.direct) {
+ 			ctxt->gpa_access = ACC_READ_MASK;
+ 			/*
+-			 * Always allow writes for SEV guests, as the guest's
+-			 * page tables are encrypted, i.e. KVM can't walk the
+-			 * guest's page tables and so must always use the GPA
+-			 * from the initial fault.  Restricting use of the GPA
+-			 * to the access type that faulted would prevent KVM
+-			 * from emulating RMW operations for SEV guests.
++			 * Always allow writes for guests with protected page
++			 * tables, as KVM can't walk the guest's page tables,
++			 * i.e. KVM can't get the RMW protections for a given
++			 * GVA to see if the write side of a RMW operation
++			 * should be allowed.
+ 			 */
+ 			if ((emulation_type & EMULTYPE_PF_WRITE) ||
+-			    (cpu_feature_enabled(X86_FEATURE_SVM) && is_sev_guest(vcpu)))
++			    vcpu->kvm->arch.has_protected_page_tables)
+ 				ctxt->gpa_access |= ACC_WRITE_MASK;
+ 			ctxt->gpa_val = cr2_or_gpa;
+ 		}
 
-That's just one of the scenarios that leads to the __linearize() 'bad:'
-path, but I think the same logic must apply to the other cases.
