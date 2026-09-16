@@ -1,166 +1,317 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112FA42123E
-	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 19:27:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D48841B8EE
+	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 19:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789586882; cv=none; b=TeQIq5uOYMZYxE/RelyCVou5URq1Rf+74VGEgOCJRR1qGXD3pVfQD9B42mVfxsgVZgdXeFE7IarAzME+i8L5rWaRSMMJlrXrVBS1+XqocFghYrsYGflQ6IuqgyBjJ7xUmRsXHDJ3YMxTNn47OUlnswyBkwwEmqNcXFFPQu6WQKM=
+	t=1789587220; cv=none; b=lO4wP5ute7W5plSxb2FxukvvOdjSwd63Y+vBD9CiW/wqKjfe+Q/S59bBu0nULyWArJcTb6yHa2jN+ByS14tUxwse/srgcmfqjSGgHMkcU0n2GyyEYo+sms57udvoETaGDHowHU2Ck0yiIZ1jNF82vn+Lp6fABOKLAmPBYHD6MgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789586882; c=relaxed/simple;
-	bh=q2Lu/gBIIz5tR888gYDfXNn+E1ZBLVUP8HyYrOK6nwQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nJUv0ppHflN8P406lj2wNuCKQ8FO71vn5ESW98KVwnMRYJoVG+Tm1PhU4pImj1+C8Rp+jJExZTNOXM9xUiRNbYyWkv9a4VdmnRYeQvMswNXKfOtkcmeJWINwIYkVnsaiZoLYd97bYC9FHo5RAp9KO/3Rhx9xPrekjy5WZfL+B7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T70v9h56; arc=none smtp.client-ip=209.85.210.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1789587220; c=relaxed/simple;
+	bh=Kpo0OyWi0CO746t44DDgn1hn3lqL6Qj9kQMB/VsQdtI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mQykqnz51t1NemsrdSW6TNS2XJxZhaqLSxtbqUSVTaFnif4sBJaeDA2KlV+yVwlOTiZDeOaR70H8o5H7wPVCseLMr6FJDgMLz6JQVngUp3ZqToz620pQc1lvC3ewZQ1S6B6GaIEphxvrMyNe4M2PRxZr8ynU9EFBce3tY0JXskk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=RSzzeEYp; arc=none smtp.client-ip=74.125.230.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T70v9h56"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-86a0dc7f26cso50794b3a.3
-        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 12:27:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="RSzzeEYp"
+Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-90cdfbd3208so33066d6.2
+        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 12:33:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789586856; x=1790191656; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=kdb/dcqaU3T+x2hKjF2QXeOgIWRPb7qej2gXSeg/S/w=;
-        b=T70v9h56FENC67tCp+lt1ECLI7STXaw+TndKCpnPl36VTgJVTuVevAKJpC3qcMaEgn
-         qSb7YiOKzokxSgeQ+OgUhWu6yg6XwAzGkz6oWayxSbFbhLnYfOPCQZPDSZ8FIbrVYYKd
-         bme2lmORERyPsNjN2M03fqUaaTTx2QP/+mvh9VRgXrF8c1XrqgUgTK+XlN2Yht8HdwFC
-         0GtpU55A//NFvmmMx441D1cworscH9WXnSTR/8YoRwhcJBuhZhsPA1UwMbrcJy/V4xqA
-         3rQPBKi+cgHnLMGQQO6GoNYlgcgUtBalmDWLx6N8wTRBd04VZQT1tu5npSoGc2YZ4ZGi
-         zUMg==
+        d=gourry.net; s=google; t=1789587211; x=1790192011; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eJtIecQvwkVEDPm/6dNtwM/FqSFHvdTn3Czip8ta20A=;
+        b=RSzzeEYp51xyMflEt24hgwFSPgHtW1nrLj3gzOsux+BYrVHqPq+MBJDHkgcBE0IrmV
+         qZGteJmf5nvplXr5hPFVIldhBVKQVujfnj1U+9iQEXbzQvvKfa4YBK6oEUEWTiH2t+W6
+         c0spJB+mCL0Giv46yabqNPKEWMxFk5LvvEq44AGVjebZ4mTj7r36ODIyJXG3EMKmT4aK
+         YYCCH8K4Vsj/dUt0IRddDyX02VS6nqKoGr/BxN2yWilB+Qpc408H15zR3BkT/QREp6lV
+         bqYdUZLDY16rbNFi1KO33uo7l4wDajjwgmsZo1cjyrrMI2hzEUy7UIx5CVAeFz3zIxY3
+         qE5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789586856; x=1790191656;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
+        d=1e100.net; s=20260707; t=1789587211; x=1790192011;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=kdb/dcqaU3T+x2hKjF2QXeOgIWRPb7qej2gXSeg/S/w=;
-        b=OlT5gt4osa/3g1hDwBBB1KvoqfV5v4EPgZXs1mO9u6dJr0RsjLOYOzIsWTpwOjXBvI
-         noHNx48piKIa5mdYJA5msg1iLNXgvC7CuJNYrM0F61ywkepurVAjjhXW8A+57On7wWu8
-         oLekDQ/72cYNLijq8Q+3x8lLpdpxJAg/M7gx7W91dAaiBsXzLti1/ixlmFdJEtbdNxgc
-         XP/LW+zQ/FuIJDS9FBswlUmoB/MZWnJcu4jQeEpYPea4P4bTzEhx8M4vrZPZroF9oscW
-         d1tCifAsfnZ5+xUr/cRthfuX0JZ5aeh4ZFHXN5G2mCjQ3nFLxVgh5nEPGNj7369PqqmE
-         FXbw==
-X-Forwarded-Encrypted: i=1; AKwUvBw4aLHsa7Xb7lISuq6gtFJxlUaYSHEPyPvDeRbWDjv2G6prjbz02j/4f/e0DyxZiRLdluY=@vger.kernel.org
-X-Gm-Message-State: AFuF++kGR0NhP/uweeO0whKE+cfwZV5EPDpduNkPf10F1Nqt8JApkQ4u
-	pY41X+KXbRLFBteDlakWZCXVBa8oPooZDmPqDoagIL8osDROHID8DY/4lDfp95AjrtB5WpNRfG/
-	ursL+CQ==
-X-Received: from pfbmc28.prod.google.com ([2002:a05:6a00:769c:b0:847:9be8:84d5])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4652:b0:86f:394c:5c68
- with SMTP id d2e1a72fcca58-87238d87b0emr7666454b3a.13.1789586855429; Wed, 16
- Sep 2026 12:27:35 -0700 (PDT)
-Date: Wed, 16 Sep 2026 12:27:34 -0700
-In-Reply-To: <736a9315f3cc3d8ef7079b784bfcc7b014386bd8.camel@intel.com>
+        bh=eJtIecQvwkVEDPm/6dNtwM/FqSFHvdTn3Czip8ta20A=;
+        b=X1ikOStvG19PkYVJlT+CB+0Q8pV7Gb1sxfKWE77s09bWGAaduJpWT15czVd8/MUfMf
+         Ny1vNzWLQZcpqrYkDSb2u9IJXOO4gtUK0uDWEfLcCBQ97gXXP4AJHlE7SEA0hHlGlbVl
+         s2n1LAp3qD+jalz0E2Dt6GjdZQgko0zHBWl0BE9Hi2f3Z+TBr9dZr0wxWXIjk3T3J8cD
+         s3usxSKQ+JIhyKH+m5o5eMUzw8tWhnI/M52Ufq52zE8P2Bp1hWVqNEPjB/+NZQZQrCqn
+         s+eUmiJuJHjfN1GogPJXkgUzlRXlk/TjhYxP5nJQ0zOSqoFeu8g3J5SCvx9k8uOmVF1C
+         +8Pg==
+X-Forwarded-Encrypted: i=1; AKwUvBxLbWFPnWggbgn7Cow9wxDehIRcc04tM6TaOrDCyDStQP00e+1MO3L677kRFuq/7BbwNHc=@vger.kernel.org
+X-Gm-Message-State: AFuF++nSku7tAxuRkBGhpLE3OtoZOqsizZy7ARingVhpX17YAZ0ZwTj2
+	5OvtLMbLNheX/1MfVAFiGOBapwHxajne15QDnVlBWLP9fDCKPvtGe/isV+jDya7a+8w=
+X-Gm-Gg: AYBFou2C2UJwytWlaHCRsskLAzgWyQtbrzgczdOwGIHTj71k0JD35i8q9CprFWQFL13
+	aeNQzIpTZNAte+0AM2c9zfD26a6G1FjCSBF38RoY/EVG9cWCj+7h2ggJlDSVAK4MPCONjQAA+cl
+	02eV0C2S93/zNNX0i2vQaDHGtpJr/5NZh5uyf4NsjDf2A6c5ac85wTE8vnm+0VAjgVIOnyTmtID
+	FwdqqbAGJ64Bvs/jNpmjg1IMPxpG80RkIRuQpRygRmsHDbIukrNU9A6e6RTDtOWT30XJuic/IA7
+	78AwqAA6NDt1bySyaOLcVFiWQgmGHjtYgioCvaZz3Qgo/C4ZOCqBtMTsvhtOru/O8x5TcaZ1miE
+	HKIIV3Y5xtE7UIBMXCX4hRr+siR3krgruEL1jLaBxGpNVcMbzSc1nfJkXGei4G8L+bTgvrttJoS
+	alRCa3P+Akk8QdTaN2PrBSYrwifDGwHKNxnd5MF3sIlJtVWasTUCq7fnoWWt1NreMJ4cA+FFkm4
+	//P9n8/7FIqNXdzgTc+MKZ/yg4PyOAZtXFf4QbTFZMBLq+AwVLClfk=
+X-Received: by 2002:a05:6214:448b:b0:910:31f7:3bd7 with SMTP id 6a1803df08f44-9123d7d57f2mr72582036d6.29.1789587210868;
+        Wed, 16 Sep 2026 12:33:30 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91246979f17sm6900666d6.34.2026.09.16.12.33.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Sep 2026 12:33:30 -0700 (PDT)
+Date: Wed, 16 Sep 2026 15:33:28 -0400
+From: Gregory Price <gourry@gourry.net>
+To: mhonap@nvidia.com
+Cc: alex@shazbot.org, jgg@ziepe.ca, ankita@nvidia.com, jic23@kernel.org, 
+	dave.jiang@intel.com, alejandro.lucero-palau@amd.com, smadhavan@nvidia.com, 
+	corbet@lwn.net, skhan@linuxfoundation.org, dave@stgolabs.net, 
+	alison.schofield@intel.com, vishal.l.verma@intel.com, iweiny@kernel.org, 
+	ming.li@zohomail.com, yishaih@nvidia.com, skolothumtho@nvidia.com, 
+	kevin.tian@intel.com, bhelgaas@google.com, dmatlack@google.com, kees@kernel.org, 
+	gustavoars@kernel.org, cjia@nvidia.com, kjaju@nvidia.com, vsethi@nvidia.com, 
+	zhiw@nvidia.com, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v5 26/27] Documentation: vfio-pci: Document CXL Type-2
+ device passthrough
+Message-ID: <aqrl_FyWEBOZundU@gourry-fedora-PF4VCD3F>
+References: <20260916183540.3813685-1-mhonap@nvidia.com>
+ <20260916183540.3813685-27-mhonap@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <24a751d16ba0dc37aa7774df5739f39734cf9aca.camel@intel.com>
- <aqrZUZtSZ-YItclT@google.com> <736a9315f3cc3d8ef7079b784bfcc7b014386bd8.camel@intel.com>
-Message-ID: <aqrtprn5YaMijVdZ@google.com>
-Subject: Re: TDG quote analysis
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Yilun Xu <yilun.xu@intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Binbin Wu <binbin.wu@intel.com>, Dave Hansen <dave.hansen@intel.com>, 
-	"kas@kernel.org" <kas@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, Peter Fang <peter.fang@intel.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260916183540.3813685-27-mhonap@nvidia.com>
 
-On Wed, Sep 16, 2026, Rick P Edgecombe wrote:
-> On Wed, 2026-09-16 at 11:00 -0700, Sean Christopherson wrote:
-> > On Wed, Sep 16, 2026, Rick P Edgecombe wrote:
-> > > This DICE quote generation can take a long time. Exactly how long is =
-not
-> > > known, but it is expected to vary and often exceed the time a SEAMCAL=
-L can
-> > > be executing in the TDX module by a considerable amount.
-> >=20
-> > What's the ballpark?=C2=A0 Are we talking tens of nanoseconds, tens of
-> > microseconds, tens of milliseconds?
->=20
-> I asked about this too. I have not seen any measurement yet for the real
-> implementation. AFAIU the PQC stuff is not settled enough at the industry=
- level
-> to be sure in the long run. I have been under the impression of at least =
-a ms or
-> 2 for PQC signature based on general PQC signature benchmarks I've seen. =
-That is
-> only my guess though.
->=20
-> If you are thinking the implementation could punt on how to handle the gu=
-est
-> interrupts for now, that seems reasonable. I'd think exiting to handle th=
-e host
-> interrupts could not be skipped though.
+On Thu, Sep 17, 2026 at 12:05:39AM +0530, mhonap@nvidia.com wrote:
+> From: Manish Honap <mhonap@nvidia.com>
+> 
 
-I'm just trying to understand the scope of the problem we're trying to solv=
-e.
-E.g. I don't think any design will save us if generating a quote requires a=
- CPU
-to be spinning for multiple milliseconds.
+1) Thank you so much for writing documentation, i truly appreciate this.
 
-> > Does the TDX Module *need* to provide a save slot?=C2=A0 What would pre=
-vent TDX
-> > from requiring the guest to provide storage for whatever in-flight data=
- is
-> > needed? That way there it doesn't matter if the guest never resumes the=
- call,
-> > it can only hurt itself.
->=20
-> I was thinking about this too, but thought it sounded a bit like the NAKe=
-d SNP
-> secure AVIC pattern. At least the TDX module would need to handle getting=
- asked
-> to zap the guest page that was given to be a saved state slot.
+2) I apologize in advance for my terseness, I know writing is hard,
+   please do not interpret this as disliking your writing or series.
 
-But doesn't the TDX Module already need to do this?  It's writing guest mem=
-ory,
-no?  So it needs to prevent the page from being freed while it's handling t=
-he
-quote.  Just put the onus on the guest to provide the same GPA when restart=
-ing
-the TDG.
+> +Address model
+> +=============
+> +
+> +The HDM memory is a coherent host physical range (HPA). The host kernel
+> +resolves that range before the guest sees the device, and owns it for the
+> +bind lifetime. The guest only chooses where the memory appears in its own
+> +physical address space (GPA), by programming a virtual endpoint HDM
+> +decoder. The guest never reprograms the physical decoder.
+> +
+> +The kernel holds the HPA and does not see the GPA. The guest programs a
+> +GPA and does not see the HPA. The VMM holds the device fd, reads the
+> +committed base from the decoder-register region described below, and maps
+> +the HPA-backed HDM region at the GPA the guest committed. The base the
+> +guest reads back is the GPA, not the HPA.
+> +
 
-If the host yanks a page away from the guest, the guest is hosed no matter =
-what.
-If the guest frees an in-use page, e.g. converts it to SHARED, then that's =
-100%
-a guest bug.
+I think this must be slightly inaccurate / imprecise wording.
 
-> The host would probably need to be involved in unmapping the page from th=
-e S-EPT
-> while in use too, since it would need a TLB flush on each vCPU. Otherwise=
- the
-> guest could see the intermediate memory of the operation.
+The host *must* provide some form of physical memory window to the guest
+at initialization time, otherwise the guest has no way to know - at boot
+time - that there's even a window of memory it can use.
 
-Do we care?  I was and am assuming "no".  Unless there is sensitive TDX-Mod=
-ule
-data that needs to be saved, it's again on the guest not to read half-baked=
- data.
+That's what the CFMWS is.  This is initialized by the hypervisor - which
+is controlled by the host.
 
-> > What about the whole "TD-specific data in the quote" thing?=C2=A0 If ge=
-tting a
-> > quote (or report?) is punted to the host, I'd still like to keep it out=
- of
-> > KVM.
->=20
-> I checked another option for this: Write the nonce to the TDX module via =
-some
-> new TDG call, then just ask for a TD scoped quote which fills in everythi=
-ng from
-> what the TDX module already knows. TD details and nonce. Apparently it co=
-uld
-> work.
->=20
-> Then nothing gets passed out of the guest except for request for a quote.=
-  We'd
-> have to break compatibility with the SGX based quotes though. Is it worth=
- it? Vs
-> just utilizing the upstream KVM functionality unchanged?
+So the host (at least the VMM) must know, for the region the entire
+device *could* inhabit, what that GPA is - because it's the one that makes
+the CFMWS for the guest.
+
+If this is not the case, then something is missing from this
+documentation to explain why.
+
+
+If you're actually trying to say is that the GPA's programmed into the
+virtual decoders are largely symbolic - this at best feels a bit
+inaccurate and simply an implementation detail.
+
+The host's virtio device could enforce ....:
+
+Host Range:
+   CFMWS HPA - [0x10000, 0x20000]
+                   |         |
+Guest Range:       |         |
+   CFMWS GPA - [0x50000, 0x60000]
+
+In that case, you'd get the following translation...
+   vdecoder0.0 - [0x58000, 0x60000]
+   CFMWS GPA   - [0x58000, 0x60000]
+   CFMWS HPA   - [0x18000, 0x20000]
+
+Or the virtio device could not enforce that and let the host page-fault
+just hand it a random page from the actual CXL device.
+
+   vdecoder0.0 - [0x58000, 0x60000]
+   CFMWS GPA   - [0x58000, 0x60000]
+                         |
+              No discrete host mapping
+
+
+The former makes sense if the device (accelerator) requires exact
+physical placement to do its accelerator nonsense.
+
+The latter makes sense if the device (accelerator) doesn't care
+about placement (compressed memory).
+
+This is not saying we need support both out of the box, but we shouldn't
+lock ourselves into the former unless there's some reason why the latter
+is not reasonable.
+
+Can you please help document what the actual expected behavior is with
+examples in the Address model section so it's easier to understand the
+intent?  That will help quite a bit.
+
+> +Guest decoder and commit
+> +========================
+> +
+> +The guest programs its virtual endpoint decoder through the trapped
+> +region: it writes a base (a GPA), a size, and then the COMMIT bit. The
+> +host already resolved and committed the physical placement before the
+> +guest ran,
+
+So the host does know GPA, just not exact placement.
+
+> so a live read of the decoder always shows COMMITTED and the
+> +guest's commit poll completes. The physical decoder is never rewritten;
+> +the guest's writes are absorbed.
+> +
+
+Rather clunky, round-about way to say "The guest decoders are
+virtualized".   If possible, it would be nice to formalize this concept
+into "Virtual Decoders" - since that's what this is.
+
+With that concept i think you can probably generate some nice diagrams
+that show how the guest vdecoder's interact with the host drivers.
+
+> +The VMM observes the commit, reads the committed base, and maps the HDM
+> +region at that GPA.
+> +
+
+So the host does know the GPA.
+
+> +CXL Device DVSEC
+> +================
+> +
+> +The kernel virtualizes the CXL Device DVSEC body through the config-space
+> +permission hooks. Reads and writes inside the DVSEC body use a per-open
+> +shadow; a guest write stays in the shadow and does not reach hardware.
+> +Accesses outside the DVSEC body go to the device as usual.
+> +
+
+"The kernel" - what part? vfio-pci ? the vmm ?
+
+
+> +DMA and iommufd
+> +===============
+> +
+> +A Type-2 accelerator issues ATS-translated DMA to addresses inside its own
+> +HDM window, so that range must be present in the guest IOAS that backs the
+> +nested stage-2 translation.
+
+Type-2, ATS, DMA, HDM window, guest IOAS, stage-2 translation
+
+I think the only thing i don't know in this sentence is "guest IOAS" and
+it's still hurting my brain to read.
+
+Are all accelerators expect to have this particular interaction, or just
+yours?
+
+> The HDM range is struct-page-less coherent
+> +memory, which a userspace-VA ``IOMMU_IOAS_MAP`` cannot pin.
+> +
+
+The hardest part about writing about virtualization is keeping a
+consistent mental model from section to section.
+
+which userspace? guest? host?  (i presume guest here)
+
+`struct-page-less coherent memory`
+   e.g. the host never hotplugs this, it hands the entire region
+   directly to the VFIO device, right?
+
+   I think this would be nice to spell out somewhere.
+
+> +The HDM memory region is therefore exportable as a dma-buf:
+> +``VFIO_DEVICE_FEATURE_DMA_BUF`` on that region returns an fd that iommufd
+> +maps with ``IOMMU_IOAS_MAP_FILE``, mapping the physical range without a VA
+> +or a page pin. The dma-buf is revoked whenever the mapping is torn down
+> +(reset, power transition, teardown), so a stale stage-2 mapping cannot
+> +outlive the HDM window.
+> +
+
+For the sake of readers, I think either a little bit more information
+on this "stage-2 mapping" concept is needed to make sense of what's
+going on here and why it mustn't outlive the HDM window.
+
+> +Reset
+> +=====
+> +
+> +A CXL Type-2 function must not take a Function Level Reset: an FLR resets
+> +the coherent CXL.mem state and the HDM decoder. The PCI core reflects this
+> +by preferring the CXL reset over FLR, so a function reset of a CXL device
+> +runs the CXL DVSEC reset sequence, which resets the function and then
+> +restores the HDM decoder and the PCI config state.
+> +
+
+I think what you're trying to say is that FLRs are never passed to the
+device because it can cause physical device effects that defeat the
+purpose of the virtualization, yes?
+
+So we virtualize FLRs...
+
+> +A guest requests a reset by writing Initiate CXL Reset in the DVSEC. That
+> +write only stamps completion in the shadow. The real reset runs at the vfio
+> +reset points (the reset ioctl and a virtualized FLR through config space):
+
+As you describe here.
+
+So it's not that an accelerator "must not take an FLR" - it's that FLRs
+are virtualized to prevent deleterious effects on the host / hardware.
+
+Am I misunderstanding this?
+
+> +the kernel zaps the HDM mapping and revokes the dma-buf, then runs the CXL
+> +reset, which always clears the device memory, and restores and re-samples
+> +the decoder afterwards. A CXL port masks Secondary Bus Reset by default, so a
+> +``VFIO_DEVICE_PCI_HOT_RESET`` does not reach the endpoint and the HDM
+> +state is untouched. If the port has SBR unmasked the reset can decommit
+> +the decoder without restoring it, so the reset_done handler gates HDM
+> +access; a ``VFIO_DEVICE_RESET`` then runs the CXL reset sequence and
+> +restores it.
+> +
+> +The decoder register region is served by live reads of the hardware
+> +decoder with guest writes absorbed: the decoder is committed and locked by
+> +the host, so a guest can neither decommit nor reprogram it, and the kernel
+> +keeps no shadow of the decoder state.
+
+This is basically what I said at the beginning - it must either be that
+the host provides locked auto-decoders at boot, or it must provide
+proper virtualization so that the decoders settings are fully
+virtualized.
+
+Seems it's the former, and that makes sense.  Please correct me if i'm
+misunderstanding.
+
+> After a reset the kernel restores and
+> +re-samples the firmware-committed decoder, so the geometry the guest reads
+> +back is unchanged. A VMM that dropped its HDM mapping, for example across a
+> +reset or a D3hot->D0 transition, must rescan the decoder and rebuild its
+> +stage-2 mapping before it resumes HDM access.
+> +
+
+Yeah i think we need a bit more information about this stage-2 mapping
+rebuild to make sense of this.  Maybe I'm just not read-up enough on
+this particular setup - is there another part of the docs you can link
+to that talk about this, or are you able to share some details as to
+what this rebuild process looks like?
+
+~Gregory
