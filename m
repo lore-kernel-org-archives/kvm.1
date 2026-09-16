@@ -1,124 +1,159 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013031.outbound.protection.outlook.com [40.107.201.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE78251C335
-	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 18:38:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789583905; cv=none; b=sW5R4fa2SODhDUDbyy/c7FyXjkMrI020BP7/gu0vy65C5WAc0u855jwX3h5Zjdv50WAkbxwTdcIS+LVUuyynkVcdX/P7o3IIHrtBJj+EJw/AlLjhK7idvVgDSAdPd2wWTJYcpw4RVzxO2Q79Y64+t5LbFc4N+wwZZxCPvtXCV2k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789583905; c=relaxed/simple;
-	bh=cDzXvZbaOZP3SiwFeiDd+RJA7MdlMNY4XVSpNU20A3k=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QhOCjxZo+JeORGIVknyXgOa7AvmEAkWuKrpb1Li5tp4XWqxKCDp1ltA5dYRVuTTW3g50lY2ciFwaQxm67ZHOWZAdkIGQwqrCl4bGq8Gb8LgK4wxN0NY8OW7XvQMupfDuICgIyn8EgIVzNKVCMJ38pdnqxjCoUhb7aT6ICMlSEDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ckLUiLC0; arc=none smtp.client-ip=209.85.216.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16186345CA1;
+	Wed, 16 Sep 2026 18:38:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.31
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789583907; cv=fail; b=AXOEpqd+OCTafiW7n4cQW1etSA/VcVQPnx1M0XA2iXv3hcobsHu+m4yvTP8Ke/Mzfp7BUGpGpJNXPwCq20/6zBdpDB4yFyFVbdzgOtjKakP5J9v7aw/t2F/5BvHfnkSBabl2AACrjpZ+qFtekIydjFyh//Pui3fA1erpdh+A5dM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789583907; c=relaxed/simple;
+	bh=di8V0UnXENs3iHFI8Go+7UcPcrvy7YaZFNWVFyZRa/0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fTjnueRmqhsPIEp3BpQ+IQbDotlh6+giylrAcB1/Gq4QR9J6oUS9vyPBuKE2wlGl30MdHYrZ2kPvdQLiK71G3KzMqTZR3SlJsvB1TJpiI+Xiv21i3g+MjMGOLNSZY6AAwlLOaE29LrRVbm1yMHsNSlNdPuxSf3Mhu9Kv6NNW3WM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jrc7J6/T; arc=fail smtp.client-ip=40.107.201.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ckLUiLC0"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38ea32e57e2so11643834a91.1
-        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 11:38:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789583882; x=1790188682; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fNEHdDji3u/WjfZNbUeK+OKQDAVuIySwD4Ew2YHeImc=;
-        b=ckLUiLC0iIu3OMP//79Xj4r3LBrqXlbcW7dZ5B+D847OxTaWpc1Z4RSNi8PndJbfl8
-         wldBmCbuWDsJimr6OQwc1j7X5HcxVQ47KYofILPShB7JjerO0czPRmLICAa6gGPH6y0R
-         DIas4zila35/z43euoGc1f42ncmzWX2iO9Kh/SulGctLwd8MhhYn/SIupW3kFKAFrmB8
-         UQ4YT8c25PcNel48V5YLqyZlXbIxw5xF53uOMrqmu5nIxuia//elGomDEgJw7B1ucX4S
-         08NR6KwPxn2opdt3V031aCuD5Fu9cfCZC1GknRntYqNeTJuOhxHclo9aGDXs+lJRzrVO
-         Fp6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789583882; x=1790188682;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fNEHdDji3u/WjfZNbUeK+OKQDAVuIySwD4Ew2YHeImc=;
-        b=i7rCEHhkADwkq3yxB2XPqpKv8FpeMH8FS60VYeVoHXRFyw4JRztvouSIdHp+QS69gE
-         orDeYvVg8NXWm87x40NobrcjOLKGvp8qohPDqD/iRW7PTpP/zwwZylBg2AkY55izDwK1
-         Ig4wCB+CGfpY7SmN/bPsK9ld9cz3z3YAAV+xcWqVXHC9ftWKr7s7xWm9UDKM11xT69yr
-         lYZ5CzattabxjDvXrMni9pZHk6lSVHHZsAGiR92EvOW/Nr3Hu3y0TRYAYQWiC55bedIe
-         PyawkJ5SUK2TsDhbxwL7Z4LSQ70PcCrS7CiqbZlaPHiRW32gDhBeMPsuA/u+YfMksJqs
-         rriA==
-X-Forwarded-Encrypted: i=1; AKwUvByIWoUJnsmg7zKfEaBYoox64zi+PBF3g7pulUkH9DhyEMxzcxzOWv96Ts0q8ZMPwvBxqpU=@vger.kernel.org
-X-Gm-Message-State: AFuF++lkAnCyZUkm/9ScaNPgHodBsX2tbzjln+nXXwB0MFCImpRd187B
-	ybwvEDnL4dCX52rRC2V1mcQBjz4gDrnskzK3pd++ERhxZbZuG8OQN1iqR2nCYN+EFCGw6dAeeuJ
-	YazEY9g==
-X-Received: from pjbkj2.prod.google.com ([2002:a17:90a:ed42:b0:39d:dd69:126b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2744:b0:39b:2c55:365
- with SMTP id 98e67ed59e1d1-39e1e45bc52mr7668103a91.12.1789583881800; Wed, 16
- Sep 2026 11:38:01 -0700 (PDT)
-Date: Wed, 16 Sep 2026 11:38:01 -0700
-In-Reply-To: <f4fdef08-fdf0-4af8-bf59-07c48625b282@intel.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jrc7J6/T"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=A8Uf94WPf/87hWV5s9SrZs3O1sFmU7Ki2MOCvEHxMKndFGachaYGJAglOCg4Fq5vPwvkmcqF7RKhepCyI46rirQ2TePrnZpIk2epLEpYZNMKrvUuuyg5UBtFV039MaKZukdZg1NDhKf/mT8y02IhwMxyfXtvaWZc+yUSeALSAhrFQpckMYWQNwbtyCcLRCBx0ViP48aF5HJPxJVGX2SJSi86jaJ6S06GMa6P7kPap93SQo49BCJsWuSniBb43gqeFv17W+otldga0wK3FGRLbbLq36LRCxUcq1CgiVwJ9SVsHHAiqvnUS/+bM3PGhuNtzu/BTtsYjwog9TUhyG4trA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dbPZFmvv8n4tuMdBBzzhmcgYMGqKp5NrPSs43eCSLp8=;
+ b=QY361iqrDg3nfIeNtUHNKzPGeBnfQyR5R049P7O+JApNEx5pFc7lRF9NSePyQzW0Q1UiauXzdY3DOmzC7OmBTgfC6FprM3FqwJmFNRa4aASmHZ3xnDQPxiw2H3PFpP8HpKW1LfXLVQlKqUZ9uqcTyjRITXM1kD/CcLTKgwGw7vtkzzUqeSTXeojv7wz/xtOhkQXXa9Bjedk7Upprgtvohnpu9HJ3M85JQnW2uP29doc8Rhy+TqFS77Ei8I86gAFgtppvPO/P1kFQkWjGxwOGnS0jU9dgUGSa4Zo28DJYZWwIdHCKHw0q4++g9/DnZKkmR0Hnb/2LtEjajit4bwMFfA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=shazbot.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dbPZFmvv8n4tuMdBBzzhmcgYMGqKp5NrPSs43eCSLp8=;
+ b=jrc7J6/TSETvfVgS3aVj2qiSAsvNRYLKlr+62pPby8+44KBG2SgSBQZF8Bf8/CI1iHBuOmAooDpmqAksYGWQiuUx6O+bGLiaza9KMfjaaWy4oGklBLXiqT2suZHgUfVYjm6w+wm28Bzx9WRbBikDLOUY5cxCPKt8/RcKkO9NCChvjXZVZhxeRjelTOmTZEYLMof46iw6VhTagXfIz/gGz+0RZGlrZHwM8Qrvw1Wbt1WYdSy1viPMM7lUxHHZj3bCREqX2MHizQFJLgxw/FwM1RMZs8ZciANvDeFhs8Op7VssL1trZfworL+KFjf6+ywBTBSZmaIPsEiEH+Kcguf4JA==
+Received: from BN9PR03CA0382.namprd03.prod.outlook.com (2603:10b6:408:f7::27)
+ by SN7PR12MB7105.namprd12.prod.outlook.com (2603:10b6:806:2a0::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Wed, 16 Sep
+ 2026 18:37:50 +0000
+Received: from LV8PEPF00000068.namprd03.prod.outlook.com
+ (2603:10b6:408:f7:cafe::7a) by BN9PR03CA0382.outlook.office365.com
+ (2603:10b6:408:f7::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.9 via Frontend Transport; Wed, 16
+ Sep 2026 18:37:50 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ LV8PEPF00000068.mail.protection.outlook.com (10.167.248.41) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.428.7 via Frontend Transport; Wed, 16 Sep 2026 18:37:48 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 16 Sep
+ 2026 11:37:11 -0700
+Received: from nvidia-4028GR-scsim.nvidia.com (10.126.230.37) by
+ rnnvmail202.nvidia.com (10.129.68.7) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 16 Sep 2026 11:37:02 -0700
+From: <mhonap@nvidia.com>
+To: <alex@shazbot.org>, <jgg@ziepe.ca>, <ankita@nvidia.com>,
+	<jic23@kernel.org>, <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
+	<smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+	<dave@stgolabs.net>, <alison.schofield@intel.com>,
+	<vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
+	<yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+	<bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
+	<gustavoars@kernel.org>
+CC: <cjia@nvidia.com>, <kjaju@nvidia.com>, <vsethi@nvidia.com>,
+	<zhiw@nvidia.com>, <mhonap@nvidia.com>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>
+Subject: [PATCH v5 07/27] vfio/pci: Honor -EPROBE_DEFER from CXL provider probe
+Date: Thu, 17 Sep 2026 00:05:20 +0530
+Message-ID: <20260916183540.3813685-8-mhonap@nvidia.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260916183540.3813685-1-mhonap@nvidia.com>
+References: <20260916183540.3813685-1-mhonap@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260806011536.4172258-1-sohil.mehta@intel.com>
- <20260806011536.4172258-5-sohil.mehta@intel.com> <e6220b0e-0f5c-435f-823e-318b527eee8a@intel.com>
- <c5076e4a-0335-4ed1-8049-a3ddf486ea03@intel.com> <aqlQgQgnLDf2CHqx@google.com>
- <f4fdef08-fdf0-4af8-bf59-07c48625b282@intel.com>
-Message-ID: <aqriCQTG7F73aEpX@google.com>
-Subject: Re: [PATCH v4 4/7] KVM: VMX: Implement LASS violation check
-From: Sean Christopherson <seanjc@google.com>
-To: Sohil Mehta <sohil.mehta@intel.com>
-Cc: "Chang S. Bae" <chang.seok.bae@intel.com>, kvm@vger.kernel.org, x86@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H . Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Kai Huang <kai.huang@intel.com>, 
-	Fuad Tabba <fuad.tabba@linux.dev>, Chao Gao <chao.gao@intel.com>, 
-	Yosry Ahmed <yosry@kernel.org>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-	David Matlack <dmatlack@google.com>, Bala-Vignesh-Reddy <reddybalavignesh9979@gmail.com>, 
-	Kishen Maloor <kishen.maloor@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail202.nvidia.com (10.129.68.7)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PEPF00000068:EE_|SN7PR12MB7105:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5da68741-620c-480b-5b97-08df14219bca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|82310400026|7416014|36860700016|376014|11063799006|56012099006|3023799007|22082099003|18002099003|10067099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	WI4l11Z1JeOWE9J9+Gt0rWNX2O71qgmDzP2ap48XhmLIsbzZKqRrYOLSjJ1JrhUzjuDSHMEUePCSeUtCzPHlqk45NuzTSstwGykTty5WOK6cTyaBhzgSucxr8u2XRbQgUfRM1kyPEtn7kLZvgMQDv3CAvFC/3MxZgnbKHVN87tcu2HinSOXj1ci5miPm8gUaXhD50zgq7R8Uqw5Q5wfWxvo65/CRmHlsyOpABBfyKb1rrOgWHr5O11HSHhUbpUEjTNK8DF9m3Zgw4Na/MKO2vKsVDWKKcbSdyTu3WpnAgUvK2Pd8RdZK+Aw56m44dDp/K2P4E/EDoIVRUWRTiVX3bBJICiuvGXaQkKKJ2MCPNwKz1jQwtufXDa6k6mqJlp8wTYijajIAkZpLyctq3/573suzb80++GKz6MT0GEm6zRSnEgKgQw3JK8JbhSzTTCXDnm75B/cd4RO9Z3wJvgww3IWv2+N1/QRambf7aysd3BiYnmg0+O6rO/QnYMUb9jijZl47PQGocE1uQksugD2+Tg3iNAIiHXTK/q3h+6i9z70qzTlgrwM2GmYHsYjL4nlTWW8UATbe1vq+poY7WbMuVH0M8xfvJrDf4+a9ShkotRNTeasIWx5XSEExM+x/WEALyRKOpuoYyZP15pxvhKAmD4k6R16ZmQ7zub9Mx+idpGzHuqHN6XP7vPXdNcEY3LJl70qBtfkfVUuqON2YH0wGZo1qAf/DEbAmwJ08q9vGyBQOsnA3F8kYxo8VV+sDJko4
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(82310400026)(7416014)(36860700016)(376014)(11063799006)(56012099006)(3023799007)(22082099003)(18002099003)(10067099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	qZVkG2616mDv0OCqXInmIQnb97vGQ/KKzLbfODwyhcsRiTYBcXXnoRQf7C4avkx+M3lhPPcjMULFMt978hErWvcqj/ulBFaiPGEqjbKyYUCc0R7+TpKS0TPTHm+PKds8YxDR404DE5zmJrlKTPwIoCv1GEzUImE+5ygfGRDL3cpLpAgezZ47BF9dLueW9cdI4OS2bLU4wZw2xdbgoPv9sjNwAxLSJYQBeKoun7N0Y4pqxxqA6/owfOmhnGIxPMGsP/csz6yJlCGnx1wss4gkuKMp42jYJSzu2AvSvQZ6/kJKsivVudqHoclyOl3M27LYLk8SQKR928PKLMp9Ul1P1pI4sUDd7qKE+hqqtLDSieXmLcRgrHOvGQVkHXRJ4mKrQY4cSEV0lGNPcNNx8kWSIOc063y4jEsMiy77J9U0Uca8JEe0coKBCp6iV/vxlC2L
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 18:37:48.8320
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5da68741-620c-480b-5b97-08df14219bca
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	LV8PEPF00000068.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7105
 
-On Tue, Sep 15, 2026, Sohil Mehta wrote:
-> On 9/15/2026 7:04 AM, Sean Christopherson wrote:
-> > That said, I love Sohil's idea of adding a function comment.  Someting along the
-> > lines of "The basic flow is this: <example>, but the actual behavior is far more
-> > subtle due to many exceptions and edge cases".
-> 
-> Great, how about this?
+From: Manish Honap <mhonap@nvidia.com>
 
-LGTM.
+The CXL provider .init() can return -EPROBE_DEFER when the device is not
+ready yet, for example when its CXL port has not enumerated. Handle that
+return separately from other init failures and propagate it, so the bind
+is retried later.
 
-> > /*
-> >  * Check if an access violates LASS purely based on bit 63 of the linear address
-> >  * and whether the access targets the "wrong" half of the address space. The
-> >  * basic flow is straightforward:
-> >  *
-> >  *	if (exempt from LASS)
-> >  *		no violation;
-> >  *	else if (user access)
-> >  *		violation when address is in the supervisor half;
-> >  *	else
-> >  *		violation when address is in the user half;
-> >  *
-> >  * but the actual behavior is far more subtle due to the many exceptions and
-> >  * edge cases. For example, the implementation depends on which accesses are
-> >  * exempt, what constitutes a user access, and how supervisor data accesses
-> >  * differ from instruction fetches.
-> >  */
-> > bool vmx_is_lass_violation(struct kvm_vcpu *vcpu, gva_t gva,
-> > 			   unsigned int size, unsigned int flags)
-> 
-> 
-> 
-> Sean, other than this, do you want to see any big change in the series?
+This keeps the deferred path distinct from the general failure path that
+a following patch makes non-fatal: an -EPROBE_DEFER must retry, not fall
+back to plain vfio-pci.
 
-Dunno, I haven't looked at anything else in the series, I just saw that I got
-summoned :-)
+Assisted-by: LLM
+Signed-off-by: Manish Honap <mhonap@nvidia.com>
+---
+ drivers/vfio/pci/vfio_pci_core.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-It's on my list of things to review, but I'm behind on reviews this kernel cycle
-for a variety of reasons.
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index 9eede1e56ab5..a63a4f5228b8 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -2262,6 +2262,15 @@ static int vfio_pci_core_cxl_init(struct vfio_pci_core_device *vdev)
+ 		return IS_BUILTIN(CONFIG_VFIO_CXL) ? -EPROBE_DEFER : 0;
+ 
+ 	ret = ops->init(vdev);
++	/*
++	 * A provider that is not ready yet (for example its CXL port has not
++	 * enumerated) returns -EPROBE_DEFER. Propagate it so the bind retries
++	 * rather than falling back to plain vfio-pci.
++	 */
++	if (ret == -EPROBE_DEFER) {
++		vfio_pci_put_cxl_ops(ops);
++		return ret;
++	}
+ 	if (ret) {
+ 		vfio_pci_put_cxl_ops(ops);
+ 		return ret;
+-- 
+2.25.1
 
-> The sashiko complains are false-positives. There are a couple of nits to
-> be addressed, and I need to change Binbin's SoBs into Reviewed-bys.
-> Otherwise, I think the series (1-5) is getting ready to be picked up.
-> 
