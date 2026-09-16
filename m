@@ -1,33 +1,50 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D8746A5E0
-	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 08:29:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F89457E47
+	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 08:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789547393; cv=none; b=D6yljGlfnC/MZqlp0FYoSMCaZxG7MEEmDN7k7M7s7wY/Oh3ETHIWkXDoJQ9w3B2pC1bjdG+RrF07aK2jcqUiI0XlxB2a3cj2w6YnsB4304O3KLIr8ZGrXMhI3xwzdIXaoVjW+Cb+7ObFI3Q+TYs9sJIZaN4UbzMJfWARCeEl7qc=
+	t=1789547828; cv=none; b=vF9onin93zughBPFNCH45PL6fo1DLBaMW1cZPZjqPW9/9W+A0PC+JEIEkPMpwJac/1DgBu9RMSinEL/+JtnY1ZTZgloHi2rUGhXvncVgxIGaoosgPACFpbkw9SZHEFES8PLek/GYf8GgtacMRo5L56LHZN/iSAmf5IMDpE+B61I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789547393; c=relaxed/simple;
-	bh=y55ACC3MPUfOeusEzJNUnJR+YNOw7CmGAYFFZG69fOM=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=gAEaAo2ALBv/vz6wLx9LMsFHxqjoUqa+Tn/UJ6OL7836iIQjIo3+6u+Incq2fnIV2i1E1s5X5ZfIMluVJG/cRuQYJXIF0o3B33PWY4kHi/sJgXDp4BXal7sdTNumtVskOEO7AU6StZ4GFAscsBuF5bqI8/JILk8Irvd9gX6aQnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=IVLNFXo7; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1789547828; c=relaxed/simple;
+	bh=nzqpSFJdhBT24epR0tIx+DeqgtVd9AwjcY+bt0Kjxcw=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=ZR5Nj3BdySIsAnPaMSNaHN/Ze/+pAXrpL4o4Uv4pZOMXdZ6ewm8IyTkWcB89gE5C6ibsm9CqwtrnYkeOCUeAMe6ElWhPX3mYIcaHs2TkAsVMiPERrPmllBOhV7Sxi9awzQEM4ujDxW/WPaoP90VUY3bpzUzHgVKdC1YV3dR+w+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=btxkVMvl; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="IVLNFXo7"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DF092152B;
-	Wed, 16 Sep 2026 01:29:45 -0700 (PDT)
-Received: from [10.0.128.139] (unknown [10.0.128.139])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BDA623F882;
-	Wed, 16 Sep 2026 01:29:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789547389; bh=y55ACC3MPUfOeusEzJNUnJR+YNOw7CmGAYFFZG69fOM=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=IVLNFXo7GeAU8Xo5pmHQ1MHSQ3ZU8IGha06VwIrdgjVX2p9OPrAwXhk7dujDGXGBj
-	 CtC9UsgPBlBPaS0h/XPyJS+/ciKGCsXUQJ4HFHEmNlKYjAtEHZSyEt4hMpCRy6SzQP
-	 wUps3ACm3E14i5O4dVE1QwXxXGqEcQEXXJCjWAAA=
-Message-ID: <a53512f8-251b-4081-8d19-7957de3fc678@arm.com>
-Date: Wed, 16 Sep 2026 09:29:47 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="btxkVMvl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789547826; x=1821083826;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=nzqpSFJdhBT24epR0tIx+DeqgtVd9AwjcY+bt0Kjxcw=;
+  b=btxkVMvl/pdBElu0NmI3dB8frxyQViN8AkmYTeduCXdKC+QKH9mMy6nT
+   rqfeFbviZ/hVRQmUiPXHXqHkPeUJENsSx1fH9vqquh+XQlty8sRO98KjS
+   E+5wUkV90cV1LwBv1hPhMFs0Nwb8c31bqAyPmlGC1j3ZXh/kiNuJZyvmJ
+   vUaAfdac60V2YmZ6Wy/DGTwNKrAqK65k10MONXYVCQEGZk98zzWec+FCd
+   26fW1qCj1wbyK2Y1m54LIybUYdVw9vErFUVRD7FZ5sAWNZKC2l8fnu3nK
+   Lc/Q5is/wPm7gkGHzY/OrbW+9OzHQc65VjN/4VZwdI82fvQHuKiz/bFA+
+   w==;
+X-CSE-ConnectionGUID: 9HsAKBrqQJ2uC+dlDABdEg==
+X-CSE-MsgGUID: 0iI9gQxPQvOmCbeCBW8ITw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100583889"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="100583889"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2026 01:37:05 -0700
+X-CSE-ConnectionGUID: 7HZFttlaSlePItWGmROmyw==
+X-CSE-MsgGUID: gDklz5Q9TYG35AumczGwCA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="269997320"
+Received: from unknown (HELO [10.238.1.188]) ([10.238.1.188])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2026 01:37:04 -0700
+Message-ID: <5fae68ba-1fcc-4817-8ed3-3f724a9f807d@linux.intel.com>
+Date: Wed, 16 Sep 2026 16:37:02 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,99 +52,55 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18 20/23] KVM: arm64: CCA: Don't expose unsupported
- capabilities for realm guests
-Content-Language: en-GB
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: baolu.lu@linux.intel.com, kvm@vger.kernel.org
+Subject: Re: [PATCH 4/5] iommu/vt-d: Add helpers to set up and tear down TDX
+ extensions
 To: sashiko-reviews@lists.linux.dev
-Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>,
- kvmarm@lists.linux.dev, kvm@vger.kernel.org
-References: <20260915160141.3543048-1-suzuki.poulose@arm.com>
- <20260915160141.3543048-21-suzuki.poulose@arm.com>
- <20260915164346.D49711F000FF@smtp.kernel.org>
- <6c3b2732-052c-47b8-905d-32aad2871ef8@arm.com>
-In-Reply-To: <6c3b2732-052c-47b8-905d-32aad2871ef8@arm.com>
+References: <20260915074235.1219183-1-baolu.lu@linux.intel.com>
+ <20260915074235.1219183-5-baolu.lu@linux.intel.com>
+ <20260915080449.D960B1F000FF@smtp.kernel.org>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20260915080449.D960B1F000FF@smtp.kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 15/09/2026 18:55, Suzuki K Poulose wrote:
-> On 15/09/2026 17:43, sashiko-bot@kernel.org wrote:
->> Thank you for your contribution! Sashiko AI review found 1 potential 
->> issue(s) to consider:
->> - [High] kvm: host Denial of Service via WARN_ON_ONCE in 
->> kvm_arch_vm_ioctl_allowed()
->> -- 
->>
->> commit f9fdb12a2363dfa41ace289596ec2d2bd95cde48
->> Author: Suzuki K Poulose <suzuki.poulose@arm.com>
->> KVM: arm64: CCA: Don't expose unsupported capabilities for realm guests
->>
->> This commit limits the capabilities allowed for Realm VMs and blocks
->> vm_ioctls backed by unsupported capabilities. It introduces generic
->> capability and ioctl filtering helpers kvm_arch_vm_ext_allowed() and
->> kvm_arch_vm_ioctl_allowed() to support both pKVM and Realm guests.
->>
->>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->>> --- a/arch/arm64/kvm/arm.c
->>> +++ b/arch/arm64/kvm/arm.c
->> [ ... ]
->>> +static inline bool kvm_arch_vm_ioctl_allowed(struct kvm *kvm, 
->>> unsigned int ioctl)
->>> +{
->>> +    long ext;
->>> +    int r;
->>> +
->>> +    r = kvm_get_cap_for_kvm_ioctl(ioctl, &ext);
->>> +    if (WARN_ON_ONCE(r < 0))
->>> +        return false;
->>
->> [Severity: High]
->> Could this allow an unprivileged host userspace process to crash the 
->> host?
+On 9/15/2026 4:04 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Low] iommu: bounds check uses PAGE_SIZE while allocation uses SZ_4K
+> --
 > 
-> This is addressed by a patch from Fuad, hence I didn't try to fix that
-> here.
+> commit 4edc662d667d9a3f034b902dc510d5238c7c24a5
+> Author: Lu Baolu<baolu.lu@linux.intel.com>
 > 
-> https://lore.kernel.org/all/20260914093838.1082637-1-fuad.tabba@linux.dev
+> iommu/vt-d: Add helpers to set up and tear down TDX extensions
 > 
+> This commit implements per-IOMMU TDX Connect bring-up and tear-down helpers.
+> It allocates and populates the IOMMU_MT parameter layout required by
+> TDH.IOMMU.SETUP, and handles initialization completion and rollback.
 > 
->>
->> When kvm_arch_vm_ioctl() receives an unrecognized or garbage ioctl,
->> kvm_get_cap_for_kvm_ioctl() returns a negative value. This evaluates 
->> to true
->> and triggers the WARN_ON_ONCE() here. On systems configured with 
->> panic_on_warn
->> (which is common in production and Android environments), this results 
->> in a
->> kernel panic and a complete host denial of service.
->>
->> [ ... ]
->>> @@ -2150,7 +2202,7 @@ int kvm_arch_vm_ioctl(struct file *filp, 
->>> unsigned int ioctl, unsigned long arg)
->>>       void __user *argp = (void __user *)arg;
->>>       struct kvm_device_attr attr;
->>> -    if (is_protected_kvm_enabled() && !kvm_pkvm_ioctl_allowed(kvm, 
->>> ioctl))
->>> +    if (!kvm_arch_vm_ioctl_allowed(kvm, ioctl))
->>>           return -EINVAL;
->>
->> [Severity: High]
->> Does removing the is_protected_kvm_enabled() check expose the 
->> WARN_ON_ONCE()
->> above to all ARM64 KVM deployments?
+>> diff --git a/drivers/iommu/intel/tdxc.c b/drivers/iommu/intel/tdxc.c
+>> index 559c752a15273..b5dfdeeb23dba 100644
+>> --- a/drivers/iommu/intel/tdxc.c
+>> +++ b/drivers/iommu/intel/tdxc.c
+> [ ... ]
 > 
-> Thats right, I will add the following check in the 
-> kvm_arch_vm_ioctl_allowed()
-> 
-> if (!kvm || !kvm_vm_is_hyp_distrusting(kvm))
->      return true;
+>> +static struct tdxc_pages *tdxc_alloc_mt_pages(struct intel_iommu *iommu,
+>> +					      unsigned int nr_mt_pages)
+>> +{
+>> +	unsigned int nr_entries = nr_mt_pages + IQ_BUFFERS_NUM;
+>> +	struct tdxc_pages *array;
+>> +
+>> +	if (!nr_mt_pages || nr_mt_pages > (PAGE_SIZE / sizeof(u64) - IQ_BUFFERS_NUM))
+> [Severity: Low]
+> Does this bounds check use the wrong size macro? It restricts nr_mt_pages
+> based on PAGE_SIZE, but the corresponding root array allocation below is
+> hardcoded to SZ_4K. Should this check use SZ_4K to match the allocation size?
 
-Thats not correct. It should be :
+I'll use SZ_4K instead of PAGE_SIZE here. The size is fixed at 4KB by
+the TDX module ABI, so it should not be expressed in terms of the host
+page size, even though this file is x86-only and PAGE_SIZE == SZ_4K
+unconditionally. No functional change.
 
-if (!is_protected_kvm_enabled() &&
-     (!kvm || !kvm_is_realm(kvm)))
-	return true;
-
-Cheers
-Suzuki
-
+Thanks,
+baolu
