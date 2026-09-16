@@ -1,70 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE403D9558;
-	Wed, 16 Sep 2026 05:16:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5602356754;
+	Wed, 16 Sep 2026 05:17:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789535804; cv=none; b=E2Ev4Vj9cSJLFKyM2xJJl2so3N0t32AEfhiXuJLjNVo9Q2e2it+nPvyrSODelTv4VFpms9nQ9RoFOR2D2EruyJH+VSdLNkTLS8lk4RuzUtvIJpG2L9ZNjNDafVJJIckeRHzTgRstMhT9WQidJ6+YBWEHGxR5o8bDiST8oxfqoLc=
+	t=1789535866; cv=none; b=cmv1pjmLmqQFtpNBkXxhNwp907412M0wzF5N4Ax4S9oKNeLhD7Iv0gl2+SywuhWR8p1ZSPuVpeiawN1frNoHQAZl5yZpN6N46MTDgmdMAl6LOI2QuejQ74MKENiUePN8c8reZ3WXDapinKuthpXL7u0n+o52suZMQ99G6ew8pNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789535804; c=relaxed/simple;
-	bh=EV75Lo1RnTPNfDHilEOJJw/QZ4DeMJpCLNdibHXNLzI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=mLRVmy+07gFz3gavtaz8WjPPpghUqhl/DNA5paXbErErGqi3gteuXfKgGP0QRqmqoGCipw0NIuf9bImFDzxZksxKU6PAuPxCgz2Ug8Qzm1RydwetKoeW/lgFlku6+SUkdcNMsW+gMkdaPCAP9yD1igiBDiKEkl41n0XY5Tsb9T4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nsAvflTT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789535866; c=relaxed/simple;
+	bh=QUu94teIx4TW3x6nbYKlORv1Ri6SBezqVAFqs1gpUZU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LugLLTKqBuBZmXJgGw7iRVxZ+/q502d5pYsV5VnBMz4qvLgaOdXtVVAKxW2XZbWml0D4yZmGS7C0fXNxr7VgyqBxDJtv3TuBfDznWCQPnfuKjEfZ+k6RPaFP4nt3EzzZxfVjGQSj7fFEzQ7v0mtNPIZC0O0EIcv0G5v3xJmSwfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ps8zn5Mt; arc=none smtp.client-ip=192.198.163.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nsAvflTT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21EAE1F000FF;
-	Wed, 16 Sep 2026 05:16:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789535801;
-	bh=EV75Lo1RnTPNfDHilEOJJw/QZ4DeMJpCLNdibHXNLzI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=nsAvflTTuNkVkHLizjzKMvQCTP0dhUPed9363GsF7ULJrMt6L4Xwt/2xyQVsG454j
-	 zfH0WnfeQpLjuF8wtL7dXcYMGocbfV7BUWL8ch50CrlT22ddRcPX9vxbe7XEYi5nsY
-	 J7v4YFVC4xUn9XF880ybwH8JbxpAN/c3stBx8gGjxAdILFqewHb/M+LRS/Ucvf47vW
-	 Tqa3o7JI+qnhMp263e62zmO2m3zMpeJGKOEQTkUVTr9k0Zpx5R2qQ152rpVTl+0t48
-	 ghGHEF+vvXvmOAjwmUULZwaCMNRjK04zw8BXaHwIWpQ5CYXvQtGXX7E5ZiuNTvGhNc
-	 TcZ1IEpKuMEig==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1 1/2] percpu: Use X86_MEM_ENCRYPT for decrypted
- per-CPU data
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Zack Rusin" <zack.rusin@broadcom.com>
-Cc: kvm@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>, "Eugenio
- Perez" <eperezma@redhat.com>, virtualization@lists.linux.dev
-In-Reply-To: <07cdda86e2c60b27a18023e2e5fae339b78db0ab.1789488039.git.zack.rusin@broadcom.com>
-References: <cover.1789488039.git.zack.rusin@broadcom.com>
- <07cdda86e2c60b27a18023e2e5fae339b78db0ab.1789488039.git.zack.rusin@broadcom.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 16 Sep 2026 05:16:40 +0000
-Message-Id: <20260916051641.21EAE1F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ps8zn5Mt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789535864; x=1821071864;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=QUu94teIx4TW3x6nbYKlORv1Ri6SBezqVAFqs1gpUZU=;
+  b=Ps8zn5MtujQ+DWVKDJHHoIDZ9+iu+Vke9dEqd7kWHuzSWVGycsp1a7tC
+   qdf9ICSj6CNSbIAiWwKEx/uLdyaLGEihlXGuRXf3Z9rnJwXrUkKCAOCKo
+   /ygvjp9kC2qhlL0UdQzIo+LzqnvUKhJniFMUedsvqCECf62h1XMlplOFW
+   M4xnF/B3I/CNCLyWZKI/PaNo0bGJc+ju9RQNRDq7wmBPlPxXlRqmGhLNJ
+   1YgD0/oe69uAbH6OQbGH1HWkg3biJ4aq+ZljwQVt079iQAIjuzzSoA+ci
+   THdK049ykSv48MY+y92XAdBG7nl95XFUwQU2WVPzKVs+gt2jm0K+X0nUp
+   w==;
+X-CSE-ConnectionGUID: LiJBtV1cQpWaGL8rYf/1lw==
+X-CSE-MsgGUID: IGX3E98tS0q69p+jIBYedg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="411276"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="411276"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa116.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 22:17:41 -0700
+X-CSE-ConnectionGUID: frUvfdzMTPSc4HoPQQIhJA==
+X-CSE-MsgGUID: coPjhrOMSg+EJ9PvaN/ueA==
+X-ExtLoop1: 1
+Received: from unknown (HELO [10.238.2.139]) ([10.238.2.139])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 22:17:39 -0700
+Message-ID: <c6ccc8a9-8699-4355-8148-c9b3b60e7419@linux.intel.com>
+Date: Wed, 16 Sep 2026 13:17:37 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/4] KVM: TDX: Track configurable CPUID bits allowed by
+ KVM
+To: Xiaoyao Li <xiaoyao.li@intel.com>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "seanjc@google.com" <seanjc@google.com>
+Cc: "Gao, Chao" <chao.gao@intel.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "kas@kernel.org" <kas@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "nik.borisov@suse.com" <nik.borisov@suse.com>,
+ "andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>
+References: <20260827031837.2863609-1-binbin.wu@linux.intel.com>
+ <20260827031837.2863609-2-binbin.wu@linux.intel.com>
+ <55488b92-66a8-45e5-ad0f-8fed63ce1187@intel.com>
+ <a30741f8-b99b-4f36-80a5-4688c2578d99@linux.intel.com>
+ <6b565572-b316-4e86-906d-f150c896fe21@intel.com>
+ <84891108-55be-48c1-9993-c730a5334d5b@linux.intel.com>
+ <cfe57e67-49ce-47d7-b20b-a29e23fe16d4@intel.com>
+ <d8012e9acbe3c733b082c87fdbe9f229a8f7750c.camel@intel.com>
+ <9abeed40-bcdc-48d9-8cbb-cb87154bb9f6@intel.com>
+ <aqHdwkOFVR4XoS2M@google.com>
+ <c967dc3eb6b128055e415bae45d1c14a52dc4acd.camel@intel.com>
+ <94b3473c-7e44-4f6f-8721-b43ff4e2c423@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <94b3473c-7e44-4f6f-8721-b43ff4e2c423@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-> Decrypted per-CPU data is gated by AMD_MEM_ENCRYPT. With
-> INTEL_TDX_GUEST=3Dy and AMD_MEM_ENCRYPT=3Dn it falls back to ordinary
-> per-CPU storage, so converting a variable to shared memory can expose
-> unrelated data on the same page.
->=20
-> Gate the declarations and linker section on X86_MEM_ENCRYPT, which both
-> AMD_MEM_ENCRYPT and INTEL_TDX_GUEST select. Existing AMD configurations
-> are unchanged.
->=20
-> Keep the decrypted subsection page-aligned at both ends. The per-CPU
-> template and each allocated per-CPU unit are also page-aligned, so page
-> conversion cannot expose ordinary per-CPU data. TDX-only configurations
-> may need additional space for this alignment and isolation.
->=20
-> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+On 9/10/2026 10:53 AM, Xiaoyao Li wrote:
+> On 9/10/2026 7:18 AM, Edgecombe, Rick P wrote:
+>> On Wed, 2026-09-09 at 15:29 -0700, Sean Christopherson wrote:
+>>>   Yeah, *ideally* we'd magically enable everything everywhere all at once.  In
+>>> reality, different VM types are going to support features at different times. 
+>>> More importantly, as Xiaoyao points out below in #1, unless we enable
+>>> everyting in a single patch, which is probably a terrible idea in most cases,
+>>> we'll still end up with staged/progressive enabling, i.e. we still need to
+>>> have patches that selectively enable and advertise a feature only for the VM
+>>> types that actually support the feature.
+>>>
+>>> This is all quite similar to Intel and AMD feature enabling being done at
+>>> different times.  The biggest difference is that Intel and AMD are mutually
+>>> exclusive and so KVM_GET_SUPPORTED_CPUID always reports the correct
+>>> information, but TDX already provides KVM_TDX_CAPABILITIES, so AFAICT we still
+>>> get accurate reporting for TDX, just in a slightly different way.
+>> I think this actually surfaces another problem with TD-first enabling.
+>> KVM_TDX_CAPABILITIES only returns the directly configurable bits. Then recall,
+>> KVM_TDX_GET_CPUID returns the actual TDX module's view of CPUID bits to
+>> userspace. Then userspace calls KVM_SET_CPUID to actually put them on KVM's vcpu
+>> so they can match between Qemu, KVM and TDX
+>>
+>> So if a bit is enabled for KVM_TDX_CAPABILITIES, but not yet in
+>> KVM_GET_SUPPORTED_CPUID. How should userspace interpret KVM_GET_SUPPORTED_CPUID?
+>> It can ignore it for TDX, but that is how it can find the PV bits today.>
+>> If we have a TD first feature, it could be a documentation update on how to
+>> interpret it. Or we could stuff the PV bits somewhere else for TDX and say to
+>> ignore KVM_GET_SUPPORTED_CPUID for TDX. I think we don't need to solve it before
+>> we begin filtering like this series has.
+> 
+> The PV bits reported in KVM_GET_SUPPORTED_CPUID are the bits supported for
+> non-TDX VMs. Only some of them are actually supported for TDX. I would suggest
+> reporting TDX supported PV CPUIDs in KVM_TDX_CAPABILITIES as well.
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+I would leave it as a separate task if we want to report the PV features more
+accurately.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1789488039.gi=
-t.zack.rusin@broadcom.com?part=3D1
+Currently, the CPUID bits reported by KVM_TDX_CAPABILITIES only serve the
+purpose for enumeration of directly configurable CPUID bits and the userspace
+VMM (e.g. QEMU) will follow the same structure and layout of the CPUIDs reported
+to construct the input for KVM_TDX_INIT_VM.  If we report PV CPUIDs in
+KVM_TDX_CAPABILITIES, these values in KVM_TDX_INIT_VM will be rejected by the
+TDX module.
 
