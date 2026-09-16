@@ -1,83 +1,83 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718E7412BF7
-	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 12:36:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976734F053C
+	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 12:44:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789562181; cv=none; b=PKFRCrv7g66Z8lcrIgvH4PVHF/+nWwKSWewTVTkpqBkjgJKAt8AkEuZNwuw6WoEe/f0Rvgxv6KgyfdPKAZbQDm+vb2n4t2VZMDeCs1yzztv6PVytu9Lr5vJu4pVOnR3W2dxg4Ivjg0SSFgBnOhaBjECMQ3CsPx7UU5O4NMTEOMY=
+	t=1789562686; cv=none; b=i/3o/6NQ01EmAUoTS0+QrgBB9xDk+5NJpEnUmqpsSlSlNkulAIZ/He+whRH1RTZ/z5NKXE0Sy/8s89lYfpMERaakFUiJumAeup+DvbNiLNRlP0Ykyv8KdrWhBTDtabaezV/xA0rc65BOeFTg8nDoyEJns+B2erQw0OBvEDhDUfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789562181; c=relaxed/simple;
-	bh=j43LFPCZ7rUBOiUq13DB94/P46Wvh+c5n7GJVgSSa8E=;
+	s=arc-20240116; t=1789562686; c=relaxed/simple;
+	bh=R6gErF33Osgu7Z3SwcLr9EAh1+JuJ9MhvIEQ63MOWQs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ajMYOl0ED/urtB+Mu18JiB/3rkpyX/tvhMPnNYKPviMK0w+GpebFxw2tjozAlu5pOmRCQ/f2WyrlYLddvqsY2YK5JxLuI/2x8EFrdJ4lvZyh36nK9YqKd+hKcR+ziZXZN4/rhqp9cDvyVQ6btJdKVSfBue1fEUyA+w+iYSgp0+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EvAfabXl; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ikcLr5Fb; arc=none smtp.client-ip=170.10.133.124
+	 Content-Type:Content-Disposition:In-Reply-To; b=UVYvfYAMwScm7NnKbJwVtdMXpmeWmzWuTdeRspc4UWwsM/IGY0vnfiCBuPtxlwfpYWrB8BZGAvWIZ90IlW0yPz8pgTzf4bObrYf+cDnqJmwW8k43DOYPxkpJQt95Xvoklu0cYs1rdgRdVWsKV8KGbSPjeMlS3TjFLU0bK5XOARI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I1tqclnv; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=grXiK//V; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EvAfabXl";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ikcLr5Fb"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I1tqclnv";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="grXiK//V"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789562178;
+	s=mimecast20190719; t=1789562682;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=j43LFPCZ7rUBOiUq13DB94/P46Wvh+c5n7GJVgSSa8E=;
-	b=EvAfabXl/qEudjdbqezYT4ZZbT77u0m8hnuQmMLdpNQHaETG7Gf72TtaCJm2oJltK3rW76
-	wTmq3vka6ru0GrV5Rj0e+aDxLzYi9cqcyqMRcicg115lk0RklPa6koSK+Yuf614XKOYdh3
-	2mzl096OoQ6rKQ5RkAlT9dS6KnSlfUE=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=xtQRXCuPYRxWKGeHGm4yA8jBCwKuCZ6dScY6lTLEkSY=;
+	b=I1tqclnvth+ZBN3/5/xaUPUrLrnMcIin+fke49CIwgQj3ZasSPRsAjoAGhWRN1diGOJS5n
+	2ic4Oyi038jaFcl7OLs6BLBEgu8CYE6RollkV/yIVbl03ZyEln2NGzEO1Iw0qT9056rjp0
+	89Tjf6AAkmzSWkgmqJ2xD5sl0PM2cQQ=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-6-XVQdqRv8M3qX5Hvm74JFlg-1; Wed, 16 Sep 2026 08:36:17 -0400
-X-MC-Unique: XVQdqRv8M3qX5Hvm74JFlg-1
-X-Mimecast-MFC-AGG-ID: XVQdqRv8M3qX5Hvm74JFlg_1789562176
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49cf9df1eadso54739205e9.3
-        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 05:36:16 -0700 (PDT)
+ us-mta-593-Wqv_QOMVOmWzy1xCcb-KNw-1; Wed, 16 Sep 2026 08:44:41 -0400
+X-MC-Unique: Wqv_QOMVOmWzy1xCcb-KNw-1
+X-Mimecast-MFC-AGG-ID: Wqv_QOMVOmWzy1xCcb-KNw_1789562680
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47f6e8b5996so5138459f8f.2
+        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 05:44:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789562175; x=1790166975; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1789562680; x=1790167480; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=j43LFPCZ7rUBOiUq13DB94/P46Wvh+c5n7GJVgSSa8E=;
-        b=ikcLr5FbZMq85EGq9fBe8+Pc1Dy101TfX00wqJQ1Hl0MXhXFi1le4K1PYcOPIe6L64
-         rYDWn8FfV7G1Q1C8SgVc27kq8nbT1WrRNm/0RjchbUsdZJvY5IQEcQ7oxTYoHIqrBcoz
-         3ioq/NLHSs6ley7/cWxh+PHx1YFVjieSx1TfPi4DrCP+ejAaMI3tnOhfipXDmij7oHSP
-         /DmWzOJaFLYUcN4lTsiSJyTzYPRZUxr0MqswO2tamt4y08vHGE+kKzv5fD5PTyNxm1WJ
-         ZnPPpnw7IQ9fLTWZ9/SVPy+P55Dy+7x0oPiBD3//UgiSSUzpNT8k+DU3ofnrGyhJiXpd
-         tL/w==
+        bh=xtQRXCuPYRxWKGeHGm4yA8jBCwKuCZ6dScY6lTLEkSY=;
+        b=grXiK//V+b7/KQTPXz7+Ge3n/6GHGWSt3mlWQqlGgH7W4FLoHfTxrE0cCABZkXqsOF
+         s4gaumXOGdLWAwNv8tyGQnjnhnGpyUy5Uol4YLXzE9lv4nowCLeBtpHzl0/LWv13smHr
+         KGIakXJWgHhmea/Nx91ydPw+Mbx6/EvbCYYZSqTWHBzkrtoMAaDl2vFObkx1iGQLM20U
+         WSkG2R7tfby2IXgk32YiCIL2LaQgf2LdkWX2ID+VJe9rwZeNLHYvKas+BruIZjFlLTn1
+         SCwXZ3PPMTicZi6RopsKu3RlUf0yTTK+lSZX8xMiAyv9DdGItOnq+laXjKE6j4EB+0OC
+         vceg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789562175; x=1790166975;
+        d=1e100.net; s=20260707; t=1789562680; x=1790167480;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=j43LFPCZ7rUBOiUq13DB94/P46Wvh+c5n7GJVgSSa8E=;
-        b=Vq+pHPndBkc23ISb5cgy+rcSbkw/iC6MzPwU6PpfxB/oP+x5dspWBFVlXpQoCq3LA6
-         7kOcLl0jJqLwWxPlkqBMXtkBBDBxvKqYX3S3TukZM2X7bn2eLZuAijQcUvdTWD6TyK8H
-         Os+EGTyPLtAX9zx/wguw8tXAj1mYb85ll5hiebK4N4ZP7VdgjyLAOAC+Ph151ZayZg5M
-         ++LBIICDg2BVtW2ri4xY4o81/0xluEGB0mMRiFpOMmK/Iq5udt+IIB0jDHz4XuiNyJ39
-         iLW4Kqu3b7xrFtSrIpoIY3FKBDy6GP/lBKKmxFDytXt4x+qcSL/Ku2+6OF0Gjpi7KvB/
-         joOA==
-X-Forwarded-Encrypted: i=1; AKwUvBx/agC25T6oAukbCD+36dYicRB4twWzi7Ck3flXzOC7/cqcj/upALxIzdv4cPI5CRLrdlc=@vger.kernel.org
-X-Gm-Message-State: AFuF++lHhYfyH4srsf7DWkfEACEn2rJ2yeVBPL5dAvTli6rypvJZSKvi
-	IxhqDGW9Qi/WoLD7EI41W5DAuIrZcgr3NcwpPzREejSZ4OAOkxWOGxjkk4sqYhzboAwkWhCQSDc
-	gH6wnw1IOH+gGUKcB5Og5D/a9DBjxX7aXYmyRwFsRDU+SGODT28jKnw==
-X-Gm-Gg: AYBFou04bSfnjnz6do8g5PO/MbV68kNHnhOmX7QYXmsLTYHT17rOndBhUHG+TZfaTjt
-	WX8BPNgJdY3On7BbfavNlofDjSKY2UlK6Ahl+n4nclPuJ/XcxUbh9M0vTFjJ3deiV+dNjNH/oeo
-	9qqPnsQoekU3Z6AAcusTc1XlW0qwelzjIr3aF4hW5MnOJJnXDTRCfoUODvNCwCSwbfX/S4Fp+5e
-	BxdFI4A+GE3lqHZAoXR3jqsM28/+351BF8amGrA3uawJDwNU8HBVjPSziXDlxj1L29Wr6QT8LMG
-	4wkud+6ddm2RB0tbHFdGz2O+BYwxVwz+xNR8WlXnU+8wrtlutqztpioPri5a3qHZ4Euhhj+m9Ge
-	0bW+a4UoldpiM0Qo+UKoVEP4ACmZfRT6D5KzPo4vutfJK/g==
-X-Received: by 2002:a05:600c:698e:b0:49c:dada:f57f with SMTP id 5b1f17b1804b1-49eac4638d8mr29033485e9.7.1789562175596;
-        Wed, 16 Sep 2026 05:36:15 -0700 (PDT)
-X-Received: by 2002:a05:600c:698e:b0:49c:dada:f57f with SMTP id 5b1f17b1804b1-49eac4638d8mr29033135e9.7.1789562175106;
-        Wed, 16 Sep 2026 05:36:15 -0700 (PDT)
+        bh=xtQRXCuPYRxWKGeHGm4yA8jBCwKuCZ6dScY6lTLEkSY=;
+        b=16HJhD2CrtfM4ulRQNm2WFCIFxiq9nZEsYyM2+E0Yt4hMEQkzRu/jN9+YTh8EuE+68
+         wao+YzQZnop3+3Fg9Q3lJha+B6k+S+wJw0521rnniHR03hYsJPzdm9EymrNPdKA3xOiB
+         UI/c4GUdPYUjZ7lUQh37M4WTcHbp+BjbROrjYxvkIIWRUc6ieo/28o2pPVXDk1eyiBGc
+         M9sWkOgEQLGXvNzHQJTmwcPgSMHWHnEs9CnVNOdZQFV51xAr85asv5nBql9hCxB7AoOb
+         31fEnViXPHHUApvBBJymShu2BB4NNR1mDggszke85F4mOFISQMtaPZs+HfZlmWVHImvs
+         6rDw==
+X-Forwarded-Encrypted: i=1; AKwUvBy2BRE67vNIDziGpZ+q/xzWd/uMIIoUSzAnAzIP8h86fsxSynCMWFNo7WH3awcL8xJfFl0=@vger.kernel.org
+X-Gm-Message-State: AFuF++nLX3rqF5XkS+jE+n9nWMZS2n8w9dLjmOrgAaZoYJVYKiZ8xNmr
+	7dU3y5LcBqgzD40cveYeyg4yEfZY/zvSyVm9mXXWi0g/eEOvH1XKLJYk3HTJXfLpL6/1na3+fjx
+	jrnzv+RE+f4/RzV+PccH/91X06CXO3j71vYCLSL09Z5n9mLI1ZBw2+w==
+X-Gm-Gg: AYBFou3feF0QKj3WXd/rtTbz6kKPBMOR3IR1B2ttpAytFAEqogh64BUPf6HHiaT78MI
+	weOZbVlHtqCM8tdGwKh1N6HdWRchcwAeygM7f8Vfa/L6BSCA2w/JWkexUh/oqmoRAHC77qpP78e
+	fN3JZ3HLai/U9nemAmhZ71nQ3smLPisjo8v1OZB6nlaQC+qU95fS70a2dpV6TUcbEZJ01zpMpX6
+	E+ryK1QXLmPOnJzJWQFkDMrwvTunGqZv+NuehXBd+GiG5/D3NSr/7RJO+KKDuLLms3jcvnJ3rpT
+	sNP0M0mE/cXGgbNc9OEo5QTJcT0BcuLMv3zf7lq6apRR7lxHaAU1sUg6dqJ/pkcF4c8tOM0s0ao
+	ZD2h+SRzwzF7xti60zp/ytaQXUsQa+5HpUoTvenK6h19dmQ==
+X-Received: by 2002:a05:6000:2210:b0:486:e949:532c with SMTP id ffacd0b85a97d-4870d16d687mr2826005f8f.43.1789562680109;
+        Wed, 16 Sep 2026 05:44:40 -0700 (PDT)
+X-Received: by 2002:a05:6000:2210:b0:486:e949:532c with SMTP id ffacd0b85a97d-4870d16d687mr2825969f8f.43.1789562679479;
+        Wed, 16 Sep 2026 05:44:39 -0700 (PDT)
 Received: from sgarzare-redhat (host-79-53-30-11.retail.telecomitalia.it. [79.53.30.11])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e83da071asm93775155e9.8.2026.09.16.05.36.13
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf3494dsm6691205f8f.28.2026.09.16.05.44.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 05:36:14 -0700 (PDT)
-Date: Wed, 16 Sep 2026 14:36:07 +0200
+        Wed, 16 Sep 2026 05:44:38 -0700 (PDT)
+Date: Wed, 16 Sep 2026 14:44:28 +0200
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: Bobby Eshleman <bobbyeshleman@gmail.com>
 Cc: "David S. Miller" <davem@davemloft.net>, 
@@ -91,14 +91,13 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org, sargun@sargun.me, jlinbox@meta.com, 
 	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next 0/6] vsock: assign the guest vsock device to a
- network namespace
-Message-ID: <aqqNEl6Hyk_h9C8r@sgarzare-redhat>
+Subject: Re: [PATCH net-next 3/6] vsock/virtio: support guest device network
+ namespace
+Message-ID: <aqqNZX0gk0I6AbVG@sgarzare-redhat>
 References: <20260902-vsock-guest-ns-v1-0-9995383e9a8b@meta.com>
- <apqGcFDFm9_Wtw4q@sgarzare-redhat>
- <apsANK7ySuRzzK0V@devvm29614.prn0.facebook.com>
- <aqkaTXHDf5nfPL9w@sgarzare-redhat>
- <aqmDuxMuEN5lS/0J@devvm29614.prn0.facebook.com>
+ <20260902-vsock-guest-ns-v1-3-9995383e9a8b@meta.com>
+ <aqlkWGyoUYrgQUzz@sgarzare-redhat>
+ <aqmLFzcF3MmwRITz@devvm29614.prn0.facebook.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -107,62 +106,130 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <aqmDuxMuEN5lS/0J@devvm29614.prn0.facebook.com>
+In-Reply-To: <aqmLFzcF3MmwRITz@devvm29614.prn0.facebook.com>
 
-On Tue, Sep 15, 2026 at 10:43:23AM -0700, Bobby Eshleman wrote:
->On Tue, Sep 15, 2026 at 12:16:47PM +0200, Stefano Garzarella wrote:
->> On Fri, Sep 04, 2026 at 10:30:28AM -0700, Bobby Eshleman wrote:
->> > On Fri, Sep 04, 2026 at 10:55:17AM +0200, Stefano Garzarella wrote:
->> > > On Wed, Sep 02, 2026 at 04:00:46PM -0700, Bobby Eshleman wrote:
->> > > > vsock network namespaces let a host put each VM in a namespace of its
->> > > > own. A guest has no equivalent yet. It has a single G2H device that
->> > > > cannot be assigned to a network namespace.
->> > >
->> > > Thanks for this, I'll do a proper review next week, in the mean time some
->> > > comments below:
->> > >
->> > > >
->> > > > This series lets a guest move that device into a network namespace. A
->> > > > new ioctl on /dev/vsock, IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS, assigns the
->> > > > device to the namespace of the calling process. The namespace's existing
->> > >
->> > > Why an ioctl?
->> > >
->> > > I'm asking because I'd like to know if you've already considered any
->> > > alternatives (sysfs, netlink, etc.)
->> > >
->> > > How do you think the ioctl should be used? Should we provide an userspace
->> > > tool, or extending some existing tools?
->> > >
->> > > Thanks,
->> > > Stefano
+On Tue, Sep 15, 2026 at 11:14:47AM -0700, Bobby Eshleman wrote:
+>On Tue, Sep 15, 2026 at 05:47:02PM +0200, Stefano Garzarella wrote:
+>> On Wed, Sep 02, 2026 at 04:00:49PM -0700, Bobby Eshleman wrote:
+>> > From: Bobby Eshleman <bobbyeshleman@meta.com>
 >> >
->> > Really only because /dev/vsock exists and the prior series used it.
->>
->> Yeah, I vaguely remember that we may have discussed switching to netlink in
->> that thread, but I can't find it.
->>
+>> > virtio-vsock did not have namespace support (the device was always
+>> > accessible to any global namespace).
 >> >
->> > Considering netlink, it might be the better option because there is a
->> > lot of prior art solving problems we might have in the future. For
->> > example, I was thinking about when users suddenly lose access to vsock,
->> > with just the current assign ioctl there is no way for apps or users to
->> > figure out why this happened. We can have an ioctl() setter for user,
->> > but in netdev world users can actually get a notification via netlink as
->> > to which namespace the device went to and what its ifindex is there (see
->> > __dev_change_net_namespace() for the RTM_DELLINK and RTM_NEWLINK
->> > messages). There is probably more, but that's the case that comes to
->> > mind.
+>> > Make the virtio-vsock device assignable to a namespace and initialize it
+>> > to init_net. Because virtio-vsock and init_net are both hardcoded to
+>> > global mode, nothing changes until the assign ioctl is issued.
+>> >
+>> > When the device's local-mode namespace is being destroyed, received
+>> > packets are reset until new valid a namespace has been assigned and/or
+>> > automatically returned to, and the next RX batch begins (in
+>> > virtio_transport_rx_work). They are reset rather than dropped because
+>> > vsock does not retransmit, so a silent drop would leave the host waiting
+>> > for a timeout, and a connection request arriving in that window has no
+>> > socket whose teardown would tell it otherwise. This requires making
+>> > virtio_transport_reset_no_sock() available outside of the common code.
+>> >
+>> > When a device is assigned to a namespace, every already established
+>> > vsock socket that is no longer able to reach the device is forcibly
+>> > reset. For that reason, adding new sockets to the connected table must
+>> > be performed atomically with regards to namespace assignment. This
+>> > ensures that when the socket is added to the connected table that it
+>> > actually passes the new reachability conditions set by ns assignment. If
+>> > it wins the race to the table and does NOT pass the reachability tests,
+>> > then the reset sweep will correctly catch it. This is the purpose
+>> > of the new helper 'vsock_maybe_set_connected()'.
+>> >
+>> > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+>> > ---
+>> > include/linux/virtio_vsock.h            |  2 ++
+>> > net/vmw_vsock/virtio_transport.c        | 28 ++++++++++++++++++++++------
+>> > net/vmw_vsock/virtio_transport_common.c | 28 +++++++++++++++++++++-------
+>> > 3 files changed, 45 insertions(+), 13 deletions(-)
+>> >
+>> > diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
+>> > index f91704731057..9c68ce1d7fb4 100644
+>> > --- a/include/linux/virtio_vsock.h
+>> > +++ b/include/linux/virtio_vsock.h
+>> > @@ -286,6 +286,8 @@ void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *
+>> > u32 virtio_transport_get_credit(struct virtio_vsock_sock *vvs, u32 wanted);
+>> > void virtio_transport_put_credit(struct virtio_vsock_sock *vvs, u32 credit);
+>> > void virtio_transport_deliver_tap_pkt(struct sk_buff *skb);
+>> > +int virtio_transport_reset_no_sock(const struct virtio_transport *t,
+>> > +				   struct sk_buff *skb, struct net *net);
+>> > int virtio_transport_purge_skbs(void *vsk, struct sk_buff_head *list);
+>> > int virtio_transport_read_skb(struct vsock_sock *vsk, skb_read_actor_t read_actor);
+>> > int virtio_transport_notify_set_rcvlowat(struct vsock_sock *vsk, int val);
+>> > diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+>> > index 4f9aa9c4c3aa..a453a4f828dc 100644
+>> > --- a/net/vmw_vsock/virtio_transport.c
+>> > +++ b/net/vmw_vsock/virtio_transport.c
+>> > @@ -540,9 +540,14 @@ static bool virtio_transport_msgzerocopy_allow(void)
+>> > 	return true;
+>> > }
+>> >
+>> > +static bool virtio_transport_netns_assign_allow(void)
+>> > +{
+>> > +	return true;
+>> > +}
+>> > +
+>> > bool virtio_transport_stream_allow(struct vsock_sock *vsk, u32 cid, u32 port)
+>> > {
+>> > -	return vsock_net_mode_global(vsk);
+>> > +	return vsock_g2h_net_reachable(sock_net(sk_vsock(vsk)));
+>> > }
+>> >
+>> > static bool virtio_transport_seqpacket_allow(struct vsock_sock *vsk,
+>> > @@ -587,6 +592,7 @@ static struct virtio_transport virtio_transport = {
+>> > 		.seqpacket_has_data       = virtio_transport_seqpacket_has_data,
+>> >
+>> > 		.msgzerocopy_allow        = virtio_transport_msgzerocopy_allow,
+>> > +		.netns_assign_allow       = virtio_transport_netns_assign_allow,
+>> >
+>> > 		.notify_poll_in           = virtio_transport_notify_poll_in,
+>> > 		.notify_poll_out          = virtio_transport_notify_poll_out,
+>> > @@ -616,7 +622,7 @@ virtio_transport_seqpacket_allow(struct vsock_sock *vsk, u32 remote_cid)
+>> > 	struct virtio_vsock *vsock;
+>> > 	bool seqpacket_allow;
+>> >
+>> > -	if (!vsock_net_mode_global(vsk))
+>> > +	if (!vsock_g2h_net_reachable(sock_net(sk_vsock(vsk))))
+>> > 		return false;
+>> >
+>> > 	seqpacket_allow = false;
+>> > @@ -634,6 +640,9 @@ static void virtio_transport_rx_work(struct work_struct *work)
+>> > 	struct virtio_vsock *vsock =
+>> > 		container_of(work, struct virtio_vsock, rx_work);
+>> > 	struct virtqueue *vq;
+>> > +	struct net *net;
+>> > +
+>> > +	net = vsock_g2h_net_get();
+>> >
+>> > 	mutex_lock(&vsock->rx_lock);
+>> >
+>> > @@ -682,10 +691,14 @@ static void virtio_transport_rx_work(struct work_struct *work)
+>> >
+>> > 			virtio_transport_deliver_tap_pkt(skb);
+>> >
+>> > -			/* Force virtio-transport into global mode since it
+>> > -			 * does not yet support local-mode namespacing.
+>> > -			 */
+>> > -			virtio_transport_recv_pkt(&virtio_transport, skb, NULL);
+>> > +			if (unlikely(!net)) {
+>> > +				virtio_transport_reset_no_sock(
+>> > +					&virtio_transport, skb, &init_net);
 >>
->> netlink seems like the right way to go, do you think it'll be a real pain to
->> implement?
+>> Why init_net?
 >
->It is really not bad... it'll include a yaml spec in
->Documentation/netlink/specs/ of call names and perms, a new target for
->generated code in the Makefile, a handler, and then
->tools/net/ynl/ynl-regen.sh generates the plumbing.
+>This parameter is actually unused by virtio_transport_reset_no_sock(),
+>its call to virtio_transport_send_pkt(), and even the eventual call to
+>virtio_transport_deliver_tap_pkt()... so maybe NULL w/ a comment would
+>be better?
 
-Ah, nice! So, do you want to try that direction?
+mmm, should we remove that parameter if unused?
+
+Anyway, not in this series/patch.
+
+Here, anything is fine, just put a comment with the reason.
 
 Thanks,
 Stefano
