@@ -1,342 +1,92 @@
-Received: from mail-oi2-f43.google.com (mail-oi2-f43.google.com [74.125.231.235])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1478A48F83D
-	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 21:23:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B42364942;
+	Wed, 16 Sep 2026 21:32:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789593854; cv=none; b=II/16sJiKKyumo3HK1PcCOz5S7tjteDukvtwMRV+1wpTlhb81kqzfPyRtMH0cNt6ogKmr4PM1BKg1lV+x4srGEoZlJy6BCLNtWF1BqxrK9sbDm9xv4GEZJt0OnQxrxG9y0QJk2Kkq4IdwViWGueYJbZVfMyDVMV/kiO1O8hWm3o=
+	t=1789594392; cv=none; b=NTDS/0ognxRlFrb8NXUg/i/adkLFEvQNvgFlk0+MzSzMvvGDZPYYwKMuZvYnxfAFolGVounGZ9EBLYQK8dlyZlK/LlL7M2DDKPzhjSqg3LpCSkCkXKI5DRTKJgx1IxSqy+hH9iFPorkK0qodvzCaQA+XlSDTJaRMbwhICJ3wCjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789593854; c=relaxed/simple;
-	bh=2UIZhQGNlp0yvgPj2bp76HRBxinSpLpWqq5nZWfgdJU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JbzMj8tTiLoZ6O4rpOFvP4giJ6+s5FzvX3/OfQ0sgaL4pSe6rR72W7x9wEkV1SEV+P1NVuFxakDuErDXJEcDFzPv11jDRGhZ0l6F5g60IFNMTN9qfQj61141Uc8HHEuxnuzxdHpX/mRK0ukNODeITMMgCSWfcqJr2wJJXyV31SU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E8VT7AuZ; arc=none smtp.client-ip=74.125.231.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789594392; c=relaxed/simple;
+	bh=c0QBlhKG71j35+ahEUAuYE2gertFT0ypy2pMftXxiUA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OWW43x4UiQMrEyUqPcTEmi1ZduX/pO4hswXaRlCCSU1v6zroy0AF7xMrQLstqxxHBrQFC+aiU0rDTPIHiQ/TwJNZCB5kzpvCp+3vXIY9pcczrTIAY+BrY1Gu86k/w68Ot3ETmxrmh5SCLcKcXye/io20V17N3o2TWriEftad0vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CHQsP/UJ; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E8VT7AuZ"
-Received: by mail-oi2-f43.google.com with SMTP id 46e09a7af769-805bf8c2661so123534a34.3
-        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 14:23:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789593833; x=1790198633; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=XSIk8tJbuXToHcbml5dyAhA+YFmm4IR2Ghd4XhDQSyI=;
-        b=E8VT7AuZmtBJ/hkPO9QDNVDywR5Qo7yLPcYymOuBSrOtscddz9rTh+tODZO7CS6LFA
-         iODi/iWZecRrIoX8aX7F3t+sxGqAV1/2ZAy1/38AEENbjg+kz1A3oKFng8ULafqYw8Ba
-         QgBf/shInGbGPoLSbXxQ3SLEPB5oo0IhKjQr3YaAQFJAxboomtF//wN3CCy0DkG5iJSV
-         j/mugFRDXdYU+46JFVy5xQ8kVvSMwYS/8ex9DjWJpEMsG+p6oNzRbZtEq095Bg9Lc9Xo
-         EQlaKECYEQoIqoglicLQZb5382NnSMVgGskQ0m40IMNBeybb8O95rUNJtEmDBAR3ykIz
-         x77Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789593833; x=1790198633;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XSIk8tJbuXToHcbml5dyAhA+YFmm4IR2Ghd4XhDQSyI=;
-        b=mdWX2topJC4WkAeG7aeHglSqfyvdytlkIBQlzqq5qmw35ogcjLlPv5su+O14pCbAWa
-         kHwULSfJICb4yEe5G3wkkmXqAkHFJB6YaNW++/KRIBSmamRCVSq96y1xszas8K4YM1ja
-         NaU2ybcFVx6kniLqHYeL5I8tWi59EzdReNGkE2cZFD15yyPNcwwI995zss+GUkU8tG+g
-         5DSiknI+lUFAGIr5sPUJV1hUFinvC9jRtBovbILf/Kp9Y7PY0jZtS/GdZFla0LlYu+nA
-         7MrbsOiYPOmGMtNkOtUw/6g6qpFGYr6BQNNZWq68wxHoEGnOwotsklRK6YLgew4XtKL1
-         j04A==
-X-Forwarded-Encrypted: i=1; AKwUvBzJfkHdIobdlC8d503DrWkI6HcJGX0ajK9mVUgz//XoOI9+PAgSlioIz8kv1hC/A/9wTnM=@vger.kernel.org
-X-Gm-Message-State: AFuF++loKm8ZFpasKzI72yEbP7Sz1Y1teNWjzxQ4S3I3ROh6yC5iSusK
-	v5QMDQPuqFnZ+Lva8sSLjYGM1admZ+EF5GbpsEJlcXha3wT3M1cbEvOu
-X-Gm-Gg: AYBFou2XJTz75rsuYI2rrVC1r2iZF3+eICFXq0ADK46SPaQkXsuvUHOXIeEh6LQJ9Fs
-	S7utCrbbxUufmJ040rbGRGoggtvdYzZvT/pxal248QX46l1tOD3it8APxWGfqnJaP9tM7TaaTRT
-	trsPKgH9UB5w0dYgzU3YY1eAYmCIliYKgNOcDmkvmPIR2VwguOoztV+WkGFK7n1oeJEHd8Oa5CF
-	JukxYkSU8kjP5MwiHPBEy86Py9GukmXWnQtodzV9PDxAvmcvuB0lF8mBrOBdkmViFq2677ekg8u
-	zwru4FJuhRuwf0sAumgGi9CBxx87Gkw9QBAv+y9SfhOIpc1gMePNhL11J4SE7EvUTji6HWBArhe
-	JfW84I1z4rl53htHWzKQrSk6ubdwreQUmisqdpPQVZi+zf6CtS/GTB+PYivN/IZ/TfPvA+CGbnz
-	0GOcncgUlL1vHfV57+XoINfx7UPHbRaapjTkh87NX7uXJiK19YNPAC63yfTz0of5Z/VwCI4NE48
-	8d1k5JXnEO/XagtXL1E
-X-Received: by 2002:a05:6830:6017:b0:7e6:ef1d:4aeb with SMTP id 46e09a7af769-80b2e0576bemr4670574a34.15.1789593833101;
-        Wed, 16 Sep 2026 14:23:53 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:43::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-80c466a2dcesm1059784a34.11.2026.09.16.14.23.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 14:23:52 -0700 (PDT)
-Date: Wed, 16 Sep 2026 14:23:48 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Shuah Khan <shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	sargun@sargun.me, jlinbox@meta.com,
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next 2/6] vsock: add IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS
-Message-ID: <aqsI5BXRB96dkIHm@devvm29614.prn0.facebook.com>
-References: <20260902-vsock-guest-ns-v1-0-9995383e9a8b@meta.com>
- <20260902-vsock-guest-ns-v1-2-9995383e9a8b@meta.com>
- <aqlTlFvQL34-WViB@sgarzare-redhat>
- <aqmTYoCMmzx1BM1v@devvm29614.prn0.facebook.com>
- <aqqPXr2LNJUM4yMW@sgarzare-redhat>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CHQsP/UJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789594378; x=1821130378;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=c0QBlhKG71j35+ahEUAuYE2gertFT0ypy2pMftXxiUA=;
+  b=CHQsP/UJiKtoZlUrc3BHFMv2QSI8XEPL7PyrX9PrBjrMOkXjRGfuoKsT
+   A43VjpyFFhFPiHVRe8fXIHlTthPGDCv1/9dwpw+ZTPgdnvJD7ufopM8Mg
+   PdoV0lV8N5ZB4OmIFRv1qmigqQF7TrE02Z5DLy7kHJ0XA69eG5tyRAJm/
+   4UvstMbVV7ThBMTmfAwQHxKy3xB87IEcUkhkGu7OQsdr00JNt65VBr5Iu
+   559G5VfwjMhqQiZQeL1x+DP53PrGa0Q+EFosJF6DuB3jYmsPmQDfruHhW
+   P6V+bTeK9EU75H9KCegj9DomD0sKGlk89zrvGXSRAhNKVLhL9HdVZO+JK
+   A==;
+X-CSE-ConnectionGUID: YzF+IFzsSUK3vJcC59UWcQ==
+X-CSE-MsgGUID: FLsIjSmORjKg5YZ4AUroUQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="89918470"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="89918470"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2026 14:32:54 -0700
+X-CSE-ConnectionGUID: eM7YEe0CTjObMA3wkOWBYw==
+X-CSE-MsgGUID: U5+8yxvwTZuuuaD2Ee9rQg==
+X-ExtLoop1: 1
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.185.5]) ([10.122.185.5])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2026 14:32:52 -0700
+Message-ID: <1320a70d-4d92-45bb-9cca-5e86199b4cb1@intel.com>
+Date: Wed, 16 Sep 2026 16:32:51 -0500
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqqPXr2LNJUM4yMW@sgarzare-redhat>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 5/8] KVM: x86/pmu: Support PERF_METRICS MSR in mediated
+ vPMU
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
+ Andi Kleen <ak@linux.intel.com>, linux-kernel@vger.kernel.org,
+ Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
+ Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi
+ <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
+References: <20260817183143.226156-1-zide.chen@intel.com>
+ <20260817183143.226156-6-zide.chen@intel.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <20260817183143.226156-6-zide.chen@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 16, 2026 at 02:57:43PM +0200, Stefano Garzarella wrote:
-> On Tue, Sep 15, 2026 at 11:50:10AM -0700, Bobby Eshleman wrote:
-> > On Tue, Sep 15, 2026 at 05:28:25PM +0200, Stefano Garzarella wrote:
-> > > On Wed, Sep 02, 2026 at 04:00:48PM -0700, Bobby Eshleman wrote:
-> > > > From: Bobby Eshleman <bobbyeshleman@meta.com>
-> > > >
-> > > > Namespaces let a host isolate a VM's vsock traffic to a specific
-> > > > namespace, but in a guest vsock traffic cannot be isolated to a
-> > > > namespace. The vsock device is hardcoded to global mode and can't be
-> > > > moved into a local-mode namespace.
-> > > >
-> > > > Introduce ioctl IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS on /dev/vsock that
-> > > 
-> > > We already discussed about netlink, but I'm not sure how much work can
-> > > take, here just another alternative, what about adding
-> > > /proc/sys/net/vsock/g2h_owner sysctl that can be read/write where:
-> > > 0 - no owner
-> > > 1 - owner
-> > > 
-> > > 0 -> 1 transition, move the device in the new nets
-> > > 1 -> 0 transition, reset back to init_ns
-> > 
-> > That seems reasonable, but if multi-device support ever lands, this
-> > might be harder to adapt cleanly?
-> 
-> I see, but maybe we can have a dev0/ dev1/ subfolders in that case.
-> 
-> > 
-> > > 
-> > > > gives userspace a way to move the device to the calling pid's namespace.
-> > > > The call requires CAP_NET_ADMIN in the root user namespace. A privileged
-> > > > user wishing to "unassign" the device can move it to the init_netns,
-> > > > which is hardcoded to global mode (so no unassign call is necessary).
-> > > >
-> > > > A getter to read the current assignment back was considered, returning
-> > > > either the namespace's net_cookie or its nsfs inode number, but neither
-> > > > seemed useful enough to bake into the uAPI now. It can be added later if
-> > > > a user turns up that needs it.
-> > > >
-> > > > Add a transport hook to indicate support for guest namespacing, so that
-> > > > transports may opt in/out. A transport that opts out keeps the
-> > > > reachability rules it had before this ioctl existed.
-> > > >
-> > > > Sockets are reset when the underlying device moves to a different
-> > > > namespace, so as to prevent reachability from the previous and now
-> > > > disallowed namespace.
-> > > >
-> > > > Following the approach of netdevs, the device returns to init_net when
-> > > > its namespace is removed. Care is taken to not break flows when the
-> > > > device is inside a global namespace that is being torn down and alive
-> > > > sockets are in a different global namespace. In this scenario, the
-> > > > device's netns getter pre-emptively falls back to the init_net (always
-> > > > global) so that these flows are not disrupted. If init_netns ever
-> > > > supports local-mode in the future, this logic will have to be changed.
-> > > >
-> > > > Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-> > > > Link: https://lore.kernel.org/all/20200427142518.uwssa6dtasrp3bfc@steredhat/
-> > > > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-> > > > ---
-> > > > Documentation/admin-guide/sysctl/net.rst |  18 +++
-> > > > include/net/af_vsock.h                   |   7 ++
-> > > > include/uapi/linux/vm_sockets.h          |   6 +
-> > > > net/vmw_vsock/af_vsock.c                 | 198 ++++++++++++++++++++++++++++++-
-> > > > 4 files changed, 228 insertions(+), 1 deletion(-)
-> > > >
-> 
-> [...]
-> 
-> > > > +
-> > > > +static void vsock_reset_unreachable_sock(struct sock *sk)
-> > > > +{
-> > > > +	if (vsock_g2h_net_reachable(sock_net(sk)))
-> > > > +		return;
-> > > > +
-> > > > +	sk->sk_state = TCP_CLOSE;
-> > > > +	sk->sk_err = ECONNRESET;
-> > > > +	sk_error_report(sk);
-> > > 
-> > > Should we send the reset to the other peer too?
-> > > 
-> > > Or avoid to set TCP_CLOSE, so the user will see the error and close it?
-> > 
-> > Sending the reset sounds good. At least the peer won't be waiting around
-> > forever. Will work that into v2.
-> 
-> If it's too much of work, we can skip it, it's not a strong opinion on my
-> side. It was more a question of what we should do ;-)
-> 
-> > 
-> > > 
-> > > > +}
-> > > > +
-> > > > +/* Move the g2h device to @net. Returns -ENODEV if no g2h transport is loaded
-> > > > + * and -EOPNOTSUPP if the loaded one cannot be moved.
-> > > > + */
-> > > > +static int vsock_g2h_net_assign(struct net *net)
-> > > > +{
-> > > > +	int ret = 0;
-> > > > +
-> > > > +	mutex_lock(&vsock_register_mutex);
-> > > > +	if (!transport_g2h) {
-> > > > +		ret = -ENODEV;
-> > > > +	} else if (!vsock_g2h_netns_assignable()) {
-> > > > +		ret = -EOPNOTSUPP;
-> > > > +	} else {
-> > > > +		/* See vsock_maybe_set_connected() comment about synchronizing
-> > > > +		 * with connecting sockets.
-> > > > +		 */
-> > > > +		rcu_assign_pointer(vsock_g2h_net, net);
-> > > > +		vsock_for_each_connected_socket(transport_g2h,
-> > > > +						vsock_reset_unreachable_sock);
-> > > > +	}
-> > > > +	mutex_unlock(&vsock_register_mutex);
-> > > > +
-> > > > +	return ret;
-> > > > +}
-> > > > +
-> > > > +/* Move the g2h device back to init_net if it lives in @net, which is about to
-> > > > + * be destroyed.
-> > > > + */
-> > > > +static void vsock_g2h_net_reset(struct net *net)
-> > > > +{
-> > > > +	bool reset = false;
-> > > > +
-> > > > +	/* Avoid taking the mutex if the namespaces don't match. */
-> > > > +	if (likely(rcu_access_pointer(vsock_g2h_net) != net))
-> > > > +		return;
-> > > > +
-> > > > +	mutex_lock(&vsock_register_mutex);
-> > > > +	if (rcu_access_pointer(vsock_g2h_net) == net) {
-> > > > +		rcu_assign_pointer(vsock_g2h_net, &init_net);
-> > > > +		reset = true;
-> > > > +	}
-> > > > +	mutex_unlock(&vsock_register_mutex);
-> > > > +
-> > > > +	if (reset)
-> > > > +		synchronize_rcu();
-> > > > +}
-> > > > +
-> > > > static struct sock *vsock_dequeue_accept(struct sock *listener)
-> > > > {
-> > > > 	struct vsock_sock *vlistener;
-> > > > @@ -2745,6 +2920,15 @@ static long vsock_dev_do_ioctl(struct file *filp,
-> > > > 			retval = -EFAULT;
-> > > > 		break;
-> > > >
-> > > > +	case IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS:
-> > > > +		if (!capable(CAP_NET_ADMIN)) {
-> > > > +			retval = -EPERM;
-> > > > +			break;
-> > > > +		}
-> > > > +
-> > > > +		retval = vsock_g2h_net_assign(current->nsproxy->net_ns);
-> > > > +		break;
-> > > > +
-> > > > 	default:
-> > > > 		retval = -ENOIOCTLCMD;
-> > > > 	}
-> > > > @@ -2978,6 +3162,7 @@ static __net_init int vsock_sysctl_init_net(struct net *net)
-> > > >
-> > > > static __net_exit void vsock_sysctl_exit_net(struct net *net)
-> > > > {
-> > > > +	vsock_g2h_net_reset(net);
-> > > 
-> > > Why calling this in the sysctl_exit ?
-> > 
-> > Should we add another pernet_operations? I agree the name of
-> > vsock_sysctl_ops does not really fit as a general "do all per-net
-> > operations here" location.
-> 
-> Aaaaa, it's not really related to sysctl.
-> 
-> Maybe we can rename it or add another pernet_operations.
-> 
-> > 
-> > > 
-> > > > 	vsock_sysctl_unregister(net);
-> > > > }
-> > > >
-> > > > @@ -3104,13 +3289,21 @@ EXPORT_SYMBOL_GPL(vsock_core_register);
-> > > >
-> > > > void vsock_core_unregister(const struct vsock_transport *t)
-> > > > {
-> > > > +	bool g2h_net_reset = false;
-> > > > +
-> > > > 	mutex_lock(&vsock_register_mutex);
-> > > >
-> > > > 	if (transport_h2g == t)
-> > > > 		transport_h2g = NULL;
-> > > >
-> > > > -	if (transport_g2h == t)
-> > > > +	if (transport_g2h == t) {
-> > > > 		transport_g2h = NULL;
-> > > > +		/* The device is gone, so is its namespace assignment. */
-> > > > +		if (rcu_access_pointer(vsock_g2h_net) != &init_net) {
-> > > > +			rcu_assign_pointer(vsock_g2h_net, &init_net);
-> > > > +			g2h_net_reset = true;
-> > > > +		}
-> > > > +	}
-> > > >
-> > > > 	if (transport_dgram == t)
-> > > > 		transport_dgram = NULL;
-> > > > @@ -3119,6 +3312,9 @@ void vsock_core_unregister(const struct vsock_transport *t)
-> > > > 		transport_local = NULL;
-> > > >
-> > > > 	mutex_unlock(&vsock_register_mutex);
-> > > > +
-> > > > +	if (g2h_net_reset)
-> > > > +		synchronize_rcu();
-> > > 
-> > > Why we need this? (I'd add also a comment with the reason)
-> > 
-> > We might actually be able to drop it... I do think we need to keep it in
-> > vsock_g2h_net_reset() because it makes sure that vsock_g2h_net_get()
-> > doesn't dereference a destroyed net.
-> > 
-> > vsock_core_unregister() isn't on the teardown path, so even if we
-> > re-assign to init_net the previous net is still alive.
-> 
-> Agree.
-> 
-> > 
-> > 
-> > One thing I realized when answering your uAPI questions and looking at
-> > the code is that IOCTL_VM_SOCKETS_GET_LOCAL_CID is not namespace aware,
-> > but I think it probably should be? I remember for host ns we strived for
-> > truly strong isolation.
-> 
-> Can you elabore a bit more?
-> 
 
-I'm wondering if IOCTL_VM_SOCKETS_GET_LOCAL_CID should not reveal the
-CID of the g2h device if the device has been moved to an inaccessible
-namespace? In this case, fallback to the results of h2g/local and
-through to returning VMADDR_CID_ANY if neither of those transports are
-loaded.
 
-I also considered whether or not /dev/vsock should even be visible from
-within an inaccessible namespace in order to not leak even the mere
-presence of the vsock device, but it seems to me that /dev/vsock's
-presence doesn't leak anything besides the presence of the vsock module.
+On 8/17/2026 1:31 PM, Zide Chen wrote:
+> @@ -395,6 +400,14 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+>  		if (pmu->fixed_ctr_ctrl != data)
+>  			reprogram_fixed_counters(pmu, data);
+>  		break;
+> +	case MSR_PERF_METRICS:
+> +		/*
+> +		 * Bits [63:32] are ignored on hardware that supports only
+> +		 * level-1 metrics, but may be valid on hardware that supports
+> +		 * level-2 metrics. Preserve guest writes verbatim.
+> +		 */
 
-Best,
-Bobby
+That comment isn't correct. I've confirmed that MSR_PERF_METRICS[63:32]
+isn't simply ignored on hardware that implements only the four level-1
+Topdown metrics. Those bits are reserved, and KVM should reject non-zero
+writes.
+
+I'll post a fix in the next version. KVM will get the number of Topdown
+metric events supported by the host CPU from perf/x86 and derive the
+MSR_PERF_METRICS reserved-bit mask from that count, using it to reject
+invalid writes.
