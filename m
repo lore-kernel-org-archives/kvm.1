@@ -1,242 +1,254 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010008.outbound.protection.outlook.com [40.93.198.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CFCC48CD7F
-	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 23:31:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789601501; cv=fail; b=S/uKFIV5mKjC+BmfXMMrQUjXJzeAuWZX13EphU3yQxwSyVCWUG++zhdUFLiaOVf5Z8wM11FKuldv/xixxKHmMe5e52mJsDvnQNZuLp9xoX9ODlW3fLiVo6yc0M4Dcs2JYis1fISTOkfz9HGf2XAVVDkDzP2P1/Yg/IruHs2gdt8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789601501; c=relaxed/simple;
-	bh=/UH0Whxp45lmKKRZMvr+/LO8IpobT1fmRGxAjweECHw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=YnJ38N6batD0b9VSxB1m/nMyQNG8vfCMODPVgjFCgPMFf6bGM/O5fVa1huPbLART/kfVfCYtz15xCfxd6Zyl3l5844JlyyIuLXYJzADC6+8zfcHcTOF06DQUIdjGFnTzwR1MlY20+orUxB9oPFuHhyIc8MbhK5QY9O/9JA3SGw8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=RPckePkn; arc=fail smtp.client-ip=40.93.198.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB544E4304;
+	Wed, 16 Sep 2026 23:39:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789601960; cv=none; b=fdbV46SyZ1WG999HvPomTrdFF0IOVXpvbemoGH3kKQFsIoQE09d7HwbvSqOY1xxnzc729vIqEo4yykFNO6eZlDkl6KOeF/6XqCP/vMSXfug16ciIx/R4asmOmpF44tKJgG03HpEdORge0qINHxeYZWm6D43lUodHS9VC0bTS5A0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789601960; c=relaxed/simple;
+	bh=0VruGOcHMn7s4Xvh7/5PEOZ6dO5OOxNk6OshssXhJ/U=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=RsK0/jyHFGX6rvb+tBZaHx/cnib/jhKjNwdGb7W8vOdsxnTcpH8hRtIdcGsx1wYdQ9+18lLLQozaIthqnsnLwFzop1x9wVlnkrHhMUl23kb4DhI/PxTAXAyDNMayPaA9VSGH0vGFrQcb88SOzOY6c17xdCMkA6S/F2oB4GgviUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XnjkX/V8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="RPckePkn"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=C8HhU8dvVnM1iyGqT1InyKmeLsxVaRr1UJ8gyPPMmh5fG2FauInzSd6XWnZWDNPB3guOJ5JK46eyszf8dzDHUz2jJw0jPGaxfel3TGpoe9DtdTSbzYawSRp4HyUXmSbreaVTAEi21FcWc0S5UVlEZcii2aHSibeh0cA28Go64qq4f3lZE10VOzbtkCi2jIRAmJRnFTaJPzNbBW/hfoae7a03ADt50aASUVA1fKJiECBizwnWoRpiIuVR4ZAeJGS/ZXhvWJX6y0xRc8um5HllwXVBUSKl05VGrfW57oiEoHTvThy8lrsYtAWMKihapbP9uSp8+0bcmHl2DGt2kT98Zw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/SNgFNJiD2nyEOR6xoH1PtliI2UjI7v0svl83gpGe2Y=;
- b=LjT2qzmyEt3NO8aEP1UDerQgyi+3jqs2+Tyv+2Pq5a6veU9eU61sLD+IuRCd7+rYSilWoB7XlYQoHgBteNKUVoBdovSkRnpIn639dOyMdSIY/qIXUDXnuIrwVgTj9riNiQk0w48397RduwjQEFgwPHN34EdaOb2cWOJboN+eu75dzE5f0blxUXN0SR03kXczww96HwGZkDyGTzHaUDIHr7B8iklKCZsfCE8g5Kp7hPgLfMumgjWHZhMDXboU4+lMg+uIaqQsodXl0ZS0p7/pZGoY+Vb/mIJ5EL7xQvkxvwjUpSmq9M2D/fYwBynpXe9q695/Zyy+nnZiN23e5FtGgg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/SNgFNJiD2nyEOR6xoH1PtliI2UjI7v0svl83gpGe2Y=;
- b=RPckePkn/cG6ryRLOl98dIHoDhd5vCB/la+FUYRxJy9WC2lzsR+LRj/hiYhcdBNvzL2EYEeMgRTSlsqOhJgR2vRXpa5PzMcgQQTqwyKdLGebouqxuK+Ls58RFKTUWwVUASRVIJQEw0bR5AoYswwpziRICISEnwLdB4xuuPkSJ3Q=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by MW6PR12MB8836.namprd12.prod.outlook.com (2603:10b6:303:241::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Wed, 16 Sep
- 2026 23:31:35 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad%5]) with mapi id 15.21.0428.009; Wed, 16 Sep 2026
- 23:31:35 +0000
-Message-ID: <c1afb35a-f9a3-48c6-81e4-91a4299f0cc1@amd.com>
-Date: Wed, 16 Sep 2026 18:31:32 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 2/5] x86/sev: Disable CPU hotplug while SNP is active
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-References: <cover.1789594774.git.ashish.kalra@amd.com>
- <cd6962a88d691a020c2bf40fe77a6a3f3852fdfc.1789594774.git.ashish.kalra@amd.com>
- <20260916223630.C5E1C1F000FF@smtp.kernel.org>
-Content-Language: en-US
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-Autocrypt: addr=ashish.kalra@amd.com; keydata=
- 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
-In-Reply-To: <20260916223630.C5E1C1F000FF@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XnjkX/V8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF51A1F000FF;
+	Wed, 16 Sep 2026 23:39:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789601955;
+	bh=filjnyf342E4M2H2Obf85mVFGHrLc3neRKaFrYuW0tA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=XnjkX/V8257k3/suTp3HKJR7LMRPwEWAZuYF3pCsAB74Ghv1KpJDHxncxO6a0Zyoq
+	 Hq9wr/U7ujGEHvT7Ydz2ub0HN1bBunPXYTxyYhxiyio0QeOE2NKdwfS26fc7lCf3Tt
+	 LeKWvKgE77P5bqGgYuiJyOwtIpqmrCxilQ9pJr4T6R8vdGtRxZSjFri/YwYkyNS0Ho
+	 WQFzB9T27e0e+QTUa3WFwFlAqqTUym6a3LQZKFcdbWknd6/f0gp9Bc3+vzGK/8MObT
+	 fkYc1RVmKz6LbUu0lBvR2O8mtUakvfN+qqSKzWp1layUSqrNQbgk+q5yKXJzlmynfp
+	 eCKqmsN8tGdPw==
+Subject: Re: [PATCH net v2 2/5] vsock/virtio: Streamline socket reset on
+ transport/PM event
+From: netdev-bot+sashiko@kernel.org
+To: mhal@rbox.co
+Cc: stefanha@redhat.com, sgarzare@redhat.com, mst@redhat.com,
+ jasowangio@gmail.com, eperezma@redhat.com, davem@davemloft.net,
+ xuanzhuo@linux.alibaba.com, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, asias@redhat.com, kvm@vger.kernel.org,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Wed, 16 Sep 2026 23:39:14 +0000
+Message-ID: <178960195424.22033.1318608175795217350@kernel.org>
+In-Reply-To: <20260915-vsock-connect-reset-closing-v2-2-a1d9abb472f7@rbox.co>
+References: <20260915-vsock-connect-reset-closing-v2-2-a1d9abb472f7@rbox.co>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH5P222CA0004.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:610:1ee::8) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|MW6PR12MB8836:EE_
-X-MS-Office365-Filtering-Correlation-Id: b20bf511-74c0-43f6-0c5a-08df144aa5b1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|23010399003|366016|11063799006|6133799003|22082099003|18002099003|3023799007|10067099003|56012099006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	jYOMalcM3JEDcsMuKMkUFUIUO9PIRLCmWRy0L7I9S7ofBGYKEhyB/1EvmXvBx7mR7Fix1bwuOs8FHkxqlegh06jCOjWUgTUM+PeJdAL9h7azes7QbsI2fJTKmS0fJcPE3Yk/ELb+GoIWdBFgqvEokRly2dSDt8TmbAj9ByJjI+2zTWWnqUzFfVrW9kDadeHfLsNtAJLILI+zxc+ZsTDuV5GcBqrcJUomOGy+F+YxwoBKMcXf0tAVcLEZbVBJbAB2aec5oGBOJtwuQWCt+HLCUTkSTfxrDbqXLfDvTpQMoMUn/X/rbpcOfmVoTaq23oL3NIIJL115nSiDhD6YH7lb+t8l0O3XkGF0gJv+N62zsOld4HEu7Riyr8NPdQ8qjI96gfzh0iKYRwpAwT7SO+bRbFpk5bodh2AjabEpaikI59HqHf3oyUr0g6aXfhdZaCBGupV1GmbA0s9VjrOKWWHE1BybU5Fjf+rjqAEV1W4rUt1Zps3/xfXiygV49ng1oYzryt9cPAGoWG3E+LqO7NtKrwZFAfnOy34x4N86IS9Xk11dIh2mlHX2ss0jyJgD5SgSBwA2G34wmEHnRfhxow8W2XQlOGoBd3QXBFjyxjminuyB5US07plf7IQArPOBRKh7iGnHN7CvMXTVesRTsgPehyX1jw69iW8GDc0FApvmBLM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(366016)(11063799006)(6133799003)(22082099003)(18002099003)(3023799007)(10067099003)(56012099006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OGF2UWhJQitoSFo4YmRWY1EzRjJBaGRjeXorbmpqWFVoYVVxclBaSWdnWEVK?=
- =?utf-8?B?ejZrUnoxRW9BblBIa2NmdFNYYnMvb2NPNXBBMVJtY3ZjcTlSUDB3WGg5RVl6?=
- =?utf-8?B?bUtQS2JvRkpNeGNXRXlaUW51dERTeXNEekZab3hJeHRUTk9Vdk9qYy9Pejc4?=
- =?utf-8?B?cksvZE1KNFpuWjJ1Wm96VEhVdUpVb2dvN1FmSWlvRHlTaFNVamJ3WjA5Q3Zv?=
- =?utf-8?B?L0lqTmRPLy9WNnViQ21TT3UveDhXdTByUk5PL1Ryb2dGY2tLQVRPWUY5N2s0?=
- =?utf-8?B?Smk0NjNqZWFvdnQyQ3JZUGdvVy9UeFM3aWtmMkh5NTY3b1A5Z1hNUGNQdEg2?=
- =?utf-8?B?S0owRE5qTUZGc2l2NXNCVnBCSmxNbFd2bE9ZbzVqazVZNE9lNmpFNmF2NE5C?=
- =?utf-8?B?eXdWQ1pRUXhiTzhpRStZanFBZFFDNW43OVV6dXhVNGliTTNYRnpPTk91UkNE?=
- =?utf-8?B?Z01Fa0lPNEFRTjlXRHlHWU5QQ3llOHV5S2prRXVndlo4TlRubU1ORFlOSzRs?=
- =?utf-8?B?UzJ1R2ltUWVRQUVsWmRaaHlES2J3WUZuTnBsZG5oeG45LzY2U2w5Z1JralI4?=
- =?utf-8?B?Y1pXQkQrNzE5LzhXaXFHVGxlc045OFVHcjJSOTcwOGtsbTNyZlJkeXE4b21P?=
- =?utf-8?B?bCtValBvRTcxdFNKSVdaU09iMmZnditEK3hoaitLcURvZEhxMkgwSmxlUGx5?=
- =?utf-8?B?K3d0NmJEb2JyeXlnMW80SlRVbTlEaW9vdmY2R051eXZRTTgrc1h5U1VtK05F?=
- =?utf-8?B?TVBacjFzUEVGMTdIM1hEekdONjBqdmszMXhPeHVrbVphaFVhRXhDTmZzWkt1?=
- =?utf-8?B?WUtUd1VMVDJYK1hIcytmeW01T3FsZHpnVE94N3c5b2JJMUFvYnRTL3JYa0Fs?=
- =?utf-8?B?d2FxY2xvdVNmS2VKbGpRdGp2SmYxMFl0bE1ocWcwd1FiaUFyRVZ3NWpjVWFl?=
- =?utf-8?B?VnhLZk52UE5Ub2sxejc4c090T25oazZXdXc1c3dVY0NmOW02NW42NldpY2RU?=
- =?utf-8?B?eG85ZEk4ZndQWmxxVzBWTVowMzJtMXJNYTJnM1dNSkN6aWROWEtzMGVncUdP?=
- =?utf-8?B?QW1aejcraldCZWU1ZW52NXZoWTA2YXFMQmtQdGlyZU1FekxJY3dVREhnOWNY?=
- =?utf-8?B?djF5MkZjOE84QlVuZm5TODJOb1ZpaGRCM2NxaG9yMDlXcFdhcHFhemZPSVlT?=
- =?utf-8?B?SXBvcXBWTVJqbkVMejNtNXAvSHNnMWVUS1pia2pUY2kwT091MVZ1N3dScVNI?=
- =?utf-8?B?dERaczJQbFBGdE9xeXBEUjFLM0dJTUVReEIrSFJad2tQc25PNm44UzgyNHc5?=
- =?utf-8?B?VkxWSHExb3luU0UrUSt0MXRqS1JoUUZ3T052U3Uya1pzUG1iTUYwTmFUOXMr?=
- =?utf-8?B?Vms3djRLTlpYOGkvb0VoS0hBb3dScG1lamRITWNlVlJSazdOMlhFbDMwUFl2?=
- =?utf-8?B?NEwzL1VIaCtEb1h3alZlcGVxS1htUDdxMzBvSTBqMnZ5ak9KdmVwVVIreUpH?=
- =?utf-8?B?MWRSaVhpZTNmV25CZHQ2NlZrWVdBRkgzRXdIYi8xaW4xK1I4cEhJQ0FRMEtG?=
- =?utf-8?B?MjlQYUlOck5oL09vUk54U1JzZlIrQXMzZm1zWTZVZHBGdmV2YWh3bzVNcWox?=
- =?utf-8?B?Qi9LKyt5SzJyWEtQN09FQnozT09WM2c4QU5oUkcrZ0lKeFpkY1EyNkhtOHhS?=
- =?utf-8?B?bnpkMi9kYXg1YW1JZWZnQ3EzM1JVQXZDUnFEV0tEYTNwS1BZS1BsU1czbURr?=
- =?utf-8?B?MldLaXlrQVg1Y1JuY0NzUjhNaDdZRWV4MjllRlI4TG5iMzZKYzJIeDVmeHVR?=
- =?utf-8?B?bGM4TmYvYTVVdnE1ZlZtNG1zOGZUQWM1cEFablVMdU44dGRBRFJkeDJZT1pl?=
- =?utf-8?B?cERQSUhPSEhmQyswbUNwOWJHQmFRb1RWQlhEdS9ZMHpZSms3YzdMTnVTUW1T?=
- =?utf-8?B?cHBXNGZNdDljYlF2NnR4YVdKVm5ySUVtRmVjSk1uVFphbklJUTRHN1NhcWJv?=
- =?utf-8?B?dGcrNkxZT3RoWG9RTFlpcWo5THAvSEVoU1N5aXk4eXpMQ2xxWWdtNTV6SFFY?=
- =?utf-8?B?NHpGUHp4S0hQMFJKVFdtTjliRnh4cWgvVHJwMklIei9lNlVNNDBXVmZjL1du?=
- =?utf-8?B?K3AyeXp2Sm02QWdxeUtqMDdkVytqY2ZDd1BYTlpvSFhrT29nZkd1VVFkMGRq?=
- =?utf-8?B?Lzd6cmNIcXpEcm9XUXRJYUdMTVFDSHpjc2V3ZnRDKzdXcytBdDV6YXRiRXE2?=
- =?utf-8?B?d3FzTHNjU2NqNFRkRkFyMFluSlFJdHRoR2p1SlRkNDZIbkUzY3Z1Z2l6MWV3?=
- =?utf-8?Q?xoklVA+GvhPIXI/OGK?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b20bf511-74c0-43f6-0c5a-08df144aa5b1
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 23:31:35.0983
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nFX7vedhxV+DjsVUzU3ucU5ii1siJgY21MdjMZhKw4xo8nRP0UoJSK5832yJzyb+dLdEA12gicqch7jWI/p+Pg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8836
 
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider:
 
-On 9/16/2026 5:36 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] x86/sev: CPU hotplug disablement bypassed on early kexec errors
-> --
-> 
-> commit ac084f2d7188c520f2ee3ced2ab76e4c068df91f
-> Author: Ashish Kalra <ashish.kalra@amd.com>
-> 
-> x86/sev: Disable CPU hotplug while SNP is active
-> 
-> This commit disables CPU hotplug when SNP is enabled to prevent SNP guest
-> memory from being broken by CPUs coming online without the SnpEn bit set.
-> It ties CPU hotplug to the SNP-enable bit, disabling it in snp_prepare()
-> and re-enabling it in snp_shutdown() when SNP is disabled. It also
-> explicitly disables CPU hotplug during kexec if SNP is already enabled.
-> 
->> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
->> index cff285d8ad8e3..558f7924a3f85 100644
->> --- a/arch/x86/virt/svm/sev.c
->> +++ b/arch/x86/virt/svm/sev.c
-> 
-> [ ... ]
-> 
->> @@ -577,6 +582,8 @@ EXPORT_SYMBOL_FOR_MODULES(snp_shutdown, "ccp");
->>   */
->>  int __init snp_rmptable_init(void)
->>  {
->> +	u64 val;
->> +
->>  	if (WARN_ON_ONCE(!cc_platform_has(CC_ATTR_HOST_SEV_SNP)))
->>  		return -ENOSYS;
->>  
->> @@ -586,6 +593,15 @@ int __init snp_rmptable_init(void)
->>  	if (!setup_rmptable())
->>  		return -ENOSYS;
->>  
->> +	/*
->> +	 * On a kexec boot SNP may already be enabled (legacy firmware leaves
->> +	 * SnpEn set across shutdown), in which case snp_prepare() bails without
->> +	 * disabling CPU hotplug, so disable it here.
->> +	 */
->> +	rdmsrq(MSR_AMD64_SYSCFG, val);
->> +	if (val & MSR_AMD64_SYSCFG_SNP_EN)
->> +		cpu_hotplug_disable();
-> 
-> [Severity: High]
-> If a kexec kernel boots into a system where the previous kernel left
-> MSR_AMD64_SYSCFG_SNP_EN active, and an early initialization step fails
-> (such as passing amd_iommu=off on the kernel command line resulting in
-> !amd_iommu_snp_en, or setup_rmptable() failing), snp_rmptable_init() will
-> return -ENOSYS before checking the physical MSR hardware state and
-> disabling CPU hotplug.
-> 
-> Because hotplug remains enabled and the CCP driver skips initialization on
-> failure (bypassing snp_prepare()), could a subsequently hotplugged CPU come
-> online without the SNP_EN bit set?
-> 
-> If this results in a mixed hardware state, does it violate firmware
-> constraints and cause fatal RMP faults when the new CPU accesses memory?
-> 
-> Should the hardware state be checked and hotplug disabled unconditionally
-> before the software configuration checks?
-> 
+Critical: 0 · High: 1 · Medium: 2 · Low: 0
 
-The SnpEn‑already‑set branch handles only legacy firmware that leaves SnpEn set across kexec. Platforms supporting RMPOPT advertise SNP_X86_SHUTDOWN_SUPPORTED, so kexec clears SnpEn and a kexec boot leaves SnpEn=0 — the branch is never reached, and no CPU has SnpEn set to form a mixed state, whether or not amd_iommu=off or setup_rmptable() fails. On legacy firmware that does leave SnpEn set, such an early failure makes snp_rmptable_init() return -ENOSYS and SNP host support is not enabled, so the system doesn't run as an SNP host and RMPOPT never comes up; the resulting SnpEn‑set‑without‑RMP‑table state is a pre‑existing base‑SNP condition, not introduced by this patch. Disabling hotplug unconditionally before the checks would instead leave it permanently disabled when falling back to non‑SNP operation.
+- [High] Lost-update race: the new lockless store `vsk->peer_shutdown =
+  SHUTDOWN_MASK;` in virtio_vsock_reset_sock()…
+- [Medium] Unannotated (plain) store to a locklessly-read field:
+  virtio_vsock_reset_sock() (net/vmw_vsock/virtio_transport.c:423)…
+- [Medium] Commit message does not describe the bug being fixed nor the
+  user-visible behaviour change, while carrying a Fixes: tag.
 
-Thanks,
-Ashish
+--
+
+vsock/virtio: Streamline socket reset on transport/PM event
+
+This makes virtio_vsock_reset_sock() set vsk->peer_shutdown to
+SHUTDOWN_MASK in addition to setting TCP_CLOSE and ECONNRESET, matching
+what vhost_vsock_reset_orphans() and vmci_transport_handle_detach() do.
+The changelog describes it as groundwork for later patches in the series.
+
+A few questions below, one about the changelog and two about the new
+store itself.
+
+> vsock/virtio: Streamline socket reset on transport/PM event
+>
+> Follow vhost's vhost_vsock_reset_orphans() and VMCI's
+> vmci_transport_handle_detach(): set SHUTDOWN_MASK, which will come handy
+> later in the series.
+>
+> Fixes: 0ea9e1d3a9e3 ("VSOCK: Introduce virtio_transport.ko")
+
+[Severity: Medium]
+The changelog says the new state "will come handy later in the series",
+but the patch carries a Fixes: tag against the original transport commit.
+Could the changelog state the failure mode that is being fixed, so this
+can be judged (and backported) on its own?
+
+The change also looks user-visible by itself. After
+VIRTIO_VSOCK_EVENT_TRANSPORT_RESET or device removal/PM freeze,
+vsock_poll_shutdown() now contributes EPOLLRDHUP:
+
+	if (sk->sk_shutdown & RCV_SHUTDOWN ||
+	    peer_shutdown & SEND_SHUTDOWN)
+		mask |= EPOLLRDHUP;
+
+and vsock_poll() adds EPOLLIN|EPOLLRDNORM, while the blocking send/recv
+loops now terminate on the peer_shutdown condition rather than only on
+sk_err.
+
+The errno also changes for send(). In vsock_connectible_sendmsg() the
+peer shutdown test runs before the state test:
+
+	if (sk->sk_shutdown & SEND_SHUTDOWN ||
+	    vsk->peer_shutdown & RCV_SHUTDOWN) {
+		err = -EPIPE;
+		goto out;
+	}
+
+	if (!transport || sk->sk_state != TCP_ESTABLISHED ||
+
+For SOCK_STREAM the error is then passed through sk_stream_error(), which
+consumes the pending ECONNRESET on the first call and raises SIGPIPE on
+subsequent calls unless MSG_NOSIGNAL is set:
+
+net/core/stream.c:sk_stream_error() {
+	if (err == -EPIPE)
+		err = sock_error(sk) ? : -EPIPE;
+	if (err == -EPIPE && !(flags & MSG_NOSIGNAL))
+		send_sig(SIGPIPE, current, 0);
+}
+
+Before this patch the same send() returned -ENOTCONN and no signal. Is
+that behaviour change intended, and could it be mentioned in the
+changelog?
+
+> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+> index 4f9aa9c4c3aa5..4d6991321699e 100644
+> --- a/net/vmw_vsock/virtio_transport.c
+> +++ b/net/vmw_vsock/virtio_transport.c
+> @@ -413,11 +413,14 @@ static void virtio_vsock_event_fill(struct virtio_vsock *vsock)
+>  
+>  static void virtio_vsock_reset_sock(struct sock *sk)
+>  {
+> +	struct vsock_sock *vsk = vsock_sk(sk);
+> +
+>  	/* vmci_transport.c doesn't take sk_lock here either.  At least we're
+>  	 * under vsock_table_lock so the sock cannot disappear while we're
+>  	 * executing.
+>  	 */
+>  
+> +	vsk->peer_shutdown = SHUTDOWN_MASK;
+
+[Severity: Medium]
+Should this store be a WRITE_ONCE()?  As the comment right above it says,
+no socket lock is held here, only vsock_table_lock via
+vsock_for_each_connected_socket().  peer_shutdown is sampled locklessly
+by vsock_poll():
+
+net/vmw_vsock/af_vsock.c:vsock_poll() {
+		u32 peer_shutdown = READ_ONCE(vsk->peer_shutdown);
+
+		/* DGRAM sockets do not take lock_sock() in poll(), so use one
+		 * lockless snapshot for all shutdown-derived mask bits.
+		 */
+	...
+		peer_shutdown = READ_ONCE(vsk->peer_shutdown);
+		mask |= vsock_poll_shutdown(sk, peer_shutdown);
+}
+
+and the equivalent assignment in the same transport is annotated:
+
+net/vmw_vsock/virtio_transport_common.c:virtio_transport_do_close() {
+	WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
+}
+
+The other writers in af_vsock.c, hyperv_transport.c and vmci_transport.c
+use WRITE_ONCE() too, so this looks like an unmarked/marked pair that
+KCSAN would flag.  The last patch of the series also reads this field
+with READ_ONCE() from vsock_connect() with the comment "Virtio/PM events
+are serviced locklessly.", which makes the pairing here relevant.
+
+[Severity: High]
+Separately from the annotation: can this store be lost against the
+read-modify-write in the rx path?
+
+virtio_transport_recv_connected() handles OP_SHUTDOWN under lock_sock():
+
+net/vmw_vsock/virtio_transport_common.c:virtio_transport_recv_connected() {
+	case VIRTIO_VSOCK_OP_SHUTDOWN: {
+		u32 peer_shutdown = READ_ONCE(vsk->peer_shutdown);
+
+		if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SHUTDOWN_RCV)
+			peer_shutdown |= RCV_SHUTDOWN;
+		if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SHUTDOWN_SEND)
+			peer_shutdown |= SEND_SHUTDOWN;
+		WRITE_ONCE(vsk->peer_shutdown, peer_shutdown);
+}
+
+while the reset path holds only vsock_table_lock:
+
+net/vmw_vsock/af_vsock.c:vsock_for_each_connected_socket() {
+	spin_lock_bh(&vsock_table_lock);
+	...
+			fn(sk_vsock(vsk));
+}
+
+So the two lock sets are disjoint:
+
+CPU0 (rx_work, lock_sock held)
+  virtio_transport_recv_connected()
+    peer_shutdown = READ_ONCE(vsk->peer_shutdown);   /* reads 0 */
+
+CPU1 (event_work or device removal)
+  virtio_vsock_reset_sock()
+    vsk->peer_shutdown = SHUTDOWN_MASK;
+
+CPU0 continues
+    WRITE_ONCE(vsk->peer_shutdown, peer_shutdown);   /* stale value wins */
+
+Are these two contexts actually serialized anywhere?  virtio_vsock_vqs_del()
+runs the reset loop before rx_run is cleared and rx_work drained:
+
+net/vmw_vsock/virtio_transport.c:virtio_vsock_vqs_del() {
+	/* Reset all connected sockets when the VQs disappear */
+	vsock_for_each_connected_socket(&virtio_transport.transport,
+					virtio_vsock_reset_sock);
+
+	/* Stop all work handlers ... */
+	mutex_lock(&vsock->rx_lock);
+	vsock->rx_run = false;
+}
+
+and the VIRTIO_VSOCK_EVENT_TRANSPORT_RESET path runs from event_work,
+which shares the non-ordered virtio_vsock_workqueue with rx_work.
+
+Since hdr->flags is host supplied and is not validated as non-zero, the
+value written back by the rx path can be the stale snapshot itself, i.e.
+0, which would clear the reset state entirely.  In that case
+vsock_poll_shutdown() reports no EPOLLRDHUP/EPOLLHUP, the sendmsg/recvmsg
+peer_shutdown tests see a stale mask, and the guard added by the last
+patch of the series:
+
+net/vmw_vsock/af_vsock.c:vsock_connect() {
+		/* Virtio/PM events are serviced locklessly. */
+		if (READ_ONCE(vsk->peer_shutdown)) {
+			err = -ECONNRESET;
+}
+
+silently passes.  A WRITE_ONCE() alone would not close this; would an
+atomic update (atomic OR / cmpxchg), or performing the reset from a
+context that can take lock_sock(), be more appropriate here?
+
+>  	sk->sk_state = TCP_CLOSE;
+>  	sk->sk_err = ECONNRESET;
+>  	sk_error_report(sk);
+
+Both of the above were still present in the same form at the end of the
+series, so no later patch appears to change them.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915-vsock-connect-reset-closing-v2-0-a1d9abb472f7%40rbox.co
