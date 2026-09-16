@@ -1,206 +1,312 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f226.google.com (mail-pf1-f226.google.com [209.85.210.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D76595752;
-	Wed, 16 Sep 2026 15:38:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7D54CEE74
+	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 15:41:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789573122; cv=none; b=mllUXoEmHe20a8LbMTWOyFaXl/7ckYY9iagiN9P4NTiuz4nd/oLup7XLBAEgIXMRqsHmwYHvLuqjoBPr9H2ivZpAoJ1HyQ8Y9j+64E4D0kjlalfHHs2zDaNvzzdjWhQ+UkRi+NxDwmqA11Q0DavuFjWnH8lSmrnblKCUVqywAds=
+	t=1789573301; cv=none; b=miDqdn6+ae6o0NpMoMFEyKJ/nmDScSVJ85RFh/9WUoXtRGXDwaiBFm2RpDxUG9fYgfFPhbn6GnOIuoZZ3A70QHtPNJZoFrc37WBX1Nzn1cchoqFGHW07gALvS6/dJZPfBWdg//yOodgZTjvGZHUqVN+6shmRhD+mwxa1vzXud/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789573122; c=relaxed/simple;
-	bh=LWBhLxxhDGLUgl9+FgGhc+1pFfsBdn5xXnETFiFtZWE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=kPQtD+6p2rcNuJM9TGAj6WPcrJOh7MFDj6EHv+6mtqoD7AdFaWgEcR1r2FNANzbfNZZYls9gUFqy/yi+VwVFpitA4RsVob9+vIPHRgqww3jMr+ddhu4UH5adaebDMkSFPYu0joDtR/R5CcuoFcrCzByLWc4KfjILHTx92CsLDXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yka/rZnh; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789573301; c=relaxed/simple;
+	bh=0c19mKRkI9BCd5hI9oYlOlxfPMZ6AUWvjNR5VgwDXEs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NgmFmqb2/y5YvKO+4t46bce0QEE2VlkbD8FnG7QB9Ym4iI88bNwdAFAHKAgKAV5Wt8DsBW3OciQDo9cU4zuQsEC1Xp89Bxf1JHsfssWmrwT5wrIotTZRhln+a+OPtkpyLv0pC+exoYv92aD9wqjH41ulfwf8+EpAe5wp4TZxTwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=DqJ14WW8; arc=none smtp.client-ip=209.85.210.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yka/rZnh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE7E1F0089A;
-	Wed, 16 Sep 2026 15:38:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789573109;
-	bh=EPCONZRiEdb85UDk6nSXxb7+/XaFdek1rKB9RkHrd20=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To;
-	b=Yka/rZnhDxSsqObpBfY993AqhMd7JE15GrPhYGt74fIX3tJaxvt3M7uULOraogjXa
-	 VYjBkjbnJFzyhSopg5joWrf0WS+y9Ftfm6p5WN93sdCMekjk5lBhepeGuyU2l3stb3
-	 fmEMT+b7DsarJ4S/LODDsGXybv7+uQU5wHMfBzpyC6+imFB6LTVjJDTRPUebQnDslM
-	 8g68hF3Qp6r54dnE6dZiTABtdHClX+FFoZkmHwyi9YIx2mjTBn5CDl5UM00lP8EXTi
-	 4h1IySLZS2KKRwHPj89j6bO6dm1r82e+tO1I5/5YMewDcvSj7Q8CyuK7w8Nv4iphVq
-	 eS9hOBxMnJBUQ==
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="DqJ14WW8"
+Received: by mail-pf1-f226.google.com with SMTP id d2e1a72fcca58-871807d6148so300404b3a.3
+        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 08:41:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789573297; x=1790178097;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0c19mKRkI9BCd5hI9oYlOlxfPMZ6AUWvjNR5VgwDXEs=;
+        b=gdSSCCmIS1uXqvzg+Z3iRH4V2RIOnyFYySiJZZQ8UTXa+E5cifWnsPecw8a/OGM02y
+         TKCyTKAE1V8MpAYzTJoHV9VdUPPB2EuN6SMV8l3RCx+UhDf/BLxlzCJbOZD4NWfLod6+
+         q3swYRkOSVN5mq1AQZKVS8/pY6EiJX1EGfoFFyoGy3VcnfOziKl4tV0qo5X7ynsm7v9Z
+         /lMJUWOe+VSgGoo4AlzZMhdu7t/iG176B4BCUuiyzG5gqREoD4+zBlgAKEDdLCdLRI0w
+         gKv6GDe+28pM9bSvINu6NFo+8fTf6VhkuCMF9C/2wY6WefCmgCbjK7nn4tWbkpNaOknf
+         xE4w==
+X-Forwarded-Encrypted: i=1; AKwUvBx27H18utRO7F3MHSLmkmqt4KViMP3m2zQUacDtJTi/pcQhzm3aSBB3fD11VfIZQJd6d5A=@vger.kernel.org
+X-Gm-Message-State: AFuF++ml1gj1S10L1NOSddry5JuuOEZ0dNkIKws2I3UpYDg0JzQF5OpH
+	jV11tX4RFL8b/NFVsv8JOjWieMncUDcgdlIexiuCThjUcyLsw43iTw4cPGJ7gr16gFkKRDnXUQO
+	i0zdYbmU5QgC7bEdZbpQ8JRdNzlUf83q0q+BBM+CTsv0RXoJ9PwHgPG2MmVViiJBqN+lYk/BURQ
+	DlJxoI619yzy7C2B90DIoQn6Slx5S2vdU6hXiJQEib8HOa+ZZWm+3ZLSt2vgAgOxu85mSpnK8jt
+	hH/
+X-Gm-Gg: AYBFou2QKwozxJIJeYZ2qBDJMFhBJv9nE0GXiqxYmC3CKKH0dbhi67jdJkrLCfKNzLd
+	WuuuvSLW4ToZuMQXUjIWFX9YpO62cZ6V5Ii0XItSmKSzqnYBtBSsiGccJxfNUifYLBzNS2CADbG
+	pqzxIVDRQMnDfNWnuavdoOf8UM+Jmhapt0bnd3lWyO75Sw6D0gpiVfHKHUZjxa1Irzxp/ZRhbBe
+	rKArZfq1gFHuyOpTPfzuL9tQe/gZyMQj8x5AVrKBUhkxLPEo4eFGfiIvovhAwiudIDpAnSmV1xh
+	+C2G5VgruwXRmLC+YOx6wnI34yxHqAzp37t/OGm/CuiUpIL2jY22s5FkC+qVp991Yl+f2J5hgO1
+	gJ1MQR58Rgqiuv65ysWhtmTO1w+9dvOPvqOK431MZYofqIDmvHpRN73cuUT470CKWprWqiNula5
+	veq3WqeYAncW057j7FuQH8Nb8QejK6pbYW
+X-Received: by 2002:a05:6a20:4313:b0:3d0:88f5:f812 with SMTP id adf61e73a8af0-3dd5f455d67mr7652843637.10.1789573296907;
+        Wed, 16 Sep 2026 08:41:36 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-29.dlp.protect.broadcom.com. [144.49.247.29])
+        by smtp-relay.gmail.com with ESMTPS id 41be03b00d2f7-cc50ab186desm1358662a12.2.2026.09.16.08.41.36
+        for <kvm@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 16 Sep 2026 08:41:36 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-3a58fef21b3so22381661fa.0
+        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 08:41:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1789573295; x=1790178095; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0c19mKRkI9BCd5hI9oYlOlxfPMZ6AUWvjNR5VgwDXEs=;
+        b=DqJ14WW8ZyMaGDO6qgBuK1xEQqbjeBRdoMfDtZKwFiiJij3uTgKQYl36/B+w7Qc8L0
+         J/dhKi29nagtJcoi1E/zrFi4BwPS00M+O2DBRCHCQelcUzvSYZO5Uu9dKXXNRfISthQu
+         kc5D38sqrshazdaECUY9KKwdPP/Ac38DDPIJQ=
+X-Forwarded-Encrypted: i=1; AKwUvBzrGhEA9PrekPyTzHDX4pAfwkLSmTx/tKhuFYAvikcFn+BhNR0tcgHzqdm4Ne+WbDov0VM=@vger.kernel.org
+X-Received: by 2002:a05:651c:222c:b0:3a3:42cf:c014 with SMTP id 38308e7fff4ca-3a5dc988ee4mr6734811fa.7.1789573294641;
+        Wed, 16 Sep 2026 08:41:34 -0700 (PDT)
+X-Received: by 2002:a05:651c:222c:b0:3a3:42cf:c014 with SMTP id
+ 38308e7fff4ca-3a5dc988ee4mr6734611fa.7.1789573294062; Wed, 16 Sep 2026
+ 08:41:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <cover.1789488039.git.zack.rusin@broadcom.com> <aqqGUAX65s4LdJkr@thinkstation>
+In-Reply-To: <aqqGUAX65s4LdJkr@thinkstation>
+From: Zack Rusin <zack.rusin@broadcom.com>
+Date: Wed, 16 Sep 2026 11:41:19 -0400
+X-Gm-Features: AcwNN1X8EphbssgNJGAU5J8Ew6yzojuFKn8poYC7Vw-gA-ySadQxgIJcWpvSrQw
+Message-ID: <CABQX2QMAfszf3z+Auo0AdwGsf94kTX0DrTrd8k6G1PTNMYsdXQ@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] x86/vmware: Share steal-time storage in encrypted guests
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>, Ajay Kaher <ajay.kaher@broadcom.com>, 
+	Alexey Makhalov <alexey.makhalov@broadcom.com>, x86@kernel.org, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"H . Peter Anvin" <hpa@zytor.com>, virtualization@lists.linux.dev, 
+	bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org, 
+	Christoph Lameter <cl@gentwo.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Bo Gan <bo.gan@broadcom.com>, linux-mm@kvack.org, 
+	linux-arch@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="0000000000008cf866065b9b80e6"
+
+--0000000000008cf866065b9b80e6
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 16 Sep 2026 17:38:21 +0200
-Message-Id: <DLGUPX9KPFKF.12CU304YAST79@kernel.org>
-To: "Jason Gunthorpe" <jgg@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 12/13] vfio/nvidia-vgpu: add the NVIDIA vGPU VFIO
- variant driver
-Cc: "Alex Williamson" <alex@shazbot.org>, "Zhi Wang" <zhiw@nvidia.com>,
- <acourbot@nvidia.com>, <yishaih@nvidia.com>, <skolothumtho@nvidia.com>,
- <kevin.tian@intel.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
- <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
- <jhubbard@nvidia.com>, <ecourtney@nvidia.com>, <cjia@nvidia.com>,
- <smitra@nvidia.com>, <kjaju@nvidia.com>, <alkumar@nvidia.com>,
- <ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
- <targupta@nvidia.com>, <nova-gpu@lists.linux.dev>,
- <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <kvm@vger.kernel.org>
-References: <20260905081116.106613-1-zhiw@nvidia.com>
- <20260905081116.106613-13-zhiw@nvidia.com>
- <DLCRZLO06SIO.LS7TWQXIPZSQ@kernel.org>
- <20260914121217.70fa0d93@shazbot.org>
- <DLFD2ZDSK9YQ.3A4R66G8UJMD8@kernel.org>
- <20260915120148.7548a8ca@shazbot.org>
- <DLG7C7MLGSTC.2GSTD84WI595N@kernel.org>
- <20260916141718.GU3968357@nvidia.com>
-In-Reply-To: <20260916141718.GU3968357@nvidia.com>
 
-On Wed Sep 16, 2026 at 4:17 PM CEST, Jason Gunthorpe wrote:
-> On Tue, Sep 15, 2026 at 11:19:01PM +0200, Danilo Krummrich wrote:
+On Wed, Sep 16, 2026 at 8:18=E2=80=AFAM Kiryl Shutsemau <kas@kernel.org> wr=
+ote:
 >
->> The driver_data pointer in struct device is defined to be a pointer wher=
-e a
->> driver can store *arbitrary* data for the duration the driver is bound t=
-o this
->> device.
+> On Wed, Sep 16, 2026 at 01:05:38AM -0400, Zack Rusin wrote:
+> > VMware registers each per-CPU steal-time GPA with the host. An encrypte=
+d
+> > guest must first convert that storage to shared memory, but the existin=
+g
+> > setup publishes the address without conversion.
+> >
+> > Patch 1 makes the decrypted per-CPU section available with
+> > CONFIG_X86_MEM_ENCRYPT, including TDX-only configurations. Patch 2 defe=
+rs
+> > encrypted-guest setup until allocator-backed page-table splitting is
+> > available, converts every possible CPU's storage before publishing any
+> > GPA, and attempts to roll back all conversions on failure.
 >
-> There are places in the kernel where the drvdata of the bound device
-> ends up owned by the subsystem, not the end driver.  Yes, an ideal
-> driver + subsystem should never even need drvdatab beyond remove. Yet,
-> things are not perfect..
+> I acked 1/2, but I don't like where 2/2 does the conversion.
+
+I saw that, thank you. Since I'll be respinning v2 of this I can go
+ahead and drop the unused DECLARE_PER_CPU_DECRYPTED in that one if you
+want as well.
+
+> A variable declared with DEFINE_PER_CPU_DECRYPTED() ends up in a
+> dedicated, page-aligned linker section. The point of the section is that
+> one place converts it. Instead every user does it itself: KVM in
+> sev_map_percpu_data(), and now VMware in vmware_decrypt_steal_time(),
+> each with its own vendor checks and failure handling. The macro today
+> only buys page isolation, not the shared mapping its name promises.
 >
-> The fundamental issue is some kernel API surfaces that the subystem
-> needs to work with only provide a struct device in their callbacks and
-> the subystem has no option but to use the drvdata for its own purpose
-> to recover the subsystem specific data.
+> The underlying problem is that the whole "decrypted section"
+> infrastructure is built around SME/SEV and was never generalized.
+> __bss_decrypted, early_set_memory_decrypted() and
+> mem_encrypt_free_decrypted_mem() are all under CONFIG_AMD_MEM_ENCRYPT
+> and implemented in mem_encrypt_amd.c. sme_postprocess_startup() converts
+> .bss..decrypted only if sme_get_me_mask() is set, so a TDX guest never
+> shares it. 1/2 moves the per-CPU linker section to X86_MEM_ENCRYPT, but
+> nothing that would act on that section follows.
 >
-> For example VFIO hooks into this nasty API:
+> Rather than have every TDX user reinvent the conversion, I would rather
+> see the infrastructure made vendor-neutral: boundary symbols for the
+> per-CPU decrypted section like the ones .bss..decrypted has, an early
+> conversion primitive that works on TDX as well as SEV, and a single
+> conversion of both sections at boot. Then sev_map_percpu_data() and
+> this driver's loop go away.
 >
->         ret =3D vga_client_register(pdev, vfio_pci_set_decode);
->         if (ret)
->                 return ret;
+> > TDX's conversion callback uses __pa(), so patch 2 preflights every poss=
+ible
+> > CPU and leaves steal time disabled if a TDX guest uses vmalloc-backed
+> > per-CPU storage. This covers percpu_alloc=3Dpage and automatic allocato=
+r
+> > fallback. AMD encrypted guests support those mappings and are not rejec=
+ted.
+> > Supporting them in TDX would require a separate conversion-API change.
 >
-> Which doesn't provide a void * token to pass the core code's
-> struct.=20
+> Refusing vmalloc-backed storage on TDX is the right call, and not because
+> of the __pa() in the callback. Converting a vmalloc alias means either
+> fracturing the direct map or leaving a private direct-map alias to a
+> shared page, and the latter is a guest shutdown the moment
+> load_unaligned_zeropad() steps into it. See the comment in
+> tdx_early_init() and the earlier discussion of the same idea:
 >
-> Another is all the PCI callbacks which assume the op behind them uses
-> drvdata to get its data.
-
-This is where the class (i.e. vfio-pci) should instead take a driver callba=
-ck,
-as only the driver really knowns about the layering details.
-
-Usually, class device implementations can't make assumptions of the underly=
-ing
-bus, because they have to work for any bus. I.e. there's no other way than
-providing helpers and letting drivers do the glue code between the bus and =
-the
-class device.
-
-> It is not necessarily easy to fix. Rrouting all those PCI callbacks
-> through trampolines in every single driver is really not an appealing
-> design. There are alot of VFIO drivers.
-
-The reason this seems undesirable from a vfio-pci perspective is that it is
-special in the sense that it is a class device that is specifically built t=
-o sit
-on top of a spcific bus device (i.e. struct pci_dev).
-
-Since this is a rare (maybe even unique?) edge case, the driver core has in=
-deed
-no infrastructure in place to represent this.
-
-> Maybe it needs a dev->drvdata and dev->subsystem_data, maybe it needs
-> some PCI thing where the pm ops can get a void *, IDK.
-
-It still makes me think that there should be some closer integration of vfi=
-o-pci
-with the PCI core, as it is specifically built for this bus.
-
-In fact, what you say above is the generalization of my "hack" [1], which, =
-the
-more I think about this, seems actually less of a hack. :)
-
-I would object a bit to the generalization with dev->subsystem_data as it
-screams for abuse, but the thing in [1] seems more and more reasonable to m=
-e.
-
-(Another option would be to really split it up and have a virtual vfio-pci =
-bus
-on top of PCI, which would also allow for custom match logic, but that also
-seems pretty overkill.)
-
->> As mentoined above, there are people volunteering now. Without starting =
-it, it
->> can't scale further than that. :)
+> https://lore.kernel.org/all/xqi2bkulnhen2vax5msbzczlaywx3dsc7ezpn7oo5qn7u=
+7xzap@xmaseinov7tf/
 >
-> There are lots of other vfio patches that need attention too, and it
-> seems we are short of that more than anything. Now you need to do a
-> bunch of C refactoring patches as well just to get things ready to
-> show a bunch of rust code. It is a lot of work.
+> But that decision belongs in the same central place as the conversion.
+> If the first per-CPU chunk is vmalloc-backed on TDX, the decrypted
+> section is simply not shared, and users see that, instead of every
+> driver re-deriving it.
 
-It's only the drvdata thing, what else is missing?
+I went through the linked thread, including the dropped 2022
+Quote-buffer alias approach and the 2024 netvsc work's kexec
+regression, fix and re-review discussion. I will keep TDX vmalloc
+support out of this series and correct the explanation to cover alias
+consistency, direct-map splitting and load_unaligned_zeropad(),
+including removing the suggestion that per-page GPA lookup alone
+resolves it.
 
-> I don't really understand in a nutshell why we should do this for nova
-> the mails were so long... Can we not just ignore the lifetime
-> imperfection for this?
+After tracing the boot paths, I think there are two distinct pieces
+here. The SEV boot GHCB needs .bss..decrypted before BSS is cleared,
+whereas the SMP per-CPU instances do not exist until
+setup_per_cpu_areas(). KVM then registers its boot-CPU per-CPU buffers
+in smp_prepare_boot_cpu(), so the common conversion needs the early
+primitive you proposed. A shared early_initcall would be too late for
+KVM. The UP registration path probably also needs handling separately
 
-I mentioned some points in the first two paragraphs of [2]. Besides that, I
-don't see a reason why we should spend time and effort for working out the
-inferior solution, where the better alternative is even less effort, contri=
-butes
-to better quality and stability of the whole driver project and also offers=
- a
-chance for the vfio subsystem to gain new contributors and gather experienc=
-e
-with the language that has proven itself in many areas already.
+My suggestion would be to do one of two things (or at least I think
+those two options are realistic to me, given that I'm no expert here):
+- add the central per-CPU infrastructure and migrate KVM/VMware
+together, removing both loops and putting the TDX vmalloc rejection
+and readiness state in common code. Would you and the KVM maintainers
+be happy with that first, and generalizing .bss..decrypted separately
+while preserving its earliest SEV setup? afaict the latter also needs
+to broaden the annotation and linker guards, and changes kvmclock
+storage and sharing on TDX-only builds.
+- a smaller VMware fix using a separately allocated, direct-mapped
+page per CPU while the common infrastructure is developed. Using the
+normal allocator would also defer ordinary-guest registration, unless
+I kept their current static storage as a second path. This option
+would retain caller-managed sharing and buffer lifetime handling.
 
-I mean, there'd still be the option to make it an experiment and say let's =
-add
-the abstractions and the nvidia-vgpu driver and see how it works out for a =
-while
-before allowing more Rust drivers. And if it really turns out to be bad, it
-should also be easy to rip it out, replace nvidia-vgpu with a C driver and =
-throw
-in a crappy FFI layer. :)
+The second option is, of course, easier for me, but I'm happy to do
+the first to get steal-time storage working for us. Do you have any
+thoughts on this?
 
->> However, I don't really see the use-case; you can't load nvidia-vgpu wit=
-hout
->> nova-core in the first place, so it would require to unbind nova-core th=
-rough
->> sysfs force unbind, no?
->
-> nvidia gpu is a more unique scenario, if you are building a general
-> bindings it has to support the flows like this.
+z
 
-Sure, as mentioned, the code I sketched up should already be able to do thi=
-s.
+--0000000000008cf866065b9b80e6
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-> I've wanted to rework the way the common ops are shimmed in for a
-> while, you'd probably want to do that before rust bindings.
-
-TBH, I don't think it makes a difference; having Rust abstractions is prett=
-y
-much the same as having another driver. I.e. it would be equivalent to sayi=
-ng
-"before we accept another pci-vfio driver we need to do some rework".
-
-Actually, I even think it can be an advantage, as you could think of the Ru=
-st
-abstractions like a driver with built-in correctness checks, so it can help=
- to
-validate the changes.
-
-Of course, this requires the responsibles of the Rust code to help with tha=
-t and
-I think we have this commitment.
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/commit/?=
-id=3D76b3bfd6386a01f338780e1a37b5bad3f5a48d31
-[2] https://lore.kernel.org/nova-gpu/DLCRZLO06SIO.LS7TWQXIPZSQ@kernel.org/
+MIIVIgYJKoZIhvcNAQcCoIIVEzCCFQ8CAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+ghKPMIIGqDCCBJCgAwIBAgIQfofDCS7XZu8vIeKo0KeY9DANBgkqhkiG9w0BAQwFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSNjETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMzA0MTkwMzUzNTNaFw0yOTA0MTkwMDAwMDBaMFIxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBS
+NiBTTUlNRSBDQSAyMDIzMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAwjAEbSkPcSyn
+26Zn9VtoE/xBvzYmNW29bW1pJZ7jrzKwPJm/GakCvy0IIgObMsx9bpFaq30X1kEJZnLUzuE1/hlc
+hatYqyORVBeHlv5V0QRSXY4faR0dCkIhXhoGknZ2O0bUJithcN1IsEADNizZ1AJIaWsWbQ4tYEYj
+ytEdvfkxz1WtX3SjtecZR+9wLJLt6HNa4sC//QKdjyfr/NhDCzYrdIzAssoXFnp4t+HcMyQTrj0r
+pD8KkPj96sy9axzegLbzte7wgTHbWBeJGp0sKg7BAu+G0Rk6teO1yPd75arbCvfY/NaRRQHk6tmG
+71gpLdB1ZhP9IcNYyeTKXIgfMh2tVK9DnXGaksYCyi6WisJa1Oa+poUroX2ESXO6o03lVxiA1xyf
+G8lUzpUNZonGVrUjhG5+MdY16/6b0uKejZCLbgu6HLPvIyqdTb9XqF4XWWKu+OMDs/rWyQ64v3mv
+Sa0te5Q5tchm4m9K0Pe9LlIKBk/gsgfaOHJDp4hYx4wocDr8DeCZe5d5wCFkxoGc1ckM8ZoMgpUc
+4pgkQE5ShxYMmKbPvNRPa5YFzbFtcFn5RMr1Mju8gt8J0c+dxYco2hi7dEW391KKxGhv7MJBcc+0
+x3FFTnmhU+5t6+CnkKMlrmzyaoeVryRTvOiH4FnTNHtVKUYDsCM0CLDdMNgoxgkCAwEAAaOCAX4w
+ggF6MA4GA1UdDwEB/wQEAwIBhjBMBgNVHSUERTBDBggrBgEFBQcDAgYIKwYBBQUHAwQGCisGAQQB
+gjcUAgIGCisGAQQBgjcKAwwGCisGAQQBgjcKAwQGCSsGAQQBgjcVBjASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBQAKTaeXHq6D68tUC3boCOFGLCgkjAfBgNVHSMEGDAWgBSubAWjkxPioufi
+1xzWx/B/yGdToDB7BggrBgEFBQcBAQRvMG0wLgYIKwYBBQUHMAGGImh0dHA6Ly9vY3NwMi5nbG9i
+YWxzaWduLmNvbS9yb290cjYwOwYIKwYBBQUHMAKGL2h0dHA6Ly9zZWN1cmUuZ2xvYmFsc2lnbi5j
+b20vY2FjZXJ0L3Jvb3QtcjYuY3J0MDYGA1UdHwQvMC0wK6ApoCeGJWh0dHA6Ly9jcmwuZ2xvYmFs
+c2lnbi5jb20vcm9vdC1yNi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUAA4IC
+AQCRkUdr1aIDRmkNI5jx5ggapGUThq0KcM2dzpMu314mJne8yKVXwzfKBtqbBjbUNMODnBkhvZcn
+bHUStur2/nt1tP3ee8KyNhYxzv4DkI0NbV93JChXipfsan7YjdfEk5vI2Fq+wpbGALyyWBgfy79Y
+IgbYWATB158tvEh5UO8kpGpjY95xv+070X3FYuGyeZyIvao26mN872FuxRxYhNLwGHIy38N9ASa1
+Q3BTNKSrHrZngadofHglG5W3TMFR11JOEOAUHhUgpbVVvgCYgGA6dSX0y5z7k3rXVyjFOs7KBSXr
+dJPKadpl4vqYphH7+P40nzBRcxJHrv5FeXlTrb+drjyXNjZSCmzfkOuCqPspBuJ7vab0/9oeNERg
+nz6SLCjLKcDXbMbKcRXgNhFBlzN4OUBqieSBXk80w2Nzx12KvNj758WavxOsXIbX0Zxwo1h3uw75
+AI2v8qwFWXNclO8qW2VXoq6kihWpeiuvDmFfSAwRLxwwIjgUuzG9SaQ+pOomuaC7QTKWMI0hL0b4
+mEPq9GsPPQq1UmwkcYFJ/Z4I93DZuKcXmKMmuANTS6wxwIEw8Q5MQ6y9fbJxGEOgOgYL4QIqNULb
+5CYPnt2LeiIiEnh8Uuh8tawqSjnR0h7Bv5q4mgo3L1Z9QQuexUntWD96t4o0q1jXWLyrpgP7Zcnu
+CzCCBYMwggNroAMCAQICDkXmuwODM8OFZUjm/0VRMA0GCSqGSIb3DQEBDAUAMEwxIDAeBgNVBAsT
+F0dsb2JhbFNpZ24gUm9vdCBDQSAtIFI2MRMwEQYDVQQKEwpHbG9iYWxTaWduMRMwEQYDVQQDEwpH
+bG9iYWxTaWduMB4XDTE0MTIxMDAwMDAwMFoXDTM0MTIxMDAwMDAwMFowTDEgMB4GA1UECxMXR2xv
+YmFsU2lnbiBSb290IENBIC0gUjYxEzARBgNVBAoTCkdsb2JhbFNpZ24xEzARBgNVBAMTCkdsb2Jh
+bFNpZ24wggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQCVB+hzymb57BTKezz3DQjxtEUL
+LIK0SMbrWzyug7hBkjMUpG9/6SrMxrCIa8W2idHGsv8UzlEUIexK3RtaxtaH7k06FQbtZGYLkoDK
+RN5zlE7zp4l/T3hjCMgSUG1CZi9NuXkoTVIaihqAtxmBDn7EirxkTCEcQ2jXPTyKxbJm1ZCatzEG
+xb7ibTIGph75ueuqo7i/voJjUNDwGInf5A959eqiHyrScC5757yTu21T4kh8jBAHOP9msndhfuDq
+jDyqtKT285VKEgdt/Yyyic/QoGF3yFh0sNQjOvddOsqi250J3l1ELZDxgc1Xkvp+vFAEYzTfa5MY
+vms2sjnkrCQ2t/DvthwTV5O23rL44oW3c6K4NapF8uCdNqFvVIrxclZuLojFUUJEFZTuo8U4lptO
+TloLR/MGNkl3MLxxN+Wm7CEIdfzmYRY/d9XZkZeECmzUAk10wBTt/Tn7g/JeFKEEsAvp/u6P4W4L
+sgizYWYJarEGOmWWWcDwNf3J2iiNGhGHcIEKqJp1HZ46hgUAntuA1iX53AWeJ1lMdjlb6vmlodiD
+D9H/3zAR+YXPM0j1ym1kFCx6WE/TSwhJxZVkGmMOeT31s4zKWK2cQkV5bg6HGVxUsWW2v4yb3BPp
+DW+4LtxnbsmLEbWEFIoAGXCDeZGXkdQaJ783HjIH2BRjPChMrwIDAQABo2MwYTAOBgNVHQ8BAf8E
+BAMCAQYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUrmwFo5MT4qLn4tcc1sfwf8hnU6AwHwYD
+VR0jBBgwFoAUrmwFo5MT4qLn4tcc1sfwf8hnU6AwDQYJKoZIhvcNAQEMBQADggIBAIMl7ejR/ZVS
+zZ7ABKCRaeZc0ITe3K2iT+hHeNZlmKlbqDyHfAKK0W63FnPmX8BUmNV0vsHN4hGRrSMYPd3hckSW
+tJVewHuOmXgWQxNWV7Oiszu1d9xAcqyj65s1PrEIIaHnxEM3eTK+teecLEy8QymZjjDTrCHg4x36
+2AczdlQAIiq5TSAucGja5VP8g1zTnfL/RAxEZvLS471GABptArolXY2hMVHdVEYcTduZlu8aHARc
+phXveOB5/l3bPqpMVf2aFalv4ab733Aw6cPuQkbtwpMFifp9Y3s/0HGBfADomK4OeDTDJfuvCp8g
+a907E48SjOJBGkh6c6B3ace2XH+CyB7+WBsoK6hsrV5twAXSe7frgP4lN/4Cm2isQl3D7vXM3PBQ
+ddI2aZzmewTfbgZptt4KCUhZh+t7FGB6ZKppQ++Rx0zsGN1s71MtjJnhXvJyPs9UyL1n7KQPTEX/
+07kwIwdMjxC/hpbZmVq0mVccpMy7FYlTuiwFD+TEnhmxGDTVTJ267fcfrySVBHioA7vugeXaX3yL
+SqGQdCWnsz5LyCxWvcfI7zjiXJLwefechLp0LWEBIH5+0fJPB1lfiy1DUutGDJTh9WZHeXfVVFsf
+rSQ3y0VaTqBESMjYsJnFFYQJ9tZJScBluOYacW6gqPGC6EU+bNYC1wpngwVayaQQMIIGWDCCBECg
+AwIBAgIMYT8cPnonh1geNIT5MA0GCSqGSIb3DQEBCwUAMFIxCzAJBgNVBAYTAkJFMRkwFwYDVQQK
+ExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBDQSAy
+MDIzMB4XDTI0MTEyODA2NTUwOVoXDTI2MTEyOTA2NTUwOVowgaUxCzAJBgNVBAYTAlVTMRMwEQYD
+VQQIEwpDYWxpZm9ybmlhMREwDwYDVQQHEwhTYW4gSm9zZTEZMBcGA1UEYRMQTlRSVVMrREUtNjYx
+MDExNzEWMBQGA1UEChMNQlJPQURDT00gSU5DLjETMBEGA1UEAxMKWmFjayBSdXNpbjEmMCQGCSqG
+SIb3DQEJARYXemFjay5ydXNpbkBicm9hZGNvbS5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAw
+ggEKAoIBAQCwQ8KpnuEwUOX0rOrLRj3vS0VImknKwshcmcfA9VtdEQhJHGDQoNjaBEFQHqLqn4Lf
+hqEGUo+nKhz2uqGl2MtQFb8oG+yJPCFPgeSvbiRxmeOwSP0jrNADVKpYpy4UApPqS+UfVQXKbwbM
+6U6qgI8F5eiKsQyE0HgYrQJx/sDs9LLVZlaNiA3U8M8CgEnb8VhuH3BN/yXphhEQdJXb1TyaJA60
+SmHcZdEQZbl4EjwUcs3UIowmI/Mhi7ADQB7VNsO/BaOVBEQk53xH+4djY/cg7jvqTTeliY05j2Yx
+uwwXcDC4mWjGzxAT5DVqC8fKQvon1uc2heorHb555+sLdwYxAgMBAAGjggHYMIIB1DAOBgNVHQ8B
+Af8EBAMCBaAwgZMGCCsGAQUFBwEBBIGGMIGDMEYGCCsGAQUFBzAChjpodHRwOi8vc2VjdXJlLmds
+b2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3I2c21pbWVjYTIwMjMuY3J0MDkGCCsGAQUFBzABhi1o
+dHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3I2c21pbWVjYTIwMjMwZQYDVR0gBF4wXDAJ
+BgdngQwBBQMBMAsGCSsGAQQBoDIBKDBCBgorBgEEAaAyCgMCMDQwMgYIKwYBBQUHAgEWJmh0dHBz
+Oi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwQQYDVR0fBDowODA2
+oDSgMoYwaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3I2c21pbWVjYTIwMjMuY3JsMCIG
+A1UdEQQbMBmBF3phY2sucnVzaW5AYnJvYWRjb20uY29tMBMGA1UdJQQMMAoGCCsGAQUFBwMEMB8G
+A1UdIwQYMBaAFAApNp5ceroPry1QLdugI4UYsKCSMB0GA1UdDgQWBBQNDn2m/OLuDx9YjEqPLCDB
+s/VKNTANBgkqhkiG9w0BAQsFAAOCAgEAF463syOLTQkWZmEyyR60W1sM3J1cbnMRrBFUBt3S2NTY
+SJ2NAvkTAxbPoOhK6IQdaTyrWi8xdg2tftr5FC1bOSUdxudY6dipq2txe7mEoUE6VlpJid/56Mo4
+QJRb6YiykQeIfoJiYMKsyuXWsTB1rhQxlxfnaFxi8Xy3+xKAeX68DcsHG3ZU0h1beBURA44tXcz6
+fFDNPQ2k6rWDFz+XNN2YOPqfse2wEm3DXpqNT79ycU7Uva7e51b8XdbmJ6XVzUFmWzhjXy5hvV8z
+iF+DvP+KT1/bjO6aNL2/3PWiy1u6xjnWvobHuAYVrXxQ5wzk8aPOnED9Q8pt2nqk/UIzw2f67Cn9
+3CxrVqXUKm93J+rupyKVTGgKO9T1ODVPo665aIbM72RxSI9Wsofatm2fo8DWOkrfs29pYfy6eECl
+91qfFMl+IzIVfDgIrEX6gSngJ2ZLaG6L+/iNrUxHxxsaUmyDwBbTfjYwr10H6NKES3JaxVRslnpF
+06HTTciJNx2wowbYF1c+BFY4r/19LHygijIVa+hZEgNuMrVLyAamaAKZ1AWxTdv8Q/eeNN3Myq61
+b1ykTSPCXjBq/03CMF/wT1wly16jYjLDXZ6II/HYyJt34QeqnBENU9zXTc9RopqcuHD2g+ROT7lI
+VLi5ffzC8rVliltTltbYPc7F0lAvGKAxggJXMIICUwIBATBiMFIxCzAJBgNVBAYTAkJFMRkwFwYD
+VQQKExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBD
+QSAyMDIzAgxhPxw+eieHWB40hPkwDQYJYIZIAWUDBAIBBQCggccwLwYJKoZIhvcNAQkEMSIEING+
+tS9jluKZG2ayZ4pYr4+TXQr15tnm2U0384jZyaB7MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEw
+HAYJKoZIhvcNAQkFMQ8XDTI2MDkxNjE1NDEzNVowXAYJKoZIhvcNAQkPMU8wTTALBglghkgBZQME
+ASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQcwCwYJ
+YIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIBAAiJiiMRjpbhErRjga91uv6fyg7gDKiW/hzIZv4u
+twci6FZEZWPYJYzwugbWz8tTef7pmY99e2ozuPN8cvLqjnDD9CdmDOA1oKFiKeuhTxMKrmsdFxUF
+A/zaoj8Hh15JhRNwQB/Hn6JooqcOmUZINDYEDse+KmMcxuCsMi2D7N2/2bOB9PHl/2uBiCZ9NiEZ
+8LmqSKB/hjxWSvkm/Mo6WmsPYtekjp5MRu5wYBMZQMyPCnQKGpZMzVOUOG+THnEj5pJvLhzj6pvT
+nOEp+MloSY9rk0lmdMFQxK3qy6ZXjKFT1dUSwPdfPpSmc6WHa5huCNvC0hBo8Pn3HvKrY0Xmtgc=
+--0000000000008cf866065b9b80e6--
