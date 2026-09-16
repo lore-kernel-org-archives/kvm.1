@@ -1,147 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CE63D79FD;
-	Wed, 16 Sep 2026 18:17:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789582643; cv=none; b=l1GnIYKpDER1wY9IMGB3UbMHFfzctP+FuiBmtkBbWEORrBtPbNzc1Ra+BkTpUVc60bleBo9DMCDFl9W/5MVRs5gIPG8bbTAOD1Bs3I7K2EK4iYBgkqyQrWWT1Z3YxDLY4G2V3EBeh0k4K1oDgQNNQdGgeusClIK3J1xNKplje5U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789582643; c=relaxed/simple;
-	bh=ScI2G65sM//CM+f3nIL0oxJ3lrV8QR5SvKucYOlaBgk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dP3pktaHCoRZndvIJYc2ZKrm9tH8HWGBjmrPbJ1AXKvYGR4qqt9N8lEXr3wwHcGC8l4e3D9WrAwSqcMSFgBOCRTNN8X8hBLVFtLMKBmHri9MC18p0zxiwxRQ0lfqTG95SovxSQ8CPlCU3VibJMgnRG79ju3fJD4kK/IO+x+Gqcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N0m6naZD; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3354B95BC
+	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 18:23:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.204
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789583028; cv=pass; b=gW/9LM/oZvF5JI90nLGkMGgeQIRZlegHYE3okTIj30W7fy4U3u9DUbwssZtvY2X2vi2dPam0CgMrYrmCHjetNdF3QLUP46eoFQzWxZwXCxod/xhDjKQDbBLO87pMQUQ2q24ODLs7HF1uIjB64XvJ1odx+++eCUxFH9IcjkaXhEA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789583028; c=relaxed/simple;
+	bh=K1VkZN9Ax/ivqRQhY6l3VgzDLSp6+7t77YixSnLTILA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hO9Jz0GFX4PyxK+ewK/6+YeybdtULPXZ1pcLPaut7MKxQCxQsoVhx4aK0mRYspi/KjSAZ3xjRKuu4rDxu65v5bWJo9fBcQXD2/UUH2qgQELwKwo6AvOeOZJ4s1SFpjNe1tsAqT18OCywbQzkIiFxzXNzqEZLqcDO6XDppk0325o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TOWvHVmH; arc=pass smtp.client-ip=74.125.229.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N0m6naZD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B8F91F000FF;
-	Wed, 16 Sep 2026 18:17:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789582625;
-	bh=xQl299OIcdoGcLSnKJmKZ4+XRPKt1RyOR0NcAsk8cxQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=N0m6naZD/lxG8pObZTwNFrnXZSW6+XOoKvHbNV/LvIkWlxx94JluNzO514SxbWEsd
-	 1QfsVIDJDAxZj+xCAbnHSrcOf9czF3Ru+9Bmf2S+dWTdk3onM065w9PXDOT7/JsPFp
-	 DrYGLXXRUtGQwHXEiSUw+BIAkvugbwTt7dCSnHepR8c2FGnCpPqSehhBuJKdWggppW
-	 kaFkw89NsduneTZa0uqHOkQD2MOquwLIbtWUBSwVwANJ6HvikJoqCg5ynvO4QZH4hu
-	 QAfif53H09G/TMF0x639FDAHISk6qCNvVTatXikaGNgb8JN8CB1R0Y5TNtQazpkCbn
-	 ib6PB3DLIKXjQ==
-Date: Wed, 16 Sep 2026 19:16:59 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: <mhonap@nvidia.com>, Gregory Price <gourry@gourry.net>
-Cc: <alex@shazbot.org>, <jgg@ziepe.ca>, <ankita@nvidia.com>,
- <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
- <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
- <dave@stgolabs.net>, <alison.schofield@intel.com>,
- <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
- <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
- <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
- <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
- <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
- <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>
-Subject: Re: [PATCH v4 07/27] vfio/pci: Detect CXL devices and load vfio-cxl
- on demand
-Message-ID: <20260916191659.1d3cb36b@jic23-hlaptop>
-In-Reply-To: <20260813093631.2288172-8-mhonap@nvidia.com>
-References: <20260813093631.2288172-1-mhonap@nvidia.com>
-	<20260813093631.2288172-8-mhonap@nvidia.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TOWvHVmH"
+Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b5e4f1b845so1241506e87.1
+        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 11:23:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789583011; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rc1dr+4e0fDGma6AfY+ULl1uJuC1Rl6gQpneNtTWHw1QJElIy+VbHW2L9YTkNXAUkT
+         LC1uGNJDWLibtRSXmJjMiCEU7YCJIPNu2Y5aiP40R9emE5lDV/IR6TnwQLGb02AyEe7M
+         gI27tSAaelc7CU2t60VQbRkGmZD8jdeK31edeDtlf7rOeMUFAY14DkqhrKGG7uc1lQ/k
+         PPHuetGgtHzlI0blPHk35ia6Qjl6FUePL5tIKJE7+Q486GvsxI6VCacEdzbMV5SFWD1y
+         15EOJGEY3AOTlbzOE7KfCE1yOSvm5epGfBPyPZ5RRZVIf5+XV/TjQzuSF3Cupp/y3PJN
+         osAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=iA6WOY7U5Hpnzgqa3cIbAuP1d1sT3cNwxEh5sU4xF5Y=;
+        fh=kbBd0KhVOqRJYNEu5Z9zuMmro7ujZvLg2Zx6vAqOwmA=;
+        b=HOk84001bGuCQSVgHpzzTimS7tL6B4YhKK/qvba7x3Gpjqrm4tVlB2P2jqZGYrCPbQ
+         o37/4nz+B6U8eZE72KE9ZTSupgJGM91d1AxtZ3NnvsaW78EgT5GZjolrbncRDXI0wIua
+         QAvq+Bc3sL3k+WYLVzdePYzNf94YaPj7NhoSqi80musvDQFXZ6Cgs8ty5n4OqUVtDGei
+         4f3tnGvo8mfsomkDI8E5SSqAkmH2qiuHOAOMvHKEnjCgYeeQcjJP8bmAOXKdfI4iAMDp
+         AftLNLVs0h6FXPkYEmo9dytsmRSE17GZOOIYuD8NMB8Yvbtr6bMchM5AU7kP+xhKsRvq
+         n3qg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789583011; x=1790187811; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=iA6WOY7U5Hpnzgqa3cIbAuP1d1sT3cNwxEh5sU4xF5Y=;
+        b=TOWvHVmHt+weCIsIpXWwEjsqy28ZKumadJvtsv3OcYPUJwCRtgl8HskPfEXVpHE4L4
+         FuaN1he+VTngVx0oarqnwK1kXYWtY5WlmjIzQE6gzNhbzrJ8/ETfqSz3uJunzJ062g2B
+         s8CIU6mX161xEoWXmqdyx0/uytT9WN+XBImm76C+JZTtlWBCdu279L8HxEL9Dz32nfcb
+         jRm7pPRpw4VGbMqiu5K4WmLlQcrhHDZ28tC7fNMsDjo8pVSMX1kkMK8T9U9ClyoDdV4k
+         RcV48HfXU9I4ELPqR1UyyWGCpEReoR7jDPYkD+BzELs5B9vIDP3bERTLyjjOk227sLYL
+         JJKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789583011; x=1790187811;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=iA6WOY7U5Hpnzgqa3cIbAuP1d1sT3cNwxEh5sU4xF5Y=;
+        b=pZ6Og0Urv7trMOEqRC8UHDWfeSq6bO006CATgM75I832v/PKI5Vr1MugsacxYAUQSP
+         EmikRCfilTI4DhDjpSW4oXCa4K5aQhcB5VfwDEGLIrQiSDcMZLdwzSPSY1QX+Qsnv0zM
+         zXwaBHKqJ07nT5w1FbmIXGCAgnKkKodYdlWL0ANZQwksmb/2kzV7rrsaPFxc54n7QSP6
+         /b/AXminnuJPJmmAYJc48/9XKZr7vSFEG5Li5aFYcPST1ni2Npr8QXpECNy4HQvtiL7a
+         6EDxF9ApcCNAVH92uqm3jXV3WTj+u7Bu39kUGbhzvoNDBIxqUicfpeQYYNjUb85YOOf1
+         KwaQ==
+X-Gm-Message-State: AFuF++nSZNSWeDLUCT1hfhw1+qydrQpvZg3PQIDqynMD8bTEbHrLDLYA
+	uFZVdXlF6douybpPy9Sy3pQH8e9Sd19jzP8UKjriDEEJG9snRi1vVJzgf6yIQVFIMDDqbbTJFmR
+	72hxYvFuxfo6myX2UGAsgc3ysJseR3SMsM+ja7DG2UWluvKuaty3fCcFiASNvrw==
+X-Gm-Gg: AYBFou1FcV4v/IIQZCO9ta6MBubIzPl91AnuWwTbfu7u6O8aZS2YNJva6ljYQXlMwZ/
+	M/m8xGxKZ9GvlZGHOfDMCcHP7m0oox1D+8VUh7SrmzK23vIk7ITUCzPIoLRMsDBy3pw8XVlSdYe
+	UqbtQgc4RDSRh0mCFJgzhS/2Ma3qcbu7AyqxAlgyxaGeksIsNu8WimgVHW2sK+t+GfiWyynfZBw
+	BcPHNmBjgLVJ3A/m9BpfZxeMT94aY7L7eUFJBbzprpcGYSiuuNIZ6WKlVc+e4N7C/BnGKgdC7ns
+	O4NxMDmbRPgnMCXlRCocP7sqIB3gos+kE7nqLm1lSnRXB61xyW2A8A==
+X-Received: by 2002:a05:6512:1293:b0:5b6:1a7c:aa13 with SMTP id
+ 2adb3069b0e04-5b8b6640be1mr1009695e87.43.1789583011057; Wed, 16 Sep 2026
+ 11:23:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20260912083611.2513845-1-suzuki.poulose@arm.com> <20260912083611.2513845-7-suzuki.poulose@arm.com>
+In-Reply-To: <20260912083611.2513845-7-suzuki.poulose@arm.com>
+From: Alper Gun <alpergun@google.com>
+Date: Wed, 16 Sep 2026 11:23:19 -0700
+X-Gm-Features: AcwNN1Xa9rZlSKbZ1HJXqNvz676wwtG0Dzc3HxbzhCyZpg8GXZHTQsxrOGLMh6o
+Message-ID: <CABpDEum16ZzLSjd7Yg2Ge6VjwL8S8xxtSs_AsqOeNT9-9FNKKQ@mail.gmail.com>
+Subject: Re: [PATCH v18 6/7] firmware: arm_rmm: Ensure the RMM has GPT entries
+ for memory
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, 
+	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, 
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, 
+	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com, 
+	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, 
+	sdonthineni@nvidia.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
+	lpieralisi@kernel.org, enju.kohei@fujitsu.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 13 Aug 2026 15:06:11 +0530
-<mhonap@nvidia.com> wrote:
-
-> From: Manish Honap <mhonap@nvidia.com>
-> 
-> A CXL device needs the vfio-cxl callbacks, but pulling vfio-cxl and the
-> CXL core in unconditionally would bloat every vfio-pci setup. At bind,
-> detect a CXL device with pcie_is_cxl() and request_module("vfio-cxl")
-> only then, and hand the device to the registered ops.
-> 
-> Each bound CXL device pins vfio-cxl through try_module_get() and drops
-> the reference at release, so vfio-cxl can unload once no CXL device is
-> bound. If vfio-cxl is absent the device is driven as plain vfio-pci.
-> 
-> Signed-off-by: Manish Honap <mhonap@nvidia.com>
-> ---
->  drivers/vfio/pci/vfio_pci_core.c | 81 ++++++++++++++++++++++++++++++--
->  include/linux/vfio_pci_core.h    |  3 ++
->  2 files changed, 81 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index 88e68d43af9a..0f9b5dfeea66 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -2176,6 +2176,44 @@ static void vfio_pci_vga_uninit(struct vfio_pci_core_device *vdev)
->  					      VGA_RSRC_LEGACY_MEM);
->  }
->  
-> +static const struct vfio_cxl_ops *vfio_pci_cxl_ops;
-> +static DEFINE_MUTEX(vfio_pci_cxl_ops_lock);
-> +
-> +static const struct vfio_cxl_ops *vfio_pci_get_cxl_ops(void)
+On Sat, Sep 12, 2026 at 1:37=E2=80=AFAM Suzuki K Poulose <suzuki.poulose@ar=
+m.com> wrote:
+[...]
+> +static int rmi_init_metadata(void)
 > +{
-> +	const struct vfio_cxl_ops *ops;
+> +       phys_addr_t start, end;
+> +       struct memblock_region *r;
 > +
-> +	mutex_lock(&vfio_pci_cxl_ops_lock);
-> +	ops = vfio_pci_cxl_ops;
-> +	if (ops && !try_module_get(ops->owner))
-> +		ops = NULL;
-> +	mutex_unlock(&vfio_pci_cxl_ops_lock);
+> +       for_each_mem_region(r) {
+> +               int ret;
 > +
-> +	return ops;
-> +}
+> +               /* Firmware-reserved NOMAP regions are not usable system =
+RAM */
+> +               if (memblock_is_nomap(r))
+> +                       continue;
 > +
-> +/*
-> + * A CXL Type-2 device advertises both CXL.cache and CXL.mem in its CXL DVSEC.
-> + * pcie_is_cxl() is also true for Type-1 (cache only) and Type-3 (mem only)
-> + * devices, which the vfio-cxl provider does not handle, so confirm the Type-2
-> + * identity before engaging it.
-
-We don't expect to handle type 3 class code compliant devices, but what about
-the things referred to sometimes as CXL Type 3+?
-No CXL.cache support, but accelerators none the less - typically using back
-invalidate to ensure what they are working on isn't held by the host and
-CXL.IO (i.e. PCI) for control path.
-
-It is also plausible we'd pass a full compressed RAM device through to the
-guest without paravirtualizing like we currently plan to do for class
-code Type 3 devices (for DCD, sharing etc). +CC Gregory to point out where
-I am wrong on this ;)
-
-Not sure what that means for this checking function.
-
-More generally, why are we controlling usecases?  A class code complaint type 3
-device 'could' be passed through I think if someone wanted to do that.
-I'd not encourage it but why is it a linux policy to not support it?
-
-Jonathan
-
-
-
-> + */
-> +static bool vfio_pci_is_cxl_type2(struct pci_dev *pdev)
-> +{
-> +	u16 dvsec, cap;
+> +               start =3D memblock_region_memory_base_pfn(r) << PAGE_SHIF=
+T;
+> +               end =3D memblock_region_memory_end_pfn(r) << PAGE_SHIFT;
 > +
-> +	dvsec = pci_find_dvsec_capability(pdev, PCI_VENDOR_ID_CXL,
-> +					  PCI_DVSEC_CXL_DEVICE);
-> +	if (!dvsec)
-> +		return false;
-> +
-> +	if (pci_read_config_word(pdev, dvsec + PCI_DVSEC_CXL_CAP, &cap))
-> +		return false;
-> +
-> +	return (cap & PCI_DVSEC_CXL_CACHE_CAPABLE) &&
-> +	       (cap & PCI_DVSEC_CXL_MEM_CAPABLE);
-> +}
+> +               ret =3D rmi_prepare_memory(start, end);
+> +               if (ret)
+> +                       return ret;
+> +       }
 
+Hi Suzuki,
+
+What happens if a system has memory regions in memblock that are not
+tracked by RMM (e.g. CXL memory)?
+
+Currently, rmi_verify_memory_tracking() returns -ENODEV for untracked
+regions, causing rmi_init_metadata() to abort and disable CCA
+system-wide.
+
+Shouldn't rmi_init_metadata() skip untracked regions (continue) with a
+warning/info log instead of aborting? That would allow Realm support
+for conventional DRAM while leaving untracked memory for the host.
+
+Thanks,
+Alper
