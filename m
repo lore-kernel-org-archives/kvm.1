@@ -1,160 +1,206 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABBEB3C09E7;
-	Wed, 16 Sep 2026 17:51:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B1F414A11
+	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 18:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789581088; cv=none; b=ZFjSKJMzT+g8cIlgQGKpvvsMl9o8bGnnP8Q0w2kQ9WISQ8vMmNt/dryLWusiHFrRWbEKMdt1UtXlePkXzKUenVttlh0ALf18mEb1NVvy0G9zKiGwtUskki6F/2rOYlq5BQLE3U4sh//bqubnPZZzD56Fo80BwDNckC0izDzDLSY=
+	t=1789581667; cv=none; b=nODWiKAmR/95eWgzanvzZu29TuBmwIdLn+pTJFHn+39S9+dQm/VzZ0+xYGu8CzzJt5gig+ygMvFtHP/qn2yp31Nhp2xm2SLJEzVD4EuzvGQo3vFWb3mRmmljINI/wTN3vFKazkS7ebnjRq1nKsHHPvvx1VGCfoTskbbYR2hwh4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789581088; c=relaxed/simple;
-	bh=ipTJmkF3/zpr+sbsZHP7u7xHksn9daIAXHVrXTmWyRY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S6KDlYO3X/wPuFlzi9B+Z2uYSKNkTSHaZkG1c0DHywAJ5qIIBUYUcIlSW81hcScgq3Amhd8AqfTsHilUlD5fGj99gyRhSn/6QJ+gfdDG6CRuwt/dC1AANvW9eUQRTO/4CyZ1V84wRDYPecZJ6RTH40WxWOul27rEsUzpdoDOx9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=E7FjhsZ1; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1789581667; c=relaxed/simple;
+	bh=BM7m2qMuLHC97pgGicfcI+F7Qy4IfuoGYUuoHV6tpug=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=SPZCtgYZsv3dtRlOJi2SGnngcshFOIXZMLtnEPT0gy2BgIdA8cjLEHISCAiBlZNuyqCcsIwIQh28mQKK/vnwynt8jZNafg2P7nmym/GzumK3zLhbU+sVzOmWwN8eWeuL0+yNEG+Xkbzb7qZ6byCTN3iiwq3rIBqbtkwj3Gv+xxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m5w8Rwhy; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="E7FjhsZ1"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 99E4540E00E8;
-	Wed, 16 Sep 2026 17:51:09 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 9zV9muLWubjt; Wed, 16 Sep 2026 17:51:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1789581064; bh=or2++1LeeipZYCb3G9WRgyA4slOHEhMs91sMxm37PrE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E7FjhsZ1898C+iRkHA2e9itQoyiqH/Ch3CRAiwQscnU0CXAU1B3A58i/8qF7CWRQh
-	 G9fmEyLGGIFdYQql64Uc91Gneuv+SDG6aDTZnURc3lGHscWFc5r5ZPh1vPnn+mqjo9
-	 KFHhO1O53B1kflUQZ5pwBl1X+TZ/YeOf6S4ukWau6F9Oy2bvc2AkWVFtpJFZA/d20Q
-	 giWI8kOs24tcni/YN9qyJ2ifRbE9E3/xTzGmQUWsiuXTEhyoEZljOUczoL/sJ+VORm
-	 Jkvi5hPfZD2JyHdgx2JTUeJM+9EfC5lNAKlo3wpXrtxjuZdy0HbqzBa/nrDlGGXUEB
-	 T6ChTVHnrHjzueQm9iG6UjvNvWs1Ci2nBGXVxdIW5G0N5g5YvMPiyWBQmN/KIt+8BJ
-	 4nMWbx4zbda4r5Pe4F71yKd9gdBn5WVrThXpykty5Y9ZS6rxK/Zy/4imk+qiuwIQBK
-	 +J/Y7B2Xd/vbfAw0NWAJZRMYwlCrFpuzM/A8ynROZCZpyn7YbI8CMVxBS6k2Zrpwya
-	 T6Y4mlUo4kZxEKXRc1Vy6jsORFjfP4A+DtCjZKq1wSzIccfVVxpJX103Kp6LkYYPGE
-	 WV11UFcMReR+2ndH81MYlmJrtQ8QF3VCSlMJid4YqIKWMK9eHGy2UwsKc4B1bjlrvo
-	 ZcjWPKxqQS0jjFQdEECxxF+M=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6DA8240E00B9;
-	Wed, 16 Sep 2026 17:49:32 +0000 (UTC)
-Date: Wed, 16 Sep 2026 10:49:29 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jini Susan George <jinisusan.george@amd.com>,
-	Kees Cook <kees@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Kim Phillips <kim.phillips@amd.com>, Joerg Roedel <jroedel@suse.de>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	"Tycho Andersen (AMD)" <tycho@kernel.org>,
-	Liam Merwick <liam.merwick@oracle.com>,
-	Michael Kerrisk <mtk.manpages@gmail.com>,
-	Suresh Siddha <suresh.b.siddha@intel.com>,
-	Xiaotian Feng <dfeng@redhat.com>,
-	Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>,
-	Andi Kleen <ak@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Tony Luck <tony.luck@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Carlos =?utf-8?B?TMOzcGV6?= <clopez@suse.de>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jori Koolstra <jkoolstra@xs4all.nl>,
-	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Ian Campbell <ian.campbell@citrix.com>,
-	Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	David Howells <dhowells@redhat.com>,
-	Haavard Skinnemoen <hskinnemoen@atmel.com>,
-	Kenji Kaneshige <kaneshige.kenji@jp.fujitsu.com>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Ilias Stamatis <ilstam@amazon.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Toshi Kani <toshi.kani@hp.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Jiang Liu <jiang.liu@linux.intel.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Palmer Dabbelt <palmerdabbelt@google.com>,
-	linux-coco@lists.linux.dev, xen-devel@lists.xenproject.org,
-	iommu@lists.linux.dev, linux-mm@kvack.org, aik@ozlabs.ru,
-	Santosh Shukla <santosh.shukla@amd.com>,
-	"Pratik R . Sampat" <prsampat@amd.com>,
-	Scott Soule Cheloha <scott.cheloha@amd.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Fuad Tabba <tabba@google.com>
-Subject: Re: [RFC PATCH kernel 01/17] pci/dma/tsm: Call disable DMA bus hook
- on cleanup
-Message-ID: <20260916174929.GCaqrWqZ1fIhi4Rgbn@fat_crate.local>
-References: <20260916115159.1938195-1-aik@amd.com>
- <20260916115159.1938195-2-aik@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m5w8Rwhy"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2dd8920c132so14545ad.0
+        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 11:00:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789581651; x=1790186451; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=4s+521Fqa19KtzEYgOec6+FEoiMkZDuNR0N9XHxDUm8=;
+        b=m5w8RwhyJ41ughHK7n0FGeBmgyJiIeIEU3qiCkRtjr7k1yy5Syo2s8DXH+tRb+F5PJ
+         nUKeC0JdrO0m+dIUv+iwZtyYPKNYwFezyasvY1syblFUokYneMR67ZkjWufVe5eCNVrm
+         +e89oYN0b4Fa+SzOsuPpTr06L3Q4wYPQ3Oefyok5J+0Oj4294wrVfZh6LFv2Rq1c6yn8
+         3SY/AZee7R2vTE0xa76B6JVdCGBeJbIl+RLydoSARGnZRIp1w+dFAPSOKzNRlBo6yDnU
+         ST5RhrgPirb1Aw1OU7ksQK8wEZ+ypjEdg9N9cW7E8Cg70SrCjVJdzzL5zUZ+KxyJ6UBq
+         zQRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789581651; x=1790186451;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4s+521Fqa19KtzEYgOec6+FEoiMkZDuNR0N9XHxDUm8=;
+        b=rmSLgieftB2K0sXNJ9KI4cSdRbwFH0/MZXYCnCEc69yBU6IxVO39tohewor7UoJpmv
+         /dzfGdicpXVQLX4ezO/bxTBQvuLGaAxJ11vurAyOYj52PJ5c2mRCUuCQj6k2joWa/EqC
+         sdlOnsKOk2lSX0a8FC0MVGCqD24va7tN3pDFU083bfxWVvutchbWqkJRAYEm049sCs/2
+         JznSMWC4qnla9KfW2632Ad1GsmJoBJODtnIPrKJ7T2JRS7Shr77NtifwRNERcp0b8UK1
+         3NAY94fc5MEq4G28txOKpTmvxGxjfCiN/EPpvwe1CBgsz8u/bMW4O5gnM7xSpuoVwvGJ
+         v43Q==
+X-Forwarded-Encrypted: i=1; AKwUvByhernYR2vWplChfKeTyo+5XZdoYpkm3B23LUZ38wcgrdxh3DkahLay5r7QUGIJnbnxKKk=@vger.kernel.org
+X-Gm-Message-State: AFuF++nV8DW5AGjfOBzBHMV/nXGV+ZvuYdNFAZnfk2l8yyILFM/ze+Yg
+	6cvVkZzCTbGeD4bZ+Gsvqo597wVpFOaXLDDRh8tghwjF/+guJx+icoE+KmAY1i7iTeZu2G6lXSl
+	zUj3uAA==
+X-Received: from plih6.prod.google.com ([2002:a17:903:37c6:b0:2dd:4a8d:e22b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1211:b0:2d9:3bee:4f32
+ with SMTP id d9443c01a7336-2dd8e752eb8mr73324115ad.20.1789581650896; Wed, 16
+ Sep 2026 11:00:50 -0700 (PDT)
+Date: Wed, 16 Sep 2026 11:00:49 -0700
+In-Reply-To: <24a751d16ba0dc37aa7774df5739f39734cf9aca.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260916115159.1938195-2-aik@amd.com>
+Mime-Version: 1.0
+References: <24a751d16ba0dc37aa7774df5739f39734cf9aca.camel@intel.com>
+Message-ID: <aqrZUZtSZ-YItclT@google.com>
+Subject: Re: TDG quote analysis
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, Dave Hansen <dave.hansen@intel.com>, 
+	"kas@kernel.org" <kas@kernel.org>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Yilun Xu <yilun.xu@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	Vishal Annapurve <vannapurve@google.com>, Peter Fang <peter.fang@intel.com>, 
+	Binbin Wu <binbin.wu@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 16, 2026 at 09:51:41PM +1000, Alexey Kardashevskiy wrote:
-> +	if (device_tcb_trusted(dev))
+On Wed, Sep 16, 2026, Rick P Edgecombe wrote:
+> Here is the overdue analysis of what a TDG based TDX quote operation coul=
+d look
+> like, pulled together as writeup somewhat quickly. This was from Sean's r=
+equest
+> originally. The writeup is based on a bunch of gathering by Peter, Elena =
+and I.
+> Some TDX interrupt input from Binbin.
 
-Where is that function and the rest of the gunk needed for me to apply before
-I review those?
+Thank you!
 
-The patches on that branch:
+> This DICE quote generation can take a long time. Exactly how long is not =
+known,
+> but it is expected to vary and often exceed the time a SEAMCALL can be ex=
+ecuting
+> in the TDX module by a considerable amount.
 
-https://github.com/AMDESE/linux-kvm/commits/tsm-next
+What's the ballpark?  Are we talking tens of nanoseconds, tens of microseco=
+nds,
+tens of milliseconds?
 
-which come before those here are enough?
+Is the CPU spinning the entire time?  Or is the quote degeneration I/O-like=
+?
 
-Thx.
+>    It is not nice to keep the guest from running for too long. The TDH.QU=
+OTE.GET
+>    SEAMCALL monitors for host interrupts, but not guest ones. Similarly, =
+the SGX
+>    quoting enclave doesn't know what is happening in the TD. So, to help =
+reduce
+>    guest latencies, the GHCI exposes a way to register for a notification
+>    (SetupEventNotifyInterrupt) when the quoting is finished. A quote TDVM=
+CALL
+>    handler can start the quote operation on another host thread, and resu=
+me
+>    guest execution waiting for the quote to finish.
 
--- 
-Regards/Gruss,
-    Boris.
+To me, this just *screams* for a virtio-like device to provide quotes to th=
+e guest,
+especially if the slow part of quote generation is I/O-like.  Even if it ho=
+gs a CPU,
+an asynchronous virtio-like interface would be far easier to support.  E.g.=
+ the
+userspace device backend spawns a thread (affined to the same set of pCPUs =
+as the
+vCPU, i.e. to "tax" the guest instead of requiring dedicated "overhead" CPU=
+s),
+and kicks the guest when the quote is ready.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Ahh, that's more or less what SetupEventNotifyInterrupt is.  I guess that's=
+ not
+the end of the world, so long as the backend for SetupEventNotifyInterrupt =
+is
+handled entirely in host userspace.
+  =20
+>    A resumable TDG quote call would have to solve a slightly different pr=
+oblem.
+>    A bad guest could refuse to resume the TDG call and hold the TDX modul=
+e
+>    extension save state slot hostage.
+
+The whole "what about guest interrupts?" thing makes me think the quote gen=
+eration
+is CPU-bound, i.e. not I/O-like.
+
+Does the TDX Module *need* to provide a save slot?  What would prevent TDX =
+from
+requiring the guest to provide storage for whatever in-flight data is neede=
+d?
+That way there it doesn't matter if the guest never resumes the call, it ca=
+n only
+hurt itself.
+
+>    So instead, a TDG call could work by remotely canceling another TD=E2=
+=80=99s paused
+>    operation if that TD didn't call back frequently enough. After a time-=
+limit
+>    was reached on an extension save state slot usage, another TD=E2=80=99=
+s TDG call
+>    could abort the stalled TD=E2=80=99s operation. There existing designs=
+ around doing
+>    this cancellation already in the TDX extension arch. It would need to =
+be
+>    adapted to the guest side calls and incorporate the extra cancellation=
+ work
+>    into the time limit math. Some good timeouts would need to be picked.
+
+...
+
+>    If a quote operation is long enough, the TDG SEAMCALL should probably =
+support
+>    a resumable-like flow from the guest side too, where it also monitors =
+for
+>    pending guest interrupts and returns from the TDG call to let the gues=
+t
+>    handle them.
+>
+>    Then the host wouldn't need a thread and a completion guest notificati=
+on
+>    mechanism. It basically transfers that complexity to the TDX module.
+
+
+>    But it also might transfer some of the control. The TDX module would h=
+ave to
+>    embed some policy on how to decide when to inject guest interrupts. If=
+ the
+>    host and TDX module had different logic on when to actually re-enter t=
+he TD,
+>    that could be annoying.
+
+But the TDX-Module already has some policy, no?  In the sense that it decid=
+es
+when to exit to the host because there's an interrupt pending.
+
+> =3D=3D Summary =3D=3D
+>=20
+> From what we found, I think it doesn't seem overly impossible for the mod=
+ule. But
+> the exact cancellation rules and timeout logic would need to be hashed ou=
+t a bit
+> more.=C2=A0The simple mutex on the host side does still seem a fair amoun=
+t simpler than
+> the TDX module's fairness options.
+>=20
+> How do we feel about the roles and responsibility shifts? Any other probl=
+ems to
+> solve?
+
+What about the whole "TD-specific data in the quote" thing?  If getting a q=
+uote
+(or report?) is punted to the host, I'd still like to keep it out of KVM.=
+=20
