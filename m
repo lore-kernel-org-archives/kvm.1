@@ -1,285 +1,185 @@
-Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2FB265623
-	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 05:06:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBC235DA41
+	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 05:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789535162; cv=none; b=c/vcaMaYhAipMLkDSlga0kPPq4IlHtBG5Nmzy3/1rvP/T/2CBLcfUAibrhHD154IjbOC1x0KVBJuBAhepPx/8e9NBl32OOowXqdbEwK3Jr1k3r98fF5gTkyHGbm4IqDWTESe8mDEgmnzDrBXAveS0ilAXz2QehjjNy5k/HrrDVQ=
+	t=1789535405; cv=none; b=dIZ11r39eUGTGGRIg4Ac6uND+A/de8jLQzfnlwIu7xxMD0qNx39Sy/7px5reijCw0yRw+jPGJUWjlKw56V0homwmCujtQVfnik+sbg/rqiAI4rOeEL+dAFewhg0n/pGQgTSeww6azqRfD+K4KSTZ635sviY1y3wjXE6IEO91BrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789535162; c=relaxed/simple;
-	bh=ZCYsk3b8be7YzwPtZc9AlEHE3JpuvSauytIqzViEWP8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SRHe0nFT9gQU997lOdQ10uNGKooixiZtmvmsJ1VfBYlPRmB0/1HHoc+YXTES2XyAnz847p3p7ukXE8qVmOvGyR5asTFY3e5bg3bjkjSF8W8URnhSPdF/DbEdfKct+RCIKOldLpgmySvV5eLiwVd2YA4ISgP5CGXXGL5IR46PeSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=YW777VKk; arc=none smtp.client-ip=209.85.216.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1789535405; c=relaxed/simple;
+	bh=qKdxfXkMfSh4FamBWlqynr5J72eabbL9tAi+VLmj058=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s6+yioLe5QAOA7hM+56w40oCKevToRrwBpzQg9fT7R7HMnizH8D3LSawZ/vG0kzo0SL3b+Vx31wh+DnXu7nVvN5wX6tpbKvc+nYuAgBEUz8BXKpLe9mYO9ZwKCk7xzjD5yX4WO4KojvWxHzlHTKnpNbTY1lCscXHT9NNCpJSkNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YTTOK8OU; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="YW777VKk"
-Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-38ea87caafeso4488038a91.3
-        for <kvm@vger.kernel.org>; Tue, 15 Sep 2026 22:06:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789535160; x=1790139960;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qEqGUwhuGtd/IQ00br0ru4/E+DR8RR02AnrUv6Zwxpk=;
-        b=p2JHeyzD6nBLZpC0f8UpJ6ok3xUDQ2YwIcn26u/5cJropiUwOIcya8eqCPK5pCP5Vk
-         0NSxueqNStaEAHKhBHkXtdPv2dBk5xUm6vM8EY3kApZblR1Wtk1JTRGMbmk0KsZ/gB/r
-         miRye2DHZ7nJlYpBcAQvNDzLxKFiCu3fBDkNybugVi7vHw12Dgaz0bNzD+SGIq/zb3Rk
-         b9CywS/udnNLsUEwHgeOVCcZ9ycl5AiGxjK0cP0rcdUmvbYl+vBw52fYqMNTmncXwOYF
-         C2bkHJ2y12bfSt9zEprwWH5+fsFx/X/+RdCX5/BxsSsioGOXQHcuIs0rERRIqCDfp4PE
-         O3/g==
-X-Forwarded-Encrypted: i=1; AKwUvBwzcvvUVEorpQdATz+ZdxSMiONSyh1h70qs5zb3UIscAx2RfMm/s++MwqSZl5E73kOsr+g=@vger.kernel.org
-X-Gm-Message-State: AFuF++lzlFILUqFRjZpRgXIrKiMhFslPF4eQ6VsXYhM6ajBRLb6nkDG/
-	j/Avd61CV0p1JDYL9HCEdEX3nqjMip2xuckoCikRK+aZde7vTMwih5C66lvahcEc0mP8/wByxmm
-	1SGY5tX2tRRYEdEHTUeKCN2s6FPIkYquDy/ZFgt66fCw0Mpvk27tdbUb0vbQKEiM+pRbwaM1Zyb
-	y3+8dcrKxFJCfDNlOnwwj73PXvzF6jIsIHbFY5dNTe4W3OoKPsC/iqNUKk2GutuaAmQKo0ryKA7
-	g+3
-X-Gm-Gg: AYBFou2gfALaX5Kv4NHcCo2vHyB7vW2pqHphBS/jaXP0DQhngjswrlBBInm+gDikkKf
-	q1Lkd10YAEE2tDdhqjgoltX2qQIGLWqN5x85Z2FKtkHqacAAZq5cGHynmOpbXTAZaiVmMYA6yxU
-	DChyUnzNl3cKrlMWi1eO3bGCbt/MpzyoKNgP9aQtk1seWQ4gM4DI8JPWsvoI4yeSH16+zk3yATH
-	wx2JfHYSUEJfjiwDMbrfn9qjjbtKKvaQwcSla68/Zm5CzT1Za78+Rb3NJnhknvms0EMSj3cgtT+
-	AnTjpAaTEBAWL/ORyP46y+Ki4nBKfyeXe6lHIyI4DcxQ9zH56gagTW5zAl9xFDgHtGbTM4mM40g
-	m/Z2/JS5g7kUL9rB/g41BMcsr6owfGm0WFZJya3dZyJVDIc9rXFCmtnWYdJB4qVcuYlDS8fWPw8
-	33cjqkVBikiGuBYJQWResXFltz9XxdoZOX
-X-Received: by 2002:a17:90a:fc44:b0:39e:4fb:fdcf with SMTP id 98e67ed59e1d1-39e1e49242cmr2899633a91.14.1789535160113;
-        Tue, 15 Sep 2026 22:06:00 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-98.dlp.protect.broadcom.com. [144.49.247.98])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-39e1b3efe54sm799872a91.1.2026.09.15.22.05.59
-        for <kvm@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 15 Sep 2026 22:06:00 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc42a07d04aso4451286a12.1
-        for <kvm@vger.kernel.org>; Tue, 15 Sep 2026 22:05:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1789535158; x=1790139958; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=qEqGUwhuGtd/IQ00br0ru4/E+DR8RR02AnrUv6Zwxpk=;
-        b=YW777VKkuthOhJll13Vfzz2TFuo7Dg4wmScpv2bjhDyzJ/f/p/MOQx8huOil4+PGWN
-         WtMxrZuFv75DzHRdMmW8yrE7IHNh9G3HDENQQC02VhyktO6g++ZPQ8J/0inkvJ4CgURj
-         R07zG3rTlx/SnJGV0+elbsCoqb3Xe0YjId85M=
-X-Forwarded-Encrypted: i=1; AKwUvBwLgkPM0stROfY+KQV48Tv2zcAn8Geyix6mzaWRQRDpyompFW3In5fmLsdq1cyLeO81/Ek=@vger.kernel.org
-X-Received: by 2002:a05:6a21:1343:b0:3da:80a1:f2f with SMTP id adf61e73a8af0-3dd5f5dfd69mr2927530637.14.1789535158354;
-        Tue, 15 Sep 2026 22:05:58 -0700 (PDT)
-X-Received: by 2002:a05:6a21:1343:b0:3da:80a1:f2f with SMTP id adf61e73a8af0-3dd5f5dfd69mr2927490637.14.1789535157892;
-        Tue, 15 Sep 2026 22:05:57 -0700 (PDT)
-Received: from vertex.localdomain ([192.19.144.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33bf5e40494sm3951386eec.15.2026.09.15.22.05.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 22:05:56 -0700 (PDT)
-From: Zack Rusin <zack.rusin@broadcom.com>
-To: Borislav Petkov <bp@alien8.de>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	x86@kernel.org,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	virtualization@lists.linux.dev,
-	bcm-kernel-feedback-list@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	Christoph Lameter <cl@gentwo.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YTTOK8OU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789535401; x=1821071401;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=qKdxfXkMfSh4FamBWlqynr5J72eabbL9tAi+VLmj058=;
+  b=YTTOK8OUqsMZXzE4F2cg8SjeMNBRjZWLQHbSPfxkuoMhJe6/yqAop87o
+   QqxUgbhvTEHnjAFQL37L64eF5ypTHhSFjfNpQiWCOuQqtMz1+FP6VtWBo
+   4d+U2XpswtYKidX+38NlmXDkdZ8fAxCmVLu8oEqib17FTysOIdbmmrdz8
+   /F0DRn9RiteRhoUK1vF7LiqevNeZQ4nxfVk2EiHS/jxDOnWP9hM6b36kc
+   oRl26MZrmXpgThiuM4mdL1ja6XG6x/tOgrCMYEdPRQkHGESjhY/iZ+bFd
+   3KJGJEy5fdRgV/bKgEd8J49O39dZMnsaOOVIZkYUo82eX/t3ZC6E1DE5b
+   g==;
+X-CSE-ConnectionGUID: zfgqTmItQF+UNVR/Cudb5g==
+X-CSE-MsgGUID: nAzNKeMNTwavRuevtz2Tmg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="77468762"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="77468762"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 22:09:59 -0700
+X-CSE-ConnectionGUID: iUZ9uUeoRUWZTyRE1yEZsg==
+X-CSE-MsgGUID: g6yXnWmITjae8NzFWD2Z/g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="311495886"
+Received: from szadworn-mobl.ger.corp.intel.com (HELO localhost) ([10.245.246.45])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 22:09:52 -0700
+Date: Wed, 16 Sep 2026 08:09:48 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Kishen Maloor <kishen.maloor@intel.com>
+Cc: Artem Bityutskiy <dedekind1@gmail.com>,
+	=?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+	Jon Grimm <Jon.Grimm@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
-	Bo Gan <bo.gan@broadcom.com>,
-	linux-mm@kvack.org,
-	linux-arch@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org,
-	Zack Rusin <zack.rusin@broadcom.com>
-Subject: [PATCH v1 2/2] x86/vmware: Decrypt steal-time storage before sharing it
-Date: Wed, 16 Sep 2026 01:05:40 -0400
-Message-ID: <bbdb89067cd07d07fe4963ad229932faf87b0ef9.1789488039.git.zack.rusin@broadcom.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1789488039.git.zack.rusin@broadcom.com>
-References: <cover.1789488039.git.zack.rusin@broadcom.com>
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Steven Price <steven.price@arm.com>,
+	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
+	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Peter Fang <peter.fang@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org
+Subject: Re: [RFC PATCH v2 2/4] KVM: x86: Add optional KVM_CAP_LIVE_MIGRATION
+ and KVM_MIGRATE_CMD
+Message-ID: <aqoknAli8A0Mc4HR@tlindgre-MOBL1>
+References: <ap-SihGd0fk02QV8@tlindgre-MOBL1>
+ <4c07e70e-7639-4141-b602-1c09c9c7510c@intel.com>
+ <aqEDQ5Qrv724gGzN@tlindgre-MOBL1>
+ <0cf5b79e-521d-4c7c-97f2-673c51d42bbd@intel.com>
+ <aqJPLEX51DSCF1zC@tlindgre-MOBL1>
+ <be09b02d-c993-40ad-a690-753a7a50677c@intel.com>
+ <aqOCPVoFAFMv8ZYo@tlindgre-MOBL1>
+ <085c28db-31e3-4249-a9be-a2f9d7156719@intel.com>
+ <aqjNFLv5VrmB_fdx@tlindgre-MOBL1>
+ <e090caa0-be97-46cd-bde8-374f2522c986@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e090caa0-be97-46cd-bde8-374f2522c986@intel.com>
 
-VMware's steal-time counter must be in shared memory so the host can
-update it. Encrypted guests currently register its address without
-decrypting the storage. Move their setup to an early initcall, when the
-memory allocator is available for page-table splitting, but before
-secondary CPUs start. Leave ordinary guests' setup unchanged.
+On Tue, Sep 15, 2026 at 08:53:18AM -0700, Kishen Maloor wrote:
+> On 9/14/26 9:44 PM, Tony Lindgren wrote:
+> > On Mon, Sep 14, 2026 at 05:14:32PM -0700, Kishen Maloor wrote:
+> >> On 9/10/26 9:23 PM, Tony Lindgren wrote:
+> >>> On Thu, Sep 10, 2026 at 06:40:04PM -0700, Kishen Maloor wrote:
+> >>>> On 9/9/26 11:33 PM, Tony Lindgren wrote:
+> >>>>> On Wed, Sep 09, 2026 at 06:11:11PM -0700, Kishen Maloor wrote:
+> >>>>> ...
+> >>>>>>
+> >>>>>> As mentioned above, that is a destination launch time directive that we needn't
+> >>>>>> conflate with a migration/transfer session role.
+> >>>>>
+> >>>>> It's still the same role though. Yes we can set it on init, but would
+> >>>>> be nice to have some generic way to do it for qemu -incoming.
+> >>>>
+> >>>> I'd separate these.
+> >>>>
+> >>>> On the role: it seems we agree on recording roles per-session. My only point
+> >>>> then is that a VM created through the delayed_init flow doesn't additionally
+> >>>> need a destination role recorded for it if SETUP will assert one when the
+> >>>> migration is kicked off.
+> >>>>
+> >>>> On generic plumbing for -incoming: is this about KVM_TDX_INIT_VM_F_DELAY_INIT?
+> >>>> A generic mechanism would make sense to me if the flag were consumed by generic
+> >>>> KVM code, but that isn't the case here. Userspace has to make a
+> >>>> vendor-specific VM-init call like KVM_TDX_INIT_VM anyway, with the flag passed
+> >>>> on that call. So I'm not sure what a generic version would add, unless you have
+> >>>> something else in mind.
+> >>>
+> >>> So we could add a SETUP subcommand SET_ROLE or SET_INCOMING.
+> >> It might be better to pass the role as a parameter of the SETUP call
+> >> rather than a separate SET_ROLE call.
+> >> A separate SET_ROLE would bring its own ordering rules relative to the
+> >> other SETUP sub-commands. 
+> > 
+> > OK a flag for SETUP sounds good to me. SETUP is needed anyways for each
+> > migration session.
+> 
+> To be clear, I was suggesting a field in kvm_migrate_cmd and not a flag to pass
+> the role as an argument to SETUP. As I mentioned in my last comments (right 
+> below), 'flags' in the current proposal carry the vendor-defined sub-command values,
+> so a generic role argument wouldn't belong there.
 
-Convert every possible CPU's storage before registering any address.
-Zero each object after conversion, since its contents may not survive
-conversion and the host initializes only the counter. Register the boot
-CPU with preemption disabled; the existing hotplug callbacks handle the
-others. If conversion or boot-CPU registration fails, attempt to re-encrypt
-all affected ranges, including a partially converted failing range, and
-disable steal time.
+I was thinking 8 bits for common flags and 8 bits for vendor flags but
+yeah that can be a bit tight. Sorry if the SETUP above caused extra
+confusion.
 
-TDX's conversion path requires directly mapped memory. Check all per-CPU
-objects before converting anything, and disable steal time if a TDX guest
-uses the page per-CPU allocator, which supplies vmalloc mappings. This
-also covers automatic fallback from the embedded allocator. AMD guests
-are unaffected by this restriction because their conversion path supports
-those mappings.
+So trying to summarize the common flags for the role and separate vendor
+flags:
 
-Link: https://lore.kernel.org/r/20260309235250.2611115-5-alexey.makhalov@broadcom.com
-Co-developed-by: Bo Gan <bo.gan@broadcom.com>
-Signed-off-by: Bo Gan <bo.gan@broadcom.com>
-Co-developed-by: Alexey Makhalov <alexey.makhalov@broadcom.com>
-Signed-off-by: Alexey Makhalov <alexey.makhalov@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
----
- arch/x86/kernel/cpu/vmware.c | 96 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 95 insertions(+), 1 deletion(-)
+struct kvm_migrate_cmd {
+	__u16 command;
+	__u16 flags;
+	__u16 vflags;
+	__u16 reserved;
+	__u32 reserved;
+	struct kvm_transfer_buffer buf;
+};
 
-diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
-index 34b73573b108..f49898275d87 100644
---- a/arch/x86/kernel/cpu/vmware.c
-+++ b/arch/x86/kernel/cpu/vmware.c
-@@ -25,14 +25,19 @@
- #include <linux/init.h>
- #include <linux/export.h>
- #include <linux/clocksource.h>
-+#include <linux/cc_platform.h>
- #include <linux/cpu.h>
- #include <linux/efi.h>
-+#include <linux/mm.h>
-+#include <linux/preempt.h>
- #include <linux/reboot.h>
-+#include <linux/set_memory.h>
- #include <linux/static_call.h>
- #include <linux/sched/cputime.h>
- #include <asm/div64.h>
- #include <asm/x86_init.h>
- #include <asm/hypervisor.h>
-+#include <asm/cpufeature.h>
- #include <asm/cpuid/api.h>
- #include <asm/timer.h>
- #include <asm/apic.h>
-@@ -147,6 +152,7 @@ static struct cyc2ns_data vmware_cyc2ns __ro_after_init;
- static bool vmw_sched_clock __initdata = true;
- static DEFINE_PER_CPU_DECRYPTED(struct vmware_steal_time, vmw_steal_time) __aligned(64);
- static bool has_steal_clock;
-+static bool vmw_steal_time_ready;
- static bool steal_acc __initdata = true; /* steal time accounting */
+Is the above along the lines what you were thinking?
+  
+> >> The specific role (src or dst) still needs someplace to go, and flags is
+> >> already the sub-command selector. An option is to carve out room in
+> >> the __u32 reserved field to carry a role argument, something
+> >> like 0=unset, 1=src, 2=dest so KVM can verify that a role was indeed set.
+> > 
+> > To me it seems that 0=src can be the natural default starting point, I
+> > don't think we need 0=unset.
+> 
+> With 0=src, the field would only carry information when it's a destination,
+> thereby making it an is_dest boolean rather than a role. It would also mean any 
+> VM that never established a session still reads as a source, so a 
+> KVM_TRANSFER_MEMORY aimed at the wrong VM by buggy or rogue userspace would get 
+> dispatched to the export path instead of rejected outright. The generic 
+> dispatcher shouldn't have to rely on the vendor layer to catch that. Reserving 0 
+> for 'unset' costs nothing and lets KVM reject a session that never stated a 
+> role.
+
+Ah OK, yes that would also tell "the hardware has been initialized to a
+certain migration role". That seems like a usable common feature.
  
- static __init int setup_vmw_sched_clock(char *s)
-@@ -280,7 +286,9 @@ static void vmware_disable_steal_time(void)
- 
- static void vmware_guest_cpu_init(void)
- {
--	if (has_steal_clock)
-+	if (has_steal_clock &&
-+	    (!cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) ||
-+	     vmw_steal_time_ready))
- 		vmware_register_steal_time();
- }
- 
-@@ -325,6 +333,92 @@ static int vmware_cpu_down_prepare(unsigned int cpu)
- }
- #endif
- 
-+static void __init vmware_steal_time_range(int cpu, unsigned long *start,
-+					   int *numpages)
-+{
-+	unsigned long addr = (unsigned long)per_cpu_ptr(&vmw_steal_time, cpu);
-+
-+	*start = addr & PAGE_MASK;
-+	*numpages = DIV_ROUND_UP(offset_in_page(addr) +
-+				 sizeof(struct vmware_steal_time), PAGE_SIZE);
-+}
-+
-+static int __init vmware_decrypt_steal_time(void)
-+{
-+	int cpu, failed_cpu, numpages, ret;
-+	unsigned long start;
-+
-+	if (!has_steal_clock ||
-+	    !cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-+		return 0;
-+
-+	/*
-+	 * TDX's conversion callback derives the physical range with __pa(),
-+	 * so the storage must live in the direct map. The page per-CPU
-+	 * allocator, which is also the automatic fallback when the embedding
-+	 * allocator fails, hands out vmalloc addresses instead. Reject those
-+	 * before converting anything, so no page is left converted.
-+	 */
-+	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
-+		for_each_possible_cpu(cpu) {
-+			if (!is_vmalloc_addr(per_cpu_ptr(&vmw_steal_time, cpu)))
-+				continue;
-+
-+			pr_warn("steal time disabled: TDX requires a direct mapping\n");
-+			has_steal_clock = false;
-+			return 0;
-+		}
-+	}
-+
-+	for_each_possible_cpu(cpu) {
-+		vmware_steal_time_range(cpu, &start, &numpages);
-+		ret = set_memory_decrypted(start, numpages);
-+		if (ret) {
-+			failed_cpu = cpu;
-+			goto rollback;
-+		}
-+
-+		/*
-+		 * Conversion need not preserve the zeroes. The host
-+		 * initializes only the counter on enable, so the guest
-+		 * must initialize the reserved words itself.
-+		 */
-+		memset(per_cpu_ptr(&vmw_steal_time, cpu), 0,
-+		       sizeof(struct vmware_steal_time));
-+	}
-+
-+	vmw_steal_time_ready = true;
-+	preempt_disable();
-+	vmware_guest_cpu_init();
-+	preempt_enable();
-+	if (!has_steal_clock) {
-+		pr_warn("failed to register boot CPU steal-time memory\n");
-+		failed_cpu = nr_cpu_ids;
-+		goto rollback_pages;
-+	}
-+	return 0;
-+
-+rollback:
-+	pr_warn("failed to decrypt steal-time memory for CPU %d: %d\n",
-+		failed_cpu, ret);
-+
-+rollback_pages:
-+	for_each_possible_cpu(cpu) {
-+		vmware_steal_time_range(cpu, &start, &numpages);
-+		ret = set_memory_encrypted(start, numpages);
-+		if (ret)
-+			pr_warn("failed to re-encrypt steal-time memory for CPU %d: %d\n",
-+				cpu, ret);
-+		if (cpu == failed_cpu)
-+			break;
-+	}
-+
-+	vmw_steal_time_ready = false;
-+	has_steal_clock = false;
-+	return 0;
-+}
-+early_initcall(vmware_decrypt_steal_time);
-+
- static __init int activate_jump_labels(void)
- {
- 	if (has_steal_clock) {
--- 
-2.53.0
+> >> It could further be written into a generic KVM struct (kvm_arch or kvm) which
+> >> could be queried on KVM_TRANSFER_MEMORY, etc. to identify the relevant
+> >> callback.
+> > 
+> > Yeah eventually some generic place for it would be nice. But that's easy
+> > to add later on too.
+> 
+> Sure, we don't have to decide now as we're still discussing the UAPI.
+> But we'd want this detail also settled sometime before we call the UAPI
+> complete as it determines whether the dispatch is generic.
+
+Yes a shared place for the role would make some generic sanity checks
+easier.
