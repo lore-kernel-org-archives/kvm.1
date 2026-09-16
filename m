@@ -1,125 +1,129 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7473793B0;
-	Wed, 16 Sep 2026 15:05:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A06B3A63F2;
+	Wed, 16 Sep 2026 15:11:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789571113; cv=none; b=u24LPnviynfgwEiFGwCdS1kT8dvEug0ey8d+253Pr/WvPbmAtKxn/x/2eYVaZVI9Zbcc+DatwERbiaIY3a4nviVHGd/GiBzibfoIL8S54g72shsCb4QQFY87U88hw1SpOpnrR4tUZdyH5d1R3dDU6iy691hZVmN0jTr2waTHMFI=
+	t=1789571476; cv=none; b=HuMSmxUyKFZMZtRzM7z7lhHDOlhIqH0OnNXso5i09qvBfo2TQZDGppBdf4Gz7B6vxdVkzqtyDDWbRtYzZAPhMo+iwTEeUTBw5IlExdMaPbofstImqQ327HmzoNQ7l/YdoK3C3gYfP9/EykfbsB9fomgR8HG7AIpoNwL7YowkWSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789571113; c=relaxed/simple;
-	bh=lecKlwiZpOx67XjPELGhrtr2sWO32diwhhQ25lBYHPo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tyVO0zk5vAXNdp+qnNeTSual0ZRqWSHWlwHuDyp/kE/HEQVWk9HM7mPH2wps3UYqU7QAcXwxEL7sbJ1IkE3Gab3uo3xCSzZeimIYBSWz2P8diqwf/dZ5dl61LTZnePJhfUpYNAbAM+YP371JZ83Pp9LD5AndQm9p10r/SZCq1IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=AVJxnD7c; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1789571476; c=relaxed/simple;
+	bh=u0tVuRykFn1O+PwVUdVWvx6InPsLZ5OPHQxhQrz/giQ=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=kbymDnENyP4Xm5GJ6mGsfo9ARIi86SaKawEix/X0YVBnm/8iMcTwYi6gZ+Rp5Y+kU1cWhctpuXq5FS5ily5GFxXBnvqs5KVoLclv1ViTIe1KPuUx7DD4VKmQML5SO7cA2aiihTC6HMId/9BAxsH0gj3f8EjG9Qjk2/Bj5RNwpNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k/2kdVXt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="AVJxnD7c"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B14C540E01F9;
-	Wed, 16 Sep 2026 15:05:06 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 8aWCoS_NYVkT; Wed, 16 Sep 2026 15:04:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1789571096; bh=OavHCWMHrrNZGtQQFEfuOdSXz4SUqFw84RfIgt32BKk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AVJxnD7chINUYXPPYH+EdWJImtVKM/uBwqDV3xpl5zS/oMqUAOxJyeY+CJxGH+k6w
-	 OLbMjMvMvC6X7jNBelPQQbyxQp0RKdipnK3MwJNupxQCtVKVXnJlNVUrnXotiaMqb4
-	 NkCtzIHawBNz3IYpMeGqk+ClEHzQ5GEPK5rmD5VewoxhI6EpLkcbZb7/5JwqiVpOcU
-	 9ppRoKSnsrzXZWKkbZ/7I7iLB15FjyPord+7ZEL2k8cXnL7pK0mMBWE9kQ3Z+SaGR1
-	 WCMUBZ6ri0Y9wgf2acLcNo8A61qdZ/yCdPvyOOYO4h0mDq5LwGJntzZ3xZUk/wKF1c
-	 NE4Z/v3QqbaP6GSLQjcuq/rAi+WbO4oMSV5ggBnDDGu8UoJG5oRLA0iD6FwI7E27U5
-	 0ZSLj5BcDOypfYw6z0+o/zFzyEB7mUlO4ts8KUHNVoQm8F1/hxYyJ5X6sWIZqRFylE
-	 XMUzNqGE3gnijP995wLg1l//5+O0JK7ELFl01EBmA4P2NOxD7Yb39LLTugKoVgNoRE
-	 l6wXziTY9mRN6nTp3VBRHhq2UP7c+ziRS1jvP8pDG2VjzgGGeno/yqu7/jb3wZKs3L
-	 XDNkz5lFINBnUVfDHcvSIvrEoPdiAbrJnCdDEPx0HRUlZNuMgCSdMYollCjN0LU6ni
-	 V0XxXhL4svuDld+AMHfZDjKs=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5B00240E00B9;
-	Wed, 16 Sep 2026 15:04:40 +0000 (UTC)
-Date: Wed, 16 Sep 2026 08:04:36 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Luka Absandze <absandze@amazon.de>, Sandipan Das <sandipan.das@amd.com>
-Cc: peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
-	namhyung@kernel.org, tglx@kernel.org, dave.hansen@linux.intel.com,
-	x86@kernel.org, yaoz@meta.com, dwmw2@infradead.org,
-	kim.phillips@amd.com, kvm@vger.kernel.org,
-	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] perf/x86/amd: Reject AMD Merge event as a countable event
-Message-ID: <20260916150436.GAaqqwBD8KvgTVrmc3@fat_crate.local>
-References: <20260916123315.89042-1-absandze@amazon.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k/2kdVXt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74CC1F000FF;
+	Wed, 16 Sep 2026 15:11:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789571474;
+	bh=6pJZlwL4vv3n0HS3phtnf+vf4448t/3gjdWcfUceqG0=;
+	h=Date:From:To:Cc:Subject;
+	b=k/2kdVXtCQvMgh7swp8SCL+7ZpmoB8Wf3KF6uUxHIg/O/QJKckm1zOkiSogwJblfo
+	 aYF4IgshxAL7U9EA+4gimQpQ7dog+5Bfe0r2edOz2yY3D95n22bz+j7NM/yScK3Ws4
+	 F4DvtlVXKd6ArvyL/mlL5QLeqyZAIzAMTA2I7sl4Bx/s5R2gOWVzc3Zu5Hr8bNNcfJ
+	 rQqPlC2+S+tmHPwvH5PyCLsI/gd22w/KEm1+MydzOgor/1cV6xHrXMKePA0HhRbEON
+	 31WLVfe1rRsjHVioUXriSkMXpU/si/sCzQkZzIUGFgMz+qWGOBgM3soR96ai6YZALu
+	 vYsKfpuP4fGug==
+Message-ID: <b91dbfae-20f1-4b9f-a25b-4397afae80f9@kernel.org>
+Date: Wed, 16 Sep 2026 17:11:04 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260916123315.89042-1-absandze@amazon.de>
+User-Agent: Mozilla Thunderbird
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
+Cc: ackerleytng@google.com, amit@infradead.org,
+ aneeshkumar.kizhakeveetil@arm.com, ashish.kalra@amd.com,
+ dwmw2@infradead.org, eberman@quicinc.com, fvdl@google.com, gshan@redhat.com,
+ jackmanb@google.com, jackyli@google.com, jthoughton@google.com,
+ kalyazin@amazon.com, kas@kernel.org, kevinloughlin@google.com,
+ liruxin@google.com, michael.day@amd.com, michael.roth@amd.com,
+ mike.rapoport@gmail.com, mvaralar@redhat.com, pankaj.gupta@amd.com,
+ papaluri@amd.com, patrick.roy@linux.dev, Peter Xu <peterx@redhat.com>,
+ pheragu@quicinc.com, pkondeti@qti.qualcomm.com, prty@google.com,
+ psalian@google.com, qinkun@google.com, seanjc@google.com,
+ shan.gavin@gmail.com, shivankg@amd.com, sidtelang@google.com,
+ suzuki.poulose@arm.com, tabba@google.com, tatashin@google.com,
+ vannapurve@google.com, vbabka@suse.com, wyihan@google.com
+Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-09-16
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-+ Sandipan
+Hi,
 
-On Wed, Sep 16, 2026 at 12:33:15PM +0000, Luka Absandze wrote:
-> AMD event select 0xFFF (Merge) is the hardware control encoding used by
-> Large Increment per Cycle (LIPC) pairs.  When written into an odd
-> counter's PerfCtl it turns that counter into the upper 16 bits of a
-> 64-bit merged accumulator; any subsequent arming write (-(2^47-1)) is
-> silently truncated to its low 16 bits, while hwc->prev_count retains the
-> full value.
-> 
-> This is particularly problematic with a KVM guest, which will program
-> the Merge encoding into its own odd vPMC as a normal part of scheduling
-> a LIPC event.  KVM intercepts that write and faithfully forwards it to
-> the host as a raw event carrying the Merge encoding, where it is
-> accepted as an ordinary countable event. Once a counter's PerfCtl holds
-> the Merge encoding, every later user of that counter gets a first delta
-> inflated by 2^47
-> 
-> Reject Merge (AMD_MERGE_EVENT) in amd_core_hw_config() so it cannot be
-> submitted as a user-visible event.  The pair mechanism programs it
-> itself via x86_pmu.perf_ctr_pair_en; nothing else should do so.
-> 
-> Fixes: 5738891229a2 ("perf/x86/amd: Add support for Large Increment per Cycle Events")
-> Reported-by: Yao Zhou <yaoz@meta.com>
-> Signed-off-by: Luka Absandze <absandze@amazon.de>
-> ---
->  arch/x86/events/amd/core.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
-> index 49b6b8fce566..cb655c751e5b 100644
-> --- a/arch/x86/events/amd/core.c
-> +++ b/arch/x86/events/amd/core.c
-> @@ -380,8 +380,12 @@ static int amd_core_hw_config(struct perf_event *event)
->  	else if (event->attr.exclude_guest)
->  		event->hw.config |= AMD64_EVENTSEL_HOSTONLY;
->  
-> -	if ((x86_pmu.flags & PMU_FL_PAIR) && amd_is_pair_event_code(&event->hw))
-> -		event->hw.flags |= PERF_X86_EVENT_PAIR;
-> +	if (x86_pmu.flags & PMU_FL_PAIR) {
-> +		if ((event->hw.config & AMD64_EVENTSEL_EVENT) == AMD_MERGE_EVENT)
-> +			return -EINVAL;
-> +		if (amd_is_pair_event_code(&event->hw))
-> +			event->hw.flags |= PERF_X86_EVENT_PAIR;
-> +	}
->  
->  	if (has_branch_stack(event))
->  		return static_call(amd_pmu_branch_hw_config)(event);
-> -- 
-> 2.47.3
-> 
+Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
+2026-09-16 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
+
+So far we don't have any topics, so I assume we'll just briefly sync on current
+upstream work and discuss whatever comes up.
+
+We'll be using the following Google meet:
+http://meet.google.com/wxp-wtju-jzw
+
+The meeting notes can be found at [1], where we also link recordings and
+collect current guest_memfd upstream proposals. If you want an google
+calendar invitation that also covers all future meetings, just write me
+or Ackerley a mail.
+
+To put something to discuss onto the agenda, reply to this mail or add
+them to the "Topics/questions for next meeting(s)" section in the
+meeting notes as a comment.
+
+[1]
+https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
 
 -- 
-Regards/Gruss,
-    Boris.
+Cheers,
 
-https://people.kernel.org/tglx/notes-about-netiquette
+David
+
