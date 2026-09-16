@@ -1,193 +1,216 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011005.outbound.protection.outlook.com [52.101.62.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A267D472521;
-	Wed, 16 Sep 2026 23:45:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789602333; cv=none; b=SALJWOO0q/j5/HEs+iYtFXwRlw0ByrHKnazVq6tBpSsL0769PTX2ZTXRiML/9h+O6zy20xKsWUD6QSJoEgpfEgL4K6VM7nO7mYgJg+KQ4fbJClsJaKfCestk2hR/r7VoTPxK8y8o29yb3rdwcmiwnng4ZhfwoaOwa1/mTx33o1Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789602333; c=relaxed/simple;
-	bh=Kh3rKS1+K7TDXnwpcYYaSVeBFbOeWE/01LMZJFeCs8k=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=I3tzTN5EkEL2uAg7O5FKFbtvaKNajTQfNfMG70Zcke3R//OtbqX8ESgPzlAS78oxd4y3pIsHE90m+E5+UbEut+umlETOVEzh0sSfZ2AmSBAf6I3BApVoUtGDsHNRusIoVEBAy1wijaBYUErUmNKBvXjVc7E+Ktk2jWjLxxoQSC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HDmAf4+L; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7E15013C2;
+	Wed, 16 Sep 2026 23:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.5
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789602638; cv=fail; b=Ce/sOxYfSzuBxWZutIZ6kAPo7P+CCea6CtC2pEIomf4BdizGUqV1nlRDNx9R4jAhLvOWDVLbHcxJPzec+RDcPRmxqJ5n5Fu2Wi4BSl4X7d/Gf/RgMA+ouYQ7h0En26S5VlM1VBrbDJlAdu8a1L0ufPgkGBKXhn0fdphJ4rIycOc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789602638; c=relaxed/simple;
+	bh=VfsO4hcdLx7ZK2t4VSlVcUHQVuzYaoZv92tXND63qzc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YijMX8MzfzmdTDFWwIlfY/Lpah59pBRmJWiReVGrMtQTLgrDdq3bK02JR44FZSn8NkHF9ff11jWLtZ1SfQmVrfMal2u6NJrVUHqxHIUxAf/Qn1PCSk3IgkBbeaZx/8gOeKEDbPkoR/D9csfpVKr4IkbTPsoyJX8taEUF0lmFj50=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CV66vWAD; arc=fail smtp.client-ip=52.101.62.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HDmAf4+L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E282B1F000FF;
-	Wed, 16 Sep 2026 23:45:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789602332;
-	bh=Uom+5GiRwnUi0P13tTGi61WOHauRp/h8S/b2KqC1Afk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=HDmAf4+LvbmJSAoQRmaGZ2c2JeChzAbl08VlEepE6bI4BXd4YKpP0Ukb9lhdtMtTF
-	 HNUofo1oxUREMHfcP9KNAjrKP0QQlkeXuYmtD00rDEaFt9fHDKV9BsjZU76LdwXvfg
-	 la9tvag7dT8NkJOmmq0wMp1pWwz4jAtu708Bj05Kv6dYm8XdJevRGR5gyUg5t9oWwa
-	 Aeo8GeMCBIbpx3lCBZKZ8/1HDgBMuCW8G1sL9LbZ9IE0qw29fhud7UzGmUtDH8Ly20
-	 kkh2QcnFg9fsfnmEoImihNReVklcb4lNcN9crUYuyiOyFWHwyAq1J0pCyLvYIDSZ4I
-	 Zx0w60SifExYQ==
-Date: Thu, 17 Sep 2026 08:45:26 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Peter Zijlstra
- <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
- Jinchao Wang <wangjinchao600@gmail.com>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Thomas Gleixner <tglx@linutronix.de>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H . Peter Anvin" <hpa@zytor.com>, Alexander Shishkin
- <alexander.shishkin@linux.intel.com>, Ian Rogers <irogers@google.com>,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-perf-users@vger.kernel.org, Paolo Bonzini
- <pbonzini@redhat.com>, kvm@vger.kernel.org
-Subject: Re: [PATCH v16 02/13] KVM: x86: Prevent host DR7 debug register
- leak into guest OS on NMI
-Message-Id: <20260917084526.18128cef47424990d42bb6ce@kernel.org>
-In-Reply-To: <aqgGRKOE138ePqmX@google.com>
-References: <178939017565.94750.9431053336761330458.stgit@devnote2>
-	<178939019982.94750.4441254006258061798.stgit@devnote2>
-	<aqgGRKOE138ePqmX@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CV66vWAD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Q6P9nBiBJJqFLNGHW4nTVnkSrsqVh1DBgqOn8iO96jjEMSE7l7tq8KAxrRwbApk+ZNsnIBDy8h9IdVkiM/G/KlSUhcgDuPfis7842NBmkwA08dSZZ0xB1ivGyKv/LK9WDQMMRslAGLTvr+T46h3yHkX5ICHkYscC0chrYD6WrnzU1O4OZnc/eHTr2y127pDj4XBEt1PLSCLIJDp4N7WmiVrOJb3C63WDrF14zoVcvjK2nfB5ebx9a/TsGFLbYmab6P3pVMCpsQqIZolfeKGErY9Se0Hy7QIzsMzqz++50Ri946Ogzj2axFx27e3Gcnzp6+SHCDNlWavY0YB7BhI9Dw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0I4ILH2uM4pfxmoBtm2U0QuqZwP1ujxiG/2/wu+rSws=;
+ b=eCW46zvIsQ2lzBIUVHKqrpGYhJi26hFKQTcMhDUESiEqbcuxnhyPZYS4nKOeerLM8EmqLGlFXR4VjoP9BZoZkFn5AHjGSa5WI0RlcpwQTC5d3t/V4BY59YmpTLJfWHQzj387bOLKJpqJiFssXuutFlrYTwugz3dqePxosMAhlXHhs2vAk3fwkAEIOAhPh4wqNEsY0F8OfkN6rUmwK5+RlhPxYAVksxyYA08FXKwTIbJ4h8XrM1zpG+1M+nqPzkGzdS67LEFwJObSwXGNQw6EqaMIVQVwAegchy7PfvqOtFC3zcL1tCrs6UiQfhVchKn5yrgOeI+qv5dVbgQsRFpy3w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0I4ILH2uM4pfxmoBtm2U0QuqZwP1ujxiG/2/wu+rSws=;
+ b=CV66vWADp2esWTFeUOnfztpdMwS+8GxMy30iuF61zLxt7SUnsC5KXP4mwYWC6KoImNP/VxqGY9HC/bDzic5UpZDnMGvJLvb0DrMZ/Zo4mwj0Op7461RyRl9TlNhOWWz0hSqpZBotv7KemmDBTHO/XHIN0O8PyZqI+v439H/MT/B4M5la7InGHPufDvaDH79FLHpHQRr2zMFwhzGhDjRJ6NuTRKhWA6npEWh1mexnpxUp9cN6pXSBUoxnVE4FjHEDX6yGOSpQUIwWK6/LLk1rtEwweVGow+3jEsFb3NNR5ec1yszbVyPKutC1ouUC1am3cwofRLk1cJasIegI2S3Ejw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12) by IA4PR12MB9787.namprd12.prod.outlook.com
+ (2603:10b6:208:54d::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Wed, 16 Sep
+ 2026 23:50:00 +0000
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0428.011; Wed, 16 Sep 2026
+ 23:50:00 +0000
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Alex Williamson <alex@shazbot.org>,
+	David Matlack <dmatlack@google.com>,
+	kvm@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>,
+	linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	Mark Bloch <mbloch@nvidia.com>,
+	netdev@vger.kernel.org,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>
+Cc: patches@lists.linux.dev
+Subject: [PATCH v6 04/10] net/mlx5: Add ONCE and MMIO accessor variants to mlx5_ifc_macros.h
+Date: Wed, 16 Sep 2026 20:49:52 -0300
+Message-ID: <4-v6-8af36cf7b73f+e2-mlx5st_jgg@nvidia.com>
+In-Reply-To: <0-v6-8af36cf7b73f+e2-mlx5st_jgg@nvidia.com>
+References:
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MN0PR04CA0006.namprd04.prod.outlook.com
+ (2603:10b6:208:52d::23) To CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|IA4PR12MB9787:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7e7c0581-63aa-45e9-f64f-08df144d3829
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|23010399003|366016|921020|10067099003|11063799006|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	e/CEjykKRohHzzmZssYle+ugeLFueu6+mhTmZnkzWaiGyEmqvwYCuZnQ6b4iig7TrUibnTLkPnYJF1VWLjnhzQqi0JC0J2ImhytRvWJ8qKKdmeCoR98knxmsnhlmmPGjmu6gu1VNt+UolZo7Y8cXvAJJ/839SMQ0odE8aEGNh3OR0VCDO3iTD7/TaRgh262JZh8kXY+f2E5rqR7FnDQG/xe4Mq1KIpT2YZDX11VdaEt+9aztoejOINfN0f5BS/xn3mfIfY5VVLeLlE9WGs4ck7/CuBGTgD3X07YuxWn0lQdaCb/OSzI0wgGMx8LO/PqsAUPNhDJcCOKAaP4pAH+U7owhN1wbYMGzOH3olscu3oEpE84jkuQIwbhAA04ir5y+mT0DQC/mtMPBlzdF7K33Bx8kNvT05vXA0FHKLitFFa9oQwqd2ZuW/qHIRIOnVpKNm6OdlOau7gQH4ICng/OWd4RfA4hhQWj3NIInzTCU5Ueoy3Voog+n/cF6gzBnB9qqNRI0BWyqtGqMSYCUuQwG68G1AGHoZlsz6vkFMbUR/BnXISLz+agWb0KIriHvKTA/AzPfuxLSBM/sCP86hyReigkI4Z7y645oLrCetP1sfgGGtnUT2k/waIqrhv3H/OOistdl0hEj5LQf+zB/KIRDQ97rb+Y/GfWZF+9WfRw1rVpefanHmMqM/54eL97+kKNbDVE7nBXdtiuNPELfdHREHw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(366016)(921020)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?CYDaalIAMOStcfaF6x1paKg2Wjx4vqzE7AMWPT0krV0vyK8GfPFyaRi5bkWm?=
+ =?us-ascii?Q?ff0Ewyrg4+GUu5XWAf2Fe0yIplIE1GdlIjZUa7aQepx9/PIedj7RjCU+6gpD?=
+ =?us-ascii?Q?ZYm8TZWyamggy40a4DQRaxCTpnpG52U1m342/H6w4RW3a3e+DVx/93+wODTn?=
+ =?us-ascii?Q?AtzjDZ/RS6ywv0XIuF+jjxiHkxeTOtHgtxFZs4OqUNpfw+/QHQ5CSXvvrMh+?=
+ =?us-ascii?Q?UX+7Fo8VxyveiLSwfr6iLG1qDAbIX13QoYcwBBpEzK/a86bXpS6lkAn1Q87z?=
+ =?us-ascii?Q?hD0jeqloAy7DDwxJHs+tgTzHheyGrmgApoQr/cD3kO+HemlIfb9NbXHJWxqk?=
+ =?us-ascii?Q?3Ipc0CGUTswIuXQ2/2x6emRTCH/nkx3jU1cZtI1xVy/i5BFY0mSp1MEMa40j?=
+ =?us-ascii?Q?UXmFVVK+gqcXxOl8BZ2vKEOa9PfbUULyWJCjwDV2j99RJoCrQYm7r5Nhp8vr?=
+ =?us-ascii?Q?up/xHrBcXuzJoZmo62XpI74P/9EGIuWasWIS8DiawvcLHiYK1qS6UMVCHMIZ?=
+ =?us-ascii?Q?F4sfDwCFOZWdFZiekMN7WrN1PpoChFOLXNYT0La/sXI1VK/RRrDGllHirFUD?=
+ =?us-ascii?Q?+JdncWNR6Sp8hhRyRmytwj3FmZFE1upXQUPvz8MtQ9lZZUYsphaEeC8t+4Fv?=
+ =?us-ascii?Q?04XLqYrNd6l7H7A5JnF3s7mSBIp/wMmXDmxRC/2dZjHmep+5k8sh3h7akBym?=
+ =?us-ascii?Q?QYGiaAhBpl3yvHS5A1A6G/+Vm4TvJUaPtLSBzA6bjr79BvsWTdZz1MHCIYdX?=
+ =?us-ascii?Q?RE4Q867jYA0E1nXG6eZ6zP6v0jLotQGFThf/gV0cNFoN8RvuYmMfK6MPhYTg?=
+ =?us-ascii?Q?kUaju3Ss8vtsYZGSMiPm8O691XHkVRaOZ+uQkcsvioXmvAtmN/kX4j9jjsP8?=
+ =?us-ascii?Q?lkTYZeoQL0ZMH9qhQ4d8Dc637wP60Di1imam8a59h4q7zPlAr3Oij1lc1EbM?=
+ =?us-ascii?Q?NqdFxfmbbuTtC9DVVWaMLvnBhGxhbj8Ym8MyhWbhT6CJ/MgbTGRcDoCc8bCR?=
+ =?us-ascii?Q?7XaQuQVraMHF4ACGdp9IMQPJqCAg0mO5IKJllANJyGe6u3Sr0ymukKJn3358?=
+ =?us-ascii?Q?oMef50G9Z5Tru/Kk5kr9y90jwMWlcmL/C3jFud45mUKkBxCtoQLFYJUwFSGL?=
+ =?us-ascii?Q?xOBeJ9+FeZJDK07qnGpqeM4jnOROLfFGKQe7vUWAr4yrmBZTbYYcdahNWhcd?=
+ =?us-ascii?Q?5pgPK6EV/xMIVUKHw+fZbKxcD519hNZiWmHwVLnvB20VmZJdK9YcIK9Iqr0i?=
+ =?us-ascii?Q?a49t6UyCVHBfpTnlHF7itscjgqmKfK+499FmNGjiv9fDd6Phssu+kwFfNI1t?=
+ =?us-ascii?Q?P5ymeQp12FRRyRzPaCx9TuGfB6YIMm791ZsLEfMj0IDBe2POxoKehvPP6Nvh?=
+ =?us-ascii?Q?tBf5fu0j+MCNTWdsbdlr+BPcRj9MwoAsTCe3VsDGkjWeahTGDGLU3zs91uiD?=
+ =?us-ascii?Q?l7rqfLdLyG5MzV9h5Bhs8QQGBGoZoQgONrIy7RXK1wmtQD6O7H6CWiRus9xW?=
+ =?us-ascii?Q?vJzYfDamN71D+E2Nkb0i8SfyJe0vCcdrQqT3K7NoIS/2KZvVpFU+Hn9yRNxr?=
+ =?us-ascii?Q?Y0xnHdo979A57c+FPQiZAoh/RklXja1uqbAz0lY/7eo0ZJK5C3EvfQFTdaaB?=
+ =?us-ascii?Q?UqfzKXMc2gWP+pe5JCgboDwDyLQMDaJe+F+35AcTF5j6n3ouacMriHX/uacu?=
+ =?us-ascii?Q?VczXzxar4GUn/YfkM8b08xlD5XwLKg6QHgZP7Cw8w+DBrv1Q?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e7c0581-63aa-45e9-f64f-08df144d3829
+X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 23:49:59.7910
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PhBFX72OXUMDNRBURPGVvaSruNkRnB6eWzzgp2B96pJMz3I4SbGMQO4mODdHEtaZ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR12MB9787
 
-Hi Sean,
+Add MLX5_GET_ONCE / MLX5_SET_ONCE which include READ_ONCE/WRITE_ONCE
+semantics for touching ownership bits that hardware may read or write
+at any time. The kernel driver doesn't use the IFC struct for these
+ownership bits, but the VFIO driver will and needs these helpers.
 
-Thanks for your review!
+Add MLX5_GET_MMIO / MLX5_SET_MMIO for accessing the init seg using
+the IFC offsets. They embed a readl/writel using the IFC struct to
+generate the addressing.
 
-On Mon, 14 Sep 2026 07:35:48 -0700
-Sean Christopherson <seanjc@google.com> wrote:
+Add MLX5_ARRAY_GET64(), the missing counterpart to
+MLX5_ARRAY_SET64().
 
-> On Mon, Sep 14, 2026, Masami Hiramatsu (Google) wrote:
-> > From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> > 
-> > When KVM enters a guest OS, host hardware breakpoints are disabled
-> > before running the guest. However, an NMI can occur during guest
-> > execution, where local_db_save() or arch_install_hw_breakpoint()
-> > can be invoked.
-> > 
-> > In particular, if local_db_save() or arch_install_hw_breakpoint()
-> > is executed from NMI, hardware DR7 can be modified or restored with
-> > host breakpoint settings, leaking host breakpoints into the guest OS
-> > or clobbering the guest's debug registers.
-> 
-> Not for local_db_save(), at least not AFAICT.  On VM-Exit, both Intel and AMD
-> purge DR7, i.e. load 0x400, so local_db_save() => local_db_restore() is more or
-> less a nop.  Even if that weren't the case, actually saving/restoring DR7 would
-> be the right thing to do, in any context.
+Assisted-by: Claude:claude-opus-4.6
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+---
+ include/linux/mlx5/mlx5_ifc_macros.h | 52 ++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-OK.
-
-> 
-> > Introduce a per-CPU flag, cpu_dr_in_guest, to indicate that the CPU
-> > is executing in guest mode. Set this flag in vcpu_enter_guest()
-> > during entering the guest with disabling host breakpoints.
-> > If this flag is set, local_db_save() and local_db_restore() return
-> > immediately, and arch_install_hw_breakpoint() returns an error.
-> > In addition, protect cpu_dr_in_guest in within_cpu_entry() to
-> > prevent recursive #DB exceptions.
-> > 
-> > Fixes: f85d40160691 ("KVM: X86: Disable hardware breakpoints unconditionally before kvm_x86->run()")
-> > Assisted-by: Antigravity:gemini-3.8-flash
-> > Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> > ---
-> > Changes in v16:
-> >  - Newly added.
-> > ---
-> >  arch/x86/include/asm/debugreg.h |    6 ++++++
-> >  arch/x86/kernel/hw_breakpoint.c |   10 ++++++++++
-> >  arch/x86/kvm/x86.c              |    7 +++++++
-> >  3 files changed, 23 insertions(+)
-> > 
-> > diff --git a/arch/x86/include/asm/debugreg.h b/arch/x86/include/asm/debugreg.h
-> > index 854d82b88ff4..50f830972698 100644
-> > --- a/arch/x86/include/asm/debugreg.h
-> > +++ b/arch/x86/include/asm/debugreg.h
-> > @@ -18,6 +18,7 @@
-> >  #define DR7_FIXED_1	0x00000400
-> >  
-> >  DECLARE_PER_CPU(unsigned long, cpu_dr7);
-> > +DECLARE_PER_CPU(bool, cpu_dr_in_guest);
-> >  
-> >  #ifndef CONFIG_PARAVIRT_XXL
-> >  /*
-> > @@ -129,6 +130,9 @@ static __always_inline unsigned long local_db_save(void)
-> >  {
-> >  	unsigned long dr7;
-> >  
-> > +	if (this_cpu_read(cpu_dr_in_guest))
-> > +		return 0;
-> 
-> This is broken.  If an NMI hits between KVM writing cpu_dr_in_guest and clearing
-> DR7, and there are active breakpoints, then local_db_save() won't disable breakpoints
-> as it should, and the relevant code in exc_nmi() will run with breakpoints enabled.
-> 
-> 	kvm_load_xfeatures(vcpu, true);
-> 
-> 	this_cpu_write(cpu_dr_in_guest, true);
-> 	barrier();
-> 
->   <NMI here is problematic>
-> 
-> 	if (unlikely(vcpu->arch.switch_db_regs &&
-> 		     !(vcpu->arch.switch_db_regs & KVM_DEBUGREG_AUTO_SWITCH))) {
-> 		set_debugreg(DR7_FIXED_1, 7);
-> 		set_debugreg(vcpu->arch.eff_db[0], 0);
-
-Oops, indeed! OK, so local_db_save/restore will just work as it is,
-but modifying DR7 should directly be prohibited.
-
-> 
-> > +
-> >  	if (cpu_feature_enabled(X86_FEATURE_HYPERVISOR) && !hw_breakpoint_active())
-> >  		return 0;
-> >  
-> > @@ -157,6 +161,8 @@ static __always_inline void local_db_restore(unsigned long dr7)
-> >  	 * not be good.
-> >  	 */
-> >  	barrier();
-> > +	if (this_cpu_read(cpu_dr_in_guest))
-> > +		return;
-> >  	if (dr7)
-> >  		set_debugreg(dr7, 7);
-> >  }
-> > diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
-> > index f846c15f21ca..68de7ed79d88 100644
-> > --- a/arch/x86/kernel/hw_breakpoint.c
-> > +++ b/arch/x86/kernel/hw_breakpoint.c
-> > @@ -40,6 +40,9 @@
-> >  DEFINE_PER_CPU(unsigned long, cpu_dr7);
-> >  EXPORT_PER_CPU_SYMBOL(cpu_dr7);
-> >  
-> > +DEFINE_PER_CPU(bool, cpu_dr_in_guest);
-> > +EXPORT_PER_CPU_SYMBOL_GPL(cpu_dr_in_guest);
-> > +
-> >  /* Per cpu debug address registers values */
-> >  static DEFINE_PER_CPU(unsigned long, cpu_debugreg[HBP_NUM]);
-> >  
-> > @@ -102,6 +105,9 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
-> >  
-> >  	lockdep_assert_irqs_disabled();
-> >  
-> > +	if (this_cpu_read(cpu_dr_in_guest))
-> > +		return -EBUSY;
-> 
-> If we decide this is how to fix arch_install_hw_breakpoint() clobbering DRs from
-> NMI context, I would rather have more generic flag to tell perf that KVM is about
-> to enter the guest, e.g. so that we don't have to separately solve the same problem
-> for other perf events:
-> 
-> https://lore.kernel.org/all/3585d823-00f3-46ae-a799-b62a95743e76@linux.intel.com
-
-OK, so introducing a new (someting like) cpu_in_trans_guest flag and check it
-from all affected places?
-
-Thank you,
-
+diff --git a/include/linux/mlx5/mlx5_ifc_macros.h b/include/linux/mlx5/mlx5_ifc_macros.h
+index d357acfd351de2..1b9e39a509495a 100644
+--- a/include/linux/mlx5/mlx5_ifc_macros.h
++++ b/include/linux/mlx5/mlx5_ifc_macros.h
+@@ -85,6 +85,13 @@ __mlx5_mask(typ, fld))
+ 	__MLX5_SET64(typ, p, fld[idx], v); \
+ } while (0)
+ 
++#define MLX5_ARRAY_GET64(typ, p, fld, idx)                                   \
++	({                                                                   \
++		BUILD_BUG_ON(__mlx5_bit_off(typ, fld) % 64);                 \
++		be64_to_cpu(                                                 \
++			*((__be64 *)(p) + __mlx5_64_off(typ, fld) + (idx))); \
++	})
++
+ #define MLX5_GET64(typ, p, fld) be64_to_cpu(*((__be64 *)(p) + __mlx5_64_off(typ, fld)))
+ 
+ #define MLX5_GET64_PR(typ, p, fld) ({ \
+@@ -130,4 +137,49 @@ __mlx5_mask16(typ, fld))
+ 		tmp;							  \
+ 		})
+ 
++/*
++ * Use READ_ONCE/WRITE_ONCE for a single field that hardware may read/write
++ * unpredictably, mostly owner bits. All other bits in the DW must be stable.
++ * Usually a dma_wmb() will be required before a write and a dma_rmb() after a
++ * read.
++ */
++#define MLX5_GET_ONCE(typ, p, fld)                                              \
++	((be32_to_cpu(READ_ONCE(*((__be32 *)(p) + __mlx5_dw_off(typ, fld)))) >> \
++	  __mlx5_dw_bit_off(typ, fld)) &                                        \
++	 __mlx5_mask(typ, fld))
++
++#define MLX5_SET_ONCE(typ, p, fld, v)                                      \
++	do {                                                               \
++		u32 _v = v;                                                \
++		__be32 *_dw = (__be32 *)(p) + __mlx5_dw_off(typ, fld);     \
++		BUILD_BUG_ON(__mlx5_st_sz_bits(typ) % 32);                 \
++		WRITE_ONCE(*_dw,                                           \
++			   cpu_to_be32((be32_to_cpu(READ_ONCE(*_dw)) &     \
++					(~__mlx5_dw_mask(typ, fld))) |     \
++				       (((_v) & __mlx5_mask(typ, fld))     \
++					<< __mlx5_dw_bit_off(typ, fld)))); \
++	} while (0)
++
++/* Access MMIO registers, usually the init segment, using IFC structs. */
++#define MLX5_GET_MMIO(typ, p, fld)                                         \
++	((ioread32be(((__be32 __iomem *)(p) + __mlx5_dw_off(typ, fld))) >> \
++	  __mlx5_dw_bit_off(typ, fld)) &                                   \
++	 __mlx5_mask(typ, fld))
++
++/* The set is not relaxed so there is an integrated dma_wmb(). */
++#define MLX5_SET_MMIO(typ, p, fld, v)                                         \
++	do {                                                                  \
++		u32 _v = v;                                                   \
++		void __iomem *_dw =                                           \
++			((__be32 __iomem *)(p) + __mlx5_dw_off(typ, fld));    \
++		if (__mlx5_bit_sz(typ, fld) == 32)                            \
++			iowrite32be(_v, _dw);                                 \
++		else                                                          \
++			iowrite32be((ioread32be(_dw) &                        \
++				     (~__mlx5_dw_mask(typ, fld))) |           \
++					    ((_v & __mlx5_mask(typ, fld))     \
++					     << __mlx5_dw_bit_off(typ, fld)), \
++				    _dw);                                     \
++	} while (0)
++
+ #endif /* MLX5_IFC_MACROS_H */
 -- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+2.43.0
+
