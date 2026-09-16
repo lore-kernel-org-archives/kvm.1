@@ -1,80 +1,166 @@
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4544C41B8C4
-	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 19:24:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112FA42123E
+	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 19:27:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789586663; cv=none; b=khqXQNRwSNwZ3bJQrfIY7JJnTmojUpUPWGCUJllceJvF0WjLAZO089HiqpW7Ujr/eLqfPe2+tKhnJyLwaIUZq/4T7IoYjdrbZETSmoSQwImDBSEsnwzD8ZRcD1n1YmHN7HtvGUjg6c6Con1YG77BSrWokl1e/XjFmNSqIkVc000=
+	t=1789586882; cv=none; b=TeQIq5uOYMZYxE/RelyCVou5URq1Rf+74VGEgOCJRR1qGXD3pVfQD9B42mVfxsgVZgdXeFE7IarAzME+i8L5rWaRSMMJlrXrVBS1+XqocFghYrsYGflQ6IuqgyBjJ7xUmRsXHDJ3YMxTNn47OUlnswyBkwwEmqNcXFFPQu6WQKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789586663; c=relaxed/simple;
-	bh=T8e4qFcoWW/dNathKMvtjSc8MmQ0SvJgeeAGEMDyUMQ=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=UwEV8rbHnSuJUO5jRvwUPlIC+vZzSJSO73n6P9oKHU3KLA3m2swJJ1Lr0M/CefkhWtntzrZm/Q7c3YW4sN7FaNDLxGqoKoFO41ISmTq9cbkkkfO5mcbcWMd6WxXMkGbNdqVv9vHCTjEulhsk0flBP5gRjmRZ5mA1FAD14L2BeSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4a45b3f0bdfso123642b6e.1
-        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 12:24:08 -0700 (PDT)
+	s=arc-20240116; t=1789586882; c=relaxed/simple;
+	bh=q2Lu/gBIIz5tR888gYDfXNn+E1ZBLVUP8HyYrOK6nwQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=nJUv0ppHflN8P406lj2wNuCKQ8FO71vn5ESW98KVwnMRYJoVG+Tm1PhU4pImj1+C8Rp+jJExZTNOXM9xUiRNbYyWkv9a4VdmnRYeQvMswNXKfOtkcmeJWINwIYkVnsaiZoLYd97bYC9FHo5RAp9KO/3Rhx9xPrekjy5WZfL+B7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T70v9h56; arc=none smtp.client-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T70v9h56"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-86a0dc7f26cso50794b3a.3
+        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 12:27:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789586856; x=1790191656; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=kdb/dcqaU3T+x2hKjF2QXeOgIWRPb7qej2gXSeg/S/w=;
+        b=T70v9h56FENC67tCp+lt1ECLI7STXaw+TndKCpnPl36VTgJVTuVevAKJpC3qcMaEgn
+         qSb7YiOKzokxSgeQ+OgUhWu6yg6XwAzGkz6oWayxSbFbhLnYfOPCQZPDSZ8FIbrVYYKd
+         bme2lmORERyPsNjN2M03fqUaaTTx2QP/+mvh9VRgXrF8c1XrqgUgTK+XlN2Yht8HdwFC
+         0GtpU55A//NFvmmMx441D1cworscH9WXnSTR/8YoRwhcJBuhZhsPA1UwMbrcJy/V4xqA
+         3rQPBKi+cgHnLMGQQO6GoNYlgcgUtBalmDWLx6N8wTRBd04VZQT1tu5npSoGc2YZ4ZGi
+         zUMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789586646; x=1790191446;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=gGav+E6NmhUVSh9XUjVdcV/Auw85chnTv3eOmsCDzNk=;
-        b=UmCTlIhNosHStHdjNY0JJy5HRV8WqiB7ZNnAcs7pJL+KJx/Y/C7+CHBftZGil/GZMx
-         TDLcdiFreJUg+6utli7wdKbKg3M03O5fBhIi7voxCBuGiJW8uKCxxDFTtgqCj/7AaSkV
-         fOJkQ4ekpv6B1AITCxmpDDVG1w/iSVSy7P5UEnajp5vdE2VfGpLpAy/ilzXuCSpbJ5TR
-         VB1V1GkK3ELCecvkBmH+dlsFbpxmRgcjBrsn0iOHGeOk8i5pVTo40dupuNqaYWuSJfta
-         9paL7m61+d2Bgdhbi/Fi1wXZi0Pj1I6Gi01a9jH+2kqS8IjvyxN65a2Dp8VPDqOIrQn4
-         bsYw==
-X-Forwarded-Encrypted: i=1; AKwUvBzJ4G9nD9NdsSrfvmJIkTo2qPpQLtdWN3R6w0aGuHFsM2fugspPfQNu0OH5MvPTsnuKJFE=@vger.kernel.org
-X-Gm-Message-State: AFuF++lCiDK1WWjYufjvPe/dA1lFc50qYj5Ms1+9Bx1ysraFtSo2brvK
-	sYlQWxWsBWE6m02MXCObVso3xgttrGf71+P7UdbhXHaBA8+GVU4kjdTwBE4czLJU4SPvZ4dmrel
-	eUL5w9Laafgx22Lqig7r0bI8WJSjOs/UGdbfpnFjkzR1N9ajwGgxM6XSkLXs=
+        d=1e100.net; s=20260707; t=1789586856; x=1790191656;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kdb/dcqaU3T+x2hKjF2QXeOgIWRPb7qej2gXSeg/S/w=;
+        b=OlT5gt4osa/3g1hDwBBB1KvoqfV5v4EPgZXs1mO9u6dJr0RsjLOYOzIsWTpwOjXBvI
+         noHNx48piKIa5mdYJA5msg1iLNXgvC7CuJNYrM0F61ywkepurVAjjhXW8A+57On7wWu8
+         oLekDQ/72cYNLijq8Q+3x8lLpdpxJAg/M7gx7W91dAaiBsXzLti1/ixlmFdJEtbdNxgc
+         XP/LW+zQ/FuIJDS9FBswlUmoB/MZWnJcu4jQeEpYPea4P4bTzEhx8M4vrZPZroF9oscW
+         d1tCifAsfnZ5+xUr/cRthfuX0JZ5aeh4ZFHXN5G2mCjQ3nFLxVgh5nEPGNj7369PqqmE
+         FXbw==
+X-Forwarded-Encrypted: i=1; AKwUvBw4aLHsa7Xb7lISuq6gtFJxlUaYSHEPyPvDeRbWDjv2G6prjbz02j/4f/e0DyxZiRLdluY=@vger.kernel.org
+X-Gm-Message-State: AFuF++kGR0NhP/uweeO0whKE+cfwZV5EPDpduNkPf10F1Nqt8JApkQ4u
+	pY41X+KXbRLFBteDlakWZCXVBa8oPooZDmPqDoagIL8osDROHID8DY/4lDfp95AjrtB5WpNRfG/
+	ursL+CQ==
+X-Received: from pfbmc28.prod.google.com ([2002:a05:6a00:769c:b0:847:9be8:84d5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4652:b0:86f:394c:5c68
+ with SMTP id d2e1a72fcca58-87238d87b0emr7666454b3a.13.1789586855429; Wed, 16
+ Sep 2026 12:27:35 -0700 (PDT)
+Date: Wed, 16 Sep 2026 12:27:34 -0700
+In-Reply-To: <736a9315f3cc3d8ef7079b784bfcc7b014386bd8.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1a24:b0:4c3:7695:d30 with SMTP id
- 5614622812f47-4ca4a1dc406mr4599160b6e.14.1789586646123; Wed, 16 Sep 2026
- 12:24:06 -0700 (PDT)
-Date: Wed, 16 Sep 2026 12:24:06 -0700
-In-Reply-To: <aqrZMReaQPG0M9oV@gremlin>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aaaecd6.4e05fbd6.392abc.0003.GAE@google.com>
-Subject: Re: [syzbot] [kvm?] BUG: sleeping function called from invalid
- context in kvm_mmu_notifier_invalidate_range_start
-From: syzbot <syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, bigeasy@linutronix.de, dwmw2@infradead.org, 
-	dwmw@amazon.co.uk, kvm@vger.kernel.org, liam.howlett@oracle.com, 
-	liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-rt-devel@lists.linux.dev, ljs@kernel.org, lkp@intel.com, 
-	llvm@lists.linux.dev, lorenzo.stoakes@oracle.com, me@brighamcampbell.com, 
-	mhocko@suse.com, nogikh@google.com, oe-kbuild-all@lists.linux.dev, 
-	pbonzini@redhat.com, rientjes@google.com, rppt@kernel.org, seanjc@google.com, 
-	shaikhkamal2012@gmail.com, shakeel.butt@linux.dev, skhan@linuxfoundation.org, 
-	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <24a751d16ba0dc37aa7774df5739f39734cf9aca.camel@intel.com>
+ <aqrZUZtSZ-YItclT@google.com> <736a9315f3cc3d8ef7079b784bfcc7b014386bd8.camel@intel.com>
+Message-ID: <aqrtprn5YaMijVdZ@google.com>
+Subject: Re: TDG quote analysis
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Yilun Xu <yilun.xu@intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Binbin Wu <binbin.wu@intel.com>, Dave Hansen <dave.hansen@intel.com>, 
+	"kas@kernel.org" <kas@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, Peter Fang <peter.fang@intel.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Wed, Sep 16, 2026, Rick P Edgecombe wrote:
+> On Wed, 2026-09-16 at 11:00 -0700, Sean Christopherson wrote:
+> > On Wed, Sep 16, 2026, Rick P Edgecombe wrote:
+> > > This DICE quote generation can take a long time. Exactly how long is =
+not
+> > > known, but it is expected to vary and often exceed the time a SEAMCAL=
+L can
+> > > be executing in the TDX module by a considerable amount.
+> >=20
+> > What's the ballpark?=C2=A0 Are we talking tens of nanoseconds, tens of
+> > microseconds, tens of milliseconds?
+>=20
+> I asked about this too. I have not seen any measurement yet for the real
+> implementation. AFAIU the PQC stuff is not settled enough at the industry=
+ level
+> to be sure in the long run. I have been under the impression of at least =
+a ms or
+> 2 for PQC signature based on general PQC signature benchmarks I've seen. =
+That is
+> only my guess though.
+>=20
+> If you are thinking the implementation could punt on how to handle the gu=
+est
+> interrupts for now, that seems reasonable. I'd think exiting to handle th=
+e host
+> interrupts could not be skipped though.
 
-syzbot tried to test the proposed patch but the build/boot failed:
+I'm just trying to understand the scope of the problem we're trying to solv=
+e.
+E.g. I don't think any design will save us if generating a quote requires a=
+ CPU
+to be spinning for multiple milliseconds.
 
-failed to apply patch:
-error: corrupt patch at line 7
+> > Does the TDX Module *need* to provide a save slot?=C2=A0 What would pre=
+vent TDX
+> > from requiring the guest to provide storage for whatever in-flight data=
+ is
+> > needed? That way there it doesn't matter if the guest never resumes the=
+ call,
+> > it can only hurt itself.
+>=20
+> I was thinking about this too, but thought it sounded a bit like the NAKe=
+d SNP
+> secure AVIC pattern. At least the TDX module would need to handle getting=
+ asked
+> to zap the guest page that was given to be a saved state slot.
 
+But doesn't the TDX Module already need to do this?  It's writing guest mem=
+ory,
+no?  So it needs to prevent the page from being freed while it's handling t=
+he
+quote.  Just put the onus on the guest to provide the same GPA when restart=
+ing
+the TDG.
 
+If the host yanks a page away from the guest, the guest is hosed no matter =
+what.
+If the guest frees an in-use page, e.g. converts it to SHARED, then that's =
+100%
+a guest bug.
 
-Tested on:
+> The host would probably need to be involved in unmapping the page from th=
+e S-EPT
+> while in use too, since it would need a TLB flush on each vCPU. Otherwise=
+ the
+> guest could see the intermediate memory of the operation.
 
-commit:         9b87fdc9 Merge tag 'sched_ext-for-7.3-rc3-fixes' of gi..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b454dc6b1b7acd30
-dashboard link: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
-compiler:       
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=15a16bf9580000
+Do we care?  I was and am assuming "no".  Unless there is sensitive TDX-Mod=
+ule
+data that needs to be saved, it's again on the guest not to read half-baked=
+ data.
 
+> > What about the whole "TD-specific data in the quote" thing?=C2=A0 If ge=
+tting a
+> > quote (or report?) is punted to the host, I'd still like to keep it out=
+ of
+> > KVM.
+>=20
+> I checked another option for this: Write the nonce to the TDX module via =
+some
+> new TDG call, then just ask for a TD scoped quote which fills in everythi=
+ng from
+> what the TDX module already knows. TD details and nonce. Apparently it co=
+uld
+> work.
+>=20
+> Then nothing gets passed out of the guest except for request for a quote.=
+  We'd
+> have to break compatibility with the SGX based quotes though. Is it worth=
+ it? Vs
+> just utilizing the upstream KVM functionality unchanged?
