@@ -1,224 +1,193 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEBE4CA779;
-	Wed, 16 Sep 2026 23:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A267D472521;
+	Wed, 16 Sep 2026 23:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789601962; cv=none; b=HMVAAJ5JFNxV0Mm4+pY4Fe1eLcVuuKoH3XK8VbZr+/s2UZ8/4YairmMITRHBOYi8tagF01BYWeDfcLvJB5rRkjOUXtqmC3cF4lmuxBEj725N8R5Sapgx2EioZa23Pfn56PSx6KXQDSoyKmFgDCeqt0xZAYBjf5d/kriplzpNR2w=
+	t=1789602333; cv=none; b=SALJWOO0q/j5/HEs+iYtFXwRlw0ByrHKnazVq6tBpSsL0769PTX2ZTXRiML/9h+O6zy20xKsWUD6QSJoEgpfEgL4K6VM7nO7mYgJg+KQ4fbJClsJaKfCestk2hR/r7VoTPxK8y8o29yb3rdwcmiwnng4ZhfwoaOwa1/mTx33o1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789601962; c=relaxed/simple;
-	bh=ii2ZG5F7ufI7wKa1xlq57LRaUXtjyL8jQs74dZdeelk=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PvYCdkhJzDYUum4ohyh6HM8VB0lh4Gm58fj/KMR8fbWcM7nh3aQuJgX3BEt101cXjf1JFo9ViK6gDKFs6tyWPKpvUL+jhF/CtdBfN9J97bcvWLAyn5cpwXGNmq+HAvPIdyuRXa3RGYVRqs3QPa3iL8SOXD0vXurMqhalrsU2/wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ely4aOS/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789602333; c=relaxed/simple;
+	bh=Kh3rKS1+K7TDXnwpcYYaSVeBFbOeWE/01LMZJFeCs8k=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=I3tzTN5EkEL2uAg7O5FKFbtvaKNajTQfNfMG70Zcke3R//OtbqX8ESgPzlAS78oxd4y3pIsHE90m+E5+UbEut+umlETOVEzh0sSfZ2AmSBAf6I3BApVoUtGDsHNRusIoVEBAy1wijaBYUErUmNKBvXjVc7E+Ktk2jWjLxxoQSC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HDmAf4+L; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ely4aOS/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2EF71F00893;
-	Wed, 16 Sep 2026 23:39:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HDmAf4+L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E282B1F000FF;
+	Wed, 16 Sep 2026 23:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789601958;
-	bh=6xLgyUj4E59zikNOGva9HXqASQHqSQBDsxta8HdSbyo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ely4aOS/u/Hv7ETfy/G5Aq7GF+vWBwxNALr0q6TieCHGNhioWnE77s1VcGcIEUlKq
-	 9jCsi/b5WWf+OxnhJbYufMXubhKQYqeILs00VfgFRsEMKC6g/IXIEy7r+UlWBzbBo6
-	 IedH0VPt9e0TZlXCLJRlCgECuSPC1QJ5mcyyzQlE4HPTyaShN9wiS5sIr/E9tepol9
-	 snKHDqQuopfYn53/0KQWBIZzSpcAWJa0ykOMUO+G9t2kCUpBkKu5ViFD1jkooHYP63
-	 u9+VweNcnAbYBSEvTlj6SQWpG1/hwNx+h21XxqfsonFvj2XrLd0DtH6+3PZHYWQHQu
-	 /1iYM70NfvxuA==
-Subject: Re: [PATCH net v2 4/5] vsock: Do not reset a TCP_CLOSING socket
-From: netdev-bot+sashiko@kernel.org
-To: mhal@rbox.co
-Cc: stefanha@redhat.com, sgarzare@redhat.com, mst@redhat.com,
- jasowangio@gmail.com, eperezma@redhat.com, davem@davemloft.net,
- xuanzhuo@linux.alibaba.com, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, asias@redhat.com, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Wed, 16 Sep 2026 23:39:17 +0000
-Message-ID: <178960195730.22033.16636722417726715635@kernel.org>
-In-Reply-To: <20260915-vsock-connect-reset-closing-v2-4-a1d9abb472f7@rbox.co>
-References: <20260915-vsock-connect-reset-closing-v2-4-a1d9abb472f7@rbox.co>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1789602332;
+	bh=Uom+5GiRwnUi0P13tTGi61WOHauRp/h8S/b2KqC1Afk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=HDmAf4+LvbmJSAoQRmaGZ2c2JeChzAbl08VlEepE6bI4BXd4YKpP0Ukb9lhdtMtTF
+	 HNUofo1oxUREMHfcP9KNAjrKP0QQlkeXuYmtD00rDEaFt9fHDKV9BsjZU76LdwXvfg
+	 la9tvag7dT8NkJOmmq0wMp1pWwz4jAtu708Bj05Kv6dYm8XdJevRGR5gyUg5t9oWwa
+	 Aeo8GeMCBIbpx3lCBZKZ8/1HDgBMuCW8G1sL9LbZ9IE0qw29fhud7UzGmUtDH8Ly20
+	 kkh2QcnFg9fsfnmEoImihNReVklcb4lNcN9crUYuyiOyFWHwyAq1J0pCyLvYIDSZ4I
+	 Zx0w60SifExYQ==
+Date: Thu, 17 Sep 2026 08:45:26 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Peter Zijlstra
+ <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>, x86@kernel.org,
+ Jinchao Wang <wangjinchao600@gmail.com>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H . Peter Anvin" <hpa@zytor.com>, Alexander Shishkin
+ <alexander.shishkin@linux.intel.com>, Ian Rogers <irogers@google.com>,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-perf-users@vger.kernel.org, Paolo Bonzini
+ <pbonzini@redhat.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH v16 02/13] KVM: x86: Prevent host DR7 debug register
+ leak into guest OS on NMI
+Message-Id: <20260917084526.18128cef47424990d42bb6ce@kernel.org>
+In-Reply-To: <aqgGRKOE138ePqmX@google.com>
+References: <178939017565.94750.9431053336761330458.stgit@devnote2>
+	<178939019982.94750.4441254006258061798.stgit@devnote2>
+	<aqgGRKOE138ePqmX@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+Hi Sean,
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
+Thanks for your review!
 
-- [Medium] Undocumented change of connect()'s return value / sk_err
-  consumption for an already-established socket.
+On Mon, 14 Sep 2026 07:35:48 -0700
+Sean Christopherson <seanjc@google.com> wrote:
 
-Pre-existing issues:
-- [Low] Reported gap (validated as resolved later in this series,
-  therefore discarded): at this commit vsock_connect() keys its "do not…
+> On Mon, Sep 14, 2026, Masami Hiramatsu (Google) wrote:
+> > From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+> > 
+> > When KVM enters a guest OS, host hardware breakpoints are disabled
+> > before running the guest. However, an NMI can occur during guest
+> > execution, where local_db_save() or arch_install_hw_breakpoint()
+> > can be invoked.
+> > 
+> > In particular, if local_db_save() or arch_install_hw_breakpoint()
+> > is executed from NMI, hardware DR7 can be modified or restored with
+> > host breakpoint settings, leaking host breakpoints into the guest OS
+> > or clobbering the guest's debug registers.
+> 
+> Not for local_db_save(), at least not AFAICT.  On VM-Exit, both Intel and AMD
+> purge DR7, i.e. load 0x400, so local_db_save() => local_db_restore() is more or
+> less a nop.  Even if that weren't the case, actually saving/restoring DR7 would
+> be the right thing to do, in any context.
 
---
+OK.
 
-vsock: Do not reset a TCP_CLOSING socket
+> 
+> > Introduce a per-CPU flag, cpu_dr_in_guest, to indicate that the CPU
+> > is executing in guest mode. Set this flag in vcpu_enter_guest()
+> > during entering the guest with disabling host breakpoints.
+> > If this flag is set, local_db_save() and local_db_restore() return
+> > immediately, and arch_install_hw_breakpoint() returns an error.
+> > In addition, protect cpu_dr_in_guest in within_cpu_entry() to
+> > prevent recursive #DB exceptions.
+> > 
+> > Fixes: f85d40160691 ("KVM: X86: Disable hardware breakpoints unconditionally before kvm_x86->run()")
+> > Assisted-by: Antigravity:gemini-3.8-flash
+> > Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+> > ---
+> > Changes in v16:
+> >  - Newly added.
+> > ---
+> >  arch/x86/include/asm/debugreg.h |    6 ++++++
+> >  arch/x86/kernel/hw_breakpoint.c |   10 ++++++++++
+> >  arch/x86/kvm/x86.c              |    7 +++++++
+> >  3 files changed, 23 insertions(+)
+> > 
+> > diff --git a/arch/x86/include/asm/debugreg.h b/arch/x86/include/asm/debugreg.h
+> > index 854d82b88ff4..50f830972698 100644
+> > --- a/arch/x86/include/asm/debugreg.h
+> > +++ b/arch/x86/include/asm/debugreg.h
+> > @@ -18,6 +18,7 @@
+> >  #define DR7_FIXED_1	0x00000400
+> >  
+> >  DECLARE_PER_CPU(unsigned long, cpu_dr7);
+> > +DECLARE_PER_CPU(bool, cpu_dr_in_guest);
+> >  
+> >  #ifndef CONFIG_PARAVIRT_XXL
+> >  /*
+> > @@ -129,6 +130,9 @@ static __always_inline unsigned long local_db_save(void)
+> >  {
+> >  	unsigned long dr7;
+> >  
+> > +	if (this_cpu_read(cpu_dr_in_guest))
+> > +		return 0;
+> 
+> This is broken.  If an NMI hits between KVM writing cpu_dr_in_guest and clearing
+> DR7, and there are active breakpoints, then local_db_save() won't disable breakpoints
+> as it should, and the relevant code in exc_nmi() will run with breakpoints enabled.
+> 
+> 	kvm_load_xfeatures(vcpu, true);
+> 
+> 	this_cpu_write(cpu_dr_in_guest, true);
+> 	barrier();
+> 
+>   <NMI here is problematic>
+> 
+> 	if (unlikely(vcpu->arch.switch_db_regs &&
+> 		     !(vcpu->arch.switch_db_regs & KVM_DEBUGREG_AUTO_SWITCH))) {
+> 		set_debugreg(DR7_FIXED_1, 7);
+> 		set_debugreg(vcpu->arch.eff_db[0], 0);
 
-This teaches the vsock_connect() wait loop about the TCP_ESTABLISHED ->
-TCP_CLOSING transition triggered by VIRTIO_VSOCK_OP_RST, so a socket that
-is still linked in vsock_connected_table is not reset behind the receive
-path's back. It also rewrites the tail of vsock_connect() and drops a
-stale comment.
+Oops, indeed! OK, so local_db_save/restore will just work as it is,
+but modifying DR7 should directly be prohibited.
 
-Link: https://lore.kernel.org/netdev/anzT1fREOSyHT99k@v4bel/
+> 
+> > +
+> >  	if (cpu_feature_enabled(X86_FEATURE_HYPERVISOR) && !hw_breakpoint_active())
+> >  		return 0;
+> >  
+> > @@ -157,6 +161,8 @@ static __always_inline void local_db_restore(unsigned long dr7)
+> >  	 * not be good.
+> >  	 */
+> >  	barrier();
+> > +	if (this_cpu_read(cpu_dr_in_guest))
+> > +		return;
+> >  	if (dr7)
+> >  		set_debugreg(dr7, 7);
+> >  }
+> > diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
+> > index f846c15f21ca..68de7ed79d88 100644
+> > --- a/arch/x86/kernel/hw_breakpoint.c
+> > +++ b/arch/x86/kernel/hw_breakpoint.c
+> > @@ -40,6 +40,9 @@
+> >  DEFINE_PER_CPU(unsigned long, cpu_dr7);
+> >  EXPORT_PER_CPU_SYMBOL(cpu_dr7);
+> >  
+> > +DEFINE_PER_CPU(bool, cpu_dr_in_guest);
+> > +EXPORT_PER_CPU_SYMBOL_GPL(cpu_dr_in_guest);
+> > +
+> >  /* Per cpu debug address registers values */
+> >  static DEFINE_PER_CPU(unsigned long, cpu_debugreg[HBP_NUM]);
+> >  
+> > @@ -102,6 +105,9 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
+> >  
+> >  	lockdep_assert_irqs_disabled();
+> >  
+> > +	if (this_cpu_read(cpu_dr_in_guest))
+> > +		return -EBUSY;
+> 
+> If we decide this is how to fix arch_install_hw_breakpoint() clobbering DRs from
+> NMI context, I would rather have more generic flag to tell perf that KVM is about
+> to enter the guest, e.g. so that we don't have to separately solve the same problem
+> for other perf events:
+> 
+> https://lore.kernel.org/all/3585d823-00f3-46ae-a799-b62a95743e76@linux.intel.com
 
-> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-> index 499e902becfad..adf3f018347ea 100644
-> --- a/net/vmw_vsock/af_vsock.c
-> +++ b/net/vmw_vsock/af_vsock.c
+OK, so introducing a new (someting like) cpu_in_trans_guest flag and check it
+from all affected places?
 
-[ ... ]
-
-> @@ -1834,23 +1833,22 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
->  		timeout = schedule_timeout(timeout);
->  		lock_sock(sk);
->  
-> -		/* Connection established. Whatever happens to socket once we
-> -		 * release it, that's not connect()'s concern. No need to go
-> +		/* Connection was established. Whatever happens to socket once
-> +		 * we release it, that's not connect()'s concern. No need to go
->  		 * into signal and timeout handling. Call it a day.
->  		 *
->  		 * Note that allowing to "reset" an already established socket
->  		 * here is racy and insecure.
->  		 */
-> -		if (sk->sk_state == TCP_ESTABLISHED)
-> -			break;
-> +		if (sk->sk_state == TCP_ESTABLISHED ||
-> +		    sk->sk_state == TCP_CLOSING) {
-> +			err = 0;
-> +			goto out_wait;
-> +		}
-
-[Severity: Medium]
-
-The old code did a plain break here, so control fell through to the
-err = sock_error(sk) tail. Now it jumps straight to out_wait with err = 0.
-
-Combined with the tail change below, does this mean a blocking connect()
-that wakes up in TCP_ESTABLISHED with sk_err already set now returns 0
-instead of that error, leaving sk_err queued for the next send()/recv()?
-
-That window looks reachable via virtio_transport_recv_connected(), which
-runs only for TCP_ESTABLISHED sockets:
-
-net/vmw_vsock/virtio_transport_common.c:virtio_transport_recv_connected() {
-	case VIRTIO_VSOCK_OP_RW:
-		if (!virtio_transport_recv_enqueue(vsk, skb)) {
-			...
-			(void)virtio_transport_reset(vsk, skb);
-			virtio_transport_do_close(vsk, true);
-			sk->sk_err = ENOBUFS;
-			...
-}
-
-and virtio_transport_do_close() only downgrades the state when the receive
-queue is empty:
-
-net/vmw_vsock/virtio_transport_common.c:virtio_transport_do_close() {
-	WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
-	if (vsock_stream_has_data(vsk) <= 0)
-		sk->sk_state = TCP_CLOSING;
-	...
-}
-
-In the queue-full case vsock_stream_has_data(vsk) > 0, so sk_state stays
-TCP_ESTABLISHED while sk_err == ENOBUFS.
-
-The changelog mentions only the TCP_CLOSING transition plus "Drop the
-redundant err=0 and the inaccurate comment above signal_pending()". Could
-the changelog also spell out that connect() no longer reports or consumes a
-pending sk_err for an established socket? The patch carries a Fixes:
-d021c344051a tag, so it is a backport candidate and the user-visible change
-of the connect() return value seems worth documenting.
-
->  
->  		/* If connection was _not_ established and a signal/timeout came
->  		 * to be, we want the socket's state reset. User space may want
->  		 * to retry.
-> -		 *
-> -		 * sk_state != TCP_ESTABLISHED implies that socket is not on
-> -		 * vsock_connected_table. We keep the binding and the transport
-> -		 * assigned.
->  		 */
->  		if (signal_pending(current) || timeout == 0) {
->  			err = timeout == 0 ? -ETIMEDOUT : sock_intr_errno(timeout);
-
-[ ... ]
-
-> @@ -1874,8 +1872,8 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
->  		prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
->  	}
->  
-> -	err = sock_error(sk);
-> -	if (err) {
-> +	if (sk->sk_state != TCP_ESTABLISHED && sk->sk_state != TCP_CLOSING) {
-> +		err = sock_error(sk);
->  		sk->sk_state = TCP_CLOSE;
->  		sock->state = SS_UNCONNECTED;
->  	}
-
-[Severity: Low]
-
-This is a pre-existing issue and not introduced by this patch, but the new
-whitelist covers only TCP_ESTABLISHED and TCP_CLOSING. A socket that is
-still linked in vsock_connected_table but was moved to TCP_CLOSE by a
-lockless event handler still gets reset to SS_UNCONNECTED both here and in
-the signal_pending() branch above.
-
-Two writers do that without calling vsock_remove_connected():
-
-net/vmw_vsock/virtio_transport.c:virtio_vsock_reset_sock() {
-	vsk->peer_shutdown = SHUTDOWN_MASK;
-	sk->sk_state = TCP_CLOSE;
-	sk->sk_err = ECONNRESET;
-	sk_error_report(sk);
-}
-
-net/vmw_vsock/vmci_transport.c:vmci_transport_handle_detach() {
-	WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
-	...
-		sk->sk_state = TCP_CLOSE;
-}
-
-With sock->state == SS_UNCONNECTED, a retry connect() takes the default:
-branch, vsock_assign_transport() returns early because the transport is
-unchanged, transport->connect() is re-issued, and the next RESPONSE reaches
-__vsock_insert_connected():
-
-net/vmw_vsock/af_vsock.c:__vsock_insert_connected() {
-	sock_hold(&vsk->sk);
-	list_add(&vsk->connected_table, list);
-}
-
-which is the same list_add double add BUG quoted in the changelog, plus a
-leaked struct sock reference.
-
-For the record, this appears to be closed by the next patch in the series,
-"vsock: Handle sudden TCP_CLOSE during connect", which adds
-
-	/* Virtio/PM events are serviced locklessly. */
-	if (READ_ONCE(vsk->peer_shutdown)) {
-		err = -ECONNRESET;
-		goto out;
-	}
-
-to the same default: branch, and every writer above sets
-peer_shutdown = SHUTDOWN_MASK before moving the socket to TCP_CLOSE, so no
-action seems needed on the series as a whole. Would it be worth noting in
-this patch's changelog that the TCP_CLOSE variant of the same race is
-handled by the following patch?
+Thank you,
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915-vsock-connect-reset-closing-v2-0-a1d9abb472f7%40rbox.co
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
