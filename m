@@ -1,127 +1,201 @@
-Received: from mail-oi2-f10.google.com (mail-oi2-f10.google.com [74.125.231.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012052.outbound.protection.outlook.com [52.101.53.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D964FB9DF
-	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 14:08:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789567710; cv=none; b=f63Td/4AzuarmSGekczcU5VzzMT1a72zrtXKoH8qR105xmnR6tkCbvSYN9YmgDXwy8Dpd1Dzid2iMEFL91oRX7fh4DTpIhNh/fRNOTHhrWzTsduAa2D6BhG+nVauIdxPWH/C6HwSpbvOvKmwgiyFYBp4vvt8jzJfHJ35qbcqo6E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789567710; c=relaxed/simple;
-	bh=qn7QE2Vhw0BaRhEZiS9hTTSjPpHUeCBsathFgkcuJMg=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=FNb0Lgj9/9gqZiNFVxIvzJp3mmJ1Xm1OtFikNnjxi/mjsoZEmt3T+gLVUyFIQI2lZOWSxDkHVff1+RZBYCUgC65fLJaJ2ucnMLpSdN1Z6Ze1wdVzV7YUIWzUYMUboulZjZlUsCBJocgmt/lu6AqDiZhetCYMKh2GkluDXOeFi6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi2-f10.google.com with SMTP id 5614622812f47-4b94bb43008so924853b6e.0
-        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 07:08:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789567707; x=1790172507;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=htUCy0q7FG4YSd/XI01PpxHhl9O1HtPtmWa1pKHUGLE=;
-        b=yMawPqGN94vMoezmg6QEI45v831fe+Wk+zpCswesl/AMQ6vPvPvuKVcD3aCCtry4Gw
-         Lb0Ues7b361xkRUCHfEthdzx4RjIHNL4xff9fzUg/4RgR8fBZY2cT97o+n8pDvGWAaqF
-         P7lMZdh0k8Jp8xTvtbAoD5hjGccuZvRck9M/QyTjdpEGdorLlHUAo3in1X0Nv755Tdec
-         GB4EsRetxte6eZNRj6S9UtUQ1wU10KG6VHBhVibUEk+tAKtylFBaslIakIOFjLAt2ZG9
-         kO+dbMBGUGSwlJw4pnRoOxJ1QQND2HqSojlDfa09dq6izChJDQIR4zZbxw2f4bkleqwP
-         kjEA==
-X-Forwarded-Encrypted: i=1; AKwUvBzVF7ju9ae0GUIg2vt8FNK66kkggf8cMUEnjRyZNlVn6zmjxyqVWDTyGH3KxyoGLrBe+GI=@vger.kernel.org
-X-Gm-Message-State: AFuF++kOW/E22tN2H/V9wFzraS4p71HgUaVFCx/ZEA/d5JpMZPtUOVDF
-	Ot+xsxfrFXcLLCSRpuVvAKky0hbxAXjSxS4RiDedGWqx2Oa7SAR1hq35cRtlLLB1rEucj9+kPvL
-	2CChFAwhnIGNn1F7sCiwRiC1pCbnRbaUS7QXzU/E383YN7bWrgtK3nnKDEuQ=
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C53450AC37;
+	Wed, 16 Sep 2026 14:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789568251; cv=fail; b=ufwpuXGjaMIuymfT5hnL07Bo6jIGGnGucCxfYrVqubSSxfIblAYIl4y9+aWMhx0Zw8N+8TnOId4Ei63vUve8i642H7a6QqJNOuv/mDQMbRt9rXLd9b11+SL6qB1KVcgXC9rRtAJoUSwKHcnUjVq9Hl18X96LQ8TLb4Z3wsHIyWk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789568251; c=relaxed/simple;
+	bh=Ht1I7m1d0FuEk4tx6y4Ry1uyLsoFW9HFIWTqJuJ9gJc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=hgmi6jjOAPZA+Tcgf4av2p+cXCmAa2mhLn/yo3FRPqfE7ApU8h/Y8UKZ3zamLK1RDkgilskQoHA1B8hlnjVavwJPJmbmxBbHxbomtIkti6Uc8mj2xPnVKMmoPaWijAa6Jc+zl1lGnOpqklAZuO9Ry15OeawChP0sxiDqcN7K3zk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gPqe9tPv; arc=fail smtp.client-ip=52.101.53.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gPqe9tPv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=F8PAzUhOg4nNdNwOtZgg7JnvvB6xPGKc/vkKRH4Yr3JwAeEx10A8keyMeqAOdgMjrXmheIt9S5jEhy+BStWuthvXScMZER8RhlKd3DZC3OPWayk9ZMuC2wF/cM7q3hQoJdiWclq9qa45PfUegFrag1/wMXM+iuHCxJ1VMtt7/SbV8DKPsEbcsK1v/vdpOn0QaXieXtA/TtHgzBNPrIbhWW2fSvDyxF8uXwSfofcqmYWgDNNZY0V6OBwFyBtVvQTaqHDj2IQdTW/SYv7H0/So/ZUCOOfiu3i7ryK9/ZcFuKAI/haYajVORPOa+FpQ4g8C2vSFXzqbWnxfe1S5vdt2hQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LGANMnxAP6sa3/ztAcveZ3pgpH6ex6oiQKg8LrGSzWk=;
+ b=Rm1IgY7ht8UGkUtpJ/ozWXJURK5LLq4tfQNGLS1EeOXSptT//bjISc6k5QSoe8SMTZJVRqu46K6zmlvyPWI/331IxpjaCy2SuUU3Iui7Y5nGVw3/MUCjEmz738GcCmCExJWhGVbLhZ2Ony1BWHYoL7MiAy8FAuq3mwpc8SSW5tAJiKMswTTlajp5GczofRO5j4NKhQD24H664UwwQO687jFANpXPLfKJyLfiwxJ9obY4jUja9riMK0gbIOydhYBziS+GY4OLtH6GwaMGD74ujK5n7CjupM2foszNPPCTGuJKzq638cjkm1xixZmOIXFF0XdEBxrRJ3rXbLFh5c3iew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LGANMnxAP6sa3/ztAcveZ3pgpH6ex6oiQKg8LrGSzWk=;
+ b=gPqe9tPvF9lqSn22EseeAkq+9UHUPo2a+kSzoJ+r9inHkO320JySnjct83NdtLgi7IcDBOjDpLYTMCXh2hin4PwWWDcaY01DPTeUzzPGCpg/ts8h1iPVlkFsuOmwFUY9fH6ACwvyXPOUH+I4Sax22bYcP3EfMxPM5b69t6GIgocwxbuWML4IATyzzuFYRTxFK5mfCGkbdKKW8V4qDIMRnjHJhfgU2Nh+vMn5qgInsmMc6U4iTvq+X0v7XWATGt58gkSDsCPgRwckpaReIk+iCq5OshT0VyYCvZTbInrERgg1Li/6uPwIFN/tgR30kDGU9TRP0jgmyIy5NBLcSz9gNw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12) by IA0PR12MB8350.namprd12.prod.outlook.com
+ (2603:10b6:208:40d::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Wed, 16 Sep
+ 2026 14:17:19 +0000
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0428.008; Wed, 16 Sep 2026
+ 14:17:19 +0000
+Date: Wed, 16 Sep 2026 11:17:18 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alex Williamson <alex@shazbot.org>, Zhi Wang <zhiw@nvidia.com>,
+	acourbot@nvidia.com, yishaih@nvidia.com, skolothumtho@nvidia.com,
+	kevin.tian@intel.com, airlied@gmail.com, simona@ffwll.ch,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	jhubbard@nvidia.com, ecourtney@nvidia.com, cjia@nvidia.com,
+	smitra@nvidia.com, kjaju@nvidia.com, alkumar@nvidia.com,
+	ankita@nvidia.com, aniketa@nvidia.com, kwankhede@nvidia.com,
+	targupta@nvidia.com, nova-gpu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, zhiwang@kernel.org,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH 12/13] vfio/nvidia-vgpu: add the NVIDIA vGPU VFIO variant
+ driver
+Message-ID: <20260916141718.GU3968357@nvidia.com>
+References: <20260905081116.106613-1-zhiw@nvidia.com>
+ <20260905081116.106613-13-zhiw@nvidia.com>
+ <DLCRZLO06SIO.LS7TWQXIPZSQ@kernel.org>
+ <20260914121217.70fa0d93@shazbot.org>
+ <DLFD2ZDSK9YQ.3A4R66G8UJMD8@kernel.org>
+ <20260915120148.7548a8ca@shazbot.org>
+ <DLG7C7MLGSTC.2GSTD84WI595N@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DLG7C7MLGSTC.2GSTD84WI595N@kernel.org>
+X-ClientProxiedBy: YT4PR01CA0141.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:d5::12) To CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:81c9:b0:6be:4eb3:e1c0 with SMTP id
- 006d021491bc7-6c7d3fe744bmr2517440eaf.45.1789567706922; Wed, 16 Sep 2026
- 07:08:26 -0700 (PDT)
-Date: Wed, 16 Sep 2026 07:08:26 -0700
-In-Reply-To: <6936812a.a70a0220.38f243.0090.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aaaa2da.86093f18.33004f.0001.GAE@google.com>
-Subject: Re: [syzbot] [kvm?] BUG: sleeping function called from invalid
- context in kvm_mmu_notifier_invalidate_range_start
-From: syzbot <syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, bigeasy@linutronix.de, dwmw2@infradead.org, 
-	dwmw@amazon.co.uk, kvm@vger.kernel.org, liam.howlett@oracle.com, 
-	liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-rt-devel@lists.linux.dev, ljs@kernel.org, lkp@intel.com, 
-	llvm@lists.linux.dev, lorenzo.stoakes@oracle.com, me@brighamcampbell.com, 
-	mhocko@suse.com, nogikh@google.com, oe-kbuild-all@lists.linux.dev, 
-	pbonzini@redhat.com, rientjes@google.com, rppt@kernel.org, seanjc@google.com, 
-	shaikhkamal2012@gmail.com, shakeel.butt@linux.dev, skhan@linuxfoundation.org, 
-	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|IA0PR12MB8350:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9d821fd5-aada-4266-4be4-08df13fd37d3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|10067099003|4143699003|56012099006|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	mruOq3RmhCdeTYLN+F7s/fH8dRVtM69Zwv5ng3Odm1FZc2poYVhxPcg/tgzkfkEedC0gRCklFY9zJ5iPaIT1vG0bRSMc/mu2n72nNW3IyKU9ES1a1+m7khfzwsPgvM+yLlxu9RPaknHGcjArF+Hx3me+GzloxNJkggmrDD12GxkRizX73LGkM4DiGVBoI0uQe66rruqeSyfOBRfp6s2vsIOrWkPQ1HAOeiWbjkm6tBOLUKmcNX6qooDOMldFajunlX/Y5zR+aRGN8zIqfWo0nrt4TfzL7R4+AHPvI83ixx81NUuZ5mIhPs8x44nnYg7YRtKEQ5w73GojHpWidRyoz5S7LAUegaAvliy2DoXQWoh4MU4AUS+fiDlFWt1sIt5aq8tpvB6vjMmAamnvp+kuBm4xMWZxVDILjmgZ8UhNnfI1lOY+G8H0l8pCEyC2zDTF9nuMLE///2I0+7b4d4/GUMRjHitI6yC2gf+Y1vpJZHhzDcReOOv8GOcTqkTeuk4Tpc1d2wG/BHV6JX/WFcQHuLxSJj7Jdgczo9z2BIE4URCjCXf2bA16V8G4d8j+uSOuQT/OyNW93jRgi1GZy6FUGZfHevXOXWCOPkLpb3tLiZiDZ52SmPf78r6oZO9d15nAwJID7Z3oj8KyJs/T5eDeeRv9wkhMTdDwSjxZfnJmo30=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(10067099003)(4143699003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?PpYkGwGVHPZrdcylCSnoGm920n1XmNa+B39hfwBRvMYOQ73h5pN6aOjVOVR/?=
+ =?us-ascii?Q?qtSSCU8z7E5kHqYaJi8Wh+muWFAoXQmD1r5XO2Hiycap1TruOd+c54onc5G7?=
+ =?us-ascii?Q?aAaF3x2LV0PxInODG/bCgdziM9/Yoo0jmIbeknUVQ19sIyqVzbgrQyGx4PFc?=
+ =?us-ascii?Q?a5Ul1cQDeWc9h4MNl/Xbmll2z7PHj7AIuBWNUKoiLlPJdv6J/eYqrT6psOvK?=
+ =?us-ascii?Q?Uq+0KHDRoVCttJJajsW2iT7Fyi0mA52NgMn+jwVs53A25Ks0NFgGhgFkQaCG?=
+ =?us-ascii?Q?R/GC4UfAy7K0I/3fa9ccBv+pAaYROk5uKAmldofttTT6mZmoXljTz/vTaf67?=
+ =?us-ascii?Q?Lqfl6RfNM+kmrC5YXYedX5+wHxKlOvwojHFTdkkKy7WiiDgKB1w2JhBzgQ+g?=
+ =?us-ascii?Q?nFqXByoLat2od8loKGsJqXa9X0fcU+Tg1pWtwUNAwDh+nwlNxGCy9qugG1aX?=
+ =?us-ascii?Q?gBzqijBEME+YaHRz2LZYjGBsHNYOaY077Agrv5OORgkpZMlqTpUkgGwq7Ecu?=
+ =?us-ascii?Q?G6p9HqqMlHNk0GbrD8Y+UUOWmGrmKStEnFfIoOjla5vFycGnxd6XM8oVSPK+?=
+ =?us-ascii?Q?VZRNRH5R+H5qNBTHh2fv0Zhw52iqUrO+JFHSLRJLAS/On+HfanjlQ8JRK16P?=
+ =?us-ascii?Q?eg0g0TjAY84onnpEWzS+u7Z9PnMuVsZkTEd3mo9ucvY0C8InEnVQyTnreTAj?=
+ =?us-ascii?Q?E0Tab7a/I2/c7azS21uY+MolbHuvrW3xI7LmWTRJXb/FxpSf/uzKgjiWBrvy?=
+ =?us-ascii?Q?1OI03Tu/Ce7lqmHOhZrFGeZvbtWbhCgtaCsWE/8M76EYem0DQ5AoZPz4X0rW?=
+ =?us-ascii?Q?LO3Xj9TAO3x8FmiXvNSmd8TK7AxcLRYdliqurgkkeT1OkxgB4GARbpKMSZL7?=
+ =?us-ascii?Q?fA06I4BJoAIr+YBjQJIqzY/vsomC4o9y+5D0fbVJxEbWmntn99Hy36kZNBpY?=
+ =?us-ascii?Q?m0utqsfe3+Py4ej4wsB3c1F0y1hKF0sOiGSPGQltbZ26ZJssjuwIL/sSNM0a?=
+ =?us-ascii?Q?W9OEiywPVmV9A7vyXWv34qGUYcFkW7YtfAiaklvfQlG8nVFr/uWxQKrR8qPb?=
+ =?us-ascii?Q?xxqHqj6tPR4XBLgea0AG61CzLWWflpiDuv2HUeV3Ehlk3tpZU+knQ2kkx0H2?=
+ =?us-ascii?Q?pqS0Jc+3Rdwq8fJzDCtxkGxC5IVjmbb2FGfFhTPGJrHNkV428CElzW0BVwlW?=
+ =?us-ascii?Q?o/nSLwgYJcGoneKidcqfCejekiSvwv20BDe2Cpfjv4FnUi/XelBhUSgJAB8t?=
+ =?us-ascii?Q?5g3pthvKFZtL3lnuP2Qn1+WtGhzB18CmJho593QwfGWW5YARu98wnRIjL76m?=
+ =?us-ascii?Q?2/rQclF40vXpp6zJTO64xz8YjTAOV3itmT7VoeNGiUCmlhtQE4NN+N1ZnsnK?=
+ =?us-ascii?Q?WbOJsgzOBtqEBkzRPyF0VYIyLWlEoYjTbUh6vSh6UV/iXUpPk/ochEeMUJV3?=
+ =?us-ascii?Q?/HnS5Ep794eEwdjT2pmnr/PM+KEJfocbBNalXutJRct3WnD0D0SNb678qczE?=
+ =?us-ascii?Q?jAPJS8URPxgo7chy9/0BL4oZiZUD5ortLrBlwwotumqfmZXrQh0lFyHLd89S?=
+ =?us-ascii?Q?MPXY9Y2LfbXMg9PPeedmC5RPHJ/Tb4neAeEtwzNFVOMkcJzHoHcFTW9QGREE?=
+ =?us-ascii?Q?Q0H5wJGYY69C5NDjUzOqGad+oan90gZwPyw4gXWnE+WcAfADNrIvcyyD8y14?=
+ =?us-ascii?Q?pfjekzXtc9sAvUcRZOtbUS8IoIFLOfKZBpP2jZB6/NmOSITI?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9d821fd5-aada-4266-4be4-08df13fd37d3
+X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 14:17:19.5392
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ssW24AMJM3EPpVusyj38lsvvwo4Yrzx2uJWKyY2ezRDWVRh2tDWmI6m6UATZLBP9
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8350
 
-syzbot has found a reproducer for the following issue on:
+On Tue, Sep 15, 2026 at 11:19:01PM +0200, Danilo Krummrich wrote:
 
-HEAD commit:    9b87fdc9af2f Merge tag 'sched_ext-for-7.3-rc3-fixes' of gi..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=16f46bf9580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b454dc6b1b7acd30
-dashboard link: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12f23925580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16f23925580000
+> The driver_data pointer in struct device is defined to be a pointer where a
+> driver can store *arbitrary* data for the duration the driver is bound to this
+> device.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/d9d20c79bd3c/disk-9b87fdc9.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/2a6a8f176798/vmlinux-9b87fdc9.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/db8864d1c812/bzImage-9b87fdc9.xz
+There are places in the kernel where the drvdata of the bound device
+ends up owned by the subsystem, not the end driver.  Yes, an ideal
+driver + subsystem should never even need drvdatab beyond remove. Yet,
+things are not perfect..
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com
+The fundamental issue is some kernel API surfaces that the subystem
+needs to work with only provide a struct device in their callbacks and
+the subystem has no option but to use the drvdata for its own purpose
+to recover the subsystem specific data.
 
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-in_atomic(): 0, irqs_disabled(): 0, non_block: 1, pid: 38, name: oom_reaper
-preempt_count: 0, expected: 0
-RCU nest depth: 0, expected: 0
-locks held by oom_reaper/38: 4, last CPU#1:
- #0: ffff8880370147b0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_trylock include/linux/mmap_lock.h:619 [inline]
- #0: ffff8880370147b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task_mm mm/oom_kill.c:566 [inline]
- #0: ffff8880370147b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task mm/oom_kill.c:609 [inline]
- #0: ffff8880370147b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reaper+0x2b4/0xc10 mm/oom_kill.c:650
- #1: ffffffff8e30af80 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: mmu_notifier_invalidate_range_start_nonblock include/linux/mmu_notifier.h:495 [inline]
- #1: ffffffff8e30af80 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: zap_vma_for_reaping+0x193/0x380 mm/memory.c:2266
- #2: ffffffff8e30afd8 (srcu){.+.+}-{0:0}, at: srcu_lock_acquire include/linux/srcu.h:198 [inline]
- #2: ffffffff8e30afd8 (srcu){.+.+}-{0:0}, at: srcu_read_lock include/linux/srcu.h:305 [inline]
- #2: ffffffff8e30afd8 (srcu){.+.+}-{0:0}, at: mn_hlist_invalidate_range_start mm/mmu_notifier.c:515 [inline]
- #2: ffffffff8e30afd8 (srcu){.+.+}-{0:0}, at: __mmu_notifier_invalidate_range_start+0x5c6/0xb80 mm/mmu_notifier.c:580
- #3: ffff8880465ad560 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:45 [inline]
- #3: ffff8880465ad560 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: kvm_mmu_notifier_invalidate_range_start+0x1b6/0xc10 virt/kvm/kvm_main.c:745
-CPU: 1 UID: 0 PID: 38 Comm: oom_reaper Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- __might_resched+0x31b/0x470 kernel/sched/core.c:9257
- __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
- rt_spin_lock+0xc2/0x400 kernel/locking/spinlock_rt.c:57
- spin_lock include/linux/spinlock_rt.h:45 [inline]
- kvm_mmu_notifier_invalidate_range_start+0x1b6/0xc10 virt/kvm/kvm_main.c:745
- mn_hlist_invalidate_range_start mm/mmu_notifier.c:525 [inline]
- __mmu_notifier_invalidate_range_start+0x709/0xb80 mm/mmu_notifier.c:580
- mmu_notifier_invalidate_range_start_nonblock include/linux/mmu_notifier.h:498 [inline]
- zap_vma_for_reaping+0x1f7/0x380 mm/memory.c:2266
- __oom_reap_task_mm mm/oom_kill.c:548 [inline]
- oom_reap_task_mm mm/oom_kill.c:585 [inline]
- oom_reap_task mm/oom_kill.c:609 [inline]
- oom_reaper+0x519/0xc10 mm/oom_kill.c:650
- kthread+0x38b/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-oom_reaper: reaped process 8617 (syz.2.1028), now anon-rss:0kB, file-rss:72kB, shmem-rss:0kB
+For example VFIO hooks into this nasty API:
 
+        ret = vga_client_register(pdev, vfio_pci_set_decode);
+        if (ret)
+                return ret;
 
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+Which doesn't provide a void * token to pass the core code's
+struct. 
+
+Another is all the PCI callbacks which assume the op behind them uses
+drvdata to get its data.
+
+It is not necessarily easy to fix. Rrouting all those PCI callbacks
+through trampolines in every single driver is really not an appealing
+design. There are alot of VFIO drivers.
+
+Maybe it needs a dev->drvdata and dev->subsystem_data, maybe it needs
+some PCI thing where the pm ops can get a void *, IDK.
+
+This is not some philosophical thing about busses or classes, it is
+just an accommodation for the way the kernel is now. Fix the above and
+you can get rid of it.
+
+> > I have no doubt that integration with a more structured language would
+> > lead to various improvements.  However, it doesn't seem there are
+> > resources to support it in the short term.
+> 
+> As mentoined above, there are people volunteering now. Without starting it, it
+> can't scale further than that. :)
+
+There are lots of other vfio patches that need attention too, and it
+seems we are short of that more than anything. Now you need to do a
+bunch of C refactoring patches as well just to get things ready to
+show a bunch of rust code. It is a lot of work.
+
+I don't really understand in a nutshell why we should do this for nova
+the mails were so long... Can we not just ignore the lifetime
+imperfection for this?
+
+> However, I don't really see the use-case; you can't load nvidia-vgpu without
+> nova-core in the first place, so it would require to unbind nova-core through
+> sysfs force unbind, no?
+
+nvidia gpu is a more unique scenario, if you are building a general
+bindings it has to support the flows like this.
+
+I've wanted to rework the way the common ops are shimmed in for a
+while, you'd probably want to do that before rust bindings.
+
+Jason
