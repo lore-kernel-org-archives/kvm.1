@@ -1,143 +1,224 @@
-Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3354B95BC
-	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 18:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.204
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789583028; cv=pass; b=gW/9LM/oZvF5JI90nLGkMGgeQIRZlegHYE3okTIj30W7fy4U3u9DUbwssZtvY2X2vi2dPam0CgMrYrmCHjetNdF3QLUP46eoFQzWxZwXCxod/xhDjKQDbBLO87pMQUQ2q24ODLs7HF1uIjB64XvJ1odx+++eCUxFH9IcjkaXhEA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789583028; c=relaxed/simple;
-	bh=K1VkZN9Ax/ivqRQhY6l3VgzDLSp6+7t77YixSnLTILA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hO9Jz0GFX4PyxK+ewK/6+YeybdtULPXZ1pcLPaut7MKxQCxQsoVhx4aK0mRYspi/KjSAZ3xjRKuu4rDxu65v5bWJo9fBcQXD2/UUH2qgQELwKwo6AvOeOZJ4s1SFpjNe1tsAqT18OCywbQzkIiFxzXNzqEZLqcDO6XDppk0325o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TOWvHVmH; arc=pass smtp.client-ip=74.125.229.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33F34D37CB
+	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 18:34:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789583660; cv=none; b=rmU1/dtwFGEvCXyHmWQG+Jw/Lxj6mKf0NyHIRFMcoUqKuuP30M7fAYJbtJZU8gcrFJlCI51NGaGvzgICrReH/arEXnKiWu4WqvuqR3mLJRN8hM7/YYZ/N0LSYMdbX/J0Fw7d2jv+G5Rl0/hjhmwdgy5F1+3i0bme09K8cw65aso=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789583660; c=relaxed/simple;
+	bh=Ykk92tDV9M7kvVoJsqecVU31W9ystDedudQnlhM9OB8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=KhcpP5270/8F+5s0/2DmR9cJFTutvf9R4GOxk27qXbJ+YSN/smyfHSDcFZ9ro9/0t7NcYSJpw0p0+GUV1vjiJM/rt0N05f47gPwaPRbQZew28IdcX66kVg5HZhpqvNNiAVGvswLbJQ/KTzYuHaSxP7RHyWnGvW5WykkISc5DvMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ClBD6ywo; arc=none smtp.client-ip=209.85.215.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TOWvHVmH"
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b5e4f1b845so1241506e87.1
-        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 11:23:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789583011; cv=none;
-        d=google.com; s=arc-20260327;
-        b=rc1dr+4e0fDGma6AfY+ULl1uJuC1Rl6gQpneNtTWHw1QJElIy+VbHW2L9YTkNXAUkT
-         LC1uGNJDWLibtRSXmJjMiCEU7YCJIPNu2Y5aiP40R9emE5lDV/IR6TnwQLGb02AyEe7M
-         gI27tSAaelc7CU2t60VQbRkGmZD8jdeK31edeDtlf7rOeMUFAY14DkqhrKGG7uc1lQ/k
-         PPHuetGgtHzlI0blPHk35ia6Qjl6FUePL5tIKJE7+Q486GvsxI6VCacEdzbMV5SFWD1y
-         15EOJGEY3AOTlbzOE7KfCE1yOSvm5epGfBPyPZ5RRZVIf5+XV/TjQzuSF3Cupp/y3PJN
-         osAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=iA6WOY7U5Hpnzgqa3cIbAuP1d1sT3cNwxEh5sU4xF5Y=;
-        fh=kbBd0KhVOqRJYNEu5Z9zuMmro7ujZvLg2Zx6vAqOwmA=;
-        b=HOk84001bGuCQSVgHpzzTimS7tL6B4YhKK/qvba7x3Gpjqrm4tVlB2P2jqZGYrCPbQ
-         o37/4nz+B6U8eZE72KE9ZTSupgJGM91d1AxtZ3NnvsaW78EgT5GZjolrbncRDXI0wIua
-         QAvq+Bc3sL3k+WYLVzdePYzNf94YaPj7NhoSqi80musvDQFXZ6Cgs8ty5n4OqUVtDGei
-         4f3tnGvo8mfsomkDI8E5SSqAkmH2qiuHOAOMvHKEnjCgYeeQcjJP8bmAOXKdfI4iAMDp
-         AftLNLVs0h6FXPkYEmo9dytsmRSE17GZOOIYuD8NMB8Yvbtr6bMchM5AU7kP+xhKsRvq
-         n3qg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ClBD6ywo"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc1b8088202so5346572a12.3
+        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 11:34:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789583011; x=1790187811; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=iA6WOY7U5Hpnzgqa3cIbAuP1d1sT3cNwxEh5sU4xF5Y=;
-        b=TOWvHVmHt+weCIsIpXWwEjsqy28ZKumadJvtsv3OcYPUJwCRtgl8HskPfEXVpHE4L4
-         FuaN1he+VTngVx0oarqnwK1kXYWtY5WlmjIzQE6gzNhbzrJ8/ETfqSz3uJunzJ062g2B
-         s8CIU6mX161xEoWXmqdyx0/uytT9WN+XBImm76C+JZTtlWBCdu279L8HxEL9Dz32nfcb
-         jRm7pPRpw4VGbMqiu5K4WmLlQcrhHDZ28tC7fNMsDjo8pVSMX1kkMK8T9U9ClyoDdV4k
-         RcV48HfXU9I4ELPqR1UyyWGCpEReoR7jDPYkD+BzELs5B9vIDP3bERTLyjjOk227sLYL
-         JJKg==
+        d=google.com; s=20251104; t=1789583639; x=1790188439; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=1/boOQor9JLExDk92cynKiJhAwGiEff2rVhXxeRxqi4=;
+        b=ClBD6yworE6thdWh7eCBA3FhIDrUN4fB14lIbr6Txofs8xI3/Z8QgpSotcUZJQczgV
+         U5dt2rzsc/fBmI+Nbk4fEEwvTqgt6OE9pjJWdMx1szoylxvmGntWnIjrd2EAQwtO4c3H
+         6seUeQW8sR6IjVIy8qjQT4Q9caop8+Q6McB0PAPQfuIxiUWhuqHNUf8GO4REBWg/jQzy
+         xHksPON/HFZNUFAUDPpdLDmc5fnQQLiVlDctw3Cf+2zplA0XfxJfImlVNFA4jbVM2mqm
+         HnoNRHkGfdM9DGowcamU8eMu5dBXI4xcyS8AgoiVuFZRG0Eis+Qnpm1hkV2KteIK92wq
+         59fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789583011; x=1790187811;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1789583639; x=1790188439;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=iA6WOY7U5Hpnzgqa3cIbAuP1d1sT3cNwxEh5sU4xF5Y=;
-        b=pZ6Og0Urv7trMOEqRC8UHDWfeSq6bO006CATgM75I832v/PKI5Vr1MugsacxYAUQSP
-         EmikRCfilTI4DhDjpSW4oXCa4K5aQhcB5VfwDEGLIrQiSDcMZLdwzSPSY1QX+Qsnv0zM
-         zXwaBHKqJ07nT5w1FbmIXGCAgnKkKodYdlWL0ANZQwksmb/2kzV7rrsaPFxc54n7QSP6
-         /b/AXminnuJPJmmAYJc48/9XKZr7vSFEG5Li5aFYcPST1ni2Npr8QXpECNy4HQvtiL7a
-         6EDxF9ApcCNAVH92uqm3jXV3WTj+u7Bu39kUGbhzvoNDBIxqUicfpeQYYNjUb85YOOf1
-         KwaQ==
-X-Gm-Message-State: AFuF++nSZNSWeDLUCT1hfhw1+qydrQpvZg3PQIDqynMD8bTEbHrLDLYA
-	uFZVdXlF6douybpPy9Sy3pQH8e9Sd19jzP8UKjriDEEJG9snRi1vVJzgf6yIQVFIMDDqbbTJFmR
-	72hxYvFuxfo6myX2UGAsgc3ysJseR3SMsM+ja7DG2UWluvKuaty3fCcFiASNvrw==
-X-Gm-Gg: AYBFou1FcV4v/IIQZCO9ta6MBubIzPl91AnuWwTbfu7u6O8aZS2YNJva6ljYQXlMwZ/
-	M/m8xGxKZ9GvlZGHOfDMCcHP7m0oox1D+8VUh7SrmzK23vIk7ITUCzPIoLRMsDBy3pw8XVlSdYe
-	UqbtQgc4RDSRh0mCFJgzhS/2Ma3qcbu7AyqxAlgyxaGeksIsNu8WimgVHW2sK+t+GfiWyynfZBw
-	BcPHNmBjgLVJ3A/m9BpfZxeMT94aY7L7eUFJBbzprpcGYSiuuNIZ6WKlVc+e4N7C/BnGKgdC7ns
-	O4NxMDmbRPgnMCXlRCocP7sqIB3gos+kE7nqLm1lSnRXB61xyW2A8A==
-X-Received: by 2002:a05:6512:1293:b0:5b6:1a7c:aa13 with SMTP id
- 2adb3069b0e04-5b8b6640be1mr1009695e87.43.1789583011057; Wed, 16 Sep 2026
- 11:23:31 -0700 (PDT)
+        bh=1/boOQor9JLExDk92cynKiJhAwGiEff2rVhXxeRxqi4=;
+        b=Ra8hqyepNJPdnm4zYLtEUQzYLtX174ntFrSnDfn+jvy5xyvhTywAWcLfSuNLkQdExq
+         9AVrXUD39gV4Cp3faalKndSSfPsg+ZA1IzgsgFg1SZgV8ji+zcyZhDOo/P/OWtQBjDEW
+         OLLXkwwsklhBxPjZX/iOt771PDl2HSnHfEvrQHSv8MooGz7o4pwBzu4K8atq+4JXRwuq
+         TxINnBXtKystM8l8SGHTtdiwP9t8rbD1xSVNalwpULcjbEttKpb5KCnNj5joLIJCWI3e
+         zd7i68pnsVRmGYN5NZMImnPSBlUsxLlkAqSW1eFYJQ2r/dov7hTWuQn0mnvL+tijXJhQ
+         KrHA==
+X-Forwarded-Encrypted: i=1; AKwUvBwrrYrWZdDQ3iOaNApclFu3zP4I0A+XM1TjlA8try32VESBQEOiEgIxM2QXNvdwrMqDcd0=@vger.kernel.org
+X-Gm-Message-State: AFuF++lRv4HNfshYE1Y5dHiOMB+EHzmcpD3zanMVsi5HfoIBmje0LTjN
+	ybWrOWhmldOm70FD8ZxTZUtpZGyu0WuW5OXxgkvOxVrc8s1qpOz7AdvNk/WqBttQiiHF0pTLEzJ
+	ThbzKVQ==
+X-Received: from pffj7-n2.prod.google.com ([2002:a05:6a00:c2c7:20b0:86b:491c:9006])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:f8b:b0:871:e76a:2a35
+ with SMTP id d2e1a72fcca58-87238f95cf6mr8223777b3a.19.1789583638744; Wed, 16
+ Sep 2026 11:33:58 -0700 (PDT)
+Date: Wed, 16 Sep 2026 11:33:58 -0700
+In-Reply-To: <CAJxe5ctcVxmhRSw3Gt0POQTzRKoxXo7+Y3CPDe7cUZvC0QPK+g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260912083611.2513845-1-suzuki.poulose@arm.com> <20260912083611.2513845-7-suzuki.poulose@arm.com>
-In-Reply-To: <20260912083611.2513845-7-suzuki.poulose@arm.com>
-From: Alper Gun <alpergun@google.com>
-Date: Wed, 16 Sep 2026 11:23:19 -0700
-X-Gm-Features: AcwNN1Xa9rZlSKbZ1HJXqNvz676wwtG0Dzc3HxbzhCyZpg8GXZHTQsxrOGLMh6o
-Message-ID: <CABpDEum16ZzLSjd7Yg2Ge6VjwL8S8xxtSs_AsqOeNT9-9FNKKQ@mail.gmail.com>
-Subject: Re: [PATCH v18 6/7] firmware: arm_rmm: Ensure the RMM has GPT entries
- for memory
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, 
-	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, 
-	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, 
-	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com, 
-	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, 
-	sdonthineni@nvidia.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
-	lpieralisi@kernel.org, enju.kohei@fujitsu.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20260910-snp-invalid-input-v1-1-fb2e03da614b@google.com>
+ <0b2d8858-b361-4a64-986a-4c179210fbec@amd.com> <aqlWt4jb4CSPnecN@google.com>
+ <d6179d34-a4b0-4548-8298-b790b333d22f@amd.com> <CAJxe5ctcVxmhRSw3Gt0POQTzRKoxXo7+Y3CPDe7cUZvC0QPK+g@mail.gmail.com>
+Message-ID: <aqrhFvwFJsQTaEkz@google.com>
+Subject: Re: [PATCH] KVM: SEV: Return INVALID_INPUT on SNP req/resp buffer
+ access failure
+From: Sean Christopherson <seanjc@google.com>
+To: Jacky Li <jackyli@google.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Michael Roth <michael.roth@amd.com>, 
+	Ashish Kalra <ashish.kalra@amd.com>, Jacob Xu <jacobhxu@google.com>, 
+	Supraja Sridhara <suprajasri@google.com>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Sep 12, 2026 at 1:37=E2=80=AFAM Suzuki K Poulose <suzuki.poulose@ar=
-m.com> wrote:
-[...]
-> +static int rmi_init_metadata(void)
-> +{
-> +       phys_addr_t start, end;
-> +       struct memblock_region *r;
-> +
-> +       for_each_mem_region(r) {
-> +               int ret;
-> +
-> +               /* Firmware-reserved NOMAP regions are not usable system =
-RAM */
-> +               if (memblock_is_nomap(r))
-> +                       continue;
-> +
-> +               start =3D memblock_region_memory_base_pfn(r) << PAGE_SHIF=
-T;
-> +               end =3D memblock_region_memory_end_pfn(r) << PAGE_SHIFT;
-> +
-> +               ret =3D rmi_prepare_memory(start, end);
-> +               if (ret)
-> +                       return ret;
-> +       }
+On Tue, Sep 15, 2026, Jacky Li wrote:
+> On Tue, Sep 15, 2026 at 8:21=E2=80=AFAM Tom Lendacky <thomas.lendacky@amd=
+.com> wrote:
+> >
+> > On 9/15/26 09:31, Sean Christopherson wrote:
+> > > What if we keep this one as -EIO (or better, change it to -EFAULT in =
+a separate
+> > > patch?), but add a comment explaning why KVM needs to exit to userspa=
+ce in this
+> > > particular case?  That would be a good compromise; if the guest is at=
+tempting to
+> > > access non-existent memory, the initial READ will fail, i.e. we still=
+ get most
+> > > of the behavior Jacky wants.  The only fatal case would be where eith=
+er userspace
+> > > really did screw up, or the guest managed to find read-only memory (t=
+hough I
+> > > would probably argue that's likely also a userspace bug?).
+> >
+> > That sounds good to me.
+>=20
+> Thinking through the sequence number and VMM bug concerns, I'd still argu=
+e
+> that returning INVALID_INPUT on kvm_write_guest() failure is preferable t=
+o
+> exiting to userspace:
+>=20
+> 1. req_gpa and resp_gpa are two independent guest inputs, so a guest can =
+pass
+>    a valid req_gpa and a resp_gpa that isn't backed by any memslot to sai=
+l
+>    through the initial read and fail only on the write.  Exiting to users=
+pace
+>    on write failure therefore still lets a guest kill the VM at will.
 
-Hi Suzuki,
+Drat, I missed that.
 
-What happens if a system has memory regions in memblock that are not
-tracked by RMM (e.g. CXL memory)?
+> 2. Comparing the two outcomes after a kvm_write_guest() failure:
+>=20
+>    - Case 1 (exit to userspace with -EFAULT/-EIO): unrecoverable.  The PS=
+P's
+>      response is lost, and userspace can't rewind the PSP's sequence numb=
+er,
+>      so retrying KVM_RUN would just fail that check.  There is nothing
+>      userspace can do other than kill the VM.
+>=20
+>    - Case 2 (return INVALID_INPUT to the guest): the guest disables the V=
+MPCK
+>      and moves on to the next one, as Tom mentioned.  The worst case, onc=
+e all
+>      four VMPCKs are exhausted, is that the guest can no longer issue gue=
+st
+>      requests, but the VM keeps running.
+>=20
+>    Neither is ideal, but Case 2 seems to be better: a localized loss of
+>    functionality instead of the entire VM dying over a single bad request=
+.
+>    It also leaves the decision to the guest, which can carry on with what=
+ever
+>    doesn't depend on attestation, wind down cleanly, and shut itself down=
+ on
+>    its own terms instead of being killed abruptly.
 
-Currently, rmi_verify_memory_tracking() returns -ENODEV for untracked
-regions, causing rmi_init_metadata() to abort and disable CCA
-system-wide.
+The problem is, I don't see how the guest can know when it needs to discard=
+ the
+VMPCK (post-request failures) versus when the VMPCK is still "fine" (pre-re=
+quest
+errors).=20
 
-Shouldn't rmi_init_metadata() skip untracked regions (continue) with a
-warning/info log instead of aborting? That would allow Realm support
-for conventional DRAM while leaving untracked memory for the host.
+> 3. More generally, when KVM can't tell a guest error apart from a VMM bug=
+ at a
+>    hypercall boundary, reporting the error to the guest seems to be the s=
+afer
+>    default: failing the guest request degrades one service while keeping =
+the
+>    VM alive and debuggable, whereas exiting to userspace turns a single f=
+ailed
+>    request into a dead VM, and hands an untrusted guest a way to terminat=
+e it.
 
-Thanks,
-Alper
+Well, ideally KVM never has to make a choice.
+
+>    And in the context of SNP the guest doesn't trust the VMM anyway, so a=
+ VMM
+>    that fails to deliver a response is indistinguishable from one that re=
+fuses
+>    to, and the guest already deals with that by disabling the VMPCK on a
+>    VMGEXIT error.  Letting a host problem bleed into the guest is arguabl=
+y
+>    "fine" here, since the guest is designed to cope with it regardless.
+
+FWIW, I'm not terribly concerned about bleeding host issues into the guest,=
+ I'm
+more concerned about ending up with deferred fatalities and a mess of an "A=
+BI"
+between the guest and KVM with respect to handling failures.
+
+What if we "tickle" the resp_gpa before doing the request?  Similar to how =
+CPUs
+probe bytes early in XSAVE/XRSTOR to avoid having to unwind later on.  In t=
+his
+case, the response is restricted to a single page, so we only need to tickl=
+e a
+single byte.  E.g.
+
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 2da61843a6f2..b2e74a407c2b 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -4207,6 +4207,7 @@ static int snp_handle_guest_req(struct vcpu_svm *svm,=
+ gpa_t req_gpa, gpa_t resp_
+ 	struct kvm *kvm =3D svm->vcpu.kvm;
+ 	struct kvm_sev_info *sev =3D to_kvm_sev_info(kvm);
+ 	sev_ret_code fw_err =3D 0;
++	u8 tickle =3D 0;
+ 	int ret;
+=20
+ 	if (!is_sev_snp_guest(&svm->vcpu))
+@@ -4219,6 +4220,11 @@ static int snp_handle_guest_req(struct vcpu_svm *svm=
+, gpa_t req_gpa, gpa_t resp_
+ 		return 1;
+ 	}
+=20
++	if (kvm_write_guest(kvm, resp_gpa, &tickle, sizeof(tickle))) {
++		svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
++		return 1;
++	}
++
+ 	data.gctx_paddr =3D __psp_pa(sev->snp_context);
+ 	data.req_paddr =3D __psp_pa(sev->guest_req_buf);
+ 	data.res_paddr =3D __psp_pa(sev->guest_resp_buf);
+@@ -4232,10 +4238,9 @@ static int snp_handle_guest_req(struct vcpu_svm *svm=
+, gpa_t req_gpa, gpa_t resp_
+ 	if (ret && !fw_err)
+ 		return ret;
+=20
+-	if (kvm_write_guest(kvm, resp_gpa, sev->guest_resp_buf, PAGE_SIZE)) {
+-		svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
+-		return 1;
+-	}
++	/* Comment goes here. */
++	if (kvm_write_guest(kvm, resp_gpa, sev->guest_resp_buf, PAGE_SIZE))
++		return -EIO;
+=20
+ 	/* No action is requested *from KVM* if there was a firmware error. */
+ 	svm_vmgexit_no_action(svm, SNP_GUEST_ERR(0, fw_err));
+
