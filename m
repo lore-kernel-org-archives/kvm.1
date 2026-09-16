@@ -1,181 +1,108 @@
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2644377A83
-	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 12:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18AC6371897;
+	Wed, 16 Sep 2026 12:51:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789562933; cv=none; b=q2zKVCVFNN5rBswXE+FGl11LovVXKby33/Wd1RxgOJfNDPgv/3auXcptY90L1739F265RWeQSw6D02ARrjnvGmo/Hpee3KP3sbjQgcfvxl5FQrEwTgBlDxBbaopoUca1OS31IdIjhLpb5Nrp0hpRg0Cd4krUuSs3uepwuqzpEtI=
+	t=1789563110; cv=none; b=jYWHwvLP+U8bjgi+A3WigP+3tG6jS2AxzOUT0rEpvacoCIFCmdbUP5NHcWQah8DS/DJ/rueUj7lLOxEWztWti20Zb555bpKFZ016AYYHXJXt5D9F13gSn31iO+FKUFoZ2eo+6sLNNlRhAdumEJFfhjvUE8lbQnlQoU4mKGvPqvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789562933; c=relaxed/simple;
-	bh=H34k7SsIUJ0nZ0sEaZhQtlZ3Kbira6446GXQ2UQYvlA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nH4JumJTchjdTE3euHzILLMzWU7iSJXtqndHbPIgYH4ILJVFzFxXkhQoQ0Lxy8yelMBinzE8czzoKPBNtDEZzGmzGSA81c0so/lMsDBgzrNQtNlCwEIFoJYHLxpfOZ6FxUvYg0G1F+EUETht4dLhp7me8wXDs2grAsCQB35cRTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=UYHFLxHT; arc=none smtp.client-ip=74.125.230.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1789563110; c=relaxed/simple;
+	bh=TPQjG+w09wCHruYtAJmv+95BMyhOXGtFraaarwzEmGM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=bG6B+APvgD0Dw/mOYDatya9bEZ+yJ3JUu2c8m1RipFmvAhUoQvC0RP0VGXqXR90WrJsiEjmcHqv8K9U8VzGfwwdOBnsCLp2wAHKHE91iykUxEVagtt00TxNR1bD1+OZOBeLX084CKtW6HuJb5zlnU0eLC0fZvHcX65AuhUciHss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lvQDpGg7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="UYHFLxHT"
-Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-939922847efso81161185a.0
-        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 05:48:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1789562930; x=1790167730; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VzaI7ZYbqdoJC4coFReri2t1Bm12kg0MhPi/KYFxqXI=;
-        b=UYHFLxHT4tZADRfpps3/kPdRToXmVpOT+yeTerpUx+frrD5S1Vd4xEsnYf2fUNAK+z
-         TJej/1g0956DfFk8A0HCE8pk2I0yXGuoBCJ9rRkqvWqECXzOo7Ri4Bz6/DwyL2x1Xwvm
-         Vf+HBexeoo3hCuE6HFiL+Im6mQzWPwXv+sOfdbz9EuSW/X1axwSKIvWY6kXcXIapema8
-         h1FCrw0ML5RMzigsKcZudElSnwPJbz1HGkEc7IZDAd7dM+4IrbtOAKmrpK97wL7MvWk/
-         jP7q1oc7Y9ERG7ZCDWYjtFOHpjuqt1gjg4E/R19mC2Cn8648kFnLgcZdFSxH9qLNXzPw
-         0Dgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789562930; x=1790167730;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VzaI7ZYbqdoJC4coFReri2t1Bm12kg0MhPi/KYFxqXI=;
-        b=RpXQubOf3Ddc1ryakuxBe7yDqZ5hhCt2BC7uR0qDy1jdh+KRoDkuqujCmWkLk7TPka
-         JFSkn+S3A7xQYUNiYUnaKqs4cPD4pRSgwEsSKcU0FENRMbF6CUhg8CoLhq3erDC+TWdq
-         94fVbIWv1ZIW7Zx4lXkcP0z/zT/DkmfVIJaPQLUmN26rFQP3OtelpjVA1YGiLNyZBwsC
-         tfP82QK8X0ueenWDlZ/H+OGn2hrJt6Zxi48dmP4Xv4VT1MBmqppHKCErxtCP+wzN20Lq
-         gg9e6sqkRIFFT/tohFcA+o17XjmwB8JCr+xuZkvXB+W+vWrPrFDv8dMqfAa65G/nhj/J
-         9oUA==
-X-Forwarded-Encrypted: i=1; AKwUvBxmMwsvXX4ax1tu55cgZZoFfPh1QVM5muqbEr8qz1Lo/4Vgj2kQLvOt9gv6df04SspMxbQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++mTxUrdLUAPk2OGS8XGbkydxZVvSdxZD1RESwE+FVpg7tivaVHa
-	5NsPW58x0SXDMOGyTnTndeOLpl1hSA1ZqbleTkWxD+YD7AiToRz7jvw+202cICvALXI=
-X-Gm-Gg: AYBFou3Se+GMsHBV9JWvDF7D9SP7Tx23B0k7g4NyD4iuAmxHsH6xUTDDNmZbjQSXVl2
-	A0WOvrWJIrNz9AOStDDpGSWen0+dp4gnWsDYkcDYx9cb23mBDWkqErhafHB1CgvDAJuYceJF/Nz
-	0abhaBr0gvurXBCuB0DBUS7DmiQ5WAKIVjKbpc38/Nx3HODuiNVvNIP7Zii9svT7oTC+Naenmg3
-	ljeAKaBMDJJ5LlNua6EEdvLewxbz7gH52gClvhelzHo2DcCsD4wDceTELjGy24d3irCdxeI+f3I
-	pAcQ3tdSHRYCRKpIoCL9kRajgXST+ofI4DgeEjGLbF2Gcj5dH+On9EZHhMM0PXOI7ToEbkUktCn
-	4MRbwiOSlBF8+pBOFRYPyEtvgeYuYgKhYFTpoGWbobuG7+jflscLEDrxv4WE0PpHmmRIBoKOp8w
-	UMX4WLhrwpm+5SAOao1qDS+m9aMmx0Z//vE7LjX3ofTATo5+GZufWx6dmx1HxnRc/ZQd9hGECyr
-	UbALNbcHE6u+4PdNtjcz4HejXXcWMwS6t7XtjQAoPQa+O8ZSjRjdCTCeA==
-X-Received: by 2002:a05:620a:d8e:b0:939:6de9:4cff with SMTP id af79cd13be357-93bb7907fecmr386232885a.45.1789562930363;
-        Wed, 16 Sep 2026 05:48:50 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93b7821dcfesm208481285a.18.2026.09.16.05.48.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 05:48:49 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1x6p4D-000000099Zm-0Jbp;
-	Wed, 16 Sep 2026 09:48:49 -0300
-Date: Wed, 16 Sep 2026 09:48:49 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jini Susan George <jinisusan.george@amd.com>,
-	Kees Cook <kees@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Kim Phillips <kim.phillips@amd.com>, Joerg Roedel <jroedel@suse.de>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	"Tycho Andersen (AMD)" <tycho@kernel.org>,
-	Liam Merwick <liam.merwick@oracle.com>,
-	Michael Kerrisk <mtk.manpages@gmail.com>,
-	Suresh Siddha <suresh.b.siddha@intel.com>,
-	Xiaotian Feng <dfeng@redhat.com>,
-	Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>,
-	Andi Kleen <ak@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Tony Luck <tony.luck@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Carlos =?utf-8?B?TMOzcGV6?= <clopez@suse.de>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jori Koolstra <jkoolstra@xs4all.nl>,
-	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Ian Campbell <ian.campbell@citrix.com>,
-	Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	David Howells <dhowells@redhat.com>,
-	Haavard Skinnemoen <hskinnemoen@atmel.com>,
-	Kenji Kaneshige <kaneshige.kenji@jp.fujitsu.com>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Ilias Stamatis <ilstam@amazon.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Toshi Kani <toshi.kani@hp.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Jiang Liu <jiang.liu@linux.intel.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Palmer Dabbelt <palmerdabbelt@google.com>,
-	linux-coco@lists.linux.dev, xen-devel@lists.xenproject.org,
-	iommu@lists.linux.dev, linux-mm@kvack.org, aik@ozlabs.ru,
-	Santosh Shukla <santosh.shukla@amd.com>,
-	"Pratik R . Sampat" <prsampat@amd.com>,
-	Scott Soule Cheloha <scott.cheloha@amd.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Fuad Tabba <tabba@google.com>
-Subject: Re: [RFC PATCH kernel 10/17] x86, dma: Allow accepted devices to map
- private memory
-Message-ID: <20260916124849.GD3196566@ziepe.ca>
-References: <20260916115159.1938195-1-aik@amd.com>
- <20260916115159.1938195-11-aik@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lvQDpGg7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E96F1F00893;
+	Wed, 16 Sep 2026 12:51:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789563106;
+	bh=5skq9KdtHxqvy+/GURDRtaDb+8mGgfKxhyoDMzASm/g=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=lvQDpGg7b9bcTqBridJrwB2uKje++b26mj70H6HXku95fhb0I4eZhvB/ORjPpQM65
+	 yQAVg8MxA0+DgybCaHwxu5Vq4CtO00Gd5n9II0dnDoMCf3XWnS9dmwxkiclNcCQeKP
+	 CaexOU9xKEw7PrsamrtnAxX1ija05dGTVWjfbOvUtPikt2wL3OaFaRNT/wizpNNGli
+	 +Elfn160XRmYu49sstS5IUWG0dJXOHAu92aXQLx2rXDtAQWnZmwUJB61G6V7DdWCdk
+	 VXhXUZBdlA/aZCeQbAaY6R+P+d8ZLqHjC1v14RyIjNq69mm7N0/SfhU2FKKd1xjr5Y
+	 GoxvZx0vp0xSA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] perf/x86/amd: Reject AMD Merge event as a countable
+ event
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Luka Absandze" <absandze@amazon.de>
+Cc: kvm@vger.kernel.org, linux-perf-users@vger.kernel.org
+In-Reply-To: <20260916123315.89042-1-absandze@amazon.de>
+References: <20260916123315.89042-1-absandze@amazon.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 16 Sep 2026 12:51:45 +0000
+Message-Id: <20260916125146.0E96F1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260916115159.1938195-11-aik@amd.com>
 
-On Wed, Sep 16, 2026 at 09:51:50PM +1000, Alexey Kardashevskiy wrote:
->  bool force_dma_unencrypted(struct device *dev)
->  {
->  	/*
-> -	 * For SEV, all DMA must be to unencrypted addresses.
-> +	 * Require unencrypted DMA unless the device has been "accepted",
-> +	 * enabled by a TSM driver to DMA to private encrypted memory.
->  	 */
->  	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-> -		return true;
-> +		return !__device_cc_accepted(dev);
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] perf/x86/amd: -EINVAL on AMD_MERGE_EVENT causes KVM retry storm
+--
 
-I want this out of arch code, after Aneesh's recent rework Nicolin is trying
-this approach:
+commit 74f1b4944fbb968a39b8b39a32bd5ffa921c5814
+Author: Luka Absandze <absandze@amazon.de>
 
-https://lore.kernel.org/all/abddd433493324a6bfdf8ba9710e96d90f0d1ccc.1789010941.git.nicolinc@nvidia.com/
+perf/x86/amd: Reject AMD Merge event as a countable event
 
-Jason
+This commit modifies amd_core_hw_config() to reject the AMD Merge event
+(AMD_MERGE_EVENT) as a user-visible event by returning -EINVAL. It prevents=
+ a
+counter's PerfCtl from holding the Merge encoding inappropriately, which co=
+uld
+otherwise artificially inflate deltas.
+
+> diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
+> index 49b6b8fce5664..cb655c751e5b1 100644
+> --- a/arch/x86/events/amd/core.c
+> +++ b/arch/x86/events/amd/core.c
+> @@ -380,8 +380,12 @@ static int amd_core_hw_config(struct perf_event *eve=
+nt)
+[ ... ]
+> -	if ((x86_pmu.flags & PMU_FL_PAIR) && amd_is_pair_event_code(&event->hw))
+> -		event->hw.flags |=3D PERF_X86_EVENT_PAIR;
+> +	if (x86_pmu.flags & PMU_FL_PAIR) {
+> +		if ((event->hw.config & AMD64_EVENTSEL_EVENT) =3D=3D AMD_MERGE_EVENT)
+> +			return -EINVAL;
+
+[Severity: High]
+Does returning a permanent -EINVAL error here cause an opportunistic retry =
+storm
+in KVM?
+
+If a KVM guest programs a Large Increment per Cycle (LIPC) event by writing
+AMD_MERGE_EVENT to an odd vPMC, KVM intercepts this and attempts to create a
+raw host perf event.  When this fails with -EINVAL, KVM's reprogram_counter=
+()
+propagates the error to kvm_pmu_handle_event():
+
+arch/x86/kvm/pmu.c:kvm_pmu_handle_event() {
+    ...
+		if (reprogram_counter(pmc))
+			set_bit(pmc->idx, pmu->reprogram_pmi);
+    ...
+}
+
+Because KVM treats all failures as transient and unconditionally re-adds the
+failing counter to pmu->reprogram_pmi, on every subsequent PMU refresh KVM
+will repeatedly retry the failed counter.
+
+Could this create a permanent retry storm that degrades VM performance and
+wastes host CPU cycles?
+
+> +		if (amd_is_pair_event_code(&event->hw))
+> +			event->hw.flags |=3D PERF_X86_EVENT_PAIR;
+> +	}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260916123315.8904=
+2-1-absandze@amazon.de?part=3D1
