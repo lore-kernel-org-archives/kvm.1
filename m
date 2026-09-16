@@ -1,139 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA8F477E3B;
-	Wed, 16 Sep 2026 08:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0829A470E96
+	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 08:25:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789546622; cv=none; b=ndgcP6w9dFjg/0ZjUwRi49p1xDiFck7NxYQpnBo7/qiYeKF3haibbdZY6CceYgX11zYOLfHqg6dntTYnRzqDKdg1OhyeAvJ8owEVllkhclFGThrm3lQz0Zdp9RrJM7uf7bSXB2E96c08ZRsAUEzeUs3goRUw1MUaHXl639dgPC4=
+	t=1789547117; cv=none; b=Bjs18oG7/+MKL/o2rTawtgGHhVX5MKm/3yQVddBJBvJqsZNNA7iA4FLxb+wc/7hrKkveb6k2vaVlNuHilskBc/0mDQkPWpqlKJOhphYX6OUosTGFovsfTn90AFnSq1aVuEqhmZjPnvuh4l3wxESj8bbMn2dQ7huCVOSCfsgVtTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789546622; c=relaxed/simple;
-	bh=dtktspgZqgkVbLoipRf+Ced0AALPpZJn+tJTsPPQQgA=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BUbEEnHcz9fJPhVisUy26zSMJIca+Jnf59qDcWfHSwxwyTLRK1xLg4KAyT/ZPi4J1iVNeosH9JkCgij5qzm0IzYKASg+M6F1vsCAF0mIHqmpJbDqRjrvwtVNZ31wMrndRay6dzJq0VkRtb+KZYJozV8gZuDOKuGd+aqvcb82zPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OJSzhIY+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789547117; c=relaxed/simple;
+	bh=d2RsgbI3a5vH2k559izKEhziDtSd1rtlwhsHKltYtMw=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=ap4h+qS+i5HnYYKJr0FyBMa6Xcg+aeDOfAcNeV6GLCX1xzTqqdCOMmbyy0kaOVIhaZDj2kq8rAJ0a3ETFmUNLGuYAmIWyj+vCElQwRZTqDului+ukeQsYXCsVBzh/AG5wMlYva9IioqvDFA5DTf8M6kCrBw1ogKhUrTEgppTg6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gS3PRQOt; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OJSzhIY+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E9A1F000FF;
-	Wed, 16 Sep 2026 08:16:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789546604;
-	bh=ZJiy+EQgetwOr93GvKDb0H7whWYuf28kIErFLyYFFc8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=OJSzhIY+9YFR7vTobkyFlM67gI7Nd8rxuhwx+l8fI9Od3FMyji5O5PMePTRto08TJ
-	 BtdgC7Tocn2rZFyGXEB2C0jVq8PpAzOvTjAPV4ZlV6I/EBH/FE6e4uXL6LfnJTLtAP
-	 B12okfMVFwD3XoS+mmCoVp0GI5Ijuvp38O1rExuR4zma5UxX2jzB1W3NBQXgENhs6z
-	 0XCVmmrKrV8/dNzqhBJjcDZiP0Aq6NYJnnPJMQOOpizHVeocE3X5lepWNkDg+/+YfR
-	 RN7wEWSfYCk1vXy+f2+9h7+r4baEIYhn/3OZGpTlLb3Lrbk+zg24GOAHfGAiCJbPzz
-	 lvnuUoetnMh1Q==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1x6kos-00000009VTD-0vIh;
-	Wed, 16 Sep 2026 08:16:42 +0000
-Date: Wed, 16 Sep 2026 09:16:41 +0100
-Message-ID: <86ik45626u.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	will@kernel.org,
-	catalin.marinas@arm.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	steven.price@arm.com,
-	aneesh.kumar@kernel.org,
-	oupton@kernel.org,
-	gshan@redhat.com,
-	joey.gouly@arm.com,
-	tabba@google.com,
-	yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev,
-	gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com,
-	alpergun@google.com,
-	fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com,
-	lpieralisi@kernel.org,
-	enju.kohei@fujitsu.com,
-	Marc Zyngier <maz@krenel.org>
-Subject: Re: [PATCH v18 01/23] KVM: arm64: protected VM: Handle set_one_reg CNTVCT_EL0/CNTPCT_EL0
-In-Reply-To: <a4e7e6c3-d325-4f35-a17c-e02791cca326@arm.com>
-References: <20260915160141.3543048-1-suzuki.poulose@arm.com>
-	<20260915160141.3543048-2-suzuki.poulose@arm.com>
-	<86o6dy5uob.wl-maz@kernel.org>
-	<7c26c860-0543-459e-974b-72c59af261f9@arm.com>
-	<a4e7e6c3-d325-4f35-a17c-e02791cca326@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gS3PRQOt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789547112; x=1821083112;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=d2RsgbI3a5vH2k559izKEhziDtSd1rtlwhsHKltYtMw=;
+  b=gS3PRQOtiXbQO8rb4EuS40HcY5kkrhNYtA4zpMHlvweL5KivWGvnN6hf
+   mjnWzRD4018BAcHY+uanSO0jtAMGFDBXlhyAtOO5KU7geMPQVxTb3jQEy
+   hMPhilQVfBajEWMqQ2Kil8hNgfiIUw1d5h1CBE4dzYRY6bgi5sse0CdbS
+   uyPmDfFoID+Z2WD3k5GgSKe7AKuSq1sdkTOaRafhv1clUzO9E0WBh3TAl
+   X7M0HCv5aUZwe/M7qwaHnPjO1ON3ZWvpFAWlY5ZLZbt1C757gNk5JPoeq
+   5WLBLzA2N4GW4HoZeGNtUtPq134jyZoiumDZvDfgL7LDzuUFXxKXqx4vr
+   w==;
+X-CSE-ConnectionGUID: 1xX7x29USqWgJ8L6WI86OQ==
+X-CSE-MsgGUID: R6JjHcuLT6SvwBVo+GXVwg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="107428825"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="107428825"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2026 01:25:07 -0700
+X-CSE-ConnectionGUID: MAqfUoh/SV+P1jVnNL3Vrw==
+X-CSE-MsgGUID: qbs5p9jRQoO3QKGVzVoFlw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="277389996"
+Received: from unknown (HELO [10.238.1.188]) ([10.238.1.188])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2026 01:25:06 -0700
+Message-ID: <01d08be8-94b3-4ba4-9eb5-0928bbe4a499@linux.intel.com>
+Date: Wed, 16 Sep 2026 16:25:03 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: suzuki.poulose@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com, maz@krenel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, kvm@vger.kernel.org
+Subject: Re: [PATCH 5/5] iommu/vt-d: Reserve MSB of domain ID space for TDX
+ module
+To: sashiko-reviews@lists.linux.dev
+References: <20260915074235.1219183-1-baolu.lu@linux.intel.com>
+ <20260915074235.1219183-6-baolu.lu@linux.intel.com>
+ <20260915081150.D79E21F000FF@smtp.kernel.org>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20260915081150.D79E21F000FF@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, 15 Sep 2026 22:20:36 +0100,
-Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+On 9/15/2026 4:11 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] iommu: missing TDX teardown and mt_pages leak on IOMMU hot-remove
+> --
 > 
-> This is how it looks like now, reworked.
+> commit 8a16aba70396ddc74c834953ff8123fae8be9bad
+> Author: Lu Baolu <baolu.lu@linux.intel.com>
 > 
+> iommu/vt-d: Reserve MSB of domain ID space for TDX module
 > 
-> diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
-> index 6ac3321f4c575..1c8fac222a643 100644
-> --- a/arch/arm64/kvm/arch_timer.c
-> +++ b/arch/arm64/kvm/arch_timer.c
-> @@ -1110,8 +1110,7 @@ void kvm_timer_vcpu_init(struct kvm_vcpu *vcpu)
->                 timer_context_init(vcpu, i);
+> When an Intel IOMMU is enabled for TDX Connect, the VT-d DID namespace
+> must be split so the TDX module can use the MSB-tagged half for trusted
+> DMA translations, while the host/VMM uses the lower half.
 > 
->         /* Synchronize offsets across timers of a VM if not already
-> provided */
-> -       if (!vcpu_is_protected(vcpu) &&
-> -           !test_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET,
-> &vcpu->kvm->arch.flags)) {
-> +       if (!test_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET,
-> &vcpu->kvm->arch.flags)) {
->                 timer_set_offset(vcpu_vtimer(vcpu), kvm_phys_timer_read());
->                 timer_set_offset(vcpu_ptimer(vcpu), 0);
->         }
-> @@ -1133,6 +1132,15 @@ void kvm_timer_init_vm(struct kvm *kvm)
->          */
->         for (int i = 0; i < NR_KVM_TIMERS; i++)
->                 kvm->arch.timer_data.ppi[i] = get_vgic_ppi(kvm,
-> default_ppi[i]);
-> +
-> +       /*
-> +        * For the protected VMs, fix the counter offset to 0 by marking the
-> +        * KVM_ARCH_FLAG_VM_COUNTER_OFFSET. This would also prevent
-> userspace
-> +        * writes to CNTVCT_ELO & CNTPCT_EL0.
-> +        * The user can't set the offset via vm ioctl
-> KVM_ARM_SET_COUNTER_OFFSET.
-> +        */
-
-This is a bit wordy. Something like:
-
-	Protected VMs don't allow any offset being set from userspace,
-	either set via writes to the counters or using the dedicated
-	ioctl. Pretend the offset has already been set and rely on the
-	default offset being 0.
-
-> +       if (kvm_vm_is_protected(kvm))
-> +               set_bit(KVM_ARCH_FLAG_VM_COUNTER_OFFSET, &kvm->arch.flags);
->  }
+>> diff --git a/drivers/iommu/intel/tdxc.c b/drivers/iommu/intel/tdxc.c
+>> index b5dfdeeb23dba..1ca03257d4563 100644
+>> --- a/drivers/iommu/intel/tdxc.c
+>> +++ b/drivers/iommu/intel/tdxc.c
+> [ ... ]
+>> @@ -154,17 +159,27 @@ static int intel_iommu_bringup_tdxc(struct intel_iommu *iommu, unsigned int nr_p
+>>   		return -EFAULT;
+>>   	}
+>>   
+>> +	/*
+>> +	 * Intel TDX Connect Architecture Specification, Section 2.2 Trusted DMA
+>> +	 *
+>> +	 * When IOMMU is enabled to support TDX Connect, the IOMMU restricts
+>> +	 * the VMM’s DID setting, reserving the MSB bit for the TDX module. The
+>> +	 * TDX module always sets this reserved bit on the trusted DMA table.
+>> +	 */
+>> +	iommu->max_domain_id = ndoms >> 1;
+>>   	iommu->tdx_iommu_id = tdx_iommu_id;
+>>   	iommu->mt_pages = no_free_ptr(iommu_mt);
+>>   
+>> -	/* Bring-up is not complete yet; report as unsupported for now. */
+>> -	return -EOPNOTSUPP;
+>> +	pr_info("%s: trusted DMA for TEE/IO initialized\n", iommu->name);
+>> +
+>> +	return 0;
 > 
->  void kvm_timer_cpu_up(void)
+> [Severity: High]
+> With TDX bring-up now successfully completing here, if this IOMMU is later
+> hot-removed, does this leak the TDX metadata pages (iommu->mt_pages) and leave
+> dangling hardware state in the SEAM firmware?
 
-Otherwise LGTM.
+This path is basically unreachable in practice. No TDX Connect-capable
+platform supports DMAR hotplug.
 
-	M.
+> 
+> When ACPI hotplug invokes dmar_iommu_hotplug() with insert=false, the IOMMU
+> is destroyed via:
+> 
+> drivers/iommu/intel/iommu.c:dmar_iommu_hotplug() {
+>      ...
+> 		disable_dmar_iommu(iommu);
+> 		free_dmar_iommu(iommu);
+>      ...
+> }
 
--- 
-Without deviation from the norm, progress is not possible.
+I will add the following check for future proofing:
+
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index e88457d96b53..16203604b751 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -2202,6 +2202,10 @@ int dmar_iommu_hotplug(struct dmar_drhd_unit 
+*dmaru, bool insert)
+         if (insert) {
+                 ret = intel_iommu_add(dmaru);
+         } else {
++#ifdef CONFIG_INTEL_IOMMU_TDX_CONNECT
++               if (iommu->mt_pages)
++                       return -EBUSY;
++#endif
+                 disable_dmar_iommu(iommu);
+                 free_dmar_iommu(iommu);
+         }
+
+> 
+> Because this hot-remove path never calls intel_iommu_teardown_tdxc(), it
+> appears iommu->mt_pages is leaked and tdh_iommu_clear() is never called before
+> the IOMMU structure itself is freed.
+> 
+
+Thanks,
+baolu
