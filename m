@@ -1,206 +1,168 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B1F414A11
-	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 18:00:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E1F3DDDDA;
+	Wed, 16 Sep 2026 18:02:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789581667; cv=none; b=nODWiKAmR/95eWgzanvzZu29TuBmwIdLn+pTJFHn+39S9+dQm/VzZ0+xYGu8CzzJt5gig+ygMvFtHP/qn2yp31Nhp2xm2SLJEzVD4EuzvGQo3vFWb3mRmmljINI/wTN3vFKazkS7ebnjRq1nKsHHPvvx1VGCfoTskbbYR2hwh4s=
+	t=1789581759; cv=none; b=tV6+//rjWNlK/OgQfeSllXFTv6dZkNDoNx4euKKgqUKvSR6mzpdgFj3a2tk9xpPd8sF2tHHhdNF4Wi7Vyj1sH3Scx5p7OeYueZLlZRZlYQH7a0zuK7L+s48Gy1aeA0TfMz8kvpZzyqLzz6s5aQ5RolaILn5bnwHW5DxYpKYMO4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789581667; c=relaxed/simple;
-	bh=BM7m2qMuLHC97pgGicfcI+F7Qy4IfuoGYUuoHV6tpug=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SPZCtgYZsv3dtRlOJi2SGnngcshFOIXZMLtnEPT0gy2BgIdA8cjLEHISCAiBlZNuyqCcsIwIQh28mQKK/vnwynt8jZNafg2P7nmym/GzumK3zLhbU+sVzOmWwN8eWeuL0+yNEG+Xkbzb7qZ6byCTN3iiwq3rIBqbtkwj3Gv+xxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m5w8Rwhy; arc=none smtp.client-ip=209.85.214.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1789581759; c=relaxed/simple;
+	bh=kxgsNNT1KvLPfb3YCHP70inh8dhJgSSo6EGOUD+EiRA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=a/GhEq8p8obqL0NCj9YIqdprxwxEYiuMgDT6zaLEWZ3t1+mOUEmMlquw46r31tkg0plmQUGdjqJXmj3wjxiPC/wRY3loFF9Mb+XFp0UwqCwEESa1KBGkqoEmz+JcNhXs/pctQ9lGX1r5wk7vrFZ4dehMDcYwhma4xKOmUIHLVTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZIOCba99; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m5w8Rwhy"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2dd8920c132so14545ad.0
-        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 11:00:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789581651; x=1790186451; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=4s+521Fqa19KtzEYgOec6+FEoiMkZDuNR0N9XHxDUm8=;
-        b=m5w8RwhyJ41ughHK7n0FGeBmgyJiIeIEU3qiCkRtjr7k1yy5Syo2s8DXH+tRb+F5PJ
-         nUKeC0JdrO0m+dIUv+iwZtyYPKNYwFezyasvY1syblFUokYneMR67ZkjWufVe5eCNVrm
-         +e89oYN0b4Fa+SzOsuPpTr06L3Q4wYPQ3Oefyok5J+0Oj4294wrVfZh6LFv2Rq1c6yn8
-         3SY/AZee7R2vTE0xa76B6JVdCGBeJbIl+RLydoSARGnZRIp1w+dFAPSOKzNRlBo6yDnU
-         ST5RhrgPirb1Aw1OU7ksQK8wEZ+ypjEdg9N9cW7E8Cg70SrCjVJdzzL5zUZ+KxyJ6UBq
-         zQRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789581651; x=1790186451;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4s+521Fqa19KtzEYgOec6+FEoiMkZDuNR0N9XHxDUm8=;
-        b=rmSLgieftB2K0sXNJ9KI4cSdRbwFH0/MZXYCnCEc69yBU6IxVO39tohewor7UoJpmv
-         /dzfGdicpXVQLX4ezO/bxTBQvuLGaAxJ11vurAyOYj52PJ5c2mRCUuCQj6k2joWa/EqC
-         sdlOnsKOk2lSX0a8FC0MVGCqD24va7tN3pDFU083bfxWVvutchbWqkJRAYEm049sCs/2
-         JznSMWC4qnla9KfW2632Ad1GsmJoBJODtnIPrKJ7T2JRS7Shr77NtifwRNERcp0b8UK1
-         3NAY94fc5MEq4G28txOKpTmvxGxjfCiN/EPpvwe1CBgsz8u/bMW4O5gnM7xSpuoVwvGJ
-         v43Q==
-X-Forwarded-Encrypted: i=1; AKwUvByhernYR2vWplChfKeTyo+5XZdoYpkm3B23LUZ38wcgrdxh3DkahLay5r7QUGIJnbnxKKk=@vger.kernel.org
-X-Gm-Message-State: AFuF++nV8DW5AGjfOBzBHMV/nXGV+ZvuYdNFAZnfk2l8yyILFM/ze+Yg
-	6cvVkZzCTbGeD4bZ+Gsvqo597wVpFOaXLDDRh8tghwjF/+guJx+icoE+KmAY1i7iTeZu2G6lXSl
-	zUj3uAA==
-X-Received: from plih6.prod.google.com ([2002:a17:903:37c6:b0:2dd:4a8d:e22b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1211:b0:2d9:3bee:4f32
- with SMTP id d9443c01a7336-2dd8e752eb8mr73324115ad.20.1789581650896; Wed, 16
- Sep 2026 11:00:50 -0700 (PDT)
-Date: Wed, 16 Sep 2026 11:00:49 -0700
-In-Reply-To: <24a751d16ba0dc37aa7774df5739f39734cf9aca.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZIOCba99"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EAA61F000FF;
+	Wed, 16 Sep 2026 18:02:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789581746;
+	bh=kxgsNNT1KvLPfb3YCHP70inh8dhJgSSo6EGOUD+EiRA=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=ZIOCba99yzswUHkcAeKvXEWO/4QfUMF9elUUGXb60w+iYrGhurwzzNKJDvqx3u7Iq
+	 YgORqkWOt+1JxM3gK6RqnYFntMYjgloXsb6POOsDfMwcTqlkhFpzmzh2HwDHG8OKYC
+	 +2IfdX+wqXN2n/LN/niNao/Vk7a67L6xKVwOcqz9BwwEXCvrAe4OZUTJ66TBItGxij
+	 NiT217d2NRJxsFMsDYfKXJ1r7ZzzMa2g94xtyQaDvQn0HjZydFmjsK+KNqJkBtmKbH
+	 54qXawlPjADa14Cmq5u0GLAUuwn3ZIPvhToyRmlFoJ4zDXXd857SxdOg2jQtKn9v71
+	 ltjvLmFLWSXTQ==
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <24a751d16ba0dc37aa7774df5739f39734cf9aca.camel@intel.com>
-Message-ID: <aqrZUZtSZ-YItclT@google.com>
-Subject: Re: TDG quote analysis
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, Dave Hansen <dave.hansen@intel.com>, 
-	"kas@kernel.org" <kas@kernel.org>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Yilun Xu <yilun.xu@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	Vishal Annapurve <vannapurve@google.com>, Peter Fang <peter.fang@intel.com>, 
-	Binbin Wu <binbin.wu@intel.com>
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 16 Sep 2026 20:02:17 +0200
+Message-Id: <DLGXS4SCP3VT.28XXX09BL963U@kernel.org>
+Subject: Re: [PATCH 12/13] vfio/nvidia-vgpu: add the NVIDIA vGPU VFIO
+ variant driver
+Cc: "Alex Williamson" <alex@shazbot.org>, "Zhi Wang" <zhiw@nvidia.com>,
+ <acourbot@nvidia.com>, <yishaih@nvidia.com>, <skolothumtho@nvidia.com>,
+ <kevin.tian@intel.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
+ <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
+ <jhubbard@nvidia.com>, <ecourtney@nvidia.com>, <cjia@nvidia.com>,
+ <smitra@nvidia.com>, <kjaju@nvidia.com>, <alkumar@nvidia.com>,
+ <ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
+ <targupta@nvidia.com>, <nova-gpu@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <kvm@vger.kernel.org>
+To: "Jason Gunthorpe" <jgg@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260905081116.106613-1-zhiw@nvidia.com>
+ <20260905081116.106613-13-zhiw@nvidia.com>
+ <DLCRZLO06SIO.LS7TWQXIPZSQ@kernel.org>
+ <20260914121217.70fa0d93@shazbot.org>
+ <DLFD2ZDSK9YQ.3A4R66G8UJMD8@kernel.org>
+ <20260915120148.7548a8ca@shazbot.org>
+ <DLG7C7MLGSTC.2GSTD84WI595N@kernel.org>
+ <20260916141718.GU3968357@nvidia.com>
+ <DLGUPX9KPFKF.12CU304YAST79@kernel.org>
+ <20260916162817.GW3968357@nvidia.com>
+In-Reply-To: <20260916162817.GW3968357@nvidia.com>
 
-On Wed, Sep 16, 2026, Rick P Edgecombe wrote:
-> Here is the overdue analysis of what a TDG based TDX quote operation coul=
-d look
-> like, pulled together as writeup somewhat quickly. This was from Sean's r=
-equest
-> originally. The writeup is based on a bunch of gathering by Peter, Elena =
-and I.
-> Some TDX interrupt input from Binbin.
-
-Thank you!
-
-> This DICE quote generation can take a long time. Exactly how long is not =
-known,
-> but it is expected to vary and often exceed the time a SEAMCALL can be ex=
-ecuting
-> in the TDX module by a considerable amount.
-
-What's the ballpark?  Are we talking tens of nanoseconds, tens of microseco=
-nds,
-tens of milliseconds?
-
-Is the CPU spinning the entire time?  Or is the quote degeneration I/O-like=
-?
-
->    It is not nice to keep the guest from running for too long. The TDH.QU=
-OTE.GET
->    SEAMCALL monitors for host interrupts, but not guest ones. Similarly, =
-the SGX
->    quoting enclave doesn't know what is happening in the TD. So, to help =
-reduce
->    guest latencies, the GHCI exposes a way to register for a notification
->    (SetupEventNotifyInterrupt) when the quoting is finished. A quote TDVM=
-CALL
->    handler can start the quote operation on another host thread, and resu=
-me
->    guest execution waiting for the quote to finish.
-
-To me, this just *screams* for a virtio-like device to provide quotes to th=
-e guest,
-especially if the slow part of quote generation is I/O-like.  Even if it ho=
-gs a CPU,
-an asynchronous virtio-like interface would be far easier to support.  E.g.=
- the
-userspace device backend spawns a thread (affined to the same set of pCPUs =
-as the
-vCPU, i.e. to "tax" the guest instead of requiring dedicated "overhead" CPU=
-s),
-and kicks the guest when the quote is ready.
-
-Ahh, that's more or less what SetupEventNotifyInterrupt is.  I guess that's=
- not
-the end of the world, so long as the backend for SetupEventNotifyInterrupt =
-is
-handled entirely in host userspace.
-  =20
->    A resumable TDG quote call would have to solve a slightly different pr=
-oblem.
->    A bad guest could refuse to resume the TDG call and hold the TDX modul=
-e
->    extension save state slot hostage.
-
-The whole "what about guest interrupts?" thing makes me think the quote gen=
-eration
-is CPU-bound, i.e. not I/O-like.
-
-Does the TDX Module *need* to provide a save slot?  What would prevent TDX =
-from
-requiring the guest to provide storage for whatever in-flight data is neede=
-d?
-That way there it doesn't matter if the guest never resumes the call, it ca=
-n only
-hurt itself.
-
->    So instead, a TDG call could work by remotely canceling another TD=E2=
-=80=99s paused
->    operation if that TD didn't call back frequently enough. After a time-=
-limit
->    was reached on an extension save state slot usage, another TD=E2=80=99=
-s TDG call
->    could abort the stalled TD=E2=80=99s operation. There existing designs=
- around doing
->    this cancellation already in the TDX extension arch. It would need to =
-be
->    adapted to the guest side calls and incorporate the extra cancellation=
- work
->    into the time limit math. Some good timeouts would need to be picked.
-
-...
-
->    If a quote operation is long enough, the TDG SEAMCALL should probably =
-support
->    a resumable-like flow from the guest side too, where it also monitors =
-for
->    pending guest interrupts and returns from the TDG call to let the gues=
-t
->    handle them.
+On Wed Sep 16, 2026 at 6:28 PM CEST, Jason Gunthorpe wrote:
+> On Wed, Sep 16, 2026 at 05:38:21PM +0200, Danilo Krummrich wrote:
+>> Usually, class device implementations can't make assumptions of the unde=
+rlying
+>> bus, because they have to work for any bus. I.e. there's no other way th=
+an
+>> providing helpers and letting drivers do the glue code between the bus a=
+nd the
+>> class device.
 >
->    Then the host wouldn't need a thread and a completion guest notificati=
-on
->    mechanism. It basically transfers that complexity to the TDX module.
+> You should think of VFIO as a series of helper libraries. One of those
+> libraries is "here are all the PCI PM ops you need".
+>
+> Drivers rarely need to customize these ops, they just need to wire it
+> up to the support library to avoid a bunch of code duplication.
+>
+> Stated another way - the very point of vfio-pci is to remove
+> duplicated code from the drivers.
+>
+> So if we wanted to push hard on removing drvdata, and don't want to
+> touch the struct device I would probably say to #define up a way for
+> the driver to build its unique trampolines. It wastes a bunch of .text
+> but at least it doesn't duplicate code.
+>
+>> The reason this seems undesirable from a vfio-pci perspective is that it=
+ is
+>> special in the sense that it is a class device that is specifically buil=
+t to sit
+>> on top of a spcific bus device (i.e. struct pci_dev).
+>
+> It is a library, all these ideas to do things with the driver core to
+> implement a library make no architectural sense.
 
+Both is true, it is a library, and it is also a class device built on top o=
+f
+another class device (struct vfio_device) that accomodates to a specific
+underlying bus (PCI).
 
->    But it also might transfer some of the control. The TDX module would h=
-ave to
->    embed some policy on how to decide when to inject guest interrupts. If=
- the
->    host and TDX module had different logic on when to actually re-enter t=
-he TD,
->    that could be annoying.
+Which means that this library has the need to make a generic connection bet=
+ween
+the class (VFIO) and the bus (PCI). And this is something that the kernel h=
+as no
+generic solution for (and isn't represented by the driver core in any way).
 
-But the TDX-Module already has some policy, no?  In the sense that it decid=
-es
-when to exit to the host because there's an interrupt pending.
+Your dev->subsystem_data idea would accomodate this connection. However, I
+object to this, as it'd be for a very special case and I'd be worried it is
+abused by other subsystems in odd ways.
 
-> =3D=3D Summary =3D=3D
->=20
-> From what we found, I think it doesn't seem overly impossible for the mod=
-ule. But
-> the exact cancellation rules and timeout logic would need to be hashed ou=
-t a bit
-> more.=C2=A0The simple mutex on the host side does still seem a fair amoun=
-t simpler than
-> the TDX module's fairness options.
->=20
-> How do we feel about the roles and responsibility shifts? Any other probl=
-ems to
-> solve?
+Besides that, I still think that the correct thing to do is to have the glu=
+e in
+the driver and just provide the helpers in the best possible form. In fact,=
+ this
+is what a library should do - provide the helpers, but do not directly
+interfere with with other layers.
 
-What about the whole "TD-specific data in the quote" thing?  If getting a q=
-uote
-(or report?) is punted to the host, I'd still like to keep it out of KVM.=
-=20
+>> It still makes me think that there should be some closer integration of =
+vfio-pci
+>> with the PCI core, as it is specifically built for this bus.
+>
+> It has such a basic need I don't see this as a reason to pollute pci
+> core with any vfio specific things. Like I would nak your [1], that's
+> completely wrong layering.
+
+As I said in the beginning, it is just a "hack"; and in fact it is the exac=
+t
+same layering violation as abusing dev->driver_data or adding
+dev->subsystem_data.
+
+The reasons I called it "more reasonable" and "less of a hack" in my previo=
+us
+reply are that it doesn't break an existing (driver core) API contract and =
+it
+only affects the the exact two layers this is about in the first place.
+
+>> > I don't really understand in a nutshell why we should do this for nova
+>> > the mails were so long... Can we not just ignore the lifetime
+>> > imperfection for this?
+>>=20
+>> I mentioned some points in the first two paragraphs of [2]. Besides that=
+, I
+>> don't see a reason why we should spend time and effort for working out t=
+he
+>> inferior solution, where the better alternative is even less effort, con=
+tributes
+>> to better quality and stability of the whole driver project and also off=
+ers a
+>> chance for the vfio subsystem to gain new contributors and gather experi=
+ence
+>> with the language that has proven itself in many areas already.
+>
+> It seems to be quite a leap that it is less effort. IDK..
+>
+>> TBH, I don't think it makes a difference; having Rust abstractions is pr=
+etty
+>> much the same as having another driver. I.e. it would be equivalent to s=
+aying
+>> "before we accept another pci-vfio driver we need to do some rework".
+>
+> Well, it is, but thats the point when judging effort..
+
+So it seems that we agree that there isn't really a difference between addi=
+ng a
+new C or Rust driver in this regard.
