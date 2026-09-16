@@ -1,224 +1,184 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010045.outbound.protection.outlook.com [52.101.56.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33F34D37CB
-	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 18:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789583660; cv=none; b=rmU1/dtwFGEvCXyHmWQG+Jw/Lxj6mKf0NyHIRFMcoUqKuuP30M7fAYJbtJZU8gcrFJlCI51NGaGvzgICrReH/arEXnKiWu4WqvuqR3mLJRN8hM7/YYZ/N0LSYMdbX/J0Fw7d2jv+G5Rl0/hjhmwdgy5F1+3i0bme09K8cw65aso=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789583660; c=relaxed/simple;
-	bh=Ykk92tDV9M7kvVoJsqecVU31W9ystDedudQnlhM9OB8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KhcpP5270/8F+5s0/2DmR9cJFTutvf9R4GOxk27qXbJ+YSN/smyfHSDcFZ9ro9/0t7NcYSJpw0p0+GUV1vjiJM/rt0N05f47gPwaPRbQZew28IdcX66kVg5HZhpqvNNiAVGvswLbJQ/KTzYuHaSxP7RHyWnGvW5WykkISc5DvMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ClBD6ywo; arc=none smtp.client-ip=209.85.215.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208684DAFB5;
+	Wed, 16 Sep 2026 18:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789583833; cv=fail; b=rAVZgUne+FhwzYr1CRcUaKw+QKaHGyFm/LYGRCi9zg+vD9FI8KsM7WkcIbuUmc1P8J+eqkprOx9UMvOrc9+eX8oCspGyG3NbjpEG0yyGSKpiM0nzC7kJMrOPtgVnh+OrHc2B0fqpMPIOYlvAkLGt+1ZAgtpGglYxkqGf8kmGTUs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789583833; c=relaxed/simple;
+	bh=IC6vn3X1VMMBI7YHpR788VNWxBalfoFl+2LwP05FyH8=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YXmAHNkX/jSTDQ3KrUyr78pFEV/+RgKBbcdj42mW/0x5tdB2OAiyZeC4gLS2MbJQFwhaX88kRPd0IFs2LcM2n6RaXolpOeEFWa1eESicqO7nXi9zUOrsiZOci8aosxRzU6WpuLPwPeHA8cxW0/hlC096f9j8UlPNM8X7xwvnTgI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CM/u/VZa; arc=fail smtp.client-ip=52.101.56.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ClBD6ywo"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc1b8088202so5346572a12.3
-        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 11:34:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789583639; x=1790188439; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=1/boOQor9JLExDk92cynKiJhAwGiEff2rVhXxeRxqi4=;
-        b=ClBD6yworE6thdWh7eCBA3FhIDrUN4fB14lIbr6Txofs8xI3/Z8QgpSotcUZJQczgV
-         U5dt2rzsc/fBmI+Nbk4fEEwvTqgt6OE9pjJWdMx1szoylxvmGntWnIjrd2EAQwtO4c3H
-         6seUeQW8sR6IjVIy8qjQT4Q9caop8+Q6McB0PAPQfuIxiUWhuqHNUf8GO4REBWg/jQzy
-         xHksPON/HFZNUFAUDPpdLDmc5fnQQLiVlDctw3Cf+2zplA0XfxJfImlVNFA4jbVM2mqm
-         HnoNRHkGfdM9DGowcamU8eMu5dBXI4xcyS8AgoiVuFZRG0Eis+Qnpm1hkV2KteIK92wq
-         59fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789583639; x=1790188439;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1/boOQor9JLExDk92cynKiJhAwGiEff2rVhXxeRxqi4=;
-        b=Ra8hqyepNJPdnm4zYLtEUQzYLtX174ntFrSnDfn+jvy5xyvhTywAWcLfSuNLkQdExq
-         9AVrXUD39gV4Cp3faalKndSSfPsg+ZA1IzgsgFg1SZgV8ji+zcyZhDOo/P/OWtQBjDEW
-         OLLXkwwsklhBxPjZX/iOt771PDl2HSnHfEvrQHSv8MooGz7o4pwBzu4K8atq+4JXRwuq
-         TxINnBXtKystM8l8SGHTtdiwP9t8rbD1xSVNalwpULcjbEttKpb5KCnNj5joLIJCWI3e
-         zd7i68pnsVRmGYN5NZMImnPSBlUsxLlkAqSW1eFYJQ2r/dov7hTWuQn0mnvL+tijXJhQ
-         KrHA==
-X-Forwarded-Encrypted: i=1; AKwUvBwrrYrWZdDQ3iOaNApclFu3zP4I0A+XM1TjlA8try32VESBQEOiEgIxM2QXNvdwrMqDcd0=@vger.kernel.org
-X-Gm-Message-State: AFuF++lRv4HNfshYE1Y5dHiOMB+EHzmcpD3zanMVsi5HfoIBmje0LTjN
-	ybWrOWhmldOm70FD8ZxTZUtpZGyu0WuW5OXxgkvOxVrc8s1qpOz7AdvNk/WqBttQiiHF0pTLEzJ
-	ThbzKVQ==
-X-Received: from pffj7-n2.prod.google.com ([2002:a05:6a00:c2c7:20b0:86b:491c:9006])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:f8b:b0:871:e76a:2a35
- with SMTP id d2e1a72fcca58-87238f95cf6mr8223777b3a.19.1789583638744; Wed, 16
- Sep 2026 11:33:58 -0700 (PDT)
-Date: Wed, 16 Sep 2026 11:33:58 -0700
-In-Reply-To: <CAJxe5ctcVxmhRSw3Gt0POQTzRKoxXo7+Y3CPDe7cUZvC0QPK+g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CM/u/VZa"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=w3TChDNxkE/lWur/ac2ZfLENvza9zWcJfFwOiqX1h0IoTJUAczg3C50IhwfoCApjHr0eJNlOf6m0bKuSRkRT15p+B9ESNReeNwrQKL00VINYfFD+Q4UyVFInXhc7OqHdpPJRM14bvqeej65FnMciori5kxdOxnzEyPc/BuUSG5MC9FT5yo8LUU82uD6kEaFE4moTwBnlQ4ZBeCVRqAKMvr2DMa/nfyb0M+KoIoUcXXt5KXFUU9sQAH18tz4CLhr6I+UBsDEHsXbcnxIvmWiFj4BJkywyTtz3+v3ucTGkDF3/vZwVwdiEPFNnH2Pxzb9jXyqc5CBgtUER4fJLfBaYHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TPDimQCpMRZ2zwHgUKQ+mZadhC+KU4LVD+dKbpAN+60=;
+ b=kFgClq5m0hdZvuHhr4stvJdLo/GW1I5iKSZ3MyaR29E9WJ2dNA5JkP2FV+lSZSEGWZHQOd8aPeIpyEK7CCHvlH0TgClasQeNiQ0SzX9f7+Iur0kuh8fa1c5RzBq2Fdc7UhEuKF9/tZiahXVe7O2f0HMbNZ0UPWkJoVUQwneehhZ1e6jBzngsFz3BCWzpU9c7jGIA/hZwn6ivqHFP1Jl1fzOiXBNyOxedgRWOTXa+AOihV3W4I+aCjW/+/POVnTiRC4K87Y7ckSkw980KE78XgjrGVPbhYZp5Ee9RVSdisXl3oajRduF1/m3jJcHs9TdzT8MpkX/JaK2NXBmO3VWybA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=shazbot.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TPDimQCpMRZ2zwHgUKQ+mZadhC+KU4LVD+dKbpAN+60=;
+ b=CM/u/VZa0RLBO1AfZ2BKi56Sgi/pXs5zynJqRlw7BvrnfWavkv6VrOg+lpH8CbZbgAEhlgRe5PMPcTR9ZH4rmD2emfwO9Hfyf7vLYsWwHEe9guV0KYSIwZx9hvt+CliVFnwWgYn8ECOUL2IOa4r5ZhHpki6q/tURZ+jpeR8kzpPCy3vjqpgMa3lv0J1k1neUSMclKqBWPPME3aAtM+v/0F9fFOwuRwipEIfaqc14BqlOHJ24MinmVyNVazGe5yomI9wPJ+aDJSegAbl2iYDbMUrvKQcaoDvqZcj4ocKKJLR/dJiHUhsJLXYHViB6JKrJaWaohCaZCBrPFRDE7u257w==
+Received: from BL1PR13CA0216.namprd13.prod.outlook.com (2603:10b6:208:2bf::11)
+ by SJ2PR12MB7867.namprd12.prod.outlook.com (2603:10b6:a03:4cd::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.10; Wed, 16 Sep
+ 2026 18:36:49 +0000
+Received: from LV8PEPF0000006B.namprd03.prod.outlook.com
+ (2603:10b6:208:2bf:cafe::8b) by BL1PR13CA0216.outlook.office365.com
+ (2603:10b6:208:2bf::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.9 via Frontend Transport; Wed, 16
+ Sep 2026 18:36:48 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ LV8PEPF0000006B.mail.protection.outlook.com (10.167.248.40) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.428.7 via Frontend Transport; Wed, 16 Sep 2026 18:36:48 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 16 Sep
+ 2026 11:36:16 -0700
+Received: from nvidia-4028GR-scsim.nvidia.com (10.126.230.37) by
+ rnnvmail202.nvidia.com (10.129.68.7) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 16 Sep 2026 11:36:07 -0700
+From: <mhonap@nvidia.com>
+To: <alex@shazbot.org>, <jgg@ziepe.ca>, <ankita@nvidia.com>,
+	<jic23@kernel.org>, <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
+	<smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+	<dave@stgolabs.net>, <alison.schofield@intel.com>,
+	<vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
+	<yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+	<bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
+	<gustavoars@kernel.org>
+CC: <cjia@nvidia.com>, <kjaju@nvidia.com>, <vsethi@nvidia.com>,
+	<zhiw@nvidia.com>, <mhonap@nvidia.com>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>
+Subject: [PATCH v5 01/27] cxl/regs: Split the BAR block request and ioremap helpers
+Date: Thu, 17 Sep 2026 00:05:14 +0530
+Message-ID: <20260916183540.3813685-2-mhonap@nvidia.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260916183540.3813685-1-mhonap@nvidia.com>
+References: <20260916183540.3813685-1-mhonap@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260910-snp-invalid-input-v1-1-fb2e03da614b@google.com>
- <0b2d8858-b361-4a64-986a-4c179210fbec@amd.com> <aqlWt4jb4CSPnecN@google.com>
- <d6179d34-a4b0-4548-8298-b790b333d22f@amd.com> <CAJxe5ctcVxmhRSw3Gt0POQTzRKoxXo7+Y3CPDe7cUZvC0QPK+g@mail.gmail.com>
-Message-ID: <aqrhFvwFJsQTaEkz@google.com>
-Subject: Re: [PATCH] KVM: SEV: Return INVALID_INPUT on SNP req/resp buffer
- access failure
-From: Sean Christopherson <seanjc@google.com>
-To: Jacky Li <jackyli@google.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Michael Roth <michael.roth@amd.com>, 
-	Ashish Kalra <ashish.kalra@amd.com>, Jacob Xu <jacobhxu@google.com>, 
-	Supraja Sridhara <suprajasri@google.com>, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail202.nvidia.com (10.129.68.7)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PEPF0000006B:EE_|SJ2PR12MB7867:EE_
+X-MS-Office365-Filtering-Correlation-Id: b7341e51-9c2c-4f89-0d65-08df142177e4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|82310400026|36860700016|23010399003|376014|921020|10067099003|56012099006|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	BoVyYIxbKOGhCMaZTDKJ9bQhRyfziOjzXPfFQq082WX2Sa7a7nS1zQ+O+lG9M4AGoQ4SuD03nU+U74bmlYHpgbmuOe6o5wWVa56XQBo+vy/BvuZ68DxKDdV44f1wKevEvG2XMEdTvcflshKXEz8r8eKnCSsd5xMtr5B3WA/fTzZ93/75gG3dLbWteRP9PctH1XnqksRnIJSQf9W4SHp2kLMUZQTGdJSwqJzcdWxgR9imqICnRuhTdX2F8s7xfswkffmnsF5iPLkFKPEktB+sjo/Ij4jzT9JaVds4e85mcro/zVycQ2XrTK/LNUs0AhoQlSEdHwXFOM1XBCrnZdIlRNaA2Vor1Zfc+NWgyzodpYuvDslxfHKj6IKYvR2+yIAjSJHmX3aPfd38EIZRV0e0guGay5P0OAnNqQu722Nq9KPtn4q707zfV0x5CKImjOVKrjH1TnFEC0X6MQN6Uw3VgZx57GrgApbPbBFuKAaDW9VWTlNOvz21diJSJOfUmahbJXXwwT30HWVZ0I4zuCg4EuKdtmdkkJz447EU0k4MJkVtAfkNXmGQX8owJTE00xbpG4Ny/ksg30BAo+eehVScnkdq4EH1P9+L10ej0EFUqRPvpvoqpNO1WrP/wMl8bChQWPcNOcrXC0xtgoK6zLTIYaKKS9PGEMknj6deiOwMSzt0+uvj1+xSouQAVOFJxINb0xJ6sTIg8oodFig18hjC9sAOCDPvVLLEYs8j+Qlj1I5IgUxQ/jRPw3Bwj34W0v1F
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(82310400026)(36860700016)(23010399003)(376014)(921020)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	+z6Lrj9Msi/vLkU8DyAVcHeSotCKSqotQK7peVn7yXq/B3hn0/buuBepQcxHcuKAI7KipWufu9zIPPFF/p6Xqd+CbBY2BIbAnSn64mQHzhrY2WsGEnbwJnaPxLbb0kicWUPtUbNoOZaDBdCe3HjoJCVDbIW3Fi4kC9YADPkYKKIcJtyT8ms7/JV4n0TqSV4WlGXXfZRKSN/flsD/XKGRXGxzgNTZop1U0ymeZBt9ks0E080v48RO5DNZhlWTotTIV9NX9HhrlrMrqzrZYEf/ngHiC1hYYmRUTLQCYfWDN7EMArcjrXuSAPCtUxvKxrIz1E1UA1xbJvvQelS7VYstlo8sm3PJ4k/ZbF4VKWgEdWzI2MVefv24Eky9lPeza1C/3uYnG3Q+i08Rui4pUBjMFG5HzeqA5/aDGMUG6WzyCMP8vy1DezduW7L0YVuias0j
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 18:36:48.5972
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b7341e51-9c2c-4f89-0d65-08df142177e4
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	LV8PEPF0000006B.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7867
 
-On Tue, Sep 15, 2026, Jacky Li wrote:
-> On Tue, Sep 15, 2026 at 8:21=E2=80=AFAM Tom Lendacky <thomas.lendacky@amd=
-.com> wrote:
-> >
-> > On 9/15/26 09:31, Sean Christopherson wrote:
-> > > What if we keep this one as -EIO (or better, change it to -EFAULT in =
-a separate
-> > > patch?), but add a comment explaning why KVM needs to exit to userspa=
-ce in this
-> > > particular case?  That would be a good compromise; if the guest is at=
-tempting to
-> > > access non-existent memory, the initial READ will fail, i.e. we still=
- get most
-> > > of the behavior Jacky wants.  The only fatal case would be where eith=
-er userspace
-> > > really did screw up, or the guest managed to find read-only memory (t=
-hough I
-> > > would probably argue that's likely also a userspace bug?).
-> >
-> > That sounds good to me.
->=20
-> Thinking through the sequence number and VMM bug concerns, I'd still argu=
-e
-> that returning INVALID_INPUT on kvm_write_guest() failure is preferable t=
-o
-> exiting to userspace:
->=20
-> 1. req_gpa and resp_gpa are two independent guest inputs, so a guest can =
-pass
->    a valid req_gpa and a resp_gpa that isn't backed by any memslot to sai=
-l
->    through the initial read and fail only on the write.  Exiting to users=
-pace
->    on write failure therefore still lets a guest kill the VM at will.
+From: Manish Honap <mhonap@nvidia.com>
 
-Drat, I missed that.
+devm_cxl_iomap_block() claims a register block with
+devm_request_mem_region() and then maps it with devm_ioremap().
 
-> 2. Comparing the two outcomes after a kvm_write_guest() failure:
->=20
->    - Case 1 (exit to userspace with -EFAULT/-EIO): unrecoverable.  The PS=
-P's
->      response is lost, and userspace can't rewind the PSP's sequence numb=
-er,
->      so retrying KVM_RUN would just fail that check.  There is nothing
->      userspace can do other than kill the VM.
->=20
->    - Case 2 (return INVALID_INPUT to the guest): the guest disables the V=
-MPCK
->      and moves on to the next one, as Tom mentioned.  The worst case, onc=
-e all
->      four VMPCKs are exhausted, is that the guest can no longer issue gue=
-st
->      requests, but the VM keeps running.
->=20
->    Neither is ideal, but Case 2 seems to be better: a localized loss of
->    functionality instead of the entire VM dying over a single bad request=
-.
->    It also leaves the decision to the guest, which can carry on with what=
-ever
->    doesn't depend on attestation, wind down cleanly, and shut itself down=
- on
->    its own terms instead of being killed abruptly.
+A driver that already owns the parent BAR needs to skip the sub-block
+request while still mapping it, so the request and the map must be
+callable independently.
 
-The problem is, I don't see how the guest can know when it needs to discard=
- the
-VMPCK (post-request failures) versus when the VMPCK is still "fine" (pre-re=
-quest
-errors).=20
+Split them into devm_cxl_request_block() and devm_cxl_ioremap_block().
+devm_cxl_iomap_block() keeps calling both in turn, so there is no
+functional change.
 
-> 3. More generally, when KVM can't tell a guest error apart from a VMM bug=
- at a
->    hypercall boundary, reporting the error to the guest seems to be the s=
-afer
->    default: failing the guest request degrades one service while keeping =
-the
->    VM alive and debuggable, whereas exiting to userspace turns a single f=
-ailed
->    request into a dead VM, and hands an untrusted guest a way to terminat=
-e it.
+Assisted-by: LLM
+Signed-off-by: Manish Honap <mhonap@nvidia.com>
+---
+ drivers/cxl/core/regs.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-Well, ideally KVM never has to make a choice.
-
->    And in the context of SNP the guest doesn't trust the VMM anyway, so a=
- VMM
->    that fails to deliver a response is indistinguishable from one that re=
-fuses
->    to, and the guest already deals with that by disabling the VMPCK on a
->    VMGEXIT error.  Letting a host problem bleed into the guest is arguabl=
-y
->    "fine" here, since the guest is designed to cope with it regardless.
-
-FWIW, I'm not terribly concerned about bleeding host issues into the guest,=
- I'm
-more concerned about ending up with deferred fatalities and a mess of an "A=
-BI"
-between the guest and KVM with respect to handling failures.
-
-What if we "tickle" the resp_gpa before doing the request?  Similar to how =
-CPUs
-probe bytes early in XSAVE/XRSTOR to avoid having to unwind later on.  In t=
-his
-case, the response is restricted to a single page, so we only need to tickl=
-e a
-single byte.  E.g.
-
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 2da61843a6f2..b2e74a407c2b 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -4207,6 +4207,7 @@ static int snp_handle_guest_req(struct vcpu_svm *svm,=
- gpa_t req_gpa, gpa_t resp_
- 	struct kvm *kvm =3D svm->vcpu.kvm;
- 	struct kvm_sev_info *sev =3D to_kvm_sev_info(kvm);
- 	sev_ret_code fw_err =3D 0;
-+	u8 tickle =3D 0;
- 	int ret;
-=20
- 	if (!is_sev_snp_guest(&svm->vcpu))
-@@ -4219,6 +4220,11 @@ static int snp_handle_guest_req(struct vcpu_svm *svm=
-, gpa_t req_gpa, gpa_t resp_
- 		return 1;
- 	}
-=20
-+	if (kvm_write_guest(kvm, resp_gpa, &tickle, sizeof(tickle))) {
-+		svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
-+		return 1;
-+	}
+diff --git a/drivers/cxl/core/regs.c b/drivers/cxl/core/regs.c
+index 989e79383b99..d79550dbb484 100644
+--- a/drivers/cxl/core/regs.c
++++ b/drivers/cxl/core/regs.c
+@@ -177,6 +177,20 @@ void cxl_probe_device_regs(struct device *dev, void __iomem *base,
+ }
+ EXPORT_SYMBOL_NS_GPL(cxl_probe_device_regs, "CXL");
+ 
++static struct resource *devm_cxl_request_block(struct device *dev,
++					       resource_size_t addr,
++					       resource_size_t length)
++{
++	return devm_request_mem_region(dev, addr, length, dev_name(dev));
++}
 +
- 	data.gctx_paddr =3D __psp_pa(sev->snp_context);
- 	data.req_paddr =3D __psp_pa(sev->guest_req_buf);
- 	data.res_paddr =3D __psp_pa(sev->guest_resp_buf);
-@@ -4232,10 +4238,9 @@ static int snp_handle_guest_req(struct vcpu_svm *svm=
-, gpa_t req_gpa, gpa_t resp_
- 	if (ret && !fw_err)
- 		return ret;
-=20
--	if (kvm_write_guest(kvm, resp_gpa, sev->guest_resp_buf, PAGE_SIZE)) {
--		svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
--		return 1;
--	}
-+	/* Comment goes here. */
-+	if (kvm_write_guest(kvm, resp_gpa, sev->guest_resp_buf, PAGE_SIZE))
-+		return -EIO;
-=20
- 	/* No action is requested *from KVM* if there was a firmware error. */
- 	svm_vmgexit_no_action(svm, SNP_GUEST_ERR(0, fw_err));
++static void __iomem *devm_cxl_ioremap_block(struct device *dev,
++					    resource_size_t addr,
++					    resource_size_t length)
++{
++	return devm_ioremap(dev, addr, length);
++}
++
+ void __iomem *devm_cxl_iomap_block(struct device *dev, resource_size_t addr,
+ 				   resource_size_t length)
+ {
+@@ -186,7 +200,7 @@ void __iomem *devm_cxl_iomap_block(struct device *dev, resource_size_t addr,
+ 	if (WARN_ON_ONCE(addr == CXL_RESOURCE_NONE))
+ 		return NULL;
+ 
+-	res = devm_request_mem_region(dev, addr, length, dev_name(dev));
++	res = devm_cxl_request_block(dev, addr, length);
+ 	if (!res) {
+ 		resource_size_t end = addr + length - 1;
+ 
+@@ -194,7 +208,7 @@ void __iomem *devm_cxl_iomap_block(struct device *dev, resource_size_t addr,
+ 		return NULL;
+ 	}
+ 
+-	ret_val = devm_ioremap(dev, addr, length);
++	ret_val = devm_cxl_ioremap_block(dev, addr, length);
+ 	if (!ret_val)
+ 		dev_err(dev, "Failed to map region %pr\n", res);
+ 
+-- 
+2.25.1
 
