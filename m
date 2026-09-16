@@ -1,116 +1,206 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5952F1FE4;
-	Wed, 16 Sep 2026 15:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D76595752;
+	Wed, 16 Sep 2026 15:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789571774; cv=none; b=Zv5apq9MdFo6Pd6Zt6MS/M+dgVL8DOW4ieWPyOn4PR7O26xefYnnnCswLeL9zs+Nk5BJ7H8ksINKhmKk8MQT4jHWCxE3uSjJo/FdgWYmv55MACbQYeavpnHayx7ciA/ddLkIDUVXFlvoHIiEjS3ktjCHu0JWfdspXNNOm2pNNAg=
+	t=1789573122; cv=none; b=mllUXoEmHe20a8LbMTWOyFaXl/7ckYY9iagiN9P4NTiuz4nd/oLup7XLBAEgIXMRqsHmwYHvLuqjoBPr9H2ivZpAoJ1HyQ8Y9j+64E4D0kjlalfHHs2zDaNvzzdjWhQ+UkRi+NxDwmqA11Q0DavuFjWnH8lSmrnblKCUVqywAds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789571774; c=relaxed/simple;
-	bh=7l81VcKfKJmBVyzCajm87dXl/dGxTegoqlRGD6QPQaU=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=tbYz8K29SkidMs74gUXMf77VUJW0ZGp+9KJi9MP202dU+t/JgktPTkIGUQaPfUy+hihqPdLPppG2ibJNauVmf8LYqyfW461uUJm8H/EBWd0mZPdpdmN7AYqzyATErcP6p2bZM+vvYjYnhSBzxZGatyQ0WW3CEEReK7EwpWiW9Ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WXALUMGF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789573122; c=relaxed/simple;
+	bh=LWBhLxxhDGLUgl9+FgGhc+1pFfsBdn5xXnETFiFtZWE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=kPQtD+6p2rcNuJM9TGAj6WPcrJOh7MFDj6EHv+6mtqoD7AdFaWgEcR1r2FNANzbfNZZYls9gUFqy/yi+VwVFpitA4RsVob9+vIPHRgqww3jMr+ddhu4UH5adaebDMkSFPYu0joDtR/R5CcuoFcrCzByLWc4KfjILHTx92CsLDXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yka/rZnh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WXALUMGF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33AD01F000FF;
-	Wed, 16 Sep 2026 15:16:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yka/rZnh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE7E1F0089A;
+	Wed, 16 Sep 2026 15:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789571773;
-	bh=BCPRrbMitCn2R1NORvmiGIytFMtrEhSP7twr2VDXeFI=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=WXALUMGF17LNTY8vF7rM/+E6lmP4/WUqjCjFabo38I6XnG3DIHLLZPJX7BbfLRWuy
-	 p+4NtN8CjA7F/61OplsrWvd4ZsFoYXpkgFieSKgYSOdYYC0zD2ubn4kKyuEtdqWHCo
-	 mTcGtwo8Acl2lR2sA1VdiCo40OaQTESKGyYuM60fxWhiIhQJ4Ekn4Onc9aV6GJQaYt
-	 IKIjO0/NY5povFKSxLC74Mnewj4oQwr2RXlBi56KzWeYHcOQGxrKYClg/iYCK4h45j
-	 U6GHja5FNg/ruhh3qu3cVYuEZKG8YxI9CBCSAZ9Gm8zvae/pFSfQeQS0rqAQhwpXjb
-	 Yb2rt+VNKA3qA==
-Message-ID: <16ffff40-4ef0-4312-a700-348603f05c0c@kernel.org>
-Date: Wed, 16 Sep 2026 17:16:03 +0200
+	s=k20260515; t=1789573109;
+	bh=EPCONZRiEdb85UDk6nSXxb7+/XaFdek1rKB9RkHrd20=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To;
+	b=Yka/rZnhDxSsqObpBfY993AqhMd7JE15GrPhYGt74fIX3tJaxvt3M7uULOraogjXa
+	 VYjBkjbnJFzyhSopg5joWrf0WS+y9Ftfm6p5WN93sdCMekjk5lBhepeGuyU2l3stb3
+	 fmEMT+b7DsarJ4S/LODDsGXybv7+uQU5wHMfBzpyC6+imFB6LTVjJDTRPUebQnDslM
+	 8g68hF3Qp6r54dnE6dZiTABtdHClX+FFoZkmHwyi9YIx2mjTBn5CDl5UM00lP8EXTi
+	 4h1IySLZS2KKRwHPj89j6bO6dm1r82e+tO1I5/5YMewDcvSj7Q8CyuK7w8Nv4iphVq
+	 eS9hOBxMnJBUQ==
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Invitation] bi-weekly guest_memfd upstream call on 2026-09-17
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
-Cc: ackerleytng@google.com, amit@infradead.org,
- aneeshkumar.kizhakeveetil@arm.com, ashish.kalra@amd.com,
- dwmw2@infradead.org, eberman@quicinc.com, fvdl@google.com, gshan@redhat.com,
- jackmanb@google.com, jackyli@google.com, jthoughton@google.com,
- kalyazin@amazon.com, kas@kernel.org, kevinloughlin@google.com,
- liruxin@google.com, michael.day@amd.com, michael.roth@amd.com,
- mike.rapoport@gmail.com, mvaralar@redhat.com, pankaj.gupta@amd.com,
- papaluri@amd.com, patrick.roy@linux.dev, Peter Xu <peterx@redhat.com>,
- pheragu@quicinc.com, pkondeti@qti.qualcomm.com, prty@google.com,
- psalian@google.com, qinkun@google.com, seanjc@google.com,
- shan.gavin@gmail.com, shivankg@amd.com, sidtelang@google.com,
- suzuki.poulose@arm.com, tabba@google.com, tatashin@google.com,
- vannapurve@google.com, vbabka@suse.com, wyihan@google.com
-References: <b91dbfae-20f1-4b9f-a25b-4397afae80f9@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <b91dbfae-20f1-4b9f-a25b-4397afae80f9@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Wed, 16 Sep 2026 17:38:21 +0200
+Message-Id: <DLGUPX9KPFKF.12CU304YAST79@kernel.org>
+To: "Jason Gunthorpe" <jgg@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 12/13] vfio/nvidia-vgpu: add the NVIDIA vGPU VFIO
+ variant driver
+Cc: "Alex Williamson" <alex@shazbot.org>, "Zhi Wang" <zhiw@nvidia.com>,
+ <acourbot@nvidia.com>, <yishaih@nvidia.com>, <skolothumtho@nvidia.com>,
+ <kevin.tian@intel.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
+ <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
+ <jhubbard@nvidia.com>, <ecourtney@nvidia.com>, <cjia@nvidia.com>,
+ <smitra@nvidia.com>, <kjaju@nvidia.com>, <alkumar@nvidia.com>,
+ <ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
+ <targupta@nvidia.com>, <nova-gpu@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <kvm@vger.kernel.org>
+References: <20260905081116.106613-1-zhiw@nvidia.com>
+ <20260905081116.106613-13-zhiw@nvidia.com>
+ <DLCRZLO06SIO.LS7TWQXIPZSQ@kernel.org>
+ <20260914121217.70fa0d93@shazbot.org>
+ <DLFD2ZDSK9YQ.3A4R66G8UJMD8@kernel.org>
+ <20260915120148.7548a8ca@shazbot.org>
+ <DLG7C7MLGSTC.2GSTD84WI595N@kernel.org>
+ <20260916141718.GU3968357@nvidia.com>
+In-Reply-To: <20260916141718.GU3968357@nvidia.com>
 
-On 9/16/26 17:11, David Hildenbrand (Arm) wrote:
-> Hi,
-> 
-> Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
-> 2026-09-16 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
+On Wed Sep 16, 2026 at 4:17 PM CEST, Jason Gunthorpe wrote:
+> On Tue, Sep 15, 2026 at 11:19:01PM +0200, Danilo Krummrich wrote:
+>
+>> The driver_data pointer in struct device is defined to be a pointer wher=
+e a
+>> driver can store *arbitrary* data for the duration the driver is bound t=
+o this
+>> device.
+>
+> There are places in the kernel where the drvdata of the bound device
+> ends up owned by the subsystem, not the end driver.  Yes, an ideal
+> driver + subsystem should never even need drvdatab beyond remove. Yet,
+> things are not perfect..
+>
+> The fundamental issue is some kernel API surfaces that the subystem
+> needs to work with only provide a struct device in their callbacks and
+> the subystem has no option but to use the drvdata for its own purpose
+> to recover the subsystem specific data.
+>
+> For example VFIO hooks into this nasty API:
+>
+>         ret =3D vga_client_register(pdev, vfio_pci_set_decode);
+>         if (ret)
+>                 return ret;
+>
+> Which doesn't provide a void * token to pass the core code's
+> struct.=20
+>
+> Another is all the PCI callbacks which assume the op behind them uses
+> drvdata to get its data.
 
-Sorry, tomorrow (17) of course :(
+This is where the class (i.e. vfio-pci) should instead take a driver callba=
+ck,
+as only the driver really knowns about the layering details.
 
--- 
-Cheers,
+Usually, class device implementations can't make assumptions of the underly=
+ing
+bus, because they have to work for any bus. I.e. there's no other way than
+providing helpers and letting drivers do the glue code between the bus and =
+the
+class device.
 
-David
+> It is not necessarily easy to fix. Rrouting all those PCI callbacks
+> through trampolines in every single driver is really not an appealing
+> design. There are alot of VFIO drivers.
+
+The reason this seems undesirable from a vfio-pci perspective is that it is
+special in the sense that it is a class device that is specifically built t=
+o sit
+on top of a spcific bus device (i.e. struct pci_dev).
+
+Since this is a rare (maybe even unique?) edge case, the driver core has in=
+deed
+no infrastructure in place to represent this.
+
+> Maybe it needs a dev->drvdata and dev->subsystem_data, maybe it needs
+> some PCI thing where the pm ops can get a void *, IDK.
+
+It still makes me think that there should be some closer integration of vfi=
+o-pci
+with the PCI core, as it is specifically built for this bus.
+
+In fact, what you say above is the generalization of my "hack" [1], which, =
+the
+more I think about this, seems actually less of a hack. :)
+
+I would object a bit to the generalization with dev->subsystem_data as it
+screams for abuse, but the thing in [1] seems more and more reasonable to m=
+e.
+
+(Another option would be to really split it up and have a virtual vfio-pci =
+bus
+on top of PCI, which would also allow for custom match logic, but that also
+seems pretty overkill.)
+
+>> As mentoined above, there are people volunteering now. Without starting =
+it, it
+>> can't scale further than that. :)
+>
+> There are lots of other vfio patches that need attention too, and it
+> seems we are short of that more than anything. Now you need to do a
+> bunch of C refactoring patches as well just to get things ready to
+> show a bunch of rust code. It is a lot of work.
+
+It's only the drvdata thing, what else is missing?
+
+> I don't really understand in a nutshell why we should do this for nova
+> the mails were so long... Can we not just ignore the lifetime
+> imperfection for this?
+
+I mentioned some points in the first two paragraphs of [2]. Besides that, I
+don't see a reason why we should spend time and effort for working out the
+inferior solution, where the better alternative is even less effort, contri=
+butes
+to better quality and stability of the whole driver project and also offers=
+ a
+chance for the vfio subsystem to gain new contributors and gather experienc=
+e
+with the language that has proven itself in many areas already.
+
+I mean, there'd still be the option to make it an experiment and say let's =
+add
+the abstractions and the nvidia-vgpu driver and see how it works out for a =
+while
+before allowing more Rust drivers. And if it really turns out to be bad, it
+should also be easy to rip it out, replace nvidia-vgpu with a C driver and =
+throw
+in a crappy FFI layer. :)
+
+>> However, I don't really see the use-case; you can't load nvidia-vgpu wit=
+hout
+>> nova-core in the first place, so it would require to unbind nova-core th=
+rough
+>> sysfs force unbind, no?
+>
+> nvidia gpu is a more unique scenario, if you are building a general
+> bindings it has to support the flows like this.
+
+Sure, as mentioned, the code I sketched up should already be able to do thi=
+s.
+
+> I've wanted to rework the way the common ops are shimmed in for a
+> while, you'd probably want to do that before rust bindings.
+
+TBH, I don't think it makes a difference; having Rust abstractions is prett=
+y
+much the same as having another driver. I.e. it would be equivalent to sayi=
+ng
+"before we accept another pci-vfio driver we need to do some rework".
+
+Actually, I even think it can be an advantage, as you could think of the Ru=
+st
+abstractions like a driver with built-in correctness checks, so it can help=
+ to
+validate the changes.
+
+Of course, this requires the responsibles of the Rust code to help with tha=
+t and
+I think we have this commitment.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/commit/?=
+id=3D76b3bfd6386a01f338780e1a37b5bad3f5a48d31
+[2] https://lore.kernel.org/nova-gpu/DLCRZLO06SIO.LS7TWQXIPZSQ@kernel.org/
