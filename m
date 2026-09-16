@@ -1,32 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A06B3A63F2;
-	Wed, 16 Sep 2026 15:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5952F1FE4;
+	Wed, 16 Sep 2026 15:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789571476; cv=none; b=HuMSmxUyKFZMZtRzM7z7lhHDOlhIqH0OnNXso5i09qvBfo2TQZDGppBdf4Gz7B6vxdVkzqtyDDWbRtYzZAPhMo+iwTEeUTBw5IlExdMaPbofstImqQ327HmzoNQ7l/YdoK3C3gYfP9/EykfbsB9fomgR8HG7AIpoNwL7YowkWSY=
+	t=1789571774; cv=none; b=Zv5apq9MdFo6Pd6Zt6MS/M+dgVL8DOW4ieWPyOn4PR7O26xefYnnnCswLeL9zs+Nk5BJ7H8ksINKhmKk8MQT4jHWCxE3uSjJo/FdgWYmv55MACbQYeavpnHayx7ciA/ddLkIDUVXFlvoHIiEjS3ktjCHu0JWfdspXNNOm2pNNAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789571476; c=relaxed/simple;
-	bh=u0tVuRykFn1O+PwVUdVWvx6InPsLZ5OPHQxhQrz/giQ=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=kbymDnENyP4Xm5GJ6mGsfo9ARIi86SaKawEix/X0YVBnm/8iMcTwYi6gZ+Rp5Y+kU1cWhctpuXq5FS5ily5GFxXBnvqs5KVoLclv1ViTIe1KPuUx7DD4VKmQML5SO7cA2aiihTC6HMId/9BAxsH0gj3f8EjG9Qjk2/Bj5RNwpNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k/2kdVXt; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789571774; c=relaxed/simple;
+	bh=7l81VcKfKJmBVyzCajm87dXl/dGxTegoqlRGD6QPQaU=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=tbYz8K29SkidMs74gUXMf77VUJW0ZGp+9KJi9MP202dU+t/JgktPTkIGUQaPfUy+hihqPdLPppG2ibJNauVmf8LYqyfW461uUJm8H/EBWd0mZPdpdmN7AYqzyATErcP6p2bZM+vvYjYnhSBzxZGatyQ0WW3CEEReK7EwpWiW9Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WXALUMGF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k/2kdVXt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74CC1F000FF;
-	Wed, 16 Sep 2026 15:11:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WXALUMGF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33AD01F000FF;
+	Wed, 16 Sep 2026 15:16:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789571474;
-	bh=6pJZlwL4vv3n0HS3phtnf+vf4448t/3gjdWcfUceqG0=;
-	h=Date:From:To:Cc:Subject;
-	b=k/2kdVXtCQvMgh7swp8SCL+7ZpmoB8Wf3KF6uUxHIg/O/QJKckm1zOkiSogwJblfo
-	 aYF4IgshxAL7U9EA+4gimQpQ7dog+5Bfe0r2edOz2yY3D95n22bz+j7NM/yScK3Ws4
-	 F4DvtlVXKd6ArvyL/mlL5QLeqyZAIzAMTA2I7sl4Bx/s5R2gOWVzc3Zu5Hr8bNNcfJ
-	 rQqPlC2+S+tmHPwvH5PyCLsI/gd22w/KEm1+MydzOgor/1cV6xHrXMKePA0HhRbEON
-	 31WLVfe1rRsjHVioUXriSkMXpU/si/sCzQkZzIUGFgMz+qWGOBgM3soR96ai6YZALu
-	 vYsKfpuP4fGug==
-Message-ID: <b91dbfae-20f1-4b9f-a25b-4397afae80f9@kernel.org>
-Date: Wed, 16 Sep 2026 17:11:04 +0200
+	s=k20260515; t=1789571773;
+	bh=BCPRrbMitCn2R1NORvmiGIytFMtrEhSP7twr2VDXeFI=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=WXALUMGF17LNTY8vF7rM/+E6lmP4/WUqjCjFabo38I6XnG3DIHLLZPJX7BbfLRWuy
+	 p+4NtN8CjA7F/61OplsrWvd4ZsFoYXpkgFieSKgYSOdYYC0zD2ubn4kKyuEtdqWHCo
+	 mTcGtwo8Acl2lR2sA1VdiCo40OaQTESKGyYuM60fxWhiIhQJ4Ekn4Onc9aV6GJQaYt
+	 IKIjO0/NY5povFKSxLC74Mnewj4oQwr2RXlBi56KzWeYHcOQGxrKYClg/iYCK4h45j
+	 U6GHja5FNg/ruhh3qu3cVYuEZKG8YxI9CBCSAZ9Gm8zvae/pFSfQeQS0rqAQhwpXjb
+	 Yb2rt+VNKA3qA==
+Message-ID: <16ffff40-4ef0-4312-a700-348603f05c0c@kernel.org>
+Date: Wed, 16 Sep 2026 17:16:03 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -34,8 +35,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: [Invitation] bi-weekly guest_memfd upstream call on 2026-09-17
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
 To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
  "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
 Cc: ackerleytng@google.com, amit@infradead.org,
@@ -51,7 +52,8 @@ Cc: ackerleytng@google.com, amit@infradead.org,
  shan.gavin@gmail.com, shivankg@amd.com, sidtelang@google.com,
  suzuki.poulose@arm.com, tabba@google.com, tatashin@google.com,
  vannapurve@google.com, vbabka@suse.com, wyihan@google.com
-Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-09-16
+References: <b91dbfae-20f1-4b9f-a25b-4397afae80f9@kernel.org>
+Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -96,34 +98,19 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
+In-Reply-To: <b91dbfae-20f1-4b9f-a25b-4397afae80f9@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi,
+On 9/16/26 17:11, David Hildenbrand (Arm) wrote:
+> Hi,
+> 
+> Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
+> 2026-09-16 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
-Our next guest_memfd upstream call is scheduled for tomorrow, Thursday,
-2026-09-16 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
-
-So far we don't have any topics, so I assume we'll just briefly sync on current
-upstream work and discuss whatever comes up.
-
-We'll be using the following Google meet:
-http://meet.google.com/wxp-wtju-jzw
-
-The meeting notes can be found at [1], where we also link recordings and
-collect current guest_memfd upstream proposals. If you want an google
-calendar invitation that also covers all future meetings, just write me
-or Ackerley a mail.
-
-To put something to discuss onto the agenda, reply to this mail or add
-them to the "Topics/questions for next meeting(s)" section in the
-meeting notes as a comment.
-
-[1]
-https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+Sorry, tomorrow (17) of course :(
 
 -- 
 Cheers,
 
 David
-
