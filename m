@@ -1,101 +1,98 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01A33B95E9
-	for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 23:57:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708451FF5E3
+	for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 00:12:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789603078; cv=none; b=E1RRysf6T3W2qPanKtPj1d+7Cup1MRJ4Gm8zJv5aPbpw2LZlE0/kJ3u3dclb/CB238SBwZ3MRWobUmYKqA7rDCM02MajeeQsKoSyn38s9Uw5vnKk+uHVN/Ro+VYyMryQL4d/1KzEqooEFbgbjm4UED18qnwyV6eZepFIjdrH+PY=
+	t=1789603933; cv=none; b=sOSAXSN6JCzBQn+UBaEN0EpeQqAbAhBqVuTiqdwQelraQZQLv7XCUr9QiZiOW+Q1vQDe7lCEvBBcHs1dpoHMTxmAGRQnvyNSImBxiQd+VM5ZeHI2BkosQXDDWOIjkGNp2ygZDDCztviSIdyq/XLLSnxjV1+k6PrfyU3MZQqiwoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789603078; c=relaxed/simple;
-	bh=rXMgegBfOhfeytGkgRNDEJriW8nCixKGipVpwv/Yb0U=;
+	s=arc-20240116; t=1789603933; c=relaxed/simple;
+	bh=HozO84mXGPcKS1igoe/VwSJOG7i5lKGoSVIesNmNWWw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=l6YHjaZet8WEWL9UtSjFM53oPrQpJtPLqEvhJQ3eHDLTrS8ZO0TNfG0bID7WF2NOWMz9YRhNPJsaKBN0kDYuPpuEFa9a+63DcuW2CSkAsSXEo1qFwbxBacdKPJPFADP/W83U6/NyqpGAVLC6GUIVWx6EGe/BjxjjOaRQ/5CRPB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qe0MNFI1; arc=none smtp.client-ip=209.85.216.69
+	 To:Cc:Content-Type; b=WN7E3kV1+FGtLjLRIaZzM3j2TkPyN8X8cW469L7b3obaBIJmQ0SujzX51MQvG3Qvv1SUjqCsmzkC3lYdi6pSqynfMOl0tHiyO/88Gl6aoQuWjyrECL0MEjkUZZ89mYa8KrbVnhUJZpwXQ29VGdsRdnRSbP2U+RNN7n7t9AU6Svw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PIi8kwNO; arc=none smtp.client-ip=209.85.216.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qe0MNFI1"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-39533bb224cso422471a91.3
-        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 16:57:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PIi8kwNO"
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38e8fee6af3so350108a91.1
+        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 17:12:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789603076; x=1790207876; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789603932; x=1790208732; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=E1lScqubr1yoj5tPRxggQdvm+qpOPiHCADjlZtOkPnU=;
-        b=Qe0MNFI1Ea1lFqndDjR6NqoX7x//SOmMolYJ2hky+j+bvZxcHfpt1VN0yFj1wgMNSL
-         9mZNQ8f79eDdZwSB4KpgEZE4TrX9B/QPJlrlpNebQmrKc1KbqhIhCNTLaD9qlcONAJqV
-         fnbK1bCrq6A9U1t5NNwxM3XWh3URDJPR6W5sapbufbRyIvjKPsE0X/hpC4y1GCP9ZHrw
-         c6dw6OitjgnmM3pkyvItDvJUpa37+W72/KnVSsEqrOH2vm3kYAVzq29rkSMEwk+04zkW
-         wdwuXnM2GqVg4Hn02yA21htG8YNor/AyyWJxVoo4mmrn/0PSH2K+VO7b9nQRKnUA0cR8
-         uTew==
+        bh=j6iDNH5wuGoL3/bmQAOC4Dn6hjBP2bgu5FvPAn8HKIQ=;
+        b=PIi8kwNOUE05OJOvW+p3JD2hKWNLG6LeG5NF4sm0t9pkSoAG3uIET79vZnP5gMjcnK
+         1Eg2mLY2GQZTsl0v7MYHN19VLBn34tsaRZawG3pLH0K6jtmrCs6dSLwoF2kZ5ptsPxm5
+         E4UjpLnrAyGbeGOSCmFxvyXMYW/6iQGsNizi7mityK33Qb5jfWqSwnr2xgAxOwa3xheb
+         ZzRBj5eQXvr14wvds5IMEMcczqTCb1oEoYCTbRhG0Ka1tNqxA7XUFkvirSEGQNfg7b6+
+         WagWMif4BuHJ3ByIhnNisFNYLrjFBQdm8PDe58XDeb+commwjD4Klb7oQMlXDCAJeE+6
+         FLmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789603076; x=1790207876;
+        d=1e100.net; s=20260707; t=1789603932; x=1790208732;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=E1lScqubr1yoj5tPRxggQdvm+qpOPiHCADjlZtOkPnU=;
-        b=rknm+K6qRSc6wZWhR7UhZceSsvwhrr29vraIDTGOfUwMbA7uvvjLmfYcP1Hk7AdoML
-         3sOplQa12QUC62RZUmxz6d91CFUkCpejuMddBgf2FeM9Mu1buUmcNO0nSA8AFu5H2zyF
-         acvZ797fHiYhpzDOwkg8QzcpLob7MxoYTbM50ZgAShF9wwBwGQsearIPhcdTgrnO6eiT
-         Ezgx/NSRcpFyUzNagjMhUt50Bw54kIYAK6+FOOEt6WKgo3Kf/aB12ecJ4RtBBg+VtAqr
-         2oBBYOrlkyzxGcKlRldQ+BrV9cKzEyV2Rxe1mZ8suk9evkWhedWgvzYr8ExXDIf93nrb
-         0ZCw==
-X-Forwarded-Encrypted: i=1; AKwUvBz3x3lwEyUMdKte/NatiP1jec5BTV2E+Oli4PBbflPQ9gwhj4DoThCvVbS3qjQEkd8xugs=@vger.kernel.org
-X-Gm-Message-State: AFuF++mVV+tAg03ZnbbY3ctmFm96y6xN26PUOpTtia8bVG7h1/5uiOp2
-	2DJP3/bWYRmzKrU5g90qOoO2eM5EOSOi28HbrGeUr/gvrhIhooOdI7qZSdiUBuHQwxzj3O7Vdmx
-	DZjYuFg==
-X-Received: from pjk3.prod.google.com ([2002:a17:90b:5583:b0:39e:3716:7aca])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2f06:b0:39e:252:ae4d
- with SMTP id 98e67ed59e1d1-39e1e4d3fe8mr10125165a91.17.1789603075980; Wed, 16
- Sep 2026 16:57:55 -0700 (PDT)
-Date: Wed, 16 Sep 2026 16:57:49 -0700
-In-Reply-To: <aqsfoHzOip3n4zdU@intel.com>
+        bh=j6iDNH5wuGoL3/bmQAOC4Dn6hjBP2bgu5FvPAn8HKIQ=;
+        b=W11r3Uc0uzEN92slMo6sslFP1dmWamFWK40tWBV3Tlh2zvi0l7gnhsCw7JCKvy5GXt
+         rA16eCxK2Wwj5EKz76DF5nD+mQgbTAH+kCYupQbCA5M6EwRBqJaYAh2QPnQLQo4jS8cW
+         BYXpDPT67OxzsuKX1Y7R8jQG7Tl44dJ+wXOyoJms90tZ/fHCqXtkjr4W0ZqjKZ7fNniE
+         WSOyIlrGnvx5SX+d2DurYiZUK0GoiO6E2hTOFMojotqG7aTf5yIna+Jr0YiCb8fz0yTx
+         56AhyLXwvYQy4Lrh6Fxi7t/xu9wvjy8f4L0V8MZX7zPIwL2FFtGIVJkIzjV4a9VbD4nJ
+         OXpA==
+X-Forwarded-Encrypted: i=1; AKwUvBx7ZGtEhVtpOd1ugAVCMIr3pgPn2F+xED4GtISh4W1/C+cz7OpCHYyCGqcLgpe12eCLIy0=@vger.kernel.org
+X-Gm-Message-State: AFuF++nDBuQfb/qwAT2rKRrF3d9YhUUxIvl5yzkoT6KSBjvPAyVRtDvj
+	bvodb4xvIOVO1lPMVSJge2J8B+slcLAr0BVzI3JoD4fsNyDHhGSe/DfKnKAwi/gu62K7ReglnjW
+	yMjO25A==
+X-Received: from pjqf7.prod.google.com ([2002:a17:90a:a787:b0:39e:18b3:6422])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:6cf:b0:38e:7168:281
+ with SMTP id 98e67ed59e1d1-39e1e329409mr10995151a91.10.1789603931494; Wed, 16
+ Sep 2026 17:12:11 -0700 (PDT)
+Date: Wed, 16 Sep 2026 17:12:10 -0700
+In-Reply-To: <aqe4QCxIhcoBL+po@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <24a751d16ba0dc37aa7774df5739f39734cf9aca.camel@intel.com>
- <aqrZUZtSZ-YItclT@google.com> <736a9315f3cc3d8ef7079b784bfcc7b014386bd8.camel@intel.com>
- <aqrtprn5YaMijVdZ@google.com> <dae5a64112c9c949524226c66efac9c669df5b92.camel@intel.com>
- <aqsfoHzOip3n4zdU@intel.com>
-Message-ID: <aqss_eQAY7soHRwJ@google.com>
-Subject: Re: TDG quote analysis
+References: <20260902230932.2760127-1-seanjc@google.com> <20260902230932.2760127-2-seanjc@google.com>
+ <aqe4QCxIhcoBL+po@yzhao56-desk.sh.intel.com>
+Message-ID: <aqswWjRN0_G-xyGJ@google.com>
+Subject: Re: [PATCH v3 1/3] KVM: x86/mmu: Use KVM's max TDP level to determine
+ need for 32-bit TDP root
 From: Sean Christopherson <seanjc@google.com>
-To: Peter Fang <peter.fang@intel.com>
-Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, Yilun Xu <yilun.xu@intel.com>, 
-	Elena Reshetova <elena.reshetova@intel.com>, Binbin Wu <binbin.wu@intel.com>, 
-	Dave Hansen <dave.hansen@intel.com>, "kas@kernel.org" <kas@kernel.org>, 
-	Vishal Annapurve <vannapurve@google.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Kai Huang <kai.huang@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Sep 16, 2026, Peter Fang wrote:
-> On Wed, Sep 16, 2026 at 03:31:50PM -0700, Edgecombe, Rick P wrote:
-> > On Wed, 2026-09-16 at 12:27 -0700, Sean Christopherson wrote:
-> > > > If you are thinking the implementation could punt on how to handle the guest
-> > > > interrupts for now, that seems reasonable. I'd think exiting to handle the
-> > > > host interrupts could not be skipped though.
-> > > 
-> > > I'm just trying to understand the scope of the problem we're trying to solve.
-> > > E.g. I don't think any design will save us if generating a quote requires a
-> > > CPU to be spinning for multiple milliseconds.
-> > 
-> > Elena, any updated estimates on CPU based quote generation and HW based?
-> 
-> The current estimate is 10s of milliseconds for HW based, and
-> milliseconds or less for CPU based.
+On Mon, Sep 14, 2026, Yan Zhao wrote:
+> On a separate note, though it shouldn't be a real issue, is the below change
+> necessary?
 
-I am beyond confused.  What is "HW based" versus "CPU based"?
+I would say this is technically correct, but unnecessary, because I can't imagine
+any 32-bit guest firmware would try to relocate BARs above 4G.
 
-At this point, I don't care about the gory details, I just want to understand
-the basics:
+> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+> index bb68a021cfaf..abbba26dbdc6 100644
+> --- a/arch/x86/kvm/cpuid.c
+> +++ b/arch/x86/kvm/cpuid.c
+> @@ -1810,7 +1810,7 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
+>                         phys_as = entry->eax & 0xff;
+>                         g_phys_as = phys_as;
+>                         if (kvm_mmu_get_max_tdp_level() < 5)
+> -                               g_phys_as = min(g_phys_as, 48U);
+> +                               g_phys_as = min(g_phys_as, kvm_mmu_get_max_tdp_level() == 3 ? 32U : 48U);
 
- - Does generating a quote require the CPU to actively execute instructions?
- - If not, how does software know when a quote is ready? 
+FWIW, if we wanted to do this, my vote would be for:
 
-I tried peeking at TDX Module source code, but I can't find anything relevant
-even in the latest TDX 2.0 drop.
+			if (kvm_mmu_get_max_tdp_level() < 4)
+				g_phys_as = min(g_phys_as, 32U);
+			else if (kvm_mmu_get_max_tdp_level() < 5)
+				g_phys_as = min(g_phys_as, 48U);
+
+but I think I'd prefer to just leave this be.  Rr better, drop 32-bit kVM support :-D
