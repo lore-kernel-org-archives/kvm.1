@@ -1,132 +1,79 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40397480974;
-	Thu, 17 Sep 2026 07:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0F845FFD3;
+	Thu, 17 Sep 2026 07:39:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789630144; cv=none; b=oktE6EzFZWKWq7IUjCYlVhUJToGvd1mu0vVgXk+yNqybuYmCwbjM55qOYRrwjjXfv/UQN7yXxv3oUAV4H8i/C/c5L0FwGZp+7+YGu7zoV44R8ydSEwXuBrCYX5vQX510Qg+wbK7CPzEpk6DRZQwTsLx5NAg32krVBqxcpmcv5tg=
+	t=1789630776; cv=none; b=AX3PfZ1f6n0ZXqG72MDxV/Iaa1x/9tnPxfJDeGNkk2Tc3WsHU72mLHWBExBwjda+HuPqg/1nB5CMhSgMp0VdoBYw4cudTX3DABZ0uYdowIDUop51dY56/XeQP4y9NYZ0zgjx5Ud+jtHVZV75DUkRGuwSCJ4yZvC9EtgB2HWKnwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789630144; c=relaxed/simple;
-	bh=UWLEgWf3IFhAhJ2ecK1fJP+oT6/NXMuKZGX97AOPIJ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IsLOta3ZO+OjB6Lbo+Zdd11bEWq50+UQeAzpMVNAlE99NjrwgyMjYH4RvRKFuqEtcPdS//UbADEHYQkVaEFppTCsx8J4ojNwRGVKeEVmJHidXMwvJJcWWej6mVSt7BhTFQyFGQIo0tT9Yz9J5MOMpUg15mYZZwQZ1Xnj6PyoUH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=UkhNciO+; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1789630776; c=relaxed/simple;
+	bh=WZv+KO4tNtUG1yij60OhMLNffrpj6RJac9KO6/2z9I0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HSmbgKx/puaxFz3buJesRFJLtYKMpK/DvlcYsUAIh/qATS7P+lGo7eyxhaXuma7N6UpHMKyaZRCV6WHtBx+0lD46QucELhSaZ9/9nE1gCQjOhhx8BZrWxBXXXsh17OqzlieaNY3OyIoo8hla6pGBTvo/BSeM18/WNTL5rCyUdSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=u63kw8gg; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eRMxAfrK; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="UkhNciO+"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68H62Vhn543281;
-	Thu, 17 Sep 2026 07:28:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=VdNZZv1a826Zdg6V+tiU51bjXhpyBdIlBXrzq/0An
-	zI=; b=UkhNciO+SQ7+z/ksp+QUUc1mUfgD+jgXjuGYomU+qD9XtvHCyQixNZ+Is
-	k7QeoiXvbq0FcRuolmxkySQbP5lFtqcX7W65AbGekR5tXZbaYQN1jHoVviiK93JP
-	rV4jpAqvLV+pjiO45dXB/2rBetrYQ65+tpNMUOzxclvE/fnDgwUoNClsKpfIzh6z
-	5wIiUNQCZ7fmx6pfNbTUcSsIAE/9L5ts+Vy0YbbCU4nS+3M2oV3viPy1V5Se7fMa
-	9yKdOpNL6NsJl7nUJkDl9v5i3S899YMedgrtc2kB87QKfaYzgqLltrzPPGOnWtfZ
-	3mzVsq+ypWHVEl/la0a+Bw2oClziQ==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmw5e8mvk-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 17 Sep 2026 07:28:47 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68H652MO2723209;
-	Thu, 17 Sep 2026 07:28:46 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gra3yrccv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 17 Sep 2026 07:28:46 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68H7ShWr43778482
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 17 Sep 2026 07:28:43 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E988720043;
-	Thu, 17 Sep 2026 07:28:42 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CEE9420040;
-	Thu, 17 Sep 2026 07:28:40 +0000 (GMT)
-Received: from mac.bl1-in.ibm.com (unknown [9.123.14.178])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 17 Sep 2026 07:28:40 +0000 (GMT)
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au,
-        chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com
-Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Amit Machhiwal <amachhiw@linux.ibm.com>
-Subject: [PATCH v2] KVM: PPC: Book3S HV: Free the queue pages in error path
-Date: Thu, 17 Sep 2026 12:58:38 +0530
-Message-ID: <20260917072839.78857-1-gautam@linux.ibm.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="u63kw8gg";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eRMxAfrK"
+Date: Thu, 17 Sep 2026 09:39:31 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1789630773;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0igQin304nP9DurEyIteQCtX8TEHH4rBGYmjaSQfzyc=;
+	b=u63kw8ggDgGCYSxjvQA2v7fDXEW2lPCH1T+Q07Q/QeLn6cQV+2QAkbF1Os3VH9gwTCzR+R
+	DRXDoGuV32CuTSNNju1d/A5BghGYPzHzw4YMYCFo2e8SDD3M1RE5n34J3WZ0sGrO9/foyO
+	sILJ63OAVoUFhFEAkLwa4KaR6gC0S/wMvhL7c2LXtwg6Zo7opY24flhjzCSYnpSfWQh6Ce
+	iRbmIfJieVUHkKigmQm2fVMHRdcpaV8XEXLTZp/sanuNNneWMw++bHhaTQpqKkHNBUZ/ED
+	pdIlgdPrcbBFUm2ZUa78mX1xwOF3m38Zw2ggeQaP2LG9tUGGODaKwt69aX5XYA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1789630773;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0igQin304nP9DurEyIteQCtX8TEHH4rBGYmjaSQfzyc=;
+	b=eRMxAfrKdQDwv6Ea2Fg6UimVRKEms3XXSHbs5tePWbDxnZDFePCEYBq747W5wzcm1chwGY
+	+LVsn/6TxAlf2KCg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: syzbot <syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com>,
+	akpm@linux-foundation.org, dwmw2@infradead.org, dwmw@amazon.co.uk,
+	kvm@vger.kernel.org, liam.howlett@oracle.com, liam@infradead.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-rt-devel@lists.linux.dev, lkp@intel.com, llvm@lists.linux.dev,
+	lorenzo.stoakes@oracle.com, me@brighamcampbell.com, mhocko@suse.com,
+	nogikh@google.com, oe-kbuild-all@lists.linux.dev,
+	pbonzini@redhat.com, rientjes@google.com, rppt@kernel.org,
+	seanjc@google.com, shaikhkamal2012@gmail.com,
+	shakeel.butt@linux.dev, skhan@linuxfoundation.org,
+	surenb@google.com, syzkaller-bugs@googlegroups.com,
+	vbabka@kernel.org
+Subject: Re: [syzbot] [kvm?] BUG: sleeping function called from invalid
+ context in kvm_mmu_notifier_invalidate_range_start
+Message-ID: <20260917073931.iggMficE@linutronix.de>
+References: <6936812a.a70a0220.38f243.0090.GAE@google.com>
+ <6aaaa2da.86093f18.33004f.0001.GAE@google.com>
+ <aqrZMReaQPG0M9oV@gremlin>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE3MDA5MyBTYWx0ZWRfXw7hnuAm4E65q
- JSmTvKoOSI8qMOmDs5I4MXgsETUhwXhYNrTLOJSux4CJAItuyxsdDb4IO83Grzf3EYXzvmmmaJ9
- C4ABghCsSC8YgT8JiScvJEbQHXJeIeK9Gu8AT3a2ziHZMSOa+wV6B+wp6cds0XGBFn4tokFMClJ
- oPZM1fd4osCqzkQnHDVXvAaK+uByMmt6kRbmlmQQDUlmm+rePcIpeVzaNMdnVPxy5WJtGPqZ53n
- C8Jx389Lj7KPOlEQ/4kMRihBUchNjL2JltvNMMLCcfVwBwjQQ4fmiXybdsC2uS4uMWVdBe+0SG6
- OArfEGYM3FJXtDyimXTRO/35rU+MvqNBUmTseya4C1ps/VnYi2Ntgbitn8nOkLt/qDehd2bKG6X
- eb7jxtImxEYv4bZC3b6QPyzdEAWf8OmPa6S4BysXdNa2sGtRr4z0vBLH4ba9ZnIEVKLnMe8KHcS
- 45fXnbwnisYcIeHzg/Q==
-X-Authority-Analysis: v=2.4 cv=E/NYNqdl c=1 sm=1 tr=0 ts=6aab96af cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=GyUfv2pc0mdjDTKTsuAA:9
-X-Proofpoint-ORIG-GUID: AL1Y_dS7VFRyjEFhCF7oHHc8uiPmkCst
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE3MDA5MyBTYWx0ZWRfXyRd7tDtax9ow
- 9nGsB3yBWHYlSfdxvHYTDluLjC2aHcRV7lClAAQFPNolwdJsESV8vYhK7nA+3nezCO38udEDRpk
- f6rMAF2RbkAq4j8eB6j/FGIAstgjY68=
-X-Proofpoint-GUID: bCDU_DTWZv1kYWNumuMnMrWK46snfZlx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-17_01,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 lowpriorityscore=0 priorityscore=1501 spamscore=0
- adultscore=0 clxscore=1015 bulkscore=0 malwarescore=0 suspectscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609170093
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aqrZMReaQPG0M9oV@gremlin>
 
-If the xive_native_configure_queue() call fails, the qpage allocated is
-not freed, which results in wasted memory. Fix this by freeing the qpage
-in the error path.
+On 2026-09-16 19:05:03 [+0100], Lorenzo Stoakes (ARM) wrote:
+> > dashboard link: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
 
-Fixes: 5af50993850a ("KVM: PPC: Book3S HV: Native usage of the XIVE interrupt controller")
-Reviewed-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
----
-v2:
-1. Move call to free_pages() after error message. (Amit)
+> Seems like a false positive and an RT thing?
 
- arch/powerpc/kvm/book3s_xive.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+yes, it does. The proposed patch has a matching reported-by of the
+report. dwmw2 did test it via his tree
+	https://lore.kernel.org/all/6a8d9a7e.a5a502ce.31d34.0069.GAE@google.com/
 
-diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
-index 89a1b8c21ab4..0f8f851a3f8f 100644
---- a/arch/powerpc/kvm/book3s_xive.c
-+++ b/arch/powerpc/kvm/book3s_xive.c
-@@ -961,9 +961,11 @@ static int xive_provision_queue(struct kvm_vcpu *vcpu, u8 prio)
- 	 */
- 	rc = xive_native_configure_queue(xc->vp_id, q, prio, qpage,
- 					 xive->q_order, true);
--	if (rc)
-+	if (rc) {
- 		pr_err("Failed to configure queue %d for VCPU %d\n",
- 		       prio, xc->server_num);
-+		free_pages((unsigned long)qpage, xive->q_page_order);
-+	}
- 	return rc;
- }
- 
--- 
-2.55.0
-
+Sebastian
