@@ -1,153 +1,129 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B785E3A0E99
-	for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 15:40:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795E94DDB5D
+	for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 15:49:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789659609; cv=none; b=DG8t66Rw2E3/PD2wirUiYdEbuBVs5rVxPaaljyJ4Nv3uvlvcc2l6RazX1Y/tjVXmIpQnlad3vpkeAPjHI1lT/bMOYQWkg5Staxg2hPVI5S5Dq7hURIINs1mPZ205wMz4vTbmov7geGRP/KSqxzxQ7U57meziXxqkdOZoxv6BSXk=
+	t=1789660204; cv=none; b=BN4bkH9U6qB00+6n40F/4xp0IkQFQPbF3VC83zBD1wI8z+5k0HqQO6wZtw0D4RXTbCW2skCiM19cXrRzx5HzU0iN18V7V+SZ0n4j9qfOajg4KPzzA140U/NOmo+uk5e+0Wre+mk5cB2XEsbIAAfx8EhImlGwpFzWIQUnaMlKPIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789659609; c=relaxed/simple;
-	bh=ZEPRZWQSbrRLK6spoQmF7XlsJWpr55fNU8xc6W79Ubc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MXxbKjKYh5+Ffb6V/V1YZMiTkd7GUDbYpljp/xpbbjuOwDwYpmJtFSf2LB1lhBGuUwaliNJvkg5wiy6DQo3FNe14ihslQbfj7yYw5xps3bvCnct45oWUeh411DD4GelNfOWswn2MpYtwle/aEXRvf1KtiNWpu4S62lngR3JuZJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OTRppooz; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=WMahKYlr; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789660204; c=relaxed/simple;
+	bh=RJzKdDo+REX/VlAsX42GpLBJ8XTELLDjR7TtOlDY7IQ=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=B7S+0lKky+gJEdTb5Vxv8ZRC8Kg87VPnkodoajuewZsZrMdyyd9hrdrUP2lzlbkEo6qFnRBP6uSZ/HuDmwqmztt49UhXEShO//0xTndHDHd9taoCXILS2yQdaP+rwLhnqxW0QMvdNdy41u7Dor7HoaKAxI1YVIcN4sVS9U+Ul24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=F0IPwOCm; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OTRppooz";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="WMahKYlr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789659598;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ksHKsD+rPQygiKBYrLWLevL1zmQIyZm3/sEyFnk8qqU=;
-	b=OTRppoozSHKfn5LbFR1I1QZ/0vrgEj6gyYGhFpEUpvp36dj8CrSZewICgZ9wTmWIMDEgoJ
-	orHkvRNsFLg+piEk07vie2H5V68c8izPpcDCHJgo127UxroVeGjEVfuBSZrVmEMTDfkf+B
-	T9xDrTfGNxS1lEi6YEBoqDji73nuvFk=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-623-DoOOeLL_NgKaWmBWq5qkYQ-1; Thu, 17 Sep 2026 11:39:56 -0400
-X-MC-Unique: DoOOeLL_NgKaWmBWq5qkYQ-1
-X-Mimecast-MFC-AGG-ID: DoOOeLL_NgKaWmBWq5qkYQ_1789659595
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490a767b782so8395525e9.2
-        for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 08:39:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789659595; x=1790264395; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ksHKsD+rPQygiKBYrLWLevL1zmQIyZm3/sEyFnk8qqU=;
-        b=WMahKYlr8SHBNP9db6ucA3iSYIUTZ4J4k1H0JUESmdhX8B8hYBwYp7sFxgG+Y9hW7q
-         g0TFR5wwYNP3Xj8EOPljrdx662E4aFX4Wed23IKjfm1Sj59HprszncIuvdii9eILKHsp
-         FIT7PlS7yI8aRvUsJt3nF5SpBG8smY1E7TvchLOazrsOZiqT+plwA2dUsx3PbpISsDY7
-         ULUg998+mA38mas80VN/BUBJ8JOPDaY1+Af2whpv5BH3/5mZTQM29WOquyFqrmJZcC0s
-         RvIayahvrCQBGVG8RV92Cok1EHt7KSXdZzFTC7SXfVqTpc4GDWJXtIXfpml6idvd6vS/
-         ouCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789659595; x=1790264395;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ksHKsD+rPQygiKBYrLWLevL1zmQIyZm3/sEyFnk8qqU=;
-        b=JuBgnKNjBd3sGfz5gRdQufdE4hqa/PDmzgUqIMZ0aswXn4zVCGIjS4UxIA65Qpocvx
-         Exj7Rzs/5Th9S/KX2u73RbDvRPlxVMMiurXkh7PUkt9E/il0pUyd0qYIWEl/WCghU5J5
-         n7bqYpJsymhjKwEDv5DWYr6ug6M5y0HDCIsTfc5bsP3bl7pcgbYIv0qDTjcDLxpr0Ie6
-         OMRKvdxg8Z6c3Amic9Hsmre8+4QYnb8Zjl9DcDS7jXAkAIlLED4cbre3n5D3JL5oGw47
-         b/4nmuNALjotAqIhjtEQ7kHWArEiQYbdHu+DLWbsIT3euc2cXj+42r3gVECgAjG08q1F
-         CMXg==
-X-Forwarded-Encrypted: i=1; AKwUvBz/ZBTAX8X4DAPz+jgWaJkvTt12TQZj8dTAhR8yCVIlHZiDxN9hSBAyH2D8X3hNEOE45oY=@vger.kernel.org
-X-Gm-Message-State: AFuF++kPfz7EeaDYB1NyHSvIoNwz+SBj0nD9B/g+LfYJ4uIp0BVd6I8T
-	yFiJ5sU0vXlkgiXhp+qrUn1hm3fqJzWt2T6emqytJ/MYkCf+VvPpg7Xxu6A5SJ4/KgLwuP5Eba9
-	g7Q1GlBaxuvbDuWXR+xZfJzcxK4BzC4jXz4Q8t2/iogWlPBP2fMg2EQ==
-X-Gm-Gg: AYBFou1vRPzL1+dbx5D/a8ylyhQpcvpt7J4Qhm9HVnKZaFnxhxpCHaHKEpgnBUVqNoq
-	+IO/IJeFEWlfnZr1I9bepCc0f5iFWdZLsUwpTM3ykz07VCC7zzE+SbRz96Rz++m2LPeEL+UeZ5h
-	KAYAKT+pl5Zx/L4qWTnQ5+qr4Q5zEC8ta4OhxDCWiAgyS/rDuxk00zLBVdYMaEcYWitWYLVG8Mq
-	FG405NdIvsaeBny8vu59pTNgRJairVGWfjmgRk65YAxvVJICJJicK/VSvGyCVuO69Y4Uo1I7zDL
-	d64Okv5T2Cu2rGI80INmEKLFlvr/3oQNlX4Plmv5bqtrkDdka/8UUjHzw1S64KYjuPMbyHmeoDa
-	xnuMGftTyKLOmulkJl9UTIWE=
-X-Received: by 2002:a05:600c:4e86:b0:49d:15b9:2a2a with SMTP id 5b1f17b1804b1-49eb72f3d08mr88668595e9.10.1789659595177;
-        Thu, 17 Sep 2026 08:39:55 -0700 (PDT)
-X-Received: by 2002:a05:600c:4e86:b0:49d:15b9:2a2a with SMTP id 5b1f17b1804b1-49eb72f3d08mr88668225e9.10.1789659594734;
-        Thu, 17 Sep 2026 08:39:54 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-79-236.inter.net.il. [80.230.79.236])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf342a0sm16364931f8f.24.2026.09.17.08.39.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 08:39:53 -0700 (PDT)
-Date: Thu, 17 Sep 2026 11:39:50 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	sgarzare@redhat.com, stefanha@redhat.com, dongli.zhang@oracle.com,
-	maciej.szmigiero@oracle.com, bchaney@akamai.com,
-	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
-Subject: Re: [PATCH v6 0/5] vhost/vsock: add support for VHOST_RESET_OWNER
- and CPR migration
-Message-ID: <20260917113941-mutt-send-email-mst@kernel.org>
-References: <20260724114542.734623-1-andrey.drobyshev@virtuozzo.com>
- <20260730194858-mutt-send-email-mst@kernel.org>
- <f8646e25-7e81-4f19-aecc-a040caac1103@virtuozzo.com>
- <ea805767-9e3f-455a-a4d6-828063aaf2f4@virtuozzo.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="F0IPwOCm"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3CC2C1476;
+	Thu, 17 Sep 2026 08:49:48 -0700 (PDT)
+Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 328DA3F7B4;
+	Thu, 17 Sep 2026 08:49:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789660191; bh=RJzKdDo+REX/VlAsX42GpLBJ8XTELLDjR7TtOlDY7IQ=;
+	h=From:To:Subject:Date:From;
+	b=F0IPwOCmHpw5v1mc5QunUDRw1xCBe9gpk8MYh7Ami6aYqjBvmdxNpaaP4i0GZhxY2
+	 YsbHuVNWhFjQhqBlL0qk+Y0BcqrXDpdu32nEJilOnoZMpTPd0PHz2u791ky1LnuOgy
+	 ijFqCb1FJHhJIOXaqI9kbT2TTBHOOotZE3Mo0WeA=
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: will@kernel.org,
+	julien.thierry.kdev@gmail.com,
+	kvm@vger.kernel.org,
+	maz@kernel.org,
+	oupton@kernel.org,
+	fuad.tabba@linux.dev,
+	joey.gouly@arm.com,
+	seiden@linux.ibm.com,
+	suzuki.poulose@arm.com,
+	yuzenghui@huawei.com,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev
+Subject: [PATCH kvmtool 0/7] Fix --vcpu-affinity
+Date: Thu, 17 Sep 2026 16:49:25 +0100
+Message-ID: <20260917154932.193943-1-alexandru.elisei@arm.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ea805767-9e3f-455a-a4d6-828063aaf2f4@virtuozzo.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 14, 2026 at 12:09:35PM +0300, Andrey Drobyshev wrote:
-> On 7/31/26 11:31 AM, Andrey Drobyshev wrote:
-> > On 7/31/26 2:49 AM, Michael S. Tsirkin wrote:
-> >> On Fri, Jul 24, 2026 at 02:45:37PM +0300, Andrey Drobyshev wrote:
-> >>> v5 -> v6:
-> >>>
-> >>>   * Patch 4:
-> >>>     - make sync+flush conditional by adding a bool 'sync' param to the
-> >>>       chain, as suggested by Michael:
-> >>>         vhost_dev_reset_owner()
-> >>>           vhost_dev_cleanup()
-> >>>             vhost_workers_free()
-> >>>
-> >>>     - reword commit message and comment;
-> >>>     - drop Fixes;
-> >>>
-> >>>   * Patch 5:
-> >>>     - add 'sync' param to vhost_dev_reset_owner() call.
-> >>>
-> >>> v5: https://lore.kernel.org/virtualization/20260720102241.371610-1-andrey.drobyshev@virtuozzo.com
-> >>
-> >> does not apply for me is this for net next?
-> >> in that case
-> >>
-> >> Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> >>
-> > 
-> > The series is based on tag v7.2-rc1.  However I think the reason it
-> > doesn't apply is you already have v5 of this series queued in
-> > mst/linux-next, commits ddb0918e36c4^..ad5b642c84d0, with your S-o-b.
-> > 
-> > So you might roll it back and take v6 instead (only commits 4 and 5
-> > differ), or leave v5 in the tree, or I can send you v5->v6 difference
-> > separately.  Whichever you prefer.
-> 
-> Friendly ping.
-> 
-> I noticed that these patches were queued in your linux-next tree, but
-> got dropped afterwards and never made it to your last PR (used to be
-> ddb0918e36c4^..ad5b642c84d0).  To be clear: the series targets your
-> vhost tree, not net-next tree.  Since it applies cleanly on your current
-> vhost branch - please let me know if it's ready or there's smth else
-> that should be fixed.
-> 
-> Thanks,
-> Andrey
+This is my attempt at fixing --vcpu-affinity, which I introduced. Patches #1-#4
+are straightforward fixes, and they don't modify the current (broken) behaviour
+in any way. Patch #5 fixes is most of the fix: with it, the VCPU threads run on
+the physical CPUs passed to --vcpu-affinity, and most of the kvmtool threads,
+except the virtio threads, use the main thread affinity.
 
-I'll put this in next, thanks!
+The virtio threads are special because they are spawned from the VCPU threads,
+and they inherit the VCPU thread affinity. Note that there might be other cases
+where this happens.
+
+Patches #6-#7 attempt to fix the remaining issue: #6 switch the entire codebase
+to kvm_create_thread() instead of pthread_create(). In #7, kvm_create_thread()
+will use the main thread affinity when creating new threads. These two patches
+are RFC because they cause a lot of churn and I would like some feedback if it's
+worth it.
+
+Why is it useful to run the VCPUs on different physical CPUs than the other
+threads? I can think of two situations:
+
+1. Testing heterogenous hardware configurations, where the VM creation and setup
+happens on a set of physical CPUs, and the VCPUs are run on a different set. I
+used these patches for the KVM SPE series.
+
+2. I/O testing. Maybe?
+
+Tested on an Orion board and a x86 machine. On the x86 machine, there's was this
+one thread called 'kvm-nx-lpage-re' which had affinity of the VCPUs, but I
+couldn't figure out where it was created. I grep'ed for each part of the name in
+the source node, no luck. I used strace, and couldn't see a clone call that
+returned the corresponding pid. Any clues would be appreciated.
+
+Alexandru Elisei (7):
+  arm64: Pass the number of elements as the first argument to calloc()
+  arm64: Consistently treat vcpu_affinity_cpuset as dynamically
+    allocated
+  arm64: Free the temporary cpumask in vcpu_affinity_parser()
+  arm64/pmu: Consider kvmtool's affinity when searching for a PMU
+  Correctly apply --vcpu-affinity to the VCPU threads
+  Introduce kvm_create_thread()
+  Don't apply --vcpu-affinity to threads spawned from VCPUs
+
+ arm64/include/kvm/kvm-arch.h        |  2 --
+ arm64/include/kvm/kvm-config-arch.h |  5 ----
+ arm64/kvm-cpu.c                     |  9 ------
+ arm64/kvm.c                         | 31 --------------------
+ arm64/pmu.c                         | 31 +++++++++++---------
+ builtin-run.c                       | 41 +++++++++++++++++++++++++--
+ disk/aio.c                          |  3 +-
+ disk/blk.c                          | 12 ++++++--
+ disk/core.c                         | 29 ++++++++++---------
+ disk/qcow.c                         | 44 ++++++++++++++++++++---------
+ disk/raw.c                          | 21 +++++++++++---
+ epoll.c                             |  2 +-
+ include/kvm/disk-image.h            | 28 ++++++++++++------
+ include/kvm/kvm-config.h            |  1 +
+ include/kvm/kvm.h                   |  2 ++
+ include/kvm/qcow.h                  |  3 +-
+ include/kvm/uip.h                   |  2 ++
+ include/kvm/util.h                  |  6 ++++
+ kvm.c                               | 18 ++++++++++++
+ net/uip/tcp.c                       |  7 ++---
+ net/uip/udp.c                       |  5 ++--
+ term.c                              |  4 +--
+ ui/gtk3.c                           |  2 +-
+ ui/sdl.c                            |  2 +-
+ ui/vnc.c                            |  2 +-
+ util/threadpool.c                   |  9 +++---
+ util/util.c                         | 42 +++++++++++++++++++++++++++
+ virtio/blk.c                        |  2 +-
+ virtio/net.c                        | 26 +++++++++++------
+ 29 files changed, 258 insertions(+), 133 deletions(-)
+
+
+base-commit: f67bc0bdae9433a9cfd05e65ea2c1bb6102566d9
+-- 
+2.55.0
 
