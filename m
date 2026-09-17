@@ -1,183 +1,277 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F65524AE8
-	for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 13:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C440853B5F3;
+	Thu, 17 Sep 2026 13:56:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789652259; cv=none; b=R8WTdYPcdeWxNIhclQDp+DvIq0WNJGB/hKZ+IBhLds9z+HIDZMGnVKyUIQ41ND1rayDaKkdqE5gO9qZTVTzPuuCCDdaRXbJuRZXoKND1wbvWKnZzWacn6GMqCGlWtwxl2imel0zsIy/vSOQErfzcq0ldQ6Q+MoXDlXdqKY9bxnA=
+	t=1789653393; cv=none; b=NW0kNNDR+rKTnKkb6sCc+uNpJiAYT4Fub5wB6OmKWabAKoWlu0pcc4pDcHmwwJWokwEUsP6w1uyQhfUBhFRvbPz7vEHMa2FqszqYfZFtypyHqd0kQZfMR6yVxhXl/zw+8OphVuSXJ0f3KhcQEkSHApyy7Jvx85gruTSCgvU7jME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789652259; c=relaxed/simple;
-	bh=ANDl/5v0fxRpOzCImDuf3M6HQOSPkF9ZfV/ybVQrV0k=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YkGuGQWt4W9Q8joAJ4Izpx31Kir7zY5ATr/e8zZNyuKND69nbkwz3v+mhlBpdAM79ZmCw+L4Qgz4wxPtcxtS5vwnKhOwzkuh1C3jtkDHAM8SGrhGXuj/0D/FNn1bVOG6lKy2R4woETpCFY5CEQDKd5nBhsAT8RAV/CP803SUkvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ttNnT6SE; arc=none smtp.client-ip=209.85.214.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1789653393; c=relaxed/simple;
+	bh=p/8Kga/2mO8x1WfxwkvXVFVTUy+Bdkv/hHhIK3GIj6E=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jbsWk4iAXPATDHWOGKFB5JOOqUz4P2Uz2dsKz1tMfY3gFYe1MDcNc7eWeSb2LqZ4i8IEvsWjC0QnTw+/+2Kakd1NMhAgDBWw4D/C2opZthM5PlCJC6XxjgGqJkOmcGdWul60PYigPOVQS2qVnGO7d85QmPAOzAEQLc0m46tv9vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bcG34pXd; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ttNnT6SE"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2dc92350888so16962735ad.3
-        for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 06:37:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789652252; x=1790257052; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=trTMJfjyYMrQlQirbNUWIdpNuWI6E2e7zL0lle6byUM=;
-        b=ttNnT6SEQC+olLvGIvJhXIPxTs9BHOOJK7DBl2oz/5ycVOM1A9tQ2X1e9XqNqqUEYp
-         +v53Bx1XGurySimzXtt/RWMFRuYLXtn0VRr52GLxJLtSCEL9rSCeQAvB3FMzfVmFVy/l
-         O4A1grU4KcJ0bPngQzi4GMAxczQK2HWPs8adjBwlMhzInarK2ipJ5ZoAN2E5k3gJ6z0W
-         JRuos181Hl4Nl8ntefml1+foODGLdlidD8yQhUD/RHspdfZXmvyBLH0vOWC+egaTkD+1
-         HpVvTou4suhaBmW8jwtpb6XS8Mhk278rL5RTGJJXqGytmhqeIa4AbcLGen2ydVrULelh
-         YcqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789652252; x=1790257052;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=trTMJfjyYMrQlQirbNUWIdpNuWI6E2e7zL0lle6byUM=;
-        b=dGSAbRytE1sUoh+6oiCm8C3V7mfE5USYFuSqaH3AjKi3bPDjySOIz2Tz+K/PfDSdu/
-         iFeqg69tgy71/j6FvLjMfCRisXhnAnmQqsdgR6vN/l0vwsM88ny4x1egwnpdY+BwomTk
-         UuMEpYnLS8HZJRHS2ICWKIHpR9StiIpAObqE4k6t3bt1kjGelQaqFrY2znpLYrJszFDZ
-         jeQZldEol1jyMoqHGj2dP4oi2FcNbFAyOzNARDHPhSic0DhmHzT90hFjUouON9LJtBYH
-         9pw7CgKe0ue164hj0Bhhh/8Xla5rzUdsaqWeXbro5htt+cyTvDbslnAGLZP0aS3/nlEb
-         AVyQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzWJORnFPfWtOGH5LaHdurAVji6YZUUfQrrG7crApSzCoBZmjhjh0iFdNVB4OkGPbxx5eI=@vger.kernel.org
-X-Gm-Message-State: AFuF++kIeaL9Zw3G9KLtRlrMYV+RF4HXKKDXRJTOp1V1BhKfK+bCVrIG
-	JR5R1fp0LsOXLTXhCU5OW0TOregTM23fzEydxIQIRPSH8ka5sFHjaONmYaR+QWflnbB1a5X4dGR
-	V7bVW4w==
-X-Received: from plpc7.prod.google.com ([2002:a17:903:1b47:b0:2dd:a9d1:e5af])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:db0f:b0:2da:dcd8:713d
- with SMTP id d9443c01a7336-2dd8e635b49mr128566625ad.15.1789652252038; Thu, 17
- Sep 2026 06:37:32 -0700 (PDT)
-Date: Thu, 17 Sep 2026 06:37:31 -0700
-In-Reply-To: <28f7a805c57da35d86b5c495cdf2b613a61d235e.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bcG34pXd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789653386; x=1821189386;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=p/8Kga/2mO8x1WfxwkvXVFVTUy+Bdkv/hHhIK3GIj6E=;
+  b=bcG34pXdI9FSMrGs07Jd/T3KJc1Rdbw2WiWFmgfIaBObBBtDn/+XpgYt
+   B56Tt3W2JG3HKKrMChtykc4Ttii41HOa6ui+H0o9U+fOjupBoKqprRIyK
+   j+KHswV7ZaW+o5NYHVQHI0rch9RHmYMV9cwFHn+0Vl/z/00eJ0nIBuhAa
+   PBLe8iZzNAUKp4qnMeJeDtlPI3v6Ijfq+RM1e8l/i+hBl6zlMCqKpwu1+
+   9g9ObEAZ8PjBiIJ3cRHi3/yQRQig2Sg+wXK38X71VKFNG22Leb9eNONxN
+   3xo9gduJtt2G5dsXfrjXrv8vLVyMDtDzZ5Hgti3v0vTGorXrp9kFWGsLE
+   g==;
+X-CSE-ConnectionGUID: Ho45ydrASIKIsXI5voaklQ==
+X-CSE-MsgGUID: 0UyfDeXGQaeZSKAGg1Ya3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="90094740"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="90094740"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 06:56:20 -0700
+X-CSE-ConnectionGUID: 74emaZPGQ3emVLcB420q1g==
+X-CSE-MsgGUID: 30OjFD+9QE+gA++0uliwDQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="270121022"
+Received: from ettammin-mobl3.ger.corp.intel.com (HELO [10.245.245.63]) ([10.245.245.63])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 06:56:14 -0700
+Message-ID: <321890690ce83d1943b2f678bd9bee9b8c895b66.camel@linux.intel.com>
+Subject: Re: [PATCH v6 18/18] RDMA/mlx5: Ask P2PDMA whether ATS takes a
+ direct peer-to-peer route
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ Logan Gunthorpe <logang@deltatee.com>, Chaitanya Kulkarni <kch@nvidia.com>,
+ Greg Kroah-Hartman	 <gregkh@linuxfoundation.org>, Jens Axboe
+ <axboe@kernel.dk>, Alex Williamson	 <alex@shazbot.org>, Ankit Agrawal
+ <ankita@nvidia.com>, Jason Gunthorpe	 <jgg@ziepe.ca>, Jonathan Corbet
+ <corbet@lwn.net>, Shuah Khan	 <skhan@linuxfoundation.org>, "Joerg Roedel
+ (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy
+ <robin.murphy@arm.com>, Randy Dunlap	 <rdunlap@infradead.org>, Sumit Semwal
+ <sumit.semwal@linaro.org>, Christian =?ISO-8859-1?Q?K=F6nig?=	
+ <christian.koenig@amd.com>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, iommu@lists.linux.dev, Tushar Dave
+ <tdave@nvidia.com>, 	linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, 	linaro-mm-sig@lists.linaro.org,
+ linux-rdma@vger.kernel.org, kvm@vger.kernel.org
+Date: Thu, 17 Sep 2026 15:56:12 +0200
+In-Reply-To: <20260914-fix-p2p-acs-v4-0-v6-18-5ef07ec9ef06@nvidia.com>
+References: <20260914-fix-p2p-acs-v4-0-v6-0-5ef07ec9ef06@nvidia.com>
+	 <20260914-fix-p2p-acs-v4-0-v6-18-5ef07ec9ef06@nvidia.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <24a751d16ba0dc37aa7774df5739f39734cf9aca.camel@intel.com>
- <aqrZUZtSZ-YItclT@google.com> <736a9315f3cc3d8ef7079b784bfcc7b014386bd8.camel@intel.com>
- <aqrtprn5YaMijVdZ@google.com> <dae5a64112c9c949524226c66efac9c669df5b92.camel@intel.com>
- <aqsfoHzOip3n4zdU@intel.com> <aqss_eQAY7soHRwJ@google.com> <28f7a805c57da35d86b5c495cdf2b613a61d235e.camel@intel.com>
-Message-ID: <aqvtG90zWq6SkU8L@google.com>
-Subject: Re: TDG quote analysis
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Peter Fang <peter.fang@intel.com>, Yilun Xu <yilun.xu@intel.com>, 
-	Elena Reshetova <elena.reshetova@intel.com>, Binbin Wu <binbin.wu@intel.com>, 
-	Dave Hansen <dave.hansen@intel.com>, "kas@kernel.org" <kas@kernel.org>, 
-	Vishal Annapurve <vannapurve@google.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 
-On Thu, Sep 17, 2026, Rick P Edgecombe wrote:
-> On Wed, 2026-09-16 at 16:57 -0700, Sean Christopherson wrote:
-> > > The current estimate is 10s of milliseconds for HW based, and
-> > > milliseconds or less for CPU based.
-> >=20
-> > I am beyond confused.
+Hi
+
+On Mon, 2026-09-14 at 14:22 +0300, Leon Romanovsky wrote:
+> From: Leon Romanovsky <leonro@nvidia.com>
 >=20
-> Sorry if this is another gap. Trying to find the right level to cover the
-> important points. Did we not talk about S3M?=20
-
-We talked about S3M, it's the "CPU based" thing that confused me.  I wasn't=
- aware
-that manually doing "everything" in software, on the CPU, was an option.
-
-> > =C2=A0=C2=A0What is "HW based" versus "CPU based"?
+> mlx5_umem_needs_ats() enables ATS for any dma-buf whose caller asked
+> for
+> Relaxed Ordering, on the assumption that a switch in the path has CR,
+> RR
+> and DT all set. It also enables it for a buffer already mapped with
+> the
+> peer's bus addresses, which are not translatable at all.
 >=20
-> "HW" is talking about the S3M thing. The quote operation could go directl=
-y to
-> the S3M to get the quote. (HW based) Or it could get an intermediate key =
-and
-
-Get an intermediate key from where?  I assume this is a privileged key that=
- can't
-be exposed outside of the TDX-Module?  I.e. we can't hand that key to the g=
-uest
-to let it complete the quoting process, in an inherently interruptible envi=
-ronment?
-
-> generate quotes using CPU instructions. (SW based). Think like a crypto l=
-ibrary
-> in the TDX module.
-
-That's not a library...
-
-> > At this point, I don't care about the gory details, I just want to unde=
-rstand
-> > the basics:
-> >=20
-> > =C2=A0- Does generating a quote require the CPU to actively execute ins=
-tructions?
-> > =C2=A0- If not, how does software know when a quote is ready?=20
-
-I would still like an answer to this question.  Even if the end-to-end solu=
-tion
-isn't nailed down, I hope that the physical capabilities of the S3M are def=
-ined
-enough to cover this.
-
-> Oh man. There are actually a ton of attestation plans. I don't know which=
- will
-> become real. So these two behaviors we are enumerating are actually an ed=
-itorial
-> decision.
+> P2PDMA has read the ACS controls, so ask it through
+> dma_buf_p2pdma_map_type(): enable ATS only where the path is not
+> routed
+> directly as it stands, but would be for a Translated Request whose
+> Completions carry Relaxed Ordering. Exporters that name no provider
+> keep
+> the old assumption, since their ACS settings remain hidden.
 >=20
-> The software based flow would be expected to first. It would involve the =
-CPU
-> doing crypto stuff as above.=20
+> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> ---
+> =C2=A0drivers/infiniband/hw/mlx5/mlx5_ib.h | 36 ++-----------------------=
+-
+> ------
+> =C2=A0drivers/infiniband/hw/mlx5/mr.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 40
+> ++++++++++++++++++++++++++++++++++++
+> =C2=A02 files changed, 42 insertions(+), 34 deletions(-)
 >=20
-> Then a HW based flow where the crypto happens on the limited HW resource.=
- This
-> is where full parallelization is not possible, because the CPU is not doi=
-ng the
-> heavy work. You might want this one instead for security reasons. But the=
- main
-> point of discussing it is that you could expect some quotes to take a lon=
-g time
-> and support a limited number of parallel quotes.
+> diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h
+> b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+> index e9ddf2e97a76..ab32742b2180 100644
+> --- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
+> +++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+> @@ -1646,40 +1646,8 @@ static inline bool rt_supported(int ts_cap)
+> =C2=A0	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ts_cap =3D=3D
+> MLX5_TIMESTAMP_FORMAT_CAP_FREE_RUNNING_AND_REAL_TIME;
+> =C2=A0}
+> =C2=A0
+> -/*
+> - * PCI Peer to Peer is a trainwreck. If no switch is present then
+> things
+> - * sometimes work, depending on the pci_distance_p2p logic for
+> excluding broken
+> - * root complexes. However if a switch is present in the path, then
+> things get
+> - * really ugly depending on how the switch is setup. This table
+> assumes that the
+> - * root complex is strict and is validating that all req/reps are
+> matches
+> - * perfectly - so any scenario where it sees only half the
+> transaction is a
+> - * failure.
+> - *
+> - * CR/RR/DT=C2=A0 ATS RO P2P
+> - * 00X=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 X=C2=A0=C2=A0 X=C2=A0 OK
+> - * 010=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 X=C2=A0=C2=A0 X=C2=A0 fails (=
+request is routed to root but root never
+> sees comp)
+> - * 011=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=A0 X=C2=A0 fails (=
+request is routed to root but root never
+> sees comp)
+> - * 011=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1=C2=A0=C2=A0 X=C2=A0 OK
+> - * 10X=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 X=C2=A0=C2=A0 1=C2=A0 OK
+> - * 101=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 X=C2=A0=C2=A0 0=C2=A0 fails (=
+completion is routed to root but root
+> didn't see req)
+> - * 110=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 X=C2=A0=C2=A0 0=C2=A0 SLOW
+> - * 111=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=A0 0=C2=A0 SLOW
+> - * 111=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1=C2=A0=C2=A0 0=C2=A0 fails (=
+completion is routed to root but root
+> didn't see req)
+> - * 111=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1=C2=A0=C2=A0 1=C2=A0 OK
+> - *
+> - * Unfortunately we cannot reliably know if a switch is present or
+> what the
+> - * CR/RR/DT ACS settings are, as in a VM that is all hidden. Assume
+> that
+> - * CR/RR/DT is 111 if the ATS cap is enabled and follow the last
+> three rows.
+> - *
+> - * For now assume if the umem is a dma_buf then it is P2P.
+> - */
+> -static inline bool mlx5_umem_needs_ats(struct mlx5_ib_dev *dev,
+> -				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct ib_umem *umem, int
+> access_flags)
+> -{
+> -	if (!MLX5_CAP_GEN(dev->mdev, ats) || !umem->is_dmabuf)
+> -		return false;
+> -	return access_flags & IB_ACCESS_RELAXED_ORDERING;
+> -}
+> +bool mlx5_umem_needs_ats(struct mlx5_ib_dev *dev, struct ib_umem
+> *umem,
+> +			 int access_flags);
+> =C2=A0
+> =C2=A0int set_roce_addr(struct mlx5_ib_dev *dev, u32 port_num,
+> =C2=A0		=C2=A0 unsigned int index, const union ib_gid *gid,
+> diff --git a/drivers/infiniband/hw/mlx5/mr.c
+> b/drivers/infiniband/hw/mlx5/mr.c
+> index 00e13028762a..286f372e5b0c 100644
+> --- a/drivers/infiniband/hw/mlx5/mr.c
+> +++ b/drivers/infiniband/hw/mlx5/mr.c
+> @@ -38,6 +38,7 @@
+> =C2=A0#include <linux/export.h>
+> =C2=A0#include <linux/delay.h>
+> =C2=A0#include <linux/dma-buf.h>
+> +#include <linux/dma-buf-mapping.h>
+> =C2=A0#include <linux/dma-resv.h>
+> =C2=A0#include <rdma/frmr_pools.h>
+> =C2=A0#include <rdma/ib_umem_odp.h>
+> @@ -47,6 +48,45 @@
+> =C2=A0#include "data_direct.h"
+> =C2=A0#include "dmah.h"
+> =C2=A0
+> +MODULE_IMPORT_NS("DMA_BUF");
+> +
+> +bool mlx5_umem_needs_ats(struct mlx5_ib_dev *dev, struct ib_umem
+> *umem,
+> +			 int access_flags)
+> +{
+> +	struct dma_buf_attachment *attach;
+> +
+> +	if (!MLX5_CAP_GEN(dev->mdev, ats) || !umem->is_dmabuf)
+> +		return false;
+> +
+> +	/*
+> +	 * The Completer decides whether its Completions carry
+> Relaxed
+> +	 * Ordering, and only a Request that asked for it can expect
+> them to.
+> +	 */
+> +	if (!(access_flags & IB_ACCESS_RELAXED_ORDERING))
+> +		return false;
+> +
+> +	attach =3D to_ib_umem_dmabuf(umem)->attach;
+> +	switch (dma_buf_p2pdma_map_type(attach, 0)) {
+> +	case PCI_P2PDMA_MAP_NONE:
+> +		/* Nothing is known about the route, so fall back to
+> the bet. */
+> +		return true;
+> +	case PCI_P2PDMA_MAP_BUS_ADDR:
+> +		/*
+> +		 * The path is routed directly already and is
+> programmed with
+> +		 * the peer's bus addresses. Those are not
+> translatable, so
+> +		 * ATS would be wrong as well as pointless.
+> +		 */
+> +		return false;
+> +	default:
+> +		break;
+> +	}
+> +
+> +	return dma_buf_p2pdma_map_type(attach,
+> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 PCI_P2PDMA_TLP_TRANSLATED |
+> +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> PCI_P2PDMA_TLP_RELAXED_CPL) =3D=3D
+> +	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 PCI_P2PDMA_MAP_BUS_ADDR;
+> +}
+> +
 
-It's not just the raw time that matters, where/how that time is spent also =
-matters
-greatly.  There is a *massive* difference between "fire off an operation an=
-d get a
-notification" and "churn on crypto stuff for the entire time", especially w=
-hen the
-thing churning on crypto stuff isn't interruptible by default.
+It looks like this works well when the device can choose whether to
+enable ATS per transaction.=20
 
-> But neither of these solutions are actually nailed down yet. How should a=
- off-
-> cpu based flow work? We can discuss it. I'd think to have some interface =
-that
-> doesn't require guest changes all the time. Focusing on something that ju=
-st
-> supports long quotes seems the most robust.
+However, at least for the Intel GPUs, ATS enablement is based on the
+PCIe-side enable bit.
 
-No, because they are wildly different beasts.  This is basically like compa=
-ring
-zswap and traditional swap; yes, they're both swap, but they have *very* di=
-fferent
-characteristics that need to be accounted for at the system level.  Now mak=
-e the
-zswap (de)compression code completely uninterruptible.  The whole problem s=
-pace
-changes, because either the host has to be ok with a CPU "disappearing" for=
- an
-extended duration, or the interface needs to be reworked to make the swap s=
-equence
-restartable.
+This means that if p2pdma tells the dma-mapping layer to give an Xe
+device a bus address rather than an IOVA, things break, while
+pci_p2pdma_distance says everything is OK.
 
-It sounds to me like y'all need to take a step back and nail down your cust=
-omer
-requirements, including what is tolerable latency from the guest perspectiv=
-e.
+It looks like the infrastructure and solution added in this series is
+targeted at fixing this on the device side by conditionally enabling
+ATS. However I think we need to look also at having the computed
+routing assume untranslated transactions using IOVA rather than bus
+address.
 
-FWIW, if S3M quoting isn't I/O-like, i.e. isn't fire and get notified, then=
- IMO
-it's completely broken and likely unusable.
+That is, a flag to tell the topology check that some transactions
+*will* take the host-bridge path due to IOVA being used, and that the
+computations including pci_p2pdma_distance() need to check whether that
+is possible (checking whitelist etc.) and return the corresponding
+THRU_HOST_BRIDGE mapping type. Translated transactions taking a short-
+cut using the bus-address would then be hidden from the driver.
+
+Whether that is best done as a parameter to these functions or perhaps
+as a flag in the PCI device, I'm not sure.
+
+Thanks,
+Thomas
+
+
+
+
+> =C2=A0static int mkey_max_umr_order(struct mlx5_ib_dev *dev)
+> =C2=A0{
+> =C2=A0	if (MLX5_CAP_GEN(dev->mdev,
+> umr_extended_translation_offset))
