@@ -1,124 +1,214 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944944DA9CF
-	for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 11:51:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789645927; cv=pass; b=T+wI+TEcOMqMpZlT9t5K5OjxrXT0Bj4kDsAALL+Qsfb8aI8rvhJTL4EtKP2wMNC1LGHQKsK1flxnOPoESGHRobr7/KRjG2YNF717+PtINlUkHoBmeL2HQABOGe944FPw0Mpl6KBM8qCE9GSUuTdlsgh3yVwSxJ0Yxp+D/5N9yWA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789645927; c=relaxed/simple;
-	bh=nOYhv3codkqkgw3J82tO/HjCMv9eP9bGCd7SuCfawsE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KE0w4bS7hCRjwdWS2jkYQKCWmmIVRoV5xCf9WWaE1NmYsR4TFg/70n9w/8ojF+S0+flu3PmXF9gZ1obyHts34Fn/ovAPBcZW5rAnlL/diJplzirDeTFR4niNDA0WT+StDjA4Ibsu5O0jQxVilVXmfrcUv2xwTyPnfEAKUORf44w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DYjblt1m; arc=pass smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6484D957E;
+	Thu, 17 Sep 2026 11:53:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789646044; cv=none; b=IPxlTdzmTDtBDt57/EWMRGaS26v3ol5neBeFDkiwWiuZ+eL1Ucnf6MwpKQsXttgmCvbkpitPkfz8e7YekqRRY+3t0A929Fnpmg6APjW+Ws2EZa0OtV9D+hc4238ZV7dnPxyuUbe0KInVM32Vvh6Se/zFVB3UZA2XlvTi/m2dIq0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789646044; c=relaxed/simple;
+	bh=jvaLVEbnFCdM/+XrIG6EfmKoeNrEdotsynpBFgLSflw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qO9UX/PHyDnJ0UI3OqSNg7BLcluv9wqHjip7CHpPG7jaxX5V1TOB39FgBBMTWTRlZq0CnY2aYl65qCCK+Y6LsnFUmfSYWCSNR8earJjGX+dO6CwWPckzTPgtmYp3dHYG0vvtCyPTIyCWaDOmJYnWt7xW+BnNAZJLxtgOE50mBKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=YUw+lKOe; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DYjblt1m"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5b5e5aaf7deso1168e87.0
-        for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 04:51:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789645909; cv=none;
-        d=google.com; s=arc-20260327;
-        b=aRPgvRo/NmkIzki9ufmGJEZPSupvlZxdqOfj2X+5BqBDD7JfZ1y+Oe53QUPkT5uplK
-         SF6IDCJLSHTGW7t4iQQ95EXv//AAMK998ao4Sf2BHyhOl+59ilRwhqRec5MPPf8j3+sp
-         UORWLVx/ORuozkfDNUKGU26XEj85AGdXuZsILHGfKYqozETrhlQlLMsaWbraxxWPbbrU
-         8IAmmJnQM6ze3avjKQuNW3rlEtP0/LW1Je1tLT707tFKU/C392f05WnEuOMWI5N3uPmF
-         f92M6v94IL70/O8aeem/cLCr4O1NLvv8LIqeAhM37tYLK14MtR+IdmFZ8r2Y22JzmLVd
-         HbbA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=AdIwW+5qYXXR92NXdwAH/Idy+Qhx8FbslhR3tYZnWQg=;
-        fh=Ez8NpNZlYpJMs5FsbI2d5a16stCZJhW3aTDCQxMMJyU=;
-        b=LEUoxN5bbTWeT1Hv562Mg2FBK87glkhvmm08aXAxukPNaNOLZLOXY7lLNrs56X3KBo
-         90oweheUOD1PCG573YlGKnQIfWRahUvkcbH08KCEFLWk0Rts1iGZ+ZbfhZg6HxR99V2Z
-         C3ER5swcLWFoaZv0O5ctbVQ896zphikXY+U+p7Jx9itluKiaEWpCFMMhgrLSXRLcvfnp
-         9oZ3pUcILl6N/qdiC+CFtmF6dBzjT7n0c3G5TcIsSOSkIwedYdXmsuUZRHEtlq0tcSUq
-         eNzg5z8OpwYB6NXK6hjPwmXOgmgPL5zX/Q7UCzyZxfzZsfGt/C+NgJY1GIg7eKDwnkgU
-         apdw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789645909; x=1790250709; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AdIwW+5qYXXR92NXdwAH/Idy+Qhx8FbslhR3tYZnWQg=;
-        b=DYjblt1mxHITRZPgDTK5tAknbFLiBRfrlKgn7iyL6XYzITysGm4r60lkJVSrmdDb2N
-         G5XZ8+SgcOo8Nk/2uWZhRccqn6bWlW7cCL+HxOzOIRHVs2ZqndaPTZYyx6uitaDnQ7I8
-         5mAypXm3agSscKAq5xUdX6/qci4nIk23xPpTWdTLtduSq385+ENfMboJsrQnSzPRaJnd
-         VpkSVsgQGAt/WQQGKBL4WNnczq8vUXIAuLQMORX/ai6fjh2Y+Dkf4NgcNfs9mvCLFZAV
-         MHuRz5CkVMnHBftLkFLmuNWGNvUQUbZwcg8vpTR5g/cqimQY9b6O3KZBmCgNN0vtJyxU
-         y3zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789645909; x=1790250709;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=AdIwW+5qYXXR92NXdwAH/Idy+Qhx8FbslhR3tYZnWQg=;
-        b=JRBQoii4/lEvQZuz8kPVUJCkcCC05D7EtFmS15Ye2KUGxHrtHdNjEz9aAq7i96+Pr1
-         PcoLBMhVQ87BGHm0VkfqB3lETi0y1TXjHzV3sF7HtRmNznX78j/A9yVeTa1W+VJfvy5C
-         f5Pp4TRc0FwGfaHL378q4B1tLqFfshY6fxzPKzwc2IcqgwRI64K0vpf51NxD3qDeB6SH
-         /PfK1JhQvq9JWMgoUhZ9IGswqfHHu/GtC0z8MlDNQ21EGLcBAaNx/UxC/ubksmQcGwCG
-         N4Mj6dT7VqAbSc+CpLttPwJ3SWb6OD2ciRuAaUd+LRI2PsrzG4tYaeaOjdJNBFUnLda6
-         C2vQ==
-X-Gm-Message-State: AFuF++nnpKBHdl9pg/YtwkD8cSH+XomKo995skmcM8H4t9SaNqUnXmEG
-	sxIz4NGZ9R2qrWjXFceLn5r9+ms/Sw3Z4vvzNMwLrP2M3h9cXCmeydFxhnTTyXra0zSnHnNuUho
-	W8iOmQFvejMrt2jP1JOV+SeHdnHlGsxfmw4/UOUEl
-X-Gm-Gg: AYBFou3S4b7ZQKAcQHqDitZqcBemKvSDvnk1dppZ7VmXoRyP1xuPd6orNwS1UaVb+A3
-	Vs3sQz/FjE/Tw9DnwfraweEjJd1ugKP1wO58YRIDJtPti9MB2tP+0M1pMcXfZyJ3wA5UXicEdeR
-	tukuL+S9ZY+x7A/kxvkYKh+RNqDvX5myE4i3oMg9PE8oIF8J77WVBZYYwVbuR0NtzlTF7y9nI3S
-	cG7sJh4lKXre4yeoG24154oHKa+tU/p9MrSqabUOijuju3JIQ53HOsAWxPf6/wmxSu5+d9w5sLA
-	wt7s/Lyh4fvw/QfXCrjIuZshxR8pm9Nh3ddmISOfmB9m6Tv/PZUWHvoYWnPohopMG2lm74y1qgU
-	SEvNxlSUS8PzqIw==
-X-Received: by 2002:a05:6512:33d5:b0:5b1:5e30:ab4d with SMTP id
- 2adb3069b0e04-5b8bff20394mr25749e87.5.1789645908458; Thu, 17 Sep 2026
- 04:51:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="YUw+lKOe"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68HA1UTc322340;
+	Thu, 17 Sep 2026 11:53:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=V9ERVpr4ybPvUdFY/gMcMooqa+vD4ZbFk/cBj5IgD
+	w4=; b=YUw+lKOeEBkeEyWzEjaUwnCe1skx5PLSvUCiPgcFElcEkaW5cTHV3dzhl
+	Q5TeeH8U133qOTWWwvXXTFaKFS7ggQ/aUaraNWlK68dcdiu7JMS7ZVNvdbXele9u
+	nw1Ve3Udja2RTnheWpeLqVHqBBHiTiX+Na0pA4fa0SwbQDw/mdqlki6tDPt0ZPYo
+	A9XpgmLCnYuo6hFbZz6rSjIt3NvOZ2qMeNJPGPC8Hkvx3Uxjz0J5KWheW7byg+Ov
+	F0rNmNc5ugKp8t9HojFDY/g8/2y1i5VI712B8BHr/i/dv/ewzvRJLwZQb/STJVTh
+	5j8ISOmK3W823Nn/WCifYmwUzHl3A==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmxdqj443-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 17 Sep 2026 11:53:47 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68H9aQBd2917878;
+	Thu, 17 Sep 2026 11:53:46 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gr5xa23tb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 17 Sep 2026 11:53:46 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68HBreGJ36569418
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 17 Sep 2026 11:53:40 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4E0532004B;
+	Thu, 17 Sep 2026 11:53:40 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 29B1220043;
+	Thu, 17 Sep 2026 11:53:40 +0000 (GMT)
+Received: from p-imbrenda.ehn-de.ibm.com (unknown [9.224.75.30])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 17 Sep 2026 11:53:40 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
+        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com
+Subject: [PATCH v1 1/1] KVM: s390: Fix UCONTROL inconsistencies
+Date: Thu, 17 Sep 2026 13:53:40 +0200
+Message-ID: <20260917115340.126628-1-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260915160141.3543048-1-suzuki.poulose@arm.com> <20260915160141.3543048-13-suzuki.poulose@arm.com>
-In-Reply-To: <20260915160141.3543048-13-suzuki.poulose@arm.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Thu, 17 Sep 2026 12:51:12 +0100
-X-Gm-Features: AcwNN1X5WP4Na_O-dNFd8fWbgG-HeOkWBxaHeAYarJjcpr1hEP0fkdn3TrX09z4
-Message-ID: <CA+EHjTxfbG6-LPjJVoErQ3iJk4vAvhVO=Qv6hjcxDXL0yByiQA@mail.gmail.com>
-Subject: Re: [PATCH v18 12/23] KVM: arm64: Widen the scope of "protected" VMs
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, 
-	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, 
-	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, 
-	joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, 
-	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, 
-	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
-	lpieralisi@kernel.org, enju.kohei@fujitsu.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE3MDE2MCBTYWx0ZWRfX9/h2sGx1Zc23
+ LH1WeP3vsLjFxLejr0y5MQFF9wX5H4q1vzYtSU3n8W8Ad3We5ceE2CDLyP9gqpPffPNJ6Qrnl+o
+ guK49yjIdOmXvFodwfKkf+1S2GDtnJGpj+m30IdeiGy56+vdl0M1wol56CWk14Yqda3occWWJtu
+ 0y/bxMcaoN7suftVexyBT2FZqoSHjJHN55PP1EcQ1bpUH0RZdgg3NvhsXHmc4KNx6pCsexGOgGb
+ 26GlAoQCgye9XkOKtWQi+cFlqPKqmeAcw/9rR/eUoefe+j9SzvalFS1b8dEWDCWsj5wNs0xGdli
+ kVoQYKaWpgQi0oHnsNJAO3MG4MTZiIhrakRWcjF+JirEKGHsuvuRLuyKhGNuWMDTBf4YKiTnAxn
+ O39zBW9KAwOO0poqWTCPlpKH9F3P0L6GojJg8uOC26FoJfGfydYbX6MqQiQ9CCCPwy/uFh1ZVRB
+ fS439W0nqFxZuFGANfw==
+X-Proofpoint-GUID: JpaoghcP1i0kzQ8kq5d5B8KBSNaQ5fGw
+X-Authority-Analysis: v=2.4 cv=DobDa2/+ c=1 sm=1 tr=0 ts=6aabd4cb cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=UYoTy7AoXebUC5eqFE8A:9
+X-Proofpoint-ORIG-GUID: JpaoghcP1i0kzQ8kq5d5B8KBSNaQ5fGw
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE3MDE2MCBTYWx0ZWRfX8r6YoMyasJuf
+ saMChlnQlFgSf+R4swL+9vR1eBjd78UOscgXNPmBNeF6h4xaAiE+fA1oEUlIqaXKpe9s1PMPNTs
+ DWzJdBZxLBp67AkSEDlD0dUydYQQkMs=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-17_02,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0 priorityscore=1501 suspectscore=0 impostorscore=0
+ spamscore=0 clxscore=1015 adultscore=0 bulkscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609170160
 
-Hi Suzuki,
+For UCONTROL VMs, when a vCPU segment entry is mapped but unallocated,
+the tl field was set to 1. This collides with the present bit, which
+means that other parts of gmap would mistake the entry for a present
+one.
 
-On Tue, 15 Sep 2026 17:01:30 +0100, Suzuki K Poulose
-<suzuki.poulose@arm.com> wrote:
-[...]
-> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-[...]
-> -#define kvm_vm_is_protected(kvm)        ((kvm)->arch.vm_flavor == VM_PROTECTED_PKVM)
-> +#define kvm_vm_is_protected(kvm)        ((kvm)->arch.vm_flavor >= __VM_PROTECTED)
-> +#define kvm_vm_is_protected_pkvm(kvm)        ((kvm)->arch.vm_flavor == VM_PROTECTED_PKVM)
->  #define kvm_vm_is_unprotected_pkvm(kvm)        ((kvm)->arch.vm_flavor == VM_PKVM)
+Refactor the code to use a different combination of flags to indicate a
+mapped but unallocated segment.
 
-Agree with Marc that this belongs in patch 5. When it moves, could you
-add vcpu_is_protected_pkvm() next to vcpu_is_protected()? The pKVM
-host-side series [1] has vcpu_is_protected() checks that are pKVM
-mechanism (the vCPU feature allowlist, CPU_ON against the pKVM
-power-off state, the ONE_REG rejection after the first run), and with
-the wider predicate those have to carry a pKVM-specific name.
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Fixes: a2c17f9270cc ("KVM: s390: New gmap code")
+---
+ arch/s390/kvm/gmap/dat.h  | 16 +++++++++++++++-
+ arch/s390/kvm/gmap/gmap.c | 40 ++++++++++++++++++---------------------
+ 2 files changed, 33 insertions(+), 23 deletions(-)
 
-Cheers,
-/fuad
+diff --git a/arch/s390/kvm/gmap/dat.h b/arch/s390/kvm/gmap/dat.h
+index 90389d47ba4e..4665c1112bb9 100644
+--- a/arch/s390/kvm/gmap/dat.h
++++ b/arch/s390/kvm/gmap/dat.h
+@@ -109,6 +109,8 @@ union pte {
+ #define _REGION3_FR_MASK	(_REGION3_MASK >> PAGE_SHIFT)
+ #define _PAGES_PER_SEGMENT	_PAGE_ENTRIES
+ #define _PAGES_PER_REGION3	(_PAGES_PER_SEGMENT * _CRST_ENTRIES)
++#define _UCAS_ENTRY_LENGTH	0
++#define _UCAS_ENTRY_OFFSET	3
+ 
+ /* Soft dirty, needed as macro for atomic operations on ptes */
+ #define _PAGE_SD 0x002
+@@ -421,6 +423,17 @@ static inline union crste _crste_fc0(kvm_pfn_t pfn, int tt)
+ 	return res;
+ }
+ 
++static inline union crste _crste_ucas(kvm_pfn_t pfn)
++{
++	union crste res = { .val = PFN_PHYS(pfn) };
++
++	res.h.i = 1;
++	res.h.tt = TABLE_TYPE_SEGMENT;
++	res.h.fc0.tl = _UCAS_ENTRY_LENGTH;
++	res.h.fc0.tf = _UCAS_ENTRY_OFFSET;
++	return res;
++}
++
+ /**
+  * _crste() - Useful constructor for union crste with FC=1
+  * @pfn: the pfn this pte should point to.
+@@ -985,7 +998,8 @@ static inline int dat_create_slot(struct kvm_s390_mmu_cache *mc, union asce asce
+ 
+ static inline bool crste_is_ucas(union crste crste)
+ {
+-	return is_pmd(crste) && crste.h.i && crste.h.fc0.tl == 1 && crste.h.fc == 0;
++	return is_pmd(crste) && crste.h.i && !crste.h.fc &&
++	       crste.h.fc0.tl == _UCAS_ENTRY_LENGTH && crste.h.fc0.tf == _UCAS_ENTRY_OFFSET;
+ }
+ 
+ #endif /* ARCH_KVM_GMAP_DAT_H */
+diff --git a/arch/s390/kvm/gmap/gmap.c b/arch/s390/kvm/gmap/gmap.c
+index 3f3fa864cc36..554015e0dad0 100644
+--- a/arch/s390/kvm/gmap/gmap.c
++++ b/arch/s390/kvm/gmap/gmap.c
+@@ -773,9 +773,7 @@ static int gmap_ucas_map_one(struct kvm_s390_mmu_cache *mc, struct gmap *gmap,
+ 	if (rc)
+ 		return rc;
+ 	if (!ptep) {
+-		newcrste = _crste_fc0(p_gfn, TABLE_TYPE_SEGMENT);
+-		newcrste.h.i = 1;
+-		newcrste.h.fc0.tl = 1;
++		newcrste = _crste_ucas(p_gfn);
+ 	} else {
+ 		pt = pte_table_start(ptep);
+ 		dat_set_ptval(pt, PTVAL_VMADDR, p_gfn >> (_SEGMENT_SHIFT - PAGE_SHIFT));
+@@ -836,26 +834,24 @@ int gmap_ucas_translate(struct kvm_s390_mmu_cache *mc, struct gmap *gmap, gpa_t
+ 		if (rc <= 0)
+ 			return rc;
+ 	}
+-	do {
+-		scoped_guard(write_lock, &gmap->kvm->mmu_lock) {
+-			rc = gmap_ucas_translate_simple(gmap, gaddr, &crstep);
+-			if (rc <= 0)
+-				return rc;
+-			translated_address = (*gaddr & ~_SEGMENT_MASK) |
+-					     (crstep->val & _SEGMENT_MASK);
+-			rc = gmap_ucas_map_one(mc, gmap, gpa_to_gfn(translated_address), gfn, true);
+-		}
+-		if (!rc) {
+-			*gaddr = translated_address;
+-			return 0;
+-		}
+-		if (rc != -ENOMEM)
+-			return -EREMOTE;
+-		rc = kvm_s390_mmu_cache_topup(mc);
+-		if (rc)
++	rc = kvm_s390_mmu_cache_topup(mc);
++	if (rc)
++		return rc;
++
++	scoped_guard(write_lock, &gmap->kvm->mmu_lock) {
++		rc = gmap_ucas_translate_simple(gmap, gaddr, &crstep);
++		if (rc <= 0)
+ 			return rc;
+-	} while (1);
+-	return 0;
++		translated_address = (*gaddr & ~_SEGMENT_MASK) |
++				     (crstep->val & _SEGMENT_MASK);
++		rc = gmap_ucas_map_one(mc, gmap, gpa_to_gfn(translated_address), gfn, true);
++	}
++
++	if (!rc)
++		*gaddr = translated_address;
++	if (!rc || rc == -ENOMEM)
++		return rc;
++	return -EREMOTE;
+ }
+ 
+ int gmap_ucas_map(struct gmap *gmap, gfn_t p_gfn, gfn_t c_gfn, unsigned long count)
+-- 
+2.55.0
 
-[1] https://lore.kernel.org/all/20260914113338.159227-1-fuad.tabba@linux.dev/
