@@ -1,101 +1,76 @@
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92DDD4F4049
-	for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 17:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20ADC531606;
+	Thu, 17 Sep 2026 17:27:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789666035; cv=none; b=sNietqZLSY4bYs8rEFfHvbKynQ/+p4ESyJUhAbPLqrotbH+xkQaKaIpTjBc88hQYuvf9Z+/9cGQEl4/L87h3dOwz3RPHDh9cGYS3SOj855vjoua3vixJ+SI8tuvwIxrvqIunAwu4KwCBQ7Ygpvr1OvzxgrrWfjZwVpB+0I994p8=
+	t=1789666065; cv=none; b=bZ7oBgF+dikniaWQooXlg3TImplGhaocnsI2dJ7hrp5rAVxwphmO53prpMs0VTVNAA6CYPFkDB0bGtTWKdt1rxEiXlJ++qLFJfTB/xxL+g4itK986dOxZEQyNnYE3rL3bifEMjUNKc0teqhcEATknpCLDxb8k+1WmPQ28o7mK10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789666035; c=relaxed/simple;
-	bh=0dFIc1P5SspHIbcKl55NBr7eN3RMWTBd1gplw1ToFVI=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=udCO2VI3IjLgVqLpomWwLv6GR+ZhUvh6yIT8/9wZ+2+2Mf4LdeaFAqayucmPlc8xok9CT4iFg8WQA3nRMcnvXl5HolFDgO4LpO0PrH0UfSjHNJSicuGyX2siA6/rfPVBj8O44VswpRDfUsND/dFJjp9CXj1zQzBlWjDCX5WrE1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmcrey.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=F95bx81S; arc=none smtp.client-ip=209.85.216.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmcrey.bounces.google.com
+	s=arc-20240116; t=1789666065; c=relaxed/simple;
+	bh=jKZOZ0vCACLspHtlfXg4nPEC++KYAdALEYHNye3uvLk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=omuP6iYFlMnNfFiGyJhje2H8oqPttBY+5XrsestQA9/mGcWz5YqOHRPlEwyN5YbetQUJ9EYx9WvU8IQiFSEt5BZyhqc7lpFtiGx0iZN3aJUrbUQgTv1vErXIfeSHH7SQvex5LsAqa+VyvxBv1mzXUDxttNR85n/mwvTynfrDgj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jGrO2X/f; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F95bx81S"
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39d865b11b4so1446132a91.3
-        for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 10:27:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789666033; x=1790270833; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=grk7eKklEDZuGU4DO+mElUf9TxeDf2UBTPbgXb/BfTs=;
-        b=F95bx81SBRfb7bMrzEu3kfU/h5GulJRwM1LOcoqYDT9KnVm7a6NOuTG/HzsGMVJEXF
-         lCIjXaHgJ6HEr/r+mpgJ8msXv8DIz90UwtPa/ktGCkPgXhakEZw5B3wydzKP/YmfBuLH
-         uZTCcOkTF5lcT4BL11702VFiFDLFCHm1K1oR6LOcDXXTNfCsrqAu5kKF3SXuOio00Sum
-         1AAZi8kzcBrKxwo0TPC7+c3V2eJjT9pWJyAp/oH8z0dGo1FRONxIVBflCT+dWJOuX5tn
-         EKznbqv1Lg0FhDCPkVmqv/CxHyXo6DwdtzIXvWzYW4qHo6HSE/OeOEehoXCncosHapwi
-         ngLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789666033; x=1790270833;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=grk7eKklEDZuGU4DO+mElUf9TxeDf2UBTPbgXb/BfTs=;
-        b=jzbmP8ect8bj0B2q2qXWUme5v1Bv63kGdsUhrNNhWRhhl5/yAB2Raszjblk4TUOdkr
-         O2I+GgjSMqJdlNAwQxAFq4Pb7qd1GZ26UB9CgCkXCdVfMsOGy7eFwQXN2KlwLYd54QaD
-         JgeE/eS/DSQafNRcGKPdlK5CnlNbLrryfHML2/Mgouc7InjZrhKl80Bs67+DNZ1EXCLA
-         p3t1392Mth4k32TRW+MbGK+7G2+/c4zAn7tavVq4j6OnLgnBedpq3Hre/ApavOOaB7ji
-         uJUQ1athE3pwT0/8ClaKFewmEH0AVWqor2zM2Idid7kbttvzwuWu9xE5v9SXObWUdSqk
-         WN6w==
-X-Gm-Message-State: AFuF++k4emsn5iQTznZQ0g0XBni84lBTNZWBM6p1YoDmgQ6vvwQvvCGQ
-	NNVQazfy3teTWgq7Xx2ogaygue/Dzz2AhCwUIsFceNUonhOmyf3u1aOM5pQF3i/5UdgaPwqBWEQ
-	4mI+C+7722v2dgIDSKYitRjduS0+RM2ZB9+K9KYxpKSszj6isi/zIes4jpmCWmsjWb/xBzhrqXz
-	MiVQOU7YSE/Z71oY5tKqDdAVrsJbccWnbf
-X-Received: from pjbbb12.prod.google.com ([2002:a17:90b:8c:b0:39d:926d:83f4])
- (user=jmcrey job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:274a:b0:39e:131d:4510
- with SMTP id 98e67ed59e1d1-39e1e484999mr16683624a91.13.1789666032530; Thu, 17
- Sep 2026 10:27:12 -0700 (PDT)
-Date: Thu, 17 Sep 2026 17:26:51 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jGrO2X/f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 183BF1F00893;
+	Thu, 17 Sep 2026 17:27:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789666063;
+	bh=jKZOZ0vCACLspHtlfXg4nPEC++KYAdALEYHNye3uvLk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=jGrO2X/fGLfcGPgd+k144I7KKJWcyW5zLeF7F13DCffI84Z2PsZeTytXcB9iHnXG4
+	 z8H4SAbEotKAiyVXoPgfMu8NW3CFQyYTJ/i0nDkiMwfcM+Azdtr1N6DxNXAqnG1e/3
+	 73efvolGTy5l5BWgoUoq4lKxklwFjSBU5OdC1mJNK2RtI6B9gPSH1z+Ogn/W7lHB1q
+	 I9BI8LiiucPopUw7Qay2BKv/40OC6Dz7V/b16Fdh4JBfb6ZW4jGXdVa6zEF7GDE+XN
+	 cvv7MH41VE7zVG8GhsuoGSbAPBy1gwceeD+fwpxlcaIVHtzs+ZQR+KGNogMJrVQgMW
+	 CBj4JnE4Mbn+A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 19/40] fbdev: defio: assert FBINFO_VIRTFB, drop
+ VM_IO, add VM_MIXEDMAP
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?TG9yZW56byBTdG9ha2VzIChBUk0p?= <ljs@kernel.org>
+Cc: "Christian Borntraeger" <borntraeger@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Marc Zyngier" <maz@kernel.org>, linux-rdma@vger.kernel.org, kvmarm@lists.linux.dev, "Oliver
+ Upton" <oupton@kernel.org>, linux-scsi@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, bpf@vger.kernel.org, selinux@vger.kernel.org, kvm@vger.kernel.org
+In-Reply-To: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-19-4583d8a23bca@kernel.org>
+References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
+ <20260917-b4-mmap-prepare-vma-flag-sanify-v3-19-4583d8a23bca@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 17 Sep 2026 17:27:42 +0000
+Message-Id: <20260917172743.183BF1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260917172651.3322899-1-jmcrey@google.com>
-Subject: [kvm-unit-tests PATCH] x86/msr: Disable PMU for MSR tests
-From: Jeremiah McReynolds <jmcrey@google.com>
-To: kvm@vger.kernel.org
-Cc: seanjc@google.com, Jeremiah McReynolds <jmcrey@google.com>
-Content-Type: text/plain; charset="UTF-8"
 
-QEMUv11 introduced a check when PMU is enabled to ensure that the
-virtualized CPU is the same as the underlying host CPU[1]. The MSR test
-always runs under GenuineIntel with the max CPU model, so PMU is
-implicitly enabled. However, when run on AMD, this new check in QEMU
-causes the test to fail with the log: "host doesn't support requested
-feature: vPMU".
+> Currently all drivers which use defio allocate system memory. All of them
+> also set FBINFO_VIRTFB, other than ssd1307fb, however this driver allocat=
+es
+> system RAM, so simply failed to set this flag when it ought to.
+>=20
+> This patch sets FBINFO_VIRTFB on ssd1307fb probe, then drops setting VM_IO
+> in fb_deferred_io_mmap() and instead requires FBINFO_VIRTFB to be set,
+> erroring out with a kernel warning if not.
+>=20
+> The logic requires a page from the driver and since commit 1ecbc7dd2902
+> ("fbdev/deferred-io: Always call get_page() for framebuffer pages") has
+> always required it to be refcounted, so this was implicitly already the
+> case.
+>=20
+> Finally this patch sets VM_MIXEDMAP, as the logic is mapping
+> kernel-allocated memory so this is appropriate.
+>=20
+> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Explicitly disable PMU on the MSR test to avoid this failure.
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-[1]: https://gitlab.com/qemu-project/qemu/-/commit/4c7f05232cd1db5db114d36be2b210d24f1b9ad3
-
-Signed-off-by: Jeremiah McReynolds <jmcrey@google.com>
----
- x86/unittests.cfg | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/x86/unittests.cfg b/x86/unittests.cfg
-index ae731a93..06fe92f9 100644
---- a/x86/unittests.cfg
-+++ b/x86/unittests.cfg
-@@ -174,9 +174,10 @@ arch = x86_64
- # Use GenuineIntel to ensure SYSENTER MSRs are fully preserved, and to test
- # SVM emulation of Intel CPU behavior.  Use the max CPU model so that 64-bit
- # support follows the host kernel.  Running a 32-bit guest on a 64-bit host
--# will fail due to shortcomings in KVM.
-+# will fail due to shortcomings in KVM.  The max CPU model turns on PMU, but
-+# Intel PMU registers cannot be virtualized on AMD, so turn it off.
- file = msr.flat
--qemu_params = -cpu max,vendor=GenuineIntel
-+qemu_params = -cpu max,vendor=GenuineIntel,pmu=off
- 
- [msr64]
- # Same as above, but with a minimal 64-bit CPU model to validate cases where an
--- 
-2.55.0.1082.g2b9226bbc0-goog
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260917-b4-mmap-pr=
+epare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org?part=3D19
 
