@@ -1,188 +1,300 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012032.outbound.protection.outlook.com [40.107.209.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7092030F7FF;
-	Thu, 17 Sep 2026 08:45:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789634772; cv=none; b=lv5i2xyC5baUqZBGkV/LjoihJnOqJcH5sWyqV4Ny2/IZSSjczf5IbCGrV5vzX5lb9ZTpHdIy6v4z6I29IbKhs2WRjArxgRPS0vu9kyC6w+/X8MMqhhI2uzrF9t0BtAj/meskMbbOL1+7g3yRrPvMWm7KZF+W/KlZBvNk0vdGDQU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789634772; c=relaxed/simple;
-	bh=KNvuiSAZT/02QuUxp7uiQOlWYu2VUC1qzplqriSz8ZY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T/cMDx72Skwql2VZhhZNwOi38DY7mbNYmJ0sYKyVdLsc0BJuMO5RX1+rTNLmfmuS5a4J6PPadDryzHOz3FOsmt6HZ6Auv27RKne09EYKSady9gT3Nb6IQbO2bH44Ik0sx5JTbnkfhWU4ccXSsSF/vQBoUmcTs4ym9X+RQPlJs7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=g9dlaHth; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167A13BD225;
+	Thu, 17 Sep 2026 08:48:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789634922; cv=fail; b=M5VJHkHz2XiJrNxLMJkxHKVy9zuqXK3+VRHIC8q63E3oz3ymjWwkofTZejz4WohYOClfwUXmBfGWuAXJwiohRCilc+URZ9zE9R4BHOXr2hSE5fkybc/QiIKuT6y2ScaVaHW3hMHYMdINOSY9hrXSNGlzyaEvKjZ0/CVrOrr3tn8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789634922; c=relaxed/simple;
+	bh=PcXVfYDt05emT7YLcIql0M9mJPuaCjicujbkFKzo2wE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Bhu0BtM9PDwDi7+UY1sEJRg2sSNsz/r9+NgiOM+xapsQZRY+hEZzhqASungzxxQBtgjjPYkqy9dgCJRDl1gXotWs+hbvMtihlumoev50CO85NCKmls/FKbKJv4kPKKTpY89H/PraRXFHBaaaRh8FRskZq1kgSwbfHztkNSoibYU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Fp0HjEcj; arc=fail smtp.client-ip=40.107.209.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="g9dlaHth"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68H62V4k543286;
-	Thu, 17 Sep 2026 08:45:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=T5CM6ODXOUrqzCVj1f4AUoFeSoYLib
-	qQQi4xRw949ug=; b=g9dlaHthG11QP5ZrXfLVjTXxXbYSqgV2LuzJ2K/1ZC0lJr
-	quZT21uTR85Uc5hmt1I3JwSudAlylafERGmMd+bwd6fAb/XK9n4O8AV9sTgDiYXL
-	HLa/qAzjz4FtRGTj+nJQCNyb0Om/AJf7nUpapw9eqN3Tif3o5vH+C2gcf2SBFcJx
-	4ea4w2EvqSzyhPkEFCMZOgS8RalrRSoHve88zVmTtf4zmxcaYEYvJlsrRvgaMaPj
-	DKT7BU5LMP/h8uL9HbtHaIFu1z2wKDs+nm5pNP46cfYT4/YNApujotXLDoUJTUwg
-	jPwsXCjvmUMv26Ptog15p1Cj3RrlnArmewsVjIUw==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmw5e8ydf-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 17 Sep 2026 08:45:50 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68H653432660555;
-	Thu, 17 Sep 2026 08:45:50 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gr5fjhk3s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 17 Sep 2026 08:45:50 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68H8jkFd28311812
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 17 Sep 2026 08:45:46 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 516AE20043;
-	Thu, 17 Sep 2026 08:45:46 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2D20720040;
-	Thu, 17 Sep 2026 08:45:46 +0000 (GMT)
-Received: from osiris (unknown [9.224.76.185])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 17 Sep 2026 08:45:46 +0000 (GMT)
-Date: Thu, 17 Sep 2026 10:45:44 +0200
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: sashiko-reviews@lists.linux.dev,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>, kvm@vger.kernel.org,
-        Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
-        Vasily Gorbik <gor@linux.ibm.com>
-Subject: Re: [PATCH v2] vfio: Use file-based reference counting for KVM
-Message-ID: <20260917084544.474297-A-seiden@linux.ibm.com>
-References: <20260903-vfio-v2-1-ef4cd4190ae7@linux.ibm.com>
- <20260903084221.C3B871F000E9@smtp.kernel.org>
- <apmpWNSv6ahYr2Bl@google.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Fp0HjEcj"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=icUAIOZfk4NfWwUUQ9NOjsP4hiQmPtIoFjuKwM7cd9FnK4t9x/oT/ndPocuWBmFz5RFvxYjM7Vooo5o2zA2CcTfyMasBqr6dS4s3ND9p8knyygJqdnK8Uf9oCmLH3UPO8Yklu33KS8mS4V0ysz6HDeJb0uyNl6n1ME+/+uurGXOWPqz5bTC/MU35Wf/HZuy+al4zz/p382P4JYIyq2caIIfBoS01D2JlXVUIAsRSeLEei4leJAMmizpuv1M7xYAsYxP5AAWrXVrzjWsYxBLDSyPbW9CCXAaIM7/V/UndOVVBfhWNDDMyy2Hexb3bZUanxGenVJro/guIe4g2BO21Ig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=f9/sty7MP1HeFPqvOYirpb+6XSFGEsm5NBcyHxEIg3E=;
+ b=H3ncf3od9pZ1nOMbnjB0a4rKAahU/rTLT45h6bgG1/qyTorxJheOMqNAiyRwHFNcavqAwry7N9SMyXfb1QHauYrqmO6vhYnjfggYfV1pruGrbbNvl1JnFifGL5KoOzFsTgoraaFqdrki7/IYGKdOwLh6P1vissxI0ac15C+L6htG+za1OtLC5Z3+9Ok4eOpImzcKH3hboNZPLt82EXrhRvNMAHyxKBHLRQuLE/YJIL3MirTMKm2uI1Y/rkKc0oWt6K7WVFBX4gPLek2vz2+9eeOO8Eh0r7EoeSwQieel6LcOVZxe7Cie2fx6Vo5DEoo0jpxj3H181EQizto4tAjXGw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=f9/sty7MP1HeFPqvOYirpb+6XSFGEsm5NBcyHxEIg3E=;
+ b=Fp0HjEcjueTjmTrHCNu9vowxog23YgzU3CfDu7cth9U1wzd0oUktMi/PEgwSMqU4FP3/VsaXGstoSr2YxTgsTTe7pCdvbgDbYbv1qOjdtA+8j9yCa3N5eUJV0I3wTHmCzM/cnIB0wyFHnPI0cLSCeL2TNLxhI0xaJMKrx0ILFDcUgqxCB7KHMMh3Va3UDBnj2ChtesJuGakFBpjjdcvpVXDXG3kp8jg7+vbLL4Qb1gskaTcszvnvleiCus6B2ghTLmjLcVuKiiAqQwbZqwy7rRZkZS6HLjImoUOWxtSoYHyy7j2giG6XXKrlrqLwAA2W2qBEolok21I8Y2EZKiL7RA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB2370.namprd12.prod.outlook.com (2603:10b6:207:47::27)
+ by SN7PR12MB7785.namprd12.prod.outlook.com (2603:10b6:806:346::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Thu, 17 Sep
+ 2026 08:48:14 +0000
+Received: from BL0PR12MB2370.namprd12.prod.outlook.com
+ ([fe80::86cf:c3ec:2cf5:74c8]) by BL0PR12MB2370.namprd12.prod.outlook.com
+ ([fe80::86cf:c3ec:2cf5:74c8%7]) with mapi id 15.21.0406.007; Thu, 17 Sep 2026
+ 08:48:14 +0000
+Date: Thu, 17 Sep 2026 16:48:08 +0800
+From: Richard Cheng <icheng@nvidia.com>
+To: mhonap@nvidia.com
+Cc: alex@shazbot.org, jgg@ziepe.ca, ankita@nvidia.com, jic23@kernel.org, 
+	dave.jiang@intel.com, alejandro.lucero-palau@amd.com, smadhavan@nvidia.com, 
+	corbet@lwn.net, skhan@linuxfoundation.org, dave@stgolabs.net, 
+	alison.schofield@intel.com, vishal.l.verma@intel.com, iweiny@kernel.org, 
+	ming.li@zohomail.com, yishaih@nvidia.com, skolothumtho@nvidia.com, 
+	kevin.tian@intel.com, bhelgaas@google.com, dmatlack@google.com, kees@kernel.org, 
+	gustavoars@kernel.org, cjia@nvidia.com, kjaju@nvidia.com, vsethi@nvidia.com, 
+	zhiw@nvidia.com, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-cxl@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v5 06/27] vfio/pci: Detect CXL devices and load the CXL
+ provider on demand
+Message-ID: <aqun1vZcE3gQzXD9@MWDK4CY14F>
+References: <20260916183540.3813685-1-mhonap@nvidia.com>
+ <20260916183540.3813685-7-mhonap@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260916183540.3813685-7-mhonap@nvidia.com>
+X-ClientProxiedBy: TPYP295CA0017.TWNP295.PROD.OUTLOOK.COM (2603:1096:7d0:a::9)
+ To BL0PR12MB2370.namprd12.prod.outlook.com (2603:10b6:207:47::27)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <apmpWNSv6ahYr2Bl@google.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE3MDExNiBTYWx0ZWRfX4FTCRqbsYLxT
- y8ElZRsb3ecu1u3jDKbnmHnSGHE/pSCyvi4Gzl6o1Wf4YvQeV0UCfGyG0JQORNgz4mWHENUgImy
- mGACtsKrluwU18t44CFFM+VqNSl3cjODchhlAHPTo8OThpbciYJjgvkNvqSRjFzaGdoy6Dv23xB
- cKD8D3oadonV3LChRwFSETYe+g7YzLf0RcLkGcl82EmyB7YSASTi2ZruiaG+Mh7C8PxjIgT2EXR
- YgKlHxInAqGTLH+dPGlX9zzXpC8v4WAG2N/fwxyTJH/Kp8iRCZ4Opubs8TttoTuSBd62D81DATU
- moREleUNsgMwwtr+JdYYeyPWhvYtubVmUGPFSzLwUH6v44ktCQtb5+l2ekATqCbZxEF0O0/rlBF
- GGlqBywt+jRWyAx6IWyI+N9+c6xC+8I7aFvI/6CBgOawxTGmDel6jXjN0YZa/Si6rhJxDC9HVYC
- //o6GQ/iHCBPJDsQ01g==
-X-Authority-Analysis: v=2.4 cv=E/NYNqdl c=1 sm=1 tr=0 ts=6aaba8bf cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=1S03ISw_H58Mq3hviRYA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: xKBDAchbgNBRyb6i4BLtkzoy4Et3BA-5
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE3MDExNiBTYWx0ZWRfXy8SBbaPR4RIP
- tedWM7+COBnMzpJi6+74K7bZqRIxJ8xZq8mim9sbyIu1RXRleDEgG2ir7YvzaIUXA/OYG+jvuKM
- 1L6fj4f+XLmxzwdAhin9TrHkMBfASSI=
-X-Proofpoint-GUID: sxzVDNJf6d89P3f8URrWrJYS87sx4rU_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-17_01,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 lowpriorityscore=0 priorityscore=1501 spamscore=0
- adultscore=0 clxscore=1015 bulkscore=0 malwarescore=0 suspectscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609170116
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2370:EE_|SN7PR12MB7785:EE_
+X-MS-Office365-Filtering-Correlation-Id: 838c2aa4-db18-4525-9bb7-08df149868ba
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|10067099003|4143699003|6133799003|11063799006|18002099003|22082099003|5023799004|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	9BBblMt084Zs8Rl+aUegqlCGTRCKVEtOhG/FSLnVKdgRQPifLnAAQong/Nyu7JvEBKcpy3WSFdu4cnA9AkbA5zlRo90jo0mPpO6n1T7tIAhnXIDXu6/uiuZuEA/YEILQtOZ/jUPVLvVNPYH2hUvWW9zbUX13+ErnYAsxvTijmpdZ9m/Y12hfL9gNtSV4xBp2ffEH6YK7u3L6o9Wk6U0ngSjyqmOj5CkxgYyn3oZl4FZgPygSwoI0ikTU9Jt52M3GO71NhNhZirMgPFtH2BsKZWqSsqTfe/I/4w5cNLRkAwtLfmgroKb70gSH9Q6ZtW0YOso9CsvWjono8Ckx/nJE25GVB9UqR7m5xBbOuV9q20s0OcMcdVTJN7imxNt0FiMdnRea5JyEHP5CmZ1dQtAQqXVltP6FxnnpnrX2mxA0GN8/UuGe/1HxU0QgPgRGeQroKeuZRL6nLeadYeKzd1PhkcZOa6nn9nnVeiT//HItM7HGkhnWmsphZg9BCjPCRauz/NcOBmukrvtMXSmk0y/drBfhjANK4evJElhtg1+5HVSzPx/H0m86zbAz+rVlUL2HEM5uZx3E4OxjLAPvZsx2ljp/tyIHivLx2qQsyBGwKMZ18u4s0SCA65bYiOTJhKGW640c6zaURuDywVo2JXzE4T2DqHYD7/3rHbKFyNHHBJA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2370.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(10067099003)(4143699003)(6133799003)(11063799006)(18002099003)(22082099003)(5023799004)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Dpc+av2i0y4y9xgsbNg1X+QIXjCDJmkrvcuR6yVlrcsqgLEoeOsaEsPcryqG?=
+ =?us-ascii?Q?RPXu7G5AP47OHbzEFgjIK31zc18v6WTkanP2ygembVgO1ZpX0/PsqKYYhy+C?=
+ =?us-ascii?Q?r6wFpoP0MnpDGef9EkTQ1OCwLOSTSH0sTVJgv32j3/nFLlKNwHeZTOhNRVZA?=
+ =?us-ascii?Q?1XVPD9HRkeKIKz+tPVNlnRJ8NaV79QmnWkoDvl8OLG0pDFaQGxRNIvShuFTn?=
+ =?us-ascii?Q?I10i59cuTZyWNdqY7x1YY/VK3DsgCaaW4ROux/2cFciaiE7dBxlqGIxmWN/u?=
+ =?us-ascii?Q?TtStI4tE87L2klk01wijk14qbwouGwmHVaxrqM6FAhS+Iez6atdCJ1mmS0ET?=
+ =?us-ascii?Q?JzQzLRthCTUUfUYP7pxzOAQzmV6cpSckVAFqVIC300MZ5G2eaVL1sJGZ1ZDN?=
+ =?us-ascii?Q?g35MFUYjbWDFFIDUokazdRkEDShTPn1//QZESsgsQ63/gJXmFizu7+Hgpkif?=
+ =?us-ascii?Q?LokE/FlHS7UEbIT+u5f6YR+jtgThxJfxvoIF675p+sh6GqbdLrRC3NVucTLf?=
+ =?us-ascii?Q?HKKFRAqk9alFLqvxpJwrs+zmd8zG3WYGXLHB/RTx9oeQKGwwKRcHqadtkW06?=
+ =?us-ascii?Q?LTTye/yfydnfDDlTWHNtdu+4Sv+R/W4w0iNONMOQ/FZNGJKJY6vw2OhbITkZ?=
+ =?us-ascii?Q?Ej2k7hw4X48zeiAIJ+KHn5NAANedsSxQ59pSvdwbO48Y1gNOCL5EQnuaSnDS?=
+ =?us-ascii?Q?WRvs+ferq4TZ5ufeqf1yqrk1Pn38+lbAM6KReJsblp/GN0egoprtJZKR4t0E?=
+ =?us-ascii?Q?oGDl8/3a/J2HiffvE3LgDoz/ZYsgVJp63Gs3Dl+2vE28uOvibnlk0xl9N1lA?=
+ =?us-ascii?Q?wDao+v1JIaMQwNYx6bVh0C8ki1cM/B6EZ/ED7nS277bIft5S9LleyNrvou7m?=
+ =?us-ascii?Q?VlWKYcth13AQehQfXhxoDESdhvdv4ILAaHzqqgfxwSBuxjieZPbVy3sSsLQW?=
+ =?us-ascii?Q?JTN8hbt+mHs9S8EkmMdP8Bo9l26T+lu0D/2+puKxaVH/WJd9qb09Zrvuq2eU?=
+ =?us-ascii?Q?dtB9E8URL/+sGR8oommJF2jxNWZND7HpF6rVT6rMD2XD3/Dz3hKBmBL7J67G?=
+ =?us-ascii?Q?7+c9GoKgkYLT/A0jR1KHzwIlAM1ipggQ1YYq3qmolriL4AE969eoCdSTyl69?=
+ =?us-ascii?Q?w+K6RIz67epi8uoVDuq0H0eYXUCzNzDSEQVcCZ75Kf0AgBWUP6qzRaBohI0m?=
+ =?us-ascii?Q?uvUcOwPE2NjatuqFyM3DV2fCdMq/NAmNLp3PzxHVFQzJ5gmHTu97hUbIO8kY?=
+ =?us-ascii?Q?eJ31jbeM8v+cnupgZfYBnxDafrBtTCmk0TfVdqcviBdFsdzPvK+69jnOqM28?=
+ =?us-ascii?Q?UreDpPxbJeKVugibOtgQKhnOjHP3DE+ALkTWXDwlskCmaWj+pdoI+0oo3nhx?=
+ =?us-ascii?Q?lcRyvQLQlUBNKuHnwd3NC2WJACXY9tGX6ItI4AuGpEI4/A16Dd+WmCJqmLgq?=
+ =?us-ascii?Q?Std+c79PNRtClCdHVpG/mkHU1FLPk1kUqwdJaLTtcxWP6GM0ENqeghbi5kQc?=
+ =?us-ascii?Q?VLiJt67K2GAHH5Ug1XnaJ4XmlfM46vKi/nhjNgadYrbZvPOYPa+fTSRAtLBN?=
+ =?us-ascii?Q?kZISgR7LnF4Ik9rGK6J2JyEjzyFqYMxDcqgtysadXvYDgzdlN4jtRGiAbnN6?=
+ =?us-ascii?Q?4IUxqLved4wjKtu6Bsf5ctNqBqNYfbCg7N8Zxt0k3KF3HxrsM9e4jIY6mPV2?=
+ =?us-ascii?Q?bBgPeZMTThe30jq+Na/uLPT37lGiFNvJSBH2GFt+FfSLEzgz?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 838c2aa4-db18-4525-9bb7-08df149868ba
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2370.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 08:48:13.8796
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bdptcSY6fPzIhOgFra/1eyiAHegmJAJlUqTyBauTvN/6fktjax5Z2B+LJFtyQk1hBTaOq094tNcwBPcye1Xxyg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7785
 
-On Thu, Sep 03, 2026 at 10:07:36AM -0700, Sean Christopherson wrote:
-> On Thu, Sep 03, 2026, sashiko-bot@kernel.org wrote:
-> > > diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
-> > > index 940c0ff668bee..f160e1945fbce 100644
-> > > --- a/drivers/s390/crypto/vfio_ap_ops.c
-> > > +++ b/drivers/s390/crypto/vfio_ap_ops.c
-> > 
-> > [ ... ]
-> > 
-> > > @@ -1822,17 +1822,27 @@ static const struct attribute_group *vfio_ap_mdev_attr_groups[] = {
-> > >  
-> > >  /**
-> > >   * vfio_ap_mdev_set_kvm - sets all data for @matrix_mdev that are needed
-> > > - * to manage AP resources for the guest whose state is represented by @kvm
-> > > + * to manage AP resources for the guest whose state is represented by
-> > > + * @kvm_file
-> > >   *
-> > >   * @matrix_mdev: a mediated matrix device
-> > > - * @kvm: reference to KVM instance
-> > > + * @kvm_file: the KVM VM file this vfio device is associated with
-> > >   *
-> > > - * Return: 0 if no other mediated matrix device has a reference to @kvm;
-> > > + * Return: 0 if no other mediated matrix device has a reference to the VM;
-> > >   * otherwise, returns an -EPERM.
-> > >   */
-> > >  static int vfio_ap_mdev_set_kvm(struct ap_matrix_mdev *matrix_mdev,
-> > > -				struct kvm *kvm)
-> > > +				struct file *kvm_file)
-> > >  {
-> > > +	struct kvm *kvm;
-> > > +
-> > > +	if (!kvm_file)
-> > > +		return -ENOENT;
-> > > +
-> > > +	kvm = kvm_file->private_data;
-> > > +	if (!kvm)
-> > > +		return -ENOENT;
-> > > +
-> > >  	if (kvm->arch.crypto.crycbd) {
-> > 
-> > [Severity: Critical]
-> > Does this code adequately verify that the file is an s390 KVM file before
-> > casting its private_data in vfio_ap_mdev_set_kvm() inside
-> > drivers/s390/crypto/vfio_ap_ops.c?
-> > 
-> > If a user instantiates a VM using a concurrent KVM-arm64 module and attaches
-> > an s390-specific VFIO device to its KVM device, could this driver extract the
-> > untyped private_data and mistakenly treat an arm64 struct kvm as an s390 one?
-> > 
-> > Because the memory layouts of struct kvm_arch differ across architectures,
-> > would accessing s390-specific fields in the arch member (like
-> > kvm->arch.crypto.pqap_hook) result in arbitrary memory corruption?
+On Thu, Sep 17, 2026 at 12:05:19AM +0800, mhonap@nvidia.com wrote:
+> From: Manish Honap <mhonap@nvidia.com>
 > 
-> This is effectively the same concern I raised[1] in the s390+arm64 series:
+> A CXL device needs the vfio-cxl callbacks, but pulling vfio-cxl and the
+> CXL core in unconditionally would bloat every vfio-pci setup. Detect a
+> CXL Type-2 device at bind and request_module("vfio-cxl") only then, then
+> hand the device to the registered ops.
 > 
->  : Side topic #2, this entire approach seems extremely brittle unless you make it
->  : all but impossible for non-KVM code to get at KVM structure definitions.  Outside
->  : of KVM, all compilation units will see the s390 version of KVM structures.  Which
->  : is "fine", but obviously dangerous and IMO asking for maintenance issues down the
->  : road.
+> Each bound CXL device pins the provider through
+> vfio_pci_get_cxl_ops() (try_module_get) and drops it with
+> vfio_pci_put_cxl_ops() at release, so vfio-cxl can unload once no CXL
+> device is bound.
 > 
-> I don't think we need to go to the super extreme lengths I proposed[2] back when
-> we were exploring multi-KVM on x86, but the direct dereference of ->private_data
-> is a huge red flag.
+> If the provider is absent the device is driven as plain vfio-pci. A
+> built-in provider whose initcall has not run yet is waited for with
+> -EPROBE_DEFER; the deferred-probe machinery will retry the bind once the
+> provider registers.
 > 
-> Given that external usage of "struct kvm" should be *super* rare, and IMO is
-> something we should actively discourage, I think we should make it opt-in.  Then
-> at the same time, define the API so that it's arch-specific, e.g. to yield
-> file_to_kvm_s390() so that drivers/s390/crypto/vfio_ap_ops.c can get exactly
-> what it wants.
+> Assisted-by: LLM
+> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+> ---
+>  drivers/vfio/pci/vfio_pci_core.c | 84 ++++++++++++++++++++++++++++++++
+>  include/linux/vfio_pci_core.h    |  3 ++
+>  2 files changed, 87 insertions(+)
 > 
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 2cc5dd20396c..9eede1e56ab5 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -2202,6 +2202,84 @@ void vfio_pci_core_unregister_cxl_ops(const struct vfio_cxl_ops *ops)
+>  }
+>  EXPORT_SYMBOL_GPL(vfio_pci_core_unregister_cxl_ops);
+>  
+> +static const struct vfio_cxl_ops *vfio_pci_get_cxl_ops(void)
+> +{
+> +	guard(rwsem_read)(&vfio_pci_cxl_ops_rwsem);
+> +
+> +	if (vfio_pci_cxl_ops && try_module_get(vfio_pci_cxl_ops->owner))
+> +		return vfio_pci_cxl_ops;
+> +
+> +	return NULL;
+> +}
+> +
+> +static void vfio_pci_put_cxl_ops(const struct vfio_cxl_ops *ops)
+> +{
+> +	module_put(ops->owner);
+> +}
+> +
 
-yes, I was not happy with the ->private_data either. Thanks for finding
-a solution. Simple is good. I only came up overly complex solutions I
-did not like :) I will incoporate this. 
+Anything guarantees that we can finish devres cleanup before dropping module ref ?
 
-> Diff below, though it needs to be split into multiple patches (I'll respond with
-> more to the full patch).
+This function drops the module ref during vfio_pci_remove(), while devres might still pending.
 
-Amazing, thanks!
+I see in patch 18 it register vfio_cxl_release_hpa() as a devres callback, and it lives in vfio-cxl.
+If this drops the last module ref, another process could unload vfio-cxl before devres invokes that callback.
 
-	Steffen
+Best regards,
+Richard Cheng.
+
+
+
+
+> +/*
+> + * A CXL Type-2 device advertises both CXL.cache and CXL.mem in its CXL DVSEC.
+> + * pcie_is_cxl() is also true for Type-1 (cache only) and Type-3 (mem only)
+> + * devices, which the vfio-cxl provider does not handle, so confirm the Type-2
+> + * identity before engaging it.
+> + */
+> +static bool vfio_pci_is_cxl_type2(struct pci_dev *pdev)
+> +{
+> +	u16 dvsec, cap;
+> +
+> +	if (!pcie_is_cxl(pdev))
+> +		return false;
+> +
+> +	dvsec = pci_find_dvsec_capability(pdev, PCI_VENDOR_ID_CXL,
+> +					  PCI_DVSEC_CXL_DEVICE);
+> +	if (!dvsec)
+> +		return false;
+> +
+> +	if (pci_read_config_word(pdev, dvsec + PCI_DVSEC_CXL_CAP, &cap))
+> +		return false;
+> +
+> +	return (cap & PCI_DVSEC_CXL_CACHE_CAPABLE) &&
+> +		(cap & PCI_DVSEC_CXL_MEM_CAPABLE);
+> +}
+> +
+> +/*
+> + * Load vfio-cxl on demand for a CXL Type-2 device and hand the device to its
+> + * ops. If the provider is absent the device is driven as plain vfio-pci; a
+> + * built-in provider whose initcall has not run yet is waited for with
+> + * -EPROBE_DEFER.
+> + */
+> +static int vfio_pci_core_cxl_init(struct vfio_pci_core_device *vdev)
+> +{
+> +	const struct vfio_cxl_ops *ops;
+> +	int ret;
+> +
+> +	if (!vfio_pci_is_cxl_type2(vdev->pdev))
+> +		return 0;
+> +
+> +	request_module("vfio-cxl");
+> +	ops = vfio_pci_get_cxl_ops();
+> +	if (!ops)
+> +		return IS_BUILTIN(CONFIG_VFIO_CXL) ? -EPROBE_DEFER : 0;
+> +
+> +	ret = ops->init(vdev);
+> +	if (ret) {
+> +		vfio_pci_put_cxl_ops(ops);
+> +		return ret;
+> +	}
+> +
+> +	vdev->cxl_ops = ops;
+> +	return 0;
+> +}
+> +
+> +static void vfio_pci_core_cxl_release(struct vfio_pci_core_device *vdev)
+> +{
+> +	if (!vdev->cxl_ops)
+> +		return;
+> +
+> +	vdev->cxl_ops->release(vdev);
+> +	vfio_pci_put_cxl_ops(vdev->cxl_ops);
+> +}
+> +
+>  int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
+>  {
+>  	struct vfio_pci_core_device *vdev =
+> @@ -2223,6 +2301,10 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
+>  	init_rwsem(&vdev->memory_lock);
+>  	xa_init(&vdev->ctx);
+>  
+> +	ret = vfio_pci_core_cxl_init(vdev);
+> +	if (ret)
+> +		return ret;
+> +
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(vfio_pci_core_init_dev);
+> @@ -2232,6 +2314,8 @@ void vfio_pci_core_release_dev(struct vfio_device *core_vdev)
+>  	struct vfio_pci_core_device *vdev =
+>  		container_of(core_vdev, struct vfio_pci_core_device, vdev);
+>  
+> +	vfio_pci_core_cxl_release(vdev);
+> +
+>  	mutex_destroy(&vdev->igate);
+>  	mutex_destroy(&vdev->ioeventfds_lock);
+>  	kfree(vdev->region);
+> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+> index 9fe0d1a3a370..7f3a2bcb5830 100644
+> --- a/include/linux/vfio_pci_core.h
+> +++ b/include/linux/vfio_pci_core.h
+> @@ -29,6 +29,7 @@ struct vfio_pci_core_device;
+>  struct vfio_pci_region;
+>  struct p2pdma_provider;
+>  struct dma_buf_attachment;
+> +struct vfio_cxl_state;
+>  
+>  struct vfio_pci_eventfd {
+>  	struct eventfd_ctx	*ctx;
+> @@ -109,6 +110,8 @@ struct vfio_pci_core_device {
+>  	struct vfio_device	vdev;
+>  	struct pci_dev		*pdev;
+>  	const struct vfio_pci_device_ops *pci_ops;
+> +	const struct vfio_cxl_ops *cxl_ops;
+> +	struct vfio_cxl_state   *cxl;
+>  	void __iomem		*barmap[PCI_STD_NUM_BARS];
+>  	bool			bar_mmap_supported[PCI_STD_NUM_BARS];
+>  	/* Flags modified at runtime - dedicated storage unit */
+> -- 
+> 2.25.1
+> 
+> 
