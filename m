@@ -1,130 +1,108 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2654E36C6;
-	Thu, 17 Sep 2026 19:35:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36EE4E3244
+	for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 19:36:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789673751; cv=none; b=qWz9sRuA8HLmOuqrEXScTI4R37PqWYsXFf4XYBWcbdX7MtL1VFJEdUxgoigUm/uxvKjzQFuyiREdjellcTy9PpPJeHr6DObJoXWc/TEsyAknDaPgY9FRvV/PGxGAGPYICV/7fru2qD15tnbAI6J2SLL9XzTKyDoeqWDOQHFxilM=
+	t=1789673787; cv=none; b=Bk3Z5c+9CLXWAOeu6w4A66CGtIv2dtRDXCWRsSF55paVwT3Il8K4qrL1cDxaKqSXvzoDhPoskuusvGiYnvvIiRqEsIiwu9KzFACo2WmrWB6BipXWVWFxz4wvy/4rTqP4Oe++4WK6+abnHgVhyRm5e2+25rRzX1pON+7IMkCDpyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789673751; c=relaxed/simple;
-	bh=ZdaDZ7DmgcYhunGLg9XN1aRRnPTk3xh49WnefUvS7T4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GIc6YYVhN4U3S9FQ3LFK1IPsfq4lP/tf1lGweQBrNsx1OEH4AusbpZr97Z3x+LKfwdtxXOqP4LnJg/1uNZLGc2nGh+BzA4T7rs2MsJkdhB81lGvqaZjH2ZX1mvpJ3XkHRogEC8xSG+FEqrLMNB4CgFoDSageKwpqGYWIv/fQLMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=cO2PKqwG; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1789673787; c=relaxed/simple;
+	bh=y06n3eOW6+Hxo8JDqnYn3jmEOtkB+UXISokzHImXY2M=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Mb+Nl3VOUlqvl8oUfs39qFaZrCbcr3r9VAAN7Ql7jnzUKlIPk14cBXE+UV/LJM9P7UvNGumjGhTH3Hh9+FKwmWcdyWzfx79PRKpRW8AqciYv3py/Hla/LsOyQYf45VPFqNBvGJI1pfwEjF5vvULnPxHgRWSSR6p316KmVwY3cBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kYFarkfP; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="cO2PKqwG"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68HHVagS3182107;
-	Thu, 17 Sep 2026 19:35:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=1gItC5phrprkxYX1pujl44KNc3xrKd
-	TC8XyZgAuFYKA=; b=cO2PKqwG6l8g1+RpnY+AS0Gu2nykZb2obCSx4a4UNM/Ssm
-	IvOxOvCBBUqQKR8Xg53u9IHYuMlc1IeQlrZYQ5PaZ51DZ8o450G7mHbncV6Wb+tM
-	/9Hcp27ezuN/Jze+JRzsERJPwZ4h2m/HKNyFWQ2NPA5kY2i/mDlaa/yTqnz7bNQV
-	tdJrmQkIj+X/tvR7FcOUMtcysn/4pUjm1LPd2LWLPirgh+SJewehwl8kPrz4w0rb
-	knIpLNvj5SRif7zN1Y9hvTXxtzxp8hBpR5+Wvhd+shGJNoy2eyiLC6P4xeEd2/Cs
-	9Y2wk5pN8Qb+mTDl1VvY3CG2t8Nj5obs7B+eE8Fw==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmxcvbud7-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 17 Sep 2026 19:35:46 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68HH9Ahe261621;
-	Thu, 17 Sep 2026 19:35:46 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gr7gekmj8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 17 Sep 2026 19:35:45 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68HJZgRX47513880
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 17 Sep 2026 19:35:42 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4598020043;
-	Thu, 17 Sep 2026 19:35:42 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DC17E20040;
-	Thu, 17 Sep 2026 19:35:41 +0000 (GMT)
-Received: from osiris (unknown [9.111.82.95])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 17 Sep 2026 19:35:41 +0000 (GMT)
-Date: Thu, 17 Sep 2026 21:35:40 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Vasily Gorbik <gor@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
-        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] s390/uv: Rework page allocation for guest variable
- storage area
-Message-ID: <20260917193540.13842A26-hca@linux.ibm.com>
-References: <20260915144307.2367089-1-hca@linux.ibm.com>
- <1a53b72c-b215-496c-b9f0-04f3afd09693-agordeev@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kYFarkfP"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cec4226c70so141445ad.1
+        for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 12:36:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789673784; x=1790278584; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tExGA9HoTEuIemSrYQEJIOlGYkpT8qx+sw3JSJqDwqs=;
+        b=kYFarkfP5ibfInGp/xtNyYrCZib5lSO+FU/qGz+yZequSFPc6Nj8GrfYi7MdzFiHYt
+         8+SkwerFK6hQ0Dmnj3WRlZ2hHjUcAw4IUR5MOv8YW3p2kQqAyQM9prw07wkPZxb0/EUg
+         a6MhqNyWe8obQ5+f6kXgJH/ij8LmaiJq3Rw3g4ppAkult4XCetgvgAsW3ooNrOEHUDi/
+         qMLL4gTD8j/fMAhg9NrOFL8kWwilJ7nd1pF/AFSCG61IhLG1/vjVMLonm0vuWO7f4VmN
+         aDhG7EEdX2u+/vg1gogijAA4ROc7O3ngnarrndpgvomHUpirqSEKxaps6sSwVgzUou2w
+         7nng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789673784; x=1790278584;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=tExGA9HoTEuIemSrYQEJIOlGYkpT8qx+sw3JSJqDwqs=;
+        b=hKRgQlsoRiR0XAwj/jXFgkuHIrz/vqLWXyK/S0lIfOJpoMRfgFfRtI7MCZhxkT8DvV
+         NrQuSjuBm89pWP/XZZmTHXHtMIIokCfl5LEHICyC9V76lH/FpsIB/p4lEjV41+5utdl9
+         1kiqRYqGBSg4825hDdts2bDTCKiXs3HJacRy5MWP9SbQ8Pv8YE1lTCXGy8vgslQ6bNSO
+         p3QmCwpacc+prg6CtH+2F0n8PcYFC6TypjMZM/Hgm6sRXEUw7Fqoku7WdnyvzLbX4N9J
+         XPuzjeR6BWiB01o/ItyPCgC0RUWypwGrFT8nsOJPHB7y/ge86mHF8HmnIM0y95IZsgB/
+         9+vw==
+X-Gm-Message-State: AFuF++l4sDVq97JZWvQpsMiylKq/NtTxfTuS1gNPgJfG7lDM+3tXz83Z
+	C3ybQlw2l4d3+8g/uAMS+r3X9YsuVJ5G7BPQigkl1h0wNTVZQG7d46ISSQ0mHEyI2/dXAuGLB7H
+	mvXsgPw==
+X-Received: from ploz8.prod.google.com ([2002:a17:902:8f88:b0:2dd:86da:afaf])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d2cc:b0:2dd:ad73:c982
+ with SMTP id d9443c01a7336-2ddb1ba0faamr3395105ad.26.1789673783742; Thu, 17
+ Sep 2026 12:36:23 -0700 (PDT)
+Date: Thu, 17 Sep 2026 12:36:23 -0700
+In-Reply-To: <20260917172651.3322899-1-jmcrey@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1a53b72c-b215-496c-b9f0-04f3afd09693-agordeev@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE3MDI3OSBTYWx0ZWRfXw4jJYB+9KF/d
- xKLhadtAYAtxneldBMLwYgbI8OcJet93/F66t1ATbCN26ZcMBhByNxijjqtOj37wlGf5jW26C7b
- 6EwQylkrlePwXvemYYHSY4bJOBZidKU=
-X-Proofpoint-ORIG-GUID: RgQNPFIvEn6DnAy0Re0sBklNzp7bgJnV
-X-Proofpoint-GUID: RgQNPFIvEn6DnAy0Re0sBklNzp7bgJnV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE3MDI3OSBTYWx0ZWRfX60DLld6w6aQP
- 2wyOM3A52M/we0tHkvOB9NkNoAQA4mMjpS/eTMTVNAK1WND0R5D5v4iXRczIaWfx+He/Kro8ZKc
- E7RzKwsDgfqndNAAcx13Ru6W0I43RBWMbjysnSF9GPfxrIu8Wmxi+mpmZa1Cz6TmS1VBh47qjdQ
- WGeZibRUX8h+VNdmRdgdFZeRQVUXiwYrOTLPlTwWLFcSfuXps1a5kXHj6ctXMauKkBBXBmJAolq
- FzXHONRXR27AdaIfMS7ueQs3rsPpMyfpou7owDq51HcNsDelXdgoGbYuFq2B2pW9wKnJozgraWR
- rzk52A3bp4LiK9RY96S/+OiXvd3V2perwfqKTgki65PXvxsxUMdedMqVubRaGKz19WFQmLVLg7K
- WBvTnZDk9seSnc1DhJwjVHp7ZZH1TlS39GrbYMML9imnHjDPZc5tSl7UhPdzTU3mx3/nMzfLZPb
- DHHmoM5x82LUmFX+Gnw==
-X-Authority-Analysis: v=2.4 cv=F+7C5ahN c=1 sm=1 tr=0 ts=6aac4112 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=xgZBs7X4GezASKjRQcQA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-17_04,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 phishscore=0 clxscore=1015 malwarescore=0
- lowpriorityscore=0 bulkscore=0 spamscore=0 impostorscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609170279
+Mime-Version: 1.0
+References: <20260917172651.3322899-1-jmcrey@google.com>
+Message-ID: <aqxBNxlhV8WbFxo7@google.com>
+Subject: Re: [kvm-unit-tests PATCH] x86/msr: Disable PMU for MSR tests
+From: Sean Christopherson <seanjc@google.com>
+To: Jeremiah McReynolds <jmcrey@google.com>
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Sep 17, 2026 at 12:26:55PM +0200, Alexander Gordeev wrote:
-> On Tue, Sep 15, 2026 at 04:43:07PM +0200, Heiko Carstens wrote:
-> Hi Heiko,
-> ...
-> > +	for (i = 0; i < nr_pages; i++) {
-> > +		pages[i] = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
-> > +		if (!pages[i])
-> > +			goto free_pages;
-> > +	}
-> ...
-> > +	for (i = 0; i < nr_pages; i++) {
-> > +		if (pages[i])
-> > +			__free_page(pages[i]);
-> > +	}
+On Thu, Sep 17, 2026, Jeremiah McReynolds wrote:
+> QEMUv11 introduced a check when PMU is enabled to ensure that the
+> virtualized CPU is the same as the underlying host CPU[1]. The MSR test
+> always runs under GenuineIntel with the max CPU model, so PMU is
+> implicitly enabled. However, when run on AMD, this new check in QEMU
+> causes the test to fail with the log: "host doesn't support requested
+> feature: vPMU".
 > 
-> Why not alloc_pages_bulk()/free_pages_bulk()?
+> Explicitly disable PMU on the MSR test to avoid this failure.
+> 
+> [1]: https://gitlab.com/qemu-project/qemu/-/commit/4c7f05232cd1db5db114d36be2b210d24f1b9ad3
+> 
+> Signed-off-by: Jeremiah McReynolds <jmcrey@google.com>
+> ---
+>  x86/unittests.cfg | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/x86/unittests.cfg b/x86/unittests.cfg
+> index ae731a93..06fe92f9 100644
+> --- a/x86/unittests.cfg
+> +++ b/x86/unittests.cfg
+> @@ -174,9 +174,10 @@ arch = x86_64
+>  # Use GenuineIntel to ensure SYSENTER MSRs are fully preserved, and to test
+>  # SVM emulation of Intel CPU behavior.  Use the max CPU model so that 64-bit
+>  # support follows the host kernel.  Running a 32-bit guest on a 64-bit host
+> -# will fail due to shortcomings in KVM.
+> +# will fail due to shortcomings in KVM.  The max CPU model turns on PMU, but
+> +# Intel PMU registers cannot be virtualized on AMD, so turn it off.
+>  file = msr.flat
+> -qemu_params = -cpu max,vendor=GenuineIntel
+> +qemu_params = -cpu max,vendor=GenuineIntel,pmu=off
 
-That's because alloc_pages_bulk() contains this:
+I double checked that "pmu" has existed for a while; it goes back all the way to
+QEMU v1.6.0, so we should be good on that front.
 
-	/* Bulk allocator does not support memcg accounting. */
-	if (memcg_kmem_online() && (gfp & __GFP_ACCOUNT))
-		goto failed;
-
-Which does not work with GFP_KERNEL_ACCOUNT.
+>  
+>  [msr64]
+>  # Same as above, but with a minimal 64-bit CPU model to validate cases where an
+> -- 
+> 2.55.0.1082.g2b9226bbc0-goog
+> 
