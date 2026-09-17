@@ -1,114 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A1D4AC156;
-	Thu, 17 Sep 2026 14:50:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03DFA59D623;
+	Thu, 17 Sep 2026 14:56:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789656626; cv=none; b=eq7BMTKTJhWAHcAgA8tT0rgTdN0m0zcXCHhVG8Ina2QhjVSOycA31H38nzc3ZsNZl8x3b0fcpscSbcfpyCIVINUfxqtTMm/bIAXGQNJxu3b9hTok3jpmXliW41WZalBrzIM8uHgi9ERmaFioTF7hoMKoFNLbZVPADHcJlDLHm4A=
+	t=1789657010; cv=none; b=p4GHkZd/Yxl8+Q4r4QV8YWcIJqpXGE3doyODuo5oGiZwwi+oCtbhoeyhVYTMimB4+66qqceffA0R1vSLt82fHWhx7UtGTgNDaVi5xpUOSPNQRyVi5GAdjcqyZUzRI9wV3EliZ+WQf4si0OakNOfWVAxAgnaqW4rN6iz2UHjw0aU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789656626; c=relaxed/simple;
-	bh=eVWkWy44/qDOlZVCkQ/31R9pnyw9ab52gVT5TqfCAO0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=B5WIg1pt959W2s0tQyNkjhnyFEVjuZu9HplMLQ5/MLiL0D4/1lsGDOyBnar0xrNseqakZAXQvlsk6RcQghwuTgbWMFxVXgeG8hy5tMQq8Dc7Rad5MgSn7mmCf161IFD4uKYVhNPqbrdtBjkofn0unmbPVW/GEfczzYXKgb5YpRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I49YKlLL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789657010; c=relaxed/simple;
+	bh=eUxG9747wszXc+62EGP/WBFIfzWwzDqmVrDkyyASluY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uzuGX8QSsLM/OUpZ/SWF35qj4/632DYm0neHYmQ8j/U05xSTTnOejRaemDSIDxwWZbbEyLpwU4yGdG5hkScY+kH0W+vvszvOhFkDKOotrL5Zrg6wm8VxKblKPjWc8ixiO644cF9lv7Xyx4EDu11xrBki/HALBM6D2hQOHIEefGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=TsyKfiEi; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I49YKlLL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA801F000FF;
-	Thu, 17 Sep 2026 14:50:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789656614;
-	bh=eVWkWy44/qDOlZVCkQ/31R9pnyw9ab52gVT5TqfCAO0=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=I49YKlLLMTvB9vk0Gu3n+YjOJxQEVSm58I+lrWE1hPAvm0pC4HCMMZO09nKz/PtPK
-	 T8di+cUIcza7liOtk1FLG0eQu13im1F5RLxR/FnEUj4APzIvkoTDWIT6GO4HQOrfpe
-	 0YKm03/7InEljX8XHT0fZhlI3LfH5lv2oZ9RdLOJpBqC6Ax+0yA+WIioS6T/41HtCV
-	 WLalJcMYWSMMCF7cbUcN/azRmBMyU+j2N8/OOUZ1tjazujy/wvPlKWP9mbEDMDhTYF
-	 4k8FAP2/3GmGn1J7a/WvJstSihDTq/G1PGgwB3XZs7a5PJvvtbjFnzhxS6hII9fhMv
-	 Xhr2olBbgT+1A==
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="TsyKfiEi"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 793A11AED;
+	Thu, 17 Sep 2026 07:56:25 -0700 (PDT)
+Received: from [192.168.4.158] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 717683FAF5;
+	Thu, 17 Sep 2026 07:56:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789656989; bh=eUxG9747wszXc+62EGP/WBFIfzWwzDqmVrDkyyASluY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TsyKfiEiMhJBNLVveiQpLq85U6MQ93vNKCu3TgmqxqLIMIdSx9GBKJi8IP9JDllJU
+	 7pB41kUm+a3xgdocm3fTfC/tvwzwS08OzoGuh1QpB/RhCCf+SCq70C29VDVUcQK7/O
+	 UUmSYCXbKSoxUdqmV8OqGAfBjt9YCJrAmcFb3qlU=
+Message-ID: <1ed53b83-a598-49c7-aa42-7736df87e2b1@arm.com>
+Date: Thu, 17 Sep 2026 15:56:25 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 17 Sep 2026 16:50:07 +0200
-Message-Id: <DLHOBJB1NYJA.3FCP9OLPBVRZA@kernel.org>
-Subject: Re: [PATCH 12/13] vfio/nvidia-vgpu: add the NVIDIA vGPU VFIO
- variant driver
-Cc: "Alex Williamson" <alex@shazbot.org>, "Zhi Wang" <zhiw@nvidia.com>,
- <acourbot@nvidia.com>, <yishaih@nvidia.com>, <skolothumtho@nvidia.com>,
- <kevin.tian@intel.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
- <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
- <jhubbard@nvidia.com>, <ecourtney@nvidia.com>, <cjia@nvidia.com>,
- <smitra@nvidia.com>, <kjaju@nvidia.com>, <alkumar@nvidia.com>,
- <ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
- <targupta@nvidia.com>, <nova-gpu@lists.linux.dev>,
- <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <kvm@vger.kernel.org>
-To: "Jason Gunthorpe" <jgg@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260905081116.106613-13-zhiw@nvidia.com>
- <DLCRZLO06SIO.LS7TWQXIPZSQ@kernel.org>
- <20260914121217.70fa0d93@shazbot.org>
- <DLFD2ZDSK9YQ.3A4R66G8UJMD8@kernel.org>
- <20260915120148.7548a8ca@shazbot.org>
- <DLG7C7MLGSTC.2GSTD84WI595N@kernel.org>
- <20260916141718.GU3968357@nvidia.com>
- <DLGUPX9KPFKF.12CU304YAST79@kernel.org>
- <20260916162817.GW3968357@nvidia.com>
- <DLGXS4SCP3VT.28XXX09BL963U@kernel.org>
- <20260917132829.GA3968357@nvidia.com>
-In-Reply-To: <20260917132829.GA3968357@nvidia.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18 20/23] KVM: arm64: CCA: Don't expose unsupported
+ capabilities for realm guests
+Content-Language: en-GB
+To: Fuad Tabba <tabba@google.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev,
+ gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
+ alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
+ lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260915160141.3543048-1-suzuki.poulose@arm.com>
+ <20260915160141.3543048-21-suzuki.poulose@arm.com>
+ <CA+EHjTwYqTFzGdNPproWW5L6j5pNqmuWeFuu9HbHa8LBLPvY2A@mail.gmail.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <CA+EHjTwYqTFzGdNPproWW5L6j5pNqmuWeFuu9HbHa8LBLPvY2A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu Sep 17, 2026 at 3:28 PM CEST, Jason Gunthorpe wrote:
-> On Wed, Sep 16, 2026 at 08:02:17PM +0200, Danilo Krummrich wrote:
->> >> TBH, I don't think it makes a difference; having Rust abstractions is=
- pretty
->> >> much the same as having another driver. I.e. it would be equivalent t=
-o saying
->> >> "before we accept another pci-vfio driver we need to do some rework".
->> >
->> > Well, it is, but thats the point when judging effort..
->>=20
->> So it seems that we agree that there isn't really a difference between a=
-dding a
->> new C or Rust driver in this regard.
->
-> To be clear I was trying to say I think you are are underestimating
-> how much work this is and how long it will take. Including all the
-> preconditon C reworks has to be included when considering how much
-> work is involved.
+On 17/09/2026 14:16, Fuad Tabba wrote:
+> Hi Suzuki,
+> 
+> On Tue, 15 Sep 2026 17:01:38 +0100, Suzuki K Poulose
+> <suzuki.poulose@arm.com> wrote:
+> [...]
+>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> [...]
+>> +static inline bool kvm_realm_ext_allowed(long ext)
+>> +{
+>> +        switch (ext) {
+>> +        case KVM_CAP_ARM_PSCI:
+>> +        case KVM_CAP_ARM_PSCI_0_2:
+>> +        case KVM_CAP_NR_VCPUS:
+>> +        case KVM_CAP_MAX_VCPUS:
+>> +        case KVM_CAP_MAX_VCPU_ID:
+>> +        case KVM_CAP_MSI_DEVID:
+>> +        case KVM_CAP_ARM_VM_IPA_SIZE:
+>> +        case KVM_CAP_ARM_SVE:
+>> +        case KVM_CAP_ONE_REG:
+>> +        case KVM_CAP_ARM_PTRAUTH_ADDRESS:
+>> +        case KVM_CAP_ARM_PTRAUTH_GENERIC:
+>> +        case KVM_CAP_SYNC_MMU:
+>> +                return true;
+>> +        }
+>> +        return false;
+>> +}
+> 
+> I'd keep KVM_CAP_IRQCHIP in this list. api.rst has it advertising
+> KVM_IRQ_LINE as well as KVM_CREATE_IRQCHIP, so the cap means in-kernel
+> irqchip rather than GICv2, and the GICv2 case is already rejected by
+> patch 18 in kvm_vgic_create(). It also keeps the two protected lists
 
-I'm not sure I follow what you mean by "preconditon C reworks".
+Ack
 
-Do you refer to the drvdata thing? That seems rather trivial to address?
+> the same where the support is the same. And could this live in
+> kvm_rmi.h, next to where kvm_pkvm_ext_allowed() lives in kvm_pkvm.h,
+> rather than in arm.c?
 
-Or do you refer to other C core reworks people are working on? If so, they =
-are
-only relevant if they affect the drivers. And if they affect the drivers,
-there's not really a difference between adding a new C driver and adding a =
-Rust
-abstraction.
+ From what I remember, it creates weird header file dependencies. I
+will see if I can resolve them.
 
-> Why can't we just go forward with what Zhi already drafted? Do we
-> really need another side quest?
+> 
+> [...]
+>> +static inline bool kvm_arch_vm_ioctl_allowed(struct kvm *kvm, unsigned int ioctl)
+>> +{
+>> +        long ext;
+>> +        int r;
+>> +
+>> +        r = kvm_get_cap_for_kvm_ioctl(ioctl, &ext);
+>> +        if (WARN_ON_ONCE(r < 0))
+>> +                return false;
+> 
+> You told Sashiko my fix covers this one [1], but that fix changes
+> kvm_pkvm_ioctl_allowed(), which this patch deletes, so the `if (r <
+> 0)` has to go into this copy too. The guard you posted for the second
+> finding still leaves the WARN reachable on pKVM and Realm hosts, which
+> is the case the fix removed.
 
-Because I don't think it is a side quest. As mentioned, the FFI layer is al=
-ready
-more complicated than the Rust abstraction we need, and I also don't see th=
-at
-this work is progressed further than the Rust abstraction I drafted. So, wh=
-y not
-just go for the proper solution right away?
+I had the chat with Marc about this and his recommendation was to
+post my changes as they are and he would resolve the changes
+while managing the conflict.
 
-I still have to finish some talks, but I could probably finish that work un=
-til
-LPC and then we can walk through it?
+> 
+> nit: kvm_arch_ is the prefix generic KVM uses for the hooks it calls
+> into the arch. For two static helpers in arm.c, kvm_vm_ext_allowed()
+> and kvm_vm_ioctl_allowed() would avoid the collision, and the same for
+> kvm_arch_vm_ext_allowed() above.
 
-> I cannot forsee rust bindings for vfio until sometime in 2027.
+Ack
 
-What is different in 2027 than is now?
+Suzuki
+
+> 
+> Cheers,
+> /fuad
+> 
+> [1] https://lore.kernel.org/all/20260914093838.1082637-1-fuad.tabba@linux.dev/
+
