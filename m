@@ -1,168 +1,130 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6098F2DCF45;
-	Thu, 17 Sep 2026 09:03:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA5E4A386A
+	for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 09:06:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789635804; cv=none; b=N8cynybh4La2D+CcDfU+Rv52Mi6xkshFof0n3FYg6U71R+u8LThB2mLr1g3Dvs6JbfSqxldWsZBrx2OILfAtyb270nzO1waCkGXXvG8HD7bZNA5t9QmGBPLKrehXdwXk4FVrKJtaAcRS7HSI6eXvLVRqEnS9XZwVnggctAwJeQE=
+	t=1789635978; cv=none; b=uidJAzOLvKDuzzFyF9ZRj9jKEHgjWny/riY1UXwtslUJOsZ09me0kUuBszbcsGUhnmjTAfYfoaxprolgXrrf/KdDKSEm7QaaqXNbkp9ZRQc/y711SGkVwqoYsX2m/arR31pbfxopgYbzaD5a0+UQoa9gOoQyk5AtuknowQVpWv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789635804; c=relaxed/simple;
-	bh=H7DYV+GTC/oHo8YbGXHgYOr8KdParA1BZBiqphABHmU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ML9qFHWdLUbeLbRVN5LVRx3uJOy/PiVbs6xAdUW+mxhNI9w/L0Oboy2zAPxtoWg9RL3Q/P+CZ7DyPgHJE41QIDs1kUUQtRNcNH9ax4tWIiSlDNe48QOboawAiDy1FHkSq0n5zufmgLTXs54Y7AKzFum8LfpCc7WGtolGLD6WtvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=dkj0kbfu; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1789635978; c=relaxed/simple;
+	bh=VQM5RHu4ipLxRK9ragICOIOjXMOtnGsFtTLl/qbimfk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=hhDrKM1yi/uSSTlbD1kyvT2XQTPLDOKh1M9S+O5dnPAKEUWCTD7kgvjcpzEAiETcERupvPFXDDhMjtjA1ivllJ+sx+JTDDnXTkhiZzP/FSHFFuTpq2Cj4+H928QFC+GALAuOuJUmhzu25+lSO4jCQZAG8urpOlUBW1DchE2iYOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DJDfNvga; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="dkj0kbfu"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B80E81476;
-	Thu, 17 Sep 2026 02:03:16 -0700 (PDT)
-Received: from [10.0.128.139] (unknown [10.0.128.139])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2C9BE3FAA1;
-	Thu, 17 Sep 2026 02:03:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789635800; bh=H7DYV+GTC/oHo8YbGXHgYOr8KdParA1BZBiqphABHmU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dkj0kbfuI7IiL7YpSyZcZi7LZlvJ0O/YQmyiiNMdPRMKFCWI6B508cxJQglO1aVel
-	 kKb5m0Voqhe1auzEBi4BCZzLSTlHuEXNxHm7678XJVsvUPYou8SnT1shjudXR0xIGX
-	 Vj4vKBm+vvGH1MBwES6/fam0h85SJsUTzuxUPgNc=
-Message-ID: <985520fa-99b0-4620-bfee-8e6321b36104@arm.com>
-Date: Thu, 17 Sep 2026 10:03:14 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DJDfNvga"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A498A1F00893;
+	Thu, 17 Sep 2026 09:06:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789635975;
+	bh=WygfHy6z2CmLfqu/j8aAPhxoZPzccsvqX+T8b3SFBfI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=DJDfNvgaSwn3gsYvizyUwua5Y9m4LUDxv3nZxu5YahC/GPscfLB3J56Yk3pajdKWx
+	 97CgpRN6Ip0+VXqfwxP7kOB74lVAOm4fEYMkFMTBYbw2FpKaCjxbs1feevgOcEEms9
+	 BZk4b1xWdanKZ+KgxJXChhlJkw4FpDJ5nm5UMCBSlO2XfHXytZMManxdfCC0hW5Cku
+	 WLKhdsIWR8LZFIvDVTbqf9UJFhsHfY+hbS6I8KHnsacWOGlOgux0QPEvawxJu8r+jl
+	 ChD+/jssPRkpJzA/IaRb9r/Qz3LSfynpCQqJZcD2vHbRG/xXseoZ5buCq+TSNLBp2G
+	 4ezVaqyuFwXbA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] virt: tdx-guest: Use read_poll_timeout() to shorten
+ get-quote polling interval
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jun Miao" <jun.miao@intel.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260917085533.750434-1-jun.miao@intel.com>
+References: <20260917085533.750434-1-jun.miao@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 17 Sep 2026 09:06:15 +0000
+Message-Id: <20260917090615.A498A1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18] arm64: mm: Handle Granule Protection Faults (GPFs)
-Content-Language: en-GB
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
- will@kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260913070459.2547407-1-suzuki.poulose@arm.com>
- <aqrGPK0lFBFXL2qY@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <aqrGPK0lFBFXL2qY@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Hi Catalin
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] virt: tdx-guest: wait_for_quote_completion() discards successful=
+ quote on pending signal
+--
 
-On 16/09/2026 17:39, Catalin Marinas wrote:
-> On Sun, Sep 13, 2026 at 08:04:58AM +0100, Suzuki K Poulose wrote:
->> From: Steven Price <steven.price@arm.com>
->>
->> If the host attempts to access granules that have been delegated for use
->> in a realm these accesses will be caught and will trigger a Granule
->> Protection Fault (GPF).
->>
->> A fault during a page walk signals a bug in the kernel and is handled by
->> oopsing the kernel. A non-page walk fault could be caused by user space
->> having access to a page which has been delegated to the kernel and will
->> trigger a SIGBUS to allow debugging why user space is trying to access a
->> delegated page.
->>
->> There is work in progress to unmap the guest_memfd backed private pages from the
->> linear map. Until we get that support, we could get spurious GPFs from within
->> the kernel, e.g., load_unaligned_zeropad(). So, try to fix them up for now.
->>
->> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Reviewed-by: Gavin Shan <gshan@redhat.com>
->> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> ---
->> Changes since v17:
->>   * Pass untagged address to die_kernel_fault() - Sashiko
->>   * Explicitly check !user_mode() for fixups - Catalin
->>   * Switch to BUS_OBJERR for si_code from SI_KERNEL - Catalin
->>   * Clarify the commit description about the upcoming work on
->>     unmapping guest_memfd backed pages from linear map
->> Changes since v16:
->>   * Update the commit description to indicate why we try to fixup GPFs
->> Changes since v10:
->>   * Don't call arm64_notify_die() in do_gpf() but simply return 1.
->> Changes since v2:
->>   * Include missing "Granule Protection Fault at level -1"
->> ---
->>   arch/arm64/mm/fault.c | 30 ++++++++++++++++++++++++------
->>   1 file changed, 24 insertions(+), 6 deletions(-)
->>
->> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
->> index 75c3e463df2ef..dc3a87902a60c 100644
->> --- a/arch/arm64/mm/fault.c
->> +++ b/arch/arm64/mm/fault.c
->> @@ -914,6 +914,24 @@ static int do_tag_check_fault(unsigned long far, unsigned long esr,
->>   	return 0;
->>   }
->>   
->> +static int do_gpf_ptw(unsigned long far, unsigned long esr, struct pt_regs *regs)
->> +{
->> +	const struct fault_info *inf = esr_to_fault_info(esr);
->> +	unsigned long addr = untagged_addr(far);
->> +
->> +	die_kernel_fault(inf->name, addr, esr, regs);
->> +	return 0;
->> +}
->> +
->> +static int do_gpf(unsigned long far, unsigned long esr, struct pt_regs *regs)
->> +{
->> +	if (!user_mode(regs) && !is_el1_instruction_abort(esr) &&
->> +	    fixup_exception(regs, esr))
->> +		return 0;
->> +
->> +	return 1;
->> +}
-> 
-> We discussed briefly offline. With the latest patches around, would we
-> ever end up with private memory mapped in the VMM and hence the GPF? If
-> not, I would still keep this handling but add a
-> WARN_ON_ONCE(user_mode(regs)).
-> 
-> However, can we end up delegating a non-guest_memfd memslot page as
-> protected?
-> 
-> I played a bit with codex and it reckons it's possible if a guest_memfd
-> memslot is deleted after its IPA range has been initialised with
-> RIPAS=RAM. Removing the memslot unmaps and undelegates any data pages
-> but leaves the RMM state as RAM. The VMM can then install an ordinary
-> memslot over the same GPA range.
+commit c4b6f45a215285a9c5c32f569a08072ce93e37a2
+Author: Jun Miao <jun.miao@intel.com>
 
-This should be prevented by the following predicates:
+    virt: tdx-guest: Use read_poll_timeout() to shorten get-quote polling i=
+nterval
 
-1) Realms only support guest_memfd backed memslots for mappable memory.
-2) Memslots cannot be created after the Realm is created, as is with the
-protected VMs. (This check seems to have been lost over the iterations,
-  but should be reinstated).
+This commit replaces the manual msleep_interruptible() loop with
+read_poll_timeout() to wait for TDX quote completion. It reduces the check
+interval from 1s to 5ms and overall timeout from 30s to 2s to improve
+performance.
 
-> 
-> A subsequent private-IPA S2 fault sees the non-guest_memfd slot, takes
-> user_mem_abort(), GUPs the user page and passes it to
-> realm_map_protected(). The userspace mapping remains present, so a later
-> EL0 access can generate a GPF.
+> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/=
+tdx-guest/tdx-guest.c
+> index d0303e31e8161..a73d1f0335bee 100644
+> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
+> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+[ ... ]
+> @@ -251,18 +252,31 @@ static void *alloc_quote_buf(void)
+>   */
+>  static int wait_for_quote_completion(struct tdx_quote_buf *quote_buf, u3=
+2 timeout)
+>  {
+> -	int i =3D 0;
+> +	u64 status;
+> +	int ret;
+> =20
+>  	/*
+> -	 * Quote requests usually take a few seconds to complete, so waking up
+> -	 * once per second to recheck the status is fine for this use case.
+> +	 * Quote requests usually take a few milliseconds to complete, so waking
+> +	 * up once per 5 milliseconds to recheck the status is fine for this use
+> +	 * case. Fixed-interval polling doesn't scale well since QE response
+> +	 * times vary by implementation; an interrupt-based approach would be
+> +	 * the proper long-term solution.
+> +	 *
+> +	 * Also break out early if a signal is pending so the caller can be
+> +	 * interrupted while waiting.
+>  	 */
+> -	while (quote_buf->status =3D=3D GET_QUOTE_IN_FLIGHT && i++ < timeout) {
+> -		if (msleep_interruptible(MSEC_PER_SEC))
+> -			return -EINTR;
+> -	}
+> +	ret =3D read_poll_timeout(READ_ONCE, status,
+> +				status !=3D GET_QUOTE_IN_FLIGHT ||
+> +					signal_pending(current),
+> +				5 * USEC_PER_MSEC, timeout * USEC_PER_SEC,
+> +				false, quote_buf->status);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (signal_pending(current))
+> +		return -EINTR;
 
-The Realm mem abort code should prevent this by ensuring that the
-memslot is backed by gmem for private_faults. With the mandate of
-in-place conversion, even the shared pages must come from the
-gmem backed memslots.
+[Severity: Medium]
+Will this discard a successfully completed quote if a signal happens to be
+pending?
 
-> 
-> What's worse, I think it can even trick the kernel into doing a memcpy()
-> access (via GUP). Hmm, does such ordinary slot page even remain pinned?
-> There are other kernel parts that could access it.
-> 
-> I don't think it changes this patch but if the above is possible, we
-> should definitely get it tightened on the other series (and here we can
-> add the warning).
+If read_poll_timeout() completes successfully because the break condition
+status !=3D GET_QUOTE_IN_FLIGHT is met, it returns 0.
 
-Agreed. I will address these concerns in the kvm part2 of the CCA changes.
+However, the subsequent unconditional check for signal_pending(current) will
+evaluate to true if a signal was received, causing the function to return
+-EINTR instead of success.
 
-Cheers
-Suzuki
+Since the caller logs any non-zero return value from this function as a
+timeout, does this force userspace to needlessly retry an expensive
+hypercall while incorrectly logging a timeout error?
+
+> =20
+> -	return (i =3D=3D timeout) ? -ETIMEDOUT : 0;
+> +	return 0;
+>  }
+> =20
+>  static int tdx_report_new_locked(struct tsm_report *report, void *data)
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260917085533.7504=
+34-1-jun.miao@intel.com?part=3D1
