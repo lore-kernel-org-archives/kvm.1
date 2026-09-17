@@ -1,107 +1,130 @@
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E1A3B47CD
-	for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 19:30:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2654E36C6;
+	Thu, 17 Sep 2026 19:35:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789673403; cv=none; b=SGGnWCBKXzq3hOrN1H5sP0nLvmoEDBhK2NTffDX+mrjbt38Fhrze3lGiFf+Hq6Y1UFpidr5wZyVbIOu7baUeyFXJgUMRkVnZfGKthtH1R2nlC+W5a3MMjny1Mdiaq3usBU9WVabwMaB2JMiXUAhEY/ZT5YOECjlu9V+IopJLyj4=
+	t=1789673751; cv=none; b=qWz9sRuA8HLmOuqrEXScTI4R37PqWYsXFf4XYBWcbdX7MtL1VFJEdUxgoigUm/uxvKjzQFuyiREdjellcTy9PpPJeHr6DObJoXWc/TEsyAknDaPgY9FRvV/PGxGAGPYICV/7fru2qD15tnbAI6J2SLL9XzTKyDoeqWDOQHFxilM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789673403; c=relaxed/simple;
-	bh=tHjG9vQi2IrBN0TTfmCXHotbCB+m4BkQnD2fcTAFqgI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hCXQVLz1kF9lIyB5eVsYhs7uFgM+9SIBYyR6JawzARXICtyYxceAoGmRoHQSOPfyDDMRY3IU6C+Yv12XxiwA1Fr47XYDRMmjS8J2uFzeWpiI2w2TPQaxBCVUr1/+kA/Dv7EurRT9DdFIMa05yUMjPD4xgA/7V+4Jjc7J5vXHXY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FYzj62zW; arc=none smtp.client-ip=209.85.216.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1789673751; c=relaxed/simple;
+	bh=ZdaDZ7DmgcYhunGLg9XN1aRRnPTk3xh49WnefUvS7T4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GIc6YYVhN4U3S9FQ3LFK1IPsfq4lP/tf1lGweQBrNsx1OEH4AusbpZr97Z3x+LKfwdtxXOqP4LnJg/1uNZLGc2nGh+BzA4T7rs2MsJkdhB81lGvqaZjH2ZX1mvpJ3XkHRogEC8xSG+FEqrLMNB4CgFoDSageKwpqGYWIv/fQLMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=cO2PKqwG; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FYzj62zW"
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-39de4a68f7cso50279a91.1
-        for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 12:30:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789673401; x=1790278201; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1mrjzrdKauTI1kt3ea3M47lmxrEOAZpZ0W0oj81G6CQ=;
-        b=FYzj62zWMtbqYzOn4X1Kpuzzyq2hyh4fYY89MSmAzGaqcuiy25IyUKdEOs3eMfQvdd
-         Qz5S6SZtvZ6odp96LJPtpCKmuOPOLKOe+fshtpfcKdGn8cDfo5aibL1xwAL0N96mmrmw
-         1vZu4vgbqfqBbiRbK5WXgtrTTV1Axj2z7DwUxAHayMLVhxB/9b0f52q7JvO19+Hqy8eV
-         ul7OOczaVsoeAHS9H5CbRC668UGFZYj4webKoFcOEUlH1YLtIyjFe+Xwb0pn/r1AJG71
-         VzGXd5TK3+dT3OmVwIVW2i2rWr3y6PwVKnq9O9Z+uNo9B9GK4WCoNbqFsV4Cn8A+f+2j
-         yNDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789673401; x=1790278201;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1mrjzrdKauTI1kt3ea3M47lmxrEOAZpZ0W0oj81G6CQ=;
-        b=1NNDEqo7H2gDfU/NgZWKQdkDgAkUVImb5SXIy+TI0yr/rQ80ROZIijiL2DTnSoOSj9
-         QAWXOQJlE3rBhhQpP07MY8k+inoiG/YlgJE2Z5mBJSqnFuthxfdByc66bXrhQHZ0s2NY
-         oheK9bCxhO3SxrHVxWa0LxhFsOKR3Wp7y2cXXHBUrKHVzBfStNN2bx74yJLFUhsaBiCs
-         WhbBOnOhUX6Dq7iWSipOTwbi3P0NA4bYJx7Y2Fu94zVSFbmFMav91BXDnxF9meenRyI1
-         eT1CW+5fTzMXX3+3HChFIGX5o5rGHvQdDhnRliwee2N4Q/vUo2s0Lggu9SH1VsBk9jOr
-         XolA==
-X-Forwarded-Encrypted: i=1; AKwUvBwAG0EOjjcKXgxWbJv27B2x9dZE+/dLhwrhF0BnMCXXREikp63NnzFcdQrGf3Ly+peUjBM=@vger.kernel.org
-X-Gm-Message-State: AFuF++k5nm+g0imdLzJVSCOqxHrmuPIyj7Ec1Q7OvvcshewvVCG5L8ZC
-	wcllyTqVZpDRDUBtta3PATuE3LRykLZh+b/kz1cx7n9UKX4mVGRzYD8vnJA7INxA9mccjh5WbCf
-	eIzs3yg==
-X-Received: from pjwo24.prod.google.com ([2002:a17:90a:d258:b0:39d:93fb:c298])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4b82:b0:39d:f06f:79be
- with SMTP id 98e67ed59e1d1-39e5502546cmr549736a91.15.1789673400989; Thu, 17
- Sep 2026 12:30:00 -0700 (PDT)
-Date: Thu, 17 Sep 2026 12:30:00 -0700
-In-Reply-To: <CAEvNRgGW_VHmT82q+bUqHh_5G2Z9sUF1jJOTiVN4Z8_cA9A50g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="cO2PKqwG"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68HHVagS3182107;
+	Thu, 17 Sep 2026 19:35:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=1gItC5phrprkxYX1pujl44KNc3xrKd
+	TC8XyZgAuFYKA=; b=cO2PKqwG6l8g1+RpnY+AS0Gu2nykZb2obCSx4a4UNM/Ssm
+	IvOxOvCBBUqQKR8Xg53u9IHYuMlc1IeQlrZYQ5PaZ51DZ8o450G7mHbncV6Wb+tM
+	/9Hcp27ezuN/Jze+JRzsERJPwZ4h2m/HKNyFWQ2NPA5kY2i/mDlaa/yTqnz7bNQV
+	tdJrmQkIj+X/tvR7FcOUMtcysn/4pUjm1LPd2LWLPirgh+SJewehwl8kPrz4w0rb
+	knIpLNvj5SRif7zN1Y9hvTXxtzxp8hBpR5+Wvhd+shGJNoy2eyiLC6P4xeEd2/Cs
+	9Y2wk5pN8Qb+mTDl1VvY3CG2t8Nj5obs7B+eE8Fw==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmxcvbud7-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 17 Sep 2026 19:35:46 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68HH9Ahe261621;
+	Thu, 17 Sep 2026 19:35:46 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gr7gekmj8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 17 Sep 2026 19:35:45 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68HJZgRX47513880
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 17 Sep 2026 19:35:42 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4598020043;
+	Thu, 17 Sep 2026 19:35:42 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DC17E20040;
+	Thu, 17 Sep 2026 19:35:41 +0000 (GMT)
+Received: from osiris (unknown [9.111.82.95])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 17 Sep 2026 19:35:41 +0000 (GMT)
+Date: Thu, 17 Sep 2026 21:35:40 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Vasily Gorbik <gor@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
+        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] s390/uv: Rework page allocation for guest variable
+ storage area
+Message-ID: <20260917193540.13842A26-hca@linux.ibm.com>
+References: <20260915144307.2367089-1-hca@linux.ibm.com>
+ <1a53b72c-b215-496c-b9f0-04f3afd09693-agordeev@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <b91dbfae-20f1-4b9f-a25b-4397afae80f9@kernel.org>
- <16ffff40-4ef0-4312-a700-348603f05c0c@kernel.org> <CAEvNRgGW_VHmT82q+bUqHh_5G2Z9sUF1jJOTiVN4Z8_cA9A50g@mail.gmail.com>
-Message-ID: <aqw_uBIYig_uo5Eq@google.com>
-Subject: Re: [Invitation] bi-weekly guest_memfd upstream call on 2026-09-17
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	KVM <kvm@vger.kernel.org>, amit@infradead.org, aneeshkumar.kizhakeveetil@arm.com, 
-	ashish.kalra@amd.com, dwmw2@infradead.org, eberman@quicinc.com, 
-	fvdl@google.com, gshan@redhat.com, jackmanb@google.com, jackyli@google.com, 
-	jthoughton@google.com, kalyazin@amazon.com, kas@kernel.org, 
-	kevinloughlin@google.com, liruxin@google.com, michael.day@amd.com, 
-	michael.roth@amd.com, mike.rapoport@gmail.com, mvaralar@redhat.com, 
-	pankaj.gupta@amd.com, papaluri@amd.com, patrick.roy@linux.dev, 
-	Peter Xu <peterx@redhat.com>, pheragu@quicinc.com, pkondeti@qti.qualcomm.com, 
-	prty@google.com, psalian@google.com, qinkun@google.com, shan.gavin@gmail.com, 
-	shivankg@amd.com, sidtelang@google.com, suzuki.poulose@arm.com, 
-	tabba@google.com, tatashin@google.com, vannapurve@google.com, vbabka@suse.com, 
-	wyihan@google.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1a53b72c-b215-496c-b9f0-04f3afd09693-agordeev@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE3MDI3OSBTYWx0ZWRfXw4jJYB+9KF/d
+ xKLhadtAYAtxneldBMLwYgbI8OcJet93/F66t1ATbCN26ZcMBhByNxijjqtOj37wlGf5jW26C7b
+ 6EwQylkrlePwXvemYYHSY4bJOBZidKU=
+X-Proofpoint-ORIG-GUID: RgQNPFIvEn6DnAy0Re0sBklNzp7bgJnV
+X-Proofpoint-GUID: RgQNPFIvEn6DnAy0Re0sBklNzp7bgJnV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE3MDI3OSBTYWx0ZWRfX60DLld6w6aQP
+ 2wyOM3A52M/we0tHkvOB9NkNoAQA4mMjpS/eTMTVNAK1WND0R5D5v4iXRczIaWfx+He/Kro8ZKc
+ E7RzKwsDgfqndNAAcx13Ru6W0I43RBWMbjysnSF9GPfxrIu8Wmxi+mpmZa1Cz6TmS1VBh47qjdQ
+ WGeZibRUX8h+VNdmRdgdFZeRQVUXiwYrOTLPlTwWLFcSfuXps1a5kXHj6ctXMauKkBBXBmJAolq
+ FzXHONRXR27AdaIfMS7ueQs3rsPpMyfpou7owDq51HcNsDelXdgoGbYuFq2B2pW9wKnJozgraWR
+ rzk52A3bp4LiK9RY96S/+OiXvd3V2perwfqKTgki65PXvxsxUMdedMqVubRaGKz19WFQmLVLg7K
+ WBvTnZDk9seSnc1DhJwjVHp7ZZH1TlS39GrbYMML9imnHjDPZc5tSl7UhPdzTU3mx3/nMzfLZPb
+ DHHmoM5x82LUmFX+Gnw==
+X-Authority-Analysis: v=2.4 cv=F+7C5ahN c=1 sm=1 tr=0 ts=6aac4112 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=xgZBs7X4GezASKjRQcQA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-17_04,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 phishscore=0 clxscore=1015 malwarescore=0
+ lowpriorityscore=0 bulkscore=0 spamscore=0 impostorscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609170279
 
-On Thu, Sep 17, 2026, Ackerley Tng wrote:
-> At the call Sean suggested mirroring the RMM's tracking in KVM, but that
-> sounds quite arch-specific and it's like doing arch-specific validation
-> within KVM.
+On Thu, Sep 17, 2026 at 12:26:55PM +0200, Alexander Gordeev wrote:
+> On Tue, Sep 15, 2026 at 04:43:07PM +0200, Heiko Carstens wrote:
+> Hi Heiko,
+> ...
+> > +	for (i = 0; i < nr_pages; i++) {
+> > +		pages[i] = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
+> > +		if (!pages[i])
+> > +			goto free_pages;
+> > +	}
+> ...
+> > +	for (i = 0; i < nr_pages; i++) {
+> > +		if (pages[i])
+> > +			__free_page(pages[i]);
+> > +	}
+> 
+> Why not alloc_pages_bulk()/free_pages_bulk()?
 
-I suggested "mirroring" the tracking in KVM arm64, not in guest_memfd.
+That's because alloc_pages_bulk() contains this:
 
-E.g. put a structure in arm64's kvm_vcpu_arch with a list_head object, then insert
-into a per-VM list store in kvm_arch on a conversion request.  But before inserting,
-walk the list to see if there are conflicting requests, and if so, reject the new
-request.
+	/* Bulk allocator does not support memcg accounting. */
+	if (memcg_kmem_online() && (gfp & __GFP_ACCOUNT))
+		goto failed;
 
-Then on KVM_RUN, if a vCPU has an outstanding request, verify the gmem page exists,
-is in the correct state, and is mapped into the guest (or at least, is known to the
-RMM?).  If any steps fail, exit to userspace with -EFAULT + KVM_EXIT_MEMORY_FAULT.
-
-The downside to such a simplistic implementation is that it'll require a per-VM
-lock to serialize the requests.  If the contention ends up being too painful, e.g.
-because there are usage patterns where guests due batched conversions across many
-vCPUs, then KVM could use a more sophisticated approach as needed.  E.g. shard the
-tracking+locking at 1GiB or something?
-
-> p.s. Fuad, for pKVM you also mentioned that you'll need to check if the
-> guest had requested for conversion first? This might be the same/similar
-> problem.
+Which does not work with GFP_KERNEL_ACCOUNT.
