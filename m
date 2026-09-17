@@ -1,30 +1,31 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795E94DDB5D
-	for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 15:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573124F3928
+	for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 15:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789660204; cv=none; b=BN4bkH9U6qB00+6n40F/4xp0IkQFQPbF3VC83zBD1wI8z+5k0HqQO6wZtw0D4RXTbCW2skCiM19cXrRzx5HzU0iN18V7V+SZ0n4j9qfOajg4KPzzA140U/NOmo+uk5e+0Wre+mk5cB2XEsbIAAfx8EhImlGwpFzWIQUnaMlKPIE=
+	t=1789660208; cv=none; b=neYJQ80byM34Ue5bVwrHyoJjORlZyt3+vaR1p5T41VPk9etsG9nQHMYsfEcNjhGlRo2KRbJR0hW3BiMc7+T3ny3UIZ2xaI5Kj74KyLZpzbrPk5FAnpPJqJEp3ZwyTX3vUxBjvYPCMSmSUDZHQHLNYNP+odIUWPW/mlfIrC6fxlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789660204; c=relaxed/simple;
-	bh=RJzKdDo+REX/VlAsX42GpLBJ8XTELLDjR7TtOlDY7IQ=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=B7S+0lKky+gJEdTb5Vxv8ZRC8Kg87VPnkodoajuewZsZrMdyyd9hrdrUP2lzlbkEo6qFnRBP6uSZ/HuDmwqmztt49UhXEShO//0xTndHDHd9taoCXILS2yQdaP+rwLhnqxW0QMvdNdy41u7Dor7HoaKAxI1YVIcN4sVS9U+Ul24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=F0IPwOCm; arc=none smtp.client-ip=217.140.110.172
+	s=arc-20240116; t=1789660208; c=relaxed/simple;
+	bh=uj9ZhxPtZlaMAJjllPz+XYRBkA3Sgv72c0v1bO+y8ic=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RPyuM75eeW9bsd4eciABXp9z42F9BrE4M6U92VoOWk9COcu3IrfSI14c2hd4xH/X2O5GQOg5tPjNa8nEygfp04yHVRqXgZKd1dL999hdJGNnMSggr2szqFzAieq/l8AnDVTiaQAIVMEt+ulDmlHR9L9u9+LASP6+98Nm5SYGfhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=WRfIo66+; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="F0IPwOCm"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="WRfIo66+"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3CC2C1476;
-	Thu, 17 Sep 2026 08:49:48 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BD2C31F37;
+	Thu, 17 Sep 2026 08:49:55 -0700 (PDT)
 Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 328DA3F7B4;
-	Thu, 17 Sep 2026 08:49:50 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B9FB13F7B4;
+	Thu, 17 Sep 2026 08:49:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789660191; bh=RJzKdDo+REX/VlAsX42GpLBJ8XTELLDjR7TtOlDY7IQ=;
-	h=From:To:Subject:Date:From;
-	b=F0IPwOCmHpw5v1mc5QunUDRw1xCBe9gpk8MYh7Ami6aYqjBvmdxNpaaP4i0GZhxY2
-	 YsbHuVNWhFjQhqBlL0qk+Y0BcqrXDpdu32nEJilOnoZMpTPd0PHz2u791ky1LnuOgy
-	 ijFqCb1FJHhJIOXaqI9kbT2TTBHOOotZE3Mo0WeA=
+	t=1789660199; bh=uj9ZhxPtZlaMAJjllPz+XYRBkA3Sgv72c0v1bO+y8ic=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=WRfIo66+RNyHDDP73SbOEOHjy7/jhlsevqI2ipFIm7MsCkfLlI8OeXMavfr9VE577
+	 4ooAI4aPFjGiwxipG8MK/sXJPVC+lrHlUpfwWulLN/kgulZsNcIylTL2iRndDOrKJT
+	 y3XGAXaXL0SQxdB+SM4qbYRrbI5Q4unGPiudwVJY=
 From: Alexandru Elisei <alexandru.elisei@arm.com>
 To: will@kernel.org,
 	julien.thierry.kdev@gmail.com,
@@ -38,10 +39,12 @@ To: will@kernel.org,
 	yuzenghui@huawei.com,
 	linux-arm-kernel@lists.infradead.org,
 	kvmarm@lists.linux.dev
-Subject: [PATCH kvmtool 0/7] Fix --vcpu-affinity
-Date: Thu, 17 Sep 2026 16:49:25 +0100
-Message-ID: <20260917154932.193943-1-alexandru.elisei@arm.com>
+Subject: [PATCH kvmtool 4/7] arm64/pmu: Consider kvmtool's affinity when searching for a PMU
+Date: Thu, 17 Sep 2026 16:49:29 +0100
+Message-ID: <20260917154932.193943-5-alexandru.elisei@arm.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260917154932.193943-1-alexandru.elisei@arm.com>
+References: <20260917154932.193943-1-alexandru.elisei@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -50,80 +53,86 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is my attempt at fixing --vcpu-affinity, which I introduced. Patches #1-#4
-are straightforward fixes, and they don't modify the current (broken) behaviour
-in any way. Patch #5 fixes is most of the fix: with it, the VCPU threads run on
-the physical CPUs passed to --vcpu-affinity, and most of the kvmtool threads,
-except the virtio threads, use the main thread affinity.
+When --vcpu-affinity is set, find_pmu() -> find_pmu_cpumask() attempts to
+find a PMU instance that is shared by all CPUs in the specified affinity.
 
-The virtio threads are special because they are spawned from the VCPU threads,
-and they inherit the VCPU thread affinity. Note that there might be other cases
-where this happens.
+If --vcpu-affinity is not set, find_pmu() will only attempt to find a PMU
+instance associated with the *current* physical CPU. This misses the fact
+that it might be possible that the other threads that kvmtool creates
+(which include the VCPU threads), might be executed on physical CPUs which
+have a different PMU instance than the *current* physical CPU (or none at
+all). This can lead to hard to reproduce and diagnose errors.
 
-Patches #6-#7 attempt to fix the remaining issue: #6 switch the entire codebase
-to kvm_create_thread() instead of pthread_create(). In #7, kvm_create_thread()
-will use the main thread affinity when creating new threads. These two patches
-are RFC because they cause a lot of churn and I would like some feedback if it's
-worth it.
+Improve things by teaching find_pmu() to use kvmtool process CPU affinity
+when --vcpu-affinity is not set.
 
-Why is it useful to run the VCPUs on different physical CPUs than the other
-threads? I can think of two situations:
+Also fix a memory leak by freeing the local variable 'cpumask'.
 
-1. Testing heterogenous hardware configurations, where the VM creation and setup
-happens on a set of physical CPUs, and the VCPUs are run on a different set. I
-used these patches for the KVM SPE series.
+Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
+---
+ arm64/pmu.c | 38 +++++++++++++++++++++++++++-----------
+ 1 file changed, 27 insertions(+), 11 deletions(-)
 
-2. I/O testing. Maybe?
-
-Tested on an Orion board and a x86 machine. On the x86 machine, there's was this
-one thread called 'kvm-nx-lpage-re' which had affinity of the VCPUs, but I
-couldn't figure out where it was created. I grep'ed for each part of the name in
-the source node, no luck. I used strace, and couldn't see a clone call that
-returned the corresponding pid. Any clues would be appreciated.
-
-Alexandru Elisei (7):
-  arm64: Pass the number of elements as the first argument to calloc()
-  arm64: Consistently treat vcpu_affinity_cpuset as dynamically
-    allocated
-  arm64: Free the temporary cpumask in vcpu_affinity_parser()
-  arm64/pmu: Consider kvmtool's affinity when searching for a PMU
-  Correctly apply --vcpu-affinity to the VCPU threads
-  Introduce kvm_create_thread()
-  Don't apply --vcpu-affinity to threads spawned from VCPUs
-
- arm64/include/kvm/kvm-arch.h        |  2 --
- arm64/include/kvm/kvm-config-arch.h |  5 ----
- arm64/kvm-cpu.c                     |  9 ------
- arm64/kvm.c                         | 31 --------------------
- arm64/pmu.c                         | 31 +++++++++++---------
- builtin-run.c                       | 41 +++++++++++++++++++++++++--
- disk/aio.c                          |  3 +-
- disk/blk.c                          | 12 ++++++--
- disk/core.c                         | 29 ++++++++++---------
- disk/qcow.c                         | 44 ++++++++++++++++++++---------
- disk/raw.c                          | 21 +++++++++++---
- epoll.c                             |  2 +-
- include/kvm/disk-image.h            | 28 ++++++++++++------
- include/kvm/kvm-config.h            |  1 +
- include/kvm/kvm.h                   |  2 ++
- include/kvm/qcow.h                  |  3 +-
- include/kvm/uip.h                   |  2 ++
- include/kvm/util.h                  |  6 ++++
- kvm.c                               | 18 ++++++++++++
- net/uip/tcp.c                       |  7 ++---
- net/uip/udp.c                       |  5 ++--
- term.c                              |  4 +--
- ui/gtk3.c                           |  2 +-
- ui/sdl.c                            |  2 +-
- ui/vnc.c                            |  2 +-
- util/threadpool.c                   |  9 +++---
- util/util.c                         | 42 +++++++++++++++++++++++++++
- virtio/blk.c                        |  2 +-
- virtio/net.c                        | 26 +++++++++++------
- 29 files changed, 258 insertions(+), 133 deletions(-)
-
-
-base-commit: f67bc0bdae9433a9cfd05e65ea2c1bb6102566d9
+diff --git a/arm64/pmu.c b/arm64/pmu.c
+index e5a07abcd317..d3761689c907 100644
+--- a/arm64/pmu.c
++++ b/arm64/pmu.c
+@@ -189,28 +189,44 @@ out_free:
+  */
+ static int find_pmu(struct kvm *kvm)
+ {
++	cpu_set_t *affinity;
+ 	cpumask_t *cpumask;
+-	int i, this_cpu;
+ 	size_t setsize;
++	int i, ret = 0;
+ 
+ 	cpumask = calloc(cpumask_size(), 1);
+ 	if (!cpumask)
+ 		die_perror("calloc");
+ 
+-	if (!kvm->arch.vcpu_affinity_cpuset) {
+-		this_cpu = sched_getcpu();
+-		if (this_cpu < 0)
+-			return -errno;
+-		cpumask_set_cpu(this_cpu, cpumask);
++	setsize = CPU_ALLOC_SIZE(NR_CPUS);
++
++	if (kvm->arch.vcpu_affinity_cpuset) {
++		affinity = kvm->arch.vcpu_affinity_cpuset;
+ 	} else {
+-		setsize = CPU_ALLOC_SIZE(NR_CPUS);
+-		for (i = 0; i < NR_CPUS; i ++) {
+-			if (CPU_ISSET_S(i, setsize, kvm->arch.vcpu_affinity_cpuset))
+-				cpumask_set_cpu(i, cpumask);
++		affinity = CPU_ALLOC(NR_CPUS);
++		if (!affinity)
++			die_perror("CPU_ALLOC");
++		CPU_ZERO_S(setsize, affinity);
++
++		ret = sched_getaffinity(0, setsize, affinity);
++		if (ret < 0) {
++			ret = -errno;
++			goto out_free;
+ 		}
+ 	}
+ 
+-	return find_pmu_cpumask(kvm, cpumask);
++	for (i = 0; i < NR_CPUS; i ++) {
++		if (CPU_ISSET_S(i, setsize, affinity))
++			cpumask_set_cpu(i, cpumask);
++	}
++
++	ret = find_pmu_cpumask(kvm, cpumask);
++
++out_free:
++	free(cpumask);
++	if (!kvm->arch.vcpu_affinity_cpuset)
++		CPU_FREE(affinity);
++	return ret;
+ }
+ 
+ void pmu__generate_fdt_nodes(void *fdt, struct kvm *kvm)
 -- 
 2.55.0
 
