@@ -1,133 +1,131 @@
-Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58CB959220D
-	for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 14:28:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.140
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789655293; cv=none; b=pdlC4VG5UXYjlVzI1dxQh8DuJvl56VGTSU6/hbIJt0x8tk4uB9aj/X86pum6EZslnG3+fE1DRlKbk95IgaEW8zPuQNW/2tx5H1vCqZo4XCq/Zn5JheMpEJGal1kz1z6/E505LXksGxE2EholnBJO52nfmk+4K7qztkVun3aXp3c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789655293; c=relaxed/simple;
-	bh=zD+yqYOk9BEwYrlkE41XIJFd2WjARDFI5ce4WJxm+Ls=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XzWOjJcFqFqvLIlmyyXKo+j00pZZ3a9ywWna7CdEN3d0ACqARCaDhfcY2+ZFf7r82fs8YswjC39hfEPKmRZYHNT0bEJGVhln5KQYjIXodgkHxnpqeukwshzYdpUgKKsJbUSFLtEoAOgOtKY00aUZmeAJ5/laDIQVbeT1cHg4KEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=jOZBXJLw; arc=none smtp.client-ip=74.125.230.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8465908BB
+	for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 14:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789655472; cv=pass; b=jlAzM3eFo/pc258IrdUVbvLSw2vLTDQWRqkVfDHVn1w4dmYflvsssOTSm/OVZNyrO1GlHl95U5UDGovXNJO4a3LXYbVW1tS6N/YsPxoF7h3Ngz7IV9cjmIifuEeAz/ghfeqN0WTP4G/ae0uDwKeEqyyqNcCBUWrESZREJMcyU7A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789655472; c=relaxed/simple;
+	bh=E3oZRD9yG/RjtC4yF5B0bl+SmXgC13bgt8t7IT2/g5Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IhkwAbiSN8CFMZUHXPCmWFifxBM8+/ARavhRiXyWCpJC5HCUmkLVdV1nsCxppIPy+SQp8HZc1yluLd3EpMhoCBD+Y/itfzBJGriRwZ346APBypWAoyvyVya6AUOglRdAOnnVjbBzQRvsDlUEuTcbctkElGARyi6zgsNr5Jt4tt8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rKjnxFbJ; arc=pass smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="jOZBXJLw"
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-91235f46716so6935676d6.1
-        for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 07:28:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rKjnxFbJ"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-52faa58bff5so102481cf.0
+        for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 07:31:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789655470; cv=none;
+        d=google.com; s=arc-20260327;
+        b=amRZZxXYldYWnXmA1VevbvV3FMOhducpx2ip/2iQpetn6rpD/1r5Awblyl87xsqyAs
+         VtGg6waloAb5Ziw6+hmHRB8hIkj3+WIv+vwnLy5pV9NGCqqxg4HbsQ+HfAi65CS/AO4F
+         +pGcQSpZNf6OEOe6MCWzm53ZrYdhPexXzO8BUd/kbD9aiMEitMLg4MeAOJLaflElTK5P
+         zVm0ZNeJZm1jzub6ABlZWn9g8wehNC7FELiHWFcmb9Gyq4Tj2dG8G4WUWNcpV0cXGxlU
+         T3bLGxqbusr5pxYN7MfobKqZeejLivRRqT8NsI5Y3TlMUj2QGP07N8G0YQFTSApv3J2K
+         qpeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=E3oZRD9yG/RjtC4yF5B0bl+SmXgC13bgt8t7IT2/g5Y=;
+        fh=librOfr7brqDg58N9cjaHsKeeuswcsWuAlx+P3ABLuk=;
+        b=FQie/t3n7L9kqzCEYFEE8dgAkCBzrHUmU+PFVpWRd8GZJgkXlRUzzoadqlrA8DL1TB
+         hjMam3WTjCdlxgk6md5GKzNk5vXloH+mmJE3PnDXaF4HMcfPER7g+AqiqorxD3qBfhIy
+         i2fEEXERTqSjdJ2tybLxjldbrD8HO994UVM9oBtUtDDd4HeFBAtnKhrG0P5RlEI6oq2B
+         /XrO7CVn4ETITCSKH3eUvXwwexM0h0IVmRSL7eWRSogx+1dNQJyvA7JwCHiqs2sNcVms
+         6bNR4EAcfQxBv/LIIU1ECY8eDQVyE/teO8DCNxdu5/TX+pPSO9WwvGbv7n8aTMV74NiR
+         Rp6A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1789655290; x=1790260090; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Jw1k2NAja1Um952Tl85LJupIp0nZbLj8NYpKbR9I6hU=;
-        b=jOZBXJLwf6JP3b19azmsQ5fLkQfodPWKCQ4sDgsm74opbQurokqxNrasGuNyOPVzvE
-         CTVWAdgBhof6iu0XiS8kaZ358Ree3L9tOC68tPaGgk6QmS7dj/CAh2cDH6Ri94YsKWYE
-         zFgjnox0YrTKuN8CziN0SVinO8YFZz6H8x2igaWxvbrgFrudFRNrFyWtefERJIZGn9WM
-         /YRBE5l7nBeTmhMKMbx56N0o1l466lNeHVloV8m2iSh8w9+kxpuV28bJDRjIUAx2mv9y
-         5MOsangOpHqTW06zyEsy1fwdV0ITN+uat3lRUftLj9jAXlHsH37VEcNIWu8qGi0F66Q2
-         koBw==
+        d=google.com; s=20251104; t=1789655470; x=1790260270; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=E3oZRD9yG/RjtC4yF5B0bl+SmXgC13bgt8t7IT2/g5Y=;
+        b=rKjnxFbJS2MhhAPcVRGEkOhipASSkLDPVfKni9GP3WTRKdID4oW/hSEZJQInOik6n0
+         dB0Pcxcg1GURjGNYveby8cmzlXk6l4YjiI6Konl5/RWffjsGFKr/Bq7yNfxY6SWcLhyk
+         NSwlhmUEmq68asAOMmHxv9POrKyX66zUZ4PJvkR5Fojgmu4sB0XQiidKf9B7lf/wYEkq
+         3KkjmjjpKXf42sPP5CgfbN1oFB/nshGdrohA712pons/jWHrNoOro/14wgfh0Q38TZiK
+         BQxMOkAcy8C1s0u5MoGoUepb79lcU4ZBtcNl+Gy707RVnJH6MIkRHq3vLfcxSOnK3Hi1
+         kX0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789655290; x=1790260090;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Jw1k2NAja1Um952Tl85LJupIp0nZbLj8NYpKbR9I6hU=;
-        b=2d82AkEmfMUMCJWjlleqFP+dhkHI+RZCBAzGIFVrhVtT2BsXcH4mbJTfME8P88zm48
-         yvglm64Ef/AU4CEPGxVOHzHFF++Gri7VwFBk2XeEcJ/f+hijBpud2gKlQdZHwGZL2Bvg
-         t2VQPkE36RbIxiY98Rs3W059JT7W/hPWosPQSakta8W3pr2OjSc++0iZQX7rV/edPNaM
-         UCc3i2eCG8IWObJl+zlzw04w1RA5exf9RvmhzauA+0gVHMLIOpT1LBe9bVb/1aQsUxie
-         hEhj+uMtfwCZt6GGRdQdN3qOs5RIPHWJeaj378ZYkCjEolk/BdNLDuWDH3TVoOEd2Km+
-         +GRg==
-X-Forwarded-Encrypted: i=1; AKwUvBwzC43PxouaBNsFREr2nzJ0fMjhId3A4tiAok43M+QhXUIlHhy3CNSDxsdQRZG2/vud+88=@vger.kernel.org
-X-Gm-Message-State: AFuF++m5GYL8e6iVCHnUpBiUI06e43W9KW3HrH9Tofcn1RQrbMnTfYgN
-	N1ujTP649g1JjVuGnSXliEakvKy7iFHysihNE/RAHiJSf0pGxTpbbs0t7bhwAsAHL8M=
-X-Gm-Gg: AYBFou3QoJIn/P0gBtJashnqvCJLLNXCKCwQ/FSkKfJ1PWLmiLuv24cexvKAISDka0/
-	9I7WdCKzasZXCb05NKmk+E/1zK5ovrejXNeA5Zq5RD999u7xr9Y0ubYbJdIs8J0k060Y/PcpsTT
-	qzKXjcRAbJR+gWphtpxQw7O3zeR/JSRR+ZUVNxcbSwJsDGsdhOAePwHGwoTlLGMMU/FExJ+IQBu
-	QI8zvI9BFWI+uptcf5x9zpI/CI+dEd0fborm/M1RfXx6noDsOtsjfm2+qIf6Sk07aTG9bjmID8+
-	ika4xheHg6/4H6lDaUINEaB3KLr8rud9Sp+IB+7wkQgSjKf4eQHKlvD1x4wkJtb4S6Pm92Owzgw
-	Ts+tRo3l0VeYVrZPDiWvb/MlUbE2jVf7xTFqd+RVX+IGvlpr8++0L/dUbIq5WsH18l9FFuePv3L
-	v4wBa0t99yf0BKB0eBAli0w1ejDl9Lix6YqV45GFTUlCwsIBvSSLRHylwMAEM5erZ3FpQqgNAJt
-	csyBWygFCve8DRxGHJp3ybHNwFVOd4z2gVQPSPOYRktBMW5vz6tWVbM
-X-Received: by 2002:a05:6214:1316:b0:912:517b:911 with SMTP id 6a1803df08f44-912517b0beamr9926716d6.48.1789655289706;
-        Thu, 17 Sep 2026 07:28:09 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9123be9ca82sm51192626d6.32.2026.09.17.07.28.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 07:28:09 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1x7D5s-0000000CrE5-25RS;
-	Thu, 17 Sep 2026 11:28:08 -0300
-Date: Thu, 17 Sep 2026 11:28:08 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
-Cc: Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	iommu@lists.linux.dev, Tushar Dave <tdave@nvidia.com>,
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org, linux-rdma@vger.kernel.org,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH v6 18/18] RDMA/mlx5: Ask P2PDMA whether ATS takes a
- direct peer-to-peer route
-Message-ID: <20260917142808.GH3196566@ziepe.ca>
-References: <20260914-fix-p2p-acs-v4-0-v6-0-5ef07ec9ef06@nvidia.com>
- <20260914-fix-p2p-acs-v4-0-v6-18-5ef07ec9ef06@nvidia.com>
- <321890690ce83d1943b2f678bd9bee9b8c895b66.camel@linux.intel.com>
- <f3708893-4760-4157-83a3-313867a94e78@amd.com>
+        d=1e100.net; s=20260707; t=1789655470; x=1790260270;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=E3oZRD9yG/RjtC4yF5B0bl+SmXgC13bgt8t7IT2/g5Y=;
+        b=E+L5ClhCgaBraAygkNixP1kce5MfMM/kRtVtfocCIw+NNbBzWglS+G08C/0zsSUi1u
+         sojQ968mqjGxeYJAucXABg+dReQS1FDJ0KTx7vxo/Rn4bGv8khTPJsKiU5JodDIYgmdK
+         /zQ++gzioOYM6RytLFGFkDnG0grg0yeGJ+xJoEOb+GDWw6zsdj4W11K4aYR9IRqcvcXh
+         yew+YmUmaewEsWGuQ0RW77+9XNGtKdlmrOJoAfXFPMA9r5oZCbdrxogcZ2oLhO9FCdjG
+         DNL3rcbEgVMTCYLGagAaik8ZxUHve6yt/zvRmR1Mho+DZWNm4S2SqRWBGfOzn1Ep/hun
+         i86w==
+X-Forwarded-Encrypted: i=1; AKwUvBzw/xbSihNWEqBEe5gX9rCjy1E4rpbIbEAurGpbMJhTd/7kIznt2iN9/mgj1uSBNvT9Kak=@vger.kernel.org
+X-Gm-Message-State: AFuF++mcwEEkXK50AdtZdJxGvA992PP/+fEeNWMDL+sVflPcOcQaGHp+
+	S366jxPiMmmr9Qo8wBgbdhUUeOZNojfG0QO4F5fkC853ZfNSrrghCuHzEslO3fnM1Ap64YoAySt
+	uuoagymv7XGT0OPWCNIyfqtLg5//0nTlJSWsMNn4A
+X-Gm-Gg: AYBFou0NXwUH+LQv9gZAaNk261VpYCfbS04D2tQaJVoqDgSs035mQCCZkKJn5LreWgA
+	D0AJqClzW+RVtnG8A/UAuBWa5mNypbPY4gK6sE+vkHR9rlCWiXhWBrOJw8vq7LbaGMuUYM8Vw38
+	3wg5qh+mOpjJfBYHS2XHL6XrpyniPDgRTOcFgxhlABOQMNxWhjTdA7v7CKGT0NQgo7sALB+c1dp
+	72rd/Xj8KrY8LQ3p0f8+3apgD/f6WFLcODG0S4n8Q0nIu1mnFCBrzcUcIfbxjqqzuamrz0Z1kHo
+	+Tuk/vLVtLIRxe3pOUgJKDC4PH+aBq6pAI0mwJuqJrZi21zHrqsug1jdp3iRmnw2F/0=
+X-Received: by 2002:a05:622a:400c:b0:531:129b:2dba with SMTP id
+ d75a77b69052e-532998b798dmr3895331cf.3.1789655469226; Thu, 17 Sep 2026
+ 07:31:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f3708893-4760-4157-83a3-313867a94e78@amd.com>
+References: <cover.1789281096.git.zhang_wei@open-hieco.net>
+ <016ecb3a3187b20fac299f1c2cb15aac01358412.1789281096.git.zhang_wei@open-hieco.net>
+ <CALMp9eSnoFAk5PN-JudLc=xB6jzKzERfTVPEeAaRbLTYqtnKKA@mail.gmail.com> <cd63935b-8239-4caf-8e97-0896ab7743f1@open-hieco.net>
+In-Reply-To: <cd63935b-8239-4caf-8e97-0896ab7743f1@open-hieco.net>
+From: Jim Mattson <jmattson@google.com>
+Date: Thu, 17 Sep 2026 07:30:53 -0700
+X-Gm-Features: AcwNN1XpKe-CB8PQDcy6cyaywdtMnfN_H56Nu0Oy7JZUSLelJ_9kw_Ni3fDLoxE
+Message-ID: <CALMp9eRGvU_zXO1FWAj9o3dECpUaK4qOCOVwenPZ0nQ9+Yk2yA@mail.gmail.com>
+Subject: Re: [PATCH v6 8/8] KVM: selftests: Add nested SVM DecodeAssists test
+To: Tina Zhang <zhang_wei@open-hieco.net>
+Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, zhouyanjing@hygon.cn, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 17, 2026 at 04:00:33PM +0200, Christian König wrote:
-> > However, at least for the Intel GPUs, ATS enablement is based on the
-> > PCIe-side enable bit.
-> 
-> Yeah, I can confirm as well that this is something really exotic.
+On Thu, Sep 17, 2026 at 1:22=E2=80=AFAM Tina Zhang <zhang_wei@open-hieco.ne=
+t> wrote:
+>
+>
+>
+> On 9/15/2026 6:33 AM, Jim Mattson wrote:
+> > Should this be:
+> >
+> > .exit_info_1 =3D BIT_ULL(63),
+> > .exit_info_1_mask =3D ~0ULL,
+>
+> Did you mean .exit_info_1 =3D 0? For CLTS, bit 63 should be clear.
+>
+> I tested CLTS without FEP on an EPYC 9754 and captured EXITINFO1 at
+> the L0 kvm_exit tracepoint, before reflection to L1. It was zero in
+> all cases, with CR0.TS both clear and set. Each case followed a
+> MOV-from-CR4 exit that populated EXITINFO1 with 0x800000000000000a.
+>
+> The current mask checks only that bit 63 is clear. Would you prefer
+> checking the entire field against zero?
+>
+> I'm a little unsure how to interpret the APM here: =E2=80=9CIf the instru=
+ction
+> is LMSW or CLTS, no additional information is provided and bit 63 is
+> not set.=E2=80=9D Does =E2=80=9Cno additional information=E2=80=9D mean t=
+he remaining bits
+> must be zero, or simply that they contain no valid decode information
+> and should be ignored?
 
-In most datacenter systems it is only the NIC that initiates the P2P
-transfers, so it should not be surprising that NIC HW has more
-optimizations for this. In real systems ATS carries such a perf cost
-that you do need to be selective about it. I would expect every
-serious NIC to have this capability or it will not be perf
-competitive.
-
-NIC and GPU are using ATS for completely different reasons.
-
-> Additional to that the setup that ACS seems to be disabled for some
-> bridges bit not all also sounds extremely uncommon.
-
-I'm not sure where you saw ACS disabled, you can look rdma-core now
-has a tool to help people get their RDMA NICs working in GPU systems:
-
-https://github.com/linux-rdma/rdma-core/blob/master/kernel-boot/rdma_topo
-
-I would view most of that stuff as completely normal at this point,
-people have been doing versions of this by hand for almost 10 years
-now. Especially the asymmetric translated/untranslated routing.
-
-Jason
+I stand corrected, and I agree with your interpretation of the APM.
+The original code is fine.
