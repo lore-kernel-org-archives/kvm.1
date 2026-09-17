@@ -1,73 +1,73 @@
 Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F26F4334CD
-	for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 20:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975BE4E5339
+	for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 20:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789677912; cv=none; b=hrt3JQPQ5uWGkiG2O6YudVX8d2e1ZN1IoX3SXjmolW7f4DOXEiQgk+Qtok2hnPLeCXZSq/BX/E8/pT64m7s5Dd3LQ1Wm9TfAnCYSbK812DNzzaOEkH5thZIODvQxDCjmlqnbT9QhJYTu9qO4R5eOizgvWTYNdmRGAb78r/0b0v8=
+	t=1789677914; cv=none; b=h+W+alIga11pC0U76mmjKlCEuMqeQs+9n61qrJBeHsRD32+3of4i7tOoTBrkhk+sdoyJtyQMP2yiKkXVUuW5Ji88Fc4CjpOAKkDZXeWMuFnk5yNKuenhInTgdvx1csyV2e0sZ85BYWA6m/hToU30SOtkCjfT2fTGHpMUIWOopig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789677912; c=relaxed/simple;
-	bh=72Va4xv8Ms2h78XcKuZg9RHaTyup/YG0a/Xfii40hfc=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=V5p6mj0C/eaPpbQqpHNrb3bcSqRsOF+XUjwDwZwqsnohaJIs+D7n3+8gMHq1pBT4r9M1yfU1QTZS/l80gUCzzvnvkH+ZiJK10alXYpPo6nrVR42O1PDumUmoR+9mpWQw0ElzaZnd4cv5iDG7XSAAgfuEAyuV22C769N+j6dwMqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dwkQfPml; arc=none smtp.client-ip=209.85.216.71
+	s=arc-20240116; t=1789677914; c=relaxed/simple;
+	bh=AkbxLkF/+nAmGEf9KgEr5gQ3H9mZvwt0D27L0+zaegU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=I66P/MGeHtjvfcZWL8j4bk5pSQpvER5zA7OPUbL19vYwr8KCQcT09V+nKvQrH+8/87T+7LgN146vwbwt/x8q752Hcb8QLVx+dXvWOhxVVv5HXZXHZITkEKcuzRrJlKCmgZYpgb1vJ3Q3BwVT5MLth2E9+E2JQhqmi5ELAu8yMZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LB/joyzB; arc=none smtp.client-ip=209.85.216.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dwkQfPml"
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-39de4a68f7cso135883a91.1
-        for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 13:45:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LB/joyzB"
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-39deb05ef51so98797a91.3
+        for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 13:45:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789677907; x=1790282707; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:mime-version:date:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=jMNh0+jAAa1Kr4+QO+vi3xyA58GWdIBX9d8ih4uK1uA=;
-        b=dwkQfPmlWkd/T7A/vKfGTLqfrem8YCSe9PCv6MjwH1nCQpfG6Te0q5gue5iOtvCWEm
-         4LhVuxiFZWYl0hCKTZbEHTjh6eqCLMw9C9ePeob8K1fjbbpwxs4+wRsGe9T6fpEHGDUp
-         sZrs/hoXUecziJQp/Kk8NV5T+slzkIq7+Wigx10FBAxIL4ZgYK/iIVeqv53F04OyDVPg
-         G/6TSrMMShgyj/jJE1CQqvdU0cENHYmcsbFlR80nCPFWnTwOMV8n1hB3nDqhXOPvaADJ
-         69KjYxqcPJAnUI5jwpw1WfqH0ypKIUV26gGKuZOo3dL6VU243FH1V/yGB7qrRZMqp+hL
-         Vbfw==
+        d=google.com; s=20251104; t=1789677910; x=1790282710; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Hoad39omJnatpjgiztoN01A08gT8UYIlksvJjwoC6QM=;
+        b=LB/joyzBePGiI7tkKSlYZq3igeTLEQwIbfTTi2+2c68POih/95MDqqrFzGtH+O2TRy
+         tDwqb7E1Lv2aqNebtuRG8xiWsyM3LXQn7TlpCJKJfl6hJMFf2uNMqnwwCDgL/fH8KkBv
+         QdK9wRQNf+3xYNa2cqFHYJxm5me5QmFq74w6Wg5jyE6JPuBAbH94n4JXyar9eRbhZzTL
+         h7KqJSV8A+cLL7Z66qx4nyJId1AB+bXC9WBkuiXwzYyE8QVkyWgI0z5X1D9QVnBzySdW
+         zwoal8jyv/sofhyxgLjMqHEpM/5pkGjmpg2CZatAqkSZmHx0Zrolr+FoVKpnku+TkDT0
+         VZjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789677907; x=1790282707;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jMNh0+jAAa1Kr4+QO+vi3xyA58GWdIBX9d8ih4uK1uA=;
-        b=BuBD4hL0+MRlu4p4ey6IAL3nmxgIETYY4xEWrw6zPiKh7elqiWwrKDwiExaVC7Rmvo
-         l3RKtBE1oegcNGYsJPnl0lre3mcGIDqIby3kxmt04F0IFVUU8atPjAKF2z3zCd1xh9Co
-         IFLqooR560BX9rP6UZ8huYG6AiceKndw417bwAkF4UFvB9QYUY3XqQDDOav3Hjl6q2dX
-         lGiNwOAuquYhldu9YYlFjCerh78fKZZlqzvWVvxQtLXZf3O7t/eAnyx/tdzZg61HWQXE
-         +NPvdOEpdPw2CuRDYykYTuS781qK43C2R8R7dGsJdwfBvy4linMdFpvn3ySS4txl5hPf
-         l6Sg==
-X-Forwarded-Encrypted: i=1; AKwUvBwcbr7/VmAUxmRIqh7JRkcpBz59agjCSvilLX+2pxwtGpB2nONZnipZPbPb6EBFHgVJjJ8=@vger.kernel.org
-X-Gm-Message-State: AFuF++md0Zo5+WMCDQA4ZSqzb7GB/Vx+TCxit+E43ns4YX3Q+eXpyUmB
-	aN2LH8CHUzMHGCS6xAYdRAzsluGx1oTWWQVuJo54ybQRywXE5XjdxfzVBXPhy0q0VEinwOABBT6
-	05fPkuA==
-X-Received: from pje10.prod.google.com ([2002:a17:90b:550a:b0:39b:a3c6:1ea1])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:280a:b0:39e:2530:2102
- with SMTP id 98e67ed59e1d1-39e54f4221amr1221121a91.11.1789677907330; Thu, 17
- Sep 2026 13:45:07 -0700 (PDT)
-Date: Thu, 17 Sep 2026 20:43:46 +0000
+        d=1e100.net; s=20260707; t=1789677910; x=1790282710;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Hoad39omJnatpjgiztoN01A08gT8UYIlksvJjwoC6QM=;
+        b=g37ofP8pxMUZgn9SRWqIuU8uRcBKfKSmS8Xj1NG1V1Caa2l4f4g9RMkQTE6VsESTmD
+         CFHp5km04CyhGQxg32JqhDsoFGuMtV7+4LpLv3gnZ1CZ+opjlzrEqk0g+P/9+6YlmkY3
+         fGLxAqn0883vf1aHb6aAHoo5/G/+FFuV4kNw9Ll0YyY09iLAFEUHr293iXsz1g5GY4VH
+         6x9YXTMnlxQ1/1O1vpcQtEb9zuuzokkTxZWRRWkDNeYL24BW+H8Hb6+hphH0V+9dwVKa
+         96aQybC2mMZgAR+/KLKZeUKm7KoQ3utZgZ3n1ruL3S7dLJZrqs+0ORicgQqVijAz9v9M
+         czJw==
+X-Forwarded-Encrypted: i=1; AKwUvBzg8bHArJKI2B77iQT161g0Svwoyj9ivtQHlvWpqwEs+n/xKf1cBTqSpekTxNTnXfrCRew=@vger.kernel.org
+X-Gm-Message-State: AFuF++kOC81AuTOFpLix58fR7uYH6lI+eXuN6kLhFOgX7/d/Xo4KKu7o
+	k5ifd5KnxiB9/wBZDfssSZrXPeMD4oykGbyZHG1NETuaqsoerb9LKj1DF+uJIJi1BfbFRQz3IkB
+	Oyc5JgA==
+X-Received: from pjbei24.prod.google.com ([2002:a17:90a:e558:b0:39e:ac:d0a2])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:224c:b0:39d:f317:44cd
+ with SMTP id 98e67ed59e1d1-39e54eab3dbmr1101051a91.14.1789677909569; Thu, 17
+ Sep 2026 13:45:09 -0700 (PDT)
+Date: Thu, 17 Sep 2026 20:43:48 +0000
+In-Reply-To: <20260917-memory-failure-mf-delayed-fix-v6-0-4b00856b5364@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAAJRrGoC/4XNQQ6CMBCF4auQrh3TFErBlfcwLqZ0Ck2AmlaJh
- HB3Cy6MK5b/S+abhUUKjiK7ZAsLNLno/JiiPGWs6XBsCZxJzQQXJZdCwUCDDzNYdP0rEAwWDPU
- 4kwHr3qCMxMoWWGGlWTIegdK8+7d76s7FZzrf303Ftn7lkosDeSqAA0rdKKMl1lpcW+/bns6NH 9hGT/LHVSI/4mTiTK1QKp5TIfGPW9f1Ax+ywPUaAQAA
-X-Change-Id: 20260527-memory-failure-mf-delayed-fix-7d5a8f4a8a8b
+References: <20260917-memory-failure-mf-delayed-fix-v6-0-4b00856b5364@google.com>
 X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789677906; l=1740;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789677906; l=2010;
  i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=Am2jKIW9EJEt0JmvNafH4y2xjpYHkskddR3CBeqh7Zw=; b=/wh3h4RwP/TLeQrHX1ATtrr76sHTMiPuM2R+SJAOB0ZNs9zkKo19zhJPXOol9dk/vZK8KxzTh
- kMzeBBM0ciYCOfVQNYSBsGFmVAddo2DxqCG+W/jupYzZWJ8KL9ooBKj
+ bh=AkbxLkF/+nAmGEf9KgEr5gQ3H9mZvwt0D27L0+zaegU=; b=l43vikXXPWbiYd0vKIvQqVDarn1Ty3l6Vrm71axmlmmBFUC/OJBsLcDslWeQrnqbkktxP00pO
+ rxclAE9wwFRBWLRaf58fDlGZj9/LGabzo7cne5Pv9ImCfAttWfE42ZJ
 X-Mailer: b4 0.14.3
-Message-ID: <20260917-memory-failure-mf-delayed-fix-v6-0-4b00856b5364@google.com>
-Subject: [PATCH v6 0/5] mm: Fix MF_DELAYED handling on memory failure
+Message-ID: <20260917-memory-failure-mf-delayed-fix-v6-2-4b00856b5364@google.com>
+Subject: [PATCH v6 2/5] mm: memory_failure: Allow truncate_error_folio to
+ return MF_DELAYED
 From: Lisa Wang <wyihan@google.com>
 To: Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
 	Andrew Morton <akpm@linux-foundation.org>, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -85,49 +85,53 @@ Cc: rientjes@google.com, seanjc@google.com, ackerleytng@google.com,
 	tabba@google.com, dave.hansen@linux.intel.com, Lisa Wang <wyihan@google.com>, 
 	Isaku Yamahata <isaku.yamahata@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-Here's a sixth revision to fix MF_DELAYED handling on memory failure.
+The .error_remove_folio a_ops is used by different filesystems to handle
+folio truncation upon discovery of a memory failure in the memory
+associated with the given folio.
 
-This patch series addresses an issue in the memory failure handling path
-where MF_DELAYED is incorrectly treated as an error. This issue was
-discovered while testing memory failure handling for guest_memfd.
+Currently, MF_DELAYED is treated as an error, causing "Failed to punch
+page" to be written to the console. MF_DELAYED is then relayed to the
+caller of truncate_error_folio() as MF_FAILED. This further causes
+memory_failure() to return -EBUSY, which then always causes a SIGBUS.
 
-The proposed solution involves -
-1. Clarifying the definition of MF_DELAYED to mean that memory failure
-   handling is only partially completed, and that the metadata for the
-   memory that failed (as in struct page/folio) is still referenced.
-2. Updating shmem=E2=80=99s handling to align with the clarified definition=
-.
-3. Updating how the result of .error_remove_folio() is interpreted.
+This is also implies that regardless of whether the thread's memory
+corruption kill policy is PR_MCE_KILL_EARLY or PR_MCE_KILL_LATE, a
+memory failure with MF_DELAYED will always cause a SIGBUS.
 
-Changes from v5:
-Add comment-style fallthrough in the memory-failure test, as suggested
-by Ackerley and David
+Update truncate_error_folio() to return MF_DELAYED to the caller if the
+.error_remove_folio() callback reports MF_DELAYED.
 
-+ RFC v5: https://lore.kernel.org/all/20260823-memory-failure-mf-delayed-fi=
-x-v5-0-d97a5703e45a@google.com/
-
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+Fixes: 6a46079cf57a ("HWPOISON: The high level memory error handler in the VM v7")
+Fixes: a7800aa80ea4 ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
 Signed-off-by: Lisa Wang <wyihan@google.com>
 ---
-Lisa Wang (5):
-      mm: memory_failure: Clarify the MF_DELAYED definition
-      mm: memory_failure: Allow truncate_error_folio to return MF_DELAYED
-      mm: shmem: Update shmem handler to the MF_DELAYED definition
-      mm: memory_failure: Generalize extra_pins handling to all MF_DELAYED =
-cases
-      mm: selftests: Add shmem into memory failure test
+ mm/memory-failure.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
- mm/memory-failure.c                         |  29 ++++---
- mm/shmem.c                                  |   2 +-
- tools/testing/selftests/mm/memory-failure.c | 114 ++++++++++++++++++++++++=
-+++-
- 3 files changed, 126 insertions(+), 19 deletions(-)
----
-base-commit: 08745c62350126bc31b09548137be87e2866f628
-change-id: 20260527-memory-failure-mf-delayed-fix-7d5a8f4a8a8b
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index e698d0e9711d..37ea23489b75 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -939,10 +939,12 @@ static int truncate_error_folio(struct folio *folio, unsigned long pfn,
+ 	if (mapping->a_ops->error_remove_folio) {
+ 		int err = mapping->a_ops->error_remove_folio(mapping, folio);
+ 
+-		if (err != 0)
++		if (err == MF_DELAYED)
++			ret = err;
++		else if (err != 0)
+ 			pr_info("%#lx: Failed to punch page: %d\n", pfn, err);
+ 		else if (!filemap_release_folio(folio, GFP_NOIO))
+-			pr_info("%#lx: failed to release buffers\n", pfn);
++			pr_info("%#lx: Failed to release buffers\n", pfn);
+ 		else
+ 			ret = MF_RECOVERED;
+ 	} else {
 
-Best regards,
---=20
-Lisa Wang <wyihan@google.com>
+-- 
+2.55.0.1082.g2b9226bbc0-goog
 
