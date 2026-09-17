@@ -1,172 +1,191 @@
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799F8358378
-	for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 01:49:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.204
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789609784; cv=pass; b=XJ9fmT3eA67ffP41kac6LBgPi7S8TvU9VbdL7Zt66RPsQTJEgN0WZOm1b7y8BlzaHDns8TomZ7LDqGyTGwm6Gq5OyHoKk+Ed4fd6LbyR4dD3ReBkwO57rsdkLbe1pC4eOaSaATCWYSbrFGT6fJ2e5d4+8eNBF6+9kPMPoHpK8C8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789609784; c=relaxed/simple;
-	bh=4vvuCAg8LOYwCkFNxLubS5odZ0quKkv2reSoFIokHEM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rxhGW8RZJZhNxRNZzxONH5acBmKXpx4Ye3+wSNhZpJDd4qCHai5XR0lgs65xxgreKUeq51Fe76VUwT5vd0i8gaW93ShG5YSs5kiEdbqb6XrkqiYsNFO6h0T4vCVzNUnHVgsaj3glZhMlri8BFuGdpyy8XLEa6StxEqRkmHRQf/M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ia5cs1FC; arc=pass smtp.client-ip=74.125.230.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5533859EC;
+	Thu, 17 Sep 2026 02:20:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789611637; cv=none; b=X6BlNPayR/fFPEbRyVxpUMaEqTa8AgwcuoMRCTFlZKNMrdxQ4U30/ct14yMUXMEhv3t8A83kp/G2MgW+4jEZKkB6STtHDmH6BFtwwgkr0qq+WWlolXQE/KiIXp/V3rRtQ6mvqkGu99CpyWzKKjDl8HH4aJv783UaciUpvTN0YT4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789611637; c=relaxed/simple;
+	bh=2hEhyk0s4WVmFdIupv816I4A+gouGd9M8wYttLHRGbg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ID6I/35gzwxFhIQjy3MwqIa3XJZ6/9dOrg6B56HbsNsInNp4KJ1AmNE7LQxHQ9+F8ARiBW1pdh8mQGJMSw8OFwf42eK1nhYVWFTPgxAcvb1hQU6BoPhtk6V4jbvHqUPrqss0MVRaZa15nu42tHDaDYk2ZtwqyN28+j1gCKho6gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=CPaKDwdl reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ia5cs1FC"
-Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-52fb7692a57so2438141cf.1
-        for <kvm@vger.kernel.org>; Wed, 16 Sep 2026 18:49:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789609781; cv=none;
-        d=google.com; s=arc-20260327;
-        b=sApvBSwikerl3735K6KexbjUutbsX1I7VcBw8uRhHlvkoKF1YbRpwR/YasqHOD4/fV
-         GFkpBCjyQkanUD5DOXVjA7+i/liqhwtUkLS0npt07x8w25R8S1hpugadurMLAB2/QJKz
-         iqhBVL5fhocest1SCYfAmXfgRSTOP0V9AnO02gv/eScqFrAHFRs4qtvzUqkwBvKMnN8t
-         UcC6+McG3ClG3EQ3oguWdfMj3NWSAAls/fdSRWwFNpIaT8+1NLohrFIJhEzTCESOx41R
-         TyaoGR7Z5J0oA7vzNQMtw2u7/F/TSy1E9l0IcgugG/qDlunbA4R6NCRao+ZyavOjgfdg
-         ceSA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=ijmEvQZ7YCTIw8TR2oOyYMWmdXBKTEydSXSQjwrQ2VM=;
-        fh=BE66eFjeSR0jpaglN7VyamzvTC7l3MkXRa92l8dpvCQ=;
-        b=GwZD1EWaxKIkfThu9ykpT+9CPZgpXfITmQObVvi6C0koy1cjnZeq7ntOfypjgUB8sm
-         Zw2gUw9B4CmXMW5Eb/Q2oMwP9y08F1GIu7EN67oDQOJPK5I+ulmBPkD0qrzJLTPFK+SR
-         +uSUswSmoillSRHfoWGWGXdZhkeg7Mza6jzAHMgkkFYfUW8I/VI/KRKhWVt8IMpveKNt
-         KE8Q2hI8vmjsddPCe9YZWgyKAOy84o0riuA4Oid30ZSalgIcuBnHmVy8B1Pv7gPHU1Rl
-         ObMGY4gTf+cq65eR5l1IKvz9BViRGvuuoziTeiINv2l+ROgmAsdGtYT8Eavqr45kSgPh
-         69bQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789609781; x=1790214581; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ijmEvQZ7YCTIw8TR2oOyYMWmdXBKTEydSXSQjwrQ2VM=;
-        b=ia5cs1FCjeMPM5bwFeoDaGEblifSYhLt/DQ4TrEob+Mwx2yBejR/CX/ufmzMrFORKM
-         AUdN1EuTp/TUCQiskjfP5Ipx0diLDtPUQKXknYPfLBm9RdJwVhMO8feEQAh5BPvnMSSc
-         0XbuFvxRceTjAvxuu9TA5R3DD59ubE949JId861gLOO+Nmp4S+f4md0+A7wmVE+81Yzj
-         1uMlmnqgz502nCSlidEg14/ZJkO4MAW7QAv7mDTRKQ09XG2BAKYjVh6RU272CENb67/o
-         qXtZ6fXvedbC5kyMaIxnIoRGde28fFbX7mkDFUWHreVPym3zXZK3Nmp8Kyln8Vh5iltl
-         A4Gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789609781; x=1790214581;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ijmEvQZ7YCTIw8TR2oOyYMWmdXBKTEydSXSQjwrQ2VM=;
-        b=jXIfCpVnY9tNSCj44LJWBiILPHc3OFm+1NTpVYgkZ6qQDra3uXDE3lUv04TrIeAmWj
-         IyG1RhOAHoQFwon1kMWDbShJl1jZl61eViBrMIOsM1GV3IdT6g53cPioE7MgdO3/yx4M
-         Mrm9jxo1KVxvlAMW5CConQjRCgEqsykLFoNP6Lu0dwxD2hoMxs0pxCNWrh+v9O6QYi7c
-         j+EA+K2NflMkLxiO+Ou/uHP4tZGVB/x0QtUgqksqRtN7ifIvV5ImuBKSsZi/NpdwiLnl
-         +vOH2V+dKWNWpg9Hj49XT0cDmg54Im6xZtZEMSASaOb8HeSnzXT1Uedp8KS5mbMPeDuw
-         CcOA==
-X-Forwarded-Encrypted: i=1; AKwUvBzCQ9v0bgS/+jhmcb1s94STFRrC6jc5TZTJeQ1oIFeKasbK/UuuWqXm8hYTIQmzzS1QIkM=@vger.kernel.org
-X-Gm-Message-State: AFuF++nZ982JTNjDUQwfPZYoII6PMNK31JmiajRAlVhuAOnnkPZQFhHr
-	DcGNZVaaMePkTF0WsMZHRKmOi69a3Nol3Od8Fw7TjvzsKXVGjzDSFAkGOpWnKTjd0jydj0rnGfE
-	vYKCoyMp5oP1lgF28CGbVZIOCLNgY3C4=
-X-Gm-Gg: AYBFou3eXk8DNG9yCPX1r2zQ2s3qv38DbawtTjphm5pMJlcrK2gkdoeApcX7F3DE6Lh
-	G1mxi9mtwIXZTJjTyDSJZKbCK1H5mTKOTuUYSyt1TOpYLizf06H+FElcwtVfAYr899mv/6GjG6L
-	rrf2E5tAVllAcGfX0NwyeyCxL7CIoMOb82su+iTOBXw40rMKctuc2vu6FKlU/ykCMgUn0NZs75a
-	rYrdvK16x8QYnaqkaYLM3aqg2AYpxu5zh/z/3+AuwOpEUwBA2LRHgvwETtR5XAKvrFRpshSp3ll
-	rKM0fXH5LnDgaHCGyxlSTVSV+dtzXORqXRprdwTeOk1CwlLas8KQNdgBWWkGO61W2It4KKry7KR
-	yBcQJugg2UG+AVC0WSNEKJlxDJ/cUw5iVLNc5gYDj
-X-Received: by 2002:a05:620a:6292:b0:939:78ab:3c5f with SMTP id
- af79cd13be357-93bb76e2fe8mr878910085a.9.1789609781431; Wed, 16 Sep 2026
- 18:49:41 -0700 (PDT)
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="CPaKDwdl"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B90C440E00B9;
+	Thu, 17 Sep 2026 02:20:26 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Oqanxm5HEzvI; Thu, 17 Sep 2026 02:20:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1789611616; bh=t+xhCY2klvKxUHYu8YVGd1Jq3dnIAaBznhM5u4gjcEw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CPaKDwdlQE4UQKX5VEGrvNFhWWNdZ5an+ir3VDDwOLNb6Thz2NZnvhPfPvM++nh1s
+	 VROsc8PIAf1rBld9VtHkliStCc5QOBkUfvkvLN6XzSyomnq5VgwkOnTcHJYn5y9w4N
+	 SE8zZ5Jd3EO/527Jd5FDgUJeeFgZKkqi6SWcTs0LH6a0KFHG5Ff79mpy/E/tLpu8am
+	 ZiA7szmkmZy8E+3FKpU+4Eqfvr5JMqail4qIA9Xuu6sufv7nTP2Ohx079BBbTcSCCL
+	 kzannFLMQ2DHAqs/tnDbkk9thbJ4iMfo3muzW6OBGoi7XG3n+W64ijBmTVHuwr5wIO
+	 B6i/1t0bSpSdzJFB6PmqZ1LSgp8S5eSHypxnfW+BarzoQey4PtjgDGpTWVIwcm+il6
+	 bjKC2FbBgFO4QREQRreqD+80QNfypJB6GZJcRSmvruu4RRAoTve2bwj+gKNMFhFjj2
+	 5RISMtwUxlPOqPYDNphTDxoIbghtrlNdnVdNcbmfIiv/dqOCMWNr3+1MP2KvnqZy3I
+	 6u9m+KPChF6vYRN2QhUwdKCyxQ4Q5X3ghAZENYaa14hVxAK23COKU6uaSESM6BPfc/
+	 h2my2Tpa8xQaGxnNFgyShc8qpJGhFS5mY7FESabANNs4/FR9yXHeSoVuBJRZKvqNxf
+	 C4zFsSARasged0QxHNaCVV3A=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1CEBE40E015B;
+	Thu, 17 Sep 2026 02:19:40 +0000 (UTC)
+Date: Wed, 16 Sep 2026 19:19:37 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: sashiko-reviews@lists.linux.dev
+Cc: Ashish Kalra <Ashish.Kalra@amd.com>, kvm@vger.kernel.org,
+	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+	seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	darwi@linutronix.de, linux-kernel@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v16 2/5] x86/sev: Disable CPU hotplug while SNP is active
+Message-ID: <20260917021937.GEaqtOOfbceTzNy0um@fat_crate.local>
+References: <cover.1789594774.git.ashish.kalra@amd.com>
+ <cd6962a88d691a020c2bf40fe77a6a3f3852fdfc.1789594774.git.ashish.kalra@amd.com>
+ <20260916223630.C5E1C1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260905081116.106613-1-zhiw@nvidia.com> <20260905081116.106613-13-zhiw@nvidia.com>
- <DLCRZLO06SIO.LS7TWQXIPZSQ@kernel.org> <20260914121217.70fa0d93@shazbot.org>
- <DLFD2ZDSK9YQ.3A4R66G8UJMD8@kernel.org> <20260915120148.7548a8ca@shazbot.org>
- <DLG7C7MLGSTC.2GSTD84WI595N@kernel.org> <20260916141718.GU3968357@nvidia.com>
- <DLGUPX9KPFKF.12CU304YAST79@kernel.org> <20260916162817.GW3968357@nvidia.com>
-In-Reply-To: <20260916162817.GW3968357@nvidia.com>
-From: Dave Airlie <airlied@gmail.com>
-Date: Thu, 17 Sep 2026 11:49:29 +1000
-X-Gm-Features: AcwNN1VXCeIhnNkZrtRydjWaxN4Qnt0jH2kObUrck50VuTkYeDZzVilcahg7zlk
-Message-ID: <CAPM=9twda0Q9nj9E5AUCi4=en5tDA7ReBv8MV2Ftg-STwNbDLQ@mail.gmail.com>
-Subject: Re: [PATCH 12/13] vfio/nvidia-vgpu: add the NVIDIA vGPU VFIO variant driver
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Alex Williamson <alex@shazbot.org>, Zhi Wang <zhiw@nvidia.com>, 
-	acourbot@nvidia.com, yishaih@nvidia.com, skolothumtho@nvidia.com, 
-	kevin.tian@intel.com, simona@ffwll.ch, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	aliceryhl@google.com, tmgross@umich.edu, jhubbard@nvidia.com, 
-	ecourtney@nvidia.com, cjia@nvidia.com, smitra@nvidia.com, kjaju@nvidia.com, 
-	alkumar@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com, 
-	kwankhede@nvidia.com, targupta@nvidia.com, nova-gpu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, zhiwang@kernel.org, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260916223630.C5E1C1F000FF@smtp.kernel.org>
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 17 Sept 2026 at 02:28, Jason Gunthorpe <jgg@nvidia.com> wrote:
->
-> On Wed, Sep 16, 2026 at 05:38:21PM +0200, Danilo Krummrich wrote:
-> > Usually, class device implementations can't make assumptions of the underlying
-> > bus, because they have to work for any bus. I.e. there's no other way than
-> > providing helpers and letting drivers do the glue code between the bus and the
-> > class device.
->
-> You should think of VFIO as a series of helper libraries. One of those
-> libraries is "here are all the PCI PM ops you need".
->
-> Drivers rarely need to customize these ops, they just need to wire it
-> up to the support library to avoid a bunch of code duplication.
+On Wed, Sep 16, 2026 at 10:36:30PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential is=
+sue(s) to consider:
+> - [High] x86/sev: CPU hotplug disablement bypassed on early kexec error=
+s
+> --
+>=20
+> commit ac084f2d7188c520f2ee3ced2ab76e4c068df91f
+> Author: Ashish Kalra <ashish.kalra@amd.com>
+>=20
+> x86/sev: Disable CPU hotplug while SNP is active
+>=20
+> This commit disables CPU hotplug when SNP is enabled to prevent SNP gue=
+st
+> memory from being broken by CPUs coming online without the SnpEn bit se=
+t.
+> It ties CPU hotplug to the SNP-enable bit, disabling it in snp_prepare(=
+)
+> and re-enabling it in snp_shutdown() when SNP is disabled. It also
+> explicitly disables CPU hotplug during kexec if SNP is already enabled.
+>=20
+> > diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+> > index cff285d8ad8e3..558f7924a3f85 100644
+> > --- a/arch/x86/virt/svm/sev.c
+> > +++ b/arch/x86/virt/svm/sev.c
+>=20
+> [ ... ]
+>=20
+> > @@ -577,6 +582,8 @@ EXPORT_SYMBOL_FOR_MODULES(snp_shutdown, "ccp");
+> >   */
+> >  int __init snp_rmptable_init(void)
+> >  {
+> > +	u64 val;
+> > +
+> >  	if (WARN_ON_ONCE(!cc_platform_has(CC_ATTR_HOST_SEV_SNP)))
+> >  		return -ENOSYS;
+> > =20
+> > @@ -586,6 +593,15 @@ int __init snp_rmptable_init(void)
+> >  	if (!setup_rmptable())
+> >  		return -ENOSYS;
+> > =20
+> > +	/*
+> > +	 * On a kexec boot SNP may already be enabled (legacy firmware leav=
+es
+> > +	 * SnpEn set across shutdown), in which case snp_prepare() bails wi=
+thout
+> > +	 * disabling CPU hotplug, so disable it here.
+> > +	 */
+> > +	rdmsrq(MSR_AMD64_SYSCFG, val);
+> > +	if (val & MSR_AMD64_SYSCFG_SNP_EN)
+> > +		cpu_hotplug_disable();
+>=20
+> [Severity: High]
+> If a kexec kernel boots into a system where the previous kernel left
+> MSR_AMD64_SYSCFG_SNP_EN active, and an early initialization step fails
+> (such as passing amd_iommu=3Doff
 
-It's currently a library being used as a midlayer. demidlayering it so
-drivers control drvdata removes that.
+amd_iommu=3Doff means no SNP.
 
-I sent the diffstat that covers all the current vfio pci drivers and
-that didn't seem excessive.
+> on the kernel command line resulting in !amd_iommu_snp_en, or
+> setup_rmptable() failing),
 
->
-> Stated another way - the very point of vfio-pci is to remove
-> duplicated code from the drivers.
->
-> So if we wanted to push hard on removing drvdata, and don't want to
-> touch the struct device I would probably say to #define up a way for
-> the driver to build its unique trampolines. It wastes a bunch of .text
-> but at least it doesn't duplicate code.
+The same happens in that case:
 
-+static pci_ers_result_t hisi_acc_vfio_pci_aer_err_detected(
-+       struct pci_dev *pdev, pci_channel_state_t state)
-+{
-+       struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
-+
-+       return vfio_pci_core_aer_err_detected(&hisi_acc_vdev->core_device,
-state);
-+}
-+
-+static int hisi_acc_vfio_pci_runtime_suspend(struct device *dev)
-+{
-+       struct hisi_acc_vf_core_device *hisi_acc_vdev = dev_get_drvdata(dev);
-+
-+       return vfio_pci_core_runtime_suspend(&hisi_acc_vdev->core_device);
-+}
-+
-+static int hisi_acc_vfio_pci_runtime_resume(struct device *dev)
-+{
-+       struct hisi_acc_vf_core_device *hisi_acc_vdev = dev_get_drvdata(dev);
-+
-+       return vfio_pci_core_runtime_resume(&hisi_acc_vdev->core_device);
-+}
-+
-+static const struct dev_pm_ops hisi_acc_vfio_pci_pm_ops = {
-+       SET_RUNTIME_PM_OPS(hisi_acc_vfio_pci_runtime_suspend,
-+                          hisi_acc_vfio_pci_runtime_resume, NULL)
-+};
+        if (snp_rmptable_init()) {
+                pr_warn("SNP: RMP initialization failed, SNP cannot be su=
+pported.\n");
+                goto disable_snp;
+		     ^^^^^^^^^^^
 
-is how much code it adds to current drivers, this doesn't seem
-excessive for 10 drivers,
-like you could obfuscate it a bit with some macros, but I really don't
-see a lot of value in hiding
-what is effectively just standard driver boilerplate.
+Does Sashiko not see that or somehow it ate a lot of credits so it cannot=
+ use
+enough now to "swap in" the whole context... if that is the AI that is go=
+ing
+to destroy the world, then I'm not too worried. :)
 
-Dave.
+Or is my AI failing me right now?
+
+:-P
+
+Leaving in the rest.
+
+> snp_rmptable_init() will
+> return -ENOSYS before checking the physical MSR hardware state and
+> disabling CPU hotplug.
+>=20
+> Because hotplug remains enabled and the CCP driver skips initialization=
+ on
+> failure (bypassing snp_prepare()), could a subsequently hotplugged CPU =
+come
+> online without the SNP_EN bit set?
+
+Yes, but the above disabled all our intention of running SNP in the first
+place...
+=20
+> If this results in a mixed hardware state, does it violate firmware
+> constraints and cause fatal RMP faults when the new CPU accesses memory=
+?
+>=20
+> Should the hardware state be checked and hotplug disabled unconditional=
+ly
+> before the software configuration checks?
+>=20
+> --=20
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.178959477=
+4.git.ashish.kalra@amd.com?part=3D2
+
+--=20
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
