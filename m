@@ -1,58 +1,59 @@
 Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012060.outbound.protection.outlook.com [40.107.200.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C844E325C
-	for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 15:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581865476FC
+	for <kvm@vger.kernel.org>; Thu, 17 Sep 2026 15:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.60
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789657666; cv=fail; b=QuHdlehb1ESn2pu/zKbzCARfiWzEcXXZuyzBrK8YWb6NrpAlZHrnDpAax1ZCGTblTUv8HQ/RXSmdDrYqCe8Vyrmb8sIJ/9oUC5n/DBl9BsY2uOLgtRoobfwywg4wLnkXxACc0ieFJwDx3qW4wLdGv/JlZ2hz4oGz1vurLRSLTag=
+	t=1789657686; cv=fail; b=rUZsrr+Zt5FrDdsNJIUHC0WzeENV9Uw3NQveOCDYfEGOR4NmHqCrXUjSNjODtOpHWU3J9ytvtld4xvXoj8wm8g3EuGvtEkh0CXolHDZOAj330F0lS7Y2TEZO4EagFT183o5XYeeIxhRpw6OlPbLiYZbN9b+NNWGTAPfTd5Gweoo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789657666; c=relaxed/simple;
-	bh=YpNk4pHfxQCVpmKYGksZd3K+R664z4OwCOd1miIHXPs=;
+	s=arc-20240116; t=1789657686; c=relaxed/simple;
+	bh=41p1Cfv3gekpUtFNVjnN9GHs0vyUNt8jjXXvj3QdBCw=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=J9HScYa24iknjHh77+G/w/GV5GB9eSS+sKIsnu4OShuOldIDT8cMwxB5c03h56lHtdt86xPZ/3JhR7uNNe/ZZsHZyCsucSyK5vH4LZ7lYvyyc8Y2p70bqBPhYfSg1NoPtK7bI0CPMTahLmlht64LDT1qVt9iDrDYoUgPdz6xang=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=hHUtG1/9; arc=fail smtp.client-ip=40.107.200.60
+	 Content-Type:MIME-Version; b=GSEIql4qvFlyhcXlkipqFtwD4FA+5FgwZMaawm7UEyGQR/DGNjNfgyK8kJX4KN7vahhW+Yrtmf94pkNftRK0pUo3aEbTDmN6wYudIdYjSNoVVi1Ta13XHbDO1k/9fWkvZuMwH5MBTrwwXiWAS8mPahyUA2ddP3rkPomQVfnz8Yk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=TRIrrU0T; arc=fail smtp.client-ip=40.107.200.60
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="hHUtG1/9"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="TRIrrU0T"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YxWVHTfRoMl2IhnyfZYVbwYC7TKtaiNU4VwTX1dUbpZmxfS7W6orC2oDKJxQ/Ef8fQA0+fktGjV6T3BDSr3LZjrcsXyGh78ZL8LBGbcw3deVNCerDuTLvFHZczPf/foZWtv6KYYcuPjFGGwA3beS12hBlbzOm9ey751RU4Mn0NFGub7FF3njESb+ntY2GpeXwQe+IAp+zLGlA3Q6av65Yx2No511Hxozj7/gkgjBrLYHnvTyBy1ixXfUoQ1WZSEuDm9O01fSmfyPsydtPM5ZYz3K1xJY4WOT/NE6eo3dVtLtvgJYcbyeEh3tixQFMmT4kD5mRHgAcKdr1QmgYqBs1w==
+ b=SvRYjcS4zkt+eDh/pa9g6i2LJaoeR/Ces56LTLuxlgVbu4M0xEMOcAiCYpyjpRLkjFAbd29rUFJJeGYjui6LwfiWB9qNuDVaIl8oWj8vTGS9tix9RxhkhwU7ee849G5r5itHCUqTu0SNcK7PcbWUmQX9w7xSty0PpdIQ1B6tsXQ+DeBQmY2jraYSPvZj7aeYXGLBg3sG/02uJfN/EPHsdHzU+M6ybnUdVP4qZivC8HqgimXhLmdeEczxpL379sw5EWMlo2NW7QK7NWDyV1tjCohHlfdzKI+LDcNRUNMEghCHh/53DstbIq0pqPgb0GO+Dvuds2mrHcyY2wPr87onuw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZpeEOiEtEwbqUt04pig8Qa9MsVrqsyY9atddECtUbJ8=;
- b=Ya6l9a5sCbL2FrvtBTbSFlYcXjDSkHUmmCUOMp9sOTEWastQUuGAWm9ZRG0ZEqDCvR/xmSRlnD6QNK74gkXDQBqonz60szGH5O8KSgfFu4mJriRGhQEC3XB1XJY08bSpj1I8l7RfoWz1Ivt5PHy5h18ox5048I/oqlvEUrCi5v4Nj5UBV0jmbZHqgt3PGVztAM1ugG3YrrjqLmbbHpA7rIYqYgV0IdrmfcvO8vYdMeScWH/xhqPgbn4kfZfjWjlnJF12yJndYpCdZx8/r4JpVuUO9MP/DXVZ4Mm7gRxwLDNcgxB2sjT+B1PbIQHWHDGhE/Qy4yqIy+KNBmNK1lRpwg==
+ bh=7HXkVrRORe1bu7HBDEia69j5JMx8TRMSckUvvBhPCtw=;
+ b=TJgarkfprMi697QfTQF0w3EV1KCb1PDiQ/9Hnp2yaIoEc4/3lJ88j8/2RT+KR3xV/i+8Uum827vjpM4jbFovq9Hs8RNszSlznJW+i9euBBmuPr5ir/jJmWD7UZcoT/s1JjFs60KHJXP+cNyKaIxfNdHj0PMqAPdzyHjk9h3lQedDZ8pyvnjTzNaljxaHTYqeFPEDWg+C/vRczfB9LbGZnuYVh14zph12qvkEJTLdV/UM8BhWy5DNWEwksNFCtNbJrqgSaSnXbAhSKb6E6gNJD8VBVc7VYMyhGrpeye59OnnPNjmWPsdYO2uZEjivkq+uckABZjepBo3PwRp0JNbn8Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZpeEOiEtEwbqUt04pig8Qa9MsVrqsyY9atddECtUbJ8=;
- b=hHUtG1/95J3DtNwujeqY99Rjq3+vie+k1ifSyj4VYPw410C6+NhH+qJRRhPrDcEPQQ6d+EV+ad1ReZbk+UUWBgmq+TV6jxsfhY1HHGGarmibjakY4yMjWN3t/JK6ewGwXdbN1V0qF6KgEswFAvOXbCOU2oNGEqhkTqO004Y5baA=
+ bh=7HXkVrRORe1bu7HBDEia69j5JMx8TRMSckUvvBhPCtw=;
+ b=TRIrrU0TW2yXSAo9DitPSrUsIRKENSGkjnb0mS65w53y9b9JarEM6xgB4tgqouL32ydCCDNExNHb3fooQtZj50whk/cHA+RFfha8vgBE8wOUlr9roBtYylwxkBwrcUcCqjC75mt33Tw5q+ZMRvWxFtLa56swaDQITm+Ah4kwQ7E=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from CH3PR12MB8660.namprd12.prod.outlook.com (2603:10b6:610:177::5)
  by PH7PR12MB6955.namprd12.prod.outlook.com (2603:10b6:510:1b8::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.11; Thu, 17 Sep
- 2026 15:07:25 +0000
+ 2026 15:07:29 +0000
 Received: from CH3PR12MB8660.namprd12.prod.outlook.com
  ([fe80::87aa:52e5:4b72:d5f3]) by CH3PR12MB8660.namprd12.prod.outlook.com
  ([fe80::87aa:52e5:4b72:d5f3%5]) with mapi id 15.21.0406.007; Thu, 17 Sep 2026
- 15:07:25 +0000
-Message-ID: <ecbb6fb8-fe61-4028-880b-245f94db0f9f@amd.com>
-Date: Thu, 17 Sep 2026 11:07:23 -0400
+ 15:07:29 +0000
+Message-ID: <639ea1d1-76d5-415c-93f4-e516d6873718@amd.com>
+Date: Thu, 17 Sep 2026 11:07:28 -0400
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] KVM: SVM: Re-queue events that were never injected
+Subject: Re: [PATCH 2/3] KVM: SVM: Add host support for Enhanced SMT
+ Protection
 To: sashiko-reviews@lists.linux.dev
 Cc: kvm@vger.kernel.org
 References: <cover.1789399214.git.prsampat@amd.com>
- <d946de080e3dd34844a665c167179e4910fdc9d4.1789399214.git.prsampat@amd.com>
- <20260914171628.8A4631F00893@smtp.kernel.org>
+ <df22a9879871f5f926ff74b203e06b58ed505503.1789399214.git.prsampat@amd.com>
+ <20260914171316.43BC41F000FF@smtp.kernel.org>
 Content-Language: en-US
 From: "Pratik R. Sampat" <prsampat@amd.com>
-In-Reply-To: <20260914171628.8A4631F00893@smtp.kernel.org>
+In-Reply-To: <20260914171316.43BC41F000FF@smtp.kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-ClientProxiedBy: CH0PR03CA0236.namprd03.prod.outlook.com
@@ -66,158 +67,226 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH3PR12MB8660:EE_|PH7PR12MB6955:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4cb7fd09-c9fb-4f74-4d5a-08df14cd61f9
+X-MS-Office365-Filtering-Correlation-Id: 0125e761-75b6-4566-b2fc-08df14cd642c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|366016|23010399003|10067099003|4143699003|11063799006|22082099003|56012099006|18002099003;
+	BCL:0;ARA:13230040|1800799024|376014|366016|23010399003|10067099003|4143699003|6133799003|3023799007|11063799006|22082099003|5023799004|56012099006|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	sBQHEIp0hPDVquJTlIPMpbOq+JbI4jesZmbU1kv2JfmyQ8v3ZSDXhbrChhjNiLhxSybgOU4vTezWBiaHht8TPA1/olCH72weFMi0zuXMe2TylF6e+AajR9jXwIU2/thwd8tVN9kiVKwwanJz/Q8INQ1PNwGr5Q8GFVs6wVXuCILgeSwbjKlIqmnVVYENu4/aSsmaDv7ogYSMaHAftNlWlQc48wAIoOorYrQIP8uReDgNEHaeAlYzCCPfqHJbqk95mxQMNhIXfp0hR8J7pfO36wDmh+wOJT44F7uldqkJtp5sSiVfLFZv4N/W8zp+SPpqAEWm4y5aLecVZcn7b44Ze4onXawreidsEhXiR1o8nW8OD3jrZcjN5LfCy01Y39MhVwwBukYj9j76CES1tEkyht9fCmd/uHJW8nVmAdXF27ulKzb8PvdlvyyBbj0b/kDGEn8q9ze3o8WX6s2SUQWAc6rO5US13W20ssZ9Z1bvvy8HMpF5jwZ1UxvNuZMw9FAFHVHQFilZJO7xipXmgR2ZycEaViQvN7fydnTvqYczSpPuGgn4yZ92NpiSjrvsesZ9Ss8L3qcEBc0TXELcyAouqa7o2KqvJca5pfGtTydHVTA=
+	4CliXO7oFBcfGDlsQ+lH2EsDHlhyxBE/onV6gHY7Io9MJKgF1AAsVZvDW/Z76T37cEfnobiSE2Zau97c/yT1j975JDhhyWU12VPLk2JKLAY7rbzmUBpvlmlNpkmF1OT6cbIWVk2Cfd8E4qojQMJi+AxYqT+vSh2ftf7NL1zqy4KXrXhDqTQ2ecFHUdd9f+H9BzFjuZwLTHg5QGlaOf6cH8TG/HXXao2Y3Wci3Zui87BjBcpr9+q1AcTepHmhBLR5/5jZYYRR7bU1i6q0d1Asntw4vSv95BmEGi9b6LylOA2S9A/Tp53FgvMpcqdk2lLANeErudGz7CwaC0hPF1avcfwU7Sac8JSAvRwzMC9IXqpvgHqlsE9hqq1rf9lp0qZyC8m+Wgf+AB8oW6ujIYhFqnLP+lhPPkXZVGSWznHIApbkVq30jQP83/oeOFxUwpIVC6fxUGkenkgI0v/lGkATrKJSvBpYyBLDFI/alCpvXs5s+8w2hwoSZ9Q+ndnIy9hqXrZ1AnCnVkecZkxVI+NEAcyUl7M55BiaGR1irIwwVCQUupSjlgXEiooAmygJ3cxI1DUlF34zPeXfee9QSfZGpkszxLJqS4bSU6YfgIWVChc=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8660.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(23010399003)(10067099003)(4143699003)(11063799006)(22082099003)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8660.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(23010399003)(10067099003)(4143699003)(6133799003)(3023799007)(11063799006)(22082099003)(5023799004)(56012099006)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TVVkL0poMXNSSnFBL01rNmsxYVdUakdVMFozUy9zb0dvSVNUeVhXWUNyM3Qv?=
- =?utf-8?B?U1cwM2o3WW5YMW9yaFh2eHRaWnhBVVh1UVBkZEhiWTFPbm5QV2VweVkweVNj?=
- =?utf-8?B?cWJYUS9ZL3BiTWVYRk9nT1VYTkxSamlmT21VQjYwVUJRQUNUbThKcDZrZzV6?=
- =?utf-8?B?SWRaNW95RFA5cFBYZnVjNWNPUG9GWS9yMSs0RnArWWQranpDTW9EdlQrbUls?=
- =?utf-8?B?WjFQMmF6WEU2MkFCeURWQm5SNWVOL3I2TXZQTlhuTnVwVzJIZmJJcW8ybDhP?=
- =?utf-8?B?YnlodldPVU13VnlGU0wxNFUzRU1zcFdIc0FzT1d2MEhUTmdtQVZJSkFvaXc0?=
- =?utf-8?B?UmhzczdvbzhIZWRVV0dLYlQrdXovTVlvdStCcGtLQWhTdDZQTjRXNnN0Smpu?=
- =?utf-8?B?UllLRW5xWDdiamw1RjRySW4zYlJ4MUo1R0dLRDdXbEtEUk8yNzdwTXc0SkFM?=
- =?utf-8?B?L1JSMVhFRVMvdEVLMWpiWXVtNTc3MHB6S2pkQXUxV1JaaENNQ0k2bjcrQlpH?=
- =?utf-8?B?L2ZSLzBwcDBldk9sTFFmZlZWZnFKQ20xQVBCZFFyN3hKYXV0dW9sQ0Q4SXB5?=
- =?utf-8?B?NHFiR1Bqdy81Yzh1czdHVGNpVm4zSjBIZWR6ODgvK0p5K0ZidjRJamE1dDZS?=
- =?utf-8?B?SjFrN3RrS2VxMldJSklzOHlnajNMNEg5WUErcU4zVmUzSUlYSGs2dGx6SFhN?=
- =?utf-8?B?K1VINS9PMng5bGdId1QyUTJOZkUrVHNpY3VUTUJXZ24rWFR1dVNNUi9Yd2N1?=
- =?utf-8?B?N0xmVXhKMnE3U3VnMTg5NWNXc05QRHRLaWN5MHlpTDhVOVFpWXpkWjlsZ2hs?=
- =?utf-8?B?VDZ2T2JZcWRCTkh4ZUpRclh3NVhXRnhib21vRjNSQndBd21sSUEwdm11bWR4?=
- =?utf-8?B?TjA5QkZhTmgrQ0NUZk1zbkFqTmJyTnQzUG1FV1pLeEJ5Tkx3MjdlWDc2VE9s?=
- =?utf-8?B?cnIyVCtEd2pVWmF3UU15MEg4bEV4elJRUFZUNWxrUXR0bXRlOG1WdUJ5Yzdq?=
- =?utf-8?B?c1JUTEpaejA3ZjJKTWlvNVlVT3lJNWFVaUMrVXg1RElJZE8rOWtEWUd6RWha?=
- =?utf-8?B?SXFQSGFhYkFJMEFnU2l5RzZFUXVzSlRLMDNTNXM2N2I5OGpmdnN1b1N4NGxX?=
- =?utf-8?B?T2tZSE55K1NkNm52ZFBNbi9uZzdpS2s5N3J1Y2VzOVRndERrQWJOMUdHanNm?=
- =?utf-8?B?dmdyS3MzZmRQQlNEYUxqaWhDVVlhbHlqWHo0cHRmd3J6RSsyVHJlNFpkZkZE?=
- =?utf-8?B?TUdPQWlIZldKWE91NndqY0NFR293K2NEcXNnWFl6dHptQTBSLzhLUVJRN2Ri?=
- =?utf-8?B?UWNBZHpxYXE3N0RsWHFaWS9xQkRMQ1kvc3lCTlV0dzMvd2tuU2VsYU1EMHFk?=
- =?utf-8?B?MEFGQ21xZS9YSWZmY3BDditBdEZwbTU3K2Y4c3ZaWG9KajgremlrVkx6VmFU?=
- =?utf-8?B?N05jZVhJcWVHZzNSNm9waVhjSE5zVGluclpzOHFOS1V0QnhwVWhZTy95OGRP?=
- =?utf-8?B?a1BNaENQUStWQ0F1MmxDbVZFa2RUVW5pZ2lHRmpmODZ3Q0MzWnBSRG1NREQ1?=
- =?utf-8?B?dHdwSWRKRGtteG5vWHBVMnRBRDEzdVBJdFZEU3RBd1p1elZ1M3FXUFNKdDZJ?=
- =?utf-8?B?TDhkVWpOZWRqZUxnNDcyTW9hcS9vN1RkLzhyNkYzUk9xQzVaejZpSENvUXpn?=
- =?utf-8?B?VzJQTmFzS2xWK3pnTjdYUHlRTis2VUVqSGlnemk5TzU0RFJiYlYwNGJMUGJP?=
- =?utf-8?B?clJLYjJnbWlYSHRqUzIzQzBPTDhheE85blhWcmRLcjMxcUg3QlN3LzZiaE9u?=
- =?utf-8?B?ZU9neGJhN0RiNDF5N0I1VkRZbXRzanNmNmNLRy9mU1I4MjhHUmZhYWtZb0tM?=
- =?utf-8?B?SlIvbVRIbldIbEl6dlZUK1ViQUo3TWNNSkhjKzVPMFkvbmFGYWpQN3ZVVFBO?=
- =?utf-8?B?cjRHTHJNUkFaVTFKa1BXdExveTBHeHorcEJmc2hEdHJZYU1KR1VpdlNOUGtC?=
- =?utf-8?B?dGt3QVNNWk04OTEwcTQrTVV5Um40dXVzSitubHNnMksvRzA3ZVAvS1pkTVNT?=
- =?utf-8?B?WDdIYWI4cGpZUnNKamxRM0ZHMS9IT2p1VUtmSE9QWUtmQ3E0UkZXK00yajlv?=
- =?utf-8?B?anhpM1RPenFzQ2xEam1tWFdPNzZ0TVlkMm9JZWlYK094dDZFeFgwdVhWbXR2?=
- =?utf-8?B?bDR1bE1NRUxyeS8xcXhrM0dvQmJaVm9sS2xCcit5ZmN6Ry9WY0pOUjJ6R3lC?=
- =?utf-8?B?eUh0V0hQT0ZRRStxSkovTGNaYnA5TmZpTE0wa05FZnl4UVdEcjFaWFVmcHV1?=
- =?utf-8?Q?JUYsRB6kqMLTHqAN1v?=
+	=?utf-8?B?UmdQMm14SmE2bzlFV25abG8zMmJ0RXhFM3F4bjBxdGZKb2wyNSt0ZnFpRlZt?=
+ =?utf-8?B?dy90ZE5MU1JmUEZEbHEyeFRVSWcyUzRDUXFWQXBabi9JbHJra2lBY0F4VFBP?=
+ =?utf-8?B?dk9ObktlaTRoeG1TcGJEZXUwSmZ1UnB5cGI4UmZvRno5ZCsySXhiNGttYUpU?=
+ =?utf-8?B?eCsyWUh5U2tKenBkcGYvRlIrREZ1dUVrbGpTOXNjMUd0bjJwd0F1QU96NlhF?=
+ =?utf-8?B?RDVBY05Hb3RUblJhRHFBUWhWVmxqWjlYclhOUDZvZEdWTVUwTml0bEFNM2RN?=
+ =?utf-8?B?dThzVC9DTjlmT21LNTBkTGt0TDNHT2Y3SHJXdWE3NWUzbEtqZFJJZzlpQ0tQ?=
+ =?utf-8?B?SGVPNVJCKzlwRGt1dDQ2VXR0UDNwbmVQMzlpMzlTU3BGajFVbERLT1poWC80?=
+ =?utf-8?B?UVdLTFFGWUlFa3gyREJwUkxQdWNsdlJ0UmFBaHArcU1tMm5qQkhsT0w3VFdx?=
+ =?utf-8?B?UHkycThHVEJhM2NJUUJYNVRmcnZZTE9mNUszS0dkSzZNOGpjWWNVNjlSaGxn?=
+ =?utf-8?B?THZzZUJhVEpqOHoyNFYrSVlIZCs1QXFpVzljSldJVy9WOG1adXNJVW81UnB0?=
+ =?utf-8?B?VVdVSjNrTS9VZG5mRFBTQ2pnZFdnSmxhUzl4SkVzaE1jZllGS1M5ZE40QmhX?=
+ =?utf-8?B?K3ZlVkd4OW5LZkZRak5XRDNEckNDU1lGUHJkYUx5cEcvN1Zna0JVU1hmUENI?=
+ =?utf-8?B?NjkrT2RiVFVObHBRNndqQ3V5YXg0VWxocSs2SjhsNm1sWCtnaVB4dVZ1amxL?=
+ =?utf-8?B?VUdsbG9MbXEwdllVRXJxVk5JcExYQTdBS0dscm9GZHJEanB5SCszWFFrR3VS?=
+ =?utf-8?B?eGp3NzVBVmFnQy9jbGJUODNvSWtZc0pnbHBLaDhDcE9KdkxWeUdnelFUWVRh?=
+ =?utf-8?B?b0xpby9DS09naDRDU2NUWURGd1NObFh1QkMvZlo2QnJFbGJXUUxuZThkTlpG?=
+ =?utf-8?B?TExBT3BnaUVMbEhiSzZES2EzcGxmVXFnM2g4WDV1b2VRWmhLZ01qWDZSeVE4?=
+ =?utf-8?B?VE5QdFFIcjNzd2JZT0RvOHA0bFp6ajdyN0c0aHR3d3FNdVdZYUIwWEpFeXBH?=
+ =?utf-8?B?cmdXUXV3aThMU3pVQW8wZ1ZYOWJ3Sk9rY0FxZzVhV1NhNlZDdVFtQXZtdENK?=
+ =?utf-8?B?Q1VabE9VRHdySkdKT29uakI0VHNzaG9halZERTBMSHRSQ3ZWUnRIR2tBUUZ3?=
+ =?utf-8?B?WU5hWktRMFFKZmk3RFlINXRJdUVGNitLb3ZoMWcrbTJ1eDl4S2lORG0xb2RM?=
+ =?utf-8?B?Zy9yZDd5M1doSkE4KzJqOHZQNDJHU3VwZzRzdWl5Zkw3VFRIa3dNcFErV3Z2?=
+ =?utf-8?B?L0pYVmhDRHIyWEtYNkxtY3U0aXVhVnQzWU03U1pDNjZXTzBDYmlWMnljMjhz?=
+ =?utf-8?B?cjFTaVNla255WTR5bmVpeUlBMnpVZzIvQ2YzU1hkb0JpQVhCT1FQbjd2NmZr?=
+ =?utf-8?B?eFEwVFIwempxRWV2YWdyOHlHV3JLaUp2M2ltN0J6cHV2R0RYb0lxd09RTzNC?=
+ =?utf-8?B?N1VoSXQ5UUxla0Q1VnA5V0ZQeUtYK2JrYlltMVBpeTlEOFRWQWs0clR2Wk51?=
+ =?utf-8?B?RkE1cWhFekRwd0JBUlJsMjF2NDFwRW9KMTl6SkNxelFpYkpQOTZYWEZjRW5S?=
+ =?utf-8?B?UEp1SlNyZFpqRzFjaGIzS05Td1RMc2VhVWtMbWlvRUNyQ01tTUdqY2R6UWVL?=
+ =?utf-8?B?UDhITEpUVC9aM0VId0o0STNVbTI4aGpselBDQjJGdWEvU2NuVzlqVS9UZVQ4?=
+ =?utf-8?B?dUg3WEU1WTVRbHpIcjBGYUNTSndIKzVtejQ0M21JckxkMi9tKzVmTUF5T2Ro?=
+ =?utf-8?B?QWpVTnh0RGlWeC94bk1UUWhIRFEybzBmVUNWSmE5RStyR1Z4RGlGeEJUSDA4?=
+ =?utf-8?B?UDB3cEY0MzRPeGsrKzV6ejB1cmFwY1hVSjgrWkE1N2pjby9MeTgvd2pBK0k0?=
+ =?utf-8?B?N2Y2RlQ5TjdEM21pb0hGVHN6SGdZZEwxU3FHNWMvTEFFeXREcTJEeDZFSGlX?=
+ =?utf-8?B?TlZNbzhvOGNpYnFZalM4Q2VKSEUvK3BabGNpM3pqQnUxSG85bUhBVW5uOWRY?=
+ =?utf-8?B?RFZ0WWhNVWx4eko1ZzliMCtRYWpCajhOOS9nQmJYa2Joclgxbk5sb3BQSkN5?=
+ =?utf-8?B?emFjMTV3RWplMDlvZFhsbWVsMVNVMUNSdW83aGRPMmk2WkFBemhaUWR2bHEv?=
+ =?utf-8?B?bGovRG9oOG5qY05uVjNJUytsbnFXS3VaYkFCM0ZLQ001eXlRL2ovdExrTU9O?=
+ =?utf-8?B?akRjTGpXQWw1dmkxZktYUTNqcE5iY0F0QmYvVDJCcVIxMGNrQytBWnJUejB5?=
+ =?utf-8?Q?efByf4WQ0tzze9SHOO?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4cb7fd09-c9fb-4f74-4d5a-08df14cd61f9
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0125e761-75b6-4566-b2fc-08df14cd642c
 X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8660.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 15:07:25.6581
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 15:07:29.3422
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iCCeTu4zHBc+tMzueTXMKobXU7+5CLfkE9d6shNMR4wZaALHJlMSj6Q7s8U/2T3j9qxvp3LVXdXSrOB/W3UYgQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: qA/uzeftzjsMtJzgzt8p/PMNu+RKSfT/ikiQmAmz1ih4CgvZb+G2zu4+xMTTr8/kl7oWcZ3wJvaEI48G5rEDGw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6955
 
 
 
-On 9/14/26 1:16 PM, sashiko-bot@kernel.org wrote:
+On 9/14/26 1:13 PM, sashiko-bot@kernel.org wrote:
 > [You don't often get email from sashiko-bot@kernel.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
 > 
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] svm_complete_interrupts() incorrectly checks if (control->event_inj) instead of the SVM_EVTINJ_VALID bit, which can silently drop valid hardware-reported events (like guest page faults) by clobbering EXITINTINFO.
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> - [High] MSR_AMD64_IDLE_WAKEUP_ICR is only programmed for online CPUs during module load without CPU hotplug locks, breaking ESMTP on hotplugged CPUs.
+> - [High] Immediate retry on ESMTP_ILLSIB and ESMTP_TIMEOUT exits with cond_resched() causes a kernel livelock and violates SRCU locking invariants.
+> - [Medium] Missing teardown of MSR_AMD64_IDLE_WAKEUP_ICR on KVM module unload leads to permanent spurious IPIs.
 > --
 > 
-> commit 50716e3ba11eb9d000a0186ffad984ac08df1dcb
+> commit 6679aa4cd87f7de484f6cabf547ea6d6220bfceb
 > Author: Pratik R. Sampat <prsampat@amd.com>
 > 
-> KVM: SVM: Re-queue events that were never injected
+> KVM: SVM: Add host support for Enhanced SMT Protection
 > 
-> When injecting an event into the guest via the event_inj field, a non-zero
-> event_inj value on #VMEXIT means the hardware was unable to inject it.
-> This commit adds a check to recover potentially lost interrupts by detecting
-> an undelivered injected event and re-queuing it.
+> This commit introduces support for Enhanced SMT Protection (ESMTP) to protect
+> SEV-SNP guests from SMT side channels. It adds logic to program the host's
+> wakeup IPIs and handles three new non-fatal VMRUN exits (ESMTP_ILLSIB,
+> ESMTP_TIMEOUT, ESMTP_RETRY) by yielding the CPU.
 > 
+>> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+>> index 944aaea6501f2..9bafb671a8b7f 100644
+>> --- a/arch/x86/kvm/svm/sev.c
+>> +++ b/arch/x86/kvm/svm/sev.c
+> [ ... ]
+>> @@ -3045,6 +3059,30 @@ static const char * __init sev_str_feature_state(bool is_supported, bool is_usable)
+>>       return is_supported ? is_usable ? "enabled" : "unusable" : "disabled";
+>>  }
+>>
+>> +static bool sev_esmtp_setup_wakeup_icr(void)
+>> +{
+>> +     unsigned int cpu, sibling;
+>> +     bool wrmsr_success = true;
+>> +
+>> +     for_each_online_cpu(cpu) {
+>> +             for_each_cpu(sibling, topology_sibling_cpumask(cpu)) {
+> 
+> [Severity: High]
+> Could this break ESMTP on hotplugged CPUs?
+> 
+> This loop only touches currently online CPUs during module load and does so
+> without holding cpus_read_lock(). Because this is a one-time invocation
+> during module init, any CPU brought online after the KVM module is loaded
+> will lack the required MSR programming.
+> 
+> Hardware will then fail to wake the sibling upon CC6 idle, causing VMRUN
+> to indefinitely stall and trigger ESMTP_TIMEOUT exits on those hotplugged
+> CPUs.
+
+
+Having is in the svm_enable_virtualization_cpu() probably makes sense.
+
+> 
+>> +                     u64 icr;
+>> +                     int ret;
+>> +
+>> +                     if (sibling == cpu)
+>> +                             continue;
+>> +
+>> +                     icr = (u64)per_cpu(x86_cpu_to_apicid, sibling) << 32;
+>> +                     icr |= LOCAL_TIMER_VECTOR & 0xff;
+>> +                     ret = wrmsrq_safe_on_cpu(cpu, MSR_AMD64_IDLE_WAKEUP_ICR, icr);
+>> +                     if (ret)
+>> +                             wrmsr_success = false;
+>> +             }
+>> +     }
+>> +
+>> +     return wrmsr_success;
+>> +}
+>> +
+>>  void __init sev_hardware_setup(void)
+>>  {
+>>       unsigned int eax, ebx, ecx, edx, sev_asid_count, sev_es_asid_count;
+> [ ... ]
+>> @@ -3221,6 +3259,10 @@ void __init sev_hardware_setup(void)
+>>
+>>       if (sev_snp_enabled && tsc_khz && cpu_feature_enabled(X86_FEATURE_SNP_SECURE_TSC))
+>>               sev_supported_vmsa_features |= SVM_SEV_FEAT_SECURE_TSC;
+>> +
+>> +     if (sev_snp_enabled && cpu_feature_enabled(X86_FEATURE_AMD_ESMTP) &&
+>> +         sev_esmtp_setup_wakeup_icr())
+>> +             sev_supported_vmsa_features |= SVM_SEV_FEAT_ESMTP;
+> 
+> [Severity: Medium]
+> Will this lead to permanent spurious IPIs when the KVM module is unloaded?
+> 
+> MSR_AMD64_IDLE_WAKEUP_ICR is programmed globally on all online CPUs to send a
+> local timer IPI when a CPU enters CC6 idle. However, I don't see a teardown
+> path (like in sev_hardware_unsetup) restoring this MSR to zero.
+> 
+> After the KVM module is unloaded, the CPUs will permanently continue sending
+> spurious local timer IPIs to their siblings upon idling, which could cause
+> host power regressions and prevent deep sleep.
+> 
+
+Described this way is likely not possible. If the KVM module is unloaded, an
+ESMTP enabled guest cannot be spawned. The ICR only fires when a VMEXIT routine
+of a guest with ESMTP enabled, when a sibling thread is still executing guest
+code or still trying to complete a VMRUN.
+
+I could clear the MSR in svm_disable_virtualization_cpu() but I don't think
+that is needed.
+
+>>  }
+>>
+>>  void sev_hardware_unsetup(void)
+> [ ... ]
 >> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
->> index d0971685034b9..e2be2cd86c320 100644
+>> index e2be2cd86c320..0b128f7911348 100644
 >> --- a/arch/x86/kvm/svm/svm.c
 >> +++ b/arch/x86/kvm/svm/svm.c
 > [ ... ]
->> @@ -4323,6 +4324,27 @@ static void svm_complete_interrupts(struct kvm_vcpu *vcpu)
->>       svm->nmi_l1_to_l2 = false;
->>       svm->soft_int_injected = false;
+>> @@ -3732,6 +3732,13 @@ static int svm_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
+>>               return 0;
+>>       }
 >>
->> +     /*
->> +      * Hardware clears EVENTINJ field when it injects an event.
->> +      * A non-empty EVENTINJ on #VMEXIT means the vCPU never entered guest
->> +      * mode, and thus that the event was never delivered.  Migrate the event
->> +      * to EXITINTINFO so that it's requeued instead of being dropped.
->> +      *
->> +      * An undelivered event doesn't imply a fatal VMEXIT_INVALID. With
->> +      * Enhanced SMT Protection, VMRUN may exit with an ordinary #VMEXIT
->> +      * without having injected that event into the guest.
->> +      *
->> +      * Clobbering EXITINTINFO is safe precisely because the vCPU never
->> +      * entered guest mode.
->> +      */
->> +     if (control->event_inj) {
-> [Severity: High]
-> Does this code silently drop valid hardware-reported events?
-> 
-> If an L1 hypervisor sets event_inj to a non-zero value but leaves the
-> SVM_EVTINJ_VALID bit clear, hardware will ignore the injection and won't
-> clear EVENTINJ.
-
-
-The first half is right, nested_svm_check_event_inj() intentionally returns
-true when V is clear, so vmcb02->control.event_inj can be non-zero with V=0.
-
-The second half isn't. Clearing EVENTINJ is not part of injection, it's part of
-#VMEXIT, and it's unconditional. APM vol 3, VMRUN:
-
-  Upon #VMEXIT, the processor performs the following actions in order to
-  return to the host execution context:
-  ...
-  EXITINTINFO
-  clear EVENTINJ field in VMCB
-
-KVM already relies on this, nested_svm_vmexit_update_vmcb12() zeroes vmcb12's
-EVENTINJ rather than propagating vmcb02's, citing the same thing.
-
-
-> 
-> If a genuine exception occurs in the L2 guest that populates EXITINTINFO,
-> this check incorrectly evaluates to true since event_inj is non-zero.
-> 
-> This causes EXITINTINFO to be clobbered with the L1's invalid event_inj
-> data. Because the clobbered value lacks the VALID bit, KVM will then ignore
-> it and drop the event.
-> 
-> Should this code check the SVM_EVTINJ_VALID bit instead of checking for a
-> non-zero event_inj value?
-
-I believe we don't need to since the valid check is made later below.
-
--- Pratik
-
-> 
->> +             control->exit_int_info = control->event_inj;
->> +             control->exit_int_info_err = control->event_inj_err;
->> +             control->event_inj = 0;
->> +
->> +             exitintinfo = control->exit_int_info;
+>> +     if (svm->vmcb->control.exit_code == SVM_EXIT_ESMTP_RETRY ||
+>> +         svm->vmcb->control.exit_code == SVM_EXIT_ESMTP_ILLSIB ||
+>> +         svm->vmcb->control.exit_code == SVM_EXIT_ESMTP_TIMEOUT) {
+>> +             cond_resched();
+>> +             return 1;
 >> +     }
+> 
+> [Severity: High]
+> Does this immediate retry create a kernel livelock and violate SRCU invariants?
+> 
+> If the runqueue has no other tasks (TIF_NEED_RESCHED is false), cond_resched()
+> does nothing. The vCPU immediately attempts VMRUN again, hits the exact same
+> hardware conflict, and exits again. This creates a tight spin loop that can
+> peg the host CPU at 100% utilization.
+> 
+
+Right, the retry can spin, but mainly only for ILLSIB. This also seems more
+likely to occur when vCPUs are pinned. RETRY and TIMEOUT are transient by
+construction.
+
+Having said that, I was toying with the idea of having bounded number of
+consecutive retries and that would fix it entirely.
+
+> Additionally, if a task is pending, cond_resched() yields the CPU while
+> holding KVM's SRCU read lock, because svm_handle_exit() is invoked within
+> the vcpu_enter_guest() SRCU critical section. This would stall
+> synchronize_srcu() indefinitely and bypass KVM's safe
+> xfer_to_guest_mode_handle_work() protocol.
+> 
+
+Yeah, cond_resched() seems like the wrong thing to do here. Although probably
+for a different reason. It consumes NEED_RESCHED with kvm->srcu held, so the 
+outer unlock-then-schedule() path is skipped.  It is a worse preemption point 
+than the one KVM already has. I will drop it and plain return 1 instead.
+
+
 >> +
+>>       if (exit_fastpath != EXIT_FASTPATH_NONE)
+>>               return 1;
+>>
 > 
 > --
-> Sashiko AI review · https://sashiko.dev/#/patchset/cover.1789399214.git.prsampat@amd.com?part=1
+> Sashiko AI review · https://sashiko.dev/#/patchset/cover.1789399214.git.prsampat@amd.com?part=2
 
