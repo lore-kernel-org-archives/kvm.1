@@ -1,242 +1,180 @@
-Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E333C0624
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 07:26:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7C54915BC;
+	Fri, 18 Sep 2026 07:30:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789716418; cv=none; b=Upf4nls5Jt8A560Y8HQ+U8NOoGlcPOA6f6d4zE/ftiCWom8GL/6h8JTgPr3LeEOrnX1go1NvvlSTp+H5P8bZAyIFuXEe1SbpFbbtDkRNFy6T/PViol4VTqBOjNf2ldlGoR994aijQgU9m39MhdLC/qQ/dL3NHo/9Bf3ZYAhYiDw=
+	t=1789716645; cv=none; b=LGP3MB2dFlSBC/fyrisM2bfjWbkTVB3IqiHm/Wm8P3JIxYXSJ05x1mfyGhCZcLMr9++Cvi5dZ+eFph50JlCsxzl/YPIvmxNzrPXwRC7tRZEz6zcd6RvtXOf7P+/nNHmtz4mYEA2tQluKTpoW/5LHJ7gOcLymgZMsmGJmrQsdGKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789716418; c=relaxed/simple;
-	bh=j0Re39X5EzptSkn+keySa8RUS2nsQvmKZ/5s6481OKI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BzatP4cyUln4f28UE1FrHP0DxkLVTj+4nsk3hFM+UnjMcxM+QeTVF96IDzWHGeclcjjEsgzo4qx/UBeKYl8RjJitUeGN+W9ZSJNubbR743dskUQX2o712lCC1LrqnvviuWV4ASYpqwem771k223mlk5aJUV985VhNAZ3UD7I+sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qCnf5Fld; arc=none smtp.client-ip=74.125.227.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789716645; c=relaxed/simple;
+	bh=Tt8GdfbueXGSkuK4G2fnxFMVppLcaokIDf9ojMSlu20=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=a5ofdZhtrTF/z7X2tEvIBH7PARZdQRctvCEIk7bkIPFUcCRYabN/LdyGixLLr6tMpGq8mNgGi4IQ1XHw7DWmsqc+PLeBiOyKeS09Av1Li3VbEd6Edp/hDaaUNn8xxIcfGj2SgQAoeEDnIQ6v0YqHYCV9nmM99eNof4sqS+ncMag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=b9GkcDni; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qCnf5Fld"
-Received: by mail-pj2-f42.google.com with SMTP id d9443c01a7336-2ddb44ad1c1so3275675ad.3
-        for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 00:26:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789716408; x=1790321208; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=r0TiBnW0QZCej4PmxwEbVRI0oUSu1J4v1QwXVJOCioo=;
-        b=qCnf5Fld7IE/GDBfrMQFkuINinH2umGDB20GkF5e5JJf7lEw8yAF2ztNLWnpxHBNIU
-         LvLc1O47HWhFJg59rx5b+frRO89VL6zUYnygWYRKcVyvdyUTxZJRmyO+ishx5Nuwlmbz
-         cKGpjvjGtD0HkIvA0LZU80e9aqI1NSTy/2swptrfXnkWi5+Q3PBCHVYY0aJ57egFotjV
-         zlJiObUJ1hDfnZKpp9HLDRyWOr/nM4BWnLW0xIRfWx83U/idT0BAfTXlXgLqyDEPX93/
-         BuPUStMCSu9lnXmGGmgYmwqWPf/qr4p1AMutDIC51dz+Xw8yrPY9TE0njVXRxcq84EXH
-         Gn2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789716408; x=1790321208;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=r0TiBnW0QZCej4PmxwEbVRI0oUSu1J4v1QwXVJOCioo=;
-        b=UO7yB03fR7kZraIMAQP3PCATj8zfcI/JQ/+ohAl9PMb1y3zUoE9vkDly93R+K/Im1R
-         bxgYs28ozkhyMkI6ErckOJMrYVnt7qk+PsDhjN/4+wkVVuczTvc/efXjFnnI6Bt4zpoK
-         Q8FIE7BlcsLxQfqRo6OeYx2D0h7zwsiZes+M/wMxONPEcOGaITha7qPLJL1XQiZGhUsl
-         lSECDhKRUu6WK9BKrPvuABhp/yTr9A2gRNox2GS3Y02c4AdMe8gFc6z0I+w9XSF0XRim
-         GX2UFeTK6/0dZa3RlhCF3whHWQ6DGsq4FXObVjjeehRcBRXzUWKRmiZ/u1gecq0MZuWc
-         kfoQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz8o79qw2wRlqRxcuODghCCNOzHyp1K95PL4Me9YZGyHCHeu6CszotrBFITozffMJhoOck=@vger.kernel.org
-X-Gm-Message-State: AFuF++nowt4tovIIB72KE8yvuQB161b46Ub8NAhMIGV9JzFc9Oqyw+lx
-	bNMO+ls2thqZVB/ZJZ9nuTYOGyOT2Fjvgf2MQ+QkG+j4eBDu6OB8VZWB
-X-Gm-Gg: AYBFou0XYo8jXg7DG1gAbJLSjGMdYH8jEwTn1i/4D0foqHZdR3yGXO3ugt2+tlniSCy
-	zc2a07hQsbAXT1UiHWUsTMlw960mC6KF63oBlNSfmaEafQmHmAzjCr5UiGVc0GJMw5cnUxBKXDu
-	Rj2nUh1fADj25sCzcyBVkDZqFFbRZEHmJztVehODHkJ57n2wryCelUqZjsdHcc6Mleb6hOjaK8c
-	2ON8SC0UyrJZI+EVd0cfngoGJcfJsTU+3G9PANgRxqzUZyVUhUn0U2Q/ffAQhrQGWm0fQTqYIgT
-	u9JC7uAfJ0gE/2HxjeTU6eVtq9Fx/U17F6CZ4aXOj9gtFmowCoP+3WW3JXBwSl3HSTueT4zYw+a
-	w0hsoYCNnZwfhiGeIxaUNv6UOMMWRCzjZrYODQN7jhedxS34E2RsamJzkpxPKYJ4jkdj5leisC2
-	QuuN4bcEsHhHy2bx9yM1sphz6Tp5EtwccXhGdYPU7a0+fyvGUcKnThjXHoQchRvIrpMUWfvPAsV
-	EszwuD9XHn2tmNCNgrYl8w=
-X-Received: by 2002:a17:902:da85:b0:2d9:3083:a3ac with SMTP id d9443c01a7336-2ddb7420950mr15441415ad.15.1789716407615;
-        Fri, 18 Sep 2026 00:26:47 -0700 (PDT)
-Received: from fedora ([61.74.238.173])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddb73dae10sm3772535ad.1.2026.09.18.00.26.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 00:26:45 -0700 (PDT)
-From: SeungJu Cheon <suunj1331@gmail.com>
-To: Anup Patel <anup@brainfault.org>
-Cc: Atish Patra <atish.patra@linux.dev>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jinyu Tang <tjytimi@163.com>,
-	kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	SeungJu Cheon <suunj1331@gmail.com>
-Subject: [PATCH] KVM: riscv: Age all G-stage PTEs in a GFN range
-Date: Fri, 18 Sep 2026 16:26:22 +0900
-Message-ID: <20260918072622.284188-1-suunj1331@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="b9GkcDni"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68I61wOl313701;
+	Fri, 18 Sep 2026 07:30:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=VVrcSc
+	kwtiGgM8C01h+pd1zrhhl2QR3EIgt6hAK0330=; b=b9GkcDniko72qq1TLuDdAJ
+	e+lpqtgR3Jt2PiTMVsDMGNxqKlSK08ZA7sGGaDyMkfh4PpeZfRAu9ympXIP7g0ws
+	ZRWnB6RyrVq4qHuwC8qoig4Ne+PeyFXEymSaxQX5D1FcQDHXvYTtm+v3rhtPIhOb
+	YYY0Ars+zC7VPH+o/wAlMs35HDD2Z/FEbsDAAPhzbJGWbuIV7W1eUZ/V5rmvL55W
+	IFi39NA/q3DDXaHG0ITVDbEgtdqNQtQbkI8qZZgUzbgd+5y8VViHQObD/YjCN3OU
+	yTbo/l4ui5IWjXwZBc/EE0CcvVDvjoAHS6YuTW1ENM5aNAvl0Nh9IT/XW6sLtgvg
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmv5j6hs5-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 18 Sep 2026 07:30:42 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68I653bE170840;
+	Fri, 18 Sep 2026 07:30:42 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gra3fdbyj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 18 Sep 2026 07:30:41 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68I7Ubad12059132
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 18 Sep 2026 07:30:38 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DFD6A2004B;
+	Fri, 18 Sep 2026 07:30:37 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4672B20040;
+	Fri, 18 Sep 2026 07:30:37 +0000 (GMT)
+Received: from [9.123.2.177] (unknown [9.123.2.177])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 18 Sep 2026 07:30:37 +0000 (GMT)
+Message-ID: <31320deb-ad24-420e-aded-53031ca43fa4@linux.ibm.com>
+Date: Fri, 18 Sep 2026 13:00:36 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] KVM: PPC: Book3S HV: Avoid spurious interrupts caused
+ by LPCR_MER bit
+To: sashiko-reviews@lists.linux.dev, Gautam Menghani <gautam@linux.ibm.com>
+Cc: kvm@vger.kernel.org
+References: <20260918055848.28390-1-gautam@linux.ibm.com>
+ <20260918060829.D84C61F000FF@smtp.kernel.org>
+Content-Language: en-US
+From: Narayana Murty N <nnmlinux@linux.ibm.com>
+In-Reply-To: <20260918060829.D84C61F000FF@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDA5NCBTYWx0ZWRfXyOobu03mOjJc
+ bodtKZzzxpOuOYBxQ30RCBYYY/KPw3ST2h/LRPgSpPT3GsyhrXEKo60XdkpSBusFINdPrgUdxIn
+ CbDz5Vbqbhfk7vTkB40pkEaAT95cy/UY8jehUnZ7MF3yNPI2rSgh7bMAd0W6dmnM+rmkiQFd/Y3
+ b4C+fJVY1A+4XjwPS40UA4DqjpRsxcIz3iXoxkkZ8E3+JbOrbenOKpS4X/WSfB37KeP5MYoahET
+ 8e6yJsyfqzbYysqYmj2nYJsl7i2mfAy9hel08eUPWMNP3MRe5GQc43MmwnPLDQfZWOBAlYgW4EZ
+ AEuxhO+BAii4vHUvdOD5z3nE5Edc/Caedou/nB/SWT+X8gmxCLFo/VZfSQ6sWxKnkUDfeyuWp/+
+ +HwWOUtu3EF8UF5mWpQMn13cRW+YC+YDhWrxaVuBMEYvmS4m9gSAWdKIwIbPN/nazL4ni7npyR5
+ PPAV3a8yuUtfhhQF+oA==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDA5NCBTYWx0ZWRfX0zRUpPM7f0kx
+ um3DNKoZsy9RQmAqoAQhXxgt7vbNHX//J+xJ5EGe5sGhh7934BT262dxOL07W9GCrhRhnaGqjRQ
+ SBK2+Lw21xJ/Gjioo5Law0g8Ot39b84=
+X-Authority-Analysis: v=2.4 cv=Zsx4uN7G c=1 sm=1 tr=0 ts=6aace8a2 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=yKAn6K1XAAAA:8 a=VnNF1IyMAAAA:8 a=XlwifpPfmKqjG8qNDjIA:9 a=QEXdDO2ut3YA:10
+ a=6M1ixcW_PCWoKiWyFx5v:22
+X-Proofpoint-ORIG-GUID: 8z_PiAN9i3nFrmeVXNNciFTh7UhUg6dv
+X-Proofpoint-GUID: 8z_PiAN9i3nFrmeVXNNciFTh7UhUg6dv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-18_02,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 impostorscore=0 clxscore=1011 priorityscore=1501
+ lowpriorityscore=0 bulkscore=0 adultscore=0 phishscore=0 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609180094
 
-kvm_age_gfn() and kvm_test_age_gfn() only operate on the G-stage
-leaf covering range->start. They also warn unless the range size is
-exactly 4K, 2M, or 1G.
+Hi
 
-The MM can pass larger ranges when batching the PTEs of a large folio.
-For example, a 64K mTHP range triggers the warning and only the first
-4K leaf is aged, leaving the Accessed bits of the remaining leaves
-unchanged.
+On 18/09/26 11:38 AM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] kvm: ppc: software-injected external interrupts lost on XIVE hosts
+> --
+> 
+> commit 05773d5b089dd4410c7e3e3a1611da5479c7d1a4
+> Author: Gautam Menghani <gautam@linux.ibm.com>
+> 
+> KVM: PPC: Book3S HV: Avoid spurious interrupts caused by LPCR_MER bit
+> 
+> This commit aims to avoid a huge number of spurious interrupts on KVM PowerNV
+> guests in XIVE mode by not using the LPCR_MER bit when the hardware can
+> present interrupts directly. It modifies kvmhv_run_single_vcpu() to skip
+> setting LPCR_MER when xics_on_xive() returns true.
+> 
+> Closes: https://lore.kernel.org/linuxppc-dev/582904882.11159.1786719390349.JavaMail.zimbra@raptorengineeringinc.com
+> 
+>> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+>> index dbac3573b2c89..f4d12a97311b9 100644
+>> --- a/arch/powerpc/kvm/book3s_hv.c
+>> +++ b/arch/powerpc/kvm/book3s_hv.c
+>> @@ -4980,7 +4980,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+>>   			if (!kvmhv_on_pseries() && (__kvmppc_get_msr_hv(vcpu) & MSR_EE))
+>>   				kvmppc_inject_interrupt_hv(vcpu,
+>>   							   BOOK3S_INTERRUPT_EXTERNAL, 0);
+>> -			else
+>> +			else if (!xics_on_xive())
+>>   				lpcr |= LPCR_MER;
+> 
+> [Severity: High]
+> Does this unconditionally disable LPCR_MER on XIVE hosts, potentially dropping
+> software-injected external interrupts when MSR_EE=0?
+> 
+> The outer condition in kvmhv_run_single_vcpu() checks if either a KVM software
+> interrupt (BOOK3S_IRQPRIO_EXTERNAL) or a hardware XIVE interrupt is pending.
+> 
+> When MSR_EE=0 on guest entry, the patched code evaluates:
+> 
+>      else if (!xics_on_xive())
+>          lpcr |= LPCR_MER;
+> 
+> Since xics_on_xive() evaluates to true globally on bare-metal POWER9+ hosts
+> with XIVE enabled, regardless of whether the guest uses the in-kernel XIVE
+> irqchip, bypassing LPCR_MER here seems to cause software-injected interrupts
+> (such as those from userspace via the KVM_INTERRUPT ioctl) to lose the
+> hardware trap mechanism that normally fires when the guest later sets
+> MSR_EE=1.
+> 
+> Could this lead to dropped or severely delayed external interrupts for guests
+> using a userspace irqchip?
 
-This can be reproduced on an rv64 host with Svadu by disabling 2M THP,
-enabling 64K mTHP, and running:
+No, interrupts are not dropped. KVM_INTERRUPT sets 
+BOOK3S_IRQPRIO_EXTERNAL in vcpu->arch.pending_exceptions and kicks the 
+vCPU out to the host. On the next kvmhv_run_single_vcpu() entry, 
+kvmppc_core_prepare_to_enter() re-evaluates the pending bit. The bit 
+persists until MSR_EE=1 allows delivery via vmppc_inject_interrupt_hv(). 
+LPCR_MER is not needed here as XIVE hardware handles the delivery 
+trigger directly If I am not wrong.
 
-access_tracking_perf_test -s anonymous_thp
 
-This results in:
+Looks good to me, much better logic than v1. The v1 concern about the
+case where xive_interrupt_pending() is true alongside the external
+exception bit is now handled cleanly with the xics_on_xive() guard.
 
-WARNING: arch/riscv/kvm/mmu.c:362 at kvm_age_gfn+0x210/0x370
-...
-[<ffffffff800c8fc8>] kvm_age_gfn+0x210/0x370
-[<ffffffff80095c90>] kvm_mmu_notifier_clear_young+0x250/0x478
-[<ffffffff80ae532e>] __mmu_notifier_clear_young+0xde/0x1a0
-[<ffffffff80932f76>] walk_pud_range+0x86e/0x1688
-[<ffffffff80a18720>] walk_pgd_range+0x518/0x17b0
-[<ffffffff80a19aa2>] __walk_page_range+0xea/0x580
-[<ffffffff80a1a422>] walk_page_range+0x3a/0x80
-[<ffffffff80931dc0>] try_to_inc_max_seq+0x520/0xe68
-[<ffffffff80939dc0>] lru_gen_seq_write+0xd08/0x1310
+Feel free to add:
 
-Walk all G-stage leaves in the requested range. Advance by the leaf
-size when a mapping is found, or by the size of the non-present region
-at the level where the walk stopped. When testing the age, return as
-soon as a young leaf is found.
+Reviewed-by: Narayana Murty N <nnmlinux@linux.ibm.com>
 
-Remove the range-size warning since arbitrary GFN ranges are valid.
+Thanks,
+Narayana Murty N.
+> 
 
-Fixes: 9955371cc014 ("RISC-V: KVM: Implement MMU notifiers")
-Signed-off-by: SeungJu Cheon <suunj1331@gmail.com>
----
- arch/riscv/include/asm/kvm_gstage.h |  2 ++
- arch/riscv/kvm/gstage.c             | 34 +++++++++++++++++++++++++++++
- arch/riscv/kvm/mmu.c                | 22 ++++---------------
- 3 files changed, 40 insertions(+), 18 deletions(-)
-
-diff --git a/arch/riscv/include/asm/kvm_gstage.h b/arch/riscv/include/asm/kvm_gstage.h
-index aaf080ba1b77..a03db1a10095 100644
---- a/arch/riscv/include/asm/kvm_gstage.h
-+++ b/arch/riscv/include/asm/kvm_gstage.h
-@@ -81,6 +81,8 @@ bool kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
- 				  gpa_t start, gpa_t size, bool may_block);
- 
- bool kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, gpa_t end);
-+bool kvm_riscv_gstage_age_range(struct kvm_gstage *gstage, gpa_t start,
-+				gpa_t end, bool test_only);
- 
- bool kvm_riscv_gstage_wp_pt_masked(struct kvm_gstage *gstage, gfn_t base_gfn,
- 				   unsigned long mask);
-diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
-index e5002cb9cbef..f61ba434093c 100644
---- a/arch/riscv/kvm/gstage.c
-+++ b/arch/riscv/kvm/gstage.c
-@@ -485,6 +485,40 @@ bool kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, gpa_t end
- 	return flush;
- }
- 
-+bool kvm_riscv_gstage_age_range(struct kvm_gstage *gstage, gpa_t start,
-+				gpa_t end, bool test_only)
-+{
-+	unsigned long page_size;
-+	bool young = false;
-+	gpa_t addr = start;
-+	pte_t *ptep;
-+	u32 level;
-+	bool found;
-+
-+	while (addr < end) {
-+		found = kvm_riscv_gstage_get_leaf(gstage, addr, &ptep, &level);
-+		if (gstage_level_to_page_size(gstage, level, &page_size))
-+			break;
-+
-+		if (found) {
-+			if (test_only) {
-+				if (pte_young(ptep_get(ptep)))
-+					return true;
-+			} else {
-+				young |= ptep_test_and_clear_young(NULL, 0, ptep);
-+			}
-+		}
-+
-+		/*
-+		 * Advance past this leaf, or past the non-present region at
-+		 * the level where the walk stopped.
-+		 */
-+		addr = ALIGN_DOWN(addr, page_size) + page_size;
-+	}
-+
-+	return young;
-+}
-+
- static inline void clear_huge_mask(unsigned long *mask, unsigned long page_size,
- 				   gfn_t base_gfn, gpa_t addr)
- {
-diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index 3e955d808743..342f606399e5 100644
---- a/arch/riscv/kvm/mmu.c
-+++ b/arch/riscv/kvm/mmu.c
-@@ -351,42 +351,28 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
- 
- bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
- {
--	pte_t *ptep;
--	u32 ptep_level = 0;
--	u64 size = (range->end - range->start) << PAGE_SHIFT;
- 	struct kvm_gstage gstage;
- 
- 	if (!kvm->arch.pgd)
- 		return false;
- 
--	WARN_ON(size != PAGE_SIZE && size != PMD_SIZE && size != PUD_SIZE);
--
- 	kvm_riscv_gstage_init(&gstage, kvm);
--	if (!kvm_riscv_gstage_get_leaf(&gstage, range->start << PAGE_SHIFT,
--				       &ptep, &ptep_level))
--		return false;
- 
--	return ptep_test_and_clear_young(NULL, 0, ptep);
-+	return kvm_riscv_gstage_age_range(&gstage, range->start << PAGE_SHIFT,
-+					  range->end << PAGE_SHIFT, false);
- }
- 
- bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
- {
--	pte_t *ptep;
--	u32 ptep_level = 0;
--	u64 size = (range->end - range->start) << PAGE_SHIFT;
- 	struct kvm_gstage gstage;
- 
- 	if (!kvm->arch.pgd)
- 		return false;
- 
--	WARN_ON(size != PAGE_SIZE && size != PMD_SIZE && size != PUD_SIZE);
--
- 	kvm_riscv_gstage_init(&gstage, kvm);
--	if (!kvm_riscv_gstage_get_leaf(&gstage, range->start << PAGE_SHIFT,
--				       &ptep, &ptep_level))
--		return false;
- 
--	return pte_young(ptep_get(ptep));
-+	return kvm_riscv_gstage_age_range(&gstage, range->start << PAGE_SHIFT,
-+					  range->end << PAGE_SHIFT, true);
- }
- 
- static bool fault_supports_gstage_huge_mapping(struct kvm_memory_slot *memslot,
-
-base-commit: 41e81f7e3ef96594fb840445343c0ee7723aa550
--- 
-2.52.0
 
