@@ -1,133 +1,211 @@
-Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5046A4F3EA4
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 13:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC73C4F68AB;
+	Fri, 18 Sep 2026 13:31:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789737898; cv=none; b=d8Jki5sh/RwIoaYD3t0Ndtw9eWNUW03lGBvx00DJRN0IOLkJoDqbhOwEUcHDVVM0g0nIOwdrpPfKh+zGOoFJ6c5RUrIljgw2GLDpRmI60U6SM19zpIpkPrCyxQLX8egG4hDkj/fthHs4K9U/uqRD/vhd7RbYpRhPyeMk4f/Hyqk=
+	t=1789738301; cv=none; b=cMW8wXrBFRoOwk5HhfSrEHvdv7FhFoAd01zEjSEvz0LviV9qbtLzCKDUhAGsTqWrNsNGwKLhALCOAXjhi4Ts3fU8figmOHsqTml8wwqb5uGTYEDID1ZrfttFINVqLJgWFTd8EjG1uHhgb70Gt5NY1nwVR4kOAtFAfWSGJrnrix0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789737898; c=relaxed/simple;
-	bh=v9UdPVY3a3m1N1cQS4DrnsIxV/L+mPyRwqE2xihCRdw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sgioYya785YNB+5FMkYnzsjenQWxWAftmG7QIVJ4GoVP+ripIxZI1fiB2DKjdllupxr4LOjOi79s7AnkV8/8OLmWYgZdQlaFcGw+XxoH4hfJRXLoczBjfcs+wmo++VZClAZiuwl9DeCOoYe2bisQzjJzGc677hzzRwzqPTFL9Cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=R3ySaGL5; arc=none smtp.client-ip=74.125.230.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1789738301; c=relaxed/simple;
+	bh=x9FcjygSuDmHthKzChzm1j3Gi0Wm8e5vmtA7K3N744s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WEWGpz6RreTSu8tJk7dYah5cRXEIubgB5aXOIPFSKtwYfg7bStQme6FfyELNlzSvvhDpJWqmrdoL9bNv3n71Viucl7b083syqSey0P+IzUXauuk6ETllD1y96CVhtf05OXs0lsqZVkMo530035WUy9JlX7otsJp9eFFVKnQr9Bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bUKZb0CA; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="R3ySaGL5"
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-90cdfbd148aso6327286d6.2
-        for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 06:24:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1789737895; x=1790342695; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mn3aKmmmFmyEWeqRjbvgjKGN1x4p/IU34Fpl/53vDbE=;
-        b=R3ySaGL5frHpRepuatv5HJ4AikBrYUEgGtgAm/GHfcG/yrpUGPyM6+4Oaua4XAjm7F
-         F0pbJG4Zi7+U3QXshaalrCu0SR0bugJWKv2G68cwyiTisVKfL9JLm2U6cmsqsNrHADQ1
-         HvRAZBWkIuh/TWITsZhFpRAI2qIrwwvdQBQpN3sSlmk1NT5C/4/hJ6Um+tfzJmADOAge
-         JdCPPGebVyeEVZzOgf5VEYLM9gTETJvlw5dWhYih0ksyowVOh4jlFF0mVYwg+ZiBbMiy
-         wJ7XSU1zQtllFsmGhRHNi4HLC7Aj0UA66sJkQsCXZFWX6EJvei/OK2+s5mfOs9+RciId
-         0svA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789737895; x=1790342695;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mn3aKmmmFmyEWeqRjbvgjKGN1x4p/IU34Fpl/53vDbE=;
-        b=PVcNbCmkQJm6xhdLCT+tIW2ajhE/A+8SiLJKwHNeKaJ+WZPQYQYUcDXSoJMOMK7mo6
-         mv0oQWKx1Ij96mFgqbVv+2LjZGH3SGdXfg/iGhQrh3m00DF4FGlmkXbxiHv1koIhB7Jh
-         E2H6l/ZLqXnTDpmFtaIVTauCMabrc5NfpHKt61WiCkUkXXn9Jr1OgJtGnJ1J5QIOEHyy
-         9DEQqdlEuVQpvwDz8R2gaCWcU9z3ftQqqN8uKd9oooM5vmjrwrSxbSrZs+W02MD+xUHY
-         qcOgqkG/YKwlQCDb0l9ZEmkjJ1ggYavcTUlduTefZxSkX/R6Fw4nJBSI89HvBwYrODOQ
-         TQ3A==
-X-Forwarded-Encrypted: i=1; AKwUvBwiT7ZbooUtchw4V14x8+U32e/C5t+5GiCOnDXIEkI1ZMipsDZ/OZg/g3xuvQxnPWSQDt4=@vger.kernel.org
-X-Gm-Message-State: AFuF++kX+Fs29BOF7ktlR52MbzE7q6l/6QvxG579xXXkuo+5EPsvn2BM
-	O7BbvmNS0CNvQOoCckm8k6SR8lFqCynQPpd4U/OztqQMAhqybvsXZhMJHjauklpNDEI=
-X-Gm-Gg: AYBFou2HsTaniuBw4bRi99W5GVdMcpxUcBwc68XVA8WCyTOoKRf0kCVB+EIEucEISEl
-	YcpOgNR0ut/cYwue/2yvHOl2jeIBe780wnlLeCqXwluc6G2DMQRs39+o8r7BlxKPj0cbK6yro5z
-	iW+KLwjPdLiiHHyiD2kPZ44IRsoUY3sQ7kCSc0ILMEdb7k/f0RV/AcP7/YYir0egAbR2xEWX+Dx
-	a7di+hyp6ZAcodACCrYtlYEDD815qMm5oTq/uTqIsjEQwukjFhNkD2lpVu1t8vCcpOo1Rga7Byc
-	6x5z7/BT1JsvGHBLWiNAFOiAfu7r8tm3UFG588Pr+oBcyr7pZkhPh8pMB9JdwZ6fl2bwvM/BFKw
-	BZD3URT5CXOnbusHSf1Qzu0ltaPyEg8wJmGgbs7nXgbR2sZ9z/T4WXETXYJqAKQ3/SPQLlHZQze
-	aSX4XnUK0j0n3WFq+OTddRD+t89N08NBw/ZCvRc5ZYoiVADo5fUOMZ/1qOdj+0sMMblFyzppXPg
-	s/5lkLZBgLz/Ns92M5FdtJk6pMQrAtiXruBwBMTSM5CqYuz7bS2eMAl
-X-Received: by 2002:a05:620a:6186:b0:930:9091:f0ce with SMTP id af79cd13be357-93bdc70b7c5mr343538785a.22.1789737895140;
-        Fri, 18 Sep 2026 06:24:55 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93be0ed258esm134537385a.30.2026.09.18.06.24.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 06:24:54 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1x7YaD-00000001Cw0-3NeV;
-	Fri, 18 Sep 2026 10:24:53 -0300
-Date: Fri, 18 Sep 2026 10:24:53 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: Baolu Lu <baolu.lu@linux.intel.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	David Matlack <dmatlack@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Pranjal Shrivastava <praan@google.com>,
-	Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v4 12/18] iommu/vt-d: Handle reattach of the restored
- domain
-Message-ID: <20260918132453.GC11599@ziepe.ca>
-References: <20260808022723.3893618-1-skhawaja@google.com>
- <20260808022723.3893618-13-skhawaja@google.com>
- <5b920299-260b-4025-ac4f-e8f83beebf95@linux.intel.com>
- <apBso6So7UqwR3AX@google.com>
- <bb7052d7-51fa-42e0-9eb5-ba4743956688@linux.intel.com>
- <20260828143546.GC3769797@ziepe.ca>
- <apGpHv8vy4SWIEaV@google.com>
- <aqyW3RzBGQyZebsG@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bUKZb0CA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789738299; x=1821274299;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=x9FcjygSuDmHthKzChzm1j3Gi0Wm8e5vmtA7K3N744s=;
+  b=bUKZb0CAnsU8rop4Pi2fHGXwjAa3LxcQe5BWmQyLthOhiSboWmwywQPH
+   YO/2uW/U21Q4VjJvb908fKUgs4CY/vLqgrtQ5nvTBbBNPICSHMNSrSQ44
+   ZidPuNkLQxfgDXXyDnURExUf8gn1Oi/CuxFhp4eXXRdgElc4fcOP2vws0
+   lqB9/rdVxivntj6bD7X0+2CSSiVljQkdA338PL9lWB6Lh8ZatFid4B1h9
+   sAIo9cCpZ371CNe/590gES9NLSQqLU+TqUszDmAoyC6u/0wUv7tdqc9ol
+   gsO/+My9dEl8TIY6so9snUWlCd0wPc7GQJu8C+4HgKOEkadIXlGMj0piY
+   w==;
+X-CSE-ConnectionGUID: G0lAJ11eTseuAxcURpyOcQ==
+X-CSE-MsgGUID: NwhtPnz4RJ21fKZ4O/chcA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11908"; a="115776093"
+X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
+   d="scan'208";a="115776093"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 06:31:38 -0700
+X-CSE-ConnectionGUID: c8hT+xyRQFC2mRXTpIPxnQ==
+X-CSE-MsgGUID: 4iUg8d0KRp6OSvsFZTuLzg==
+X-ExtLoop1: 1
+Received: from 984fee019967.jf.intel.com ([10.23.153.244])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 06:31:38 -0700
+From: Chao Gao <chao.gao@intel.com>
+To: x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: yilun.xu@linux.intel.com,
+	Chao Gao <chao.gao@intel.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: [RFC PATCH v2 00/10] TDX: Stop auto-generating the global metadata code
+Date: Fri, 18 Sep 2026 06:29:19 -0700
+Message-ID: <20260918132946.76533-1-chao.gao@intel.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqyW3RzBGQyZebsG@google.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 18, 2026 at 02:59:43AM +0000, Samiullah Khawaja wrote:
-> On Fri, Aug 28, 2026 at 04:15:56PM +0000, Samiullah Khawaja wrote:
-> > On Fri, Aug 28, 2026 at 11:35:46AM -0300, Jason Gunthorpe wrote:
-> > > On Fri, Aug 28, 2026 at 09:55:18AM +0800, Baolu Lu wrote:
-> > > > That looks reasonable to me. I have no concerns about keeping ATS
-> > > > enabled on preserved devices across kexec reboot, as long as the
-> > > > software state is synchronized in the new kernel.
-> > > 
-> > > The new kernel should issue an ATC flush when it changes away from the
-> > > inherented domain.
-> > 
-> > Yes, I will make sure this happens when we do the retrieval side. It
-> > should mostly work well with the existing replace machinery.
-> > > 
-> > > > By the way, is disabling ATS an option?
-> > > 
-> > > No, many devices require ATS.
-> > 
-> > Agreed on the ATS requirement. I had Nicolin's patch series for CXL
-> > devices in mind here.
-> 
-> Having implemented this now, I am thinking about this again with respect
-> to the scope of this series. To limit the scope of this series I am
-> going to refuse preservation of devices that have ATS enabled. Once the
-> base preservation logic goes in, I can add a separate series on top of
-> it to add that support.
+This series cleans up the TDX global metadata code. It has two goals:
 
-That seems reasonable
+1. Replace the generated code with a table-driven metadata reader.
 
-Jason
+2. Make the existing code easier to read and maintain, and simplify
+   adding new metadata fields.
+
+During the v1 review, Dave raised concerns about signing off on
+AI-generated code. I have since rewritten the affected patches based on
+my own understanding of the code.
+
+The main goal of this RFC is to agree on whether the table-driven reader is
+the right replacement for the generated code. Please raise any concerns or
+alternative design ideas.
+
+Feedback on the patch organization is also welcome. In v2, each patch
+converts one metadata reader. This should make the individual changes
+easier to review, but results in more patches and some repetition in their
+changelogs. I am not sure whether this is the best organization for the
+series.
+
+Dave, please feel free to ignore this RFC. Kirill, Rick, and other TDX
+developers, please take a look.
+
+Changes since v1:
+=================
+  - Reimplemented the code and rewrote the changelogs for patches
+    generated entirely by AI. (Dave)
+  - Expanded the problem statement with the history of earlier TDX metadata
+    proposals (Rick)
+  - Dropped the false claim that literal u64 field IDs are unreviewable
+    (Dave)
+  - Rebase onto tip/x86/tdx and convert the metadata added by DPAMT.
+  - Name field IDs as their readers are converted instead of naming them
+    in a separate patch.
+  - Convert one metadata reader per patch.
+  - v1: https://lore.kernel.org/all/20260804112941.19894-1-chao.gao@intel.com/
+
+The TDX module reports its capabilities and limits through a set of global
+metadata fields, each read using a 64-bit field ID via TDH.SYS.RD. The
+fields are grouped into classes, and the kernel mirrors each class it
+needs in a sub-structure of struct tdx_sys_info.
+
+Both those structures and the code that fills them were generated by an
+out-of-tree script from a JSON file.
+
+The script was not the first approach.  Kai's first attempt paired each
+field ID with its destination C member in a table and walked the table in a
+loop to read every field.  Two pieces of feedback on it drove everything
+that followed [1]:
+
+  1. Compile-time type checking. Metadata fields have different sizes (u16
+     and u64), so a common helper takes a void * and a size instead of
+     a typed destination.
+
+  2. The check that a field ID's encoded size matches its destination
+     member ran at runtime, although both sizes are known at build time.
+
+The discussion did not converge after several rounds of review. Dave noted
+that, despite the void *, the size check provides the safety that matters:
+it catches mismatched field and member widths [2]. That left one problem:
+moving the size check from runtime to build time.
+
+Before that was settled, the direction shifted to generating the code with a
+script. At the time, the TDX ABI definitions were published as JSON, so
+checking a field ID required consulting a machine-readable file by hand.
+The script parsed the JSON and generated both the structures and their
+readers [3]. Generation also made the size/type check unnecessary. The
+field IDs and destination members came from the same input, so a mismatch
+could only result from a bug in the script, which is less likely than a
+mistake in hand-written code.
+
+Dave concluded that the JSON experiment had failed [4] for two reasons:
+
+  1. The JSON file is not stable. The CPUID config arrays here were once
+     sized for a maximum of 32 entries, which has since increased to 128 [5].
+
+  2. The JSON file is not authoritative enough to write code from by itself.
+
+TDX ABI definitions are now available in human-readable PDF specifications
+[6]. So, stop relying on the out-of-tree script and maintain the code by
+hand.
+
+Yilun later proposed a single table whose entries carry the offset and size
+of each mapped member in struct tdx_sys_info [7]. That design does not
+cover the new handoff metadata because it is not cached in
+struct tdx_sys_info.
+
+This series gives every class its own table: each entry pairs a field ID
+with the member that holds it, and a loop walks the table. This also covers
+handoff metadata, which is read into a local structure rather than into
+struct tdx_sys_info.
+
+The common reader still takes a void *, but each mapping verifies at build
+time that the destination member size matches the size encoded in the field
+ID. A field/member width mismatch therefore fails the build.
+
+AI usage
+========
+
+I used LLM tools to review the patches and refine the wording of the cover
+letter and changelogs from my drafts. I reviewed all suggestions and adopted
+those I agreed with. For example, AI review suggested the
+read_sys_metadata_table() macro, which avoids repeating the table name when
+passing both the table and its size.
+
+
+Testing
+=======
+Built each patch individually and successfully launched TDs.
+
+
+[1]: https://lore.kernel.org/kvm/66b16121c48f4_4fc729424@dwillia2-xfh.jf.intel.com.notmuch/
+[2]: https://lore.kernel.org/kvm/c3b1e743-6d34-49ce-8e60-a41038f27c61@intel.com/
+[3]: https://lore.kernel.org/kvm/f25673ea-08c5-474b-a841-095656820b67@intel.com/
+[4]: https://lore.kernel.org/kvm/1e7bcbad-eb26-44b7-97ca-88ab53467212@intel.com/
+[5]: https://lore.kernel.org/lkml/55f97ca1-8f32-4e33-96fb-d82ed2109f9a@intel.com/
+[6]: https://www.intel.com/content/www/us/en/content-details/865803/abi-definitions-for-intel-tdx.html
+[7]: https://lore.kernel.org/kvm/20251202050844.2520762-4-yilun.xu@linux.intel.com/
+
+
+
+Chao Gao (10):
+  x86/virt/tdx: Add a helper to read a table of metadata fields
+  x86/virt/tdx: Convert the version metadata reader
+  x86/virt/tdx: Convert the features metadata reader
+  x86/virt/tdx: Convert the tdmr metadata reader
+  x86/virt/tdx: Convert the td_ctrl metadata reader
+  x86/virt/tdx: Convert the handoff metadata reader
+  x86/virt/tdx: Convert the td_conf metadata reader
+  x86/virt/tdx: Remove tdx_global_metadata.c
+  x86/virt/tdx: Use early returns in get_tdx_sys_info()
+  x86/virt/tdx: Verify structure member sizes against metadata field IDs
+
+ arch/x86/virt/vmx/tdx/tdx.c                 | 222 +++++++++++++++++++-
+ arch/x86/virt/vmx/tdx/tdx.h                 |  54 +++++
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 154 --------------
+ 3 files changed, 275 insertions(+), 155 deletions(-)
+ delete mode 100644 arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+
+-- 
+2.52.0
+
