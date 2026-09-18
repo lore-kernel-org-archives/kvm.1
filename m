@@ -1,56 +1,56 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192064FD277
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 13:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCFD5012A2
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 13:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789739447; cv=none; b=HWSQgwV93d18VLFZ27ci6ajruBQMC/yc7Z667PzAkhwfOS2NIz2AWzX3XtvCK1BWBXrUod2/1r2D8Ail/H6lEcHBp2+ljS1Nto8Ku4E8CD8MXiyQu0G8ueEdHZseSJDDJUGTaas+bmAgm2YlfVu+8xEs7av8bg5Ypv7gfji3tqw=
+	t=1789739449; cv=none; b=bYpVV2r1z+t0VNN6z8EZ6fbJWfAT7spIA1psU9j4mPhUljSIDgKU/E68IBu6dWurvMgxVa7Fg1JeeN688wDF2pFUdHnKl4NZFX44ompYFvmQkj6KaHiPaTdf4IuLj4PCM7oWx8kSkpikjkikH2q4RmzbaAZxwM9tMvvoU6OSVqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789739447; c=relaxed/simple;
-	bh=EXcUQL/NKDJ9oFEseKk8LXJwue2n8xNh2zucya4dx9c=;
+	s=arc-20240116; t=1789739449; c=relaxed/simple;
+	bh=WhFqh8uhGQZ/xWxTG2gXCAO/WGUKqM4zBtUv4OyH224=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=flYJEYgbt9xgTqrVLY8BQmrk03FmfUSLRDLsXWDVnimYjAKXHuKsmW0M7RxyFDLlD/1X3yDyMWoXqUNDYdrmDTj3QYltIFJskQV/xAOrU1SzIlG7vA5GW0My7NY4sleMBtOrQNWvEwaGhQ0Kt2WC9588Wp6gLU+lmK5bud1sL74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gtdkQ5h2; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=DHCXKGFENmJkZ3QAlxsHZ81UR0Iqa49tffzvgT2QL3gDCqfbrhuqpHw4J6W6qifpTXvzJrii5d1i9tOOvpC0Zq9FsSZThXUSm8/qRgm2AC1zRNtKCKyEJvos+QzBj5/v5+9SP9zUxpPgbZc2LE65rGdXy86eCq7sI0GjxXl2YJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VUgqvX4w; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gtdkQ5h2"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VUgqvX4w"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789739443;
+	s=mimecast20190719; t=1789739445;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5js5Mj4SDQt1xxsJ8Tbd0F0lb+vm6Ty0rPl+7ojhkXU=;
-	b=gtdkQ5h2TFE1rTCHsztDp85Y0H5I2iLxPh5eTsomJb+m0qWFvOBNyicHFKYZP6VdCO8lc5
-	H1ZeAEiS7gPVfYgSPd1xEfoGSUcpY5f/cNpymvGwFv/sVxvMSZA5sa9h+05bAXkq8LO8aM
-	oN06v8Nu07qyVeTIhUcUQ8myIAhOhDY=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=0GTDOB/89g/ILYPTHttvaooY6OWv0acI2nWoT1j+xQk=;
+	b=VUgqvX4wUdY09M2j7Iko/Q2cyxEX2EbuKg8eK3Nol0/9QcnD0XlP8Lo4LNh9/jLDfNxOP6
+	4w1VBIUgkit5DGA9pltSVkDE85CvwlmpFZdfXtsjFev8j0ZCczDI3mu5HB5NO89a63iu9r
+	5NSfoHKP+Jl6eqKZ4QwftF+ZYpCQBss=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-60-dueIkRq6NgeWxHHquFFJ7g-1; Fri,
- 18 Sep 2026 09:50:39 -0400
-X-MC-Unique: dueIkRq6NgeWxHHquFFJ7g-1
-X-Mimecast-MFC-AGG-ID: dueIkRq6NgeWxHHquFFJ7g_1789739438
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-qNInFmmmPnioJebNDiKEfw-1; Fri,
+ 18 Sep 2026 09:50:44 -0400
+X-MC-Unique: qNInFmmmPnioJebNDiKEfw-1
+X-Mimecast-MFC-AGG-ID: qNInFmmmPnioJebNDiKEfw_1789739443
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 17E7E1830468;
-	Fri, 18 Sep 2026 13:50:38 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 40D011944E40;
+	Fri, 18 Sep 2026 13:50:43 +0000 (UTC)
 Received: from virtlab1023.virt.eng.rdu2.dc.redhat.com (virtlab1023.virt.eng.rdu2.dc.redhat.com [10.18.48.26])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6B10B1956042;
-	Fri, 18 Sep 2026 13:50:37 +0000 (UTC)
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 97BBE756;
+	Fri, 18 Sep 2026 13:50:42 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: nsaenz@amazon.com,
 	vkuznets@redhat.com,
 	snambakam@linux.microsoft.com
-Subject: [PATCH 07/31] KVM: selftests: test hypercall memory fault exits
-Date: Fri, 18 Sep 2026 09:50:06 -0400
-Message-ID: <20260918135030.171564-8-pbonzini@redhat.com>
+Subject: [PATCH 13/31] KVM: Introduce NR/NW/NX memory attributes
+Date: Fri, 18 Sep 2026 09:50:12 -0400
+Message-ID: <20260918135030.171564-14-pbonzini@redhat.com>
 In-Reply-To: <20260918135030.171564-1-pbonzini@redhat.com>
 References: <20260918135030.171564-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -61,319 +61,384 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-Cover various scenarios where hypercalls are invoked with invalid or
-read-only GPAs, and check that they exit to userspace.
+From: Nicolas Saenz Julienne <nsaenz@amazon.com>
 
+Introduce memory attributes to map guest physical memory regions as
+non-readable, non-writable, and/or non-executable. Only a subset of flag
+combinations is supported. Notably write and exec permissions require
+read permission, and memory protection attributes are incompatible with
+private memory.
+
+As mentioned in 5a475554db1e ("KVM: Introduce per-page memory attributes",
+2023-11-13), bits 0-2 of the memory attributes were reserved for RWX
+protection; they are negated to support current memory attribute users
+which use 0 to indicate no special treatment.  Since 0 is not available,
+a non-negated version of the flags would need an extra bit to express
+no-access (R=0/W=0/X=0) mappings.
+
+Unfortunately this precaution did not age too well; KVM now supports
+MBEC/GMET and adding mode-based memory protections will require a
+non-contiguous bit.  But that's something left for later.
+
+Different architectures may have different limitations on the set of
+valid protections, for example execution-only and XU=0 mappings are
+supported by Intel but not AMD processors[1].  So, add an architecture-specific
+callback and add a basic implementation for x86.
+
+[1] When adding support for MBEC/GMET, since NX would remain to mean no
+    execution at all, it is possible to use either an NXS bit or two
+    separate NXS/NXU bits in addition to NX.  The former would only
+    support permissions that are available with either MBEC or GMET.
+
+Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- tools/testing/selftests/kvm/x86/hcall_fault.c | 246 ++++++++++++++++++
- .../testing/selftests/kvm/x86/hyperv_evmcs.c  |   4 +
- .../selftests/kvm/x86/hyperv_svm_test.c       |   2 +
- 4 files changed, 253 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/x86/hcall_fault.c
+ Documentation/virt/kvm/api.rst  | 14 ++++++--
+ arch/x86/include/asm/kvm_host.h |  1 +
+ arch/x86/kvm/Kconfig            |  4 +--
+ arch/x86/kvm/mmu/mmu.c          | 63 ++++++++++++++++++++++++---------
+ arch/x86/kvm/x86.c              |  2 --
+ include/linux/kvm_host.h        | 28 ++++++++++++++-
+ include/uapi/linux/kvm.h        |  3 ++
+ virt/kvm/kvm_main.c             | 36 +++++++++++++++----
+ 8 files changed, 119 insertions(+), 32 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 96bab7002d39..6e2bbf743eaa 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -79,6 +79,7 @@ TEST_GEN_PROGS_x86 += x86/evmcs_smm_controls_test
- TEST_GEN_PROGS_x86 += x86/exit_on_emulation_failure_test
- TEST_GEN_PROGS_x86 += x86/fastops_test
- TEST_GEN_PROGS_x86 += x86/fix_hypercall_test
-+TEST_GEN_PROGS_x86 += x86/hcall_fault
- TEST_GEN_PROGS_x86 += x86/hwcr_msr_test
- TEST_GEN_PROGS_x86 += x86/hyperv_clock
- TEST_GEN_PROGS_x86 += x86/hyperv_cpuid
-diff --git a/tools/testing/selftests/kvm/x86/hcall_fault.c b/tools/testing/selftests/kvm/x86/hcall_fault.c
-new file mode 100644
-index 000000000000..725c59ff750c
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/hcall_fault.c
-@@ -0,0 +1,246 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <errno.h>
-+
-+#include "kvm_util.h"
-+#include "processor.h"
-+#include "hyperv.h"
-+
-+#define TEST_MEM_GPA		0x100000000ull
-+#define READONLY_GPA		(TEST_MEM_GPA + PAGE_SIZE)
-+#define UNMAPPED_IN_GPA		(TEST_MEM_GPA + 2 * PAGE_SIZE)
-+#define UNMAPPED_OUT_GPA	(TEST_MEM_GPA + 3 * PAGE_SIZE)
-+
-+struct hcall_test {
-+	/* TEST_MEM_GPA in the guest */
-+	u64 control;
-+	u64 ingpa;
-+	u64 outgpa;
-+	u64 expected_status;
-+	u8 unused[PAGE_SIZE - 32];
-+
-+	/* READONLY_GPA in the guest */
-+	u8 readonly_data[];
-+};
-+
-+#define HV_FLUSH_ALL_PROCESSORS                 BIT(0)
-+#define HV_FLUSH_ALL_VIRTUAL_ADDRESS_SPACES     BIT(1)
-+
-+/* HvFlushVirtualAddressSpace, HvFlushVirtualAddressList hypercalls */
-+struct hv_tlb_flush {
-+        u64 address_space;
-+        u64 flags;
-+        u64 processor_mask;
-+        u64 gva_list[];
-+} __packed;
-+
-+static void guest_code(gpa_t hcall_page, struct hcall_test *test)
-+{
-+	u64 result;
-+	u8 vector;
-+
-+	wrmsr(HV_X64_MSR_GUEST_OS_ID, HYPERV_LINUX_OS_ID);
-+	wrmsr(HV_X64_MSR_HYPERCALL, hcall_page);
-+
-+	vector = __hyperv_hypercall(test->control, test->ingpa, test->outgpa, &result);
-+	GUEST_ASSERT(!vector);
-+	GUEST_ASSERT_EQ(result & 0xffff, test->expected_status);
-+	GUEST_DONE();
-+}
-+
-+static void clock_pairing_guest(gpa_t gpa)
-+{
-+	kvm_hypercall(KVM_HC_CLOCK_PAIRING, gpa, KVM_CLOCK_PAIRING_WALLCLOCK, 0, 0);
-+	GUEST_DONE();
-+}
-+
-+static gva_t create_test_regions(struct kvm_vm *vm)
-+{
-+	gva_t test_gva;
-+
-+	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, TEST_MEM_GPA,
-+				    10, 1, 0);
-+	memset(addr_gpa2hva(vm, TEST_MEM_GPA), 0, PAGE_SIZE);
-+
-+	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, READONLY_GPA,
-+				    11, 1, KVM_MEM_READONLY);
-+	memset(addr_gpa2hva(vm, READONLY_GPA), 0, PAGE_SIZE);
-+
-+	test_gva = vm_unused_gva_gap(vm, PAGE_SIZE * 2, 1 << 24);
-+	for (int i = 0; i < 2; i++)
-+		virt_pg_map(vm, test_gva + PAGE_SIZE * i, TEST_MEM_GPA + PAGE_SIZE * i);
-+
-+	return test_gva;
-+}
-+
-+static struct kvm_vm *create_vm(struct kvm_vcpu **vcpu, struct hcall_test **test,
-+				gpa_t *hcall_page_gpa)
-+{
-+	gva_t hcall_page, test_gva;
-+	struct kvm_vm *vm;
-+
-+	vm = vm_create_with_one_vcpu(vcpu, guest_code);
-+	vcpu_set_hv_cpuid(*vcpu);
-+	vm_enable_cap(vm, KVM_CAP_HCALL_FAULT_EXIT, 1);
-+
-+	hcall_page = vm_alloc_page(vm);
-+	memset(addr_gva2hva(vm, hcall_page), 0, PAGE_SIZE);
-+	*hcall_page_gpa = addr_gva2gpa(vm, hcall_page);
-+
-+	test_gva = create_test_regions(vm);
-+	*test = addr_gva2hva(vm, test_gva);
-+
-+	vcpu_args_set(*vcpu, 2, *hcall_page_gpa, test_gva);
-+	return vm;
-+}
-+
-+static void run_vm(struct kvm_vcpu *vcpu)
-+{
-+	struct ucall uc;
-+
-+	vcpu_run(vcpu);
-+	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-+
-+	switch (get_ucall(vcpu, &uc)) {
-+	case UCALL_ABORT:
-+		REPORT_GUEST_ASSERT(uc);
-+		break;
-+	case UCALL_DONE:
-+		break;
-+	default:
-+		TEST_FAIL("Unexpected ucall: %lu", uc.cmd);
-+	}
-+}
-+
-+static void test_unused_gpas(void)
-+{
-+	struct hcall_test *test;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	gpa_t hcall_page;
-+
-+	vm = create_vm(&vcpu, &test, &hcall_page);
-+	test->control = HVCALL_NOTIFY_LONG_SPIN_WAIT;
-+	test->ingpa = UNMAPPED_IN_GPA;
-+	test->outgpa = UNMAPPED_OUT_GPA;
-+	test->expected_status = HV_STATUS_SUCCESS;
-+	run_vm(vcpu);
-+	kvm_vm_free(vm);
-+
-+	vm = create_vm(&vcpu, &test, &hcall_page);
-+	test->control = 0xbeef;
-+	test->ingpa = UNMAPPED_IN_GPA;
-+	test->outgpa = UNMAPPED_OUT_GPA;
-+	test->expected_status = HV_STATUS_INVALID_HYPERCALL_CODE;
-+	run_vm(vcpu);
-+	kvm_vm_free(vm);
-+}
-+
-+static void assert_memory_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 flags)
-+{
-+	int r;
-+
-+	r = _vcpu_run(vcpu);
-+	TEST_ASSERT(r == -1 && errno == EFAULT, KVM_IOCTL_ERROR(KVM_RUN, r));
-+	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_MEMORY_FAULT);
-+	TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, flags);
-+	TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, gpa & PAGE_MASK);
-+	TEST_ASSERT_EQ(vcpu->run->memory_fault.size, PAGE_SIZE);
-+}
-+
-+/* Read-only hypercalls, read-only inputs, valid/invalid argument */
-+static void test_readonly_input(void)
-+{
-+	struct hv_tlb_flush *flush;
-+	struct hcall_test *test;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	gpa_t hcall_page;
-+
-+	vm = create_vm(&vcpu, &test, &hcall_page);
-+	flush = (struct hv_tlb_flush *)addr_gpa2hva(vm, READONLY_GPA);
-+	flush->flags = HV_FLUSH_ALL_VIRTUAL_ADDRESS_SPACES | HV_FLUSH_ALL_PROCESSORS;
-+	flush->processor_mask = 0;
-+	test->control = HVCALL_FLUSH_VIRTUAL_ADDRESS_SPACE;
-+	test->ingpa = READONLY_GPA;
-+	test->outgpa = UNMAPPED_OUT_GPA;
-+	test->expected_status = HV_STATUS_SUCCESS;
-+	run_vm(vcpu);
-+	kvm_vm_free(vm);
-+
-+	/* fails immediately because it requires SynIC */
-+	vm = create_vm(&vcpu, &test, &hcall_page);
-+	test->control = HVCALL_POST_MESSAGE;
-+	test->ingpa = UNMAPPED_IN_GPA;
-+	test->outgpa = UNMAPPED_OUT_GPA;
-+	test->expected_status = HV_STATUS_INVALID_HYPERCALL_INPUT;
-+	run_vm(vcpu);
-+	kvm_vm_free(vm);
-+}
-+
-+/* Read-only hypercall, unmapped input */
-+static void test_input_fault(void)
-+{
-+	struct hcall_test *test;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	gpa_t hcall_page;
-+
-+	vm = create_vm(&vcpu, &test, &hcall_page);
-+	test->control = HVCALL_SIGNAL_EVENT;
-+	test->ingpa = UNMAPPED_IN_GPA;
-+	test->outgpa = UNMAPPED_OUT_GPA;
-+	assert_memory_fault(vcpu, test->ingpa, KVM_MEMORY_EXIT_FLAG_READ);
-+	kvm_vm_free(vm);
-+}
-+
-+/* Read-write hypercall, unmapped or readonly input and output */
-+static void test_output_fault(bool readonly_in, bool readonly_out)
-+{
-+	struct hcall_test *test;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	gpa_t hcall_page;
-+
-+	vm = create_vm(&vcpu, &test, &hcall_page);
-+	test->control = HV_EXT_CALL_QUERY_CAPABILITIES;
-+	test->ingpa = readonly_in ? READONLY_GPA : UNMAPPED_IN_GPA;
-+	test->outgpa = readonly_out ? READONLY_GPA : UNMAPPED_OUT_GPA;
-+
-+	assert_memory_fault(vcpu, test->outgpa, KVM_MEMORY_EXIT_FLAG_WRITE);
-+	kvm_vm_free(vm);
-+}
-+
-+static void test_clock_pairing_fault(bool readonly)
-+{
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	gpa_t gpa;
-+
-+	/* Unlike create_vm do not enable Hyper-V hypercalls. */
-+	vm = vm_create_with_one_vcpu(&vcpu, clock_pairing_guest);
-+	create_test_regions(vm);
-+	vm_enable_cap(vm, KVM_CAP_HCALL_FAULT_EXIT, 1);
-+	gpa = readonly ? READONLY_GPA : UNMAPPED_OUT_GPA;
-+	vcpu_args_set(vcpu, 1, gpa);
-+
-+	assert_memory_fault(vcpu, gpa, KVM_MEMORY_EXIT_FLAG_WRITE);
-+	kvm_vm_free(vm);
-+}
-+
-+int main(void)
-+{
-+	TEST_REQUIRE(kvm_has_cap(KVM_CAP_HYPERV_CPUID));
-+	TEST_REQUIRE(kvm_has_cap(KVM_CAP_HCALL_FAULT_EXIT));
-+	TEST_REQUIRE(kvm_cpuid_has(kvm_get_supported_hv_cpuid(),
-+				   HV_ENABLE_EXTENDED_HYPERCALLS));
-+
-+	test_unused_gpas();
-+	test_readonly_input();
-+	test_input_fault();
-+	test_output_fault(false, false);
-+	test_output_fault(true, false);
-+	test_output_fault(false, true);
-+	test_clock_pairing_fault(false);
-+	test_clock_pairing_fault(true);
-+	return 0;
-+}
-diff --git a/tools/testing/selftests/kvm/x86/hyperv_evmcs.c b/tools/testing/selftests/kvm/x86/hyperv_evmcs.c
-index 29baae74ad3a..59d200ccb408 100644
---- a/tools/testing/selftests/kvm/x86/hyperv_evmcs.c
-+++ b/tools/testing/selftests/kvm/x86/hyperv_evmcs.c
-@@ -216,6 +216,8 @@ static struct kvm_vcpu *save_restore_vm(struct kvm_vm *vm,
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index abc2ff1f8c84..81126ac11bf8 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -6414,15 +6414,23 @@ of guest physical memory.
+ 	__u64 flags;
+   };
  
- 	/* Restore state in a new VM.  */
- 	vcpu = vm_recreate_with_one_vcpu(vm);
-+	if (kvm_has_cap(KVM_CAP_HCALL_FAULT_EXIT))
-+		vm_enable_cap(vm, KVM_CAP_HCALL_FAULT_EXIT, 1);
- 	vcpu_set_hv_cpuid(vcpu);
- 	vcpu_enable_evmcs(vcpu);
- 	vcpu_load_state(vcpu, state);
-@@ -246,6 +248,8 @@ int main(int argc, char *argv[])
- 	TEST_REQUIRE(kvm_cpu_has_ept());
++  #define KVM_MEMORY_ATTRIBUTE_NR                (1ULL << 0)
++  #define KVM_MEMORY_ATTRIBUTE_NW                (1ULL << 1)
++  #define KVM_MEMORY_ATTRIBUTE_NX                (1ULL << 2)
+   #define KVM_MEMORY_ATTRIBUTE_PRIVATE           (1ULL << 3)
  
- 	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
-+	if (kvm_has_cap(KVM_CAP_HCALL_FAULT_EXIT))
-+		vm_enable_cap(vm, KVM_CAP_HCALL_FAULT_EXIT, 1);
- 	vm_enable_ept(vm);
+ The address and size must be page aligned.  The supported attributes can be
+ retrieved via ioctl(KVM_CHECK_EXTENSION) on KVM_CAP_MEMORY_ATTRIBUTES.  If
+ executed on a VM, KVM_CAP_MEMORY_ATTRIBUTES precisely returns the attributes
+ supported by that VM.  If executed at system scope, KVM_CAP_MEMORY_ATTRIBUTES
+-returns all attributes supported by KVM.  The only attribute defined at this
+-time is KVM_MEMORY_ATTRIBUTE_PRIVATE, which marks the associated gfn as being
+-guest private memory.
++returns all attributes supported by KVM.  The attribute defined at this
++time are:
++
++ - KVM_MEMORY_ATTRIBUTE_NR/NW/NX - Respectively marks the memory region as
++   non-read, non-write and/or non-exec.  Note that write-only, exec-only and
++   write-exec mappings are not supported.
++ - KVM_MEMORY_ATTRIBUTE_PRIVATE - Which marks the associated gfn as being guest
++   private memory.
  
- 	hcall_page = vm_alloc_pages(vm, 1);
-diff --git a/tools/testing/selftests/kvm/x86/hyperv_svm_test.c b/tools/testing/selftests/kvm/x86/hyperv_svm_test.c
-index 18f0ad6debd8..ecad242e6623 100644
---- a/tools/testing/selftests/kvm/x86/hyperv_svm_test.c
-+++ b/tools/testing/selftests/kvm/x86/hyperv_svm_test.c
-@@ -162,6 +162,8 @@ int main(int argc, char *argv[])
+ Note, there is no "get" API.  Userspace is responsible for explicitly tracking
+ the state of a gfn/page as needed.
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index c619552740a8..52c432f9bc66 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1853,6 +1853,7 @@ enum kvm_intr_type {
+ 	 (!!in_nmi() == ((vcpu)->arch.handling_intr_from_guest == KVM_HANDLING_NMI)))
  
- 	/* Create VM */
- 	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
-+	if (kvm_has_cap(KVM_CAP_HCALL_FAULT_EXIT))
-+		vm_enable_cap(vm, KVM_CAP_HCALL_FAULT_EXIT, 1);
- 	vm_enable_npt(vm);
- 	vcpu_set_hv_cpuid(vcpu);
- 	vcpu_alloc_svm(vm, &nested_gva);
+ #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
++#define kvm_arch_has_memory_protection_attributes(kvm) (!(kvm) || !(kvm)->arch.has_private_mem)
+ #define kvm_arch_has_private_mem(kvm) (!(kvm) || (kvm)->arch.has_private_mem)
+ #endif
+ 
+diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+index 538ed1e80332..4c630fd64fd2 100644
+--- a/arch/x86/kvm/Kconfig
++++ b/arch/x86/kvm/Kconfig
+@@ -48,6 +48,7 @@ config KVM_X86
+ 	select KVM_GENERIC_PRE_FAULT_MEMORY
+ 	select KVM_WERROR if WERROR
+ 	select KVM_GUEST_MEMFD if X86_64
++	select KVM_GENERIC_MEMORY_ATTRIBUTES
+ 
+ config KVM
+ 	tristate "Kernel-based Virtual Machine (KVM) support"
+@@ -84,7 +85,6 @@ config KVM_SW_PROTECTED_VM
+ 	bool "Enable support for KVM software-protected VMs"
+ 	depends on EXPERT
+ 	depends on KVM_X86 && X86_64
+-	select KVM_GENERIC_MEMORY_ATTRIBUTES
+ 	help
+ 	  Enable support for KVM software-protected VMs.  Currently, software-
+ 	  protected VMs are purely a development and testing vehicle for
+@@ -135,7 +135,6 @@ config KVM_INTEL_TDX
+ 	bool "Intel Trust Domain Extensions (TDX) support"
+ 	default y
+ 	depends on INTEL_TDX_HOST
+-	select KVM_GENERIC_MEMORY_ATTRIBUTES
+ 	select HAVE_KVM_ARCH_GMEM_POPULATE
+ 	help
+ 	  Provides support for launching Intel Trust Domain Extensions (TDX)
+@@ -159,7 +158,6 @@ config KVM_AMD_SEV
+ 	depends on KVM_AMD && X86_64
+ 	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
+ 	select ARCH_HAS_CC_PLATFORM
+-	select KVM_GENERIC_MEMORY_ATTRIBUTES
+ 	select HAVE_KVM_ARCH_GMEM_CONVERT
+ 	select HAVE_KVM_ARCH_GMEM_RECLAIM
+ 	select HAVE_KVM_ARCH_GMEM_INVALIDATE
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 77d9c62d2a07..1ecb3f3fe832 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -8104,7 +8104,6 @@ void kvm_mmu_pre_destroy_vm(struct kvm *kvm)
+ 		vhost_task_stop(kvm->arch.nx_huge_page_recovery_thread);
+ }
+ 
+-#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+ static bool hugepage_test_mixed(struct kvm_memory_slot *slot, gfn_t gfn,
+ 				int level)
+ {
+@@ -8127,19 +8126,27 @@ bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
+ 					struct kvm_gfn_range *range)
+ {
+ 	struct kvm_memory_slot *slot = range->slot;
++	bool flush = false;
+ 	int level;
+ 
+ 	/*
+-	 * Zap SPTEs even if the slot can't be mapped PRIVATE.  KVM x86 only
+-	 * supports KVM_MEMORY_ATTRIBUTE_PRIVATE, and so it *seems* like KVM
+-	 * can simply ignore such slots.  But if userspace is making memory
+-	 * PRIVATE, then KVM must prevent the guest from accessing the memory
+-	 * as shared.  And if userspace is making memory SHARED and this point
+-	 * is reached, then at least one page within the range was previously
+-	 * PRIVATE, i.e. the slot's possible hugepage ranges are changing.
+-	 * Zapping SPTEs in this case ensures KVM will reassess whether or not
+-	 * a hugepage can be used for affected ranges.
++	 * For KVM_MEMORY_ATTRIBUTE_PRIVATE:
++	 *  Zap SPTEs even if the slot can't be mapped PRIVATE.  KVM x86 only
++	 *  supports KVM_MEMORY_ATTRIBUTE_PRIVATE, and so it *seems* like KVM
++	 *  can simply ignore such slots.  But if userspace is making memory
++	 *  PRIVATE, then KVM must prevent the guest from accessing the memory
++	 *  as shared.  And if userspace is making memory SHARED and this point
++	 *  is reached, then at least one page within the range was previously
++	 *  PRIVATE, i.e. the slot's possible hugepage ranges are changing.
++	 *  Zapping SPTEs in this case ensures KVM will reassess whether or not
++	 *  a hugepage can be used for affected ranges.
++	 *
++	 * For KVM_MEMORY_ATTRIBUTE_NR/NW/NX:
++	 *  Zap even when loosening restrictions R=>RW, which is not strictly
++	 *  necessary, but will allow KVM to reasses whether a hugepage can be
++	 *  used for the affected pages.
+ 	 */
++
+ 	if (WARN_ON_ONCE(range->end <= range->start))
+ 		return false;
+ 
+@@ -8173,12 +8180,17 @@ bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
+ 	}
+ 
+ 	/* Unmap the old attribute page. */
+-	if (range->arg.attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE)
+-		range->attr_filter = KVM_FILTER_SHARED;
+-	else
+-		range->attr_filter = KVM_FILTER_PRIVATE;
++	range->attr_filter = KVM_FILTER_SHARED;
++	if ((kvm_supported_mem_attributes(kvm) & ~KVM_MEMORY_ATTRIBUTE_PRIVATE) ||
++	    (range->arg.attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE))
++		flush |= kvm_unmap_gfn_range(kvm, range);
+ 
+-	return kvm_unmap_gfn_range(kvm, range);
++	range->attr_filter = KVM_FILTER_PRIVATE;
++	if (kvm->arch.has_private_mem &&
++	    !(range->arg.attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE))
++		flush |= kvm_unmap_gfn_range(kvm, range);
++
++	return flush;
+ }
+ 
+ 
+@@ -8299,4 +8311,23 @@ void kvm_mmu_init_memslot_memory_attributes(struct kvm *kvm,
+ 		}
+ 	}
+ }
+-#endif
++
++/* The bits are flipped but remain in the same position.  */
++#define KVM_PROT_READ  KVM_MEMORY_ATTRIBUTE_NR
++#define KVM_PROT_WRITE KVM_MEMORY_ATTRIBUTE_NW
++#define KVM_PROT_EXEC  KVM_MEMORY_ATTRIBUTE_NX
++
++bool kvm_arch_mem_attributes_supported_prot(struct kvm *kvm, unsigned long attrs)
++{
++	unsigned long prot = (attrs & KVM_MEMORY_ATTRIBUTE_PROT) ^ KVM_MEMORY_ATTRIBUTE_PROT;
++
++        /* Private memory and access permissions are incompatible */
++	if (attrs & KVM_MEMORY_ATTRIBUTE_PRIVATE)
++		return false;
++
++	/* For now do now support exec-only, even though EPT can handle it.  */
++	if (prot && !(prot & KVM_PROT_READ))
++		return false;
++
++	return true;
++}
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 3338d85c721f..182fa31a286c 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10168,9 +10168,7 @@ static int kvm_alloc_memslot_metadata(struct kvm *kvm,
+ 		}
+ 	}
+ 
+-#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+ 	kvm_mmu_init_memslot_memory_attributes(kvm, slot);
+-#endif
+ 
+ 	if (kvm_page_track_create_memslot(kvm, slot, npages))
+ 		goto out_free;
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index acffb2f79b3e..c215e3bdf043 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -722,7 +722,9 @@ static inline int kvm_arch_vcpu_memslots_id(struct kvm_vcpu *vcpu)
+ }
+ #endif
+ 
+-#ifndef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
++#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
++bool kvm_arch_mem_attributes_supported_prot(struct kvm *kvm, unsigned long attrs);
++#else
+ static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
+ {
+ 	return false;
+@@ -2567,7 +2569,25 @@ static inline bool kvm_memslot_is_gmem_only(const struct kvm_memory_slot *slot)
+ 	return slot->flags & KVM_MEMSLOT_GMEM_ONLY;
+ }
+ 
++static inline bool kvm_mem_attributes_may_read(u64 attrs)
++{
++	return !(attrs & KVM_MEMORY_ATTRIBUTE_NR);
++}
++
++static inline bool kvm_mem_attributes_may_write(u64 attrs)
++{
++	return !(attrs & KVM_MEMORY_ATTRIBUTE_NW);
++}
++
++static inline bool kvm_mem_attributes_may_exec(u64 attrs)
++{
++	return !(attrs & KVM_MEMORY_ATTRIBUTE_NX);
++}
++
+ #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
++#define KVM_MEMORY_ATTRIBUTE_PROT \
++	(KVM_MEMORY_ATTRIBUTE_NR | KVM_MEMORY_ATTRIBUTE_NW | KVM_MEMORY_ATTRIBUTE_NX)
++
+ static inline unsigned long kvm_get_memory_attributes(struct kvm *kvm, gfn_t gfn)
+ {
+ 	return xa_to_value(xa_load(&kvm->mem_attr_array, gfn));
+@@ -2579,6 +2599,7 @@ bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
+ 					struct kvm_gfn_range *range);
+ bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
+ 					 struct kvm_gfn_range *range);
++bool kvm_mem_attributes_valid(struct kvm *kvm, unsigned long attrs);
+ u64 kvm_supported_mem_attributes(struct kvm *kvm);
+ 
+ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+@@ -2586,6 +2607,11 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+ 	return kvm_get_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIVATE;
+ }
+ #else
++static inline bool kvm_mem_attributes_valid(struct kvm *kvm,
++					       unsigned long attrs)
++{
++	return false;
++}
+ static inline u64 kvm_supported_mem_attributes(struct kvm *kvm)
+ {
+ 	return 0;
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index c23f1ea62eaf..ffbc68a6e2c9 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -1657,6 +1657,9 @@ struct kvm_memory_attributes {
+ 	__u64 flags;
+ };
+ 
++#define KVM_MEMORY_ATTRIBUTE_NR		       (1ULL << 0)
++#define KVM_MEMORY_ATTRIBUTE_NW		       (1ULL << 1)
++#define KVM_MEMORY_ATTRIBUTE_NX		       (1ULL << 2)
+ #define KVM_MEMORY_ATTRIBUTE_PRIVATE           (1ULL << 3)
+ 
+ #define KVM_CREATE_GUEST_MEMFD	_IOWR(KVMIO,  0xd4, struct kvm_create_guest_memfd)
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 85fdd33c51ab..da80ce6b380e 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -2422,10 +2422,15 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
+ #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+ u64 kvm_supported_mem_attributes(struct kvm *kvm)
+ {
+-	if (kvm_arch_has_private_mem(kvm))
+-		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
++	u64 supported_attrs = 0;
+ 
+-	return 0;
++	if (kvm_arch_has_memory_protection_attributes(kvm))
++		supported_attrs |= KVM_MEMORY_ATTRIBUTE_PROT;
++
++	if (kvm_arch_has_private_mem(kvm))
++		supported_attrs |= KVM_MEMORY_ATTRIBUTE_PRIVATE;
++
++	return supported_attrs;
+ }
+ 
+ /*
+@@ -2522,9 +2527,7 @@ static bool kvm_pre_set_memory_attributes(struct kvm *kvm,
+ {
+ 	/*
+ 	 * Unconditionally add the range to the invalidation set, regardless of
+-	 * whether or not the arch callback actually needs to zap SPTEs.  E.g.
+-	 * if KVM supports RWX attributes in the future and the attributes are
+-	 * going from R=>RW, zapping isn't strictly necessary.  Unconditionally
++	 * whether or not the arch callback actually needs to zap SPTEs.  Always
+ 	 * adding the range allows KVM to require that MMU invalidations add at
+ 	 * least one range between begin() and end(), e.g. allows KVM to detect
+ 	 * bugs where the add() is missed.  Relaxing the rule *might* be safe,
+@@ -2599,6 +2602,25 @@ static int kvm_vm_set_mem_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+ 
+ 	return r;
+ }
++
++bool __weak kvm_arch_mem_attributes_supported_prot(struct kvm *kvm, unsigned long attrs)
++{
++	WARN_ONCE(true, "KVM_MEMORY_ATTRIBUTE_PROT requires kvm_arch_mem_attributes_supported_prot()");
++	return false;
++}
++
++bool kvm_mem_attributes_valid(struct kvm *kvm, unsigned long attrs)
++{
++	if (attrs & ~kvm_supported_mem_attributes(kvm))
++		return false;
++
++	if ((attrs & KVM_MEMORY_ATTRIBUTE_PROT) &&
++	    !kvm_arch_mem_attributes_supported_prot(kvm, attrs))
++		return false;
++
++	return true;
++}
++
+ static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
+ 					   struct kvm_memory_attributes *attrs)
+ {
+@@ -2607,7 +2629,7 @@ static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
+ 	/* flags is currently not used. */
+ 	if (attrs->flags)
+ 		return -EINVAL;
+-	if (attrs->attributes & ~kvm_supported_mem_attributes(kvm))
++	if (!kvm_mem_attributes_valid(kvm, attrs->attributes))
+ 		return -EINVAL;
+ 	if (attrs->size == 0 || attrs->address + attrs->size < attrs->address)
+ 		return -EINVAL;
 -- 
 2.52.0
 
