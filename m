@@ -1,23 +1,23 @@
-Received: from out28-147.mail.aliyun.com (out28-147.mail.aliyun.com [115.124.28.147])
+Received: from out28-101.mail.aliyun.com (out28-101.mail.aliyun.com [115.124.28.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56503DDDBE;
-	Fri, 18 Sep 2026 08:56:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511584B1CE0;
+	Fri, 18 Sep 2026 08:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789721808; cv=none; b=Q955J1R5oV2dh4HADBK6OtO8pYMShEwGmSuOhiOyhpcLCFcDKYSas9Ox+ajhciDRhguNuN5UxMcwDgCGQwpefnDt0UBIxOSHqu8cTi6oSt3/Bb7cx//tdggWtm0wRu94DWBhrJhDax83+aaJN68sO2J4ajkeTSe2iFO3VlZY4cw=
+	t=1789721807; cv=none; b=kqUkAfYTZAFxIXZDLOXOQ9ps7yU0GpHzjzN0kRvyvMhUZCtaYE1tIOx5f39Hin82CP7kRVvD51qSJ5i0b3onhPDS+odcGuofPQ/x8SDZdmV6Blj9GbmrtbY+MqFGmPa+TTBJs0+3obkTjskaLA91pgCcIWkO9BwTn90OWngcQ18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789721808; c=relaxed/simple;
-	bh=QZWNxZ4MgCDhMSom6fOG0nlRZxBeFW2QDH9whnu0/7c=;
+	s=arc-20240116; t=1789721807; c=relaxed/simple;
+	bh=9MkFrJNVCwThM1wP4Pq1llJDaBTuVmVV3j14BlsMBVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TWKB9ryqGRmA/fiVzmGmyjvGlXFKIiRMKHAHVPIoyxdzZBNx5Dnqb0bnYfm2XNNzsHClW6Amr3Cofya2iT8GUa6lvMUEg1oWkOGS+32TwxIgW77mzKd5B0atfSpMXrPvGUsQs1yJa9mLniz4/bXLdO2Y+Gc3scTDL44km+wYqC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.147
+	 MIME-Version; b=OIHqhRuC6Dp9yIjuFB1TKRdnQgI/jDioV+MxiATzR/t8hEXpCCgFeYsH33DMcb9R20URn8KooMbzES1B/cNG0WmgqgLiSVHUDPYQsPOqfkuC5lqPQbcZigEQC2u7D/oywaMeYgDCgadLi0c1LdJLlgS7mGFZMfStNko/tSl7mak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.2010712|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.00822565-0.00404493-0.987729;FP=16639321896244676075|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam033032053168;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.jGgS5SK_1789721790;
-Received: from localhost.localdomain(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.jGgS5SK_1789721790 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436259|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0287089-0.00277421-0.968517;FP=14583058191639071997|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam033037031241;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.jGgS5Qx_1789721789;
+Received: from localhost.localdomain(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.jGgS5Qx_1789721789 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Fri, 18 Sep 2026 16:56:30 +0800
+          Fri, 18 Sep 2026 16:56:29 +0800
 From: Tina Zhang <zhang_wei@open-hieco.net>
 To: Sean Christopherson <seanjc@google.com>,
 	Jim Mattson <jmattson@google.com>,
@@ -27,9 +27,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	zhouyanjing@hygon.cn,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v7 7/8] KVM: nSVM: Advertise DecodeAssists to L1
-Date: Fri, 18 Sep 2026 16:56:17 +0800
-Message-ID: <b716bb603fe3fff0160aa7b2af102cb5e9738086.1789721173.git.zhang_wei@open-hieco.net>
+Subject: [PATCH v7 5/8] KVM: nSVM: Fetch DecodeAssist bytes for synthesized faults
+Date: Fri, 18 Sep 2026 16:56:15 +0800
+Message-ID: <83b494b3773e0b6ad578aec16f54e63193aa9473.1789721173.git.zhang_wei@open-hieco.net>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <cover.1789721173.git.zhang_wei@open-hieco.net>
 References: <cover.1789721173.git.zhang_wei@open-hieco.net>
@@ -41,51 +41,219 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Advertise DecodeAssists to L1 now that KVM virtualizes the
-guest-visible DecodeAssist state in VMCB12: EXITINFO1 decode data for
-MOV CR/DR, INTn, and INVLPG exits, plus instruction bytes for nested
-page faults and intercepted #PF exits.  INVLPGA's linear address remains
-available directly from the saved guest rAX, as required by the APM.
+Hardware-reflected #NPF and #PF VM-Exits can propagate instruction bytes
+from VMCB02, but KVM-synthesized exits have no hardware-provided state for
+the current exit.
 
-Expose the feature only when supported by hardware, as KVM still relies
-on hardware DecodeAssists for VM-Exits that are reflected directly from
-L2.
+Extend kvm_read_guest_virt_helper() to optionally report the number of
+bytes read, including partial reads.  Add kvm_fetch_guest_virt() to apply
+instruction-fetch permissions and return that count, reusing the generic
+helper's page-by-page read loop.
 
-With DecodeAssists exposed, QEMU configurations that require the feature
-(e.g. "-cpu ...,+decodeassists,...,enforce") are no longer rejected.
+When a synthesized data #NPF or #PF has no valid VMCB02 instruction bytes,
+fetch up to 15 bytes from L2's RIP while constructing VMCB12.  Preserve
+the bytes already read if a subsequent read cannot be completed.
+
+For instruction fetches, truncate each linear address to 32 bits outside
+64-bit mode and stop at a non-canonical address in 64-bit mode.  Limit
+the fetch window at the code-segment limit outside 64-bit mode.
+
+Do not attempt the fallback for SEV guests, as KVM cannot read encrypted
+guest memory directly.
 
 Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
-Reviewed-by: Jim Mattson <jmattson@google.com>
 ---
- arch/x86/kvm/cpuid.c   | 1 +
- arch/x86/kvm/svm/svm.c | 2 ++
- 2 files changed, 3 insertions(+)
+ arch/x86/kvm/svm/nested.c | 41 +++++++++++++++++++++++++---
+ arch/x86/kvm/x86.c        | 56 +++++++++++++++++++++++++++++++--------
+ arch/x86/kvm/x86.h        |  2 ++
+ 3 files changed, 85 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 7c63ef90fc60..52dcde011987 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -1195,6 +1195,7 @@ void kvm_initialize_cpu_caps(void)
- 		VENDOR_F(NPT),
- 		VENDOR_F(VMCBCLEAN),
- 		VENDOR_F(FLUSHBYASID),
-+		VENDOR_F(DECODEASSISTS),
- 		VENDOR_F(NRIPS),
- 		VENDOR_F(TSCRATEMSR),
- 		VENDOR_F(V_VMSAVE_VMLOAD),
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index e83e4e5e7b93..82de844f63ad 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -5557,6 +5557,8 @@ static __init void svm_set_cpu_caps(void)
- 		 */
- 		kvm_cpu_cap_set(X86_FEATURE_FLUSHBYASID);
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index d99706e1b9c0..c17df8c2e75f 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -78,22 +78,57 @@ static void nested_svm_invalidate_vmcb02_insn_bytes(struct vcpu_svm *svm)
+ 	svm->nested.vmcb02_insn_bytes_valid = false;
+ }
  
-+		kvm_cpu_cap_check_and_set(X86_FEATURE_DECODEASSISTS);
++static u8 nested_svm_get_insn_bytes_len(struct kvm_vcpu *vcpu, u8 max_bytes)
++{
++	if (!is_64_bit_mode(vcpu)) {
++		u32 eip = kvm_rip_read(vcpu);
++		u32 limit = to_svm(vcpu)->vmcb->save.cs.limit;
 +
- 		if (nrips)
- 			kvm_cpu_cap_set(X86_FEATURE_NRIPS);
++		if (eip > limit)
++			return 0;
++		max_bytes = min_t(u64, max_bytes, (u64)limit - eip + 1);
++	}
++
++	return max_bytes;
++}
++
++static u8 nested_svm_fetch_insn_bytes(struct kvm_vcpu *vcpu, u8 *bytes,
++				      u8 max_bytes)
++{
++	gva_t rip = kvm_get_linear_rip(vcpu);
++
++	max_bytes = nested_svm_get_insn_bytes_len(vcpu, max_bytes);
++
++	return kvm_fetch_guest_virt(vcpu, rip, bytes, max_bytes);
++}
++
+ static void nested_svm_update_vmcb12_insn_bytes(struct kvm_vcpu *vcpu,
+ 						struct vmcb *vmcb12,
+ 						const struct vmcb *vmcb02)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
++	const u8 max_bytes = sizeof(vmcb12->control.insn_bytes);
  
+ 	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_DECODEASSISTS))
+ 		goto out;
+ 
+-	if (!nested_svm_vmexit_supports_insn_bytes(vmcb02) ||
+-	    !svm->nested.vmcb02_insn_bytes_valid) {
++	if (!nested_svm_vmexit_supports_insn_bytes(vmcb02)) {
+ 		nested_svm_invalidate_insn_bytes(vmcb12);
+ 		goto out;
+ 	}
+ 
+-	nested_svm_copy_insn_bytes(vmcb12, vmcb02);
++	if (svm->nested.vmcb02_insn_bytes_valid) {
++		nested_svm_copy_insn_bytes(vmcb12, vmcb02);
++		goto out;
++	}
++
++	if (!is_sev_guest(vcpu))
++		vmcb12->control.insn_len =
++			nested_svm_fetch_insn_bytes(vcpu,
++						    vmcb12->control.insn_bytes,
++						    max_bytes);
++	else
++		nested_svm_invalidate_insn_bytes(vmcb12);
+ 
+ out:
+ 	svm->nested.vmcb02_insn_bytes_valid = false;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index af3ceee714c9..3c706a4627d8 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -4772,20 +4772,34 @@ gpa_t kvm_mmu_gva_to_gpa_system(struct kvm_vcpu *vcpu, gva_t gva,
+ 
+ static int kvm_read_guest_virt_helper(gva_t addr, void *val, unsigned int bytes,
+ 				      struct kvm_vcpu *vcpu, u64 access,
+-				      struct x86_exception *exception)
++				      struct x86_exception *exception,
++				      unsigned int *bytes_read)
+ {
+ 	struct kvm_pagewalk *gva_walk = &vcpu->arch.gva_walk;
+ 	void *data = val;
+ 	int r = X86EMUL_CONTINUE;
+ 
+ 	while (bytes) {
+-		gpa_t gpa = gva_walk->gva_to_gpa(vcpu, gva_walk, addr, access, exception);
++		gpa_t gpa;
+ 		unsigned offset = addr & (PAGE_SIZE-1);
+ 		unsigned toread = min(bytes, (unsigned)PAGE_SIZE - offset);
+ 		int ret;
+ 
+-		if (gpa == INVALID_GPA)
+-			return X86EMUL_PROPAGATE_FAULT;
++		/* Apply address wrapping or canonicality checks before each fetch chunk. */
++		if (access & PFERR_FETCH_MASK) {
++			if (!is_64_bit_mode(vcpu))
++				addr = (u32)addr;
++			else if (is_noncanonical_address(addr, vcpu, 0)) {
++				r = X86EMUL_UNHANDLEABLE;
++				goto out;
++			}
++		}
++
++		gpa = gva_walk->gva_to_gpa(vcpu, gva_walk, addr, access, exception);
++		if (gpa == INVALID_GPA) {
++			r = X86EMUL_PROPAGATE_FAULT;
++			goto out;
++		}
+ 		ret = kvm_vcpu_read_guest_page(vcpu, gpa >> PAGE_SHIFT, data,
+ 					       offset, toread);
+ 		if (ret < 0) {
+@@ -4798,13 +4812,32 @@ static int kvm_read_guest_virt_helper(gva_t addr, void *val, unsigned int bytes,
+ 		addr += toread;
+ 	}
+ out:
++	if (bytes_read)
++		*bytes_read = data - val;
+ 	return r;
+ }
+ 
+-/* used for instruction fetching */
+-static int kvm_fetch_guest_virt(struct x86_emulate_ctxt *ctxt,
+-				gva_t addr, void *val, unsigned int bytes,
+-				struct x86_exception *exception)
++/* Return the number of instruction bytes read, including partial reads. */
++unsigned int kvm_fetch_guest_virt(struct kvm_vcpu *vcpu, gva_t addr,
++				 void *val, unsigned int bytes)
++{
++	struct x86_exception exception = {};
++	unsigned int bytes_read;
++	u64 access = PFERR_FETCH_MASK;
++
++	if (kvm_x86_call(get_cpl)(vcpu) == 3)
++		access |= PFERR_USER_MASK;
++
++	kvm_read_guest_virt_helper(addr, val, bytes, vcpu, access,
++				  &exception, &bytes_read);
++	return bytes_read;
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_fetch_guest_virt);
++
++static int emulator_fetch_guest_virt(struct x86_emulate_ctxt *ctxt,
++				     gva_t addr, void *val,
++				     unsigned int bytes,
++				     struct x86_exception *exception)
+ {
+ 	struct kvm_vcpu *vcpu = emul_to_vcpu(ctxt);
+ 	struct kvm_pagewalk *gva_walk = &vcpu->arch.gva_walk;
+@@ -4843,7 +4876,7 @@ int kvm_read_guest_virt(struct kvm_vcpu *vcpu,
+ 	 */
+ 	memset(exception, 0, sizeof(*exception));
+ 	return kvm_read_guest_virt_helper(addr, val, bytes, vcpu, access,
+-					  exception);
++					  exception, NULL);
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_read_guest_virt);
+ 
+@@ -4859,7 +4892,8 @@ static int emulator_read_std(struct x86_emulate_ctxt *ctxt,
+ 	else if (kvm_x86_call(get_cpl)(vcpu) == 3)
+ 		access |= PFERR_USER_MASK;
+ 
+-	return kvm_read_guest_virt_helper(addr, val, bytes, vcpu, access, exception);
++	return kvm_read_guest_virt_helper(addr, val, bytes, vcpu, access,
++					  exception, NULL);
+ }
+ 
+ static int kvm_write_guest_virt_helper(gva_t addr, void *val, unsigned int bytes,
+@@ -5771,7 +5805,7 @@ static const struct x86_emulate_ops emulate_ops = {
+ 	.write_gpr           = emulator_write_gpr,
+ 	.read_std            = emulator_read_std,
+ 	.write_std           = emulator_write_std,
+-	.fetch               = kvm_fetch_guest_virt,
++	.fetch               = emulator_fetch_guest_virt,
+ 	.read_emulated       = emulator_read_emulated,
+ 	.write_emulated      = emulator_write_emulated,
+ 	.cmpxchg_emulated    = emulator_cmpxchg_emulated,
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index 1d9a66048b01..dbf0a4e6e9c1 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -357,6 +357,8 @@ static inline void adjust_tsc_offset_host(struct kvm_vcpu *vcpu, s64 adjustment)
+ int kvm_read_guest_virt(struct kvm_vcpu *vcpu,
+ 	gva_t addr, void *val, unsigned int bytes,
+ 	struct x86_exception *exception);
++unsigned int kvm_fetch_guest_virt(struct kvm_vcpu *vcpu, gva_t addr,
++				 void *val, unsigned int bytes);
+ 
+ int kvm_write_guest_virt_system(struct kvm_vcpu *vcpu,
+ 	gva_t addr, void *val, unsigned int bytes,
 -- 
 2.43.7
 
