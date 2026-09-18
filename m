@@ -1,131 +1,117 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89013F929B
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 09:43:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 457A93A875F;
+	Fri, 18 Sep 2026 09:47:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789724608; cv=none; b=S2UQKw8x+BFEPbFm4kXQV7Ocm/DkTZxEEFyoHh6AlzNc2pKkJfjWlb5oJLGj/6xhQwjiuKLlQzDexVTSIIKLtvKMSo7ufBMAZG/52NFAvExaCRA82/JEuTyZJcRBndENTX/KmrySCqzevUmUR2oRz0qjgDYtlWugzwG5ODqJxsI=
+	t=1789724842; cv=none; b=aZSgFhvllpR3YMaC6YVvx2NrHH5knkLND16JPH0P6DwTWo0w9/+ipJGNiueS3w+BRalSFrRTHKcvaZQstVtqwo8MzgrU6Zt53cigiShdhL4xufALKr/xRrmYhudmjvUQ/ENmTbjRxMdqZCFOUgq6sacUNXhLb+8mohdXqBfcP4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789724608; c=relaxed/simple;
-	bh=YM9BQf4ErIDgU19uy/gKY9+H0f4P0KhPIGXQbbqdQQc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Uvr5DuHCbYswEMyEomeSKqA7AP/XNOXbJGlQrzdFbYDD8zypEhqJxbG2/2643yTOwxr5FGKamsjnVEuf7gQCOVYIBnUdk67FudFVBMwlXm8eEQVdtc4yvzI6xb8mLL6jG5HLn4miqAtU4z37EBhUJ4Q0niQTQEgPBzRDMFvhRYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZQ9Azc00; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789724842; c=relaxed/simple;
+	bh=eSlqW067KZEESlksS4pzEEOFJpVLZHMuQ6i8lq4fTU4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eOACZQMqjW0V+DVbllckaUK0ogqU0RUTs6mfpgLckdTx7b9upuUFj4q91W/mbQG2zYTYYpFkZBmwsf4GawpRFKSyKSCCnbwc6h3VsS/NeuCt9d9bLnm+kCjh8s0CGD0ci48BxglCjwzfLchGu1HAOzKZ1GKGniI46KZ94ZmkwT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=fETqMfGi; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZQ9Azc00"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789724605;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Z5TU7PallJ1RPWaWYTk7XS3Dm59h/qbbVQnv6/Nzc4s=;
-	b=ZQ9Azc00I33Xf0znns5gvcGGjgYRQphN+JMTOKR4xFASnDyZMqkX7H8pVfX/gsla4DVXPi
-	j9YEJNPRkT5DFe0cjNb2CXy/kDr7wuR0IvxEmJmpqDpv+wlIvjN3uVepBVAk5ECRwBkAp3
-	fUdMH8s5eWDWz8VnyMHhD16IzkJhA1U=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-359-suHYJGCEP8CooeBbAmwyXw-1; Fri,
- 18 Sep 2026 05:43:24 -0400
-X-MC-Unique: suHYJGCEP8CooeBbAmwyXw-1
-X-Mimecast-MFC-AGG-ID: suHYJGCEP8CooeBbAmwyXw_1789724603
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6EE541956042;
-	Fri, 18 Sep 2026 09:43:23 +0000 (UTC)
-Received: from virtlab1023.virt.eng.rdu2.dc.redhat.com (virtlab1023.virt.eng.rdu2.dc.redhat.com [10.18.48.26])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E7A7A1800370;
-	Fri, 18 Sep 2026 09:43:22 +0000 (UTC)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] KVM: x86/hyperv: do not overwrite hc->ingpa for slow SIGNAL_EVENT hypercall
-Date: Fri, 18 Sep 2026 05:43:22 -0400
-Message-ID: <20260918094322.152817-1-pbonzini@redhat.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="fETqMfGi"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D3186168F;
+	Fri, 18 Sep 2026 02:47:15 -0700 (PDT)
+Received: from [10.57.6.197] (unknown [10.57.6.197])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 801D93F882;
+	Fri, 18 Sep 2026 02:47:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789724839; bh=eSlqW067KZEESlksS4pzEEOFJpVLZHMuQ6i8lq4fTU4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=fETqMfGisKk6NTxLoU1SBAaZzF4uzWxwEO9GudmINWmDd6C/oSVjhWMWDT2uStWJ5
+	 ycmJ+DkKfZGrxwDKDUK3kQ1Wtz273cxB6y7o27WOQyO49zZ/JZpH46scbKmQExn0DR
+	 sZ95l4hiNczrmOzTk5BdWjJEPwCKoXP6SGVSRv7s=
+Message-ID: <76fb1cc8-60f4-4725-a839-76fcf928e232@arm.com>
+Date: Fri, 18 Sep 2026 10:47:14 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18 05/23] KVM: arm64: Track the type of VM in kvm_arch
+Content-Language: en-GB
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev,
+ gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
+ alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
+ lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260915160141.3543048-1-suzuki.poulose@arm.com>
+ <20260915160141.3543048-6-suzuki.poulose@arm.com>
+ <CA+EHjTz65G0MM=tOrzmk=jMweBX1us6FqfrmSkQs4KSyAEoxhg@mail.gmail.com>
+ <e26cbb4e-84e2-4fcc-9eb0-93bfd4aff4a7@arm.com>
+ <CA+EHjTw6TOSEs1GtUcUy9WACpGRJBA9yTn9Ro_+tiD=XkeHr4g@mail.gmail.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <CA+EHjTw6TOSEs1GtUcUy9WACpGRJBA9yTn9Ro_+tiD=XkeHr4g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-When a guest makes a slow HVCALL_SIGNAL_EVENT hypercall with a connection ID
-that is valid in userspace but not registered in the kernel conn_to_evt,
-kvm_hvcall_signal_event() reads the connection ID and overwrites hc->ingpa.
-However, hc->param still signals that the hypercall was a slow one, and
-userspace will then treat the connection ID as an address.
+On 18/09/2026 10:14, Fuad Tabba wrote:
+> Hi Suzuki,
+> 
+> On <date>, Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+> [...]
+>> +       if (WARN_ON_ONCE(!kvm))
+>> +               return false;
+>> +
+>> +       /* Cover both pKVM host and Realm VMs */
+>> +       if (!kvm_vm_hyp_is_distrusting(kvm))
+>> +               return true;
+> 
+> I'd drop the WARN_ON_ONCE. 
 
-Cc: stable@vger.kernel.org
-Fixes: bd38b32053eb ("KVM: hyper-v: Collect hypercall params into struct")
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
-        originally reported by sashiko at
-        https://lore.kernel.org/kvm/20260918083322.C87F11F000FF@smtp.kernel.org/,
-        but the issue is preexisting and unrelated to the patch that was being
-        reviewed.
+I would say, we need it. i.e., we are filtering kvm_arch_vm_ioctl(),
+where it is called from the kvm instance ioctl. So, kvm must be !NULL.
 
- arch/x86/kvm/hyperv.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-index 9f5adcd26cba..e3a8e8236230 100644
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -2501,6 +2501,7 @@ static int kvm_hvcall_signal_event(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *h
- {
- 	struct kvm_hv *hv = to_kvm_hv(vcpu->kvm);
- 	struct eventfd_ctx *eventfd;
-+	u64 conn_id;
- 	int ret;
- 
- 	ret = kvm_hv_hypercall_check_params(vcpu, hc);
-@@ -2511,14 +2512,16 @@ static int kvm_hvcall_signal_event(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *h
- 		int ret;
- 		gpa_t gpa = hc->ingpa;
- 
--		if ((gpa & (__alignof__(hc->ingpa) - 1)) ||
--		    offset_in_page(gpa) + sizeof(hc->ingpa) > PAGE_SIZE)
-+		if ((gpa & (__alignof__(conn_id) - 1)) ||
-+		    offset_in_page(gpa) + sizeof(conn_id) > PAGE_SIZE)
- 			return HV_STATUS_INVALID_ALIGNMENT;
- 
- 		ret = kvm_vcpu_read_guest(vcpu, gpa,
--					  &hc->ingpa, sizeof(hc->ingpa));
-+					  &conn_id, sizeof(conn_id));
- 		if (ret < 0)
- 			return HV_STATUS_INVALID_ALIGNMENT;
-+	} else {
-+		conn_id = hc->ingpa;
- 	}
- 
- 	/*
-@@ -2526,15 +2529,15 @@ static int kvm_hvcall_signal_event(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *h
- 	 * have no use for it, and in all known usecases it is zero, so just
- 	 * report lookup failure if it isn't.
- 	 */
--	if (hc->ingpa & 0xffff00000000ULL)
-+	if (conn_id & 0xffff00000000ULL)
- 		return HV_STATUS_INVALID_PORT_ID;
- 	/* remaining bits are reserved-zero */
--	if (hc->ingpa & ~KVM_HYPERV_CONN_ID_MASK)
-+	if (conn_id & ~KVM_HYPERV_CONN_ID_MASK)
- 		return HV_STATUS_INVALID_HYPERCALL_INPUT;
- 
- 	/* the eventfd is protected by vcpu->kvm->srcu, but conn_to_evt isn't */
- 	rcu_read_lock();
--	eventfd = idr_find(&hv->conn_to_evt, hc->ingpa);
-+	eventfd = idr_find(&hv->conn_to_evt, conn_id);
- 	rcu_read_unlock();
- 	if (!eventfd)
- 		return HV_STATUS_INVALID_PORT_ID;
--- 
-2.52.0
+> And this early return needs the `>=` from
+> patch 13, or non-protected pKVM VMs skip the filter.
+> 
+
+Of course, This snippet is for Patch 20 and I have fixed the comparison.
+
+
+>> I resorted to is_protected_kvm_enabled() to make it faster than using
+>> the vm_flavor checks. I could rever those anyways.
+> 
+> Agreed it's the faster test. I'd just call it by name at the three
+> sites rather than through a macro.
+> 
+>> Do you mean something like :
+>>
+>>          if (kvm_vm_is_protected_pkvm(host_kvm))
+>>                  hyp_vm->kvm.arch.vm_flavor = VM_PROTECTED_PKVM;
+>>          else
+>>                  hyp_vm->kvm.arch.vm_flavor = VM_PKVM;
+> 
+> Yes, exactly that.
+> 
+>> Do we additionally need to WARN_ON() if we encounter a VM_REALM ?
+> 
+> No, the host shouldn't be able to trigger a WARN at EL2.
+
+Alright.
+
+> 
+>> Apologies, I thought this one didn't change, but later patches changes
+>> them, which is why I kept this.
+> 
+> No worries. With those two in, please keep the tag.
+
+Thanks
+Suzuki
+
+> 
+> Cheers,
+> /fuad
 
