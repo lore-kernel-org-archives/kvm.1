@@ -1,45 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F2A502571;
-	Fri, 18 Sep 2026 15:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FEA93DB320;
+	Fri, 18 Sep 2026 15:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789745156; cv=none; b=rmRKEkVl1QcXF4HZCmvA/7ZJ/C9OF/y2A9PRNwURBlLQzOrOb9eWJcyJwyHpJRhG4QWZu815CxgmcBVt3zUGcxu8WWHrfKP4VB2YYD+PRfgBX1MQZ6zvH2fMNfdz9dtKUp+U+pmw3+zNhOjptYnXo8o+43rO3eryS3w05U/cdkA=
+	t=1789745283; cv=none; b=KpgzZTKeMvdsLaLhwCumEtc5Y2rQ6kxFFjquuqTk/xiLHxfQ5FYF5X7XJF0pdIUdkdiDsi6cQmH1NOoTYhZi7IfM3II95z6T463aRtB+ZH3IOGzBhOhLqJqDDhPVl4z87OCK6nB18A38EP2oOMvh0Z7tSdSl6EWEweOaFiYB4Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789745156; c=relaxed/simple;
-	bh=EAZ6zvjGCfITYSQ+lHL1WQKP0e/vfrscSWwbTvCkcC0=;
+	s=arc-20240116; t=1789745283; c=relaxed/simple;
+	bh=Y5O/xf/mFIcJDKbCeHsIsZUQCLhaZqE+IXeyz/TEH8Q=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Ndy0OQBVr8itFjuuwewiAAjFC7/r2TY/OSxjrl0FhBSdciKjXADICWRx4VlzZ4gxD3vCJXm9pID5yFot8gGx5KPFI1XYzrOercbNbE+BIUbS3B7s1+d7E+mvaWuhzz58Bx5VZJl/3ZMNsV4N+AdnfHD4L0O44TSBEsmQ82V1uUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TwhZn5gO; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=gDxwOUL87kmXoEZDtTV9SHH5RDKcmTG6CicJ/yPvYhZhea0DY3oZz4w6YLRYmCKbEAvaPYK/qFLvUAbL2tKGW6SSE5NAd5oQem0OBjMnGfq7fUCJa9ahDXhvC2I/mRVKvCOGaX2ygdxqKpb+v5vBS+zaENyfo3JY1alFY9T4fSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j7aN1nj5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TwhZn5gO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05B21F000FF;
-	Fri, 18 Sep 2026 15:25:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j7aN1nj5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB7A11F000FF;
+	Fri, 18 Sep 2026 15:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789745154;
-	bh=EAZ6zvjGCfITYSQ+lHL1WQKP0e/vfrscSWwbTvCkcC0=;
+	s=k20260515; t=1789745278;
+	bh=Y5O/xf/mFIcJDKbCeHsIsZUQCLhaZqE+IXeyz/TEH8Q=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TwhZn5gOjbX7i3kcXbCiHJZHAizGFGpRtPlfjUcg6TcRQFlYp79HHYbgusUtzBq56
-	 2cneAoxlE5Ndlx1Vq6Q+z0ouSBL2d+yiNG1bk8SjD5Z/5T4Rd4gcIN46et/wMfmt0Y
-	 DSaKflim8sRG/vSlfMPf4+VETXYBsD66kn4907dtdzqBkr2tqlaRn/aJSOYEVI6gVg
-	 yaiRSSLDiDOkPIrYzboFzIJpCKl+WTOzRAw+1Y+8Ne4LS1tiQ1/B8eDUqaRgdI04/B
-	 UslATfPh2E1+IegElNhFJTFR4MPqOQPx8LZ6Cvz37p4RMCMNYadT7mi6hnlF+DMier
-	 dje6563NZYsIQ==
+	b=j7aN1nj50pCUp+OABmhm6f/4UTG7A5UhnGS3AD174OmOFSf8irpcKeU2DD4Hzwwvw
+	 jk5yFo4VSam59DhUGa1mH5BWKWQMhDSN/03mcfjYGrlg7FoKPzli0bfkcJ0fo3krzg
+	 Wa3Uafk636+nbyhsH8nXawIYDRm40ukKNs+leFvLCfK+vSZl3jM8dKP/Vdvf0C0/CZ
+	 ingvanVdmd/pNn2AqW2K5I50BH6we6yYEe7hzKRMD+ZkGRhDqUnnlGbfnltyw8j7JF
+	 6QqUPShVmRtsu5d9J4JsmX8jPAF5/HUkEpgsH05EcRyFHTUTmEtLKZ2ZUgpUnDjsTP
+	 ukYO1qzs2h8gA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 11/21] KVM: s390: vsie: Add helper reset_vsie_page()
- and unshadow_intercept()
+Subject: Re: [PATCH v7 12/21] KVM: s390: vsie: Add helper
+ unshadow_intercept()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
-Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>, "Vasily
- Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org
-In-Reply-To: <20260918-vsie-sigpi-v7-11-f39806eaae37@linux.ibm.com>
+Cc: "Vasily Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>, "Christian
+ Borntraeger" <borntraeger@linux.ibm.com>, kvm@vger.kernel.org
+In-Reply-To: <20260918-vsie-sigpi-v7-12-f39806eaae37@linux.ibm.com>
 References: <20260918-vsie-sigpi-v7-0-f39806eaae37@linux.ibm.com>
- <20260918-vsie-sigpi-v7-11-f39806eaae37@linux.ibm.com>
+ <20260918-vsie-sigpi-v7-12-f39806eaae37@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 15:25:53 +0000
-Message-Id: <20260918152553.D05B21F000FF@smtp.kernel.org>
+Date: Fri, 18 Sep 2026 15:27:57 +0000
+Message-Id: <20260918152757.EB7A11F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -48,7 +49,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 > Extract helper method from existing code to reuse in new code.
 >=20
-> reset_vsie_page() clears and releases gmap related to vsie_page.
+> unshadow_intercept() acts like unshadow_scb() but only copies intercept
+> information. Used where the rest of the scb is not yet shadowed.
 >=20
 > Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
 
@@ -56,5 +58,5 @@ Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918-vsie-sigpi=
--v7-0-f39806eaae37@linux.ibm.com?part=3D11
+-v7-0-f39806eaae37@linux.ibm.com?part=3D12
 
