@@ -1,97 +1,137 @@
-Received: from ale.deltatee.com (ale.deltatee.com [204.191.154.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703CF348C6B;
-	Fri, 18 Sep 2026 21:11:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=204.191.154.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00023A48C5
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 21:32:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789765878; cv=none; b=P9mVq4w7lWuSpMIT7Or5ReM04Dz+E5CiIaPxStgsXjjBLy23LZW1jpxmSYB3J5Ch37oT5pqRv2W7opgtpNbRaL7qN7+LHwqdtPM62KrJoU04LwaTC7xWql62xUNQKEnqg/pK2mWC7WsvqdVSLd8JgWXplc3XIRelDxrjwS878M4=
+	t=1789767146; cv=none; b=WExyEXK5cPqkhpX3OWIF9GxrfBEjkkpu06epZvGj0OI25TnvA6vzlfQCtUCcsllx5BKp70LK3rB8PWjceSGrDdlMvzhdRV2KaBSFQt+Qon2V6RdToKGHb7DYYaWmACqi/+ozJ/tbjJ0/ReKGvqy6Cib6sGYZa4pUQYg+b/N3sBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789765878; c=relaxed/simple;
-	bh=iTA2JmU9v7HJ5V5IljVnQwoIkWnikrfuoyICSQaKHl0=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Subject; b=qDcr1luZ7g7a5ac7RX6JlQ8IJ1yi4DuE/o12ff4985fZjKf2HzyCxE5DAGfgTOObk93z3XH/4gsS+Ok632+aouae1ivo4qqzF5W5WCNX57goztQVawWKQyvqiIEIbjTZmKCDB+NUscD5ycha3Z4b7tKqds1OwBRKFhvdmDJPdmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=deltatee.com; spf=pass smtp.mailfrom=deltatee.com; dkim=pass (2048-bit key) header.d=deltatee.com header.i=@deltatee.com header.b=MK5blqq2; arc=none smtp.client-ip=204.191.154.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=deltatee.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deltatee.com
+	s=arc-20240116; t=1789767146; c=relaxed/simple;
+	bh=i+AIJ7kveZ6bTwB9nAnv/K3Y/I8+LS/Dr18pfaPSPIE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=EPhIpKMqOCzuF98k1t88PHWcxYRtEkj0QqzOs1kxqCapvFRbOqcrPK1u6wp2OAQuw0oklzaP6sPh9yP9x0SPaKpMzsnqsnFg9ngL27oTBkhI1LVLWpH9G9rtlKpx7IzYQWG+wpzzpQ2ToDjfDqOjv+MONpDLyKH3WW3sszftNJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ryvLFuk2; arc=none smtp.client-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=deltatee.com header.i=@deltatee.com header.b="MK5blqq2"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=deltatee.com; s=20200525; h=Subject:In-Reply-To:From:References:Cc:To:
-	MIME-Version:Date:Message-ID:content-disposition;
-	bh=ULK5VZAuxSXWm8LF6Ikgli/YbS6dUrioNZM7oqlPxpI=; b=MK5blqq2y3XgRiBDMg9+TPw8T0
-	UT496dXnWXaagiYpJ1QjxAfmCHoXmHvKAkurXXQNRO1vHuwD8QANkRnJJ4GzcOMFvPlayeMSYYpgY
-	MrmLiAKp2mxyWv4ot7eFkFMFP0I6KlAWyMj8WcV8lQkz/uFyXIBWnswMqzddGeC2DcMGbKvmMBVhr
-	Xfy/J004Cc45D2ZsVjDFWzx9u0yYC2UjzdUKLosanchXkMCKHW7YTK6o6dA2MLNLMRvBS1XHYfNva
-	jhYUyth0v1bllQNFaJMTlXZWV2E2PHAeUZASCOMn8XxquG3udEVsm99SRFGRR3xLRzs7xfkAa5m55
-	OROgvIIg==;
-Received: from guinness.priv.deltatee.com ([172.16.1.162])
-	by ale.deltatee.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <logang@deltatee.com>)
-	id 1x7frU-0000000Ct2f-3PJO;
-	Fri, 18 Sep 2026 15:11:13 -0600
-Message-ID: <df87832e-8c45-467c-bbfd-d5154158172d@deltatee.com>
-Date: Fri, 18 Sep 2026 15:11:11 -0600
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ryvLFuk2"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ccb687f82eso16973705ad.3
+        for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 14:32:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789767144; x=1790371944; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=njzJ20D4uLqX8b8VhscD9ctvL+AlXe9kGWUy4cyvKI8=;
+        b=ryvLFuk2Bf2OInmOAWjxPnJH3jTVsowrVBNDZk8i74UjmNKikEmKoVlYUxPGFounFA
+         FpnesZ2KPjsKxRuA/UpwDWOihZoOPI54qmpinS8Hz3V/U90ZNOXsa51/OX3Gu3Moc78f
+         Dsa4+ahiFTuVVTF/EErxIcIUbUZ53zDuwNaCO6P3Rsd8ZIP+Su088+9DMBKS/78L4LpO
+         FK5RadGlm7fmTnXX/f+8It9UutMcHfxZIngYp5dcPWndPcYJ6/nA9dBEc6kEGCDY934O
+         dLqB8IX8MuO8Rjuiq78kTFbG81WQlgl+vcG59gYWZ5NxQu+9RL1etuCpxR+9Lckahuha
+         baMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789767144; x=1790371944;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=njzJ20D4uLqX8b8VhscD9ctvL+AlXe9kGWUy4cyvKI8=;
+        b=P8nq7mHQtMiIF/5dlrp0rfjhbHTjJ85q33op6v4lENVLKoYYpDlpLd6Cb2rikkUwdY
+         PYk8IKXDERRxu2uFjBXhMYx5+4XN4RlHlM3LyRlcnpmU99WjRU863xSuO65cNw4Pmm2S
+         niEYKDYjzHb36H0d+PrfqFzC+Ike12Xx1U192R4FhKfJ0mMRXNEfxypRQ/S8E3UkDYfT
+         Ehjd8uy7zCLW1tgktK5EJCts7E19dU+X+GgWOc5tJTKuoelkKK1v1/vrjxa8XLlqbzzO
+         Cixs1pEBD1zwV/MDEttmE9LbX7r/aYRo4ALSLrjOmaEkJewT0Ah7d3ZPORmYmWApJgaz
+         OhJA==
+X-Forwarded-Encrypted: i=1; AKwUvBzSsECCkqylwj6u47kSZ2hhZ1d8rYrCebluLkhcFyRPNrAdoFtU2HMkJ0HvzN1ScNt9Lbo=@vger.kernel.org
+X-Gm-Message-State: AFuF++nnOObUTWpXoWo/zC/h4Zl6KeSG0TErw2oXgFWc48Xk5AKGdQhZ
+	YkgULBO1dSPNKd8I+Ia7zt78kAJt+dBqAkcyfRk9NimmbrybeFFWIlLT1E1nrbpNEhrhvxhVNVK
+	iVIGGLQ==
+X-Received: from plbiw23.prod.google.com ([2002:a17:903:457:b0:2dd:bf8a:52b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:19cd:b0:2dd:c100:b2bf
+ with SMTP id d9443c01a7336-2ddc100b30amr11139185ad.42.1789767143896; Fri, 18
+ Sep 2026 14:32:23 -0700 (PDT)
+Date: Fri, 18 Sep 2026 14:32:23 -0700
+In-Reply-To: <7d40bcd97e01390a345ce1dbe26264e7b064a619.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Chaitanya Kulkarni <kch@nvidia.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jens Axboe
- <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
- Ankit Agrawal <ankita@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Randy Dunlap <rdunlap@infradead.org>,
- Sumit Semwal <sumit.semwal@linaro.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, iommu@lists.linux.dev,
- Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- linux-rdma@vger.kernel.org, kvm@vger.kernel.org
-References: <20260914-fix-p2p-acs-v4-0-v6-0-5ef07ec9ef06@nvidia.com>
- <20260914-fix-p2p-acs-v4-0-v6-7-5ef07ec9ef06@nvidia.com>
-Content-Language: en-CA
-From: Logan Gunthorpe <logang@deltatee.com>
-In-Reply-To: <20260914-fix-p2p-acs-v4-0-v6-7-5ef07ec9ef06@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 172.16.1.162
-X-SA-Exim-Rcpt-To: leon@kernel.org, bhelgaas@google.com, kch@nvidia.com, gregkh@linuxfoundation.org, axboe@kernel.dk, alex@shazbot.org, ankita@nvidia.com, jgg@ziepe.ca, corbet@lwn.net, skhan@linuxfoundation.org, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, rdunlap@infradead.org, sumit.semwal@linaro.org, christian.koenig@amd.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, iommu@lists.linux.dev, tdave@nvidia.com, linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, linux-rdma@vger.kernel.org, kvm@vger.kernel.org
-X-SA-Exim-Mail-From: logang@deltatee.com
-X-Spam-Level: 
-Subject: Re: [PATCH v6 07/18] PCI/P2PDMA: Collect the path's ACS controls
- before deciding
-X-SA-Exim-Version: 4.2.1 (built Sun, 23 Feb 2025 07:57:16 +0000)
-X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
+Mime-Version: 1.0
+References: <aqss_eQAY7soHRwJ@google.com> <28f7a805c57da35d86b5c495cdf2b613a61d235e.camel@intel.com>
+ <aqvtG90zWq6SkU8L@google.com> <3f97caf660cbe460b8bbaf3f2a72e4b6a3ea83d9.camel@intel.com>
+ <aqxGN2Zc8sOl2RKx@google.com> <906d0cb6515b396f4e9d74f1d546c902ea3ce49a.camel@intel.com>
+ <aqyAED5ZK48eEZtq@google.com> <56a61983c03806120e607dfd1e1b7c9046c1f54b.camel@intel.com>
+ <aq048KmPN5WPQ4sQ@google.com> <7d40bcd97e01390a345ce1dbe26264e7b064a619.camel@intel.com>
+Message-ID: <aq2t5wJGLtsltMza@google.com>
+Subject: Re: TDG quote analysis
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Yilun Xu <yilun.xu@intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Binbin Wu <binbin.wu@intel.com>, Dave Hansen <dave.hansen@intel.com>, 
+	Vishal Annapurve <vannapurve@google.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, Peter Fang <peter.fang@intel.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Sep 18, 2026, Rick P Edgecombe wrote:
+> On Fri, 2026-09-18 at 06:13 -0700, Sean Christopherson wrote:
+> > =C2=A0But given that you say "This idea came up before actually", maybe=
+ chunking
+> > the quote operation isn't a big lift?
+>=20
+> The idea that came up was to have a saved state are per-TD. But this only
+> eliminated concurrency issues in the SW based flow. In the future a HW ba=
+sed
+> flow would be S3M limited. Which is why I keep saying a redesigned soluti=
+on
+> should be robust to concurrency limitations.
 
+IMO, that's the complete wrong way to look at this.  HW-based is inherently
+serialized, it does NOT have concurrency, period.  SW-based is has no inher=
+ent
+concurrency restrictions beyond existing CPU contention.
 
-On 2026-09-14 05:22, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
-> 
-> calc_map_type_and_dist() reads each divergence port's ACS Control register
-> and folds the result into running counters as it goes. Any routing property
-> that depends on the kind of TLP being routed would have to be threaded
-> through that code, so there is nowhere to put one without reading the
-> registers again for each kind.
-> 
-> Collect the two ports' ACS Control values into struct pci_p2pdma_acs_path
-> first, then decide from it. pci_p2pdma_route() applies the same rule as
-> before: a path routes directly only when both directions do.
-> 
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Trying to find a perfect one-size-fits-all solution is impossible, because =
+the
+problems with each are so very different.  The problem you want to solve fo=
+r
+SW-based is how to support preemption.  The problem you want to solve for H=
+W-based
+is how to hide the fact that someone in the future might think following AM=
+D's
+lead and putting a precious resource into a tiny microprosser on a slow bus=
+ is a
+fantastic idea.
 
-Big patch, but I think it makes sense. Might have been easier to read if
-splitting out pci_p2pdma_warn_path() was done first in a prep patch. But
-this is already a pretty large and growing series.
+By creating these system-wide thread pools, TDX has effectively created a b=
+izarre
+M:N scheduling problem, *and* introduced a completely avoidable noisy-neigh=
+bor
+problem.
 
-Overall though, I think the patch is ok:
+Assuming my understanding is (finally) correct, and the SW-based flows do a=
+ll the
+work on the CPU, then the only way making the SW-based flows asynchronous a=
+dds
+value is if the host is willing to set aside CPU cores for such chores.  An=
+d for
+the use cases where TDX makes sense, AFAIK no CSP *wants* to do that.  Not =
+to
+mention the RFC doesn't even support that, because KVM doesn't resume the v=
+CPU
+until the quote is ready.
 
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+> But now I'm wondering what your specific interest is. It seems you have m=
+ore
+> interest in non-KVM in-the-loop guest side latency than you did on host s=
+ide.
+> Which is fine. But it makes me want to double check: You want an average =
+and
+> worse case latency for the first DICE attestation "SW" flow?
+
+I care about future me not getting pulled into a customer issue because a v=
+CPU
+got waylaid by a system-wide mutex for multiple seconds.
