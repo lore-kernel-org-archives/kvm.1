@@ -1,117 +1,172 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 457A93A875F;
-	Fri, 18 Sep 2026 09:47:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8417233933;
+	Fri, 18 Sep 2026 09:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789724842; cv=none; b=aZSgFhvllpR3YMaC6YVvx2NrHH5knkLND16JPH0P6DwTWo0w9/+ipJGNiueS3w+BRalSFrRTHKcvaZQstVtqwo8MzgrU6Zt53cigiShdhL4xufALKr/xRrmYhudmjvUQ/ENmTbjRxMdqZCFOUgq6sacUNXhLb+8mohdXqBfcP4k=
+	t=1789725313; cv=none; b=fBpfi3wgYQqCPSNE4MEShQoNNywRIEDoYsl1S4C0sg1zE794NWFawFQb9NADSd3jPZUXXp1uNfaI6djrWfOkl0PlGjyzt5CroO1KXxl+hLWw0+RX2k9Ug5ZizIpbXe06fOi6PXsvc+WX6GhOB4MxF8TGfFlh081OXIZjgsy6gXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789724842; c=relaxed/simple;
-	bh=eSlqW067KZEESlksS4pzEEOFJpVLZHMuQ6i8lq4fTU4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eOACZQMqjW0V+DVbllckaUK0ogqU0RUTs6mfpgLckdTx7b9upuUFj4q91W/mbQG2zYTYYpFkZBmwsf4GawpRFKSyKSCCnbwc6h3VsS/NeuCt9d9bLnm+kCjh8s0CGD0ci48BxglCjwzfLchGu1HAOzKZ1GKGniI46KZ94ZmkwT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=fETqMfGi; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1789725313; c=relaxed/simple;
+	bh=IGcNG9V6vpEAmGJWRLXEzH9r5ld2oVhwqzI1320opF0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CyxgxlZyauGYqepeIQRCdnBzitrCpBtELVN2FXYMaGYgiH+NjWYvvVdSr+AHHeeKGUC1OJoMTdMrJTal+wzCnZMZkpbe0sEES1grNIu2nPQvcgec8bG3RI42k78YUprVtJCy1QNG3IW279vmCPQn4LhG/nbrWbFai+yfAX8oq3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FLbnAawq; arc=none smtp.client-ip=192.198.163.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="fETqMfGi"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D3186168F;
-	Fri, 18 Sep 2026 02:47:15 -0700 (PDT)
-Received: from [10.57.6.197] (unknown [10.57.6.197])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 801D93F882;
-	Fri, 18 Sep 2026 02:47:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789724839; bh=eSlqW067KZEESlksS4pzEEOFJpVLZHMuQ6i8lq4fTU4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fETqMfGisKk6NTxLoU1SBAaZzF4uzWxwEO9GudmINWmDd6C/oSVjhWMWDT2uStWJ5
-	 ycmJ+DkKfZGrxwDKDUK3kQ1Wtz273cxB6y7o27WOQyO49zZ/JZpH46scbKmQExn0DR
-	 sZ95l4hiNczrmOzTk5BdWjJEPwCKoXP6SGVSRv7s=
-Message-ID: <76fb1cc8-60f4-4725-a839-76fcf928e232@arm.com>
-Date: Fri, 18 Sep 2026 10:47:14 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FLbnAawq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789725312; x=1821261312;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=IGcNG9V6vpEAmGJWRLXEzH9r5ld2oVhwqzI1320opF0=;
+  b=FLbnAawqVtwQ922jow9hBwPCrCKA4K1IWjri0oYOMrx6uxft4957paj7
+   6TJMvv7KY4inh0MEZ44Y6Q+X5w5q6GPpmLPV4nAqkrzzFxEZKnJegccXo
+   NbPUXBDdksCmFkd8eUSH0iyH0HfsPfQtIfRg0zfZ0DlcooHH+mRbFq1Z4
+   n4M/HstftqOgGD3BuFXdKNh44S67TntkcqjUEkpukSm0l7+wW8MMuto0B
+   unBakCSNRbfT4A+IRp+oBiAFep6fHishvtYrCguBI8VYONYdCmQ/USQzd
+   IlVNlkzbI87sqYccCHYushNMXVuFVrS1+nNabujB/BseTTWXhS6+DdnRq
+   A==;
+X-CSE-ConnectionGUID: nSZr639oQnW+3beefS1w3w==
+X-CSE-MsgGUID: DR7R809vQHijZsb4VB2AEw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="736020"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="736020"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa116.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 02:55:11 -0700
+X-CSE-ConnectionGUID: PvOJQpnTRqOixLSWVMnakg==
+X-CSE-MsgGUID: dbSDKyMPSN+YV/pwLgT2yw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="270999672"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa007.fm.intel.com with ESMTP; 18 Sep 2026 02:55:07 -0700
+Date: Fri, 18 Sep 2026 17:54:44 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Maloor, Kishen" <kishen.maloor@intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+	"Mehta, Sohil" <sohil.mehta@intel.com>,
+	"Fang, Peter" <peter.fang@intel.com>,
+	"nik.borisov@suse.com" <nik.borisov@suse.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>
+Subject: Re: [PATCH v2 1/5] x86/virt/tdx: Move TDH.SYS.CONFIG operations into
+ a wrapper
+Message-ID: <aq0KZNuDmTeUDn9T@yilunxu-OptiPlex-7050>
+References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
+ <20260915102658.713079-2-yilun.xu@linux.intel.com>
+ <8b5b577cdad5e81c5166349e13541989f2facf53.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18 05/23] KVM: arm64: Track the type of VM in kvm_arch
-Content-Language: en-GB
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
- will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev,
- gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
- alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
- lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260915160141.3543048-1-suzuki.poulose@arm.com>
- <20260915160141.3543048-6-suzuki.poulose@arm.com>
- <CA+EHjTz65G0MM=tOrzmk=jMweBX1us6FqfrmSkQs4KSyAEoxhg@mail.gmail.com>
- <e26cbb4e-84e2-4fcc-9eb0-93bfd4aff4a7@arm.com>
- <CA+EHjTw6TOSEs1GtUcUy9WACpGRJBA9yTn9Ro_+tiD=XkeHr4g@mail.gmail.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <CA+EHjTw6TOSEs1GtUcUy9WACpGRJBA9yTn9Ro_+tiD=XkeHr4g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8b5b577cdad5e81c5166349e13541989f2facf53.camel@intel.com>
 
-On 18/09/2026 10:14, Fuad Tabba wrote:
-> Hi Suzuki,
+On Tue, Sep 15, 2026 at 08:45:04PM +0000, Edgecombe, Rick P wrote:
+> On Tue, 2026-09-15 at 18:26 +0800, Xu Yilun wrote:
+> > In Linux, SEAMCALL wrappers are introduced to avoid broad SEAMCALL
+> > access by exposing only a selection of SEAMCALL leafs, but also to
+> > abstract the SEAMCALL register ABIs.
+> > 
 > 
-> On <date>, Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
-> [...]
->> +       if (WARN_ON_ONCE(!kvm))
->> +               return false;
->> +
->> +       /* Cover both pKVM host and Realm VMs */
->> +       if (!kvm_vm_hyp_is_distrusting(kvm))
->> +               return true;
 > 
-> I'd drop the WARN_ON_ONCE. 
+> > The latter improves readability and
+> > reuse for SEAMCALL leafs that are called multiple times.
+> 
+> I'm trying to adjust to not using former/latter. The feedback I've seen is that
+> it is too much to remember as you read along. How about:
+> The abstraction improves...
 
-I would say, we need it. i.e., we are filtering kvm_arch_vm_ioctl(),
-where it is called from the kvm instance ioctl. So, kvm must be !NULL.
-
-
-> And this early return needs the `>=` from
-> patch 13, or non-protected pKVM VMs skip the filter.
-> 
-
-Of course, This snippet is for Patch 20 and I have fixed the comparison.
-
-
->> I resorted to is_protected_kvm_enabled() to make it faster than using
->> the vm_flavor checks. I could rever those anyways.
-> 
-> Agreed it's the faster test. I'd just call it by name at the three
-> sites rather than through a macro.
-> 
->> Do you mean something like :
->>
->>          if (kvm_vm_is_protected_pkvm(host_kvm))
->>                  hyp_vm->kvm.arch.vm_flavor = VM_PROTECTED_PKVM;
->>          else
->>                  hyp_vm->kvm.arch.vm_flavor = VM_PKVM;
-> 
-> Yes, exactly that.
-> 
->> Do we additionally need to WARN_ON() if we encounter a VM_REALM ?
-> 
-> No, the host shouldn't be able to trigger a WARN at EL2.
-
-Alright.
+Yes.
 
 > 
->> Apologies, I thought this one didn't change, but later patches changes
->> them, which is why I kept this.
+> > 
+> > Some SEAMCALL leafs are not explicitly wrapped because the level of TDX
+> > ABI details needed to perform the call is low enough to flow well with
+>                                          ^are
+
+the level ... is low enough, seems "is" is the right one? AI also
+prefers "is".
+
+> > the calling code.
+> > 
+> > For some of the currently unwrapped SEAMCALL leafs, TDX architecture
+> > adjusts the ABI and adds SEAMCALL version selection for backward
+> > compatibility.
+> > 
 > 
-> No worries. With those two in, please keep the tag.
+> Reads a little weird to me. Like I'm not sure when this adjusting is happening.
+> How about:
+> 
+> ..., the TDX architecture has evolved the ABI to introduce new versions of
+> existing SEAMCALLs. VMM code can select the version to call based on what is
+> supported by the loaded TDX module.
 
-Thanks
-Suzuki
+good to me.
 
 > 
-> Cheers,
-> /fuad
+> >  Future kernel will need to support the changes. 
+> > 
+> 
+> ?? I guess you mean selecting between SEAMCALL versions?
 
+Yes. I refactored the whole paragraph:
+
+    For some of the currently unwrapped SEAMCALL leafs, the TDX architecture
+    has evolved the ABI to introduce new leaf versions. The host can select
+    the version to call based on what is supported by the loaded TDX module.
+    When future kernel implements this version selection, more ABI details
+    will leak into the surrounding caller code, which decreases the
+    readability of the caller logic. To keep the ABI details contained, move
+    the SEAMCALL leaf that will need version selection into a wrapper.
+
+> 
+> > This will
+> > leak more ABI details into the surrounding caller code and decrease
+> > readability of the other logic. To keep the ABI details contained, move
+> > the SEAMCALL leafs that will need version selection into wrappers.
+> > 
+> > The cleanest separation would be to have kernel data types for the
+> > SEAMCALL wrapper arguments,
+> > 
+> 
+> This is now talking about general seamcall wrapper design. It could read like
+> it's instead talking about clean separation of SEAMCALL versions?
+
+OK, the transition is not good here.
+
+    When defining the wrapper, the cleanest separation would be...
+
+[...]
+
+> Outside the diff it has:
+> array_sz = tdmr_list->nr_consumed_tdmrs * sizeof(u64);
+> 
+> Could be now changed to:
+> array_sz = tdmr_list->nr_consumed_tdmrs * sizeof(*tdmr_pa_array->phys);
+
+Good to me. I tweaked it a bit on my preference:
+
+	array_sz = tdmr_list->nr_consumed_tdmrs *
+		sizeof(tdmr_pa_array->phys[0]);
+
+> 
+> A bit of existing cleanup, but the u64 is especially tucked away compared to
+> before, so I'd argue its maintaining readability of the existing code.
