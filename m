@@ -1,103 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1FD5158BD;
-	Fri, 18 Sep 2026 16:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECC451614B
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 16:30:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789748899; cv=none; b=j0rzIIWqdwoPlIwQXNP6RkeHlQARtiS3jirvoRRQv+Ouqpo6Z29V0DbLsVLPwA8pYJwWnjd/Vvt5phXkX8HkQo0ac0eL+aDZk8AmxW9xX4bYNXtndYZ+GY0vXeKxkMoKao+ao2NWx8J/b67L1Q/rS93GvCpzVsmepplI+eFsSiE=
+	t=1789749012; cv=none; b=IJBthHXaBKvdI4RhbPJ8j41FlfEYrWStmRn6nfPAgHCZz8SQRibSKCGieJPyVzY9twmeknhyYJF/tL0nHaUbODhuiav+m1YXcRNss7/I0/Ki9e62KSEJbSC+rN0qYHhX3N4sLNqCdsWmZ4FwGt93nIDC0FGsrxx/Uh7XAY2oSzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789748899; c=relaxed/simple;
-	bh=tzCFpUnckKZJcYA8Q8I0dDzdDgypn2YHTLdWGr0BlKw=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=pJT1rrNurN4cZWz29wJFlUQeblsG0i+6ITH7GS6q4dJdAPCClYiWk1A4t/rGiDQhHzYsrlVy2qT22X+vWRazmLQsyDfj3t6C/qp/fhY3PqeHRqp7BMlyjgOUBGzynKfdADbyoqmM5NFw4+QRzYniS81Zzkgro7n3xfQdax7FOo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HDJx44W5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789749012; c=relaxed/simple;
+	bh=O+UBJr3gFAX4TinUIRjZUyiXmreSVDUomUUj2Aj1ptQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=TdVLjO5OOlNGSqrqZQCOhy7M36NAKvc3QGmGrqBUZweFO8aYh5aWu4v+GUh5Mpj4q0UP0fHLrTXihAsMl0FCScKyuBpJFpONVZokP4jI3VkEja7ev1AfwBnTqBF/GbD/cwX7Mb++qcNxwhOJPoIlmmr1HDP4zKbqjet/rRlcmRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MOon/fPZ; arc=none smtp.client-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HDJx44W5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831321F000FF;
-	Fri, 18 Sep 2026 16:28:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789748890;
-	bh=Oog97d45GBWxizIp3e8XEIos1HPU6lzu/8vqoiXky/g=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HDJx44W5tKdI01OUf5JqIr44QNAziDvu6Np0IxcMjBFypQjbFKko3Z3VWILqpxvoY
-	 NJgyN2LREGkpSL6aPIP57RK1ULbjAuZOrNJb8vE9cCsGFlxJnd0m4JzAcYw7EJIWEU
-	 W/bvqPviyJ+fvGHNq+gQ67Ug+fbHrVKLQZ0IHW/c+P8ltC1dMLFGE4RuSSJ3Iq/6oe
-	 QTIPe/3XRXag66HtlwGFeJXKXKZqaJW0B5ySIsi/wH2d21Z6uBy2/IoGIvauR3V9y1
-	 hGmpyn4vnhkqx7huwTkEm6bLb5B3VsYtD5QqyKnEKzE9GWgyIepf6X+wrlUy1FMgd+
-	 soTF/ZwnPq51w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 20/29] s390: Introduce Start Arm Execution
- instruction
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steffen Eiden" <seiden@linux.ibm.com>
-Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, "Marc Zyngier" <maz@kernel.org>, linux-s390@vger.kernel.org, "Christian
- Borntraeger" <borntraeger@linux.ibm.com>, kvmarm@lists.linux.dev, "Heiko
- Carstens" <hca@linux.ibm.com>, "Oliver Upton" <oupton@kernel.org>, "Vasily
- Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org
-In-Reply-To: <20260918133107.1042730-21-seiden@linux.ibm.com>
-References: <20260918133107.1042730-1-seiden@linux.ibm.com>
- <20260918133107.1042730-21-seiden@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 16:28:09 +0000
-Message-Id: <20260918162809.831321F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MOon/fPZ"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d55d8cd938so16334845ad.1
+        for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 09:30:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789749010; x=1790353810; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=99erlflp2aCrSG4QDyPZLxsRtq+Uqca0X+Eqb36V21w=;
+        b=MOon/fPZWzbK/s3WHjXvAzIQ9LTqwWE80w3GUMp/X0GhYu2HpaX/fVRXrf6BFQC5zo
+         QJvQsMcLEysQByVbCfQbvBfcgVgSucfliU2rdKnYsifQSsYrbRPzF1W+e8jUbnY52JUo
+         I8AxZvXDCvmLSD6pW3cQy/GnXTOV6yRntFhBfHZgPY+3dppUWWZ4ga3GIO29dp9Xp+PB
+         deEDd6Lgl63SNJVuo3Jz7CLaejWRE7VyvDBYQg/FQKDCs6WmTjGxGAgORmWoK3lwPQHL
+         KtLHeKSDzfCeZ8rKoekDudFEfrzrh1zfZh+RHcfZfTbdjXpcfEyn1s8Fi0barWgZlHB1
+         FRNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789749010; x=1790353810;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=99erlflp2aCrSG4QDyPZLxsRtq+Uqca0X+Eqb36V21w=;
+        b=KyoVHUovQTC6wGKFEWuEy+quwub4lePYvhSuHmax+zr590wsumG2/vVnf3pYMHdqG+
+         rBkOZ2bescYuTmV+SLiNFuBCUe8wDfw0r03mWwAPAcNHHYjmnL0RYLPeLp2ND+S5b8aB
+         UcmU5LjfQOHB6ZBwGKEoHKhEAltqr+wpP1V1oEYI2fA9zh8IKxkwUeGeE4cu1T3CdwII
+         D8j0ZTHAzjdl6PCifLTAyeUq3zrX/W/HvPfrPjlMh9gczQsedeQwDeS9LczaeDX8ctQP
+         p8m1SQ6ROyQxcH25TPmW7r5/kS9QSkXBMgQ85yJ3vlxgEEDvi+JIqdZavX3fkcvqhBzg
+         ndYQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxuSD/U/IW0dizy5s3Fc8xfL9ODDteWBOywJ5X0biDhMueNJ+FOE07cpN1k/Gf7w6IRJfY=@vger.kernel.org
+X-Gm-Message-State: AFuF++mZvXBorLt2QqU5NJAUGy8a3iom7lHY8HTh73ek10FCuJkc1Gou
+	zgZb0C5PsAKCrRYobUOaJPauGMe2tym4DP/dBRghp4zLCMqDvLW91Mf5ChByL+gvNTi1HaTihgq
+	/JoG6Mw==
+X-Received: from plw15.prod.google.com ([2002:a17:903:45cf:b0:2dd:b2b9:91a7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f792:b0:2dd:ad74:ac82
+ with SMTP id d9443c01a7336-2ddb1bbff1emr67985325ad.29.1789749009925; Fri, 18
+ Sep 2026 09:30:09 -0700 (PDT)
+Date: Fri, 18 Sep 2026 09:30:09 -0700
+In-Reply-To: <20260917102314.GI776954@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260508231353.406465-1-seanjc@google.com> <anTB6ksbUs18FEf1@google.com>
+ <aqLvXM5SPPlQePXs@google.com> <20260917102314.GI776954@noisy.programming.kicks-ass.net>
+Message-ID: <aq1nETs-EO0B7NLj@google.com>
+Subject: Re: [PATCH v3 0/9] perf/x86: Don't write PEBS_ENABLED on KVM transitions
+From: Sean Christopherson <seanjc@google.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	James Clark <james.clark@linaro.org>, linux-perf-users@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>, Mingwei Zhang <mizhang@google.com>, 
+	Stephane Eranian <eranian@google.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] s390: missing `nop` padding after SAE instruction execution
---
+On Thu, Sep 17, 2026, Peter Zijlstra wrote:
+> On Thu, Sep 10, 2026 at 10:56:44AM -0700, Sean Christopherson wrote:
+> > On Thu, Aug 06, 2026, Sean Christopherson wrote:
+> > > On Fri, May 08, 2026, Sean Christopherson wrote:
+> > > > Sean Christopherson (9):
+> > > >   perf/x86/intel: Ensure guest PEBS path doesn't set unwanted
+> > > >     PERF_GLOBAL_CTRL bits
+> > > >   perf/x86/intel: Don't write PEBS_ENABLED on host<=>guest xfers if CPU
+> > > >     has isolation
+> > > >   perf/x86/intel: Don't context switch DS_AREA (and PEBS config) if PEBS
+> > > >     is unused
+> > > >   perf/x86/intel: Make @data a mandatory param for
+> > > >     intel_guest_get_msrs()
+> > > >   perf/x86/intel: Invert names of intel_ctrl_{guest,host}_mask
+> > > >   perf/x86: KVM: Have perf define a dedicated struct for getting guest
+> > > >     PEBS data
+> > > >   perf/x86/intel: KVM: Handle cross-mapped PEBS PMCs entirely within KVM
+> > > >   KVM: VMX: Drop a redundant pmu->global_ctrl check when processing
+> > > >     pebs_enable
+> > > >   KVM: VMX: Only tell perf to enable PEBS counters for fully enabled
+> > > >     PMCs
+> > > > 
+> > > >  arch/x86/events/core.c            |  5 +-
+> > > >  arch/x86/events/intel/core.c      | 92 +++++++++++++++++++------------
+> > > >  arch/x86/events/intel/lbr.c       |  2 +-
+> > > >  arch/x86/events/perf_event.h      |  7 ++-
+> > > >  arch/x86/include/asm/kvm_host.h   |  9 ---
+> > > >  arch/x86/include/asm/perf_event.h | 11 +++-
+> > > >  arch/x86/kvm/vmx/pmu_intel.c      | 28 +++++++---
+> > > >  arch/x86/kvm/vmx/vmx.c            | 10 ++--
+> > > >  arch/x86/kvm/vmx/vmx.h            | 15 ++++-
+> > > >  9 files changed, 114 insertions(+), 65 deletions(-)
+> > > 
+> > > Ping.  This still applies on Linus' tree and against tip/master.
+> > 
+> > Ping again.  This fixes a real issue and IMO provides much-needed improvements
+> > for the KVM<=>perf APIs.
+> 
+> Right, finally got around to staring at them. How did you want them
+> merged?
+> 
+> AFAICT 2-4 have Fixes tags and should go in perf/urgent, while the rest
+> goes in perf/core?
 
-commit 97e095ed7008049c3b17921733022a1015bd2720
-Author: Steffen Eiden <seiden@linux.ibm.com>
+I was going to say "just put everything in perf/core", but given that 7.3 is the
+likely next LTS, I agree that we should patch 2 in particular into 7.3.  FWIW,
+after looking at this more, patch 1 is more of a fix than I realized (it too will
+have a Fixes tag on the next version).  It *should* be a glorified nop, but is a
+decent defense-in-depth change, so is probably worth putting into perf/urgent as
+well.  That would give a nice split of 1-4 to perf/urgent, and the rest to perf/core.
 
-s390: Introduce Start Arm Execution instruction
+> /me tries and finds patch 5 doesn't apply.
 
-This commit introduces the Start Arm Execution (SAE) instruction to enable
-accelerated execution of arm64 virtual machines on s390. It adds the
-necessary assembly wrapper __sae64a, control blocks, and architecture
-types.
+I'll send a v6.  After reading through all of this again, I agree with Dapeng[*]
+that it's worth fixing the flaw Sashiko pointed out (I'll tack on a patch).
 
-> diff --git a/arch/s390/kernel/entry.S b/arch/s390/kernel/entry.S
-> --- a/arch/s390/kernel/entry.S
-> +++ b/arch/s390/kernel/entry.S
+Thanks!
 
-[ ... ]
-
-> @@ -245,6 +245,28 @@ EXPORT_SYMBOL(__sie64a)
->  EXPORT_SYMBOL(sie_exit)
->  #endif
-> =20
-> +#if IS_ENABLED(CONFIG_KVM)
-> +/*
-> + * __sae64a calling convention:
-> + * %r2 pointer to sae control block physical address
-> + */
-> +SYM_FUNC_START(__sae64a)
-> +	stmg	%r6,%r14,__SF_GPRS(%r15)	# store kernel registers
-> +	STBEAR	__SF_SAE_BEAR(%r15)		# save breaking event address register
-> +	.insn	rre,0xb9a50000,%r2,0		# Start Arm Execution
-> +	LBEAR	__SF_SAE_BEAR(%r15)		# restore breaking event address register
-
-[Severity: Medium]
-Should there be a nopr 7 padding inserted after the SAE instruction here?
-
-For the SIE instruction, the handler explicitly includes a nopr 7 cushion=20
-because if a machine check is triggered by the immediately following instru=
-ction
-(in this case LBEAR), the hardware may incorrectly attribute the exception =
-to
-the guest context instead of the host.
-
-Since the hardware behavior for SAE likely mirrors SIE, does this path requ=
-ire
-similar padding to safely handle machine-check boundaries?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918133107.1042=
-730-1-seiden@linux.ibm.com?part=3D20
+[*] https://lore.kernel.org/all/a0fdbd96-3a4d-4a32-92ee-cf2b47db59db@linux.intel.com
