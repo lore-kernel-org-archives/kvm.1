@@ -1,95 +1,94 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EDE432E65
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 11:22:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DBC4E1C73
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 11:24:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789730529; cv=pass; b=XCwwwXZZ7Is5aMn9Ts5uxkCkssYRscGdxxFptRnUzTUAwv+sfy9ZEQA0zR8FBMV28469LvC5ousa/1sPDBV7FOKEiEgzPEkHUi2Z1QB7HDBVVP8JV5qxtQqmXnO+4Ew0TZXQrhHMBhMZijGRWDp73FxBN4S85pbAFMw0Vzxkh7s=
+	t=1789730685; cv=pass; b=E2dfXmRO+5rpmN2k0gp2T7HKflNotZ2ltMW5f2eBXLw1+/i0J5UFdjkvrG75N3bFshjuSiTBZUdmo+iqSzI6kLSUUtwlK7EdJX5yE8c25JS6Gzi71BSFeArf9sAPhGS9z9y4GGf6Lz2/kdCJ0WNrg12PKnliWP6LRAxK7CF7Ywk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789730529; c=relaxed/simple;
-	bh=/H+f8rE4cmCyRd97Qlb5sVoBG09cTXloUz/HII+jJZk=;
+	s=arc-20240116; t=1789730685; c=relaxed/simple;
+	bh=uBnC6KA4mFvaE05vQovsBFoi0Ky2dT/n6cHsROU3IVA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kcRpxwsGBaln0N6oR/PBgV0Rt+AVWBcIzpXzu1EO+jA9n0eva4YckpGfMjBF1I0QSwZvuYz6YEmMq7EMpm+ai67lfWoy6lFUmK8LvRXoiN8Nn0fLW84ubFLvFV3s0dwtyfvgvjyERLnmS5F5l1+qICUsot3woxNmZ/Ii59KUl80=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ny43O8F4; arc=pass smtp.client-ip=209.85.208.42
+	 To:Cc:Content-Type; b=Flk/Vr8GV+dit33NWPqjIa1nbFpnsPUuSBvOjvJZJpGOwU/Eh7/0EEoOrKslY7aNGkEWGJrpfA9M3ScJTcf2jLkQpMskGqrDM04P22jnHAZVyIhvgp0UX+byFPrkx9AxRR9exM4mx+xqjL54kCJfW+1O6kjCF4YcikWHNlABoMg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o2Q+F0lQ; arc=pass smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ny43O8F4"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6aa13d8d9d0so6536a12.0
-        for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 04:22:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789730526; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o2Q+F0lQ"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6aa13d8d9d0so6564a12.0
+        for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 04:24:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789730680; cv=none;
         d=google.com; s=arc-20260327;
-        b=Zm64K+h/ci/OmVYv+LEgTB6r+IJ/PiW86X5NNijZjjZQ+rw0UZQliRGjvlaM23/7IT
-         ZjSspSuuVs8i4t4yot8ZOYvdYCL/iUvyonV0J3Wu2VSV8xuAEwcPV6J4sagElifJ7wNP
-         f+DDqzvolxvBJMFu8PtDJ7hqEGmWwpQje48++DpSRCFQWEBk5lCKZFiQ9MLvZgtM6QS/
-         HbyCiNnntVWN5EOgxVUFmuDYqA+7Nxo0Yrzwital20Jo0MaQ/d6oWIpdd/+JzLTwEXbI
-         hINA00UYI8q74qGU09Gahs8p40JIyVcym+tre9c1InkZjiZnyf2M1dgT6iZfxnsl+Iz6
-         sSkA==
+        b=EjHorG40mKJ5ZDJF8auj1TnDXwdNSsQubIUIc0ESgU3RFG9nznW6F2vUdaOhJRm7kG
+         iGqOOmrcA2cCjGnoHRgCq2wj5MYOjj6WeeYzLHy9+syMyOLB+5kqBxixLIws13nsn8Mv
+         HeAt2QeRAWTkf4JmSgoN9J4l4m+74FOK6O428S+pDLE3reabLzbILeIWCrvCZxV4HSfi
+         Zy4LAiILg/Oroqrm2pQloCmA1rnZVSodDMxXDvX5Hltye/PlVDj78CPe/Cn94cZiGr0a
+         5JcBys8k1V6UWJl7WCO0/cOAGbYfS31VNud8ZzmZ+mGofh5casc6jCn1uPokWNLp80rs
+         ghAQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=Bfl80AgR13deu44SG/KPKuN/OYJwn1enWYpfQyfJCUU=;
-        fh=pwJYwy953AW44E3e8WhRP5fsmlg1tsZ3ahU2K3sHbfM=;
-        b=WGw4jj/i2R9+xNRmryhnybzxdgkBwnaRimGicpqLABqLvMV8u+4mOKjnxEYu77Bz7A
-         tLRsYvGvXmYksIixv+0oHlljgrpfgNYrMhkcUW0fHjAIy3Wzk4P9ikzfughz6IMlgA02
-         uM3mXjMKbLungn/YF0gJ2JBq1kEd+2iX4Q9IGaVMFHAHjCcfFjyXeGcIY+DkH1NKe4Vi
-         YKaCo2id6e16sPhHW0MzwxwIAAKSRYYT9UiYH8ihyDoQKg6Y81tjWHptu0jIaIKaQeZd
-         exTejkEdzIyT/Jb2ampFFTHYsR9kk1h6tVnkr2D1ajRYRw/+jy/H4Ji9+wgBh0/pZoN4
-         +A3A==;
+        bh=7a5izxf6YFzXYW8w93EbliwqXIbZagpn1chA3AffJ0A=;
+        fh=/8pwEDZpSN4KGjs39IISAy0H41rEaWaHw87DydQ7BYU=;
+        b=CX2iGzVTKSs3i85FUreaHNFlUN0vqTQklkWjxB5hSu28hLpq9/8b9fhbKqejiE/ruE
+         DhIu0a1DB3T77wFyTh7dJtBSsOvMKzl3oEU54mXCxUo3yvw2NZj90mUimY2o2JolY2/o
+         m0n+bevp0qS4b5JT512VMrAMF2LMYcE1xC+0CrOGQNdLKNv906autR1BEofi0h4vCvLh
+         2pwUMExL5rWF+QWfS3bkQPjdO1oJ1DTrBwChjLhgwDVKYphbk19n7WVX3NYS1lXEvH40
+         IDZ9XE7+t5/G089tlr4UYggRQoo39Fx5dsDqCw6Q+TgWkyxCHD0Xc4C5KrOJk3ZJI9py
+         fHlg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789730526; x=1790335326; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789730680; x=1790335480; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Bfl80AgR13deu44SG/KPKuN/OYJwn1enWYpfQyfJCUU=;
-        b=Ny43O8F4P4vxQ7/zMrkI32A43lJHFbDxxSUXs/taJpDHGhIPuIY1CJAnTbTE2IhATj
-         3zS4g567bNVkMQFL4SEQJBq4w4vBGQGg0dKBNyu/jlihVksHi2CSOF0JOFLZSQ0mnRbP
-         D4aGtilA9rfBoZFqg2o8ZCi9bGrM/potcjJ42lelmumgR6/j4IKmZ3gjNw1EugTPfKLm
-         a9snYCFql1wnmPaOQl9awVMRyMnGPbHdwBt+1J7uFDXJI/9k4Z0cH7GNRKK+skcnoMOI
-         Yz3FDCL26Wl6qftpL2B61xiTouSOzym87VZZst8aBkb1wj76c0ytBWZT91RS1/pBzLVj
-         eesA==
+        bh=7a5izxf6YFzXYW8w93EbliwqXIbZagpn1chA3AffJ0A=;
+        b=o2Q+F0lQUDOlildXI8CHt2tuRsVMh7RNL6NsE6gE7zgjPqAmIzvxc3mMaTj7iDJ4qi
+         6Kp5a+pysfw40TIAlsZxZ81qAnHe9p8jcGmZhafR0URdMZeNWtJYjbEbv//VBmstq34Q
+         cfFA+Z6vWvYXnpxPRiUztO6W7pQkJNT03gsbajeaTvTpSaumUYEplNxArRaBRur4ET4t
+         35KT5FLGfSJx4qY8TCU2307Bp7bLztGVwTz31oNj+uPnnDVu69waNHuBvI+0TjgYLWxS
+         3/C0xDli/wxKsDyCRJwF6coH7erjAVcivNN+Ztq0SCj29zTatEaDVCFSxmaayPOdWsL5
+         LUgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789730526; x=1790335326;
+        d=1e100.net; s=20260707; t=1789730680; x=1790335480;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Bfl80AgR13deu44SG/KPKuN/OYJwn1enWYpfQyfJCUU=;
-        b=yJD7j4N+vA3O2TmzxGfAwG5DsFSPpUhR+vNa+3gSj59mCzcSZeaz4narqZWMiymKjv
-         tl8GFojTdN6LgyyrlQohQbLQ7CbkURwB7Gb4TOJUjpVLHb8Dz3nVX4h+DYLNKKt2T5AD
-         pkBJDw/u2RFb3Dymg2B4Ytji+s06e2ovZZpwUgGUk88t3jNEN14yPGJgLboA7NU7VIMI
-         DsvzY+KSCv81Ua+YSGlV7oR69sub8PmMn11xOjKoXBLijLo9VgJYpuO21+VvbT4zgSli
-         MCeJbkUwxr7rHAVS7nS/zH5DoecoeH/jHLJUqGXWL65wsg0KeRwdNokStX2xl14FMXO1
-         o4kQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxTxuaJtGsyekfJtQSkBpgIO1q/A/JzqAViGamdNn9fEqM9COou84991+jXvXD2tW4aris=@vger.kernel.org
-X-Gm-Message-State: AFuF++kC3USakdos8/9Lxb6zra9VGTesfZpGVP46foATEJN4KslDS6vT
-	LoIko042enl7gz9GlVkIbwUzaGh+qz813QR9EV/CTTLqz1tX63F1smVSRa5/OjAzn6XJsUCOJXj
-	AR55tNRHoT2zQTomkLLgPMPDH1AnoWvGUK73Ygy8/BZTsPU/TPxNRLSsynX8=
-X-Gm-Gg: AYBFou17RoaadagBAG4pU+IzIeWjuXwALTVLSlj9Bdgc58+ROVn3QvfiGdeI9IKCWuw
-	xby3U9JrbcDsi5LYi2dzJHslD5PaLPf8XHU3LsToAfngYhreHLd6vWKtRc4SIfWmTmNBwNxwAi7
-	TEg24BGY2kXHAHQOYlwtVkSv0tXOai1AMah2mQ6o4LHXRchIMVj4ulivMHolFGhlAs7URjgm+qT
-	kfVRPsF3vCGpwUcKxU6JQN1XYqfdl69OzvUm60YlmzRhNL0KhdlPAluy9MNZDCVv0aHLGo08zKx
-	E6OwNun9O69gQPxAROCwHqa99IOa253ONloA7Q8ZkzaCoxc2vQmUhsE=
-X-Received: by 2002:a05:6402:c318:b0:6a7:ef71:28e0 with SMTP id
- 4fb4d7f45d1cf-6aa4de2f154mr26925a12.0.1789730525581; Fri, 18 Sep 2026
- 04:22:05 -0700 (PDT)
+        bh=7a5izxf6YFzXYW8w93EbliwqXIbZagpn1chA3AffJ0A=;
+        b=sPkBHUyEB5JmMhMIjQvYbxVnqm+r4nK0RRvr2j5xXGlgT+LU/89HN3cq41nOjvRKKt
+         0RU7331bZYGc0Z0GUSik2rILHj3vvWJ38x4W+eRfdFSxhCZIZasYvheIPkjpyWwhQlpU
+         7oKSDKIfF5gH497GtIB0bE/33KOD9tl/4frR+GOZaJZOcX6nwy7swc6OOMgMas1mj60Y
+         rLHfFM4ZslUpU3esLoqXwdvFJV6NEtw5/tDSC31js/wm/OIB5bQcVfrtD5pl4r6Uvqdm
+         5E/zlYK0LAjPtBuxvKk/lvRhV8+6o/m/SgmbgJWTb7w+zrZ4kTYHyUVuQ1ngUIVMfpDq
+         TYZA==
+X-Forwarded-Encrypted: i=1; AKwUvBw/+HFsJLk4MIpgFzWQw2c4ItUphKyXtSTyVjhZiQLS/MiSrzW0asyU6wEc3eUHWqbZXtI=@vger.kernel.org
+X-Gm-Message-State: AFuF++l7uShjUykGxHvEJjSxU1yarmp2HT8RU5l67o15q5SgvaVLmGQ1
+	e7PD3Jgu5uUQTAt32L7ZQD1rhuv6gJvbV1BMk2ThhgG2rRRRu4vi9zUIpZCtUYVbZYunwJ7z/96
+	Gor5zN80S2hSqKhSvNL71uEvG8uBalo8XBt5yM43D
+X-Gm-Gg: AYBFou2DQ+doYQnJTEOoC+mzJVzZXTf6Cil97Is2KHnijJnFX3OI2OBjtSPl9GANfUh
+	DzDsaSIfNiCdyrolqv+hcZqcrZFiIjcZgTUjJIXcfZP6ZEDurAZ8RUzBsBY9oMqndck+sZOHN+G
+	ptRQ2yTMvFdUz/HJFspa+52ZRbYtG/uskjoAoWKpyiMUu1PhjXRSA70Fl8wBltStd8WcYgPFwCD
+	pPv7qWfHzEHNzKpRxvkizn6X960jbHZB220TcoxPL21JSW6mAit7PnkDjPjbYgP+sy6Ae0VGndT
+	14HHCgeeVJ4cwVZkV5ugpgbp/Dul4zileT5tmaacgY5vP9SHsQ13clss
+X-Received: by 2002:a05:6402:3c7:b0:6a6:967c:3186 with SMTP id
+ 4fb4d7f45d1cf-6aa4df21b4amr30464a12.2.1789730679801; Fri, 18 Sep 2026
+ 04:24:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1789721173.git.zhang_wei@open-hieco.net> <95301258748704c6b63664015ea18d3632739256.1789721173.git.zhang_wei@open-hieco.net>
-In-Reply-To: <95301258748704c6b63664015ea18d3632739256.1789721173.git.zhang_wei@open-hieco.net>
+References: <cover.1789721173.git.zhang_wei@open-hieco.net> <1355f32599087e8f4d0740bb92ab5f0c9c329b6f.1789721173.git.zhang_wei@open-hieco.net>
+In-Reply-To: <1355f32599087e8f4d0740bb92ab5f0c9c329b6f.1789721173.git.zhang_wei@open-hieco.net>
 From: Jim Mattson <jmattson@google.com>
-Date: Fri, 18 Sep 2026 04:21:52 -0700
-X-Gm-Features: AcwNN1We1S9kRVzuD3jSj8IbJp1M4rVqZ6TcYDxFKtZsWvmaACGzUXedXxtLuy0
-Message-ID: <CALMp9eTme_QbkN8fuc-JkE9M-VLri30sqR7vxqjeU8xX5iHQgg@mail.gmail.com>
-Subject: Re: [PATCH v7 6/8] KVM: nSVM: Use emulator bytes for synthesized
- nested #NPF
+Date: Fri, 18 Sep 2026 04:24:27 -0700
+X-Gm-Features: AcwNN1WGefe8mq1Aq8R2hXSQ4KSfm5bPolxygvJQEfdVJUvpg92P3z4X6vU4uvI
+Message-ID: <CALMp9eTM3WN7idYYK3hhkuYgdDbwE94VTZB4F0fj33DTa1ExuQ@mail.gmail.com>
+Subject: Re: [PATCH v7 8/8] KVM: selftests: Add nested SVM DecodeAssists test
 To: Tina Zhang <zhang_wei@open-hieco.net>
 Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
 	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, zhouyanjing@hygon.cn, 
@@ -100,22 +99,30 @@ Content-Transfer-Encoding: quoted-printable
 On Fri, Sep 18, 2026 at 1:56=E2=80=AFAM Tina Zhang <zhang_wei@open-hieco.ne=
 t> wrote:
 >
-> Preserve the bytes used by the emulator when synthesizing a data #NPF.
-> Reuse the fetch cache only when the fault is the current emulator
-> exception, identified by fault =3D=3D &ctxt->exception.
+> Add a focused nested SVM selftest for DecodeAssists.  Verify that KVM
+> exposes the feature to L1 and provides EXITINFO for representative
+> MOV CR/DR, CLTS, INTn, INVLPG, and INVLPGA intercepts, including a
+> MOV-to-CR0 selective intercept.  Check hardware and forced-emulation
+> paths against the same expected values.  Poison the instruction-byte
+> fields before each instruction-intercept test and verify that the byte
+> count is cleared on exit.
 >
-> Add an emulator accessor to copy cached instruction bytes, checking
-> the RIP and cache bounds.  These checks alone do not establish that
-> the cache belongs to the current emulation.
+> Exercise instruction bytes for hardware and synthesized #NPF/#PF exits.
+> Cover a synthesized #NPF that follows a hardware #NPF in the same emulate=
+d
+> instruction, an unreadable instruction tail that leaves only the cached
+> opcode, and the absence of bytes for an instruction-fetch #PF.  Modify th=
+e
+> MOVSB opcode while its MMIO read is pending to verify that the emulator's
+> cached bytes are preserved.
 >
-> Write the cached bytes directly to VMCB02 and fetch any missing tail
-> through the instruction-fetch helper.  If the tail cannot be read,
-> report only the bytes already available.  For SEV guests, retain only
-> the cached bytes because KVM cannot fetch plaintext guest instructions.
+> Inject a userspace #PF while an MMIO read is pending.  Verify that after
+> MMIO completion, L1 receives instruction bytes from the current RIP,
+> not the previous instruction's emulator cache.
+>
+> The hardware instruction-intercept, synthesized OUTSB #NPF, and
+> userspace-injected #PF cases run by default.  The forced-emulation #PF
+> and instruction-intercept paths require kvm.force_emulation_prefix=3D1.
 >
 > Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
-> Reviewed-by: Jim Mattson <jmattson@gmail.com>
-
-Oops. My bad.
-
 Reviewed-by: Jim Mattson <jmattson@google.com>
