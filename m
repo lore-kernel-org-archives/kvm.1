@@ -1,62 +1,62 @@
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B0A4FECDD;
-	Fri, 18 Sep 2026 15:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C688F501288;
+	Fri, 18 Sep 2026 15:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789744182; cv=none; b=crUAEFuY40AojNfxQ36Y0FCvvX5REqJL+WdSyX1dFxDb0uvIuQUxqroIz1X2BzZ7uvSoBSssFaopAIsnRRsJcEeVaKm2AT4AKoXlyIP7bu+x46fEpnjP1AoXUFNWRh8KGz4d4EGSmdJl1EA6Y7V6WllsDAgw6/UwPvgl63ZMYWI=
+	t=1789744184; cv=none; b=R7s+j1OEVU4AyUX04aTUEdqH9hB92QjvJIigT+JCkjq/UCTd2AtwxW9AIx2+YU7505Id2sw4SPrSK/xwS1RWkTvQvl3uDhzfaNEAXtequ72lN/1ayjlfWE7ZcLwL5jWDWEYKDdRlKcUqViidUwJqkqOipNVcsYSWN6uTcFNDTaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789744182; c=relaxed/simple;
-	bh=RlOK7+/85o8NyNvhDLpEVWXMj68PMLlOpTprYyd4VS4=;
+	s=arc-20240116; t=1789744184; c=relaxed/simple;
+	bh=hCe95FF+seVRSwZ1P13haw5HXwc9uZ9Aj1DI3j5vaGI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iROzs7o/FozUU43xDPL7m/mdhlPV/HKj0uPftUYIqk8zhAjbSdFpx21YcS/n6Bf41kGITMwFIfUfhMuzwzkGptJ6JVdF7nAjg4as1ww9Hqlk/YpT6iXzK2MUbkQ/HbsYqsK0B3G4XegwnWl3bPaegWWfTu+2LX7LvWwnDiA0NJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=sZQHVxHy; arc=none smtp.client-ip=148.163.158.5
+	 In-Reply-To:To:Cc; b=OHai9oGuoZ42p5sOIfs/6R+WLqx6QDNeJXxAeJ5oP7yFD1jDcPfZhWhOsEVmCbywsE76Q+CL/4Ck3uv70TxwCXa5Bilt0W7aZ25xd3bxtUzRUt02SZIS8AJARnumYQgQLSsGErqt1X4U9l+bO0CsM/SNsRbqnQhufTuIJ+Dw/V8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=b9AKBerN; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="sZQHVxHy"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68IDVqv01421721;
-	Fri, 18 Sep 2026 15:09:30 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="b9AKBerN"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68IDVdIf1235847;
+	Fri, 18 Sep 2026 15:09:33 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=0k8JNq
-	C3APBMkYIH0AhM7AanL22iurBvxOljn1RJRjk=; b=sZQHVxHyCXxMUnMLGIw9qd
-	/WgV0f2hGMJL/B41g51tRTz7m6A5HEQXhwV3QcTuNOnMOkeZIKva4JDt72WlpqT+
-	Z/9WQC6lNg9QO81EyeH98e3jvKr6WZGbJbsCfYJRJgoruuJxAsQamXvrGxcYxARM
-	NgPKlAVW0qbL7l6JoZ14rscwUbZ3dp92BR7Mlrto95c1HnSaR6NwvQXySwKtu5vz
-	6Tgi82Dhn1R6+TdIkrbWmSSxhZ7ZVWBC7e/azXnuEawUhjTKgyJVogtPqUOvGt9O
-	Vjx1LV2aE8DE6+DLkcHfzIx/JP3HzaNf48W6tvTVNsVI5zJEY/C3dsHlG5ojM41w
+	:message-id:mime-version:references:subject:to; s=pp1; bh=PptSfh
+	joTnhSmgC0hHjVcEuJMv6Z+IU9jOXNx4Stk38=; b=b9AKBerNzPv7/Vn3Sjdxfg
+	Sv/AcNLoJHZqEbjo6NEpDeqp9aT604ZZuhCpJ+whdXjV7jkKwmXGlH0N2G65FxeJ
+	3xqYJhySW2/TA/wFw/j/dO4/q1TII/oHY1E3tHRnesciYBHI4ITANA4+kPl4BoJ/
+	fm5m8ZUISn5XiKw0fIPYKQxYv7ZBJU7oXE3fNzB8JEPvT4esGAZyw1otUBJPQQTO
+	4ZXPF/FuDGajQLDW1cP4o8BqiqkHAlXBWDuMnO/nvEJ3ZBVbYB51djk6xX9ANgzW
+	QGSg8mPS/pZr3R5HoQ362jbfhiJtbOup8ZL7Wlv47iQsfserpRYRIyPoRNzOgo8A
 	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmxcvg4v0-1
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmv5j8gem-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 18 Sep 2026 15:09:30 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68IDO5Zg777752;
-	Fri, 18 Sep 2026 15:09:29 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gra3yxxr4-1
+	Fri, 18 Sep 2026 15:09:32 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68IDO9ge771962;
+	Fri, 18 Sep 2026 15:09:32 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gr5fffvrr-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Sep 2026 15:09:29 +0000 (GMT)
+	Fri, 18 Sep 2026 15:09:32 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68IF9P8Y52429150
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68IF9SLb47120788
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 18 Sep 2026 15:09:26 GMT
+	Fri, 18 Sep 2026 15:09:28 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D166220040;
-	Fri, 18 Sep 2026 15:09:25 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 7E6E720040;
+	Fri, 18 Sep 2026 15:09:28 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5DD6B20043;
-	Fri, 18 Sep 2026 15:09:25 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 09CCC2004B;
+	Fri, 18 Sep 2026 15:09:28 +0000 (GMT)
 Received: from [192.168.88.251] (unknown [9.111.72.118])
 	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 18 Sep 2026 15:09:25 +0000 (GMT)
+	Fri, 18 Sep 2026 15:09:27 +0000 (GMT)
 From: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Date: Fri, 18 Sep 2026 17:09:21 +0200
-Subject: [PATCH v7 04/21] KVM: s390: vsie: Add ssca_block and ssca_entry
- structs
+Date: Fri, 18 Sep 2026 17:09:26 +0200
+Subject: [PATCH v7 09/21] KVM: s390: vsie: Replace radix_tree with xarray
+ addr_to_page
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260918-vsie-sigpi-v7-4-f39806eaae37@linux.ibm.com>
+Message-Id: <20260918-vsie-sigpi-v7-9-f39806eaae37@linux.ibm.com>
 References: <20260918-vsie-sigpi-v7-0-f39806eaae37@linux.ibm.com>
 In-Reply-To: <20260918-vsie-sigpi-v7-0-f39806eaae37@linux.ibm.com>
 To: kvm@vger.kernel.org, linux-s390@vger.kernel.org
@@ -80,128 +80,155 @@ Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
         Sean Christopherson <seanjc@google.com>,
         Christoph Schlameuss <schlameuss@linux.ibm.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2868;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4178;
  i=schlameuss@linux.ibm.com; h=from:subject:message-id;
- bh=RlOK7+/85o8NyNvhDLpEVWXMj68PMLlOpTprYyd4VS4=;
- b=owGbwMvMwCUmoqVx+bqN+mXG02pJDFlrQxSbrCfOP2A6Q/v+XJukBS6GrvG7Xkx+Y3ThqcCij
- WGrUmMzO0pZGMS4GGTFFFmqxa3zqvpal845aHkNZg4rE8gQBi5OAZhI8X9Ghlln52x5YOxcorjl
- x9VHq37bhMz4/vKABku/56c5QvWME64w/PdKLvqzKvLhPJ8kd95r26bZrP1Wc79VbqrQ7ew7iWe
- Mw5kA
+ bh=hCe95FF+seVRSwZ1P13haw5HXwc9uZ9Aj1DI3j5vaGI=;
+ b=owGbwMvMwCUmoqVx+bqN+mXG02pJDFlrQxRzah1eHlQ6v9/WNmi1f6bQSR1TF+85215ssL9o0
+ fE+pImno5SFQYyLQVZMkaVa3Dqvqq916ZyDltdg5rAygQxh4OIUgIlsjGf4Hy4UcS1IZhXnuVeV
+ fk52vD1HnZTXd069+T5HgDk2pX1NCMM/e7MzHSYsl9IceHlFnvrbbvqxr23jtyutvl1dV6Lv64l
+ xAwA=
 X-Developer-Key: i=schlameuss@linux.ibm.com; a=openpgp;
  fpr=0E34A68642574B2253AF4D31EEED6AB388551EC3
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDIxNCBTYWx0ZWRfX2+M66lahvjgf
- 2GOlW1wCkeqsasJwbBS6pMGoDqJ7fxuaLb0DehNGD5y8+CUKcT7MZdJ83tynGxHGtjF3kpQG6zv
- FdMs4De4vYNr2U2xbS4HI6wfmHWEIR8=
-X-Proofpoint-ORIG-GUID: sZdPNvvJTcNeB8_81V3JJOdKG-wUuNNX
-X-Proofpoint-GUID: _nz1pI0BXRm6SIYYHL1qiCZ8c_M-28Gu
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDIxNCBTYWx0ZWRfXynbX7aMRlMWP
- PmEXzZ7XdqpwZLktiMreYjZ0Z6Y3yvYNFDrvQ739P/BcfjVIvOydwZd4D4xEygBiBLJHZAtyQYY
- QxobySMo7Qj1G2hOinB/QxrcR/2Efy30zjwh9tRjkkY9RrEXuoClGLsjehpwSXmfEUZWRQ4qJDS
- 3pH/NWKvJvm/ZmXdLtOX63MaQHelG8UiIF3Lc2TzPQV8PMax/V8waA7z2u0twJiDvL79PAe0gNn
- n6wZpk5dA6tbXF+QXzQ9ZZTD5lWi2klQ4xH/+URoZD7dRd5DH8PWsL534NFTh7VFk2jIlqQq9iA
- T/nMSahnhRINPZ8jswtj5gxUPODj3ZzwIXLgwSqpE05iuKWpu65weLm6W7gOM6w8aybYeTcmJ9c
- Oq/gk+PY/xw6wwn8f55Cg1lTNEt2zD+5+Xu7MFF4/YwSsw54KkIJ8EPFp+skJDSFnLy7WM4MvTB
- ftxNt5u7c0tKTdyKBrQ==
-X-Authority-Analysis: v=2.4 cv=F+7C5ahN c=1 sm=1 tr=0 ts=6aad542a cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDIxNCBTYWx0ZWRfX09Nf0z9nfWPv
+ t8zcmaF/+p2M6t50GBiDvFll8zMSB91DmhlI4NKVDkDA8piUOVj23FbacnLY/yYdEJwLU3Ncvv8
+ WG+P09EpiyRkjMk1fces3Quvhj7EBzyNkmczvAbUyvUHXqy0hinIQ1VVsyUQwONlnh6Rg6h7Acj
+ cxzUXpugSW9lpPHM9ZpXBB/xtUxmKizZbDswTLH72eJp9jLPO3noGGkpS8Yb3MT59PY38dMEwvK
+ IDHMEzRC7T8biXUw01R8tHiZCVzU40naVh8QkZQZeNoNs+QOrKxkRABcsyvhHatsLakaYbdOKc4
+ W1HunbYlanhp+ppuobXB77LtcIUb7vY1WVMad55E0adEFAoPvJ19WWsNpxeBQHGuPvMORP+rpVp
+ AaA33BSrqx2GfZ3sMvjfSO4PJwNAVKlWpzhzoPDzp+NZvQqZTKsLIb70TqWpTOw2Bn57TBby4Ps
+ uGeKoWKmZaBp8z92bXg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDIxNCBTYWx0ZWRfXzWI1XDRCzqeR
+ PCSo+Xdox7yxCZ+84yXHMyowEtHGU03lNOXoTZuM0KAodhpbTq3F0whjsPiXPKKaqSN63IitY7Y
+ qXS7oB5rZaA0hH/mvoBN/IkHHBWth4Y=
+X-Authority-Analysis: v=2.4 cv=Zsx4uN7G c=1 sm=1 tr=0 ts=6aad542d cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
  a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=KXQrNVq8KaMVEL7Tj7gA:9 a=QEXdDO2ut3YA:10
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=F8FVqei25e47uhyEDlAA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: JYDRXDsdSH5mXaOJs2kDp1oHfm-Q2IrY
+X-Proofpoint-GUID: NpO1cd3U_rrCQ6jM1PIbSHFbgP7Tw7Gu
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-18_04,2026-09-16_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 phishscore=0 clxscore=1015 malwarescore=0
- lowpriorityscore=0 bulkscore=0 spamscore=0 impostorscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609180214
+ malwarescore=0 impostorscore=0 clxscore=1015 priorityscore=1501
+ lowpriorityscore=0 bulkscore=0 adultscore=0 phishscore=0 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609180214
 
-Add the required guest-1 structures for the ssca to the SIE
-control block for use in later patches.
+The underlying implementation of radix_tree is xarray since v4.20.
+Changing to the xarray API directly relaxes some of the locking
+obligations and provides more symmetry with the next vsie changes in
+the series.
 
-The shadow SCA features the address of the original SCA as well as an
-entry for each original SIGP entry. The entries contain the addresses of
-the shadow state description and original SIGP entry.
-
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
 Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
 ---
- arch/s390/include/asm/kvm_host_s390_types.h    | 25 ++++++++++++++++++++++++-
- tools/testing/selftests/kvm/include/s390/sie.h |  2 +-
- 2 files changed, 25 insertions(+), 2 deletions(-)
+ arch/s390/include/asm/kvm_host_s390.h |  2 +-
+ arch/s390/kvm/s390/vsie.c             | 40 ++++++++++++++---------------------
+ 2 files changed, 17 insertions(+), 25 deletions(-)
 
-diff --git a/arch/s390/include/asm/kvm_host_s390_types.h b/arch/s390/include/asm/kvm_host_s390_types.h
-index 9e348a530421..0b69e71bc8ee 100644
---- a/arch/s390/include/asm/kvm_host_s390_types.h
-+++ b/arch/s390/include/asm/kvm_host_s390_types.h
-@@ -6,6 +6,8 @@
- #include <linux/atomic.h>
- #include <linux/types.h>
+diff --git a/arch/s390/include/asm/kvm_host_s390.h b/arch/s390/include/asm/kvm_host_s390.h
+index 6fdac144ca3a..82bfcc2bec74 100644
+--- a/arch/s390/include/asm/kvm_host_s390.h
++++ b/arch/s390/include/asm/kvm_host_s390.h
+@@ -575,7 +575,7 @@ struct vsie_page;
  
-+#define KVM_S390_MAX_VSIE_VCPUS 256
-+
- #define KVM_S390_BSCA_CPU_SLOTS 64
- #define KVM_S390_ESCA_CPU_SLOTS 248
+ struct kvm_s390_vsie {
+ 	struct mutex mutex;
+-	struct radix_tree_root addr_to_page;
++	struct xarray addr_to_page;
+ 	int page_count;
+ 	int next;
+ 	struct vsie_page *pages[KVM_MAX_VCPUS];
+diff --git a/arch/s390/kvm/s390/vsie.c b/arch/s390/kvm/s390/vsie.c
+index e7005bade757..75676f493ab2 100644
+--- a/arch/s390/kvm/s390/vsie.c
++++ b/arch/s390/kvm/s390/vsie.c
+@@ -56,8 +56,7 @@ struct vsie_page {
+ 	gpa_t sdnx_gpa;				/* 0x0250 */
+ 	/*
+ 	 * guest address of the original SCB. Remains set for free vsie
+-	 * pages, so we can properly look them up in our addr_to_page
+-	 * radix tree.
++	 * pages, so we can properly look them up in our addr_to_page map.
+ 	 */
+ 	gpa_t scb_gpa;				/* 0x0258 */
+ 	/* the shadow gmap in use by the vsie_page */
+@@ -1532,19 +1531,15 @@ static struct vsie_page *get_vsie_page(struct kvm *kvm, unsigned long addr)
+ 	struct vsie_page *vsie_page;
+ 	int nr_vcpus;
  
-@@ -47,6 +49,13 @@ struct bsca_entry {
- 	__u64	reserved2[2];
- };
+-	rcu_read_lock();
+-	vsie_page = radix_tree_lookup(&kvm->arch.vsie.addr_to_page, addr >> SCB_ALIGNMENT_SHIFT);
+-	rcu_read_unlock();
+-	if (vsie_page) {
+-		if (try_get_vsie_page(vsie_page)) {
+-			if (vsie_page->scb_gpa == addr)
+-				return vsie_page;
+-			/*
+-			 * We raced with someone reusing + putting this vsie
+-			 * page before we grabbed it.
+-			 */
+-			put_vsie_page(vsie_page);
+-		}
++	vsie_page = xa_load(&kvm->arch.vsie.addr_to_page, addr >> SCB_ALIGNMENT_SHIFT);
++	if (vsie_page && try_get_vsie_page(vsie_page)) {
++		if (vsie_page->scb_gpa == addr)
++			return vsie_page;
++		/*
++		 * We raced with someone reusing + putting this vsie
++		 * page before we grabbed it.
++		 */
++		put_vsie_page(vsie_page);
+ 	}
  
-+struct ssca_entry {
-+	__u64	reserved1;
-+	__u64	ssda;
-+	__u64	ossea;
-+	__u64	reserved2;
-+};
-+
- union ipte_control {
- 	unsigned long val;
- 	struct {
-@@ -88,6 +97,20 @@ struct esca_block {
- 	struct esca_entry cpu[KVM_S390_ESCA_CPU_SLOTS];
- };
+ 	/*
+@@ -1573,15 +1568,15 @@ static struct vsie_page *get_vsie_page(struct kvm *kvm, unsigned long addr)
+ 			kvm->arch.vsie.next %= nr_vcpus;
+ 		}
+ 		if (vsie_page->scb_gpa != ULONG_MAX)
+-			radix_tree_delete(&kvm->arch.vsie.addr_to_page,
+-					  vsie_page->scb_gpa >> SCB_ALIGNMENT_SHIFT);
++			xa_erase(&kvm->arch.vsie.addr_to_page,
++				 vsie_page->scb_gpa >> SCB_ALIGNMENT_SHIFT);
+ 		/* Mark it as invalid until it resides in the tree. */
+ 		vsie_page->scb_gpa = ULONG_MAX;
+ 	}
  
-+/*
-+ * The shadow sca / ssca needs to cover both bsca and esca depending on what the
-+ * guest uses so we allocate space for 256 entries that are defined in the
-+ * architecture.
-+ * The header part of the struct must not cross page boundaries.
-+ */
-+struct ssca_block {
-+	__u64	osca;
-+	__u64	reserved08[7];
-+	struct ssca_entry cpu[KVM_S390_MAX_VSIE_VCPUS];
-+};
-+
-+static_assert(offsetof(struct ssca_block, cpu) == 64);
-+
- /*
-  * This struct is used to store some machine check info from lowcore
-  * for machine checks that happen while the guest is running.
-@@ -317,7 +340,7 @@ struct kvm_s390_sie_block {
- 	__u32	fac;			/* 0x01a0 */
- 	__u8	reserved1a4[20];	/* 0x01a4 */
- 	__u64	cbrlo;			/* 0x01b8 */
--	__u8	reserved1c0[8];		/* 0x01c0 */
-+	__u64	osda;			/* 0x01c0 */
- #define ECD_HOSTREGMGMT	0x20000000
- #define ECD_MEF		0x08000000
- #define ECD_ETOKENF	0x02000000
-diff --git a/tools/testing/selftests/kvm/include/s390/sie.h b/tools/testing/selftests/kvm/include/s390/sie.h
-index 160acd4a1db9..4ff1c1a354af 100644
---- a/tools/testing/selftests/kvm/include/s390/sie.h
-+++ b/tools/testing/selftests/kvm/include/s390/sie.h
-@@ -223,7 +223,7 @@ struct kvm_s390_sie_block {
- 	__u32	fac;			/* 0x01a0 */
- 	__u8	reserved1a4[20];	/* 0x01a4 */
- 	__u64	cbrlo;			/* 0x01b8 */
--	__u8	reserved1c0[8];		/* 0x01c0 */
-+	__u64	osda;			/* 0x01c0 */
- #define ECD_HOSTREGMGMT	0x20000000
- #define ECD_MEF		0x08000000
- #define ECD_ETOKENF	0x02000000
+ 	/* Double use of the same address or allocation failure. */
+-	if (radix_tree_insert(&kvm->arch.vsie.addr_to_page, addr >> SCB_ALIGNMENT_SHIFT,
+-			      vsie_page)) {
++	if (xa_insert(&kvm->arch.vsie.addr_to_page, addr >> SCB_ALIGNMENT_SHIFT, vsie_page,
++		      GFP_KERNEL_ACCOUNT)) {
+ 		put_vsie_page(vsie_page);
+ 		mutex_unlock(&kvm->arch.vsie.mutex);
+ 		return NULL;
+@@ -1660,7 +1655,7 @@ int kvm_s390_handle_vsie(struct kvm_vcpu *vcpu)
+ void kvm_s390_vsie_init(struct kvm *kvm)
+ {
+ 	mutex_init(&kvm->arch.vsie.mutex);
+-	INIT_RADIX_TREE(&kvm->arch.vsie.addr_to_page, GFP_KERNEL_ACCOUNT);
++	xa_init_flags(&kvm->arch.vsie.addr_to_page, XA_FLAGS_ACCOUNT);
+ }
+ 
+ /* Destroy the vsie data structures. To be called when a vm is destroyed. */
+@@ -1676,12 +1671,9 @@ void kvm_s390_vsie_destroy(struct kvm *kvm)
+ 			if (vsie_page->gmap_cache.gmap)
+ 				release_gmap_shadow(vsie_page);
+ 		kvm->arch.vsie.pages[i] = NULL;
+-		/* free the radix tree entry */
+-		if (vsie_page->scb_gpa != ULONG_MAX)
+-			radix_tree_delete(&kvm->arch.vsie.addr_to_page,
+-					  vsie_page->scb_gpa >> SCB_ALIGNMENT_SHIFT);
+ 		free_vsie_page(vsie_page);
+ 	}
++	xa_destroy(&kvm->arch.vsie.addr_to_page);
+ 	kvm->arch.vsie.page_count = 0;
+ 	mutex_unlock(&kvm->arch.vsie.mutex);
+ }
 
 -- 
 2.55.0
