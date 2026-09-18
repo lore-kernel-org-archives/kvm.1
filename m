@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72AA3A5435
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 08:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B917C294A10
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 08:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789720721; cv=none; b=had0Vy51T4iUwklNuPriSRIP5AOT0oVs4hR9ZujHpbp8mbZYTvYYKZLlKTArZSLuafuJ5fGoIp1WBvkpPz85a0x/igUEKiMZS5zLBW3TfZ/OOSoI7GdoG8oOUDZT+rbiXFnR3groryEYZdA7RsN1ktPHP8HyvRJSZGnEEc/enKA=
+	t=1789720747; cv=none; b=RIPQi4GipcN3WyUtCENQ8gy0VrljO1Mvq00tRd4bgMaNKGfevw7IQLe7EOiyxEUcf03gB2PeIIeok6+vG+gGqitLFlq1h1EcvcazAK0SmtpLv30MTlWcEn9N1aCOiOGX1CfjZbJm5buAyjkycp23KJp7lXN70fbv5bHZ4EbFINc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789720721; c=relaxed/simple;
-	bh=WuYu+4TOC8tHdLsXtQyWcCG64zsPRY/FEntInpuiEdQ=;
+	s=arc-20240116; t=1789720747; c=relaxed/simple;
+	bh=zX+91O276jyoMbgJ5NOf85qR07+N8a63fPpoQPJle6Q=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hLOYjwsFpXY8/PK/Zf2OUz/710+EZjMibiobvTWztDJfbHdSY7GJQWyX9XhCdvHgXX9rsNuSmvUX6H2bD9v9/yayIeZmXWt8fb8a1gaoGQrkuspfpzc0vSVv+wECTf9Ib0upQ3cQDR2a7TXjr9V6TMJqz1XMC+R4IJZCuiKPOmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GpuLSvx0; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=svf6TuCVA/BXFH+UTWa4z4SPCodW2Fjl6BY37w9JOrWnsqAHetWfqjm6qP8v6xCHTEhKkMID4p3Y4o6uqg4TNGcG0Qb1vLyBG1GBKIzBU0afolmM2zCHgJZDL+4Evk8vXdCW9/esPcyfbXzdUpFoEKOQfHeNKI+wBGKIZUYYVtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=df3sVQbG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GpuLSvx0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F28C1F000FF;
-	Fri, 18 Sep 2026 08:38:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="df3sVQbG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8731F000FF;
+	Fri, 18 Sep 2026 08:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789720719;
-	bh=kUFRICPbyyS7WFMn0cB6RyZrz/MPp81zPG/UXjY/aBo=;
+	s=k20260515; t=1789720745;
+	bh=lt5ed4DVEBDaXQg6ckJXhVkN6pTBsUlsx34l4Py+K8c=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=GpuLSvx0qVvBPWDbqLPBtZ4rglAiq3x9FV4LCmJqQU5/iWlj9OPh1GjWUm86KqGfV
-	 dTJQv1ipnCDGqrdo/nYtsbH+NZ10oFPFEaSn2B3fgKTADMKUr8t+jDUOhF7wOG6mjZ
-	 AQeC1la6qNlc5HZ+voAf0iH9qvOxjnc9dng0H9RyMAWlURwymxTvV7E6JBjO9whvsw
-	 31QM0r3TmVqMk55x2sRGSCXn2/inEP/E/Q39S4kNYX5OBwGiJW5K26eFqg8hbQbU5W
-	 pTrNAHj5uo7C+/Xtf+zd0OLGH1Jwc6rbnwLJFAk2kSOB4dHJmVUuir7QSIfStV/K56
-	 lr6H9obSVtlQA==
+	b=df3sVQbGQL68sALjh/SnV+QM+rYrkBGsD8f1mHM2A9XtVjUdms9pWxRggdL5hZM6C
+	 hOjavmzmvjEsrCEMt8oLjRDvedP/gz/V1+KQ2dLf1eM7mcRa7yp8dyvV2tAZ015IPa
+	 Ah+hZTWaGSqpelgkG3IHf9QmhEn4DD+w/9zHhwxgxfPmCOxiakfRfXTW5m6im3UK88
+	 4Zc7/FGKgrbShECgclhDv0cgmFL01/R8vpO6bwj8s8/2H5Z8l78rPDLVkGLHR5ANjm
+	 6+T4cqV7qBgZ0ha8UGpDHbd73JDoTdEw2U0d62hDVNXPC9x0emhS158xYiRZxmxAdJ
+	 Qtrj5DOjM3Z8w==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 19/28] KVM: Take memory protections into account for
- accesses with cached gfn->hva
+Subject: Re: [PATCH v2 26/28] KVM: x86: selftests: Introduce memory
+ protection attributes test
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Paolo Bonzini" <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260918081543.139871-20-pbonzini@redhat.com>
+In-Reply-To: <20260918081543.139871-27-pbonzini@redhat.com>
 References: <20260918081543.139871-1-pbonzini@redhat.com>
- <20260918081543.139871-20-pbonzini@redhat.com>
+ <20260918081543.139871-27-pbonzini@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 08:38:38 +0000
-Message-Id: <20260918083839.4F28C1F000FF@smtp.kernel.org>
+Date: Fri, 18 Sep 2026 08:39:04 +0000
+Message-Id: <20260918083904.EC8731F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,88 +47,55 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] kvm: loongarch build failure due to unrenamed ghc->generation field
+- [Medium] selftests: incomplete capability check for KVM_MEMORY_ATTRIBUTE_=
+NO_ACCESS
 --
 
-commit d698f3639de00de4e2127e86617e1f29da8afef7
-Author: Nicolas Saenz Julienne <nsaenz@amazon.com>
+commit f041c4a018399e9454f5aa7f797e258a8a617f0e
+Author: Paolo Bonzini <pbonzini@redhat.com>
 
-    KVM: Take memory protections into account for accesses with cached gfn-=
->hva
-   =20
-    Account for memory attributes when accessing guest memory through
-    kvm_get/put_guest().
-   =20
-    This requires tracking the memory attributes generation as part of
-    gfn_to_hva_cache's data, invalidate the cached information if the
-    generation changes, and failing to refresh the cache if restrictive
-    memory attributes are found within the GPA range.
+KVM: x86: selftests: Introduce memory protection attributes test
 
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 2d85d7c9e0046..f10b14293e60e 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
+This commit introduces architecture-independent tests for KVM memory
+attributes, utilizing small architecture-specific snippets to handle
+the execution tests.
+
+> diff --git a/tools/testing/selftests/kvm/memory_attributes.c b/tools/test=
+ing/selftests/kvm/memory_attributes.c
+> new file mode 100644
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/memory_attributes.c
 [ ... ]
-> @@ -3560,15 +3560,22 @@ static int __kvm_gfn_to_hva_cache_init(struct kvm=
- *kvm,
->  	 * If the requested region crosses two memslots, we still
->  	 * verify that the entire region is valid here.
->  	 */
-> -	for ( ; start_gfn <=3D end_gfn; start_gfn +=3D nr_pages_avail) {
-> -		ghc->memslot =3D __gfn_to_memslot(slots, start_gfn);
-> -		ghc->hva =3D gfn_to_hva_many(ghc->memslot, start_gfn,
-> -					   &nr_pages_avail);
-> +	for (gfn_t gfn =3D start_gfn ; gfn <=3D end_gfn; gfn +=3D nr_pages_avai=
-l) {
-> +		ghc->memslot =3D __gfn_to_memslot(slots, gfn);
-> +		ghc->hva =3D gfn_to_hva_many(ghc->memslot, gfn, &nr_pages_avail);
->  		if (kvm_is_error_hva(ghc->hva))
->  			return -EFAULT;
->  	}
-> =20
-> +	/*
-> +	 * RW memory attributes are incompatible with GHC. The RW protection
-> +	 * check has to happen after storing the generation number.
-> +	 */
->  	ghc->attrs_generation =3D kvm_mem_attributes_generation(kvm);
+> +int main(int argc, char *argv[])
+> +{
+[ ... ]
+> +	struct kvm_vm *vm;
+> +
+> +	TEST_REQUIRE(kvm_check_cap(KVM_CAP_MEMORY_ATTRIBUTES) &
+> +		     KVM_MEMORY_ATTRIBUTE_NO_ACCESS);
 
-[Severity: Low]
-Does this patchset break the build on LoongArch?
+[Severity: Medium]
+Does this capability check in main() ensure that all required attributes are
+supported?
 
-In arch/loongarch/kvm/vcpu.c, kvm_update_stolen_time() and
-kvm_vcpu_set_pv_preempted() still reference the removed ghc->generation fie=
-ld
-and fail to verify memory attribute generations:
+Since KVM_MEMORY_ATTRIBUTE_NO_ACCESS is composed of multiple bits (NR, NW,=
+=20
+and NX), a bitwise AND evaluates to true even if the kernel only supports a=
+=20
+single subset attribute.=20
 
-arch/loongarch/kvm/vcpu.c:kvm_update_stolen_time() {
-    ...
-	if (slots->generation !=3D ghc->generation || gpa !=3D ghc->gpa) {
-    ...
-}
+If only partial support is present, wouldn't the test proceed and=20
+unconditionally iterate over access_array, where the ioctl to set=20
+unsupported attributes fails with -EINVAL and triggers a TEST_ASSERT crash
+instead of a graceful skip?
 
-arch/loongarch/kvm/vcpu.c:kvm_vcpu_set_pv_preempted() {
-    ...
-	if (slots->generation !=3D ghc->generation || gpa !=3D ghc->gpa) {
-    ...
-}
+Could this be updated to verify that all bits in the mask are present?
 
-With the transition to ghc->attrs_generation and ghc->slots_generation acro=
-ss
-this patchset (specifically since the prior patch "KVM: Introduce a generat=
-ion
-number for memory attributes"), these manual generation checks will fail to
-compile.
-
-Could these be updated to use kvm_check_gen()?
-
-> +	if (kvm_range_has_rw_memory_protections(kvm, start_gfn, end_gfn + 1)) {
-> +		ghc->hva =3D KVM_HVA_ERR_BAD;
-> +		return -EFAULT;
-> +	}
-> =20
->  	/* Use the slow path for cross page reads and writes. */
->  	if (nr_pages_needed =3D=3D 1)
+> +
+> +	vm =3D __vm_create_with_one_vcpu(&vcpu, pages, guest_code);
+> +
+> +	/* add a few extra pages for use by tests */
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918081543.1398=
-71-1-pbonzini@redhat.com?part=3D19
+71-1-pbonzini@redhat.com?part=3D26
