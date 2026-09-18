@@ -1,77 +1,70 @@
 Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F4D4E9C36
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 11:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97E63914E9
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 11:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789731424; cv=none; b=goZ3127gQ+PEF4tZ4Ttucr1nBQ5vpCIry5FQbk8prqtwQOd26fRNBxxhZPyAqirBeVWoEEbFQbQLtzmhlsevaqXGTsnlZQKTA+1V3Xeqg48WEwd1RLXGaHLVC/Pwp8XxgBFJunjH280oQebWLmQ2kN6nwmev4CIu41MfVkMiq44=
+	t=1789731464; cv=none; b=QFWw/asSLO+RB3p08YG5955QBRnnnBwpGlHUAMjZuNM3nrXzIhky2/JUWoDNqfzt+Z6PPC+976QjvSyRwIZYHovnfHc/Xa56lgMDDtymemf5YQTaCIVU/E2mhlNtuLdfPjRzNH3anBnkaHaP0PWvPRHph2dPtdbxGAq4qNLVoH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789731424; c=relaxed/simple;
-	bh=FjLFcy9UkF/Nj9OGXk9eYHGkRZAuPRURKY09ueTbAiA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IodDC5HwskkPci4arUtyF843m6Y0kiDCbdf6TkKqcxwm4VQ3s5lFYp7t7JTZOwHQW44ls0FrKrxrMhDJxWebbcexjhsmYAdGAjNsbJcpBVDJD5tz27DayMpvfRXfqFToM9NHAQgFs6aaCkW3229fBYepl8su4kA/LWi89CtQHzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A9/2wU8g; arc=none smtp.client-ip=74.125.227.141
+	s=arc-20240116; t=1789731464; c=relaxed/simple;
+	bh=9sUbCyd02ndB1VZKJXATLmtcx8shFR5IpEb5QeZDF1A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A+LLERFReWp5IpXyB3fVcPosshEj3FzuadSvgmuumwP6j+lagv6TS59r39ASDZqkYHExUfpEzvmpV/O0ElYiYjYTpcDfQw38WYADbBfeIdyaBKJ0pC/X357oD+rbj0+V2psGOwy/UVLIr8negmeeDpXuoGoTHF6d/ysZWOD1DxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QoUOUrmN; arc=none smtp.client-ip=74.125.227.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A9/2wU8g"
-Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2db18fe433fso5141945ad.2
-        for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 04:37:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QoUOUrmN"
+Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2d747ec6188so3614135ad.3
+        for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 04:37:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789731422; x=1790336222; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=knn7HOFJI9QIw3xJhFEBCduwXPGFO8ZK6ZsJD7E+H7U=;
-        b=A9/2wU8gM+DaAVEkhUSXfmbk6NKwquohucX86tuhF9DbvZBtopN0qFp48l5fnT22VX
-         sHYOgQib7+5vXbiA9/vs+1RgvACXwRXWPMjLaaJT9sCf4xexwc9AhHGUdYGKvCEVjkha
-         o6FmdNkMkB6Aqw9yY32+LC3aCTRkc0dzLcjt7dK48hecsVfoZNNxsbAhOCjHUEyeuDni
-         GXo5Jd0pU1dJqG3CfyeMtCa4goP4h+/dFU0G5F/oL54Rm0IjVpDEm/cf6ektCW8AhCk5
-         8KkhdQIvXwtZm0Qkfi51ovSklQNCohz8B7IK4781vVVhDPEduuxHKp73GvoqJwwRiIoD
-         bvWg==
+        d=gmail.com; s=20251104; t=1789731462; x=1790336262; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0ntrLxvkPRzxkiBPzxXVvlYCVy3b1/R3WQ+cKHpiMbM=;
+        b=QoUOUrmNZ2PIJ8qXuRBIy6lnFPR/exlA1f4iHuxe9MNdwdy2ivBKb9vkpFK1RZtF8P
+         /oVs9D3PbOhTxXFynkaIoeLHAe54EQ6iQfTQnwGhE+BMT4Q/oRFOeowbnPh6m8AuqNhe
+         GVzLC8rmp65H/RG+f2tbzVFsDCGvf+aToexkx30sVjSU6m3VWB0QCiGuNysKl9OihoDs
+         mIr+UjyleIG5UF/rw/+cQazy9euZyIUcs6iAslX3F+FaY5SsorDpUn5z/rOQldJWuuUl
+         /cp6/mnmNPGL+XKNXGXFB/nDDniNDAi+0K0qn5CfJsZbybX8JUiXuUmb/KQMAoHpNQCi
+         ilHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789731422; x=1790336222;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=knn7HOFJI9QIw3xJhFEBCduwXPGFO8ZK6ZsJD7E+H7U=;
-        b=rxijSwuOrLqck/Vn/IQHAyI61FN0k6ifV5oK/q3JlUBf036HFYrj/0qdv9SqbJYbUp
-         HsT3SpZA+s+EMd//k1QBe8Sq0H/EX4ufAWEkFdgzSM0EnjsGzabdecAU3h3c9fHA3ZHP
-         8qgpprVmIVk4Au92AKN4KmNKhbdt5Rc2E4EtH1FDuGHZfx++PpTfPaN5hNxBrWIVLV3Z
-         cMIRGn6JuUHKx6qDRTV3Bsp83ZpFzQXN9AAaorWfEBH24XNj38HK64IN9uhShXI8+93j
-         bmY4dOHYthY/EnLg5HUfYC/ZqMU2eD9B8wdBLxgBC2KEvZbhrO66fFil4r+IEhAYkBL1
-         7rmA==
-X-Forwarded-Encrypted: i=1; AKwUvBxrzLZhs3GClG4h2247lwms5LItpUk8M88A8Tf1C1HUaq/kQhnhOniDpQlSJ5RwocR5utg=@vger.kernel.org
-X-Gm-Message-State: AFuF++lq5YcgAWiLZnu1cdPr0mpm6YPLXhy8Z3ZJ9l0ZliNc0ooecypB
-	NtCDmXbJn2KdKJEW37VFPTWpLDBtyMV4yuTZVn9zCl/rBKeiZsOZSoWG
-X-Gm-Gg: AYBFou1eBCLbuH4UoA6QNUzhg9aGvnQliRmq+UmFIN250H0aEHEXj97Mu7j6VOnCUII
-	ZXwDulx+TmgUDCL/MghCU11HRTzRm7b48gyDkM+nomWT0M0LwUCweV0lHpd3HJcCgSJsrFOWjMW
-	QdV+wTjlCjza0gUppHX5a4Dd4aqyoFf0fze/F7zBX6+amWz1y0vjDb29TmIUXYg3Uones9+nVMD
-	kn52h1zY5qOrdv4FFXuc8gfZyewLLFhh0GhY1+JNKD901z54iNRW/K4bnRU+w7FlfeznWkJQdgk
-	l5lpHzxFK1eA0gKruv3JOwfHuLL+1UYW8rjwZAst1nDrJh5oA+RYSGPjrGjzwK1yhEunioD8uI8
-	7u31HxQaoENLhuTp4/IHzlmcBBOzNGiT/aTqxatt3mZUA3eG8YRrkbZsRtI8NGI9F8PUJ+S30Yc
-	gzNJmbjI9of0xYem5cW+nBO3B7BNn7Cqd3/yyuaFIVOEz8gNhqvL2fqI4cCw5r5nKmehJylfaZy
-	1gR7774Uz4j
-X-Received: by 2002:a17:902:f645:b0:2d8:d4d0:792b with SMTP id d9443c01a7336-2ddb1b79d84mr49699935ad.15.1789731422080;
-        Fri, 18 Sep 2026 04:37:02 -0700 (PDT)
-Received: from 10-86-27-207.ban-spse ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33c2876839dsm4203059eec.18.2026.09.18.04.36.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 04:37:01 -0700 (PDT)
-From: Gokul K <gokul02k@gmail.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org
-Cc: Shuah Khan <shuah@kernel.org>,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] KVM: selftests: Delete the unused guest_snprintf()
-Date: Fri, 18 Sep 2026 17:06:31 +0530
-Message-ID: <20260918113631.634233-4-gokul02k@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260918113631.634233-1-gokul02k@gmail.com>
-References: <20260918113631.634233-1-gokul02k@gmail.com>
+        d=1e100.net; s=20260707; t=1789731462; x=1790336262;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0ntrLxvkPRzxkiBPzxXVvlYCVy3b1/R3WQ+cKHpiMbM=;
+        b=SpWOIE4SbKXRJSd8XdEVWffDayzgUneXZRz3MVCidch0ONI6G5O1sGzLony9/SK6w8
+         fj2XUzrY5bxfp1CGBLC7jdd7NTWQF1GeLtGJrhpSmQzcgwSNt5//ZeYtTKrLyeSqcvHZ
+         bgfYK2fNZBE7IqkBCI3Orgbae4UvKkzGl5k90mnIPVu41jPHMrWaG0s29JA1uXLFtj8z
+         Tv6axRiyM0SfJzP56IK7lyawYdp8Ue6IRbcgYhKzX6r7NP49euzHeDIVJCxz6ldTFWMq
+         cY03MSXcSy0A7ib8nK+AiLDfXSQH6T9ZjlD+Gckf5Lz0DRC07Bu2aFTJCH4n0SyyomUI
+         I4NA==
+X-Gm-Message-State: AFuF++mMhYAbdZiHHVRSdOVB7iFpyTflXmM3UPDISxOGAJ4XzH+4d2K6
+	zLHx1y/gv3muDaaJmAy3o6WDlUz/57Msp9fjXJdk4dt2QdxkmtuLqa79
+X-Gm-Gg: AYBFou24WTvIBdUzVnn0Wf9BXqog8+1mWMdODrEB3raWgE5FOxDrkmzEa9h4NQis8ah
+	s/xj8iShHl4IK5vQj5oD4kwF6gZBQR0f9luHOlFAgQWEMBbNRnRSOA51zA82vk7fL7fnfDcT754
+	vUHvSGW5oIFSONJxzIIbN4cuvmUKT/+bV62tskU06I34055VKdE+sRJytoSECGDgwHJjNlKLPQN
+	P5qS765PtGm1ERsLji6PKZthOicyP2jSlHwsbSjwc8i+vbQOB/g0FV/LL5+sXmjKOhLL5CvpFcB
+	7aYXAGC17BynQYWFRwSY5rkwlYbZESffQ37tv1nrXCD10OytRKp0SjjpyPN/TEClNSy5vFOfQyy
+	JzHlneupzqNKZtUbVVtCDnmCU9Y9nNUvTE+H5AYWPAlPPWe2WX2afCZ57nzTm7Uc5cZ5jUVyJd4
+	rxqlj1+B2zkLoVwogCDx8/1mQ61rECMUZV+rSAugWEhA1aCikBdvs3nc0M2/yjaQ095jBXJj6Oy
+	OIiDDYoZeKWZs4TfAGcAlboP1bLoBXeND7YZ7tVRoFaUmUf+IoDug==
+X-Received: by 2002:a17:903:1446:b0:2da:eb8f:b4e4 with SMTP id d9443c01a7336-2ddb1add397mr50997485ad.7.1789731461660;
+        Fri, 18 Sep 2026 04:37:41 -0700 (PDT)
+Received: from FLYINGPENG-MC2.tencent.com ([43.132.141.21])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddb7527582sm6431355ad.17.2026.09.18.04.37.40
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 18 Sep 2026 04:37:41 -0700 (PDT)
+From: Peng Hao <flyingpenghao@gmail.com>
+X-Google-Original-From: Peng Hao <flyingpeng@tencent.com>
+To: pbonzini@redhat.com,
+	seanjc@google.com
+Cc: kvm@vger.kernel.org
+Subject: [PATCH v2] KVM: Use check_shl_overflow() for dirty ring reset batching
+Date: Fri, 18 Sep 2026 19:37:37 +0800
+Message-ID: <20260918113737.13606-1-flyingpeng@tencent.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -80,55 +73,87 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-guest_snprintf() is a varargs wrapper around guest_vsnprintf() that nothing
-calls. Its declaration in test_util.h and its definition in
-lib/guest_sprintf.c are the only two mentions anywhere under
-tools/testing/selftests.
+The backwards-coalescing check in kvm_dirty_ring_reset() spells out "the
+shift left must not lose any set bits" as a shift-out-and-back identity:
 
-The rest of the family is alive: guest_vsnprintf() does the work and
-ucall_common.c calls it, so this deletes the wrapper and nothing else.
+	if (delta > -BITS_PER_LONG && delta < 0 &&
+	(mask << -delta >> -delta) == mask) {
 
-No functional change intended.
+That is exactly what check_shl_overflow() means, so say so directly.  The
+macro also rejects a shift wider than the destination on its own, which
+subsumes the delta > -BITS_PER_LONG term, leaving only the direction test.
 
-Signed-off-by: Gokul K <gokul02k@gmail.com>
+Compare the offsets as unsigned and derive each shift from them in the
+direction that applies, rather than deriving both from the sign of a signed
+delta.  The forward case keeps its explicit width check, since there is no
+shifted result to validate there, just a bit position.  Also use
+BITS_PER_TYPE(mask) so the bound comes from the mask being shifted, and
+BIT() for the individual bits.
+
+No functional change intended for offsets within a memslot.Comparing unsigned
+does change how a wrapped offset is treated -- it becomes a distant offset
+rather than a small backwards step, so it ends the batch instead of being folded
+into it, and the legitimate entries gathered so far are no longer discarded along
+with it by kvm_reset_dirty_gfn()'s bounds check:
+
+	harvested { 10, 0xfffffffffffffffd }
+	  offsets reset before: [], after: [10]
+
+Such an offset is bogus either way and is still rejected by the bounds
+check added in commit 577a8d3bae05 ("KVM: Reject wrapped offset in
+kvm_reset_dirty_gfn()"); only the collateral damage to its batch-mates is
+gone.  The new form never coalesces where the old form refused.
+
+Signed-off-by: Peng Hao <flyingpeng@tencent.com>
 ---
- tools/testing/selftests/kvm/include/test_util.h |  1 -
- tools/testing/selftests/kvm/lib/guest_sprintf.c | 12 ------------
- 2 files changed, 13 deletions(-)
+ virt/kvm/dirty_ring.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testing/selftests/kvm/include/test_util.h
-index a6a3e1657895..fbdf0e0c15d1 100644
---- a/tools/testing/selftests/kvm/include/test_util.h
-+++ b/tools/testing/selftests/kvm/include/test_util.h
-@@ -238,7 +238,6 @@ static inline u32 atoi_non_negative(const char *name, const char *num_str)
- }
- 
- int guest_vsnprintf(char *buf, int n, const char *fmt, va_list args);
--__printf(3, 4) int guest_snprintf(char *buf, int n, const char *fmt, ...);
- 
- char *strdup_printf(const char *fmt, ...) __attribute__((format(printf, 1, 2), nonnull(1)));
- 
-diff --git a/tools/testing/selftests/kvm/lib/guest_sprintf.c b/tools/testing/selftests/kvm/lib/guest_sprintf.c
-index 7a33965349a7..6caebb456f3d 100644
---- a/tools/testing/selftests/kvm/lib/guest_sprintf.c
-+++ b/tools/testing/selftests/kvm/lib/guest_sprintf.c
-@@ -300,15 +300,3 @@ int guest_vsnprintf(char *buf, int n, const char *fmt, va_list args)
- 	*str = '\0';
- 	return str - buf;
- }
+diff --git a/virt/kvm/dirty_ring.c b/virt/kvm/dirty_ring.c
+index 572b854edf74..8a9728fd7c09 100644
+--- a/virt/kvm/dirty_ring.c
++++ b/virt/kvm/dirty_ring.c
+@@ -6,6 +6,7 @@
+  */
+ #include <linux/kvm_host.h>
+ #include <linux/kvm.h>
++#include <linux/overflow.h>
+ #include <linux/vmalloc.h>
+ #include <linux/kvm_dirty_ring.h>
+ #include <trace/events/kvm.h>
+@@ -163,18 +164,21 @@ int kvm_dirty_ring_reset(struct kvm *kvm, struct kvm_dirty_ring *ring,
+ 			 * is scanning pages in the same slot.
+ 			 */
+ 			if (next_slot == cur_slot) {
+-				s64 delta = next_offset - cur_offset;
 -
--int guest_snprintf(char *buf, int n, const char *fmt, ...)
--{
--	va_list va;
--	int len;
+-				if (delta >= 0 && delta < BITS_PER_LONG) {
+-					mask |= 1ull << delta;
+-					continue;
+-				}
 -
--	va_start(va, fmt);
--	len = guest_vsnprintf(buf, n, fmt, va);
--	va_end(va);
--
--	return len;
--}
+-				/* Backwards visit, careful about overflows! */
+-				if (delta > -BITS_PER_LONG && delta < 0 &&
+-				(mask << -delta >> -delta) == mask) {
++				unsigned long shifted_mask;
++
++				if (next_offset >= cur_offset) {
++					u64 shift = next_offset - cur_offset;
++
++					if (shift < BITS_PER_TYPE(mask)) {
++						mask |= BIT(shift);
++						continue;
++					}
++				} else if (!check_shl_overflow(mask,
++							       cur_offset - next_offset,
++							       &shifted_mask)) {
++					/* Backwards visit, move the batch's base down. */
+ 					cur_offset = next_offset;
+-					mask = (mask << -delta) | 1;
++					mask = shifted_mask | BIT(0);
+ 					continue;
+ 				}
+ 			}
 -- 
-2.54.0
-
+2.43.7
 
