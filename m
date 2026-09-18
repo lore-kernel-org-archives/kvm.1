@@ -1,88 +1,66 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CFD4F7CDA;
-	Fri, 18 Sep 2026 13:31:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACA54F93BD;
+	Fri, 18 Sep 2026 13:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789738306; cv=none; b=K/7LdA+xuN/5VHBvWQx1YTy5Zdb7YEFT2fphCbKUrUvjujx6YBidrgsYaqKP1iGXO5Mh4R4Df0+VOzClsmoL2XGvUVd9Of8O73CgLVDEPFm2xWbfmzudSgSfUVKv24Ilz9Iyw5py1LKj2/4YEdJDUPuVHFDDC/ia8FkrQkYYYr0=
+	t=1789738309; cv=none; b=jHX7R/ZOiubzT41BMe2Oo2w5jktgJglTHkFpEeLp3O5VK/vTTHv3yIHoiliCTY8YQZZmfFQv1Lu4JRE1MkT8jibZ7TTWtSACl+aICIJD0KMNsQ8Aqlj7dy/8porg5GKXTYsF7X8IKf0PGMlwPNGgE03Urce4wWv3YKjgyyGeZKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789738306; c=relaxed/simple;
-	bh=tRqgKRNWjjU3bOalRnKsPbDRdGHP6HAuir8mhQ3nFFA=;
+	s=arc-20240116; t=1789738309; c=relaxed/simple;
+	bh=kLCUBKUyKSBmyX86DoO24PXOVX3ZEud/eaxMU6SLFXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lWmt65MDUft2fJkoxhtKgx9wPRwdwyCAsF6yBAsROK7DVAKb8buzvt8C34WxAYCKAOP7+u1tnXg+F4m/tBz2ldBt14LWnjmeFxMquAJ8xbKS0IAlzgYYTSMBbELKNLIyzpcPv7r0PHruyErIS7dtGRfZ6lXVfdz/oWSqbdBrfXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=N7QYleKl; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=kl0EWDDxXQz5RxlcGxNuMdO3BobxrIKiqWgBP0hSZejN63koHi8fq7ey/PZ8bRvTJ+mhQrhiwjWVbIJubP4a/C1IWS1rnf6KAi6cacEIzRh4AcZ7OX2FoZ89ayRrMH7RgdGeutC4hNOiliUWcJJ6tfwz110bdREhrzBfMHUhafg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NuyOz7sh; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="N7QYleKl"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68IA1VrU3979055;
-	Fri, 18 Sep 2026 13:31:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=pw9h0MXlYzlny3S/e
-	Nw2NjZKbOhNMhfLYpS69vfV5gU=; b=N7QYleKl6nnA9WPwNAQ+6O3Snbkd5VJSg
-	eTEeeqG1NXSEt2y4ZlEpRdN+vqUZZTPwgFK858piOZ6d6MsBgae88kmJQCGF2QaT
-	2xMaPuj2OtmunFK9MrHSOFqkRv3uS7KYcYLmWwqipi7+dZJno+xae9VT2OwiBREI
-	cOCLurWf1YozFaECccWgW70q/zkjjwibLBfjzDoBWdKv8biBLCS4Wep2t78LvRXT
-	hq9tsDkUpD7gQgnJuFdQRXGjd2X6YKv9Ho7L1yDwLRcolJMK80haHA6IGcGmkPqh
-	bUfYj7dvAgUoNB+7M6hMqP6lslP0ZmfU4OO3B2v2ZmoCXktrewe1Q==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmw5eftrx-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 18 Sep 2026 13:31:16 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68IDNrEj722688;
-	Fri, 18 Sep 2026 13:31:15 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gr5fjqgvc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Sep 2026 13:31:15 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68IDV89m51642826
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 18 Sep 2026 13:31:08 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 892C720040;
-	Fri, 18 Sep 2026 13:31:08 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 370462004B;
-	Fri, 18 Sep 2026 13:31:08 +0000 (GMT)
-Received: from tuxmaker.lnxne.boe (unknown [9.87.85.9])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 18 Sep 2026 13:31:08 +0000 (GMT)
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
-        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Friedrich Welter <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>,
-        Gautam Gala <ggala@linux.ibm.com>,
-        Hariharan Mari <hari55@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
-        Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>,
-        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-        Zenghui Yu <yuzenghui@huawei.com>
-Subject: [PATCH v8 01/29] KVM: Introduce file_to_kvm_<arch>() infrastructure
-Date: Fri, 18 Sep 2026 15:30:38 +0200
-Message-ID: <20260918133107.1042730-2-seiden@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260918133107.1042730-1-seiden@linux.ibm.com>
-References: <20260918133107.1042730-1-seiden@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NuyOz7sh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789738306; x=1821274306;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=kLCUBKUyKSBmyX86DoO24PXOVX3ZEud/eaxMU6SLFXA=;
+  b=NuyOz7shSl01gPM384abxw0ALXqRv+xwvCOkyz2ChG9CbkAGvN6RMFDE
+   NnJN7fM+LvelNg2g+Tse855Y8IHrJSmFk0i2E7r9qsZxoFUf31WSCLELr
+   gCKThKwQ4AUtDzMxChMP8pZsCSoeNtYyWeUVXo64U8GPJyP0iRC4qsDCs
+   jJgDT0FijpqrI6KTbA6czxZ2GcK2AisA31axzOQKnNOMAadyBrk4Hqwrc
+   zGWRRaPYOV9pD8GWQzPJSpDwoBnxNoG4mQGI1XDfSJ9Jllia+oyATrlP/
+   QG65odFFob9xgHfLXFXX5FOr9MvhV8gZNM7JuyJHAfZ2clVio0ijb1Pe0
+   w==;
+X-CSE-ConnectionGUID: pQ9qMgp+SpqfOt+LbtJ/vA==
+X-CSE-MsgGUID: q9atIebmSvK2yacwta2Png==
+X-IronPort-AV: E=McAfee;i="6800,10657,11908"; a="115776129"
+X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
+   d="scan'208";a="115776129"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 06:31:42 -0700
+X-CSE-ConnectionGUID: FzWkJb1ITuG8OWjidp+m7g==
+X-CSE-MsgGUID: wox0qpMfSGejwwb/7Crt0Q==
+X-ExtLoop1: 1
+Received: from 984fee019967.jf.intel.com ([10.23.153.244])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 06:31:41 -0700
+From: Chao Gao <chao.gao@intel.com>
+To: linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org
+Cc: yilun.xu@linux.intel.com,
+	Chao Gao <chao.gao@intel.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: [RFC PATCH v2 04/10] x86/virt/tdx: Convert the tdmr metadata reader
+Date: Fri, 18 Sep 2026 06:29:23 -0700
+Message-ID: <20260918132946.76533-5-chao.gao@intel.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260918132946.76533-1-chao.gao@intel.com>
+References: <20260918132946.76533-1-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -90,135 +68,127 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDE4NCBTYWx0ZWRfXxFrQ/P1J0+KD
- d1DQTGdnhKBvbJH8EyeYqCJ8I9C+dK8IfZHlL5jqf5m7FqO/8GbtCpNPXMj/TgJBGvHX6yrzE8p
- h1mEYVcI9surmWD4/aRvFILq+OIIefSRAQtcwncvqO3SZsNl/uuttToawsIrsdank7qswBpt9ek
- RBwJsl1mRcw0fDPtk6Q+E8yIpkOrbzjrwDQ6VitTORm9uURHhFTI3C21TNBBxoF3BWWIGZ7ERy3
- 0OhIXx1Vx8fj7C36eBV/klQjKQ+j6TFPY2esrF3RGyWNS5Kd+RDI8xn1iFwc1sEj2eBfrTJ4OzU
- z/wVGW7C+UDT3OGsRaD2zQGxvKbtH/1qNxvgsoxSejukemSTDBImIUhEivCEYVJksJPLK2I7xWf
- 4Af7DY0ZjGIpGG72+Da4ayFhN8+5q9mwpeeVP4ybrtDyEsw2uWTk+La56/Qs/Tzx5Dbj1moOe+j
- PnIR1rCctZ/tuSJbADA==
-X-Authority-Analysis: v=2.4 cv=E/NYNqdl c=1 sm=1 tr=0 ts=6aad3d24 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=1XWaLZrsAAAA:8 a=VnNF1IyMAAAA:8
- a=VUxmUKdmKFa5Qofq_fQA:9
-X-Proofpoint-ORIG-GUID: MtkYc9tkSr0_zK7BDKYMje2mjFKuAmt1
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDE4NCBTYWx0ZWRfX8uY4apRe4BFR
- vCmeQzGUXMW7Zrh3Tr27U+3Z0xzqUNFvxEakl5IlH8mdJRmU5C2kczA8YzgtgOdfiDwf5It1c48
- ZxUggaBX6jSmBqs39EJ71blXmCVkveQ=
-X-Proofpoint-GUID: m-apAQu_9Y6FW9cdyS6K5S_BtNzmm8UA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-18_03,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 lowpriorityscore=0 priorityscore=1501 spamscore=0
- adultscore=0 clxscore=1015 bulkscore=0 malwarescore=0 suspectscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609180184
 
-Add a macro mechanism that generates an opt-in and arch-namespaced
-file_to_kvm_<arch>() to convert a file reference to a kvm object if the
-file handle represents a kvm handle.
+Continue converting the metadata readers to the table-driven helper.
 
-Activate for x86 and for s390 (native KVM only).
+The "TDMR info" metadata class has two readers: one for the fields that are
+always present, and one for the fields that exist only when the module
+supports Dynamic PAMT.
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+Add a table for each, both pairing field IDs with the 'struct
+tdx_sys_info_tdmr' members that hold their values, and read all fields by
+walking the tables.
+
+Annotate both tables as __initconst since they are referenced only during
+init.
+
+AI was used under supervision to review the code and workshop the
+changelog.
+
+Signed-off-by: Chao Gao <chao.gao@intel.com>
 ---
- arch/s390/include/asm/kvm_host_s390.h |  2 ++
- arch/x86/include/asm/kvm_host.h       |  2 ++
- arch/x86/kvm/Makefile                 |  1 +
- include/linux/kvm_host.h              | 12 ++++++++++++
- virt/kvm/kvm_main.c                   | 11 +++++++++++
- 5 files changed, 28 insertions(+)
+ arch/x86/virt/vmx/tdx/tdx.c                 | 25 +++++++++++++++++
+ arch/x86/virt/vmx/tdx/tdx.h                 |  8 ++++++
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 31 ---------------------
+ 3 files changed, 33 insertions(+), 31 deletions(-)
 
-diff --git a/arch/s390/include/asm/kvm_host_s390.h b/arch/s390/include/asm/kvm_host_s390.h
-index cd692f8fb764..8a7eed5847e1 100644
---- a/arch/s390/include/asm/kvm_host_s390.h
-+++ b/arch/s390/include/asm/kvm_host_s390.h
-@@ -27,6 +27,8 @@
- #include <asm/isc.h>
- #include <asm/guarded_storage.h>
- 
-+#define kvm_file_to_kvm_arch s390
-+
- #define KVM_HAVE_MMU_RWLOCK
- #define KVM_MAX_VCPUS 255
- 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 683bb8bf43a9..e460073ff176 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -44,6 +44,8 @@
- 
- #include <hyperv/hvhdk.h>
- 
-+#define kvm_file_to_kvm_arch x86
-+
- #define __KVM_HAVE_ARCH_VCPU_DEBUGFS
- 
- /*
-diff --git a/arch/x86/kvm/Makefile b/arch/x86/kvm/Makefile
-index 0474604ab8a1..e6d395ede9e2 100644
---- a/arch/x86/kvm/Makefile
-+++ b/arch/x86/kvm/Makefile
-@@ -61,6 +61,7 @@ exports_grep_trailer := --include='*.[ch]' -nrw $(srctree)/virt/kvm $(srctree)/a
- 				-e kvm_page_track_unregister_notifier \
- 				-e kvm_write_track_add_gfn \
- 				-e kvm_write_track_remove_gfn \
-+				-e kvm_file_to_kvm_fn \
- 				-e kvm_get_kvm \
- 				-e kvm_get_kvm_safe \
- 				-e kvm_put_kvm
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 03bfc92864b6..a1bf6d4a8f46 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1082,6 +1082,18 @@ void kvm_get_kvm(struct kvm *kvm);
- bool kvm_get_kvm_safe(struct kvm *kvm);
- void kvm_put_kvm(struct kvm *kvm);
- bool file_is_kvm(struct file *file);
-+
-+/*
-+ * Architectures define kvm_file_to_kvm_arch to <arch>
-+ * to get a typed, arch-namespaced helper:
-+ *
-+ *   static inline struct kvm *file_to_kvm_<arch>(struct file *file)
-+ */
-+#ifdef kvm_file_to_kvm_arch
-+#define kvm_file_to_kvm_fn CONCATENATE(file_to_kvm_, kvm_file_to_kvm_arch)
-+struct kvm *kvm_file_to_kvm_fn(struct file *file);
-+#endif /* kvm_file_to_kvm_arch */
-+
- void kvm_put_kvm_no_destroy(struct kvm *kvm);
- 
- static inline struct kvm_memslots *__kvm_memslots(struct kvm *kvm, int as_id)
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 65eb26a0520d..0172ca94f82e 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -5496,6 +5496,17 @@ bool file_is_kvm(struct file *file)
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 59e2396fea39..72aed3fc2b25 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -460,6 +460,31 @@ static __init int get_tdx_sys_info_features(struct tdx_sys_info_features *featur
+ 	return read_sys_metadata_table(feature_mappings, features);
  }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(file_is_kvm);
  
-+#ifdef kvm_file_to_kvm_arch
-+struct kvm *kvm_file_to_kvm_fn(struct file *file)
++#define TDX_SYSINFO_MAP_TDMR(_field_id, _member) \
++	TDX_SYSINFO_MAP(_field_id, struct tdx_sys_info_tdmr, _member)
++
++static const struct field_mapping tdmr_mappings[] __initconst = {
++	TDX_SYSINFO_MAP_TDMR(MAX_TDMRS,			max_tdmrs),
++	TDX_SYSINFO_MAP_TDMR(MAX_RESERVED_PER_TDMR,	max_reserved_per_tdmr),
++	TDX_SYSINFO_MAP_TDMR(PAMT_4K_ENTRY_SIZE,	pamt_4k_entry_size),
++	TDX_SYSINFO_MAP_TDMR(PAMT_2M_ENTRY_SIZE,	pamt_2m_entry_size),
++	TDX_SYSINFO_MAP_TDMR(PAMT_1G_ENTRY_SIZE,	pamt_1g_entry_size),
++};
++
++static __init int get_tdx_sys_info_tdmr(struct tdx_sys_info_tdmr *tdmr)
 +{
-+	if (!file || file->f_op != &kvm_vm_fops)
-+		return NULL;
-+
-+	return file->private_data;
++	return read_sys_metadata_table(tdmr_mappings, tdmr);
 +}
-+EXPORT_SYMBOL_GPL(kvm_file_to_kvm_fn);
-+#endif
 +
- static int kvm_dev_ioctl_create_vm(unsigned long type)
++static const struct field_mapping dpamt_mappings[] __initconst = {
++	TDX_SYSINFO_MAP_TDMR(PAMT_PAGE_BITMAP_ENTRY_BITS, pamt_page_bitmap_entry_bits),
++};
++
++static __init int get_tdx_sys_info_tdmr_dpamt(struct tdx_sys_info_tdmr *tdmr)
++{
++	return read_sys_metadata_table(dpamt_mappings, tdmr);
++}
++
+ #include "tdx_global_metadata.c"
+ 
+ static __init int check_features(struct tdx_sys_info *sysinfo)
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index 582b6ff9a0bb..9a8c32b180e1 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -73,6 +73,14 @@
+ /* Class "TDX Module Info" */
+ #define TDX_MD_FIELD_ID_TDX_FEATURES0			0x0A00000300000008ULL
+ 
++/* Class "TDMR Info" */
++#define TDX_MD_FIELD_ID_MAX_TDMRS			0x9100000100000008ULL
++#define TDX_MD_FIELD_ID_MAX_RESERVED_PER_TDMR		0x9100000100000009ULL
++#define TDX_MD_FIELD_ID_PAMT_4K_ENTRY_SIZE		0x9100000100000010ULL
++#define TDX_MD_FIELD_ID_PAMT_2M_ENTRY_SIZE		0x9100000100000011ULL
++#define TDX_MD_FIELD_ID_PAMT_1G_ENTRY_SIZE		0x9100000100000012ULL
++#define TDX_MD_FIELD_ID_PAMT_PAGE_BITMAP_ENTRY_BITS	0x9100000000000013ULL
++
+ /* TDX page types */
+ #define	PT_NDA		0x0
+ #define	PT_RSVD		0x1
+diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+index 615f4d23c5d8..f0673dc28cb9 100644
+--- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
++++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+@@ -7,37 +7,6 @@
+  * Include this file to other C file instead.
+  */
+ 
+-static __init int get_tdx_sys_info_tdmr_dpamt(struct tdx_sys_info_tdmr *sysinfo_tdmr)
+-{
+-	int ret;
+-	u64 val;
+-
+-	ret = read_sys_metadata_field(0x9100000000000013, &val);
+-	if (!ret)
+-		sysinfo_tdmr->pamt_page_bitmap_entry_bits = val;
+-
+-	return ret;
+-}
+-
+-static __init int get_tdx_sys_info_tdmr(struct tdx_sys_info_tdmr *sysinfo_tdmr)
+-{
+-	int ret = 0;
+-	u64 val;
+-
+-	if (!ret && !(ret = read_sys_metadata_field(0x9100000100000008, &val)))
+-		sysinfo_tdmr->max_tdmrs = val;
+-	if (!ret && !(ret = read_sys_metadata_field(0x9100000100000009, &val)))
+-		sysinfo_tdmr->max_reserved_per_tdmr = val;
+-	if (!ret && !(ret = read_sys_metadata_field(0x9100000100000010, &val)))
+-		sysinfo_tdmr->pamt_4k_entry_size = val;
+-	if (!ret && !(ret = read_sys_metadata_field(0x9100000100000011, &val)))
+-		sysinfo_tdmr->pamt_2m_entry_size = val;
+-	if (!ret && !(ret = read_sys_metadata_field(0x9100000100000012, &val)))
+-		sysinfo_tdmr->pamt_1g_entry_size = val;
+-
+-	return ret;
+-}
+-
+ static __init int get_tdx_sys_info_td_ctrl(struct tdx_sys_info_td_ctrl *sysinfo_td_ctrl)
  {
- 	char fdname[ITOA_MAX_LEN + 1];
+ 	int ret = 0;
 -- 
-2.53.0
+2.52.0
 
