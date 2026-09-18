@@ -1,139 +1,164 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E084B1CE0;
-	Fri, 18 Sep 2026 08:59:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015C02F6188
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 09:12:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789721962; cv=none; b=hmhfiCxLou99686JxHu7RIw79gO56f9HRRO1M43ywCv9OWaIjNMw/WL/hkvoyAPcQhhsUw5HqTX6Lpaebt9j27ZCfB2F17qBM8DMAiT9LWbBT2+Oe+FjWAOZWpo4HEWJnTl4DF7ncXsvj3AxSkV7+lMeHkBk1e1RdVP+AYAVoXg=
+	t=1789722756; cv=none; b=AJeYIy5iwgtsTuslegWKve3EkpiX2DqRyjxt/YAqoMUmcde1wEpkEs/+6U/n0Xac88OUKW8iEM87KBGUfsgZrLc0EWHZryVBqTNapFANvcTasq2NgF4stdAPId5meiZ4k+acCRCx5XvU+HsRUyM5OdTCMWTZJ8oS+0LE0bXu9Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789721962; c=relaxed/simple;
-	bh=1M1QtH7NdzkDYZ09YQzOvcKU43QqUz+DMQ3u7GB+BTA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pBaMC9R5m8K36ED/7zSYXxwzs0ZIksMSvYMvhWCpf619aWtJPYNLH+AxPiXtq+9C4VK0SgGtLTl+H5tTR9zIKwmQXHv2luedrtBF/cVBd+hY2zB9mkMg09b6Hx/ptAozaBkUfgVnG6ZjZduLtZte/dnLtVTnm66L6GHwjHoRAak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=gMhNVUf7; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1789722756; c=relaxed/simple;
+	bh=F4XvBSLLWDzKn/S3WlCxvT8p1TSIXmf9hXfiZEWRMhE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=slnKvACe70xI0TaxRn/hURIawlgfCN9xjAuGDHZq61cEZqCga+G090mar1d6oT+cV4rcB/vwYl2L1/cupRQGR3VRq0A5vPqdDSAksEUkGTMM/WwCUcYm1UmNTJBEttNBENaojtOgm4JXifjyChwHiWYmfJDoy7gMKIMKPZpI04Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FmkoRfi/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="gMhNVUf7"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F1C06168F;
-	Fri, 18 Sep 2026 01:59:14 -0700 (PDT)
-Received: from [10.57.6.197] (unknown [10.57.6.197])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A15FA3F86F;
-	Fri, 18 Sep 2026 01:59:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789721958; bh=1M1QtH7NdzkDYZ09YQzOvcKU43QqUz+DMQ3u7GB+BTA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gMhNVUf7FU14C3AvALw/IJRAU0r5ZC7LybOmBcwkNWc+DAjCckG9KnP01I1wmlwyC
-	 jwkpPhL4ENWatRqaHBHlgShatqY/nVK4er+43d5StSotzGLtEXPJotp0f1EKvtUnpj
-	 Bzj946PL96YGt37gh2bvsO5zxsWPabKAQrRAacd0=
-Message-ID: <e26cbb4e-84e2-4fcc-9eb0-93bfd4aff4a7@arm.com>
-Date: Fri, 18 Sep 2026 09:59:14 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FmkoRfi/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9731F0089D;
+	Fri, 18 Sep 2026 09:12:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789722754;
+	bh=Sv9MQB4uanOlet2bYWn2CBdrd7KEwFbeuh++cdQ/yDM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=FmkoRfi/YwXVO0x+uuQ5jhd4Mlb20lqVBOg9Qs7NnG7G2rD75FdHFnt9wHo4R3I8J
+	 +AqGhWQNMSQhL1UFJi7FlLuqXpYTWypH9kp3O9WvAo/ZnTAl32+gc4JCwL9KezydeA
+	 ZfSTpoVa2kRuwOT0mdMT/Nt3998BXA8tKlH3pZ8i+eRtvh6i+LL3TFJJB0Jt4Goocf
+	 bjAO/iHa1w6pawoLZUUHhd5CGwGK9Y3bPrZA+pIMN1oCVjLjXuZoiSdPXqFyj/pxcS
+	 VOJOdAtMloB2StqLze/xp8Q725r4V706XjCkLnZq/ZhuBBMJeuErMwgTauCJLvgtun
+	 innE8zqZQ9MBw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v7 2/8] KVM: nSVM: Synthesize DecodeAssists EXITINFO for
+ emulated intercepts
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Tina Zhang" <zhang_wei@open-hieco.net>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <2b30c180a7ec1fb22033cc1b89debc36c9f569d0.1789721173.git.zhang_wei@open-hieco.net>
+References: <cover.1789721173.git.zhang_wei@open-hieco.net>
+ <2b30c180a7ec1fb22033cc1b89debc36c9f569d0.1789721173.git.zhang_wei@open-hieco.net>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 18 Sep 2026 09:12:34 +0000
+Message-Id: <20260918091234.9A9731F0089D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18 05/23] KVM: arm64: Track the type of VM in kvm_arch
-Content-Language: en-GB
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
- will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev,
- gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
- alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
- lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260915160141.3543048-1-suzuki.poulose@arm.com>
- <20260915160141.3543048-6-suzuki.poulose@arm.com>
- <CA+EHjTz65G0MM=tOrzmk=jMweBX1us6FqfrmSkQs4KSyAEoxhg@mail.gmail.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <CA+EHjTz65G0MM=tOrzmk=jMweBX1us6FqfrmSkQs4KSyAEoxhg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 17/09/2026 12:24, Fuad Tabba wrote:
-> Hi Suzuki,
-> 
-> On Tue, 15 Sep 2026 17:01:23 +0100, Suzuki K Poulose
-> <suzuki.poulose@arm.com> wrote:
-> [...]
->> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> [...]
->> +#define kvm_vm_hyp_is_pkvm(kvm)                (is_protected_kvm_enabled())
-> 
-> I'd keep is_protected_kvm_enabled() at the three call sites: this
-> takes a VM and ignores it, so it reads as per-VM when it's the mode,
-> and patch 20's comment about not being able to use the kvm_vm_ helpers
-> with a NULL kvm goes away too.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [High] kvm: nSVM: Stale EXITINFO2 leaked to L1 for Decode Assists and SWI=
+NT/ICEBP
+- [High] kvm: nSVM: Unconditional CR_VALID injects spurious #GP into 32-bit=
+ guests
+- [Medium] kvm: nSVM: Missing Decode Assists synthesis for SVM instructions
+--
 
-Actually, that comment is invalid. kvm_arch_vm_ioctl_allowed, is only
-called from the kvm_arch_vm_ioctl() with a valid kvm instance. I have 
-changed that hunk to:
+commit 426ea34e024e5747a2d0375a678f4064cd396fdd
+Author: Tina Zhang <zhang_wei@open-hieco.net>
 
+KVM: nSVM: Synthesize DecodeAssists EXITINFO for emulated intercepts
 
-+/*
-+ * Check whether the KVM VM IOCTL is allowed. For pKVM and Realm VMs, 
-certain
-+ * ioctls are not allowed. Further, certain features are allowed only for
-+ * non-protected VMs in pKVM.
-+ */
-+static inline bool kvm_arch_vm_ioctl_allowed(struct kvm *kvm, unsigned 
-int ioctl)
-+{
-+       long ext;
-+       int r;
-+
-+       /*
-+        * We are guaranteed to be called with a valid kvm instance, as the
-+        * only caller is kvm_arch_vm_ioctl(). Catch any deviations, as we
-+        * rely on the kvm instance below.
-+        */
-+       if (WARN_ON_ONCE(!kvm))
-+               return false;
-+
-+       /* Cover both pKVM host and Realm VMs */
-+       if (!kvm_vm_hyp_is_distrusting(kvm))
-+               return true;
-+
+This commit adds synthesis of DecodeAssists EXITINFO1 fields for emulated
+instruction intercepts such as MOV CR/DR, INTn, and INVLPG when the guest
+CPU exposes DecodeAssists capabilities.
 
-I resorted to is_protected_kvm_enabled() to make it faster than using
-the vm_flavor checks. I could rever those anyways.
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+[ ... ]
+> @@ -4846,14 +4847,26 @@ static int svm_check_intercept(struct kvm_vcpu *v=
+cpu,
+>  	if (stage !=3D icpt_info.stage)
+>  		goto out;
+> =20
+> +	decode_assists =3D guest_cpu_cap_has(vcpu, X86_FEATURE_DECODEASSISTS);
+> +
+>  	switch (icpt_info.exit_code) {
 
-> 
->> diff --git a/arch/arm64/kvm/hyp/nvhe/pkvm.c b/arch/arm64/kvm/hyp/nvhe/pkvm.c
-> [...]
->> @@ -432,7 +432,7 @@ static void init_pkvm_hyp_vm(struct kvm *host_kvm, struct pkvm_hyp_vm *hyp_vm,
->>
->>           hyp_vm->host_kvm = host_kvm;
->>           hyp_vm->kvm.created_vcpus = nr_vcpus;
->> -        hyp_vm->kvm.arch.pkvm.is_protected = READ_ONCE(host_kvm->arch.pkvm.is_protected);
->> +        hyp_vm->kvm.arch.vm_flavor = READ_ONCE(host_kvm->arch.vm_flavor);
-> 
-> Could EL2 reduce this to VM_PKVM or VM_PROTECTED_PKVM here instead of
-> storing what it reads? The host supplies the value, and it's now an
-> enum rather than a bool. Patch 12 relies on EL2 only ever seeing those
-> two, and with VM_REALM above the marker a host-written value passes
-> kvm_vm_is_protected() but not the == form, if EL2 ever adds one.
+[Severity: Medium]
+Does this switch statement miss several mandatory intercepts defined in the
+hardware specification for Decode Assists?
 
-Do you mean something like :
+According to AMD APM Vol 2, Table 15-22, Decode Assists also apply to VMRUN,
+VMLOAD, VMSAVE, CLGI, STGI, and PAUSE, requiring EXITINFO1 to be explicitly
+cleared to 0.
 
-	if (kvm_vm_is_protected_pkvm(host_kvm))
-		hyp_vm->kvm.arch.vm_flavor = VM_PROTECTED_PKVM;
-	else
-		hyp_vm->kvm.arch.vm_flavor = VM_PKVM;
+Since these intercepts are omitted, will they fall through to the default
+case and leave uninitialized, stale garbage in EXITINFO1 instead of the
+architecturally required 0?
 
-Do we additionally need to WARN_ON() if we encounter a VM_REALM ?
+>  	case SVM_EXIT_READ_CR0:
+>  		if (info->intercept =3D=3D x86_intercept_cr_read)
+>  			icpt_info.exit_code +=3D info->modrm_reg;
+> +
+> +		if (decode_assists)
+> +			vmcb->control.exit_info_1 =3D
+> +				info->intercept =3D=3D x86_intercept_cr_read ?
+> +				CR_VALID | (info->modrm_rm & SVM_EXITINFO_REG_MASK) : 0;
 
-> 
-> Both hunks are new since v17, which is where I gave the Reviewed-by.
-> Happy to keep it if you can settle these please.
+[Severity: High]
+Does setting CR_VALID unconditionally here, and below in SVM_EXIT_WRITE_CR0,
+inject spurious #GP faults into 32-bit guests?
 
-Apologies, I thought this one didn't change, but later patches changes 
-them, which is why I kept this.
+AMD APM defines Bit 63 (CR_VALID) of EXITINFO1 for CR accesses under
+Decode Assists as "1 =3D instruction is 64-bit, 0 =3D instruction is 32-bit=
+".
 
-Cheers
-Suzuki
+If a 32-bit L2 guest executes a CR access and its general purpose register
+happens to have non-zero upper 32 bits (which is permissible), L1 will see
+Bit 63 set.
 
+If L1 treats this as a 64-bit instruction, will it read the full 64-bit
+vCPU register and fail safety checks (like cr0 & 0xffffffff00000000UL),
+resulting in a spurious #GP being injected into L2?
+
+[Severity: High]
+Should exit_info_2 also be unconditionally zeroed here when decode_assists
+is true?
+
+AMD APM mandates that when Decode Assists is enabled, EXITINFO2 must contain
+NextRIP for INTn and ICEBP, and must be 0 for other intercepts like MOV CRx.
+
+Because KVM does not zero exit_info_2 prior to calling svm_check_intercept(=
+),
+could this retain a stale value in the L2 VMCB from a prior exit (such as a
+#NPF faulting GPA) and leak it to L1?
+
+>  		break;
+>  	case SVM_EXIT_WRITE_CR0: {
+>  		unsigned long cr0, val;
+> =20
+> +		if (decode_assists)
+> +			vmcb->control.exit_info_1 =3D
+> +				info->intercept =3D=3D x86_intercept_cr_write ?
+> +				CR_VALID | (info->modrm_rm & SVM_EXITINFO_REG_MASK) : 0;
+> +
+[ ... ]
+>  	case SVM_EXIT_SWINT:
+> +		if (decode_assists)
+> +			vmcb->control.exit_info_1 =3D info->src_val & 0xff;
+> +		break;
+
+[Severity: High]
+Does this miss setting exit_info_2 for the SWINT intercept?
+
+AMD APM mandates that EXITINFO2 must contain NextRIP for INTn (SVM_EXIT_SWI=
+NT)
+and ICEBP (SVM_EXIT_ICEBP) when Decode Assists is enabled.
+
+By not setting exit_info_2 =3D info->next_rip for SWINT, and completely
+omitting handling for SVM_EXIT_ICEBP, does L1 read the stale EXITINFO2 as
+NextRIP?
+
+If L1 relies on this for NextRIP, could it cause L2 to resume at a corrupted
+instruction pointer and crash the L2 guest?
+
+>  	case SVM_EXIT_INVLPG:
+> +		if (decode_assists)
+> +			vmcb->control.exit_info_1 =3D info->invlpg_linear_addr;
+> +		break;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1789721173.gi=
+t.zhang_wei@open-hieco.net?part=3D2
