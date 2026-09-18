@@ -1,22 +1,23 @@
-Received: from out28-101.mail.aliyun.com (out28-101.mail.aliyun.com [115.124.28.101])
+Received: from out28-173.mail.aliyun.com (out28-173.mail.aliyun.com [115.124.28.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81A439B4A5;
-	Fri, 18 Sep 2026 08:56:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD034A6CFB;
+	Fri, 18 Sep 2026 08:56:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789721801; cv=none; b=Wb/l4N9SJuJ+JkGOiATUGDudSO5e+AlYcpQSZf8NfERGFD/beF9xQJRQCtT2w+kiKsma6PREZ/rRrMYrq195nbP9aMjRnPFVAyJwKkOTX3AFfpeocggoynG3zb/peEdtVZC88F4s8JPYyAuFD9LLc8AG7Rhe+hqi/YCYsfrEtk4=
+	t=1789721805; cv=none; b=g3Ks/qGsM2xYW0fGWQMl4lB4ZeS/5RX+Q2eu+khvC1SlxiTTqdZTs2sstkeFBw4hQdB2h5HYNgrLdbmKx0E6KZnSnJgNgD4DP7kmg+A+pMQM39F3bwJrj8Pn2gaYQ3+O6Ufv83xswINhAZCJ/4HSHn4GM02BHaEFSuDdP/ZmcD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789721801; c=relaxed/simple;
-	bh=HNCrEhIxicQlTKQSr+qbu9zTctD/Y2vdJuqlQmZ/CKY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G8zId9I0tL71qdzv8vYyOXixdQTko+9iZ78DzKrMqA7yrWeLMzakhr0PTpaCh/Xw8FBnIkPQzY2UfSVXaHRl3e6BRKA145q1yK4o5HFWIxDbdsUSxupg/kaX45zGc+dGcOCkZhqRI6PvdKFeA9eLe5CFWm2b4TdsK42ouusthxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.101
+	s=arc-20240116; t=1789721805; c=relaxed/simple;
+	bh=q/jrRFTbP7ROaTK4FUqOWWE6YjOvkIR4dZveVTKToL0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mY+jVU4Z8h28Za+lCAbPFU2dzUXwW6eWMdU9rp6E3SpR0YnV4OwvHLBPa99E1OonYOV2LMtY51qsnpU72S2s1/hOyL0DQn+BwoiF330c2R/yQoToZdX+GSKNwgr3efk3vWUIE8+UxHNUP8S1OU+Sgqiw/E1NCMWhcZHyBED5do8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.1867809|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.006375-0.00109542-0.99253;FP=7109916802226474487|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037006180;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.jGgS5HU_1789721780;
-Received: from localhost.localdomain(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.jGgS5HU_1789721780 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.2100021|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.158478-0.00122291-0.840299;FP=4966202699363141559|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam011083013073;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.jGgS5Oq_1789721787;
+Received: from localhost.localdomain(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.jGgS5Oq_1789721787 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Fri, 18 Sep 2026 16:56:26 +0800
+          Fri, 18 Sep 2026 16:56:27 +0800
 From: Tina Zhang <zhang_wei@open-hieco.net>
 To: Sean Christopherson <seanjc@google.com>,
 	Jim Mattson <jmattson@google.com>,
@@ -26,10 +27,12 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	zhouyanjing@hygon.cn,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v7 0/8] KVM: nSVM: Enable DecodeAssists for nested guests
-Date: Fri, 18 Sep 2026 16:56:10 +0800
-Message-ID: <cover.1789721173.git.zhang_wei@open-hieco.net>
+Subject: [PATCH v7 2/8] KVM: nSVM: Synthesize DecodeAssists EXITINFO for emulated intercepts
+Date: Fri, 18 Sep 2026 16:56:12 +0800
+Message-ID: <2b30c180a7ec1fb22033cc1b89debc36c9f569d0.1789721173.git.zhang_wei@open-hieco.net>
 X-Mailer: git-send-email 2.43.7
+In-Reply-To: <cover.1789721173.git.zhang_wei@open-hieco.net>
+References: <cover.1789721173.git.zhang_wei@open-hieco.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -38,101 +41,83 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The SVM DecodeAssists feature provides decode state for selected
-VM-Exits.  KVM currently does not expose this feature to L1.  Some L1
-hypervisors may therefore treat the platform's SVM support as
-incomplete.
+When the x86 emulator encounters an instruction intercepted by L1,
+svm_check_intercept() synthesizes a nested VM-Exit without fresh hardware
+DecodeAssist state.  Populate the architectural EXITINFO1 field when
+DecodeAssists is exposed to L1.
 
-In practice, this was observed with Hyper-V running on top of KVM.
-Hyper-V appears to require DecodeAssists before enabling nested SVM for
-its guests.  Virtualizing the feature lets users enable Hyper-V
-virtualization features inside a Windows VM when needed, e.g. to run
-QEMU/KVM in WSL.
+Provide the GPR number for MOV CR/DR, the interrupt vector for INTn, and
+the linear address for INVLPG.  Preserve the MOV-to-CR0 decode information
+when a selective CR0 write intercept is triggered.  Leave EXITINFO1 clear
+for CLTS, LMSW, SMSW, and INVLPGA; the INVLPGA address remains in guest
+rAX.  Leave EXITINFO1 unchanged when DecodeAssists is not exposed, and
+leave unrelated intercepts unchanged.
 
-Virtualize both parts of DecodeAssists for nested SVM.  For emulated
-MOV CR/DR, INTn, INVLPG, and related intercepts, populate EXITINFO1 as
-specified by the architecture.  Preserve MOV-to-CR0 decode information
-for selective CR0 write intercepts.  INVLPGA's address remains in saved
-guest rAX.  Leave EXITINFO1 unchanged when DecodeAssists is not exposed.
+Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
+---
+ arch/x86/kvm/svm/svm.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-For data #NPF and intercepted data #PF exits, propagate current hardware
-instruction bytes when available.  For an emulator-generated #NPF, keep
-the bytes used to decode the instruction and fetch any missing tail.
-Queued #PF exits, including userspace-injected exceptions, use an
-on-demand fetch from the current L2 CS:RIP.  Instruction-fetch faults
-report zero bytes, and SEV guests do not use the memory-fetch fallback.
-
-The selftest checks hardware and forced-emulation instruction intercepts
-against the same expected values, including selective CR0 writes.  It
-also covers hardware and synthesized instruction bytes, truncated
-fetches, cache preservation after instruction memory changes during
-MMIO, and userspace-injected #PF after MMIO completion.
-
-Before rebasing, the updated selftest passed with
-kvm.force_emulation_prefix both disabled and enabled in an isolated VM
-using the v7 implementation.  The non-FEP cases also passed on the
-physical host.  After rebasing onto the base commit below, the affected
-KVM objects and selftest build successfully; runtime validation on the
-new base is still pending.  SEV paths have not been tested.
-
-Changes since v6:
-- Rebase onto kvm-x86/next at the base commit listed below and use
-  cpu_feature_enabled() in place of the removed static_cpu_has() API.
-- Document why get_invlpg_linear_addr() ignores __linearize() failures:
-  the address is computed before a failure and matches em_invlpg().
-- Use CR_VALID and SVM_EXITINFO_REG_MASK for MOV CR/DR decode state,
-  and retain MOV-to-CR0 information for selective CR0 write intercepts.
-- Use the common VMCB02 invalidation helper for synthesized exits that
-  do not provide instruction bytes.
-- Extend kvm_read_guest_virt_helper() with an optional bytes_read output
-  and make kvm_fetch_guest_virt() return the number of bytes read.
-  Remove the nSVM page loop and handle instruction-fetch address wrapping
-  and canonicality checks in the generic helper's existing loop.
-- Run instruction-intercept tests without FEP as well as with FEP when
-  enabled.  Add a MOV-to-CR0 selective-intercept case and poison insn_len
-  and insn_bytes before each run.  Keep the CLTS check limited to bit 63.
-- Add Jim's Reviewed-by tags for hardware-byte propagation and emulator
-  cache reuse.
-
-Previous versions (including earlier changelogs):
-v6:
-https://lore.kernel.org/r/cover.1789281096.git.zhang_wei@open-hieco.net
-v5:
-https://lore.kernel.org/r/20260824123954.315112-1-zhang_wei@open-hieco.net
-v4:
-https://lore.kernel.org/r/cover.1787116250.git.zhang_wei@open-hieco.net
-v3:
-https://lore.kernel.org/r/cover.1785411877.git.zhang_wei@open-hieco.net
-v2:
-https://lore.kernel.org/r/cover.1783999988.git.zhang_wei@open-hieco.net
-v1:
-https://lore.kernel.org/r/20260629125205.52394-1-zhang_wei@open-hieco.net
-
-Tina Zhang (8):
-  KVM: x86: Provide INVLPG linear address to intercept handlers
-  KVM: nSVM: Synthesize DecodeAssists EXITINFO for emulated intercepts
-  KVM: nSVM: Track valid hardware DecodeAssist bytes
-  KVM: nSVM: Propagate hardware DecodeAssist bytes to VMCB12
-  KVM: nSVM: Fetch DecodeAssist bytes for synthesized faults
-  KVM: nSVM: Use emulator bytes for synthesized nested #NPF
-  KVM: nSVM: Advertise DecodeAssists to L1
-  KVM: selftests: Add nested SVM DecodeAssists test
-
- arch/x86/kvm/cpuid.c                          |   1 +
- arch/x86/kvm/emulate.c                        |  45 ++
- arch/x86/kvm/kvm_emulate.h                    |   4 +
- arch/x86/kvm/svm/nested.c                     | 142 ++++-
- arch/x86/kvm/svm/svm.c                        |  29 +
- arch/x86/kvm/svm/svm.h                        |   3 +
- arch/x86/kvm/x86.c                            |  56 +-
- arch/x86/kvm/x86.h                            |   2 +
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../selftests/kvm/include/x86/processor.h     |   1 +
- .../kvm/x86/svm_nested_decode_assists_test.c  | 590 ++++++++++++++++++
- 11 files changed, 862 insertions(+), 12 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/x86/svm_nested_decode_assists_test.c
-
-
-base-commit: 70c944caf570fda2d79baa71435589a8db39f048
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index f5aa3d7d3a10..e83e4e5e7b93 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4837,6 +4837,7 @@ static int svm_check_intercept(struct kvm_vcpu *vcpu,
+ 	int vmexit, ret = X86EMUL_CONTINUE;
+ 	struct __x86_intercept icpt_info;
+ 	struct vmcb *vmcb = svm->vmcb;
++	bool decode_assists;
+ 
+ 	if (info->intercept >= ARRAY_SIZE(x86_intercept_map))
+ 		goto out;
+@@ -4846,14 +4847,26 @@ static int svm_check_intercept(struct kvm_vcpu *vcpu,
+ 	if (stage != icpt_info.stage)
+ 		goto out;
+ 
++	decode_assists = guest_cpu_cap_has(vcpu, X86_FEATURE_DECODEASSISTS);
++
+ 	switch (icpt_info.exit_code) {
+ 	case SVM_EXIT_READ_CR0:
+ 		if (info->intercept == x86_intercept_cr_read)
+ 			icpt_info.exit_code += info->modrm_reg;
++
++		if (decode_assists)
++			vmcb->control.exit_info_1 =
++				info->intercept == x86_intercept_cr_read ?
++				CR_VALID | (info->modrm_rm & SVM_EXITINFO_REG_MASK) : 0;
+ 		break;
+ 	case SVM_EXIT_WRITE_CR0: {
+ 		unsigned long cr0, val;
+ 
++		if (decode_assists)
++			vmcb->control.exit_info_1 =
++				info->intercept == x86_intercept_cr_write ?
++				CR_VALID | (info->modrm_rm & SVM_EXITINFO_REG_MASK) : 0;
++
+ 		/*
+ 		 * Adjust the exit code accordingly if a CR other than CR0 is
+ 		 * being written, and skip straight to the common handling as
+@@ -4898,6 +4911,20 @@ static int svm_check_intercept(struct kvm_vcpu *vcpu,
+ 	case SVM_EXIT_READ_DR0:
+ 	case SVM_EXIT_WRITE_DR0:
+ 		icpt_info.exit_code += info->modrm_reg;
++		if (decode_assists)
++			vmcb->control.exit_info_1 = info->modrm_rm & SVM_EXITINFO_REG_MASK;
++		break;
++	case SVM_EXIT_SWINT:
++		if (decode_assists)
++			vmcb->control.exit_info_1 = info->src_val & 0xff;
++		break;
++	case SVM_EXIT_INVLPG:
++		if (decode_assists)
++			vmcb->control.exit_info_1 = info->invlpg_linear_addr;
++		break;
++	case SVM_EXIT_INVLPGA:
++		if (decode_assists)
++			vmcb->control.exit_info_1 = 0;
+ 		break;
+ 	case SVM_EXIT_MSR:
+ 		if (info->intercept == x86_intercept_wrmsr)
 -- 
 2.43.7
+
