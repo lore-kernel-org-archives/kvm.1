@@ -1,164 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-79.mta0.migadu.com [91.218.175.79])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015C02F6188
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 09:12:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DAAB3B2FFD
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 09:15:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789722756; cv=none; b=AJeYIy5iwgtsTuslegWKve3EkpiX2DqRyjxt/YAqoMUmcde1wEpkEs/+6U/n0Xac88OUKW8iEM87KBGUfsgZrLc0EWHZryVBqTNapFANvcTasq2NgF4stdAPId5meiZ4k+acCRCx5XvU+HsRUyM5OdTCMWTZJ8oS+0LE0bXu9Dk=
+	t=1789722906; cv=none; b=kz9C8ZMVEuKO6NX82xIrq8SlzDcrECZtJrvUBalDEVSwWSEwvglSBjvC7zjqoeSlV+bZcV9fdt5nZiK7LXFtqtOS8bFvVgbFJk38ZXA8YGLkFmlCkJ0NyjQKVQF5fOPtKJDYpyhVPWT+AZuScXxTIebA/jOWG68O5Jo64HxaUCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789722756; c=relaxed/simple;
-	bh=F4XvBSLLWDzKn/S3WlCxvT8p1TSIXmf9hXfiZEWRMhE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=slnKvACe70xI0TaxRn/hURIawlgfCN9xjAuGDHZq61cEZqCga+G090mar1d6oT+cV4rcB/vwYl2L1/cupRQGR3VRq0A5vPqdDSAksEUkGTMM/WwCUcYm1UmNTJBEttNBENaojtOgm4JXifjyChwHiWYmfJDoy7gMKIMKPZpI04Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FmkoRfi/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789722906; c=relaxed/simple;
+	bh=D0PKzZhQRsxn3gOcYMwqRGpkhs/bU2h6lOLFmUyfZXg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VZ0gO7P0ITEceThKqC5oMmTME3eyuA9gOoV7uGb9orBf4CGt20AB4KYPb6DX0BkGOtP/8d0HClQdsNVBU809mOUpx2dMiEBVjoa1cTwptJr/xhvA/7yNjqVxh15CPCLe0fn3R4ROGALY+8cqarT+9jLjkoQf0VfXgxIDZ+pbOrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xilwTkY5; arc=none smtp.client-ip=91.218.175.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FmkoRfi/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9731F0089D;
-	Fri, 18 Sep 2026 09:12:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789722754;
-	bh=Sv9MQB4uanOlet2bYWn2CBdrd7KEwFbeuh++cdQ/yDM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FmkoRfi/YwXVO0x+uuQ5jhd4Mlb20lqVBOg9Qs7NnG7G2rD75FdHFnt9wHo4R3I8J
-	 +AqGhWQNMSQhL1UFJi7FlLuqXpYTWypH9kp3O9WvAo/ZnTAl32+gc4JCwL9KezydeA
-	 ZfSTpoVa2kRuwOT0mdMT/Nt3998BXA8tKlH3pZ8i+eRtvh6i+LL3TFJJB0Jt4Goocf
-	 bjAO/iHa1w6pawoLZUUHhd5CGwGK9Y3bPrZA+pIMN1oCVjLjXuZoiSdPXqFyj/pxcS
-	 VOJOdAtMloB2StqLze/xp8Q725r4V706XjCkLnZq/ZhuBBMJeuErMwgTauCJLvgtun
-	 innE8zqZQ9MBw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 2/8] KVM: nSVM: Synthesize DecodeAssists EXITINFO for
- emulated intercepts
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tina Zhang" <zhang_wei@open-hieco.net>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <2b30c180a7ec1fb22033cc1b89debc36c9f569d0.1789721173.git.zhang_wei@open-hieco.net>
-References: <cover.1789721173.git.zhang_wei@open-hieco.net>
- <2b30c180a7ec1fb22033cc1b89debc36c9f569d0.1789721173.git.zhang_wei@open-hieco.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 09:12:34 +0000
-Message-Id: <20260918091234.9A9731F0089D@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xilwTkY5"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=D0PKzZhQRsxn3gOcYMwqRGpkhs/bU2h6lOLFmUyfZXg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789722902; v=1; x=1790327702;
+ b=xilwTkY5bXLeU8YhzASbJG+fqWWzK4CgvrNY/2BPbSuJuQt+Khw/pDXC4j09hfwjrMqzsBsj
+ UA2RfVpm43+DxSr3uL6nIm+CdbizkeQT1KhUYgHd3ucF5DPnkv3+aMp2ivpMH11/+VIDrQYtCsz
+ UvnrcaCrsLeztohRfRg3J8SM=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id ffec458f40ca2faa;
+	Fri, 18 Sep 2026 09:15:02 +0000
+X-Mizu-Trace-ID: ffec458f40ca2faa
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5b83c1421ecso5319e87.1
+        for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 02:15:01 -0700 (PDT)
+X-Gm-Message-State: AFuF++lHCdbHxDfLxB7/xt/moCjrX2oC1NsYp6tRfOedw3o2u2+W32hB
+	cbPnLSyRHM5lbqzOCi13yHG8N6XBewachp9XXbcoyV0iVUSusa0p0P+3/Aw6BvD0fFOCPO23GVe
+	PSnh3tW5rTgZTWtI9UeJAVzTTZkPUG7Y4QTSAXeqv
+X-Received: by 2002:a05:6512:a96:b0:5b4:9dba:7401 with SMTP id
+ 2adb3069b0e04-5b8c17f53eemr77720e87.11.1789722900983; Fri, 18 Sep 2026
+ 02:15:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260915160141.3543048-1-suzuki.poulose@arm.com>
+ <20260915160141.3543048-6-suzuki.poulose@arm.com> <CA+EHjTz65G0MM=tOrzmk=jMweBX1us6FqfrmSkQs4KSyAEoxhg@mail.gmail.com>
+ <e26cbb4e-84e2-4fcc-9eb0-93bfd4aff4a7@arm.com>
+In-Reply-To: <e26cbb4e-84e2-4fcc-9eb0-93bfd4aff4a7@arm.com>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Fri, 18 Sep 2026 10:14:24 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTw6TOSEs1GtUcUy9WACpGRJBA9yTn9Ro_+tiD=XkeHr4g@mail.gmail.com>
+X-Gm-Features: AcwNN1WAyYZFMS1tYTqzPWruuztc5hWFyoH3hZA9fEYOfU0jxVOmsQMTpwP1D70
+Message-ID: <CA+EHjTw6TOSEs1GtUcUy9WACpGRJBA9yTn9Ro_+tiD=XkeHr4g@mail.gmail.com>
+Subject: Re: [PATCH v18 05/23] KVM: arm64: Track the type of VM in kvm_arch
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org, 
+	will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com, 
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, 
+	joey.gouly@arm.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, 
+	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, 
+	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, 
+	lpieralisi@kernel.org, enju.kohei@fujitsu.com
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] kvm: nSVM: Stale EXITINFO2 leaked to L1 for Decode Assists and SWI=
-NT/ICEBP
-- [High] kvm: nSVM: Unconditional CR_VALID injects spurious #GP into 32-bit=
- guests
-- [Medium] kvm: nSVM: Missing Decode Assists synthesis for SVM instructions
---
+Hi Suzuki,
 
-commit 426ea34e024e5747a2d0375a678f4064cd396fdd
-Author: Tina Zhang <zhang_wei@open-hieco.net>
-
-KVM: nSVM: Synthesize DecodeAssists EXITINFO for emulated intercepts
-
-This commit adds synthesis of DecodeAssists EXITINFO1 fields for emulated
-instruction intercepts such as MOV CR/DR, INTn, and INVLPG when the guest
-CPU exposes DecodeAssists capabilities.
-
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-[ ... ]
-> @@ -4846,14 +4847,26 @@ static int svm_check_intercept(struct kvm_vcpu *v=
-cpu,
->  	if (stage !=3D icpt_info.stage)
->  		goto out;
-> =20
-> +	decode_assists =3D guest_cpu_cap_has(vcpu, X86_FEATURE_DECODEASSISTS);
+On <date>, Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+[...]
+> +       if (WARN_ON_ONCE(!kvm))
+> +               return false;
 > +
->  	switch (icpt_info.exit_code) {
+> +       /* Cover both pKVM host and Realm VMs */
+> +       if (!kvm_vm_hyp_is_distrusting(kvm))
+> +               return true;
 
-[Severity: Medium]
-Does this switch statement miss several mandatory intercepts defined in the
-hardware specification for Decode Assists?
+I'd drop the WARN_ON_ONCE. And this early return needs the `>=` from
+patch 13, or non-protected pKVM VMs skip the filter.
 
-According to AMD APM Vol 2, Table 15-22, Decode Assists also apply to VMRUN,
-VMLOAD, VMSAVE, CLGI, STGI, and PAUSE, requiring EXITINFO1 to be explicitly
-cleared to 0.
+> I resorted to is_protected_kvm_enabled() to make it faster than using
+> the vm_flavor checks. I could rever those anyways.
 
-Since these intercepts are omitted, will they fall through to the default
-case and leave uninitialized, stale garbage in EXITINFO1 instead of the
-architecturally required 0?
+Agreed it's the faster test. I'd just call it by name at the three
+sites rather than through a macro.
 
->  	case SVM_EXIT_READ_CR0:
->  		if (info->intercept =3D=3D x86_intercept_cr_read)
->  			icpt_info.exit_code +=3D info->modrm_reg;
-> +
-> +		if (decode_assists)
-> +			vmcb->control.exit_info_1 =3D
-> +				info->intercept =3D=3D x86_intercept_cr_read ?
-> +				CR_VALID | (info->modrm_rm & SVM_EXITINFO_REG_MASK) : 0;
+> Do you mean something like :
+>
+>         if (kvm_vm_is_protected_pkvm(host_kvm))
+>                 hyp_vm->kvm.arch.vm_flavor = VM_PROTECTED_PKVM;
+>         else
+>                 hyp_vm->kvm.arch.vm_flavor = VM_PKVM;
 
-[Severity: High]
-Does setting CR_VALID unconditionally here, and below in SVM_EXIT_WRITE_CR0,
-inject spurious #GP faults into 32-bit guests?
+Yes, exactly that.
 
-AMD APM defines Bit 63 (CR_VALID) of EXITINFO1 for CR accesses under
-Decode Assists as "1 =3D instruction is 64-bit, 0 =3D instruction is 32-bit=
-".
+> Do we additionally need to WARN_ON() if we encounter a VM_REALM ?
 
-If a 32-bit L2 guest executes a CR access and its general purpose register
-happens to have non-zero upper 32 bits (which is permissible), L1 will see
-Bit 63 set.
+No, the host shouldn't be able to trigger a WARN at EL2.
 
-If L1 treats this as a 64-bit instruction, will it read the full 64-bit
-vCPU register and fail safety checks (like cr0 & 0xffffffff00000000UL),
-resulting in a spurious #GP being injected into L2?
+> Apologies, I thought this one didn't change, but later patches changes
+> them, which is why I kept this.
 
-[Severity: High]
-Should exit_info_2 also be unconditionally zeroed here when decode_assists
-is true?
+No worries. With those two in, please keep the tag.
 
-AMD APM mandates that when Decode Assists is enabled, EXITINFO2 must contain
-NextRIP for INTn and ICEBP, and must be 0 for other intercepts like MOV CRx.
-
-Because KVM does not zero exit_info_2 prior to calling svm_check_intercept(=
-),
-could this retain a stale value in the L2 VMCB from a prior exit (such as a
-#NPF faulting GPA) and leak it to L1?
-
->  		break;
->  	case SVM_EXIT_WRITE_CR0: {
->  		unsigned long cr0, val;
-> =20
-> +		if (decode_assists)
-> +			vmcb->control.exit_info_1 =3D
-> +				info->intercept =3D=3D x86_intercept_cr_write ?
-> +				CR_VALID | (info->modrm_rm & SVM_EXITINFO_REG_MASK) : 0;
-> +
-[ ... ]
->  	case SVM_EXIT_SWINT:
-> +		if (decode_assists)
-> +			vmcb->control.exit_info_1 =3D info->src_val & 0xff;
-> +		break;
-
-[Severity: High]
-Does this miss setting exit_info_2 for the SWINT intercept?
-
-AMD APM mandates that EXITINFO2 must contain NextRIP for INTn (SVM_EXIT_SWI=
-NT)
-and ICEBP (SVM_EXIT_ICEBP) when Decode Assists is enabled.
-
-By not setting exit_info_2 =3D info->next_rip for SWINT, and completely
-omitting handling for SVM_EXIT_ICEBP, does L1 read the stale EXITINFO2 as
-NextRIP?
-
-If L1 relies on this for NextRIP, could it cause L2 to resume at a corrupted
-instruction pointer and crash the L2 guest?
-
->  	case SVM_EXIT_INVLPG:
-> +		if (decode_assists)
-> +			vmcb->control.exit_info_1 =3D info->invlpg_linear_addr;
-> +		break;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1789721173.gi=
-t.zhang_wei@open-hieco.net?part=3D2
+Cheers,
+/fuad
