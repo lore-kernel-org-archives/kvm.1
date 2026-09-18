@@ -1,64 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554D95013CE;
-	Fri, 18 Sep 2026 13:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9594F4DE70B
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 13:59:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789739782; cv=none; b=fo1lzNn/ALsyMlSRWTU9BDEstGj23PdrGPEeNDyf5FW6hcgZahavh2iA7xh6hRRO7Pl65RfsJEVzd9JAysZeqplrl+KVSp19CrfdEHSp7uNPKES0iiA4n1dyYG8pUhhVRLkbG9wwv9Uq0TMUfdZVHl/iFxi6hqSogf0sgKrfecs=
+	t=1789739989; cv=none; b=nTFVi7rgNZrnZDwBdWfn9QA1KTAf2G2VtyRsV9XN/AnjqTKxVU104WXP8f5oT4E7QazdaNvJLZIfdUr1hqPsB7oKvEmNwVUxprogb+Uq3kCwcCYPRIxjyyjKFfTG0/11IRlinC9pVa1bzT8Uk85IrWLz3NsqCqaycMo+gsVqHTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789739782; c=relaxed/simple;
-	bh=LF217VCeBbJeCEsFuNcrCHaItMR9zTAMp5fE2w+/lq0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=PvCcjkP7Jg1kirdUi63xBWwS/zKvx+76Z2sX+ZVkMsTy4XxJBkVJJ9dE0Ayfyv6dXIfHrNHLCMnmeDyznPN5Oa9v5RdITGE+3r6CND9Q+NiMX2ab4KrAeYlOoi1rXCD1nOokMWA5tyC+qdPPn8KtigpXRLfauicGoon7Iz4SsRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c39yuBGO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789739989; c=relaxed/simple;
+	bh=aivAK4Nb0pN5lZtUki8wXBnU8M2jDRpB90Nrxcx49TU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=kXJvnMAXF1KlWUPyL3sn/Hj7DcNb/W35ORakm6Vc7Bf4hw8/yH8rsqHcjbQF96JPvq/6y08SkFrb9aQt7f6EPqEsstgAD32Y/hbt56AWlpxfopRPxYmxgITdaZX6X+S4+J9tbWGntzCoUILJEWwwZ10PbjRpgbDNg/xPgyqkleU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sOFWfalh; arc=none smtp.client-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c39yuBGO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FF51F00898;
-	Fri, 18 Sep 2026 13:56:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789739781;
-	bh=LF217VCeBbJeCEsFuNcrCHaItMR9zTAMp5fE2w+/lq0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=c39yuBGO5eKnjPk02z0+ZFaQwfAzB7XG+VnS52R5ehRCWZSDZoi5sVF9kpJQq6M3t
-	 6Zv98/xxs18bSYdlmYX5EVgMlX6PUn/om4S9/JUOmqlRMXb4PqvALTO0k9sewHNEQu
-	 zYywR7WPai45Ns3wAAS8IaY7DKaeof/Yc0/kqBi6r93fxdAjDPzrPxRf7ENO0hAnIC
-	 57VbTdMd3e6gF8wCfB5etIuc0tkBVs0bzGeI3vcTTr724rPEYQM/23GzoBHLz31KGG
-	 8dd4W5YG4thpzSEVft7vNBxx7egttxBeEnOk8HKlvU6aCeMUaC97cCbQHfKBjkKUUr
-	 uxCXARHqBGEPA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 02/29] KVM: Add file back-pointer to struct kvm
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steffen Eiden" <seiden@linux.ibm.com>
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, kvmarm@lists.linux.dev, "Vasily
- Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Christian
- Borntraeger" <borntraeger@linux.ibm.com>, linux-s390@vger.kernel.org, "Marc
- Zyngier" <maz@kernel.org>, kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>
-In-Reply-To: <20260918133107.1042730-3-seiden@linux.ibm.com>
-References: <20260918133107.1042730-1-seiden@linux.ibm.com>
- <20260918133107.1042730-3-seiden@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 13:56:20 +0000
-Message-Id: <20260918135620.91FF51F00898@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sOFWfalh"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-39deb05ef51so1329558a91.3
+        for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 06:59:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789739987; x=1790344787; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UmTysDn4nll757dspZkZb/n39UP8Vw3WfecA74ZmN5w=;
+        b=sOFWfalhIEo3SloeFIRPSunyHqlpKxjKyLb3UwmfeUUvuXE2W6ONS4q+7960RzbI1I
+         tf3iQAFnpAMchoYfbHrYnLpxjpUJt6F5tPQ2gwYeyhDmoQW/mRqOP/MS1tbK0uQvCdM2
+         g6MfxvH9OyVU4Lk6KH5TKPmiR0HTNEyXfVkZe9DZiy183meseiUjqC3n8BTMOb4XAlwC
+         VzUjcodIex3JVbvOijF5hV4gu+OiGW3xcrAOiGKOo6Zh2yJpvIxa55ji6J8wbgK/WN8r
+         cEWblskpuJKxCgi0qTVRPkCqt8TpqIR0FucoBY/ntJWaz9BEcc7Q+quks9tPgRbYD0fR
+         1ZFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789739987; x=1790344787;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=UmTysDn4nll757dspZkZb/n39UP8Vw3WfecA74ZmN5w=;
+        b=Sf8JYe8g2d1uENQE3Nw4Nsjv3zPVBtwS2gIPXSype8oJNsFWGqtoSVZgNtoCmFT7KJ
+         t8FupI7jeKMnRSF0pn0AsOK8glk9cl4xHwJigAep/COdTl6uQ3XlUeecXa3Cm7q+cq9O
+         TRqC2U3UbyNvQx0Yu+7z25KbhW3NC9N69ePblplQOYPSRmrc0hJXg6tiw8fJkst+NdQ1
+         JDHplOYjeMgkoZs/rNF4Ow1DmBFuPCfLeDyRhcIj4L/hyu3z9/fTy09qPneYlWGrF3ae
+         HdjoaKDKHP2P7Gw56UQnRJCn5m2qKyGBdd+/R3+b6v76GtRqLON7UuODwFgOghHguMVk
+         UXAw==
+X-Gm-Message-State: AFuF++m+qiSklDa6J4BLxnjjQAL5Md9iFCvehE6CVvE1jXkkk76X32mM
+	CaoVnK6Pa3by1Xuqh0cEzLpSUoQTeHqv0zgvXIONw4JOqHIHVlcu3vyaU9GpvkZ5yZX0ycbgFFD
+	HF3k+AA==
+X-Received: from pjrv21.prod.google.com ([2002:a17:90a:bb95:b0:39e:5090:e9b7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2686:b0:39e:6a81:c91e
+ with SMTP id 98e67ed59e1d1-39e6a81c997mr11996a91.17.1789739986633; Fri, 18
+ Sep 2026 06:59:46 -0700 (PDT)
+Date: Fri, 18 Sep 2026 06:59:45 -0700
+In-Reply-To: <20260918033658.21842-1-kylebot@openai.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260918033658.21842-1-kylebot@openai.com>
+Message-ID: <aq1D0Qxsa7IMX6ea@google.com>
+Subject: Re: [PATCH v4] KVM: x86: Restrict saved GPA writes to hardware write faults
+From: Sean Christopherson <seanjc@google.com>
+To: Kyle Zeng <kylebot@openai.com>
+Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Oleg Boiko <oboiko@openai.com>
+Content-Type: text/plain; charset="us-ascii"
 
-> Add kvm->file as a no-reference back-pointer to the VM file in struct
-> kvm. The pointer is set at VM creation time and cleared under
-> WRITE_ONCE() in kvm_vm_release() before the file is freed.
-> Callers storing the file must take their own reference.
->=20
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+On Thu, Sep 17, 2026, Kyle Zeng wrote:
+> @@ -2036,6 +2037,7 @@ static void sev_migrate_from(struct kvm *dst_kvm, struct kvm *src_kvm)
+>  	unsigned long i;
+>  
+>  	dst->active = true;
+> +	dst_kvm->arch.has_protected_page_tables = true;
+>  	dst->asid = src->asid;
+>  	dst->handle = src->handle;
+>  	dst->pages_locked = src->pages_locked;
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Hrm, I think in the sev_migrate_from() case, we should clear the flag in the source
+to be consistent with the other fields:
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918133107.1042=
-730-1-seiden@linux.ibm.com?part=3D2
+	src->asid = 0;
+	src->active = false;
+	src->handle = 0;
+	src->pages_locked = 0;
+	src->es_active = false;
 
+And with the vCPU tracking:
+
+		memset(&src_svm->sev_es, 0, sizeof(src_svm->sev_es));
+		src_svm->vmcb->control.ghcb_gpa = INVALID_PAGE;
+		src_svm->vmcb->control.vmsa_pa = INVALID_PAGE;
+		src_vcpu->arch.guest_state_protected = false;
+
+I can't imagine it will ever matter, but it leaving the flag set looks wrong,
+being consistent costs nothing in practice.
+
+No need for a v5, I'll fixup when applying.
