@@ -1,120 +1,128 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F994E4C29
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 11:27:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789730870; cv=pass; b=hkA7qt9b/mhk0ZHEOpxeWLkEr5oPjhMwW1myY77hglDF9PTHzB8IJYP1S7CyyVlxYrex/yj6l1WlcFH+NOSUosIbQ5wIfuNhVY/QF6l7YYlZVq54WQhTNtrVyo2odSw9WSVIXOa+ilECQpYMlebKiPp0ChgbC9GgCFiOnb4Q5MU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789730870; c=relaxed/simple;
-	bh=1T4Ypx73b49lIoEeXBKDKWASxqKm0qUZYs1hZl9y4gQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u66m0gEhirxPtjl6NuYS+vtcjKBN914cZ0PCWTsGxqfhobZb2OUvXyoUWlmf3qZa2h1AVS+NAVc8ga2bzKx/rjENmG94IliZ0CnW00yOG5aTicsMC2OfP8GcZO7DoslWtE0tRR7hBu6YvtTuDrnEQIK/IfHBlX4yElexl/gLRMU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bnicj358; arc=pass smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4D4499F25
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 11:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789731368; cv=none; b=CJuJfjVKPKm5wfKcbVdPyYsEIR6iA5VonMAQSItZyzT+BOq/AhGpFANksaBiprv5y8QAf+CKZMjpqHJTGAhqrNWiR2NVH6wJtdV8Sqss55LmjSvqQp+SdQf0bbI61Seqa+9cxjz6dbgk7jGa34lgroEOaAfKg5XsPiQPGSVZ7ds=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789731368; c=relaxed/simple;
+	bh=rtN8qENpaRtifWq0pL9lCQPDcNEtXd9dpsU5YPwNW5o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=srkGiOf4cNPAJyo5h7uEQ09cmy9HBYSXOTiCPZaD0dQkZ0Bj7T+6G0Frv+J9d/koUlsMDnIA7KRA6IVFfp406B8RM19nRkMXSv4GhfWPy9YavQuLZxHsIUbYjDlW5/IhHd31bkPVo8ovMy854TTtpqTdirDaBsAvw/cGtFd5VoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YdGTB7/X; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jcyuBUuh; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bnicj358"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6a5f9b036f9so5326a12.1
-        for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 04:27:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789730866; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qI4X9BfJo0DyqygQs06CMzLWbYyzbo97BuRm4y5x1I7VRVR5tSmV6hDZI8I7zqxpu9
-         MUi2L1rDQQhypfa8rR8teI/kPor0n8ipY+InrvQ5++kcKqbaeu5weKEomV+xN/syLKz7
-         t966DJbIBampyju7/zMbwFtPhRLZ830SV49XFDSWUuC75mQgLfEFHdnQLbvciSMUx/WE
-         7GjYT5i209i77H8oc8PHp+h5d+Dh+0uFyJ2ZT5GB0AL6DiFQAtrLMRkEJS0X7mlDdi0r
-         bO9luxqSLvFJzyGeoX/vn77+bJxVRanhh0dTTvjW3QIUsMMQmmfTFI6vXp2vHmDFc0jk
-         hohQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2zkFlHoWQ2AWCYz/XBKFNT4MlZs4AcmAdTGygjovBbU=;
-        fh=SZn1aRO0aPolAdhZiigxiFNmvQdemdtXxcfWUOwd3U4=;
-        b=qVPJ1jC6Q/GU72y/l0YO7X5elhg6WbnFmuHIWkPrgxITnpmkc7ESRgR/vItfGgSPEU
-         6p+nytwBhrKHVLJlLpwsOmAuIUXTewLvn5PgdeSUOZ2I9jsaOPkgIw65SJCI8Koq69Zz
-         gu2WgC4PfFfvCtHzhBfrVvcqVr/y7S4GWrUbRqrwtxtQo0NmQB5fqk1L8VkHNaYUhIQ5
-         8zFKQyMag7MhU7QUn1lmAIvCSsMoLtoOoUXRAf2jifCBTbGtYw1rvc2He37O87cMg/l1
-         jgdrhOxzj1Da2FhCtxdVwi9EQSUnwkIam0Yma07Cwwonl+4jNoGAxXFoIom0TWxhNv/Y
-         Gvqw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YdGTB7/X";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="jcyuBUuh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789731364;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xKV/nX0BC4tLJSo87et19oAKhXTXN7V8XgQQafKKWXQ=;
+	b=YdGTB7/XxN0T+FwOfrHJUTpaXJTNwKeHeklA2zmFBW7DcImNVxWCRd6Nwhzv0cUuAhWI02
+	9uUZJrz5AvLlTJfCmBikgoShdPJWXIy1UkepbQpa6yt0WgUUmj445Cs40wFy+rVN7iwRs1
+	ArfWwvWpanPG80bEtLD1hA0TcYIPi2s=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-197-17KmlOf9Pxif04Sgq10n4w-1; Fri, 18 Sep 2026 07:36:03 -0400
+X-MC-Unique: 17KmlOf9Pxif04Sgq10n4w-1
+X-Mimecast-MFC-AGG-ID: 17KmlOf9Pxif04Sgq10n4w_1789731363
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93a0050a554so149437385a.1
+        for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 04:36:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789730866; x=1790335666; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=redhat.com; s=google; t=1789731363; x=1790336163; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=2zkFlHoWQ2AWCYz/XBKFNT4MlZs4AcmAdTGygjovBbU=;
-        b=bnicj358p8BvR+0cPsy7nSRI+syhPcD8q9t1kzH/MM7jD3Ex2AgecRNFRaIh2hoD12
-         t69llh4Gd79xFNGgrtRQqTucY8HzpYZPkiePEQvpXaaU8L8B6vuctbaMv3j7t2O9Ulyg
-         DiBifT7wFrrd8V7NIOZMz36SDefcD0ExuZmo5B6UeU6MQSLwhUINU0tQ03hQsFspBqPl
-         cJ9yoiFMNZR7Soz591jRZzlMG4yr/651O4S2Bz3yZoTMWjRHQo0FbxuNxeXOteLlQZ37
-         +7/+dO2nFfXN2gatJZt3WwO/AMmDtcVXhxc8N+bcdTHovBGad+zyhtC7YwAbu1P2BYKT
-         K3zg==
+        bh=xKV/nX0BC4tLJSo87et19oAKhXTXN7V8XgQQafKKWXQ=;
+        b=jcyuBUuhb917/j5HfFO7ndeCTWbqtuJnv0CtvmuF6eQ5yow8BHda5X0u3VcvXjj+57
+         FoADFzyUXmDxbKvSSbh3zbitqIEaHBj+mrF4OakIehjvXYc1sV2q7XY8HtIMntytWHD/
+         vEoupl0RssASc1n2pQq1V2jyl3EhZ3C15ZPWWGLWu/DEYWsSPNPD2GXEXPIwFLx/Dm4N
+         ty1Ol1gzXQVaMQ27Rv9nh9cWZjy1i82T/L/xodtKD5aek36iHpeCXqHHLX9dP/4bP0fQ
+         eQPO6fUU7yfPLnBG6yqziC90963B7p4gmw+Z9Z6tMZSTc8fWKjfH+GZ/exoMw/zAqB+N
+         jFZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789730866; x=1790335666;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1789731363; x=1790336163;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=2zkFlHoWQ2AWCYz/XBKFNT4MlZs4AcmAdTGygjovBbU=;
-        b=FfZEtYs7as2J0RTbpAoob8YuqUS52lNwFcNBvaHQ0jowRCHqxEMRTlcTFW4owgGf0q
-         4sCdnPvVhyeeeXig6bY0OGPCoB8/WX4k0MTFOBdB01v9nvfMgGSBn/SEdBLyfKdtvKPD
-         +v2WDwU+rKMlMKJUg3v7sAGPJVqRzdiEO5xoDFMexJLw0BW3o28OaWiI5Bb9NM5tyGkX
-         2GDnJkP5PPdDLVXL1kNZbkEDB3gLdWJG7e9i7J7a9d9bUt705kzyqJw2fUX62g9/j0in
-         DvEkZBc8q24vzE1iNVzrl5IdF677jh8hM+OlZYGBCOzQSEMsUpGezOXXUyL5tNFZnCNz
-         4IdQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwQ1NrGLMI0cH1Yc62GYWq4S9T3wh70yti5Crk4ADKCB2KyzR3crAtSnnkPZiHMBDye64Y=@vger.kernel.org
-X-Gm-Message-State: AFuF++kNcpSRmDQNpxT68TPBvt0v/BoBXZUXfgIsTye6gwmLr41MDA/W
-	rW7yCFrFCH4qRa97xs40BoKIJzfsgBTMJ501FuUgOaUIbOxEv/WpfIBcz8ptJzf52VSMeNwotPV
-	w8294g155JYLpfDdQ5et0ySGfZE6va2ED0t2ECBjy
-X-Gm-Gg: AYBFou0qUSNiXVGIBr99V0iNcnfH2j2i8fRSMT/sd69zL6xym/qN4M/OmoqSLZcWMTx
-	BW8MnUsJPFYLjvzDHYFWTvMm5ufvMQ+AIVxmlDbbcHL0B9QYVrU38mSBAUEFJfOl1AcsE5433DT
-	e83RpgVT07UXUDgPm7ncHqbNNF/JspNmlt+spUlgEtTSgihepxV/MmgS2WuSPGpzOXwsF565zCR
-	R6QHgtuW0dVqpGA8kcaUm5ehQuDzEubzDVDYnX48AJyYt8PasvOfXHo8qiiv6vlzGQ+1oOfUzfS
-	rEXuO7DmWAqi4R1URay3ACsBGToq2k91SM6Gp7ZaDvJP+dY94m/AChM=
-X-Received: by 2002:a05:6402:a588:20b0:6a6:f2a5:1b4f with SMTP id
- 4fb4d7f45d1cf-6aa4df2139bmr25284a12.4.1789730866074; Fri, 18 Sep 2026
- 04:27:46 -0700 (PDT)
+        bh=xKV/nX0BC4tLJSo87et19oAKhXTXN7V8XgQQafKKWXQ=;
+        b=Z8dq2EcamuFUtoFCQEgIJPrGD0yyM1Og731uIYwZlKuXXWhPPMxTSHkc6yMHEX//DU
+         LDvvM/Q85tQYI9ixA8plEaG1aUCoLed4o+7jn39rxsYh4w3lWSMBP6cgGhxaR/wVO1YO
+         VsbirrZWvTsGbxqH3TXTRXXS2TZurI/e1eogKb7Qhxulq5CLslQEyYlth3VGVEI1SNR9
+         YnPKlnr+ZQngkA0C//dfi2rX6Wywah2ZgXi+zS9ucKU81ZmebLlh/VagvlsvH02Z9HFJ
+         nDQXMAl4FJLeX52DgyqpFbuwunu9wtvHw1GUF8xjU3h7Wh19xM0aHdp2R1ppxNRR8WDn
+         NQzA==
+X-Forwarded-Encrypted: i=1; AKwUvBwKFlGX8hOn7E3pMh7IckP3O+ofZSeSYc31SprCZARw+CfaslCM5KSt/FIhL2HXB3Bqi/U=@vger.kernel.org
+X-Gm-Message-State: AFuF++n3NyLc3M865V1wCaTwVD15B6XJuraxdZiN/CXa89M3pUkRQnN4
+	OnqnOFZrJZEBGN/IxHuPv2dof3QdlwurueAjrvDqnSSv75nyRoS619iZf4dseWfQ4qDwcYkSgEW
+	7dxOk0n4ROzehK6b141PI2Ws5ukn+8zleXWjzyIShqPxn0v0uy+TIvQ==
+X-Gm-Gg: AYBFou13V8ik6RnQMdMxd+z+nxnvFaz1DOTv/JVJ+/PZnPAH8xvK90PuU1Jcuqnv7xX
+	2nnb5mcqpYqCU8geMXDB17BOI00iMswBSMAvntDnd7D9T7utAlfKqIOT/TxSL1TTP7Ymalwj1ZR
+	9+ce7K5CWrNWdywl/Lm/ZzRT4KisBC2/uNDs3d0rggi/p1vdu853Ue3Pn09rvNkOakeZOE7Z+CG
+	wEnJ5Z+vYThYltaBWrjjfAdfdCrBMcjsPy9nufsrfm3bUznc2PESGA9zYCEo9qjcD/rkLQBtJbM
+	Xx3UPfa0fSaBpKeeHAGTr4l5eJfbUy3Bmp6IkXGlyud20qq1XIIeZlxC6wvPP55Mu2+H
+X-Received: by 2002:a05:620a:17a0:b0:93b:d79e:18f6 with SMTP id af79cd13be357-93bdc7ac02cmr256114285a.57.1789731363047;
+        Fri, 18 Sep 2026 04:36:03 -0700 (PDT)
+X-Received: by 2002:a05:620a:17a0:b0:93b:d79e:18f6 with SMTP id af79cd13be357-93bdc7ac02cmr256046385a.57.1789731353730;
+        Fri, 18 Sep 2026 04:35:53 -0700 (PDT)
+Received: from localhost ([174.91.117.74])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9125800f25bsm10381296d6.15.2026.09.18.04.35.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 04:35:52 -0700 (PDT)
+Date: Fri, 18 Sep 2026 07:35:39 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Tony Lindgren <tony.lindgren@linux.intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Fabiano Rosas <farosas@suse.de>, Jon Grimm <Jon.Grimm@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Steven Price <steven.price@arm.com>,
+	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
+	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
+	=?utf-8?B?SsO2cmcgUsO2ZGVs?=  <joro@8bytes.org>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Kishen Maloor <kishen.maloor@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Peter Fang <peter.fang@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org
+Subject: Re: [RFC PATCH v2 1/4] Documentation: KVM: Add live migration API
+ for confidential guests
+Message-ID: <aq0iC5z0HFn5Rb2D@zhexu-thinkpadt14gen5.rmtcaon.csb>
+References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
+ <20260831071304.762939-2-tony.lindgren@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1789721173.git.zhang_wei@open-hieco.net> <2b30c180a7ec1fb22033cc1b89debc36c9f569d0.1789721173.git.zhang_wei@open-hieco.net>
-In-Reply-To: <2b30c180a7ec1fb22033cc1b89debc36c9f569d0.1789721173.git.zhang_wei@open-hieco.net>
-From: Jim Mattson <jmattson@google.com>
-Date: Fri, 18 Sep 2026 04:27:34 -0700
-X-Gm-Features: AcwNN1XiB8HFa2Js9NBlTZk2TxW38UVMUVZNntIOccJ00GWuWntEdr41p3Y9JBA
-Message-ID: <CALMp9eT0RjVUYbcHbhd-phmaXs1yPsh25j+qkfmizqp+DCV=fA@mail.gmail.com>
-Subject: Re: [PATCH v7 2/8] KVM: nSVM: Synthesize DecodeAssists EXITINFO for
- emulated intercepts
-To: Tina Zhang <zhang_wei@open-hieco.net>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, zhouyanjing@hygon.cn, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260831071304.762939-2-tony.lindgren@linux.intel.com>
 
-On Fri, Sep 18, 2026 at 1:56=E2=80=AFAM Tina Zhang <zhang_wei@open-hieco.ne=
-t> wrote:
->
-> When the x86 emulator encounters an instruction intercepted by L1,
-> svm_check_intercept() synthesizes a nested VM-Exit without fresh hardware
-> DecodeAssist state.  Populate the architectural EXITINFO1 field when
-> DecodeAssists is exposed to L1.
->
-> Provide the GPR number for MOV CR/DR, the interrupt vector for INTn, and
-> the linear address for INVLPG.  Preserve the MOV-to-CR0 decode informatio=
-n
-> when a selective CR0 write intercept is triggered.  Leave EXITINFO1 clear
-> for CLTS, LMSW, SMSW, and INVLPGA; the INVLPGA address remains in guest
-> rAX.  Leave EXITINFO1 unchanged when DecodeAssists is not exposed, and
-> leave unrelated intercepts unchanged.
->
-> Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
+On Mon, Aug 31, 2026 at 10:13:01AM +0300, Tony Lindgren wrote:
+> +:Capability: KVM_CAP_LIVE_MIGRATION
 
-I think Sashiko is hallucinating.
+IMHO this is slightly misleading, some "CONFIDENTIAL_" or other prefix
+would be nice.
 
-Reviewed-by: Jim Mattson <jmattson@google.com>
+Thanks,
+
+-- 
+Peter Xu
+
