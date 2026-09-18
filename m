@@ -1,46 +1,46 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE704FC8E8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5584FC8E6
 	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 13:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789739445; cv=none; b=XRly43fAttPGroh6E9HfSGD3p6bizEbxrrKX+JVhHd4trei9tlvZalPpPQ5kUlIVngf4BJhf219IO0bliblgVgyqYXtoIgU8fTF4p2WihlICZLQBCep7h3VCah9yuBmtNOQpzetPTuj7bDc3krGqPJt/Te8ujSJmhHr11nGeQIA=
+	t=1789739445; cv=none; b=bvhnW20hJ2ePSONkr4Jiz3wic43InX0buqZ4t0Uwhb1S+lt0IZThEjYM8eaJHyPoxh7N6wl0HmFx0bVqUcvG55Zslk9L0oO26lInW8PN/Yjhkxh6QoHUP8pW9ASNA1K4etTMe7L2IX5ZrogIivZzwH83c2z5ZTXQ0Z541UQWgSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789739445; c=relaxed/simple;
-	bh=rgk9M4pgE1QviE0CqliLyO+0jWnMkZ/1sJnfXb4SX+s=;
+	bh=lcJN8vLjIwK4WDPsjbRdO6X3eIhgV3xUE56pBLYgXUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KZNrW8jLMuPJ04lr19l75iJcsiDvXI5EbvgI3YuZWKjOfM5zerSu3WX9VWD8LReiGyawm+Fwn+AuKwoqo758SSSSF+jkKBQC2290FGh4zgg6YZaYgAtjicBG0au25OFI3MiNIJbB0Ov5tgiFRpLChLk8figcMhnuFBCeY3ewn9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FdAqnJ/0; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=X3Ji7EVTH1qMuEPK0ucmXyHm2EMXHbPqGmv2iBQyO4qgapXGbZBxbmkLt2fzxg4A2Zzi2LFxP/1i0e7KKzQ/TpOdrkyIzY/1FSL0tfhrQsiTpbIMNiRNlU+jOJ54+xZiTB8ZgM9roL6WcQExZWGcUDkxozaBZCoKYBMF+GinwUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=S3jYxvM+; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FdAqnJ/0"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="S3jYxvM+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1789739442;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ujSswSFjYRCTMYkmmhaCZWF4ecoRPMD1qhDcHmUI9W0=;
-	b=FdAqnJ/0qOxxMNgdzfnKz/sFOVmIUMjeOhBpWeAgYGebWX5jui+Zbyyd/urdt3LYh2jxF7
-	joRvmgKbELIiuuNAdRDT9WcW0WRtYCwxqWLlKY7p/tECJ5sDw9k9uOLuZpM0XNg7kmfZ7a
-	PEOHBKzaMTDH0PciLTsFhPalf6n1FpI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=34U/H3bFnFyk6+Y+T6dy301GKxXjP7tSD65G/7DySy4=;
+	b=S3jYxvM+kw9/OXHGMNPYm9pFBJ7ZLYEYZIr07p3oSWZmw2vRinlkzk3MDIgh9ZdLLDLu7k
+	qWEOwU70LVGj0u5N4BjAqUy1ePweKo2ZLKaEE40TZJuSxtS2OpCrZ43GG2eCxTZR0v2tRR
+	t0iCa6TW+1TBxc8z/5R6Ugl6F4NtCgk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-189-2w4Tn3_2Mgi_8tBFe-taGQ-1; Fri,
- 18 Sep 2026 09:50:39 -0400
-X-MC-Unique: 2w4Tn3_2Mgi_8tBFe-taGQ-1
-X-Mimecast-MFC-AGG-ID: 2w4Tn3_2Mgi_8tBFe-taGQ_1789739439
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-303-q-VAUPgVO0O6Y-_tvYOGbA-1; Fri,
+ 18 Sep 2026 09:50:40 -0400
+X-MC-Unique: q-VAUPgVO0O6Y-_tvYOGbA-1
+X-Mimecast-MFC-AGG-ID: q-VAUPgVO0O6Y-_tvYOGbA_1789739439
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D9CD318011D7;
-	Fri, 18 Sep 2026 13:50:38 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AAD2E1944DCC;
+	Fri, 18 Sep 2026 13:50:39 +0000 (UTC)
 Received: from virtlab1023.virt.eng.rdu2.dc.redhat.com (virtlab1023.virt.eng.rdu2.dc.redhat.com [10.18.48.26])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3B1091956042;
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0BF611956042;
 	Fri, 18 Sep 2026 13:50:38 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
@@ -48,9 +48,9 @@ To: linux-kernel@vger.kernel.org,
 Cc: nsaenz@amazon.com,
 	vkuznets@redhat.com,
 	snambakam@linux.microsoft.com
-Subject: [PATCH 08/31] KVM: x86/mmu: intersect writability from __kvm_faultin_pfn with fault->map_writable
-Date: Fri, 18 Sep 2026 09:50:07 -0400
-Message-ID: <20260918135030.171564-9-pbonzini@redhat.com>
+Subject: [PATCH 09/31] KVM: x86/mmu: Extend map_writable to a full ACC_* mask
+Date: Fri, 18 Sep 2026 09:50:08 -0400
+Message-ID: <20260918135030.171564-10-pbonzini@redhat.com>
 In-Reply-To: <20260918135030.171564-1-pbonzini@redhat.com>
 References: <20260918135030.171564-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -63,86 +63,215 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-fault->map_writable is currently a pure output of __kvm_faultin_pfn(),
-which is the only thing that restricts it.  This will no longer hold once
-memory protections derived from memory attributes are applied: those
-compute their own access permissions that combine with those from
-__kvm_faultin_pfn().
+Support for memory protection attributes opens the door to installing
+non-executable mappings. Instead of introducing yet another member in
+struct kvm_page_fault and another argument to make_spte(), make the
+existing member map_writable a mask of ACC_* bits.  This also avoids the
+need for make_spte() to map a single bool to either the NX bit or
+the XS/XU bits together.
 
-Applying them *before* faulting in the pfn lets a fault that violates
-the attributes exit to userspace without the cost of gup and/or an
-async #PF; but it means that permissions will then be restricted in two
-independent steps, first by memory attributes and then by __kvm_faultin_pfn().
-Switch fault->map_writable to that model by letting kvm_mmu_faultin_pfn()
-only clear bits rather than assign them.
-
-No functional change intended: nothing writes fault->map_writable between
-the initializer and __kvm_mmu_faultin_pfn() yet, so the AND is equivalent
-to the assignment it replaces.
+Unlike for mappings that are not writable because the fault did
+not request write premission, it is not not necessary to track
+executability for these SPTEs; the gfn is always available and it will
+be possible to access the attributes directly in FNAME(sync_spte).
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/mmu/mmu.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/x86/kvm/mmu/mmu.c          | 21 ++++++++++++---------
+ arch/x86/kvm/mmu/mmu_internal.h |  2 +-
+ arch/x86/kvm/mmu/paging_tmpl.h  |  8 +++++---
+ arch/x86/kvm/mmu/spte.c         | 12 ++++++------
+ arch/x86/kvm/mmu/spte.h         |  2 +-
+ arch/x86/kvm/mmu/tdp_mmu.c      |  2 +-
+ 6 files changed, 26 insertions(+), 21 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 064ecc33b926..5996468b7120 100644
+index 5996468b7120..b72ccbee0d86 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4634,7 +4634,7 @@ static int kvm_mmu_faultin_pfn_gmem(struct kvm_vcpu *vcpu,
+@@ -3105,7 +3105,7 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, struct kvm_memory_slot *slot,
+ 	u64 spte;
+ 
+ 	/* Prefetching always gets a writable pfn.  */
+-	bool host_writable = !fault || fault->map_writable;
++	unsigned host_access = fault ? fault->host_access : ACC_ALL;
+ 	bool prefetch = !fault || fault->prefetch;
+ 	bool write_fault = fault && fault->write;
+ 
+@@ -3142,7 +3142,7 @@ static int mmu_set_spte(struct kvm_vcpu *vcpu, struct kvm_memory_slot *slot,
+ 	}
+ 
+ 	wrprot = make_spte(vcpu, sp, slot, pte_access, gfn, pfn, *sptep, prefetch,
+-			   false, host_writable, &spte);
++			   false, host_access, &spte);
+ 
+ 	if (*sptep == spte) {
+ 		ret = RET_PF_SPURIOUS;
+@@ -3589,7 +3589,7 @@ static int kvm_handle_noslot_fault(struct kvm_vcpu *vcpu,
+ 
+ 	fault->slot = NULL;
+ 	fault->pfn = KVM_PFN_NOSLOT;
+-	fault->map_writable = false;
++	fault->host_access = 0;
+ 
+ 	/*
+ 	 * If MMIO caching is disabled, emulate immediately without
+@@ -4614,7 +4614,8 @@ static void kvm_mmu_finish_page_fault(struct kvm_vcpu *vcpu,
+ 				      struct kvm_page_fault *fault, int r)
+ {
+ 	kvm_release_faultin_page(vcpu->kvm, fault->refcounted_page,
+-				 r == RET_PF_RETRY, fault->map_writable);
++				 r == RET_PF_RETRY,
++				 !!(fault->host_access & ACC_WRITE_MASK));
+ }
+ 
+ static int kvm_mmu_faultin_pfn_gmem(struct kvm_vcpu *vcpu,
+@@ -4634,9 +4635,10 @@ static int kvm_mmu_faultin_pfn_gmem(struct kvm_vcpu *vcpu,
  		return r;
  	}
  
--	fault->map_writable = !(fault->slot->flags & KVM_MEM_READONLY);
-+	fault->map_writable &= !(fault->slot->flags & KVM_MEM_READONLY);
- 	fault->max_level = kvm_max_level_for_order(max_order);
+-	fault->map_writable &= !(fault->slot->flags & KVM_MEM_READONLY);
+-	fault->max_level = kvm_max_level_for_order(max_order);
++	if (fault->slot->flags & KVM_MEM_READONLY)
++		fault->host_access &= ~ACC_WRITE_MASK;
  
- 	return RET_PF_CONTINUE;
-@@ -4644,13 +4644,14 @@ static int __kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
- 				 struct kvm_page_fault *fault)
- {
- 	unsigned int foll = fault->write ? FOLL_WRITE : 0;
-+	bool writable;
- 
- 	if (fault->is_private || kvm_memslot_is_gmem_only(fault->slot))
- 		return kvm_mmu_faultin_pfn_gmem(vcpu, fault);
- 
- 	foll |= FOLL_NOWAIT;
- 	fault->pfn = __kvm_faultin_pfn(fault->slot, fault->gfn, foll,
--				       &fault->map_writable, &fault->refcounted_page);
-+				       &writable, &fault->refcounted_page);
- 
- 	/*
- 	 * If resolving the page failed because I/O is needed to fault-in the
-@@ -4659,7 +4660,7 @@ static int __kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
- 	 * other failures are terminal, i.e. retrying won't help.
- 	 */
- 	if (fault->pfn != KVM_PFN_ERR_NEEDS_IO)
--		return RET_PF_CONTINUE;
-+		goto out_pf_continue;
- 
- 	if (!fault->prefetch && kvm_can_do_async_pf(vcpu)) {
- 		trace_kvm_try_async_get_page(fault->addr, fault->gfn);
-@@ -4680,8 +4681,10 @@ static int __kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
- 	foll |= FOLL_INTERRUPTIBLE;
- 	foll &= ~FOLL_NOWAIT;
- 	fault->pfn = __kvm_faultin_pfn(fault->slot, fault->gfn, foll,
--				       &fault->map_writable, &fault->refcounted_page);
-+				       &writable, &fault->refcounted_page);
- 
-+out_pf_continue:
-+	fault->map_writable &= writable;
++	fault->max_level = kvm_max_level_for_order(max_order);
  	return RET_PF_CONTINUE;
  }
  
-@@ -5000,6 +5003,7 @@ static int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+@@ -4684,7 +4686,8 @@ static int __kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
+ 				       &writable, &fault->refcounted_page);
+ 
+ out_pf_continue:
+-	fault->map_writable &= writable;
++	if (!writable)
++		fault->host_access &= ~ACC_WRITE_MASK;
+ 	return RET_PF_CONTINUE;
+ }
+ 
+@@ -5003,7 +5006,7 @@ static int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
  		.is_private = err & PFERR_PRIVATE_ACCESS,
  
  		.pfn = KVM_PFN_ERR_FAULT,
-+		.map_writable = true,
+-		.map_writable = true,
++		.host_access = ACC_ALL,
  	};
  	int r;
  
+@@ -5197,7 +5200,7 @@ int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
+ 		.gfn = gfn,
+ 		.slot = kvm_vcpu_gfn_to_memslot(vcpu, gfn),
+ 		.pfn = pfn,
+-		.map_writable = true,
++		.host_access = ACC_ALL,
+ 	};
+ 	struct kvm *kvm = vcpu->kvm;
+ 	int r;
+diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
+index c29002c60126..00215b9f309f 100644
+--- a/arch/x86/kvm/mmu/mmu_internal.h
++++ b/arch/x86/kvm/mmu/mmu_internal.h
+@@ -280,7 +280,7 @@ struct kvm_page_fault {
+ 	unsigned long mmu_seq;
+ 	kvm_pfn_t pfn;
+ 	struct page *refcounted_page;
+-	bool map_writable;
++	u8 host_access;
+ 
+ 	/*
+ 	 * Indicates the guest is trying to write a gfn that contains one or
+diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
+index 27427e7f22fa..e6ec14165f40 100644
+--- a/arch/x86/kvm/mmu/paging_tmpl.h
++++ b/arch/x86/kvm/mmu/paging_tmpl.h
+@@ -935,7 +935,7 @@ static gpa_t FNAME(gva_to_gpa)(struct kvm_vcpu *vcpu, struct kvm_pagewalk *w,
+  */
+ static int FNAME(sync_spte)(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp, int i)
+ {
+-	bool host_writable;
++	u8 host_access;
+ 	gpa_t first_pte_gpa;
+ 	u64 *sptep, spte;
+ 	struct kvm_memory_slot *slot;
+@@ -992,11 +992,13 @@ static int FNAME(sync_spte)(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp, int
+ 
+ 	sptep = &sp->spt[i];
+ 	spte = *sptep;
+-	host_writable = spte & shadow_host_writable_mask;
++	host_access = ACC_ALL;
++	if (!(spte & shadow_host_writable_mask))
++		host_access &= ~ACC_WRITE_MASK;
+ 	slot = kvm_vcpu_gfn_to_memslot(vcpu, gfn);
+ 	make_spte(vcpu, sp, slot, pte_access, gfn,
+ 		  spte_to_pfn(spte), spte, true, true,
+-		  host_writable, &spte);
++		  host_access, &spte);
+ 
+ 	/*
+ 	 * There is no need to mark the pfn dirty, as the new protections must
+diff --git a/arch/x86/kvm/mmu/spte.c b/arch/x86/kvm/mmu/spte.c
+index 5fc27e9733b3..1434164fa372 100644
+--- a/arch/x86/kvm/mmu/spte.c
++++ b/arch/x86/kvm/mmu/spte.c
+@@ -189,7 +189,7 @@ bool make_spte(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp,
+ 	       const struct kvm_memory_slot *slot,
+ 	       unsigned int pte_access, gfn_t gfn, kvm_pfn_t pfn,
+ 	       u64 old_spte, bool prefetch, bool synchronizing,
+-	       bool host_writable, u64 *new_spte)
++	       unsigned int host_access, u64 *new_spte)
+ {
+ 	int level = sp->role.level;
+ 	u64 spte = SPTE_MMU_PRESENT_MASK;
+@@ -207,6 +207,11 @@ bool make_spte(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp,
+ 	if (!prefetch || synchronizing)
+ 		spte |= shadow_accessed_mask;
+ 
++	if (host_access & ACC_WRITE_MASK)
++		spte |= shadow_host_writable_mask;
++
++	pte_access &= host_access;
++
+ 	/*
+ 	 * For simplicity, enforce the NX huge page mitigation even if not
+ 	 * strictly necessary.  KVM could ignore the mitigation if paging is
+@@ -246,11 +251,6 @@ bool make_spte(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp,
+ 	if (kvm_x86_ops.get_mt_mask)
+ 		spte |= kvm_x86_call(get_mt_mask)(vcpu, gfn,
+ 						  kvm_is_mmio_pfn(pfn, &is_host_mmio));
+-	if (host_writable)
+-		spte |= shadow_host_writable_mask;
+-	else
+-		pte_access &= ~ACC_WRITE_MASK;
+-
+ 	if (shadow_me_value && !kvm_is_mmio_pfn(pfn, &is_host_mmio))
+ 		spte |= shadow_me_value;
+ 
+diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
+index e730717824b3..589f3954633e 100644
+--- a/arch/x86/kvm/mmu/spte.h
++++ b/arch/x86/kvm/mmu/spte.h
+@@ -563,7 +563,7 @@ bool make_spte(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp,
+ 	       const struct kvm_memory_slot *slot,
+ 	       unsigned int pte_access, gfn_t gfn, kvm_pfn_t pfn,
+ 	       u64 old_spte, bool prefetch, bool synchronizing,
+-	       bool host_writable, u64 *new_spte);
++	       unsigned int host_access, u64 *new_spte);
+ u64 make_small_spte(struct kvm *kvm, u64 huge_spte,
+ 		    union kvm_mmu_page_role role, int index);
+ u64 make_huge_spte(struct kvm *kvm, u64 small_spte, int level);
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index 44dad106fad1..dce44b9ce73a 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -1143,7 +1143,7 @@ static int tdp_mmu_map_handle_target_level(struct kvm_vcpu *vcpu,
+ 	else
+ 		wrprot = make_spte(vcpu, sp, fault->slot, sp->role.access, iter->gfn,
+ 				   fault->pfn, iter->old_spte, fault->prefetch,
+-				   false, fault->map_writable, &new_spte);
++				   false, fault->host_access, &new_spte);
+ 
+ 	if (new_spte == iter->old_spte)
+ 		ret = RET_PF_SPURIOUS;
 -- 
 2.52.0
 
