@@ -1,97 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from ale.deltatee.com (ale.deltatee.com [204.191.154.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDECF3BD649
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 19:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3E335E956;
+	Fri, 18 Sep 2026 20:00:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=204.191.154.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789761560; cv=none; b=LfDdwoy3UC+krnONUf2F1DcwzrGV2FJsaQd1hBScy1Oo+RUf7pkkNyGaMT4qzcARRKnqznmVNl2/0U01dIL4Jc9rzerp9X/nHmX7vRegBHi7rrRL9NRGlV0rIJ17/6UvFT1LFRIwkuJiaIqngHRVg2tgHSA9HhXg1CRpPmpEcyA=
+	t=1789761601; cv=none; b=gxmnZerjEWLcNSrBDAEnlRm8aikLN4LoMLtTqXF9+JVLni7x+H0xgNZuGmnHW7uzcvNkAhWon2LGYPA1btg8Z2er+9GzqP7G3Tsjf5fiE+Alv4idm8l+OaJFBIYy7My3d/ep3TT+OqQENKnWQkVZLqcBuWeTaUM8m2qS01WENOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789761560; c=relaxed/simple;
-	bh=uQyeAJaOPIVRnUM/WPrf88YUnn3TiiHht7t9VOLuVqY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=kzczpOZD217CNjEwnbd/I6R7pJQDcwbRDjNYBXwHLDRWQMVCCAUFWIcXlEFW0QH1ZUbhwdg2Fs0+xMblIOVuP0pj/co9v2BynuyEYg0C6AVLrtYdpbVHiH9tHrN8ir0kzALqrgLJ9dLVgkAErFRlqvuWUex79yujZ1rz1ygT2DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T9Tg2HPR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789761601; c=relaxed/simple;
+	bh=ujkhGy2FSYAIasmOkN8vs+uHhKJMbQlyvbnsVAWbj1o=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Subject; b=IKzrhETNZm4Id2TBQ2+vdXFmAhy8b4lD3Ijd2as9QzU+nElmDRICochwDeUUPxTomKA5Vp2OuUJhPn53cRZayk1b8NR0mMZn76nmPJAxC+iElqQ2CFixUjUxQrOLcOoW59UavlLsEKQVRmUule42wpuRs49zkr98pfHdnZKQEgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=deltatee.com; spf=pass smtp.mailfrom=deltatee.com; dkim=pass (2048-bit key) header.d=deltatee.com header.i=@deltatee.com header.b=W/ONbTcH; arc=none smtp.client-ip=204.191.154.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=deltatee.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deltatee.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T9Tg2HPR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 557421F000FF;
-	Fri, 18 Sep 2026 19:59:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789761558;
-	bh=jPF/dhy8Qy0ULSwWSsIwkP5ApXxMdH+MQ7vMQ/9XYfo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=T9Tg2HPRT/r0qaMXxlj4fR318gBjU8tfLDAflLquLHjJa0cz+YOx/9WdvnjSLbmK/
-	 XSx0Uvpf23kI9fzsrMwAv9lu7kxMh5rhnzmAVL0ZcvWBPmf1h9KN+uB1MwkxC262se
-	 ROsXN1v4ZPBIJJIsorTJklyHtB0sBotdsE/2w/Qd9tVHuFy+7vgD7AxBdz4atWl4Fo
-	 rLMncl/o4RxsaTZUpiDGFMWhDpifIS76Vh8x3rJHMpSjFlweE5Nrk7d0OcscXRPB5S
-	 A8M3qZGXZb2TqoIlpKtPhHZQ1CUpxl3i2x3AQafG9NJXo/a7oJ4gYFEL8dlWGeBVY2
-	 Nkvft0nFmB73Q==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 09/12] perf/x86: Add
- INTEL_TD_METRIC_FIELD_{BITS,MASK} constants
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Zide Chen" <zide.chen@intel.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260918193937.569414-10-zide.chen@intel.com>
-References: <20260918193937.569414-1-zide.chen@intel.com>
- <20260918193937.569414-10-zide.chen@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 19:59:17 +0000
-Message-Id: <20260918195918.557421F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=deltatee.com header.i=@deltatee.com header.b="W/ONbTcH"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=deltatee.com; s=20200525; h=Subject:In-Reply-To:From:References:Cc:To:
+	MIME-Version:Date:Message-ID:content-disposition;
+	bh=cmiry3JcpazZ6l/PDBYrf3Gg/OWOS79zaTVf2b02IB0=; b=W/ONbTcHvbbIcERFDBy5V9+fz8
+	ClXKlqhfI9/+PEX5UPZD/o9kNZB2xeLc6zsCCTmVEebXhBjHQB1VHAH3gZOcPOirQCS5xTtaH0f5y
+	s0JCpmFhn7hlwfUnwEhUXZMND0d06IpSnuXzm8j86ZILMwQr8gCPbjPiwyNNd/0T4UK7TSQzEcPNC
+	5aqkcHGEO3iirTALpNPzRsqeyqDK7uUa2nahHS2hhtAH2q05KmkruKKkOSr1EwNbW/d6ezacx2EXb
+	kuJwha3ZRhs0SHbPVT9LjGFOUI6TCSn71LmSJBR0L8gAurJAb3h9zxd1NU58TeZwTWpyag9nqPIUW
+	MSa9+CMQ==;
+Received: from guinness.priv.deltatee.com ([172.16.1.162])
+	by ale.deltatee.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <logang@deltatee.com>)
+	id 1x7ekV-0000000Cs4I-1zVG;
+	Fri, 18 Sep 2026 13:59:56 -0600
+Message-ID: <1384e37c-d4d4-41d7-8d74-c4e60f52c9d7@deltatee.com>
+Date: Fri, 18 Sep 2026 13:59:54 -0600
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Chaitanya Kulkarni <kch@nvidia.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jens Axboe
+ <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
+ Ankit Agrawal <ankita@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Randy Dunlap <rdunlap@infradead.org>,
+ Sumit Semwal <sumit.semwal@linaro.org>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, iommu@lists.linux.dev,
+ Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+ linux-rdma@vger.kernel.org, kvm@vger.kernel.org
+References: <20260914-fix-p2p-acs-v4-0-v6-0-5ef07ec9ef06@nvidia.com>
+ <20260914-fix-p2p-acs-v4-0-v6-4-5ef07ec9ef06@nvidia.com>
+Content-Language: en-CA
+From: Logan Gunthorpe <logang@deltatee.com>
+In-Reply-To: <20260914-fix-p2p-acs-v4-0-v6-4-5ef07ec9ef06@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 172.16.1.162
+X-SA-Exim-Rcpt-To: leon@kernel.org, bhelgaas@google.com, kch@nvidia.com, gregkh@linuxfoundation.org, axboe@kernel.dk, alex@shazbot.org, ankita@nvidia.com, jgg@ziepe.ca, corbet@lwn.net, skhan@linuxfoundation.org, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, rdunlap@infradead.org, sumit.semwal@linaro.org, christian.koenig@amd.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, iommu@lists.linux.dev, tdave@nvidia.com, linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, linux-rdma@vger.kernel.org, kvm@vger.kernel.org
+X-SA-Exim-Mail-From: logang@deltatee.com
+X-Spam-Level: 
+Subject: Re: [PATCH v6 04/18] PCI: Reject unreadable ACS controls in isolation
+ checks
+X-SA-Exim-Version: 4.2.1 (built Sun, 23 Feb 2025 07:57:16 +0000)
+X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] perf/x86: conflation of UMASK shift and MSR metric field width
---
 
-commit ca73afb21aaf968ca13fd3d0ba413055c3dc1861
-Author: Zide Chen <zide.chen@intel.com>
 
-perf/x86: Add INTEL_TD_METRIC_FIELD_{BITS,MASK} constants
-   =20
-Replace the hard coded field width (8) and the equivalent 0xff mask
-used for PERF_METRICS MSR field access with named constants
-INTEL_TD_METRIC_FIELD_{BITS,MASK}.
+On 2026-09-14 05:22, Leon Romanovsky wrote:
+> From: Leon Romanovsky <leonro@nvidia.com>
+> 
+> pci_acs_flags_enabled() and the Intel SPT PCH quirk use ACS registers
+> without checking config-space read errors. A failed read may leave control
+> state indeterminate yet allow the device to satisfy requested isolation
+> controls.
+> 
+> Return false when either ACS capability or control state cannot be read.
+> An unknown state cannot prove isolation.
+> 
+> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 
-> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-> index cc13164d948f2..cbc9a179f2e5c 100644
-> --- a/arch/x86/events/intel/core.c
-> +++ b/arch/x86/events/intel/core.c
+Looks good to me.
 
-[ ... ]
-
-> @@ -4742,7 +4743,8 @@ static int core_pmu_hw_config(struct perf_event *ev=
-ent)
->  }
-> =20
->  #define INTEL_TD_METRIC_AVAILABLE_MAX	(INTEL_TD_METRIC_RETIRING + \
-> -					 ((x86_pmu.num_topdown_events - 1) << 8))
-> +					 ((x86_pmu.num_topdown_events - 1) << \
-> +					  INTEL_TD_METRIC_FIELD_BITS))
-
-[Severity: Low]
-Is it safe to replace the UMASK shift here with the hardware MSR metric
-field width?
-
-The original << 8 was used to shift the metric ID into the UMASK field
-(bits 8-15) of the software perf event configuration (attr.config).
-INTEL_TD_METRIC_FIELD_BITS represents the hardware width of metrics within
-the PERF_METRICS MSR.
-
-When evaluated in is_available_metric_event() during perf_event_open(), this
-currently functions because both values are 8. However, conflating a softwa=
-re
-API layout offset with a hardware register field width could cause this mac=
-ro
-to calculate an invalid configuration mask if the MSR field width changes in
-future hardware.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918193937.5694=
-14-1-zide.chen@intel.com?part=3D9
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
