@@ -1,61 +1,61 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D764FECD9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44444FE2F9;
 	Fri, 18 Sep 2026 15:09:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789744180; cv=none; b=bJkYqrvY5th/TNKCWaj56GHnchVIV/sSTXTXD8/JZ5v4s5Lp5DZKamTZXzzVpfX7v+89Pm/8tmWFePH5OMmY9Le++L2E5lG/n6+Fv+yHsjDEdYaEJ8y7CDyglJPGYlhqDJm0NxGHUX4L1sXILqjgXAulh5T7Yr3vcxXN6iI7/sY=
+	t=1789744181; cv=none; b=JnrgBDc8NmDRJTTHDlnvZdqRWxST+29zvD2Ug65hy9nWTv57349e6r1V0Rg/9h8Afa3TKcXcXrCXVv8Dln9cleUKkttcPDCNpLrSW7/fSmME2Qn00g2I77w2vit/9GuPIYmLL0P5K8hWNDS8MMqRCQZWO4tZYqgjRrjmAQNUQR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789744180; c=relaxed/simple;
-	bh=GGMbtyEuxzIWuM9bBkuwnluaQBjqdO1ctV3RbbWb7OQ=;
+	s=arc-20240116; t=1789744181; c=relaxed/simple;
+	bh=1fxDDyDR6lkckQEZkjVHQ11O472FldbpAT5pBY5mcjM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=J3lP7V2x2vueSihk31RV2Rs3dFZdNZmQzdl8XXNgc8SxdC3nrrZu4LyDsqatksi6snth/+bcJtUJgMCk8o/O03bCzady285fOKCvDtf9iyZcm8n1H/BytNyEejyjYNdgImVT7ALdDlEDfScvLMqI5GqEGPnfrtjfmKr1Cr0LWhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=LqnLirlj; arc=none smtp.client-ip=148.163.158.5
+	 In-Reply-To:To:Cc; b=VvxK16L5dPMjBbJG476xQ+lAzSg5sqQUMfcHyks7irtCGBL5Ixl5tLDJOrB704oX/6b/X44KZ4ny1deH6tFvNgB4seuqIVCD9sigkB0yi0mnAshvBjuJMeBqmZOElI2ni8X0q5RUvgkKSyzF5xIiZoxRZE5Z5yt6lFX6/xA3Ftg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=fXNAtirJ; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="LqnLirlj"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68IDVYHq1235759;
-	Fri, 18 Sep 2026 15:09:32 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="fXNAtirJ"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68IDVWGp3708576;
+	Fri, 18 Sep 2026 15:09:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=MT+Rbw
-	P/QlHzq7dx/FEVabIZ9enBy18WWWj/Tnk6Gj8=; b=LqnLirljNNlGCXKancCxJn
-	9SNAASjFEDJ2GT6ClEsbkbMYI4H0GYY6z+qloAq0X02AXfD0u548odsNgwAMyOvB
-	WMNMY/cxrtXkyQ4ZsAzE/qxMcKqpTaqCMGKzYw2HqQLb25c9UvZkHOP5R/k3T3qg
-	7ENNlItV5sN+5jdRCoJG+U8JMol2NKypHBdsT+q7hi8FEguhVA8BibeMlo1ptdYO
-	6Y3+i8rzw7p4uXZ+7ABmKJdFYSnziq6FDM+VRk6vvlIMHTe3xxnArj3+FdY47DlU
-	88FTNZPspqSSUpKSfParcqeoThKd3alPRDNJhnfUSMX3yr6Ep4acrRqe2AgS4FBA
+	:message-id:mime-version:references:subject:to; s=pp1; bh=KHBJxu
+	yYcBVBWbJ2bQe3LZR3w/sswf1inmbakA65f4s=; b=fXNAtirJz8UeANa1UsJhmK
+	awhtFyVtXk/IiJ/NpgIrRd7Rmd3BMhhT+PNbWwZNmGfTYz5lmmiXHHrMziO1AtUW
+	yNTfDNnOjwvZ3nKTsdiTbOzqflbYz9Enk4KCNt7z2YcTAMdsmp6VMPF6gwiIIY58
+	0026mbgJTN9kjGMAy7dOF60qCL8WyrhJKyw+rMvUxjsAx6QHlzmz6JiE0kNHJTL6
+	s90DOmqy4zbBu33zyB8ENxKKbESjUXkY0YHcOZTo5XPJfbJ24B6bWV+Clozk2Lz6
+	PdYk/d1wA7ndvOa1qGtxidO4VDbaVJSFlL8r+phowqG1HamDGN/DXW0ann6Rht5g
 	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmv5j8gee-1
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmxdqrspx-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 18 Sep 2026 15:09:32 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68IDOCAj695830;
-	Fri, 18 Sep 2026 15:09:31 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gra3fexf8-1
+	Fri, 18 Sep 2026 15:09:30 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68IDOF8d739719;
+	Fri, 18 Sep 2026 15:09:29 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gs56q8m9b-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Sep 2026 15:09:31 +0000 (GMT)
+	Fri, 18 Sep 2026 15:09:29 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68IF9Rrr43909496
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68IF9PbQ28574104
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 18 Sep 2026 15:09:27 GMT
+	Fri, 18 Sep 2026 15:09:25 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6DC7D20040;
-	Fri, 18 Sep 2026 15:09:27 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 5172620040;
+	Fri, 18 Sep 2026 15:09:25 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EB5C52004D;
-	Fri, 18 Sep 2026 15:09:26 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id D27722004B;
+	Fri, 18 Sep 2026 15:09:24 +0000 (GMT)
 Received: from [192.168.88.251] (unknown [9.111.72.118])
 	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 18 Sep 2026 15:09:26 +0000 (GMT)
+	Fri, 18 Sep 2026 15:09:24 +0000 (GMT)
 From: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Date: Fri, 18 Sep 2026 17:09:24 +0200
-Subject: [PATCH v7 07/21] KVM: s390: vsie: Move release/acquire gmap shadow
+Date: Fri, 18 Sep 2026 17:09:20 +0200
+Subject: [PATCH v7 03/21] KVM: s390: vsie: Add vsie_interp_extf detection
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260918-vsie-sigpi-v7-7-f39806eaae37@linux.ibm.com>
+Message-Id: <20260918-vsie-sigpi-v7-3-f39806eaae37@linux.ibm.com>
 References: <20260918-vsie-sigpi-v7-0-f39806eaae37@linux.ibm.com>
 In-Reply-To: <20260918-vsie-sigpi-v7-0-f39806eaae37@linux.ibm.com>
 To: kvm@vger.kernel.org, linux-s390@vger.kernel.org
@@ -79,201 +79,106 @@ Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
         Sean Christopherson <seanjc@google.com>,
         Christoph Schlameuss <schlameuss@linux.ibm.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4854;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2460;
  i=schlameuss@linux.ibm.com; h=from:subject:message-id;
- bh=GGMbtyEuxzIWuM9bBkuwnluaQBjqdO1ctV3RbbWb7OQ=;
- b=owGbwMvMwCUmoqVx+bqN+mXG02pJDFlrQxQD3Mo8X6me6xfkTpn2Q/tKQptR+4ufPesORz79e
- L5u6bN1HaUsDGJcDLJiiizV4tZ5VX2tS+cctLwGM4eVCWQIAxenAEzE7S3Df997yq3aUpaKjMa1
- 6bPeZ1ZPWNiXcuruvDAHi+cCpbt2LGNkeHTyuqn4/YAlER8v5N08W911/IEfk4JR09LGFyeN/Q7
- cYAYA
+ bh=1fxDDyDR6lkckQEZkjVHQ11O472FldbpAT5pBY5mcjM=;
+ b=owGbwMvMwCUmoqVx+bqN+mXG02pJDFlrQxRP1+wuuvfZpm8tr3OpkU31xB+mCzwvb1JruOQfs
+ MZlw7LfHaUsDGJcDLJiiizV4tZ5VX2tS+cctLwGM4eVCWQIAxenAEykegXD/+Rnx78+XWK6oGzx
+ gUkJumeLiyQeTk/vOdP0qCTkxG4zJzVGhn0LeTfrZa5TaXpvsuLtzV7HqW9efnO59+qc5b8ZBsa
+ WJZwA
 X-Developer-Key: i=schlameuss@linux.ibm.com; a=openpgp;
  fpr=0E34A68642574B2253AF4D31EEED6AB388551EC3
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDIxNCBTYWx0ZWRfX9eh/+KEtylIh
- 8Pez+qeAOC0+ThFHgbn3aL38qkiLS5+94Y2c9Ky++Cad/fUNaMgZfPC4rl5F0VDuXFZN6hgi9Vd
- 5mfx4Ipd0QPwbRX1RCqJlRAv8phKeC1Ql4rhdxT3pCTgIxCHoc+1ROr9BVHbDf1P+u6lX1ftbtM
- EBcvdsFXDJM27QBeRkApOwc9l4W/IGvAjBhVB6PgY0g7SD9Aow7WUizR00c2Z2kzkMFJzYz/S8p
- scewTzhf91rKjkNj8q+2OtGlV0uG6NnPiSL+xKuVTwFIInoPKrAk/v7gQUW4dvGBsVv9wo14oRs
- IHDEMdVEB9+QlrbTjhDHBkCma3nJ+mWWhWZo+SXrhlqu0Gid4Ha8IdvJfQN6TErXQSTIdxdU5p2
- HMRMeobvqoYP6Avhsm0uvVOnaINrOgles+zvee5gQdAiZqzGb04SL7qJW6o7ly+9Kne9v5Oldr0
- F8WUIyFDU6f+5A4tuWA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDIxNCBTYWx0ZWRfX/tu4wy6402eg
- ap99SfRW3lnkmeqYC4wOsEo4sWl19CoPg44zgNI8beNLOXC2236xb9W2gpUD2LisBJY8sGWm6+Z
- 2mmLebnLNWQud+tTiEhriu/OhR3iktA=
-X-Authority-Analysis: v=2.4 cv=Zsx4uN7G c=1 sm=1 tr=0 ts=6aad542c cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDIxNCBTYWx0ZWRfX4krvatPUwdzT
+ 4QB5t72oaJtKHULqd471AteAqJEQsJYssrl4TNU1mvN3UBAsmYMG6MZwqRtSELTYGEtcnGG9bA2
+ X2rYHLCzGjS0YV7mJaQ/GHsN1hexl0042ihlIZjcvS77j3Hkvn+LHVnS4wTVCSkQXZsejcH57F0
+ ulaAq7swi+h1hdYkM3YAu9n5YJ3XdXbBCWe6lhEYpp0z4kF9SK85WtBhkPhFEZKqpUZLQx6aKH1
+ CxwrRqa2sJy1LqXT3YbipkWvMQW++1w+451cSNoBGXnBahAgiVBiEcGyRVXXS+AkBWm3oiEtWov
+ pagQCsBpawfwMLbUEymkH6P0YKq4uIXX9h2QhxP28xZGCBGYwLFbTVOW3SRSLjRQr0F36aEj0Ry
+ 2DGYRcnvv5pL3g1WRnGx6Q8XXpVjMvVRZOuW0L76Y2l1igFeU+WoLwUq4NMH81LEvUKawZdPkCT
+ uIqUAmzmyAwsca6wpAg==
+X-Proofpoint-GUID: lQ1Du4OA7lPLEUCTRR1Up37spONI6D4X
+X-Authority-Analysis: v=2.4 cv=DobDa2/+ c=1 sm=1 tr=0 ts=6aad542a cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
  a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=_7pECfS6dbZ_FIWTgVQA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: Ag6gX-ouEEwveqPBaKz7Xf8eVc_OGrlw
-X-Proofpoint-GUID: 5SlDDg2M00c453bdemKBRGyyaNasg6Qa
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
+ a=aPtVb-VRJjWQdk5PnbsA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: n6Ar91Fr2cJFDTEMjYpDoxaEz_FTHR8d
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDIxNCBTYWx0ZWRfX/V07Z6rpGV6m
+ kAJ9ENPpS21vD1ph4k7huiGq3bpYEVcB3M72376bzRHqqu/u+CUzwr/KHZdqgWBSEu0F1pgPABf
+ cErRIZ5MJmRi3DpELIgouRWWL2AuaKI=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-18_04,2026-09-16_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 impostorscore=0 clxscore=1015 priorityscore=1501
- lowpriorityscore=0 bulkscore=0 adultscore=0 phishscore=0 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609180214
+ phishscore=0 malwarescore=0 priorityscore=1501 suspectscore=0 impostorscore=0
+ spamscore=0 clxscore=1015 adultscore=0 bulkscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609180214
 
-Move {release,acquire}_gmap_shadow() up in preparation for the next patch.
-No change intended.
+Add sensing of the VSIE Interpretation Extension Facility as
+vsie_interp_extf from SCLP. This facility is introduced with IBM Z
+gen17.
+Along with the new facility add a KVM struct member use_ssca that we
+enable when the vsie_interp_extf is available.
 
 Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
 ---
- arch/s390/kvm/s390/vsie.c | 130 +++++++++++++++++++++++-----------------------
- 1 file changed, 65 insertions(+), 65 deletions(-)
+ arch/s390/include/asm/kvm_host_s390.h | 1 +
+ arch/s390/include/asm/sclp.h          | 1 +
+ arch/s390/kvm/s390/s390.c             | 1 +
+ drivers/s390/char/sclp_early.c        | 1 +
+ 4 files changed, 4 insertions(+)
 
-diff --git a/arch/s390/kvm/s390/vsie.c b/arch/s390/kvm/s390/vsie.c
-index 55e9399b9b30..afc2e56fcabf 100644
---- a/arch/s390/kvm/s390/vsie.c
-+++ b/arch/s390/kvm/s390/vsie.c
-@@ -149,6 +149,71 @@ static int prefix_is_mapped(struct vsie_page *vsie_page)
- 	return !(atomic_read(&vsie_page->scb_s.prog20) & PROG_REQUEST);
- }
+diff --git a/arch/s390/include/asm/kvm_host_s390.h b/arch/s390/include/asm/kvm_host_s390.h
+index cd692f8fb764..6fdac144ca3a 100644
+--- a/arch/s390/include/asm/kvm_host_s390.h
++++ b/arch/s390/include/asm/kvm_host_s390.h
+@@ -623,6 +623,7 @@ struct kvm_arch {
+ 	int use_pfmfi;
+ 	int use_skf;
+ 	int use_zpci_interp;
++	int use_ssca;
+ 	int user_cpu_state_ctrl;
+ 	int user_sigp;
+ 	int user_stsi;
+diff --git a/arch/s390/include/asm/sclp.h b/arch/s390/include/asm/sclp.h
+index 44066550b9b1..9e960c09ce0b 100644
+--- a/arch/s390/include/asm/sclp.h
++++ b/arch/s390/include/asm/sclp.h
+@@ -105,6 +105,7 @@ struct sclp_info {
+ 	unsigned char has_dirq : 1;
+ 	unsigned char has_iplcc : 1;
+ 	unsigned char has_zpci_lsi : 1;
++	unsigned char has_vsie_interp_extf : 1;
+ 	unsigned char has_aisii : 1;
+ 	unsigned char has_aeni : 1;
+ 	unsigned char has_aisi : 1;
+diff --git a/arch/s390/kvm/s390/s390.c b/arch/s390/kvm/s390/s390.c
+index 5c73f43782a7..a58c330b9e7c 100644
+--- a/arch/s390/kvm/s390/s390.c
++++ b/arch/s390/kvm/s390/s390.c
+@@ -3359,6 +3359,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
  
-+static void release_gmap_shadow(struct vsie_page *vsie_page)
-+{
-+	struct gmap *gmap = vsie_page->gmap_cache.gmap;
-+
-+	lockdep_assert_held(&gmap->kvm->arch.gmap->children_lock);
-+
-+	list_del(&vsie_page->gmap_cache.list);
-+	vsie_page->gmap_cache.gmap = NULL;
-+	prefix_unmapped(vsie_page);
-+
-+	if (list_empty(&gmap->scb_users)) {
-+		gmap_remove_child(gmap);
-+		gmap_put(gmap);
-+	}
-+}
-+
-+static struct gmap *acquire_gmap_shadow(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
-+{
-+	union ctlreg0 cr0;
-+	struct gmap *gmap;
-+	union asce asce;
-+	int edat;
-+
-+	asce.val = vcpu->arch.sie_block->gcr[1];
-+	cr0.val = vcpu->arch.sie_block->gcr[0];
-+	edat = cr0.edat && test_kvm_facility(vcpu->kvm, 8);
-+	edat += edat && test_kvm_facility(vcpu->kvm, 78);
-+
-+	scoped_guard(spinlock, &vcpu->kvm->arch.gmap->children_lock) {
-+		gmap = vsie_page->gmap_cache.gmap;
-+		if (gmap) {
-+			/*
-+			 * ASCE or EDAT could have changed since last icpt, or the gmap
-+			 * we're holding has been unshadowed. If the gmap is still valid,
-+			 * we can safely reuse it.
-+			 */
-+			if (gmap_is_shadow_valid(gmap, asce, edat)) {
-+				vcpu->kvm->stat.gmap_shadow_reuse++;
-+				gmap_get(gmap);
-+				return gmap;
-+			}
-+			/* release the old shadow and mark the prefix as unmapped */
-+			release_gmap_shadow(vsie_page);
-+		}
-+	}
-+again:
-+	gmap = gmap_create_shadow(vcpu->arch.mc, vcpu->kvm->arch.gmap, asce, edat);
-+	if (IS_ERR(gmap))
-+		return gmap;
-+	scoped_guard(spinlock, &vcpu->kvm->arch.gmap->children_lock) {
-+		/* unlikely race condition, remove the previous shadow */
-+		if (vsie_page->gmap_cache.gmap)
-+			release_gmap_shadow(vsie_page);
-+		if (!gmap->parent) {
-+			gmap_put(gmap);
-+			goto again;
-+		}
-+		vcpu->kvm->stat.gmap_shadow_create++;
-+		list_add(&vsie_page->gmap_cache.list, &gmap->scb_users);
-+		vsie_page->gmap_cache.gmap = gmap;
-+		prefix_unmapped(vsie_page);
-+	}
-+	return gmap;
-+}
-+
- /*
-  * Pin the guest page given by gpa and set hpa to the pinned host address.
-  * Will always be pinned writable.
-@@ -1311,71 +1376,6 @@ static int do_vsie_run(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page, struc
- 	return rc;
- }
- 
--static void release_gmap_shadow(struct vsie_page *vsie_page)
--{
--	struct gmap *gmap = vsie_page->gmap_cache.gmap;
--
--	lockdep_assert_held(&gmap->kvm->arch.gmap->children_lock);
--
--	list_del(&vsie_page->gmap_cache.list);
--	vsie_page->gmap_cache.gmap = NULL;
--	prefix_unmapped(vsie_page);
--
--	if (list_empty(&gmap->scb_users)) {
--		gmap_remove_child(gmap);
--		gmap_put(gmap);
--	}
--}
--
--static struct gmap *acquire_gmap_shadow(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
--{
--	union ctlreg0 cr0;
--	struct gmap *gmap;
--	union asce asce;
--	int edat;
--
--	asce.val = vcpu->arch.sie_block->gcr[1];
--	cr0.val = vcpu->arch.sie_block->gcr[0];
--	edat = cr0.edat && test_kvm_facility(vcpu->kvm, 8);
--	edat += edat && test_kvm_facility(vcpu->kvm, 78);
--
--	scoped_guard(spinlock, &vcpu->kvm->arch.gmap->children_lock) {
--		gmap = vsie_page->gmap_cache.gmap;
--		if (gmap) {
--			/*
--			 * ASCE or EDAT could have changed since last icpt, or the gmap
--			 * we're holding has been unshadowed. If the gmap is still valid,
--			 * we can safely reuse it.
--			 */
--			if (gmap_is_shadow_valid(gmap, asce, edat)) {
--				vcpu->kvm->stat.gmap_shadow_reuse++;
--				gmap_get(gmap);
--				return gmap;
--			}
--			/* release the old shadow and mark the prefix as unmapped */
--			release_gmap_shadow(vsie_page);
--		}
--	}
--again:
--	gmap = gmap_create_shadow(vcpu->arch.mc, vcpu->kvm->arch.gmap, asce, edat);
--	if (IS_ERR(gmap))
--		return gmap;
--	scoped_guard(spinlock, &vcpu->kvm->arch.gmap->children_lock) {
--		/* unlikely race condition, remove the previous shadow */
--		if (vsie_page->gmap_cache.gmap)
--			release_gmap_shadow(vsie_page);
--		if (!gmap->parent) {
--			gmap_put(gmap);
--			goto again;
--		}
--		vcpu->kvm->stat.gmap_shadow_create++;
--		list_add(&vsie_page->gmap_cache.list, &gmap->scb_users);
--		vsie_page->gmap_cache.gmap = gmap;
--		prefix_unmapped(vsie_page);
--	}
--	return gmap;
--}
--
- /*
-  * Register the shadow scb at the VCPU, e.g. for kicking out of vsie.
-  */
+ 	kvm->arch.use_pfmfi = sclp.has_pfmfi;
+ 	kvm->arch.use_skf = sclp.has_skey;
++	kvm->arch.use_ssca = sclp.has_vsie_interp_extf;
+ 	spin_lock_init(&kvm->arch.start_stop_lock);
+ 	kvm_s390_vsie_init(kvm);
+ 	if (use_gisa)
+diff --git a/drivers/s390/char/sclp_early.c b/drivers/s390/char/sclp_early.c
+index 22dd797e6229..40e6e346ee08 100644
+--- a/drivers/s390/char/sclp_early.c
++++ b/drivers/s390/char/sclp_early.c
+@@ -56,6 +56,7 @@ static void __init sclp_early_facilities_detect(void)
+ 		sclp.has_diag318 = !!(sccb->byte_134 & 0x80);
+ 		sclp.has_diag320 = !!(sccb->byte_134 & 0x04);
+ 		sclp.has_iplcc = !!(sccb->byte_134 & 0x02);
++		sclp.has_vsie_interp_extf = !!(sccb->byte_134 & 0x01);
+ 	}
+ 	if (sccb->cpuoff > 137) {
+ 		sclp.has_sipl = !!(sccb->cbl & 0x4000);
 
 -- 
 2.55.0
