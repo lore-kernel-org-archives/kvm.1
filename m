@@ -1,172 +1,100 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.6])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8417233933;
-	Fri, 18 Sep 2026 09:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6B943A81A;
+	Fri, 18 Sep 2026 09:56:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789725313; cv=none; b=fBpfi3wgYQqCPSNE4MEShQoNNywRIEDoYsl1S4C0sg1zE794NWFawFQb9NADSd3jPZUXXp1uNfaI6djrWfOkl0PlGjyzt5CroO1KXxl+hLWw0+RX2k9Ug5ZizIpbXe06fOi6PXsvc+WX6GhOB4MxF8TGfFlh081OXIZjgsy6gXU=
+	t=1789725409; cv=none; b=s4i+iaoId7M3Rojvf5F4RCxNsPIi9V13kyYvg+5me95T1UUIbzHGQ1jVe32064PgNF1Y7FgLXapY867T3SGizNbBCEqR2vUIEP95kTfjvTka5dWMKliuNfo+PubptIi8hh0aBe2MaccvYo+TGPoliMYjJsHtP8sz97qzDnwcqPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789725313; c=relaxed/simple;
-	bh=IGcNG9V6vpEAmGJWRLXEzH9r5ld2oVhwqzI1320opF0=;
+	s=arc-20240116; t=1789725409; c=relaxed/simple;
+	bh=NuH7pmx+0A8Wu/jHvV54MuVr4rgjrQerP0rzVSpk7+w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CyxgxlZyauGYqepeIQRCdnBzitrCpBtELVN2FXYMaGYgiH+NjWYvvVdSr+AHHeeKGUC1OJoMTdMrJTal+wzCnZMZkpbe0sEES1grNIu2nPQvcgec8bG3RI42k78YUprVtJCy1QNG3IW279vmCPQn4LhG/nbrWbFai+yfAX8oq3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FLbnAawq; arc=none smtp.client-ip=192.198.163.6
+	 Content-Type:Content-Disposition:In-Reply-To; b=o7W90cBf27ctRR/5fJmOPPdv/v8Ps3x21+S7WFsNde/85QKiv5LQzsW7XpI3x+ZT7e0MYp8NoEj4HozJQqID0+ckN7WE2tPh4sW5N7oBnAFLQf71WM3+C3Ljt4yuYvYvnnNT+AMYrLxVRYq6CiNQZP1tR+MgtNxuZrs2posgaZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a5zEF/13; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FLbnAawq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a5zEF/13"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789725312; x=1821261312;
+  t=1789725407; x=1821261407;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=IGcNG9V6vpEAmGJWRLXEzH9r5ld2oVhwqzI1320opF0=;
-  b=FLbnAawqVtwQ922jow9hBwPCrCKA4K1IWjri0oYOMrx6uxft4957paj7
-   6TJMvv7KY4inh0MEZ44Y6Q+X5w5q6GPpmLPV4nAqkrzzFxEZKnJegccXo
-   NbPUXBDdksCmFkd8eUSH0iyH0HfsPfQtIfRg0zfZ0DlcooHH+mRbFq1Z4
-   n4M/HstftqOgGD3BuFXdKNh44S67TntkcqjUEkpukSm0l7+wW8MMuto0B
-   unBakCSNRbfT4A+IRp+oBiAFep6fHishvtYrCguBI8VYONYdCmQ/USQzd
-   IlVNlkzbI87sqYccCHYushNMXVuFVrS1+nNabujB/BseTTWXhS6+DdnRq
-   A==;
-X-CSE-ConnectionGUID: nSZr639oQnW+3beefS1w3w==
-X-CSE-MsgGUID: DR7R809vQHijZsb4VB2AEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="736020"
+   mime-version:in-reply-to;
+  bh=NuH7pmx+0A8Wu/jHvV54MuVr4rgjrQerP0rzVSpk7+w=;
+  b=a5zEF/13yw2YvoP3J/m01Tgs52XcSVAYUayRW6CRiI7855INc1z2hUql
+   JuCh++6GMOGZEKAszrGPbRLmqdaWgj85cwMHUrLjeRWHyM0GChu2i2vMM
+   HnM7IIc1RPFsl+P8s9Xw4Zx9yz5UVYUGloSla+/uFe2LfJ9bc8ntxnGCd
+   T4QNaP8n2oZ4grAPCtCZUKxyC/kYvRkjDSRzAPN2YkFzJAKF0erRjfYW+
+   It+ZUYnjRetAw4BJdDtQYg8fx8wbLJ0xsTh9f2+KxaXCqe9DqgI0FB0ej
+   ZpX9mVXgXgKk8TFFK6tbLft9q1jSnQCsu0a34qxFAyM5uxbTHbkNFNl6d
+   g==;
+X-CSE-ConnectionGUID: R+sp3ZbhQPuKsz+W5RwE1A==
+X-CSE-MsgGUID: FWSrewIFR0+YCwEgPv0x2Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="90351768"
 X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="736020"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa116.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 02:55:11 -0700
-X-CSE-ConnectionGUID: PvOJQpnTRqOixLSWVMnakg==
-X-CSE-MsgGUID: dbSDKyMPSN+YV/pwLgT2yw==
+   d="scan'208";a="90351768"
+Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 02:56:47 -0700
+X-CSE-ConnectionGUID: nsTEGihQSAmHzty72eXD3w==
+X-CSE-MsgGUID: Fq6vv3jvS7qVK+1N5UW4Mg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="270999672"
+   d="scan'208";a="2514002"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa007.fm.intel.com with ESMTP; 18 Sep 2026 02:55:07 -0700
-Date: Fri, 18 Sep 2026 17:54:44 +0800
+  by fmviesa012.fm.intel.com with ESMTP; 18 Sep 2026 02:56:43 -0700
+Date: Fri, 18 Sep 2026 17:56:20 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
-	"Xu, Yilun" <yilun.xu@intel.com>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"Maloor, Kishen" <kishen.maloor@intel.com>,
-	"Hunter, Adrian" <adrian.hunter@intel.com>,
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
-	"Mehta, Sohil" <sohil.mehta@intel.com>,
-	"Fang, Peter" <peter.fang@intel.com>,
-	"nik.borisov@suse.com" <nik.borisov@suse.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>
-Subject: Re: [PATCH v2 1/5] x86/virt/tdx: Move TDH.SYS.CONFIG operations into
- a wrapper
-Message-ID: <aq0KZNuDmTeUDn9T@yilunxu-OptiPlex-7050>
+To: Chao Gao <chao.gao@intel.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kas@kernel.org,
+	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
+	xiaoyao.li@intel.com, sohil.mehta@intel.com,
+	adrian.hunter@intel.com, kishen.maloor@intel.com,
+	tony.lindgren@linux.intel.com, peter.fang@intel.com,
+	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+	artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org,
+	nik.borisov@suse.com
+Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Configure add-on features on TDX
+ module init
+Message-ID: <aq0KxJ34tI9ZdmSF@yilunxu-OptiPlex-7050>
 References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
- <20260915102658.713079-2-yilun.xu@linux.intel.com>
- <8b5b577cdad5e81c5166349e13541989f2facf53.camel@intel.com>
+ <20260915102658.713079-3-yilun.xu@linux.intel.com>
+ <aqoLqXyeXUFkvnxF@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8b5b577cdad5e81c5166349e13541989f2facf53.camel@intel.com>
+In-Reply-To: <aqoLqXyeXUFkvnxF@intel.com>
 
-On Tue, Sep 15, 2026 at 08:45:04PM +0000, Edgecombe, Rick P wrote:
-> On Tue, 2026-09-15 at 18:26 +0800, Xu Yilun wrote:
-> > In Linux, SEAMCALL wrappers are introduced to avoid broad SEAMCALL
-> > access by exposing only a selection of SEAMCALL leafs, but also to
-> > abstract the SEAMCALL register ABIs.
-> > 
+On Wed, Sep 16, 2026 at 11:23:21AM +0800, Chao Gao wrote:
+> On Tue, Sep 15, 2026 at 06:26:55PM +0800, Xu Yilun wrote:
+> >The TDX architecture identifies some features that are off by default
+> >but can be enabled by the host during TDX module initialization. They
+> >are classified as add-on features because enabling them affects existing
+> >TDX systems: they may change existing feature behavior, or reserve more
+> >memory.
+> >
+> >The TDX module extends TDH.SYS.CONFIG with a new register argument to
+> >specify which add-on features to enable. This new argument is a bitmap
+> >that uses the same feature bits as TDX_FEATURES0. Note that Dynamic PAMT
+> >is an exception: although it is an add-on feature, it is controlled via
+> >a legacy, dedicated register argument [1].
+> >
+> >The kernel needs to enable these add-on features when it supports them.
+> >Add a get_tdx_addon_features0() helper to return the bitmap of the add-on
+> >features that the module & kernel both support. Initially, this helper
+> >returns 0. It will be updated to return specific feature bits as full
+> >kernel support lands. Pass this extra bitmap to TDH.SYS.CONFIG wrapper.
 > 
-> 
-> > The latter improves readability and
-> > reuse for SEAMCALL leafs that are called multiple times.
-> 
-> I'm trying to adjust to not using former/latter. The feedback I've seen is that
-> it is too much to remember as you read along. How about:
-> The abstraction improves...
+> The last sentence is stale: the bitmap is no longer passed to the wrapper.
 
-Yes.
+Good catch.
 
-> 
-> > 
-> > Some SEAMCALL leafs are not explicitly wrapped because the level of TDX
-> > ABI details needed to perform the call is low enough to flow well with
->                                          ^are
+  Pass this bitmap as an argument to TDH.SYS.CONFIG.
 
-the level ... is low enough, seems "is" is the right one? AI also
-prefers "is".
-
-> > the calling code.
-> > 
-> > For some of the currently unwrapped SEAMCALL leafs, TDX architecture
-> > adjusts the ABI and adds SEAMCALL version selection for backward
-> > compatibility.
-> > 
-> 
-> Reads a little weird to me. Like I'm not sure when this adjusting is happening.
-> How about:
-> 
-> ..., the TDX architecture has evolved the ABI to introduce new versions of
-> existing SEAMCALLs. VMM code can select the version to call based on what is
-> supported by the loaded TDX module.
-
-good to me.
-
-> 
-> >  Future kernel will need to support the changes. 
-> > 
-> 
-> ?? I guess you mean selecting between SEAMCALL versions?
-
-Yes. I refactored the whole paragraph:
-
-    For some of the currently unwrapped SEAMCALL leafs, the TDX architecture
-    has evolved the ABI to introduce new leaf versions. The host can select
-    the version to call based on what is supported by the loaded TDX module.
-    When future kernel implements this version selection, more ABI details
-    will leak into the surrounding caller code, which decreases the
-    readability of the caller logic. To keep the ABI details contained, move
-    the SEAMCALL leaf that will need version selection into a wrapper.
-
-> 
-> > This will
-> > leak more ABI details into the surrounding caller code and decrease
-> > readability of the other logic. To keep the ABI details contained, move
-> > the SEAMCALL leafs that will need version selection into wrappers.
-> > 
-> > The cleanest separation would be to have kernel data types for the
-> > SEAMCALL wrapper arguments,
-> > 
-> 
-> This is now talking about general seamcall wrapper design. It could read like
-> it's instead talking about clean separation of SEAMCALL versions?
-
-OK, the transition is not good here.
-
-    When defining the wrapper, the cleanest separation would be...
-
-[...]
-
-> Outside the diff it has:
-> array_sz = tdmr_list->nr_consumed_tdmrs * sizeof(u64);
-> 
-> Could be now changed to:
-> array_sz = tdmr_list->nr_consumed_tdmrs * sizeof(*tdmr_pa_array->phys);
-
-Good to me. I tweaked it a bit on my preference:
-
-	array_sz = tdmr_list->nr_consumed_tdmrs *
-		sizeof(tdmr_pa_array->phys[0]);
-
-> 
-> A bit of existing cleanup, but the u64 is especially tucked away compared to
-> before, so I'd argue its maintaining readability of the existing code.
+Thanks.
