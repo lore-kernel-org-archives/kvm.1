@@ -1,57 +1,56 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DFB4FC8E8
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 13:50:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35545495ACE
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 13:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789739440; cv=none; b=mkLkA00HxEHc5QVwQ1f8JCwb5M/OvP++Bn3Qx5JSdMZTyyrb7nowgxDKgiWC7c72tbA17bl0twqt57+kv3SceyJG9uJ7uCPVdh0AAIugFtmB48U316Oj2TRsuHIw0G6Ins9S+1NRAJ2GV9Pf2/pvysUpZb9a1NEmnzR8UZ8ReI8=
+	t=1789739440; cv=none; b=ZCYXCJxXnMUdw5mFgXgC74YWW6rGhVf/hzA4VqfCekvOpOiQ1m9goLCrKUkQiNwYjKrFOz/UeBDYN2Nv/+UlKCMEebgERDe/y6AVz4c/tqvcnVIRhJOLY2d6Lkh2F7fj6Ao6I+Qn7oI5rJdPiyMpP790f3bw/cZBq3lj76bb/Dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789739440; c=relaxed/simple;
-	bh=6ylVGzoVg5WyGnxqAmFcToYzZVklKcib90G+PvfoyT0=;
+	bh=LecEQKu/SDwbIJ98w082y35hYPM4bZ2YqckHZDStxmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pAKn9iHdls7GL3wFMapQ1QTSLgzkiwktxo1ad7PFDf9IvN7T/VtwNwxR7D8d82FHPHYJ4ys0Now5HGCPjeRSju9WQaZkO5urRS1QZT56Mxbv9fvebdFvWUwG6h3DY1UqNfPP6IP3lli/iprUPfzyhZC4K26uRPOyNGGZ+78DSO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R2VAn5IL; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=W33RfzZcezjlFyPfTdO1+rLytk/vFQrrg3cY+joXpQ+vF0PHPWMra8+IsTFYCPTvywRtTNYjuoUgb/fVXtb0bFPVK3qYhgPWABDueuZDeV7P4R2+iZO9BEPiuvqN6lybS90w+PcHnqOqqmlAIkNm8g+HRVxAegkxd29rhzGxnqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ez5bg0rj; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R2VAn5IL"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ez5bg0rj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789739436;
+	s=mimecast20190719; t=1789739438;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EPIhTn4sDBuz0G96LEXoKpjhT6oJylIi4yaM6st+xoA=;
-	b=R2VAn5ILVSbVUBGZrCo3bEgyFtrJThjOabIcvAOuBDFOvIV7ZtL0AXJapujqVfRs0XPmhf
-	6e8k0nlW82ZnPWb6nAWKgQG39hoZHekT088f/4PN6jiyQRhPrjO9i0YBnuxf9qVdDLGSD3
-	A3e4h41j8uU5hRYruWucJl4cvb1tRbQ=
+	bh=p+RBgkHWDBWjcz9ZqG24LQx/Q7KFkaJuhhsDYniJ5qc=;
+	b=ez5bg0rjt/TETEX1fNiBI6lkGo4sES4t4rIWpSGi0h13G425LcFQ9FozHSmKH3XCN/d477
+	pB/GZ/Nu+gTsitnHatWCXAFEld4HMLRrW/74g7AhGm/NdGLnTaDGXszaCH5cGAx+5U+mUj
+	Ia9qDSu7Z9iHbMUilh/xLq/rhFZQTUA=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-180-iQVw_cmHPXu5g8v5gitnTA-1; Fri,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-627-Enm4X3rPNE62PsWIseykpA-1; Fri,
  18 Sep 2026 09:50:34 -0400
-X-MC-Unique: iQVw_cmHPXu5g8v5gitnTA-1
-X-Mimecast-MFC-AGG-ID: iQVw_cmHPXu5g8v5gitnTA_1789739433
+X-MC-Unique: Enm4X3rPNE62PsWIseykpA-1
+X-Mimecast-MFC-AGG-ID: Enm4X3rPNE62PsWIseykpA_1789739433
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 08F7D1828B4A;
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CFD2E1800DA1;
 	Fri, 18 Sep 2026 13:50:33 +0000 (UTC)
 Received: from virtlab1023.virt.eng.rdu2.dc.redhat.com (virtlab1023.virt.eng.rdu2.dc.redhat.com [10.18.48.26])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 45BAF1956042;
-	Fri, 18 Sep 2026 13:50:32 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2F16A1956042;
+	Fri, 18 Sep 2026 13:50:33 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: nsaenz@amazon.com,
 	vkuznets@redhat.com,
-	snambakam@linux.microsoft.com,
-	stable@vger.kernel.org
-Subject: [PATCH 01/31] KVM: x86/hyperv: do not overwrite hc->ingpa for slow SIGNAL_EVENT hypercall
-Date: Fri, 18 Sep 2026 09:50:00 -0400
-Message-ID: <20260918135030.171564-2-pbonzini@redhat.com>
+	snambakam@linux.microsoft.com
+Subject: [PATCH 02/31] KVM: selftests: Take into account mixed memory fault flags
+Date: Fri, 18 Sep 2026 09:50:01 -0400
+Message-ID: <20260918135030.171564-3-pbonzini@redhat.com>
 In-Reply-To: <20260918135030.171564-1-pbonzini@redhat.com>
 References: <20260918135030.171564-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -64,68 +63,43 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-When a guest makes a slow HVCALL_SIGNAL_EVENT hypercall with a connection ID
-that is valid in userspace but not registered in the kernel conn_to_evt,
-kvm_hvcall_signal_event() reads the connection ID and overwrites hc->ingpa.
-However, hc->param still signals that the hypercall was a slow one, and
-userspace will then treat the connection ID as an address.
+From: Nicolas Saenz Julienne <nsaenz@amazon.com>
 
-Cc: stable@vger.kernel.org
-Fixes: bd38b32053eb ("KVM: hyper-v: Collect hypercall params into struct")
+Update x86_64/private_mem_kvm_exits_test to take into account memory
+fault flags might contain multiple bits set while remaining valid---for
+example KVM might return KVM_MEMORY_EXIT_FLAG_READ in addition to
+KVM_MEMORY_EXIT_FLAG_PRIVATE.
+
+Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/hyperv.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ .../testing/selftests/kvm/x86/private_mem_kvm_exits_test.c  | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-index 604651cb2739..d2921d443fde 100644
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -2436,19 +2436,22 @@ static u16 kvm_hvcall_signal_event(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *h
- {
- 	struct kvm_hv *hv = to_kvm_hv(vcpu->kvm);
- 	struct eventfd_ctx *eventfd;
-+	u64 conn_id;
+diff --git a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
+index e6d16e9d6120..33fd73465432 100644
+--- a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
++++ b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
+@@ -74,7 +74,8 @@ static void test_private_access_memslot_deleted(void)
+ 	exit_reason = (u32)(u64)thread_return;
  
- 	if (unlikely(!hc->fast)) {
- 		int ret;
- 		gpa_t gpa = hc->ingpa;
+ 	TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
+-	TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
++	TEST_ASSERT(vcpu->run->memory_fault.flags & KVM_MEMORY_EXIT_FLAG_PRIVATE,
++		    "Memory fault didn't occur on a private memory access");
+ 	TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
+ 	TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
  
--		if ((gpa & (__alignof__(hc->ingpa) - 1)) ||
--		    offset_in_page(gpa) + sizeof(hc->ingpa) > PAGE_SIZE)
-+		if ((gpa & (__alignof__(conn_id) - 1)) ||
-+		    offset_in_page(gpa) + sizeof(conn_id) > PAGE_SIZE)
- 			return HV_STATUS_INVALID_ALIGNMENT;
+@@ -103,7 +104,8 @@ static void test_private_access_memslot_not_private(void)
+ 	exit_reason = run_vcpu_get_exit_reason(vcpu);
  
- 		ret = kvm_vcpu_read_guest(vcpu, gpa,
--					  &hc->ingpa, sizeof(hc->ingpa));
-+					  &conn_id, sizeof(conn_id));
- 		if (ret < 0)
- 			return HV_STATUS_INVALID_ALIGNMENT;
-+	} else {
-+		conn_id = hc->ingpa;
- 	}
+ 	TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
+-	TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
++	TEST_ASSERT(vcpu->run->memory_fault.flags & KVM_MEMORY_EXIT_FLAG_PRIVATE,
++		    "Memory fault didn't occur on a private memory access");
+ 	TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
+ 	TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
  
- 	/*
-@@ -2456,15 +2459,15 @@ static u16 kvm_hvcall_signal_event(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *h
- 	 * have no use for it, and in all known usecases it is zero, so just
- 	 * report lookup failure if it isn't.
- 	 */
--	if (hc->ingpa & 0xffff00000000ULL)
-+	if (conn_id & 0xffff00000000ULL)
- 		return HV_STATUS_INVALID_PORT_ID;
- 	/* remaining bits are reserved-zero */
--	if (hc->ingpa & ~KVM_HYPERV_CONN_ID_MASK)
-+	if (conn_id & ~KVM_HYPERV_CONN_ID_MASK)
- 		return HV_STATUS_INVALID_HYPERCALL_INPUT;
- 
- 	/* the eventfd is protected by vcpu->kvm->srcu, but conn_to_evt isn't */
- 	rcu_read_lock();
--	eventfd = idr_find(&hv->conn_to_evt, hc->ingpa);
-+	eventfd = idr_find(&hv->conn_to_evt, conn_id);
- 	rcu_read_unlock();
- 	if (!eventfd)
- 		return HV_STATUS_INVALID_PORT_ID;
 -- 
 2.52.0
 
