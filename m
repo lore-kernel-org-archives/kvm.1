@@ -1,94 +1,95 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DBC4E1C73
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 11:24:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F994E4C29
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 11:27:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789730685; cv=pass; b=E2dfXmRO+5rpmN2k0gp2T7HKflNotZ2ltMW5f2eBXLw1+/i0J5UFdjkvrG75N3bFshjuSiTBZUdmo+iqSzI6kLSUUtwlK7EdJX5yE8c25JS6Gzi71BSFeArf9sAPhGS9z9y4GGf6Lz2/kdCJ0WNrg12PKnliWP6LRAxK7CF7Ywk=
+	t=1789730870; cv=pass; b=hkA7qt9b/mhk0ZHEOpxeWLkEr5oPjhMwW1myY77hglDF9PTHzB8IJYP1S7CyyVlxYrex/yj6l1WlcFH+NOSUosIbQ5wIfuNhVY/QF6l7YYlZVq54WQhTNtrVyo2odSw9WSVIXOa+ilECQpYMlebKiPp0ChgbC9GgCFiOnb4Q5MU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789730685; c=relaxed/simple;
-	bh=uBnC6KA4mFvaE05vQovsBFoi0Ky2dT/n6cHsROU3IVA=;
+	s=arc-20240116; t=1789730870; c=relaxed/simple;
+	bh=1T4Ypx73b49lIoEeXBKDKWASxqKm0qUZYs1hZl9y4gQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Flk/Vr8GV+dit33NWPqjIa1nbFpnsPUuSBvOjvJZJpGOwU/Eh7/0EEoOrKslY7aNGkEWGJrpfA9M3ScJTcf2jLkQpMskGqrDM04P22jnHAZVyIhvgp0UX+byFPrkx9AxRR9exM4mx+xqjL54kCJfW+1O6kjCF4YcikWHNlABoMg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o2Q+F0lQ; arc=pass smtp.client-ip=209.85.208.49
+	 To:Cc:Content-Type; b=u66m0gEhirxPtjl6NuYS+vtcjKBN914cZ0PCWTsGxqfhobZb2OUvXyoUWlmf3qZa2h1AVS+NAVc8ga2bzKx/rjENmG94IliZ0CnW00yOG5aTicsMC2OfP8GcZO7DoslWtE0tRR7hBu6YvtTuDrnEQIK/IfHBlX4yElexl/gLRMU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bnicj358; arc=pass smtp.client-ip=209.85.208.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o2Q+F0lQ"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6aa13d8d9d0so6564a12.0
-        for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 04:24:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789730680; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bnicj358"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6a5f9b036f9so5326a12.1
+        for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 04:27:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789730866; cv=none;
         d=google.com; s=arc-20260327;
-        b=EjHorG40mKJ5ZDJF8auj1TnDXwdNSsQubIUIc0ESgU3RFG9nznW6F2vUdaOhJRm7kG
-         iGqOOmrcA2cCjGnoHRgCq2wj5MYOjj6WeeYzLHy9+syMyOLB+5kqBxixLIws13nsn8Mv
-         HeAt2QeRAWTkf4JmSgoN9J4l4m+74FOK6O428S+pDLE3reabLzbILeIWCrvCZxV4HSfi
-         Zy4LAiILg/Oroqrm2pQloCmA1rnZVSodDMxXDvX5Hltye/PlVDj78CPe/Cn94cZiGr0a
-         5JcBys8k1V6UWJl7WCO0/cOAGbYfS31VNud8ZzmZ+mGofh5casc6jCn1uPokWNLp80rs
-         ghAQ==
+        b=qI4X9BfJo0DyqygQs06CMzLWbYyzbo97BuRm4y5x1I7VRVR5tSmV6hDZI8I7zqxpu9
+         MUi2L1rDQQhypfa8rR8teI/kPor0n8ipY+InrvQ5++kcKqbaeu5weKEomV+xN/syLKz7
+         t966DJbIBampyju7/zMbwFtPhRLZ830SV49XFDSWUuC75mQgLfEFHdnQLbvciSMUx/WE
+         7GjYT5i209i77H8oc8PHp+h5d+Dh+0uFyJ2ZT5GB0AL6DiFQAtrLMRkEJS0X7mlDdi0r
+         bO9luxqSLvFJzyGeoX/vn77+bJxVRanhh0dTTvjW3QIUsMMQmmfTFI6vXp2vHmDFc0jk
+         hohQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=7a5izxf6YFzXYW8w93EbliwqXIbZagpn1chA3AffJ0A=;
-        fh=/8pwEDZpSN4KGjs39IISAy0H41rEaWaHw87DydQ7BYU=;
-        b=CX2iGzVTKSs3i85FUreaHNFlUN0vqTQklkWjxB5hSu28hLpq9/8b9fhbKqejiE/ruE
-         DhIu0a1DB3T77wFyTh7dJtBSsOvMKzl3oEU54mXCxUo3yvw2NZj90mUimY2o2JolY2/o
-         m0n+bevp0qS4b5JT512VMrAMF2LMYcE1xC+0CrOGQNdLKNv906autR1BEofi0h4vCvLh
-         2pwUMExL5rWF+QWfS3bkQPjdO1oJ1DTrBwChjLhgwDVKYphbk19n7WVX3NYS1lXEvH40
-         IDZ9XE7+t5/G089tlr4UYggRQoo39Fx5dsDqCw6Q+TgWkyxCHD0Xc4C5KrOJk3ZJI9py
-         fHlg==;
+        bh=2zkFlHoWQ2AWCYz/XBKFNT4MlZs4AcmAdTGygjovBbU=;
+        fh=SZn1aRO0aPolAdhZiigxiFNmvQdemdtXxcfWUOwd3U4=;
+        b=qVPJ1jC6Q/GU72y/l0YO7X5elhg6WbnFmuHIWkPrgxITnpmkc7ESRgR/vItfGgSPEU
+         6p+nytwBhrKHVLJlLpwsOmAuIUXTewLvn5PgdeSUOZ2I9jsaOPkgIw65SJCI8Koq69Zz
+         gu2WgC4PfFfvCtHzhBfrVvcqVr/y7S4GWrUbRqrwtxtQo0NmQB5fqk1L8VkHNaYUhIQ5
+         8zFKQyMag7MhU7QUn1lmAIvCSsMoLtoOoUXRAf2jifCBTbGtYw1rvc2He37O87cMg/l1
+         jgdrhOxzj1Da2FhCtxdVwi9EQSUnwkIam0Yma07Cwwonl+4jNoGAxXFoIom0TWxhNv/Y
+         Gvqw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789730680; x=1790335480; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789730866; x=1790335666; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=7a5izxf6YFzXYW8w93EbliwqXIbZagpn1chA3AffJ0A=;
-        b=o2Q+F0lQUDOlildXI8CHt2tuRsVMh7RNL6NsE6gE7zgjPqAmIzvxc3mMaTj7iDJ4qi
-         6Kp5a+pysfw40TIAlsZxZ81qAnHe9p8jcGmZhafR0URdMZeNWtJYjbEbv//VBmstq34Q
-         cfFA+Z6vWvYXnpxPRiUztO6W7pQkJNT03gsbajeaTvTpSaumUYEplNxArRaBRur4ET4t
-         35KT5FLGfSJx4qY8TCU2307Bp7bLztGVwTz31oNj+uPnnDVu69waNHuBvI+0TjgYLWxS
-         3/C0xDli/wxKsDyCRJwF6coH7erjAVcivNN+Ztq0SCj29zTatEaDVCFSxmaayPOdWsL5
-         LUgA==
+        bh=2zkFlHoWQ2AWCYz/XBKFNT4MlZs4AcmAdTGygjovBbU=;
+        b=bnicj358p8BvR+0cPsy7nSRI+syhPcD8q9t1kzH/MM7jD3Ex2AgecRNFRaIh2hoD12
+         t69llh4Gd79xFNGgrtRQqTucY8HzpYZPkiePEQvpXaaU8L8B6vuctbaMv3j7t2O9Ulyg
+         DiBifT7wFrrd8V7NIOZMz36SDefcD0ExuZmo5B6UeU6MQSLwhUINU0tQ03hQsFspBqPl
+         cJ9yoiFMNZR7Soz591jRZzlMG4yr/651O4S2Bz3yZoTMWjRHQo0FbxuNxeXOteLlQZ37
+         +7/+dO2nFfXN2gatJZt3WwO/AMmDtcVXhxc8N+bcdTHovBGad+zyhtC7YwAbu1P2BYKT
+         K3zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789730680; x=1790335480;
+        d=1e100.net; s=20260707; t=1789730866; x=1790335666;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7a5izxf6YFzXYW8w93EbliwqXIbZagpn1chA3AffJ0A=;
-        b=sPkBHUyEB5JmMhMIjQvYbxVnqm+r4nK0RRvr2j5xXGlgT+LU/89HN3cq41nOjvRKKt
-         0RU7331bZYGc0Z0GUSik2rILHj3vvWJ38x4W+eRfdFSxhCZIZasYvheIPkjpyWwhQlpU
-         7oKSDKIfF5gH497GtIB0bE/33KOD9tl/4frR+GOZaJZOcX6nwy7swc6OOMgMas1mj60Y
-         rLHfFM4ZslUpU3esLoqXwdvFJV6NEtw5/tDSC31js/wm/OIB5bQcVfrtD5pl4r6Uvqdm
-         5E/zlYK0LAjPtBuxvKk/lvRhV8+6o/m/SgmbgJWTb7w+zrZ4kTYHyUVuQ1ngUIVMfpDq
-         TYZA==
-X-Forwarded-Encrypted: i=1; AKwUvBw/+HFsJLk4MIpgFzWQw2c4ItUphKyXtSTyVjhZiQLS/MiSrzW0asyU6wEc3eUHWqbZXtI=@vger.kernel.org
-X-Gm-Message-State: AFuF++l7uShjUykGxHvEJjSxU1yarmp2HT8RU5l67o15q5SgvaVLmGQ1
-	e7PD3Jgu5uUQTAt32L7ZQD1rhuv6gJvbV1BMk2ThhgG2rRRRu4vi9zUIpZCtUYVbZYunwJ7z/96
-	Gor5zN80S2hSqKhSvNL71uEvG8uBalo8XBt5yM43D
-X-Gm-Gg: AYBFou2DQ+doYQnJTEOoC+mzJVzZXTf6Cil97Is2KHnijJnFX3OI2OBjtSPl9GANfUh
-	DzDsaSIfNiCdyrolqv+hcZqcrZFiIjcZgTUjJIXcfZP6ZEDurAZ8RUzBsBY9oMqndck+sZOHN+G
-	ptRQ2yTMvFdUz/HJFspa+52ZRbYtG/uskjoAoWKpyiMUu1PhjXRSA70Fl8wBltStd8WcYgPFwCD
-	pPv7qWfHzEHNzKpRxvkizn6X960jbHZB220TcoxPL21JSW6mAit7PnkDjPjbYgP+sy6Ae0VGndT
-	14HHCgeeVJ4cwVZkV5ugpgbp/Dul4zileT5tmaacgY5vP9SHsQ13clss
-X-Received: by 2002:a05:6402:3c7:b0:6a6:967c:3186 with SMTP id
- 4fb4d7f45d1cf-6aa4df21b4amr30464a12.2.1789730679801; Fri, 18 Sep 2026
- 04:24:39 -0700 (PDT)
+        bh=2zkFlHoWQ2AWCYz/XBKFNT4MlZs4AcmAdTGygjovBbU=;
+        b=FfZEtYs7as2J0RTbpAoob8YuqUS52lNwFcNBvaHQ0jowRCHqxEMRTlcTFW4owgGf0q
+         4sCdnPvVhyeeeXig6bY0OGPCoB8/WX4k0MTFOBdB01v9nvfMgGSBn/SEdBLyfKdtvKPD
+         +v2WDwU+rKMlMKJUg3v7sAGPJVqRzdiEO5xoDFMexJLw0BW3o28OaWiI5Bb9NM5tyGkX
+         2GDnJkP5PPdDLVXL1kNZbkEDB3gLdWJG7e9i7J7a9d9bUt705kzyqJw2fUX62g9/j0in
+         DvEkZBc8q24vzE1iNVzrl5IdF677jh8hM+OlZYGBCOzQSEMsUpGezOXXUyL5tNFZnCNz
+         4IdQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwQ1NrGLMI0cH1Yc62GYWq4S9T3wh70yti5Crk4ADKCB2KyzR3crAtSnnkPZiHMBDye64Y=@vger.kernel.org
+X-Gm-Message-State: AFuF++kNcpSRmDQNpxT68TPBvt0v/BoBXZUXfgIsTye6gwmLr41MDA/W
+	rW7yCFrFCH4qRa97xs40BoKIJzfsgBTMJ501FuUgOaUIbOxEv/WpfIBcz8ptJzf52VSMeNwotPV
+	w8294g155JYLpfDdQ5et0ySGfZE6va2ED0t2ECBjy
+X-Gm-Gg: AYBFou0qUSNiXVGIBr99V0iNcnfH2j2i8fRSMT/sd69zL6xym/qN4M/OmoqSLZcWMTx
+	BW8MnUsJPFYLjvzDHYFWTvMm5ufvMQ+AIVxmlDbbcHL0B9QYVrU38mSBAUEFJfOl1AcsE5433DT
+	e83RpgVT07UXUDgPm7ncHqbNNF/JspNmlt+spUlgEtTSgihepxV/MmgS2WuSPGpzOXwsF565zCR
+	R6QHgtuW0dVqpGA8kcaUm5ehQuDzEubzDVDYnX48AJyYt8PasvOfXHo8qiiv6vlzGQ+1oOfUzfS
+	rEXuO7DmWAqi4R1URay3ACsBGToq2k91SM6Gp7ZaDvJP+dY94m/AChM=
+X-Received: by 2002:a05:6402:a588:20b0:6a6:f2a5:1b4f with SMTP id
+ 4fb4d7f45d1cf-6aa4df2139bmr25284a12.4.1789730866074; Fri, 18 Sep 2026
+ 04:27:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1789721173.git.zhang_wei@open-hieco.net> <1355f32599087e8f4d0740bb92ab5f0c9c329b6f.1789721173.git.zhang_wei@open-hieco.net>
-In-Reply-To: <1355f32599087e8f4d0740bb92ab5f0c9c329b6f.1789721173.git.zhang_wei@open-hieco.net>
+References: <cover.1789721173.git.zhang_wei@open-hieco.net> <2b30c180a7ec1fb22033cc1b89debc36c9f569d0.1789721173.git.zhang_wei@open-hieco.net>
+In-Reply-To: <2b30c180a7ec1fb22033cc1b89debc36c9f569d0.1789721173.git.zhang_wei@open-hieco.net>
 From: Jim Mattson <jmattson@google.com>
-Date: Fri, 18 Sep 2026 04:24:27 -0700
-X-Gm-Features: AcwNN1WGefe8mq1Aq8R2hXSQ4KSfm5bPolxygvJQEfdVJUvpg92P3z4X6vU4uvI
-Message-ID: <CALMp9eTM3WN7idYYK3hhkuYgdDbwE94VTZB4F0fj33DTa1ExuQ@mail.gmail.com>
-Subject: Re: [PATCH v7 8/8] KVM: selftests: Add nested SVM DecodeAssists test
+Date: Fri, 18 Sep 2026 04:27:34 -0700
+X-Gm-Features: AcwNN1XiB8HFa2Js9NBlTZk2TxW38UVMUVZNntIOccJ00GWuWntEdr41p3Y9JBA
+Message-ID: <CALMp9eT0RjVUYbcHbhd-phmaXs1yPsh25j+qkfmizqp+DCV=fA@mail.gmail.com>
+Subject: Re: [PATCH v7 2/8] KVM: nSVM: Synthesize DecodeAssists EXITINFO for
+ emulated intercepts
 To: Tina Zhang <zhang_wei@open-hieco.net>
 Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
 	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, zhouyanjing@hygon.cn, 
@@ -99,30 +100,21 @@ Content-Transfer-Encoding: quoted-printable
 On Fri, Sep 18, 2026 at 1:56=E2=80=AFAM Tina Zhang <zhang_wei@open-hieco.ne=
 t> wrote:
 >
-> Add a focused nested SVM selftest for DecodeAssists.  Verify that KVM
-> exposes the feature to L1 and provides EXITINFO for representative
-> MOV CR/DR, CLTS, INTn, INVLPG, and INVLPGA intercepts, including a
-> MOV-to-CR0 selective intercept.  Check hardware and forced-emulation
-> paths against the same expected values.  Poison the instruction-byte
-> fields before each instruction-intercept test and verify that the byte
-> count is cleared on exit.
+> When the x86 emulator encounters an instruction intercepted by L1,
+> svm_check_intercept() synthesizes a nested VM-Exit without fresh hardware
+> DecodeAssist state.  Populate the architectural EXITINFO1 field when
+> DecodeAssists is exposed to L1.
 >
-> Exercise instruction bytes for hardware and synthesized #NPF/#PF exits.
-> Cover a synthesized #NPF that follows a hardware #NPF in the same emulate=
-d
-> instruction, an unreadable instruction tail that leaves only the cached
-> opcode, and the absence of bytes for an instruction-fetch #PF.  Modify th=
-e
-> MOVSB opcode while its MMIO read is pending to verify that the emulator's
-> cached bytes are preserved.
->
-> Inject a userspace #PF while an MMIO read is pending.  Verify that after
-> MMIO completion, L1 receives instruction bytes from the current RIP,
-> not the previous instruction's emulator cache.
->
-> The hardware instruction-intercept, synthesized OUTSB #NPF, and
-> userspace-injected #PF cases run by default.  The forced-emulation #PF
-> and instruction-intercept paths require kvm.force_emulation_prefix=3D1.
+> Provide the GPR number for MOV CR/DR, the interrupt vector for INTn, and
+> the linear address for INVLPG.  Preserve the MOV-to-CR0 decode informatio=
+n
+> when a selective CR0 write intercept is triggered.  Leave EXITINFO1 clear
+> for CLTS, LMSW, SMSW, and INVLPGA; the INVLPGA address remains in guest
+> rAX.  Leave EXITINFO1 unchanged when DecodeAssists is not exposed, and
+> leave unrelated intercepts unchanged.
 >
 > Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
+
+I think Sashiko is hallucinating.
+
 Reviewed-by: Jim Mattson <jmattson@google.com>
