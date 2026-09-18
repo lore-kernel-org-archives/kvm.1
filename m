@@ -1,180 +1,167 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7C54915BC;
-	Fri, 18 Sep 2026 07:30:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3617F23E334
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 08:15:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789716645; cv=none; b=LGP3MB2dFlSBC/fyrisM2bfjWbkTVB3IqiHm/Wm8P3JIxYXSJ05x1mfyGhCZcLMr9++Cvi5dZ+eFph50JlCsxzl/YPIvmxNzrPXwRC7tRZEz6zcd6RvtXOf7P+/nNHmtz4mYEA2tQluKTpoW/5LHJ7gOcLymgZMsmGJmrQsdGKw=
+	t=1789719351; cv=none; b=QCOjewSQoOtAYqd/00TR1OQqlY34osEKhEODYS7ZCbFHSSGeyrdSyNAKVISSff9pJ8jP9TnLcmJjt2PUL/n3saoVbxsZsMItbpnv56GkVJst9Yi+qxNY+WprH20olE7R2oBC1VoFTCwxTcFsfdIQewmxHhVKbXkm+8Rf7KPnF+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789716645; c=relaxed/simple;
-	bh=Tt8GdfbueXGSkuK4G2fnxFMVppLcaokIDf9ojMSlu20=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a5ofdZhtrTF/z7X2tEvIBH7PARZdQRctvCEIk7bkIPFUcCRYabN/LdyGixLLr6tMpGq8mNgGi4IQ1XHw7DWmsqc+PLeBiOyKeS09Av1Li3VbEd6Edp/hDaaUNn8xxIcfGj2SgQAoeEDnIQ6v0YqHYCV9nmM99eNof4sqS+ncMag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=b9GkcDni; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1789719351; c=relaxed/simple;
+	bh=5Aq73BWOFN4B/ivUfKmVZdwIvugxUNtoVw1D5AjNt1w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=t7qaI2cEt8b8jGVXOeg/IYqJ7pHsGetm6ya7999Un+wnzqP05UJvQvRJpd/4GdNqRLVqDF7Et+aLvcJO0CFer/1fRbi4yu98iBoup5+5ic5rpHq9SOuArlZ8FVkJzfLTu5pPUu2vSjAkWcTuJsiryXvKWrgGKnF2hCWxbY3RFwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CUfN8dST; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="b9GkcDni"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68I61wOl313701;
-	Fri, 18 Sep 2026 07:30:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=VVrcSc
-	kwtiGgM8C01h+pd1zrhhl2QR3EIgt6hAK0330=; b=b9GkcDniko72qq1TLuDdAJ
-	e+lpqtgR3Jt2PiTMVsDMGNxqKlSK08ZA7sGGaDyMkfh4PpeZfRAu9ympXIP7g0ws
-	ZRWnB6RyrVq4qHuwC8qoig4Ne+PeyFXEymSaxQX5D1FcQDHXvYTtm+v3rhtPIhOb
-	YYY0Ars+zC7VPH+o/wAlMs35HDD2Z/FEbsDAAPhzbJGWbuIV7W1eUZ/V5rmvL55W
-	IFi39NA/q3DDXaHG0ITVDbEgtdqNQtQbkI8qZZgUzbgd+5y8VViHQObD/YjCN3OU
-	yTbo/l4ui5IWjXwZBc/EE0CcvVDvjoAHS6YuTW1ENM5aNAvl0Nh9IT/XW6sLtgvg
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmv5j6hs5-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 18 Sep 2026 07:30:42 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68I653bE170840;
-	Fri, 18 Sep 2026 07:30:42 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gra3fdbyj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Sep 2026 07:30:41 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68I7Ubad12059132
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 18 Sep 2026 07:30:38 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DFD6A2004B;
-	Fri, 18 Sep 2026 07:30:37 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4672B20040;
-	Fri, 18 Sep 2026 07:30:37 +0000 (GMT)
-Received: from [9.123.2.177] (unknown [9.123.2.177])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 18 Sep 2026 07:30:37 +0000 (GMT)
-Message-ID: <31320deb-ad24-420e-aded-53031ca43fa4@linux.ibm.com>
-Date: Fri, 18 Sep 2026 13:00:36 +0530
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CUfN8dST"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789719349;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Gf+lzvxbi1Zh3wBsxJVsPtZtBcbza/YT/ul3GdaSIiA=;
+	b=CUfN8dSTpsxQkE1y3ax/tA6G6nIwn+xZEJEyFI+PqoCRolHpwHhdALhzxXC4KL6xeUF2Fm
+	c1JnHOBTbSmXd27S2pQATcykOP3Zkx3ZhVz2eD4J8mrFtvF7kAq9Kq5MOBxTSpnrXlXatl
+	TNpUGACu1qvEgMS9P+D4p2O5FltyV6g=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-10-lL60C4iIPNalfAqfaHqYKQ-1; Fri,
+ 18 Sep 2026 04:15:45 -0400
+X-MC-Unique: lL60C4iIPNalfAqfaHqYKQ-1
+X-Mimecast-MFC-AGG-ID: lL60C4iIPNalfAqfaHqYKQ_1789719344
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 975921805A2B;
+	Fri, 18 Sep 2026 08:15:44 +0000 (UTC)
+Received: from virtlab1023.virt.eng.rdu2.dc.redhat.com (virtlab1023.virt.eng.rdu2.dc.redhat.com [10.18.48.26])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D3F4D1800370;
+	Fri, 18 Sep 2026 08:15:43 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: nsaenz@amazon.com,
+	vkuznets@redhat.com,
+	snambakam@linux.microsoft.com
+Subject: [PATCH v2 00/28] KVM: x86: Introduce memory protection attributes
+Date: Fri, 18 Sep 2026 04:15:15 -0400
+Message-ID: <20260918081543.139871-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] KVM: PPC: Book3S HV: Avoid spurious interrupts caused
- by LPCR_MER bit
-To: sashiko-reviews@lists.linux.dev, Gautam Menghani <gautam@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-References: <20260918055848.28390-1-gautam@linux.ibm.com>
- <20260918060829.D84C61F000FF@smtp.kernel.org>
-Content-Language: en-US
-From: Narayana Murty N <nnmlinux@linux.ibm.com>
-In-Reply-To: <20260918060829.D84C61F000FF@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDA5NCBTYWx0ZWRfXyOobu03mOjJc
- bodtKZzzxpOuOYBxQ30RCBYYY/KPw3ST2h/LRPgSpPT3GsyhrXEKo60XdkpSBusFINdPrgUdxIn
- CbDz5Vbqbhfk7vTkB40pkEaAT95cy/UY8jehUnZ7MF3yNPI2rSgh7bMAd0W6dmnM+rmkiQFd/Y3
- b4C+fJVY1A+4XjwPS40UA4DqjpRsxcIz3iXoxkkZ8E3+JbOrbenOKpS4X/WSfB37KeP5MYoahET
- 8e6yJsyfqzbYysqYmj2nYJsl7i2mfAy9hel08eUPWMNP3MRe5GQc43MmwnPLDQfZWOBAlYgW4EZ
- AEuxhO+BAii4vHUvdOD5z3nE5Edc/Caedou/nB/SWT+X8gmxCLFo/VZfSQ6sWxKnkUDfeyuWp/+
- +HwWOUtu3EF8UF5mWpQMn13cRW+YC+YDhWrxaVuBMEYvmS4m9gSAWdKIwIbPN/nazL4ni7npyR5
- PPAV3a8yuUtfhhQF+oA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDA5NCBTYWx0ZWRfX0zRUpPM7f0kx
- um3DNKoZsy9RQmAqoAQhXxgt7vbNHX//J+xJ5EGe5sGhh7934BT262dxOL07W9GCrhRhnaGqjRQ
- SBK2+Lw21xJ/Gjioo5Law0g8Ot39b84=
-X-Authority-Analysis: v=2.4 cv=Zsx4uN7G c=1 sm=1 tr=0 ts=6aace8a2 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
- a=yKAn6K1XAAAA:8 a=VnNF1IyMAAAA:8 a=XlwifpPfmKqjG8qNDjIA:9 a=QEXdDO2ut3YA:10
- a=6M1ixcW_PCWoKiWyFx5v:22
-X-Proofpoint-ORIG-GUID: 8z_PiAN9i3nFrmeVXNNciFTh7UhUg6dv
-X-Proofpoint-GUID: 8z_PiAN9i3nFrmeVXNNciFTh7UhUg6dv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-18_02,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 impostorscore=0 clxscore=1011 priorityscore=1501
- lowpriorityscore=0 bulkscore=0 adultscore=0 phishscore=0 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609180094
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Hi
+This series introduces a mechanism to let userspace block read,
+write or execute access to individual GFNs via KVM's memory
+attribute mechanism, and have them reported via KVM_EXIT_MEMORY_FAULT.
+It is mostly the work of Nicolas Saenz Julienne, with my working
+consisting in reorganization, code cleanup, and using the recently
+revamped MMU code (ACC_* masks and kvm_page_format).
 
-On 18/09/26 11:38 AM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] kvm: ppc: software-injected external interrupts lost on XIVE hosts
-> --
-> 
-> commit 05773d5b089dd4410c7e3e3a1611da5479c7d1a4
-> Author: Gautam Menghani <gautam@linux.ibm.com>
-> 
-> KVM: PPC: Book3S HV: Avoid spurious interrupts caused by LPCR_MER bit
-> 
-> This commit aims to avoid a huge number of spurious interrupts on KVM PowerNV
-> guests in XIVE mode by not using the LPCR_MER bit when the hardware can
-> present interrupts directly. It modifies kvmhv_run_single_vcpu() to skip
-> setting LPCR_MER when xics_on_xive() returns true.
-> 
-> Closes: https://lore.kernel.org/linuxppc-dev/582904882.11159.1786719390349.JavaMail.zimbra@raptorengineeringinc.com
-> 
->> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
->> index dbac3573b2c89..f4d12a97311b9 100644
->> --- a/arch/powerpc/kvm/book3s_hv.c
->> +++ b/arch/powerpc/kvm/book3s_hv.c
->> @@ -4980,7 +4980,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
->>   			if (!kvmhv_on_pseries() && (__kvmppc_get_msr_hv(vcpu) & MSR_EE))
->>   				kvmppc_inject_interrupt_hv(vcpu,
->>   							   BOOK3S_INTERRUPT_EXTERNAL, 0);
->> -			else
->> +			else if (!xics_on_xive())
->>   				lpcr |= LPCR_MER;
-> 
-> [Severity: High]
-> Does this unconditionally disable LPCR_MER on XIVE hosts, potentially dropping
-> software-injected external interrupts when MSR_EE=0?
-> 
-> The outer condition in kvmhv_run_single_vcpu() checks if either a KVM software
-> interrupt (BOOK3S_IRQPRIO_EXTERNAL) or a hardware XIVE interrupt is pending.
-> 
-> When MSR_EE=0 on guest entry, the patched code evaluates:
-> 
->      else if (!xics_on_xive())
->          lpcr |= LPCR_MER;
-> 
-> Since xics_on_xive() evaluates to true globally on bare-metal POWER9+ hosts
-> with XIVE enabled, regardless of whether the guest uses the in-kernel XIVE
-> irqchip, bypassing LPCR_MER here seems to cause software-injected interrupts
-> (such as those from userspace via the KVM_INTERRUPT ioctl) to lose the
-> hardware trap mechanism that normally fires when the guest later sets
-> MSR_EE=1.
-> 
-> Could this lead to dropped or severely delayed external interrupts for guests
-> using a userspace irqchip?
+KVM needs to check the attributes anytime KVM takes GPAs as input for any
+action initiated by the guest; if the memory attributes are incompatible
+with such action, it should be stopped.  This means that there are quite
+a lot of cases to handle.  While some families of functions can be
+handled in one step, there are simply many places that do memory access.
 
-No, interrupts are not dropped. KVM_INTERRUPT sets 
-BOOK3S_IRQPRIO_EXTERNAL in vcpu->arch.pending_exceptions and kicks the 
-vCPU out to the host. On the next kvmhv_run_single_vcpu() entry, 
-kvmppc_core_prepare_to_enter() re-evaluates the pending bit. The bit 
-persists until MSR_EE=1 allows delivery via vmppc_inject_interrupt_hv(). 
-LPCR_MER is not needed here as XIVE hardware handles the delivery 
-trigger directly If I am not wrong.
+Along the way, the patches fix some issues in the memory attributes code,
+that surfaced due to having more than one attribute.
 
+Paolo
 
-Looks good to me, much better logic than v1. The v1 concern about the
-case where xive_interrupt_pending() is true alongside the external
-exception bit is now handled cleanly with the xics_on_xive() guard.
+v1->v2:
+- fixed sashiko reports
+- fixed and cleanup up test
+- hypercall fault exit KVM_CAP not Hyper-V specific anymore
+- completed/rewritten Hyper-V hypercall handling
+- added KVM_HC_CLOCK_PAIRING handling
+- use NX attribute for emulation
+- properly split front/back halves of kvm_zap_all_fast
 
-Feel free to add:
+Anish Moorthy (1):
+  KVM: Define and communicate KVM_EXIT_MEMORY_FAULT RWX flags to
+    userspace
 
-Reviewed-by: Narayana Murty N <nnmlinux@linux.ibm.com>
+Nicolas Saenz Julienne (13):
+  KVM: selftests: Take into account mixed memory fault flags
+  KVM: x86/mmu: Init memslot hugepage information for non-private_mem
+    VMs too
+  KVM: Introduce NR/NW/NX memory attributes
+  KVM: Include memory protections in result of gfn->hva conversion
+  KVM: Take memory protections into account for memory read/write/fetch
+  KVM: Encapsulate memattrs array into anonymous struct
+  KVM: Introduce a generation number for memory attributes
+  KVM: Take memory protections into account for accesses with cached
+    gfn->hva
+  KVM: pfncache: Fail to refresh if it contains memory protections
+  KVM: x86/mmu: Take memory protection attributes into account during
+    faults
+  KVM: x86/mmu: Issue memory fault exit if walk failed due to memory
+    attribute
+  KVM: x86/mmu: Do not update accessed/dirty if guest PTE is read-only
+  KVM: x86/mmu: Do not prefetch sptes on gfns backed by memory
+    attributes
 
-Thanks,
-Narayana Murty N.
-> 
+Paolo Bonzini (14):
+  KVM: selftests: Test address translation for Hyper-V direct L2
+    hypercalls
+  KVM: apply nGPA->GPA translation to KVM_HC_CLOCK_PAIRING
+  KVM: x86: Introduce memory fault on invalid hypercalls reads/writes
+  KVM: selftests: test hypercall memory fault exits
+  KVM: x86/mmu: intersect writability from __kvm_faultin_pfn with
+    fault->map_writable
+  KVM: x86/mmu: Extend map_writable to a full ACC_* mask
+  KVM: pass kvm == NULL case to kvm_arch_has_private_mem
+  KVM: adjust for presence of more than one attribute
+  KVM: Introduce kvm_fetch_guest_page() and use it for x86
+  KVM: Introduce kvm_check_gen()/kvm_memslots_check_gen()
+  KVM: x86/mmu: Obsolete all roots if memattr contains gPTEs
+  KVM: x86: selftests: Introduce memory protection attributes test
+  KVM: x86: selftests: Introduce memory attributes PTE test
+  KVM: x86: selftests: Introduce memory attributes side-channel tests
 
+ Documentation/virt/kvm/api.rst                |  38 +-
+ arch/x86/include/asm/kvm_host.h               |   4 +-
+ arch/x86/kvm/Kconfig                          |   4 +-
+ arch/x86/kvm/hyperv.c                         | 157 ++++--
+ arch/x86/kvm/mmu/mmu.c                        | 169 +++++--
+ arch/x86/kvm/mmu/mmu_internal.h               |  21 +-
+ arch/x86/kvm/mmu/mmutrace.h                   |  36 ++
+ arch/x86/kvm/mmu/paging_tmpl.h                |  25 +-
+ arch/x86/kvm/mmu/spte.c                       |  12 +-
+ arch/x86/kvm/mmu/spte.h                       |  13 +-
+ arch/x86/kvm/mmu/tdp_mmu.c                    |   2 +-
+ arch/x86/kvm/x86.c                            |  57 ++-
+ include/linux/kvm_host.h                      | 128 ++++-
+ include/linux/kvm_types.h                     |   6 +-
+ include/trace/events/kvm.h                    |  14 +-
+ include/uapi/linux/kvm.h                      |   7 +
+ tools/include/uapi/linux/kvm.h                |   3 +
+ tools/testing/selftests/kvm/Makefile.kvm      |   2 +
+ .../testing/selftests/kvm/include/kvm_util.h  |  32 +-
+ .../selftests/kvm/include/x86/processor.h     |   1 +
+ .../testing/selftests/kvm/lib/x86/processor.c |   5 +
+ .../testing/selftests/kvm/memory_attributes.c | 453 ++++++++++++++++++
+ tools/testing/selftests/kvm/x86/hcall_fault.c | 236 +++++++++
+ .../testing/selftests/kvm/x86/hyperv_evmcs.c  |  17 +-
+ .../selftests/kvm/x86/hyperv_svm_test.c       |  15 +-
+ .../selftests/kvm/x86/memory_attributes.c     | 415 ++++++++++++++++
+ .../kvm/x86/private_mem_kvm_exits_test.c      |   6 +-
+ virt/kvm/kvm_main.c                           | 252 ++++++++--
+ virt/kvm/pfncache.c                           |  30 +-
+ 29 files changed, 1973 insertions(+), 187 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/memory_attributes.c
+ create mode 100644 tools/testing/selftests/kvm/x86/hcall_fault.c
+ create mode 100644 tools/testing/selftests/kvm/x86/memory_attributes.c
+
+-- 
+2.52.0
 
