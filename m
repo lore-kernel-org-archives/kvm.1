@@ -1,506 +1,206 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010070.outbound.protection.outlook.com [52.101.85.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276D04E77EF;
-	Fri, 18 Sep 2026 13:09:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789736986; cv=fail; b=qqoiQTSXKFAEPKhRtevm6w02VLZWE+hy3Wm5SK1fuG/61axE1VWzgB4uR9B355yGu5/uDGONVJMzbcv6eOQ6M7rjGzQ6ufuA9QBnOfgduQvedCyNMQ+yYNqTutFcDzIPaOMvOGlLIfhPo/Zd9z+lI8YIvBfxicUSy4u0vy1zf5I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789736986; c=relaxed/simple;
-	bh=l6cs9n5JsG+t3kFrW1VMpuxkGvcITHCnnZQgY9Wcaos=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=kCqEfhjFtPhoTY8uhfdWYf+xMpshj/HE+0zq0firGR11BaSJLrnRgkn4EJtfxJJUz/vCe3jzv5NlY0elechy3VcE0ByPSEFNkILYqiEfCSpf4vd8VAdMfbN6ZD+0TK+5DM53g5eT4isqYyusGBPTZlAmMRLFluPB4YH3zNBo56g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Y9vJkgre; arc=fail smtp.client-ip=52.101.85.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E1E41A506
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 13:13:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789737204; cv=none; b=V378AYmVV1PRo3LhmTo2jst1A32GJeDidpVRQwFbOUmoDRwrdTV9wBtn7S0gd287JI1qKDvuNKsbjmz4UZ/iJk03GjZS6bO8/RxDLKSjg/PAWPZY/UT2SZUF+90yiIDNm4H9px1sKY3jFhwyayzQC3bSXXOQpMXgteL9DPP8hYA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789737204; c=relaxed/simple;
+	bh=UrewZhvj67OD5/PiVQn1ohfUYivZXx+MgCmwrexV93o=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=pOFQTrJQ/oaQ7b091UognAUpziJLv2E4mzrjWb+R+QEwzBWrAn9iLUGIcNZbc6BygMhfiTVQw/p0k+8rt1MF1/o6QfZFhTR4UJMxagzxPq44QlfPEjefS9VRaimWv9D7/nq3WyUke7Lx8JI0Fhhy7SDqTLqu7qw7lRX5+7YiDxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y+jKs4mz; arc=none smtp.client-ip=209.85.215.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Y9vJkgre"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EdQNv6X/DZStbPVKH4UbTU2vBw/3+00mRz68KryfpAYuGRG9S1g51nFw6Bl+O1dK/6PmXn8MpPKsFrD3nWsMigCUCHYuPV4AAit2BE9Jl+j7y6/dqCDpxso2/mCMuIJ1UEDsLWsfA59zDZEfrV+xMU2lMn0pVYRLwGrkNB8WtVfCZYTHIlRZP/F3LItfbkdFrkn0Y3HS0MxOsoD54Jn8SUwGHsWmx0fBl1f3YLpI6zBPwbQNWYByPWJZ56Cjz03MbVcnC9B4BFAm2wzD6BOysyGBNpTcDCr5tJI0bGcVCcxl2Ip0k8BFcvX6aIrW2MvGH+UEPeGIiyF5pJcTh29qZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=r6KuzDJOd0tpDLpilxEYe7gANcKdJQd/aTNCRIv/CDc=;
- b=Ut3eyIr4wsXHOycPFHiby/ilKrpMJUGNF3vl4p5vktbm9JaL3mI9PPBkmLLaNWJ2zKjJuCvWFLNuIiOhALBC+3uMg3MR+gA038T3891xK/JY5F3DcTjfvT5xJcoIMAIYspFrbpCKDLkkZncRrM+hJfzrI6wzDDvDHhFjB6JUpUJhfWAdjYRvsuKkBXBMX5TPSZygT5tWn7iw8woHM0vgYzpjYqWNUku7m9vlILBGYKNW3PxcA48WNbtbwsAGMufolXJGkZEqzoXnPNg53x15+wu32PPAIY2FPsjqhS1fMd/yiLEocVdt3z0//6nGIs3NDG03xU4Chjr+rcmGq3CqhQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r6KuzDJOd0tpDLpilxEYe7gANcKdJQd/aTNCRIv/CDc=;
- b=Y9vJkgreX58bV5w30v8NM6yg5MWZlENa0aW1aivvYB84C0pkbVlXRva5T97tXw62Us/oOzB0NfTMP5LL88ggzle4IpNnjocWt92q2vMdtaif3GR1eyXthIfPbqGvRywxEHL4d11K6gUzKFbkgnaCEfVBtWb0jHl1PrF7OI1rn90=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SA1PR12MB999228.namprd12.prod.outlook.com
- (2603:10b6:806:4db::10) by SJ0PR12MB6853.namprd12.prod.outlook.com
- (2603:10b6:a03:47b::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Fri, 18 Sep
- 2026 13:09:37 +0000
-Received: from SA1PR12MB999228.namprd12.prod.outlook.com
- ([fe80::4dba:119e:8e7c:37b3]) by SA1PR12MB999228.namprd12.prod.outlook.com
- ([fe80::4dba:119e:8e7c:37b3%6]) with mapi id 15.21.0428.011; Fri, 18 Sep 2026
- 13:09:37 +0000
-Message-ID: <f6fb7f1e-a296-4142-9b77-64420edabe64@amd.com>
-Date: Fri, 18 Sep 2026 23:09:29 +1000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v6 09/11] iommufd: Add the vdevice TSM request ioctl
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
- linux-coco@lists.linux.dev, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Bjorn Helgaas <helgaas@kernel.org>,
- Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
- Kevin Tian <kevin.tian@intel.com>, Nicolin Chen <nicolinc@nvidia.com>,
- Samuel Ortiz <sameo@rivosinc.com>, Steven Price <steven.price@arm.com>,
- Suzuki K Poulose <Suzuki.Poulose@arm.com>, Will Deacon <will@kernel.org>,
- Xu Yilun <yilun.xu@linux.intel.com>,
- Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
- <20260917140159.1163281-10-aneesh.kumar@kernel.org>
-From: Alexey Kardashevskiy <aik@amd.com>
-Content-Language: en-US
-In-Reply-To: <20260917140159.1163281-10-aneesh.kumar@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SY8PR01CA0012.ausprd01.prod.outlook.com
- (2603:10c6:10:29c::11) To SA1PR12MB999228.namprd12.prod.outlook.com
- (2603:10b6:806:4db::10)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y+jKs4mz"
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cbee6bb8408so898081a12.3
+        for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 06:13:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789737202; x=1790342002; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0ud9IADFECmv4ypdoomkuAdmOaYSroln0xj23hEJBkE=;
+        b=Y+jKs4mzo8Xj8k7MaTbKPyzpkybyRGdqlxTCFg1qa3tBnQudimL04mJMIQa6vmzlAY
+         9EmEQzTg7YO0DJXKJuMBFn7wbgJ2WGeB8GQiVX4NukMnlSGHv0B+EoEfwa4DM5/SPuW5
+         Cd3wMmBT3kmOHWOShsXEWdGqs6dQpwokHjtPP9CoBQnMUSuJOeXVJZPOhu9zovutDWsF
+         6+mNsGvilg3K2cb2fIquXAOU06iWkaRCColHJ8EkD9wbCRAkBYDLzEkQCAyoVL1XizET
+         rfyJ1xO1EXvp9wucvroROsRht1IbUKGakZKjeDsrtycBNYFDANTe39AUQ/ggr3fHW1KD
+         cMEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789737202; x=1790342002;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0ud9IADFECmv4ypdoomkuAdmOaYSroln0xj23hEJBkE=;
+        b=z8rBpUD742rfvB3sIXfHQT3TZNK7ENL32JGliYt9LPEU6x8Oq5PltvJ81rhH9v6aBn
+         J8q8+5ZQ2xZE+xKmc/Echmm7AcsJ45r+R20+shFqGUyG6DIg21m6PWB3VznWmbWJmxnP
+         dspLu2U4K8K8qliRWIbflJ7FG4qc/HERB1RUYn7e66u2mm1LRc9Ccyb8+PEFY3u01HAa
+         0DCag2vED3Dr2HYc8+4C/v+gt34HI4D8VxB8p65BNHXrvzuTeziMsMNPLQ0CNQbBgzWI
+         RBkd7eZJHJ7SvU3IGJFt6o8X3TRXaePfX+UxvPm/WpwtmoCbWU+7a9rrKm59ASxoKxef
+         U+8w==
+X-Forwarded-Encrypted: i=1; AKwUvByCQdWnDTfxhmIJgCwwkTAvGzF21IW1yydIMVCzMdso9SR8+i/LRg8MFuxtIoqO1gi42bc=@vger.kernel.org
+X-Gm-Message-State: AFuF++k/8F6cL+83bp3uc4bsMnYKIDTNZHpxnzYdTrrUawXBo47kktyN
+	5x8vjBsYLko26qJ6SEyGWtFRjuK6DvYkuhjwgZ3qZ8bNJM/ihVlPePG9NYz7krnsfwQmA7x5K4x
+	eXMe3Ew==
+X-Received: from pjbju13.prod.google.com ([2002:a17:90b:20cd:b0:39e:2369:7399])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2d47:b0:39d:f4fd:8075
+ with SMTP id 98e67ed59e1d1-39e54c9c7b7mr6090144a91.19.1789737201416; Fri, 18
+ Sep 2026 06:13:21 -0700 (PDT)
+Date: Fri, 18 Sep 2026 06:13:20 -0700
+In-Reply-To: <56a61983c03806120e607dfd1e1b7c9046c1f54b.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR12MB999228:EE_|SJ0PR12MB6853:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e6ad043-178a-4a7e-9e50-08df158617b5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|366016|7416014|1800799024|3023799007|10067099003|4143699003|56012099006|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	ZeyS4r0XTJWkvcIBLgl9XMvA+gVkdu4znI2Yzqb20sZXA7Y3EfN4LWPqqMCNuvfTYFQCcFnADJY8Jb4rZ9KCVR9B1ebKns2iG4VKfJG1boqif2pahmho+/+8uOJSOr9zVw7OzMAqvYiMLvAmw0F5t+YSjEiKQ0Zu/g/3LTWJoekLj6UNVj2Z3c7BJGeo7VLAyr471Lp9ZdnYCGtyqgtfEcOwqBu3ewhYvyut3F87zuckqPhEDKuoxvnm9BhUfFGg1Po6Gms7dFfmLeySSMgaNA/G+y+rdimrBvhMhafHCYsPyh8CIXoEc/pIY+WIv2j0pS6mA90oCS7AfnSS32RyXOnKfnJJfbpvejah4k3Gyf7Wj+505CM6yqMBeXAjnh+gZ0A0NyGjYX9xjSFsWMjjYMRyjrTf2oVXyH6prGNInI/lzYshzadMagYPSLSJmfhnNejN1cHY6gF7uYD2RzXEDhW4Ybpqg1ugkLbVwXrgQE5ewt/5pbLKUUQCaiVT4Dr4DnDLBkYbSQbyFWwEkYxRnHccNWBl56S3OBdi4JktwJDxMNmQPLVUwfyz1rGOAc9wttHrDokFHeki2Wdxoyrr6204bw97LguUiFOhG2lHeVMgyp9kIlVHYs6BJUOB8msiPJSew2fktonSTPBc6kRqmJAan2ealatYDp2ieduXd3E=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB999228.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(366016)(7416014)(1800799024)(3023799007)(10067099003)(4143699003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NE52RWIyZFVMUWh2azg1SkEvb25zcEpTZCtPdWF2REZqeHdDOUpRSytQZUkv?=
- =?utf-8?B?Y1VpOTJ4d09Mck9JZjhOeDhnSDJPT2NhU2s4bjNMTFpnSm9iVmhCOWhsWldW?=
- =?utf-8?B?b1VaSU9BZkdubGVmM1NMejRXL3ViR3VncnpKVzZhTmtvWDU5T2pyYkgyeC9G?=
- =?utf-8?B?U29vVGhmRkNLWXdSdnpXRkRIbmorZ0xmWkszZUdrRTgyNGNZSVMreXdZSDF3?=
- =?utf-8?B?d09CazZCdUhPaGJOd1F4K2VnUnlVTVU1bVYxSmdlTDRtZ3VYT2E2UUcvaHRU?=
- =?utf-8?B?d0phRzNtK05tMW9RdnpjOXkvcDVTa1dYeFhZUmNkanBmSC96RGlvT0tpYllX?=
- =?utf-8?B?MVVLYlV6MUZxRkJVMzkwNHpVMUloUzc3ODRyYVFlYzcxbnE3am15dVRIRklw?=
- =?utf-8?B?WS8wT0ZJMjdvZ1JGYzZiUXk1WHhTcEFRMlE5MlJrZTVraWx5ai9YVDR5RzlX?=
- =?utf-8?B?cE9HT3BvTW1XcCtsSUYwbjcybW44RXZMMVEvRUgzNmVnOW1YbzUrcFZSdkpw?=
- =?utf-8?B?MUdFZ3E0UWdtdE1rSm9HWWpKQ1UwQ0R1c2MzRElqc3d3MFRVRUxBWHhlS1hn?=
- =?utf-8?B?VDk4OGJCSVN1T0Z6SEpQU3ViRHhxendodk51cExwQ0ZraWhRNWtZeDJnL215?=
- =?utf-8?B?eW9WY0JGRzFjRWFTMk43dlpCcmsyYTc3ZGdNMm83cUpoVXBweWw5WXF0VE9V?=
- =?utf-8?B?cHMyQ2pYN0ZmeXFlLzVzWUYveUlYajAxZzQyM2lNU2c3VkhQWHVBSmFiZnhQ?=
- =?utf-8?B?dllBZTdsL1k2M1FqQ3FvZm9wWnpvZUhyOUQ3NkVLRmlKT2NEblhvV0E4cGc2?=
- =?utf-8?B?eHNVeE5xN2lneUo5bDl2RXJjNzNidktnekljSU1WR0M5NlJ5UU9vdk5sTC9U?=
- =?utf-8?B?Qk5laEdiVHU4aUI3NHJ5cFE1ckVydmpNUitPeDJzdlZMTW9pRDdXMTJoZlA2?=
- =?utf-8?B?R2FqQXR1ZzJ2WnUwbzQwMDBwc2ZDYzZ2bGxrUW9PZFB5LzV3NFNEb21SS3Y1?=
- =?utf-8?B?MWR1RUozTTBHNVh1RkZuaDN4N0JTVW05NFFYNFAwUmdxMTB3eHF3a0RGRTR0?=
- =?utf-8?B?b25jY3czNXlRbG1CRUVNWmhxVWYrR0ZKbUlCTk9mSUpzeGpOazdwaGxpcXZG?=
- =?utf-8?B?QllUV0RvUDhpVGI1WHNaM0pxNHlWMEtHaVUxQ2pWNTZYM3JuRUI0ZEpyV2xY?=
- =?utf-8?B?d2h5RmJGWDhudlJOUzREUGcyYlBUK3N4ZWNEU2lEN0lpcmtDb2tWdnhFaTEx?=
- =?utf-8?B?RnRKMnMya0JadnRBR0JtaTlIbktmbE5nbGJSMDdmd2JhZ2loYWcycHVCUmp2?=
- =?utf-8?B?QXUxMFEvaEFSS3BLVjM2ajIwVjVyV244WjlMcU5jNGc1WjNxRXYvTTVMUWtw?=
- =?utf-8?B?VkpiTzdTQWMzUWJ6Y2EvSkhFSndydkwxUlVoZUhrQ3JBWWVRTDNsbWIxWE5h?=
- =?utf-8?B?TUFXNWw3ajZ6bkV3RnRhaFdMZnJoVkp2QVpyc2FDMks1d3kyTTF0RHBJVUMx?=
- =?utf-8?B?RVNENW1IeGVnbVVsREZMU21kNlh3NVFjRzl2NmhjUlpNbENkR3ZtcExIamND?=
- =?utf-8?B?NkNLMk03bWlQck1KMWt3WFV3U0U5eExZL0MxYnF5ZlA0dnFhNFJOSWN1cWda?=
- =?utf-8?B?dm9ONGtzVEFHd3QzZVdQRVNLVndQVnJIK3ZOdHY1QkhOTVlZSklIc255S1pV?=
- =?utf-8?B?NFV6TWdxd3BhKy9aeU5RQW1vKzlTVjFtUVBSUUJRSG5iSU9Cak9BZlp1V0gv?=
- =?utf-8?B?OUIvUTN4UVVJTmZwb095UFFobU1PQXJ6YmQ2VWt1bFl0d3FUa3lyWlIxd2FU?=
- =?utf-8?B?Q21NOVlQbTcrdXY2V1BGdWFvSTNSM1VXbXdFY2oyUDZrSlE3MjVJb0RpWVZx?=
- =?utf-8?B?Uk9mWG9kMVBBek5vNEowcTFiN3NCOFp4TkhNOVZpb0ZZbTJLcUlpZklKNWVq?=
- =?utf-8?B?bERKaDVSa2NlalE2RVFjTHdZNUNiNDhWeGZMZE5CV2hpRVIxUmtQUVZTaWZv?=
- =?utf-8?B?am1MMjhNUFlLdVhUa29HZUk2VVBlVVVMZXpxZ1hHWWo3SVBWb0VHYnVicE52?=
- =?utf-8?B?WTEvbDVDcGJjYnZ3K284U0hXY2VaeWNXM0lIRWNsQ28rODA0T1R2VnRubENB?=
- =?utf-8?B?YkJTNDQyRUNCS082d3FFbWk0R21CSlZKbFpGMEZGc290OEFkZUNHVXFMamh3?=
- =?utf-8?B?QTZQckdIZS8vRHowd0ZIRGxRMVFHM1BGV2NpMnJRRlR6U2ROVW1zcGNKVU9D?=
- =?utf-8?B?aWRXOEdYWVRnTVluVG9TMi9QTzJ0UjN5THhqT3dXcWpJSVRmZXRrNytldHQy?=
- =?utf-8?B?cjlpLzVYeFY4VGs2RnNhOHMwSlNwSWhva1A2NE43S1JCTU9wKzZEdz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e6ad043-178a-4a7e-9e50-08df158617b5
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB999228.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2026 13:09:37.8153
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NgcWB1vFaZ+QS6IpKxc6684QnunhE0aKpOHt9KWnBiR0YmoLy8kI2bWWmPNe4vx2ErcljOSKHOFICr81bnGxzw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6853
+Mime-Version: 1.0
+References: <dae5a64112c9c949524226c66efac9c669df5b92.camel@intel.com>
+ <aqsfoHzOip3n4zdU@intel.com> <aqss_eQAY7soHRwJ@google.com>
+ <28f7a805c57da35d86b5c495cdf2b613a61d235e.camel@intel.com>
+ <aqvtG90zWq6SkU8L@google.com> <3f97caf660cbe460b8bbaf3f2a72e4b6a3ea83d9.camel@intel.com>
+ <aqxGN2Zc8sOl2RKx@google.com> <906d0cb6515b396f4e9d74f1d546c902ea3ce49a.camel@intel.com>
+ <aqyAED5ZK48eEZtq@google.com> <56a61983c03806120e607dfd1e1b7c9046c1f54b.camel@intel.com>
+Message-ID: <aq048KmPN5WPQ4sQ@google.com>
+Subject: Re: TDG quote analysis
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Yilun Xu <yilun.xu@intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Binbin Wu <binbin.wu@intel.com>, Dave Hansen <dave.hansen@intel.com>, 
+	Vishal Annapurve <vannapurve@google.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, Peter Fang <peter.fang@intel.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-
-
-On 18/9/26 00:01, Aneesh Kumar K.V (Arm) wrote:
-> A VMM needs to forward guest-originated TSM commands to the TSM
-> implementation managing an assigned device. The IOMMUFD vdevice
-> identifies that device within its vIOMMU and provides the appropriate
-> dispatch point.
+On Fri, Sep 18, 2026, Rick P Edgecombe wrote:
+> On Thu, 2026-09-17 at 17:04 -0700, Sean Christopherson wrote:
+> >   If supported for the specific request type, the host VMM can request an
+> >   interrupted request to be aborted.
+> > 
+> > Though per the above, apparently whether or not that's going to be supported is
+> > TBD?
 > 
-> Add IOMMU_VDEVICE_TSM_REQ to send an opaque request to a vdevice and
-> optionally return a response. Define common operation and guest
-> architecture identifiers for CCA, SEV and TDX requests.
+> So extension aborts are a whole 'nother topic. And "support" has a nuanced
+> answer to boot. I'd be very glad to hear your thoughts on it. Should we leave it
+> for a later topic or get into it now? I *think* we don't need it, but the more
+> we get into the details here, the more it's a notable thing we haven't covered.
 
-iommufd_viommu_provider_ops already knows what architecture it is, why bother with these identifiers? Thanks,
+How is saying "I no longer want to complete this quote" at all complex?  I can
+see how aborting a request to the S3M might be somewhat pointless, but inserting
+the equivalent to signal_pending() in a long-running operation doesn't seem that
+difficult.
 
+> > Regardless of where we end up with quoting, whatever RFC is sent next needs to be
+> > a million times better.  My expectations are that someone with core TDX knowledge
+> > and a basic understanding of attestation would be able to get a full and complete
+> > understanding of the design and tradeoffs from the RFC alone.  If I have to
+> > rereference a spec for anything other than double check params and magic values,
+> > the entire series is getting ignored.
 > 
-> The ioctl return value reports dispatch or data transfer errors, while
-> tsm_code carries the TSM-specific result.
+> I mean. Confidential compute in general is trying to reinvent decades of
+> virtualization solutions with one hand tied behind it's back. There *are* a lot
+> of design choices.
 > 
-> Use sockptr_t for the internal request and response buffers so TSM
-> implementations are not tied to userspace pointers.
+> Besides a rushed RFC, I think another factor is that this is the first TDX
+> feature we have done that you don't already have at least some exposure to. The
+> level of background delta need is way higher than S-EPT management for example.
 > 
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> ---
->   drivers/iommu/iommufd/Makefile          |  2 +
->   drivers/iommu/iommufd/iommufd_private.h |  8 ++
->   drivers/iommu/iommufd/main.c            |  3 +
->   drivers/iommu/iommufd/tsm.c             | 98 +++++++++++++++++++++++++
->   drivers/iommu/iommufd/viommu.c          |  2 +
->   include/linux/iommufd.h                 |  5 ++
->   include/linux/tsm.h                     | 25 +++++++
->   include/uapi/linux/iommufd.h            | 73 ++++++++++++++++++
->   8 files changed, 216 insertions(+)
->   create mode 100644 drivers/iommu/iommufd/tsm.c
-> 
-> diff --git a/drivers/iommu/iommufd/Makefile b/drivers/iommu/iommufd/Makefile
-> index 7ed46c286c42..105a54ff89f5 100644
-> --- a/drivers/iommu/iommufd/Makefile
-> +++ b/drivers/iommu/iommufd/Makefile
-> @@ -11,6 +11,8 @@ iommufd-y := \
->   	viommu.o \
->   	viommu_provider.o
->   
-> +iommufd-$(CONFIG_TSM) += tsm.o
-> +
->   iommufd-$(CONFIG_IOMMUFD_TEST) += selftest.o
->   
->   obj-$(CONFIG_IOMMUFD) += iommufd.o
-> diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
-> index eae607eb5d76..0c67f2e1f137 100644
-> --- a/drivers/iommu/iommufd/iommufd_private.h
-> +++ b/drivers/iommu/iommufd/iommufd_private.h
-> @@ -721,6 +721,14 @@ void iommufd_vdevice_destroy(struct iommufd_object *obj);
->   void iommufd_vdevice_abort(struct iommufd_object *obj);
->   int iommufd_hw_queue_alloc_ioctl(struct iommufd_ucmd *ucmd);
->   void iommufd_hw_queue_destroy(struct iommufd_object *obj);
-> +#ifdef CONFIG_TSM
-> +int iommufd_vdevice_tsm_req_ioctl(struct iommufd_ucmd *ucmd);
-> +#else
-> +static inline int iommufd_vdevice_tsm_req_ioctl(struct iommufd_ucmd *ucmd)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +#endif
->   
->   static inline struct iommufd_vdevice *
->   iommufd_get_vdevice(struct iommufd_ctx *ictx, u32 id)
-> diff --git a/drivers/iommu/iommufd/main.c b/drivers/iommu/iommufd/main.c
-> index 8c6d43601afb..4a42cda0e8f8 100644
-> --- a/drivers/iommu/iommufd/main.c
-> +++ b/drivers/iommu/iommufd/main.c
-> @@ -432,6 +432,7 @@ union ucmd_buffer {
->   	struct iommu_veventq_alloc veventq;
->   	struct iommu_vfio_ioas vfio_ioas;
->   	struct iommu_viommu_alloc viommu;
-> +	struct iommu_vdevice_tsm_req tsm_req;
->   #ifdef CONFIG_IOMMUFD_TEST
->   	struct iommu_test_cmd test;
->   #endif
-> @@ -493,6 +494,8 @@ static const struct iommufd_ioctl_op iommufd_ioctl_ops[] = {
->   		 __reserved),
->   	IOCTL_OP(IOMMU_VIOMMU_ALLOC, iommufd_viommu_alloc_ioctl,
->   		 struct iommu_viommu_alloc, out_viommu_id),
-> +	IOCTL_OP(IOMMU_VDEVICE_TSM_REQ, iommufd_vdevice_tsm_req_ioctl,
-> +		 struct iommu_vdevice_tsm_req, tsm_code),
->   #ifdef CONFIG_IOMMUFD_TEST
->   	IOCTL_OP(IOMMU_TEST_CMD, iommufd_test, struct iommu_test_cmd, last),
->   #endif
-> diff --git a/drivers/iommu/iommufd/tsm.c b/drivers/iommu/iommufd/tsm.c
-> new file mode 100644
-> index 000000000000..2fb51a86c5ec
-> --- /dev/null
-> +++ b/drivers/iommu/iommufd/tsm.c
-> @@ -0,0 +1,98 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (C) 2026 ARM Ltd.
-> + */
-> +
-> +#include <linux/tsm.h>
-> +#include "iommufd_private.h"
-> +
-> +static bool iommufd_vdevice_tsm_req_arch_valid(u32 tvm_arch)
-> +{
-> +	switch (tvm_arch) {
-> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_CCA:
-> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_SEV:
-> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_TDX:
-> +		return true;
-> +	default:
-> +		return false;
-> +	}
-> +}
-> +
-> +static bool iommufd_vdevice_tsm_req_op_valid(u32 op, u32 tvm_arch)
-> +{
-> +	switch (op) {
-> +	case TSM_REQ_VALIDATE_MMIO:
-> +	case TSM_REQ_SET_TDI_STATE:
-> +		return true;
-> +	case TSM_REQ_SEV_ENABLE_DMA:
-> +	case TSM_REQ_SEV_DISABLE_DMA:
-> +		return tvm_arch == IOMMU_VDEVICE_TSM_TVM_ARCH_SEV;
-> +	case TSM_REQ_READ_OBJECT:
-> +	case TSM_REQ_REGEN_OBJECT:
-> +	case TSM_REQ_OBJECT_INFO:
-> +		return true;
-> +	default:
-> +		return false;
-> +	}
-> +}
-> +
-> +/**
-> + * iommufd_vdevice_tsm_req_ioctl - Forward TSM requests
-> + * @ucmd: user command data for IOMMU_VDEVICE_TSM_REQ
-> + *
-> + * Resolve @iommu_vdevice_tsm_req::vdevice_id to a vdevice and pass the
-> + * request/response buffers to its vIOMMU provider.
-> + *
-> + * Return:
-> + *  -errno on error.
-> + *  positive residue if response/request bytes were left unconsumed.
-> + *    if response buffer is provided, residue indicates the number of bytes
-> + *    not used in response buffer
-> + *    if there is no response buffer, residue indicates the number of bytes
-> + *    not consumed in req buffer
-> + *  0 otherwise.
-> + */
-> +int iommufd_vdevice_tsm_req_ioctl(struct iommufd_ucmd *ucmd)
-> +{
-> +	int ret;
-> +	struct iommufd_vdevice *vdev;
-> +	struct iommu_vdevice_tsm_req *cmd = ucmd->cmd;
-> +	struct tsm_guest_req_info info = {
-> +		.op = cmd->op,
-> +		.tvm_arch = cmd->tvm_arch,
-> +		.req   = {
-> +			.user = u64_to_user_ptr(cmd->req_uptr),
-> +			.is_kernel = false,
-> +		},
-> +		.req_len = cmd->req_len,
-> +		.resp    =  {
-> +			.user = u64_to_user_ptr(cmd->resp_uptr),
-> +			.is_kernel = false,
-> +		},
-> +		.resp_len = cmd->resp_len,
-> +	};
-> +
-> +	if (!iommufd_vdevice_tsm_req_arch_valid(cmd->tvm_arch))
-> +		return -EINVAL;
-> +
-> +	if (!iommufd_vdevice_tsm_req_op_valid(cmd->op, cmd->tvm_arch))
-> +		return -EINVAL;
-> +
-> +	vdev = iommufd_get_vdevice(ucmd->ictx, cmd->vdevice_id);
-> +	if (IS_ERR(vdev))
-> +		return PTR_ERR(vdev);
-> +
-> +	cmd->tsm_code = 0;
-> +	if (!vdev->viommu->ops || !vdev->viommu->ops->vdevice_tsm_req)
-> +		ret = -EOPNOTSUPP;
-> +	else
-> +		ret = vdev->viommu->ops->vdevice_tsm_req(vdev, &info,
-> +							 &cmd->tsm_code);
-> +
-> +	/* Always copy the tsm_code as response */
-> +	if (iommufd_ucmd_respond(ucmd, sizeof(*cmd)))
-> +		ret = -EFAULT;
-> +
-> +	iommufd_put_object(ucmd->ictx, &vdev->obj);
-> +	return ret;
-> +}
-> diff --git a/drivers/iommu/iommufd/viommu.c b/drivers/iommu/iommufd/viommu.c
-> index 66bbd6e4571d..c462086ff5df 100644
-> --- a/drivers/iommu/iommufd/viommu.c
-> +++ b/drivers/iommu/iommufd/viommu.c
-> @@ -3,6 +3,8 @@
->    */
->   #include <linux/file.h>
->   #include "iommufd_private.h"
-> +#include <linux/cleanup.h>
-> +#include <linux/tsm.h>
->   
->   void iommufd_viommu_destroy(struct iommufd_object *obj)
->   {
-> diff --git a/include/linux/iommufd.h b/include/linux/iommufd.h
-> index 7b906e0d6400..f16b82034be9 100644
-> --- a/include/linux/iommufd.h
-> +++ b/include/linux/iommufd.h
-> @@ -27,6 +27,7 @@ struct iommufd_viommu_ops;
->   struct iommufd_viommu_provider;
->   struct module;
->   struct page;
-> +struct tsm_guest_req_info;
->   
->   /**
->    * struct iommufd_viommu_provider_ops - External vIOMMU implementation
-> @@ -199,6 +200,7 @@ struct iommufd_hw_queue {
->    *                include/uapi/linux/iommufd.h)
->    *                If driver has a deinit function to revert what vdevice_init op
->    *                does, it should set it to the @vdev->destroy function pointer
-> + * @vdevice_tsm_req: Forward a guest TSM request to a driver-owned vDEVICE
->    * @get_hw_queue_size: Get the size of a driver-defined HW queue structure for a
->    *                     given @viommu corresponding to @queue_type. Driver should
->    *                     return 0 if HW queue aren't supported accordingly. It is
-> @@ -225,6 +227,9 @@ struct iommufd_viommu_ops {
->   				struct iommu_user_data_array *array);
->   	const size_t vdevice_size;
->   	int (*vdevice_init)(struct iommufd_vdevice *vdev);
-> +	ssize_t (*vdevice_tsm_req)(struct iommufd_vdevice *vdev,
-> +				   struct tsm_guest_req_info *info,
-> +				   u64 *tsm_code);
->   	size_t (*get_hw_queue_size)(struct iommufd_viommu *viommu,
->   				    enum iommu_hw_queue_type queue_type);
->   	/* AMD's HW will add hw_queue_init simply using @hw_queue->base_addr */
-> diff --git a/include/linux/tsm.h b/include/linux/tsm.h
-> index f38d6fcf9cc9..39bad60b4815 100644
-> --- a/include/linux/tsm.h
-> +++ b/include/linux/tsm.h
-> @@ -7,6 +7,8 @@
->   #include <linux/types.h>
->   #include <linux/uuid.h>
->   #include <linux/device.h>
-> +#include <linux/sockptr.h>
-> +#include <uapi/linux/iommufd.h>
->   
->   #define TSM_REPORT_INBLOB_MAX 64
->   #define TSM_REPORT_OUTBLOB_MAX SZ_16M
-> @@ -139,4 +141,27 @@ struct tsm_dev *find_tsm_dev(int id);
->   struct pci_ide;
->   int tsm_ide_stream_register(struct pci_ide *ide);
->   void tsm_ide_stream_unregister(struct pci_ide *ide);
-> +
-> +#ifdef CONFIG_TSM
-> +/**
-> + * struct tsm_guest_req_info - parameters for a guest-initiated TSM request
-> + * @op: operation for the guest-initiated request
-> + * @tvm_arch: guest TVM architecture
-> + * @req: request data buffer filled by guest
-> + * @req_len: the size of @req filled by guest
-> + * @resp: response data buffer filled by host
-> + * @resp_len: the size of @resp buffer filled by guest
-> + */
-> +struct tsm_guest_req_info {
-> +	enum iommu_vdevice_tsm_guest_req_op op;
-> +	enum iommu_vdevice_tsm_guest_tvm_arch tvm_arch;
-> +	sockptr_t req;
-> +	size_t req_len;
-> +	sockptr_t resp;
-> +	size_t resp_len;
-> +};iommufd_viommu_provider_ops
-> +#else
-> +struct tsm_guest_req_info;
-> +#endif
-> +
->   #endif /* __TSM_H */
-> diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
-> index 0425d452d41e..43ed082a9421 100644
-> --- a/include/uapi/linux/iommufd.h
-> +++ b/include/uapi/linux/iommufd.h
-> @@ -57,6 +57,7 @@ enum {
->   	IOMMUFD_CMD_IOAS_CHANGE_PROCESS = 0x92,
->   	IOMMUFD_CMD_VEVENTQ_ALLOC = 0x93,
->   	IOMMUFD_CMD_HW_QUEUE_ALLOC = 0x94,
-> +	IOMMUFD_CMD_VDEVICE_TSM_REQ = 0x96,
->   };
->   
->   /**
-> @@ -1351,4 +1352,76 @@ struct iommu_hw_queue_alloc {
->   	__aligned_u64 length;
->   };
->   #define IOMMU_HW_QUEUE_ALLOC _IO(IOMMUFD_TYPE, IOMMUFD_CMD_HW_QUEUE_ALLOC)
-> +
-> +/**
-> + * enum iommu_vdevice_tsm_guest_tvm_arch - guest TVM architecture
-> + * @IOMMU_VDEVICE_TSM_TVM_ARCH_CCA: Arm CCA TVM
-> + * @IOMMU_VDEVICE_TSM_TVM_ARCH_SEV: AMD SEV TVM
-> + * @IOMMU_VDEVICE_TSM_TVM_ARCH_TDX: Intel TDX TVM
-> + */
-> +enum iommu_vdevice_tsm_guest_tvm_arch {
-> +	IOMMU_VDEVICE_TSM_TVM_ARCH_CCA = 1,
-> +	IOMMU_VDEVICE_TSM_TVM_ARCH_SEV,
-> +	IOMMU_VDEVICE_TSM_TVM_ARCH_TDX,
-> +};
-> +
-> +/**
-> + * enum iommu_vdevice_tsm_guest_req_op - operation for guest TSM requests
-> + * @TSM_REQ_VALIDATE_MMIO: Validate MMIO for the TDI
-> + * @TSM_REQ_SET_TDI_STATE: Set TDI state
-> + * @TSM_REQ_SEV_ENABLE_DMA: Enable SEV DMA
-> + * @TSM_REQ_SEV_DISABLE_DMA: Disable SEV DMA
-> + * @TSM_REQ_READ_OBJECT: Read a TSM object
-> + * @TSM_REQ_REGEN_OBJECT: Regenerate a TSM object
-> + * @TSM_REQ_OBJECT_INFO: Read TSM object information
-> + */
-> +enum iommu_vdevice_tsm_guest_req_op {
-> +	TSM_REQ_VALIDATE_MMIO = 1,
-> +	TSM_REQ_SET_TDI_STATE,
-> +	TSM_REQ_SEV_ENABLE_DMA,
-> +	TSM_REQ_SEV_DISABLE_DMA,
-> +	TSM_REQ_READ_OBJECT,
-> +	TSM_REQ_REGEN_OBJECT,
-> +	TSM_REQ_OBJECT_INFO,
-> +};
-> +
-> +/**
-> + * struct iommu_vdevice_tsm_req - ioctl(IOMMU_VDEVICE_TSM_REQ)
-> + * @size: sizeof(struct iommu_vdevice_tsm_req)
-> + * @vdevice_id: vDevice ID the guest request is for
-> + * @op: One of enum iommu_vdevice_tsm_guest_req_op
-> + * @tvm_arch: One of enum iommu_vdevice_tsm_guest_tvm_arch
-> + * @req_len: Size in bytes of the input payload at @req_uptr
-> + * @resp_len: Size in bytes of the output buffer at @resp_uptr
-> + * @req_uptr: Userspace pointer to the guest-provided request payload
-> + * @resp_uptr: Userspace pointer to the guest response buffer
-> + * @tsm_code: TSM-specific result code returned by the TSM implementation
-> + *
-> + * Forward a TSM request to the TSM bound vDevice. This is intended for
-> + * guest TSM/TDISP message transport where the host kernel only marshals
-> + * bytes between userspace and the TSM implementation.
-> + *
-> + * The request operation is guest initiated. The TSM backend validates
-> + * @tvm_arch against its bound TVM architecture assumptions.
-> + *
-> + * The request payload is read from @req_uptr/@req_len. If a response is
-> + * expected, userspace provides @resp_uptr/@resp_len as writable storage for
-> + * response bytes returned by the TSM path.
-> + *
-> + * The ioctl is only suitable for commands and results that the host kernel
-> + * has no use, the host is only facilitating guest to TSM communication.
-> + */
-> +struct iommu_vdevice_tsm_req {
-> +	__u32 size;
-> +	__u32 vdevice_id;
-> +	__u32 op;
-> +	__u32 tvm_arch;
-> +	__u32 req_len;
-> +	__u32 resp_len;
-> +	__aligned_u64 req_uptr;
-> +	__aligned_u64 resp_uptr;
-> +	__aligned_u64 tsm_code;
-> +};
-> +
-> +#define IOMMU_VDEVICE_TSM_REQ _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VDEVICE_TSM_REQ)
->   #endif
+> And I'm less and less sure we are going to be successful distilling things like
 
--- 
-Alexey
+It seems like part of the problem is that you're trying to "distill" into abstract
+concepts.  I don't want abstract concepts, I want a description of what the TDX
+Module code will literally do, using verbiage and terminology that a KVM developer
+will natively understand.
 
+> this down in a way that doesn't leave you frustrated. But if you want details
+> there is just going to be a lot of them. Hmm.
+
+This is what I want.  Note, this description is apparently wildly wrong, because
+I wrote it before reading about whatever NRX modules are.  But I'm leaving it
+because it highlights my point about not wanting TDX jargon rephrased as abstract
+concepts.
+
+  Under the hood, TDH.GET.QUOTE uses what TDX calls a "virtual thread pool".
+  That just means there's a pre-allocated pool of "thread" memory that can be
+  used to service interruptible requests (it's not true interruption, it's
+  basically voluntary preemption).  The number of threads in the pool is
+  configured by software during ??? (TDH.QUOTE.INIT?), and directly controls
+  how many in-flight TDH.GET.QUOTE operations there can be at any given time.
+
+  Each thread consumes ??? KiB of memory, and <reasoning>, so we chose to set
+  the pool size to 1, i.e. to only allow a single quote to be in-flight across
+  the entire system.
+
+  TDH.GET.QUOTE is "interruptible" because the bulk of the quote crypto is done
+  by the TDX module, i.e. on the CPU that invokes TDH.GET.QUOTE.  We don't have
+  numbers for TDH.GET.QUOTE yet (why not?), but the very rough ballpark is that
+  it will takes 1-2ms.  Note, the S3M is used only during ??? (TDH.QUOTE.INIT?)
+  to get the platform key used to generate quotes, i.e. generating a quote is
+  fully synchronous relative to the core.
+
+> > As for guest-driven quoting, to me there is a fairly straightforward solution.
+> > Assuming using guest-donated memory is too complex for the "virtual thread":
+> > 
+> >  1. Drop "virtual thread pools" from quoting and support at most one in-flight
+> >     quote per TD.  I doubt whatever memory is needed for a virtual thread is so
+> >     insanely ridiculous that we can't burn that much memory per TD.  32KiB is a
+> >     no-brainer.  Above that and we'd have to reconsider, but if quoting requires
+> >     more than 32KiB of scratch space, I have to wonder what on earth it's doing.
+> 
+> I think the abstract descriptions are not helping, so I'll try some more
+> details. Today the "thread" involves something like a vCPU in a TD. You can see
+> some references in the TDX base spec like:
+>    Currently, TDX Module extensions are implemented as guests running in SEAM non-
+>    root mode, called NRX Modules. Technically, each NRX Module is similar to a TD.
+
+So my above statement that "it's not true interruption, it's basically voluntary
+preemption" is wrong?  Because if the quote crud is running in a TD, then events
+will trigger VM-Exit, and it will be impossible to make forward progress without
+SEAMRETing to the host.
+
+If that's true, then that changes my understanding of this just a bit, because
+it means the quote operation isn't manually saving state at a "good stopping point",
+it's relying on the VM-Exit to save/restore at whenever it happened to be.  But
+given that you say "This idea came up before actually", maybe chunking the quote
+operation isn't a big lift?
+
+But the original mail says this:
+
+   -- Guest Interrupts --
+
+   It is not nice to keep the guest from running for too long. The TDH.QUOTE.GET
+   SEAMCALL monitors for host interrupts, but not guest ones. Similarly, the SGX
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   quoting enclave doesn't know what is happening in the TD. So, to help reduce
+   guest latencies, the GHCI exposes a way to register for a notification
+   (SetupEventNotifyInterrupt) when the quoting is finished. A quote TDVMCALL
+   handler can start the quote operation on another host thread, and resume
+   guest execution waiting for the quote to finish.
+
+which strongly suggests active polling.  Do you see why I don't want abstract
+descriptions?  Similar to changelogs, there's a balance between "too detailed"
+and "too abstract", and right now all of this is firmly on the "too abstract"
+side of the world.
+
+> >  2. To avoid having to check for guest interrupts, for the "SW based" synchronous
+> >     method, simply resume the guest after processing a fixed amount of state.  Yes,
+> >     that will increase the best case latency for a single quote, but *best* case
+> >     latency isn't a huge concern, and I doubt the overhead of a VMX roundtrip will
+> >     significantly impact that.  It's the tail latencies that will be problematic,
+> >     and a forcing the serialization into the guest (the aforementioned mutex) means
+> >     the tail latencies will only be affected by host activity on *that* CPU, which
+> >     is more or less the status quo.
+> > 
+> >     E.g. even assuming an absurd 20% overhead for the VMX round trips, having a
+> >     quote take ~1.2 *every* time is would be a far, far better experience than a
+> >     quote taking 1ms - 10ms to complete.
+> 
+> Dave will probably not get a chance to respond this week, but we should maybe
+> discuss what acceptable guest latency actually is.
+
+Yes.  But it's not necessarily about "acceptable" guest latency, I care more about
+*predictable* guest latency.  E.g. making up numbers to illustrate the point,
+achieving 50us latency for the happy case is meaningless if the P99 latency is 10ms.
