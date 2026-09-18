@@ -1,135 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C95E4071CA
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 08:43:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D034957C9F;
+	Fri, 18 Sep 2026 08:43:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789721030; cv=none; b=pE41taew95cO7E6iMscPq4LEzxn/JFHvkdMWTa8uu+vEV5jRtBW63dtOrx014/Alzl57fHhCF4SmpvEWxkOm7hKSkRDFanHXPieO4s/frRfYMYRTiuEUlJ/4/FDUKytOjxLQ6fFgRWuOjWoUtsn2QvAfYtJ4Nd2gz2U0E1ZTwqM=
+	t=1789721040; cv=none; b=ofCasQF7Hqub6TeQtvrVQ3VMhy475kWoMTg1xu2/hvfYlXamS9EkSxMDhALqAHPqHCaTyi2ewBvXzkEywBB2mWBGhUlMU49q/ZkjP4WgXc5tnEwgzoQnWs14pxV4I1rQ3Vt0bx8WaX15rP3ZsjM5MN0FZqdciygYNkjPaarcLx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789721030; c=relaxed/simple;
-	bh=MiViv+W337/PdW4LE9kxVBMCbKg7khgBw1rtJBaAj+I=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Q8HzD9Z9hKohJNI0YyARjfah+AT/m9fBOQA0UVLGBXRFPorhW0H3/84E6k0eGMIa7E6G0jUVs2Cv0s1D1jyDa22a8LsalDdH4Ec81yLPeXytdJ8HddBpSFSkvZsnWf1XlhQi88YeIzKPRhfDDD8e/+xyBSafju1rjsHSifIgOq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BjVLEP8s; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789721040; c=relaxed/simple;
+	bh=If0woU3wB/U0GPMkW/UBmPHM9mrWMkULYMmonKX54CE=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ougxVD+A+inh+gbZDj9lzIhDW+qhAdo1YDfVY3eFhfeqbD5JfVr/6OSu5Z13ujVADXxwGbgBUpAAgHkuAUjcREl9OMCfu4hqutwdQjAFIrdaL6vyGxR/5NFoyGvLVKWe9iLxcFmfsOglfnAzRCX2RRA9Sv9VSgGC14mfpJIy0eE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=sldqc943; arc=none smtp.client-ip=113.46.200.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BjVLEP8s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2CE81F00893;
-	Fri, 18 Sep 2026 08:43:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789721028;
-	bh=9pHj3GRphBoLNttdG5fj6aOsL07VLoc4zklW4pYwAsA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BjVLEP8suRj6BmhzkvvcccK1oaqQg74Ots4ukEAJiac0fK5GaYPVZe2pL5blM1qu8
-	 9qP4lRMCNtXymfW9DNRv4XSSikwWZ/SIpTY1x0vOCdMPItkG+93WxY+cEepNTCbj3s
-	 p3eteLq8xmRfkXkha79t5KYKbzKN67UKgYvRlB9BdvNVq/gDgSNyvCmUyGhv9R6Jem
-	 z/sqfd+5cN7x2Tem47uC9N39ceOzhLUX21NoRcJI7vRx3a3DPSt5sNg372EgAOMXST
-	 eYTcjJOZiRqefYlPWxKCHElGuQphWaORg5eNk4UNDHEfwW83/Ql9Zhv1IYfZkNjvgz
-	 nLlHbPrSbNgUg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 25/28] KVM: x86/mmu: Obsolete all roots if memattr
- contains gPTEs
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Paolo Bonzini" <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260918081543.139871-26-pbonzini@redhat.com>
-References: <20260918081543.139871-1-pbonzini@redhat.com>
- <20260918081543.139871-26-pbonzini@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 08:43:47 +0000
-Message-Id: <20260918084347.E2CE81F00893@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="sldqc943"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=lnb1HsHPC7o9LX8c5eToyfaI+3ww1o3UsgtWogez0oY=;
+	b=sldqc9435XhYZkkErI8ITZ3BKXKuMG89YSDpE7Q+IpZU3aMkDd7u+aNynGpJyLWyB+ulU0CT8
+	PKEmZwwBy4KtFo/6H59LCQ6vy5eKTvagVY8+fw5A/RGnDCJpHgmeTz1r6/34K/IWgpejOXXcy+G
+	HAE3YSRcGMLc+MHHi2HlZYA=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4hmQqF3FVGz12LFc;
+	Fri, 18 Sep 2026 16:32:41 +0800 (CST)
+Received: from whupemk100014.china.huawei.com (unknown [7.152.184.20])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8007420333;
+	Fri, 18 Sep 2026 16:43:48 +0800 (CST)
+Received: from huawei.com (10.50.163.32) by whupemk100014.china.huawei.com
+ (7.152.184.20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 18 Sep
+ 2026 16:43:47 +0800
+From: Longfang Liu <liulongfang@huawei.com>
+To: <alex.williamson@redhat.com>, <jgg@nvidia.com>
+CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<liulongfang@huawei.com>
+Subject: [PATCH v4 2/2] hisi_acc_vfio_pci: reject live migration on 64KB page with QM_HW_V3 hardware
+Date: Fri, 18 Sep 2026 16:42:44 +0800
+Message-ID: <20260918084244.1485837-3-liulongfang@huawei.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260918084244.1485837-1-liulongfang@huawei.com>
+References: <20260918084244.1485837-1-liulongfang@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ whupemk100014.china.huawei.com (7.152.184.20)
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Critical] kvm: mixed-attribute hugepage mapping via race when mmu_lock i=
-s dropped
-- [High] kvm: soft lockup in kvm_arch_post_set_memory_attributes() due to u=
-nbounded loop
---
+On QM_HW_V3 (VF_CTRL mode) hardware with 64KB pages, the functional
+region and migration registers share one BAR2 physical page with no
+isolation, which leaks migration registers to the guest and causes
+guest kernel calltrace under the KVM emulated device scheme.
 
-commit 33f579fe7310efff8ad87a283b4a1e970511e847
-Author: Paolo Bonzini <pbonzini@redhat.com>
-Subject: KVM: x86/mmu: Obsolete all roots if memattr contains gPTEs
+The previous fix rejected the device in hisi_acc_vf_qm_init() during
+open_device, returning -EINVAL and breaking passthrough entirely.
+Move the drv_mode check into a helper called from probe() so that a
+VF_CTRL device on a 64KB page is bound to the generic ops, keeping
+passthrough working while disabling live migration.
 
-This commit introduces a mechanism to invalidate all MMU roots when applying
-memory protection attributes against a GPTE page. It splits the fast zap
-operation into a locked front-half and an unlocked back-half.
+Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
+Signed-off-by: Longfang Liu <liulongfang@huawei.com>
+---
+ .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 32 ++++++++++++-------
+ 1 file changed, 21 insertions(+), 11 deletions(-)
 
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index 097095f71d605..d658cfe31cd9b 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-[ ... ]
-> @@ -8320,9 +8321,40 @@ bool kvm_arch_post_set_memory_attributes(struct kv=
-m *kvm,
->  				hugepage_set_mixed(slot, gfn, level);
->  		}
->  	}
-> +
-> +	/*
-> +	 * There are special considerations when applying an memory protection
-> +	 * attibute against a GPTE page. If set read-only, access/dirty bits
-> +	 * within that page shouldn't be updated. If set non-accesible,
-> +	 * accessing a virtual address that requires traversing that GPTE page
-> +	 * should fault.
-> +	 *
-> +	 * On TDP enabled guests, the CPU faults on the GPTE address upon
-> +	 * detecting such a situation.
-> +	 *
-> +	 * On non-TDP, upon detecting this situation, and based on the fact it
-> +	 * should be a rare occasion, invalidate all the mmu roots.
-> +	 */
-> +	for (gfn_t gfn =3D range->start; gfn < range->end; gfn++) {
+diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+index 8ff69c8d1ff7..1c9f5cfa5c32 100644
+--- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
++++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+@@ -1198,13 +1198,6 @@ static int hisi_acc_vf_qm_init(struct hisi_acc_vf_core_device *hisi_acc_vdev)
+ 	struct hisi_qm *vf_qm = &hisi_acc_vdev->vf_qm;
+ 	struct hisi_qm *pf_qm = hisi_acc_vdev->pf_qm;
+ 	struct pci_dev *vf_dev = vdev->pdev;
+-	u32 val;
+-
+-	val = readl(pf_qm->io_base + QM_MIG_REGION_SEL);
+-	if (pf_qm->ver > QM_HW_V3 && (val & QM_MIG_REGION_EN))
+-		hisi_acc_vdev->drv_mode = HW_ACC_MIG_PF_CTRL;
+-	else
+-		hisi_acc_vdev->drv_mode = HW_ACC_MIG_VF_CTRL;
+ 
+ 	if (hisi_acc_vdev->drv_mode == HW_ACC_MIG_PF_CTRL) {
+ 		/*
+@@ -1672,19 +1665,34 @@ static void hisi_acc_vf_debugfs_exit(struct hisi_acc_vf_core_device *hisi_acc_vd
+ 	hisi_acc_vdev->debug_migf = NULL;
+ }
+ 
++static enum hw_drv_mode hisi_acc_vf_get_drv_mode(struct hisi_qm *pf_qm)
++{
++	u32 val;
++
++	val = readl(pf_qm->io_base + QM_MIG_REGION_SEL);
++	if (pf_qm->ver > QM_HW_V3 && (val & QM_MIG_REGION_EN))
++		return HW_ACC_MIG_PF_CTRL;
++
++	return HW_ACC_MIG_VF_CTRL;
++}
++
+ static int hisi_acc_vfio_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ {
+ 	struct hisi_acc_vf_core_device *hisi_acc_vdev;
+ 	const struct vfio_device_ops *ops = &hisi_acc_vfio_pci_ops;
++	enum hw_drv_mode drv_mode = HW_ACC_MIG_VF_CTRL;
++	resource_size_t func_len;
+ 	struct hisi_qm *pf_qm;
+ 	int ret;
+ 
+ 	pf_qm = hisi_acc_get_pf_qm(pdev);
+-	if (pf_qm && pf_qm->ver >= QM_HW_V3) {
+-		if (pdev->is_virtfn)
+-			ops = &hisi_acc_vfio_pci_migrn_ops;
++	if (pf_qm && pf_qm->ver >= QM_HW_V3 && pdev->is_virtfn) {
++		func_len = pci_resource_len(pdev, VFIO_PCI_BAR2_REGION_INDEX) >> 1;
++		drv_mode = hisi_acc_vf_get_drv_mode(pf_qm);
++		if (drv_mode == HW_ACC_MIG_VF_CTRL && func_len < PAGE_SIZE)
++			pci_warn(pdev, "migration not supported on 64KB pages with QM_HW_V3\n");
+ 		else
+-			pci_warn(pdev, "migration support failed, continue with generic interface\n");
++			ops = &hisi_acc_vfio_pci_migrn_ops;
+ 	}
+ 
+ 	hisi_acc_vdev = vfio_alloc_device(hisi_acc_vf_core_device,
+@@ -1692,6 +1700,8 @@ static int hisi_acc_vfio_pci_probe(struct pci_dev *pdev, const struct pci_device
+ 	if (IS_ERR(hisi_acc_vdev))
+ 		return PTR_ERR(hisi_acc_vdev);
+ 
++	hisi_acc_vdev->drv_mode = drv_mode;
++
+ 	dev_set_drvdata(&pdev->dev, &hisi_acc_vdev->core_device);
+ 	ret = vfio_pci_core_register_device(&hisi_acc_vdev->core_device);
+ 	if (ret)
+-- 
+2.43.0
 
-[Severity: High]
-Could this loop cause a host soft lockup and RCU stalls?
-
-If host userspace issues a KVM_SET_MEMORY_ATTRIBUTES ioctl with a massive
-memory range, this loop will iterate over the entire guest-controlled GFN
-range.
-
-Because it executes hash table lookups via for_each_gfn_valid_sp_with_gptes=
-()
-while holding mmu_lock for write without any cond_resched(), could a
-malicious guest or VMM orchestrate massive memslot updates to degrade host
-availability?
-
-> +		for_each_gfn_valid_sp_with_gptes(kvm, sp, gfn) {
-> +			__kvm_mmu_zap_all_fast_front_half(kvm);
-
-[Severity: Critical]
-Can this lead to memory isolation breakage by allowing mixed-attribute
-hugepage mappings?
-
-During kvm_vm_set_mem_attributes(), kvm_handle_gfn_range() is called with
-post_set_range. When processing the first memslot, it triggers range->on_lo=
-ck,
-which maps to kvm_mmu_invalidate_end() and sets mmu_invalidate_in_progress
-to 0.
-
-When __kvm_mmu_zap_all_fast_front_half() is called here, it can drop and
-reacquire mmu_lock via cond_resched_rwlock_write().
-
-While the lock is dropped and mmu_invalidate_in_progress is 0, could a
-concurrent page fault on a subsequent memslot proceed? If that memslot's
-disallow_lpage flag hasn't been updated yet, KVM might map a hugepage using
-the specific faulted GFN's attributes, bypassing the mixed attributes in the
-xarray entirely.
-
-> +			return false;
-> +		}
-> +	}
->  	return false;
->  }
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918081543.1398=
-71-1-pbonzini@redhat.com?part=3D25
