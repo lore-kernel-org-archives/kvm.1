@@ -1,206 +1,121 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+Received: from mail-qk2-f43.google.com (mail-qk2-f43.google.com [74.125.230.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E1E41A506
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 13:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABAB41A506
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 13:13:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789737204; cv=none; b=V378AYmVV1PRo3LhmTo2jst1A32GJeDidpVRQwFbOUmoDRwrdTV9wBtn7S0gd287JI1qKDvuNKsbjmz4UZ/iJk03GjZS6bO8/RxDLKSjg/PAWPZY/UT2SZUF+90yiIDNm4H9px1sKY3jFhwyayzQC3bSXXOQpMXgteL9DPP8hYA=
+	t=1789737210; cv=none; b=aPRCldOXlPb6ywdeYy/BXa2rx5qCFCGJl/yE/0dGuCJnTPCzvQUX/RPRUQRAUOyhBk9BIhFjYtJ0N7clOVqNkpVHdnx/jFz6wV4pt3omjWKKQmxcJG5Kbz6bwllH0NXX0v/KgTLI8pt2avjKsU3bZ0YdrzT5ERzLH90LPxDGb0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789737204; c=relaxed/simple;
-	bh=UrewZhvj67OD5/PiVQn1ohfUYivZXx+MgCmwrexV93o=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pOFQTrJQ/oaQ7b091UognAUpziJLv2E4mzrjWb+R+QEwzBWrAn9iLUGIcNZbc6BygMhfiTVQw/p0k+8rt1MF1/o6QfZFhTR4UJMxagzxPq44QlfPEjefS9VRaimWv9D7/nq3WyUke7Lx8JI0Fhhy7SDqTLqu7qw7lRX5+7YiDxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y+jKs4mz; arc=none smtp.client-ip=209.85.215.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1789737210; c=relaxed/simple;
+	bh=0e/Us3WlYuqZCrvqyucnYIvOewYG6+iESgxv213CRfg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ra+QAl1uRJWWC6v9S+hOJ7oByISUZ5kqNUElkeElDYcm8WXgEsccS1VT4ssQMFPuV2LgxUglRtwc1zhtIM0vw0iwHqg5m6kl1CMF8UwMqPX5wLuaLJ9D4te3uj3aicL3nwYJyjZHYEVuR77xi0HucRIpjx5oF07f8xhHOvvK8PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=QymDbWPx; arc=none smtp.client-ip=74.125.230.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y+jKs4mz"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cbee6bb8408so898081a12.3
-        for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 06:13:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="QymDbWPx"
+Received: by mail-qk2-f43.google.com with SMTP id d75a77b69052e-52fb767cc7fso6295621cf.0
+        for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 06:13:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789737202; x=1790342002; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0ud9IADFECmv4ypdoomkuAdmOaYSroln0xj23hEJBkE=;
-        b=Y+jKs4mzo8Xj8k7MaTbKPyzpkybyRGdqlxTCFg1qa3tBnQudimL04mJMIQa6vmzlAY
-         9EmEQzTg7YO0DJXKJuMBFn7wbgJ2WGeB8GQiVX4NukMnlSGHv0B+EoEfwa4DM5/SPuW5
-         Cd3wMmBT3kmOHWOShsXEWdGqs6dQpwokHjtPP9CoBQnMUSuJOeXVJZPOhu9zovutDWsF
-         6+mNsGvilg3K2cb2fIquXAOU06iWkaRCColHJ8EkD9wbCRAkBYDLzEkQCAyoVL1XizET
-         rfyJ1xO1EXvp9wucvroROsRht1IbUKGakZKjeDsrtycBNYFDANTe39AUQ/ggr3fHW1KD
-         cMEg==
+        d=ziepe.ca; s=google; t=1789737208; x=1790342008; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=RgJgP9V+TanXYXiwf33sE6+6RN244WVmbEbqLcX7cFg=;
+        b=QymDbWPxT3LIIkAo24f4eqDGDQL8cnAxHXQdGvCMdYVBu9HuWti5/IeVLbVSeaAzl3
+         WX2j58XQXmSLMksuVUzTfRpBaxjZne3SqE86c0anqQppyuEnL3qgemBbrX9XoY4+ejja
+         4lOANYFlwqrV34QnNlaJrE+Us5d3DciOB6S0nU5dFH8UEOvAnzHGKHq7phwlBqMxNBm4
+         Gq5PS6+VvQZSaEt2V1Z7FO+D2gk4HeOaQiOrpUv8a4bKLyo9s7uefYOgR8Ba4oPJjAYj
+         ar6w1dcRwLdDGhC9sDIIcyM6rmKUOr1JmnHA8kIMQu/UZITv6qoxa28Yera2UJX3U8PC
+         tBKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789737202; x=1790342002;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0ud9IADFECmv4ypdoomkuAdmOaYSroln0xj23hEJBkE=;
-        b=z8rBpUD742rfvB3sIXfHQT3TZNK7ENL32JGliYt9LPEU6x8Oq5PltvJ81rhH9v6aBn
-         J8q8+5ZQ2xZE+xKmc/Echmm7AcsJ45r+R20+shFqGUyG6DIg21m6PWB3VznWmbWJmxnP
-         dspLu2U4K8K8qliRWIbflJ7FG4qc/HERB1RUYn7e66u2mm1LRc9Ccyb8+PEFY3u01HAa
-         0DCag2vED3Dr2HYc8+4C/v+gt34HI4D8VxB8p65BNHXrvzuTeziMsMNPLQ0CNQbBgzWI
-         RBkd7eZJHJ7SvU3IGJFt6o8X3TRXaePfX+UxvPm/WpwtmoCbWU+7a9rrKm59ASxoKxef
-         U+8w==
-X-Forwarded-Encrypted: i=1; AKwUvByCQdWnDTfxhmIJgCwwkTAvGzF21IW1yydIMVCzMdso9SR8+i/LRg8MFuxtIoqO1gi42bc=@vger.kernel.org
-X-Gm-Message-State: AFuF++k/8F6cL+83bp3uc4bsMnYKIDTNZHpxnzYdTrrUawXBo47kktyN
-	5x8vjBsYLko26qJ6SEyGWtFRjuK6DvYkuhjwgZ3qZ8bNJM/ihVlPePG9NYz7krnsfwQmA7x5K4x
-	eXMe3Ew==
-X-Received: from pjbju13.prod.google.com ([2002:a17:90b:20cd:b0:39e:2369:7399])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2d47:b0:39d:f4fd:8075
- with SMTP id 98e67ed59e1d1-39e54c9c7b7mr6090144a91.19.1789737201416; Fri, 18
- Sep 2026 06:13:21 -0700 (PDT)
-Date: Fri, 18 Sep 2026 06:13:20 -0700
-In-Reply-To: <56a61983c03806120e607dfd1e1b7c9046c1f54b.camel@intel.com>
+        d=1e100.net; s=20260707; t=1789737208; x=1790342008;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RgJgP9V+TanXYXiwf33sE6+6RN244WVmbEbqLcX7cFg=;
+        b=Q0JkK7eAKj6Dkpq8XX4atAJTrxw6G6JVPI5sCXAlWsnGFk68M3uIhhTnGXYnZtSKfN
+         BBPLt7rEqFxlRB8E3hy1GtnU/CkufmptUfQfcoHTbnovgw7cZcfGR+VJN290G4chpdST
+         p66Q8M/dZSyuL/ns9jzyK91fdmmFPSnv/pyezXPrD8XEvDaaLj1vo/CWgdraXe0QALnT
+         /Xc7XVCAyuQMHZ5MqyeHGKi85YwffkTPXRqXQ2kOED16egOxrwwqECiOGOLj3cxnLbHz
+         xzTNtkSlNNAGK32QMnDZPtW2y5MDZoEOGiePwbDKCgx77976xvstFYEkv9oElkS0iLV/
+         xJyg==
+X-Forwarded-Encrypted: i=1; AKwUvBwjWGapaqrZASZJRS8tGEVHtbd04fsooe0yhf7+1su9Dm7tAxoa8n9G1PuvOWEAcj5gWHc=@vger.kernel.org
+X-Gm-Message-State: AFuF++kpZDBEXTbg1n+vy8N+atxXUeMQi1mVrd9k2pgXQp4Q9Lw/fv2H
+	RgPntZ+ty9AlTLdRvwjYSxf2kDHhU9YyvI9cIujuQjdlcn79IdTl00//x5242JVFnZQ=
+X-Gm-Gg: AYBFou3RxcYk9AMLZcFxbjDPKfJc/FZyxpPuk/5zte5pE5v9WQJanRQAsC2fWMpfJrC
+	zCKZtmjj/r0pwHzVPaI1vtHCB56b5DTW5vnQWC+JTbfI+ggBpMkFqW9BPtUJPzWo0iUY4uiXTQR
+	+bFaM1QfVwy1FOfqJ9gNjQlPyvA08UTJ0r8jdTSKtmTIHPDpC4nvfN890jt/8Bxj9l33McWkImd
+	9zz+9rjHx8gI8wBcbH3/wlBz2FqeKNHm4KeqMZMvNToYV7dNNx/h8H8Ib3UsuW28BS1qwGVCWRb
+	/qyVNqH//0+xP2CZIU0Mx5vZ1RVvePg4mwzeAdg2dyW1efHj+142GdPFTi8s0gUICSeOy55oyYT
+	DFKTBPTO62HyCVkC31gXlzWKpHugT8U/aAviyM5I7Jvsgp+zyXzR5xYrg3I+Q6oldYsMv35WDS0
+	fGLJpEljMqz265dIL7SkIUT4SgWtAtv/szHD+K3JAGFUiiGe5m51KLgUz8Ag0MF3aGYO++DMJUJ
+	8veZH8EtXDpz/XGlzr3G2hctDQ4EtLqM++sTS28IOw4nJAsebWUB/rm
+X-Received: by 2002:a05:622a:550:b0:532:a5a2:e652 with SMTP id d75a77b69052e-532a5a2f397mr15646941cf.79.1789737208228;
+        Fri, 18 Sep 2026 06:13:28 -0700 (PDT)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532aac41140sm3599291cf.5.2026.09.18.06.13.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 06:13:27 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1x7YP9-00000001CUD-0PCN;
+	Fri, 18 Sep 2026 10:13:27 -0300
+Date: Fri, 18 Sep 2026 10:13:27 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	linux-coco@lists.linux.dev, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	Bjorn Helgaas <helgaas@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [RFC PATCH v6 09/11] iommufd: Add the vdevice TSM request ioctl
+Message-ID: <20260918131327.GB11599@ziepe.ca>
+References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
+ <20260917140159.1163281-10-aneesh.kumar@kernel.org>
+ <f6fb7f1e-a296-4142-9b77-64420edabe64@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <dae5a64112c9c949524226c66efac9c669df5b92.camel@intel.com>
- <aqsfoHzOip3n4zdU@intel.com> <aqss_eQAY7soHRwJ@google.com>
- <28f7a805c57da35d86b5c495cdf2b613a61d235e.camel@intel.com>
- <aqvtG90zWq6SkU8L@google.com> <3f97caf660cbe460b8bbaf3f2a72e4b6a3ea83d9.camel@intel.com>
- <aqxGN2Zc8sOl2RKx@google.com> <906d0cb6515b396f4e9d74f1d546c902ea3ce49a.camel@intel.com>
- <aqyAED5ZK48eEZtq@google.com> <56a61983c03806120e607dfd1e1b7c9046c1f54b.camel@intel.com>
-Message-ID: <aq048KmPN5WPQ4sQ@google.com>
-Subject: Re: TDG quote analysis
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Yilun Xu <yilun.xu@intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Binbin Wu <binbin.wu@intel.com>, Dave Hansen <dave.hansen@intel.com>, 
-	Vishal Annapurve <vannapurve@google.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, Peter Fang <peter.fang@intel.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f6fb7f1e-a296-4142-9b77-64420edabe64@amd.com>
 
-On Fri, Sep 18, 2026, Rick P Edgecombe wrote:
-> On Thu, 2026-09-17 at 17:04 -0700, Sean Christopherson wrote:
-> >   If supported for the specific request type, the host VMM can request an
-> >   interrupted request to be aborted.
+On Fri, Sep 18, 2026 at 11:09:29PM +1000, Alexey Kardashevskiy wrote:
+> 
+> 
+> On 18/9/26 00:01, Aneesh Kumar K.V (Arm) wrote:
+> > A VMM needs to forward guest-originated TSM commands to the TSM
+> > implementation managing an assigned device. The IOMMUFD vdevice
+> > identifies that device within its vIOMMU and provides the appropriate
+> > dispatch point.
 > > 
-> > Though per the above, apparently whether or not that's going to be supported is
-> > TBD?
+> > Add IOMMU_VDEVICE_TSM_REQ to send an opaque request to a vdevice and
+> > optionally return a response. Define common operation and guest
+> > architecture identifiers for CCA, SEV and TDX requests.
 > 
-> So extension aborts are a whole 'nother topic. And "support" has a nuanced
-> answer to boot. I'd be very glad to hear your thoughts on it. Should we leave it
-> for a later topic or get into it now? I *think* we don't need it, but the more
-> we get into the details here, the more it's a notable thing we haven't covered.
+> iommufd_viommu_provider_ops already knows what architecture it is,
+> why bother with these identifiers? Thanks,
 
-How is saying "I no longer want to complete this quote" at all complex?  I can
-see how aborting a request to the S3M might be somewhat pointless, but inserting
-the equivalent to signal_pending() in a long-running operation doesn't seem that
-difficult.
+At the uAPI boundary we want something like a strace to be able to
+dump and inspect the system call without having to inspect hidden
+knowledge of what is inside the FD. That's a huge PITA.
 
-> > Regardless of where we end up with quoting, whatever RFC is sent next needs to be
-> > a million times better.  My expectations are that someone with core TDX knowledge
-> > and a basic understanding of attestation would be able to get a full and complete
-> > understanding of the design and tradeoffs from the RFC alone.  If I have to
-> > rereference a spec for anything other than double check params and magic values,
-> > the entire series is getting ignored.
-> 
-> I mean. Confidential compute in general is trying to reinvent decades of
-> virtualization solutions with one hand tied behind it's back. There *are* a lot
-> of design choices.
-> 
-> Besides a rushed RFC, I think another factor is that this is the first TDX
-> feature we have done that you don't already have at least some exposure to. The
-> level of background delta need is way higher than S-EPT management for example.
-> 
-> And I'm less and less sure we are going to be successful distilling things like
+So saything 'this is an x86 format request that uses this coding' is
+the right thing.
 
-It seems like part of the problem is that you're trying to "distill" into abstract
-concepts.  I don't want abstract concepts, I want a description of what the TDX
-Module code will literally do, using verbiage and terminology that a KVM developer
-will natively understand.
-
-> this down in a way that doesn't leave you frustrated. But if you want details
-> there is just going to be a lot of them. Hmm.
-
-This is what I want.  Note, this description is apparently wildly wrong, because
-I wrote it before reading about whatever NRX modules are.  But I'm leaving it
-because it highlights my point about not wanting TDX jargon rephrased as abstract
-concepts.
-
-  Under the hood, TDH.GET.QUOTE uses what TDX calls a "virtual thread pool".
-  That just means there's a pre-allocated pool of "thread" memory that can be
-  used to service interruptible requests (it's not true interruption, it's
-  basically voluntary preemption).  The number of threads in the pool is
-  configured by software during ??? (TDH.QUOTE.INIT?), and directly controls
-  how many in-flight TDH.GET.QUOTE operations there can be at any given time.
-
-  Each thread consumes ??? KiB of memory, and <reasoning>, so we chose to set
-  the pool size to 1, i.e. to only allow a single quote to be in-flight across
-  the entire system.
-
-  TDH.GET.QUOTE is "interruptible" because the bulk of the quote crypto is done
-  by the TDX module, i.e. on the CPU that invokes TDH.GET.QUOTE.  We don't have
-  numbers for TDH.GET.QUOTE yet (why not?), but the very rough ballpark is that
-  it will takes 1-2ms.  Note, the S3M is used only during ??? (TDH.QUOTE.INIT?)
-  to get the platform key used to generate quotes, i.e. generating a quote is
-  fully synchronous relative to the core.
-
-> > As for guest-driven quoting, to me there is a fairly straightforward solution.
-> > Assuming using guest-donated memory is too complex for the "virtual thread":
-> > 
-> >  1. Drop "virtual thread pools" from quoting and support at most one in-flight
-> >     quote per TD.  I doubt whatever memory is needed for a virtual thread is so
-> >     insanely ridiculous that we can't burn that much memory per TD.  32KiB is a
-> >     no-brainer.  Above that and we'd have to reconsider, but if quoting requires
-> >     more than 32KiB of scratch space, I have to wonder what on earth it's doing.
-> 
-> I think the abstract descriptions are not helping, so I'll try some more
-> details. Today the "thread" involves something like a vCPU in a TD. You can see
-> some references in the TDX base spec like:
->    Currently, TDX Module extensions are implemented as guests running in SEAM non-
->    root mode, called NRX Modules. Technically, each NRX Module is similar to a TD.
-
-So my above statement that "it's not true interruption, it's basically voluntary
-preemption" is wrong?  Because if the quote crud is running in a TD, then events
-will trigger VM-Exit, and it will be impossible to make forward progress without
-SEAMRETing to the host.
-
-If that's true, then that changes my understanding of this just a bit, because
-it means the quote operation isn't manually saving state at a "good stopping point",
-it's relying on the VM-Exit to save/restore at whenever it happened to be.  But
-given that you say "This idea came up before actually", maybe chunking the quote
-operation isn't a big lift?
-
-But the original mail says this:
-
-   -- Guest Interrupts --
-
-   It is not nice to keep the guest from running for too long. The TDH.QUOTE.GET
-   SEAMCALL monitors for host interrupts, but not guest ones. Similarly, the SGX
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   quoting enclave doesn't know what is happening in the TD. So, to help reduce
-   guest latencies, the GHCI exposes a way to register for a notification
-   (SetupEventNotifyInterrupt) when the quoting is finished. A quote TDVMCALL
-   handler can start the quote operation on another host thread, and resume
-   guest execution waiting for the quote to finish.
-
-which strongly suggests active polling.  Do you see why I don't want abstract
-descriptions?  Similar to changelogs, there's a balance between "too detailed"
-and "too abstract", and right now all of this is firmly on the "too abstract"
-side of the world.
-
-> >  2. To avoid having to check for guest interrupts, for the "SW based" synchronous
-> >     method, simply resume the guest after processing a fixed amount of state.  Yes,
-> >     that will increase the best case latency for a single quote, but *best* case
-> >     latency isn't a huge concern, and I doubt the overhead of a VMX roundtrip will
-> >     significantly impact that.  It's the tail latencies that will be problematic,
-> >     and a forcing the serialization into the guest (the aforementioned mutex) means
-> >     the tail latencies will only be affected by host activity on *that* CPU, which
-> >     is more or less the status quo.
-> > 
-> >     E.g. even assuming an absurd 20% overhead for the VMX round trips, having a
-> >     quote take ~1.2 *every* time is would be a far, far better experience than a
-> >     quote taking 1ms - 10ms to complete.
-> 
-> Dave will probably not get a chance to respond this week, but we should maybe
-> discuss what acceptable guest latency actually is.
-
-Yes.  But it's not necessarily about "acceptable" guest latency, I care more about
-*predictable* guest latency.  E.g. making up numbers to illustrate the point,
-achieving 50us latency for the happy case is meaningless if the P99 latency is 10ms.
+Jason
