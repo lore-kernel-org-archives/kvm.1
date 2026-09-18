@@ -1,69 +1,62 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C10450128E;
-	Fri, 18 Sep 2026 15:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D4C2C15A5;
+	Fri, 18 Sep 2026 15:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789745301; cv=none; b=jA5g2Mg3UNIR5AHyYPY1r1qAhd8f70M09MWdNyYpdELLKeXF7Vadt0iTi+mvLZVSiVh1GRVF/SvitwGrXo20wbA9i+GBwZ8WHKwZJXxBlgI49iWuEhxkzmSGrjTyFL83hSQakK+E8kNb1jOw3e982H5vFVG0xhYP1BO0XqiR16Y=
+	t=1789745515; cv=none; b=ejBEDf5/H74XJ+UC5NYFJizDKZRzyuDE/fckwURmnNinQe+jElXLeVqnAl/D+ZOZLe1r+17Bglg4SItNVzuNKUapTHGD3EQXUoIMftxGXDliY83EE7eSwwsa15snVuTTo3ec8ga7UzIZgyRc2iO7PT680xsHJICOwVGniB5S73g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789745301; c=relaxed/simple;
-	bh=IXyyspzrawdPOwrrcMBVjA9eW6qbsWrW93RiPOP1KfY=;
+	s=arc-20240116; t=1789745515; c=relaxed/simple;
+	bh=BTTxFT+qjxiGinniZAaCqgbzmSLm3GBK9djn2pgyTdE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=olg3kYctTJu5jS9b+DMvQccWvQdmjqxBx3aEoOzGzJyI9NyotesiDIpBJGn+VC+1RwWiHNP3ohNtJdKTYls7MTzvbVVSkon92ubVs7AxQVnKitEIHYEGRSlaAO75XJR1AoDrYIU3TkdSTWFi+CrZokXwVi55tttMbCGer1Xhq0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IT+kQF0R; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=F0TbO2SRRfeuODqbv+us9XPr/w4Kdy61Izn3L0KpLknGkVDXnURnF6sUUX4u9Mtpz35nA/GyOpvrL+kQ9OVrwGn9y04D/WS5Mft5aUa9RjF7/ajcQ+s7WRJZY057miBmtHSJz6R1xZe60iEQlo2AhRMeRMlA/bgup5+wNBAmk6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PxxhzhPa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IT+kQF0R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A521F000FF;
-	Fri, 18 Sep 2026 15:28:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PxxhzhPa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20D11F000FF;
+	Fri, 18 Sep 2026 15:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789745299;
-	bh=IXyyspzrawdPOwrrcMBVjA9eW6qbsWrW93RiPOP1KfY=;
+	s=k20260515; t=1789745514;
+	bh=BTTxFT+qjxiGinniZAaCqgbzmSLm3GBK9djn2pgyTdE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IT+kQF0R0RCML3nEZmzL2MHfQQBNzb1K/UmVG6KB+RaTpI/ptZmHm69GHfMVw9ebM
-	 msRX3UpiONA8SfwgUDF1zKIQRngdiu8dE6e7xuOQWf1ZOZPZHv+F9RIoetFdacBXhS
-	 CzsDovA5IFPTCd6qr+bDyP4aPXut9b89QN39+TfpdRyU/GUv0aFK79vK5wIF1rhoOo
-	 y8w+jAZ0o/kYIG4rj2HtS02bkLFccoRd+HDGE2BypUukDOni536xcfdZgLyFnpuHf1
-	 PlefhdKjKWiBj73UoN6wrhAXWgbIxDYubebxYVEmK84sT7EQZcj46Eb34tTwfHVbLJ
-	 tG7rjEIze461g==
+	b=PxxhzhPamoL7jN538+xnqZ5xHhWjAzEbCzB2QjTalMqlqfQjkMTmiVbLF7Sql4hYZ
+	 Ui3kT3mIH24aACyJ8bxDg0p6Vggt/CriVaVFWoCLTosPwkR1thqzvwODMN8FPemAKg
+	 1SYCpls4IUgFEhGS+8aqs7BZx43zo6uUtNL2b/ftvaDyGcpG4nDvZmtMaF5Ogfkf2+
+	 wJ0q5wi4kOe1pj+h7eZjGsxrWA4ZcttbXkTl1eTp5aP+gM10TVlzYLnHupYfDMGYcg
+	 /jx49VGcD8DM+f5XvfehOpqbjF7pa6xNT62v3iPjr1wMLXIR8K2oVn6JA8Wcf8WpvS
+	 MEB0kwLSr7lOA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 13/29] KVM: arm64: Access elements of vcpu_gp_regs
- individually
+Subject: Re: [PATCH v7 14/21] KVM: s390: vsie: Add helper to pin and unpin
+ multiple guest pages
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steffen Eiden" <seiden@linux.ibm.com>
-Cc: "Marc Zyngier" <maz@kernel.org>, "Oliver Upton" <oupton@kernel.org>, linux-s390@vger.kernel.org, "Vasily
- Gorbik" <gor@linux.ibm.com>, kvmarm@lists.linux.dev, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Heiko
- Carstens" <hca@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>, kvm@vger.kernel.org
-In-Reply-To: <20260918133107.1042730-14-seiden@linux.ibm.com>
-References: <20260918133107.1042730-1-seiden@linux.ibm.com>
- <20260918133107.1042730-14-seiden@linux.ibm.com>
+To: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, "Christian Borntraeger" <borntraeger@linux.ibm.com>, kvm@vger.kernel.org, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Heiko
+ Carstens" <hca@linux.ibm.com>
+In-Reply-To: <20260918-vsie-sigpi-v7-14-f39806eaae37@linux.ibm.com>
+References: <20260918-vsie-sigpi-v7-0-f39806eaae37@linux.ibm.com>
+ <20260918-vsie-sigpi-v7-14-f39806eaae37@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 15:28:18 +0000
-Message-Id: <20260918152819.50A521F000FF@smtp.kernel.org>
+Date: Fri, 18 Sep 2026 15:31:53 +0000
+Message-Id: <20260918153153.C20D11F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-> While for arm64 the members of vcpu_gp_regs are allocated continuous
-> this is not necessarily true for other architectures implementing ARM.
+> To handle vSIE configurations with an ssca we need to pin and unpin
+> multiple consecutive guest-2 pages in guest-1. As these might not be
+> consecutive in guest-1 it is necessary to iterate over all pages and
+> store guest and host addresses for later use.
 >=20
-> Let vcpu_gp_regs() no longer return the address of the user_pt_regs in
-> the vcpu context but the address of the gp-register array field in the
-> user_pt_reg struct. Note, this change semantically excludes pc from the
-> GPRs.
->=20
-> No functional change.
->=20
-> Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
 
 Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918133107.1042=
-730-1-seiden@linux.ibm.com?part=3D13
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918-vsie-sigpi=
+-v7-0-f39806eaae37@linux.ibm.com?part=3D14
 
