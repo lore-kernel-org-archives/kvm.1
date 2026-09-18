@@ -1,151 +1,134 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3719044AB8A
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 08:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72AA3A5435
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 08:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789720650; cv=none; b=Y9Lbz6Wc0ZqH7n9NYztc1Zr6oOwig5mKXnYnXfaLnf1CV0g/bABjA0KIPw8KhgENUsdwmM2KhF+kJ+UC7kCw7vZjBjR82PGqpFzwySggYhw67AoDO46g9kJ/WiVih45B4vc2159hnJGReIu9gR7PN6WzNNvZnEOF2iDV0D/Khyg=
+	t=1789720721; cv=none; b=had0Vy51T4iUwklNuPriSRIP5AOT0oVs4hR9ZujHpbp8mbZYTvYYKZLlKTArZSLuafuJ5fGoIp1WBvkpPz85a0x/igUEKiMZS5zLBW3TfZ/OOSoI7GdoG8oOUDZT+rbiXFnR3groryEYZdA7RsN1ktPHP8HyvRJSZGnEEc/enKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789720650; c=relaxed/simple;
-	bh=KGBDuMfUmhRQblJsPT69GK+jcROS6fw7GVvGhiPbeQE=;
+	s=arc-20240116; t=1789720721; c=relaxed/simple;
+	bh=WuYu+4TOC8tHdLsXtQyWcCG64zsPRY/FEntInpuiEdQ=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=PInGEd5nanNNIOHAZjE5MZ4Qfr0LfN9K9zhpK4BgVr0BHQcZLZfNdmxHepk4dWhcFY41eMIrDygesSzI5/Njgrg09A0JcA+BNrwsTlCp/kDmlk9RlMr0vidZEwNuDFMV1aIiuUm9IZWUxgkOcgCCf83Y5kBl2U3yAf1rOp6yPvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DsMi5ghm; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=hLOYjwsFpXY8/PK/Zf2OUz/710+EZjMibiobvTWztDJfbHdSY7GJQWyX9XhCdvHgXX9rsNuSmvUX6H2bD9v9/yayIeZmXWt8fb8a1gaoGQrkuspfpzc0vSVv+wECTf9Ib0upQ3cQDR2a7TXjr9V6TMJqz1XMC+R4IJZCuiKPOmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GpuLSvx0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DsMi5ghm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931541F000FF;
-	Fri, 18 Sep 2026 08:37:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GpuLSvx0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F28C1F000FF;
+	Fri, 18 Sep 2026 08:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789720648;
-	bh=udnemYPNMJcWkKaB4XljCTFTN4+vAh134vfVsdWLgXc=;
+	s=k20260515; t=1789720719;
+	bh=kUFRICPbyyS7WFMn0cB6RyZrz/MPp81zPG/UXjY/aBo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DsMi5ghmTGg+iUapwNLW4c0MwxdlkvJUZ/I+HD5BZmwNEgTgSYcJG2m7kvEy2QSnU
-	 vu7hrSqJuCj3tRsCuKBhm3PdJ0aptlRceXcVipv3pWpH9sXGrdvSI6TF+Gn2aSRvSq
-	 0NyLchn5xiXoO38MNh/EvZY+5w0LJb+yd+FzsL0qKZ7a/0bywjCV3r14Vwxndo94KK
-	 QDtqtG4hlm7h+FVds8pGrobrW0JFB60wYi/TnFbtphrp5RzytgBfg0SUxKQXgEcpG6
-	 Gng2EQzOHS/KRIT4LVRC/mLKLrua92UFJRrhjf4CA8yO1MigZrbEC+WV/JT42AKtaV
-	 SkBUS8N3GXGLw==
+	b=GpuLSvx0qVvBPWDbqLPBtZ4rglAiq3x9FV4LCmJqQU5/iWlj9OPh1GjWUm86KqGfV
+	 dTJQv1ipnCDGqrdo/nYtsbH+NZ10oFPFEaSn2B3fgKTADMKUr8t+jDUOhF7wOG6mjZ
+	 AQeC1la6qNlc5HZ+voAf0iH9qvOxjnc9dng0H9RyMAWlURwymxTvV7E6JBjO9whvsw
+	 31QM0r3TmVqMk55x2sRGSCXn2/inEP/E/Q39S4kNYX5OBwGiJW5K26eFqg8hbQbU5W
+	 pTrNAHj5uo7C+/Xtf+zd0OLGH1Jwc6rbnwLJFAk2kSOB4dHJmVUuir7QSIfStV/K56
+	 lr6H9obSVtlQA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 22/28] KVM: x86/mmu: Issue memory fault exit if walk
- failed due to memory attribute
+Subject: Re: [PATCH v2 19/28] KVM: Take memory protections into account for
+ accesses with cached gfn->hva
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Paolo Bonzini" <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260918081543.139871-23-pbonzini@redhat.com>
+In-Reply-To: <20260918081543.139871-20-pbonzini@redhat.com>
 References: <20260918081543.139871-1-pbonzini@redhat.com>
- <20260918081543.139871-23-pbonzini@redhat.com>
+ <20260918081543.139871-20-pbonzini@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 08:37:28 +0000
-Message-Id: <20260918083728.931541F000FF@smtp.kernel.org>
+Date: Fri, 18 Sep 2026 08:38:38 +0000
+Message-Id: <20260918083839.4F28C1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] kvm: KVM_EXIT_MEMORY_FAULT reports original access type instead of=
- PTE read
-- [High] kvm: memory attribute violations during emulation inject spurious =
-#PF
+- [Low] kvm: loongarch build failure due to unrenamed ghc->generation field
 --
 
-commit f13a0662fba26c69b7ab24d7639e44c8da7ee24c
+commit d698f3639de00de4e2127e86617e1f29da8afef7
 Author: Nicolas Saenz Julienne <nsaenz@amazon.com>
 
-KVM: x86/mmu: Issue memory fault exit if walk failed due to memory attribute
+    KVM: Take memory protections into account for accesses with cached gfn-=
+>hva
+   =20
+    Account for memory attributes when accessing guest memory through
+    kvm_get/put_guest().
+   =20
+    This requires tracking the memory attributes generation as part of
+    gfn_to_hva_cache's data, invalidate the cached information if the
+    generation changes, and failing to refresh the cache if restrictive
+    memory attributes are found within the GPA range.
 
-This patch adds a check during guest page table walks to identify if a walk
-fails due to a memory attribute restriction. When this occurs, it populates
-the newly added memory_attributes_fault flag and attempts to exit to usersp=
-ace
-with a memory fault.
-
-> diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmp=
-l.h
-> index b031123fcb369..d2836a327bc99 100644
-> --- a/arch/x86/kvm/mmu/paging_tmpl.h
-> +++ b/arch/x86/kvm/mmu/paging_tmpl.h
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 2d85d7c9e0046..f10b14293e60e 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
 [ ... ]
-> @@ -411,6 +413,12 @@ static int FNAME(walk_addr_generic)(struct guest_wal=
-ker *walker,
->  		if (unlikely(kvm_is_error_hva(host_addr)))
->  			goto error;
-> =20
-> +		if (!kvm_mem_attributes_may_read_gfn(vcpu->kvm, gpa_to_gfn(real_gpa)))=
- {
-> +			walker->memory_attributes_fault =3D true;
-> +			walker->gfn =3D gpa_to_gfn(real_gpa);
-> +			goto error;
-> +		}
-> +
-
-[Severity: High]
-When this flag is set and FNAME(walk_addr_generic)() returns an error, how =
-is
-it handled by other callers that aren't updated in this patch?
-
-For example, in arch/x86/kvm/mmu/paging_tmpl.h within FNAME(gva_to_gpa)():
-
-static gpa_t FNAME(gva_to_gpa)(struct kvm_vcpu *vcpu, struct kvm_pagewalk *=
-w,
-			       gpa_t addr, u64 access,
-			       struct x86_exception *exception)
-{
-	struct guest_walker walker;
-	gpa_t gpa =3D INVALID_GPA;
-	int r;
-
-	r =3D FNAME(walk_addr_generic)(&walker, vcpu, w, addr, access);
-
-	if (r) {
-		gpa =3D gfn_to_gpa(walker.gfn);
-		gpa |=3D addr & ~PAGE_MASK;
-	} else if (exception)
-		*exception =3D walker.fault;
-
-If instruction emulation encounters a memory attribute violation here durin=
-g a
-page table walk, does this drop the walker.memory_attributes_fault flag and
-blindly return the fabricated #PF exception?
-
-Could this inject a spurious #PF into the guest instead of exiting to users=
-pace
-with KVM_EXIT_MEMORY_FAULT?
-
-[ ... ]
-> @@ -820,6 +828,12 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, =
-struct kvm_page_fault *fault
->  	 * The page is not mapped by the guest.  Let the guest handle it.
+> @@ -3560,15 +3560,22 @@ static int __kvm_gfn_to_hva_cache_init(struct kvm=
+ *kvm,
+>  	 * If the requested region crosses two memslots, we still
+>  	 * verify that the entire region is valid here.
 >  	 */
->  	if (!r) {
-> +		if (walker.memory_attributes_fault) {
-> +			fault->gfn =3D walker.gfn;
-> +			kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
-> +			return -EFAULT;
-> +		}
-> +
+> -	for ( ; start_gfn <=3D end_gfn; start_gfn +=3D nr_pages_avail) {
+> -		ghc->memslot =3D __gfn_to_memslot(slots, start_gfn);
+> -		ghc->hva =3D gfn_to_hva_many(ghc->memslot, start_gfn,
+> -					   &nr_pages_avail);
+> +	for (gfn_t gfn =3D start_gfn ; gfn <=3D end_gfn; gfn +=3D nr_pages_avai=
+l) {
+> +		ghc->memslot =3D __gfn_to_memslot(slots, gfn);
+> +		ghc->hva =3D gfn_to_hva_many(ghc->memslot, gfn, &nr_pages_avail);
+>  		if (kvm_is_error_hva(ghc->hva))
+>  			return -EFAULT;
+>  	}
+> =20
+> +	/*
+> +	 * RW memory attributes are incompatible with GHC. The RW protection
+> +	 * check has to happen after storing the generation number.
+> +	 */
+>  	ghc->attrs_generation =3D kvm_mem_attributes_generation(kvm);
 
-[Severity: High]
-In arch/x86/kvm/mmu/paging_tmpl.h within FNAME(page_fault)(), if
-walker.memory_attributes_fault is true, we prepare a memory fault exit.
+[Severity: Low]
+Does this patchset break the build on LoongArch?
 
-However, does kvm_mmu_prepare_memory_fault_exit() use the original fault's
-properties (fault->write, fault->exec) instead of the properties of the page
-table read itself?
+In arch/loongarch/kvm/vcpu.c, kvm_update_stolen_time() and
+kvm_vcpu_set_pv_preempted() still reference the removed ghc->generation fie=
+ld
+and fail to verify memory attribute generations:
 
-Could this incorrectly report the access flags to userspace (e.g., reporting
-WRITE or EXEC instead of READ) when a page table walk fails due to KVM memo=
-ry
-attributes?
+arch/loongarch/kvm/vcpu.c:kvm_update_stolen_time() {
+    ...
+	if (slots->generation !=3D ghc->generation || gpa !=3D ghc->gpa) {
+    ...
+}
 
->  		if (!fault->prefetch)
->  			__kvm_inject_emulated_page_fault(vcpu, &walker.fault, true);
->
+arch/loongarch/kvm/vcpu.c:kvm_vcpu_set_pv_preempted() {
+    ...
+	if (slots->generation !=3D ghc->generation || gpa !=3D ghc->gpa) {
+    ...
+}
+
+With the transition to ghc->attrs_generation and ghc->slots_generation acro=
+ss
+this patchset (specifically since the prior patch "KVM: Introduce a generat=
+ion
+number for memory attributes"), these manual generation checks will fail to
+compile.
+
+Could these be updated to use kvm_check_gen()?
+
+> +	if (kvm_range_has_rw_memory_protections(kvm, start_gfn, end_gfn + 1)) {
+> +		ghc->hva =3D KVM_HVA_ERR_BAD;
+> +		return -EFAULT;
+> +	}
+> =20
+>  	/* Use the slow path for cross page reads and writes. */
+>  	if (nr_pages_needed =3D=3D 1)
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918081543.1398=
-71-1-pbonzini@redhat.com?part=3D22
+71-1-pbonzini@redhat.com?part=3D19
