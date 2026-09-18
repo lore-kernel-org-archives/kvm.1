@@ -1,56 +1,56 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23474B2CC1
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 08:16:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3A54B95C5
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 08:16:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789719375; cv=none; b=pzAHyxfC/9W/2mvUC19xFTuI1HPaKq6GIzzquETLudSkoS7TjWmdvfmxIq1Y9Dy/RERhq2qiRepQtNRmUCqaBTq1H8OFMTejtWK+Dfi7C902sn8XnYxU9EhMX1RkOg/mFvIivRaCxV5vqyKPaMis+Wo+2yRCNgM0Opm9fPs2qDM=
+	t=1789719385; cv=none; b=sPWnADNvQ+o+ShTaJY7qLuR5VQ/qFX/s+Dec9mkqCQAUCeqGMD+q+VkwtMwoaI3amtu0Kp1r7Fwo+cMjQeLThyvPwFVFA6JIBQb9ZrpEPahy4gmiSdAdt200Nvi6eN9Us1Q7uPjpH6x+k5O9ObJ/Lp54Oqv5u6jI2ynBs4IhAiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789719375; c=relaxed/simple;
-	bh=I5ibwMtY9EbomTpjerkx/2uNla7H7oHQYY11dx8+HWI=;
+	s=arc-20240116; t=1789719385; c=relaxed/simple;
+	bh=ZeAs2RHWuVZQ4kVY9VrdUgPI0drlMcBQr3Sohd7nkUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=spWu6ro0btntt4XVZmAg0oefogse1pHZLHUv6P1jeXB3JM2ytUuGhjuRKi445qfSOPmnoRDUWampEHkbg3DExYOMWbEsrpC00CHgTiSD1phwYx2SYsog/jmf6DXi/HS5gJib8eB5vL958KUvNvH8bzAIzvvqaPZFZtojvWKKYcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WHyF429c; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=b+go4xIjCVaN3Kt9ekQsApLMFOBfUR3YRflcbW/XqOECETC6P+cOkoGDPycwDYTbWzww014VJkxlvxS9cnG2xUzB13CvYTUcVXo14EZZMoKT/H+PGDxndb6ZbsjZRCMKDaY+bGH1nQPvy/72eTz25X86OTuKpqA6HFvOasRoSwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MiK3sUG6; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WHyF429c"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MiK3sUG6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789719367;
+	s=mimecast20190719; t=1789719373;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jP3CCCr3me+qhU/3Ko3iK48MQgZC82F2uaDjJuPoHc4=;
-	b=WHyF429cfGmjSRJEiopdUU78XSkBn08LvgP3TDsI0fsfn21jU8cKRo6l/IviltiEAE9xAL
-	BjKGmdehvkbZBED75AJC/S4Cey9Zq0ViuatEYGCmc77E3CIMu4xVvNNOwcgTItcuitUogV
-	K8NQtd+hFeD9U3S0zRxzy3U/LYBFMCU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=sQFKDtIIcyaHramE20aRDws/f2ayTgXSNylmL8x1hGc=;
+	b=MiK3sUG6oEBGl7u+PC3OJbBxLG8Xkw4bdzf7bgoAxrhJDYq8ldvDeti8g1WyJCc+TUnNSG
+	zjwGU8xofIgMqn4JYQHJtPhglI1cmwmjtX/Tf4UrGT89kHrsN3zG1J8lo2v2XI15vgxH8O
+	jDfIw+JcM7eAijknqTCSv2tc0n8YM9s=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-280-CqLKpG1ENVCLudAaimEyZg-1; Fri,
- 18 Sep 2026 04:16:04 -0400
-X-MC-Unique: CqLKpG1ENVCLudAaimEyZg-1
-X-Mimecast-MFC-AGG-ID: CqLKpG1ENVCLudAaimEyZg_1789719363
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-7-uimsVkKpNpKXFMcuaY1olQ-1; Fri,
+ 18 Sep 2026 04:16:09 -0400
+X-MC-Unique: uimsVkKpNpKXFMcuaY1olQ-1
+X-Mimecast-MFC-AGG-ID: uimsVkKpNpKXFMcuaY1olQ_1789719368
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 146521977514;
-	Fri, 18 Sep 2026 08:16:03 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CAC541802542;
+	Fri, 18 Sep 2026 08:16:08 +0000 (UTC)
 Received: from virtlab1023.virt.eng.rdu2.dc.redhat.com (virtlab1023.virt.eng.rdu2.dc.redhat.com [10.18.48.26])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6A5F830001A2;
-	Fri, 18 Sep 2026 08:16:02 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2D15730001A2;
+	Fri, 18 Sep 2026 08:16:08 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: nsaenz@amazon.com,
 	vkuznets@redhat.com,
 	snambakam@linux.microsoft.com
-Subject: [PATCH v2 21/28] KVM: x86/mmu: Take memory protection attributes into account during faults
-Date: Fri, 18 Sep 2026 04:15:36 -0400
-Message-ID: <20260918081543.139871-22-pbonzini@redhat.com>
+Subject: [PATCH v2 28/28] KVM: x86: selftests: Introduce memory attributes side-channel tests
+Date: Fri, 18 Sep 2026 04:15:43 -0400
+Message-ID: <20260918081543.139871-29-pbonzini@redhat.com>
 In-Reply-To: <20260918081543.139871-1-pbonzini@redhat.com>
 References: <20260918081543.139871-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -63,229 +63,470 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-From: Nicolas Saenz Julienne <nsaenz@amazon.com>
+Introduce memory attributes selftests to catch any vulnerable
+side-channels.
 
-Take memory protection attributes when faulting guest memory.  Prohibited
-memory accesses will cause a user-space -EFAULT exit just like private
-memory accesses.  Userspace will either enable the access or bump it to
-the guest as some kind of exception (e.g. a VTL return).
+Memory attributes access restrictions are vulnerable to side-channel
+attacks. This means that any KVM operation initiated by the guest that
+requires guest memory access (which is the case for most
+para-virtualised interfaces) needs to consider memory attributes.
 
-Since the struct kvm_page_fault already has the access type in PFERR_*
-format, the check is done via the kvm_page_format permissions table.
-This means that it supports naturally all page table format variants,
-and it can even handle mode-based memory protection when the host
-uses MBEC/GMET.  The only thing that needs some care is to build the
-restricted ACC_* mask with the root page's own access mask as a base
-(and not ACC_ALL).  Otherwise, supervisor mode execution would be
-handled incorrectly on AMD processors with GMET.
+The tests confirm this requirement is upheld for a variety of
+use-cases, exercising various kinds of guest memory access such as
+kvm_read/write_guest(), gfn_to_hva_cache and gfn_to_pfn_cache.
 
-To avoid spamming the trace buffer too much, the new trace event only
-kicks in if memory protection attributes are present for the faulted gfn.
-
+Co-developed-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
 Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/mmu/mmu.c          | 49 +++++++++++++++++++++++++++++++++
- arch/x86/kvm/mmu/mmu_internal.h | 19 +++++++++++++
- arch/x86/kvm/mmu/mmutrace.h     | 36 ++++++++++++++++++++++++
- arch/x86/kvm/mmu/paging_tmpl.h  |  2 +-
- arch/x86/kvm/mmu/spte.h         | 11 ++------
- 5 files changed, 107 insertions(+), 10 deletions(-)
+ .../testing/selftests/kvm/include/kvm_util.h  |   9 +
+ .../selftests/kvm/include/x86/processor.h     |   1 +
+ .../testing/selftests/kvm/lib/x86/processor.c |   5 +
+ .../testing/selftests/kvm/memory_attributes.c |  51 +++-
+ .../selftests/kvm/x86/memory_attributes.c     | 232 ++++++++++++++++++
+ 5 files changed, 297 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 797b18201d98..3fd4cc3c57a5 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4642,6 +4642,50 @@ static int kvm_mmu_faultin_pfn_gmem(struct kvm_vcpu *vcpu,
- 	return RET_PF_CONTINUE;
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index 996909230ac7..b18af4f5f615 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -883,6 +883,15 @@ static inline int vcpu_get_stats_fd(struct kvm_vcpu *vcpu)
+ 	return fd;
  }
  
-+static inline unsigned kvm_get_gfn_protections(struct kvm_vcpu *vcpu, gfn_t gfn)
++static inline struct kvm_translation vcpu_translate(struct kvm_vcpu *vcpu,
++						    u64 gva)
 +{
-+	struct kvm *kvm = vcpu->kvm;
-+	unsigned int access = vcpu->arch.mmu->root_role.access;
-+	unsigned long attrs = kvm_get_memory_attributes(kvm, gfn);
-+	if (!attrs)
-+		return access;
++	struct kvm_translation tr = { .linear_address = gva };
 +
-+	WARN_ON_ONCE(!kvm_mem_attributes_valid(kvm, attrs));
-+
-+	if (!kvm_mem_attributes_may_read(attrs))
-+		access &= ~ACC_READ_MASK;
-+	if (!kvm_mem_attributes_may_write(attrs))
-+		access &= ~ACC_WRITE_MASK;
-+	if (!kvm_mem_attributes_may_exec(attrs)) {
-+		access &= ~ACC_EXEC_MASK;
-+		if (shadow_xu_mask)
-+			access &= ~ACC_USER_EXEC_MASK;
-+	}
-+
-+	return access;
++	vcpu_ioctl(vcpu, KVM_TRANSLATE, &tr);
++	return tr;
 +}
 +
-+static int kvm_faultin_memory_protections(struct kvm_vcpu *vcpu,
-+					  struct kvm_page_fault *fault)
-+{
-+	unsigned access;
-+
-+	/* Memory attributes don't apply to MMIO regions */
-+	if (unlikely(!fault->slot))
-+		return RET_PF_CONTINUE;
-+
-+	access = kvm_get_gfn_protections(vcpu, fault->gfn);
-+	if (access == ACC_ALL)
-+		return RET_PF_CONTINUE;
-+
-+	trace_kvm_faultin_memory_protections(vcpu, fault, access);
-+	if (__permission_fault(vcpu->arch.mmu, access, fault))
-+		return -EFAULT;
-+
-+	fault->host_access &= access;
-+	return RET_PF_CONTINUE;
-+}
-+
- static int __kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
- 				 struct kvm_page_fault *fault)
- {
-@@ -4722,6 +4766,11 @@ static int kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
- 	if (unlikely(!slot))
- 		return kvm_handle_noslot_fault(vcpu, fault, access);
+ int __kvm_has_device_attr(int dev_fd, u32 group, u64 attr);
  
-+	if (kvm_faultin_memory_protections(vcpu, fault)) {
-+		kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
-+		return -EFAULT;
-+	}
+ static inline void kvm_has_device_attr(int dev_fd, u32 group, u64 attr)
+diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+index 6e6f70035508..398380157fa1 100644
+--- a/tools/testing/selftests/kvm/include/x86/processor.h
++++ b/tools/testing/selftests/kvm/include/x86/processor.h
+@@ -1472,6 +1472,7 @@ static inline bool kvm_is_lbrv_enabled(void)
+ 	return !!get_kvm_amd_param_integer("lbrv");
+ }
+ 
++u64 *vm_get_pte_level(struct kvm_vm *vm, gva_t gva, int *level);
+ u64 *vm_get_pte(struct kvm_vm *vm, gva_t gva);
+ 
+ u64 kvm_hypercall(u64 nr, u64 a0, u64 a1, u64 a2, u64 a3);
+diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+index d31fa81ea075..f51b4929d668 100644
+--- a/tools/testing/selftests/kvm/lib/x86/processor.c
++++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+@@ -400,6 +400,11 @@ u64 *tdp_get_pte(struct kvm_vm *vm, u64 l2_gpa)
+ 	return __vm_get_page_table_entry(vm, &vm->stage2_mmu, l2_gpa, &level);
+ }
+ 
++u64 *vm_get_pte_level(struct kvm_vm *vm, gva_t gva, int *level)
++{
++	return __vm_get_page_table_entry(vm, &vm->mmu, gva, level);
++}
 +
- 	/*
- 	 * Retry the page fault if the gfn hit a memslot that is being deleted
- 	 * or moved.  This ensures any existing SPTEs for the old memslot will
-diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
-index 00215b9f309f..0bad60c5aab6 100644
---- a/arch/x86/kvm/mmu/mmu_internal.h
-+++ b/arch/x86/kvm/mmu/mmu_internal.h
-@@ -290,6 +290,25 @@ struct kvm_page_fault {
- 	bool write_fault_to_shadow_pgtable;
+ u64 *vm_get_pte(struct kvm_vm *vm, gva_t gva)
+ {
+ 	int level = PG_LEVEL_4K;
+diff --git a/tools/testing/selftests/kvm/memory_attributes.c b/tools/testing/selftests/kvm/memory_attributes.c
+index c703c5586d43..63dec49c2888 100644
+--- a/tools/testing/selftests/kvm/memory_attributes.c
++++ b/tools/testing/selftests/kvm/memory_attributes.c
+@@ -22,6 +22,8 @@
+ #define TEST_MEM_SLOT	1
+ #define TEST_MEM_GPA	0x80000000
+ 
++#define HV_STATUS_INVALID_HYPERCALL_INPUT	3
++
+ #define MMIO_GPA	0x700000000
+ #define MMIO_GVA	MMIO_GPA
+ 
+@@ -29,12 +31,35 @@
+ #define PT_ACCESSED_MASK	BIT_ULL(5)
+ #define PTE_VADDR		0x1000000000
+ 
++static volatile uint64_t ipis_rcvd;
++
++static pthread_t vcpu_thread;
++
++struct hv_vpset {
++	u64 format;
++	u64 valid_bank_mask;
++	u64 bank_contents[2];
++};
++
++enum HV_GENERIC_SET_FORMAT {
++	HV_GENERIC_SET_SPARSE_4K,
++	HV_GENERIC_SET_ALL,
++};
++
++struct hv_send_ipi_ex {
++	u32 vector;
++	u32 reserved;
++	struct hv_vpset vp_set;
++};
++
+ enum {
+ 	TEST_OP_NOP,
+ 	TEST_OP_READ,
+ 	TEST_OP_WRITE,
+ 	TEST_OP_EXEC,
+ 	TEST_OP_INVPLG,
++	TEST_OP_HYPERV_HYPERCALL_INPUT,
++	TEST_OP_MONITOR_ADDRESS,
+ 	TEST_OP_EXIT,
  };
  
-+/*
-+ * Returns true if the access indicated by @fault is forbidden by the existing
-+ * SPTE protections.
-+ */
-+static inline bool __permission_fault(struct kvm_mmu *mmu, unsigned access,
-+				      struct kvm_page_fault *fault)
-+{
-+	unsigned pfec;
+@@ -44,6 +69,8 @@ const char *test_op_names[] =
+ 	[TEST_OP_WRITE] = "Write",
+ 	[TEST_OP_EXEC] = "Exec",
+ 	[TEST_OP_INVPLG] = "Invplg",
++	[TEST_OP_HYPERV_HYPERCALL_INPUT] = "HvHcall input",
++	[TEST_OP_MONITOR_ADDRESS] = "Monitor address",
+ 	[TEST_OP_EXIT] = "Exit",
+ };
+ 
+@@ -51,6 +78,8 @@ struct test_data {
+ 	uint8_t op;
+ 	int stage;
+ 	gva_t vaddr;
++	gpa_t paddr;
++	uint8_t confirm_read;
+ 	uint64_t expected_val;
+ 
+ 	struct kvm_vcpu *vcpu;
+@@ -63,19 +92,26 @@ static void arch_controlled_write(gva_t addr, uint64_t val);
+ static void arch_controlled_exec(gva_t addr);
+ static void arch_write_return_insn(struct kvm_vm *vm, gpa_t paddr);
+ static bool arch_test_op(struct test_data *test_data);
++static void arch_guest_init(void);
+ 
+ static void guest_code(void *data)
+ {
+ 	struct test_data *test_data = data;
+ 	int stage = 1;
+ 
++	arch_guest_init();
 +
-+	/*
-+	 * RSVD is handled elsewhere, and is used for SMAP in the context
-+	 * of accessing fmt.permissions[].  SPTEs never use PK or SS, as
-+	 * they are not supported for shadow paging and irrelevant for TDP.
-+	 */
-+	pfec = fault->error_code & (
-+		PFERR_WRITE_MASK | PFERR_USER_MASK | PFERR_FETCH_MASK);
-+	return (mmu->fmt.permissions[pfec >> 1] >> access) & 1;
+ 	while (true) {
+ 		uint64_t expected_val = READ_ONCE(test_data->expected_val);
++		bool confirm_read = READ_ONCE(test_data->confirm_read);
+ 		gva_t vaddr = READ_ONCE(test_data->vaddr);
++		u64 val;
+ 
+ 		switch(READ_ONCE(test_data->op)) {
+ 		case TEST_OP_READ:
+-			(void) arch_controlled_read(vaddr);
++			val = arch_controlled_read(vaddr);
++			if (confirm_read)
++				GUEST_ASSERT_EQ(expected_val, val);
+ 			GUEST_SYNC(stage++);
+ 			break;
+ 		case TEST_OP_WRITE:
+@@ -86,6 +122,14 @@ static void guest_code(void *data)
+ 			arch_controlled_exec(vaddr);
+ 			GUEST_SYNC(stage++);
+ 			break;
++		case TEST_OP_MONITOR_ADDRESS: {
++			if (arch_controlled_read(vaddr) != expected_val)
++				GUEST_SYNC(stage++);
++			break;
++		}
++		case TEST_OP_NOP:
++			GUEST_SYNC(stage++);
++			break;
+ 		default:
+ 			if (!arch_test_op(test_data))
+ 				goto exit;
+@@ -145,6 +189,7 @@ static void test_page_restricted(struct kvm_vcpu *vcpu, int op,
+ 
+ 	test_data->op = op;
+ 	test_data->vaddr = vaddr;
++	test_data->paddr = fault_paddr;
+ 
+ 	rc = _vcpu_run(vcpu);
+ 	TEST_ASSERT(rc == -1 && errno == EFAULT,
+@@ -390,12 +435,16 @@ int main(int argc, char *argv[])
+ 	test_mem = vm_alloc_pages(vm, pages);
+ 	virt_map(vcpu->vm, MMIO_GVA, MMIO_GPA, 1);
+ 	test_data = init_test_data(vcpu);
++#ifdef __x86_64__
++	vcpu_set_hv_cpuid(vcpu);
++#endif
+ 
+ 	test_input_validation(vm);
+ 	test_memory_access(vcpu, test_mem, size);
+ 	test_memattrs_ignore_mmio(vcpu);
+ #ifdef __x86_64__
+ 	arch_test_memory_access_pte(vcpu, test_mem);
++	arch_test_side_channels(vcpu, test_mem, size);
+ #endif
+ 	test_finalize(vcpu);
+ 
+diff --git a/tools/testing/selftests/kvm/x86/memory_attributes.c b/tools/testing/selftests/kvm/x86/memory_attributes.c
+index 12395feb6ac7..6ce7da5cb376 100644
+--- a/tools/testing/selftests/kvm/x86/memory_attributes.c
++++ b/tools/testing/selftests/kvm/x86/memory_attributes.c
+@@ -45,17 +45,28 @@ void arch_write_return_insn(struct kvm_vm *vm, gpa_t paddr)
+ bool arch_test_op(struct test_data *test_data)
+ {
+ 	gva_t vaddr = READ_ONCE(test_data->vaddr);
++	gpa_t paddr = READ_ONCE(test_data->paddr);
+ 
+ 	switch(READ_ONCE(test_data->op)) {
+ 	case TEST_OP_INVPLG:
+ 		asm volatile("invlpg (%0)"
+ 			     :: "b" (vaddr): "memory");
+ 		return true;
++	case TEST_OP_HYPERV_HYPERCALL_INPUT:
++		hyperv_hypercall(HVCALL_SEND_IPI_EX, paddr, 0);
++		asm volatile ("sti; hlt; cli;");
++		GUEST_ASSERT_EQ(ipis_rcvd, 1);
++		return true;
+ 	default:
+ 		return false;
+ 	}
+ }
+ 
++void arch_guest_init(void)
++{
++	x2apic_enable();
 +}
 +
  /*
-  * Return values of handle_mmio_page_fault(), mmu.page_fault(), fast_page_fault(),
-  * and of course kvm_mmu_do_page_fault().
-diff --git a/arch/x86/kvm/mmu/mmutrace.h b/arch/x86/kvm/mmu/mmutrace.h
-index 8354d9f39777..744f111644cb 100644
---- a/arch/x86/kvm/mmu/mmutrace.h
-+++ b/arch/x86/kvm/mmu/mmutrace.h
-@@ -8,6 +8,13 @@
- #undef TRACE_SYSTEM
- #define TRACE_SYSTEM kvmmmu
- 
-+#ifdef CREATE_TRACE_POINTS
-+#define tracing_kvm_rip_read(vcpu) ({					\
-+	typeof(vcpu) __vcpu = vcpu;					\
-+	__vcpu->arch.guest_state_protected ? 0 : kvm_rip_read(__vcpu);	\
-+	})
-+#endif
-+
- #define KVM_MMU_PAGE_FIELDS		\
- 	__field(__u8, mmu_valid_gen)	\
- 	__field(__u64, gfn)		\
-@@ -447,6 +454,35 @@ TRACE_EVENT(
- 		  __entry->gfn, __entry->spte, __entry->level, __entry->errno)
- );
- 
-+TRACE_EVENT(kvm_faultin_memory_protections,
-+	TP_PROTO(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault,
-+		 unsigned access),
-+	TP_ARGS(vcpu, fault, access),
-+
-+	TP_STRUCT__entry(
-+		__field(unsigned int, vcpu_id)
-+		__field(unsigned long, guest_rip)
-+		__field(u64, fault_address)
-+		__field(bool, write)
-+		__field(bool, exec)
-+		__field(unsigned, access)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->vcpu_id = vcpu->vcpu_id;
-+		__entry->guest_rip = tracing_kvm_rip_read(vcpu);
-+		__entry->fault_address = fault->gfn;
-+		__entry->write = fault->write;
-+		__entry->exec = fault->exec;
-+		__entry->access = access;
-+	),
-+
-+	TP_printk("vcpu %d rip 0x%lx gfn 0x%016llx access %s protections 0x%x",
-+		  __entry->vcpu_id, __entry->guest_rip, __entry->fault_address,
-+		  __entry->exec ? "X" : (__entry->write ? "W" : "R"),
-+		  __entry->access)
-+);
-+
- #endif /* _TRACE_KVMMMU_H */
- 
- #undef TRACE_INCLUDE_PATH
-diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index e6ec14165f40..b031123fcb36 100644
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -992,7 +992,7 @@ static int FNAME(sync_spte)(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp, int
- 
- 	sptep = &sp->spt[i];
- 	spte = *sptep;
--	host_access = ACC_ALL;
-+	host_access = kvm_get_gfn_protections(vcpu, gfn);
- 	if (!(spte & shadow_host_writable_mask))
- 		host_access &= ~ACC_WRITE_MASK;
- 	slot = kvm_vcpu_gfn_to_memslot(vcpu, gfn);
-diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
-index 589f3954633e..14f322944671 100644
---- a/arch/x86/kvm/mmu/spte.h
-+++ b/arch/x86/kvm/mmu/spte.h
-@@ -491,7 +491,7 @@ static inline bool is_mmu_writable_spte(u64 spte)
- static inline bool spte_permission_fault(struct kvm_mmu *mmu, u64 spte,
- 					 struct kvm_page_fault *fault)
- {
--	unsigned pfec, pte_access;
-+	unsigned pte_access;
- 
- 	if (!is_shadow_present_pte(spte))
- 		return true;
-@@ -511,14 +511,7 @@ static inline bool spte_permission_fault(struct kvm_mmu *mmu, u64 spte,
- 		pte_access |= spte & shadow_xu_mask ? ACC_USER_EXEC_MASK : 0;
- 	}
- 
--	/*
--	 * RSVD is handled elsewhere, and is used for SMAP in the context
--	 * of accessing fmt.permissions[].  SPTEs never use PK or SS, as
--	 * they are not supported for shadow paging and irrelevant for TDP.
--	 */
--	pfec = fault->error_code & (
--		PFERR_WRITE_MASK | PFERR_USER_MASK | PFERR_FETCH_MASK);
--	return (mmu->fmt.permissions[pfec >> 1] >> pte_access) & 1;
-+	return __permission_fault(mmu, pte_access, fault);
+  * This test validates that, during a page walk, if the page a PTE is placed in
+  * is read-only the accesss and dirty bits will not be written. Note There's a
+@@ -181,3 +192,224 @@ static void arch_test_memory_access_pte(struct kvm_vcpu *vcpu, gva_t vaddr)
+ 	test_memory_access_pte_ro(vcpu, vaddr);
+ 	test_memory_access_sync_spte(vcpu, vaddr);
  }
- 
- /*
++
++#define IPI_VECTOR	 0xfe
++
++static void guest_ipi_handler_hv(struct ex_regs *regs)
++{
++	ipis_rcvd++;
++	wrmsr(HV_X64_MSR_EOI, 1);
++}
++
++/*
++ * This test verifies that the Hyper-V hypercall exit handler takes memory
++ * attributes into account before accessing input data. It coordinates with the
++ * guest through the 'TEST_OP_HYPERV_HYPERCALL_INPUT' operation and instructs
++ * the guest to issue two PV IPIs. The first PV IPI fails because the input
++ * data is held in read-protected memory. Subsequently, the memory protection
++ * is lifted, and the second PV IPI succeeds.
++ */
++static void test_side_channel_hyperv_hypercall_inputs(struct kvm_vcpu *vcpu,
++						      gva_t vaddr,
++						      size_t size)
++{
++	struct kvm_vm *vm = vcpu->vm;
++	struct hv_send_ipi_ex *ipi_ex = addr_gva2hva(vm, vaddr);
++	gpa_t paddr = addr_gva2gpa(vm, vaddr);
++
++	if (!kvm_has_cap(KVM_CAP_HYPERV_SEND_IPI) ||
++	    !kvm_has_cap(KVM_CAP_HCALL_FAULT_EXIT))
++		return;
++
++	vm_enable_cap(vcpu->vm, KVM_CAP_HCALL_FAULT_EXIT, 1);
++
++	ipis_rcvd = 0;
++	vm_install_exception_handler(vm, IPI_VECTOR, guest_ipi_handler_hv);
++	vcpu_set_msr(vcpu, HV_X64_MSR_GUEST_OS_ID, HYPERV_LINUX_OS_ID);
++
++	*ipi_ex = (struct hv_send_ipi_ex){
++		.vector = IPI_VECTOR,
++		.vp_set.format = HV_GENERIC_SET_ALL,
++	};
++
++	vm_set_memory_attributes(vm, paddr, vm->page_size, KVM_MEMORY_ATTRIBUTE_NO_ACCESS);
++	test_page_restricted(vcpu, TEST_OP_HYPERV_HYPERCALL_INPUT, vaddr, paddr,
++			     KVM_MEMORY_EXIT_FLAG_READ);
++	vm_set_memory_attributes(vm, paddr, vm->page_size, 0);
++	vcpu_run_and_inc_stage(vcpu);
++}
++
++/*
++ * Verifies that the guest page table walker fails the walk if it encounters a
++ * page table entry address read-protected by a memory attribute.
++ */
++static void test_side_channel_emul_page_walks(struct kvm_vcpu *vcpu,
++					      gva_t test_vm_addr,
++					      size_t size)
++{
++	const uint64_t pte_addr_mask = GENMASK(51, 12);
++	struct kvm_vm *vm = vcpu->vm;
++	struct kvm_translation tr;
++	int level = PG_LEVEL_1G;
++	gpa_t paddr;
++	uint64_t *pte;
++
++	pte = vm_get_pte_level(vm, test_vm_addr, &level);
++	TEST_ASSERT_EQ(level, PG_LEVEL_1G);
++	paddr = *pte & pte_addr_mask;
++
++	tr = vcpu_translate(vcpu, test_vm_addr);
++	TEST_ASSERT_EQ(tr.valid, true);
++	TEST_ASSERT_EQ(tr.physical_address, addr_gva2gpa(vm, test_vm_addr));
++
++	vm_set_memory_attributes(vm, paddr, vm->page_size, KVM_MEMORY_ATTRIBUTE_NO_ACCESS);
++	tr = vcpu_translate(vcpu, test_vm_addr);
++	TEST_ASSERT_EQ(tr.valid, false);
++
++	vm_set_memory_attributes(vm, paddr, vm->page_size, 0);
++}
++
++static void vm_set_vapic_addr(struct kvm_vcpu *vcpu, uint64_t addr)
++{
++	struct kvm_vapic_addr va;
++
++	va.vapic_addr = addr;
++	vcpu_ioctl(vcpu, KVM_SET_VAPIC_ADDR, &va);
++}
++
++/*
++ * Perform a dummy regs update to issue a KVM_REQ_EVENT. This forces
++ * vapic to be synced before entering the guest.
++ */
++static void vcpu_force_vapic_update(struct kvm_vcpu *vcpu)
++{
++	struct kvm_regs regs;
++
++	vcpu_regs_get(vcpu, &regs);
++	vcpu_regs_set(vcpu, &regs);
++}
++
++/*
++ * Setup the vapic address on a GPA that is write-protected. Force an vapic
++ * update and validate its contents were not changes. Then, lift the write
++ * restriction and validate the page's contents are updated.
++ */
++static void test_side_channel_vapic_addr(struct kvm_vcpu *vcpu)
++{
++	struct kvm_vm *vm = vcpu->vm;
++	gva_t vaddr = vm_alloc_page(vm);
++	gpa_t paddr = addr_gva2gpa(vm, vaddr);
++
++	vm_set_vapic_addr(vcpu, paddr);
++	test_data->op = TEST_OP_READ;
++	test_data->vaddr = vaddr;
++	test_data->confirm_read = 1;
++	test_data->expected_val = ~0ULL >> 32;
++	memset(addr_gva2hva(vm, vaddr), 0xff, sizeof(uint32_t));
++	vm_set_memory_attributes(vm, paddr, vm->page_size, KVM_MEMORY_ATTRIBUTE_NW);
++	vcpu_run_and_inc_stage(vcpu);
++
++	vm_set_memory_attributes(vm, paddr, vm->page_size, 0);
++	vcpu_force_vapic_update(vcpu);
++	test_data->expected_val = 0ULL;
++	vcpu_run_and_inc_stage(vcpu);
++
++	vm_set_vapic_addr(vcpu, 0);
++	test_data->confirm_read = 0;
++}
++
++static void *vcpu_worker(void *data)
++{
++	struct test_data *test_data = data;
++	struct kvm_vcpu *vcpu = test_data->vcpu;
++
++	vcpu_run_and_inc_stage(vcpu);
++
++	return NULL;
++}
++
++/*
++ * Set up the pvclock page and validate that KVM periodically updates the
++ * 'version' field. Subsequently, make the pvclock page non-writable and
++ * verify that the 'version' field is no longer updated.
++ */
++static void test_side_channel_pvclock(struct kvm_vcpu *vcpu)
++{
++	struct kvm_vm *vm = vcpu->vm;
++	gva_t vaddr = vm_alloc_page(vm);
++	gpa_t paddr = addr_gva2gpa(vm, vaddr);
++	struct pvclock_vcpu_time_info *pvclock = addr_gpa2hva(vm, paddr);
++
++	pvclock->version = 0;
++
++	test_data->op = TEST_OP_MONITOR_ADDRESS;
++	test_data->vaddr = vaddr + offsetof(struct pvclock_vcpu_time_info, version);
++	test_data->expected_val = pvclock->version;
++
++	pthread_create(&vcpu_thread, NULL, vcpu_worker, test_data);
++	vcpu_set_msr(vcpu, MSR_KVM_SYSTEM_TIME_NEW, paddr | 0x1);
++	usleep(msecs_to_usecs(1000));
++	TEST_ASSERT_EQ(pthread_tryjoin_np(vcpu_thread, NULL), 0);
++	vcpu_set_msr(vcpu, MSR_KVM_SYSTEM_TIME_NEW, 0);
++
++	test_data->expected_val = pvclock->version;
++	vm_set_memory_attributes(vm, paddr, vm->page_size, KVM_MEMORY_ATTRIBUTE_NW);
++	pthread_create(&vcpu_thread, NULL, vcpu_worker, test_data);
++	vcpu_set_msr(vcpu, MSR_KVM_SYSTEM_TIME_NEW, paddr | 0x1);
++	usleep(msecs_to_usecs(1000));
++	TEST_ASSERT_EQ(pthread_tryjoin_np(vcpu_thread, NULL), EBUSY);
++
++	/* Force the 'monitor_address' guest operation to finish */
++	test_data->op = TEST_OP_NOP;
++	TEST_ASSERT_EQ(pthread_join(vcpu_thread, NULL), 0);
++	vm_set_memory_attributes(vm, paddr, vm->page_size, 0);
++	vcpu_set_msr(vcpu, MSR_KVM_SYSTEM_TIME_NEW, 0);
++}
++
++/*
++ * Write to MSR_KVM_WALL_CLOCK_NEW and verify that the struct's 'version' field
++ * is updated. Subsequently, make the target guest physical address
++ * non-writable, and verify the 'version' field isn't updated anymore.
++ */
++static void test_side_channel_wallclock(struct kvm_vcpu *vcpu)
++{
++	struct kvm_vm *vm = vcpu->vm;
++	gva_t vaddr = vm_alloc_page(vm);
++	gpa_t paddr = addr_gva2gpa(vm, vaddr);
++	struct pvclock_wall_clock *wc = addr_gva2hva(vm, vaddr);
++
++	wc->version = 0x0;
++	vcpu_set_msr(vcpu, MSR_KVM_WALL_CLOCK_NEW, paddr);
++	TEST_ASSERT_EQ(READ_ONCE(wc->version), 2);
++
++	vm_set_memory_attributes(vm, paddr, vm->page_size, KVM_MEMORY_ATTRIBUTE_NW);
++	vcpu_set_msr(vcpu, MSR_KVM_WALL_CLOCK_NEW, paddr);
++	TEST_ASSERT_EQ(READ_ONCE(wc->version), 2);
++
++	vm_set_memory_attributes(vm, paddr, vm->page_size, 0);
++}
++
++/*
++ * Memory attributes are vulnerable to side-channel attacks. This means that
++ * any KVM operation initiated by the guest that requires guest memory access
++ * (which is the case for most pv-interfaces) needs to consider memory
++ * attributes.
++ *
++ * The following tests validate that this requirement is upheld for a variety
++ * of use-cases. These test cases were selected to exercise specific approaches
++ * to accessing guest memory, including:
++ *
++ *  - kvm_read/write_guest()
++ *  - gfn_to_hva_cache
++ *  - gfn_to_pfn_cache
++ *  - Guest page walker
++ */
++static void arch_test_side_channels(struct kvm_vcpu *vcpu, gva_t test_vm_addr,
++			            size_t size)
++{
++	test_side_channel_hyperv_hypercall_inputs(vcpu, test_vm_addr, size);
++	test_side_channel_emul_page_walks(vcpu, test_vm_addr, size);
++	test_side_channel_vapic_addr(vcpu);
++	test_side_channel_wallclock(vcpu);
++	test_side_channel_pvclock(vcpu);
++}
 -- 
 2.52.0
-
 
