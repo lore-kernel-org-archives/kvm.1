@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689644EE86E
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 14:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0291B4F96C2
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 14:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789743417; cv=none; b=fSbsQwx08EmfPmPh7N+hXTnbxv0wxeLPPiAqEoQRHFT/9Nkulv917z3QLpfnlafzz+aVN/4RIEfzbLqqYE8Lpy02oWlCzW6J+rX+3IPLM2n3Sk+lnS3WwGukYrkFItTLKvqslQih59kA9hOoG3upjT/92je9y9iwkrv14yrhXrg=
+	t=1789743443; cv=none; b=OHS2k7dXIngRyVpuKJebZujyqrwMQmrd0P+ARxyS7EqPPEsLqoIpiGAVT9YAqHP6WaymXnn3H7c3y8i0uCrtYx7g4lgeXGLWqjYYz/0AJr5QbGyL7rg7zDawJaHing4KResHQsLMw5fE861ViK1yl+GK7jCDUR6wNtfO0XAWoBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789743417; c=relaxed/simple;
-	bh=9vBULcYEKsTxDqYnEWJxGmJvdu0qn93TJm0l9Mffv+8=;
+	s=arc-20240116; t=1789743443; c=relaxed/simple;
+	bh=ywCDwWczOthwM3LgQSw96QUc3eXfZw1pO4cS+Apj7v8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JNGPc8gaz8YuNIhmOEYaezfu+TINLi6Oo85Azcc/XvTluJ2IiYk4bWtP4ubXp4hrbK3YW3DcVpzcGmNtvSdn28xnwfOfOs+2hO8I6xVuza3CNaSEgPPD7qRAJ9F4vye2Yw49QFVYwTUXW6I9kJd7O8oWI7Xdoc4y5cbGyZySJSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l8ov419w; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=fhI57wTI5oJ2gM3Euu980r3kEVxg4ySZbNUaTCdFhqay+f/9F2GDByYxHhG6n+tU7VkIsexkW1vB94QKW4kgFGGxnRvu31XW4f4sz8bNQz1wBGnYye3zb+8qJ1ku8vYkpZtD0RFgNBtaY7TGXvBz72JKyIkyCsq5Lk5ZdKQl40E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SyZZmoIt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l8ov419w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD35D1F000FF;
-	Fri, 18 Sep 2026 14:56:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SyZZmoIt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B19901F000FF;
+	Fri, 18 Sep 2026 14:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789743414;
-	bh=UEediM5y64jeP0DQ8AYMvWgM/HxHXbhxj8vJEZK2k14=;
+	s=k20260515; t=1789743441;
+	bh=i/ot6fI/mfPOrB1LaOYO1JcJ0Oh3MPODjV0WmaEsevo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=l8ov419wC/YYqgkkUaedaSh7fWTMOE4bGZAXUY9ZGCm7NGBloA2lQWJDdAOfFaMzF
-	 3pfwv1iYRK23iTaJ4hAKA95WjmoLVZG13y3d0lA+6CxgiBVtIFbCRWQk73o2Sa8CHu
-	 rG6fAovKrbwJEgSNW39TFdRJHFbLag48ZOEdyeqPfXjwYFWtG4MTLV2zEH1buUePGh
-	 5tYjs3e3j7dTXrRL8FJI6vFPLlA6KvB1xsQRq3yRwmz/X8NR6N/X6zeEzQDgqa+Psz
-	 822Geyrsbh54RfPw0T6PWJDbEe2oL31TU12GzrbJ7M5PHM9O3If2CKb/IHdkonAr3f
-	 S6pW0W6jPJ70Q==
+	b=SyZZmoItPgFmaMvJ+aBqr4nSFjqEfTPTKC4W/gFGrwE5atptoHbvZEKrmFmQrRZpB
+	 hk6iYIbz58NXT1/hsDGzLFrNCRts3aRpSYFONofsUsvFDVYo959yyu99Q2a3tR5IOt
+	 5XcCFi2lCjSshwg735OxevGU8HnOJsL98HdNMesXJwKXyq32KmJkV50yuw2yxNPY08
+	 mswEPTBUq6Ut32hQB1ITstKdpc3mdswIDTZrFNDAJiuuGdEW/CBF6drXWx4Nla5F1d
+	 FvdZxstYWD6Dj9rI9nl5ZrnxLGm65FqJzx7ib6veHd+c3YE9h6RGQ3sbvYkOaxdTIM
+	 JygYRUEVXY8KA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 31/31] KVM: x86: selftests: Introduce memory attributes
- side-channel tests
+Subject: Re: [PATCH 25/31] KVM: x86/mmu: Take memory protection attributes
+ into account during faults
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Paolo Bonzini" <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260918135030.171564-32-pbonzini@redhat.com>
+In-Reply-To: <20260918135030.171564-26-pbonzini@redhat.com>
 References: <20260918135030.171564-1-pbonzini@redhat.com>
- <20260918135030.171564-32-pbonzini@redhat.com>
+ <20260918135030.171564-26-pbonzini@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 14:56:54 +0000
-Message-Id: <20260918145654.BD35D1F000FF@smtp.kernel.org>
+Date: Fri, 18 Sep 2026 14:57:21 +0000
+Message-Id: <20260918145721.B19901F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,83 +47,64 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] kselftests: race condition in pvclock test using usleep() for sy=
-nchronization
+- [Medium] kvm: trace buffer spam on AMD with GMET enabled
 --
 
-commit 9a779483841fdb39484cbe06ffba510ee690c56e
-Author: Paolo Bonzini <pbonzini@redhat.com>
+commit e48ad04487bab345ee62e42a2457d15e6edd7180
+Author: Nicolas Saenz Julienne <nsaenz@amazon.com>
+Subject: KVM: x86/mmu: Take memory protection attributes into account durin=
+g faults
 
-KVM: x86: selftests: Introduce memory attributes side-channel tests
+This commit adds support for memory protection attributes during guest page
+faults, injecting a user-space -EFAULT exit for prohibited accesses. It also
+adds a trace event that is intended to trigger only when memory protection
+attributes restrict access.
 
-This commit introduces memory attributes selftests to catch vulnerable
-side-channels. It validates that KVM operations requiring memory access
-properly account for memory attributes across various use cases.
-
-> diff --git a/tools/testing/selftests/kvm/x86/memory_attributes.c b/tools/=
-testing/selftests/kvm/x86/memory_attributes.c
-> --- a/tools/testing/selftests/kvm/x86/memory_attributes.c
-> +++ b/tools/testing/selftests/kvm/x86/memory_attributes.c
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index 3c926f95f87be..6bbecbae2f8c4 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
 [ ... ]
-> @@ -181,3 +192,224 @@ static void arch_test_memory_access_pte(struct kvm_=
-vcpu *vcpu, gva_t vaddr)
-[ ... ]
-> +static void test_side_channel_pvclock(struct kvm_vcpu *vcpu)
+> +static inline unsigned kvm_get_gfn_protections(struct kvm_vcpu *vcpu, gf=
+n_t gfn)
 > +{
-> +	struct kvm_vm *vm =3D vcpu->vm;
-> +	gva_t vaddr =3D vm_alloc_page(vm);
-> +	gpa_t paddr =3D addr_gva2gpa(vm, vaddr);
-> +	struct pvclock_vcpu_time_info *pvclock =3D addr_gpa2hva(vm, paddr);
+> +	struct kvm *kvm =3D vcpu->kvm;
+> +	unsigned int access =3D vcpu->arch.mmu->root_role.access;
+> +	unsigned long attrs =3D kvm_get_memory_attributes(kvm, gfn);
+> +	if (!attrs)
+> +		return access;
 > +
-> +	pvclock->version =3D 0;
+[ ... ]
+> +static int kvm_faultin_memory_protections(struct kvm_vcpu *vcpu,
+> +					  struct kvm_page_fault *fault)
+> +{
+> +	unsigned access;
 > +
-> +	test_data->op =3D TEST_OP_MONITOR_ADDRESS;
-> +	test_data->vaddr =3D vaddr + offsetof(struct pvclock_vcpu_time_info, ve=
-rsion);
-> +	test_data->expected_val =3D pvclock->version;
+> +	/* Memory attributes don't apply to MMIO regions */
+> +	if (unlikely(!fault->slot))
+> +		return RET_PF_CONTINUE;
 > +
-> +	vcpu_set_msr(vcpu, MSR_KVM_SYSTEM_TIME_NEW, paddr | 0x1);
-> +	pthread_create(&vcpu_thread, NULL, vcpu_worker, test_data);
-> +	usleep(msecs_to_usecs(1000));
-> +	TEST_ASSERT_EQ(pthread_tryjoin_np(vcpu_thread, NULL), 0);
+> +	access =3D kvm_get_gfn_protections(vcpu, fault->gfn);
+> +	if (access =3D=3D ACC_ALL)
+> +		return RET_PF_CONTINUE;
+> +
+> +	trace_kvm_faultin_memory_protections(vcpu, fault, access);
 
 [Severity: Medium]
-Does this test rely on a hardcoded 1-second timeout for synchronization?
+Will this check effectively prevent trace buffer spam on AMD processors
+with Guest Mode Execute Trap (GMET) enabled?
 
-On heavily loaded CI systems or nested virtualized environments, vCPU
-scheduling and the pvclock update can easily exceed 1 second. This could
-cause pthread_tryjoin_np() to fail unexpectedly and create a false positive
-regression.
+When GMET is enabled, KVM sets the root_role.access for the TDP MMU to
+ACC_ALL & ~ACC_USER_MASK. Since kvm_get_gfn_protections() initializes the
+access mask using vcpu->arch.mmu->root_role.access, it will return the
+restricted mask even if no memory attributes are present.
 
-Similarly, when waiting to confirm the vCPU does not exit in the second part
-of this test, a slow system might simply not have scheduled the thread yet,
-leading to a false negative pass even if memory was erroneously updated.
-
-> +	vcpu_set_msr(vcpu, MSR_KVM_SYSTEM_TIME_NEW, 0);
-> +
-> +	test_data->expected_val =3D pvclock->version;
-> +	vm_set_memory_attributes(vm, paddr, vm->page_size, KVM_MEMORY_ATTRIBUTE=
-_NW);
-> +	vcpu_set_msr(vcpu, MSR_KVM_SYSTEM_TIME_NEW, paddr | 0x1);
-> +	pthread_create(&vcpu_thread, NULL, vcpu_worker, test_data);
-> +	usleep(msecs_to_usecs(1000));
-> +	TEST_ASSERT_EQ(pthread_tryjoin_np(vcpu_thread, NULL), EBUSY);
-> +
-> +	/* Force the 'monitor_address' guest operation to finish */
-> +	test_data->op =3D TEST_OP_NOP;
-> +	TEST_ASSERT_EQ(pthread_join(vcpu_thread, NULL), 0);
-
-[Severity: Medium]
-Is a WRITE_ONCE() missing when assigning test_data->op?
-
-The test_data->op variable is polled concurrently by the guest vCPU thread
-via READ_ONCE() in guest_code(), so using a plain assignment here violates
-standard lockless concurrency patterns.
-
-> +	vm_set_memory_attributes(vm, paddr, vm->page_size, 0);
-> +	vcpu_set_msr(vcpu, MSR_KVM_SYSTEM_TIME_NEW, 0);
-> +}
+If access is restricted by GMET, the condition checking if access =3D=3D AC=
+C_ALL
+evaluates to false, which causes the trace event to trigger unconditionally
+on every page fault. Could this lead to noticeable performance regressions
+during tracing on these systems?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918135030.1715=
-64-2-pbonzini@redhat.com?part=3D31
+64-2-pbonzini@redhat.com?part=3D25
