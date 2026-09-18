@@ -1,171 +1,382 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806884F93B3;
-	Fri, 18 Sep 2026 13:39:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C484F4CF3;
+	Fri, 18 Sep 2026 13:42:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789738757; cv=none; b=WxzWjxaZa/bi8E0XcEbC1nUeZOeQfKFjgV1kWmMKjDRxLst6qCEuAbVfTXTjRrWSB/FbPOd3EFU9f13jVyQFdGqM8IFTQch1UDyPpIAe+F1p7ip+8zmuFEawKtRBfK3zY01eDJJJX0B3dScd4p1Hb/PWDY3K2SMhpNCcYJjDzCs=
+	t=1789738965; cv=none; b=dF5MSMsiuFGhcUP+TTlxYvcu797fCi6hZqblrV4ZyH/pjdesEkU53Hi7Sg4yzzF1NTgMBotqgnXDOWHMUTY4kR0gMIbpxGQ6x+5Q7eiiypGzCQRHTDkN5u5ZjNAeVfuHRRhTHre/XRod8EQSksw1VJgl/sA0Uek8jYQJec0OzYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789738757; c=relaxed/simple;
-	bh=1raoYJ8cPmN5OZkFmEYS9nk8LKREynZAs6k257z4zbQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JDKb+0NgN2WJyqcOtfk0KFIJmqxD/U/PsNYIzBA8HEaUK5Li2HaPre5UNIOLl/bqvTVafqicedDGgCQ71b9cMaPwOWKSkIg8DhmXd5NnwqPv9R/1kMWg1YxQwabXjh0AFQnC04GETPpFz4JEbT44TBKCG06IZzTb7XGl7/qYTTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hjI6uadR; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1789738965; c=relaxed/simple;
+	bh=0oiHFMwARjeya69GcpvyV541pBNfoR0D+boudpmmdkc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=U5oXXZHWXi3T6hhodEV3axqiP2SKAa/JafxXKXQZ8LiHumpqkwKRsc3qO39osZW/lcscLEkUeFLgguijZci6E2/3mQj33lqDT11yBAf6ITlaVHHFBkY9NCmjozjHXFqSH/TlgvujJOFtKcoy3cO5YLqaQunEs/cLikLAr3q8D4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FzGRAyGZ; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hjI6uadR"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68IDVW4o217069;
-	Fri, 18 Sep 2026 13:38:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=Zg61270tTkGqKKJ4JDj4mB3Ld40GCP
-	4fvHt1fZMrxp0=; b=hjI6uadR0ijaodzmA4kzryzl8Z/+0tu3OY00hFk769Wpmi
-	Wk0GZqDwusrlINtZHrta3dP5bJr69KxBASMz5bUDBsj2bVhJjb5aH8iEAjQcVqFI
-	QVfFLsyifgEPvlGdN/JGZfs49zteZJZxCNeIcHQviEQr19eFTxjVkX8PjzZzuWZQ
-	YaaMsGudMwVJp6oYdu97NcGOuM+aX2PXpTcdpVtyBrNrIvWsSj2iHlpIv0Hz1xcY
-	5diEI6tnHu2MfETckfAY+8HzYyXjMMt9cMaPi+PV1xo6hgl8dIisBVBOPXKFIGG/
-	0Mc7bIoB2KrKrYGt+YbsCVLXinqEjb8ToZNQ0dtw==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmw5efv2g-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 18 Sep 2026 13:38:52 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68IDNtqJ695598;
-	Fri, 18 Sep 2026 13:38:51 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gra3fem78-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Sep 2026 13:38:51 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68IDceSe27722194
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 18 Sep 2026 13:38:40 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1EFCC2004E;
-	Fri, 18 Sep 2026 13:38:40 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2E9C320043;
-	Fri, 18 Sep 2026 13:38:39 +0000 (GMT)
-Received: from osiris (unknown [9.111.4.88])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 18 Sep 2026 13:38:39 +0000 (GMT)
-Date: Fri, 18 Sep 2026 15:38:37 +0200
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Steffen Eiden <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
-        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Friedrich Welter <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>,
-        Gautam Gala <ggala@linux.ibm.com>,
-        Hariharan Mari <hari55@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
-        Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>,
-        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-        Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v8 00/29] KVM: s390: Introduce arm64 KVM
-Message-ID: <20260918133837.84754-A-seiden@linux.ibm.com>
-References: <20260918133107.1042730-1-seiden@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FzGRAyGZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789738962; x=1821274962;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=0oiHFMwARjeya69GcpvyV541pBNfoR0D+boudpmmdkc=;
+  b=FzGRAyGZT4dNMl9318MqJOyC6PavR9ICN8UEZG4lJhBJxY3LYdtCl+n1
+   DAYYLyOsvGP4EnOzELLsolRHGPcb4JElegPEMXIaqFIQBUryQl1LXoBfl
+   tppfx998Wu6cpyexOKV+IzYIyAbUUrqReBQDGnz9x88Q83gAq9vMiAdG/
+   o85LxoBticOuLgHMJBW9Wsha8ZHXogilca6C+r5ad1eQo8xEvkifDjjBe
+   gHFy5Apmpc9DDioj3o+EuUYWHL2/DHDx9Z+PpagXKQFPuFMOsQxzpy0qc
+   Q9hhlKr0RYkpEXZV4eo5Bw2XXyETEsyWxzmmX5vn0RhpG+I5wAZie+Lo1
+   g==;
+X-CSE-ConnectionGUID: w+VdLg4YSGOGeyTCPi0Y3g==
+X-CSE-MsgGUID: uoULOr0HQjC5e120A5NKuA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11908"; a="89176889"
+X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
+   d="scan'208";a="89176889"
+Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 06:42:37 -0700
+X-CSE-ConnectionGUID: nlw35IBKQbaMx6YJ5XUK1g==
+X-CSE-MsgGUID: T2brE3rVRA+7nGvBdijE2w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
+   d="scan'208";a="2601666"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO [10.245.245.247]) ([10.245.245.247])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 06:42:31 -0700
+Message-ID: <b517070d0b9236b03962fcba649faffcacda23eb.camel@linux.intel.com>
+Subject: Re: [PATCH v6 18/18] RDMA/mlx5: Ask P2PDMA whether ATS takes a
+ direct peer-to-peer route
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe
+ <logang@deltatee.com>,  Chaitanya Kulkarni	 <kch@nvidia.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Jens Axboe	 <axboe@kernel.dk>,
+ Alex Williamson <alex@shazbot.org>, Ankit Agrawal	 <ankita@nvidia.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet	 <corbet@lwn.net>, Shuah
+ Khan <skhan@linuxfoundation.org>, "Joerg Roedel (AMD)"	 <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy	 <robin.murphy@arm.com>, Randy
+ Dunlap <rdunlap@infradead.org>, Sumit Semwal	 <sumit.semwal@linaro.org>,
+ Christian =?ISO-8859-1?Q?K=F6nig?=	 <christian.koenig@amd.com>,
+ linux-pci@vger.kernel.org, 	linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, iommu@lists.linux.dev,  Tushar Dave
+ <tdave@nvidia.com>, linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, 	linaro-mm-sig@lists.linaro.org,
+ linux-rdma@vger.kernel.org, kvm@vger.kernel.org
+Date: Fri, 18 Sep 2026 15:42:28 +0200
+In-Reply-To: <20260918121500.GV13683@unreal>
+References: <20260914-fix-p2p-acs-v4-0-v6-0-5ef07ec9ef06@nvidia.com>
+	 <20260914-fix-p2p-acs-v4-0-v6-18-5ef07ec9ef06@nvidia.com>
+	 <321890690ce83d1943b2f678bd9bee9b8c895b66.camel@linux.intel.com>
+	 <20260918121500.GV13683@unreal>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260918133107.1042730-1-seiden@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDE5MiBTYWx0ZWRfX8NOiLounXJV3
- p4ksMi+kacIKw6TqakTSOWUZIjsH2DBZucRYVsqR+C0f+TOO43S45ZXwBcY6K1/Qd2q8DKEW1eu
- QrBPzt74AVs+tqgzffd90bN/heuvGcsUXjF/l8Zmvbxe1kfWh+moMOGAAPs4eCK9pbGpfvJXzd+
- RhQIfW3O3xyFLIXqVbX7EQJ5jCdA3OEiBr3+kfwzLXbxwgWzJKhX1qu2MH4j7+yeebTBnVl5oUX
- ScjFiIWRQmltqq31pShmheu+2L17BGoyROyfMzLAYryD9/LigRfFa0xe0n4EGT9RUYDOokB+kvr
- QX5xm34Nys6Ulv1noKx+U2zTJBFGfzZ1EiQq70azxz7PV22vupBQ1BZ9F5EhEPLM4+R7sDejhLq
- 1Fd0lXRTi3dOV5+Lz/pYUS7i9pzuP7GfzqGar3+5nNWKo86sJ9mSnUDuPBUDtXyAeiHT4PTGRcX
- 2sQPP30nzlUmVZHDRwQ==
-X-Authority-Analysis: v=2.4 cv=E/NYNqdl c=1 sm=1 tr=0 ts=6aad3eec cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=HQ_ZLx768mUr4WH56XwA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: yj9WjxwmCZmDszY55CZnhGcPKW1x8ZIB
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDE5MiBTYWx0ZWRfXwBa5tmX9Zui/
- 5FEAMNIa/C7zCAuqUZ505lFt9Er8ruJIiz5lWDQq4U1WX8LIo3/FCvOn/E5QvQ2XhI5wD1EOoYN
- wx38zl2LIwJnoR4aMry/I7e4pu8gzuk=
-X-Proofpoint-GUID: 0oxN8qpLp3I7KaiEFna4SOFT743i7NUu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-18_04,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 lowpriorityscore=0 priorityscore=1501 spamscore=0
- adultscore=0 clxscore=1015 bulkscore=0 malwarescore=0 suspectscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609180192
 
-On Fri, Sep 18, 2026 at 03:30:37PM +0200, Steffen Eiden wrote:
-> Introduce arm-on-s390. Enable KVM-accelerated ARM CPU virtualisation on s390.
-> 
+Hi,=C2=A0Leon,
 
-...
+On Fri, 2026-09-18 at 15:15 +0300, Leon Romanovsky wrote:
+> On Thu, Sep 17, 2026 at 03:56:12PM +0200, Thomas Hellstr=C3=B6m wrote:
+> > Hi
+> >=20
+> > On Mon, 2026-09-14 at 14:22 +0300, Leon Romanovsky wrote:
+> > > From: Leon Romanovsky <leonro@nvidia.com>
+> > >=20
+> > > mlx5_umem_needs_ats() enables ATS for any dma-buf whose caller
+> > > asked
+> > > for
+> > > Relaxed Ordering, on the assumption that a switch in the path has
+> > > CR,
+> > > RR
+> > > and DT all set. It also enables it for a buffer already mapped
+> > > with
+> > > the
+> > > peer's bus addresses, which are not translatable at all.
+> > >=20
+> > > P2PDMA has read the ACS controls, so ask it through
+> > > dma_buf_p2pdma_map_type(): enable ATS only where the path is not
+> > > routed
+> > > directly as it stands, but would be for a Translated Request
+> > > whose
+> > > Completions carry Relaxed Ordering. Exporters that name no
+> > > provider
+> > > keep
+> > > the old assumption, since their ACS settings remain hidden.
+> > >=20
+> > > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> > > ---
+> > > =C2=A0drivers/infiniband/hw/mlx5/mlx5_ib.h | 36 ++-------------------=
+-
+> > > ----
+> > > ------
+> > > =C2=A0drivers/infiniband/hw/mlx5/mr.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
+ 40
+> > > ++++++++++++++++++++++++++++++++++++
+> > > =C2=A02 files changed, 42 insertions(+), 34 deletions(-)
+> > >=20
+> > > diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h
+> > > b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+> > > index e9ddf2e97a76..ab32742b2180 100644
+> > > --- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
+> > > +++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+> > > @@ -1646,40 +1646,8 @@ static inline bool rt_supported(int
+> > > ts_cap)
+> > > =C2=A0	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ts_cap =3D=3D
+> > > MLX5_TIMESTAMP_FORMAT_CAP_FREE_RUNNING_AND_REAL_TIME;
+> > > =C2=A0}
+> > > =C2=A0
+> > > -/*
+> > > - * PCI Peer to Peer is a trainwreck. If no switch is present
+> > > then
+> > > things
+> > > - * sometimes work, depending on the pci_distance_p2p logic for
+> > > excluding broken
+> > > - * root complexes. However if a switch is present in the path,
+> > > then
+> > > things get
+> > > - * really ugly depending on how the switch is setup. This table
+> > > assumes that the
+> > > - * root complex is strict and is validating that all req/reps
+> > > are
+> > > matches
+> > > - * perfectly - so any scenario where it sees only half the
+> > > transaction is a
+> > > - * failure.
+> > > - *
+> > > - * CR/RR/DT=C2=A0 ATS RO P2P
+> > > - * 00X=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 X=C2=A0=C2=A0 X=C2=A0 OK
+> > > - * 010=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 X=C2=A0=C2=A0 X=C2=A0 fai=
+ls (request is routed to root but root
+> > > never
+> > > sees comp)
+> > > - * 011=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=A0 X=C2=A0 fai=
+ls (request is routed to root but root
+> > > never
+> > > sees comp)
+> > > - * 011=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1=C2=A0=C2=A0 X=C2=A0 OK
+> > > - * 10X=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 X=C2=A0=C2=A0 1=C2=A0 OK
+> > > - * 101=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 X=C2=A0=C2=A0 0=C2=A0 fai=
+ls (completion is routed to root but root
+> > > didn't see req)
+> > > - * 110=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 X=C2=A0=C2=A0 0=C2=A0 SLO=
+W
+> > > - * 111=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=C2=A0=C2=A0 0=C2=A0 SLO=
+W
+> > > - * 111=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1=C2=A0=C2=A0 0=C2=A0 fai=
+ls (completion is routed to root but root
+> > > didn't see req)
+> > > - * 111=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1=C2=A0=C2=A0 1=C2=A0 OK
+> > > - *
+> > > - * Unfortunately we cannot reliably know if a switch is present
+> > > or
+> > > what the
+> > > - * CR/RR/DT ACS settings are, as in a VM that is all hidden.
+> > > Assume
+> > > that
+> > > - * CR/RR/DT is 111 if the ATS cap is enabled and follow the last
+> > > three rows.
+> > > - *
+> > > - * For now assume if the umem is a dma_buf then it is P2P.
+> > > - */
+> > > -static inline bool mlx5_umem_needs_ats(struct mlx5_ib_dev *dev,
+> > > -				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct ib_umem *umem, int
+> > > access_flags)
+> > > -{
+> > > -	if (!MLX5_CAP_GEN(dev->mdev, ats) || !umem->is_dmabuf)
+> > > -		return false;
+> > > -	return access_flags & IB_ACCESS_RELAXED_ORDERING;
+> > > -}
+> > > +bool mlx5_umem_needs_ats(struct mlx5_ib_dev *dev, struct ib_umem
+> > > *umem,
+> > > +			 int access_flags);
+> > > =C2=A0
+> > > =C2=A0int set_roce_addr(struct mlx5_ib_dev *dev, u32 port_num,
+> > > =C2=A0		=C2=A0 unsigned int index, const union ib_gid *gid,
+> > > diff --git a/drivers/infiniband/hw/mlx5/mr.c
+> > > b/drivers/infiniband/hw/mlx5/mr.c
+> > > index 00e13028762a..286f372e5b0c 100644
+> > > --- a/drivers/infiniband/hw/mlx5/mr.c
+> > > +++ b/drivers/infiniband/hw/mlx5/mr.c
+> > > @@ -38,6 +38,7 @@
+> > > =C2=A0#include <linux/export.h>
+> > > =C2=A0#include <linux/delay.h>
+> > > =C2=A0#include <linux/dma-buf.h>
+> > > +#include <linux/dma-buf-mapping.h>
+> > > =C2=A0#include <linux/dma-resv.h>
+> > > =C2=A0#include <rdma/frmr_pools.h>
+> > > =C2=A0#include <rdma/ib_umem_odp.h>
+> > > @@ -47,6 +48,45 @@
+> > > =C2=A0#include "data_direct.h"
+> > > =C2=A0#include "dmah.h"
+> > > =C2=A0
+> > > +MODULE_IMPORT_NS("DMA_BUF");
+> > > +
+> > > +bool mlx5_umem_needs_ats(struct mlx5_ib_dev *dev, struct ib_umem
+> > > *umem,
+> > > +			 int access_flags)
+> > > +{
+> > > +	struct dma_buf_attachment *attach;
+> > > +
+> > > +	if (!MLX5_CAP_GEN(dev->mdev, ats) || !umem->is_dmabuf)
+> > > +		return false;
+> > > +
+> > > +	/*
+> > > +	 * The Completer decides whether its Completions carry
+> > > Relaxed
+> > > +	 * Ordering, and only a Request that asked for it can
+> > > expect
+> > > them to.
+> > > +	 */
+> > > +	if (!(access_flags & IB_ACCESS_RELAXED_ORDERING))
+> > > +		return false;
+> > > +
+> > > +	attach =3D to_ib_umem_dmabuf(umem)->attach;
+> > > +	switch (dma_buf_p2pdma_map_type(attach, 0)) {
+> > > +	case PCI_P2PDMA_MAP_NONE:
+> > > +		/* Nothing is known about the route, so fall
+> > > back to
+> > > the bet. */
+> > > +		return true;
+> > > +	case PCI_P2PDMA_MAP_BUS_ADDR:
+> > > +		/*
+> > > +		 * The path is routed directly already and is
+> > > programmed with
+> > > +		 * the peer's bus addresses. Those are not
+> > > translatable, so
+> > > +		 * ATS would be wrong as well as pointless.
+> > > +		 */
+> > > +		return false;
+> > > +	default:
+> > > +		break;
+> > > +	}
+> > > +
+> > > +	return dma_buf_p2pdma_map_type(attach,
+> > > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 PCI_P2PDMA_TLP_TRANSLATED
+> > > |
+> > > +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> > > PCI_P2PDMA_TLP_RELAXED_CPL) =3D=3D
+> > > +	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 PCI_P2PDMA_MAP_BUS_ADDR;
+> > > +}
+> > > +
+> >=20
+> > It looks like this works well when the device can choose whether to
+> > enable ATS per transaction.=20
+> >=20
+> > However, at least for the Intel GPUs, ATS enablement is based on
+> > the
+> > PCIe-side enable bit.
+> >=20
+> > This means that if p2pdma tells the dma-mapping layer to give an Xe
+> > device a bus address rather than an IOVA, things break, while
+> > pci_p2pdma_distance says everything is OK.
+> >=20
+> > It looks like the infrastructure and solution added in this series
+> > is
+> > targeted at fixing this on the device side by conditionally
+> > enabling
+> > ATS. However I think we need to look also at having the computed
+> > routing assume untranslated transactions using IOVA rather than bus
+> > address.
+> >=20
+> > That is, a flag to tell the topology check that some transactions
+> > *will* take the host-bridge path due to IOVA being used, and that
+> > the
+> > computations including pci_p2pdma_distance() need to check whether
+> > that
+> > is possible (checking whitelist etc.) and return the corresponding
+> > THRU_HOST_BRIDGE mapping type. Translated transactions taking a
+> > short-
+> > cut using the bus-address would then be hidden from the driver.
+>=20
+> The word *will* puzzles me. As I understand it, if your device has
+> ATS
+> enabled all the time, it should always get THRU_HOST_BRIDGE.
+>=20
+> In the mlx5 case, we can enable or disable ATS on the fly, but what
+> does a
+> device with ATS enabled globally do for different mapping types? Do
+> you
+> simply not use dma_buf_p2pdma_map_type() at all and continue to
+> operate
+> as is?
+>=20
+> I asked some questions my AI tool about XE:
+> ---------------------------------------------------------------------
+> ---------------------------
+> Xe needs THRU_HOST_BRIDGE even with ATS completely disabled.
+> xe_ttm_vram_mgr_alloc_sgt()
+> maps VRAM with dma_map_resource() unconditionally
+> (xe_ttm_vram_mgr.c:450) =E2=80=94 an IOVA under
+> an IOMMU, never a bus address, with no ATS involvement at all. ATS
+> only adds the possibility
+> that some of that traffic short-cuts invisibly. The actual
+> requirement is =E2=80=9Cthis caller cannot
+> program bus addresses=E2=80=9D, which is true of Xe regardless of the ATS
+> Enable bit.
+> ---------------------------------------------------------------------
+> ----------------------------
+>=20
+> Could you please clarify what the expected behavior is here? My
+> series
+> does not change the existing behavior; it only reports the routing
+> more
+> clearly for each TLP class.
+>=20
+> Thanks
 
-> 
-> Hendrik Brueckner (1):
->   s390/hwcaps: Report SAE support as hwcap
-> 
-> Steffen Eiden (28):
->   KVM: Introduce file_to_kvm_<arch>() infrastructure
->   KVM: Add file back-pointer to struct kvm
->   KVM: x86: Use file_to_kvm_x86() in SEV
->   KVM/vfio: Use file-based reference counting for KVM
->   KVM: Restrict kvm_get_kvm/kvm_put_kvm export to internal KVM modules
+So the *current* concerns are these (assuming I haven't misunderstood
+the code).
 
-@Sean: I think yo udeserve Co-authorshiop for those 4
-(if not already there)
+1) Xe attachment check if pci_p2pdma_distance() returns OK for the
+path. Then Xe always sets up dma-addresses using dma_map_resource(). If
+IOMMU is enabled, that's always the IOMMU VAs. But if the host bridge
+is not whitelisted, and pci_p2pdma_distance() has found a shortcut that
+works using BUS_ADDR, then p2pdma is incorrectly enabled, and will be
+routed using a non-supporting host bridge.
 
-If you think the same please give me your signoff
+2) If an ATS on/off device (outside of dma-buf) were to map ZONE_DEVICE
+pci_p2pdma pages using dma_map_sgtable(), then again the dma addresses
+returned may be BUS_ADDR addresses, if the topology check finds a
+direct path. But if ATS is on, then this also breaks down.
 
-	Steffen
+Now after your patch series, I tried to set up a patch for xe and ran
+into the following:
 
->   KVM: Move export symbol check macros to Makefile.kvm
->   KVM: Make device name configurable
->   KVM: Move architecture capability Kconfigs to header defines
->   KVM: Replace CONFIG_KVM_MMIO with KVM_NO_MMIO
->   arm64: Use proper include variant
->   arm64: ptrace: Use constants for compat register numbers
->   arm64: sysreg: Convert SPSR_ELx to automatic register generation
->   KVM: arm64: Access elements of vcpu_gp_regs individually
->   KVM: arm64: Use accessor functions for core regs
->   arm64: Prepare sharing arm64 headers with s390
->   arm64: Share arm64 headers with s390
->   KVM: arm64: Share arm64 code with s390
->   s390/tools: Use arm64 headers
->   KVM: s390: Use arm64 code
->   s390: Introduce Start Arm Execution instruction
->   KVM: s390: arm64: Introduce host definitions
->   KVM: s390: Add basic arm64 kvm module
->   KVM: s390: arm64: Implement required functions
->   KVM: s390: arm64: Implement vm/vcpu create destroy.
->   KVM: s390: arm64: Implement vCPU IOCTLs
->   KVM: s390: arm64: Implement basic page fault handler
->   KVM: s390: arm64: Integrate arm on s390
->   KVM: s390: Enforce no unexpected external symbol exports in s390 KVM
+1a) Let's say the importer (Xe) has ATS enabled, and the exporter is
+supposed to map dma_addresses.
+In between there is a switch that allows direct traffic.
+Now with your patch series, How would the exporter know that Xe has ATS
+enabled and therefore should return IOVA mappings rather than the BUS
+addresses representing the shortcut.
 
-...
+2a) Does your patch series resolve that potential issue?
+
+It seems to me that a pci-device settable flag "ATS always enabled"
+should be enough to fix both issues?
+
+Thanks,
+Thomas
+
+
+>=20
+> >=20
+> > Whether that is best done as a parameter to these functions or
+> > perhaps
+> > as a flag in the PCI device, I'm not sure.
+> >=20
+> > Thanks,
+> > Thomas
+> >=20
+> >=20
+> >=20
+> >=20
+> > > =C2=A0static int mkey_max_umr_order(struct mlx5_ib_dev *dev)
+> > > =C2=A0{
+> > > =C2=A0	if (MLX5_CAP_GEN(dev->mdev,
+> > > umr_extended_translation_offset))
