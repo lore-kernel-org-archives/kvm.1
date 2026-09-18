@@ -1,142 +1,205 @@
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D034957C9F;
-	Fri, 18 Sep 2026 08:43:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57AF523E334
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 08:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789721040; cv=none; b=ofCasQF7Hqub6TeQtvrVQ3VMhy475kWoMTg1xu2/hvfYlXamS9EkSxMDhALqAHPqHCaTyi2ewBvXzkEywBB2mWBGhUlMU49q/ZkjP4WgXc5tnEwgzoQnWs14pxV4I1rQ3Vt0bx8WaX15rP3ZsjM5MN0FZqdciygYNkjPaarcLx4=
+	t=1789721172; cv=none; b=ixDWVepjQnDviue3C0tOEMKWszEcavCGHoTLcxtGQ5iHZyOda7W+SKmxWCqfU4CVFCLn9nGgfya0azdrY5VznYxhGlJKV5D2TJTZzioerLccH7ZMhbNBlE02QqAsxlcjxTvbsN5QAfgRlnxXWVNXVGvkAejVMQje5NmlUNPg+zY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789721040; c=relaxed/simple;
-	bh=If0woU3wB/U0GPMkW/UBmPHM9mrWMkULYMmonKX54CE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ougxVD+A+inh+gbZDj9lzIhDW+qhAdo1YDfVY3eFhfeqbD5JfVr/6OSu5Z13ujVADXxwGbgBUpAAgHkuAUjcREl9OMCfu4hqutwdQjAFIrdaL6vyGxR/5NFoyGvLVKWe9iLxcFmfsOglfnAzRCX2RRA9Sv9VSgGC14mfpJIy0eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=sldqc943; arc=none smtp.client-ip=113.46.200.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1789721172; c=relaxed/simple;
+	bh=ydODeynV8LR3a1WkHsm5qlhqiVO+nGaInkry7o/xXp8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=PTYzo/OLuFPIKkLDuM8sLnOE9areU6VkqHRdBVxJrqHnyAxKthMLiGdQMewx1fLhyV4jdZQWxQwkU7vVllchKzlarfb2eoOVjzCQFCMYh0msfR7Lf18TZ3wVifxD1FIQkgjcSvA61iviiNwphq107RwgpTZgORo2YcXjr80sKlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=APO6G3uo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="sldqc943"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=lnb1HsHPC7o9LX8c5eToyfaI+3ww1o3UsgtWogez0oY=;
-	b=sldqc9435XhYZkkErI8ITZ3BKXKuMG89YSDpE7Q+IpZU3aMkDd7u+aNynGpJyLWyB+ulU0CT8
-	PKEmZwwBy4KtFo/6H59LCQ6vy5eKTvagVY8+fw5A/RGnDCJpHgmeTz1r6/34K/IWgpejOXXcy+G
-	HAE3YSRcGMLc+MHHi2HlZYA=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4hmQqF3FVGz12LFc;
-	Fri, 18 Sep 2026 16:32:41 +0800 (CST)
-Received: from whupemk100014.china.huawei.com (unknown [7.152.184.20])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8007420333;
-	Fri, 18 Sep 2026 16:43:48 +0800 (CST)
-Received: from huawei.com (10.50.163.32) by whupemk100014.china.huawei.com
- (7.152.184.20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 18 Sep
- 2026 16:43:47 +0800
-From: Longfang Liu <liulongfang@huawei.com>
-To: <alex.williamson@redhat.com>, <jgg@nvidia.com>
-CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<liulongfang@huawei.com>
-Subject: [PATCH v4 2/2] hisi_acc_vfio_pci: reject live migration on 64KB page with QM_HW_V3 hardware
-Date: Fri, 18 Sep 2026 16:42:44 +0800
-Message-ID: <20260918084244.1485837-3-liulongfang@huawei.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260918084244.1485837-1-liulongfang@huawei.com>
-References: <20260918084244.1485837-1-liulongfang@huawei.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="APO6G3uo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95BB61F0089F;
+	Fri, 18 Sep 2026 08:46:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789721169;
+	bh=MhRu0YxMj9zw8j/PsUAbiWbIq4kL3YlHmmDBGkhrXxM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=APO6G3uofBFfT81+0XaJC6r5cV1AaQ7ipgVZWUOrmp++xsXXGXjquhNdWqRB4OZIa
+	 C/v+wq5kivXUAlicZWjYZF+kD29F1IexyY1PkL8MJ5HN8iP8N2lB+GXaOkneyqAnR9
+	 /SFPGbO+PV2p9z6I5zpXzd7LejO0vybVOYJQMajk3XWfDz0Yan89fxlh8LeSdKB90M
+	 U/R309r0d/HTfDb5XICeVl3ysGTjQvjmlG+TTq+JpH6TVrcIlJj7DUDTl23U+kwSHh
+	 pogQ11dqoGZyEiJLzXmxIQkuiod/VCh7yFmKTN6PDn9w0YysANlJqCgWKEG+Fp1lAE
+	 rTNO2bi4KyJ4Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 21/28] KVM: x86/mmu: Take memory protection
+ attributes into account during faults
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Paolo Bonzini" <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260918081543.139871-22-pbonzini@redhat.com>
+References: <20260918081543.139871-1-pbonzini@redhat.com>
+ <20260918081543.139871-22-pbonzini@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 18 Sep 2026 08:46:09 +0000
+Message-Id: <20260918084609.95BB61F0089F@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- whupemk100014.china.huawei.com (7.152.184.20)
 
-On QM_HW_V3 (VF_CTRL mode) hardware with 64KB pages, the functional
-region and migration registers share one BAR2 physical page with no
-isolation, which leaks migration registers to the guest and causes
-guest kernel calltrace under the KVM emulated device scheme.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Critical] kvm: mmu: prefetching completely bypasses memory protections
+- [Critical] kvm: mmu: missing SPTE invalidation allows bypass of shared me=
+mory protections
+- [High] kvm: mmu: host access permissions conflated with guest root_role.a=
+ccess
+--
 
-The previous fix rejected the device in hisi_acc_vf_qm_init() during
-open_device, returning -EINVAL and breaking passthrough entirely.
-Move the drv_mode check into a helper called from probe() so that a
-VF_CTRL device on a 64KB page is bound to the generic ops, keeping
-passthrough working while disabling live migration.
+commit 5aa6405feba846a8b81344070caa806c21c16bfd
+Author: Nicolas Saenz Julienne <nsaenz@amazon.com>
+Subject: KVM: x86/mmu: Take memory protection attributes into account durin=
+g faults
 
-Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
-Signed-off-by: Longfang Liu <liulongfang@huawei.com>
----
- .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 32 ++++++++++++-------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+This commit updates KVM x86 MMU to respect memory protection attributes when
+faulting guest memory. Prohibited accesses will cause a user-space -EFAULT
+exit. The access type is checked using the existing kvm_page_format
+permissions table.
 
-diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-index 8ff69c8d1ff7..1c9f5cfa5c32 100644
---- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-+++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-@@ -1198,13 +1198,6 @@ static int hisi_acc_vf_qm_init(struct hisi_acc_vf_core_device *hisi_acc_vdev)
- 	struct hisi_qm *vf_qm = &hisi_acc_vdev->vf_qm;
- 	struct hisi_qm *pf_qm = hisi_acc_vdev->pf_qm;
- 	struct pci_dev *vf_dev = vdev->pdev;
--	u32 val;
--
--	val = readl(pf_qm->io_base + QM_MIG_REGION_SEL);
--	if (pf_qm->ver > QM_HW_V3 && (val & QM_MIG_REGION_EN))
--		hisi_acc_vdev->drv_mode = HW_ACC_MIG_PF_CTRL;
--	else
--		hisi_acc_vdev->drv_mode = HW_ACC_MIG_VF_CTRL;
- 
- 	if (hisi_acc_vdev->drv_mode == HW_ACC_MIG_PF_CTRL) {
- 		/*
-@@ -1672,19 +1665,34 @@ static void hisi_acc_vf_debugfs_exit(struct hisi_acc_vf_core_device *hisi_acc_vd
- 	hisi_acc_vdev->debug_migf = NULL;
- }
- 
-+static enum hw_drv_mode hisi_acc_vf_get_drv_mode(struct hisi_qm *pf_qm)
-+{
-+	u32 val;
-+
-+	val = readl(pf_qm->io_base + QM_MIG_REGION_SEL);
-+	if (pf_qm->ver > QM_HW_V3 && (val & QM_MIG_REGION_EN))
-+		return HW_ACC_MIG_PF_CTRL;
-+
-+	return HW_ACC_MIG_VF_CTRL;
-+}
-+
- static int hisi_acc_vfio_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- {
- 	struct hisi_acc_vf_core_device *hisi_acc_vdev;
- 	const struct vfio_device_ops *ops = &hisi_acc_vfio_pci_ops;
-+	enum hw_drv_mode drv_mode = HW_ACC_MIG_VF_CTRL;
-+	resource_size_t func_len;
- 	struct hisi_qm *pf_qm;
- 	int ret;
- 
- 	pf_qm = hisi_acc_get_pf_qm(pdev);
--	if (pf_qm && pf_qm->ver >= QM_HW_V3) {
--		if (pdev->is_virtfn)
--			ops = &hisi_acc_vfio_pci_migrn_ops;
-+	if (pf_qm && pf_qm->ver >= QM_HW_V3 && pdev->is_virtfn) {
-+		func_len = pci_resource_len(pdev, VFIO_PCI_BAR2_REGION_INDEX) >> 1;
-+		drv_mode = hisi_acc_vf_get_drv_mode(pf_qm);
-+		if (drv_mode == HW_ACC_MIG_VF_CTRL && func_len < PAGE_SIZE)
-+			pci_warn(pdev, "migration not supported on 64KB pages with QM_HW_V3\n");
- 		else
--			pci_warn(pdev, "migration support failed, continue with generic interface\n");
-+			ops = &hisi_acc_vfio_pci_migrn_ops;
- 	}
- 
- 	hisi_acc_vdev = vfio_alloc_device(hisi_acc_vf_core_device,
-@@ -1692,6 +1700,8 @@ static int hisi_acc_vfio_pci_probe(struct pci_dev *pdev, const struct pci_device
- 	if (IS_ERR(hisi_acc_vdev))
- 		return PTR_ERR(hisi_acc_vdev);
- 
-+	hisi_acc_vdev->drv_mode = drv_mode;
-+
- 	dev_set_drvdata(&pdev->dev, &hisi_acc_vdev->core_device);
- 	ret = vfio_pci_core_register_device(&hisi_acc_vdev->core_device);
- 	if (ret)
--- 
-2.43.0
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index 797b18201d982..3fd4cc3c57a53 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -4642,6 +4642,50 @@ static int kvm_mmu_faultin_pfn_gmem(struct kvm_vcp=
+u *vcpu,
+>  	return RET_PF_CONTINUE;
+>  }
+> =20
+> +static inline unsigned kvm_get_gfn_protections(struct kvm_vcpu *vcpu, gf=
+n_t gfn)
+> +{
+> +	struct kvm *kvm =3D vcpu->kvm;
+> +	unsigned int access =3D vcpu->arch.mmu->root_role.access;
+> +	unsigned long attrs =3D kvm_get_memory_attributes(kvm, gfn);
+> +	if (!attrs)
+> +		return access;
 
+[Severity: High]
+Does initializing host access rules with the guest's root_role.access confl=
+ate
+host and guest permissions, potentially causing spurious -EFAULT exits?
+
+If attrs is 0, this returns the guest mask. Then in
+kvm_faultin_memory_protections(), this access mask is evaluated against the
+hardware fault code using __permission_fault().
+
+If the guest's root page table is restricted (e.g., lacks write access), any
+guest write fault could return -EFAULT, causing a KVM_EXIT_MEMORY_FAULT to
+userspace instead of injecting a normal guest #PF. A guest could trigger th=
+is
+by executing code with restricted root page table permissions.
+
+> +
+> +	WARN_ON_ONCE(!kvm_mem_attributes_valid(kvm, attrs));
+> +
+> +	if (!kvm_mem_attributes_may_read(attrs))
+> +		access &=3D ~ACC_READ_MASK;
+> +	if (!kvm_mem_attributes_may_write(attrs))
+> +		access &=3D ~ACC_WRITE_MASK;
+> +	if (!kvm_mem_attributes_may_exec(attrs)) {
+> +		access &=3D ~ACC_EXEC_MASK;
+> +		if (shadow_xu_mask)
+> +			access &=3D ~ACC_USER_EXEC_MASK;
+> +	}
+> +
+> +	return access;
+> +}
+> +
+> +static int kvm_faultin_memory_protections(struct kvm_vcpu *vcpu,
+> +					  struct kvm_page_fault *fault)
+> +{
+> +	unsigned access;
+> +
+> +	/* Memory attributes don't apply to MMIO regions */
+> +	if (unlikely(!fault->slot))
+> +		return RET_PF_CONTINUE;
+> +
+> +	access =3D kvm_get_gfn_protections(vcpu, fault->gfn);
+> +	if (access =3D=3D ACC_ALL)
+> +		return RET_PF_CONTINUE;
+> +
+> +	trace_kvm_faultin_memory_protections(vcpu, fault, access);
+> +	if (__permission_fault(vcpu->arch.mmu, access, fault))
+> +		return -EFAULT;
+> +
+> +	fault->host_access &=3D access;
+> +	return RET_PF_CONTINUE;
+> +}
+
+[Severity: Critical]
+When memory protections are applied to shared memory, do we properly invali=
+date
+existing writable SPTEs so that guests cannot bypass the protections?
+
+Looking at kvm_arch_pre_set_memory_attributes() in arch/x86/kvm/mmu/mmu.c:
+
+    /* Unmap the old attribute page. */
+    if (range->arg.attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE)
+        range->attr_filter =3D KVM_FILTER_SHARED;
+    else
+        range->attr_filter =3D KVM_FILTER_PRIVATE;
+
+    return kvm_unmap_gfn_range(kvm, range);
+
+If userspace sets memory protections (like KVM_MEMORY_ATTRIBUTE_NW) without
+setting PRIVATE, the filter falls back to KVM_FILTER_PRIVATE. The subsequent
+call to kvm_unmap_gfn_range() only zaps private KVM_MIRROR_ROOTS and comple=
+tely
+skips shared KVM_DIRECT_ROOTS.
+
+This could allow a guest to retain full read/write/execute access via exist=
+ing
+shared SPTEs to memory that was explicitly restricted by userspace.
+
+[ ... ]
+
+> diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmp=
+l.h
+> index e6ec14165f400..b031123fcb369 100644
+> --- a/arch/x86/kvm/mmu/paging_tmpl.h
+> +++ b/arch/x86/kvm/mmu/paging_tmpl.h
+> @@ -992,7 +992,7 @@ static int FNAME(sync_spte)(struct kvm_vcpu *vcpu, st=
+ruct kvm_mmu_page *sp, int
+> =20
+>  	sptep =3D &sp->spt[i];
+>  	spte =3D *sptep;
+> -	host_access =3D ACC_ALL;
+> +	host_access =3D kvm_get_gfn_protections(vcpu, gfn);
+
+[Severity: Critical]
+Since we are replacing ACC_ALL with kvm_get_gfn_protections() here, does
+mmu_set_spte() also need to be updated to prevent prefetching from bypassing
+memory protections?
+
+Looking at mmu_set_spte() in arch/x86/kvm/mmu/mmu.c:
+
+    unsigned host_access =3D fault ? fault->host_access : ACC_ALL;
+
+If a guest touches a page adjacent to a protected page, triggering
+kvm_mmu_prefetch_sptes(), mmu_set_spte() is called with a NULL fault pointe=
+r.
+This causes it to default to ACC_ALL instead of querying the host attribute=
+s,
+which could allow a malicious guest to bypass NR/NW/NX protections.
+
+(Note: Patch 24 in this series attempts to fix this but introduces an inver=
+ted
+condition "if (!kvm_get_memory_attributes(kvm, gfn)) continue;", which skips
+prefetching only when there are NO attributes, and still grants ACC_ALL to
+pages WITH attributes.)
+
+>  	if (!(spte & shadow_host_writable_mask))
+>  		host_access &=3D ~ACC_WRITE_MASK;
+>  	slot =3D kvm_vcpu_gfn_to_memslot(vcpu, gfn);
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918081543.1398=
+71-1-pbonzini@redhat.com?part=3D21
