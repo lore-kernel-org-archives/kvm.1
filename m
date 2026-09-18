@@ -1,148 +1,135 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23D438F928
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 08:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C95E4071CA
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 08:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789721029; cv=none; b=b3PaCpnD882xGhSWYQzsLyxeFa4z4uyXwF69b/k/zLhkrSGAayikpDAaQZD9oHQcnSbocZXfWKte7/sg853MIABWOAXpvQxRTPHjeV0Rwfjcn6Da9nNc86TDTFv2Kw+yyeO2GufDtx8A83OhE0Pl7iCBJ2izrqGpv3V1SNe5eO8=
+	t=1789721030; cv=none; b=pE41taew95cO7E6iMscPq4LEzxn/JFHvkdMWTa8uu+vEV5jRtBW63dtOrx014/Alzl57fHhCF4SmpvEWxkOm7hKSkRDFanHXPieO4s/frRfYMYRTiuEUlJ/4/FDUKytOjxLQ6fFgRWuOjWoUtsn2QvAfYtJ4Nd2gz2U0E1ZTwqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789721029; c=relaxed/simple;
-	bh=Iin3bc5hSW2YYSXIh4sa6DgOCcCAOK/m0hFqJs/10W0=;
+	s=arc-20240116; t=1789721030; c=relaxed/simple;
+	bh=MiViv+W337/PdW4LE9kxVBMCbKg7khgBw1rtJBaAj+I=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=T3ivUR+RKnAtVNNUC6yYZ+CJUuvX12XFyvHHKOMXgGz/i2go+2FbjX9+WWTxUnnroFFg2pzSbJH0IgpLK2EDZHn2KMuIDMgY6wOo4//gSm+JUiNFpzq1+Bch9scbwC1tXofC1o0nw+leiLM8jdHBgSGNl8Bg1TBhd0uFhOdnQFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hj7bH1uW; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Q8HzD9Z9hKohJNI0YyARjfah+AT/m9fBOQA0UVLGBXRFPorhW0H3/84E6k0eGMIa7E6G0jUVs2Cv0s1D1jyDa22a8LsalDdH4Ec81yLPeXytdJ8HddBpSFSkvZsnWf1XlhQi88YeIzKPRhfDDD8e/+xyBSafju1rjsHSifIgOq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BjVLEP8s; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hj7bH1uW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4408C1F000FF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BjVLEP8s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2CE81F00893;
 	Fri, 18 Sep 2026 08:43:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789721027;
-	bh=kAmS41jRFgdFYTqRaPrbA/x/vvDzCqhkIlWsHhhmjCk=;
+	s=k20260515; t=1789721028;
+	bh=9pHj3GRphBoLNttdG5fj6aOsL07VLoc4zklW4pYwAsA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Hj7bH1uWJhi2eD6j3q6aZrxIHguV17od6P6FfwLqHCzMbWU2OoDp2aiSnjHLqSp5y
-	 O8xG/zKKq6+y8q7jbWGtrRiw5vdg31oPwATYp7SLHyVRvgu1XotEo0hv3mLENG3wz4
-	 2wuKwTr9mg06DeVS8YbYV3as9Mi9JS+0Gbz+Iu+vG+xKstUObYqmJY/iWuAJAdwasn
-	 EgmMd7S5b+5BWdi5dMBu2XjQaZIGk4FLJDFAxpBjFepdVTbSMccCIM5oY8Fiq/JjXR
-	 yYhdmH2BPfhq8W/yEpGW8aU1kbM1OiTe4a9ID8xLk57+FBSsWgs2cZBQHF3nqodmfe
-	 HHHFAg2nXbYuQ==
+	b=BjVLEP8suRj6BmhzkvvcccK1oaqQg74Ots4ukEAJiac0fK5GaYPVZe2pL5blM1qu8
+	 9qP4lRMCNtXymfW9DNRv4XSSikwWZ/SIpTY1x0vOCdMPItkG+93WxY+cEepNTCbj3s
+	 p3eteLq8xmRfkXkha79t5KYKbzKN67UKgYvRlB9BdvNVq/gDgSNyvCmUyGhv9R6Jem
+	 z/sqfd+5cN7x2Tem47uC9N39ceOzhLUX21NoRcJI7vRx3a3DPSt5sNg372EgAOMXST
+	 eYTcjJOZiRqefYlPWxKCHElGuQphWaORg5eNk4UNDHEfwW83/Ql9Zhv1IYfZkNjvgz
+	 nLlHbPrSbNgUg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 28/28] KVM: x86: selftests: Introduce memory
- attributes side-channel tests
+Subject: Re: [PATCH v2 25/28] KVM: x86/mmu: Obsolete all roots if memattr
+ contains gPTEs
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Paolo Bonzini" <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260918081543.139871-29-pbonzini@redhat.com>
+In-Reply-To: <20260918081543.139871-26-pbonzini@redhat.com>
 References: <20260918081543.139871-1-pbonzini@redhat.com>
- <20260918081543.139871-29-pbonzini@redhat.com>
+ <20260918081543.139871-26-pbonzini@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 08:43:46 +0000
-Message-Id: <20260918084347.4408C1F000FF@smtp.kernel.org>
+Date: Fri, 18 Sep 2026 08:43:47 +0000
+Message-Id: <20260918084347.E2CE81F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] kselftests/kvm: Race condition in pvclock test causes deadlock
+- [Critical] kvm: mixed-attribute hugepage mapping via race when mmu_lock i=
+s dropped
+- [High] kvm: soft lockup in kvm_arch_post_set_memory_attributes() due to u=
+nbounded loop
 --
 
-commit 80c207820949c9e59181f5bf084d4354741225e7
+commit 33f579fe7310efff8ad87a283b4a1e970511e847
 Author: Paolo Bonzini <pbonzini@redhat.com>
+Subject: KVM: x86/mmu: Obsolete all roots if memattr contains gPTEs
 
-KVM: x86: selftests: Introduce memory attributes side-channel tests
+This commit introduces a mechanism to invalidate all MMU roots when applying
+memory protection attributes against a GPTE page. It splits the fast zap
+operation into a locked front-half and an unlocked back-half.
 
-This commit introduces memory attributes selftests to catch side-channel
-vulnerabilities. It exercises various guest memory access patterns to verify
-memory attribute access restrictions are upheld.
-
-> diff --git a/tools/testing/selftests/kvm/memory_attributes.c b/tools/test=
-ing/selftests/kvm/memory_attributes.c
-> --- a/tools/testing/selftests/kvm/memory_attributes.c
-> +++ b/tools/testing/selftests/kvm/memory_attributes.c
-
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index 097095f71d605..d658cfe31cd9b 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
 [ ... ]
+> @@ -8320,9 +8321,40 @@ bool kvm_arch_post_set_memory_attributes(struct kv=
+m *kvm,
+>  				hugepage_set_mixed(slot, gfn, level);
+>  		}
+>  	}
+> +
+> +	/*
+> +	 * There are special considerations when applying an memory protection
+> +	 * attibute against a GPTE page. If set read-only, access/dirty bits
+> +	 * within that page shouldn't be updated. If set non-accesible,
+> +	 * accessing a virtual address that requires traversing that GPTE page
+> +	 * should fault.
+> +	 *
+> +	 * On TDP enabled guests, the CPU faults on the GPTE address upon
+> +	 * detecting such a situation.
+> +	 *
+> +	 * On non-TDP, upon detecting this situation, and based on the fact it
+> +	 * should be a rare occasion, invalidate all the mmu roots.
+> +	 */
+> +	for (gfn_t gfn =3D range->start; gfn < range->end; gfn++) {
 
-> @@ -86,6 +122,14 @@ static void guest_code(void *data)
->  			arch_controlled_exec(vaddr);
->  			GUEST_SYNC(stage++);
->  			break;
-> +		case TEST_OP_MONITOR_ADDRESS: {
-> +			if (arch_controlled_read(vaddr) !=3D expected_val)
-> +				GUEST_SYNC(stage++);
-> +			break;
+[Severity: High]
+Could this loop cause a host soft lockup and RCU stalls?
+
+If host userspace issues a KVM_SET_MEMORY_ATTRIBUTES ioctl with a massive
+memory range, this loop will iterate over the entire guest-controlled GFN
+range.
+
+Because it executes hash table lookups via for_each_gfn_valid_sp_with_gptes=
+()
+while holding mmu_lock for write without any cond_resched(), could a
+malicious guest or VMM orchestrate massive memslot updates to degrade host
+availability?
+
+> +		for_each_gfn_valid_sp_with_gptes(kvm, sp, gfn) {
+> +			__kvm_mmu_zap_all_fast_front_half(kvm);
+
+[Severity: Critical]
+Can this lead to memory isolation breakage by allowing mixed-attribute
+hugepage mappings?
+
+During kvm_vm_set_mem_attributes(), kvm_handle_gfn_range() is called with
+post_set_range. When processing the first memslot, it triggers range->on_lo=
+ck,
+which maps to kvm_mmu_invalidate_end() and sets mmu_invalidate_in_progress
+to 0.
+
+When __kvm_mmu_zap_all_fast_front_half() is called here, it can drop and
+reacquire mmu_lock via cond_resched_rwlock_write().
+
+While the lock is dropped and mmu_invalidate_in_progress is 0, could a
+concurrent page fault on a subsequent memslot proceed? If that memslot's
+disallow_lpage flag hasn't been updated yet, KVM might map a hugepage using
+the specific faulted GFN's attributes, bypassing the mixed attributes in the
+xarray entirely.
+
+> +			return false;
 > +		}
-
-[Severity: Medium]
-Is there a risk of the guest loop getting stuck indefinitely?
-
-In guest_code() under TEST_OP_MONITOR_ADDRESS, the guest spins and does not
-trigger a VM-exit unless the value changes. If the host thread is blocked
-from updating the expected value, this could cause a deadlock.
+> +	}
+>  	return false;
+>  }
 
 [ ... ]
-
-> diff --git a/tools/testing/selftests/kvm/x86/memory_attributes.c b/tools/=
-testing/selftests/kvm/x86/memory_attributes.c
-> --- a/tools/testing/selftests/kvm/x86/memory_attributes.c
-> +++ b/tools/testing/selftests/kvm/x86/memory_attributes.c
-
-[ ... ]
-
-> +static void test_side_channel_pvclock(struct kvm_vcpu *vcpu)
-> +{
-> +	struct kvm_vm *vm =3D vcpu->vm;
-> +	gva_t vaddr =3D vm_alloc_page(vm);
-> +	gpa_t paddr =3D addr_gva2gpa(vm, vaddr);
-> +	struct pvclock_vcpu_time_info *pvclock =3D addr_gpa2hva(vm, paddr);
-> +
-> +	pvclock->version =3D 0;
-> +
-> +	test_data->op =3D TEST_OP_MONITOR_ADDRESS;
-> +	test_data->vaddr =3D vaddr + offsetof(struct pvclock_vcpu_time_info, ve=
-rsion);
-> +	test_data->expected_val =3D pvclock->version;
-> +
-> +	pthread_create(&vcpu_thread, NULL, vcpu_worker, test_data);
-> +	vcpu_set_msr(vcpu, MSR_KVM_SYSTEM_TIME_NEW, paddr | 0x1);
-
-[Severity: Medium]
-Could this asynchronous sequence lead to a permanent deadlock?
-
-The vcpu_worker thread executes KVM_RUN, which acquires the vcpu->mutex.
-Concurrently, the main thread calls vcpu_set_msr(), which triggers
-KVM_SET_MSRS and also attempts to acquire vcpu->mutex.
-
-If the worker thread schedules and acquires vcpu->mutex before the main
-thread executes vcpu_set_msr(), the main thread will block indefinitely.
-Consequently, the MSR is never set, the guest memory is never updated,
-and the guest spin loop under TEST_OP_MONITOR_ADDRESS never sees the
-updated value. KVM_RUN will thus never return, hanging the test.
-
-> +	usleep(msecs_to_usecs(1000));
-> +	TEST_ASSERT_EQ(pthread_tryjoin_np(vcpu_thread, NULL), 0);
-> +	vcpu_set_msr(vcpu, MSR_KVM_SYSTEM_TIME_NEW, 0);
-> +
-> +	test_data->expected_val =3D pvclock->version;
-> +	vm_set_memory_attributes(vm, paddr, vm->page_size, KVM_MEMORY_ATTRIBUTE=
-_NW);
-> +	pthread_create(&vcpu_thread, NULL, vcpu_worker, test_data);
-> +	vcpu_set_msr(vcpu, MSR_KVM_SYSTEM_TIME_NEW, paddr | 0x1);
-
-[Severity: Medium]
-This appears to have the exact same race condition leading to deadlock
-as the first thread handoff earlier in test_side_channel_pvclock().
-
-If the vcpu_worker acquires vcpu->mutex before the main thread can execute
-vcpu_set_msr(), the test will hang waiting for an MSR update that will never
-arrive.
-
-> +	usleep(msecs_to_usecs(1000));
-> +	TEST_ASSERT_EQ(pthread_tryjoin_np(vcpu_thread, NULL), EBUSY);
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918081543.1398=
-71-1-pbonzini@redhat.com?part=3D28
+71-1-pbonzini@redhat.com?part=3D25
