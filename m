@@ -1,23 +1,23 @@
-Received: from out28-173.mail.aliyun.com (out28-173.mail.aliyun.com [115.124.28.173])
+Received: from out28-171.mail.aliyun.com (out28-171.mail.aliyun.com [115.124.28.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD034A6CFB;
-	Fri, 18 Sep 2026 08:56:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7324B0C9E;
+	Fri, 18 Sep 2026 08:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789721805; cv=none; b=g3Ks/qGsM2xYW0fGWQMl4lB4ZeS/5RX+Q2eu+khvC1SlxiTTqdZTs2sstkeFBw4hQdB2h5HYNgrLdbmKx0E6KZnSnJgNgD4DP7kmg+A+pMQM39F3bwJrj8Pn2gaYQ3+O6Ufv83xswINhAZCJ/4HSHn4GM02BHaEFSuDdP/ZmcD4=
+	t=1789721807; cv=none; b=nDq3r8xUFV9ahrg5DorW+XTJmTMYcPjIMuUVtfUBMnsYlehlwJF+dhdqF8N3pJ74JcQg59ALt/XOcV3wSmHZM64ppVJRSxEI67CSTilSEmfbeRIwZ1uiyJxGkGs/HMV5f7u2lca/ksTB0QW3Ob93mJ5/92nOLSd7vrOKgO9falk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789721805; c=relaxed/simple;
-	bh=q/jrRFTbP7ROaTK4FUqOWWE6YjOvkIR4dZveVTKToL0=;
+	s=arc-20240116; t=1789721807; c=relaxed/simple;
+	bh=yPTBKqoNUAAjpo4GBOoP4IZFIrFh1BwbwzXuPFh7ARg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mY+jVU4Z8h28Za+lCAbPFU2dzUXwW6eWMdU9rp6E3SpR0YnV4OwvHLBPa99E1OonYOV2LMtY51qsnpU72S2s1/hOyL0DQn+BwoiF330c2R/yQoToZdX+GSKNwgr3efk3vWUIE8+UxHNUP8S1OU+Sgqiw/E1NCMWhcZHyBED5do8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.173
+	 MIME-Version; b=b2qrznAwKOlYXNwPo4NaCYCCA4lT7ThEjvDIzYY97Kx65N5q1f+WH0n3KQcZSAb1cFJgUs5R7CmuRgqJZh+KDgmYNERg718d4AqUyml1udmAqXj1l6X+wi/tEqSuRkb56/KMPE/dQ+cuCyH+gJA4hZypxczyydUpN13vGrxvqm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.2100021|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.158478-0.00122291-0.840299;FP=4966202699363141559|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam011083013073;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.jGgS5Oq_1789721787;
-Received: from localhost.localdomain(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.jGgS5Oq_1789721787 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436343|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00315548-0.000215038-0.99663;FP=16638970010530287355|1|1|1|0|-1|-1|-1;HT=maildocker-contentspam033032053168;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.jGgS5PR_1789721787;
+Received: from localhost.localdomain(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.jGgS5PR_1789721787 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Fri, 18 Sep 2026 16:56:27 +0800
+          Fri, 18 Sep 2026 16:56:28 +0800
 From: Tina Zhang <zhang_wei@open-hieco.net>
 To: Sean Christopherson <seanjc@google.com>,
 	Jim Mattson <jmattson@google.com>,
@@ -27,9 +27,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	zhouyanjing@hygon.cn,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v7 2/8] KVM: nSVM: Synthesize DecodeAssists EXITINFO for emulated intercepts
-Date: Fri, 18 Sep 2026 16:56:12 +0800
-Message-ID: <2b30c180a7ec1fb22033cc1b89debc36c9f569d0.1789721173.git.zhang_wei@open-hieco.net>
+Subject: [PATCH v7 3/8] KVM: nSVM: Track valid hardware DecodeAssist bytes
+Date: Fri, 18 Sep 2026 16:56:13 +0800
+Message-ID: <1fc24efcd29e379c3784f661512cd3ebd833e463.1789721173.git.zhang_wei@open-hieco.net>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <cover.1789721173.git.zhang_wei@open-hieco.net>
 References: <cover.1789721173.git.zhang_wei@open-hieco.net>
@@ -41,83 +41,110 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When the x86 emulator encounters an instruction intercepted by L1,
-svm_check_intercept() synthesizes a nested VM-Exit without fresh hardware
-DecodeAssist state.  Populate the architectural EXITINFO1 field when
-DecodeAssists is exposed to L1.
+VMCB02 instruction bytes are valid only for the hardware VM-Exit that
+populated them.  Track whether VMCB02 contains instruction bytes for the
+data #PF or #NPF currently being reflected to L1 so that stale bytes are
+not copied to VMCB12.
 
-Provide the GPR number for MOV CR/DR, the interrupt vector for INTn, and
-the linear address for INVLPG.  Preserve the MOV-to-CR0 decode information
-when a selective CR0 write intercept is triggered.  Leave EXITINFO1 clear
-for CLTS, LMSW, SMSW, and INVLPGA; the INVLPGA address remains in guest
-rAX.  Leave EXITINFO1 unchanged when DecodeAssists is not exposed, and
-leave unrelated intercepts unchanged.
+Invalidate VMCB02's instruction-byte state when preparing VMCB02,
+normally in response to an emulated VMRUN.  Mark the bytes as valid only
+when the current VMCB02 exit is a data #PF or #NPF.  Opcode exits and
+instruction-fetch faults are excluded by inspecting the exit state.
+
+A subsequent change will use this state when propagating hardware
+DecodeAssist instruction bytes to VMCB12.
 
 Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
 ---
- arch/x86/kvm/svm/svm.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ arch/x86/kvm/svm/nested.c | 38 +++++++++++++++++++++++++++++++++++++-
+ arch/x86/kvm/svm/svm.h    |  3 +++
+ 2 files changed, 40 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index f5aa3d7d3a10..e83e4e5e7b93 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4837,6 +4837,7 @@ static int svm_check_intercept(struct kvm_vcpu *vcpu,
- 	int vmexit, ret = X86EMUL_CONTINUE;
- 	struct __x86_intercept icpt_info;
- 	struct vmcb *vmcb = svm->vmcb;
-+	bool decode_assists;
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index 23d29597d6bf..378467288716 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -35,6 +35,35 @@
  
- 	if (info->intercept >= ARRAY_SIZE(x86_intercept_map))
- 		goto out;
-@@ -4846,14 +4847,26 @@ static int svm_check_intercept(struct kvm_vcpu *vcpu,
- 	if (stage != icpt_info.stage)
- 		goto out;
+ #define CC KVM_NESTED_VMENTER_CONSISTENCY_CHECK
  
-+	decode_assists = guest_cpu_cap_has(vcpu, X86_FEATURE_DECODEASSISTS);
++static void nested_svm_invalidate_insn_bytes(struct vmcb *vmcb)
++{
++	vmcb->control.insn_len = 0;
++}
 +
- 	switch (icpt_info.exit_code) {
- 	case SVM_EXIT_READ_CR0:
- 		if (info->intercept == x86_intercept_cr_read)
- 			icpt_info.exit_code += info->modrm_reg;
++static bool nested_svm_vmexit_supports_insn_bytes(const struct vmcb *vmcb)
++{
++	u64 exit_code = vmcb->control.exit_code;
 +
-+		if (decode_assists)
-+			vmcb->control.exit_info_1 =
-+				info->intercept == x86_intercept_cr_read ?
-+				CR_VALID | (info->modrm_rm & SVM_EXITINFO_REG_MASK) : 0;
- 		break;
- 	case SVM_EXIT_WRITE_CR0: {
- 		unsigned long cr0, val;
++	if (exit_code != SVM_EXIT_NPF &&
++	    exit_code != SVM_EXIT_EXCP_BASE + PF_VECTOR)
++		return false;
++
++	return !(vmcb->control.exit_info_1 & PFERR_FETCH_MASK);
++}
++
++static void nested_svm_set_vmcb02_insn_bytes_valid(struct vcpu_svm *svm)
++{
++	svm->nested.vmcb02_insn_bytes_valid =
++		cpu_feature_enabled(X86_FEATURE_DECODEASSISTS) &&
++		nested_svm_vmexit_supports_insn_bytes(svm->nested.vmcb02.ptr);
++}
++
++static void nested_svm_invalidate_vmcb02_insn_bytes(struct vcpu_svm *svm)
++{
++	nested_svm_invalidate_insn_bytes(svm->nested.vmcb02.ptr);
++	svm->nested.vmcb02_insn_bytes_valid = false;
++}
++
+ static void nested_svm_inject_npf_exit(struct kvm_vcpu *vcpu,
+ 				       struct x86_exception *fault,
+ 				       bool from_hardware)
+@@ -68,6 +97,10 @@ static void nested_svm_inject_npf_exit(struct kvm_vcpu *vcpu,
+ 				    (fault->error_code & ~PFERR_GUEST_FAULT_STAGE_MASK);
+ 	vmcb->control.exit_info_2 = fault->address;
  
-+		if (decode_assists)
-+			vmcb->control.exit_info_1 =
-+				info->intercept == x86_intercept_cr_write ?
-+				CR_VALID | (info->modrm_rm & SVM_EXITINFO_REG_MASK) : 0;
++	if (from_hardware)
++		nested_svm_set_vmcb02_insn_bytes_valid(svm);
++	else
++		nested_svm_invalidate_vmcb02_insn_bytes(svm);
+ 	nested_svm_vmexit(svm);
+ }
+ 
+@@ -873,6 +906,7 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
+ 	 * Filled at exit: exit_code, exit_info_1, exit_info_2, exit_int_info,
+ 	 * exit_int_info_err, next_rip, insn_len, insn_bytes.
+ 	 */
++	nested_svm_invalidate_vmcb02_insn_bytes(svm);
+ 
+ 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_VGIF) &&
+ 	    (vmcb12_ctrl->int_ctl & V_GIF_ENABLE_MASK))
+@@ -1653,8 +1687,10 @@ int nested_svm_exit_handled(struct vcpu_svm *svm)
+ 
+ 	vmexit = nested_svm_intercept(svm);
+ 
+-	if (vmexit == NESTED_EXIT_DONE)
++	if (vmexit == NESTED_EXIT_DONE) {
++		nested_svm_set_vmcb02_insn_bytes_valid(svm);
+ 		nested_svm_vmexit(svm);
++	}
+ 
+ 	return vmexit;
+ }
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index e958943b8162..1e12ef1105c0 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -243,6 +243,9 @@ struct svm_nested_state {
+ 	 * on its side.
+ 	 */
+ 	bool force_msr_bitmap_recalc;
 +
- 		/*
- 		 * Adjust the exit code accordingly if a CR other than CR0 is
- 		 * being written, and skip straight to the common handling as
-@@ -4898,6 +4911,20 @@ static int svm_check_intercept(struct kvm_vcpu *vcpu,
- 	case SVM_EXIT_READ_DR0:
- 	case SVM_EXIT_WRITE_DR0:
- 		icpt_info.exit_code += info->modrm_reg;
-+		if (decode_assists)
-+			vmcb->control.exit_info_1 = info->modrm_rm & SVM_EXITINFO_REG_MASK;
-+		break;
-+	case SVM_EXIT_SWINT:
-+		if (decode_assists)
-+			vmcb->control.exit_info_1 = info->src_val & 0xff;
-+		break;
-+	case SVM_EXIT_INVLPG:
-+		if (decode_assists)
-+			vmcb->control.exit_info_1 = info->invlpg_linear_addr;
-+		break;
-+	case SVM_EXIT_INVLPGA:
-+		if (decode_assists)
-+			vmcb->control.exit_info_1 = 0;
- 		break;
- 	case SVM_EXIT_MSR:
- 		if (info->intercept == x86_intercept_wrmsr)
++	/* True if VMCB02 has instruction bytes for the current nested exit. */
++	bool vmcb02_insn_bytes_valid;
+ };
+ 
+ struct vcpu_sev_es_state {
 -- 
 2.43.7
 
