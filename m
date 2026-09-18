@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045C1304BB3
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 08:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37417421225
+	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 08:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789720078; cv=none; b=gbHFw7KE8rwr+h0to0vzpAweyZdxlCEPdBODlAq/V+p6qlt9j8lUcejW2UcW/iA45XFe8G/ikt4uYEmQFQKfBfakHUFc2EcuNgIALbdTmUsyE5i0Jrckgd96yGTvnwEDJSHVa3/qAu449fYCQ70Ghp0wJ6Q3uPn9fjWFRk/I0t8=
+	t=1789720220; cv=none; b=iXVBTu2JcUi3cWXzJXErCWCdq/vnM+Taz0Tlgh94Ue0t8v/iLzlhYVEF09AXQsfaRkdymOXEN/rcgwGmEOT2kMlBtp7qdCkI8qqB8n+Gfft3v5axQ1A7rCO/Pw6b1fvRfQ8Dx7WPQd3lEZ/q+nhXxBvEHtxKXtVP6wA1qCGoQXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789720078; c=relaxed/simple;
-	bh=4PuqYb7beV0sxPZIjHWM/BgJmlle7WYBZlCYl2ioXFQ=;
+	s=arc-20240116; t=1789720220; c=relaxed/simple;
+	bh=bQkEpI2pubvPxSpYIk1qoH+WGtD+GVGT2wDhcdtJgMA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=q2W9FT05jf2ji4p+wxz7mUyX773SybLVRyOlKq50v3bMMffIS7QVVlJ77CR8udbo43Ny/+ww4rIU8aUQc/f20uLO/3XtY624s6vA1exbzbtLBp/JQV87EGzVtkNweIj7EjXYwc4+6FpfFkr9ecn9Ni2ETzD1YGUh7p+t90MyQN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iyeodpPf; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=XGuvkXpTTpH1vNVsuKIny6s6WEtS5TRhG31yDpP8bDhosZNyA2NAgwuqxuL/2/Si3UKNYUD+StqUkMgmGI+LbGS7PLw7+fIkrc9fIRR1KGGA6NssEx1nRAuWawGDcBW9Wk9qNpFoytcbh7wYszBlz7oi0BDAvzRNx46lonAJCm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QwfMmWLM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iyeodpPf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D291F000FF;
-	Fri, 18 Sep 2026 08:27:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QwfMmWLM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2001F0089B;
+	Fri, 18 Sep 2026 08:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789720076;
-	bh=X1TL1ZXU6ilBqzdu9Ab/DHLXQsTY3BH4HM6dQYo/KL0=;
+	s=k20260515; t=1789720218;
+	bh=e8Ui1fgmXTxTFPsx5XJxlZx5CdVv+wOF6xUH9mDHDzY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=iyeodpPfEGIKdn2Ao40lC5mCmKW40pRAz8dzJ1hPFww0ggdy9v4EnDS6yk5n/Zjvr
-	 Tio6RYFd7XggEzHcIfSIir9aPOtmlx0nW0QeFvvJccf1FUv233UrSfJmDKGJlTgYXm
-	 9scOXPp9svs0LuAJbXPhj0jnVpMib9NwDgSxQkZzzpRrr5jhgdx99RWQDhNV/2wjkw
-	 sK946IwSW3TVbibI32m3T5y+wCN6UyJVjFe2zasiT++VY0MKAqBz2VEOS8k1DOnEfI
-	 RFQqVqIhRgWQfx/gQ4PhzBJ0cXuVj/gxrRuODzgla/ZLCSEwhndqD8qQYzDrS4XoPE
-	 oiPmBgF4Mh7cg==
+	b=QwfMmWLMklZvDA1wjhAHTxY7OHTcJ9DJurn1mrTeMf0e+5t2B94xyKd8YUNz9j5P1
+	 xztxA78aMrinAevoSubAdHF04Orp6pqC3KmbniiBmxXHEvlYyltA4OA9WvVY52Lqll
+	 FWZs0AdGCsALmlOWvKmOxZKLOI3xliYcWrdlhEIaAvVFda/GGtgxDTDplLqqPtiE7N
+	 SD5iWG1ixFsz+jMMLRp9dojEMXfFBD65Hky1F/BOc15/vdzfwpiMvSPj63io29Tug0
+	 jpjgn9SnNomK+GiFIxIWdgkRH8pr9zNNhbvqhdCAOVnW6DCN6a6BnzVFCYzttm4rkQ
+	 PgkcV4c0Kf1TA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 02/28] KVM: Define and communicate
- KVM_EXIT_MEMORY_FAULT RWX flags to userspace
+Subject: Re: [PATCH v2 03/28] KVM: selftests: Test address translation for
+ Hyper-V direct L2 hypercalls
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Paolo Bonzini" <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260918081543.139871-3-pbonzini@redhat.com>
+In-Reply-To: <20260918081543.139871-4-pbonzini@redhat.com>
 References: <20260918081543.139871-1-pbonzini@redhat.com>
- <20260918081543.139871-3-pbonzini@redhat.com>
+ <20260918081543.139871-4-pbonzini@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 08:27:56 +0000
-Message-Id: <20260918082756.81D291F000FF@smtp.kernel.org>
+Date: Fri, 18 Sep 2026 08:30:18 +0000
+Message-Id: <20260918083018.8A2001F0089B@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,48 +47,55 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] kvm: missing mirror sync in tools/include/uapi/linux/kvm.h for memo=
-ry exit flags
+- [Medium] selftests/kvm: assertion failure in hyperv_evmcs test due to red=
+undant vm_enable_ept()
 --
 
-commit bde51f2cf0c01c45785fd4f593b721d8c5b218c8
-Author: Anish Moorthy <amoorthy@google.com>
+commit 3101456ba54ccd614ac31b337348b4588da927e6
+Author: Paolo Bonzini <pbonzini@redhat.com>
 
-KVM: Define and communicate KVM_EXIT_MEMORY_FAULT RWX flags to userspace
+KVM: selftests: Test address translation for Hyper-V direct L2 hypercalls
+   =20
+Test that the TLB flush hypercalls, when executed by L2, translate their
+input addresses through the guest's EPT or NPT.
 
-This commit adds new read, write, and execute flags to the
-KVM_EXIT_MEMORY_FAULT UAPI structure to communicate the faulting access
-type to userspace.
-
-Link: https://lore.kernel.org/kvm/ZR4N8cwzTMDanPUY@google.com/
+> diff --git a/tools/testing/selftests/kvm/x86/hyperv_evmcs.c b/tools/testi=
+ng/selftests/kvm/x86/hyperv_evmcs.c
+> index 63ea1533e4ead..fa80bc78aef70 100644
+> --- a/tools/testing/selftests/kvm/x86/hyperv_evmcs.c
+> +++ b/tools/testing/selftests/kvm/x86/hyperv_evmcs.c
 
 [ ... ]
 
-> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> index ac2d77d149635..15a3090f067e5 100644
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-> @@ -457,6 +457,9 @@ struct kvm_run {
->  		} notify;
->  		/* KVM_EXIT_MEMORY_FAULT */
->  		struct {
-> +#define KVM_MEMORY_EXIT_FLAG_READ       (1ULL << 0)
-> +#define KVM_MEMORY_EXIT_FLAG_WRITE      (1ULL << 1)
-> +#define KVM_MEMORY_EXIT_FLAG_EXEC       (1ULL << 2)
->  #define KVM_MEMORY_EXIT_FLAG_PRIVATE	(1ULL << 3)
+> @@ -212,6 +216,7 @@ static struct kvm_vcpu *save_restore_vm(struct kvm_vm=
+ *vm,
+> =20
+>  	/* Restore state in a new VM.  */
+>  	vcpu =3D vm_recreate_with_one_vcpu(vm);
+> +	vm_enable_ept(vm);
 
-[Severity: Low]
-Does this patch also need to sync the mirrored UAPI header in
-tools/include/uapi/linux/kvm.h?
+[Severity: Medium]
+Does this redundant vm_enable_ept() call cause an assertion failure?
 
-The new KVM_MEMORY_EXIT_FLAG_READ, KVM_MEMORY_EXIT_FLAG_WRITE, and
-KVM_MEMORY_EXIT_FLAG_EXEC macros are missing from the tools directory
-copy of the UAPI header. This will leave tools building against the
-mirrored header without the required definitions.
+The hyperv_evmcs test periodically simulates live migration by calling
+save_restore_vm(). This function calls vm_recreate_with_one_vcpu(), which
+recreates the vCPU but preserves the existing kvm_vm object and its
+initialized stage2_mmu configuration.
 
->  			__u64 flags;
->  			__u64 gpa;
+Calling vm_enable_ept(vm) here delegates to tdp_mmu_init(). Since
+tdp_mmu_init() expects to run only once per VM, it checks:
+
+    TEST_ASSERT(!vm->stage2_mmu.pgtable_levels, "TDP MMU already initialize=
+d");
+
+Because pgtable_levels was already set to 4 during the initial
+vm_enable_ept(vm) call in main(), this assertion fails, crashing the test
+unconditionally on the very first live migration cycle.
+
+>  	vcpu_set_hv_cpuid(vcpu);
+>  	vcpu_enable_evmcs(vcpu);
+>  	vcpu_load_state(vcpu, state);
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918081543.1398=
-71-1-pbonzini@redhat.com?part=3D2
+71-1-pbonzini@redhat.com?part=3D3
