@@ -1,106 +1,194 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698284FD281
-	for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 14:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4914FDA76;
+	Fri, 18 Sep 2026 14:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789743474; cv=none; b=YCAUXw8bSVjkSWzgprDOQgvGM762NY5kfs7luGVf5fe/m0wopUJ9//34HUsM1ADiObu2dyOouo8kIJIRh6Bt6dLhcbdjmG3+k1ImZXwpcojX6AQkFKLOspSenrT/1pEAclRptzuK9Dm+8o+nI6+Nf6e7qEw0XfoAP6rsIFCafDE=
+	t=1789743495; cv=none; b=qQw38hS+HWuNI27vmB6Pimq2/A6xnOb7ChORmMSZdA4qOf3ebUSIWnZjeU1qID0H+uyvnCm4MdjE9MVaOeJWtDaCBHcRUuqX6gjyeS2VifvD71PrMOGKcp0HR5XBk6+MVjcp1Vi4/byr/d4gVrdA3tlw4s39Zh45GWO4nCPrnBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789743474; c=relaxed/simple;
-	bh=G/gFmpu1Tcg4GG6o8z225VtNQxYHavwTvEVRSsulBHY=;
+	s=arc-20240116; t=1789743495; c=relaxed/simple;
+	bh=RF1s6mLH/teaAVMBltKOXpAY10cWmutijpOAWgvqd5M=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=KZjVxQYzMhzsREE2fIo3Uc+cayPv2RGXsWGXL1xv2zlN9V8U+gVWQvNXY15wXUq2hkPL5qswbtYRmsnO2rZMhXK46VJSWtEpPYIpkRY63yoeqsfZH5V71NzAwMMm+lf5Iew8QNm6MvnHOkn8BRDlgu/8nvgGJgbh9fKcyPglsVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kZbom7oC; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=U+zJwF+yUImArWWlUrjuGlhBgJ03/b0rT7FNQ5xqNPxCpNI3I3hm5RpkcV234Xn3v83ex8BEMlAmFUEOeaKowjkctSEamm1BeoFIT2/CD7gFXkz88c3pRMIVH2s8JBMMhQMW7Jna9u8WbCWE0B5LWVxDxTvcOxCXFl+j/gq549k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DVZQdrwL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kZbom7oC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E551F000FF;
-	Fri, 18 Sep 2026 14:57:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DVZQdrwL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE131F00898;
+	Fri, 18 Sep 2026 14:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789743473;
-	bh=KdaEzLzGhI8x8/EiW6Jiujlj2ehC49VW5TO6zViUGlk=;
+	s=k20260515; t=1789743494;
+	bh=+aMLP3BCeP896xtPE7BbMOwBTSyhVeEGlc2T6/YOQOw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kZbom7oCNGq/6rPpIJdoB/Z+a7hCHnejZtes5HVy+13dD4hE9tXGr237IwsaTQa3V
-	 Rm1RWTfaWhmqkLzucWa8z0RwrgEcE6aRjmAp2OIe3x9wOM4bnEb+ZZ8q6LfcvllvcG
-	 /5/crya9+otvBL1j3FQGe2+IYwKfI+yeygc5JShVWaJjVWfmEDpRr1w3Vom5KlXjv9
-	 3FPqcLS2M2Val6k//g5gQxdgIzoj8aEzu0qkzVdE6KAykk/hI9gLUUUjuTCesXe9DO
-	 pNJYaNBi2wnrWeALRmCAyZWR8vqj0R0p4NVH29KkD4PEo85FtIsNoEHbbmc0kNeq6E
-	 4JPi4y5ncOX3g==
+	b=DVZQdrwLwjIWqK1W3V17xY1NMSJptPahMpZw07NlGySJC95UMAmxYaEsyE6kQAbXV
+	 KxpWd7Xpa35RU6DjxYenT5F3IHRQ734hY1Lfgzcib9j+CjZSOvR2/GB4x/bA53IlG9
+	 xO7+YCyK5Meyun3Tgfb+7+Ac+LdlKsMPtkeLKygNM0OjAp3gLWrKcaQGMshkMA1Px2
+	 QSAZYbXaH6WucAozGbifILf9RmdYjHSRs72UVXz1z1vPCVH10otvW/Y0Bw+zxcB/bI
+	 N8c0k65Uta3JtoQmAliEYP+YVPUyzf97VRVUw1ZH9uukOzeURBEX0FT9mH1nC1q9kR
+	 zirxD/oXq7Ixg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 28/31] KVM: x86/mmu: Obsolete all roots if memattr
- contains gPTEs
+Subject: Re: [PATCH v8 07/29] KVM: Make device name configurable
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Paolo Bonzini" <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260918135030.171564-29-pbonzini@redhat.com>
-References: <20260918135030.171564-1-pbonzini@redhat.com>
- <20260918135030.171564-29-pbonzini@redhat.com>
+To: "Steffen Eiden" <seiden@linux.ibm.com>
+Cc: "Marc Zyngier" <maz@kernel.org>, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Heiko
+ Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, kvmarm@lists.linux.dev, kvm@vger.kernel.org, "Christian
+ Borntraeger" <borntraeger@linux.ibm.com>, "Oliver Upton" <oupton@kernel.org>
+In-Reply-To: <20260918133107.1042730-8-seiden@linux.ibm.com>
+References: <20260918133107.1042730-1-seiden@linux.ibm.com>
+ <20260918133107.1042730-8-seiden@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 14:57:52 +0000
-Message-Id: <20260918145753.30E551F000FF@smtp.kernel.org>
+Date: Fri, 18 Sep 2026 14:58:13 +0000
+Message-Id: <20260918145813.CEE131F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [High] kvm: soft lockup in KVM_SET_MEMORY_ATTRIBUTES due to unyielding lo=
-op
+- [Medium] kvm: KVM_DEV_STRING macro evaluates to literal "KVM_DEV_NAME_vcp=
+u"
+- [Low] kvm: hardcoded "kvm" strings bypass the configurable device name
 --
 
-commit c7a249c1f674a4bf236247e82b5eb5accc8a2958
-Author: Paolo Bonzini <pbonzini@redhat.com>
+commit d598c93c97a669f28341c88d4d371abfd9c3b335
+Author: Steffen Eiden <seiden@linux.ibm.com>
 
-KVM: x86/mmu: Obsolete all roots if memattr contains gPTEs
+KVM: Make device name configurable
 
-This commit introduces a separate architecture callback for the back half of
-kvm_mmu_zap_all_fast() so that obsolete roots can be zapped after the mmu_l=
-ock
-is dropped. It applies this by checking for guest PTEs when setting memory
-attributes and triggering a front-half fast zap if found.
+Allow KVM implementations to choose alternative device names. This is
+especially useful for architectures providing multiple KVM
+implementations simultaneously.
 
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index 6bbecbae2f8c4..242cbe65859df 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
 [ ... ]
-> @@ -8326,9 +8327,38 @@ bool kvm_arch_post_set_memory_attributes(struct kv=
-m *kvm,
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 2b56fb4e85557..5926478563e88 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -45,6 +45,9 @@
+>  #include <asm/kvm_host.h>
+>  #include <linux/kvm_dirty_ring.h>
+> =20
+> +#define __KVM_DEV_STRING(name, x) __stringify(name ## _ ## x)
+> +#define KVM_DEV_STRING(x) __KVM_DEV_STRING(KVM_DEV_NAME, x)
+
+[Severity: Medium]
+Does KVM_DEV_STRING(vcpu) expand to the literal string "KVM_DEV_NAME_vcpu"
+instead of the expected configured name?
+
+Because the name parameter in __KVM_DEV_STRING is adjacent to the ##
+token-pasting operator, the C preprocessor does not macro-expand it before
+pasting. The tokens KVM_DEV_NAME, _, and vcpu are pasted into
+KVM_DEV_NAME_vcpu, which __stringify converts to the literal string.
+
+Does this need an extra level of macro indirection to evaluate the arguments
+before pasting?
+
 [ ... ]
-> +	/*
-> +	 * There are special considerations when applying an memory protection
-> +	 * attibute against a page containing guest PTEs, because virtual
-> +	 * addresses that requires traversing that page need to fault.
-> +	 *
-> +	 * When using shadow paging, the PTEs that the CPU actually walks
-> +	 * do not have any information about attributes (unlike TDP where
-> +	 * the attributes become part of the TDP permission bits).  Since
-> +	 * this should be a rare occasion, just invalidate all the mmu roots
-> +	 * if shadow paging is in use and attributes do cover a guest PTE.
-> +	 */
-> +	for (gfn_t gfn =3D range->start; gfn < range->end; gfn++) {
-> +		for_each_gfn_valid_sp_with_gptes(kvm, sp, gfn) {
-> +			__kvm_mmu_zap_all_fast_front_half(kvm);
-> +			return false;
-> +		}
-> +	}
->  	return false;
->  }
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 891a67cb365ab..4f25e170b542c 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -5596,8 +5596,8 @@ static struct file_operations kvm_chardev_ops =3D {
+>  };
+> =20
+>  static struct miscdevice kvm_dev =3D {
+> -	KVM_MINOR,
+> -	"kvm",
+> +	KVM_DEV_MINOR,
+> +	__stringify(KVM_DEV_NAME),
 
-[Severity: High]
-Does this loop present a denial of service vector?  If userspace calls the
-KVM_SET_MEMORY_ATTRIBUTES ioctl with a very large memory range (for example,
-1TB), this loop will execute hundreds of millions of iterations doing hash
-table lookups.
+[Severity: Low]
+Are there other hardcoded "kvm" strings that will bypass this configurable
+device name when creating a VM or interacting with KVM infrastructure?
 
-Because kvm_arch_post_set_memory_attributes() is called with the global
-kvm->mmu_lock held for write, and the loop scales linearly with the size of
-the update without yielding, can an unprivileged userspace process stall
-the host CPU indefinitely, causing RCU stalls and soft lockups?
+For instance, processes utilizing different KVM implementations will have
+indistinguishable workqueues and anonymous inodes, reducing observability:
+
+virt/kvm/eventfd.c:kvm_irqfd_init() {
+    ...
+    irqfd_cleanup_wq =3D alloc_workqueue("kvm-irqfd-cleanup", WQ_PERCPU, 0);
+    ...
+}
+
+virt/kvm/kvm_main.c:kvm_create_vm() {
+    ...
+    file =3D anon_inode_getfile("kvm-vm", &kvm_vm_fops, kvm, O_RDWR);
+    ...
+}
+
+And also hardcoded log prefixes:
+
+virt/kvm/kvm_main.c:kvm_shutdown() {
+    ...
+    pr_info("kvm: exiting hardware virtualization\n");
+    ...
+}
+
+Do these strings also need to use the configured device name to ensure
+concurrent KVM instances are cleanly segregated?
+
+[Severity: Low]
+This is a pre-existing issue, but does generic multiple KVM support conflict
+with hardcoded core kernel singletons?
+
+If architectures using CONFIG_KVM_GENERIC_HARDWARE_ENABLING attempt to load
+multiple KVM modules simultaneously, the second module will fail to initial=
+ize.
+The core hotplug subsystem returns -EBUSY when a second implementation invo=
+kes
+it since the hotplug state is statically assigned:
+
+virt/kvm/kvm_main.c:kvm_enable_virtualization() {
+    ...
+    r =3D cpuhp_setup_state(CPUHP_AP_KVM_ONLINE, "kvm/cpu:online",
+                          kvm_online_cpu, kvm_offline_cpu);
+    ...
+}
+
+Also, concurrent registrations of guest info callbacks trigger a WARN_ON_ON=
+CE
+since the core kernel only maintains a single pointer:
+
+virt/kvm/kvm_main.c:__kvm_register_perf_callbacks() {
+    ...
+    perf_register_guest_info_callbacks(&kvm_guest_cbs);
+    ...
+}
+
+Can these singletons be adjusted to support concurrent implementations?
+
+>  	&kvm_chardev_ops,
+>  };
+> =20
+[ ... ]
+> @@ -6521,7 +6521,7 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_alig=
+n, struct module *module)
+>  	if (!vcpu_align)
+>  		vcpu_align =3D __alignof__(struct kvm_vcpu);
+>  	kvm_vcpu_cache =3D
+> -		kmem_cache_create_usercopy("kvm_vcpu", vcpu_size, vcpu_align,
+> +		kmem_cache_create_usercopy(KVM_DEV_STRING(vcpu), vcpu_size, vcpu_align,
+
+[Severity: Medium]
+With the KVM_DEV_STRING() macro evaluating to the literal string
+"KVM_DEV_NAME_vcpu", will all KVM modules unconditionally attempt to create=
+ a
+kmem_cache named literally "KVM_DEV_NAME_vcpu" during module initialization?
+
+This causes duplicate slab names across multiple KVM implementations, leadi=
+ng
+to sysfs creation warnings (SLUB: Unable to add cache KVM_DEV_NAME_vcpu to
+sysfs) and broken observability in /proc/slabinfo. Although SLUB permits
+duplicate names and proceeds with cache creation, this seems to break the
+intended uniqueness.
+
+>  					   SLAB_ACCOUNT,
+>  					   offsetof(struct kvm_vcpu, arch),
+>  					   offsetofend(struct kvm_vcpu, stats_id)
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918135030.1715=
-64-2-pbonzini@redhat.com?part=3D28
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918133107.1042=
+730-1-seiden@linux.ibm.com?part=3D7
