@@ -1,43 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB11C511E6E;
-	Fri, 18 Sep 2026 16:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9B15172C2;
+	Fri, 18 Sep 2026 16:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789747921; cv=none; b=CJgG3mxhfGL98oH/oPqc4ogG6J1asdBgQvgA2dQGEJS8Z9Yi9ccNg1Tx5mhzSftZlbtjG8SMRRsd6rhb0GCEem1A/vq2GtIvW07XvBqI3ajd6eBCxhTEf3JmObiaRG9LP24RTs1gPXOisue+CSddHYA2787NLtd2nqtjUZK7wcI=
+	t=1789748090; cv=none; b=hl9DfQD35fxxFBdpWjnm51cTwhMr4lFlxswFKs+Cu+wSQdiIUwcmkUVGb9lOz5dB/i9hsAAOVNnrbL5X+GiJLKnUcY81w6SQCHNjTdM1BR+xfED71pLY5oqDn7Ty83YvPPHdJf/j9bL7e54QUhRLGmW4Fcv9SZHa1FBHnMO+oxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789747921; c=relaxed/simple;
-	bh=gzmtYWgWadIDC31W2ejDQZ7S46kME5Pt9JmeIsg+sxQ=;
+	s=arc-20240116; t=1789748090; c=relaxed/simple;
+	bh=l9nYo3fnLVcP3EfwMY2HprXsggbhOGLXy3Rp82L/0ng=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=k04brOlYJIJ+3EgYl5m0NsUQQ4WsOZPDV1gtNgwE/9kd9zZBr7+Exg225PiTNArn2sLTAt0a993AhZVDADWlLvHhMeT6wMiePfyRDDxRbGHFPuDoPa71vk9Fj+iCFgQm8iXRy5msBWiDqW9PB4r13izZ9U5mcZned2fE1PduFnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mrlMAfeh; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=shUdXpAdW8vZiqrIT9mFggmRb6I/awHiDTiNHymv7DLqS8a0orP1ncJZtSlPJdXhfd2wcIMlxzUjy3HHrY7E51Kyt4NKx5gkUJsW2G2DhNxuCc+7KhAQgxQ+l8RhM8CB0KBJx5Yc0MukC+s7BlirW8ZoPXRDk5ODhPrJErC6fkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k8cf7bZb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mrlMAfeh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9BE21F000FF;
-	Fri, 18 Sep 2026 16:11:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k8cf7bZb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B61C1F0089A;
+	Fri, 18 Sep 2026 16:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789747917;
-	bh=1S4LOWej9Oxv4Crxz3SMYa4g87mQImBv0lXDJriHrJ4=;
+	s=k20260515; t=1789748089;
+	bh=OIio10vJFuWpSQCOrKEwPrmMGhRjb55Qi4/sWOshmbk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mrlMAfeh+Ez7lU9qezHRZdE40n8LmkVdTkJyt70LYGMFjTMByYSXd/2SyQV1tBA85
-	 o+3K9PVaLnPxV0JFzvJPw75qGJLcl+HytPz0X9Bq0tCtY5avFvKH2U81hizqBXTazZ
-	 knZjrX4a1oR9DsAiOdmEEIDuTz3o24xlMYlsF8xqgtsh8J/M89d2pBUdFpVvvnck6a
-	 nAk+sKbxp6fa1txG1Vhfhl4bUb3osU2VFsR/Jo4LfiorZA+VrwqgsKs3JewOdtncxY
-	 p1nOGcHUajk5MhnFBQA49PvsADK1SG0HJzrCGKDSJrh5fElowzd1d3aiap0mbCw7dQ
-	 2riyMyOW6SYJw==
+	b=k8cf7bZbFSdo6H80Fsnx77yNEQxSTpwZSx05d3kPyzIaXh5cCPUUOQohxb4kdwl2X
+	 vV4FhquCU/ZN2Z4zv1V7QY9N4N8lJFDs+ddxLR8tPVHPqIEt1cFWHuc/oWDd0mqdpK
+	 DCbu+zjp2n9GrWLRpIB1MVyTi4Pe8LyucixB0evn0KhMF+5uq7bRvHjETlPXzO4JyE
+	 JtkKl5wNX/1unBLmziQuoA0XZDTDq+VVgGjoZaHdAAjCmZNBn2/s58dG/4YbGmgyeH
+	 MgB34uc1rO+tFXp7K2fmPE7sDMokIOZwMU3CVoM5QtG6HpLZjVdvd3kwxh2TmC/2XJ
+	 pCgPUx8NLImCA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: x86/pmu: Don't retry a counter whose config was
- rejected
+Subject: Re: [PATCH v8 19/29] KVM: s390: Use arm64 code
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Luka Absandze" <absandze@amazon.de>
-Cc: linux-perf-users@vger.kernel.org, kvm@vger.kernel.org
-In-Reply-To: <20260918160006.61816-1-absandze@amazon.de>
-References: <20260918160006.61816-1-absandze@amazon.de>
+To: "Steffen Eiden" <seiden@linux.ibm.com>
+Cc: kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>, "Marc
+ Zyngier" <maz@kernel.org>, linux-s390@vger.kernel.org, "Christian
+ Borntraeger" <borntraeger@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
+ Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>
+In-Reply-To: <20260918133107.1042730-20-seiden@linux.ibm.com>
+References: <20260918133107.1042730-1-seiden@linux.ibm.com>
+ <20260918133107.1042730-20-seiden@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Sep 2026 16:11:56 +0000
-Message-Id: <20260918161156.D9BE21F000FF@smtp.kernel.org>
+Date: Fri, 18 Sep 2026 16:14:48 +0000
+Message-Id: <20260918161448.9B61C1F0089A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,59 +49,60 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] kvm: pmu: incomplete error check leaves retry loop for non-EINVAL =
-errors
+- [Medium] build: cross-arch C code extraction via awk breaks tooling and m=
+odularity
 --
 
-commit c902c2e2a69841996cdfa4c9e356844d36d6b770
-Author: Luka Absandze <absandze@amazon.de>
+commit e83a74be06a131ec905dd0c83821e6279b998572
+Author: Steffen Eiden <seiden@linux.ibm.com>
 
-KVM: x86/pmu: Don't retry a counter whose config was rejected
+KVM: s390: Use arm64 code
 
-This commit prevents KVM from infinitely retrying PMU reprogramming when the
-host PMU driver rejects a configuration outright by skipping the re-arm for
--EINVAL.
+This commit introduces build infrastructure to extract marked sections
+from ARM64 C files into generated .inc files for use in the s390 KVM
+host code. It adds the copy-arm64c.awk script that searches for
+ARM64_S390_COMMON markers and copies the matched code verbatim.
 
-Link: https://lore.kernel.org/all/20260916123315.89042-1-absandze@amazon.de/
+> diff --git a/arch/s390/kvm/arm64/copy-arm64c.awk b/arch/s390/kvm/arm64/co=
+py-arm64c.awk
+> new file mode 100644
+> index 0000000000000..5561619aa70c8
+> --- /dev/null
+> +++ b/arch/s390/kvm/arm64/copy-arm64c.awk
+> @@ -0,0 +1,72 @@
+[ ... ]
+> +BEGIN {
+> +	# Constants
+> +	start_pattern =3D "^#ifdef ARM64_S390_COMMON$"
+> +	end_pattern =3D "^#endif /\\* ARM64_S390_COMMON \\*/$"
 
-> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-> index d2fd47ee5ec80..ef229faafd1e1 100644
-> --- a/arch/x86/kvm/pmu.c
-> +++ b/arch/x86/kvm/pmu.c
-> @@ -680,8 +680,14 @@ void kvm_pmu_handle_event(struct kvm_vcpu *vcpu)
->  		 * reprogram bit, i.e. opportunistically try again on the next
->  		 * PMU refresh.  Don't make a new request as doing so can stall
->  		 * the guest if reprogramming repeatedly fails.
-> +		 *
-> +		 * -EINVAL means the event's config was rejected outright and
-> +		 * can never succeed on retry, so don't re-arm; the guest can
-> +		 * still do so itself by rewriting the event selector.
->  		 */
-> -		if (reprogram_counter(pmc))
-> +		int r =3D reprogram_counter(pmc);
-> +
-> +		if (r && r !=3D -EINVAL)
->  			set_bit(pmc->idx, pmu->reprogram_pmi);
+[Severity: Medium]
+Does tightly coupling the s390 build to the exact source code formatting
+in the arm64 tree present a maintenance burden?
 
-[Severity: High]
-Does this condition fail to exclude other permanent error codes like
--EOPNOTSUPP or -ENOENT?
+Sharing architecture code via text extraction of C files violates kernel
+modularity principles. It imposes a burden on ARM64 maintainers who must
+now preserve s390-specific markers (ARM64_S390_COMMON) and formatting.
+The established Linux kernel paradigm for cross-architecture code sharing
+is to abstract common logic into standalone .c files in a shared
+location (e.g., virt/kvm/).
 
-If a guest programs an invalid configuration (such as a PEBS precise_ip lev=
-el
-that the host hardware does not support), x86_pmu_hw_config() can return
--EOPNOTSUPP.=20
+[ ... ]
+> +copying {
+> +	gsub(/#include <asm\//, "#include <arm64/")
+> +	gsub(/#include <uapi\/asm\//, "#include <uapi/arm64/")
+> +	print
+> +	next
+> +}
 
-In that scenario, reprogram_counter() will propagate this error, the condit=
-ion
-here evaluates to true, and KVM will incorrectly re-arm the reprogram_pmi b=
-it.
-On subsequent PMU refreshes, KVM will repeatedly retry the heavy
-perf_event_create_kernel_counter() path.
+[Severity: Medium]
+Does copying C source code into a new file without emitting C preprocessor
+#line directives break standard developer tooling?
 
-Could this leave the retry loop open for other error codes, allowing an
-unprivileged guest to cause high CPU overhead on the host?
+Without #line directives, compiler errors, warnings, and debugger (GDB)
+symbols will map to the generated .inc files instead of the original
+arch/arm64 source, degrading debuggability.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918160006.6181=
-6-1-absandze@amazon.de?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260918133107.1042=
+730-1-seiden@linux.ibm.com?part=3D19
