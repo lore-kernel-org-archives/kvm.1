@@ -1,44 +1,44 @@
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DC03BFE50;
-	Sat, 19 Sep 2026 01:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9850C3BB10D;
+	Sat, 19 Sep 2026 01:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789781300; cv=none; b=igtmrVUPH+Fovayoz69t540PReXW5Dg6batQocPtgatyDGlLLiXt6gfFzyVyIAjletpi8z/SZmXnoZ3AGfbljHRyyPAUQfFSdWO67NeLlQ1E/13+bpOa4PHSoEScNwFoNLgb2hY+itvb3M31N3R9uQEMFCNK+QodflfDZIGnxdI=
+	t=1789781302; cv=none; b=DqWmOC8jbkDjLkCBNvC9d2+TUuhG074w3+avxdokezGvb27TzkxkovH/OPF8qsbws/atQg5nbL706MF6zmTM6EF3AKgpayEXYnUqbZDtBLi7dY7PYy0COk/OEiZzFUdDtXS7Ka5xH350vKZf6M1qAlNbh8ty0LtC3/+9U+6JasA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789781300; c=relaxed/simple;
-	bh=01rCRyqgxnN3/mgu+0CrIgXsm4ZIWzg41CVlS8W84kQ=;
+	s=arc-20240116; t=1789781302; c=relaxed/simple;
+	bh=TDckzYcPQFRtAhJQqOo2HQDMM0SVUuf0EC865DBBpYo=;
 	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=ccjvclGhpEgyu8zlz/4NO0A8xf3T1wIZZpRv6z1ZbR0m6XhbtAbGZbax8tmkHSmZ1e0L6AmmMJyL6bF6HXxHtYg9IfNe75bD4fvBRvpL2jGAsBcvP1OeRU2agAUEYISeS/E01kuhvQmupyoAcWohGfUzn034fdJxtm+yrNmgaWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XRBYKCG0; arc=none smtp.client-ip=205.220.168.131
+	 References:Date:Message-Id; b=d3S9Orzb6BWM9QnCYD4htOnXDdjmCsx4boEWmQmbCf10IhnRCPF3kLdu6+7q/6JFOVDVLQ01U3Lr4VkZ9qFmehwvZgqFLGbc+zpnVR8aN5I+9Jt1BuPQXNQ9kinsYcJrLy8Ck959VCa6q2QpW7N+N4/+CSYTT5PN35tIQx2Xgy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YqMpfmQM; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XRBYKCG0"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68J0gfNV3380737;
-	Sat, 19 Sep 2026 01:27:51 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YqMpfmQM"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68INwF213107001;
+	Sat, 19 Sep 2026 01:27:52 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	jOszlEhsREU8ur26W/fzd1dwj4oC9vIW0wwZ2gdS9FY=; b=XRBYKCG03ZDE7OKa
-	37tkcSV3RAH2dwH8vS1b1mmFeNHQUC2V1gNnC1vEmLZDMM9DABKnGcpIcz64r1sw
-	keUXjaS/xJivNJVxou/NM+PClZIYQP8Uf3W9JZz4ggSh624UYUYpDyNSydR6wETb
-	s9XYTDgBiqrH3U49zL26RBp7p4bpcnYBrE4f2skYa2iMuT6R4uZaipuC1wwk6sE1
-	Dfo5Hl2Rrr1RVMQg0OWqpUC+e+mMWq1Q6C6tqYvdmZxpnKgLplq/5eB/rOFdj+qr
-	cX4hDSA8k2US7cF6wKR92A38HsSC655dCrgIrYTjmWgeA9saRLOSc2Xiu94OF7Q8
-	c7I2yA==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gsg3f032p-1
+	gOMfiWikPcmiAlM8lrGHBGFDcaUdadddDJDHEifhXT8=; b=YqMpfmQMEuiskSDN
+	KZarNYSbVkoHjpw95ah96UdtXdnidAwTBaHQtjNe1LZ46+ZwMP7UFRqqzZIGJcue
+	SCo23l7OrX7fEcHFWutm5apEw0IlHTx0rViyp4Jxo61gGLAsjh92qguupAgsjIBH
+	GYIwkMbkWLI7QxJoh891jAT1bKsIiz4zIXNxkdj5Lo+TgIJRN8aq7ZdtaL117mE0
+	2tEjVxsZoh8PtLzhnXSxhSDgp12Sh6Vx/9f6hBjAc7z5EFTY+zyeyFU29i5eU4wn
+	/vkR9+OqvnToCXgBS1oRBy9KZay2j3lfS/MFApsZIHQ4cRu+PUtptP1UwiGFoHGo
+	1jgqyA==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gs8gyhtxj-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
 	Sat, 19 Sep 2026 01:27:51 +0000 (GMT)
 Received: from hu-devc-lv-u24-a.qualcomm.com (hu-jcameron-lv.qualcomm.com [10.81.84.69])
-	by NALASPPMTA01.qualcomm.com (8.18.1.11/8.18.1.11) with ESMTPS id 68J1RpGQ3476835
+	by NALASPPMTA04.qualcomm.com (8.18.1.11/8.18.1.11) with ESMTPS id 68J1Rp983490811
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
 	Sat, 19 Sep 2026 01:27:51 GMT
 Received: from hu-jcameron-lv.qualcomm.com (localhost [127.0.0.1])
-	by hu-devc-lv-u24-a.qualcomm.com (Postfix) with ESMTP id 10E27217B0;
+	by hu-devc-lv-u24-a.qualcomm.com (Postfix) with ESMTP id 1779424DD6;
 	Fri, 18 Sep 2026 18:27:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -48,8 +48,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v18 1/7] firmware: arm_rmm: Add SMC definitions for
- calling the RMM
+Subject: Re: [PATCH v18 4/7] firmware: arm_rmm: Add support for SRO
 From: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
 To: Suzuki K Poulose <suzuki.poulose@arm.com>
 Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
@@ -60,289 +59,435 @@ Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
         linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
         sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
         WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-In-Reply-To: <20260912083611.2513845-2-suzuki.poulose@arm.com>
+In-Reply-To: <20260912083611.2513845-5-suzuki.poulose@arm.com>
 References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
- <20260912083611.2513845-2-suzuki.poulose@arm.com>
+ <20260912083611.2513845-5-suzuki.poulose@arm.com>
 Date: Fri, 18 Sep 2026 18:27:45 -0700
-Message-Id: <178978126540.2352296.16845657485139032765.b4-review@b4>
+Message-Id: <178978126542.2352296.15676256806777454164.b4-review@b4>
 X-Mailer: b4 0.17-dev
 X-QCInternal: smtphost
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE5MDAxNiBTYWx0ZWRfX/1hOwdD6+6iq
- Pw8hk0+frowJlymXnPUvRhhUBfehc9oT8VYYPUbvyPiCm7uHhb/Zowtunud3zcIAlkInYS73JWd
- z0hpehnWFaE2Bny82vgFz10LqgHIde0=
-X-Proofpoint-ORIG-GUID: ZTHL2QsPlv_fHuiNBqdX6jLD1y1Ca2wX
-X-Proofpoint-GUID: ZTHL2QsPlv_fHuiNBqdX6jLD1y1Ca2wX
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE5MDAxNiBTYWx0ZWRfXyA3Z0OHKJ2Mw
- ClnMwM+k3RViVgDM2x2t2Mc6rdD+mnKMfh4F/cvunZvZcZkIHMWKzvl3QOPTxZ06AW4KP6YKK+R
- tXKlKdvn8SEAERWaVDKsJTRwoVTWZIv6FJajfQSQoC1pom4qDMTxhyxLz47BfPPpuw9DD9G+tG9
- AewsFk96lwux65eY6UFMrcKZMqo3bBZPHOxyan29zDomZXyVWwxKpsFQlLYxJVnZbZNquJI4x/S
- G4jNmTfbTJdbQDf7gV+9VQoD5E4TN/dXcmlSbmPWhp4q35rJWJH2gTZcpj2yLKOsyycxyCdv1Pt
- gVVPz1WTHV26WKBJeBPTpH7G22+FgtUlBYNjuyFucSuwVxJTzHiWQOzT78J40QOE4u07l2R61Us
- Nbwj8FWaEyhcbQZsYr7iKiFQcUvCxLy4kpnkuagbRW6C+v1POWA+562ifEejnEt8dlVeQbEgpiz
- cP+rZAgAK7YQ9CUKSSg==
-X-Authority-Analysis: v=2.4 cv=N6S8hG9B c=1 sm=1 tr=0 ts=6aade517 cx=c_pps
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE5MDAxNiBTYWx0ZWRfX9EKNv0Kha0FC
+ gZ4PVQYW7PmxMqbrF/aBJcFWiS4Ze/z9L2Ou7NfaMWUpkctX/v3JrKziyYJ3is6k77Lc7hlQLop
+ YSzYI2lh18IIkcHnqnkgNG9W//OOqAc=
+X-Authority-Analysis: v=2.4 cv=Tq5zFzXh c=1 sm=1 tr=0 ts=6aade517 cx=c_pps
  a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
  a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22 a=7CQSdrXTAAAA:8
- a=EUspDBNiAAAA:8 a=dlddJRs0OWu8TNdq08oA:9 a=QEXdDO2ut3YA:10
+ a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22 a=7CQSdrXTAAAA:8
+ a=EUspDBNiAAAA:8 a=J1ZjCe3lCUVqSFJHhOAA:9 a=QEXdDO2ut3YA:10
  a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE5MDAxNiBTYWx0ZWRfX6d3w91RC/8cH
+ nsP6gK7lVdRz00GsWNNaSHW6edWB0W3JwDSSGHory7KXdydWIqNnOj8B3lprnRQATagHrJ722Ov
+ 2Z/Vx2Pft0zT17hfcLAxN6bgBt4TEmKr1h+Z0fLJq/Ln1P0EoNba9Wo5KYl6ZqIld+lYrSK08WZ
+ juW5WlnGudZCuJDpGfGLld/NV0qaPZys4UkcgrpmEH0NaniAp3RNqj38+aQVR8vPNZL7+3sn92o
+ WebkzRFc7+t4twDlp5qbWfxsPaneru0ZoKgeid/7IWzF0OJxcNXb4X0ekrtQHxryokFOXOV5s9I
+ 7hA2YKn2uthJhkWlmWaK1ih8MAmQbpKfvFLnopdlvF9lQt+2QbBsIqIgWFKXCaB/6XgiBMAzbnn
+ qdCJ5MjF0z6I2jt3CMYzyAF83cR32WFTndPzoGUD02RCf10abkxsSbIHP+3t8GVBFu+kgICXuG8
+ QGjvBNVDX9b54BXGJUw==
+X-Proofpoint-ORIG-GUID: ykRMeUVC9vLtkyXvvpaqv3PVOCEWCorb
+X-Proofpoint-GUID: ykRMeUVC9vLtkyXvvpaqv3PVOCEWCorb
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-18_07,2026-09-16_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0 adultscore=0 spamscore=0 suspectscore=0
- priorityscore=1501 clxscore=1011 impostorscore=0 lowpriorityscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609190016
+ clxscore=1011 spamscore=0 bulkscore=0 adultscore=0 priorityscore=1501
+ phishscore=0 malwarescore=0 lowpriorityscore=0 suspectscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609190016
 
-> The RMM (Realm Management Monitor) provides functionality that can be
-> accessed by SMC calls from the host.
+> RMM v2.0 introduces the concept of "Stateful RMI Operations" (SRO). This
+> means that an SMC can return with an operation still in progress. The
+> host is expected to continue the operation until it reaches a conclusion
+> (either success or failure). During this process the RMM can request
+> additional memory ('donate') or hand memory back to the host
+> ('reclaim'). The host can request an in progress operation is cancelled,
+> but still continue the operation until it has completed (otherwise the
+> incomplete operation may cause future RMM operations to fail).
 > 
-> The SMC definitions are based on DEN0137[1] version 2.0-bet3
+> The SRO is tracked using a struct rmi_sro_state object which keeps track
+> of any memory which has been allocated but not yet consumed by the RMM
+> or reclaimed from the RMM. This allows the memory to be reused in a
+> future request within the same operation. It will also permit an
+> operation to be done in a context where memory allocation may be
+> difficult (e.g. atomic context) with the option to abort the operation
+> and retry the memory allocation outside of the atomic context. The
+> memory stored in the struct rmi_sro_state object can then be reused on
+> the subsequent attempt.
 > 
-> [1] https://developer.arm.com/documentation/den0137/2-0bet3/
+> Wrappers for SRO RMI commands are also provided here because they depend
+> on the rmi_sro_execute() implementation added by this patch.
+> Delegate/undelegate handles are also added here because they now use the
+> SRO/stateful command infrastructure and are also used for the memory
+> DONATE/RECLAIM flows.
 > 
 > Signed-off-by: Steven Price <steven.price@arm.com>
+> Co-Developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-With Gavin's nitpicks and the GENMASK_ULL() from sashiko, just a few
-comments inline.  Mostly on subtle inconsistencies that really don't
-matter that much.
+Hi Suzuki.
 
->  include/linux/arm-smccc-rmi.h | 497 ++++++++++++++++++++++++++++++++++
->  1 file changed, 497 insertions(+)
->  create mode 100644 include/linux/arm-smccc-rmi.h
+A few comments and questions on the array for the cache of
+allocations.
+
+Jonathan
+
+> ---
+>  drivers/firmware/arm_rmm/rmi.c | 586 +++++++++++++++++++++++++++++++++
+>  include/linux/arm-rmi-cmds.h   |  41 +++
+>  2 files changed, 627 insertions(+)
 >
-> diff --git a/include/linux/arm-smccc-rmi.h b/include/linux/arm-smccc-rmi.h
-> new file mode 100644
-> index 000000000000..214d6228dfc2
-> --- /dev/null
-> +++ b/include/linux/arm-smccc-rmi.h
-> @@ -0,0 +1,497 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Copyright (C) 2023-2026 ARM Ltd.
-> + *
-> + * The values and structures in this file are from the Realm Management Monitor
-> + * specification (DEN0137) version 2.0-bet3:
-> + * https://developer.arm.com/documentation/den0137/2-0bet3/
-> + */
+> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+> index 5b0e342ce3d5..4f9898ece754 100644
+> --- a/drivers/firmware/arm_rmm/rmi.c
+> +++ b/drivers/firmware/arm_rmm/rmi.c
+> @@ -15,6 +15,59 @@
+>  #define RMI_FEAT_REG_COUNT	2
+>  static unsigned long rmi_feat_reg_cache[RMI_FEAT_REG_COUNT] __ro_after_init;
+
+
+
+> +static int rmi_sro_donate_contig(struct rmi_sro_state *sro,
+> +				 unsigned long sro_handle,
+> +				 unsigned long donatereq,
+> +				 struct arm_smccc_1_2_regs *out_regs,
+> +				 gfp_t gfp)
+> +{
+> +	unsigned long block_size_fld = RMI_DONATE_BLOCK_SIZE(donatereq);
+> +	unsigned long block_size = rmi_addr_block_size_to_bytes(block_size_fld);
+> +	unsigned long count = RMI_DONATE_COUNT(donatereq);
+> +	unsigned long state = RMI_DONATE_STATE(donatereq);
+> +	unsigned long size = block_size * count;
+> +	unsigned long addr_range;
+> +	unsigned long donated_granules;
+> +	unsigned long donated_size;
+> +	int ret;
+> +	void *virt;
+> +	phys_addr_t phys;
 > +
-> +#ifndef __LINUX_ARM_SMCCC_RMI_H_
-> +#define __LINUX_ARM_SMCCC_RMI_H_
+> +	/*
+> +	 * The RMM specification requires contiguous allocations are always a
+> +	 * power of 2
+> +	 */
+> +	if (WARN_ON_ONCE(!is_power_of_2(size)))
+> +		return -EINVAL;
 > +
-> +#include <linux/arm-smccc.h>
-> +#include <linux/bitfield.h>
-> +#include <linux/bits.h>
-> +#include <linux/build_bug.h>
-> +#include <linux/sizes.h>
+> +	/* Reuse the cached address range if we have one */
+> +	for (int i = 0; i < sro->addr_count; i++) {
+> +		unsigned long entry = sro->addr_list[i];
 > +
-> +#include <asm/page.h>
+> +		if (RMI_ADDR_RANGE_BLOCK_SIZE(entry) == block_size_fld &&
+> +		    RMI_ADDR_RANGE_COUNT(entry) == count &&
+> +		    RMI_ADDR_RANGE_STATE(entry) == state &&
+> +		    IS_ALIGNED(RMI_ADDR_RANGE_ADDR(entry), size)) {
+> +			sro->addr_count--;
+> +			swap(sro->addr_list[sro->addr_count],
+> +			     sro->addr_list[i]);
 > +
-> +#define SMC_RMI_CALL(func)				\
-> +	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,		\
-> +			   ARM_SMCCC_SMC_64,		\
-> +			   ARM_SMCCC_OWNER_STANDARD,	\
-> +			   (func))
-
-Obviously it is v18 so probably a future thing but nothing about this
-is RMI specific.  Could be used for ARM_SMCCC_TRNG_RND64 for instance.
-I'm not entirely sure what we'd call such a macro
-
-ARM_SMCCC_CALL_VAL64_STD() maybe?
-
-I'm not just not keen on macros whose names to me hint at something
-special. FWIW this also matches SMC_RSI_FID() and FFA_SMC64().
-Isn't it nice when we have a predictable naming scheme :)
-
-FID (for Function IDentifier) is in the spec, so maybe?
-
-Anyhow, I don't really care that much.
-
+> +			goto out;
+> +		}
+> +	}
 > +
-> +#define SMC_RMI_VERSION				SMC_RMI_CALL(0x0150)
+> +	ret = rmi_sro_ensure_capacity(sro, 1);
+> +	if (ret)
+> +		return ret;
 > +
-
-
-> +#define RMI_ABI_MAJOR_VERSION	2
-> +#define RMI_ABI_MINOR_VERSION	0
+> +	virt = alloc_pages_exact(size, gfp);
+> +	if (!virt)
+> +		return -ENOMEM;
+> +	phys = virt_to_phys(virt);
 > +
-> +#define RMI_ABI_VERSION_GET_MAJOR(version) ((version) >> 16)
-
-I'd mask it.  Mostly because that would shout that it is only 15 bits.
-
-> +#define RMI_ABI_VERSION_GET_MINOR(version) ((version) & 0xFFFF)
-> +#define RMI_ABI_VERSION(major, minor)      (((major) << 16) | (minor))
-
-I'd go all in on FIELD_PREP() / FIELD_GET() + GENMASK just for the
-sake of consistency + not having to be careful that everything is
-checked for fit to keep the LLM bots happy.
-
+> +	if (state == RMI_OP_MEM_DELEGATED) {
+> +		phys_addr_t delegated_phys;
 > +
-> +#define RMI_RETURN_STATUS_MASK		GENMASK(7, 0)
-> +#define RMI_RETURN_INDEX_MASK		GENMASK(15, 8)
-> +#define RMI_RETURN_MEMREQ_MASK		GENMASK(9, 8)
-> +#define RMI_RETURN_CAN_CANCEL_MASK	BIT(10)
+> +		if (rmi_delegate_range(phys, size, &delegated_phys)) {
+> +			if (!rmi_undelegate_range(phys, delegated_phys - phys))
+> +				free_pages_exact(virt, size);
+> +			return -ENXIO;
+> +		}
+> +	}
 > +
-> +#define RMI_RETURN_STATUS(ret)		FIELD_GET(RMI_RETURN_STATUS_MASK, ret)
-> +#define RMI_RETURN_INDEX(ret)		FIELD_GET(RMI_RETURN_INDEX_MASK, ret)
-
-What's this one?  I can't find anything in the spec that matches it
-and as far as I can tell you don't use it in this series.
-
-> +#define RMI_RETURN_MEMREQ(ret)		FIELD_GET(RMI_RETURN_MEMREQ_MASK, ret)
-> +#define RMI_RETURN_CAN_CANCEL(ret)	FIELD_GET(RMI_RETURN_CAN_CANCEL_MASK, ret)
-These are obscure enough to find in the spec I'd give a comment just
-to save the sanity of anyone looking for them.
-
-> +/*
-> + * Note many of these fields are smaller than u64 but all fields have u64
-> + * alignment, so use u64 to ensure correct alignment.
-
-Obviously this is only going to run on arm64 so it's not critical, but
-more generally u64s aren't always 64 bit aligned.  So if you 'really'
-care aligned_u64 is there to ensure it.  Meh, arm64 so fine.
-
-> + */
-> +struct rmm_config {
-> +	union { /* 0x0 */
-> +		struct {
-> +			u64 tracking_region_size;
-> +			u64 rmi_granule_size;
-> +		};
-> +		u8 sizer[SZ_4K];
-> +	};
-> +};
+> +	addr_range = phys & RMI_ADDR_RANGE_ADDR_MASK;
+> +	FIELD_MODIFY(RMI_ADDR_RANGE_BLOCK_SIZE_MASK, &addr_range, block_size_fld);
+> +	FIELD_MODIFY(RMI_ADDR_RANGE_COUNT_MASK, &addr_range, count);
+> +	FIELD_MODIFY(RMI_ADDR_RANGE_STATE_MASK, &addr_range, state);
 > +
-> +static_assert(sizeof(struct rmm_config) == SZ_4K);
+> +	sro->addr_list[sro->addr_count] = addr_range;
 > +
-> +#define RMI_REALM_PARAM_FLAG_SVE		BIT(1)
-> +#define RMI_REALM_PARAM_FLAG_PMU		BIT(2)
-> +#define RMI_REALM_PARAM_FLAG_DA			BIT(3)
-> +#define RMI_REALM_PARAM_FLAG_LFA_POLICY		GENMASK(6, 5)
-> +#define RMI_REALM_PARAM_FLAG_MEC_POLICY		GENMASK(8, 7)
+> +out:
 
-Tiny bit inconsistent. When do you decide _MASK is needed and when
-not?  Seems a little too random for multibit fields.
+This doesn't smell like an 'out' - as the real works is done down
+here.
+
+> +	rmi_op_mem_donate(sro_handle,
+> +			  virt_to_phys(&sro->addr_list[sro->addr_count]), 1,
+> +			  0, out_regs);
+> +	donated_granules = out_regs->a1;
 > +
-> +struct rec_params {
-> +	union { /* 0x0 */
-> +		u64 flags;
-> +		u8 padding0[0x100];
-> +	};
-> +	union { /* 0x100 */
-> +		u64 mpidr;
-> +		u8 padding1[0x100];
-> +	};
-> +	union { /* 0x200 */
-> +		u64 pc;
-> +		u8 padding2[0x100];
-> +	};
-> +	union { /* 0x300 */
-> +		u64 gprs[REC_CREATE_NR_GPRS];
-> +		u8 padding3[0xd00];
-> +	};
-> +};
+> +	if (WARN_ON(donated_granules > (size >> PAGE_SHIFT)))
+> +		donated_granules = (size >> PAGE_SHIFT);
 > +
-> +static_assert(sizeof(struct rec_params) == SZ_4K);
-Whilst the assert works and is need to prevent oversized the
-dos never seem to provide any indication of the final trailing
-padding other than indirectly and I don't like maths on Fridays ;).
-Maybe union the inner union set with a u8 [SZ_4K]?
-
+> +	donated_size = donated_granules << PAGE_SHIFT;
 > +
-> +struct rec_exit {
-> +	union { /* 0x000 */
-> +		u8 exit_reason;
-> +		u8 padding0[0x100];
-> +	};
-> +	union { /* 0x100 */
-> +		struct {
-> +			u64 esr;
-> +			u64 far;
-> +			u64 hpfar;
-> +			u64 rtt_tree;
-> +		};
-> +		u8 padding1[0x100];
-> +	};
-> +	union { /* 0x200 */
-> +		u64 gprs[REC_RUN_GPRS];
-> +		u8 padding2[0x100];
-> +	};
-> +	union { /* 0x300 */
-> +		u8 padding3[0x100];
-
-Why does this one exist rather than padding above
-by 0x200?  Other structures don't seem to keep
-to a specific stride so I'm not sure what this gives
-you here.
-
-> +	};
-> +	union { /* 0x400 */
-> +		struct {
-> +			u64 cntp_ctl;
-> +			u64 cntp_cval;
-> +			u64 cntv_ctl;
-> +			u64 cntv_cval;
-> +		};
-> +		u8 padding4[0x100];
-> +	};
-> +	union { /* 0x500 */
-> +		struct {
-> +			u64 ripas_base;
-> +			u64 ripas_top;
-> +			u8 ripas_value;
-> +			u8 padding5[0xf];
-
-In various other places you just use a u64 for a u8
-+ padding. Why is this one special? And for that matter
-various other fields later in this particular structure?
-
-> +			u64 s2ap_base;
-> +			u64 s2ap_top;
-> +			u64 vdev_id_1;
-> +			u64 vdev_id_2;
-> +			u64 dev_mem_base;
-> +			u64 dev_mem_top;
-> +			u64 dev_mem_pa;
-> +		};
-> +		u8 padding6[0x100];
-> +	};
-> +	union { /* 0x600 */
-> +		struct {
-> +			u16 imm;
-> +			u8 padding7[0x6];
-> +			u64 plane;
-> +		};
-> +		u8 padding8[0x100];
-> +	};
-> +	union { /* 0x700 */
-> +		struct {
-> +			u8 pmu_ovf_status;
-> +			u8 padding9[0xf];
-> +			u64 vsmmu;
-> +		};
-> +		u8 padding10[0x100];
-> +	};
-> +};
+> +	/* All granules consumed by the RMM */
+> +	if (donated_size == size)
+> +		return 0;
+> +	/* No granules were consumed by the RMM, cache them */
+> +	if (donated_granules == 0) {
+> +		sro->addr_count++;
+> +		return 0;
+> +	}
 > +
-> +static_assert(sizeof(struct rec_exit) == SZ_2K);
+> +	/* The granules were partially consumed, reclaim the unused ones. */
+> +	free_addr_range(sro->addr_list[sro->addr_count], donated_size);
+> +
+> +	return 0;
+> +}
+> +
+> +static int rmi_sro_donate_noncontig(struct rmi_sro_state *sro,
+> +				    unsigned long sro_handle,
+> +				    unsigned long donatereq,
+> +				    struct arm_smccc_1_2_regs *out_regs,
+> +				    gfp_t gfp)
+> +{
+> +	unsigned long block_size_fld = RMI_DONATE_BLOCK_SIZE(donatereq);
+> +	unsigned long block_size = rmi_addr_block_size_to_bytes(block_size_fld);
+> +	unsigned long count = RMI_DONATE_COUNT(donatereq);
+> +	unsigned long state = RMI_DONATE_STATE(donatereq);
+> +	unsigned long found = 0;
+> +	unsigned long donated_granules;
+> +	unsigned long granules_per_block = block_size >> PAGE_SHIFT;
+> +	unsigned long consumed_blocks;
+> +	int addr_list_start = sro->addr_count;
+> +
+> +	int ret;
+> +
+> +	for (int i = 0; i < addr_list_start && found < count; i++) {
+> +		unsigned long entry = sro->addr_list[i];
+> +
+> +		if (RMI_ADDR_RANGE_BLOCK_SIZE(entry) == block_size_fld &&
+> +		    RMI_ADDR_RANGE_COUNT(entry) == 1 &&
+> +		    RMI_ADDR_RANGE_STATE(entry) == state) {
+> +			addr_list_start--;
+
+I guess putting that as a predecrement in the swap is a little
+too obscure.
+
+Maybe a comment for this whole loop that it is gathering up
+useable entries by moving them to the end of the bit of the
+array that is already in use.  Neat little bit of code but takes a little
+more thinking about than might be ideal when we look at this
+10 years down the line.  Maybe it's just that it is Friday...
+
+> +			swap(sro->addr_list[addr_list_start],
+> +			     sro->addr_list[i]);
+> +			found++;
+> +			i--;
+
+Rather than decrement the loop variable, maybe a goto and a label
+for try_new_entry or something like that?  Even a comment might
+be useful.
+
+> +		}
+> +	}
+> +
+> +	ret = rmi_sro_ensure_capacity(sro, count - found);
+> +	if (ret)
+> +		return ret;
+
+Will this normally succeed? Feels like we could have a lot
+of useless entrees at the start of the storage, so no room to
+enough extra ones.
 
 > +
-> +/* RMI_RTT_UNPROT_MAP_FLAGS definitions */
+> +	while (found < count) {
 
-How this counts as a 'flags' field is slightly beyond me, but
-indeed matches the spec naming even though it's a grab bag
-of small fields...
+For loop seems more natural to me given the bounds are known
+and found is only incremented at the end.
 
-> +#define RMI_RTT_UNPROT_MAP_FLAGS_OADDR_TYPE	GENMASK(1, 0)
-> +#define RMI_RTT_UNPROT_MAP_FLAGS_LIST_COUNT	GENMASK(15, 2)
-> +#define RMI_RTT_UNPROT_MAP_FLAGS_MEMATTR	GENMASK(18, 16)
-> +#define RMI_RTT_UNPROT_MAP_FLAGS_S2AP		GENMASK(22, 19)
+> +		unsigned long addr_range;
+> +		void *virt = alloc_pages_exact(block_size, gfp);
+> +		phys_addr_t phys;
+> +
+> +		if (!virt)
+> +			return -ENOMEM;
+> +
+> +		phys = virt_to_phys(virt);
+> +
+> +		if (state == RMI_OP_MEM_DELEGATED) {
+> +			phys_addr_t delegated_phys;
+> +
+> +			if (rmi_delegate_range(phys, block_size,
+> +					       &delegated_phys)) {
 
-Nothing signficant enough in here to absolutely require changes so
-Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+Go long. It is shorter than the line that follows anyway!
+
+> +				if (!rmi_undelegate_range(phys, delegated_phys - phys))
+> +					free_pages_exact(virt, block_size);
+> +				return -ENXIO;
+> +			}
+> +		}
+> +
+> +		addr_range = phys & RMI_ADDR_RANGE_ADDR_MASK;
+> +		FIELD_MODIFY(RMI_ADDR_RANGE_BLOCK_SIZE_MASK, &addr_range, block_size_fld);
+> +		FIELD_MODIFY(RMI_ADDR_RANGE_COUNT_MASK, &addr_range, 1);
+> +		FIELD_MODIFY(RMI_ADDR_RANGE_STATE_MASK, &addr_range, state);
+> +
+> +		sro->addr_list[sro->addr_count++] = addr_range;
+> +		found++;
+> +	}
+> +
+> +	rmi_op_mem_donate(sro_handle,
+> +			  virt_to_phys(&sro->addr_list[addr_list_start]),
+> +			  count, 0, out_regs);
+> +
+> +	donated_granules = out_regs->a1;
+> +	/*
+> +	 * The RMM shouldn't report more granules than we provided, but clamp
+> +	 * just in case.
+> +	 */
+> +	if (WARN_ON_ONCE(donated_granules > found * granules_per_block))
+> +		donated_granules = count * granules_per_block;
+> +
+> +	/*
+> +	 * The RMM reports the consumed memory in terms of granules, but we
+> +	 * track in the address lists in block-sized ranges. So divide to get
+> +	 * the number of (complete) consumed blocks.
+> +	 */
+> +	consumed_blocks = donated_granules / granules_per_block;
+> +	if (donated_granules % granules_per_block) {
+> +		/*
+> +		 * A block has been partially consumed, the start is owned by
+> +		 * the RMM, the tail is owned by the host
+> +		 */
+> +		unsigned long entry =
+> +			sro->addr_list[addr_list_start + consumed_blocks];
+> +		unsigned long donated_size =
+> +			(donated_granules % granules_per_block) << PAGE_SHIFT;
+> +
+> +		free_addr_range(entry, donated_size);
+> +		/*
+> +		 * This block is now fully 'consumed' (either held by the RMM or
+> +		 * freed)
+> +		 */
+> +		consumed_blocks++;
+> +	}
+> +
+> +	/* Keep just the blocks the RMM didn't use in addr_list */
+> +	for (int i = consumed_blocks; i < count; i++)
+> +		sro->addr_list[addr_list_start + i - consumed_blocks] =
+> +			sro->addr_list[addr_list_start + i];
+
+Maybe memmove to make it clear you are shifting a chunk of the array
+down.  This might be worth some asci art showing each step in brief.
+Anyhow, something along these lines:
+
+      memmove(&sro->addr_list[addr_list_start],
+	      &sro->addr_list[addr_list_start + consumed_blocks],
+	      (count - consumed_blocks) * sizeof(*sro->addr_list));
+
+Obviously doesn't save code, but maybe simpler to understand than
+the loop.
+		
+> +
+> +	sro->addr_count -= consumed_blocks;
+> +
+> +	return 0;
+> +}
+> +
+> +static int rmi_sro_donate(struct rmi_sro_state *sro,
+> +			  unsigned long sro_handle,
+> +			  unsigned long donatereq,
+> +			  struct arm_smccc_1_2_regs *regs,
+> +			  gfp_t gfp)
+> +{
+> +	if (WARN_ON_ONCE(!RMI_DONATE_COUNT(donatereq)))
+> +		return -EINVAL;
+> +
+> +	if (RMI_DONATE_CONTIG(donatereq) == RMI_OP_MEM_CONTIG) {
+> +		return rmi_sro_donate_contig(sro, sro_handle, donatereq,
+> +					     regs, gfp);
+> +	} else {
+> +		return rmi_sro_donate_noncontig(sro, sro_handle, donatereq,
+> +						regs, gfp);
+> +	}
+
+I'd go longer than 80 chars in a few places to help
+readability. Up to you.
+
+> +}
+> +
+> +static int rmi_sro_reclaim(struct rmi_sro_state *sro,
+> +			   unsigned long sro_handle,
+> +			   struct arm_smccc_1_2_regs *out_regs)
+> +{
+> +	unsigned long capacity;
+> +
+> +	if (rmi_sro_ensure_capacity(sro, 1))
+> +		rmi_sro_free(sro);
+
+Maybe a comment on why you free the whole lot rather than a smaller
+amount to make some room.
+
+> +
+> +	capacity = RMI_MAX_ADDR_LIST - sro->addr_count;
+> +
+> +	rmi_op_mem_reclaim(sro_handle,
+> +			   virt_to_phys(&sro->addr_list[sro->addr_count]),
+> +			   capacity, out_regs);
+> +
+> +	/*
+> +	  * RMI_OP_MEM_RECLAIM always return RMI_INCOMPLETE, except when the
+> +	  * input parameters were invalid.
+> +	  */
+> +	if (WARN_ON_ONCE(RMI_RETURN_STATUS(out_regs->a0) != RMI_INCOMPLETE))
+> +		return -EINVAL;
+> +	if (WARN_ON_ONCE(out_regs->a1 > capacity))
+> +		out_regs->a1 = capacity;
+I guess this should never happen, but bit ugly to fixup the register
+return rather than perhaps using a local variable instead.
+Obviously doesn't matter in practice.
+
+> +	sro->addr_count += out_regs->a1;
+> +
+> +	return 0;
+> +}
+
+> +
+> +/* For RMI commands that are stateful but not memory-transferring */
+
+Given this is exported, maybe some docs on return values etc?
+Similar for the other exported funcitons.
+
+> +long rmi_sro_execute(struct arm_smccc_1_2_regs *regs)
+> +{
+> +	bool cancelled = false;
+> +	unsigned long sro_handle = regs->a1;
+> +
+> +	rmi_smccc_invoke(regs);
+> +
+> +	sro_handle = regs->a1;
+> +	while (RMI_RETURN_STATUS(regs->a0) == RMI_INCOMPLETE) {
+> +		bool can_cancel = RMI_RETURN_CAN_CANCEL(regs->a0) == RMI_OP_CAN_CANCEL;
+> +
+> +		switch (RMI_RETURN_MEMREQ(regs->a0)) {
+> +		case RMI_OP_MEM_REQ_NONE:
+> +			rmi_op_continue(sro_handle, RMI_CONTINUE_KEEP_GOING,
+> +					regs);
+> +			break;
+> +		default:
+> +			WARN_ON_ONCE(1);
+> +			if (!can_cancel)
+> +				return regs->a0;
+> +			/* If we have already cancelled, don't retry this */
+
+Maybe expand that comment a little to say if we can get here under a
+valid sequence and if so are we guaranteed that cancel is complete
+given that is what caller will probably expect if it gets -ECANCELED.
+
+My reading of spec would suggest we can't hit this path for the
+calls that are not memory tranferring. Then again we can't hit the
+first cancel either so all bets are off.  So maybe this is the
+bet we can do.  Also can_cancel shouldn't be true after
+rmi_op_cancel() as I assume you can't cancel a cancel.
 
 -- 
 Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
