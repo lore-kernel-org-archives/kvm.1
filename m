@@ -1,341 +1,253 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C723B2FD0;
-	Sat, 19 Sep 2026 09:03:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147C33B2D39;
+	Sat, 19 Sep 2026 09:22:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789808608; cv=none; b=HE0luKfpbio2rbMejuSF6x7WAJtvFtCz++dAq2oehWelcrXAfb99oLAmu4IJJe0Yvu0XYDFjatbuwMKK2ZjmoHdpkO4MJeSJoGhQERFHPhff96gbTxTivTuZZ2B7HrYh06KsdQc1gcmSP8zRVJPiSU/4eBfB+rusmSHYct95dik=
+	t=1789809775; cv=none; b=RxSSElwBg4F1WCiKzZRuAzrFcqqFgow59MvS+YZOrQqhzAg/M+GALlx88uzLDlo0jUjTAx/4LSNxXwzUBGGvTvJaDDCX+jkf5Ep3buT5PSlIBRpmw72ms9de71R71ED5bjg80vC44+8/FxfcVpj7TH1XosEwoVadnQf6uwxkmuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789808608; c=relaxed/simple;
-	bh=NO+4R7SbqN+dUwxldmKJ//Hf+GSLWh3xtK42EBA8TnE=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=VnxbKerd70HNTcbG7lTM0PjUZy1BaHJEDkcFVprN/4gHm3LZaOhrkGgmkOd9CdSmwOC0qQTCKycytmZgR1E28xs8gWKwnJqjJu3VRwttrxmAa2zdR6jGHQs0mEbDYX72DWONZ0YxpHWUO43EBpoDWMpcEhCOigQ2FKuQ9WO2xfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ibm.com; spf=pass smtp.mailfrom=ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=fKmO1RSb; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ibm.com
+	s=arc-20240116; t=1789809775; c=relaxed/simple;
+	bh=s0Q9Jr7Ajsxct8ZN+S1ktDBZtevCFOzsYwmtNormGOg=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jbJ43ZA5/j1nfeG6YCWB+Ax7Ha/Gc6LCnYn4s2+Bw6v4ksO1PFRoTfOBQDzmtJXHEllfvlTRAlGlYXAEBTx8Qm1eam4LVnmqF5N7Wja4enszZw7sDQesRQK3x+yPeP3NodSbantGNAZsZsik5VV+tK3l8aSF1ZqyHzIb+AeD49g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=moAckOx/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="fKmO1RSb"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68J75kGw2314674;
-	Sat, 19 Sep 2026 09:03:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=nwstIV
-	pgPU5fGdnMm71IxbWqi0Y0oEWw+0hRDoe6eu8=; b=fKmO1RSbiGipvzt+wNl56D
-	iKMNJKIQb5cGyjeoR1Tk8qRkFPvnV39F3e6ZgNIcNuPVEF2wzO0/DIRa9wTISUlF
-	l0jD1Fpfk9hD48uWQMYHa5bb6n7+Sl57iyuMTQiKGIhr0Gg47LhHpeo1NZ2A6LZm
-	U6RBSb++BwCa1eas5tjYqDZ0h2+4g9ea3wMrJ4+zFOQPhGjtmkSPQRQCYYMF83nu
-	R69Zq3rSw1kUmhEoTenulrAtQrh0bVXyyf9kzQiq64IAnN7EqS2R3doIptwu66Qw
-	5KJvy+dDTilUMc8YLJlHTyAyA4Ff4xmT6XqwLA2+G8wHZtaBq6B06/uqSjIiev1g
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskgq0ms7-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sat, 19 Sep 2026 09:03:10 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68J6lUAJ1933827;
-	Sat, 19 Sep 2026 09:03:10 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gsjym0s61-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 19 Sep 2026 09:03:10 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68J939tH59245052
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 19 Sep 2026 09:03:09 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E817858059;
-	Sat, 19 Sep 2026 09:03:08 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5D68158058;
-	Sat, 19 Sep 2026 09:03:04 +0000 (GMT)
-Received: from [9.61.240.148] (unknown [9.61.240.148])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
-	Sat, 19 Sep 2026 09:03:04 +0000 (GMT)
-Message-ID: <0d3d7fe2-deda-4caa-8237-f8f4efc6483b@ibm.com>
-Date: Sat, 19 Sep 2026 14:33:01 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="moAckOx/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9801F000FF;
+	Sat, 19 Sep 2026 09:22:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789809773;
+	bh=p2++DSH7qzxPkUFh8j6R7Yh1w31wukoOyoqI9yjfdzM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=moAckOx/BPVEJ1RzH3Y4pPsnwzsAWrGRbxm3lk29vHVa/fqmDMYCpF8+laeQ8Fiqm
+	 vJhorci6+huPu6TpBGzoelksDEEX/IQiY0dRJ0mKPS8vlQ/rAh0mISFmMwPMe8fkf1
+	 VoCJfmw5k5d/ljYIKnyFd/KA8OvSz+JnXAT/Mfq4+z/EkVjnzbktETwTRcTKJDyUeL
+	 qmOr6mQ+wNCd2qyZnDppyIokInddhCdc52KGjbvXGaA4q4msaibojUzdBfB+kvBbj6
+	 eqmb2BzIbv7iOmAHMreAvi62AE1MhsBlYOLjxCeddTeWJ5Igubyss5hwZ4xz0RXamk
+	 5cGYpvHhLpGjg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1x7rHX-0000000AvKU-1Eeq;
+	Sat, 19 Sep 2026 09:22:51 +0000
+Date: Sat, 19 Sep 2026 10:25:57 +0100
+Message-ID: <87h5jl4moq.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Sascha Bischoff <Sascha.Bischoff@arm.com>
+Cc: "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	nd <nd@arm.com>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+	Joey Gouly
+	<Joey.Gouly@arm.com>,
+	Suzuki Poulose <Suzuki.Poulose@arm.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"peter.maydell@linaro.org"
+	<peter.maydell@linaro.org>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	Timothy Hayes <Timothy.Hayes@arm.com>,
+	"fuad.tabba@linux.dev"
+	<fuad.tabba@linux.dev>
+Subject: Re: [PATCH v6 09/49] KVM: arm64: gic-v5: Create and manage VM and VPE tables
+In-Reply-To: <20260904113404.4051341-10-sascha.bischoff@arm.com>
+References: <20260904113404.4051341-1-sascha.bischoff@arm.com>
+	<20260904113404.4051341-10-sascha.bischoff@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/3] KVM: selftests: add powerpc support
-From: Anushree Mathur <anushree.mathur2@ibm.com>
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, kvm@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Christophe Leroy <chleroy@kernel.org>,
-        Anushree Mathur <anushree.mathur@linux.ibm.com>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Shrikanth Hegde <sshegde@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org
-References: <cover.1789097569.git.ritesh.list@gmail.com>
- <edbbfb46-53c7-4fc2-b9ea-c0676479fc47@ibm.com>
-Content-Language: en-US
-In-Reply-To: <edbbfb46-53c7-4fc2-b9ea-c0676479fc47@ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=G+OJgNk5 c=1 sm=1 tr=0 ts=6aae4fcf cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=1XWaLZrsAAAA:8 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=Peq01IYdYfpa89gBVw0A:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE5MDEyMiBTYWx0ZWRfXxi1yy4rvAVBm
- 093bcaJtyBIFgim24urK0NOwi6okzOxy/SK37HqmGS8OTaNuvz7LcQd6DjYZuB1NehrBmATs+kr
- yDGUS7bS3zCpGLWWMxLCWRIvDptyZwpDDM8T3kDqbUJObXfD+ALkBUMTITIMUldV28PCNlcyIyc
- 4NSJU119/ninF8uId6uv55eyuJG5ipPiuJIIiv+exaPuqNMc1QrcU7ZdgzR+tmpM8lIWw9/R7tM
- gIhkIk5UtI2if+1RJtrxUJiu2L24kWFnOLbcscT/S6G+L0ZW6HgR6rUXZYN6v9R11omqMPOBDM/
- WmZBTtvaRtW5Vb/mtFBTJ4CG/ErWdg0fPjAyUj/9iAmpa351Yf7wYzo8a8O7c+bu+VFrgjahKdI
- ROent5ZrYvSKMp4H2M3ErhLVS4mw6NdLwhspSMW1NCC8sOp+KKm3X1PPWMSWPLP7AtsA9wVMkYX
- o/mliV3xo67ZWQVkj2g==
-X-Proofpoint-ORIG-GUID: 5xLPe1jobdVw3JyHLTxTgRszxWpaiI7J
-X-Proofpoint-GUID: N2YXDqDQKrpKiJ1o_KKNEktCUtXw_sFR
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE5MDEyMiBTYWx0ZWRfX44cc/bplIYPT
- O8ODgu/9G/CljxsUWKSWb6aIdDIMyzmys35Jjm/5je2wXHfZJ/Dtd8maTOx9FK6d0buNRO6WDGd
- 07W5t0+7ixHjTAqZWqkTe/eFLmPFosU=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-19_02,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0
- bulkscore=0 priorityscore=1501 clxscore=1011 spamscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609190122
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com, fuad.tabba@linux.dev
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+
+On Fri, 04 Sep 2026 12:38:51 +0100,
+Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
+> 
+> GICv5 uses a set of in-memory tables to track and manage VM state.
+> These must be allocated by the hypervisor and provided to the IRS.
+> 
+> The VMT (Virtual Machine Table) is a linear or two-level table
+> comprising VMT Entries (VMTEs). Each VMTE describes the state for a
+> single VM. This state includes things such as the SPI and LPI IST
+> configuration (coming in a future commit), an implementation-defined
+> VM Descriptor, and a VPE Table (VPET).
+> 
+> The VPET contains one entry per possible VPE ID belonging to a VM. It
+> is used to mark a VPE as valid and provide the address of an
+> implementation-defined VPE Descriptor (VPED), which the hardware uses
+> to track and manage VPE state.
+> 
+> Allocate each VM's VPEDs as a single dense array indexed by vcpu_idx,
+> while the VPET remains indexed by the userspace-provided vcpu_id. This
+> keeps VPED storage proportional to the number of vCPUs even when their
+> IDs are sparse.
+> 
+> The VMT and VPET are shared with the IRS. On systems with a
+> non-coherent IRS, cache maintenance operates at cache-line
+> granularity, while multiple entries can occupy the same cache line.
+> Use a common lock for CPU accesses to these tables and IRS command
+> processing so that writing back one entry cannot overwrite an IRS
+> update to a neighbouring entry.
+> 
+> The implementation-defined VMD and VPED storage is also visible to the
+> IRS. Round these allocations up to whole cache lines to prevent cache
+> maintenance from corrupting unrelated slab objects. Initialise the
+> storage before publishing its addresses to the IRS.
+> 
+> This commit adds support for allocating the VMT and its descriptor
+> backing state, and for managing VMTEs. The VMTEs can be initialised or
+> released for reuse. VM IDs are allocated with an IDA, while an XArray
+> tracks the host-side allocations associated with populated VMTEs.
+> 
+> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+> ---
+>  arch/arm64/kvm/Makefile              |   2 +-
+>  arch/arm64/kvm/vgic/vgic-init.c      |   2 +
+>  arch/arm64/kvm/vgic/vgic-v5-tables.c | 681 +++++++++++++++++++++++++++
+>  arch/arm64/kvm/vgic/vgic-v5-tables.h | 100 ++++
+>  arch/arm64/kvm/vgic/vgic-v5.c        |  19 +
+>  drivers/irqchip/irq-gic-v5-irs.c     |  12 +-
+>  include/kvm/arm_vgic.h               |   4 +
+>  include/linux/irqchip/arm-gic-v5.h   |  14 +-
+>  8 files changed, 824 insertions(+), 10 deletions(-)
+>  create mode 100644 arch/arm64/kvm/vgic/vgic-v5-tables.c
+>  create mode 100644 arch/arm64/kvm/vgic/vgic-v5-tables.h
+> 
+
+[...]
+
+The lkp bot is reporting some interesting issues in
+202609190650.liMAzwjF-lkp@intel.com:
+
+> +	/* Allocate and assign the VM Descriptor, if required. */
+> +	if (vmt_info->vmd_size != 0) {
+> +		vmd_alloc_size = round_up(vmt_info->vmd_size,
+> +					  dma_get_cache_alignment());
+> +		vmd = kzalloc(vmd_alloc_size, GFP_KERNEL);
+> +		if (!vmd) {
+> +			ret = -ENOMEM;
+> +			goto out_fail;
+> +		}
+> +
+> +		/* Stash the VA so we can free it later */
+> +		vmi->vmd_base = vmd;
+
+The VMD is dynamically allocated.
+
+> +
+> +		tmp = FIELD_PREP(GICV5_VMTEL2E_VMD_ADDR,
+> +				 virt_to_phys(vmd) >> GICV5_VMTEL2E_VMD_ADDR_SHIFT);
+> +		vmte_val0 = tmp;
+> +	}
+> +
+> +	/*
+> +	 * Allocate and assign the VPE Table.
+> +	 *
+> +	 * First of all, iterate over all vcpus to find the highest VPE ID we
+> +	 * require - we need to ensure that we have enough storage for all
+> +	 * vcpu_id values that userspace has picked and not just the total
+> +	 * number of vcpus. This gives us the number of VPEs required for the
+> +	 * VM.
+> +	 *
+> +	 * Round up the number of VPEs to a whole power of two as we cannot
+> +	 * describe non-powers-of-two in the VMTE field as it conveys the number
+> +	 * of ID bits used and not the number of vPEs. IRS_IDR1.IAFFID_BITS is
+> +	 * encoded as N - 1, so expose at least one VPE ID bit even for a
+> +	 * single-vCPU VM to keep the views consistent.
+> +	 */
+> +	kvm_for_each_vcpu(i, vcpu, kvm) {
+> +		u16 vpe_id = vgic_v5_vpe_id(vcpu);
+> +
+> +		if (vpe_id > max_vpe_id)
+> +			max_vpe_id = vpe_id;
+> +	}
+> +
+> +	nr_cpus = max(2UL, roundup_pow_of_two(max_vpe_id + 1));
+> +	vmi->vpe_id_bits = fls(nr_cpus) - 1;
+> +
+> +	vpet_alloc_size = round_up((size_t)nr_cpus * sizeof(*vpet),
+> +				   dma_get_cache_alignment());
+> +	vpet = kzalloc(vpet_alloc_size, GFP_KERNEL);
+> +	if (!vpet) {
+> +		ret = -ENOMEM;
+> +		goto out_fail;
+> +	}
+> +
+> +	/* Stash the VA so we can free it later */
+> +	vmi->vpet_base = vpet;
+
+and so is the VPET.
+
+[...]
+
+> diff --git a/arch/arm64/kvm/vgic/vgic-v5-tables.h b/arch/arm64/kvm/vgic/vgic-v5-tables.h
+> new file mode 100644
+> index 0000000000000..962be0c7cd3f6
+> --- /dev/null
+> +++ b/arch/arm64/kvm/vgic/vgic-v5-tables.h
+> @@ -0,0 +1,100 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * Copyright (C) 2025, 2026 Arm Ltd.
+> + */
+> +
+> +#ifndef __KVM_ARM_VGICV5_TABLES_H__
+> +#define __KVM_ARM_VGICV5_TABLES_H__
+> +
+> +#include <linux/spinlock.h>
+> +#include <linux/idr.h>
+> +#include <linux/irqchip/arm-gic-v5.h>
+> +
+> +/* Level 1 Virtual Machine Table Entry */
+> +typedef __le64 vmtl1_entry;
+> +
+> +/* Level 2 Virtual Machine Table Entry */
+> +struct vmtl2_entry {
+> +	__le64 val[4];
+> +};
+> +
+> +/* Virtual PE Table Entry */
+> +typedef __le64 vpe_entry;
+> +
+> +struct vgic_v5_vm_info {
+> +	void __iomem		*vmd_base;
+> +	vpe_entry __iomem	*vpet_base;
+
+But pointers to allocated memory cannot be __iomem, as this qualifies
+MMIO registers.
+
+I'll queue the change below on top.
+
+	M.
+
+diff --git a/arch/arm64/kvm/vgic/vgic-v5-tables.h b/arch/arm64/kvm/vgic/vgic-v5-tables.h
+index b2ffbe68c05b4..89096926563f7 100644
+--- a/arch/arm64/kvm/vgic/vgic-v5-tables.h
++++ b/arch/arm64/kvm/vgic/vgic-v5-tables.h
+@@ -23,8 +23,8 @@ struct vmtl2_entry {
+ typedef __le64 vpe_entry;
+ 
+ struct vgic_v5_vm_info {
+-	void __iomem		*vmd_base;
+-	vpe_entry __iomem	*vpet_base;
++	void			*vmd_base;
++	vpe_entry		*vpet_base;
+ 	void			*vped_base;
+ 	u8			vpe_id_bits;
+ 
 
 
-On 19/09/26 2:29 PM, Anushree Mathur wrote:
->
-> On 11/09/26 10:18 AM, Ritesh Harjani (IBM) wrote:
->> PATCH v3 -> PATCH v4:
->> ==================
->> - Rebased on top of Sean's new page allocator patch series v2 [1]
->>    This allowed to drop and patch-2 since it will now come from Sean's
->>    v2.
->> - Addressed review comments from Sean - squashed patches 6-10 in 
->> patch-1 of
->>    this.
->> - Dropped patch-5 to print vcpu_id when KVM_CREATE_VCPU ioctl fails.
->> - Added additional patch-3 to this series to allow dirty_log_test to 
->> run on all
->>    big-endian machines.
->>
->> [1]: 
->> https://lore.kernel.org/kvm/20260902164123.2546762-1-seanjc@google.com/
->> [v3]: 
->> https://lore.kernel.org/linuxppc-dev/2d2c46be7f051c7f1c645afaec67f57067d37a81.1781093720.git.ritesh.list@gmail.com/
->>
->> Testing updates:
->> ================
->> I have done some fair amount of testing of the selftests both on real 
->> HW and
->> using various combinations on qemu (powernv+LE (default), 
->> pseries+cap-nested-hv,
->> pseries+cap-nested-papr, powernv+BE). There were few powerpc kvm 
->> kernel fixes
->> which were identified as part of this work. I will send those patches 
->> separately
->> as those anyway needs to go in separately.
->>
->> <pasted snippet of cover letter from previous versions>
->> =======================================================
->>
->> Hi All,
->>
->> This series primarly adds KVM selftests support for powerpc (64-bit, 
->> BookS,
->> radix MMU).
->>
->> This patch series is originally Nick's work. I have mainly only 
->> rebased it on
->> the latest upstream tree. Since the rebase required few changes to 
->> all the four
->> patches (Patch 1-4), I have dropped the earlier Acked-by from Michael 
->> Ellerman.
->>
->> Since the last series was posted three years ago [1], I am resetting 
->> the version
->> to RFC. This rebase was done as part of a larger effort to improve 
->> the selftests
->> infrastructure for Linux on PowerPC tree. Thanks to Harsh and Maddy 
->> for their
->> help on this.
->>
->> Nicholas Piggin (1):
->>    KVM: PPC: selftests: add support for powerpc
->>
->> Ritesh Harjani (IBM) (2):
->>    KVM: PPC: selftests: powerpc enable kvm_create_max_vcpus test
->>    KVM: selftests: Use LE bitops for dirty bitmaps on all big-endian
->>      hosts
->>
->>   MAINTAINERS                                   |   2 +
->>   tools/testing/selftests/kvm/Makefile          |   2 +-
->>   tools/testing/selftests/kvm/Makefile.kvm      |  10 +
->>   tools/testing/selftests/kvm/dirty_log_test.c  |  12 +-
->>   .../testing/selftests/kvm/include/kvm_util.h  |   9 +
->>   .../selftests/kvm/include/powerpc/hcall.h     |  17 +
->>   .../kvm/include/powerpc/kvm_util_arch.h       |  22 +
->>   .../selftests/kvm/include/powerpc/ppc_asm.h   |  32 ++
->>   .../selftests/kvm/include/powerpc/processor.h |  39 ++
->>   .../selftests/kvm/include/powerpc/ucall.h     |  21 +
->>   .../selftests/kvm/kvm_create_max_vcpus.c      |   8 +-
->>   tools/testing/selftests/kvm/lib/guest_modes.c |  20 +-
->>   tools/testing/selftests/kvm/lib/kvm_util.c    |   8 +
->>   .../selftests/kvm/lib/powerpc/handlers.S      |  93 ++++
->>   .../testing/selftests/kvm/lib/powerpc/hcall.c |  45 ++
->>   .../selftests/kvm/lib/powerpc/processor.c     | 512 ++++++++++++++++++
->>   .../testing/selftests/kvm/lib/powerpc/ucall.c |  22 +
->>   17 files changed, 862 insertions(+), 12 deletions(-)
->>   create mode 100644 tools/testing/selftests/kvm/include/powerpc/hcall.h
->>   create mode 100644 
->> tools/testing/selftests/kvm/include/powerpc/kvm_util_arch.h
->>   create mode 100644 
->> tools/testing/selftests/kvm/include/powerpc/ppc_asm.h
->>   create mode 100644 
->> tools/testing/selftests/kvm/include/powerpc/processor.h
->>   create mode 100644 tools/testing/selftests/kvm/include/powerpc/ucall.h
->>   create mode 100644 tools/testing/selftests/kvm/lib/powerpc/handlers.S
->>   create mode 100644 tools/testing/selftests/kvm/lib/powerpc/hcall.c
->>   create mode 100644 tools/testing/selftests/kvm/lib/powerpc/processor.c
->>   create mode 100644 tools/testing/selftests/kvm/lib/powerpc/ucall.c
->>
->> -- 
->> 2.39.5
->>
-> Hi Ritesh,
-> Thanks for working on this enablement. I have tested kvm selftests 
-> after applying this patch on top of Sean's patch as mentioned and even 
-> I applied this patch for the kvm_create_max_vcpus issue as rc=-56 
-> "https://lore.kernel.org/linuxppc-dev/cover.1789099725.git.ritesh.list@gmail.com/" 
-> But still few tests got failed. Providing a summary below:
->
-> System details where I tested this : PowerVM P11 (ppc64le) KVM enabled 
-> lpar!
->
-> Test Results:
-> =============
->
-> PASS: demand_paging_test
-> PASS: dirty_log_test (dirty-log mode, 4K + 64K pages, 32 iterations)
-> PASS: guest_print_test
-> PASS: kvm_binary_stats_test (4/4 subtests)
-> PASS: kvm_page_table_test (4K + 64K pages)
-> PASS: set_memory_region_test
-> PASS: memslot_modification_stress_test (4K + 64K pages)
-> PASS: memslot_perf_test
-> PASS: dirty_log_perf_test (4K + 64K pages)
->
-> SKIP: irqfd_test
->   - kvm_arch_has_default_irqchip() not yet implemented for PowerPC
->
-> SKIP: vm_types_test
->   - KVM_CAP_VM_TYPES not supported on PowerPC
->
-> Failures seen for the following tests
->
-> FAIL: kvm_create_max_vcpus
->   - RFC patch-3 partially helps: KVM_CAP_MAX_VCPU_ID correctly
->     capped from 16384 to 2048.
->   - But vCPU creation still fails with rc=-44 below the 2048 limit.
->   - dmesg: KVM: Create Guest vcpu hcall failed, rc=-44
->
-> for the above test in dmesg I saw the following error everytime I ran 
-> this test
->
-> dmesg -w
-> [ 2640.213798] KVM: Create Guest vcpu hcall failed, rc=-44
-> [ 2923.048989] KVM: Create Guest hcall failed, rc=-44
-> [ 3650.642771] KVM: Create Guest vcpu hcall failed, rc=-44
->
-> FAIL: hardware_disable_test
->   - KVM_CREATE_VM fails with ENOMEM
->   - dmesg: KVM: Create Guest vcpu hcall failed, rc=-44
->   - Likely the same underlying hcall issue as kvm_create_max_vcpus.
->
-> FAIL: access_tracking_perf_test
->   - Too many idle pages (245385 out of 262144)
->   - errno=4 (Interrupted system call)
->   - page_idle tracking may not be fully supported on PowerPC yet.
->
->
-> I believe these issues might be real kernel issue. If you plan to send 
-> fixed please feel free to add my Reported-by:
->
-> Reported-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
->
-> Thank you,
-> Anushree Mathur 
-
-Here are some more detailed logs for the Failed selftests:
-
-./kvm_create_max_vcpus
-Random seed: 0x62af7ca
-KVM_CAP_MAX_VCPU_ID: 2048
-KVM_CAP_MAX_VCPUS: 2048
-Testing creating 2048 vCPUs, with IDs 0...2047.
-
-==== Test Assertion Failure ====
-   lib/kvm_util.c:1388: vcpu->fd >= 0
-   pid=3808 tid=3808 errno=12 - Cannot allocate memory
-      1    0x0000000010008667: __vm_vcpu_add at kvm_util.c:1388 
-(discriminator 18)
-      2    0x0000000010004093: test_vcpu_creation at 
-kvm_create_max_vcpus.c:32
-      3    0x0000000010003c93: main at kvm_create_max_vcpus.c:59
-      4    0x00007fffae42b4fb: ?? ??:0
-      5    0x00007fffae42b77b: ?? ??:0
-   KVM_CREATE_VCPU failed, rc: -1 errno: 12 (Cannot allocate memory)
-
-
-./hardware_disable_test
-Random seed: 0x7c401041
-
-==== Test Assertion Failure ====
-   lib/kvm_util.c:193: vm->fd >= 0
-   pid=5544 tid=5544 errno=12 - Cannot allocate memory
-      1    0x00000000100069cb: vm_open at kvm_util.c:193 (discriminator 3)
-      2    0x000000001000b95f: ____vm_create at kvm_util.c:404
-      3    0x000000001000c403: __vm_create at kvm_util.c:513
-      4    0x0000000010004037: vm_create at kvm_util.h:1126
-      5     (inlined by) run_test at hardware_disable_test.c:78
-      6     (inlined by) main at hardware_disable_test.c:148
-      7    0x00007fff95c2b4fb: ?? ??:0
-      8    0x00007fff95c2b77b: ?? ??:0
-   KVM_CREATE_VM failed, rc: -1 errno: 12 (Cannot allocate memory)
-
-./access_tracking_perf_test
-Random seed: 0x50130229
-lru_gen: Could not open /sys/kernel/mm/lru_gen/enabled
-Using page_idle for aging
-Testing guest mode: PA-bits:52,  VA-bits:52,  4K pages
-guest physical test memory: [0xfffffbfff0000, 0xfffffffff0000)
-
-Populating memory             : 0.324930580s
-Writing to populated memory   : 0.007850148s
-Reading from populated memory : 0.008390886s
-
-==== Test Assertion Failure ====
-   access_tracking_perf_test.c:164: idle_pages_warn_only
-   pid=5558 tid=5560 errno=4 - Interrupted system call
-      1    0x0000000010004cdf: too_many_idle_pages at 
-access_tracking_perf_test.c:164
-      2     (inlined by) pageidle_mark_vcpu_memory_idle at 
-access_tracking_perf_test.c:229
-      3     (inlined by) vcpu_thread_main at access_tracking_perf_test.c:339
-      4    0x000000001000f5f7: vcpu_thread_main at memstress.c:277
-      5    0x00007fff822b8063: ?? ??:0
-   vCPU0: Too many pages still idle (245400 out of 262144)
-
-Thank you,
-Anushree Mathur
-
+-- 
+Jazz isn't dead. It just smells funny.
