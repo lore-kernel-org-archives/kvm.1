@@ -1,193 +1,175 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4591E361958
-	for <kvm@vger.kernel.org>; Sat, 19 Sep 2026 15:59:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0D23603FB;
+	Sat, 19 Sep 2026 18:33:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789833583; cv=none; b=JK8loGHxkuAvfsHJ20BQcBVeCFUPEmGVz2DfOJSTskNbF3Cl7mEN+WS+bLb1NAwp1G+OO72MDE11hsC9eCNPU0Z/R1Dll7X0hLxUvA21PgG7ixpcIWTl97W4YAbJESIn7xJNYuPli8qaU4bcYYK40j4MGsylp7vhd2p0cJXEPXA=
+	t=1789842827; cv=none; b=auK/dZ95HzEtzX5EdLUK0AdthW19vYmkv6gEBKXwI3LzDB80VAtfPe8qe1kf4EpFze/8P0TutsWOl8vOAwclMOFOeegIjGlz6KLqeHEWqQHu0qoPxFX7bWQPC3OiJrvT3RCCWYfAxaPFRmHGpZG/v6lsHW9vsbAodoSL2iMWnco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789833583; c=relaxed/simple;
-	bh=PsWGovfCWgSGuGwy3uZeV6xNTGPEJ0BbxBzEu7nWu+s=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OJE0Bk3sAFstdMHcWcvS7mzvj2oa2OsfmlDsc4BuCaGkvJPaISRO8IEl3+d5SW65jCAYv8ev1nwAricO+GxMOXVTbUIEnED1w6Cf24jpmqBESwCtssPNoYRg5105jNaBDYwkfMUMEhnskEcH6KWnAfkuohjMenm1UnZKKCGg7yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=BzblwuOs; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1789842827; c=relaxed/simple;
+	bh=Sy3grNUZpsuPuSaITZoBHZy5+06ixfUU2LxIcJOYwoA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=FW3f3CooiJctYZvoignK1WEx+WMYykaTu/XFmic74rXk0ptbcgrsCJ5mGkHFVgRxrvjvOY1+dzA8S7FkUAtKnI1DK3zofigQNjRDpanmHsAAvONq3y1dvaA5D+ZC96kJb1zOvF6tbUup/8oIzsC6ZdzIaYzv1mtCZsFAADK1qe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GfPS4prm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="BzblwuOs"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=PsWGovfCWgSGuGwy3uZeV6xNTGPEJ0BbxBzEu7nWu+s=; b=BzblwuOsh9rxnmUp1/yMkQop/A
-	xWRIjyI5/sKbmn2XlF+a+ipYqE1mk2SOATAPOhvPJTEuPPo/Z7bCLpL6561+KL32Ho8yG+rOZ5ua4
-	08RSlG6tDi4DmZy1bVoNZqjOmwLUZoLyi4tjdTgqxrujDQqZfbgDSuS+xnLJukHaryLUTYXYWNInD
-	RolejCDItcJiKoflc1EDyO/fkiEZ7DaTE4kuTPJHMBtPhGnd+cLNrK0SbiUiC4kVwJxgVd4azp884
-	YfUJRALbf6FYti7DQMTNtpcEWzXZgST6vo7wqHJqfrqd3ZVJptsenZRiNZ1XvQWa9vHaErJ0R1xO/
-	oMC0mn/A==;
-Received: from [2001:8b0:10b:5:5e22:f122:acda:40c5] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x7xTR-0000000GeAd-23St;
-	Sat, 19 Sep 2026 15:59:34 +0000
-Message-ID: <17a5d6bb0de1e5a7f35b90e1bd0f2f0e5cf6cf58.camel@infradead.org>
-Subject: Re: [PATCH] KVM: optionally post write on ioeventfd write
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>, Thanos Makatos
-	 <thanos.makatos@nutanix.com>
-Cc: Ilias Stamatis <ilstam@amazon.com>, Paul Durrant <paul@xen.org>, 
- "graf@amazon.de"
-	 <graf@amazon.de>, "pbonzini@redhat.com" <pbonzini@redhat.com>, John Levon
-	 <john.levon@nutanix.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Date: Sat, 19 Sep 2026 16:59:31 +0100
-In-Reply-To: <aeeNMhOM2fc2BW6u@google.com>
-References: <20260306125651.2485-1-thanos.makatos@nutanix.com>
-	 <43e9c370c07092e6e1342f70d272166a1f3caedb.camel@infradead.org>
-	 <DS0PR02MB93214EEAB50391C84CB7B9C48B44A@DS0PR02MB9321.namprd02.prod.outlook.com>
-	 <aeeNMhOM2fc2BW6u@google.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-VjfkMv+j/Rhbko+D4afx"
-User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GfPS4prm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B88871F000FF;
+	Sat, 19 Sep 2026 18:33:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789842825;
+	bh=5uEtSw9FNGtwKppfcWhsnmvvQQMRQcLU2dZAmIiU/XQ=;
+	h=Date:From:To:Cc:Subject;
+	b=GfPS4prmdrAXMceCA6QEwctwxCbaHvuayQbg2JR/98ys0oyDK51DEyGffjabnY9x6
+	 oSbhK4oz8FWG5p2cah1fYPQjX+Q2busExYDZTK9FGDhd2CPZncpcZMhlRiTA9zVJ/y
+	 jFZK62+QmQe14ms/INBXzFOgHP/Z98OKziWCG/SoLA+DfTLe+MVQEgGyGHxZui3Srk
+	 o4G+7zZ0+/ETWVyTU4GFVSplqvLR5Wg0LUzoU95otSojb1EYJR3eH5ldyXqPRtmoor
+	 ErJSXL+i8PT3+847pABJGrlZAlUUQjE9G2LILXhr7KJl7xFZKHhBO2T3932OC6kM4H
+	 azEft9qAx8P1Q==
+Date: Sat, 19 Sep 2026 11:33:44 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Marc Zyngier <maz@kernel.org>, Sean Christopherson <seanjc@google.com>,
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org
+Subject: [GIT PULL] KVM/arm64 fixes for 7.3, round #1
+Message-ID: <aq7ViMljbhjibseX@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
+Hi Paolo,
 
---=-VjfkMv+j/Rhbko+D4afx
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Here's the first pile of fixes for 7.3.
 
-On Tue, 2026-04-21 at 07:44 -0700, Sean Christopherson wrote:
-> > > I'd love to see if this KVM_IOEVENTFD_FLAG_POST_WRITE works for the
-> > > i82559 emulation use case. I think back-to-back writes are discarded
-> > > with this model, while Ilias's patches would convey each one?
->=20
-> Do you happen to know the requirements for i82559 emulation?=C2=A0 I trie=
-d reading the
-> spec and QEMU's code, and that was just a waste of ~20 minutes :-)
+The diff is definitely on the larger end, although this is mostly
+explained by the inclusion of a selftest for the ITS table changes
+which are quite tricky. Also worth noting that this selftest mixed poorly
+in next with Sean's PPC selftest prefix due to the library changes [*].
 
-I think the last-write-wins mode is actually fine for the ring
-registers of both i82559 and ENAv1. I'm playing with a prototype which
-uses Thanos's patch, which seems to be working out...
+Otherwise, the most noteworthy change here is definitely the pKVM patches
+to unmap the EL2 hypervisor's stack pages from the host, for obvious
+reasons...
 
---=-VjfkMv+j/Rhbko+D4afx
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+Details on the rest of it can be found in the tag. Please expect at
+least one more pull for 7.3, there's some additional changes that are
+still brewing.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-4q/e2nklfAKf4TvGM/HB36EAAAAAAAA=
+Please pull.
 
+Thanks,
+Oliver
 
---=-VjfkMv+j/Rhbko+D4afx--
+The following changes since commit fd73f4a6659897191fa0d40695fe370925dd3780:
+
+  Linux 7.3-rc3 (2026-09-13 14:38:02 -0700)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git/ tags/kvmarm-fixes-7.3-1
+
+for you to fetch changes up to 6b1bca1b1ab77f60a62087337bfe6e2f0efb9e6d:
+
+  KVM: arm64: Fix AArch32 DBGBXVR<n> handling (2026-09-19 11:14:22 -0700)
+
+----------------------------------------------------------------
+KVM/arm64 changes for 7.3, take #2
+
+ - Invalidate the ITS translation cache when the guest changes the
+   base address of the ITS tables (Fuad Tabba)
+
+ - Skip saving ITS devices with device IDs that are out-of-bounds
+   rather than failing the entire ITS save ioctl (Fuad Tabba)
+
+ - Close race between VM teardown and invalidations of nested MMUs
+   when handling MMU operations that are allowed to block
+   (Lorenzo Stoakes)
+
+ - Various fixes for the handling of the host's untrusted SVE
+   configuration in pKVM (Fuad Tabba)
+
+ - Make sure that empty SMCCC ranges based at 0 are rejected by the
+   kvm_smccc_set_filter() (Karl Mehltretter)
+
+ - Revoke the host mapping for pKVM's private stack pages, along
+   with a new sanity check that all mappings in the hyp's private
+   VA range have been correctly marked as hyp-owned (Fuad Tabba)
+
+ - Lifetime fixes for the array of shadow stage-2 MMUs, ensuring that
+   concurrent vCPU initialization cannot relocate in-use MMUs. Defer
+   the freeing of shadow stage-2 MMUs to the point that no other users
+   (e.g. MMU notifier) could reference them (Marc Zyngier)
+
+ - Drop useless WARN when rejecting an unsupported ioctl for pKVM
+   (Fuad Tabba)
+
+ - Fix the steal_time selftest to install correctly-sized mappings for
+   non-4K hosts (Sebastian Ott)
+
+ - Correct mapping of fine-grained trap for GCSPOPX instruction
+   (Mark Brown)
+
+ - Fix KVM_BUG_ON() due to missing handling of DBGBXVR<n> from 32-bit
+   guests (Karl Mehltretter)
+
+----------------------------------------------------------------
+Fuad Tabba (13):
+      KVM: arm64: vgic-its: Free the caches when GITS_BASER changes
+      Revert "KVM: arm64: vgic-its: Don't save collections the table cannot hold"
+      KVM: arm64: vgic-its: Skip unreachable devices instead of failing the save
+      KVM: arm64: selftests: Add ITS table save tests
+      KVM: arm64: Validate the SVE vector length in pkvm_vcpu_init_sve()
+      KVM: arm64: Do not clear VM-wide SVE feature on vCPU init failure
+      KVM: arm64: Key unpin_host_sve_state() on the state it unpins
+      KVM: arm64: Derive GUEST_HAS_SVE from the SVE feature bit at EL2
+      KVM: arm64: Transfer the hyp stack pages out of the host stage-2
+      KVM: arm64: Match hyp text by physical address in fix_host_ownership()
+      KVM: arm64: Move the private VA allocation cursor to __io_map_next
+      KVM: arm64: Check every private mapping is hyp-owned at pKVM init
+      KVM: arm64: Don't WARN on an unknown VM ioctl in protected mode
+
+Karl Mehltretter (3):
+      KVM: arm64: Return -EINVAL for an empty SMCCC filter range at base 0
+      KVM: arm64: selftests: Test empty SMCCC filter range at base 0
+      KVM: arm64: Fix AArch32 DBGBXVR<n> handling
+
+Lorenzo Stoakes (ARM) (2):
+      KVM: arm64: Fix spurious warning for benign stage 2 teardown race
+      KVM: arm64: nv: Fix null ptr deref on nested wp/unmap, teardown race
+
+Marc Zyngier (2):
+      KVM: arm64: nv: Fix life cycle of the nested_mmus array
+      KVM: arm64: nv: Delay freeing of shadow S2 structures until VM destruction
+
+Mark Brown (1):
+      KVM: arm64: Fix FGT mapping for HFGITR_EL2.nGCSEPP
+
+Sebastian Ott (1):
+      KVM: selftests: fix steal_time for arm64 with host page size > 4K
+
+ arch/arm64/include/asm/kvm_host.h                 |   2 +-
+ arch/arm64/include/asm/kvm_nested.h               |   3 +-
+ arch/arm64/include/asm/kvm_pkvm.h                 |   3 +-
+ arch/arm64/kvm/arm.c                              |   8 +-
+ arch/arm64/kvm/emulate-nested.c                   |   2 +-
+ arch/arm64/kvm/hyp/include/nvhe/mem_protect.h     |   2 +
+ arch/arm64/kvm/hyp/include/nvhe/mm.h              |   1 +
+ arch/arm64/kvm/hyp/nvhe/mem_protect.c             |  20 +
+ arch/arm64/kvm/hyp/nvhe/mm.c                      |  79 +++-
+ arch/arm64/kvm/hyp/nvhe/pkvm.c                    |  29 +-
+ arch/arm64/kvm/hyp/nvhe/setup.c                   |  16 +-
+ arch/arm64/kvm/hypercalls.c                       |   3 +-
+ arch/arm64/kvm/mmu.c                              |  15 +-
+ arch/arm64/kvm/nested.c                           | 111 +++---
+ arch/arm64/kvm/sys_regs.c                         |   1 +
+ arch/arm64/kvm/vgic/vgic-its.c                    |  46 ++-
+ tools/testing/selftests/kvm/Makefile.kvm          |   1 +
+ tools/testing/selftests/kvm/arm64/smccc_filter.c  |   4 +
+ tools/testing/selftests/kvm/arm64/vgic_its_save.c | 441 ++++++++++++++++++++++
+ tools/testing/selftests/kvm/steal_time.c          |  30 +-
+ 20 files changed, 700 insertions(+), 117 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/arm64/vgic_its_save.c
