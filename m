@@ -1,39 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCAC30C35F;
-	Sat, 19 Sep 2026 18:36:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371D33242B2
+	for <kvm@vger.kernel.org>; Sat, 19 Sep 2026 19:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789842979; cv=none; b=NSp9MckaVuQadKEzIylfTx9wm+FGOtc3NzNoznUtvbN11lM0GLA4lnqTr+aQnSZAMHmpjKIFExv77xIMfOvEomz6Op+SiVRkQBkk60sQCmb5KtDwx6oLsCaFqFpWUHeRgkbiS99e6lZXB0pJhNtaOE4DfqMz49PatbnmVzh41+E=
+	t=1789845884; cv=none; b=lbTC2mtcBJGomwl2qV+bZcDJyVEQ7d5G3elbzCcz0Ecvq1bg2ru77mRUJmTZBT6NA6JvgfveCur1VRyDZUerOBLq+H2HE/M3sDnTAFnDv4WAYVnUsHmVMxXyHSj8gjz4sHhh3RtF3ZaNYV5zertLgnZVXk09HL16EdSEfxWeuFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789842979; c=relaxed/simple;
-	bh=hCo2pZtmoPJecO1D2Wh1r0QRR9FPOXCuGWEogFvw6Mo=;
+	s=arc-20240116; t=1789845884; c=relaxed/simple;
+	bh=NeHshQNFCGwJF2ysi+RWsWuwph5Ge0ieMHHyeUv2SS0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=scXMyzRiq8cf7kgzbWoSSfcIsoFHg1F/FSDR9agIokcyNcLA7UEmU9qx0R5D5yNf63yxtdpW+WCbp3VXqkknufjQO01HCBr6vYlD0coS/QHtTo5TGhD7e1npCep6V2PEdmVONal6LJV27XnD4V6Jgloghe3bj8ksQO9T9CD0ZFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RuZGTp7Z; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=k4LdD4kocMNIDifRVyi1SJybZPpkwg6EAE6etf9e2nLt0L9luLzzpuO21HFlBopjeAVWVLtenShkmk8snwcfSgXRw1lt/JFjO2Bp9olApby4PHH0kePUfpIiEE2S8be8W5cb1Heq+LMdlSwi1TQszRUzGWWwWiOPfqlRs8j31UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VGzD+gLl; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=YD5FrD8L; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RuZGTp7Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38BDD1F000FF;
-	Sat, 19 Sep 2026 18:36:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789842978;
-	bh=GtjH5GaHbdy/dzwtgEaK5zRKcSSFxLPn+4OR5BHpbyc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RuZGTp7ZSb57vSwDD3EswVj0UWtSRkQbQpWJW8S3Ih0b60DdBhgn2RxbAsJ8290Qq
-	 2QT6sy+VMd57E/tT6QZ09jFfXdHlz8IiHBg3CDjmXpO782yzp4hXW6cyvSQjOlJoAT
-	 j4sVa6ys0pukZ6BVum8PRaCdP1gQtw8wIdTXg6/uLoJ820dEo/75VMWVE9wPfn0o1M
-	 WpbLgnNW82jIDVmjt6QBXZloCORLwJ9St8a0dhGIVT9/rnN6AEZVAYtup0ubjEh7BN
-	 kW+01akXZd6APv++pHCf2mkRcBchbWZGeJ6NP3WrSFCWpNrZG3fjBVGqu1Giam2YSb
-	 q1B0TfDruJJkA==
-Date: Sat, 19 Sep 2026 11:36:17 -0700
-From: Oliver Upton <oupton@kernel.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Marc Zyngier <maz@kernel.org>, Sean Christopherson <seanjc@google.com>,
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org
-Subject: Re: [GIT PULL] KVM/arm64 fixes for 7.3, round #1
-Message-ID: <aq7WIW052XXHJWlL@kernel.org>
-References: <aq7ViMljbhjibseX@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VGzD+gLl";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="YD5FrD8L"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789845882;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kjyUSthyZu35KpQeM9B/0jd7CF9c0bVVky2/qXbbeS4=;
+	b=VGzD+gLlsQrMifF3+CMMRFj6AhU9LHFoULnB0WVC6DkdNAAilC57HBfz/M3b7/4ea449qV
+	eTu2ubozrffDgvbJ5ZVP4hem0peLofHY5AaxfAnZZdSH1hSMaPMBF4l9w0xN3M2k4ws1m0
+	pFcGiKatmM92Gfb22eiWpO7YEHJvcio=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-610-R8vv6eoTNL2pDq0hTQaSVg-1; Sat, 19 Sep 2026 15:24:40 -0400
+X-MC-Unique: R8vv6eoTNL2pDq0hTQaSVg-1
+X-Mimecast-MFC-AGG-ID: R8vv6eoTNL2pDq0hTQaSVg_1789845880
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49e65f2f1baso21207225e9.3
+        for <kvm@vger.kernel.org>; Sat, 19 Sep 2026 12:24:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1789845879; x=1790450679; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kjyUSthyZu35KpQeM9B/0jd7CF9c0bVVky2/qXbbeS4=;
+        b=YD5FrD8L8ro6jkww6Zaehi5NslkKMNn5fdErK2+YRYDdiZGDijDXGu2dWZQbpOnf6L
+         l6vFvEUCbL9tXggZRuinaZKPr/0AcEZWwD71mcOZzlfBxirqyPXBAMWrbLG0sfj/zn0l
+         U5dcgZlX1dzIo6EHiKSNRSBTR9taTopsHkCgVCOKfUngynr7+Uj4+PaRNeCZAA7VQO2v
+         Fw7VBCFNwa2mDatKaWOgGBkv6w8WNBziNrSwqV4kTrHS2I61iZwieu+LFgMvw8+4uUAY
+         YK0BvW56/M+lH/vt6HBqJl1yrRNawiaJpunUl6VfHvxeJZC9OzVKPXAXYThBPY6XOO/7
+         iNmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789845879; x=1790450679;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kjyUSthyZu35KpQeM9B/0jd7CF9c0bVVky2/qXbbeS4=;
+        b=pHbv/DZySjhlM1tevJMDZ8UOM+qutXJMScAs7Wk4OsaxMRRu5bZTvoOTVYBkluHdV/
+         CgBySpgjvNVEoPdM7Qr6/Eof+n8Bu0JE9vc7sf+k4vp0z4Q1n61BGz7THz/V2tF8ItQt
+         nqXhYZ2q/PJV1Fm1o1Vm+DtKcxxzUUYjOMl7CcSsgqdVjsvNP8/ADgie3rBT031p0P5P
+         4w6qbBXoMnSwaWwL3qSOOsThLYDLD8bv5BbW6CjAICm332pUb1TI0DL9nw6+QejsPagq
+         vutYwpuHghLZ8OO+yvxd9gBpqyAJzkERe9SuPcoCqhxnRIDCozXXWYw+Q0KRJKX+euDr
+         DNkQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzpZH1WZcy1jjE9AgIkZ+hqqYCxMe8EYRf8DqzOnGphW9kUrw3+6bUO3Xn+K2X9OISt+1I=@vger.kernel.org
+X-Gm-Message-State: AFuF++ma1G5gcb/RUHmW2wSxKwwZlcRHAmtusUIhQXF3u80/5TZtt7RH
+	42H7p2jVj3f8zlClbLdkcw5Azv0hbodyi6+6rzlV3ujqbGdXyp7coM0KiTDwtmolQAT2j0AHg50
+	cYtab6XaDppxwlA70gGMdubCSAHwBtBZmq1HWwdiQhp/KoC0NCKIqKg==
+X-Gm-Gg: AYBFou25q+5INN2vewLZPFp6drqiZEA73bviVzRTBB+vsnq6Kl9vQwPnCXadWkDrEMf
+	u2sHsCAl7E+QQfDVAYPjKicEUCDB2KX7+hHoxrzOvlQgq3aOfoD7fmlJHaP+twJZkgdkhWzBX/O
+	9xkttrM2lLPlfOW054xAkxRV6HWQn+OijL6Xqocm6MSs3NDD12nfhyYZHtPOGi67YMO8RRdPCtV
+	JDuOyeHAEVJf/Lz61x23oqwQOEFLb2l6BBYEK9HkrDfsBDJL8S8fqVlkjWWfxIqtOAfsFiOUnv5
+	k24+7H/azJQQSofUQ3rDknxK41QRHxn6X0S0+uPv+sjywby7qa/D7JMkj84HxeQRx0+zn1ZqdH4
+	R+uDQ280QYk0mwlk5ZvZ/IyU=
+X-Received: by 2002:a05:600c:5251:b0:49c:fa20:cc00 with SMTP id 5b1f17b1804b1-49fc5736898mr78443185e9.23.1789845879501;
+        Sat, 19 Sep 2026 12:24:39 -0700 (PDT)
+X-Received: by 2002:a05:600c:5251:b0:49c:fa20:cc00 with SMTP id 5b1f17b1804b1-49fc5736898mr78442915e9.23.1789845879068;
+        Sat, 19 Sep 2026 12:24:39 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-79-236.inter.net.il. [80.230.79.236])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fcd0874c3sm138399065e9.14.2026.09.19.12.24.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Sep 2026 12:24:38 -0700 (PDT)
+Date: Sat, 19 Sep 2026 15:24:35 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Jia Jia <physicalmtea@gmail.com>
+Cc: Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Nicholas Bellinger <nab@linux-iscsi.org>, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] vhost: keep vring addresses stable while the backend is
+ attached
+Message-ID: <20260919152336-mutt-send-email-mst@kernel.org>
+References: <20260919131744.131030-1-physicalmtea@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -42,145 +97,51 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aq7ViMljbhjibseX@kernel.org>
+In-Reply-To: <20260919131744.131030-1-physicalmtea@gmail.com>
 
-On Sat, Sep 19, 2026 at 11:33:45AM -0700, Oliver Upton wrote:
-> Hi Paolo,
-> 
-> Here's the first pile of fixes for 7.3.
-> 
-> The diff is definitely on the larger end, although this is mostly
-> explained by the inclusion of a selftest for the ITS table changes
-> which are quite tricky. Also worth noting that this selftest mixed poorly
-> in next with Sean's PPC selftest prefix due to the library changes [*].
-> 
-> Otherwise, the most noteworthy change here is definitely the pKVM patches
-> to unmap the EL2 hypervisor's stack pages from the host, for obvious
-> reasons...
-> 
-> Details on the rest of it can be found in the tag. Please expect at
-> least one more pull for 7.3, there's some additional changes that are
-> still brewing.
-> 
-> Please pull.
+On Sat, Sep 19, 2026 at 09:17:44PM +0800, Jia Jia wrote:
+> vhost-scsi keeps the response and bounce-buffer iovecs until the backend
+> completes the command.  If userspace changes the vring addresses while the
+> command is in flight, the completion data is copied through the old iovecs
+> while vhost_add_used() updates the new used ring.  The guest then no longer
+> sees the completion.
 
-Haven't caffeinated enough yet.
+I do not get what all this is trying to say. if you break it you get to
+keep both pieces. when is this a real problem?
 
-Just in case it wasn't clear, this is a
-conflict with 7.4 material and based on the conversation I expect Sean
-to work around it.
+> 
+> Reject changes to the vring addresses while a backend is attached to the
+> queue.  Keep accepting the current addresses so userspace can update
+> VHOST_VRING_F_LOG or log_guest_addr without stopping the backend.  Queues
+> that have not been attached retain the existing setup behavior; userspace
+> must detach the backend before changing their addresses.
+> 
+> Fixes: 057cbf49a1f0 ("tcm_vhost: Initial merge for vhost level target fabric driver")
+> Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+> ---
+>  drivers/vhost/vhost.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+> index 44cac11b68d2..074590838de5 100644
+> --- a/drivers/vhost/vhost.c
+> +++ b/drivers/vhost/vhost.c
+> @@ -2150,6 +2150,17 @@ static long vhost_vring_set_addr(struct vhost_dev *d,
+>  				a.flags & (0x1 << VHOST_VRING_F_LOG),
+>  				a.log_guest_addr))
+>  			return -EINVAL;
+> +
+> +		/*
+> +		 * Commands may retain iovecs derived from the current ring
+> +		 * addresses.  Keep the addresses unchanged while the backend
+> +		 * is attached.
+> +		 */
+> +		if ((vq->desc || vq->avail || vq->used) &&
+> +		    (vq->desc != (void __user *)(unsigned long)a.desc_user_addr ||
+> +		     vq->avail != (void __user *)(unsigned long)a.avail_user_addr ||
+> +		     vq->used != (void __user *)(unsigned long)a.used_user_addr))
+> +			return -EBUSY;
+>  	}
+>  
+>  	vq->log_used = !!(a.flags & (0x1 << VHOST_VRING_F_LOG));
 
-[*]: https://lore.kernel.org/linux-next/aqqap3DngKznNrSA@sirena.org.uk/
-
-> Thanks,
-> Oliver
-> 
-> The following changes since commit fd73f4a6659897191fa0d40695fe370925dd3780:
-> 
->   Linux 7.3-rc3 (2026-09-13 14:38:02 -0700)
-> 
-> are available in the Git repository at:
-> 
->   https://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git/ tags/kvmarm-fixes-7.3-1
-> 
-> for you to fetch changes up to 6b1bca1b1ab77f60a62087337bfe6e2f0efb9e6d:
-> 
->   KVM: arm64: Fix AArch32 DBGBXVR<n> handling (2026-09-19 11:14:22 -0700)
-> 
-> ----------------------------------------------------------------
-> KVM/arm64 changes for 7.3, take #2
-> 
->  - Invalidate the ITS translation cache when the guest changes the
->    base address of the ITS tables (Fuad Tabba)
-> 
->  - Skip saving ITS devices with device IDs that are out-of-bounds
->    rather than failing the entire ITS save ioctl (Fuad Tabba)
-> 
->  - Close race between VM teardown and invalidations of nested MMUs
->    when handling MMU operations that are allowed to block
->    (Lorenzo Stoakes)
-> 
->  - Various fixes for the handling of the host's untrusted SVE
->    configuration in pKVM (Fuad Tabba)
-> 
->  - Make sure that empty SMCCC ranges based at 0 are rejected by the
->    kvm_smccc_set_filter() (Karl Mehltretter)
-> 
->  - Revoke the host mapping for pKVM's private stack pages, along
->    with a new sanity check that all mappings in the hyp's private
->    VA range have been correctly marked as hyp-owned (Fuad Tabba)
-> 
->  - Lifetime fixes for the array of shadow stage-2 MMUs, ensuring that
->    concurrent vCPU initialization cannot relocate in-use MMUs. Defer
->    the freeing of shadow stage-2 MMUs to the point that no other users
->    (e.g. MMU notifier) could reference them (Marc Zyngier)
-> 
->  - Drop useless WARN when rejecting an unsupported ioctl for pKVM
->    (Fuad Tabba)
-> 
->  - Fix the steal_time selftest to install correctly-sized mappings for
->    non-4K hosts (Sebastian Ott)
-> 
->  - Correct mapping of fine-grained trap for GCSPOPX instruction
->    (Mark Brown)
-> 
->  - Fix KVM_BUG_ON() due to missing handling of DBGBXVR<n> from 32-bit
->    guests (Karl Mehltretter)
-> 
-> ----------------------------------------------------------------
-> Fuad Tabba (13):
->       KVM: arm64: vgic-its: Free the caches when GITS_BASER changes
->       Revert "KVM: arm64: vgic-its: Don't save collections the table cannot hold"
->       KVM: arm64: vgic-its: Skip unreachable devices instead of failing the save
->       KVM: arm64: selftests: Add ITS table save tests
->       KVM: arm64: Validate the SVE vector length in pkvm_vcpu_init_sve()
->       KVM: arm64: Do not clear VM-wide SVE feature on vCPU init failure
->       KVM: arm64: Key unpin_host_sve_state() on the state it unpins
->       KVM: arm64: Derive GUEST_HAS_SVE from the SVE feature bit at EL2
->       KVM: arm64: Transfer the hyp stack pages out of the host stage-2
->       KVM: arm64: Match hyp text by physical address in fix_host_ownership()
->       KVM: arm64: Move the private VA allocation cursor to __io_map_next
->       KVM: arm64: Check every private mapping is hyp-owned at pKVM init
->       KVM: arm64: Don't WARN on an unknown VM ioctl in protected mode
-> 
-> Karl Mehltretter (3):
->       KVM: arm64: Return -EINVAL for an empty SMCCC filter range at base 0
->       KVM: arm64: selftests: Test empty SMCCC filter range at base 0
->       KVM: arm64: Fix AArch32 DBGBXVR<n> handling
-> 
-> Lorenzo Stoakes (ARM) (2):
->       KVM: arm64: Fix spurious warning for benign stage 2 teardown race
->       KVM: arm64: nv: Fix null ptr deref on nested wp/unmap, teardown race
-> 
-> Marc Zyngier (2):
->       KVM: arm64: nv: Fix life cycle of the nested_mmus array
->       KVM: arm64: nv: Delay freeing of shadow S2 structures until VM destruction
-> 
-> Mark Brown (1):
->       KVM: arm64: Fix FGT mapping for HFGITR_EL2.nGCSEPP
-> 
-> Sebastian Ott (1):
->       KVM: selftests: fix steal_time for arm64 with host page size > 4K
-> 
->  arch/arm64/include/asm/kvm_host.h                 |   2 +-
->  arch/arm64/include/asm/kvm_nested.h               |   3 +-
->  arch/arm64/include/asm/kvm_pkvm.h                 |   3 +-
->  arch/arm64/kvm/arm.c                              |   8 +-
->  arch/arm64/kvm/emulate-nested.c                   |   2 +-
->  arch/arm64/kvm/hyp/include/nvhe/mem_protect.h     |   2 +
->  arch/arm64/kvm/hyp/include/nvhe/mm.h              |   1 +
->  arch/arm64/kvm/hyp/nvhe/mem_protect.c             |  20 +
->  arch/arm64/kvm/hyp/nvhe/mm.c                      |  79 +++-
->  arch/arm64/kvm/hyp/nvhe/pkvm.c                    |  29 +-
->  arch/arm64/kvm/hyp/nvhe/setup.c                   |  16 +-
->  arch/arm64/kvm/hypercalls.c                       |   3 +-
->  arch/arm64/kvm/mmu.c                              |  15 +-
->  arch/arm64/kvm/nested.c                           | 111 +++---
->  arch/arm64/kvm/sys_regs.c                         |   1 +
->  arch/arm64/kvm/vgic/vgic-its.c                    |  46 ++-
->  tools/testing/selftests/kvm/Makefile.kvm          |   1 +
->  tools/testing/selftests/kvm/arm64/smccc_filter.c  |   4 +
->  tools/testing/selftests/kvm/arm64/vgic_its_save.c | 441 ++++++++++++++++++++++
->  tools/testing/selftests/kvm/steal_time.c          |  30 +-
->  20 files changed, 700 insertions(+), 117 deletions(-)
->  create mode 100644 tools/testing/selftests/kvm/arm64/vgic_its_save.c
