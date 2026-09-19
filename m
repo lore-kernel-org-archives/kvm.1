@@ -1,133 +1,211 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CD62F3C07
-	for <kvm@vger.kernel.org>; Sat, 19 Sep 2026 00:27:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789777647; cv=pass; b=Emv+q8GaTWy5D2XoC9GJ5SkcgbhEsnUpzYIeX/UcgJKn88lQiXRk0hBFhDtwQ4CT/8qP9bHPvWVG7hBaW34uWSflCfBrJof33O9UO+r6xNVgcSDCYcQwMNSoHaJPpDpk4YQ+3w+kYsTj2Xl78Z+YN+yH4L8ROb574CzGH18bNkE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789777647; c=relaxed/simple;
-	bh=eRYDYXq8mO0xqUTiGna2hw3VEfXp06tx+s1Wx9I3ALI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=emU3zrJmlwmL/yEGP9kGQXrGoqEjZA9+pCCNRLwzJDp5RnVHbWIdCm1m6zfJn8RgIKI4NIi4zBPYRlttGMz5gQtLR6pK65V4/d0CUH+2159wJfT2K7hgLdWrgVoY2aIt10SEyvs47O4R8CG4AEgP2c9uDwZfP3MhoZFUU9Lt4HU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mhCYJju5; arc=pass smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717F23BC673;
+	Sat, 19 Sep 2026 01:28:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789781297; cv=none; b=IBPx33XfTOamnU6j20sBjU2QbofcmrsBo/LM0zYEu6KBZfiIMCrJrJwYrSD/HbnhpQ1BniSQMf8bHiaaY83A7toEsiBQ0SOyRt9rlk1D+78je2byCWpg6+gtd1lP8b7+VRBzLP0lEOkIB9W1fIStb0s7GqShLIEcvuL6SKQOKwk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789781297; c=relaxed/simple;
+	bh=xBkyZH6iSdSNdymCclTI0r6wLkOufX0u7rLgRDfRSAQ=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=ZnwqPLBxni4MNRxKROvsZIWvSV+Tqj0vZx/yQX59oa3TcMS2SsHo+gpID5FKbE0udic/PFuxlrz6w0plvCO2L/VRHY7fl/9IoMGpiIhIylpgqu0eXcWAyzbfXSIeZ/QD6oGxLhZQGniPtnA9YoDHyxbo/Yslxz2TeTgSZZZAQRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CtZTTJsN; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mhCYJju5"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2d3b445a84fso17665ad.1
-        for <kvm@vger.kernel.org>; Fri, 18 Sep 2026 17:27:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789777642; cv=none;
-        d=google.com; s=arc-20260327;
-        b=gV0PUx3AdipluEhYTrUqY6B6kX/KtP16CDByvInCAaSf7wPlEXSoacVkh/XURI9e3e
-         Mz81doVCYxF/N3XT7GN+cbT5ccWmQTDVwSbARGKBPEoUioVG9EQj52r9deXvE0vNhh4n
-         IQpATme1acYx4snCM+oePT0yo3JTFGaAYKuUpH18Bp7/g1R3nlgd8LDTOqgskMZpbAqE
-         TMPRVi0R35oBwG1EAhIfZ3truhWUqsyvfczzXcP/Z67kVVvVzyiFbkAr56Vz5OCEJXdr
-         iUen3CZXqmjeJNd1B3Pk5LcB/6IECNwH+vgCLpfx1feIQ/aWeEryLC+GOjrZRh2f4GNB
-         /y/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LmqMKPHBB/mFOUskOMGcF49EXv1ypL8clVxsz/MHGR0=;
-        fh=eTZBID7v6LHGdUdKTEsVjKhdL4WoNu1ugarfLiSfmvg=;
-        b=MdBy7r9Bl9BkdJgVAba6kcdZKQlpDcU4l+SnUTLdvwvQN9tsqljHNXRPOUuISj3iAk
-         gZuuiCeBzO0waELu/DP5wjATQQ2HbYe4+P41UFX1fJjZui+TZZuwsyajgrUHGFhKGviK
-         GBYhQhjaN0Q5d9osxO/WPqwfoFUcCAK9hyXNKvWzXt4I68M7hF10aZMjl2pO8yXStUm0
-         Yj6SHynyiAqhXkRR4l42J05g19uWIhTU+DyWK4jkp3ObFu8F5G9EvYY4yvH+tV+IeON2
-         KcXLPDlLpP7/gsH/erVsTSjTh4TFNYC+odp8Mxt0p3wnwEk/0Baf9nBThpXlBovqNcEc
-         zU0w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789777642; x=1790382442; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LmqMKPHBB/mFOUskOMGcF49EXv1ypL8clVxsz/MHGR0=;
-        b=mhCYJju5RLperT/80kwTGTcKjRNJS61m/AO4/v9fq01QvhtP1GPxdBUs1rWQZqCLMb
-         Q5J7CuPZHfhlDgsVVDTiEQAB1ZPUPVrG2e6x3rPB72wJ3EYwrvOk5HEG8n3yHK4Tp08z
-         MAJ5TqgoqwJ363BnUMgRnxMdjHcN83KWP2Uu3Usd9syZRrbK8Rz2UOLfZuTwTT3/GKO0
-         S2XOdwRAbJ1bRJFpALEVViREqGx/wSCh9pdaPpB3MHYYrouxgU/L+6KF5GrauP4QvFpI
-         GvfZPGIXXPOeN9tgDhcUlVb55min7MhHSYMpelgNS96wvKzy+lVjtejB/OGyVTyRCh1V
-         33lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789777642; x=1790382442;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LmqMKPHBB/mFOUskOMGcF49EXv1ypL8clVxsz/MHGR0=;
-        b=C8sK3ybJTCg8oHqfZhWnOb5uGFOv70G48nL76EPd1ep0tgu6oPaJ+nA0VtWzg7BrEz
-         hT/AIKJyAUIOlzKpylupUK9T0FxeNjOv72Vybng63sBORnpAI4URK19KnmYt7gGMZ/CY
-         sespWTQQ978C0pwL+RKiN7yWTkOz53sMAYMGR1BqgvSDlgoyT28/Y6V0ohJ1lu1xEAvC
-         FXPg3KzZHNKpGnpU0wNoyx9hsNO97JbOiE1lzuGlkjQ80JF4L12L3QGQFyGb1CBsxAVW
-         N1p9726uW3JY7cT/CNv+KXvXnMwf06tNqhL+e/vy/ebSI6Kmj+ZnNmd3SPjPtcqKnMoB
-         MYCw==
-X-Forwarded-Encrypted: i=1; AKwUvBwIzimAf3vj/McyQJemz1S+G6JJCcWn5NOzXclDti3CbjUvIknB5R3oky8FxmSHy+9mIg4=@vger.kernel.org
-X-Gm-Message-State: AFuF++lp6IBceNUqhsyO1r3Lnwzh+ApapEDV1j5HI5hJW7L9U6wHS8Zl
-	7QEOtD379D1R5C8CIn15iPz0+Cxc+ASGDoF9pRDupqr3/43Bm+0KrXak363iWFVxgmFKRWEZGXR
-	RxXU+hWpCAE0PYKAwf9yTLcw57f1/gSOYXvQXUFRf
-X-Gm-Gg: AYBFou1DaHCWRnDwkJ+PYzeTmWM3CgHnS5Qw0LxBp+PSpIDPoobcxzNPzHPoEqCqgPC
-	/V6xV4A6byQwkkr8vR+Qkzu3IMe31/P2dF49paxn0H4C+n0hrbBUXH1PmLj5a5i1IaXiP5yqs60
-	PbUKgYuR8ynN8vav1ZfoRu5YztoiGbSjGfSmN16QIowJoYZEq4NAFbSmFxoT/TWPWJZN4oIhaA/
-	ADzvgRoreWEMoCqKSYOjgYgwcvsmEqkFM+42H+EinZieloy2ReDj8wHg+uITvq1dQ4EaGAl/UtM
-	oJpvEvhArdbmm8FDU6jYgJEDJHtOvvtEoB2kGkk9KNqcVkqOnBaNFTp39YlIDXYo5gX4NWBWjEj
-	eRGTgoUZ0mg==
-X-Received: by 2002:a17:902:ffce:b0:2d5:db3d:1a44 with SMTP id
- d9443c01a7336-2dec1f19e92mr1672875ad.17.1789777641256; Fri, 18 Sep 2026
- 17:27:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CtZTTJsN"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68INwXdt2267664;
+	Sat, 19 Sep 2026 01:27:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	SWy/LsEtrczjIIVigdhZqWco2xuU9StAi1HysiyiSHk=; b=CtZTTJsNUNQt+rP4
+	yP7Vv86AgmvcgvJ152qKl4CIqEbHPntz9nDIrJe9ZBbTvbcU2IFDiGR3UnZDDd+R
+	Hqq43wxdv17ZxxurFvsz0ue28qtoI98OKEbYc0/Cqljl+5ioEcYj3or41jJ1sSAP
+	G8ubNzGhaI5yxA6vVtTad/NQRnRtrObdHZRG7C9GJzgDBikFjoTjUQh4Y1DPTHV6
+	StOqWS/PAUbE0DiP33byaTFWxWkW6c/5Lf7z4BfeVHKnD2JF5D7VheprUEd0N+DZ
+	ZL94zIsVhK054kAUCc/KnHwijkSlsmi06acFOFxMnuMWv27dc7sE+CQ7Uv8mSOKV
+	coVyUw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gs72u281g-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Sat, 19 Sep 2026 01:27:51 +0000 (GMT)
+Received: from hu-devc-lv-u24-a.qualcomm.com (hu-jcameron-lv.qualcomm.com [10.81.84.69])
+	by NALASPPMTA02.qualcomm.com (8.18.1.11/8.18.1.11) with ESMTPS id 68J1RppH3471038
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Sat, 19 Sep 2026 01:27:51 GMT
+Received: from hu-jcameron-lv.qualcomm.com (localhost [127.0.0.1])
+	by hu-devc-lv-u24-a.qualcomm.com (Postfix) with ESMTP id 1AAAE24DF8;
+	Fri, 18 Sep 2026 18:27:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260819094903.3060020-1-xiaoyao.li@intel.com>
-In-Reply-To: <20260819094903.3060020-1-xiaoyao.li@intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Fri, 18 Sep 2026 17:27:07 -0700
-X-Gm-Features: AcwNN1VzCFV9uA1sUp0UBFirw4LC7YC87Ka8strvz1IBLR6XIOyhlpfD4-o1ujQ
-Message-ID: <CAGtprH9a3Cu80coUpg-1sHrmVF2c6ZQOSe1pOTUbEx4_xuHiEA@mail.gmail.com>
-Subject: Re: [PATCH v4 0/9] KVM: TDX: Enable VM-DoS Prevention Features for TDX
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	nik.borisov@suse.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v18 6/7] firmware: arm_rmm: Ensure the RMM has GPT
+ entries for memory
+From: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+        will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+        aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+        joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+        linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+        sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+        WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+In-Reply-To: <20260912083611.2513845-7-suzuki.poulose@arm.com>
+References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
+ <20260912083611.2513845-7-suzuki.poulose@arm.com>
+Date: Fri, 18 Sep 2026 18:27:45 -0700
+Message-Id: <178978126543.2352296.12214136703168879825.b4-review@b4>
+X-Mailer: b4 0.17-dev
+X-QCInternal: smtphost
+X-Proofpoint-ORIG-GUID: FGz3-zyLI-E1WYi31zj9H_PjW-jtmjH_
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE5MDAxNiBTYWx0ZWRfX+OGK14wbLIFE
+ 4FcADTlI6cQIrwnz4K/3OUFsAwE+yD86FEr2QQXZATQik8472EqKg+O+0dJIlv3aFdi+5kjMiqi
+ AsDX9+yyimwZNz7aM157X0+VbEdmKOs=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE5MDAxNiBTYWx0ZWRfX9/wNJxj4wJbb
+ +cJI2epfBASP2611cG46ZRhY+q0rAVp5PPpWrv/J6+q1W+Vwf4AruR5IhaXttCotEouuomMy4Mg
+ 0h+mNfKzo9c9WWEZSpuj2rexnk5pexaXThTLEE+OQQ6Vo1RPVkA4MW+AvGHpbL3CvKCHdaxQvxF
+ 6sWUqugH6Smhshw/kKNxH5ZFHBH4oq7C94t8jHC7Vo9PgmqrUvxiqsDgZKShENYPygYVoDNQMtr
+ 62d+gtRhqtS1joaVrFzbbgK+XeM6P3Z+/JYjx4JyLJptgXekSpHMCFdVBpVh7msVpM4U/rdYZeh
+ 0i7f2NTjUDyBum0bMgBL6Tvu2OEzKLvkf1BO1o6CDRxmS63DQ31f38y9AeQBn+p/k2OGJfoUf8x
+ WOzNha0YBdl7+N2FJGjkjXnFZIijwRccu3bHWBdn1fCO348tha3ErEkcUQg+nuoL5gedW8jTK1e
+ HQu8uvCIlWJybhu+uwg==
+X-Proofpoint-GUID: FGz3-zyLI-E1WYi31zj9H_PjW-jtmjH_
+X-Authority-Analysis: v=2.4 cv=DO8acCNb c=1 sm=1 tr=0 ts=6aade517 cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22 a=7CQSdrXTAAAA:8
+ a=EUspDBNiAAAA:8 a=ANFCpyTuUsUUZqEkrDcA:9 a=QEXdDO2ut3YA:10
+ a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-18_07,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 clxscore=1011 impostorscore=0 suspectscore=0 bulkscore=0
+ adultscore=0 spamscore=0 malwarescore=0 phishscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609190016
 
-On Wed, Aug 19, 2026 at 2:59=E2=80=AFAM Xiaoyao Li <xiaoyao.li@intel.com> w=
-rote:
->
-> Xiaoyao Li (9):
->   KVM: TDX: Enable Notify VM exit
->   KVM: TDX: Check if there is valid exit infos based on vp_enter_ret
->   KVM: TDX: Set bits 31:16 to 0 for the synthesized Exit Reason
->   KVM: TDX: Don't assume exit_reason[31:16] is all-0 in
->     tdx_to_vmx_exit_reason()
->   KVM: TDX: Update exit_reason on wait_for_sept_zap return
->   KVM: VMX: Preserve negative return value in vmx_handle_exit() with bus
->     lock detected
->   KVM: VMX: Make handle_bus_lock_vmexit() a shared helper
->   KVM: TDX: Enable Bus Lock VM exit
->   KVM: VMX: Consolidate the exit handler for VMX and TDX
+> The RMM maintains the state of all the granules in the system to make
+> sure that the host is abiding by the rules. This state can be maintained
+> at different granularity, per page (TRACKING_FINE) or per region
+> (TRACKING_COARSE or TRACKING_INTERMEDIATE). The region size depends on the
+> underlying "RMI_GRANULE_SIZE". For a "coarse"/"intermediate" region, all pages
+> in the region must be of the same state, this implies we need to have "fine"
+> tracking for DRAM, so that we can delegate individual pages.
+> 
+> For now we only support a statically carved out memory for tracking
+> granules for the "fine" regions. This can be extended in the future to
+> allow modifying the tracking granularity and remove the need for a
+> static allocation by the firmware.
+> 
+> Similarly, the firmware may create L0 GPT entries describing the total
+> address space. But if we change the "PAS" (Physical Address Space) of a
+> granule, then the firmware may need to create L1 tables to track the PAS
+> at a finer granularity. Linux therefore checks if the platform firmware manages
+> the PAR region. i.e., the firmware is in charge of managing the L1 GPTs
+> (creation and the required memory for the GPT tables - via static carveouts)
+> without host intervention. Support for dynamic GPT creation by the host will be
+> added later.
+> 
+> If the firmware requires us to manage the tracking or GPT memory, Deactivate
+> the RMM and reclaim any memory donated at RMM activation.
+> 
+> Apply the same checks when hotplugged memory is brought online.
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> [ Switch to RMI_GPT_L1_INFO for checking GPTs and deactivate RMM ]
+> Co-Developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-Reviewed-By: Vishal Annapurve <vannapurve@google.com> for the complete seri=
-es.
+A few comments inline.
 
 
+> ---
+>  Changes since v17:
+>      * Move wrappers that may not be used elsewhere, out of arm-rmi-cmds.h
+>  Changes since v16:
+>      * Check fine tracking and create L1 GPTs for hotplug-added memory.
+>      * Clarify the L1 GPT setup and move the explanatory comment.
+>      * Switch to using RMI_GPT_INFO command for checking the GPTs.
+>      * Deactivate the RMM and reclaim the memory if we can't proceed.
+>  Changes since v15:
+>      * Skip firmware-reserved NOMAP memory in rmi_init_metadata()
+>      * Handle negative error codes from wrappers.
+>  Changes since v14:
+>      * Move the implementation into drivers/firmware/arm_rmm.
+>  Changes since v13:
+>      * Moved out of KVM
+> ---
+>  drivers/firmware/arm_rmm/rmi.c | 200 +++++++++++++++++++++++++++++++++
+>  include/linux/arm-rmi-cmds.h   |   2 +
+>  2 files changed, 202 insertions(+)
 >
->  arch/x86/kvm/vmx/common.h | 20 ++++++++++
->  arch/x86/kvm/vmx/main.c   | 49 ++++++++++++++++++-----
->  arch/x86/kvm/vmx/tdx.c    | 82 ++++++++++++++++++++++++++++++---------
->  arch/x86/kvm/vmx/vmx.c    | 46 ++--------------------
->  4 files changed, 126 insertions(+), 71 deletions(-)
->
->
-> base-commit: 1b731e5ded480bd1e5546aed35584238661ce72e
-> --
-> 2.43.0
->
->
+> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+> index ecc89e91d264..583e1aca9b15 100644
+> --- a/drivers/firmware/arm_rmm/rmi.c
+> +++ b/drivers/firmware/arm_rmm/rmi.c
+
+
+> + */
+> +static inline long rmi_gpt_info(unsigned long start, unsigned long end,
+
+Why inline vs letting compiler make it's mind up?
+Same in other places
+
+> +				unsigned long *out_top,
+> +				unsigned long *out_gpt_par_state)
+> +{
+> +	struct arm_smccc_1_2_regs regs = {
+> +		SMC_RMI_GPT_INFO, start, end,
+> +	};
+> +
+> +	rmi_smccc_invoke(&regs);
+> +	if (regs.a0 != RMI_SUCCESS)
+> +		return regs.a0;
+> +
+> +	if (out_top)
+> +		*out_top = regs.a1;
+> +	if (out_gpt_par_state)
+> +		*out_gpt_par_state = regs.a2;
+> +
+> +	return RMI_SUCCESS;
+> +}
+
+
+
+>  static int __init arm64_init_rmi(void)
+>  {
+>  	int ret;
+> @@ -786,8 +970,24 @@ static int __init arm64_init_rmi(void)
+>  	if (ret) {
+>  		pr_err("RMM activate failed\n");
+>  		ret = ret < 0 ? ret : -ENXIO;
+> +		return ret;
+
+Why did this change?
+
+>  	}
+>  
+> +	ret = rmi_init_metadata();
+> +	if (ret)
+
+And this is hitting another bit of guidance in cleanup.h.
+Functions shouldn't be mixing __free and friends with
+gotos.  Again, not a bug here but there are large ugly
+monsters around this stuff, hence the blanket guidance.
+I haven't thought that hard on how you avoid it here, but
+usually it's a combination of suitable helpers and wrappers
+and resulting code is often more readable as a result.
+
+-- 
+Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
