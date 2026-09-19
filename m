@@ -1,44 +1,44 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CFB03BBFDA;
-	Sat, 19 Sep 2026 01:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9213BFE42;
+	Sat, 19 Sep 2026 01:28:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789781306; cv=none; b=KkYecAoYjPzKMifu+9JwziLQE2/9hQ75LgOzUg3trqSCNRMS5WFOUotab1PK86k95tMYrS58zTLb1GTPjeI7vaNDFZjWVey1IQQ3ibBBzmgAMOqZRutSRRozzwPqGGJFpNbMEKy4v+6gUCvBUGdgthbZqLvPEYg3ZiV18eOcqhw=
+	t=1789781306; cv=none; b=KlfytaZdPyPOxt2BBOYvAv2H1HgiodjrB+K0j/cm05zFbks1XhF0rk4YciYL1iMpVuZtN+tsi0/5HfTtcowtOWGoiHYizoPm/h8xs09UEfCkNzCq4rSf0w2siVqiXT9amq0n78YGWPOWhSXNfukqKqF8dKKPerbtUdHaSM87wo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789781306; c=relaxed/simple;
-	bh=OoCqfwZ1Owk818WlU/41A9fXBe3y+KWuklEQwvwZaw8=;
+	bh=ZpNfCwWo9Cp5QuAglZNjQeM/moqz1idRiysr3l/sJQM=;
 	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=HkCm+LOvP7jhbkS4O9w+gJFs1lPVobZO3S5QYbFuId9TDwUEahcKQU+ssbNxieFSl3DoAvUoLEt01XajnhFOT5JYNWsBvToD4fWbQW3dhysWIcR5tL9CibSwwLJ8XBb6lRz7TArF8O8XkdbUNDQPy8Jge/DHWIIy2cxkuOfuRD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dwg3dnXu; arc=none smtp.client-ip=205.220.180.131
+	 References:Date:Message-Id; b=OQtNWvXMMXB8Pf/HA780cHQS4htwXtHHR+5kjJyhEhX+gaUsF03sQLDAWcn4+wuzcG33MIbW64WZWTBXtFzHBZdGWjDltvs8up3WDTyqV6X0l/FkOLvKczG8H4BwiYsFgEYz0e7xUtBkgKm15IxLuveAzWC+RsEyxuPufnMTT5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dNAyCRGf; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dwg3dnXu"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68INw6RR2740147;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dNAyCRGf"
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68INvnbY1420671;
 	Sat, 19 Sep 2026 01:27:52 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	cr/qoa0sDlgWepv1yFUGASuUApy87SNqzJHn7531YD4=; b=dwg3dnXuqUBTMBWB
-	1J/dpqkJNX3WBcw6uwWN3RieckAmX+Hs+ZrjpP9hNa8sdc/MFUJOB8BAVVLp+/aG
-	lUGLjT870EFKIxahsWfWM9KPNY36sBBvOxNdbRTYvb2Pun8tQZ3Ea86vzZeNlPQW
-	gFWpb8x2YDgiS/YRKpwCrqdOhCpPHIAyI57I1J8ExbiXWJ5oCtVaY4qh7Yr855CS
-	eX0tiUzeniY7+oNK9N/pHdAaO723cuMQGOiVI+TJVoLiFkYr0TUqjbNcnf6rE1ZT
-	EvKKnMh+QpVJ96sf69zUOpHTAQwLnSvvpYtqxMrlDR5gjbxXP56Jp7ygu/I7wyn4
-	rEuRvQ==
+	IJbeOC5P7CUlCHlbrCCH2eu4B712uwW8R+WMUfDTt4I=; b=dNAyCRGfrsxac/A+
+	WEkGlYlPp60psM7pbG6YriRDXCApI4wsIgmqSeKGsbAMnl2vMquZCiq1HvFfn9GM
+	aC23B2roWjqBFmkNV1Xl2BbwJOB6GGQOJHI6p3AYiYm1ku35MCTxFuxSrsHbfkvo
+	LLmFWhTqpFuqzq8zJF98XDr1r3bddriCCm8kzA+ZpBQd3TCEC6JgxoA46HoNgq/Y
+	5l1UY6bZ+6gui3taJvgnxIIray3c+nk3ckwhDb0LrWJLsk5U/Yj34PT0U9JKSqFg
+	Z3AkbF9/gAnhDtfAeU4qaMBnl0WHsZf275Yq9hMbhRL1+SRLoiexX862z1QidJtz
+	SU1wgg==
 Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gs2hvbety-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gs84a1xr0-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sat, 19 Sep 2026 01:27:52 +0000 (GMT)
+	Sat, 19 Sep 2026 01:27:51 +0000 (GMT)
 Received: from hu-devc-lv-u24-a.qualcomm.com (hu-jcameron-lv.qualcomm.com [10.81.84.69])
-	by NALASPPMTA03.qualcomm.com (8.18.1.11/8.18.1.11) with ESMTPS id 68J1RpwN3483931
+	by NALASPPMTA03.qualcomm.com (8.18.1.11/8.18.1.11) with ESMTPS id 68J1RpeB3483928
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
 	Sat, 19 Sep 2026 01:27:51 GMT
 Received: from hu-jcameron-lv.qualcomm.com (localhost [127.0.0.1])
-	by hu-devc-lv-u24-a.qualcomm.com (Postfix) with ESMTP id 1C3C424DF9;
+	by hu-devc-lv-u24-a.qualcomm.com (Postfix) with ESMTP id 1906F24DE1;
 	Fri, 18 Sep 2026 18:27:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -48,8 +48,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v18 7/7] firmware: arm_rmm: Add wrappers for Realm
- related RMI commands
+Subject: Re: [PATCH v18 5/7] firmware: arm_rmm: Activate the RMM
 From: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
 To: Suzuki K Poulose <suzuki.poulose@arm.com>
 Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
@@ -60,52 +59,107 @@ Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
         linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
         sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
         WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-In-Reply-To: <20260912083611.2513845-8-suzuki.poulose@arm.com>
+In-Reply-To: <20260912083611.2513845-6-suzuki.poulose@arm.com>
 References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
- <20260912083611.2513845-8-suzuki.poulose@arm.com>
+ <20260912083611.2513845-6-suzuki.poulose@arm.com>
 Date: Fri, 18 Sep 2026 18:27:45 -0700
-Message-Id: <178978126543.2352296.6917799344044957375.b4-review@b4>
+Message-Id: <178978126542.2352296.10527413259157627665.b4-review@b4>
 X-Mailer: b4 0.17-dev
 X-QCInternal: smtphost
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE5MDAxNiBTYWx0ZWRfXyktYp53sjxb8
- sQAj3oI38AegSyFmNXh2jIEckjISg0EC7odeWkBuG3hwpFXJ0GR4QyiCn9XdRD9RjJKudWfMS7b
- rws7ghPoB5DBSRPm9bEUxoG+eIOUoCQ=
-X-Authority-Analysis: v=2.4 cv=IOWXmQvG c=1 sm=1 tr=0 ts=6aade518 cx=c_pps
+X-Proofpoint-GUID: 302lZnfJ4GkCbMvsWeOukSS38_6TSES3
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE5MDAxNiBTYWx0ZWRfX6TKTc7X/tDu8
+ wXCA3awHo8CyoLuusdY2vhGJU5UIyuMXXjxC17wt/VRdQwh9iOo5/e0H2wQOuG4Dn8BtjPEPv3q
+ Rj1Ltu4yKl6CH84LtU1BUbmj9i7H5/8=
+X-Proofpoint-ORIG-GUID: 302lZnfJ4GkCbMvsWeOukSS38_6TSES3
+X-Authority-Analysis: v=2.4 cv=MLD1C8Zl c=1 sm=1 tr=0 ts=6aade517 cx=c_pps
  a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
  a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22 a=7CQSdrXTAAAA:8
- a=EUspDBNiAAAA:8 a=IJVdKelJPJ4dxn_WyZIA:9 a=QEXdDO2ut3YA:10
+ a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22 a=7CQSdrXTAAAA:8
+ a=EUspDBNiAAAA:8 a=sr4bC4xs5gVJGtrCXjkA:9 a=QEXdDO2ut3YA:10
  a=a-qgeE7W1pNrGK8U0ZQC:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE5MDAxNiBTYWx0ZWRfX68om1iBpuJ2z
- vkUkZnJuovzvOeWd6fdilIqGSx2OiPqhS27KIX5Byz66aiVQ/S4EKBag0f3WRI4TA2zXv62IOx4
- EQzwwSGm2MuB1SBhi2QDOmmGqGf8URb3Hh+V2UgjVc02sp+8FkRVnfWCbQsSXe0rFaCrJy5dknI
- OsIqKe1qjnRkBSBbFD/WFN2jKxE/XMTlYWf6MOK7h+3Q1lLzH5I5ewkIy/rbtvedGgDowkx97cI
- 0ig4z/hhA9dMaUXGcXMffDgWpzUQDqxMWQ1L6w3C81W0sN2i9hZqBcUPCM3ikRt74LLZCYRnKks
- Obh0TjAGtvS3rM4VzvH1aRbrsOFvwyjbYTskv7qkNJGeAxxLOCiX5tAO9f/KwqsUMZAAYlzH39S
- bdmkYMe+KLe2Nivv/bUqnDEOeC+V+a/czvDUOpmv300Egkc/LPqcQ6WlyrXZZGugrv/XR4UWEd6
- /9bxPLJuroNHx8ca1RA==
-X-Proofpoint-ORIG-GUID: XjJu7fT-9rrGarPvdiGVr6Xo-IfVZ7UE
-X-Proofpoint-GUID: XjJu7fT-9rrGarPvdiGVr6Xo-IfVZ7UE
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE5MDAxNiBTYWx0ZWRfXyalYluVoXgps
+ jqoI/tlDqUsuotTAtSN1mXpl9e+DrAtKfi4eX8brkvpOOug5mfTvuWtbxSxSCYdlLzE3YMDRkxl
+ gfyP1aS8GpLsJT5dipmOcsQtCegZ51B6osS7MrZ6Yo9oNUWsMDFm3sqnby5q0ly36S5WkW6n8ZI
+ hDu2GPDkbod0HuiDdUY/lD7EbNNwx5EfyUZVFDkWs408o5dHwtuH6z933mKdoSs045Ej31k2VWj
+ z5L6aQVd3uw57a3jtY2OplJBtwkAzAp1mjbYj65NC237BcIU/xDxR4YmKgTlZX4tQvqh+R9PcFo
+ uLg/jvLkaBHadNHNdLU5o2TCUkyVcoVz4sY3Y8xM9pV0hSnvs/DBqnd8oJIPdVATAI7dUQnW12C
+ XznvmDZ/ccHEFJ3Zf7Af1SyJhx/yjjKLKjq1VBe4KrkhgpwmJ7Pfn4JlW/HcJeJIHZbBym5qCiY
+ nl0PzwSMVcJZ8Uo9LHw==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-18_07,2026-09-16_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0 malwarescore=0 bulkscore=0 spamscore=0
- suspectscore=0 phishscore=0 clxscore=1015 lowpriorityscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ malwarescore=0 phishscore=0 clxscore=1011 lowpriorityscore=0
+ priorityscore=1501 bulkscore=0 impostorscore=0 spamscore=0 suspectscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
  definitions=main-2609190016
 
-> Introduce wrappers for the RMI functions needed for creating and
-> managing realm guests. This will be used by the KVM to manage the
-> Realms
+> Activate the RMM after the basic configuration. This is a memory transferring,
+> stateful operation.
 > 
 > Signed-off-by: Steven Price <steven.price@arm.com>
 > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Wrapper tastic.
 
-With the tweaks Gavin and Alper called out already
+With the declaration moved as per standard way of dealing with __free
+magic (there are docs in cleanup.h on this)
+
 Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+
+> ---
+> Changes since v17:
+>  * Inline RMM_ACTIVATE command and remove the definitions from arm-rmi-cmds.h
+>  * Use scope-based cleanup to free sro object
+> Changes since v16:
+>  * Split into a new patch
+> ---
+>  drivers/firmware/arm_rmm/rmi.c | 14 +++++++++++++-
+>  1 file changed, 13 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+> index 4f9898ece754..ecc89e91d264 100644
+> --- a/drivers/firmware/arm_rmm/rmi.c
+> +++ b/drivers/firmware/arm_rmm/rmi.c
+> @@ -762,6 +762,7 @@ static int rmi_configure(void)
+>  static int __init arm64_init_rmi(void)
+>  {
+>  	int ret;
+> +	struct rmi_sro_state *sro __free(kfree) = NULL;
+>
+Read the guidance in cleanup.h
+
+This is a path to a potentially grumpy Linus.  He's made the sensible
+point a number of times that putting the declaration of the destructor
+anywhere that isn't right next to the contstructor is a recipe for
+hard to read code and odd bugs (this one isn't buggy,
+but the principle is more general and the readability thing does hold!)
+
+>  	/* Continue without realm support if we can't agree on a version */
+>  	ret = rmi_check_version();
+> @@ -776,7 +777,18 @@ static int __init arm64_init_rmi(void)
+>  	if (ret)
+>  		return ret;
+>  
+> -	return 0;
+> +	/* Activate the RMM */
+> +	sro = kmalloc_obj(*sro);
+
+struct rmi_sro_state *sro __free(kfree) = kmalloc_obj(*sro);
+
+> +	if (!sro)
+> +		return -ENOMEM;
+> +
+> +	ret = rmi_sro_memxfer_cmd(sro, GFP_KERNEL, SMC_RMI_RMM_ACTIVATE);
+> +	if (ret) {
+> +		pr_err("RMM activate failed\n");
+> +		ret = ret < 0 ? ret : -ENXIO;
+  		return ret < 0 ? ...
+> +	}
+
+return 0;
+Perhaps to make it more obvious that any non 0 return means error?
+
+Doesn't really matter
 
 -- 
 Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
