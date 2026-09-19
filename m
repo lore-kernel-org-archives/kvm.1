@@ -1,130 +1,91 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F34C23D7DF;
-	Sat, 19 Sep 2026 09:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19BA447CC8D;
+	Sat, 19 Sep 2026 11:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789810389; cv=none; b=gFnyxujcdqIG+qhmiXCBRuVrx9neyHfGiMk9FjGbYCSMY9zuw+Lw/8oKqKHqSlrcxX7SBSP0hcLo3wt7+o7KX2ksI3sDQATjdPMKs+QwWFAJmkINdcZ0IrcTmMrr7UTi7VRxLfhAgExnCGGGnZJy734/9kHh3IOPpPVYKXCqgQI=
+	t=1789817163; cv=none; b=pAjxPN2o+xoxcFHw1+OHZ/S4h5M1ZX0SHzAIlLa9LSg0fnB3cw4so/AUWbJWAqjUkybMKnP9ZuZpHGau2WdpuPYOwy72beOIyfyPrX8Fi88muGVgRYHo8grftfo/gb+m89cLUIBQxiq8xXgCwXIiEhzrXtXqfcZy/IwEhh9FEuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789810389; c=relaxed/simple;
-	bh=37Tkp54FuTweTIX79ZXQH1nZlgF0Y6dt687PbaKTug8=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IpFwy2hux1LJkdQU+ceK/Oc8lOr/MFXTJrgqj5z5UAUddW+TigQ7Odd2mQF/HH7EjcJ+TfyOng1JiMaSQHwLEf9JAYFBVKPtchm8YrDmuw9xxI9GqLcfmplnJLOA6mP+ASmdmuMjqV3GXbDk64/WwkMSl86HYJUfXo4S+tb31/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XDsjrrlC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789817163; c=relaxed/simple;
+	bh=nDD77lCUuGPanc1dIg/pQIPYUjWYdkS3J6zyyFNMC8w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=svqfMB9zvWH4WNA0TneA4edhLOfCZs6mD9kU2vebRRTCiB9poGUpO1+o3SD71dONSDaNzpmztF/YYuLhucom6U0eEVEFOWkM/8b9c4y1F9ro6jjgk4RHa5I+iwtLRBxZgVB28CAdNgu35xqszgv1zu9vEa7MG8+Hu2IiJIymKhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sui0KgF3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XDsjrrlC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C87281F000FF;
-	Sat, 19 Sep 2026 09:33:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sui0KgF3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0C851F000FF;
+	Sat, 19 Sep 2026 11:26:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789810387;
-	bh=0caxOyaJoh8KN4zezLmE5kiSj3XpRezHw9bAKEfHF+E=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=XDsjrrlC/bjieVDUM7zOk8gB4UIJFl0ddaQ+sC2uP+/yLsu5viZfE67d6SlH0ixE1
-	 qMAhmknJmMs7wGx8sQt27EdAOeDgKn1hK6JGmYWAbpkIcecakZ5L7iOHcB2tH23SJe
-	 X3FrTs3okSimGbCy3EAnHnLSh29C1NmKKzXLlSqFnEf06RizFeAvfziU3V9CKhGjbz
-	 n2XSP826Kn3M6DQ4nGxKzM439GmgWbwsKqsR25CJHdxO3IVh6AuKF5kw/EaLS+aYm/
-	 tzHXNRduo/Mj4wn+pnsUqB+mrcuz6UClC7uu8bBQqoZf5N8Qa0Nx/ni3qeiTf0aIet
-	 FuUGVQfh4gWOQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1x7rRR-0000000AvOn-27ai;
-	Sat, 19 Sep 2026 09:33:05 +0000
-Date: Sat, 19 Sep 2026 10:36:12 +0100
-Message-ID: <87fqz54m7n.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Cc: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	nd <nd@arm.com>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
-	Joey Gouly
-	<Joey.Gouly@arm.com>,
-	Suzuki Poulose <Suzuki.Poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"peter.maydell@linaro.org"
-	<peter.maydell@linaro.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	Timothy Hayes <Timothy.Hayes@arm.com>,
-	"fuad.tabba@linux.dev"
-	<fuad.tabba@linux.dev>
-Subject: Re: [PATCH v6 35/49] KVM: arm64: gic-v5: Implement save/restore mechanisms for ISTs
-In-Reply-To: <20260904113404.4051341-36-sascha.bischoff@arm.com>
-References: <20260904113404.4051341-1-sascha.bischoff@arm.com>
-	<20260904113404.4051341-36-sascha.bischoff@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20260515; t=1789817161;
+	bh=fCBBvMJ9RrgDcgopr8ESfkQ/nu0fhXNb8XpG2GhGV3I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Sui0KgF3V2wTPBaekHDtIyHqVKUojFZmU+nR3zYPd4Qff3fAUw1mGdgQ2cFUX0D0I
+	 InGzWCQ//u4sYwraWmImGSipYxNodKmw9viNFmdga6R89wkkJa5kHmFghWOeMhAbEp
+	 VJgY2LR00tyXPtcMGnjB5oUHQeRY/ObD7gqxpxtnVlwqV1PRNatsiGmUFqix37NyI2
+	 +c1nS9yKklEMhDWGntIWA1dGxa7wrbzihQIU37bPl+8ce7ovJNklkrKtYmu5RSQVxs
+	 oCZVzA0RzhElJEh0/40G2hlT6zbBw/0uXiG9Z0GebhzupLJTpGvRH1fi7cdt8CIadC
+	 b4FjqbEqhQIbg==
+Date: Sat, 19 Sep 2026 14:25:56 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
+	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
+	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	linux-rdma@vger.kernel.org, kvm@vger.kernel.org
+Subject: Re: [PATCH v6 18/18] RDMA/mlx5: Ask P2PDMA whether ATS takes a
+ direct peer-to-peer route
+Message-ID: <20260919112556.GB13683@unreal>
+References: <20260914-fix-p2p-acs-v4-0-v6-0-5ef07ec9ef06@nvidia.com>
+ <20260914-fix-p2p-acs-v4-0-v6-18-5ef07ec9ef06@nvidia.com>
+ <321890690ce83d1943b2f678bd9bee9b8c895b66.camel@linux.intel.com>
+ <20260918121500.GV13683@unreal>
+ <b517070d0b9236b03962fcba649faffcacda23eb.camel@linux.intel.com>
+ <20260918170524.GH11599@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com, fuad.tabba@linux.dev
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260918170524.GH11599@ziepe.ca>
 
-On Fri, 04 Sep 2026 12:52:03 +0100,
-Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
+On Fri, Sep 18, 2026 at 02:05:24PM -0300, Jason Gunthorpe wrote:
+> On Fri, Sep 18, 2026 at 03:42:28PM +0200, Thomas Hellström wrote:
+> > 
+> > 1) Xe attachment check if pci_p2pdma_distance() returns OK for the
+> > path. Then Xe always sets up dma-addresses using dma_map_resource(). 
+> 
+> Open coding pci_p2pdma_distance() in drivers is a hack. Using
+> dma_map_resource() like this was never "allowed".
+> 
+> We've fixed things so these hacks are not needed, the drivers need to
+> move over to things like dma_buf_phys_vec_to_sgt() and the hmm helpers
+> to use the DMA API correctly.
 
-Another LKP bot sparse finding at 202609191215.to1MBYak-lkp@intel.com:
+And this brings us back to my original question: what exactly should I
+change in this series, given that it works as expected for all users of
+the existing DMA and P2P APIs without any additional "hacks"? This
+includes, for example, VFIO, iommufd, and RDMA. In our internal tests,
+the GPU driver converted to use these interfaces also works as expected.
 
-> +/*
-> + * Save a linear host IST to userspace memory.
-> + *
-> + * Only the architected 32-bit ISTE state is stored. Metadata is skipped when
-> + * striding through the host IST.
-> + */
-> +static int vgic_v5_save_linear_ist(const struct vgic_v5_ist_desc *ist,
-> +				   u32 __user *uaddr, size_t nr_entries)
-> +{
-> +	__le32 h_iste;
-> +	size_t index;
-> +	int ret;
-> +
-> +	vgic_v5_clean_inval(ist->base,
-> +			    GICV5_LINEAR_IST_SIZE(ist->id_bits, ist->istsz));
-> +
-> +	for (index = 0; index < nr_entries; index++) {
-> +		__le32 *h_iste_addr = ist->base + index * ist->iste_size;
-> +
-> +		h_iste = READ_ONCE(*h_iste_addr);
-> +		ret = put_user(h_iste, uaddr);
+IMHO, it is time to update XE too.
 
-h_iste is an __le32, while uaddr is a pointer to u32. Not great, even
-if arm64 BE is now dead. I'll queue this:
-
-@@ -1459,7 +1459,6 @@ static int vgic_v5_get_lpi_ist_desc(struct kvm *kvm,
- static int vgic_v5_save_linear_ist(const struct vgic_v5_ist_desc *ist,
- 				   u32 __user *uaddr, size_t nr_entries)
- {
--	__le32 h_iste;
- 	size_t index;
- 	int ret;
- 
-@@ -1468,8 +1467,9 @@ static int vgic_v5_save_linear_ist(const struct vgic_v5_ist_desc *ist,
- 
- 	for (index = 0; index < nr_entries; index++) {
- 		__le32 *h_iste_addr = ist->base + index * ist->iste_size;
-+		u32 h_iste;
- 
--		h_iste = READ_ONCE(*h_iste_addr);
-+		h_iste = le32_to_cpu(READ_ONCE(*h_iste_addr));
- 		ret = put_user(h_iste, uaddr);
- 		if (ret)
- 			return ret;
-
-Thanks,
-
-	M.
-
--- 
-Jazz isn't dead. It just smells funny.
+Thanks
