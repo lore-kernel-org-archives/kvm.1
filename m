@@ -1,65 +1,65 @@
-Received: from mail-yx2-f43.google.com (mail-yx2-f43.google.com [74.125.224.171])
+Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12609476CD4
-	for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 19:38:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB4247206D
+	for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 19:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789933109; cv=none; b=AckirroQli3MXkN67Bc/kfzy1A+v+4r58WaA9P2NLNqgnTDjM4mtRE7dKCpe2W7iCi62Xf2KMGW8u8XSy8YzWWeZAzac7ah97uERft95o57VbrinRgnPUK2Yr3g8hMPjEcVrSKEfs84JprtwiA85g9zdu9Fc/+cs4IJHWGKpvI8=
+	t=1789933113; cv=none; b=nJSCLdG03rSlPmI/hvwxMK8W5/Ty968mkOjHCl+fbsyQ9jxCVBvd8KjuAvdhDS12J99qavMqP1w2yhWOYYFCYZiLIp2cXtzcIIVn5Wvupl6GG9BPQSOt1ghuYloVUbsu++2Gq3u9oW5NZASTzFDbnQNL+2CFEoxJG3RhLqcikZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789933109; c=relaxed/simple;
-	bh=Mx5CubcfB4sMZYCm46TzbufBdOimSDN1Nrpp7LlbNFg=;
+	s=arc-20240116; t=1789933113; c=relaxed/simple;
+	bh=PcZIg6mUk+b75x/WMxTq7Jg9adSsEcLtx5KRB8LICEI=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gP4JlpqKvXO5XAmHCov6ZwMNzkxf9OC1S9TS+lPp31P15mk+Vy55UAVOvTHehgWYAE9uZaUchdEjKM17CMMsK7Q/uh/7HeYWIeqk9T271cOIWs8DQaSPz2M/6NDt2/Qck5v8LVit250/T/98N+my0kUNJI316kM4Y8/qRTm4jRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com; spf=pass smtp.mailfrom=soleen.com; dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b=kH2QH5RN; arc=none smtp.client-ip=74.125.224.171
+	 MIME-Version; b=nxmIe3ZjJnTv/7pIwV1bLlHC/iLIDh+VL+Xu0VQ3i25XQjwMhGAkXFzRaCnCN33oOGijjonE27jRBPGeO+SH07NfKpaNJE6P8k/xxwDPCXNkNXleFX8CVJlqaEsdIMN5nxdWgaCSSadzCtCr71IXcGVcN4uvcHwZaz9oqw5Ocpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com; spf=pass smtp.mailfrom=soleen.com; dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b=iuYsaamQ; arc=none smtp.client-ip=74.125.224.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b="kH2QH5RN"
-Received: by mail-yx2-f43.google.com with SMTP id 00721157ae682-85d43f9b119so18207337b3.2
-        for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 12:38:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b="iuYsaamQ"
+Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-67109935888so2111806d50.3
+        for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 12:38:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1789933105; x=1790537905; darn=vger.kernel.org;
+        d=soleen.com; s=google; t=1789933110; x=1790537910; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=K5j5l9GIwIcGWU8WT7f8DcBXaOCqBMTT8VcXmZE9caw=;
-        b=kH2QH5RNMleW7R3ONGtvPtM+n9xJoyjRG8AzY4G/xi+MUT5H9Po87NFYFmjyhQB03s
-         eCvdszZxoct9t/m5ijhgMgc0n95BMJkyiqgfzaCmoSX79uLKyhzgFbwZ3SVWawYqeUdg
-         v0/EFwHwPvgc+Asn03NGDRAsm7RgoZz43h5TuDwS4dVoX6wC13suCg07NGFUUQ7y+j6N
-         PspXwKKlD8rFGG9nrS4yPclpFOt1acmHed+DUf7T7PQsxyBzrw11xS7/ZZFWl7eULaN3
-         1Ea9rPUvNarPSxhA7Ja3nOvr3y5yM1K5neFD0eU10TVSBdMLQ5PM3/3Vo1i8oSLfNH7A
-         k6xw==
+        bh=wVg6Gk8z5CmekkaH13r0qzA08Wiru8yJiEs8XX/Voco=;
+        b=iuYsaamQFeh8sh2oM51c7GxGMn8WhLvAvEpn7BXxefRmmkKg01fUMgIfOz5t29Qf6L
+         zhts+pjZaHMoDW6mWXlF88I56Z7A3xkIj6RAUw5Kj/o2KZ3vWPLeLITY96krBaF21p6t
+         DGWoF4PUnhQTR1xdJ92rkoFp39+qgsd0/uTXZhw+2LNphzBe72gT3r7B4kXToN2VmUJs
+         HBu8GBk+gQjk3PhKYx8+4L01/PRob8qFBNj1XeTQK/mx14oEk6zRmajq/0ca/ApZDbBs
+         F09GiVcZFKUtwA4YVQ5Nk+GimT9T/HeYNigsNJAT3IbDjZbpLwD6/9Ov9ccRYb+AlMn+
+         XlqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789933105; x=1790537905;
+        d=1e100.net; s=20260707; t=1789933110; x=1790537910;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=K5j5l9GIwIcGWU8WT7f8DcBXaOCqBMTT8VcXmZE9caw=;
-        b=HZ6ahcVW3uqmB1rw9zgMYvEesdk3ZX1f0XA9G9wybU79VaHnA9n33/2tMD7ace+OQG
-         JGJp9YqITHr1xrTMpH2U0hn7x1YupGDF4C18HVd16UFtHHEO/sOSBUMK5mdQ96wQpTAA
-         apMZd6zLHpg4HO5GUqDjalBt32SQyT+rZdkinaj5PCecE90CQXPMIM73glCE/bhQwRTp
-         qwDksfKd2JTxEMhonoO2IV0u10HhWCzRaJt67UjgLuijEtpQgVv/mRbO4Nh/815fl1MF
-         Q2ZsyEowJwAQvFFh6McMkp0xiuRj7A0VrXTiB14rBshkkN4yFGqCH+5jEQ7VrpDxharb
-         fJeA==
-X-Forwarded-Encrypted: i=1; AKwUvBwIDjyT5UBVmpGUYJLa1YAe4L70TElkLfqlRdKSSym8qQE1XHfdnKVtUuVML+6MGuSCv6g=@vger.kernel.org
-X-Gm-Message-State: AFuF++nd6LoaffA+17Wr1hPS462UG7AIsmhtXYblyxywaihejG1tnX+c
-	B9pKXVDk0dQieIAEt1cABVvKiyoDdzbsvGH6GK6iuMlVeNA/VkQzPqEaIRLmmyZIPFU=
-X-Gm-Gg: AYBFou0bEUsf20vVnvlc4w+LlFbigAPKIEL33cECKbFwkktfF8QXeqBC6uS9tX7iCe7
-	D/HDCFvpRRYqYSaeIRLb9zYh0PSjp4mHjom8AD311lI7jHGegpgWVuaZdM/JSpRJlgrlk8qgotg
-	eLiwbdUwd7n8u2xc5Kp8Cx03qvnMvO1BNXIk0XLSf2EJYk7K13IxCf/xPbkrPJhjbdkMdorjXac
-	ujkAt1oTdfJlWbbBPD4rdxBnIS2j3Fo+SWE0zBdRGq7GZVH98kXmc7D3KVEOTf5yBYDdX09SMIr
-	JB/XDQ8dezyrxIHy+6PY98EtH3vvmxNzCyc/jdNVQTXZUR8qHtnMoDy1QZvAruTVGi52GzMVFBG
-	uSfOEXaI4Wsr3NocbKWNwMmoGyCWvnqtu0EaLNis4o4vK73hOJDzCc8kv93rUO0Vkzklvnq7gEA
-	zPX2nvnXWpDj/KYE2SvNbPQVk24j6/9Jk9NzQDiTGXSZ5i6XyOzBjhyqfV1rtv6sh0WC4NH5hCh
-	KdwIauPHPdc2nuemhzEHJJSt9bjC8MYcu40ZQX1RxQ/21VPxEaceoQra5VNagnZe6wB4xSr/aRC
-	3PlFyOVztC7Z+UPLatM=
-X-Received: by 2002:a05:690c:a695:b0:873:5ddf:d85a with SMTP id 00721157ae682-897346e4bd2mr18960687b3.37.1789933105074;
-        Sun, 20 Sep 2026 12:38:25 -0700 (PDT)
+        bh=wVg6Gk8z5CmekkaH13r0qzA08Wiru8yJiEs8XX/Voco=;
+        b=pnu9SA3BC+B8+MonrRsFUxzsBLwcauOp12AeXIQoYgPlLMqYTruEjJTpvRYYvtQupp
+         n9W6XrCyKI13y0yROJasIs+kuXDkX5oejSstbShyDj2gFuMu+QwF5o31ubKu6/Xn00JH
+         VRUZexP//LTd+3ByDg+gT77f5DVYzDpl6MSLiEO/Y7dlchgXg/oHtpC7q5nKRbpWO1gG
+         TWKwXYi1UEiIWvfvRF2QUA4/YuiZHcSf6nDchJdD3exxCF5+xTFKOaoy5+14ztAf454/
+         EAJwwxj2NxOIfG+Up6yObHp3P42dmqr3auYtzMwBsUrBGTW7kjG0Shh5JJSc1+N1L7Km
+         /iGw==
+X-Forwarded-Encrypted: i=1; AKwUvBwRWACT/xyqfEnsVMNK93N2FUsIQ9k6mJBAh4XvtmVALg/oy6XFPxSSufktqKE/tOEHmoE=@vger.kernel.org
+X-Gm-Message-State: AFuF++kcZAZL1EpnuACS+xTzch4XbXyES7rj2cPIiVmVoPNsi8qfE0rF
+	veMIMoVq1wbf0AA1zjHWuPHetGZ2fzuJFB9P8eAkuCnuyEPZxhVIzgQfZfXqWw/hr7s=
+X-Gm-Gg: AYBFou3o4w4/87pogAINxyKXivJruKXBOnXQT/TkgSlnvVgvVRIiR+ZUggNijUPK5ns
+	HLj/5OZrdumuZB/T0WL7hrSgn9G9Wyg/SxpZZkUBPnreLgE4W/ukZ1Sbb8qSyxIuWltqCR9JNLO
+	7zjUIDPO49IRku/Ja1mhqUISZhc95ttKpaUKlOk2CTDgpPNgs3jlgtO4Kxvt4rgZrMidNCKuX2c
+	WqhgFDR3N7uTka2f2mgYY9XWXG9yusHWfbN/1eB9rBtaXo6gkPIMtvavZ5hRz2P9fLGfcpg/8pn
+	2PktahW3MMAzdta4ceCJtoP/I67aCCDVv3VaHVnfDakXV2o3G1KWUkpE+gBsz9HLCYwxkrILxxE
+	YGouG0XDmEPnMm+txue/z5mRNdFHSAogE18laeAYmAgn8fEC/SxdhxIoQ+25widEdsbmVMNw2JJ
+	fmBb2ZKxXaps2E2Zv5bCg74ammZzicWXuyevJPXyZyCR8nuDbtROOENaWwSBTxlG3eYsyi8eo+p
+	D5QZ9FBzmEi0hyONYDQraI3PJx9p+0AQejPHOc172AD9MIYYeAM1M211xu5LHbABL8jwZE2GLi7
+	5a3b1OT5ytW2GRYqVy8=
+X-Received: by 2002:a05:690e:144f:b0:671:70d2:527e with SMTP id 956f58d0204a3-6717fd6bc1bmr2723101d50.65.1789933110380;
+        Sun, 20 Sep 2026 12:38:30 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-89a47af7bfbsm18835137b3.33.2026.09.20.12.38.22
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67299104e3bsm2626871d50.15.2026.09.20.12.38.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 12:38:24 -0700 (PDT)
+        Sun, 20 Sep 2026 12:38:29 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: linux-kselftest@vger.kernel.org,
 	legion@kernel.org,
@@ -137,9 +137,9 @@ To: linux-kselftest@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	vladimir.murzin@arm.com,
 	kas@kernel.org
-Subject: [RFC PATCH 15/46] cpu_preserve: Add physical CPU preservation lifecycle and build rules
-Date: Sun, 20 Sep 2026 15:36:19 -0400
-Message-ID: <20260920193650.3373435-16-pasha.tatashin@soleen.com>
+Subject: [RFC PATCH 16/46] liveupdate: cpu_preserve: Add sysfs interface
+Date: Sun, 20 Sep 2026 15:36:20 -0400
+Message-ID: <20260920193650.3373435-17-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 In-Reply-To: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 References: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
@@ -151,465 +151,102 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Implement physical CPU preservation lifecycle management, stack allocation,
-and build rules with -mbranch-protection=none and -fno-stack-protector.
+Expose /sys/devices/system/cpu/preserved (global cpumask of preserved
+cores) and /sys/devices/system/cpu/cpuX/preserve (per-CPU preservation
+attribute and file descriptor target for LUO sessions), and document
+both attributes in Documentation/ABI/testing/sysfs-devices-system-cpu.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- kernel/cpu.c                     |   2 +
- kernel/liveupdate/Kconfig        |  35 +++
- kernel/liveupdate/Makefile       |   3 +
- kernel/liveupdate/cpu_preserve.c | 359 +++++++++++++++++++++++++++++++
- 4 files changed, 399 insertions(+)
+ .../ABI/testing/sysfs-devices-system-cpu      | 20 ++++++++
+ kernel/liveupdate/cpu_preserve.c              | 49 +++++++++++++++++++
+ 2 files changed, 69 insertions(+)
 
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index b3c8553d7bd6..8637b5e7f2de 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -14,6 +14,7 @@
- #include <linux/sched/smt.h>
- #include <linux/unistd.h>
- #include <linux/cpu.h>
-+#include <linux/cpu_preserve.h>
- #include <linux/oom.h>
- #include <linux/rcupdate.h>
- #include <linux/delay.h>
-@@ -349,6 +350,7 @@ static inline void cpuhp_ap_update_sync_state(enum cpuhp_sync_state state) { }
- void cpuhp_ap_report_dead(void)
- {
- 	cpuhp_ap_update_sync_state(SYNC_STATE_DEAD);
-+	cpu_preserved_report_dead();
- }
- 
- void __weak arch_cpuhp_cleanup_dead_cpu(unsigned int cpu) { }
-diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
-index 2490f9a9b838..52c5fd7a620b 100644
---- a/kernel/liveupdate/Kconfig
-+++ b/kernel/liveupdate/Kconfig
-@@ -101,4 +101,39 @@ config LIVEUPDATE_GUEST_MEMFD
- 
- 	  If unsure, say N.
- 
-+config ARCH_SUPPORTS_LIVEUPDATE_CPU
-+	bool
+diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
+index 82d10d556cc8..88ab03efd433 100644
+--- a/Documentation/ABI/testing/sysfs-devices-system-cpu
++++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
+@@ -806,3 +806,23 @@ Date:		Nov 2022
+ Contact:	Linux kernel mailing list <linux-kernel@vger.kernel.org>
+ Description:
+ 		(RO) the list of CPUs that can be brought online.
 +
-+config LIVEUPDATE_CPU
-+	bool "Live update support for preserved CPUs"
-+	depends on LIVEUPDATE
-+	depends on ARCH_SUPPORTS_LIVEUPDATE_CPU
-+	depends on HOTPLUG_CPU
-+	default LIVEUPDATE
-+	help
-+	  Enable live update support for physical CPU preservation.
++What:		/sys/devices/system/cpu/preserved
++Date:		March 2026
++Contact:	Pasha Tatashin <pasha.tatashin@soleen.com>
++Description:
++		(RO) cpumask list of physical CPUs currently isolated and
++		preserved across a host kernel live update. Note the naming
++		distinction from the per-CPU /sys/devices/system/cpu/cpuX/preserve
++		attribute.
 +
-+	  This feature allows physical CPU cores to be preserved across
-+	  kexec-based live updates without undergoing a hardware reset or
-+	  full kernel offline/online cycle.
++What:		/sys/devices/system/cpu/cpuX/preserve
++Date:		March 2026
++Contact:	Pasha Tatashin <pasha.tatashin@soleen.com>
++Description:
++		(RO) returns 1 if cpuX is currently preserved across a host
++		kernel live update, 0 otherwise. Although read-only, this sysfs
++		node exists to be opened and passed by file descriptor to a Live
++		Update Orchestrator (LUO) session via LIVEUPDATE_SESSION_PRESERVE_FD
++		to request preservation of cpuX across kexec.
 +
-+	  When a core is preserved, it is isolated from host scheduling and
-+	  parked in a dedicated execution loop within preserved memory pages.
-+	  Its execution context, state, and necessary page tables are handed
-+	  over across the kexec transition using the KHO
-+	  framework. The incoming kernel detects preserved cores during early
-+	  boot and avoids bringing them up during smp_init(), keeping them
-+	  isolated and running their assigned workloads.
-+
-+	  This capability is a core building block for live-updating virtual
-+	  machine hosts (e.g. Caretaker/OrphanVM) without pausing or
-+	  disrupting running guest workloads, and can also speed up kernel
-+	  live updates by skipping CPU re-initialization.
-+
-+	  Preservation lifecycle is managed from userspace via LUO sessions
-+	  associated with /sys/devices/system/cpu/cpu<N>/preserve file
-+	  descriptors, and monitored via sysfs.
-+
-+	  If unsure, say N.
-+
- endmenu
-diff --git a/kernel/liveupdate/Makefile b/kernel/liveupdate/Makefile
-index d9f469462556..486f7854bb75 100644
---- a/kernel/liveupdate/Makefile
-+++ b/kernel/liveupdate/Makefile
-@@ -1,5 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- 
-+CFLAGS_cpu_preserve.o += $(call cc-option,-mbranch-protection=none) -fno-stack-protector $(call cc-option,-ftrivial-auto-var-init=uninitialized) $(call cc-option,-fno-jump-tables)
-+
- luo-y :=								\
- 		kho_block.o						\
- 		luo_core.o						\
-@@ -11,3 +13,4 @@ obj-$(CONFIG_KEXEC_HANDOVER)		+= kexec_handover.o
- obj-$(CONFIG_KEXEC_HANDOVER_DEBUGFS)	+= kexec_handover_debugfs.o
- 
- obj-$(CONFIG_LIVEUPDATE)		+= luo.o
-+obj-$(CONFIG_LIVEUPDATE_CPU)		+= cpu_preserve.o
 diff --git a/kernel/liveupdate/cpu_preserve.c b/kernel/liveupdate/cpu_preserve.c
-index e19208670c3e..c5fd3a07ccb5 100644
+index c5fd3a07ccb5..cc27d1624d29 100644
 --- a/kernel/liveupdate/cpu_preserve.c
 +++ b/kernel/liveupdate/cpu_preserve.c
-@@ -247,3 +247,362 @@ static phys_addr_t cpu_preserved_get_data_pa(void)
- 	return cpu_preserved_data_pages ? page_to_phys(cpu_preserved_data_pages) : 0;
+@@ -606,3 +606,52 @@ static int __init cpu_preserve_early_init(void)
+ 	return 0;
  }
- 
-+static void cpu_preserved_sync_global_ser(void)
+ early_initcall(cpu_preserve_early_init);
++static ssize_t preserved_show(struct device *dev,
++			      struct device_attribute *attr, char *buf)
 +{
-+	struct cpu_preserved_global_ser *ser = cpu_preserved_global_ser;
-+
-+	if (!ser)
-+		return;
-+
-+	bitmap_to_arr64(ser->cpu_preserved_bitmap,
-+			cpumask_bits(&cpu_preserved_mask), nr_cpu_ids);
-+	if (cpu_preserved_text_pages) {
-+		ser->text_runtime_pa = page_to_phys(cpu_preserved_text_pages);
-+		ser->text_runtime_size =
-+			(1UL << cpu_preserved_text_order) * PAGE_SIZE;
-+	}
-+	if (cpu_preserved_data_pages) {
-+		ser->data_runtime_pa = page_to_phys(cpu_preserved_data_pages);
-+		ser->data_runtime_size =
-+			(1UL << cpu_preserved_data_order) * PAGE_SIZE;
-+	}
-+	KHOSER_STORE_PTR(ser->pcpus_runtime, cpu_preserved_outgoing.pcpus_ser);
-+	cpu_preserved_clean_sz(ser,
-+			       struct_size(ser, cpu_preserved_bitmap, ser->nr_cpu_words));
++	return sysfs_emit(buf, "%*pbl\n",
++			  cpumask_pr_args(cpu_get_preserved_mask()));
 +}
++static DEVICE_ATTR_RO(preserved);
 +
-+static void cpu_preserved_free_kho(void *va, bool is_incoming)
++static ssize_t preserve_show(struct device *dev,
++			     struct device_attribute *attr, char *buf)
 +{
-+	if (!va)
-+		return;
-+
-+	if (is_incoming)
-+		kho_restore_free(va);
-+	else
-+		kho_unpreserve_free(va);
++	return sysfs_emit(buf, "%d\n", cpu_is_preserved(dev->id));
 +}
++static DEVICE_ATTR_RO(preserve);
 +
-+static void cpu_preserved_free_stack(phys_addr_t stack_pa, bool is_incoming)
++static int __init cpu_preserve_sysfs_init(void)
 +{
-+	if (stack_pa)
-+		cpu_preserved_free_kho(phys_to_virt(stack_pa), is_incoming);
-+}
++	struct device *dev_root = bus_get_dev_root(&cpu_subsys);
++	int cpu, ret;
 +
-+static void cpu_preserved_state_cleanup(struct cpu_preserved_state *st,
-+					bool is_incoming)
-+{
-+	if (!cpumask_empty(&st->mask))
-+		return;
-+
-+	cpu_preserved_free_kho(st->pcpus_ser, is_incoming);
-+	st->pcpus_ser = NULL;
-+	kfree(st->pcpus);
-+	st->pcpus = NULL;
-+}
-+
-+/*
-+ * Drop @cpu out of the preserved state, free its preserved stack, and
-+ * republish the globals a parked core may still be reading.  The caller holds
-+ * cpu_preserved_lock and has already made the core leave the park loop.
-+ */
-+static void __cpu_unpreserve_locked(unsigned int cpu)
-+{
-+	struct cpu_preserved_state *incoming = &cpu_preserved_incoming;
-+	struct cpu_preserved_state *outgoing = &cpu_preserved_outgoing;
-+	struct cpu_preserved_pcpu_ser *ser = cpu_preserved_get_pcpu_ser(cpu);
-+	struct cpu_preserved_pcpu *pcpu = cpu_preserved_get_pcpu(cpu);
-+	bool is_incoming = cpu_preserved_is_incoming(cpu);
-+	phys_addr_t stack_pa = 0;
-+
-+	lockdep_assert_held(&cpu_preserved_lock);
-+
-+	cpumask_clear_cpu(cpu, &outgoing->mask);
-+	cpumask_clear_cpu(cpu, &incoming->mask);
-+	cpumask_clear_cpu(cpu, &cpu_preserved_mask);
-+	cpu_preserved_clean(&cpu_preserved_mask);
-+	set_cpu_present(cpu, true);
-+
-+	if (ser)
-+		WRITE_ONCE(ser->workload, 0);
-+
-+	if (pcpu) {
-+		stack_pa = pcpu->stack_pa;
-+		memset(pcpu, 0, sizeof(*pcpu));
++	if (dev_root) {
++		ret = sysfs_create_file(&dev_root->kobj, &dev_attr_preserved.attr);
++		put_device(dev_root);
++		if (ret)
++			pr_warn("Failed to create cpu preserved sysfs attribute: %d\n", ret);
 +	}
 +
-+	cpu_preserved_free_stack(stack_pa, is_incoming);
++	for_each_possible_cpu(cpu) {
++		struct device *dev = get_cpu_device(cpu);
 +
-+	/* @pcpu and @ser point into these arrays: do not touch past this point. */
-+	cpu_preserved_state_cleanup(outgoing, false);
-+	cpu_preserved_state_cleanup(incoming, true);
++		if (!dev && cpu_is_preserved(cpu)) {
++			set_cpu_present(cpu, true);
++			arch_register_cpu(cpu);
++			dev = get_cpu_device(cpu);
++		}
 +
-+	if (cpumask_empty(&cpu_preserved_mask)) {
-+		WRITE_ONCE(cpu_preserved_pcpus_va, NULL);
-+		WRITE_ONCE(cpu_preserved_host_pcpus_va, NULL);
-+		cpu_preserved_clean(&cpu_preserved_pcpus_va);
-+		cpu_preserved_clean(&cpu_preserved_host_pcpus_va);
++		if (dev) {
++			ret = sysfs_create_file(&dev->kobj, &dev_attr_preserve.attr);
++			if (ret)
++				pr_warn("Failed to create cpu%d preserve sysfs attribute: %d\n",
++					cpu, ret);
++		}
++
++		if (cpu_is_preserved(cpu))
++			set_cpu_present(cpu, false);
 +	}
-+
-+	cpu_preserved_sync_global_ser();
-+}
-+
-+/**
-+ * cpu_unpreserve - Unpreserve a physical CPU and restore it to online state
-+ * @cpu: Logical CPU identifier.
-+ *
-+ * Signals the CPU to exit the parking loop, cleans up preserved stack memory,
-+ * and restores the core to host scheduling via standard add_cpu().
-+ */
-+static void cpu_unpreserve(unsigned int cpu)
-+{
-+	int ret;
-+
-+	scoped_guard(mutex, &cpu_preserved_lock) {
-+		if (!cpu_is_preserved(cpu))
-+			return;
-+
-+		cpu_signal_exit(cpu);
-+		arch_cpu_preserved_kick(cpu);
-+	}
-+
-+	/*
-+	 * cpu_wait_dead() busy-polls for up to 20 seconds.  Do not hold
-+	 * cpu_preserved_lock across it: the poll only reads pcpu->state, which
-+	 * stays valid for as long as the CPU is preserved, and holding the lock
-+	 * here would stall every other preservation operation and every sysfs
-+	 * reader for the entire window.
-+	 */
-+	if (cpu_wait_dead(cpu))
-+		return;
-+
-+	scoped_guard(mutex, &cpu_preserved_lock) {
-+		if (!cpu_is_preserved(cpu))
-+			return;
-+
-+		__cpu_unpreserve_locked(cpu);
-+	}
-+
-+	ret = add_cpu(cpu);
-+	if (ret < 0)
-+		pr_err("Failed to bring unpreserved cpu %u back online: %d\n",
-+		       cpu, ret);
-+}
-+
-+/*
-+ * FLB Ops for Preserved CPUs
-+ */
-+static int cpu_preserved_flb_preserve(struct liveupdate_flb_op_args *argp)
-+{
-+	unsigned int nr_words = BITS_TO_U64(nr_cpu_ids);
-+	struct cpu_preserved_global_ser *ser;
-+	size_t ser_sz;
-+	int ret;
-+
-+	ret = cpu_preserved_init_runtime_buffer();
-+	if (ret)
-+		return ret;
-+
-+	ser_sz = struct_size(ser, cpu_preserved_bitmap, nr_words);
-+
-+	mutex_lock(&cpu_preserved_lock);
-+	ser = kho_alloc_preserve(ser_sz);
-+	if (IS_ERR(ser)) {
-+		mutex_unlock(&cpu_preserved_lock);
-+		return PTR_ERR(ser);
-+	}
-+
-+	memset(ser, 0, ser_sz);
-+	ser->nr_cpu_words = nr_words;
-+	cpu_preserved_global_ser = ser;
-+	cpu_preserved_sync_global_ser();
-+	mutex_unlock(&cpu_preserved_lock);
-+
-+	argp->data = virt_to_phys(ser);
-+	argp->obj = ser;
 +	return 0;
 +}
-+
-+static void cpu_preserved_flb_unpreserve(struct liveupdate_flb_op_args *argp)
-+{
-+	struct cpu_preserved_global_ser *ser;
-+
-+	if (!argp->data)
-+		return;
-+
-+	ser = phys_to_virt(argp->data);
-+	mutex_lock(&cpu_preserved_lock);
-+	cpu_preserved_global_ser = NULL;
-+	mutex_unlock(&cpu_preserved_lock);
-+
-+	cpu_preserved_unpreserve_runtime_buffer();
-+	kho_unpreserve_free(ser);
-+}
-+
-+static int cpu_preserved_flb_retrieve(struct liveupdate_flb_op_args *argp)
-+{
-+	struct cpu_preserved_global_ser *ser;
-+	struct cpu_preserved_pcpu_ser *pcpus;
-+	u64 nr_bits;
-+	int cpu;
-+
-+	if (!argp->data)
-+		return -EINVAL;
-+
-+	ser = phys_to_virt(argp->data);
-+	arch_cpu_preserved_early_init();
-+
-+	/*
-+	 * The outgoing kernel may have been built with a larger NR_CPUS.  Any
-+	 * preserved CPU we cannot represent would be silently forgotten and
-+	 * left spinning in its park loop forever, so refuse the handover
-+	 * instead.
-+	 */
-+	nr_bits = (u64)ser->nr_cpu_words * BITS_PER_TYPE(u64);
-+	if (nr_bits > nr_cpu_ids &&
-+	    find_next_bit((const unsigned long *)ser->cpu_preserved_bitmap,
-+			  nr_bits, nr_cpu_ids) < nr_bits) {
-+		pr_err("preserved CPU above nr_cpu_ids=%u in handover data\n",
-+		       nr_cpu_ids);
-+		return -ERANGE;
-+	}
-+
-+	mutex_lock(&cpu_preserved_lock);
-+	bitmap_from_arr64(cpumask_bits(&cpu_preserved_mask),
-+			  ser->cpu_preserved_bitmap, min_t(u64, nr_bits, nr_cpu_ids));
-+	cpumask_copy(&cpu_preserved_incoming.mask, &cpu_preserved_mask);
-+	pcpus = KHOSER_LOAD_PTR(ser->pcpus_runtime);
-+
-+	if (pcpus) {
-+		cpu_preserved_incoming.pcpus_ser = pcpus;
-+		WRITE_ONCE(cpu_preserved_pcpus_va, pcpus);
-+		cpu_preserved_clean(&cpu_preserved_pcpus_va);
-+	}
-+	cpu_preserved_clean(&cpu_preserved_mask);
-+	for_each_cpu(cpu, &cpu_preserved_mask)
-+		set_cpu_present(cpu, false);
-+	mutex_unlock(&cpu_preserved_lock);
-+
-+	argp->obj = ser;
-+	return 0;
-+}
-+
-+static void cpu_preserved_flb_finish(struct liveupdate_flb_op_args *argp)
-+{
-+	struct cpu_preserved_global_ser *ser;
-+
-+	if (!argp->obj)
-+		return;
-+
-+	ser = argp->obj;
-+
-+	scoped_guard(mutex, &cpu_preserved_lock) {
-+		if (cpu_preserved_incoming.pcpus_ser) {
-+			kho_restore_free(cpu_preserved_incoming.pcpus_ser);
-+			cpu_preserved_incoming.pcpus_ser = NULL;
-+		}
-+		kfree(cpu_preserved_incoming.pcpus);
-+		cpu_preserved_incoming.pcpus = NULL;
-+	}
-+
-+	if (ser->text_runtime_pa && ser->text_runtime_size) {
-+		unsigned long nr_pages = ser->text_runtime_size >> PAGE_SHIFT;
-+		struct page *page = kho_restore_pages(ser->text_runtime_pa, nr_pages);
-+
-+		if (page) {
-+			for (unsigned long i = 0; i < nr_pages; i++)
-+				__free_page(page + i);
-+		}
-+	}
-+
-+	if (ser->data_runtime_pa && ser->data_runtime_size) {
-+		unsigned long nr_pages = ser->data_runtime_size >> PAGE_SHIFT;
-+		struct page *page = kho_restore_pages(ser->data_runtime_pa, nr_pages);
-+
-+		if (page) {
-+			for (unsigned long i = 0; i < nr_pages; i++)
-+				__free_page(page + i);
-+		}
-+	}
-+
-+	kho_restore_free(ser);
-+}
-+
-+static const struct liveupdate_flb_ops cpu_preserved_flb_ops = {
-+	.preserve   = cpu_preserved_flb_preserve,
-+	.unpreserve = cpu_preserved_flb_unpreserve,
-+	.retrieve   = cpu_preserved_flb_retrieve,
-+	.finish     = cpu_preserved_flb_finish,
-+	.owner      = THIS_MODULE,
-+};
-+
-+static struct liveupdate_flb cpu_preserved_flb = {
-+	.ops        = &cpu_preserved_flb_ops,
-+	.compatible = CPU_PRESERVED_LUO_FLB_COMPATIBLE,
-+};
-+
-+static int cpu_preserve_reboot_notify(struct notifier_block *nb,
-+				      unsigned long action, void *data)
-+{
-+	int cpu;
-+
-+	scoped_guard(mutex, &cpu_preserved_lock) {
-+		for_each_cpu(cpu, &cpu_preserved_mask) {
-+			/*
-+			 * If this CPU is not being preserved across an outgoing
-+			 * live update, signal it to exit the park loop and
-+			 * offline it.
-+			 */
-+			if (kexec_in_progress && liveupdate_enabled() &&
-+			    !cpu_preserved_is_incoming(cpu))
-+				continue;
-+
-+			cpu_signal_exit(cpu);
-+			arch_cpu_preserved_kick(cpu);
-+			if (cpu_wait_dead(cpu))
-+				continue;
-+
-+			__cpu_unpreserve_locked(cpu);
-+		}
-+	}
-+
-+	return NOTIFY_OK;
-+}
-+
-+static struct notifier_block cpu_preserve_reboot_nb = {
-+	.notifier_call = cpu_preserve_reboot_notify,
-+	.priority = 0,
-+};
-+
-+/**
-+ * cpu_preserve_early_init - Early boot registration & retrieval of CPUs
-+ *
-+ * Registers the preserved CPU file handler and FLB with LUO, retrieves incoming
-+ * preserved CPU state prior to secondary SMP bringup, and registers the reboot
-+ * notifier.
-+ *
-+ * Return: 0 on success, or negative error code on failure.
-+ */
-+static int __init cpu_preserve_early_init(void)
-+{
-+	void *obj;
-+	int err;
-+
-+	if (!liveupdate_enabled())
-+		cpumask_clear(&cpu_preserved_mask);
-+	cpumask_clear(&cpu_preserved_outgoing.mask);
-+	cpumask_clear(&cpu_preserved_incoming.mask);
-+	cpu_preserved_outgoing.pcpus = NULL;
-+	cpu_preserved_outgoing.pcpus_ser = NULL;
-+	cpu_preserved_incoming.pcpus = NULL;
-+	cpu_preserved_incoming.pcpus_ser = NULL;
-+	cpu_preserved_global_ser = NULL;
-+
-+	/* Retrieve incoming preserved CPUs before secondary CPU bringup */
-+	if (liveupdate_enabled())
-+		liveupdate_flb_get_incoming(&cpu_preserved_flb, &obj);
-+
-+	register_reboot_notifier(&cpu_preserve_reboot_nb);
-+
-+	return 0;
-+}
-+early_initcall(cpu_preserve_early_init);
++late_initcall(cpu_preserve_sysfs_init);
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
