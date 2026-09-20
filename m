@@ -1,180 +1,181 @@
 Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47643DFC6A
-	for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 07:25:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789889108; cv=none; b=JtlljRVYLj9TBc6lU92E2cQaGSebo3JYGjkaCkJNu+kCUrWK8kPCZXHHpO0XlELY3nAzFq/r1BxQ8C0xsKLn9azzOhpaAxPfpvpN3N2qGvmxMepObZtSUPcigIXJnxFlj6M8+fJ2A0VPJ7etq0t805ZjHN2cCQIIE1P5DuOV2i4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789889108; c=relaxed/simple;
-	bh=IUta/M2tNKvfaLoq2NlbsB84SShrqK6/UdO94LXNBYQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l0YczZhaRo9Lsab0fzVl3F0+/rDZlrSa1yPiYZfGKOyHAkT6u8kkUxSxpxa2JL2e4Gb6+S80z09Z3bz0PBlQO5XQHnl+XNYMnDCrNGx1pOI9JANrBwUjjEofIlgYbEYo13f/s2qEkq/v7hjwhwjrX/d00iq5ZWkkv9MPxfxfqTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y6uNyAkm; arc=none smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D95E3DB324
+	for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 08:25:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.225.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789892729; cv=pass; b=YzoIOtiHhwT6i1GL80pfJkDzoqe+WgfazTYASMfh2+2LZYuTrMlBd+/vD5FMJeGF9orfJeINt/B6GsbtqKhxYZMhiIIXiw5QNJe+tpNNvvLyErYxspejNfkC3R28eIXhRhbQlbjuIXz8i7B+2xyb/MJU09F7TsfdHUFzQo2jSA8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789892729; c=relaxed/simple;
+	bh=VXFTwPchnB8FN8+NBy8TOuHUJ8PP0h+KsSBgVXPy+6s=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=VFhUJSuZpdler/b/8Cs2BSsqEsP1Ig/Awihi+EXmD94O3nzRfMimXCIKrdka4ELq1QNA0PSDzOfXwOGAN2ZgVxdzMIx9magkRjs0lTFppZn7qGpYKADbPWjmtQF4Ine9kxeRSuoMfL/3BRhTwRyLXNCcvGokPLARCrTcVS5CwRc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=PPF+vm0S; arc=pass smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y6uNyAkm"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-485933b24c3so1001137f8f.0
-        for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 00:25:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="PPF+vm0S"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f63546c3so1574683f8f.1
+        for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 01:25:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789892726; cv=none;
+        d=google.com; s=arc-20260327;
+        b=H1AbCnda+A7DudeggghC8rk9kw6NNTbQL6x8CFSzz/LwroBoEdXJY1Cx1HZOvVOz9w
+         xSHuzl27F5+nJLXEmEoddSmXysQsHkVQN8hu7zB2AvEolws3af3m1eTtJoW56+yiO5g4
+         T+KRcTyiGRGnZ5tWnFJ66YPGY44fM0h6xaiUltRVT/zrv3zaKfwUk8wC8RaOe+/44uDs
+         NGAm1F7o2brZAcmrO9qwDZjQRNSsMGUiHwxSCfc/hfh0/eLlWBk/wfxBTttmvYuvehp3
+         kuBc3JjzbERW5jHrKu/FHM78Fx4Y38zSasjepQ4psDR0B170gvwLc5bnPSeRBYjwB6U2
+         ftBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=/v5NR7eNmP+HJUBTR1GLDXgKiaOepq2osnsCYiJw7Nw=;
+        fh=PbXyHT1gbz5b7z1j4p2uZnEMvbJZJsP+ZdslIUSkF7A=;
+        b=XNUjeldTBm1ri3V//LmMAin+eM4AnUYOnms2ojIMeo4pbksf6AhdeWg0YDIXhzgdBF
+         JhgwrTrlLTqM+xm5uCUUYUEDlGctFCbbXFB5k1anZJhpI8Ih8qFMg3f6NIE6pTwy3+EC
+         bmrOtyJN6K2dlQMLWzwYzl10vh1bHS5Cd7hnYs5wSsV6/HQDxdqN/XkGh8x/7AwTlg4z
+         TEnZ6EPDvun4joDseaLlWd1q5Fbnl5RvuBLkLIEZxb7aId8t/xv3SODRt0FoGzxYrWZZ
+         eLccieoqzyLDl8QuHw3K7KKXoRyW80X773eOdWwY84sEJgRmazs9qRg9Y1Cp1HvQcy5Z
+         ewwA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789889104; x=1790493904; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+vC7mWH/mIfDgj2VP2g28i21vIin0AtG0fS/fptEVoY=;
-        b=Y6uNyAkm5l2Rq2e/PZy0RG3K5WKKD+rP1RA/qBdJrN3VmEy0RXXkvQvOSHCOXrZB+3
-         pEkP+nuipxO94jFFM80MKUQ413HStE4PZoiQY6/Ho6l7tfr6Ko3DA42JMkPc5KA2GLL+
-         yl2d8JSXV2+dbuv7emfD5pu1DP1yn/aKs/FMZoYv/ZewU9nKJKUKhq8s+ek18oBzu/S0
-         d5rJqRogiOlC/QE26FsC+LH5G9b9ux6iX7Gl2XJqDi9Vi5weokivNAPnxpzWTYdhD02F
-         3e7hj8HFSF3ZfXO7hERRVMqQNNQTAyJ8ObJx/zjt/jOGMgf9EZpR2BxGfZiKc2oqWzgX
-         WSHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789889104; x=1790493904;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=brainfault.org; s=google; t=1789892726; x=1790497526; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+vC7mWH/mIfDgj2VP2g28i21vIin0AtG0fS/fptEVoY=;
-        b=ld7cnnyeWdVA0UfByk7FFfiK+Y928ZJw9IcONJugSmYHHTyWfFDyem5AnENS81z/P7
-         6sWf1mgu09NsjK6alyMmEM7/65jK1X2ZO02H5dZXGUMf4UMRUf7eR/f9rgiM4c1RC7CQ
-         Vgkts6yVmD8NVpjs1mmb/pUKPLBZixiAHSuG42p3P1g/2zWTuSNmVUscX/VtOKaWojjl
-         MqEGk50QKW135CNoP9+RiQWs3KxpE6vyx5Lskx0JN41XTV6FH9+q1A0PlViR0nW6b5Y2
-         3xH6IhR2A1vOkOR66IycmULGlzXnYcwlY2CeanYvNRBZsW2a+epN+D3xDlHg0mFDEeOS
-         3Vfw==
-X-Forwarded-Encrypted: i=1; AKwUvBwCFbXZlWKzlbAFc3Mu2DddvbN9hm41jmI3iKLg8uniA72z2yBt7CwAB/VZsKRpnrFVIUY=@vger.kernel.org
-X-Gm-Message-State: AFuF++mWJCPaKkIg8HlZqNk0pLmKY4E88AvHudRnLytinpAVA3klR/eX
-	qi28H5mEHPfdIUSEvnihKOymKO5WUVJmUEGHeDlLhfhv3RHypgqIsogTkRWW3G4y
-X-Gm-Gg: AYBFou1gO2Ehhqbyyd7bhtsnoTg+el60xLxBudfEM0u8FOrAnayH+GzsDyhluj+YsQB
-	5WuLorrtYrf3m4SpbO7u2NCyMpe+f4QYzv/lAL7w9fVJU+Gw76L22JEiK2ZPukrrUKP7e8V6viu
-	OoLY5abGhsgcpvL+zNiyAp8Msyzam6qbhKVQBtLKG496bd7xs6syRY4z7X+pv5AkJGecNzUfPqY
-	QlTPFsjO3fZwvjeehZx1efqGJAi3nXy1rnhBGnqDcjf3aSeAWGdeHB42jcXzO6TMTOI0dIntALP
-	8AQLjNTMs5wOPqRVcjAFkrPII30KG1oe4c4IjyHG/f8BI1RqwR4rCUzUbzD9mF1ICFA2k2s9dCw
-	928iV0Oxil/7xj9Kzwoczyz3y85iwW11bNF3XQRKEZGhC+fWTAmDoY7c9/iMCZpH6DFWeq00CDe
-	2mjj80LASfCmf1CCMkz+X0hhgXsylEr3u+ZRChQMF6pUqcTIT1HMUrMfbPRAh//uNgt4gs9GnoA
-	++s
-X-Received: by 2002:a05:600c:3496:b0:49b:2796:be30 with SMTP id 5b1f17b1804b1-49fc57226d8mr106507795e9.11.1789889103983;
-        Sun, 20 Sep 2026 00:25:03 -0700 (PDT)
-Received: from build-server.. ([62.96.37.222])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fcd07bba7sm125191575e9.9.2026.09.20.00.25.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 00:25:03 -0700 (PDT)
-From: mike.malyshev@gmail.com
-To: seanjc@google.com,
-	pbonzini@redhat.com,
-	kvm@vger.kernel.org
-Cc: amoorthy@google.com,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	hpa@zytor.com,
-	x86@kernel.org,
-	chao.p.peng@linux.intel.com,
-	xiaoyao.li@intel.com,
-	yu.c.zhang@linux.intel.com,
-	linux-kernel@vger.kernel.org,
-	Mikhail Malyshev <mike.malyshev@gmail.com>
-Subject: [PATCH v2 2/2] KVM: x86/mmu: Convert can't-happen fault path EFAULTs to KVM_BUG_ON() + -EIO
-Date: Sun, 20 Sep 2026 07:24:59 +0000
-Message-ID: <20260920072459.3485710-3-mike.malyshev@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260920072459.3485710-1-mike.malyshev@gmail.com>
-References: <20260920072459.3485710-1-mike.malyshev@gmail.com>
+        bh=/v5NR7eNmP+HJUBTR1GLDXgKiaOepq2osnsCYiJw7Nw=;
+        b=PPF+vm0Spbrcg+dy6Ycjei0utHpgSDPZ0YFcNgHWGmsVD7Z4vScofVyROUp4/0WUGK
+         StsR/h2hgaai34DIGDw85YKmTqJhUMPtzFS831FFGL/pW4tiXtMgMmZ7pp7V+/oQHkIy
+         tqW9g7Db02MiAAznLCx3TxcICcqxhH8XInM7eTUNM8yFqbNf8PfwloveVTh45HB6ZhFE
+         BkdFIrM556rwibYT1NJHfKUwsYr3oebH6Mt5aMvouTZQVyfeE1l3lrjVAwT3EJoOoRrO
+         z2cB64JlM11lcoI9gw5etUHmwBGR0K+hEOp8zmWPMVKnBHf2oBwtRlDeeQz4al0ZLkIB
+         NW6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789892726; x=1790497526;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=/v5NR7eNmP+HJUBTR1GLDXgKiaOepq2osnsCYiJw7Nw=;
+        b=rfGjazZTiDs/AL9TJv3brIKGI2yTZCmmx+wA1pgxqLI4kdV2bIJayVzP1ZEKAVYDlB
+         IXK+TpgIJgHPqJkv63NqzKET971TbSVSb3+4jtBJtNy6KkYnTmWCG50RgpC8A15CTfwe
+         eIO9HvXcw99YLK0JpNAhzPpbyYj5qfh2alKEuJJbZO3FzA4BRYGog7RBzaQrqsKz1wS2
+         QN+T4dzi5cfZHZ5XFB9d8v/20H2GAJk0oeEYMbjnZV79znJT+eFZNSKoyVknpMgru406
+         3ecF+fh/C4WJFOcV5S7H8oLvvWJJDpHmrtkWkpOQ4Hy8OuOmxg7fSO5pHkxsaevqqqAl
+         WcEQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwHY6bw63+0Wv3swEX8csASDuao0o2vWqo/UsqRft4UbRQ4PXDKRAPRjMlJVQxQjpiwbgI=@vger.kernel.org
+X-Gm-Message-State: AFuF++kQMNr9ZW6bjk2DlUnB5fMUokbwYvUxteDUOB6qzwLYX1OdjGbs
+	PSrtd1JwJRzTyZGYymKPx5eQynv5+XE6QOB42152fejbawFvW0ZZmwdBA4Uucdgl04F8PplNXP8
+	vM49+5npq+zUnX5+jluwuTvE7H22yTcZ0L3uvPFb3nw==
+X-Gm-Gg: AYBFou2dc44Jnz2Dy5qiMlJeutT7WWOH0Tg/s60hm8HcP27DF68F7XuCYXJmjd6ul3+
+	4y+aST04EQEgigQiGKo1mROqPy2G7o5S2R84KcCN1SQmuR6femlO5DZNsocCLU6v1KuC5THRMHM
+	A7/ettr8K7KTSY7l6PX7ILtyh065Q1TYa1QzdfbWTVE5GFKT6UYhdZlSQGn3+b95m8mr//5HzfY
+	oZrHCzQfyG5knVAzlbFc8QgyTx9Ab5EKRc6VLvVFlkMq8HgBWss++tvZs2j1rMfJjYNWyrbbII4
+	2w62viSFd15jPlP74pcXn6OmkWBvvveog4dzZqHo71T4TKudsq/vIaxcqHdpUU73LJJqyMt+ROS
+	uxoCsLRLCFf2istqThL2E/ALrfdcHVNUwXu0Pm0NhJXMEPu3N5c7KZc67oBF7BxcepWHZY2lxDA
+	==
+X-Received: by 2002:a05:6000:2c0b:b0:487:6f0:8658 with SMTP id
+ ffacd0b85a97d-4871e36d031mr10347126f8f.42.1789892725264; Sun, 20 Sep 2026
+ 01:25:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: Anup Patel <anup@brainfault.org>
+Date: Sun, 20 Sep 2026 13:55:14 +0530
+X-Gm-Features: AcwNN1VHoP9FKod9I1ZhoSlWxL2KyjBkIxPhBW5MLSbl95fW79rnRDNl-xpnew8
+Message-ID: <CAAhSdy2MbSq2eGDZfh_EKt2S3OUEn7tJRWUgvncPsWNVR7vqeg@mail.gmail.com>
+Subject: [GIT PULL] KVM/riscv fixes for 7.3 take #1
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Atish Patra <atish.patra@linux.dev>, Andrew Jones <andrew.jones@oss.qualcomm.com>, 
+	KVM General <kvm@vger.kernel.org>, 
+	"KVM RISC-V (KVM/riscv)" <kvm-riscv@lists.infradead.org>, 
+	linux-riscv <linux-riscv@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Mikhail Malyshev <mike.malyshev@gmail.com>
+Hi Paolo,
 
-Four -EFAULT returns in x86's page fault path are guarded by
-WARN_ON_ONCE() because they describe KVM bugs, not conditions the guest
-or userspace can reach:
+We have the following fixes for the 7.3 kernel:
+1) Synchronize hrtimer during VCPU teardown
+2) Fix the conversion between vsip and hvip values
+3) Serialize IMSIC attributes with vCPU migration
+4) Release unused page after MMU invalidation
+5) Propagate interrupted G-stage faults to KVM user-space
+6) Fix NACL hfence entry update order
+7) Fix sdata leak and stale snapshot_addr in PMU snapshot_set_shmem
+8) Preserve firmware counter value across PMU counter stop/start
+9) Report PMU snapshot write failure to the guest
+10) Fix perf-backed counter accounting across PMU stop and read
+11) Fix HSM hart status error propagation
 
- - direct_map() and FNAME(fetch)() completing the walk at a level other
-   than the goal level, i.e. KVM's shadow page table walk disagreeing
-   with the mapping level KVM itself just computed.
+As you can see, the fixes are all over the place except quite
+few of them (4 fixes) focus only on SBI PMU extension.
 
- - a CR2 with bits 63:32 set on 32-bit KVM, which the hardware cannot
-   produce.
+Please pull.
 
- - PFERR_PRIVATE_ACCESS set on a reserved-bit fault.  KVM sets that
-   synthetic bit itself, and only when PFERR_RSVD_MASK is clear.
+Regards,
+Anup
 
-Returning -EFAULT for a KVM bug conflicts with KVM_CAP_MEMORY_FAULT_INFO,
-which promises that an -EFAULT out of KVM_RUN on a guest page fault
-VM-Exit is accompanied by kvm_run.memory_fault.  Describing a broken
-KVM invariant as a memory fault would be actively misleading, as there
-is no guest access for userspace to resolve and retry.
+The following changes since commit fd73f4a6659897191fa0d40695fe370925dd3780:
 
-Convert the four sites to KVM_BUG_ON() + -EIO, the established way to
-report that KVM is hosed, so that -EFAULT out of the fault path always
-means "guest memory access KVM could not resolve".
+  Linux 7.3-rc3 (2026-09-13 14:38:02 -0700)
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/all/Zr-8M9rYplgN6IS3@google.com/
-Signed-off-by: Mikhail Malyshev <mike.malyshev@gmail.com>
----
- arch/x86/kvm/mmu/mmu.c         | 12 ++++++------
- arch/x86/kvm/mmu/paging_tmpl.h |  4 ++--
- 2 files changed, 8 insertions(+), 8 deletions(-)
+are available in the Git repository at:
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 244575f576071..6529ff9e98358 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -3577,8 +3577,8 @@ static int direct_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
- 					     fault->req_level >= it.level);
- 	}
- 
--	if (WARN_ON_ONCE(it.level != fault->goal_level))
--		return -EFAULT;
-+	if (KVM_BUG_ON(it.level != fault->goal_level, vcpu->kvm))
-+		return -EIO;
- 
- 	ret = mmu_set_spte(vcpu, fault->slot, it.sptep, access,
- 			   base_gfn, fault->pfn, fault);
-@@ -4942,8 +4942,8 @@ int kvm_handle_page_fault(struct kvm_vcpu *vcpu, u64 error_code,
- 
- #ifndef CONFIG_X86_64
- 	/* A 64-bit CR2 should be impossible on 32-bit KVM. */
--	if (WARN_ON_ONCE(fault_address >> 32))
--		return -EFAULT;
-+	if (KVM_BUG_ON(fault_address >> 32, vcpu->kvm))
-+		return -EIO;
- #endif
- 	/*
- 	 * Legacy #PF exception only have a 32-bit error code.  Simply drop the
-@@ -6658,8 +6658,8 @@ int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 err
- 
- 	r = RET_PF_INVALID;
- 	if (unlikely(error_code & PFERR_RSVD_MASK)) {
--		if (WARN_ON_ONCE(error_code & PFERR_PRIVATE_ACCESS))
--			return -EFAULT;
-+		if (KVM_BUG_ON(error_code & PFERR_PRIVATE_ACCESS, vcpu->kvm))
-+			return -EIO;
- 
- 		r = handle_mmio_page_fault(vcpu, cr2_or_gpa, direct);
- 		if (r == RET_PF_EMULATE)
-diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index c8ec47b09264b..8e350095508c5 100644
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -778,8 +778,8 @@ static int FNAME(fetch)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault,
- 					     fault->req_level >= it.level);
- 	}
- 
--	if (WARN_ON_ONCE(it.level != fault->goal_level))
--		return -EFAULT;
-+	if (KVM_BUG_ON(it.level != fault->goal_level, vcpu->kvm))
-+		return -EIO;
- 
- 	ret = mmu_set_spte(vcpu, fault->slot, it.sptep, gw->pte_access,
- 			   base_gfn, fault->pfn, fault);
--- 
-2.43.0
+  https://github.com/kvm-riscv/linux.git tags/kvm-riscv-fixes-7.3-1
 
+for you to fetch changes up to 41e81f7e3ef96594fb840445343c0ee7723aa550:
+
+  RISC-V: KVM: Fix HSM hart status error propagation (2026-09-15 18:55:51 +0530)
+
+----------------------------------------------------------------
+KVM/riscv fixes for 7.3, take #1
+
+- Synchronize hrtimer during VCPU teardown
+- Fix the conversion between vsip and hvip values
+- Serialize IMSIC attributes with vCPU migration
+- Release unused page after MMU invalidation
+- Propagate interrupted G-stage faults to KVM user-space
+- Fix NACL hfence entry update order
+- Fix sdata leak and stale snapshot_addr in snapshot_set_shmem
+- Preserve firmware counter value across PMU counter stop/start
+- Report PMU snapshot write failure to the guest
+- Fix perf-backed counter accounting across PMU stop and read
+- Fix HSM hart status error propagation
+
+----------------------------------------------------------------
+Myeonghun Pak (1):
+      RISC-V: KVM: Synchronize hrtimer callback during teardown
+
+SeungJu Cheon (3):
+      RISC-V: KVM: Preserve firmware counter value across stop/start
+      RISC-V: KVM: Report snapshot write failure to the guest
+      RISC-V: KVM: Fix perf-backed counter accounting across stop and read
+
+Tan Chi (1):
+      RISC-V: KVM: Fix HSM hart status error propagation
+
+Xie Bo (3):
+      RISC-V: KVM: Serialize IMSIC attributes with vCPU migration
+      RISC-V: KVM: Release unused page after MMU invalidation
+      RISC-V: KVM: Propagate interrupted G-stage faults
+
+Yicong Yang (1):
+      RISC-V: KVM: Fix the conversion between vsip and hvip
+
+Zongmin Zhou (2):
+      KVM: riscv: Fix NACL hfence entry update order
+      RISC-V: KVM: Fix sdata leak and stale snapshot_addr in snapshot_set_shmem
+
+ arch/riscv/include/asm/csr.h       | 20 +++++++++++++++----
+ arch/riscv/kvm/aia_imsic.c         | 11 ++++++++--
+ arch/riscv/kvm/mmu.c               | 10 ++++++++--
+ arch/riscv/kvm/nacl.c              | 20 +++++++++++++++----
+ arch/riscv/kvm/vcpu.c              |  3 +--
+ arch/riscv/kvm/vcpu_exit.c         |  2 +-
+ arch/riscv/kvm/vcpu_onereg.c       |  8 +++-----
+ arch/riscv/kvm/vcpu_pmu.c          | 41 +++++++++++++++++++++++---------------
+ arch/riscv/kvm/vcpu_sbi_hsm.c      |  4 ++--
+ arch/riscv/kvm/vcpu_timer.c        |  5 ++++-
+ tools/arch/riscv/include/asm/csr.h | 20 +++++++++++++++----
+ 11 files changed, 101 insertions(+), 43 deletions(-)
