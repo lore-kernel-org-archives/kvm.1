@@ -1,31 +1,31 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0CEB483BC4;
-	Sun, 20 Sep 2026 21:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58B3477E4B;
+	Sun, 20 Sep 2026 21:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789939805; cv=none; b=Q7v/teZbstiA+daBGZ2TiaWlN5IRy+HY8yDs/ilhT5WoM6GbA5aKt2ngjBYBPr6yS2QPUX6dGP5erYM+iWoxRenX63EnPCm+Iq6KY8X2vcjCqoMh0NLYoDPhIW14xaUABRiPskWPz0rehoUtJnWptMvqx9Lb9UmjUdK1tu8gglM=
+	t=1789939806; cv=none; b=HM/Otb5JcxKyDJ2PJuA9IC2AeN/zEU2FTce3Rwh/bEeqE3Si+BKw8MaxvFJItQyTsHOdgda/P7v4yHHefcaiorQrE8YC85pU3spE+ZwXEhTGp9vQH5Ca2/Qwmf6Bc5WyuV36JXktIza2e7l/Va4lpLETIvSWHYR7Z1bI5MrFb2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789939805; c=relaxed/simple;
-	bh=2dgJhNhp7pODA5D9cQ92Hsv7wb629Wj97aqSNHchHR0=;
+	s=arc-20240116; t=1789939806; c=relaxed/simple;
+	bh=z6o75vDBsMZwi/biTfE7PGIB4lI6WnxqwAzwyQx6OWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VsVt3Nfmdu/3Q+ZFPNk3KeZ71ooXzhmrWIXteeyIKmhx4AzRBmAcTOXVsxQTehDYbyS4q07dbktwoKKYI9XV2/W0rnXrg+q3kBmVPakNYxYw/3mQaTmBHPGm8UIU7hQruOn0ZiWVQ0UWNccjTGlhu5qtQWjfFPypox6vbVgkyTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=eaiFThnA; arc=none smtp.client-ip=217.140.110.172
+	 MIME-Version; b=rjtxgrycW1QkE9E+rQoLvfZO6cbQCGs8F3GhbQk/+nUeZJBVUGB6R0jPSmI781wQNwsE83B6sGaQT+OVANwYuqIN7aYCKSz4z+iyAN+78qWEKJ4i6C+rVIwZqoZrRVLwvaQXIU17r36kYeEVqcH5ccGVoKVD+8zpn633gUWg2BY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=oHwuhnMJ; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="eaiFThnA"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="oHwuhnMJ"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6A1581596;
-	Sun, 20 Sep 2026 14:29:57 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3E7DC1650;
+	Sun, 20 Sep 2026 14:29:54 -0700 (PDT)
 Received: from ewhatever.cambridge.arm.com (ewhatever.cambridge.arm.com [10.2.197.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 157723F632;
-	Sun, 20 Sep 2026 14:29:57 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 05BCA3F632;
+	Sun, 20 Sep 2026 14:29:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789939800; bh=2dgJhNhp7pODA5D9cQ92Hsv7wb629Wj97aqSNHchHR0=;
+	t=1789939797; bh=z6o75vDBsMZwi/biTfE7PGIB4lI6WnxqwAzwyQx6OWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eaiFThnA260h6+IfxTsrJK+/I0GdaF9zJ4ryW5m+1k59eqLeI11Yicqs5hOz3aD4M
-	 occxFYw/oLEyAE017XSilDyvIVZLHM7Mc7reQ+6Et21ovi0ItIe4PH8a12FK2eE25B
-	 NWm54COVQEL+aZarGL0YOzqdPIMWrWk6fC8xZ3ys=
+	b=oHwuhnMJQ/RB5zLTLW0Rnq8rr2V8U3gJt6tgtP5foA9uBMM/4+uWhbhlT2ycD3fir
+	 xKyTXItdnYOr2L4DTO8yCNGhtCJNmaUEygVQsqq4u+lRk17ZU2O01oqw0e62vc8qRZ
+	 xX8DmqFf+64wTZfCPWAHV/69qkYjMESzqeyG3HJk=
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
 To: kvm@vger.kernel.org,
 	kvmarm@lists.linux.dev
@@ -49,11 +49,10 @@ Cc: maz@kernel.org,
 	WeiLin.Chang@arm.com,
 	lpieralisi@kernel.org,
 	enju.kohei@fujitsu.com,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [PATCH v19 19/20] KVM: arm64: CCA: Expose SVE VL register before VCPU finalization
-Date: Sun, 20 Sep 2026 22:28:44 +0100
-Message-ID: <20260920212845.707-20-suzuki.poulose@arm.com>
+Subject: [PATCH v19 18/20] KVM: arm64: CCA: Support timers in realm RECs
+Date: Sun, 20 Sep 2026 22:28:43 +0100
+Message-ID: <20260920212845.707-19-suzuki.poulose@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260920212845.707-1-suzuki.poulose@arm.com>
 References: <20260920212845.707-1-suzuki.poulose@arm.com>
@@ -65,103 +64,69 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+From: Steven Price <steven.price@arm.com>
 
-Userspace must configure the SVE vector length before the Realm is created
-(as it is part of the parameter for Realm creation), but the Realm VCPUs
-cannot be finalized until after the Realm Descriptor has been created.
+The RMM keeps track of the timer while the realm REC is running, but on
+exit to the normal world KVM is responsible for handling the timers.
 
-KVM_GET_REG_LIST currently rejects the unfinalized VCPUs, which prevents
-the userspace from discovering and configuring the VLs for  the Realm.
+A later patch adds the support for propagating the timer values from the
+exit data structure and making sure the values are in sync for KVM.
 
-Allow KVM_GET_REG_LIST for unfinalized RECs and make the SVE register
-enumeration handle the unfinalized case explicitly. i.e., only expose
-KVM_REG_ARM64_SVE_VLS before SVE is finalized.
+Also, RMM doesn't support injecting virtual interrupts backed by Physical
+interrupts. So, use the existing software resampling mechanims for Realm
+timer interrupts.
 
-One adverse side effect of this change is that a KVM_GET_REG_LIST call that
-only probes for the array size will now succeed even if SVE is not
-finalized, but that seems harmless since the following KVM_GET_REG_LIST
-with the full array will fail.
-
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 Signed-off-by: Steven Price <steven.price@arm.com>
 Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 ---
-Changes since v17:
- - Rewrite the commit description to clearly describe the purpose
----
- arch/arm64/kvm/arm.c   | 15 ++++++++++++++-
- arch/arm64/kvm/guest.c | 10 +++++-----
- 2 files changed, 19 insertions(+), 6 deletions(-)
+ arch/arm64/kvm/arch_timer.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index eab8543a4194d..6a52b102d0ce4 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -1993,6 +1993,19 @@ static int kvm_arm_vcpu_set_events(struct kvm_vcpu *vcpu,
- 	return __kvm_arm_vcpu_set_events(vcpu, events);
+diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
+index 226cd5a495c8b..83c13bbdcc777 100644
+--- a/arch/arm64/kvm/arch_timer.c
++++ b/arch/arm64/kvm/arch_timer.c
+@@ -56,11 +56,25 @@ static unsigned long kvm_arch_timer_get_irq_flags(void)
+ 	return kvm_vgic_global_state.no_hw_deactivation ? VGIC_IRQ_SW_RESAMPLE : 0;
  }
  
-+/*
-+ * Realm VCPUs can be finalized only after the Realm descriptor is created.
-+ * But in order to seal the SVE VL, we need to allow the userspace to read/write
-+ * to the SVE_VL, before everything is finalized.
-+ * Allow the register list for RECs before the VCPUs are finalized.
-+ */
-+static bool kvm_arm_vcpu_reg_list_allowed(struct kvm_vcpu *vcpu)
++static unsigned long kvm_realm_timer_get_irq_flags(void)
 +{
-+	if (kvm_arm_vcpu_is_finalized(vcpu))
-+		return true;
-+	return vcpu_is_rec(vcpu);
++	/*
++	 * RMI_REC_ENTER rejects LRs with the HW bit set, so use the existing
++	 * software resampling mechanism for Realm timer interrupts.
++	 */
++	return VGIC_IRQ_SW_RESAMPLE;
 +}
 +
- long kvm_arch_vcpu_ioctl(struct file *filp,
- 			 unsigned int ioctl, unsigned long arg)
- {
-@@ -2048,7 +2061,7 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
- 			break;
+ static const struct irq_ops arch_timer_irq_ops = {
+ 	.get_flags	 = kvm_arch_timer_get_irq_flags,
+ 	.get_input_level = kvm_arch_timer_get_input_level,
+ };
  
- 		r = -EPERM;
--		if (!kvm_arm_vcpu_is_finalized(vcpu))
-+		if (!kvm_arm_vcpu_reg_list_allowed(vcpu))
- 			break;
- 
- 		r = -EFAULT;
-diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
-index b01d6622b8720..c3ca369882273 100644
---- a/arch/arm64/kvm/guest.c
-+++ b/arch/arm64/kvm/guest.c
-@@ -598,8 +598,8 @@ static unsigned long num_sve_regs(const struct kvm_vcpu *vcpu)
- 	if (!vcpu_has_sve(vcpu))
- 		return 0;
- 
--	/* Policed by KVM_GET_REG_LIST: */
--	WARN_ON(!kvm_arm_vcpu_sve_finalized(vcpu));
-+	if (!kvm_arm_vcpu_sve_finalized(vcpu))
-+		return 1; /* KVM_REG_ARM64_SVE_VLS */
- 
- 	return slices * (SVE_NUM_PREGS + SVE_NUM_ZREGS + 1 /* FFR */)
- 		+ 1; /* KVM_REG_ARM64_SVE_VLS */
-@@ -616,9 +616,6 @@ static int copy_sve_reg_indices(const struct kvm_vcpu *vcpu,
- 	if (!vcpu_has_sve(vcpu))
- 		return 0;
- 
--	/* Policed by KVM_GET_REG_LIST: */
--	WARN_ON(!kvm_arm_vcpu_sve_finalized(vcpu));
--
- 	/*
- 	 * Enumerate this first, so that userspace can save/restore in
- 	 * the order reported by KVM_GET_REG_LIST:
-@@ -628,6 +625,9 @@ static int copy_sve_reg_indices(const struct kvm_vcpu *vcpu,
- 		return -EFAULT;
- 	++num_regs;
- 
-+	if (!kvm_arm_vcpu_sve_finalized(vcpu))
-+		return num_regs;
++static const struct irq_ops realm_timer_irq_ops = {
++	.get_flags	 = kvm_realm_timer_get_irq_flags,
++	.get_input_level = kvm_arch_timer_get_input_level,
++};
 +
- 	for (i = 0; i < slices; i++) {
- 		for (n = 0; n < SVE_NUM_ZREGS; n++) {
- 			reg = KVM_REG_ARM64_SVE_ZREG(n, i);
+ static const struct irq_ops arch_timer_irq_ops_vgic_v5 = {
+ 	.get_input_level = kvm_arch_timer_get_input_level,
+ 	.queue_irq_unlock = vgic_v5_ppi_queue_irq_unlock,
+@@ -1617,8 +1631,12 @@ int kvm_timer_enable(struct kvm_vcpu *vcpu)
+ 
+ 	get_timer_map(vcpu, &map);
+ 
+-	ops = vgic_is_v5(vcpu->kvm) ? &arch_timer_irq_ops_vgic_v5 :
+-				      &arch_timer_irq_ops;
++	if (vcpu_is_rec(vcpu))
++		ops = &realm_timer_irq_ops;
++	else if (vgic_is_v5(vcpu->kvm))
++		ops = &arch_timer_irq_ops_vgic_v5;
++	else
++		ops = &arch_timer_irq_ops;
+ 
+ 	for (int i = 0; i < nr_timers(vcpu); i++)
+ 		kvm_vgic_set_irq_ops(vcpu, timer_irq(vcpu_get_timer(vcpu, i)), ops);
 -- 
 2.43.0
 
