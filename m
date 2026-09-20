@@ -1,195 +1,203 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8475538B7BC
-	for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 14:30:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551AE39CD0B;
+	Sun, 20 Sep 2026 14:39:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789914617; cv=none; b=Tk7sqgc2suhwIJoma1eUadzAosYCZmTKbNnwBe81oMtuXXV0xxKiADE0dcjgjagRxd9ZHbsNXQQOcvhPP4+7GvSy1VLdXxplmJcRH1QlClN4rX9M95ZFhZKPoedy2YHTyEPHUlkLQYhKUi+xZQ++/vyYY2fycWSdG+tynbHgEs0=
+	t=1789915160; cv=none; b=TjuvgT/M71eftoMZNvRC3b0td9AeibhZUGwLYx4yOK95F/hvkHSSv3rFSI3d+GhNvJD/ShSgtRmCTbIgkN8ARUCACS6sxUI9JyVUorC4KxU621KwLzjwHHsYYX2A018roWOeK+IajecXKRWTjymiICSngmg7yhQ2pNbO2cJMDgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789914617; c=relaxed/simple;
-	bh=1GXXCYnoSzgl8fbLS/j1zzxqrBoTtPoebTnLHaJ6Cmg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rzqrjGI5H1l0V+0IgIbaeNV8u1jxwfaw9oAmvE4h1bDtQVbfTuCzAwC64nQJ6vUPgYrE55kOoDwFT1qbvpYnwPdGoIlMyLMB4lf7ZM+nGMEMVAgk7orQ4t8z8ifoJ6qOgX8ounkoFZdp6QuvqeRbply/c6WkzN2437oTcPFMPu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V00rD5Gc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789915160; c=relaxed/simple;
+	bh=BRfN/rf0VySNtmX2zd1u7eYqcuOgLIEDB+BlqbqFJcM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=rBTuJ8wpmJBYUalJQ4OC+b2uOO6yUx8jvHVjIAG0vTxd6INJEeDa3c0VwmDuD6A8mXbXFzuQ/obBJS2yC5pQOUuoFe7b+idgxvHr1boOUAC/a5gz+6yS3Y11FwiIP68FVXqTtINHBRvCwNV4Mx80rc2Up5x/eLYngEJ+/Yfio9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=FMwW3C+h; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V00rD5Gc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD47A1F008A3;
-	Sun, 20 Sep 2026 14:30:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789914610;
-	bh=cvSHl/T5RLW87fYsS7D4DZcWNwiIkIZ08zF32HkRmIY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=V00rD5Gcl2T6jc+Ipod9fotJ8ICxtX7hEP55OR1+bRf4Nc0H9mUApQQDDptwkSdI+
-	 Kgpx/EKeXRl9naIHDQAQGuC/IEE/dLOKFttc73DuDvcprWKies8QeiLmqeLNiH2UwT
-	 XMZo0JteXeilGkiiqAkPWT93zOqmQZ2IAjWYVd5XnQvpg6Nz9uYHg6ygcZfvC23Eia
-	 h8OZsSeN7RCw6oUhz/rXtVd2Ke4seu93uD0QIC/L/S/3VRTzdn6Gym48lo4UYvg+Xl
-	 BmuDjrhHa9hi+lbDXpjWvuvbzV3H0rPqnHWnRTbVUTZdycjmZ3xiMcJ61RUfhEATLC
-	 UpMsgCeXMYWhw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] KVM: riscv: Free detached G-stage page tables
- outside mmu_lock
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Can Qi" <qican5708@163.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260920140831.75097-1-qican5708@163.com>
-References: <20260920123117.49830-1-qican5708@163.com>
- <20260920140831.75097-1-qican5708@163.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 20 Sep 2026 14:30:10 +0000
-Message-Id: <20260920143010.AD47A1F008A3@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="FMwW3C+h"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=BRfN/rf0VySNtmX2zd1u7eYqcuOgLIEDB+BlqbqFJcM=; b=FMwW3C+hJyGfvbJnBBx2Hlm1Pp
+	Y6zRXb2RdpoV0G4DepbhPHV+emaIdwcnylEDpTuO+2N07QYV5PhdOIEsHEacVtPpN//ikfnBJ4Ghl
+	xembOWXp3hgwHwGtZ+XysGD2GoE/xqWTDGDQkAZjesBtYQe2gQnjRWlFBE8BnlFvMl7sTLenHZx8A
+	BRzy+z7hgLeUeQ8awOqUstaEd/Q88V83dYd3tuwAagbccwleImyvbBSMTjmCHb7wjxe3whYFxT0Kg
+	XVTj+5dpNaYdnIPefSeE2dlIFSFWcF+g+sYbMpN3KOp9f48UYALU29ujS4+Rn17/0/zdDAupyfPYX
+	9mVoptag==;
+Received: from [54.239.6.189] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x8Ih7-00000008f1u-1gCG;
+	Sun, 20 Sep 2026 14:39:05 +0000
+Message-ID: <adf8f7bc525975a748b1b322cbd35c002e95000f.camel@infradead.org>
+Subject: Re: [PATCH v4 4/5] KVM: VMX: Synthesize nested EPT violation
+ GVA_IS_VALID/GVA_TRANSLATED bits
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, Kevin Cheng
+	 <chengkev@google.com>
+Date: Sun, 20 Sep 2026 16:39:03 +0200
+In-Reply-To: <20260522232701.3671446-5-seanjc@google.com>
+References: <20260522232701.3671446-1-seanjc@google.com>
+	 <20260522232701.3671446-5-seanjc@google.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-YcyWK771M646neRz9l3X"
+User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Critical] kvm: premature MMU notifier abort during teardown allows use-a=
-fter-free
-- [High] kvm: stale TLB exposed when dropping mmu_lock with pending flushes
---
 
-commit cab834ddbb040506be1fc3bc033afe85ed6f46cc
-Author: Can Qi <qican5708@163.com>
-Subject: KVM: riscv: Free detached G-stage page tables outside mmu_lock
+--=-YcyWK771M646neRz9l3X
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This commit changes KVM RISC-V to detach the active G-stage root under
-mmu_lock and free the page tables after dropping the lock. It also replaces
-the KVM-wide split page cache with a per-operation cache, dropping the
-lock to top it up.
+On Fri, 2026-05-22 at 16:27 -0700, Sean Christopherson wrote:
+> From: Kevin Cheng <chengkev@google.com>
+>=20
+> When injecting an EPT Violation into L2 in response to a fault detected
+> while emulating an L2 GVA access, synthesize the GVA_IS_VALID and
+> GVA_TRANSLATED bits using information provided by the walker, instead of
+> pulling the bits from vmcs02.EXIT_QUALIFICATION.=C2=A0 The information in
+> vmcs02.EXIT_QUALIFICATION is valid/correct if and only if the fault being
+> injected into L1 is the direct result of an EPT Violation VM-Exit from L2=
+.
+>=20
+> E.g. if KVM is emulating an I/O instruction and the memory operand's
+> translation through L1's EPT fails, using vmcs02.EXIT_QUALIFICATION is
+> wrong as the semantics for EXIT_QUALIFICATION would be for an I/O exit,
+> not an EPT Violation exit.
+>=20
+> Opportunistically clean up the formatting for creating the mask of bits
+> to pull from vmcs02.EXIT_QUALIFICATION.
+>=20
+> Signed-off-by: Kevin Cheng <chengkev@google.com>
+> [sean: use plumbed in @access bits, massage changelog]
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-> diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
-> index e5002cb9cbef1..5ab3c4ba5a6a4 100644
-> --- a/arch/riscv/kvm/gstage.c
-> +++ b/arch/riscv/kvm/gstage.c
-[ ... ]
-> @@ -426,6 +457,12 @@ bool kvm_riscv_gstage_unmap_range(struct kvm_gstage =
-*gstage,
->  	bool flush =3D false;
-> =20
->  	while (addr < end) {
-> +		/* cond_resched_rwlock_write() may have let teardown detach us. */
-> +		if (!(gstage->flags & KVM_GSTAGE_FLAGS_LOCAL) &&
-> +		    (!gstage->kvm->arch.pgd ||
-> +		     gstage->pgd !=3D gstage->kvm->arch.pgd))
-> +			break;
-> +
+I think this wants a Fixes: a9466078687f and backports to stable? Broke
+my testing environment on a 6.12-based distro.
 
-[Severity: Critical]
-Can this sequence cause a use-after-free by aborting an MMU notifier
-prematurely?
+--=-YcyWK771M646neRz9l3X
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-If an in-progress kvm_riscv_gstage_unmap_range() loop yields and observes t=
-he
-detached root here, it breaks out early and fails to complete the unmap
-operation requested by the MMU notifier.
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+6O6ltZP7fQq7uYLgWJXNPs8AAAAAAAA=
 
-Since kvm_riscv_mmu_free_pgd() drops the mmu_lock before the vCPUs are
-quiesced, the host MM could trigger an MMU notifier (e.g., page reclaim)
-during this window. If the unmap aborts early, the host MM might free the
-page while the guest is still executing and has it mapped.
 
->  		found_leaf =3D kvm_riscv_gstage_get_leaf(gstage, addr, &ptep, &ptep_le=
-vel);
->  		ret =3D gstage_level_to_page_size(gstage, ptep_level, &page_size);
->  		if (ret)
-> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> index 6035b5ec95039..2d7ad70ff7654 100644
-> --- a/arch/riscv/kvm/mmu.c
-> +++ b/arch/riscv/kvm/mmu.c
-[ ... ]
-> @@ -141,19 +139,22 @@ static bool mmu_split_huge_pages(struct kvm_gstage =
-*gstage,
->  			if (ret) {
->  				kvm_err("Failed to toup split page cache\n");
->  				write_lock(&kvm->mmu_lock);
-> -				return flush;
-> +				break;
->  			}
->  			write_lock(&kvm->mmu_lock);
->  		}
-> =20
-> -		if (!kvm->arch.pgd)
-> -			return flush;
-> +		if (!kvm->arch.pgd || gstage->pgd !=3D kvm->arch.pgd)
-> +			break;
-> =20
->  		flush |=3D kvm_riscv_gstage_split_huge(gstage, pcache, addr, 0, false);
-> =20
->  		addr +=3D PMD_SIZE;
->  	}
-> =20
-> +	write_unlock(&kvm->mmu_lock);
-> +	kvm_mmu_free_memory_cache(pcache);
-> +	write_lock(&kvm->mmu_lock);
->  	return flush;
->  }
-
-[Severity: High]
-Does this code expose stale hardware translations to the guest?
-
-If flush is true at the end of the loop, the mmu_lock is dropped to free the
-memory cache before returning the flush status to the caller. This creates a
-window where the mmu_lock is dropped, but the accumulated split pages have =
-not
-yet been flushed from the TLB.
-
-Could a guest trigger huge page splits and access memory during this window,
-retaining a stale mapping in the hardware TLB while the host MM subsystem
-believes the page is unmapped?
-
-[ ... ]
-> @@ -772,41 +768,45 @@ int kvm_riscv_mmu_alloc_pgd(struct kvm *kvm)
->  void kvm_riscv_mmu_free_pgd(struct kvm *kvm)
->  {
->  	struct kvm_gstage gstage;
-> -	void *pgd =3D NULL;
-> -	bool flush =3D false;
-> =20
->  	write_lock(&kvm->mmu_lock);
-> -	if (kvm->arch.pgd) {
-> -		kvm_riscv_gstage_init(&gstage, kvm);
-> -		flush =3D kvm_riscv_gstage_unmap_range(&gstage, 0UL,
-> -			kvm_riscv_gstage_gpa_size(kvm->arch.pgd_levels), false);
-> -		pgd =3D READ_ONCE(kvm->arch.pgd);
-> -		kvm->arch.pgd =3D NULL;
-> -		kvm->arch.pgd_phys =3D 0;
-> -		kvm->arch.pgd_levels =3D 0;
-> +	if (!kvm_riscv_gstage_init(&gstage, kvm)) {
-> +		write_unlock(&kvm->mmu_lock);
-> +		return;
->  	}
-> +	/* Live walkers must acquire mmu_lock and check the active root. */
-> +	WRITE_ONCE(kvm->arch.pgd, NULL);
-> +	kvm->arch.pgd_phys =3D 0;
-> +	kvm->arch.pgd_levels =3D 0;
->  	write_unlock(&kvm->mmu_lock);
-> =20
-> -	if (flush)
-> -		kvm_flush_remote_tlbs(kvm);
-> -
-> -	if (pgd)
-> -		free_pages((unsigned long)pgd, get_order(kvm_riscv_gstage_pgd_size));
-> +	/* Quiesce hardware users before freeing the detached page tables. */
-> +	kvm_make_all_cpus_request(kvm, KVM_REQ_OUTSIDE_GUEST_MODE);
-
-[Severity: Critical]
-Does this code allow vCPUs to continue executing with a detached page table?
-
-By setting kvm->arch.pgd to NULL and dropping the mmu_lock before
-kvm_make_all_cpus_request() successfully kicks all vCPUs out of guest mode,
-there is a window where vCPUs can still access memory.
-
-If the host MM triggers an MMU notifier during this window,
-kvm_unmap_gfn_range() could fail to initialize because kvm->arch.pgd is NUL=
-L,
-silently returning without unmapping. This could lead to a host use-after-f=
-ree
-if the host MM frees the page while the guest is still executing.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260920140831.7509=
-7-1-qican5708@163.com?part=3D1
+--=-YcyWK771M646neRz9l3X--
