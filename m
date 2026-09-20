@@ -1,420 +1,206 @@
-Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECBA403B18;
-	Sun, 20 Sep 2026 11:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3963F58CC
+	for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 11:22:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789903347; cv=none; b=q4drIvlXGbGq4XLzUjttGfDb7EFbc3yzkVspsfi8Kd+LA66vCWCC8n1Li0416mMOo8Pd31bBKO97WKXu4/JL3XGrq3/Dvy1xahvUSr4FwpCNqEwgGbKeKtVqZmlHNi77mZugC7N1mzd1S02yGTrukj8FOU4XQ+e6o4RGXfBePk8=
+	t=1789903371; cv=none; b=eAohvGKjb1oKQs6roVjnCXQYMtOSehaIUGlupbVDTf49G2blh/R8b3TTnik2V+550Q9/WSuCTNCBo2H1+CroxOq+7b4MmOjldwCkYArRhgt2IwAQBGB/4p9E2fX7AgYqLKKqsbj2CYTJohw77+UDV2cv0ePNnoFGoyYoCe2QdfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789903347; c=relaxed/simple;
-	bh=z4iUiM9bC55rfw6jduOct1366YhypIYol3KPCgIE8E8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JoH0jnLRFYwXWc2GVT3/Fa/CyKPi13PTe+gD/Mjk/F313qWljFvprIR63B/wmttN8iApuWIxMBkt9on/qjruOGOUtRgVCI4nM+DZ25jWN4u/R4QcsVVBKeSoaIeef340r4BECzYzGUvKa+s/cVQCOmWI/ybJGoD6hESQkO+98dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=knbWzXqg; arc=none smtp.client-ip=49.212.243.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
+	s=arc-20240116; t=1789903371; c=relaxed/simple;
+	bh=TTSAmX1wYFJBw0fvvMopxHoUBy5D4DhhdG2PXyYgxwI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ugBIUTFOC1D6yt0vu0FolCzImotIr0fSMJolqrorw46+Z/Nl2dUN/kJDW8gsy4/I2nY9GSBevvQuaBHxiq3oaUay9JPgs/h5LX7Z+uhh0+YoX+C2RXtVVUauTzZIGdUXh8mJji7+F7eQuBXUr2tNk2hSjhCZWJWBp6AUtzOOeRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=qyauvioD; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="knbWzXqg"
-Received: from [192.168.10.153] (p865013-ipoe.ipoe.ocn.ne.jp [153.242.222.12])
-	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 68KBG36i088236
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Sun, 20 Sep 2026 20:16:18 +0900 (JST)
-	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=TtZpVD+c3rEb0z9kPtnuF7Xmt0s3q4Ts6qjSmqh3PZU=;
-        c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
-        h=From:Message-Id:To:Subject:Date;
-        s=rs20250326; t=1789902978; v=1;
-        b=knbWzXqg8NGeKxxhNW04XuYdUmIIlyxOVRVcxJSJvJ9rPqczPdFOHatE3ABD5YFh
-         cosIOiiP3gvshNhdlb4jY5Qm6kEbit1xoU616ejx8GZrR4RlQPPcaCqvJazYdFUx
-         tlabv8FYQZhC2JcUYnaJzy+Tfq+HY2yLaPgnFhKSEUEhO5OOL8g+gd4sDnqFCoos
-         mJzlwIX3BgiLB3lSthVIVbEWs73/92JGukf7Q38yBHldW2BQ7wsU1jhTsxHPRyAV
-         OQ0uY9VoHuFufi0fl/x6gxYwe9lgugbAznnJ3ZIlfeyBzxuEkWLqiahdM2zw/7vt
-         O/hy7puc/Ge+CirW1Z694g==
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Sun, 20 Sep 2026 20:16:02 +0900
-Subject: [PATCH v11 21/21] KVM: arm64: selftests: Test
- PMU_V3_FIXED_COUNTERS_ONLY
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="qyauvioD"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BAE5F1650;
+	Sun, 20 Sep 2026 04:22:40 -0700 (PDT)
+Received: from [10.57.11.6] (unknown [10.57.11.6])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0E7293F59E;
+	Sun, 20 Sep 2026 04:22:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789903364; bh=TTSAmX1wYFJBw0fvvMopxHoUBy5D4DhhdG2PXyYgxwI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=qyauvioDKvQzThtvSLBGUf00hBG20UnPEJ0clgBhfu9GvSX1Xg/pZH0QLdPzdQrkr
+	 Rn/HeZaQOknJwH5vX2OkJANfmSbhrtNUJOSqrFM1awqd5vGcu96O0475S6SDtKKgrj
+	 ScCxtmZV4s18MEl9M3NnkqviXS/2pMgmVqrptrYo=
+Message-ID: <629e51dc-75ad-4727-b584-293a4081e7c9@arm.com>
+Date: Sun, 20 Sep 2026 12:22:37 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Invitation] bi-weekly guest_memfd upstream call on 2026-09-17
+To: Ackerley Tng <ackerleytng@google.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
+Cc: amit@infradead.org, aneeshkumar.kizhakeveetil@arm.com,
+ ashish.kalra@amd.com, dwmw2@infradead.org, eberman@quicinc.com,
+ fvdl@google.com, gshan@redhat.com, jackmanb@google.com, jackyli@google.com,
+ jthoughton@google.com, kalyazin@amazon.com, kas@kernel.org,
+ kevinloughlin@google.com, liruxin@google.com, michael.day@amd.com,
+ michael.roth@amd.com, mike.rapoport@gmail.com, mvaralar@redhat.com,
+ pankaj.gupta@amd.com, papaluri@amd.com, patrick.roy@linux.dev,
+ Peter Xu <peterx@redhat.com>, pheragu@quicinc.com,
+ pkondeti@qti.qualcomm.com, prty@google.com, psalian@google.com,
+ qinkun@google.com, seanjc@google.com, shan.gavin@gmail.com,
+ shivankg@amd.com, sidtelang@google.com, tabba@google.com,
+ tatashin@google.com, vannapurve@google.com, vbabka@suse.com,
+ wyihan@google.com
+References: <b91dbfae-20f1-4b9f-a25b-4397afae80f9@kernel.org>
+ <16ffff40-4ef0-4312-a700-348603f05c0c@kernel.org>
+ <CAEvNRgGW_VHmT82q+bUqHh_5G2Z9sUF1jJOTiVN4Z8_cA9A50g@mail.gmail.com>
+ <e4bcc676-34d3-45ed-9eda-51c9a60e977f@arm.com>
+ <CAEvNRgFAL6qtSiJpQuga_TxWBr2pK=9LoiON+ZARMp0xFA8rPA@mail.gmail.com>
+Content-Language: en-GB
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <CAEvNRgFAL6qtSiJpQuga_TxWBr2pK=9LoiON+ZARMp0xFA8rPA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260920-hybrid-v11-21-03618771b0e1@rsg.ci.i.u-tokyo.ac.jp>
-References: <20260920-hybrid-v11-0-03618771b0e1@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20260920-hybrid-v11-0-03618771b0e1@rsg.ci.i.u-tokyo.ac.jp>
-To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-        Joey Gouly <joey.gouly@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Zenghui Yu <yuzenghui@huawei.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
-        Yury Norov <yury.norov@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Steffen Eiden <seiden@linux.ibm.com>,
-        Andrew Jones <andrew.jones@oss.qualcomm.com>,
-        Fuad Tabba <fuad.tabba@linux.dev>, Mark Rutland <mark.rutland@arm.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Shannon Zhao <shannon.zhao@linaro.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Fuad Tabba <fuad.tabba@linux.dev>
-Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
-        devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11665;
- i=odaki@rsg.ci.i.u-tokyo.ac.jp; h=from:subject:message-id;
- bh=z4iUiM9bC55rfw6jduOct1366YhypIYol3KPCgIE8E8=;
- b=owGbwMvMwCWmMbc20y1CyJDxtFoSQ9b6A8VvJ3Qf+/Dv8eKyjJOhy///YDpYOX+l8BO51bM2P
- /vzPn6+XkcpC4MYF4OsmCJLStFubo3o2k+FCfEtMHNYmUCGMHBxCsBEZm1iZPijnHTtUdfBDQFp
- D6qd0zlfRjZNS6pJYIvXXHw2eFJa+yaG/1HvK5isJxUJVDypvCfvP8k+02lJoVLr7QkcIqJG02T
- O8QMA
-X-Developer-Key: i=odaki@rsg.ci.i.u-tokyo.ac.jp; a=openpgp;
- fpr=AEDC03C9AF734F2EC26A7BFFA4BAEAA73536753C
 
-Assert the following:
-- FIXED_COUNTERS_ONLY is unset at initialization.
-- FIXED_COUNTERS_ONLY can be set.
-- Setting an event filter when FIXED_COUNTERS_ONLY has already been set
-  results in EBUSY.
-- Setting FIXED_COUNTERS_ONLY when an event filter has already been set
-  results in EBUSY.
-- Setting FIXED_COUNTERS_ONLY when a VCPU has already run results in
-  EBUSY.
+Hi Ackerley,
 
-Also verify that strict PMUv3 initialization requires a PMU selection
-and succeeds after selecting fixed-counters-only mode.
+On 18/09/2026 17:21, Ackerley Tng wrote:
+> Suzuki K Poulose <suzuki.poulose@arm.com> writes:
+> 
+>>
+>> [...snip...]
+>>
+>>>
+>>> RMI_RTT_SET_RIPAS() is actually saying "host permits the conversion from
+>>> base to top", it's not telling the RMM what to set it to, this is also
+>>> different from SNP.
+>>
+>> As mentioned above, host knows the requested "RIPAS" from VCPU exit.
+>> RMM knows the "RIPAS" from the VCPU object.
+>>
+>> Now: Privates vs Shared is translated to RIPAS_RAM vs RIPAS_EMPTY
+>> in the CCA (well, roughly)
+>>
+>> RIPAS_RAM implies, the GPA can be mapped into the private address
+>> space of the Realm and it is integrity protected. Host cannot
+>> replace the GPA with another content (it can unmap and DESTROY
+>> the GPA mapping. But unless the Realm consents to replace the
+>> GPA, again via SET_RIPAS request).
+>>
+>>
+>>>
+>>> Interestingly RMI_RTT_SET_RIPAS() also errors out if the current
+>>> shared/private state is different from the one tracked in the vCPU
+>>> object in the RMM? Did I get that right? I'm looking at the base_align
+>>
+>> Correct.
+>>
+>>> Failure condition, where it says ripas_pre != rec.ripas_value.
+>>
+>> Please note that, in such cases, RMM needs a deeper page table level
+>> and the error is RMI_ERROR_RTT, indicating to the host that:
+>> Look I need a deeper level table to satisfy the request.
+>>
+>> e.g., base = 4K, but walk.level = 2, and ripas_pre="private"
+>>
+>> i.e. the requested base is mapped at L2 as block with "private" ripas.
+>> If you want to convert the "base" to shared, it needs L3 table. The host
+>> would follow up with RMI_RTT_CREATE and then retry the request.
+>>
+>>
+>>> If two vCPUs race to convert the same range to shared, both vCPUs would
+>>> have rec.ripas_value = private. The first conversion would be fine, but
+>>
+>> nit: rec.ripas_value = empty (shared)
+>>
+> 
+> Sorry that was a bad mixture of pseudocode and constants on my part.
+> 
+>>> the second one woul see ripas_pre = shared but rec.ripas_value = private
+>>> and would definitely get an error?
+>>
+>> rec.ripas_value == empty (shared) as per the guest request. And the RMM
+>> will find the state is already "shared" and would confirm the success
+>> back to host.
+>>
+> 
+> Oh yes, my bad.
+> 
+> base_align says (rephrased)
+> 
+>    if (!AddrIsRttLevelAligned(base, walk.level) &&
+>        ripas_pre != rec.ripas_value)
+>            return RMI_ERROR_RTT
+> 
+> Is the alignment check to do with another vCPU splitting the record in
+> the table?
 
-Run the existing PMU and MDCR_EL2 tests in fixed-only mode. Verify that
-enabling the mode preserves the userspace MDCR_EL2 value until a
-subsequent KVM_ARM_VCPU_INIT resets HPMN to zero.
+Nope. The Host doesn't keep track of the levels at which the S2 mapping
+is created nor does it track the "RIPAS" of the regions. That check is
+making sure that we don't unnecessarily break down "block" mappings.
 
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
----
- .../selftests/kvm/arm64/vpmu_counter_access.c      | 202 ++++++++++++++++++---
- 1 file changed, 173 insertions(+), 29 deletions(-)
+e.g., Before boot, the host might set RIPAS for certain regions (e.g.,
+populated contents.) The Guest (firmware) could at boot then convert
+all of the "DRAM" regions to RIPAS_RAM without checking what was
+populated (this is anyway available in the Measurement). Thus a
+conversion request may encounter regions that are already in the
+requested state (RIPAS_RAM in the above case). And thus RMM
+can report SUCCESS if it is already in the state.
 
-diff --git a/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c b/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c
-index 73b4f1870d3d..637653f7a25b 100644
---- a/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c
-+++ b/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c
-@@ -411,12 +411,7 @@ static void create_vpmu_vm(void *guest_code)
- {
- 	struct kvm_vcpu_init init;
- 	u8 pmuver, ec;
--	u64 dfr0, irq = 23;
--	struct kvm_device_attr irq_attr = {
--		.group = KVM_ARM_VCPU_PMU_V3_CTRL,
--		.attr = KVM_ARM_VCPU_PMU_V3_IRQ,
--		.addr = (u64)&irq,
--	};
-+	u64 dfr0;
- 
- 	/* The test creates the vpmu_vm multiple times. Ensure a clean state */
- 	memset(&vpmu_vm, 0, sizeof(vpmu_vm));
-@@ -442,8 +437,6 @@ static void create_vpmu_vm(void *guest_code)
- 	TEST_ASSERT(pmuver != ID_AA64DFR0_EL1_PMUVer_IMP_DEF &&
- 		    pmuver >= ID_AA64DFR0_EL1_PMUVer_IMP,
- 		    "Unexpected PMUVER (0x%x) on the vCPU with PMUv3", pmuver);
--
--	vcpu_ioctl(vpmu_vm.vcpu, KVM_SET_DEVICE_ATTR, &irq_attr);
- }
- 
- static void destroy_vpmu_vm(void)
-@@ -493,13 +486,22 @@ static void set_nr_counters(struct kvm_vcpu *vcpu,
- }
- 
- static void test_create_vpmu_vm_with_nr_counters(unsigned int nr_counters,
-+						 bool fixed_counters_only,
- 						 bool expect_fail)
- {
- 	struct kvm_vcpu *vcpu;
-+	u64 irq = 23;
- 
- 	create_vpmu_vm(guest_code);
- 	vcpu = vpmu_vm.vcpu;
- 
-+	if (fixed_counters_only)
-+		vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+				     KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
-+
-+	vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+			     KVM_ARM_VCPU_PMU_V3_IRQ, &irq);
-+
- 	set_nr_counters(vcpu, nr_counters, expect_fail);
- 
- 	vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL, KVM_ARM_VCPU_PMU_V3_INIT, NULL);
-@@ -509,15 +511,15 @@ static void test_create_vpmu_vm_with_nr_counters(unsigned int nr_counters,
-  * Create a guest with one vCPU, set the PMCR_EL0.N for the vCPU to @pmcr_n,
-  * and run the test.
-  */
--static void run_access_test(u64 pmcr_n)
-+static void run_access_test(u64 pmcr_n, bool fixed_counters_only)
- {
- 	u64 sp;
- 	struct kvm_vcpu *vcpu;
- 	struct kvm_vcpu_init init;
- 
--	pr_debug("Test with pmcr_n %lu\n", pmcr_n);
-+	pr_debug("Test with pmcr_n %lu, fixed_counters_only %d\n", pmcr_n, fixed_counters_only);
- 
--	test_create_vpmu_vm_with_nr_counters(pmcr_n, false);
-+	test_create_vpmu_vm_with_nr_counters(pmcr_n, fixed_counters_only, false);
- 	vcpu = vpmu_vm.vcpu;
- 
- 	/* Save the initial sp to restore them later to run the guest again */
-@@ -553,14 +555,14 @@ static struct pmreg_sets validity_check_reg_sets[] = {
-  * Create a VM, and check if KVM handles the userspace accesses of
-  * the PMU register sets in @validity_check_reg_sets[] correctly.
-  */
--static void run_pmregs_validity_test(u64 pmcr_n)
-+static void run_pmregs_validity_test(u64 pmcr_n, bool fixed_counters_only)
- {
- 	int i;
- 	struct kvm_vcpu *vcpu;
- 	u64 set_reg_id, clr_reg_id, reg_val;
- 	u64 valid_counters_mask, max_counters_mask;
- 
--	test_create_vpmu_vm_with_nr_counters(pmcr_n, false);
-+	test_create_vpmu_vm_with_nr_counters(pmcr_n, fixed_counters_only, false);
- 	vcpu = vpmu_vm.vcpu;
- 
- 	valid_counters_mask = get_counters_mask(pmcr_n);
-@@ -605,13 +607,15 @@ static void run_pmregs_validity_test(u64 pmcr_n)
- 	destroy_vpmu_vm();
- }
- 
--static void run_mdcr_el2_validity_test(u64 pmcr_n)
-+static void run_mdcr_el2_validity_test(u64 pmcr_n, bool fixed_counters_only)
- {
- 	struct kvm_vcpu_init init;
- 	struct kvm_vcpu *vcpu;
- 	u64 expected_mdcr, mdcr;
-+	u64 irq = 23;
- 
--	pr_debug("MDCR_EL2 test with pmcr_n %lu\n", pmcr_n);
-+	pr_debug("MDCR_EL2 test with pmcr_n %lu, fixed_counters_only %d\n",
-+		 pmcr_n, fixed_counters_only);
- 
- 	create_vpmu_vm(guest_code);
- 	if (!vm_supports_el2(vpmu_vm.vm)) {
-@@ -632,6 +636,16 @@ static void run_mdcr_el2_validity_test(u64 pmcr_n)
- 		    "MDCR_EL2 was not properly updated after HPMN write (expected 0x%lx, got 0x%lx)",
- 		    expected_mdcr, mdcr);
- 
-+	if (fixed_counters_only) {
-+		vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+				     KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
-+
-+		mdcr = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_MDCR_EL2));
-+		TEST_ASSERT(mdcr == expected_mdcr,
-+			    "MDCR_EL2 changed after PMU_V3_FIXED_COUNTERS_ONLY (expected 0x%lx, got 0x%lx)",
-+			    expected_mdcr, mdcr);
-+	}
-+
- 	set_nr_counters(vcpu, pmcr_n, false);
- 
- 	mdcr = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_MDCR_EL2));
-@@ -639,6 +653,9 @@ static void run_mdcr_el2_validity_test(u64 pmcr_n)
- 		    "MDCR_EL2 changed after PMU_V3_SET_NR_COUNTERS (expected 0x%lx, got 0x%lx)",
- 		    expected_mdcr, mdcr);
- 
-+	vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+			     KVM_ARM_VCPU_PMU_V3_IRQ, &irq);
-+
- 	vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
- 			     KVM_ARM_VCPU_PMU_V3_INIT, NULL);
- 
-@@ -673,11 +690,11 @@ static void run_mdcr_el2_validity_test(u64 pmcr_n)
-  * the vCPU to @pmcr_n, which is larger than the host value.
-  * The attempt should fail as @pmcr_n is too big to set for the vCPU.
-  */
--static void run_error_test(u64 pmcr_n)
-+static void run_error_test(u64 pmcr_n, bool fixed_counters_only)
- {
- 	pr_debug("Error test with pmcr_n %lu (larger than the host)\n", pmcr_n);
- 
--	test_create_vpmu_vm_with_nr_counters(pmcr_n, true);
-+	test_create_vpmu_vm_with_nr_counters(pmcr_n, fixed_counters_only, true);
- 	destroy_vpmu_vm();
- }
- 
-@@ -738,25 +755,152 @@ static void test_set_nr_counters_after_vcpu_run(void)
- 	kvm_vm_free(vm);
- }
- 
--int main(void)
-+static void test_config(u64 pmcr_n, bool fixed_counters_only)
-+{
-+	u64 i;
-+
-+	for (i = 0; i <= pmcr_n; i++) {
-+		run_access_test(i, fixed_counters_only);
-+		run_pmregs_validity_test(i, fixed_counters_only);
-+		run_mdcr_el2_validity_test(i, fixed_counters_only);
-+	}
-+
-+	for (i = pmcr_n + 1; i < ARMV8_PMU_MAX_COUNTERS; i++)
-+		run_error_test(i, fixed_counters_only);
-+}
-+
-+static void test_fixed_counters_only_strict(void)
-+{
-+	struct kvm_vcpu_init init;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	u64 irq = 23;
-+	int ret;
-+
-+	if (!kvm_has_cap(KVM_CAP_ARM_PMU_V3_STRICT))
-+		return;
-+
-+	vm = vm_create(1);
-+	kvm_get_default_vcpu_target(vm, &init);
-+	init.features[0] |= BIT(KVM_ARM_VCPU_PMU_V3) |
-+			    BIT(KVM_ARM_VCPU_PMU_V3_STRICT);
-+	vcpu = aarch64_vcpu_add(vm, 0, &init, guest_code_done);
-+	kvm_arch_vm_finalize_vcpus(vm);
-+	vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+			     KVM_ARM_VCPU_PMU_V3_IRQ, &irq);
-+
-+	/* STRICT still requires a PMU selection before initialization. */
-+	ret = __vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+				     KVM_ARM_VCPU_PMU_V3_INIT, NULL);
-+	TEST_ASSERT(ret == -1 && errno == ENXIO,
-+		    KVM_IOCTL_ERROR(KVM_SET_DEVICE_ATTR, ret));
-+
-+	vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+			     KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
-+	vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+			     KVM_ARM_VCPU_PMU_V3_INIT, NULL);
-+
-+	kvm_vm_free(vm);
-+}
-+
-+static void test_fixed_counters_only(void)
- {
--	u64 i, pmcr_n;
-+	struct kvm_pmu_event_filter filter = { .nevents = 0 };
-+	struct kvm_vm *vm;
-+	struct kvm_vcpu *running_vcpu;
-+	struct kvm_vcpu *stopped_vcpu;
-+	struct kvm_vcpu_init init;
-+	int ret;
-+	u64 irq = 23;
-+
-+	create_vpmu_vm(guest_code);
-+	ret = __vcpu_has_device_attr(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+				     KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY);
-+	if (ret) {
-+		TEST_ASSERT(ret == -1 && errno == ENXIO,
-+			    KVM_IOCTL_ERROR(KVM_HAS_DEVICE_ATTR, ret));
-+		destroy_vpmu_vm();
-+		return;
-+	}
-+
-+	/* Assert that FIXED_COUNTERS_ONLY is unset at initialization. */
-+	ret = __vcpu_device_attr_get(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+				     KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
-+	TEST_ASSERT(ret == -1 && errno == ENXIO,
-+		    KVM_IOCTL_ERROR(KVM_GET_DEVICE_ATTR, ret));
-+
-+	/* Assert that setting FIXED_COUNTERS_ONLY succeeds. */
-+	vcpu_device_attr_set(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+			     KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
-+
-+	/* Assert that FIXED_COUNTERS_ONLY is set. */
-+	vcpu_device_attr_get(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+			     KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
-+
-+	/*
-+	 * Setting an event filter when FIXED_COUNTERS_ONLY has already been set
-+	 * results in EBUSY.
-+	 */
-+	ret = __vcpu_device_attr_set(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+				     KVM_ARM_VCPU_PMU_V3_FILTER, &filter);
-+	TEST_ASSERT(ret == -1 && errno == EBUSY,
-+		    KVM_IOCTL_ERROR(KVM_SET_DEVICE_ATTR, ret));
-+
-+	destroy_vpmu_vm();
-+
-+	create_vpmu_vm(guest_code);
-+
-+	/*
-+	 * Assert that setting FIXED_COUNTERS_ONLY when an event filter has
-+	 * already been set results in EBUSY.
-+	 */
-+	vcpu_device_attr_set(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+			     KVM_ARM_VCPU_PMU_V3_FILTER, &filter);
-+
-+	ret = __vcpu_device_attr_set(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+				     KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
-+	TEST_ASSERT(ret == -1 && errno == EBUSY,
-+		    KVM_IOCTL_ERROR(KVM_SET_DEVICE_ATTR, ret));
-+
-+	destroy_vpmu_vm();
-+
-+	/*
-+	 * Assert that setting FIXED_COUNTERS_ONLY when a VCPU has already run
-+	 * results in EBUSY.
-+	 */
-+	vm = vm_create(2);
-+	vm_ioctl(vm, KVM_ARM_PREFERRED_TARGET, &init);
-+	init.features[0] |= (1 << KVM_ARM_VCPU_PMU_V3);
-+	running_vcpu = aarch64_vcpu_add(vm, 0, &init, guest_code_done);
-+	stopped_vcpu = aarch64_vcpu_add(vm, 1, &init, guest_code_done);
-+	kvm_arch_vm_finalize_vcpus(vm);
-+	vcpu_device_attr_set(running_vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+			     KVM_ARM_VCPU_PMU_V3_IRQ, &irq);
-+	vcpu_device_attr_set(running_vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+			     KVM_ARM_VCPU_PMU_V3_INIT, NULL);
-+	run_vcpu(running_vcpu);
-+
-+	ret = __vcpu_device_attr_set(stopped_vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+				     KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
-+	TEST_ASSERT(ret == -1 && errno == EBUSY,
-+		    KVM_IOCTL_ERROR(KVM_SET_DEVICE_ATTR, ret));
-+
-+	kvm_vm_free(vm);
-+
-+	test_fixed_counters_only_strict();
- 
-+	test_config(0, true);
-+}
-+
-+int main(void)
-+{
- 	TEST_REQUIRE(kvm_has_cap(KVM_CAP_ARM_PMU_V3));
- 	TEST_REQUIRE(kvm_supports_vgic_v3());
- 	TEST_REQUIRE(kvm_supports_nr_counters_attr());
- 
- 	test_set_nr_counters_after_vcpu_run();
--
--	pmcr_n = get_pmcr_n_limit();
--	for (i = 0; i <= pmcr_n; i++) {
--		run_access_test(i);
--		run_pmregs_validity_test(i);
--		run_mdcr_el2_validity_test(i);
--	}
--
--	for (i = pmcr_n + 1; i < ARMV8_PMU_MAX_COUNTERS; i++)
--		run_error_test(i);
-+	test_config(get_pmcr_n_limit(), false);
-+	test_fixed_counters_only();
- 
- 	return 0;
- }
+Otherwise, we now need to split the block mapping to a deeper level
+to apply the "state" change to a subset of the "block" range. This
+is why we return RMI_ERROR_RTT when the requested RIPAS doesn't
+match the "ripas_pre"
 
--- 
-2.55.0
+Does that help ? Remember that we don't have the concept of "ACCEPT"
+in CCA.
+
+Cheers
+Suzuki
+
+
+> 
+> Why compare ripas_pre and rec.ripas_value when the level is not aligned?
+> 
+>>
+>>>
+>>> And there's no "accept" step in the guest after conversions, which makes
+>>> it different from TDX and SNP.
+>>
+>> Correct, the guest "permitted" the GPA to be made private with unknown
+>> contents anyway. RMM guarantees that the "data" is scrubbed when the
+>> GPA is made valid. The advantage with this approach is, once the
+>> Guest sets the RIPAS_RAM, the host can lazily donate pages at
+>> fault time
+>>
+>>>
+>>> Difficulty in using current gmem hooks that SNP uses:
+>>>
+>>> * .gmem_make_shared() called from conversions doesn't have the vCPU
+>>>     context, finding the right vCPU context is expensive.
+>>>       * Sean, don't we already iterate vCPUs to find VMSA pages to kick
+>>>         the right vCPUs?
+>>
+>> We could keep a list of VCPUs with pending set-ripas request for e.g.
+>> Or before the vCPU enter, we check the state of the region and
+>> do the sync with RMM.
+>>
+>>> * .gmem_make_private at fault time is too late
+>>>       * At the next vCPU enter, the RMM would already read it's state to
+>>>         report success/failure, and there's no fault in-between for the
+>>>         .gmem_make_private to happen.
+>>>
+>>> At the call Sean suggested mirroring the RMM's tracking in KVM, but that
+>>> sounds quite arch-specific and it's like doing arch-specific validation
+>>> within KVM.
+>>
+>> Suzuki
+>>
+>>
+>>>
+>>> p.s. Fuad, for pKVM you also mentioned that you'll need to check if the
+>>> guest had requested for conversion first? This might be the same/similar
+>>> problem.
 
