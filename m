@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B6147CA78;
-	Sun, 20 Sep 2026 21:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D74D4766AB;
+	Sun, 20 Sep 2026 21:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789940663; cv=none; b=Y9UqPBSJcCZCh4tZ6U9k207lMS20aLDe6biFbUVK8Wjq9tYQtXDKxAbOxWwFyHVj98ZTTH3DAGNkjVIcNjv7kf0ZN8gw7iooUl8x6182IV+LoqvEo8pV4OE3DCVpxzhtpNjpKJdSDo1twuPzMpqY1O9yrut5md6CVLgCW1UZYb8=
+	t=1789941104; cv=none; b=ZVb/UxwWaxv3WwIZRQjlVw+rSNNmCabPvevpHbutG8nzApqRpZ8de4eBkMD00gi/OV4nUnzlFih/hEVhK5Bq+cSgj1dNNaXJPJxw7KfrM5lvgkNe91dTCBhO+Se27ueeXZR+/a078DhApOLnnkuCA4IWjuuXKP5iNPGAhGJwxVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789940663; c=relaxed/simple;
-	bh=qhT5C6zKySKu1rSsPNT8ibOTVYUw2vcAXIPCmejvnLg=;
+	s=arc-20240116; t=1789941104; c=relaxed/simple;
+	bh=8lrFdJCK0hP8tBo0/L0O4KfvrChkLlA/DsFw5acZxJo=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=oImIWCgDcZKOaXgvwAgX5ga5TLjRuN4RXYFlCHsqEylW3uF92hAz2Fe4liUZ99jdzs93GG2wBXbfRzIrYuocGpksFVU/GhZIj6ePip9RUQ2TilBQD/lKt2BOD1eaKGDp1xkeCixbHspQFcxVHjI/TZOa4KVlTuOaP/ypF8YoRqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J1sH415G; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=GBrrdXgr5yntaBJKHb4anHn+fgopTOePQojPxOzb56m7jcvmq5FLUJfKRroYhJdZ+rGCz5tzE6S4afyiNMuhakPD9B94bZV7OGbozWX2llU/Z5PxtKXVjFdGAu0pTOGn8DlH52/F6RnYj6fqMXBL3+HU1geDgmCzyKZ4tmFNtes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gct7GEXD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J1sH415G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D84B81F000FF;
-	Sun, 20 Sep 2026 21:44:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gct7GEXD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03BA41F000FF;
+	Sun, 20 Sep 2026 21:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789940662;
-	bh=eHhSSxLGVoPebUWjHE8p0EIJe3Z1HUGjjOLRQNBoKb0=;
+	s=k20260515; t=1789941089;
+	bh=NYfVHbiVNvz5mJ9infrMi9C+SgVaLYLdUDj7Xrq5Dyk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=J1sH415Ghlc7B+j+Xq2hED7VZvkU3taWbs5O5LmOqLHMrrFsbCxLzbA9YV5wLnRgf
-	 uYpyC1ZZTJdT5E4hrxMC7TAJVLre0kgveXOiNVKNkh7QBl1ybmGeY0IJEtrtaORHMl
-	 2XlgDQsmtB0NKa8+3xcgMNwhkL8aZxVzp1eJr8teTX4Af1HnFx8xKf9siqzNee0WvB
-	 20BHhcp1ffoyeXUyyLUlm9w1mmqR/uldJOtPR9ITmXW5/MTTw46Z9HVglRUX/XsFTu
-	 Yx0XD++NDRjRko9htKr9DnfQOj1NA/djnkKrOt6VGygtZHeQ3LFkA5N580DI9zP5zy
-	 gUs7baWdo/OYg==
+	b=gct7GEXD93mrnkmTFRyk+sVwHdnuOmN8MziPrdc4JNxemykIPljggkOouDnHCOHIl
+	 7+qQPYBPm3m5LOglXdcjIAwlS08fYw5O8E9gZX6zbF6upxiok75c63fE0z3/PZQj7i
+	 SLF2orq/aPyW0PcGmw5gSD+capVJoODExiClzuZCPXK4jjEHJtRTJxQ2gmCecOun+q
+	 /iNH/sK2FFBEQsmToasQSyBSUaYJFKOpi1OM3Pm6bt1OjUA/o1OQ6LBL3YQ2KmXh/S
+	 9yaxhkYyvQKUSWIbn47CpajuklBZOF2evk+Xed7CaXQTZ5Hz7iIiP+5LDRcsiLD6kC
+	 o/87O0qVsDoxQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v19 02/20] KVM: arm64: Disable Steal time accounting for
- protected guests
+Subject: Re: [PATCH 12/17] KVM: selftests: Add nested VMX APIC cache
+ invalidation test
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Suzuki K Poulose" <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, kvmarm@lists.linux.dev
-In-Reply-To: <20260920212845.707-3-suzuki.poulose@arm.com>
-References: <20260920212845.707-1-suzuki.poulose@arm.com>
- <20260920212845.707-3-suzuki.poulose@arm.com>
+To: "David Woodhouse" <dwmw2@infradead.org>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev
+In-Reply-To: <20260920211920.928306-13-dwmw2@infradead.org>
+References: <20260920211920.928306-1-dwmw2@infradead.org>
+ <20260920211920.928306-13-dwmw2@infradead.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 20 Sep 2026 21:44:21 +0000
-Message-Id: <20260920214421.D84B81F000FF@smtp.kernel.org>
+Date: Sun, 20 Sep 2026 21:51:28 +0000
+Message-Id: <20260920215129.03BA41F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,73 +47,92 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] arm64: kvm: contradictory SMCCC advertisement for PV_TIME on pro=
-tected VMs
+- [Medium] kvm: selftests: test randomly fails on KVM_EXIT_INTERNAL_ERROR
 --
 
-commit db2c057e4ceefd58162587d4fd417788a4db3dbc
-Author: Suzuki K Poulose <suzuki.poulose@arm.com>
+commit 9c12532066400c0055054c635c5df9f04407d1a2
+Author: Fred Griffoul <fgriffo@amazon.co.uk>
 
-    KVM: arm64: Disable Steal time accounting for protected guests
-   =20
-    PVTIME support is advertised by KVM_CAP_STEAL_TIME, which doesn't take =
-into
-    account the kvm instance. Even with that, a VMM could skip the CAP check
-    and proceed to configure the PVTIME as we don't do further check on the
-    DEVICE_CTRL. Tighten this up by passing the KVM instance around wherever
-    possible and catch things early.
+KVM: selftests: Add nested VMX APIC cache invalidation test
 
-> diff --git a/arch/arm64/kvm/pvtime.c b/arch/arm64/kvm/pvtime.c
-> index 4ceabaa4c30bd..579e0a4720ad2 100644
-> --- a/arch/arm64/kvm/pvtime.c
-> +++ b/arch/arm64/kvm/pvtime.c
-> @@ -67,9 +67,9 @@ gpa_t kvm_init_stolen_time(struct kvm_vcpu *vcpu)
->  	return base;
->  }
-> =20
-> -bool kvm_arm_pvtime_supported(void)
-> +bool kvm_arm_pvtime_supported(struct kvm *kvm)
->  {
-> -	return !!sched_info_on();
-> +	return !!sched_info_on() && (!kvm || !kvm_vm_is_protected(kvm));
->  }
+Introduce selftest to verify nested VMX APIC virtualization page cache
+invalidation and refresh mechanisms for pfncache implementation.
+
+> diff --git a/tools/testing/selftests/kvm/x86/vmx_apic_update_test.c b/too=
+ls/testing/selftests/kvm/x86/vmx_apic_update_test.c
+> new file mode 100644
+> index 0000000000000..8dd15c92fa906
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/x86/vmx_apic_update_test.c
+[ ... ]
+> +static void l1_guest_code(struct vmx_pages *vmx_pages)
+> +{
+[ ... ]
+> +again:
+> +	exit_reason =3D vmreadz(VM_EXIT_REASON);
+> +	if (exit_reason =3D=3D EXIT_REASON_APIC_ACCESS) {
+> +		uint64_t guest_rip =3D vmreadz(GUEST_RIP);
+> +		uint64_t instr_len =3D vmreadz(VM_EXIT_INSTRUCTION_LEN);
+> +
+> +		vmwrite(GUEST_RIP, guest_rip + instr_len);
+> +		GUEST_ASSERT(!vmresume());
 
 [Severity: Medium]
-Does this create a contradictory SMCCC advertisement for protected VMs?
+If the VAPIC_SLOT memslot is moved asynchronously and leaves the VAPIC_GPA
+unbacked just prior to this VMRESUME call, will KVM treat the unbacked
+APIC access page at VM-entry as a misconfiguration and exit to userspace
+with KVM_EXIT_INTERNAL_ERROR?
 
-A protected guest querying ARM_SMCCC_ARCH_FEATURES_FUNC_ID for
-ARM_SMCCC_HV_PV_TIME_FEATURES in kvm_smccc_call_handler() will receive
-SMCCC_RET_SUCCESS because the KVM_REG_ARM_STD_HYP_BIT_PV_TIME bit is
-still set in std_hyp_bmap:
+> +		goto again;
+> +	}
+[ ... ]
+> +static void *update_move_memslot(void *arg)
+> +{
+> +	struct update_control *ctrl =3D arg;
+> +	uint64_t gpa =3D VAPIC_GPA;
+> +
+> +	wait_for_start_signal(ctrl);
+> +
+> +	while (is_running(ctrl)) {
+> +		usleep(update_period_ms * 1000);
+> +		gpa +=3D 0x10000;
+> +		vm_mem_region_move(ctrl->vm, VAPIC_SLOT, gpa);
 
-arch/arm64/kvm/hypercalls.c:kvm_smccc_call_handler() {
-	...
-	case ARM_SMCCC_HV_PV_TIME_FEATURES:
-		if (test_bit(KVM_REG_ARM_STD_HYP_BIT_PV_TIME,
-			     &smccc_feat->std_hyp_bmap))
-			val[0] =3D SMCCC_RET_SUCCESS;
-		break;
-	...
-}
+[Severity: Medium]
+Does this background memslot move leave the VAPIC_GPA unbacked precisely
+when L1 is about to execute VMRESUME?
 
-However, when the guest actually invokes the feature,
-kvm_hypercall_pv_features() returns SMCCC_RET_NOT_SUPPORTED because
-the IPA is unconfigured:
+> +		ctrl->updates++;
+> +	}
+> +
+> +	return NULL;
+> +}
+[ ... ]
+> +static void run(void * (*update)(void *), const char *name)
+> +{
+[ ... ]
+> +	while (!done) {
+> +		vcpu_run(vcpu);
+> +
+> +		switch (vcpu->run->exit_reason) {
+[ ... ]
+> +		default:
+> +			TEST_FAIL("%s: Unexpected exit reason: %d (flags 0x%x)",
+> +				  progname,
+> +				  vcpu->run->exit_reason, vcpu->run->flags);
 
-arch/arm64/kvm/pvtime.c:kvm_hypercall_pv_features() {
-	...
-	case ARM_SMCCC_HV_PV_TIME_FEATURES:
-	case ARM_SMCCC_HV_PV_TIME_ST:
-		if (vcpu->arch.steal.base !=3D INVALID_GPA)
-			val =3D SMCCC_RET_SUCCESS;
-		break;
-	...
-}
+[Severity: Medium]
+Does this unconditionally fail the test if it encounters the resulting
+KVM_EXIT_INTERNAL_ERROR?
 
-This violates the SMCCC ABI by advertising ARM_SMCCC_HV_PV_TIME_FEATURES
-as supported but returning NOT_SUPPORTED when it is invoked. Should the
-KVM_REG_ARM_STD_HYP_BIT_PV_TIME bit be cleared for protected VMs?
+If update_move_memslot() occasionally leaves the VAPIC_GPA unbacked
+precisely while L1 handles an EXIT_REASON_APIC_ACCESS, the resulting
+KVM_EXIT_INTERNAL_ERROR will cause this test to fail randomly in
+CI environments.
+
+> +		}
+> +	}
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260920212845.707-=
-1-suzuki.poulose@arm.com?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260920211920.9283=
+06-1-dwmw2@infradead.org?part=3D12
