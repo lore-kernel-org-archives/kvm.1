@@ -1,180 +1,195 @@
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A152C375F7B;
-	Sun, 20 Sep 2026 14:26:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8475538B7BC
+	for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 14:30:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789914409; cv=none; b=jxJ9UUWyGP/XM+R8wSPu6IoNdMJCUwvhtPE58CdLhpRxNAjWxm2xA+9JShRjRZEiLo9sllKGjZCtCE+g1g3SZlakK3dcwoeREE+8+5ib3ukZNHKH4Clh2WqVVpufmNVor7YCR/Zyed2ekX7WAKQ15YNb2C+cAammi+SpuH9kqWw=
+	t=1789914617; cv=none; b=Tk7sqgc2suhwIJoma1eUadzAosYCZmTKbNnwBe81oMtuXXV0xxKiADE0dcjgjagRxd9ZHbsNXQQOcvhPP4+7GvSy1VLdXxplmJcRH1QlClN4rX9M95ZFhZKPoedy2YHTyEPHUlkLQYhKUi+xZQ++/vyYY2fycWSdG+tynbHgEs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789914409; c=relaxed/simple;
-	bh=pLxv4XzGTP6A2hwd+UTRK/B7f1I7CeNJE0ZqLRUOou0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pollQNuC7N4noMQIQyHRIWbDKFbZHC10W3tlXWveZHuu6WoLvQGo+wg83Is7v2p91gVfG0K0hG1xCwbVTuDFEiUm640zw546sRnYixYYI/bhoEf/IK359d6N8wnj22JAebozJs8XOXxr63C7wL8Xjr4JD1lRIq1q04WzvGaOG8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=D3PvOlU0; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=l7xmx2Ob; arc=none smtp.client-ip=103.168.172.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1789914617; c=relaxed/simple;
+	bh=1GXXCYnoSzgl8fbLS/j1zzxqrBoTtPoebTnLHaJ6Cmg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=rzqrjGI5H1l0V+0IgIbaeNV8u1jxwfaw9oAmvE4h1bDtQVbfTuCzAwC64nQJ6vUPgYrE55kOoDwFT1qbvpYnwPdGoIlMyLMB4lf7ZM+nGMEMVAgk7orQ4t8z8ifoJ6qOgX8ounkoFZdp6QuvqeRbply/c6WkzN2437oTcPFMPu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V00rD5Gc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="D3PvOlU0";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="l7xmx2Ob"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id C7667EC00CC;
-	Sun, 20 Sep 2026 10:26:44 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Sun, 20 Sep 2026 10:26:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1789914404;
-	 x=1790000804; bh=ZZ9WhfGrBQCdKD1w2c0K2pd4Pn9iwIa5Ab+S7w7mvac=; b=
-	D3PvOlU00ItPjefagyMs/LskoD9o2h9hLqW3sgtFz/QxipZ3eBuxi5KizNTBBuxQ
-	vP0TKOOap22KQnPPo8I/ZmDlH2+G8IjrYtLhMEbB0sVgLzo54yR9At8kKxyOUlBa
-	NA8dbXENvWjrCwtp9aUQmjyQ6OW76HKk/FWD92LSqKJRTZSZ+cANDeTAj9O5oYBN
-	Qw6PlkfXDb1uRQb0ila+4RvO/PfIvPcY82baxQp170os0CDplO4y8IpfzNNU8fv6
-	YoPOYI65e4Yz2ez6zkN9Tso4/PnuUxF3pruIoeskzLH4ex5EDeDt2+hinpeFjPhN
-	5xcOmf2z3QcIw7zZOBFK3w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789914404; x=
-	1790000804; bh=ZZ9WhfGrBQCdKD1w2c0K2pd4Pn9iwIa5Ab+S7w7mvac=; b=l
-	7xmx2ObjlE54jD2v9nSy51HqZ2g14GJ9U3HBTLZOVa0aQcKXemN10VdmLjpZTddP
-	cA6/Q5Q+Q1XYtUoNGoARWWvWB8CnP+k9U6oTNDff45WU+OZlkGTuniSxNQ8s64kP
-	vT07bvhAsZyj4Igku/TqMK56yvUAgKQI8CWKN27DvP1lSiG1+O9/VUl3WGB+Cn/f
-	2LgPDRsFMfwdi6FD58uiA2FmYe6XT789X8a+PJiG2fcZIeiYK3hQeyX13uM0I9gL
-	pg5L97sGihQADu0aGLn+yh1vBLh3yTkLeaFch4cOxMftLEJf63jx833WYNawHu8V
-	19X4g9m47cDrhEQKbresQ==
-X-ME-Sender: <xms:JO2vatQPq5_PUMUR9OAZf-ln3aI9XedtW5XBvw0vRGXBX3-tyuuMLg>
-    <xme:JO2vagGla_84GiBdqwQFA04egMJjtDkmKTJRF6fcjPU_wpR78VShslZTVYT0NnyMx
-    48pG_U_B9j2H5ej-t9Yxp3_5HzjLR61rFn4h4DF4-elSGPOEU9xVA>
-X-ME-Received: <xmr:JO2vaqH2ddiILJrntabZxMOu4cpca6AnjjNXhc_jDc0GS_ZbotQISQjPK5GGWg>
-X-ME-Proxy-Cause: dmFkZTE1p7SKTICFtOQTXEJqa4o9j4y3CC92KP87/SfBi+SVgiV2Idp33XejySp20EJpj3
-    iW7vP1Qlb8yIWEhuajflvwn/yxcdlTicL3yVRAgLSCj62ph1smor9e3WVRiwAXCxfniCPU
-    TmH8NpH4eXHmEqC+v7Zkao1oF7E/kKULKhdR6TjLw+Ma33mJsYHC+d75XoGbnk2/4+ggVo
-    /qBXg8088yvrVSS3AMCWqXpIqfjf15Z+yo8EeKvmT0Vis+Wp3S2PZkUZOq77KAMQVEV/VV
-    FkI1/ieldFcuMGBAA7qynuKgXIMtGI+RKgD2Ocon0t2ygghfUJfnimhzuBt/39W2YXbrnP
-    tVmpmU+bGgXs0JNIrJkAHxQtYyiEEq7dZSDrKc/0qc6cZoWKNcB3KChJmO40wInOzlLAvK
-    pvKoPy/wZmWxmLpHv/pmdjm3Eidxyn4XIBzh2ascBc+mQLoktrGOuJiKU8eSPOH+pXFbfb
-    9kACPmmJ5RdMyux45zEKSc7Jx8ZmgoHmnxgIxLuNkkiLyndpkbeQT/cwc11RUUhlyTHBFd
-    3PrK4ndYEJEnNwQItiUn+eStlu5cWVifCTBnbynGllhsSlgmbZa/uk6HFOXwqna5ju53r8
-    AiFzclMptVL3LfpsS4DWFu8z5J1jngXppRxDAOtnHQ0WXZ92shyX4BKALsFg
-X-ME-Proxy: <xmx:JO2vamTHaq_-2RfhaTfgGjb3zLzrxTmxWvBOZgQES-oHkDN-AdPCeg>
-    <xmx:JO2vajI00zUBKCNpcDcQW2Leyb7oaBdfWqvgNZQSEIc9I6e0y6hC7A>
-    <xmx:JO2vapYpuCR6mbC8tOxOqXfnatNgCMaWigdDcQUmOD7oUIYmMnsYjg>
-    <xmx:JO2vat9UUm3jcsbv0u8kEUabawhkqRJ4OgbZvRh2qVYTyl2FXHi-pw>
-    <xmx:JO2vandBSjJn3EhxUlOarpiXTtMW2Vb1KjjiKsMXOvKflFHaJNyT8Hqp>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 20 Sep 2026 10:26:43 -0400 (EDT)
-Date: Sun, 20 Sep 2026 08:26:41 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Longfang Liu <liulongfang@huawei.com>
-Cc: <alex.williamson@redhat.com>, <jgg@nvidia.com>, <kvm@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, alex@shazbot.org
-Subject: Re: [PATCH v4 1/2] hisi_acc_vfio_pci: fix NULL dereference in
- reset_prepare on PF passthrough
-Message-ID: <20260920082641.64d66616@shazbot.org>
-In-Reply-To: <20260918084244.1485837-2-liulongfang@huawei.com>
-References: <20260918084244.1485837-1-liulongfang@huawei.com>
-	<20260918084244.1485837-2-liulongfang@huawei.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V00rD5Gc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD47A1F008A3;
+	Sun, 20 Sep 2026 14:30:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789914610;
+	bh=cvSHl/T5RLW87fYsS7D4DZcWNwiIkIZ08zF32HkRmIY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=V00rD5Gcl2T6jc+Ipod9fotJ8ICxtX7hEP55OR1+bRf4Nc0H9mUApQQDDptwkSdI+
+	 Kgpx/EKeXRl9naIHDQAQGuC/IEE/dLOKFttc73DuDvcprWKies8QeiLmqeLNiH2UwT
+	 XMZo0JteXeilGkiiqAkPWT93zOqmQZ2IAjWYVd5XnQvpg6Nz9uYHg6ygcZfvC23Eia
+	 h8OZsSeN7RCw6oUhz/rXtVd2Ke4seu93uD0QIC/L/S/3VRTzdn6Gym48lo4UYvg+Xl
+	 BmuDjrhHa9hi+lbDXpjWvuvbzV3H0rPqnHWnRTbVUTZdycjmZ3xiMcJ61RUfhEATLC
+	 UpMsgCeXMYWhw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] KVM: riscv: Free detached G-stage page tables
+ outside mmu_lock
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Can Qi" <qican5708@163.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260920140831.75097-1-qican5708@163.com>
+References: <20260920123117.49830-1-qican5708@163.com>
+ <20260920140831.75097-1-qican5708@163.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 20 Sep 2026 14:30:10 +0000
+Message-Id: <20260920143010.AD47A1F008A3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Fri, 18 Sep 2026 16:42:43 +0800
-Longfang Liu <liulongfang@huawei.com> wrote:
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Critical] kvm: premature MMU notifier abort during teardown allows use-a=
+fter-free
+- [High] kvm: stale TLB exposed when dropping mmu_lock with pending flushes
+--
 
-> When a PF is bound to the driver via driver_override and passed
-> through to a VM, its pf_qm stays NULL. The PCI error handler
-> reset_prepare() runs during open_device through
-> pci_try_reset_function(), before the mig_ops gate, and dereferences
-> the NULL pf_qm for the timeout log, crashing the kernel.
-> 
-> Move the mig_ops check to the entry of reset_prepare() and
-> aer_reset_done() so non-migration devices skip the QM_RESETTING
-> coordination. Also clear set_reset_flag together with QM_RESETTING
-> in aer_reset_done(); the flag was never cleared before, so a later
-> timed-out reset could release a foreign lock. Replace
-> pci_iov_vf_id() >= 0 with pdev->is_virtfn in probe() for clearer
-> on-VF gating.
-> 
-> Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
-> Fixes: a22099ed7936f ("hisi_acc_vfio_pci: fix VF reset timeout issue")
-> Signed-off-by: Longfang Liu <liulongfang@huawei.com>
-> ---
->  .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 19 ++++++++++++-------
->  1 file changed, 12 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> index 86362ec424a5..8ff69c8d1ff7 100644
-> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> @@ -1154,9 +1154,14 @@ static void hisi_acc_vf_pci_reset_prepare(struct pci_dev *pdev)
+commit cab834ddbb040506be1fc3bc033afe85ed6f46cc
+Author: Can Qi <qican5708@163.com>
+Subject: KVM: riscv: Free detached G-stage page tables outside mmu_lock
+
+This commit changes KVM RISC-V to detach the active G-stage root under
+mmu_lock and free the page tables after dropping the lock. It also replaces
+the KVM-wide split page cache with a per-operation cache, dropping the
+lock to top it up.
+
+> diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
+> index e5002cb9cbef1..5ab3c4ba5a6a4 100644
+> --- a/arch/riscv/kvm/gstage.c
+> +++ b/arch/riscv/kvm/gstage.c
+[ ... ]
+> @@ -426,6 +457,12 @@ bool kvm_riscv_gstage_unmap_range(struct kvm_gstage =
+*gstage,
+>  	bool flush =3D false;
+> =20
+>  	while (addr < end) {
+> +		/* cond_resched_rwlock_write() may have let teardown detach us. */
+> +		if (!(gstage->flags & KVM_GSTAGE_FLAGS_LOCAL) &&
+> +		    (!gstage->kvm->arch.pgd ||
+> +		     gstage->pgd !=3D gstage->kvm->arch.pgd))
+> +			break;
+> +
+
+[Severity: Critical]
+Can this sequence cause a use-after-free by aborting an MMU notifier
+prematurely?
+
+If an in-progress kvm_riscv_gstage_unmap_range() loop yields and observes t=
+he
+detached root here, it breaks out early and fails to complete the unmap
+operation requested by the MMU notifier.
+
+Since kvm_riscv_mmu_free_pgd() drops the mmu_lock before the vCPUs are
+quiesced, the host MM could trigger an MMU notifier (e.g., page reclaim)
+during this window. If the unmap aborts early, the host MM might free the
+page while the guest is still executing and has it mapped.
+
+>  		found_leaf =3D kvm_riscv_gstage_get_leaf(gstage, addr, &ptep, &ptep_le=
+vel);
+>  		ret =3D gstage_level_to_page_size(gstage, ptep_level, &page_size);
+>  		if (ret)
+> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+> index 6035b5ec95039..2d7ad70ff7654 100644
+> --- a/arch/riscv/kvm/mmu.c
+> +++ b/arch/riscv/kvm/mmu.c
+[ ... ]
+> @@ -141,19 +139,22 @@ static bool mmu_split_huge_pages(struct kvm_gstage =
+*gstage,
+>  			if (ret) {
+>  				kvm_err("Failed to toup split page cache\n");
+>  				write_lock(&kvm->mmu_lock);
+> -				return flush;
+> +				break;
+>  			}
+>  			write_lock(&kvm->mmu_lock);
+>  		}
+> =20
+> -		if (!kvm->arch.pgd)
+> -			return flush;
+> +		if (!kvm->arch.pgd || gstage->pgd !=3D kvm->arch.pgd)
+> +			break;
+> =20
+>  		flush |=3D kvm_riscv_gstage_split_huge(gstage, pcache, addr, 0, false);
+> =20
+>  		addr +=3D PMD_SIZE;
+>  	}
+> =20
+> +	write_unlock(&kvm->mmu_lock);
+> +	kvm_mmu_free_memory_cache(pcache);
+> +	write_lock(&kvm->mmu_lock);
+>  	return flush;
+>  }
+
+[Severity: High]
+Does this code expose stale hardware translations to the guest?
+
+If flush is true at the end of the loop, the mmu_lock is dropped to free the
+memory cache before returning the flush status to the caller. This creates a
+window where the mmu_lock is dropped, but the accumulated split pages have =
+not
+yet been flushed from the TLB.
+
+Could a guest trigger huge page splits and access memory during this window,
+retaining a stale mapping in the hardware TLB while the host MM subsystem
+believes the page is unmapped?
+
+[ ... ]
+> @@ -772,41 +768,45 @@ int kvm_riscv_mmu_alloc_pgd(struct kvm *kvm)
+>  void kvm_riscv_mmu_free_pgd(struct kvm *kvm)
 >  {
->  	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
->  	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
-> -	struct device *dev = &qm->pdev->dev;
-> +	struct device *dev = &pdev->dev;
->  	u32 delay = 0;
->  
-> +	if (!hisi_acc_vdev->core_device.vdev.mig_ops) {
-> +		dev_err(dev, "device not support migration\n");
+>  	struct kvm_gstage gstage;
+> -	void *pgd =3D NULL;
+> -	bool flush =3D false;
+> =20
+>  	write_lock(&kvm->mmu_lock);
+> -	if (kvm->arch.pgd) {
+> -		kvm_riscv_gstage_init(&gstage, kvm);
+> -		flush =3D kvm_riscv_gstage_unmap_range(&gstage, 0UL,
+> -			kvm_riscv_gstage_gpa_size(kvm->arch.pgd_levels), false);
+> -		pgd =3D READ_ONCE(kvm->arch.pgd);
+> -		kvm->arch.pgd =3D NULL;
+> -		kvm->arch.pgd_phys =3D 0;
+> -		kvm->arch.pgd_levels =3D 0;
+> +	if (!kvm_riscv_gstage_init(&gstage, kvm)) {
+> +		write_unlock(&kvm->mmu_lock);
 > +		return;
-> +	}
-
-Why is not supporting migration worthy of a dev_err()?!  Resets are a
-normal operation.  Generating a log to nag the lack of migration
-support on every reset is unacceptable.
-
-> +
->  	/* All reset requests need to be queued for processing */
->  	while (test_and_set_bit(QM_RESETTING, &qm->misc_ctl)) {
->  		msleep(1);
-> @@ -1174,12 +1179,14 @@ static void hisi_acc_vf_pci_aer_reset_done(struct pci_dev *pdev)
->  	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
->  	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
->  
-> -	if (hisi_acc_vdev->set_reset_flag)
-> -		clear_bit(QM_RESETTING, &qm->misc_ctl);
+>  	}
+> +	/* Live walkers must acquire mmu_lock and check the active root. */
+> +	WRITE_ONCE(kvm->arch.pgd, NULL);
+> +	kvm->arch.pgd_phys =3D 0;
+> +	kvm->arch.pgd_levels =3D 0;
+>  	write_unlock(&kvm->mmu_lock);
+> =20
+> -	if (flush)
+> -		kvm_flush_remote_tlbs(kvm);
 > -
->  	if (!hisi_acc_vdev->core_device.vdev.mig_ops)
->  		return;
->  
-> +	if (hisi_acc_vdev->set_reset_flag) {
-> +		clear_bit(QM_RESETTING, &qm->misc_ctl);
-> +		hisi_acc_vdev->set_reset_flag = false;
-> +	}
-> +
->  	mutex_lock(&hisi_acc_vdev->state_mutex);
->  	hisi_acc_vf_reset(hisi_acc_vdev);
->  	mutex_unlock(&hisi_acc_vdev->state_mutex);
-> @@ -1670,13 +1677,11 @@ static int hisi_acc_vfio_pci_probe(struct pci_dev *pdev, const struct pci_device
->  	struct hisi_acc_vf_core_device *hisi_acc_vdev;
->  	const struct vfio_device_ops *ops = &hisi_acc_vfio_pci_ops;
->  	struct hisi_qm *pf_qm;
-> -	int vf_id;
->  	int ret;
->  
->  	pf_qm = hisi_acc_get_pf_qm(pdev);
->  	if (pf_qm && pf_qm->ver >= QM_HW_V3) {
-> -		vf_id = pci_iov_vf_id(pdev);
-> -		if (vf_id >= 0)
-> +		if (pdev->is_virtfn)
->  			ops = &hisi_acc_vfio_pci_migrn_ops;
->  		else
->  			pci_warn(pdev, "migration support failed, continue with generic interface\n");
+> -	if (pgd)
+> -		free_pages((unsigned long)pgd, get_order(kvm_riscv_gstage_pgd_size));
+> +	/* Quiesce hardware users before freeing the detached page tables. */
+> +	kvm_make_all_cpus_request(kvm, KVM_REQ_OUTSIDE_GUEST_MODE);
 
-I still reject the redundant is_virtfn check here.  I don't find
-support for the claim that it's a convention among variant drivers, nor
-does it do anything here or to the next patch.  pf_qm is
-deterministically NULL for pdev->is_virtfn.  Thanks,
+[Severity: Critical]
+Does this code allow vCPUs to continue executing with a detached page table?
 
-Alex
+By setting kvm->arch.pgd to NULL and dropping the mmu_lock before
+kvm_make_all_cpus_request() successfully kicks all vCPUs out of guest mode,
+there is a window where vCPUs can still access memory.
+
+If the host MM triggers an MMU notifier during this window,
+kvm_unmap_gfn_range() could fail to initialize because kvm->arch.pgd is NUL=
+L,
+silently returning without unmapping. This could lead to a host use-after-f=
+ree
+if the host MM frees the page while the guest is still executing.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260920140831.7509=
+7-1-qican5708@163.com?part=3D1
