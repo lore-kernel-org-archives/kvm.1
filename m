@@ -1,41 +1,41 @@
 Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D896402B99;
-	Sun, 20 Sep 2026 11:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C953FCB10;
+	Sun, 20 Sep 2026 11:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789903078; cv=none; b=VSwS2dyF65+Mhb6HHZnXyt9daKf8sioM0mKtt9DR7EHauD7bdgZ0BaP+OFx5AnWQYZqZnyRLqE+0ItDCE7MxDBaYqRzWwsZO4BYY6pkjvSQlLtgPjCmHzvKZr222AyrcwAwYPhZWN14NqDzCmp1xYjjSD9vN6gwAk9O8xSoTdt0=
+	t=1789903346; cv=none; b=oq1dJRcQAiwinGvN99s+x37QvRCFhS+5roenxb9/92Z5cFMC6TpTCrwvhZWOHdvLVK20uV7FI33rMJ8QEeEyI42np6rLrzJh9cNimjzZgP/HirhFcfEvMcB4HK9KNmndfIVXnx+3GAsSwW8DL/vSz6PptaOL8UNxmO8AHASGbzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789903078; c=relaxed/simple;
-	bh=xEWxbBZGUjPYlzg4Xr8/yHzALhSurwMXAGDpDFsHDG4=;
+	s=arc-20240116; t=1789903346; c=relaxed/simple;
+	bh=3wHsuhm1EOsX6FnaaZCz7S9AObKXD0J2nrSu7LVseb8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lH2hnfDOTbuVOi2unBh8d8KQW2OMwE5H7wRonovbSqI+61d6GETSHytlo/EcUJsR8VJMYWtI3H68RBXNnenrYdJTgTTGf0z7QBSA+pE2xEB/FmFWiXBcdQwRqM5t4Y/gm/pmYNPp/LuEPRzVlsvbbGL3m/e1HmkpD0VEaHtRRlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=OJJVMnrx; arc=none smtp.client-ip=49.212.243.89
+	 In-Reply-To:To:Cc; b=WgaXsPtGT389DS+HkabdQb8x/fwRe0FV7kjXBrstGv8+JMFAAckQb5dzXg0b6V1UKwUeA5ivpNUnsCQdg0Iak5UVEdcbCeeswA8951+LPLBkUhJw/WZV6GQrHFFsykYhj7zHDSYzCIxAGtbVcC37w74tblU2H2L1nDf5dMSu+Fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=mInm2XTu; arc=none smtp.client-ip=49.212.243.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="OJJVMnrx"
+	dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="mInm2XTu"
 Received: from [192.168.10.153] (p865013-ipoe.ipoe.ocn.ne.jp [153.242.222.12])
 	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 68KBG36f088236
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 68KBG36b088236
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Sun, 20 Sep 2026 20:16:16 +0900 (JST)
+	Sun, 20 Sep 2026 20:16:14 +0900 (JST)
 	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=+2D3XC//PXEj3eDv40Gbahf5dAWuKc/ExUhJEz+Wh54=;
+DKIM-Signature: a=rsa-sha256; bh=xY3f7CW2k+sxURpCWyIEkta47r/Ail7h0q2vhhuON5Y=;
         c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
         h=From:Message-Id:To:Subject:Date;
-        s=rs20250326; t=1789902977; v=1;
-        b=OJJVMnrxeC53WpNkLlXng9twP6VYuQ/JoGFuBUbI+92aGfH/slaGnULjiyVMSldf
-         efgrYqaTF9l0UlZExxiy0SoEV4eb7tllylg84VTpKsXVCRI72i1UX1Q9nDY2UI7h
-         8n7ZfpMbsolrr5ewER7q3PBuo8+aKOndD11ihYKZ33Tp/aEAc05MwrVr+XD0lEhl
-         cIbC49RedRspbqSlDWuVKD8MFgArPlpYE9A0+s+PJSpAKp7E906ZjzUxZ8JdhHet
-         qV/tJ3V9vTI3ZTx+tKm2557K8TbxM8NoEMLeGmlipXJnfPLCAegFyk494y04M01F
-         I8VZAdxh/rrlAVBkLV19Uw==
+        s=rs20250326; t=1789902975; v=1;
+        b=mInm2XTuQIO9C+YXeqfebcOFmmo0frr1Zm8g8p5z6Jq7UKBcwKjgVAAMFAfVJiUd
+         xBenMftkF3iNMlA9lfJY3+/fWwDb25KsqHMCkpJxfIgzhWjYEBbHTAvPC4LvdadC
+         HvvXchwGjR19oAIws8ZLHbg0Oi6lIWRSVuFi7nXBPkFJ3LuA9Ug+B8Rup7Sia7o+
+         D0wcK8iqvjULQE2aTFv9oRsuQT/wCajOsPxekCfr6Hz6kwxXBQIM1SXQNu/1Abt3
+         Mty7ERJ9aLaBleu2qmxKWuIyf/Lc0dLr8W57cIzhjjc5Eq71ClnHRD4nzz5BCieM
+         xBbespM5NLD2jRJLBXhs9g==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Sun, 20 Sep 2026 20:15:59 +0900
-Subject: [PATCH v11 18/21] KVM: arm64: PMU: Pass the target CPU to
- kvm_pmu_probe_armpmu()
+Date: Sun, 20 Sep 2026 20:15:55 +0900
+Subject: [PATCH v11 14/21] arm64: errata: Require Apple IMPDEF PMUv3 traps
+ on all CPUs
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -44,7 +44,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260920-hybrid-v11-18-03618771b0e1@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20260920-hybrid-v11-14-03618771b0e1@rsg.ci.i.u-tokyo.ac.jp>
 References: <20260920-hybrid-v11-0-03618771b0e1@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20260920-hybrid-v11-0-03618771b0e1@rsg.ci.i.u-tokyo.ac.jp>
 To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
@@ -71,131 +71,64 @@ Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
         linux-kselftest@vger.kernel.org,
         Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4142;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2262;
  i=odaki@rsg.ci.i.u-tokyo.ac.jp; h=from:subject:message-id;
- bh=xEWxbBZGUjPYlzg4Xr8/yHzALhSurwMXAGDpDFsHDG4=;
- b=owGbwMvMwCWmMbc20y1CyJDxtFoSQ9b6AwUnJU9VHZgVv3lncJW29cWqhqBy7916DirG5xzur
- AiYy/uto5SFQYyLQVZMkSWlaDe3RnTtp8KE+BaYOaxMIEMYuDgFYCI9ogx/JZ2WROXdvLDk/dIv
- 9etCNtQZ2T3XSu+aHXnfbsOzVbv+WzMyTH8bNHGO69q5cwUEUh8+m2/1YdrGnbtWK098o3VFQfC
- dOQ8A
+ bh=3wHsuhm1EOsX6FnaaZCz7S9AObKXD0J2nrSu7LVseb8=;
+ b=owGbwMvMwCWmMbc20y1CyJDxtFoSQ9b6A7lnUxVOBxxlDNxw5oBdoJXrzRyT78vT9ioa8B0NP
+ PU2+VpCRykLgxgXg6yYIktK0W5ujejaT4UJ8S0wc1iZQIYwcHEKwEQ+xDP896rZWnpzyrw5Iu9n
+ 6q4y753/ZV/N7VDRi8oTLF7G1P8xfMXwT50rRNB9npSOKMParUeWf9G515Jh7jF7GafQ9MRvXSd
+ 3cAAA
 X-Developer-Key: i=odaki@rsg.ci.i.u-tokyo.ac.jp; a=openpgp;
  fpr=AEDC03C9AF734F2EC26A7BFFA4BAEAA73536753C
 
-kvm_pmu_probe_armpmu() currently samples the current CPU internally,
-which ties the helper to default PMU selection.
+KVM relies on ARM64_WORKAROUND_PMUV3_IMPDEF_TRAPS as a system-wide
+precondition for PMUv3 emulation on affected Apple CPUs. A local CPU
+erratum is too weak for that: once the workaround is enabled, a late CPU
+that misses it may still be onlined.
 
-Move that policy to kvm_arm_set_default_pmu() by passing
-raw_smp_processor_id() from the caller, and make the helper search for
-the pPMU covering an explicit CPU. Move the helper above
-kvm_pmu_create_perf_event() so later code can reuse it when creating
-PMU events for a VCPU's current pCPU.
+Make the workaround an all-early-CPU capability instead. The matcher is
+still local because it depends on MIDR_EL1, but the capability is only
+advertised if all early CPUs match. A late CPU that misses an advertised
+capability is therefore rejected.
 
-This preserves the existing default PMU selection behavior while
-preparing fixed-counters-only mode to select a pPMU at runtime.
+Although kept in the errata capability table, this capability describes
+optional trap support, not a workaround required for safe CPU operation.
+Therefore, a late CPU can safely match the capability even when the
+system does not advertise it.
 
+On these CPUs, ID_AA64DFR0_EL1.PMUVer == 0xf means the
+Arm-architected PMUv3 is not implemented. Without the system
+capability, KVM does not advertise PMUv3, and direct accesses to
+architected PMUv3 registers remain UNDEFINED. HACR_EL2[56] only makes
+those accesses trap to EL2 so KVM can emulate PMUv3; leaving it clear
+does not make them access Apple's native PMU.
+
+The native Apple PMU uses separate implementation-defined system
+register encodings, which KVM independently traps with
+HCR_EL2.TIDCP. Allowing a late CPU with extra HACR_EL2 trap support
+therefore does not expose host PMU state to a guest.
+
+Fixes: bed9b8ec8c71 ("KVM: arm64: Advertise PMUv3 if IMPDEF traps are present")
+Assisted-by: Codex:gpt-5.5
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 ---
- arch/arm64/kvm/pmu-emul.c | 72 +++++++++++++++++++++++------------------------
- 1 file changed, 35 insertions(+), 37 deletions(-)
+ arch/arm64/kernel/cpu_errata.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
-index 72b042e5c360..a303752c5e61 100644
---- a/arch/arm64/kvm/pmu-emul.c
-+++ b/arch/arm64/kvm/pmu-emul.c
-@@ -708,6 +708,23 @@ static int kvm_map_pmu_event(struct arm_pmu *pmu, unsigned int eventsel)
- 	return eventsel;
- }
- 
-+static struct arm_pmu *kvm_pmu_probe_armpmu(int cpu)
-+{
-+	struct arm_pmu_entry *entry;
-+	struct arm_pmu *pmu;
-+
-+	guard(rcu)();
-+
-+	list_for_each_entry_rcu(entry, &arm_pmus, entry) {
-+		pmu = entry->arm_pmu;
-+
-+		if (cpumask_test_cpu(cpu, &pmu->supported_cpus))
-+			return pmu;
-+	}
-+
-+	return NULL;
-+}
-+
- /**
-  * kvm_pmu_create_perf_event - create a perf event for a counter
-  * @pmc: Counter context
-@@ -837,42 +854,6 @@ void kvm_host_pmu_init(struct arm_pmu *pmu)
- 	list_add_tail_rcu(&entry->entry, &arm_pmus);
- }
- 
--static struct arm_pmu *kvm_pmu_probe_armpmu(void)
--{
--	struct arm_pmu_entry *entry;
--	struct arm_pmu *pmu;
--	int cpu;
--
--	guard(rcu)();
--
--	/*
--	 * It is safe to use a stale cpu to iterate the list of PMUs so long as
--	 * the same value is used for the entirety of the loop. Given this, and
--	 * the fact that no percpu data is used for the lookup there is no need
--	 * to disable preemption.
--	 *
--	 * It is still necessary to get a valid cpu, though, to probe for the
--	 * default PMU instance as userspace is not required to specify a PMU
--	 * type. In order to uphold the preexisting behavior KVM selects the
--	 * PMU instance for the core during vcpu init. A dependent use
--	 * case would be a user with disdain of all things big.LITTLE that
--	 * affines the VMM to a particular cluster of cores.
--	 *
--	 * In any case, userspace should just do the sane thing and use the UAPI
--	 * to select a PMU type directly. But, be wary of the baggage being
--	 * carried here.
--	 */
--	cpu = raw_smp_processor_id();
--	list_for_each_entry_rcu(entry, &arm_pmus, entry) {
--		pmu = entry->arm_pmu;
--
--		if (cpumask_test_cpu(cpu, &pmu->supported_cpus))
--			return pmu;
--	}
--
--	return NULL;
--}
--
- static u64 __compute_pmceid(struct arm_pmu *pmu, bool pmceid1)
- {
- 	u32 hi[2], lo[2];
-@@ -1112,7 +1093,24 @@ static void kvm_arm_set_pmu(struct kvm *kvm, struct arm_pmu *arm_pmu)
-  */
- int kvm_arm_set_default_pmu(struct kvm *kvm)
- {
--	struct arm_pmu *arm_pmu = kvm_pmu_probe_armpmu();
-+	/*
-+	 * It is safe to use a stale cpu to iterate the list of PMUs so long as
-+	 * the same value is used for the entirety of the loop. Given this, and
-+	 * the fact that no percpu data is used for the lookup there is no need
-+	 * to disable preemption.
-+	 *
-+	 * It is still necessary to get a valid cpu, though, to probe for the
-+	 * default PMU instance as userspace is not required to specify a PMU
-+	 * type. In order to uphold the preexisting behavior KVM selects the
-+	 * PMU instance for the core during vcpu init. A dependent use
-+	 * case would be a user with disdain of all things big.LITTLE that
-+	 * affines the VMM to a particular cluster of cores.
-+	 *
-+	 * In any case, userspace should just do the sane thing and use the UAPI
-+	 * to select a PMU type directly. But, be wary of the baggage being
-+	 * carried here.
-+	 */
-+	struct arm_pmu *arm_pmu = kvm_pmu_probe_armpmu(raw_smp_processor_id());
- 
- 	if (!arm_pmu)
- 		return -ENODEV;
+diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
+index b33dccfafaf8..3dc598a9fdd2 100644
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -1020,7 +1020,7 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
+ 	{
+ 		.desc = "Apple IMPDEF PMUv3 Traps",
+ 		.capability = ARM64_WORKAROUND_PMUV3_IMPDEF_TRAPS,
+-		.type = ARM64_CPUCAP_LOCAL_CPU_ERRATUM,
++		.type = ARM64_CPUCAP_EARLY_LOCAL_CPU_FEATURE,
+ 		.matches = has_impdef_pmuv3,
+ 		.cpu_enable = cpu_enable_impdef_pmuv3_traps,
+ 	},
 
 -- 
 2.55.0
