@@ -1,121 +1,138 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF61C42E401;
-	Sun, 20 Sep 2026 11:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B359C7081A;
+	Sun, 20 Sep 2026 12:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789904577; cv=none; b=D25FMImkP2QeSMAMFIC2/RlO3LSXIKUrdydFQ/ULGc7hmy9gElzZ3TE5Pr56k8kVvcHipWBc2Hti70rhdHDbUbm+Z7xLjMowbhMKXAzYBU7VyLYr9qsnJ1cNVsGZ2fy4WUqaeMt1CmPn/UB0x7oZCWSzrtLa1MMDaf3Isbz1/Ac=
+	t=1789907496; cv=none; b=QP+C86EslYsnyfhnfd/Pvd8jywZP9c70+jdewD+OHU1gAZPsgnDuvlIrHs7y+MOmnhluL0+LIuGGnpW0UiZx7n3tDNn1sjHG92CMeD6c1OaSoHMcdEhDWdRnpX/hE0IZg3SimJtOt3Iz/oGDqedAi/b/KiVjgDwQQLZd8EQTIP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789904577; c=relaxed/simple;
-	bh=riGlHG++DL8f0DnvaJ2KRuj/96+VOlrVeHQ7nm4g8CI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Lin2sbAfTYSzb8Y6/dtiEHE0RXTnvKNs7TtI2t4RpcWXaGADw9vQC/g2fCZF4K+OdwDlGjrMG21aAgyZPOSYN9g6g0qkEwJlsJlI7YyAgZv7yIdlmO3E++5MZ12CfmATEjYhNBj9Ac9tp4WQyiJ+nIslX9KZcxKmRNIrtJIyqEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PoGh9Arc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789907496; c=relaxed/simple;
+	bh=ASMq3FNooPSEO1HqMpusUY/rkyOZL3h0UiPcC4l50XY=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=WXS67L9l4DtgiK/mg2jeqtEyvBcaLe4DM6DAyBXx7Gg+6sngNBKQ3yHa9Zlx9vjTkBlOZ0lDB7LcvD3qmoRB/tZwekXtGEebq7RnIlrGlPiARAFml1oonHCiziF1Xko0KUHk4H+jgNsoJA10OTPssBoXZIKWCm2W6TgAvw0dz0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A4jPOMnf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PoGh9Arc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CB01F00893;
-	Sun, 20 Sep 2026 11:42:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A4jPOMnf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F29901F000FF;
+	Sun, 20 Sep 2026 12:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789904575;
-	bh=s9hM+k8hMa1R4u6jdfPzKiE4L3rfw69xZAFpd6/U+Zg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PoGh9ArcYHh6zXNr/LygdppEE41Db17kxr5t8DdpKSiAmGcvrNfiIokCmXawiSfgM
-	 Hku+cxQAisaRVymDGpXIo3meEk+bOR2g+Y8aLtNmYxus8IwnLKNDcdCfeOGfpUAhKb
-	 qg3DXxavmZka1Wpk5hk3AzrKJd30UoX4QkJZaYjeiG7YyoC73R736Zf+VPco5sxyqZ
-	 7yyzoTpNQaSFpcz9B8xtmt4zInIak96Jr+dPLsMf3PpVjYkdKBLbKPlS/ZSi2KdJmB
-	 QwQiMhcXSYtwK3//ZBexba+fRUsUAsieD8tve6cl17Yql9bVvOorZZC4N0wazzUl1c
-	 b1Nj4vFiXfdmQ==
-From: Leon Romanovsky <leon@kernel.org>
-To: Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Alex Williamson <alex@shazbot.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	=?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	iommu@lists.linux.dev,
-	Tushar Dave <tdave@nvidia.com>,
-	linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org,
-	linux-rdma@vger.kernel.org,
-	kvm@vger.kernel.org
-Subject: [PATCH v7 18/19] RDMA/uverbs: Hand out the P2PDMA provider behind a dma-buf
-Date: Sun, 20 Sep 2026 14:41:30 +0300
-Message-ID: <20260920-fix-p2p-acs-v4-0-v7-18-ca0828ab697c@nvidia.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260920-fix-p2p-acs-v4-0-v7-0-ca0828ab697c@nvidia.com>
-References: <20260920-fix-p2p-acs-v4-0-v7-0-ca0828ab697c@nvidia.com>
+	s=k20260515; t=1789907481;
+	bh=x7Rj+1lR8yco9L3uUKrFikg1vos+ZhMx9ekAaju3IsA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=A4jPOMnfgp6Majaj+E4qINiJINQ2rJMWGrLoChrQfIiPz/fV9o2XrHytqnMZcMe2s
+	 VnsjYnsi8wwvq/L7wVAXQ4QjUIDD2YY9S73PjcSfWw+/wPLxt1tEOgC5rxjW4OVJDI
+	 mnrhAHxgn8MgBBy78aIHDJcb2s6vyIorc9Uf1iSR7sSLAOF1YAxk3UfED1Mhotc2Rc
+	 LGNViXdwhaJTo5eT8sse6dOjFuyuOHgC3gfMrw+zQLd7z7QYHkiUsJAdouLtDsFTTm
+	 odUcv2hv3eQIylzSLvb/gaY1MVGhg2w8o+pWulnhWdwpwbF9Xpcv0mMbqGjS19GLa9
+	 RYBWLfQSFOhdw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] vsock: keep SOCK_SEQPACKET message boundaries on
+ interrupted send
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?QmFydMWCb21pZWogRG1pdHJ1aw==?= <bartlomiej.dmitruk@isec.pl>
+Cc: virtualization@lists.linux.dev, kvm@vger.kernel.org, "Eugenio Perez" <eperezma@redhat.com>, "Michael
+ S. Tsirkin" <mst@redhat.com>
+In-Reply-To: <20260919122916.28226-1-bartlomiej.dmitruk@isec.pl>
+References: <20260919122916.28226-1-bartlomiej.dmitruk@isec.pl>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 20 Sep 2026 12:31:20 +0000
+Message-Id: <20260920123120.F29901F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.15-dev-18f8f
-Content-Transfer-Encoding: 8bit
 
-From: Leon Romanovsky <leonro@nvidia.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] vsock: vhost_transport missing seqpacket_max_size causes indefinit=
+e hang
+- [Medium] vsock: seqpacket wait loop hangs if peer dynamically shrinks buf=
+fer
+--
 
-An importer attached to a uverbs dma-buf cannot tell whether its
-peer-to-peer traffic would reach the exported memory directly, because the
-&struct p2pdma_provider describing it stays in ib_uverbs_dmabuf_file.
+commit faa45a951be47102c344158967938f9970eb6270
+Author: Bart=C5=82omiej Dmitruk <bartlomiej.dmitruk@isec.pl>
 
-Implement @p2pdma_provider so dma_buf_p2pdma_map_type() can reach it, and
-refuse once the buffer is revoked and the memory it described is gone.
+vsock: keep SOCK_SEQPACKET message boundaries on interrupted send
 
-Tested-by: Tushar Dave <tdave@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
----
- drivers/infiniband/core/uverbs_std_types_dmabuf.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+A credit-limited SOCK_SEQPACKET send transmits fragments as credit becomes
+available, and the VIRTIO_VSOCK_SEQ_EOM flag is set only on the fragment
+where msg_data_left() reaches 0. If vsock_connectible_sendmsg() exits via
+out_err after a partial send, the already-transmitted fragments carry no EO=
+M.
+The receiver only advances msg_count / sets msg_ready on an EOM skb, so the
+orphaned fragments are silently merged into the next message, violating
+SOCK_SEQPACKET atomicity.
 
-diff --git a/drivers/infiniband/core/uverbs_std_types_dmabuf.c b/drivers/infiniband/core/uverbs_std_types_dmabuf.c
-index 2411ebee69e2..5a6a1ee430a7 100644
---- a/drivers/infiniband/core/uverbs_std_types_dmabuf.c
-+++ b/drivers/infiniband/core/uverbs_std_types_dmabuf.c
-@@ -76,6 +76,17 @@ static void uverbs_dmabuf_release(struct dma_buf *dmabuf)
- 	uverbs_uobject_release(&priv->uobj);
- }
- 
-+static struct p2pdma_provider *
-+uverbs_dmabuf_provider(struct dma_buf *dmabuf)
-+{
-+	struct ib_uverbs_dmabuf_file *priv = dmabuf->priv;
-+
-+	if (priv->revoked)
-+		return NULL;
-+
-+	return priv->provider;
-+}
-+
- static const struct dma_buf_ops uverbs_dmabuf_ops = {
- 	.attach = uverbs_dmabuf_attach,
- 	.map_dma_buf = uverbs_dmabuf_map,
-@@ -83,6 +94,7 @@ static const struct dma_buf_ops uverbs_dmabuf_ops = {
- 	.pin = uverbs_dmabuf_pin,
- 	.unpin = uverbs_dmabuf_unpin,
- 	.release = uverbs_dmabuf_release,
-+	.p2pdma_provider = uverbs_dmabuf_provider,
- };
- 
- static int UVERBS_HANDLER(UVERBS_METHOD_DMABUF_ALLOC)(
+> diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+> index 5549298c1ec6b..d94c613ef604b 100644
+> --- a/include/net/af_vsock.h
+> +++ b/include/net/af_vsock.h
+> @@ -143,6 +143,7 @@ struct vsock_transport {
+>  				 size_t len);
+>  	bool (*seqpacket_allow)(struct vsock_sock *vsk, u32 remote_cid);
+>  	u32 (*seqpacket_has_data)(struct vsock_sock *vsk);
+> +	u32 (*seqpacket_max_size)(struct vsock_sock *vsk);
+> =20
 
--- 
-2.55.0
+[Severity: High]
+Does vhost_transport in drivers/vhost/vsock.c also need to implement this
+callback?
 
+It implements SOCK_SEQPACKET, but appears to omit the newly required
+seqpacket_max_size() callback. If the callback is NULL, the max size check =
+in
+vsock_connectible_sendmsg() is skipped. If a user application sends a
+SOCK_SEQPACKET message larger than the transport's buffer size, this will
+cause an indefinite wait loop because the space can never reach min_space.
+
+>  	/* Notification. */
+>  	int (*notify_poll_in)(struct vsock_sock *, size_t, bool *);
+
+[ ... ]
+
+> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> index 9b71479a2b295..01fc9ac6fa2b5 100644
+> --- a/net/vmw_vsock/af_vsock.c
+> +++ b/net/vmw_vsock/af_vsock.c
+> @@ -2250,9 +2250,32 @@ static int vsock_connectible_sendmsg(struct socket=
+ *sock, struct msghdr *msg,
+> =20
+>  	while (total_written < len) {
+>  		ssize_t written;
+> +		s64 min_space;
+> +
+> +		if (sk->sk_type =3D=3D SOCK_SEQPACKET) {
+
+[ ... ]
+
+> +			if (transport->seqpacket_max_size &&
+> +			    len > transport->seqpacket_max_size(vsk)) {
+> +				err =3D -EMSGSIZE;
+> +				goto out_err;
+> +			}
+> +			min_space =3D len - total_written;
+> +		} else {
+> +			min_space =3D 1;
+> +		}
+> =20
+>  		add_wait_queue(sk_sleep(sk), &wait);
+> -		while (vsock_stream_has_space(vsk) =3D=3D 0 &&
+> +		while (vsock_stream_has_space(vsk) < min_space &&
+
+[Severity: Medium]
+What happens if the remote peer dynamically shrinks its receive buffer to a
+size smaller than min_space while the sender is waiting in this loop?
+
+Since the seqpacket_max_size() check is outside the sleep loop, if the space
+ceiling shrinks below min_space during the wait, the sender could be
+permanently trapped without re-evaluating the max size.
+
+>  		       sk->sk_err =3D=3D 0 &&
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260919122916.2822=
+6-1-bartlomiej.dmitruk@isec.pl?part=3D1
