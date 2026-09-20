@@ -1,181 +1,275 @@
 Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D95E3DB324
-	for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 08:25:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.225.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789892729; cv=pass; b=YzoIOtiHhwT6i1GL80pfJkDzoqe+WgfazTYASMfh2+2LZYuTrMlBd+/vD5FMJeGF9orfJeINt/B6GsbtqKhxYZMhiIIXiw5QNJe+tpNNvvLyErYxspejNfkC3R28eIXhRhbQlbjuIXz8i7B+2xyb/MJU09F7TsfdHUFzQo2jSA8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789892729; c=relaxed/simple;
-	bh=VXFTwPchnB8FN8+NBy8TOuHUJ8PP0h+KsSBgVXPy+6s=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=VFhUJSuZpdler/b/8Cs2BSsqEsP1Ig/Awihi+EXmD94O3nzRfMimXCIKrdka4ELq1QNA0PSDzOfXwOGAN2ZgVxdzMIx9magkRjs0lTFppZn7qGpYKADbPWjmtQF4Ine9kxeRSuoMfL/3BRhTwRyLXNCcvGokPLARCrTcVS5CwRc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=PPF+vm0S; arc=pass smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585EA332EBC
+	for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 09:08:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789895339; cv=none; b=NIALvmndZxfdj8jY9BtWdgpT2FsaXUwZNFmho1epeLddIyvTAeQUZM9OaZSI4+oxKTnWOqXJygq8MQgclaVwdRCUUUAo3MOwiMjWGHF6dy2r/lafp9pngSng8CH4hiuZ9+ydGkCvO6uKmzhdXdwsxvO5gMdIeQb8j00+Hd62daE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789895339; c=relaxed/simple;
+	bh=Kpj/3YYcrWVRQOfZB3Vpm+urkRgZJqiel/b4w8mA/z0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kU1s/q3iHPsku37gdzKwttjVQPQeZ/HqzHt2WQ/QgJHsf6aYsqrB+wlpxM095Aj7Ebu6BSm50JBl69DfexN4GCFKrMM4KdLZQEcaxYfpEWuLLUzy3ilj3Oc01Dwp4sJlSoLb2HHWKi5p4m3gXxNajl15eHEyfeVy9pGvQXGreWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LeabTi5s; arc=none smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="PPF+vm0S"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f63546c3so1574683f8f.1
-        for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 01:25:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789892726; cv=none;
-        d=google.com; s=arc-20260327;
-        b=H1AbCnda+A7DudeggghC8rk9kw6NNTbQL6x8CFSzz/LwroBoEdXJY1Cx1HZOvVOz9w
-         xSHuzl27F5+nJLXEmEoddSmXysQsHkVQN8hu7zB2AvEolws3af3m1eTtJoW56+yiO5g4
-         T+KRcTyiGRGnZ5tWnFJ66YPGY44fM0h6xaiUltRVT/zrv3zaKfwUk8wC8RaOe+/44uDs
-         NGAm1F7o2brZAcmrO9qwDZjQRNSsMGUiHwxSCfc/hfh0/eLlWBk/wfxBTttmvYuvehp3
-         kuBc3JjzbERW5jHrKu/FHM78Fx4Y38zSasjepQ4psDR0B170gvwLc5bnPSeRBYjwB6U2
-         ftBQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=/v5NR7eNmP+HJUBTR1GLDXgKiaOepq2osnsCYiJw7Nw=;
-        fh=PbXyHT1gbz5b7z1j4p2uZnEMvbJZJsP+ZdslIUSkF7A=;
-        b=XNUjeldTBm1ri3V//LmMAin+eM4AnUYOnms2ojIMeo4pbksf6AhdeWg0YDIXhzgdBF
-         JhgwrTrlLTqM+xm5uCUUYUEDlGctFCbbXFB5k1anZJhpI8Ih8qFMg3f6NIE6pTwy3+EC
-         bmrOtyJN6K2dlQMLWzwYzl10vh1bHS5Cd7hnYs5wSsV6/HQDxdqN/XkGh8x/7AwTlg4z
-         TEnZ6EPDvun4joDseaLlWd1q5Fbnl5RvuBLkLIEZxb7aId8t/xv3SODRt0FoGzxYrWZZ
-         eLccieoqzyLDl8QuHw3K7KKXoRyW80X773eOdWwY84sEJgRmazs9qRg9Y1Cp1HvQcy5Z
-         ewwA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LeabTi5s"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f63546c3so1589410f8f.1
+        for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 02:08:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1789892726; x=1790497526; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/v5NR7eNmP+HJUBTR1GLDXgKiaOepq2osnsCYiJw7Nw=;
-        b=PPF+vm0Spbrcg+dy6Ycjei0utHpgSDPZ0YFcNgHWGmsVD7Z4vScofVyROUp4/0WUGK
-         StsR/h2hgaai34DIGDw85YKmTqJhUMPtzFS831FFGL/pW4tiXtMgMmZ7pp7V+/oQHkIy
-         tqW9g7Db02MiAAznLCx3TxcICcqxhH8XInM7eTUNM8yFqbNf8PfwloveVTh45HB6ZhFE
-         BkdFIrM556rwibYT1NJHfKUwsYr3oebH6Mt5aMvouTZQVyfeE1l3lrjVAwT3EJoOoRrO
-         z2cB64JlM11lcoI9gw5etUHmwBGR0K+hEOp8zmWPMVKnBHf2oBwtRlDeeQz4al0ZLkIB
-         NW6w==
+        d=gmail.com; s=20251104; t=1789895334; x=1790500134; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LuoIcNR8M3VmrQ/YOAKp2aarikMbYVcQakxWPsHNlLI=;
+        b=LeabTi5s/d/Ots26bQ144ovQnBC9eyVCJeAym7jI92YkWo+wH+BwT0ouRnBixnQXSB
+         8JOozWbVprLkVsjArHJER+NDHmBF1Bzpg4U+5Gs8YvSWIYcS/dp7wOhBA+v4LQmCAtMl
+         r93xCIMeK8cm0GxiQx6++5fNAQyh9/Dr0pyNaSUlIZggVfyCPd4uKQkz4AljlsGUK17j
+         kKdsWRtxA6W6Wnt6ndkedtHByyWypAu3ERWsmusHh+cCJCfG1+OZCyfBGt6fzGzhqBch
+         +wZQJuTvckfpnuvOsMqsixVxZx1D/+WvtE0aaICkBjkn74ictn3slb+DFGH+zEbkONI7
+         hXdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789892726; x=1790497526;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=/v5NR7eNmP+HJUBTR1GLDXgKiaOepq2osnsCYiJw7Nw=;
-        b=rfGjazZTiDs/AL9TJv3brIKGI2yTZCmmx+wA1pgxqLI4kdV2bIJayVzP1ZEKAVYDlB
-         IXK+TpgIJgHPqJkv63NqzKET971TbSVSb3+4jtBJtNy6KkYnTmWCG50RgpC8A15CTfwe
-         eIO9HvXcw99YLK0JpNAhzPpbyYj5qfh2alKEuJJbZO3FzA4BRYGog7RBzaQrqsKz1wS2
-         QN+T4dzi5cfZHZ5XFB9d8v/20H2GAJk0oeEYMbjnZV79znJT+eFZNSKoyVknpMgru406
-         3ecF+fh/C4WJFOcV5S7H8oLvvWJJDpHmrtkWkpOQ4Hy8OuOmxg7fSO5pHkxsaevqqqAl
-         WcEQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwHY6bw63+0Wv3swEX8csASDuao0o2vWqo/UsqRft4UbRQ4PXDKRAPRjMlJVQxQjpiwbgI=@vger.kernel.org
-X-Gm-Message-State: AFuF++kQMNr9ZW6bjk2DlUnB5fMUokbwYvUxteDUOB6qzwLYX1OdjGbs
-	PSrtd1JwJRzTyZGYymKPx5eQynv5+XE6QOB42152fejbawFvW0ZZmwdBA4Uucdgl04F8PplNXP8
-	vM49+5npq+zUnX5+jluwuTvE7H22yTcZ0L3uvPFb3nw==
-X-Gm-Gg: AYBFou2dc44Jnz2Dy5qiMlJeutT7WWOH0Tg/s60hm8HcP27DF68F7XuCYXJmjd6ul3+
-	4y+aST04EQEgigQiGKo1mROqPy2G7o5S2R84KcCN1SQmuR6femlO5DZNsocCLU6v1KuC5THRMHM
-	A7/ettr8K7KTSY7l6PX7ILtyh065Q1TYa1QzdfbWTVE5GFKT6UYhdZlSQGn3+b95m8mr//5HzfY
-	oZrHCzQfyG5knVAzlbFc8QgyTx9Ab5EKRc6VLvVFlkMq8HgBWss++tvZs2j1rMfJjYNWyrbbII4
-	2w62viSFd15jPlP74pcXn6OmkWBvvveog4dzZqHo71T4TKudsq/vIaxcqHdpUU73LJJqyMt+ROS
-	uxoCsLRLCFf2istqThL2E/ALrfdcHVNUwXu0Pm0NhJXMEPu3N5c7KZc67oBF7BxcepWHZY2lxDA
-	==
-X-Received: by 2002:a05:6000:2c0b:b0:487:6f0:8658 with SMTP id
- ffacd0b85a97d-4871e36d031mr10347126f8f.42.1789892725264; Sun, 20 Sep 2026
- 01:25:25 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1789895334; x=1790500134;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LuoIcNR8M3VmrQ/YOAKp2aarikMbYVcQakxWPsHNlLI=;
+        b=Fy/4Y3Neo4jXc42cL84WVPXp/LlDFH9oiKrjpsSVmJLgsIH0qyz5+4Fv/g9BywDAki
+         HLyPP5bp5OnxP7CMZyttFj9lWGI+Mjcw5Hs6GL5pZpHs9EiTdWgtSDdYMWznB+5OBi8y
+         INBtF/mPccJ3xboxsmniQuv6m6jLCOKs6ggcxqsEDKUh39QDepkFfXiLF12ek9oe1tNH
+         wA0oslxKLmnmCzMQ+Ya8UbXbceL/Lo3XiuHGFGY+Cu7fBi2CSHT1hKr9A5tVQ8uLB5xi
+         ScTGL4o3at1a+PWbxEgVTYNXApAsPMG/uR3XKZeyMZBf/5eaaH7d4jLH971PjnnfKk5k
+         /8qw==
+X-Forwarded-Encrypted: i=1; AKwUvBym8ZrIZvOIFaXCWGR+ihw8AyN2iV83HyHTRackEW7RA9rYW1cpHo4ezO3lJFk/CBICoCQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++lIQtpU9HjWnKIw1neOlu2nZA4dwQ0Xgod/Rn1k5/LloZf98UdI
+	vbd3unHKxcAsrZMi9Uz2gyd3+7R2bXVA4d5LfgMe53E5FHqdyRrZbpiL
+X-Gm-Gg: AYBFou1aY+ur95hrl5ax8mpLUUsQiLMEINlPJ+pHy2qhFu7gTK1D3zcaCVdLb0s+dVI
+	kx7eC7c27d2KAloPHQi0yGhxTDUKf8+L6CwQ3kGipk/u2BzJEINjpNCkX4WT7/L+u7Z0+4YftUu
+	/hJSHSFHiE3g8OXm1T4B3wi8xgLhxwOQ9w8fcoEhWKDlpasIUqIZQothkendShrK1hGSNFO26bd
+	XEvVRX0vrWg/Q0werArhm5OejiHX2J5bxcP9/rNK/FjU+lDiOhnYrN4h0LEBA2iQBQYNvjiF15j
+	8HVka/TZGvN2vWeSxzwiQj2mAtZodJfOg7Y34ukNrkcuu05Z3qmabujgW3DJMYQW8T+6Q9q8lxs
+	IjoTgpqWZMqOgYLruPL9Bbi9NGiM0Wku0/EmB3zZJ1RCQh31v76+/LvrkkF00fdIdZrDJOl+oNU
+	/oNQRZArDiOMO1RuCDxD4FLiUnYzp7BA1hqh5f6OtDiE0Jxro+T4yofIFCWZlelw611hiSssB/i
+	ucEqn1PNHI1O/xPPFSPXpAkGbAOHXVRVsY=
+X-Received: by 2002:a05:6000:2210:b0:487:b4a:3f54 with SMTP id ffacd0b85a97d-4871e269d90mr11394524f8f.29.1789895334332;
+        Sun, 20 Sep 2026 02:08:54 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-487244229d5sm13813240f8f.2.2026.09.20.02.08.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Sep 2026 02:08:53 -0700 (PDT)
+Date: Sun, 20 Sep 2026 10:08:52 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: =?UTF-8?B?QmFydMWCb21pZWo=?= Dmitruk <bartlomiej.dmitruk@isec.pl>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella
+ <sgarzare@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang
+ <jasowangio@gmail.com>, Eugenio =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, kvm@vger.kernel.org, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] vsock: keep SOCK_SEQPACKET message boundaries on
+ interrupted send
+Message-ID: <20260920100852.7806895b@pumpkin>
+In-Reply-To: <20260919122916.28226-1-bartlomiej.dmitruk@isec.pl>
+References: <20260919122916.28226-1-bartlomiej.dmitruk@isec.pl>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Anup Patel <anup@brainfault.org>
-Date: Sun, 20 Sep 2026 13:55:14 +0530
-X-Gm-Features: AcwNN1VHoP9FKod9I1ZhoSlWxL2KyjBkIxPhBW5MLSbl95fW79rnRDNl-xpnew8
-Message-ID: <CAAhSdy2MbSq2eGDZfh_EKt2S3OUEn7tJRWUgvncPsWNVR7vqeg@mail.gmail.com>
-Subject: [GIT PULL] KVM/riscv fixes for 7.3 take #1
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Atish Patra <atish.patra@linux.dev>, Andrew Jones <andrew.jones@oss.qualcomm.com>, 
-	KVM General <kvm@vger.kernel.org>, 
-	"KVM RISC-V (KVM/riscv)" <kvm-riscv@lists.infradead.org>, 
-	linux-riscv <linux-riscv@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Paolo,
+On Sat, 19 Sep 2026 14:29:15 +0200
+Bart=C5=82omiej Dmitruk <bartlomiej.dmitruk@isec.pl> wrote:
 
-We have the following fixes for the 7.3 kernel:
-1) Synchronize hrtimer during VCPU teardown
-2) Fix the conversion between vsip and hvip values
-3) Serialize IMSIC attributes with vCPU migration
-4) Release unused page after MMU invalidation
-5) Propagate interrupted G-stage faults to KVM user-space
-6) Fix NACL hfence entry update order
-7) Fix sdata leak and stale snapshot_addr in PMU snapshot_set_shmem
-8) Preserve firmware counter value across PMU counter stop/start
-9) Report PMU snapshot write failure to the guest
-10) Fix perf-backed counter accounting across PMU stop and read
-11) Fix HSM hart status error propagation
+> A credit-limited SOCK_SEQPACKET send transmits fragments as credit becomes
+> available, and the VIRTIO_VSOCK_SEQ_EOM flag is set only on the fragment
+> where msg_data_left() reaches 0. If vsock_connectible_sendmsg() exits via
+> out_err after a partial send -- notably the non-terminal -EINTR path
+> (signal_pending while blocked for credit), but also sk_err / peer
+> RCV_SHUTDOWN -- the already-transmitted fragments carry no EOM. The recei=
+ver
+> only advances msg_count / sets msg_ready on an EOM skb, so the orphaned
+> fragments are silently merged into the next message, violating SOCK_SEQPA=
+CKET
+> atomicity.
 
-As you can see, the fixes are all over the place except quite
-few of them (4 fixes) focus only on SBI PMU extension.
+Should the unsent fragments just get requeued with an EOM flag?
+The receiving system will have a partial message (and should be allowed to
+pass that to an application) and will append the fragments to it when
+they arrive.
 
-Please pull.
+>=20
+> Wait until the whole remaining SEQPACKET message fits before enqueuing, s=
+o a
+> message is committed atomically (with its EOM) or not started; an error w=
+hile
+> waiting then leaves nothing on the wire. SOCK_STREAM behaviour is unchang=
+ed
+> (min_space =3D=3D 1 reproduces the old "wait while space =3D=3D 0").
 
-Regards,
-Anup
+Why should the message ever fit?
+ISO transport (which no one really uses any more) maps to SEQPACKET.
+It is perfectly valid for a file transfer program to send the entire file
+as one 'message' by not sending EOM until the end of file fragment.
 
-The following changes since commit fd73f4a6659897191fa0d40695fe370925dd3780:
+David
 
-  Linux 7.3-rc3 (2026-09-13 14:38:02 -0700)
+>=20
+> To avoid blocking forever on a message that can never fit -- a peer can
+> advertise a small buf_alloc, or the message can simply exceed the transmit
+> buffer -- reject such a message up front with -EMSGSIZE (the same error t=
+he
+> transport already returns for an oversized message) instead of waiting. T=
+his
+> needs the transport's maximum message size, added as a new optional
+> seqpacket_max_size() transport op implemented by the virtio/loopback
+> transports.
+>=20
+> Signed-off-by: Bart=C5=82omiej Dmitruk <bartlomiej.dmitruk@isec.pl>
+> Assisted-by: Claude (Anthropic)
+> ---
+> Changes in v2:
+>  - Fix an indefinite wait the v1 approach introduced for oversized
+>    SOCK_SEQPACKET messages (reported by the Sashiko AI review on v1): the
+>    atomic-wait could never be satisfied when len > the transport's max
+>    message size (e.g. a peer advertising a small peer_buf_alloc), so the
+>    sender blocked instead of returning -EMSGSIZE. v2 checks this up front=
+ via
+>    the new seqpacket_max_size() op and returns -EMSGSIZE without waiting.
+>  - v1: https://lore.kernel.org/netdev/20260917220101.55744-1-bartlomiej.d=
+mitruk@isec.pl/
+>=20
+> Testing (vsock_loopback, unprivileged):
+>  - Interrupted partial send (-EINTR) no longer leaks orphan bytes into the
+>    next message (recv() returns only the next message).
+>  - Oversized message and small-peer_buf_alloc cases return -EMSGSIZE prom=
+ptly
+>    instead of blocking.
+>  - Normal SEQPACKET send/recv unaffected.
+>=20
+> diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
+> index f91704731..e96790c03 100644
+> --- a/include/linux/virtio_vsock.h
+> +++ b/include/linux/virtio_vsock.h
+> @@ -219,6 +219,7 @@ virtio_transport_seqpacket_dequeue(struct vsock_sock =
+*vsk,
+>  s64 virtio_transport_stream_has_data(struct vsock_sock *vsk);
+>  s64 virtio_transport_stream_has_space(struct vsock_sock *vsk);
+>  u32 virtio_transport_seqpacket_has_data(struct vsock_sock *vsk);
+> +u32 virtio_transport_seqpacket_max_size(struct vsock_sock *vsk);
+> =20
+>  ssize_t virtio_transport_unsent_bytes(struct vsock_sock *vsk);
+> =20
+> diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+> index 5549298c1..d94c613ef 100644
+> --- a/include/net/af_vsock.h
+> +++ b/include/net/af_vsock.h
+> @@ -143,6 +143,7 @@ struct vsock_transport {
+>  				 size_t len);
+>  	bool (*seqpacket_allow)(struct vsock_sock *vsk, u32 remote_cid);
+>  	u32 (*seqpacket_has_data)(struct vsock_sock *vsk);
+> +	u32 (*seqpacket_max_size)(struct vsock_sock *vsk);
+> =20
+>  	/* Notification. */
+>  	int (*notify_poll_in)(struct vsock_sock *, size_t, bool *);
+> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> index f840498b5..ac64cb957 100644
+> --- a/net/vmw_vsock/af_vsock.c
+> +++ b/net/vmw_vsock/af_vsock.c
+> @@ -2250,9 +2250,32 @@ static int vsock_connectible_sendmsg(struct socket=
+ *sock, struct msghdr *msg,
+> =20
+>  	while (total_written < len) {
+>  		ssize_t written;
+> +		s64 min_space;
+> +
+> +		if (sk->sk_type =3D=3D SOCK_SEQPACKET) {
+> +			/* A SEQPACKET message must be delivered atomically, so
+> +			 * wait until the whole remaining message fits before
+> +			 * enqueuing.  Otherwise a credit-limited partial send that
+> +			 * later errors out (e.g. -EINTR) leaves EOM-less fragments
+> +			 * that the peer merges into the next message.
+> +			 *
+> +			 * Reject a message that can never fit up front so the wait
+> +			 * below cannot block forever (a peer may advertise a small
+> +			 * buf_alloc); this mirrors the -EMSGSIZE the transport
+> +			 * returns for an oversized message.
+> +			 */
+> +			if (transport->seqpacket_max_size &&
+> +			    len > transport->seqpacket_max_size(vsk)) {
+> +				err =3D -EMSGSIZE;
+> +				goto out_err;
+> +			}
+> +			min_space =3D len - total_written;
+> +		} else {
+> +			min_space =3D 1;
+> +		}
+> =20
+>  		add_wait_queue(sk_sleep(sk), &wait);
+> -		while (vsock_stream_has_space(vsk) =3D=3D 0 &&
+> +		while (vsock_stream_has_space(vsk) < min_space &&
+>  		       sk->sk_err =3D=3D 0 &&
+>  		       !(sk->sk_shutdown & SEND_SHUTDOWN) &&
+>  		       !(vsk->peer_shutdown & RCV_SHUTDOWN)) {
+> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_tran=
+sport.c
+> index 4f9aa9c4c..b7d587a20 100644
+> --- a/net/vmw_vsock/virtio_transport.c
+> +++ b/net/vmw_vsock/virtio_transport.c
+> @@ -585,6 +585,7 @@ static struct virtio_transport virtio_transport =3D {
+>  		.seqpacket_enqueue        =3D virtio_transport_seqpacket_enqueue,
+>  		.seqpacket_allow          =3D virtio_transport_seqpacket_allow,
+>  		.seqpacket_has_data       =3D virtio_transport_seqpacket_has_data,
+> +		.seqpacket_max_size       =3D virtio_transport_seqpacket_max_size,
+> =20
+>  		.msgzerocopy_allow        =3D virtio_transport_msgzerocopy_allow,
+> =20
+> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virt=
+io_transport_common.c
+> index f225f53ed..e10e7b958 100644
+> --- a/net/vmw_vsock/virtio_transport_common.c
+> +++ b/net/vmw_vsock/virtio_transport_common.c
+> @@ -994,6 +994,19 @@ virtio_transport_seqpacket_enqueue(struct vsock_sock=
+ *vsk,
+>  }
+>  EXPORT_SYMBOL_GPL(virtio_transport_seqpacket_enqueue);
+> =20
+> +u32 virtio_transport_seqpacket_max_size(struct vsock_sock *vsk)
+> +{
+> +	struct virtio_vsock_sock *vvs =3D vsk->trans;
+> +	u32 max_size;
+> +
+> +	spin_lock_bh(&vvs->tx_lock);
+> +	max_size =3D virtio_transport_tx_buf_size(vvs);
+> +	spin_unlock_bh(&vvs->tx_lock);
+> +
+> +	return max_size;
+> +}
+> +EXPORT_SYMBOL_GPL(virtio_transport_seqpacket_max_size);
+> +
+>  int
+>  virtio_transport_dgram_dequeue(struct vsock_sock *vsk,
+>  			       struct msghdr *msg,
+> diff --git a/net/vmw_vsock/vsock_loopback.c b/net/vmw_vsock/vsock_loopbac=
+k.c
+> index 8068d1b6e..b9a0cc861 100644
+> --- a/net/vmw_vsock/vsock_loopback.c
+> +++ b/net/vmw_vsock/vsock_loopback.c
+> @@ -90,6 +90,7 @@ static struct virtio_transport loopback_transport =3D {
+>  		.seqpacket_enqueue        =3D virtio_transport_seqpacket_enqueue,
+>  		.seqpacket_allow          =3D vsock_loopback_seqpacket_allow,
+>  		.seqpacket_has_data       =3D virtio_transport_seqpacket_has_data,
+> +		.seqpacket_max_size       =3D virtio_transport_seqpacket_max_size,
+> =20
+>  		.msgzerocopy_allow        =3D vsock_loopback_msgzerocopy_allow,
+> =20
+>=20
 
-are available in the Git repository at:
-
-  https://github.com/kvm-riscv/linux.git tags/kvm-riscv-fixes-7.3-1
-
-for you to fetch changes up to 41e81f7e3ef96594fb840445343c0ee7723aa550:
-
-  RISC-V: KVM: Fix HSM hart status error propagation (2026-09-15 18:55:51 +0530)
-
-----------------------------------------------------------------
-KVM/riscv fixes for 7.3, take #1
-
-- Synchronize hrtimer during VCPU teardown
-- Fix the conversion between vsip and hvip values
-- Serialize IMSIC attributes with vCPU migration
-- Release unused page after MMU invalidation
-- Propagate interrupted G-stage faults to KVM user-space
-- Fix NACL hfence entry update order
-- Fix sdata leak and stale snapshot_addr in snapshot_set_shmem
-- Preserve firmware counter value across PMU counter stop/start
-- Report PMU snapshot write failure to the guest
-- Fix perf-backed counter accounting across PMU stop and read
-- Fix HSM hart status error propagation
-
-----------------------------------------------------------------
-Myeonghun Pak (1):
-      RISC-V: KVM: Synchronize hrtimer callback during teardown
-
-SeungJu Cheon (3):
-      RISC-V: KVM: Preserve firmware counter value across stop/start
-      RISC-V: KVM: Report snapshot write failure to the guest
-      RISC-V: KVM: Fix perf-backed counter accounting across stop and read
-
-Tan Chi (1):
-      RISC-V: KVM: Fix HSM hart status error propagation
-
-Xie Bo (3):
-      RISC-V: KVM: Serialize IMSIC attributes with vCPU migration
-      RISC-V: KVM: Release unused page after MMU invalidation
-      RISC-V: KVM: Propagate interrupted G-stage faults
-
-Yicong Yang (1):
-      RISC-V: KVM: Fix the conversion between vsip and hvip
-
-Zongmin Zhou (2):
-      KVM: riscv: Fix NACL hfence entry update order
-      RISC-V: KVM: Fix sdata leak and stale snapshot_addr in snapshot_set_shmem
-
- arch/riscv/include/asm/csr.h       | 20 +++++++++++++++----
- arch/riscv/kvm/aia_imsic.c         | 11 ++++++++--
- arch/riscv/kvm/mmu.c               | 10 ++++++++--
- arch/riscv/kvm/nacl.c              | 20 +++++++++++++++----
- arch/riscv/kvm/vcpu.c              |  3 +--
- arch/riscv/kvm/vcpu_exit.c         |  2 +-
- arch/riscv/kvm/vcpu_onereg.c       |  8 +++-----
- arch/riscv/kvm/vcpu_pmu.c          | 41 +++++++++++++++++++++++---------------
- arch/riscv/kvm/vcpu_sbi_hsm.c      |  4 ++--
- arch/riscv/kvm/vcpu_timer.c        |  5 ++++-
- tools/arch/riscv/include/asm/csr.h | 20 +++++++++++++++----
- 11 files changed, 101 insertions(+), 43 deletions(-)
