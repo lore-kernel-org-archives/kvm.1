@@ -1,204 +1,130 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBFE7481FCA;
-	Sun, 20 Sep 2026 21:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A333D8902;
+	Sun, 20 Sep 2026 22:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789941465; cv=none; b=guzfN26+MnkO1EUSEdzPFn/KXmF6AWTr4fhrtaM5GaaJdlrZND6AivYnQj/MZ4oFAESaRlG5QjnJ9zahYbnzWCtIQwo3LHAEtjuOslwJgzebWFlSbG/xrpn2t2TrONJKqPgbw4qrq+iD7ZEPHZYsw1Y2JURSWu4wTai+8hUq0LY=
+	t=1789941983; cv=none; b=gzP9G/f4hRQEJlwvruWzNfmKrKlYkYpq6smc8+Iq+azoOO38GWfNL9Ck0VuXyCvKaAcUiyIfYTYqvSgFvelCw0InAgp3d+/9DixFBYwd9atK0B7ZgvMIHGi9PISxWhSyMSuyWik81g+A8FLRRpYQ4GUmuP1igj1KLZJVvcKDClE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789941465; c=relaxed/simple;
-	bh=bZa1pElkzClMfmQwucEy+nArbsZOWFANAM4HqgqupDQ=;
+	s=arc-20240116; t=1789941983; c=relaxed/simple;
+	bh=7KsZAiziTOOr/DbU04KxKAm/6Gd7N6oiNCv7Tb22eUE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=CGRF4rmWpQ6dIbTsZgF1+IjIFX6dJP5pfoXs00hlEHgtOxlqgjQRbxBV8JGAO787YKAHgymfrqgjqPh8rmF9DVfAcRrCG5ZqLlgW6RlyN86Tm9tYl0kGAp77nHDOJVQf2myYNMsIZqJZlP0ypUTshBAK2gSDbcqWJQTop8LVIeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H6HhOkw1; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Hq1hY84qtviXJzRgTddjbGcaLeZ/uf12RFesLX8uowDMQdpFJjDsETow+anupJ3g97HLZQEupA8ccJxwUOMvwrel1hw2XGEE/v47hZrn+CIUysV4jn+lPNc0/E/Q8sMnKwCBNqJJbCX+3cSZ0ALA/Ip+ssye1rrSssVGAp/+rqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UGboTFOt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H6HhOkw1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E90CB1F000FF;
-	Sun, 20 Sep 2026 21:57:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UGboTFOt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7D21F000FF;
+	Sun, 20 Sep 2026 22:06:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789941459;
-	bh=K5lgCFXvudAyPyRrwuAH655JZLJ/x1VD68ZBotZZ/74=;
+	s=k20260515; t=1789941977;
+	bh=g/qaINeHiqA2KhUtssNRdjMI4ZVktcT4zFMvhkMkS+w=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=H6HhOkw1E/7UbiDyZtItNXxqVGwQ81wi3Xe+ruSG04y6K42mz/JjPQoslxH9MGQix
-	 LcXiN9MRUUB763Ev+USq436t/oJQVCdWZdlTB2SVgu5Gr7riwUlsrnaswigVi04yZU
-	 lSM0n0c4Gv0Dapdh5w+Q62CkVxMdQJcermWxf8liI5DDvkTt+O/MVsmBuFuQ0G43i6
-	 NSeFXnU3pFeuwOKrGU6PIveiSL7mZHFm5uCMMliWcEOf79uv8t+bUT1TlzirMzeBeF
-	 VWd5AkQ50ge44yCfntREvbdkF2qDWpz/iqFqpgHfSYJ1e90jV69PfnMoRVC3dyTA2m
-	 DIpZ/uiSjhdPg==
+	b=UGboTFOtgHX4iHMo5u+5INK3e5RDc7rGYOrjN/Lg9HM0hkugm2uS+8KKvPhmdvgp1
+	 VZSvwqyWUE0bEIxUB+HXbPksDXHMcxEeSdSYmss01De/f4X05FSPIpn9CPJ4T59PGQ
+	 nXKcQVh1K/GMllZvO7sdY810zA3N0K1RVstysgTPcNxoL5mepk2z7xeEcp5H7N+Jt2
+	 3T1nLSYJPDApEoOBMpArGeELGoxA9wYlMzWmENFFduTwgvsiCgZJruoqaVMPvnMH6Z
+	 qNFdByspTf61lE/WcrNuw83UQ/FWuRHphGUKJIvEeYpmm8Na/4tRYFshA5MjQG5V4j
+	 eWGN1GpbWIcdQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 11/17] KVM: nVMX: Use pinned pfncache for L1 APIC
- virtualization pages
+Subject: Re: [PATCH 06/17] KVM: x86: Use gfn_to_pfn_cache for steal time /
+ preempted status
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "David Woodhouse" <dwmw2@infradead.org>
-Cc: linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-In-Reply-To: <20260920211920.928306-12-dwmw2@infradead.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
+In-Reply-To: <20260920211920.928306-7-dwmw2@infradead.org>
 References: <20260920211920.928306-1-dwmw2@infradead.org>
- <20260920211920.928306-12-dwmw2@infradead.org>
+ <20260920211920.928306-7-dwmw2@infradead.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 20 Sep 2026 21:57:38 +0000
-Message-Id: <20260920215738.E90CB1F000FF@smtp.kernel.org>
+Date: Sun, 20 Sep 2026 22:06:16 +0000
+Message-Id: <20260920220616.AC7D21F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] kvm: nVMX: Guest-triggered KVM_EXIT_INTERNAL_ERROR via unaligned A=
-PIC-access address
-- [Medium] kvm: lockdep: AB-BA circular dependency between gpc->refresh_loc=
-k and kvm->gpc_srcu
+- [Low] build: Missing definitions for srcu_read_lock_atomic and synchroniz=
+e_srcu_atomic
 --
 
-commit daeb1861c76d9216ee8842648d7c50ed244624b3
-Author: Fred Griffoul <fgriffo@amazon.co.uk>
-Date:   Sun Sep 20 20:49:39 2026 +0000
+commit 73f7f7addf4a338b749e65de38df63e40795698c
+Author: Carsten Stollmaier <stollmc@amazon.com>
 
-    KVM: nVMX: Use pinned pfncache for L1 APIC virtualization pages
+KVM: x86: Use gfn_to_pfn_cache for steal time / preempted status
 
-    Replace kvm_host_map usage with gfn_to_pfn_cache for the L1 pages whose
-    physical addresses are handed to the CPU in vmcs02 for direct use while
-    running L2. This eliminates the map/unmap cycle on every L2 VM-entry/ex=
-it.
+This largely reverts commit 7e2175ebd695 ("KVM: x86: Fix recording of
+guest steal time / preempted status"), which dropped the use of the
+gfn_to_pfn_cache because it was not integrated with the MMU notifiers
+at the time. That shortcoming has long since been addressed, making
+the GPC work correctly for this use case.
 
-> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-> index 5fe7e5d1f72d9..105ff6cbfe583 100644
-> --- a/arch/x86/kvm/vmx/nested.c
-> +++ b/arch/x86/kvm/vmx/nested.c
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 3db1855aba798..116932e13d595 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -2065,42 +2064,27 @@ static void record_steal_time(struct kvm_vcpu *vc=
+pu)
+>  	if (WARN_ON_ONCE(current->mm !=3D vcpu->kvm->mm))
+>  		return;
+> =20
+> -	slots =3D kvm_memslots(vcpu->kvm);
+> +	/* We rely on the fact that it fits in a single page. */
+> +	BUILD_BUG_ON((sizeof(*st) - 1) & KVM_STEAL_VALID_BITS);
+> =20
+> -	if (unlikely(slots->generation !=3D ghc->generation ||
+> -		     gpa !=3D ghc->gpa ||
+> -		     kvm_is_error_hva(ghc->hva) || !ghc->memslot)) {
+> -		/* We rely on the fact that it fits in a single page. */
+> -		BUILD_BUG_ON((sizeof(*st) - 1) & KVM_STEAL_VALID_BITS);
+> +	idx =3D srcu_read_lock_atomic(&vcpu->kvm->gpc_srcu);
+> +	while (!kvm_gpc_check(gpc, sizeof(*st))) {
+> +		srcu_read_unlock_atomic(&vcpu->kvm->gpc_srcu, idx);
+
+[Severity: Low]
+Are the definitions for srcu_read_lock_atomic(), srcu_read_unlock_atomic(),
+and synchronize_srcu_atomic() missing from the kernel tree? Compiling this
+patch results in an implicit declaration or undefined reference linker erro=
+r.
 
 [ ... ]
 
-> @@ -3494,26 +3591,74 @@ static bool nested_get_vmcs12_pages(struct kvm_vc=
-pu *vcpu)
+> @@ -2657,20 +2632,31 @@ static void kvm_steal_time_set_preempted(struct k=
+vm_vcpu *vcpu)
+>  	if (unlikely(current->mm !=3D vcpu->kvm->mm))
+>  		return;
 > =20
-> =20
->  	if (nested_cpu_has2(vmcs12, SECONDARY_EXEC_VIRTUALIZE_APIC_ACCESSES)) {
-> -		map =3D &vmx->nested.apic_access_page_map;
+> -	slots =3D kvm_memslots(vcpu->kvm);
 > -
-> -		if (!kvm_vcpu_map(vcpu, gpa_to_gfn(vmcs12->apic_access_addr), map)) {
-> -			vmcs_write64(APIC_ACCESS_ADDR, pfn_to_hpa(map->pfn));
-> -		} else {
-> +		int err =3D nested_gpc_hpa(&vmx->nested.apic_access_page_cache,
-> +					 vmcs12->apic_access_addr, &hpa);
-> +		if (!err) {
-> +			vmcs_write64(APIC_ACCESS_ADDR, hpa);
-> +		} else if (err =3D=3D -EAGAIN) {
-> +			kvm_gpc_unpin_for_guest(&vmx->nested.apic_access_page_cache);
-> +			kvm_gpc_deactivate(&vmx->nested.apic_access_page_cache);
-> +			goto retry;
-> +		} else if (!lazy) {
-> +			/*
-> +			 * Entry-time resolution (VMLAUNCH/VMRESUME, or resume
-> +			 * from KVM_SET_NESTED_STATE): an unbackable
-> +			 * APIC-access page is a misconfiguration to report,
-> +			 * not a transient to ride out.
-> +			 */
->  			pr_debug_ratelimited("%s: no backing for APIC-access address in vmcs1=
-2\n",
->  					     __func__);
->  			vcpu->run->exit_reason =3D KVM_EXIT_INTERNAL_ERROR;
+> -	if (unlikely(slots->generation !=3D ghc->generation ||
+> -		     gpa !=3D ghc->gpa ||
+> -		     kvm_is_error_hva(ghc->hva) || !ghc->memslot))
+> -		return;
+> -
+> -	st =3D (struct kvm_steal_time __user *)ghc->hva;
+> -	BUILD_BUG_ON(sizeof(st->preempted) !=3D sizeof(preempted));
+> -
+> -	if (!copy_to_user_nofault(&st->preempted, &preempted, sizeof(preempted)=
+))
+> +	/*
+> +	 * This is called from the scheduler path (via kvm_sched_out), so
+> +	 * the cache cannot be refreshed here.  Setting 'preempted' is
+> +	 * best-effort anyway; the old HVA-based code used
+> +	 * copy_to_user_nofault(), which could also silently fail.  If the
+> +	 * cache is invalid, it will be refreshed from task context by
+> +	 * record_steal_time() before the vCPU next enters the guest, since
+> +	 * kvm_arch_vcpu_load() unconditionally raises KVM_REQ_STEAL_UPDATE.
+> +	 */
+> +	guard(srcu_atomic)(&vcpu->kvm->gpc_srcu);
 
-[Severity: High]
-Does this allow an untrusted L1 guest to crash the VM by triggering a
-KVM_EXIT_INTERNAL_ERROR?
-
-The L1 guest can write a non-page-aligned address to the APIC_ACCESS_ADDR f=
-ield
-in vmcs12 and execute VMLAUNCH. When nested_get_vmcs12_pages() calls
-nested_gpc_hpa() with this raw, unaligned address, nested_gpc_lock() will r=
-eturn
--EINVAL due to its strict !PAGE_ALIGNED(gpa) check.
-
-Because this non-lazy path treats -EINVAL as an unbackable page and aborts =
-the
-entry with KVM_EXIT_INTERNAL_ERROR, the host userspace might kill the entir=
-e VM.
-Should this be handled as a graceful architectural VM-Entry failure instead?
-
->  			vcpu->run->internal.suberror =3D
->  				KVM_INTERNAL_ERROR_EMULATION;
-
-[ ... ]
-
-> @@ -4065,6 +4269,8 @@ static void vmcs12_save_pending_event(struct kvm_vc=
-pu *vcpu,
->  static int vmx_complete_nested_posted_interrupt(struct kvm_vcpu *vcpu)
->  {
->  	struct vcpu_vmx *vmx =3D to_vmx(vcpu);
-> +	int pi_idx, vapic_idx;
-> +	struct pi_desc *pi_desc;
->  	int max_irr;
->  	void *vapic_page;
->  	u16 status;
-> @@ -4072,22 +4278,32 @@ static int vmx_complete_nested_posted_interrupt(s=
-truct kvm_vcpu *vcpu)
->  	if (!vmx->nested.pi_pending)
->  		return 0;
-> =20
-> -	if (!vmx->nested.pi_desc)
-> +	pi_idx =3D nested_gpc_lock_if_active(&vmx->nested.pi_desc_cache);
-> +	if (pi_idx < 0)
->  		goto mmio_needed;
-> =20
-> +	pi_desc =3D nested_pi_desc(vmx);
->  	vmx->nested.pi_pending =3D false;
-> =20
-> -	if (!pi_test_and_clear_on(vmx->nested.pi_desc))
-> +	if (!pi_test_and_clear_on(pi_desc)) {
-> +		nested_gpc_unlock(&vmx->nested.pi_desc_cache, pi_idx);
->  		return 0;
-> +	}
-> =20
-> -	max_irr =3D pi_find_highest_vector(vmx->nested.pi_desc);
-> +	max_irr =3D pi_find_highest_vector(pi_desc);
->  	if (max_irr > 0) {
-> -		vapic_page =3D vmx->nested.virtual_apic_map.hva;
-> -		if (!vapic_page)
-> +		vapic_idx =3D nested_gpc_lock_if_active(&vmx->nested.virtual_apic_cach=
-e);
-
-[Severity: Medium]
-Will this nested lock cause an AB-BA circular locking dependency warning fr=
-om
-lockdep?
-
-Here in vmx_complete_nested_posted_interrupt(), nested_gpc_lock_if_active()=
- is
-first called for pi_desc_cache, acquiring the SRCU read lock for kvm->gpc_s=
-rcu.
-Then, while still holding this SRCU read lock, it attempts to lock the
-virtual_apic_cache. If a refresh is needed, kvm_gpc_refresh() is called, wh=
-ich
-acquires the gpc->refresh_lock mutex.
-
-Since all gpc->refresh_lock instances share the same lock class, lockdep wi=
-ll
-observe gpc_srcu -> refresh_lock here.
-
-However, in kvm_gpc_deactivate() in virt/kvm/pfncache.c:
-
-	guard(mutex)(&gpc->refresh_lock);
-	if (gpc->active) {
-		...
-		if (old_state & (GPC_VALID | GPC_INVALIDATING))
-			synchronize_srcu_atomic(&kvm->gpc_srcu);
-
-The refresh_lock is held while synchronize_srcu_atomic() waits, establishin=
-g the
-reverse dependency: refresh_lock -> gpc_srcu. This circular dependency can
-disable lockdep and pollute kernel logs.
-
-> +		if (vapic_idx < 0) {
-> +			nested_gpc_unlock(&vmx->nested.pi_desc_cache, pi_idx);
->  			goto mmio_needed;
-> +		}
-> +		vapic_page =3D vmx->nested.virtual_apic_cache.khva;
-> +
-> +		__kvm_apic_update_irr(pi_desc->pir, vapic_page, &max_irr);
+[Severity: Low]
+Does the guard(srcu_atomic) definition in include/linux/srcu.h also referen=
+ce
+the undefined srcu_read_lock_atomic() function, which breaks the build?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260920211920.9283=
-06-1-dwmw2@infradead.org?part=3D11
+06-1-dwmw2@infradead.org?part=3D6
