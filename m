@@ -1,41 +1,41 @@
 Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975DE3FE34D;
-	Sun, 20 Sep 2026 11:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77872404BD4;
+	Sun, 20 Sep 2026 11:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789903072; cv=none; b=XEQprAlvxqDNM0sRMS+Bxw+d51cKiAi4UjMHP1PNUU9OxJhc/rRiVFrsIu3lFZzSaiJjcYsDB6HfqoIy/9WmSErRmRKgVMdn5+8kVonTVza+4Gd+SJnKXb20xz59/ZQJAwARr9QB7zzqp1PgBG/U/yIZRUIyGu0YCpEP+8wcTNg=
+	t=1789903075; cv=none; b=jhIZ4JzSfAKVcsSdI6b9KjKv6hUKNgZBTKVv4Byq8hz+Hliss2Vw7h4Kxbi7OVc5xPMehTV9tND87VQdyiOGzxQUdXxa4upzvpETxL88O0Q4JUc1f01PDjIXBhG0ltB0J2nowa0JJoQxNDazX/MLtR1vSW0puX9usi3rVrah4AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789903072; c=relaxed/simple;
-	bh=7qyZ3yw8xwXvroToHAs5qx3zfIpA0akFceWmVOkFa8E=;
+	s=arc-20240116; t=1789903075; c=relaxed/simple;
+	bh=07g7Wsnxy7TV71yYjMKtl6l/jv8TXnMqlazGTus0lG4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=r/IBu5mxqT5sVfcD7ju098K58dYaF0vgUmQrgPlElVcxHbc2ErAoz1bTy3CinBOIwuz7Z2xmS2B5CcMLJKQOD2E5mkT6GszgBzN2b0TWnfuym/Q5BjkG0iP8/lgRWp+1ZzybDokEO6xnTWn6/6z5eXNgvhyooyM7pBp5Cfd/7EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=swLXvuxC; arc=none smtp.client-ip=49.212.243.89
+	 In-Reply-To:To:Cc; b=Z+dfK8643v/o9ciC59uHDa8mTzfm6DhJS9+g4lUB8mqRnkOMEak1xCJGHnz4v1HfoyBSFeXPNzo9sGpkLZphkaSp37/GAo1rChs0bDQMnBtfy9cBx4XtiA+JBI3Q0gv3psNFmwNtM1krVkbIQmSMnm1Vrx4UGzMnqEsA2eoNaYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=kodpUlKs; arc=none smtp.client-ip=49.212.243.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="swLXvuxC"
+	dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="kodpUlKs"
 Received: from [192.168.10.153] (p865013-ipoe.ipoe.ocn.ne.jp [153.242.222.12])
 	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 68KBG36R088236
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 68KBG36g088236
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Sun, 20 Sep 2026 20:16:09 +0900 (JST)
+	Sun, 20 Sep 2026 20:16:17 +0900 (JST)
 	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=CpstWXsEGNxvTAnG53+JLBqVzfY5FoROk7Pvi0Mk+sY=;
+DKIM-Signature: a=rsa-sha256; bh=8iwQDxRfrOAjdLEnj6KqRv2uciFkrG85NKoY1Q5Ne64=;
         c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
         h=From:Message-Id:To:Subject:Date;
-        s=rs20250326; t=1789902970; v=1;
-        b=swLXvuxCmaz8hB04AEW2oFrcON647nR1UZTKe4ffJumEjp8MwV04mAcw7Tszh5kk
-         rIR4jQq2ERwzr3gHkpCW8a4XMpn/b0O/7or2OjHupmFhUHQaG04SlEx2aKcTQv+C
-         eBnAvwCtAlI881VIIebctlKfQPILNl6dRbCuPMELx0Wdu1AAZR9wO+naO366C7BT
-         I1eWgTPvMegh3THZvdq7orqHnUt/MeP8ZDF65Vfuh5ZRMVTQiATHXOFH25lvHuEF
-         1j7sxL2da5EF+ei3qtnc3hq8y54tJzMEEdLcZUk4gvaPgCFpSNyxGEMThPCWESMK
-         6qaXH5Qy00xhxk8BOH7kpg==
+        s=rs20250326; t=1789902977; v=1;
+        b=kodpUlKskgJDYfgFYWg/SDs1zojEj+vAHqhdwVsBSFcoiu19swkP4YohevElDlpw
+         idIF6OliQqAukZrtr+qT+F97ppYV4l14eNumGhTt+fJa/HxHb5wZoz49LfqFAYDK
+         IlD37vtgNQmaD5SeeOhawR9aXac7HOewgnifUALoOotPYLozJKcN4FZjs7Hh+3nl
+         6wattudp6JzMHJ70S0NB6MamVVAfIv7MxuU+WI0RSP9CXxAXEnumtpxWsh1G/jJJ
+         1tHQlMbIuAhGHgyRQD7Pt/NYGb5jG5wMyBObJ9Mtw413fpifYjcp0ka86rLsI6jL
+         T3fevnJLFuowCuKLindWKQ==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Sun, 20 Sep 2026 20:15:45 +0900
-Subject: [PATCH v11 04/21] KVM: arm64: selftests: Test SET_NR_COUNTERS
- after first run
+Date: Sun, 20 Sep 2026 20:16:00 +0900
+Subject: [PATCH v11 19/21] KVM: arm64: PMU: Implement fixed-counters-only
+ emulation
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -44,7 +44,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260920-hybrid-v11-4-03618771b0e1@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20260920-hybrid-v11-19-03618771b0e1@rsg.ci.i.u-tokyo.ac.jp>
 References: <20260920-hybrid-v11-0-03618771b0e1@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20260920-hybrid-v11-0-03618771b0e1@rsg.ci.i.u-tokyo.ac.jp>
 To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
@@ -71,122 +71,227 @@ Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
         linux-kselftest@vger.kernel.org,
         Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3449;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8244;
  i=odaki@rsg.ci.i.u-tokyo.ac.jp; h=from:subject:message-id;
- bh=7qyZ3yw8xwXvroToHAs5qx3zfIpA0akFceWmVOkFa8E=;
- b=owGbwMvMwCWmMbc20y1CyJDxtFoSQ9b6A2lXr+g7PReYfHOn6usjIZ/dmvRe1F09wP3FpOeE3
- 9l5R7lcOkpZGMS4GGTFFFlSinZza0TXfipMiG+BmcPKBDKEgYtTACYSvpzhv9tLz/1h7+6p8CiL
- MO7inyL9vfzY2p8dzsLpJ7sF2R5VXWb4K/w1d+XRP88/m8rJORQ/Y9YuEbTuLtA7O/fsp/8KXS6
- u3AA=
+ bh=07g7Wsnxy7TV71yYjMKtl6l/jv8TXnMqlazGTus0lG4=;
+ b=owGbwMvMwCWmMbc20y1CyJDxtFoSQ9b6A4UWPwwz+YoP+p378f99InMC40/BpPhH57TfJKpO9
+ Lz9vlCvo5SFQYyLQVZMkSWlaDe3RnTtp8KE+BaYOaxMIEMYuDgFYCKHUhj+GSxJSYyd7lhsPUHp
+ OPfhTxdZozmtXkp69J113mnOdOVtLcN/Fzftn+d3PJ9TaMZ7XzTsaLark8eW8ANXonZufcF0X7q
+ LDwA=
 X-Developer-Key: i=odaki@rsg.ci.i.u-tokyo.ac.jp; a=openpgp;
  fpr=AEDC03C9AF734F2EC26A7BFFA4BAEAA73536753C
 
-Add a regression test that runs one vCPU and then tries to change the
-VM-scoped PMU counter count through an idle sibling. Verify that
-SET_NR_COUNTERS fails with EBUSY once any vCPU has run.
+Add internal state for PMUv3 emulation without programmable event
+counters. When fixed-counters-only mode is active, KVM reports no
+programmable counters and hides PMCEID, avoiding event-counter state
+whose behavior can depend on the selected hardware PMU.
 
-Assisted-by: Codex:gpt-5.6-sol
+The cycle counter still uses a host perf event. Unlike the normal PMU
+path, fixed-counters-only mode may create that event from the hardware
+PMU attached to the VCPU's current pCPU. If the VCPU later loads on a
+pCPU that is not covered by the existing event's PMU, request a PMU
+reload so the cycle counter can be recreated against the new pCPU's PMU.
+Keep this affinity check limited to fixed-counters-only VMs; the normal
+programmable-counter mode continues to use the VM-wide PMU and does not
+need per-load reload decisions.
+
+Registered pPMUs must cover every CPU on which fixed-counters-only
+emulation runs. On ACPI systems, a CPU brought online after PMU probing
+may have an unregistered PMU implementation. Full coverage is also not
+guaranteed when ARM64_WORKAROUND_PMUV3_IMPDEF_TRAPS is present.
+
+Fixed-counters-only emulation is not supported once a vCPU runs on an
+uncovered CPU. If event creation detects such a CPU, warn and add
+TAINT_CPU_OUT_OF_SPEC.
+
+Add a separate internal flag for explicit userspace PMU selection. The
+UAPI wiring added later will use it to keep explicit PMU selection and
+fixed-counters-only mode mutually exclusive while still allowing
+fixed-counters-only mode to replace the default PMU selected during
+KVM_ARM_VCPU_INIT.
+
+The UAPI wiring that sets the fixed-counters-only flag and records
+explicit PMU selection is added later in the series.
+
+Assisted-by: Codex:gpt-5.5
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 ---
- .../selftests/kvm/arm64/vpmu_counter_access.c      | 47 ++++++++++++++++++++--
- 1 file changed, 43 insertions(+), 4 deletions(-)
+ arch/arm64/include/asm/kvm_host.h |  4 +++
+ arch/arm64/kvm/arm.c              |  2 ++
+ arch/arm64/kvm/pmu-emul.c         | 60 ++++++++++++++++++++++++++++++++++-----
+ include/kvm/arm_pmu.h             |  2 ++
+ 4 files changed, 61 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c b/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c
-index 22223395969e..05135bcdb462 100644
---- a/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c
-+++ b/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c
-@@ -443,11 +443,10 @@ static void destroy_vpmu_vm(void)
- 	kvm_vm_free(vpmu_vm.vm);
- }
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+index 766c5cb32f54..d273bfc4cbaf 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -367,6 +367,10 @@ struct kvm_arch {
+ #define KVM_ARCH_FLAG_WRITABLE_IMP_ID_REGS		10
+ 	/* Unhandled SEAs are taken to userspace */
+ #define KVM_ARCH_FLAG_EXIT_SEA				11
++	/* PMUv3 is emulated with an explicitly specified hardware PMU */
++#define KVM_ARCH_FLAG_PMU_V3_EXPLICIT			12
++	/* PMUv3 is emulated without programmable event counters */
++#define KVM_ARCH_FLAG_PMU_V3_FIXED_COUNTERS_ONLY	13
+ 	unsigned long flags;
  
--static void run_vcpu(struct kvm_vcpu *vcpu, u64 pmcr_n)
-+static void run_vcpu(struct kvm_vcpu *vcpu)
+ 	/* VM-wide vCPU feature set */
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index 55b07926ce2e..4b1f06a36055 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -665,6 +665,7 @@ static bool kvm_vcpu_should_clear_twe(struct kvm_vcpu *vcpu)
+ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
  {
- 	struct ucall uc;
+ 	struct kvm_s2_mmu *mmu;
++	int last_cpu = vcpu->cpu;
+ 	int *last_ran;
  
--	vcpu_args_set(vcpu, 1, pmcr_n);
- 	vcpu_run(vcpu);
- 	switch (get_ucall(vcpu, &uc)) {
- 	case UCALL_ABORT:
-@@ -461,6 +460,11 @@ static void run_vcpu(struct kvm_vcpu *vcpu, u64 pmcr_n)
- 	}
+ 	if (is_protected_kvm_enabled())
+@@ -714,6 +715,7 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+ 	if (has_vhe())
+ 		kvm_vcpu_load_vhe(vcpu);
+ 	kvm_arch_vcpu_load_fp(vcpu);
++	kvm_vcpu_load_pmu(vcpu, last_cpu);
+ 	kvm_vcpu_pmu_restore_guest(vcpu);
+ 	if (kvm_arm_is_pvtime_enabled(&vcpu->arch))
+ 		kvm_make_request(KVM_REQ_RECORD_STEAL, vcpu);
+diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
+index a303752c5e61..9c1e2f3e41db 100644
+--- a/arch/arm64/kvm/pmu-emul.c
++++ b/arch/arm64/kvm/pmu-emul.c
+@@ -83,6 +83,11 @@ u64 kvm_pmu_evtyper_mask(struct kvm *kvm)
+ 	return mask;
  }
  
-+static void guest_code_done(void)
++static bool kvm_pmu_fixed_counters_only(struct kvm *kvm)
 +{
-+	GUEST_DONE();
++	return test_bit(KVM_ARCH_FLAG_PMU_V3_FIXED_COUNTERS_ONLY, &kvm->arch.flags);
 +}
 +
- static void test_create_vpmu_vm_with_nr_counters(unsigned int nr_counters, bool expect_fail)
+ /**
+  * kvm_pmc_is_64bit - determine if counter is 64bit
+  * @pmc: counter context
+@@ -725,14 +730,10 @@ static struct arm_pmu *kvm_pmu_probe_armpmu(int cpu)
+ 	return NULL;
+ }
+ 
+-/**
+- * kvm_pmu_create_perf_event - create a perf event for a counter
+- * @pmc: Counter context
+- */
+-static void kvm_pmu_create_perf_event(struct kvm_pmc *pmc)
++static void kvm_pmu_create_perf_event_with_pmu(struct kvm_pmc *pmc,
++					       struct arm_pmu *arm_pmu)
  {
- 	struct kvm_vcpu *vcpu;
-@@ -503,7 +507,8 @@ static void run_access_test(u64 pmcr_n)
- 	/* Save the initial sp to restore them later to run the guest again */
- 	sp = vcpu_get_reg(vcpu, ctxt_reg_alias(vcpu, SYS_SP_EL1));
+ 	struct kvm_vcpu *vcpu = kvm_pmc_to_vcpu(pmc);
+-	struct arm_pmu *arm_pmu = vcpu->kvm->arch.arm_pmu;
+ 	struct perf_event *event;
+ 	struct perf_event_attr attr;
+ 	int eventsel;
+@@ -766,7 +767,7 @@ static void kvm_pmu_create_perf_event(struct kvm_pmc *pmc)
+ 	 * Don't create an event if we're running on hardware that requires
+ 	 * PMUv3 event translation and we couldn't find a valid mapping.
+ 	 */
+-	eventsel = kvm_map_pmu_event(vcpu->kvm->arch.arm_pmu, eventsel);
++	eventsel = kvm_map_pmu_event(arm_pmu, eventsel);
+ 	if (eventsel < 0)
+ 		return;
  
--	run_vcpu(vcpu, pmcr_n);
-+	vcpu_args_set(vcpu, 1, pmcr_n);
-+	run_vcpu(vcpu);
+@@ -811,6 +812,32 @@ static void kvm_pmu_create_perf_event(struct kvm_pmc *pmc)
+ 	pmc->perf_event = event;
+ }
  
++/**
++ * kvm_pmu_create_perf_event - create a perf event for a counter
++ * @pmc: Counter context
++ */
++static void kvm_pmu_create_perf_event(struct kvm_pmc *pmc)
++{
++	struct kvm_vcpu *vcpu = kvm_pmc_to_vcpu(pmc);
++	struct arm_pmu *arm_pmu = vcpu->kvm->arch.arm_pmu;
++
++	if (kvm_pmu_fixed_counters_only(vcpu->kvm)) {
++		do {
++			arm_pmu = kvm_pmu_probe_armpmu(READ_ONCE(vcpu->cpu));
++
++			if (!arm_pmu) {
++				pr_warn_once("kvm: Unsupported PMU variation detected.\n");
++				add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
++				return;
++			}
++
++			kvm_pmu_create_perf_event_with_pmu(pmc, arm_pmu);
++		} while (!cpumask_test_cpu(READ_ONCE(vcpu->cpu), &arm_pmu->supported_cpus));
++	} else {
++		kvm_pmu_create_perf_event_with_pmu(pmc, arm_pmu);
++	}
++}
++
+ /**
+  * kvm_pmu_set_counter_event_type - set selected counter to monitor some event
+  * @vcpu: The vcpu pointer
+@@ -897,6 +924,13 @@ u64 kvm_pmu_get_pmceid(struct kvm_vcpu *vcpu, bool pmceid1)
+ 	u64 val, mask = 0;
+ 	int base, i, nr_events;
+ 
++	/*
++	 * Hide the hardware PMU's event set to keep PMCEID stable across
++	 * physical CPU migration.
++	 */
++	if (kvm_pmu_fixed_counters_only(vcpu->kvm))
++		return 0;
++
+ 	if (!pmceid1) {
+ 		val = compute_pmceid0(vcpu);
+ 		base = 0;
+@@ -924,6 +958,15 @@ u64 kvm_pmu_get_pmceid(struct kvm_vcpu *vcpu, bool pmceid1)
+ 	return val & mask;
+ }
+ 
++void kvm_vcpu_load_pmu(struct kvm_vcpu *vcpu, int last_cpu)
++{
++	if (!kvm_pmu_fixed_counters_only(vcpu->kvm) || vcpu->cpu == last_cpu || last_cpu == -1)
++		return;
++
++	if (kvm_pmu_probe_armpmu(vcpu->cpu) != kvm_pmu_probe_armpmu(last_cpu))
++		kvm_pmu_request_recreate(vcpu);
++}
++
+ void kvm_vcpu_reload_pmu(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_pmu *pmu = &vcpu->arch.pmu;
+@@ -1048,6 +1091,9 @@ u8 kvm_arm_pmu_get_max_counters(struct kvm *kvm)
+ {
+ 	struct arm_pmu *arm_pmu = kvm->arch.arm_pmu;
+ 
++	if (kvm_pmu_fixed_counters_only(kvm))
++		return 0;
++
  	/*
- 	 * Reset and re-initialize the vCPU, and run the guest code again to
-@@ -516,7 +521,8 @@ static void run_access_test(u64 pmcr_n)
- 	vcpu_set_reg(vcpu, ctxt_reg_alias(vcpu, SYS_SP_EL1), sp);
- 	vcpu_set_reg(vcpu, ARM64_CORE_REG(regs.pc), (u64)guest_code);
- 
--	run_vcpu(vcpu, pmcr_n);
-+	vcpu_args_set(vcpu, 1, pmcr_n);
-+	run_vcpu(vcpu);
- 
- 	destroy_vpmu_vm();
- }
-@@ -622,6 +628,37 @@ static bool kvm_supports_nr_counters_attr(void)
- 	return supported;
- }
- 
-+static void test_set_nr_counters_after_vcpu_run(void)
-+{
-+	struct kvm_vcpu *running_vcpu, *stopped_vcpu;
-+	unsigned int nr_counters = 0;
-+	struct kvm_vcpu_init init;
-+	struct kvm_vm *vm;
-+	int ret;
-+	u64 irq = 23;
-+
-+	vm = vm_create(2);
-+	vm_ioctl(vm, KVM_ARM_PREFERRED_TARGET, &init);
-+	init.features[0] |= BIT(KVM_ARM_VCPU_PMU_V3);
-+	running_vcpu = aarch64_vcpu_add(vm, 0, &init, guest_code_done);
-+	stopped_vcpu = aarch64_vcpu_add(vm, 1, &init, guest_code_done);
-+	kvm_arch_vm_finalize_vcpus(vm);
-+
-+	vcpu_device_attr_set(running_vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+			     KVM_ARM_VCPU_PMU_V3_IRQ, &irq);
-+	vcpu_device_attr_set(running_vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+			     KVM_ARM_VCPU_PMU_V3_INIT, NULL);
-+	run_vcpu(running_vcpu);
-+
-+	ret = __vcpu_device_attr_set(stopped_vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-+				     KVM_ARM_VCPU_PMU_V3_SET_NR_COUNTERS,
-+				     &nr_counters);
-+	TEST_ASSERT(ret == -1 && errno == EBUSY,
-+		    KVM_IOCTL_ERROR(KVM_SET_DEVICE_ATTR, ret));
-+
-+	kvm_vm_free(vm);
-+}
-+
- int main(void)
+ 	 * Under KVM_ARM_VCPU_PMU_V3_STRICT no PMU exists until userspace sets
+ 	 * one, so this can be reached before arm_pmu is set. Report no
+diff --git a/include/kvm/arm_pmu.h b/include/kvm/arm_pmu.h
+index fca00f7f4c0a..33d81461f5cd 100644
+--- a/include/kvm/arm_pmu.h
++++ b/include/kvm/arm_pmu.h
+@@ -63,6 +63,7 @@ void kvm_pmu_handle_pmcr(struct kvm_vcpu *vcpu, u64 val);
+ void kvm_pmu_apply_mdcr(struct kvm_vcpu *vcpu, u64 old, u64 val);
+ void kvm_pmu_set_counter_event_type(struct kvm_vcpu *vcpu, u64 data,
+ 				    u64 select_idx);
++void kvm_vcpu_load_pmu(struct kvm_vcpu *vcpu, int last_cpu);
+ void kvm_vcpu_reload_pmu(struct kvm_vcpu *vcpu);
+ int kvm_arm_pmu_v3_set_attr(struct kvm_vcpu *vcpu,
+ 			    struct kvm_device_attr *attr);
+@@ -176,6 +177,7 @@ static inline u64 kvm_pmu_get_pmceid(struct kvm_vcpu *vcpu, bool pmceid1)
+ static inline void kvm_pmu_update_vcpu_events(struct kvm_vcpu *vcpu) {}
+ static inline void kvm_vcpu_pmu_restore_guest(struct kvm_vcpu *vcpu) {}
+ static inline void kvm_vcpu_pmu_restore_host(struct kvm_vcpu *vcpu) {}
++static inline void kvm_vcpu_load_pmu(struct kvm_vcpu *vcpu, int last_cpu) {}
+ static inline void kvm_vcpu_reload_pmu(struct kvm_vcpu *vcpu) {}
+ static inline u8 kvm_arm_pmu_get_pmuver_limit(void)
  {
- 	u64 i, pmcr_n;
-@@ -630,6 +667,8 @@ int main(void)
- 	TEST_REQUIRE(kvm_supports_vgic_v3());
- 	TEST_REQUIRE(kvm_supports_nr_counters_attr());
- 
-+	test_set_nr_counters_after_vcpu_run();
-+
- 	pmcr_n = get_pmcr_n_limit();
- 	for (i = 0; i <= pmcr_n; i++) {
- 		run_access_test(i);
 
 -- 
 2.55.0
