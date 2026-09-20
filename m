@@ -1,150 +1,152 @@
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013002.outbound.protection.outlook.com [52.101.72.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466F134CFC2
-	for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 02:19:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08DB3AE18A;
+	Sun, 20 Sep 2026 02:28:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.2
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789870772; cv=pass; b=Rw/QkptkSpJubocICxhq768QsK8aocAsuGEuiXQcUEvkSzF5ZcKQ/KXg/fURmXRrqOtUSs8Sq4tLLZKb84WRENrBBzgPTALs+95c/5yrWVUB/sAJYuuvw5dCi7NdWjLb+EdHfLs5BYPTn40S4YbXuBcG4mwprqYPcGg2tD9kIWg=
+	t=1789871335; cv=fail; b=X/PMaP9H2nN1o5yXsqY/AmBDRfOYWFmIYbr6bDjfiY3oStkPep58wYXjb1eZtT7jrnT2TyS+EwJqCwjVOUGKdOxVF1AJ6cDNjRpjmXHxW8N2wlxEa9iPGLCfx70IJCn40mH2MxPJx0/Fw8oOT/lzchgK39c9wLPFl3XOFd/E8n8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789870772; c=relaxed/simple;
-	bh=Oj5sg9PCyDUl3TeOjKEQSeMqK8FhKnxaUFXuz/wNJ/I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MMCjRqozKPlbZHj/VqXKmKo47zh1zh0JXIFnqUKaD7sCB2ynsC0NLhzWu7sZ5YG5M+NQIkShM2lARl5+Fh0OPkCwJd9Rfr9KW06s7p5RyZtFALhAbM85JiZ28mmap65litCoSjBN4qOx27HVqXqJmUtGgYFfsbJkKnV/DHzd5o8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZdY/aojF; arc=pass smtp.client-ip=74.125.230.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789871335; c=relaxed/simple;
+	bh=QhyBaVRTTWwf5K00dgZ8YiFnpwSM7vxDVITBrBIMnh4=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=EqImnIlgLMhuKfGemBiCiNVhSapLbWJ3x69UIjufRroVnGPRdFuhPZI4Hna/5bp8PrV0DzkzOMqX8+iJHQHRx3UAzSk49/xhbW4cMqMu5X/Xfw9d/E236vOjhYglHX9J7hmXbK7GR8/GoefNkcYR5r8UWRXjAlfmF12z1AVA7b4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=WTLp91QF; arc=fail smtp.client-ip=52.101.72.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZdY/aojF"
-Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93a2dea320fso204634285a.2
-        for <kvm@vger.kernel.org>; Sat, 19 Sep 2026 19:19:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789870770; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Mpkb8MKFCBYHuNz/9jeSOgbD9TI06ohtlIH8UTt4KJCObslYNEUtgRqleX40mIjqlf
-         sxuDdLLWi5Ffatrh3NEf3brntWuLAf9B57RN20pA7gB76UA0P/qJLjM4cWDMfC73D5rt
-         9yq+7Cy/2p6FsIhU19ufZd1nlSgdfvnFYJkBys8dQ1EYPS4ziG8Q6rjXKMC0d0Mx3iZW
-         R99n250OLxGw4lERpJF972RArMThhkzXhcCm6yqG+JulGPEfdITPsn+GYBWIvU4Ot27U
-         cx6sDI9IEV8SpmhGUcBeJzMRdGPmIwp3TRdY83yGzviLOCc2OLTrnjWBu2B6lE/RsEaN
-         jNfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=t1jf+n9Y/HXbw9hy+wSRUxXx+QGd/8tyjA6GiwXlHUQ=;
-        fh=a1kmkMLMDBjZrLy3Qt1pdpy/eNe/5Ri1XQNWDrEMcpA=;
-        b=Ke2FMQzl6cwlw26qkl+aSoIhCiXdyl/N5DPSeOLlvsmq0i7nQO17fCFxGvGzlc5xdA
-         qHnYW4nJmxFsUSP5eqAEBZBH6twN8woQVkuDGlQoSBLhCd3mvxGk7uhX6e12L8dRHHFk
-         RqiEv404wzOWLyuzvlUQD9c2RluP5nmW22gFshLuTR3nztV75neer37mYNHNvBKV2ted
-         935nkZolN/gY48pJumxky5P9u+nXczIwEVN091RT6krXmSQ8DUSPCjkZLG09yw4l134C
-         s7H7oYi8n/kZZvsCzlwCdbGNOheLpg4/vPNv6Nin1c/SKrkKCyE5eMeTk6nXPI4fwQ3Y
-         UJ+w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789870770; x=1790475570; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=t1jf+n9Y/HXbw9hy+wSRUxXx+QGd/8tyjA6GiwXlHUQ=;
-        b=ZdY/aojFRC54Cf2Uxg5kJI2s7ovE/rCSqWRmZqYsrhcX5FrMmwETLowV9bl+QBfGAG
-         V9RTkGu0hepuCs2TIYuIo0FoCh9W7o42lN8okRXyHvq3fTJkX6+n219g/55KehYaH0Fz
-         dih1Zl7u75NLe16cg/EUIJ8cqYY32pjeZX5MGVcWaH40cnuxooGTG6UBikVes5UYSiiu
-         rMt9SFFV2v8p/XqreluP5GuSnFx/JOAyanhSvajdHH4QSM/kcsNMdrs2/n3bNwnZQ2uW
-         zdNXuKpO1WZOxwD01u+BtOFvRSKVeBHejKDE6kM+t9wieGv/Bfb0UeYMEyYi5doSxGLc
-         NBWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789870770; x=1790475570;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=t1jf+n9Y/HXbw9hy+wSRUxXx+QGd/8tyjA6GiwXlHUQ=;
-        b=SGUvej1tYonSl6pQoCMMH7Zb5xIol+SxL2P8M/j8kno4vTMeaBwcxyR4Y+G5zdt335
-         V63bbBOrjj1Bed8vv/FORXebC5cIuBu/KUc8tIJpzULdDIm1uaUg6LltzxW17YhNBanc
-         H371LFezfwm2tW5BrWlu40A0nXhxYysZ3SexLuSwIn5rPqajXGg9VI7kTlvwv+LhJCxO
-         923xniDU03sqxmlogI3QoJqgfRLbV4B7CA1BDSmlZdTW8yJ+WdVd345rFJX7+v9Gw9Pm
-         vKY+vQJJCWeh0A+C8ELg0AjbAo1pHHh2k6c9D5nySuJbstUE8K8PAx07Zo0K4qEY5ELX
-         PS4w==
-X-Forwarded-Encrypted: i=1; AKwUvBx6QSyZ6HeJVolw/lEj2JiAEpGBRaZpgikAf0gLp5nYNgnUonEb0wUg1OK7V7U9ny+kwJk=@vger.kernel.org
-X-Gm-Message-State: AFuF++mcJEppnHeN7PX4GqgxQadJRfpPeHLzt6TQAWXIoEsLqGrysi9r
-	mYc7ckH1wyhJ0OIC+aNuLb0ztA7RXcb1jXeocIWVYPr1yUgrcm2HDI3W+rYPzPybiHqrDvwoZL9
-	ZEzo5t6bj4fy7dXYNoo2ZM7xMyPQpN/Q=
-X-Gm-Gg: AYBFou2M2z0tZEDcaIc94pT2Yhbxqr1MGg26lMR5izYlqvPkATNuEHWlpendijYAkBN
-	EL1qzS5p33s3HXjTK3IYUxrzEFSnq2Z18/GebR05EWAJ7P894b7d1PWjSPyZ/+f/mZOlF68HmLA
-	SuY4adiMlBPPEknoSUn/uduj8vtKvtCOTsL3eEVy9c6gU9OhGLSxJXBi1B9CYFwgk3sdjUlNyH5
-	r3cVym/YfzLSsV+/9fq5szP6c3bPvDCcJjCOmt+LENqWdkAjYMsnIPp1s+OM1V3+WBDSJA/RyQg
-	1ipMoAcDFJ4Pil649/ynxga0k1c0rSQYGiDQbWkLYDDZK288Ooj7Mccr
-X-Received: by 2002:a05:620a:a0ce:10b0:93b:d58f:4fab with SMTP id
- af79cd13be357-93bf5595417mr270410785a.25.1789870770127; Sat, 19 Sep 2026
- 19:19:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="WTLp91QF"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nnv7ZyfpF1tYv9hDICJmeAdY01lfLGx+QIb/NSRNFvOsqqPgVbKeKKnRix8G6CquMtUE6GzAL9nxAjNJSkDcqwhja35XHt5D71n6z08sU6tYE6G/C0oTJ3LKYyW1qiY0rGb6Yy4uTS9UebTPx5eIjDGt70vvPyihqil3u+iZpSXKsbwACk4g5Pgy+YbZfE4kkzONf/4bZ3IwRrtFqr53PN94/VQe3+YtyNwEi6GEw3NaWQsm+zEnlj1fvdzqV4CSS0hhAUyV3XID/0YnsvKVem5uf69IB2N+L/6r63JPix1x2HYJMUBVbsa3FciUfrDlBkokG12QisyQPJ9ZsTtibw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cnisPdoVhZsxKLwg0yqAtYkm/XdJZgGFGUYT8RLQDUA=;
+ b=l5QggW+ACvDnYZ0oIQYCkBc0rQLxsaamtoD/OJaPx7pwh95c2DbY1LsJIMKVGa4EgQfNQKMaDx0GR50dRo2/F9nm4bI0tlRro+SIz2voYmFzCa8KsaXkxpAstRIaeZK8qGZrJExtv2OkMEpSmLkzJtJuWpJ6XZaEBWh/SQd23toZcoaPG34WTFuZNGwN7KQP/Q843w+Jf5TxhNLobg6+gkwT+xcx7v6R6x2SBhTYzC1gJgla7if3UWm9kY5pU5HG0tkS5Sc/21DggCbXjZ94hA/OMZMeR2hAFW0s4H2Pb/PgmTcXz0z1XUNFlBP9xYrJffTXd/RZSpQznTzaapJkAA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cnisPdoVhZsxKLwg0yqAtYkm/XdJZgGFGUYT8RLQDUA=;
+ b=WTLp91QFRVn9B9Jfzi6QA53hv8cj6ghp/JHIuTmco6MnmzucZ+vgWf5fm/6Q5Jjl2e0I+qsPx66hD3hBeyAUXlORpddEQU35Li1m857T2tDhJNXjMaws2x3XKNPtTK6cw4R4B23VgIWgG8KHmiMDkcDnoK8kGz4DJfOnnh8wTsCc4/cVKdAzlSpA/E4iAWo4QuDgYMoq63U0VZSUdPwhQqwmMY4bU6kMNiwIplcK57la1NK6nIupy+VsSXwG44EvBTdTOkfCRUMEpXNf7SLrJeTcmMQ0xOt0hYKbCE0+RcQtUqUEkkYWU2YE+G5rCN0p11SHe+fRlnamByDvGwtuYw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com (2603:10a6:20b:24d::9)
+ by PAXPR04MB9596.eurprd04.prod.outlook.com (2603:10a6:102:23e::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Sun, 20 Sep
+ 2026 02:28:48 +0000
+Received: from AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9]) by AM8PR04MB7874.eurprd04.prod.outlook.com
+ ([fe80::ac38:1699:6f18:c5d9%6]) with mapi id 15.21.0428.014; Sun, 20 Sep 2026
+ 02:28:48 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@nxp.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org
+Subject: [PATCH] KVM: PPC: use assign_bit() where applicable
+Date: Sun, 20 Sep 2026 10:26:17 +0800
+Message-ID: <20260920022618.3145649-1-peng.fan@oss.nxp.com>
+X-Mailer: git-send-email 2.51.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR01CA0027.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:192::7) To AM8PR04MB7874.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24d::9)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260919131744.131030-1-physicalmtea@gmail.com> <20260919152336-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20260919152336-mutt-send-email-mst@kernel.org>
-From: Jia Jia <physicalmtea@gmail.com>
-Date: Sun, 20 Sep 2026 10:18:53 +0800
-X-Gm-Features: AcwNN1VkMN-0syiFYPeuWa4rISLvm99vUAZPB8bHXDefFB9Y34rSJVqTJuxGaqo
-Message-ID: <CAJwVaM+BmE_HoN_hSYL28nhZh1ZStqH9Od3pizAb_fyTZAS+5g@mail.gmail.com>
-Subject: Re: [PATCH] vhost: keep vring addresses stable while the backend is attached
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowangio@gmail.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Nicholas Bellinger <nab@linux-iscsi.org>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7874:EE_|PAXPR04MB9596:EE_
+X-MS-Office365-Filtering-Correlation-Id: 07395eaf-aa91-4370-7458-08df16bee700
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|23010399003|19092799006|366016|18002099003|56012099006|11063799006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	edjO5PQeb86jsraB2e+othd0sm0G3L2KrClQx9nR1Mzk1mzorxGXU/FVHMa++FfE2sgpEfjEGK1jrwwcYMYpxVJN+EQBUJRC+kJPlxMNuSdbQT34cBvtXmQQb4Rv6PCf3Fxsin4MlQ4YBsFkaE/Iga4CzONTu9vONpOQfvujoRl601qrpW+WivhPu0a96AEyef2MFqunGqf7lgkacUZCzMxP0d8FrCPBryPyFP6AEL1Uz3oB2LWtTlP4w/Pr3/RJr3hafqXZi4mMO+2likJYz72LaBy1+nxDbKS9ExVc+7x0/wA0nTS1DePK03HgbkXHvLWxVfIjqSd3h6QCFbwjFj15yqe7EjMpPJiPld8XVX02xQUfN1fKnV8rLov3InrjmRXk/+Pa5K68xMRL51Bed0l+3OUsgFZmBKqUJ7J4woYUC3pSQg8oCtSbc0iIHTjKKl81UQdGhr8uepvR0x/J/NQV3qJqxRDSqna3KU5fP8O2cV5eY7RVnFDhZA8PLvZ04nhi5r0AfkBeQW1W1A4WIiT+sULCmuSQmYczyBFWjF3jxCwCh1GRijt1bAZtKxzZFhfkSAu4Eo2d/58zQf64wDBWTVP8/gED2T3/AfFfDRbNaZf6JhA4Ba6GPW+yyzGfJEPW0Hl23OosmIE8HJUxWE7npkEEeP8KGn8ypA3Lsbs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7874.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(19092799006)(366016)(18002099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?oMSJN+y6N2aoFoy4p66wjBIIU0tPrju7QV8XHIloQRaS9lfaXySSZGNLEBhw?=
+ =?us-ascii?Q?cra/HE1Pdur52XWZ2kCaYHcrWXTUstMtsSMW345UY1LkZzEpJWxK2aHs1s7k?=
+ =?us-ascii?Q?sfgzgN+KRqrK7cEX0b8xLyJfMSd06MoBhIxLZxniE34CKQKmpbgrfnNbVda+?=
+ =?us-ascii?Q?p9AFjTg+1ORFd+dI5XMMs4UGtrk57KLzTiDVEDC7lnguZ6O+q9Fn19hXcd6u?=
+ =?us-ascii?Q?aWxuq1yhC/aTgdogseOL7MF2ZRaaC/jOAk0IqVGB+FasQ/wbw0YC/IAvl7xN?=
+ =?us-ascii?Q?JogjEYq/hhAxNU0MSc3CUBpf5y7wzP9SY+AkIQpfr9hzqORcx2zJXUF4dZzX?=
+ =?us-ascii?Q?M4JBdX5qt9KFr6/9q6r5ewGLyJT9OZkM2b1ZXQAETBSYkUln3DTMNqBHX5eJ?=
+ =?us-ascii?Q?PYyBQ6JTOGXXCLQagIl0u8wD6ju9Xt7T1BHor4onSdlpnboeDOMGEv3PD312?=
+ =?us-ascii?Q?IMuXH4iMTFuj4OrcHNlb3bHZupKEgN3Sot1G9FO2RqvfmdpkwlYmoTfxKnA6?=
+ =?us-ascii?Q?hLVS+MYvvapo3zZUwNunVDcHO6sst8lDedN2RS7K72/16tlpDOWqvX+JMPUe?=
+ =?us-ascii?Q?MjE5WlJF9RAjl8Iz7aBYANoVE4L7TPuB+pXdxhvpcObQhUMlZl6TpeU+/a4n?=
+ =?us-ascii?Q?Qst77ye5S4pL36K5gebi2FDYewtQZSteo35d7vYpfDAhE0JTBwrCLaeb+0Q3?=
+ =?us-ascii?Q?Qc4i5Yj6BDokg74Swm6tysd6MT4E2L1EmBDLGuIVtopj0EsnM4wJFF57U5rZ?=
+ =?us-ascii?Q?RQIjtW9zP/j47vQMxBZeGCs6BHxT/8OA7VpcLGEtlWOT4WNwlS/o8bVBVNXs?=
+ =?us-ascii?Q?fYuXTW/x+aHTA52gfeE/Qw7soV7ErTabXPenfBV16FqMO5aR/v/ww/CbUg35?=
+ =?us-ascii?Q?00TvQdTeU07+3CtYN9fCFJ8894mCERjNN3KkVnMr9J+DXa1PXQgWuHxfh1sB?=
+ =?us-ascii?Q?8Isc9L5r2U74R7sPuKxARDkiEtHeQFffFwRXRHX7gi+4JJKPJeI9lTr6GqPr?=
+ =?us-ascii?Q?yn6jRXz9GJPzlxd2MyGc693LT0iERlTdXjlGV0FQR1TL2rsJ34HUtigSZ2uJ?=
+ =?us-ascii?Q?aVAXbRMipSz2eySAWYwIgTmjr7emp5gk0De1nD9GYiVkFxggsx88naD2ETGR?=
+ =?us-ascii?Q?U+C2HfX/p1wAs1Q9CX4k1mW5W9v3qIcPxHQrhCOK8K7MpLZ4UusBP5t/jB42?=
+ =?us-ascii?Q?fPzFqcj3+Q5WR9QOzz5z5eJ6vziAIzyiEP9Ag7ad5vBYevHpHiP9K1K6llRD?=
+ =?us-ascii?Q?zXxSmmlpEPFLtJqud7EeWMAtoIkH3WbZKtU28yC9bXX9+w7z3y/ufVUgVeOu?=
+ =?us-ascii?Q?UJgWJscOQ4jTV9FSoTMYprIQmTz6PZHfB9iHdcCnGTxPzSs13k8N98CgjuJh?=
+ =?us-ascii?Q?vTbRulGP5eLD5oqluonbHWGqYsjtmlyu2YaNM2qJ2kMZYWkHf7BU35j7WhEw?=
+ =?us-ascii?Q?mq6zpL/d6E7jipn0zt6HbWEjV+gSbGOJwG3xMxysf1FXNbkkpMP+Fs01atAB?=
+ =?us-ascii?Q?9U7/CWfFY6/T5eSbZThsKmtJg9R3O+y9RykqPjPd1KUPATqQxAoB2c54oTLf?=
+ =?us-ascii?Q?gRGpP1oBDZC5YdtU2bFeuKNz6o2ZGkkITBbaGu7bMr5VSNKyhVUbqf7R/jNs?=
+ =?us-ascii?Q?Bx+7+chtVb4Wvh943eQmz7ILMyCsQZ5GLxdzcswvOxYpo4uY1G/HJbBXB46C?=
+ =?us-ascii?Q?agoPLPzMvE+1R7E2xyunT4AE9iozCjCiCtZTTlsU//t9TlXE710SCoXZuqby?=
+ =?us-ascii?Q?wdTREA+ct/SI2i+m77ZqMNKC08sA4nuLXVUQdYfOTX1+j4pAozcw?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 07395eaf-aa91-4370-7458-08df16bee700
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7874.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2026 02:28:48.6309
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rFlME0p0M+w/g/DL8oJGlopUnbFzaBw7NZ4AXap2vGlpb904UjXRdEAUO1cTQMdqyYpbLmgEQUk+iCAXpEZzpiUIUu/jrUBwtjmpfBIzqLwNHLrNiYFf5SlEyWuaisLm
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9596
 
->
-> On Sat, Sep 19, 2026 at 09:17:44PM +0800, Jia Jia wrote:
-> > vhost-scsi keeps the response and bounce-buffer iovecs until the backend
-> > completes the command.  If userspace changes the vring addresses while the
-> > command is in flight, the completion data is copied through the old iovecs
-> > while vhost_add_used() updates the new used ring.  The guest then no longer
-> > sees the completion.
->
-> I do not get what all this is trying to say. if you break it you get to
-> keep both pieces. when is this a real problem?
->
+From: Peng Fan <peng.fan@nxp.com>
 
-Before running the test, I checked the virtio spec and vhost UAPI and
-did not find an explicit rule
-prohibiting changes to vring addresses while a backend is attached.
-That is why I ran the directed test.
-I see what you mean now. I'll drop this patch.
+Convert open-coded if/else with set_bit/clear_bit to the assign_bit API.
 
-> >
-> > Reject changes to the vring addresses while a backend is attached to the
-> > queue.  Keep accepting the current addresses so userspace can update
-> > VHOST_VRING_F_LOG or log_guest_addr without stopping the backend.  Queues
-> > that have not been attached retain the existing setup behavior; userspace
-> > must detach the backend before changing their addresses.
-> >
-> > Fixes: 057cbf49a1f0 ("tcm_vhost: Initial merge for vhost level target fabric driver")
-> > Signed-off-by: Jia Jia <physicalmtea@gmail.com>
-> > ---
-> >  drivers/vhost/vhost.c | 11 +++++++++++
-> >  1 file changed, 11 insertions(+)
-> >
-> > diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> > index 44cac11b68d2..074590838de5 100644
-> > --- a/drivers/vhost/vhost.c
-> > +++ b/drivers/vhost/vhost.c
-> > @@ -2150,6 +2150,17 @@ static long vhost_vring_set_addr(struct vhost_dev *d,
-> >                               a.flags & (0x1 << VHOST_VRING_F_LOG),
-> >                               a.log_guest_addr))
-> >                       return -EINVAL;
-> > +
-> > +             /*
-> > +              * Commands may retain iovecs derived from the current ring
-> > +              * addresses.  Keep the addresses unchanged while the backend
-> > +              * is attached.
-> > +              */
-> > +             if ((vq->desc || vq->avail || vq->used) &&
-> > +                 (vq->desc != (void __user *)(unsigned long)a.desc_user_addr ||
-> > +                  vq->avail != (void __user *)(unsigned long)a.avail_user_addr ||
-> > +                  vq->used != (void __user *)(unsigned long)a.used_user_addr))
-> > +                     return -EBUSY;
-> >       }
-> >
-> >       vq->log_used = !!(a.flags & (0x1 << VHOST_VRING_F_LOG));
->
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+ arch/powerpc/kvm/powerpc.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index 9194cf492d1c..a567b63a5f1f 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -2210,10 +2210,7 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+ 			break;
+ 		if (!kvmppc_book3s_hcall_implemented(kvm, hcall))
+ 			break;
+-		if (cap->args[1])
+-			set_bit(hcall / 4, kvm->arch.enabled_hcalls);
+-		else
+-			clear_bit(hcall / 4, kvm->arch.enabled_hcalls);
++		assign_bit(hcall / 4, kvm->arch.enabled_hcalls, cap->args[1]);
+ 		r = 0;
+ 		break;
+ 	}
+-- 
+2.51.0
+
