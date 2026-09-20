@@ -1,472 +1,618 @@
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDBC3D646B;
-	Sun, 20 Sep 2026 18:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217A6459AFC
+	for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 19:36:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789928610; cv=none; b=CXoxfAIdK4nmgy9dCsAvTIN7GQZ909vMF9opeGSTJmRk54P5iLgs0i51RW+JjokQ31ZSiQ+9RT4Vy6gvQ4VY78AZJRm8SYAdTCWNb+VumAfQD0fooVEYwLlbfyJtZJB1HDBKmkkCn4vEY2LfOrzwb1aVtajG7UeHcfLGAXELAHE=
+	t=1789933020; cv=none; b=NLdXePFQHjNV3XhzOuGbl6Psa5bqwHQRcYHyKNM5ywWKLqHspZvCikIIppc6fe7mr0/apkExPpLNuTa7IIrvBVZC8XfpY013fnj8PDz7qScZCDiyVRISgnucx2IqVE7zhAOb6k4ZQjApf1leaj6c764qnFPYRho/IGeu/DZ4dsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789928610; c=relaxed/simple;
-	bh=0mXQ+TZ5l+g9AWKeeUjd10QVgLNrE3l6VCtckKnCyIM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=awjUHgNhIjqZi/1mAbMJRUtDc7WowOTEgvlE/XwRC9midgP7aVbHuG9cuRpfN9H8VYo3pAYnRnpowh8yNAgToU+xh7kPe1hHyFC/8kbBoXqJhBjE3kG5Fxs0eOvVE9KFXP7iuX79FNwnjEb5PH+E3Rp3wYfIsysPIu6HpVNills=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=QpqkAgeQ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=LMrGvxjL; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1789933020; c=relaxed/simple;
+	bh=5/jzvqe0BI1q/7sUFWqbU0QbLDpwftKxNlY814+z1KU=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=TZu1r1mjhq241GqiLYKdwJ7jjFAFGPAsWdAnO1K3rDAfn62xrzeSBnc2r2+TZiVllUaNsHOBy8LhjIGyh3pgxYmKGgZ/rS4EB3xKB+PlS0rbyNO30QaGRfjy38MzXv4cyAofv6/keZ6NA4Ghdf2ucJ/vulo5qSAF94S99pmxMf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com; spf=pass smtp.mailfrom=soleen.com; dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b=AvImfVfI; arc=none smtp.client-ip=74.125.224.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="QpqkAgeQ";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="LMrGvxjL"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 109A97A0075;
-	Sun, 20 Sep 2026 14:23:26 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Sun, 20 Sep 2026 14:23:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1789928605;
-	 x=1790015005; bh=uVP3B4eZAr0us09kFMKVJy1GOQ6xqt+/9a3b9urSYuM=; b=
-	QpqkAgeQUBXSyf5WZVit1tqGctoGW2MGKCM0FLUA31vp9NaTfWGuiiaczMq8mqKA
-	KCjKkLJxcLzfb1pCT54Zxif9Xaw8xhLr3Mqp/PN8ADJqJenbIgAJ/ce0niaRZST2
-	+1l4q+YIJ/2Rwy/So/DmyZQIN+elPfCcAKRWsXrKsYSzovN1J7tGW+Qjt5ovHGkp
-	9o2NnyLfNKIzy+BFXBNHaZVlexZhTU6keP/sXchLPe2971wNiUScgOUSZMjk0TfC
-	ozuadTS3XWlGKuFNOGqVEEyZ1vMKnWBHUpBTuB/VhwjXMSuBKS+i06WzD3W1r+tO
-	C3IraFLMOIYO8JR5MOOfuQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789928605; x=
-	1790015005; bh=uVP3B4eZAr0us09kFMKVJy1GOQ6xqt+/9a3b9urSYuM=; b=L
-	MrGvxjLU6gBNSF2TOGqXM5aqkzsnhpRq8uZ8eYJHUoD2B92/I9YqAj8F1sASEPEs
-	uWdMB6I1tqLnLVfOIwcTrZi6h9FemZbm+hlehU7essbVTUcZNppJi3/YsGbNZOzw
-	mZUWYjnkVnR8zHr/xCZfvbyWfMt18Klvk8/ruKURedwTSAI13MD8g448HdgGlidm
-	AoPhX7iBc7OfSj8CXTvXVQVkMSfrA8/ykhKw7fonIx61ZsoiZT7oih7M960ZxzuB
-	8/fL1qnEu1R7WEu0AC6kDPFW07ZZIGoTZdrbcFJss/6vve+BXqnJT25vXfIItg1Y
-	1bY1RFZrR7WNWhnQaGRAg==
-X-ME-Sender: <xms:nSSwajtGW-PGgETRsqX-5UniMYnB6wkS99AYkrFFn5K-LxsPRR5jJQ>
-    <xme:nSSwal8T-zzAtbBAgb-2S8JlxYvmwylg7T-5gPrzVdgHp36MzXbvc9g_Ib51-Ngi2
-    _NP3HjL_Wl-V-JALSA7Fv-70fTbEB8sONknvTEt1bxIMtaaESz2ISY>
-X-ME-Received: <xmr:nSSwam1W-PxOMOXfuP2dsjY2kkLFm4oQ4pGRnG9EjEs3IZRFOSjo206FtB61cg>
-X-ME-Proxy-Cause: dmFkZTGNjVRgdGQTs2MLb/8kbQ4oIZ4XTCcTclWhy4q5DjHEy1U2KO3uRJu8ZWS8HmxfFq
-    VHvc1ljmEeypkOWytLnZavHgCH9VjIjjtjWrNz/yj5f9osSLctLV9I8d9hob6PEvxpAkga
-    6zg/sOLBFyoP4DKthjnmJhpEwTX3BSGwlJJde416CA8jwhjoXR5Zh6mjEysfrNfzfTJsi2
-    4IICYu8WSGyWMdL8ATq7CaI8pm2fgDUaCQAkFqdostPfObfRTC5BUt15f9ZIu9cKYs+3Nc
-    7B2qIGSIgTohSANRUsM0Hw0rczdPdXU5OmcYud/QgJqIgKsGyciHLG7kDDGr2cEEHRiAPQ
-    9uVWidxl4SbWfuHp0/4ItRLCCHpjjl1NGWi0Okbm0SmkGD6zZzAhHZqImeclHDulngczeV
-    o25/KGDoGtmvalTAuRivnJVmEt5aUsjyhJutuuzcjYRu8VrWne5s39myj3NYEr7FM8rtA5
-    SZ9AfW6+B3wNXEYGiDIDkV4d7nSuf3cULwAKdGHHpZr8NPNFZG5l44pwXnSj9d2B/w15m3
-    EDkb53LiSCCY0mGR4HFdIYmdGOBhhJIML+H8WWj7aPvWsNXKsfHA/NCnBPUgcP5c5ni3fZ
-    wz2XAuYdPsDfVqhGb3x7l67Y2KsH800zT/pf5hG58EKuvdh3qPEwJf4JjLXQ
-X-ME-Proxy: <xmx:nSSwaiAU2wkqt52sUCyPauUCXcOOiboZszLdJhIqbSG7CrBnFcCV-w>
-    <xmx:nSSwaqeZFaqRwPIJALphjuIQbnoo5v9Pe-QM0YcgdlMD9TgkO2fV_g>
-    <xmx:nSSwan63o0IiuTU8yfFakaigUYCfY8kdYv5X8A3N8O2G2NoKCbcvjg>
-    <xmx:nSSwalWveyu2uYbCjLdrIfa4x1mWPS2pji3gIVNrqzFFR1H5DM0Igg>
-    <xmx:nSSwagndsLfi4Q9AI0iAuE1BS4au0fo1gHFwyiG2poay43RQ3hgokuzB>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 20 Sep 2026 14:23:24 -0400 (EDT)
-Date: Sun, 20 Sep 2026 12:23:22 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Pavol Sakac <sakacpav@amazon.de>
-Cc: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nh-open-source@amazon.com>, alex@shazbot.org
-Subject: Re: [PATCH] vfio: Create the group chardev outside vfio.group_lock
-Message-ID: <20260920122322.6ad9a01e@shazbot.org>
-In-Reply-To: <20260911-vfopt-s4-v1-0-98ba1d2ef7ab@amazon.de>
-References: <20260911-vfopt-s4-v1-0-98ba1d2ef7ab@amazon.de>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b="AvImfVfI"
+Received: by mail-yx2-f13.google.com with SMTP id 00721157ae682-85d43daa8f4so14396967b3.3
+        for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 12:36:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1789933016; x=1790537816; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=SWKz/8OeAkiGFbZLGJoBxcLgC1DzN7WUJVOWNvZAQ8A=;
+        b=AvImfVfIdCW/Dfk4XZaI7UWuEdRsKmVEuFU8ofYzauV0Hxs/2CA35OLQp5t9Ue21SX
+         Tfkbh3jo93YySvVWu2FBgbkBNYu4IICj3XdsmU8NHtsHa716NMybJhp8pG6SSFx60rJA
+         11ehw9r5wtePfHkWu811BKn30QJ5DFzPTiVlF46sVXdCFltbPvD/GQj8bAxv8QqPjX84
+         lRrX+IdH6IAfmThiqwupUP2gKpTYl7W3n1stAR7e3Q+PIRDCPWLeNGigBK9z8S/NyoWF
+         cGRLygFSsiu4jZprClJUTaj7eZ9X7I9tscTNU8+E1wN5/W/9d1ew97uMoT08V+gN8QjZ
+         8GwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789933016; x=1790537816;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=SWKz/8OeAkiGFbZLGJoBxcLgC1DzN7WUJVOWNvZAQ8A=;
+        b=0AqZvNfXgHymWZUlMsu6dCfXY/D0iABwWFP7vs2tdo7jHzm/Aj83MCgOnS++j8FaOY
+         y0Gxk+DmTM8fZ3bKk+6AXLSnCP16wCuGATKTKe9Qt7CmH1z8RlwpIcQB3qRRht3IRJWw
+         lFV0vHzZl9rjgLbw7X36x//F5ArfCvrwXS8/femUIVMFAoTcYG+THcioAe+cuxDWbRnG
+         1pW4sd6q9ObzNpuLXqRzV9geIgKyYb0W9A5wpLT2Xe09lvdGb/1/koqu0s5RycIv39CR
+         MKJBl20EX1R4Ke2Q6Ko0zHs4xshjunr9bXodeeaf3HUqkPWYh3u7EtHEaAZDW3JwvCNC
+         byEg==
+X-Forwarded-Encrypted: i=1; AKwUvBz0ntFSQ2g0hn4RRPtzPjpTjETw7w0J0FGgU48fzzPRs7RwbsjsVwtgJLmVZwqzxQ7IULE=@vger.kernel.org
+X-Gm-Message-State: AFuF++nIHIGCIiuhnQYU1Kk/klStOIJmT7wNC1Rbh6HVOyDbiUAhNCt1
+	WeAmkK4dVgg2rdDtwOA7UCxNVnVx533icYagZl2wb5M/klQVw1FflLhhvTTeW0/U2Os=
+X-Gm-Gg: AYBFou2RB68OhR+q9P/3lqr2pEQsqfUlrHOpv3tv59MQoHIDOSEtwuZ+Za464wjtZZI
+	kJWMPpDoBC3bnyIEWjMSKojiVDtq/i+cxJwrPounPRV1a/VuZwytYajWFkf+NUrA6cbk3v95eke
+	B+Kh93rs0vdlQPfsWkyZHoIBlmXJw0BpHcs0soULKEqYatbvb2dEK3vz9CbgeCDpjb1/pggx9fI
+	evz+1rwhxa517x9maiOIXB1osS9hZs4AurEmRip+rjNuv8jreressVll684niQvhhbW3zbOk+sH
+	NnKCcqlq00Gp7XzAVf3YLbVoAHTYxbRdjnKnEQfAh+/ML5zHK5yOgsFvmyL9R9CFEi9kwqBXStU
+	kITaDqybsv1yVbzT/TmeDTVNGGQjGbBJ9+7bYES4gMJ5QyRZ+KYORpMR0dHDENED2/aCMVJljv6
+	rZO1Q9Ar6oUii/I3yB2sN5AAqpggV1f0stJqR1kQ/M5AD8zhHIc6x8lEX3UF4dHHYpPizH2ZrAd
+	QBEIZUDe7O2WhnAQm0+f1pnBKhWpdo0GvOV8Y1IfTYlM0H/P7zQ5t5p6CMUXHHt7pdVQeJXJoZs
+	XhLj3cG7hXgFYsXXp48=
+X-Received: by 2002:a05:690c:c6d2:b0:873:5bd1:98cf with SMTP id 00721157ae682-89738781626mr20406527b3.65.1789933015865;
+        Sun, 20 Sep 2026 12:36:55 -0700 (PDT)
+Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-89a415208bfsm19230137b3.3.2026.09.20.12.36.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Sep 2026 12:36:55 -0700 (PDT)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: linux-kselftest@vger.kernel.org,
+	legion@kernel.org,
+	kees@kernel.org,
+	will@kernel.org,
+	ruanjinjie@huawei.com,
+	atomlin@atomlin.com,
+	rppt@kernel.org,
+	jani.nikula@intel.com,
+	hamzamahfooz@linux.microsoft.com,
+	joey.gouly@arm.com,
+	tglx@kernel.org,
+	nsc@kernel.org,
+	alexandre.chartre@oracle.com,
+	james.morse@arm.com,
+	dianders@chromium.org,
+	bp@alien8.de,
+	jpoimboe@kernel.org,
+	shuah@kernel.org,
+	catalin.marinas@arm.com,
+	linux-kbuild@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	jaredwhite@microsoft.com,
+	johan@kernel.org,
+	pbonzini@redhat.com,
+	mingo@redhat.com,
+	linux-mm@kvack.org,
+	seanjc@google.com,
+	mark.rutland@arm.com,
+	vdonnefort@google.com,
+	tarunsahu@google.com,
+	gshan@redhat.com,
+	skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org,
+	xur@google.com,
+	djbw@kernel.org,
+	oupton@kernel.org,
+	nogikh@google.com,
+	sumitg@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	zengheng4@huawei.com,
+	peterz@infradead.org,
+	corbet@lwn.net,
+	suzuki.poulose@arm.com,
+	luto@kernel.org,
+	hpa@zytor.com,
+	zhangpengjie2@huawei.com,
+	x86@kernel.org,
+	yuzenghui@huawei.com,
+	jic23@kernel.org,
+	ardb@kernel.org,
+	pasha.tatashin@soleen.com,
+	petr.pavlu@suse.com,
+	ryan.roberts@arm.com,
+	kexec@lists.infradead.org,
+	pratyush@kernel.org,
+	dave.hansen@linux.intel.com,
+	rdunlap@infradead.org,
+	kvm@vger.kernel.org,
+	fuad.tabba@linux.dev,
+	maz@kernel.org,
+	mbenes@suse.cz,
+	jgross@suse.com,
+	seiden@linux.ibm.com,
+	pierre.gondois@arm.com,
+	song@kernel.org,
+	nathan@kernel.org,
+	pmladek@suse.com,
+	graf@amazon.com,
+	chao.gao@intel.com,
+	zhenglifeng1@huawei.com,
+	arnd@arndb.de,
+	sidnayyar@google.com,
+	linux-arm-kernel@lists.infradead.org,
+	vladimir.murzin@arm.com,
+	kas@kernel.org
+Subject: [RFC PATCH 00/46] Orphaned Virtual Machines
+Date: Sun, 20 Sep 2026 15:36:04 -0400
+Message-ID: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Fri, 11 Sep 2026 18:25:13 +0200
-Pavol Sakac <sakacpav@amazon.de> wrote:
+This RFC series is a PoC intended to showcase e2e working OrphanVMs
+uninterrupted continuing execution on preserved physical CPUs across a
+host kernel live update, prepared for the LPC'26 presentation at the
+KVM Microconf [1].
 
-> VFIO holds the global group_lock while allocating, naming, and
-> registering each group chardev. cdev_device_add() includes device_add()
-> and the KOBJ_ADD uevent, so unrelated group creation is serialized.
-> 
-> Allocate and name a candidate without the lock, reserve its IOMMU-group
-> identity on group_list, then build the chardev unlocked. A contender
-> waits for an unpublished reservation and then retries the lookup.
-> Keep removal locked through cdev_device_del() so a lookup miss also
-> guarantees that the chardev name is free.
-> 
-> Suppress the ADD event until publication so a failed construction emits
-> no uevents.
-> 
-> The ADD uevent also carries per-event cost (env allocation,
-> kobject_get_path()) and a netlink broadcast that serializes globally under
-> uevent_sock_mutex; sending it off the lock keeps that global section from
-> extending vfio.group_lock hold times.
-> 
-> Under parallel device probing this lock is a top contention source; with
-> the chardev built outside it, it disappears from the enable window's
-> contention profile entirely.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Pavol Sakac <sakacpav@amazon.de>
-> ---
-> vfio.group_lock is held across cdev_device_add() -- device_add() plus
-> the KOBJ_ADD uevent -- so one group's chardev creation serializes every
-> unrelated one under the concurrent bring-up of "PCI/IOV: Initialize
-> virtual functions in parallel" [1]. The patch reserves the group
-> identity on group_list first, then builds the chardev outside the lock:
-> three short uncontended holds replace one long contended one.
-> 
-> Lock statistics and SR-IOV init time for 4x PF (NVMe, 255 VFs each), on
-> the reproducer from the parallel VF initialization cover letter [1]:
-> 
->   lock_stat:
->   Lock                     wait: Before     After   contentions: Before   After
->   iommu_probe_device_lock       9154 ms  12367 ms                   783     990
->   &vfio.group_lock              3823 ms      0 ms                   730       0
->   &root->kernfs_rwsem           1285 ms   2189 ms                 55459   62799
->   gdp_mutex                        6 ms    314 ms                    23     191
-> 
->   vfio.group_lock acquisitions / avg hold  1020 / 378 us -> 3060 / 11 us
-> 
->   Removing vfio.group_lock contention lets the released concurrency
->   re-queue on iommu, kernfs and gdp_mutex, none of which this patch
->   touches; the staged sysfs series [2] absorbs most of the kernfs rise.
-> 
->   Stage                 SR-IOV init time:
->   S0 (baseline)         3027 ms
->   S1                     999 ms
->   S2                     995 ms
->   S3                     991 ms
->   S4 (this patch)        943 ms
-> 
-> Reproducer disclaimer:
-> I lean primarily on lock_stat numbers to defend the improvements. In
-> the reproducer, the residual iommu_probe_device_lock dominates the
-> window and masks the later series' wall-time gains; reducing that lock
-> further is out of scope for this set. On real hardware the five series
-> together cut SR-IOV initialization by 65% [1].
-> 
-> The lock_stat and timing figures come from the public reproducer. The
-> full series has also been tested on current datacenter server hardware
-> with thousands of VFs.
+The original design proposal discussion can be found at [2].
 
-I'm having a hard time justifying what this actually does.  We're
-optimizing for lock contentions, but we're just redistributing the time
-elsewhere and disregarding the actual lock bouncing.  For example the
-error path acquires and releases the global group_lock for list removal,
-the discard path acquires and releases the group->group_lock even when a
-group hasn't been published, and there's another global acquire and
-release to set published.  It's not necessarily incorrect, but it
-doesn't appear as the right balance of incremental or logical
-improvement to base this so heavily on lock_stat alone.
+This series is applied on top of v7.3-rc1 + the "[PATCH v4 00/11]
+liveupdate: kvm: Guest_memfd preservation" series [3]. The whole branch
+can be accessed at [4].
 
-It also seems like there's a bit of code refactoring without locking
-changes that could precede this.  Thanks,
+It was tested on Intel Xeon Granite Rapids-AP, AMD EPYC Turin, and ARM
+Neoverse V2, as well as in emulation on QEMU and Intel Simics. However,
+it is still very early WIP, and is not anywhere near being production
+ready.
 
-Alex
+Overview & Submission Strategy
+==============================
+While this RFC bundles the e2e stack, it is NOT intended to be merged as
+a single series, the goal of this series is to have a discussion about
+the technical layers, and the challenges that need to be solved in order
+to have full Caretaker support within the kernel.
 
- 
-> [1] https://lore.kernel.org/r/20260911-vfopt-s1-v1-0-693271dc0226@amazon.de
-> [2] https://lore.kernel.org/r/20260911-vfopt-s5-v1-0-fa4cacdb6ca8@amazon.de
-> 
->  drivers/vfio/group.c | 192 ++++++++++++++++++++++++++++++-------------
->  drivers/vfio/vfio.h  |   9 ++
->  2 files changed, 146 insertions(+), 55 deletions(-)
-> 
-> diff --git a/drivers/vfio/group.c b/drivers/vfio/group.c
-> index b2299e5bc6df..692381151303 100644
-> --- a/drivers/vfio/group.c
-> +++ b/drivers/vfio/group.c
-> @@ -537,52 +537,157 @@ static struct vfio_group *vfio_group_alloc(struct iommu_group *iommu_group,
->  	group->cdev.owner = THIS_MODULE;
->  
->  	refcount_set(&group->drivers, 1);
-> +	init_completion(&group->publish_done);
->  	mutex_init(&group->group_lock);
->  	spin_lock_init(&group->kvm_ref_lock);
->  	INIT_LIST_HEAD(&group->device_list);
->  	mutex_init(&group->device_lock);
->  	group->iommu_group = iommu_group;
-> -	/* put in vfio_group_release() */
-> +	/* put in vfio_device_remove_group() or vfio_group_discard() */
->  	iommu_group_ref_get(iommu_group);
->  	group->type = type;
->  
->  	return group;
->  }
->  
-> -static struct vfio_group *vfio_create_group(struct iommu_group *iommu_group,
-> -		enum vfio_group_type type)
-> +/*
-> + * Undo vfio_group_alloc() for a never-published group: the teardown tail
-> + * of vfio_device_remove_group(), except that unlinking the group from
-> + * vfio.group_list is the caller's job, under vfio.group_lock.
-> + */
-> +static void vfio_group_discard(struct vfio_group *group)
-> +{
-> +	struct iommu_group *iommu_group;
-> +
-> +	/*
-> +	 * An unpublished group holds only vfio_group_alloc()'s reference.
-> +	 * On a count mismatch, leak rather than free under the other holder.
-> +	 */
-> +	if (WARN_ON(refcount_read(&group->drivers) != 1))
-> +		return;
-> +	/* No discard site leaves the group findable, so nothing can inc it. */
-> +	refcount_set(&group->drivers, 0);
-> +
-> +	mutex_lock(&group->group_lock);
-> +	WARN_ON(!list_empty(&group->device_list));
-> +	if (group->container)
-> +		vfio_group_detach_container(group);
-> +	iommu_group = group->iommu_group;
-> +	group->iommu_group = NULL;
-> +	mutex_unlock(&group->group_lock);
-> +
-> +	iommu_group_put(iommu_group);
-> +	put_device(&group->dev);
-> +}
-> +
-> +static bool vfio_group_has_device(struct vfio_group *group, struct device *dev)
-> +{
-> +	struct vfio_device *device;
-> +
-> +	mutex_lock(&group->device_lock);
-> +	list_for_each_entry(device, &group->device_list, group_next) {
-> +		if (device->dev == dev) {
-> +			mutex_unlock(&group->device_lock);
-> +			return true;
-> +		}
-> +	}
-> +	mutex_unlock(&group->device_lock);
-> +	return false;
-> +}
-> +
-> +/*
-> + * vfio.group_lock is held only to claim the identity: a reserved group is
-> + * linked on vfio.group_list before the lock drops, so a lookup miss proves
-> + * the chardev name is free and a hit on an unpublished group waits for its
-> + * builder.  Allocation, naming, and cdev_device_add() all run unlocked.
-> + */
-> +static struct vfio_group *
-> +vfio_group_find_or_create(struct device *dev, struct iommu_group *iommu_group,
-> +			  enum vfio_group_type type)
->  {
->  	struct vfio_group *group;
-> -	struct vfio_group *ret;
-> +	struct vfio_group *new;
->  	int err;
->  
-> -	lockdep_assert_held(&vfio.group_lock);
-> -
-> -	group = vfio_group_alloc(iommu_group, type);
-> -	if (IS_ERR(group))
-> +retry:
-> +	mutex_lock(&vfio.group_lock);
-> +	group = vfio_group_find_from_iommu(iommu_group);
-> +	if (group) {
-> +		if (!group->published) {
-> +			/*
-> +			 * Wait unlocked and look up again -- the builder
-> +			 * can still fail and unlink the group.  The device
-> +			 * reference keeps the completion alive.
-> +			 */
-> +			get_device(&group->dev);
-> +			mutex_unlock(&vfio.group_lock);
-> +			while (!wait_for_completion_timeout(&group->publish_done,
-> +							    10 * HZ))
-> +				dev_warn(dev, "waiting for vfio group %s registration\n",
-> +					 dev_name(&group->dev));
-> +			put_device(&group->dev);
-> +			goto retry;
-> +		}
-> +		if (WARN_ON(vfio_group_has_device(group, dev)))
-> +			group = ERR_PTR(-EINVAL);
-> +		else
-> +			refcount_inc(&group->drivers);
-> +		mutex_unlock(&vfio.group_lock);
->  		return group;
-> +	}
-> +
-> +	mutex_unlock(&vfio.group_lock);
->  
-> -	err = dev_set_name(&group->dev, "%s%d",
-> -			   group->type == VFIO_NO_IOMMU ? "noiommu-" : "",
-> +	new = vfio_group_alloc(iommu_group, type);
-> +	if (IS_ERR(new))
-> +		return new;
-> +	err = dev_set_name(&new->dev, "%s%d",
-> +			   new->type == VFIO_NO_IOMMU ? "noiommu-" : "",
->  			   iommu_group_id(iommu_group));
->  	if (err) {
-> -		ret = ERR_PTR(err);
-> -		goto err_put;
-> +		vfio_group_discard(new);
-> +		return ERR_PTR(err);
->  	}
->  
-> -	err = cdev_device_add(&group->cdev, &group->dev);
-> -	if (err) {
-> -		ret = ERR_PTR(err);
-> -		goto err_put;
-> +	mutex_lock(&vfio.group_lock);
-> +	if (vfio_group_find_from_iommu(iommu_group)) {
-> +		/* Lost the race; drop ours and take theirs. */
-> +		mutex_unlock(&vfio.group_lock);
-> +		vfio_group_discard(new);
-> +		goto retry;
->  	}
-> +	list_add(&new->vfio_next, &vfio.group_list);
-> +	mutex_unlock(&vfio.group_lock);
->  
-> -	list_add(&group->vfio_next, &vfio.group_list);
-> +	/*
-> +	 * Hold back device_add()'s KOBJ_ADD until publication; on failure,
-> +	 * suppression also keeps the device_add() unwind from emitting an
-> +	 * unmatched KOBJ_REMOVE.
-> +	 */
-> +	dev_set_uevent_suppress(&new->dev, true);
-> +	err = cdev_device_add(&new->cdev, &new->dev);
-> +	if (err) {
-> +		mutex_lock(&vfio.group_lock);
-> +		list_del(&new->vfio_next);
-> +		mutex_unlock(&vfio.group_lock);
-> +		complete_all(&new->publish_done);
-> +		vfio_group_discard(new);
-> +		return ERR_PTR(err);
-> +	}
->  
-> -	return group;
-> +	mutex_lock(&vfio.group_lock);
-> +	new->published = true;
-> +	mutex_unlock(&vfio.group_lock);
-> +	complete_all(&new->publish_done);
->  
-> -err_put:
-> -	put_device(&group->dev);
-> -	return ret;
-> +	/*
-> +	 * Send the deferred ADD unlocked.  The caller still owns the
-> +	 * drivers reference, so vfio_device_remove_group() cannot reach
-> +	 * cdev_device_del() before the ADD is sent.
-> +	 */
-> +	dev_set_uevent_suppress(&new->dev, false);
-> +	kobject_uevent(&new->dev.kobj, KOBJ_ADD);
-> +	return new;
->  }
->  
->  static struct vfio_group *vfio_noiommu_group_alloc(struct device *dev,
-> @@ -603,9 +708,11 @@ static struct vfio_group *vfio_noiommu_group_alloc(struct device *dev,
->  	if (ret)
->  		goto out_put_group;
->  
-> -	mutex_lock(&vfio.group_lock);
-> -	group = vfio_create_group(iommu_group, type);
-> -	mutex_unlock(&vfio.group_lock);
-> +	/*
-> +	 * The iommu_group is fresh and private, so the lookup and builder
-> +	 * wait are unreachable; the shared helper is used for uniformity.
-> +	 */
-> +	group = vfio_group_find_or_create(dev, iommu_group, type);
->  	if (IS_ERR(group)) {
->  		ret = PTR_ERR(group);
->  		goto out_remove_device;
-> @@ -620,21 +727,6 @@ static struct vfio_group *vfio_noiommu_group_alloc(struct device *dev,
->  	return ERR_PTR(ret);
->  }
->  
-> -static bool vfio_group_has_device(struct vfio_group *group, struct device *dev)
-> -{
-> -	struct vfio_device *device;
-> -
-> -	mutex_lock(&group->device_lock);
-> -	list_for_each_entry(device, &group->device_list, group_next) {
-> -		if (device->dev == dev) {
-> -			mutex_unlock(&group->device_lock);
-> -			return true;
-> -		}
-> -	}
-> -	mutex_unlock(&group->device_lock);
-> -	return false;
-> -}
-> -
->  static struct vfio_group *vfio_group_find_or_alloc(struct device *dev)
->  {
->  	struct iommu_group *iommu_group;
-> @@ -659,17 +751,7 @@ static struct vfio_group *vfio_group_find_or_alloc(struct device *dev)
->  	if (!iommu_group)
->  		return ERR_PTR(-EINVAL);
->  
-> -	mutex_lock(&vfio.group_lock);
-> -	group = vfio_group_find_from_iommu(iommu_group);
-> -	if (group) {
-> -		if (WARN_ON(vfio_group_has_device(group, dev)))
-> -			group = ERR_PTR(-EINVAL);
-> -		else
-> -			refcount_inc(&group->drivers);
-> -	} else {
-> -		group = vfio_create_group(iommu_group, VFIO_IOMMU);
-> -	}
-> -	mutex_unlock(&vfio.group_lock);
-> +	group = vfio_group_find_or_create(dev, iommu_group, VFIO_IOMMU);
->  
->  	/* The vfio_group holds a reference to the iommu_group */
->  	iommu_group_put(iommu_group);
-> @@ -702,16 +784,16 @@ void vfio_device_remove_group(struct vfio_device *device)
->  	if (group->type == VFIO_NO_IOMMU || group->type == VFIO_EMULATED_IOMMU)
->  		iommu_group_remove_device(device->dev);
->  
-> -	/* Pairs with vfio_create_group() / vfio_group_get_from_iommu() */
-> +	/* Pairs with vfio_group_alloc() / vfio_group_find_or_create() */
->  	if (!refcount_dec_and_mutex_lock(&group->drivers, &vfio.group_lock))
->  		return;
->  	list_del(&group->vfio_next);
->  
->  	/*
-> -	 * We could concurrently probe another driver in the group that might
-> -	 * race vfio_device_remove_group() with vfio_get_group(), so we have to
-> -	 * ensure that the sysfs is all cleaned up under lock otherwise the
-> -	 * cdev_device_add() will fail due to the name aready existing.
-> +	 * We could concurrently probe another driver in the group racing this
-> +	 * removal with vfio_group_find_or_create().  The sysfs name is all
-> +	 * cleaned up under the lock, so once a creator's lookup misses, the
-> +	 * name is guaranteed free.
->  	 */
->  	cdev_device_del(&group->cdev, &group->dev);
->  
-> diff --git a/drivers/vfio/vfio.h b/drivers/vfio/vfio.h
-> index 7728bc99b63d..cfc76e5752dd 100644
-> --- a/drivers/vfio/vfio.h
-> +++ b/drivers/vfio/vfio.h
-> @@ -9,6 +9,7 @@
->  #include <linux/file.h>
->  #include <linux/device.h>
->  #include <linux/cdev.h>
-> +#include <linux/completion.h>
->  #include <linux/module.h>
->  #include <linux/vfio.h>
->  
-> @@ -83,6 +84,14 @@ struct vfio_group {
->  	struct list_head		device_list;
->  	struct mutex			device_lock;
->  	struct list_head		vfio_next;
-> +	/*
-> +	 * Reserved on vfio.group_list while the chardev is built; published
-> +	 * is set when the build succeeds (failure unlinks the group) and is
-> +	 * accessed only under vfio.group_lock.  publish_done releases
-> +	 * callers that found the group mid-build.
-> +	 */
-> +	bool				published;
-> +	struct completion		publish_done;
->  #if IS_ENABLED(CONFIG_VFIO_CONTAINER)
->  	struct list_head		container_next;
->  #endif
-> 
-> base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+Some of the arch/* changes duplicate small helpers (such as GICv3 list
+register accessors or low-level VMCS/VMCB/sysreg helpers) that could be
+shared with existing KVM/arch code if those routines and their callees
+are moved to static inlines or annotated with __cpu_preserved_text (and
+built without ftrace/KASAN/per-CPU references, as enforced by objtool
+and modpost). To avoid sprinkling __cpu_preserved_text annotations
+across core arch/* files in this PoC, those helpers are kept local to
+caretaker.c for now and can be consolidated when individual platform
+support is upstreamed.
+
+The series is structured into at least 8 workstreams that will be
+discussed and worked on separately:
+
+1. Workstream 1: Preparation Patches (Patches 01-06)
+   Architecture-neutral and arch-specific preparatory cleanups (in
+   future these could be bundled with the workstreams that require these
+   changes):
+     01. KVM: luo: Delegate VM creation type to kvm_arch_vm_luo_preserve
+     02. KVM: arm64: Split demux_c15_{get,set}_val from userspace
+         accessors
+     03. KVM: arm64: Split kvm_sys_reg_{get,set}_user from kernel
+         accessors
+     04. x86/mm/ident_map: Add force_pte to support 4K PTE identity
+         mappings
+     05. arm64: mm: Add trans_pgd_map_range() support
+     06. x86/smp: Skip offline CPUs for REBOOT_VECTOR in
+         native_stop_other_cpus()
+
+2. Workstream 2: In-Kernel In-RAM vCPU State Preservation via LUO
+   (Patches 07-10)
+   Allows performing suspend/resume-type preservation across kexec
+   without carrying the vCPU internal state in the VMM in userspace,
+   keeping all vCPU state in-kernel:
+     07. KVM: luo: Support vCPU file preservation across live updates
+     08. KVM: x86: Add x86 vCPU LUO preservation ABI and register
+         helpers
+     09. KVM: x86: Implement architectural vCPU state preservation via
+         LUO
+     10. KVM: arm64: Implement architectural vCPU state preservation via
+         LUO
+
+3. Workstream 3: Physical CPU Preservation Core & x86 Support
+   (Patches 11-24)
+   Introduces the physical CPU preservation subsystem (cpu_preserve),
+   linker sections (.text.cpu_preserved, .data.cpu_preserved) with
+   build-time section isolation checks in modpost and objtool, isolated
+   transition page table management (struct cpu_preserved_as), and sysfs
+   interfaces. Allows booting the machine with some CPUs removed from
+   the OS scheduler, and provides infrastructure for executing orphaned
+   jobs on such CPUs:
+     11. liveupdate: Define CPU preservation linker sections
+     12. liveupdate: Add liveupdate_session_name() helper
+     13. cpu_preserve: Add physical CPU preservation ABI and core API
+         headers
+     14. cpu_preserve: Add core physical CPU preservation state and park
+         loop
+     15. cpu_preserve: Add physical CPU preservation lifecycle and build
+         rules
+     16. liveupdate: cpu_preserve: Add sysfs interface
+     17. liveupdate: cpu_preserve: Add isolated address space management
+         API
+     18. liveupdate: cpu_preserve: Add LUO file handler for preserved
+         physical CPUs
+     19. x86: liveupdate: Add low-level physical CPU preservation
+         assembly
+     20. x86: liveupdate: Add physical CPU preservation context and page
+         table support
+     21. selftests: liveupdate: Add physical CPU preservation unit tests
+     22. selftests: liveupdate: Add physical CPU preservation live
+         update tests
+     23. Documentation: liveupdate: Add physical CPU preservation
+         documentation
+     24. MAINTAINERS: Add entry for KVM Caretaker
+
+4. Workstream 4: ARM64 Support for Physical CPU Preservation (Patch 25)
+   Enables physical CPU preservation on ARM64 using isolated transition
+   page tables (trans_pgd_map_range()), cache maintenance to PoC, and
+   GICv3 redistributor SGI wake helpers:
+     25. arm64: liveupdate: Add support for physical CPU preservation
+
+5. Workstream 5: On-Core Scheduling Framework (oncore) (Patches 26-27)
+   (Note: This layer sits between cpu_preserve and the KVM Caretaker and
+   Kernel Caretaker (Future Work for Orphaned Processes))
+   Provides a runqueue and time-slice scheduling framework
+   (kernel/liveupdate/oncore.c) that multiplexes preserved workloads
+   onto preserved physical CPUs during the kexec blackout window:
+     26. oncore: Add on-core KHO ABI and public framework headers
+     27. oncore: Implement on-core session lifecycle and scheduling loop
+
+6. Workstream 6: KVM Caretaker Core & Intel VMX Support
+   (Patches 28-39)
+   Introduces the KVM Caretaker execution engine (virt/kvm/caretaker.c),
+   vCPU detach/attach/cancel lifecycle, optional cross-kexec execution
+   telemetry and debugfs reporting, x86 TDP MMU KHO page table
+   preservation, x86 common Caretaker runtime (LAPIC timer injection,
+   VM-exit dispatch, instruction decoding), and the Intel VMX Caretaker
+   backend:
+     28. KVM: caretaker: Add Caretaker control block and architecture
+         ops headers
+     29. KVM: caretaker: Implement Caretaker session memory mapping
+         helpers
+     30. KVM: caretaker: Integrate Caretaker vCPU detach, attach, and
+         cancel with KVM
+     31. KVM: caretaker: Add generic KHO ABI telemetry and debugfs
+         reporting
+     32. KVM: x86: Add TDP MMU KHO preservation helpers
+     33. KVM: x86: Add Caretaker x86 KHO ABI and runtime context headers
+     34. KVM: x86: Implement Caretaker LAPIC timer and interrupt
+         injection
+     35. KVM: x86: Implement Caretaker VM-exit dispatch and instruction
+         decoders
+     36. KVM: x86: Implement Caretaker run loop and LUO detach/attach
+         lifecycle
+     37. KVM: VMX: Add Caretaker VMX assembly guest entry/exit routine
+         and helpers
+     38. KVM: VMX: Implement Caretaker VMX VMCS lifecycle and exit
+         dispatch
+     39. KVM: VMX: Integrate Caretaker VMX detach serialization and KVM
+         registration
+
+7. Workstream 7: KVM Caretaker for AMD SVM (Patches 40-41)
+   Implements the AMD SVM Caretaker backend (caretaker_vmenter.S, VMCB
+   lifecycle, exit decoding, and next-RIP sync):
+     40. KVM: SVM: Add Caretaker SVM assembly guest entry/exit routine
+     41. KVM: SVM: Implement Caretaker SVM VMCB lifecycle and exit
+         dispatch
+
+8. Workstream 8: KVM Caretaker for ARM64 (Patches 42-46)
+   Implements the ARM64 VHE Caretaker backend (caretaker_vmenter.S,
+   EL2 exception vectors, GICv3 CPU interface & arch timer emulation,
+   system register trap handling, and Stage-2 fault handling):
+     42. KVM: arm64: Add Caretaker arm64 KHO ABI and runtime context
+         headers
+     43. KVM: arm64: Add Caretaker EL2 exception vectors and guest
+         entry/exit assembly
+     44. KVM: arm64: Implement Caretaker GICv3 CPU interface and arch
+         timer emulation
+     45. KVM: arm64: Implement Caretaker system register trap and
+         exception handlers
+     46. KVM: arm64: Implement Caretaker vCPU run loop and LUO
+         detach/attach lifecycle
+
+Architectural Design Layers
+===========================
+The OrphanVM architecture is layered so that each subsystem has zero
+upward symbol dependencies:
+
+  +--------------------------------------------------------------------+
+  | Layer 4: KVM Caretaker Engine (virt/kvm/caretaker.c + arch/kvm/*)  |
+  |   - VMENTER/VMRUN/ERET guest execution loop                        |
+  |   - Handling of timer preemption, HLT/WFI, MSR/sysreg traps        |
+  |   - Yield on unhandled I/O or Stage-2 MMIO faults                  |
+  +--------------------------------------------------------------------+
+                                    |
+                                    v (registers oncore jobs)
+  +--------------------------------------------------------------------+
+  | Layer 3: On-Core Scheduler Framework (kernel/liveupdate/oncore.c)  |
+  |   - Runqueue and time-slice scheduler on preserved cores           |
+  |   - Architecture-neutral counter frequency deadline calculation    |
+  |   - Session memory mapping into isolated address spaces            |
+  +--------------------------------------------------------------------+
+                                    |
+                                    v (attaches cpu_preserve workload)
+  +--------------------------------------------------------------------+
+  | Layer 2: Physical CPU Preservation (kernel/liveupdate/cpu_preserve)|
+  |   - Offlines CPUs into preserved park loop (.text.cpu_preserved)   |
+  |   - Switches CR3/TTBR to isolated transition page tables           |
+  |   - Manages cpu_present state across kexec and hotplug reclaim     |
+  +--------------------------------------------------------------------+
+                                    |
+                                    v (persists state via KHO / LUO)
+  +--------------------------------------------------------------------+
+  | Layer 1: KHO & LUO                                                 |
+  |   - Preserves guest_memfd RAM, TDP/Stage-2 MMU, and vCPU state     |
+  |   - Cross-kexec ABI (include/linux/kho/abi/*)                      |
+  +--------------------------------------------------------------------+
+
+1. Layer 1: KHO & LUO In-RAM Preservation (kvm_luo)
+   Preserves VM and vCPU file descriptors across kexec using KHO memory
+   preservation. Guest memory (guest_memfd) and secondary MMU page
+   tables remain in place in physical RAM. Architectural vCPU state is
+   serialized into struct kvm_vcpu_arch_luo_state buffers.
+
+2. Layer 2: Physical CPU Preservation (cpu_preserve)
+   Before kexec, selected physical CPUs are taken offline and
+   transitioned into a park loop compiled into .text.cpu_preserved and
+   copied into KHO-preserved pages outside KHO scratch memory. Each
+   preserved CPU switches to an isolated address space (struct
+   cpu_preserved_as) that maps ONLY the preserved text/data, per-CPU
+   stack, and mapped workload buffers. Build-time section checks in
+   modpost and objtool enforce that .text.cpu_preserved and
+   .data.cpu_preserved do not reference unmapped host kernel symbols.
+   Because preserved CPUs are marked !cpu_present(cpu) while preserved,
+   the host kernel's SMP stop routines and incoming kernel's SMP boot
+   bringup skip them without hotplug workarounds.
+
+3. Layer 3: On-Core Scheduling Framework (oncore)
+   Provides a runqueue and session scheduler (kernel/liveupdate/oncore.c)
+   that runs inside the cpu_preserve park loop. Multiple preserved
+   workloads (such as vCPUs) can be scheduled across one or more
+   preserved physical CPUs using hardware counter deadlines (TSC on x86,
+   CNTPCT_EL0 on ARM64).
+
+4. Layer 4: KVM Caretaker Execution Engine (caretaker)
+   Attaches preserved KVM vCPUs to oncore jobs. During the kexec
+   blackout window, the Caretaker enters the guest directly from
+   preserved text with baseline speculative execution mitigations
+   (VERW CPU buffer clearing on x86 VM-entry, RSB stuffing on x86
+   VM-exit, and Spectre-BHB loop clearing on ARM64 EL2 guest exit):
+   - On Intel VMX (vmx/caretaker.c), executes VMLAUNCH/VMRESUME against
+     a preserved VMCS page and handles VMX preemption timer / physical
+     LAPIC timer, HLT, PAUSE, CPUID, RDTSC, COM1 UART, and basic MSR
+     exits. Software emulation of x2APIC ICR IPIs is intentionally
+     omitted (trapped ICR writes park the vCPU until the incoming kernel
+     reclaims it); instead, the Caretaker KHO-preserves the virtual APIC
+     page and the VM's Posted-Interrupt Descriptor pointer table
+     (pid_table), allowing hardware with APICv and Intel IPIv to deliver
+     inter-vCPU IPIs without VM-exits.
+   - On AMD SVM (svm/caretaker.c), executes VMRUN with a preserved VMCB,
+     preserved MSR/IO permission bitmaps (msrpm/iopm), and host save
+     area (MSR_VM_HSAVE_PA), sharing the common x86 Caretaker exit and
+     timer handlers.
+   - On ARM64 VHE (arm64/kvm/caretaker.c), switches EL2 exception
+     vectors (VBAR_EL2) to Caretaker vectors, emulates the GICv3 CPU
+     interface (including inter-vCPU SGI delivery via ICC_SGI1R_EL1
+     trapping and GICv3 List Register injection) and arch timer, and
+     handles WFI/WFE and system register traps.
+   - Note that the set of supported VM-exits can be adjusted as needed;
+     initial upstreaming can start by not supporting any VM-exits at
+     all, waiting in the Caretaker loop if a vCPU exits until the
+     incoming host kernel finishes booting and reclaims the vCPU.
+   - Cross-Kexec Re-Attachment: When the incoming kernel boots and
+     retrieves the preserved VM, it signals detach via the Caretaker
+     control block. The Caretaker serializes live hardware state on the
+     preserved core into struct kvm_vcpu_arch_luo_state before yielding,
+     exits the park loop, and allows the incoming kernel to reclaim the
+     physical CPU and resume KVM execution. Optional execution telemetry
+     (runs, exits, stalls, exit reasons, and last RIP) is preserved via
+     the KHO ABI and exposed in dmesg and per-vCPU debugfs
+     (caretaker_telemetry), both live during detached execution and upon
+     re-attachment.
+
+Links
+=====
+[1] https://lpc.events/event/20/contributions/2553/
+[2] https://lore.kernel.org/all/afEwWZksU0Fw61oT@plex/
+[3] https://lore.kernel.org/all/20260728121138.1103610-1-tarunsahu@google.com/#r
+[4] https://github.com/soleen/linux/tree/ovm/rfc/v1
+
+Pasha Tatashin (46):
+  KVM: luo: Delegate VM creation type to kvm_arch_vm_luo_preserve
+  KVM: arm64: Split demux_c15_{get,set}_val from userspace accessors
+  KVM: arm64: Split kvm_sys_reg_{get,set}_user from kernel accessors
+  x86/mm/ident_map: Add force_pte to support 4K PTE identity mappings
+  arm64: mm: Add trans_pgd_map_range() support
+  x86/smp: Skip offline CPUs for REBOOT_VECTOR in
+    native_stop_other_cpus()
+  KVM: luo: Support vCPU file preservation across live updates
+  KVM: x86: Add x86 vCPU LUO preservation ABI and register helpers
+  KVM: x86: Implement architectural vCPU state preservation via LUO
+  KVM: arm64: Implement architectural vCPU state preservation via LUO
+  liveupdate: Define CPU preservation linker sections
+  liveupdate: Add liveupdate_session_name() helper
+  cpu_preserve: Add physical CPU preservation ABI and core API headers
+  cpu_preserve: Add core physical CPU preservation state and park loop
+  cpu_preserve: Add physical CPU preservation lifecycle and build rules
+  liveupdate: cpu_preserve: Add sysfs interface
+  liveupdate: cpu_preserve: Add isolated address space management API
+  liveupdate: cpu_preserve: Add LUO file handler for preserved physical
+    CPUs
+  x86: liveupdate: Add low-level physical CPU preservation assembly
+  x86: liveupdate: Add physical CPU preservation context and page table
+    support
+  selftests: liveupdate: Add physical CPU preservation unit tests
+  selftests: liveupdate: Add physical CPU preservation live update tests
+  Documentation: liveupdate: Add physical CPU preservation documentation
+  MAINTAINERS: Add entry for KVM Caretaker
+  arm64: liveupdate: Add support for physical CPU preservation
+  oncore: Add on-core KHO ABI and public framework headers
+  oncore: Implement on-core session lifecycle and scheduling loop
+  KVM: caretaker: Add Caretaker control block and architecture ops
+    headers
+  KVM: caretaker: Implement Caretaker session memory mapping helpers
+  KVM: caretaker: Integrate Caretaker vCPU detach, attach, and cancel
+    with KVM
+  KVM: caretaker: Add generic KHO ABI telemetry and debugfs reporting
+  KVM: x86: Add TDP MMU KHO preservation helpers
+  KVM: x86: Add Caretaker x86 KHO ABI and runtime context headers
+  KVM: x86: Implement Caretaker LAPIC timer and interrupt injection
+  KVM: x86: Implement Caretaker VM-exit dispatch and instruction
+    decoders
+  KVM: x86: Implement Caretaker run loop and LUO detach/attach lifecycle
+  KVM: VMX: Add Caretaker VMX assembly guest entry/exit routine and
+    helpers
+  KVM: VMX: Implement Caretaker VMX VMCS lifecycle and exit dispatch
+  KVM: VMX: Integrate Caretaker VMX detach serialization and KVM
+    registration
+  KVM: SVM: Add Caretaker SVM assembly guest entry/exit routine
+  KVM: SVM: Implement Caretaker SVM VMCB lifecycle and exit dispatch
+  KVM: arm64: Add Caretaker arm64 KHO ABI and runtime context headers
+  KVM: arm64: Add Caretaker EL2 exception vectors and guest entry/exit
+    assembly
+  KVM: arm64: Implement Caretaker GICv3 CPU interface and arch timer
+    emulation
+  KVM: arm64: Implement Caretaker system register trap and exception
+    handlers
+  KVM: arm64: Implement Caretaker vCPU run loop and LUO detach/attach
+    lifecycle
+
+ .../ABI/testing/sysfs-devices-system-cpu      |   20 +
+ Documentation/liveupdate/cpu_preservation.rst |   48 +
+ Documentation/liveupdate/index.rst            |   11 +
+ Documentation/liveupdate/vmm.rst              |   15 +
+ Documentation/virt/kvm/api.rst                |   16 +
+ MAINTAINERS                                   |   11 +
+ arch/arm64/Kconfig                            |    1 +
+ arch/arm64/include/asm/caretaker.h            |   56 +
+ arch/arm64/include/asm/cpu_preserve.h         |   44 +
+ arch/arm64/include/asm/oncore.h               |   24 +
+ arch/arm64/include/asm/trans_pgd.h            |    4 +
+ arch/arm64/kernel/Makefile                    |    7 +
+ arch/arm64/kernel/cpu_preserve.c              |  674 ++++++
+ arch/arm64/kernel/preserve_cpu.S              |   44 +
+ arch/arm64/kernel/smp.c                       |    8 +-
+ arch/arm64/kernel/vmlinux.lds.S               |    1 +
+ arch/arm64/kvm/Kconfig                        |    2 +
+ arch/arm64/kvm/Makefile                       |   14 +
+ arch/arm64/kvm/caretaker.c                    | 1162 +++++++++++
+ arch/arm64/kvm/caretaker.h                    |  130 ++
+ arch/arm64/kvm/caretaker_vmenter.S            |  248 +++
+ arch/arm64/kvm/kvm_luo.c                      |  304 +++
+ arch/arm64/kvm/sys_regs.c                     |  247 ++-
+ arch/arm64/kvm/sys_regs.h                     |    4 +
+ arch/arm64/mm/trans_pgd.c                     |   70 +
+ arch/x86/Kconfig                              |    1 +
+ arch/x86/include/asm/cpu_preserve.h           |   34 +
+ arch/x86/include/asm/init.h                   |    3 +-
+ arch/x86/include/asm/oncore.h                 |   25 +
+ arch/x86/kernel/Makefile                      |    7 +
+ arch/x86/kernel/cpu_preserve.c                |  432 ++++
+ arch/x86/kernel/preserve_cpu.S                |   62 +
+ arch/x86/kernel/smp.c                         |    2 +-
+ arch/x86/kernel/vmlinux.lds.S                 |    2 +
+ arch/x86/kvm/Kconfig                          |    2 +
+ arch/x86/kvm/Makefile                         |   32 +
+ arch/x86/kvm/caretaker.c                      | 1129 ++++++++++
+ arch/x86/kvm/caretaker.h                      |  238 +++
+ arch/x86/kvm/caretaker_asm.h                  |  117 ++
+ arch/x86/kvm/cpuid.c                          |    4 +-
+ arch/x86/kvm/cpuid.h                          |    1 +
+ arch/x86/kvm/kvm-asm-offsets.c                |   32 +
+ arch/x86/kvm/kvm_luo.c                        |  368 ++++
+ arch/x86/kvm/mmu.h                            |    7 +
+ arch/x86/kvm/mmu/kho.c                        |  193 ++
+ arch/x86/kvm/msrs.c                           |   17 +
+ arch/x86/kvm/msrs.h                           |    2 +
+ arch/x86/kvm/regs.c                           |    8 +-
+ arch/x86/kvm/regs.h                           |    4 +
+ arch/x86/kvm/svm/caretaker.c                  |  467 +++++
+ arch/x86/kvm/svm/caretaker.h                  |   63 +
+ arch/x86/kvm/svm/caretaker_vmenter.S          |   91 +
+ arch/x86/kvm/svm/svm.c                        |   11 +-
+ arch/x86/kvm/vmx/caretaker.c                  |  658 ++++++
+ arch/x86/kvm/vmx/caretaker.h                  |   78 +
+ arch/x86/kvm/vmx/caretaker_vmenter.S          |  110 +
+ arch/x86/kvm/vmx/vmx.c                        |    6 +-
+ arch/x86/kvm/vmx/vmx.h                        |    1 +
+ arch/x86/kvm/x86.c                            |    8 +-
+ arch/x86/kvm/x86.h                            |    4 +
+ arch/x86/mm/ident_map.c                       |   72 +-
+ include/asm-generic/vmlinux.lds.h             |   29 +
+ include/linux/cpu_preserve.h                  |  464 +++++
+ include/linux/kho/abi/cpu.h                   |  151 ++
+ include/linux/kho/abi/kvm.h                   |  137 +-
+ include/linux/kho/abi/kvm_arm64.h             |   93 +
+ include/linux/kho/abi/kvm_x86.h               |  106 +
+ include/linux/kvm_caretaker.h                 |  439 ++++
+ include/linux/kvm_host.h                      |   63 +
+ include/linux/liveupdate.h                    |    6 +
+ include/linux/oncore.h                        |  129 ++
+ include/uapi/linux/kvm.h                      |    2 +
+ kernel/cpu.c                                  |    2 +
+ kernel/liveupdate/Kconfig                     |   45 +
+ kernel/liveupdate/Makefile                    |   15 +
+ kernel/liveupdate/cpu_preserve.c              | 1811 +++++++++++++++++
+ kernel/liveupdate/luo_session.c               |   14 +
+ kernel/liveupdate/oncore.c                    |  947 +++++++++
+ scripts/mod/modpost.c                         |   32 +-
+ tools/objtool/check.c                         |   35 +-
+ tools/objtool/include/objtool/check.h         |    1 +
+ tools/objtool/include/objtool/elf.h           |    2 +-
+ tools/testing/selftests/liveupdate/Makefile   |    1 +
+ tools/testing/selftests/liveupdate/config     |    6 +
+ tools/testing/selftests/liveupdate/init.c     |   27 +-
+ .../testing/selftests/liveupdate/liveupdate.c |  251 +++
+ .../selftests/liveupdate/luo_cpu_preserve.c   |  145 ++
+ .../selftests/liveupdate/run-vmtests.sh       |    1 +
+ tools/testing/selftests/liveupdate/vmtest.sh  |    4 +-
+ virt/kvm/Kconfig                              |   41 +
+ virt/kvm/Makefile.kvm                         |    8 +
+ virt/kvm/caretaker.c                          |  639 ++++++
+ virt/kvm/caretaker_debug.c                    |  120 ++
+ virt/kvm/kvm_luo.c                            |  249 ++-
+ virt/kvm/kvm_main.c                           |   66 +-
+ 95 files changed, 13415 insertions(+), 122 deletions(-)
+ create mode 100644 Documentation/liveupdate/cpu_preservation.rst
+ create mode 100644 Documentation/liveupdate/index.rst
+ create mode 100644 arch/arm64/include/asm/caretaker.h
+ create mode 100644 arch/arm64/include/asm/cpu_preserve.h
+ create mode 100644 arch/arm64/include/asm/oncore.h
+ create mode 100644 arch/arm64/kernel/cpu_preserve.c
+ create mode 100644 arch/arm64/kernel/preserve_cpu.S
+ create mode 100644 arch/arm64/kvm/caretaker.c
+ create mode 100644 arch/arm64/kvm/caretaker.h
+ create mode 100644 arch/arm64/kvm/caretaker_vmenter.S
+ create mode 100644 arch/arm64/kvm/kvm_luo.c
+ create mode 100644 arch/x86/include/asm/cpu_preserve.h
+ create mode 100644 arch/x86/include/asm/oncore.h
+ create mode 100644 arch/x86/kernel/cpu_preserve.c
+ create mode 100644 arch/x86/kernel/preserve_cpu.S
+ create mode 100644 arch/x86/kvm/caretaker.c
+ create mode 100644 arch/x86/kvm/caretaker.h
+ create mode 100644 arch/x86/kvm/caretaker_asm.h
+ create mode 100644 arch/x86/kvm/kvm_luo.c
+ create mode 100644 arch/x86/kvm/mmu/kho.c
+ create mode 100644 arch/x86/kvm/svm/caretaker.c
+ create mode 100644 arch/x86/kvm/svm/caretaker.h
+ create mode 100644 arch/x86/kvm/svm/caretaker_vmenter.S
+ create mode 100644 arch/x86/kvm/vmx/caretaker.c
+ create mode 100644 arch/x86/kvm/vmx/caretaker.h
+ create mode 100644 arch/x86/kvm/vmx/caretaker_vmenter.S
+ create mode 100644 include/linux/cpu_preserve.h
+ create mode 100644 include/linux/kho/abi/cpu.h
+ create mode 100644 include/linux/kho/abi/kvm_arm64.h
+ create mode 100644 include/linux/kho/abi/kvm_x86.h
+ create mode 100644 include/linux/kvm_caretaker.h
+ create mode 100644 include/linux/oncore.h
+ create mode 100644 kernel/liveupdate/cpu_preserve.c
+ create mode 100644 kernel/liveupdate/oncore.c
+ create mode 100644 tools/testing/selftests/liveupdate/luo_cpu_preserve.c
+ create mode 100644 virt/kvm/caretaker.c
+ create mode 100644 virt/kvm/caretaker_debug.c
+
+-- 
+2.55.0.1082.g2b9226bbc0-goog
 
