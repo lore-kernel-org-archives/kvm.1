@@ -1,31 +1,31 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB7D47728F;
-	Sun, 20 Sep 2026 21:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0CEB483BC4;
+	Sun, 20 Sep 2026 21:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789939799; cv=none; b=nC2OS2XJqd8ONb3h1CHjToOdchThxQsV2v1I2/Ohqcr9WHtV0/LxMYqPFfc7VFbFFIGQffdhnzXVX03/9SphUPg+zhqKFct44nIdqa1hlq3nQ1OpHF2Y34YPsm1iBcFh8haGYPdnf7QkwPGIgPz7fKGYF/Yo18x23kXwredh9wI=
+	t=1789939805; cv=none; b=Q7v/teZbstiA+daBGZ2TiaWlN5IRy+HY8yDs/ilhT5WoM6GbA5aKt2ngjBYBPr6yS2QPUX6dGP5erYM+iWoxRenX63EnPCm+Iq6KY8X2vcjCqoMh0NLYoDPhIW14xaUABRiPskWPz0rehoUtJnWptMvqx9Lb9UmjUdK1tu8gglM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789939799; c=relaxed/simple;
-	bh=9M7geBj6UCJkJyvLCwIiWDqhM55InOwQYvPonTGtze0=;
+	s=arc-20240116; t=1789939805; c=relaxed/simple;
+	bh=2dgJhNhp7pODA5D9cQ92Hsv7wb629Wj97aqSNHchHR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d2Yp13OfmL1DWmZezWEiHrIm36Z9NkpYKsOO56qXqJtCbdLa0uEucxBv2W3QLlkrZiUMDteBAjg1Aj0GWpWBucH8fAkRlj+TaT8Il+eOZpyETcvUWVcRJRu5ia7XX4UE7lt3laDn9ZXUDSjCFytyE/4PnrzkZkjzGwBOTdSv4J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=YXSwLol7; arc=none smtp.client-ip=217.140.110.172
+	 MIME-Version; b=VsVt3Nfmdu/3Q+ZFPNk3KeZ71ooXzhmrWIXteeyIKmhx4AzRBmAcTOXVsxQTehDYbyS4q07dbktwoKKYI9XV2/W0rnXrg+q3kBmVPakNYxYw/3mQaTmBHPGm8UIU7hQruOn0ZiWVQ0UWNccjTGlhu5qtQWjfFPypox6vbVgkyTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=eaiFThnA; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="YXSwLol7"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="eaiFThnA"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2E60515A1;
-	Sun, 20 Sep 2026 14:29:48 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6A1581596;
+	Sun, 20 Sep 2026 14:29:57 -0700 (PDT)
 Received: from ewhatever.cambridge.arm.com (ewhatever.cambridge.arm.com [10.2.197.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id ED3653F632;
-	Sun, 20 Sep 2026 14:29:48 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 157723F632;
+	Sun, 20 Sep 2026 14:29:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789939791; bh=9M7geBj6UCJkJyvLCwIiWDqhM55InOwQYvPonTGtze0=;
+	t=1789939800; bh=2dgJhNhp7pODA5D9cQ92Hsv7wb629Wj97aqSNHchHR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YXSwLol7w2i6PulaPfU5XbB9Qb2A96Hln+Y1Izk9daVdNntg3Q8OfuH4lrWFvNGl4
-	 brj2gDmVa1ZXcQ/S27a9VNocqtYKRdtgbxAnOVgTciRw59VU7rXFbrpA8MiSlz7tCw
-	 qB3+NyAa9agHSh+pQ6whumb/chWOsY6OKBYhVZro=
+	b=eaiFThnA260h6+IfxTsrJK+/I0GdaF9zJ4ryW5m+1k59eqLeI11Yicqs5hOz3aD4M
+	 occxFYw/oLEyAE017XSilDyvIVZLHM7Mc7reQ+6Et21ovi0ItIe4PH8a12FK2eE25B
+	 NWm54COVQEL+aZarGL0YOzqdPIMWrWk6fC8xZ3ys=
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
 To: kvm@vger.kernel.org,
 	kvmarm@lists.linux.dev
@@ -49,10 +49,11 @@ Cc: maz@kernel.org,
 	WeiLin.Chang@arm.com,
 	lpieralisi@kernel.org,
 	enju.kohei@fujitsu.com,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [PATCH v19 16/20] KVM: arm64: CCA: Don't expose unsupported capabilities for realm guests
-Date: Sun, 20 Sep 2026 22:28:41 +0100
-Message-ID: <20260920212845.707-17-suzuki.poulose@arm.com>
+Subject: [PATCH v19 19/20] KVM: arm64: CCA: Expose SVE VL register before VCPU finalization
+Date: Sun, 20 Sep 2026 22:28:44 +0100
+Message-ID: <20260920212845.707-20-suzuki.poulose@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260920212845.707-1-suzuki.poulose@arm.com>
 References: <20260920212845.707-1-suzuki.poulose@arm.com>
@@ -64,194 +65,103 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Limit the capabilities that are allowed for Realm VMs. Similarly block
-the vm_ioctls backed by the capabilities.
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-Repurpose the kvm_pkvm_ioctl_allowed() to support both pKVM and Realm
-ioctls. Rename the helper to kvm_vm_ioctl_allowed() and move it
-into arch/arm64/kvm/arm.c. Also add a generic kvm_vm_ext_allowed()
-to handle pKVM and Realm capability filtering and route them accordingly.
+Userspace must configure the SVE vector length before the Realm is created
+(as it is part of the parameter for Realm creation), but the Realm VCPUs
+cannot be finalized until after the Realm Descriptor has been created.
 
+KVM_GET_REG_LIST currently rejects the unfinalized VCPUs, which prevents
+the userspace from discovering and configuring the VLs for  the Realm.
+
+Allow KVM_GET_REG_LIST for unfinalized RECs and make the SVE register
+enumeration handle the unfinalized case explicitly. i.e., only expose
+KVM_REG_ARM64_SVE_VLS before SVE is finalized.
+
+One adverse side effect of this change is that a KVM_GET_REG_LIST call that
+only probes for the array size will now succeed even if SVE is not
+finalized, but that seems harmless since the following KVM_GET_REG_LIST
+with the full array will fail.
+
+Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Signed-off-by: Steven Price <steven.price@arm.com>
 Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 ---
-Changes since v18:
- * Bail out early for !pKVM && !Realm vms. Use kvm_vm_hyp_is_distrusting()
- * WARN_ON_ONCE(!kvm), we are only called from kvm_arch_vm_ioctl() with a
-   valid kvm instance.
- * Move the kvm_realm_ext_allowed() to asm/kvm_rmi.h - Fuad
- * Rename kvm_arch_vm_*allowed => kvm_vm_*_allowed - Fuad
 Changes since v17:
- * Drop superfluous !kvm check from kvm_vm_ioctl_enable_cap() - Sashiko
- * Drop KVM_CAP_CREATE_IRQCHIP, as we don't support VGIC_V2 for Realms
- * Filter out the vm_ioctls that are based on blocked cap.
- * Repurpose the pkvm plumbing for filtering the caps and ioctl to generic
-   and plumb the Realm support in
-Changes since v13:
- * Add missing check in kvm_vm_ioctl_enable_cap().
-Changes since v10:
- * Add a kvm_realm_ext_allowed() function which limits which extensions
-   are exposed to an allowlist. This removes the need for special casing
-   various extensions.
-Changes since v7:
- * Remove the helper functions and inline the kvm_is_realm() check with
-   a ternary operator.
- * Rewrite the commit message to explain this patch.
+ - Rewrite the commit description to clearly describe the purpose
 ---
- arch/arm64/include/asm/kvm_pkvm.h | 19 ------------
- arch/arm64/include/asm/kvm_rmi.h  | 23 +++++++++++++++
- arch/arm64/kvm/arm.c              | 49 +++++++++++++++++++++++++++++--
- 3 files changed, 69 insertions(+), 22 deletions(-)
+ arch/arm64/kvm/arm.c   | 15 ++++++++++++++-
+ arch/arm64/kvm/guest.c | 10 +++++-----
+ 2 files changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/include/asm/kvm_pkvm.h b/arch/arm64/include/asm/kvm_pkvm.h
-index e4ea80711bec6..1bc4fe2726e9b 100644
---- a/arch/arm64/include/asm/kvm_pkvm.h
-+++ b/arch/arm64/include/asm/kvm_pkvm.h
-@@ -53,25 +53,6 @@ static inline bool kvm_pkvm_ext_allowed(struct kvm *kvm, long ext)
- 	}
- }
- 
--/*
-- * Check whether the KVM VM IOCTL is allowed in pKVM.
-- *
-- * Certain features are allowed only for non-protected VMs in pKVM, which is why
-- * this takes the VM (kvm) as a parameter.
-- */
--static inline bool kvm_pkvm_ioctl_allowed(struct kvm *kvm, unsigned int ioctl)
--{
--	long ext;
--	int r;
--
--	r = kvm_get_cap_for_kvm_ioctl(ioctl, &ext);
--
--	if (WARN_ON_ONCE(r < 0))
--		return false;
--
--	return kvm_pkvm_ext_allowed(kvm, ext);
--}
--
- extern struct memblock_region kvm_nvhe_sym(hyp_memory)[];
- extern unsigned int kvm_nvhe_sym(hyp_memblock_nr);
- 
-diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-index 44f5c75a27b5b..6b8b9ee9ea245 100644
---- a/arch/arm64/include/asm/kvm_rmi.h
-+++ b/arch/arm64/include/asm/kvm_rmi.h
-@@ -6,6 +6,8 @@
- #ifndef __ASM_KVM_RMI_H
- #define __ASM_KVM_RMI_H
- 
-+#include <linux/kvm.h>
-+
- /**
-  * enum realm_state - State of a Realm
-  *
-@@ -58,4 +60,25 @@ struct realm {
- 
- void kvm_init_rmi(void);
- 
-+static inline bool kvm_realm_ext_allowed(long ext)
-+{
-+	switch (ext) {
-+	case KVM_CAP_IRQCHIP:
-+	case KVM_CAP_ARM_PSCI:
-+	case KVM_CAP_ARM_PSCI_0_2:
-+	case KVM_CAP_NR_VCPUS:
-+	case KVM_CAP_MAX_VCPUS:
-+	case KVM_CAP_MAX_VCPU_ID:
-+	case KVM_CAP_MSI_DEVID:
-+	case KVM_CAP_ARM_VM_IPA_SIZE:
-+	case KVM_CAP_ARM_SVE:
-+	case KVM_CAP_ONE_REG:
-+	case KVM_CAP_ARM_PTRAUTH_ADDRESS:
-+	case KVM_CAP_ARM_PTRAUTH_GENERIC:
-+	case KVM_CAP_SYNC_MMU:
-+		return true;
-+	}
-+	return false;
-+}
-+
- #endif /* __ASM_KVM_RMI_H */
 diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 86e705330d7bd..eab8543a4194d 100644
+index eab8543a4194d..6a52b102d0ce4 100644
 --- a/arch/arm64/kvm/arm.c
 +++ b/arch/arm64/kvm/arm.c
-@@ -136,6 +136,49 @@ int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
- 	return kvm_vcpu_exiting_guest_mode(vcpu) == IN_GUEST_MODE;
+@@ -1993,6 +1993,19 @@ static int kvm_arm_vcpu_set_events(struct kvm_vcpu *vcpu,
+ 	return __kvm_arm_vcpu_set_events(vcpu, events);
  }
  
-+static inline bool kvm_vm_ext_allowed(struct kvm *kvm, long ext)
-+{
-+	/*
-+	 * We could be called with kvm as NULL, so can't use kvm_vm_* for pKVM
-+	 * flavors
-+	 */
-+	if (is_protected_kvm_enabled())
-+		return kvm_pkvm_ext_allowed(kvm, ext);
-+	else if (kvm && kvm_vm_is_realm(kvm))
-+		return kvm_realm_ext_allowed(ext);
-+	else
-+		return true;
-+}
-+
 +/*
-+ * Check whether the KVM VM IOCTL is allowed. For pKVM and Realm VMs, certain
-+ * ioctls are not allowed. Further, certain features are allowed only for
-+ * non-protected VMs in pKVM.
++ * Realm VCPUs can be finalized only after the Realm descriptor is created.
++ * But in order to seal the SVE VL, we need to allow the userspace to read/write
++ * to the SVE_VL, before everything is finalized.
++ * Allow the register list for RECs before the VCPUs are finalized.
 + */
-+static inline bool kvm_vm_ioctl_allowed(struct kvm *kvm, unsigned int ioctl)
++static bool kvm_arm_vcpu_reg_list_allowed(struct kvm_vcpu *vcpu)
 +{
-+	long ext;
-+	int r;
-+
-+	/*
-+	 * We are guaranteed to be called with a valid kvm instance, as the
-+	 * only caller is kvm_arch_vm_ioctl(). Catch any deviations, as we
-+	 * rely on the kvm instance below.
-+	 */
-+	if (WARN_ON_ONCE(!kvm))
-+		return false;
-+
-+	/* Cover both pKVM host and Realm VMs */
-+	if (!kvm_vm_hyp_is_distrusting(kvm))
++	if (kvm_arm_vcpu_is_finalized(vcpu))
 +		return true;
-+
-+	r = kvm_get_cap_for_kvm_ioctl(ioctl, &ext);
-+	if (WARN_ON_ONCE(r < 0))
-+		return false;
-+
-+	return kvm_vm_ext_allowed(kvm, ext);
++	return vcpu_is_rec(vcpu);
 +}
 +
- int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
- 			    struct kvm_enable_cap *cap)
+ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 			 unsigned int ioctl, unsigned long arg)
  {
-@@ -144,7 +187,7 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
- 	if (cap->flags)
- 		return -EINVAL;
+@@ -2048,7 +2061,7 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 			break;
  
--	if (is_protected_kvm_enabled() && !kvm_pkvm_ext_allowed(kvm, cap->cap))
-+	if (!kvm_vm_ext_allowed(kvm, cap->cap))
- 		return -EINVAL;
+ 		r = -EPERM;
+-		if (!kvm_arm_vcpu_is_finalized(vcpu))
++		if (!kvm_arm_vcpu_reg_list_allowed(vcpu))
+ 			break;
  
- 	switch (cap->cap) {
-@@ -403,7 +446,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- {
- 	int r;
- 
--	if (is_protected_kvm_enabled() && !kvm_pkvm_ext_allowed(kvm, ext))
-+	if (!kvm_vm_ext_allowed(kvm, ext))
+ 		r = -EFAULT;
+diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
+index b01d6622b8720..c3ca369882273 100644
+--- a/arch/arm64/kvm/guest.c
++++ b/arch/arm64/kvm/guest.c
+@@ -598,8 +598,8 @@ static unsigned long num_sve_regs(const struct kvm_vcpu *vcpu)
+ 	if (!vcpu_has_sve(vcpu))
  		return 0;
  
- 	switch (ext) {
-@@ -2135,7 +2178,7 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
- 	void __user *argp = (void __user *)arg;
- 	struct kvm_device_attr attr;
+-	/* Policed by KVM_GET_REG_LIST: */
+-	WARN_ON(!kvm_arm_vcpu_sve_finalized(vcpu));
++	if (!kvm_arm_vcpu_sve_finalized(vcpu))
++		return 1; /* KVM_REG_ARM64_SVE_VLS */
  
--	if (is_protected_kvm_enabled() && !kvm_pkvm_ioctl_allowed(kvm, ioctl))
-+	if (!kvm_vm_ioctl_allowed(kvm, ioctl))
- 		return -EINVAL;
+ 	return slices * (SVE_NUM_PREGS + SVE_NUM_ZREGS + 1 /* FFR */)
+ 		+ 1; /* KVM_REG_ARM64_SVE_VLS */
+@@ -616,9 +616,6 @@ static int copy_sve_reg_indices(const struct kvm_vcpu *vcpu,
+ 	if (!vcpu_has_sve(vcpu))
+ 		return 0;
  
- 	switch (ioctl) {
+-	/* Policed by KVM_GET_REG_LIST: */
+-	WARN_ON(!kvm_arm_vcpu_sve_finalized(vcpu));
+-
+ 	/*
+ 	 * Enumerate this first, so that userspace can save/restore in
+ 	 * the order reported by KVM_GET_REG_LIST:
+@@ -628,6 +625,9 @@ static int copy_sve_reg_indices(const struct kvm_vcpu *vcpu,
+ 		return -EFAULT;
+ 	++num_regs;
+ 
++	if (!kvm_arm_vcpu_sve_finalized(vcpu))
++		return num_regs;
++
+ 	for (i = 0; i < slices; i++) {
+ 		for (n = 0; n < SVE_NUM_ZREGS; n++) {
+ 			reg = KVM_REG_ARM64_SVE_ZREG(n, i);
 -- 
 2.43.0
 
