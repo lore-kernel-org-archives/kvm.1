@@ -1,109 +1,150 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE54B342510;
-	Sun, 20 Sep 2026 01:12:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789866743; cv=none; b=tI0e3VoDn0zV90JUH+haR8dWwXMb8wtrOqtg7BEqBltgnBob6Qp4qXI9FF6lkLsCofSzBNdruFbNWvjVdoZvA5m6i14SCukR2X2i6OIR7g7pJDu8Tgz2f+dmwsbm0a8D9FOexnS+FQTBx16ZjE/APoTRb3CU4PFc3/Xs/AyJ0uk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789866743; c=relaxed/simple;
-	bh=Vi2TEmlrT2sU/jz1u4mJKXT8twlyCdRxU6LegCVKyEo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f4roM1PWNYd5yYJ99JMwvq3JkaFHL5EV/FXoZNrmJp8/Vy6u7kcVb4LbtleBYm1htg4pFkWR+YeJ3OglrbPtEOLDjd3X659ZAnAgsBnddIIdYe1hm/CzhmVEYEvqbmcP73+a9wt0WWs0ewdRb66KP5HTfELWJn2ifGk1zROGRRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iCxGm8JR; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466F134CFC2
+	for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 02:19:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.205
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789870772; cv=pass; b=Rw/QkptkSpJubocICxhq768QsK8aocAsuGEuiXQcUEvkSzF5ZcKQ/KXg/fURmXRrqOtUSs8Sq4tLLZKb84WRENrBBzgPTALs+95c/5yrWVUB/sAJYuuvw5dCi7NdWjLb+EdHfLs5BYPTn40S4YbXuBcG4mwprqYPcGg2tD9kIWg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789870772; c=relaxed/simple;
+	bh=Oj5sg9PCyDUl3TeOjKEQSeMqK8FhKnxaUFXuz/wNJ/I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MMCjRqozKPlbZHj/VqXKmKo47zh1zh0JXIFnqUKaD7sCB2ynsC0NLhzWu7sZ5YG5M+NQIkShM2lARl5+Fh0OPkCwJd9Rfr9KW06s7p5RyZtFALhAbM85JiZ28mmap65litCoSjBN4qOx27HVqXqJmUtGgYFfsbJkKnV/DHzd5o8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZdY/aojF; arc=pass smtp.client-ip=74.125.230.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iCxGm8JR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789866740; x=1821402740;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Vi2TEmlrT2sU/jz1u4mJKXT8twlyCdRxU6LegCVKyEo=;
-  b=iCxGm8JRgKihFyll9sk2JkTK4csQXMnejsRW1xC4anLLQAHeHbfnG9lz
-   VekqzFLYaD82SSX1UTHP+WbJJCr81UbO/hnSiEbWzK0FCfrjAXc8iwBEX
-   D+4HPAZovQrPalvTPhAW0vC3v8SluFCVIGilDA4gt2aQ1+BPEKXT54W6s
-   fUkbfqXS+MTvlmZqiVgfdjrITK8V7HZTYLPz1qX+e4Ga4sckys0MOsw7n
-   5XL+3y2A9xSVOS4THDdLXh55sHnoDPtypnY3Oa+xzZw3qDzc/DyK6jKPg
-   g0Kg0XMISSzBDzMBFtM8mFfcLoMyegN6uUfb8Lx62BmLpD1mnmLKat3u9
-   g==;
-X-CSE-ConnectionGUID: MzfJtfgSSNGdTkmIRbylOQ==
-X-CSE-MsgGUID: bSoXOhC5Q7ORRLdR91aSfw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11910"; a="90246257"
-X-IronPort-AV: E=Sophos;i="6.27,111,1787036400"; 
-   d="scan'208";a="90246257"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2026 18:12:19 -0700
-X-CSE-ConnectionGUID: vdEm01clRZWxfJWzl0CbPw==
-X-CSE-MsgGUID: oHLJuQchTESrtdldG+UxjA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,111,1787036400"; 
-   d="scan'208";a="3165056"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2026 18:12:18 -0700
-Message-ID: <6d3d2d97-82ed-4cb3-8a76-e8bcac57f6ea@linux.intel.com>
-Date: Sun, 20 Sep 2026 09:12:15 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZdY/aojF"
+Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93a2dea320fso204634285a.2
+        for <kvm@vger.kernel.org>; Sat, 19 Sep 2026 19:19:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789870770; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Mpkb8MKFCBYHuNz/9jeSOgbD9TI06ohtlIH8UTt4KJCObslYNEUtgRqleX40mIjqlf
+         sxuDdLLWi5Ffatrh3NEf3brntWuLAf9B57RN20pA7gB76UA0P/qJLjM4cWDMfC73D5rt
+         9yq+7Cy/2p6FsIhU19ufZd1nlSgdfvnFYJkBys8dQ1EYPS4ziG8Q6rjXKMC0d0Mx3iZW
+         R99n250OLxGw4lERpJF972RArMThhkzXhcCm6yqG+JulGPEfdITPsn+GYBWIvU4Ot27U
+         cx6sDI9IEV8SpmhGUcBeJzMRdGPmIwp3TRdY83yGzviLOCc2OLTrnjWBu2B6lE/RsEaN
+         jNfA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=t1jf+n9Y/HXbw9hy+wSRUxXx+QGd/8tyjA6GiwXlHUQ=;
+        fh=a1kmkMLMDBjZrLy3Qt1pdpy/eNe/5Ri1XQNWDrEMcpA=;
+        b=Ke2FMQzl6cwlw26qkl+aSoIhCiXdyl/N5DPSeOLlvsmq0i7nQO17fCFxGvGzlc5xdA
+         qHnYW4nJmxFsUSP5eqAEBZBH6twN8woQVkuDGlQoSBLhCd3mvxGk7uhX6e12L8dRHHFk
+         RqiEv404wzOWLyuzvlUQD9c2RluP5nmW22gFshLuTR3nztV75neer37mYNHNvBKV2ted
+         935nkZolN/gY48pJumxky5P9u+nXczIwEVN091RT6krXmSQ8DUSPCjkZLG09yw4l134C
+         s7H7oYi8n/kZZvsCzlwCdbGNOheLpg4/vPNv6Nin1c/SKrkKCyE5eMeTk6nXPI4fwQ3Y
+         UJ+w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789870770; x=1790475570; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=t1jf+n9Y/HXbw9hy+wSRUxXx+QGd/8tyjA6GiwXlHUQ=;
+        b=ZdY/aojFRC54Cf2Uxg5kJI2s7ovE/rCSqWRmZqYsrhcX5FrMmwETLowV9bl+QBfGAG
+         V9RTkGu0hepuCs2TIYuIo0FoCh9W7o42lN8okRXyHvq3fTJkX6+n219g/55KehYaH0Fz
+         dih1Zl7u75NLe16cg/EUIJ8cqYY32pjeZX5MGVcWaH40cnuxooGTG6UBikVes5UYSiiu
+         rMt9SFFV2v8p/XqreluP5GuSnFx/JOAyanhSvajdHH4QSM/kcsNMdrs2/n3bNwnZQ2uW
+         zdNXuKpO1WZOxwD01u+BtOFvRSKVeBHejKDE6kM+t9wieGv/Bfb0UeYMEyYi5doSxGLc
+         NBWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789870770; x=1790475570;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=t1jf+n9Y/HXbw9hy+wSRUxXx+QGd/8tyjA6GiwXlHUQ=;
+        b=SGUvej1tYonSl6pQoCMMH7Zb5xIol+SxL2P8M/j8kno4vTMeaBwcxyR4Y+G5zdt335
+         V63bbBOrjj1Bed8vv/FORXebC5cIuBu/KUc8tIJpzULdDIm1uaUg6LltzxW17YhNBanc
+         H371LFezfwm2tW5BrWlu40A0nXhxYysZ3SexLuSwIn5rPqajXGg9VI7kTlvwv+LhJCxO
+         923xniDU03sqxmlogI3QoJqgfRLbV4B7CA1BDSmlZdTW8yJ+WdVd345rFJX7+v9Gw9Pm
+         vKY+vQJJCWeh0A+C8ELg0AjbAo1pHHh2k6c9D5nySuJbstUE8K8PAx07Zo0K4qEY5ELX
+         PS4w==
+X-Forwarded-Encrypted: i=1; AKwUvBx6QSyZ6HeJVolw/lEj2JiAEpGBRaZpgikAf0gLp5nYNgnUonEb0wUg1OK7V7U9ny+kwJk=@vger.kernel.org
+X-Gm-Message-State: AFuF++mcJEppnHeN7PX4GqgxQadJRfpPeHLzt6TQAWXIoEsLqGrysi9r
+	mYc7ckH1wyhJ0OIC+aNuLb0ztA7RXcb1jXeocIWVYPr1yUgrcm2HDI3W+rYPzPybiHqrDvwoZL9
+	ZEzo5t6bj4fy7dXYNoo2ZM7xMyPQpN/Q=
+X-Gm-Gg: AYBFou2M2z0tZEDcaIc94pT2Yhbxqr1MGg26lMR5izYlqvPkATNuEHWlpendijYAkBN
+	EL1qzS5p33s3HXjTK3IYUxrzEFSnq2Z18/GebR05EWAJ7P894b7d1PWjSPyZ/+f/mZOlF68HmLA
+	SuY4adiMlBPPEknoSUn/uduj8vtKvtCOTsL3eEVy9c6gU9OhGLSxJXBi1B9CYFwgk3sdjUlNyH5
+	r3cVym/YfzLSsV+/9fq5szP6c3bPvDCcJjCOmt+LENqWdkAjYMsnIPp1s+OM1V3+WBDSJA/RyQg
+	1ipMoAcDFJ4Pil649/ynxga0k1c0rSQYGiDQbWkLYDDZK288Ooj7Mccr
+X-Received: by 2002:a05:620a:a0ce:10b0:93b:d58f:4fab with SMTP id
+ af79cd13be357-93bf5595417mr270410785a.25.1789870770127; Sat, 19 Sep 2026
+ 19:19:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: TDX: Remove always true ifdef
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: seanjc@google.com, pbonzini@redhat.com, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260826100321.1309685-1-nik.borisov@suse.com>
- <b519578d-60fb-4248-88eb-05bb9474762f@suse.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <b519578d-60fb-4248-88eb-05bb9474762f@suse.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260919131744.131030-1-physicalmtea@gmail.com> <20260919152336-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20260919152336-mutt-send-email-mst@kernel.org>
+From: Jia Jia <physicalmtea@gmail.com>
+Date: Sun, 20 Sep 2026 10:18:53 +0800
+X-Gm-Features: AcwNN1VkMN-0syiFYPeuWa4rISLvm99vUAZPB8bHXDefFB9Y34rSJVqTJuxGaqo
+Message-ID: <CAJwVaM+BmE_HoN_hSYL28nhZh1ZStqH9Od3pizAb_fyTZAS+5g@mail.gmail.com>
+Subject: Re: [PATCH] vhost: keep vring addresses stable while the backend is attached
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowangio@gmail.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	Nicholas Bellinger <nab@linux-iscsi.org>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 9/18/2026 7:36 PM, Nikolay Borisov wrote:
-> 
-> 
-> On 26.08.26 г. 13:03 ч., Nikolay Borisov wrote:
->> CONFIG_KVM_INTEL_TDX depends on KVM_TDX_HOST, which in turn depends on
->> CONFIG_X86_64. So it's guaranteed that any code under ifdef
->> CONFIG_KVM_INTEL_TDX is also running under CONFIG_X86_64 being true,
->> remove pointless ifdef guard.
->>
->> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+>
+> On Sat, Sep 19, 2026 at 09:17:44PM +0800, Jia Jia wrote:
+> > vhost-scsi keeps the response and bounce-buffer iovecs until the backend
+> > completes the command.  If userspace changes the vring addresses while the
+> > command is in flight, the completion data is copied through the old iovecs
+> > while vhost_add_used() updates the new used ring.  The guest then no longer
+> > sees the completion.
+>
+> I do not get what all this is trying to say. if you break it you get to
+> keep both pieces. when is this a real problem?
+>
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Before running the test, I checked the virtio spec and vhost UAPI and
+did not find an explicit rule
+prohibiting changes to vring addresses while a backend is attached.
+That is why I ran the directed test.
+I see what you mean now. I'll drop this patch.
 
-> 
-> Gentle ping.
-
-BTW, I find the patch has been applied to kvm-x86 next branch already.
-
-> 
-> 
->> ---
->>   arch/x86/kvm/vmx/main.c | 2 --
->>   1 file changed, 2 deletions(-)
->>
->> diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
->> index f204a0fc0a57..e9cca303c855 100644
->> --- a/arch/x86/kvm/vmx/main.c
->> +++ b/arch/x86/kvm/vmx/main.c
->> @@ -799,7 +799,6 @@ static void vt_write_tsc_multiplier(struct kvm_vcpu *vcpu)
->>       vmx_write_tsc_multiplier(vcpu);
->>   }
->>   -#ifdef CONFIG_X86_64
->>   static int vt_set_hv_timer(struct kvm_vcpu *vcpu, u64 guest_deadline_tsc,
->>                     bool *expired)
->>   {
->> @@ -818,7 +817,6 @@ static void vt_cancel_hv_timer(struct kvm_vcpu *vcpu)
->>         vmx_cancel_hv_timer(vcpu);
->>   }
->> -#endif
->>     static void vt_setup_mce(struct kvm_vcpu *vcpu)
->>   {
-> 
-
+> >
+> > Reject changes to the vring addresses while a backend is attached to the
+> > queue.  Keep accepting the current addresses so userspace can update
+> > VHOST_VRING_F_LOG or log_guest_addr without stopping the backend.  Queues
+> > that have not been attached retain the existing setup behavior; userspace
+> > must detach the backend before changing their addresses.
+> >
+> > Fixes: 057cbf49a1f0 ("tcm_vhost: Initial merge for vhost level target fabric driver")
+> > Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+> > ---
+> >  drivers/vhost/vhost.c | 11 +++++++++++
+> >  1 file changed, 11 insertions(+)
+> >
+> > diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+> > index 44cac11b68d2..074590838de5 100644
+> > --- a/drivers/vhost/vhost.c
+> > +++ b/drivers/vhost/vhost.c
+> > @@ -2150,6 +2150,17 @@ static long vhost_vring_set_addr(struct vhost_dev *d,
+> >                               a.flags & (0x1 << VHOST_VRING_F_LOG),
+> >                               a.log_guest_addr))
+> >                       return -EINVAL;
+> > +
+> > +             /*
+> > +              * Commands may retain iovecs derived from the current ring
+> > +              * addresses.  Keep the addresses unchanged while the backend
+> > +              * is attached.
+> > +              */
+> > +             if ((vq->desc || vq->avail || vq->used) &&
+> > +                 (vq->desc != (void __user *)(unsigned long)a.desc_user_addr ||
+> > +                  vq->avail != (void __user *)(unsigned long)a.avail_user_addr ||
+> > +                  vq->used != (void __user *)(unsigned long)a.used_user_addr))
+> > +                     return -EBUSY;
+> >       }
+> >
+> >       vq->log_used = !!(a.flags & (0x1 << VHOST_VRING_F_LOG));
+>
