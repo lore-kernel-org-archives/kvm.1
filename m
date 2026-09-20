@@ -1,65 +1,65 @@
-Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
+Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731BA4756B8
-	for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 19:38:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB0D471CEB
+	for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 19:38:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789933089; cv=none; b=T21j0nf1h3hRB/tffZhWXL3hhqEBaQPnF+AvuFbzlYZGe94l1kGLpxHibgSN68AIZay1xhSW871PqjK8Wsx9G4H628OpPOwwIeKy0kea/SUbV1PhjoFdc4k6rbnVB7JX0U+Ebd3hIJeI/D47NcEeU4DlVvAAVl/fQXZJ070U2QY=
+	t=1789933097; cv=none; b=olfWvCxdUJOIAyipnCGN8Mdda5R/Dmphq2eK4rOwzaA5SmGajM2ui0Cyyko3NmLEJjwwuUd3rbxD1AAoLt/7CDbazlunMxr2IK0ohnq8NJ5YsAiUUyOLI9PO7BLie7zHG/kdSSMItxwntSs5Ghgz94L+U1UiEoo25llLWDnTv/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789933089; c=relaxed/simple;
-	bh=vD3k0UChVcsUPV8WCpzl60xjcOJJ7AH4O6Kwg/ASCvo=;
+	s=arc-20240116; t=1789933097; c=relaxed/simple;
+	bh=02+Q42Ze6xEkQFVgi4gpBhdoirv+ojduq0xSuruKGDs=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mao8YbMXa//ueoplO6UohbRN4j0ZXgKQmnRFshbdUZbKn5ZTlPcPSj9LOEfAMjzvzMhKFSKrFzAx4l3LnV3G7LZ1EACBrkW+tgY+hC+X6s7oGTu+L/ej3vfssZnc7Acj0o8TzrurMlRcu6xsaXWz28rIWjZbIfroMDq3sxpdsFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com; spf=pass smtp.mailfrom=soleen.com; dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b=RrlNGgY0; arc=none smtp.client-ip=74.125.224.141
+	 MIME-Version; b=fyOovtcF4vHYO2BcvSZ9gr2zGhuCZVkIHc/lE1qsMHWQC1ZlciODW58uZJgXADT63O+qPFbR/hsR0LPpwpuhM1uHllMQYV2kK6MjJKtG9DT2R1bu1jtN+PsAmpTetQZO/PoAi+LDWAVy8m0q8s9n3QkR8sKGro2a4HMOqwJYg+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com; spf=pass smtp.mailfrom=soleen.com; dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b=QdLsrPq/; arc=none smtp.client-ip=74.125.224.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b="RrlNGgY0"
-Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4aac9321so2006863d50.3
-        for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 12:38:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b="QdLsrPq/"
+Received: by mail-yx2-f42.google.com with SMTP id 00721157ae682-89666ee9b3bso13449817b3.0
+        for <kvm@vger.kernel.org>; Sun, 20 Sep 2026 12:38:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1789933086; x=1790537886; darn=vger.kernel.org;
+        d=soleen.com; s=google; t=1789933094; x=1790537894; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=Xd0t5fQ0wbqovFneONezXRLopfuFSVDwWIsqSLQ6+6E=;
-        b=RrlNGgY0iJCLHvLzaOqKkf3gLzRqZRNs3AAepRwIwDleyCYaiOghA4vqiXA6qubzC+
-         24dvZefH6rJFbESqgiBexlht9k2P4jayHUVOxKavkv047Iwi3j68ZxrHzNYxx4AhE2Qb
-         aKxGtjXjJX6+0Sgcy+nXo4muIMtbk+5iXSH83LreZrlNlj5brul3XvqxZuXYyMkJHbx2
-         M9kE4SgGfjg/AgZJ+kZyRU2gcJRKIyvpm8ZE27VVSIw/faLLB90ylpqTLqx8w3sMAtH5
-         fDGymuvYj2dE2L3f3IPD7SWIbaWLjxdGzXi9W7OVFRvoL20by8hHYOwrYpq+32pX2pRJ
-         NpJA==
+        bh=jYn4Ytq2YXSifYxA9CPS6d/oLI/kiEdGEMZqJLYvWho=;
+        b=QdLsrPq/f8KC45i9+2XN9/dQFx2ScqdKxYdXTu1ulwXm5mdO7DBc77HF0S86QDWHZA
+         OINAabWa/Mm8OZqSzAFCUcpcg4N0VXC4xxqQZq+B6qHcemty1mTERymn0/1q216nBwz5
+         v/3aa3DikaoHHfZ9Y/fdkiOPOw6Bta8j3LEikSxjZVl7U49CdBpshRf0Ixx1qgua0OCQ
+         aLEZ0Piznl9iHkN/+K35NbwxbbKP7Yyn4u2jyIoT0UYC7LeJGImiL+d9Al1hE0ceMc1O
+         gsaVMbB0ThM2OzdCXNSxC8qYlL3jNRSvRcosjxsQUmVugf5tXt7S6/fHWotuK4t9beBP
+         Oz/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789933086; x=1790537886;
+        d=1e100.net; s=20260707; t=1789933094; x=1790537894;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=Xd0t5fQ0wbqovFneONezXRLopfuFSVDwWIsqSLQ6+6E=;
-        b=xhfWc9iNXAIDmLx4USskCgtg0wH6B0zcEc0Mapy/jMeAMtcxi1vXct3SBHE94o7U3B
-         rE9ikgs5NU6VOi72R2CNYR0CyYL0ENEHUA86/Ku3C4E6XBsc9toDei17NHnjId90qJrE
-         Ch5EV2aCEaX/NcEbvuVsCzl5bXRaQDL0IPYJlGEydkvu5WIgHYuEP7wm1iovuL5K4LWb
-         HlrkxQl2n2owM0/+hAVwMZeeX5TUKTxBLtNzZ+hlVlHbG+/GnwXn0esRg1+8ZvEcPETF
-         pkyalgmrfs1QXAbP7FPGZn0fUMGeVLXKh88KfZbcqwVe99QaBAu22rwWWEQ+q6u+XarR
-         cZ+w==
-X-Forwarded-Encrypted: i=1; AKwUvBxS0AFaqQaZDZsgG5woA7Xr9H1zB9GsegfJp8JiA+IsdoM2/alvTLqs7ayDFYdoF3XmWg0=@vger.kernel.org
-X-Gm-Message-State: AFuF++k/P8RTA8KXh/d3JKaw6ql1NkMGHla50g/jmqwP/iKIGL4DfAFf
-	fB7ryiRPt1XqwJGj1T0dKVM6w2O6XH0yyFPimyFJB/xaD7AQV1O3pxsoipAKKaT3suA=
-X-Gm-Gg: AYBFou2tef16XPuKrk0UR39rBF9SR2xvgmOUcFQecGieXOVEeZuRRC9YaTDol1mZ9ui
-	RHDDNv+CEKDajJKNOyRABqgsaALnIrpCDJESxBVyY2KUq3QxHqdRlyx9xfDDxVuGXeCMnvmHnzl
-	dgk6eZQ5/yoEKGiMrrGJy716kk63S0QTM4L2sJpSHy2k7MpIxBYe5AqvkdUxeHVc8BlT5jHH9di
-	7dCwRH7UbWBSaWeaVYP0gQJ52XL/vc0KBMckiN5yKI2SqSsTkOUR2J2Osp8BxV5TLMO0U5l4qGa
-	GW8E8wDV3OHTxV6XYG3JiW0To1K0J6atxPh3hyUaOo1244elg9Oc5+c8luew/0KxATTRPYif74U
-	rXZ2/ixQJJKH4sdDrL5jLXUfUIxK9HV1Rgid8tqywvVPyGnNHH8C9m3+jxci6ZLhPKdo+5JPl8J
-	xv8PwgmoYksV4cZtdp/8E9DP98mnvgUCbCnBBOFQwgLjyGPbJwQXAmqfc9AQf8W0RRFhaWhU8As
-	yrsz9qkSV+3pTemmppX2NapA/YELOPV3VrL5RvAAaLT0kcBdXcwGGu1o+chvVA5gcojec1U5j5r
-	phc8Z0OGbr116k3l/38=
-X-Received: by 2002:a05:690e:dce:b0:66f:c1be:a646 with SMTP id 956f58d0204a3-6717fd8f1ddmr2788927d50.56.1789933086522;
-        Sun, 20 Sep 2026 12:38:06 -0700 (PDT)
+        bh=jYn4Ytq2YXSifYxA9CPS6d/oLI/kiEdGEMZqJLYvWho=;
+        b=RJg5dVkQoq+jdBm1BDOk0EsnXcH5SsEtthuwg/LzE1y4rv1zkNQZH4SLDsBzo+d+1t
+         1iQ1pxK/aaNq06arVIDm31JCaprQiFGHqOLn17ees+hMxJ93QPRNBvh4zRUox+cREz44
+         MfpAyK2y1XXANR9JObE4iSS8/0mVJ48jy4X04hIf14w2pWxFV+mWg7sFylnEBML9N6pG
+         Tl8ERaW2phjTRIy0G54yEpNTXiggUyxRMb3uwsU5mhHgrlKgk5TJD81L0WuE2pKt6Bd0
+         aZ8bxaR1hNOvW1mYtC3omxZ2Wc/yk/uSPXqOG7k/+npli8bR3Ood4W97iwpousj2paYE
+         63wQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxAULqrcepS3fsM8OWHeKH3gLgfRcsuou3ILrKvdwrS7xvuGqPpsrHfZo+RCp19ImO3XAA=@vger.kernel.org
+X-Gm-Message-State: AFuF++mG1LXGjT/ARTIyHdne8YzI48d/3+9JnigbHrw53xImDpGGPNwE
+	vnAmo0ECYYT+bqBZ6fWKTfs33sGcqHhAPrkRMMJexqtdGXRzR8AzNpUe4yCWiBmH8ms=
+X-Gm-Gg: AYBFou2n+dtWHeDUla4I04+9YIeJomElMGoRsXUC0fDFhvevTXvGD/z1Eht5rk5trCd
+	KiTNvkCUTKrmE/5Q9LzCcTzh5W4l4mtzlBaLQ5F050uMHQlXvE7Mz0whTLXSXgTTT3lvj2ETWL1
+	NT08dkixMLQjCNT4V0TLLV4AuCc2EulX52kagXzKxL1GatOx44twlPE2ObIfibLWtfMHGYr5W+D
+	3iGWWHmbsuvi367i+5u4RboQTZ0Cbg5fTEHJ1SZdi34YVy0aSc0yfOxtofRAwsaw1ZCF/SPpWFi
+	4hX7ndXbrz4ntqucKRkPuOKqnjQAQIh2Usvb+ICYAJQcIg2fokS3qV10zNedHOK8gBqvh3XhLOO
+	4bXnwMEDjMixXl2/5/J4dbmfESQfwjA13ez8RJVdeUeTauuwxPFfypwkQStYHqUiIoBTVDeaUJO
+	WEJZxpVRQqgz47SS+gbsbN9yjiLsbwikxqfFSCnMgRvdc2KoUekPvgboOLPyQXxqWPaitIfmv9E
+	4ghBxSlJCQZ0XbeT2zv7ttTvyJOX1NZ93g4dJCwOTC6tAcZ1pMJAyDAy4lzaJYHGwAe30hLhMZN
+	VNynDzbmV7hY3lnv4q0=
+X-Received: by 2002:a81:8a82:0:b0:81f:e85b:f9da with SMTP id 00721157ae682-89738597570mr31205017b3.33.1789933093562;
+        Sun, 20 Sep 2026 12:38:13 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-672991445desm2614214d50.20.2026.09.20.12.38.04
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-89a47139db2sm18456977b3.26.2026.09.20.12.38.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 12:38:06 -0700 (PDT)
+        Sun, 20 Sep 2026 12:38:12 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: linux-kselftest@vger.kernel.org,
 	legion@kernel.org,
@@ -137,9 +137,9 @@ To: linux-kselftest@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	vladimir.murzin@arm.com,
 	kas@kernel.org
-Subject: [RFC PATCH 12/46] liveupdate: Add liveupdate_session_name() helper
-Date: Sun, 20 Sep 2026 15:36:16 -0400
-Message-ID: <20260920193650.3373435-13-pasha.tatashin@soleen.com>
+Subject: [RFC PATCH 13/46] cpu_preserve: Add physical CPU preservation ABI and core API headers
+Date: Sun, 20 Sep 2026 15:36:17 -0400
+Message-ID: <20260920193650.3373435-14-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 In-Reply-To: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
 References: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
@@ -151,63 +151,514 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Provide an accessor function liveupdate_session_name() to retrieve the
-name of a live update session from its session handle.
-
-This allows kernel subsystems like CPU preservation to identify the
-session managing preserved resources.
+Define the KHO ABI structures for physical CPU preservation in
+include/linux/kho/abi/cpu.h and the core kernel interfaces in
+include/linux/cpu_preserve.h.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- include/linux/liveupdate.h      |  6 ++++++
- kernel/liveupdate/luo_session.c | 14 ++++++++++++++
- 2 files changed, 20 insertions(+)
+ include/linux/cpu_preserve.h | 352 +++++++++++++++++++++++++++++++++++
+ include/linux/kho/abi/cpu.h  | 112 +++++++++++
+ 2 files changed, 464 insertions(+)
+ create mode 100644 include/linux/kho/abi/cpu.h
 
-diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
-index 6051abc0612c..119ad0f82705 100644
---- a/include/linux/liveupdate.h
-+++ b/include/linux/liveupdate.h
-@@ -256,6 +256,7 @@ int liveupdate_get_file_incoming(struct liveupdate_session *s, u64 token,
- /* Get a token for an outgoing file, or -ENOENT if file is not preserved */
- int liveupdate_get_token_outgoing(struct liveupdate_session *s,
- 				  struct file *file, u64 *tokenp);
-+const char *liveupdate_session_name(struct liveupdate_session *s);
+diff --git a/include/linux/cpu_preserve.h b/include/linux/cpu_preserve.h
+index f653838c383d..94181952df1a 100644
+--- a/include/linux/cpu_preserve.h
++++ b/include/linux/cpu_preserve.h
+@@ -9,9 +9,75 @@
+ #define _LINUX_CPU_PRESERVE_H
  
- #else /* CONFIG_LIVEUPDATE */
+ #include <linux/compiler.h>
++#include <linux/cpumask.h>
++#include <linux/errno.h>
++#include <linux/kho/abi/cpu.h>
++#include <linux/list.h>
++#include <linux/smp.h>
++#include <linux/types.h>
  
-@@ -321,5 +322,10 @@ static inline int liveupdate_get_token_outgoing(struct liveupdate_session *s,
- 	return -EOPNOTSUPP;
- }
+ #ifdef CONFIG_LIVEUPDATE_CPU
  
-+static inline const char *liveupdate_session_name(struct liveupdate_session *s)
++#include <asm/cpu_preserve.h>
++#include <asm/page.h>
++
++#define CPU_PRESERVED_STACK_ORDER	ARCH_CPU_PRESERVED_STACK_ORDER
++#define CPU_PRESERVED_STACK_SIZE	((size_t)PAGE_SIZE << CPU_PRESERVED_STACK_ORDER)
++#define CPU_PRESERVED_STACK_HEADROOM	256
++#define CPU_PRESERVED_STACK_MAGIC	0x435055505354414bULL	/* "CPUPSTAK" */
++
++/**
++ * struct cpu_preserved_stack_context - Context header at base of preserved CPU stack
++ * @magic:            Validation signature (%CPU_PRESERVED_STACK_MAGIC).
++ * @cpu:              Logical CPU identifier of the preserved physical core.
++ * @reserved:         Must be zero.
++ * @workload_context: Opaque owning workload or session context.
++ * @session_pgd_pa:   Session root page table physical address, or 0.
++ *
++ * This structure lives at the base of a preserved CPU's dedicated stack and is
++ * accessed by the preserved CPU during parking and workload execution. It is
++ * private to the preserved CPU execution context of the kernel that allocated it.
++ */
++struct cpu_preserved_stack_context {
++	u64 magic;
++	u32 cpu;
++	u32 reserved;
++	u64 workload_context;
++	u64 session_pgd_pa;
++};
++
++static_assert(sizeof(struct cpu_preserved_stack_context) == 32);
++static_assert(offsetof(struct cpu_preserved_stack_context, magic) == 0,
++	      "magic must lead: the struct is found by masking the stack pointer");
++
++/**
++ * cpu_preserved_get_stack_context - Return the context block at the base of the preserved stack
++ *
++ * Masks the current stack pointer to %CPU_PRESERVED_STACK_SIZE alignment and
++ * validates %CPU_PRESERVED_STACK_MAGIC.
++ *
++ * Return: Pointer to &struct cpu_preserved_stack_context if executing on a
++ *         preserved CPU stack, or %NULL otherwise.
++ */
++static inline struct cpu_preserved_stack_context *
++cpu_preserved_get_stack_context(void)
++{
++	struct cpu_preserved_stack_context *sctx;
++	unsigned long sp;
++
++#if defined(CONFIG_X86_64)
++	asm volatile("mov %%rsp, %0" : "=r"(sp));
++#elif defined(CONFIG_ARM64)
++	asm volatile("mov %0, sp" : "=r"(sp));
++#else
++	return NULL;
++#endif
++	sctx = (struct cpu_preserved_stack_context *)(sp & ~(CPU_PRESERVED_STACK_SIZE - 1));
++	if (sctx && sctx->magic == CPU_PRESERVED_STACK_MAGIC)
++		return sctx;
++	return NULL;
++}
++
+ /*
+  * __cpu_preserved_text: Code executed by preserved physical CPUs during live
+  * update kexec handover in orphan mode.
+@@ -36,12 +102,298 @@
+ 
+ extern char __cpu_preserved_text_start[], __cpu_preserved_text_end[];
+ extern char __cpu_preserved_data_start[], __cpu_preserved_data_end[];
++bool cpu_is_preserved(int cpu);
++bool cpu_preserved_should_exit(int cpu);
++void cpu_preserved_set_dead(int cpu);
++void cpu_preserved_park(int cpu);
++void cpu_preserved_park_loop(int cpu);
++const struct cpumask *cpu_get_preserved_mask(void);
++phys_addr_t cpu_preserved_get_pgd(int cpu);
++int cpu_preserved_attach_workload(int cpu,
++				  void (*entry_fn)(void *data), void *data);
++int cpu_preserved_detach_workload(int cpu);
++void cpu_preserved_set_workload_context(int cpu, void *ctx, phys_addr_t pgd_pa);
++
++/**
++ * cpu_preserved_report_dead - Park preserved CPU when reporting dead in hotplug
++ *
++ * Invoked by cpuhp_ap_report_dead() after CPU hotplug offline synchronization
++ * is complete. If the calling CPU is marked for preservation across live update,
++ * transition it into the preserved parking loop instead of powering down.
++ */
++static inline void cpu_preserved_report_dead(void)
++{
++	if (cpu_is_preserved(raw_smp_processor_id()))
++		cpu_preserved_park(raw_smp_processor_id());
++}
++
++/*
++ * Architecture-specific hooks for CPU preservation.
++ */
++
++/**
++ * arch_cpu_preserved_kick - Signal or wake up a preserved physical CPU
++ * @cpu: Logical CPU identifier.
++ *
++ * Architecture backend hook to wake up the specified preserved CPU from its
++ * low-power parking state (e.g. via IPI, NMI, or SGI).
++ *
++ * This function must be placed in the __cpu_preserved_text section.
++ */
++void arch_cpu_preserved_kick(int cpu);
++
++/**
++ * arch_cpu_preserved_park_wait - Architecture low-power wait in parking loop
++ *
++ * Architecture backend hook to execute a low-power wait instruction
++ * (e.g., cpu_relax/pause, wfe) while parked.
++ *
++ * This function must be placed in the __cpu_preserved_text section.
++ */
++void arch_cpu_preserved_park_wait(void);
++
++/**
++ * arch_cpu_preserved_park_init - Architecture setup upon entering park loop
++ * @cpu: Logical CPU identifier.
++ *
++ * Architecture backend hook to configure the physical core (e.g., disable
++ * or mask local interrupts) upon entering the park loop.
++ *
++ * This function must be placed in the __cpu_preserved_text section.
++ */
++void arch_cpu_preserved_park_init(int cpu);
++
++/**
++ * arch_cpu_preserved_early_init - Arch early-boot init for incoming preserved CPUs
++ *
++ * Called during early boot in the incoming kernel when preserved physical CPUs
++ * are adopted from KHO metadata.
++ */
++void arch_cpu_preserved_early_init(void);
++
++/**
++ * arch_cpu_preserved_park_finish - Architecture cleanup on park loop exit
++ * @cpu: Logical CPU identifier.
++ *
++ * Architecture backend hook to execute cleanup or CPU powerdown sequence
++ * when the park loop exits.
++ *
++ * This function must be placed in the __cpu_preserved_text section.
++ */
++void arch_cpu_preserved_park_finish(int cpu);
++
++/**
++ * arch_cpu_preserved_park_on_stack - Switch stack and enter park loop
++ * @cpu: Logical CPU identifier.
++ * @stack_top: Top address of the preserved stack.
++ *
++ * Architecture backend hook to switch to the preserved execution stack
++ * and invoke cpu_preserved_park_loop().
++ *
++ * This function must be placed in the __cpu_preserved_text section.
++ */
++void arch_cpu_preserved_park_on_stack(int cpu, unsigned long stack_top);
++
++/**
++ * arch_cpu_preserved_dcache_clean - Clean data cache for address range
++ * @start: Starting virtual address.
++ * @end: Ending virtual address.
++ *
++ * Architecture backend hook to flush/clean data caches to PoC for memory
++ * preservation across live update.
++ *
++ * This function must be placed in the __cpu_preserved_text section.
++ */
++void arch_cpu_preserved_dcache_clean(unsigned long start, unsigned long end);
++
++/**
++ * arch_cpu_preserved_dcache_inval - Invalidate/clean data cache for range
++ * @start: Starting virtual address.
++ * @end: Ending virtual address.
++ *
++ * Architecture backend hook to clean/invalidate data caches across live
++ * update transitions.
++ *
++ * This function must be placed in the __cpu_preserved_text section.
++ */
++void arch_cpu_preserved_dcache_inval(unsigned long start, unsigned long end);
++
++/**
++ * arch_cpu_preserved_wait_dead - Wait for CPU to reach dead state
++ * @cpu: Logical CPU identifier.
++ *
++ * Architecture backend hook to wait for a CPU to be fully stopped.
++ *
++ * Executed in normal text context during CPU teardown.
++ */
++void arch_cpu_preserved_wait_dead(int cpu);
++
++struct page;
++
++/**
++ * arch_cpu_preserved_setup_buffer - Map preserved execution buffer outside Scratch
++ * @text_page: Head page of allocated preserved text memory.
++ * @text_nr_pages: Number of pages in the preserved text buffer.
++ * @data_page: Head page of allocated preserved data memory.
++ * @data_nr_pages: Number of pages in the preserved data buffer.
++ *
++ * Architecture backend hook to remap kernel page table entries for
++ * __cpu_preserved_text and __cpu_preserved_data to the newly allocated
++ * pages outside Scratch memory.
++ *
++ * Return: 0 on success, or a negative errno on failure.
++ */
++int arch_cpu_preserved_setup_buffer(struct page *text_page,
++				    unsigned int text_nr_pages,
++				    struct page *data_page,
++				    unsigned int data_nr_pages);
++
++/**
++ * struct cpu_preserved_as - In-memory address space handle for a preserved CPU
++ * @node:        Entry on the global list of preserved address spaces.
++ * @pgd:         Root page table virtual address in host direct map.
++ * @pgd_pa:      Physical address of @pgd, as loaded into CR3 / TTBR1.
++ * @is_incoming: This address space was built by the previous kernel.
++ * @ser:         Preserved serialization descriptor holding page table physical addresses.
++ */
++struct cpu_preserved_as {
++	struct list_head		node;
++	void				*pgd;
++	phys_addr_t			pgd_pa;
++	bool				is_incoming;
++	struct cpu_preserved_as_ser	*ser;
++};
++
++struct cpu_preserved_as *cpu_preserved_as_create(void);
++void cpu_preserved_as_destroy(struct cpu_preserved_as *as);
++struct cpu_preserved_as *cpu_preserved_as_adopt(struct cpu_preserved_as_ser *ser);
++int cpu_preserved_as_map(struct cpu_preserved_as *as, phys_addr_t pa,
++			 unsigned long va, size_t size, pgprot_t prot);
+ 
+ #else /* !CONFIG_LIVEUPDATE_CPU */
+ 
+ #define __cpu_preserved_text
+ #define __cpu_preserved_data
+ 
++static inline bool cpu_is_preserved(int cpu) { return false; }
++static inline bool cpu_preserved_should_exit(int cpu) { return true; }
++static inline void cpu_preserved_park(int cpu) {}
++static inline void cpu_preserved_set_dead(int cpu) {}
++static inline void cpu_preserved_report_dead(void) {}
++static inline const struct cpumask *cpu_get_preserved_mask(void)
++{
++	return cpu_none_mask;
++}
++
++static inline int cpu_preserved_attach_workload(int cpu,
++						void (*entry_fn)(void *data),
++						void *data)
++{
++	return -EOPNOTSUPP;
++}
++
++static inline int cpu_preserved_detach_workload(int cpu)
++{
++	return -EOPNOTSUPP;
++}
++
++static inline void cpu_preserved_set_workload_context(int cpu, void *ctx,
++						      phys_addr_t pgd_pa) {}
++static inline void arch_cpu_preserved_kick(int cpu) {}
++static inline void arch_cpu_preserved_park_wait(void) {}
++static inline void arch_cpu_preserved_park_init(int cpu) {}
++static inline void arch_cpu_preserved_early_init(void) {}
++static inline void arch_cpu_preserved_park_finish(int cpu) {}
++static inline void arch_cpu_preserved_dcache_clean(unsigned long start,
++						   unsigned long end) {}
++static inline void arch_cpu_preserved_dcache_inval(unsigned long start,
++						   unsigned long end) {}
++static inline void arch_cpu_preserved_wait_dead(int cpu) {}
++static inline phys_addr_t cpu_preserved_get_pgd(int cpu) { return 0; }
++static inline int arch_cpu_preserved_setup_buffer(struct page *text_page,
++						  unsigned int text_nr_pages,
++						  struct page *data_page,
++						  unsigned int data_nr_pages)
++{
++	return 0;
++}
++
++static inline int cpu_preserved_map_range(phys_addr_t pa, unsigned long va,
++					  size_t size, pgprot_t prot) { return 0; }
++static inline int cpu_preserved_map_buffer(void *va, size_t size) { return 0; }
++static inline int arch_cpu_preserved_mpidr_to_cpu(u64 mpidr) { return -EINVAL; }
++static inline bool arch_cpu_preserved_is_active(void) { return false; }
++static inline void arch_cpu_preserved_switch_pgd(phys_addr_t pgd_pa) {}
++static inline struct cpu_preserved_stack_context *
++cpu_preserved_get_stack_context(void)
 +{
 +	return NULL;
 +}
 +
- #endif /* CONFIG_LIVEUPDATE */
- #endif /* _LINUX_LIVEUPDATE_H */
-diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
-index f48e9a4185f9..3c4f195d375d 100644
---- a/kernel/liveupdate/luo_session.c
-+++ b/kernel/liveupdate/luo_session.c
-@@ -683,3 +683,17 @@ int luo_session_serialize(void)
+ #endif /* CONFIG_LIVEUPDATE_CPU */
  
- 	return err;
- }
++/*
++ * Object-granular wrappers around the arch dcache hooks.
++ *
++ * Every preserved-memory handshake flushes or invalidates a whole object, so
++ * spell that out once instead of open-coding (addr, addr + size) at each call
++ * site: the size can then never drift from the object it is supposed to cover.
++ *
++ * @p is a pointer to the object.  For a statically sized array, pass &array so
++ * that sizeof(*(p)) is the size of the whole array rather than of one element.
++ * Use the _sz() forms for flexible-array structures and for raw page buffers,
++ * where the length is not derivable from the type.
++ */
++#define cpu_preserved_clean_sz(p, sz)					\
++	arch_cpu_preserved_dcache_clean((unsigned long)(p),		\
++					(unsigned long)(p) + (sz))
++#define cpu_preserved_inval_sz(p, sz)					\
++	arch_cpu_preserved_dcache_inval((unsigned long)(p),		\
++					(unsigned long)(p) + (sz))
++#define cpu_preserved_clean(p)		cpu_preserved_clean_sz(p, sizeof(*(p)))
++#define cpu_preserved_inval(p)		cpu_preserved_inval_sz(p, sizeof(*(p)))
 +
 +/**
-+ * liveupdate_session_name - Get the name of a liveupdate session
-+ * @s: Live update session pointer.
++ * cpu_preserved_memset - Compiler-barrier-safe byte fill for preserved runtime code
++ * @s: Destination buffer.
++ * @c: Byte value to fill.
++ * @n: Number of bytes to fill.
 + *
-+ * Return: Pointer to session name string.
++ * Uses WRITE_ONCE() per byte so the compiler's loop-idiom pass cannot replace
++ * the loop with a call to the unmapped host kernel memset() inside
++ * __cpu_preserved_text.
++ *
++ * Return: @s.
 + */
-+const char *liveupdate_session_name(struct liveupdate_session *s)
++static inline void *cpu_preserved_memset(void *s, int c, size_t n)
 +{
-+	struct luo_session *session = (struct luo_session *)s;
++	unsigned char *p = s;
 +
-+	return session->name;
++	while (n--)
++		WRITE_ONCE(*p++, (unsigned char)c);
++	return s;
 +}
-+EXPORT_SYMBOL_GPL(liveupdate_session_name);
++
++/**
++ * cpu_preserved_memcpy - Compiler-barrier-safe byte copy for preserved runtime code
++ * @dest: Destination buffer.
++ * @src:  Source buffer.
++ * @n:    Number of bytes to copy.
++ *
++ * Uses READ_ONCE()/WRITE_ONCE() per byte so the compiler's loop-idiom pass
++ * cannot replace the loop with a call to the unmapped host kernel memcpy()
++ * inside __cpu_preserved_text.
++ *
++ * Return: @dest.
++ */
++static inline void *cpu_preserved_memcpy(void *dest, const void *src, size_t n)
++{
++	const unsigned char *s = src;
++	unsigned char *d = dest;
++
++	while (n--)
++		WRITE_ONCE(*d++, READ_ONCE(*s++));
++	return dest;
++}
++
+ #endif /* _LINUX_CPU_PRESERVE_H */
+diff --git a/include/linux/kho/abi/cpu.h b/include/linux/kho/abi/cpu.h
+new file mode 100644
+index 000000000000..5926be37f7a0
+--- /dev/null
++++ b/include/linux/kho/abi/cpu.h
+@@ -0,0 +1,112 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) 2026, Google LLC.
++ * Pasha Tatashin <pasha.tatashin@soleen.com>
++ */
++
++#ifndef _LINUX_KHO_ABI_CPU_H
++#define _LINUX_KHO_ABI_CPU_H
++
++#include <linux/build_bug.h>
++#include <linux/kho/abi/kexec_handover.h>
++#include <linux/stddef.h>
++#include <linux/types.h>
++#include <uapi/linux/liveupdate.h>
++
++/**
++ * DOC: CPU Preservation Live Update ABI
++ *
++ * Physical CPU preservation uses the ABI defined below to serialize
++ * and restore the state of preserved CPUs across a live update kexec
++ * reboot using the LUO.
++ *
++ * Preserved CPUs are isolated from host scheduling and remain active
++ * in a parking loop or running workload across the live update reboot.
++ * This ABI provides the contract for communicating preserved core metadata
++ * and per-file descriptor state to the incoming kernel.
++ *
++ * The state is serialized into packed structures
++ * (struct cpu_preserved_global_ser and struct cpu_preserved_file_ser) which
++ * are handed over to the next kernel via the KHO mechanism.
++ *
++ * This interface is a contract. Any modification to the structure
++ * fields, compatible strings, or the layout of the `__packed`
++ * serialization structures defined here constitutes a breaking change.
++ * Such changes require incrementing the version number in the
++ * CPU_PRESERVED_LUO_FLB_COMPATIBLE or CPU_PRESERVED_LUO_FH_COMPATIBLE
++ * compatibility strings to prevent a new kernel from misinterpreting
++ * data from an old kernel.
++ *
++ * Changes are allowed provided the compatibility version is
++ * incremented; however, backward/forward compatibility is only
++ * guaranteed for kernels supporting the same ABI version.
++ */
++
++/* The compatibility string for preserved CPU FLB */
++#define CPU_PRESERVED_LUO_FLB_COMPATIBLE	"cpu_flb_v1"
++
++/* The compatibility string for preserved CPU file handler */
++#define CPU_PRESERVED_LUO_FH_COMPATIBLE		"cpu_fh_v1"
++
++enum cpu_preserved_workload {
++	CPU_PRESERVED_PARKED = 1,
++	CPU_PRESERVED_WORKLOAD = 2,
++	CPU_PRESERVED_EXITING = 3,
++	CPU_PRESERVED_DEAD = 4,
++};
++
++/**
++ * struct cpu_preserved_pcpu_ser - Per-CPU mailbox in preserved memory
++ * @workload: Preserved workload state (enum cpu_preserved_workload).
++ */
++struct cpu_preserved_pcpu_ser {
++	u32 workload;
++} __packed;
++
++/**
++ * struct cpu_preserved_global_ser - Global FLB serialization header
++ * @nr_cpu_words:       Number of u64 words in @cpu_preserved_bitmap.
++ * @reserved:           Must be zero.
++ * @text_runtime_pa:    Physical address of preserved CPU runtime text.
++ * @text_runtime_size:  Size of preserved CPU runtime text in bytes.
++ * @data_runtime_pa:    Physical address of preserved CPU runtime data.
++ * @data_runtime_size:  Size of preserved CPU runtime data in bytes.
++ * @pcpus_runtime:      Preservation pointer to struct cpu_preserved_pcpu_ser array.
++ * @transition_as:      Preservation pointer to transition struct cpu_preserved_as_ser.
++ * @cpu_preserved_bitmap: Bitmap of physical CPUs preserved across live update.
++ *
++ * The preserved-CPU bitmap is serialized as an explicitly sized array of u64
++ * rather than as a cpumask_t: sizeof(cpumask_t) depends on NR_CPUS, so
++ * embedding one would make the offset of every subsequent field depend on the
++ * .config of the kernel that wrote it.
++ */
++struct cpu_preserved_global_ser {
++	u32 nr_cpu_words;
++	u32 reserved;
++	u64 text_runtime_pa;
++	u64 text_runtime_size;
++	u64 data_runtime_pa;
++	u64 data_runtime_size;
++	DECLARE_KHOSER_PTR(pcpus_runtime, struct cpu_preserved_pcpu_ser *);
++	DECLARE_KHOSER_PTR(transition_as, struct cpu_preserved_as_ser *);
++	u64 cpu_preserved_bitmap[];
++} __packed;
++
++static_assert(offsetof(struct cpu_preserved_global_ser,
++		       cpu_preserved_bitmap) % sizeof(u64) == 0,
++	      "cpu_preserved_bitmap must be 64-bit aligned");
++
++/**
++ * struct cpu_preserved_file_ser - Per-file serialized state for preserved CPU fd
++ * @cpu:      Logical CPU identifier.
++ * @reserved: Must be zero.
++ * @stack_pa: Physical address of this CPU's preserved stack.
++ * @oncore:   Preservation pointer to on-core session serialized metadata.
++ */
++struct cpu_preserved_file_ser {
++	u32 cpu;
++	u32 reserved;
++	u64 stack_pa;
++} __packed;
++
++#endif /* _LINUX_KHO_ABI_CPU_H */
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
