@@ -1,41 +1,41 @@
 Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628D73DDB03;
-	Sun, 20 Sep 2026 11:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229F63F9263;
+	Sun, 20 Sep 2026 11:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789903076; cv=none; b=cSA4mzjL7hdtr/oQ0gBXZUoWhiosMmGviHe9UMcvtUX8GOdgMIx9DryUCCDOArdiHyH/fupXsvf8y7LqARpYSNk0KFlOBvrGxEwp4dKr876wWJV9Hy2sS5Arv6RtPBqLPEDIT8H+NeJbZ5eXOULWz+tzQv0KWn775A37o3BSz+k=
+	t=1789903078; cv=none; b=qvEB8KulvJxWyyszCxPR2afZCpmwi7yzPIMqAEMn/ibHzAcs8qDmrVWfje5b4FGTaFOL4izTOi0LxyL4YX+dChxmwhgBBTgDQnRspxuBUhxrMOh5av2iirYNfH1R+SAWL7QsMu6Tvt/8IAYNltYXlwkxmfO2tGcfxh40FBzpfmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789903076; c=relaxed/simple;
-	bh=B4dzm7ewjeuKN1a1PN2bUUK6vcNWIu32kozfRCLd2Po=;
+	s=arc-20240116; t=1789903078; c=relaxed/simple;
+	bh=Tfgm9WXcmRxelzdJdDKljVp7Ced7YFV3TbgyJMrdSII=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tIzKDxCzNA9h4r51W81pm8S2BLfi65T7vRwZKLR4srwLeKlaSn07rsz7chvAb1FYBFxdpaRnYbXlHT3qq6X1Qj6PQ1I0+67fZBUCJaAtjmgntBZyQ4T7B5/GiF3vIxRsVhmbLLHn8zVdciMWnUHDcclC69uKUjcH03VusW8FGps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=oIHGjcGo; arc=none smtp.client-ip=49.212.243.89
+	 In-Reply-To:To:Cc; b=ozVZrfbaU3a2UlqtU/UC6Yst7C9q3hyf+P9LjFWSKzPTV0LmuB1Xabuj1h9H8Lha0mjHHhWvhpJZDki18rBIeOUxDYpco6tJOKdLCJQaN5BacQqJTyFxxKd2xgUvNEzegoJayML9Hr0lyP12Tj9VWbcFvwCUmpuB+aFEgrHjYxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=Ydv+XW7M; arc=none smtp.client-ip=49.212.243.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="oIHGjcGo"
+	dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="Ydv+XW7M"
 Received: from [192.168.10.153] (p865013-ipoe.ipoe.ocn.ne.jp [153.242.222.12])
 	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 68KBG36c088236
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 68KBG36a088236
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Sun, 20 Sep 2026 20:16:15 +0900 (JST)
+	Sun, 20 Sep 2026 20:16:14 +0900 (JST)
 	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=GWp1qZjKZJDBgpGF1xqb2F0C/RBOoHyL11jPLC8n4jE=;
+DKIM-Signature: a=rsa-sha256; bh=6lniNaSo1hUoB3R0uLY0fE5jF1IOAjXaMQncZzAQRLI=;
         c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
         h=From:Message-Id:To:Subject:Date;
-        s=rs20250326; t=1789902975; v=1;
-        b=oIHGjcGoZs8L8idyNxvQRy4DBmOkG1C+oz6eKCuD2GT+YGuCFF4A60sdJgGVnQZN
-         PP+AeuXNFbNOW2SG456aYFwD1DRuhuy0y6OokG3I+1drSG7NyvEswH+Cq5Dnx4rC
-         KoQi36jDonppgWwNMOdUNvbnvgkKm9sP1FzsJrVh7vVSzAoCMpFGMsCGMZImXL9b
-         JPKvgdqLr5EaoZ0vDw9n+qrmHerbWxhi7ZAUIp/o9ZpI6y58cUuzFE9ulpMxy6UV
-         tnp8ft2FIep8yluOYwFc8ZypmFrSmYdC8PDYYpZ5FpzomBvVx4+x2mnkSsCIZDjR
-         69pOg41qFlH74QY+iV8iqQ==
+        s=rs20250326; t=1789902974; v=1;
+        b=Ydv+XW7MqG3MpqFwfBQsTeZKK41NMdQ5o+i6/so/dXeVHaVb9X9TLrTIMRBSncwa
+         0hKqvj8g9wIO93H7kZWijnxWEhjVFklH6yty7dfrLI0MOb9Mz3TJ2sz4nlP0O5nA
+         aoKDoBmmZalSgSvKEDD0tIqdZo77NaD6L0TuSmApEGPulzvXBv3hkKEmW+/UjsiW
+         TpUPIsVtyQVP+bZKwS8ZV78dHsJHfWEyr9PWIgjBKUS42EkQ8qo1qO9c5hRHCXCe
+         bWGYUAbzOh0Lq9oQ765tvE8ZZstUs57XmG9pxPIS1y6P57ZKfyPCFtPJyN9HnLUm
+         lVx9tcPCV3OvB10U1F5a9A==
 From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Date: Sun, 20 Sep 2026 20:15:56 +0900
-Subject: [PATCH v11 15/21] KVM: arm64: Don't clear vcpu->cpu in
- kvm_arch_vcpu_put()
+Date: Sun, 20 Sep 2026 20:15:54 +0900
+Subject: [PATCH v11 13/21] KVM: arm64: selftests: Cover PMU state in
+ MDCR_EL2
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -44,7 +44,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260920-hybrid-v11-15-03618771b0e1@rsg.ci.i.u-tokyo.ac.jp>
+Message-Id: <20260920-hybrid-v11-13-03618771b0e1@rsg.ci.i.u-tokyo.ac.jp>
 References: <20260920-hybrid-v11-0-03618771b0e1@rsg.ci.i.u-tokyo.ac.jp>
 In-Reply-To: <20260920-hybrid-v11-0-03618771b0e1@rsg.ci.i.u-tokyo.ac.jp>
 To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
@@ -71,92 +71,164 @@ Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
         linux-kselftest@vger.kernel.org,
         Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2532;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5050;
  i=odaki@rsg.ci.i.u-tokyo.ac.jp; h=from:subject:message-id;
- bh=Wo4YX+JLn2zPeTcpRRl6wn6Y1qLLImnsb8pkey2lNzQ=;
- b=owGbwMvMwCWmMbc20y1CyJDxtFoSQ9b6A3mKc0N+9P78tqUzc2vVk7nLwm4m1dgWR/9iWT+rK
- TqmU62go5SFQYyLQVZMkSWlaDe3RnTtp8KE+BaYOaxMIEMYuDgFYCL7DBj+h6Wn3HuesGXSm685
- Au+T6j1jlD5J3rF6Pefceyb2C7cLzzP8D7198Pr5eFbf2qK0BzZ/Ko4sk/lx4/4EZq/qHsvQo0u
- VmQA=
+ bh=Tfgm9WXcmRxelzdJdDKljVp7Ced7YFV3TbgyJMrdSII=;
+ b=owGbwMvMwCWmMbc20y1CyJDxtFoSQ9b6A7kd4QLLu3UnPROc6DXX/OoquWsl9m3FR2NtamRi3
+ JQaXlzqKGVhEONikBVTZEkp2s2tEV37qTAhvgVmDisTyBAGLk4BmMjiAwz/S6Y3hIeZ+5tv/Xwn
+ pVVP2WFZw+1XrMeDd6m0N/+uWHUsm5Fh5crFHjYNCnMc0pOX1zX9YlaNjosvLLDcKdq02idxeSs
+ /AA==
 X-Developer-Key: i=odaki@rsg.ci.i.u-tokyo.ac.jp; a=openpgp;
  fpr=AEDC03C9AF734F2EC26A7BFFA4BAEAA73536753C
 
-From: Oliver Upton <oupton@kernel.org>
+Add MDCR_EL2 coverage to vpmu_counter_access when EL2 is available.
 
-commit e9b152cb957c ("arm/arm64: kvm: Set vcpu->cpu to -1 on vcpu_put")
-reset vcpu->cpu in order for the VGIC to determine if there was any vCPU
-running at the time of access. The VGIC has gone through an entire
-rewrite since then, and with commit 7d450e282171 ("KVM: arm/arm64:
-vgic-new: Add userland access to VGIC dist registers") the user
-accessors just grab all vCPU mutexes instead.
+For each configured PMCR_EL0.N value, verify that an arbitrary HPMN
+value, including one above the configured counter count, round-trips
+through KVM_SET_ONE_REG and survives SET_NR_COUNTERS. Also verify that
+HPME can be toggled without disturbing HPMN and that KVM_ARM_VCPU_INIT
+resets HPMN from the configured count.
 
-Drop this remaining vestige such that kvm_arch_vcpu_load() can properly
-detect a CPU migration. While at it, rework kvm_reset_vcpu() to do a
-much more pedantic check that the provided vCPU is actually what's
-running on the present CPU.
-
-Signed-off-by: Oliver Upton <oupton@kernel.org>
+Assisted-by: Codex:gpt-5.5
 Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 ---
- arch/arm64/kvm/arm.c   |  1 -
- arch/arm64/kvm/reset.c | 16 +++++++++++-----
- 2 files changed, 11 insertions(+), 6 deletions(-)
+ .../selftests/kvm/arm64/vpmu_counter_access.c      | 90 ++++++++++++++++++++--
+ 1 file changed, 85 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 997f24f5fb91..55b07926ce2e 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -767,7 +767,6 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
- 	kvm_arm_vmid_clear_active();
+diff --git a/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c b/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c
+index 05135bcdb462..73b4f1870d3d 100644
+--- a/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c
++++ b/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c
+@@ -25,6 +25,14 @@
+ /* The cycle counter bit position that's common among the PMU registers */
+ #define ARMV8_PMU_CYCLE_IDX		31
  
- 	vcpu_clear_on_unsupported_cpu(vcpu);
--	vcpu->cpu = -1;
++#ifndef MDCR_EL2_HPMN
++#define MDCR_EL2_HPMN			GENMASK_ULL(4, 0)
++#endif
++
++#ifndef MDCR_EL2_HPME
++#define MDCR_EL2_HPME			BIT_ULL(7)
++#endif
++
+ struct vpmu_vm {
+ 	struct kvm_vm *vm;
+ 	struct kvm_vcpu *vcpu;
+@@ -465,15 +473,12 @@ static void guest_code_done(void)
+ 	GUEST_DONE();
  }
  
- static void __kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu)
-diff --git a/arch/arm64/kvm/reset.c b/arch/arm64/kvm/reset.c
-index adcb460a5287..db794d50fa18 100644
---- a/arch/arm64/kvm/reset.c
-+++ b/arch/arm64/kvm/reset.c
-@@ -178,7 +178,8 @@ static void kvm_vcpu_reset_sve(struct kvm_vcpu *vcpu)
- void kvm_reset_vcpu(struct kvm_vcpu *vcpu)
+-static void test_create_vpmu_vm_with_nr_counters(unsigned int nr_counters, bool expect_fail)
++static void set_nr_counters(struct kvm_vcpu *vcpu,
++			    unsigned int nr_counters, bool expect_fail)
  {
- 	struct vcpu_reset_state reset_state;
--	bool loaded;
-+	struct kvm_vcpu *running;
-+	bool loaded = false;
+-	struct kvm_vcpu *vcpu;
+ 	unsigned int prev;
+ 	int ret;
  
- 	spin_lock(&vcpu->arch.mp_state_lock);
- 	reset_state = vcpu->arch.reset_state;
-@@ -188,10 +189,16 @@ void kvm_reset_vcpu(struct kvm_vcpu *vcpu)
- 	/* Reset PMU outside of the non-preemptible section */
- 	kvm_pmu_vcpu_reset(vcpu);
+-	create_vpmu_vm(guest_code);
+-	vcpu = vpmu_vm.vcpu;
+-
+ 	prev = get_pmcr_n(vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_PMCR_EL0)));
  
--	preempt_disable();
--	loaded = (vcpu->cpu != -1);
--	if (loaded)
-+	guard(preempt)();
+ 	ret = __vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
+@@ -485,6 +490,17 @@ static void test_create_vpmu_vm_with_nr_counters(unsigned int nr_counters, bool
+ 			    nr_counters, prev);
+ 	else
+ 		TEST_ASSERT(!ret, KVM_IOCTL_ERROR(KVM_SET_DEVICE_ATTR, ret));
++}
 +
-+	running = kvm_get_running_vcpu();
-+	if (running) {
-+		if (KVM_BUG_ON(running != vcpu, vcpu->kvm))
-+			return;
++static void test_create_vpmu_vm_with_nr_counters(unsigned int nr_counters,
++						 bool expect_fail)
++{
++	struct kvm_vcpu *vcpu;
 +
-+		loaded = true;
- 		kvm_arch_vcpu_put(vcpu);
-+	}
++	create_vpmu_vm(guest_code);
++	vcpu = vpmu_vm.vcpu;
++
++	set_nr_counters(vcpu, nr_counters, expect_fail);
  
- 	if (!kvm_arm_vcpu_sve_finalized(vcpu)) {
- 		if (vcpu_has_feature(vcpu, KVM_ARM_VCPU_SVE))
-@@ -218,7 +225,6 @@ void kvm_reset_vcpu(struct kvm_vcpu *vcpu)
- 
- 	if (loaded)
- 		kvm_arch_vcpu_load(vcpu, smp_processor_id());
--	preempt_enable();
+ 	vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL, KVM_ARM_VCPU_PMU_V3_INIT, NULL);
+ }
+@@ -589,6 +605,69 @@ static void run_pmregs_validity_test(u64 pmcr_n)
+ 	destroy_vpmu_vm();
  }
  
- u32 kvm_get_pa_bits(struct kvm *kvm)
++static void run_mdcr_el2_validity_test(u64 pmcr_n)
++{
++	struct kvm_vcpu_init init;
++	struct kvm_vcpu *vcpu;
++	u64 expected_mdcr, mdcr;
++
++	pr_debug("MDCR_EL2 test with pmcr_n %lu\n", pmcr_n);
++
++	create_vpmu_vm(guest_code);
++	if (!vm_supports_el2(vpmu_vm.vm)) {
++		destroy_vpmu_vm();
++		return;
++	}
++
++	vcpu = vpmu_vm.vcpu;
++
++	mdcr = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_MDCR_EL2));
++	expected_mdcr = u64_replace_bits(mdcr, FIELD_MAX(MDCR_EL2_HPMN),
++					 MDCR_EL2_HPMN);
++	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_MDCR_EL2),
++		     expected_mdcr);
++
++	mdcr = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_MDCR_EL2));
++	TEST_ASSERT(mdcr == expected_mdcr,
++		    "MDCR_EL2 was not properly updated after HPMN write (expected 0x%lx, got 0x%lx)",
++		    expected_mdcr, mdcr);
++
++	set_nr_counters(vcpu, pmcr_n, false);
++
++	mdcr = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_MDCR_EL2));
++	TEST_ASSERT(mdcr == expected_mdcr,
++		    "MDCR_EL2 changed after PMU_V3_SET_NR_COUNTERS (expected 0x%lx, got 0x%lx)",
++		    expected_mdcr, mdcr);
++
++	vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
++			     KVM_ARM_VCPU_PMU_V3_INIT, NULL);
++
++	mdcr = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_MDCR_EL2));
++	TEST_ASSERT(mdcr == expected_mdcr,
++		    "MDCR_EL2 changed after PMU_V3_INIT (expected 0x%lx, got 0x%lx)",
++		    expected_mdcr, mdcr);
++
++	expected_mdcr = mdcr ^ MDCR_EL2_HPME;
++	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_MDCR_EL2),
++		     expected_mdcr);
++
++	mdcr = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_MDCR_EL2));
++	TEST_ASSERT(mdcr == expected_mdcr,
++		    "MDCR_EL2 was not properly updated after HPME write (expected 0x%lx, got 0x%lx)",
++		    expected_mdcr, mdcr);
++
++	kvm_get_default_vcpu_target(vpmu_vm.vm, &init);
++	init.features[0] |= (1 << KVM_ARM_VCPU_PMU_V3);
++	aarch64_vcpu_setup(vcpu, &init);
++
++	mdcr = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_MDCR_EL2));
++	TEST_ASSERT(FIELD_GET(MDCR_EL2_HPMN, mdcr) == pmcr_n,
++		    "MDCR_EL2.HPMN is not reset after INIT (expected %lu, got %lu)",
++		    pmcr_n, FIELD_GET(MDCR_EL2_HPMN, mdcr));
++
++	destroy_vpmu_vm();
++}
++
+ /*
+  * Create a guest with one vCPU, and attempt to set the PMCR_EL0.N for
+  * the vCPU to @pmcr_n, which is larger than the host value.
+@@ -673,6 +752,7 @@ int main(void)
+ 	for (i = 0; i <= pmcr_n; i++) {
+ 		run_access_test(i);
+ 		run_pmregs_validity_test(i);
++		run_mdcr_el2_validity_test(i);
+ 	}
+ 
+ 	for (i = pmcr_n + 1; i < ARMV8_PMU_MAX_COUNTERS; i++)
 
 -- 
 2.55.0
