@@ -1,157 +1,130 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011026.outbound.protection.outlook.com [40.107.208.26])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5337B3515E8
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 05:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.26
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789968218; cv=fail; b=m7VAqRYoAbLllnhK4qkdxN27Sls2Qn4n9PzGuhkqR938RXJYrUeTG1sd/JrQcbPRhcs0TfQRlf5LWPHU0PtLs7jKPbcoYmZ8ZbToUL/vpb+9Yr/1tg7cwoZVKqIW56QUfwmK/s1ABrA3aq5Cgj+SmzT4pUBqBIO+kH5SwHHt6l0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789968218; c=relaxed/simple;
-	bh=aSPmoKRXvgfwimCFQJCLoE1ytEpSa1CLLPZkKCNXjuk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=fqerdvU1dYml8gBCmz1vZV1DTp2richKd6mNANpw7SK/HmHUIiR1aot8KEpkVTTCQJ82rCZtoXBH6gFPnuTbyPf6prc70OGXnbrFr8140jA9LqD3Xd0q5qh8dankYVyq+/5grMzGbntniFlOOfvRncbWTfLXjHvP6U49++bP1yc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=JIITNGEs; arc=fail smtp.client-ip=40.107.208.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B6B36197B
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 05:58:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789970299; cv=none; b=V2PhdbyGE4ehe0E6OO/fEBC2vl0UFyvW4uf2xIIzhdlyE28Q9EXoqU5vucYEjWs18N7r5PqiYEmK0PsXWuk+wLmmtAKwYFBWFCiwVo9SfgYzyPKzL/sTIGOj5/0vGQmOkMd0zkswIWSGN1KI1j0xcUWSQAJge5XIPMv/gDgCozM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789970299; c=relaxed/simple;
+	bh=bdTbBlRWQDK8jCNNEaihenXcF9Ysecbf5xBOqRbbB20=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jXkm98u3cakOLa++KbHKUFv7AkvBNvhVu8uVj9+DY/cdgYDrGhTQDS14a2gA55dhFH+qheyWXRiG8u4d5G6SmzAuaRjkq1v5GvFbkttgnhNN9baQol1MDE/jnLE4XPqdPMGQBLL+u9KtO6SZ0HONi1QZKDDzwBE4qBfhIaiEO6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FZ3pcDQj; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="JIITNGEs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=e4JBAE61Q9g0HuZBQtZuFzTQMg4/OYn2B4gEFtlNS9jAR8KBs6O5rIcYC/sksx3wEzoJGhDs3t8CysEqFBd0uLqGKaF14RmyfXNHxTNmGPSxyVgkxD0hUGzfWBXP/gYLzpF4Fk5AUgc4UN3DJxeQrAEQ9256CcsjsstQWoI+BXZb2BC0fo6dUG6BLM11J2SdKtuSygOj8wqwwlC4KUdOrJSlYomfimdFUWOlB4AybT0A0uY0UYbGT+/Vqwon35eDe5lkYLwNgWh2d+iVclX6QuC3yIzvxuVwvQt8yhHqu5AiKonD2t9R86ePfg/i8RkGYk/AcF1Wgfn2KcXQb1B28g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VCvMYOmsGQxqYkB1FcPpd/Z0gGrLkf6JCFMQL2IfnlM=;
- b=D3gRd9C74R20p2N2kNagdRMUUt7F9aUPIsa8CavLTQEXE4DH6jbaYj/q3qWmKR0NzfPYQxC/oSZiMxeX+rvY0YpSORvukrsaMle0pwa0cYUPqVcul3IC73Gn72mRaaTEh2qAMkdnYazM+qRqeDzQMPUYpvDlvbCDvSS7JClO6jBjEuY0+1FrjRV4hbk4LirXFqrNGmIXVgjFMkaZRtUEkT5cQtWMTuTTxgMn6DOEiSXJjCJb7RqF1MiscriCcpOiixV8yYhhjoLht7/xxYSboqnRTbv9OUqyJYBOwrs1aEk5HOGiZvkYusQUrQUgohAk3wfTyGQ2nBMvCmssuR/wGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VCvMYOmsGQxqYkB1FcPpd/Z0gGrLkf6JCFMQL2IfnlM=;
- b=JIITNGEsvdTl7YzmhWlBHY9Eq6CHcAY/UCwylIYRbHnXE19QtqqxX63cEdE3v+usXZUojQX8a9STGqkrG7xkisz7ZKhPCdQzDaZ1v+faR4H1tTbXCJnaquv7SXigSK9FC/OUZYCUE/nquZS+TO5c52rQ/3nCam6QXzpWQhnf9/E=
-Received: from MN2PR16CA0040.namprd16.prod.outlook.com (2603:10b6:208:234::9)
- by PH7PR12MB8426.namprd12.prod.outlook.com (2603:10b6:510:241::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Mon, 21 Sep
- 2026 05:23:33 +0000
-Received: from BN2PEPF000055DE.namprd21.prod.outlook.com
- (2603:10b6:208:234:cafe::4f) by MN2PR16CA0040.outlook.office365.com
- (2603:10b6:208:234::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.16 via Frontend Transport; Mon,
- 21 Sep 2026 05:23:33 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- BN2PEPF000055DE.mail.protection.outlook.com (10.167.245.8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.451.0 via Frontend Transport; Mon, 21 Sep 2026 05:23:33 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 21 Sep
- 2026 00:23:33 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 21 Sep
- 2026 00:23:33 -0500
-Received: from [10.85.39.204] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Mon, 21 Sep 2026 00:23:31 -0500
-Message-ID: <4b931b35-0890-466f-9ee3-09b4bb9ca4b7@amd.com>
-Date: Mon, 21 Sep 2026 10:53:30 +0530
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FZ3pcDQj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789970297; x=1821506297;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bdTbBlRWQDK8jCNNEaihenXcF9Ysecbf5xBOqRbbB20=;
+  b=FZ3pcDQj7v8Jm7slBwv50u8itlyawtGiu7Hgcs1D4O2UM87GpmItzvob
+   EyBYwmMA7JTYTz7h4beLPn/Ag2HsxZN1cN4rXzMbexe0C+5o09qNH5JTZ
+   874R0E9eSJtewu6nkirBucJVTxkTXMUCHRKXFA8YnaMnIb+Nf3CyHnKgn
+   eFv6wXQZchjpdOdZQ8GD4N4rOB/tXz2voGbcqvIN5AjV9mtmE06NZknSz
+   136sR3DNZQY0Ja6JXBwWIJhk+rCXiMK3VR8vf3hIP02TuzYFU2HzXKKRJ
+   xDWBNKNyFgr9qfAuPyAN3MmyBZfCoQCfncOO02rAgeAo5saHTBjWiNxhx
+   Q==;
+X-CSE-ConnectionGUID: Ou2P0JfuTbGwUandnUqQng==
+X-CSE-MsgGUID: OoAVGGe+RueOydXym9BIxA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11911"; a="89599453"
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
+   d="scan'208";a="89599453"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2026 22:58:16 -0700
+X-CSE-ConnectionGUID: pJegh9V4R8y2fBX/wtAEsQ==
+X-CSE-MsgGUID: vI8mHHkpRAiixdGtfoU+RQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
+   d="scan'208";a="298766364"
+Received: from bradocaj-mobl.ger.corp.intel.com (HELO localhost) ([10.245.246.168])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2026 22:58:09 -0700
+Date: Mon, 21 Sep 2026 08:58:06 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Kishen Maloor <kishen.maloor@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Peter Xu <peterx@redhat.com>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Fabiano Rosas <farosas@suse.de>, Jon Grimm <Jon.Grimm@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Steven Price <steven.price@arm.com>,
+	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
+	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
+	=?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Peter Fang <peter.fang@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org
+Subject: Re: [RFC PATCH v2 2/4] KVM: x86: Add optional KVM_CAP_LIVE_MIGRATION
+ and KVM_MIGRATE_CMD
+Message-ID: <arDHbjcwaRFcHb08@tlindgre-MOBL1>
+References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
+ <20260831071304.762939-3-tony.lindgren@linux.intel.com>
+ <ab3c9e32-ab34-49bf-937a-4d3d736fb4dc@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 8/8] KVM: SVM: Add Page modification logging support
-To: Sean Christopherson <seanjc@google.com>
-CC: <sashiko-reviews@lists.linux.dev>, <kvm@vger.kernel.org>
-References: <20260907063906.1964557-1-nikunj@amd.com>
- <20260907063906.1964557-9-nikunj@amd.com>
- <20260907070024.4A7E11F00A3D@smtp.kernel.org>
- <9a5552de-0f36-41c6-8bb6-16cbba5425b6@amd.com> <aqH4SpA_567soglf@google.com>
-Content-Language: en-US
-From: "Nikunj A. Dadhania" <nikunj@amd.com>
-In-Reply-To: <aqH4SpA_567soglf@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000055DE:EE_|PH7PR12MB8426:EE_
-X-MS-Office365-Filtering-Correlation-Id: 254bef79-3a0b-4537-3792-08df17a07b16
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|23010399003|1800799024|376014|10067099003|11063799006|6133799003|22082099003|18002099003|4143699003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	9IaFaTXNB/cpswfbsNntXaC3VaGJV/yzuP9UvRJ+Jf5CYmZ4AdygX3JutU+aiHYyG66ff0sNtzC6JeEaPdrp63uUf2sibgLfo+ZzK/lVRKLlEvb/By1V2xcBlflbDa4sB1a76xXvyOovAMZ6YWIOTbdfAUsr2QPLYdjbmeK7wCxht326UflNhSegFsunxb+nxy4eoNz83NbfOCoJQ9zcp4hY/6F6MGCJy60h3bRMyIgy/wpoD73fu/np9dvoG4nPDGRb79WVRE7ExWYXt6FZ7N46dONeqFEzHqidBhhZVkThMuvFZNXngq+PEWMAoU3MaQ+6n8jHFmotl8fpc78SrTqPXPN4FM3iHXfOzAJ7zdv3pxoUII5oNLutOosOzG/+C11pC4LQs4y/Ekp47MDeP4dCppgd89XP58ZuN4L2Hkv60CSRzM5/P0sVqC4LIlXcIu4l1OgzGQ874iRtbxx/FHoO5eXoB4II5g2xENaRqGVkyINtrsGQVjJ9V0W4dPWArqyZkKQybJ+8bP015FVq5bL52d3Omv4WvXkR8qRTSuySw9WXN0G7dlePwqcQ+7cFW0ePjuc8j1juiicddqsJYcQdEpHvDwlekXS2Iohg2/N8ahsDSq4hl159LSNrp9aUxuod3tIxnrjFVZL3tE39uBa0SK00dthXRpyLicLjxQovduM5Suuln/htxGxzw3vd/DwV6O9xmB4QwzAhXdkwWg==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(23010399003)(1800799024)(376014)(10067099003)(11063799006)(6133799003)(22082099003)(18002099003)(4143699003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	QCNxYO+3ar+OdAFWstkqq7pB8WrOejZyVm9hV5VWosGnCqVq1s7kdyKJSsKcgnQYMCvPMqf9hTn2ClU85VqXHp3olkqdhLyaQ1MQlfzIsUngIQ96lvB+lb574/mg8qd2fG8dIgBkMYSy9rIC1LYag+6OkDDRzz7c2rEKe4nLdrA5K2NHl6JICH0TdemlxvSBw7Y/CUpqeatEluCD9vNa4lh7xKr/Oh06wOGLXBZAub+akjf5xNaWUuv+nkaWJ8oCFO7w7dhXr+TPpDLeIxo4TIDqzj/0wzIZiPlRZmueQ/60/uMrhVVM9H9qDTStM2KevRsdQ9BqdfaNsZZd1zrDa/sdtoPx8EdPBDxYkRv+PWnEJX1HXO4eRj/oQjj6EbKU5IIl6MimRbE5Lw7jpPVf3ng9BjewFBGpcsdWkOsBsFR45Q07llzd0ut1d3S6rl7D
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 05:23:33.6736
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 254bef79-3a0b-4537-3792-08df17a07b16
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF000055DE.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8426
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ab3c9e32-ab34-49bf-937a-4d3d736fb4dc@intel.com>
 
-
-On 9/10/2026 5:52 AM, Sean Christopherson wrote:
-> On Tue, Sep 08, 2026, Nikunj A. Dadhania wrote:
->>
->>
->> On 9/7/2026 12:30 PM, sashiko-bot@kernel.org wrote:
->>
->>>> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
->>>> index 73f37b050d0a0..da417c4c59154 100644
->>>> --- a/arch/x86/kvm/svm/nested.c
->>>> +++ b/arch/x86/kvm/svm/nested.c
->>>> @@ -901,6 +901,13 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
->>>>       vmcb02->control.msrpm_base_pa = vmcb01->control.msrpm_base_pa;
->>>>       vmcb_mark_dirty(vmcb02, VMCB_PERM_MAP);
->>>>
->>>> +     /*
->>>> +      * PML is never enabled in hardware for L2.  Make sure that an
->>>> +      * unexpected PML write would trigger a PML_FULL VM-Exit.
->>>> +      */
->>>> +     if (pml)
->>>> +             vmcb02->control.pml_index = -1;
->>>
->>> [Severity: Critical]
->>> By intentionally leaving hardware PML disabled for nested L2 guests in
->>> nested_vmcb02_prepare_control without informing the KVM MMU, doesn't this
->>> cause all memory dirtied by L2 to be silently lost?
->>
->> No, kvm_mmu_page_ad_need_write_protect() returns true when
->> cpu_dirty_log_size is set and the shadow page is in guest_mode,
->> which forces write-protection on L2 SPTEs instead of relying on
->> hardware PML. L2 dirty pages are tracked via write faults, not PML.
->> This is the same approach VMX uses for nested guests.
+On Thu, Sep 17, 2026 at 09:33:18PM -0700, Kishen Maloor wrote:
+> On 8/31/26 12:13 AM, Tony Lindgren wrote:
 > 
-> And FWIW, because Sashiko's hallucinations made me double check, this series
-> doesn't advertise PML to L1, i.e. doesn't need to implement and wire up
-> kvm_x86_nested_ops.write_log_dirty() for SVM.
+> I was wondering how a vendor would use kvm_transfer_buffer for a command that
+> passes an input and also returns an output. size can describe the input
+> length or the space available for output, not both, so the kernel has no way to
+> know how much it may write.
+> 
+> Two suggestions below. They're orthogonal.
+> 
+> > ...
+> > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> > index 5f6c1ce9673b7..d9291a8a97bb1 100644
+> > --- a/arch/x86/include/asm/kvm_host.h
+> > +++ b/arch/x86/include/asm/kvm_host.h
+> > @@ -2010,6 +2010,8 @@ struct kvm_x86_ops {
+> >  	int (*gmem_prepare)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
+> >  	void (*gmem_invalidate)(kvm_pfn_t start, kvm_pfn_t end);
+> >  	int (*gmem_max_mapping_level)(struct kvm *kvm, kvm_pfn_t pfn, bool is_private);
+> > +	bool (*cap_live_migration)(struct kvm *kvm);
+> 
+> Should this return an 'int' specifying the maximum buffer size that the vendor impl
+> requires/uses? Userspace can then learn this once.
 
-Yes, SVM nested PML is on my radar, I have been working on it along with
-selftest coverage in nested_dirty_log_test.  The test covers nVMX as well
--- dirty_log_perf_test -n runs an L2, but never enables PML for it, so
-KVM's existing nVMX PML emulation doesn't appear to be exercised today.
-Will post it once it's ready for review.
+OK that sounds good to me. I assume you are thinking the maximum hardware
+specific buffer size per thread? As in 512 * 4096 bytes for the TDX case?
 
-Regards,
-Nikunj
+> > +
+> > +struct kvm_transfer_buffer {
+> > +	__u64 address;
+> > +	__u32 size;
+> > +	__u32 reserved;
+> > +};
+> 
+> Should this struct include a 'capacity' field (u32) that is set on each command?
+> It would be the number of bytes writable at address.
+> size would be the input length on entry (0 if the command passes none), and the
+> number of bytes produced on return (0 if none).
+
+Hmm so the transfer command return value can return how many bytes were
+written of the input. But yeah we don't know how many bytes were written
+back to the transfer buffer as result of the transfer command.
+
+How about if we add the bytes returned to the transfer struct? Then the
+kvm_transfer_buffer can stay as just a buffer. 
