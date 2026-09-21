@@ -1,191 +1,136 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09DF4478E56;
-	Mon, 21 Sep 2026 14:17:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90EF246783
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:19:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790000228; cv=none; b=dJ7rcNLzeYMHfNWuvl7jYXgg5F7shE3hJA/mJ7OG3m+BvYONwRAEycutibH+uL6Q+4wgkdDRohFuLj2OARimWWP3J6tAsvGXpUSej5G7RPYsjvckCh1BNw9KF9CgjExcsYQLaQKEBQLH4GGyg3neJ2CIFqLYK2BZjXmeZGLZxcc=
+	t=1790000348; cv=none; b=I5P/y054hjlSKa0rYC3RjUR0qEdeO9PaESToYQX43ZRBB6UQRbrxqChBbRXb3Iz5dOw9bUckdO2t0ZE6/wWHnjMge4x91R+JVb0k1rTwrBR/1aQy9jOxiM4GnNCVbBZIT4QXkfU2YWs4BOrkI5UBXiwrmBlFY3vicyPUuTDExXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790000228; c=relaxed/simple;
-	bh=VxPgw7TqHxNsUYbyjxsPVYtoYeZ513ZKxEdNjRdpnaw=;
-	h=Message-ID:Subject:From:To:Cc:Date:in-reply-to:Content-Type:
-	 MIME-Version; b=StbUVv/2/bMGvVG+J4dt5e8xuTRyrLKHKKRiASNydaRAJo+HYMv5eHf1bSWNWpqLkddN56IWVNe48HDXodfOkd7E+L4RoYq8lDu/TqkHbOssYHrOJjcRsYeq+PeOVlQ+wddRSj1qDDuJVEGsIU7qleXvvYGx51rwkQou3uNhUIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=hND9vOsS; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1790000348; c=relaxed/simple;
+	bh=YeeC+2+2L+S8+5NDHnlYj5S1MfCL5SiHgjRm8O/D4Lk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hhGEWbEWr6sDxbAjLCKOXPQ2MwBMHoG52hrzP9P1Pw0DpXK+u5R/lJxIvNrrpWYIefcFVQJOrjdF+/5cZwNhoW5dOcZcHs7IYGHDmhtZ4id9kQneBF25yAu0vmkODNd889wsDL40g1IS9kyl8aDFp9t8J7FKdnf6dOAoL3Z94f8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=NCoVhUqN; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="hND9vOsS"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:in-reply-to:
-	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=VxPgw7TqHxNsUYbyjxsPVYtoYeZ513ZKxEdNjRdpnaw=; b=hND9vOsSDwHag1soPaknulsBUT
-	REZyUgkpa3A7ojqOg2PvR6VDuEmfFdJ0f9Ukg+AYnCc1WNJRYqiYWj7Gs+29lKOuN0+iVCOAzVe7M
-	C0T4AWxmG3PGYzJenw5KCN6BdLMnXVh8ryIatlvEYU2qFKBJdhQMjUVuAFzYXRG1sRnGvbOscL40v
-	90vntpPMYV2rY1xsAE84W279+gLWEdYzObk67gHuJk8VtPP00/AZWxFBBK4Lg0nFIg0+IQX18yiFJ
-	tjY/CrgD2pwnV/9c3kuojm1dTeSLwMr6ZkpGVdQqsu8Qa7o/pyOBxo0hhtN8VqxrTHJ8Fn2LONw5y
-	rbFXZwJg==;
-Received: from [54.239.6.188] (helo=edge-m2-r3-110.e-iad50.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x8epL-00000004LCt-15U2;
-	Mon, 21 Sep 2026 14:17:03 +0000
-Message-ID: <ff980ee262d5349e02f9c5a509c6b0cab1653631.camel@infradead.org>
-Subject: Re: [PATCH 07/17] KVM: pfncache: Add guest-mode pinning
- (GUEST_USES_PFN successor)
-From: David Woodhouse <dwmw2@infradead.org>
-To: sashiko-bot@kernel.org
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, rcu@vger.kernel.org, 
-	pbonzini@redhat.com, seanjc@google.com, paul@xen.org, paulmck@kernel.org, 
-	nh-open-source@amazon.com
-Date: Mon, 21 Sep 2026 16:17:01 +0200
-in-reply-to: <20260920215320.84B701F000FF@smtp.kernel.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-3WoC2uP+6BndPOxo1ODc"
-User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="NCoVhUqN"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49e66390995so16447715e9.2
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 07:19:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1790000344; x=1790605144; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hqbKKNT9ux8l56CK0pHK3up35FrU6+62NPcNC6MTw/A=;
+        b=NCoVhUqNh1KeDX+AI/gI3baVbwsH8vT/EvyM1fDiRWfdRYUTeqoBCPfi80ir7uPKUS
+         dI+AugkJt9KKYn4f/MU14AkxIj0jQXzq+xrzYty9smYF8o5440oUH9YeyiUShiG35TYn
+         8Zm4GToTfnTBLaQrO+7lhE+DaPCZkozYpOTsGhX3uoanRwuEsieK4FZ7OMsoEatrjp/N
+         hyFHkTI73a765SfAz8y4+jNOa8jjV54f7IIVFHRYaHP+2mcKDSy9jYQTO/y2xrf6dgtG
+         iXwtYSL1OwdlfTYQ6OzTouqLkEujGaM4a6Vg1mnyxpD9+xE4RERw7FW+bKWFj1pWWNRM
+         itnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790000344; x=1790605144;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hqbKKNT9ux8l56CK0pHK3up35FrU6+62NPcNC6MTw/A=;
+        b=hPG4uUgWf3PoUlniRMruXLuZRo4wvcmZF3XI4YD5LTrnZ6hmuQ1iOKI2KX11v5Bjs+
+         8ZMUGEyxhwnZkecw5Bzg42ZSF+FxqEBN4gkKIfOfGQRRojlMl0lNaAfGuDNNPa4APbp+
+         YaHKO9wMq8INFO/0r4DEGHpvktWJ2mEKba9oGtttnYhK/DgCL5X/ryFhGbriMbBiTrY4
+         RP7+wO3Q5z0MvUTX5BG7sZ8x2x5nCSi9p/itI+QzyUa+PJO+4BPLh8E9HF0FdLWnpg0T
+         aN4H70MUTBaD0RsfaLR473roKMIQlHBvNiMCY6Fu79sdM2gOwTKBQzipCLFHiA1s4/OG
+         2vjg==
+X-Forwarded-Encrypted: i=1; AKwUvBz1uecfAIbPXmXgu/U+yOuuVh0cxp1qfpDTj5KebCMe3uOiHXzT42tkk5Hbgqrd+G+mZWI=@vger.kernel.org
+X-Gm-Message-State: AFuF++lKJbuD7cUm3FNrsK2nDC3bUkuoRw1Gkpmh95/9I/CzNJocmMox
+	PtM/c5asUDOGRky9C30SdiKcQT9t6bP5FFNrhvnbWLht2R6Xbfcr+8RsYd1TqOJ33Pw=
+X-Gm-Gg: AYBFou1ihuf/2T+Bo1esjOVLZKS4lKdLWC72iO1zFmawk4mJXaO74yqFfvBO2af3xBj
+	wW7uuD09ZfCTpdsTlv/9DVQxHGkabduEp7HbPUEsLXnxDdpNjK2ygOf5KR6rQ+xz+BbchF4DuV2
+	nnV8RBGPKjWEXBC6er14PxYhiyfUCl/gtbeuTp6TuVR2izd74YyZyIxpvzvYM72bCNp/glfRA2+
+	qW+Ofw1YzObr2BrYmKaSDDskx68jg0PNMSHUGS1V3GTv60m4yxRABmDGeJTIAXjy+g0ZQODDSvQ
+	Netx8xSUPjSuHR4fbqEQBOyRh0kI2nzornMjSHiaxISEjdvrV8mU9oV9mhCBQDPPzF+a22/wOpQ
+	/J+VZEFHyAvslSuusasHQ8KBeBAp/Xd3eNX1B/4EeX2OJhcN5PbeJtWuX4CE2FKSBCJjHLJDWrM
+	AWm8UL1NT3cTLCziQkotcbV3vGQqUTECzlvOVqd2zAG6onOQFeNwo0HDnDJxDtco9Elpd8Q5Qz/
+	CPaG1nN2DIhqc4yWVL6gZ+6S0IMNf6SlGmUbYkYMxrFZSO1SAXDkqicN3jzDA==
+X-Received: by 2002:a05:600c:698d:b0:49c:fc6c:be06 with SMTP id 5b1f17b1804b1-49fc5851ea2mr149001505e9.29.1790000343951;
+        Mon, 21 Sep 2026 07:19:03 -0700 (PDT)
+Received: from localhost (p200300f65f19a904d4f76eed31f2ef79.dip0.t-ipconnect.de. [2003:f6:5f19:a904:d4f7:6eed:31f2:ef79])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-49fcd068124sm226896045e9.3.2026.09.21.07.19.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 07:19:03 -0700 (PDT)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>
+To: Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	=?utf-8?q?Uwe_Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Raag Jadav <raag.jadav@intel.com>,
+	"Martin K. Petersen" <mkp@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Jorge Sanjuan Garcia <dev-jorge.sanjuangarcia@duagon.com>,
+	Jose Javier Rodriguez Barbarin <dev-josejavier.rodriguez@duagon.com>,
+	=?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Alexey Gladkov <legion@kernel.org>,
+	Hasan Basbunar <basbunarhasan@gmail.com>,
+	Hugh Dickins <hughd@google.com>,
+	Armin Wolf <W_Armin@gmx.de>
+Cc: WANG Xuerui <kernel@xen0n.name>,
+	kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	Sudeep Holla <sudeep.holla@kernel.org>
+Subject: [PATCH v1 0/3] <linux/mod_devicetable.h> deprecation continues
+Date: Mon, 21 Sep 2026 16:18:48 +0200
+Message-ID: <cover.1789988540.git.u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.56.0.rc1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1180; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=YeeC+2+2L+S8+5NDHnlYj5S1MfCL5SiHgjRm8O/D4Lk=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBqsTzI0TOeHEQB9Maz2NC3JCpfSuBkzPvIF0T5H Lqgf39rKXmJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCarE8yAAKCRCPgPtYfRL+ TmLtB/40aAYP3C3wo4bv6SBsJRxepvOO+jcl0y6KAeoCenvhnVPm/U5nlXY7fUlejd7q3fl0qIH 3wunXaEyWa7N0Hnxp6GBFKmtIyIshbBYavzyzDHP3d5fsKsZ6Ujrq+B/nKu8ErQAj6mJ/WiA/NW Z1n2h7rV+CZzXz2YPqlfSPmNoPgaAOubluHd4AG2oZE2ZXvRQFq/K1UITc7sQJfWHXCJVU22n3n 3M/ol8XaTDGelOFaTVk2GZcRRMLcy2GIMo/r/Is5xaVPfXv8VaR55Ome5joYVhi+rg/rpz9KFWS SyHC1Dd9naehhr1ePCR2X7eNJgguLkS34JjzQc5kFkpvoghu
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+
+Hello,
+
+this is a next step in the deprecation of <linux/mod_devicetable.h>.
+scripts/mod/devicetable-offsets.c and scripts/mod/file2alias.c are the
+only users of that header that use more than a few device-id structs. So
+their number of lines actually grows when unfolding the needed includes
+into them. Still it is a reduction in build dependencies.
+
+I suggest to take this via kbuild during the merge window. Would be great to
+cook in next for a while before.
+
+Best regards
+Uwe
+
+Uwe Kleine-König (The Capable Hub) (3):
+  Move struct cpu_feature to <linux/cpufeature.h>
+  devicetable-offsets: Include the needed device-id headers instead of
+    the catch-all
+  file2alias: Include the needed device-id headers instead of the
+    catch-all
+
+ arch/loongarch/kvm/main.c         |  2 +-
+ include/linux/cpufeature.h        | 12 ++++++-
+ include/linux/mod_devicetable.h   | 13 -------
+ scripts/mod/devicetable-offsets.c | 57 ++++++++++++++++++++++++++++++-
+ scripts/mod/file2alias.c          | 56 +++++++++++++++++++++++++++++-
+ 5 files changed, 123 insertions(+), 17 deletions(-)
 
 
---=-3WoC2uP+6BndPOxo1ODc
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+base-commit: 93f51579e7df248780214094418f205253383cc5
+-- 
+2.56.0.rc1
 
-On Sun, 2026-09-20 at 21:53 +0000, sashiko-bot@kernel.org wrote:
-> [Severity: Critical]
-> Does the early skip condition in this loop fail to check for
-> GPC_GUEST_USING?
-
-No. GPC_GUEST_USING can only be set while GPC_VALID is, and whoever
-clears GPC_VALID is responsible for kicking any vCPU that was using it
-(and waiting). The vCPU can't re-enter guest mode without servicing
-that kicked request, so can't re-pin without a full refresh.
-
-> [Severity: Critical]
-> does this zeroing of the state in kvm_gpc_deactivate() hide the
-> GPC_GUEST_USING pin from concurrent invalidators?
-
-It kicks any vCPU just like the normal invalidate path.
-
---=-3WoC2uP+6BndPOxo1ODc
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-K2xbGSpPlDGrCI+j2e2ujU4AAAAAAAA=
-
-
---=-3WoC2uP+6BndPOxo1ODc--
