@@ -1,97 +1,118 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF7E4AC14D
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:11:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC9A310645;
+	Mon, 21 Sep 2026 14:17:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789999878; cv=none; b=WMRtuzhRVRbPRZAI6djiuGPknwDXzdnzHbGN3/nnykGfRP20wQN0pZYvvd6gw6U7LjNkLnmfMctVoFcn9FQSjOawz5AyNRyDuXkdtqV1m3ckbVZYqocTbbFzAHWNP1l+4GShnkmWUUynHwxH2zfgJl8l3fy3j4VUePhr80Vp9/8=
+	t=1790000223; cv=none; b=t8z0GV/wfEHTWpH7Im6YwPXKo56+ZrRxB1Er053UvIylTIkVsBQQc6a2UetcVzQrE5TyKGNY8IgcFEzTY+noUqWT7E2jlqbH8+qoGA9KfAAN3N0oHLHfhSGZY7RMmlUTSigpjRolnkj4ozN2kehuy+Q/1seZ9aZrZhkTfkouo9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789999878; c=relaxed/simple;
-	bh=B4QJF82dna8D9ggBsF8oeK2V+6NAw7hoRbDRKemE+iA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YBdox7IPh0CX3F6Bl8oJLZtHT9pKrspkjPhaHw2eHa8kA6rTBk1f9LcHJjWdZiinw0KiQYwma+YEs6nSmV7yjEuUUMCgouDwX4mUz6tWYdgXuKewur8iKMO4BitAuXR/6KOTFyFgxi1LveJjxRzLMykPLT745RLockqGwkJF7k8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bw7ZHcUl; arc=none smtp.client-ip=209.85.214.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1790000223; c=relaxed/simple;
+	bh=2qq8KfM2YOSpp0BCA0r02D0yFEX0yj1ZCE2mOf/9jU8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Dvsnsa7tSiUGP7qrNC9KEkbhzekSkUgFJkJhZUy4RDKn/HeW0wjGQu/GUX1CsTExsXHr5l3o5rIJw3Tr4+n9oe3SeVCQ/CQT08U+tpSsBo/vgDdRpYLpZ7LJCjtVSxIZvbcOUfxjQXqMRCC8utXA73VqaMDu/ngWt50T/aSLE1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QBfd496z; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bw7ZHcUl"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2dd53f2b27cso38397355ad.0
-        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 07:11:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789999876; x=1790604676; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KuS+RsQ1XJKIcaJnDQOiwRD0nOJzYFvdBOhw7tWIQmU=;
-        b=bw7ZHcUlYm1jgzRP4VFhKS6O36dKIPYhDyV3fP5jMhQUi6jvrPqMjgHOaxr3HcMIv1
-         uAc5ozk4tAh4cuKUb40b44e0u6+Wo/2OX81YIYCeHUV+ZgMaTor+WwrdyErwYSpwIYhM
-         BlHCrDAALhwRNe9exe0ozYlOJiFfyVNt9Tq7MKTE86MSqga7UmmZIrcU+yh8oYihWTGr
-         2bSc+l8H9XSSZkeF4HPyS2eSx5F9mkJ/y2FRgI+x07cNG+E/+fkDNt/Ii8aDgCegY1nA
-         v2RkYXA/Q5qUJiX4u5tej5HqUqXgRqy+cVmpBiBA3pvBB4RX8vpIkmB/Jstah+po9C1G
-         hl+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789999876; x=1790604676;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KuS+RsQ1XJKIcaJnDQOiwRD0nOJzYFvdBOhw7tWIQmU=;
-        b=Mq1aKZo8oC96HdTKb9HAWS2gSRiW6o5Mp6Y1ax93aq+XVDS++8ZQVC8D1geFXAmA4G
-         3a3siiOey62b15f+w3I8rnsHAd1C0EHCcR+1r7FB2KR2siZxQ2bz1+cqjoA2LZNW/tQI
-         sU1NgpW5QMB5B7jVG9keJenr7eBDVXzm26+z5tiIq5nFqFZulYr2tkBQEPkS3OoKzqf2
-         oZU+qC4L5uZGMVUiE3WeQm8WeIQwsFqCdUFGLxdwZA47Cu3nGPAU2urcd0fbNTgY6Mfz
-         OSHl8qJh0J2DUId17rHELcdLidRRLr7TU3i9SCArdcO1mwVO0YJhVuO8/ieUfBn77OjH
-         pbmQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwwADFbFjYcDrHm7UVZCBl/WIXVNCbYQEly4yNMbkjih2Rn+3P/ZsfnwZaSOLoPU5fjw70=@vger.kernel.org
-X-Gm-Message-State: AFuF++kyQ3Am5TevCedq1KmPl7orAxerDlsBv4jU/CCsWaBZO1IFtSWO
-	228FRMCg7TCLiVFJyh8TW2KNVb4ww+C/PvVN4UJRjpdtZh4L/YBC0JG22Jx4atc95koYXngG0o/
-	TJzJVFg==
-X-Received: from plbd17.prod.google.com ([2002:a17:902:f151:b0:2dd:4fe2:d786])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2349:b0:2dd:c100:4b73
- with SMTP id d9443c01a7336-2ddc1005ee4mr92390435ad.42.1789999874739; Mon, 21
- Sep 2026 07:11:14 -0700 (PDT)
-Date: Mon, 21 Sep 2026 07:11:14 -0700
-In-Reply-To: <7efe2260-5c11-4e8c-812e-dd1e215ac3e4@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QBfd496z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CFD1F000FF;
+	Mon, 21 Sep 2026 14:17:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790000221;
+	bh=JVtOhCEnFF4VMLoP4FDqz9BM7LYVVOhqz0dAz47yYnM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=QBfd496z8brZlJiAq6yr49Fz4QaVh5Qg03HGrh16xJAtRh+HIlk9l6PDEhrkG65dI
+	 ekltsVd/Z4vbRFTGL02WUqDhwx5320Ni2bbK8B2KqQtYRDtEdyYNLpkZ7D4yg+BRLF
+	 tMuZMQTIsY9F8gCBCD2z+LpDN7PXLVlREPUbD1SmfXA8tL2JC598bSyDW0Sqw50TVE
+	 FhC+lit9CAR09D+jGg4onNf3MBXblWUQxF2652xGdtdYA/ygNyGOjUTl0/FYkzF+Oo
+	 eA9MabTRscmD+43/IjWikviUV+7nL/U0yVRQSnlrfuYMuum6mwf6wYNu4haQh2o6IK
+	 1YzSfFUMX9Yhg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 3/3] KVM: arm64: selftests: Test a timer set past the
+ counter's wrap
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Fuad Tabba" <fuad.tabba@linux.dev>
+Cc: "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+In-Reply-To: <20260921140427.2211373-4-fuad.tabba@linux.dev>
+References: <20260921140427.2211373-1-fuad.tabba@linux.dev>
+ <20260921140427.2211373-4-fuad.tabba@linux.dev>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 21 Sep 2026 14:17:00 +0000
+Message-Id: <20260921141701.33CFD1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260914181223.289061-1-seanjc@google.com> <c645070e-9829-4f98-bafc-b5d44ff2db45@leemhuis.info>
- <7efe2260-5c11-4e8c-812e-dd1e215ac3e4@redhat.com>
-Message-ID: <arE7AjkOyuadAFBY@google.com>
-Subject: Re: [PATCH 0/5] KVM: Serialize vCPU creation and revert vcpu_ids tracking
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	Jean-Christophe Guillain <jean-christophe@guillain.net>, "=?utf-8?B?UGF3ZcWC?= S" <spawel523@gmail.com>, 
-	Linux kernel regressions list <regressions@lists.linux.dev>
-Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Sep 21, 2026, Paolo Bonzini wrote:
-> On 9/21/26 15:57, Thorsten Leemhuis wrote:
-> > On 9/14/26 20:12, Sean Christopherson wrote:
-> > > Serialize vCPU creation by holding kvm->lock for the entirety of
-> > > kvm_vm_ioctl_create_vcpu(), and then revert the now-redundant tracking adding
-> > > by commit 97d65b544f48 ("KVM: Check for duplicate vcpu_id as early as
-> > > possible").  I botched the math when justifying the vcpu_ids tracking; it's not
-> > > an extra 256 bytes, it's an extra 2048 bytes.  Roughly doubling the size of
-> > > "struct kvm" tripped x86's KVM_SANITY_CHECK_VM_STRUCT_SIZE, and obviously isn't
-> > > something we want to do in general.
-> > 
-> > Hi Sean! Thx for handling this and sorry for pestering you, but I have
-> > to ask, as this fixes a regression that was already reported two times
-> > and introduced this cycle:
-> > 
-> > What's the plan to merge this? Is this aimed for the current or the next
-> > merge window? Ciao, Thorsten
-> 
-> For this one, but after fixing the PPC and s390 cases.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] selftests: flaky test due to scheduling delay in test_timers_pas=
+t_counter_wrap
+--
 
-Ya.
+commit 8788b1ebd8d97a89915e8766ef7a7c75ad83b3c9
+Author: Fuad Tabba <fuad.tabba@linux.dev>
 
-> Sean, if you're busy I can send the v2 myself.
+KVM: arm64: selftests: Test a timer set past the counter's wrap
 
-I'll get it out today.  I was traveling last week and got behind one a "few" things.
+This commit adds a KVM selftest to verify timer behavior when programmed
+with a cval past the counter's wrap point. It programs an unmasked timer
+and tests that no unexpected interrupts fire since the guest's counter
+cannot realistically reach the deadline.
+
+> diff --git a/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c b/=
+tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c
+> index d9c9377a63256..69986a7f0d37d 100644
+> --- a/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c
+> +++ b/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c
+
+[ ... ]
+
+> +/*
+> + * With the counter at wait_ms, a tval of -(wait_ms + long_wait_ms) puts=
+ cval
+> + * within long_wait_ms of the counter's wrap: a deadline further away th=
+an the
+> + * counter can reach. Unmasked, so an early ISTATUS shows up as an IRQ.
+> + */
+> +static void test_timers_past_counter_wrap(enum arch_timer timer)
+> +{
+> +	s32 tval =3D -(s32)msec_to_cycles(test_args.wait_ms + test_args.long_wa=
+it_ms);
+> +	int i;
+> +
+> +	for (i =3D 0; i < ARRAY_SIZE(sleep_method); i++) {
+> +		sleep_method_t sm =3D sleep_method[i];
+> +
+> +		local_irq_disable();
+> +		set_counter(timer, msec_to_cycles(test_args.wait_ms));
+> +		set_tval_irq(timer, tval, CTL_ENABLE);
+
+[Severity: Medium]
+Could this sequence lead to a flaky test on a loaded host system?
+
+If a host scheduling delay exceeds long_wait_ms between setting the counter
+and writing the TVAL, the guest's CNT can advance such that:
+CNT > wait_ms + long_wait_ms
+
+When set_tval_irq() then executes, the hardware calculates the absolute
+deadline as CVAL =3D CNT + TVAL. Because TVAL is a negative value of
+-(wait_ms + long_wait_ms), CVAL evaluates to a small positive number
+instead of wrapping around to near U64_MAX.
+
+Since CVAL is now less than CNT, the timer condition (CNT >=3D CVAL) is
+met immediately, and the hardware legitimately fires the unmasked timer.
+This would cause the subsequent assert_irqs_handled(0) check to fail.
+
+> +		sm(timer, msecs_to_usecs(test_args.wait_ms) + TIMEOUT_NO_IRQ_US);
+> +		local_irq_enable();
+> +		isb();
+> +		assert_irqs_handled(0);
+> +		timer_set_ctl(timer, CTL_IMASK);
+> +	}
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260921140427.2211=
+373-1-fuad.tabba@linux.dev?part=3D3
