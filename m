@@ -1,57 +1,57 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A60C4EDCDF
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 17:44:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1D14EF133
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 17:44:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790012692; cv=none; b=RmJ+hhNNsMpDi3U3JhZ9HdCP4dnOP29KJTyRj3UkC5+oe6+ggHyAO6WfYMMVNYKqJ04RySb5tB/7AoXC55Srid6GFcRYsbj8H13tKIFLCEZdnvyzfe+88TQnB0N3NxInysR7+1vZ/7H4dWGLuU4BzWYy7AC/RZt9VUIVaszvmC0=
+	t=1790012693; cv=none; b=SP4njvx1+vpEfkK+XjKCwUdV8AlFf1dlK3MmoSC2TaIhZgwat+dB9V4IQOyctLO0d9eitHWKZ5KRTwbYwKGnLBmKy85tWyeVszacmqCQr94SFulP+D6oBsuiym+PwBeS4Ndkw30AFyJdudGWF31uRnKvyLZBnK+0sn2SaK9FLuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790012692; c=relaxed/simple;
-	bh=j8ssnULdPPzVZi4sm7QHZinEQxPvi5qB+JfHrPlZuss=;
+	s=arc-20240116; t=1790012693; c=relaxed/simple;
+	bh=CNhibckm2761zC3hAPFvim0N4m7lGBRenE1P2zWSHJk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gs+f/lViiJv2UznFv/dkeBAy/yHZqWbAISooFnyZWMqgfvsPndUT+b/NhjsdCPuyEiUDO9a9EXAdy+w0PHjR2oqCvKCUD7nt8/7vOGTG+Nl1hd6lrhcHsKPQ8a8U3k0gXlhmu2latpLUB7XGAzMj/4j74SE8JczN3UOg7xtOo3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AcYsIzqN; arc=none smtp.client-ip=209.85.214.197
+	 To:Cc:Content-Type; b=FWzW30eFTzLzoULfWSPY144IyoNCznaZB81Jxx6mmJCcwX9McNcA+1tHFoa3PRoTcUUSH0/LHhljBxLmjzFijQD7VDoCB8p02GErLhidLJvSTKJDFA36/MxrNmTicq+7M7VJ5XP2Mbs8TJRTa1RDJDOqlg0scpKqU/gQmyhtNKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Bb3voCAv; arc=none smtp.client-ip=209.85.215.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AcYsIzqN"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2db87f759c5so62960915ad.1
-        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 10:44:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Bb3voCAv"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc21bc2923fso2938902a12.2
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 10:44:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790012690; x=1790617490; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790012691; x=1790617491; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=Hyb3zhkpLvcha2XPZl3y4VqrXuYFCx4NQzeWMijbr/g=;
-        b=AcYsIzqNXuEWViGRHn5SQxdAdfLhJzMsFwrOWZTfw4AKks74XEiA7eaVf8yDY0AU4t
-         FjvvBgOe7FvowqNv7fzKEuo+5gNV6Iff9va3tYFLEDV5flVyIFlYj0GNwTHolr2soTx/
-         FmfV0mKurMPEN9aNE5WL/u5j9TsTlay05n/9OCCS+sOiM+ud9e1YyjhGtX4+WnhxovWg
-         MJhS16lekyzIRgWSC9HghAXHbYKBqUu6ZdvX4+2i9PHX7SsPOEz1PfVlDa2hT2DysIbU
-         pgZZ+ocxsg6Z8r9ZrIb5s2HwN5NHk7Kp4B88WFvX33bxiKwnCezGE4AK+nogrlVbyZ+A
-         LjsQ==
+        bh=y4bAp3nBUO90ZQn1u2Z0gOxXpoxTWghtyWO5GBrBpXE=;
+        b=Bb3voCAvMKzhwNJByrAcASRMJyiOXpR93gIZxKodAPUtwCo0aIyHa70Q35Ucc0nE4i
+         iNmDPAiOtNcOav8gJOUfTfkrRTBn+/66Xg5JfZl9SqI0aPElHPQ5ok/mEjlqosh1CJo+
+         GLdI8aa2D4w6eBXvLcFFUZ1aSDUk0ra42I+qlvnBWAD+3qMK+EFmK5C4D7ao6CmTTl3z
+         S8Q4bjzQE9M86aRsJow9qkOs7VW91RldTmMUkt03cJWn0IY4R2Do/heZ7l3eftXsBnZe
+         PU3FnPar7xV9cUpbbAlph3EldG6iVaCpd8BrOL6Rc9MM/kG5TdGG4MeL7ZY66u1ikqJB
+         4VvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790012690; x=1790617490;
+        d=1e100.net; s=20260707; t=1790012691; x=1790617491;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Hyb3zhkpLvcha2XPZl3y4VqrXuYFCx4NQzeWMijbr/g=;
-        b=esLTtqHFVsqndT+B5Kd7auDorTbzzqUM+90If7NCRP85OJN8leUd6rPZ6r56ZtBBTv
-         AHMNYMyxR1jnq88QxkiEuf4jyWiEMkg0DKwYKc8k7zYSj+F/GN2ULD8FnL+zL9uL6x41
-         ng7Z8O5Wd9Se1Qg7zLXkr8tW5dW1JwfZ0uQoEe95zYNP70RHojeUijPoLfVnk3Cj9YOe
-         PH9amGxFd2T5P/7K1QIAU8QdjeOnZnCZsjcHIA0/NGx3LKIeax/JcblIo3a/KUCPRro/
-         X4PstqU3zqcnO/VxYdpnGCdYnmeI1W8g8oKAAn6Vq/M/SCmdpcidvtjuEIBX2sIvEWGA
-         nbjg==
-X-Forwarded-Encrypted: i=1; AKwUvBxVeqbllkobRb8QaIcJph1/BwGzLMdfn5LNQ5EcZirlR7bN+sAkNEdcd4XwQasMfd3f47Y=@vger.kernel.org
-X-Gm-Message-State: AFuF++nXU5j5yWbnl5J4ZyhSxSIZHN3MrAEmkm2kxY0uJoeTsbouq6Nf
-	YlJ1CZOjER288viUgOP0bOY9UEZvilc55C6jM9Ovc78nFIwBAhTcxilC4/v2S78NjaIjQL+xn27
-	z0PPy1A==
-X-Received: from plaq21.prod.google.com ([2002:a17:903:2055:b0:2dd:1daa:a60c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f54f:b0:2dd:c053:c207
- with SMTP id d9443c01a7336-2df560d81a4mr14415165ad.35.1790012689572; Mon, 21
- Sep 2026 10:44:49 -0700 (PDT)
+        bh=y4bAp3nBUO90ZQn1u2Z0gOxXpoxTWghtyWO5GBrBpXE=;
+        b=KN91Gw04KksSsgeuv+oVCa4XH3JgIA7jYCJagqkv0oRCNXBK+9SlV2vOQmCOvY0tAt
+         iiUaVN55hJwer+WycLOO2Yg7AhKDa/wEx4mWSiJs/ZI+HVcIpPbf42pBJ7ypyxLFYGCs
+         zJA9orL7c2sQiRf8KZFpc3Qf4z0907TlV8rabIeyX1hzL9dPrOHa6PTZXOekPDck3BDN
+         OH4hpnC8ehNH5MEy4/DjeSp/etudxVBrn93hMqkskafftjOJ9jtq+6FhXEfDvpgBm5pL
+         qIJTB2EBCbZ24Gh6Rt9uYkWuwIEGrhHnV+hp44Yt7f5/dvzyVYQaWeCteDxplOstx2Sr
+         aVag==
+X-Forwarded-Encrypted: i=1; AKwUvBz+zdw1F9n/7MOv/0mfJITcIeSV5QEXRI5riH+NS2LOE1oRFBn6PZqiS14VmAOl3ZrRCb4=@vger.kernel.org
+X-Gm-Message-State: AFuF++kHQ4RdF/sceyAmB96No/rHwkI8wEzpexGbHXOFUFdSc5tVRza7
+	N7lfzFOU49bLn7PH8BkG7BMK+79/yoCL77lFQx6OigWz/X67joo+0KBdSmo5OuOwvzUXA7UhrJU
+	xzXsceA==
+X-Received: from pgvn10.prod.google.com ([2002:a65:63ca:0:b0:cc4:5907:21e9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:1b81:b0:3cd:8bba:824f
+ with SMTP id adf61e73a8af0-3dd8c3d3acfmr19085095637.4.1790012690700; Mon, 21
+ Sep 2026 10:44:50 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Mon, 21 Sep 2026 10:44:40 -0700
+Date: Mon, 21 Sep 2026 10:44:41 -0700
 In-Reply-To: <20260921174445.911676-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -61,9 +61,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260921174445.911676-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260921174445.911676-3-seanjc@google.com>
-Subject: [PATCH v2 2/7] KVM: arm64: vgic: Rely on vCPU creation check in
- "trylock all vCPUs"
+Message-ID: <20260921174445.911676-4-seanjc@google.com>
+Subject: [PATCH v2 3/7] KVM: RISC-V: Use kvm_is_vcpu_creation_in_progress()
+ instead of open-coded equivalent
 From: Sean Christopherson <seanjc@google.com>
 To: Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, 
 	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
@@ -78,58 +78,31 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, Atish Patra <atish.patra@linux.dev>,
 	"=?UTF-8?q?Pawe=C5=82=20S?=" <spawel523@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Now that KVM's APIs for locking all vCPUs return -EBUSY if vCPU creation is
-in-progress, drop the manual check for the same from vGIC creation, and
-update the comments accordingly.
+Use kvm_is_vcpu_creation_in_progress() instead of an open-coded equivalent
+during AIA initialization.  Unlike similar vGIC code in arm64, the relevant
+RISC-V code runs under kvm->lock, i.e. can use the standard API without
+hitting lockdep false positive.
 
-Note, while KVM arm64 guards many vGIC operations with its arch-specific
-config_lock, holding kvm->lock is sufficient to guarantee a stable result
-for "is vCPU creation in-progress".  So, no functional change intended.
-
-Note #2, the open coded check in vgic_init() is racy when called without
-kvm->lock held, e.g. via vgic_lazy_init().  I.e. that check needs to stay
-open coded to avoid triggering a lockdep assert.  Whether or not the race
-is "fine" is a problem for a different day.
+No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/arm64/kvm/vgic/vgic-init.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ arch/riscv/kvm/aia_device.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
-index 4012df6002ea..a58575df36e9 100644
---- a/arch/arm64/kvm/vgic/vgic-init.c
-+++ b/arch/arm64/kvm/vgic/vgic-init.c
-@@ -97,6 +97,9 @@ int kvm_vgic_create(struct kvm *kvm, u32 type)
- 	/*
- 	 *  - Acquiring the vCPU mutex for every *online* vCPU to prevent
- 	 *    concurrent vCPU ioctls for vCPUs already visible to userspace.
-+	 *    This also ensures KVM isn't in the middle of creating a vCPU,
-+	 *    i.e. that there are no vCPUs that have been created but aren't
-+	 *    yet fully online.
- 	 */
- 	ret = -EBUSY;
- 	if (kvm_trylock_all_vcpus(kvm))
-@@ -105,18 +108,11 @@ int kvm_vgic_create(struct kvm *kvm, u32 type)
- 	/*
- 	 *  - Taking the config_lock which protects VGIC data structures such
- 	 *    as the per-vCPU arrays of private IRQs (SGIs, PPIs).
--	 */
--	mutex_lock(&kvm->arch.config_lock);
--
--	/*
--	 * - Bailing on the entire thing if a vCPU is in the middle of creation,
--	 *   dropped the kvm->lock, but hasn't reached kvm_arch_vcpu_create().
- 	 *
- 	 * The whole combination of this guarantees that no vCPU can get into
- 	 * KVM with a VGIC configuration inconsistent with the VM's VGIC.
- 	 */
--	if (kvm->created_vcpus != atomic_read(&kvm->online_vcpus))
--		goto out_unlock;
-+	mutex_lock(&kvm->arch.config_lock);
+diff --git a/arch/riscv/kvm/aia_device.c b/arch/riscv/kvm/aia_device.c
+index efc7c0bcfba9..97833a04268a 100644
+--- a/arch/riscv/kvm/aia_device.c
++++ b/arch/riscv/kvm/aia_device.c
+@@ -237,7 +237,7 @@ static int aia_init(struct kvm *kvm)
+ 		return -EBUSY;
  
- 	if (irqchip_in_kernel(kvm)) {
- 		ret = -EEXIST;
+ 	/* We might be in the middle of creating a VCPU? */
+-	if (kvm->created_vcpus != atomic_read(&kvm->online_vcpus))
++	if (kvm_is_vcpu_creation_in_progress(kvm))
+ 		return -EBUSY;
+ 
+ 	/* Number of sources should be less than or equals number of IDs */
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
