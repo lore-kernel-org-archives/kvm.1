@@ -1,114 +1,197 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AD73BD24A
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:28:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CBE31B10B;
+	Mon, 21 Sep 2026 14:31:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790000933; cv=none; b=qGwYxXC42Ee+MiRJ/GOa5X4gxhabYev2WU9eCu+uEOAWRCzi8uCNQ+vWCTjoouofgLp6j309X9P8yRt9ayGGWZy3hr8Y67bWPNrAmKyVDGCfXSQ2Orf+7J4VSB1WymnSjlC5oD7dpiaLBjDmtptCKFb3uuuPuKZotLMgey18chE=
+	t=1790001104; cv=none; b=bre0EEhe5Z4bUqOBXWuf/v1Lljsfj+NIctX8l8uhatv4Lq6owl5h33DubaLWq7DAPTGv/7AWD+lSBUIj+O95HQpNf2sBE6eA4m5JB22tWMEQY5Aa6/hul497fwAS12Nc2uqVVu4lcb66v/0W+XQG8Dbg4XtZ+T6nWcpnv/5w3xE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790000933; c=relaxed/simple;
-	bh=+tO/i9Xyuou+31ezUwg43wt7nSI4r/oWlUp9qpfAC+Y=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rKZdYOIagdn3LsWAtIkl34PKYHjvnvxu5V0KgPO75kbNRHOkMsoSz8tcKleivfB7ymYINOWdTXCLPOXQ0aMuXjFYeLDhqIJXvIU03HSV7qyRipBDd9gmf5IyrTtOARK1Z+jCv9brkUzITN4mucAoRSC4ka6bq0ajmbqvAMsDRHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nG6C54Ww; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790001104; c=relaxed/simple;
+	bh=BaK+ror1WcG9uNimQK0Mo7rl2cctQ8gmMLV7BMQMOB4=;
+	h=Message-ID:Subject:From:To:Cc:Date:in-reply-to:Content-Type:
+	 MIME-Version; b=Q3nOrZYN7pTSA0QQu2eiU4bOxatHA/jathjmDFm2z6C+K6nKQtN8z266ZiynCRm00D+LZo926+iWiq2m2lpdltW9MBAfjpwI6XH9qm22OajMgZd9yO7MspeWJdDGuyql3oobkfngN/HPzq4Qntheumo0v3BPlTVl93oflgHZa4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=d13Zxk6f; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nG6C54Ww"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 551C81F00893;
-	Mon, 21 Sep 2026 14:28:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790000931;
-	bh=KsMpDeIY0jAeVBjNfXcXGf5WjWL2WS7KSHHX8KmOVQ4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=nG6C54WwJ7c54eJcOM4qq5fKnUkd2D5PNHn2WZjvUl8UeCZ38Id4p0OQgpOW+Sx5N
-	 9Drui9ncPcj5voYx51jAJCDIdiVr5/UhwmVOB6VcVCdNNfJipiuiA+HXl3F8oGAg0u
-	 9cF4mbhHa2GtJG0Zoiu730gRHGvNVPbwjGsbigHNHQFcmPWuZDYBU2Fhi7mMtesMnC
-	 fW0q+M5SySw9/RcTmJ4B8sa+IEVzfzJvEdg91Ai4hnVcDwn0FLYu0k0UvX3F+yGp7N
-	 CC62zPGOLDHp87gM3jlJJdoBfUm6O2wFDPS+hMyj0WosMI1mixRYQR2xiGKD/YGr61
-	 I/aBfzhXAwTzw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1 1/3] Move struct cpu_feature to <linux/cpufeature.h>
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?VXdlIEtsZWluZS1Lw7ZuaWcgKFRoZSBDYXBhYmxlIEh1Yik=?= <u.kleine-koenig@baylibre.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <ef103a4b9e1cd7477fa52ee347c4ec301354fba9.1789988540.git.u.kleine-koenig@baylibre.com>
-References: <cover.1789988540.git.u.kleine-koenig@baylibre.com>
- <ef103a4b9e1cd7477fa52ee347c4ec301354fba9.1789988540.git.u.kleine-koenig@baylibre.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 21 Sep 2026 14:28:50 +0000
-Message-Id: <20260921142851.551C81F00893@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="d13Zxk6f"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:in-reply-to:
+	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:References;
+	bh=BaK+ror1WcG9uNimQK0Mo7rl2cctQ8gmMLV7BMQMOB4=; b=d13Zxk6fSrZ05MhpgougqU+YTH
+	RJXyD/8+OJ89mV5b/WR2gMm2HEICgzULEEQFNqGJGOaS3uaaL0Fsmex/49CM9zRodwEcI1c7eY8yO
+	LuIwgbXiVuqnsoYOskXkR1o3XMEEwgqg62dlz5BR/oPebRrrMqhzity7hyiMlo0AdFkWHIo+4n80F
+	f7e+oQHc6ugDrm8xYact7ltXO6E4OqPVXcKlngFFMnIdJHTENpTtTjR9SxWCyWta/nKgKOwZlnV1R
+	1bl3D3LDr0N+M55BQRVDmldaVQc9ifUg7ek5luqAtPRTd6lSA5KtkANIaGpodZT68YIuyvxd48DiN
+	yN+bk/MQ==;
+Received: from [54.239.6.188] (helo=edge-m2-r3-110.e-iad50.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x8f3T-00000004OYy-3JE2;
+	Mon, 21 Sep 2026 14:31:40 +0000
+Message-ID: <2a6d520d7663eb637b2ebd5d079a2e5082dd1d2b.camel@infradead.org>
+Subject: Re: [PATCH 11/17] KVM: nVMX: Use pinned pfncache for L1 APIC
+ virtualization pages
+From: David Woodhouse <dwmw2@infradead.org>
+To: sashiko-bot@kernel.org
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, rcu@vger.kernel.org, 
+	pbonzini@redhat.com, seanjc@google.com, paul@xen.org, paulmck@kernel.org, 
+	nh-open-source@amazon.com
+Date: Mon, 21 Sep 2026 16:31:37 +0200
+in-reply-to: <20260920215738.E90CB1F000FF@smtp.kernel.org>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-erIkMXqIH0BsonHupxFm"
+User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] build: cross-compilation failure due to unguarded <linux/types.h>
---
 
-commit eeaf7eac97be82ddec1f82f3064dbaed8a04364f
-Author: Uwe Kleine-K=C3=B6nig (The Capable Hub) <u.kleine-koenig@baylibre.c=
-om>
+--=-erIkMXqIH0BsonHupxFm
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Move struct cpu_feature to <linux/cpufeature.h>
+On Sun, 2026-09-20 at 21:57 +0000, sashiko-bot@kernel.org wrote:
+> [Severity: High]
+> Does this allow an untrusted L1 guest to crash the VM by triggering a
+> KVM_EXIT_INTERNAL_ERROR? The L1 guest can write a non-page-aligned
+> address to the APIC_ACCESS_ADDR field in vmcs12 and execute VMLAUNCH.
 
-This commit moves the definition of struct cpu_feature from
-<linux/mod_devicetable.h> to <linux/cpufeature.h>. It also adds explicit
-includes of <linux/cpufeature.h> in devicetable-offsets.c and file2alias.c
-to satisfy modpost requirements.
+No, that would be caught by nested_vmx_check_apic_access_controls()
+which calls page_address_valid() and requires page alignment. So the
+VMLAUNCH should fail.
 
-> diff --git a/include/linux/cpufeature.h b/include/linux/cpufeature.h
-> index 6aff540ee9e57..93c1da38aaf69 100644
-> --- a/include/linux/cpufeature.h
-> +++ b/include/linux/cpufeature.h
-> @@ -6,10 +6,20 @@
->  #ifndef __LINUX_CPUFEATURE_H
->  #define __LINUX_CPUFEATURE_H
-> =20
-> +#include <linux/types.h>
+(... s/should/does/ fail, as I made my friend throw up a self-test to
+prove it. Want that added to the existing tests?)
 
-[Severity: Low]
-Does this unguarded include cause a cross-compilation failure?
+> [Severity: Medium]
+> Will this nested lock cause an AB-BA circular locking dependency
+> warning from lockdep?
 
-Because scripts/mod/file2alias.c is compiled using the host compiler (HOSTC=
-C),
-this unguarded include in include/linux/cpufeature.h causes the host compil=
-er
-to pull in the host system's <linux/types.h> when compiling file2alias.c.
+No, RCU isn't really a 'lock'; those nest just fine (unlike the special
+case I just fixed in EVTCHNOP_send which was spinning inside the read
+section, waiting for something that could never complete until it
+*left* the read section =E2=80=94 a completely different kind of deadlock).
 
-On non-Linux systems (like macOS or FreeBSD), this header does not exist,
-leading to a missing header error. On Linux hosts, it pulls in
-/usr/include/linux/types.h, which risks compiler redefinition errors
-against the explicit __u16 typedefs in file2alias.c.
+--=-erIkMXqIH0BsonHupxFm
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-Could this be wrapped in an #ifdef __KERNEL__ guard?
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+c20iQN8THi308HKpJtTuQqwAAAAAAAA=
 
-[ ... ]
 
-> diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
-> index 8d36c74dec2d5..88bff32072775 100644
-> --- a/scripts/mod/file2alias.c
-> +++ b/scripts/mod/file2alias.c
-> @@ -121,6 +121,7 @@ typedef struct {
->  /* Big exception to the "don't include kernel headers into userspace, wh=
-ich
->   * even potentially has different endianness and word sizes, since
->   * we handle those differences explicitly below */
-> +#include "../../include/linux/cpufeature.h"
-
-[Severity: Low]
-Does this host-compiled inclusion of the kernel header implicitly pull in
-the host's linux/types.h due to the new include in cpufeature.h?
-
-This is the inclusion path in scripts/mod/file2alias.c that triggers the
-cross-compilation failure mentioned above.
-
->  #include "../../include/linux/mod_devicetable.h"
->
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1789988540.gi=
-t.u.kleine-koenig@baylibre.com?part=3D1
+--=-erIkMXqIH0BsonHupxFm--
