@@ -1,82 +1,71 @@
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C64F49363E
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 11:55:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787B23C4B64;
+	Mon, 21 Sep 2026 11:59:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789991718; cv=none; b=DoOxjuDWeRXDLVkcjZijcfurNw92C1e6c2wwTKFYlax6SH20JrFhPTHPrdMDcQrcMjCkfGhloAAks5Keact0ur8hYNI7Aose93WIW3iAFowfa19KrzDMkoxvLk22GF9/6dBGojBn2JfzXG/xsSzG0+FTDCh5fjoPAMhpmrWRoQQ=
+	t=1789991987; cv=none; b=jeK9Qh+NFmXIaER0hdG63TBD4fPtSaxbLc7yEKw3cwyR6kYI6GSonJoqXlBdH7226O+TmNqsIbvvy+eViFT9+AbvJepx8+zkx3srCaR6xbcMMG8IHy/Mj1297QCeQhWQvbmRecOQ62gXouO1EGEpSByiHO8H5io2f5eKza4Ue48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789991718; c=relaxed/simple;
-	bh=x4ZR/35KD2CxuvtsQBW7vNL6jE8skBPQeFvOsLTptis=;
+	s=arc-20240116; t=1789991987; c=relaxed/simple;
+	bh=P5jPS1qkrIzmfP0iv0B8nbaTYixsh2wFPo/ToIHURKc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aOv0zYqM/5DYFti4SgcdJD98XC2sknOFPqZYA+KbGUU4sf6hOXSr3l90JpwZOER1qTTIJ6UiO1XSHJ8MpvxKCgx53QEYYWwaT1M+D8PcGYjjz358QsKFL461JSyLffrBL92LTlTVDwdgsfMpPlnlvyUOLGlH6b3KXgbespzZ3ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=BwwZBE+0; arc=none smtp.client-ip=74.125.230.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=pWZMzfz7IVfLjFI2xk5Xz6IMme31mvJHGFpxSl9tZ4dqkrpkARU/vQzqRccPUX1wqyCprS9lJZZtwXLegWo1/n/8MoOkNCPMcJGK4Laq2aWaTKZrJL/wqNKMoub+4WOi7I9GpclAcNBIbIoCnIcsXS3SD47BVqWO6IVIgP5Cvh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=LG9FJpj+; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="BwwZBE+0"
-Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-939109f067cso304642185a.3
-        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 04:55:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1789991715; x=1790596515; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qZHfowJU9Gcgjx9yDF775AN/BbRSMKh2T0yPRE0+ftE=;
-        b=BwwZBE+0VUUSuKlhncHoA99Hh3+jh0/AtSRFx8rexSdZVXOmdfNhJyTUAPRUy63Fcg
-         e+VHIynSPJI0LUk7JAlihyJ/DaoqPKDgX1Ap4mrpbrkccmb3fRWDzyx1OxL0lyn6+ksv
-         8Q3rTaU3BfEhuj9cIzicGFCVIjPFs8JHg0Gl6zYRqdwi+/o9UKCFlDg3O9mahVlwFNSN
-         M0l+TT069dtda7EXKCSUgcheXPI1CPILZBgQddgNRezHzIr3K1GWYE+Ul2HbtV5yh9fc
-         9MV6EhvVRImM2evj7bjzYZxH+olDjNAemh7q3QSGkwqzcUfGh8QAQUWn7wo/sOCUyN6M
-         lsng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789991715; x=1790596515;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qZHfowJU9Gcgjx9yDF775AN/BbRSMKh2T0yPRE0+ftE=;
-        b=g3evKlP/hGzcx4ZvzLlmx0hMxTUr56HV9PIhFvzKXFDkiF62ReuuMYhfm2NBpWNNMq
-         T5Vk2KrAexrf1uoXH+EwrcVmc7+6e+2vq1T0EDj7yk08EySb0GEPOPHL2qob8P/Z5J+W
-         JhzTzqqNvZenF8JjTnC7fqFbLj+LP8KaEBzvJ85KmYOG0vGeDHedfIVrZ+RFxkwX5gj0
-         XBZT3M8G2mzlN/UQoOYjADIm6EvXo7cPRN/rT9f8XaANT464oUZk4giWZLuei5izekZ/
-         2dNHYcMmaHQN6Bkc4kcRlyiBGT3HDzWOdnAotSQvO5+NQSRkU5hV+8VeVZ1gHyL1P/V1
-         INfw==
-X-Forwarded-Encrypted: i=1; AKwUvBzZF1Ybq9kQ91Ucnk48gVp+zsKVWZVGKgTlbMyThw4XYx3ODYC3l8ZL9b5StRgxxSIDC78=@vger.kernel.org
-X-Gm-Message-State: AFuF++nVa4cpIdH1oiws+TazNKeZopqvVWGm6R+8rQcq0HC94AgpaUPj
-	tOzHzxXF7/VpbGw4ty9UHi+SG/13bQbT8ezLS3VviB4pO/feALx+Ypu7na5DC9Ug5pg=
-X-Gm-Gg: AYBFou0Ys8+4a7ciExcgVuzm4M7jLN/+yL4Txxb/n7gagBMUG7kg2qseTCz7HWSx42O
-	/0vY1hTGYLIQpZ6jsPz0lGV1bW5YDmcRWcPHUoJc5t3ic29lshznRs0ZSBdGLlKQECLQkcwbRMZ
-	awxXiucJL09HeKyB4haRUYCwTtEmAfvZ8NdeDcek3c5wXBhQFZv1yYb8qn9Wa/0svPEwI3hlAAq
-	rMgnrua+NrKqb3CLsWeMwpwNv8bMYBguH7r8qkLiPwyS63UN1NGCPTib8Jx82dQ3Yu23txdylHG
-	d4qZ+8pBuxAWEGBMaeFmuZSUuVr1R9h72hl2QvCVuRmU76S14xC64+y/aK1PhyUKyJ/c75wRo5F
-	+bLTbgZor4j6gthZB9vFsQ3ZLtZWpkYyXaW6DFkf0C0vW8fTj88Xi3ywydkxAyz2lUCIN2/Or9d
-	ojxZt2R5v8RsJo2aYpjCLVdpj6AEd4H1BKVXFdEsvqwpqxzX8sAQ9KyucwQXm+LpohDMJ5b+6pM
-	ETSqimMvLnjfBrnNewY/QFylNs6dcLY1jcd1fbA39Eoh+CLiT3VomEz
-X-Received: by 2002:a05:620a:4492:b0:93b:c22a:e98a with SMTP id af79cd13be357-93c15d9e687mr22451485a.2.1789991715373;
-        Mon, 21 Sep 2026 04:55:15 -0700 (PDT)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93beda70a1esm612157385a.11.2026.09.21.04.55.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 04:55:14 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1x8cc5-00000006EDj-1rtR;
-	Mon, 21 Sep 2026 08:55:13 -0300
-Date: Mon, 21 Sep 2026 08:55:13 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Guanghui Feng <guanghuifeng@linux.alibaba.com>, kevin.tian@intel.com,
-	alex@shazbot.org, joro@8bytes.org, will@kernel.org,
-	iommu@lists.linux.dev, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] iommu: Reserve PCI host bridge MMIO windows for
- IOVA
-Message-ID: <20260921115513.GK11599@ziepe.ca>
-References: <20260921070234.897736-1-guanghuifeng@linux.alibaba.com>
- <20260921103922.1113752-1-guanghuifeng@linux.alibaba.com>
- <a82c3113-cee1-4e27-8c10-b7616f860a93@arm.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="LG9FJpj+"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68LB5biG1169483;
+	Mon, 21 Sep 2026 11:59:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=rVDLd6gucClabU9Q1VnKpP2svsAjUe
+	Xvhbu4ISNalWM=; b=LG9FJpj+I6j8rzE7IWzTzPBBU/nihzSzaU6FcelQKgGlPn
+	fW4EL5qeULkQTeMd74DAUlwY6y0fQP+iWjBkJ1XmJy7zJI2B7JQHKdbyRYBw3RV0
+	mZyVNmyyLT5qA71GKG8wiAd46CWO6pmGoAIcaO4OXzakvp3X9t5QYQNVvY8XMX0e
+	EPbGbTWc8isuYxRMAdVwMi689uMZOAqNN0PTuZqjIhDQ6FnlN/FlXTExC29M1WPz
+	5JIz9dJX0HqFA5QrtF7r0G0KCGwFQAbHi3soUdxsV9r/BVZovn68Xr3UtSaOa/WN
+	GVtRVmYqlJfZk3u1JJ4RgIo2Y4tUkNxbjnwIfY9A==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gske1868g-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 21 Sep 2026 11:59:20 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68LAlT2B2063264;
+	Mon, 21 Sep 2026 11:59:19 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gt7dy4v9r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 21 Sep 2026 11:59:19 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68LBxFpR42074556
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 21 Sep 2026 11:59:15 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9CC0420040;
+	Mon, 21 Sep 2026 11:59:15 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 18C1F20043;
+	Mon, 21 Sep 2026 11:59:13 +0000 (GMT)
+Received: from li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com (unknown [9.123.6.5])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 21 Sep 2026 11:59:12 +0000 (GMT)
+Date: Mon, 21 Sep 2026 17:29:10 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>, linux-kernel@vger.kernel.org,
+        Peng Fan <peng.fan@nxp.com>, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org
+Subject: Re: [PATCH] KVM: PPC: use assign_bit() where applicable
+Message-ID: <arEb8QNaPzcywaD8@li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com>
+References: <20260920022618.3145649-1-peng.fan@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -85,41 +74,68 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a82c3113-cee1-4e27-8c10-b7616f860a93@arm.com>
+In-Reply-To: <20260920022618.3145649-1-peng.fan@oss.nxp.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: JA8Z-cASsVrqxiOfk92DbeQcfOgmTtTH
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIxMDE2OCBTYWx0ZWRfX2MRkXB9s/VQm
+ lTxoVUXTPa6eiuem/uVb46ozplf9qTmp/3uALAK3ctZZd9A+P0NxohuWzT0lBQzri5k8aXME2BN
+ Z0bpBFSNqX9l3AX8RSZ2zviozcpJUshiQaJNzgngvaPsWY/zITlnpjUDSYbe/kNET51slb1HU6h
+ n5h1VYb1Uki+vAWxvM8DjgSDEP35EXOcH9h9cCe0XvzzMFho/U5yX25XTwU0S8rz2PysroFrk7M
+ cpEpbgr+240G9+eiUYFu6ewPU+3RlDckOr6BH7aZh/XPCdqNhZpDAo+FAmIB7nK+TLxO6HEmgLc
+ HDjoR67uksg+KGTZAEhthLrSJTvtu8R/bpYUjRr8ljQkb4B1+djj7wT9WxgLzxE4YUGXVcoJy1L
+ xlb8dHVIGcXHUindza+Dtrlap76jcBsafGUVIXwWreV4kOCe0Cu+MvK9WtMJ2c94mqeDAdZcMMY
+ NbsIqO5nkJ8fyrDStdQ==
+X-Authority-Analysis: v=2.4 cv=O/KsLx9W c=1 sm=1 tr=0 ts=6ab11c18 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=8AirrxEcAAAA:8
+ a=VnNF1IyMAAAA:8 a=Z0NEbA_iRV-AWij7CAYA:9 a=CjuIK1q_8ugA:10
+ a=ST-jHhOKWsTCqRlWije3:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIxMDE2OCBTYWx0ZWRfXw+f82BNwqPEs
+ xA8C3MQLa7rTeJ7ktaJBk0tZAROVs43cDuDFfqaWwu+yE5FcdRwfSnKYSKC5LhkIiFhlYt30oya
+ XLXcgp6jjWC246ICHTMbRUkps3cEOTo=
+X-Proofpoint-GUID: NAZqCAiihzjNz_cSiZPgqzT21N0PBHPJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-21_04,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 malwarescore=0 phishscore=0 impostorscore=0 suspectscore=0
+ bulkscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609210168
 
-On Mon, Sep 21, 2026 at 12:24:13PM +0100, Robin Murphy wrote:
-> On 21/09/2026 11:39 am, Guanghui Feng wrote:
-> > The DMA IOVA layer reserves PCI host bridge MMIO windows via
-> > iova_reserve_pci_windows() to keep IOVA allocations from overlapping
-> > those address ranges.  As commit fade1ec055dc ("iommu/dma: Avoid PCI
-> > host bridge windows") explains, a host bridge may interpret addresses
-> > falling within its MMIO windows as peer-to-peer DMA, leading to
-> > faults, data corruption, or DMA transactions being misrouted to the
-> > wrong PCIe device.  This is especially dangerous when a device sits
-> > behind a PCIe switch and ACS Upstream Forwarding is not fully enabled.
-> > 
-> > Passthrough paths that let userspace pick IOVAs did not honour these
-> > windows: VFIO type1 and iommufd only excluded IOMMU driver-level
-> > reserved regions (RMRR, unity maps, MSI), not PCI host bridge MMIO
-> > windows.
+On Sun, Sep 20, 2026 at 10:26:17AM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
 > 
-> This was intentional - I forget where the exact discussion happened, but at
-> the time we decided that exposing reserved regions for entire windows was
-> the wrong thing to do, as being pessimistically inaccurate might be OK for
-> the internal DMA API, but restricting userspace is another matter, and I
-> think the consensus was that it wasn't really the IOMMU layer's job to get
-> deep into PCI details anyway. Such "accidental" P2P can only happen within a
-> group that's assigned to VFIO as a whole, so IIRC the conclusion was that
-> users should already have enough information at the VFIO level to avoid BAR
-> addresses if they need to.
+> Convert open-coded if/else with set_bit/clear_bit to the assign_bit API.
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  arch/powerpc/kvm/powerpc.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+> 
+> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> index 9194cf492d1c..a567b63a5f1f 100644
+> --- a/arch/powerpc/kvm/powerpc.c
+> +++ b/arch/powerpc/kvm/powerpc.c
+> @@ -2210,10 +2210,7 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+>  			break;
+>  		if (!kvmppc_book3s_hcall_implemented(kvm, hcall))
+>  			break;
+> -		if (cap->args[1])
+> -			set_bit(hcall / 4, kvm->arch.enabled_hcalls);
+> -		else
+> -			clear_bit(hcall / 4, kvm->arch.enabled_hcalls);
+> +		assign_bit(hcall / 4, kvm->arch.enabled_hcalls, cap->args[1]);
+>  		r = 0;
+>  		break;
+>  	}
+> -- 
+> 2.51.0
+> 
+> 
 
-Yes, but we never did a a very good job to make the information
-visible to the VFIO userspace level, and I don't think anyone ever
-implemented some sysfs parsing to try to get it.
+Thanks for the cleanup.
 
-It would be a nice improvement to expose these pessimistic ranges to
-userspace through iommufd so it can choose to opt into them if it
-wants. Some kind of helper that the dma-iommu.c and iommufd can call
-perhaps.
-
-Jason
+Reviewed-by: Gautam Menghani <gautam@linux.ibm.com>
