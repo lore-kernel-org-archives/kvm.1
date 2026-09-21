@@ -1,250 +1,109 @@
-Received: from forwardcorp1a.mail.yandex.net (forwardcorp1a.mail.yandex.net [178.154.239.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D4E3C1400
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 16:46:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301024DF4DC
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 16:54:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790009180; cv=none; b=mwL1Gp2mgMVzTgVFCIJavU20kxNmfnVRo8fbU+3OjLpkGkiQtKdLUITARZTVVZCknfi66+aqYDah9lwmwMUir33TwZRWJGYWvG74VDSb/DL54BckpqeJepBKJ7HCkv05NlpF2rcw4siPr0fPPP3nLjISJxKdLRxhlc19CEp/+/I=
+	t=1790009688; cv=none; b=mJ2y7TLpm9yEjCfRuMG+CCBbgCp4en5lr7G0Qru7DOpvT8QTphG4xponahJbVolWp1J7lK5vtgScN0rsXd9XAb0v9Bzwd+AeCe5zcsJQUIAZGeS5SFqoBYiBluCKeGRR+Bb/IHBCc9Xk7a1C6S5o5HFWdEDwB8txC1nAXN0JapY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790009180; c=relaxed/simple;
-	bh=kHrzm1/lXfILC87TgxJWGRWslqmPB/5Q4gbtK2fu694=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PhnL3tvSBWcC3sICYZruX/v2w6Qy3qWJbGujjyfEjeLELVk3/f+w93oCgvl5y57a9RKii0aKFd68xvSER+d6PUMYhTxGz5M8ixT7eNDvfN7Huf9iahwjXrw80i4qhloqWJkLoicZiQwZY2RGr1axjCEESELzJwCL4jbz2XMq/jQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=DlvsTD1I; arc=none smtp.client-ip=178.154.239.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
+	s=arc-20240116; t=1790009688; c=relaxed/simple;
+	bh=DQx9hlQjp0Ti326TI6FuSf7aj8Z2x3TJE87fC88XGRc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=AS4FkO8poqpNdxntnaHyFc8MHSK4ZKin+9MMajDVw0oRWZnnAVmipUo9xoQj1T0RtTNurqaX8EsOaAOdMUXDHF1v4yknZL+l/3nwnZPfRwuHfYXZ+PHR1G5yLgOw/bNw9ViUwM9pH+ZhXLdKhOwa2qzR+PoiYWTRpU464aTRRqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oioiTj9y; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="DlvsTD1I"
-Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net [IPv6:2a02:6b8:c2d:3530:0:640:eca4:0])
-	by forwardcorp1a.mail.yandex.net (postfix) with ESMTPS id 7788CC09AB;
-	Mon, 21 Sep 2026 19:44:45 +0300 (MSK)
-Received: from i115954770.yandex-team.ru (unknown [2a02:6bf:8080:126::1:23])
-	by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp) with ESMTPSA id iidWON1XjeA0-C2hX9359;
-	Mon, 21 Sep 2026 19:44:44 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1790009084;
-	bh=ctlTJMRaGQ2Xv/+KT0Ox90raocjkW4/61p06QO57KEg=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=DlvsTD1IbUmE7xGfy9y1ZrTestMsXpClMi9Z43eTNqZyv+yyvijzmGunH+ln8Sfsh
-	 1VpA1W/GzYow1X8t/KjYqzA4StoEBSYSVyu2KKTjPDN7+BEoaUktl4Nl1M6MRvKlP+
-	 MG7P0w1wJCJFF4IR0BfG/pe1itgCDa4EWwR0GRbA=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: qemu-devel@nongnu.org
-Cc: kvm@vger.kernel.org,
-	pbonzini@redhat.com,
-	vsementsov@yandex-team.ru
-Subject: [PATCH] kvm: turn fprintf into error_report
-Date: Mon, 21 Sep 2026 19:44:42 +0300
-Message-ID: <20260921164442.1137615-1-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oioiTj9y"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8699b293a80so3359333b3a.0
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 09:54:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790009685; x=1790614485; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=C6jcco0yE/Dn2LosJJ4qYi7uiGnh5WOabYUvvtCROxo=;
+        b=oioiTj9y9kKyAlo2MeGHXDby17Col0739T/IIezxRYx7aDnu9C4D+6dO8bNqmjp5me
+         UxBeKmktNbOoiTsDhuLuHDZXl99Mvv/7rOnXtJRMTZlkbTjDEbMNfjjC26ljhrOxCwHI
+         XE1Bh2xvG9yc6axqhTthsSZO7owcSWb3sGbmQFkA3ebWZyJQZaneM2FJfjMLpD7LP9+P
+         e92UQC6dgdITIrCPT9fBQBuspw2FS3CuS7D86Ze2pZdaJYsSecu5FW1l7kSwpAvMSJER
+         uw5kis67mRFlznrbhieVamQTqRhXdX0l7NNBO4WZ5c6MFmSkDfmPJWbQN1PMrG/jv848
+         ciSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790009685; x=1790614485;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=C6jcco0yE/Dn2LosJJ4qYi7uiGnh5WOabYUvvtCROxo=;
+        b=rfc6zZIaBCrs1F3d1Ab0GIJEqQtKxLtES84gw/N6ySrEERwGa8pqA/TKh6tLjGBA37
+         MoCpoqVadik9p3bOUxIG1IY5uqrbiOM206WAa6OQEv/MjzeJxGMtXKdplgMH6hvxKHUQ
+         v/XQbNTc+tDGjiN3g5gsGMczPq8v3gmwDdi/zNPVlpdaBazCBWL0g2e4fBzIeej+xi9c
+         tUM8QEJRIgrCuaG5IpezS5WFLuZu+SoLs7/m5PO4dTdNTy49l6cpSB9D1bt7dzaZSjkI
+         iSPn/qMmo5LbjJvC3jMIx5grtIdCldWdyD697BIGjt99LVJ8pHPSoi0Dha9kOeqCwJas
+         RNAw==
+X-Gm-Message-State: AFuF++ngKmtVJ7Ogmq9jOgKXV8u4PrRbIzsBTEm4UbyPhMUVtoeYBaXk
+	tBV4km+1CPxRCdm5ugwYgacZtxlRnoSqtBpnSxyBfKg4DpPDncVC5yhW3QxPbAtZ9Ubz6u5M/8q
+	Utc5Qfw==
+X-Received: from pfbdl11.prod.google.com ([2002:a05:6a00:490b:b0:879:66b7:29a9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:23c1:b0:878:34b8:231d
+ with SMTP id d2e1a72fcca58-87834b824b0mr9140370b3a.37.1790009685111; Mon, 21
+ Sep 2026 09:54:45 -0700 (PDT)
+Date: Mon, 21 Sep 2026 09:54:44 -0700
+In-Reply-To: <178999918502.750661.11881169009752034088.b4-ty@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260904010353.3175819-1-seanjc@google.com> <178999918502.750661.11881169009752034088.b4-ty@google.com>
+Message-ID: <arFhVLkkGFyGBGI4@google.com>
+Subject: Re: [PATCH v3 0/8] KVM: VMX: Harden against interpreting TDX vCPU as vcpu_vmx
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Kai Huang <kai.huang@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Main benefit: ability to print timestamps.
+On Mon, Sep 21, 2026, Sean Christopherson wrote:
+> On Thu, 03 Sep 2026 18:03:45 -0700, Sean Christopherson wrote:
+> > Move and rename "all" (read: everything I could find) common helpers out of
+> > vmx.c and/or replace their vmx_ prefix with vt_, and then poison to_vmx() for
+> > all common .c files to harden KVM against misinterpreting a TDX vCPU as a VMX
+> > vCPU, i.e. consuming to_vmx() on a TDX vCPU.  Spotted when working through
+> > the bus lock series.
+> > 
+> > v3:
+> >  - Collect tags. [Kai, Xiaoyao, Binbin]
+> >  - Move the poisoning to patch 1. [Xiaoyao]
+> >  - s/Disallowing/Disallow. [Binbin, Kai]
+> >  - s/vmx_needs_pi_wakeup/vt_needs_pi_wakeup. [Xiaoyao]
+> > 
+> > [...]
+> 
+> Applied to kvm-x86 vmx, thanks!
+> 
+> [1/8] KVM: VMX: Disallow using to_vmx() in common VT code
+>       https://github.com/kvm-x86/linux/commit/05a0c1e2a525
+> [2/8] KVM: VMX: Move the shared "IRQs off" exit handler(s) to common code
+>       https://github.com/kvm-x86/linux/commit/903420c26086
+> [3/8] KVM: VMX: Move the shared NMI handler/trampoline to common code
+>       https://github.com/kvm-x86/linux/commit/81fbafddf6e5
+> [4/8] KVM: VMX: Rename posted interrupt prefixes from "vmx" to "vt"
+>       https://github.com/kvm-x86/linux/commit/09c6f74ecb86
+> [5/8] KVM: VMX: Rename EPT violation handler prefix from "vmx" to "vt"
+>       https://github.com/kvm-x86/linux/commit/96a113536fa0
+> [6/8] KVM: VMX: Use dummy pseudo-overlay struct for to_vt() and vt_to_vcpu()
+>       https://github.com/kvm-x86/linux/commit/881455777a02
+> [7/8] KVM: VMX: Move common VT getters/converters to common.h
+>       https://github.com/kvm-x86/linux/commit/d238df58b1e1
+> [8/8] KVM: VMX: Rename common exit info getters prefixes from "vmx" to "vt"
+>       https://github.com/kvm-x86/linux/commit/decbd448b05e
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- accel/kvm/kvm-all.c | 64 ++++++++++++++++++++++-----------------------
- 1 file changed, 31 insertions(+), 33 deletions(-)
+FYI, I'm going to rebase these on top of the TDX bus-lock series[*], i.e. these
+hashes are going to change.  I forgot that series needs to got to stable@.
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 83cbd120a84..d271699db87 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -300,7 +300,7 @@ static KVMSlot *kvm_alloc_slot(KVMMemoryListener *kml)
-         return slot;
-     }
- 
--    fprintf(stderr, "%s: no free slot available\n", __func__);
-+    error_report("%s: no free slot available", __func__);
-     abort();
- }
- 
-@@ -1702,8 +1702,8 @@ static void kvm_set_phys_mem(KVMMemoryListener *kml,
-             mem->flags = 0;
-             err = kvm_set_user_memory_region(kml, mem, false);
-             if (err) {
--                fprintf(stderr, "%s: error unregistering slot: %s\n",
--                        __func__, strerror(-err));
-+                error_report("%s: error unregistering slot: %s",
-+                             __func__, strerror(-err));
-                 abort();
-             }
-             start_addr += slot_size;
-@@ -1730,8 +1730,8 @@ static void kvm_set_phys_mem(KVMMemoryListener *kml,
-         kvm_slot_init_dirty_bitmap(mem);
-         err = kvm_set_user_memory_region(kml, mem, true);
-         if (err) {
--            fprintf(stderr, "%s: error registering slot: %s\n", __func__,
--                    strerror(-err));
-+            error_report("%s: error registering slot: %s", __func__,
-+                         strerror(-err));
-             abort();
-         }
- 
-@@ -2024,8 +2024,8 @@ static void kvm_mem_ioeventfd_add(MemoryListener *listener,
-                                data, true, int128_get64(section->size),
-                                match_data);
-     if (r < 0) {
--        fprintf(stderr, "%s: error adding ioeventfd: %s (%d)\n",
--                __func__, strerror(-r), -r);
-+        error_report("%s: error adding ioeventfd(%d): %s (%d)",
-+                     __func__, fd, strerror(-r), -r);
-         abort();
-     }
- }
-@@ -2042,8 +2042,8 @@ static void kvm_mem_ioeventfd_del(MemoryListener *listener,
-                                data, false, int128_get64(section->size),
-                                match_data);
-     if (r < 0) {
--        fprintf(stderr, "%s: error deleting ioeventfd: %s (%d)\n",
--                __func__, strerror(-r), -r);
-+        error_report("%s: error deleting ioeventfd(%d): %s (%d)",
-+                     __func__, fd, strerror(-r), -r);
-         abort();
-     }
- }
-@@ -2060,8 +2060,8 @@ static void kvm_io_ioeventfd_add(MemoryListener *listener,
-                               data, true, int128_get64(section->size),
-                               match_data);
-     if (r < 0) {
--        fprintf(stderr, "%s: error adding ioeventfd: %s (%d)\n",
--                __func__, strerror(-r), -r);
-+        error_report("%s: error adding ioeventfd(%d): %s (%d)",
-+                     __func__, fd, strerror(-r), -r);
-         abort();
-     }
- }
-@@ -2079,8 +2079,8 @@ static void kvm_io_ioeventfd_del(MemoryListener *listener,
-                               data, false, int128_get64(section->size),
-                               match_data);
-     if (r < 0) {
--        fprintf(stderr, "%s: error deleting ioeventfd: %s (%d)\n",
--                __func__, strerror(-r), -r);
-+        error_report("%s: error deleting ioeventfd(%d): %s (%d)",
-+                     __func__, fd, strerror(-r), -r);
-         abort();
-     }
- }
-@@ -2143,7 +2143,7 @@ int kvm_set_irq(KVMState *s, int irq, int level)
-     event.irq = irq;
-     ret = kvm_vm_ioctl(s, s->irq_set_ioctl, &event);
-     if (ret < 0) {
--        perror("kvm_set_irq");
-+        error_report("kvm_set_irq: %s", strerror(-ret));
-         abort();
-     }
- 
-@@ -2581,7 +2581,7 @@ static int do_kvm_irqchip_create(KVMState *s)
-     } else if (kvm_check_extension(s, KVM_CAP_S390_IRQCHIP)) {
-         ret = kvm_vm_enable_cap(s, KVM_CAP_S390_IRQCHIP, 0);
-         if (ret < 0) {
--            fprintf(stderr, "Enable kernel irqchip failed: %s\n", strerror(-ret));
-+            error_report("Enable kernel irqchip failed: %s", strerror(-ret));
-             exit(1);
-         }
-     } else {
-@@ -2589,7 +2589,7 @@ static int do_kvm_irqchip_create(KVMState *s)
-     }
- 
-     if (kvm_check_extension(s, KVM_CAP_IRQFD) <= 0) {
--        fprintf(stderr, "kvm: irqfd not implemented\n");
-+        error_report("kvm: irqfd not implemented");
-         exit(1);
-     }
- 
-@@ -2605,7 +2605,7 @@ static int do_kvm_irqchip_create(KVMState *s)
-         }
-     }
-     if (ret < 0) {
--        fprintf(stderr, "Create kernel irqchip failed: %s\n", strerror(-ret));
-+        error_report("Create kernel irqchip failed: %s", strerror(-ret));
-         exit(1);
-     }
- 
-@@ -3136,15 +3136,14 @@ static int kvm_handle_internal_error(CPUState *cpu, struct kvm_run *run)
- {
-     int i;
- 
--    fprintf(stderr, "KVM internal error. Suberror: %d\n",
--            run->internal.suberror);
-+    error_report("KVM internal error. Suberror: %d", run->internal.suberror);
- 
-     for (i = 0; i < run->internal.ndata; ++i) {
--        fprintf(stderr, "extra data[%d]: 0x%016"PRIx64"\n",
--                i, (uint64_t)run->internal.data[i]);
-+        error_printf("extra data[%d]: 0x%016"PRIx64"\n",
-+                     i, (uint64_t)run->internal.data[i]);
-     }
-     if (run->internal.suberror == KVM_INTERNAL_ERROR_EMULATION) {
--        fprintf(stderr, "emulation failure\n");
-+        error_printf("emulation failure\n");
-         if (!kvm_arch_stop_on_emulation_error(cpu)) {
-             cpu_dump_state(cpu, stderr, CPU_DUMP_CODE);
-             return EXCP_INTERRUPT;
-@@ -3315,13 +3314,13 @@ static void kvm_eat_signals(CPUState *cpu)
-     do {
-         r = sigtimedwait(&waitset, &siginfo, &ts);
-         if (r == -1 && !(errno == EAGAIN || errno == EINTR)) {
--            perror("sigtimedwait");
-+            error_report("sigtimedwait: %s", strerror(errno));
-             exit(1);
-         }
- 
-         r = sigpending(&chkset);
-         if (r == -1) {
--            perror("sigpending");
-+            error_report("sigpending: %s", strerror(errno));
-             exit(1);
-         }
-     } while (sigismember(&chkset, SIG_IPI));
-@@ -3490,14 +3489,13 @@ int kvm_cpu_exec(CPUState *cpu)
-                 break;
-             }
-             if (!(run_ret == -EFAULT && run->exit_reason == KVM_EXIT_MEMORY_FAULT)) {
--                fprintf(stderr, "error: kvm run failed %s\n",
--                        strerror(-run_ret));
-+                error_report("kvm run failed: %s", strerror(-run_ret));
- #ifdef TARGET_PPC
-                 if (run_ret == -EBUSY) {
--                    fprintf(stderr,
--                            "This is probably because your SMT is enabled.\n"
--                            "VCPU can only run on primary threads with all "
--                            "secondary threads offline.\n");
-+                    error_printf("This is probably because your SMT is "
-+                                 "enabled.\n"
-+                                 "VCPU can only run on primary threads with all "
-+                                 "secondary threads offline.\n");
-                 }
- #endif
-                 ret = -1;
-@@ -3533,8 +3531,8 @@ int kvm_cpu_exec(CPUState *cpu)
-             ret = EXCP_INTERRUPT;
-             break;
-         case KVM_EXIT_UNKNOWN:
--            fprintf(stderr, "KVM: unknown exit, hardware reason %" PRIx64 "\n",
--                    (uint64_t)run->hw.hardware_exit_reason);
-+            error_report("KVM: unknown exit, hardware reason %" PRIx64,
-+                         (uint64_t)run->hw.hardware_exit_reason);
-             ret = -1;
-             break;
-         case KVM_EXIT_INTERNAL_ERROR:
-@@ -3978,7 +3976,7 @@ void kvm_init_cpu_signals(CPUState *cpu)
-         r = kvm_set_signal_mask(cpu, &set);
-     }
-     if (r) {
--        fprintf(stderr, "kvm_set_signal_mask: %s\n", strerror(-r));
-+        error_report("kvm_set_signal_mask: %s", strerror(-r));
-         exit(1);
-     }
- }
--- 
-2.43.0
-
+[*] https://lore.kernel.org/all/20260819094903.3060020-1-xiaoyao.li@intel.com
