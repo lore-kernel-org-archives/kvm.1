@@ -1,33 +1,32 @@
-Received: from mta0.migadu.com (out-24.mta0.migadu.com [91.218.175.24])
+Received: from mta0.migadu.com (out-26.mta0.migadu.com [91.218.175.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D514A4995
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:04:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408C24A4990
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.26
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789999483; cv=none; b=HYO+w/mHL529f44chtn3PhaHwfTbELtRfkxXHDPLFybxfyO9ciPflFvedoSXgC2iBNoHSvF7615eqRIfhYaCorvo/HaQgJNiMp5uY9NTqMzJB3VxmhaihNNzqlM4Ju+0KnLocr7pQK5TjKIjWLBwlm2ljUGsRbybuLBSsEygbiU=
+	t=1789999483; cv=none; b=kgogaiM4FFhQG+5+ypiMwFFV6QNTDzx9v/a50ms1ySBbFibGcYhw+iHZgxezeRxbvaXEZ2JxV/OYxJ3+6SOqATF3CVIeybCwlIbj/b5QXgqt4wPpdZ/qaRrlMVBFkwZSTUnucZMJVJeQvq/Kuz+5Vhv8DEA60nq2liV2BrOD264=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789999483; c=relaxed/simple;
-	bh=ie878rU/JdV+WHZq6reEkW3LocI09006Gd3UryYGcEA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dX7UusGzZ/HLCKhdMzXjnOHB3YmzYOZX79Q7nqp6aNwyesdYLtTWR8GO4zzHTmQr6NSRdQlyVOMwhWQXsx/6AijdHBMRpJeRUjAhqWEl/CkrEpEnV6eS5qS8BJp+xbmTDBWvrXN82JjNwYy4SOtCeV6rMtAZhaMOYoigXPRr/MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Ym+yjfJS; arc=none smtp.client-ip=91.218.175.24
+	bh=kGLTqSDqNKduog1GOtZuGMpqVSeUXQY7T0QuU7Ou3ok=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QWGAmri2V9EunyH6wOWc+GWQ1O/oW8xtLTFcJmyGNWhz7dDuHOMn9epeXv/nm2UPzLugjzv/FmbRdJcOODrAjscvRMdqIolylpiJ6c2b6+vlE7uAO8U42txKY4V506229qxaAP7AuWhbwJ6WkeB0KySiX6EdZWTDyvNXIOPJhog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=gfbW+RT9; arc=none smtp.client-ip=91.218.175.26
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Ym+yjfJS"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="gfbW+RT9"
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=ie878rU/JdV+WHZq6reEkW3LocI09006Gd3UryYGcEA=;
+DKIM-Signature: a=rsa-sha256; bh=kGLTqSDqNKduog1GOtZuGMpqVSeUXQY7T0QuU7Ou3ok=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
  t=1789999479; v=1; x=1790604279;
- b=Ym+yjfJSNoAEEYEZ8nF7MSCaOlkglFvG2PXUFTZUSCR2WK5OnYpE4u5G9is82wrKVkT62a4N
- 3BKH6UbTddmpZt07+o7ZsSKH+CNw6hyAPpGlQybfsJ5CmBCRHD0QRiaeTp1SU8NtV/OZ11iSrDi
- U11Fua0vRpoxEyOe7hpcnV+U=
+ b=gfbW+RT93Hjow0l4m8ocQrvGpouLVMfsueC2VZt4se6who03ngRCK3TcgOvXcU0dDoFDFMtX
+ Pibd/GCJfdn/mig5X5NFPtFdh5CxEI2MBzq82yP1fy8akDIF+UGBsTq6kF1M84km7wFVNnNGHZb
+ AoP1k0eBW4yUvW3PIr4wpq68=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id ad4db469fc531011;
-	Mon, 21 Sep 2026 14:04:39 +0000
-X-Mizu-Trace-ID: ad4db469fc531011
+Received: by smtp.migadu.com with ESMTPS id 295205c3151231b2;
+	Mon, 21 Sep 2026 14:04:29 +0000
+X-Mizu-Trace-ID: 295205c3151231b2
 X-Migadu-Flow: FLOW_OUT
 From: Fuad Tabba <fuad.tabba@linux.dev>
 To: Marc Zyngier <maz@kernel.org>,
@@ -44,12 +43,10 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH 3/3] KVM: arm64: selftests: Test a timer set past the counter's wrap
-Date: Mon, 21 Sep 2026 15:04:27 +0100
-Message-Id: <20260921140427.2211373-4-fuad.tabba@linux.dev>
+Subject: [PATCH 0/3] KVM: arm64: timers: Program CVAL from the current count when the hardware won't apply the offset
+Date: Mon, 21 Sep 2026 15:04:24 +0100
+Message-Id: <20260921140427.2211373-1-fuad.tabba@linux.dev>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260921140427.2211373-1-fuad.tabba@linux.dev>
-References: <20260921140427.2211373-1-fuad.tabba@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -58,61 +55,70 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Program an unmasked timer whose cval sits within long_wait_ms of the
-counter's wrap while the guest's counter is at wait_ms, and expect no
-interrupt. The guest's counter can't reach it, but a host that applies
-the timer's offset by adding it to cval wraps the sum into the past and
-fires at once. The one existing case with a cval past the wrap, in the
-sanity checks, runs with the timer masked and can't see that.
+Hi folks,
 
-Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
----
- .../kvm/arm64/arch_timer_edge_cases.c         | 25 +++++++++++++++++++
- 1 file changed, 25 insertions(+)
+A guest timer can fail to fire, or fire early, once the guest's counter
+is far enough from the host's. Where the hardware won't apply the
+offset itself (the physical timer without CNTPOFF_EL2, a CNTPOFF_EL2
+host while TGE is set, the virtual timer on x1e), KVM adds it to CVAL
+and lets the hardware compare the sum against the raw counter. The
+timer condition is an unsigned compare, and adding the offset to both
+sides of it preserves it only while both sums wrap or neither does: a
+guest whose counter is ahead of the host's by more than CVAL has an
+expired timer that never fires, and one behind it can have a far-future
+timer fire at once.
 
-diff --git a/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c b/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c
-index d9c9377a63256..69986a7f0d37d 100644
---- a/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c
-+++ b/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c
-@@ -787,6 +787,30 @@ static void test_timers_in_the_past(enum arch_timer timer)
- 	}
- }
- 
-+/*
-+ * With the counter at wait_ms, a tval of -(wait_ms + long_wait_ms) puts cval
-+ * within long_wait_ms of the counter's wrap: a deadline further away than the
-+ * counter can reach. Unmasked, so an early ISTATUS shows up as an IRQ.
-+ */
-+static void test_timers_past_counter_wrap(enum arch_timer timer)
-+{
-+	s32 tval = -(s32)msec_to_cycles(test_args.wait_ms + test_args.long_wait_ms);
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(sleep_method); i++) {
-+		sleep_method_t sm = sleep_method[i];
-+
-+		local_irq_disable();
-+		set_counter(timer, msec_to_cycles(test_args.wait_ms));
-+		set_tval_irq(timer, tval, CTL_ENABLE);
-+		sm(timer, msecs_to_usecs(test_args.wait_ms) + TIMEOUT_NO_IRQ_US);
-+		local_irq_enable();
-+		isb();
-+		assert_irqs_handled(0);
-+		timer_set_ctl(timer, CTL_IMASK);
-+	}
-+}
-+
- static void test_long_timer_delays(enum arch_timer timer)
- {
- 	s32 tval = (s32)msec_to_cycles(test_args.long_wait_ms);
-@@ -806,6 +830,7 @@ static void guest_run_iteration(enum arch_timer timer)
- 	test_basic_functionality(timer);
- 	test_timers_sanity_checks(timer);
- 
-+	test_timers_past_counter_wrap(timer);
- 	test_timers_above_tval_max(timer);
- 	test_timers_in_the_past(timer);
- 
+Patch 1 computes the programmed value from the current count instead,
+and returns a guest hypervisor's own physical CVAL from memory where it
+used to subtract the offset from the hardware value. Patch 2 does the
+same for the virtual CVAL read on x1e, which has returned CVAL + offset
+since the workaround landed. Patch 3 adds the second case, a guest
+behind the host with a far-future timer, to arch_timer_edge_cases.
+
+So far it has only shown up in the selftest, which moves the guest
+counter half its range away from the host's. On a VHE host without
+CNTPOFF_EL2 arch_timer_edge_cases hangs in its physical cval = 0 cases
+until the vCPU is next loaded, which is what Zenghui saw on a
+Kunpeng920 [1]. On a CNTPOFF_EL2 host (QEMU, here) the same cases
+livelock instead. Both go away with patch 1. The arithmetic is wrong
+for any offset once one sum wraps and the other doesn't, and the fix
+for the selftest's case should be the fix for all of them.
+
+Tested with arch_timer_edge_cases on QEMU with [2] applied, under VHE,
+nVHE and pKVM, and under VHE with CNTPOFF_EL2 removed by
+id_aa64mmfr0.ecv=1, the host class Zenghui hit. Under VHE with patch 1
+reverted the new case fails. QEMU's TCG has a separate bug with the
+same offsets, which [2] fixes. Without it the test stalls under nVHE
+and pKVM as well, where KVM emulates the physical timer and patch 1
+changes nothing. Not exercised here: patch 1's x1e paths in
+timer_save_state() and timer_restore_state() and all of patch 2, since
+nothing here runs on an x1e, and patch 1's CNTP_CVAL_EL0 read in
+kvm_hyp_handle_timer(), which only a guest hypervisor with a physical
+offset on a host without CNTPOFF_EL2 reaches.
+
+Patch 1 carries Cc: stable for the hang and the livelock.
+
+Based on Linux 7.3-rc3 (fd73f4a665989).
+
+Cheers,
+/fuad
+
+[1] https://lore.kernel.org/r/460258be-0102-e922-c342-4e87cd94b9e5@huawei.com
+[2] https://lore.kernel.org/qemu-devel/20260921074451.3158645-1-fuad.tabba@linux.dev/
+
+Fuad Tabba (3):
+  KVM: arm64: timers: Compute an offset-applied CVAL from the current
+    count
+  KVM: arm64: nv: Read a guest hypervisor's CNTV_CVAL_EL0 from memory on
+    x1e
+  KVM: arm64: selftests: Test a timer set past the counter's wrap
+
+ arch/arm64/kvm/arch_timer.c                   | 27 +++++++++----------
+ arch/arm64/kvm/hyp/vhe/switch.c               | 21 +++++++++------
+ include/kvm/arm_arch_timer.h                  | 15 +++++++++++
+ .../kvm/arm64/arch_timer_edge_cases.c         | 25 +++++++++++++++++
+ 4 files changed, 65 insertions(+), 23 deletions(-)
+
 -- 
 2.39.5
 
