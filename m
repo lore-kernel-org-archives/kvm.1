@@ -1,153 +1,223 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-13.mta0.migadu.com [91.218.175.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FEA74A093D
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:00:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553E84A206E
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:04:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789999230; cv=none; b=vD+Jj/c5d8FWmbnGMlhuloq7d84KnEZuGHTQq37TG5zOLq1TfPlRaVqVsX1QeGAhEjsNbji4WdOm880cpwuLeQlFc6FYyoTYHfinlIsx+Jk5QLm2xa7vqYAf2cylronEgficNBSCi4t3l9mM4wSYq5dTCwyQ0wzUVvbygYpb1EI=
+	t=1789999474; cv=none; b=FSvGSM7VmQ9EBskie/0HYOkzCPB3Wri87U4+Xqi+iJKJyHvA+OlkTD3KOnTGUs48p7/WhYxP7lYQWsZDMq/exZ6R1Dhn3W6UyFKHF/ZM22KAUzv8l1IvV67HZWHGQSLoZs4206YH0HFlpNgwc4CPuegOL2vzk7r4WcMHSTP0rnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789999230; c=relaxed/simple;
-	bh=Y9K/A2rysPS73ZVguMllk0HJbV1REEwCXWLmLjckNoE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HI5wbHtQjngyKraJDPbEvNhRV/IlD86KsctQxD2Bh3CyJctVjR20YEGJtIE/gf2z3ZqfWIAIqK5JFblAYfnGNT39KkcqWsQnIdTkvxGcZCVhBiAFoCAkXxSsXC3O3GU3uLRm0G1V+egfVq4xwbidqYQ6RcxIm04uCfp88fb4bXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZwEbWgLz; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789999474; c=relaxed/simple;
+	bh=OSYAyJkxVLSPK+NkLdepaf6lI/E2wi+QfFe45FHXmeM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=LD9jS1uBs3j1TGBaNlliJtm/uyLLPyvsz/BlSGB/mb0ZcsmEwV1jlmvXBMtBtasx0YhNUpe8A/SK/1m0rKhhuq+DLn2kI7+akJ4Wkus35mI+Wxa07ZMmfO9ybpst1l+1DuQTa3REI+cSgQa5K6vTaHIXQ03HMOOp3zoD1o0ooIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Sk5a9FvZ; arc=none smtp.client-ip=91.218.175.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZwEbWgLz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789999227;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=3Xy9D3cMzmtvMI6QdqX1VMUscrgyZ9okvtda7MIeoJ4=;
-	b=ZwEbWgLzMWxv/S84rthhG0kZ6AE75Qd+I6apcOj35UVgKVH4PO91sg9EcbNHeB15Q/Dgtg
-	fOvR/Lck+hbrZ3fnLUthYbp6yIqxvUERGgi2/ijL19qkeu2pH4suwuSW1tkrSJDHtpcdzW
-	Z58vdMEbqfO2ev6e2FlhM+4ixW7NJp0=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-107-JTlX0O3nN5Kgt0HcrTRYIA-1; Mon,
- 21 Sep 2026 10:00:20 -0400
-X-MC-Unique: JTlX0O3nN5Kgt0HcrTRYIA-1
-X-Mimecast-MFC-AGG-ID: JTlX0O3nN5Kgt0HcrTRYIA_1789999217
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 84A9D1954227;
-	Mon, 21 Sep 2026 14:00:16 +0000 (UTC)
-Received: from [100.90.56.12] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A9F1341B;
-	Mon, 21 Sep 2026 14:00:13 +0000 (UTC)
-Message-ID: <7efe2260-5c11-4e8c-812e-dd1e215ac3e4@redhat.com>
-Date: Mon, 21 Sep 2026 16:00:09 +0200
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Sk5a9FvZ"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=OSYAyJkxVLSPK+NkLdepaf6lI/E2wi+QfFe45FHXmeM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789999470; v=1; x=1790604270;
+ b=Sk5a9FvZBlY/6bf164Jy3nmRv5LY6eEHg5avMTVpYBAI71bK86cnfGRDWp7d/R/xM9g7/QXJ
+ Aa2Bdcjt+nLLeKrc+SthqXxIxax/HACY4nHAO5Y8N3mFT3uWS72dOphDUdq82nHpgavJOl1Q0tO
+ ltX7KYvWBmswKZUBvfgiLdUo=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id cfe6841c27b4352f;
+	Mon, 21 Sep 2026 14:04:29 +0000
+X-Mizu-Trace-ID: cfe6841c27b4352f
+X-Migadu-Flow: FLOW_OUT
+From: Fuad Tabba <fuad.tabba@linux.dev>
+To: Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>
+Cc: Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Zenghui Yu <zenghui.yu@linux.dev>,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Will Deacon <will@kernel.org>,
+	Fuad Tabba <tabba@google.com>,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH 1/3] KVM: arm64: timers: Compute an offset-applied CVAL from the current count
+Date: Mon, 21 Sep 2026 15:04:25 +0100
+Message-Id: <20260921140427.2211373-2-fuad.tabba@linux.dev>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20260921140427.2211373-1-fuad.tabba@linux.dev>
+References: <20260921140427.2211373-1-fuad.tabba@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] KVM: Serialize vCPU creation and revert vcpu_ids
- tracking
-To: Thorsten Leemhuis <regressions@leemhuis.info>,
- Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- Jean-Christophe Guillain <jean-christophe@guillain.net>,
- =?UTF-8?Q?Pawe=C5=82_S?= <spawel523@gmail.com>,
- Linux kernel regressions list <regressions@lists.linux.dev>
-References: <20260914181223.289061-1-seanjc@google.com>
- <c645070e-9829-4f98-bafc-b5d44ff2db45@leemhuis.info>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <c645070e-9829-4f98-bafc-b5d44ff2db45@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+Content-Transfer-Encoding: 8bit
 
-On 9/21/26 15:57, Thorsten Leemhuis wrote:
-> On 9/14/26 20:12, Sean Christopherson wrote:
->> Serialize vCPU creation by holding kvm->lock for the entirety of
->> kvm_vm_ioctl_create_vcpu(), and then revert the now-redundant tracking adding
->> by commit 97d65b544f48 ("KVM: Check for duplicate vcpu_id as early as
->> possible").  I botched the math when justifying the vcpu_ids tracking; it's not
->> an extra 256 bytes, it's an extra 2048 bytes.  Roughly doubling the size of
->> "struct kvm" tripped x86's KVM_SANITY_CHECK_VM_STRUCT_SIZE, and obviously isn't
->> something we want to do in general.
-> 
-> Hi Sean! Thx for handling this and sorry for pestering you, but I have
-> to ask, as this fixes a regression that was already reported two times
-> and introduced this cycle:
-> 
-> What's the plan to merge this? Is this aimed for the current or the next
-> merge window? Ciao, Thorsten
+When the hardware won't apply a timer's offset, KVM programs CVAL +
+offset and lets it compare that against the raw counter. The compare is
+unsigned (IsTimerConditionMet, DDI0487M_c J1.4.3.29):
 
-For this one, but after fixing the PPC and s390 cases.  Sean, if you're 
-busy I can send the v2 myself.
+  condition_met = (UInt(PhysicalCountInt() - offset) -
+                   UInt(compare_value)) >= 0;
 
-Paolo
+Adding the offset to both sides preserves it only when both sums wrap
+or neither does: a guest whose counter is ahead of the host's by more
+than CVAL has an expired timer that CVAL + offset puts in the far
+future, and one behind it has a far-future timer that CVAL + offset
+wraps into the past.
 
->> The TL;DR of why it's a-ok to serialize vCPU creation is that no VMM actually
->> does parallel vCPU creation.  As with so many things, KVM's current behavior is
->> the result of decades-old cruft, not intentional, deliberate design.
->>
->> Patch 1 is a tangentially related bug fix; I included it here because holding
->> kvm->lock for all of vCPU creation allows WARNing if KVM attempts to lock all
->> vCPUs if vCPU creation is in-progress (the caller is must hold kvm->lock).
->>
->> Sean Christopherson (5):
->>    KVM: Reject attempts to lock all vCPUs if vCPU creation is in-progress
->>    KVM: Protect all of kvm_vm_ioctl_create_vcpu() with kvm->lock
->>    KVM: Move check for existing vCPU ID to the top of vCPU creation
->>    Revert "KVM: Check for duplicate vcpu_id as early as possible"
->>    KVM: WARN if vCPU creation is in-progress when locking all vCPUs
->>
->>   arch/x86/kvm/svm/sev.c   | 10 ----------
->>   arch/x86/kvm/vmx/tdx.c   |  5 -----
->>   include/linux/kvm_host.h |  1 -
->>   virt/kvm/kvm_main.c      | 35 +++++++++++------------------------
->>   4 files changed, 11 insertions(+), 40 deletions(-)
->>
->>
->> base-commit: d599822bdb66aeec5ec76297b0fc6efaaeefe07c
-> 
-> 
+On a CNTPOFF_EL2 host the first case livelocks: __activate_traps()
+reloads the guest's CVAL and the timer fires, __deactivate_traps()
+rewrites it as CVAL + offset on the way out and the line drops before
+the host can take the interrupt, and the vCPU only makes progress once
+an unrelated vcpu_put() and vcpu_load() inject the interrupt from the
+memory copy. arch_timer_edge_cases stops in its physical past-timer
+cases. Without CNTPOFF_EL2 the same cases hang until the vCPU is next
+loaded, which is what Zenghui reported on a Kunpeng920.
+
+Derive the programmed value from the current count instead: CVAL +
+offset while the deadline is ahead, 0 for a timer that has already
+expired for the guest, ~0 for one past the counter's wrap. That value
+can't be inverted, so timer_save_state() keeps the memory copy whenever
+an offset is in play; it's current there, written by the trap handler
+when the accesses are trapped and by __deactivate_traps() on the
+CNTPOFF_EL2 path. kvm_hyp_handle_timer() subtracted the offset back out
+for a guest hypervisor's read of its own physical CVAL, so return the
+memory copy there too.
+
+Fixes: c605ee245097 ("KVM: arm64: timers: Allow physical offset without CNTPOFF_EL2")
+Fixes: 9404673293b0 ("KVM: arm64: timers: Correctly handle TGE flip with CNTPOFF_EL2")
+Fixes: 0bc9a9e85fcf ("KVM: arm64: Work around x1e's CNTVOFF_EL2 bogosity")
+Reported-by: Zenghui Yu <yuzenghui@huawei.com>
+Closes: https://lore.kernel.org/r/460258be-0102-e922-c342-4e87cd94b9e5@huawei.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
+---
+ arch/arm64/kvm/arch_timer.c     | 27 ++++++++++++---------------
+ arch/arm64/kvm/hyp/vhe/switch.c | 11 ++++++-----
+ include/kvm/arm_arch_timer.h    | 15 +++++++++++++++
+ 3 files changed, 33 insertions(+), 20 deletions(-)
+
+diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
+index 6ac3321f4c575..9278b5383c044 100644
+--- a/arch/arm64/kvm/arch_timer.c
++++ b/arch/arm64/kvm/arch_timer.c
+@@ -528,17 +528,11 @@ static void timer_save_state(struct arch_timer_context *ctx)
+ 		goto out;
+ 
+ 	switch (index) {
+-		u64 cval;
+-
+ 	case TIMER_VTIMER:
+ 	case TIMER_HVTIMER:
+ 		timer_set_ctl(ctx, read_sysreg_el0(SYS_CNTV_CTL));
+-		cval = read_sysreg_el0(SYS_CNTV_CVAL);
+-
+-		if (has_broken_cntvoff())
+-			cval -= timer_get_offset(ctx);
+-
+-		timer_set_cval(ctx, cval);
++		if (!has_broken_cntvoff() || !timer_get_offset(ctx))
++			timer_set_cval(ctx, read_sysreg_el0(SYS_CNTV_CVAL));
+ 
+ 		/* Disable the timer */
+ 		write_sysreg_el0(0, SYS_CNTV_CTL);
+@@ -564,11 +558,12 @@ static void timer_save_state(struct arch_timer_context *ctx)
+ 	case TIMER_PTIMER:
+ 	case TIMER_HPTIMER:
+ 		timer_set_ctl(ctx, read_sysreg_el0(SYS_CNTP_CTL));
+-		cval = read_sysreg_el0(SYS_CNTP_CVAL);
+-
+-		cval -= timer_get_offset(ctx);
+-
+-		timer_set_cval(ctx, cval);
++		/*
++		 * With an offset, memory already holds the guest's CVAL (the
++		 * trap handler or __deactivate_traps() wrote it).
++		 */
++		if (!timer_get_offset(ctx))
++			timer_set_cval(ctx, read_sysreg_el0(SYS_CNTP_CVAL));
+ 
+ 		/* Disable the timer */
+ 		write_sysreg_el0(0, SYS_CNTP_CTL);
+@@ -647,7 +642,8 @@ static void timer_restore_state(struct arch_timer_context *ctx)
+ 		offset = timer_get_offset(ctx);
+ 		if (has_broken_cntvoff()) {
+ 			set_cntvoff(0);
+-			cval += offset;
++			if (offset)
++				cval = timer_apply_offset(cval, offset, kvm_phys_timer_read());
+ 		} else {
+ 			set_cntvoff(offset);
+ 		}
+@@ -660,7 +656,8 @@ static void timer_restore_state(struct arch_timer_context *ctx)
+ 		cval = timer_get_cval(ctx);
+ 		offset = timer_get_offset(ctx);
+ 		set_cntpoff(offset);
+-		cval += offset;
++		if (offset)
++			cval = timer_apply_offset(cval, offset, kvm_phys_timer_read());
+ 		write_sysreg_el0(cval, SYS_CNTP_CVAL);
+ 		isb();
+ 		write_sysreg_el0(timer_get_ctl(ctx), SYS_CNTP_CTL);
+diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
+index 7875911c05063..14aada311bac4 100644
+--- a/arch/arm64/kvm/hyp/vhe/switch.c
++++ b/arch/arm64/kvm/hyp/vhe/switch.c
+@@ -175,7 +175,8 @@ static void __deactivate_traps(struct kvm_vcpu *vcpu)
+ 		offset = read_sysreg_s(SYS_CNTPOFF_EL2);
+ 
+ 		if (map.direct_ptimer && offset) {
+-			write_sysreg_el0(val + offset, SYS_CNTP_CVAL);
++			val = timer_apply_offset(val, offset, arch_timer_read_cntpct_el0());
++			write_sysreg_el0(val, SYS_CNTP_CVAL);
+ 			isb();
+ 		}
+ 	}
+@@ -296,10 +297,10 @@ static bool kvm_hyp_handle_timer(struct kvm_vcpu *vcpu, u64 *exit_code)
+ 		break;
+ 	case SYS_CNTP_CVAL_EL0:
+ 		if (vcpu_el2_e2h_is_set(vcpu)) {
+-			val = read_sysreg_el0(SYS_CNTP_CVAL);
+-
+-			if (!has_cntpoff())
+-				val -= timer_get_offset(vcpu_hptimer(vcpu));
++			if (!has_cntpoff() && timer_get_offset(vcpu_hptimer(vcpu)))
++				val = __vcpu_sys_reg(vcpu, CNTHP_CVAL_EL2);
++			else
++				val = read_sysreg_el0(SYS_CNTP_CVAL);
+ 		} else {
+ 			val = __vcpu_sys_reg(vcpu, CNTP_CVAL_EL0);
+ 		}
+diff --git a/include/kvm/arm_arch_timer.h b/include/kvm/arm_arch_timer.h
+index bc6f2fdd7ad33..80f96ea59f1ae 100644
+--- a/include/kvm/arm_arch_timer.h
++++ b/include/kvm/arm_arch_timer.h
+@@ -195,4 +195,19 @@ static inline void timer_set_offset(struct arch_timer_context *ctxt, u64 offset)
+ 	WRITE_ONCE(*ctxt->offset.vm_offset, offset);
+ }
+ 
++/*
++ * CVAL to program when the hardware won't apply the timer's offset, so that
++ * its compare against the raw counter matches the guest's at 'now'. An
++ * expired timer stays expired; one past the wrap never fires.
++ */
++static inline u64 timer_apply_offset(u64 cval, u64 offset, u64 now)
++{
++	u64 hw = cval + offset;
++
++	if (now - offset >= cval)
++		return 0;
++
++	return hw > now ? hw : U64_MAX;
++}
++
+ #endif
+-- 
+2.39.5
 
