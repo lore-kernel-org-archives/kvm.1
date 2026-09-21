@@ -1,168 +1,429 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF564963CC
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 12:41:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C14A498901;
+	Mon, 21 Sep 2026 12:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789994511; cv=none; b=JPcGllApk4hY+GfIN46Tncs7htHNQO+hKvS+TaYlQL1ln2X7xsysMaw6tqJFCgiPIfiELLoFowBkEd4l9UdjLdkVOAzUKtEPYabCDR7EGyJGhFQ+rKG3SPudB8PbmShRPQT+mxCQ4gWktpa9gm2ByrWIhE1/so93rp0Y9lP8zT8=
+	t=1789994541; cv=none; b=Ck0iZENCOOZtfiUgzL/8PhUOlknCgttzRaqqOiBtcPtLE4dWhuoULwS8tuSFvqG6tjT39qPGhbJpqhhehFzWNNyXEeQor5MI785/NSFTcsJ9LBuqMx1ZQVh3m4D4RvBzc8m+XlWWpsNcWCgp4Wyit0jOeq0yvytj8pkFdqAgqfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789994511; c=relaxed/simple;
-	bh=jblObbLC3FrNXx+T/lLSD1ZVsmQc5YFNAIcAj+09rmw=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=of0A2VXCutfzjLDp/rEmW5n20SescOH0JQgaN2CnagAVtltxI3TAT8KFW/U9yGzCFbX60+gXI3Up61Hv5bQVZWVFMgGOSFpkDw8bPaj1zslusIF+XE0MIYm2A0qQfeSaNpmgStZ1UONLT+dv1pIDbhsMBIJ/8iFD8D7z3khY2sI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oJ3wIxZF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789994541; c=relaxed/simple;
+	bh=IRpX+ZEp/zVlKdL3h+SzNZQpQmKb6Y0IMlPZO81/S6c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CdkgqXmFLrrBudvKjHqMWVgz3zh2c+m3M4cr9EypaIR2kOi88D2yixtjidOamUVCpl3OwB9701JeO+481qstI0BxMZJw2J343w1YPf6PhNtAxcR8zY1rHn9OsBQukv8xXIumbUNlWx6CIpW0Wopmj/6O8SwSv4AE7rzMAZ36+6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=eQGWfG0T; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oJ3wIxZF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA7521F000FF;
-	Mon, 21 Sep 2026 12:41:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789994509;
-	bh=lA9Q61OLra3+9VXlYL2Kmh3aAU5zUG+8C67x0zqyZf4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=oJ3wIxZF93H+rsvLnJr7eTA/kBiRa4o2xicW2YbOEuwGstJjBW5yc8qWUCBgwkUkT
-	 eMvtThenEy2XLj2XpjP1XjIRZoy6JNh7SFlbwHZkX/Qslki/2U7ZBGHrO6qNCty/iX
-	 Hbs5/xa5/dShsDwpocc4S9Nq0qa93pUmHChQXw69TaM+Z1EpgoJ7GjJtvLdI/AIauR
-	 YPIe/DkuIgL4PDBvY34CUnVmb/gFIip5jvWPHRsOYX0SzqV5Jl8sZ8hGRsZRsr/S5o
-	 hm5bDZWmLKcApeNLookKQGy5JI57v36BcBa2WCI6S0iYtJQEwTp7518TGYVbCaahmP
-	 KGwIqn7TCIVJw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v4 2/4] RISC-V: paravirt: Add pvqspinlock frontend
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?R1VPIFJlbiAoWHVhblRpZSk=?= <guoren@kernel.org>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260921-pvqspinlock-v4-2-409a22aed6ef@kernel.org>
-References: <20260921-pvqspinlock-v4-0-409a22aed6ef@kernel.org>
- <20260921-pvqspinlock-v4-2-409a22aed6ef@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 21 Sep 2026 12:41:49 +0000
-Message-Id: <20260921124149.BA7521F000FF@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="eQGWfG0T"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 36E811D13;
+	Mon, 21 Sep 2026 05:42:13 -0700 (PDT)
+Received: from [10.0.128.141] (unknown [10.0.128.141])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5ADB83F86C;
+	Mon, 21 Sep 2026 05:42:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789994536; bh=IRpX+ZEp/zVlKdL3h+SzNZQpQmKb6Y0IMlPZO81/S6c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=eQGWfG0TNldwMTREH8bTh8H+1w65s5SsyxtYASsAlYAaZhM8/Zie7v82Mz2jl0q9d
+	 zxAeSIJPe+dB5+sJ8mob10j+F/7snho7KhyQ+JbciEj5KvoFXiLNlzC3lNDR/4jHEl
+	 3xtE0k19WjVMcp+/ILdArlTZ7OInKPcsQie2e8do=
+Message-ID: <bbb2f1db-5d42-495f-b34e-184a6cd894ce@arm.com>
+Date: Mon, 21 Sep 2026 13:42:11 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18 4/7] firmware: arm_rmm: Add support for SRO
+Content-Language: en-GB
+To: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
+ <20260912083611.2513845-5-suzuki.poulose@arm.com>
+ <178978126542.2352296.15676256806777454164.b4-review@b4>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <178978126542.2352296.15676256806777454164.b4-review@b4>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] riscv: out-of-line static_call in queued_spin_unlock() degrades pe=
-rformance
-- [High] riscv: missing headers in qspinlock_paravirt cause build failures
---
+On 19/09/2026 02:27, Jonathan Cameron wrote:
+>> RMM v2.0 introduces the concept of "Stateful RMI Operations" (SRO). This
+>> means that an SMC can return with an operation still in progress. The
+>> host is expected to continue the operation until it reaches a conclusion
+>> (either success or failure). During this process the RMM can request
+>> additional memory ('donate') or hand memory back to the host
+>> ('reclaim'). The host can request an in progress operation is cancelled,
+>> but still continue the operation until it has completed (otherwise the
+>> incomplete operation may cause future RMM operations to fail).
+>>
+>> The SRO is tracked using a struct rmi_sro_state object which keeps track
+>> of any memory which has been allocated but not yet consumed by the RMM
+>> or reclaimed from the RMM. This allows the memory to be reused in a
+>> future request within the same operation. It will also permit an
+>> operation to be done in a context where memory allocation may be
+>> difficult (e.g. atomic context) with the option to abort the operation
+>> and retry the memory allocation outside of the atomic context. The
+>> memory stored in the struct rmi_sro_state object can then be reused on
+>> the subsequent attempt.
+>>
+>> Wrappers for SRO RMI commands are also provided here because they depend
+>> on the rmi_sro_execute() implementation added by this patch.
+>> Delegate/undelegate handles are also added here because they now use the
+>> SRO/stateful command infrastructure and are also used for the memory
+>> DONATE/RECLAIM flows.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> Co-Developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> 
+> Hi Suzuki.
+> 
+> A few comments and questions on the array for the cache of
+> allocations.
+> 
+> Jonathan
+> 
+>> ---
+>>   drivers/firmware/arm_rmm/rmi.c | 586 +++++++++++++++++++++++++++++++++
+>>   include/linux/arm-rmi-cmds.h   |  41 +++
+>>   2 files changed, 627 insertions(+)
+>>
+>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+>> index 5b0e342ce3d5..4f9898ece754 100644
+>> --- a/drivers/firmware/arm_rmm/rmi.c
+>> +++ b/drivers/firmware/arm_rmm/rmi.c
+>> @@ -15,6 +15,59 @@
+>>   #define RMI_FEAT_REG_COUNT	2
+>>   static unsigned long rmi_feat_reg_cache[RMI_FEAT_REG_COUNT] __ro_after_init;
+> 
 
-commit c07167cc8d5368121bd2aa429e157f2496f5c63f
-Author: GUO Ren (XuanTie) <guoren@kernel.org>
+Was there a question here you missed ? FWIW:
 
-RISC-V: paravirt: Add pvqspinlock frontend
+I have expanded this to cover all 5 RmiFeatureRegisters exposed by RMM, 
+and it looks something like this now, with the use of ARRAY_SIZE() to
+limit accesses.
 
-Add a virtualization-friendly unfair qspinlock frontend that halts the
-virtual CPU instead of spinning.
 
-> diff --git a/arch/riscv/include/asm/qspinlock.h b/arch/riscv/include/asm/=
-qspinlock.h
-> new file mode 100644
-> index 0000000000000..330b714edc447
-> --- /dev/null
-> +++ b/arch/riscv/include/asm/qspinlock.h
+/* RMM defines RmiFeatureRegister0 to RmiFeatureRegister5. */
+static unsigned long rmi_feat_reg_cache[5] __ro_after_init;
 
-[ ... ]
+> 
+> 
+>> +static int rmi_sro_donate_contig(struct rmi_sro_state *sro,
+>> +				 unsigned long sro_handle,
+>> +				 unsigned long donatereq,
+>> +				 struct arm_smccc_1_2_regs *out_regs,
+>> +				 gfp_t gfp)
 
-> +#define queued_spin_unlock	queued_spin_unlock
-> +static inline void queued_spin_unlock(struct qspinlock *lock)
-> +{
-> +	static_call(pv_queued_spin_unlock)(lock);
-> +}
+...
 
-[Severity: High]
-Does replacing the inline smp_store_release() with a static_call() regress
-native bare-metal performance?
+>> +	addr_range = phys & RMI_ADDR_RANGE_ADDR_MASK;
+>> +	FIELD_MODIFY(RMI_ADDR_RANGE_BLOCK_SIZE_MASK, &addr_range, block_size_fld);
+>> +	FIELD_MODIFY(RMI_ADDR_RANGE_COUNT_MASK, &addr_range, count);
+>> +	FIELD_MODIFY(RMI_ADDR_RANGE_STATE_MASK, &addr_range, state);
+>> +
+>> +	sro->addr_list[sro->addr_count] = addr_range;
+>> +
+>> +out:
+> 
+> This doesn't smell like an 'out' - as the real works is done down
+> here.
 
-Because RISC-V does not yet support inline static calls, this change replac=
-es
-the fast path native smp_store_release() instruction with an out-of-line
-function call or indirect branch across the kernel for every spin_unlock
-operation when CONFIG_PARAVIRT_SPINLOCKS is enabled.
+Ack, I have renamed it to "donate:"
 
-> diff --git a/arch/riscv/include/asm/qspinlock_paravirt.h b/arch/riscv/inc=
-lude/asm/qspinlock_paravirt.h
-> new file mode 100644
-> index 0000000000000..7261cd9b13b2e
-> --- /dev/null
-> +++ b/arch/riscv/include/asm/qspinlock_paravirt.h
+>> +
+>> +static int rmi_sro_donate_noncontig(struct rmi_sro_state *sro,
+>> +				    unsigned long sro_handle,
+>> +				    unsigned long donatereq,
+>> +				    struct arm_smccc_1_2_regs *out_regs,
+>> +				    gfp_t gfp)
+>> +{
+>> +	unsigned long block_size_fld = RMI_DONATE_BLOCK_SIZE(donatereq);
+>> +	unsigned long block_size = rmi_addr_block_size_to_bytes(block_size_fld);
+>> +	unsigned long count = RMI_DONATE_COUNT(donatereq);
+>> +	unsigned long state = RMI_DONATE_STATE(donatereq);
+>> +	unsigned long found = 0;
+>> +	unsigned long donated_granules;
+>> +	unsigned long granules_per_block = block_size >> PAGE_SHIFT;
+>> +	unsigned long consumed_blocks;
+>> +	int addr_list_start = sro->addr_count;
+>> +
+>> +	int ret;
+>> +
+>> +	for (int i = 0; i < addr_list_start && found < count; i++) {
+>> +		unsigned long entry = sro->addr_list[i];
+>> +
+>> +		if (RMI_ADDR_RANGE_BLOCK_SIZE(entry) == block_size_fld &&
+>> +		    RMI_ADDR_RANGE_COUNT(entry) == 1 &&
+>> +		    RMI_ADDR_RANGE_STATE(entry) == state) {
+>> +			addr_list_start--;
+> 
+> I guess putting that as a predecrement in the swap is a little
+> too obscure.
+> 
+> Maybe a comment for this whole loop that it is gathering up
+> useable entries by moving them to the end of the bit of the
+> array that is already in use.  Neat little bit of code but takes a little
+> more thinking about than might be ideal when we look at this
+> 10 years down the line.  Maybe it's just that it is Friday...
+> 
+>> +			swap(sro->addr_list[addr_list_start],
+>> +			     sro->addr_list[i]);
+>> +			found++;
+>> +			i--;
+> 
+> Rather than decrement the loop variable, maybe a goto and a label
+> for try_new_entry or something like that?  Even a comment might
+> be useful.
 
-[ ... ]
+Ack. I think a while loop makes it look a bit better with
+comments. e.g.:
 
-> +void dummy_queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
-> +void dummy_queued_spin_unlock(struct qspinlock *lock);
-> +
-> +DECLARE_STATIC_CALL(pv_queued_spin_lock_slowpath, dummy_queued_spin_lock=
-_slowpath);
+@@ -356,9 +356,11 @@ static int rmi_sro_donate_noncontig(struct 
+rmi_sro_state *sro,
+         unsigned long granules_per_block = block_size >> PAGE_SHIFT;
+         unsigned long consumed_blocks;
+         int addr_list_start = sro->addr_count;
+-       int ret;
++       int ret, i;
 
-[Severity: High]
-Can this cause a build failure due to an undefined macro?
+-       for (int i = 0; i < addr_list_start && found < count; i++) {
++       /* Gather the suitable entries to the end of the list */
++       i = 0;
++       while (i <  addr_list_start && found < count) {
+                 unsigned long entry = sro->addr_list[i];
 
-DECLARE_STATIC_CALL requires <linux/static_call_types.h>, which does not
-appear to be included in this file.
+                 if (RMI_ADDR_RANGE_BLOCK_SIZE(entry) == block_size_fld &&
+@@ -368,8 +370,11 @@ static int rmi_sro_donate_noncontig(struct 
+rmi_sro_state *sro,
+                         swap(sro->addr_list[addr_list_start],
+                              sro->addr_list[i]);
+                         found++;
+-                       i--;
++                       /* Continue from the swapped in entry */
++                       continue;
+                 }
++               /* skip past the entry */
++               i++;
+         }
 
-> +DECLARE_STATIC_CALL(pv_queued_spin_unlock, dummy_queued_spin_unlock);
+> 
+>> +		}
+>> +	}
+>> +
+>> +	ret = rmi_sro_ensure_capacity(sro, count - found);
+>> +	if (ret)
+>> +		return ret;
+> 
+> Will this normally succeed? Feels like we could have a lot
+> of useless entrees at the start of the storage, so no room to
+> enough extra ones.
 
-[ ... ]
+That is true. In this case, we should be able to proceed to
+donate as much as we have been able to gather and retry
+the donation in the next iteration, by freeing up the
+cached ones.
+         ret = rmi_sro_ensure_capacity(sro, count - found);
+-       if (ret)
+-               return ret;
++       if (ret) {
++               /* If we have found some entries, donate them and try 
+again */
++               if (found)
++                       goto mem_donate;
++               /* Otherwise, free up the list and start again */
++               rmi_sro_free(sro);
++       }
 
-> diff --git a/arch/riscv/kernel/qspinlock_paravirt.c b/arch/riscv/kernel/q=
-spinlock_paravirt.c
-> new file mode 100644
-> index 0000000000000..c534447437fec
-> --- /dev/null
-> +++ b/arch/riscv/kernel/qspinlock_paravirt.c
-> @@ -0,0 +1,67 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (C) 2026 GUO Ren (XuanTie) <guoren@kernel.org>
-> + */
-> +
-> +#include <linux/static_call.h>
-> +#include <asm/qspinlock_paravirt.h>
-> +#include <asm/sbi.h>
-> +
-> +void pv_kick(int cpu)
-> +{
-> +	sbi_ecall(SBI_EXT_PVLOCK, SBI_EXT_PVLOCK_KICK_CPU,
-> +		  cpuid_to_hartid_map(cpu), 0, 0, 0, 0, 0);
+-       while (found < count) {
++       for (; found < count; found++) {
+                 unsigned long addr_range;
+                 void *virt = alloc_pages_exact(block_size, gfp);
+                 phys_addr_t phys;
+@@ -403,12 +413,12 @@ static int rmi_sro_donate_noncontig(struct 
+rmi_sro_state *sro,
+                 FIELD_MODIFY(RMI_ADDR_RANGE_STATE_MASK, &addr_range, 
+state);
 
-[Severity: High]
-Will this cause an implicit declaration error when compiling?
+                 sro->addr_list[sro->addr_count++] = addr_range;
+-               found++;
+         }
 
-The cpuid_to_hartid_map() function requires <asm/smp.h>, which is missing
-from the includes in this file.
++mem_donate:
+         rmi_op_mem_donate(sro_handle,
+                           virt_to_phys(&sro->addr_list[addr_list_start]),
+-                         count, 0, out_regs);
++                         found, 0, out_regs);
 
-> +}
+>> +
+>> +	while (found < count) {
+> 
+> For loop seems more natural to me given the bounds are known
+> and found is only incremented at the end.
 
-[ ... ]
+Ack
 
-> +static void native_queued_spin_unlock(struct qspinlock *lock)
-> +{
-> +	/*
-> +	 * unlock() needs release semantics:
-> +	 */
-> +	smp_store_release(&lock->locked, 0);
-> +}
+> 
+>> +		unsigned long addr_range;
+>> +		void *virt = alloc_pages_exact(block_size, gfp);
+>> +		phys_addr_t phys;
+>> +
+>> +		if (!virt)
+>> +			return -ENOMEM;
+>> +
+>> +		phys = virt_to_phys(virt);
+>> +
+>> +		if (state == RMI_OP_MEM_DELEGATED) {
+>> +			phys_addr_t delegated_phys;
+>> +
+>> +			if (rmi_delegate_range(phys, block_size,
+>> +					       &delegated_phys)) {
+> 
+> Go long. It is shorter than the line that follows anyway!
 
-[Severity: High]
-By forcing this into an out-of-line static function, does this prevent the
-compiler from inlining the native fast path entirely?
+Ack
 
-> +
-> +DEFINE_STATIC_CALL(pv_queued_spin_lock_slowpath, native_queued_spin_lock=
-_slowpath);
+>> +
+>> +	/* Keep just the blocks the RMM didn't use in addr_list */
+>> +	for (int i = consumed_blocks; i < count; i++)
+>> +		sro->addr_list[addr_list_start + i - consumed_blocks] =
+>> +			sro->addr_list[addr_list_start + i];
+> 
+> Maybe memmove to make it clear you are shifting a chunk of the array
+> down.  This might be worth some asci art showing each step in brief.
+> Anyhow, something along these lines:
+> 
+>        memmove(&sro->addr_list[addr_list_start],
+> 	      &sro->addr_list[addr_list_start + consumed_blocks],
+> 	      (count - consumed_blocks) * sizeof(*sro->addr_list));
+> 
+> Obviously doesn't save code, but maybe simpler to understand than
+> the loop.
+> 		
 
-[Severity: High]
-Will this result in an undeclared identifier error for
-native_queued_spin_lock_slowpath?
+Does the following hunk look better with the comment ?
 
-The native_queued_spin_lock_slowpath symbol requires <asm/qspinlock.h>,
-which is missing from the includes in this file.
+         /*
+          * Keep just the blocks the RMM didn't use in addr_list.
+          * RMM claimed consumed_blocks entries from addr_list_start.
+          * Move the entries left out at the end i.e.
+          * [ addr_list_start + consumed_blocks, addr_list_start + found)
+          * to the rest of the valid entries and adjust the addr_count to
+          * reflect the available entries.
+          */
+         for (int i = 0, src = addr_list_start + consumed_blocks;
+                 i < found - consumed_blocks; i++)
+                 sro->addr_list[addr_list_start + i] = 
+sro->addr_list[src + i];
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260921-pvqspinloc=
-k-v4-0-409a22aed6ef@kernel.org?part=3D2
+         sro->addr_count -= consumed_blocks;
+
+> 
+>> +}
+>> +
+>> +static int rmi_sro_reclaim(struct rmi_sro_state *sro,
+>> +			   unsigned long sro_handle,
+>> +			   struct arm_smccc_1_2_regs *out_regs)
+>> +{
+>> +	unsigned long capacity;
+>> +
+>> +	if (rmi_sro_ensure_capacity(sro, 1))
+>> +		rmi_sro_free(sro);
+> 
+> Maybe a comment on why you free the whole lot rather than a smaller
+> amount to make some room.
+
+We don't do partial free of the list today, and having that is
+unnecssarily complicating the logic/code. We are going to do a reclaim 
+anyways. Sure, I could add a comment.
+
+
+> 
+>> +
+>> +	capacity = RMI_MAX_ADDR_LIST - sro->addr_count;
+>> +
+>> +	rmi_op_mem_reclaim(sro_handle,
+>> +			   virt_to_phys(&sro->addr_list[sro->addr_count]),
+>> +			   capacity, out_regs);
+>> +
+>> +	/*
+>> +	  * RMI_OP_MEM_RECLAIM always return RMI_INCOMPLETE, except when the
+>> +	  * input parameters were invalid.
+>> +	  */
+>> +	if (WARN_ON_ONCE(RMI_RETURN_STATUS(out_regs->a0) != RMI_INCOMPLETE))
+>> +		return -EINVAL;
+>> +	if (WARN_ON_ONCE(out_regs->a1 > capacity))
+>> +		out_regs->a1 = capacity;
+> I guess this should never happen, but bit ugly to fixup the register
+> return rather than perhaps using a local variable instead.
+
+We pass/get the out_regs, so local variable doesn't work, unless
+I missed what you were hinting at..
+
+> Obviously doesn't matter in practice.
+
+> 
+>> +	sro->addr_count += out_regs->a1;
+>> +
+>> +	return 0;
+>> +}
+> 
+>> +
+>> +/* For RMI commands that are stateful but not memory-transferring */
+> 
+> Given this is exported, maybe some docs on return values etc?
+> Similar for the other exported funcitons.
+
+Ack
+
+> 
+>> +long rmi_sro_execute(struct arm_smccc_1_2_regs *regs)
+>> +{
+>> +	bool cancelled = false;
+>> +	unsigned long sro_handle = regs->a1;
+>> +
+>> +	rmi_smccc_invoke(regs);
+>> +
+>> +	sro_handle = regs->a1;
+>> +	while (RMI_RETURN_STATUS(regs->a0) == RMI_INCOMPLETE) {
+>> +		bool can_cancel = RMI_RETURN_CAN_CANCEL(regs->a0) == RMI_OP_CAN_CANCEL;
+>> +
+>> +		switch (RMI_RETURN_MEMREQ(regs->a0)) {
+>> +		case RMI_OP_MEM_REQ_NONE:
+>> +			rmi_op_continue(sro_handle, RMI_CONTINUE_KEEP_GOING,
+>> +					regs);
+>> +			break;
+>> +		default:
+>> +			WARN_ON_ONCE(1);
+>> +			if (!can_cancel)
+>> +				return regs->a0;
+>> +			/* If we have already cancelled, don't retry this */
+> 
+> Maybe expand that comment a little to say if we can get here under a
+> valid sequence and if so are we guaranteed that cancel is complete
+> given that is what caller will probably expect if it gets -ECANCELED.
+> 
+> My reading of spec would suggest we can't hit this path for the
+> calls that are not memory tranferring. Then again we can't hit the
+> first cancel either so all bets are off.  So maybe this is the
+> bet we can do.  Also can_cancel shouldn't be true after
+> rmi_op_cancel() as I assume you can't cancel a cancel.
+
+Ack.  This was to handle a buggy RMM (and soothing an LLM bot)
+
+Thank you for the review.
+
+Cheers
+Suzuki
+
+
+> 
+
