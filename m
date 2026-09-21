@@ -1,148 +1,213 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011051.outbound.protection.outlook.com [52.101.62.51])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9725951A15C;
-	Mon, 21 Sep 2026 22:39:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790030352; cv=fail; b=a60eszn3anSj/fFewdSCnTcOQFSxqf7oRHXCaiJDnd+hhZQMOZBnF+VUDXajuDfZinsro8GAGVy7gcYMQDlpBLFuunR4UCYew3gCsjki203E1370Z98XvBiP9194/knSv1zzrxnby64Nn5LiXZEpj/jlVUP2gug60e/EvB1lIEU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790030352; c=relaxed/simple;
-	bh=Y37Yshz4BXp1jV5uTNhUrhuI8g1wVDeY8rsekLqF4Ac=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=BVim5dmCvPUFbeeWqheD0v8j3iTWvlq5P7DP1yBuTbdD5GT00FcGvgiQ0inqjT6KB2H+h8iqkUwM+iO48OvHubd00ZvRE0h/LA1MGTe6Us5nQzCjossJ+dyGo1vRtG2gBxp4/aV8mLEWmoV+bEvYRUuLkwtkSk4WloH3wfRFZv0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=odUEEHZE; arc=fail smtp.client-ip=52.101.62.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA453C1D7D;
+	Mon, 21 Sep 2026 22:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790030825; cv=none; b=Jpu7DYfBEyprzEzuCaUad7g1coKErabcS5ITPRCaqkzf/fY/20e0Y6csHD6VWKBJOYVwhlR3LYcqq+zeSPf3hvvdnxtOd7qT9xhmKIbXq49+N4l94TR5FYubtkRq7WlpEIRwvsZm330vU0Hqezr8NS9agVkhLs2plhW35i0qHPQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790030825; c=relaxed/simple;
+	bh=rNqxnHIZZp8AeQxFEC2Wv+y5DCWvgxhQONt5DjyRBf0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=psYh/1XDD4hxEP0P9Vkq4BjtTKaxsT7b+ARJPJauq3ftRwwXnuTAwLNroPIr/cQscbBAA9mvqs4DgCDQRqhfToOmYijAJJgA400UjB3xb7goE0SOCFfMqS/yxvpPUupv+BhngOSrIOn26r1WIKcANJnPLw9IbrdpL9Y+XBSvjJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=isllbmtS; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="odUEEHZE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g235keDuN0zPB/+xPK8l75IrJ3n8ZbbkWZqEsXPwPdiA1AbBOZ1mP8lcLKAjholUER1ukHCUXYOlKWvQROWF6j0OUHRKTMK33Q2by4WmDGNyZfrr2egsgW9WGwTcsO69D+Ron19WrNHHCLYYUciC3aJYAEV9/0DkrMEu+6iZCeSGOXWuPv2rCWBsUYxyheu7sUJfVUMlBWVGeKoIGLt6N6cSLDkXbRvydsONfsqVKdoXj/gXFGhkzXohfkqkHbzNSa5khLaGGPklusNtxPuo37Uo00BPFmYqOrcFEzvlvcKU33G/wx8hKirv8gf+TISR3ML5aFooXW80HZ75qusrUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mKcac8M0FBM+kgAZFXKNgM9IXp5KY1gq+HQFHByACKQ=;
- b=vGnoP3xeBw5s1PazlGQ83Z/MrvVz9VvdYkND//LpDyBouS6es77SzAqf7+feEhNrLv6A5ICrP23Qe0MIq7obHrPxMKVCCNKCkMJrtwxfRnVhfnrW9hIJcH7MDU2E3q8OtEnNqZgkNYOpqPaazygMScCWPSvtG2Mvhgo/K9JoYLz2nvZfMXjS+l7GDzRj0n1P7nXWy+gHUu5s0cRiai28n8DdGAzLkQu0SBKgT1F84wnLwzMBsCH5C2x6xNrlQHNGY8K8f76AQGKrZZhPznEasLGfSwikgmIjAiZdj80OhQJQ+LQalAr5oQ252cvjI3h83BS3lywByY5eMakI1nTTtw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mKcac8M0FBM+kgAZFXKNgM9IXp5KY1gq+HQFHByACKQ=;
- b=odUEEHZEeCOQaRTgIztT+fLRRIDNLesZrmDy46qB3XsjmlIINw0sllrMvcYJT+xBQB2ps+bqOUPoZ3X+Z+uWOKnUUJtwOEcCY/+msG0d/afgfCPb7SqxiF8a0AH8/KUmh6KmYGMfoe/xYbznWn4+WOx4w4fX9IMMyPd1BNpUC7J0G4t6mDzCo5L48l/L4SfQwkP4KwvsP3jxdBZ/gB2la5dK3sz1jEFWrsvQY3bc1OHLJ1AsQi68LM0/ZzG3QQo1EHDEjw6gMOdHtoNdq0zIXowXI5Iu+dcplXzR+k3PfC+mdOcWIwmmCRJfZZM8uqtQrT4q+s5Ws8McjPdeAsYw/A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by LV3PR12MB9144.namprd12.prod.outlook.com
- (2603:10b6:408:19d::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
- 2026 22:38:58 +0000
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0428.015; Mon, 21 Sep 2026
- 22:38:57 +0000
-Date: Mon, 21 Sep 2026 19:38:56 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: David Matlack <dmatlack@google.com>
-Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org,
-	linux-rdma@vger.kernel.org, Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH v6 06/10] vfio: selftests: Allow drivers to specify
- required region size
-Message-ID: <20260921223856.GC1507824@nvidia.com>
-References: <6-v6-8af36cf7b73f+e2-mlx5st_jgg@nvidia.com>
- <20260917235245.CAAE41F00898@smtp.kernel.org>
- <20260918115217.GA11142@nvidia.com>
- <CALzav=f4NTb4Csn2BoK5kk=MckFRvbVnOdO9yiCz8MLXdRMPOg@mail.gmail.com>
- <20260918200000.GB11142@nvidia.com>
- <arGYLavnr25ZSyuw@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arGYLavnr25ZSyuw@google.com>
-X-ClientProxiedBy: DM6PR08CA0048.namprd08.prod.outlook.com
- (2603:10b6:5:1e0::22) To CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="isllbmtS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790030823; x=1821566823;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=rNqxnHIZZp8AeQxFEC2Wv+y5DCWvgxhQONt5DjyRBf0=;
+  b=isllbmtSiu/6mVrfCGdMt/mAPlr/zl6Jy4khPSOUd46cj6QXJuly8Q0t
+   Ocbk4pcpcOSV9hXAle5c9DkDzudkd/NCgztp2TOv1qBnGoHr4S+axn6/s
+   TBQfPJMU1BXhw7n0xq5bemKfXoBHAS8RvNgsipBODJ/RQxq2LzWJQpkzT
+   tZJDBGsVWv2UAOvUe4usvgiFI7Bo23iK3O0nTKJXgfAS8Bs2RIB96Fxey
+   rjvUmSG+tk6lb/MDwmx4dmTM+uaVou8zrtXJ5BzlQcEQ3hhaO7OI6a5RD
+   Kmg/GzZsUsz4hynfJJKmHcdvnPM/pMHU7die1kHP4EfCqhPlEhsJOMsUK
+   Q==;
+X-CSE-ConnectionGUID: iOpJevTiTNG6Y3135wZpjw==
+X-CSE-MsgGUID: 4YKc2gJVTCiQMcRhIIDqrg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="93087279"
+X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
+   d="scan'208";a="93087279"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 15:47:02 -0700
+X-CSE-ConnectionGUID: 9uPfTCbgRxWn+H8CGh5Y5A==
+X-CSE-MsgGUID: tyT5fr15QAOz1asA+MrQ7Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
+   d="scan'208";a="273021668"
+Received: from jjgreens-desk24.amr.corp.intel.com (HELO [10.125.109.249]) ([10.125.109.249])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 15:47:01 -0700
+Message-ID: <c88327ac-6227-4e4a-85b5-0ad320871637@intel.com>
+Date: Mon, 21 Sep 2026 15:47:02 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|LV3PR12MB9144:EE_
-X-MS-Office365-Filtering-Correlation-Id: cef58d81-5151-4e37-7d56-08df18311fe7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|366016|1800799024|56012099006|10067099003|4143699003|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	wWW64n3ooi3lmd9vRS86NuzVdgf0x7+OEgJkMGHC8m0XzKzXniJyqhRrvBIQH6rPkr0/t7lgTrBA/DrH6OOBU0Mcp3vemfGnQDCXMkdTW+lK/iFJwx3QWbaXEuGlgfV2Lu6pPbjta480MFE5EPHFpRgswkuw7uI8qqxpQFnCMITGxbv+g3qF6v3HGgWVLlpYX8Nlhh2lvLpPqI4nINgQdY06kMY+IVeNMocrOBLTXkNJwDo4dEff4XVx3Q/5sk/F05F1DNy+iJxiVq3bhBHoMX0donujzyRyjMNM6c8ydvU4fP+Cd7SObTue9Al+P/QkFxaBPv/wrXYPCKIwBVuplN39qrWcbe7FkNk6EhpBDWDy8/HRMkWHlQzGzc4l9l5PDHvjZNVY59Cxzjh7+YAspHE2bru7vsHERkJi55K37OAfIA4PNHAna7Kpd7SMYM3qRhhos/vejYxo7MWpVOWS/6iQ2qP2M/zArtoHsDIDspSz67KRHyi7Xh+1hTUfkZ7tyizV5yzVrf0eVRWCOdO6U1YOISeg5b3XrfMvS3zZMcqRnamMH8EkW9ookC2DuhIHdHb8W1C0ci/K7cOiBTGLpErrfBEn8XPW6Kc/SiUH1UgZ1bHYTFgmLzX7N+I2HXRLcmucV/ctuz/XTUmyYwk1tg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(56012099006)(10067099003)(4143699003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?0gkjXKPijW+kaG3h0h9dnLfNCm0br5PD07qVLoMVSN6GWijgC0IiO+sK/Oov?=
- =?us-ascii?Q?bN5pSCkPz1xRlfGPE6KY5OM3rR/I/SYdAtXYh44q6wyl2FZeKi3Lf8vvhdHk?=
- =?us-ascii?Q?1m8iqDyJ9IeG1VjJAcEHUbCJ7dx3tAk3iz8RmqBInF9B5/9tqscxAh/CrqxY?=
- =?us-ascii?Q?50Mqh9mZurUEPw6BBDf3e9jPVgbJoARaYZMSvKQQVxZNt/JXBu2FKiUBijMX?=
- =?us-ascii?Q?8Qn0/ebaRMBYgcfDo5WmpDhnhgF1AtH4nTa3qOcCYopct4+C9wAvtNecidX8?=
- =?us-ascii?Q?dNIQVg0+yMQi+4OZWyi2lrnQxQn701hjP0pu+hTA1TnLJh4a6mdqM+uWeDNG?=
- =?us-ascii?Q?E7ycJ4QOS91DtDqIrMNb7sETVw4Y1n1QOLEVTE8BVMHWpar4hp64aHcX1sTI?=
- =?us-ascii?Q?UYNEbz3nkhfHkl1xwebjCv5r56NBCd7YCJPUCOf3Kz6XAdD7NSPKJc0KRQDk?=
- =?us-ascii?Q?dO2FDFISPYOa5GZQRU9LndUZdDnJuPe8hPciuWfubLAl0Wq/fyXZTY9oukW7?=
- =?us-ascii?Q?Y9XLXoHWQNG7iHEb2NaeTJABLTEDWJ+rq401bbwn8TvwmME72RxYxqjTFTe4?=
- =?us-ascii?Q?8lWxFMHhZVrhI1jIkN2QhViQkkva8Yphx1mEw6Jcrvbx3rv8QzXt2W3MFu6x?=
- =?us-ascii?Q?CPMufLCLH/dTaqpdhv0FQy7JuB4lTQrKi0e8ErJQoPaQ6K4Zz97cyR2q2dr7?=
- =?us-ascii?Q?RiidXSZ+XEsjRUgydVWANjbdqX2hNkX5plbBEYs+FEjcVzZd6LyxqHWKi9jj?=
- =?us-ascii?Q?yVn1y5rt3RseqgDaFefG8cb4a5i1hxxPSPt9K4b83D/O6SImRaZLne0reIVt?=
- =?us-ascii?Q?8P6Oep4qK9vqT16TtHXc37rBK/ffRrl2zZVLGSs6jJHOHbAKjUPuisNAghJd?=
- =?us-ascii?Q?IuTkdFFHNBmqhb7AIxdjkw6n2xS3+S8FHKQ+tHDNii8t8Y+SZrbT176j524J?=
- =?us-ascii?Q?zYHm5yDuNZJzt064rCdVqDrznEkP5lHGCYJhdf63b9Io5FLctB200xH+Q/80?=
- =?us-ascii?Q?es8a9kuinxyfpay04HvsWMxCY4i5wJm46mgBNxw/nFLG2IalRIWAp9BQdVVd?=
- =?us-ascii?Q?fkdZ2Fm3UxCRLYy3AhVxxA+JY+N7LjBjlIxKrx0EU6NNkHQdLlKue0KMCjvl?=
- =?us-ascii?Q?Qbe0oT/ShmbYg975OVS/zkKZadw5iMJYp6C2uLR8GVqhsGDJADoOr8S+y+Rb?=
- =?us-ascii?Q?ff0aAJ32dEiXNOOe+dEIasDhEes85JJYxsNYRoElDGdVEK4K11pF9dMjPp8u?=
- =?us-ascii?Q?V56B3pt7D0gRAnetO+5+F1DGjP7WkNbbYhJlnsjcEApQsVoDbRu9Zc1dlyWm?=
- =?us-ascii?Q?vMiRWBnrPNTWJaIsfg+AVkTr6WFQQg8FlxPK5nROQn68qsKu1o7Xy4raAjfM?=
- =?us-ascii?Q?FUXncpDhx/05nRvykciXhftPOyCqqD7O5GREd1ln0oNjGnvyBN8RMh9LwxWP?=
- =?us-ascii?Q?3Ob/rEohnUHe1XhdyBxACbRx5w/V3/i+RG/9LuI6iqmkMaaNlBX/n/cNycu4?=
- =?us-ascii?Q?ofXgXONYOOuJSYYlWB2bJ0gYMcrs7mMVawxxH1+3YPV9HUpZEYSA+veU6rqw?=
- =?us-ascii?Q?mjmLLbKIh1qeNkFFGXO2mELGWerGiRIF8ZdQ9wbH92JCXcunu3PKtVz8wj2z?=
- =?us-ascii?Q?yU3HQo28IJJWdTtHD75FxJjx62eqkgiXq/Jwt7WpKCJhgNmB64tpyRQpDlWv?=
- =?us-ascii?Q?LNXerm+2MobLDImL0M5q8tbAWu3qUppbjT0jRtYfR91UUo8k?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cef58d81-5151-4e37-7d56-08df18311fe7
-X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 22:38:57.8357
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YuR7BW6P5aOK7NLixpDeGdwT1OaOjZDCAP/wb/+f8Fwz/p6JBE51dcI+I+tkKFzZ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9144
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/4] virt: tdx-guest: Allocate Quote buffer dynamically
+To: Peter Fang <peter.fang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>,
+ Tony Lindgren <tony.lindgren@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Artem Bityutskiy <artem.bityutskiy@intel.com>
+References: <20260915092632.2822169-1-peter.fang@intel.com>
+ <20260915092632.2822169-5-peter.fang@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260915092632.2822169-5-peter.fang@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 21, 2026 at 08:48:45PM +0000, David Matlack wrote:
+On 9/15/26 02:26, Peter Fang wrote:
+> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> index ec886c401fcb..7224a66b65d1 100644
+> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
+> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> @@ -162,7 +162,7 @@ static void tdx_mr_deinit(const struct attribute_group *mr_grp)
+>   * DICE-based attestation uses layered evidence that requires
+>   * larger Quote size (~100K).
+>   */
+> -#define GET_QUOTE_BUF_SIZE		SZ_128K
+> +#define GET_QUOTE_DEFAULT_BUF_SIZE	SZ_128K
 
-> > I don't have an arm system or userspace cross compiler to test it with
-> > though..
-> 
-> Wait, really?
+The naming of "GET_QUOTE_DEFAULT_BUF_SIZE" is rather unfortunate. "GET"
+is a verb. It is for functions.
 
-Yeah, I don't really do anything :P
+Isn't it "TDX_DEFAULT_QUOTE_SIZE"?
 
-> I can help with building and running the KVM/arm64
-> selftests if that's what you need.
+I know the TDCALL leaf is "GET_QUOTE" but replaying that naming is
+horribly confusing.
 
-I borrowed a system and I think it is OK, but it is such a pita to
-make kselftest-all compile clean it is hard to say. 0-day has not
-complained and it has been there for the weekend too.
- 
-> > Are we good on everything else, can Alex pick it up after I fix this?
-> 
-> Yes all good from my pov after we address this feedback. I am no longer
-> seeing failures[1] when using the IGB driver with this series applied.
+> @@ -222,11 +222,34 @@ static void free_quote_buf(void *buf, size_t len)
+>  	free_pages_exact(buf, len);
+>  }
+>  
+> +/*
+> + * Return a buffer size large enough for a Quote. This covers all Quote
+> + * types supported by the platform.
+> + */
+> +static size_t get_quote_buf_size(void)
+> +{
+> +	u32 quote_size = tdx_get_max_quote_size();
+> +	size_t len;
+> +
+> +	if (quote_size)
+> +		/* The reported size does not include the buffer header */
+> +		len = TDX_QUOTE_BUF_LEN(quote_size);
+> +	else
+> +		/* Older TDX modules don't report the size, use the default */
+> +		len = GET_QUOTE_DEFAULT_BUF_SIZE;
+> +
+> +	return len;
+> +}
 
-Great thanks lets be done then
+No, I'm sorry, that's not how we do multi-line if()'s. Brackets please.
 
-Jason
+I'd much rather see something structured this way:
+
+static size_t get_quote_buf_size(void)
+{
+	static u32 full_quote_len;
+	/* Size of the quote itself, no header: */
+	u32 quote_data_len;
+
+	if (full_quote_len)
+		return full_quote_len;
+
+	/* Ask the module for the max data size: */
+	tdx_read_max_quote_data_len(&quote_data_len);
+
+	/* Fall back to defaults on old TDX modules: */
+	if (!quote_data_len)
+		quote_data_len = GET_QUOTE_DEFAULT_DATA_SIZE;
+
+	/* Add room for the header metadata: */
+	full_quote_len = quote_data_len + sizeof(struct tdx_quote_buf);
+	full_quote_len = PAGE_ALIGN(full_quote_len);
+
+	return full_quote_len;
+}
+
+Having a static function variable beats a global every single time when
+possible. This way, you can (guaranteed) see 100% of the code that reads
+or writes the variable. Anybody can muck with a global and you need to
+grep or search to look at all the other code in the file even for a
+static global.
+
+Also note that it talks about quote data and metadata instead of just
+"lengths".
+
+You also have a mess of naming there. Some 'len', some 'size'. Pick one.
+
+>  static void *alloc_quote_buf(size_t len)
+>  {
+>  	unsigned int count = len >> PAGE_SHIFT;
+>  	void *addr;
+>  
+> +	/*
+> +	 * This fails if the requested size exceeds the buddy allocator's
+> +	 * maximum order (order-10, 4MB).
+> +	 */
+...
+
+I don't think you need to document the buddy allocator's behavior here.
+
+Why did you even add this?
