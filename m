@@ -1,118 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp153-166.sina.com.cn (smtp153-166.sina.com.cn [61.135.153.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8ED48B395
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 11:15:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EF2446821
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 11:21:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.135.153.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789989357; cv=none; b=hji/0I+jpovd7LpQQXFkiKzzJLGtfERaos98NJEN9pEkrxczSopG1qUrkZuuS2Rw9Sw7h6NR2ofTB1fLsGd6rwfuJfj4TVXnSsZVr6L3D0ijmuouNX1Wo7cc9hUpTY1X+p7YeHMJTeeM8PYshfm2NoV4Rla7NQeP5RUiNb9H1Uc=
+	t=1789989718; cv=none; b=IbFzlcxbgF8umf4Gc1YXZaddBSpIGoereYIPjaRv79XLOx6C5mYZpk+0NoD+wZCichRJYMIcoI2mlDFImRcU9LxTH8du010d1S0mFseOk7ml5N0BkXs6zxtbXOuUdPqqutXiaVoZuNS79gL6xPtH+5Cl9ddlPz/Ed56G27rVCmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789989357; c=relaxed/simple;
-	bh=7tudY6BZDd/ChkJiHcdIfzMwRr1HXCFloGEgOBD6d/I=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=cvXfRvVs9CS7TLTxflHy8FiSDDPldMzjNzk4Q1hJHMv8wBCS5r1C4v1QH6KdihxTdntnQtg5HkfmPSKI1QeQQos48b24uCWlU3NbEKZSBxmlCC6nJz52+qeDE8EizCEdXI0ZcSYeMCGLimkoNIBUxjpTvUz+PRRLTHoA8y+BgyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Et6AS+Lc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789989718; c=relaxed/simple;
+	bh=nj4Q6OP6SoK8Ru9viwCVYiVJtMzO5g5yi9lAI9DKHy4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=A9dEG7B3gvoEpGK3N1+ekiQDb31d1Y7sYf7JyKpF/F4rhLnYsbWgKCgT++SWngsFjqn4NIIjeslcnOTaO9lGdF9wfugS+6A027XBXzYR6uqkG3YMHpoNnYhw+ZyuJ+ddljy7aWZDnJ8y3b40W49fnjvfCY1x4OjbdsGGWj0H/7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=aIQ5kCZ8; arc=none smtp.client-ip=61.135.153.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Et6AS+Lc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4561F1F000FF;
-	Mon, 21 Sep 2026 11:15:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789989355;
-	bh=zbqKu5M8hUxotpmluaGv4u09URKpX/x6JjZd8ShekyA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Et6AS+LcDx5Kj2jaULSyR654+N47sN1pDa9K3ogr5Po5gdhPlgLpbCHXnfGqQPPzh
-	 bhLsLv1sJeXOwYr/mCI2vlKbBB6967TCncJnYwUEhKO+41tKw1++MC8e/oXr1JC27H
-	 OreX/SiHMytzWIMp8paUUtJaLMSJn2DjHlHQdBvY+1+xbpcfaUu9E7m9vduQ/oYIeX
-	 FCWLB8VSIuOyPIDy0xe5271lfRs+/mBzSIkfikb2QCvuBMxfxsbp22zBzkq8D/MNLa
-	 3A6y/+8tZKKySLivsBHgtLHSK9f1bBPdC996NMbHFBaXyvOZi+wc6h+YVhdUBFefFx
-	 vUg98bCl/Qk5g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 06/21] mm/pgtable: define (pgd|p4d|pud)_leaf() for
- folded page tables
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Yeoreum Yun" <yeoreum.yun@arm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260921-dummy_ptxp3-v1-6-cd40cf68242e@arm.com>
-References: <20260921-dummy_ptxp3-v1-0-cd40cf68242e@arm.com>
- <20260921-dummy_ptxp3-v1-6-cd40cf68242e@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 21 Sep 2026 11:15:54 +0000
-Message-Id: <20260921111555.4561F1F000FF@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="aIQ5kCZ8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1789989712;
+	bh=sg4eS4lg800FfNdEgDSoTx4BTb4bxIyvFHi59GLWpus=;
+	h=From:Subject:Date:Message-ID;
+	b=aIQ5kCZ83gj+0ytLyjjNb8x4HuzYjSNjbN3SfN1acxF1j1tUSyh8ZObxmcRWqSmAO
+	 x06kdohIFgO24bmFFN7kDu0EBHhNFUXz89wYYF0oRjH0b62g79ZQTr8kEJ9oKM+BGd
+	 Uxr7ucCdgLwGlsug9kUab5wSyQPKkcCDB1t6+Bag=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.249.62.194])
+	by sina.com (10.54.253.33) with ESMTP
+	id 6AB11343000012E8; Mon, 21 Sep 2026 19:21:42 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=hdanton@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=hdanton@sina.com
+X-SMAIL-MID: 5185206685057
+X-SMAIL-UIID: FB65B8A53C8748DCAF25A55AC2A44BA8-20260921-192142-1
+From: Hillf Danton <hdanton@sina.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: linux-kernel@vger.kernel.org,
+	rcu@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	linux-kselftest@vger.kernel.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: Re: [PATCH 01/17] KVM: pfncache: Use atomic SRCU for readers instead of a rwlock
+Date: Mon, 21 Sep 2026 19:21:30 +0800
+Message-ID: <20260921112131.274-1-hdanton@sina.com>
+In-Reply-To: <272c0fdf9e5eb9a1caf6a5c0bf674e3c006ac2ea.camel@infradead.org>
+References: 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] mm: broken macro definitions for p4d_ERROR and pud_ERROR
---
+On Mon, 21 Sep 2026 11:54:36 +0200 David Woodhouse wrote:
+> On Mon, 2026-09-21 at 09:42 +0800, Hillf Danton wrote:
+> > On Sun, 20 Sep 2026 21:49:29 +0100 David Woodhouse wrote:
+> > > 
+> > > Replace the per-cache rwlock with a dedicated per-VM atomic SRCU
+> > > domain (kvm->gpc_srcu) for the read side. Readers now run under
+> > > srcu_read_lock_atomic() alone — preemption disabled and non-blocking
+> > > enforced, which every GPC read-side section already satisfied as a
+> > > former rwlock critical section. It works in any context
+> > > (including hardirq and sched-out paths) and never fails or spins,
+> > > eliminating the
+> > > read_trylock() contortions in the atomic paths, the double-lock dance
+> > > with the lockdep subclass hack in the runstate update, and the
+> > > PREEMPT_RT problems inherent to taking an rwlock in those contexts.
+> > > In particular, kvm_xen_set_evtchn_fast() is called from hardirq
+> > > context (timer callback, kvm_arch_set_irq_inatomic()), where taking
+> > > gpc->lock is a sleeping-lock-in-atomic-context bug on PREEMPT_RT.
+> >
+> > Given the preempt_disable() in srcu_read_lock_atomic(), as PREEMPT_RT
+> > has no way of handling preempt_disable(), you need to add another
+> > version of srcu_read_lock_atomic() with preempt_disable() replaced with
+> > something like rcu_read_lock().
+> 
+> Hm? What's wrong with preempt_disable()? It works OK, but is generally
 
-commit b1d94b4085bf94fbd22f26d0b8cf668f45ded666
-Author: David Hildenbrand (Arm) <david@kernel.org>
+How is preempt_disable() handled by RT?
 
-mm/pgtable: define (pgd|p4d|pud)_leaf() for folded page tables
-
-This commit defines pgd_leaf(), p4d_leaf(), and pud_leaf() for folded page
-tables, hard-coding them to return false. It updates the functions to use b=
-ool
-as a return type and ensures pud_leaf() is defined to prevent architectures=
- from
-inadvertently overwriting it.
-
-> diff --git a/include/asm-generic/pgtable-nop4d.h b/include/asm-generic/pg=
-table-nop4d.h
-> index 1cf739ee38aa1..c6a5a43899b50 100644
-> --- a/include/asm-generic/pgtable-nop4d.h
-> +++ b/include/asm-generic/pgtable-nop4d.h
-> @@ -22,6 +22,9 @@ static inline int pgd_none(pgd_t pgd)		{ return 0; }
->  static inline int pgd_bad(pgd_t pgd)		{ return 0; }
->  static inline int pgd_present(pgd_t pgd)	{ return 1; }
->  static inline void pgd_clear(pgd_t *pgd)	{ }
-> +static inline bool pgd_leaf(pgd_t pgd)		{ return false; }
-> +#define pgd_leaf pgd_leaf
-> +#define p4d_ERROR(p4d)				(pgd_ERROR((p4d).pgd))
-
-[Severity: Low]
-Is this p4d_ERROR() macro definition correct? It expands to pgd_ERROR(), but
-pgd_ERROR() does not appear to exist in the kernel. This could cause a comp=
-ile
-error if a developer attempts to use p4d_ERROR() in architectures relying on
-include/asm-generic/pgtable-nop4d.h.
-
-> =20
->  #define pgd_populate(mm, pgd, p4d)		do { } while (0)
->  #define pgd_populate_safe(mm, pgd, p4d)		do { } while (0)
-
-[ ... ]
-
-> diff --git a/include/asm-generic/pgtable-nopud.h b/include/asm-generic/pg=
-table-nopud.h
-> index eedee8e3ad68f..6c9bca78047c4 100644
-> --- a/include/asm-generic/pgtable-nopud.h
-> +++ b/include/asm-generic/pgtable-nopud.h
-> @@ -29,6 +29,9 @@ static inline int p4d_none(p4d_t p4d)		{ return 0; }
->  static inline int p4d_bad(p4d_t p4d)		{ return 0; }
->  static inline int p4d_present(p4d_t p4d)	{ return 1; }
->  static inline void p4d_clear(p4d_t *p4d)	{ }
-> +static inline bool p4d_leaf(p4d_t p4d)		{ return false; }
-> +#define p4d_leaf p4d_leaf
-> +#define pud_ERROR(pud)				(p4d_ERROR((pud).p4d))
-
-[Severity: Low]
-Does pud_ERROR() propagate the missing macro issue? It expands to p4d_ERROR=
-(),
-which in turn attempts to use the non-existent pgd_ERROR(). This also appea=
-rs
-to result in a compile error if code in include/asm-generic/pgtable-nopud.h
-attempts to use it.
-
-> =20
->  #define p4d_populate(mm, p4d, pud)		do { } while (0)
->  #define p4d_populate_safe(mm, p4d, pud)		do { } while (0)
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260921-dummy_ptxp=
-3-v1-0-cd40cf68242e@arm.com?part=3D6
+> frowned upon in RT unless the sections are short and bounded of course.
+> 
+Is this patchset going not to work with the preempt_disable() in
+srcu_read_lock_atomic() replaced with rcu_read_lock()?
