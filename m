@@ -1,236 +1,228 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED0649F10F;
-	Mon, 21 Sep 2026 13:38:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3DB4A9D54
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 13:40:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789997937; cv=none; b=e0rf+1NwgZf3Qu+hxfy813PW9u6Zk2LqPM0avugb/LChROI3AskuXLT4UtQ9wuT10/2d4jLNHWyUP1au2YRSvheKtaS5udqQMf0AXnFoRNdz6WBXfQp2jL9KcPBcL2J/UqVDwEtcoYLV2+qkQ9VPhEy9EabSKGsGDWkqjLH4dFY=
+	t=1789998019; cv=none; b=NDWAEBR6dgNSQy27Z5cLCA0x0icHc5zNhbf8yUch2BHn3zwqx5ei6fdG6V7eyWdZZvRvstB+6hTOFwvO/r+9/WgL+Zbsd/znsDbnBvfcj6MQKwYRyJKcKr3llXfL7U5c/UAi/94xnPTOg73ABYS7X9hzUiOYvvJMh5N1rzyHdIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789997937; c=relaxed/simple;
-	bh=MKegHsV8HzpeuCGAw7PUAXUzjaeSFOdwlkUlxPrRN1Y=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ozT9UTryb/uudEJiJoOe1V9HCEA6Z5u4mmzLxLga+auh/vPtMCeJ4V1pIoHEX1Roxs60umUaAEHFN86Wn0EXpB5D/PN+e3YJ/bIjOyl7PZaL5UOZ1usz8bOvasaejiFptj+wjXwMsT7+v3sRrt9z2bHQ7zB0D7iDyllUygpGqJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=dRkF6hot; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1789998019; c=relaxed/simple;
+	bh=/iK5tspmMe5BLiH9VQ8TvVl5j0mL+s0vIMp7F58jSuY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=YmY6/iUfVFVF13psnX0HiiJbzePYOUkZvTJKyw1qLv6lhbrsvlvuN7qeNNBrP7OgM7Vj3bndE5k4bh8ekcKANQtez/0CwNnWU7CU1w1hxxxYHk0+e6ZMbyNysaKIQEVcQUO3l4tjeKqF+nEtboc4i1pLP6nCzSalZFEfwGt1TS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LmRSnMid; arc=none smtp.client-ip=209.85.216.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="dRkF6hot"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A7B4C19F6;
-	Mon, 21 Sep 2026 06:38:51 -0700 (PDT)
-Received: from [10.0.128.141] (unknown [10.0.128.141])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 656B83F86F;
-	Mon, 21 Sep 2026 06:38:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789997935; bh=MKegHsV8HzpeuCGAw7PUAXUzjaeSFOdwlkUlxPrRN1Y=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=dRkF6hot2SZM9x7rXT9uJ32yX8g3jH6t3bZx4R0uMTnlLattJs7rhfOXyCkD/Lg2H
-	 vNJ3kjbuUeHmumIC/8/lDd1Q4y4td1m0hp9Mlju7grA/51Q+jMf8Gw9H3N0AyTlN0y
-	 TUb00JwsTZ6YEE8FYHRh/7YAGXiWyFwsVrwA3JXY=
-Message-ID: <93aea89c-0a05-4b5a-905d-2e8c14a9e894@arm.com>
-Date: Mon, 21 Sep 2026 14:38:50 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LmRSnMid"
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-39de4a68f7cso5361976a91.1
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 06:40:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789998016; x=1790602816; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kha/TosCiMrk/VRiX69ZYAyIdODbozYl6Tc1z7Ph1q8=;
+        b=LmRSnMidsXeVyWjAzek4Db7V0oNB8u3CsBS5DlBJMT1Bb3ppFCWbXB1k3kfrOB5tHp
+         qHM4yElnzRDxipQXdR0RTYmguQmKXO4roj82Wc/kJ4YweVmml5vc7nU49yNC8bX9inoV
+         DtO4tU3oRvc1HRUtJ8CEVGGG0ixaBApYGDJ46qlpMm8oNNYnf/v+9NEojNtw9outLNhn
+         JK0Z8tG6xXmCwmsSlGnHrg3cRyiBOPZ4fVW8KtI3eUFK5Y9HcP8+jCTa+X/0NwAgJCMk
+         r9681P23pdWAOfMpegi1gRfxTlkkbT2LpjfyYqKF1ewbefCU+LtvRoA5+lNC/UcS7YAW
+         BhTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789998016; x=1790602816;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kha/TosCiMrk/VRiX69ZYAyIdODbozYl6Tc1z7Ph1q8=;
+        b=DvpDOw2741ob/goEXKMHFEb0qemDA21b2/JfYFXaCEQDDoliuIXtRrD/i7DXmZtC7x
+         gdzZcDFFHqsniJ98UpK1dqQ7bgExAXrK3plfVeetIAkETs3/DCIIUJ2GBGnk6UOcJ554
+         +rWy2j+OuQBwj43NinyWzJznq8T/7VsMtUn8yDwTYBHrhXuNauN2jxVWTUpPJJng8rxo
+         f8uIKZIKTCqPhu5Sdm1bWhH44VBeD6cJHmH3HTOfl8syUYzkWKWNlUon8iBJn1AbqLXa
+         Zb6jTuiJQvpj8wmdA6zHJYcGKMdelytAlww/6HJiwRA1B3qcew2eqwTYox/2LjJdCB5m
+         0+ZQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxxoM12jRdeqTvZ+dgimiEYXdXwOfWebq/oVXtlCnV5NoQK4pOkJDnHfZPVjjqo499RY4k=@vger.kernel.org
+X-Gm-Message-State: AFuF++khhmEJ0cELm3XNIqfPe7FlZuabq8HY8Zma5Nso42WK03/4LaKd
+	bE0QrinEgmkeC+dVr3Nd4WQ/4dIqmsSytPVHUCPv/3CU8T/bm6py42kOr0rfQDwYULnX3I4TdXr
+	SR/VWeA==
+X-Received: from pjbmm23.prod.google.com ([2002:a17:90b:3597:b0:39e:6e02:bf60])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:57e8:b0:39e:6c69:7774
+ with SMTP id 98e67ed59e1d1-39e6c697961mr11605726a91.29.1789998015789; Mon, 21
+ Sep 2026 06:40:15 -0700 (PDT)
+Date: Mon, 21 Sep 2026 06:40:15 -0700
+In-Reply-To: <aq/XwK71uNfLvUux@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18 6/7] firmware: arm_rmm: Ensure the RMM has GPT entries
- for memory
-Content-Language: en-GB
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
- will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
- <20260912083611.2513845-7-suzuki.poulose@arm.com>
- <178978126543.2352296.12214136703168879825.b4-review@b4>
- <65b0c03b-36b9-4e60-aa55-c3b4b85e21ee@arm.com>
-In-Reply-To: <65b0c03b-36b9-4e60-aa55-c3b4b85e21ee@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260826165647.769231-1-seanjc@google.com> <aq/XwK71uNfLvUux@yzhao56-desk.sh.intel.com>
+Message-ID: <arEzv8b2IMHYcHsZ@google.com>
+Subject: Re: [PATCH v2] KVM: guest_memfd: Elaborate on how release() vs.
+ get_pfn() is safe against UAF
+From: Sean Christopherson <seanjc@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Vishal Annapurve <vannapurve@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On 21/09/2026 10:32, Suzuki K Poulose wrote:
-> On 19/09/2026 02:27, Jonathan Cameron wrote:
->>> The RMM maintains the state of all the granules in the system to make
->>> sure that the host is abiding by the rules. This state can be maintained
->>> at different granularity, per page (TRACKING_FINE) or per region
->>> (TRACKING_COARSE or TRACKING_INTERMEDIATE). The region size depends 
->>> on the
->>> underlying "RMI_GRANULE_SIZE". For a "coarse"/"intermediate" region, 
->>> all pages
->>> in the region must be of the same state, this implies we need to have 
->>> "fine"
->>> tracking for DRAM, so that we can delegate individual pages.
->>>
->>> For now we only support a statically carved out memory for tracking
->>> granules for the "fine" regions. This can be extended in the future to
->>> allow modifying the tracking granularity and remove the need for a
->>> static allocation by the firmware.
->>>
->>> Similarly, the firmware may create L0 GPT entries describing the total
->>> address space. But if we change the "PAS" (Physical Address Space) of a
->>> granule, then the firmware may need to create L1 tables to track the PAS
->>> at a finer granularity. Linux therefore checks if the platform 
->>> firmware manages
->>> the PAR region. i.e., the firmware is in charge of managing the L1 GPTs
->>> (creation and the required memory for the GPT tables - via static 
->>> carveouts)
->>> without host intervention. Support for dynamic GPT creation by the 
->>> host will be
->>> added later.
->>>
->>> If the firmware requires us to manage the tracking or GPT memory, 
->>> Deactivate
->>> the RMM and reclaim any memory donated at RMM activation.
->>>
->>> Apply the same checks when hotplugged memory is brought online.
->>>
->>> Signed-off-by: Steven Price <steven.price@arm.com>
->>> [ Switch to RMI_GPT_L1_INFO for checking GPTs and deactivate RMM ]
->>> Co-Developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->>
->> A few comments inline.
->>
->>
->>> ---
->>>   Changes since v17:
->>>       * Move wrappers that may not be used elsewhere, out of arm-rmi- 
->>> cmds.h
->>>   Changes since v16:
->>>       * Check fine tracking and create L1 GPTs for hotplug-added memory.
->>>       * Clarify the L1 GPT setup and move the explanatory comment.
->>>       * Switch to using RMI_GPT_INFO command for checking the GPTs.
->>>       * Deactivate the RMM and reclaim the memory if we can't proceed.
->>>   Changes since v15:
->>>       * Skip firmware-reserved NOMAP memory in rmi_init_metadata()
->>>       * Handle negative error codes from wrappers.
->>>   Changes since v14:
->>>       * Move the implementation into drivers/firmware/arm_rmm.
->>>   Changes since v13:
->>>       * Moved out of KVM
->>> ---
->>>   drivers/firmware/arm_rmm/rmi.c | 200 +++++++++++++++++++++++++++++++++
->>>   include/linux/arm-rmi-cmds.h   |   2 +
->>>   2 files changed, 202 insertions(+)
->>>
->>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/ 
->>> arm_rmm/rmi.c
->>> index ecc89e91d264..583e1aca9b15 100644
->>> --- a/drivers/firmware/arm_rmm/rmi.c
->>> +++ b/drivers/firmware/arm_rmm/rmi.c
->>
->>
->>> + */
->>> +static inline long rmi_gpt_info(unsigned long start, unsigned long end,
->>
->> Why inline vs letting compiler make it's mind up?
->> Same in other places
->>
->>> +                unsigned long *out_top,
->>> +                unsigned long *out_gpt_par_state)
->>> +{
->>> +    struct arm_smccc_1_2_regs regs = {
->>> +        SMC_RMI_GPT_INFO, start, end,
->>> +    };
->>> +
->>> +    rmi_smccc_invoke(&regs);
->>> +    if (regs.a0 != RMI_SUCCESS)
->>> +        return regs.a0;
->>> +
->>> +    if (out_top)
->>> +        *out_top = regs.a1;
->>> +    if (out_gpt_par_state)
->>> +        *out_gpt_par_state = regs.a2;
->>> +
->>> +    return RMI_SUCCESS;
->>> +}
->>
->>
->>
->>>   static int __init arm64_init_rmi(void)
->>>   {
->>>       int ret;
->>> @@ -786,8 +970,24 @@ static int __init arm64_init_rmi(void)
->>>       if (ret) {
->>>           pr_err("RMM activate failed\n");
->>>           ret = ret < 0 ? ret : -ENXIO;
->>> +        return ret;
->>
->> Why did this change?
+On Sun, Sep 20, 2026, Yan Zhao wrote:
+> On Wed, Aug 26, 2026 at 09:56:47AM -0700, Sean Christopherson wrote:
+> > Add more context and information to the comment in kvm_gmem_release() that
+> > explains why there's no synchronization on RCU _or_ kvm->srcu.  Point (b)
+> > from commit 67b43038ce14 ("KVM: guest_memfd: Remove RCU-protected attribute
+> > from slot->gmem.file")
+> > 
+> >       b) kvm->srcu ensures that kvm_gmem_unbind() and freeing of a memslot
+> >          occur after the memslot is no longer visible to kvm_gmem_get_pfn().
+> > 
+> > is especially difficult to fully grok, particularly in light of commit
+> > ae431059e75d ("KVM: guest_memfd: Remove bindings on memslot deletion when
+> > gmem is dying"), which addressed a race between unbind() and release().
+> > 
+> > See the extended on-list discussion[*] for more details about exactly what
+> > KVM guards against, and how.
+> > 
+> > No functional change intended.
+> > 
+> > Link: https://lore.kernel.org/all/CAEvNRgGmyd1yqQXsnz5hWRZpBZUs%3DpiEWbEaqP9%2Bcz9ZqEMQ6g@mail.gmail.com [*]
+> > Cc: Yan Zhao <yan.y.zhao@intel.com>
+> > Cc: Vishal Annapurve <vannapurve@google.com>
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> > 
+> > v2: Explain how this all works in even gorier detail. [Yan]
+> > 
+> > v1: https://lore.kernel.org/all/20251113232229.1698886-1-seanjc@google.com
+> > 
+> >  virt/kvm/guest_memfd.c | 50 +++++++++++++++++++++++++++++++++++++-----
+> >  1 file changed, 44 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > index b596486d184c..7f1c6a0f8039 100644
+> > --- a/virt/kvm/guest_memfd.c
+> > +++ b/virt/kvm/guest_memfd.c
+> > @@ -300,17 +300,55 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
+> >  	 * dereferencing the slot for existing bindings needs to be protected
+> >  	 * against memslot updates, specifically so that unbind doesn't race
+> >  	 * and free the memslot (kvm_gmem_get_file() will return NULL).
+> > -	 *
+> > -	 * Since .release is called only when the reference count is zero,
+> > -	 * after which file_ref_get() and get_file_active() fail,
+> > -	 * kvm_gmem_get_pfn() cannot be using the file concurrently.
+> > -	 * file_ref_put() provides a full barrier, and get_file_active() the
+> > -	 * matching acquire barrier.
+> >  	 */
+> >  	mutex_lock(&kvm->slots_lock);
+> >  
+> >  	filemap_invalidate_lock(inode->i_mapping);
+> >  
+> > +	/*
+> > +	 * Note!  synchronize_srcu() is _not_ needed after nullifying memslot
+> > +	 * bindings as slot->gmem.file cannot be set back to a non-null value
+> > +	 * without the memslot first being deleted.  I.e. this relies on the
+> > +	 * synchronize_srcu_expedited() in kvm_swap_active_memslots() to ensure
+> > +	 * kvm_gmem_get_pfn() (which runs with kvm->srcu held for read) can't
+> > +	 * grab a reference to slot->gmem.file even if the struct file object
+> > +	 * is reallocated.
 > 
-> Rebase messed up. I will restore it.
-
-Actually this is not. We dont have to check the metadata if
-we couldn't activate the RMM. Also, the failure path at the
-bottom has "deactivate", which again is not needed. So
-it is the right thing to do.
-
+> Nit:
 > 
->>
->>>       }
->>> +    ret = rmi_init_metadata();
->>> +    if (ret)
->>
->> And this is hitting another bit of guidance in cleanup.h.
->> Functions shouldn't be mixing __free and friends with
->> gotos.  Again, not a bug here but there are large ugly
->> monsters around this stuff, hence the blanket guidance.
->> I haven't thought that hard on how you avoid it here, but
->> usually it's a combination of suitable helpers and wrappers
->> and resulting code is often more readable as a result.
-
-I could change the hunk to something like, but that looks ugly.
-
-@@ -1010,20 +1010,12 @@ static int __init arm64_init_rmi(void)
-                 return ret;
-         }
-
--       ret = rmi_init_metadata();
--       if (ret)
--               goto out_deactivate;
-+       if (!rmi_init_metadata() && 
-!register_memory_notifier(&rmi_memory_nb)) {
-+               arm64_rmi_is_available = true;
-+               pr_info("RMI configured\n");
-+               return 0;
-+       }
-
--       ret = register_memory_notifier(&rmi_memory_nb);
--       if (ret)
--               goto out_deactivate;
--
--       arm64_rmi_is_available = true;
--       pr_info("RMI configured\n");
--
--       return 0;
--
--out_deactivate:
-         WARN_ON(rmi_sro_memxfer_cmd(sro, GFP_KERNEL, 
-SMC_RMI_RMM_DEACTIVATE));
-         return ret;
-  }
-
-
-Either ways, we have to cleanup the object on return, no matter
-the route we take. So the original form is much more readable
-for me.
-
-Cheers
-Suzuki
-
->>
+> Do we need to update the code comment in __kvm_gmem_unbind() from
+> 	/*
+> 	 * synchronize_srcu(&kvm->srcu) ensured that kvm_gmem_get_pfn()
+> 	 * cannot see this memslot.
+> 	 */
+> to
+> 	/*
+> 	 * synchronize_srcu_expedited() in kvm_swap_active_memslots() ensured
+> 	 * that kvm_gmem_get_pfn() cannot see this memslot.
+> 	 */
 > 
-> I will see if I can improve it.
-> 
-> Cheers
-> Suzuki
-> 
+> to align with the above comment.
 
+How about this?  Because the "rule" is that kvm_gmem_unbind() can only be called
+on a memslot that is unreachable, either by synchronizing SRCU after uninstalling
+the memslot *or* because the memslot was never installed.  Simply stating that
+synchronize_srcu_expedited() makes everything safe isn't the whole story, as it's
+specifically synchronzing after removing/deleting/deactivating the slot that
+makes this safe.
+
+	/*
+	 * Note, the caller is responsible for ensuring the slot is unreachable
+	 * before unbinding, e.g. by synchronizing SRCU after deleting the slot.
+	 */
+
+> > +	 *
+> > +	 * file_ref_put() provides a full barrier, and __get_file_rcu() the
+> > +	 * matching acquire barrier, to ensure that kvm_gmem_get_file() (via
+> > +	 * __get_file_rcu()) sees refcount==0 or fails the "file reloaded"
+> > +	 * check (file != NULL due to nullifying the file pointer here).
+> > +	 *
+> > +	 * Unlike most other users of get_file_rcu(), where callers don't care
+> > +	 * if they race with a write, only that they have a reference to _a_
+> > +	 * live file, kvm_gmem_get_pfn() needs to get the exact file that is
+> > +	 * associated with the memslot.  Without the aforementioned SRCU
+> > +	 * synchronization, the following could happen:
+> > +	 *
+> > +	 *  CPU0				CPU1
+> > +	 *  kvm_gmem_get_pfn()
+> > +	 *    f = X (from slot->gmem.file)
+> > +	 *					kvm_gmem_release())
+> > +	 *					  slot->gmem.file = NULL
+> > +	 *
+> > +	 *					kvm_set_memory_region()
+> > +	 *					  slot deleted
+> > +	 *
+> > +	 *					kvm_set_memory_region()
+> > +	 *					  slot created
+> > +	 *					  slot->gmem.file = f (alloc the same object)
+> > +	 *
+> > +	 *  get_file_active()
+> > +	 *    file = f
+> > +	 *    file_reloaded = f
+> > +	 *
+> > +	 * <KVM does weird things with an old memslot+file>
+> > +	 *
+> > +	 * Obviously KVM would be broken in many places if the synchronization
+> > +	 * were omitted, but it's important to note that get_file_active() does
+> > +	 * NOT guarantee a reference to the correct file was obtained, only
+> > +	 * that the file doesn't point at a reallocated object.
+> reallocated -> reloaded?
+
+No, "reallocated" is correct.  From the comment for SLAB_TYPESAFE_BY_RCU:
+
+  * This delays freeing the SLAB page by a grace period, it does _NOT_
+  * delay object freeing. This means that if you do kmem_cache_free()
+  * that memory location is free to be reused at any time. Thus it may
+  * be possible to see another object there in the same RCU grace period.
+  *
+  * This feature only ensures the memory location backing the object
+  * stays valid, the trick to using this is relying on an independent
+  * object validation pass. Something like:
+  *
+  * ::
+  *
+  *  begin:
+  *   rcu_read_lock();
+  *   obj = lockless_lookup(key);
+  *   if (obj) {
+  *     if (!try_get_ref(obj)) // might fail for free objects
+  *       rcu_read_unlock();
+  *       goto begin;
+  *
+  *     if (obj->key != key) { // not the object we expected
+  *       put_ref(obj);
+  *       rcu_read_unlock();
+  *       goto begin;
+  *     }
+  *   }
+  *  rcu_read_unlock();
+
+The above pseudocode is what get_file_active() is doing; it verifies the found
+file ("obj" above) is the correct file.  Specifically, from __get_file_rcu():
+
+	 * If the pointers don't match the file has been reallocated by
+	 * SLAB_TYPESAFE_BY_RCU.
