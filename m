@@ -1,96 +1,152 @@
-Received: from mta1.migadu.com (out-238.mta1.migadu.com [95.215.58.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953644A99C3
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 15:26:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.238
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790004376; cv=none; b=QajTcEN+40Ihn4F/Y5kpPNYGyZL3HYp4l7i5rZwz5AfrQGI2QdxXOe0eSrpMr4rrMU3XYWrfB8ZcF2uNHLQ1AeiJc++xnVfQUm/Pc/lJhmq5VaE3jXSEjlzLPac4u2+kKfupixuV/01da6eKptCMo2xUZJT6KsCum4IDHu47xkk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790004376; c=relaxed/simple;
-	bh=/8RGZVQWUyzs19cUu3Y//9Vj+1op9fq9/ZosbH4mY4I=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B714D0CC4
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 15:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790005027; cv=pass; b=AYDkOmsd7Cm7x/+1djBDnqJVQTvwbfsZyOXDaEIOR1udZKE99l5vwJ1K7m9dKI8uziBgeX+EvqT6x5ConSaQIYwGYntNPhv8EEL5u191DiW4GncdEoDS49yCV2JbeQnab7Cj8i9dnUdG3ud3Zyek2m6tIzQJH9djsi/5VVChWGw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790005027; c=relaxed/simple;
+	bh=605+kgvDQ9CC7Dqfh31X+6P5aO3gnNTo5Q1U93YCcDw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dQDlklb3Sb/4zm13rMyDxSiF8Cupb0sJleLCDGSAnkKheoa6n0e81BGEmYHj1GMrcAB6gr9SveUtY49aAZDJsHIxyaLsvRo3b5U78J0tD7Q4xbSydGKMmNEk8wl+beyhEQj0opIzdhEAY/cYGpkJed15rKzz1oC3lq4Pa3B/NlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fx/R2cHP; arc=none smtp.client-ip=95.215.58.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 To:Cc:Content-Type; b=cxVHKL9L5V7EK66rwO4f30g6geOPYEl13ymdeSs60MmgAYkOE22efizqhd7wud/L/4Fyaais9j6cOs6ev7pWNuDL9MgtAHAQ300v2yHGn4Mnboj7ZTpGyMUVyAXzscW52fzGH0rlzaCyp3qTbS+G+itho0Gz2Xq4bek/TpdEeEo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=foGPqbI2; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=J/mjoLv3; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fx/R2cHP"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=/8RGZVQWUyzs19cUu3Y//9Vj+1op9fq9/ZosbH4mY4I=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790004372; v=1; x=1790609172;
- b=fx/R2cHP+0L8ALvPMfPkydjlvDM3sjVE+zypPRDCAPzPz2pCCwACtrCjfOAu9skjBZKobSNL
- uNZoGl+PzMLE5lWgol1lrOBF4lqAu9gf+Mv2cc9Q7WM5DdJB/rORhoJTBHG0Y6U1iJNJz+vcqlo
- 4xWT+3DtcBzjxJI5i7CI+DG4=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 3ea6149d8565f925;
-	Mon, 21 Sep 2026 15:26:12 +0000
-X-Mizu-Trace-ID: 3ea6149d8565f925
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5b8c42da963so11607e87.0
-        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 08:26:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwANw9Jj42l87UZorSSy90vD7mbutxajM87Y5SuxvuGpgTvf3cPAgsGC1llTDMQxI5F+9w=@vger.kernel.org
-X-Gm-Message-State: AFuF++m0BsgQbM6eXF4kTn/lZ6+x7oqiTnl30VjC0X54rSjsceBM7W6Q
-	eJjNvU+xq5vom5cC6BzfR61CrY0resLd0ohi4Ur5kt2F1ehKN/CRWsJEk9hCnZIFCkbcsBlB3si
-	83LyI3BlnRac7iCu/mre7Q9C5hVzkC9m8LUUBCYdm
-X-Received: by 2002:a05:6512:3c86:b0:5b1:5141:9156 with SMTP id
- 2adb3069b0e04-5b8c7eaa535mr194108e87.9.1790004367252; Mon, 21 Sep 2026
- 08:26:07 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="foGPqbI2";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="J/mjoLv3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790005024;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=twdk4Tne1/4O9YpjiNMs8jU+vPfWAzKxomteFVmFtns=;
+	b=foGPqbI2YKkrgTxlMyIKMSRj5zubUOOfpg9QYiyXE+aespXZjdPVgZC58urN98LsKpGBIZ
+	Kvf4jQg7CkK2sVZ/YWjBto5MTTIbvZ39l2q2HecKCMcYLnTXaKXScNn5QWlgGIpgFegcDB
+	N7s/e89fCX+Ccm5XuBsWWyYQ1CSKn2o=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-66-5XzncNtVOcidYxpU3z0jDg-1; Mon, 21 Sep 2026 11:37:03 -0400
+X-MC-Unique: 5XzncNtVOcidYxpU3z0jDg-1
+X-Mimecast-MFC-AGG-ID: 5XzncNtVOcidYxpU3z0jDg_1790005022
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48589603501so1582442f8f.3
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 08:37:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790005022; cv=none;
+        d=google.com; s=arc-20260327;
+        b=UZSid5yepp/gJG+RAU+pFz1HgrBo/ByFk5kAAGAljBlb/KqAxAdV/9RyMhWbYKOIIp
+         ypvRR8nDisch90BArpt69GGnwD/ByLZ7YYvO1NjI8zBpCl5p8v6ry8ZPbWhRo+hJ+LtB
+         wiV8E5VSBlG0TKGCmz0c3Yk4GUIET7XY7ti24YOwhbBE5KesChp/6JukscNBDxmk1h6N
+         4/fKSE3nTVfr9N9CiS1YBiRTTQkcDDsnacGaMaMYKf/owfgTHWwAgk9/vjf/AABGbinm
+         X3WbRmqg++L9A9PNptZ3RPyXTiOZxSsx3c3pAcAdf6JIGhGNfk/FKf9ZPuqBLbmtw6YH
+         /e8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=twdk4Tne1/4O9YpjiNMs8jU+vPfWAzKxomteFVmFtns=;
+        fh=gODEUqo+Bo7nW2ykYD9q3BWEYIAA5MlRH41QywN/U18=;
+        b=LmEX5oZTdwVBmx3CvCLTqa6W1legCFdL3iVd0kSyvDb5nLlhpzr3Kz2RXCH/M5zvFc
+         pavi76ZSLZ7LCP/gbASY6zqTLQ8kbXTQeSqzNQ1fgSnLfkW74vXztsDqIz7BpeZodf/g
+         si7zex/M/YtmkFymfzR9FD9/B8IJALEIL6pXE3uqh5V61T+7K+OQHUi7Jl7gbGEVmLt7
+         3vzbuS+D7umQZXkihzWz36yxA+WwvqK15s7ihpo40vO/k/Mq4l8IRplnjLK0bpov0pbc
+         8LIb09M6BuNijiCf2SCddFwfe0c66s1tJU9ZY/7xMc+ozV3xg5xZSuLV+qpDiiDZNc0d
+         vstw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1790005022; x=1790609822; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=twdk4Tne1/4O9YpjiNMs8jU+vPfWAzKxomteFVmFtns=;
+        b=J/mjoLv3lq/5l1vx0AmtPWjy1dLhe5zJuMeC1Rkv6JxHOQWCGF47FKG9OU1QMf8u0r
+         C4J01gAjX7HtLAdVN1eJmVoI7OPZv3EZ7fKVoJDVNlrw5J67pVIqTK6gnwZAEEOXyTVT
+         8f+wckoGoZ125uIfR+RpO9Ymhmui0veB4yScleOPk5ZbYcInrS7L1frtR14RadzSM18G
+         73yePQrUqt5RaBDQsJuYVwjQwoWkqyPm0bjLofFdQ1z1JmCXRhTEwJgxuMQK07GTB1dF
+         kPgfEEv/YeuYiVF1aXp7Y2jnu+x14d5xgAx+rz4EBrDWgRjqRdfMWzxu99bBJFPjT2bX
+         rUsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790005022; x=1790609822;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=twdk4Tne1/4O9YpjiNMs8jU+vPfWAzKxomteFVmFtns=;
+        b=ItpbBfzWm2JJl9chfqnjOxkg28NOGYEUtDTxyYIcnMj0bq1pKxl0GI0vo4TMxnIjfY
+         fFg206HumIHAUL0Cu6JTH3A5qa7FIDwFOE3wzdgoT4YnDXVf5o5F6c23HmQcJMrYvw+V
+         WrhInBlWPspo2JpFXU7IvRU0DcK2ScEtpFa7nyVTZKT3evdmVf/UAnQa+w+OunG4FzI8
+         kby7KRnkkFRPphPWEFRk6Rh3ba5i+fmXQXia2z2AJFMH0uCRdCb/Xu1eSB/owHE+vZiD
+         XRQxvxxVcLIt4DKx9sE1DkzPOK37GhBjfLFGQTMG6xB+04eS0lNGxVG0PKnC4jpXzPmC
+         vpoQ==
+X-Gm-Message-State: AFuF++l03kRa8yqcGqr+aJvKs+KvZeQStvKUtTv/bR2rO6zENkFi/s2j
+	/BSjPQSiBs72Yvl7n2ntEFB7x0Dmt9fEAO9NFaMWKHQ0tt3KsZg7/kiaWa9svn8yXxSbY2Haf3V
+	g6ZQY+IqFNREY/lxZWmp6wABH4ObKtlRGNleTicm4HxC0mOYXrrexoAcwcmvOV7nMXXiU2WYmU6
+	pySEeui4+U+ARc+v45y7vi7nxyX1DR
+X-Gm-Gg: AYBFou2ilm3Li5thmhrDNzJBmeJMWeBrQTvDBLYJOjf+k3X1SxCiVRDonEdZFDjEBig
+	4P1yS3z4fMLFtcoEmModS+96I+U4PLvgBtkrKrF1Sk75/Nn/d0k6yyK62ZtuDC8Xw/GWOlXjTZy
+	E8JkXVsCpp1YdokXxHOWuBOO1plBZIYjJb89ZhMOOCWXGHEp1NnJQpcraahGF30YksyAa/TrV+o
+	RGtzJMUKL80Vuq0cP3CDbzmeXpqxZyyx7MVBLxs7y1pBi0eI4Ho1rglmX7Awg==
+X-Received: by 2002:a05:6000:2405:b0:487:bef:31a8 with SMTP id ffacd0b85a97d-4871dfac13emr17456024f8f.0.1790005021940;
+        Mon, 21 Sep 2026 08:37:01 -0700 (PDT)
+X-Received: by 2002:a05:6000:2405:b0:487:bef:31a8 with SMTP id
+ ffacd0b85a97d-4871dfac13emr17455982f8f.0.1790005021596; Mon, 21 Sep 2026
+ 08:37:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260921140427.2211373-1-fuad.tabba@linux.dev>
- <20260921140427.2211373-4-fuad.tabba@linux.dev> <20260921141701.33CFD1F000FF@smtp.kernel.org>
-In-Reply-To: <20260921141701.33CFD1F000FF@smtp.kernel.org>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Mon, 21 Sep 2026 16:25:31 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTweK4XJZNaeKKzizReQrP+25jDT08hDkc9+zQoxWu+iYg@mail.gmail.com>
-X-Gm-Features: AcwNN1UdQ0NUVS431o0imISYD8tq6CTjYnZ7u83ldsAQHh0Mec-JjbiaaUqj-84
-Message-ID: <CA+EHjTweK4XJZNaeKKzizReQrP+25jDT08hDkc9+zQoxWu+iYg@mail.gmail.com>
-Subject: Re: [PATCH 3/3] KVM: arm64: selftests: Test a timer set past the
- counter's wrap
-To: sashiko-reviews@lists.linux.dev
-Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev
+References: <20260826164214.756512-1-seanjc@google.com> <178999899502.746042.13434207152687268434.b4-ty@google.com>
+In-Reply-To: <178999899502.746042.13434207152687268434.b4-ty@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 21 Sep 2026 17:36:48 +0200
+X-Gm-Features: AcwNN1Vc5Dd1Z6bz0UOG_dq6CPv_obdD40QYNgy4I8WlOv2VzLbhnywhiqHrT_0
+Message-ID: <CABgObfbtL48EP7+_VJirWxFj+NWnn=kmF6CF+qdctyHv_a4FAw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] KVM: x86/mmu: Fix pre-fault and map private loops
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Kai Huang <kai.huang@intel.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>, Sashiko Bot <sashiko-bot@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 21 Sept 2026 at 15:17, <sashiko-bot@kernel.org> wrote:
-[...]
+On Mon, Sep 21, 2026 at 4:07=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
 >
-> > +/*
-> > + * With the counter at wait_ms, a tval of -(wait_ms + long_wait_ms) puts cval
-> > + * within long_wait_ms of the counter's wrap: a deadline further away than the
-> > + * counter can reach. Unmasked, so an early ISTATUS shows up as an IRQ.
-> > + */
-> > +static void test_timers_past_counter_wrap(enum arch_timer timer)
-> > +{
-> > +     s32 tval = -(s32)msec_to_cycles(test_args.wait_ms + test_args.long_wait_ms);
-> > +     int i;
-> > +
-> > +     for (i = 0; i < ARRAY_SIZE(sleep_method); i++) {
-> > +             sleep_method_t sm = sleep_method[i];
-> > +
-> > +             local_irq_disable();
-> > +             set_counter(timer, msec_to_cycles(test_args.wait_ms));
-> > +             set_tval_irq(timer, tval, CTL_ENABLE);
+> On Wed, 26 Aug 2026 09:42:10 -0700, Sean Christopherson wrote:
+> > Fix a bug in the pre-fault path where KVM fails to reload an invalidate=
+d
+> > MMU root, which puts the KVM_PRE_FAULT_MEMORY task into an infinite loo=
+p
+> > (although it's breakable, so not fatal to the host).  My best guess is =
+that
+> > the test started failing once PREEMPT_LAZY was enabled by default.  Not=
+e,
+> > the bug is *really* easy to repro with a to-be-proposed patch to have K=
+VM
+> > do auto-pre-faulting[*], i.e. prefetch surrounding pages on fault.
+> >
+> > [...]
 >
-> [Severity: Medium]
-> Could this sequence lead to a flaky test on a loaded host system?
+> Applied to kvm-x86 mmu, thanks!
+>
+> [1/4] KVM: x86/mmu: Reload MMU on *every* page pre-fault attempt/iteratio=
+n
+>       https://github.com/kvm-x86/linux/commit/355323a4dc94
+> [2/4] KVM: x86/mmu: Harden "map private PFN" against unexpected root inva=
+lidation
+>       https://github.com/kvm-x86/linux/commit/698b8c88e159
+> [3/4] KVM: x86/mmu: Top-up memory caches when retrying "map private PFN"
+>       https://github.com/kvm-x86/linux/commit/6415d9c4ee19
+> [4/4] KVM: x86/mmu: Add sanity check to detect stale page faults in "map =
+private PFN"
+>       https://github.com/kvm-x86/linux/commit/f7a3be227619
 
-Yes, a stall of more than long_wait_ms between the counter write and
-the TVAL write leaves cval below the counter. This should sort it out:
+Should I apply this to kvm/master?
 
--        s32 tval = -(s32)msec_to_cycles(test_args.wait_ms +
-test_args.long_wait_ms);
-+        u64 cval = -msec_to_cycles(test_args.long_wait_ms);
-[...]
--                set_tval_irq(timer, tval, CTL_ENABLE);
-+                set_cval_irq(timer, cval, CTL_ENABLE);
+Paolo
 
-Cheers,
-/fuad
