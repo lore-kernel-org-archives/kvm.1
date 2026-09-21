@@ -1,157 +1,115 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB61839CCFD
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 07:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D6A3AC0CD;
+	Mon, 21 Sep 2026 07:06:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789974305; cv=none; b=gOc3NrnSHzjxDOZxb0eScqfbJG7YPaH7Q18mW4rj8h6NYxeLn1+QTNi/xBE5r3Xc/bcsBo3mVIR0gW+6L2A0OUYj/14iaTFyI6j2nyXXBhIqcFGCl7amh9ORGaEfJaMlou+JQ3pnsxgZuvACndL1ydqFZihId/gRBPFDjZqrPsE=
+	t=1789974376; cv=none; b=WxK1+cXCljGj0+zXyMX0wfmMS/X/VDqmz5hlOTc8Hs9gWAj6umup4jJuGEi6W306DxlCga2AaonrxO+nakmRJdPTQAOri6nGtyXLB6ji1ESp7qGzMXl2i2hUdgIaJw/ZUyr9ZHRgYk5hU3eQJYOc/FRf5Z/fkLc85W4HTIC14PE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789974305; c=relaxed/simple;
-	bh=q+4TWAH82wt5mYMumibglvij/JtGR91K1fZZsuVUS8M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=il/wNijElPHjM+dIzxeOvREsptdsdNeVSTjdChgA262SO6ADpqRHsWm5mu/xIp0Xy07mtToNlGowrg/u4s2GkbfTH0PMox9Uk0NvPPTAR8mGKn+6UiB0/Ig/x8+Y3cegcSQW/cVJiBSh6AiAvfbeibtDbcoxsdaTLGmCmHujM7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=d70JbJvf; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1789974376; c=relaxed/simple;
+	bh=/5m4aZ65LSN4IxjKX08SXAMvhKoumaooVWqP8+wIShc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=I2DD2/OlzS5FWyj2ndo5ImlBTTbnss+7aDIt2H07hyp5kLaz3EaFcxMN/fYelxjjdjR6kdnfVPZN0vu/PNjU2BEDTpzGPyni9KaRoeOAZHbyb6GUp1Q2igFt9ewD+hQzDkTI+IQqg2ElQwyx1IlfE/EvG6wKa8ca/Q33NX6kMs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eD4SlotA; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="d70JbJvf"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68L3aSYG3307017;
-	Mon, 21 Sep 2026 07:04:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=+kP1iCLZakbh0FG6jVlAEp35ZfDOaz
-	3git5jCqXt0KU=; b=d70JbJvfz0VVPd+YltVMouduLOibR5DRjO7TU8cBXcGmwD
-	m2EXy0RGeIeW1PPjL0duZfrK5RCPF3/pymdunmeO/6ScCeSXPx9AcPUGmzWPpv+y
-	Wdkl2yXwxP+eizVtA+v0FO94qbcxqe2E3nsAMIqzI3niVL3NHqJu9y6M55yLo9Tn
-	sQPum9bAcV5pT52qZHfHs/N1bjH3nfd46ztNcxphXnPoCWMPKFv2v1zx01zFy6zB
-	TwI2spOYWgmWjHuqkjLM/tUTfvGPjArFvYAmjcIySLA33B4esvjBHpTMcsJwDb4G
-	/1rj613Ue68ra2h/Ab+OiTp9S2nqg3iGUOXr0Klg==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskgq716q-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 21 Sep 2026 07:04:52 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68L3XYog628081;
-	Mon, 21 Sep 2026 07:04:51 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gt53vcatf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Sep 2026 07:04:51 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68L74ne545416796
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 21 Sep 2026 07:04:49 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 35F4D20040;
-	Mon, 21 Sep 2026 07:04:49 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 159B920043;
-	Mon, 21 Sep 2026 07:04:48 +0000 (GMT)
-Received: from li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com (unknown [9.123.6.5])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 21 Sep 2026 07:04:47 +0000 (GMT)
-Date: Mon, 21 Sep 2026 12:35:51 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2] KVM: PPC: Book3S HV: Avoid spurious interrupts caused
- by LPCR_MER bit
-Message-ID: <arDWLD7CuAwVV4LM@li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com>
-References: <20260918055848.28390-1-gautam@linux.ibm.com>
- <20260918060829.D84C61F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eD4SlotA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789974375; x=1821510375;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=/5m4aZ65LSN4IxjKX08SXAMvhKoumaooVWqP8+wIShc=;
+  b=eD4SlotA4p6rlRj8pOy1Q9fNgCr7mIljozRMAGVubNSIqxyTEC1SYYTP
+   WMjOSJ/IDn+bLeS5FnlXWH678o8xWt0SUPeiA+7sHyFKaKHBbtz4CkNKd
+   6xMIlx5elwV8mnD0P/lp685UIDPd0NjeEVNJj94oqq1Qexr1NUMtnmcve
+   OsUodfuJCTC0g45wfSZKEHXfx4THV388pMX2Ze5MFai5ZlsxdQ1MZw+Pe
+   HR2ONP1Ue82DCKrg6aJ4xMxMZ7wyNbNXDqqD508lvq2aPyTkQRGTco+Zf
+   4Wp/GfxnFSMZFMlFtnajo0vK8RxZzDvlH7m0MHryJZ0vYG7S/yehrb88m
+   Q==;
+X-CSE-ConnectionGUID: oJv9ss7TTqCaOIiVGLNPfQ==
+X-CSE-MsgGUID: WiDlbllVTgqANkrNaixB6A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11911"; a="90485952"
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
+   d="scan'208";a="90485952"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 00:06:14 -0700
+X-CSE-ConnectionGUID: bNJQaRoSQtaGEKTvysCowQ==
+X-CSE-MsgGUID: 9dwpuAJhQgSfjSLJTMuWYw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
+   d="scan'208";a="3831815"
+Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.239]) ([10.124.241.239])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 00:06:11 -0700
+Message-ID: <76c44332-2a6d-479f-aaf6-fab08e4cb60b@linux.intel.com>
+Date: Mon, 21 Sep 2026 15:06:08 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260918060829.D84C61F000FF@smtp.kernel.org>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=G+OJgNk5 c=1 sm=1 tr=0 ts=6ab0d714 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=yKAn6K1XAAAA:8 a=VnNF1IyMAAAA:8 a=C0UQplxeHUNF3Q06eqEA:9 a=CjuIK1q_8ugA:10
- a=6M1ixcW_PCWoKiWyFx5v:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIxMDA5MyBTYWx0ZWRfXyK3cOmMYTXx6
- ZOb3yQAS9Yj6TuD2pOm+dGLgUuLU4YsAkBM9xvJ05OBhdNNgtdysTDS2NGnxczwy6MgHPzchkDO
- lgWTLhK5bxhXjxP58WVFDC+8kCc4IxM8v3SYNciS2uR+hP7DmbkRZrAb9MbIZmRlOFhhWIRg2bR
- AohF9MOgPLN++F2KwsMh8Ym8ZAqz9rQcKV61kg16BYCTea2PdVEEGslSqaYrgCQoEyH3fm+9oD2
- K9cscwWDAwf05bxt6B+Ex5SyJUaSvoOdV5zf2p8yyody+mmkNi7VLqydxRJ6xxzGSYiT+4ygmfi
- wkLFOkQRa4EkJ/FVCEEwp5KCJlko304epQXs/PDnhI0zv0j1hW9Q8thT5swmXos4Rzbh+nDd4v/
- Jr6DmKJSaiX55mnchF86+pn7rW1sA+p++j35+GsPYB6SrS41ahWyxlnjH1ieO8OCeaEA1bKlTQS
- nw1pm2aEX83dQVMO0nA==
-X-Proofpoint-ORIG-GUID: GygjeXbEPNI_UQ74as96vUtXmWo3C4IQ
-X-Proofpoint-GUID: GygjeXbEPNI_UQ74as96vUtXmWo3C4IQ
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIxMDA5MyBTYWx0ZWRfX/OPJRO0rJ89s
- o6dfnZlS/J4UObS/sfueUQBGxoPd2qSYguD/nx/h1p2DJi2UtqeQpTPiT2yOoOf2QQDoDwVcsu5
- sTR44QqX4ev4RkAEsHgSWZpcAMyWxQ8=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-21_02,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0
- bulkscore=0 priorityscore=1501 clxscore=1015 spamscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609210093
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 10/12] perf/x86: Expose number of Topdown metric events
+ to KVM
+To: Zide Chen <zide.chen@intel.com>, Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>
+Cc: kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
+ Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>,
+ linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Xudong Hao <xudong.hao@intel.com>
+References: <20260918193937.569414-1-zide.chen@intel.com>
+ <20260918193937.569414-11-zide.chen@intel.com>
+Content-Language: en-US
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <20260918193937.569414-11-zide.chen@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 18, 2026 at 06:08:29AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] kvm: ppc: software-injected external interrupts lost on XIVE hosts
-> --
-> 
-> commit 05773d5b089dd4410c7e3e3a1611da5479c7d1a4
-> Author: Gautam Menghani <gautam@linux.ibm.com>
-> 
-> KVM: PPC: Book3S HV: Avoid spurious interrupts caused by LPCR_MER bit
-> 
-> This commit aims to avoid a huge number of spurious interrupts on KVM PowerNV
-> guests in XIVE mode by not using the LPCR_MER bit when the hardware can
-> present interrupts directly. It modifies kvmhv_run_single_vcpu() to skip
-> setting LPCR_MER when xics_on_xive() returns true.
-> 
-> Closes: https://lore.kernel.org/linuxppc-dev/582904882.11159.1786719390349.JavaMail.zimbra@raptorengineeringinc.com
-> 
-> > diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> > index dbac3573b2c89..f4d12a97311b9 100644
-> > --- a/arch/powerpc/kvm/book3s_hv.c
-> > +++ b/arch/powerpc/kvm/book3s_hv.c
-> > @@ -4980,7 +4980,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
-> >  			if (!kvmhv_on_pseries() && (__kvmppc_get_msr_hv(vcpu) & MSR_EE))
-> >  				kvmppc_inject_interrupt_hv(vcpu,
-> >  							   BOOK3S_INTERRUPT_EXTERNAL, 0);
-> > -			else
-> > +			else if (!xics_on_xive())
-> >  				lpcr |= LPCR_MER;
-> 
-> [Severity: High]
-> Does this unconditionally disable LPCR_MER on XIVE hosts, potentially dropping
-> software-injected external interrupts when MSR_EE=0?
-> 
-> The outer condition in kvmhv_run_single_vcpu() checks if either a KVM software
-> interrupt (BOOK3S_IRQPRIO_EXTERNAL) or a hardware XIVE interrupt is pending.
-> 
-> When MSR_EE=0 on guest entry, the patched code evaluates:
-> 
->     else if (!xics_on_xive())
->         lpcr |= LPCR_MER;
-> 
-> Since xics_on_xive() evaluates to true globally on bare-metal POWER9+ hosts
-> with XIVE enabled, regardless of whether the guest uses the in-kernel XIVE
-> irqchip, bypassing LPCR_MER here seems to cause software-injected interrupts
-> (such as those from userspace via the KVM_INTERRUPT ioctl) to lose the
-> hardware trap mechanism that normally fires when the guest later sets
-> MSR_EE=1.
-> 
-> Could this lead to dropped or severely delayed external interrupts for guests
-> using a userspace irqchip?
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
-Yes this is a valid case. When kernel irqchip is off, the guest vCPU will be required to make an extra
-exit to the host for interrupt injection. Will fix this in v3.
-
-Thanks,
-Gautam
+On 9/19/2026 3:39 AM, Zide Chen wrote:
+> The number of Topdown metric events varies by CPU: ICL/TGL/RKL
+> support 4, while SPR/GNR/DMR and some hybrid CPUs support 8.
+>
+> Add num_topdown_events to struct x86_pmu_capability and populate it
+> in perf_get_x86_pmu_capability() so that KVM can determine how many
+> PERF_METRICS fields are valid on the host CPU and correctly identify
+> the reserved bits in IA32_PERF_METRICS.
+>
+> Signed-off-by: Zide Chen <zide.chen@intel.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> ---
+> v9: new patch
+> ---
+>  arch/x86/events/core.c            | 1 +
+>  arch/x86/include/asm/perf_event.h | 1 +
+>  2 files changed, 2 insertions(+)
+>
+> diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+> index 8b3ea0adb965..01c1c9447f30 100644
+> --- a/arch/x86/events/core.c
+> +++ b/arch/x86/events/core.c
+> @@ -3164,6 +3164,7 @@ void perf_get_x86_pmu_capability(struct x86_pmu_capability *cap)
+>  	cap->events_mask_len	= x86_pmu.events_mask_len;
+>  	cap->pebs_ept		= x86_pmu.pebs_ept;
+>  	cap->mediated		= !!(pmu.capabilities & PERF_PMU_CAP_MEDIATED_VPMU);
+> +	cap->num_topdown_events	= x86_pmu.num_topdown_events;
+>  }
+>  EXPORT_SYMBOL_FOR_KVM(perf_get_x86_pmu_capability);
+>  
+> diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+> index ceb6188e5217..3c02389b2ea6 100644
+> --- a/arch/x86/include/asm/perf_event.h
+> +++ b/arch/x86/include/asm/perf_event.h
+> @@ -306,6 +306,7 @@ struct x86_pmu_capability {
+>  	int		bit_width_fixed;
+>  	unsigned int	events_mask;
+>  	int		events_mask_len;
+> +	int		num_topdown_events;
+>  	unsigned int	pebs_ept	:1;
+>  	unsigned int	mediated	:1;
+>  };
