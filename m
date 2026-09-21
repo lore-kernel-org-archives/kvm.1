@@ -1,174 +1,96 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B663CA4BC
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 23:07:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2AD3F3294
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 23:11:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790032053; cv=none; b=Ue3N0tdq2zUoZ0zXaYr8/tYZ2va4G3busvTKoOdtrQykaGSGwHO0TsJStIRl6zIR1ZPdvSpsV541ZbkPPTySSeHqWWomTqV0p3CJBgWt9RjUi1dC0k/mcOgkeFdQHaOSlFkg7P2jn1XJgJw3YzTgFdV+39F5RHrFc3s7FDbYdGs=
+	t=1790032304; cv=none; b=PkWIk11I1d4B2RYhHq4IXGV3poekw1KPWzIGR+47i8btWypjUJ6NliwGYzgqBk6uVJ6H8UvISHR3tf4CWqbhXrAeb3oDqxWHmOmjLZtxhgJnFs4GRiQiQsVmFZDmIA/vU3I1Cx+URTv4g31YF8lT0Ifbi3o9ydx6eebKywbPDuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790032053; c=relaxed/simple;
-	bh=BewPU4fx4/WOAWdrwi1Faroa99w7EtJpMxN0EsboFGo=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Aj+gAFaSwqETB6QBAipkuOOlZO4ol50FqicfMq9WMbUOr2nGo80JWOp7vgsEPyueYOf0B75rEkOSSdFuI+Xt+zkI6Ekhdza9ocw+XeppO29aC8JO6NeCycke/NKVpzsspv+mcq2tc70R0yNRPmzUwRFQSDD6zXnGm3PIZYQerBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=OW8sMrje; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790032304; c=relaxed/simple;
+	bh=soZNgkpbLPQjxM50cgoLxqORfklMlgfQRakZyHGqkvI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=eGtm1tCW1AOb7bVQtAyNfYmYo1bea+KhoVgp1Kzd64vi8r9UkY+RbwJcPr6IPuyeQGK566hTR1p7fMQQpoqj409XONA3MD2fqqSYEWlGBF6GlgldEs/q8TMGxqChmQ3yxTDNw99cmbuUnz+dDAjhhhKd0H6uQm8LuR7ezgahZ5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MzAsaCp1; arc=none smtp.client-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="OW8sMrje"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5464916A3;
-	Mon, 21 Sep 2026 16:07:23 -0700 (PDT)
-Received: from [10.57.9.187] (unknown [10.57.9.187])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1990F3F86C;
-	Mon, 21 Sep 2026 16:07:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790032046; bh=BewPU4fx4/WOAWdrwi1Faroa99w7EtJpMxN0EsboFGo=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=OW8sMrjeTt2SUn1pMfsNSQUdueXs0JNKSanltdBFMVfbUOE7IduGPIfBgSr+dzSmh
-	 0zivvVKqgvnzgFQskQT7KFByPMna/5VwTNHFq63xhlhvEeUoLdjYTc0Vwp2EQfjhxH
-	 Vmio4OOGkKRMPQURiEhkNyEqPOcKxC42aLQg2ikE=
-Message-ID: <ead9ced1-527d-4a36-87f2-2878921c1696@arm.com>
-Date: Tue, 22 Sep 2026 00:07:24 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MzAsaCp1"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d55d8cd938so61656355ad.1
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 16:11:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790032302; x=1790637102; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=qwbr5XeU55Bs52f3BsImPLKA3IMnfsIYgDqReY17WJo=;
+        b=MzAsaCp1juK/39fJWfB/YGvlzok8bLwl2WsGhl6N3ARV9aXMKtO6kgb2stNk8T28gp
+         PzrrjYF9r9SgL6/g3piZZIC/pEyduNLN6St4gSiigRs1vkZOBS/OyoqYo+cIq/JSlzhQ
+         Rt/sOJbq8aHtMItiXIFKfiu/31RWZ4dukrDvEqvI7JiMCyOQ1m4NlrgvMCroQ/GYFFeY
+         k29rquV9Ref8Qp+gFCKeYMXD7Ba8YLkQOeTxqMLv3PfCk9mOqASFMopuTe2578kuqW6Z
+         LSiD7/CMtKzjNuub6/F6g2Z8qQtPtAuPN97QbCSjmyCN0XrDM2cWujZo8IutepWUIBus
+         G6uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790032302; x=1790637102;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qwbr5XeU55Bs52f3BsImPLKA3IMnfsIYgDqReY17WJo=;
+        b=2Gby11VKBPb4X7PYrFSzF/Jq0jtiokM6qPFF3Dvmm1t0W2JtijHXlBG7gQPFQ6Z8nN
+         anvn2m3WjfRgWZ1+BXrZq/N/mk/dbkWa0eCPKXjVNTNlVK1sVMfkqHBxS6f2tqzQg8UA
+         Fd6+uJ0AXyBSYxZ5R22ieNlBIJrJFJwMIYpLsTwriq+y1lHZpjNUfAMU9ows0tb17CAD
+         HujamuBBd3CDmNjw1l07FeyRs5xmwLXgxRXw4jT8SmssWuGcTqTQqtwOos8ubt0I4xrk
+         GvZLolgm76dAtChbPySsoe4Uvv6i/ITrvUhJl/+2FUbMN8QBFnEJMXoLyzU3tjWhw5L/
+         Gpnw==
+X-Forwarded-Encrypted: i=1; AKwUvBwWCWgnwyquSUAOZQu0dSGDR9JHKqt5+e6HOTcuRmjyGAR+hUszH4k2F4eLjfbN2wyDs7I=@vger.kernel.org
+X-Gm-Message-State: AFuF++mGQEzYvR1Ruzp8MHyaoMHEgjf8NmFUQLlC3IzZVyzAZmbWFVau
+	TkNKuiKF7Uj0ic75PszGjkm9IgdCJc6oXkPWyWI9fy63mphxJv0iO1ZRgQBwI3vh81flIAbKYPn
+	qYrT7Mg==
+X-Received: from plmo6.prod.google.com ([2002:a17:903:18c6:b0:2df:3468:8a7d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d984:b0:2df:3b09:664
+ with SMTP id d9443c01a7336-2df3b0909cbmr79433785ad.32.1790032302259; Mon, 21
+ Sep 2026 16:11:42 -0700 (PDT)
+Date: Mon, 21 Sep 2026 16:11:41 -0700
+In-Reply-To: <CABgObfZTbj7cSUdGEcA2xgGkSgFqZ2NnNrHJ7+uYAHP3_9idqg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 02/20] KVM: arm64: Disable Steal time accounting for
- protected guests
-Content-Language: en-GB
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org, Oliver Upton <oupton@kernel.org>,
- Marc Zyngier <maz@kernel.org>, kvmarm@lists.linux.dev
-References: <20260920212845.707-1-suzuki.poulose@arm.com>
- <20260920212845.707-3-suzuki.poulose@arm.com>
- <20260920214421.D84B81F000FF@smtp.kernel.org>
- <a955032c-3e49-4b51-bf93-dd9718bed16a@arm.com>
-In-Reply-To: <a955032c-3e49-4b51-bf93-dd9718bed16a@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260918094322.152817-1-pbonzini@redhat.com> <arG1Nh2yuMQyAdhV@google.com>
+ <CABgObfatLAp3AsPktQVtVq0MgeJV1Bw+54i5LKye5KzjVPqbyQ@mail.gmail.com>
+ <arG3L3TL5_xCBtc9@google.com> <CABgObfZTbj7cSUdGEcA2xgGkSgFqZ2NnNrHJ7+uYAHP3_9idqg@mail.gmail.com>
+Message-ID: <arG5raFJQO0hA-Uz@google.com>
+Subject: Re: [PATCH] KVM: x86/hyperv: do not overwrite hc->ingpa for slow
+ SIGNAL_EVENT hypercall
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	James Houghton <jthoughton@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 20/09/2026 23:24, Suzuki K Poulose wrote:
-> On 20/09/2026 22:44, sashiko-bot@kernel.org wrote:
->> Thank you for your contribution! Sashiko AI review found 1 potential 
->> issue(s) to consider:
->> - [Medium] arm64: kvm: contradictory SMCCC advertisement for PV_TIME 
->> on protected VMs
->> -- 
->>
->> commit db2c057e4ceefd58162587d4fd417788a4db3dbc
->> Author: Suzuki K Poulose <suzuki.poulose@arm.com>
->>
->>      KVM: arm64: Disable Steal time accounting for protected guests
->>      PVTIME support is advertised by KVM_CAP_STEAL_TIME, which doesn't 
->> take into
->>      account the kvm instance. Even with that, a VMM could skip the 
->> CAP check
->>      and proceed to configure the PVTIME as we don't do further check 
->> on the
->>      DEVICE_CTRL. Tighten this up by passing the KVM instance around 
->> wherever
->>      possible and catch things early.
->>
->>> diff --git a/arch/arm64/kvm/pvtime.c b/arch/arm64/kvm/pvtime.c
->>> index 4ceabaa4c30bd..579e0a4720ad2 100644
->>> --- a/arch/arm64/kvm/pvtime.c
->>> +++ b/arch/arm64/kvm/pvtime.c
->>> @@ -67,9 +67,9 @@ gpa_t kvm_init_stolen_time(struct kvm_vcpu *vcpu)
->>>       return base;
->>>   }
->>> -bool kvm_arm_pvtime_supported(void)
->>> +bool kvm_arm_pvtime_supported(struct kvm *kvm)
->>>   {
->>> -    return !!sched_info_on();
->>> +    return !!sched_info_on() && (!kvm || !kvm_vm_is_protected(kvm));
->>>   }
->>
++James for real this time.
 
+On Tue, Sep 22, 2026, Paolo Bonzini wrote:
+> On Tue, Sep 22, 2026 at 1:01=E2=80=AFAM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> >
+> > +James
+> >
+> > On Tue, Sep 22, 2026, Paolo Bonzini wrote:
+> > > (BTW, I would like to talk about memory attributes and kvm-userfault
+> > > next Wednesday... and whether those are two different things at all).
+> >
+> > By "next" Wednesday, do you mean the 23rd or the 30th?  I want to make =
+sure James
+> > is pulled into the discussion as he know a lot more than I do with resp=
+ect to
+> > Google's use cases for KVM Userfault.
+>=20
+> Either is fine, of course 23rd is better if there are no other topics pla=
+nned.
 
->> [Severity: Medium]
->> Does this create a contradictory SMCCC advertisement for protected VMs?
->>
->> A protected guest querying ARM_SMCCC_ARCH_FEATURES_FUNC_ID for
->> ARM_SMCCC_HV_PV_TIME_FEATURES in kvm_smccc_call_handler() will receive
->> SMCCC_RET_SUCCESS because the KVM_REG_ARM_STD_HYP_BIT_PV_TIME bit is
->> still set in std_hyp_bmap:
-> 
-> This looks like an existing issue in the code. I have something
-> like this to fix this :
-
-....
-
-> 
-> diff --git a/arch/arm64/kvm/hypercalls.c b/arch/arm64/kvm/hypercalls.c
-> index b11b8821c9fbc..6fabcd8aaacb9 100644
-> --- a/arch/arm64/kvm/hypercalls.c
-> +++ b/arch/arm64/kvm/hypercalls.c
-> @@ -402,6 +402,9 @@ void kvm_arm_init_hypercalls(struct kvm *kvm)
-> 
->          smccc_feat->std_bmap = KVM_ARM_SMCCC_STD_FEATURES;
->          smccc_feat->std_hyp_bmap = KVM_ARM_SMCCC_STD_HYP_FEATURES;
-> +       /* Clear PV_TIME support for protected VMs */
-> +       if (kvm_vm_is_protected(kvm))
-> +               clear_bit(KVM_REG_ARM_STD_HYP_BIT_PV_TIME, &smccc_feat- 
->  >std_hyp_bmap);
->          smccc_feat->vendor_hyp_bmap = KVM_ARM_SMCCC_VENDOR_HYP_FEATURES;
-> 
->          mt_init(&kvm->arch.smccc_filter);
-> @@ -532,6 +535,9 @@ static int kvm_arm_set_fw_reg_bmap(struct kvm_vcpu 
-> *vcpu, u64 reg_id, u64 val)
->          case KVM_REG_ARM_STD_HYP_BMAP:
->                  fw_reg_bmap = &smccc_feat->std_hyp_bmap;
->                  fw_reg_features = KVM_ARM_SMCCC_STD_HYP_FEATURES;
-> +               /* PV_TIME is not supported for protected VMs */
-> +               if (vcpu_is_protected(vcpu))
-> +                       clear_bit(KVM_REG_ARM_STD_HYP_BIT_PV_TIME, 
-> &fw_reg_features);
->                  break;
->          case KVM_REG_ARM_VENDOR_HYP_BMAP:
->                  fw_reg_bmap = &smccc_feat->vendor_hyp_bmap;
-> 
-> Suzuki
-> 
->>
->> arch/arm64/kvm/hypercalls.c:kvm_smccc_call_handler() {
->>     ...
->>     case ARM_SMCCC_HV_PV_TIME_FEATURES:
->>         if (test_bit(KVM_REG_ARM_STD_HYP_BIT_PV_TIME,
->>                  &smccc_feat->std_hyp_bmap))
->>             val[0] = SMCCC_RET_SUCCESS;
->>         break;
->>     ...
->> }
->>
->> However, when the guest actually invokes the feature,
->> kvm_hypercall_pv_features() returns SMCCC_RET_NOT_SUPPORTED because
->> the IPA is unconfigured:
->>
->> arch/arm64/kvm/pvtime.c:kvm_hypercall_pv_features() {
->>     ...
->>     case ARM_SMCCC_HV_PV_TIME_FEATURES:
->>     case ARM_SMCCC_HV_PV_TIME_ST:
->>         if (vcpu->arch.steal.base != INVALID_GPA)
->>             val = SMCCC_RET_SUCCESS;
->>         break;
->>     ...
->> }
->>
->> This violates the SMCCC ABI by advertising ARM_SMCCC_HV_PV_TIME_FEATURES
->> as supported but returning NOT_SUPPORTED when it is invoked. Should the
->> KVM_REG_ARM_STD_HYP_BIT_PV_TIME bit be cleared for protected VMs?
-
-I went back to this and the behavior is as per the DEN0057A.b, Section
-4.2, the guest must use ARM_SMCCC_HV_PV_TIME_FEATURES call to actually
-test if the FIDs are implemented. So, we can ignore this one.
-
-Cheers
-Suzuki
-
-
->>
-> 
-
+James, how are you feeling about an early morning PUCK in the near future?
