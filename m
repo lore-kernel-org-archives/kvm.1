@@ -1,128 +1,161 @@
-Received: from mail-ed2-f35.google.com (mail-ed2-f35.google.com [74.125.228.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8B449B5D3
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 12:23:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9361493D44;
+	Mon, 21 Sep 2026 12:27:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789993438; cv=none; b=RWbRzCiTYe7yT7M8nvPSy2pVNTqZyP45uh2fO0+HbSIgZorycdRJumzIDwUEO9ubibZk281IGVUvsC03vxfyCMW6uNugIGU9GGTn1r4M3wAfvRhNxmgf0+lRqKPdy3yEXxS3+TfIzBpoW7Ede9nIYahevF79K/0C5vJqjQ2b1ko=
+	t=1789993644; cv=none; b=clWITUbGGME5jf18EPo7ekMck0OhIVP4xM28JHdG3idstb8nT1ORhuWnpQpoRuDHvOdEeyWoNvpWZu6M9RvnjHtseH6eCmAFWotjMO4fhjH+t75/KCyU+QciSdcH0hZGI+W5dddtcU/zn1LH33xYHsoRb6wAD7XQ4cjViZnIFBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789993438; c=relaxed/simple;
-	bh=d0Pu1ilCGL9vvnrLmpOv5p3mO1EXNOEK6StG7zB1nxo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6hfklCBksASPrDXOOr3Nlos8jqa7LSgQX+S7yodDZtJcQON+3BahsTMVOt1y573hDnwYIbuKbCNZ1uoTxT2Vv9qPGYrEocYtyB9PBkm40zHI2Ya8Ptnbfk9KQWAHrweCqk75yXHh3gMnX9LGOv45tePL8rmeMTGozhKTFUk07o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gXpEEn8r; arc=none smtp.client-ip=74.125.228.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789993644; c=relaxed/simple;
+	bh=SjDao1yNks/V61Ir0suTkP7GRJSrFYDBucpEXbNO0nA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=F3Qe5L/8E9ZLfGdFQTZrmGGUm437kw1RAYoEQHtdNvnTUsbJwg54oUUufYGK9kRtlFbTHDp9xoKS/RTIKJAoUxBGHAC6dkrMpepGdV0N5D7DlmJ9Va8LU2booIyljc/iW8oX75N6/TYO2qA5j/67o8kGTXgobTgzpQ0a+6V+OFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gWbfEfo8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gXpEEn8r"
-Received: by mail-ed2-f35.google.com with SMTP id 4fb4d7f45d1cf-6aa13e194easo4492259a12.1
-        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 05:23:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789993434; x=1790598234; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yVmp8Yn2ZqAd40ufyn15a/l8ROXyGaSQFj5xPJK5IVE=;
-        b=gXpEEn8rRNYPRn+XfHK/fG4sTzoa2B3Us6LYka+CBpL3E9PmW85myaeSY1EUB5dMBC
-         QEKTLAtC8xPzpjKkY7H/keaGieMQTG+0J+xETxU1UiunS5QxQRnQ3+2kmqK3+5WoAKgR
-         cEGmZLvxof7PPdIR/fkhy0IJP2ljAiC2nMItJAg0HxXW4+Av0atrRA/OESSTjabuAa91
-         2ER+Yo+ebtZpzzViZOTyNDw1FKo4AE0kEcVLUEhOyxIz3DDyQw6zu5EPODy56EvaUBWq
-         SEAMEzLaAFPTuiZ2z+8G2u8Cy9u4TE3NSiAbeNH0n5plKu3iKmcu3r+LmtJ05EVBcqgB
-         tBdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789993434; x=1790598234;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yVmp8Yn2ZqAd40ufyn15a/l8ROXyGaSQFj5xPJK5IVE=;
-        b=sktZlHm28N59hVr8jembmV3+jhD5bNLTMfU/L1IweSjAP8P4Jhmj5mcTHfLD2kP1D4
-         NS1CEpCQ2DhXW9cYgFCOgqayXIT3ECsEwzHKMh2JYRkSYYCRgc7kGCTyCUTHutvTH7As
-         e2M7nWkobeE0ZVykHNm7RAdvNIWUtdn2c5zxX998PYZKnt8f5WXEDxbx9Jg0PCQrITEo
-         RdGVSY5bm3cQT9thr+5nmCO6tB/fkb905K8sIw1Pnmp+XbOzDymmWCVPCmkF40LOpMsX
-         USjGJy6WCxNfJ0JAcn8Ea6ifEs5Uu2xcSZ9UE/i87SRkfPyy2aXlfohiaCfC1syuPPaF
-         YTPg==
-X-Gm-Message-State: AFuF++ntu7ctlDCVEyjt3PaNIBAqDgXKlN9JpjClvx5Tv3uK81kXkEzY
-	JpqJpKp+aVr/rEBCO7Y53a0a7RZtFLLOuKKtrosADwRhnYAkJm+eYTHGImUD0Q==
-X-Gm-Gg: AYBFou2JNcC1Ol6HquHvRHvRmjrpgL6yc29ZNw8dBwg5r+ozDB1R0s+VbC5LYS4GSDT
-	tKk48gOKHG+r/NL0ZzGr40yMG2ZDyVkZMCeSUNuJNJNLVKZ/OcCWVydSkPIAQStsM82eoJ610ig
-	3WHQdEhkJgnTJg46X1zFzCmRq55C+SE67KrKtPX46BzLf2k7JIS9EkrvFl79u9mFy9EDZ/uCenU
-	Xlq2zPTyBPCR6615Ngkgv8BDGCzZ9IlndLjpqJq43HkPsaCpMywYuQSO4tNtcRAUb0CS/Rj6sDj
-	wvDz2rDQpLJESwdTVzn1w0qB5kzkNUyaXFPej2T96mYsTVHLDAV/5aWyKDNuBLJrst4uaKkHElb
-	qJVsUsNq/vcBp6VzLi/2FPAcUpKSB+jr0jyKohUGYXGjuwI5BhuaIoqtLq6XSFhxfI07zwfkpE4
-	HcBMD3n2TDf7lRIR82Zn3hBpcKWNWKiw2bqhBG+iQ+8PCJ19CSbjYzqGVzTkVN5dxI564F1QdCN
-	KCGVw==
-X-Received: by 2002:a05:6402:3785:b0:6a7:ee56:814d with SMTP id 4fb4d7f45d1cf-6aa5798162fmr8755777a12.27.1789993434148;
-        Mon, 21 Sep 2026 05:23:54 -0700 (PDT)
-Received: from SurHub.localdomain ([196.188.112.50])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6aa67b5eddcsm4228761a12.0.2026.09.21.05.23.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 05:23:53 -0700 (PDT)
-From: Abdifatah Suruur <suruurism@gmail.com>
-To: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: alex@shazbot.org,
-	eric.auger@redhat.com,
-	smostafa@google.com,
-	praan@google.com,
-	ioana.ciornei@nxp.com,
-	nipun.gupta@amd.com,
-	nikhil.agarwal@amd.com
-Subject: [PATCH 7/7] vfio/cdx: reject non-shared MMIO mmaps
-Date: Mon, 21 Sep 2026 15:23:34 +0300
-Message-ID: <20260921122334.2099-8-suruurism@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260921122334.2099-1-suruurism@gmail.com>
-References: <20260921122334.2099-1-suruurism@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gWbfEfo8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC701F000FF;
+	Mon, 21 Sep 2026 12:27:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789993642;
+	bh=u3kpT48+EAjuEBOYW9Un4dFvspIcpqydYwj1Scn9tqY=;
+	h=From:Subject:Date:To:Cc;
+	b=gWbfEfo8+iZGckv2O6ms2ErMihHJC39wCp36OIo9ypFslxaoOPH9SjskVsGQ5PHQ0
+	 VLLiKZEafOXRBjdpUKBaeFGoBJEPfKtU+0RI/QI3/PdC17D11z0+Uom0leM/isd2AN
+	 aibgohAuEvnOKVYIkY3vMei0iKOD+KzTCgKwIwKZT4sf4ceTpJ7QBco1cxaFZFbUtB
+	 /p9vS5++0wqgE72ezmjq/rAv6Wl5GS1CoqFUBztUc587DFSrb2bw6cnrH9vdtlkgJc
+	 ZlbE+L+SbcchctcRjgKQDr3oFwT9U/PqHig1gGeAzLbrEfqih6W9S4eVzKXy/PABnC
+	 RZNAnEdnGhVZw==
+From: "GUO Ren (XuanTie)" <guoren@kernel.org>
+Subject: [PATCH RFC v4 0/4] RISC-V: Add PARAVIRT_SPINLOCKS support
+Date: Mon, 21 Sep 2026 12:27:00 +0000
+Message-Id: <20260921-pvqspinlock-v4-0-409a22aed6ef@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJQisWoC/zWMyw6CMBBFf4XM2pJpeSiuTEz8ALfGBZQBKtjiF
+ IgJ4d8Fjctzc8+ZwRMb8nAMZmCajDfOrhDvAtBNbmsSplwZFKoUMyVFP718b2zndCv2UV6iroo
+ 4KSSsRs9Umfe3doPr5Qz33+jH4kF62DrbrWL3FEPDlP/TiVQoESOMZZhmCR6kkKIeHZM9tcSWu
+ tBxDcvyAUHIQhywAAAA
+X-Change-ID: 20260921-pvqspinlock-73ad0cfb45b1
+To: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, 
+ Fangyu Yu <fangyu.yu@linux.alibaba.com>, 
+ CHEN Jiankang <yubin.cjk@alibaba-inc.com>
+Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Leonardo Bras <leobras@redhat.com>, 
+ "GUO Ren (XuanTie)" <guoren@kernel.org>
+X-Mailer: b4 0.16.0
 
-vfio_cdx_mmap() accepts MAP_PRIVATE mappings.  A non-shared mapping
-with VM_MAYWRITE is a COW mapping, and remap_pfn_range()'s COW special
-case in get_remap_pgoff() then overwrites vma->vm_pgoff with the
-physical frame number:
+Paravirtualized spinlocks allow an unfair qspinlock to replace the
+ticket-lock or native fair qspinlock implementation with something
+virtualization-friendly, for example, halting the virtual CPU rather
+than spinning.
 
-	if (is_cow) {
-		if (addr != vm_start || end != vm_end)
-			return -EINVAL;
-		*vm_pgoff_p = pfn;
-	}
+You can observe the paravirt qspinlock behavior with the pv_kick and
+pv_wait tracepoints under /sys/kernel/debug/tracing/:
 
-The VMA is inserted into the device file's mapping->i_mmap interval
-tree keyed by vm_pgoff, which VFIO expects to be the logical file
-offset: the core links every device mmap to the device inode's
-i_mapping precisely so that unmap_mapping_range() can revoke all
-mappings associated with a device (see vfio_device_cdev_open()).
+  # echo 1 > /sys/kernel/debug/tracing/events/paravirt/enable
+  # cat /sys/kernel/debug/tracing/trace
+            TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
+               | |         |   |||||     |         |
+             sh-100     [001] d..2.    28.312294: pv_wait: cpu 1 out of wfi
+         <idle>-0       [000] d.h4.    28.322030: pv_kick: cpu 0 kick target cpu 1
 
-A raw PFN in vm_pgoff lands the interval tree entry in the wrong
-coordinate space, so unmap_mapping_range() cannot find the VMA and a
-stale MMIO mapping survives any revocation attempt.  Without this
-check, a MAP_PRIVATE mapping reintroduces that corruption even with
-the logical-vm_pgoff fix in place.
+This series is split from [1]. The newest discussion is at [2].
 
-Require VM_SHARED as vfio-pci, vfio/fsl-mc and vfio/platform already
-do.  This is defensive hygiene: vfio-cdx does not call
-unmap_mapping_range() today, so no reachable stale-mapping issue
-exists.
+[1]: https://lore.kernel.org/linux-riscv/20231225125847.2778638-1-guoren@kernel.org/
+[2]: https://lists.riscv.org/g/tech-prs/message/1211
 
-Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
+Changelog:
+v4:
+ - Rebase onto v7.3-rc4.
+ - Normalize the author identity to "GUO Ren (XuanTie)".
+ - Minor commit log cleanups (fix line-wrap artifacts and typos).
+
+v3:
+https://lore.kernel.org/linux-riscv/20251201003041.695081-1-guoren@kernel.org/
+ - Rebase on linux-6.18-rc7.
+ - Simplify nopvspin usage.
+
+v2:
+https://lore.kernel.org/linux-riscv/20241227011011.2331381-1-guoren@kernel.org/
+ - Add RFC tag.
+ - Using new SBI_EXT_PVLOCK ID.
+ - Add virt_spin_lock support.
+ - Add nopvspin support.
+
+v1:
+https://lore.kernel.org/linux-riscv/20241222033917.1754495-1-guoren@kernel.org/
+
+GUO Ren (XuanTie) (5):
+  RISC-V: Add PARAVIRT_SPINLOCKS support
+  RISC-V: paravirt: Add pvqspinlock KVM backend
+  RISC-V: paravirt: Add pvqspinlock frontend
+  RISC-V: paravirt: pvqspinlock: Add trace point for pv_kick/wait
+  RISC-V: paravirt: Support nopvspin to disable PARAVIRT_SPINLOCKS
+
+ .../admin-guide/kernel-parameters.txt         |  2 +-
+ arch/riscv/Kconfig                            | 12 +++
+ arch/riscv/include/asm/Kbuild                 |  1 -
+ arch/riscv/include/asm/kvm_vcpu_sbi.h         |  1 +
+ arch/riscv/include/asm/qspinlock.h            | 57 +++++++++++++
+ arch/riscv/include/asm/qspinlock_paravirt.h   | 26 ++++++
+ arch/riscv/include/asm/sbi.h                  |  5 ++
+ arch/riscv/include/uapi/asm/kvm.h             |  1 +
+ arch/riscv/kernel/Makefile                    |  2 +
+ arch/riscv/kernel/qspinlock_paravirt.c        | 82 +++++++++++++++++++
+ arch/riscv/kernel/setup.c                     |  5 ++
+ .../kernel/trace_events_filter_paravirt.h     | 58 +++++++++++++
+ arch/riscv/kvm/Makefile                       |  1 +
+ arch/riscv/kvm/vcpu_sbi.c                     |  4 +
+ arch/riscv/kvm/vcpu_sbi_pvlock.c              | 54 ++++++++++++
+ 15 files changed, 309 insertions(+), 2 deletions(-)
+ create mode 100644 arch/riscv/include/asm/qspinlock.h
+ create mode 100644 arch/riscv/include/asm/qspinlock_paravirt.h
+ create mode 100644 arch/riscv/kernel/qspinlock_paravirt.c
+ create mode 100644 arch/riscv/kernel/trace_events_filter_paravirt.h
+ create mode 100644 arch/riscv/kvm/vcpu_sbi_pvlock.c
+
+--
+2.43.1
+
 ---
-diff --git a/drivers/vfio/cdx/main.c b/drivers/vfio/cdx/main.c
-index b31ed4be7bdc1..6d208db0896d6 100644
---- a/drivers/vfio/cdx/main.c
-+++ b/drivers/vfio/cdx/main.c
-@@ -271,6 +271,9 @@ static int vfio_cdx_mmap(struct vfio_device *core_vdev,
+GUO Ren (XuanTie) (4):
+      RISC-V: paravirt: Add pvqspinlock KVM backend
+      RISC-V: paravirt: Add pvqspinlock frontend
+      RISC-V: paravirt: pvqspinlock: Add trace point for pv_kick/wait
+      RISC-V: paravirt: Support nopvspin to disable PARAVIRT_SPINLOCKS
 
- 	index = vma->vm_pgoff >> (VFIO_CDX_OFFSET_SHIFT - PAGE_SHIFT);
+ Documentation/admin-guide/kernel-parameters.txt  |  2 +-
+ arch/riscv/Kconfig                               | 12 ++++
+ arch/riscv/include/asm/Kbuild                    |  1 -
+ arch/riscv/include/asm/kvm_vcpu_sbi.h            |  1 +
+ arch/riscv/include/asm/qspinlock.h               | 57 ++++++++++++++++
+ arch/riscv/include/asm/qspinlock_paravirt.h      | 26 ++++++++
+ arch/riscv/include/asm/sbi.h                     |  5 ++
+ arch/riscv/include/uapi/asm/kvm.h                |  1 +
+ arch/riscv/kernel/Makefile                       |  2 +
+ arch/riscv/kernel/qspinlock_paravirt.c           | 82 ++++++++++++++++++++++++
+ arch/riscv/kernel/setup.c                        |  5 ++
+ arch/riscv/kernel/trace_events_filter_paravirt.h | 58 +++++++++++++++++
+ arch/riscv/kvm/Makefile                          |  1 +
+ arch/riscv/kvm/vcpu_sbi.c                        |  4 ++
+ arch/riscv/kvm/vcpu_sbi_pvlock.c                 | 54 ++++++++++++++++
+ 15 files changed, 309 insertions(+), 2 deletions(-)
+---
+base-commit: 93f51579e7df248780214094418f205253383cc5
+change-id: 20260921-pvqspinlock-73ad0cfb45b1
 
-+	if (!(vma->vm_flags & VM_SHARED))
-+		return -EINVAL;
-+
- 	if (index >= cdx_dev->res_count)
- 		return -EINVAL;
+Best regards,
+--  
+GUO Ren (XuanTie) <guoren@kernel.org>
 
