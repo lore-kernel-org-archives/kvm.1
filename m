@@ -1,200 +1,182 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBCA8499F3D;
-	Mon, 21 Sep 2026 10:59:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132C1484880;
+	Mon, 21 Sep 2026 11:11:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789988350; cv=none; b=nFJJ2SO5CTPA+LIm6UfMJ9+ly7mKyhBzDWgLMIrRxYpNgeqdj5tNsII8LO9H1Z3UZHfsb78TdFdo9YUkbfFlA6Vb9dykOfoewhj4gJvbCd84Gs5geRlHngHpYwUVhkfCnh/XI5oE3dhpo+gVP9CbfY77/UyyK463Icqv/Ltg6Jg=
+	t=1789989071; cv=none; b=Qf5DIQQMZBjZPwh9vmofkbH9iTXsqHA1kQlYYoeJ1WJ5mqCPe0Q5liAJ+aWu0ef5gRyg7oAPr6oP5tVTvBWLj7K6mD4meSp5s9ee9V9pzJp6VsV1WBdOnVTHTfwseCb6sIx+QomZOqVqSnX53AZnDWHEgKKF2AoPdEUgWnI1ITg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789988350; c=relaxed/simple;
-	bh=Or+pfL3PXEcPJdOW4W+xPfx8ylyd8tpn0CA0i+cQDx8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=X54mlD/38lpOMYdu0BpI9LhOd0xDK7SutXpuTB5vuF98TwKNoGCiwwQXzRWj8n+Ud4O/JQYQQwTfnq1992LLI7tAEW68PJjux+Qw8N4zLUAMbU7q2hOOpkQO+WoRI8Bx9KilKKxYfAzYSe2yp2rK4kqXjridRx+nCkgOkplIei8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=OTPGWQ3V; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1789989071; c=relaxed/simple;
+	bh=PzXcXk1NdEq+6grOWKN1MdvfMZlqE+Yyj0tT0VhIjf0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s/6TL9x6g5GVzmAwX5dHGW7llAUoojRlfnkt0X02MQl89gk9SK+/g44t3Vldzu0iHaDDW2Sl8S/znAqFkbiNeWpFV5acBD+8Luv/c0aVveHlo7CEjJBPPJFKGmw36blKoSUM8+VQ2HhUX96klmAMq7+nuAVBV/KmR0botKQl/zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bQm1VPSG; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="OTPGWQ3V"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D0D821CE0;
-	Mon, 21 Sep 2026 03:59:03 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3E11E3F86C;
-	Mon, 21 Sep 2026 03:59:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789988347; bh=Or+pfL3PXEcPJdOW4W+xPfx8ylyd8tpn0CA0i+cQDx8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=OTPGWQ3V/YIEMLtO7u2Mynqz++o5RPwLMFLlzIT4rgUlbfJz02BoKMgw4RXvRuSNj
-	 deUYqvEpMQchecaubbKtyAiqcrqDJ3rG98HSWlUBFWHIGiqs9ocWbZVbfPkkrmm/D7
-	 ncRtII6dpeDQJvydmvJhhhL2Snuaf1u6HEPcx7TY=
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Mon, 21 Sep 2026 11:55:43 +0100
-Subject: [PATCH 21/21] Documentation: mm: clarify behaviour of compile-time
- folded page tables
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bQm1VPSG"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68LB5N5Z1316544;
+	Mon, 21 Sep 2026 11:10:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=spcUacc2GkEI6/pcjXq11vkjawtG1NHlSWBJ691pj
+	9M=; b=bQm1VPSGBxiIwsNzjNbZ7eIL4MBm333vCvbJyvUN8FlWb8d/AV/2dZS6q
+	fDdG0bRHA3VNExoePk2JA0TDyExzT4g2Ury+TQxNq+L0UbpQ9OiI0PuUQtXuWXcl
+	zJur30pMX8BUcRXNnsxLoF2lnzMbPpXfdNFQv7kARKsm/7Jh6nby7pCeZZwjg4lR
+	emxOZkA45AV9d/C4dXL6sZbZw+0XmqhDZV5KAeH2gsKgzZdt+68DNEwXLV3GHZo9
+	GhiZ8zpRSp37AnFC2n41Igt+XWPuMz63HPetVl/ReVPgDxMBJrL200DFZoKrrudl
+	42mCVO2Gc3QZ+gIlCUl2vSBiRc9ow==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskg2853j-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 21 Sep 2026 11:10:53 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68LAm3CC1096709;
+	Mon, 21 Sep 2026 11:10:52 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gt53vd35e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 21 Sep 2026 11:10:52 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68LBAmta12058946
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 21 Sep 2026 11:10:48 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AB6812004B;
+	Mon, 21 Sep 2026 11:10:48 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 20AA220040;
+	Mon, 21 Sep 2026 11:10:46 +0000 (GMT)
+Received: from li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.bl1-in.ibm.com (unknown [9.123.6.5])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 21 Sep 2026 11:10:45 +0000 (GMT)
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au,
+        chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com,
+        nnmlinux@linux.ibm.com, amachhiw@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Timothy Pearson <tpearson@raptorengineering.com>
+Subject: [PATCH v3] KVM: PPC: Book3S HV: Avoid spurious interrupts caused by LPCR_MER bit
+Date: Mon, 21 Sep 2026 16:40:42 +0530
+Message-ID: <20260921111043.49825-1-gautam@linux.ibm.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260921-dummy_ptxp3-v1-21-cd40cf68242e@arm.com>
-References: <20260921-dummy_ptxp3-v1-0-cd40cf68242e@arm.com>
-In-Reply-To: <20260921-dummy_ptxp3-v1-0-cd40cf68242e@arm.com>
-To: Russell King <linux@armlinux.org.uk>, 
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>, 
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
- Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>, 
- Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Dave Hansen <dave.hansen@linux.intel.com>, 
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Jonas Bonn <jonas@southpole.se>, 
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
- Stafford Horne <shorne@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
- linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
- linux-openrisc@vger.kernel.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5249; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=WkUI9iV+4tWIf8gUL0eT1d3WqVW3xHozxqWVF9c3f4k=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqsQ1UvQaI/DbnQhSon1cfVb2lmVIAgB8pZa9xc
- x4itcv3wn+JAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCarENVAAKCRBt1cPRWsUx
- M3wVC/9HHxJ8te9GEbS6FYmVPJFsAKbIOicXI24Ln9gqlvTZxuy4kNJc4ab1vnjPxk64m8Rg+x2
- Mge3H0r3HnaL+quWGc5hhXjVijIFzCG8gpQvS3TAos58QC0AOllXSljJJW+I6bPGRHEfZbrplmH
- MSpeBY8ZsvhMVxoa7rzCNDxLL9FQI0Cc3PXqn84Rx9aaobgkmEtYiN7CNHsRZU3ng64fu67dco/
- 9XO55oYTMY5NC0dEQSGNn31KsfpblVBRsW5um+k73FHlpD7vrNWPHSDKjsItM4o3qlBwTsCwCl1
- Z7zy/Eg/ZygXnmH8QOhMc7fglKOXMvcG/maDLM9eOF/8KD3LCcwyTzCpuv5EoxT7vOhxogj2kut
- s/VQGR4ui3uesYjCw/PuXgA7Ampck2ZMBsmMmPI1k93NpLLOG4Y529M4WW6uqqGb5xddwPmnW5l
- apVpiy9rUjEUxGjRGHepEQpg+BUzcWhj6iVaP8sd5tNs9WaHGtTaNtG9oqCr4rfrjLXkY=
-X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
- fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: 7Js7S6Cc_0Lsr-IVK1KaZSIBUY5o6rkR
+X-Authority-Analysis: v=2.4 cv=I43w19gg c=1 sm=1 tr=0 ts=6ab110be cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8 a=yKAn6K1XAAAA:8 a=_AprYWD3AAAA:8
+ a=VnNF1IyMAAAA:8 a=lIyXSIJ_195hEhgqkI0A:9 a=6M1ixcW_PCWoKiWyFx5v:22
+ a=fKH2wJO7VO9AkD4yHysb:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIxMDE2MCBTYWx0ZWRfX59weTEn1vE/U
+ ZqVri69RqlN+KkQszLh32gFt4uB/vCACVg66nEQq1msFWL1aY0EKe+/4eNIgR38rgXCI0HNqXO/
+ AZogsDk3oj9esHXsCX5HovFmV1I4mwlX+80T9Cs2GEDN6x3fUaeAu70XVIoXYafSOHai0mES17Z
+ e12fcsXC2UZceb3EUTqSaphfXWQm1FoBZ2NvRZgAYWZZvcgi2dEWuakTnGAk5tQnr+D0Gz5V852
+ YJ+0kDrTO6Ig9U62RqOMTXL+0B6Z7NKWipRYWAez9iCkFAH94izWkvGiQvGYzA/Xs2rfki1j9n6
+ 19WqugHb8ODxu06/8PWAUfjkWd67KTs6uF8lFeQuTpaOR/myhRYxnrK8IdhW4SIFR/XrmDeOU67
+ 3nuMC/AdP+N9cU72zhOG8iX+erPGIgLAzK7gkxMoi6KMKxJ5QW8gm3ippWhTjyIM1eOEZkUV3Zw
+ oeKWz81ZhGk3mECsnQw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIxMDE2MCBTYWx0ZWRfX9zpJ33Pjjuyu
+ FcMI3h0CxwGISS8m+6Oz1FDrze9R1MLNDCP/sho/FXS7/4/TfmC3ChLh8ZPwbZkt0rK9Xq0wNQs
+ lM6bJSH/wV5/Bu0R+AYyKpcI19LVmdM=
+X-Proofpoint-GUID: KteZVDsxXEQHrfqAau4WzZlVGG2zIK21
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-21_04,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015 adultscore=0 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 bulkscore=0 phishscore=0 priorityscore=1501 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609210160
 
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+A huge number of spurious interrupts can be seen immediately after a KVM
+on PowerNV guest boots up in XIVE mode.
 
-Compile-time folded page tables are not necessarily easy to understand, and even
-people the were once familiar with the concept might need to refresh their memory.
+$ cat /proc/interrupts  | grep SPU
+SPU:     223705     192439     273526     147623   Spurious interrupts
 
-Add proper documentation, including a nice diagram, for the current design.
-Mention details about dummy functions, including the recently changed pXdp_get()
-helpers.
+This bug was introduced by commit ecd10702baae5 ("KVM: PPC: Book3S HV:
+Handle pending exceptions on guest entry with MSR_EE"). The root cause
+is that once LPCR_MER bit is set, it is supposed to be reset by
+software. But when a vCPU starts running with LPCR_MER set, the vCPU does
+not exit back to the host until the decrementer expires or there is an
+hcall, etc. This is because KVM on PowerNV guests have support for
+native XIVE, so they are not dependent on host for interrupt emulation.
+Due to this behaviour, a huge number of spurious interrupts are seen
+since LPCR_MER continues to be set and LPCR_MER cannot be reset until the
+vCPU exits to the host.
 
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Fix this behaviour by not using the LPCR_MER bit whenever native XIVE is
+available (currently in case of KVM on PowerNV only), as the XIVE hardware
+can present interrupts to the KVM guest vCPU directly. So the LPCR_MER
+functionality is not required. This reduces the number of spurious
+interrupts drastically.
+
+Fixes: ecd10702baae5 ("KVM: PPC: Book3S HV: Handle pending exceptions on guest entry with MSR_EE")
+Cc: stable@vger.kernel.org # 6.8+
+Reported-by: Timothy Pearson <tpearson@raptorengineering.com>
+Closes: https://lore.kernel.org/linuxppc-dev/582904882.11159.1786719390349.JavaMail.zimbra@raptorengineeringinc.com
+Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
 ---
- Documentation/mm/page_tables.rst | 84 +++++++++++++++++++++++++++++++++++-----
- 1 file changed, 75 insertions(+), 9 deletions(-)
+v3:
+1. Continue the use of LPCR_MER when kernel-irqchip=off (Sashiko)
 
-diff --git a/Documentation/mm/page_tables.rst b/Documentation/mm/page_tables.rst
-index 126c876282509..84f2715c7de0a 100644
---- a/Documentation/mm/page_tables.rst
-+++ b/Documentation/mm/page_tables.rst
-@@ -143,15 +143,81 @@ pointers on each level is architecture-defined.::
- Page Table Folding
- ==================
- 
--If the architecture does not use all the page table levels, they can be *folded*
--which means skipped, and all operations performed on page tables will be
--compile-time augmented to just skip a level when accessing the next lower
--level.
--
--Page table handling code that wishes to be architecture-neutral, such as the
--virtual memory manager, will need to be written so that it traverses all of the
--currently five levels. This style should also be preferred for
--architecture-specific code, so as to be robust to future changes.
-+Not all architectures support 5-level page tables; while for some of them
-+the exact number of supported page table levels is known at compile time,
-+others can determine the number of page table levels at runtime based on
-+hardware support and address space sizes.
-+
-+Generic page table walking code always assumes that 5 levels of page table
-+exist. To make page table walking code not have to worry about that,
-+`compile-time folding` and `runtime folding` of page tables are used.
-+Compile-time folding is mostly handled in common code, whereas runtime folding
-+is exclusively handled in architecture code.
-+
-+This description focuses on generic compile-time folded page tables; for
-+architecture-specific variants, some details can vary, however, without
-+affecting common page table walkers.
-+
-+When walking folded page tables, all upper page table levels up to the supported
-+level are skipped in page table walkers: this is achieved by (a) treating
-+entries in upper page table levels as present and pointing at a page table; and
-+(b) having page table walkers cast the entry pointer to the next-level entry
-+instead of dereferencing that table. From the perspective of a page table
-+walker, the entry points at itself.
-+
-+Assuming compile-time folded 4-level page tables, to achieve (a), pgd_present()
-+and pgd_leaf() are hard-coded to indicate a present page table entry that
-+points at a page table, and to achieve (b) p4d_offset() and
-+p4d_offset_lockless() simply cast the page table entry pointer to the next
-+lower level.
-+
-+In the current design, this is further modeled by having the P4D have a
-+single page table entry::
-+
-+        PGD
-+  --> +------+          NOP4D
-+      | ptr0 |-------> +------+           PUD
-+      | ptr1 |-        | ptr0 |-------> +-----+
-+      | ptr2 | \       +------+         | ptr |-------> ...
-+      | ptr3 |  \                       | ptr |
-+        ...      \                        ..
-+                  \        NOP4D
-+                   +----> +------+           PUD
-+                          | ptr1 |-------> +-----+
-+                          +------+         | ptr |-------> ...
-+                                           | ptr |
-+                                             ...
-+
-+Note that the arrows from PGD to NOP4D represent page-table-walker
-+transitions, not pointers stored in the pgd entries.
-+
-+Using p4d as an example, `nop4d`/`p4d folded` translates to the following:
-+
-+- p4d is considered folded into pgd; both are operating on the same page
-+ table.
-+
-+- Most pgd_* helpers are hard-coded dummy functions that ignore the passed
-+  pgd_t values entirely. Exceptions are pgd_val() and low-level helpers
-+  set_pgd() + pgd_page_vaddr(), which effectively translate to set_p4d()/
-+  p4d_pgtable() to keep existing arch code working.
-+
-+  Architectures must provide p4d_* helpers (unless further common
-+  compile-time folding applies).
-+
-+- PTRS_PER_P4D is hard-coded to 1. Architectures must define PTRS_PER_PGD.
-+
-+To avoid reading a value that will never be used but cannot be entirely
-+optimized out, compile-time folded page table code also makes pXdp_get()
-+return a constant dummy value.
-+
-+In common code, this only affects pXd_val() when used for printing page
-+table entries for debugging purposes. As we don't want architecture code
-+that uses set_pXd(), pgd_page_vaddr() or pXd_pgtable() to accidentally
-+operate on dummy values, the compiler will error out if it detects that the
-+helpers are used with dummy values. For a folded level, pXd_page() must not
-+be used and unconditionally triggers a compiler error. Architecture code must
-+instead call the helpers on the proper first page table level: e.g., set_p4d()
-+instead of set_pgd().
- 
- 
- MMU, TLB, and Page Faults
+v2:
+1. Handle the case where xive_interrupt_pending() is true and also the
+external exception bit is set. (Narayana)
 
+ arch/powerpc/include/asm/kvm_ppc.h | 7 +++++++
+ arch/powerpc/kvm/book3s_hv.c       | 2 +-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
+index 169ea6a7fbad..580ad2548c2b 100644
+--- a/arch/powerpc/include/asm/kvm_ppc.h
++++ b/arch/powerpc/include/asm/kvm_ppc.h
+@@ -747,6 +747,11 @@ static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
+ 	return vcpu->arch.irq_type == KVMPPC_IRQ_XIVE;
+ }
+ 
++static inline bool kvmppc_xive_native_enabled(struct kvm *kvm)
++{
++	return kvm->arch.xive_devices.native;
++}
++
+ extern int kvmppc_xive_native_connect_vcpu(struct kvm_device *dev,
+ 					   struct kvm_vcpu *vcpu, u32 cpu);
+ extern void kvmppc_xive_native_cleanup_vcpu(struct kvm_vcpu *vcpu);
+@@ -782,6 +787,8 @@ static inline bool kvmppc_xive_rearm_escalation(struct kvm_vcpu *vcpu) { return
+ 
+ static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
+ 	{ return 0; }
++static inline bool kvmppc_xive_native_enabled(struct kvm *kvm) { return false; }
++
+ static inline int kvmppc_xive_native_connect_vcpu(struct kvm_device *dev,
+ 			  struct kvm_vcpu *vcpu, u32 cpu) { return -EBUSY; }
+ static inline void kvmppc_xive_native_cleanup_vcpu(struct kvm_vcpu *vcpu) { }
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index dbac3573b2c8..cb2bb29451a7 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -4980,7 +4980,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 			if (!kvmhv_on_pseries() && (__kvmppc_get_msr_hv(vcpu) & MSR_EE))
+ 				kvmppc_inject_interrupt_hv(vcpu,
+ 							   BOOK3S_INTERRUPT_EXTERNAL, 0);
+-			else
++			else if (!kvmppc_xive_native_enabled(vcpu->kvm))
+ 				lpcr |= LPCR_MER;
+ 		} else {
+ 			/*
 -- 
-2.43.0
+2.55.0
 
