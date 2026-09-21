@@ -1,41 +1,46 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C3947011C;
-	Mon, 21 Sep 2026 10:25:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8157D47886A;
+	Mon, 21 Sep 2026 10:39:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789986319; cv=none; b=jGXB8cPRcs5BSxo+lQbYC7IgCjvmUTZ7jLV6/T77YW20/JRA1ERVFsBjmXQm28KbOBnWapWQkTGieXohGk1wnnjSw65fKc5ibKgw1Jf6mCAWi7iTr8IHultxypyXADK7b6yjM1TxjET58q1ffAdT8zm2xVl5b3ET06B7q5UdJEc=
+	t=1789987185; cv=none; b=TMHBRXVa9mtSqajR4aNxMUZxtbzQx0hYVq2hFL1M6LhDs++3cpEkuNsPR8rAvJz5Y82pUr/fyRQyGxK4Y8d2VNwj0Kc/6l9v1Ww1RFY4AQ1kgInJB+iAWnNoSR0G1PYzjjc5S6Cipr3lpOMRz4iOHf1+RBGlJpmKbb9ZWDIfXWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789986319; c=relaxed/simple;
-	bh=Now0Qpi2foNjf/cfFRimz5v9RXKlErVsVE3KJdhDivE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=L9J5yZSOxPPV1SJv1T99fwNAerKt6AhLuG/+ShyaXcr3iifsXDZ41C5vrljNzZbYa0UiEquY3yLkbfpW6V7FQx1ZC4rqtHkH7SdupYKUafVEp5iagBAd4xdGGVKAQd3aYOZguP2a2JaAsVGe5uLGwCGOyayyLSHBGQ8rvhbeTF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=V67Sce65; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1789987185; c=relaxed/simple;
+	bh=cQKe33CkmGv2kL9EoHanYMLGJBVwaWAB6423BuYQQ5k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NEit45nc4l2j+pGGJceCflr8pqzCu/1SVpzqZnuiaP0kiiUjDDNCPrx3X1YcCUQ4hRXCPB1hyvhR+4rxHCK65Pe5kcuH1n2XeXeYyf/8bRSv/OnWI0KSq15ss5tahzBgHn9+mvCDB/GIg52tvM/rB6YUEjGoyFP5dKa2hlj1ELo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=LcvMQhNf; arc=none smtp.client-ip=115.124.30.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="V67Sce65"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=wx
-	wZYCeDLl+p5Y5j0iGX/sMKQABMGkScHGtuKNgNBpY=; b=V67Sce65EGuVzYJ1kl
-	01eraDdvUN54eUmqKZN21b1l688D+d23k3dZH/EWeX2iSCSem3EhmcZHFW8Us0IN
-	TbhQnfko4+5uNF1cqAa0sR57e7d/6e2yawyJqqtpKapfoDwZo1rS8uUy6fJhbqPj
-	mwSRH54MaKvQRUgKhKs2TW7/U=
-Received: from zengchi (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wA3a9ntBbFqcIbHBw--.46549S2;
-	Mon, 21 Sep 2026 18:24:47 +0800 (CST)
-From: Zeng Chi <zeng_chi911@163.com>
-To: pbonzini@redhat.com,
-	seanjc@google.com
-Cc: chao.p.peng@linux.intel.com,
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="LcvMQhNf"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1789987178; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=mzlY+7WKmWC1qIp/3zzQwEE6yf9TuN03YHdJStM2WvA=;
+	b=LcvMQhNf3BeAOCwuRy3PNQfRWTE9wVEZ+S4ayOdSR/OVqH68u+1PL07yPlQ4vUAr8n4V8NQNjVYBma0HWtHAad3ZPHoHUKYysCp9JaoywtxI02GoBlv0bG6TxysQAVCxPYG14xtBlpw/n49xPwS21fdfeIEKoQ6/ogwuCJO2d6o=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R361e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0XBMvKat_1789987163;
+Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0XBMvKat_1789987163 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 21 Sep 2026 18:39:37 +0800
+From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+To: jgg@ziepe.ca,
+	kevin.tian@intel.com,
+	alex@shazbot.org,
+	joro@8bytes.org,
+	robin.murphy@arm.com,
+	will@kernel.org
+Cc: iommu@lists.linux.dev,
 	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	zengchi@kylinos.cn,
-	David Ballesteros <davimaba.v@proton.me>
-Subject: [PATCH v3] KVM: Don't treat reserved xarray entries as having memory attributes
-Date: Mon, 21 Sep 2026 18:24:42 +0800
-Message-Id: <20260921102442.1232375-1-zeng_chi911@163.com>
-X-Mailer: git-send-email 2.25.1
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/2] iommu: Reserve PCI host bridge MMIO windows for IOVA
+Date: Mon, 21 Sep 2026 18:39:20 +0800
+Message-ID: <20260921103922.1113752-1-guanghuifeng@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20260921070234.897736-1-guanghuifeng@linux.alibaba.com>
+References: <20260921070234.897736-1-guanghuifeng@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -43,109 +48,63 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wA3a9ntBbFqcIbHBw--.46549S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxWw4DtryfXrW3WF43uF18Grg_yoWrXF1rpF
-	95GryUKws5tr1xZFZaya1DZ3Wruw1Sqw45JrWDKw1DZw15JasaqryrKr1YvrW3ArWkW3Wj
-	qF4jva48u3yDZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07joGQDUUUUU=
-X-CM-SenderInfo: 52hqws5fklmiqr6rljoofrz/xtbCvw+DP2qxBe-MqAAA3Z
 
-From: Zeng Chi <zengchi@kylinos.cn>
+The DMA IOVA layer reserves PCI host bridge MMIO windows via
+iova_reserve_pci_windows() to keep IOVA allocations from overlapping
+those address ranges.  As commit fade1ec055dc ("iommu/dma: Avoid PCI
+host bridge windows") explains, a host bridge may interpret addresses
+falling within its MMIO windows as peer-to-peer DMA, leading to
+faults, data corruption, or DMA transactions being misrouted to the
+wrong PCIe device.  This is especially dangerous when a device sits
+behind a PCIe switch and ACS Upstream Forwarding is not fully enabled.
 
-kvm_vm_set_mem_attributes() reserves an xarray entry for every gfn in
-the range before storing the new attributes, so that the store loop
-can't fail partway through.  If one of the reservations fails, e.g. with
--ENOMEM, the entries that were already reserved are left in the array.
-That is harmless as far as xa_reserve() is concerned, as the reserved
-entries read back as NULL via xa_load(), but it confuses the "does this
-range have no attributes at all" check:
+Passthrough paths that let userspace pick IOVAs did not honour these
+windows: VFIO type1 and iommufd only excluded IOMMU driver-level
+reserved regions (RMRR, unity maps, MSI), not PCI host bridge MMIO
+windows.
 
-	if (!attrs)
-		return !xas_find(&xas, end - 1);
+This series closes that gap:
 
-A reserved entry is XA_ZERO_ENTRY, not NULL, and xas_find() returns it
-as present.  So a leftover reservation makes KVM report that a fully
-shared range has attributes even though kvm_get_memory_attributes()
-returns none for every gfn in the range.  On x86, the next time
-mixed-attribute tracking is recomputed for the range (memslot creation,
-or a later attribute change that straddles the 2MiB page),
-hugepage_has_attrs() treats a fully shared 2MiB range as mixed and
-refuses to map it with a hugepage, until userspace happens to set
-attributes on the range again.
+  Patch 1 adds a common helper, iommu_get_pci_resv_windows(), and
+  reserves PCI host bridge MMIO windows in
+  iommu_get_group_resv_regions() so all group-level consumers (VFIO
+  type1, sysfs reserved_regions) avoid them; iova_reserve_pci_windows()
+  is refactored to reuse the helper.
 
-Drop the shortcut and handle the !attrs case in the per-index loop,
-using xas_next_entry() to find the next non-NULL entry.  xas_next_entry()
-is essentially an optimized xas_find(), so the effective change is that
-the !attrs lookup now goes through xas_retry() like the attrs != 0 case,
-i.e. reserved entries are skipped and retry entries restart the walk.
-Don't check the index when no entry is found, as the xarray leaves the
-xas index in a bogus state in that case; no entry simply means the rest
-of the range has no attributes.
+  Patch 2 switches iommufd's iopt_table_enforce_dev_resv_regions() to
+  iommu_get_group_resv_regions() so IOMMU_IOAS_IOVA_RANGES also avoids
+  PCI host bridge MMIO windows, aligning iommufd with VFIO type1.
 
-KVM never stores a non-NULL entry with a value of zero (clearing stores
-NULL), but such an entry would be returned by xas_next_entry() and trip
-the index check, so WARN if one is ever seen.
+v1: https://lore.kernel.org/all/20260921070234.897736-1-guanghuifeng@linux.alibaba.com/
 
-While at it, skip the reservation loop entirely when clearing attributes,
-as storing NULL only erases the entry and never needs to allocate, so no
-reservation (and no cleanup of a failed one) is required in that case.
+Changes since v1:
+- v1 was a single patch; v2 is a two-patch series.
+- Patch 1: build the reservations with iommu_insert_resv_region()
+  instead of list_add_tail(), so the group reserved list stays sorted
+  by start address and overlapping same-type regions are merged.  The
+  helper now frees its partial list itself on error and leaves the
+  caller's list untouched.
+- Patch 2 (new): reserve PCI host bridge MMIO windows for the iommufd
+  IOAS as well, so IOMMU_IOAS_IOVA_RANGES no longer reports IOVAs that
+  overlap PCI MMIO windows.
 
-Fixes: 5a475554db1e ("KVM: Introduce per-page memory attributes")
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Cc: David Ballesteros <davimaba.v@proton.me>
-Signed-off-by: Zeng Chi <zengchi@kylinos.cn>
----
- virt/kvm/kvm_main.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+Notes on earlier automated review feedback:
+- The size_t length of each window matches struct iommu_resv_region's
+  existing field type; no new truncation is introduced on 64-bit.
+- An IOMMU group cannot span multiple PCI host bridges:
+  pci_device_group() only groups devices within a single host bridge
+  hierarchy, so scanning the first PCI device of the group is enough.
 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 108d42c5c1d6..c0b00c8ad2ea 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -2457,14 +2457,23 @@ bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
- 		return (kvm_get_memory_attributes(kvm, start) & mask) == attrs;
- 
- 	guard(rcu)();
--	if (!attrs)
--		return !xas_find(&xas, end - 1);
- 
-+	/*
-+	 * xas_retry() skips reserved (zero) entries.  For !attrs, find the
-+	 * next non-NULL entry; not finding one means the range is clear, and
-+	 * the xas index is bogus in that case, so don't check it.
-+	 */
- 	for (index = start; index < end; index++) {
- 		do {
--			entry = xas_next(&xas);
-+			entry = attrs ? xas_next(&xas) :
-+					xas_next_entry(&xas, end - 1);
- 		} while (xas_retry(&xas, entry));
- 
-+		if (!entry)
-+			return !attrs;
-+
-+		WARN_ON_ONCE(!xa_to_value(entry));
-+
- 		if (xas.xa_index != index ||
- 		    (xa_to_value(entry) & mask) != attrs)
- 			return false;
-@@ -2581,9 +2590,10 @@ static int kvm_vm_set_mem_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
- 
- 	/*
- 	 * Reserve memory ahead of time to avoid having to deal with failures
--	 * partway through setting the new attributes.
-+	 * partway through setting the new attributes.  Storing NULL never
-+	 * allocates, so no reservations are needed when clearing.
- 	 */
--	for (i = start; i < end; i++) {
-+	for (i = start; entry && i < end; i++) {
- 		r = xa_reserve(&kvm->mem_attr_array, i, GFP_KERNEL_ACCOUNT);
- 		if (r)
- 			goto out_unlock;
+Guanghui Feng (2):
+  iommu: Reserve PCI host bridge MMIO windows in group reserved regions
+  iommufd: Reserve PCI host bridge MMIO windows in IOAS reserved regions
+
+ drivers/iommu/dma-iommu.c            | 17 ++++--
+ drivers/iommu/iommu-priv.h           | 11 ++++
+ drivers/iommu/iommu.c                | 85 ++++++++++++++++++++++++++++
+ drivers/iommu/iommufd/io_pagetable.c | 15 ++++-
+ 4 files changed, 121 insertions(+), 7 deletions(-)
+
 -- 
-2.25.1
-
-
-No virus found
-		Checked by Hillstone Network AntiVirus
+2.43.7
 
