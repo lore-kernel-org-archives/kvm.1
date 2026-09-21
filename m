@@ -1,90 +1,91 @@
 Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104E54A68AB
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF4A4ACC78
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789999646; cv=none; b=gyyUEkKTMGSFQXW2Ezbj+vcjMpmuc+Mq6EXCc4C8ASRzXSoRHkz03TCzFiyTHwFxV79TbYjb97mh/D3Qr++YRaLUiaQcWY8aWCxNDsQ9OaP4PD64q6L/mARMYAF5CkWtwvs8pTUn+jjUT4c3/bFiDQpyW59Gkq9E4PPr0ETe3Eg=
+	t=1789999651; cv=none; b=XhJB2lV983j5VYpkoPp76Fnxf9jPfA7gyRj/xv5/4qvrsUwpk+bHtowWNEZww8vsfjOeee13kHBbJfd79xh4/GErzfcZUT0dNdaMPWfrgBOfqImgtaWUTVqKA5NDFNaHJkDV6GjTnewqNzv3da6JaVFvhPcvVTJtx8pjU2EBWZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789999646; c=relaxed/simple;
-	bh=aVY+77+Rg4LdrLfAH6xlK0pN+kCKSnGa0twjylLa7m4=;
+	s=arc-20240116; t=1789999651; c=relaxed/simple;
+	bh=l74fNDk6VO8vPprQl+zeIl7U2mcronWS4nPqTAUnEVg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=noyNiQkQ/FTN0+JpCuOTWBQ1hxfKORUdk7EqxBNuxU6CjqqmN3sonqQIlZ9EjIkrRgOk3Xt9dfsJBkcnRAlDzY87M734IhkcSooVJGL4059pH0cOcALulSjZq57T7xFo2qiqW35R5qmNIlRaXqIikRFDyZSojDJ+oCkLcA3TPc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d36U9OqE; arc=none smtp.client-ip=209.85.210.200
+	 To:Cc:Content-Type; b=kHSXhG7QYHbK1FySd3C7Nk7pI1BlOaaWP9t3eo/vs5u74FJqZyYYEX8dfAGF1RvF+wWjRW9L8yWEketBUXMWAsCXDv2RgDuL2+B6KJPpJIRqggdDq6PbVI170jy6mLIyyayFQD3C51snXMhJuw1oIXJGfe5ljx3DrSrKF6N0OSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TQ4SqJXN; arc=none smtp.client-ip=209.85.210.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d36U9OqE"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-86a880e91f0so5386799b3a.2
-        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 07:07:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TQ4SqJXN"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8679cfe5019so4381387b3a.0
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 07:07:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789999644; x=1790604444; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789999649; x=1790604449; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=H7kVfEuUUuG5RNBx6vZsXAqf4DhBGNyoOU9tZbLc/gs=;
-        b=d36U9OqEy5t1YSBG3G0wsA04D9U97Fvp344kSMe9WPaXa1qeOiup1nBk7QMtYIe4my
-         59Duy4/P+j6qra4KJQypPXj4jtrzjJndcbwzKxZ5f5HNDOJ+TCuNgwJvIuIVIlijEEHx
-         uviGmzzRcXLKLrFEMe4WBSXUqrUDwzq1qNjDHFsEF9ycwor9ix5OLAaqZW/Yca9Spqkf
-         COzdtAMyYKn5XGwJkOBe2mOPOzLs77snnJWUD4fZs6ltlvL8Esmfj3D5WU0jOLaLlukh
-         L7kP0lYBS7N7rXvfXAzazoyPk2yfRyQ3ceN+ET5zG8s1GQPp0KO1MgoSJVjBKi/O630R
-         BVbg==
+        bh=GyNDJX3fIEdqZwMfzP/6YwVAKyII5CaZgMpV7trI7WI=;
+        b=TQ4SqJXNZoYFTtg9QNA15/JLKCoTbgABf63jL5uoYH+coE2aLf9qpvWn07T7ry7RQT
+         iIDlv3UpTzZ4HgKY3MtPKud7F2Y3nxWkddAuDNWq9Hlt0xQeq6KV6b738ZqnTdFMEQVF
+         prFtRYKUNut+TDqUa3AIo7/7pqNBTbbSeGJyPsvAf+EaZtJtkuqwUq9DMCKytaJNn+Dk
+         sqG9bp7XV60KZ0zOz7950Dzr1gGIz1ZzBaqKg4oaaYSv60hQI9VB4EWMvBHmckYl3t3E
+         pR7nbZYnQAzhDir2wQxcLJJPxJxlvORHdZE6bSS6wxqpMRAn93wWSK34yR6BnEeaPZQS
+         UsCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789999644; x=1790604444;
+        d=1e100.net; s=20260707; t=1789999649; x=1790604449;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=H7kVfEuUUuG5RNBx6vZsXAqf4DhBGNyoOU9tZbLc/gs=;
-        b=bRZKY8UspG5HwNiSJVFKAUXSAMJM7O1dUgoL0HfOm5qzzGynrwlv0T8shYYG7h55CV
-         LEdPl7poNmNKNDzNoauKlYrS5epm7HQdrgXunjxSdLeOvksmzEf34XuEus3J4L35kios
-         6xzANCmMakyURY2cDvYuNFxvHcX2LnqPin6A99xpfPUOS+3jGZtxjqZ9Ab/ZRxNP4ebc
-         HNkRzcLWRTTN6c6m2D2426fB/A/Q21luWTZLEoqZdfrJHOtprhgT7lFqeGkRXdRFGELF
-         bCfDu7Mm9WedXjYPHKF+WWOUe6QURfY/a0iYVaKROinuCy0ffbD1K9KcLYHW0gL4TO2a
-         Cu0g==
-X-Forwarded-Encrypted: i=1; AKwUvByl3mYSPmdALUHrX5Xo3EMNoYitfKRVELZptkz0aG79MFryKYWMOLgmGANkCTcUXKlAWQk=@vger.kernel.org
-X-Gm-Message-State: AFuF++m+jsATkRTdXvz9bOPfafIF0lgGflySJeBBeIMGhq9ucc7+ICaH
-	b803D+bobs6CYg8AFXHHgJ4hP+GkyWIauqDX4HOpjJGtR9g8yp8lVSHOS6WTxnqTs/EOqnguQ8Y
-	qY2rvGw==
-X-Received: from pfst21.prod.google.com ([2002:aa7:8f95:0:b0:87b:300f:fd01])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:aa7:8883:0:b0:84e:d5e6:a085
- with SMTP id d2e1a72fcca58-874d84a92bemr15148212b3a.0.1789999643931; Mon, 21
- Sep 2026 07:07:23 -0700 (PDT)
-Date: Mon, 21 Sep 2026 07:05:32 -0700
-In-Reply-To: <20260811050029.530698-1-gokul02k@gmail.com>
+        bh=GyNDJX3fIEdqZwMfzP/6YwVAKyII5CaZgMpV7trI7WI=;
+        b=z0CrYsM4cL7fegllv1hdVX8E/hcew3ZA0zo6o1kuMocqu711OQwMefvOHbuqMowogk
+         bsauB5CeSm+4owyEuCttSb1lAFHtQaTkMC8E1FYUMU2GwldsLiRtoXAsUxlLB05HM3Hz
+         MMoEYg2n/go966ikyCGasN6bR6DJgv5YepeGOACprGMMN3+e5YryjEtF2HEEIeEp6sBu
+         QG4NsS+PIxXpBzyoAUG5PQUjeSTz9mL+S0gUqsG1+bAiTZt+IXGfLVv0v94ahWWYFf5N
+         JuFSVVB7xtAQ+pvtBgpiepuMpeIShE7Dz+bXp/Pzm9xO7KRCYNb3YbUbSkd9K6bXxe8P
+         Vs4Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxM+RMhR+h7Cb95njHB1MpQpzz3rrbhnrwCFpg8Cup4jJG07lJRdqUWi4NteJrTZ94btPA=@vger.kernel.org
+X-Gm-Message-State: AFuF++ml6u8yzHVSE0gW62I4ObM6MbbSFe28pNnYpT7GQNYuNuisLw0v
+	02lrYZj7cUrSh1N3UHsosL49W80GHM0hHBMf55tKBzcZkVnBYQprabHtiCkvibtSzyXP9j8NKzx
+	BcUl/RQ==
+X-Received: from pfw9.prod.google.com ([2002:a05:6a00:a269:b0:87b:6530:9518])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1c8b:b0:878:34d7:6977
+ with SMTP id d2e1a72fcca58-87834d76c96mr7399999b3a.37.1789999648656; Mon, 21
+ Sep 2026 07:07:28 -0700 (PDT)
+Date: Mon, 21 Sep 2026 07:05:34 -0700
+In-Reply-To: <20260803170825.925561-4-hisamshar@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260811050029.530698-1-gokul02k@gmail.com>
+References: <20260803170825.925561-4-hisamshar@gmail.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <178999927029.754512.6741483404933166279.b4-ty@google.com>
-Subject: Re: [PATCH v2 0/2] KVM: selftests: Fix two VMs leaked on early returns
+Message-ID: <178999928264.755166.909574492736686331.b4-ty@google.com>
+Subject: Re: [PATCH v2] KVM: selftests: Replace ulong with unsigned long
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, Gokul K <gokul02k@gmail.com>
-Cc: Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, 
+	Hisam Mehboob <hisamshar@gmail.com>
+Cc: maz@kernel.org, oupton@kernel.org, joey.gouly@arm.com, 
+	seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
+	shuah@kernel.org, aqibaf@amazon.com, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Fuad Tabba <fuad.tabba@linux.dev>
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, 11 Aug 2026 10:30:27 +0530, Gokul K wrote:
-> Two x86 selftests create a VM and then take an early return that skips the
-> kvm_vm_free() at the end of the function.  Both now jump to that existing
-> cleanup instead.
+On Mon, 03 Aug 2026 22:08:28 +0500, Hisam Mehboob wrote:
+> KVM selftests use the non-standard ulong alias in several files. glibc
+> exposes the alias transitively through its headers, whereas musl does not,
+> causing musl builds to fail with ulong undeclared.
 > 
-> Patch 1 is the plain-SEV path of sev_smoke_test(), which returns straight
-> out of the UCALL_DONE case instead of leaving the loop.  The SEV-ES path
-> next to it breaks out and frees correctly.
+> Use unsigned long directly instead of depending on a libc-specific typedef.
+> This also avoids adding a duplicate typedef to a shared tools header.
 > 
 > [...]
 
 Applied to kvm-x86 selftests, thanks!
 
-[1/2] KVM: selftests: Free the VM when the SEV smoke test's guest completes
-      https://github.com/kvm-x86/linux/commit/434c50e703c5
-[2/2] KVM: selftests: Free the VM when NX hugepage disabling is denied
-      https://github.com/kvm-x86/linux/commit/ebb702707896
+[1/1] KVM: selftests: Replace ulong with unsigned long
+      https://github.com/kvm-x86/linux/commit/5be2d20f9818
 
 --
 https://github.com/kvm-x86/linux/tree/next
