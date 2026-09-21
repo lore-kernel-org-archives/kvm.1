@@ -1,249 +1,157 @@
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2943ACEEC;
-	Mon, 21 Sep 2026 07:02:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB61839CCFD
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 07:05:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789974182; cv=none; b=fz+d3U2+ds8wEjy0yNXGSMIXxx/LUzbU6Kfk+vRhEVRgQoHpMEeJ/UaJVgp306icJDRjxOgiNfJGhy8/5xdAQqZQFFP3W17rDxrar53beI7Dhv1ACUfAesXaZGYJdP/QVCraKyUfZG5cKcoassmpFH+WVgnMt1q0e6+BOdtykVU=
+	t=1789974305; cv=none; b=gOc3NrnSHzjxDOZxb0eScqfbJG7YPaH7Q18mW4rj8h6NYxeLn1+QTNi/xBE5r3Xc/bcsBo3mVIR0gW+6L2A0OUYj/14iaTFyI6j2nyXXBhIqcFGCl7amh9ORGaEfJaMlou+JQ3pnsxgZuvACndL1ydqFZihId/gRBPFDjZqrPsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789974182; c=relaxed/simple;
-	bh=3U4Ovp0ynC0fulSiroEpUMxha2GMqQD2AFLocjFCzrI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dMZ13a0j1htl+vmI9uaXp4ghgCtYvjrASvIG7m6JY62/ViW/c2Od09pTUYmSQYcGj8H6K/HmyeSog+p+3e463DH8gWoyyDnzY78sqITOdowCX/wlTTCrvLLhYqbFZK7k/N0nng6pJM0pu1X61jCgHISoXX+xE+1wHl10tk1mDYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=qGEK/0Bv; arc=none smtp.client-ip=115.124.30.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1789974305; c=relaxed/simple;
+	bh=q+4TWAH82wt5mYMumibglvij/JtGR91K1fZZsuVUS8M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=il/wNijElPHjM+dIzxeOvREsptdsdNeVSTjdChgA262SO6ADpqRHsWm5mu/xIp0Xy07mtToNlGowrg/u4s2GkbfTH0PMox9Uk0NvPPTAR8mGKn+6UiB0/Ig/x8+Y3cegcSQW/cVJiBSh6AiAvfbeibtDbcoxsdaTLGmCmHujM7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=d70JbJvf; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="qGEK/0Bv"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1789974169; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=8ymtIVnhU6dCbTrVvPdPOmUpJ0Opv2VSNX9iXSB+xPQ=;
-	b=qGEK/0Bvf62pKvoOr6e1AkDMNvWbV9jnt/1kse/l9Ev00GL04MR7x5mvvrc0GgfXPFRWTNEJE8d3BvI+hdGEtSCkgwfmhIC/eKOEI9g7v8I29kOuxmSmDiWVEk++EVIoIc6ejMAQKuD7IAqu11YVt0gLqZzL8L+LU62OnNVNwAQ=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0XBJEbq-_1789974154;
-Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0XBJEbq-_1789974154 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 21 Sep 2026 15:02:49 +0800
-From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
-To: robin.murphy@arm.com,
-	joro@8bytes.org,
-	will@kernel.org
-Cc: iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	alex@shazbot.org,
-	kvm@vger.kernel.org
-Subject: [PATCH] iommu: Reserve PCI host bridge MMIO windows in group reserved regions
-Date: Mon, 21 Sep 2026 15:02:34 +0800
-Message-ID: <20260921070234.897736-1-guanghuifeng@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="d70JbJvf"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68L3aSYG3307017;
+	Mon, 21 Sep 2026 07:04:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=+kP1iCLZakbh0FG6jVlAEp35ZfDOaz
+	3git5jCqXt0KU=; b=d70JbJvfz0VVPd+YltVMouduLOibR5DRjO7TU8cBXcGmwD
+	m2EXy0RGeIeW1PPjL0duZfrK5RCPF3/pymdunmeO/6ScCeSXPx9AcPUGmzWPpv+y
+	Wdkl2yXwxP+eizVtA+v0FO94qbcxqe2E3nsAMIqzI3niVL3NHqJu9y6M55yLo9Tn
+	sQPum9bAcV5pT52qZHfHs/N1bjH3nfd46ztNcxphXnPoCWMPKFv2v1zx01zFy6zB
+	TwI2spOYWgmWjHuqkjLM/tUTfvGPjArFvYAmjcIySLA33B4esvjBHpTMcsJwDb4G
+	/1rj613Ue68ra2h/Ab+OiTp9S2nqg3iGUOXr0Klg==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskgq716q-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 21 Sep 2026 07:04:52 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68L3XYog628081;
+	Mon, 21 Sep 2026 07:04:51 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gt53vcatf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 21 Sep 2026 07:04:51 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68L74ne545416796
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 21 Sep 2026 07:04:49 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 35F4D20040;
+	Mon, 21 Sep 2026 07:04:49 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 159B920043;
+	Mon, 21 Sep 2026 07:04:48 +0000 (GMT)
+Received: from li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com (unknown [9.123.6.5])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 21 Sep 2026 07:04:47 +0000 (GMT)
+Date: Mon, 21 Sep 2026 12:35:51 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2] KVM: PPC: Book3S HV: Avoid spurious interrupts caused
+ by LPCR_MER bit
+Message-ID: <arDWLD7CuAwVV4LM@li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com>
+References: <20260918055848.28390-1-gautam@linux.ibm.com>
+ <20260918060829.D84C61F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260918060829.D84C61F000FF@smtp.kernel.org>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=G+OJgNk5 c=1 sm=1 tr=0 ts=6ab0d714 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=yKAn6K1XAAAA:8 a=VnNF1IyMAAAA:8 a=C0UQplxeHUNF3Q06eqEA:9 a=CjuIK1q_8ugA:10
+ a=6M1ixcW_PCWoKiWyFx5v:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIxMDA5MyBTYWx0ZWRfXyK3cOmMYTXx6
+ ZOb3yQAS9Yj6TuD2pOm+dGLgUuLU4YsAkBM9xvJ05OBhdNNgtdysTDS2NGnxczwy6MgHPzchkDO
+ lgWTLhK5bxhXjxP58WVFDC+8kCc4IxM8v3SYNciS2uR+hP7DmbkRZrAb9MbIZmRlOFhhWIRg2bR
+ AohF9MOgPLN++F2KwsMh8Ym8ZAqz9rQcKV61kg16BYCTea2PdVEEGslSqaYrgCQoEyH3fm+9oD2
+ K9cscwWDAwf05bxt6B+Ex5SyJUaSvoOdV5zf2p8yyody+mmkNi7VLqydxRJ6xxzGSYiT+4ygmfi
+ wkLFOkQRa4EkJ/FVCEEwp5KCJlko304epQXs/PDnhI0zv0j1hW9Q8thT5swmXos4Rzbh+nDd4v/
+ Jr6DmKJSaiX55mnchF86+pn7rW1sA+p++j35+GsPYB6SrS41ahWyxlnjH1ieO8OCeaEA1bKlTQS
+ nw1pm2aEX83dQVMO0nA==
+X-Proofpoint-ORIG-GUID: GygjeXbEPNI_UQ74as96vUtXmWo3C4IQ
+X-Proofpoint-GUID: GygjeXbEPNI_UQ74as96vUtXmWo3C4IQ
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIxMDA5MyBTYWx0ZWRfX/OPJRO0rJ89s
+ o6dfnZlS/J4UObS/sfueUQBGxoPd2qSYguD/nx/h1p2DJi2UtqeQpTPiT2yOoOf2QQDoDwVcsu5
+ sTR44QqX4ev4RkAEsHgSWZpcAMyWxQ8=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-21_02,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0
+ bulkscore=0 priorityscore=1501 clxscore=1015 spamscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609210093
 
-The DMA IOVA layer reserves PCI host bridge MMIO windows via
-iova_reserve_pci_windows() to prevent IOVA allocations from
-overlapping with those address ranges.  As commit fade1ec055dc
-("iommu/dma: Avoid PCI host bridge windows") explains, a host
-bridge may interpret addresses falling within its MMIO windows as
-peer-to-peer DMA, leading to faults, data corruption, or DMA
-transactions being misrouted to the wrong PCIe device.
+On Fri, Sep 18, 2026 at 06:08:29AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] kvm: ppc: software-injected external interrupts lost on XIVE hosts
+> --
+> 
+> commit 05773d5b089dd4410c7e3e3a1611da5479c7d1a4
+> Author: Gautam Menghani <gautam@linux.ibm.com>
+> 
+> KVM: PPC: Book3S HV: Avoid spurious interrupts caused by LPCR_MER bit
+> 
+> This commit aims to avoid a huge number of spurious interrupts on KVM PowerNV
+> guests in XIVE mode by not using the LPCR_MER bit when the hardware can
+> present interrupts directly. It modifies kvmhv_run_single_vcpu() to skip
+> setting LPCR_MER when xics_on_xive() returns true.
+> 
+> Closes: https://lore.kernel.org/linuxppc-dev/582904882.11159.1786719390349.JavaMail.zimbra@raptorengineeringinc.com
+> 
+> > diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> > index dbac3573b2c89..f4d12a97311b9 100644
+> > --- a/arch/powerpc/kvm/book3s_hv.c
+> > +++ b/arch/powerpc/kvm/book3s_hv.c
+> > @@ -4980,7 +4980,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+> >  			if (!kvmhv_on_pseries() && (__kvmppc_get_msr_hv(vcpu) & MSR_EE))
+> >  				kvmppc_inject_interrupt_hv(vcpu,
+> >  							   BOOK3S_INTERRUPT_EXTERNAL, 0);
+> > -			else
+> > +			else if (!xics_on_xive())
+> >  				lpcr |= LPCR_MER;
+> 
+> [Severity: High]
+> Does this unconditionally disable LPCR_MER on XIVE hosts, potentially dropping
+> software-injected external interrupts when MSR_EE=0?
+> 
+> The outer condition in kvmhv_run_single_vcpu() checks if either a KVM software
+> interrupt (BOOK3S_IRQPRIO_EXTERNAL) or a hardware XIVE interrupt is pending.
+> 
+> When MSR_EE=0 on guest entry, the patched code evaluates:
+> 
+>     else if (!xics_on_xive())
+>         lpcr |= LPCR_MER;
+> 
+> Since xics_on_xive() evaluates to true globally on bare-metal POWER9+ hosts
+> with XIVE enabled, regardless of whether the guest uses the in-kernel XIVE
+> irqchip, bypassing LPCR_MER here seems to cause software-injected interrupts
+> (such as those from userspace via the KVM_INTERRUPT ioctl) to lose the
+> hardware trap mechanism that normally fires when the guest later sets
+> MSR_EE=1.
+> 
+> Could this lead to dropped or severely delayed external interrupts for guests
+> using a userspace irqchip?
 
-However, VFIO type1 obtains reserved regions through
-iommu_get_group_resv_regions() and reports the available IOVA
-ranges to userspace via VFIO_IOMMU_GET_INFO.  Previously
-iommu_get_group_resv_regions() only returned IOMMU driver-level
-reserved regions (RMRR, Unity Maps, MSI regions, etc.) and did
-not include PCI host bridge MMIO windows.  This allowed userspace
-to choose IOVA addresses that overlap with bridge windows.
+Yes this is a valid case. When kernel irqchip is off, the guest vCPU will be required to make an extra
+exit to the host for interrupt injection. Will fix this in v3.
 
-The problem is especially dangerous when a device sits behind a
-PCIe switch and ACS Upstream Forwarding is not fully enabled: the
-switch may route DMA TLPs as peer-to-peer traffic to other
-downstream devices instead of forwarding them upstream to the
-root complex for IOMMU translation.
-
-Fix this by:
-
-  - Introducing iommu_get_pci_resv_windows(), a common helper
-    that walks a PCI host bridge's MMIO windows and creates
-    IOMMU_RESV_RESERVED region entries for each one.
-
-  - Calling iommu_resv_pci_windows() from
-    iommu_get_group_resv_regions() so that all group-level
-    consumers (VFIO type1, sysfs reserved_regions) automatically
-    receive the PCI window reservations.
-
-  - Refactoring iova_reserve_pci_windows() to reuse
-    iommu_get_pci_resv_windows(), eliminating the duplicated
-    bridge window enumeration logic.
-
-Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
----
- drivers/iommu/dma-iommu.c  | 21 +++++++----
- drivers/iommu/iommu-priv.h | 11 ++++++
- drivers/iommu/iommu.c      | 73 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 99 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index 58c624513cd4..bccb53043462 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -37,6 +37,7 @@
- 
- #include "dma-iommu.h"
- #include "iommu-pages.h"
-+#include "iommu-priv.h"
- 
- struct iommu_dma_msi_page {
- 	struct list_head	list;
-@@ -508,18 +509,26 @@ static int iova_reserve_pci_windows(struct pci_dev *dev,
- 		struct iova_domain *iovad)
- {
- 	struct pci_host_bridge *bridge = pci_find_host_bridge(dev->bus);
-+	struct iommu_resv_region *region, *next;
- 	struct resource_entry *window;
- 	unsigned long lo, hi;
- 	phys_addr_t start = 0, end;
-+	LIST_HEAD(pci_windows);
-+	int ret;
- 
--	resource_list_for_each_entry(window, &bridge->windows) {
--		if (resource_type(window->res) != IORESOURCE_MEM)
--			continue;
-+	ret = iommu_get_pci_resv_windows(dev, &pci_windows);
- 
--		lo = iova_pfn(iovad, window->res->start - window->offset);
--		hi = iova_pfn(iovad, window->res->end - window->offset);
--		reserve_iova(iovad, lo, hi);
-+	list_for_each_entry_safe(region, next, &pci_windows, list) {
-+		if (!ret) {
-+			lo = iova_pfn(iovad, region->start);
-+			hi = iova_pfn(iovad, region->start + region->length - 1);
-+			reserve_iova(iovad, lo, hi);
-+		}
-+		list_del(&region->list);
-+		kfree(region);
- 	}
-+	if (ret)
-+		return ret;
- 
- 	/* Get reserved DMA windows from host bridge */
- 	list_sort(NULL, &bridge->dma_ranges, iommu_dma_ranges_sort);
-diff --git a/drivers/iommu/iommu-priv.h b/drivers/iommu/iommu-priv.h
-index aaffad5854fc..bc7fab0c827e 100644
---- a/drivers/iommu/iommu-priv.h
-+++ b/drivers/iommu/iommu-priv.h
-@@ -123,4 +123,15 @@ static inline void iommu_debug_init(void)
- 
- #endif /* CONFIG_IOMMU_DEBUG_PAGEALLOC */
- 
-+#ifdef CONFIG_PCI
-+struct pci_dev;
-+int iommu_get_pci_resv_windows(struct pci_dev *dev, struct list_head *head);
-+#else
-+static inline int iommu_get_pci_resv_windows(struct pci_dev *dev,
-+					     struct list_head *head)
-+{
-+	return 0;
-+}
-+#endif /* CONFIG_PCI */
-+
- #endif /* __LINUX_IOMMU_PRIV_H */
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index cd1bca7ede9a..de675ed27753 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -945,6 +945,72 @@ iommu_insert_device_resv_regions(struct list_head *dev_resv_regions,
- 	return ret;
- }
- 
-+#ifdef CONFIG_PCI
-+/**
-+ * iommu_get_pci_resv_windows - collect PCI host bridge MMIO windows as
-+ *                               reserved regions
-+ * @dev: PCI device whose host bridge to scan
-+ * @head: list head to append iommu_resv_region entries to
-+ *
-+ * Walks the MMIO windows of @dev's PCI host bridge and creates an
-+ * IOMMU_RESV_RESERVED region for each one.  The caller must free the
-+ * returned entries with kfree() when done.
-+ *
-+ * Returns 0 on success, negative errno on failure.
-+ */
-+int iommu_get_pci_resv_windows(struct pci_dev *dev, struct list_head *head)
-+{
-+	struct pci_host_bridge *bridge = pci_find_host_bridge(dev->bus);
-+	struct resource_entry *window;
-+
-+	resource_list_for_each_entry(window, &bridge->windows) {
-+		struct iommu_resv_region *region;
-+		phys_addr_t start;
-+		size_t length;
-+
-+		if (resource_type(window->res) != IORESOURCE_MEM)
-+			continue;
-+
-+		start = window->res->start - window->offset;
-+		length = window->res->end - window->res->start + 1;
-+
-+		region = iommu_alloc_resv_region(start, length, 0,
-+						 IOMMU_RESV_RESERVED,
-+						 GFP_KERNEL);
-+		if (!region)
-+			return -ENOMEM;
-+
-+		list_add_tail(&region->list, head);
-+	}
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(iommu_get_pci_resv_windows);
-+
-+/*
-+ * Reserve PCI host bridge MMIO windows as IOMMU_RESV_RESERVED regions.
-+ * This prevents IOVA allocations from overlapping with PCI MMIO address
-+ * ranges, which could cause PCIe switches to misroute DMA transactions.
-+ *
-+ * All PCI devices within the same IOMMU group share the same host bridge,
-+ * so we only need to find the first PCI device.
-+ *
-+ * Caller must hold group->mutex.
-+ */
-+static int iommu_resv_pci_windows(struct iommu_group *group,
-+				  struct list_head *head)
-+{
-+	struct group_device *gdev;
-+
-+	for_each_group_device(group, gdev) {
-+		if (!dev_is_pci(gdev->dev))
-+			continue;
-+		return iommu_get_pci_resv_windows(to_pci_dev(gdev->dev),
-+						  head);
-+	}
-+	return 0;
-+}
-+#endif /* CONFIG_PCI */
-+
- int iommu_get_group_resv_regions(struct iommu_group *group,
- 				 struct list_head *head)
- {
-@@ -969,6 +1035,13 @@ int iommu_get_group_resv_regions(struct iommu_group *group,
- 		if (ret)
- 			break;
- 	}
-+
-+	/* Reserve PCI host bridge MMIO windows to prevent IOVA conflicts */
-+#ifdef CONFIG_PCI
-+	if (!ret)
-+		ret = iommu_resv_pci_windows(group, head);
-+#endif
-+
- 	mutex_unlock(&group->mutex);
- 	return ret;
- }
--- 
-2.43.7
-
+Thanks,
+Gautam
