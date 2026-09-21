@@ -1,43 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24487420469;
-	Mon, 21 Sep 2026 20:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173A343C05E;
+	Mon, 21 Sep 2026 20:26:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790022023; cv=none; b=l64vji35iovNHyL1up+2EzFIwFkk9eWUJyLGtSX0n5fUjA+zAD6bHgKUX5B7Wg/ibjnxmlpmeVLu6RRRfC2YoAOrnPuC9p2eR7erJhIjCb9QT2wQkejODq7DDIoi7vNtIbjbdap1zcUEaAWNMoVKHzTRyJezA0AlsepCPE1QLoU=
+	t=1790022412; cv=none; b=MhRvGszv3i3YDBEp60SZvMzzkvU00jg8tXlDeCGUIoBbmnW2oXi2niRWYWqNqGp8PaNbKAOz4ONUfc/DbMeBXd4QNtASdj++6p/z53L/2/ln6sn75bBNst6mvFY5a4FlozMc/lqPkVJX9MFPcoB2KhE+VOKFoX9O/uXCgXwTKPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790022023; c=relaxed/simple;
-	bh=JtykKgqo+f211SbFKgghZZ2s4s0O43HbHIIra7rXxb4=;
+	s=arc-20240116; t=1790022412; c=relaxed/simple;
+	bh=YR8KjfryI7McmdGWbe5RjCYF03qe877YQVcwQ4evUyE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NhhzrOXndqOkEFz2razQROZrIbCYniVCCzI/fvvIZ2V9szF5TtiIRG9N9tU3OrJPVWP22GQ0NV7YUNnAw+veuu6hY/YBaVQPsKms1MWZZYNzM4cKyQ9ydMmoJdV2p/ZeHmoNGy9P/wuu1aef9Ujbxr/m1DFGyvUgVtwb547VN+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EpKzmRij; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=rTX/QEn1Ji894oyz++0D+vJAcw/0aHMg9iXM6SvlC4IBw98JT9TfIOO8CO2iscVj6uVdGO6JZpOvPljFs0zYSdkQIclV/ft9VyEZ2AKBJOAXcJ1PMlwyCXbZ8UZyNMDs+R0VV3IdY7GqwNs3cv/uBSfyfMAB0XC2yWV+S91vsJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ZJQgJ1u3; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EpKzmRij"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89FD01F000FF;
-	Mon, 21 Sep 2026 20:20:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790022021;
-	bh=DSZiEtwE1uacP7iFOeCfIa6zqRHcapIJW8XH08Z+dxA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EpKzmRijiEzN+ngovxGMDwJKFJeQ2p8zxUZ2ELAUP5ZX3aH5mmjdKcjB23Xcui26Y
-	 DNzSM9QbDJB7kM2T0dotHeN1jiMXolgz2FFl2OUYT4PeyaTwoB9sYdLCSMRkvCEZ7t
-	 4O8pKUsfzFYRe4KTTxjK4vBTmINcmgeMEVRFLtFqWm/UldS7ydThDSex+ews5gnEQ8
-	 hfjWhD7bTQTmP2Sf52eg9Iy6SurqA7TF9pEZUh+GZlmEWh1IL07rn5VhKoQT6e7Sgn
-	 Fujl6SkeU74eLu7uqVpSXPAkkEgMHYUyCrecvCLfoORp2JRQTDmohMZXp+fUeCt8X7
-	 oG1sP4TJ4aRRQ==
-Date: Mon, 21 Sep 2026 13:20:20 -0700
-From: Oliver Upton <oupton@kernel.org>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>, Will Deacon <will@kernel.org>,
-	Fuad Tabba <tabba@google.com>, kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] KVM: selftests: Fix arm64 sysreg header dependencies
-Message-ID: <arGRhHgP_izSwW4T@kernel.org>
-References: <20260902134118.2718200-1-fuad.tabba@linux.dev>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ZJQgJ1u3"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E89C5176C;
+	Mon, 21 Sep 2026 13:26:45 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 19DCC3F632;
+	Mon, 21 Sep 2026 13:26:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790022409; bh=YR8KjfryI7McmdGWbe5RjCYF03qe877YQVcwQ4evUyE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZJQgJ1u3+XbrE14CRndMnlfvZodRjo8Owgd4VUfyb4ysv/TCeswI4E1slRGuH0ZC5
+	 gEB41b7eQMFvIpiPafng381AyyipSmuL+EUBfZkrewzD7VQyDMaw6gvMc8JJ8U+oLq
+	 2RkB+DvgV9b00Ftlc/0AMEXk2kIo1XjoleH7ftTk=
+Date: Mon, 21 Sep 2026 21:26:40 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linux-openrisc@vger.kernel.org
+Subject: Re: [PATCH 21/21] Documentation: mm: clarify behaviour of
+ compile-time folded page tables
+Message-ID: <arGTAMyNaJVjKiuC@e129823.arm.com>
+References: <20260921-dummy_ptxp3-v1-0-cd40cf68242e@arm.com>
+ <20260921-dummy_ptxp3-v1-21-cd40cf68242e@arm.com>
+ <c0c67459-6b75-4bcd-b068-3752e23afbf6@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,31 +81,45 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260902134118.2718200-1-fuad.tabba@linux.dev>
+In-Reply-To: <c0c67459-6b75-4bcd-b068-3752e23afbf6@infradead.org>
 
-Hey Fuad,
+Hi Randy,
 
-Thanks for the fix here.
-
-On Wed, Sep 02, 2026 at 02:41:18PM +0100, Fuad Tabba wrote:
-> ---
-> Unlike the two existing sysreg-defs.h rules, this one's recipe is a recursive
-> make, so its prerequisites are not the recipe's arguments. They only decide
-> whether to recurse, which is a question tools/arch/arm64/tools/Makefile already
-> answers. An alternative is therefore to drop the two explicit inputs in favour
-> of:
 > 
-> 	$(GEN_SYSREG_DEFS): FORCE
 > 
-> leaving that Makefile as the only place naming the generator's inputs. Both
-> forms regenerate the header and rebuild the dependents in the same invocation,
-> and neither rebuilds anything when nothing changed. I kept the explicit
-> prerequisites so that the recursion stays conditional, but I am happy to respin
-> with FORCE if you would rather.
+> On 9/21/26 3:55 AM, Yeoreum Yun wrote:
+> > From: "David Hildenbrand (Arm)" <david@kernel.org>
+> > 
+> > Compile-time folded page tables are not necessarily easy to understand, and even
+> > people the were once familiar with the concept might need to refresh their memory.
+> > 
+> > Add proper documentation, including a nice diagram, for the current design.
+> > Mention details about dummy functions, including the recently changed pXdp_get()
+> > helpers.
+> > 
+> > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> 
+> Documentation/mm/page_tables.rst:197: WARNING: Bullet list ends without a blank line; unexpected unindent. [docutils]
+> 
+> See below for a fix.
 
-This might be the better approach at this point. In the unlikely event
-that new dependencies get added to the kernel side of this, I'll give it
-approximately a 0% chance that the author will update this rule :)
+[...]
 
-Thanks,
-Oliver
+> > +Note that the arrows from PGD to NOP4D represent page-table-walker
+> > +transitions, not pointers stored in the pgd entries.
+> > +
+> > +Using p4d as an example, `nop4d`/`p4d folded` translates to the following:
+> > +
+> > +- p4d is considered folded into pgd; both are operating on the same page
+> > + table.
+> 
+>      table.
+> (add one more prefix space to align the indentation)
+> 
+
+Thanks! I'll fix it!
+
+[...]
+-- 
+Sincerely,
+Yeoreum Yun
