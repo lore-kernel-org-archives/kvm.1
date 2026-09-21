@@ -1,122 +1,357 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A14368964
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 09:24:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6971E47045A;
+	Mon, 21 Sep 2026 09:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789982680; cv=none; b=YoIKhSp4VYwrVxfSMsxavthnMt8NJcqN4YPgmZhEPb3X/dxCl02kfqvi21IGLE3S4iv3GNKXNxmO0ABa2Gx6Fyda+lAPND5ki36mWngW5O8P4d8GeDXesyZbAbE0rTCgNE38VibnnzX3AhQM0iSodzvLRCHYuf2ZY3MQtncZXHM=
+	t=1789982879; cv=none; b=Gw8QlcKp0tF2DnL0JbnY1MlUxbqs93wE7atl8tLQwhOLTCUGXsWADla0UU21XqQdUmmlE5g4M2middO5/ON1+AEpkX9Ns7qlEDZbACcqqBVOU7yPZfIY1R6D2q5QQR0GolxF2CSdGTcN0DguZGMpgEIr7xhR7vq9mzqjtsw4t/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789982680; c=relaxed/simple;
-	bh=cp83rDh97htt+z8Wz2CB7Z8ITESPz0+2ZtCcvQT335s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WLEQUBrvj4kIYdf0Z850nvVam6gUZXVGgA8R5DAwcamvPpjULKbk9jLSND2+XgVH3FdoILXElpaABpGPjQ6K4NBx6rXrgpMZ1mM2vIN4i5iD/spJwBEbFWRscBnaFOVhIOYXIovVTslFOlR2GGysIuREXQ8gGYkUWmRsm0y92Yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ju528Gc1; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1789982879; c=relaxed/simple;
+	bh=ZTBtfMgrW8AVZtlxHjrB7je5cwXndDnFsVDtzCf5SAk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XTgg/QNgEeVZvtTZh6IifWAUQzGpiZMy0OJv5Gewq2Z8xoLTwCmDi9CsC1OoUBWu+N6RzY0+Cb7Axb/X9ORxwLJEwF5nKHX/zjarJ/L5BPlE6/b6p5ETrF1Gy0YWMqplLIJZB7lhbK3MUUN7POqzvsFL0ry859VTjF8TE+29VcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=TkC2tykb; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ju528Gc1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789982678; x=1821518678;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=cp83rDh97htt+z8Wz2CB7Z8ITESPz0+2ZtCcvQT335s=;
-  b=Ju528Gc1+r/OtFX1laMB/725w+vAuYnnCyDvpcr33ZVzB+3glN3kUM4l
-   4D+Q5HlaC2oeyUKJOIt28yDtM4QGJwNAMB9iJix73ctkHnsjJU5u0WvIX
-   VuQ+u+R5GiKcnMEQgPkagnKEDrC0JX7403JWX+AXTmc6e4kS33jb8B0Ax
-   4wzVzvx1XQLYkVv74GctJqKrv9PUbaW+bQs0s5RyfigNaUjfH3oZTYR0q
-   EWQmEHJXXcntLMFvrZh6OTr0YIgVhyC5Le3Ln229Iywq73Bp8E2foEIGa
-   i70opgnNSftTXEbXkZSCKk/YID7xKJ7yyrS0WZFm0ieDjJI2MImplS/Sx
-   w==;
-X-CSE-ConnectionGUID: 6yEVdjm7SGiMcr5vmA870A==
-X-CSE-MsgGUID: M5un6b6bQQuZhucrpnn7Kw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11911"; a="90501106"
-X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
-   d="scan'208";a="90501106"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 02:24:37 -0700
-X-CSE-ConnectionGUID: PjlWT5aNRKOFpS70RJJbog==
-X-CSE-MsgGUID: 0fmTbqAwTreR1SGMfMAUUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
-   d="scan'208";a="300512116"
-Received: from bradocaj-mobl.ger.corp.intel.com (HELO localhost) ([10.245.246.168])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 02:24:29 -0700
-Date: Mon, 21 Sep 2026 12:24:26 +0300
-From: Tony Lindgren <tony.lindgren@linux.intel.com>
-To: Kishen Maloor <kishen.maloor@intel.com>
-Cc: Artem Bityutskiy <dedekind1@gmail.com>,
-	=?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
-	Jon Grimm <Jon.Grimm@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Steven Price <steven.price@arm.com>,
-	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
-	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Peter Fang <peter.fang@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org
-Subject: Re: [RFC PATCH v2 2/4] KVM: x86: Add optional KVM_CAP_LIVE_MIGRATION
- and KVM_MIGRATE_CMD
-Message-ID: <arD3yu3SkN2wLwPN@tlindgre-MOBL1>
-References: <085c28db-31e3-4249-a9be-a2f9d7156719@intel.com>
- <aqjNFLv5VrmB_fdx@tlindgre-MOBL1>
- <e090caa0-be97-46cd-bde8-374f2522c986@intel.com>
- <aqoknAli8A0Mc4HR@tlindgre-MOBL1>
- <3ee06a84-2c4b-4b2f-9899-68fc92b6daf7@intel.com>
- <aquL7kNJsjnY0mJ4@tlindgre-MOBL1>
- <b5906521-858b-487b-a262-7a86891a0731@intel.com>
- <aqzS_mCOT6YuHKxN@tlindgre-MOBL1>
- <e2f8b93a-fd42-4ee6-8b74-759d3052258a@intel.com>
- <arDUOl2WPKRxwrZW@tlindgre-MOBL1>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="TkC2tykb"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 98B4F1476;
+	Mon, 21 Sep 2026 02:27:47 -0700 (PDT)
+Received: from [10.0.128.141] (unknown [10.0.128.141])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D74603F86F;
+	Mon, 21 Sep 2026 02:27:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789982871; bh=ZTBtfMgrW8AVZtlxHjrB7je5cwXndDnFsVDtzCf5SAk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TkC2tykbS6fuXOOVNsxlJt/ZCdRJVqaSv+ZbV/fy/dp/i/FCK5r7pviztK8PJrsmN
+	 K5OUDt8Ib1Lkz4NnQEx7A4QnQ+0SH/pH/XRwppfJvtueM/pGYpy8q3aUtfoiwsuBNO
+	 kc2IYVS2cwBgcv0sa8gPseAz1rwmBbj4wCSB5zwk=
+Message-ID: <d7ccaf22-5bde-4344-8bf0-a5a17dcac0f3@arm.com>
+Date: Mon, 21 Sep 2026 10:27:46 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <arDUOl2WPKRxwrZW@tlindgre-MOBL1>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18 1/7] firmware: arm_rmm: Add SMC definitions for
+ calling the RMM
+Content-Language: en-GB
+To: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
+ <20260912083611.2513845-2-suzuki.poulose@arm.com>
+ <178978126540.2352296.16845657485139032765.b4-review@b4>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <178978126540.2352296.16845657485139032765.b4-review@b4>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 21, 2026 at 09:52:42AM +0300, Tony Lindgren wrote:
-> On Sun, Sep 20, 2026 at 05:13:10PM -0700, Kishen Maloor wrote:
-> > On 9/17/26 10:58 PM, Tony Lindgren wrote:
-> > > So looks like we have tree things to consider: userspace set migration
-> > > role, the hardware state, and transfer direction.
-> > 
-> > Two of those three I agree with: userspace passes the role at SETUP, and
-> > the vendor implementation tracks the hardware state. It's the per-transfer
-> > direction I don't think we need.
+On 19/09/2026 02:27, Jonathan Cameron wrote:
+>> The RMM (Realm Management Monitor) provides functionality that can be
+>> accessed by SMC calls from the host.
+>>
+>> The SMC definitions are based on DEN0137[1] version 2.0-bet3
+>>
+>> [1] https://developer.arm.com/documentation/den0137/2-0bet3/
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > 
-> Ack on the userspace passing the role at SETUP and vendor implementation
-> tracking the hardware state.
+> With Gavin's nitpicks and the GENMASK_ULL() from sashiko, just a few
+> comments inline.  Mostly on subtle inconsistencies that really don't
+> matter that much.
 > 
-> Then for KVM tracking the role, I don't think we need it with the two
-> above. The role tracking can always be added if really needed. Any other
-> opinions on this one?
+>>   include/linux/arm-smccc-rmi.h | 497 ++++++++++++++++++++++++++++++++++
+>>   1 file changed, 497 insertions(+)
+>>   create mode 100644 include/linux/arm-smccc-rmi.h
+>>
+>> diff --git a/include/linux/arm-smccc-rmi.h b/include/linux/arm-smccc-rmi.h
+>> new file mode 100644
+>> index 000000000000..214d6228dfc2
+>> --- /dev/null
+>> +++ b/include/linux/arm-smccc-rmi.h
+>> @@ -0,0 +1,497 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +/*
+>> + * Copyright (C) 2023-2026 ARM Ltd.
+>> + *
+>> + * The values and structures in this file are from the Realm Management Monitor
+>> + * specification (DEN0137) version 2.0-bet3:
+>> + * https://developer.arm.com/documentation/den0137/2-0bet3/
+>> + */
+>> +
+>> +#ifndef __LINUX_ARM_SMCCC_RMI_H_
+>> +#define __LINUX_ARM_SMCCC_RMI_H_
+>> +
+>> +#include <linux/arm-smccc.h>
+>> +#include <linux/bitfield.h>
+>> +#include <linux/bits.h>
+>> +#include <linux/build_bug.h>
+>> +#include <linux/sizes.h>
+>> +
+>> +#include <asm/page.h>
+>> +
+>> +#define SMC_RMI_CALL(func)				\
+>> +	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,		\
+>> +			   ARM_SMCCC_SMC_64,		\
+>> +			   ARM_SMCCC_OWNER_STANDARD,	\
+>> +			   (func))
 > 
-> The transfer direction is there with the EXPORT/IMPORT naming. Maybe
-> just let's keep that naming for easier readability rather than try to 
-> switch to TRANSFER style naming. No transfer direction flag needed.
+> Obviously it is v18 so probably a future thing but nothing about this
+> is RMI specific.  Could be used for ARM_SMCCC_TRNG_RND64 for instance.
+> I'm not entirely sure what we'd call such a macro
+> 
+> ARM_SMCCC_CALL_VAL64_STD() maybe?
 
-Looking at include/linux/dmaengine.h again, the transfer specific
-direction is depreated.. So to follow the the dmaengine analogy, I now
-agree that migration SETUP is the place to set the transfer direction
-like you're suggesting. And so it seems the role at SETUP and the vendor
-implementation tracking the hardware state is all we need.
+ARM_SMCCC_STD_CALL64_VAL() ?
 
-The EXPORT/IMPORT vs TRANFER naming both work for me. I find the
-EXPORT/IMPORT easier to read, and I think Jörg also seemed to like
-that naming better.
+But, I would leave it as a wider cleanup in the tree as a separate
+series.
+
+> 
+> I'm not just not keen on macros whose names to me hint at something
+> special. FWIW this also matches SMC_RSI_FID() and FFA_SMC64().
+> Isn't it nice when we have a predictable naming scheme :)
+> 
+> FID (for Function IDentifier) is in the spec, so maybe?
+> 
+> Anyhow, I don't really care that much.
+> 
+>> +
+>> +#define SMC_RMI_VERSION				SMC_RMI_CALL(0x0150)
+>> +
+> 
+> 
+>> +#define RMI_ABI_MAJOR_VERSION	2
+>> +#define RMI_ABI_MINOR_VERSION	0
+>> +
+>> +#define RMI_ABI_VERSION_GET_MAJOR(version) ((version) >> 16)
+> 
+> I'd mask it.  Mostly because that would shout that it is only 15 bits.
+> 
+
+Ack
+
+>> +#define RMI_ABI_VERSION_GET_MINOR(version) ((version) & 0xFFFF)
+>> +#define RMI_ABI_VERSION(major, minor)      (((major) << 16) | (minor))
+> 
+> I'd go all in on FIELD_PREP() / FIELD_GET() + GENMASK just for the
+> sake of consistency + not having to be careful that everything is
+> checked for fit to keep the LLM bots happy.
+> 
+>> +
+>> +#define RMI_RETURN_STATUS_MASK		GENMASK(7, 0)
+>> +#define RMI_RETURN_INDEX_MASK		GENMASK(15, 8)
+>> +#define RMI_RETURN_MEMREQ_MASK		GENMASK(9, 8)
+>> +#define RMI_RETURN_CAN_CANCEL_MASK	BIT(10)
+>> +
+>> +#define RMI_RETURN_STATUS(ret)		FIELD_GET(RMI_RETURN_STATUS_MASK, ret)
+>> +#define RMI_RETURN_INDEX(ret)		FIELD_GET(RMI_RETURN_INDEX_MASK, ret)
+> 
+> What's this one?  I can't find anything in the spec that matches it
+> and as far as I can tell you don't use it in this series.
+
+This is coming from RmiResultDataLevel. See RmiResult type.
+This was renamed after we introduce the RmiResultDataIncomplete.
+It is used in the KVM code to find the "level" where a command
+failed/walked.
+
+I could rename it to RMI_RESULT_DATA_LEVEL() ?
+Similarly RMI_RESULT_STATUS instead of RMI_RETURN_*
+
+> 
+>> +#define RMI_RETURN_MEMREQ(ret)		FIELD_GET(RMI_RETURN_MEMREQ_MASK, ret)
+>> +#define RMI_RETURN_CAN_CANCEL(ret)	FIELD_GET(RMI_RETURN_CAN_CANCEL_MASK, ret)
+
+> These are obscure enough to find in the spec I'd give a comment just
+> to save the sanity of anyone looking for them.
+
+As above, they are really RMI_RESULT_DATA_INCOMPLETE_*
+
+> 
+>> +/*
+>> + * Note many of these fields are smaller than u64 but all fields have u64
+>> + * alignment, so use u64 to ensure correct alignment.
+> 
+> Obviously this is only going to run on arm64 so it's not critical, but
+> more generally u64s aren't always 64 bit aligned.  So if you 'really'
+> care aligned_u64 is there to ensure it.  Meh, arm64 so fine.
+
+Agreed, I am worried about the churn in the consumer code. Also, like
+you said, this is only for ARM64. So, I would pass it.
+
+> 
+>> + */
+>> +struct rmm_config {
+>> +	union { /* 0x0 */
+>> +		struct {
+>> +			u64 tracking_region_size;
+>> +			u64 rmi_granule_size;
+>> +		};
+>> +		u8 sizer[SZ_4K];
+>> +	};
+>> +};
+>> +
+>> +static_assert(sizeof(struct rmm_config) == SZ_4K);
+>> +
+>> +#define RMI_REALM_PARAM_FLAG_SVE		BIT(1)
+>> +#define RMI_REALM_PARAM_FLAG_PMU		BIT(2)
+>> +#define RMI_REALM_PARAM_FLAG_DA			BIT(3)
+>> +#define RMI_REALM_PARAM_FLAG_LFA_POLICY		GENMASK(6, 5)
+>> +#define RMI_REALM_PARAM_FLAG_MEC_POLICY		GENMASK(8, 7)
+> 
+> Tiny bit inconsistent. When do you decide _MASK is needed and when
+> not?  Seems a little too random for multibit fields.
+
+I will try to clean this up.
+
+>> +
+>> +struct rec_params {
+>> +	union { /* 0x0 */
+>> +		u64 flags;
+>> +		u8 padding0[0x100];
+>> +	};
+>> +	union { /* 0x100 */
+>> +		u64 mpidr;
+>> +		u8 padding1[0x100];
+>> +	};
+>> +	union { /* 0x200 */
+>> +		u64 pc;
+>> +		u8 padding2[0x100];
+>> +	};
+>> +	union { /* 0x300 */
+>> +		u64 gprs[REC_CREATE_NR_GPRS];
+>> +		u8 padding3[0xd00];
+>> +	};
+>> +};
+>> +
+>> +static_assert(sizeof(struct rec_params) == SZ_4K);
+> Whilst the assert works and is need to prevent oversized the
+> dos never seem to provide any indication of the final trailing
+> padding other than indirectly and I don't like maths on Fridays ;).
+
+Agree it is a bit obscure, but ...
+
+> Maybe union the inner union set with a u8 [SZ_4K]?
+> 
+
+That doesn't help if the other one runs past SZ_4K ?
+
+>> +
+>> +struct rec_exit {
+>> +	union { /* 0x000 */
+>> +		u8 exit_reason;
+>> +		u8 padding0[0x100];
+>> +	};
+>> +	union { /* 0x100 */
+>> +		struct {
+>> +			u64 esr;
+>> +			u64 far;
+>> +			u64 hpfar;
+>> +			u64 rtt_tree;
+>> +		};
+>> +		u8 padding1[0x100];
+>> +	};
+>> +	union { /* 0x200 */
+>> +		u64 gprs[REC_RUN_GPRS];
+>> +		u8 padding2[0x100];
+>> +	};
+>> +	union { /* 0x300 */
+>> +		u8 padding3[0x100];
+> 
+> Why does this one exist rather than padding above
+> by 0x200?  Other structures don't seem to keep
+> to a specific stride so I'm not sure what this gives
+> you here.
+
+
+That looks like a field was removed over the RMM spec iterations.
+I will fold this into the padding above.
+
+> 
+>> +	};
+>> +	union { /* 0x400 */
+>> +		struct {
+>> +			u64 cntp_ctl;
+>> +			u64 cntp_cval;
+>> +			u64 cntv_ctl;
+>> +			u64 cntv_cval;
+>> +		};
+>> +		u8 padding4[0x100];
+>> +	};
+>> +	union { /* 0x500 */
+>> +		struct {
+>> +			u64 ripas_base;
+>> +			u64 ripas_top;
+>> +			u8 ripas_value;
+>> +			u8 padding5[0xf];
+> 
+> In various other places you just use a u64 for a u8
+> + padding. Why is this one special? And for that matter
+> various other fields later in this particular structure?
+
+Please feel free to point out, if you spot any. I am happy
+to fix them.
+
+> 
+>> +			u64 s2ap_base;
+>> +			u64 s2ap_top;
+>> +			u64 vdev_id_1;
+>> +			u64 vdev_id_2;
+>> +			u64 dev_mem_base;
+>> +			u64 dev_mem_top;
+>> +			u64 dev_mem_pa;
+>> +		};
+>> +		u8 padding6[0x100];
+>> +	};
+>> +	union { /* 0x600 */
+>> +		struct {
+>> +			u16 imm;
+>> +			u8 padding7[0x6];
+>> +			u64 plane;
+>> +		};
+>> +		u8 padding8[0x100];
+>> +	};
+>> +	union { /* 0x700 */
+>> +		struct {
+>> +			u8 pmu_ovf_status;
+>> +			u8 padding9[0xf];
+>> +			u64 vsmmu;
+>> +		};
+>> +		u8 padding10[0x100];
+>> +	};
+>> +};
+>> +
+>> +static_assert(sizeof(struct rec_exit) == SZ_2K);
+> 
+>> +
+>> +/* RMI_RTT_UNPROT_MAP_FLAGS definitions */
+> 
+> How this counts as a 'flags' field is slightly beyond me, but
+> indeed matches the spec naming even though it's a grab bag
+> of small fields...
+> 
+>> +#define RMI_RTT_UNPROT_MAP_FLAGS_OADDR_TYPE	GENMASK(1, 0)
+>> +#define RMI_RTT_UNPROT_MAP_FLAGS_LIST_COUNT	GENMASK(15, 2)
+>> +#define RMI_RTT_UNPROT_MAP_FLAGS_MEMATTR	GENMASK(18, 16)
+>> +#define RMI_RTT_UNPROT_MAP_FLAGS_S2AP		GENMASK(22, 19)
+> 
+> Nothing signficant enough in here to absolutely require changes so
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+
+Thanks
+
+Suzuki
+
+
+> 
+
