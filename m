@@ -1,519 +1,128 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05E24DEC28
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 16:57:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F9F4DAF90
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 17:44:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790009826; cv=none; b=alYPkaHhndSUweW2MdyenZOPDMrN6phD4DYvt+jpuSTqr9tbCH2Vd71isKj9lcnqvfEjUVVyv8fajZ8X0aO2HzJXc7K2PQdacLNaI1vs0n3Td4kR2Y5seFQuy6CfLgIfEfVKFGzR1VtIQ4y/Xw+iqTZ3XXbcnVWulK8PKS6rNx8=
+	t=1790012689; cv=none; b=pRmuoEhEIpTMCbBDNQ/wwCdrrF167n/IH7jzWoWt63qzbn+Mtg7q4LA+ewj9i+ZmnufXTeWpsN6FfTQmaFeN04aUYD8MG6y3uzULlflG51rP0IgffoHpU8a+lZ3GVFXbQLoiEdlEBaZNe5KOrNInFxvsO9v8qViX6oXWoFKUs6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790009826; c=relaxed/simple;
-	bh=OP4ttDVoApHivsEs2dRxJXRNpgTqNQ2xZ/gaYUMLeEk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=jcjiW1gJIJ1DHMn8znrDu+rAZooZBe+bNVEyz9iHvc1Kx18MhJNheGiVyAAyojnAiX+TLGK02TDRaeHzw5wJ59C1I4BhQwNcdEUd139RflkxtXGe+19f/GBMMHK6oQVTDX6roRgxnOLASUchbaVUQtTjlY+mOaKLwaiYW9s/OJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UcHA/rtM; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790012689; c=relaxed/simple;
+	bh=q6sKknVxjsNpsOX3dGkf1KErMXo5zCoLn9mk28KTqNg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=LokyAGQFa9flQkyhZw+/7lPzbM6ud9R+yTwnEj6lMRhxliPNZRzl8gh1jq9UXFB/l7XNwHrVbF6Mnwf6SgOzguepy8EdHlROAjMk20OsEQs3dcz3cOuTErE9V60NgGAn407z/KsfdJJf9EMpqgvTyCnnQhZo7z5TAYBaQoolUXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LLPkNLD5; arc=none smtp.client-ip=209.85.210.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UcHA/rtM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790009822;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O3izGn7HcWhD3JOmI/cuSL5By5m1gOBvkgkLf8XK894=;
-	b=UcHA/rtM1ku9jR1zvp/sbNIYxof81Wl5yu6nkL9d6q5m9B+iGE8K02FnycAnMOPswzD3aj
-	lgS8s1izvqnmvFlBCowoO7IP5Qz8rzdZF1r1ak512ZLj+MbthF0mg1o3HBANJ6tB0pUqnN
-	OuyTxP/z1LiYhGNPGAtMSrl+sH82G/g=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-26-AfWoa3nqPiWdEPy2iqEBlA-1; Mon,
- 21 Sep 2026 12:56:58 -0400
-X-MC-Unique: AfWoa3nqPiWdEPy2iqEBlA-1
-X-Mimecast-MFC-AGG-ID: AfWoa3nqPiWdEPy2iqEBlA_1790009817
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6BA801955F44;
-	Mon, 21 Sep 2026 16:56:57 +0000 (UTC)
-Received: from vkuznets-thinkpadx1carbongen12.rmtcz.csb (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BACCB1956049;
-	Mon, 21 Sep 2026 16:56:55 +0000 (UTC)
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org
-Cc: nsaenz@amazon.com, snambakam@linux.microsoft.com
-Subject: Re: [PATCH 06/31] KVM: x86: Introduce memory fault on invalid
- hypercalls reads/writes
-In-Reply-To: <20260918135030.171564-7-pbonzini@redhat.com>
-References: <20260918135030.171564-1-pbonzini@redhat.com>
- <20260918135030.171564-7-pbonzini@redhat.com>
-Date: Mon, 21 Sep 2026 18:56:39 +0200
-Message-ID: <kupv77y5yrc.fsf@vkuznets-thinkpadx1carbongen12.rmtcz.csb>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LLPkNLD5"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8538a72b430so3494957b3a.2
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 10:44:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790012687; x=1790617487; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vpZEGIou0oqWtJedTRzj6hNhUCCuK0pge9AESQcyXk4=;
+        b=LLPkNLD5aBKgcdKDQjuV/lRYO5V4tfGAu4ftEBZcDk9xk1QIlxvsT53SA0VZ+C1Tns
+         uDWqSN9ses49+gzu2UgL14dBG886qqnCbzO09YH1RZ1hdBemCNBkFOq5BsvURnpR4FPm
+         uFYqqlBbOyuRRrcjdWCH+Q+Pu6Rpq5tvy1oOa6tBtQbG7X5xmOstoYyMq+0kBtAT/5Bt
+         jvsBKyR2tsT3tV8Hz5PKWC3d+upLCtR7vRuw6Vh/1YO6/caIxKQtfeSkZ842kePYowLu
+         Og3dFE6ezsVHOpze0wVhOy5ydCf6WkQa3AUPYsVlovhb3uMVNFDi9GJ50zzSA9xpf8aB
+         r6zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790012687; x=1790617487;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=vpZEGIou0oqWtJedTRzj6hNhUCCuK0pge9AESQcyXk4=;
+        b=cY2DEe+E/H0eBcK0WDBAjMQ9wii2HfO99v3RQI0Z4UXj3Z0QjKqTK6xHJmw3adCoYA
+         S3TV6mrUg5PpZfv1CTOj0Ipc/Cph8S6sW6c08efhjKLVK518DKZg3EsAQz4b4VdCxMWl
+         zIgpAuiq5eR9n5gL0A7IJS5t2YTDVTS75xwTmNWAr9DQQ5JlKpAWxzUbEfY+wXEhYfsE
+         wrKJ0sHCFP5sh/4jmEKGJIXkrO03DHD1lGMS01qo5pDtrjaob1ry0JBgO6/RqhVGwefb
+         aDJnfDks9T2s51KCQQUBmQdkk1IV9ZTje0hzES0df9uKabcXm2HKiF2OMKzKw7x+V4sz
+         9Y2A==
+X-Forwarded-Encrypted: i=1; AKwUvByYirz0QdiF2mHpRx54rnT6IuqplGc5Jb9pDD7SlkEYy42IYqoA3ogjIxSyPpM2m5n5ZEQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++khNgf2C/1QcGg05a0xtwzrDGdoI+gL3H6CBOwzpT45I8As3nG/
+	dH/6DhU0L6cGwZ2DNwPY8r+b4Jj9lKvbiFvlDrp2yc8c4zpwdjtXHguELnnuIfmv493gpF0NVvo
+	RV6PmDg==
+X-Received: from pfbgs18.prod.google.com ([2002:a05:6a00:4d92:b0:87a:49f8:6a76])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:9487:b0:878:3507:8d6b
+ with SMTP id d2e1a72fcca58-8783508a7bemr7870003b3a.50.1790012686945; Mon, 21
+ Sep 2026 10:44:46 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Mon, 21 Sep 2026 10:44:38 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
+Message-ID: <20260921174445.911676-1-seanjc@google.com>
+Subject: [PATCH v2 0/7] KVM: Serialize vCPU creation and revert vcpu_ids tracking
+From: Sean Christopherson <seanjc@google.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>, Atish Patra <atish.patra@linux.dev>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Jean-Christophe Guillain <jean-christophe@guillain.net>, 
+	"=?UTF-8?q?Pawe=C5=82=20S?=" <spawel523@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Paolo Bonzini <pbonzini@redhat.com> writes:
+Serialize vCPU creation by holding kvm->lock for the entirety of
+kvm_vm_ioctl_create_vcpu(), and then revert the now-redundant tracking adding
+by commit 97d65b544f48 ("KVM: Check for duplicate vcpu_id as early as
+possible").  I botched the math when justifying the vcpu_ids tracking; it's not
+an extra 256 bytes, it's an extra 2048 bytes.  Roughly doubling the size of
+"struct kvm" tripped x86's KVM_SANITY_CHECK_VM_STRUCT_SIZE, and obviously isn't
+something we want to do in general.
 
-> Allow userspace to perform arbitrary actions when a hypercall refers to an
-> invalid address, by exiting with KVM_EXIT_MEMORY_FAULT.  This will for
-> example allow userspace to perform a VTL call.
->
-> Co-developed-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
-> Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  Documentation/virt/kvm/api.rst  |  19 ++++
->  arch/x86/include/asm/kvm_host.h |   1 +
->  arch/x86/kvm/hyperv.c           | 157 +++++++++++++++++++++++++-------
->  arch/x86/kvm/x86.c              |  34 +++++--
->  include/uapi/linux/kvm.h        |   1 +
->  5 files changed, 173 insertions(+), 39 deletions(-)
->
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> index 37028ce019e3..abc2ff1f8c84 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -8984,6 +8984,25 @@ enabled, cmma can't be enabled anymore and pfmfi and the storage key
->  interpretation are disabled. If cmma has already been enabled or the
->  hpage_2g module parameter is not set to 1, -EINVAL is returned.
->  
-> +7.48 KVM_CAP_HCALL_FAULT_EXIT
-> +------------------------------------
-> +
-> +:Architectures: x86
-> +:Parameters: args[0] is 0 to disable, 1 to enable
-> +
-> +When enabled, KVM checks the memory that is read or written by
-> +hypercalls (including slow Hyper-V hypercalls and KVM_HC_CLOCK_PAIRING).
-> +An inaccessible input page causes a KVM_EXIT_MEMORY_FAULT with
-> +KVM_MEMORY_EXIT_FLAG_READ.  An inaccessible or read-only output page causes
-> +a KVM_EXIT_MEMORY_FAULT with KVM_MEMORY_EXIT_FLAG_WRITE.  The reported
-> +range identifies the page containing the parameter GPA.
-> +
-> +Hypercall parameters that are unused by the selected hypercall are not checked.
-> +
-> +For Hyper-V, unknown hypercalls are passed to userspace without checking their
-> +parameter pages.  The fault GPA is in the physical address space of the
-> +VM managed by userspace, after nested GPA translation.
+The TL;DR of why it's a-ok to serialize vCPU creation is that no VMM actually
+does parallel vCPU creation.  As with so many things, KVM's current behavior is
+the result of decades-old cruft, not intentional, deliberate design.
 
-I'm sure you thought it through but since this is going to be a
-hard-to-change API let me ask: would it make any sense to try to keep
-Hyper-V world separate here, i.e. have a dedicated
-KVM_CAP_HYPERV_HCALL_FAULT_EXIT so VMMs can implement and enable/disable
-them separately? (I don't personally see a big benefit from VMM's PoV,
-but still).
+Patches 1-3 are a tangentially related cleanups and bug fixes; I included them
+here because holding kvm->lock for all of vCPU creation allows WARNing if KVM
+attempts to lock all vCPUs if vCPU creation is in-progress (the caller must
+hold kvm->lock).
 
-> +
->  8. Other capabilities.
->  ======================
->  
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index 683bb8bf43a9..c08781bb0327 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -1169,6 +1169,7 @@ struct kvm_arch {
->  	bool has_protected_eoi;
->  	bool has_protected_pmu;
->  	bool pre_fault_allowed;
-> +	bool hcall_fault_exit;
->  	struct hlist_head *mmu_page_hash;
->  	struct list_head active_mmu_pages;
->  	struct kvm_possible_nx_huge_pages possible_nx_huge_pages[KVM_NR_MMU_TYPES];
-> diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-> index d2921d443fde..e3a8e8236230 100644
-> --- a/arch/x86/kvm/hyperv.c
-> +++ b/arch/x86/kvm/hyperv.c
-> @@ -2033,7 +2033,68 @@ int kvm_hv_vcpu_flush_tlb(struct kvm_vcpu *vcpu)
->  	return -ENOSPC;
->  }
->  
-> -static u64 kvm_hv_flush_tlb(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
-> +static int kvm_hv_hypercall_check_gpa(struct kvm_vcpu *vcpu, gpa_t gpa,
-> +				      bool write)
-> +{
-> +	bool writable = true;
-> +	gfn_t gfn = gpa_to_gfn(gpa);
-> +	unsigned long addr;
-> +
-> +	addr = kvm_vcpu_gfn_to_hva_prot(vcpu, gfn, &writable);
-> +	if (!kvm_is_error_hva(addr) && (!write || writable))
-> +		return 0;
-> +
-> +	kvm_prepare_memory_fault_exit(vcpu, gfn_to_gpa(gfn), PAGE_SIZE,
-> +				      write, false, false);
-> +	return -EFAULT;
-> +}
-> +
-> +static unsigned int kvm_hv_hypercall_mem_access(u16 code)
-> +{
-> +	switch (code) {
-> +	case HVCALL_SIGNAL_EVENT:
-> +	case HVCALL_POST_MESSAGE:
-> +	case HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST:
-> +	case HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST_EX:
-> +	case HVCALL_FLUSH_VIRTUAL_ADDRESS_SPACE:
-> +	case HVCALL_FLUSH_VIRTUAL_ADDRESS_SPACE_EX:
-> +	case HVCALL_SEND_IPI:
-> +	case HVCALL_SEND_IPI_EX:
-> +		return KVM_MEMORY_EXIT_FLAG_READ;
-> +	case HVCALL_POST_DEBUG_DATA:
-> +	case HVCALL_RETRIEVE_DEBUG_DATA:
-> +		return KVM_MEMORY_EXIT_FLAG_READ | KVM_MEMORY_EXIT_FLAG_WRITE;
-> +	case HVCALL_RESET_DEBUG_SESSION:
-> +	case HV_EXT_CALL_QUERY_CAPABILITIES:
-> +		return KVM_MEMORY_EXIT_FLAG_WRITE;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int kvm_hv_hypercall_check_params(struct kvm_vcpu *vcpu,
-> +					 struct kvm_hv_hcall *hc)
-> +{
-> +	unsigned access;
-> +	int r;
-> +
-> +	if (hc->fast || !vcpu->kvm->arch.hcall_fault_exit)
-> +		return 0;
-> +
-> +	access = kvm_hv_hypercall_mem_access(hc->code);
-> +	if (access & KVM_MEMORY_EXIT_FLAG_READ) {
-> +		r = kvm_hv_hypercall_check_gpa(vcpu, hc->ingpa, false);
-> +		if (r)
-> +			return r;
-> +	}
-> +
-> +	if (access & KVM_MEMORY_EXIT_FLAG_WRITE)
-> +		return kvm_hv_hypercall_check_gpa(vcpu, hc->outgpa, true);
-> +
-> +	return 0;
-> +}
-> +
-> +static s64 kvm_hv_flush_tlb(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
->  {
->  	struct kvm_vcpu_hv *hv_vcpu = to_hv_vcpu(vcpu);
->  	unsigned long *vcpu_mask = hv_vcpu->vcpu_mask;
-> @@ -2053,6 +2114,19 @@ static u64 kvm_hv_flush_tlb(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
->  	struct kvm_vcpu *v;
->  	unsigned long i;
->  	bool all_cpus;
-> +	int r;
-> +
-> +	/* Slow direct hypercalls from L2 provide a nested GPA. */
-> +	if (!hc->fast) {
-> +		hc->ingpa = kvm_translate_gpa(vcpu, &vcpu->arch.gva_walk, hc->ingpa,
-> +					      PFERR_GUEST_FINAL_MASK, NULL, 0);
-> +		if (unlikely(hc->ingpa == INVALID_GPA))
-> +			return HV_STATUS_INVALID_HYPERCALL_INPUT;
-> +	}
-> +
-> +	r = kvm_hv_hypercall_check_params(vcpu, hc);
-> +	if (r)
-> +		return r;
->  
->  	/*
->  	 * The Hyper-V TLFS doesn't allow more than HV_MAX_SPARSE_VCPU_BANKS
-> @@ -2061,20 +2135,6 @@ static u64 kvm_hv_flush_tlb(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
->  	 */
->  	BUILD_BUG_ON(KVM_HV_MAX_SPARSE_VCPU_SET_BITS > HV_MAX_SPARSE_VCPU_BANKS);
->  
-> -	/*
-> -	 * 'Slow' hypercall's first parameter is the address in guest's memory
-> -	 * where hypercall parameters are placed. This is either a GPA or a
-> -	 * nested GPA when KVM is handling the call from L2 ('direct' TLB
-> -	 * flush).  Translate the address here so the memory can be uniformly
-> -	 * read with kvm_read_guest().
-> -	 */
-> -	if (!hc->fast) {
-> -		hc->ingpa = kvm_translate_gpa(vcpu, &vcpu->arch.gva_walk, hc->ingpa,
-> -					      PFERR_GUEST_FINAL_MASK, NULL, 0);
-> -		if (unlikely(hc->ingpa == INVALID_GPA))
-> -			return HV_STATUS_INVALID_HYPERCALL_INPUT;
-> -	}
-> -
->  	if (hc->code == HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST ||
->  	    hc->code == HVCALL_FLUSH_VIRTUAL_ADDRESS_SPACE) {
->  		if (hc->fast) {
-> @@ -2242,7 +2302,7 @@ static void kvm_hv_send_ipi_to_many(struct kvm *kvm, u32 vector,
->  	}
->  }
->  
-> -static u64 kvm_hv_send_ipi(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
-> +static int kvm_hv_send_ipi(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
->  {
->  	struct kvm_vcpu_hv *hv_vcpu = to_hv_vcpu(vcpu);
->  	u64 *sparse_banks = hv_vcpu->sparse_banks;
-> @@ -2252,6 +2312,11 @@ static u64 kvm_hv_send_ipi(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
->  	u64 valid_bank_mask;
->  	u32 vector;
->  	bool all_cpus;
-> +	int r;
-> +
-> +	r = kvm_hv_hypercall_check_params(vcpu, hc);
-> +	if (r)
-> +		return r;
->  
->  	if (!lapic_in_kernel(vcpu))
->  		return HV_STATUS_INVALID_HYPERCALL_INPUT;
-> @@ -2432,11 +2497,16 @@ static int kvm_hv_hypercall_complete_userspace(struct kvm_vcpu *vcpu)
->  	return kvm_hv_hypercall_complete(vcpu, vcpu->run->hyperv.u.hcall.result);
->  }
->  
-> -static u16 kvm_hvcall_signal_event(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
-> +static int kvm_hvcall_signal_event(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
->  {
->  	struct kvm_hv *hv = to_kvm_hv(vcpu->kvm);
->  	struct eventfd_ctx *eventfd;
->  	u64 conn_id;
-> +	int ret;
-> +
-> +	ret = kvm_hv_hypercall_check_params(vcpu, hc);
-> +	if (ret)
-> +		return ret;
->  
->  	if (unlikely(!hc->fast)) {
->  		int ret;
-> @@ -2550,11 +2620,30 @@ static bool hv_check_hypercall_access(struct kvm_vcpu_hv *hv_vcpu, u16 code)
->  	return true;
->  }
->  
-> +static int kvm_hv_hypercall_userspace_exit(struct kvm_vcpu *vcpu,
-> +					   struct kvm_hv_hcall *hc)
-> +{
-> +	int r;
-> +
-> +	r = kvm_hv_hypercall_check_params(vcpu, hc);
-> +	if (r)
-> +		return r;
-> +
-> +	vcpu->run->exit_reason = KVM_EXIT_HYPERV;
-> +	vcpu->run->hyperv.type = KVM_EXIT_HYPERV_HCALL;
-> +	vcpu->run->hyperv.u.hcall.input = hc->param;
-> +	vcpu->run->hyperv.u.hcall.params[0] = hc->ingpa;
-> +	vcpu->run->hyperv.u.hcall.params[1] = hc->outgpa;
-> +	vcpu->arch.complete_userspace_io = kvm_hv_hypercall_complete_userspace;
-> +	return 0;
-> +}
-> +
->  int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
->  {
->  	struct kvm_vcpu_hv *hv_vcpu = to_hv_vcpu(vcpu);
->  	struct kvm_hv_hcall hc;
->  	u64 ret = HV_STATUS_SUCCESS;
-> +	s64 r;
->  
->  	/*
->  	 * hypercall generates UD from non zero cpl and real mode
-> @@ -2622,7 +2711,10 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
->  			ret = HV_STATUS_INVALID_HYPERCALL_INPUT;
->  			break;
->  		}
-> -		ret = kvm_hvcall_signal_event(vcpu, &hc);
-> +		r = kvm_hvcall_signal_event(vcpu, &hc);
-> +		if (r < 0)
-> +			return r;
-> +		ret = r;
->  		if (ret != HV_STATUS_INVALID_PORT_ID)
->  			break;
->  		fallthrough;	/* maybe userspace knows this conn_id */
-> @@ -2632,7 +2724,7 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
->  			ret = HV_STATUS_INVALID_HYPERCALL_INPUT;
->  			break;
->  		}
-> -		goto hypercall_userspace_exit;
-> +		return kvm_hv_hypercall_userspace_exit(vcpu, &hc);
->  	case HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST:
->  		if (unlikely(hc.var_cnt)) {
->  			ret = HV_STATUS_INVALID_HYPERCALL_INPUT;
-> @@ -2644,7 +2736,10 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
->  			ret = HV_STATUS_INVALID_HYPERCALL_INPUT;
->  			break;
->  		}
-> -		ret = kvm_hv_flush_tlb(vcpu, &hc);
-> +		r = kvm_hv_flush_tlb(vcpu, &hc);
-> +		if (r < 0)
-> +			return r;
-> +		ret = r;
->  		break;
->  	case HVCALL_FLUSH_VIRTUAL_ADDRESS_SPACE:
->  		if (unlikely(hc.var_cnt)) {
-> @@ -2657,7 +2752,10 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
->  			ret = HV_STATUS_INVALID_HYPERCALL_INPUT;
->  			break;
->  		}
-> -		ret = kvm_hv_flush_tlb(vcpu, &hc);
-> +		r = kvm_hv_flush_tlb(vcpu, &hc);
-> +		if (r < 0)
-> +			return r;
-> +		ret = r;
->  		break;
->  	case HVCALL_SEND_IPI:
->  		if (unlikely(hc.var_cnt)) {
-> @@ -2670,7 +2768,10 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
->  			ret = HV_STATUS_INVALID_HYPERCALL_INPUT;
->  			break;
->  		}
-> -		ret = kvm_hv_send_ipi(vcpu, &hc);
-> +		r = kvm_hv_send_ipi(vcpu, &hc);
-> +		if (r < 0)
-> +			return r;
-> +		ret = r;
->  		break;
->  	case HVCALL_POST_DEBUG_DATA:
->  	case HVCALL_RETRIEVE_DEBUG_DATA:
-> @@ -2691,14 +2792,14 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
->  			ret = HV_STATUS_OPERATION_DENIED;
->  			break;
->  		}
-> -		goto hypercall_userspace_exit;
-> +		return kvm_hv_hypercall_userspace_exit(vcpu, &hc);
->  	}
->  	case HV_EXT_CALL_QUERY_CAPABILITIES ... HV_EXT_CALL_MAX:
->  		if (unlikely(hc.fast)) {
->  			ret = HV_STATUS_INVALID_PARAMETER;
->  			break;
->  		}
-> -		goto hypercall_userspace_exit;
-> +		return kvm_hv_hypercall_userspace_exit(vcpu, &hc);
->  	default:
->  		ret = HV_STATUS_INVALID_HYPERCALL_CODE;
->  		break;
-> @@ -2707,14 +2808,6 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
->  hypercall_complete:
->  	return kvm_hv_hypercall_complete(vcpu, ret);
->  
-> -hypercall_userspace_exit:
-> -	vcpu->run->exit_reason = KVM_EXIT_HYPERV;
-> -	vcpu->run->hyperv.type = KVM_EXIT_HYPERV_HCALL;
-> -	vcpu->run->hyperv.u.hcall.input = hc.param;
-> -	vcpu->run->hyperv.u.hcall.params[0] = hc.ingpa;
-> -	vcpu->run->hyperv.u.hcall.params[1] = hc.outgpa;
-> -	vcpu->arch.complete_userspace_io = kvm_hv_hypercall_complete_userspace;
-> -	return 0;
->  }
->  
->  void kvm_hv_init_vm(struct kvm *kvm)
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 0fbe2d4e685f..3338d85c721f 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -2242,6 +2242,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->  	case KVM_CAP_HYPERV_ENFORCE_CPUID:
->  	case KVM_CAP_SYS_HYPERV_CPUID:
->  #endif
-> +	case KVM_CAP_HCALL_FAULT_EXIT:
->  	case KVM_CAP_PCI_SEGMENT:
->  	case KVM_CAP_DEBUGREGS:
->  	case KVM_CAP_X86_ROBUST_SINGLESTEP:
-> @@ -4210,6 +4211,10 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
->  		mutex_unlock(&kvm->lock);
->  		break;
->  	}
-> +	case KVM_CAP_HCALL_FAULT_EXIT:
-> +		kvm->arch.hcall_fault_exit = cap->args[0];
-> +		r = 0;
-> +		break;
->  	default:
->  		r = -EINVAL;
->  		break;
-> @@ -7191,25 +7196,28 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_x86_vendor_exit);
->  
->  #ifdef CONFIG_X86_64
->  static int kvm_pv_clock_pairing(struct kvm_vcpu *vcpu, gpa_t paddr,
-> -			        unsigned long clock_type)
-> +			        unsigned long clock_type, unsigned long *ret)
->  {
->  	struct kvm_clock_pairing clock_pairing;
->  	struct timespec64 ts;
->  	size_t offset = 0;
-> +	bool writable;
-> +	unsigned long hva;
->  	u64 cycle;
->  
-> +	*ret = -KVM_EOPNOTSUPP;
->  	if (clock_type != KVM_CLOCK_PAIRING_WALLCLOCK)
-> -		return -KVM_EOPNOTSUPP;
-> +		return 0;
->  
->  	/*
->  	 * When tsc is in permanent catchup mode guests won't be able to use
->  	 * pvclock_read_retry loop to get consistent view of pvclock
->  	 */
->  	if (vcpu->arch.tsc_always_catchup)
-> -		return -KVM_EOPNOTSUPP;
-> +		return 0;
->  
->  	if (!kvm_get_walltime_and_clockread(&ts, &cycle))
-> -		return -KVM_EOPNOTSUPP;
-> +		return 0;
->  
->  	clock_pairing.sec = ts.tv_sec;
->  	clock_pairing.nsec = ts.tv_nsec;
-> @@ -7217,6 +7225,7 @@ static int kvm_pv_clock_pairing(struct kvm_vcpu *vcpu, gpa_t paddr,
->  	clock_pairing.flags = 0;
->  	memset(&clock_pairing.pad, 0, sizeof(clock_pairing.pad));
->  
-> +	*ret = -KVM_EFAULT;
->  	while (offset < sizeof(clock_pairing)) {
->  		gpa_t gpa = kvm_translate_gpa(vcpu, &vcpu->arch.gva_walk, paddr + offset,
->  					      PFERR_WRITE_MASK | PFERR_GUEST_FINAL_MASK, NULL, 0);
-> @@ -7224,12 +7233,22 @@ static int kvm_pv_clock_pairing(struct kvm_vcpu *vcpu, gpa_t paddr,
->  				   PAGE_SIZE - offset_in_page(gpa));
->  
->  		if (gpa == INVALID_GPA)
-> -			return -KVM_EFAULT;
-> +			return 0;
-> +		if (vcpu->kvm->arch.hcall_fault_exit) {
-> +			hva = kvm_vcpu_gfn_to_hva_prot(vcpu, gpa_to_gfn(gpa), &writable);
-> +			if (kvm_is_error_hva(hva) || !writable) {
-> +				kvm_prepare_memory_fault_exit(vcpu, gpa & PAGE_MASK, PAGE_SIZE,
-> +							      true, false, false);
-> +				return -EFAULT;
-> +			}
-> +		}
->  		if (kvm_write_guest(vcpu->kvm, gpa, (u8 *)&clock_pairing + offset, len))
-> -			return -KVM_EFAULT;
-> +			return 0;
->  
->  		offset += len;
->  	}
-> +
-> +	*ret = 0;
->  	return 0;
->  }
->  #endif
-> @@ -7388,7 +7407,8 @@ int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, int cpl,
->  		break;
->  #ifdef CONFIG_X86_64
->  	case KVM_HC_CLOCK_PAIRING:
-> -		ret = kvm_pv_clock_pairing(vcpu, a0, a1);
-> +		if (kvm_pv_clock_pairing(vcpu, a0, a1, &ret))
-> +			return -EFAULT;
->  		break;
->  #endif
->  	case KVM_HC_SEND_IPI:
-> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> index 15a3090f067e..c23f1ea62eaf 100644
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-> @@ -1002,6 +1002,7 @@ struct kvm_enable_cap {
->  #define KVM_CAP_S390_HPAGE_2G 249
->  #define KVM_CAP_PPC_COMPAT_CAPS 250
->  #define KVM_CAP_ARM_PMU_V3_STRICT 251
-> +#define KVM_CAP_HCALL_FAULT_EXIT 252
->  
->  struct kvm_irq_routing_irqchip {
->  	__u32 irqchip;
+v2:
+ - Tweak patch 1's changelog to clarify that that only x86's manual checks are
+   dropped. [Sashiko]
+ - Add patches to convert additional arm64 and RISC-V usage to 
+   kvm_is_vcpu_creation_in_progress(). [Sashiko]
+ - Remove acquisition of kvm->lock from s390 and PPC vCPU creation flows.
+   [Christian, Sashiko]
+ - Add Jean-Christophe's Tested-by to the revert.
 
+v1: https://lore.kernel.org/all/20260914181223.289061-1-seanjc@google.com
+
+Sean Christopherson (7):
+  KVM: Reject attempts to lock all vCPUs if vCPU creation is in-progress
+  KVM: arm64: vgic: Rely on vCPU creation check in "trylock all vCPUs"
+  KVM: RISC-V: Use kvm_is_vcpu_creation_in_progress() instead of
+    open-coded equivalent
+  KVM: Protect all of kvm_vm_ioctl_create_vcpu() with kvm->lock
+  KVM: Move check for existing vCPU ID to the top of vCPU creation
+  Revert "KVM: Check for duplicate vcpu_id as early as possible"
+  KVM: WARN if vCPU creation is in-progress when locking all vCPUs
+
+ arch/arm64/kvm/vgic/vgic-init.c | 12 ++++-------
+ arch/powerpc/kvm/book3s_hv.c    |  2 --
+ arch/riscv/kvm/aia_device.c     |  2 +-
+ arch/s390/kvm/s390/s390.c       |  5 +----
+ arch/x86/kvm/svm/sev.c          | 10 ----------
+ arch/x86/kvm/vmx/tdx.c          |  5 -----
+ include/linux/kvm_host.h        |  1 -
+ virt/kvm/kvm_main.c             | 35 +++++++++++----------------------
+ 8 files changed, 17 insertions(+), 55 deletions(-)
+
+
+base-commit: d599822bdb66aeec5ec76297b0fc6efaaeefe07c
 -- 
-Vitaly
+2.55.0.1082.g2b9226bbc0-goog
 
