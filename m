@@ -1,141 +1,123 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787B23C4B64;
-	Mon, 21 Sep 2026 11:59:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A1C492516
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 12:23:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789991987; cv=none; b=jeK9Qh+NFmXIaER0hdG63TBD4fPtSaxbLc7yEKw3cwyR6kYI6GSonJoqXlBdH7226O+TmNqsIbvvy+eViFT9+AbvJepx8+zkx3srCaR6xbcMMG8IHy/Mj1297QCeQhWQvbmRecOQ62gXouO1EGEpSByiHO8H5io2f5eKza4Ue48=
+	t=1789993423; cv=none; b=HM+4eNn47lUuMftzRoOIDf3yKjS/Rst31TUoZZrU6HTvjrZb5luXMxAGvknGBDjZx+rZnxY+LNRh6DBr0tBIxz+Sek2TaEQ/e5M25c6r4JSeJ2abhI/I1EJ9nYSxkRqaEQY9N1/erbh5Iw9RyjhEZm+Pv6hUJp7ayYJh6oCYQUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789991987; c=relaxed/simple;
-	bh=P5jPS1qkrIzmfP0iv0B8nbaTYixsh2wFPo/ToIHURKc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pWZMzfz7IVfLjFI2xk5Xz6IMme31mvJHGFpxSl9tZ4dqkrpkARU/vQzqRccPUX1wqyCprS9lJZZtwXLegWo1/n/8MoOkNCPMcJGK4Laq2aWaTKZrJL/wqNKMoub+4WOi7I9GpclAcNBIbIoCnIcsXS3SD47BVqWO6IVIgP5Cvh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=LG9FJpj+; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1789993423; c=relaxed/simple;
+	bh=JV4W5TMXI76KcExHD2GTseLBA6zQn/BdT3kKQ2I+OrI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sfPH4W2l96u8ew4qEqxCCAbghPKt1uh2ioIopM8Qs/WwShdTWqj68Vq3xIq1fKCpP8drptJlVnN4Fu/red+LU+dEbuN3oOVlsLzoVo1ayvHthUCUkphHd0uOdGc+pkRAZNjxfPTVxHmFnZc6FvCRJPOLXaCSQl60Ux5MGgdl0ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pt4lTQm5; arc=none smtp.client-ip=74.125.228.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="LG9FJpj+"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68LB5biG1169483;
-	Mon, 21 Sep 2026 11:59:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=rVDLd6gucClabU9Q1VnKpP2svsAjUe
-	Xvhbu4ISNalWM=; b=LG9FJpj+I6j8rzE7IWzTzPBBU/nihzSzaU6FcelQKgGlPn
-	fW4EL5qeULkQTeMd74DAUlwY6y0fQP+iWjBkJ1XmJy7zJI2B7JQHKdbyRYBw3RV0
-	mZyVNmyyLT5qA71GKG8wiAd46CWO6pmGoAIcaO4OXzakvp3X9t5QYQNVvY8XMX0e
-	EPbGbTWc8isuYxRMAdVwMi689uMZOAqNN0PTuZqjIhDQ6FnlN/FlXTExC29M1WPz
-	5JIz9dJX0HqFA5QrtF7r0G0KCGwFQAbHi3soUdxsV9r/BVZovn68Xr3UtSaOa/WN
-	GVtRVmYqlJfZk3u1JJ4RgIo2Y4tUkNxbjnwIfY9A==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gske1868g-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 21 Sep 2026 11:59:20 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68LAlT2B2063264;
-	Mon, 21 Sep 2026 11:59:19 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gt7dy4v9r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Sep 2026 11:59:19 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68LBxFpR42074556
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 21 Sep 2026 11:59:15 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9CC0420040;
-	Mon, 21 Sep 2026 11:59:15 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 18C1F20043;
-	Mon, 21 Sep 2026 11:59:13 +0000 (GMT)
-Received: from li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com (unknown [9.123.6.5])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 21 Sep 2026 11:59:12 +0000 (GMT)
-Date: Mon, 21 Sep 2026 17:29:10 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Shrikanth Hegde <sshegde@linux.ibm.com>, linux-kernel@vger.kernel.org,
-        Peng Fan <peng.fan@nxp.com>, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org
-Subject: Re: [PATCH] KVM: PPC: use assign_bit() where applicable
-Message-ID: <arEb8QNaPzcywaD8@li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com>
-References: <20260920022618.3145649-1-peng.fan@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pt4lTQm5"
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a99391ffb2so4733870a12.0
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 05:23:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789993420; x=1790598220; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1NSOlcFsa3Q2haBKnE9Qyms84RhbiSQDazU8Yyf+/gY=;
+        b=Pt4lTQm5IBjjZn3nUStQGAiYbM+x81E1AantfoYbrGI1CGoOGAjPQMOiB0t3aCh76m
+         XAmvKVPifLkJWWpnUu1QRh6LAU/ogzvoQNq3s3vhQUKFUXietfGtYII8LRP1WIDUfJ+Z
+         BTLTtL1KBQd6FHHKCt60fa97xo2fm0ycRbmn3Sfg99t6B27wkDvxmi/siMqs5SoJDL6j
+         2ydF17PBn+x9s1QfeccXQRcBQb6KszSUWFynHwCGZ8wRhSEq2RC3gGZUmP4OhD0vNiZI
+         rOuRNyVH6+XS58fYlI/3iBSp1+QnyNBV0VKqnxKAZW/dkoop/g4d9UYfVsmZngr9ke9w
+         ZJdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789993420; x=1790598220;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1NSOlcFsa3Q2haBKnE9Qyms84RhbiSQDazU8Yyf+/gY=;
+        b=y3+FzEhtnVveS3Brmf46GciVn/ev4n80N0vvKZkuFQCPgofrwn0h2ehZJIL+Y9LGrn
+         rqfr7eaRXsVlrfxM/hgcsQkL61TIc5J19I3HpAVgqbjnXxVT7IYFIxvjfXUbImZnc9dE
+         ui/iX7c/RTtlJnImzZCNMdNk41aPnSYrNw1mgUIJKzmLjYxXdEVyU+bPdvJ57oZtfdYA
+         ovBe9RAUY7whWDraib59nQlSs6nHMkC19GxUs+iVs+o6sW/QNtkzrurgegCvMMEwqtZL
+         48HRc01YGAfx4r9lyBbRS8AkpxZ9fQirB/rSRgkPtG8lEZBRH8rJTYR3bwX1rJH2xVTL
+         1vOg==
+X-Gm-Message-State: AFuF++kxctlhv+CEMv82BQNzZ7IVnhnoAEVMBCCylVzvJLnpLD5Mw7D6
+	O8Epm5H7Swdx/ju9PNIiPw8B7UDv6jGbgboevCTuutctXxZSq3Flqjsp2BIjdg==
+X-Gm-Gg: AYBFou0fFIizSDS2hUmlYFIZOyCkyPUh5p+j8tizlOcoq6odiZZCj5y3jrUsL+eA0u6
+	oYgsfTBqNh/E+0sOsrmI65KBGZRanOiVBiuzDs+tbtS8/4zikMhJ0EBPCzugXftV0Crjocm7hCh
+	oAXTegACaFhDqqG5FRKbPVXiiSszAvBJVgV+0ukTkw9r3PfPTyNmsYgzoE/1s7XoeGexhZzzc/G
+	PBuDZLOFD5GGnG9zg4LWJgHSMtdRx7ustNSyHh0mo+xPKMmETGqBrH3s/YuuskSMMOUjHXyZ3s0
+	lm9/9Gc+PU5rxf8XrO6UKmq0PdMgzb15nTX8hcsQyZhByBfHGqz1nvjsOReHmpf7mFUxijGUgKW
+	9nh2Ued27SUpOyOszRJf24Grm7HEhJ7HdBKmg3/XG3k8/nB4Pp5z7RPqs3zbayk6qVBfbAthXn8
+	8gZ3dwXHubydCqYhJmYt/cbMYSh4ENLaH7z+NMxu8GlTfrUxb1wRvlPxTCEodinC+06Z7t+2V1l
+	Y2QgA==
+X-Received: by 2002:a05:6402:20d6:10b0:6aa:915a:f51e with SMTP id 4fb4d7f45d1cf-6aa915af661mr984290a12.17.1789993419349;
+        Mon, 21 Sep 2026 05:23:39 -0700 (PDT)
+Received: from SurHub.localdomain ([196.188.112.50])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6aa67b5eddcsm4228761a12.0.2026.09.21.05.23.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 05:23:39 -0700 (PDT)
+From: Abdifatah Suruur <suruurism@gmail.com>
+To: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: alex@shazbot.org,
+	eric.auger@redhat.com,
+	smostafa@google.com,
+	praan@google.com,
+	ioana.ciornei@nxp.com,
+	nipun.gupta@amd.com,
+	nikhil.agarwal@amd.com
+Subject: [PATCH 0/7] vfio: mmap()/mprotect() hygiene for MMIO region mappings
+Date: Mon, 21 Sep 2026 15:23:27 +0300
+Message-ID: <20260921122334.2099-1-suruurism@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260920022618.3145649-1-peng.fan@oss.nxp.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: JA8Z-cASsVrqxiOfk92DbeQcfOgmTtTH
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIxMDE2OCBTYWx0ZWRfX2MRkXB9s/VQm
- lTxoVUXTPa6eiuem/uVb46ozplf9qTmp/3uALAK3ctZZd9A+P0NxohuWzT0lBQzri5k8aXME2BN
- Z0bpBFSNqX9l3AX8RSZ2zviozcpJUshiQaJNzgngvaPsWY/zITlnpjUDSYbe/kNET51slb1HU6h
- n5h1VYb1Uki+vAWxvM8DjgSDEP35EXOcH9h9cCe0XvzzMFho/U5yX25XTwU0S8rz2PysroFrk7M
- cpEpbgr+240G9+eiUYFu6ewPU+3RlDckOr6BH7aZh/XPCdqNhZpDAo+FAmIB7nK+TLxO6HEmgLc
- HDjoR67uksg+KGTZAEhthLrSJTvtu8R/bpYUjRr8ljQkb4B1+djj7wT9WxgLzxE4YUGXVcoJy1L
- xlb8dHVIGcXHUindza+Dtrlap76jcBsafGUVIXwWreV4kOCe0Cu+MvK9WtMJ2c94mqeDAdZcMMY
- NbsIqO5nkJ8fyrDStdQ==
-X-Authority-Analysis: v=2.4 cv=O/KsLx9W c=1 sm=1 tr=0 ts=6ab11c18 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=8AirrxEcAAAA:8
- a=VnNF1IyMAAAA:8 a=Z0NEbA_iRV-AWij7CAYA:9 a=CjuIK1q_8ugA:10
- a=ST-jHhOKWsTCqRlWije3:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIxMDE2OCBTYWx0ZWRfXw+f82BNwqPEs
- xA8C3MQLa7rTeJ7ktaJBk0tZAROVs43cDuDFfqaWwu+yE5FcdRwfSnKYSKC5LhkIiFhlYt30oya
- XLXcgp6jjWC246ICHTMbRUkps3cEOTo=
-X-Proofpoint-GUID: NAZqCAiihzjNz_cSiZPgqzT21N0PBHPJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-21_04,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 malwarescore=0 phishscore=0 impostorscore=0 suspectscore=0
- bulkscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609210168
+Content-Transfer-Encoding: 8bit
 
-On Sun, Sep 20, 2026 at 10:26:17AM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> Convert open-coded if/else with set_bit/clear_bit to the assign_bit API.
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  arch/powerpc/kvm/powerpc.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index 9194cf492d1c..a567b63a5f1f 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -2210,10 +2210,7 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
->  			break;
->  		if (!kvmppc_book3s_hcall_implemented(kvm, hcall))
->  			break;
-> -		if (cap->args[1])
-> -			set_bit(hcall / 4, kvm->arch.enabled_hcalls);
-> -		else
-> -			clear_bit(hcall / 4, kvm->arch.enabled_hcalls);
-> +		assign_bit(hcall / 4, kvm->arch.enabled_hcalls, cap->args[1]);
->  		r = 0;
->  		break;
->  	}
-> -- 
-> 2.51.0
-> 
-> 
+These seven patches are hygiene/hardening cleanups of the MMIO region
+mmap() paths in vfio-platform, vfio/fsl-mc and vfio/cdx, all in the
+same class as commit a5edadbae57e ("ptp: vmclock: prevent read-only
+mappings from becoming writable").  They do two things:
 
-Thanks for the cleanup.
+ 1. Clear VM_MAYWRITE on regions without VFIO_REGION_INFO_FLAG_WRITE
+    so that mprotect() cannot upgrade a read-only MMIO mapping to
+    writable (patches 1-3).
 
-Reviewed-by: Gautam Menghani <gautam@linux.ibm.com>
+ 2. Keep vma->vm_pgoff in the logical VFIO offset space instead of
+    overwriting it with the physical frame number, and reject
+    non-shared mmaps where the remap_pfn_range() COW special case
+    would overwrite it anyway (patches 4-7).
+
+Proper scoping: no in-tree platform, fsl-mc or cdx device currently
+publishes a region without the WRITE flag, and none of the three
+drivers calls unmap_mapping_range(), so none of these issues is
+reachable today.  The vm_pgoff changes preserve the documented VFIO
+core contract that every device mmap is linked to the device inode's
+i_mapping so it can be revoked; that shared namespace came from
+commit b7c5e64fecfa ("vfio: Create vfio_fs_type with inode per device"), so
+Fixes: tags were dropped from patches 4-7 and kept on patches 1-3,
+pointing at the commits that added each driver's MMIO mmap support.
+
+Previously posted as standalone patches; grouping them into one series
+per Alex's request.  Reviewed-by tags from those reviews are carried
+on the affected patches.
+
+Abdifatah Suruur (7):
+  vfio/platform: prevent read-only region mappings from becoming
+    writable
+  vfio/fsl-mc: prevent read-only region mappings from becoming
+    writable
+  vfio/cdx: prevent read-only region mappings from becoming writable
+  vfio/platform: keep logical vm_pgoff in MMIO region mmap
+  vfio/fsl-mc: keep logical vm_pgoff in MMIO region mmap
+  vfio/cdx: keep logical vm_pgoff in MMIO region mmap
+  vfio/cdx: reject non-shared MMIO mmaps
+
+ drivers/vfio/cdx/main.c                      | 11 +++++++++--
+ drivers/vfio/fsl-mc/vfio_fsl_mc.c            |  9 ++++++---
+ drivers/vfio/platform/vfio_platform_common.c | 15 +++++++++------
+ 3 files changed, 24 insertions(+), 11 deletions(-)
