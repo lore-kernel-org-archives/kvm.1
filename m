@@ -1,164 +1,129 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857B148B389
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 11:29:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789990178; cv=pass; b=h5LrvdABLvSiutXxt31h3anxmWRMZHPEr/UmeGXVeH7IRoAsHfNi2sIoKz/LT2sUPet7SLWmcT7FHD3Qxn61Dj2HcY9avfkr6dymq5WDPC9o2DcBu28WaPEmuqL8BUPRH7FyaPR13PoHxPBylIW1ogrUOCU/mS+eAlohGSQqbAU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789990178; c=relaxed/simple;
-	bh=ptOPvpl8Jn4/467WKDIfcKUlrqRNuCJaQOy7TpWYDfM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ELUCDiqBIWgYf3K5ALRx9loAoWlvTCycBNxPpnZJMlG7LHjFfvwGKxDC8JaZKJNry44Q3BKNx1G3GRFGGRw84ChltZxnJRhN50ISFYLBuveWNorGLD/KCO8XE460AN0pAcygh44ZzdRtoEb6RdMM+popaoU7ucWo0EnSidOnE4I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O6ageLli; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=hFjosavz; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9769148D86B;
+	Mon, 21 Sep 2026 11:43:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789991015; cv=none; b=dauJKz9XswzjHj+HexVdaMWP5E/s+y5B4RufxYkFQTnUk4nBY50txUGb6XN17cVmuJDsY/oGzzJ2St3iBr5AkLoWkELW7S8EuVCSJ0nnz6R46H/xHQrIqNgYIJ22+xnjbnI8jrYjB4Ucyf8TOXg3EG0KLjk91OBq3tLHLZr6UlE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789991015; c=relaxed/simple;
+	bh=/RT1+5/E52WlGRbRy8r6SoysexFm1DrziEDBiKHjW1o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HsXD4b4ftlWEGNJXu0Vh9GgDOSWEhBnSmTrjA84iebpdqpl6rkJz818DAUy78eElIAavRCxvIccyEfJIQikRXzc9baFKrXAE/X5yX9ZcewxmdcfMTyl85158/tJH3oiZ7qrNN5CShq5tV1+0iFFqdt7QHjmn4JhCMFUhgMl28pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EI1Aynum; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O6ageLli";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="hFjosavz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789990175;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ptOPvpl8Jn4/467WKDIfcKUlrqRNuCJaQOy7TpWYDfM=;
-	b=O6ageLlihfDB6076/yHJyZKSoLL3nKRi/zQLTHfzt81mczUIQ9IS0tgvRJ1NlCjqBb4DoF
-	GZrYoV3RbM1da3b462HvAx/mn3gZn/RrTsYJoZiIFO2UQUxFL/1TZPIy0U7ZqqGb/oJSYY
-	phAiGePIBp/H+zTMNVR59vJJTguhh7A=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-34-R5PeqNMHO8S0IHXcUwlpQA-1; Mon, 21 Sep 2026 07:29:34 -0400
-X-MC-Unique: R5PeqNMHO8S0IHXcUwlpQA-1
-X-Mimecast-MFC-AGG-ID: R5PeqNMHO8S0IHXcUwlpQA_1789990173
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4870142fd5cso1489333f8f.0
-        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 04:29:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789990173; cv=none;
-        d=google.com; s=arc-20260327;
-        b=sz+afrs8a+1Ny1a7BbaU9lJx3lRCmFBwvQhYsCh5XEQXvkmNHlG6bTPJEV71Bk4Glz
-         3xXdRMmoxAhveK9yG6KHlzLYsX+XLmfbnQGH0QhpVa8PQGflVaGFc9VkTYcH4fnwz/OO
-         kSA8/em+I6bMXkJvqvpJ3A0S1vlvdbEwbGSXxEVAgjSXoLjAUcepKZZVIibb3JlCsyTe
-         ifBEffpTL2AqFTtLP/7PUgg/+1Z+z7Dt0IHgvpOvzcE4uvdM8hxEFMdM/+c6MiJFYQXR
-         znpbkET0g+ZasDhm1PLPUiPXIvHTlJ1H8dMx2TsD3IAU4l1b83foHOgyArAQWe5GaL2r
-         8qPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ptOPvpl8Jn4/467WKDIfcKUlrqRNuCJaQOy7TpWYDfM=;
-        fh=n2jsaGO3VHSXTCarIqS+1/hasZqOG9b0u8jclMOt94w=;
-        b=EirLdcJiPOfu+mmYigkSIAleFRi5BhUXaZ4Io5/yDZgifzMqtWzCVJPd2jp52MO5Gg
-         ALavlfgy9wgIyc3lfu/zyJOOcaQLSLznUri/AAL+7tyKFaGdGXM1ncdvkVNG9McoAVKY
-         ytEB9PoVLQ7vVqrJwbXToR7+nav/nTi/Q4zT70EhwDKonaTnVt/lYnuxrzwpa/Jjxudh
-         ZWghvvDHF6EIJIbOq7bD5RsUX4ZukLaQ/Hs0KjvhUEr9bycoYTgogRsS3JtyZB6pZ57Q
-         +DXI9XnCnVmJ7q6ZmFdskjoAenFjKjNptG7xKLAFyEKvO8ssVk63CPAfF2PWKIP3nSXR
-         QOeQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789990173; x=1790594973; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ptOPvpl8Jn4/467WKDIfcKUlrqRNuCJaQOy7TpWYDfM=;
-        b=hFjosavzTEBg7sS+/amQKm0DVwQIeND1Et6uVLHGgp9oztjbPFCj1GSVjXpTtW1o4K
-         Bc/WtO6t3w0BAV929yBDSAi710gt9i8vIG6G4IyZ6GylRBVB41jc975KGZ4C1vu8jtTJ
-         x7xcrV9Z/Uk9xBkxBfaUqamjFEOwqtWIVJnzLrJGEKAvBb06h8yPiHXwvPyE6czoy7I2
-         +8i/fivrjJ4mfrJsjj/GSjzW25mhmbFvGSLW+leI/NDqeBUQcrHQxaHhM2koGsHWO/cA
-         SqniDp40toI3F8H6TS7Y1ucl7zgJL2l4gWnJOBTOA0JIIEQ+e05bwbUp/oqKz+wPpNep
-         JPqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789990173; x=1790594973;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ptOPvpl8Jn4/467WKDIfcKUlrqRNuCJaQOy7TpWYDfM=;
-        b=vJnz8ZXR9S0ZqL5VHBrZW0QY0TSmtoBYHVhND3ggZpeoZjiBqIdM0QSkCxC0pzztxY
-         yWzAGCUmGFgLYKa40CMQbfAhGvuoi+cx/G+XQW6ULhFfa6Lb9QmkZG9pLxg6pz0UuHwY
-         YQKsHdptGpUOVIRlv3mV6HKtkqzJYG76niMItcP5OUAs1H1pNXiD3pB6xPAuhx3BxoRn
-         VOHLVdLX8iIbviQ0z/xWReZvzX/gXHnI4Hl3q4IBR8bviYhnVIRrSQOVI7JHHwXqyatY
-         QUIYM+zrFm2QZYZ8q2dMmSEYq3ZWOgbwA8OIkB6pKzCWSJJge7V7F6zAIo9obbjtJ2Pf
-         hYDA==
-X-Forwarded-Encrypted: i=1; AKwUvBzdfCD3RzJ1XDpnK9v5jCr+Eeyv3y14BUeDbH3WTKpzYe31NRpnZx5R2zeBVxlBekt5CrI=@vger.kernel.org
-X-Gm-Message-State: AFuF++lVly36Dnr0qYs+k5xjt1//m/MzWMzB0BXrD87Em+QXiVXS9atq
-	vEQg7oE7+TKm7jKn7f6Xg+ur1Q2jWntuhNpvEm50I3+A8e2KO8QUvbVOWamxrM94Bfh+jxhC9b6
-	q7ClpbgQCohN2HZFc+wtqGIURzcJGp8vU33DhQbeM0UfLnOZvziHFamZI7emj6hrnS3z4yJrFCv
-	M5mOkQ38h7MDwwD7W9arockZkrGmIo
-X-Gm-Gg: AYBFou1t9e1RdbAaMNRLDA9Cy8XfpQPsoWU9bfmpZnAwuk+t5Uty/PMYhm0evOisqTn
-	ekzJaTwYKe7Sab/i4d672Urr9bVUrf/AqjFlmNYHZKp7hOiIELhRwIJBf+Jkbd1+iC7jxqJcOlx
-	w/sVTZKvdgFjT7vvUoqV4y8l28/wfXTSxUrKUGGmgv8NJwHxHqxvu+cqW7OKm1IfbsMrYtaFZic
-	BXiXm3l+vNjF9ZLAzzmzyg90smcl0eY3Ab7gmdQS6Ut9PfNUsfONsBSOQzuDA==
-X-Received: by 2002:a05:6000:491e:b0:487:84:96d7 with SMTP id ffacd0b85a97d-4871e373189mr14673926f8f.53.1789990172840;
-        Mon, 21 Sep 2026 04:29:32 -0700 (PDT)
-X-Received: by 2002:a05:6000:491e:b0:487:84:96d7 with SMTP id
- ffacd0b85a97d-4871e373189mr14673903f8f.53.1789990172510; Mon, 21 Sep 2026
- 04:29:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EI1Aynum"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789991014; x=1821527014;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=/RT1+5/E52WlGRbRy8r6SoysexFm1DrziEDBiKHjW1o=;
+  b=EI1Aynum2Sa9sRXDoiN+JHX/UeNL8VzD+yb/ik9IpmxY4rRPjAgoT4pn
+   EFjb+dwcDW39CGmzlxia4MhGixV55r5VZi+tIl7nx9qV7eNhoAxv1VVtu
+   NTzepe8dEO2EBfVDDPaFmOX0hZwtALA9zOj8jvd6EisejANQVGyu0OaY2
+   Jt1ZR9qzV4VFiWkVAUE+an8u1DqQuJ0Fu8f3HU7Dg3L6coaL4YhpBgaXw
+   ouavf2XDHcSAtFWYLjimYPvvD+sMupHaq+ulA5dWNP98zenXZ9Um0iEh0
+   R0beLVWq0KfQo+YHxljPDD6yk9wFCwIB4baNVXir1qOjC+rJ1xz016BEI
+   A==;
+X-CSE-ConnectionGUID: 1yP+haCLT8K4E37CG7QbVg==
+X-CSE-MsgGUID: iNrWWDxvQOy+7Qp3QNU+EQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11911"; a="107998157"
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
+   d="scan'208";a="107998157"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 04:43:33 -0700
+X-CSE-ConnectionGUID: 3ITumidNRpmkDeKgPcw3lg==
+X-CSE-MsgGUID: 68csLzsyQk+GWI625NrN8g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
+   d="scan'208";a="271774626"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa010.fm.intel.com with ESMTP; 21 Sep 2026 04:43:28 -0700
+Date: Mon, 21 Sep 2026 19:42:40 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>, "Gao, Chao" <chao.gao@intel.com>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Maloor, Kishen" <kishen.maloor@intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+	"Mehta, Sohil" <sohil.mehta@intel.com>,
+	"Fang, Peter" <peter.fang@intel.com>,
+	"nik.borisov@suse.com" <nik.borisov@suse.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>
+Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Configure add-on features on TDX
+ module init
+Message-ID: <arEYMCfdvmiqE4aR@yilunxu-OptiPlex-7050>
+References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
+ <20260915102658.713079-3-yilun.xu@linux.intel.com>
+ <2f6ac9afef52386fc491145222ea46e54c24a73f.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <272c0fdf9e5eb9a1caf6a5c0bf674e3c006ac2ea.camel@infradead.org> <20260921112131.274-1-hdanton@sina.com>
-In-Reply-To: <20260921112131.274-1-hdanton@sina.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 21 Sep 2026 13:29:21 +0200
-X-Gm-Features: AcwNN1Xi_H7uo3XvFAj5sLWKjk7Urm5G8ShkD2xSWIid9H62cmytfHb-xU95uPA
-Message-ID: <CABgObfYZKfSV=Ykmjkey+t1pA4rEEk8=a-VMho4=A0=xNLmKcA@mail.gmail.com>
-Subject: Re: [PATCH 01/17] KVM: pfncache: Use atomic SRCU for readers instead
- of a rwlock
-To: Hillf Danton <hdanton@sina.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, linux-kernel@vger.kernel.org, rcu@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
-	linux-kselftest@vger.kernel.org, Sean Christopherson <seanjc@google.com>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2f6ac9afef52386fc491145222ea46e54c24a73f.camel@intel.com>
 
-On Mon, Sep 21, 2026 at 1:21=E2=80=AFPM Hillf Danton <hdanton@sina.com> wro=
-te:
->
-> On Mon, 21 Sep 2026 11:54:36 +0200 David Woodhouse wrote:
-> > On Mon, 2026-09-21 at 09:42 +0800, Hillf Danton wrote:
-> > > On Sun, 20 Sep 2026 21:49:29 +0100 David Woodhouse wrote:
-> > > >
-> > > > Replace the per-cache rwlock with a dedicated per-VM atomic SRCU
-> > > > domain (kvm->gpc_srcu) for the read side. Readers now run under
-> > > > srcu_read_lock_atomic() alone =E2=80=94 preemption disabled and non=
--blocking
-> > > > enforced, which every GPC read-side section already satisfied as a
-> > > > former rwlock critical section. It works in any context
-> > > > (including hardirq and sched-out paths) and never fails or spins,
-> > > > eliminating the
-> > > > read_trylock() contortions in the atomic paths, the double-lock dan=
-ce
-> > > > with the lockdep subclass hack in the runstate update, and the
-> > > > PREEMPT_RT problems inherent to taking an rwlock in those contexts.
-> > > > In particular, kvm_xen_set_evtchn_fast() is called from hardirq
-> > > > context (timer callback, kvm_arch_set_irq_inatomic()), where taking
-> > > > gpc->lock is a sleeping-lock-in-atomic-context bug on PREEMPT_RT.
-> > >
-> > > Given the preempt_disable() in srcu_read_lock_atomic(), as PREEMPT_RT
-> > > has no way of handling preempt_disable(), you need to add another
-> > > version of srcu_read_lock_atomic() with preempt_disable() replaced wi=
-th
-> > > something like rcu_read_lock().
-> >
-> > Hm? What's wrong with preempt_disable()? It works OK, but is generally
->
-> How is preempt_disable() handled by RT?
+On Tue, Sep 15, 2026 at 08:54:01PM +0000, Edgecombe, Rick P wrote:
+> On Tue, 2026-09-15 at 18:26 +0800, Xu Yilun wrote:
+> > @@ -1012,12 +1021,22 @@ struct tdmr_info_pa_array {
+> >  static __init int tdx_sys_config(struct tdmr_info_pa_array *tdmr_pa_array,
+> >  				 unsigned int nr_tdmr_pa, u64 global_keyid)
+> >  {
+> > +	u64 addon_features0 = get_tdx_addon_features0();
+> >  	struct tdx_module_args args = {
+> >  		.rcx = __pa(tdmr_pa_array),
+> >  		.rdx = nr_tdmr_pa,
+> >  		.r8 = global_keyid,
+> >  	};
+> 
+> It seems inconsistent that global_keyid is passed in even though it is basically
+> global state, while addon_features0 is retrieved from the global state. Passing
+> the result of get_tdx_addon_features0() in from the caller doesn't make a ton of
+> sense. And we already reference tdx_global_keyid globally from another seamcall
+> wrapper. So I'd think dropping the arg when you create the wrapper would be best
+> in the end.
+> 
+> The smallest change to stay consistent would be go add an addon_features0 arg to
+> tdx_sys_config(), but it's hard to justify as good code. I'd maybe go with the
+> global_keyid change and it probably is a separate patch, but we are brushing up
+> against mixing cleanup and feature enabling... thoughts?
 
-It disables preemption. :)
+I'm not sure. My thought would be removing "u64 global_keyid" argument
+for the new added tdx_sys_config(), to make this patch reasonable.
 
-The difference is that *spinlocks* (by virtue of becoming sleeping
-locks) do not disable it, but the low-level primitives preempt_disable
-and get_cpu do not change their behavior.
+And the cleaning up of its caller - config_tdx_module() - could be in a
+separate cleanup patch out of this series, make sense?
 
-Older PREEMPT_RT patches had get_cpu_light() which did
-migrate_disable() instead of preempt_disable(), but then
-migrate_disable() was deprecated.
+make W=1 doesn't complain, but maybe shashiko will.
 
-Paolo
-
+> 
+> 
+> >  
+> > +	/*
+> > +	 * Use SEAMCALL version 1 that supports add-on features if any are
+> > +	 * requested. Otherwise use version 0 for backward compatibility.
+> > +	 */
+> > +	if (addon_features0) {
+> > +		args.r9 = addon_features0;
+> > +		args.version = 1;
+> > +	}
+> > +
+> >  	return seamcall_prerr(TDH_SYS_CONFIG, &args);
+> >  }
+> 
