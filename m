@@ -1,57 +1,57 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AECC55172D2
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 19:14:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149AD51599F
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 19:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790018072; cv=none; b=VDDtSWkpt9iGEFQMRAKuRD/fFcKWF9ED9BvRmVyUKfZddkI3jrr30u1tqFVO6HhLAgD9kDoCzYl3G+k2jfiSeyh2FPIH7ZsDlVzX8wZfpIxlrjXERvPlvGE3Axy7/L+7xu6FY2IU+vGHhSblny3g9pNEbSHXddf1z9PqHsrhklw=
+	t=1790018074; cv=none; b=oSh5pxPgGMwpOCdZx/c7a5X7NBq+SVTLf4U2CJorH55ftYa7FJDfjPggprhfRb/qpLXRG3pA2UMlevXMYIrxQvaboKs4Hqwx5CL9Yzd/EH8LMc9F/lnem+4FUgYp9zc7wpVHVPom/HmQ/w1YxOt++48NYg2ecrNRy/vOJq5hK+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790018072; c=relaxed/simple;
-	bh=1riINGkb8L/lMBS1UBqJLhb7YTi+JdgCbq8563Ste2w=;
+	s=arc-20240116; t=1790018074; c=relaxed/simple;
+	bh=yQyUCvXgCTKSDHTiDA7xPhq5TbGRGnImWydXeQVvkAk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Gmqd12YONLtr6Q74osnJw1qx4gPbMy1PtwY2VlSTuWoCnb/BFZbWmB7cpjwmNsr5HU+unmYwmMl09tQWP3HljXFgGMJ7bfvN6tCsAg3MPQlWFOxQu9XNJL8UaF72TOb03VBwRrO6CcAFKUxvALHqMsJShQl2KcQEg/fPSlEI6sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CVZFDDm/; arc=none smtp.client-ip=209.85.216.72
+	 To:Cc:Content-Type; b=nSFWUwPBfhWs15w8Pv2BnQpYaKg31ctF+a/FQLDKMrWBfIWIcYXsVhcKEneMhvl3zzEZ6PE5vsIO8+1wAuj7HeBjW6KQ4n56+sewHnbwM284oSjga914Zoesy9KqbpJtobwaRXAgbEJ9dZzvc1tAbMwYwZ2qxYpblkHGiW8dg8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FRg2wr0b; arc=none smtp.client-ip=209.85.210.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CVZFDDm/"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-395543dc382so4220593a91.0
-        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 12:14:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FRg2wr0b"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8627258ef12so7275578b3a.2
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 12:14:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790018070; x=1790622870; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790018071; x=1790622871; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=QmFxhUAgOU4dzSpCpiNYSlNdPENSvbq1kjEA7GNm5hU=;
-        b=CVZFDDm/p7orySAXLJonXfGYp+EfygPB0lWlmElihaVKC3KuZGaS594QGT2sYaj6xu
-         ZBdF3AXLyiNgWu0SHHMlODlcHgRdl9eBXWA3d2QWP2z4UObWUQ/G+Gt+vcHspsqzvKT5
-         7W6azSRRdzuCAEM3bKFygWE901LlomdqjttOLn9bUOahCOHK0xx5/VEh16O7KqYfiXDa
-         7cqu3ksfsF7GEtx5K6YpyG67Bh3ZDhjpqSSQDR95lvrUU/5n0lUcS1vOaeP2XB7LgHhD
-         Cld6Ue4Ey8fi8NGgirD6N6+m/NuwxaD/X0kmH+kKK5cIt7Uo/LHw7/dCkkKSEpBDearo
-         KmeQ==
+        bh=blyc7W90tCE2hYz98LJODWSBqsvdm4nd3UjPM9vihBM=;
+        b=FRg2wr0bRZWIuBrVWpTdBHpXMPGsWeqFzTk9y8Fikgkp6E15bEkF1gwi5RZwMfCjrH
+         HpV7urJ0b9rrFMhMCxifRHx85HDZ2om+KHotmdPzDsUOQiI26xMD3k6CCsG7B9WpZfTo
+         efLLcmoMtIdVE4cShD97MA7IhCrgawrRuo6aFlhKTZ83aQKtHzkfsTlwxFn4rwyFieZn
+         j+OsiCUmUYX7ZnFVFa0nSY4kOIjXvH8VeeZKF/ioeWLobFUi6YpomvK4OjGVzEwLk8ii
+         U4kVBZWXnjx19d5/woplEb2l8rmP7ZOTuk91BCxshMWGP19U8KnsPLhJ7u/xzuQm5zE7
+         MEKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790018070; x=1790622870;
+        d=1e100.net; s=20260707; t=1790018071; x=1790622871;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=QmFxhUAgOU4dzSpCpiNYSlNdPENSvbq1kjEA7GNm5hU=;
-        b=Sm6ruuUroxO8KXIhI6XAq+GIJSyFpxiLnbqe9gnvV7BCBWdD8GzyJ9mfoyVh9lm/dW
-         OiJRFgr5OaqT0E/QxEbq5V9ULnWaWKLvpjzfhVBomEXwHqN11yH1KZ2IU77jAGhztZjg
-         Q2gO9IgeA5aRzg/udoJRSZDjjv6tZfb2vH+YpidNIjKHSBIXvnX+nVF5+PVimFO7vOao
-         QcgRyS0FluRzwMAopFYygk//jydSdXS3IAJvYwDVxzz9EGGp6ZsIYw1WRVtZ4OXCWfvx
-         1VK2C+r5qu5Puq9CO6qWe1hwNsaZwt8HmPlgjSVJNTb8cKA6nM/fBmjxZ211L4MqNwIU
-         5EBw==
-X-Forwarded-Encrypted: i=1; AKwUvByZZF/wMnvGvLb5FjhRyGHMjXTXYltC6AUP8kxDjh3NEk0HY3XluE2zJ/HrXzFyGKoXnUQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++nAMk8bi3P1OQt2pRyX2ClK7xJUft3OpTyt00ntnknQUVLd7uXa
-	DyXlMWg5fkOjjAVC1p7qhjBmXyI1Z2TxhO3NVCR49q9uoYLadS9TJS9apyToxk0de18lNwfOTbS
-	lXCcKiw==
-X-Received: from pjbmp14.prod.google.com ([2002:a17:90b:190e:b0:3a0:6737:b83])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:55d0:b0:39e:6a81:c921
- with SMTP id 98e67ed59e1d1-39e6a81c9bbmr13344548a91.20.1790018069667; Mon, 21
- Sep 2026 12:14:29 -0700 (PDT)
+        bh=blyc7W90tCE2hYz98LJODWSBqsvdm4nd3UjPM9vihBM=;
+        b=NCdp80im3wP0Eu7DRVCHa0gXqH0axLLGxNDzbfA4aT0SNSvdOJwgTqym3U266CYNGv
+         VGEQqFMnw9vEqPVKoRtz+GpGp9ubreBu0wgYMUF2XHnucgjoXkyihdb4Y2GMmfD5Ehky
+         Bxo5+qGoJt32C02TU+1t+Kax0nVcuDWmD2lg0Zq6oQlXg8+Ych/Fh7N+Y617V/1qcUew
+         1V7vKeuN11HgG2XlxvjZh8OJHjIieWxGKlFxMbcKWjU0Yj2hBxofq90AUynABopqEFXI
+         9aTqQ3giG5FvI+gzUv2p7dJT/6uXdOWPAEz7LiAjp72+FOBB5dLPykVE4Kg24eQheL+r
+         vnMg==
+X-Forwarded-Encrypted: i=1; AKwUvBwJZdT4YHo913h5C4nFM1aEfayNKTHugock78AmEQChMd+4ziZvXk0TKpilkU0fauurhWQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++nAK6QB0ySx2/rriV2HZm3RUx0YhSA1dbIYsf24iZM3naVDTSGi
+	OEHDjeb4cQZ5zIWxSaOqq4LlJ3gCs/i7uNogyhn4qS0nr+UxTbA9aAHC42xMRNYp7tanBZxNCtj
+	H2YzZDw==
+X-Received: from pfrb17.prod.google.com ([2002:aa7:8ed1:0:b0:86d:adb4:abb8])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:124c:b0:873:2525:9a00
+ with SMTP id d2e1a72fcca58-874d8b82281mr15799924b3a.0.1790018070774; Mon, 21
+ Sep 2026 12:14:30 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Mon, 21 Sep 2026 12:14:16 -0700
+Date: Mon, 21 Sep 2026 12:14:17 -0700
 In-Reply-To: <20260921191418.950933-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -61,9 +61,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260921191418.950933-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260921191418.950933-9-seanjc@google.com>
-Subject: [PATCH v4 08/10] KVM: VMX: Drop a redundant pmu->global_ctrl check
- when processing pebs_enable
+Message-ID: <20260921191418.950933-10-seanjc@google.com>
+Subject: [PATCH v4 09/10] KVM: VMX: Only tell perf to enable PEBS counters for
+ fully enabled PMCs
 From: Sean Christopherson <seanjc@google.com>
 To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
 	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
@@ -78,35 +78,130 @@ Cc: Mark Rutland <mark.rutland@arm.com>,
 	Sashiko Bot <sashiko-bot@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Drop a redundant check that a PMC is globally enabled when looking for
-PEBS counters that are cross-mapped between the guest and the host.  The
-for-loop explicitly iterates over pmu->global_ctrl, and since PEBS requires
-PMU v2+, kvm_pmu_has_perf_global_ctrl() must be true, and thus
-pmc_is_globally_enabled() is simply checking that the bit is set in
-pmu->global_ctrl.
+When passing the guest's requested PEBS_ENABLE (or rather, KVM's version
+of PEBS_ENABLE on behalf of the guest), omit counters that are locally
+disable and/or don't have a perf event (due to contention), in addition to
+omitting counters that are cross-mapped in the host.
 
-No functional change intended.
+In practice, this should be a nop as perf will already have disabled the
+associated counter, i.e. cpuc->pebs_enabled should have been cleared, but
+paranoia is cheap, and the existing code _looks_ wrong.
 
 Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/vmx/pmu_intel.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/kvm/vmx/pmu_intel.c | 30 ++++++++++++++++--------------
+ arch/x86/kvm/vmx/vmx.c       | 11 +----------
+ arch/x86/kvm/vmx/vmx.h       | 15 ++++++++++++++-
+ 3 files changed, 31 insertions(+), 25 deletions(-)
 
 diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index a21e146ad4f2..040b8e80cf86 100644
+index 040b8e80cf86..472cf51298b4 100644
 --- a/arch/x86/kvm/vmx/pmu_intel.c
 +++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -763,8 +763,7 @@ u64 intel_pmu_get_cross_mapped_mask(struct kvm_pmu *pmu)
- 	host_cross_mapped_mask = 0;
+@@ -747,34 +747,36 @@ static void intel_pmu_cleanup(struct kvm_vcpu *vcpu)
+ 		intel_pmu_release_guest_lbr_event(vcpu);
+ }
  
- 	kvm_for_each_pmc(pmu, pmc, bit, (unsigned long *)&pmu->global_ctrl) {
--		if (!pmc_is_locally_enabled(pmc) ||
--		    !pmc_is_globally_enabled(pmc) || !pmc->perf_event)
-+		if (!pmc_is_locally_enabled(pmc) || !pmc->perf_event)
+-u64 intel_pmu_get_cross_mapped_mask(struct kvm_pmu *pmu)
++u64 __intel_pmu_compute_pebs_enable(struct kvm_pmu *pmu)
+ {
+-	u64 host_cross_mapped_mask;
++	u64 guest_pebs_enable = pmu->pebs_enable & pmu->global_ctrl;
++	u64 pebs_enable = 0;
+ 	struct kvm_pmc *pmc;
+ 	int bit, hw_idx;
+ 
+ 	/*
+-	 * Provide a mask of counters that are cross-mapped between the guest
+-	 * and the host, i.e. where a guest PMC is mapped to a host PMC with a
+-	 * different index.  PEBS records hold a PERF_GLOBAL_STATUS snapshot,
+-	 * and so PEBS-enabled counters need to hold the correct index so as
+-	 * not to confuse the guest.
++	 * Omit counters that are locally disabled, don't have a perf event, or
++	 * ended up with a perf event that is using a different counter than
++	 * the guest, i.e. where the guest PMC is different than the host PMC
++	 * being used on behalf of the guest.  PEBS records include
++	 * PERF_GLOBAL_STATUS, and so using a counter with a different index
++	 * means the guest will see overflow status for the wrong counter(s).
+ 	 */
+-	host_cross_mapped_mask = 0;
+-
+-	kvm_for_each_pmc(pmu, pmc, bit, (unsigned long *)&pmu->global_ctrl) {
++	kvm_for_each_pmc(pmu, pmc, bit, (unsigned long *)&guest_pebs_enable) {
+ 		if (!pmc_is_locally_enabled(pmc) || !pmc->perf_event)
  			continue;
  
  		/*
+-		 * A negative index indicates the event isn't mapped to a
++		 * Note, a negative index indicates the event isn't mapped to a
+ 		 * physical counter in the host, e.g. due to contention.
+ 		 */
+ 		hw_idx = pmc->perf_event->hw.idx;
+-		if (hw_idx != pmc->idx && hw_idx > -1)
+-			host_cross_mapped_mask |= BIT_ULL(hw_idx);
++		if (hw_idx != pmc->idx)
++			continue;
++
++		pebs_enable |= BIT_ULL(pmc->idx);
+ 	}
+-	return host_cross_mapped_mask;
++	return pebs_enable;
+ }
+ 
+ static bool intel_pmu_is_mediated_pmu_supported(struct x86_pmu_capability *host_pmu)
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 8f7d0620f44c..2d0443562a16 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7364,20 +7364,11 @@ static void atomic_switch_perf_msrs(struct vcpu_vmx *vmx)
+ 		return;
+ 
+ 	struct x86_guest_pebs guest_pebs = {
+-		.enable = pmu->pebs_enable,
++		.enable = intel_pmu_compute_pebs_enable(pmu),
+ 		.ds_area = pmu->ds_area,
+ 		.data_cfg = pmu->pebs_data_cfg,
+ 	};
+ 
+-	/*
+-	 * Disable counters where the guest PMC is different than the host PMC
+-	 * being used on behalf of the guest, as the PEBS record includes
+-	 * PERF_GLOBAL_STATUS, i.e. the guest will see overflow status for the
+-	 * wrong counter(s).
+-	 */
+-	if (guest_pebs.enable & pmu->global_ctrl)
+-		guest_pebs.enable &= ~intel_pmu_get_cross_mapped_mask(pmu);
+-
+ 	/* Note, nr_msrs may be garbage if perf_guest_get_msrs() returns NULL. */
+ 	msrs = perf_guest_get_msrs(&nr_msrs, &guest_pebs);
+ 	if (!msrs)
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index 5c4e2cf6256c..1db461060c7e 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -664,7 +664,20 @@ static __always_inline struct vcpu_vmx *to_vmx(struct kvm_vcpu *vcpu)
+ 	return container_of(vcpu, struct vcpu_vmx, vcpu);
+ }
+ 
+-u64 intel_pmu_get_cross_mapped_mask(struct kvm_pmu *pmu);
++u64 __intel_pmu_compute_pebs_enable(struct kvm_pmu *pmu);
++
++static inline u64 intel_pmu_compute_pebs_enable(struct kvm_pmu *pmu)
++{
++	/*
++	 * Avoid the function call overhead in the common case that the guest
++	 * isn't using PEBS.
++	 */
++	if (!(pmu->pebs_enable & pmu->global_ctrl))
++		return 0;
++
++	return __intel_pmu_compute_pebs_enable(pmu);
++}
++
+ int intel_pmu_create_guest_lbr_event(struct kvm_vcpu *vcpu);
+ void vmx_passthrough_lbr_msrs(struct kvm_vcpu *vcpu);
+ 
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
