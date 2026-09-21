@@ -1,115 +1,88 @@
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D8A4C33DC
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 15:41:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89904BE44F
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 15:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790005310; cv=none; b=QTnNqZg7J+T0YhRSx0ARLn0/VjSo9nvbLM9+HO+TSqggXSoSbr2w+vGzRDwYNiwIBmrhlDYqLyM8fUZEPFiUJ/Sw7W3HRlxhUYvO7RBGxJ2CipSHf5lbxHDCQmjJ6Iy0X37eC/shVkoqyBkvfDrmdn/dAqPvjJjfKv/Z7HFJoIU=
+	t=1790005990; cv=none; b=JlfXNF076WBBXhBYOLwf4xvJLiREax1Yqy8GtDBnhQlMP5NNHaDXr1UVS4ZUXoI9nusx6d0g4gjj7d4r8OwYTdJHRnlw7yqwitdfZCoZLZgRiZL14TRI5QIuNfr6XirxalT4U4vZk78iE2dOBwtyWZUlsQHVtXFFAvsxuleSG2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790005310; c=relaxed/simple;
-	bh=J3AvrX0iFYPsJjr3XrHKx7R6sWHc8XiaeuJLdLknwCM=;
+	s=arc-20240116; t=1790005990; c=relaxed/simple;
+	bh=deE4L1phZlstjUwtD/hOmh7Gl6v0yYFFKPYYt+wx6l4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UpAFePo+a94T9WxvEevTGDPHagF/VSONK73F35b2BmM4/6mNQyIZTohVxzxR7bsQvMkbHP3bxNf2roxXnVO+jH8Yv4bVgN9Uwj1zjvkPqxHL6lT/9otNuJ1Du5WhE9gpZqOcbAGUxd0/89dz/IcfDhwf1tMyLRerbNHGzCuUIi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r3HAa2W8; arc=none smtp.client-ip=209.85.210.197
+	 To:Cc:Content-Type; b=Ko//MMUjnx6ZIl8/4tUaI+mBqBpJ9joGfHekP5+W5ThRg8jNzgPknw8m1dv0rw9xlnVyk32kwDa5rHrdGcOwikI5vLrBms1VOp3MWVvM6dRZGo2qdGWxF2pUOsR4ZLUcwTZlJw2pQ2wc8knQdCVqutv//Q52a75gC80y/ofajZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FBsqlHhe; arc=none smtp.client-ip=209.85.216.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r3HAa2W8"
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-86a0dc7f26cso4926358b3a.3
-        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 08:41:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FBsqlHhe"
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38e8fee6af3so3988994a91.1
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 08:53:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790005307; x=1790610107; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=SCrR0emCujd+YdQmomlKx8U5XxO1W+9NZytUeTIcwzs=;
-        b=r3HAa2W8kuD04JyjmDuxVU8Ob++2sJeEZcZRzG8SYnsc+SqxN17Zs694pORaH0r5fW
-         nln8qYobG5d69md0RbQ6nJgikMXrCoT6yFSkK3wD4dZcMTwoXMWrjK+FW+t6H8WsC6/v
-         fKJW+M2rrZ2KchJAnRvYUX2rMdGwC2g+fGS68KqwK8p4fejTJ0Dze3bpopRF3QmoC4nP
-         DYDxa65Fnkxc9sX8TyDBIbXcOjh0RLkdaNSQVvaiz/3p+SuLu+/ewowba2oCrOMpVKj8
-         BSMzjtozkm5qB7FmsZ6LUSsHdg5L6dG/0MOwNO/S8tw3rHijqTGe1PBik2HPovSBMegE
-         c8/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790005307; x=1790610107;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1790005988; x=1790610788; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SCrR0emCujd+YdQmomlKx8U5XxO1W+9NZytUeTIcwzs=;
-        b=japb9QsMvrLJNXO/NBtXPX8zlDtdwwEr9jt8R9/iGAKRe3G0KeSLFjPKPHldaK/r2X
-         0WCbQtV+GCD9tEbkFeSmay7hkfWm8YwMAqnSohznVcu/Z975gxsMqlSxmaek01m2X1Cv
-         thMPAdF2pI0e5waQmdQfqErLKwJ+CuSWjBtWbDZsBOp5OgSTdjDMITPaLxD/SJVQj1Xv
-         BtULHDgb3pYfsL2gELj5+Phej/7pAaGwlhaLj58o3xGRUdB2+d/m46H/ba6GQ8C2HIwZ
-         3DR8mtIVIgAdhmflvGfbXkNZbzieieEOceecJT5c7iMsjCHtjKwy4geXRceeYzBg82BN
-         3z/w==
-X-Gm-Message-State: AFuF++k1P+cPM2IV/XnBys7w34lohRCoxtDUXHdBvtIdjkBoyAy/NRlW
-	LL4ng9ddyWgNiBOUUEkt1S2m83417w4sYCpI2yrU8LswUCOR88iLKdnAfMUbc/xF5XhqxrUSiIG
-	Q/SCrEg==
-X-Received: from pfbmc17.prod.google.com ([2002:a05:6a00:7691:b0:847:8ffb:40ad])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3a21:b0:878:34d7:6a24
- with SMTP id d2e1a72fcca58-87834e74820mr8043003b3a.38.1790005306488; Mon, 21
- Sep 2026 08:41:46 -0700 (PDT)
-Date: Mon, 21 Sep 2026 08:41:45 -0700
-In-Reply-To: <CABgObfbtL48EP7+_VJirWxFj+NWnn=kmF6CF+qdctyHv_a4FAw@mail.gmail.com>
+        bh=uqyNAjUM/X3Er3N+3LwH1+bQva2o+MZwhfp2+qk6KPs=;
+        b=FBsqlHheuwCYW6f1SJ5Ujk8n6Drypp4VByQkBkPmSSJY9Zq9p6DKNTUiIVPdYNHgog
+         K8uzav7yEBkSNjbViuBIQBTNA0HMG8cQIpN7V4mEBwD6SIFiam/Iwp+U6YqELsg/sBYu
+         gzKSRJ/RTo4grznGe2NHbV6U6BifcYnFK0WSxvlKL8RobZ3Y05MLQbzxu8uE8caXAs8x
+         C5ySAfEkNEoLZRm3NX116AxbisniA9YHgmbRd2ufGSAnsbmLmtlvvBTWvieyKw6reOR7
+         nC+3WcwmOcUIAilrOf+G7HWLayhELtFuAARrmMfofnpFrqi0Eq/EwOpKDEgppqioe2Y1
+         M7oQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790005988; x=1790610788;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uqyNAjUM/X3Er3N+3LwH1+bQva2o+MZwhfp2+qk6KPs=;
+        b=vEF2iy4Bl68yAYSyt/0pvVQ3ybcQHId+9QRR8kDUvUEcQDYLl/dJpMLqLANQmFHiOo
+         7HvUoPzqBNAlssdZMLQt4prwyvLPv77nWj5khy7T6zW/3X7n+zXKyI39k8nXitmcxyFw
+         FHA+Toy5WG9pBFEqhxSQ6wuRIW1PcF6wK6/6Mha/shT4uiM6ejUOG+H8DcwEayzmUvyS
+         WbybibJ40ar3001hZtHjuR6EIYixA+8GoEaqsTNuQ4AsIgx6H6XmpsHAmFklUxMDuyEA
+         2UmAYAa5pbwE7OvGiJeQcJKcej24JeArsXQX8DDfivdYmGIXhD1wJwpRRh7hI+fsx0xc
+         zaTg==
+X-Forwarded-Encrypted: i=1; AKwUvBxGQ2wxINE1OlL5x850S0AbgLTBDukthZPSf/T3CnI6HRocgCFe8FsbZMQdZFRhcz8XF5s=@vger.kernel.org
+X-Gm-Message-State: AFuF++meTeKyXZS5O+MW6xRGI15dHy/B6MQcUQzE0K492CFKbZUM3EiR
+	nTtG/YeNrjiBERFo64AFZmjTVQoVREPlirY3Zlb0dOmIkULetjMzCNUBLAg4hm/oP8zDuJzMS1i
+	VCfLd1w==
+X-Received: from pjqo9.prod.google.com ([2002:a17:90a:ac09:b0:3a0:3aee:4edb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:224c:b0:39e:4c80:f67c
+ with SMTP id 98e67ed59e1d1-39e54eb71e9mr16522971a91.27.1790005987577; Mon, 21
+ Sep 2026 08:53:07 -0700 (PDT)
+Date: Mon, 21 Sep 2026 08:53:06 -0700
+In-Reply-To: <ac24c392-c7bd-47dd-a055-ea5f46cbbca8@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260826164214.756512-1-seanjc@google.com> <178999899502.746042.13434207152687268434.b4-ty@google.com>
- <CABgObfbtL48EP7+_VJirWxFj+NWnn=kmF6CF+qdctyHv_a4FAw@mail.gmail.com>
-Message-ID: <arFQOQzsyonmp0rm@google.com>
-Subject: Re: [PATCH v2 0/4] KVM: x86/mmu: Fix pre-fault and map private loops
+References: <20260818234238.618158-1-dongli.zhang@oracle.com>
+ <aoVDogaO_0IYZQwm@intel.com> <ac24c392-c7bd-47dd-a055-ea5f46cbbca8@oracle.com>
+Message-ID: <arFS4k_G3mukB-s9@google.com>
+Subject: Re: [PATCH 1/1] KVM: x86: lapic: update apic_base and APIC ID together
 From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Kai Huang <kai.huang@intel.com>, 
-	Yan Zhao <yan.y.zhao@intel.com>, Sashiko Bot <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Dongli Zhang <dongli.zhang@oracle.com>
+Cc: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org, pbonzini@redhat.com, 
+	joe.jin@oracle.com
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Sep 21, 2026, Paolo Bonzini wrote:
-> On Mon, Sep 21, 2026 at 4:07=E2=80=AFPM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> >
-> > On Wed, 26 Aug 2026 09:42:10 -0700, Sean Christopherson wrote:
-> > > Fix a bug in the pre-fault path where KVM fails to reload an invalida=
-ted
-> > > MMU root, which puts the KVM_PRE_FAULT_MEMORY task into an infinite l=
-oop
-> > > (although it's breakable, so not fatal to the host).  My best guess i=
-s that
-> > > the test started failing once PREEMPT_LAZY was enabled by default.  N=
-ote,
-> > > the bug is *really* easy to repro with a to-be-proposed patch to have=
- KVM
-> > > do auto-pre-faulting[*], i.e. prefetch surrounding pages on fault.
-> > >
-> > > [...]
-> >
-> > Applied to kvm-x86 mmu, thanks!
-> >
-> > [1/4] KVM: x86/mmu: Reload MMU on *every* page pre-fault attempt/iterat=
-ion
-> >       https://github.com/kvm-x86/linux/commit/355323a4dc94
-> > [2/4] KVM: x86/mmu: Harden "map private PFN" against unexpected root in=
-validation
-> >       https://github.com/kvm-x86/linux/commit/698b8c88e159
-> > [3/4] KVM: x86/mmu: Top-up memory caches when retrying "map private PFN=
-"
-> >       https://github.com/kvm-x86/linux/commit/6415d9c4ee19
-> > [4/4] KVM: x86/mmu: Add sanity check to detect stale page faults in "ma=
-p private PFN"
-> >       https://github.com/kvm-x86/linux/commit/f7a3be227619
->=20
-> Should I apply this to kvm/master?
+On Wed, Aug 19, 2026, Dongli Zhang wrote:
+> On Tue, Aug 18, 2026 10:48:18PM -0700, Chao Gao wrote:
+> > So the goal is to avoid a _transient_ APICv inhibit in a corner case?
+> 
+> Yes.
+> 
+> > 
+> > If so, please spell out in the changelog why it's worth fixing.
+> 
+> Regarding "why it's worth fixing," the primary motivation is to avoid
+> unnecessary APICv inhibition and reactivation, ideally throughout the entire
+> lifecycle of a VM.
 
-I'm not opposed to pulling this into 7.3, but I also don't think it's neces=
-sary.
-There's no danger to the host, and without the auto-pre-faulting functional=
-ity,
-it effectively requires a deliberately misbehaving VMM.  I doubt this will =
-impact
-anything other than the pre-fault selftest for 7.3.
+That doesn't explain why it's worth fixing, that just explains what you're trying
+to do.  IMO, serializing xAPIC<=>x2APIC transitions across vCPUs and conditionally
+taking a per-VM lock in vCPU context is not at all worth fixing a transient
+condition that requires hitting a small timing window in a relatively rare, slow
+path.
