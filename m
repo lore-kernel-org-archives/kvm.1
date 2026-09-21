@@ -1,33 +1,50 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1810C476CE6;
-	Mon, 21 Sep 2026 09:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C4846EF72
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 09:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789983184; cv=none; b=gSRtc1BoMNdZ3tYgl4msoeAX4lFXEVbvClA0X6jfPiagnoeVl0gGvA6q8S3ihLHCG06GHVzR9O+yAv6eVm1dkOPdHYmBZXK13HgjdIIFv7ygiC5bTHgYq68MplI84UaN9TWvOlF79tHX0dOGn210B8bGJMUkDkywrU9d//xeehA=
+	t=1789983569; cv=none; b=X+NaJQN4nJUierLBhHDLitELNwjoEYNqlAFDABxPXoWCysnvLxBOMZuIve84mZtXQCcjt+tFwK9rRA2rVEKuvYW0768c/OxsKGfn/W3i4Y335vLm+dch2Y8Wjyqm2QAJzAqLXC9yhVeL5oexrCXvfYhcVgO2EehxMfnirwQWENU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789983184; c=relaxed/simple;
-	bh=B+BCQeVg0IeeUhu6Ob/UgCt/CZY7OCEK8gMHWMyBohk=;
+	s=arc-20240116; t=1789983569; c=relaxed/simple;
+	bh=5qs67O9O4X0BC+o/8CNVHrVTiAbkAXPQSAKyMHXk4Sg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aX3f6EksUURliZyFcqINHzjD5B86B7XI96FnI4qYTh+hI6YV9cANowbogFNDhrAgtDbCihyHLO8hRswIi3i84aFHlxnrRFk9mr8XPqjSNeo7VO9sVQtE2Oa9rvFDE3WNpRRpGu0IsKTcNdGs3Wb8aJv6gmFY2G/rU8mhqA2oCbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=vrTxUkU5; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 In-Reply-To:Content-Type; b=kDh8KsIW1x1DJ94WNdLVzep7svnxODj7gT5PKa803YmZUP9AHTQNjxoDznBhc6a5fUBLZ+6YitqURqg4wuxAiA5r/s1oLycX4m9WMAi1FjzxYV8/P5jqb1anquqoJOxCRM66PpGuO7HWjJ4nwN3IYdTwaMul/M7M1yncyJHIUxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PFQODTDF; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="vrTxUkU5"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EAEA61476;
-	Mon, 21 Sep 2026 02:32:58 -0700 (PDT)
-Received: from [10.0.128.141] (unknown [10.0.128.141])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 28C9B3F86F;
-	Mon, 21 Sep 2026 02:32:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789983182; bh=B+BCQeVg0IeeUhu6Ob/UgCt/CZY7OCEK8gMHWMyBohk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vrTxUkU5EokJyM+O6vocnZOre+9Hm/zL/psZb2j5wq0ib0aPS77g8TxaTl+R6pBo7
-	 vxkpDKVN4HocH01hrrylZzzdL9upfpdvpXEealrDA1Ba5SMWmFOqqaqVjfxjeLR5jt
-	 DSNnAGCwoigCPtBiotCwuNvfddJajT2mvtAGQIxM=
-Message-ID: <65b0c03b-36b9-4e60-aa55-c3b4b85e21ee@arm.com>
-Date: Mon, 21 Sep 2026 10:32:57 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PFQODTDF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789983566; x=1821519566;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=5qs67O9O4X0BC+o/8CNVHrVTiAbkAXPQSAKyMHXk4Sg=;
+  b=PFQODTDFW48uUne7zRj9dnVhoqlTMA1kBJzRdop/Jq4itSVmSqUZ86J7
+   /+V+FZ4YoiJh4Ph5I48CDwaUnym9bQXZBq9S2RRuLA51DsZH1+Urzy2+N
+   ajKJtgbCNRG3HiGZOHTSiI3h2CBooidsGi5AZAXxY5ic/VoqufMMyDgsF
+   9cAoMC7KYVA5h3xHvyE9x6Y7zrDAs5Zvp6tLCdb1zCgTZyKSmagXXYuG1
+   CV0gC3gCfvDF2De3t0nPxWq2ZhFWiCZW7w+Td6JSnud/3XypTdUcnIAun
+   9Dk6i+FzwKRihuwe2Qqofy5edFoAVWaxfPkfO+UkFKX/ci3sk52zfq2mo
+   Q==;
+X-CSE-ConnectionGUID: WHmyr/HnTKWZWv/cAwjpsA==
+X-CSE-MsgGUID: DFYhnac8SjWHppeBk83qkA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11911"; a="90503094"
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
+   d="scan'208";a="90503094"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 02:39:25 -0700
+X-CSE-ConnectionGUID: rvfaqZ8qThmHrmOCZH9wyQ==
+X-CSE-MsgGUID: QJh34q2oToy6mCUA98boZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
+   d="scan'208";a="271114303"
+Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.239]) ([10.124.241.239])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 02:39:24 -0700
+Message-ID: <1de5af16-06a5-4b97-ba92-0a4ac02c32ff@linux.intel.com>
+Date: Mon, 21 Sep 2026 17:39:21 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,145 +52,140 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18 6/7] firmware: arm_rmm: Ensure the RMM has GPT entries
- for memory
-Content-Language: en-GB
-To: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
- will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
- <20260912083611.2513845-7-suzuki.poulose@arm.com>
- <178978126543.2352296.12214136703168879825.b4-review@b4>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <178978126543.2352296.12214136703168879825.b4-review@b4>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v9 12/12] KVM: x86/pmu: Support RDPMC Metrics Clear Mode
+To: sashiko-reviews@lists.linux.dev, Zide Chen <zide.chen@intel.com>
+Cc: kvm@vger.kernel.org
+References: <20260918193937.569414-1-zide.chen@intel.com>
+ <20260918193937.569414-13-zide.chen@intel.com>
+ <20260918202200.F39971F000FF@smtp.kernel.org>
+Content-Language: en-US
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <20260918202200.F39971F000FF@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 19/09/2026 02:27, Jonathan Cameron wrote:
->> The RMM maintains the state of all the granules in the system to make
->> sure that the host is abiding by the rules. This state can be maintained
->> at different granularity, per page (TRACKING_FINE) or per region
->> (TRACKING_COARSE or TRACKING_INTERMEDIATE). The region size depends on the
->> underlying "RMI_GRANULE_SIZE". For a "coarse"/"intermediate" region, all pages
->> in the region must be of the same state, this implies we need to have "fine"
->> tracking for DRAM, so that we can delegate individual pages.
->>
->> For now we only support a statically carved out memory for tracking
->> granules for the "fine" regions. This can be extended in the future to
->> allow modifying the tracking granularity and remove the need for a
->> static allocation by the firmware.
->>
->> Similarly, the firmware may create L0 GPT entries describing the total
->> address space. But if we change the "PAS" (Physical Address Space) of a
->> granule, then the firmware may need to create L1 tables to track the PAS
->> at a finer granularity. Linux therefore checks if the platform firmware manages
->> the PAR region. i.e., the firmware is in charge of managing the L1 GPTs
->> (creation and the required memory for the GPT tables - via static carveouts)
->> without host intervention. Support for dynamic GPT creation by the host will be
->> added later.
->>
->> If the firmware requires us to manage the tracking or GPT memory, Deactivate
->> the RMM and reclaim any memory donated at RMM activation.
->>
->> Apply the same checks when hotplugged memory is brought online.
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> [ Switch to RMI_GPT_L1_INFO for checking GPTs and deactivate RMM ]
->> Co-Developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> 
-> A few comments inline.
-> 
-> 
->> ---
->>   Changes since v17:
->>       * Move wrappers that may not be used elsewhere, out of arm-rmi-cmds.h
->>   Changes since v16:
->>       * Check fine tracking and create L1 GPTs for hotplug-added memory.
->>       * Clarify the L1 GPT setup and move the explanatory comment.
->>       * Switch to using RMI_GPT_INFO command for checking the GPTs.
->>       * Deactivate the RMM and reclaim the memory if we can't proceed.
->>   Changes since v15:
->>       * Skip firmware-reserved NOMAP memory in rmi_init_metadata()
->>       * Handle negative error codes from wrappers.
->>   Changes since v14:
->>       * Move the implementation into drivers/firmware/arm_rmm.
->>   Changes since v13:
->>       * Moved out of KVM
->> ---
->>   drivers/firmware/arm_rmm/rmi.c | 200 +++++++++++++++++++++++++++++++++
->>   include/linux/arm-rmi-cmds.h   |   2 +
->>   2 files changed, 202 insertions(+)
->>
->> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
->> index ecc89e91d264..583e1aca9b15 100644
->> --- a/drivers/firmware/arm_rmm/rmi.c
->> +++ b/drivers/firmware/arm_rmm/rmi.c
-> 
-> 
->> + */
->> +static inline long rmi_gpt_info(unsigned long start, unsigned long end,
-> 
-> Why inline vs letting compiler make it's mind up?
-> Same in other places
-> 
->> +				unsigned long *out_top,
->> +				unsigned long *out_gpt_par_state)
->> +{
->> +	struct arm_smccc_1_2_regs regs = {
->> +		SMC_RMI_GPT_INFO, start, end,
->> +	};
+
+On 9/19/2026 4:22 AM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> - [High] pmu: event filter mistakenly strips METRICS_CLEAR_EN from fixed_ctr_ctrl_hw
+> - [Medium] pmu: METRICS_CLEAR_EN unmasked without validating fixed counter bounds
+> - [Low] pmu: emulation incorrectly ties PERF_METRICS clearing to SLOTS PMC existence
+> --
+>
+> commit 8ba3725c32dbde4a1c3935cb433e898e06425b83
+> Author: Zide Chen <zide.chen@intel.com>
+>
+> KVM: x86/pmu: Support RDPMC Metrics Clear Mode
+>
+> This commit adds support for PERF_CAP_RDPMC_METRICS_CLEAR (bit 19 of
+> IA32_PERF_CAPABILITIES). It advertises this capability to guests when the
+> mediated PMU is enabled and the host reports it, unmasking the relevant
+> control bit. It also updates intel_emulate_rdpmc() to replicate the
+> clear-on-read behavior for consistency.
+>
+>> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+>> index 98e2fb80347a1..3e5e8bae67ab0 100644
+>> --- a/arch/x86/kvm/vmx/pmu_intel.c
+>> +++ b/arch/x86/kvm/vmx/pmu_intel.c
+> [ ... ]
+>> @@ -138,6 +149,18 @@ static int intel_emulate_rdpmc(struct kvm_vcpu *vcpu, unsigned int idx,
+>>  			return 1;
+>>  
+>>  		*data = pmu->perf_metrics;
 >> +
->> +	rmi_smccc_invoke(&regs);
->> +	if (regs.a0 != RMI_SUCCESS)
->> +		return regs.a0;
+>> +		/*
+>> +		 * Per the SDM, RDPMC of PERF_METRICS clears both PERF_METRICS
+>> +		 * and the SLOTS fixed counter when Metrics Clear Mode is
+>> +		 * enabled via INTEL_FIXED_3_METRICS_CLEAR in FIXED_CTR_CTRL.
+>> +		 */
+>> +		pmc = kvm_pmc_idx_to_pmc(pmu, INTEL_PMC_IDX_FIXED_SLOTS);
+>> +		if (pmc && intel_pmu_metrics_clear_enabled(pmu)) {
+>> +			pmu->perf_metrics = 0;
+>> +			pmc_write_counter(pmc, 0);
+>> +		}
 >> +
->> +	if (out_top)
->> +		*out_top = regs.a1;
->> +	if (out_gpt_par_state)
->> +		*out_gpt_par_state = regs.a2;
+> [Severity: Low]
+> Does tying the clearing of PERF_METRICS to the existence of the SLOTS PMC in
+> intel_emulate_rdpmc() violate the hardware specification?
+>
+> If the guest executes RDPMC natively and triggers an interception, and the
+> SLOTS counter is not exposed to the guest (making kvm_pmc_idx_to_pmc return
+> NULL), but METRICS_CLEAR_EN is enabled, this code silently skips clearing
+> PERF_METRICS.
+>
+> Should the clearing of pmu->perf_metrics be performed independently of whether
+> the software PMC object for the SLOTS counter exists?
+>
+>>  		return 0;
+>>  	default:
+>>  		return 1;
+> [ ... ]
+>> @@ -601,6 +624,11 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+>>  						 INTEL_FIXED_0_USER |
+>>  						 INTEL_FIXED_0_ENABLE_PMI);
+>>  
+>> +	if (perf_capabilities & PERF_CAP_RDPMC_METRICS_CLEAR)
+>> +		pmu->fixed_ctr_ctrl_rsvd &=
+>> +			~intel_fixed_bits_by_idx(INTEL_FIXED_SLOTS_IDX,
+>> +						 INTEL_FIXED_3_METRICS_CLEAR);
 >> +
->> +	return RMI_SUCCESS;
->> +}
-> 
-> 
-> 
->>   static int __init arm64_init_rmi(void)
->>   {
->>   	int ret;
->> @@ -786,8 +970,24 @@ static int __init arm64_init_rmi(void)
->>   	if (ret) {
->>   		pr_err("RMM activate failed\n");
->>   		ret = ret < 0 ? ret : -ENXIO;
->> +		return ret;
-> 
-> Why did this change?
+> [Severity: Medium]
+> Does intel_pmu_refresh() unconditionally unmask the METRICS_CLEAR_EN bit
+> without verifying if the guest topology actually exposes the SLOTS counter?
+>
+> If a VM is configured with 3 or fewer fixed counters, this unmasking would
+> allow the unprivileged guest OS to write to bit 14 in
+> MSR_CORE_PERF_FIXED_CTR_CTRL without triggering the expected #GP.
+>
+> Should this be gated by checking if pmu->nr_arch_fixed_counters >
+> INTEL_FIXED_SLOTS_IDX?
 
-Rebase messed up. I will restore it.
+This sounds like a real risk. Should we mask out PERF_METRICS from guest
+PERF_CAPABILITIES in intel_pmu_refresh() if guest doesn't advertise fixed
+counter 3?
 
-> 
->>   	}
->>   
->> +	ret = rmi_init_metadata();
->> +	if (ret)
-> 
-> And this is hitting another bit of guidance in cleanup.h.
-> Functions shouldn't be mixing __free and friends with
-> gotos.  Again, not a bug here but there are large ugly
-> monsters around this stuff, hence the blanket guidance.
-> I haven't thought that hard on how you avoid it here, but
-> usually it's a combination of suitable helpers and wrappers
-> and resulting code is often more readable as a result.
-> 
 
-I will see if I can improve it.
+>
+> [Severity: High]
+> Does this patch inadvertently cause event filters to strip the METRICS_CLEAR_EN
+> bit in kvm_mediated_pmu_refresh_event_filter()?
+>
+> When a host-level event filter denies the SLOTS counter (counter 3) from
+> counting, KVM applies a 0xf hardware mask that zeroes all 4 configuration bits
+> for the counter:
+>
+> arch/x86/kvm/pmu.c:kvm_mediated_pmu_refresh_event_filter() {
+> ...
+> 	} else {
+> 		u64 mask = intel_fixed_bits_by_idx(pmc->idx - KVM_FIXED_PMC_BASE_IDX, 0xf);
+>
+> 		pmu->fixed_ctr_ctrl_hw &= ~mask;
+> 		if (allowed)
+> 			pmu->fixed_ctr_ctrl_hw |= pmu->fixed_ctr_ctrl & mask;
+> 	}
+> }
+>
+> Since this mask covers the entire 4-bit configuration block, it will also clear
+> bit 14 (METRICS_CLEAR_EN) from hardware. If the guest sets METRICS_CLEAR_EN and
+> then executes RDPMC natively, it will lead to un-cleared stale metrics.
+>
+> Should the mask be updated to avoid interfering with this newly introduced
+> feature bit?
 
-Cheers
-Suzuki
+This is another tricky corner case. The best way should be disabling
+PERF_METRICS along with fixed counter 3. But Intel HW doesn't provide a way
+to disable PERF_METRICS except the EN_PERF_METRICS bit in PERF_GLOBAL_CTRL.
+Since PERF_GLOBAL_CTRL could be in pass-through mode and guest could
+directly overwrite PERF_GLOBAL_CTRL, it becomes meaningless for KVM
+clearing EN_PERF_METRICS bit for guest PERF_GLOBAL_CTRL.
 
+For the filter mask, it may be good enough to only mask out
+(INTEL_FIXED_0_KERNEL | INTEL_FIXED_0_USER).
+
+Thanks.
+
+
+>
+>>  	counter_rsvd = ~((BIT_ULL(pmu->nr_arch_gp_counters) - 1) |
+>>  			 ((BIT_ULL(pmu->nr_arch_fixed_counters) - 1) << KVM_FIXED_PMC_BASE_IDX));
+>>  	pmu->global_ctrl_rsvd = counter_rsvd;
