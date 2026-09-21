@@ -1,247 +1,173 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919EE50B41B
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 21:58:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FDB44E020E;
+	Mon, 21 Sep 2026 22:14:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790027928; cv=none; b=HoFzZYl2HtncYubOv5AaA38x6JHLG/Hyvw1ivXs3x6J3iQMfId6PXd4akhvM/+hpkiZFz0OAuSMGCoo99tLWXacuyL9sdq0G+JODXG7UdBHxqrtkstGvmyrz/3sAVORrn6R8VoKy6h2n7YTamI+XPIii/n2cJBV2zOhogV4MnOI=
+	t=1790028892; cv=none; b=bDPD7nws1wsUznbSkAv8EfRej6ihQ5TW32gESW9dTyfY+p9UIsg8c5mF1gMv81d/J8YJwfWwhMUFdBqhwiOeW/zWiLAAKz2kKFdRksLmMUruWei3ndlmcKPfG+IE0clVeuKN1TLUanVrRtnYyoaNgJFTp8v+pst1S+fTenhR/2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790027928; c=relaxed/simple;
-	bh=oQnCHtOLAC2VK421zR3NYbi26SLJxa0u/brSYBeX6uo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OrlSdgxRuHUyz7hhYPnSh7+1DZGy0fAki5tXZUuACKTHCEfL/jHNhZ/0xDDSIpnGoP3cE++KyWxV6PMCkbu18xzBbexNgqAI8qhXZR1mF/PLqGkZa1rO7cO/bqF2URUhcjR+y7YO35FBOz8t/LbEch/QiI8IXOLMp1dT20GQyCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ZLmyTnAZ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=aHipJNoT; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1790028892; c=relaxed/simple;
+	bh=iWSVobGmyww2Uyy12C8qu+uuk49zSpwTgV4nyoZ4I/k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aIHYSfJ/joU8Q1E4uenvZdks9E8MqqPrx/AnSnEtmisGwAa0OveZ/6ssTOoSbbNDT6p3USqrOmtOtRPxYHHe70Zp6fsPdap62Qcyn50/4bGpnqjW94Y5IiFeyzjmPEaRcvPhj9hLxyfdZU6U61Mv+/lFkc+ns3F/xecvSa3hz/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T2qRDUMm; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ZLmyTnAZ";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="aHipJNoT"
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68LKf2Dh1614179
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 21:58:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	G4FuUHpGIZcp5Oatw0o6fh2s3f4mtV+T4R77+69YOVc=; b=ZLmyTnAZCsDJbxf9
-	oqVbVpjtTsP7rUB66vDktHclSGqyjK9Pz/QB59+mKZ354Rn0zo5yxCjo+UawpXMo
-	UUimFTofLn+raC8bHrpZunkJOyFlF8d9QTRy7ypZ6i25gigEbbhtMk6vtw/2nCRe
-	VXc4f7d/2cbHyzchfeEn6IsybHVLAHIHZH4mF565ma6n5M7aQoRQAn/Gm8plOfN2
-	cdCW0+pgNkqJyqt1EuDSixZud/wGP3TrUS8La5r+Qa/+Ar/dL17IwSZIO3hO41ww
-	R1YD7d5+xjxwi2iyd3E5/WD2EeAr0ukcw7ds6+eqVan7S2Da9cdW5vN+8OZi2vaK
-	gO2b0w==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gu0rj3bqb-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 21:58:45 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cec4226c70so43252195ad.1
-        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:58:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790027924; x=1790632724; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:organization
-         :references:in-reply-to:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=G4FuUHpGIZcp5Oatw0o6fh2s3f4mtV+T4R77+69YOVc=;
-        b=aHipJNoTzEZ0kLKfgtsnMUGg0LA+7DgxRU3o8RJVZpD/lFd/VGBSUFeVj9Y2Zk6IWb
-         z7dWHnqKG8C2uCnGGonE7+C+Q94Lag6BWiQDxpNMpTJgGaQv1svdlOWHOUKt8jDIgT2D
-         mgLzKR0InoJg1/gXFSMDtvQAQTUjGUGR1EcR8Ij1H9YAz1Nr5JHvjHV5qp9ew+wFQuul
-         9cC7lBLxuHMmk9owrVy89+BtgPPiThU5wyQUkBhk743OYgaLv3aflM1jO7vKB7P6+AGY
-         NVFC3Wszdz3WtaD7iPISUd7sAoVPYTHiQLMobdEfk3Up9K4acfhvFQHWd4CUGYx/BI+T
-         dfUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790027924; x=1790632724;
-        h=content-transfer-encoding:content-type:mime-version:organization
-         :references:in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=G4FuUHpGIZcp5Oatw0o6fh2s3f4mtV+T4R77+69YOVc=;
-        b=hRWXtKo7ZKB7cAlgpwALseGAiHPhfpNzqsZVac4ejY9WhPBU/Fiv9bhYL92WX0YAbL
-         ccK/Jw4W4ghFe5uzkjC5+/R0+ttg5lwZBWYZF8HE6tR1vSp3r4qsmXkIuui2E1RZWaL3
-         NhfQQ81O60YWCEFS8kcMCgNL7F8QWajLorGQhGe1ZdsBPVlIchsvEDx2RC5GWSxo6t4v
-         B4Ymc3qFggZ1gV67LXM3rjN3UEGOZFHXVr4Aivvv/tdOkcMAqzoY/sJJ6pYONmbUYEMi
-         gHMMUfEZ2qlLrUoQxTJjADYIfSKe5oXiFu68t49SR6hO/CPzJI+xMi8z5zn00T63zev2
-         HqXg==
-X-Gm-Message-State: AFuF++n4PLTEf6de++ONxzqxpgMYrzolRU0ZDTsaovRVlGUVjVeTb34r
-	P+gVaP2ujKb7/E/23kUXalNC+NLJOUBKdEwGFeG+XU6/Laj2+sMIq7BvBxaZOoiecbzHAuJD67a
-	N4c+nz0mZdVaW+MDbVwGpVKsXRA+NZH43LyR9S4aUsR0PCnuOuVkW09g=
-X-Gm-Gg: AYBFou3hbIl8DLMMjgvlphzZhs3twtdntLIBPwCFRmAPlAo4xdNhrmFhwfM18v02vCH
-	FkcT4hicyJj4DqX3/tk5k19OzWDGHqkmKBR+Z9GyqcWf5uCsUNAd6bm8xfIIFYwwdlAcGfcmRsR
-	rLG+m0jP6cHMNULuPqjjGNJ+eXAkooWoGtRI9YBSsn/Vv9ZeFvpYbIFjQztaXylBy+N/Y9Rv2fN
-	Q45qBjhmy33knjzo1dPJ6q4ToXRvIPZYFRhQmzzIimxoUzTGFPfTwSKdN48aBKL1QGmD64wMxls
-	uq/cOzsBeAJaM8DLrCBjXZoDQ9cW/u3NkVIxzQgS5db1HJzNE3+aIuGH+MLOzTWrwJgRxlQlfEK
-	UqtmLxVKu0FJ1ApUnVnO2jlRj8w==
-X-Received: by 2002:a17:903:1a0b:b0:2dd:7549:39d0 with SMTP id d9443c01a7336-2ddb1b86d77mr166867215ad.18.1790027924004;
-        Mon, 21 Sep 2026 14:58:44 -0700 (PDT)
-X-Received: by 2002:a17:903:1a0b:b0:2dd:7549:39d0 with SMTP id d9443c01a7336-2ddb1b86d77mr166866905ad.18.1790027923453;
-        Mon, 21 Sep 2026 14:58:43 -0700 (PDT)
-Received: from localhost ([50.35.44.179])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33e5ebc658esm835412eec.12.2026.09.21.14.58.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 14:58:43 -0700 (PDT)
-Date: Mon, 21 Sep 2026 14:58:38 -0700
-From: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
-        will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
-        aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
-        joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
-        linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
-        sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
-        WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-Subject: Re: [PATCH v18 6/7] firmware: arm_rmm: Ensure the RMM has GPT
- entries for memory
-Message-ID: <20260921145838.00003b04@oss.qualcomm.com>
-In-Reply-To: <93aea89c-0a05-4b5a-905d-2e8c14a9e894@arm.com>
-References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
-	<20260912083611.2513845-7-suzuki.poulose@arm.com>
-	<178978126543.2352296.12214136703168879825.b4-review@b4>
-	<65b0c03b-36b9-4e60-aa55-c3b4b85e21ee@arm.com>
-	<93aea89c-0a05-4b5a-905d-2e8c14a9e894@arm.com>
-Organization: Qualcomm
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-w64-mingw32)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T2qRDUMm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790028890; x=1821564890;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=iWSVobGmyww2Uyy12C8qu+uuk49zSpwTgV4nyoZ4I/k=;
+  b=T2qRDUMmyVKJBUNb/s3p8QBd1uq9x3MIxLvEQzRSUUuW83JiuOuO1XQN
+   Mc8qIp8WaamtGT+oTeUOIUb1xa4uL0O1791IWgd0WxS7clZ4ssyzP6557
+   U28SUFa76jPQeQ7KwUGWVSAUOUO/73fK6V77p3i4hXjU+kVSNjkyLgTTw
+   Ty8KI+bhwXZbrGJiqhXBGv0Df0NORYZx9UKAuA5dpmxTQPxjtc6aL2no3
+   dFfUHExv+P+KI/1vcmOD7m4bNNu03ABwg/RpEy/O/2JFe13UwezNHeOGS
+   ypF3zeKNfJQkDwrN+ws5nNWdsFHKrSNUFTZdSVAVDKEJoR+uoOpkGENDa
+   g==;
+X-CSE-ConnectionGUID: nIVESCgeRrqGWlU333OHMg==
+X-CSE-MsgGUID: 3x6O7fD9RiuDIzAWcTYJvg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="89718478"
+X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
+   d="scan'208";a="89718478"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 15:14:49 -0700
+X-CSE-ConnectionGUID: 260ZPTpMTsm5Ie0txO7RgQ==
+X-CSE-MsgGUID: heG+YXPPTl2C5FqK3rHAww==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
+   d="scan'208";a="4163225"
+Received: from jjgreens-desk24.amr.corp.intel.com (HELO [10.125.109.249]) ([10.125.109.249])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 15:14:49 -0700
+Message-ID: <a4a562cf-f195-47fb-a402-e7bba06937ef@intel.com>
+Date: Mon, 21 Sep 2026 15:14:49 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIxMDMyMCBTYWx0ZWRfX7S2eVdDK8hke
- otfh8JoQIvl9jJAja2fl39i56/DtsEHAMuvNEuHwevpZSzNbjxpl9Lj+r+gwxqOA0iizf5hbw5P
- cp276em08B6Nvrj63V8QzEDWXiw+QZs=
-X-Authority-Analysis: v=2.4 cv=AsR7T+9P c=1 sm=1 tr=0 ts=6ab1a895 cx=c_pps
- a=cmESyDAEBpBGqyK7t0alAg==:117 a=aNnz9XPx1a4JIXSYt2cE/A==:17
- a=8nJEP1OIZ-IA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
- a=L8e4LJ7mbMe5yfr_-rMA:9 a=wPNLvfGTeEIA:10 a=1OuFwYUASf3TG4hYMiVC:22
-X-Proofpoint-GUID: JFgd9FXZ-8-AFPT_YrQH0IEh-GFQ1KCq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIxMDMyMCBTYWx0ZWRfXzZEXVKodjwkc
- grwjNfyqPZgQFYwU/N0hulLgfRX0o8aYF7SJ89c5mLd33rPYp5l/bzp01+PE8wwTe03A0mexHiB
- 3FPE8W+zxu/BZRv0o6tIWXSdgY5dQXzrJM92RfrBeFYp1+h2j7h/ZOy4FseO9uDXxBiv6dA+9Ox
- iIVOOaB4LIcDIH7fFoukq+/4FNCvkl8nrtDuYZVbmrF0xXN/ttrlLVKE3TLJjhEV6eMxf7m9GCG
- b52d7lEWV7fvg7YQdriQAqbWzhYNwb7MB7b1lXgzOPrYrTGu03cSMJK6qYWoJvuIWS5iGL7WAj4
- +YNBLBqSksY1YqVgLoC5Wme8VEjSqEWqeqZpRYipfLwtEO5DGXcRBDMYkz7SPXIMSp8dnA7jxMd
- /czbpYxxVEDxa0XYg+8OBy7GjMlvPayrJD1qHtQH4aKG1UB8ScYAYjYdmbwNbRwpnErUfwnuSCp
- Q6qbpTbTSIzjTsQnCYQ==
-X-Proofpoint-ORIG-GUID: JFgd9FXZ-8-AFPT_YrQH0IEh-GFQ1KCq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-21_06,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 malwarescore=0 suspectscore=0 clxscore=1015
- impostorscore=0 adultscore=0 lowpriorityscore=0 phishscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609210320
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/4] x86/tdx: Add helper to query maximum TD Quote size
+To: Peter Fang <peter.fang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>,
+ Tony Lindgren <tony.lindgren@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Artem Bityutskiy <artem.bityutskiy@intel.com>
+References: <20260915092632.2822169-1-peter.fang@intel.com>
+ <20260915092632.2822169-2-peter.fang@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260915092632.2822169-2-peter.fang@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 9/15/26 02:26, Peter Fang wrote:
+> +/**
+> + * tdx_get_max_quote_size() - Get the maximum TD Quote size
+> + *
+> + * Read the maximum size of a TD Quote from a 4-byte TD metadata field. The TDX
+> + * guest driver uses it to size the buffer for Quotes. Older TDX modules do not
+> + * support this field and return an error.
+> + *
+> + * The reported size covers every Quote type supported by the platform,
+> + * including SGX-based Quotes.
+> + *
+> + * A runtime TDX module update does not change the reported size.
+> + *
+> + * Return: Maximum Quote size in bytes on success, or 0 on failure.
+> + */
+> +u32 tdx_get_max_quote_size(void)
+> +{
+> +	u64 val, ret;
+> +
+> +	ret = tdg_vm_rd(TDCS_QUOTE_MAX_SIZE, &val);
+> +
+> +	return ret ? 0 : (u32)val;
+> +}
+> +EXPORT_SYMBOL_GPL(tdx_get_max_quote_size);
 
-> >>> =A0 static int __init arm64_init_rmi(void)
-> >>> =A0 {
-> >>> =A0=A0=A0=A0=A0 int ret;
-> >>> @@ -786,8 +970,24 @@ static int __init arm64_init_rmi(void)
-> >>> =A0=A0=A0=A0=A0 if (ret) {
-> >>> =A0=A0=A0=A0=A0=A0=A0=A0=A0 pr_err("RMM activate failed\n");
-> >>> =A0=A0=A0=A0=A0=A0=A0=A0=A0 ret =3D ret < 0 ? ret : -ENXIO;
-> >>> +=A0=A0=A0=A0=A0=A0=A0 return ret; =20
-> >>
-> >> Why did this change? =20
-> >=20
-> > Rebase messed up. I will restore it. =20
->=20
-> Actually this is not. We dont have to check the metadata if
-> we couldn't activate the RMM. Also, the failure path at the
-> bottom has "deactivate", which again is not needed. So
-> it is the right thing to do.
+This is an awful lot of stuff I'm not fond of like packed in very few
+lines of code.
 
-Only after this patch? Not from the previous patch?
+1. An unscoped, unmentioned, uncommented export
+2. Ternary form
+3. Casting
+4. A kerneldoc comment that is quite verbose and restates the TDX specs
+5. kerneldocs for something that's not a widely-used API
+6. Comments that say the same thing as the function name
+7. Multiple variables declared on one line
 
->=20
-> >  =20
-> >> =20
-> >>> =A0=A0=A0=A0=A0 }
-> >>> +=A0=A0=A0 ret =3D rmi_init_metadata();
-> >>> +=A0=A0=A0 if (ret) =20
-> >>
-> >> And this is hitting another bit of guidance in cleanup.h.
-> >> Functions shouldn't be mixing __free and friends with
-> >> gotos.=A0 Again, not a bug here but there are large ugly
-> >> monsters around this stuff, hence the blanket guidance.
-> >> I haven't thought that hard on how you avoid it here, but
-> >> usually it's a combination of suitable helpers and wrappers
-> >> and resulting code is often more readable as a result. =20
->=20
-> I could change the hunk to something like, but that looks ugly.
->=20
-> @@ -1010,20 +1010,12 @@ static int __init arm64_init_rmi(void)
->                  return ret;
->          }
->=20
-> -       ret =3D rmi_init_metadata();
-> -       if (ret)
-> -               goto out_deactivate;
-> +       if (!rmi_init_metadata() &&=20
-> !register_memory_notifier(&rmi_memory_nb)) {
-> +               arm64_rmi_is_available =3D true;
-> +               pr_info("RMI configured\n");
-> +               return 0;
-> +       }
->=20
-> -       ret =3D register_memory_notifier(&rmi_memory_nb);
-> -       if (ret)
-> -               goto out_deactivate;
-> -
-> -       arm64_rmi_is_available =3D true;
-> -       pr_info("RMI configured\n");
-> -
-> -       return 0;
-> -
-> -out_deactivate:
->          WARN_ON(rmi_sro_memxfer_cmd(sro, GFP_KERNEL,=20
-> SMC_RMI_RMM_DEACTIVATE));
->          return ret;
->   }
->=20
->=20
-> Either ways, we have to cleanup the object on return, no matter
-> the route we take. So the original form is much more readable
-> for me.
+Rather than start trying to cram failure codes into the return code,
+just do:
 
-Agree to more readable, but that fragility of mixing __free() and
-goto is a real problem that has tripped many folk up - hence
-the perhaps overly strict guidance.  Rather than avoiding the goto, I'd just
-not use __free()  - go old school and have two labels for errors
-and an extra manual free in the good path.
+/*
+ * Ask the TDX module what the largest possible quote might be.
+ */
+int tdx_get_max_quote_size(u64 *max_quote_size)
+{
+	int ret = tdg_vm_rd(TDCS_QUOTE_MAX_SIZE, max_quote_size);
 
-	pr_info("RMI configured\n:);
-	kfree(sro);
+	/* Old modules do not support this. Tell the caller. */
+	if (ret)
+		return -EINVAL;
 
 	return 0;
-
-out_deactivate:
-	WARN_ON(rmi_sro_memxfer_cmd(sro, GFP_KERNEL, SMC_RMI_RMM_DEACTIVATE));
-out_free_sro:
-	kfree(sro);
-	return ret;
 }
 
-Sometime the new toys aren't the right answer.
-
-Jonathan
-
-
-
-
->=20
-> Cheers
-> Suzuki
->=20
-> >> =20
-> >=20
-> > I will see if I can improve it.
-> >=20
-> > Cheers
-> > Suzuki
-> >  =20
->=20
-
+That's the normal pattern. Or, heck, just return a long and return
+-errnos in there.
