@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40361493D44;
-	Mon, 21 Sep 2026 12:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66474973A3;
+	Mon, 21 Sep 2026 12:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789993648; cv=none; b=BOuLi0FXPuDYfyg217r18hAklHSXtYKhEo+7WJdYSDhkmg2/zc+3+MLxWxLnjvXJv/MZAcM/dFvuKiaO0PbQMv7LsO8zolNbx6q1Bkx3bN4v4MeXaUOzGcYc36UHWGbkJt7VuUn+lY4MgNkjnuO62TPoQEw0AC4DDMJG5JhCccA=
+	t=1789993654; cv=none; b=Q2LQ2d2QgZd5lzNRfzssG5uon8qCtTxqrUun4gEQWIO90FLpKzLdqTgcZrbMBv59PXHkRV2B0+T2k47dX43pbjyioKv1iISqAVQRaSuiZXOWPdBjrbvnStzJ18NcYBXNtVfh7xlzFxzY755seGXFakwv6dYPNeX1hFxop5wMMUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789993648; c=relaxed/simple;
-	bh=nlX8+ZEvmtGvscRdSJ9FwPw4/iLV4sfdeuARDFxL3SU=;
+	s=arc-20240116; t=1789993654; c=relaxed/simple;
+	bh=qDXFUmB+XrzIMT5ZE8RMvMmqPGs2ZVUPDkeJriq1vWg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QuTQZPPo2UuP5cZ7IXJfub4xhZ3IWl+wJBfQl1F8ziieJ+OqEeswdFfQyidWYBvhjXWoNvJCVN6Zl40AXDuzei7e2y2xJrhvrgRScWI3uLqmryt4b3bL6L2mdD5s/GP+fSDajEkNWoelPmRzS9tEG+aR2KyFGoPplcrgDLidS1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z601kbIa; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=A7O27xvxM8/09KQeLh8BCOiohV00SbpCxhPBlC6KVS7bo9ehVfqkSEGFroCo7k5UOS8hJx4v4Wd+Vn3NIVS8uQqCSreoQpTUJ9y/MCdlgOhTY+kp8oc1+nwbQstsKhFwvYc5pBGrJLkPsYxilZ4Nabid6Dao7Gdr5deOmIXiYH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FizKey6A; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z601kbIa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3511F00893;
-	Mon, 21 Sep 2026 12:27:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FizKey6A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA321F000FF;
+	Mon, 21 Sep 2026 12:27:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789993646;
-	bh=dFvHrjq0ePXXh5iBLlUENtWHcaZyZBRhrnp1IAHS2tI=;
+	s=k20260515; t=1789993652;
+	bh=ZL+jHBhm3Lazx2elITuFIbb5JJW3ttCHLqLMtnrVQrE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Z601kbIa9VSfIfHNKTEpmBalJufxQA/bArlgRDVF37yrMBOBoyWhpgkWJ+Xut1PKi
-	 o6gEp2mkBaghr4j1DpATyzKBQp8qZURn6Tk7m/fmazSpf80LqYSkrFxphZ6oomow1I
-	 5eWkwReNwMc84goCHDydh0J8BbTrCBIbjqpyREhZpOv5nZiN9qUOqlnqYSHpqd4Sr2
-	 hnoXYXL+c4TqRz3nxQofwUHM5o9qn5+6FXmGnQiPUzFMlE8Kv+JqPCvuuYXZApTZ3a
-	 ifkNNg8icwnqKOL8v+vqV9bRlwaOFIckKtpCQPVzreuSnB7DiB4SyRneQ4+dlrs4UV
-	 1DOwgBQDoZlOQ==
+	b=FizKey6Agi7E+O7B943oOu9OU8rX9A6+d+R5RAdFZstk/eu0fKvoM8/gcUDsap1QM
+	 v8HwFrI7KOQdTw7ftgDofA98CMyyMWD4kb/zvBUdBOFAG4la7VzUcYt+0YiZKfLf9F
+	 TJvD2cqFvmVk5DBDZSbg6LqVxKjYX6gOFaGa3SQv4Mf+W+CMruCT1Nto8PQIAHha7d
+	 eu/TXsUvKj7jSAMJwAFaMVEUuYe9jlpFyiskfVZgnj9SljcwikOLG8YisyIB437ldQ
+	 1v59Rdmf5jezzqvjwlPUCjNb3bd5F1Y6/Ot3zoDZWvYc+qnNsehKJHs8umS3XPqE91
+	 OkpvmJ8Tm2sLA==
 From: "GUO Ren (XuanTie)" <guoren@kernel.org>
-Date: Mon, 21 Sep 2026 12:27:01 +0000
-Subject: [PATCH RFC v4 1/4] RISC-V: paravirt: Add pvqspinlock KVM backend
+Date: Mon, 21 Sep 2026 12:27:02 +0000
+Subject: [PATCH RFC v4 2/4] RISC-V: paravirt: Add pvqspinlock frontend
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -37,7 +37,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260921-pvqspinlock-v4-1-409a22aed6ef@kernel.org>
+Message-Id: <20260921-pvqspinlock-v4-2-409a22aed6ef@kernel.org>
 References: <20260921-pvqspinlock-v4-0-409a22aed6ef@kernel.org>
 In-Reply-To: <20260921-pvqspinlock-v4-0-409a22aed6ef@kernel.org>
 To: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
@@ -53,156 +53,232 @@ Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
  "GUO Ren (XuanTie)" <guoren@kernel.org>
 X-Mailer: b4 0.16.0
 
-Add the KVM backend for the SBI PVLOCK (paravirt qspinlock kick_cpu)
-extension. kvm_sbi_ext_pvlock_kick_cpu() kicks the target vCPU out of
-the halted state via kvm_vcpu_kick(), and yields to it with
-kvm_vcpu_yield_to() when the target is already runnable.
+Add a virtualization-friendly unfair qspinlock frontend that halts the
+virtual CPU instead of spinning.
+
+Use static_call to switch between:
+  native_queued_spin_lock_slowpath()    __pv_queued_spin_lock_slowpath()
+  native_queued_spin_unlock()           __pv_queued_spin_unlock()
+
+Add the pv_wait and pv_kick implementations.
 
 Reviewed-by: Leonardo Bras <leobras@redhat.com>
 Signed-off-by: GUO Ren (XuanTie) <guoren@kernel.org>
 ---
- arch/riscv/include/asm/kvm_vcpu_sbi.h |  1 +
- arch/riscv/include/asm/sbi.h          |  5 ++++
- arch/riscv/include/uapi/asm/kvm.h     |  1 +
- arch/riscv/kvm/Makefile               |  1 +
- arch/riscv/kvm/vcpu_sbi.c             |  4 +++
- arch/riscv/kvm/vcpu_sbi_pvlock.c      | 54 +++++++++++++++++++++++++++++++++++
- 6 files changed, 66 insertions(+)
+ arch/riscv/Kconfig                          | 12 ++++++
+ arch/riscv/include/asm/Kbuild               |  1 -
+ arch/riscv/include/asm/qspinlock.h          | 33 ++++++++++++++
+ arch/riscv/include/asm/qspinlock_paravirt.h | 26 +++++++++++
+ arch/riscv/kernel/Makefile                  |  2 +
+ arch/riscv/kernel/qspinlock_paravirt.c      | 67 +++++++++++++++++++++++++++++
+ arch/riscv/kernel/setup.c                   |  5 +++
+ 7 files changed, 145 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/include/asm/kvm_vcpu_sbi.h b/arch/riscv/include/asm/kvm_vcpu_sbi.h
-index f01a2860c751..cdc16e64ad19 100644
---- a/arch/riscv/include/asm/kvm_vcpu_sbi.h
-+++ b/arch/riscv/include/asm/kvm_vcpu_sbi.h
-@@ -114,6 +114,7 @@ extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_fwft;
- extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_mpxy;
- extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_experimental;
- extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_vendor;
-+extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_pvlock;
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index d6c2dbf8455c..9af53ef5ee95 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -1165,6 +1165,18 @@ config PARAVIRT_TIME_ACCOUNTING
  
- #ifdef CONFIG_RISCV_PMU_SBI
- extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_pmu;
-diff --git a/arch/riscv/include/asm/sbi.h b/arch/riscv/include/asm/sbi.h
-index 5725e0ca4dda..724ab834ad85 100644
---- a/arch/riscv/include/asm/sbi.h
-+++ b/arch/riscv/include/asm/sbi.h
-@@ -38,6 +38,7 @@ enum sbi_ext_id {
- 	SBI_EXT_FWFT = 0x46574654,
- 	SBI_EXT_MPXY = 0x4D505859,
- 	SBI_EXT_DBTR = 0x44425452,
-+	SBI_EXT_PVLOCK = 0x50564C4B,
+ 	  If in doubt, say N here.
  
- 	/* Experimentals extensions must lie within this range */
- 	SBI_EXT_EXPERIMENTAL_START = 0x08000000,
-@@ -534,6 +535,10 @@ union sbi_dbtr_shmem_entry {
- 	struct sbi_dbtr_id_msg id;
- };
- 
-+enum sbi_ext_pvlock_fid {
-+	SBI_EXT_PVLOCK_KICK_CPU = 0,
-+};
++config PARAVIRT_SPINLOCKS
++	bool "Paravirtualization layer for spinlocks"
++	depends on QUEUED_SPINLOCKS
++	default y
++	help
++	  Paravirtualized spinlocks allow a unfair qspinlock to replace the
++	  test-set kvm-guest virt spinlock implementation with something
++	  virtualization-friendly, for example, halt the virtual CPU rather
++	  than spinning.
 +
- /* SBI spec version fields */
- #define SBI_SPEC_VERSION_DEFAULT	0x1
- #define SBI_SPEC_VERSION_MAJOR_SHIFT	24
-diff --git a/arch/riscv/include/uapi/asm/kvm.h b/arch/riscv/include/uapi/asm/kvm.h
-index 20d9959ca44f..110a0d62113f 100644
---- a/arch/riscv/include/uapi/asm/kvm.h
-+++ b/arch/riscv/include/uapi/asm/kvm.h
-@@ -228,6 +228,7 @@ enum KVM_RISCV_SBI_EXT_ID {
- 	KVM_RISCV_SBI_EXT_SUSP,
- 	KVM_RISCV_SBI_EXT_FWFT,
- 	KVM_RISCV_SBI_EXT_MPXY,
-+	KVM_RISCV_SBI_EXT_PVLOCK,
- 	KVM_RISCV_SBI_EXT_MAX,
- };
- 
-diff --git a/arch/riscv/kvm/Makefile b/arch/riscv/kvm/Makefile
-index 296c2ba05089..404a4c5f8984 100644
---- a/arch/riscv/kvm/Makefile
-+++ b/arch/riscv/kvm/Makefile
-@@ -38,6 +38,7 @@ kvm-y += vcpu_sbi_sta.o
- kvm-y += vcpu_sbi_system.o
- kvm-$(CONFIG_RISCV_SBI_V01) += vcpu_sbi_v01.o
- kvm-y += vcpu_switch.o
-+kvm-y += vcpu_sbi_pvlock.o
- kvm-y += vcpu_timer.o
- kvm-y += vcpu_vector.o
- kvm-y += vm.o
-diff --git a/arch/riscv/kvm/vcpu_sbi.c b/arch/riscv/kvm/vcpu_sbi.c
-index 1c4f874368fb..07f72e619fd5 100644
---- a/arch/riscv/kvm/vcpu_sbi.c
-+++ b/arch/riscv/kvm/vcpu_sbi.c
-@@ -94,6 +94,10 @@ static const struct kvm_riscv_sbi_extension_entry sbi_ext[] = {
- 		.ext_idx = KVM_RISCV_SBI_EXT_VENDOR,
- 		.ext_ptr = &vcpu_sbi_ext_vendor,
- 	},
-+	{
-+		.ext_idx = KVM_RISCV_SBI_EXT_PVLOCK,
-+		.ext_ptr = &vcpu_sbi_ext_pvlock,
-+	},
- };
- 
- static const struct kvm_riscv_sbi_extension_entry *
-diff --git a/arch/riscv/kvm/vcpu_sbi_pvlock.c b/arch/riscv/kvm/vcpu_sbi_pvlock.c
++	  If you are unsure how to answer this question, answer Y.
++
+ config RELOCATABLE
+ 	bool "Build a relocatable kernel"
+ 	select MODULE_SECTIONS if MODULES
+diff --git a/arch/riscv/include/asm/Kbuild b/arch/riscv/include/asm/Kbuild
+index 7721b63642f4..3d8800d4fe48 100644
+--- a/arch/riscv/include/asm/Kbuild
++++ b/arch/riscv/include/asm/Kbuild
+@@ -13,7 +13,6 @@ generic-y += spinlock_types.h
+ generic-y += ticket_spinlock.h
+ generic-y += qrwlock.h
+ generic-y += qrwlock_types.h
+-generic-y += qspinlock.h
+ generic-y += ring_buffer.h
+ generic-y += user.h
+ generic-y += vmlinux.lds.h
+diff --git a/arch/riscv/include/asm/qspinlock.h b/arch/riscv/include/asm/qspinlock.h
 new file mode 100644
-index 000000000000..728e59f3f18f
+index 000000000000..330b714edc44
 --- /dev/null
-+++ b/arch/riscv/kvm/vcpu_sbi_pvlock.c
-@@ -0,0 +1,54 @@
++++ b/arch/riscv/include/asm/qspinlock.h
+@@ -0,0 +1,33 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (C) 2026 GUO Ren (XuanTie) <guoren@kernel.org>
++ */
++
++#ifndef _ASM_RISCV_QSPINLOCK_H
++#define _ASM_RISCV_QSPINLOCK_H
++
++#ifdef CONFIG_PARAVIRT_SPINLOCKS
++#include <asm/qspinlock_paravirt.h>
++
++/* How long a lock should spin before we consider blocking */
++#define SPIN_THRESHOLD		(1 << 15)
++
++void native_queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
++void __pv_init_lock_hash(void);
++void __pv_queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
++
++static inline void queued_spin_lock_slowpath(struct qspinlock *lock, u32 val)
++{
++	static_call(pv_queued_spin_lock_slowpath)(lock, val);
++}
++
++#define queued_spin_unlock	queued_spin_unlock
++static inline void queued_spin_unlock(struct qspinlock *lock)
++{
++	static_call(pv_queued_spin_unlock)(lock);
++}
++#endif /* CONFIG_PARAVIRT_SPINLOCKS */
++
++#include <asm-generic/qspinlock.h>
++
++#endif /* _ASM_RISCV_QSPINLOCK_H */
+diff --git a/arch/riscv/include/asm/qspinlock_paravirt.h b/arch/riscv/include/asm/qspinlock_paravirt.h
+new file mode 100644
+index 000000000000..7261cd9b13b2
+--- /dev/null
++++ b/arch/riscv/include/asm/qspinlock_paravirt.h
+@@ -0,0 +1,26 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (C) 2026 GUO Ren (XuanTie) <guoren@kernel.org>
++ */
++
++#ifndef _ASM_RISCV_QSPINLOCK_PARAVIRT_H
++#define _ASM_RISCV_QSPINLOCK_PARAVIRT_H
++
++void pv_wait(u8 *ptr, u8 val);
++void pv_kick(int cpu);
++
++void dummy_queued_spin_lock_slowpath(struct qspinlock *lock, u32 val);
++void dummy_queued_spin_unlock(struct qspinlock *lock);
++
++DECLARE_STATIC_CALL(pv_queued_spin_lock_slowpath, dummy_queued_spin_lock_slowpath);
++DECLARE_STATIC_CALL(pv_queued_spin_unlock, dummy_queued_spin_unlock);
++
++bool __init pv_qspinlock_init(void);
++
++void __pv_queued_spin_unlock_slowpath(struct qspinlock *lock, u8 locked);
++
++bool pv_is_native_spin_unlock(void);
++
++void __pv_queued_spin_unlock(struct qspinlock *lock);
++
++#endif /* _ASM_RISCV_QSPINLOCK_PARAVIRT_H */
+diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
+index ebe1c3588177..b9b0763dba32 100644
+--- a/arch/riscv/kernel/Makefile
++++ b/arch/riscv/kernel/Makefile
+@@ -130,3 +130,5 @@ obj-$(CONFIG_GENERIC_CPU_VULNERABILITIES) += bugs.o
+ obj-$(CONFIG_RISCV_USER_CFI) += usercfi.o
+ 
+ obj-$(CONFIG_RISCV_ISA_SSQOSID) += qos.o
++
++obj-$(CONFIG_PARAVIRT_SPINLOCKS) += qspinlock_paravirt.o
+diff --git a/arch/riscv/kernel/qspinlock_paravirt.c b/arch/riscv/kernel/qspinlock_paravirt.c
+new file mode 100644
+index 000000000000..c534447437fe
+--- /dev/null
++++ b/arch/riscv/kernel/qspinlock_paravirt.c
+@@ -0,0 +1,67 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
 + * Copyright (C) 2026 GUO Ren (XuanTie) <guoren@kernel.org>
 + */
 +
-+#include <linux/errno.h>
-+#include <linux/err.h>
-+#include <linux/kvm_host.h>
++#include <linux/static_call.h>
++#include <asm/qspinlock_paravirt.h>
 +#include <asm/sbi.h>
-+#include <asm/kvm_vcpu_sbi.h>
 +
-+static int kvm_sbi_ext_pvlock_kick_cpu(struct kvm_vcpu *vcpu)
++void pv_kick(int cpu)
 +{
-+	struct kvm_cpu_context *cp = &vcpu->arch.guest_context;
-+	struct kvm *kvm = vcpu->kvm;
-+	struct kvm_vcpu *target;
-+
-+	target = kvm_get_vcpu_by_id(kvm, cp->a0);
-+	if (!target)
-+		return SBI_ERR_INVALID_PARAM;
-+
-+	kvm_vcpu_kick(target);
-+
-+	if (READ_ONCE(target->ready))
-+		kvm_vcpu_yield_to(target);
-+
-+	return SBI_SUCCESS;
++	sbi_ecall(SBI_EXT_PVLOCK, SBI_EXT_PVLOCK_KICK_CPU,
++		  cpuid_to_hartid_map(cpu), 0, 0, 0, 0, 0);
 +}
 +
-+static int kvm_sbi_ext_pvlock_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
-+				      struct kvm_vcpu_sbi_return *retdata)
++void pv_wait(u8 *ptr, u8 val)
 +{
-+	int ret = 0;
-+	struct kvm_cpu_context *cp = &vcpu->arch.guest_context;
-+	unsigned long funcid = cp->a6;
++	unsigned long flags;
 +
-+	switch (funcid) {
-+	case SBI_EXT_PVLOCK_KICK_CPU:
-+		ret = kvm_sbi_ext_pvlock_kick_cpu(vcpu);
-+		break;
-+	default:
-+		ret = SBI_ERR_NOT_SUPPORTED;
-+	}
++	if (in_nmi())
++		return;
 +
-+	retdata->err_val = ret;
++	local_irq_save(flags);
++	if (READ_ONCE(*ptr) != val)
++		goto out;
 +
-+	return 0;
++	wait_for_interrupt();
++out:
++	local_irq_restore(flags);
 +}
 +
-+const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_pvlock = {
-+	.extid_start = SBI_EXT_PVLOCK,
-+	.extid_end = SBI_EXT_PVLOCK,
-+	.handler = kvm_sbi_ext_pvlock_handler,
-+};
++static void native_queued_spin_unlock(struct qspinlock *lock)
++{
++	/*
++	 * unlock() needs release semantics:
++	 */
++	smp_store_release(&lock->locked, 0);
++}
++
++DEFINE_STATIC_CALL(pv_queued_spin_lock_slowpath, native_queued_spin_lock_slowpath);
++EXPORT_STATIC_CALL(pv_queued_spin_lock_slowpath);
++
++DEFINE_STATIC_CALL(pv_queued_spin_unlock, native_queued_spin_unlock);
++EXPORT_STATIC_CALL(pv_queued_spin_unlock);
++
++bool __init pv_qspinlock_init(void)
++{
++	if (num_possible_cpus() == 1)
++		return false;
++
++	if (!sbi_probe_extension(SBI_EXT_PVLOCK))
++		return false;
++
++	pr_info("PV qspinlocks enabled\n");
++	__pv_init_lock_hash();
++
++	static_call_update(pv_queued_spin_lock_slowpath, __pv_queued_spin_lock_slowpath);
++	static_call_update(pv_queued_spin_unlock, __pv_queued_spin_unlock);
++
++	return true;
++}
++
++bool pv_is_native_spin_unlock(void)
++{
++	return static_call_query(pv_queued_spin_unlock) ==
++	       native_queued_spin_unlock;
++}
+diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+index a32344bb220d..ccfa92b7c81a 100644
+--- a/arch/riscv/kernel/setup.c
++++ b/arch/riscv/kernel/setup.c
+@@ -281,6 +281,11 @@ static void __init riscv_spinlock_init(void)
+ 		return;
+ 	}
+ 
++#ifdef CONFIG_PARAVIRT_SPINLOCKS
++	if (pv_qspinlock_init())
++		return;
++#endif
++
+ 	if (IS_ENABLED(CONFIG_RISCV_ISA_ZABHA) &&
+ 	    IS_ENABLED(CONFIG_RISCV_ISA_ZACAS) &&
+ 	    IS_ENABLED(CONFIG_TOOLCHAIN_HAS_ZACAS) &&
 
 -- 
 2.43.0
