@@ -1,33 +1,33 @@
-Received: from mta0.migadu.com (out-20.mta0.migadu.com [91.218.175.20])
+Received: from mta0.migadu.com (out-24.mta0.migadu.com [91.218.175.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A794A3414
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:04:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D514A4995
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:04:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789999482; cv=none; b=eA0klqhxKm6oo0b7lwCJrOsaiXA96Ymfrl3cvCqJH6Sw9662jrVBOIFN4xm7+/vfe7V6rx32es1cbkfRKpdJlJ0kpnNTtWedPGpYXKV8Tv8EV1BwIbFuNAYQiTec4xSNXB6dh/vPA0ACoB1dxgaITE5lyTri3ISkCUkCj4vekZE=
+	t=1789999483; cv=none; b=HYO+w/mHL529f44chtn3PhaHwfTbELtRfkxXHDPLFybxfyO9ciPflFvedoSXgC2iBNoHSvF7615eqRIfhYaCorvo/HaQgJNiMp5uY9NTqMzJB3VxmhaihNNzqlM4Ju+0KnLocr7pQK5TjKIjWLBwlm2ljUGsRbybuLBSsEygbiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789999482; c=relaxed/simple;
-	bh=DEbyYnw/QNFLD6hov3Wk8Emu00bFpjJHBWq6l30twn8=;
+	s=arc-20240116; t=1789999483; c=relaxed/simple;
+	bh=ie878rU/JdV+WHZq6reEkW3LocI09006Gd3UryYGcEA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XHyxztTAHB1ctPdMQ2LM3mPDEeGmNIjL6Mj5jVUt2t8FYaww14jGE3boYJwsy2zaudOC9PxzUfXr68NYZXtCjIEK4eaHaPRog0UGwpzxCcEiWZTxqYgOftm3agvi8QBbtk6b8A3cS+CBFP5F5sb6NJCxxv+AGZ3TsnoVu0rT/IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=DeA0SiAV; arc=none smtp.client-ip=91.218.175.20
+	 MIME-Version; b=dX7UusGzZ/HLCKhdMzXjnOHB3YmzYOZX79Q7nqp6aNwyesdYLtTWR8GO4zzHTmQr6NSRdQlyVOMwhWQXsx/6AijdHBMRpJeRUjAhqWEl/CkrEpEnV6eS5qS8BJp+xbmTDBWvrXN82JjNwYy4SOtCeV6rMtAZhaMOYoigXPRr/MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Ym+yjfJS; arc=none smtp.client-ip=91.218.175.24
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="DeA0SiAV"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Ym+yjfJS"
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=DEbyYnw/QNFLD6hov3Wk8Emu00bFpjJHBWq6l30twn8=;
+DKIM-Signature: a=rsa-sha256; bh=ie878rU/JdV+WHZq6reEkW3LocI09006Gd3UryYGcEA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789999474; v=1; x=1790604274;
- b=DeA0SiAVyCbwA7WhbXf8p5FFtA1y9BGn+/at6/dcBj2TouLzRqimrd+JiZ9IpWw9i28ru18l
- Wvh3EotSdIL7vKByViObc7FL8CeaKxRWxMqAfzHKYtQIq6FEOURtCSE3EEdQu58i4T0q38I4BTy
- Fda4x2vD+FbwbbR2m4svxk3s=
+ t=1789999479; v=1; x=1790604279;
+ b=Ym+yjfJSNoAEEYEZ8nF7MSCaOlkglFvG2PXUFTZUSCR2WK5OnYpE4u5G9is82wrKVkT62a4N
+ 3BKH6UbTddmpZt07+o7ZsSKH+CNw6hyAPpGlQybfsJ5CmBCRHD0QRiaeTp1SU8NtV/OZ11iSrDi
+ U11Fua0vRpoxEyOe7hpcnV+U=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id a77cef6fbb8dcc1e;
-	Mon, 21 Sep 2026 14:04:34 +0000
-X-Mizu-Trace-ID: a77cef6fbb8dcc1e
+Received: by smtp.migadu.com with ESMTPS id ad4db469fc531011;
+	Mon, 21 Sep 2026 14:04:39 +0000
+X-Mizu-Trace-ID: ad4db469fc531011
 X-Migadu-Flow: FLOW_OUT
 From: Fuad Tabba <fuad.tabba@linux.dev>
 To: Marc Zyngier <maz@kernel.org>,
@@ -44,9 +44,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH 2/3] KVM: arm64: nv: Read a guest hypervisor's CNTV_CVAL_EL0 from memory on x1e
-Date: Mon, 21 Sep 2026 15:04:26 +0100
-Message-Id: <20260921140427.2211373-3-fuad.tabba@linux.dev>
+Subject: [PATCH 3/3] KVM: arm64: selftests: Test a timer set past the counter's wrap
+Date: Mon, 21 Sep 2026 15:04:27 +0100
+Message-Id: <20260921140427.2211373-4-fuad.tabba@linux.dev>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20260921140427.2211373-1-fuad.tabba@linux.dev>
 References: <20260921140427.2211373-1-fuad.tabba@linux.dev>
@@ -58,41 +58,61 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On x1e KVM keeps CNTVOFF_EL2 at zero, traps the virtual timer whenever
-it has an offset and programs the hardware with the offset applied.
-kvm_hyp_handle_timer() returns that hardware value for a VHE guest
-hypervisor's read of its own CNTV_CVAL_EL0, instead of the CVAL it
-wrote. Its writes trap to the kernel and land in CNTHV_CVAL_EL2, so
-return that, as the physical timer's read does without CNTPOFF_EL2.
+Program an unmasked timer whose cval sits within long_wait_ms of the
+counter's wrap while the guest's counter is at wait_ms, and expect no
+interrupt. The guest's counter can't reach it, but a host that applies
+the timer's offset by adding it to cval wraps the sum into the past and
+fires at once. The one existing case with a cval past the wrap, in the
+sanity checks, runs with the timer masked and can't see that.
 
-Fixes: 0bc9a9e85fcf ("KVM: arm64: Work around x1e's CNTVOFF_EL2 bogosity")
 Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
 ---
- arch/arm64/kvm/hyp/vhe/switch.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ .../kvm/arm64/arch_timer_edge_cases.c         | 25 +++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
-index 14aada311bac4..4c965f9b1e1de 100644
---- a/arch/arm64/kvm/hyp/vhe/switch.c
-+++ b/arch/arm64/kvm/hyp/vhe/switch.c
-@@ -322,10 +322,14 @@ static bool kvm_hyp_handle_timer(struct kvm_vcpu *vcpu, u64 *exit_code)
- 		val = __vcpu_sys_reg(vcpu, CNTV_CVAL_EL0);
- 		break;
- 	case SYS_CNTV_CVAL_EL0:
--		if (vcpu_el2_e2h_is_set(vcpu))
--			val = read_sysreg_el0(SYS_CNTV_CVAL);
--		else
-+		if (vcpu_el2_e2h_is_set(vcpu)) {
-+			if (has_broken_cntvoff() && timer_get_offset(vcpu_hvtimer(vcpu)))
-+				val = __vcpu_sys_reg(vcpu, CNTHV_CVAL_EL2);
-+			else
-+				val = read_sysreg_el0(SYS_CNTV_CVAL);
-+		} else {
- 			val = __vcpu_sys_reg(vcpu, CNTV_CVAL_EL0);
-+		}
- 		break;
- 	case SYS_CNTVCT_EL0:
- 	case SYS_CNTVCTSS_EL0:
+diff --git a/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c b/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c
+index d9c9377a63256..69986a7f0d37d 100644
+--- a/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c
++++ b/tools/testing/selftests/kvm/arm64/arch_timer_edge_cases.c
+@@ -787,6 +787,30 @@ static void test_timers_in_the_past(enum arch_timer timer)
+ 	}
+ }
+ 
++/*
++ * With the counter at wait_ms, a tval of -(wait_ms + long_wait_ms) puts cval
++ * within long_wait_ms of the counter's wrap: a deadline further away than the
++ * counter can reach. Unmasked, so an early ISTATUS shows up as an IRQ.
++ */
++static void test_timers_past_counter_wrap(enum arch_timer timer)
++{
++	s32 tval = -(s32)msec_to_cycles(test_args.wait_ms + test_args.long_wait_ms);
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(sleep_method); i++) {
++		sleep_method_t sm = sleep_method[i];
++
++		local_irq_disable();
++		set_counter(timer, msec_to_cycles(test_args.wait_ms));
++		set_tval_irq(timer, tval, CTL_ENABLE);
++		sm(timer, msecs_to_usecs(test_args.wait_ms) + TIMEOUT_NO_IRQ_US);
++		local_irq_enable();
++		isb();
++		assert_irqs_handled(0);
++		timer_set_ctl(timer, CTL_IMASK);
++	}
++}
++
+ static void test_long_timer_delays(enum arch_timer timer)
+ {
+ 	s32 tval = (s32)msec_to_cycles(test_args.long_wait_ms);
+@@ -806,6 +830,7 @@ static void guest_run_iteration(enum arch_timer timer)
+ 	test_basic_functionality(timer);
+ 	test_timers_sanity_checks(timer);
+ 
++	test_timers_past_counter_wrap(timer);
+ 	test_timers_above_tval_max(timer);
+ 	test_timers_in_the_past(timer);
+ 
 -- 
 2.39.5
 
