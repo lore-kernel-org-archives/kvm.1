@@ -1,168 +1,128 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AFF48CD7C;
-	Mon, 21 Sep 2026 10:58:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232C5496D24
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 10:58:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789988335; cv=none; b=czFX30iDCB9mQank1VMalcP+Q391ZrGFyc8owfCd0Me1TM0U+gTm9Q6mo9/bEe4ddg+rb+JylVns4/3L/YuwjlxL1bM2JB53a2HlAqzNUmPQqorjHs3LR8BMmE/WWmONMPHgjC2yrcag6f61DEJl4+sswgBVdkp3AyEIBkHvn5k=
+	t=1789988341; cv=none; b=u/mTYPzDH+v4DhXRzVfHMRuLh6HJQmQverDR3LX6Rm4DjbJBWjHjX7uZBvfWsg4Azw1TwEd7PRP31tOdXwR1MtPOMiw9+L3EXm6Gg+UqV4OrQDddciV10C3cYevwAN53a1SMxZyGfa7mXid6SO0vGqtJXihqT643m094RCck5Xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789988335; c=relaxed/simple;
-	bh=dSuJLJ9ohCs7txtQHt7hy5Mg9PfzhT9ZTRhsbp3QTUc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uMROaVwgq5+rUqjI4o/+xBj3yf52XWC1QJ1XCbVfaGxbyKSehqfYlcu2+vR3jMWQhrh8HHDuJHMBXuxJp/XdgvBQE2zQ3erxpXazx0fp/PPcy7OyLIcheD/kBpoZKPqIS63DqYPJFgOb9gITJclSFl2GOpzgkHeUAz+OKpheENQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=BThdboLw; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1789988341; c=relaxed/simple;
+	bh=fXptvvFrmXsJMvApF4iaVsdGzvEEyBiHwrz4Qnd/vxQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pg6GebUXOU25dTkY37c30lqzyDCa0htW/qJ8ihjji43JcbgXdIbSPlhsxY8q2PFGj18y0mPMQnB0H0mBxMOHhdH5sXt9Twdh/bycvnxISdRxG2mcdj2ye8GBwz8kEAiQEGJ9cfapfcDBSSRasN9wf2vtvnFQRCeDLaDX8snSl/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BKFgC+6I; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="BThdboLw"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C57631CE0;
-	Mon, 21 Sep 2026 03:58:48 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 12E133F86C;
-	Mon, 21 Sep 2026 03:58:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789988332; bh=dSuJLJ9ohCs7txtQHt7hy5Mg9PfzhT9ZTRhsbp3QTUc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=BThdboLwJgWaXYoH9hZWEZBjiZRv2Fu3SH7AMV949zk04FGwQM/S7e44T41HHFqBc
-	 ig0U/2EjLwcRsv+kn9RsCmeVGvHrzU+JMOsKwYzE5TaT0Ma5zFoMq0vE69LvCBaH9/
-	 4ET22UaBocVm3SCd1ar8dSE+dmzg+C2+T55N2vcs=
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Mon, 21 Sep 2026 11:55:41 +0100
-Subject: [PATCH 19/21] mm/pgtable: disallow calling (pgd|p4d|pud)_page,
- pgd_page_vaddr() and (p4d|pud)_pgtable with dummy
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BKFgC+6I"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789988338; x=1821524338;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=fXptvvFrmXsJMvApF4iaVsdGzvEEyBiHwrz4Qnd/vxQ=;
+  b=BKFgC+6I6DSpgcorDplyzyqQpVwn1qpY315VfgRPELfQ2aqdNi+K+KQI
+   LnUGWWpPw32AcQ6hpJcql+bgdtkwHpH7ugsYUjmvwbPOZ0j/GEaP+1vyi
+   OOdsl14PqAg0n8s8UouKz8OIuudhsIC/2BXybDPERQJTJ/uehWDWd8iXF
+   3+pM1gXL2FhyrnBaCy9mriIJTBL8s390fv8mLxsW24Hbr7qaCFwmIsNSM
+   ZvqWUeePz1lOHl3mw7FgA9e+qD+jYViWNu/Ji2l8+KifMWsmIvemjpJbb
+   hHUIeEEzzk6fh+wndY6ygr1PY5KmBIhoBTqIfbtESkiqdaCcxrBBxC6O5
+   Q==;
+X-CSE-ConnectionGUID: fuUlWrapT1y5ehcevgY8Jg==
+X-CSE-MsgGUID: sZcbXY/yTHyTZq722SutsA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11911"; a="89419586"
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
+   d="scan'208";a="89419586"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 03:58:57 -0700
+X-CSE-ConnectionGUID: KfPD7dwGR6GX7YD3xVnzLQ==
+X-CSE-MsgGUID: cSel6j+VQNGs4bKMEr9bpw==
+X-ExtLoop1: 1
+Received: from bradocaj-mobl.ger.corp.intel.com (HELO localhost) ([10.245.246.168])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 03:58:49 -0700
+Date: Mon, 21 Sep 2026 13:58:42 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Kishen Maloor <kishen.maloor@intel.com>
+Cc: Artem Bityutskiy <dedekind1@gmail.com>,
+	=?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+	Jon Grimm <Jon.Grimm@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Steven Price <steven.price@arm.com>,
+	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
+	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Peter Fang <peter.fang@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org
+Subject: Re: [RFC PATCH v2 2/4] KVM: x86: Add optional KVM_CAP_LIVE_MIGRATION
+ and KVM_MIGRATE_CMD
+Message-ID: <arEN4h1-SQ8E_qMK@tlindgre-MOBL1>
+References: <aqjNFLv5VrmB_fdx@tlindgre-MOBL1>
+ <e090caa0-be97-46cd-bde8-374f2522c986@intel.com>
+ <aqoknAli8A0Mc4HR@tlindgre-MOBL1>
+ <3ee06a84-2c4b-4b2f-9899-68fc92b6daf7@intel.com>
+ <aquL7kNJsjnY0mJ4@tlindgre-MOBL1>
+ <b5906521-858b-487b-a262-7a86891a0731@intel.com>
+ <aqzS_mCOT6YuHKxN@tlindgre-MOBL1>
+ <e2f8b93a-fd42-4ee6-8b74-759d3052258a@intel.com>
+ <arDUOl2WPKRxwrZW@tlindgre-MOBL1>
+ <arD3yu3SkN2wLwPN@tlindgre-MOBL1>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260921-dummy_ptxp3-v1-19-cd40cf68242e@arm.com>
-References: <20260921-dummy_ptxp3-v1-0-cd40cf68242e@arm.com>
-In-Reply-To: <20260921-dummy_ptxp3-v1-0-cd40cf68242e@arm.com>
-To: Russell King <linux@armlinux.org.uk>, 
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>, 
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
- Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>, 
- Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Dave Hansen <dave.hansen@linux.intel.com>, 
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Jonas Bonn <jonas@southpole.se>, 
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
- Stafford Horne <shorne@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
- linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
- linux-openrisc@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3268; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=VRD/vI2+dr2wFISWOiD6XpoJffv8Fhm2BOtCv803wXw=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqsQ1Tk7kRq4iKLtEgxpTwxLYomoYS7bs7Di2hM
- iOcaArqGTSJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCarENUwAKCRBt1cPRWsUx
- M0sKC/9fNwlXps/S5pQLQVmMhjhsVPzMbJGpnIoLHcK+XvcblaBizi3oEaugKCqA4IADURZxi7N
- zeU9amkUNdxMyAtLqtqsPRdxMSu+j3HYk690xsRuu/io3DcfvB5D0j/q9hCj04SJ9Bh6IUiV17O
- gNPS5GYZCwInYoilXG5e+HDU5w+XUwHoO+31YrveczOJESkUQ629XwSLUYzTZszK4UTHSe8eHN7
- WpArw7F0ghyhriT0dILPWFsphGS9NifdWOc2+ZQ/1vOfre04d8kJHQb36FIwB6SFR7yI/luwSuw
- 5RS5NpbJ58nx0AUey7RNro8jvW+HJmYnG9NO6ooeCMeXaKWbwC0g4p0lpKTUN6ZFzwon0SGwno3
- YUiLEt32U5HAd7gBIVuvVL/IZo0r+8jfF97cQKOV05fH01cS47H2K1DIwwEQt7PMkVszvEnPgEU
- pitE91INdVgJpvsLhPH3gte8+ox1sUn6LlA7pzFKeTV7DYzVwjulFjYbnWcQM6VW58Nd8=
-X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
- fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <arD3yu3SkN2wLwPN@tlindgre-MOBL1>
 
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+On Mon, Sep 21, 2026 at 12:24:26PM +0300, Tony Lindgren wrote:
+> On Mon, Sep 21, 2026 at 09:52:42AM +0300, Tony Lindgren wrote:
+> > On Sun, Sep 20, 2026 at 05:13:10PM -0700, Kishen Maloor wrote:
+> > > On 9/17/26 10:58 PM, Tony Lindgren wrote:
+> > > > So looks like we have tree things to consider: userspace set migration
+> > > > role, the hardware state, and transfer direction.
+> > > 
+> > > Two of those three I agree with: userspace passes the role at SETUP, and
+> > > the vendor implementation tracks the hardware state. It's the per-transfer
+> > > direction I don't think we need.
+> > 
+> > Ack on the userspace passing the role at SETUP and vendor implementation
+> > tracking the hardware state.
+> > 
+> > Then for KVM tracking the role, I don't think we need it with the two
+> > above. The role tracking can always be added if really needed. Any other
+> > opinions on this one?
+> > 
+> > The transfer direction is there with the EXPORT/IMPORT naming. Maybe
+> > just let's keep that naming for easier readability rather than try to 
+> > switch to TRANSFER style naming. No transfer direction flag needed.
+> 
+> Looking at include/linux/dmaengine.h again, the transfer specific
+> direction is depreated.. So to follow the the dmaengine analogy, I now
+> agree that migration SETUP is the place to set the transfer direction
+> like you're suggesting. And so it seems the role at SETUP and the vendor
+> implementation tracking the hardware state is all we need.
 
-These helpers silently fallback to the folded helpers. With e.g., pdgp_get()
-returning dummy values, pgd_page_vaddr(pgdp_get(pgdp)) will now behave
-differently than pgd_page_vaddr(*pgdp).
-
-Disallow calling (pgd|p4d|pud)_page() entirely, and catch when passing a
-dummy value to pgd_page_vaddr() and (p4d|pud)_pgtable.
-This will catch most abuse of dummy pXdp value at compile time --
-so far there were none, and it better stay that way.
-
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Co-developed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
----
- include/asm-generic/pgtable-nop4d.h | 8 ++++++--
- include/asm-generic/pgtable-nopmd.h | 8 ++++++--
- include/asm-generic/pgtable-nopud.h | 8 ++++++--
- 3 files changed, 18 insertions(+), 6 deletions(-)
-
-diff --git a/include/asm-generic/pgtable-nop4d.h b/include/asm-generic/pgtable-nop4d.h
-index 2d86325235da5..d2dccf7542da5 100644
---- a/include/asm-generic/pgtable-nop4d.h
-+++ b/include/asm-generic/pgtable-nop4d.h
-@@ -70,8 +70,12 @@ static __always_inline p4d_t *__p4d_offset_lockless(pgd_t *pgdp, pgd_t pgd,
- #define p4d_val(x)				(pgd_val((x).pgd))
- #define __p4d(x)				((p4d_t) { __pgd(x) })
+Sorry above I meant "SETUP is the place to set the role", not the
+direction.
  
--#define pgd_page(pgd)				(p4d_page((p4d_t){ pgd }))
--#define pgd_page_vaddr(pgd)			((unsigned long)(p4d_pgtable((p4d_t){ pgd })))
-+#define pgd_page(pgd)				({ BUILD_BUG(); (struct page *)NULL; })
-+#define pgd_page_vaddr(pgd)						\
-+({ 									\
-+	pgd_check_dummy(pgd);						\
-+	(unsigned long)p4d_pgtable((p4d_t) { pgd });			\
-+})
- 
- /*
-  * allocating and freeing a p4d is trivial: the 1-entry p4d is
-diff --git a/include/asm-generic/pgtable-nopmd.h b/include/asm-generic/pgtable-nopmd.h
-index bd40d3a5743ff..2afbf2d8659dc 100644
---- a/include/asm-generic/pgtable-nopmd.h
-+++ b/include/asm-generic/pgtable-nopmd.h
-@@ -79,8 +79,12 @@ static __always_inline pmd_t *__pmd_offset_lockless(pud_t *pudp, pud_t pud,
- #define pmd_val(x)				(pud_val((x).pud))
- #define __pmd(x)				((pmd_t) { __pud(x) } )
- 
--#define pud_page(pud)				(pmd_page((pmd_t){ pud }))
--#define pud_pgtable(pud)			((pmd_t *)(pmd_page_vaddr((pmd_t){ pud })))
-+#define pud_page(pud)				({ BUILD_BUG(); (struct page *)NULL; })
-+#define pud_pgtable(pud)						\
-+({									\
-+	pud_check_dummy(pud);						\
-+	((pmd_t *)(pmd_page_vaddr((pmd_t) { pud })));			\
-+})
- 
- /*
-  * allocating and freeing a pmd is trivial: the 1-entry pmd is
-diff --git a/include/asm-generic/pgtable-nopud.h b/include/asm-generic/pgtable-nopud.h
-index 7475d0bd0f2e0..3264673c0c386 100644
---- a/include/asm-generic/pgtable-nopud.h
-+++ b/include/asm-generic/pgtable-nopud.h
-@@ -77,8 +77,12 @@ static __always_inline pud_t *__pud_offset_lockless(p4d_t *p4dp, p4d_t p4d,
- #define pud_val(x)				(p4d_val((x).p4d))
- #define __pud(x)				((pud_t) { __p4d(x) })
- 
--#define p4d_page(p4d)				(pud_page((pud_t){ p4d }))
--#define p4d_pgtable(p4d)			((pud_t *)(pud_pgtable((pud_t){ p4d })))
-+#define p4d_page(p4d)				({ BUILD_BUG(); (struct page *)NULL; })
-+#define p4d_pgtable(p4d)						\
-+({									\
-+	p4d_check_dummy(p4d);						\
-+	((pud_t *)(pud_pgtable((pud_t) { p4d })));			\
-+})
- 
- /*
-  * allocating and freeing a pud is trivial: the 1-entry pud is
+> The EXPORT/IMPORT vs TRANFER naming both work for me. I find the
+> EXPORT/IMPORT easier to read, and I think Jörg also seemed to like
+> that naming better.
 
--- 
-2.43.0
-
+And KVM is using KVM_GET/SET_REGS type ioctls, not TRANSFER. Also, I
+think EXPORT/IMPORT is better naming than GET/SET here as we export
+into an encrypted blob.
