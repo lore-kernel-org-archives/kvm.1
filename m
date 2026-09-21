@@ -1,113 +1,146 @@
-Received: from ale.deltatee.com (ale.deltatee.com [204.191.154.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CAC643C05E;
-	Mon, 21 Sep 2026 20:38:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=204.191.154.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E444249BD6E
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 20:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790023098; cv=none; b=MdhbMRAYOyPbg1WTDhVvGKt1rVk0TaOtPBODmS9nWGgpIB7TV8Q9+rC25Xb8Vbj+ohFYo/hJYHVOOVHPbma6+bVm4gnSiCjUrYcfAgYSPmX1VhyYP1oNKRNxose4YbIt79bsSdXYmjretTYfj5VpqMoOl9IogfghcNyAfLvPOnc=
+	t=1790023732; cv=none; b=YqzjQj9fqffzu22xvMnBBeHwPY6u03UY4plvZDIJy5UV6V0WGaEQtYoD8MXG2vOrGMVEytt5RrrGkI12cvxpVIjN1g58tj9laxUA5xBKCKAr/lLB3OknXDU0SOqeOI7onCteAHNvm772g6+IPH0mLUMrlSVmXSPGn5MiYz8Y+ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790023098; c=relaxed/simple;
-	bh=eYmGtKrob21NWMfAQ95fckRcqt+uVQGfzglKt7C19oY=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Subject; b=pKg6Yuy3JSX4L0i9/qJpafn/LlVrsgI89UMvjm9Y1vbyWzizmSftZqNh94nwvaOoAG7MEajMEKnoeCNqfc1NkeRKQa8JHfJZV2R5fZ5ESjjoQ8jB/7AWzHXFPz4mO16gfOdVWA4UWiVasJg2RhTkLxd+Qf0neJ4GQ1nQPnEKL3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=deltatee.com; spf=pass smtp.mailfrom=deltatee.com; dkim=pass (2048-bit key) header.d=deltatee.com header.i=@deltatee.com header.b=LsKW3NzD; arc=none smtp.client-ip=204.191.154.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=deltatee.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deltatee.com
+	s=arc-20240116; t=1790023732; c=relaxed/simple;
+	bh=duuqjqeee1gxRjF5xn4L1VFmmMHLBdcH21nRueFfC6A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fodLq14RkGoTPWDiEbua1IAjMSgt/DRA530OfjaAgtzZbXFVIhQPnHyZN5nxh92TUk4SNlZALsRv5DJcmz+4E2UHeqZ8J5azO2kiOgwUYPgmAp2Y+f4ZDE6Aj/oLj+fSDEWYB8BhmUYsLy4r7ykoMYDpvBSYDGyiOXwOyB1qt3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LLimrgB4; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=deltatee.com header.i=@deltatee.com header.b="LsKW3NzD"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=deltatee.com; s=20200525; h=Subject:In-Reply-To:From:References:Cc:To:
-	MIME-Version:Date:Message-ID:content-disposition;
-	bh=Sr1qhGABu2EZeNtmrODjYoKQgc9j8cv9j73nR1L57ck=; b=LsKW3NzDV8inZjUq6NrZSEC48G
-	3MkUOffQBf7rtALq+krqCwpV4UHCjoTxdPFsIP8DFtXqvVKwEioT1Cdn1lv1P9SzDVlrBFfG/XMZ9
-	Fs03BSlR0j2+oZ4iyoY2LAwViJLntqOIDaG99B+Erxl9MgSfArvsxm3puFumHsbCbSidz+laCrr9K
-	8DCBlV4VsoMt/nH4fzRJvjoz0nSwjx+ljCmCLmhG72sIgW+ojj6vQGUn/R2jITMzh4crlfd+5z1su
-	tkZIOwSo9KaAJ9LTeZSR6M/eAK9dh0+CHIrd73lTZSfUpRtEPAnWBq1cjcaQl3lo6AdZ4NFJhYILD
-	LsDqJvHQ==;
-Received: from guinness.priv.deltatee.com ([172.16.1.162])
-	by ale.deltatee.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <logang@deltatee.com>)
-	id 1x8kmC-0000000F4jb-3Od7;
-	Mon, 21 Sep 2026 14:38:13 -0600
-Message-ID: <81c888b7-5d43-42cb-87ea-273e169d8343@deltatee.com>
-Date: Mon, 21 Sep 2026 14:38:09 -0600
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LLimrgB4"
+Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85a4329731cso2673878b3a.3
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 13:48:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790023730; x=1790628530; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9RpdHbEhaZD0mMR4lSv7YIPkc3oHh9/Jw4xKi9A6gsk=;
+        b=LLimrgB4OLYrO3yRYyMqbBIfEJcC6vydiVWdt+bN2J00jyw9zmdOhng8dXbnB9YBvL
+         KLRo2H/BVeQSZbd5ZKg8NcmFoJGobbU64MSteGWQiMNiucQ/+aFxHhloPlG2589TnOPy
+         xuZfAN+uCklXZ7HUwWA2TXCpA7Oc7LjDbTtu8ulilmB+e4rElR0rTkk2836k3CaMYa7N
+         cOVUTYqWKJUSB5ma4aDuEohibGmNWNbV0q08YcNfuJ7lpwRgi8WRmXr9ILPCToe6empR
+         EDklh5DY4gOVUfGHDEUatpD9Vqp14MRrsJUmBD0Cq5slXZ5Zl60enx8tTaNinsc1dSNz
+         W/Bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790023730; x=1790628530;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9RpdHbEhaZD0mMR4lSv7YIPkc3oHh9/Jw4xKi9A6gsk=;
+        b=1vicOA6emfeT/Z/mykFuD0KTuEM7VP5ErxdKLdkSkX9alfMFL+nhwuZoo8rgW5+B3e
+         y3zfRhhU6MxxMqml4zmGudTedhP55ysV8JXV1SrLgr2THTT1JypdQChj0UdC5d2AlH7L
+         6iQcAUMnLZO70c6kQ6YJF8xKM9UmKM/QjXJliRRV5xuFZZognK0rYYzsXLWQ68xJPR/i
+         7RLbgXj9vlwiWIh+j7v+3BGwQrYfmiToxrepNLeH1toC5HTHdYB5Uv3X6WzJ3c0kvHk9
+         OCrvPNts7Ee0hzubf5ozxbEFxB62OYv9oOVfaoFTRFPYe8+e1Djte3yFeUVV8+YYPZef
+         MgBg==
+X-Forwarded-Encrypted: i=1; AKwUvBzVVBskiTtIff0tLfRvPQjPYDG7KijZ8avDyEltBsekUDYFFq3Y8TpAN+ZP5tpRY5+ZExc=@vger.kernel.org
+X-Gm-Message-State: AFuF++m+j1I9eua80G7Ll4KgXfwRWAab5d1AUptu6DNXM8n0pX7Rf0wm
+	Gw+MadArBtaewFEQ0drPWsDtY/YDr9OY493Ek/j6BsTs3B8V6E9p0L54/BubqxPnp72WYvoSMZB
+	EjMaQwQ==
+X-Gm-Gg: AYBFou2qhg106qVPPOF94u0gozsRODz/vmkOKjzjqBl2Jr8e8/y4y4ejPqoj8JK9C5P
+	pKsYpr0hJXz5bgLJ/VdZiOFaFyyFWOTo+VIE4dA2Sswrnst3KR4qY0quO+6J9CywuPKtEl5oXsk
+	myziwFAQgXJop/Fh+ekz/KhLLc4XR/AWvZWnir48etflfbl23gVVek9CgeoDD5teMfK7c/nWNy5
+	kb9kke2x6oUM04FLADFWZN8VD29sVXafGLh2VkqCouFXOi1XjxKdW017v7/Li5LyJgSFI412xPv
+	y/qY0hf29P/1k+KpgYUNrEW+sv0rM+10xio5pegNTkReoWw/KDMRmFyHmJ5ao7O3laFqw5xaz5S
+	F2X2AFXLhe0HnT/XoQ7RidzdCQn6Z9ZtzfsdrP1oWvgthWxoQKXKwf20kJRZ7xphgnHFSk0lUhZ
+	FMIcHPBBf7SthfkcyZ0X78Wo28MpdvFksfobh4rB79PJipCpPHKd7JLwP8mkzpDQPQDgXZYKLSR
+	Zqr58SNw9+Coah638EMdHn/z7FGSnNkYIOL9w6WSoppWF3buUc=
+X-Received: by 2002:a05:6a00:6c97:b0:878:34b8:2320 with SMTP id d2e1a72fcca58-87834b82455mr8559084b3a.40.1790023729351;
+        Mon, 21 Sep 2026 13:48:49 -0700 (PDT)
+Received: from google.com (192.150.203.35.bc.googleusercontent.com. [35.203.150.192])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87bf84b6859sm44247b3a.52.2026.09.21.13.48.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 13:48:48 -0700 (PDT)
+Date: Mon, 21 Sep 2026 20:48:45 +0000
+From: David Matlack <dmatlack@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org,
+	linux-rdma@vger.kernel.org, Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH v6 06/10] vfio: selftests: Allow drivers to specify
+ required region size
+Message-ID: <arGYLavnr25ZSyuw@google.com>
+References: <6-v6-8af36cf7b73f+e2-mlx5st_jgg@nvidia.com>
+ <20260917235245.CAAE41F00898@smtp.kernel.org>
+ <20260918115217.GA11142@nvidia.com>
+ <CALzav=f4NTb4Csn2BoK5kk=MckFRvbVnOdO9yiCz8MLXdRMPOg@mail.gmail.com>
+ <20260918200000.GB11142@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Chaitanya Kulkarni <kch@nvidia.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jens Axboe
- <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
- Ankit Agrawal <ankita@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Randy Dunlap <rdunlap@infradead.org>,
- Sumit Semwal <sumit.semwal@linaro.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, iommu@lists.linux.dev,
- Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- linux-rdma@vger.kernel.org, kvm@vger.kernel.org
-References: <20260920-fix-p2p-acs-v4-0-v7-0-ca0828ab697c@nvidia.com>
- <20260920-fix-p2p-acs-v4-0-v7-9-ca0828ab697c@nvidia.com>
-Content-Language: en-CA
-From: Logan Gunthorpe <logang@deltatee.com>
-In-Reply-To: <20260920-fix-p2p-acs-v4-0-v7-9-ca0828ab697c@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 172.16.1.162
-X-SA-Exim-Rcpt-To: leon@kernel.org, bhelgaas@google.com, kch@nvidia.com, gregkh@linuxfoundation.org, axboe@kernel.dk, alex@shazbot.org, ankita@nvidia.com, jgg@ziepe.ca, corbet@lwn.net, skhan@linuxfoundation.org, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, rdunlap@infradead.org, sumit.semwal@linaro.org, christian.koenig@amd.com, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, iommu@lists.linux.dev, tdave@nvidia.com, linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, linux-rdma@vger.kernel.org, kvm@vger.kernel.org
-X-SA-Exim-Mail-From: logang@deltatee.com
-X-Spam-Level: 
-Subject: Re: [PATCH v7 09/19] PCI/P2PDMA: Reject Translated Requests blocked
- by Translation Blocking
-X-SA-Exim-Version: 4.2.1 (built Sun, 23 Feb 2025 07:57:16 +0000)
-X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260918200000.GB11142@nvidia.com>
 
-
-
-On 2026-09-20 05:41, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
+On 2026-09-18 05:00 PM, Jason Gunthorpe wrote:
+> On Fri, Sep 18, 2026 at 07:58:58AM -0700, David Matlack wrote:
+> > > >
+> > > > [Severity: Medium]
+> > > > Since this changes the vfio test to use the dynamic driver->region.size
+> > > > instead of SZ_2M, should tools/testing/selftests/kvm/irq_test.c be updated
+> > > > as well?
+> > > >
+> > > > It looks like vfio_setup_msi() in kvm/irq_test.c still forcefully overwrites
+> > > > the dynamically probed size back to 2MB:
+> > > >
+> > > > tools/testing/selftests/kvm/irq_test.c:vfio_setup_msi() {
+> > > >       ...
+> > > >       region = &device->driver.region;
+> > > >       region->size = SZ_2M;
+> > > >       region->iova = iova_allocator_alloc(allocator, region->size);
+> > > >       ...
+> > > > }
+> > > >
+> > > > Will this cause the KVM irq_test to fail with a VFIO_ASSERT_GE during driver
+> > > > initialization via vfio_pci_driver_init() when tested with a driver that
+> > > > requires a larger region, such as the mlx5 driver mentioned in the commit
+> > > > message?
+> > >
+> > > I have no idea, Dave? Did kvm start using this stuff?
+> > 
+> > Yes, KVM started linking in the VFIO selftests library in 7.3 and
+> > irq_test.c is the first test using it.
 > 
-> A Downstream Port with ACS Translation Blocking enabled treats every
-> Upstream Memory Request whose Address Type is not Untranslated as an ACS
-> Violation, ahead of "any applicable ACS P2P control mechanisms" per PCIe
-> r7.0 sec 6.12.1.1. P2PDMA never looks at that bit, so it reports a
-> bus-addressable path where an ATS client's Requests would be rejected.
+> Okay, so I think this is all that is needed:
 > 
-> Add PCI_ACS_P2PDMA_BLOCKED, and because blocking is not a routing control,
-> scan the path for it rather than the divergence port alone. A blocked
-> Request has no host bridge fallback, since the Address Type is rejected
-> wherever the Request is addressed.
+> @@ -101,7 +100,6 @@ static int vfio_setup_msi(struct vfio_pci_device *device)
+>         allocator = iova_allocator_init(device->iommu);
+>  
+>         region = &device->driver.region;
+> -       region->size = SZ_2M;
+>         region->iova = iova_allocator_alloc(allocator, region->size);
+>         region->vaddr = kvm_mmap(region->size, prot, flags, -1);
+>         TEST_ASSERT(region->vaddr != MAP_FAILED, "mmap() failed\n");
 > 
-> The two routes do not pass the same ports, so scan them separately. A
-> direct route turns around at the divergence and only passes the ports
-> below it, while the host bridge route keeps climbing and passes that port
-> and everything above it as well.
+> > Looks like that is also causing the dma_rmb/wmb() redefinition
+> > compiler warning from the kernel-test-robot.
 > 
-> Tested-by: Tushar Dave <tdave@nvidia.com>
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> Yeah, for some reason kvm defined them in its private headers instead
+> of putting them in the right place :(
+> 
+> I think I can just delete the kvm definitions.
+> 
+> I don't have an arm system or userspace cross compiler to test it with
+> though..
 
-> +/*
-> + * Report whether any port between @client and @common rejects Translated
-> + * addresses. @common is NULL to walk every port up to the host bridge. A port
-> + * whose ACS Control cannot be read counts as blocking, which withdraws only
-> + * the Translated classes because an Untranslated Request is routed by the
-> + * redirect controls instead.
-> + */
+Wait, really? I can help with building and running the KVM/arm64
+selftests if that's what you need.
 
-Some awkward wording, maybe:
+> Are we good on everything else, can Alex pick it up after I fix this?
 
-"If @common is NULL, every port up to the host bridge is walked."
+Yes all good from my pov after we address this feedback. I am no longer
+seeing failures[1] when using the IGB driver with this series applied.
 
-Besides that minor nit:
-
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-
+[1] https://lore.kernel.org/all/anzvkibgzTae9eV9@google.com/
