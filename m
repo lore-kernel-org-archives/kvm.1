@@ -1,33 +1,60 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1800F46A5F8;
-	Mon, 21 Sep 2026 09:04:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E808E3559C9;
+	Mon, 21 Sep 2026 09:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789981501; cv=none; b=J1htu5PhCbB7ayx5gBq/1En3hjPsRGF5VqYRl2JUqnvKzVy7mrLt+0T8UeeyZqkeTuWhd/1bjnVaNRJCkz2N2Uy4Ztkg55f5Kk53GXySwO6D7WTE8RjkjqiMqukRw6J84Xi+fmO45qAVIdVOa/OmXcFVR5+vRbIC3zoamvJSwy4=
+	t=1789981801; cv=none; b=edEAfWh957TOg4JGCMLwCMFEGDKF20SRX+/A0wnYTFUY8XNBQYmd1vTkn2OsMVCRdWKbE2+yR9RxwkD2Y14mya71xQZ+fiUJ0Zaw/JNtPJDbW2yt6GiEyKj4b4jlUBh87OSWMuWkwckLM8R7Uez0PEwbcv1x7zXsUD0wgL0MR54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789981501; c=relaxed/simple;
-	bh=UE/X0gcMPeiPPSKCeX1gWcGjezEgz5neWZ7i4wm/qgo=;
+	s=arc-20240116; t=1789981801; c=relaxed/simple;
+	bh=n3Mo9TeIFsgwHNEP+kJC2LgC9Uyase1+EIg+A84StfM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S4VBxDf2mdADwShD2YuXtJEZFYGI1OhWd7ZK7sUasucT8MsbytU3YiOHd9lfKgeFlMbPRa/LDGTudsUzhWapSHBK8PFwdxEdXzB+ZROekaDNjN+gCwQZAMU57g9iws3aaJIoYOzrzkbQNpZHDk22snUdOu9rAiGKCyzF1x60Pk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Qh7mVIMI; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 In-Reply-To:Content-Type; b=XOVN1A9EaYKlNLBbwmn+9NtapOjzvand3Uo1CFTQAs5UCY7oaiGWtWwCaWgjZEFH+9ITrr1UNh84XmryeYY8VyP92CYuE2dzH+7a6B8e5vOr53xzl4ObGgKpDXu9IXLGBr50XZKBZAWYtN6v9dwDN/DtHB1ZqEqiTbgVWPe9DIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lDpJ5m46; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Qh7mVIMI"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DEA5B1D15;
-	Mon, 21 Sep 2026 02:04:54 -0700 (PDT)
-Received: from [10.0.128.141] (unknown [10.0.128.141])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 22CA23F86F;
-	Mon, 21 Sep 2026 02:04:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789981498; bh=UE/X0gcMPeiPPSKCeX1gWcGjezEgz5neWZ7i4wm/qgo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Qh7mVIMImrIyA1UX15dpadr1LMV3Kze+0L28tCkv4dH36w/Hz6pKo+WJZ1W8FVRo+
-	 xeEolfEH3D0mZpSL2zzQiFX012Z6mt4274rlFjgoixZGWkKDIVtYHwWY8sdSZN+L+R
-	 hQDlfTbxahWEb4hVwqB7ZYrSkcL0cL9cxwfbbXoA=
-Message-ID: <5318f467-317b-4d67-a39b-39e5ce1d860c@arm.com>
-Date: Mon, 21 Sep 2026 10:04:53 +0100
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lDpJ5m46"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68L7ZZmB3856783;
+	Mon, 21 Sep 2026 09:09:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=4ZIsYW
+	UVn7guBQOBOTbKiEq7QO0teNhYsfMnJtt9g80=; b=lDpJ5m46AV/NUrV8otXfLy
+	IVe0gEViJQF82mSfydssR1fcRXPZTkh0V2d5sqRX4gBqRArkYXDxuQr62Hc9FYp1
+	qa0bGiuIxmHxFaOpl2u1sa5m8vGcCM1QPpx/TsWYxNZz/U/ovsM1uwkRu82XDSRf
+	LqK9kW6SzxXLieTnRhvn1h+iSJdR0BulWIdIAEWef7L+wzadaB6ytts2cFnW6exc
+	c0msvcZmr8UCLLwcQxfLNRgGnJFL9BKqPXIa5ZbyyEhuwC0TEMvH8OpK34uP0FK2
+	cpB/yjlrtYP2xDOz1NqhzfP47Tip4FZHA0J25jAJU3n5vugeLX893alrC7SR2Xfg
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskgq7fv6-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 21 Sep 2026 09:09:41 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68L7HUsR924413;
+	Mon, 21 Sep 2026 09:09:40 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gt4qq4r54-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 21 Sep 2026 09:09:40 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68L99c6329426126
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 21 Sep 2026 09:09:38 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8709520040;
+	Mon, 21 Sep 2026 09:09:38 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E07382004B;
+	Mon, 21 Sep 2026 09:09:35 +0000 (GMT)
+Received: from [9.124.208.199] (unknown [9.124.208.199])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 21 Sep 2026 09:09:35 +0000 (GMT)
+Message-ID: <aed4e6a7-1678-4e27-9091-d621d3fe1535@linux.ibm.com>
+Date: Mon, 21 Sep 2026 14:39:34 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,105 +62,83 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18 5/7] firmware: arm_rmm: Activate the RMM
-Content-Language: en-GB
-To: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
- will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
- <20260912083611.2513845-6-suzuki.poulose@arm.com>
- <178978126542.2352296.10527413259157627665.b4-review@b4>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <178978126542.2352296.10527413259157627665.b4-review@b4>
+Subject: Re: [PATCH] KVM: PPC: use assign_bit() where applicable
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
+        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+References: <20260920022618.3145649-1-peng.fan@oss.nxp.com>
+Content-Language: en-US
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+In-Reply-To: <20260920022618.3145649-1-peng.fan@oss.nxp.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=G+OJgNk5 c=1 sm=1 tr=0 ts=6ab0f455 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=8AirrxEcAAAA:8
+ a=VnNF1IyMAAAA:8 a=Nid3tJT5lt5-er1BLS4A:9 a=QEXdDO2ut3YA:10
+ a=ST-jHhOKWsTCqRlWije3:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIxMDEzMCBTYWx0ZWRfXw9Z+eF+SZmPD
+ +Qoaa60PKvIkNklTODfHdllh5WfKewFYmCLfylfWncUtePFdB8b5akdHv5pu/cE3/K2QipcdMNL
+ C2B9s8FXFlb4T1zFZYXX/zsxUJ91OJFk7CeEOJ1S1kc0uTVJUBrjgw52vLhjTD9AX4kCfBnc1S2
+ 6PO86dtSWTu2IZsrj25XHK43cynoVKt81mbBjlGSzgohCo44bY1mPI9v7dFDRRzHU9lTkLxm2+p
+ Us4NSJyfKodPMJHDe7yXtNZdBeEFWvM9uW14bZh/O1EgTe9csU+dUGwdF2Dhsv+3qXNK/iM/H/P
+ x+vXk12Fnpii0cUwfSqfhOz8y6DLvzzYAJ+4m6NKC/YTw6OCohxi5ftQaQkmpqAsJQQDGhA2Y8R
+ tlbwRgRXhZ9ahAN+bPbJWWvMywAVhjcbkQoJYKM5WNJWtVIIjvzicV+BDBIUSJMkpTu7rdLx2ZT
+ 932rfYPYwLkfDLzb/Tw==
+X-Proofpoint-ORIG-GUID: 26wd-gAuxDGHB4yJx885WrLhHeVZ4hEv
+X-Proofpoint-GUID: vVT54iSS5N2yMyLnpAkFyrMWLjO-j_IU
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIxMDEzMCBTYWx0ZWRfX0NbGaXikVMbw
+ yfvcadrd2EEx9jtjqCqWhhbKD0FPcPn0T/iAJr16KfRCrwWxZmNj/pWBFlrTg7K8vy6255Idkb3
+ KNkBDKLC85yvaQVePk91/dG30rZIjjI=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-21_03,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0
+ bulkscore=0 priorityscore=1501 clxscore=1011 spamscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609210130
 
-On 19/09/2026 02:27, Jonathan Cameron wrote:
->> Activate the RMM after the basic configuration. This is a memory transferring,
->> stateful operation.
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> 
-> With the declaration moved as per standard way of dealing with __free
-> magic (there are docs in cleanup.h on this)
-> 
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-> 
->> ---
->> Changes since v17:
->>   * Inline RMM_ACTIVATE command and remove the definitions from arm-rmi-cmds.h
->>   * Use scope-based cleanup to free sro object
->> Changes since v16:
->>   * Split into a new patch
->> ---
->>   drivers/firmware/arm_rmm/rmi.c | 14 +++++++++++++-
->>   1 file changed, 13 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
->> index 4f9898ece754..ecc89e91d264 100644
->> --- a/drivers/firmware/arm_rmm/rmi.c
->> +++ b/drivers/firmware/arm_rmm/rmi.c
->> @@ -762,6 +762,7 @@ static int rmi_configure(void)
->>   static int __init arm64_init_rmi(void)
->>   {
->>   	int ret;
->> +	struct rmi_sro_state *sro __free(kfree) = NULL;
->>
-> Read the guidance in cleanup.h
-> 
-> This is a path to a potentially grumpy Linus.  He's made the sensible
-> point a number of times that putting the declaration of the destructor
-> anywhere that isn't right next to the contstructor is a recipe for
-> hard to read code and odd bugs (this one isn't buggy,
-> but the principle is more general and the readability thing does hold!)
+Hi Peng.
 
-Ack
-
+On 9/20/26 7:56 AM, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
 > 
->>   	/* Continue without realm support if we can't agree on a version */
->>   	ret = rmi_check_version();
->> @@ -776,7 +777,18 @@ static int __init arm64_init_rmi(void)
->>   	if (ret)
->>   		return ret;
->>   
->> -	return 0;
->> +	/* Activate the RMM */
->> +	sro = kmalloc_obj(*sro);
-> 
-> struct rmi_sro_state *sro __free(kfree) = kmalloc_obj(*sro);
-
-Thanks
-
-> 
->> +	if (!sro)
->> +		return -ENOMEM;
->> +
->> +	ret = rmi_sro_memxfer_cmd(sro, GFP_KERNEL, SMC_RMI_RMM_ACTIVATE);
->> +	if (ret) {
->> +		pr_err("RMM activate failed\n");
->> +		ret = ret < 0 ? ret : -ENXIO;
->    		return ret < 0 ? ...
->> +	}
-> 
-> return 0;
-> Perhaps to make it more obvious that any non 0 return means error?
-
-We want to differentiate between the linux errnos vs RMM errors 
-(positive). I will rework this to address the RMI_BLOCKED comment
-from Sudeep.
-
-Cheers
-Suzuki
-
-
-> 
-> Doesn't really matter
+> Convert open-coded if/else with set_bit/clear_bit to the assign_bit API.
 > 
 
+Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>   arch/powerpc/kvm/powerpc.c | 5 +----
+>   1 file changed, 1 insertion(+), 4 deletions(-)
+> 
+> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> index 9194cf492d1c..a567b63a5f1f 100644
+> --- a/arch/powerpc/kvm/powerpc.c
+> +++ b/arch/powerpc/kvm/powerpc.c
+> @@ -2210,10 +2210,7 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+>   			break;
+>   		if (!kvmppc_book3s_hcall_implemented(kvm, hcall))
+>   			break;
+> -		if (cap->args[1])
+> -			set_bit(hcall / 4, kvm->arch.enabled_hcalls);
+> -		else
+> -			clear_bit(hcall / 4, kvm->arch.enabled_hcalls);
+> +		assign_bit(hcall / 4, kvm->arch.enabled_hcalls, cap->args[1]);
+>   		r = 0;
+>   		break;
+>   	}
+
+
+Just ensure you have covered all such possible open coding where applicable
+in arch/powerpc/.
