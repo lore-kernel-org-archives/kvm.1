@@ -1,87 +1,91 @@
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC594A4990
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181534A4981
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789999561; cv=none; b=dBies18IeEqMTZSP6BOwzPgNeE3Z9HI4oP2NYQ3LZJE9wpID/trx7TFHG12R2bVI5BHyx45bgVZhFPiAz1n4lb2W782Sr5rRaeVqbn/LOkFdBlRdf2X6FD+2ASpecOIk6IMLHPL3Yxr9bXekwX1Fkp7rsxxzfDx7Bkgu0eFjj5M=
+	t=1789999565; cv=none; b=YemRAuBp5Oy+vApbgLq6cd2h5S1FXVU7QT/HIksWJ0tR1J+SGuIc6VGWZQoRtTf/b08niYjlZTpTZCxuX98rJOV0ejFOGiToY3a6dyACadjLbvGAkzaOUPIOu1TykpiOf32ZL9usm10dtu/q1NizESM0OkBBIAYBV0+li9FMvbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789999561; c=relaxed/simple;
-	bh=YCLS+GpysQVlR+Gg9J8dCevTLbKjdQeJbJnZ1IUK5DY=;
+	s=arc-20240116; t=1789999565; c=relaxed/simple;
+	bh=2eJm4Qlbcv63yRhYp8LKeIfnT6D1XcAZy2F28IWxQIA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PHWlqwgOVf4nYPRscYSUggXFJ2UAOmkYlof+K/hpzF3I7/WVS7FEOU4zpwQm90eo+W6sr+EeBvUDIAjiGdDDjSX9yDsPHyFT6Qi8U0N+NDS82ViSGP/R5PtIvodjPW3++RyrW1nHl4maq4LltPUFQ2cu3lvsqm3jduLZ6pjPnJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nT/GhguN; arc=none smtp.client-ip=209.85.210.198
+	 To:Content-Type; b=cOOLZMxGpY+RqPS/F7+eFwFjZDNWhKu07LNYXiXZiokudemmmQz3d5eoR9ZtpzPunBPi/Lh0q+UbzNynvPZQOJ/PvmhpiZI0qG/5qfMGlK5bhozgUjVNW5qo9xUN0QJOFGJcTGwztA8YqCOG9tIaSw9mLPUGT/KvrOXGsTkvESQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DVQG/ibn; arc=none smtp.client-ip=209.85.214.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nT/GhguN"
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-86a59faf521so5030794b3a.2
-        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 07:05:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DVQG/ibn"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d7443e0f0bso57391955ad.1
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 07:06:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789999559; x=1790604359; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=o2Nhmlqu7ytTbKiYkM8wQ0H/blwuXmMtC635O5Am7vU=;
-        b=nT/GhguN083dggGi7fyo7f1Xzerr0Y7cRRxRLJ1nQZzuqTeIdGcJQZ2c+fw/XP9d41
-         YYDyreZRzRnbQNdMhC9ER/DDtr9vZThkrGVA6B9uonl65lK4Qst07XYvtb/9F99EXGpO
-         YfeA/YNz7ivHQo3hyFNkUC2XmtPX6Vt/anksW06xH1lJUN328hSF/sdFl6qDhCLG1m1J
-         dBSOthrdNrA3JEgKBJPXTH/8W1aRem9LWv9SdnEaypuDDc3/hedhFb9/E/8BykI09UKi
-         kvvaRNis6HOMUtR/tbO3bgbdUXsdgLHJZNyaMoRjfXe3WvBLZ3m/apPPT4UXXz2eQ55F
-         1maQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789999559; x=1790604359;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20251104; t=1789999563; x=1790604363; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:to:from:subject:message-id
+         :references:mime-version:in-reply-to:date:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=o2Nhmlqu7ytTbKiYkM8wQ0H/blwuXmMtC635O5Am7vU=;
-        b=i7256DPZruthFtg6mHRjY8bDbMQ69lBLLcb1wIxRJxGRLV9R8Ffplk5za2Ggh79rx/
-         YfuwalY8C903iQsZilszeTvfIql9yxyCjj8zqsXRXQejHo9z+0X4MODDum9P4XO7S8RH
-         uYQDJAlGTOmch6ZQ6gYQ5/XSdytf6Du3EhloIf05jtF0d2voab2L6Ft4YfrYQSPQ7O5x
-         K9habwulAIkPjkBubF9iA3e0r0jusAV5Qb/eUpRZXsaynlnBYmoFzwuiY3uBFTpeBch/
-         I8OKLp9eRBi0ulAHkOXdiRPWC8b5txlPp2w5HoNOcBuo0AF+oO65PaT0CdVKGFOTB4Da
-         nu5w==
-X-Gm-Message-State: AFuF++npuauoiwHF/xtPtr4zb7asx+9aDPNgkB25ZwhTVyOEKtchHBck
-	Uk809HA3URL+z+ruIn27DExQbStQ8fXVCqpGH1KS56ZNRswH5/Q8Ghx0oW7rQ8RInF1sUKVYJth
-	/xrU81g==
-X-Received: from pgvm9.prod.google.com ([2002:a65:62c9:0:b0:cc5:284c:de35])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:9086:b0:3dd:a196:9077
- with SMTP id adf61e73a8af0-3dda196af91mr11271682637.65.1789999559066; Mon, 21
- Sep 2026 07:05:59 -0700 (PDT)
-Date: Mon, 21 Sep 2026 07:05:04 -0700
-In-Reply-To: <20260826161430.714316-1-seanjc@google.com>
+        bh=2SNrcGbCmwVp5rC+pI8JTwzDzqFP9LyCEeRjh8ThPOg=;
+        b=DVQG/ibnrvEMizR/ZR3AN3CK4Wrbi5L96YI2dcIXkU2pFtMqBavry4S7EO3gVrJudk
+         fzImUQD3JxuHhf5VqZOT7NhoK88ro/+2RpyRlcGv7RekKGaPgMo/ZR6W3juLsapgwDYW
+         LIg1TZ27n20mJLhjvizutQJfx0H4NyFqoKcKxrXhLGqDWpOtwAs0KNVrdJ4ujm4PlQkm
+         mgApY4XEY71mKWkRnUDSTTS4BEXTc4kAF2iBoOrSZRkvMbCIx/zpZvFAF4pZZeKFIcSR
+         13wSKIr9FLcffcpSHcXzyrhc1svm+M4dhVVaOWKCD2R9DLusGQdtmfIyL33e1+FvYImZ
+         uEbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789999563; x=1790604363;
+        h=content-transfer-encoding:content-type:to:from:subject:message-id
+         :references:mime-version:in-reply-to:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=2SNrcGbCmwVp5rC+pI8JTwzDzqFP9LyCEeRjh8ThPOg=;
+        b=03pr818BpflYMdSa69Wl2+d9KTcHLqF1QVN1o/w24jM256KvdHRr7s/+xbGcH7IrXM
+         TvvQ/7oeWHm4JIbhWrzw7PlaTlW5jpNT5H19SwLxcf/c8jTv+ynK4Dx+BIz3H4dS82Nf
+         70EFjqxKjGzKq9gGiZzFAdhd3WliPqZ2NJy5jyIyVHy+rXDH/VcMwJz6rQavObs3yk8z
+         aJHFehvsb/nsLqPqroCGFJsR9t6WxItF6juUc/m8dV+l79j8ATYxQ46h9ebMzLNur3FK
+         251dzWp3SOOELzX69Kh0Fk/xtItQO4kzYr/H7aNYcPaxkgt2upV36LjohwmYCPcJTKXf
+         CZyA==
+X-Forwarded-Encrypted: i=1; AKwUvBw9movG31258BKlhiozK9NSbWobTgldVr0hhpwxa4Q32lqNlLa9Au3laA0nzibbnGzEBMw=@vger.kernel.org
+X-Gm-Message-State: AFuF++knigHE2PKJNx0y2+Uv0MRHj8V4AflHLqg99Yn2R4EZYKfe9kX4
+	npDfGQ8u+YWBAdaxkKIKdWPsDcJpIJ0q6yiGf9sZfy/NAEw+G9F6AzCdDg8gT0uLwmVXyKQ4XW7
+	6Ug9W1Q==
+X-Received: from plld8.prod.google.com ([2002:a17:902:7288:b0:2db:60a3:afae])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2f4c:b0:2dd:c170:2d4d
+ with SMTP id d9443c01a7336-2ddc17034demr110471435ad.24.1789999563212; Mon, 21
+ Sep 2026 07:06:03 -0700 (PDT)
+Date: Mon, 21 Sep 2026 07:05:06 -0700
+In-Reply-To: <047d5e3a-b64d-434c-9a40-140468441de2.hao.xiang@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260826161430.714316-1-seanjc@google.com>
+References: <047d5e3a-b64d-434c-9a40-140468441de2.hao.xiang@linux.alibaba.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <178999853712.734513.7564161913562650394.b4-ty@google.com>
-Subject: Re: [PATCH] KVM: selftests: Use __GLIBC__, not _GNU_SOURCE, to detect
- actual glibc
+Message-ID: <178999687461.714438.14645888024741570716.b4-ty@google.com>
+Subject: Re: [PATCH v2] KVM: x86: Rename CPUID feature bit AVX10_VNNI_INT to AVX10_V1_AUX
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Sashiko Bot <sashiko-bot@kernel.org>, Hisam Mehboob <hisamshar@gmail.com>
+To: Sean Christopherson <seanjc@google.com>, kvm <kvm@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, "zhao1.liu" <zhao1.liu@intel.com>, 
+	pbonzini <pbonzini@redhat.com>, "shannon.zhao" <shannon.zhao@linux.alibaba.com>, 
+	Hao Xiang <hao.xiang@linux.alibaba.com>
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 26 Aug 2026 09:14:30 -0700, Sean Christopherson wrote:
-> Use __GLIBC__ in the hardware disable test to detect when selftests are
-> being built/linked against glibc and thus pthread_attr_setaffinity_np() is
-> (hopefully) available.  As pointed out by Sashiko and Hisam, _GNU_SOURCE is
-> effectively a "request" macro to enable functionality, whereas __GLIBC__ is
-> an announcement of support and selftests' idiomatic way of guarding code
-> that's specific to glibc.
-> 
+On Tue, 08 Sep 2026 19:54:51 +0800, Hao Xiang wrote:
+> CPUID feature bit AVX10_VNNI_INT is renamed to AVX10_V1_AUX to account
+> for additional AVX10.2 instructions separated to have =E2=80=9DOR=E2=80=
+=9D sensitivity
+> for platforms which may not support all of AVX10.2[*]. This CPUID bit now
+> applies to the following VNNI instructions: VPDPB[SU,UU,SS]D[,S]
+> VPDPW[SU,US,UU]D[,S], as well as the following convert instructions:
+> VCVT[,2]PH2[B,H]F8[,S], VCVT2PS2PHX, VCVT-BIASPH2[B,H]F8[,S],
+> VCVTHF82PH.
+>=20
 > [...]
 
-Applied to kvm-x86 fixes, thanks!
+Applied to kvm-x86 misc, thanks!
 
-[1/1] KVM: selftests: Use __GLIBC__, not _GNU_SOURCE, to detect actual glibc
-      https://github.com/kvm-x86/linux/commit/f13368e0acff
+[1/1] KVM: x86: Rename CPUID feature bit AVX10_VNNI_INT to AVX10_V1_AUX
+      https://github.com/kvm-x86/linux/commit/674717509d9e
 
 --
 https://github.com/kvm-x86/linux/tree/next
