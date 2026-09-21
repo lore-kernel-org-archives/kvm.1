@@ -1,158 +1,236 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208A049DBA8;
-	Mon, 21 Sep 2026 13:27:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED0649F10F;
+	Mon, 21 Sep 2026 13:38:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789997266; cv=none; b=k5zIoPgefZfVs6AHEYKiiTfiBteGh1YHFQ2HcGWcKQfzsLHOLY2VBVLd/3SKSuYpFj8vfRjlENx6bQvsRmpqj/Fe1uWp3B4iCoxo5YWYhZke8Cv49HPGnfu8ReK0EkwGeZVnd7xPbeP9GWxxQxcHuVTPJ9FwOq2WRV2l6avA5/k=
+	t=1789997937; cv=none; b=e0rf+1NwgZf3Qu+hxfy813PW9u6Zk2LqPM0avugb/LChROI3AskuXLT4UtQ9wuT10/2d4jLNHWyUP1au2YRSvheKtaS5udqQMf0AXnFoRNdz6WBXfQp2jL9KcPBcL2J/UqVDwEtcoYLV2+qkQ9VPhEy9EabSKGsGDWkqjLH4dFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789997266; c=relaxed/simple;
-	bh=4nmoxw2ZHQofaj8EJj1UInlqle9eASAx4yPihU0NGKE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mJbE2s2CZ6YrLPkhrc6jKP52T1TqewXzS96701XOONsgVshEBNlG2dCbtJA6vgPt8XxAEabyZuXce26x6cWVAKY+yK6ejOzYFc1zJX+j+qh0g0HQ9c4ZaFJ0GoNRbyFiIt9Ke76U0g7Pt/3u9DGzSV4csZXlqssrqb4qPOS11yQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gSVwtMYm; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1789997937; c=relaxed/simple;
+	bh=MKegHsV8HzpeuCGAw7PUAXUzjaeSFOdwlkUlxPrRN1Y=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ozT9UTryb/uudEJiJoOe1V9HCEA6Z5u4mmzLxLga+auh/vPtMCeJ4V1pIoHEX1Roxs60umUaAEHFN86Wn0EXpB5D/PN+e3YJ/bIjOyl7PZaL5UOZ1usz8bOvasaejiFptj+wjXwMsT7+v3sRrt9z2bHQ7zB0D7iDyllUygpGqJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=dRkF6hot; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gSVwtMYm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789997265; x=1821533265;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=4nmoxw2ZHQofaj8EJj1UInlqle9eASAx4yPihU0NGKE=;
-  b=gSVwtMYm9u8/TvRU/wBpgudO9Ehtse7UBnIlKa8lG/1MTfjZbfpLPAYx
-   +aTSirdYG17fXPQsa0/CjgrNyG/2X5D9OnBuZMgRyh7GC/W3sQjkpkIGU
-   g6QLJyJmTibkQa/yAdOMti5XmDK2iK91IcxklHYPijov10qlzhNnRrN9r
-   QPcsnXXeQddQ7n3JVC1wcMShUVIGW9iEjmqWcOPIvfjSrUOBmCJ1d0l6V
-   iF77jyoMenpeXvXfcJsGVxrTw+9aPFgSVd49KTGQlDpaoeECgqVOF99kr
-   DFdn1/SNN6GImu1J0DYU3ib1Zik14r9xJYBcVwhmYYcsI2nAoBo5iBpGG
-   g==;
-X-CSE-ConnectionGUID: UFScwykFTZGXSlN5VY0WkQ==
-X-CSE-MsgGUID: 506UoGJZRaO0PnY5xV6hpw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11911"; a="89434438"
-X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
-   d="scan'208";a="89434438"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 06:27:44 -0700
-X-CSE-ConnectionGUID: 5cCwDP5/TEOO04pH4+JPkA==
-X-CSE-MsgGUID: YiaHkgBaTpKNVdfgWlxTsQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
-   d="scan'208";a="269165565"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO [10.245.244.155]) ([10.245.244.155])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 06:27:38 -0700
-Message-ID: <51ddde08ece4ca9dc277d799b3ea4f1f3cdf7e10.camel@linux.intel.com>
-Subject: Re: [PATCH v6 18/18] RDMA/mlx5: Ask P2PDMA whether ATS takes a
- direct peer-to-peer route
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>, Christoph Hellwig <hch@lst.de>
-Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
- Logan Gunthorpe <logang@deltatee.com>, Chaitanya Kulkarni <kch@nvidia.com>,
- Greg Kroah-Hartman	 <gregkh@linuxfoundation.org>, Jens Axboe
- <axboe@kernel.dk>, Alex Williamson	 <alex@shazbot.org>, Ankit Agrawal
- <ankita@nvidia.com>, Jonathan Corbet	 <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>, "Joerg Roedel (AMD)"	 <joro@8bytes.org>, Will
- Deacon <will@kernel.org>, Robin Murphy	 <robin.murphy@arm.com>, Randy
- Dunlap <rdunlap@infradead.org>, Sumit Semwal	 <sumit.semwal@linaro.org>,
- linux-pci@vger.kernel.org, 	linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, iommu@lists.linux.dev,  Tushar Dave
- <tdave@nvidia.com>, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, 	linaro-mm-sig@lists.linaro.org,
- linux-rdma@vger.kernel.org, kvm@vger.kernel.org
-Date: Mon, 21 Sep 2026 15:27:36 +0200
-In-Reply-To: <20260921131055.GP11599@ziepe.ca>
-References: <20260914-fix-p2p-acs-v4-0-v6-0-5ef07ec9ef06@nvidia.com>
-	 <20260914-fix-p2p-acs-v4-0-v6-18-5ef07ec9ef06@nvidia.com>
-	 <321890690ce83d1943b2f678bd9bee9b8c895b66.camel@linux.intel.com>
-	 <20260918121500.GV13683@unreal>
-	 <b517070d0b9236b03962fcba649faffcacda23eb.camel@linux.intel.com>
-	 <20260918170524.GH11599@ziepe.ca>
-	 <f9ced8cab6eb929a5f65d789fe6922458c6f3396.camel@linux.intel.com>
-	 <20260921131055.GP11599@ziepe.ca>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="dRkF6hot"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A7B4C19F6;
+	Mon, 21 Sep 2026 06:38:51 -0700 (PDT)
+Received: from [10.0.128.141] (unknown [10.0.128.141])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 656B83F86F;
+	Mon, 21 Sep 2026 06:38:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789997935; bh=MKegHsV8HzpeuCGAw7PUAXUzjaeSFOdwlkUlxPrRN1Y=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=dRkF6hot2SZM9x7rXT9uJ32yX8g3jH6t3bZx4R0uMTnlLattJs7rhfOXyCkD/Lg2H
+	 vNJ3kjbuUeHmumIC/8/lDd1Q4y4td1m0hp9Mlju7grA/51Q+jMf8Gw9H3N0AyTlN0y
+	 TUb00JwsTZ6YEE8FYHRh/7YAGXiWyFwsVrwA3JXY=
+Message-ID: <93aea89c-0a05-4b5a-905d-2e8c14a9e894@arm.com>
+Date: Mon, 21 Sep 2026 14:38:50 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18 6/7] firmware: arm_rmm: Ensure the RMM has GPT entries
+ for memory
+Content-Language: en-GB
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+To: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
+ <20260912083611.2513845-7-suzuki.poulose@arm.com>
+ <178978126543.2352296.12214136703168879825.b4-review@b4>
+ <65b0c03b-36b9-4e60-aa55-c3b4b85e21ee@arm.com>
+In-Reply-To: <65b0c03b-36b9-4e60-aa55-c3b4b85e21ee@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2026-09-21 at 10:10 -0300, Jason Gunthorpe wrote:
-> On Mon, Sep 21, 2026 at 08:40:41AM +0200, Thomas Hellstr=C3=B6m wrote:
-> > On Fri, 2026-09-18 at 14:05 -0300, Jason Gunthorpe wrote:
-> > > On Fri, Sep 18, 2026 at 03:42:28PM +0200, Thomas Hellstr=C3=B6m wrote=
-:
-> > > >=20
-> > > > 1) Xe attachment check if pci_p2pdma_distance() returns OK for
-> > > > the
-> > > > path. Then Xe always sets up dma-addresses using
-> > > > dma_map_resource().=20
-> > >=20
-> > > Open coding pci_p2pdma_distance() in drivers is a hack. Using
-> > > dma_map_resource() like this was never "allowed".
-> > >=20
-> > > We've fixed things so these hacks are not needed, the drivers
-> > > need to
-> > > move over to things like dma_buf_phys_vec_to_sgt() and the hmm
-> > > helpers
-> > > to use the DMA API correctly.
-> > >=20
-> > > > 1a) Let's say the importer (Xe) has ATS enabled, and the
-> > > > exporter
-> > > > is
-> > > > supposed to map dma_addresses.
-> > > > In between there is a switch that allows direct traffic.
-> > > > Now with your patch series, How would the exporter know that Xe
-> > > > has
-> > > > ATS
-> > > > enabled and therefore should return IOVA mappings rather than
-> > > > the
-> > > > BUS
-> > > > addresses representing the shortcut.
-> > >=20
-> > > The thing that does the DMA map must be aware of what PCI TLPs
-> > > the
-> > > PCIe initiator will use to compute the proper P2P mapping mode.
-> > >=20
-> > > ATS always needs an IOVA but that still doesn't mean the P2P will
-> > > work.
-> > >=20
-> > > > It seems to me that a pci-device settable flag "ATS always
-> > > > enabled"
-> > > > should be enough to fix both issues?
-> > >=20
-> > > It should be be per-mapping to support the NIC workflow that
-> > > isn't a
-> > > global operation.
-> >=20
-> > OK. It looked to me from the series like the NIC workflow was to
-> > adapt
-> > its ATS settings per mapping depending on the p2p mapping type
-> > returned
-> > rather than vice versa. If so it would just clear "ATS always
-> > enabled".
-> >=20
-> > Admittedly a per-mapping flag would be more flexible, but also
-> > would
-> > require changed internal APIs?
->=20
-> Ah you didn't send this to the list, was it intentional?
+On 21/09/2026 10:32, Suzuki K Poulose wrote:
+> On 19/09/2026 02:27, Jonathan Cameron wrote:
+>>> The RMM maintains the state of all the granules in the system to make
+>>> sure that the host is abiding by the rules. This state can be maintained
+>>> at different granularity, per page (TRACKING_FINE) or per region
+>>> (TRACKING_COARSE or TRACKING_INTERMEDIATE). The region size depends 
+>>> on the
+>>> underlying "RMI_GRANULE_SIZE". For a "coarse"/"intermediate" region, 
+>>> all pages
+>>> in the region must be of the same state, this implies we need to have 
+>>> "fine"
+>>> tracking for DRAM, so that we can delegate individual pages.
+>>>
+>>> For now we only support a statically carved out memory for tracking
+>>> granules for the "fine" regions. This can be extended in the future to
+>>> allow modifying the tracking granularity and remove the need for a
+>>> static allocation by the firmware.
+>>>
+>>> Similarly, the firmware may create L0 GPT entries describing the total
+>>> address space. But if we change the "PAS" (Physical Address Space) of a
+>>> granule, then the firmware may need to create L1 tables to track the PAS
+>>> at a finer granularity. Linux therefore checks if the platform 
+>>> firmware manages
+>>> the PAR region. i.e., the firmware is in charge of managing the L1 GPTs
+>>> (creation and the required memory for the GPT tables - via static 
+>>> carveouts)
+>>> without host intervention. Support for dynamic GPT creation by the 
+>>> host will be
+>>> added later.
+>>>
+>>> If the firmware requires us to manage the tracking or GPT memory, 
+>>> Deactivate
+>>> the RMM and reclaim any memory donated at RMM activation.
+>>>
+>>> Apply the same checks when hotplugged memory is brought online.
+>>>
+>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>> [ Switch to RMI_GPT_L1_INFO for checking GPTs and deactivate RMM ]
+>>> Co-Developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>
+>> A few comments inline.
+>>
+>>
+>>> ---
+>>>   Changes since v17:
+>>>       * Move wrappers that may not be used elsewhere, out of arm-rmi- 
+>>> cmds.h
+>>>   Changes since v16:
+>>>       * Check fine tracking and create L1 GPTs for hotplug-added memory.
+>>>       * Clarify the L1 GPT setup and move the explanatory comment.
+>>>       * Switch to using RMI_GPT_INFO command for checking the GPTs.
+>>>       * Deactivate the RMM and reclaim the memory if we can't proceed.
+>>>   Changes since v15:
+>>>       * Skip firmware-reserved NOMAP memory in rmi_init_metadata()
+>>>       * Handle negative error codes from wrappers.
+>>>   Changes since v14:
+>>>       * Move the implementation into drivers/firmware/arm_rmm.
+>>>   Changes since v13:
+>>>       * Moved out of KVM
+>>> ---
+>>>   drivers/firmware/arm_rmm/rmi.c | 200 +++++++++++++++++++++++++++++++++
+>>>   include/linux/arm-rmi-cmds.h   |   2 +
+>>>   2 files changed, 202 insertions(+)
+>>>
+>>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/ 
+>>> arm_rmm/rmi.c
+>>> index ecc89e91d264..583e1aca9b15 100644
+>>> --- a/drivers/firmware/arm_rmm/rmi.c
+>>> +++ b/drivers/firmware/arm_rmm/rmi.c
+>>
+>>
+>>> + */
+>>> +static inline long rmi_gpt_info(unsigned long start, unsigned long end,
+>>
+>> Why inline vs letting compiler make it's mind up?
+>> Same in other places
+>>
+>>> +                unsigned long *out_top,
+>>> +                unsigned long *out_gpt_par_state)
+>>> +{
+>>> +    struct arm_smccc_1_2_regs regs = {
+>>> +        SMC_RMI_GPT_INFO, start, end,
+>>> +    };
+>>> +
+>>> +    rmi_smccc_invoke(&regs);
+>>> +    if (regs.a0 != RMI_SUCCESS)
+>>> +        return regs.a0;
+>>> +
+>>> +    if (out_top)
+>>> +        *out_top = regs.a1;
+>>> +    if (out_gpt_par_state)
+>>> +        *out_gpt_par_state = regs.a2;
+>>> +
+>>> +    return RMI_SUCCESS;
+>>> +}
+>>
+>>
+>>
+>>>   static int __init arm64_init_rmi(void)
+>>>   {
+>>>       int ret;
+>>> @@ -786,8 +970,24 @@ static int __init arm64_init_rmi(void)
+>>>       if (ret) {
+>>>           pr_err("RMM activate failed\n");
+>>>           ret = ret < 0 ? ret : -ENXIO;
+>>> +        return ret;
+>>
+>> Why did this change?
+> 
+> Rebase messed up. I will restore it.
 
-No, Just hit the wrong reply-button. +lists again.
+Actually this is not. We dont have to check the metadata if
+we couldn't activate the RMM. Also, the failure path at the
+bottom has "deactivate", which again is not needed. So
+it is the right thing to do.
 
->=20
-> mlx5 has both cases, some DMA is flexable and can do either, some is
-> non-ATS only.
+> 
+>>
+>>>       }
+>>> +    ret = rmi_init_metadata();
+>>> +    if (ret)
+>>
+>> And this is hitting another bit of guidance in cleanup.h.
+>> Functions shouldn't be mixing __free and friends with
+>> gotos.  Again, not a bug here but there are large ugly
+>> monsters around this stuff, hence the blanket guidance.
+>> I haven't thought that hard on how you avoid it here, but
+>> usually it's a combination of suitable helpers and wrappers
+>> and resulting code is often more readable as a result.
 
-OK.
+I could change the hunk to something like, but that looks ugly.
 
->=20
-> Jason
+@@ -1010,20 +1010,12 @@ static int __init arm64_init_rmi(void)
+                 return ret;
+         }
 
-Thanks,
-Thomas
+-       ret = rmi_init_metadata();
+-       if (ret)
+-               goto out_deactivate;
++       if (!rmi_init_metadata() && 
+!register_memory_notifier(&rmi_memory_nb)) {
++               arm64_rmi_is_available = true;
++               pr_info("RMI configured\n");
++               return 0;
++       }
+
+-       ret = register_memory_notifier(&rmi_memory_nb);
+-       if (ret)
+-               goto out_deactivate;
+-
+-       arm64_rmi_is_available = true;
+-       pr_info("RMI configured\n");
+-
+-       return 0;
+-
+-out_deactivate:
+         WARN_ON(rmi_sro_memxfer_cmd(sro, GFP_KERNEL, 
+SMC_RMI_RMM_DEACTIVATE));
+         return ret;
+  }
+
+
+Either ways, we have to cleanup the object on return, no matter
+the route we take. So the original form is much more readable
+for me.
+
+Cheers
+Suzuki
+
+>>
+> 
+> I will see if I can improve it.
+> 
+> Cheers
+> Suzuki
+> 
+
