@@ -1,63 +1,65 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90EF246783
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:19:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734E23E315C
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:19:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790000348; cv=none; b=I5P/y054hjlSKa0rYC3RjUR0qEdeO9PaESToYQX43ZRBB6UQRbrxqChBbRXb3Iz5dOw9bUckdO2t0ZE6/wWHnjMge4x91R+JVb0k1rTwrBR/1aQy9jOxiM4GnNCVbBZIT4QXkfU2YWs4BOrkI5UBXiwrmBlFY3vicyPUuTDExXI=
+	t=1790000349; cv=none; b=CqVw56SMqPSg5XMKnEiSr2d0szZFo+7BKkkrXmVRr+8dEUV52yDWF7InmTsxV/7gROgYqs0rnxcmvv/C6/fEkrIG9fZ1GOjXRIqH/ImiWPYENzrRrujN8GlihCpvhVNvKqWXhZJG7zl+71q+zOgXrykfd5us6TxeLHtxA5PHH48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790000348; c=relaxed/simple;
-	bh=YeeC+2+2L+S8+5NDHnlYj5S1MfCL5SiHgjRm8O/D4Lk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hhGEWbEWr6sDxbAjLCKOXPQ2MwBMHoG52hrzP9P1Pw0DpXK+u5R/lJxIvNrrpWYIefcFVQJOrjdF+/5cZwNhoW5dOcZcHs7IYGHDmhtZ4id9kQneBF25yAu0vmkODNd889wsDL40g1IS9kyl8aDFp9t8J7FKdnf6dOAoL3Z94f8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=NCoVhUqN; arc=none smtp.client-ip=74.125.225.140
+	s=arc-20240116; t=1790000349; c=relaxed/simple;
+	bh=Hp1aaN6m9SLOJ9Ba77XKxslIFjByDCCJrJMUB87/J7I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rxxxXaLy/Q7zvfuZCUNV4Cj85hdptulckxxdtTsfJp8oCmNQgOzg0OowQJ1dBvvLoU6G8g/IwEifB8an+MWCDF7sCrBOxzdI7VmfZSUXBA+/J1oo0+SZCAr1FUC5rMp9jHlPlXEWufC05h6jzIqKGDH/ORlrFkgRq0iSJfZmwX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=h28rVdGL; arc=none smtp.client-ip=74.125.225.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="NCoVhUqN"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49e66390995so16447715e9.2
-        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 07:19:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="h28rVdGL"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f6351831so1553155f8f.1
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 07:19:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1790000344; x=1790605144; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hqbKKNT9ux8l56CK0pHK3up35FrU6+62NPcNC6MTw/A=;
-        b=NCoVhUqNh1KeDX+AI/gI3baVbwsH8vT/EvyM1fDiRWfdRYUTeqoBCPfi80ir7uPKUS
-         dI+AugkJt9KKYn4f/MU14AkxIj0jQXzq+xrzYty9smYF8o5440oUH9YeyiUShiG35TYn
-         8Zm4GToTfnTBLaQrO+7lhE+DaPCZkozYpOTsGhX3uoanRwuEsieK4FZ7OMsoEatrjp/N
-         hyFHkTI73a765SfAz8y4+jNOa8jjV54f7IIVFHRYaHP+2mcKDSy9jYQTO/y2xrf6dgtG
-         iXwtYSL1OwdlfTYQ6OzTouqLkEujGaM4a6Vg1mnyxpD9+xE4RERw7FW+bKWFj1pWWNRM
-         itnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790000344; x=1790605144;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+        d=baylibre.com; s=google; t=1790000345; x=1790605145; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=hqbKKNT9ux8l56CK0pHK3up35FrU6+62NPcNC6MTw/A=;
-        b=hPG4uUgWf3PoUlniRMruXLuZRo4wvcmZF3XI4YD5LTrnZ6hmuQ1iOKI2KX11v5Bjs+
-         8ZMUGEyxhwnZkecw5Bzg42ZSF+FxqEBN4gkKIfOfGQRRojlMl0lNaAfGuDNNPa4APbp+
-         YaHKO9wMq8INFO/0r4DEGHpvktWJ2mEKba9oGtttnYhK/DgCL5X/ryFhGbriMbBiTrY4
-         RP7+wO3Q5z0MvUTX5BG7sZ8x2x5nCSi9p/itI+QzyUa+PJO+4BPLh8E9HF0FdLWnpg0T
-         aN4H70MUTBaD0RsfaLR473roKMIQlHBvNiMCY6Fu79sdM2gOwTKBQzipCLFHiA1s4/OG
-         2vjg==
-X-Forwarded-Encrypted: i=1; AKwUvBz1uecfAIbPXmXgu/U+yOuuVh0cxp1qfpDTj5KebCMe3uOiHXzT42tkk5Hbgqrd+G+mZWI=@vger.kernel.org
-X-Gm-Message-State: AFuF++lKJbuD7cUm3FNrsK2nDC3bUkuoRw1Gkpmh95/9I/CzNJocmMox
-	PtM/c5asUDOGRky9C30SdiKcQT9t6bP5FFNrhvnbWLht2R6Xbfcr+8RsYd1TqOJ33Pw=
-X-Gm-Gg: AYBFou1ihuf/2T+Bo1esjOVLZKS4lKdLWC72iO1zFmawk4mJXaO74yqFfvBO2af3xBj
-	wW7uuD09ZfCTpdsTlv/9DVQxHGkabduEp7HbPUEsLXnxDdpNjK2ygOf5KR6rQ+xz+BbchF4DuV2
-	nnV8RBGPKjWEXBC6er14PxYhiyfUCl/gtbeuTp6TuVR2izd74YyZyIxpvzvYM72bCNp/glfRA2+
-	qW+Ofw1YzObr2BrYmKaSDDskx68jg0PNMSHUGS1V3GTv60m4yxRABmDGeJTIAXjy+g0ZQODDSvQ
-	Netx8xSUPjSuHR4fbqEQBOyRh0kI2nzornMjSHiaxISEjdvrV8mU9oV9mhCBQDPPzF+a22/wOpQ
-	/J+VZEFHyAvslSuusasHQ8KBeBAp/Xd3eNX1B/4EeX2OJhcN5PbeJtWuX4CE2FKSBCJjHLJDWrM
-	AWm8UL1NT3cTLCziQkotcbV3vGQqUTECzlvOVqd2zAG6onOQFeNwo0HDnDJxDtco9Elpd8Q5Qz/
-	CPaG1nN2DIhqc4yWVL6gZ+6S0IMNf6SlGmUbYkYMxrFZSO1SAXDkqicN3jzDA==
-X-Received: by 2002:a05:600c:698d:b0:49c:fc6c:be06 with SMTP id 5b1f17b1804b1-49fc5851ea2mr149001505e9.29.1790000343951;
-        Mon, 21 Sep 2026 07:19:03 -0700 (PDT)
+        bh=X9iJStx8k76O9mNNIa9n25MiOt6w1A7vHpXQesRkijU=;
+        b=h28rVdGLNenqmI8RqjzxFu/RJSKbLRv+7ymn3gTJw47/ANWN+0HrOaUKmYmX7nU8Br
+         GJKG4unSf/4uwU1vOeMkMKJ5416sM9iCusXrhaae6d4/C4r3FqoPxzE1PAMU9HmZgMhu
+         JHn9FwGyJ1kdWyyhKheCP97wQjswxYDY18RN6NlbeJOh6N2J21EbZkZJ3jTlBFXfZFEc
+         FTt7/EcXFY48wCNeXQxEbt2ZF1vIsjK3R77INN6YBckf7jlmApgzKNLrEBgTznc9+vYR
+         2KucigoDm9smNQT3TVdYgB2ul5/Tksht4XzB/pr8NfUtgAvky9tOgHbdlzsfsldJG6cH
+         s6vA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790000345; x=1790605145;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=X9iJStx8k76O9mNNIa9n25MiOt6w1A7vHpXQesRkijU=;
+        b=bwIGKhawbEEXHNVELir6ukJLkgxc2146NoIC1K+4OxtRhZvxDHA8ldECihQk/NBWrT
+         0A9R34XOui4uPUUhU4JyhXzEp3IgwYWgj395CGwSVAwihwb3wGneMgoolW+mgZ2ZRN2y
+         DmEV/RGbgP+4kCY4HjuczWEMm2+jn6L6t7Mku2nr27/ppdq0K9gDEpcbatDrBbuy29M1
+         fFnIwD0D10/aaJZCDHHDrP4uhnjxapaCIPVFlIGzPTphgey5tFSGJIioNulNT6cry51j
+         gIviR7p/mczJbn18oSdF4NzJPo4d+XO4bicPNdNRBOuo1DZaJK8lSPi+rv06ckWuK2fv
+         MSnw==
+X-Forwarded-Encrypted: i=1; AKwUvBzxwgnus7BIwWeunsXwRje/gmG4coFZY8VFRYzLFDbq9f962Ro3ae1TEDWnSgkJxwj92ys=@vger.kernel.org
+X-Gm-Message-State: AFuF++lG2MZwmNQFkYhExDtGARLgDm42C85DjycvW4XoMbuUpN73KfNO
+	XH18Ov/UCetwvt7fTCQlZMnvek4eZ7aByYjZysIu6akQ0a+YRH9U5HziZih9BvEGs6g=
+X-Gm-Gg: AYBFou2Qf+qi7olfiIDuuajVdwX8Yn+z6GJVpRRx59BpEosCvwy/4SnXaOR6MC40Fu3
+	pfL+dYTjRI/EsSN1gQc8wbw+i9EU1k4UQMSVbXZEMIrYOPJ9ZyxnfcuBQNNITcNB3CgSM+w7BkI
+	iLWWOR2qVGntnhb3o7WyxPyfq6n9j2/9Fb3OM8kPVUhCA/HXcnTvOwYhuIcvnO+EEjfNunkrQKV
+	Oo3sqNmhFHZG4AVfzxXBzIHLTcgwRDL5jvmaBrZeuELXcZzF5NQWpRYGo9shQYHU4B3SxyY1ZbZ
+	DFewsdKH2fCx5UzvrGfEz0tbEt+jD/+r+foXorYA59zzPhBJ0BBzgwYZSSvNMe0KlxDmyKUHiyJ
+	kKiU2+JhlzbQBl5+4qkmepXrP9dkDRiLiPj8GHI6yq6tRsoGuUwp0VQhXqFfvrzSPei8URKKZ5w
+	x3DKZj/42YS6/rZNMvHCvJQJRhCD3FOEV2/w8ioScI8NbX4oS6Fr0bcZ/Qz2Ag5XADNWLRD6mRZ
+	Sc+5Bzhtsdt8du+RANRNukYZv0oWKlWgmmvYlTyrUJa197zRPaWfYunPfQtVQ==
+X-Received: by 2002:a05:6000:310c:b0:485:ae8d:1e07 with SMTP id ffacd0b85a97d-4871e37dee2mr15597411f8f.56.1790000345490;
+        Mon, 21 Sep 2026 07:19:05 -0700 (PDT)
 Received: from localhost (p200300f65f19a904d4f76eed31f2ef79.dip0.t-ipconnect.de. [2003:f6:5f19:a904:d4f7:6eed:31f2:ef79])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-49fcd068124sm226896045e9.3.2026.09.21.07.19.03
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-48724422790sm22134362f8f.5.2026.09.21.07.19.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 07:19:03 -0700 (PDT)
+        Mon, 21 Sep 2026 07:19:04 -0700 (PDT)
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>
 To: Tianrui Zhao <zhaotianrui@loongson.cn>,
 	Bibo Mao <maobibo@loongson.cn>,
@@ -86,10 +88,12 @@ Cc: WANG Xuerui <kernel@xen0n.name>,
 	linux-kernel@vger.kernel.org,
 	linux-kbuild@vger.kernel.org,
 	Sudeep Holla <sudeep.holla@kernel.org>
-Subject: [PATCH v1 0/3] <linux/mod_devicetable.h> deprecation continues
-Date: Mon, 21 Sep 2026 16:18:48 +0200
-Message-ID: <cover.1789988540.git.u.kleine-koenig@baylibre.com>
+Subject: [PATCH v1 1/3] Move struct cpu_feature to <linux/cpufeature.h>
+Date: Mon, 21 Sep 2026 16:18:49 +0200
+Message-ID:  <ef103a4b9e1cd7477fa52ee347c4ec301354fba9.1789988540.git.u.kleine-koenig@baylibre.com>
 X-Mailer: git-send-email 2.56.0.rc1
+In-Reply-To: <cover.1789988540.git.u.kleine-koenig@baylibre.com>
+References: <cover.1789988540.git.u.kleine-koenig@baylibre.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -97,40 +101,115 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1180; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=YeeC+2+2L+S8+5NDHnlYj5S1MfCL5SiHgjRm8O/D4Lk=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBqsTzI0TOeHEQB9Maz2NC3JCpfSuBkzPvIF0T5H Lqgf39rKXmJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCarE8yAAKCRCPgPtYfRL+ TmLtB/40aAYP3C3wo4bv6SBsJRxepvOO+jcl0y6KAeoCenvhnVPm/U5nlXY7fUlejd7q3fl0qIH 3wunXaEyWa7N0Hnxp6GBFKmtIyIshbBYavzyzDHP3d5fsKsZ6Ujrq+B/nKu8ErQAj6mJ/WiA/NW Z1n2h7rV+CZzXz2YPqlfSPmNoPgaAOubluHd4AG2oZE2ZXvRQFq/K1UITc7sQJfWHXCJVU22n3n 3M/ol8XaTDGelOFaTVk2GZcRRMLcy2GIMo/r/Is5xaVPfXv8VaR55Ome5joYVhi+rg/rpz9KFWS SyHC1Dd9naehhr1ePCR2X7eNJgguLkS34JjzQc5kFkpvoghu
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3330; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=Hp1aaN6m9SLOJ9Ba77XKxslIFjByDCCJrJMUB87/J7I=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBqsTzLZ9D4hpytjwv31lXxPvfXsBlJnDYJz+Jiq Ckg1/ZdTzmJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCarE8ywAKCRCPgPtYfRL+ Tr7BB/9RxyUkC8S2GB8h2AOL5R1cm+BhY9DSagwLwPGj7JLlQCNJn+1BpMEj/D6VFQC+nz70qG2 yPyA2QQ1bUxHWk/yXqQHc2aLOAwfVbWII5ziFW40g/6GvU6wvz8WcEyRDE31WY34MEQ7U7jcb6C lV32wGb66HTpO1a/WqGnaIiLw+93l6IkcuGzKf3aCqRjjMDVAl2id/bwVPjVAI4krEK2MsAhXb1 WpGCfUDDGDfmsMF3khnktkeHgFidAC6iBymdXOg9yODHQcbhPhE2c31y8H93SOIWisLa86oVmgb aT/QWYPEJ2u+WdNcbeKYiBJxYkR/MuOmC2K6dh+rQ1fbEPw8
 X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
-Hello,
+struct cpu_feature used to be defined in <linux/mod_devicetable.h>. It's
+much better located in <linux/cpufeature.h>. The only downside is that
+modpost and devicetable-offsets.h need the definition and thus
+<linux/cpufeature.h> must be included explicitly there.
 
-this is a next step in the deprecation of <linux/mod_devicetable.h>.
-scripts/mod/devicetable-offsets.c and scripts/mod/file2alias.c are the
-only users of that header that use more than a few device-id structs. So
-their number of lines actually grows when unfolding the needed includes
-into them. Still it is a reduction in build dependencies.
-
-I suggest to take this via kbuild during the merge window. Would be great to
-cook in next for a while before.
-
-Best regards
-Uwe
-
-Uwe Kleine-König (The Capable Hub) (3):
-  Move struct cpu_feature to <linux/cpufeature.h>
-  devicetable-offsets: Include the needed device-id headers instead of
-    the catch-all
-  file2alias: Include the needed device-id headers instead of the
-    catch-all
-
+Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
+---
  arch/loongarch/kvm/main.c         |  2 +-
- include/linux/cpufeature.h        | 12 ++++++-
- include/linux/mod_devicetable.h   | 13 -------
- scripts/mod/devicetable-offsets.c | 57 ++++++++++++++++++++++++++++++-
- scripts/mod/file2alias.c          | 56 +++++++++++++++++++++++++++++-
- 5 files changed, 123 insertions(+), 17 deletions(-)
+ include/linux/cpufeature.h        | 12 +++++++++++-
+ include/linux/mod_devicetable.h   | 13 -------------
+ scripts/mod/devicetable-offsets.c |  1 +
+ scripts/mod/file2alias.c          |  1 +
+ 5 files changed, 14 insertions(+), 15 deletions(-)
 
-
-base-commit: 93f51579e7df248780214094418f205253383cc5
+diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
+index 236523d2449d..d082dae61971 100644
+--- a/arch/loongarch/kvm/main.c
++++ b/arch/loongarch/kvm/main.c
+@@ -5,7 +5,7 @@
+ 
+ #include <linux/err.h>
+ #include <linux/module.h>
+-#include <linux/mod_devicetable.h>
++#include <linux/cpufeature.h>
+ #include <linux/kvm_host.h>
+ #include <asm/cacheflush.h>
+ #include <asm/cpufeature.h>
+diff --git a/include/linux/cpufeature.h b/include/linux/cpufeature.h
+index 6aff540ee9e5..93c1da38aaf6 100644
+--- a/include/linux/cpufeature.h
++++ b/include/linux/cpufeature.h
+@@ -6,10 +6,20 @@
+ #ifndef __LINUX_CPUFEATURE_H
+ #define __LINUX_CPUFEATURE_H
+ 
++#include <linux/types.h>
++
++/*
++ * Generic table type for matching CPU features.
++ * @feature:	the bit number of the feature (0 - 65535)
++ */
++
++struct cpu_feature {
++	__u16	feature;
++};
++
+ #ifdef CONFIG_GENERIC_CPU_AUTOPROBE
+ 
+ #include <linux/init.h>
+-#include <linux/mod_devicetable.h>
+ #include <asm/cpufeature.h>
+ 
+ /*
+diff --git a/include/linux/mod_devicetable.h b/include/linux/mod_devicetable.h
+index a397213bedac..9ce2429b455f 100644
+--- a/include/linux/mod_devicetable.h
++++ b/include/linux/mod_devicetable.h
+@@ -8,10 +8,6 @@
+ #ifndef LINUX_MOD_DEVICETABLE_H
+ #define LINUX_MOD_DEVICETABLE_H
+ 
+-#ifdef __KERNEL__
+-#include <linux/types.h>
+-#endif
+-
+ #include "device-id/acpi.h"
+ #include "device-id/amba.h"
+ #include "device-id/ap.h"
+@@ -69,13 +65,4 @@
+ #include "device-id/x86_cpu.h"
+ #include "device-id/zorro.h"
+ 
+-/*
+- * Generic table type for matching CPU features.
+- * @feature:	the bit number of the feature (0 - 65535)
+- */
+-
+-struct cpu_feature {
+-	__u16	feature;
+-};
+-
+ #endif /* LINUX_MOD_DEVICETABLE_H */
+diff --git a/scripts/mod/devicetable-offsets.c b/scripts/mod/devicetable-offsets.c
+index b4178c42d08f..b57dbbef8777 100644
+--- a/scripts/mod/devicetable-offsets.c
++++ b/scripts/mod/devicetable-offsets.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #define COMPILE_OFFSETS
++#include <linux/cpufeature.h>
+ #include <linux/kbuild.h>
+ #include <linux/mod_devicetable.h>
+ 
+diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
+index 8d36c74dec2d..88bff3207277 100644
+--- a/scripts/mod/file2alias.c
++++ b/scripts/mod/file2alias.c
+@@ -121,6 +121,7 @@ typedef struct {
+ /* Big exception to the "don't include kernel headers into userspace, which
+  * even potentially has different endianness and word sizes, since
+  * we handle those differences explicitly below */
++#include "../../include/linux/cpufeature.h"
+ #include "../../include/linux/mod_devicetable.h"
+ 
+ struct devtable {
 -- 
 2.56.0.rc1
 
