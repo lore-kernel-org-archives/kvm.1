@@ -1,91 +1,91 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF4A4ACC78
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:07:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886B54A6CE6
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:07:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789999651; cv=none; b=XhJB2lV983j5VYpkoPp76Fnxf9jPfA7gyRj/xv5/4qvrsUwpk+bHtowWNEZww8vsfjOeee13kHBbJfd79xh4/GErzfcZUT0dNdaMPWfrgBOfqImgtaWUTVqKA5NDFNaHJkDV6GjTnewqNzv3da6JaVFvhPcvVTJtx8pjU2EBWZU=
+	t=1789999656; cv=none; b=ViIKOk6AqrAkC08U78Ru9VsVwFPjcpmdnGPtSUWnWOjuj2DrOucSyxhlR+tUNq2vf/4eRFJPVeyYZWeFo+pcfJhwZV7slcq3WehXAQ+dZX5nikS5Ju8YtEnsWoize6oaHUqKsEjA40thXwTJak/VZo4IrOdc07fi51MXhNmtEIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789999651; c=relaxed/simple;
-	bh=l74fNDk6VO8vPprQl+zeIl7U2mcronWS4nPqTAUnEVg=;
+	s=arc-20240116; t=1789999656; c=relaxed/simple;
+	bh=ph2cExDaQRQOwHEuFpPe/53YJaqNaEO2h1aVyc1Vvpc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kHSXhG7QYHbK1FySd3C7Nk7pI1BlOaaWP9t3eo/vs5u74FJqZyYYEX8dfAGF1RvF+wWjRW9L8yWEketBUXMWAsCXDv2RgDuL2+B6KJPpJIRqggdDq6PbVI170jy6mLIyyayFQD3C51snXMhJuw1oIXJGfe5ljx3DrSrKF6N0OSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TQ4SqJXN; arc=none smtp.client-ip=209.85.210.200
+	 To:Cc:Content-Type; b=Px5ShlYiVZ/7IkIZjX+ByEdDQ+9dVGb66MWJwuHIF4pG46y9ACKummgIEgoL3JHmpOLV3QvJe2kGMcSTXJw+cOVfZnlj6gsBKwx69V9RwLL1gZfjcgSO4wz09poMWxw3hv1PwQytg2rkLWH6oG6vEWGpCknCx+y9YSk7Sx+fW7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dxXJYEfh; arc=none smtp.client-ip=209.85.214.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TQ4SqJXN"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8679cfe5019so4381387b3a.0
-        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 07:07:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dxXJYEfh"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2d9057fab9eso51760265ad.1
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 07:07:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789999649; x=1790604449; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789999654; x=1790604454; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GyNDJX3fIEdqZwMfzP/6YwVAKyII5CaZgMpV7trI7WI=;
-        b=TQ4SqJXNZoYFTtg9QNA15/JLKCoTbgABf63jL5uoYH+coE2aLf9qpvWn07T7ry7RQT
-         iIDlv3UpTzZ4HgKY3MtPKud7F2Y3nxWkddAuDNWq9Hlt0xQeq6KV6b738ZqnTdFMEQVF
-         prFtRYKUNut+TDqUa3AIo7/7pqNBTbbSeGJyPsvAf+EaZtJtkuqwUq9DMCKytaJNn+Dk
-         sqG9bp7XV60KZ0zOz7950Dzr1gGIz1ZzBaqKg4oaaYSv60hQI9VB4EWMvBHmckYl3t3E
-         pR7nbZYnQAzhDir2wQxcLJJPxJxlvORHdZE6bSS6wxqpMRAn93wWSK34yR6BnEeaPZQS
-         UsCQ==
+        bh=VQJ1GYmLnk2RvPx8au14VoaR+1x+bzghWulma+pPMno=;
+        b=dxXJYEfhxkwDaxKklG++KTrJbWZ5yavCjUmeX5Yc7cpRgkWHMEK2pPIgEXs17cAq0X
+         p9m6UFPTbgOBkXSXD6/u8p0gO0F0vamXHQRsZ0dQr9dYzn6UscefKwQju5pog3zP4nWN
+         5p2Y9T21ey6/vKPlZUUSI/yyhqNZc1Wv5l1Z3wAj79j9zNsv4Pa7pEXvOTuYTuyoxI1D
+         aO2nfKhX+gwfM0RFKH9SrLvzpBQs3jt8eAX2fh5oVPYdcnWakFU1BIU84zHctOXJjmvQ
+         nVXQqFGbuV7AU1QTMrQPf/RFu3UH9E534EHEr+lnIjxbvLeCfhsjbJmQx8zXgx3MO2ly
+         JgRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789999649; x=1790604449;
+        d=1e100.net; s=20260707; t=1789999654; x=1790604454;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=GyNDJX3fIEdqZwMfzP/6YwVAKyII5CaZgMpV7trI7WI=;
-        b=z0CrYsM4cL7fegllv1hdVX8E/hcew3ZA0zo6o1kuMocqu711OQwMefvOHbuqMowogk
-         bsauB5CeSm+4owyEuCttSb1lAFHtQaTkMC8E1FYUMU2GwldsLiRtoXAsUxlLB05HM3Hz
-         MMoEYg2n/go966ikyCGasN6bR6DJgv5YepeGOACprGMMN3+e5YryjEtF2HEEIeEp6sBu
-         QG4NsS+PIxXpBzyoAUG5PQUjeSTz9mL+S0gUqsG1+bAiTZt+IXGfLVv0v94ahWWYFf5N
-         JuFSVVB7xtAQ+pvtBgpiepuMpeIShE7Dz+bXp/Pzm9xO7KRCYNb3YbUbSkd9K6bXxe8P
-         Vs4Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxM+RMhR+h7Cb95njHB1MpQpzz3rrbhnrwCFpg8Cup4jJG07lJRdqUWi4NteJrTZ94btPA=@vger.kernel.org
-X-Gm-Message-State: AFuF++ml6u8yzHVSE0gW62I4ObM6MbbSFe28pNnYpT7GQNYuNuisLw0v
-	02lrYZj7cUrSh1N3UHsosL49W80GHM0hHBMf55tKBzcZkVnBYQprabHtiCkvibtSzyXP9j8NKzx
-	BcUl/RQ==
-X-Received: from pfw9.prod.google.com ([2002:a05:6a00:a269:b0:87b:6530:9518])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1c8b:b0:878:34d7:6977
- with SMTP id d2e1a72fcca58-87834d76c96mr7399999b3a.37.1789999648656; Mon, 21
- Sep 2026 07:07:28 -0700 (PDT)
-Date: Mon, 21 Sep 2026 07:05:34 -0700
-In-Reply-To: <20260803170825.925561-4-hisamshar@gmail.com>
+        bh=VQJ1GYmLnk2RvPx8au14VoaR+1x+bzghWulma+pPMno=;
+        b=cV29CgPdHSf7J5OkpIKEFXU1e+fx2uqabOhkgss1mhGUJELVfdeQLtj6bVQWaQ5MgM
+         ff+RMK95srWHbmNBPAxYHQdTqWuwoX2QLV6qrdydi2vlBTnqaggHKXYp3+qYaYbHB8NK
+         6Nmtfo6vkNQ8Zdq5rHHMFbWcr31OA68+fRvlDceawxsSUABdqpdlDOCsnShCjPKM6rES
+         yGRvCtSBcLyReZlWTWsIMx6xEvAcDUWmi9k7/yG4fHnGaJeEeuA4b7JHGqJOOz6YFmTj
+         F0mY+sM3ddmdIOcKz2B8utS7rRE13YjFqBT91VBJv26xitAcjxm7hqClKMCt8uPjjOcd
+         W9kA==
+X-Forwarded-Encrypted: i=1; AKwUvByI8v/llHDBf6aSkk9omPglbe9Bja1Qt/wCehxYFtRw3OL5ZNRy3Z82t0JbgpFMZlfn0cU=@vger.kernel.org
+X-Gm-Message-State: AFuF++nYlvs+9htJkMyZJO3KpbpeNJNxNDPTjjcWfdQBAQv7Yr/b5guO
+	McubHqMjuZHpw8zYPvFZO74nhl/8D8CH4ECWjbt2awqB+oGdjByeHqbj0CnJx6TUSr5dO8C3Zjo
+	6lvNZYw==
+X-Received: from plan18.prod.google.com ([2002:a17:903:4052:b0:2df:500b:1a93])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:bcf:b0:2dd:c100:3141
+ with SMTP id d9443c01a7336-2ddc100323cmr69307015ad.61.1789999653610; Mon, 21
+ Sep 2026 07:07:33 -0700 (PDT)
+Date: Mon, 21 Sep 2026 07:05:36 -0700
+In-Reply-To: <20260907045246.3783304-1-nagachaithanya9911@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260803170825.925561-4-hisamshar@gmail.com>
+References: <20260907045246.3783304-1-nagachaithanya9911@gmail.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <178999928264.755166.909574492736686331.b4-ty@google.com>
-Subject: Re: [PATCH v2] KVM: selftests: Replace ulong with unsigned long
+Message-ID: <178999930529.756750.6445682647618178643.b4-ty@google.com>
+Subject: Re: [PATCH] KVM: selftests: Fix the never-true negative UFFD delay check
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, 
-	Hisam Mehboob <hisamshar@gmail.com>
-Cc: maz@kernel.org, oupton@kernel.org, joey.gouly@arm.com, 
-	seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
-	shuah@kernel.org, aqibaf@amazon.com, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Fuad Tabba <fuad.tabba@linux.dev>
+	Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+Cc: shuah@kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, 03 Aug 2026 22:08:28 +0500, Hisam Mehboob wrote:
-> KVM selftests use the non-standard ulong alias in several files. glibc
-> exposes the alias transitively through its headers, whereas musl does not,
-> causing musl builds to fail with ulong undeclared.
+On Mon, 07 Sep 2026 04:52:46 +0000, Chaithanya Lagisetty wrote:
+> demand_paging_test parses the -d option with strtoul() and then asserts
+> that the result is not negative:
 > 
-> Use unsigned long directly instead of depending on a libc-specific typedef.
-> This also avoids adding a duplicate typedef to a shared tools header.
+> 	p.uffd_delay = strtoul(optarg, NULL, 0);
+> 	TEST_ASSERT(p.uffd_delay >= 0, "A negative UFFD delay is not supported.");
+> 
+> p.uffd_delay is a useconds_t, which is an unsigned type, so the comparison
+> is always true and the assertion can never fire. GCC points this out with
+> -Wtype-limits, which is enabled by -Wextra.
 > 
 > [...]
 
 Applied to kvm-x86 selftests, thanks!
 
-[1/1] KVM: selftests: Replace ulong with unsigned long
-      https://github.com/kvm-x86/linux/commit/5be2d20f9818
+[1/1] KVM: selftests: Fix the never-true negative UFFD delay check
+      https://github.com/kvm-x86/linux/commit/25158cac2d15
 
 --
 https://github.com/kvm-x86/linux/tree/next
