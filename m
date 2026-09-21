@@ -1,176 +1,112 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C7C51598B
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 21:16:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA032475CF
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 21:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790025375; cv=none; b=p8Fr1+Qk+AffDVub+Cukg/Vdar0oNPLilPOgcpF5T5Gmh9f75nhAIxx6oO3HrrmjCLTVSnrm7IgJ7mTF0IwqMx6eTOk/fQRfQ+19AD10su55ApBPKiTt6YqF2Um/isWRmD5T7D32ynKpPKfw8OCW0HRbxcWJwHb2elBPLeL+uog=
+	t=1790025583; cv=none; b=UD3h5RoxM094dFW8QTjFWWhQBjXiWUkGxKAmvtgtbH+YlRr/yEc/C9OHRQEeU6P8qDWW76L7XGEZ2maX10hR4w2N4wBH51TnVV6iO+WUSZ1YtPBmKAeVBgBU2OxhMzBJn8A7GTOkZ/YJIJgLGPxGPlNMy+hGRIMVSsFCmzEKYhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790025375; c=relaxed/simple;
-	bh=8j/UVd3R9hPZYEQmpaTIM9YhX+5Gk60NqIXL2kiut2E=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=TRL4PRKJmMWGFzLq+8Ba5NtF5dYslqqrVZx0j35Ip1lLLD/E/9FhQkCsoGb+oy6btV+CFRpmAIdE54VdeKIbOuk26jAwr2Q6JP49G0nQzFg5iQx20Acle3B7O7ylgAa7xIkYAmejslJFeNLxmfzEhatkT1+w7egu6Nr5MO0scSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KH/pyQZN; arc=none smtp.client-ip=209.85.215.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1790025583; c=relaxed/simple;
+	bh=+qfiOErA/N25TrI/l0lI5CQBm79NhrPVBVbcjG39Yw4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=VhxhQfoFNKLsNSdy355z0Eqv/9r8qeZnaK4EFkL287MaLhyGZK3pbD2zBTk5p0nbPwpO9pqQrbppSLXaUcG0guUi7jZ/ngub6nFQbfIZ9P/biTowpKqPu/lpjxAfEXPLizi2BUcZDtqnAPNd0E/KTBivCGHxcEwtZ9ILvpZG28Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KoAn3Tum; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KH/pyQZN"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc51591102fso4934753a12.1
-        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:16:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790025373; x=1790630173; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=gUPmdTjIpuFQRYNvpR8eehCmbHOJvqsMfaeTcAMfPLk=;
-        b=KH/pyQZNRSDTSTS2+6sDBdZZY3nf/MJIMCMxDe4Y1OmroDYHdXknoHGAJsZJESbr6n
-         HPl5XfbAXI+Jk4SXvntXwytpLV+Z7aabGGXD67YvPvMLy6d43KztxF5XKzy9CejMekfv
-         K/r529E+Xl3uFR53KFzQ8/wvrRFjvCJbNqf3rlL1QQmu6IWzcpj54rRAaTD3lUEby0Zx
-         rDjksdsGaHuXIphAneirKwv2J/93zQNYiOUG2eG1P5gNV1Dy44VUGS+J8ZjLtGEql/8D
-         Jfsri6EM/sAwiiuvsRHO6BrsqzSv7OqQ251cLxGRUAohcjzuKSZqGR6Ofp5F+s9Gr6hc
-         jifQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790025373; x=1790630173;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gUPmdTjIpuFQRYNvpR8eehCmbHOJvqsMfaeTcAMfPLk=;
-        b=0frL/YDKoJoR4P3BtQ19UbOS7+tXMsV5a7oIJgyQiPXObMR5ZIAu3ej72o8hHWK8cs
-         v1kOMPBIwfiG3KqX8yWxj5oJ1SOpFSuM9B6X07z6G64t8cfT6PZzKOpx7U703zGP0o3s
-         XoG1LxgEB3Dr3W8ANzEAAmsOpBRJgabRWylRgiu8Z7ncTRqauHhg4QkwvzXSPIXk8oxO
-         dsW0YCo3VhWmPX4Hsc3nSMaw9a4C3i5tJr1bLpvuxDHSVSI3t4UeqmcSLiQtYK5zCJBZ
-         ePSu63ymN60ehgxGtT2wLSASb3uLGVwbLCQudxGWhdS9BM+GeBT1ZFrNEIuNmR2hIVqd
-         vWXA==
-X-Gm-Message-State: AFuF++k4HQxdQQvGz8vG+NdRFiIYgCxeA90RZ+/EDHYCo7SsJMdGn1cT
-	pKHq7gIvb8ppM77OQL5gXNcukgcw0d2PNjLmAfaqfAHso+QYwgBLri+4SrdOZfa4BHjyL7IoyHP
-	NLWBu6w==
-X-Received: from pjbkz3.prod.google.com ([2002:a17:90b:2103:b0:39d:9b47:4551])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:574d:b0:39b:3109:10ce
- with SMTP id 98e67ed59e1d1-3a06ae1fd24mr248043a91.16.1790025373221; Mon, 21
- Sep 2026 14:16:13 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Mon, 21 Sep 2026 14:16:08 -0700
-In-Reply-To: <20260921211608.1030158-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KoAn3Tum"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E8A91F000FF;
+	Mon, 21 Sep 2026 21:19:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790025581;
+	bh=U1LzjUrgjAvASiVP4s+H6Dyi3lnlcz9fJJU+wra+qR0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=KoAn3TumLOexrabK7UspqxTOggVPHz90bnk1kSyOS38FlC+RVhTb+ymSevl9zE1IZ
+	 7uK9XsQ9Kwi3Viofeg5DPypO8LHK8CcheZxFEchi/HrSHFkSys9+0Pr5Z89RsQM4Hn
+	 aiikXrtYIwV/TMf60BwHbDtv2z7ZVU9k1AQxguAkJ4tWrTZ6Uf1e91O2Wn7ZpTCx8Z
+	 FiOjMbw0/oq0pd8Wirgau14e8cAHXQ/m1UTzcxZ66oY71nDH1sl8z8gSz2lUcfMDbg
+	 3INzeBRVAqxVyx0cdQbTqxauAW/1mI82iD5AlOuZRf880bzV4n1jFcuF4NzZTtk58G
+	 xht3fuyNeY5Rg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 4/5] KVM: guest_memfd: Establish
+ memslot<=>guest_memfd bindings *after* memslot is ready
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260921210616.1024168-5-seanjc@google.com>
+References: <20260921210616.1024168-1-seanjc@google.com>
+ <20260921210616.1024168-5-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 21 Sep 2026 21:19:40 +0000
+Message-Id: <20260921211941.5E8A91F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260921211608.1030158-1-seanjc@google.com>
-X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260921211608.1030158-3-seanjc@google.com>
-Subject: [PATCH v2 2/2] KVM: x86: Fill kvm_run exit fields in common
- get_nested_state_pages() error paths
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Jinwoo Lee <rkskek9254@gmail.com>, Stefan Teodorescu <fane@google.com>
-Content-Type: text/plain; charset="UTF-8"
 
-Fill kvm_run with "internal error, emulation" in the common error handling
-paths for getting nested state pages, as requiring each check to manually
-fill kvm_run is error prone and requires a non-trivial amount of copy+paste.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] kvm: arm64 guest_memfd creation always fails with -EINVAL
+--
 
-Specifically, both SVM and VMX fail to fill kvm_run if load_pdptrs() fails,
-and SVM fails to fill kvm_run if kvm_hv_verify_vp_assist() fails.  If those
-flows fail, the *best* case scenario is that KVM will exit to userspace
-with KVM_EXIT_UNKNOWN.  The worst case scenario is that KVM exits with a
-stale exit_reason and confuses userspace.
+commit 4ef8ddb233e05072a60b26ea82b2f5c73a298a71
+Author: Sean Christopherson <seanjc@google.com>
 
-Note, SVM never exits to userspace if something goes sideways when dealing
-with vmcb12 assets while emulating VMRUN, i.e. lack of SVM-specific code is
-not a bug.
+KVM: guest_memfd: Establish memslot<=3D>guest_memfd bindings *after* memslo=
+t is ready
 
-Fixes: 0f85722341b0 ("KVM: nVMX: delay loading of PDPTRs to KVM_REQ_GET_NESTED_STATE_PAGES")
-Fixes: 232f75d3b4b5 ("KVM: nSVM: call nested_svm_load_cr3 on nested state load")
-Fixes: 3f4a812edf5c ("KVM: nSVM: hyper-v: Enable L2 TLB flush")
-Cc: stable@vger.kernel.org
-Reported-by: Jinwoo Lee <rkskek9254@gmail.com>
-Closes: https://lore.kernel.org/all/20260813043932.3214460-1-rkskek9254@gmail.com
-Reported-by: Stefan Teodorescu <fane@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/svm/nested.c |  7 +------
- arch/x86/kvm/vmx/nested.c | 15 +++++----------
- arch/x86/kvm/x86.c        |  3 +++
- 3 files changed, 9 insertions(+), 16 deletions(-)
+This patch delays binding a memslot to a guest_memfd instance until after
+the memslot is prepared. It accomplishes this by moving the kvm_gmem_bind()
+call directly into kvm_set_memslot(), running it after the call to
+kvm_prepare_memory_region().
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 23d29597d6bf..82c49a24dd75 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -2130,13 +2130,8 @@ static bool svm_get_nested_state_pages(struct kvm_vcpu *vcpu)
- 			return false;
- 	}
- 
--	if (!nested_svm_merge_msrpm(vcpu)) {
--		vcpu->run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
--		vcpu->run->internal.suberror =
--			KVM_INTERNAL_ERROR_EMULATION;
--		vcpu->run->internal.ndata = 0;
-+	if (!nested_svm_merge_msrpm(vcpu))
- 		return false;
--	}
- 
- 	if (kvm_hv_verify_vp_assist(vcpu))
- 		return false;
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 0e5f4d7ce9eb..56fbe73a44dc 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -3465,10 +3465,6 @@ static bool nested_get_vmcs12_pages(struct kvm_vcpu *vcpu)
- 		} else {
- 			pr_debug_ratelimited("%s: no backing for APIC-access address in vmcs12\n",
- 					     __func__);
--			vcpu->run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
--			vcpu->run->internal.suberror =
--				KVM_INTERNAL_ERROR_EMULATION;
--			vcpu->run->internal.ndata = 0;
- 			return false;
- 		}
- 	}
-@@ -3539,11 +3535,6 @@ static bool vmx_get_nested_state_pages(struct kvm_vcpu *vcpu)
- 	if (!nested_get_evmcs_page(vcpu)) {
- 		pr_debug_ratelimited("%s: enlightened vmptrld failed\n",
- 				     __func__);
--		vcpu->run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
--		vcpu->run->internal.suberror =
--			KVM_INTERNAL_ERROR_EMULATION;
--		vcpu->run->internal.ndata = 0;
--
- 		return false;
- 	}
- #endif
-@@ -3915,8 +3906,12 @@ static int nested_vmx_run(struct kvm_vcpu *vcpu, bool launch)
- 
- vmentry_failed:
- 	vcpu->arch.nested_run_pending = 0;
--	if (status == NVMX_VMENTRY_KVM_INTERNAL_ERROR)
-+	if (status == NVMX_VMENTRY_KVM_INTERNAL_ERROR) {
-+		vcpu->run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
-+		vcpu->run->internal.suberror = KVM_INTERNAL_ERROR_EMULATION;
-+		vcpu->run->internal.ndata = 0;
- 		return 0;
-+	}
- 	if (status == NVMX_VMENTRY_VMEXIT)
- 		return 1;
- 	WARN_ON_ONCE(status != NVMX_VMENTRY_VMFAIL);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 3c5d3e19ec99..e9684abae4d8 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -8024,6 +8024,9 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 
- 		if (kvm_check_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu)) {
- 			if (unlikely(!kvm_nested_call(get_nested_state_pages)(vcpu))) {
-+				vcpu->run->exit_reason = KVM_EXIT_INTERNAL_ERROR;
-+				vcpu->run->internal.suberror = KVM_INTERNAL_ERROR_EMULATION;
-+				vcpu->run->internal.ndata = 0;
- 				kvm_make_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
- 				r = 0;
- 				goto out;
--- 
-2.55.0.1082.g2b9226bbc0-goog
+Closes: https://lore.kernel.org/all/20260826170551.BEF801F000E9@smtp.kernel=
+.org
 
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+[ ... ]
+> @@ -1944,6 +1945,15 @@ static int kvm_set_memslot(struct kvm *kvm,
+>  	r =3D kvm_prepare_memory_region(kvm, old, new, change);
+>  	if (r)
+>  		goto err;
+> =20
+> +	if (change =3D=3D KVM_MR_CREATE && (new->flags & KVM_MEM_GUEST_MEMFD)) {
+> +		r =3D kvm_gmem_bind(kvm, new, gmem_fd, gmem_offset);
+
+[Severity: High]
+Does this new initialization order break guest_memfd creation on arm64?
+
+By moving the kvm_gmem_bind() call to execute after kvm_prepare_memory_regi=
+on(),
+the KVM_MEMSLOT_GMEM_ONLY flag is not populated in time for the architecture
+specific hooks.
+
+In virt/kvm/guest_memfd.c:kvm_gmem_bind(), the flag is assigned:
+
+    if (kvm_gmem_supports_mmap(inode))
+        slot->flags |=3D KVM_MEMSLOT_GMEM_ONLY;
+
+Because kvm_prepare_memory_region() now runs before this assignment, the
+architecture hook in arch/arm64/kvm/mmu.c:kvm_arch_prepare_memory_region()
+evaluates the flag before it is set:
+
+    if (kvm_slot_has_gmem(new) && !kvm_memslot_is_gmem_only(new))
+        return -EINVAL;
+
+Will this cause all userspace attempts to create a guest_memfd memslot via
+KVM_SET_USER_MEMORY_REGION2 on arm64 to unconditionally fail with -EINVAL?
+
+> +		if (r) {
+> +			kvm_arch_free_memslot(kvm, new);
+> +			kvm_destroy_dirty_bitmap(new);
+> +			goto err;
+> +		}
+> +	}
+> +
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260921210616.1024=
+168-1-seanjc@google.com?part=3D4
