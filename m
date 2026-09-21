@@ -1,88 +1,90 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3374A4993
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:07:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104E54A68AB
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789999640; cv=none; b=CGFO2CjScEkAde2jEMcgDRdClvnIS97yBCMSuJ3OSSUeysqq4FPwc2xjSqqWzR0k2/4OnVXY1UKxNkkYCFcUdvZDXEkmrUCBEEDa/HEVvSMJaXz8hKfV22Ao7YGGqvH6g+JKXemVb5mziyoUi4osuQf7wQSdAhiy9DiB7Pl5VFY=
+	t=1789999646; cv=none; b=gyyUEkKTMGSFQXW2Ezbj+vcjMpmuc+Mq6EXCc4C8ASRzXSoRHkz03TCzFiyTHwFxV79TbYjb97mh/D3Qr++YRaLUiaQcWY8aWCxNDsQ9OaP4PD64q6L/mARMYAF5CkWtwvs8pTUn+jjUT4c3/bFiDQpyW59Gkq9E4PPr0ETe3Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789999640; c=relaxed/simple;
-	bh=KOZ0qB47P1ewJ3LD1bSwEcoCVnsnJF9mDPIxaNxavec=;
+	s=arc-20240116; t=1789999646; c=relaxed/simple;
+	bh=aVY+77+Rg4LdrLfAH6xlK0pN+kCKSnGa0twjylLa7m4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ABj21AskoV250vX1hv9X5bsD2Cpcrh2AKZF9Q9RaBiViWFC6oqt6jSCUE9zcLYBPPp1WtnVULLIDQnqHFzBOa0y65fNm02UzPnqClq4lj9b/8Upkmp70yvze63zdLSRObNzPHOpAJqkcntiDiYlw2r0uk+EmLAO12+q6FBa9KPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=l51VD1oX; arc=none smtp.client-ip=209.85.215.198
+	 To:Cc:Content-Type; b=noyNiQkQ/FTN0+JpCuOTWBQ1hxfKORUdk7EqxBNuxU6CjqqmN3sonqQIlZ9EjIkrRgOk3Xt9dfsJBkcnRAlDzY87M734IhkcSooVJGL4059pH0cOcALulSjZq57T7xFo2qiqW35R5qmNIlRaXqIikRFDyZSojDJ+oCkLcA3TPc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d36U9OqE; arc=none smtp.client-ip=209.85.210.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="l51VD1oX"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc52c77089bso4472547a12.3
-        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 07:07:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d36U9OqE"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-86a880e91f0so5386799b3a.2
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 07:07:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789999639; x=1790604439; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789999644; x=1790604444; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=2sMdkQ+BjHAUqyEvlsX1t+uQj30MsWabMHW4ps8eLKs=;
-        b=l51VD1oX/m5tikehhVOkm+H0av9N+v099hDBXLuH2uyq/HXlNz3c9xkgjWQ5exqUXm
-         3Fv1cAZxqEsDrIUvkkkE0zjDHMXR9KlW/yjAZ/DGQ1EiWD6HRmL57q5wLZKFq/IJgexL
-         tUf40kE8PtPpCqyTrJhZqu4aQr0Uoa8mQFBVLVLohF4RDv63LMy7HbBf4jRX5P+bpSur
-         B2zm8LRsD9PcKwUIEr9yprZEImU0pWHrSvDiQZRuI2lg7ZtVJSxefEU+wlLESOCrtWlg
-         +WTwjXgZ4aMkQ4eKCVJQL7kDJRKpBRp6tg8FmX0QwJs8b9VNwJ7HrpSNPcEq35TR+GZE
-         lPTg==
+        bh=H7kVfEuUUuG5RNBx6vZsXAqf4DhBGNyoOU9tZbLc/gs=;
+        b=d36U9OqEy5t1YSBG3G0wsA04D9U97Fvp344kSMe9WPaXa1qeOiup1nBk7QMtYIe4my
+         59Duy4/P+j6qra4KJQypPXj4jtrzjJndcbwzKxZ5f5HNDOJ+TCuNgwJvIuIVIlijEEHx
+         uviGmzzRcXLKLrFEMe4WBSXUqrUDwzq1qNjDHFsEF9ycwor9ix5OLAaqZW/Yca9Spqkf
+         COzdtAMyYKn5XGwJkOBe2mOPOzLs77snnJWUD4fZs6ltlvL8Esmfj3D5WU0jOLaLlukh
+         L7kP0lYBS7N7rXvfXAzazoyPk2yfRyQ3ceN+ET5zG8s1GQPp0KO1MgoSJVjBKi/O630R
+         BVbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789999639; x=1790604439;
+        d=1e100.net; s=20260707; t=1789999644; x=1790604444;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=2sMdkQ+BjHAUqyEvlsX1t+uQj30MsWabMHW4ps8eLKs=;
-        b=Mc1KO6JKXySFjwNJvjsMv5PLMk+iFPZacstB/jfAlK+vcUKiWc7g/mJsx0+KgOiw1w
-         SXkK52Gn1eYiLkQDeR8jedwNza3KXu8kDzRmRrlU6exFv+3jJmPSgLANlQTq20pdKMAZ
-         3Rgn68/U88/7ujZlnwd1erM7quoRHjVvi2nGbGSMksghxsHNCofExMtbuo61NVo+37Gc
-         Zn5brdfYEsSVDh7XhBVh3SXLqz8oCH/rZ0YqhSSYL5YnW8eY7+y0KNtrB99l/NMD9mL1
-         Mf0WPaFWxMBd2OY1yT5KY1+JsAtugbg+HII3BWwQV7WhGF5gYZ24Kd3iA1U4WEZYrakb
-         O19A==
-X-Forwarded-Encrypted: i=1; AKwUvBz0wMNY52YbKVgZCvFbVcezsyBDsbuabKZ6EFnfCQHd7Lw5P1Cb6mmkY6S9Nr/fc+DPFpg=@vger.kernel.org
-X-Gm-Message-State: AFuF++kT+TCMp07OHorNOnXtj5Mz+nGxOWhmgQXYv9dW6O9NV9fz/ZCu
-	2TOIJyvJXFhTQAEnCDfG6RE2SJVZ8yfJM9WBiR7LvAEr3FP3/KhfoyW3EpKlygXQIwT78wkprPd
-	6QJatXg==
-X-Received: from pfkh29.prod.google.com ([2002:a05:6a00:1d:b0:878:7d16:4125])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:4049:b0:3da:c10c:6aa6
- with SMTP id adf61e73a8af0-3dd8c2dc837mr19064460637.1.1789999638674; Mon, 21
- Sep 2026 07:07:18 -0700 (PDT)
-Date: Mon, 21 Sep 2026 07:05:30 -0700
-In-Reply-To: <20260808061934.400892-1-gokul02k@gmail.com>
+        bh=H7kVfEuUUuG5RNBx6vZsXAqf4DhBGNyoOU9tZbLc/gs=;
+        b=bRZKY8UspG5HwNiSJVFKAUXSAMJM7O1dUgoL0HfOm5qzzGynrwlv0T8shYYG7h55CV
+         LEdPl7poNmNKNDzNoauKlYrS5epm7HQdrgXunjxSdLeOvksmzEf34XuEus3J4L35kios
+         6xzANCmMakyURY2cDvYuNFxvHcX2LnqPin6A99xpfPUOS+3jGZtxjqZ9Ab/ZRxNP4ebc
+         HNkRzcLWRTTN6c6m2D2426fB/A/Q21luWTZLEoqZdfrJHOtprhgT7lFqeGkRXdRFGELF
+         bCfDu7Mm9WedXjYPHKF+WWOUe6QURfY/a0iYVaKROinuCy0ffbD1K9KcLYHW0gL4TO2a
+         Cu0g==
+X-Forwarded-Encrypted: i=1; AKwUvByl3mYSPmdALUHrX5Xo3EMNoYitfKRVELZptkz0aG79MFryKYWMOLgmGANkCTcUXKlAWQk=@vger.kernel.org
+X-Gm-Message-State: AFuF++m+jsATkRTdXvz9bOPfafIF0lgGflySJeBBeIMGhq9ucc7+ICaH
+	b803D+bobs6CYg8AFXHHgJ4hP+GkyWIauqDX4HOpjJGtR9g8yp8lVSHOS6WTxnqTs/EOqnguQ8Y
+	qY2rvGw==
+X-Received: from pfst21.prod.google.com ([2002:aa7:8f95:0:b0:87b:300f:fd01])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:aa7:8883:0:b0:84e:d5e6:a085
+ with SMTP id d2e1a72fcca58-874d84a92bemr15148212b3a.0.1789999643931; Mon, 21
+ Sep 2026 07:07:23 -0700 (PDT)
+Date: Mon, 21 Sep 2026 07:05:32 -0700
+In-Reply-To: <20260811050029.530698-1-gokul02k@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260808061934.400892-1-gokul02k@gmail.com>
+References: <20260811050029.530698-1-gokul02k@gmail.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <178999927506.754839.13676560116435386306.b4-ty@google.com>
-Subject: Re: [PATCH] KVM: selftests: Fix the bounds of the SEV debug dst
- buffer check
+Message-ID: <178999927029.754512.6741483404933166279.b4-ty@google.com>
+Subject: Re: [PATCH v2 0/2] KVM: selftests: Fix two VMs leaked on early returns
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, Gokul K <gokul02k@gmail.com>
 Cc: Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Sat, 08 Aug 2026 11:49:34 +0530, Gokul K wrote:
-> validate_dst() is passed a starting offset and a byte count, but bounds
-> its loop with "i < nr_bytes", comparing the offset against the count
-> rather than against offset + nr_bytes.  Only calls that pass offset 0
-> check the region they were asked to check.  Every other call checks too
-> few bytes, and any call whose offset is >= the count returns without
-> checking anything at all.
+On Tue, 11 Aug 2026 10:30:27 +0530, Gokul K wrote:
+> Two x86 selftests create a VM and then take an early return that skips the
+> kvm_vm_free() at the end of the function.  Both now jump to that existing
+> cleanup instead.
+> 
+> Patch 1 is the plain-SEV path of sev_smoke_test(), which returns straight
+> out of the UCALL_DONE case instead of leaving the loop.  The SEV-ES path
+> next to it breaks out and frees correctly.
 > 
 > [...]
 
 Applied to kvm-x86 selftests, thanks!
 
-[1/1] KVM: selftests: Fix the bounds of the SEV debug dst buffer check
-      https://github.com/kvm-x86/linux/commit/622a09f6deb5
+[1/2] KVM: selftests: Free the VM when the SEV smoke test's guest completes
+      https://github.com/kvm-x86/linux/commit/434c50e703c5
+[2/2] KVM: selftests: Free the VM when NX hugepage disabling is denied
+      https://github.com/kvm-x86/linux/commit/ebb702707896
 
 --
 https://github.com/kvm-x86/linux/tree/next
