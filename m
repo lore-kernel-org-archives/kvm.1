@@ -1,193 +1,336 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC55A502560;
-	Mon, 21 Sep 2026 21:20:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790025626; cv=fail; b=a86sn3xNgS24ctWpcZ4cIwG2gotx2Dzu5zG1UHIrV0WzpOzIV0Dtb0+39uwKFJJJUBO9C8iyN25cYAZLGqqMe2Cp+f6g1qn28798woGc0gTT6gzGNPtYgSa+at2e6+Cuz/1RrKztWF9G0+hNUErct7F9jbBnPCAjaRYFQZz+qa0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790025626; c=relaxed/simple;
-	bh=yxbiG2mlb+lIgS9MrDnEV4b94sTk5GH7huWxcXIYjnY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=IZi5jfDdtHgstT+CS28RTdTCQj63p9WiAUsu2FPlUNZLUM0nrXaYvjfvsrLu4wvb9URiAVsVVT4goXlyj8Yf7f62afgC1RgAgLTGlnjdazA/0ayuO5zlJSvL6J2CkWhtnh8vW9R0p8q+dYcm+NWsJjs1Om0wulH0BNpEbRJuxgY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aibHTyUO; arc=fail smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3790F514742
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 21:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790026045; cv=none; b=CnH1sOL/DXttBCX47NCh/vVadV8FqpPdrT6tJ4lzGSyKJoPWcYjysE85/LBU/xj65w6vM7+fh2GkrjuXLCp/PQG4vEakAjVjOJxFk3a3YVPbgoYQvmvFTx+4jLwF+Pugo4L/9qFmCDlzGv7NdfBpJxXldR1DxejpuG1Rg1bwBXg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790026045; c=relaxed/simple;
+	bh=S4xfAqIaDLovmRNalhGiQCzBJDPU9QZ5iqOLO7Rx0ic=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ijCG5iLmJF4lPl3v5k9nXOSrv3w/XZ33aUzIKcg9ThnrAoLjnVs/ebuSeI6sIpe4iYEjS1Xxj74emr8OO8numCLlna5KVcgNh3gGRXU6F0/GZs+TJ4rSCrqR1/DscUXRVjsklPvvn8ie0m/SvqaXaRL5S8fZrHn6soEJFq+lBXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=eqQ8O7zw; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Of2mXILY; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aibHTyUO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790025624; x=1821561624;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=yxbiG2mlb+lIgS9MrDnEV4b94sTk5GH7huWxcXIYjnY=;
-  b=aibHTyUOn9HRv4YiFvz0cc+gX7PICiC9XaOHCw01yIA02mSb2Hf+vUMh
-   gLoPTeAc0vw+BO0f/wOBILSlt+p7IRVHWyHeBlzgqlMWWb1xpCU05mvNv
-   D1Z/gpWS31rtBtQYNi8NcKNIAWU6/nklMJi7d+1kW4cP9kUWKIhM9T/Ce
-   QJqzYty55VCZ5hBJ9UeK4BCX7Us75OPsykOrWoMl3ihd9Qwl0RJSLis49
-   f8nCKPpSLpjcq8WdhO6zJAqvi6Chd3UdidvnzlMc5EsgYfCWCZG1ON1Pl
-   Bcnt6V8NAjg7DoBaFTvppLOEERMW9A5araHSeq4edD9NiyzRBDGgj26Gm
-   A==;
-X-CSE-ConnectionGUID: ewO4jLS+S6aEMQZc0RwwYA==
-X-CSE-MsgGUID: RSZh9yzPTymXEtnDd4BtpQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="89503140"
-X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="89503140"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 14:20:23 -0700
-X-CSE-ConnectionGUID: ouOti43TQJOFeRjZfd6gWw==
-X-CSE-MsgGUID: bP7hiHbbTXOTb8bSyVLmIA==
-X-ExtLoop1: 1
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 14:20:23 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Mon, 21 Sep 2026 14:20:22 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Mon, 21 Sep 2026 14:20:22 -0700
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.39) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Mon, 21 Sep 2026 14:20:22 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=m1g/WTFAMKjIe/aOxiiBlz8e233Gi2//fi+FeoZLz/1ij8ABJGMkmV8bLpZ78Umjyy2shLl3WttpET/+KCsxNfOLySTXpOuPUnhzfLFdNLcfkN7X26fKbW+8Y6zUfSvRFm7neXkXmkrhxKLiHVnsvknqk6EZAYZ6GDClp4ENFdEyh5WYqvvAnpzIZYzzcgd4uU/JkLc/b+ct15FJGuZsGeDvTrLU1deiAU9D6cLZ9qZmlKzF/5jjN6cYzXW/i0ju9aTMpweaAildwOIznqVAvsr58lfkNhDURzqzLIZP2z8HIIsHuF27nT8pmXnmnZTZuoLZmh10ScCntMGGWwuAEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yxbiG2mlb+lIgS9MrDnEV4b94sTk5GH7huWxcXIYjnY=;
- b=oFndFfH9B/3krgdfQr1ohfhFIKIUVGW43XFVZi4XBrbemHw1yxnOZkAh8jKlmUfoEkuXW53nj4+WjIvc5eT/KPLn0bSEtc0mlI/882i7XIzQT+0Q4HgZqjODBSttpg75S/zo33WKx7KQLaisXepdC/XvBZXCN4vgaEM9vc0dOQdxJgbE1RtC+7T+PUUFGvwVyB5heqeZ1/D8LNpQit4Mt59tmpoxgnY0mVXUl4GSzZHekjah+wlHw7AXxbJmJRmc6POZ7byqG3EDaUXrcvZL1eYMh/n/nMIIK4qrV5SaakGcM9VQA33Nmwk9HGV0w4E4WeMg1Rma0DrlJxYxd2ASYg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SA2PR11MB5162.namprd11.prod.outlook.com (2603:10b6:806:114::22)
- by DS4PPF11A2D5672.namprd11.prod.outlook.com (2603:10b6:f:fc02::b) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
- 2026 21:20:18 +0000
-Received: from SA2PR11MB5162.namprd11.prod.outlook.com
- ([fe80::70e1:28f7:f440:ff0c]) by SA2PR11MB5162.namprd11.prod.outlook.com
- ([fe80::70e1:28f7:f440:ff0c%6]) with mapi id 15.21.0428.015; Mon, 21 Sep 2026
- 21:20:18 +0000
-From: "Verma, Vishal L" <vishal.l.verma@intel.com>
-To: "kas@kernel.org" <kas@kernel.org>, "Edgecombe, Rick P"
-	<rick.p.edgecombe@intel.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "ak@linux.intel.com" <ak@linux.intel.com>,
-	"x86@kernel.org" <x86@kernel.org>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>
-Subject: Re: [PATCH] x86/tdx: Remove the early #VE handler
-Thread-Topic: [PATCH] x86/tdx: Remove the early #VE handler
-Thread-Index: AQHdQVJI5eTV/fAKY0yXdX2Qs0UGg7bIRmSAgADp84CAEGsDgA==
-Date: Mon, 21 Sep 2026 21:20:18 +0000
-Message-ID: <4238bd74efaeea1a6158b79f9475a5f8d1aa7e0a.camel@intel.com>
-References: <20260910-b4-tdx_remove_early_ve_handler-v1-1-bf47a4d360c5@intel.com>
-	 <b41da075607d1eaa9d96eddbf3acc24502edd604.camel@intel.com>
-	 <aqPTIyi--7f2Fzxm@thinkstation>
-In-Reply-To: <aqPTIyi--7f2Fzxm@thinkstation>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.60.2 (3.60.2-1.fc44) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA2PR11MB5162:EE_|DS4PPF11A2D5672:EE_
-x-ms-office365-filtering-correlation-id: 8d4d1d3e-dd48-4f89-8859-08df18262329
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|11063799006|56012099006|4143699003|3023799007|10067099003|38070700021|18002099003|22082099003;
-x-microsoft-antispam-message-info: aOlb+yAj27IBTxudIG/gjN5zcMndyc0h8ZB4GKZobx64yClpS5IoQOGnVUnn9G2DfvUuCvDyHAAPkTjyz/HQuTAtGXi4Yb17UT2JFbws+O41KQqGeEiRH2rErxt97clL4C0TXulwZDiYLA7TeRKn2u8bT7kA2I6VcX7+/MGLCOyA2iGd3hiy34ij/uC4tYlQGH+aQhsQLeJy47zFLQTzIl8vQbgvV+NcTkfBHieEfHXCh0JMAFEXIiFLL7UXaJPiUAnRzHlre8DoJQHLSW2O8fQoVItzzK7RWE9MmxG3OJbCE20j5thlm19PjWFo1AWivX0T03Hzon9W/o5Wl8S3TkvnPLqw/t0Jft5DZCmfBbj2IYr6nf5l2+DqIwq8OPveCSldeCuWISnoUGf3djZGGQXGdUe3FPf6LFw1D/WFW09yt+hRQ2JskhxpG6zqiWwcYhMczEz9W9oqEYPcjADXtHSX78Y+MGBU9i3rHaznROolm4d+pbG1ysYSVALkSmJ8xhLQJXymoa1N0IoQ2RdIGfuQm01xp2L7OlFhWL3Xmt3H/W7soRQYVBAzvlIHCbCYYcvvo52H8dtFOTXFVp6gcxb5KHQ0qCeezWxe5RISMTYaGtvoMsd2IC/2m24je8pS6wNgfxs5XIPD0Ng6AfW9boqOYKmHV3NelNSLZ6ppdL6Yy4Zi7oxaPsCmpKfMx/d9DKxkuq8HT4c0hOOCH5bKD90wYo8clsqRMjoAtneM6Jg=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA2PR11MB5162.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(11063799006)(56012099006)(4143699003)(3023799007)(10067099003)(38070700021)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?UmdlaXB5M3RmUU5CaHM5ek5zYVMyUEsxM0dVUjZ6VWRiSy9xSDRuV3duQjBy?=
- =?utf-8?B?OEhxZkZIZEFubThSV2E2SjB3dGZOZ2Myd2V6RGFYOUhWck5Wb2U4SFJPNjRj?=
- =?utf-8?B?Ry92WU5USHgyYUhQeTdnUTNJa0xUeXFXeXdvVm5OOUNjMGdzZVhaSkVBOVNL?=
- =?utf-8?B?WDlFOUx5OTU4bCtEMDZWWlM1Y2JQVVhtcnVGUG9mOXBQRTRKWDdUcE9CV3E1?=
- =?utf-8?B?UTlWbjdQMkY5MnN5ZlRncm1FUFcydGFJemZWK1RrY0J3QWJEMTNBdEFqdVFK?=
- =?utf-8?B?RC9LWFRBTVc0a2pVaHFPb3hTNEp0QTVGSExZR2NwcFR0R1VxaDliS0cvd2w4?=
- =?utf-8?B?SS9BRnhTN3p0MC93bkxoTzVFSGpaVGdzeE42QXRQTDAvekZKczFIVEFZMWlm?=
- =?utf-8?B?NXE5OFpjOFRnSVVYRmdmcmtRT2xTbGRtQ28vUFdLL1lISXg1akdpUVNyeEx5?=
- =?utf-8?B?OHc3Rm9xeC85NjVHM3hFcm15V3JGKzRIYlZZNEZ3eUpDUDRBRFM3YTBzV2FT?=
- =?utf-8?B?OHFzUWF4blNscWV3SXoycXJGWkRRRnFPVkhzQk1qVm93L2NPV0hZc21STVdl?=
- =?utf-8?B?WmhwMTNPckJkeCtUOGJrMUpLZzQrWkJNdC9VZlRuVW0yVmpiakRoaEErUHky?=
- =?utf-8?B?dDBuNEt1ay9WMDFHdDRZOWNmUWxJODdMZVdKeS9wOXJqSWMvbm5nR1NRNVhw?=
- =?utf-8?B?aFlEdU1JSTZKK1V6MWhwQXJ4RHNsekVOSEJXRjBGaUV6bXpKZGpMc3FCenN5?=
- =?utf-8?B?STF4ZXh3WWgvUW5aUm51TUx1ejJoOUFNNTQzQ1VrVUExWkRUd0pCWEw5T0Jq?=
- =?utf-8?B?aHJSdGVLc1UvdXUxZkZQb0N3TDJVUWk3NmR4ekc3Qmc4dC9jN2s1WFd0WmxM?=
- =?utf-8?B?dEVuVTBmZS83NEdLd1FTSSsyYUljckJUazQyV2d3T1JPZXgwT0pLajkxR01p?=
- =?utf-8?B?Tnh5TUl0NjNvSFJpbW5XTHZENEQ5L1R5S0Y1MTMvVUZtdG9VQnVmY1NFZnVN?=
- =?utf-8?B?WVExVjRqTXVBK1l3U2RiOUpETXBvMlpnYjMwbnZEdVpwZjNHcmhXTjN4RGQw?=
- =?utf-8?B?ZkJreHhVRFJZeTlIVzljdHRtTkd2cjljRHQ2VjY5MS9FYlBCenBaYjRidFk3?=
- =?utf-8?B?ZXkzOGxsNGZzRWpUblJOMkJrQlZOQ3FRdzEzdFN1T2hxdDdmcnJ4M1RHa3RF?=
- =?utf-8?B?Ny9mWVhDc1VRRFpKeldIL3FJM3BmUkNERk1hcVFMb1duOHB6ZUE4SkorT09U?=
- =?utf-8?B?ajk5d2dOL053ZU1QVTFSdmdnYmZDQno3SWZyY3laV2dKZitadW1ZYUZtMHh3?=
- =?utf-8?B?WWMwNlRBaGFJU3dNWFIydHlqYXA1NjBmanQ2WEFJbmFvdEZHODNBNDYyeUlI?=
- =?utf-8?B?YUVWQXNIOEphMkx2Z0hlU0VkSDlTcEdNMTVIcDE2WDAxUHpTMGJHd0FMRUxp?=
- =?utf-8?B?SlIxektzZTNTbWUyMkFVT0V3RjcrQ1lPbThkMUQvUkl2c2xzcjJ2bloxUjlM?=
- =?utf-8?B?M2FUOTR0N2FrcDFBdnFiWlI2eCsrQXA1VUN4aWhXTGZSTnVjT3NWOEtINy93?=
- =?utf-8?B?Zmc4U3Exc25PWk1vZS9XU1pqbmRvcDMyQm1LNmhmSGR3TVc5TWRqZUtEbzZj?=
- =?utf-8?B?dEZFRkpTZ0RhU3hOcTRCZk9rMThnU3dRd3pDKzJ6YWVCZS9vYjJ3MGRHaC9m?=
- =?utf-8?B?anZvc1MyVzRMRWhuZlpjOWw5SVdIWldwMGNFSm0xRzlPbGFqRkhJRFlzMWdy?=
- =?utf-8?B?NHo4M3VWMDZkZVVjbzl6dmpLd0hZM2lTS2pYWVRhaWNRSGdydk9WUkRaWnk1?=
- =?utf-8?B?UXBOVTlTdmovRDBpZGtMSmF2NU90dHJYaTVJc3oydC9TZ3RlQ0Q2QWVrMTlZ?=
- =?utf-8?B?TkdwdjFrSmNoc2hqb24zYWt1cWcrdWZ6WGxQTGJ4dS9lRm93TE54Z1p1S24v?=
- =?utf-8?B?YnI4MFNnK1VaT0t6b0hoTnpGVVVHWmNpdm50S3ozeTNucC8rUXJZRndmR0tW?=
- =?utf-8?B?M1ozeHNRT0JMV0dXWGdVNURzR3BhZm15emJJdXIwNFdnN3BBU0c2VUJiUWo4?=
- =?utf-8?B?V3RlMHRjeG41dExqUmFDemV2V2txV0xXTnRhY0FFTm9sZDB2S0JHUGM2SnZB?=
- =?utf-8?B?TW1zbWs2Nk9JZ1VxazBQalBuT0FSTG1LSTIzWWJodjRWemZ3bHAwT3gvMERv?=
- =?utf-8?B?a01XbE4zZkdGNVgvci9GcG5mTldGdE45ZEV5UmNhQ0FXQW1CTzZBc2wyeHhG?=
- =?utf-8?B?Z3dhdllub3JGZC9FOHBQUWNhQkhTd2NOb0lTN1VZd2dnU3h3MTE1RWZBMVBo?=
- =?utf-8?B?dERDMGVnZk04VXpnTjdCT2lKMFF2cnUwa0Zmbk8yZktCS0JJY2lyREZvSmhF?=
- =?utf-8?Q?aXHLfkwYZWIJc1zk=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F0896225BDD20745BF8B60DAA2B43CC2@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="eqQ8O7zw";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Of2mXILY"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68LKf1MI2892147
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 21:27:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	9V9V3F7pGrGXJ58UfRgOG3pzS7jz6dKjyIdgzZ9kkkQ=; b=eqQ8O7zw8YlH96Fr
+	MQ7TVFu2Ep5Ocr5FzZRIIXRABxzdzTilVRORHzUsG7dPd+eX6lq5tCExX1kW68h8
+	J8Eci8XaNtHGBiN8L3fVpzjJpr9vk9NHl9jINuY0/c+fc+TDWz0YqfISorhCKbpp
+	YLJzUGy1rNAriFdREb3OTNIECkF9a3vUBN29vwa7FAwpNszMHOSDJV/od4LuTRaF
+	sGzNLmmSXqQrY47+qnnOPRmMLh6ZyGJ2UXhRjGgvWLMUJxeePWa7sYGjizCXdDh5
+	8guwEu6ROrVhQxfum73qHeMpkXuf8QN2X8GLif92dQeZqbm5ar2+wXK6ALCpn7BA
+	S/KfBA==
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gtysw3eq9-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 21:27:22 +0000 (GMT)
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc7348bd56fso2823086a12.2
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 14:27:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1790026042; x=1790630842; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:organization
+         :references:in-reply-to:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=9V9V3F7pGrGXJ58UfRgOG3pzS7jz6dKjyIdgzZ9kkkQ=;
+        b=Of2mXILY716HGlLd/cSx+ZBFzcYf/xppkZSv+VaZUtRHoTcS8CkUc+yybZSPTJjP0i
+         16u7uO4bySnLtJJxYo3Qnr+FuxtDaJ/35zHuW8I3coFDSFooCzuQ7s8N2wDdCTPqgECi
+         xC7t1hyTNkaBGiVDSJjoKJSiXLLEm2xlCOp9gudEgRtVVeLAG3Bhw1hZHqIIn2oqXsoo
+         P6tjVhxt20IRxqU0+CTU2CAn1nxWa+0CE2aub+rEqZSIgUi1qCLJ6McpugyEDP0fC4PB
+         b4l3mFzXVOYCke24qL4LVNCCucNd37r1vLy9fS7r8iR0T/yXqm95ZU/f+vOCReT8rNr/
+         MAew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790026042; x=1790630842;
+        h=content-transfer-encoding:content-type:mime-version:organization
+         :references:in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9V9V3F7pGrGXJ58UfRgOG3pzS7jz6dKjyIdgzZ9kkkQ=;
+        b=BncINUDsNsPxfo0fbkkZJ9AEoHPCBoaaD5iF5eC1vbGtH2PoCNjMOFh8YMcb3xHjRZ
+         OygPLeIc1QRmN3q7cGkGFYz21OAGhg6irEDQCxNE3BILwWAKd0aEtYqVbCEe9spZtzAb
+         FF70e5F9poopYw5pDYDmbps3plRr9wWjX27kr+FgGpILkfeph9oGoky4AsPQBVGZWQXB
+         q7LFddCDx3DIElwmbDKru21WYdn4d12xSeq1YMVSIrwtaRiwySg8DDiJ/czC3ovTDP9t
+         jDIfQvsM6G/8hOOA8rYt0d1t1uH2tiCTkEo6y1QFTA/SSagK3oPnllBGSuA480Gy8EUC
+         r9OA==
+X-Gm-Message-State: AFuF++m56MqDzcVIzB5E0chRXByhpwKD+wKYf/t4zcB0a0WFr84t3zX2
+	JvKNKrkpItSFmOHNQHW6E47BWkyOpeRm4K88JDMcaBS8Tkxkw2JitQrAoSKhLAadGVITt8nNVki
+	hFJ4BJs2Ck55yRL5WOe8zkf2ag7BKCJVAffKvhZtQ7FcCNBhXTKzSt+Y=
+X-Gm-Gg: AYBFou0K7RuJMJde4zkOQfyafPK0zRs0pGHiGyJHRLN5LoXqT6wLyKIBIPqK3hoWQxt
+	2xz6v89lpUH8TUsBbKNoLbBhoudIOKf1KrT3OYTk0BJ2O+gMWvV4qETZz4GLfYktFViom7rg9mC
+	Xr8/jyPGDtXWqGtssf4fT3Qdivj88+oftO7KSc37y9VmdvP60AsIYrOoZUR3VYS/01OJfioOp5T
+	/W3/ni7PbylRKm4+ygGh55t7H1jbslmXfJ5X1+Wct2232t/xGRIm57H+haggztKkPZWGtkTezmO
+	zJlF1jKvvP0ImK5lElKmCSF8aKYlbDGfjwvjak4gK5V+pHPsaffx/NI8UKHcNPY/7OHSU10fDon
+	kWiG9BlUnXTOQZdnImg1EJt+mNA==
+X-Received: by 2002:a05:6a20:43ab:b0:3dd:a196:907b with SMTP id adf61e73a8af0-3dde41729a0mr297619637.69.1790026041733;
+        Mon, 21 Sep 2026 14:27:21 -0700 (PDT)
+X-Received: by 2002:a05:6a20:43ab:b0:3dd:a196:907b with SMTP id adf61e73a8af0-3dde41729a0mr297581637.69.1790026041203;
+        Mon, 21 Sep 2026 14:27:21 -0700 (PDT)
+Received: from localhost ([50.35.44.179])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33e5e95c4b9sm851620eec.0.2026.09.21.14.27.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 14:27:20 -0700 (PDT)
+Date: Mon, 21 Sep 2026 14:27:16 -0700
+From: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+        will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+        aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+        joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+        linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+        sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+        WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+Subject: Re: [PATCH v18 1/7] firmware: arm_rmm: Add SMC definitions for
+ calling the RMM
+Message-ID: <20260921142716.000073f8@oss.qualcomm.com>
+In-Reply-To: <45fb9520-7003-412f-9ab1-14e2a762c816@arm.com>
+References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
+	<20260912083611.2513845-2-suzuki.poulose@arm.com>
+	<178978126540.2352296.16845657485139032765.b4-review@b4>
+	<d7ccaf22-5bde-4344-8bf0-a5a17dcac0f3@arm.com>
+	<45fb9520-7003-412f-9ab1-14e2a762c816@arm.com>
+Organization: Qualcomm
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: eovwyFlD9KFaUA5/diWgQjQ3DEqVDL37VtFwbHvixuj3x3IS1ea37X7q4X9lOSPO3ZjSBIEEZ9+l1yroBIuTHUIdZYF4svb8zMMR8kO6DHS7ImGpQM/9mkQLIKad4pbUqJtLIzT4KF2EdmtnsvpgeNb53jlO6NZ2zRrtBvyHm0VpNGxlDBrW0JUrZxC4vNFeljc05Lyx6X7+ExcX76xPEjMGfBNEx7V5avKbJ1K6eIpcOgFrPa9/u2xJrQD3gNrWuykgAJiOZFqhusM1DL4w9sOJaJuBMqp8LRRKqvNhdK9Ewoz0thvuIY1D0qlG7cEC3sWI3uKOjlFlgi88WZ27KA==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA2PR11MB5162.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8d4d1d3e-dd48-4f89-8859-08df18262329
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Sep 2026 21:20:18.7419
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: bB/QVgnr+48WLVo81LAMji+zS84ADM19uqvunEgSFaS7uVb7mdWAMN0W9rG/i5sYELAwQ4ZrtMjh/fWeyvhgR7vZ+PowypUJY8+L/W5Sk9A=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF11A2D5672
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIxMDMxMyBTYWx0ZWRfX3xJomJHm0ZPw
+ aI9SzL6HEhy61AGT/F3WhEusesFUkU5df2te7o30AgzS2isiosgU3soGyWDUZZ/x8KBH2F+5gp0
+ mH6vj3TykcE6C7kN56LiGBVB8eDgov8E4za16EDeYUfXdIRtxscG3JXiLJn/GYV8fQ2dL/A2n/n
+ DmhUnD7e4VEOnf0ip/WQgS8HTVsG0LqP5PR8znbJlQguYVLkWUaAQrGIXxXs7ZEGAsS5RjPOUad
+ IoSYm018Fl64LziKlhcBCdy+N064x5iaHvWuH1O5pc8b58Y6ffwI7xXn3FiIHfHSj1mxeS84uLN
+ RmjVoaXzy9fSDR3x7eoGIsBPl6UQTjuWNaQO1ng8p+JhxoT3J95rcuhDnQH7OXQ5gwB0lZDS4SF
+ pY9hVEaRvMgPvAoUiPhqF5z5P9c62CR6nwnA4rgVjReSgHrbs+znLxT5p0Wz9NgDDXMeIOHXazz
+ NzJuuZt1HC9Eywp6LFg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIxMDMxMyBTYWx0ZWRfX6OY7NpmUx3Sd
+ 38YNtdIRH7IY3R8VeIWcgHLbCtJagWMm3EAXhKvVGbvbmYytB79+qXeWZ2msKJHjZyFOVafFEPV
+ kYz2arqj2qFRHHW2lf8mCadPSQwRPaw=
+X-Proofpoint-ORIG-GUID: pxCIKcP1t4zxT6lOaymlBjJY1tpbn5Gd
+X-Proofpoint-GUID: pxCIKcP1t4zxT6lOaymlBjJY1tpbn5Gd
+X-Authority-Analysis: v=2.4 cv=W7etxhWk c=1 sm=1 tr=0 ts=6ab1a13a cx=c_pps
+ a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=aNnz9XPx1a4JIXSYt2cE/A==:17
+ a=8nJEP1OIZ-IA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=7CQSdrXTAAAA:8 a=sxcT59CpA4y3w3PZQfIA:9 a=wPNLvfGTeEIA:10
+ a=_Vgx9l1VpLgwpw_dHYaR:22 a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-21_06,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 spamscore=0 malwarescore=0 suspectscore=0 bulkscore=0
+ impostorscore=0 priorityscore=1501 phishscore=0 lowpriorityscore=0
+ clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609210313
 
-T24gRnJpLCAyMDI2LTA5LTExIGF0IDExOjM3ICswMTAwLCBLaXJ5bCBTaHV0c2VtYXUgd3JvdGU6
-DQo+IA0KPiBSaWNrLCBjb3VsZCB5b3UgYWN0dWFsbHkgdGVzdCBpdD8NCj4gDQo+IEFyZSB3ZSBz
-dXJlIHRoZXJlJ3Mgbm8gb3RoZXIgcG9ydCBJL08gaW4gYmVmb3JlIGlkdF9zZXR1cF9lYXJseV90
-cmFwcygpPw0KPiANCj4gSSBkb24ndCBzZWUgYW55dGhpbmcgZGlyZWN0LCBidXQgZXhjZXB0aW9u
-IHBhdGggaXMgZGlmZmVyZW50IHN0b3J5Lg0KPiANCj4gbmF0aXZlX21hY2hpbmVfZW1lcmdlbmN5
-X3Jlc3RhcnQoKSBkb2VzIHBvcnQgSS9PIGZvciBCT09UX0tCRCB3aGljaA0KPiBzZWVtcyB0byBi
-ZSByZWFjaGFibGUgYW5kIGxlYWRzIHRvICNWRSB3aXRoIHRoZSBwYXRjaDoNCj4gDQo+IG1hY2hp
-bmVfZW1lcmdlbmN5X3Jlc3RhcnQoKQ0KPiDCoCBfX21hY2hpbmVfZW1lcmdlbmN5X3Jlc3RhcnQo
-MSkNCj4gwqDCoMKgIG1hY2hpbmVfb3BzLmVtZXJnZW5jeV9yZXN0YXJ0KCkNCj4gwqDCoMKgwqDC
-oCBuYXRpdmVfbWFjaGluZV9lbWVyZ2VuY3lfcmVzdGFydCgpDQo+IMKgwqDCoMKgwqDCoMKgIHJl
-Ym9vdF90eXBlID09IEJPT1RfQUNQSSAoZGVmYXVsdCkNCj4gCWFjcGlfcmVib290KCkNCj4gCXJl
-Ym9vdF90eXBlID0gQk9PVF9LQkQNCj4gwqDCoAnCoCBrYl93YWl0KCkNCj4gwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoCBpbmIoMHg2NCkgLS0+ICNWRQ0KPiANCj4gQ291bGQgeW91IGNoZWNrIGlmIHRo
-ZSBwYXRjaCBjaGFuZ2VzIHBhbmljKCkgYmVoYXZpb3VyIGluIHRoZSB3aW5kb3cNCj4gYmVmb3Jl
-IGlkdF9zZXR1cF9lYXJseV90cmFwcygpPw0KDQpIaSBLaXJ5bCAtIG5vdCBzdXJlIGhvdyBJIHdv
-dWxkIHRlc3QgdGhpcyAtIGJ1dCBsb29raW5nIGF0IGl0IGEgYml0DQptb3JlIC0gDQoNCnZwYW5p
-YygpIG9ubHkgZ29lcyB0byB0aGUgbWFjaGluZV9lbWVyZ2VuY3lfcmVzdGFydCgpIHBhdGggaWYN
-CkNPTkZJR19QQU5JQ19USU1FT1VUIGlzIHNvbWV0aGluZyBvdGhlciB0aGFuIDAuIERpc3Ryb3Mg
-YW5kIEtjb25maWcNCmJvdGggZGVmYXVsdCBpdCB0byAwLiBUaGlzIGNvdWxkIGJlIG92ZXJyaWRk
-ZW4gYnkgcGFuaWM9TiBvbiB0aGUNCmNvbW1hbmQgbGluZSwgYnV0IHRoYXQgaXMgcGFyc2VkIGFm
-dGVyIGlkdF9zZXR1cF9lYXJseV90cmFwcygpLCBzbyB0aGF0DQp3b3VsZCBiZWhhdmUgbm9ybWFs
-bHkuDQoNClNvIGF0IGxlYXN0IHRoaXMgcGF0aCBzaG91bGQsIGluIHByYWN0aWNlLCBuZXZlciBj
-YXVzZSBhIHByb2JsZW0uDQoNCg0K
+On Mon, 21 Sep 2026 11:02:56 +0100
+Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+
+> On 21/09/2026 10:27, Suzuki K Poulose wrote:
+> > On 19/09/2026 02:27, Jonathan Cameron wrote: =20
+> >>> The RMM (Realm Management Monitor) provides functionality that can be
+> >>> accessed by SMC calls from the host.
+> >>>
+> >>> The SMC definitions are based on DEN0137[1] version 2.0-bet3
+> >>>
+> >>> [1] https://developer.arm.com/documentation/den0137/2-0bet3/
+> >>>
+> >>> Signed-off-by: Steven Price <steven.price@arm.com>
+> >>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com> =20
+> >>
+> >> With Gavin's nitpicks and the GENMASK_ULL() from sashiko, just a few
+> >> comments inline.=A0 Mostly on subtle inconsistencies that really don't
+> >> matter that much.
+> >> =20
+> >>> =A0 include/linux/arm-smccc-rmi.h | 497 +++++++++++++++++++++++++++++=
++++++
+> >>> =A0 1 file changed, 497 insertions(+)
+> >>> =A0 create mode 100644 include/linux/arm-smccc-rmi.h
+> >>>
+> >>> diff --git a/include/linux/arm-smccc-rmi.h b/include/linux/arm-smccc-=
+=20
+> >>> rmi.h
+> >>> new file mode 100644
+> >>> index 000000000000..214d6228dfc2
+> >>> --- /dev/null
+> >>> +++ b/include/linux/arm-smccc-rmi.h
+> >>> @@ -0,0 +1,497 @@
+> >>> +/* SPDX-License-Identifier: GPL-2.0 */
+> >>> +/*
+> >>> + * Copyright (C) 2023-2026 ARM Ltd.
+> >>> + *
+> >>> + * The values and structures in this file are from the Realm=20
+> >>> Management Monitor
+> >>> + * specification (DEN0137) version 2.0-bet3:
+> >>> + * https://developer.arm.com/documentation/den0137/2-0bet3/
+> >>> + */
+> >>> +
+> >>> +#ifndef __LINUX_ARM_SMCCC_RMI_H_
+> >>> +#define __LINUX_ARM_SMCCC_RMI_H_
+> >>> +
+> >>> +#include <linux/arm-smccc.h>
+> >>> +#include <linux/bitfield.h>
+> >>> +#include <linux/bits.h>
+> >>> +#include <linux/build_bug.h>
+> >>> +#include <linux/sizes.h>
+> >>> +
+> >>> +#include <asm/page.h>
+> >>> +
+> >>> +#define SMC_RMI_CALL(func)=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 \
+> >>> +=A0=A0=A0 ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,=A0=A0=A0=A0=A0=A0=
+=A0 \
+> >>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 ARM_SMCCC_SMC_64,=A0=A0=
+=A0=A0=A0=A0=A0 \
+> >>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 ARM_SMCCC_OWNER_STANDARD,=
+=A0=A0=A0 \
+> >>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 (func)) =20
+> >>
+> >> Obviously it is v18 so probably a future thing but nothing about this
+> >> is RMI specific.=A0 Could be used for ARM_SMCCC_TRNG_RND64 for instanc=
+e.
+> >> I'm not entirely sure what we'd call such a macro
+> >>
+> >> ARM_SMCCC_CALL_VAL64_STD() maybe? =20
+> >=20
+> > ARM_SMCCC_STD_CALL64_VAL() ?
+> >=20
+> > But, I would leave it as a wider cleanup in the tree as a separate
+> > series.
+> >  =20
+> >>
+> >> I'm not just not keen on macros whose names to me hint at something
+> >> special. FWIW this also matches SMC_RSI_FID() and FFA_SMC64().
+> >> Isn't it nice when we have a predictable naming scheme :)
+> >>
+> >> FID (for Function IDentifier) is in the spec, so maybe?
+> >>
+> >> Anyhow, I don't really care that much.
+> >> =20
+> >>> +
+> >>> +#define SMC_RMI_VERSION=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+ SMC_RMI_CALL(0x0150)
+> >>> + =20
+> >>
+> >> =20
+> >>> +#define RMI_ABI_MAJOR_VERSION=A0=A0=A0 2
+> >>> +#define RMI_ABI_MINOR_VERSION=A0=A0=A0 0
+> >>> +
+> >>> +#define RMI_ABI_VERSION_GET_MAJOR(version) ((version) >> 16) =20
+> >>
+> >> I'd mask it.=A0 Mostly because that would shout that it is only 15 bit=
+s.
+> >> =20
+> >=20
+> > Ack
+> >  =20
+> >>> +#define RMI_ABI_VERSION_GET_MINOR(version) ((version) & 0xFFFF)
+> >>> +#define RMI_ABI_VERSION(major, minor)=A0=A0=A0=A0=A0 (((major) << 16=
+) | (minor)) =20
+> >>
+> >> I'd go all in on FIELD_PREP() / FIELD_GET() + GENMASK just for the
+> >> sake of consistency + not having to be careful that everything is
+> >> checked for fit to keep the LLM bots happy.
+> >> =20
+> >>> +
+> >>> +#define RMI_RETURN_STATUS_MASK=A0=A0=A0=A0=A0=A0=A0 GENMASK(7, 0)
+> >>> +#define RMI_RETURN_INDEX_MASK=A0=A0=A0=A0=A0=A0=A0 GENMASK(15, 8)
+> >>> +#define RMI_RETURN_MEMREQ_MASK=A0=A0=A0=A0=A0=A0=A0 GENMASK(9, 8)
+> >>> +#define RMI_RETURN_CAN_CANCEL_MASK=A0=A0=A0 BIT(10)
+> >>> +
+> >>> +#define RMI_RETURN_STATUS(ret)       =20
+> >>> FIELD_GET(RMI_RETURN_STATUS_MASK, ret)
+> >>> +#define RMI_RETURN_INDEX(ret)       =20
+> >>> FIELD_GET(RMI_RETURN_INDEX_MASK, ret) =20
+> >>
+> >> What's this one?=A0 I can't find anything in the spec that matches it
+> >> and as far as I can tell you don't use it in this series. =20
+> >=20
+> > This is coming from RmiResultDataLevel. See RmiResult type.
+> > This was renamed after we introduce the RmiResultDataIncomplete.
+> > It is used in the KVM code to find the "level" where a command
+> > failed/walked.
+> >=20
+> > I could rename it to RMI_RESULT_DATA_LEVEL() ?
+> > Similarly RMI_RESULT_STATUS instead of RMI_RETURN_*
+> >  =20
+> >> =20
+> >>> +#define RMI_RETURN_MEMREQ(ret)       =20
+> >>> FIELD_GET(RMI_RETURN_MEMREQ_MASK, ret)
+> >>> +#define RMI_RETURN_CAN_CANCEL(ret)   =20
+> >>> FIELD_GET(RMI_RETURN_CAN_CANCEL_MASK, ret) =20
+> >  =20
+> >> These are obscure enough to find in the spec I'd give a comment just
+> >> to save the sanity of anyone looking for them. =20
+> >=20
+> > As above, they are really RMI_RESULT_DATA_INCOMPLETE_*
+> >  =20
+> >> =20
+> >>> +/*
+> >>> + * Note many of these fields are smaller than u64 but all fields=20
+> >>> have u64
+> >>> + * alignment, so use u64 to ensure correct alignment. =20
+> >>
+> >> Obviously this is only going to run on arm64 so it's not critical, but
+> >> more generally u64s aren't always 64 bit aligned.=A0 So if you 'really'
+> >> care aligned_u64 is there to ensure it.=A0 Meh, arm64 so fine. =20
+> >=20
+> > Agreed, I am worried about the churn in the consumer code. Also, like
+> > you said, this is only for ARM64. So, I would pass it.
+> >  =20
+> >> =20
+> >>> + */
+> >>> +struct rmm_config {
+> >>> +=A0=A0=A0 union { /* 0x0 */
+> >>> +=A0=A0=A0=A0=A0=A0=A0 struct {
+> >>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 u64 tracking_region_size;
+> >>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 u64 rmi_granule_size;
+> >>> +=A0=A0=A0=A0=A0=A0=A0 };
+> >>> +=A0=A0=A0=A0=A0=A0=A0 u8 sizer[SZ_4K];
+> >>> +=A0=A0=A0 };
+> >>> +};
+> >>> +
+> >>> +static_assert(sizeof(struct rmm_config) =3D=3D SZ_4K);
+> >>> +
+> >>> +#define RMI_REALM_PARAM_FLAG_SVE=A0=A0=A0=A0=A0=A0=A0 BIT(1)
+> >>> +#define RMI_REALM_PARAM_FLAG_PMU=A0=A0=A0=A0=A0=A0=A0 BIT(2)
+> >>> +#define RMI_REALM_PARAM_FLAG_DA=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 BIT=
+(3)
+> >>> +#define RMI_REALM_PARAM_FLAG_LFA_POLICY=A0=A0=A0=A0=A0=A0=A0 GENMASK=
+(6, 5)
+> >>> +#define RMI_REALM_PARAM_FLAG_MEC_POLICY=A0=A0=A0=A0=A0=A0=A0 GENMASK=
+(8, 7) =20
+> >>
+> >> Tiny bit inconsistent. When do you decide _MASK is needed and when
+> >> not?=A0 Seems a little too random for multibit fields. =20
+> >=20
+> > I will try to clean this up. =20
+>=20
+> Actually, this is used when we don't consume them from RMM. i.e.,
+> we never call FIELD_GET() on them. But thats not a reason for
+> not being consistent in naming. I can fix it
+
+Too obscure for me!  So if not too painful cleaner to just fix it.
+
+Jonathan
+
+>=20
+> Cheers
+> Suzuki
+>=20
+>=20
+
