@@ -1,201 +1,210 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011011.outbound.protection.outlook.com [52.101.62.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D3A35E1AD;
-	Mon, 21 Sep 2026 06:44:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789973048; cv=fail; b=sbt3pw9/Vk1P/jccjmDMp/eka0m748vxm4+MakoFHigDMmyXre1IAPEBC+AL4BeIJFwktLc++v6KjKNXvvrxlO2+hUvffafeLe74pO0t4OWy0csDcM5AtupnO6ivEfLQmoLZMKsGWVBtdISanirBSERyt+I19HzERdYITSZPKQI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789973048; c=relaxed/simple;
-	bh=OIGfSfN+En0nHj88gNfM2/en4SpzsU+0qJ+VSr21mDQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=RLTaz/OLmL2cX5xs+6rGysFSXyg+VQk5I+GqHZwgEMugcXx8KgCwx8kNoYU6C2O6nH0SwQqkPrKany03pzPSICO6CtvHqWbE1MtdP88naC9Cwf/olTs+WN7g0zLlOIf5GNOHpaL+fBWh3kMr87yBiemPIxvziB/X2drE7rWZIVg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=knykQCKj; arc=fail smtp.client-ip=52.101.62.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7540B282F3F
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 06:52:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.6
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789973575; cv=none; b=AN0brBb6wo33RFP1JEvNEh1fgTr/+TIq3xcdwDgoLt5HzXZMJy+4W2mhoVc/rQuBYtmh4NIi3IX9fv3LRju8qW09ZLHUqOZ4qj9O4fd0qQhgTKPpz+lXCkQiBkccg2LNdpKNVgTnm9rrqvZ01kcm2Z8aSMiSs48aOTHNiGIWKDg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789973575; c=relaxed/simple;
+	bh=jTPDfssEaB19bppgBlEI9plfA/WUsD1mFQCWUnMhIy0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RTgnp0OwSiFP7DCNQPwae84aiesLulgv9VopvfAuLNYtU8xMgtLD3JxI+rQ+wbtu2UK32+YaTvlYUfufN2Ew2Zdsavk2oSkW8h6PKwGpd5zRsQDvBFBN//q6mmzLiq57kg74Sc0PZ4xhrF25FrVMjMO3JAj0U6lO2Nbuomv6tbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mugHUrHq; arc=none smtp.client-ip=192.198.163.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="knykQCKj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kk8dm1/YBHt7nv3YHA/Rw0VRqPIOJRJMRyrjRJK/kaqx9Dw7D89KiWDnMoY0ayNkG5NrYT/B5BtRBnZ/unDheXVpUlK+WTy3087b3IoXwBX3fo5RYDotgSu8mHQLPxVGksxkHyxN6wTstI0hMLuVnISnfZtPACXAcRBOjPmKCKUf7dwPipQSIvQ5ftLjpSNiBhLV/31/305aR1XM5nJMDkyCtKuvhvYAWqt5iBEXz4fbPDL5tWG7YgBHI2H8kbjRcbTtJIhx3qKiyd6ifUKy7bvjTo0NbqyPmUJAkMAST3HpsKJ9H6pM7DpVxD9XF22lsPwl2B+zkK0X/I5CiL6d5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4FAs5ZqnZSg4v95aA8NFmTexcjTpwmfM84fz1IQRbsI=;
- b=rc852jBXcXHGo+Ex1lx96RykwRPFQ15UFzVX1QUlzscaYgFqDZ7zc7J7ggnJPHE1Jit0KZk+L89Lw9HKrDRSx56GsKOq71rKVUSKl3K65pw6Wr5foZx+2DT07OgbI1BGEtqUkvV2AmWWsxT3a63HIP1AxXHBFAH7/noeuUgjabew1/b0P49lGyZVigZH/28ypwpUAKtIcH4bxFgr3IYKApYf8CubAwdL4QVxUmunhm/IDmPnjhBr6N/jxyg3Cl8hT7oz/sAtyImVPkBGhDsdql/taThS7IFYWnZbrKVYTV3BINOjW5dOgm6kk1BKhVBaC/I10m9gnX2yPIe6xewgoA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4FAs5ZqnZSg4v95aA8NFmTexcjTpwmfM84fz1IQRbsI=;
- b=knykQCKj2wKiILxdAjRj97unIA3RL2GM0iBq5EhcVpnPn/RvVsP2pZspVjrH2Mp86BtbLvn/6KKUK3+0+LzK1VkvHKVOkPN99/TjPEQfk6fgZw9Z98h13EqpWFjoEaEEshxsMof0RR5yNOHxo7uPyt+d3H9pFT3ANkifpNa1LCM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by IA1PR12MB8263.namprd12.prod.outlook.com (2603:10b6:208:3f8::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
- 2026 06:43:57 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%3]) with mapi id 15.21.0428.011; Mon, 21 Sep 2026
- 06:43:57 +0000
-Message-ID: <9656f2f9-2e39-4007-b065-3b763b53c6de@amd.com>
-Date: Mon, 21 Sep 2026 08:43:49 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 18/18] RDMA/mlx5: Ask P2PDMA whether ATS takes a direct
- peer-to-peer route
-To: Jason Gunthorpe <jgg@ziepe.ca>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Christoph Hellwig <hch@lst.de>
-Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Logan Gunthorpe <logang@deltatee.com>, Chaitanya Kulkarni <kch@nvidia.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jens Axboe
- <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
- Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, "Joerg Roedel (AMD)"
- <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Randy Dunlap <rdunlap@infradead.org>,
- Sumit Semwal <sumit.semwal@linaro.org>, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- iommu@lists.linux.dev, Tushar Dave <tdave@nvidia.com>,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, linux-rdma@vger.kernel.org,
- kvm@vger.kernel.org
-References: <20260914-fix-p2p-acs-v4-0-v6-0-5ef07ec9ef06@nvidia.com>
- <20260914-fix-p2p-acs-v4-0-v6-18-5ef07ec9ef06@nvidia.com>
- <321890690ce83d1943b2f678bd9bee9b8c895b66.camel@linux.intel.com>
- <20260918121500.GV13683@unreal>
- <b517070d0b9236b03962fcba649faffcacda23eb.camel@linux.intel.com>
- <20260918170524.GH11599@ziepe.ca>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20260918170524.GH11599@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR2P281CA0078.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9a::20) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mugHUrHq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789973574; x=1821509574;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jTPDfssEaB19bppgBlEI9plfA/WUsD1mFQCWUnMhIy0=;
+  b=mugHUrHqxpjidzbinGMeWMcLf3nLR2N6DLQ5n0AQJtClY/GtRY+bF4Zn
+   0wauuu+8rSB+lJONLcDXm0PAevRmV6vN6OFkXbx3QLtMkBuINhfnpKJ1z
+   DOflvBdF4LfbOnXf8wv0mcdmn0BR4LcgMd3Fy43McO19vFC320hTfqwZk
+   zGR8xg1h4BOg1xElG5ZKpexubpPckQyJemDm2d/xDPMzeDY3f/q4adtS9
+   Wsldm6iE7Mn9lh34Rc3aMJ/XYLlxijSLS+toa0CmLaHrysvzB/DAhWrww
+   RFxYIM7JQhAKTG3/85dGng0EBk7nSRFgH8Co8PSuLgdoN5aON4mh2dJAV
+   g==;
+X-CSE-ConnectionGUID: oA4Bah8YTwKQRXMUV7YASg==
+X-CSE-MsgGUID: YUeETERWQUuW1SLFl331aw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11911"; a="975419"
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
+   d="scan'208";a="975419"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by fmvoesa116.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2026 23:52:53 -0700
+X-CSE-ConnectionGUID: TyGRBlgSRzqirq4LoGwVEw==
+X-CSE-MsgGUID: hpcRNQY9TCeRW1TNqGyLvw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
+   d="scan'208";a="3561387"
+Received: from bradocaj-mobl.ger.corp.intel.com (HELO localhost) ([10.245.246.168])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2026 23:52:45 -0700
+Date: Mon, 21 Sep 2026 09:52:42 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Kishen Maloor <kishen.maloor@intel.com>
+Cc: Artem Bityutskiy <dedekind1@gmail.com>,
+	=?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+	Jon Grimm <Jon.Grimm@amd.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Steven Price <steven.price@arm.com>,
+	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
+	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Peter Fang <peter.fang@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org
+Subject: Re: [RFC PATCH v2 2/4] KVM: x86: Add optional KVM_CAP_LIVE_MIGRATION
+ and KVM_MIGRATE_CMD
+Message-ID: <arDUOl2WPKRxwrZW@tlindgre-MOBL1>
+References: <aqOCPVoFAFMv8ZYo@tlindgre-MOBL1>
+ <085c28db-31e3-4249-a9be-a2f9d7156719@intel.com>
+ <aqjNFLv5VrmB_fdx@tlindgre-MOBL1>
+ <e090caa0-be97-46cd-bde8-374f2522c986@intel.com>
+ <aqoknAli8A0Mc4HR@tlindgre-MOBL1>
+ <3ee06a84-2c4b-4b2f-9899-68fc92b6daf7@intel.com>
+ <aquL7kNJsjnY0mJ4@tlindgre-MOBL1>
+ <b5906521-858b-487b-a262-7a86891a0731@intel.com>
+ <aqzS_mCOT6YuHKxN@tlindgre-MOBL1>
+ <e2f8b93a-fd42-4ee6-8b74-759d3052258a@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|IA1PR12MB8263:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2e740638-f10b-4228-3ec3-08df17abb5ce
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|7416014|366016|23010399003|10067099003|4143699003|56012099006|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	N2ObD7PJEldHyR8x8JIRV87VjQP+uCxNM/w7gt0w3kU8tbE4fiPbToU3vBvQPorzKJiutAPcqi70uh5/6hskDEMmBmzHGosHzly6H4UP5RoKX1vFlkUWqtGn0f3Hr4JkJgcKwgm/bXc5xT9QnruGCG7vfchPMj77P1BNF2DGv3pDtN/X1xn+gjhQPaeaB7QRNVt5k9HQELL1B3yj4PsGIfmSSjmtEchrWRzut3absPbIDGP7bvSMX+7Zg+ELEpOfy3s6GPatlJ/HqvwlPMCzDer6oyzc0w6nCBOGr0LrYmWy8QOMMY/Wa1vnPRZlbtHe1TMxn+PFyO13qv2bPZmAtqv90eS+1kuPWNNJVpJu09xI9+8AX39eP4M3De9ld0gQWbzEn8HIfXAylc5fXBjN8vJFJp+rOS/K29dILm+XBVKG06t+rs+Wf0ws/yYWUolpaZ33Qx3CEtBElS5FVbEVIAX408a+g1e0iKuOWTYICoS/U9zk0YVdMLxNvSo92enhJSA3xgm53iaDj0CEM1rQcPQkIBy9pnOyBvf6L2yJCETy6Y5ocybMbhga42BFA5t3OUCi9lrhYC1tD8itqhknlizrK05zgTAKWSeI+3/IvwDZcVXtKkow5XFVcmMzoE+YSlKvIP0Qmb7aoJB2SsD2HBbya/7tIcuu+DfOAwmUZy0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(23010399003)(10067099003)(4143699003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aC85LzQ0RE9aY3VNaWx2emNMSnlvcUlSQVlSdlFOTDVwd2J5aHB5Z1pQWVhY?=
- =?utf-8?B?S1NoWGZFYXpXN0FzVithVjM5UUJraFUzYlMxU3B6V0lZeGxwT0xFaWhXVjE1?=
- =?utf-8?B?UmJIdys1Vk1sME1FOFBidmt3ZHM1YjJ3RldoOFp6RElUc0ZvWi9peXB2QlRo?=
- =?utf-8?B?MTFJTmVPNkloVmRwenNNUmY1anpRYy9IVEJxQ0prN2lhSWJSTGg4Qm9SOUZh?=
- =?utf-8?B?QkNyZTdnbzIwWjJMMG1JZVZuRlpYMmwybU15VDFCb2FYcEZnZkpLS0NvNUZl?=
- =?utf-8?B?MG5QYS83UW1MUmlIbEJtRFpXOW9EVnZPbEd3bDBpbk4vVi94M0NKVzdNQzZ6?=
- =?utf-8?B?dHc5U3o3ajhtZ2Y0M2E0NHBwMXJpbVduNUZ3dmgxUEYyU05YQ2I2ZVpQQk0z?=
- =?utf-8?B?YUpKSjVXd05aQlpOb3c4SklzNHI0VXdzZjN3ajEwUVVKK1pUUVZRRXRGbEhm?=
- =?utf-8?B?NDVIUm0xZ3VkMHNEaDVUeEtwYzdndUZXK2NvbW9MWExhTStYSmJQNk05UnF0?=
- =?utf-8?B?SDFPOUdleTVGNUVkYS9oSWJNTmZSZGExOTVjZmhYNmxhQnFMRXZNSGFsaFgv?=
- =?utf-8?B?Tnh6RUtaQ2txYnJzRUlLTklTUS95OWFGeDRBVndpTTd6UnRDMVJRUi9TUG55?=
- =?utf-8?B?MUtOcHJiNHlmUE1BeklydHZ1b3VEeTl5bTBuMW1lRlNkT0FQMVlMbXpZOEJk?=
- =?utf-8?B?eGZ0Skx5N1RuRjlnSEcvUnFhSWt5R2kzenpmc3Y5OUdqSzZzbmV3Sm1WMldQ?=
- =?utf-8?B?c1EzTy9NMUJTYTlGWG56OStNNlZCNnNwbDlaUEU3TjVrV3NHVzd4S3R4ZmVG?=
- =?utf-8?B?Y3lxT3pRYlJkNFRuU1NDaVZNakgrdjByWVdvOFJrNDdYb1VLSC94SmNKcVpI?=
- =?utf-8?B?UlBjMWhPRTZBSGluL3lUNzBrdzVtcVpZWkJHcnlDQnc5WDhwZzZ2ckxZZzZD?=
- =?utf-8?B?OUgxZGNIbHdDc3BnTUNmYWlhYUxObzh1V2pQRG9XMUNaSkhTckpBL3NsaVp1?=
- =?utf-8?B?MzQ4eVlzeXBuL3FGakpHM0dKOTFRRDFWR0g1WHMyZlFzN3VHUVJjVnY0TUti?=
- =?utf-8?B?cUhNUHZMK2ZqME10dnJnb0I1cFN1R1k1WGsrQ2JhNHk3STBZTGY5RERFTFpB?=
- =?utf-8?B?YVowcm80THd5TGZqaFNkcW9rWk52akcwbFZVQTMrNzF5TXQyVzVBY1FGbllw?=
- =?utf-8?B?L1R1T2tuV3JlY0JmdlB4bXNXZk1UQ0JNaTF6UFBzd1NlMlFodFBKNnZ4RDc0?=
- =?utf-8?B?RHdoNXVtNURUWmt2UEdKMSt1N0Z4TzQzbmVaT3IxL3pESlRPbUZBV2JzSVdD?=
- =?utf-8?B?Q05MRk55b2NNTnRlMFZQSWMvV0FvZWUvenBteGJ5aUw4d2hrZXNYK3pFTEhr?=
- =?utf-8?B?cHVpa05DdDJ5czJPT1VoOWF6cEZMMFBmbk5Fb05ORnNuMnlydUE2Mld6MUwv?=
- =?utf-8?B?aHJLaXVOUjFUK3lJUjlIMGVsNTVpTm1CN3A1OFZBeWtDTkdqdXc5aDVhenBj?=
- =?utf-8?B?Z29hb0hIYU94UER1NWhYRCtQU1MrK2tDazlHUXp0eExtSHlmSFdjcTBWQzA4?=
- =?utf-8?B?cnBxZjBsTDNEVTZSUTdHeUFCYm8xbEY0Ykl2Q1BCckxFVkw1dHRoMVVodjIr?=
- =?utf-8?B?MFJwOGdvejJZMWUzZ2EwVGl4V0xldEJXejBTYUlhQUIvdFhSNlprejZYRWNw?=
- =?utf-8?B?MTJaSzlkNm1ZU2VqVFZMN2JsRDJValBUbDdPdm5IQ3RDMzNvSEwxVFVHN001?=
- =?utf-8?B?azNldWdSZlVLTWFKOWp6cVJ4WnBsNktBQTk0QThhdzc0TlB2QklwbDNUMjk3?=
- =?utf-8?B?ZWJRbStzL0FkQkhQTG4rQXV6Z0toMkZSaU9GOUR3dytPbUhWazlXK3dmaDFS?=
- =?utf-8?B?b0xTU3Ayc2twU0t5U3o1RXkyMklRbGw0SHBEMTl2V3ByS2RMRGY3OEo3T2tU?=
- =?utf-8?B?YUVpb3hCdlB5K3V5TEIyYk9NVVZpcDN4Y29CYVpGZFRRSnFwREhJY3Izd1Bp?=
- =?utf-8?B?aTVsbFJJend3QTBzdEJnNmVjVzhmeXBnbHNybGNLajBlQndWZDdrVGROMUEr?=
- =?utf-8?B?ZGJ0YXJrVlhMNlZwbzlYaDRYREZNUGJaWU9Ta052cE5TRFpobHNzdFYzZmpt?=
- =?utf-8?B?TWVuQitjc3lTYzZPUjlZSnV1YWdhZVF2SWZUalp1T0pNTU5RbC9sTVlxY1dx?=
- =?utf-8?B?UWZkdDZpdzhtY1VLTjFxbmUvZ3ZMcUZzdUVtQ1ZSVFpCRjZMdEFUaC9UYklY?=
- =?utf-8?B?S05ucTZ5di9XdTMzMVJtWUNncDVSdnc0VkM1bFpaUEdLV2xidEhlMTZibXpV?=
- =?utf-8?Q?Q2Jy0kIEIxhP8u2g4a?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2e740638-f10b-4228-3ec3-08df17abb5ce
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 06:43:56.9804
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OnpxN2tjN2yIRcQXeovIbSrlowrK2DLICMj4rVmrUmjoLiwsO8MrKwbsDuAf90q/
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8263
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e2f8b93a-fd42-4ee6-8b74-759d3052258a@intel.com>
 
-On 9/18/26 19:05, Jason Gunthorpe wrote:
-> On Fri, Sep 18, 2026 at 03:42:28PM +0200, Thomas Hellström wrote:
->>
->> 1) Xe attachment check if pci_p2pdma_distance() returns OK for the
->> path. Then Xe always sets up dma-addresses using dma_map_resource(). 
+On Sun, Sep 20, 2026 at 05:13:10PM -0700, Kishen Maloor wrote:
+> On 9/17/26 10:58 PM, Tony Lindgren wrote:
+> > On Thu, Sep 17, 2026 at 09:32:23PM -0700, Kishen Maloor wrote:
+> >> On 9/16/26 11:42 PM, Tony Lindgren wrote:
+> >>> On Wed, Sep 16, 2026 at 08:31:32PM -0700, Kishen Maloor wrote:
+> >>>> On 9/15/26 10:09 PM, Tony Lindgren wrote:
+> >>>>> So trying to summarize the common flags for the role and separate vendor
+> >>>>> flags:
+> >>>>>
+> >>>>> struct kvm_migrate_cmd {
+> >>>>> 	__u16 command;
+> >>>>> 	__u16 flags;
+> >>>>> 	__u16 vflags;
+> >>>>> 	__u16 reserved;
+> >>>>> 	__u32 reserved;
+> >>>>> 	struct kvm_transfer_buffer buf;
+> >>>>> };
+> >>>>>
+> >>>>> Is the above along the lines what you were thinking?
+> >>>>
+> >>>> No, I was suggesting a 'role' field carved out of the 'reserved' space,
+> >>>> like this:
+> >>>>
+> >>>> struct kvm_migrate_cmd {
+> >>>>       __u16 command;
+> >>>>       __u16 flags;
+> >>>>       __u8  role;     /* 0 = unset, 1 = source, 2 = destination */
+> >>>>       __u8  reserved[3];
+> >>>>       struct kvm_transfer_buffer buf;
+> >>>> };
+> >>>
+> >>> OK yes thanks for clarifying, that works for me.
+> >>>  
+> >>>>> Ah OK, yes that would also tell "the hardware has been initialized to a
+> >>>>> certain migration role". That seems like a usable common feature.
+> >>>>
+> >>>> Not quite. It tells us that userspace asserted a role for this VM's migration
+> >>>> session. Whether a TD was created for import is a separate, vendor-level detail.
+> >>>> The generic layer only needs the role to reject a session that never stated one,
+> >>>> and to pick the export or import callback. That callback then knows which side
+> >>>> it's on and can reject an incorrect role (e.g., if SETUP asserted dst for a src TD).
+> >>>
+> >>> That's a good point, the hardware role may not be set yet.
+> >>>
+> >>> I'm still wondering if there is a need to stash the userspace set role in
+> >>> KVM though. Likely only the hardware specific code can properly track the
+> >>> state of the hardware and adjust to the userspace requests. Seems just
+> >>> being able to pass the role in struct kvm_migrate_cmd should be enough?
+> >>
+> >> Passing it in kvm_migrate_cmd is enough for SETUP itself, but the commands
+> >> after SETUP like memory/vcpu transfers still have to reach the right
+> >> callback. So KVM would need to remember what was asserted so that the
+> >> generic layer can dispatch to the export or import facing callbacks.
+> >> We've been sketching (on this thread) an alternative UAPI set
+> >> (3 vs 5 ioctls) for consideration which this stored role enables:
+> >>
+> >> Proposed in the RFC              Alternative
+> >> KVM_MIGRATE_CMD                  KVM_MIGRATE_CMD
+> >> KVM_EXPORT_MEMORY                 
+> >> KVM_IMPORT_MEMORY                KVM_TRANSFER_MEMORY       
+> >> KVM_EXPORT_VCPU
+> >> KVM_IMPORT_VCPU                  KVM_TRANSFER_VCPU
+> >>
+> >> It's just a record (1 byte) of what userspace asserted for the current session 
+> >> at SETUP. Vendor code still owns the hardware state and remains free to reject a 
+> >> role that doesn't match it. It is also what lets the generic layer reject a 
+> >> command to a VM that never set up a session.
+> > 
+> > For the TRANSFER style operations, I would assume the direction is passed
+> > for each transfer, just like the Linux does for the dmaengine. It's
+> > possible that there may be transfers going both directions without the
+> > role changing.
+> > 
+> > So looks like we have tree things to consider: userspace set migration
+> > role, the hardware state, and transfer direction.
 > 
-> Open coding pci_p2pdma_distance() in drivers is a hack. Using
-> dma_map_resource() like this was never "allowed".
+> Two of those three I agree with: userspace passes the role at SETUP, and
+> the vendor implementation tracks the hardware state. It's the per-transfer
+> direction I don't think we need.
+
+Ack on the userspace passing the role at SETUP and vendor implementation
+tracking the hardware state.
+
+Then for KVM tracking the role, I don't think we need it with the two
+above. The role tracking can always be added if really needed. Any other
+opinions on this one?
+
+The transfer direction is there with the EXPORT/IMPORT naming. Maybe
+just let's keep that naming for easier readability rather than try to 
+switch to TRANSFER style naming. No transfer direction flag needed.
+
+> > What if userspace always passes the role and transfer direction where it
+> > makes sense? And then the hardware specific implementation tracks the
+> > hardware state?
 > 
-> We've fixed things so these hacks are not needed, the drivers need to
-> move over to things like dma_buf_phys_vec_to_sgt() and the hmm helpers
-> to use the DMA API correctly.
+> Unless there's another meaning, direction would indicate that an operation
+> must produce or consume a blob into/from a buffer. Such an indication would be
+> necessary if the layer below the API cannot know what to do with a buffer,
+> which may well be the case in your dmaengine analogy. However, in this case a
+> vendor implementation sits below the generic layer and could derive what it
+> needs to do from the role, command, and any session state it maintains. The
+> TDH.EXPORT.ABORT example I cited upthread expects a token only once the
+> session has left its pre-copy phase, so what to do with the buffer follows
+> from state the vendor layer already holds.
 
-That is a completely broken approach as well since it limits the exported resources to addresses the CPU can reach.
+Yeah I don't think the dmaengine API ever expects to get back a blob as a
+result of an outgoing transfer.. That would be a separate DMA transfer. 
+ 
+> The gap I do see is in how the buffer itself is described: we have no way to
+> express a command that takes an input and produces an output. A direction flag
+> doesn't help there either, since it can only say one thing. My comments on patch 2
+> suggest a new 'capacity' field alongside a reframing of 'size' in kvm_transfer_buffer,
+> where capacity bounds what the kernel may write and size reports what is actually
+> there. That covers the both-ways case, and it also leaves nothing for a direction
+> field to convey. Maybe that addresses your concern?
 
-Christoph Hellwig is right that drivers should never use that stuff directly, not even through that dma_buf_phys_vec_to_sgt() function.
-
-I need to take a closer look and maybe discuss with Christoph and Thomas how to proceed here.
-
->> 1a) Let's say the importer (Xe) has ATS enabled, and the exporter is
->> supposed to map dma_addresses.
->> In between there is a switch that allows direct traffic.
->> Now with your patch series, How would the exporter know that Xe has ATS
->> enabled and therefore should return IOVA mappings rather than the BUS
->> addresses representing the shortcut.
-> 
-> The thing that does the DMA map must be aware of what PCI TLPs the
-> PCIe initiator will use to compute the proper P2P mapping mode.
-> 
-> ATS always needs an IOVA but that still doesn't mean the P2P will
-> work.
-> 
->> It seems to me that a pci-device settable flag "ATS always enabled"
->> should be enough to fix both issues?
-> 
-> It should be be per-mapping to support the NIC workflow that isn't a
-> global operation.
-
-I just realized what you guys are doing and I'm not sure if the Linux PCI subsystem should support such hacks at all.
-
-Basically from the point of view of the TA the NIC has ATS enabled all the time, but has a per request option to use translated addresses directly without previously translating and caching them using ATS, correct?
-
-If yes than that is extremely questionable behavior, I'm not sure if that is covered by the PCIe spec.
-
-ATS is meant to be an optimization which moves the TLB from the root complex (TA) into the devices at the cost of TLB invalidation complexity. But what you do here is abusing that functionality as far as I can see.
-
-Christian.
-
-
-> 
-> Jason
-
+Yes that's a good point, a transfer command may also return data in the
+transfer buffer and the size of returned data needs to be known. Replied
+to your patch #2 comments with some ideas on it.
