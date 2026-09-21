@@ -1,57 +1,57 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3699751477D
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 19:14:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACBB515896
+	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 19:14:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790018068; cv=none; b=P9N22pB2glRkClRdpXfBxChEm/VloprhBNopGOV7XyMb1GGIQNuJebTkG4THHfxngYuTqabRUUxbizoM6dXPf4gRCIESeL+3+WC+M8tzLqh4BJFgCC0qFKCS1/BWmPMVDTcFETvoM7zHce0L67R+0GtDPozGXMecfuN49bl3MLU=
+	t=1790018069; cv=none; b=GsUwzrGlI/pB5USgskeOGUgO7Ko3eh0qWQx4wI4x7abYhmfNNeXgOpMvy1NXz+/fY13yO+byXsNk+yKvYMvT3AfsBkVM0KbW9IFJWraXwmEDPOXvzJAc0NdPv3a88LPYMVTRH76rx9YAXwE/FdKZF8TeKePCNZBRtn9FkOTVe8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790018068; c=relaxed/simple;
-	bh=/fduYVdhTiSZFVOb8ZbgmJZp/IyADMXN1YECjTLZc0c=;
+	s=arc-20240116; t=1790018069; c=relaxed/simple;
+	bh=ncoF0AVlXK+3iude8CPxQjaZi5GdYEtcRxqS+Pzv5U8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bfoeb/MNxKcsDA2Kjn5ha9IEJMzbN8ECE9FYkC5umfkQGv2pjDqzn9uSX3IbxdOEbZlTQFqI8x4Jnljc1EeEKJV4Z9ZSgv++YnNsPzp8z3P2wMKlhGeziU38UU9ryhrqHCyP39eU8mVrXF3yhLwyOOas/6qxs8fImso22tLbuJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QBjmeItm; arc=none smtp.client-ip=209.85.214.197
+	 To:Cc:Content-Type; b=a7a38oVYYF4AykWpTBqfTT98EBBSNj61uP0ZFuPUynzoinxlDeYa0Ivc38monO4/bUXLrjEnDnERwevOqpdFFVkAqjMvKiNYr6sfK/Zi+4IoZ8ZIT9a5ikB4dJB1hdb0xvc7S/oWz0n96USUJrraBkTmrtvd3VdK3EFMPOSYNII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aSTH0m41; arc=none smtp.client-ip=209.85.210.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QBjmeItm"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cfa4e4684bso81853665ad.2
-        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 12:14:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aSTH0m41"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8645a62066dso5276705b3a.0
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 12:14:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790018065; x=1790622865; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790018066; x=1790622866; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=BNDjdFdJNZ2KwNyt2OZWxN5CjAQkOsVS0m1OtXH+uso=;
-        b=QBjmeItmh2HCog9jWpGTEjF9tEv2TmXkGcdEmjJjSaJN5xdeB4MRM+tabSQw90V75P
-         vVuwkYaXPNcFA9uQEcbY+lpC/djUqcqLFCRBleMMvZtC3b2Y61/ralqYpTugnYlM613w
-         NlLW/8NYVEEe5Dc3DXtFJDel32RRwgax+2lZBjjUHIDwZh3uhjWlb7ailSub++rpve2N
-         OODixAVNWJY8l5uOkSjKyhraxb4L37vFVIze8jPwrhJpTix5KMNrCjgSxfHB7kyY3v0m
-         HLcdE8mC8SO0tR9s52pDfdLsB8oghoM0GBYbPebSLSj8/gKwmbBK59zkl4N4TjldgW93
-         Fb5Q==
+        bh=7RbJsXVhnh/ZoIjL3bVMfLEoE54gbAhQWsF1SSmQUH0=;
+        b=aSTH0m41K99/i0hCc+SMNHc7g/xH2jwyeoJAtFPKVvpT4wKpOBz3SDRzl5JYS303SV
+         0+ok6drbBBrLjKjpu9p/Fq8SpHhW1oJVUDoQJZzMAayQEYIusBhpr0ObeMa2m0L0z6Gp
+         ghS+KEi8KDjRPPneKcBrnrRe+Ep/RfHePI3lPrrY4Nu034OGh155K1zmetCL3YHmoRzK
+         LLrQnB+fA+/sogFVzF1P+wewOQkfuAd3PPzG8eQwvnhW6TkMIsiTgqphogCnCVqBGetB
+         yolx3xUAWa5MPGTBcRTcV/8ODnHVW4xnqbN29MInGUfM+GFArJmBWYOIAdFiXVAe0nH5
+         VZzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790018065; x=1790622865;
+        d=1e100.net; s=20260707; t=1790018066; x=1790622866;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=BNDjdFdJNZ2KwNyt2OZWxN5CjAQkOsVS0m1OtXH+uso=;
-        b=adrSBiPsMsKtW3k6mbfsT38wpgdbKYIA4coiilucmSks8tJua1+qHGy9xJSe15IxOS
-         /I0pm8ZKqY2Sttup9DnrJwojArjkMG/ifQ8lQMWnxhglTFPFBtkmxyfjH+IKbYnDMjEP
-         YvEwdMXkowQFin9VZ2TWD9o5gaC0MatHkNPMJgGMh2OfQ2XKCYZKVX0D8d2f+jAazjcU
-         I2GY6r0UwOxWVaFbMmNQSC+lVyXBAQd22k1ZhdulRqBMLLaeUO2exrGYHmAo/gnZqpDi
-         PVvJdYJm2gf7NxRvGajHg3JqX2ZRvvDGf0Xw8iDDNWSkoAhWtEIVOpXRZtO3LAqyqFvp
-         5O/w==
-X-Forwarded-Encrypted: i=1; AKwUvBxoExfthYQfOg/vtVJTv60QW/tMvH1LwwMUr74N852FIgXcRyyF0PTqbqxM1cIPVZcQf5k=@vger.kernel.org
-X-Gm-Message-State: AFuF++k3IF3MtRXB9DSavbEjlsrJxf1jSOViM9jyIQrYRd1CtfG+M1Fw
-	Pv9FT7yUBK6Z/fdMZDpz8qExrcvNWHpx6508L8PtYadRZoVIzkdjrUHhKFNNFs52MerGpAt49JZ
-	vJ8IhoQ==
-X-Received: from plmo6.prod.google.com ([2002:a17:903:18c6:b0:2df:3468:8a7d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:4590:b0:2dd:c100:3138
- with SMTP id d9443c01a7336-2ddc10031b0mr116434115ad.52.1790018064959; Mon, 21
- Sep 2026 12:14:24 -0700 (PDT)
+        bh=7RbJsXVhnh/ZoIjL3bVMfLEoE54gbAhQWsF1SSmQUH0=;
+        b=ImjtH+s9T9J/mkle2vbOyCtKl7lIpv/60BTSv0NwaOFjtdPHQTUX1kyrhVpCxA9izh
+         m+1Fhf+CZCP0JNoZjiuzVAofx2H7y3+qFw2AuDD+Lr3dLDiS5/1YSIUOZyxvtXpPXf3P
+         zZ3AqERqvkL54w20rMoUcmXJYJn0XSKNxEtq/pOEZx5dQkEaZDBsM271eFDl+/LEmM/u
+         Hn9SAYjq4i6eGKbD6V5WSWq3fpS74f1Yye80IaOJMN94MCPkdEjhBQ8A6BMrFOMjeJgM
+         GGNuj+JZuLbBA1k+1k1o88goWEnjqNajKI1QTR00Vfic7GxsL5fVZxMT8HxZ6rH24A86
+         fbeQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxDGDGUbHAHoS+BBFcpd8EHtUuun4r6wW3bUsEdze3sBXh7zLc0rb3Qb8L5KUJfKLXlzc0=@vger.kernel.org
+X-Gm-Message-State: AFuF++knLHdE9ubY2RaTFBSpCJvVDUBGHQjv6FqqUBpgKaOjYLrSJ6Wq
+	j93PLJf958wxfwr0ujnHlmvsBnWGW+Hdm9z3C7KWsGW67x8rV9X6XJmpx79wg1gg7XWWhN3+3bi
+	VRRbCIg==
+X-Received: from pgdj29.prod.google.com ([2002:a05:6a02:521d:b0:cc4:b575:5b04])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:ad08:b0:874:705d:f652
+ with SMTP id d2e1a72fcca58-874dea02e76mr15115482b3a.32.1790018066169; Mon, 21
+ Sep 2026 12:14:26 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Mon, 21 Sep 2026 12:14:12 -0700
+Date: Mon, 21 Sep 2026 12:14:13 -0700
 In-Reply-To: <20260921191418.950933-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -61,8 +61,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260921191418.950933-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260921191418.950933-5-seanjc@google.com>
-Subject: [PATCH v4 04/10] perf/x86/intel: Make @data a mandatory param for intel_guest_get_msrs()
+Message-ID: <20260921191418.950933-6-seanjc@google.com>
+Subject: [PATCH v4 05/10] perf/x86/intel: Invert names of intel_ctrl_{guest,host}_mask
 From: Sean Christopherson <seanjc@google.com>
 To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
 	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
@@ -77,41 +77,129 @@ Cc: Mark Rutland <mark.rutland@arm.com>,
 	Sashiko Bot <sashiko-bot@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Drop "support" for passing a NULL @data/@kvm_pmu param when getting guest
-MSRs.  KVM, the only in-tree user, unconditionally passes a non-NULL
-pointer, and carrying code that suggests @data may be NULL is confusing,
-e.g. incorrectly implies that there are scenarios where KVM doesn't pass
-a PMU context.
+Rename intel_ctrl_{guest,host}_mask to intel_ctrl_exclude_{host,guest}_mask
+to more accurately capture what they actually track.  Specifically, an
+event that is excluded from the guest is NOT guaranteed to count in the
+host, and vice versa, as it legal (albeit bizarre) to configure an event to
+exclude both the host and the guest, i.e. to not count at all.
 
-Fixes: 8183a538cd95 ("KVM: x86/pmu: Add IA32_DS_AREA MSR emulation to support guest DS")
-Cc: Jim Mattson <jmattson@google.com>
-Cc: Mingwei Zhang <mizhang@google.com>
-Cc: Stephane Eranian <eranian@google.com>
-Reviewed-by: Jim Mattson <jmattson@google.com>
+Subjectively (though anyone who disagrees is wrong), aligning with
+perf_event_attr.exclude_{guest,host} also makes all related code much
+easier to follow.
+
+No functional change intended.
+
+Suggested-by: Jim Mattson <jmattson@google.com>
 Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/events/intel/core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/events/intel/core.c | 22 +++++++++++-----------
+ arch/x86/events/intel/lbr.c  |  2 +-
+ arch/x86/events/perf_event.h |  4 ++--
+ 3 files changed, 14 insertions(+), 14 deletions(-)
 
 diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 4905296d99a4..0db55d90c3ca 100644
+index 0db55d90c3ca..859aba923a6a 100644
 --- a/arch/x86/events/intel/core.c
 +++ b/arch/x86/events/intel/core.c
-@@ -5364,11 +5364,11 @@ static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr, void *data)
+@@ -2787,7 +2787,7 @@ static void __intel_pmu_enable_all(int added, bool pmi)
  	}
  
- 	/*
--	 * If the guest won't use PEBS or the CPU doesn't support PEBS in the
--	 * guest, then there's nothing more to do as disabling PMCs via
--	 * PERF_GLOBAL_CTRL is sufficient on CPUs with guest/host isolation.
-+	 * If the CPU doesn't support PEBS in the guest, then there's nothing
-+	 * more to do as disabling PMCs via PERF_GLOBAL_CTRL is sufficient on
-+	 * CPUs with guest/host isolation.
+ 	wrmsrq(MSR_CORE_PERF_GLOBAL_CTRL,
+-	       intel_ctrl & ~cpuc->intel_ctrl_guest_mask);
++	       intel_ctrl & ~cpuc->intel_ctrl_exclude_host_mask);
+ 
+ 	if (test_bit(INTEL_PMC_IDX_FIXED_BTS, cpuc->active_mask)) {
+ 		struct perf_event *event =
+@@ -2985,9 +2985,9 @@ static inline void intel_set_masks(struct perf_event *event, int idx)
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+ 
+ 	if (event->attr.exclude_host)
+-		__set_bit(idx, (unsigned long *)&cpuc->intel_ctrl_guest_mask);
++		__set_bit(idx, (unsigned long *)&cpuc->intel_ctrl_exclude_host_mask);
+ 	if (event->attr.exclude_guest)
+-		__set_bit(idx, (unsigned long *)&cpuc->intel_ctrl_host_mask);
++		__set_bit(idx, (unsigned long *)&cpuc->intel_ctrl_exclude_guest_mask);
+ 	if (event_is_checkpointed(event))
+ 		__set_bit(idx, (unsigned long *)&cpuc->intel_cp_status);
+ }
+@@ -2996,8 +2996,8 @@ static inline void intel_clear_masks(struct perf_event *event, int idx)
+ {
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+ 
+-	__clear_bit(idx, (unsigned long *)&cpuc->intel_ctrl_guest_mask);
+-	__clear_bit(idx, (unsigned long *)&cpuc->intel_ctrl_host_mask);
++	__clear_bit(idx, (unsigned long *)&cpuc->intel_ctrl_exclude_host_mask);
++	__clear_bit(idx, (unsigned long *)&cpuc->intel_ctrl_exclude_guest_mask);
+ 	__clear_bit(idx, (unsigned long *)&cpuc->intel_cp_status);
+ }
+ 
+@@ -3779,7 +3779,7 @@ static int x86_pmu_handle_guest_pebs(struct pt_regs *regs,
+ 				     struct perf_sample_data *data)
+ {
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+-	u64 guest_pebs_idxs = cpuc->pebs_enabled & ~cpuc->intel_ctrl_host_mask;
++	u64 guest_pebs_idxs = cpuc->pebs_enabled & ~cpuc->intel_ctrl_exclude_guest_mask;
+ 	struct perf_event *event = NULL;
+ 	int bit;
+ 
+@@ -5339,8 +5339,8 @@ static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr, void *data)
+ 	global_ctrl = (*nr)++;
+ 	arr[global_ctrl] = (struct perf_guest_switch_msr){
+ 		.msr = MSR_CORE_PERF_GLOBAL_CTRL,
+-		.host = intel_ctrl & ~cpuc->intel_ctrl_guest_mask,
+-		.guest = intel_ctrl & ~cpuc->intel_ctrl_host_mask & ~pebs_mask,
++		.host = intel_ctrl & ~cpuc->intel_ctrl_exclude_host_mask,
++		.guest = intel_ctrl & ~cpuc->intel_ctrl_exclude_guest_mask & ~pebs_mask,
+ 	};
+ 
+ 	if (!x86_pmu.ds_pebs)
+@@ -5377,8 +5377,8 @@ static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr, void *data)
+ 	 * in the guest, and (d) _are_ excluded from counting in the host.
  	 */
--	if (!kvm_pmu || !x86_pmu.pebs_ept)
-+	if (!x86_pmu.pebs_ept)
- 		return arr;
+ 	guest_pebs_mask = pebs_mask & intel_ctrl & kvm_pmu->pebs_enable &
+-			  ~cpuc->intel_ctrl_host_mask &
+-			  cpuc->intel_ctrl_guest_mask;
++			  ~cpuc->intel_ctrl_exclude_guest_mask &
++			  cpuc->intel_ctrl_exclude_host_mask;
+ 
+ 	/*
+ 	 * Disable counters where the guest PMC is different than the host PMC
+@@ -5394,7 +5394,7 @@ static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr, void *data)
+ 	 *        What exactly goes wrong if guest and host are using PEBS is
+ 	 *        unknown.
+ 	 */
+-	if (pebs_mask & ~cpuc->intel_ctrl_guest_mask)
++	if (pebs_mask & ~cpuc->intel_ctrl_exclude_host_mask)
+ 		guest_pebs_mask = 0;
+ 
+ 	/*
+diff --git a/arch/x86/events/intel/lbr.c b/arch/x86/events/intel/lbr.c
+index cbe5c762008d..710292cf3f9b 100644
+--- a/arch/x86/events/intel/lbr.c
++++ b/arch/x86/events/intel/lbr.c
+@@ -714,7 +714,7 @@ static inline bool vlbr_exclude_host(void)
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+ 
+ 	return test_bit(INTEL_PMC_IDX_FIXED_VLBR,
+-		(unsigned long *)&cpuc->intel_ctrl_guest_mask);
++		(unsigned long *)&cpuc->intel_ctrl_exclude_host_mask);
+ }
+ 
+ void intel_pmu_lbr_enable_all(bool pmi)
+diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
+index 0bc2fe486070..87733dd52846 100644
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -540,8 +540,8 @@ struct cpu_hw_events {
+ 	/*
+ 	 * Intel host/guest exclude bits
+ 	 */
+-	u64				intel_ctrl_guest_mask;
+-	u64				intel_ctrl_host_mask;
++	u64				intel_ctrl_exclude_host_mask;
++	u64				intel_ctrl_exclude_guest_mask;
+ 	struct perf_guest_switch_msr	guest_switch_msrs[X86_PMC_IDX_MAX];
  
  	/*
 -- 
