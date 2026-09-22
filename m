@@ -1,85 +1,83 @@
-Received: from out28-149.mail.aliyun.com (out28-149.mail.aliyun.com [115.124.28.149])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97862544D57;
-	Tue, 22 Sep 2026 12:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5235753CA9B;
+	Tue, 22 Sep 2026 12:39:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790080211; cv=none; b=Jaam7sik+025mVaQ1M2vqxN4bCEf3v2crrV7d16UTwKbOqN4rdIIrRNdUFMT2elSPdTEMd761XikCxcmcTvcbhXGTTHAjQuYmiwfC8StmnNUNafdqiWRONEnSeJfNJ5jRLY1p/UdUagL9shxycGkF7CqJWzzQmN9T4L09GWX/ug=
+	t=1790080742; cv=none; b=KQycaQ62qpsNQJ2pFhRle1kJg/qBdr80sdDKni2DPlviMbe6DMspyJDuqMAEaHmauaN8Wgbi0H4H5Loz7TYvG1HYZi/cVyHp2qSoWRsCV5sjOZgQbm+Krh3GBcmRC0GPyN3HFyCy1BX2muucJyvpWn5wrb6GEpzPmi8iuzT4lEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790080211; c=relaxed/simple;
-	bh=PrMay2PDMio4LPM/Stxs8Q0612AEyOHv2dZQKcrIV8c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J1jKmtZQjUC0oFyV6+bRpHBlU6FmPcPLTjCEmuZtegLW7FlG4EUJDVaSfh2IqmrYpMqKxVpfxLXo49O+pjgWo1VhBs5RGpj0Slqvs/fbRsH7FJHjAUiWkqDEia16nF9x0j+r5NWr/FuKJ5QlzGqG3te4aux9oVLsb5Xkhyi3EFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com; spf=pass smtp.mailfrom=xiaopeng.com; dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b=Ng9k4T0L; arc=none smtp.client-ip=115.124.28.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
+	s=arc-20240116; t=1790080742; c=relaxed/simple;
+	bh=cVQtIX71pbbZKbRtS0UEbLgJdLAnPCAdw3iLkP/BAGk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=pImTY/7HdXxgRyxDIzPGvjUxNpFlKJ3MLXOlvEQ5Au3Rpdvahk95T1wzzW1GEJu0MDb8SnII/qVuoPqa9De2WBF5RpxTq93kra0kkZzP3KMk3bjRpY1aO+iGcv1d2Y/siSt1hynNn6plyKnRySLQdQEnBiywZhzeaUqY9DRNci0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NAbPoLdf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b="Ng9k4T0L"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xiaopeng.com; s=default;
-	t=1790080198; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=wIvs6Bzn9Mhp/rPNaBk6Z8IGAyJ/9Lyz4gAF5i82P1A=;
-	b=Ng9k4T0LT9ePd1kU9A/wM1eZCBQdibgDcXA+rtaVBA1JlIUnkdjWmxd+GtS9qMfgGj8pA611lDcl3ZW3prFeZAwAoXrofNzZpzKiOOXkfdWQnu7YxB/Ff3fMsxqlhjyf11F0huKgsTNetG1lYfNmFVTadbpjA70pULAEPs42ubI=
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.09716257|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0150629-0.000352776-0.984584;FP=2088973265481694556|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037028158;MF=fangxy@xiaopeng.com;NM=1;PH=DS;RN=10;RT=10;SR=0;TI=SMTPD_---.jK24y5D_1790080195;
-Received: from localhost.localdomain(mailfrom:fangxy@xiaopeng.com fp:SMTPD_---.jK24y5D_1790080195 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 22 Sep 2026 20:29:57 +0800
-From: Fang Xieyan <fangxy@xiaopeng.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-Cc: Xie Yongji <xieyongji@bytedance.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	stable@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/2] vringh: fix infinite loop on cyclic top-level indirect descriptor
-Date: Tue, 22 Sep 2026 20:29:53 +0800
-Message-ID: <20260922122955.69433-1-fangxy@xiaopeng.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NAbPoLdf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F8AD1F000FF;
+	Tue, 22 Sep 2026 12:39:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790080740;
+	bh=cVQtIX71pbbZKbRtS0UEbLgJdLAnPCAdw3iLkP/BAGk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=NAbPoLdfWmowx++lXeTQcjGgEZbvTmYlw7NmZKs1j9UyGWKDrB3V9LTIgUtdpkQGp
+	 OyFD+KvRjP3rhKbEQ2mRojwllDHizIyAtNeFm3Q8CJzQC1lVcniJxapLoU9snx/XJa
+	 6Eafx7nwrNd+dRhfA86fRw/0m7LPeRvPytK+1gBBGtzfBeV4e923kMOll/+Dtxm5gk
+	 By1aVWV622fhrNCmOeGNISHTjIdjogsBopOSjNyqVshSTY8rrC0nbhTJq6XfnSnWdV
+	 3BN184xwyscjkusLmbasea3YHEIwCUas0+KgdYaYPmtu72YCn1jbfc6r4lYd2M55qC
+	 WBFkPLCNUvgsw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/2] vringh: bound top-level re-entry into indirect
+ tables
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Fang Xieyan" <fangxy@xiaopeng.com>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, "Eugenio Perez" <eperezma@redhat.com>, "Michael
+ S. Tsirkin" <mst@redhat.com>
+In-Reply-To: <20260922122955.69433-2-fangxy@xiaopeng.com>
+References: <20260922122955.69433-1-fangxy@xiaopeng.com>
+ <20260922122955.69433-2-fangxy@xiaopeng.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 22 Sep 2026 12:39:00 +0000
+Message-Id: <20260922123900.9F8AD1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-__vringh_iov()'s F_INDIRECT branch does `continue` before the descriptor
-accounting block, so a top-level indirect descriptor is never charged to
-`count`.  When such a descriptor also carries NEXT pointing to itself,
-returning from the indirect table resumes at the same uncharged descriptor;
-`count` stays flat and `indirect_count` is reset to 0 on every return, so
-neither bound in the loop check can ever trip.  A guest can keep the host
-vringh worker spinning inside __vringh_iov(), causing a host DoS.
+> In __vringh_iov(), the F_INDIRECT branch descends into the indirect
+> table and continues before the descriptor accounting runs. A top-level
+> indirect descriptor is therefore never charged to count. If such a
+> descriptor sets NEXT to point back at itself, returning from the
+> indirect table resumes at the same top-level descriptor, which is again
+> not counted, so the walk never makes forward progress.
+>=20
+> Because count stays flat and indirect_count is reset to 0 on every
+> return to the top-level table, neither bound in the loop check trips.
+> A guest can spin the vringh worker at 100% CPU inside __vringh_iov(),
+> an uninterruptible host DoS.
+>=20
+> Move the descriptor accounting above the indirect switch so that a
+> top-level indirect descriptor is charged one top-level traversal step
+> before the walk descends into its table, bringing this re-entry under
+> the existing vrh->vring.num bound. Each top-level descriptor is still
+> charged at most one step and indirect_count still bounds a single
+> table, so legitimate chains (including the multiple-indirect case in
+> tools/virtio/vringh_test.c) stay within vring.num, while a cyclic
+> indirect descriptor is now rejected with -ELOOP.
+>=20
+> Fixes: dbd29e075228 ("vringh: Fix loop descriptors check in the indirect =
+cases")
+> Cc: Xie Yongji <xieyongji@bytedance.com>
+> Cc: stable@vger.kernel.org
+> Assisted-by: Hawkeye:GLM-5.3-flash
+> Assisted-by: Qoder:Qwen3.8-Max
+> Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
 
-Patch 1/2 moves the accounting block above the INDIRECT switch so each
-top-level descriptor, including INDIRECT ones, is charged one traversal step
-before the walk descends.  Legitimate chains and indirect descriptors stay
-within vring.num; a cyclic indirect descriptor is now rejected with -ELOOP.
-Patch 1 carries the Fixes tag and is Cc'd to stable.
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-Patch 2/2 appends a regression test to tools/virtio/vringh_test.c.  It builds
-the offending ring: top-level desc[1].flags = VRING_DESC_F_INDIRECT |
-VRING_DESC_F_NEXT and desc[1].next = 1, with a single-entry indirect table,
-and asserts that vringh_getdesc_user() returns -ELOOP.
-
-Verified against v7.3-rc3: both patches pass git apply --check.  With the fix,
-vringh_test --indirect observes -ELOOP and exits 0.  With the fix reverted, the
-walk re-enters the same descriptor without making forward progress and never
-returns -ELOOP, so the assertion does not hold and the regression is caught
-either way.
-
-Fang Xieyan (2):
-  vringh: bound top-level re-entry into indirect tables
-  vringh: add regression test for cyclic indirect descriptor
-
- drivers/vhost/vringh.c     | 22 ++++++++++----------
- tools/virtio/vringh_test.c | 41 ++++++++++++++++++++++++++++++++++++++
- 2 files changed, 52 insertions(+), 11 deletions(-)
-
--- 
-2.50.1
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260922122955.6943=
+3-1-fangxy@xiaopeng.com?part=3D1
 
