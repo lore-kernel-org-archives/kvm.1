@@ -1,214 +1,211 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDA54F391B;
-	Tue, 22 Sep 2026 14:27:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1641F55D887;
+	Tue, 22 Sep 2026 14:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790087229; cv=none; b=kLof6iSdoCVHxlEpwpdjrd6uG+jfEj8GZDM82Pj67vb3/K9idDHmuhKHAVWwthk50VX1JLSUgeuIF/x+FZt7udn/bI8sjE5mth84anz6UcXA67A0IWJuZ1lJr/sVm7n9rNKEK+ZBWeTnFe16gZ/20hkaY4BU1jTHZbgDJGLiCT8=
+	t=1790087347; cv=none; b=O/JAhYhyUEe7VF63M+Wxnx3U7bC0ObvtGrsl45+WuIA7iAvc9fos5r616UF6pL8yjjvTmZY4aUq99ebjkkyynoqdv9sBEyaqX/MHscXUuBSiYBo5uGHVYtMm8NUROTDptv0JlQNqVD4baftAvjw4eVz/wbhvlSZzo3eKCi5LsMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790087229; c=relaxed/simple;
-	bh=oW1pJRQnRgSl6wxKhscSM9KdCKWSZpH9pzzrsXbdVhQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YGtF63SIqbuyWiwyYcIEMv5ePA/CDbMsjnqsY1+NcBYCd3BNGXInFtd7+uXjaBQuDbrf9VDuhxv4p9E+clwvvDG2GU3ynGtEVyoQy67VwJuAFaXNKDzLQg3h56itoXwxkg768do21pxhJXuA/UzRqZgzfagKRmaDonXnsJtnlIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rsdna0yX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790087347; c=relaxed/simple;
+	bh=XrxCk65hl7n0FqqWmRGuFx3CHO/v2wAoD4VXvSGV4jQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nLDAVfdFACbQttt9XKMf9HoaG4EGXXqT9YUnUNSp+Z/rOY3p47hU8U+33gPBlZlK96zXvj3CqrJ8QI1uxs0WAxM277cZGacGvFT4PpEC1+InRQB/YEtZJwPnPk3m1ZTSNuJ7m1N6AXJsmQCbKBgAilpw6nyxRSqhQ3NqGdSsqiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=kwJ67Q7k; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rsdna0yX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DEE21F000FF;
-	Tue, 22 Sep 2026 14:27:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790087227;
-	bh=XJEL2Hm1vrdb6vMcqZseArACQHb75K/NoVu74tGPz+g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Rsdna0yXsjKvBSzuthMoCSnDu2jjoQf+l1qOm4qgITDB6a2BUcBKPtwC+70FFu+20
-	 uwhXwuWgh742TWvlJe+ml677jWpT20vg969DYMFWuG+hzKFutgD0Hup3AsIlzCrFfw
-	 PoeFR6LbBVTOIZpSm6+Q/om6pqsczH3bkLkVKuwvg01eJQcR3r+B1BeznFtoIYQ5xj
-	 w9T8SXPGv7SKjq1hXkoZCf5XX/IlPr8kaLdv3/FkctDtjJFEqSdwyAG9N6WtNdrLib
-	 qncToIC8KGgXQm27vIOgF57ncJx8MR9bfogklv6cJ1/3a0zmS/sQ6NDblPNSJT+EFZ
-	 Ctyb1MY0Trv2g==
-Date: Tue, 22 Sep 2026 15:26:58 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Fuad Tabba <tabba@google.com>, Joey Gouly <joey.gouly@arm.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Jack Thomson <jackabt@amazon.com>, Jack Thomson <jackabt.amazon@gmail.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Vincent Donnefort <vdonnefort@google.com>, 
-	Sean Christopherson <seanjc@google.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-	Leo Soares Passos <Leo.Bras@arm.com>
-Subject: Re: [PATCH v2 00/13] KVM: arm64: Add KVM_PRE_FAULT_MEMORY support
-Message-ID: <arKPnPBZFqvFQlTO@gremlin>
-References: <20260914-kvm-arm-prefault-v2-0-26fb47f74b73@kernel.org>
- <yq5abj9p38vq.fsf@kernel.org>
- <arJ1BDEzY5CANjjB@gremlin>
- <yq5a8q4t305j.fsf@kernel.org>
- <arKB2imOcg4MhXMF@gremlin>
- <yq5a5wzx2wny.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="kwJ67Q7k"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68MBa0Tg314617;
+	Tue, 22 Sep 2026 14:29:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=5BxkOh
+	8Gm21eteZ26fD2JOwFEX4eZGVrtN5wncdOGeo=; b=kwJ67Q7kpBrowul3Wqc4hs
+	mcWq+bvqKP3DGuYFGMNDHntjnD4ioBhWQQHWj2SbrFdPGDjCkvn0GN2dBcNEaC8K
+	42FW+uyO6VKLuknyBfwpSTqGWxxirDuJYKwbh6O3K6fGqTo2Qj40SZmuNcI0LPD4
+	qG6f0i2jDilud43UCZ6jyVjvATL4mFevEYxarW1jbxGRKz7tmjwqCfOvaguw8N3v
+	1qHxuiBwiZMh/3iC57gFvV5oxS6HOfhSw2ebYNbPSyFzKRD86B9u7JJHj2eTqsqw
+	Yo6kFaMBoY1/hJXYF3alS0hX8rIZYw2iTeP5kn5hyzjBKO6jQsgb7QcuwCUJxSjA
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskg2e9tm-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 22 Sep 2026 14:29:04 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68MBWUEO2774587;
+	Tue, 22 Sep 2026 14:29:04 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gt53vj94w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Sep 2026 14:29:04 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68MET2UR8847972
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 22 Sep 2026 14:29:02 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 788695804B;
+	Tue, 22 Sep 2026 14:29:02 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 96B2B58059;
+	Tue, 22 Sep 2026 14:29:01 +0000 (GMT)
+Received: from [9.61.66.235] (unknown [9.61.66.235])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 22 Sep 2026 14:29:01 +0000 (GMT)
+Message-ID: <a0a5fbf4-829f-42bc-98f1-a8ee022b6c4b@linux.ibm.com>
+Date: Tue, 22 Sep 2026 10:29:01 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5a5wzx2wny.fsf@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/6] s390/vfio-ap: Fix leaks of pinned NIB and
+ registered GISC
+To: sashiko-reviews@lists.linux.dev
+Cc: Heiko Carstens <hca@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>, kvm@vger.kernel.org,
+        Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Jason Herne <jjherne@linux.ibm.com>
+References: <20260904223531.1611088-1-akrowiak@linux.ibm.com>
+ <20260904223531.1611088-2-akrowiak@linux.ibm.com>
+ <20260904225127.A201D1F00A3E@smtp.kernel.org>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20260904225127.A201D1F00A3E@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ByrIu9-Bbs4H4mMxBRHCI8XWR6Mu_eHd
+X-Authority-Analysis: v=2.4 cv=I43w19gg c=1 sm=1 tr=0 ts=6ab290b1 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=_Gr4TuwbsKNQjbsvYFgA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIyMDIwNSBTYWx0ZWRfX/bE+nfW/bv3j
+ H4N2w5B3nsGEVQzlQOaMbEbrf96soVG45KAjD4esibbdkwCq94HXN4peM6MnoaeZfBgzrS6NNgK
+ lPdL4K5NeVEGN3nmGTDcyu+zRYxgRsYFKZSohGSTmhft3JYwWvqQPwbcJpTgxz77E5CXM+EcYc2
+ 4ErQbi9dlKOC7BZd1SP/BAHyebPHCRpLMQ71ckjp1EeNl5aqhRu+V5Xs25UJhHEFdA6gpHzHh8R
+ pHXCGwHLWtknbtxc9n4iErqHh4uGaCbPg9z5Xbe8FZJd+k+sskWRO34ZOqivE4vCylNSHvC8Xfv
+ 0AlFprYwFMowyjxZp16kMg2aL9n6trnzgEld+ii0E8OANgZqgKOdWnhDcRwobAF9dKw/VTrtcDQ
+ Qmryg/J22s9VkBfesgTpl6wZOUEgZY0vDt2JmqUN81FWxEyqWDxdA0oNWbeUTB8OrEUa/eZStqp
+ 1QpqXbTCD54giocNvcg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIyMDIwNSBTYWx0ZWRfX/3v0v2nDiCk2
+ Brm3MQ0twZqrP/ys8V11WbMizgK6u0NCETlwk6QudlvGSp4T9pqAYAlh9krdXwHaDreJHOfMP+p
+ BoN6Rkuh04lHsSLFLoSYXdhCI/HWX0w=
+X-Proofpoint-GUID: ByrIu9-Bbs4H4mMxBRHCI8XWR6Mu_eHd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-22_01,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015 adultscore=0 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 bulkscore=0 phishscore=0 priorityscore=1501 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609220205
 
-On Tue, Sep 22, 2026 at 07:52:25PM +0530, Aneesh Kumar K.V wrote:
-> "Lorenzo Stoakes (ARM)" <ljs@kernel.org> writes:
+
+
+On 9/4/26 6:51 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Critical] Eagerly freeing AQIC resources when ap_zapq() or ap_tapq() returns an unrecognized response allows wild DMA writes to freed host memory.
+> --
 >
-> > On Tue, Sep 22, 2026 at 06:37:04PM +0530, Aneesh Kumar K.V wrote:
-> >> "Lorenzo Stoakes (ARM)" <ljs@kernel.org> writes:
-> >>
-> >> > On Tue, Sep 22, 2026 at 03:28:33PM +0530, Aneesh Kumar K.V wrote:
-> >> >> > This is because pKVM instantiates vCPUs upon run,
-> >> >> >
-> >> >>
-> >> >> Can pKVM instantiate the hyp vCPU during pre-faulting ?
-> >> >
-> >> > It would be an unusual and unexpected thing to do - suddenly a pre-fault
-> >> > operation is initialising a vCPU explicitly for pKVM.
-> >> >
-> >> > A caller is not going to reasonably expect this and might treat a failure to
-> >> > pre-alloc as fine to carry on whereas in fact it was a failure to initailised a
-> >> > pKVM vCPU.
-> >> >
-> >> > It'd also require significant changes to how pKVM is set up, right now it's
-> >> > hardcoded to be done unconditionally at run via kvm_arch_vcpu_run_pid_change()
-> >> > -> pkvm_create_hyp_vcpu(), so all that would have to change and be checked and
-> >> > tested and... that'd be really out of scope I think :)
-> >> >
-> >> > And pre-faulting really makes most sense BEFORE you run a VM. It doesn't make so
-> >> > much sense mid-run.
-> >> >
-> >> > But more fundamentally, the stage 2 page tables, as I understand it, are owned
-> >> > by pKVM and so aren't really available to be pre-faulted.
-> >> >
-> >> > Maybe unprotected-under-pKVM VMs but then it's questionable as to how useful
-> >> > that would be given that it would be confusing to users vs. how it works for
-> >> > other VMs.
-> >> >
-> >> > So in general, no I don't think it's a good idea.
-> >> >
-> >> > And even if we wanted to pursue some version of this, it's _definitely_ out
-> >> > of scope for the initial pre-faulting bring-up series.
-> >> >
-> >> >>
-> >> >>
-> >> >> > but pre-faulting is  typically performed before a vCPU is run.  It would be confusing and
-> >> >> > inconsistent to error out on non-running vCPUs but to pre-fault running
-> >> >> > ones.
-> >> >>
-> >> >>
-> >> >> I use KVM pre-faulting when transitioning pages from shared to private
-> >> >
-> >> > You mean you'd prefer to use? Or you are using it on another arch?
-> >> >
-> >> >> with CoCo guest. This ensures that a trusted device can DMA to private
-> >> >> memory before the guest accesses it.
-> >> >
-> >> > Hm what do you mean by private memory?
-> >> >
-> >> > I see:
-> >> >
-> >> > #ifndef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
-> >> > static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
-> >> > {
-> >> > 	return false;
-> >> > }
-> >> > #endif
-> >> >
-> >> > And only x86 selects KVM_GENERIC_MEMORY_ATTRIBUTES?
-> >> >
-> >> > Do you mean something else?
-> >> >
-> >>
-> >> I am using this with ARM CCA-DA, based on the patch series from Jack Thomson <jackabt.amazon@gmail.com>.
-> >>
-> >> https://gitlab.arm.com/linux-arm/kvmtool-cca/-/commit/80e7aad61c5639de2f0cb4a5525dad0c96156428
-> >>
-> >> We do this while the VM is running.
-> >
-> > Right, that's a non-mainline kernel I guess? Which presumably implements private memory.
-> >
-> > Jack himself experienced a panic with his pKVM code, so the code you're using is
-> > not upstreamable, unfortunately. And he'd already shelved pKVM support AFAICT.
-> >
-> > And reviewers pointed out actually implementing the pKVM stuff properly would be
-> > quite involved, even if you wanted to do that (hence follow-up).
-> >
-> > Also you end up stuck with the same problems as I mentioned above - you can't
-> > sanely bring the vCPU pre-run, so now you have extremely weird behaviour - only
-> > pre-faults if vCPU initialised, running, and unprotected pKVM.
-> >
+> commit 6c73d9ea4d311d5d68e8f5501374842cccbe2c90
+> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
 >
-> IIUC, pkvm_pgtable_stage2_map() only uses the hyp vCPU's pKVM memcache
-> (&vcpu->vcpu.arch.pkvm_memcache). I agree that this does not need to be
-> addressed in this series. However, there is also a desire to keep the CCA
-> and pKVM code paths similar by using helpers such as kvm_vm_is_protected().
-> Since an RMM can create a stage-2 mapping without a REC (vCPU), rejecting
-> pre-faulting for all protected VM configurations may be incorrect. I can
-> handle this in my series though.
-
-Ack, understood. Feel free to cc- me on that when you send it out!
-
+> s390/vfio-ap: Fix leaks of pinned NIB and registered GISC
 >
-> I also want to point out that there are use cases for pre-faulting while
-> the VM is running.
+> Several code paths in the vfio_ap driver failed to free the AQIC
+> resources — the pinned guest NIB page and the registered guest ISC
+> used to enable interrupts for a queue — when a queue became unavailable
+> or when unexpected response codes were returned. This could cause memory
+> exhaustion and depletion of KVM interrupt subclass registrations over time
+> with repeated dynamic AP reconfiguration.
+>
+>> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+>> index 940c0ff668bee..9d4f5b9e3301f 100644
+>> --- a/drivers/s390/crypto/vfio_ap_ops.c
+>> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+> [ ... ]
+>> @@ -1959,8 +2087,16 @@ static void apq_reset_check(struct work_struct *reset_work)
+>>   		elapsed += AP_RESET_INTERVAL;
+>>   		status = ap_tapq(q->apqn, NULL);
+>>   		ret = apq_status_check(q->apqn, &status);
+>> -		if (ret == -EIO)
+>> +		if (ret == -EIO) {
+>> +			/*
+>> +			 * TAPQ returned an invalid response code. This
+>> +			 * indicates a hardware or firmware bug; the queue
+>> +			 * cannot generate AP interrupts or DMA-write to the
+>> +			 * NIB, so free the AQIC resources rather than leak them.
+>> +			 */
+>> +			vfio_ap_free_aqic_resources(q);
+>>   			return;
+>> +		}
+> [Severity: Critical]
+> If apq_status_check() returns -EIO due to an unrecognized TAPQ response,
+> is it safe to eagerly free the AQIC resources?
+>
+> If the hardware is in an unknown state (due to a bug or unrecognized code),
+> could it still be actively DMA-writing to the pinned Notification Indicator
+> Byte (NIB) page?
+>
+> If vfio_ap_free_aqic_resources() unpins the page and returns it to the
+> system allocator, could a subsequent wild DMA write from the malfunctioning
+> AP queue corrupt memory belonging to a new owner, potentially causing a host
+> panic?
 
-Ack yeah understood! And it does support that fine :)
-
-I added further reasoning about pKVM in the cover/commit msg in the respin
-([0]) so hopefully that helps clarify from that sid eof things.
-
+Since we don't know the state of the queue, the AQIC resources should be
+intentionally leaked here lest the NIB page be re-allocated to another
+process potentially resulting in a wild DMA-write.
 
 >
-> >
-> > Protected pKVM support is a whole other layer of complexity and it's not obvious
-> > that you're really achieving what pre-fault is supposed to.
-> >
-> > In any case Oliver literally just asked me to _simplify_ weird edge cases for
-> > this series :) so I am not sure something like that is going to be accepted.
-> >
-> > Are you sure you're actually running in pKVM mode btw? CCA doesn't AFAICT? In
-> > which case this series _should_ work fine for you.
-> >
+> [ ... ]
+>> @@ -1995,22 +2135,30 @@ static void vfio_ap_mdev_reset_queue(struct vfio_ap_queue *q)
+>>   	switch (status.response_code) {
+>>   	case AP_RESPONSE_NORMAL:
+>>   	case AP_RESPONSE_RESET_IN_PROGRESS:
+>> -	case AP_RESPONSE_BUSY:
+>>   	case AP_RESPONSE_STATE_CHANGE_IN_PROGRESS:
+>>   		/*
+>>   		 * Let's verify whether the ZAPQ completed successfully on a work queue.
+>>   		 */
+>>   		queue_work(system_long_wq, &q->reset_work);
+>>   		break;
+>> +	case AP_RESPONSE_Q_NOT_AVAIL:
+>>   	case AP_RESPONSE_DECONFIGURED:
+>>   	case AP_RESPONSE_CHECKSTOPPED:
+>>   		vfio_ap_free_aqic_resources(q);
+>>   		break;
+>>   	default:
+>> +		/*
+>> +		 * The architecture defines only the response codes above as
+>> +		 * valid for ZAPQ. Any other response code indicates a hardware
+>> +		 * or firmware bug. Since a malfunctioning queue cannot generate
+>> +		 * AP interrupts or DMA-write to the NIB, free the AQIC resources
+>> +		 * rather than leak them.
+>> +		 */
+>>   		WARN(true,
+>>   		     "PQAP/ZAPQ for %02x.%04x failed with invalid rc=%u\n",
+>>   		     AP_QID_CARD(q->apqn), AP_QID_QUEUE(q->apqn),
+>>   		     status.response_code);
+>> +		vfio_ap_free_aqic_resources(q);
+>>   	}
+>>   }
+> [Severity: Critical]
+> Similarly, if ZAPQ fails with an unrecognized response code in
+> vfio_ap_mdev_reset_queue(), does freeing the AQIC resources here present the
+> same wild DMA risk?
 >
->
-> It is not pKVM; it runs in Realm mode.
+> Even if a later patch in this series adds a retry loop that explicitly
+> handles AP_RESPONSE_BUSY, does this default case still expose the host to
+> memory corruption if any other unexpected response code is returned?
 
-Ack yeah, then the series should hopefully work for you.
-
-If you could test it and report any issues I'd be grateful! Thanks :)
-
->
-> >
-> > Anyway, if we really do need to add something for pKVM it needs to be a follow
-> > up. Let's get the basics working first :)
-> >
->
-> sure.
-
-Thanks!
+Same as the above response
 
 >
-> > (Note that kvmtool will need to be updated to retry pre-fault on -EAGAIN, -EINTR
-> >  as this series can, albeit unlikely, return -EAGAIN.)
-> >
->
-> I will check this when I rebase my kernel onto this series.
 
-OK cool, let me know if you hit any issues.
-
->
-> -aneesh
-
---
-Cheers, Lorenzo
-
-[0]: https://lore.kernel.org/kvmarm/20260922-kvm-arm-prefault-v3-0-787bd3bc7e3f@kernel.org/T/#t
