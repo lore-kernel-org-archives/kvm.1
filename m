@@ -1,432 +1,182 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949D6440640
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 21:18:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790111922; cv=none; b=ugQ7DAykxQekn/G+Vo5Weg7rE+ZrLm3aGJKUYRv5I8kmKBHWD6dtCpANGtvQD3Dv4+RL0RbwKq8bofHE+5KUkkpNQGmyJtk0j22VTz/MHwTZnGJBSIbBb8alfAqGgXvy3ZVJVmXcpLj4bnh+Lz84rT/wLreP6v58NtM7kVLDatg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790111922; c=relaxed/simple;
-	bh=THz1j7Rt3mxKlUakP1v0P4sBb6MzmK7u8InBDLTflTc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qvSN26+1mgIWgmnz/3TrQsHZT2R5K4jrrDdI3moSGqSFeFL4XjZwceKPRyKvLVeVNnL+MCoLRfayChgfNZJOQZES845qUNgP0Ovb/R2kU6i6gjpclelvy9fwVzIZmjppB7Vq1dgIXxUhuQyosnhxTzKdny7+ken6OpZQDvlX11E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ck+J+UBw; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=D1ruk9YO; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A98C519914;
+	Tue, 22 Sep 2026 21:37:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790113044; cv=fail; b=blNv+OQECjr92yWb+7FWo1D8PKAsWORITA32F88aiGwkx20n5S5aqFZx/MS9oR01EFnfsFgh77fk/I9nludqx6pCQOAFuscNSoQhw4dQOtxKpvG2uUl/FkFHj48je15xohkE0d2wSB9xdEzGsq7kv/iAFC2C8uZxjKNBp8ql1Cs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790113044; c=relaxed/simple;
+	bh=2smY8qChSHOuQwzM6k078CefeC6di0G4QLKCzwdkXYw=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=FoyXkGGsRioAB/B/DSishZFbSg0QrpnIDjVkxgKLrg+eHKr/ZSDOIUd4F5XRM1Se9JEgPmyjUSxMBPbEiNnvlpgGg4FvAiHKJVPa+Zh+BspGSFCCFVJJ5QOP9N1+4AsJmmv3ULUxLSWSLi6SIEetVEe0mKO1dIHv+61Y7n+8f7A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G1Ifg3p4; arc=fail smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ck+J+UBw";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="D1ruk9YO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790111907;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8g20MUomW2kALgnzGHxR0HRVXgDuegIX+X1slaZ3yb0=;
-	b=Ck+J+UBwS+KVL8TN06VZMW0FOBlmDXtWELJEjtodMA4+zntbPzlpbDsgmt34BgNRix0pWH
-	tJowSnaBhVZTPp7trbu/PaR1bH+e3WfEwv4VRmzPNRNPV/dp8DrbRkf6/71kj7SwjAq9mF
-	iknlHIB4uCh8IfWkCVPnrFDPxjsGIr4=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-460-7DzglqO3NfK-H1Thx6KYtg-1; Tue, 22 Sep 2026 17:18:24 -0400
-X-MC-Unique: 7DzglqO3NfK-H1Thx6KYtg-1
-X-Mimecast-MFC-AGG-ID: 7DzglqO3NfK-H1Thx6KYtg_1790111903
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-5304f2b5946so6252161cf.3
-        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 14:18:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790111903; x=1790716703; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8g20MUomW2kALgnzGHxR0HRVXgDuegIX+X1slaZ3yb0=;
-        b=D1ruk9YOXTmwaEMTZPuXLy7liOKsc+Dhc92++aQJqE/nWMohJmZUxuLYzaBBgyhO19
-         TZa3tLGn5G6p4xXe4oTMnxT05DJpHsGL6w/osPPNrpaPY9BTPnrLndFLdtkNEgn3bZ7r
-         ltNfZS2miBgfhuH/itMZ6nDSdJOfX3XpoeQt5yImJ9QKjTJa7ipHrj2k6jQ4VgZku9y+
-         yfrzNY941VQ71DPlmonEyRxV9gzofg1sRLxdEXgAkbsjcTPqeDr/bozE71T6ZjJor/4A
-         astaEdWW2T8Ee1BxBGVLvpAp+SLVk0WIxKXoAvo3vpE05iM9LCcqhrAF665JocN1t3tv
-         kVjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790111903; x=1790716703;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8g20MUomW2kALgnzGHxR0HRVXgDuegIX+X1slaZ3yb0=;
-        b=fTw6fAW3SMhdpMB3jrL47AHZ+nbb/nemjMPjvDQtWHuK5lODWNnl/afddFv73qzlCB
-         yePdB9Xt70lswTGhL2dUn9/EeTGzey5Lf1ZSaebKYkv9WqCnoJKQOi9F/SN5sjk4CDAG
-         kRbRNZ4yyyNzS3axrw86e68K9iyWzWb9cudWmC1Yu2tILGx2kZGVpM/SR+50/QkU4s1d
-         0QL+LHZ5b/7BDFJd4WDxEEnnxaQ3ewptLqyHpdoFg/cxDwIMSeR1cNkl/l4nqkqPeYDL
-         kRiuuXrdzTVuExBsxe46gWlqlKXniC3wj0euPQukxID9hUQp0z8JuRidB4SpUMZYQIYb
-         jP2w==
-X-Forwarded-Encrypted: i=1; AKwUvBwiQLOfwsBtszxnWqT9xlzDjHiHD4dr6tR8XhnQsCndVoq+vMV6DUhGOi0Bi/DP/xDFD08=@vger.kernel.org
-X-Gm-Message-State: AFuF++nvukP9az4FIfWIw8uZOu77cd0T9esCwl7YNXKCLrXR5scBN7h9
-	CtT8uAgGyj8Jgxs0GlpiWvSST+nzZbNLDKeraMV2nmXKk6ywz/euQajeXNmYvsLYJX8loFOeBDA
-	XvvERczsalq99wUTLnq6P1UzAfV4r6tCEtmvbeT4Hz8dBkZJPy6VIsg==
-X-Gm-Gg: AYBFou1Sfse4dj6+CR1fa8H05rcAnUtaVSVYlhGfK3UK5Uy4VQrFsDFEDRfxdBYGt6M
-	bnEJmZbnFX8tso32F9Xne70oxTio8/uCtf0JJI7F69I2JyCCXEGLyAc9v6b6OQSkyI8rtm1ydyG
-	FRozN/pWitPKGhZCStHx1kfQdU7JjG/RvuR3fEb+Y40wSLddH3og5BmAgoNDoTiC3xRfIAWsXbd
-	4SDLzQL7quKieMwWjy+Im+KbSRz2HJnMIZ+QISvcCPID8YnNwYxiwzemAeoHIE1kAxbKpnFkosF
-	Jf94wi6O+lvG2UgTbTB+cGIUqboDEWJDDgeH8TOoGUI60FvonN6zS0SurGBvXjbPWKuEiXg=
-X-Received: by 2002:a05:622a:8c6:b0:532:d202:3285 with SMTP id d75a77b69052e-532eae0a792mr12395611cf.52.1790111903263;
-        Tue, 22 Sep 2026 14:18:23 -0700 (PDT)
-X-Received: by 2002:a05:622a:8c6:b0:532:d202:3285 with SMTP id d75a77b69052e-532eae0a792mr12395161cf.52.1790111902434;
-        Tue, 22 Sep 2026 14:18:22 -0700 (PDT)
-Received: from localhost ([142.188.212.246])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532eb4200c9sm5736111cf.23.2026.09.22.14.18.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 14:18:21 -0700 (PDT)
-Date: Tue, 22 Sep 2026 17:18:20 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Artem Bityutskiy <dedekind1@gmail.com>
-Cc: Tony Lindgren <tony.lindgren@linux.intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Fabiano Rosas <farosas@suse.de>, Jon Grimm <Jon.Grimm@amd.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Steven Price <steven.price@arm.com>,
-	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
-	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
-	=?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Kishen Maloor <kishen.maloor@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Peter Fang <peter.fang@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org
-Subject: Re: [RFC PATCH v2 0/4] Add KVM API for confidential guest live
- migration
-Message-ID: <arLwnNyM4Tkr-Oh3@zhexu-thinkpadt14gen5.rmtcaon.csb>
-References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
- <d78207fcc5936b5822b708238d862b0e10f9f5c3.camel@gmail.com>
- <aqxbMGLwvtT8zkEb@zhexu-thinkpadt14gen5.rmtcaon.csb>
- <84bf61e0e810859ed735dc92ab94167727c2e560.camel@gmail.com>
- <aq1ehHk7OUYaGCe5@zhexu-thinkpadt14gen5.rmtcaon.csb>
- <f2889dd6e44333b2a5bbd4bd32a4557c3b50a3cc.camel@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G1Ifg3p4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790113039; x=1821649039;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=2smY8qChSHOuQwzM6k078CefeC6di0G4QLKCzwdkXYw=;
+  b=G1Ifg3p4QMEqfrVLjseA/NEEe0LGSym9sohRhHaU37ZbBxQw+fHhA4md
+   GrFs/kVmNIJ1k+feoogOBHJ5gav1y//re42fNm0D7uk3QExR7B/2loIOV
+   hZWni2GDreQe6zQKxl+sFJ8MZXuQrHvjgZ+scduejxSVBIIePGroe1zy+
+   KskIyWEzsmc1tLk1UZr1aCY2+jOVFvwXx5RHACBeJxJPfmv/uSDM8yfMp
+   QWZMeJ+FgK8OBINZc+QfC6oXRduseWTF8tRD+iKukYgYxd4WKX+RuBjlA
+   QuslveqXKtBMLEoQwGTyklRPLDbze+QBkNoPL6D+Qq+7p22THJ11YuulK
+   g==;
+X-CSE-ConnectionGUID: Uvoj+jEER3moxl9ob6yktw==
+X-CSE-MsgGUID: O23rvo3mTfmHGGGpqrMhew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="101423001"
+X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
+   d="scan'208";a="101423001"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 14:37:09 -0700
+X-CSE-ConnectionGUID: lmTbLOUnT/us2KIp4iI6ZQ==
+X-CSE-MsgGUID: qEcCovBST7eCqBA6Y2jqIg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
+   d="scan'208";a="271891821"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 14:37:09 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 22 Sep 2026 14:37:08 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Tue, 22 Sep 2026 14:37:08 -0700
+Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.2) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 22 Sep 2026 14:37:07 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ng194rlWweaggd7Em5VT/KK1LEif1LTb93u5QgT0nbqkXlG64Ch5SWDl6HGxuHHdli9q3LS+NW1T0P/amgFndXl6yc6RVt8UW7Ae3j+HsJ0vjg2dspLSbyoG4YWk+KUXj6bcAZSj84JVXjGCmv9SylsLCzsn/a4W9UYEttl/7kMrPqEPQJovB5vw62kQ2jgLK9t3qlkEdW34KNs5pvRldGNhEKHqjg/GBAZSB9tvnaLEtaDD/g5xAFGIDGqC93PJvECuJsEN8Pjm/H2L9loHEMmzBHoKTqmRp2ETy7XppHz92a2+ARgqk4uh1RFFGJC3SOSIM0RbsrC7frprZfTXkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zdxtQFDeMclCLxcpAZzFU4bFUX7fLooEsbQNoUkFjnc=;
+ b=dlAaghwdjIT3nEiEMeV9IrV3QBhfKrunKpKGMjWraMutU6XphYg6g/huuJ40gK17Yr9nISXaXQlQ8slZN9IlKNXqUNcjEPPbaYyt7vAlVoXAcVnr1Ldo4/ZLiz/lW8AhiyYMddVxClICkhzSXeBViATiuy0iPpUQSZaMQhXrZOSMWJjUsEfixXsobdP8q7Or0iGTI5RsnYCkU2SrPDLf65agbPzGl9Sk44e1LO28GaF1ZzClHbugR6UYT62+9WW06bBRLPlm03KUv7ADUjpYU5IfkMyV6Dyuh9t/X1Uh2sEIMRpp83x0KcAAyMyA8VO6c0r/W+l4DQOrcocMETLTnw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB435924.namprd11.prod.outlook.com
+ (2603:10b6:610:34a::8) by DS4PPF706C623D2.namprd11.prod.outlook.com
+ (2603:10b6:f:fc02::2f) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.13; Tue, 22 Sep
+ 2026 21:37:00 +0000
+Received: from CH3PR11MB435924.namprd11.prod.outlook.com
+ ([fe80::1696:c90e:60af:a0cd]) by CH3PR11MB435924.namprd11.prod.outlook.com
+ ([fe80::1696:c90e:60af:a0cd%6]) with mapi id 15.21.0451.012; Tue, 22 Sep 2026
+ 21:37:00 +0000
+Date: Tue, 22 Sep 2026 14:36:57 -0700
+From: Peter Fang <peter.fang@intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+CC: Xiaoyao Li <xiaoyao.li@intel.com>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>, "Rick
+ Edgecombe" <rick.p.edgecombe@intel.com>, Kuppuswamy Sathyanarayanan
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, Thomas Gleixner
+	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+	<linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<kvm@vger.kernel.org>, Binbin Wu <binbin.wu@linux.intel.com>, Tony Lindgren
+	<tony.lindgren@linux.intel.com>, Sean Christopherson <seanjc@google.com>,
+	Artem Bityutskiy <artem.bityutskiy@intel.com>
+Subject: Re: [PATCH v4 3/4] virt: tdx-guest: Use a variable to store the
+ Quote buffer size
+Message-ID: <arL0-a122DV5fCER@intel.com>
+References: <20260915092632.2822169-1-peter.fang@intel.com>
+ <20260915092632.2822169-4-peter.fang@intel.com>
+ <620e7e38-4287-431c-8285-575c84aa1f6a@intel.com>
+ <7ddf42ab-2f78-4edd-be39-ff9e5156d51c@intel.com>
+ <arKtJxNMYHYSfXuO@intel.com>
+ <1bb206f7-3951-4579-b3b2-dcdbe3ce06a9@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <1bb206f7-3951-4579-b3b2-dcdbe3ce06a9@intel.com>
+X-ClientProxiedBy: SJ0PR13CA0181.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c3::6) To CH3PR11MB435924.namprd11.prod.outlook.com
+ (2603:10b6:610:34a::8)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <f2889dd6e44333b2a5bbd4bd32a4557c3b50a3cc.camel@gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB435924:EE_|DS4PPF706C623D2:EE_
+X-MS-Office365-Filtering-Correlation-Id: 46d669f4-799a-47b7-593c-08df18f1a2b3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|4143699003|56012099006|11063799006|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: DMLn5RMX+xA1cm8KzAfpM8WeWr7RaOsHZAa3t+B975CfA90JWzPNMFbUVlpqHHWFGRUm/e4MSi/1GGeJUnzqg7sPfz0fJVcN3Nd+Z0aJpadGiQ6MeKrYmwSyjtDWb1bKc3Lc0fv1X0cpAo0+6Nbr8XQrwhhFHh2eWRwyCCuts9Mfv6ONI1R1fc/avympmZyGMLKNJIqZGC1pMeiq29WYmPnAMSuPc9Hm2G1bwdHBaiH5v52OFnxqD3p+xl7ZpN9dzVBZNBBqwvXtDvtdYNxF/xKjGN4aQSGXPuU8Q16z/ztFeTPpyFVauPqHoOkK5XHOkNig6jsjhrpxd7ZELAbjqKNQ97msTsHhfccM3k+6/vFzW5q/9kwN/Limql1sUJOWC0hXb3cNzvfJ0EjOZv4s31eTTPKQpq8uBZzJtU9SAurC2Mu2zzHnZpmggIdWbbHh031VCqyEhN6oN4nHGkgeWxzw6smbDdLA6Myk7c642nnLCNHWqyrL8UGMZ3dDyQ51H+lAWEdig+e/4CZp+TLgUp10UQO0I6c4qRocrkA7zJj+wsm2ixhCG0r4p2m+1G+MuHvhNw4u7qe4gJ7JGw9w4WIqk1Tl/Y76d3J39VA1Mudp7jHw6vx3ajw1+px0IL2Xmr0IAB9oBTXoiX0xLA8++0YGzE15dyJa4mpGVg4/JM4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB435924.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(4143699003)(56012099006)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?NVQJTrx8z8bI/+dtuHXtyOObCNTjNCgxByu9Mhy+t2MNGJ6Ell8Ge0Sz8v4k?=
+ =?us-ascii?Q?hOyFtCDs7qjhgj/PER2aO9s1yMwOVtW7mud1GvVbzTcp9YHiqJaqoG/NJEoG?=
+ =?us-ascii?Q?svpifykQMjXIYPfkOwCOezjIYakQ23E0uZeKJxOK/cU5CLqKPItFg5PN6cuv?=
+ =?us-ascii?Q?zUcDBquydjEfnKSd1t+FBz4y4DuSYzKWWa6+G0ZO/cRUCYd5BPpa2/JWM+Ba?=
+ =?us-ascii?Q?xl/Gg+p0JxY4379nGC2B8dIC4V+6nJdzzZWnjyrlbp6uTrqmFZ7TRRMK3ESp?=
+ =?us-ascii?Q?R5aJjpQ8e4+9v+kA2YkTuzeYR+VtB6t2E8GOoHQw7qpTdeWxnKLuFFoULTzD?=
+ =?us-ascii?Q?LqN7qLwLY3ElPbROehLCwJDPW+bUJ9jJQSaAKdz8KC5Hw12RSlAtRox3Qv6d?=
+ =?us-ascii?Q?9EuLVnhTVQwW/kXGC63utNGpS7HQW31FdcZynMCc2GWFqMaWMA/TC46N/Ic2?=
+ =?us-ascii?Q?YKeISvf7jG+5OaEqotQbsuDIODTSfaFEM6Ii5MtcNkSnLo33y+Nx/0VM36/6?=
+ =?us-ascii?Q?HdTaJaxa2jpKjwDPY3h+YF0wiuf2t7CeuwATStvrVtbiEtwazWxQgiqgO0a9?=
+ =?us-ascii?Q?KTjF0IJJtATmyCZv5lWlCkrIqu2grW5Zz7mtRlq9fuFzPfwKSPhGoPaSdXFl?=
+ =?us-ascii?Q?eMAZvphiMFZ+XV9GtnmAwPodR+R99zTommhaICx0PjwYnRv7mmsyBYzsS2/x?=
+ =?us-ascii?Q?dsHpIOyNmTElm9lnGSr4rFKy4C1Eb/z4FtKV02JsAtvA9q7AvQzABbrOtyk8?=
+ =?us-ascii?Q?rwou6DJ1unO5/8JWXfUj0pxQY8AwrFOfJl4/VktgyldfVqPBCE5N/2aiCaGi?=
+ =?us-ascii?Q?QSvnqhivbrLGRPpSzKVjD4TkKfrwsdpWDvZ6FIydihwwlwP9p/S8UUsHaO7/?=
+ =?us-ascii?Q?Zt970Ptn/mLxn1gOkWk6kCNFnE050BicsyU8iyT9jT0yT9+CiaTvHhkOEk3Z?=
+ =?us-ascii?Q?pOyAi5bd3s4gurFf2PJNqjO+2KJYOFyW0wJtCCO3jTuQdFwzxyXDs6JQ2Km+?=
+ =?us-ascii?Q?tEPXiDcGuZNyS9Lfbzyuk4PYZYspJI/XXbZjTdf8v6K1J636yQkAXjzV/uL7?=
+ =?us-ascii?Q?jAZLzWIUMEqksSk9ZYwlVYPxF//344yFljr7AnVAEC2MqHDxY3OlR2j+Ub4b?=
+ =?us-ascii?Q?1RjXUQQ7YHOoDwlkZoZkkTchh8ygNQwI3umE7MndijiLBNPjbPfRQ8zXoJYW?=
+ =?us-ascii?Q?l3tk4AUBx61rHQ+JEySVhuqiVlnJfHk54fQY8o2r7APobIbASUbOCLoZ6MyF?=
+ =?us-ascii?Q?pIY+tkUL1icZj7ipAuYdzNSgM6qw2ti1X5YiY66K9Zr8ITO87UIkXaskmUVs?=
+ =?us-ascii?Q?BvqSQr2UZDPC3VWl2YU/KdOf+foIoK22h3LrQCHN4MWXcSAV93nQyTW3dC/1?=
+ =?us-ascii?Q?nQOqjrHDj08TLCIQF09FF+YIldgBwTU6NolcE59vFk2+VZKB/7AOj967Gi0C?=
+ =?us-ascii?Q?tGOclKGmAWQynROwCQYumjaoo0aH9PchbkQfi21IsEESVc38ic7Oa4nuivOP?=
+ =?us-ascii?Q?kdz/5siqV+xaY8hOTfq+vrkVveUbXrIcNDndtPPM4IyTkNfIoTaKoB/BWEzo?=
+ =?us-ascii?Q?LAJdShnMB+RJQk/TU0K42jVmmAZdOOgVFYGIcxJQc7acA0GkHf+xOVB0f5e4?=
+ =?us-ascii?Q?RGgwYhN8W1rVBwNjxsgx4kuLKlkQDPgudldNM36ZsFf8ilIBOa/BBsg8qJcl?=
+ =?us-ascii?Q?leDb85T/4ylysEmoZ94Fg4KIDCC8IqykDjsX/tKUjWF+Eydg1GiYKN+8yO2g?=
+ =?us-ascii?Q?ya47ZhLgSQ=3D=3D?=
+X-Exchange-RoutingPolicyChecked: 3ww2nyu+bry4SxowdYRff1bpRpgHsvk7LarjQuRRpt+V6niKcGkUNVMz0JNM0oH9XB/IaX2T2dXJHvhj0Doe9jZCIBuLIPO3Ff7KoBzCL/Lug2jbkMvMTlzAvjVSLGQrfx6Hgcr7mQ/086YXLg/4NoY4jNeo+ry9ybseP30tn1cxLdrzYhmC2pTn/vBI8Aeyw6x7Q/kVqZYXaKZKmwVgFuYXa5RTvyTa3aKnczsDhnMIf1dGAukmJNnCvbmpME362C0nJbV3KkxCMlobohujfgOqucY3q1QLD+CeJzSXFqbhPzBioHxGLH4Gqnjzxi/DUkPdyBpTv4GqSjB90tv6sQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 46d669f4-799a-47b7-593c-08df18f1a2b3
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB435924.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2026 21:37:00.6710
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8rk2pWlD5ZqJcSgRta7lihGNIJdASgou5tuWupu78ULKLFyBa/vIYjx0KD9yDdv8a6/mDLAe+y5/OXqYc/9fIQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF706C623D2
+X-OriginatorOrg: intel.com
 
-On Tue, Sep 22, 2026 at 11:09:42AM +0300, Artem Bityutskiy wrote:
-> Hi Peter,
-
-Hello, Artem,
-
+On Tue, Sep 22, 2026 at 10:34:02AM -0700, Dave Hansen wrote:
+> On 9/22/26 09:30, Peter Fang wrote:
+> > The pointer to this buffer is "void *quote_data" which probably needs a
+> > better name too.
 > 
-> thanks again for good comments and questions.
-
-My pleasure if I helped anything at all.
-
-[...]
-
-> > Yes, thanks.  I'm willing to hear more, and I'm a bit surprised that
-> > non-coco migration didn't fit already well into it, because IIUC non-coco
-> > needs less in this case, not more.
+> Yes, please.
 > 
-> Yeah, just thinking aloud now.
-> 
-> - Suppose QEMU and KVM support CoCo migration.
-> - Does it make sense to treat traditional VM as a CoCo VM for migration
->   purposes?
->   - Not for performance reasons - mmapped memory I/O is going to be more
->     efficient than any sorts of export/import uAPIs.
->   - Yes for testing/experimental purposes.
-> - Would it add a lot of code and complexity: would the benefits outweigh the
->   costs?
->   - QEMU: Should require minimum amount of code. Would need a flag like
->     "treat me as CoCo VM", may be some QEMU operator commands or cmdline
->     options.
+> Also, does it really not have a type?
 
-In QEMU, we could likely stick with calling them non-CoCo VMs even if the
-new migration API will work for them.
+This exact issue was discussed in v3 [1]. Binbin had the same confusion.
+I suggested changing it to "struct tdx_quote_buf *quote_buf". I think
+that should work better overall.
 
-We can have a qemu flag (kvm_coco_migration_api), which will be required /
-enforced by CoCo VMs to migrate.  Then if the new API will support
-non-CoCo, we can export that kvm flag so non-CoCo can select it too.
+I didn't include it in v4 because it needed to resolve a few
+type-related wrinkles. I wasn't sure if it needed to be in this series.
+I can certainly include it in the next version if you'd like.
 
->   - KVM: Not sure, but intuitively it may add noticeable amount of churn.
-
-True.  Also because of this, personally I would not request for this to be
-supported, only if you all see fit or value.
-
-Said that, this PoC problem that Kishen described PAM in the other email
-helped me to notice something very important that I overlooked, that at
-least I want to understand.  I'll reply there later separately.
-
-[...]
-
-> > I am just thinking out loud here: if the hardware is good enough to do
-> > encryption plus (some?) compression, that would be very nice.  For "some",
-> > I meant minimum over zero pages.  Because in this case even if host wants
-> > to play tricks with zero pages, it can't anymore when un-readable.  Maybe
-> > the guest driver can play some trick, but I'm also not sure if in CoCo.
-> > 
-> > M > N may imply it's not the case for now, but it's still sane as a start
-> > even if so.
-> 
-> Yeah. In case of TDX, the TDX module does not do compression today,
-> and there is no zero-page optimization either.
-> 
-> But keep in mind that what pages in TD are zero pages is by itself a secret.
-> Any sort of theoretical TDX module zero page compression optimization would
-> need to be done in a way that VMM cannot figure out what pages were zero
-> pages. So with a disclaimer that I am not really a security expert, I'd say
-> it is far-fetched.
-
-Agreed.  That's why I think TDX, if able to compress zero pages in that
-buffer stream, will hide that information into the encrypted stream, so
-it's still not visible to VMM, but should be visible to destination TDX.
-But yeah, this is slightly off topic, we can skip this one for now
-regardless.
-
-[...]
-
-> OK, so by upper bound here you mean the maximum amount of data that can be
-> exported in a single memory export ioctl operation, right? And you mean that
-> there should be some sort of command to query it, similar to KVM_CAP_XSAVE2
-> capability returning the XSAVE buffer size? If so - yes, I think exposing
-> such an upper bound would be useful.
-> 
-> Let's see. In case of TDX, the `TDH.EXPORT.MEM` seamcall today can export
-> max. 512 pages at a time. Today only 4KiB pages are supported, so it is just
-> a 2MiB buffer. So this is the upper bound for the seamcall.
-> 
-> So in TDX case, 512 pages would be the absolute upper bound for the uAPI
-> input buffer size. The alternative is to accept larger input buffers and
-> internally do multiple seamcalls. For TDX case, I do not think the latter
-> makes much sense though. But, what I do think is that the uAPI itself
-> shouldn't mandate one approach over the other - a different CoCo
-> implementation may prefer to aggregate multiple hardware calls internally.
-> 
-> Also, today TDX can only migrate 4KiB pages - VMM must split larger pages
-> into 4KiB pages before migration. But I expect that in the future TDX may
-> implement larger pages migration too. So I think the cap should be expressed
-> in page count rather than bytes.
-> 
-> That said, I don't think exposing this upper bound cap should replace the
-> flexibility we discussed earlier: the API itself should still allow
-> exporting as much as fits the output buffer, regardless of what the cap
-> reports. A specific CoCo implementation could still choose to just fail if
-> the buffer isn't large enough to hold all requested pages - but that would
-> be an implementation limitation, not an API limitation.
-> 
-> And the other question is whether to allow exporting a mix of large and
-> small pages, like N x 4KiB along with M x 2MiB and K x 1GiB pages. Or the
-> uAPI would allow to only export one page size at a time?
-> 
-> If large pages are added to TDX, I'd speculate that TDX seamcall would allow
-> the mixing and matching - I can see that already today the seamcall API
-> is provisioned for this. uAPI could require that the input buffer (set of
-> pages) can contain a mix which should match the GPAs of the corresponding
-> memory regions. But then race conditions - the GPA layout of the VM may
-> change by the time the request reaches the hardware: large pages can be
-> split or the other way round, I guess? Then uAPI could return a "retry" sort
-> of exit code, may be?
-> 
-> What do you think? I am just thinking aloud: looks like pages of different
-> size add a degree of complexity - I did not take that into account until
-> this conversation, thanks.
-
-I apologize if my question was misleading.  My question was more about the
-size of user buffer QEMU needs to prepare.  I think I got the answer from
-the other email.
-
-Still, thanks for sharing your thoughts on huge page handling.  Personally
-I'm not sure if we need to identify huge pages: we can always still define
-the GFNs to always represent PAGE_SIZE no matter the size of host pages,
-especially in migration context, we'll need to split in the first place.
-But that'll be a question to ask for later.
-
-> 
-> > 
-> > Said that, we'll need to be careful then in case of migration fallbacks at
-> > the final stage. Nowadays, I believe QEMU can still fallback to source side
-> > at a very, very late stage after all things applied.  If I'm not mistaken,
-> > the final handshake is done at migration_incoming_state_destroy() ->
-> > migrate_send_rp_shut() telling source to be gone.
-> 
-> Right. In traditional pre-copy VM migration model, the fallback is possible
-> at any point before the destination VM starts running and modifying its
-> state.
-> 
-> The same is true for TDX, but with more complexity and limitations.
-> 
-> We have 2 points:
-> 1. Before the source has exported the start token - fallback is similar to
->    traditional VM migration - just abort the migration on source and
->    continue running the source TD, and just destroy the destination TD.
-> 2. After the source has exported the start token - fallback is still
->    possible, but more complex - it requires the destination to first
->    generate the abort token, which should be delivered to the source and
->    consumed there. There are seamcalls for both generating and consuming the
->    abort token. The token basically makes sure the destination cannot run,
->    and the source can run again - same "only one of the TDs can run at a
->    time" security rule that we discussed earlier.
-> 
-> Now, the limitation here is that if the abort is because the network
-> connectivity is lost, the abort token cannot be delivered. Then I'd guess
-> migration should stop, without destroying the source and the destination,
-> and the token should be delivered later manually, QEMU could even provide an
-> infrastructure / commands for that.
-
-Heh, this reminded me of postcopy recover that QEMU supported for years:
-not a trivial feature at all, people always want it to be there, but I'm
-not sure who is using it at all in production..
-
-Especially, normally who cares about migration will provide dedicated and
-reliable networking for migration purpose, so the failure will be even more
-unlikely.  Meanwhile who doesn't care enough, may simply crash the VM at a
-postcopy failure and reboot.. not bother to recover.
-
-I bet rarely people will hit a network failure happens exactly at
-forwarding the TDX START token to destination host, similarly for case (2)
-on ABORT token lost.  But yes, likely this is required to make the whole
-thing complete.
-
-> 
-> Would be very helpful to learn the abort protocol the other CoCo vendors
-> offer - is it similar to TDX or not?
-> 
-> In our PoC we did not implement the TDX abort token procedure. But the
-> proposed uAPI is provisioned for the abort token export/import.
-
-[...]
-
-> > Hmm, interesting.  Sorry if this follow up question may be slightly
-> > off-topic of the new API, or maybe it matters, depends on the answer: do
-> > you know who is in charge of this unplug / plug operation?  VMM or TD
-> > (hence, transparent to VMM)?
-> > 
-> > If it's VMM, is QEMU involved?
-> 
-> Specifically about TDX - the pause seamcall will return an error if TDIs
-> are not unassigned.
-> 
-> While this is something that is not implemented in Linux yet, I believe the
-> model will be that there is some uAPI to unassign TDIs, and it is not
-> related to migration. QEMU would just need to exercise this uAPI at the
-> right time.
-
-OK, this sounds working, but then it means the migration will be visible to
-the guest.  I wonder whether there's any attempt to make it more
-transparent, but we can also leave this question for later.
-
-[...]
-
-> Do you or someone else know how important it is to have it working?
-> Do actual customers use it in real setups and rely on it?
-> How bad or painful is it if this feature is not available?
-> 
-> The reason I am asking is that my assumption was that it is not important.
-> But if it is, I will come back to the TDX module architects with a
-> request to revise the design to support independent dirty page tracking. Of
-> course they may have some reasons for not doing it, but I would try at
-> least.
-
-Thanks, I'll talk to our team and revisit this after I collect answers.
-
-[...]
-
-> Understood, thanks - sounds like this workaround is doable, but wasteful,
-> something to avoid if possible. That in itself is useful evidence I can
-> bring back to the TDX module architects.
-> 
-> Just to understand the real-world deployments better: do you know if anyone
-> actually falls back to this workaround today, or is it more of a theoretical
-> idea that nobody actually uses?
-
-Nop, I am not aware of any CoCo migration worked in any production
-deployments.  So it's only a wild idea assuming GET_DIRTY_LOG will be gone
-without migration process.
-
-> 
-> > 
-> > Btw, do you know if the private pages will be write-trappable by the host
-> > kernel, with things like userfaultfd-wp or soft-dirty?  That'll be another
-> > way to do this without TD involvement, but I don't know well enough to say.
-> 
-> The short answer is - no, private pages are not write-trappable outside of
-> a migration session, so trapping cannot be used as a workaround for
-> independent dirty tracking today.
-> 
-> But a bit longer answer is that the TDX module provides 2 alternative dirty
-> page tracking mechanisms, and one of them is in fact a write-trapping
-> mechanism. In the TDX specs, these mechanisms are called Write-Blocking
-> Export and Non-Blocking Export.
-> 
-> - Write-blocking: the VMM write-blocks pages using `TDH.EXPORT.BLOCKW`, and
->   gets a VM exit (an EPT violation) when the TD attempts to write a
->   blocked page.
-> - Non-blocking: based on Secure EPT scanning, using `TDH.MEM.SCAN.RANGE`,
->   which was mentioned earlier in this cover letter. I refer to it as dirty
->   scanning.
-> 
-> Today, both mechanisms are only available during migration and require the
-> migration setup to be done first - neither can be used as a standalone. In
-> our PoC we use the dirty scanning mechanism, as we expect it to be more
-> performant.
-> 
-> But our PoC actually started with the write-blocking method. According to
-> Kishen and Tony, it required a lot of ugly code and was very intrusive into
-> the MMU code. But I'll let Kishen and Tony provide more details.
-> 
-> Anyway, if I can get the TDX module to allow dirty tracking independent of
-> migration, we could pick either mechanism, or even implement both and add a
-> TDX-specific ioctl to select which one to use. We could plug either method
-> into the KVM_DIRTY_LOG ioctl - both would work, just differently.
-> 
-> = Dirty Scanning Optimization in TDX Module =
-> 
-> Now, I am diverging, but just in case: in the PUCK call where we presented
-> TDX migration, Sean made an immediate observation that WP-based dirty
-> tracking is not categorically worse than PML-based dirty ring tracking, it
-> depends on the workload.
-
-Hmm, I was expecting PML is still superior in most cases.  For "depending
-on workloads", is that perhaps when (1) huge pages are used, and (2) the
-workload writes only a small portion of guest memory?
-
-Then maybe RO huge page will be a good hint to skip whole huge-page-range.
-But that's only my wild guess, could be wrong.
-
-> Then he learned that TDX module's dirty scanning does not use PML, and
-> was understandably surprised. Sean was concerned about dirty scanning
-> performance.
-
-I'm definitely surprised too that PML isn't used.  Could I ask if there's
-any simple reason not to use it for TDX?  Per my understanding, PML works
-with all kinds of loads, and I was expecting PML to be efficient and most
-ideal.
-
-Another approach is if TDX can take over the bitmap buffer from the
-relevant kvm memslots, update directly there alongside setting D bits in
-EPT PTEs; after all IIUC we assumed dirty info not part of confidential
-materials.  But that sounds more complex than PML if it's already working
-for years.
-
-The current scan approach sounds like unpredictable in terms of downtime,
-in that even if with a scanner I don't see how TDX can guaratee the
-downtime for the last dirty sync from QEMU, which will completely be part
-of the blackout downtime.
-
-Whenever switchover decision made, QEMU stops the VM, do the last time
-sync, move anything left.  So that last one will matter a lot if we care
-about downtime.
-
-Thanks,
-
--- 
-Peter Xu
-
+[1] https://lore.kernel.org/all/8d20d04a-3503-42d5-8aa0-90b96aca2fe4@linux.intel.com/
