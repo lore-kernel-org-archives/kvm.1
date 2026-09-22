@@ -1,283 +1,173 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FA04AB1A3;
-	Tue, 22 Sep 2026 20:20:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790108468; cv=none; b=AraIQr++KbDtvhxtFfCGh6f1/h7E3sC3GZyKWSaRr8OqiRK/mzdDpqeCxXktg3a5MB4SaGX3Yju9t4IdgvnrgQ0IOt06TRC6Krn57H4dlvfJGgCfaWumCUFjOGWgpaKIgTRrFdjt5BNL8IgF3xXosSJhgDA9fLqa6yJiav7FCIQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790108468; c=relaxed/simple;
-	bh=LfqTiuToe7fF43mv5efr3OznHeOkkyK34UuQKPN6huo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AhzsObTI2h5+Afr4jlzKmSuHo+fe5TUEjp3tcKIc7eZ3VIL+ylZuqLho8v0PtL9h4VCRaRGcnGPYjoaCygNuurWZeIuXvEcjVOf9rtE+WL8pNmJpjyKEVyofBpaMcrG2c5fXY9kOY14MpgkW0ZJLQMrx7LR2xY4e8T7Qw9Oq5bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T4rLk54d; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778813BB106
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 20:29:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790108952; cv=pass; b=iiokZ8g+a5Jne7oJRfZNRuhsHup6y8S9L+wMBgZBsZO0UPHMf5o8ho13JTLa02AwuSaXT4JgtFSSo5MEuUPV2zGXmGkvleRiKli65XCqLCQTmDTTS9nRbDW1an69ndGiypFQHm/p8CK1MNq6r2+lH3fBm22q3iQipEeFjVaC7/Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790108952; c=relaxed/simple;
+	bh=nl0WayBfnBzXB16tsQQ8C7lVQDuEYmE5cOfzxnYFlOY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=r6/sF91yo9uJ4cVsr7TuqX6zYy8rekTiWKpx5079+PYx6WU/JuYBUxmZoXv/4TNQe3aV4WqckLaX/Kwn5ALf/krQnmb2SZibUl73ytf6x+YmVWYy94Rj97JAhSAsEkUlseCufCqE+ydnJ6qmaUnBlgsawm4T6cypZCaVyXs4Da8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Xz3lNUej; arc=pass smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T4rLk54d"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790108453; x=1821644453;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=LfqTiuToe7fF43mv5efr3OznHeOkkyK34UuQKPN6huo=;
-  b=T4rLk54dJVrvtyRmCNmjd/jX0mlhj+dSHFNcsSyRjOTTztoMjAFi5Qi/
-   NK0MWFQVg+E+cCJY0O41v6MJ4W2AzD9vPxZcKqAAe+BcS0LyqKk7HmFvZ
-   /GP/fotYJUtjyk1CY8PTlgO4Ww9r4LxIYvCbPZ4618oFpR4qxvGwnXegW
-   CyMPHpE6xFhB0c2OpJgyn1Nn107Nc74ileJRuCLKO4YsDMVmzBtsjpx9D
-   nJgCoGKZJH4/S2Ooi900TPoZy59mPYlX0dRda81PovM9rAugfQ9ti8Dxv
-   hPTpvEnUTXGerauvOeNvYrhihNC/4XAISsusJei/e9D/TAAl0Vyzrfu5n
-   w==;
-X-CSE-ConnectionGUID: bYyW6nAeTTWJCh3lBBgvgA==
-X-CSE-MsgGUID: WmB9i6bGQCG0u+EvmhXqwg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="101340438"
-X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
-   d="scan'208";a="101340438"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 13:20:30 -0700
-X-CSE-ConnectionGUID: VbC8ywc4RiGj0HieDxm3ag==
-X-CSE-MsgGUID: Ev1uNTSKTW2KB+Xdpd4QXg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
-   d="scan'208";a="269799195"
-Received: from vverma7-desk1.amr.corp.intel.com (HELO [192.168.1.200]) ([10.125.110.60])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 13:20:30 -0700
-From: Vishal Verma <vishal.l.verma@intel.com>
-Date: Tue, 22 Sep 2026 14:20:07 -0600
-Subject: [PATCH v3 2/2] x86/early_printk: Add earlyprintk=tdx to drive the
- UART with TDVMCALLs
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Xz3lNUej"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6a5f95a879cso825a12.0
+        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 13:29:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790108944; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mHPkuHnOoEHmllkuAW9zFvuPV8DTEfxJTVbh05MbHC/GFPgU3bP9Zyk5j9T9BSz4gt
+         9HPu66PrGOlmSc0KSc2hN0dcq6dPWE9pxiZhbJIsC2N7AKqr6k2K28dx1ViSeNuYlhPx
+         RHmGHe/iRe+O7AQ0hOVoJakw9vZbDxhCqfQS9gguhq2wMFUInpCCty+AW4SRkFXcOnjz
+         Gc0G1t6epqybexhFsioaSbvW/rHeFFxhBqLBuK4C0WN5jda9PPj7vsXUIRbnWzJFz77I
+         uJ5V0YFSW6hm09UVqfyJ9t5uLoXqR1nG0Tqhd7m1bJ9h6ladJ00MaZxx/RV83UxAiZBL
+         wXFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=f4auqSnGVaI9/viQvIpi/oQzDocBQYdGMjQ8F0EupbI=;
+        fh=pe6ISAP47YXNcB8kiQTukPsIMKbQ3wCFWZL9+9pgaHM=;
+        b=QgVY+mNA/oPSjn2XCfEUu3rtIJspok2xC2GNILu5h1LeerdMj3Pgym5/mlDVVNA04/
+         Z1OSHyE7R0g9+VoZxWG3SATOtyMzfrkNSRAj/zXGnMRvtT4gEwYnW461yvaM9DHw01jH
+         4Uq2pEstf6AjvGSJjT8M2YURCSaq2/qFL+1ok07Gf2xr3otEXRbWK+7UUkKNpa6NXkQk
+         t18ybYkFBpztdNSDUb+48cmY5ztrQSuup9+HXEFnEtgJU80t4l/95U0zwU/wXScXE3pR
+         CMYjkNr5np4MAzY+hQI3D+aKkGpEcEJsU8UbmsRo0kua3AXm5civXFmnt2Npiz6V+LUN
+         8m/Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790108944; x=1790713744; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=f4auqSnGVaI9/viQvIpi/oQzDocBQYdGMjQ8F0EupbI=;
+        b=Xz3lNUej9X8VdZDr8tqKR2RBNQ8sjqxUZeWOZhQTAps9hA468+vYGp4qrb25FFAgX4
+         GevH59xtPZy8XUwYStm65+wcB+kG49zfUUEUo+d3/JJR4FVrf+3C8JVYJhDoEaRGYUH6
+         vyVI/Xd7elY9LlGnqji6588OhLgxDmxyED9rmSyF3zE12+KK9NXmpMMCieDzFmjIizff
+         os3tQbObDZ3wudFkxlG5LRwlRvyAYs8llnK+Ue/v9Ga9Bcb4qmWOaCtCbMwL5rrtThct
+         /mW5PCz2BAR6oBnCULgKWtTgMIUZgfv3voYk/U3Sktb+sMGey3rpCnRMFZngdV4gB/ZJ
+         QoBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790108944; x=1790713744;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=f4auqSnGVaI9/viQvIpi/oQzDocBQYdGMjQ8F0EupbI=;
+        b=eyygReTohhKx3fb24oI35kOhHKrC0BCw+SPMGOUoL54U4Qa1eLd+K38alLbEYpavNr
+         0swkCEZaA4Rk19Le6PF6WvQcvAWNtvyzkz91u/+RT9MyAW6KqZESq6BW+Ur6PQjWncRG
+         ak/hEMFy92EvEr8NY2+j8af60xjBIrZ9RfRKMfsWEH9LOtd4Jn5gHAvTIwE/Iq/11NFA
+         NgP2iYeOn62smB1NG0b/dfAaFq+qpvt5tOaIEqEjmPa3qwxFdYlrCydKmYwWDuiO6QzR
+         O5ncZVbDcbDZ0359xq4YO0tzYNY+uptuqs4zrlPlf02UT66slInhMCdd5ae/NoTGjpYR
+         5XFQ==
+X-Forwarded-Encrypted: i=1; AKwUvBycndtf4MW2IJb0WTEWTKPQZaZY+tagBmuHyIB6MbpSQeDvhj8oJhDT7v+sVd9OBhbjJl4=@vger.kernel.org
+X-Gm-Message-State: AFuF++lCqvA41XQHsz1kqMG7qvlr4eL1rsE5OvcjeeJRBISu05umxnKk
+	UkP1lM3NEySQ7KDKinPGgZ1q2x3JETXWh9Fb3RBWViQUQcYW5RDYXyN4YdYP8I5yRs7igIUmYjP
+	oY1c10cJFUPpddSfgZA4CGxqEcr0O4JopAfWIS98=
+X-Gm-Gg: AYBFou0nKm7DwPkJ/aMMrlHkK/uQ++tCPLtKHlnDt3Dj2twFZj6gmBxVebTGzfVlgyK
+	W5RHknFqsNuh/Zq5a8do3wsWrj/GUqiN0rVA4u0jRJDtL0jElAntq8IpO+/9+u2k7dYzzTkE8Gh
+	1L97oDqiPxwaHPa4IoWqyiWGYk1IhkjniQG2QcY2JpXnsQOLUuElKxOWQvvQ2OfHIFmoF+3HOHp
+	pRkiLVn/k36XtiLuax4rWSlWbOlMK/QMMwxtZqHordy1HCEi5yiiUDvCQNwbXrSWopI9w6ZRfZL
+	yDDuPzgFpIwmwpCwhmTsufjJJ0rn5ScCMxns5khYYGY5hNGqG5ai7Q4W/NdklRkLdu3OyE1T+eG
+	u18FTy1Kh
+X-Received: by 2002:a05:6402:683:b0:6aa:128c:36ad with SMTP id
+ 4fb4d7f45d1cf-6aab3b997d0mr10064a12.10.1790108943216; Tue, 22 Sep 2026
+ 13:29:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260922-b4-tdx_earlyprintk_tdcalls-v3-2-6ebaa599df10@intel.com>
-References: <20260922-b4-tdx_earlyprintk_tdcalls-v3-0-6ebaa599df10@intel.com>
-In-Reply-To: <20260922-b4-tdx_earlyprintk_tdcalls-v3-0-6ebaa599df10@intel.com>
-To: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, 
- Kiryl Shutsemau <kas@kernel.org>, 
- Rick Edgecombe <rick.p.edgecombe@intel.com>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
- kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
- Vishal Verma <vishal.l.verma@intel.com>
-X-Mailer: b4 0.16-dev-62088
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7218;
- i=vishal.l.verma@intel.com; h=from:subject:message-id;
- bh=LfqTiuToe7fF43mv5efr3OznHeOkkyK34UuQKPN6huo=;
- b=owGbwMvMwCXGf25diOft7jLG02pJDFmbHvPsTQyODz5Z/4DfxKDOY6ZK1MuCYPdJBY7/9cMCd
- E+9ML3WUcrCIMbFICumyPJ3z0fGY3Lb83kCExxh5rAygQxh4OIUgImUaDMyXJKaFpgYtae5allX
- /Y2bZmunb3p+28LktPpzsUX/O5yE+RgZFvB7vM7WKHq9Sl26uv/yvyksh+8fNWYOO3X8RGuu1po
- p3AA=
-X-Developer-Key: i=vishal.l.verma@intel.com; a=openpgp;
- fpr=F8682BE134C67A12332A2ED07AFA61BEA3B84DFF
+References: <20260910-snp-invalid-input-v1-1-fb2e03da614b@google.com>
+ <0b2d8858-b361-4a64-986a-4c179210fbec@amd.com> <aqlWt4jb4CSPnecN@google.com>
+ <d6179d34-a4b0-4548-8298-b790b333d22f@amd.com> <CAJxe5ctcVxmhRSw3Gt0POQTzRKoxXo7+Y3CPDe7cUZvC0QPK+g@mail.gmail.com>
+ <aqrhFvwFJsQTaEkz@google.com> <CAJxe5csCb0DHZmJo9a-asXZ-tYdcyK1y0Y4Y9Uoixqn=sa8zRQ@mail.gmail.com>
+ <arF9CXWC_UDYUMmf@google.com>
+In-Reply-To: <arF9CXWC_UDYUMmf@google.com>
+From: Jacky Li <jackyli@google.com>
+Date: Tue, 22 Sep 2026 13:28:51 -0700
+X-Gm-Features: AclHuK_mY43f-bAoEDGwDRGxsfpJ91_apKdGyjoPSuWVw4gI8ssd82nL_grfFCw
+Message-ID: <CAJxe5csuNRcULSTeRRAq0GGQASTTpgwqOCXwNZJtApeZb_Va3A@mail.gmail.com>
+Subject: Re: [PATCH] KVM: SEV: Return INVALID_INPUT on SNP req/resp buffer
+ access failure
+To: Sean Christopherson <seanjc@google.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Michael Roth <michael.roth@amd.com>, 
+	Ashish Kalra <ashish.kalra@amd.com>, Jacob Xu <jacobhxu@google.com>, 
+	Supraja Sridhara <suprajasri@google.com>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-A TDX guest cannot execute port I/O instructions directly, but
-earlyprintk's serial console still issues plain inb()/outb() and lets
-each one fault into the #VE handler to be emulated as a TDVMCALL.
+On Mon, Sep 21, 2026 at 11:53=E2=80=AFAM Sean Christopherson <seanjc@google=
+.com> wrote:
+>
+> No, kvm_vcpu_map() actually has far worse semantics.  GUP pins the *page*=
+, it does
+> not pin the userspace mapping.  I.e. kvm_vcpu_map() guarantees that KVM w=
+on't write
+> to a freed page, but that's literally it.  E.g. if userspace mprotect()'s=
+ the page
+> to make it read-only, KVM will write to what is supposed to be a RO page.=
+  Or if
+> userspace completely unmaps the page, KVM will write to soon-to-be-freed =
+memory.
 
-While that works, it is a roundabout way to get a character out.
-early_serial_putc() polls the LSR, and then writes a byte, but since the
-TDX guest can't directly do port I/O, a #VE exception is raised. The #VE
-handler must call TDG.VP.VEINFO.GET to find out what faulted, and then
-it can issue the TDVMCALL that does the actual work.
+Sorry for the confusion. I didn't mean writing to the response page through
+map.hva; I only meant calling kvm_vcpu_map() to validate and pin the page,
+while still using kvm_write_guest() to copy the response back:
 
-This makes #VE a functional mechanism for doing I/O, which is not
-desirable, is unnecessarily complicated and fragile, and results in
-twice the number of calls into the TDX module.
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -4231,19 +4231,25 @@ static int snp_handle_guest_req(struct
+vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_
+  if (kvm_read_guest(kvm, req_gpa, sev->guest_req_buf, PAGE_SIZE))
+  return -EIO;
 
-Instead, add an earlyprintk=tdx option, which can issue the TDVMCALLs
-directly. Add a pair of tdx_serial_in() and tdx_serial_out() accessors
-and set them up in this case.
++ CLASS(kvm_vcpu_map_local, map)(&svm->vcpu, gpa_to_gfn(resp_gpa));
++ if (map.ret) {
++ svm_vmgexit_bad_input(svm, GHCB_ERR_INVALID_INPUT);
++ return 1;
++ }
++
+  data.gctx_paddr =3D __psp_pa(sev->snp_context);
+  data.req_paddr =3D __psp_pa(sev->guest_req_buf);
+  data.res_paddr =3D __psp_pa(sev->guest_resp_buf);
 
-Note that the output does not appear any earlier - "earlyprintk=" is an
-early_param(), so the console is still registered from
-parse_early_param(). This only changes how the bytes leave the guest
-once it is up.
+  /*
+  * Firmware failures are propagated on to guest, but any other failure
+  * condition along the way should be reported to userspace. E.g. if
+  * the PSP is dead and commands are timing out.
+  */
+  ret =3D sev_issue_cmd(kvm, SEV_CMD_SNP_GUEST_REQUEST, &data, &fw_err);
+  if (ret && !fw_err)
+  return ret;
 
-LLMs were used under supervision to create this patch, to help
-understand the scope and mechanisms, create testing instrumentation
-(throwaway) to count #VEs in the serial vs tdx earlyprintk setups,
-and to drive lab machines to do this testing.
+  if (kvm_write_guest(kvm, resp_gpa, sev->guest_resp_buf, PAGE_SIZE))
+  return -EIO;
 
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
----
- Documentation/admin-guide/kernel-parameters.txt |  9 ++++++
- arch/x86/include/asm/tdx.h                      |  3 ++
- arch/x86/coco/tdx/tdx.c                         | 39 +++++++++++++++++++++++
- arch/x86/kernel/early_printk.c                  | 41 +++++++++++++++++++++++++
- 4 files changed, 92 insertions(+)
+Because the actual payload write still goes through kvm_write_guest()
+(uaccess) rather than map.hva, a concurrent mprotect(PROT_READ) or
+munmap() would still cause kvm_write_guest() to fail rather than
+overwriting a read-only page or soon-to-be-freed memory.
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 33cd30996e47..f8dac4a58327 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -1543,6 +1543,7 @@ Kernel parameters
- 			earlyprintk=serial[,ttySn[,baudrate]]
- 			earlyprintk=serial[,0x...[,baudrate]]
- 			earlyprintk=ttySn[,baudrate]
-+			earlyprintk=tdx
- 			earlyprintk=dbgp[debugController#]
- 			earlyprintk=mmio32,membase[,{nocfg|baudrate}]
- 			earlyprintk=pciserial[,force],bus:device.function[,{nocfg|baudrate}]
-@@ -1556,6 +1557,14 @@ Kernel parameters
- 			Use "nocfg" to skip UART configuration, assume
- 			BIOS/firmware has configured UART correctly.
- 
-+			On x86, "tdx" is a fixed COM1 console, and takes no
-+			options. In a TDX guest the port is driven with
-+			TDVMCALLs rather than port I/O instructions, avoiding
-+			the #VE exception that would otherwise be taken to
-+			emulate every access. Outside a TDX guest it falls back
-+			to port I/O, behaving like "earlyprintk=serial". If
-+			CONFIG_INTEL_TDX_GUEST is not set, it is ignored.
-+
- 			Append ",keep" to not disable it when the real console
- 			takes over.
- 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 89e97d5761d8..325dd7c5929f 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -83,6 +83,9 @@ int tdx_mcall_extend_rtmr(u8 index, u8 *data);
- 
- u64 tdx_hcall_get_quote(u8 *buf, size_t size);
- 
-+u8 tdx_inb(u16 port);
-+void tdx_outb(u8 value, u16 port);
-+
- void __init tdx_dump_attributes(u64 td_attr);
- void __init tdx_dump_td_ctls(u64 td_ctls);
- 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 7d1a93ee2534..d8887a2a524b 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -194,6 +194,45 @@ u64 tdx_hcall_get_quote(u8 *buf, size_t size)
- }
- EXPORT_SYMBOL_GPL(tdx_hcall_get_quote);
- 
-+/**
-+ * tdx_inb() - Read a byte from an I/O port without a #VE
-+ * @port: I/O port to read from
-+ *
-+ * Ask the VMM to perform the read with TDG.VP.VMCALL<Instruction.IO>, rather
-+ * than executing an IN instruction and having the resulting #VE emulate it.
-+ *
-+ * Return: the byte read, or 0xFF if the hypercall failed.
-+ */
-+u8 tdx_inb(u16 port)
-+{
-+	struct tdx_module_args args = {
-+		.r10 = TDX_HYPERCALL_STANDARD,
-+		.r11 = hcall_func(EXIT_REASON_IO_INSTRUCTION),
-+		.r12 = 1,
-+		.r13 = TDVMCALL_PORT_READ,
-+		.r14 = port,
-+	};
-+
-+	if (__tdx_hypercall(&args))
-+		return 0xFF;
-+
-+	return args.r11;
-+}
-+
-+/**
-+ * tdx_outb() - Write a byte to an I/O port without a #VE
-+ * @value: byte to write
-+ * @port: I/O port to write to
-+ *
-+ * Ask the VMM to perform the write with TDG.VP.VMCALL<Instruction.IO>, rather
-+ * than executing an OUT instruction and having the resulting #VE emulate it.
-+ */
-+void tdx_outb(u8 value, u16 port)
-+{
-+	_tdx_hypercall(hcall_func(EXIT_REASON_IO_INSTRUCTION), 1,
-+		       TDVMCALL_PORT_WRITE, port, value);
-+}
-+
- static void __noreturn tdx_panic(const char *msg)
- {
- 	struct tdx_module_args args = {
-diff --git a/arch/x86/kernel/early_printk.c b/arch/x86/kernel/early_printk.c
-index cba75306e5b6..194737a3e9a0 100644
---- a/arch/x86/kernel/early_printk.c
-+++ b/arch/x86/kernel/early_printk.c
-@@ -21,6 +21,7 @@
- #include <linux/usb/xhci-dbgp.h>
- #include <asm/pci_x86.h>
- #include <linux/static_call.h>
-+#include <asm/tdx.h>
- 
- /* Simple VGA output */
- #define VGABASE		(__ISA_IO_base + 0xb8000)
-@@ -111,6 +112,23 @@ ANNOTATE_NOENDBR_SYM(io_serial_out);
- DEFINE_STATIC_CALL(serial_in, io_serial_in);
- DEFINE_STATIC_CALL(serial_out, io_serial_out);
- 
-+#ifdef CONFIG_INTEL_TDX_GUEST
-+/*
-+ * A TDX guest cannot execute port I/O instructions, so ask the VMM to do it.
-+ */
-+static __noendbr unsigned int tdx_serial_in(unsigned long addr, int offset)
-+{
-+	return tdx_inb(addr + offset);
-+}
-+ANNOTATE_NOENDBR_SYM(tdx_serial_in);
-+
-+static __noendbr void tdx_serial_out(unsigned long addr, int offset, int value)
-+{
-+	tdx_outb(value, addr + offset);
-+}
-+ANNOTATE_NOENDBR_SYM(tdx_serial_out);
-+#endif /* CONFIG_INTEL_TDX_GUEST */
-+
- static int early_serial_putc(unsigned char ch)
- {
- 	unsigned timeout = 0xffff;
-@@ -196,6 +214,22 @@ static __init void early_serial_init(char *s)
- 	early_serial_hw_init(divisor);
- }
- 
-+#ifdef CONFIG_INTEL_TDX_GUEST
-+/*
-+ * Use early_serial_base (COM1) and same default baud rate as
-+ * "earlyprintk=serial"
-+ */
-+static __init void early_serial_tdx_init(void)
-+{
-+	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
-+		static_call_update(serial_in, tdx_serial_in);
-+		static_call_update(serial_out, tdx_serial_out);
-+	}
-+
-+	early_serial_hw_init(115200 / DEFAULT_BAUD);
-+}
-+#endif /* CONFIG_INTEL_TDX_GUEST */
-+
- static __noendbr void mem32_serial_out(unsigned long addr, int offset, int value)
- {
- 	u32 __iomem *vaddr = (u32 __iomem *)addr;
-@@ -414,6 +448,13 @@ static int __init setup_early_printk(char *buf)
- 			early_serial_init(buf + 4);
- 			early_console_register(&early_serial_console, keep);
- 		}
-+#ifdef CONFIG_INTEL_TDX_GUEST
-+		if (!strncmp(buf, "tdx", 3)) {
-+			early_serial_tdx_init();
-+			early_console_register(&early_serial_console, keep);
-+			break;
-+		}
-+#endif
- #ifdef CONFIG_PCI
- 		if (!strncmp(buf, "pciserial", 9)) {
- 			buf += 9; /* Keep from match the above "pciserial" */
+> Who cares?  The guest can only hurt itself by converting resp_gpa to priv=
+ate.
 
--- 
-2.55.0
+The only reason we care from the hypervisor's perspective is that
+a post-command -EIO/-EFAULT exit causes the VMM to abort and looks like
+a hypervisor infrastructure failure rather than a guest error.
 
+That said, this only matters if a malicious guest deliberately races a
+conversion against its own request. Given the complexity of a gpc and
+that kvm_vcpu_map() is being phased out, the 1-byte tickle write is much
+simpler and good enough to protect normal guests from burning their
+VMPCK or killing the VM over a bad resp_gpa.
+
+I'll send a v2 with the tickle approach. Thanks!
