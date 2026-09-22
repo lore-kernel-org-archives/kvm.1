@@ -1,90 +1,60 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A4754EECE
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 13:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C46A41A921;
+	Tue, 22 Sep 2026 13:43:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790084206; cv=none; b=L7NkW2DT4VOcIAujf33HDa+SGH1q4Jj2W7o0uQfFhw1ufpX40FzT236LJKQDZ0+iKeuhLuYjHVHJm+RHQerJIEeZP8XXWCNiYxvhL81fvWzZPknRcDEIlvIxWXucuvZNpayAXqw2qCU96eyOyH9TKE6yyzHorcY/wDaS18x9few=
+	t=1790084622; cv=none; b=oavqDUz2/xFqcd2YKxbSZ8rfu3Uf5qNaH6wWHv9atj+jPteeqQ8vFYovNv5jw0p5PGpTDe9AArVJgvc/39817gX/Bf50027+xYhDGNk2rnKd9sBUWzrMQFx7cnHmTXByzT6ajJkhBx8Mfe6lt/900mBy25bY8V1y8BeOcsiG4Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790084206; c=relaxed/simple;
-	bh=d/S9qDtUy11NQeQug4viOvCaczHDmqizyhmmIqmbdss=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gzW/lB/u+Yr1mbnOSyVU3gmsoKIdGlCs9HIF9Co63118cE7c1nO46jYtPz1N+hR610fRC3f3rEZpjv7OpoJZOxjY14P0x9gUiK8obgaBPn6OXY6jkRN8jIcPjLwkVEfeddFCz3zb2V63kXRgbILPCrjgQ9RMAN6KKxifog/LKoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qr6pOFDq; arc=none smtp.client-ip=209.85.214.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1790084622; c=relaxed/simple;
+	bh=F+4KLkGPHsdS2lHowY59BQfz0zpjOlk7+BCXlBnEzM0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=i/FFG31VASk0Xzm6Zt4XU15VIsq6ZwT1kDjm9qb+9p9ol13Uo3f1aaD99dkFJlXvYD1nXn+SVALNV2l6isigq2OD4G4ZPnw4RZGXuLHdXa9NJ5rz86F0mAHxtT126Amw4MnKaI7ACWPJFzM26qndItW5VfI7akNg8vGpqVIH6Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c5UZCTZZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qr6pOFDq"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cfc52ddc55so55715145ad.3
-        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 06:36:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790084204; x=1790689004; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oKg5F9sMGobIhjbifmhiyQNB+ur0ve2Pzm+PBviIzFQ=;
-        b=qr6pOFDq4OlYrcoQ8bziwCoxi/tXVKzym1FX3mvkJtpmCIiN+shc9iOgRor5IPuYkv
-         iDlDT7hOEO0rpJxaP2qTYhixlBl3mGrCjV4OmrO7EHpmAdZbqbOY8qfqrzBm8osZJ9k7
-         CPyF8L+koJKFT3Ym3vcufuJSR/oujkTKFM0fLpwkRA3zeWy29amjsH/zL+Y5Hhv8YA1X
-         qrJzM17lwKdKiQw9yVJCLJSOh+JBD8A/hxWMh6qDeaeX/RRV6gHpepA5rAlHLqkx7ied
-         zCh8Y0b2Yab4eB9Fx+opGhK2rSkNjmsFVYaj4UTXQftmCs0YHesneZoiA8ew+oTpoAW4
-         8BNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790084204; x=1790689004;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=oKg5F9sMGobIhjbifmhiyQNB+ur0ve2Pzm+PBviIzFQ=;
-        b=bzlj4WZEn9c/bVtsLc1mclEBmFOq+gvZzSV+c59TepHXZX+IbfbVgXPqcn09vtMek6
-         nF5YIDY7NXFZKKbn7XKbK+fQi92aZfarUJvWqUqDoNRIapUqcfNmRRhzXCV5XBcQXlFo
-         S0Q4gCxoVSWiQ5cyTLZ6ua4YgcfCxbr4K9noigH7qdkeowbkqqOiv5tek9+uvh3xtPmO
-         M3xaF048G0tMdOUEQCF7W65JbhEtWoVdCKo+5LeARlCyhJi+vmIVs0rVsRVmnjs2ptsm
-         xGfeSS3WS+L5vgwwiz6m8785vH+FxGr+xHA0naLOvFZAd+wJ6mpwcZBKCDVI6XMKibCu
-         0Stg==
-X-Forwarded-Encrypted: i=1; AKwUvBwbkuJhdNwc5D9h2lU90Dqtt1nTiou/bK5a9HD7PU5fBf4IRX2tGeGK2P1lLMhuILYkJAM=@vger.kernel.org
-X-Gm-Message-State: AFuF++kdIC293uP2okBBI11xOVVUkiyO/WL5TAPeY0GU5vP49uqi7iHz
-	8rt+8QZ6rN/vgpuYd3pXhZHROO164jWMdCfx4KKQUkjI/tOegloH3UjwyxUBm+BNcPO5wr0lotk
-	rZTiH0g==
-X-Received: from plop21.prod.google.com ([2002:a17:902:8a95:b0:2df:47c8:8ff])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2f0e:b0:2dd:c1a0:c7e0
- with SMTP id d9443c01a7336-2df609d446fmr13805055ad.15.1790084204032; Tue, 22
- Sep 2026 06:36:44 -0700 (PDT)
-Date: Tue, 22 Sep 2026 06:36:42 -0700
-In-Reply-To: <ae797ef1-4742-4957-9e28-cb1b87b1ace2@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c5UZCTZZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B15C1F00893;
+	Tue, 22 Sep 2026 13:43:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790084620;
+	bh=F+4KLkGPHsdS2lHowY59BQfz0zpjOlk7+BCXlBnEzM0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=c5UZCTZZpwwd3dtYj7dlbPCPe8xvkn+fPlB3FOOKn3Br+bJ3xsTNXu99HidMyvA5d
+	 r7Uk1LB9li+1eO1uU6BRQPTy3Hem+9y05vFY6M/QiMAD4O68LAvdulgcQn1jpp9gKe
+	 kw7eHR/X2slEkAQZN+N1Zb54s44ZTRlwPGpesPOQaDj0rsYiL0dMbo75fO3C7XcgtA
+	 I+Pd5s51G67gHcGRmgpE+gRtL96zAyUvoDZjQvhYbt+cgr4r2HYtjQsIRSqI54UdWx
+	 V47v9jkiLZUZ0SADVG4zXcSV5+J2iOfKMQ0iHay1IMJDsqh8w/S1/zZr1BIA/EULbZ
+	 hnmyy8DU5YZ3w==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH net v3 1/8] vhost/vsock: Fix socket state constant
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Michal Luczaj" <mhal@rbox.co>
+Cc: virtualization@lists.linux.dev, kvm@vger.kernel.org, "Eugenio Perez" <eperezma@redhat.com>, "Michael
+ S. Tsirkin" <mst@redhat.com>
+In-Reply-To: <20260922-vsock-connect-reset-closing-v3-1-78907b8200d4@rbox.co>
+References: <20260922-vsock-connect-reset-closing-v3-0-78907b8200d4@rbox.co>
+ <20260922-vsock-connect-reset-closing-v3-1-78907b8200d4@rbox.co>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 22 Sep 2026 13:43:40 +0000
+Message-Id: <20260922134340.8B15C1F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260922000152.1113202-1-seanjc@google.com> <ae797ef1-4742-4957-9e28-cb1b87b1ace2@intel.com>
-Message-ID: <arKEamenf6X4L9w7@google.com>
-Subject: Re: [PATCH] KVM: VMX: Move bus lock handler from main.c => common.h
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Sep 22, 2026, Xiaoyao Li wrote:
-> On 9/22/2026 8:01 AM, Sean Christopherson wrote:
-> > Move the bus lock VM-Exit handler, which is basically a one-liner, from
-> > main.c to vmx.h now that to_vt() is usable in common.h.
-> > 
-> > No functional change intended.
-> > 
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > ---
-> > 
-> > This applies on top of kvm-x86/next + Xiayao's series.  I.e. actually applying
-> > it will be painful for anyone but me at this point, but I'm really just posting
-> > for posterity.
-> 
-> It seems like squashing it into patch 7 of my series would be OK as well. I
-> guess you intended to avoid changing my series since it might require a new
-> version.
+> Refactor under Fixes missed one: SS_UNCONNECTED (1) -> TCP_CLOSE (7).
+> Until now, sk->sk_state =3D 1 stood for TCP_ESTABLISHED.
+>=20
+> Fixes: 3b4477d2dcf2 ("VSOCK: use TCP state constants for sk_state")
+> Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+> Signed-off-by: Michal Luczaj <mhal@rbox.co>
 
-Heh, I would have happily squashed, and tried to.  The problem is that I want to
-land your series before "Move common VT getters/converters to common.h".
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-https://lore.kernel.org/all/20260904010353.3175819-8-seanjc@google.com
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260922-vsock-conn=
+ect-reset-closing-v3-0-78907b8200d4@rbox.co?part=3D1
+
