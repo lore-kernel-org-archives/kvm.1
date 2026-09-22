@@ -1,135 +1,157 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D871F3BFE2B
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 17:53:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F65A3E51C6;
+	Tue, 22 Sep 2026 18:01:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790099640; cv=none; b=G5wCTW88F7RayuNZfqzWL47ALqh6hzoFB0T6Zx7+nnIlgcXRAZswZpga3Po5Vu9is1qVi94/3MhnxaDSSHrSrm/8fdzS+KoSTwnJYUpJKzALuDefgZqQlskcu+/gTgLS351U8OHwhScd8fLFcp1DxRDCwiiw03dYY5RTc0bd2gY=
+	t=1790100118; cv=none; b=Te6rU1I8b6Vd5OnUdjqLoQFQ++o9hKP5h/cOnbHlTrDY+ydGCxTgodH2HweFeFBuYuHxEk90FS8Q0AeFOiMib9jpRSwEF+YjBV4X/SOuphmvgS+8eQeX5qicq4hITJlVaUQuXGNvp5nLZjNq3cLYYAi1yWlvz7jePjyIUDAwQ3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790099640; c=relaxed/simple;
-	bh=sBNGKVaxgwd2C7MUTMhk8j+hcEEhVpjA4Z4BJR89HfU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RZFjxvs2wdTbwfl9+1UmPsvoQReupopry5xbTSr9o+r0HQ4+/2xQE4HL+5aeO/tNcTJNKlZklBRUNzTV05WtfA/pMG1Pwz9Te+TCmIRptbIjjYp7gYCpu9+AAEXrCIbU9GpQpW7nyivpuNMp7Eq5fRp0mjBC1NDrCegxbYEGMpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jLJtVPaK; arc=none smtp.client-ip=209.85.214.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1790100118; c=relaxed/simple;
+	bh=6gafUH01UEnEOFZ/RPOfxlqwmZj2EPGoGIHEuVJ2b30=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ieZK1rKS1GEFW+9R9kwc1tU7YRu/oUxdx/Blc2xOGwyvT0iQpX3UVOlPUPpsaRJs90jsz7nQPSTifIASayCvuzf6uvhzE+HPa8jF8D7nTKPwxZipVKsq+N7ZWUYS9DFEqSswHtq79/3lr19X5pCI+0Glcx4lkNTRx9L+tG3hHrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cTFAgg2F; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jLJtVPaK"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2d9336581a2so1451175ad.3
-        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 10:53:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790099638; x=1790704438; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=OTbYsyPMAXRNeqI3frHnGnx21T0lm+5EfthrZkUZKL0=;
-        b=jLJtVPaKEk1SDZSA9LVDnw8MtrL/vf4mki9/IKIfycpLkaI4q2lXZWyqMxHiGW+o3o
-         shUtF3luYqkKaJL38fg4nBzZklikV4gEyUe88uVIuX2vMZ64lhfr9d3t07Rnd9IZuLcU
-         UWOZik/veM+I3LnCqxlZITpQzTx+a9PMvc8l0ssm/DaXuIvNnEAC2WAaZCnGIPp5lpll
-         lrMZQVKuBfbKOacijTTXIatS92QUDfXVXnjeAMo33BKcnfIhjGtCB2NSb6oqxUTxcdAg
-         /5HFjkFVwezQ7ZP0B8MXdDprLxGlQ2dr24IC6f6EnLRYYQDCVerfRXoqXVYPPcDHV5DY
-         3VdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790099638; x=1790704438;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OTbYsyPMAXRNeqI3frHnGnx21T0lm+5EfthrZkUZKL0=;
-        b=U8XxO8z96I8Ex37N199LR9U/UwL1ntADJn35mMgAbGzDFmDac1CBi+cIn1XJdO8+CM
-         fq3/QNnxhoAl4zDXrGSfAVviP/vqiOeLaRr+51Kq2wgo4eimtJ89QV/Wsw2p8alYcWFc
-         2/ci4d1G145CjLfAjnOX1x9bDhrXjFKC2DqI6QC+avQRrsgQEpDGpo9beNDR+vlaZkVY
-         z+/9uiNfqMRwQYdoTLcKxJf3ACdHHveHlOQJ6Q7tRj1l1LF4SNE97NykVgmMT9lLwxZ1
-         yBq2sCGKR0vUdRlOT7tF7JIxDmX56K1M6T7ZEHL/FV0PJ9ijkNxnYk/P1eiYpswuFWb6
-         8IwQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxn5ou5jlsWRCSyeb6AZHA+kMo0IZ0ItZ3NK5rUBM50x0FdmOb57I9wPZAK4NxTVEBbVEU=@vger.kernel.org
-X-Gm-Message-State: AFuF++mjlYFSV2aFQs9JxLeLXp9vF1CYFFEccJRUIXgRHjn0xr/NSNW1
-	Ntib5aGTNrSJLfkXBd0YNtkH19/9RiSUNpA5KKybJuCAxN4xE0P/CZuyqEJAeba1Dp880YcJObu
-	xrI7mNQ==
-X-Received: from ploc24.prod.google.com ([2002:a17:902:8498:b0:2dd:2e1c:cb90])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2f8a:b0:2dd:c100:9440
- with SMTP id d9443c01a7336-2df69e1c9bcmr1132185ad.62.1790099637923; Tue, 22
- Sep 2026 10:53:57 -0700 (PDT)
-Date: Tue, 22 Sep 2026 10:53:57 -0700
-In-Reply-To: <CALMp9eQi0gm7ojijfKDZz9oZh+BK13qUkJOFrCmxjJTr5sx3Lg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cTFAgg2F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74781F000FF;
+	Tue, 22 Sep 2026 18:01:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790100116;
+	bh=XYSOqVERmoLufYUc+VgdIGa26F88+bWdDgX4ohmoDow=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cTFAgg2FOfaMX2m8EsEsOewd3kmF8o+nqmZIgHsg1+9dfNvjg7UsJBnBr7cQLe1gc
+	 NRZa7rq/dJvOZbE4iJ8qwH9xFN5HvTNU602lYu19aCdlJ8/ZK8eFBFvjLwON208EmW
+	 XDFJRh666HOdgBM4mCysh18oZxVAtffvfijp+CEreSklJcAeStfU5ZVdmz/W+G1cMw
+	 tvX2+GxoohyHrtHGMZv+Cxrry+VZhichA61P71tzJM/TfaD+SUPE5zsm6ygKShkw1+
+	 aQtV+4k7suG2DbR/RXLPSqzlhNoXCFydrrlCIBti5D3+SZI3a/BwrfTF6KEv229og0
+	 k/Vt3CWjh0zuQ==
+Date: Tue, 22 Sep 2026 19:01:48 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Oliver Upton <oupton@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
+	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Mark Rutland <mark.rutland@arm.com>, Fuad Tabba <fuad.tabba@linux.dev>, 
+	Randy Dunlap <rdunlap@infradead.org>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Jack Thomson <jackabt@amazon.com>, Jack Thomson <jackabt.amazon@gmail.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Vincent Donnefort <vdonnefort@google.com>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+	Leo Soares Passos <Leo.Bras@arm.com>, Wei-Lin Chang <weilin.chang@arm.com>
+Subject: Re: [PATCH v3 01/14] KVM: Allow architectures to disallow pre-fault
+Message-ID: <arK8-Hec3-5o4jYs@gremlin>
+References: <20260922-kvm-arm-prefault-v3-0-787bd3bc7e3f@kernel.org>
+ <20260922-kvm-arm-prefault-v3-1-787bd3bc7e3f@kernel.org>
+ <arKxjsxuO1F5ExrY@kernel.org>
+ <arK5n9HrbZMCOHOt@google.com>
+ <arK5ynpRi7VbY7Ek@gremlin>
+ <arK8seJVT9wYgVCP@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260918154530.4129698-1-jmattson@google.com> <20260918160109.E76B81F000FF@smtp.kernel.org>
- <arKJQwAPvApkeESD@google.com> <CALMp9eQboC6DTQfa3N58XCfOLf-qwJ2L7dC5vtqDerHG80eZLg@mail.gmail.com>
- <arKQJJJB8HMK0B1G@google.com> <CALMp9eQi0gm7ojijfKDZz9oZh+BK13qUkJOFrCmxjJTr5sx3Lg@mail.gmail.com>
-Message-ID: <arLAtdMP7LV0r-D9@google.com>
-Subject: Re: [PATCH] KVM: x86: Disallow EFER.LMSLE when EferLmsleUnsupported
- is set in guest CPUID
-From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arK8seJVT9wYgVCP@google.com>
 
-On Tue, Sep 22, 2026, Jim Mattson wrote:
-> On Tue, Sep 22, 2026 at 7:26=E2=80=AFAM Sean Christopherson <seanjc@googl=
-e.com> wrote:
+On Tue, Sep 22, 2026 at 10:36:49AM -0700, Sean Christopherson wrote:
+> On Tue, Sep 22, 2026, Lorenzo Stoakes (ARM) wrote:
+> > On Tue, Sep 22, 2026 at 10:23:43AM -0700, Sean Christopherson wrote:
+> > > Rather than have kvm_arch_vcpu_allow_pre_fault_memory(), what if we add a more
+> > > generic kvm_is_vcpu_loadable()?  That way we don't need to worry as much about
+> > > the return value, the connection to vcpu_load() is obvious, and we don't need to
+> > > add another pre-check if future (or cleaned-up existing?) ioctls want to do
+> > > vcpu_load() in common code.
 > >
-> > On Tue, Sep 22, 2026, Jim Mattson wrote:
-> > > On Tue, Sep 22, 2026 at 6:57=E2=80=AFAM Sean Christopherson <seanjc@g=
-oogle.com> wrote:
-> > > > Gah, I hate the negative "feature" bits, I've gotten completely tur=
-ned around
-> > > > multiple times trying to sort through this.
-> > >
-> > > Me too!
-> > >
-> > > > IIUC, you're trying to "fix" setups where host CPUID.EFER_LMSLE_MBZ=
-=3D0, but userspace
-> > > > configured guest CPUID.EFER_LMSLE_MBZ=3D1?  If so, then Sashiko is =
-right, it needs to
-> > > > be declared with EMULATED_F().  I would even argue that technically=
- this isn't a KVM
-> > > > bug, because KVM won't advertise EFER_LMSLE_MBZ in KVM_GET_SUPPORTE=
-D_CPUID on such
-> > > > hosts.
+> > ...this is exactly what I started out with.
+> >
+> > But then you are in a pickle, because _really_ you need to do that check in
+> > vcpu_load(). Which is a void function. Which is called by every single
+> > architecture all over the place.
+> >
+> > So you'd have actually no way of signalling the error back.
+> >
+> > Of course those places are arch code and you could say 'arches should know
+> > better and if they call it it's fine not to call the arch 'can you load'
+> > function.
 >
-> > > I'm trying to make it possible to run a Rome vCPU on Milan or later.
-> > >
-> > > SInce this is a negative feature bit, it must be retained if the host
-> > > reports it. That blocks running a Rome vCPU on Milan or later.
-> > > However, a defeatured Rome (which reports LMSLE_MBZ as 1) can be run
+> Yes, that's my vote.  It'd be easy enough to clarify that "rule" with a comment
+> in linux/kvm_host.h.
+
+I note you dodge the actually difficult question of what this wrapper function
+would look like ;)
+
+So maybe like:
+
+static int kvm_vcpu_load(struct kvm_vcpu *vcpu)
+{
+	int err;
+
+	err = kvm_arch_allow_vcpu_load(vcpu);
+	if (err)
+		return err;
+
+	vcpu_load(vcpu);
+	return 0;
+}
+
+?
+
+And I do like that you'd actually gate the right thing, I feel you on that,
+obviously since this kind of predicate is what I started out with.
+
+But I'm also looking to do the smallest possible thing here that fits the series
+and doesn't preface it with a 'change how core kvm does something'.
+
+But if Oliver/Marc feel this is viable then sure can go with it.
+
+(Also naming is hard, kvm_vcpu_load()? do_vcpu_load()? maybe_vcpu_load()?
+checked_vcpu_load()? vcpu_load_checked()? :P)
+
+>
+> > But you're still stuck with the problem of where exactly you put this check.
 > >
-> > So, a partially defeatured Rome?  Because it sounds like the CPU report=
-s LMSLE_MBZ=3D1,
-> > but then still allows setting EFER.LMSLE=3D1?
->=20
-> No; it should not allow setting EFER.LMSLE=3D1. That will fail on later
-> platforms and would block live migration from Rome to later platforms.
+> > So then do you put that check in a wrapper around it?
+> >
+> > Instead you can make the predicate 'don't prefault on a not-yet-initialised
+> > vCPU' which is pretty sensible I think, have a specific place to put it and
+> > all's well with the world.
+>
+> But look at it from an x86 perspective.  Pretty much everyone will look at this
+> and expect:
+>
+>   bool kvm_arch_vcpu_allow_pre_fault_memory(struct kvm_vcpu *vcpu)
+>   {
+> 	return vcpu->kvm->arch.pre_fault_allowed;
+>   }
 
-Oh, drat, I misread the "Rome vCPU" vs. "defeatured Rome" paragraph.  You w=
-ant to
-be able to migrate a vCPU with guest.CPUID.LMSLE_MBZ=3D1 between a non-defe=
-atured,
-vanilla Rome and Milan+ (or a defeatured Rome).  Correct?
+I'm not sure I really get your point here at all? :)
 
-If so, then Sashiko is right, the flag needs to be EMULATED_F() so that KVM=
- will
-advertise EFER_LMSLE_MBZ to userspace on the vanilla Rome host, and also do=
- the
-right thing when guest.CPUID.EFER_LMSLE_MBZ=3D0.
+Why would it matter what people who are too lazy to go check the implementation
+assume about an arch hook?
 
-If not correct, then I'm even more confused, because ignoring clear_cpuid,
-guest_cpu_cap_has() will only ever return true if boot_cpu_has() also retur=
-ns
-true, in which case KVM *will* reject the value because EFER_LMSLE will not=
- be
-listed as a supported EFER bit.
+>
+> > > I'd also be tempted to say it can be a macro, not a __weak function.  E.g.
+> >
+> > Yeah it can be many things but why would you want a macro if you could possibly
+> > avoid it? :)
+>
+> Because it allows arch code to dererefence "struct kvm_vcpu" in kvm_host.h,
+> i.e. allows "inlining" the check.
 
-		if (!boot_cpu_has(X86_FEATURE_EFER_LMSLE_MBZ))
-			kvm_caps.supported_efer_bits |=3D EFER_LMSLE;
+Yeah I mean, micro-optimising a path run on a costly startup operation seems a
+little unnecessary? :)
 
-> I want KVM to abide by the guest CPUID bit and disallow setting
-> EFER.LMSLE even on hardware that allows it.
+It seems the convention is __weak but I'm not going to die on this hill.
 
-Right, and that requires declaring EFER_LMSLE_MBZ with EMULATED_F().
+(C type safety is something of a myth but I do prefer to try to have what
+little protection it offers when possible :)
+
+--
+Cheers, Lorenzo
