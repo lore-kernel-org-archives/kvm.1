@@ -1,134 +1,163 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5915731B10B
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 13:51:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1790D381E94;
+	Tue, 22 Sep 2026 13:53:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790085070; cv=none; b=i6H0Lt0epe+OT1OeYduWYP4oROEFNqS+hsVgK661avomBxXyexiNcS7LwgodG8bTq54fuk75XbOF7i59/a68w0r2CDbcjBxcCBf5vyiOoJIxkqSObvkevYKwP061zpNuiDMOe7TYwSJ2h7PP++rHqmpDRaPv8LMoEInk1tA0hyQ=
+	t=1790085239; cv=none; b=OqUku9tXh8iZGquI4P4EgQimgSwYPNeCt2VIS+AqmnLEQBHSV6VWxSGQ+24b40a9vcmWMPhRhLRFO54iFIS5MpCOogYFBnmw9Tzp4nNOl9/J7wt+7J701janZ7eSoUxCdyrzLqKTPb2fU6XT9UeJ/x0KXGoG9Cy7li3c2Gu83ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790085070; c=relaxed/simple;
-	bh=N3s0/CLu9x9kPTF5rj7BgULZtfUw1x/XB4N0ngH9VKo=;
+	s=arc-20240116; t=1790085239; c=relaxed/simple;
+	bh=CxDJhUb89FFcoXP4sM0p9AKq7FSuDM2xyaUoP61ACG4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BIFdMsCtkusjqRklDK0/sKGL8rREXdDtf9xEgJuD1PSZydk94v37QMEbNGZGn9ET/vET5pasxqu8qu/fleKmyhkvw6viIQ3NvA8U3StmO1Ee/QsKkmjJ9Ris65Oho1YFda2JFUQuzAuoGdYvKqFICx6NEJ/6SOGjcg62Q/Ifh0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I0jcG3LL; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=fZFWy7IiwCCPB72wZLXQfF/uOFHO8R2OfaibQ1aB0W83+tvKZzVJtlRyqaJhwRhbD5KXpcSALb5EMkJOD5EgdJI61KH7b1ou0lXbsnpyIGqPQLCW+mZepPpu5GewR3vRUrYW+Bu6F38c9TsKLGj/PdWCZ/DqeGMf4SN2GSzjw4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ca4lFUr4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I0jcG3LL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790085068;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5BlNZBK01swwEKB8HxunMEnqdtD50qPALiXDq3bmCRI=;
-	b=I0jcG3LLEAivHZlg7po+BHwseBJ1leRYakWVjRpVl9OWhFgqRPpZ4pdV7IXBkrM8AV6ql7
-	2A64a0/3Jvy8iyHnHKJReeXYtXzZOcCdva/vUsMs6839LIFpcgwe7J/VGFuoxUPihmWSa0
-	BtmIivBs3PXLRcJYCtDJMGgYVhAVTZo=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-481-lO7ElBMZPFyhtr5-9RIz1g-1; Tue,
- 22 Sep 2026 09:51:05 -0400
-X-MC-Unique: lO7ElBMZPFyhtr5-9RIz1g-1
-X-Mimecast-MFC-AGG-ID: lO7ElBMZPFyhtr5-9RIz1g_1790085064
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6A6821806D3C;
-	Tue, 22 Sep 2026 13:51:04 +0000 (UTC)
-Received: from localhost (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B5866180056E;
-	Tue, 22 Sep 2026 13:51:03 +0000 (UTC)
-Date: Tue, 22 Sep 2026 09:51:02 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: seanjc@google.com, pbonzini@redhat.com
-Cc: John Levon <john.levon@nutanix.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	Thanos Makatos <thanos.makatos@nutanix.com>,
-	David Woodhouse <dwmw2@infradead.org>
-Subject: Re: [PATCH] KVM: optionally post write on ioeventfd write
-Message-ID: <20260922135102.GA24134@fedora>
-References: <20260306125651.2485-1-thanos.makatos@nutanix.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ca4lFUr4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C814E1F00893;
+	Tue, 22 Sep 2026 13:53:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790085237;
+	bh=hG2I/HuDKXt1ra2aKJOzjd3ZnRb0UiNU2P36VE8WR8I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Ca4lFUr4euo5Xgp+dxMXJWCi3lA8/uwBp63YGXdeyD2+IG4aq7L8gIgiMT4Y/qXMj
+	 aijgAN5hfihe11qkkucgrH9nINl9UYRCTXzJQW6SIbsubyoMrtVzm3xq1PscSFYwki
+	 C5VZ87jdxDps8LjRNU/8veWcP5WTuwNVu3jX8Z9gqEYZsxNuPYSVVkB2CPIYpnEnKR
+	 IrJIjoxwcwBJJn9M+fcY0eA6uCBzGDKAKdH2vr8IRLcwlkiA/w6CG0Lc+15xYifxez
+	 hM4ykAYUtmEDmSZqcP7SU0Oq80FVlc8TSWj1SuluJyPp+iVKjDhLF14n0Y3ipbGtUL
+	 oYl5fr01HKnDw==
+Date: Tue, 22 Sep 2026 14:53:49 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Fuad Tabba <tabba@google.com>, Joey Gouly <joey.gouly@arm.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Jack Thomson <jackabt@amazon.com>, Jack Thomson <jackabt.amazon@gmail.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Vincent Donnefort <vdonnefort@google.com>, 
+	Sean Christopherson <seanjc@google.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+	Leo Soares Passos <Leo.Bras@arm.com>
+Subject: Re: [PATCH v2 00/13] KVM: arm64: Add KVM_PRE_FAULT_MEMORY support
+Message-ID: <arKB2imOcg4MhXMF@gremlin>
+References: <20260914-kvm-arm-prefault-v2-0-26fb47f74b73@kernel.org>
+ <yq5abj9p38vq.fsf@kernel.org>
+ <arJ1BDEzY5CANjjB@gremlin>
+ <yq5a8q4t305j.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="8bQN+NXdpsvnwnuP"
-Content-Disposition: inline
-In-Reply-To: <20260306125651.2485-1-thanos.makatos@nutanix.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-
---8bQN+NXdpsvnwnuP
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <yq5a8q4t305j.fsf@kernel.org>
 
-On Fri, Mar 06, 2026 at 12:56:54PM +0000, Thanos Makatos wrote:
-> Add a new flag, KVM_IOEVENTFD_FLAG_POST_WRITE, when assigning an
-> ioeventfd that results in the value written by the guest to be copied
-> to user-supplied memory instead of being discarded.
->=20
-> The goal of this new mechanism is to speed up doorbell writes on NVMe
-> controllers emulated outside of the VMM. Currently, a doorbell write to
-> an NVMe SQ tail doorbell requires returning from ioctl(KVM_RUN) and the
-> VMM communicating the event, along with the doorbell value, to the NVMe
-> controller emulation task.  With POST_WRITE, the NVMe emulation task is
-> directly notified of the doorbell write and can find the doorbell value
-> in a known location, without involving VMM.
->=20
-> Add tests for this new functionality.
->=20
-> LLM (claude-4.6-opus-high) was used mainly for the tests and to a
-> lesser extent for pre-reviewing this patch.
->=20
-> Signed-off-by: Thanos Makatos <thanos.makatos@nutanix.com>
-> ---
->  Documentation/virt/kvm/api.rst               |  13 +-
->  include/uapi/linux/kvm.h                     |   6 +-
->  tools/testing/selftests/kvm/Makefile.kvm     |   1 +
->  tools/testing/selftests/kvm/ioeventfd_test.c | 624 +++++++++++++++++++
->  virt/kvm/eventfd.c                           |  23 +
->  virt/kvm/kvm_main.c                          |   1 +
->  6 files changed, 666 insertions(+), 2 deletions(-)
->  create mode 100644 tools/testing/selftests/kvm/ioeventfd_test.c
+On Tue, Sep 22, 2026 at 06:37:04PM +0530, Aneesh Kumar K.V wrote:
+> "Lorenzo Stoakes (ARM)" <ljs@kernel.org> writes:
+>
+> > On Tue, Sep 22, 2026 at 03:28:33PM +0530, Aneesh Kumar K.V wrote:
+> >> > This is because pKVM instantiates vCPUs upon run,
+> >> >
+> >>
+> >> Can pKVM instantiate the hyp vCPU during pre-faulting ?
+> >
+> > It would be an unusual and unexpected thing to do - suddenly a pre-fault
+> > operation is initialising a vCPU explicitly for pKVM.
+> >
+> > A caller is not going to reasonably expect this and might treat a failure to
+> > pre-alloc as fine to carry on whereas in fact it was a failure to initailised a
+> > pKVM vCPU.
+> >
+> > It'd also require significant changes to how pKVM is set up, right now it's
+> > hardcoded to be done unconditionally at run via kvm_arch_vcpu_run_pid_change()
+> > -> pkvm_create_hyp_vcpu(), so all that would have to change and be checked and
+> > tested and... that'd be really out of scope I think :)
+> >
+> > And pre-faulting really makes most sense BEFORE you run a VM. It doesn't make so
+> > much sense mid-run.
+> >
+> > But more fundamentally, the stage 2 page tables, as I understand it, are owned
+> > by pKVM and so aren't really available to be pre-faulted.
+> >
+> > Maybe unprotected-under-pKVM VMs but then it's questionable as to how useful
+> > that would be given that it would be confusing to users vs. how it works for
+> > other VMs.
+> >
+> > So in general, no I don't think it's a good idea.
+> >
+> > And even if we wanted to pursue some version of this, it's _definitely_ out
+> > of scope for the initial pre-faulting bring-up series.
+> >
+> >>
+> >>
+> >> > but pre-faulting is  typically performed before a vCPU is run.  It would be confusing and
+> >> > inconsistent to error out on non-running vCPUs but to pre-fault running
+> >> > ones.
+> >>
+> >>
+> >> I use KVM pre-faulting when transitioning pages from shared to private
+> >
+> > You mean you'd prefer to use? Or you are using it on another arch?
+> >
+> >> with CoCo guest. This ensures that a trusted device can DMA to private
+> >> memory before the guest accesses it.
+> >
+> > Hm what do you mean by private memory?
+> >
+> > I see:
+> >
+> > #ifndef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+> > static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
+> > {
+> > 	return false;
+> > }
+> > #endif
+> >
+> > And only x86 selects KVM_GENERIC_MEMORY_ATTRIBUTES?
+> >
+> > Do you mean something else?
+> >
+>
+> I am using this with ARM CCA-DA, based on the patch series from Jack Thomson <jackabt.amazon@gmail.com>.
+>
+> https://gitlab.arm.com/linux-arm/kvmtool-cca/-/commit/80e7aad61c5639de2f0cb4a5525dad0c96156428
+>
+> We do this while the VM is running.
 
-Sean, Paolo: Ping
+Right, that's a non-mainline kernel I guess? Which presumably implements private memory.
 
-I would like to enable ioeventfd support in QEMU's NVMe device emulation
-and this requires POST_WRITE for Windows guests (they don't support
-NVMe's Doorbell Buffer Config feature so it's necessary to capture the
-latest value written to the doorbell somehow).
+Jack himself experienced a panic with his pKVM code, so the code you're using is
+not upstreamable, unfortunately. And he'd already shelved pKVM support AFAICT.
 
-POST_WRITE applies to any device that has a doorbell register where the
-latest value needs to be captured. This looks like a reasonable
-extension to ioeventfd.
+And reviewers pointed out actually implementing the pKVM stuff properly would be
+quite involved, even if you wanted to do that (hence follow-up).
 
-I also looked into alternatives, like using userfaultfd, and didn't find
-anything better.
+Also you end up stuck with the same problems as I mentioned above - you can't
+sanely bring the vCPU pre-run, so now you have extremely weird behaviour - only
+pre-faults if vCPU initialised, running, and unprotected pKVM.
 
-Please consider merging this. Thanks!
+Protected pKVM support is a whole other layer of complexity and it's not obvious
+that you're really achieving what pre-fault is supposed to.
 
-Stefan
+In any case Oliver literally just asked me to _simplify_ weird edge cases for
+this series :) so I am not sure something like that is going to be accepted.
 
---8bQN+NXdpsvnwnuP
-Content-Type: application/pgp-signature; name=signature.asc
+Are you sure you're actually running in pKVM mode btw? CCA doesn't AFAICT? In
+which case this series _should_ work fine for you.
 
------BEGIN PGP SIGNATURE-----
+Anyway, if we really do need to add something for pKVM it needs to be a follow
+up. Let's get the basics working first :)
 
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmqyh8YACgkQnKSrs4Gr
-c8jkfgf/Vt7HqaxQAJrLNOr3ltePbuJi29oDwhhqkNMrcj3s6GHLCtGZ1IMah1Mu
-8daFd4jV0WJp6YoCbYOnwqMbfp6xUsaj2NNtdmOLISZazydliCQ7dtnzP9g7sORI
-uItikSDtoGis6hnz6YghQyxgXUDSStwKoUV95fm2ZVLJkGqfnGHnCATPYd90lOyB
-TKbTTuWMBhTJ+cH5ay1YjeNL8UVRHaAeNaNJSCeOtfjqzx+xHiwIs+6Q/SHNaUG7
-lGX8Dgf24LvxX/++SkgVo9xLBtXefQeqYc+URFv2WfzNYMQYIb3B4vhfFec/wd1B
-jwC6Fb+bqeYC7cwOHknDJtf+zYBV7w==
-=kCxL
------END PGP SIGNATURE-----
+(Note that kvmtool will need to be updated to retry pre-fault on -EAGAIN, -EINTR
+ as this series can, albeit unlikely, return -EAGAIN.)
 
---8bQN+NXdpsvnwnuP--
+>
+> -aneesh
 
+--
+Cheers, Lorenzo
