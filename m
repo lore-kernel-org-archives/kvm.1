@@ -1,64 +1,63 @@
 Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECF0493D57
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 18:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6FF3493636
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 18:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790101778; cv=none; b=oW0H5d0mkoCOsHJMmqe36nCyhJJqtuKldEN6moxOmjNh5fYKt56gCIUHhV9UcZ94sYCv3TIXj1A5NuIgwUkCvfd2P+QNElYCYeeR7tpIYe3XqoIdodyYI5BAErTyYQ7YNHLRfdsy7fU6X+ZsqXHJ5Nb3eKyZ/K/3dYcZ0Zosf3M=
+	t=1790101783; cv=none; b=g9TbTaTMnm0FqQRBs669Q4k2dZ6MImbuK380rQBRHou97DJdksRqMv8ImeLxAe4Crx4IKpwILI0pCJHLiQ3A9lQQWbGL9aTN44DtBCAEFR7n0hfbzdW4F2mvkjxdx4wWCNlh4kS5bUw8nM9jy5FTVPbRszDGDrDJKDvUXwt8Yy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790101778; c=relaxed/simple;
-	bh=cfR5Tc8cPyr7CMqES84GrCGAqHdjC/kTxRxFWGkznFk=;
+	s=arc-20240116; t=1790101783; c=relaxed/simple;
+	bh=GWNjedkibxumoHAK01mIQABSW7U4B9phhkLLwIwFVQw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Dx7fbF0/m3bw7N/kKmz7VWb4OcSY6rzwx+gVqRbzPyl79SSSQR+w6IWZcBh5qLZZ5BLhiPaIxVhC4p+HnDvKqBITNB18krqA+S5mdsQVL5CP7Xd9z13/VlJKdqbu4+DiwnpjPb/WCfBgV1fhK/Ft1Rq/tuexZ3wApYyDRu7nSWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J329RoNU; arc=none smtp.client-ip=74.125.229.12
+	 MIME-Version; b=cvgbCMiH//BGC6oWOECwBN6ePOi+lpUfe2KYmonTf4p4uagzndc/Qg9rIc4/2YokcAOmWS6lKjT5bmGBOyzLTWROBpA/JGgam4XKsym+MLkuUndRUwFeiviNuXCpaUeDCE/mRmtkSGPxOAko92omn84k5cUCfCLmtsfVlAtHlAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LM8MuOIx; arc=none smtp.client-ip=74.125.229.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J329RoNU"
-Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-328664c1479so66838eec.3
-        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 11:29:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LM8MuOIx"
+Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-3286624d194so81168eec.3
+        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 11:29:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790101776; x=1790706576; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790101781; x=1790706581; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=pjvCz/V+hHRF2vZEcQUC+5VRgYkjP2X2UGtP/7PKl2I=;
-        b=J329RoNUhlNqUwcTqGTnEoInBcX98DC/NEUJ6rTNn9SvAOFN2nCwc2fENz7F5wZvpL
-         tI2ir6DuSG88KukyYTKf4G+5keu4Pg+ooFnzve8h1Sg0b8PxEM5QulEx0rd2PzTQVud3
-         O2KsqLVxnxMHLKU+FfloV+Yy4EN2EB619ws96oNNCN/JV54/4zyMZJcqGHOghZOnnElR
-         8WMG4f4cy6zO8oO8itOanyvz6gwYRW5AHXij4B42rU2oLsDB4Dzk/WRcM9brQFVA3X1h
-         hU73wGDJxwuxpqt4HfattOXWwISVSn+dqUYCjW/wNJO7//OFz/c389AkcqH5x34sMzry
-         981g==
+        bh=dSFKUXBkZGZNQnOO0S3ETacf8WntsJLIZhJqM465+7c=;
+        b=LM8MuOIxaMQEGJFVVfLpBjbzR7nZQzEoFHX9URU040LXzdYAs6m9CA2qe72HHK206x
+         z5nX7CeVBuS/oQvsEAYce7qsWPSder0Q9fhL9vDahSfn2BY+uQJqfje0b5M8eTQDGyqY
+         xyDG6QwU1khE3pyVMbuz8ikVs2jJIaaZTCdYTM3/SOg3nTBnvm7eF6imssJzyFZi230z
+         YfalgQakYy2WUnnFzthnoscJ60y7lyOqU7U9XjlRTwYTUX7550mhy+g9WsDc6p5tauER
+         xfe/sAs3MdehQe0OhcHblU712aKa5BhmHslt6lAUp5Y5VdmqnZQ/WAZ8Bmk9kKvcTwDP
+         ShMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790101776; x=1790706576;
+        d=1e100.net; s=20260707; t=1790101781; x=1790706581;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pjvCz/V+hHRF2vZEcQUC+5VRgYkjP2X2UGtP/7PKl2I=;
-        b=eMAMOHd6mfbkFxE2oxCfzFZ2h8p/eJS3T9s4gToFm/1/dGBGZVHG5PhPTgOq93a+5/
-         TtKGtyKzWQYVik/cHJIlJ7D7kQVvW1ltYhSTqpGkHIgzLwG5m7lgz43fzJf4xga6V5EW
-         mhlp5dS7n6zDZmr8DwMeJ4UQPtgLZR0S+rkL1zNrVe4EanyM7dK/At35+xEQc15dBWqM
-         9nicBeDbEq7lLChNsYorbWroLH1llMEyQScJP30QmkG31zj1e+5la920tSKmTI7kP/nY
-         3jC82vk4pmcjhG6cQK8Z8v/o/MdQHzp1d9Lt119qpBBAX2/c4b9fxUWGma1hAhvXTQru
-         BvNw==
-X-Gm-Message-State: AFuF++nKDnadtC3nqfTmNfhV9Px1dV/9BIuYnZ47DlWkqwAIW7ryTinQ
-	5PUQjRtvTqD1LMFPAJAM9dfEFb1EghCtQlFLzDZCDjaBIzY2cs5LMjTnndApeg==
-X-Gm-Gg: AYBFou04Jysj6Q2/BVN5k3e+ft4YjBBr2y6GesQCmhGG/xlLSptJWVemkyyEJjmox5v
-	1rVG56C5xcrCqVCfIjkAz/5o8MheSQ7Jv1Kxyd3q+KyBj+QkwWJDJfe/LUwnPxyeyCK16rfXTqb
-	pbretjzH4WTPJpPW+p00Z0obEQ7+lTZFyIDi/zIRoyKFF5RY9/2IORCl10HwaprOzrPzLCXq5Fk
-	kqFhYZT75Icq9PNMe5vEp8+1TnApfpnuD52iVq62aPmbwN+CpcFz46vu8kPEj9mUH6UCwwYNZWZ
-	KVl3LvdWD5l2y5K78UqGzXYdaZJnIdjb28tLT80Ue09rl5YLPviPo50KDN3wba+gANV5vo3uy16
-	/OwWpc+DRoFNOFbscFt4fGTOpAnm3GBOKtMckQDfHuhFojk9CWMJ2ox0DQrtieT20cc4NSGQbmE
-	+P8RNt7Z1uAhpUG49fBXKe6Cf40l48siiVZIsnFLuC6M5mEp5BDybLeRLtzL7Cxa3Ib7vkCnypv
-	kEuSVw4daggCOE8aQSK4U3vGwgcjLLhcmanPaX+1vwQSilTaDJjLPyRE6wvVwXlbe7AJhWi0H6a
-	t8liwg==
-X-Received: by 2002:a05:7301:d597:b0:33c:1521:89aa with SMTP id 5a478bee46e88-33e8d2ebdafmr126981eec.24.1790101775482;
-        Tue, 22 Sep 2026 11:29:35 -0700 (PDT)
+        bh=dSFKUXBkZGZNQnOO0S3ETacf8WntsJLIZhJqM465+7c=;
+        b=lJRWEF2BwjW3KwJV8GdhK+9zOpeXXlvEmIrqcQS/nKtybSOKajoeu/9jsWaI7xaALn
+         ja6b8XRMhadCkajsRpRVLpgktoSeogGonJFL6YmCtUe/etaeYbBUxAfxe0oNFb8I+dzy
+         knK0ITWMBInoAvHPSweHXKj28DvlJHnpoP6U4Z8WNtYgElk4TzOcNOk7kAghVQ/njgm1
+         I9NFftLotCN818bhaDdZTW5fTZQs4BVQDG05weWapekihEZDi/DIS2JXoggW824PTF66
+         pF2qzOtX3zFUQfkRZ6VedEK3EEIAk4XWbZFneHVOCuVWhNFx7iN70FFdgGNboV3pZtKV
+         pOEQ==
+X-Gm-Message-State: AFuF++lOTKmPHAG0OgkiyPTHKCL62rzEXRf28MGKXKsNelDw6SsmeAEW
+	85q3bNKS8xJHkFQPpvTy7D2Q+t+PUQYQYASuGKIJA4PhJcO4XEDApzYqvs6V1Q==
+X-Gm-Gg: AYBFou2UW4GLdsPkyXAZznznK6aD4XTAAUq+Md1QziH8RIY+mc8txsgV+OoSxn4giuh
+	Ovzhf25HGrDTkwXZouDfONWz+AREonBJ0DGDi0C74GBZ0+EfQqRNe+QbYVG3rSh0D89KgpvpXMU
+	hClysL5jjeDrju8wTa25zoUMOEzRWLcUn9avYBn0XBWy50nURufR4cOukk1xLZS8L3GddWx7z3z
+	Bez5BW6s/6Q0/ZTwKneJd9+oOOB0m1E/0eARvGAf56vtX/cTEDhskS+VPdDC5EJmtv5d52QQusb
+	0MaNDzyrcNLu/NUlYIE2rWC0TARYS1hyTbiBkLivJOu4EwQmSv4VxRnJLUwatsQoCMlgaBDLog/
+	Ty69Xj/6iD3T0RnfEVFh8xAC2nbcrqY/0rMF35VIEzUUrrABf79jIyOBA9k5d5ly4dlqIUl5noM
+	Jk76CMzzZOdaOuhy0D9rJL++8RpG36GRs/HdvUsHSUrZN5YovdGUoGIZLkMd1fo4Ipe60q/1w1w
+	OhYQzJZ6qCeBU0fsUdB3A/93iChifOj+PmSlCtJow6zC3EmAOvHnT3RrtYt
+X-Received: by 2002:a05:7301:700d:b0:33b:eadd:9006 with SMTP id 5a478bee46e88-33e8dcc70damr130602eec.23.1790101780602;
+        Tue, 22 Sep 2026 11:29:40 -0700 (PDT)
 Received: from pve-server.rlab ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33e939fdabcsm154315eec.3.2026.09.22.11.29.30
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33e939fdabcsm154315eec.3.2026.09.22.11.29.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 11:29:34 -0700 (PDT)
+        Tue, 22 Sep 2026 11:29:40 -0700 (PDT)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: kvm@vger.kernel.org
 Cc: Sean Christopherson <seanjc@google.com>,
@@ -73,9 +72,9 @@ Cc: Sean Christopherson <seanjc@google.com>,
 	Shrikanth Hegde <sshegde@linux.ibm.com>,
 	linux-kernel@vger.kernel.org,
 	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [PATCH v5 4/9] KVM: selftests: Split out a KVM_CREATE_VCPU helper that can fail
-Date: Tue, 22 Sep 2026 23:58:48 +0530
-Message-Id: <ea46f5af08bec1e6c4c3124a6a02c785983519a0.1790101179.git.ritesh.list@gmail.com>
+Subject: [PATCH v5 5/9] KVM: selftests: Make kvm_create_max_vcpus tolerate ENOMEM
+Date: Tue, 22 Sep 2026 23:58:49 +0530
+Message-Id: <25cdef9c45a1270dcad7e9c4140e56b6953eb27b.1790101179.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <cover.1790101179.git.ritesh.list@gmail.com>
 References: <cover.1790101179.git.ritesh.list@gmail.com>
@@ -87,82 +86,89 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-__vm_vcpu_add() currently asserts on KVM_CREATE_VCPU, which is what most
-callers want. But sometimes a test may want to handle ENOMEM without
-dropping all that other setup that __vm_vcpu_add() has.
+Some hosts (like in case of nested guest the hypervisor L0 might have
+quotas/limited resources for L1 guest) can run out of hypervisor
+resources before hitting KVM_CAP_MAX_VCPUS.
 
-This patch adds a helper __vm_vcpu_try_add() for such test cases and
-make __vm_vcpu_add() a wrapper around that.
+This patch make use of the helper we introduced in the previous patch
+(__vm_vcpu_try_add()) to tolerate such scenarios where an ENOMEM can
+occur.
 
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 ---
- .../testing/selftests/kvm/include/kvm_util.h  |  1 +
- tools/testing/selftests/kvm/lib/kvm_util.c    | 26 ++++++++++++++-----
- 2 files changed, 21 insertions(+), 6 deletions(-)
+ .../testing/selftests/kvm/include/kvm_util.h  |  3 +++
+ .../selftests/kvm/kvm_create_max_vcpus.c      | 21 +++++++++++++++----
+ tools/testing/selftests/kvm/lib/kvm_util.c    |  5 +++++
+ 3 files changed, 25 insertions(+), 4 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-index 9df16c8dc82a..aa521b383abe 100644
+index aa521b383abe..576bbebe0679 100644
 --- a/tools/testing/selftests/kvm/include/kvm_util.h
 +++ b/tools/testing/selftests/kvm/include/kvm_util.h
-@@ -784,6 +784,7 @@ void vm_mem_region_set_flags(struct kvm_vm *vm, u32 slot, u32 flags);
- void vm_mem_region_reload(struct kvm_vm *vm, u32 slot);
- void vm_mem_region_move(struct kvm_vm *vm, u32 slot, u64 new_gpa);
- void vm_mem_region_delete(struct kvm_vm *vm, u32 slot);
-+struct kvm_vcpu *__vm_vcpu_try_add(struct kvm_vm *vm, u32 vcpu_id);
- struct kvm_vcpu *__vm_vcpu_add(struct kvm_vm *vm, u32 vcpu_id);
- void vm_populate_gva_bitmap(struct kvm_vm *vm);
- gva_t vm_unused_gva_gap(struct kvm_vm *vm, size_t sz, gva_t min_gva);
+@@ -1064,6 +1064,9 @@ const char *exit_reason_str(unsigned int exit_reason);
+ 
+ bool kvm_arch_needs_naturally_aligned_page_tables(void);
+ 
++/* True if KVM_CREATE_VM / KVM_CREATE_VCPU may return ENOMEM. */
++bool kvm_arch_vm_create_may_enomem(void);
++
+ gpa_t ____vm_phy_pages_alloc(struct kvm_vm *vm, size_t nr_pages, gpa_t min_gpa,
+ 			     u32 memslot, bool protected, bool naturally_aligned);
+ gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t nr_pages,
+diff --git a/tools/testing/selftests/kvm/kvm_create_max_vcpus.c b/tools/testing/selftests/kvm/kvm_create_max_vcpus.c
+index 59ddc3757943..45a9d8b369b5 100644
+--- a/tools/testing/selftests/kvm/kvm_create_max_vcpus.c
++++ b/tools/testing/selftests/kvm/kvm_create_max_vcpus.c
+@@ -20,16 +20,29 @@
+ void test_vcpu_creation(int first_vcpu_id, int num_vcpus)
+ {
+ 	struct kvm_vm *vm;
+-	int i;
++	struct kvm_vcpu *vcpu;
++	int i, created = 0;
+ 
+ 	pr_info("Testing creating %d vCPUs, with IDs %d...%d.\n",
+ 		num_vcpus, first_vcpu_id, first_vcpu_id + num_vcpus - 1);
+ 
+ 	vm = vm_create_barebones();
+ 
+-	for (i = first_vcpu_id; i < first_vcpu_id + num_vcpus; i++)
+-		/* This asserts that the vCPU was created. */
+-		__vm_vcpu_add(vm, i);
++	for (i = first_vcpu_id; i < first_vcpu_id + num_vcpus; i++) {
++		vcpu = __vm_vcpu_try_add(vm, i);
++		if (vcpu) {
++			created++;
++			continue;
++		}
++
++		TEST_ASSERT(errno == ENOMEM && kvm_arch_vm_create_may_enomem(),
++			    "KVM_CREATE_VCPU failed for id %d, errno: %d (%s)",
++			    i, errno, strerror(errno));
++		TEST_ASSERT(created > 0,
++			    "KVM_CREATE_VCPU failed with ENOMEM before creating any vCPUs");
++		pr_info("Created %d vCPUs before ENOMEM at id %d\n", created, i);
++		break;
++	}
+ 
+ 	kvm_vm_free(vm);
+ }
 diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index 2be79c240ebf..7084ed90e4cc 100644
+index 7084ed90e4cc..b4d6b8167466 100644
 --- a/tools/testing/selftests/kvm/lib/kvm_util.c
 +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -1367,11 +1367,7 @@ static bool vcpu_exists(struct kvm_vm *vm, u32 vcpu_id)
+@@ -2112,6 +2112,11 @@ __weak bool kvm_arch_needs_naturally_aligned_page_tables(void)
  	return false;
  }
  
--/*
-- * Adds a virtual CPU to the VM specified by vm with the ID given by vcpu_id.
-- * No additional vCPU setup is done.  Returns the vCPU.
-- */
--struct kvm_vcpu *__vm_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
-+struct kvm_vcpu *__vm_vcpu_try_add(struct kvm_vm *vm, u32 vcpu_id)
- {
- 	struct kvm_vcpu *vcpu;
- 
-@@ -1385,7 +1381,13 @@ struct kvm_vcpu *__vm_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
- 	vcpu->vm = vm;
- 	vcpu->id = vcpu_id;
- 	vcpu->fd = __vm_ioctl(vm, KVM_CREATE_VCPU, (void *)(unsigned long)vcpu_id);
--	TEST_ASSERT_VM_VCPU_IOCTL(vcpu->fd >= 0, KVM_CREATE_VCPU, vcpu->fd, vm);
-+	if (vcpu->fd < 0) {
-+		int __errno = errno;
-+
-+		free(vcpu);
-+		errno = __errno;
-+		return NULL;
-+	}
- 
- 	TEST_ASSERT(vcpu_mmap_sz() >= sizeof(*vcpu->run), "vcpu mmap size "
- 		"smaller than expected, vcpu_mmap_sz: %zi expected_min: %zi",
-@@ -1404,6 +1406,18 @@ struct kvm_vcpu *__vm_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
- 	return vcpu;
- }
- 
-+/*
-+ * Adds a virtual CPU to the VM specified by vm with the ID given by vcpu_id.
-+ * No additional vCPU setup is done.  Returns the vCPU.
-+ */
-+struct kvm_vcpu *__vm_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
++__weak bool kvm_arch_vm_create_may_enomem(void)
 +{
-+	struct kvm_vcpu *vcpu = __vm_vcpu_try_add(vm, vcpu_id);
-+
-+	TEST_ASSERT_VM_VCPU_IOCTL(vcpu, KVM_CREATE_VCPU, -1, vm);
-+	return vcpu;
++	return false;
 +}
 +
- /*
-  * Within the VM specified by @vm, locates the lowest starting guest virtual
-  * address >= @min_gva, that has at least @sz unallocated bytes.  A
+ gpa_t __vm_phy_pages_alloc(struct kvm_vm *vm, size_t nr_pages,
+ 			   enum kvm_mem_region_type type, bool protected)
+ {
 -- 
 2.39.5
 
