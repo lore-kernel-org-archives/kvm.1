@@ -1,45 +1,33 @@
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB6F551981;
-	Tue, 22 Sep 2026 13:18:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5BF754B1B8;
+	Tue, 22 Sep 2026 13:21:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790083124; cv=none; b=CPhek7pDvU8nD+CSvCZpIwfh36cYvqvnviSmxlvt8whJlpnYoyg1amYS/WoA5UXHwj8hIeEUhS02kkQvi2EvgspnEusrdu9SX+f5IemEhUfu10SORbf99V2Rcm7qr16uQUTYqGr4uQz0gAO7VthbDupPHF0yfgk8JJCMtyy4Fkc=
+	t=1790083282; cv=none; b=ZNYeyegtdMZUmd6zVnAI/nrnzPqyMFcfi9WCzL18rEm4LO0/7UXCVWNc+u5IJZQ5RZvp/Xd6ex239qS2Oq+jx+wrwNSnKIs9Oct2/v8iFbxrmpuefkC115/2GlfhkZWQj/8QpyoX4EqCYxCq26Yrv5EI+yp4gq3PQK18k/Xtgoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790083124; c=relaxed/simple;
-	bh=9yuCs3ICIZlrJh2sfuNAqdmLCVu1sxYY38sjHiT2moc=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=jK1c/EaM0zyg6t+l0dxImw7KIzTBi0oS7BdH1vdvqXByPWrb/6MQI3utWTRKyrXZ+hFA8tRJDJZhgPd1kCVDt8Jpb4nucz6Z+nWW0735JuhhtalPoYFPJH52M60jRvxQecv9k3dZz1VQHym8lBUMFEjSKuOHiFk9uLq+z7C9LrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=l+u1niOC; arc=none smtp.client-ip=185.226.149.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1790083282; c=relaxed/simple;
+	bh=xrhxmYRJ3exYToZIwckZeEM/ye2FI4uMt5lT4VUw7/s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qWvQLHkH3iZpKRv8BDTQc0ypqdvOgGFdNkoI5e3ma7maBxJOtcwaui1G7qkKefvu92kILv5jyHHXDVpA9kMmE023ABE74GfSjGklXFuenFUM2GcoiB451cPAGeS1A6kki7yDSZkpfgNpDXPt5VabQwoxqUFKb8KSO9N0kxsJEkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Fezc+pwV; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="l+u1niOC"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1x90OD-005SZr-My; Tue, 22 Sep 2026 15:18:29 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector1; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
-	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
-	bh=1i2pY8YvcU7k2lAUuqqEj5EdeGuvSv0X4JAnH12lwRs=; b=l+u1niOCpKWaxb2/grmDTst070
-	DP1OY/UMkNo7C2z8Dn7imHGLCOngLoIOii5SxJaKz96M1HZsCbhCm4oC1rQCJXtV7X/CR3xJvs0jK
-	EhV3yGJ9CTzo3zNKOPdYtTjS65HWUYRgB5Vy3aTcZkKl8CvY4YSybl1ss47o+RNqxWFJzFpSzMut8
-	LQ0HxcJzGmLEZeJFbRVHwV9hoeNHoIuBCGHnCxQCoC2IFcmET88U655KykfsxEMALhSCTIfDUkTGq
-	WR5ArhqccLAiv8rfmRX25h9ajEQ2YKpU8LqTzRDZpm10GEJUS5swUwhJn73bxAF6Q/iIWn79r8U7a
-	IeoCO76w==;
-Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1x90O8-00054A-Er; Tue, 22 Sep 2026 15:18:24 +0200
-Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.95)
-	id 1x90Ny-00HI7x-W2;
-	Tue, 22 Sep 2026 15:18:15 +0200
-Message-ID: <0bc40e5c-8790-4a36-84bc-80e0bfe6b504@rbox.co>
-Date: Tue, 22 Sep 2026 15:18:13 +0200
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Fezc+pwV"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0641B1576;
+	Tue, 22 Sep 2026 06:21:15 -0700 (PDT)
+Received: from [10.0.128.141] (unknown [10.0.128.141])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 288CE3F528;
+	Tue, 22 Sep 2026 06:21:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790083278; bh=xrhxmYRJ3exYToZIwckZeEM/ye2FI4uMt5lT4VUw7/s=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Fezc+pwVgB2Q4yk8pMzu0lSh4oRsM2AoyznvJEKbquznTYI8da3CnVeUBg5R+vc4H
+	 EAaYOCenq71LSbSO9o8g+QEAXUpImhKENpTJvw/AQNx4pmVGKL78IA0b5kpccsoJrr
+	 SfO7aYxh7TtA8H3nK9IGl2MolrdU+LMBzoipwCM8=
+Message-ID: <749ab0c9-810d-4989-8fa5-1706124f05bc@arm.com>
+Date: Tue, 22 Sep 2026 14:21:13 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,97 +35,199 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Michal Luczaj <mhal@rbox.co>
-Subject: Re: [PATCH net v2 3/5] vsock: Enforce no-transport invariant for
- TCP_LISTEN sockets
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- "David S. Miller" <davem@davemloft.net>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Asias He <asias@redhat.com>,
- kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260915-vsock-connect-reset-closing-v2-0-a1d9abb472f7@rbox.co>
- <20260915-vsock-connect-reset-closing-v2-3-a1d9abb472f7@rbox.co>
- <aqp7CV9DnfsG1GJc@sgarzare-redhat>
-Content-Language: pl-PL, en-GB
-In-Reply-To: <aqp7CV9DnfsG1GJc@sgarzare-redhat>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v18] arm64: mm: Handle Granule Protection Faults (GPFs)
+Content-Language: en-GB
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260913070459.2547407-1-suzuki.poulose@arm.com>
+ <aqrGPK0lFBFXL2qY@arm.com> <985520fa-99b0-4620-bfee-8e6321b36104@arm.com>
+ <aqvCwM_73qMpqzvV@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <aqvCwM_73qMpqzvV@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 9/16/26 14:30, Stefano Garzarella wrote:
-> On Tue, Sep 15, 2026 at 03:15:14PM +0200, Michal Luczaj wrote:
->> A non-blocking connect() running in parallel with a blocking connect(),
->> combined with a racy listen() that hits right after a connect timeout:
->> TCP_SYN_SENT -> TCP_CLOSE -> TCP_LISTEN, while the connect() loop is still
->> in progress.
+On 17/09/2026 11:36, Catalin Marinas wrote:
+> Hi Suzuki,
+> 
+> On Thu, Sep 17, 2026 at 10:03:14AM +0100, Suzuki K Poulose wrote:
+>> On 16/09/2026 17:39, Catalin Marinas wrote:
+>>> On Sun, Sep 13, 2026 at 08:04:58AM +0100, Suzuki K Poulose wrote:
+>>>> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+>>>> index 75c3e463df2ef..dc3a87902a60c 100644
+>>>> --- a/arch/arm64/mm/fault.c
+>>>> +++ b/arch/arm64/mm/fault.c
+>>>> @@ -914,6 +914,24 @@ static int do_tag_check_fault(unsigned long far, unsigned long esr,
+>>>>    	return 0;
+>>>>    }
+>>>> +static int do_gpf_ptw(unsigned long far, unsigned long esr, struct pt_regs *regs)
+>>>> +{
+>>>> +	const struct fault_info *inf = esr_to_fault_info(esr);
+>>>> +	unsigned long addr = untagged_addr(far);
+>>>> +
+>>>> +	die_kernel_fault(inf->name, addr, esr, regs);
+>>>> +	return 0;
+>>>> +}
+>>>> +
+>>>> +static int do_gpf(unsigned long far, unsigned long esr, struct pt_regs *regs)
+>>>> +{
+>>>> +	if (!user_mode(regs) && !is_el1_instruction_abort(esr) &&
+>>>> +	    fixup_exception(regs, esr))
+>>>> +		return 0;
+>>>> +
+>>>> +	return 1;
+>>>> +}
+>>>
+>>> We discussed briefly offline. With the latest patches around, would we
+>>> ever end up with private memory mapped in the VMM and hence the GPF? If
+>>> not, I would still keep this handling but add a
+>>> WARN_ON_ONCE(user_mode(regs)).
+>>>
+>>> However, can we end up delegating a non-guest_memfd memslot page as
+>>> protected?
+>>>
+>>> I played a bit with codex and it reckons it's possible if a guest_memfd
+>>> memslot is deleted after its IPA range has been initialised with
+>>> RIPAS=RAM. Removing the memslot unmaps and undelegates any data pages
+>>> but leaves the RMM state as RAM. The VMM can then install an ordinary
+>>> memslot over the same GPA range.
 >>
->> Enforce the invariant. Prevent a socket from becoming a listener after
->> acquiring a transport.
-> 
-> We should improve this comment; it's not entirely clear to me, TBH.
-
-The race I was thinking about:
-
-sk is CLOSE UNCONNECTED
-non-blocking connect():
-  sk := SYN_SENT CONNECTING
-  enqueue vsock_connect_timeout()
-                                   blocking connect():
-                                     release_sock()
-                                     schedule_timeout()
-vsock_connect_timeout():
-  sk := CLOSE UNCONNECTED
-listen():
-  sk := LISTEN UNCONNECTED
-                                     lock_sock()
-                                     sk is TCP_LISTEN UNCONNECTED
-
-It's not really critical (blocking connect() just timeouts), but I thought
-the invariant should be enforced once and for all.
-
->> @@ -1973,13 +1973,13 @@ static int vsock_listen(struct socket *sock, int backlog)
->> 		goto out;
->> 	}
+>> This should be prevented by the following predicates:
 >>
->> -	if (sock->state != SS_UNCONNECTED) {
->> +	vsk = vsock_sk(sk);
->> +
->> +	if (sock->state != SS_UNCONNECTED || vsk->transport) {
+>> 1) Realms only support guest_memfd backed memslots for mappable memory.
+>> 2) Memslots cannot be created after the Realm is created, as is with the
+>> protected VMs. (This check seems to have been lost over the iterations,
+>>   but should be reinstated).
 > 
-> Are we changing the behavior when an error occurs?
+> If that's the intended model, I think it should work. But v18 doesn't
+> enforce either of them. I noticed the second predicate for pKVM only -
+> your 'Widen the scope of "protected" VMs' patch makes this restriction
+> explicit to pKVM.
 > 
-> If we call `connect()` on a socket (with no others running in parallel), 
-> it fails, and then when we call `listen()`, it now fails, whereas before 
-> it didn't. Can this happen? Is that what we want?
+> For the first one, if !kvm_slot_has_gmem(), it simply continues with the
+> registration.
+> 
+>>> A subsequent private-IPA S2 fault sees the non-guest_memfd slot, takes
+>>> user_mem_abort(), GUPs the user page and passes it to
+>>> realm_map_protected(). The userspace mapping remains present, so a later
+>>> EL0 access can generate a GPF.
+>>
+>> The Realm mem abort code should prevent this by ensuring that the
+>> memslot is backed by gmem for private_faults. With the mandate of
+>> in-place conversion, even the shared pages must come from the
+>> gmem backed memslots.
+> 
+> IIUC this only works if the memslot is gmem but I can't see what
+> prevents ordinary slots from being assigned to realms. I think we can
+> enter the user_mem_abort() -> realm_map_ipa() for ordinary slots unless
+> we prevent the deletion of the original slots and enforce gmem only
+> slots early.
 
-Ah, true, I didn't consider that. So yeah, we'd changing the behaviour.
 
-> If so, we should mention it at least in the commit description; if not, 
-> perhaps we should unassign the transport in the `connect` call.
+I had another look and we could handle this via 
+kvm_fault_is_gmem_abort() see in arch/arm64/kvm/mmu.c:
 
-Do you mean immediately un-assign on every transition from SYN_SENT to
-CLOSE (failure, timeout, signal)? Then we could also drop the re-assign
-logic. I think that's a nice idea.
 
----
+diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+index 87e49251e0447..af5a4bf961aae 100644
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@ -1731,6 +1731,9 @@ static int gmem_abort(const struct 
+kvm_s2_fault_desc *s2fd)
+         gfn_t gfn;
+         int ret;
 
-I've addressed all your other comments for v2 and went through Ashiko's
-reports (side effects of lockless peer_shutdown write, imperfect
-no-transport TCP_LISTENER enforcement). I've decided to try the
-eager-unassign approach. I think/hope this way we sidestep the lockless
-writes and enforce the invariant without breaking the API, while fixing the
-bugs.
++       if (!kvm_slot_has_gmem(s2fd->memslot))
++               return -EINVAL;
++
+         if (!perm_fault) {
+                 memcache = get_mmu_memcache(vcpu);
+                 ret = topup_mmu_memcache(vcpu, memcache);
+@@ -2277,10 +2280,12 @@ static bool private_ipa_fault(struct kvm *kvm, 
+phys_addr_t fault_ipa);
+  static bool kvm_fault_is_gmem_abort(struct kvm *kvm,
+                                     const struct kvm_s2_fault_desc *s2fd)
+  {
+-       if (!kvm_slot_has_gmem(s2fd->memslot))
+-               return false;
+         if (kvm_memslot_is_gmem_only(s2fd->memslot))
+                 return true;
++       /*
++        * For Realms, all private faults must be backed by GMEM.
++        * TODO: Handle Trusted device private memory mappings.
++        */
+         if (private_ipa_fault(kvm, s2fd->fault_ipa))
+                 return true;
+         return false;
 
-This should probably be RFC, but I'm posting as v3[1] so netdev's LLM can
-have a go (too). Hope I'm not breaking any workflow. Let me know what you
-think.
 
-[1]:
-https://lore.kernel.org/netdev/20260922-vsock-connect-reset-closing-v3-0-78907b8200d4@rbox.co/
 
-thanks,
-Michal
+
+Also, I have the following hunk for preventing memslot modifications.
+I will add this to v20 integration branch, which is almost ready ;-)
+
+diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+index 582b48e34486b..87e49251e0447 100644
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@ -2783,6 +2783,18 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
+         }
+  }
+
++static bool kvm_prevents_memslot_change(struct kvm *kvm, enum 
+kvm_mr_change change)
++{
++       /* Cannot modify memslots once a pVM has run or Realm created */
++       if (change != KVM_MR_DELETE && change != KVM_MR_MOVE)
++               return false;
++
++       if ((kvm_vm_is_protected_pkvm(kvm) && 
+pkvm_hyp_vm_is_created(kvm)) ||
++            kvm_realm_is_created(kvm))
++               return true;
++       return false;
++}
++
+  int kvm_arch_prepare_memory_region(struct kvm *kvm,
+                                    const struct kvm_memory_slot *old,
+                                    struct kvm_memory_slot *new,
+@@ -2791,12 +2803,9 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
+         hva_t hva, reg_end;
+         int ret = 0;
+
+-       if (kvm_vm_is_protected_pkvm(kvm)) {
+-               /* Cannot modify memslots once a pVM has run. */
+-               if (pkvm_hyp_vm_is_created(kvm) &&
+-                   (change == KVM_MR_DELETE || change == KVM_MR_MOVE)) {
++       if (kvm_vm_is_protected(kvm)) {
++               if (kvm_prevents_memslot_change(kvm, change))
+                         return -EPERM;
+-               }
+
+                 if (new &&
+                     new->flags & (KVM_MEM_LOG_DIRTY_PAGES | 
+KVM_MEM_READONLY)) {
+diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+index fc0297103f08b..6ec4e4487dff9 100644
+--- a/arch/arm64/kvm/rmi.c
++++ b/arch/arm64/kvm/rmi.c
+@@ -1596,6 +1596,7 @@ int kvm_activate_realm(struct kvm *kvm)
+         if (kvm_realm_state(kvm) >= REALM_STATE_ACTIVE)
+                 return 0;
+
++       guard(mutex)(&kvm->slots_lock);
+         guard(mutex)(&kvm->arch.config_lock);
+         /* Check again with the lock held */
+         if (kvm_realm_state(kvm) >= REALM_STATE_ACTIVE)
+
+
+Cheers
+Suzuki
+
