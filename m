@@ -1,134 +1,120 @@
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5148348F82A
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 18:40:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3338438F646
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 18:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790102433; cv=none; b=RNnJ+ltX51oTvyWtwfw83ty95fxhkF62AJAsaCxCCbrYhFaTJYjh/WvrnjrPTuS1fVgoxs+Zst/6u0NtqvfVwYc+B2OcmoyspD+fyA1vmUCbH8m3aLoNRpVedAIISGp48hZx1tOyuVrYbl7TTZvknxzeek0Y6PwBTw0WlSK1KiQ=
+	t=1790102594; cv=none; b=i23/n/uHTiL43mHQFJ4TIJzy1w6PtMkYoaR3yEUw9h7AEPKKInw9D9jBdpKwM8fJxP0TsULGav57kMr90Fk+gdq1TljVg0n5Ceeied1lec5FZLCpiVRkxLkNb2sWgnIt4bD/BzRKTPxt54CwH6c9nBxQ4ZN6uf0rhqSV7ZeWHWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790102433; c=relaxed/simple;
-	bh=ERtLhWAKheJkkB1jYfwWgoVSdNN2wmMgOYzp/tzF/bI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AGD4XdH92d+UvoayJuWqeb9FSzm26RMjmRocqYMSzYOJriigYkxxn5wQWDddI6r1ZlOe23WxVCe0+wlwKSJUFTMRwGb1WR6Rboapxyl93D34pH9qmvbNGJqfiKyDxInNNbOjy2FBaYD4k0h6U8jAX6LcvlVpeLptXxDrOz2G3tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gDh54AWb; arc=none smtp.client-ip=209.85.210.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1790102594; c=relaxed/simple;
+	bh=Fr2Vqtps46/eejn7mcwumYFYgkZG6S//v0L1BZVQvpk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=ABbQMrIy0bROaJ5UyYeAq9QMG6BJzd5I79Yh1b0YbzHUx+TAsAxFa3wYKhEvUL4wFzLBl6jsJtifhlMoeov7bCAV11tZUEz7F6PqQaF6nTdG5FNNoEfQL17tsXcPi930Y+GhZVG3k3hpmYAq0J+u+SjvezysjdWCLoZutQl2vCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TUZ0k0Xr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gDh54AWb"
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-855315ccb64so155715b3a.3
-        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 11:40:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790102431; x=1790707231; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=22qb4IkKc4A4y/WM6dRh1XUq626SL2Lh5OkUO2ttVr4=;
-        b=gDh54AWb42iXpIZrXmIZf09Q6OXRF0pMdfM4PXnUZ1AMAqtpsp2xwvbdZqMzmJ9zhv
-         fnOg5s2Ux7EC1z7EaCjgNFT0Evx+LV7/OVVdu/Rko1iRyrKudmddahovHgbDtDHef0Td
-         hjpKyHDVd2u+B3vxVExVNGJlvz5t3rfiC2ByeqdU9X8XpeUosZ9yCxD3vCK9fkYv/Yu7
-         v0q5cPWhSXeC5NU6TYOoVMLm6hxhHJe7bulqkdqJz2muo1W/nDD1hd1ZQsNpsoYyYy1Q
-         yJiRR1LlyUVrgqv7jzbSfuHQuGFG4bega/8tufhywMjG6sx84gfGV0KnK+BkNmJG763R
-         BcWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790102431; x=1790707231;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=22qb4IkKc4A4y/WM6dRh1XUq626SL2Lh5OkUO2ttVr4=;
-        b=LEf8glrdbmTsqp1ZJXAuanyjfNHuIQCL0cosXh0hY6x5R0us1LI+Ve1gW/2jYAe7/c
-         yuF/WbBr9OZFjInOlPE9TGAy4F/g8JAbt2wEMOXb1PTPkcTTq0X1IfZzc9d4wjBrv3PN
-         23zjY3wthVsdGfDEFngzHzlYGLUMs5e9rCMB52UKqDyV3/8JX1qJ3ZpN3St2rdDFv9GP
-         EbwvpteuI47FbaV05aWussutVnJF3AlVtquJHXWLROENm7MiJ/TZcneLhLQzW0MZEttD
-         JIZX9MLlCL1d31Th2NXxYIPfmT3bslSOSI0MO9VRkvYKabRNzwkJi284yW0xl67Lv+js
-         kqmg==
-X-Forwarded-Encrypted: i=1; AKwUvBxjWkEZhDkYSfBgfQCzHWC1EpfRMGE+I80XFW/7YFPFTkJC96DYOlifwmYvrI1+yTApz9c=@vger.kernel.org
-X-Gm-Message-State: AFuF++kcT6AsmKdobpsO+QPl8Twso5gqNxhzOm8aVZEspxJF9IRrZ7+c
-	cjD+IDqRIjoWpOQvmAEjL09nkR+i3vuz+Xt4KM4eGJZs9ZEiYytVD3vLVdsEIfwnXBRkzbqOafx
-	9Vn/ypA==
-X-Received: from pfbgd10.prod.google.com ([2002:a05:6a00:830a:b0:863:cabd:d30d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4396:b0:878:3507:8d5e
- with SMTP id d2e1a72fcca58-87d1bfae6abmr510835b3a.37.1790102430559; Tue, 22
- Sep 2026 11:40:30 -0700 (PDT)
-Date: Tue, 22 Sep 2026 11:40:29 -0700
-In-Reply-To: <arK8-Hec3-5o4jYs@gremlin>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TUZ0k0Xr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FAAB1F000FF;
+	Tue, 22 Sep 2026 18:43:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790102592;
+	bh=gdHLxBTtNj7IpLbEu+05uvU7S/L7yROUHaAebbdbwNs=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=TUZ0k0Xrkdhc/WXQH1xuHDqIPp+lTeX8b/Bc2/TivrhVgApGk124BShDFEiizBWMw
+	 AuoQhMKsKE3zcYSGd8oMspRn29ja3g+kX7U5dGeohZeSc3ACbmDMf/FHNOkhA1nA1N
+	 WoG7/xfam2dm4AtEw9RLQ0jdUhn0etiKIUR87AmdSaIi/16XyLaE8BgYOWYkQ27XVE
+	 EFzXup4UadKCKYkf6pFkE5Xz1OuuE/NTgCyFSNpLizSNZ7YDACPC8RAy8KTa0Pe0dU
+	 +FL/ayAWVkrD9pJK0Y6bGGC8fo5KO2WrcVNNtGkjo2bEMVbs490EOgeYydP80KCNPu
+	 G4eyaXQfXClsg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 1/9] KVM: PPC: selftests: add support for powerpc
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?Uml0ZXNoIEhhcmphbmkgKElCTSk=?= <ritesh.list@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <de328dc973a135a956a148dd83d8353b7157d452.1790101179.git.ritesh.list@gmail.com>
+References: <cover.1790101179.git.ritesh.list@gmail.com>
+ <de328dc973a135a956a148dd83d8353b7157d452.1790101179.git.ritesh.list@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 22 Sep 2026 18:43:12 +0000
+Message-Id: <20260922184312.9FAAB1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260922-kvm-arm-prefault-v3-0-787bd3bc7e3f@kernel.org>
- <20260922-kvm-arm-prefault-v3-1-787bd3bc7e3f@kernel.org> <arKxjsxuO1F5ExrY@kernel.org>
- <arK5n9HrbZMCOHOt@google.com> <arK5ynpRi7VbY7Ek@gremlin> <arK8seJVT9wYgVCP@google.com>
- <arK8-Hec3-5o4jYs@gremlin>
-Message-ID: <arLLnYvkXSFr6f6u@google.com>
-Subject: Re: [PATCH v3 01/14] KVM: Allow architectures to disallow pre-fault
-From: Sean Christopherson <seanjc@google.com>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Mark Rutland <mark.rutland@arm.com>, Fuad Tabba <fuad.tabba@linux.dev>, 
-	Randy Dunlap <rdunlap@infradead.org>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Jack Thomson <jackabt@amazon.com>, Jack Thomson <jackabt.amazon@gmail.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Vincent Donnefort <vdonnefort@google.com>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-	Leo Soares Passos <Leo.Bras@arm.com>, Wei-Lin Chang <weilin.chang@arm.com>
-Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Sep 22, 2026, Lorenzo Stoakes (ARM) wrote:
-> On Tue, Sep 22, 2026 at 10:36:49AM -0700, Sean Christopherson wrote:
-> > On Tue, Sep 22, 2026, Lorenzo Stoakes (ARM) wrote:
-> > > On Tue, Sep 22, 2026 at 10:23:43AM -0700, Sean Christopherson wrote:
-> > > > Rather than have kvm_arch_vcpu_allow_pre_fault_memory(), what if we add a more
-> > > > generic kvm_is_vcpu_loadable()?  That way we don't need to worry as much about
-> > > > the return value, the connection to vcpu_load() is obvious, and we don't need to
-> > > > add another pre-check if future (or cleaned-up existing?) ioctls want to do
-> > > > vcpu_load() in common code.
-> > >
-> > > ...this is exactly what I started out with.
-> > >
-> > > But then you are in a pickle, because _really_ you need to do that check in
-> > > vcpu_load(). Which is a void function. Which is called by every single
-> > > architecture all over the place.
-> > >
-> > > So you'd have actually no way of signalling the error back.
-> > >
-> > > Of course those places are arch code and you could say 'arches should know
-> > > better and if they call it it's fine not to call the arch 'can you load'
-> > > function.
-> >
-> > Yes, that's my vote.  It'd be easy enough to clarify that "rule" with a comment
-> > in linux/kvm_host.h.
-> 
-> I note you dodge the actually difficult question of what this wrapper function
-> would look like ;)
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] kvm: selftests: missing save/restore of %r1 and %r2 in ex_regs
+--
 
-Oh, I was thinking we wouldn't bother with a wrapper.  Because I agree that
-providing a complement to vcpu_load() would get all kinds of messy.  Though we
-could harden vcpu_load() with a WARN_ON_ONCE(), which in practice would prevent
-the vast majority of violations from making it to a final kernel release. 
+commit 2e259a0445aae14d6a7262b100f4677735b2217f
+Author: Nicholas Piggin <npiggin@gmail.com>
 
-> > > Instead you can make the predicate 'don't prefault on a not-yet-initialised
-> > > vCPU' which is pretty sensible I think, have a specific place to put it and
-> > > all's well with the world.
-> >
-> > But look at it from an x86 perspective.  Pretty much everyone will look at this
-> > and expect:
-> >
-> >   bool kvm_arch_vcpu_allow_pre_fault_memory(struct kvm_vcpu *vcpu)
-> >   {
-> > 	return vcpu->kvm->arch.pre_fault_allowed;
-> >   }
-> 
-> I'm not sure I really get your point here at all? :)
-> 
-> Why would it matter what people who are too lazy to go check the implementation
-> assume about an arch hook?
+KVM: PPC: selftests: add support for powerpc
 
-Because I don't hate the people that contribute to KVM, and want to make it as
-easy as possible for them to not make mistakes?
+This commit implements KVM selftests support for powerpc (Book3S-64). It
+provides virtual memory implementation for the radix MMU, ucalls using an
+unsupported PAPR hcall number, and real-mode guest interrupts.
+
+Link: https://lore.kernel.org/linuxppc-dev/cover.1781093720.git.ritesh.list=
+@gmail.com/
+
+> diff --git a/tools/testing/selftests/kvm/lib/powerpc/handlers.S b/tools/t=
+esting/selftests/kvm/lib/powerpc/handlers.S
+> new file mode 100644
+> index 0000000000000..b860f6a520a13
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/lib/powerpc/handlers.S
+
+[ ... ]
+
+> +virt_handle_interrupt:
+> +	stdu	%r1,-INT_FRAME_SIZE(%r1)
+> +	mr	%r3,%r31
+
+[ ... ]
+
+> +	mtxer	%r8
+> +	mtcr	%r9
+> +reg=3D4
+> +	ld	%r0,(0*8)(%r31)
+> +	ld	%r3,(3*8)(%r31)
+> +.rept 28
+> +	ld	reg,(reg*8)(%r31)
+> +	reg=3Dreg+1
+> +.endr
+
+[Severity: Medium]
+Does this restore loop in virt_handle_interrupt intentionally skip restoring
+%r1 (stack pointer) and %r2 (TOC base)?
+
+Because the loop starts at reg=3D4 and ends at %r31, any changes made to the
+stack pointer or TOC base by the C exception handler in the ex_regs
+structure will be silently ignored when returning to the guest.
+
+> +	addi	%r1,%r1,INT_FRAME_SIZE
+> +	rfid
+> +
+> +virt_handle_interrupt_p:
+> +	.llong virt_handle_interrupt
+> +
+> +handle_interrupt:
+> +reg=3D4
+> +.rept 28
+> +	std	reg,(reg*8)(%r13)
+> +	reg=3Dreg+1
+> +.endr
+
+[Severity: Medium]
+Similarly, does handle_interrupt skip saving %r1 and %r2 into the ex_regs
+structure before routing to the C handler?=20
+
+If a selftest takes an exception and attempts to inspect the interrupted
+stack or TOC by reading regs->gprs[1] or regs->gprs[2], won't it receive
+uninitialized values instead of the actual register states?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1790101179.gi=
+t.ritesh.list@gmail.com?part=3D1
