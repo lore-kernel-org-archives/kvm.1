@@ -1,125 +1,177 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E575648A8C6;
-	Tue, 22 Sep 2026 18:24:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC1A47C116
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 18:29:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790101498; cv=none; b=YM341vPoGieAPK50cNAfOzPkzN4hxuZSde1qKXCXBkxVacJ9P93NAtp644cArMZyibOjT5fsfQI7BKagmv54O2Cn9ID/YSMqJrD6cp1J2e/pwa+NVoCS7SL5WzE7yp3G7dLUZkgV48uEv4WNzzG8ZRrCzYgn9p21vMgjvGPg1UM=
+	t=1790101757; cv=none; b=MukIesRvaSkS7qxrytstYIiu7T5T6CmdfH1MSGIiHZ35PPzkWVcKcgyIsnvQhjK4zj/6AR+4hDLkAkvzP7BhhhwDkiIaYqdsd/jzFZr/KiEjui1Mu/eVHou12PP+48/+OFpKwBl0q+A0uDvluxHrhjCN8VFNEan3lVh2z+nOrn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790101498; c=relaxed/simple;
-	bh=M1QdGC9/7SmAKgdk0qnUo0g2gyETB9vgWmQbQiI9nBs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XwD8NSOna/jQHButT5rEFV/68X+0dbKtGS6g4C9ZjfyfHYYNSdzJ4S3TsWYlQ57TS7zEarB/jTCvX2VUQuqIuWx7Y2TuydnIxMbp4HWZiCLM/CViP6p8ILdomfkaSSOVP+zNd6RiBxx28RwBViMKxJDaVARmCiz3YV0GCq/lbtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X4f+O9cI; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790101757; c=relaxed/simple;
+	bh=aFAuN6Oq4Zw4ipPVDHTfDM24/NOJlJiRcfxatgz4T+8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bpyJm/uydz6niMK4r2ogCjuaqzwEC5IMO5X//fRtEbL+TpPiGXIMPJwb0WmOG9hZwCQKa2FL1M5xyZq0n4NZ56bcmL/pyGQMtfQevQNS5nOHiwG1FNadOdrrR70b71Khj0neJaLzvAUjViHzs8z7f1kLTWWRswPOJx4uZBI4Sh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HTyc4tA0; arc=none smtp.client-ip=74.125.82.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X4f+O9cI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790101496; x=1821637496;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=M1QdGC9/7SmAKgdk0qnUo0g2gyETB9vgWmQbQiI9nBs=;
-  b=X4f+O9cIg3rt7VKaWkJ4yIbAvaibx9kn7O0vcYNSnv530CDlYTQ4ubHP
-   j/RToX7AGu82kZwkgLYWSOGD1y//WsR0uq4N45En4JBpkqlV6DIkC2a/o
-   Bxr6xjwDtPETgMuSGS7fqzheymXEA9QzVDEQ3dzTr7oFOFLdGi9XDfko3
-   Ft7TIrnbvNvm5sMCb84O6ebq9uPcZOGZUHy3c/4She7I0CIZcjBed6/5X
-   YZOvsWnHMPxzQOBv0X8POR8JfGc6wpUJDwcVgDgwhbAexDkTSrKE5A2g4
-   S9ikKH1U1Y/ebOmo/F8DQ5udXTIozOILYtuxH1JBL8aOlR1utcpcFq30d
-   g==;
-X-CSE-ConnectionGUID: Z3WtXK26SUS6G7AYFS1fJw==
-X-CSE-MsgGUID: qHRmcjtmQ5WztP3hollgMg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="90603567"
-X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
-   d="scan'208";a="90603567"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 11:24:55 -0700
-X-CSE-ConnectionGUID: QonAaH4PR/2EdM8fSde0GQ==
-X-CSE-MsgGUID: T1UC0Ph9RLySShBkyqBvBQ==
-X-ExtLoop1: 1
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.31]) ([10.125.110.31])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 11:24:55 -0700
-Message-ID: <ba472411-aebc-43f7-b0f4-0003b71905c7@intel.com>
-Date: Tue, 22 Sep 2026 11:24:55 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HTyc4tA0"
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-3115c4451c8so69051eec.1
+        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 11:29:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790101755; x=1790706555; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=boc46Sj1HOU4tKyVBAaYU0tHsUhuDqMurhOITlCOjEQ=;
+        b=HTyc4tA05qQlWJCA+Mr9M1LLGWpjMvFDTfNtt728sKf9BiJz2L+QQg4V4lXQ7o2AYs
+         ntxzHAMk4uX/PHP2fHkeVYq8YdUi1pPnimTPyYKJGb83rcuVPaG2Dn3s9LUyBCAdMZOb
+         nAg67JoNYnD4Oxu82/3skMt0uB/HW1LJHDAJVLF6Ayg4ciASKbxEylsxOreeWXf7Hbk1
+         Bgp264cnKhZwpHqdBAGukrmnty3PsSEI2BJng0Lz1gfDl4HKnRjTG3LWCX5WhexehgUU
+         uxEDASNTk6GdLbZgukuymXqyjBUcNUYwAwKKQHnw+2tJjFAaFW7jwxEerqn8zwRzl8HF
+         uFeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790101755; x=1790706555;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=boc46Sj1HOU4tKyVBAaYU0tHsUhuDqMurhOITlCOjEQ=;
+        b=d87O2biTG281ytSXNlsY65CPrrNuEzKJ7zJNQ+9eX6jOZ+cnfCTslHsnywGheX+6QU
+         ReH51up2jWvAmC8Tt2gpcOQHxkWUpFUm+2J1hCIxrjrh4ww/PHRo3JfiUclteOMo8o8A
+         iHqXCrlUk9fPD57/ro1AO5uIevC5YrGetZix4NfSXYlGHkBnvLB1RrcJKjfgq3ryxarv
+         cuIlM080GAlt24dScK5l/8AQToX7zzonyxzh/utVhm1pCoBP9AQHdZ0WobsTx3aC+wF5
+         R10QPwh8zgjlVW9ZTrVb6GH7DhtsE0tOGHEOHmei6j5+vXHLzd00+m5XhGpIKQ4MsR1K
+         XrVw==
+X-Gm-Message-State: AFuF++nr60aNR806aa/wCJdbwVauU5lE9Kg93XqDtl2RWZhXPjtcikiz
+	7M1LaDGfW8I+UQDt5pX6++qVyaBbNm7hYKgskGEEB+zQzkYGozdqpMvuzF1QpA==
+X-Gm-Gg: AYBFou0muDQ1xccoHlWX48Ne/MgWHuDKfQZpyXw3zj4E+ocJQSbYOPnDDULzi73Y/3b
+	pa7k5+b7Z7IXicNvKz0RdJRR04r5nNlHoEBUUEgCA7POYggA6oyoCZIdj6559pnJfdEksSFAk1s
+	3cG75QGjUDBbOdkNIh4xmmHrXBCEHSZBCambquH75v88nA2gy9QFOP64sFNZ3o37kFpg4PIkk3o
+	ZRELVl9GXrohVTIK4SMQ3vO4gWOKsYwzXbVL5RLXtTUgRXHUo4PYFYs7y5A73o1RDzODQ0IDAaa
+	DX+Am5Mct3bySnY9pPgeC4c1ok87sQwGjCVc2hVNeCDVZys51MxrTKc42U3ZwG7B2iIwwrsK2u9
+	cWCEF9c81by2dggTBj+7TnwJZHS75+xeihpWFSDBl2W5SNETPOwLrCvm36ZSe8iJm56TW35wost
+	9+ab053ofbSSMeWZqYOy6d017DpOlaZ+BWfF+IQ2n6CLEbQIJGYQPUmhnBmjhOmf3ENdOESQ0Oi
+	7hBXR3co2o3cVr2aomSnXQHMKwpcIFPBU/g+bQY19Djy9n+5zE8mQcQO3F8
+X-Received: by 2002:a05:693c:8201:b0:332:946c:477a with SMTP id 5a478bee46e88-33e5ca9fe0cmr241891eec.16.1790101753804;
+        Tue, 22 Sep 2026 11:29:13 -0700 (PDT)
+Received: from pve-server.rlab ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33e939fdabcsm154315eec.3.2026.09.22.11.29.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Sep 2026 11:29:12 -0700 (PDT)
+From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+To: kvm@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Anushree Mathur <anushree.mathur@linux.ibm.com>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Harsh Prateek Bora <harshpb@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	linux-kernel@vger.kernel.org,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Subject: [PATCH v5 0/9] KVM: selftests: add powerpc support
+Date: Tue, 22 Sep 2026 23:58:44 +0530
+Message-Id: <cover.1790101179.git.ritesh.list@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] x86/early_printk: Add earlyprintk=tdx to drive the
- UART with TDVMCALLs
-To: "Verma, Vishal L" <vishal.l.verma@intel.com>,
- "rdunlap@infradead.org" <rdunlap@infradead.org>,
- "corbet@lwn.net" <corbet@lwn.net>, "x86@kernel.org" <x86@kernel.org>,
- "kas@kernel.org" <kas@kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "skhan@linuxfoundation.org" <skhan@linuxfoundation.org>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20260921-b4-tdx_earlyprintk_tdcalls-v2-0-ad1fde3f25fd@intel.com>
- <20260921-b4-tdx_earlyprintk_tdcalls-v2-2-ad1fde3f25fd@intel.com>
- <12013d91-b945-40b9-a6e0-a025460eab72@intel.com>
- <58df7c2c57f2e00b0322216ec56196781023ce62.camel@intel.com>
- <94ea99fc4ba332a07530ced72284c2193aaedecd.camel@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <94ea99fc4ba332a07530ced72284c2193aaedecd.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/22/26 11:18, Verma, Vishal L wrote:
-> As a thought exercise, I changed this to just use ttyS0 which is the
-> defined default, and that changes the setup hunks to look like below
-> (not thoroughly tested or anything yet). Would you prefer this instead?
+Patch v4 -> v5:
+==============
+- Fixed the issues reported by Anushree while running on kvm on powervm
+  (nested).
+- Fixed memslot_perf_test on powerpc.
 
-That looks fine to me.
+PATCH v3 -> PATCH v4:
+==================
+- Rebased on top of Sean's new page allocator patch series v2 [1]
+  This allowed to drop and patch-2 since it will now come from Sean's
+  v2.
+- Addressed review comments from Sean - squashed patches 6-10 in patch-1 of
+  this.
+- Dropped patch-5 to print vcpu_id when KVM_CREATE_VCPU ioctl fails.
+- Added additional patch-3 to this series to allow dirty_log_test to run on all
+  big-endian machines.
+
+[1]: https://lore.kernel.org/kvm/20260902164123.2546762-1-seanjc@google.com/
+[v3]: https://lore.kernel.org/linuxppc-dev/2d2c46be7f051c7f1c645afaec67f57067d37a81.1781093720.git.ritesh.list@gmail.com/
+
+Testing updates:
+================
+I have done some fair amount of testing of the selftests both on real HW and
+using various combinations on qemu (powernv+LE (default), pseries+cap-nested-hv,
+pseries+cap-nested-papr, powernv+BE). There were few powerpc kvm kernel fixes
+which were identified as part of this work. I will send those patches separately
+as those anyway needs to go in separately.
+
+<pasted snippet of cover letter from previous versions>
+=======================================================
+
+Hi All,
+
+This series primarly adds KVM selftests support for powerpc (64-bit, BookS,
+radix MMU).
+
+This patch series is originally Nick's work. I have mainly only rebased it on
+the latest upstream tree. Since the rebase required few changes to all the four
+patches (Patch 1-4), I have dropped the earlier Acked-by from Michael Ellerman.
+
+Since the last series was posted three years ago [1], I am resetting the version
+to RFC. This rebase was done as part of a larger effort to improve the selftests
+infrastructure for Linux on PowerPC tree. Thanks to Harsh and Maddy for their
+help on this.
+
+
+Nicholas Piggin (1):
+  KVM: PPC: selftests: add support for powerpc
+
+Ritesh Harjani (IBM) (8):
+  KVM: selftests: Enable kvm_create_max_vcpus test for powerpc
+  KVM: selftests: Don't limit LE dirty-bitmap bitops to s390x
+  KVM: selftests: Split out a KVM_CREATE_VCPU helper that can fail
+  KVM: selftests: Make kvm_create_max_vcpus tolerate ENOMEM
+  KVM: selftests: Limit the number of VM creates in hardware_disable_test
+  KVM: PPC: selftests: Make nested case on pseries LPARs as resource constrained
+  KVM: PPC: selftests: Skip idle-page check when running nested on pseries LPAR
+  KVM: selftests: Move memslot_perf_test off the 256M ELF load address
+
+ MAINTAINERS                                   |   2 +
+ tools/testing/selftests/kvm/Makefile          |   2 +-
+ tools/testing/selftests/kvm/Makefile.kvm      |  10 +
+ .../selftests/kvm/access_tracking_perf_test.c |  11 +
+ tools/testing/selftests/kvm/dirty_log_test.c  |  12 +-
+ .../selftests/kvm/hardware_disable_test.c     |   7 +-
+ .../testing/selftests/kvm/include/kvm_util.h  |  13 +
+ .../selftests/kvm/include/powerpc/hcall.h     |  17 +
+ .../kvm/include/powerpc/kvm_util_arch.h       |  22 +
+ .../selftests/kvm/include/powerpc/ppc_asm.h   |  32 ++
+ .../selftests/kvm/include/powerpc/processor.h |  46 ++
+ .../selftests/kvm/include/powerpc/ucall.h     |  21 +
+ .../selftests/kvm/kvm_create_max_vcpus.c      |  29 +-
+ tools/testing/selftests/kvm/lib/guest_modes.c |  20 +-
+ tools/testing/selftests/kvm/lib/kvm_util.c    |  39 +-
+ .../selftests/kvm/lib/powerpc/handlers.S      |  93 ++++
+ .../testing/selftests/kvm/lib/powerpc/hcall.c |  45 ++
+ .../selftests/kvm/lib/powerpc/processor.c     | 522 ++++++++++++++++++
+ .../testing/selftests/kvm/lib/powerpc/ucall.c |  22 +
+ .../testing/selftests/kvm/memslot_perf_test.c |   2 +-
+ 20 files changed, 942 insertions(+), 25 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/include/powerpc/hcall.h
+ create mode 100644 tools/testing/selftests/kvm/include/powerpc/kvm_util_arch.h
+ create mode 100644 tools/testing/selftests/kvm/include/powerpc/ppc_asm.h
+ create mode 100644 tools/testing/selftests/kvm/include/powerpc/processor.h
+ create mode 100644 tools/testing/selftests/kvm/include/powerpc/ucall.h
+ create mode 100644 tools/testing/selftests/kvm/lib/powerpc/handlers.S
+ create mode 100644 tools/testing/selftests/kvm/lib/powerpc/hcall.c
+ create mode 100644 tools/testing/selftests/kvm/lib/powerpc/processor.c
+ create mode 100644 tools/testing/selftests/kvm/lib/powerpc/ucall.c
+
+--
+2.39.5
+
