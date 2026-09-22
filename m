@@ -1,129 +1,127 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8309844F54B;
-	Tue, 22 Sep 2026 17:34:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B59544D73
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 17:36:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790098446; cv=none; b=TaIfcAhYwSfJnxgODlUS0IXn6d83vux+VXRlA2oIxN7qkBABhK6lCj26ShrhY0TbvPURBYwLUe2GipXUOtsUWQYyCXOMRF2oFBOuB3qF2Ov9k73PUzuWVFke+t//VULnz0e4FE8cFeuZBhOTqoxrBiFZRUBSZh9WV0RR/whJV8M=
+	t=1790098612; cv=none; b=GPMQHtGoTm6MuEQmn8YI5lUBQ2NhTXwyMUNgHzoZLfovcNEjw1aIbhifcgiokyKruiqqyLLcK76JqbmEEmiNotbNzxzC25wC9iee9/OpEO2+yR1SF31Yh3wxJNZPu6OPgikV+92uHqVg89lXTSLi5vUahcRY+CBTWWA8nf79YJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790098446; c=relaxed/simple;
-	bh=+ierMJ5BNyB1B9aHpPh9fRXepBsJBV6naGk/gxDdPAM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eAfQK26l1qXBfpalctn2n+zNivfSRAqAekE1U6u6Wq8tPH1IYGvHurt/tXT71ERK3KxKIYomyvdYoAcrLnAAVmB6TKVEtk7FxD/gZ/LJJLnZ58fX/Zveb0MAehc8B1pMFGYat4m/inGLJxxN9+s69bg4oyNqkLAthu7DIbAILVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cuMBiKEF; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790098612; c=relaxed/simple;
+	bh=pqfxOYdbk3G5uQ189p1pwNugqSafNpPZSMqnl+pMNDk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=DrMCweQi6mxwyz/wsmeYq2FnMMr1DjKe0jHzo7cJ0zt0UZo1Opq7cgfNGysG2u25U+GaW+iY9x+vPxnRj7e73TxB4bbsaZLM5H8R/25BQ1Gab16ShAwpSx6Mj71lgZuGA5wGq6fD1uN8ihdsPv91ZSeb1rZ78K96ncVp2W/K5go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oM1ZLTAy; arc=none smtp.client-ip=209.85.214.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cuMBiKEF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790098444; x=1821634444;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=+ierMJ5BNyB1B9aHpPh9fRXepBsJBV6naGk/gxDdPAM=;
-  b=cuMBiKEF7XQ/0sKyJYjO2LUPSztjpIG5qSmMNw0NrcRTYh8XDPgnyCXb
-   XNsXxcvkTE+BCUhRoonbkUS/NxYSIz5Q4o7el5QTFnNugm5zmV/h9RsDE
-   R1Mx35Nn8WefxzM4xQGAYYadHHO1EO8AQtpt/A7FtbgqvI4vk9roWa8D1
-   XEqhqAmzGmtu9dFl7feurLD0h+PS3hhITLxxTAO4/0sj4Uz9xTZZEitLQ
-   4uVDTMzKKJZJL0N17UVq2nM/bCZrCfTYE5xwRzXbtvW1QmBFOn/gj8Cmn
-   REjQw6bBKwumJi6MIivl9qhqmVzRshEnc+bhDYJP8T/SDQKeqkkl6E/fG
-   w==;
-X-CSE-ConnectionGUID: 79u+1pilSuKUQ3OOtokSoA==
-X-CSE-MsgGUID: /D4JYAEIRWyhWJeI9Q4ptQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="101314727"
-X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
-   d="scan'208";a="101314727"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 10:34:03 -0700
-X-CSE-ConnectionGUID: f/F4kJrxSaKtFgFInBOCQQ==
-X-CSE-MsgGUID: SqbVynnPSVODHhdi1+tVjg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
-   d="scan'208";a="272433513"
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.31]) ([10.125.110.31])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 10:34:02 -0700
-Message-ID: <1bb206f7-3951-4579-b3b2-dcdbe3ce06a9@intel.com>
-Date: Tue, 22 Sep 2026 10:34:02 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oM1ZLTAy"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2dc92350888so1217705ad.3
+        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 10:36:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790098611; x=1790703411; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gMBUcj03qoQAyG1GKCyEGFSnmBsF37yewOw9nu3IXkc=;
+        b=oM1ZLTAyP/iuDIrEN/1s/ssMc/qjOS4GrxyBzqHMVVERK2b3yj7f1Tyqc9F3udzJ/S
+         h7JBV0Z+qXLBd9KMzr0uhXevBPRDNSTDckL9Af+u99518jNLE3RsiuP9HN9twCvckg3y
+         /qlNsySx2Cm64UCewyIdM93WDi3UsNzXw0RHuGdgb+kvdzh0d5AtZq55ohB6Rqix/Bb7
+         qOf1EPwQNagvNnKVog9RgJrnzuyVJJ88V2vRLsznimq70j6+OHs62jP9kyp+bHiQNFJ/
+         PDWwIg3KSqj7aKgpHg2c/DEG9FZnF2wGnq5q5trQjcUc4t8XqEJAtajrmbuGfLkd8cRp
+         I/zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790098611; x=1790703411;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gMBUcj03qoQAyG1GKCyEGFSnmBsF37yewOw9nu3IXkc=;
+        b=FqJIeR09g/eVyPUEZwqKs0SL/AhQKu9IEHfFpV7jq6SlC8REVGuicPujnOt5RAGsaD
+         muXKBNpKbB5QUzNRJN3Z6Q3oL9RZYIPj77IHTH7cJwWfa9Xx06IkXE+Xw6XmU/vpMaII
+         24e0OsKA9qXLmigil5Efg6afZwftVGaoPQcIDh5iteecjPtx4HeFVnvFzIcvazkRrba+
+         TlPF76s1cuDFdsKko2B7Iesi0Np0FDW+ec49p+qnMy+y1bDIqm68VZvCKOEGBtl1gc60
+         gdnUYPQFzHR7KhaDu7BJyJzm0e1aU1qqDD1BsPCb1dxZ6JRD9xculiNiOL6CoGi0wsBV
+         nCrA==
+X-Forwarded-Encrypted: i=1; AKwUvBx9ob+hVzwOpdzBhEvDnixZam6rssCeXZcKBXXJg+SORrVETRtcqRQL0alojRl7BM7ftuI=@vger.kernel.org
+X-Gm-Message-State: AFuF++mDKc6KH+nd87MEu59XKJLfRMXIohA7tRgTyowZIn9jBw4eUWEZ
+	RV62w1Mms3+eaBdrkXCLy97/nQYrPuPAFEPhQRJsN3BSxXeZnaEoKm0jtwRn+cs2qyydheD76Y0
+	GGpa2ug==
+X-Received: from plhz10.prod.google.com ([2002:a17:902:d9ca:b0:2df:4a0d:5ac])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:4b27:b0:2dd:c100:a5d9
+ with SMTP id d9443c01a7336-2df69df7453mr924125ad.45.1790098610429; Tue, 22
+ Sep 2026 10:36:50 -0700 (PDT)
+Date: Tue, 22 Sep 2026 10:36:49 -0700
+In-Reply-To: <arK5ynpRi7VbY7Ek@gremlin>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/4] virt: tdx-guest: Use a variable to store the Quote
- buffer size
-To: Peter Fang <peter.fang@intel.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org,
- Binbin Wu <binbin.wu@linux.intel.com>,
- Tony Lindgren <tony.lindgren@linux.intel.com>,
- Sean Christopherson <seanjc@google.com>,
- Artem Bityutskiy <artem.bityutskiy@intel.com>
-References: <20260915092632.2822169-1-peter.fang@intel.com>
- <20260915092632.2822169-4-peter.fang@intel.com>
- <620e7e38-4287-431c-8285-575c84aa1f6a@intel.com>
- <7ddf42ab-2f78-4edd-be39-ff9e5156d51c@intel.com> <arKtJxNMYHYSfXuO@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <arKtJxNMYHYSfXuO@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260922-kvm-arm-prefault-v3-0-787bd3bc7e3f@kernel.org>
+ <20260922-kvm-arm-prefault-v3-1-787bd3bc7e3f@kernel.org> <arKxjsxuO1F5ExrY@kernel.org>
+ <arK5n9HrbZMCOHOt@google.com> <arK5ynpRi7VbY7Ek@gremlin>
+Message-ID: <arK8seJVT9wYgVCP@google.com>
+Subject: Re: [PATCH v3 01/14] KVM: Allow architectures to disallow pre-fault
+From: Sean Christopherson <seanjc@google.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Mark Rutland <mark.rutland@arm.com>, Fuad Tabba <fuad.tabba@linux.dev>, 
+	Randy Dunlap <rdunlap@infradead.org>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Jack Thomson <jackabt@amazon.com>, Jack Thomson <jackabt.amazon@gmail.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Vincent Donnefort <vdonnefort@google.com>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+	Leo Soares Passos <Leo.Bras@arm.com>, Wei-Lin Chang <weilin.chang@arm.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On 9/22/26 09:30, Peter Fang wrote:
-> The pointer to this buffer is "void *quote_data" which probably needs a
-> better name too.
+On Tue, Sep 22, 2026, Lorenzo Stoakes (ARM) wrote:
+> On Tue, Sep 22, 2026 at 10:23:43AM -0700, Sean Christopherson wrote:
+> > Rather than have kvm_arch_vcpu_allow_pre_fault_memory(), what if we add a more
+> > generic kvm_is_vcpu_loadable()?  That way we don't need to worry as much about
+> > the return value, the connection to vcpu_load() is obvious, and we don't need to
+> > add another pre-check if future (or cleaned-up existing?) ioctls want to do
+> > vcpu_load() in common code.
+> 
+> ...this is exactly what I started out with.
+> 
+> But then you are in a pickle, because _really_ you need to do that check in
+> vcpu_load(). Which is a void function. Which is called by every single
+> architecture all over the place.
+> 
+> So you'd have actually no way of signalling the error back.
+> 
+> Of course those places are arch code and you could say 'arches should know
+> better and if they call it it's fine not to call the arch 'can you load'
+> function.
 
-Yes, please.
+Yes, that's my vote.  It'd be easy enough to clarify that "rule" with a comment
+in linux/kvm_host.h.
 
-Also, does it really not have a type?
+> But you're still stuck with the problem of where exactly you put this check.
+> 
+> So then do you put that check in a wrapper around it?
+> 
+> Instead you can make the predicate 'don't prefault on a not-yet-initialised
+> vCPU' which is pretty sensible I think, have a specific place to put it and
+> all's well with the world.
+
+But look at it from an x86 perspective.  Pretty much everyone will look at this
+and expect:
+
+  bool kvm_arch_vcpu_allow_pre_fault_memory(struct kvm_vcpu *vcpu)
+  {
+	return vcpu->kvm->arch.pre_fault_allowed;
+  }
+
+> > I'd also be tempted to say it can be a macro, not a __weak function.  E.g.
+> 
+> Yeah it can be many things but why would you want a macro if you could possibly
+> avoid it? :)
+
+Because it allows arch code to dererefence "struct kvm_vcpu" in kvm_host.h,
+i.e. allows "inlining" the check.
