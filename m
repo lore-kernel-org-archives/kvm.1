@@ -1,113 +1,89 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7E04189BA;
-	Tue, 22 Sep 2026 09:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43CC456DF7;
+	Tue, 22 Sep 2026 09:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790068987; cv=none; b=PGUZnEiCYQRKfjkIHeKIoDE41dxsXvrcCk54A7JxNzi4NwHrs9+UYsBxZDWcBMV5/nHwY5y/6zwn38LiSBq1jr3cVUvDJX8sXBReqseTdUMbOa4Nyoov8ZrFtyZRnuK4Z8F+qNUoCgVAtoeZxsVrd5LOHWy5ODCVkwEBC7y7vuc=
+	t=1790069280; cv=none; b=RU6mh1GuIEarH8VWsNG+9+hN+T2O8RuoHKcWrrszvS3aU5soH7IJz8hUTFlkD8h3cUY3EmdSC9rmvwo3M7sFnsX8QLiUbU+TBEO0l2KgjaKdbm133zZU6fH4fmQM2y+EbCqRUQEZF5VM7s7E3NeFISih4m4mGb0NyHxLgTjTjXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790068987; c=relaxed/simple;
-	bh=FtBsQVszZToNZFo4FDYyz6W2EQJ6IchG7TUR9qBW2W0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=JJy+3FoeHWY3S22Up8DdyF9QJZcwXDhY8AbPSFqWKL2UOo9mEQdkh1rRcqVNfuV622XQb7Tzc6k8Be38LJz0C1A74cquHwbEVTa3plyWwW7YGWZO/JQMKmW6aWJQzim0fmf6loOyZzOTgTSDaRWVIG3/Ef+yhcCQ0oqVA06Ibxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dxe2mLJ1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790069280; c=relaxed/simple;
+	bh=gS3AFki51Z44v57VCMt1yUS9ZPFvANxOrRZ4wXkAYmI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uhB7zD8x69ckrqfGITzcQqx5hDONamZXrUaWh0OuzXnHLEYmQlajYyI+F7yXJY8NPwWSkRXMMKg8b2kQHc2e4hyPzmcoX3RiA7zACba9CAGvGc6FOervze9fxJvkkJAFCmQfKYFxNGyFYSiw7Jz+0ROvLN+7dB3zfpbO/7gRs9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P93Y2JwM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dxe2mLJ1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A6E1F000FF;
-	Tue, 22 Sep 2026 09:22:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P93Y2JwM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460301F000FF;
+	Tue, 22 Sep 2026 09:27:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790068986;
-	bh=NutOSYDLx4tH7KuShcZDI2ZCU5oaHMNdqUgaoku7+KE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=dxe2mLJ1DOdNhNV3xzN1UWDf+WAxUJqwBE4m6EJ8NqGqMYw2Un9GqdAuGdl+aORRK
-	 OOuly+6n/2Smj6x6nJ/bOPD3LPqGVwEgru3T9Vb+N85YpEQzsVx7tkk452Eeek4d/v
-	 X2tCmChMlWALczUB/ok3OKDy5Pkriv+suNvrO/+iJyW8AH3cGofJxfWC9J78D8d7Y1
-	 hlBIEb3Pyp1cOg9/cbPJRDn08GOTBEbkvDNtthfYmxt2g83xX9j2cEdBLyAulmkStx
-	 hP52w+r2XFU8Qifn8Fz2BbYPQ8i2S5lOEPECaC6ZD6f2/BSRfM/DG0E3+4HtLwkf4u
-	 9Rucyt3uOjauA==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
-	will@kernel.org, catalin.marinas@arm.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
-	oupton@kernel.org, gshan@redhat.com, joey.gouly@arm.com,
-	tabba@google.com, yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com, alpergun@google.com,
-	fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
-	lpieralisi@kernel.org, enju.kohei@fujitsu.com
-Subject: Re: [PATCH v18 00/23] KVM: arm64: CCA: Add basic plumbing for Realms
-In-Reply-To: <aqrsmUTxDVbKJn8k@p14s>
-References: <20260915160141.3543048-1-suzuki.poulose@arm.com>
- <aqrsmUTxDVbKJn8k@p14s>
-Date: Tue, 22 Sep 2026 14:52:56 +0530
-Message-ID: <yq5aecel3aj3.fsf@kernel.org>
+	s=k20260515; t=1790069279;
+	bh=koizuzCvTqcQymkCuZR6nRMdDkAOhPlxoac5NyN6ips=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=P93Y2JwMRUD+FjDX9JvlrJ4sdffhqSpMhQ3xyG2fMIU7w46V1TqTlurEZHFvSSmnp
+	 2eCbfQf/foqQ/lkHF+f7ldipUiwNNQN7Y6VjMqHQ9MMC12Ja10TNRz+PBB7dYo63HN
+	 1p45XqVVe6G71spiFanf/g1AOhtAq6jjqqf2EPcBv4PQIobYrP49/5M4kREllclt/X
+	 L5hwGCaBqXR9wDzE2cl68BHXQw4yQaN9tbvaZwd7fHT0B6gO8IZMywYJuK8wPdg+xf
+	 2ZFKuqemyBIUzzqWh1b1M3W+Dt4g4n1tpq/O+4GBRiuEtrGT7YOxV1miHkxHvRpX74
+	 sSTSkzvA+KpeQ==
+Date: Tue, 22 Sep 2026 12:27:54 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Logan Gunthorpe <logang@deltatee.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
+	Ankit Agrawal <ankita@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	"Joerg Roedel (AMD)" <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
+	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	linux-rdma@vger.kernel.org, kvm@vger.kernel.org
+Subject: Re: [PATCH v7 15/19] PCI/P2PDMA: Document TLP-class routing
+Message-ID: <20260922092754.GC563127@unreal>
+References: <20260920-fix-p2p-acs-v4-0-v7-0-ca0828ab697c@nvidia.com>
+ <20260920-fix-p2p-acs-v4-0-v7-15-ca0828ab697c@nvidia.com>
+ <85bb90f0-5a02-4e35-9ed6-ad7e67c1c0d8@deltatee.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <85bb90f0-5a02-4e35-9ed6-ad7e67c1c0d8@deltatee.com>
 
-Mathieu Poirier <mathieu.poirier@linaro.org> writes:
+On Mon, Sep 21, 2026 at 04:16:56PM -0600, Logan Gunthorpe wrote:
+> 
+> 
+> On 2026-09-20 05:41, Leon Romanovsky wrote:
+> > +A path is bus addressable only where both directions route directly, so with
+> > +nothing enabled every class is.
+> 
+> I don't understand the sentence.
 
-> Hi Suzuki,
->
-> On Tue, Sep 15, 2026 at 05:01:18PM +0100, Suzuki K Poulose wrote:
+I tried to say that we need both Requests and Completions route
+directly.
 
- [ ... 42 lines skipped ... ] 
+Claude suggested something like that:
+---------------------------------------------------------------------------
+Combining the two tables gives the mapping type: a class is bus addressable
+when its Request and its Completions both route directly, a blocked Request
+is not supported because Translation Blocking rejects the Address Type
+wherever the Request is addressed, and anything else goes through the host
+bridge. With no ACS control set anywhere, every class routes directly.
+---------------------------------------------------------------------------
 
->> 
->> [0] Arm CCA KVM Support v16 : https://lore.kernel.org/all/20260803134403.80630-1-steven.price@arm.com
->> [1] Linux firmware RMI https://lore.kernel.org/all/20260912083611.2513845-1-suzuki.poulose@arm.com
->> [2] Linux GPF Host https://lore.kernel.org/all/20260913070459.2547407-1-suzuki.poulose@arm.com
->> [3] https://git.gitlab.arm.com/linux-arm/linux-cca/ cca/cca-host/kvm-v18/integration
->> [4] https://support.arm.com/documentation/den0137/2-0bet3/
->
-> When testing on the FVP model with the above baselines, I get the following
-> error messagaes in a loop, preventing the system from reaching the command line:
->
-> [    3.112577] Freeing unused kernel memory: 3520K
-> [    3.115398] Run /sbin/init as init process
-> [    3.142926] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    3.150111] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    3.177190] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    3.197194] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    3.217188] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    3.237194] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    3.257181] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    3.277189] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    3.297193] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    3.317188] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
-> total 512 (slots), used 511 (slots)
-> [    8.157185] swiotlb_tbl_map_single: 241 callbacks suppressed
->
-> I get the same result with v17.  Have you seen this before?  Perhaps a kernel
-> option that needs to be adjusted?
->
+Thanks
 
-This is due to a change in the swiotlb setup.
-
-https://lore.kernel.org/all/yq5azeyxyfol.fsf@kernel.org
-
-You can increase the swiotlb size using the swiotlb= kernel command-line
-option. I also have a patch series in progress to address this issue:
-
-https://lore.kernel.org/all/20260921063628.362078-1-aneesh.kumar@kernel.org
-
--aneesh
-
+> 
+> 
+> Logan
