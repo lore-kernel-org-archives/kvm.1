@@ -1,91 +1,66 @@
-Received: from mta1.migadu.com (out-199.mta1.migadu.com [95.215.58.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20D5473C66
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 07:20:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58E825B0B7;
+	Tue, 22 Sep 2026 07:25:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790061621; cv=none; b=VokAEFRh0pvc1Qd9INi4GEHDUZdhB3gfhepRY5nAr0iCjtdUNqMlg6YJ5YKAYmj94C5bJ1XW0OJz2NQU0K7EaqrBudXZfnua6kx2aUCf8brcxdTKqZldWNyB+Pyyen1dLOYySGZNWXBpJjHDAAWVym04tqMGnYMZ/+haCG5DJWY=
+	t=1790061929; cv=none; b=IKezKh4GaGKQFPV/3eFFz9M+b9+laqwCoW8l9c9Qecti3ctbi6vk/goXxj03Tojm0PW4r5OnBSLBNJLGFhVfySXcrye/DVxriTfo3CsszjKq6KfthM4b2CwJCLM+DZJvAP21WTdHewj+wKwwPDrYydq1lONlrfuHmruMafR5MT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790061621; c=relaxed/simple;
-	bh=EZ/YCaSPuiIHq9yuX+NfV7x2DltaVEKpXi2O9ZD9ZuQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jeuTUVwbKpcVdao5WKPngtVUW2ZRfAo9yHbDklZhUPz0zx39q6vsTEVgaaNl/Od6mIM5Pie96dP8fIgefKMassT/nWOjB7awJ+wGGsDdYxexWFJuWc0AlWXgLiCIJBr7hW17uekFb2YYjs0MULkNfi4Dw+Ib/ZXr19Q7o1aaRSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kIRggEQD; arc=none smtp.client-ip=95.215.58.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1790061929; c=relaxed/simple;
+	bh=msjq3/uC2tZisaq/QqmtboH2Q9stbsyIN2TWlCTVY1E=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=SEzrQ6FvjIx8uLASwFdxtRXT1avjXiEaz/jITTKtDv5y2KFHW5/02D907qy4+K5a8RQo8V/rgc+1N8aXQocONj2ZzUoaKRtsVZubyTjMsIE9DgMyYDIZNJw56rIQo1SLxEQhKp3wBK+O9mmq8GOFPQARYz7qcgXFxqXfGtoz+E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ORSV9Y1F; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kIRggEQD"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=EZ/YCaSPuiIHq9yuX+NfV7x2DltaVEKpXi2O9ZD9ZuQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790061599; v=1; x=1790666399;
- b=kIRggEQDcs1UC/Cst/jynYBg/HQMkeKOgE0EOwKHH6ZUUcFyaflCKjkGRCstO5kArabqfFF2
- RTL5cCH1iwL/pWn/sWuFMwVo2CcWYd6yJWw/qRhEFvWU5yCAn77kd+C8QNSA2bZ+khnQSTpI2LS
- 4iabQyLuUpPa0ZZxpDxeeRYk=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 3a52787b001092ab;
-	Tue, 22 Sep 2026 07:19:59 +0000
-X-Mizu-Trace-ID: 3a52787b001092ab
-X-Migadu-Flow: FLOW_OUT
-From: Fuad Tabba <fuad.tabba@linux.dev>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Oliver Upton <oupton@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	James Houghton <jthoughton@google.com>,
-	Will Deacon <will@kernel.org>,
-	Fuad Tabba <tabba@google.com>,
-	kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	cgroups@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] selftests/cgroup: Make the object directory an order-only prerequisite
-Date: Tue, 22 Sep 2026 08:19:45 +0100
-Message-Id: <20260922071945.693714-3-fuad.tabba@linux.dev>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260922071945.693714-1-fuad.tabba@linux.dev>
-References: <20260922071945.693714-1-fuad.tabba@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ORSV9Y1F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7537E1F000FF;
+	Tue, 22 Sep 2026 07:25:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790061928;
+	bh=msjq3/uC2tZisaq/QqmtboH2Q9stbsyIN2TWlCTVY1E=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ORSV9Y1Fmd0RXr+G1OCzXKuHlEVpmJDJB4PewZo8iH0GpOh3JDWaxSYrBG2nTXdRK
+	 yMUrHfCOdn4Z1ZC7Jr9NORgn2Z716I+Q75/lpDQ/o8lrOZ7hRq6V3rbTwWMkhTyFyx
+	 fOL5WQXfqgJUEzyLtsVz4nI8lTswTQOuyzK/qSzwfpN6hUS1WqvR2b598MVOccblVu
+	 +JULsh4wCLaOpoSudAcUh3q1pZuOPHiwk4jCFMlgpgYkF3FdnrXtTunwcGDBeRP1+I
+	 OIv0TY5VixJ0FKbZo7iGjckXPikmS2nk5a0v6mjcp5lOLrJox7QChV9M3eemuvTHFZ
+	 oeHqzUJaRDdFw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] pci/vgaarb: pass a data pointer to be used in the
+ decode callback (v2)
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Dave Airlie" <airlied@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, kvm@vger.kernel.org, linux-pci@vger.kernel.org
+In-Reply-To: <20260922071807.2533884-1-airlied@gmail.com>
+References: <20260922071807.2533884-1-airlied@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 22 Sep 2026 07:25:27 +0000
+Message-Id: <20260922072528.7537E1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-libcgroup.mk names $(LIBCGROUP_O_DIRS) as a regular prerequisite of
-cgroup_util.o. The directory's mtime moves whenever an object is
-created or replaced in it, so an incremental KVM selftests build that
-rebuilt anything in lib/ recompiles cgroup_util.o and relinks every
-test on the following run. Make the directory order-only, as
-libvfio.mk does.
+> From: Dave Airlie <airlied@redhat.com>
+>=20
+> This changes the vgaarb client API so that the user can pass a
+> private data pointer into the register that will get used in
+> the decode callback.
+>=20
+> This allows a bunch of pdev conversions in the drivers, and lets
+> some future vfio cleanups be nicer.
+>=20
+> I'd like to merge this via the drm next tree but also fine with
+> it going via pci.
+>=20
+> Signed-off-by: Dave Airlie <airlied@redhat.com>
 
-Fixes: 2c754a84ff16a ("cgroup: selftests: Move cgroup_util into its own library")
-Assisted-by: LLM
-Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
----
- tools/testing/selftests/cgroup/lib/libcgroup.mk | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-diff --git a/tools/testing/selftests/cgroup/lib/libcgroup.mk b/tools/testing/selftests/cgroup/lib/libcgroup.mk
-index 7a73007204c39..bcf6fe2516223 100644
---- a/tools/testing/selftests/cgroup/lib/libcgroup.mk
-+++ b/tools/testing/selftests/cgroup/lib/libcgroup.mk
-@@ -13,7 +13,7 @@ EXTRA_HDRS := $(selfdir)/clone3/clone3_selftests.h
- $(LIBCGROUP_O_DIRS):
- 	mkdir -p $@
- 
--$(LIBCGROUP_O): $(OUTPUT)/%.o : $(CGROUP_DIR)/%.c $(EXTRA_HDRS) $(LIBCGROUP_O_DIRS)
-+$(LIBCGROUP_O): $(OUTPUT)/%.o : $(CGROUP_DIR)/%.c $(EXTRA_HDRS) | $(LIBCGROUP_O_DIRS)
- 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
- 
- EXTRA_CLEAN += $(LIBCGROUP_O)
--- 
-2.39.5
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260922071807.2533=
+884-1-airlied@gmail.com?part=3D1
 
