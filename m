@@ -1,121 +1,131 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D32A4734D4
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 23:07:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2B749B47B;
+	Tue, 22 Sep 2026 23:22:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790118462; cv=none; b=qvOwNlw62utvYuAoBFhJNhyiTa14JqiniiZb2smWH9EqY40sn66+TygquUHOwEg9+DGz9BOXvH/LVt+c9V0uhyf5Ljga9dHpDJwqtSQ/rSNgITTkB5BWNyrB/kZE12Vaj42oQqNzE4LpHBL8xuLFZp4KxJivPIc46JVNBA4761c=
+	t=1790119326; cv=none; b=IdF5k3GPevhmpkP12ZBOeJBBa7Hd9SiOm/7mMgazM95v1msDz+LQapefKL20HVEZ9D59m58LhKPnZeYURq2aqQXu2HS/ryq+szIVYxgK1N7TBB3r1qtVT5cMJ2FWnsRH2TP4u5isfC8RIbAtNh0EbGUDbNoRmWoqx30NGm9wrsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790118462; c=relaxed/simple;
-	bh=bafBXW72cgjyWru+cPAZZaD/bbft9duIUQC9not2kp8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=O40PCotE1vgNApnSPzmcBwd/Txm79K8S0exurbcrPmI+TpMl79bWnnvO9DvBwUr/EtRSmpVQyAa2Zwn/KoXRLhLtVb1sVddIkXbG21dWrJFvx2nTeAGbNlltT17dFDX4nddDQtdcA+lcgqbAheYIsxUeTxraZ26pfB1A8kVsdA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=afdPal3T; arc=none smtp.client-ip=209.85.216.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1790119326; c=relaxed/simple;
+	bh=GV243Sx6YfNX1IPtn1LPRMxHhv8ZInKwRMvRpathHgI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iv+xzUmRSJ9CGCZj7LmztL2FIUgkjtWSJIUGqy9D9NZQqZaXkhhF0Zj9NsNXnNrqFbZ/negE4GzlMo+0jNm++b5wBNMUc6s5rwRulIYAmTALg5rA6KKbBu6kCTVmUqR/+uyeH2yvEdunPlERW5N+FnSTB8CBgtI5olQ+ePT98ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=r7gUcOdO; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="afdPal3T"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38f283baf1fso362444a91.3
-        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 16:07:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790118460; x=1790723260; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/TTDa8+5MH1bdzaEu5ZmWZePkyGRpybuiLVB+Zn8iqk=;
-        b=afdPal3TVj7/HBxdqXj5J3Jiky96xK4q3lQgeRffATCbIijii/4+a0UgF5zeQloJza
-         mN5BsonOPCXum96ig+GuyEfC8Snn4ExTAJImMHM9+m1vVoia5LeystNlUy7Nluf0Kjvv
-         vq0jwn9Iby3xUIcm6Wzpb9DTj3YURVojUZC6O6GGoL6I7vkeFFsznfmC/G52Yb5RwY50
-         Aobf/dJ/c/jz72WyOL52y+RJxUp72r2VefUUxrhXgkKOxGF9DHq6teh4GBu7XItftFVS
-         JplXUiEFWbAQiBUaRxvKIM2MrLmnCgQZBZSuJLt18+c9meUglf/ggfBEn+G/N2aJvXGk
-         mAsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790118460; x=1790723260;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/TTDa8+5MH1bdzaEu5ZmWZePkyGRpybuiLVB+Zn8iqk=;
-        b=OEPDANWaF2F793gcP5Tw6s9/3NBGw+KIAQ0aXY6in0acVIXEeqHiDlHP4592CPUvsR
-         dJh4AlD/AeQBGLBuNE0YNeNUBdiF0inMgb7a/nY+DiKKWqVDTPgOxLsWQCaPSOq+BhbU
-         4Cw4+DWiAeTxQ92vOJ39Y1ZDz8N3jnKXhPKxo/d4WXvSx0BR1vv1of4Cyz6cxXsU+4nO
-         /XPvGvLL8vs613JjuYWJm3D4ndbFe2hRB+wdEM6xaV7BL+xCp3+//EvXzXvGok1y5zI/
-         LbHUwPWGYVlnJzb4J0eK74OOgmHuzpMkTKYwUz9AeFOsRa948Fog19TI8/rvz0QnjtE3
-         FgQw==
-X-Forwarded-Encrypted: i=1; AKwUvBwquuZoGwkGIdCMUSaUOuWSOMlQRkoKRLNK2uKgEZYAB6Lh6WeXNVN4NEkRlvBzmxQiSWs=@vger.kernel.org
-X-Gm-Message-State: AFuF++lXwOwxW4VyJsLL07ECUjPpnFuOUsbeykXh+qwAIzJPu0hPVuro
-	38s/2cTf7UeAteqicNNSUYKmV217RUiVkdoX0J2WKWAXcV6yuX3orIZqTcG4YGhzjdprc/+BYuF
-	VvZx3MQ==
-X-Received: from pght3.prod.google.com ([2002:a63:eb03:0:b0:cc7:535a:4a42])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3e48:b0:39e:135e:130e
- with SMTP id 98e67ed59e1d1-3a07e4e3d55mr792668a91.3.1790118460270; Tue, 22
- Sep 2026 16:07:40 -0700 (PDT)
-Date: Tue, 22 Sep 2026 16:07:39 -0700
-In-Reply-To: <arLm-7h6nllfVpdT@blrnaveerao1>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="r7gUcOdO"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B612F1576;
+	Tue, 22 Sep 2026 16:21:59 -0700 (PDT)
+Received: from [10.57.9.113] (unknown [10.57.9.113])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 330CD3F86C;
+	Tue, 22 Sep 2026 16:22:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790119323; bh=GV243Sx6YfNX1IPtn1LPRMxHhv8ZInKwRMvRpathHgI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=r7gUcOdOMOv1C/gWWu4mGGBEYrSaMXwZ8mqRjH60TE1NhqM7SW3se092K96TED1kO
+	 oGmPi80Hqpj9IzN3/jCQ+CMl6IIMqzxJFMaGpkPDTStiWR6MXH2jzOf8pSghDBk5Ot
+	 8KUfSwZMPtnWO5Z5uFTvyQ+vHqVT8a4EG5itKM0I=
+Message-ID: <0d5201f0-359e-4748-92da-946dedf51bcf@arm.com>
+Date: Wed, 23 Sep 2026 00:21:58 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260903062856.2090499-1-naveen@kernel.org> <aqROi4Gp_vPvsOtp@google.com>
- <arK6ygKGfbqga3ij@blrnaveerao1> <arLSICws8RVdS-EA@google.com>
- <arLYrxstIphr3EvH@google.com> <arLm-7h6nllfVpdT@blrnaveerao1>
-Message-ID: <arMKOysEYFt_t4go@google.com>
-Subject: Re: [PATCH] KVM: SVM: Clear AVIC Physical ID table entry if vCPU
- creation fails
-From: Sean Christopherson <seanjc@google.com>
-To: Naveen N Rao <naveen@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	Dmytro Maluka <dmaluka@chromium.org>, 
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v19 09/20] KVM: arm64: Add VM specific callback for S2 MMU
+ operations
+Content-Language: en-GB
+To: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260920212845.707-1-suzuki.poulose@arm.com>
+ <20260920212845.707-10-suzuki.poulose@arm.com>
+ <20260922152914.00001221@oss.qualcomm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260922152914.00001221@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 23, 2026, Naveen N Rao wrote:
-> On Tue, Sep 22, 2026 at 12:36:15PM -0700, Sean Christopherson wrote:
-> Yes, this LGTM, with a minor fix below.
+On 22/09/2026 23:29, Jonathan Cameron wrote:
+> On Sun, 20 Sep 2026 22:28:34 +0100
+> Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
 > 
-> > 
-> > diff --git arch/x86/kvm/svm/avic.c arch/x86/kvm/svm/avic.c
-> > index 3b037e385523..e767e43bfb40 100644
-> > --- arch/x86/kvm/svm/avic.c
-> > +++ arch/x86/kvm/svm/avic.c
-> > @@ -395,6 +395,11 @@ static phys_addr_t avic_get_backing_page_address(struct vcpu_svm *svm)
-> >         return __sme_set(__pa(svm->vcpu.arch.apic->regs));
-> >  }
-> >  
-> > +static bool avic_is_addressable_vcpu(struct kvm_vcpu *vcpu)
-> > +{
-> > +       return vcpu->vcpu_id <= __avic_get_max_physical_id(vcpu->kvm, NULL);
-> > +}
-> > +
-> >  void avic_init_vmcb(struct vcpu_svm *svm, struct vmcb *vmcb)
-> >  {
-> >         struct kvm_svm *kvm_svm = to_kvm_svm(svm->vcpu.kvm);
-> > @@ -412,7 +417,6 @@ void avic_init_vmcb(struct vcpu_svm *svm, struct vmcb *vmcb)
-> >  
-> >  static int avic_init_backing_page(struct kvm_vcpu *vcpu)
-> >  {
-> > -       u32 max_id = x2avic_enabled ? x2avic_max_physical_id : AVIC_MAX_PHYSICAL_ID;
-> >         struct kvm_svm *kvm_svm = to_kvm_svm(vcpu->kvm);
-> >         struct vcpu_svm *svm = to_svm(vcpu);
-> >         u32 id = vcpu->vcpu_id;
-> > @@ -425,7 +429,7 @@ static int avic_init_backing_page(struct kvm_vcpu *vcpu)
-> >          * avic_vcpu_load() expects to be called if and only if the vCPU has
-> >          * fully initialized AVIC.
-> >          */
-> > -       if (id > max_id) {
-> > +       if (avic_is_addressable_vcpu(vcpu)) {
+>> Add VM type specific S2 MMU operation backends which can be initialized per
+>> VM flavor, to keep the handling cleaner.
+>>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > 
-> Missing a negation there:
-> 	if (!avic_is_addressable_vcpu(vcpu))
+> A small suggestion inline that makes it explicit when there isn't
+> range operation and a full flush of tlb is needed.
+> 
+> I don't mind either way, but thought I'd mention it anyway in case
+> you hadn't already dismissed it.
+> 
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+> 
+> 
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index 03f2017a7404a..d97a4a1bca23f 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+>> @@ -37,6 +37,8 @@ static unsigned long __ro_after_init io_map_base;
+>>   
+>>   #define KVM_PGT_FN(fn)		(!is_protected_kvm_enabled() ? fn : p ## fn)
+>>   
+> 
+>>   /**
+>>    * kvm_arch_flush_remote_tlbs() - flush all VM TLB entries for v7/8
+>>    * @kvm:	pointer to kvm structure.
+>> @@ -174,26 +188,36 @@ static bool memslot_is_logging(struct kvm_memory_slot *memslot)
+>>    */
+>>   int kvm_arch_flush_remote_tlbs(struct kvm *kvm)
+>>   {
+>> -	if (is_protected_kvm_enabled())
+>> -		kvm_call_hyp_nvhe(__pkvm_tlb_flush_vmid, kvm->arch.pkvm.handle);
+>> -	else
+>> -		kvm_call_hyp(__kvm_tlb_flush_vmid, &kvm->arch.mmu);
+>> -	return 0;
+>> +	if (!kvm->arch.vm_s2_ops->vm_flush_remote_tlbs)
+>> +		return 1;
+> 
+> For consistency with other cases and because it looks nicer
+> blank line here.
 
-Heh, I discovered this literally ~10 seconds before reading your mail.  Hooray
-for tests!
+Ack
 
-> ... which also means all three places are inverting the check, so you 
-> could optionally flip the helper instead.
+> 
+>> +	return kvm->arch.vm_s2_ops->vm_flush_remote_tlbs(kvm);
+>>   }
+>>   
+>> -int kvm_arch_flush_remote_tlbs_range(struct kvm *kvm,
+>> -				      gfn_t gfn, u64 nr_pages)
+>> +static int pkvm_flush_remote_tlbs_range(struct kvm *kvm,
+>> +					gfn_t gfn, u64 nr_pages)
+>> +{
+>> +	return pkvm_flush_remote_tlbs(kvm);
+> 
+> For the cases where there isn't a range call, perhaps you should just
+> not provide the op and have the wrapper fall back to
+> calling the 'flush all' variant if there is no range one available?
 
-I'll keep it as is, Paolo generally prefers "positive" predicates, and I tend to
-agree with him, e.g. it makes it the error paths more obvious (the above bug
-notwithstanding).
+The core KVM falls back to flushing all TLBs if the range one
+returns true anyways. So, I would leave it as it is.
+
+Cheers
+Suzuki
+
+
+> 
+>> +}
+> 
+> 
+
