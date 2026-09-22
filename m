@@ -1,117 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E83385D90;
-	Tue, 22 Sep 2026 17:45:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D871F3BFE2B
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 17:53:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790099153; cv=none; b=KXxGHGIufo/eipKovqUkN9J0nlPpqPs2WE40lAisIQpgrxvapdzvn1J5Kr2juhX2q4JQGVcxSX+gfA+RHuqzr7lz3tQG+vLey5Y04VNGFyuAfTwtgIAZMHRtqmrlBghcwkd5XJrJ+sLm5QQdyqhdtzBYcfWQ5OSai1fagtzNk+M=
+	t=1790099640; cv=none; b=G5wCTW88F7RayuNZfqzWL47ALqh6hzoFB0T6Zx7+nnIlgcXRAZswZpga3Po5Vu9is1qVi94/3MhnxaDSSHrSrm/8fdzS+KoSTwnJYUpJKzALuDefgZqQlskcu+/gTgLS351U8OHwhScd8fLFcp1DxRDCwiiw03dYY5RTc0bd2gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790099153; c=relaxed/simple;
-	bh=+MBQr7Lq88vMwlqVg9Y0+7ZpoOh9i2ra2bsBZTG9yOY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gFXuxmy7rNxnKUc+E+9zECbg7Losb3CVE37lBTPz6HXZTS6tVVoqgcWA748L2PfvEcugHvMVkBeF5TzKia84xUXI+4Vz48d5C8ZiTwuo45B35OxnULaSCR6/8d6R4vaBHA/134gX8mr1i+P3+8tmcLAOrrW5e4evDWloKmMX53Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LK/JYxRB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790099640; c=relaxed/simple;
+	bh=sBNGKVaxgwd2C7MUTMhk8j+hcEEhVpjA4Z4BJR89HfU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=RZFjxvs2wdTbwfl9+1UmPsvoQReupopry5xbTSr9o+r0HQ4+/2xQE4HL+5aeO/tNcTJNKlZklBRUNzTV05WtfA/pMG1Pwz9Te+TCmIRptbIjjYp7gYCpu9+AAEXrCIbU9GpQpW7nyivpuNMp7Eq5fRp0mjBC1NDrCegxbYEGMpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jLJtVPaK; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LK/JYxRB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38251F000FF;
-	Tue, 22 Sep 2026 17:45:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790099152;
-	bh=3XbNBEXalOL7wiFA7qwtlOxm81Xd6k8sewjrN0xUfqI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LK/JYxRBXLqT9oNDbHo0Vmb4Kvj0SOxpClLPhlDhoEDp990c2FuIfud12HQJuvoxi
-	 bDGECRYUfdSZP9gXhK4fXF614eddRmfhGFyn3I5yvyMc5JGtE8JWdEnqplwGl+30wp
-	 IgFFys8YWwUU/5cihbkrSBZb77Gp190OamEKXHrXLnzKxw4mjcFgUR4trsz+gvyhfm
-	 NkjzqhIVxzST0eRe/o24/p9M2Ef1ZchwIqf095j6f1qxLjBuNLY4oxTPM4672c12dP
-	 GifkY8ow2B/PzWEoKFKZ6UhhlpfkA0s204foNKtzVTN2L1kzD9wUQvZUXezjpuhwZz
-	 57kC61yAXm67A==
-Date: Tue, 22 Sep 2026 18:45:43 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Oliver Upton <oupton@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Mark Rutland <mark.rutland@arm.com>, 
-	Fuad Tabba <fuad.tabba@linux.dev>, Randy Dunlap <rdunlap@infradead.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Jack Thomson <jackabt@amazon.com>, Jack Thomson <jackabt.amazon@gmail.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Vincent Donnefort <vdonnefort@google.com>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Sean Christopherson <seanjc@google.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Leo Soares Passos <Leo.Bras@arm.com>, 
-	Wei-Lin Chang <weilin.chang@arm.com>
-Subject: Re: [PATCH v3 02/14] arm64: Add ESR fault helpers
-Message-ID: <arK8ZnBSFwmjizuk@gremlin>
-References: <20260922-kvm-arm-prefault-v3-0-787bd3bc7e3f@kernel.org>
- <20260922-kvm-arm-prefault-v3-2-787bd3bc7e3f@kernel.org>
- <arK0N7H1w-pcixba@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jLJtVPaK"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2d9336581a2so1451175ad.3
+        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 10:53:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790099638; x=1790704438; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=OTbYsyPMAXRNeqI3frHnGnx21T0lm+5EfthrZkUZKL0=;
+        b=jLJtVPaKEk1SDZSA9LVDnw8MtrL/vf4mki9/IKIfycpLkaI4q2lXZWyqMxHiGW+o3o
+         shUtF3luYqkKaJL38fg4nBzZklikV4gEyUe88uVIuX2vMZ64lhfr9d3t07Rnd9IZuLcU
+         UWOZik/veM+I3LnCqxlZITpQzTx+a9PMvc8l0ssm/DaXuIvNnEAC2WAaZCnGIPp5lpll
+         lrMZQVKuBfbKOacijTTXIatS92QUDfXVXnjeAMo33BKcnfIhjGtCB2NSb6oqxUTxcdAg
+         /5HFjkFVwezQ7ZP0B8MXdDprLxGlQ2dr24IC6f6EnLRYYQDCVerfRXoqXVYPPcDHV5DY
+         3VdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790099638; x=1790704438;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OTbYsyPMAXRNeqI3frHnGnx21T0lm+5EfthrZkUZKL0=;
+        b=U8XxO8z96I8Ex37N199LR9U/UwL1ntADJn35mMgAbGzDFmDac1CBi+cIn1XJdO8+CM
+         fq3/QNnxhoAl4zDXrGSfAVviP/vqiOeLaRr+51Kq2wgo4eimtJ89QV/Wsw2p8alYcWFc
+         2/ci4d1G145CjLfAjnOX1x9bDhrXjFKC2DqI6QC+avQRrsgQEpDGpo9beNDR+vlaZkVY
+         z+/9uiNfqMRwQYdoTLcKxJf3ACdHHveHlOQJ6Q7tRj1l1LF4SNE97NykVgmMT9lLwxZ1
+         yBq2sCGKR0vUdRlOT7tF7JIxDmX56K1M6T7ZEHL/FV0PJ9ijkNxnYk/P1eiYpswuFWb6
+         8IwQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxn5ou5jlsWRCSyeb6AZHA+kMo0IZ0ItZ3NK5rUBM50x0FdmOb57I9wPZAK4NxTVEBbVEU=@vger.kernel.org
+X-Gm-Message-State: AFuF++mjlYFSV2aFQs9JxLeLXp9vF1CYFFEccJRUIXgRHjn0xr/NSNW1
+	Ntib5aGTNrSJLfkXBd0YNtkH19/9RiSUNpA5KKybJuCAxN4xE0P/CZuyqEJAeba1Dp880YcJObu
+	xrI7mNQ==
+X-Received: from ploc24.prod.google.com ([2002:a17:902:8498:b0:2dd:2e1c:cb90])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2f8a:b0:2dd:c100:9440
+ with SMTP id d9443c01a7336-2df69e1c9bcmr1132185ad.62.1790099637923; Tue, 22
+ Sep 2026 10:53:57 -0700 (PDT)
+Date: Tue, 22 Sep 2026 10:53:57 -0700
+In-Reply-To: <CALMp9eQi0gm7ojijfKDZz9oZh+BK13qUkJOFrCmxjJTr5sx3Lg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arK0N7H1w-pcixba@kernel.org>
+Mime-Version: 1.0
+References: <20260918154530.4129698-1-jmattson@google.com> <20260918160109.E76B81F000FF@smtp.kernel.org>
+ <arKJQwAPvApkeESD@google.com> <CALMp9eQboC6DTQfa3N58XCfOLf-qwJ2L7dC5vtqDerHG80eZLg@mail.gmail.com>
+ <arKQJJJB8HMK0B1G@google.com> <CALMp9eQi0gm7ojijfKDZz9oZh+BK13qUkJOFrCmxjJTr5sx3Lg@mail.gmail.com>
+Message-ID: <arLAtdMP7LV0r-D9@google.com>
+Subject: Re: [PATCH] KVM: x86: Disallow EFER.LMSLE when EferLmsleUnsupported
+ is set in guest CPUID
+From: Sean Christopherson <seanjc@google.com>
+To: Jim Mattson <jmattson@google.com>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 22, 2026 at 10:00:39AM -0700, Oliver Upton wrote:
-> On Tue, Sep 22, 2026 at 03:17:56PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > Add helper functions which operate directly on an ESR value rather than
-> > trying to access the register itself.
+On Tue, Sep 22, 2026, Jim Mattson wrote:
+> On Tue, Sep 22, 2026 at 7:26=E2=80=AFAM Sean Christopherson <seanjc@googl=
+e.com> wrote:
 > >
-> > These mirror equivalent KVM vCPU wrappers in kvm_emulate.h and allow those
-> > wrappers and KVM's stage-2 fault handling to operate on a plain ESR value.
-> >
-> > This is needed to later generate a synthetic fault for the stage-2 page
-> > table pre-faulting mechanism.
-> >
-> > No functional change intended.
-> >
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> >  arch/arm64/include/asm/esr.h | 44 ++++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 44 insertions(+)
-> >
-> > diff --git a/arch/arm64/include/asm/esr.h b/arch/arm64/include/asm/esr.h
-> > index f816f5d77f1a..9c0205983d9a 100644
-> > --- a/arch/arm64/include/asm/esr.h
-> > +++ b/arch/arm64/include/asm/esr.h
-> > @@ -437,6 +437,50 @@
-> >  #ifndef __ASSEMBLER__
-> >  #include <asm/types.h>
-> >
-> > +static __always_inline u8 esr_get_ec(unsigned long esr)
-> > +{
-> > +	return ESR_ELx_EC(esr);
-> > +}
+> > On Tue, Sep 22, 2026, Jim Mattson wrote:
+> > > On Tue, Sep 22, 2026 at 6:57=E2=80=AFAM Sean Christopherson <seanjc@g=
+oogle.com> wrote:
+> > > > Gah, I hate the negative "feature" bits, I've gotten completely tur=
+ned around
+> > > > multiple times trying to sort through this.
+> > >
+> > > Me too!
+> > >
+> > > > IIUC, you're trying to "fix" setups where host CPUID.EFER_LMSLE_MBZ=
+=3D0, but userspace
+> > > > configured guest CPUID.EFER_LMSLE_MBZ=3D1?  If so, then Sashiko is =
+right, it needs to
+> > > > be declared with EMULATED_F().  I would even argue that technically=
+ this isn't a KVM
+> > > > bug, because KVM won't advertise EFER_LMSLE_MBZ in KVM_GET_SUPPORTE=
+D_CPUID on such
+> > > > hosts.
 >
-> Why do we need to wrap the macro in an inline function?
+> > > I'm trying to make it possible to run a Rome vCPU on Milan or later.
+> > >
+> > > SInce this is a negative feature bit, it must be retained if the host
+> > > reports it. That blocks running a Rome vCPU on Milan or later.
+> > > However, a defeatured Rome (which reports LMSLE_MBZ as 1) can be run
+> >
+> > So, a partially defeatured Rome?  Because it sounds like the CPU report=
+s LMSLE_MBZ=3D1,
+> > but then still allows setting EFER.LMSLE=3D1?
+>=20
+> No; it should not allow setting EFER.LMSLE=3D1. That will fail on later
+> platforms and would block live migration from Rome to later platforms.
 
-It seemed like a more consistent way of doing this but looking through the code
-ESR_ELx_EC() is referenced directly in quite a few places so will swap out.
+Oh, drat, I misread the "Rome vCPU" vs. "defeatured Rome" paragraph.  You w=
+ant to
+be able to migrate a vCPU with guest.CPUID.LMSLE_MBZ=3D1 between a non-defe=
+atured,
+vanilla Rome and Milan+ (or a defeatured Rome).  Correct?
 
->
-> > +static __always_inline bool esr_trap_is_iabt(unsigned long esr)
-> > +{
-> > +	return esr_get_ec(esr) == ESR_ELx_EC_IABT_LOW;
-> > +}
-> > +
-> > +static __always_inline bool esr_abt_is_s1ptw(unsigned long esr)
-> > +{
-> > +	return esr & ESR_ELx_S1PTW;
-> > +}
->
-> This helper doesn't make a ton of sense outside of KVM, since
-> ESR_ELx.S1PTW is RES0 (not RAZ) outside of a stage-2 abort.
+If so, then Sashiko is right, the flag needs to be EMULATED_F() so that KVM=
+ will
+advertise EFER_LMSLE_MBZ to userspace on the vanilla Rome host, and also do=
+ the
+right thing when guest.CPUID.EFER_LMSLE_MBZ=3D0.
 
-OK, kvm_emulate.h better?
+If not correct, then I'm even more confused, because ignoring clear_cpuid,
+guest_cpu_cap_has() will only ever return true if boot_cpu_has() also retur=
+ns
+true, in which case KVM *will* reject the value because EFER_LMSLE will not=
+ be
+listed as a supported EFER bit.
 
->
-> Thanks,
-> Oliver
+		if (!boot_cpu_has(X86_FEATURE_EFER_LMSLE_MBZ))
+			kvm_caps.supported_efer_bits |=3D EFER_LMSLE;
 
---
-Cheers, Lorenzo
+> I want KVM to abide by the guest CPUID bit and disallow setting
+> EFER.LMSLE even on hardware that allows it.
+
+Right, and that requires declaring EFER_LMSLE_MBZ with EMULATED_F().
