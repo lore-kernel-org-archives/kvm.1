@@ -1,196 +1,173 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180A24A1E0F
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 05:59:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E5738F954
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 06:27:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790056771; cv=none; b=ht9mPl/HEw/wKHtqJVCh5/AjLvoxObVyo6Q1n1AZzbX1lvkLGuWCZuiVc2aej1b+yKJPAcE8aAQ6x5BdUeAtgMv6s8d98xkp+BwZGyZe3iKS2O+bFrqixUZKZ10M/NtH1oqU55Y+3xtkSFEmZYKt8gn7lYGArcMhcmt1+AgM5nc=
+	t=1790058445; cv=none; b=ZkO/FhooeZM/7ndvSqcNksJOUdNMVA0NSe0QEaVJO1ymqbNSDj7f3M+jQfYr37Go4MKQjma+zZiV5l6mDrgQTDeRDdn1xhWaE/JkEv7cpstFYFL3tyIJDrANjX0RJSuZzqvx5+tHFuNhB18BzwygSJhTKxForU6PlMKwfWf//vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790056771; c=relaxed/simple;
-	bh=IubJ/xAJ7gQJ992bRuafKmN8ihKxmqpgMVtGVau5Zl0=;
+	s=arc-20240116; t=1790058445; c=relaxed/simple;
+	bh=Ax1AHTjwuPWIMbHV33ItcAYsSzezF3yc9Z7Iji35p3I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IRfbhg5PEei50O6a0FjD5itXqDznIX/BF9H4UVl9uDQgbtZgSd20/58NzkgERbN6Xfsqd1roemR0ekaxurMBK7WVZUVver+CHLDu7uuNUVGRbuom177N+T3bXYrIVKXH7Fz6VQlolI7IPPoQLXjrU0+rtxi3KzPn0bMEcHLv8ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jmGcaSdS; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=H5VY9b0njuOjekyky/uya+WjRlELys91Z2zV1JwHlf8AQQSn4q13YQTQqjgISg2j9VCkBw/NCiHceK31eB7XuIwvcGvN7ZRfqfgciIfk1VMIzvxsj++jTbMJPo/ebd7xvGiGkTi5f4NxskZ2E6RBJkZPv6MkjiU5L6NcdIIFgj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QFJjGX8X; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jmGcaSdS"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68M06N0r2982139;
-	Tue, 22 Sep 2026 05:59:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=/CgOOA
-	FoHJJXq8KyAObLLcMnmhG5iWqYQKZpygX589c=; b=jmGcaSdSp5/a2s4vAd1li8
-	OyoNRmQ4CSzozDg8ltJhVIaLEkw9kKs7aTHeVNODSO7yuj0gISi+Y4Hr8DyAeEWW
-	hH8DF/cPluPCrpDtphMi1fASm//iDrFCeMAKD4RyZsvSy2BiJpok0yIhChLJ0Qr0
-	q5EH9LCTvHfrkodU1M5ROIcYOPWtwoFPjM1Z51M88vcTYppBIYmAgbd5CtT3ncH5
-	TQMWuF0e88BQt9s37b/gy2mGeiBpk9YjyK7yTmXf/gNR7nUFNcaE6yfByEPocrpz
-	fSDfTzA6lk7FaR7xI+FrerVQ2KUHouzol3cYUm9VHyKVTsySo/Qg65BgOIJ93eQA
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskdv3x9x-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 22 Sep 2026 05:59:20 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68M5UjLG2085698;
-	Tue, 22 Sep 2026 05:59:19 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gt4qq8n77-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Sep 2026 05:59:19 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68M5xHwf47383020
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 22 Sep 2026 05:59:17 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 97F3720043;
-	Tue, 22 Sep 2026 05:59:17 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 61AA920040;
-	Tue, 22 Sep 2026 05:59:16 +0000 (GMT)
-Received: from li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com (unknown [9.39.19.247])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 22 Sep 2026 05:59:16 +0000 (GMT)
-Date: Tue, 22 Sep 2026 11:29:28 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3] KVM: PPC: Book3S HV: Avoid spurious interrupts caused
- by LPCR_MER bit
-Message-ID: <arIXVvCG1xipFnnt@li-fbf77acc-29ba-11b2-a85c-e8e934f50a46.ibm.com>
-References: <20260921111043.49825-1-gautam@linux.ibm.com>
- <20260921112538.ED7101F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QFJjGX8X"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790058443; x=1821594443;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Ax1AHTjwuPWIMbHV33ItcAYsSzezF3yc9Z7Iji35p3I=;
+  b=QFJjGX8XzN3Z9wInMdVDTohlPLdcpWXkFvBtUPllHbw0CcJO4s1kl2d7
+   q3cvRCH5rLcapR8M8Arrj1xsiCzT8hydIE/+kDVWxoGnoXnq9paavRAqj
+   +eTsCCeILkqXwYV979pqes6e2LcirMkkFrK4lZ5MuqX5YL1UuMmrxlWJh
+   qv5yHMWmJ2OpYHggf4d1wJAtkHdQN0s1en+INqddv6z7aSD9Zn3OSwCrX
+   NI8IvO5liAB1oZ6W9lb6vqMhh2pkrdM6/4H8oz4FoEJyg1nZMdB33/HFu
+   CLJ2fGJ0wjTwV3/7glTo+DB6L+alKynVd9+n017G8CDL6gbU9IUNlP3kM
+   A==;
+X-CSE-ConnectionGUID: FYNGx48rRXS1zlHrF9JZ0Q==
+X-CSE-MsgGUID: BgGqJ2MOQiaj8rofOstrDg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="101295101"
+X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
+   d="scan'208";a="101295101"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 23:27:22 -0700
+X-CSE-ConnectionGUID: bGPkEG/VTiiW7dIG7MxSWg==
+X-CSE-MsgGUID: z3EkypD9SSKI0Dy1p0FJvA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
+   d="scan'208";a="277776037"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.202])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 23:27:14 -0700
+Date: Tue, 22 Sep 2026 09:27:07 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Kishen Maloor <kishen.maloor@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Peter Xu <peterx@redhat.com>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Fabiano Rosas <farosas@suse.de>, Jon Grimm <Jon.Grimm@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Steven Price <steven.price@arm.com>,
+	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
+	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
+	=?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Peter Fang <peter.fang@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org
+Subject: Re: [RFC PATCH v2 2/4] KVM: x86: Add optional KVM_CAP_LIVE_MIGRATION
+ and KVM_MIGRATE_CMD
+Message-ID: <arIfu_A1e6KEokWI@tlindgre-MOBL1>
+References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
+ <20260831071304.762939-3-tony.lindgren@linux.intel.com>
+ <ab3c9e32-ab34-49bf-937a-4d3d736fb4dc@intel.com>
+ <arDHbjcwaRFcHb08@tlindgre-MOBL1>
+ <arDVIEobkRr3E7yS@tlindgre-MOBL1>
+ <ae22e1df-c09c-4f8a-8010-41e542e4c663@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260921112538.ED7101F000FF@smtp.kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: WDeimTp8R-6Ld2nIvyo7j80XWZb03_2F
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIyMDA3OCBTYWx0ZWRfXxshE52VIu1nB
- b3a2uN2qaM6WwSpW/QKQWgg5DPfIwfyBY8ZFKcJX6Uzni5xMzm9uHMTyOfp9wTiwxz6nuip1zV3
- ghvfSoSQ7EWp5PEwqgv13113e6o3+Ac=
-X-Authority-Analysis: v=2.4 cv=FLiOVOos c=1 sm=1 tr=0 ts=6ab21938 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=8nJEP1OIZ-IA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=yKAn6K1XAAAA:8 a=c92rfblmAAAA:8 a=VnNF1IyMAAAA:8 a=iDXJWKRIO_aAfW5byYkA:9
- a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10 a=6M1ixcW_PCWoKiWyFx5v:22
- a=GvGzcOZaWPEFPQC_NcjD:22
-X-Proofpoint-GUID: WDeimTp8R-6Ld2nIvyo7j80XWZb03_2F
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIyMDA3OCBTYWx0ZWRfX2T5I6yil0jlD
- TJ2tRgC/SZLbS9o/qxHFi9hrx/m6Tm9UQ/zOnJhK2NxC8YjxZL/BNx6QN8EnXMc1+8jwaYdIIpb
- dnGqMnANvYiJxCs4Cc8I26ENcMkBElu+nUc1b3fFjQj6OJhmLrPRSRU+NZwdmerBJX9+adSTSOj
- lnpETUwWnmS+0KVTVQ2gucz1Qpu0aTZd3Vdah1TNlok9PBjOh1PRecCiSIm+E+t89pxAz6g0mUU
- BpeOIQ7DIVT6/dx/l9lfp8WG+f9ag6eTSO/ubbBLEK+LlQ3Ztbes7k06yefhTUKBAK5zmCxPtuj
- 0JvIi+aLZ9ulWZQcqIkHy9GICCF0dqlqOKs0wYS6aPrjkwnU1pGylhfPs6/8t70XxOijX6p/i6U
- vlj0WpNCrTy4Lom3vdPXSzPhfh1hJSiopMFSNKcJN5M/i+I6PUSi/Y8Sd5Itmk0CeO6Zgq4DngF
- zfZRO8P4BQvXckhHAtQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-21_07,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0 phishscore=0 spamscore=0 clxscore=1015
- suspectscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609220078
+In-Reply-To: <ae22e1df-c09c-4f8a-8010-41e542e4c663@intel.com>
 
-On Mon, Sep 21, 2026 at 11:25:38AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] kvm: ppc: lost LPCR_MER interrupts for XICS due to XIVE state leak
-> --
+On Mon, Sep 21, 2026 at 08:56:48PM -0700, Kishen Maloor wrote:
+> On 9/20/26 11:56 PM, Tony Lindgren wrote:
+> > On Mon, Sep 21, 2026 at 08:58:17AM +0300, Tony Lindgren wrote:
+> >> On Thu, Sep 17, 2026 at 09:33:18PM -0700, Kishen Maloor wrote:
+> >>> On 8/31/26 12:13 AM, Tony Lindgren wrote:
+> >>>
+> >>> I was wondering how a vendor would use kvm_transfer_buffer for a command that
+> >>> passes an input and also returns an output. size can describe the input
+> >>> length or the space available for output, not both, so the kernel has no way to
+> >>> know how much it may write.
+> >>>
+> >>> Two suggestions below. They're orthogonal.
+> >>>
+> >>>> ...
+> >>>> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> >>>> index 5f6c1ce9673b7..d9291a8a97bb1 100644
+> >>>> --- a/arch/x86/include/asm/kvm_host.h
+> >>>> +++ b/arch/x86/include/asm/kvm_host.h
+> >>>> @@ -2010,6 +2010,8 @@ struct kvm_x86_ops {
+> >>>>  	int (*gmem_prepare)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
+> >>>>  	void (*gmem_invalidate)(kvm_pfn_t start, kvm_pfn_t end);
+> >>>>  	int (*gmem_max_mapping_level)(struct kvm *kvm, kvm_pfn_t pfn, bool is_private);
+> >>>> +	bool (*cap_live_migration)(struct kvm *kvm);
+> >>>
+> >>> Should this return an 'int' specifying the maximum buffer size that the vendor impl
+> >>> requires/uses? Userspace can then learn this once.
+> >>
+> >> OK that sounds good to me. I assume you are thinking the maximum hardware
+> >> specific buffer size per thread? As in 512 * 4096 bytes for the TDX case?
 > 
-> commit 215dda3f95780a965ce67c9c452b6f7d1948e486
-> Author: Gautam Menghani <gautam@linux.ibm.com>
-> 
-> KVM: PPC: Book3S HV: Avoid spurious interrupts caused by LPCR_MER bit
-> 
-> This commit avoids spurious interrupts for KVM on PowerNV guests by not
-> setting the LPCR_MER bit when native XIVE is available. It introduces a new
-> helper, kvmppc_xive_native_enabled(), to check for native XIVE and skips
-> setting LPCR_MER if it evaluates to true.
-> 
-> Closes: https://lore.kernel.org/linuxppc-dev/582904882.11159.1786719390349.JavaMail.zimbra@raptorengineeringinc.com
-> 
-> > diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-> > index 169ea6a7fbad4..580ad2548c2bf 100644
-> > --- a/arch/powerpc/include/asm/kvm_ppc.h
-> > +++ b/arch/powerpc/include/asm/kvm_ppc.h
-> > @@ -747,6 +747,11 @@ static inline int kvmppc_xive_enabled(struct kvm_vcpu *vcpu)
-> >  	return vcpu->arch.irq_type == KVMPPC_IRQ_XIVE;
-> >  }
-> >  
-> > +static inline bool kvmppc_xive_native_enabled(struct kvm *kvm)
-> > +{
-> > +	return kvm->arch.xive_devices.native;
-> > +}
-> > +
-> 
-> [ ... ]
-> 
-> > diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> > index dbac3573b2c89..cb2bb29451a7f 100644
-> > --- a/arch/powerpc/kvm/book3s_hv.c
-> > +++ b/arch/powerpc/kvm/book3s_hv.c
-> > @@ -4980,7 +4980,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
-> >  			if (!kvmhv_on_pseries() && (__kvmppc_get_msr_hv(vcpu) & MSR_EE))
-> >  				kvmppc_inject_interrupt_hv(vcpu,
-> >  							   BOOK3S_INTERRUPT_EXTERNAL, 0);
-> > -			else
-> > +			else if (!kvmppc_xive_native_enabled(vcpu->kvm))
-> >  				lpcr |= LPCR_MER;
-> >  		} else {
-> >  			/*
-> 
-> [Severity: High]
-> Does kvmppc_xive_native_enabled() accurately reflect whether XIVE is currently
-> in use?
-> 
-> If a VM switches from XIVE to XICS (such as during a kexec or CAS
-> renegotiation), the XIVE native device is destroyed. However, the native
-> pointer is intentionally not cleared:
+> Yeah, an upper bound on the buffer size, so 516 * 4096 (4 for the GPA+MAC lists 
+> and MBMD) in TDX. It could be a hint to userspace to size its buffers at the 
+> start. Though it would be up to userspace to decide how to use that information.
 
-The kexec case is not supported for guests - booting a KVM guest in XIVE mode and
-kexec to XICS mode.
+Oh right thanks. I think this is really the maximum transfer buffer size
+Peter asked, not just a hint to userspace :)
 
+> >>>> +struct kvm_transfer_buffer {
+> >>>> +	__u64 address;
+> >>>> +	__u32 size;
+> >>>> +	__u32 reserved;
+> >>>> +};
+> >>>
+> >>> Should this struct include a 'capacity' field (u32) that is set on each command?
+> >>> It would be the number of bytes writable at address.
+> >>> size would be the input length on entry (0 if the command passes none), and the
+> >>> number of bytes produced on return (0 if none).
+> >>
+> >> Hmm so the transfer command return value can return how many bytes were
+> >> written of the input. But yeah we don't know how many bytes were written
+> >> back to the transfer buffer as result of the transfer command.
 > 
-> arch/powerpc/kvm/book3s_xive_native.c:kvmppc_xive_native_release() {
-> 	...
-> 	/*
-> 	 * A reference of the kvmppc_xive pointer is now kept under
-> 	 * the xive_devices struct of the machine for reuse. It is
-> 	 * freed when the VM is destroyed for now until we fix all the
-> 	 * execution paths.
-> 	 */
-> 
-> 	kfree(dev);
-> }
-> 
-> When running in XICS mode after this switch, kvmppc_xive_native_enabled()
-> will continue to evaluate to true.
-> 
-> Will this cause KVM to bypass setting LPCR_MER, and subsequently fail to
-> inject external interrupts when MSR_EE=0, resulting in a guest hang?
+> The transfer command return value could return how many bytes were written into the buffer.
+> But in an input-output call, the kernel handler wouldn't know how many bytes it could write,
+> or for that matter even how many pages to pin up front in case it needs to return an output
+> because 'size' couldn't simultaneously convey the input length and buffer capacity. That was
+> the gap that I thought a read-only 'capacity' field could bridge. Of course, this
+> assumes that the output is written in-place.
 
-No. If LPCR_MER is not set, the only effect of that is the vCPU will have to
-exit to the host for the host to inject interrupts into the vCPU. One
-extra exit isn't a big deal.
+Hmm yeah this inplace capacity vs transferred issue remains still. So I
+agree we need to specify the capacity in struct kvm_transfer_buffer like
+you suggested.
 
+To me size is already the size of the buffer though. So instead of changing
+size to capacity, how about something like datasize or len for the input
+and output transfer length?
+
+> >> How about if we add the bytes returned to the transfer struct? Then the
+> >> kvm_transfer_buffer can stay as just a buffer. 
+> > 
+> > Actually, for the possible cases with input+output, we could reserve space
+> > in the transfer struct for another struct kvm_transfer_buffer for the
+> > results?
 > 
-> Could this check instead evaluate the active vCPU IRQ routing, for example by
-> using !kvmppc_xive_enabled(vcpu)?
+> Yes, say an 'in' and 'out' kvm_transfer_buffer inside struct kvm_migrate_cmd should
+> close this out and shouldn't require a 'capacity' field. Maybe we then establish this
+> convention:
+> - A non-zero 'size' on 'in' at call entry would signal that there is input.
+> - A non-zero 'size' on 'out' at call entry would convey the buffer capacity.
+> - A non-zero 'size' on 'out' at call exit would convey that there is output.
+> - A zeroed 'size' on 'out' at call exit would convey that there is no output.
 
-kvmppc_xive_enabled() does not check for native/irqchip=on case. It
-returns true even if emulation is used.
+Looks doable to me but with the inplace issue as above.. Sounds like we just
+need to reserve space for a case with a separate output buffer though.
 
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260921111043.49825-1-gautam@linux.ibm.com?part=1
