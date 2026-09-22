@@ -1,119 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70641F3B85;
-	Tue, 22 Sep 2026 04:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5206A1FC4
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 05:09:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790052212; cv=none; b=sL97AAAhp8wVxBgEOSivrs7l62pQzD4DhBvuBYeLBQqxm3AB0LS9rH1kWmfBTZrJu2gs5Caa3RR6VbOOfAAUJdBpSiGY5UfgHBM58xa/1JG1FaiNnCyMD3g5F/qmaKeBSKmFsP7r4aWW/8LkbNFe9oJAGkERY7f8NHvOqX+mH4w=
+	t=1790053790; cv=none; b=EeNaHdAhIaXPubEcH3L7Fn+1EzLmTLWb1EfA1pfBaOi1/nXFj4GNG1Xq9jxm4RvHReR1SvIZJCxlv/YfYcosq/ri5L5dX/xkQXPUiB6fj7wjOp4VvvhozWbQNMJahxRA0Ss/3xkUJanHyAT+QgPFUZAYZCtjp4QTFJ0Q+KGWrGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790052212; c=relaxed/simple;
-	bh=p6LiLT4k8KxfHwiOIg8YH2vQC03GDDaEIpIJQj6Hw/0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=bji662VM06FrWPNxmIZtw8l3DDXSGuu6V59j+iTdcOWoelQ1W94vpmuAEp7S899w4UAA94fFMN8kNP/72XektpYfyokDXk1Ly99L2LHzOBNGdeVFemqyt1yDp1ea+JHng6ZE651b8YCJtTUEpxs9NyniQoaUDNfQobdOHx1p500=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oDcQbD5T; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790053790; c=relaxed/simple;
+	bh=2HLtP2Yv4Nx2CymfguppB+nP7otJIt8dCa1AtZHyA8s=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=DTiXWGnmdQYUyl9aaCV2eiW+y6DbMXiyeoNA4zJnit0MXo2S08SpVZoLM5fFvEroIJKIgnynQZC0v5aVcWUwE5+1Lc2XHB5TEyjFMR6A1cgloEwh9xOoBLcZ4H9uueQFGLDUNC+3HnH0GxKTd2Ak7/c7ZxsxgJ9cYHVEk2qmVyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fJmzFx4n; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oDcQbD5T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB901F000FF;
-	Tue, 22 Sep 2026 04:43:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790052211;
-	bh=l7xbQbSyK+hMJedOeFVJ7HE/nZ7PeG57XNuW6CnoDPg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=oDcQbD5TYrFIwbRGAlRnmyxYXEtfVaX2reqYkxAXGljtwwigyQQT8L7eOuf+mZKpz
-	 5xifdLzJZ6zwRWzQKl7BBcn6KFKbPBp73R3L99efHblyFzPtxX3Y7JFq8Pj1B+RwBn
-	 2Tmp+VJ5iRN1/Yx9ZPW4lFNVFgAK9UOXH+b3dYw5vQZ7GPZ5tOLksWbu/astYeqtFF
-	 641UIgIhqarxQZlV/lDcMaJcaFNn845ix0QciKsQSjjQe3vHRm4Q2py6vIDFGngMkf
-	 EJAILHmCA4LkTWQ1RHqSIIMuKk4Uzb4XVuQMlrMUaiQtkIOf3Khq3SohIPTCy8/9Wn
-	 A0l00G657ONQg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v17 13/13] tracing/wprobe: Support BTF struct offset
- resolution in set_wprobe trigger
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?TWFzYW1pIEhpcmFtYXRzdSAoR29vZ2xlKQ==?= <mhiramat@kernel.org>
-Cc: linux-perf-users@vger.kernel.org, kvm@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-In-Reply-To: <179005123942.388919.17930857651144049898.stgit@devnote2>
-References: <179005108298.388919.4535333252892590932.stgit@devnote2>
- <179005123942.388919.17930857651144049898.stgit@devnote2>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 22 Sep 2026 04:43:30 +0000
-Message-Id: <20260922044331.1EB901F000FF@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fJmzFx4n"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790053788;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8lySgQTIwlN8yYS4Yr7rj9AXvFidDh1HZ1sZdHYKoR0=;
+	b=fJmzFx4nQYlkWAn9IJ6OG3/2XqBK2NnvLpwAwgbM719hXEDmPRCM0XamzPIqJ6WeNFhqLq
+	nU61YDh9EzaA7hMwF0s3XO++sFD+a5ZOQ8Vo/RmA/1ivnop2NB2IMuoeDs5WjJC97guNG8
+	BtiHM0SM5r+Nir8x08zilg+DjrgkEeo=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-mo_Ppq1zNyWIsqqwiQiCTA-1; Tue,
+ 22 Sep 2026 01:09:44 -0400
+X-MC-Unique: mo_Ppq1zNyWIsqqwiQiCTA-1
+X-Mimecast-MFC-AGG-ID: mo_Ppq1zNyWIsqqwiQiCTA_1790053783
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 73591180063A;
+	Tue, 22 Sep 2026 05:09:43 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.44.22.5])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E4C30418;
+	Tue, 22 Sep 2026 05:09:42 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+	id 42A4821E6A04; Tue, 22 Sep 2026 07:09:40 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org,  kvm@vger.kernel.org,  pbonzini@redhat.com
+Subject: Re: [PATCH] kvm: turn fprintf into error_report
+In-Reply-To: <20260921164442.1137615-1-vsementsov@yandex-team.ru> (Vladimir
+	Sementsov-Ogievskiy's message of "Mon, 21 Sep 2026 19:44:42 +0300")
+References: <20260921164442.1137615-1-vsementsov@yandex-team.ru>
+Date: Tue, 22 Sep 2026 07:09:40 +0200
+Message-ID: <87a4p998iz.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] trace: incorrect BTF kflag check in get_offset_of_field() allows=
- wild offsets
---
+Quick drive-by comments...
 
-commit 3bc53bf9a42b7270af7bd91985c43e9cafe48496
-Author: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
 
-tracing/wprobe: Support BTF struct offset resolution in set_wprobe trigger
+> Main benefit: ability to print timestamps.
 
-This commit allows the set_wprobe trigger to use BTF struct offset
-resolution to specify the target address field.
+Possible additional benefits:
 
-Link: https://lore.kernel.org/all/59637b96946653393a7ad3c7de094094796b39c2.=
-1785067572.git.wangjinchao600@gmail.com/
+* Ability to print guest name
 
-> diff --git a/kernel/trace/trace_wprobe.c b/kernel/trace/trace_wprobe.c
-> index f1d6aa320f213..121310b72522f 100644
-> --- a/kernel/trace/trace_wprobe.c
-> +++ b/kernel/trace/trace_wprobe.c
+* Print program name
 
-[ ... ]
+* "This is an error" is obvious even at a glance
 
-> @@ -1165,6 +1166,213 @@ static void wprobe_trigger_free(struct event_trig=
-ger_data *data)
->  	}
+Benefits not applicable here (I believe):
+
+* Print location if we have one
+
+* Automatic redirection to the human monitor when appropriate
+
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> ---
+>  accel/kvm/kvm-all.c | 64 ++++++++++++++++++++++-----------------------
+>  1 file changed, 31 insertions(+), 33 deletions(-)
+>
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 83cbd120a84..d271699db87 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -300,7 +300,7 @@ static KVMSlot *kvm_alloc_slot(KVMMemoryListener *kml)
+       KVMSlot *slot = kvm_get_free_slot(kml);
+
+       if (slot) {
+>          return slot;
+>      }
+>  
+> -    fprintf(stderr, "%s: no free slot available\n", __func__);
+> +    error_report("%s: no free slot available", __func__);
+>      abort();
 >  }
-> =20
-> +#ifdef CONFIG_PROBE_EVENTS_BTF_ARGS
-> +
-> +static int get_offset_of_field(struct btf *btf, const struct btf_type *t=
-ype, char *field_name)
-> +{
-> +	const struct btf_member *field;
-> +	const struct btf_type *mtype;
-> +	int bitoffs =3D 0;
-> +	u32 anon_offs;
-> +	char *next;
-> +
-> +	do {
-> +		next =3D strchr(field_name, '.');
-> +		if (next)
-> +			*next++ =3D '\0';
-> +
-> +		field =3D btf_find_struct_member(btf, type, field_name, &anon_offs, &m=
-type);
-> +		if (IS_ERR_OR_NULL(field))
-> +			return -ENOENT;
-> +
-> +		if (btf_type_kflag(mtype)) {
+>  
 
-[Severity: Medium]
-Is it intentional to check btf_type_kflag() on the member type (mtype)
-instead of the parent struct type (type)?
+Bah, too much ceremony for me.  I'd do
 
-If the member's kflag is checked instead of the parent struct's kflag,
-bitfield members can bypass the explicit rejection check and compute wildly
-incorrect memory offsets. This happens because field->offset contains the
-bitfield size in the upper 8 bits when the parent struct's kflag is set.
+       KVMSlot *slot = kvm_get_free_slot(kml);
 
-> +			/* Reject bitfield member access */
-> +			if (BTF_MEMBER_BITFIELD_SIZE(field->offset))
-> +				return -EINVAL;
-> +			bitoffs +=3D anon_offs + BTF_MEMBER_BIT_OFFSET(field->offset);
-> +		} else {
-> +			bitoffs +=3D anon_offs + field->offset;
-> +		}
+       assert(slot);
+       return slot;
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/179005108298.388919=
-.4535333252892590932.stgit@devnote2?part=3D13
+The "print something to help developers fix the programming error;
+abort()" pattern leads to having __func__ in error messages, which is
+normally an anti-pattern, because error messages are for users.
+
+But all that is outside the scope of your patch, and the maintainers may
+have other ideas anyway.
+
+[...]
+
