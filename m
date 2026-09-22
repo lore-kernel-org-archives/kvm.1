@@ -1,250 +1,232 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB6C3A16BA;
-	Tue, 22 Sep 2026 02:39:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790044775; cv=none; b=utu6vLYUWwPBttvpn3plRDhG1LLaQeaSDFlsayPtI6xP7sjyZdTJ/wyGssteGf6xLuVMOAqlNjJLViEDXTgZMwpFhh0Pr4usAfsXvWYZF7Ps/hhfg36/1RY8MbZCWeA2Oxm8YjouMpWUnRQhTBtmhtXMWAxgE8hp/QOSRlM/Dic=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790044775; c=relaxed/simple;
-	bh=oZLpOhucHC43z4ds0CWKTjnSopVVOHC64Q7+aCD2T9U=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=pVudwEDAqHqQEr5ExLzb8l8sZB7Z20n3NIrgbQadvkkAKLTHJAiA/+cHtOyuYcCG3i/PakLC5s6rQ7Y+2mmpEEyYE8NMabCvGaQHWAOXzBFohjPo5t6VES8fsrkBfi798iaP9E+AJYJ31NMzg7DU2+VXY0+StUXEejuW3Ngd4cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=grS8wGjB; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A67383333
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 03:16:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.225.141
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790046994; cv=pass; b=m3iENvoc7LaX/cm+RV/a4m0bt1VG0B3TtlSuuZtlNruswOQ9vc59+ZwDFFK5VqPtnJTgNQvLIzQ6zYQNFltsCwBv+8AMZl039VUb1y4lB2nauwbJjx9vaWlfI5M9rLPXylXWa/rW//dXM6wrFAljoXnfn1xYxNPM9e4fATiqu/w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790046994; c=relaxed/simple;
+	bh=nxcBcIIu8q5gjVlpoqJK0T82KS5DXH91pbYJkPqLAyI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LvOQg+RpAZdDnKP718nc695PdgYNH4Vb7ZfoVyzLKyFVPE/sCMIQqruKiV3IdbbrhDe98t/3NGSKrDy2yBV/KR+xQI6vHivOdS5WD3lvSzkqwBJE0sozx/jdaM7LuZZ3j06peK0PRlcQYU7dgrv3IvjTgZsawXhs3/xiM0VhEug=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OttL4iFp; arc=pass smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="grS8wGjB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 624791F000FF;
-	Tue, 22 Sep 2026 02:39:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790044766;
-	bh=/SAfsVYoWNOJHq26yUF7h5nEJM0KRG0iyQixYLdJd5A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=grS8wGjBF4E6C9/mcHeILgxNYrsa6oMXLRS4na/8KMmB4+53iikNfdmTyH5i+6Zf+
-	 8YJg0xNC4ZVXroZwuGKsSRmAuu4/iQz6zUkhLTuWTS9P6QmHtW8yhljyAJfpUkC8Og
-	 ECCn45hx1OOxUswv48gEzLwnzFdcoutxzmBL9LaXNnI9KSuwNjydL4/4hpziCOs/Lm
-	 jl8GrZHIA5LQmZQE3V8TStaJD3/yRG5GjvoHdy6HvjY6avL2qsOTT0z8stwjwJa1VS
-	 SHJTetGRQgyjaUOLjTzH7ZU7dMmY+3j47ThBwh3LDJhd6QBhTN+aKxalTJ/vFmYSqD
-	 b2u0OjWOHrPJg==
-Date: Tue, 22 Sep 2026 11:39:23 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: sashiko-bot@kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, kvm@vger.kernel.org
-Subject: Re: [PATCH v16 10/13] tracing/wprobe: Add set_wprobe and
- clear_wprobe event triggers
-Message-Id: <20260922113923.351783c6db12f18befe1db79@kernel.org>
-In-Reply-To: <20260914145845.1D9D21F000FF@smtp.kernel.org>
-References: <178939017565.94750.9431053336761330458.stgit@devnote2>
-	<178939029574.94750.11636803595861231046.stgit@devnote2>
-	<20260914145845.1D9D21F000FF@smtp.kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OttL4iFp"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b965f447cso30574095e9.3
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 20:16:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790046989; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AnggvqhFaYDtM/nzyRjWkMsCSsm4tj/H8Tav2GKiVWruAHRsTZiEmSZIrSluL1mmmq
+         hjWwV4TsSUrOSw+zYNxrMgbwb5f3TQviQzgOWgcMtqmLX0gg+kLK/MCh/bYcus2+QjVN
+         GPemgCOBcz7/P5oHee+tA9A77ylNCgyttzb7GxCInO6BzboVV+WuO6rW4eKZabGMfAv8
+         y2UI65PeyxQE5XWPp0S3HTT7I5N0a0NMCwdEZU72n5RmbtgPtVP2R9aMF1h9zO5lL3ms
+         RjyDPgddO7QS8UG/trC7KgyJJeHAneVwCnqoSy4adSaokCrbYSMN2DEmcO8G6FnYpSIy
+         wPiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=T0hVWGyySlLly+28D7LGfZKDh0uXJmKT1sB0yr2I6gM=;
+        fh=CX0mdOvy8McEFIBpcUX9jbW9EBpvcsYky58/gKrhrmU=;
+        b=TurGX5pISB+uSn/Kv8r9MdMOffF/HR8L9WbBVZotJEEhAkyzv99qbEEmYBVHoQiaoL
+         Mm+vBf1Z6U1lOlKp9PA/S8girup8k0j0UvO7jNVcffOJE+DFJQXSfTkhzzhSOGV3YCZr
+         e+Sox3ZuNndBMlxLSF2GovzOCAw3lo+LpCKrE44mjceMLTI7fuVtmJhLw+aulMayFWZW
+         DmZk1wALVK0kLKnAY4DhSB9wgl2SexoNRVkJF3ZmJKLD8yFhU4tqiPWQ2QKoKmTKRQgG
+         f+74kz+lb6NvTiNo4rudi8az6bxFmvsDN7BHEujHtPmBjCWgoGhplnvHaqo7rQLY4rFq
+         8CCg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790046989; x=1790651789; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=T0hVWGyySlLly+28D7LGfZKDh0uXJmKT1sB0yr2I6gM=;
+        b=OttL4iFp1xOGLN3gQnlMB1tq0xJngLmH/krKaax6xy5z4RxYekCTxh9Pp5E7snJIS8
+         ZobS1E0MjajLMNyvFy7990rcYKr++EK/BWqlFO10y85xevVnAspMQkzcxXzPTMmBUn16
+         O0G3myRMed/g5rzaHBAU3uWu/wfB21Dcma6GjYJPOPLx7aR9vC0WtB94c3WyUTdrpnoa
+         H4qtZJ+iHtgMcAK09zQLOy0AZ4jCix0Ts7e+HOLW6ZGtcTJ0I4WtsWreqCdP5gC4ZD2G
+         UAIvrnTEZ2sjIyjTwWzRwKmDL02BxsXALzX3e57Rz67SZ57uoZZTMabSsbMu01Fj6Hhi
+         yRGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790046989; x=1790651789;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=T0hVWGyySlLly+28D7LGfZKDh0uXJmKT1sB0yr2I6gM=;
+        b=MAmEYrVfw2Tfe22xqQw2sFZmLGsgN+ybCZD2hcUxEKPLGjGmXqRcliQTf229tz0U2f
+         qJftp3lynbbYRYQBECAcRi6MWc+rp5jrdj98LcdGjq72J50nI3hGQDnjkkcts1wY/sfr
+         j34Hz7fFR7FWFdp0fbLNoqcoNCkkw4+Rsi7/uHdNPUUV6Ca612op2EOLa+x3vkT7NFWz
+         +rLK9UckjeIwao+vNAP114AsgNTFieWVMmwLSoaGri12q+A8y/9jvpklRTP2X5smChpm
+         gjhGBqB+lnGrGtAl18rABHTYwLBsyW4Guh3ZoSfx1yGYISvpxSFIVAjHDsCnIbyarIow
+         xkwg==
+X-Gm-Message-State: AFuF++lVuVSlWXHboMoZ4ZyiDX/62gLxkvkBw7M2bD40wRUGArmRukBg
+	5pZgQzgTh/qAQAEq60RxXEc6fJEvFemXrK+BjCLJAK0KZHZfanEuz4hEWcsMYiTx02EdvwKMjW4
+	3DLlMZmaPPwgfUst04W+QtRV0EjzYEe4=
+X-Gm-Gg: AYBFou3h2nWz6JJeepXsbATf2Gw6myhLxw3ZCKRkzjholeCJpTXCubvcbQQhn9ImZ9n
+	4ZFixE72mMac30vDZTqxpX+xBjnfhf0UAv2lqzlVVJNM+R8bDd8ujYSFwrgDKDKBINNmC1/uao6
+	sllxO9WDauIeZtAg6LWECnEG0Kq5B1z+POEZcGda3CLRCTj75quQVhWbcXzED20xVknvpQ8o9yF
+	vHjNWZk7nSFfn036oOrH+etUklP33V+pUF7xVvYFO39jHJE5fUmi5IwzBwT6oxEFMm7wdavNx4P
+	GfVXpsl5AVXnJYW0T/NtK/pQmu0lr7B6gbb4FK9Jf1oUeEJUHxbhCgVvg9y1293aa9uS2KQceI1
+	qwqX7DeBQuolORQ==
+X-Received: by 2002:a05:600c:46cc:b0:493:f5bf:4dc6 with SMTP id
+ 5b1f17b1804b1-49fc566951dmr171043015e9.7.1790046989155; Mon, 21 Sep 2026
+ 20:16:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+References: <20260920211920.928306-1-dwmw2@infradead.org>
+In-Reply-To: <20260920211920.928306-1-dwmw2@infradead.org>
+From: KunWu Chan <kunwu.chan@gmail.com>
+Date: Tue, 22 Sep 2026 11:16:17 +0800
+X-Gm-Features: AcwNN1WrYNyWGp1bGXe-bJN9POYZPs3FjeCDYohf8fnVdXEdiDT26MiduZxqtjc
+Message-ID: <CAN_Opa9YWJZxr=YEjnkS-Khm=83P-xqGVZ6tq2nVQzMNOiThbg@mail.gmail.com>
+Subject: Re: [PATCH 00/17] KVM: Use atomic SRCU for gfn-to-pfn cache,
+ reinstate guest mode for x86 nesting
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, rcu@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, Paul Durrant <paul@xen.org>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, Fred Griffoul <fgriffo@amazon.co.uk>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Zqiang <qiang.zhang@linux.dev>, Boqun Feng <boqun.feng@gmail.com>, 
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Lai Jiangshan <jiangshanlai@gmail.com>, Josh Triplett <josh@joshtriplett.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Jason Gunthorpe <jgg@ziepe.ca>, Michal Hocko <mhocko@suse.com>, 
+	Nikita Kalyazin <kalyazin@amazon.com>, Keir Fraser <keirf@google.com>, 
+	David Matlack <dmatlack@google.com>, nh-open-source@amazon.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 14 Sep 2026 14:58:44 +0000
-sashiko-bot@kernel.org wrote:
+Hi David,
 
-> Thank you for your contribution! Sashiko AI review found 5 potential issue(s) to consider:
-> - [High] Missing RCU synchronization in the error path of wprobe trigger registration leads to a Use-After-Free of hardware breakpoint perf_event structures.
-> - [High] Hardware breakpoint addresses are not updated for offline CPUs, leading to stale addresses when CPUs come online.
-> - [Medium] The 'count' parameter is decremented on trigger evaluation misses, causing the trigger to exhaust its count without actually modifying the watchpoint.
-> - [Medium] The wprobe event permanently leaks as enabled when the trigger is unregistered because `EVENT_FILE_FL_SOFT_DISABLED_BIT` is manually cleared.
-> - [Low] A field named 'unlimited' is silently ignored by `clear_wprobe` if no count keyword is provided.
-> --
-> 
-> commit 146ca411781d7203b266aa3745d30641c87b97d2
-> Author: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> 
-> tracing/wprobe: Add set_wprobe and clear_wprobe event triggers
-> 
-> Add set_wprobe and clear_wprobe event triggers to dynamically attach
-> and detach hardware breakpoint address monitoring based on event field
-> contents.
-> 
-> Link: https://lore.kernel.org/all/59637b96946653393a7ad3c7de094094796b39c2.1785067572.git.wangjinchao600@gmail.com/
-> 
-> > diff --git a/kernel/trace/trace_wprobe.c b/kernel/trace/trace_wprobe.c
-> > index 9c6100b63e8d9..55a201504bb0b 100644
-> > --- a/kernel/trace/trace_wprobe.c
-> > +++ b/kernel/trace/trace_wprobe.c
-> 
-> [ ... ]
-> 
-> > @@ -231,6 +303,12 @@ static struct trace_wprobe *alloc_trace_wprobe(const char *group,
-> > 
-> > +static void wprobe_work_func(struct work_struct *work)
-> > +{
-> > +	struct trace_wprobe *tw = container_of(work, struct trace_wprobe, work);
-> > +
-> > +	on_each_cpu(wprobe_smp_update_func, tw, true);
-> 
-> [Severity: High]
-> Could this leave hardware breakpoints with stale addresses on offline CPUs?
-> 
-> on_each_cpu() only broadcasts to currently online CPUs, so offline CPUs
-> won't execute trace_wprobe_update_local(). When an offline CPU comes
-> online, won't the perf event core reinstall the hardware breakpoint using
-> the old, stale address since it wasn't updated here?
+Thanks for the series. I noticed the testing results, but didn't see
+a performance comparison for the SRCU change itself.
 
-OK, introduce cpu hotplug callback to handle it.
+Do you happen to have any numbers comparing the GPC invalidation
+latency with regular SRCU vs. `synchronize_srcu_atomic()`? If there
+are also numbers with the reader-free fastpath, that would be useful
+for understanding its impact as well.
 
-> 
-> [ ... ]
-> 
-> > @@ -773,3 +866,538 @@ static __init int init_wprobe_trace(void)
-> 
-> [ ... ]
-> 
-> > +static void wprobe_trigger(struct event_trigger_data *data,
-> > +			   struct trace_buffer *buffer,  void *rec,
-> > +			   struct ring_buffer_event *event)
-> > +{
-> > +	struct wprobe_trigger_data *wprobe_data = data->private_data;
-> > +	struct trace_wprobe *tw = wprobe_data->tw;
-> > +	unsigned long addr = 0, flags;
-> > +	bool changed = false;
-> 
-> [ ... ]
-> 
-> > +	raw_spin_lock_irqsave(&tw->lock, flags);
-> > +
-> > +	if (!wprobe_data->clear) {
-> > +		if (!trace_wprobe_is_valid_addr(addr, tw->len)) {
-> > +			atomic_inc(&tw->missed);
-> > +			goto out;
-> > +		}
-> > +		if (tw->addr == WPROBE_DEFAULT_CLEAR_ADDRESS) {
-> > +			/* Skip if a previous work is still propagating the address */
-> > +			if (atomic_read(&tw->work_pending)) {
-> > +				atomic_inc(&tw->missed);
-> > +				goto out;
-> > +			}
-> > +			WRITE_ONCE(tw->addr, addr);
-> > +			changed = true;
-> > +			clear_bit(EVENT_FILE_FL_SOFT_DISABLED_BIT, &wprobe_data->file->flags);
-> 
-> [Severity: Medium]
-> Does manually clearing EVENT_FILE_FL_SOFT_DISABLED_BIT cause the event to leak
-> as enabled?
-> 
-> When the trigger is unregistered, wprobe_trigger_free() calls
-> trace_event_enable_disable(file, 0, 1). Because the soft-disabled bit was
-> cleared here, won't the core event logic skip the unregister step, leaving
-> the wprobe tracepoint permanently enabled in the kernel?
+No need to run anything specifically if you don't already have the
+numbers.
 
-Good catch!
-Hmm, we should set EVENT_FILE_FL_SOFT_DISABLED_BIT when removing
-a wprobe_trigger.
+Thanks,
+Kunwu
 
-> 
-> [ ... ]
-> 
-> > +static int wprobe_trigger_cmd_parse(struct event_command *cmd_ops,
-> > +				    struct trace_event_file *file,
-> > +				    char *glob, char *cmd,
-> > +				    char *param_and_filter)
-> > +{
-> 
-> [ ... ]
-> 
-> > +	} else if (param && (isalpha(param[0]) || param[0] == '_')) {
-> > +		if (strncmp(param, "count=", 6) != 0 &&
-> > +		    strcmp(param, "unlimited") != 0) {
-> 
-> [Severity: Low]
-> Is this intended to skip fields named "unlimited"?
-> 
-> If a user configures a clear_wprobe trigger on an event that happens to have
-> a field named "unlimited", this parser matches the keyword and skips parsing
-> it as a field, which defaults to an unconditional clear action.
-
-Hmm, OK. Let's check the event has "unlimited" field or not.
-
-> 
-> [ ... ]
-> 
-> > +static int wprobe_register_trigger(char *glob,
-> > +				   struct event_trigger_data *data,
-> > +				   struct trace_event_file *file)
-> > +{
-> > +	int ret = 0;
-> > +
-> > +	lockdep_assert_held(&event_mutex);
-> > +
-> > +	/* The same wprobe is not accept on the same file (event) */
-> > +	if (wprobe_trigger_find_same(data, file))
-> > +		return -EEXIST;
-> > +
-> > +	if (data->cmd_ops->init) {
-> > +		ret = data->cmd_ops->init(data);
-> > +		if (ret < 0)
-> > +			return ret;
-> > +	}
-> > +
-> > +	list_add_rcu(&data->list, &file->triggers);
-> > +
-> > +	update_cond_flag(file);
-> > +	ret = trace_event_trigger_enable_disable(file, 1);
-> > +	if (ret < 0) {
-> > +		list_del_rcu(&data->list);
-> > +		update_cond_flag(file);
-> > +		if (data->cmd_ops->free)
-> > +			data->cmd_ops->free(data);
-> > +	}
-> 
-> [Severity: High]
-> Does this error path need RCU synchronization?
-> 
-> If trace_event_trigger_enable_disable() fails, list_del_rcu() is called
-> without a subsequent synchronize_rcu(). The cmd_ops->free callback
-> (wprobe_trigger_free) will then synchronously disable the wprobe, which
-> frees the tw->bp_event array.
-> 
-> Could a concurrent tracepoint reader still observe the trigger data,
-> execute wprobe_trigger(), and dereference the freed tw->bp_event via
-> this_cpu_ptr() inside trace_wprobe_update_local()?
-
-Yes. Let me add tracepoint_synchronize_unregister() here for
-waiting RCU.
-
-> 
-> [ ... ]
-> 
-> > +static struct event_command trigger_wprobe_set_cmd = {
-> > +	.name			= SET_WPROBE_STR,
-> > +	.trigger_type		= ETT_EVENT_WPROBE,
-> > +	/* This triggers after when the event is recorded. */
-> > +	.flags			= EVENT_CMD_FL_NEEDS_REC,
-> > +	.parse			= wprobe_trigger_cmd_parse,
-> > +	.reg			= wprobe_register_trigger,
-> > +	.unreg			= wprobe_unregister_trigger,
-> > +	.set_filter		= set_trigger_filter,
-> > +	.trigger		= wprobe_trigger,
-> > +	.count_func		= event_trigger_count,
-> 
-> [Severity: Medium]
-> Will this unconditionally exhaust the trigger's count parameter even on misses?
-> 
-> Because .count_func is set to event_trigger_count, the count is decremented
-> before wprobe_trigger() runs. If the trigger fails its implicit checks inside
-> wprobe_trigger() (such as checking if the field matches the watched address),
-> the count has already been consumed.
-
-Hmm, OK. Let me add wprobe_count_func() to check the condition.
-
-Thank you,
-
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/178939017565.94750.9431053336761330458.stgit@devnote2?part=10
-
-
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+On Mon, Sep 21, 2026 at 5:19=E2=80=AFAM David Woodhouse <dwmw2@infradead.or=
+g> wrote:
+>
+> Now that Paul et al have so kindly provided atomic SRCU for us, it would
+> be churlish not to use it.
+>
+> Based on the merge of kvm/next (d4b7fb647204) with Paul's dev.2026.09.17a=
+=C2=B9
+> as posted last week=C2=B2, this series:
+>
+>  =E2=80=A2 Converts the GPC to use atomic SRCU, ditching the rwlock which=
+ was a
+>    scaling and latency problem, and which PREEMPT_RT hated because it
+>    turned the rwlock into a sleeping lock.
+>
+>  =E2=80=A2 Cleans up the intentional lack of dirty-tracking of Xen shinfo=
+ and
+>    vcpu_info pages (Sean).
+>
+>  =E2=80=A2 Converts steal-time / preempted status to use gfn_to_pfn_cache=
+. (Carsten)
+>
+>  =E2=80=A2 Reinstates guest-mode pinning: replacing the old GUEST_USES_PF=
+N mode,
+>    letting nested state pages be cached and pinned while in guest context=
+.
+>
+>  =E2=80=A2 nVMX: Uses GPC for the L1 MSR bitmap, and guest mode for APIC =
+access
+>    and vAPIC pages. (Fred)
+>
+>  =E2=80=A2 nSVM: Uses GPC for vmcb12 / MSR-permissions / IO-permissions p=
+ages. This
+>    cuts the vmcb12 transition cost measurably (selftest included).
+>
+>  =E2=80=A2 Returns -EAGAIN from cache lookups which race with memslot upd=
+ates,
+>    and re-posts KVM_REQ_GET_NESTED_STATE_PAGES on memslot generation
+>    bumps so pinned caches are revalidated lazily.
+>
+> Tested: rcutorture atomic-SRCU (srcud, reader_flavor=3D0x10) on three
+> hosts; KVM selftests including new invalidation and transition tests;
+> >1 week soak of VM lifecycle + invalidation reproducers on 128-way
+> RT+KASAN+lockdep, 192-way RT and 192-way PREEMPT_DYNAMIC hosts. And
+> booted an actual Xen guest in QEMU a few times...
+>
+> =C2=B9 https://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu.=
+git dev.2026.09.17a
+> =C2=B2 https://lore.kernel.org/rcu/20260919003521.3134552-1-paulmck@kerne=
+l.org/
+>
+> There have been previous series which attempt to deal with various parts
+> of GPC locking, and the steal time one has definitely been posted before
+> a few times, but let's just call this v1:
+> https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Dref=
+s/heads/gpc-srcu
+>
+> Carsten Stollmaier (1):
+>       KVM: x86: Use gfn_to_pfn_cache for steal time / preempted status
+>
+> David Woodhouse (10):
+>       KVM: pfncache: Use atomic SRCU for readers instead of a rwlock
+>       KVM: x86: Request the guest TLB flush from record_steal_time()
+>       KVM: pfncache: Add guest-mode pinning (GUEST_USES_PFN successor)
+>       KVM: pfncache: Return -EAGAIN for a lookup which hits an invalid me=
+mslot
+>       KVM: x86: Post KVM_REQ_GET_NESTED_STATE_PAGES on memslot updates
+>       KVM: x86: Move nested GPC lock helpers to x86.h as kvm_gpc_lock_pag=
+e()
+>       KVM: nSVM: Use a gfn_to_pfn_cache for the vmcb12 page
+>       KVM: nSVM: Cache L1's MSR permissions map pages
+>       KVM: nSVM: Cache L1's IO permissions map pages
+>       KVM: selftests: Add nested transition benchmark
+>
+> Fred Griffoul (3):
+>       KVM: nVMX: Implement cache for L1 MSR bitmap
+>       KVM: nVMX: Use pinned pfncache for L1 APIC virtualization pages
+>       KVM: selftests: Add nested VMX APIC cache invalidation test
+>
+> Sean Christopherson (3):
+>       KVM: x86/xen: Extract delivery of event to vCPU into a separate hel=
+per
+>       KVM: x86/xen: Explicitly tag "shared info" page as never being dirt=
+y tracked
+>       KVM: x86/xen: Don't dirty track "vCPU info" page
+>
+>
+>  arch/x86/include/asm/kvm_host.h                    |   2 +-
+>  arch/x86/kvm/msrs.c                                |   7 +-
+>  arch/x86/kvm/svm/nested.c                          | 112 +++-
+>  arch/x86/kvm/svm/svm.h                             |  16 +
+>  arch/x86/kvm/vmx/nested.c                          | 356 ++++++++++--
+>  arch/x86/kvm/vmx/vmx.c                             |  11 +-
+>  arch/x86/kvm/vmx/vmx.h                             |  16 +-
+>  arch/x86/kvm/x86.c                                 | 181 ++++---
+>  arch/x86/kvm/x86.h                                 |  33 ++
+>  arch/x86/kvm/xen.c                                 | 279 +++++-----
+>  include/linux/kvm_host.h                           |  86 ++-
+>  include/linux/kvm_types.h                          |  52 +-
+>  include/linux/srcu.h                               |   7 +
+>  tools/testing/selftests/kvm/Makefile.kvm           |   2 +
+>  .../selftests/kvm/x86/nested_transition_bench.c    | 204 +++++++
+>  .../selftests/kvm/x86/vmx_apic_update_test.c       | 299 +++++++++++
+>  virt/kvm/kvm_main.c                                |   9 +
+>  virt/kvm/pfncache.c                                | 596 +++++++++++++++=
+++----
+>  18 files changed, 1876 insertions(+), 392 deletions(-)
