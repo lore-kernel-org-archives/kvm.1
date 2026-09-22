@@ -1,217 +1,172 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101645326C5;
-	Tue, 22 Sep 2026 22:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790117763; cv=none; b=YUF/xp9VRFOl9PFSgcV9MpKQhPvf+1CEPzm4ltY9eSEVImkkGIwyWiShMmgOrVZFkbyuvGkPoDNpYHh7ZIz7A1VqUNADMT1O6ih9Acmh3TB7ULbf4vaO1iEPAGkzstkYwGMTVXJ8Yg77bkswUzvctx/ZQq+GNCn4fm1jOwifs70=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790117763; c=relaxed/simple;
-	bh=qVCjW+bKUVgRJaxooxblKpYN+hplHE+53CuW6GhbhWg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A4KTjCpsISU/Aoy0LlhwKnL+JS+EzSNjAbCLuRV19QWHFnTRdd9MXQhfKTiqY/9tfJYdJorVVDUaK/VeIcCd1WWZ8wk585t2RD+2la0xgPloHNQBTMbpJ+uZmGBfNBK6m3prci+WtAETCbOzPh3SDIN8AU8o8Mec22dnOhq30K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=NYFlzv5R; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012047.outbound.protection.outlook.com [52.101.43.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859173321C2;
+	Tue, 22 Sep 2026 22:57:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790117878; cv=fail; b=TLbUmEtq39Bf9wqSB0M0C3e+2fCU68fTTPLa1Jz9DljOBbJUN0Y3n50i+eCdit2TsFgsRbyUj5xE+/RJD2laf1o3gsr5J73n7W7Sg+yQFcGnQQofu/+Ox2L89HiVhFq7u4LMSIa5PwPXRqTmfLH6VuhAQgrsfJy26Xc4KeOi40Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790117878; c=relaxed/simple;
+	bh=X5tdVL3Gz6PX38yO+XpcagROgxeekVvkhiFbUQ7jhCI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=JCHUbXUKn8bgNrxQGNRixmMPz8+PZ9EC2xB2B/7HbeOixhD8LBpgMbaBRdFcTpS4ePAO30CzvyTymJlk5ZuegDGoFHCoykKvongW1c7e/mA8b25DEqpBfYJe1UUgd1QHJRBsqXC2/yfktabG0PTx0E4xo1HWXOHBcBvr2MzV9fM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qR0BP/Uz; arc=fail smtp.client-ip=52.101.43.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="NYFlzv5R"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 267771576;
-	Tue, 22 Sep 2026 15:55:53 -0700 (PDT)
-Received: from [10.57.9.113] (unknown [10.57.9.113])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A07BB3F632;
-	Tue, 22 Sep 2026 15:55:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790117756; bh=qVCjW+bKUVgRJaxooxblKpYN+hplHE+53CuW6GhbhWg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NYFlzv5R7+kCofQIFQDwJs6xa1Tp35O7ZW6qtSA9fT4Pygzy9yDpBiIqnoRsXfoCU
-	 Iog5eoTK90Q60dmjkNHrvRS3Q5CEV4M8UtI0CW1l5b4iP1hxxa3rR2tGoXJzpqMeaj
-	 c5IADN5feKzMA5TDTPUIgueobeOVzZWzDfkDuvhM=
-Message-ID: <2164b046-bbbb-4cfb-b797-5df27fbe313f@arm.com>
-Date: Tue, 22 Sep 2026 23:55:52 +0100
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qR0BP/Uz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eXbCf0dOipS4qoO89RyuaC/BMrvmCXjILA0N8kCqbKLwZ3kK1MQxIBpPMREEvy5iu1hYg3P1U+3J77pCF5RO7UcTng9dcPvGgWF6gJQUndJUc/zs6xvHAaJMCbqgNZLXqSLKbAsA0K/Im1flvhAuEiAXihLwqfbFHlDRmaEnORDU+QU+ojnjNV5CT6XI8EUKBz9zVt+2+76R9tXA6kZ8Xp25EJgkoybS/eoQ3/hkS7fKvrAL4RIiiZ1lmQ0+1NfMFPQkmQ1EcEj2iGyNfMs5eBA1CId3A6mXnys0SRaKcXo2zpC+XVSrv3tJi0Ts5xLQSB0imBRu0HBeW+JaEhNZsg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=X5tdVL3Gz6PX38yO+XpcagROgxeekVvkhiFbUQ7jhCI=;
+ b=L/6sNgpiez640blApNAeJa4RjF1Gmg18TBq6cNM6L3V6fCODsxgs/I49qxkD1jxgZFTqL0pCx1rHwMcSOgnGoRxxWPftlNzfvIZ4RUscBShw5RhEUkJ/wjnh+n1+4tsETbW04r/5CjQtCXLTFnSF2aOKXJZYgy7wpicPSY2pwheYLhRzqzwrVTXwE4k6rHumPyQciaPLaAhTnxe5wRl8ijmkfvo87wHSpYk4cg//BbEPANf/yto89wyNrehorLzHQxMM2d8/dhl9BdMb4e+gPYl+LMf19TUI8VQJmgu9qu/jy5iM8Ey/tg6qaNoKebwPt42/6hT2MUaWGI341QONSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=X5tdVL3Gz6PX38yO+XpcagROgxeekVvkhiFbUQ7jhCI=;
+ b=qR0BP/UzusQxJXDKHDBWSe4wNxFZNm9ipnDsjydVj/dyPDEqKlOWIjT1yM7eNvNEP2elJDT1qbXmKR2hOXm693YZIxnC8due8uvYLJUJURuNeFQ9vni/fKyvSouBbeK0Ike4PYQH7onxELXBbO47M2NzEcVLn/ROJoVealQWmJ4KjpcF4PCJzjHMB3OcS3l2jmJQoK5XEdNzfTUIeVsbW8pX7FDxTraTyjIGN37kXBcpTD1ZjJ0tZVI3nZxr8CyRIWhjfiGmMvsVUOV7MDzw4qoiasKIWfBO6aOSC7GkSQdMrGjYPLiRZpyaPoO3WWG/UoFvNOwMxNLIRa7biBxOKA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12) by DS6PR12MB381293.namprd12.prod.outlook.com
+ (2603:10b6:8:414::5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Tue, 22 Sep
+ 2026 22:57:48 +0000
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0451.012; Tue, 22 Sep 2026
+ 22:57:48 +0000
+Date: Tue, 22 Sep 2026 19:57:47 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Alex Mastro <amastro@fb.com>
+Cc: Leon Romanovsky <leon@kernel.org>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Matt Evans <matt@ozlabs.org>, Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Longfang Liu <liulongfang@huawei.com>,
+	Mahmoud Adam <mngyadam@amazon.de>,
+	David Matlack <dmatlack@google.com>,
+	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	kvm@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v6 9/9] vfio/pci: Permanently revoke a DMABUF on request
+Message-ID: <20260922225747.GB2545495@nvidia.com>
+References: <0fdfe19e-f8ef-47ff-aa99-66adbc524728@amd.com>
+ <23a0ea30-c6dc-4b8c-a0a1-89e9f912bf37@ozlabs.org>
+ <20260921132208.GA1507824@nvidia.com>
+ <fa5c7fd5-f24a-4ca1-89c3-9ccd9a728fb4@amd.com>
+ <20260921134924.GB1507824@nvidia.com>
+ <2d15cca5-0bbe-461a-baf3-56758e82cfb7@amd.com>
+ <20260922124137.GD1507824@nvidia.com>
+ <20260922124637.GG563127@unreal>
+ <20260922125421.GE1507824@nvidia.com>
+ <arMBqyI4XNfD+q1W@devgpu015.cco6.facebook.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arMBqyI4XNfD+q1W@devgpu015.cco6.facebook.com>
+X-ClientProxiedBy: SN7P220CA0001.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:806:123::6) To CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18 6/7] firmware: arm_rmm: Ensure the RMM has GPT entries
- for memory
-Content-Language: en-GB
-To: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
- will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260912083611.2513845-1-suzuki.poulose@arm.com>
- <20260912083611.2513845-7-suzuki.poulose@arm.com>
- <178978126543.2352296.12214136703168879825.b4-review@b4>
- <65b0c03b-36b9-4e60-aa55-c3b4b85e21ee@arm.com>
- <93aea89c-0a05-4b5a-905d-2e8c14a9e894@arm.com>
- <20260921145838.00003b04@oss.qualcomm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20260921145838.00003b04@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|DS6PR12MB381293:EE_
+X-MS-Office365-Filtering-Correlation-Id: d68b2a0b-3f82-4f96-919f-08df18fcec5c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|23010399003|376014|1800799024|366016|10067099003|5023799004|11063799006|56012099006|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	uT5d8YHcJXAY91/v2JWGsQNhSiRnUAeXNgB5FFaliFbyLU4wJ93Vs+H/99sELAlE+0YC2iwA53dAc+vWE9bKef+QOBNNPIL4xt0+AjTgCocyL37EN0DO5GZGnkXabKBeNSh6Tf0AIgfHduOuLBwDECzUlGV/JBakUcwSkWVePMmSUtp588DWXVNPb5iywK7wojwj/XihbzoEAd7gTUKnKd6pXRqynHB/4EIhIYx5RGI/32qcc9cM1yGNc3Zj/5TW+xFPW7v6EnndEyLnETmpP5HLaQQl4RPhIhJAHD/h3uB1a3rlbpkyIW9kASDbseUVbP/OkNbipqkLDfd0HVo8lEBoTpewYgrdFQJQchbTLFGYCXM77II/DlwVmV6xzUaxIGcUt+RuNz82vlkI1WsxtwmY/bOveYDJFcAd5eyFcOVBp8NDkDlexdFXwyjsVLph+bDRle0BdFo4NSHO0czYvktBRj1JJqFl0Sz/lriiEAFDwEDgfxHWwY4V0BX+A+soFxq+GEQ6hCO7zj+cJlsILZqYwUQbhgAZJ2j7MXXin9mWMDSCQ4c0KljTqc/uBUv4WYZssr6HU6zXIUzQA0c1tIIOzsxvo4jqYy4CwH7HBhVLRYPlkC5NsoxnTAvVpu4rCMzJwIV3NqUsvoYir7WJRo8EXJ+5+DZfC/KOGboeLD0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(1800799024)(366016)(10067099003)(5023799004)(11063799006)(56012099006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ckjiVUDtPJKpeMbzqNxSgV9rugd4Ni4H+U+C8ET7MpjhIRw5mvtlFOKiclPU?=
+ =?us-ascii?Q?BGDBwKdHzRvET983YGglF6UjwwkWQ1hVMPhCRlIHU4BiPl9FDoJCQNO31PIR?=
+ =?us-ascii?Q?TZ8PW3qA/7QbsanuGNHzWTdjCWVdXtxVUWhWk8xWGOYU4DfJqZ0WHGrtV9Jp?=
+ =?us-ascii?Q?MnByoNaRt9DS2Jh3lb1+1cPzrxEHkobzUWZLITY4b735QLDG57Oot06A0ghU?=
+ =?us-ascii?Q?Yw8UWjAu5WI0cCQbyp8gDAJLE8XJJehc4J42M3nLUnfgpS8qkTo6RpLp7Mag?=
+ =?us-ascii?Q?PXqPmIzOqTUJFmdw/OYxxlaaH9A6bLBd3eQudxBVdsx59hAgBkeVhIY75d0Q?=
+ =?us-ascii?Q?DcmSXWUkCMBf8ADtY1fN/ID+nKtWNcy49bZXR37SpPacs7xu9qL7jATtAYDg?=
+ =?us-ascii?Q?1zcwo+uoqFe98ZYvk5BSvBf8KTDkdqTTHo7/rAvbAsfHJKSAE24/SS9+jTuV?=
+ =?us-ascii?Q?eqTeckSHCVEhr3KLPRwmK4n1zoPptfmpHYlwrjBE9M/B7DfKYosQLvN3eToC?=
+ =?us-ascii?Q?nDDpc5V4WajIuIejHX+67dq4LmvlPEglxdxzNu7CtpEW7uLUZZIlL0UVK19A?=
+ =?us-ascii?Q?3Pu5TooqeKYyC0PIdbj2FYJ3q/1+HOnWUNmVCAPui5fEfeYIPOTZu4VBQgDk?=
+ =?us-ascii?Q?DfUwx8YgHhToK/vpN02d/Vx4s5b4HPgQNwQaxee/KTYHbV99yGPSF/c31jCq?=
+ =?us-ascii?Q?lBlCiCwuXeqhHS/fMMck6ccJcbQGTe7J7Twk+XZhhvVF3aPF0kqBfFUTior4?=
+ =?us-ascii?Q?1ZHtdWCuo3sGp1hvdz4q+k6TyPkhEZtjAs5h6Y+YX4/ivjrC5dmiWgLiSaZp?=
+ =?us-ascii?Q?qg1KfUdAamQSttAzWxxBc1zW5pj/e8ydnZ3/RFFhw/6lzBWlNQAY7QAur22a?=
+ =?us-ascii?Q?v7JF8/hV2678SHty0gO6xfDnubzIZcSWjYnW5Yt+mLggF8w4DEEZve5xHlBM?=
+ =?us-ascii?Q?0Uje7TSQuWkZWZ8/FqH7Hrzm5H8hp21MMnWTN50KkgpyHx6zPYFrck/3SE75?=
+ =?us-ascii?Q?V7STTUCfgy/+d/EHxBqxLfIeoBgEg+CnLkQEI2BSZrecdMWKV+i7d7KZWaoI?=
+ =?us-ascii?Q?mJEwrQwai4sIxqSL0+ar/toMVvqJ4yXbe8lEWvfgCLKugN+DoceYdWgE3hak?=
+ =?us-ascii?Q?2OIgGlfa7VBhUOVhAnN3QaO915fGrpYS1QFeOofirz04lzCrHOodw1FH5LM4?=
+ =?us-ascii?Q?aD2AvMPqVvJER6r7J/HY/J8YuEcOjfV7Dp+02tB1O11Mb+j7pM6rR/q5SwAq?=
+ =?us-ascii?Q?tmR2NVyVcyiL05icGUURrhK6O8YY03ch6Md+SOpMODQ26NeDgfc+uFqyJsMR?=
+ =?us-ascii?Q?jKFsdZ1j1lSMbsTwp0mHM0YJ/c0XNbNy1XUqQ5p7OJP5tXciItDACCXaeuIs?=
+ =?us-ascii?Q?8bAtHSSuECGuy8txxemM3DDCykvyyFPO2opK/5qFr+qyXxSjLoDXkYk/723o?=
+ =?us-ascii?Q?fsRVaGZfg56yFDRk74ImGZfHMb7K06ubqyvY/Siypg9DosCO3LKBN8+7NsxP?=
+ =?us-ascii?Q?feVt/Gea7eINQ/oFgWz3AMV1+yTRGtgyvZbNBosRVki/0mvgjI1fKGBOFtCn?=
+ =?us-ascii?Q?tM+WNdFWOkihAlSYy1DnAUKRfHfsiUJ1xyn+A7/UklbOKriLtQefjDRH6hLy?=
+ =?us-ascii?Q?DEEfIzYmpF7BxPEn5trE++8Y+VoXIwktfXaouyaP0FLb6ERD1w5FsELTg/L/?=
+ =?us-ascii?Q?M9Rg3K5dTZin/0Fp8OiePPnpD8iC3z9XXPj3cTSS8KdmnzCt?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d68b2a0b-3f82-4f96-919f-08df18fcec5c
+X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2026 22:57:48.7065
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sSva109dIw20On7hPGa2aG9TJb17Khc7r/fm9ikY0rqS/qmjYd8PWfXXHM6bJ6nr
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR12MB381293
 
-On 21/09/2026 22:58, Jonathan Cameron wrote:
-> 
->>>>>    static int __init arm64_init_rmi(void)
->>>>>    {
->>>>>        int ret;
->>>>> @@ -786,8 +970,24 @@ static int __init arm64_init_rmi(void)
->>>>>        if (ret) {
->>>>>            pr_err("RMM activate failed\n");
->>>>>            ret = ret < 0 ? ret : -ENXIO;
->>>>> +        return ret;
->>>>
->>>> Why did this change?
->>>
->>> Rebase messed up. I will restore it.
->>
->> Actually this is not. We dont have to check the metadata if
->> we couldn't activate the RMM. Also, the failure path at the
->> bottom has "deactivate", which again is not needed. So
->> it is the right thing to do.
-> 
-> Only after this patch? Not from the previous patch?
-> 
->>
->>>    
->>>>   
->>>>>        }
->>>>> +    ret = rmi_init_metadata();
->>>>> +    if (ret)
->>>>
->>>> And this is hitting another bit of guidance in cleanup.h.
->>>> Functions shouldn't be mixing __free and friends with
->>>> gotos.  Again, not a bug here but there are large ugly
->>>> monsters around this stuff, hence the blanket guidance.
->>>> I haven't thought that hard on how you avoid it here, but
->>>> usually it's a combination of suitable helpers and wrappers
->>>> and resulting code is often more readable as a result.
->>
->> I could change the hunk to something like, but that looks ugly.
->>
->> @@ -1010,20 +1010,12 @@ static int __init arm64_init_rmi(void)
->>                   return ret;
->>           }
->>
->> -       ret = rmi_init_metadata();
->> -       if (ret)
->> -               goto out_deactivate;
->> +       if (!rmi_init_metadata() &&
->> !register_memory_notifier(&rmi_memory_nb)) {
->> +               arm64_rmi_is_available = true;
->> +               pr_info("RMI configured\n");
->> +               return 0;
->> +       }
->>
->> -       ret = register_memory_notifier(&rmi_memory_nb);
->> -       if (ret)
->> -               goto out_deactivate;
->> -
->> -       arm64_rmi_is_available = true;
->> -       pr_info("RMI configured\n");
->> -
->> -       return 0;
->> -
->> -out_deactivate:
->>           WARN_ON(rmi_sro_memxfer_cmd(sro, GFP_KERNEL,
->> SMC_RMI_RMM_DEACTIVATE));
->>           return ret;
->>    }
->>
->>
->> Either ways, we have to cleanup the object on return, no matter
->> the route we take. So the original form is much more readable
->> for me.
-> 
-> Agree to more readable, but that fragility of mixing __free() and
-> goto is a real problem that has tripped many folk up - hence
-> the perhaps overly strict guidance.  Rather than avoiding the goto, I'd just
-> not use __free()  - go old school and have two labels for errors
-> and an extra manual free in the good path.
-> 
-> 	pr_info("RMI configured\n:);
-> 	kfree(sro);
-> 
-> 	return 0;
-> 
-> out_deactivate:
-> 	WARN_ON(rmi_sro_memxfer_cmd(sro, GFP_KERNEL, SMC_RMI_RMM_DEACTIVATE));
-> out_free_sro:
-> 	kfree(sro);
-> 	return ret;
-> }
-> 
-> Sometime the new toys aren't the right answer.
+On Tue, Sep 22, 2026 at 03:31:07PM -0700, Alex Mastro wrote:
 
-I have the following hunk on top of this patch, that could do the trick.
+> So I empathize with Matt's contention that the _existing_ behavior that the
+> priv->revoked flag represents is actually "temporarily revoked": the importer
+> can use the same dma-buf again, later, without having to re-import
+> it!
 
-diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
-index bcdbed26cf08d..4385f49068965 100644
---- a/drivers/firmware/arm_rmm/rmi.c
-+++ b/drivers/firmware/arm_rmm/rmi.c
-@@ -1033,20 +1033,19 @@ static int __init arm64_init_rmi(void)
-                 return ret;
-         }
+mlx5 isn't a revoking importer, it is move capable. So the above
+sequence isn't a revoke, it is a move with an unmapped placement for a
+while.
 
--       ret = rmi_init_metadata();
--       if (ret)
--               goto out_deactivate;
--
--       ret = register_memory_notifier(&rmi_memory_nb);
--       if (ret)
--               goto out_deactivate;
--
--       arm64_rmi_is_available = true;
--       pr_info("RMI configured\n");
--
--       return 0;
--
--out_deactivate:
-+       do {
-+               ret = rmi_init_metadata();
-+               if (ret)
-+                       break;
-+               ret = register_memory_notifier(&rmi_memory_nb);
-+               if (ret)
-+                       break;
-+               arm64_rmi_is_available = true;
-+               pr_info("RMI configured\n");
-+               return 0;
-+       } while (0);
-+
-+       /* De-activate the RMM and reclaim any donated memory */
-         WARN_ON(rmi_sro_memxfer_cmd(sro, GFP_KERNEL, 
-SMC_RMI_RMM_DEACTIVATE));
-         return ret;
+This is why "temporarily revoked" is a confusing phrase.
 
-Cheers
-Suzuki
+The API is such that move and revoke importers can co-exist like this
+but they experiance a different version of things..
 
-> 
-> Jonathan
-> 
-> 
-> 
-> 
->>
->> Cheers
->> Suzuki
->>
->>>>   
->>>
->>> I will see if I can improve it.
->>>
->>> Cheers
->>> Suzuki
->>>    
->>
-> 
+We probably should not have made it have this move compatible
+restoration and had things more consistent. User space can't know if
+the importer is move capable or not so it has to assume revoke and it
+has to go and unmap things before resetting/etc.
 
+> This series doesn't intend to change the behavior of either. Is the confusion
+> about whether the current behavior is intentional and/or desirable? If the
+> answer to both is "no", then IMO this series paves the way nicely towards making
+> PERM_REVOKED the only supported semantic later.
+
+Right, I think the only concern is language.
+
+Jason
