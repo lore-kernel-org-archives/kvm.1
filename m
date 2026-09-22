@@ -1,125 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3202F260C;
-	Tue, 22 Sep 2026 14:31:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790087519; cv=none; b=dfnMkLORx6oyb0J2sjn64CKy2vO7aw5eGKP9bq8OivtCKX8LRYAsXHIKEB8q923FkOpL0snuM1GDqYwbr0ovUiV360W3F3r+F0PozaRS78Co0mbxszpDYrs1nv0nW6za9XvKKbwpF4ASrrAqcBpFT8NfSgzqPJwnDtfWuDulanE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790087519; c=relaxed/simple;
-	bh=6IImLfTKxPhGIdpizcT4cnoXrUZEZ+xiZp14YeweZOg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=J6dTvu4DP6A2scMnEM8zWdZMwibF6EywtOiDtLPJGFnyk874dT9Y0vSSk9Iof2Cf/P2Dnqj/NAEYtQ2q3H6z9TJvzCF0UtNfW3aBy9sbo2l2Sm+ZDwB3F5GfEn5FZf/e5nLIdTQAX8imWA+h32FLplSK2gpPbHqUS9Swujdeaas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oduosniq; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1945A5372D7
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 14:34:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790087677; cv=pass; b=km36BsbsDR0gIMmGa6iJo4NvEurE1D+BCYAoOadiN80GgBH1/wDk4JfNLfQQT2lKsEjnA2C5Nlqm7G4vqUH7JvPyRUbiR6W5UySg8rhXGyADdNml6mhokK/tQM9OMTG9QW3rU4zuEZMzeSz2qj1dF90njfd250y57dwP/Q34g9Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790087677; c=relaxed/simple;
+	bh=Cq7RZHzjEhO7/GK7BwfTmITx4s5PfiqDYhtEgS/Go2o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=p3BKH92u8HvpVUbv++HweQ1y2bGGqdLnNP/MrDu3Kp5MA2oghYN6x9ZFqkO9ADnoG4wY0WT5vrqbun5mbVjMv4dMKn3kuXxuvQmloayrxlx9AZZhwQefHKvHSiTiITUa/a/BJVviM+ogR/ZcvAAl2S9G97YVbErd6bz9mdPNoYk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R5i8XwVx; arc=pass smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oduosniq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E84B1F000FF;
-	Tue, 22 Sep 2026 14:31:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790087517;
-	bh=w/jfGaM0qWyYXl2OytFCyasVG0o2ZzBWvSGfH33ibz8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=oduosniqM5wZzM/Oy8KUIAo4sHwzuvLkS1A9KFRQ/AZMmiSUfibVrUIbawmWHs/Fi
-	 4kfY48XN42PTV8QJ7beUlp3hL31X34Nfm2t3v7qo6kzPmL7ApDOwXHLbsxhITuAT06
-	 wfwgce69whe9sEB82VSqub0XhRqQI/ySgLTwRFwI08zzMZJByA8gyQ534NMf67RXQh
-	 +yP1GFlnOx+stTNk206mZc70UgakvoBBVh0iOPFo9McL7qHVc1U8xyTJ9g+/I4vS0c
-	 dDfeu2VU2awim8xAA26Ej1QqT0Z2Wea97RYc0+AZNnHkH5GBTTCIOr6w+0pv8pxs5+
-	 Zkx4OMYX/RCeg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 07/14] KVM: arm64: Size the stage-2 memcache from the
- fault MMU
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?TG9yZW56byBTdG9ha2VzIChBUk0p?= <ljs@kernel.org>
-Cc: "Oliver Upton" <oupton@kernel.org>, kvmarm@lists.linux.dev, "Marc
- Zyngier" <maz@kernel.org>, kvm@vger.kernel.org
-In-Reply-To: <20260922-kvm-arm-prefault-v3-7-787bd3bc7e3f@kernel.org>
-References: <20260922-kvm-arm-prefault-v3-0-787bd3bc7e3f@kernel.org>
- <20260922-kvm-arm-prefault-v3-7-787bd3bc7e3f@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 22 Sep 2026 14:31:56 +0000
-Message-Id: <20260922143157.0E84B1F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R5i8XwVx"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-53113d72966so292781cf.1
+        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 07:34:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790087675; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZJigyFzvo/uMQ1cFFlRCnAGS9L8FBtJ4nET6AAH1pai0alKKtoP1jAq9GAKANWNSvw
+         2WSa+8KOAHMoP1chAiSOj+bQNlwoInzbw6MFAgsugucnKXdQrecHbc/SW22dE42iuzKC
+         lt2g0NyxrCE+7cr0rkbJRBB8kRtMR4vr6qYYkLm6W87Kl09J9swnu18WV+jED1xOFCmY
+         egbvHEM/al7aG4AQdQIaSUvrBliOrQKlGEwsEqRjHuzkvMExZLZ3bwg967ZqrhBfRxOk
+         dzucliA+AODklUcqC3LVhT03efc7GUNd/OncqhbUKdLL23f5REGUUQHGDzxtshfkdCkw
+         npAA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=DExhxA44NC9dc+8kUBRuzxjVL7paFNIoFs9ji4voJt0=;
+        fh=klYP++iOW0N8dXRPGy2jw9T2P8YLGSknan4XbSkg3lI=;
+        b=gzT2g2jHcVg+yeSDJTT7KWDszc2xGF4Mc363pV1yhT0XCB3JkwRA4Hp6moTwLMyfvu
+         QU+gtcyxl4C1R/g+8YtXj/o7+19ZtIBQOVTUnmgiynrXKpkIa7AHe+JgU688iPpO+zN9
+         3kOdFIlXWwZb55+649E7xzmDU8j7MkcVpZ2ZzrZibUJUDNzKUX+0ruVNPpe/AgQnPPRQ
+         jPlp6Y+wV0RlyUfqKbjSoRiWCIpJ3Es/PzHYhtn3gNVKVKxlCe/jntxUJam/FcfoSjNu
+         QFUQk/x91Yko6uuQG0McbPTc857Anhm1aoT2jSg7KwHa8F5ZqeFXfnKTnr4lyzI8Ot+M
+         Lemg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790087675; x=1790692475; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DExhxA44NC9dc+8kUBRuzxjVL7paFNIoFs9ji4voJt0=;
+        b=R5i8XwVxuPW1IdNarmfu9CW9jXTWOm4tOKFPvhwV22BF/GpNisU/wW6c9W6jwtEtKV
+         UQ8SJ2+j4TaH07ZVbh5RTRY+Eqdpt5/FQr6zE+0d+qzhOlZ+LAzvlORZQxWYRf3i17yu
+         SUNf2A8cq2+7S/OHNrMFcNOYNRuKA2n4RuAf/Q/GAeg7LIOxctDOj9ACHNL56P2fU9Ul
+         chjUfuFV7ag5f4i5AB1flEaVGUkv6iGFjhjhiQ8rkkVDTlj2m3Y0N3WtvSnphJt9wIUD
+         rEgdYLOMIiXdoPOChUvw1gmYS643zothqH6gslfyIMwCfgvCtvcpQNhTldUY5VFR+AZ2
+         0O0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790087675; x=1790692475;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DExhxA44NC9dc+8kUBRuzxjVL7paFNIoFs9ji4voJt0=;
+        b=H+AMHs1HNSlIsFlnt3NicZ8Qm9DUkwhXYuvc8vTIzAAxw+6nc4uXjIY6IjlEAFMboW
+         84cKrfgOhq/WBzSjqs9OjQ2iUaK44cuU7W5SqQGkVNguPOXXSjBWzyPMgr5jg5b2Kg22
+         rb3iX1UHW17+ACEct8U02Vzx495S4OpMRcIhb2uUY+uZJ3eDDQWXeRn24EKGS91HklYA
+         e3nbR4M7vmosmxwF72MBMzQVc+jSIjzNs/TPTHrtOws0eL5Z9QYFm06BynbH9zFuH+LW
+         CURykuWTztkLBEP0Q86wpyQO/5Kq6gzZN6q+xjpCDMKUwtGqJ1is3Py7UwX1Y0sUv2Di
+         mgsA==
+X-Forwarded-Encrypted: i=1; AKwUvBzA46XEmy3UGHcsrsWrVChGUCkVKjE8Qzvpt+OCA9QA01ASRc3a5mTTnoEglsKxcnpp/Fo=@vger.kernel.org
+X-Gm-Message-State: AFuF++l+2JL4TPoXiG3jy1M3+gfxuh9FP05MkuhHQn/1w3g9x7AXzHBb
+	e96LTi3TDqjUmLg508sifnNitmQgjzwx0A+XFeZdGxR/OL2avfHDaKfv/5xaZmweUtnef5mH1Al
+	vW+IRATKhQj1I4gPi5Ogpgch5J31ssGERwSp8XV9D
+X-Gm-Gg: AYBFou0zH7Cu/ReVif8hljYkblnhSRh+Iwa+DeoKDfMgDOSwUU9tLQsRwAdV9t2d7y5
+	8bHur8fQ+1Vsf+HlaYFVChAxDO19ZLHtufwzYOhyCJmKDUzk3OxtV/2S7cOgd+JbWbX4qc18Yla
+	/Viz/Jispqc0nDryvWa+d9Pha2CsQbi2gAkKFGJXzyEucfkr8hnvAyZysHyA/OdXl3aKhTNIWGR
+	uunDRczrc4tbZ0q0cTULSeu/XZuqQdXbxtmB077BZrptfZ1HxMAmbiWidgHylsharRnCdJiETnr
+	89FqNQFVwpJDILdZyTGL/Y9rf3OKf5SGBuBHDuTr0zPopnLB4iXY5Dc=
+X-Received: by 2002:a05:622a:1487:b0:530:2f98:cebb with SMTP id
+ d75a77b69052e-532e861cb49mr1554881cf.11.1790087674052; Tue, 22 Sep 2026
+ 07:34:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260918154530.4129698-1-jmattson@google.com> <20260918160109.E76B81F000FF@smtp.kernel.org>
+ <arKJQwAPvApkeESD@google.com> <CALMp9eQboC6DTQfa3N58XCfOLf-qwJ2L7dC5vtqDerHG80eZLg@mail.gmail.com>
+ <arKQJJJB8HMK0B1G@google.com>
+In-Reply-To: <arKQJJJB8HMK0B1G@google.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Tue, 22 Sep 2026 07:34:19 -0700
+X-Gm-Features: AcwNN1VJWL6isQaEKZnB01QFvujmP7sTdhriqRJAFl1aOntJ7hkFaVL8gFh26pE
+Message-ID: <CALMp9eQi0gm7ojijfKDZz9oZh+BK13qUkJOFrCmxjJTr5sx3Lg@mail.gmail.com>
+Subject: Re: [PATCH] KVM: x86: Disallow EFER.LMSLE when EferLmsleUnsupported
+ is set in guest CPUID
+To: Sean Christopherson <seanjc@google.com>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] arm64: kvm: spurious allocation in kvm_s2_fault_map during prefa=
-ult
---
+On Tue, Sep 22, 2026 at 7:26=E2=80=AFAM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Tue, Sep 22, 2026, Jim Mattson wrote:
+> > On Tue, Sep 22, 2026 at 6:57=E2=80=AFAM Sean Christopherson <seanjc@goo=
+gle.com> wrote:
+> > > Gah, I hate the negative "feature" bits, I've gotten completely turne=
+d around
+> > > multiple times trying to sort through this.
+> >
+> > Me too!
+> >
+> > > IIUC, you're trying to "fix" setups where host CPUID.EFER_LMSLE_MBZ=
+=3D0, but userspace
+> > > configured guest CPUID.EFER_LMSLE_MBZ=3D1?  If so, then Sashiko is ri=
+ght, it needs to
+> > > be declared with EMULATED_F().  I would even argue that technically t=
+his isn't a KVM
+> > > bug, because KVM won't advertise EFER_LMSLE_MBZ in KVM_GET_SUPPORTED_=
+CPUID on such
+> > > hosts.
+> >
+> > I'm trying to make it possible to run a Rome vCPU on Milan or later.
+> >
+> > SInce this is a negative feature bit, it must be retained if the host
+> > reports it. That blocks running a Rome vCPU on Milan or later.
+> > However, a defeatured Rome (which reports LMSLE_MBZ as 1) can be run
+>
+> So, a partially defeatured Rome?  Because it sounds like the CPU reports =
+LMSLE_MBZ=3D1,
+> but then still allows setting EFER.LMSLE=3D1?
 
-commit 9bf98edb6fb89edb3f2ce746e5754cac7f11bfe0
-Author: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-KVM: arm64: Size the stage-2 memcache from the fault MMU
+No; it should not allow setting EFER.LMSLE=3D1. That will fail on later
+platforms and would block live migration from Rome to later platforms.
 
-This commit modifies topup_mmu_memcache() to use the target MMU from s2fd->=
-mmu
-rather than the active vCPU MMU. This is a preparatory step for stage-2
-pre-faulting, which needs to target the canonical MMU regardless of the vCP=
-U's
-context.
-
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 5c429065a4feb..221ea069f9bb6 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -2251,7 +2251,7 @@ static int user_mem_abort(const struct kvm_s2_fault=
-_desc *s2fd,
->  	memcache =3D get_mmu_memcache(s2fd->vcpu);
->  	if (!perm_fault || memslot_is_logging(s2fd->memslot) ||
->  	    is_protected_kvm_enabled()) {
-> -		ret =3D topup_mmu_memcache(s2fd->vcpu, memcache);
-> +		ret =3D topup_mmu_memcache(s2fd->mmu, memcache);
->  		if (ret)
->  			return ret;
->  	}
-
-[Severity: Medium]
-Does this decoupling of s2fd->mmu and vcpu->arch.hw_mmu cause a spurious
-allocation downstream in kvm_s2_fault_map()?
-
-When pre-faulting is executed on a nested vCPU, s2fd->mmu is set to the
-non-nested canonical MMU, while vcpu->arch.hw_mmu remains nested. In
-kvm_s2_fault_map(), the allocation of the mapping struct is gated on the ac=
-tive
-vCPU MMU:
-
-arch/arm64/kvm/mmu.c:kvm_s2_fault_map() {
-	if (kvm_is_nested_s2_mmu(kvm, s2fd->vcpu->arch.hw_mmu)) {
-		mapping =3D kmalloc_obj(struct kvm_guest_s2_mapping,
-				      GFP_KERNEL_ACCOUNT);
-		if (!mapping) {
-			kvm_release_page_unused(s2vi->page);
-			return -ENOMEM;
-		}
-	}
-}
-
-However, the consumption and tracking of this mapping relies on pgt->mmu, w=
-hich
-resolves to the target s2fd->mmu:
-
-arch/arm64/kvm/mmu.c:kvm_s2_fault_map() {
-		if ((ret =3D=3D 0 || ret =3D=3D -EAGAIN) && kvm_is_nested_s2_mmu(kvm, pgt=
-->mmu)) {
-			kvm_record_guest_s2_mapping(pgt->mmu, canonical_ipa,
-						    gfn_to_gpa(gfn), mapping_size, mapping);
-			mapping =3D NULL;
-		}
-}
-
-Because kvm_is_nested_s2_mmu() for pgt->mmu evaluates to false during a
-pre-fault, the allocation is never used and is subsequently safely freed at=
- the
-end of the function.
-
-Could this lead to an unnecessary allocation in the ioctl path that might
-spuriously fail and return -ENOMEM to userspace?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260922-kvm-arm-pr=
-efault-v3-0-787bd3bc7e3f@kernel.org?part=3D7
+I want KVM to abide by the guest CPUID bit and disallow setting
+EFER.LMSLE even on hardware that allows it.
