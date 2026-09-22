@@ -1,92 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEB45678E9;
-	Tue, 22 Sep 2026 17:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8309844F54B;
+	Tue, 22 Sep 2026 17:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790098307; cv=none; b=joBvT4Na35XoxG1yPcKhiVlVJlc4j+ZE93jYsmV3m00pv82XFExvAGoU8sANRL2nMkBD0YznX8vi6YiU7BaGTuO8ki4el9aqA/tZiECgfwUmHioSlBfRNGRLG/3+O0jgSumbVRaKqwD39iGheGI2VZHlueMD76GOKtWxtLM6LPM=
+	t=1790098446; cv=none; b=TaIfcAhYwSfJnxgODlUS0IXn6d83vux+VXRlA2oIxN7qkBABhK6lCj26ShrhY0TbvPURBYwLUe2GipXUOtsUWQYyCXOMRF2oFBOuB3qF2Ov9k73PUzuWVFke+t//VULnz0e4FE8cFeuZBhOTqoxrBiFZRUBSZh9WV0RR/whJV8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790098307; c=relaxed/simple;
-	bh=DBGZQMQHw71fFKuufWjC788bXvFI2Rc4VkJqrwQ3xbo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KEJ5yk4JjaiPam3iLTF29S7u44kD27DxEdGyKaXy6fspabgUPu2El5tsHgG10gaK7FMw8xWogAHN9kDFmM7PFB3MtdSVn6LYi8XIgNryFW5IrhDOv+COp05WWSWx2QkDPK9nI1uby6EF8rutEBUGdYDSUh9IPKNNG1NbfRtatrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e3bN9/Il; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790098446; c=relaxed/simple;
+	bh=+ierMJ5BNyB1B9aHpPh9fRXepBsJBV6naGk/gxDdPAM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eAfQK26l1qXBfpalctn2n+zNivfSRAqAekE1U6u6Wq8tPH1IYGvHurt/tXT71ERK3KxKIYomyvdYoAcrLnAAVmB6TKVEtk7FxD/gZ/LJJLnZ58fX/Zveb0MAehc8B1pMFGYat4m/inGLJxxN9+s69bg4oyNqkLAthu7DIbAILVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cuMBiKEF; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e3bN9/Il"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24721F000FF;
-	Tue, 22 Sep 2026 17:31:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790098302;
-	bh=pU5MDTrWcIPn0f9bdi37/3G3L8QSWUVNbMpQbtysNeQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=e3bN9/IlMT809Q8HNhWzBbshsNy89YNRI7T0pc1ajitGhILxYyiV98IR/ZSzJM8lp
-	 CZI38mav8zQha53451wcKYvERML7esM1Yxop/8fbqA6r7r5aZW+qerhlbuDm/BZDfZ
-	 /7TgtU8BOaElRXDXXaoO0piTUuQjVhQIEgdtbJRDfcBaQ0+ss2CrbTTT3l2xXmVNVO
-	 v0UHqAr+pPOon07E45yUbrlCPQzXGTanAqhi9FcceO6ADqo9AxTCnbJqXX/d6SLyjp
-	 2NP6u7BByvQ7WsFllI7WWRHl9pQM8jd4l/neE6SD31Y02FHkvV3ryeiz9e+xmUdHh0
-	 nnl2rOwNAtBxw==
-Date: Tue, 22 Sep 2026 18:31:33 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Oliver Upton <oupton@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Mark Rutland <mark.rutland@arm.com>, 
-	Fuad Tabba <fuad.tabba@linux.dev>, Randy Dunlap <rdunlap@infradead.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Jack Thomson <jackabt@amazon.com>, Jack Thomson <jackabt.amazon@gmail.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Vincent Donnefort <vdonnefort@google.com>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Sean Christopherson <seanjc@google.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Leo Soares Passos <Leo.Bras@arm.com>, 
-	Wei-Lin Chang <weilin.chang@arm.com>
-Subject: Re: [PATCH v3 01/14] KVM: Allow architectures to disallow pre-fault
-Message-ID: <arK7auq5X5TzViWO@gremlin>
-References: <20260922-kvm-arm-prefault-v3-0-787bd3bc7e3f@kernel.org>
- <20260922-kvm-arm-prefault-v3-1-787bd3bc7e3f@kernel.org>
- <arKxjsxuO1F5ExrY@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cuMBiKEF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790098444; x=1821634444;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=+ierMJ5BNyB1B9aHpPh9fRXepBsJBV6naGk/gxDdPAM=;
+  b=cuMBiKEF7XQ/0sKyJYjO2LUPSztjpIG5qSmMNw0NrcRTYh8XDPgnyCXb
+   XNsXxcvkTE+BCUhRoonbkUS/NxYSIz5Q4o7el5QTFnNugm5zmV/h9RsDE
+   R1Mx35Nn8WefxzM4xQGAYYadHHO1EO8AQtpt/A7FtbgqvI4vk9roWa8D1
+   XEqhqAmzGmtu9dFl7feurLD0h+PS3hhITLxxTAO4/0sj4Uz9xTZZEitLQ
+   4uVDTMzKKJZJL0N17UVq2nM/bCZrCfTYE5xwRzXbtvW1QmBFOn/gj8Cmn
+   REjQw6bBKwumJi6MIivl9qhqmVzRshEnc+bhDYJP8T/SDQKeqkkl6E/fG
+   w==;
+X-CSE-ConnectionGUID: 79u+1pilSuKUQ3OOtokSoA==
+X-CSE-MsgGUID: /D4JYAEIRWyhWJeI9Q4ptQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="101314727"
+X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
+   d="scan'208";a="101314727"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 10:34:03 -0700
+X-CSE-ConnectionGUID: f/F4kJrxSaKtFgFInBOCQQ==
+X-CSE-MsgGUID: SqbVynnPSVODHhdi1+tVjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
+   d="scan'208";a="272433513"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.31]) ([10.125.110.31])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 10:34:02 -0700
+Message-ID: <1bb206f7-3951-4579-b3b2-dcdbe3ce06a9@intel.com>
+Date: Tue, 22 Sep 2026 10:34:02 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arKxjsxuO1F5ExrY@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/4] virt: tdx-guest: Use a variable to store the Quote
+ buffer size
+To: Peter Fang <peter.fang@intel.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ Binbin Wu <binbin.wu@linux.intel.com>,
+ Tony Lindgren <tony.lindgren@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Artem Bityutskiy <artem.bityutskiy@intel.com>
+References: <20260915092632.2822169-1-peter.fang@intel.com>
+ <20260915092632.2822169-4-peter.fang@intel.com>
+ <620e7e38-4287-431c-8285-575c84aa1f6a@intel.com>
+ <7ddf42ab-2f78-4edd-be39-ff9e5156d51c@intel.com> <arKtJxNMYHYSfXuO@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <arKtJxNMYHYSfXuO@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 22, 2026 at 09:49:18AM -0700, Oliver Upton wrote:
-> Hi Lorenzo,
->
-> On Tue, Sep 22, 2026 at 03:17:55PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > +bool __weak kvm_arch_vcpu_allow_pre_fault_memory(struct kvm_vcpu *vcpu)
-> > +{
-> > +	return true;
-> > +}
-> > +
-> >  void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
-> >  {
-> >  	int nr_vcpus, start, i, idx, yielded;
-> > @@ -4365,6 +4370,9 @@ static int kvm_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
-> >  	    range->gpa + range->size <= range->gpa)
-> >  		return -EINVAL;
-> >
-> > +	if (!kvm_arch_vcpu_allow_pre_fault_memory(vcpu))
-> > +		return -ENOEXEC;
-> > +
->
-> nit: it'd be better to let the arch hook return an error of its choosing
-> but in reality this is only going to be used by arm64.
->
-> Not worth a respin on its own though.
+On 9/22/26 09:30, Peter Fang wrote:
+> The pointer to this buffer is "void *quote_data" which probably needs a
+> better name too.
 
-Ack will fix up if there's a respin for something else!
+Yes, please.
 
->
-> Thanks,
-> Oliver
-
---
-Cheers, Lorenzo
+Also, does it really not have a type?
