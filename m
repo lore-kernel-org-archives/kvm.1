@@ -1,54 +1,54 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B2A47CA68
-	for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 23:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B513415A85A
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 00:01:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790035019; cv=none; b=CRihuO8J7I5GVCU4TalJS6m6uekQyuqJLBi1tcHStXpgW+ntu/O9G4YfVC+huHGIX+Dmw3MpfrFicJ0DQZ6VvVb9fZlLjDPM0jfOYoAIJuvpH2/ctYulVX1j91BkqFnDKYlY0fqMB6EUT4IP2BNYJt1bFVGY5SHOIrENLs+Zt5E=
+	t=1790035318; cv=none; b=Bjda0yS8GlUuhp9qEXy8V5JXiTfg0gQTAorjoPRiCaiJN8qqJjUvdfu7r6MfCXmEdrei22X0MH1OsslmezxBd8oft+sdiezaeuBQ8tnkJJDarn6Cv3IwYFnyz9fupKS0oB/tU0GDfb1T9ICSOCZD6v9ds5CzGK9L9mvmo11O/BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790035019; c=relaxed/simple;
-	bh=Ti9Al11aFDkHr/+GZZA6MfI9Au3xncDNO3O9ju3DYVk=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=UMNm4U3ALZvJ7W8Inq2ZQ4/HhpiEGH0nH6KKNYVyvlHt5nNKgVmQ3/Mlh2Hicn142XsIQgq5QQoDW+hk9lNtVy0QWrR47U1IY8LYs37tb+rLBjuCqSf0ntUW064xwmo12mzDuZQmtgUucJpSX/cFJLuucS6+rINCFhhMhW8QD7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FCrPW/6L; arc=none smtp.client-ip=209.85.214.199
+	s=arc-20240116; t=1790035318; c=relaxed/simple;
+	bh=qi84eELfBHzq8Gtxf2nmLjCYzLq7UX87oLUR/SOg6jI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=PzPSreCcb3IzxedQV5fGxkXqEXAXcs0bcEaeB/Y6lfoTJT3eg7lZ+meiNk0Acn3qWCA6gg8xj1JSPzewxGHOpkCFM07/Sd3qzy1yqlf18DTnjOVEAZIgfZd2yIt0yROZE3q5WgFO+UBCItNfTDZNZgmWfaoLipwU103JjR5EO4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nrQky3Fm; arc=none smtp.client-ip=209.85.215.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FCrPW/6L"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cec4226c70so44178485ad.1
-        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 16:56:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nrQky3Fm"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc435388657so5221466a12.3
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 17:01:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790035018; x=1790639818; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790035315; x=1790640115; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:mime-version:date
          :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bT4URT099tlSuoY6C/X11+mI3xpJgIcGDy2oYYWeJzc=;
-        b=FCrPW/6LB7qQlNyQ7wPDZLVE6TnM9+fBqGiPLCGXlj3yQQ8iOui34QdXrtIvf19orw
-         qV7GVPQSIFMNWkeaW1uQcmK5CDIJImD3SAl9OmWleXJ5wRdeXaj3Basc5RFk3d/4xkZq
-         F3cprhcui3WEOx1yfylw/SfhevudDfZeT7DvMRBK6DGtKkj+HkTt3M+c3BanYZiu0exy
-         bjA8CT+YZtDLvNPTR+YqffErbrwl586SArrPEYfsNrLIA4mZj1cEFA9jx1ae0NoC4+it
-         3b1pcqk1NAyPlnThpsxjw8tqovTOqVbmB57Dx2XFffzk4byzr7jFRBELuHKcrXrpo3Eq
-         GOBA==
+        bh=or4BumuwV4xPEQU58uCMLkiO/gDvhjBy7N2q2FLMj1g=;
+        b=nrQky3Fmk0OfyyhhdhAUtsuArt39Vnxzwe/AGPlEctNRt+wKuGLiYCEhp3mDdjncRL
+         YTo83FiUQgsobAfKeInB9rlnDEArNOXNuo1XomMBId9xstokkuim6Lzt7PcLuwwMEqdj
+         JhBeBm7ph1OBWnCgqPEaKU+h1bMCp4qYo5UgjuFRWDjCJ0/IpxiaI4S3AuhFrES0Vg7j
+         sBW/IqXVkVk2F16+z5ns98g0ku4jK4Mp07TQGOX6gftk6knwLijnY4RE84QTaadlZyds
+         qXMCaE4of23AAyKb9Ps1ql4tCgcVqvsygzOgzIFM68qmmZNKgnWQjxIejUBQLa6hMH2n
+         rulA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790035018; x=1790639818;
+        d=1e100.net; s=20260707; t=1790035315; x=1790640115;
         h=content-type:cc:to:from:subject:message-id:mime-version:date
          :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=bT4URT099tlSuoY6C/X11+mI3xpJgIcGDy2oYYWeJzc=;
-        b=0E8rHp2/oasSko9qUzZb+xeLobfNSYt6+48pX4K/4MMFTpWmE02mooIM/vFzEDNHyf
-         a1Ikctd5sn84Fa7t5P34bunf5nd94NUJepN8eZ+R1rX17DDjdsoq0+AmJatJs1zfjZ5n
-         L2Pqc2eN5/ryJN1HTKsHzuqqs55OdzV7QGbMkaE+a8Cp4ln9j2uJMk9oulXDKVhvMTv+
-         5Rx+JzDIVKa2tGjs6U0G1H2LQl7fVA5sejls4hD5rv4xO6NYBG7eWI/hqkGa6KejVKce
-         1nwmjCxMWkYGq7NCJMxyhXLR4BhRxXWbm1SRoTIbZurVYrRBc5+1mi4i67T4GdD85t8R
-         oBTA==
-X-Gm-Message-State: AFuF++nz9lotyhAF1slJvYF9I8gaAeth9TXVuS0w9PmGWjxfnTmO8JCq
-	Cbho65ziMQQs17P5opiPiIKvfSG7m1fe5D7u4WhR6lLimsqjUtb1ZJuxitIwC2BMi3mSyU2Nqxo
-	cQg2zIg==
-X-Received: from plas19.prod.google.com ([2002:a17:903:2013:b0:2df:4ca9:b013])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2990:b0:2dd:c053:82f5
- with SMTP id d9443c01a7336-2ddc0538431mr123944065ad.44.1790035017535; Mon, 21
- Sep 2026 16:56:57 -0700 (PDT)
+        bh=or4BumuwV4xPEQU58uCMLkiO/gDvhjBy7N2q2FLMj1g=;
+        b=bmUJqpLsnO/7biEFl0Fy/l6UhAW6PtKp7laN5cjF4Ye/wnDeH6Y1nOqp37J8cbtGW2
+         wv7QZ5a0GJUd2g70YtRvTRZEtTxdAMO2iN/Z07v4Xv9f835GdVMx8HnIozrcvE3u5unS
+         zP5TIHXZyXWQJ4Sh59z1eVTuWKFRdAuVMoEbOoBUvc496a+p3qQrXAh8M8Zl1j5LhbkR
+         UQ1VLNsCYsb/G0+SaPRUiRcExB9AfBbAYdcp1SjEm7BEqRaf56kbmhduDWIbJ2bAJKNp
+         6kuCEyWWsMKi9H3BBFe/dziBPy7Hznf9e7wiaN83JZYZt8xbasPhbSlee3kANSrM87Hs
+         opQA==
+X-Gm-Message-State: AFuF++nxSoMUQfnr9WecMVeUdBhtbHFvGOzMVDNDV+iVGHxgoxrdOn7Q
+	W4v4aPSXtTGrbaWav667QAvO92RNXmrbYtW3byNuei3QrYP6zfeZ6ucFtnVhR8W6RtyDvThYYEq
+	KaKlXuQ==
+X-Received: from pgfd21-n1.prod.google.com ([2002:a05:6a02:6555:10b0:cc7:513b:37d9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:ce49:b0:3da:755f:a031
+ with SMTP id adf61e73a8af0-3dd8c4412fbmr22065373637.12.1790035314862; Mon, 21
+ Sep 2026 17:01:54 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Mon, 21 Sep 2026 16:56:55 -0700
+Date: Mon, 21 Sep 2026 17:01:52 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -56,80 +56,74 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260921235656.1107929-1-seanjc@google.com>
-Subject: [PATCH] KVM: VMX: Formally define KVM's "0xdead" exit reason used for
- failed VM-Enter
+Message-ID: <20260922000152.1113202-1-seanjc@google.com>
+Subject: [PATCH] KVM: VMX: Move bus lock handler from main.c => common.h
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, Yan Zhao <yan.y.zhao@intel.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Add EXIT_REASON_UNDEFINED to track KVM's magic "0xdead" value that's used
-to stuff the exit reason on a failed VM-Enter so that the magic can be
-reused by TDX, and to make it more obvious that it's an arbitrary, KVM-
-defined value (though the whole "dead" thing makes it pretty darn obvious).
-
-Opportunistically add a compile-time assert to ensure the KVM-defined exit
-reason never collides with a "real" exit reason.
+Move the bus lock VM-Exit handler, which is basically a one-liner, from
+main.c to vmx.h now that to_vt() is usable in common.h.
 
 No functional change intended.
 
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: stable@vger.kernel.org
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/vmx.h | 8 ++++++++
- arch/x86/kvm/vmx/vmx.c     | 4 +++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
-index 3f1b3096ff04..e49b836c7313 100644
---- a/arch/x86/include/asm/vmx.h
-+++ b/arch/x86/include/asm/vmx.h
-@@ -20,6 +20,14 @@
- #include <asm/trapnr.h>
- #include <asm/vmxfeatures.h>
+This applies on top of kvm-x86/next + Xiayao's series.  I.e. actually applying
+it will be painful for anyone but me at this point, but I'm really just posting
+for posterity.
+
+ arch/x86/kvm/vmx/common.h | 11 ++++++++++-
+ arch/x86/kvm/vmx/main.c   | 11 -----------
+ 2 files changed, 10 insertions(+), 12 deletions(-)
+
+diff --git a/arch/x86/kvm/vmx/common.h b/arch/x86/kvm/vmx/common.h
+index e22c159c3b84..b2905335a2d2 100644
+--- a/arch/x86/kvm/vmx/common.h
++++ b/arch/x86/kvm/vmx/common.h
+@@ -254,6 +254,15 @@ static inline int __vt_handle_notify(struct kvm_vcpu *vcpu,
+ 	return 1;
+ }
  
-+/*
-+ * UNDEFINED is a KVM-defined value used to indicate that the basic exit reason
-+ * is undefined/invalid, e.g. on VM-Fail or if TDX never attempted VM-Enter.
-+ * The value itself is arbitrary, it just needs to not collide with a real exit
-+ * reason.
-+ */
-+#define EXIT_REASON_UNDEFINED			0xdead
-+
- struct vmcs_hdr {
- 	u32 revision_id:31;
- 	u32 shadow_vmcs:1;
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 612ab07d4100..c897dbf0e954 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6388,6 +6388,8 @@ static int (*kvm_vmx_exit_handlers[])(struct kvm_vcpu *vcpu) = {
- static const int kvm_vmx_max_exit_handlers =
- 	ARRAY_SIZE(kvm_vmx_exit_handlers);
+-int vt_handle_bus_lock_vmexit(struct kvm_vcpu *vcpu);
++static inline int vt_handle_bus_lock_vmexit(struct kvm_vcpu *vcpu)
++{
++	/*
++	 * Hardware may or may not set the BUS_LOCK_DETECTED flag on BUS_LOCK
++	 * VM-Exits. Unconditionally set the flag here and leave the handling
++	 * to .handle_exit() callback.
++	 */
++	to_vt(vcpu)->exit_reason.bus_lock_detected = true;
++	return 1;
++}
  
-+static_assert(EXIT_REASON_UNDEFINED >= ARRAY_SIZE(kvm_vmx_exit_handlers));
-+
- void vmx_get_exit_info(struct kvm_vcpu *vcpu, u32 *reason,
- 		       u64 *info1, u64 *info2, u32 *intr_info, u32 *error_code)
+ #endif /* __KVM_X86_VMX_COMMON_H */
+diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
+index c11732cfadf0..2985742e20f1 100644
+--- a/arch/x86/kvm/vmx/main.c
++++ b/arch/x86/kvm/vmx/main.c
+@@ -872,17 +872,6 @@ static int vt_gmem_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn,
+ #define vt_op_tdx_only(name) NULL
+ #endif /* CONFIG_KVM_INTEL_TDX */
+ 
+-int vt_handle_bus_lock_vmexit(struct kvm_vcpu *vcpu)
+-{
+-	/*
+-	 * Hardware may or may not set the BUS_LOCK_DETECTED flag on BUS_LOCK
+-	 * VM-Exits. Unconditionally set the flag here and leave the handling
+-	 * to .handle_exit() callback.
+-	 */
+-	to_vt(vcpu)->exit_reason.bus_lock_detected = true;
+-	return 1;
+-}
+-
+ noinstr void vt_handle_nmi(struct kvm_vcpu *vcpu)
  {
-@@ -7474,7 +7476,7 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
- 	vmx_enable_fb_clear(vmx);
- 
- 	if (unlikely(vmx->fail)) {
--		vmx->vt.exit_reason.full = 0xdead;
-+		vmx->vt.exit_reason.full = EXIT_REASON_UNDEFINED;
- 		goto out;
- 	}
- 
+ 	if ((u16)vt_get_exit_reason(vcpu).basic != EXIT_REASON_EXCEPTION_NMI ||
 
-base-commit: d4b7fb647204f0c81dfeae2d1a708e4d858e0c94
+base-commit: e1d8e13452eea815042f79244bb649536e3689f5
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
