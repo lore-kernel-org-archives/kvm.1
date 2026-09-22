@@ -1,66 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58E825B0B7;
-	Tue, 22 Sep 2026 07:25:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B000483825;
+	Tue, 22 Sep 2026 07:25:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790061929; cv=none; b=IKezKh4GaGKQFPV/3eFFz9M+b9+laqwCoW8l9c9Qecti3ctbi6vk/goXxj03Tojm0PW4r5OnBSLBNJLGFhVfySXcrye/DVxriTfo3CsszjKq6KfthM4b2CwJCLM+DZJvAP21WTdHewj+wKwwPDrYydq1lONlrfuHmruMafR5MT8=
+	t=1790061933; cv=none; b=npXdnunMedxf0CJ1an9d4kN7KtoGp1cvrxxv+P+MKamjNmgNn79cEiD+NRv7pRi7qe7xpHQ1rRYLCIcEPlz3mT2HtJOTUR2HYK+QXKPglDVNzn9lU0O+Z2WJx+KKWpTXjyJ2JsF2S8J6wMGhLxePSVPY9z2ydg7cZwPdHdapzks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790061929; c=relaxed/simple;
-	bh=msjq3/uC2tZisaq/QqmtboH2Q9stbsyIN2TWlCTVY1E=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=SEzrQ6FvjIx8uLASwFdxtRXT1avjXiEaz/jITTKtDv5y2KFHW5/02D907qy4+K5a8RQo8V/rgc+1N8aXQocONj2ZzUoaKRtsVZubyTjMsIE9DgMyYDIZNJw56rIQo1SLxEQhKp3wBK+O9mmq8GOFPQARYz7qcgXFxqXfGtoz+E0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ORSV9Y1F; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790061933; c=relaxed/simple;
+	bh=UG7loDTg64b7JQSr7l1wq8rnVZOHWP29afOuFfFMHdg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=trM1t0aoCzKTmVIFAV5FCZrVv/5Ju0t/DDqy9MeXxh8U6k8NVVbuxjbiQjnMirpBzAsBE7LZi/uoHl3k4T1Z52UXeAhJYRu96FZrqQHArkzCFmVS4ahwnXp+BvqeUIqzZ6JyMfSeXLLtGZn59b44PfIjN3M1Hbx8cfUPcFZPRYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CR7ZzN2p; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ORSV9Y1F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7537E1F000FF;
-	Tue, 22 Sep 2026 07:25:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790061928;
-	bh=msjq3/uC2tZisaq/QqmtboH2Q9stbsyIN2TWlCTVY1E=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ORSV9Y1Fmd0RXr+G1OCzXKuHlEVpmJDJB4PewZo8iH0GpOh3JDWaxSYrBG2nTXdRK
-	 yMUrHfCOdn4Z1ZC7Jr9NORgn2Z716I+Q75/lpDQ/o8lrOZ7hRq6V3rbTwWMkhTyFyx
-	 fOL5WQXfqgJUEzyLtsVz4nI8lTswTQOuyzK/qSzwfpN6hUS1WqvR2b598MVOccblVu
-	 +JULsh4wCLaOpoSudAcUh3q1pZuOPHiwk4jCFMlgpgYkF3FdnrXtTunwcGDBeRP1+I
-	 OIv0TY5VixJ0FKbZo7iGjckXPikmS2nk5a0v6mjcp5lOLrJox7QChV9M3eemuvTHFZ
-	 oeHqzUJaRDdFw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] pci/vgaarb: pass a data pointer to be used in the
- decode callback (v2)
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Dave Airlie" <airlied@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, kvm@vger.kernel.org, linux-pci@vger.kernel.org
-In-Reply-To: <20260922071807.2533884-1-airlied@gmail.com>
-References: <20260922071807.2533884-1-airlied@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 22 Sep 2026 07:25:27 +0000
-Message-Id: <20260922072528.7537E1F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CR7ZzN2p"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790061931; x=1821597931;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UG7loDTg64b7JQSr7l1wq8rnVZOHWP29afOuFfFMHdg=;
+  b=CR7ZzN2pHLvktjvTH1gTrjRUz+7mw6HfKV6HUliNPNXbbU87qxfzwNy3
+   zsumG0g5JQ9cS7yqJ4sLNqnLI8DIWlN9+NnM3iYjiwdKZRD2TrRv5+6sc
+   p44D4m5AFpNc/tzfqzY5gow5Rn2Age8/d+jDfYMLIH/pDetvUad0aWyGp
+   IziNK8IBq6/ZwMXToCxdvaw6lWlcS0zNvjdFTjH5iQn8BlZqPLNZCCor2
+   BgI7FxokymF3XKDnFAuGyxpAV1QxmqEHJbf7ZNgD1mAIwFsyxJ5yuMazS
+   KiH18CPEJUCU2kEtRmNwxkOP18W/4z1rOm4JjpjJnReefiQ1c1/+pbCMX
+   A==;
+X-CSE-ConnectionGUID: PClvcNnyQYuXoPQYPfU4sg==
+X-CSE-MsgGUID: 5v8a6IzHSWu6F+ZBzHEEYw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="116161033"
+X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
+   d="scan'208";a="116161033"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 00:25:31 -0700
+X-CSE-ConnectionGUID: 8d8O22H/TPicF7gc4wlsJA==
+X-CSE-MsgGUID: Zu4FL1V7SzOFNmDXO9jRuQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
+   d="scan'208";a="4324451"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.202])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 00:25:25 -0700
+Date: Tue, 22 Sep 2026 10:25:19 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kas@kernel.org,
+	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
+	xiaoyao.li@intel.com, sohil.mehta@intel.com,
+	adrian.hunter@intel.com, kishen.maloor@intel.com,
+	peter.fang@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, chao.gao@intel.com,
+	artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org,
+	nik.borisov@suse.com
+Subject: Re: [PATCH v2 4/5] x86/virt/tdx: Add extra memory to TDX module for
+ the extensions
+Message-ID: <arItX5wOG1eQIuIB@tlindgre-MOBL1>
+References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
+ <20260915102658.713079-5-yilun.xu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260915102658.713079-5-yilun.xu@linux.intel.com>
 
-> From: Dave Airlie <airlied@redhat.com>
->=20
-> This changes the vgaarb client API so that the user can pass a
-> private data pointer into the register that will get used in
-> the decode callback.
->=20
-> This allows a bunch of pdev conversions in the drivers, and lets
-> some future vfio cleanups be nicer.
->=20
-> I'd like to merge this via the drm next tree but also fine with
-> it going via pci.
->=20
-> Signed-off-by: Dave Airlie <airlied@redhat.com>
+On Tue, Sep 15, 2026 at 06:26:57PM +0800, Xu Yilun wrote:
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -1181,6 +1181,136 @@ static __init int init_tdmrs(struct tdmr_info_list *tdmr_list)
+>  	return 0;
+>  }
+>  
+> +#define TDX_HPA_LIST_MAX_NR_PAGES	(PAGE_SIZE / sizeof(u64))
+> +
+> +/*
+> + * This is the "HPA_LIST" data structure defined in the "Intel TDX Module ABI
+> + * Specification".
+> + *
+> + * It is the in-memory ABI that the kernel uses to add memory to the TDX
+> + * module.
+> + */
+> +struct tdx_hpa_list {
+> +	u64 phys[TDX_HPA_LIST_MAX_NR_PAGES];
+> +};
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Here too you could simplify the comments similar to what I suggested for
+patch 1/5.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260922071807.2533=
-884-1-airlied@gmail.com?part=3D1
+Other than that:
 
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
