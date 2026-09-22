@@ -1,136 +1,127 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E710C43CE6A
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 13:44:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB4054CF56
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 13:47:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790084685; cv=none; b=sM5ETTpROVANGmRVsnnazhbP/hj9BfdSKNa8aWx3H9l0RFdYKVTwBvOz+lUuSsywoU4xjTa6ANteD4fHeoDeAw0ku9MPQpgOoCQhfMJ3SpqywCePyIGB5XgMhFsqeikop02tYnmr7hK/i+YdDvhh8+AaXWOaX8+IWd9v4JDQhE4=
+	t=1790084830; cv=none; b=H5NCnToS+Dnw+dbCKVeT4Xl3WPPwxwbDJ3N9b0dSLPjzlf7Gc0irElaRZDcvWah1rDUddg4tiHAIRxqSwdeTycVA2dNExTgd0ts9gwEvtOIwr8pAiqHsu6ud3Bc4riBZyh/NgOWp4JOCCZnxrighkPWRslQfxEYolB0gOWCP5r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790084685; c=relaxed/simple;
-	bh=0SFlIh2a1t3j3rT/bk6IJh8ffwrgGJ66xEj1bDplnm8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qCGpzc+Ey5gfnEKrz+iAr06dMJWv75MJVvLCxvW9hrXdqMu1HdYrpVbjAHMpLZyapIP4f9IcWGkXnsvbOyKSFiED5sfW0tYmVhBypQ04oaOWCkHg7iymXQXk5CfZU6dUFSHXMFJM6oSHyxK57MAbsEp4igmBDdeVas0tOdkwc5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=FG4fpRXF; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1790084830; c=relaxed/simple;
+	bh=5gvU+dfQVMRPWQ21gMFhIRzC1AVqMIy6KUq7tbBNbqk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=oUrc3ck0/imVzwerUdzPCqLNBA5sjanwnmX2yF7SmRQk0nefn57Y5oxiOweAB10RKAMniSS76QIM7ILpoTo1cyFqQ8L+pCpj7kRsn3pDVhmf0GLyunVNnUEPDpmE8szdww9a4HuNEr0VuQiTNotk5dQ7oMG2APangngvtJ6yZ4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=obtd6cey; arc=none smtp.client-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="FG4fpRXF"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49cd4ba9f68so55895395e9.1
-        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 06:44:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="obtd6cey"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cbb20f82a0eso3110082a12.0
+        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 06:47:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1790084681; x=1790689481; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4EtP8Gib+oGUfFDioYcMAZLGT/7xIaokAymk9C8xEMA=;
-        b=FG4fpRXFBPatSwHxsYfQSy0pnlWABIGE7/vTfeI5uP7FQoa6mxknWHjLYgdRO058e1
-         fcgqXSB7kMUphrk21mipLbo8VZryb36WwtcH1zQKj0AMCcMUJFiV2dzC2w3yb1ODJ4hb
-         kgT+cW6LvXNvOfDcofgnG2kSQpkX5XSHb9Pjxq2gCUMm0YMwuFy/QqzxDe3OHjKEZiuQ
-         5fo6yOe30L2MUqtG7fjjCJtUx3oekSWTDubtoPEFnprtEIc7k/ktYBjhlwAIy956C50P
-         Tks9iJsFgXFrU9SiF7t8ClxvP0wqEjeoZxv+SYAPxARsnji2dvghLBR9LHhnnT2uWNdl
-         54ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790084681; x=1790689481;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1790084828; x=1790689628; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4EtP8Gib+oGUfFDioYcMAZLGT/7xIaokAymk9C8xEMA=;
-        b=zdwMPzYdbOk5kGMirk8MXsrLIyUSQD0hJ6M24NGYhUK6q6/L7tJakz21c23zxj6TRz
-         k+vHBY2zVbc15xtjYwuc/7lYfILacaPmtOLBzQ8DfX6lXkVT2ppcVpb3/SNO1jPn/v+Q
-         TuZrB5CQxW9Ws70nPh4EJJg+WFWN3QJkhEcY5z8tXpr9Dn8pgNhb32ip8C9mFgo1d9st
-         mhGR7c6rjbwDOagXvsUebMn2rQtBBXVQVQyCCFxbd2AfkjIMsN0oQRlfdfx1YggQvwDr
-         TLlVlrmGBVaobRvgYMGs28lpWGDeYjfSwIpqlBCIelZnsRg+S1yDlDPezqsqTzA7Q8/I
-         XcDw==
-X-Forwarded-Encrypted: i=1; AKwUvBzOKlNm+WL44raJOuegSdPSolulU3wwg5u9u0mvAHbuUV0P3QNDZu5pgkmVztkywn7/KvE=@vger.kernel.org
-X-Gm-Message-State: AFuF++lmxGGhfd5YGUGg69dggSc9lQnU+Q2Ga+LkqVYg+vLUEUpovsT3
-	FsvtpkQfp4ri6kBX4bH8tJgFEEbfzc/hSD9AP0iFN89IUp6vSZ0cNGWVQ5E2D9KX1u0=
-X-Gm-Gg: AYBFou0s1tkRwFU5Dt0+wb8lCTxslsYs5nFxGphCb4BfY94K4fB3B7eoyfUOUQ7gBzc
-	lnmM2P8NfskXFRjZtORl251jswIfXrZ9Ftpq1mcO6Mbm/PTNJZgS+kq0WtL2nwlU6fMeX1Y+7e2
-	zTZjJew19leX8k5ifceNnL8SzlQM7TvtOFaGWUWuLFFBfJQOd1wV9+WpknHd7zzdhwSHqFmkBEB
-	T1YZKXCscG42YOLmu9jLq/I1TIjech2jL/JlygU3AR4dBbBiOTHgjNYyl8pQr1+gHo2MZxA22Tl
-	Z81P98ZeZa07iBZluZGNwjuqS4dphk475Nehm16U/cwwgbhuH7LQpQ1bBiEiL8M5xh/6WNG26yi
-	q7AGPRf0kxr/uwUglpmsCmz5ShnaNdV7/YFZOQhCxJqN5nHxfLPYCCrw9TiHhI5Ox/UaLKGv98G
-	CmaqSeK3inIT3RNs84JAY2rahgGHSNoOX4OzrEy7ghckI6RSh6G0kR+G1Bi0uWEkxq1GMhi21Vd
-	Q==
-X-Received: by 2002:a05:600c:474e:b0:49e:7cff:f8ca with SMTP id 5b1f17b1804b1-49fc5743c69mr189508785e9.29.1790084681055;
-        Tue, 22 Sep 2026 06:44:41 -0700 (PDT)
-Received: from localhost.localdomain ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fdad2a3e0sm72269425e9.5.2026.09.22.06.44.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 06:44:40 -0700 (PDT)
-Date: Tue, 22 Sep 2026 15:44:38 +0200
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	James Houghton <jthoughton@google.com>, Will Deacon <will@kernel.org>, Fuad Tabba <tabba@google.com>, 
-	kvm@vger.kernel.org, kvmarm@lists.linux.dev, cgroups@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] selftests/cgroup: Make the object directory an
- order-only prerequisite
-Message-ID: <arKFe3JRF3n2h-26@localhost.localdomain>
-References: <20260922071945.693714-1-fuad.tabba@linux.dev>
- <20260922071945.693714-3-fuad.tabba@linux.dev>
+        bh=gFVUblfJev4NVGqt+kG3dG5mRgj7javR5w3TB/1uDD0=;
+        b=obtd6ceyRGwK7No7zsPtVWXCogKk9sj8ZKTY8CJGgfdXV/t0NheLAGxpEIq2gq3+Ep
+         FKYc+GWKv3W9C8jx4AB4bRHt0vzI7Qc59WHPNYzTAC3QtgnqQQI90VbSGLdqapL5FidD
+         sPgNBVXzfAi5+PLAVjG3vrz/0cH8XIomXowyoPSCrKv819FY42fyl+qZtGdeLaKaS/Bk
+         rfVljYNxwPFQGteZo5JWfVy+4aS+MvqvTQa9xQaOJzv7c9n3Z4JBdFremJyrwhvE0edE
+         weszMmwe7s2hM4Sx7xxPAIepmoNAhpEGltfQm/fQixNNI+PMFi0KAvfBGddjTjEuOWO0
+         gKBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790084828; x=1790689628;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gFVUblfJev4NVGqt+kG3dG5mRgj7javR5w3TB/1uDD0=;
+        b=25b2Rp06/LVCrGZhCgGaXcf9HCQD8aAZJxoNjbSZgzijIAcb/y/ozr9bIOOVo8ufPa
+         CEnXE16c9itgyTHlpentzTNmq13Ynoh8FXV67gZ6Sj6xzqquNnfI37ugY7GsaJMFpTZb
+         0tlq+CyDl89+5AA1ixr5dNsXuYaEc56UeNYf+dXhyoZ3pB+eIt/2PxqQv1vHUZyMSBz4
+         +mIl+RcNHE/vy0gZlPK7Uaxer8igsOCqM2U1V0tKUGP/IpKFhslLGKeF5l78Tvrh6vFU
+         BnXxKX7Fi9Feo9lS1/9vvggKNcYwjvBCfVlCQ9MWzrmy9/oE91MfcnPGiuLjwPS9I71P
+         73/w==
+X-Forwarded-Encrypted: i=1; AKwUvByN4MH7la1xKHinnMnIWesAkaDi3TBP3Dnw+fKHsriBGDuQvL0KjLs2t0m8D4n/ah72k8g=@vger.kernel.org
+X-Gm-Message-State: AFuF++no6KDXOiGqSNNcjQJiWKlLO4V7R8YnPQMGe4VwHSjFzjzcO2Jr
+	S5e5+iYAIp04Yp1tdVTjwMuGvFDGoECIcftBk2MI4+8JdEX7w4GmNV+svbRUPkN02/UmiRV9m9J
+	67d3jFw==
+X-Received: from pflr16.prod.google.com ([2002:aa7:9890:0:b0:87b:2034:f271])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3e28:b0:86c:a9a8:844f
+ with SMTP id d2e1a72fcca58-87c81cc17e7mr1327689b3a.1.1790084827682; Tue, 22
+ Sep 2026 06:47:07 -0700 (PDT)
+Date: Tue, 22 Sep 2026 06:47:05 -0700
+In-Reply-To: <arJsKA8MkSdpQxNm@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="wz67vp63rqm7k2iu"
-Content-Disposition: inline
-In-Reply-To: <20260922071945.693714-3-fuad.tabba@linux.dev>
+Mime-Version: 1.0
+References: <20260922001332.1121266-1-seanjc@google.com> <20260922001332.1121266-7-seanjc@google.com>
+ <arJsKA8MkSdpQxNm@yzhao56-desk.sh.intel.com>
+Message-ID: <arKG2UnTWySdOAkc@google.com>
+Subject: Re: [PATCH v5 6/6] KVM: guest_memfd: Drop superfluous WRITE_ONCE()
+ when binding a memslot
+From: Sean Christopherson <seanjc@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Stefan Teodorescu <fane@google.com>, 
+	Dennis Tighe <dtighe@google.com>, Sashiko Bot <sashiko-bot@kernel.org>, 
+	Ackerley Tng <ackerleytng@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
+On Tue, Sep 22, 2026, Yan Zhao wrote:
+> On Mon, Sep 21, 2026 at 05:13:32PM -0700, Sean Christopherson wrote:
+> > Drop the superfluous WRITE_ONCE() when setting a memslot's guest_memfd file
+> > during initial binding, as the memslot *must* be inactive and unreachable.
+> > The superfluous WRITE_ONCE() was added by commit 67b43038ce14 ("KVM:
+> > guest_memfd: Remove RCU-protected attribute from slot->gmem.file") to
+> > maintain rough "parity" with the existing rcu_assign_pointer(), not
+> > realizing that the only reason rcu_assign_pointer() was used was to make
+> > sparse and other checkers happy.
+> > 
+> > Cc: Yan Zhao <yan.y.zhao@intel.com>
+> > Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+> > Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >  virt/kvm/guest_memfd.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > index 80932f4ec4a3..826d26036926 100644
+> > --- a/virt/kvm/guest_memfd.c
+> > +++ b/virt/kvm/guest_memfd.c
+> > @@ -677,7 +677,7 @@ int kvm_gmem_prepare_memory_region(struct kvm *kvm, struct kvm_memory_slot *slot
+> >  	 * kvm_gmem_bind() must occur on a new memslot.  Because the memslot
+> >  	 * is not visible yet, kvm_gmem_get_pfn() is guaranteed to see the file.
+> >  	 */
+> > -	WRITE_ONCE(slot->gmem.file, file);
+> > +	slot->gmem.file = file;
+> >  	slot->gmem.pgoff = offset >> PAGE_SHIFT;
+> >  	if (kvm_gmem_supports_mmap(inode))
+> >  		slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
+> > 
+> Thanks for the fix.
+> Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
+> 
+> BTW: some questions regarding read/write to slot->gmem.file:
+> 
+> The WRITE_ONCE() in kvm_gmem_unbind() and kvm_gmem_release() are also invoked
+> when the memslot is inactive and unreachable -- are they also superfluous?
 
---wz67vp63rqm7k2iu
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 2/2] selftests/cgroup: Make the object directory an
- order-only prerequisite
-MIME-Version: 1.0
+The WRITE_ONCE() in release() is necessary, because the file could be freed/released
+while it is still attached to a memslot.
 
-On Tue, Sep 22, 2026 at 08:19:45AM +0100, Fuad Tabba <fuad.tabba@linux.dev>=
- wrote:
-> libcgroup.mk names $(LIBCGROUP_O_DIRS) as a regular prerequisite of
-> cgroup_util.o. The directory's mtime moves whenever an object is
-> created or replaced in it, so an incremental KVM selftests build that
-> rebuilt anything in lib/ recompiles cgroup_util.o and relinks every
-> test on the following run.
+I _think_ the one in unbind() is now superfluous after 0ee2c883b62d ("KVM:
+guest_memfd: take the invalidate lock when unbinding a dying file"), but that one
+needs more analysis.
 
-I'd expect the other test would recompile stuff in lib/ but not in
-cgroup/lib/, however that distinction is likely lost when $(OUTPUT) is
-expanded from the included *.mk file.
+> Do we need the READ_ONCE() in __kvm_gmem_get_pfn(), considering that other slot
+> fields (e.g., slot->gmem.pgoff) are read without READ_ONCE()?
 
-> Make the directory order-only, as libvfio.mk does.
-
-Sensible approach given that vfio.
-
->=20
-> Fixes: 2c754a84ff16a ("cgroup: selftests: Move cgroup_util into its own l=
-ibrary")
-> Assisted-by: LLM
-> Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
-> ---
->  tools/testing/selftests/cgroup/lib/libcgroup.mk | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Acked-by: Michal Koutn=FD <mkoutny@suse.com>
-
---wz67vp63rqm7k2iu
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCarKGQhsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+Ah2DgEA8Xdl3JGOJIGtK6hwQh4u
-Jb+PcelMIF9Zbpm+LvcVQysA/2EdCxDp5Lq6779UZxftUj9At2iFIuFnLA5vHe4p
-ZbcI
-=BJVd
------END PGP SIGNATURE-----
-
---wz67vp63rqm7k2iu--
+Yes, it's needed, because of the aforementioned release().  The other slot fields
+are only ever modified when the slot is inactive, i.e. unreachable.  That's why
+I think the unbind() WRITE_ONCE() is unnecessary; KVM should only unbind when the
+slot is inactive.
