@@ -1,138 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3CF544D55;
-	Tue, 22 Sep 2026 13:07:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CB354A7E9;
+	Tue, 22 Sep 2026 13:15:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790082438; cv=none; b=Y1y4MG4FjBolXUUdGbYivB+lQq44QmuPLd5CWty0Y7g97JK111gAPfnnSWdH/CY5q6OvAM2F7HkRpZUz5liiVlCL97c2s+zCmW4EceL2D333NuppP88cY/5GTZue1yUuoaQ1PPymYiHck9V+jp6Jk1LSehW8vdSxbiGedv6FWRs=
+	t=1790082942; cv=none; b=X2a3K7Dhm/IpUazHuYXgzUkARKtDKIBiUZP4TUR4/xg80IEvhFyiHjBR3QkAsqUp7in4OU+aKVU6bgrxAu9V4VEvS7D+zgq3l2h3XhxqFLek3tLf0g7tMq4WYImx4RJkYsGFnyLyaXeOS5GmmQl4WAQcHCuvUXUqPYRjpfwxZe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790082438; c=relaxed/simple;
-	bh=9feO8jW6RAb6EQNHE4b5q7Qo8TwdCz9gi79AiYIq2tY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=HK2zDo1wfEwyUYOLJg7FpEjnk9svNTFhlfQObfIbaxTxp7KM3+8dogHcN9/K01zlI2RmUyaCzz0jvls9I7ohg6Y0v7cOe8PqugvoBUhFfJ9RaBb94IDeS38OXPeazrO1E76Qg8BkZoXD+PJchdThsLtNyO5+I1f5vwuf2HAmghg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VdlNOHdA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790082942; c=relaxed/simple;
+	bh=3e88C8MD0MTi4zk76RfIGYwE4rL5JwPj8Xe4qyLb/vs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=QEnRbJOmfow98skNyS9ajOVSCKtfNi6b+6jrj8wxpVZmFgZaOs2KhGVKQ/JqXEYjQTEOOKgnMqTwQibW7TtfdhG9UwPnwC15sQP8d0tq02d0Ix97XshGqpKySJSL9/4Mlak/1KfTcF0b8xD6T1WEv55x8ajFMW6dqrTilFyvqMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=vaZh1CK3; arc=none smtp.client-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VdlNOHdA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DAA91F000FF;
-	Tue, 22 Sep 2026 13:07:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790082436;
-	bh=aHQl5p9sQAY9/zxya+ObUaa13h85sMUF9P0ssFuwzDg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=VdlNOHdACDAc7b8xtcwHdLrXhTtZt4/tmONM2O45OuWA7k2PW4mXWxpcwjlhGX88y
-	 7pr64y+yxcXtSN3h+sK4hYTZDVwzHIg55H+1w3jq5kqYDVCneoxOoWzpv4JduwXmtZ
-	 y+z5DcDaFbJ79zNbKjIlE9ac2nM2KzSwQ6Hv//SM5hKcQMZH6Q2sGrta3SjQ5z6I48
-	 O7vcq0cxQ1Tje0vwIkNYafgq/ZKpgxBKRKmMVm91o7gj8nRG63agpj3JY25N9m2PRH
-	 cNdG0i6LALMT4QJsSVsmulhpujl0s1R9YKGExxkyvs91i65ihDH+YW/zHMM9WYQuiR
-	 dXYIbA1dolPZg==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	Fuad Tabba <tabba@google.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Jack Thomson <jackabt@amazon.com>,
-	Jack Thomson <jackabt.amazon@gmail.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Leo Soares Passos <Leo.Bras@arm.com>
-Subject: Re: [PATCH v2 00/13] KVM: arm64: Add KVM_PRE_FAULT_MEMORY support
-In-Reply-To: <arJ1BDEzY5CANjjB@gremlin>
-References: <20260914-kvm-arm-prefault-v2-0-26fb47f74b73@kernel.org>
- <yq5abj9p38vq.fsf@kernel.org> <arJ1BDEzY5CANjjB@gremlin>
-Date: Tue, 22 Sep 2026 18:37:04 +0530
-Message-ID: <yq5a8q4t305j.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="vaZh1CK3"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1x90LI-005SDL-2I; Tue, 22 Sep 2026 15:15:28 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
+	bh=KqEsGGQym9dCf7XblsGQZB4/Hmko4QBycE9bOomA3ng=; b=vaZh1CK3mSr6k3khPux/ezZb4p
+	EhCcJx5zS0hPoO12vLl/irCRT/2cThrAteJF9SmsOqU6GTvlXOcYxpvkY452mXOwR3a42buGtvm81
+	mL67kou6DWJzCD+QZ9qfpU+x4tK1lXNojXpP+znrHRljISW3M3tkFAaei6To3jIetNUTHfyslvjXF
+	wpQBXzWIjkrS50FXslzGoBDDyGT/Ygev/Zxm7CzTGPaUTFXUSKOecJS0OaHkPbI5diOJllcwDT8tf
+	ZDgkpGq5mY1AFs4tzHNdIreHY1VtmNol4o923PF/+L3mWG2AjJ0/pRZel7HdP3t/brAgv4mU8Z3aW
+	JUYf/69Q==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1x90LC-0006Mx-0W; Tue, 22 Sep 2026 15:15:22 +0200
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.95)
+	id 1x90L5-00FyKH-OI;
+	Tue, 22 Sep 2026 15:15:15 +0200
+From: Michal Luczaj <mhal@rbox.co>
+Date: Tue, 22 Sep 2026 15:15:02 +0200
+Subject: [PATCH net v3 8/8] vsock: enforce no-transport invariant for
+ TCP_LISTEN sockets
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260922-vsock-connect-reset-closing-v3-8-78907b8200d4@rbox.co>
+References: <20260922-vsock-connect-reset-closing-v3-0-78907b8200d4@rbox.co>
+In-Reply-To: <20260922-vsock-connect-reset-closing-v3-0-78907b8200d4@rbox.co>
+To: Stefan Hajnoczi <stefanha@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Michal Luczaj <mhal@rbox.co>
+X-Mailer: b4 0.15.2
 
-"Lorenzo Stoakes (ARM)" <ljs@kernel.org> writes:
+In the past, listener socket could carry an assigned transport (uselessly,
+but harmlessly, except for unnecessarily hogging the kernel module refcnt).
+That's not the case anymore. Express/enforce the invariant.
 
-> On Tue, Sep 22, 2026 at 03:28:33PM +0530, Aneesh Kumar K.V wrote:
->> > This is because pKVM instantiates vCPUs upon run,
->> >
->>
->> Can pKVM instantiate the hyp vCPU during pre-faulting ?
->
-> It would be an unusual and unexpected thing to do - suddenly a pre-fault
-> operation is initialising a vCPU explicitly for pKVM.
->
-> A caller is not going to reasonably expect this and might treat a failure to
-> pre-alloc as fine to carry on whereas in fact it was a failure to initailised a
-> pKVM vCPU.
->
-> It'd also require significant changes to how pKVM is set up, right now it's
-> hardcoded to be done unconditionally at run via kvm_arch_vcpu_run_pid_change()
-> -> pkvm_create_hyp_vcpu(), so all that would have to change and be checked and
-> tested and... that'd be really out of scope I think :)
->
-> And pre-faulting really makes most sense BEFORE you run a VM. It doesn't make so
-> much sense mid-run.
->
-> But more fundamentally, the stage 2 page tables, as I understand it, are owned
-> by pKVM and so aren't really available to be pre-faulted.
->
-> Maybe unprotected-under-pKVM VMs but then it's questionable as to how useful
-> that would be given that it would be confusing to users vs. how it works for
-> other VMs.
->
-> So in general, no I don't think it's a good idea.
->
-> And even if we wanted to pursue some version of this, it's _definitely_ out
-> of scope for the initial pre-faulting bring-up series.
->
->>
->>
->> > but pre-faulting is  typically performed before a vCPU is run.  It would be confusing and
->> > inconsistent to error out on non-running vCPUs but to pre-fault running
->> > ones.
->>
->>
->> I use KVM pre-faulting when transitioning pages from shared to private
->
-> You mean you'd prefer to use? Or you are using it on another arch?
->
->> with CoCo guest. This ensures that a trusted device can DMA to private
->> memory before the guest accesses it.
->
-> Hm what do you mean by private memory?
->
-> I see:
->
-> #ifndef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
-> static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
-> {
-> 	return false;
-> }
-> #endif
->
-> And only x86 selects KVM_GENERIC_MEMORY_ATTRIBUTES?
->
-> Do you mean something else?
->
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+---
+ net/vmw_vsock/af_vsock.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-I am using this with ARM CCA-DA, based on the patch series from Jack Thomson <jackabt.amazon@gmail.com>.
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 56c595942456..9ba21a448cfa 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1993,13 +1993,13 @@ static int vsock_listen(struct socket *sock, int backlog)
+ 		goto out;
+ 	}
+ 
+-	if (sock->state != SS_UNCONNECTED) {
++	vsk = vsock_sk(sk);
++
++	if (sock->state != SS_UNCONNECTED || WARN_ON_ONCE(vsk->transport)) {
+ 		err = -EINVAL;
+ 		goto out;
+ 	}
+ 
+-	vsk = vsock_sk(sk);
+-
+ 	if (!vsock_addr_bound(&vsk->local_addr)) {
+ 		err = -EINVAL;
+ 		goto out;
 
-https://gitlab.arm.com/linux-arm/kvmtool-cca/-/commit/80e7aad61c5639de2f0cb4a5525dad0c96156428
+-- 
+2.55.0
 
-We do this while the VM is running.
-
--aneesh
