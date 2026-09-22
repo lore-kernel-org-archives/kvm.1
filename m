@@ -1,317 +1,170 @@
-Received: from us-smtp-delivery-44.mimecast.com (us-smtp-delivery-44.mimecast.com [207.211.30.44])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9C34E06F5
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 06:43:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.211.30.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1C32FF672;
+	Tue, 22 Sep 2026 06:43:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790059384; cv=none; b=WsG2PkunIbyZ6ytvpfoVMC5FT3n7U3ni18YrZYqDZf9G7c9T1CjzgoPVoL/Mii1FlCNql4EFwqCJOyUlg7DIQvmTuEzszWSNFohrZr+tiPC3pEZhQhf/3q3bevi6dex6ece3qC4CiYZRfYNNqi8hoFW73esXi92jOAlihSvu0Ho=
+	t=1790059401; cv=none; b=uXMocVp/Cs9OqwayN5jADKtOGZnbFl37KhmasEUrCM5w+81n3a3EoDogGAtUq5P+vLHNw1cFqdVGoO03p45RcnrFRF54rYVj18lpWtZj+iipunyQQPvRI0uPVB18AMuK1IphzDhqr9BcDpMOH8pYhTPxqFtYZ6pCn+1qDHvmfdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790059384; c=relaxed/simple;
-	bh=6s4ei4cr+SRQnbNELzgWqb4LV16jfmfP6LQfRYjXJ5A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=bUeh/8AfFyHo3Zt3PFOL9qDDZ6dHXGkS41sUU5ezxo4Dies7YCpPPDfcaCmoItG0BVGK/aOezSjHclKdn8taFd8QxzOg1unffWE0F5bF/3CsE/8BM6IvRme72KEKtN78C4exA/yuIbfVRQ5ESMUENUgrv2h1QSBmA6SUQ91Hmek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=207.211.30.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-399-CicNOXX2MUOiY2Pznp7E1Q-1; Tue,
- 22 Sep 2026 02:41:35 -0400
-X-MC-Unique: CicNOXX2MUOiY2Pznp7E1Q-1
-X-Mimecast-MFC-AGG-ID: CicNOXX2MUOiY2Pznp7E1Q_1790059293
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3B9B31805A3C;
-	Tue, 22 Sep 2026 06:41:33 +0000 (UTC)
-Received: from dreadlord.lan (unknown [10.67.32.53])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7079F1956041;
-	Tue, 22 Sep 2026 06:41:25 +0000 (UTC)
-From: Dave Airlie <airlied@gmail.com>
-To: dri-devel@lists.freedesktop.org,
-	linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: Jason Gunthorpe <jgg@ziepe.ca>,
-	Dave Airlie <airlied@redhat.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH] pci/vgaarb: pass a data pointer to be used in the decode callback
-Date: Tue, 22 Sep 2026 16:41:11 +1000
-Message-ID: <20260922064111.2468741-1-airlied@gmail.com>
+	s=arc-20240116; t=1790059401; c=relaxed/simple;
+	bh=/JTvVwAa8wp2p8UY5azd/n4TXS07TMF1QBglfodrLWA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RezzVq71dMSk9cyenjhdD3fMNT7nn56CRxdvtg+yx/J1HJFEtaJz1kE0Lws6odVKEikjppT5GShFpB7pVxFpxR9XTcvHcL9P+way8MSNJQSSwBZ66idr8PGSpVER1YDckL3r2utM3M65yVsuo5BTho5nR+Uwrw9aj6DByntlW9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MdX9Ya7V; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MdX9Ya7V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 537431F000FF;
+	Tue, 22 Sep 2026 06:43:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790059399;
+	bh=ZNn+S45uuHSM1MevwqL8L/OLU6cXbDvK1jrtFFoJQRo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MdX9Ya7V1NXVARco19qfnbcVEbNm56zISiZkNG3b9akDoeSs0/EYgTd7QCnlnaoa6
+	 j2PV5pmtakJaak1Co1gKLHuRiQlcvuwsQVoRCQbgks6IvTtVgn5Ypxr4Iu5PrPl4IA
+	 Yf1e8Snkoq3cpLt6pTMAUx7tdUM6zilk6a/UUJ2ClgIao2M5/Wb7me08izuBgK/1Ar
+	 kwpLRIdauWOmK9foRBd5P1ZbFjUQcVNcqytK16X+JIl4Pf6Xkg75w+lZFanHIgdaFK
+	 +kL6xFN42h9oNj9HCgbS9x9NuXH6tolh7CmaQg6Vd8tWkKZB02d1OZutpNm+t8BUfG
+	 ITmBh1WGyx0Kw==
+Date: Mon, 21 Sep 2026 23:43:18 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Andrew Jones <andrew.jones@oss.qualcomm.com>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shannon Zhao <shannon.zhao@linaro.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+	devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v11 08/21] Revert "KVM: arm64: PMU: Reload when resetting"
+Message-ID: <arIjhlqqzt4AKTOr@kernel.org>
+References: <20260920-hybrid-v11-0-03618771b0e1@rsg.ci.i.u-tokyo.ac.jp>
+ <20260920-hybrid-v11-8-03618771b0e1@rsg.ci.i.u-tokyo.ac.jp>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: PSWyOj09PJXm3NzMSbrOiGdMUt3wih9n63oj2GqSvCo_1790059293
-X-Mimecast-Originator: gmail.com
-Content-Transfer-Encoding: quoted-printable
-content-type: text/plain; charset=WINDOWS-1252; x-default=true
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260920-hybrid-v11-8-03618771b0e1@rsg.ci.i.u-tokyo.ac.jp>
 
-From: Dave Airlie <airlied@redhat.com>
+Hi Akihiko,
 
-This changes the vgaarb client API so that the user can pass a
-private data pointer into the register that will get used in
-the decode callback.
+On Sun, Sep 20, 2026 at 08:15:49PM +0900, Akihiko Odaki wrote:
+> This reverts commit fe53538069bb4f625bc8734103ba044a83138fea.
+> 
+> Restore PMU event teardown before system-register reset so existing
+> perf events cannot retain configuration from the previous run. All
+> counters are disabled by the reset PMCR_EL0 and MDCR_EL2 values, so
+> reset does not need to request a PMU reload.
 
-This allows a bunch of pdev conversions in the drivers, and lets
-some future vfio cleanups be nicer.
+Sorry, I'm not following the intent here. KVM_REQ_RELOAD_PMU should
+already be discarding + recomputing perf events based on the state of
+the vPMU. What's the problem?
 
-I'd like to merge this via the drm next tree but also fine with
-it going via pci.
+Thanks,
+Oliver
 
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Cc: Alex Williamson <alex@shazbot.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |  6 +++---
- drivers/gpu/drm/i915/display/intel_vga.c   |  7 ++++---
- drivers/gpu/drm/nouveau/nouveau_vga.c      |  6 +++---
- drivers/gpu/drm/radeon/radeon_device.c     |  7 +++----
- drivers/pci/vgaarb.c                       | 13 +++++++++----
- drivers/vfio/pci/vfio_pci_core.c           |  9 +++++----
- include/linux/vgaarb.h                     |  8 +++++---
- 7 files changed, 32 insertions(+), 24 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/a=
-md/amdgpu/amdgpu_device.c
-index 62b5b4a23f17..1344b2b1bd16 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -1435,10 +1435,10 @@ bool amdgpu_device_should_use_aspm(struct amdgpu_de=
-vice *adev)
-  * Enable/disable vga decode (all asics).
-  * Returns VGA resource flags.
-  */
--static unsigned int amdgpu_device_vga_set_decode(struct pci_dev *pdev,
-+static unsigned int amdgpu_device_vga_set_decode(void *data,
- =09=09bool state)
- {
--=09struct amdgpu_device *adev =3D drm_to_adev(pci_get_drvdata(pdev));
-+=09struct amdgpu_device *adev =3D (struct amdgpu_device *)data;
-=20
- =09amdgpu_asic_set_vga_state(adev, state);
- =09if (state)
-@@ -4208,7 +4208,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
- =09 * ignore it
- =09 */
- =09if ((adev->pdev->class >> 8) =3D=3D PCI_CLASS_DISPLAY_VGA)
--=09=09vga_client_register(adev->pdev, amdgpu_device_vga_set_decode);
-+=09=09vga_client_register(adev->pdev, amdgpu_device_vga_set_decode, adev);
-=20
- =09px =3D amdgpu_device_supports_px(adev);
-=20
-diff --git a/drivers/gpu/drm/i915/display/intel_vga.c b/drivers/gpu/drm/i91=
-5/display/intel_vga.c
-index 4966fd7eea92..0889edb36190 100644
---- a/drivers/gpu/drm/i915/display/intel_vga.c
-+++ b/drivers/gpu/drm/i915/display/intel_vga.c
-@@ -283,9 +283,10 @@ void intel_vga_disable(struct intel_display *display)
- =09intel_de_posting_read(display, vga_reg);
- }
-=20
--static unsigned int intel_vga_set_decode(struct pci_dev *pdev, bool enable=
-_decode)
-+static unsigned int intel_vga_set_decode(void *data, bool enable_decode)
- {
--=09struct intel_display *display =3D to_intel_display(pdev);
-+=09struct intel_display *display =3D (struct intel_display *)data;
-+=09struct pci_dev *pdev =3D to_pci_dev(display->drm->dev);
- =09unsigned int decodes =3D VGA_RSRC_NORMAL_IO | VGA_RSRC_NORMAL_MEM;
-=20
- =09drm_dbg_kms(display->drm, "%s VGA decode due to VGA arbitration\n",
-@@ -331,7 +332,7 @@ void intel_vga_register(struct intel_display *display)
- =09 * then we do not take part in VGA arbitration and the
- =09 * vga_client_register() fails with -ENODEV.
- =09 */
--=09ret =3D vga_client_register(pdev, intel_vga_set_decode);
-+=09ret =3D vga_client_register(pdev, intel_vga_set_decode, display);
- =09drm_WARN_ON(display->drm, ret && ret !=3D -ENODEV);
- }
-=20
-diff --git a/drivers/gpu/drm/nouveau/nouveau_vga.c b/drivers/gpu/drm/nouvea=
-u/nouveau_vga.c
-index 29a801124e56..6662e30466f2 100644
---- a/drivers/gpu/drm/nouveau/nouveau_vga.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_vga.c
-@@ -9,9 +9,9 @@
- #include "nouveau_vga.h"
-=20
- static unsigned int
--nouveau_vga_set_decode(struct pci_dev *pdev, bool state)
-+nouveau_vga_set_decode(void *data, bool state)
- {
--=09struct nouveau_drm *drm =3D pci_get_drvdata(pdev);
-+=09struct nouveau_drm *drm =3D (struct nouveau_drm *)data;
- =09struct nvif_object *device =3D &drm->client.device.object;
-=20
- =09if (drm->client.device.info.family =3D=3D NV_DEVICE_INFO_V0_CURIE &&
-@@ -103,7 +103,7 @@ nouveau_vga_init(struct nouveau_drm *drm)
- =09=09return;
- =09pdev =3D to_pci_dev(dev->dev);
-=20
--=09vga_client_register(pdev, nouveau_vga_set_decode);
-+=09vga_client_register(pdev, nouveau_vga_set_decode, drm);
-=20
- =09/* don't register Thunderbolt eGPU with vga_switcheroo */
- =09if (pci_is_thunderbolt_attached(pdev))
-diff --git a/drivers/gpu/drm/radeon/radeon_device.c b/drivers/gpu/drm/radeo=
-n/radeon_device.c
-index 9523240110a6..cf8a6bd00c77 100644
---- a/drivers/gpu/drm/radeon/radeon_device.c
-+++ b/drivers/gpu/drm/radeon/radeon_device.c
-@@ -1076,10 +1076,9 @@ void radeon_combios_fini(struct radeon_device *rdev)
-  * Enable/disable vga decode (all asics).
-  * Returns VGA resource flags.
-  */
--static unsigned int radeon_vga_set_decode(struct pci_dev *pdev, bool state=
-)
-+static unsigned int radeon_vga_set_decode(void *data, bool state)
- {
--=09struct drm_device *dev =3D pci_get_drvdata(pdev);
--=09struct radeon_device *rdev =3D dev->dev_private;
-+=09struct radeon_device *rdev =3D (struct radeon_device *)data;
- =09radeon_vga_set_state(rdev, state);
- =09if (state)
- =09=09return VGA_RSRC_LEGACY_IO | VGA_RSRC_LEGACY_MEM |
-@@ -1431,7 +1430,7 @@ int radeon_device_init(struct radeon_device *rdev,
- =09/* if we have > 1 VGA cards, then disable the radeon VGA resources */
- =09/* this will fail for cards that aren't VGA class devices, just
- =09 * ignore it */
--=09vga_client_register(rdev->pdev, radeon_vga_set_decode);
-+=09vga_client_register(rdev->pdev, radeon_vga_set_decode, rdev);
-=20
- =09if (rdev->flags & RADEON_IS_PX)
- =09=09runtime =3D true;
-diff --git a/drivers/pci/vgaarb.c b/drivers/pci/vgaarb.c
-index 3de05aee7859..3e58b2c05c85 100644
---- a/drivers/pci/vgaarb.c
-+++ b/drivers/pci/vgaarb.c
-@@ -51,7 +51,8 @@ struct vga_device {
- =09unsigned int mem_norm_cnt;=09/* normal MEM count */
- =09bool bridge_has_one_vga;
- =09bool is_firmware_default;=09/* device selected by firmware */
--=09unsigned int (*set_decode)(struct pci_dev *pdev, bool decode);
-+=09unsigned int (*set_decode)(void *data, bool decode);
-+=09void *set_decode_data;
- };
-=20
- static LIST_HEAD(vga_list);
-@@ -935,6 +936,7 @@ EXPORT_SYMBOL(vga_set_legacy_decoding);
-  * vga_client_register - register or unregister a VGA arbitration client
-  * @pdev: PCI device of the VGA client
-  * @set_decode: VGA decode change callback
-+ * @data: private data to pass to callback
-  *
-  * Clients have two callback mechanisms they can use.
-  *
-@@ -956,15 +958,18 @@ EXPORT_SYMBOL(vga_set_legacy_decoding);
-  * Returns: 0 on success, -ENODEV on failure
-  */
- int vga_client_register(struct pci_dev *pdev,
--=09=09unsigned int (*set_decode)(struct pci_dev *pdev, bool decode))
-+=09=09unsigned int (*set_decode)(void *data, bool decode),
-+=09=09void *data)
- {
- =09unsigned long flags;
- =09struct vga_device *vgadev;
-=20
- =09spin_lock_irqsave(&vga_lock, flags);
- =09vgadev =3D vgadev_find(pdev);
--=09if (vgadev)
-+=09if (vgadev) {
- =09=09vgadev->set_decode =3D set_decode;
-+=09=09vgadev->set_decode_data =3D data;
-+=09}
- =09spin_unlock_irqrestore(&vga_lock, flags);
- =09if (!vgadev)
- =09=09return -ENODEV;
-@@ -1464,7 +1469,7 @@ static void vga_arbiter_notify_clients(void)
- =09spin_lock_irqsave(&vga_lock, flags);
- =09list_for_each_entry(vgadev, &vga_list, list) {
- =09=09if (vgadev->set_decode) {
--=09=09=09new_decodes =3D vgadev->set_decode(vgadev->pdev,
-+=09=09=09new_decodes =3D vgadev->set_decode(vgadev->set_decode_data,
- =09=09=09=09=09=09=09 new_state);
- =09=09=09vga_update_device_decodes(vgadev, new_decodes);
- =09=09}
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_c=
-ore.c
-index 6757054e9d87..b04ce3ded08c 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -162,9 +162,10 @@ static inline void vfio_pci_core_debugfs_init(struct v=
-fio_pci_core_device *vdev)
-  * has no way to get to it and routing can be disabled externally at the
-  * bridge.
-  */
--static unsigned int vfio_pci_set_decode(struct pci_dev *pdev, bool single_=
-vga)
-+static unsigned int vfio_pci_set_decode(void *data, bool single_vga)
- {
--=09struct vfio_pci_core_device *vdev =3D dev_get_drvdata(&pdev->dev);
-+=09struct vfio_pci_core_device *vdev =3D data;
-+=09struct pci_dev *pdev =3D vdev->pdev;
- =09struct pci_dev *tmp =3D NULL;
- =09unsigned char max_busnr;
- =09unsigned int decodes;
-@@ -2159,10 +2160,10 @@ static int vfio_pci_vga_init(struct vfio_pci_core_d=
-evice *vdev)
- =09if (ret)
- =09=09return ret;
-=20
--=09ret =3D vga_client_register(pdev, vfio_pci_set_decode);
-+=09ret =3D vga_client_register(pdev, vfio_pci_set_decode, vdev);
- =09if (ret)
- =09=09return ret;
--=09vga_set_legacy_decoding(pdev, vfio_pci_set_decode(pdev, false));
-+=09vga_set_legacy_decoding(pdev, vfio_pci_set_decode(vdev, false));
- =09return 0;
- }
-=20
-diff --git a/include/linux/vgaarb.h b/include/linux/vgaarb.h
-index 97129a1bbb7d..71a364669eaf 100644
---- a/include/linux/vgaarb.h
-+++ b/include/linux/vgaarb.h
-@@ -33,7 +33,8 @@ struct pci_dev *vga_default_device(void);
- void vga_set_default_device(struct pci_dev *pdev);
- int vga_remove_vgacon(struct pci_dev *pdev);
- int vga_client_register(struct pci_dev *pdev,
--=09=09unsigned int (*set_decode)(struct pci_dev *pdev, bool state));
-+=09=09unsigned int (*set_decode)(void *data, bool state),
-+=09=09void *data);
- #else /* CONFIG_VGA_ARB */
- static inline void vga_set_legacy_decoding(struct pci_dev *pdev,
- =09=09unsigned int decodes)
-@@ -59,7 +60,8 @@ static inline int vga_remove_vgacon(struct pci_dev *pdev)
- =09return 0;
- }
- static inline int vga_client_register(struct pci_dev *pdev,
--=09=09unsigned int (*set_decode)(struct pci_dev *pdev, bool state))
-+=09=09unsigned int (*set_decode)(void *data, bool state),
-+=09=09void *data)
- {
- =09return 0;
- }
-@@ -97,7 +99,7 @@ static inline int vga_get_uninterruptible(struct pci_dev =
-*pdev,
-=20
- static inline void vga_client_unregister(struct pci_dev *pdev)
- {
--=09vga_client_register(pdev, NULL);
-+=09vga_client_register(pdev, NULL, NULL);
- }
-=20
- #endif /* LINUX_VGA_H */
---=20
-2.54.0
-
+> Assisted-by: Codex:gpt-6-astra
+> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+> ---
+>  arch/arm64/kvm/pmu-emul.c | 14 ++++++++++++++
+>  arch/arm64/kvm/reset.c    |  3 +++
+>  arch/arm64/kvm/sys_regs.c |  3 ---
+>  include/kvm/arm_pmu.h     |  2 ++
+>  4 files changed, 19 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
+> index a5ccb6ae44d5..14fcdbdb4587 100644
+> --- a/arch/arm64/kvm/pmu-emul.c
+> +++ b/arch/arm64/kvm/pmu-emul.c
+> @@ -258,6 +258,20 @@ void kvm_pmu_vcpu_init(struct kvm_vcpu *vcpu)
+>  		pmu->pmc[i].idx = i;
+>  }
+>  
+> +/**
+> + * kvm_pmu_vcpu_reset - reset pmu state for cpu
+> + * @vcpu: The vcpu pointer
+> + *
+> + */
+> +void kvm_pmu_vcpu_reset(struct kvm_vcpu *vcpu)
+> +{
+> +	unsigned long mask = kvm_pmu_implemented_counter_mask(vcpu);
+> +	int i;
+> +
+> +	for_each_set_bit(i, &mask, 32)
+> +		kvm_pmu_stop_counter(kvm_vcpu_idx_to_pmc(vcpu, i));
+> +}
+> +
+>  /**
+>   * kvm_pmu_vcpu_destroy - free perf event of PMU for cpu
+>   * @vcpu: The vcpu pointer
+> diff --git a/arch/arm64/kvm/reset.c b/arch/arm64/kvm/reset.c
+> index 10eb7249aa9e..adcb460a5287 100644
+> --- a/arch/arm64/kvm/reset.c
+> +++ b/arch/arm64/kvm/reset.c
+> @@ -185,6 +185,9 @@ void kvm_reset_vcpu(struct kvm_vcpu *vcpu)
+>  	vcpu->arch.reset_state.reset = false;
+>  	spin_unlock(&vcpu->arch.mp_state_lock);
+>  
+> +	/* Reset PMU outside of the non-preemptible section */
+> +	kvm_pmu_vcpu_reset(vcpu);
+> +
+>  	preempt_disable();
+>  	loaded = (vcpu->cpu != -1);
+>  	if (loaded)
+> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+> index 1481dd5c99a8..75624725adf1 100644
+> --- a/arch/arm64/kvm/sys_regs.c
+> +++ b/arch/arm64/kvm/sys_regs.c
+> @@ -5388,9 +5388,6 @@ void kvm_reset_sys_regs(struct kvm_vcpu *vcpu)
+>  	}
+>  
+>  	set_bit(KVM_ARCH_FLAG_ID_REGS_INITIALIZED, &kvm->arch.flags);
+> -
+> -	if (kvm_vcpu_has_pmu(vcpu))
+> -		kvm_make_request(KVM_REQ_RELOAD_PMU, vcpu);
+>  }
+>  
+>  /**
+> diff --git a/include/kvm/arm_pmu.h b/include/kvm/arm_pmu.h
+> index 6b4a118d17ca..51f5e4ca3326 100644
+> --- a/include/kvm/arm_pmu.h
+> +++ b/include/kvm/arm_pmu.h
+> @@ -48,6 +48,7 @@ u64 kvm_pmu_implemented_counter_mask(struct kvm_vcpu *vcpu);
+>  u64 kvm_pmu_accessible_counter_mask(struct kvm_vcpu *vcpu);
+>  u64 kvm_pmu_get_pmceid(struct kvm_vcpu *vcpu, bool pmceid1);
+>  void kvm_pmu_vcpu_init(struct kvm_vcpu *vcpu);
+> +void kvm_pmu_vcpu_reset(struct kvm_vcpu *vcpu);
+>  void kvm_pmu_vcpu_destroy(struct kvm_vcpu *vcpu);
+>  void kvm_pmu_reprogram_counter_mask(struct kvm_vcpu *vcpu, u64 val);
+>  void kvm_pmu_flush_hwstate(struct kvm_vcpu *vcpu);
+> @@ -125,6 +126,7 @@ static inline u64 kvm_pmu_accessible_counter_mask(struct kvm_vcpu *vcpu)
+>  	return 0;
+>  }
+>  static inline void kvm_pmu_vcpu_init(struct kvm_vcpu *vcpu) {}
+> +static inline void kvm_pmu_vcpu_reset(struct kvm_vcpu *vcpu) {}
+>  static inline void kvm_pmu_vcpu_destroy(struct kvm_vcpu *vcpu) {}
+>  static inline void kvm_pmu_reprogram_counter_mask(struct kvm_vcpu *vcpu, u64 val) {}
+>  static inline void kvm_pmu_flush_hwstate(struct kvm_vcpu *vcpu) {}
+> 
+> -- 
+> 2.55.0
+> 
