@@ -1,152 +1,197 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BFE45275AB;
-	Tue, 22 Sep 2026 11:49:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790077772; cv=none; b=MZBbZNrR7vALmgJhnXb2pmZirTuHrYV3V5M26F8AsQ3y9+SqZ5DUqqiG46q0zuFjJSP3eroPmFqwEApxwXSVOIvmznEEeu9bCyZkeSOBVvca+NGA3f/01dJKuGdNCWTmdjUImsfuZz7RITfLVNHQaVnL0BwGGfbjfHNlX5UUGY4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790077772; c=relaxed/simple;
-	bh=kPZbvQJojUz56uz5x2Xkq5TaowtSZU433spfKSmwdZE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T1+xIlOKwva5XefvONzc5y4P8iyWZxukSlT4RHrK/eZFrh6RUbcDKjln2i6//btQ45h8rbi6LXA7QRlVyULZzCpCIqxxzpSsDo2Nekb7yfrUnWZ96i/5XYtl5JvAlb/Wdwvki9+AwUnL/s3uDG3eT0OU1HngSQv6mY6g5lq/x78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qgyzve1n; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9425353C3D9;
+	Tue, 22 Sep 2026 11:54:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790078052; cv=fail; b=JIswuAR1p0GDdBVakmWjk2P4VvQXhmEf4oVJekhUs7JzxVUVC8NDtOlX/mBfwTJJQJnDXericbMYTJq/fGhSj5tlH3hVGvLpePz5VY4LCYD2xr2gGxhILFHMMVfHHSSHkIC5u9vVvxl/yKarnq0qpdTZbHHL1Xu46GGE5wtrxbE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790078052; c=relaxed/simple;
+	bh=I+sejMm5vLXM4FHtjbEnsl3TMzDBf+OMnbqAHMwnPIA=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=klAQu0hQjtgoeKUUjI4VDvcSQHdb6PYtpyYXwBrvKpdAj2jefdty/DQv6MvJHuuPzsaMRcWfRVqoTcuPbN4b7guDsaKC4rBsJLeYoR2o5GQnysS4TqWv1tI12T8vvFi7t+4g2gjSxXSWBFkj5KI0mFR3bGPL9oYN/FF4a0VnjP4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jLa1a194; arc=fail smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qgyzve1n"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68MBZWdI343496;
-	Tue, 22 Sep 2026 11:49:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=OlQdGT
-	d5/teWfKx6IZe2I3T2vvhzZmjui1+3FOLy4RE=; b=qgyzve1nZ4OJJTgOkt/EXP
-	fXMWkC3pQ4Z4h53l5pKyj4BauY0fwWyhEhZ41JgB4q2x1AJDOmQ9gCKmZpX6CrMp
-	wrlbXf6GpEqC7KQE5J10y9JCZ6nXiS0UqfrXeq7EQUTxg6vkB1ySMoZAVlw9n33c
-	vhys3HRuDnoIvaHKkyy/MNrOKRCGbXUlR3aLZ9pZKIbuvsu6Au1cXnUCLRSU8xGi
-	b6UxW2ngmRgU+pDQE2TobrNzr5mU+yDyr6G1RrJeU6WGDv4Gqwgc5/seVU6t7OOB
-	BBxZH6V5o7KThN39FWXBh3I2BOMbjgU5ny6lT2sP7JnK5vApKDIiPjaUmEf5pYWQ
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskdv57kx-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 22 Sep 2026 11:49:18 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68MBWZD62794786;
-	Tue, 22 Sep 2026 11:49:18 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gt67gsjp6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Sep 2026 11:49:18 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68MBnHTa64422350
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 22 Sep 2026 11:49:17 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9FC0758055;
-	Tue, 22 Sep 2026 11:49:17 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A508E5804B;
-	Tue, 22 Sep 2026 11:49:15 +0000 (GMT)
-Received: from [9.61.66.235] (unknown [9.61.66.235])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 22 Sep 2026 11:49:15 +0000 (GMT)
-Message-ID: <2569f9f9-451d-4e66-be71-d0514fa93864@linux.ibm.com>
-Date: Tue, 22 Sep 2026 07:49:15 -0400
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jLa1a194"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790078051; x=1821614051;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=I+sejMm5vLXM4FHtjbEnsl3TMzDBf+OMnbqAHMwnPIA=;
+  b=jLa1a1942KExpF9Y3Bbxineg+61wa+Xmg9XmDqdK9ogdyKqwPPWm6Amq
+   /8GEJd4vPEyfqYUylcpvo/+7FkhAOV342Rg5MbkYXmZMBLfEkhFNcRgS9
+   lssa4n58mGx7z2NkAghTOd2c5fO54H+sqwucjTo4X95PLp4oTmoKP188P
+   F19S5fWqLDUxe/+Iy4EhhzvPeKh/6yMK9ddbx6jMbSZsKFSQS8Ry7o8KJ
+   xcGLWMgeo6wM+hP9+JqRNrRDKPZnHvIOQiXlATKh4N9k0RynL7ZoFEfgU
+   uIGqeyWCpHRUx/l5Ibm6vvrMQEo6LoA8py7eh+yxo9L5Lnak+PFTAbgPX
+   w==;
+X-CSE-ConnectionGUID: dMgfgCGuQVm4eArQikTHnw==
+X-CSE-MsgGUID: NdUFZ5NBQz+AhzOB4gjBOw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="93174069"
+X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
+   d="scan'208";a="93174069"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 04:54:09 -0700
+X-CSE-ConnectionGUID: LyHa/iv1TQGW3IDaWmqSXQ==
+X-CSE-MsgGUID: 3vK8JfaIT3eaDAmSJjaALQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
+   d="scan'208";a="271660621"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 04:54:07 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 22 Sep 2026 04:54:00 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Tue, 22 Sep 2026 04:54:00 -0700
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.5) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 22 Sep 2026 04:54:00 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cZQxth7yAfvwCPC4FE10EPSHImDuYWM3N+gUUXVuXg6Z/ltpYvBMS8htlFgISDuZpSRtoANmp/oEaU8XJbs8YuMBSyC3SFjhLfmbq/5rg45VQxZ77CwitElPECOSwGKOJb/yXi9aBOlNgIsYQ0zivrmRlG9spimEZyv8MvpuAKbtcqeZqi1cDxxOxoeTm31Fcyfm38xWP2gm/7Kk6u6h0Eb4bZwmrQkoYB5cq1JX9BqpOSlJJM27yOg7gHREg6qDYd3Q792NLnoAvg0v/p0YxWcQDOuJrmpQJ5QSg+HHyfp80hFqBtmbuYH/Cz3iZzyTBj7jahVz0vt4mLTaH3qLgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4eVFFANDez+O27CJdPU5d0aZmgf8EoZix8Eeh9ti1Yg=;
+ b=f1RuQ6fTpTQRvFJgADZ0RKPTDsYEHG18Zvh7VgGmg84J/PNOhw8f5fEoW3GFJkEyvMeB+Kl9SVQJ33jJ4CZqOMxupeulwHHbiGq9rXLtNyAkTF+ww8HHvQSSlJjfYocrpx6ExhRK9zpcfHydd3TAYfvtvY1sBxuzGiRVXKXZxnjeJaVFqH8hlW62sGmgXH8bpsbimpzosAW/uT15SWVro9Kqswx+YsegnRp+ugu8hPOkj7QrPIvTtzma2GAb6yOKwBxmRaf/ffWnRnK63MfsBo88/f7MTzPEWXKWLD0SyswnrIomRVThU05N4A2vPSXUXKF/oUIFtISdzy7cyUFxPQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DSVPR11MB9579.namprd11.prod.outlook.com (2603:10b6:8:383::17)
+ by SA1PR11MB6568.namprd11.prod.outlook.com (2603:10b6:806:253::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Tue, 22 Sep
+ 2026 11:53:55 +0000
+Received: from DSVPR11MB9579.namprd11.prod.outlook.com
+ ([fe80::ab5f:5d0f:fb90:9d]) by DSVPR11MB9579.namprd11.prod.outlook.com
+ ([fe80::ab5f:5d0f:fb90:9d%3]) with mapi id 15.21.0451.014; Tue, 22 Sep 2026
+ 11:53:55 +0000
+Date: Tue, 22 Sep 2026 19:53:12 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@kernel.org>,
+	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Stefan Teodorescu
+	<fane@google.com>, Dennis Tighe <dtighe@google.com>, Sashiko Bot
+	<sashiko-bot@kernel.org>, Ackerley Tng <ackerleytng@google.com>
+Subject: Re: [PATCH v5 6/6] KVM: guest_memfd: Drop superfluous WRITE_ONCE()
+ when binding a memslot
+Message-ID: <arJsKA8MkSdpQxNm@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20260922001332.1121266-1-seanjc@google.com>
+ <20260922001332.1121266-7-seanjc@google.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260922001332.1121266-7-seanjc@google.com>
+X-ClientProxiedBy: TYCP286CA0352.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:7c::19) To DSVPR11MB9579.namprd11.prod.outlook.com
+ (2603:10b6:8:383::17)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Documentation: Add missing KVM s390 crypto attributes
-To: Eric Farman <farman@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
-        Randy Dunlap <rdunlap@infradead.org>, kvm@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-s390@vger.kernel.org
-References: <20260918145151.2116991-1-farman@linux.ibm.com>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <20260918145151.2116991-1-farman@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: pZmCBxNtzt_PIldQCJigl5ttS2hPmwyI
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIyMDE2NyBTYWx0ZWRfX8DW9ITZNVezP
- q4LE6GVXLQ/DRyXj+sVq/vF5llbWNSgnuQCwytMXz5HAsFWkM+9lg1xW9KeO3v+JN+nQvdrb1j4
- doqLtzmUgdrhO9XuAwRHDAcTqKQg79o=
-X-Authority-Analysis: v=2.4 cv=FLiOVOos c=1 sm=1 tr=0 ts=6ab26b3f cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=d3y8_kawna_tOOV282gA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: UkMdUKLfUJwX3wPyHW6TAwvMXBT0ukNh
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIyMDE2NyBTYWx0ZWRfXz9FcZ1yqGTgH
- qT6RfenlnCywdM8WwbzcbS461Euz4Womypp/AYna76GMSo3EaPnHB/lEPMRlrocmtfoHdMKvkO+
- PQpcnQL6zipczIXc/91n0BmtvlyjoGMfXHYGCSTLhydMZd1MxonYeexjG8RoClhDayC50isFJPU
- cpYdKgw01Zznl1ePZb+VB/x+cM5s6XVBIxZSuIhG5Uh/RF4HRyvQreNeS4VHN7E9xgj1zbwI+u5
- 2ENzTRYttsA0DA0vtEj8+KNpK2UlCBzsu3alUR41laCeq2yvYBM5/8wxQ/aPheU/jr41kai7U9E
- zdoyZ4eK2nt1gq/q1iHTT5IX+N1/iaFsbdvI/zjj3ExB4M8r9QrTVYt+rP3S/HmrQau/xKaPjNw
- orIONwDWuOV/Dy2oHIe7DULKZnyq/Ak/JcG2KIFr9IUwE/Cv2qLyrIvjEM29cIlvIYS0p3RrtNY
- 0jPcPsHXba0t+cw6Kvg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-22_01,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0 phishscore=0 spamscore=0 clxscore=1011
- suspectscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609220167
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DSVPR11MB9579:EE_|SA1PR11MB6568:EE_
+X-MS-Office365-Filtering-Correlation-Id: 074bb5bc-538a-4918-728e-08df18a02daf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|10067099003|56012099006|6133799003|22082099003|18002099003|4143699003|5023799004|11063799006;
+X-Microsoft-Antispam-Message-Info: jEBcu15UdcOiIPgOxuUMQLFFlmPSJGreGUBA7m/VKeBTfcj/hJJIlqSL+8Qr0oXdYid1IsbkxHIZP/8LvH8NrGNmzb0noLWSnkf0alou8C9FRVnoptNGpNqlqwGJD3BXvUyKSjdzxrdZUwUbxUHbkhim9yMRuUHe6Avk3kJm0SOa8X35Wgjw0MigjUhj6wMUgB0X7tE/kGsAeodpmGRBSuqbP9+0lCIetuaK1QnIFExryT63DFVpTsFyhQNDftq1bPH+chOSLjhGHVR21mQGLc7sV5QVCIFJoXbOFS8Lbz3aqIxAFBGk8zUdUoANXrf7v5KQXN7wh2Pjv3rhFqUUSw7lDd4od+d4SEQ54MDOodffZioM3U+JfDkf6i2dAgMqhzpejCxjHbWV8bMSkFBGgriFjQ8W9cFWYrpYRwqPNjQir+JAR495oDf2qfNm5KmCcSxsHHof23XgWPCRCZlXOrV4KMhjtm2WVidSw+044CPewTUh5sLGCro8Qpy8P8wz6GxH5H65si4B1s4donTqtFvG5hz7uPFDfCaE3Djf+DtqmCm1vaIJyO636Qc/HtWSs19sF8bO/GhwXABi0XKVSWm/k8/wiDLx4fUDFjETujAr8MVPOZxpOGdN3SfrpnVGuM6rYb8Pxw6DPPkvuxME2XbwvlD6z2aC/IWCuxyerX4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DSVPR11MB9579.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(10067099003)(56012099006)(6133799003)(22082099003)(18002099003)(4143699003)(5023799004)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?DQFs31kly8gMZJQl6JF5glhy+EQJjNg/u1wukQNvOTrdDjdnDzvuuGPNvBLx?=
+ =?us-ascii?Q?QZEqkmBs2QvFvYbRnbOn7qGfKbQk6WPfv00rE7aKRPr0k6zpAFvp4Tw/anzv?=
+ =?us-ascii?Q?isZ+OdqCQ6a7wBzFUfL61XLxE0nSeGUmas29ElKonc+yvyYgiGdAKxw/yJiN?=
+ =?us-ascii?Q?1uWtOyKI+OZtHpkJaWt6x7L9HQgoD7sLoZiz7TAYfOBBFG0cq7lrYTIGPULD?=
+ =?us-ascii?Q?209UlKa1roD0r85FOZ4CrjFyC+0KBEh8DSA3t6QhpQPoCnmlUAzV2ocdMa48?=
+ =?us-ascii?Q?YAdUNBbOYbTel9vdp1pKdEVqipJ77GddS3xjrIlQ0hP9clUuEO90sHKVoJMU?=
+ =?us-ascii?Q?YOVyfiDpfzhCK5mfg6qAsTFM2xifnwkP95lt9qonXGPSW2wKCXDOxdAek8G0?=
+ =?us-ascii?Q?Ie8kHI2N/xLKCQDQLt8BHDj70mbMzKdWklk9EMfsV4SnxMQAoHnqjsdZoIF2?=
+ =?us-ascii?Q?0n/TNBSAAGh/5Qufxw+k/PcSMEAfVbmTcoM8AzPBa0TQtH8pqQ56YDHE4n2Q?=
+ =?us-ascii?Q?FDSeUdfs8bFW4CTKiMQc+VcBqRgeOzBIJruXESkH4YKBHGG4NyvxiHANX4ra?=
+ =?us-ascii?Q?pRfU1+HvO/GD0CBWW2xgq2yw+21NCuWes7n4jQASp5bGA/Rr88Scxdsx04I1?=
+ =?us-ascii?Q?1PRrvePHDWi5yuBPhO08FxXWaysxzhsnsvZ8M7+m6QPwyIly4ZY9YIKgaICs?=
+ =?us-ascii?Q?RBnYeHqB5l8C0UAQiiXgAw7hSnMzEhYmYkqx+DPtEzBZ9MJ27V1arARoQjnD?=
+ =?us-ascii?Q?P1IcCyAKdZX2qa61WZ8KqR1hAHSrli6GEyBglMgNPHuxhjBADF4XlL62jHNM?=
+ =?us-ascii?Q?UZzrijRr+L78WOQJtw/yGqVdHeInOLmRiyXGS8oFNufpeAZvd/PPOf/mniG9?=
+ =?us-ascii?Q?0lFUhByRL8wTDuYKmjJAdhy3JBEnXVAiDt0BSNeON3wzaCwPLCM1rMBSznz3?=
+ =?us-ascii?Q?dlSG7+yXOP17RaRKhXmoFo/t8fXCSMLL8xBqoaOJ/Jan+HZeQo4+RY74DiSf?=
+ =?us-ascii?Q?quXvbe9rnL2QOTIBq5UXvJQzQd8UEIqSPrNIc3v2nj7brDJg9E4dD3phpalE?=
+ =?us-ascii?Q?3BK9A8QPRKVV8xPVGvkdXHbLUjUbEzv3VquFdfGketxndqCt8rSc3Bt5/U2Z?=
+ =?us-ascii?Q?e5tzebK9MbE72t/s1ByIAu0d3DEzaXgFulCl5VY5+M2IGItS4wUCTj4FNzUW?=
+ =?us-ascii?Q?8aqvpfteDmwucyBWAFTPf1Pu313+L+KgVLW2Ht+lCd/d4LxbOxMiTbV4Dmav?=
+ =?us-ascii?Q?ou/dIA4ZRcpMwwOF4OgoOJNR7oFnOKNdd0xw8dcFHzkKz+/9PI1VB9eYz1Rj?=
+ =?us-ascii?Q?oRrMUAylwV5JkGsd2kytlqLKL2bdItgIm65+0GQFR8OkLGtysnquR1+yr0o9?=
+ =?us-ascii?Q?wt0WsZIYDkDMBrRFkX9u+IaTO8/m6jEgkooT1ak+i1poNXuIjleSsOBCJMAe?=
+ =?us-ascii?Q?NtoNEvRuWjgkgh5IiN+YZEAT5JWjiK7puHhOApddzJhCqzvGsr+MZex54S5m?=
+ =?us-ascii?Q?r5ejjtX0OBUOHjpQq8qydQTtXwiFbyeyWzjOxpIAXn017c9BX8CxLjaaSXyc?=
+ =?us-ascii?Q?WDqietxZvnxxxdgX9kpFd3isUqLvAVl+ZshwoTiJATUvcfUQJ8CNtEO14sKb?=
+ =?us-ascii?Q?YlQJdxdH4U5PiNjXgWwzs8ZJXAT8ngQbxz8R60fMrQN4WFjloG8ZfToaCJta?=
+ =?us-ascii?Q?8iPA1pqtTRCZ2odcfLzoavHBOJcugugg508moj5DWQdmi+jGyblWft0a1GMj?=
+ =?us-ascii?Q?9dfVwJO/PQ=3D=3D?=
+X-Exchange-RoutingPolicyChecked: JlOkqifHER6NOuzlGXGSTPb+pIR25yqrTzt0OivPuBNLwDGJLge2ThLFxM0uXlCfFI5KgKnCv5zq1mDZ0c7E2JaRuFxus71mLdTsH8w4/1jBd56Qef0dSl7iYvgj9ZV6ibGHonYYqpq8bT7pPWpdddTn9AZKwxQnsbpXXNHmJi9DWm5UJ04snBeErS4Yd8gcnNuReQ9FWMmcAK4dv3PNa5OQmXRLEoQb0liZod9yO6nxprCXpKptlINNT+xq23zIsrPlgmreq7VQLLRGzEOOsnPopfnD3OS3wMjI1Pvfl3qA4DRZUD4w7NsCWRpsqZL9o1tL9LnHCgQL9/ns02DYEg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 074bb5bc-538a-4918-728e-08df18a02daf
+X-MS-Exchange-CrossTenant-AuthSource: DSVPR11MB9579.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2026 11:53:55.1360
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 044cJsfsXimUU00IVgjD0N7ZC2guhxt/0P4lxOBs5WlGP02KI3NaCdT3rZmwlg3jLV+IWn6XyrvHTDYzlhgznw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6568
+X-OriginatorOrg: intel.com
 
-
-
-On 9/18/26 10:51 AM, Eric Farman wrote:
-> Device attributes to enable/disable the AP interpretive execution
-> support for crypto were added to KVM several years ago, but they
-> weren't added to the documentation itself.
->
-> Fixes: 37940fb0b6a2 ("KVM: s390: device attrs to enable/disable AP interpretation")
-> Signed-off-by: Eric Farman <farman@linux.ibm.com>
-
-Reviewed-by: Anthony Krowiak <akrowiak@linux.ibm.com>
-
+On Mon, Sep 21, 2026 at 05:13:32PM -0700, Sean Christopherson wrote:
+> Drop the superfluous WRITE_ONCE() when setting a memslot's guest_memfd file
+> during initial binding, as the memslot *must* be inactive and unreachable.
+> The superfluous WRITE_ONCE() was added by commit 67b43038ce14 ("KVM:
+> guest_memfd: Remove RCU-protected attribute from slot->gmem.file") to
+> maintain rough "parity" with the existing rcu_assign_pointer(), not
+> realizing that the only reason rcu_assign_pointer() was used was to make
+> sparse and other checkers happy.
+> 
+> Cc: Yan Zhao <yan.y.zhao@intel.com>
+> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
->   Documentation/virt/kvm/devices/vm.rst | 18 ++++++++++++++++++
->   1 file changed, 18 insertions(+)
->
-> diff --git a/Documentation/virt/kvm/devices/vm.rst b/Documentation/virt/kvm/devices/vm.rst
-> index a4d39fa1b083..78e63eb9994e 100644
-> --- a/Documentation/virt/kvm/devices/vm.rst
-> +++ b/Documentation/virt/kvm/devices/vm.rst
-> @@ -280,6 +280,24 @@ Allows user space to disable dea key wrapping, clearing the wrapping key.
->   :Parameters: none
->   :Returns:    0
->   
-> +4.5. ATTRIBUTE: KVM_S390_VM_CRYPTO_ENABLE_APIE (w/o)
-> +-------------------------------------------------------
-> +
-> +Allows user space to enable AP interpretive execution.
-> +
-> +:Parameters: none
-> +:Returns:    0 for success
-> +	     -EOPNOTSUPP if AP instructions not available for guest
-> +
-> +4.6. ATTRIBUTE: KVM_S390_VM_CRYPTO_DISABLE_APIE (w/o)
-> +-------------------------------------------------------
-> +
-> +Allows user space to disable AP interpretive execution.
-> +
-> +:Parameters: none
-> +:Returns:    0 for success
-> +	     -EOPNOTSUPP if AP instructions not available for guest
-> +
->   5. GROUP: KVM_S390_VM_MIGRATION
->   ===============================
->   
+>  virt/kvm/guest_memfd.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 80932f4ec4a3..826d26036926 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -677,7 +677,7 @@ int kvm_gmem_prepare_memory_region(struct kvm *kvm, struct kvm_memory_slot *slot
+>  	 * kvm_gmem_bind() must occur on a new memslot.  Because the memslot
+>  	 * is not visible yet, kvm_gmem_get_pfn() is guaranteed to see the file.
+>  	 */
+> -	WRITE_ONCE(slot->gmem.file, file);
+> +	slot->gmem.file = file;
+>  	slot->gmem.pgoff = offset >> PAGE_SHIFT;
+>  	if (kvm_gmem_supports_mmap(inode))
+>  		slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
+> 
+Thanks for the fix.
+Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
+
+BTW: some questions regarding read/write to slot->gmem.file:
+
+The WRITE_ONCE() in kvm_gmem_unbind() and kvm_gmem_release() are also invoked
+when the memslot is inactive and unreachable -- are they also superfluous?
+
+Do we need the READ_ONCE() in __kvm_gmem_get_pfn(), considering that other slot
+fields (e.g., slot->gmem.pgoff) are read without READ_ONCE()?
 
