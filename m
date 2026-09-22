@@ -1,149 +1,101 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9CD41A50B;
-	Tue, 22 Sep 2026 08:16:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230FB43498C;
+	Tue, 22 Sep 2026 08:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790065019; cv=none; b=AhA5GX2hHJYkLcawUnDepwhAmHXSQccSMuT6K2UX3zVv553l11pkyv7x8dCvk2y5jpqlYFne7KwBQGtfKo+96AcbIuUX1yC7r1PAUtcg+SyTlOol6BX3HMGShbAqdV0NWFWpW+1x3T/TqOpSiiWPEHOQHdxMhkEKUSmyHcTQ2/Y=
+	t=1790065862; cv=none; b=VbMHd3tQj3nX/z5UBJbAlDs18DuYerQMjqsOTzuauxOIFYil4X9nReoA2g35KLTSV8PgqY36QwYs6lAjsp0qw+O2nDoVXyThiBmQLXpTG6ARR/2M7GCW/3ePytB79drN2uGVtL4S3sa7DGtWv76bgDn0VCOpq++xIqUTqtQkPp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790065019; c=relaxed/simple;
-	bh=4HbwZEfa+cRQWF9f/+A2Lw6siv1Umc8ka3GRgBT5ZFY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kSRbv8Pzh1t2ucFlt6Iov9T5tKQvb/0ZjzKPhnTbZ715YqxG9QJOHAtyzBR/RlQ3kVQHCAuPpBWEBcYwjr/968KyYtcWUUwJwZJTM4tEpR/QOBwBEBUO2K1F8MWG6/XZKDrLFcp9D7ASv9nBzQZGIQsAcMObdEWn3NrjEbVyFxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=gsyPGIOz; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790065862; c=relaxed/simple;
+	bh=W07KPETAFWOKHqHQ1ajEJUJQivlun3GqSHDn/+uiTtw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NXpJuL20JAv0jdMyuwf5XtWtk/HxWpkaS0GGOeRRg8s51a2046cQwh5UZHYAmGskZmLurvf3gH/WQUGyjFMAfwfGbCpoTXapkBXn2b2G8t+veH5ZCDREx5WybnxcRK7onaIayjegyIzXvyJ1a3svCV5s6v1rBarrmWDl0qEoDe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=aoAIQVZ8; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="gsyPGIOz"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD6ED1576;
-	Tue, 22 Sep 2026 01:16:52 -0700 (PDT)
-Received: from [10.0.128.141] (unknown [10.0.128.141])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A0DD83F632;
-	Tue, 22 Sep 2026 01:16:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790065016; bh=4HbwZEfa+cRQWF9f/+A2Lw6siv1Umc8ka3GRgBT5ZFY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gsyPGIOzdWO+7ye4dvf4hgM8YlaXqCY8aW4qTmiRM4liCZm/4j7epoLXFMjUuyYgq
-	 22WHSurfxTtl16xdShGOI671c4pDflaXqa3NWYCEcvA9GEWQUsd9G7fGYZt/KyixOz
-	 Au29k3hFlPbdtvH21rGaxqyuBdOyF7JuWcqA4Fnk=
-Message-ID: <beee950f-0659-43dd-9c5e-0a51722ea54a@arm.com>
-Date: Tue, 22 Sep 2026 09:16:52 +0100
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="aoAIQVZ8"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=oDcHFwTwM257p7mTTBAku1Nxwr45U9cHxRrVhHyENf4=; b=aoAIQVZ8+Ldaq0VxfWJVHdrQ6j
+	z8dh9PrsavvaJAsJJ9KMxBbngfvZDK3De/qdW0QuGd/OiTS3peSs6OAE98vn1W7tu8RXhbV/mhZ6u
+	HLz7EFyWJ4sLG0ZVYwTNN+79oitg/HJwOyV1F8IO7wp0asd9/4/5WZyG0be6G8pUBtLPvHG93D814
+	uxaNi3z+y6N0Wx6/+JiutX7mCWKg3ReeEXYUKoGJfAkwUUgye4ZsLobI1DsxO0z3jnGv+5F+dpHV3
+	2LIJQBeicxgp16NO1hw+6Mb4btp64kR6ITk34JmLDc2pCbPI/zSN+9eJnTJijvYuhJAG9r09w0ees
+	8ZqAG73Q==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x8vtm-00000007krB-3azy;
+	Tue, 22 Sep 2026 08:30:47 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 5FE2F300708; Tue, 22 Sep 2026 10:30:46 +0200 (CEST)
+Date: Tue, 22 Sep 2026 10:30:46 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Jim Mattson <jmattson@google.com>,
+	Mingwei Zhang <mizhang@google.com>,
+	Stephane Eranian <eranian@google.com>,
+	Sashiko Bot <sashiko-bot@kernel.org>
+Subject: Re: [PATCH v4 00/10] perf/x86: Don't write PEBS_ENABLED on KVM
+ transitions
+Message-ID: <20260922083046.GY4121339@noisy.programming.kicks-ass.net>
+References: <20260921191418.950933-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18] arm64: mm: Handle Granule Protection Faults (GPFs)
-Content-Language: en-GB
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
- will@kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260913070459.2547407-1-suzuki.poulose@arm.com>
- <aqrGPK0lFBFXL2qY@arm.com> <985520fa-99b0-4620-bfee-8e6321b36104@arm.com>
- <aqvCwM_73qMpqzvV@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <aqvCwM_73qMpqzvV@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260921191418.950933-1-seanjc@google.com>
 
-On 17/09/2026 11:36, Catalin Marinas wrote:
-> Hi Suzuki,
+On Mon, Sep 21, 2026 at 12:14:08PM -0700, Sean Christopherson wrote:
+
+> Sean Christopherson (10):
+>   perf/x86/intel: Ensure guest PEBS path doesn't set unwanted
+>     PERF_GLOBAL_CTRL bits
+>   perf/x86/intel: Don't write PEBS_ENABLED on host<=>guest xfers if CPU
+>     has isolation
+>   perf/x86/intel: Don't context switch DS_AREA (and PEBS config) if PEBS
+>     is unused
+>   perf/x86/intel: Make @data a mandatory param for
+>     intel_guest_get_msrs()
+>   perf/x86/intel: Invert names of intel_ctrl_{guest,host}_mask
+>   perf/x86: KVM: Have perf define a dedicated struct for getting guest
+>     PEBS data
+>   perf/x86/intel: KVM: Handle cross-mapped PEBS PMCs entirely within KVM
+>   KVM: VMX: Drop a redundant pmu->global_ctrl check when processing
+>     pebs_enable
+>   KVM: VMX: Only tell perf to enable PEBS counters for fully enabled
+>     PMCs
+>   perf/x86/intel: Check only PMC bits in PEBS_ENABLED when detecting
+>     host PEBS usage
 > 
-> On Thu, Sep 17, 2026 at 10:03:14AM +0100, Suzuki K Poulose wrote:
->> On 16/09/2026 17:39, Catalin Marinas wrote:
->>> On Sun, Sep 13, 2026 at 08:04:58AM +0100, Suzuki K Poulose wrote:
->>>> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
->>>> index 75c3e463df2ef..dc3a87902a60c 100644
->>>> --- a/arch/arm64/mm/fault.c
->>>> +++ b/arch/arm64/mm/fault.c
->>>> @@ -914,6 +914,24 @@ static int do_tag_check_fault(unsigned long far, unsigned long esr,
->>>>    	return 0;
->>>>    }
->>>> +static int do_gpf_ptw(unsigned long far, unsigned long esr, struct pt_regs *regs)
->>>> +{
->>>> +	const struct fault_info *inf = esr_to_fault_info(esr);
->>>> +	unsigned long addr = untagged_addr(far);
->>>> +
->>>> +	die_kernel_fault(inf->name, addr, esr, regs);
->>>> +	return 0;
->>>> +}
->>>> +
->>>> +static int do_gpf(unsigned long far, unsigned long esr, struct pt_regs *regs)
->>>> +{
->>>> +	if (!user_mode(regs) && !is_el1_instruction_abort(esr) &&
->>>> +	    fixup_exception(regs, esr))
->>>> +		return 0;
->>>> +
->>>> +	return 1;
->>>> +}
->>>
->>> We discussed briefly offline. With the latest patches around, would we
->>> ever end up with private memory mapped in the VMM and hence the GPF? If
->>> not, I would still keep this handling but add a
->>> WARN_ON_ONCE(user_mode(regs)).
->>>
->>> However, can we end up delegating a non-guest_memfd memslot page as
->>> protected?
->>>
->>> I played a bit with codex and it reckons it's possible if a guest_memfd
->>> memslot is deleted after its IPA range has been initialised with
->>> RIPAS=RAM. Removing the memslot unmaps and undelegates any data pages
->>> but leaves the RMM state as RAM. The VMM can then install an ordinary
->>> memslot over the same GPA range.
->>
->> This should be prevented by the following predicates:
->>
->> 1) Realms only support guest_memfd backed memslots for mappable memory.
->> 2) Memslots cannot be created after the Realm is created, as is with the
->> protected VMs. (This check seems to have been lost over the iterations,
->>   but should be reinstated).
-> 
-> If that's the intended model, I think it should work. But v18 doesn't
-> enforce either of them. I noticed the second predicate for pKVM only -
-> your 'Widen the scope of "protected" VMs' patch makes this restriction
-> explicit to pKVM.
+>  arch/x86/events/core.c            |  5 +-
+>  arch/x86/events/intel/core.c      | 94 +++++++++++++++++++------------
+>  arch/x86/events/intel/lbr.c       |  2 +-
+>  arch/x86/events/perf_event.h      |  7 ++-
+>  arch/x86/include/asm/kvm_host.h   |  9 ---
+>  arch/x86/include/asm/perf_event.h | 11 +++-
+>  arch/x86/kvm/vmx/pmu_intel.c      | 28 ++++++---
+>  arch/x86/kvm/vmx/vmx.c            | 10 ++--
+>  arch/x86/kvm/vmx/vmx.h            | 15 ++++-
+>  9 files changed, 115 insertions(+), 66 deletions(-)
 
-Yes, like I said, that seems to have lost. I will put that back in. This
-is not in the v18/v19, but will add it for the next iteration.
-
-> 
-> For the first one, if !kvm_slot_has_gmem(), it simply continues with the
-> registration.
-> 
->>> A subsequent private-IPA S2 fault sees the non-guest_memfd slot, takes
->>> user_mem_abort(), GUPs the user page and passes it to
->>> realm_map_protected(). The userspace mapping remains present, so a later
->>> EL0 access can generate a GPF.
->>
->> The Realm mem abort code should prevent this by ensuring that the
->> memslot is backed by gmem for private_faults. With the mandate of
->> in-place conversion, even the shared pages must come from the
->> gmem backed memslots.
-> 
-> IIUC this only works if the memslot is gmem but I can't see what
-> prevents ordinary slots from being assigned to realms. I think we can
-> enter the user_mem_abort() -> realm_map_ipa() for ordinary slots unless
-> we prevent the deletion of the original slots and enforce gmem only
-> slots early.
-
-Correct. For CCA, we can mandate that the private faults are only
-faulted in from gmem memslots or the "trusted device private" memslots
-when we eventually get the DA support.
-
-I will address this for v20 of the integration series
-
-Cheers
-Suzuki
-
-
-
-> 
-
+Thanks, split in two and queued in perf/urgent and perf/core. I'll push
+to tip in a day or so unless the robots scream.
