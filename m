@@ -1,139 +1,170 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531865540AD;
-	Tue, 22 Sep 2026 14:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D287D5581FD;
+	Tue, 22 Sep 2026 15:02:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790089198; cv=none; b=CN5zzlDmXzbgp/IaevyJ47bdkSeoXItgDxsEidvfHqEyHbjlN+8mFBXx3qjmCUvYz6GZz696Zyh6D2KRZdjb9Of6/zJt9JDOlgmOwqMspSUJR0eWmn6ewK5nUZdjxRfVcO9w0I2aQZEYeZGp/aUX4FtqiOwKRyXsedjA7UrsIoM=
+	t=1790089378; cv=none; b=YL3DjQOPvBexCWZ5lfK5q6SrChJEHbiBasoaAENuqsHmmDzvH5EMbDBp8NJNODu36zQa9tDfEFWKvyqqaBzPk+KefiGQzLstJdjVrlNa4T6OJXiy2l3raBc9H9MLuZEpB0vXuH7kzemzIuvuoEMxVhQgrjbfae0GVaFlHJ2vOD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790089198; c=relaxed/simple;
-	bh=OX0DjHpxPKjjPUHGDJI8qtTq/F5qcfWIf4yMFm55aCA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G8b5blbok7c1vk8kQWk3zEHXoLH6ADXbaF6cr2+YzBZlxtkU62Krx9T9HbWrTdXGr0+MMwtaIoNTbTexgb+Q71BaYfiPjdxJVy0NAhkDNed4bGZreYhlkDCUs7d4gkl3drpI+rq5s5jjLhT3lvnfhthMLOHWyozYC5dV/j6b8NU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Oc5oSfWT; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790089378; c=relaxed/simple;
+	bh=3J+esiQzIwjeD5YkDGGUJSyQUmtY/wqoWzHfAAf4dwk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KjkYeBaIT8iW6ETdZ2Q1OeV/iUuVeo8OYoUwo2BnRSzLjGYlevVBL5eP6dpbBs+DlnpH1HTR2U+G+gGj7gc0sVviw7kESdAehiynemQSrSCLuL7nx7nmikHbuzGUieBlcEWuqqaeouvYZmJeraqhvMx6unNeSXL8a7zjF3nGgII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FWl7wJ1+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Oc5oSfWT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790089197; x=1821625197;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=OX0DjHpxPKjjPUHGDJI8qtTq/F5qcfWIf4yMFm55aCA=;
-  b=Oc5oSfWTJfGLIQImSCzeLuMEeeYBmWzAEZN6n5Qxdfl0Qy3HMEi2V0BN
-   OkNvt0jsKLZit4jOeb2fqg5kKN2QqunmTYu6AwekA7hHLmo2u91tP0j2X
-   b5/qQ2sd5ZP2AoKoTA9VpkbWV841mXMHAXLhxUeCizUOqmv5Dgc3vsqo+
-   YElgfq/uupQ5T6qorVEzlNdVfk9K9tz0v908cvRPptSifm980w63d/RUP
-   UT6/riOnPSeL+GURmqtPDXK7mILHDayjXbW7CVFVOeGeXTSzHzhWVAeQh
-   tyv/GPVWx3AcUTpdkz7r85/sDomlJOhXxAVPH+EIu+qyVYQZyG0RsuYne
-   w==;
-X-CSE-ConnectionGUID: nfedFt5CSdq9LJvvdMUrGg==
-X-CSE-MsgGUID: 06HDLWT7T16xAGxaYdSN8A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="102051381"
-X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
-   d="scan'208";a="102051381"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 07:59:56 -0700
-X-CSE-ConnectionGUID: d/jiQ6bhQrm2yEobVgEPOA==
-X-CSE-MsgGUID: TM4ZXC5ZT+GCmKOG6D0oMA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
-   d="scan'208";a="4178291"
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.31]) ([10.125.110.31])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 07:59:55 -0700
-Message-ID: <7ddf42ab-2f78-4edd-be39-ff9e5156d51c@intel.com>
-Date: Tue, 22 Sep 2026 07:59:55 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FWl7wJ1+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2831F00898;
+	Tue, 22 Sep 2026 15:02:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790089376;
+	bh=NqtepCXeFpHFsb6AmnY8OHQMfHgcQxtJPFfgBTNCDVY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FWl7wJ1+99S9qM3eSiMZ3Sc0Im2Wlx/Mat0BArXX/E7scQrlnKR50yvg6CDJLU7Ee
+	 cDCM0liZ+Jpw9T6VldFxb8R8vfeVr0Q7WZCXNhrZ1HoqSE8RwZFk1lBdMnEsMKL/0/
+	 rYvFBUK7yJqmaF+nL5PbESTKUVbzksnfunumSBcwe7IFyh9Vp/DmcTCELXff2FrD+x
+	 yLA4E1yFiJYdX/ca16Yp+5JUpZ8fieKyMZBljzR/z1310B6fmJbhAROcs4Dzjeac2f
+	 w4bueSO1HAPK465Jyxi8RJfO87Aj/5ShQja+GslmRxqMfInxoJYo7M+QYRFDScEEXB
+	 GLtQ/nyykkduw==
+Date: Tue, 22 Sep 2026 20:31:45 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Borislav Petkov <bp@alien8.de>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Tianyu Lan <tiala@microsoft.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@kernel.org>, David Kaplan <david.kaplan@amd.com>, 
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>
+Subject: Re: [RFC PATCH v3 16/27] KVM: SVM: Add handler for VMGEXIT Secure
+ AVIC NAE event
+Message-ID: <arKHLaVluCNCTaau@blrnaveerao1>
+References: <cover.1783490022.git.naveen@kernel.org>
+ <c0f9fdc27f3d9a1e63f2d39a40989d66b6facee3.1783490022.git.naveen@kernel.org>
+ <ao8PtliwDo8H49sa@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/4] virt: tdx-guest: Use a variable to store the Quote
- buffer size
-To: Xiaoyao Li <xiaoyao.li@intel.com>, Peter Fang <peter.fang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org,
- Binbin Wu <binbin.wu@linux.intel.com>,
- Tony Lindgren <tony.lindgren@linux.intel.com>,
- Sean Christopherson <seanjc@google.com>,
- Artem Bityutskiy <artem.bityutskiy@intel.com>
-References: <20260915092632.2822169-1-peter.fang@intel.com>
- <20260915092632.2822169-4-peter.fang@intel.com>
- <620e7e38-4287-431c-8285-575c84aa1f6a@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <620e7e38-4287-431c-8285-575c84aa1f6a@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ao8PtliwDo8H49sa@google.com>
 
-On 9/22/26 03:05, Xiaoyao Li wrote:
->> @@ -417,7 +416,8 @@ static int __init tdx_guest_init(void)
->>  	if (ret)
->>  		goto deinit_mr;
->>  
->> -	quote_data = alloc_quote_buf();
->> +	quote_data_len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
->> +	quote_data = alloc_quote_buf(quote_data_len);
-> since quote_data_len is a global variable, it looks no need to pass it around.
+Hi Sean,
+
+On Wed, Aug 26, 2026 at 09:09:26AM -0700, Sean Christopherson wrote:
+> On Wed, Jul 08, 2026, Naveen N Rao (AMD) wrote:
+> > From: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+> > 
+> > [DO NOT MERGE]
+> > 
+> > VMGEXIT Secure AVIC NAE event is used by the guest for two purposes
+> > determined by VMCB->EXITINFO1:
+> > 1. SVM_VMGEXIT_SAVIC_REGISTER_GPA: Used to inform the hypervisor about
+> >    the GPA of the page (RBX) being used as the Secure AVIC backing page.
+> >    RAX indicates APIC ID of the target vCPU (-1 for self)
+> > 2. SVM_VMGEXIT_SAVIC_UNREGISTER_GPA: Used to inform the hypervisor that
+> >    the GPA is no longer being used as the backing page for Secure AVIC.
+> >    The previously registered GPA for the Secure AVIC backing page is
+> >    returned by the hypervisor to the guest.
+> > 
+> > The primary motivation behind these is to ensure that Secure AVIC
+> > hardware accesses to the guest APIC backing page never generate an #NPF,
+> > since Secure AVIC hardware cannot recover from such faults. Quoting the
+> > APM:
+> >   "It is required that the guest APIC backing page for a vCPU is
+> >    pinned in system memory between VMRUN and VMEXIT because some AVIC
+> >    hardware acceleration sequences may not be restartable when secure
+> >    AVIC is enabled. If an access to the guest's own backing page by
+> >    AVIC hardware results in a nested page fault, EXITINFO1 bit 63
+> >    (Not Restartable) is set (this is an Automatic Exit) and the BUSY
+> >    bit in the VMSA is set."
+> > 
+> > A guest vCPU that has the BUSY bit set in the VMSA cannot be restarted
+> > and the guest will have to be killed.
+> > 
+> > One of the main reasons why the SPTE for a Secure AVIC backing page may
+> > be invalidated is if it is backed by a huge page in the host, and an
+> > adjacent page changes state forcing the huge page to be split. Currently
+> > though, KVM uses guest_memfd to back SEV-SNP guest private memory, and
+> > those only use 4k pages. As such, this _may_ not be an issue today.
+> > 
+> > It is possible that KVM may still invalidate an SPTE for other reasons -
+> > those will need to be addressed.
 > 
-> Same for free_quote_buf()
+> As I said in PUCK, this is going to be painful to support, both now and in the
+> future.  We _could_ get it working, but I'm not at all convinced that I want to
+> commit to supporting Secure AVIC in its current form.
 
-It's not the end of the world, but... global variable == bad. Plus,
-handing global variables around can actually make the code flow more clear.
+...
 
-I'd much rather have a quote_data_len() with a static function variable.
-Oh, and, btw... "quote_data_len" is the wrong name. It's literally *not*
-"the length of the quote data" itself because it has the header metadata
-included in there.
+> Those are solvable problems, but I'm not exactly chomping at the bit to take on
+> the complexity to support what IMO is a poorly designed feature.  There's a very
+> good reason why control pages are referenced by their host PA in both the VMCS
+> and VMCB.
+
+As an update: I had a discussion with the hardware team about this.  My 
+understanding so far is that this is by design, i.e., referencing the 
+backing page by GPA (as against using an SPA) was intentional for 
+specific micro-architectural reasons and the #NPF issue is a side-effect 
+of that.
+
+> 
+> Though on a slightly happier note, I was wrong about KVM_X86_QUIRK_SLOT_ZAP_ALL.
+> That quirk only applies to KVM_X86_DEFAULT_VM VMs, i.e. wouldn't need to be
+> manually disabled for SNP.
+
+Great!
+
+> 
+> And if we go with my suggestion[1] to force KVM_MEMSLOT_GMEM_ONLY when binding to
+> a gmem instance with in-place conversion enabled, then the fix/optimization to
+> ignore mmu_notifiers for gmem-only memslots will avoids spurious zaps on that
+> front[2].
+
+Nice, this has been the one path that I have been able to trigger a non 
+restartable #NPF reliably in my testing so far. So, this will be 
+definitely needed and I suppose this will imply a dependency on in-place 
+conversion.
+
+> 
+> However, there are still problems.  E.g. when converting memory, userspace would
+> need to make sure to never do a redundant/superfluous KVM_SET_MEMORY_ATTRIBUTES2
+> on a range that contains a Secure AVIC page, because __kvm_gmem_set_attributes()
+> will tell the MMU to invalidate SHARED mappings for the entire range.  I.e. by
+> design, guest_memfd will not chunk the invalidations based on the per-page state
+> of PRIVATE vs. SHARED, because cross-referencing the current attributes would
+> incur non-trivial complexity.  For TDX, this isn't a problem because the S-EPT
+> is a separate paging structure, and so kvm_gfn_range_filter_to_root_types() can
+> simply skip MIRROR roots to avoid over-zapping PRIVATE memory.  SNP doesn't have
+> such a thing.
+
+I suppose this is one of the bigger concerns (next to ensuring all 
+invalidation paths are covered). If I'm reading this right, I think your 
+idea (thanks!) to skip zap'ing SPTEs for attribute updates addresses 
+this path:
+https://lore.kernel.org/all/ao9CKMXAX-hScRSa@google.com/
+
+In fact, as far as I can tell, it likely also addresses the MMU Notifier 
+path independently.
+
+I believe the other larger concern was ensuring coverage so that there 
+aren't surprises in a production deployment. I was thinking if a check 
+for the Secure AVIC backing page GPA in sev_gmem_invalidate_range() 
+(with a subsequent kvm_vm_dead() or such on a match) can serve as a way 
+to ensure we aren't missing any paths, and to guard against future 
+changes.
+
+> 
+> Converting a subset of a huge PRIVATE page would also be problematic, although
+> that one isn't so bad since we already need to call into the TDP MMU to pre-split
+> S-EPT pages, because those too can't tolerate spurious zappings.
+
+For hugepages, the intent is to split as part of the Secure AVIC NAE 
+Event for backing page registration. i.e., PSMASH()+prefault at the time 
+of registration. And since there is no PUNSMASH(), the backing page 
+should never end up as part of a hugepage again.
+
+
+- Naveen
