@@ -1,106 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB0447ACF1
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 18:19:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51720489FA1;
+	Tue, 22 Sep 2026 18:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790101177; cv=none; b=mjNZEfABJk3rPweLAhZLekBqIBz53rqCCpGBQwaObbzOlrl6ThMM2TkNYECrN3Ycc4cEvO2bCRzl1mwPCtSMy1snYSFMyd3i2J2WZuDItuR6B0nPOEzqBF1lc5ynTgtks7rAmcpAX5GaulgcvSrdWObv1cjgTAGACZYvJh78ZSQ=
+	t=1790101275; cv=none; b=qKgNx8yawaBs20aaoMBGspuRdnR1VaUjWxd7JPjXbWiR/SeoArCzweuv7oEUP4LeNEXWMzGrou2LdHqAccb+5OOIJcl5ymtgO55233rgfZ1vkVzJ2fIGNbdylK7Z77F/cVC7p1M1skfNwPkdD8/1nrXD8g9mO6MIOvgbRX/hleA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790101177; c=relaxed/simple;
-	bh=j0Thyp8aLj/xwxDRmUNiwzoDNeLT1f94K0xU9ghFeK0=;
+	s=arc-20240116; t=1790101275; c=relaxed/simple;
+	bh=Q3Jq6AE38hPWyaC8PxBDHclNOm3GiucU6dy5HxDiIMw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HLtUk07was3LfXSskW1o2odmaymwUEvXJGa5jMDDa+EruvdAPTxAgiOlQAeb66zLCt6Bf/mjaR+8LfIt6juaXDb0aMhf7ICfX0pxaQH3cNdB+NQSWwpe9K14t8+UGvdBmSFezZ7qEO0Tu5XQVJoosocRRp3dysopr6KAdCocwpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aisQz6r8; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=f7CAbleV+GvSXd4cPKWojjSXvX8mP7hU+36e5cfFwdKNJ4d6DocJboPBDmDMVP8InD9Rl0m1AqY90wKOB2UpFvym7CHjKugZ1ZhiN/j7gjCj/sBslT/sDvdIw1b9usk8mIfZcGxl0NZGGNF6Rbgdu5lUp1jpaXu4FJ49lkUHe1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=QbV58KhP; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aisQz6r8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445471F000FF;
-	Tue, 22 Sep 2026 18:19:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790101176;
-	bh=PkQBqiVYVST5PZCzwROMlG18TizMyNbvz6nMQd094Bg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aisQz6r8EqorFQf9pRXjEJRdeLTav80Da+7NZcTJCgJcicGHz/fnKcPQJHdKIApPU
-	 6JuXo/rgbE+2xMIDaXAimNdQVjvnsh1QiPVyR4x/3UZIkLbS6KMn4rxZt7yGxBoEdj
-	 V/Q6og7gH86KdBtk5+i0O9gq0X6mAHF6mowwWdKrfDRpaSFh8MD9f6nsQ/XnxVo0i+
-	 IpiZJYfB8fONBV5bBWWCiONCAZlswsYv/UBsbSPE46WYrXq+pXFsBBD705CFy1ztEL
-	 8BpI5z2QZ6DMcU4HIrC4nZIL0JuGiUpABqBduC4tgoBcsDch0WwkPpVYudZRxSfW0W
-	 bUI72RrKJ7oYg==
-Date: Tue, 22 Sep 2026 23:49:01 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	Dmytro Maluka <dmaluka@chromium.org>, Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Subject: Re: [PATCH] KVM: SVM: Clear AVIC Physical ID table entry if vCPU
- creation fails
-Message-ID: <arK6ygKGfbqga3ij@blrnaveerao1>
-References: <20260903062856.2090499-1-naveen@kernel.org>
- <aqROi4Gp_vPvsOtp@google.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="QbV58KhP"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id EC94C40E01C9;
+	Tue, 22 Sep 2026 18:21:02 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id hws8afuNhZVG; Tue, 22 Sep 2026 18:20:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1790101251; bh=wnm2vVrHQlGco2ec6VPqWb7bpCBXERRnc2z2yPnMu4o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QbV58KhPfBVno6B2ArSJUhoSDLAQ4Hsf6Dk72/CpFNt6mZ+6+S1L18CuGaogLzaqZ
+	 H3uX7aBWCoZhg13pIdi057ptLtwXUoaJJ3HywCGhlDHEQIpFKnWYlgSFipzy15hhLd
+	 hE43IncmcBX7EKM0kvR5LNpyAhjG6BrWs5Q3MhlIpCgr0O1cO0CUxfc7k23U7+6RR8
+	 3pGcYnWwlJOQ3wfqEVFKCl9nNaS9RKn+257MdnQR1waZGqG9p6ktKIVcAEtz3RwpnI
+	 dgPft8Z3A2f0JQ/eQPzu7euTFDQ1bRJomhb15ikY5m9EajJngUNRXzi7HFd1v3lxPW
+	 m/PecNbYJCsjEfzeo7AoB4cDgbuPDUjoYzQwgWYlH8jlIraFhutf/9wzfVfvvWP9JS
+	 wgvL87caUEU3qauAkYvKztkcEb/rlzQavUbb/WtUfzT6Z/+vl2Vg9EMWDPOh12AjBh
+	 ZgjaiIKFQnw/Y/1xQNYF/vUQvxAxzwMfCDW9BRT+MwZTZwayfaDbYD1znHp54yaRHL
+	 XpewZPye+CeXiNijEyCz5LsD+PNqSthE0R3+dg2Dqf96Y4oKC0Ovjg04LfNX1yPNM3
+	 XApzx8xgGwzN5wAtHIQAXryDJSKgRM53xzH8BP+cZz94XmahSUzXuL9snfgN0OtKBi
+	 zoMm4dxnzhYwg8dgViCun/z4=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DBDA540E00E5;
+	Tue, 22 Sep 2026 18:20:22 +0000 (UTC)
+Date: Tue, 22 Sep 2026 11:20:19 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>, Xin Li <xin@zytor.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Aaron Tomlin <atomlin@atomlin.com>,
+	linux-s390@vger.kernel.org, kvm@vger.kernel.org,
+	linux-integrity@vger.kernel.org, linux-modules@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/6] x86: Avoid indirect includes through
+ linux/module.h -> linux/elf.h
+Message-ID: <20260922182019.GAarLG4zWMoNNZJVZK@fat_crate.local>
+References: <20260911-module-include-elf-v2-0-954c732975fb@suse.com>
+ <20260911-module-include-elf-v2-1-954c732975fb@suse.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aqROi4Gp_vPvsOtp@google.com>
+In-Reply-To: <20260911-module-include-elf-v2-1-954c732975fb@suse.com>
 
-On Fri, Sep 11, 2026 at 11:55:07AM -0700, Sean Christopherson wrote:
-> On Thu, Sep 03, 2026, Naveen N Rao (AMD) wrote:
-> > diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-> > index 3b037e385523..bc2c699380b3 100644
-> > --- a/arch/x86/kvm/svm/avic.c
-> > +++ b/arch/x86/kvm/svm/avic.c
-> > @@ -885,6 +885,16 @@ int avic_init_vcpu(struct vcpu_svm *svm)
-> >  	return ret;
-> >  }
-> >  
-> > +void avic_vcpu_free(struct kvm_vcpu *vcpu)
-> > +{
-> > +	u32 max_id = x2avic_enabled ? x2avic_max_physical_id : AVIC_MAX_PHYSICAL_ID;
+On Fri, Sep 11, 2026 at 04:40:31PM +0200, Petr Pavlu wrote:
+> Several x86 files use ELF-related declarations and currently rely on them
+> being provided indirectly through linux/module.h -> linux/elf.h:
 > 
-> I don't love the duplicate (triplicate?) code, and looking at the usage in
-> avic_init_backing_page() with fresh eyes sketched me out.  It's "fine", because
-> KVM will reject vCPU creation if vcpu_id >= kvm->arch.max_vcpu_ids, i.e. checking
-> only the architectural max won't exceed this max:
+> * arch/x86/entry/entry_fred.c: ia32_enabled() -> asm/ia32.h,
+> * arch/x86/entry/syscall_32.c: vdso32_image -> asm/vdso.h,
+> * arch/x86/kernel/cpu/intel.c: ELF_HWCAP2 -> asm/elf.h,
+> * arch/x86/kernel/fpu/xstate.c: elf_coredump_extra_notes_write(),
+>   elf_coredump_extra_notes_size(), NT_X86_XSAVE_LAYOUT, elf_note ->
+>   linux/elf.h,
+> * arch/x86/kernel/process.c: mmap_is_ia32() -> asm/elf.h,
+> * arch/x86/kernel/signal.c: get_sigframe_size() -> asm/elf.h.
 > 
-> 	return min(kvm->arch.max_vcpu_ids - 1, arch_max);
+> Add the missing includes to these files in preparation for removing the
+> linux/elf.h include from linux/module.h.
 > 
-> But it's hard to see that, and I can't think of any reason why being paranoid
-> during vCPU creation/destruction would be a bad thing.
+> Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+> ---
+>  arch/x86/entry/entry_fred.c  | 1 +
+>  arch/x86/entry/syscall_32.c  | 1 +
+>  arch/x86/kernel/cpu/intel.c  | 1 +
+>  arch/x86/kernel/fpu/xstate.c | 2 +-
+>  arch/x86/kernel/process.c    | 1 +
+>  arch/x86/kernel/signal.c     | 1 +
+>  6 files changed, 6 insertions(+), 1 deletion(-)
 
-Agreed.
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
 
-> 
-> Assuming it actually works (haven't tested yet), I'll send a v2 with a prep patch
-> to add:
-> 
->   static bool avic_is_addressable_vcpu(struct kvm_vcpu *vcpu)
->   {
-> 	return (vcpu->vcpu_id * sizeof(u64)) <
-> 	       PAGE_SIZE << avic_get_physical_id_table_order(vcpu->kvm);
->   }
+-- 
+Regards/Gruss,
+    Boris.
 
-Unless you are planning to replace similar checks in __avic_vcpu_load() 
-and __avic_vcpu_put(), I think it will be simpler to just check the id 
-itself and avoid dealing with the table size:
-	return vcpu->vcpu_id <= __avic_get_max_physical_id(kvm, NULL);
-
-This helper can then also be used in avic_init_backing_page().
-
-> 
-> and then this code becomes:
-> 
->   void avic_vcpu_free(struct kvm_vcpu *vcpu)
->   {
-> 	struct kvm_svm *kvm_svm = to_kvm_svm(vcpu->kvm);
-> 
-> 	if (kvm_svm->avic_physical_id_table && avic_is_addressable_vcpu(vcpu))
-> 		WRITE_ONCE(kvm_svm->avic_physical_id_table[vcpu->vcpu_id], 0);
->   }
-> 
-
-Thanks,
-Naveen
-
+https://people.kernel.org/tglx/notes-about-netiquette
