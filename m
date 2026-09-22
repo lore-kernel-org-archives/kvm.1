@@ -1,86 +1,150 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.5])
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A92938DC7E;
-	Tue, 22 Sep 2026 02:16:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19E039B947;
+	Tue, 22 Sep 2026 02:16:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790043423; cv=none; b=G3P7oPwrzsSidJzQ7HGoEjFF3cCXRFfWfVEssxIpf590Zdx0hFF5tBAyigpaySQaSfa2RANZ766MHtx6ylC/XI6h8bxRAtndbSM8ycX+dkcdPVIXkpZmgW/4RrgRhKRL4w0xI1d6JZUWJY3F8hl0ftL/6oPiN8gTV0Fk0354CMs=
+	t=1790043420; cv=none; b=f8poGhKaKtorF9TY6J5gSq3XlHK/K666WeERILsvOSTmGkoXXkx9JboJejcCldnCussaFZGTh5wzBaNj2Gecl9EbUTXRWY8wIiXIdPSRJfagWuRCZZJ6mqzM/TloWS25zrxfloUDRMFTMBmjb7zX1LTBnvoG77ypyHUAvhncqbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790043423; c=relaxed/simple;
-	bh=nXBRK9QHnUKXIzFOAw0hN53sY//YSFicelihEikfKo8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nLCKO0f9YS0zRO1upuQIEx0BNET3g+r4mkt3g7PQwtsx5iGBAUbBKbAmqtyemCL1Nms0dic6Dz42J4m7cYFXYpRSNB05VkGgtBVOTLzzmD8UYNsUTVSkbUDwoHw735Msl+H8Oox5MKgbo005ZSzRJn5mGpovvZKfXw2m3LLUwAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SCH4a+WN; arc=none smtp.client-ip=192.198.163.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790043420; c=relaxed/simple;
+	bh=2vGBkI0xknqIEXH3MvA83d12Tvd7oJWD49BR1aQp6NE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QJVDoGciDDQqfM3u+g+aZPEYc3g1Neb//BFFE8ijKiaaBKqx2ln69yRWOj4KuzaUvMMio+OT09JYqoaagbsLPNmMG+9Jo6dZ/4yefSBZ7eHFL83MuQmaG47XtSLl6wI5kMsrz4rKG79rZatNIHCnw/g/41vizKejO3XlpEGP9WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=hbacuVnL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TrhAFyE5; arc=none smtp.client-ip=202.12.124.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SCH4a+WN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790043417; x=1821579417;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=nXBRK9QHnUKXIzFOAw0hN53sY//YSFicelihEikfKo8=;
-  b=SCH4a+WNkjDzLpbjD65EV6pcycy5K65Sm20rRj3GDUFV1TZZ/XErkwiA
-   L1jUyURWfeV33MpzUFXcN3r1mKIrmfy49Tt9VFKchwMkFNY0zbCRuL3Ko
-   xELVEwVtQkzuz+YFq0TzhkGu2Adb/gDHt3U6qOVS8osZoNIfREds8Yd+R
-   +oFr0YMkYyUQHWCbVHGGeg6QmtBgBrMI+ETaNwaLiDpfAuceMq7cPYg9r
-   uNXXDIQ2mmU/bVbFkaqcokfCeyNi7zhIjhS3CIaeWC1MPTeg8CJds25Gy
-   NlFpGjqYPNpoXxdjhOSXNUIxcSmzkp3ShdUBYKmKI9oncqFmZmWgG4JVR
-   Q==;
-X-CSE-ConnectionGUID: Bod8DmeDSD69erLXwmwK/A==
-X-CSE-MsgGUID: NdlkX97qRJOYPqI5honVAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="1111510"
-X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="1111510"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa115.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 19:16:53 -0700
-X-CSE-ConnectionGUID: 9djDXn0kS7S/5/YRmnT1hQ==
-X-CSE-MsgGUID: 474vMr2oQkGdG4YI99fOdw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="271454774"
-Received: from unknown (HELO [10.238.208.182]) ([10.238.208.182])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 19:16:51 -0700
-Message-ID: <cd58f445-34ca-4239-b5eb-deea1dc65128@intel.com>
-Date: Tue, 22 Sep 2026 10:16:46 +0800
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="hbacuVnL";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TrhAFyE5"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 097A67A006C;
+	Mon, 21 Sep 2026 22:16:51 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Mon, 21 Sep 2026 22:16:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1790043410;
+	 x=1790129810; bh=m5CLsYmH6SWKRQjuSodBxtKihfzSya8kG6HdASdWy8I=; b=
+	hbacuVnLzriYn8pry5OTtRRAhCkDYi8Dqg7/3FI9lwv+9wgCNGxwxrQAe2sEj+EZ
+	+Pz3IqnmE2Lly5WyQi8kn/n/i6s9Liws+Lr5cFDbUtFqCpcVU0QOhL81XGY4Tqv7
+	G37jfoTPDyuRf1ZKSqf1lpeFQ0n6m9N9EDI+cEesamk4o/RebjSk8F+5WRI852ts
+	dOfIseffoFnKDgzmppBfQtsHntwNTZBIkZ1Nsa6m4uP+10ENzXK84+3IHIHQ3ByS
+	Ebt04H05FXr8V+FTs3Ze+MVqDBIQHlMAKjuJs04XMNFSWvBR1zb72DJxOepUtK3Q
+	n3Q6s3Ngi9ZXvzOd79wItQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790043410; x=
+	1790129810; bh=m5CLsYmH6SWKRQjuSodBxtKihfzSya8kG6HdASdWy8I=; b=T
+	rhAFyE5ENPCYKUFx6jh7HWxG+BQm5jzmjvCNLwCGC0xUwGdQYR5mrq2NxVpCTfWf
+	bzdP2gVrO2wYqJGAtSnVsd+q3rL5d6ayoYnZTWdnNLaFEiJmve7noQ6Npb46LSoT
+	zDjiEAeNybgAhEqLULSPjE+t+A9Cd26NvVSk+mDBxlZlsIwDgQp78bJca9kZILjf
+	cfH3PW2xJ6EpGx0Z8uw77OzzTgjl4N6SkNfzyaZ7UUP0kOxFNI0mFA/4V/0UmPSE
+	4pqfp0zUdJJT2+C2mn0eQEkWuX8MRTtafYvniFWLVwKyfb4d+zvzuD/xpeFDgwtE
+	OxxXiJGT/cL0KKsqI3TMA==
+X-ME-Sender: <xms:EuWxagC5gPip0GkT3GLFF3Cucex_spHkbiZTWF8yNPhz4mLaIVh0Zg>
+    <xme:EuWxagKApE4P88CDms9j-q3mYyxVb3N113gphFRig2ASn1CeNG8mlzCZ_Inj9yrzm
+    smHniyGvqqMPA4wRi_U55v-wElB48f4IX_JKinEFzaxbHZ20H0r10o>
+X-ME-Received: <xmr:EuWxaq_eHNTulr2sCGvdgLDToflpM3K2SilqpI7G0ursdIi7RtZs3nZK2dgHig>
+X-ME-Proxy-Cause: dmFkZTGXJSHqMq/BnZYJ0YweOb4rS2VUXpPM7d5+lSYGhnppGFsNjl5Bysv+w6+cDnCJ/7
+    /L3Cxi42gIwxQ2NUo+88ApQMAdaEv47yc8fAsLypxGx87oHF4HT7ama3q0ueulG4TPc0DY
+    g9aq/+AIZ/88RBFY6z24OfxBW3WPjyGYAaKrF0WRpWdqsttcvGMxliaYSaCPsYHObnA4na
+    kPveiLHd3CCXxarYrwtQo6T70Ls9xKt0FRJqIrLM1i8XMnEKMgqeJVG7tIy0ld86sgmRqY
+    QTP1Xf0Z/CD0h9dlYVSVFIdwBL83CGpVR9ekjjvy4BxnnVieSYFxqs3RHn4BnowjRSHsN7
+    rR//SOuezp5pQ6FuD1S1ndDvE5zpymT9GuUjVB8dP5lzw3ALHldut5NIS/6oiZLPowXQv9
+    TRZ7gMnoQiIU5aIuTKGPh3BqvqFZwzMMm3aXU65kDgNxnIKonMXCWbecS8kP5RX289tXz2
+    Hj5NExCOWlHCL6fcQAPufnCRokTwGuKT2IIioF/EZ32xonW32mEpfHQ+vL/CCd17lKWVlX
+    Um6Ez5U6axfaPG2f6aCJ8jEGMdxDzvskH6XWSC2/paWTXm/OnBkHlLBEQMjZl+xpSzBkyC
+    9vdFX30KJl29H35c3LsWlXtRU3O9mVVFmD1q6ONEmUccVX0uSUQtztjIO2nA
+X-ME-Proxy: <xmx:EuWxau_W1x2-NDQipzUW5KVfi9wy_HQ3II-Qa9w8iQnQuTF5KG5Kzg>
+    <xmx:EuWxas_1PBC75ic96o06tbmTggd832JMjmnBx7xExkhdFUGVZxHFTg>
+    <xmx:EuWxahIkMK_cU7BrCKUG537jRVn7tXkTwlWXxdEIbR7gWjdEPpAvVQ>
+    <xmx:EuWxapTSXb-X0IoQY12VWELMLb1wtLcemW0HdeOcYPMjiVEGH6xejA>
+    <xmx:EuWxas-uI8cnIjDIfIlpGs0nsFmR3Ht-TR0ilNH9WF533A9lceMYECv8>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 21 Sep 2026 22:16:43 -0400 (EDT)
+Date: Mon, 21 Sep 2026 20:14:12 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: <mhonap@nvidia.com>
+Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
+ <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
+ <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+ <dave@stgolabs.net>, <alison.schofield@intel.com>,
+ <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
+ <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
+ <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+ <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
+ alex@shazbot.org
+Subject: Re: [PATCH v5 17/27] vfio/cxl: Own the whole component register BAR
+Message-ID: <20260921201412.78b7219a@shazbot.org>
+In-Reply-To: <20260916183540.3813685-18-mhonap@nvidia.com>
+References: <20260916183540.3813685-1-mhonap@nvidia.com>
+	<20260916183540.3813685-18-mhonap@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: VMX: Formally define KVM's "0xdead" exit reason used
- for failed VM-Enter
-To: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- Yan Zhao <yan.y.zhao@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-References: <20260921235656.1107929-1-seanjc@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260921235656.1107929-1-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 9/22/2026 7:56 AM, Sean Christopherson wrote:
-> Add EXIT_REASON_UNDEFINED to track KVM's magic "0xdead" value that's used
-> to stuff the exit reason on a failed VM-Enter so that the magic can be
-> reused by TDX, and to make it more obvious that it's an arbitrary, KVM-
-> defined value (though the whole "dead" thing makes it pretty darn obvious).
+On Thu, 17 Sep 2026 00:05:30 +0530
+<mhonap@nvidia.com> wrote:
+
+> From: Manish Honap <mhonap@nvidia.com>
 > 
-> Opportunistically add a compile-time assert to ensure the KVM-defined exit
-> reason never collides with a "real" exit reason.
+> devm_cxl_probe_mem() maps the component registers through the CXL core,
+> which by default claims each HDM and RAS sub-block. That collides with
+> the full-BAR request vfio-pci-core makes when the guest opens the device.
 > 
-> No functional change intended.
+> After the component registers are discovered, declare the containing BAR
+> owned with cxl_reg_map_add_owned_resource(). The core then ioremaps the
+> sub-blocks without requesting them, so vfio-pci-core owns the whole BAR
+> and the requests do not collide.
 > 
-> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-> Cc: Yan Zhao <yan.y.zhao@intel.com>
-> Cc: Binbin Wu <binbin.wu@linux.intel.com>
-> Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Assisted-by: LLM
+> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+> ---
+>  drivers/vfio/pci/cxl/vfio_cxl_core.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/drivers/vfio/pci/cxl/vfio_cxl_core.c b/drivers/vfio/pci/cxl/vfio_cxl_core.c
+> index 0d92e6a409c1..5c8a63833a43 100644
+> --- a/drivers/vfio/pci/cxl/vfio_cxl_core.c
+> +++ b/drivers/vfio/pci/cxl/vfio_cxl_core.c
+> @@ -89,6 +89,15 @@ static int vfio_cxl_init_device(struct vfio_pci_core_device *vdev)
+>  		goto err;
+>  	}
+>  
+> +	/*
+> +	 * vfio-pci-core requests the whole component-register BAR when the
+> +	 * guest opens the device. Declare that BAR owned so the CXL core
+> +	 * ioremaps the HDM and RAS sub-blocks without claiming them, and the
+> +	 * full-BAR request does not collide.
+> +	 */
+> +	cxl_reg_map_add_owned_resource(&cxl->cxlds.reg_map,
+> +				       pci_resource_n(pdev, pdev->hdm->hdm_bar));
+> +
+
+The result of this operation is setting a singleton "owned" pointer to
+this resource, whereas the name suggests it's adding the resource to
+some set of owned resources.  Is "set" really the more idiomatic verb
+for this than "add"?  Thanks,
+
+Alex
+
+>  	if (!cxl->cxlds.reg_map.component_map.hdm_decoder.valid) {
+>  		pci_err(pdev, "vfio-cxl: HDM decoder registers not found\n");
+>  		ret = -ENODEV;
+
