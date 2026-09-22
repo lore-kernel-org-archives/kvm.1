@@ -1,47 +1,46 @@
 Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CB354A7E9;
-	Tue, 22 Sep 2026 13:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C5C54EEC3;
+	Tue, 22 Sep 2026 13:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790082942; cv=none; b=X2a3K7Dhm/IpUazHuYXgzUkARKtDKIBiUZP4TUR4/xg80IEvhFyiHjBR3QkAsqUp7in4OU+aKVU6bgrxAu9V4VEvS7D+zgq3l2h3XhxqFLek3tLf0g7tMq4WYImx4RJkYsGFnyLyaXeOS5GmmQl4WAQcHCuvUXUqPYRjpfwxZe0=
+	t=1790082952; cv=none; b=YqepWjE3eydqxXonU8DpdePlHG3Mb1tZTHg7IyFAfclu5aBzPR2+l3rKp8+3GGOgxkQ9GOvwHHO5Rw5zQruDF5B3Or/3gjl+qYlZWoqXrgEguKT5j/BJDBU19ZJd3fa5q2xXAk0hoI1QFaaQWb7A/SakiQ2ePpTP9nrAhk9v4rA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790082942; c=relaxed/simple;
-	bh=3e88C8MD0MTi4zk76RfIGYwE4rL5JwPj8Xe4qyLb/vs=;
+	s=arc-20240116; t=1790082952; c=relaxed/simple;
+	bh=r8NN3NsziCexxlU2xLKrqIKiEyrwoVWHBd7Ms4fyzWM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QEnRbJOmfow98skNyS9ajOVSCKtfNi6b+6jrj8wxpVZmFgZaOs2KhGVKQ/JqXEYjQTEOOKgnMqTwQibW7TtfdhG9UwPnwC15sQP8d0tq02d0Ix97XshGqpKySJSL9/4Mlak/1KfTcF0b8xD6T1WEv55x8ajFMW6dqrTilFyvqMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=vaZh1CK3; arc=none smtp.client-ip=185.226.149.38
+	 In-Reply-To:To:Cc; b=Vmywwi/YabBZsqSO2XHIgu22A5SfLQW61djFNHDhLgUCW4OpwMbpg8u66RdiyzZf2zt7yI4iYq2w8h60OTUeVf7NHra8yz7viUS0sVWGdWABWn8vX0WKgG8np1LR7Zrbi4XcwLkMN+bZCmnPU+uIdHBaHarwVOqcQc1eelX7vYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=bRntzqzK; arc=none smtp.client-ip=185.226.149.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="vaZh1CK3"
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="bRntzqzK"
 Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
 	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.93)
 	(envelope-from <mhal@rbox.co>)
-	id 1x90LI-005SDL-2I; Tue, 22 Sep 2026 15:15:28 +0200
+	id 1x90LN-005SFy-9T; Tue, 22 Sep 2026 15:15:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
 	s=selector1; h=Cc:To:In-Reply-To:References:Message-Id:
 	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From;
-	bh=KqEsGGQym9dCf7XblsGQZB4/Hmko4QBycE9bOomA3ng=; b=vaZh1CK3mSr6k3khPux/ezZb4p
-	EhCcJx5zS0hPoO12vLl/irCRT/2cThrAteJF9SmsOqU6GTvlXOcYxpvkY452mXOwR3a42buGtvm81
-	mL67kou6DWJzCD+QZ9qfpU+x4tK1lXNojXpP+znrHRljISW3M3tkFAaei6To3jIetNUTHfyslvjXF
-	wpQBXzWIjkrS50FXslzGoBDDyGT/Ygev/Zxm7CzTGPaUTFXUSKOecJS0OaHkPbI5diOJllcwDT8tf
-	ZDgkpGq5mY1AFs4tzHNdIreHY1VtmNol4o923PF/+L3mWG2AjJ0/pRZel7HdP3t/brAgv4mU8Z3aW
-	JUYf/69Q==;
+	bh=lbdOrdNqth7S8nRKENaJcwv9RjD3QxuDxfCngDXfIPk=; b=bRntzqzKvoBagHMsTC+KL8N1+Y
+	5G5wN4PpvjlYY92nlX0p/P4/UZUWaaOL3nx/K9/F3XMHR3pb4JUHax0opYEGJzNbNDeKnVwPKW8t7
+	tYHJFcFxsSo5VAwMyeAuIfamjvwAl/8kzLAGyqnuK1V+q/Tb5OUP+50oXrTtMQFqt4wkCszFH6xbO
+	8h8wvsWBhw5ZVtMnxGRPO12hAtQ6pXUDrd+Boy5MUV+Y+OjLZpEaxJUQxCXyn8GJ4IHWsD0aSKQpF
+	OmkeaTD2b58woFb1d/hDRCAUz7jKkMDIjVVuk0jyepl4rC3pP73POrIGjGWDs/C33sYJASns8d30U
+	NSJGMf5g==;
 Received: from [10.9.9.72] (helo=submission01.runbox)
 	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
 	(envelope-from <mhal@rbox.co>)
-	id 1x90LC-0006Mx-0W; Tue, 22 Sep 2026 15:15:22 +0200
+	id 1x90LC-0006N1-L6; Tue, 22 Sep 2026 15:15:22 +0200
 Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.95)
-	id 1x90L5-00FyKH-OI;
-	Tue, 22 Sep 2026 15:15:15 +0200
+	id 1x90L1-00FyKH-Ab;
+	Tue, 22 Sep 2026 15:15:11 +0200
 From: Michal Luczaj <mhal@rbox.co>
-Date: Tue, 22 Sep 2026 15:15:02 +0200
-Subject: [PATCH net v3 8/8] vsock: enforce no-transport invariant for
- TCP_LISTEN sockets
+Date: Tue, 22 Sep 2026 15:14:57 +0200
+Subject: [PATCH net v3 3/8] vsock: do not preserve transport assignment
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -50,7 +49,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260922-vsock-connect-reset-closing-v3-8-78907b8200d4@rbox.co>
+Message-Id: <20260922-vsock-connect-reset-closing-v3-3-78907b8200d4@rbox.co>
 References: <20260922-vsock-connect-reset-closing-v3-0-78907b8200d4@rbox.co>
 In-Reply-To: <20260922-vsock-connect-reset-closing-v3-0-78907b8200d4@rbox.co>
 To: Stefan Hajnoczi <stefanha@redhat.com>, 
@@ -66,36 +65,167 @@ Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev,
  Michal Luczaj <mhal@rbox.co>
 X-Mailer: b4 0.15.2
 
-In the past, listener socket could carry an assigned transport (uselessly,
-but harmlessly, except for unnecessarily hogging the kernel module refcnt).
-That's not the case anymore. Express/enforce the invariant.
+Introduce vsock_unconnected_reset() and adapt vsock_connect().
+
+Change transport assignment life cycle. On connect(), socket gets a
+transport assigned. If connection fails (init went wrong, peer
+misbehaviour, time out, signal), transport is de-assigned and socket state
+is re-initialized. Once the connection is established, transport remains
+assigned until close().
 
 Signed-off-by: Michal Luczaj <mhal@rbox.co>
 ---
- net/vmw_vsock/af_vsock.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/vmw_vsock/af_vsock.c | 74 ++++++++++++++++++++++++++++++------------------
+ 1 file changed, 47 insertions(+), 27 deletions(-)
 
 diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 56c595942456..9ba21a448cfa 100644
+index 5c8e7e7d35b4..20181ddde114 100644
 --- a/net/vmw_vsock/af_vsock.c
 +++ b/net/vmw_vsock/af_vsock.c
-@@ -1993,13 +1993,13 @@ static int vsock_listen(struct socket *sock, int backlog)
- 		goto out;
- 	}
+@@ -1679,6 +1679,42 @@ static int vsock_transport_cancel_pkt(struct vsock_sock *vsk)
+ 	return transport->cancel_pkt(vsk);
+ }
  
--	if (sock->state != SS_UNCONNECTED) {
-+	vsk = vsock_sk(sk);
++static void vsock_unconnected_reset(struct sock *sk)
++{
++	struct vsock_sock *vsk = vsock_sk(sk);
 +
-+	if (sock->state != SS_UNCONNECTED || WARN_ON_ONCE(vsk->transport)) {
- 		err = -EINVAL;
- 		goto out;
++	sock_owned_by_me(sk);
++
++	/*
++	 * Only connected socks may have peer_shutdown or SOCK_DONE set.
++	 *
++	 * Once established (TCP_ESTABLISHED, TCP_CLOSING), a socket can be
++	 * de-assigned only on close(). But we can narrow the check down to
++	 * states we actually expect (TCP_SYN_SENT, TCP_CLOSE).
++	 */
++	if (WARN_ON_ONCE(vsk->peer_shutdown) ||
++	    WARN_ON_ONCE(sock_flag(sk, SOCK_DONE)) ||
++	    WARN_ON_ONCE(sk->sk_state != TCP_SYN_SENT &&
++			 sk->sk_state != TCP_CLOSE))
++		return;
++
++	/*
++	 * Try to cancel a VIRTIO_VSOCK_OP_REQUEST skb that may have been sent
++	 * out by transport->connect().
++	 */
++	vsock_transport_cancel_pkt(vsk);
++
++	/*
++	 * No need to invoke transport->release() for unconnected connectible
++	 * sockets. Go straight for transport deassign.
++	 */
++	vsock_deassign_transport(vsk);
++
++	/* Revert socket to initial state. Keep sk_err. */
++	WRITE_ONCE(sk->sk_state, TCP_CLOSE);
++	sk->sk_socket->state = SS_UNCONNECTED;
++}
++
+ static void vsock_connect_timeout(struct work_struct *work)
+ {
+ 	struct sock *sk;
+@@ -1690,11 +1726,9 @@ static void vsock_connect_timeout(struct work_struct *work)
+ 	lock_sock(sk);
+ 	if (sk->sk_state == TCP_SYN_SENT &&
+ 	    (sk->sk_shutdown != SHUTDOWN_MASK)) {
+-		sk->sk_state = TCP_CLOSE;
+-		sk->sk_socket->state = SS_UNCONNECTED;
+ 		sk->sk_err = ETIMEDOUT;
+ 		sk_error_report(sk);
+-		vsock_transport_cancel_pkt(vsk);
++		vsock_unconnected_reset(sk);
+ 	}
+ 	release_sock(sk);
+ 
+@@ -1760,7 +1794,7 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
+ 		if (!transport->stream_allow(vsk, remote_addr->svm_cid,
+ 					     remote_addr->svm_port)) {
+ 			err = -ENETUNREACH;
+-			goto out;
++			goto out_reset;
+ 		}
+ 
+ 		if (vsock_msgzerocopy_allow(transport)) {
+@@ -1771,18 +1805,18 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
+ 			 * feature is supported here.
+ 			 */
+ 			err = -EOPNOTSUPP;
+-			goto out;
++			goto out_reset;
+ 		}
+ 
+ 		err = vsock_auto_bind(vsk);
+ 		if (err)
+-			goto out;
++			goto out_reset;
+ 
+ 		sk->sk_state = TCP_SYN_SENT;
+ 
+ 		err = transport->connect(vsk);
+ 		if (err < 0)
+-			goto out;
++			goto out_reset;
+ 
+ 		/* sk_err might have been set as a result of an earlier
+ 		 * (failed) connect attempt.
+@@ -1825,8 +1859,9 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
+ 					     timeout))
+ 				sock_put(sk);
+ 
++			finish_wait(sk_sleep(sk), &wait);
+ 			/* Skip ahead to preserve error code set above. */
+-			goto out_wait;
++			goto out;
+ 		}
+ 
+ 		release_sock(sk);
+@@ -1844,12 +1879,7 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
+ 			break;
+ 
+ 		/* If connection was _not_ established and a signal/timeout came
+-		 * to be, we want the socket's state reset. User space may want
+-		 * to retry.
+-		 *
+-		 * sk_state != TCP_ESTABLISHED implies that socket is not on
+-		 * vsock_connected_table. We keep the binding and the transport
+-		 * assigned.
++		 * to be, we want the socket's state reset. We keep the binding.
+ 		 */
+ 		if (signal_pending(current) || timeout == 0) {
+ 			err = timeout == 0 ? -ETIMEDOUT : sock_intr_errno(timeout);
+@@ -1859,14 +1889,6 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
+ 			 * sk_state == TCP_SYN_SENT, which hereby we break.
+ 			 * In such case VIRTIO_VSOCK_OP_RST will follow.
+ 			 */
+-			sk->sk_state = TCP_CLOSE;
+-			sock->state = SS_UNCONNECTED;
+-
+-			/* Try to cancel VIRTIO_VSOCK_OP_REQUEST skb sent out by
+-			 * transport->connect().
+-			 */
+-			vsock_transport_cancel_pkt(vsk);
+-
+ 			goto out_wait;
+ 		}
+ 
+@@ -1874,13 +1896,11 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
  	}
  
--	vsk = vsock_sk(sk);
+ 	err = sock_error(sk);
+-	if (err) {
+-		sk->sk_state = TCP_CLOSE;
+-		sock->state = SS_UNCONNECTED;
+-	}
 -
- 	if (!vsock_addr_bound(&vsk->local_addr)) {
- 		err = -EINVAL;
- 		goto out;
+ out_wait:
+ 	finish_wait(sk_sleep(sk), &wait);
++out_reset:
++	if (err)
++		vsock_unconnected_reset(sk);
+ out:
+ 	release_sock(sk);
+ 	return err;
 
 -- 
 2.55.0
