@@ -1,125 +1,175 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo2-f42.google.com (mail-oo2-f42.google.com [74.125.231.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0822623BCED;
-	Tue, 22 Sep 2026 01:03:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26ED636A03F
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 01:18:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790039007; cv=none; b=dPMsVinnj9AwVeZ4yl5ZYDOq+7JfYFr5rgiZzyQP3ipNaS9lP/J7l3sF8KleLmpR9yFW4ds8evovYPNVG2am1Ud1TDXBWEppyWyRmORBs7YE2OOqNPfbOYXo7mPChHdwD0lnknAvwKuLB+f5m/cImDQjhZpUQvkbK8NTDz1Pw8M=
+	t=1790039901; cv=none; b=jOnI7/bl+6ZG1hB65yw5d/Q3eJQpFNjT98R1DfYb8OMr7CHg+JkwVe47ImRdLLnKr3OIU8TV7whkyI87nj73FerIbP2nT09hUxVVLhFKPu9I4JEWiTl1YqWg5HjfmtAU3FUSndGl5rVZUy1qDWOYQ9G5evJfNraQR5fkbnY0aSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790039007; c=relaxed/simple;
-	bh=2xhBi68DZwccfXE7xnaqc/eegH2ZyWyXrVrdyjJrFmE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WfrRpKxhfhNPNg9wsTOhhq1b93S8HZcvTbF/F9zT10AuEM0vBnGICf/DFWFr3ZkMUn0g9XD2KzfcgVJhg6DbVMMAkV5eBDC+APsWVWKT0K6MeSdjHeZyU82eD0UBYlUlxqHeJ3YM5MoRcKqfyePEMx3ZbS/f6992c7Kv6P6VtCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kYuK0w0i; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1790039901; c=relaxed/simple;
+	bh=Acv7MgHBh1jAwi3D+fsQ8X/DzGRU/jGDl+ydMkOn+HM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=WKjSrizRC9a+H/qC40XzW/IV2whHObuLZpf2Ou/xtGlBLW/VVGgTfMde9BfbR17teZoK/osdZEzg7JC1poydessvjhHLQPGmZkGUqmVow9mhlqtbQ8esLFxZQeZcMGhH1gqUGIQ6p6Np3U1k074p7kh9u2/ikYxkTRarMjb6g/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kuxwre/6; arc=none smtp.client-ip=74.125.231.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kYuK0w0i"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790039006; x=1821575006;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=2xhBi68DZwccfXE7xnaqc/eegH2ZyWyXrVrdyjJrFmE=;
-  b=kYuK0w0iW7yBjKCd7+uXsrROIL3V2uYC3pyPGmyVr6399zsmvsxImf1E
-   TOI+hEA6RWgRPtvAhymKjx0uHxYxVJ/UIBJfwyL8SP2i2kvimBd615QGW
-   CBimdmQ58e3Swft2ZUoC/GSQFQ3UDdpnhW34TapuKamgpuh1x3962NAHc
-   sxKfLpNdRc2cVoul5NFf8PUZpcQ+MHjvZYUrIX4Apq90ekqsgb1dgG36i
-   PvdFhx2P8O5IM+4SMC4V+6ixiru4UZdL2WX0XZcMDE21JL3e2NADKh4UU
-   Nh/4Hho26EKH57uJpcyT2HxhMAOh+fEnhdyL42Lh+jyyLr5YsKkFe7BMg
-   Q==;
-X-CSE-ConnectionGUID: R0s0xwYNS1SfRhALWiUXmA==
-X-CSE-MsgGUID: NSFOYj2pRW2uQcBzb85nXA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="101193130"
-X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="101193130"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 18:03:18 -0700
-X-CSE-ConnectionGUID: 5GaVgt6mQ1Gz/U0498JZ9Q==
-X-CSE-MsgGUID: PKRxYQPGSbyQo9S9zpl+SA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="280970359"
-Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.239]) ([10.124.241.239])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 18:03:14 -0700
-Message-ID: <d0bb5fea-4147-4f38-b2df-b8914a67b1a4@linux.intel.com>
-Date: Tue, 22 Sep 2026 09:03:11 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kuxwre/6"
+Received: by mail-oo2-f42.google.com with SMTP id 006d021491bc7-6b1ae6a9960so2598303eaf.0
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 18:18:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790039898; x=1790644698; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Nc+AzR6lB3hdwq2cJ+qgIdPQ8/tOa9E8y0imH8XTesg=;
+        b=kuxwre/6JCi3a99wDJx6nPkm2c0DntMKfDJ23Xd04QXsrvUU+PcRVTbwkASbCxAZW9
+         A5MBT37vz/rmONfovmbIq38oCug4mfZh9efOsIfySu8HZ7w6QZY1eSTgxm1Ch92amJ7x
+         CHviWr/dw8NjXIxWS6XcdZd4Of6gcj2E7fwXxuTTxWOtLi/0lDBPZRkpdoxo8TjVKpoM
+         qScCTZAeTy6O9+jJDqsBy8niVTdHQ8UeF226L9TR1ZxlNdp1oNP3S1tzceoSnJ7+Bslt
+         bL4CbWmtfwnF3Rjq9UyQKVFzW9cbBVqKfiBHHl1Jkl3jFfx96ACv90xP82Crmv7aTgMv
+         Am7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790039898; x=1790644698;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Nc+AzR6lB3hdwq2cJ+qgIdPQ8/tOa9E8y0imH8XTesg=;
+        b=VarwXR+/ke5AcVPJIkmqDmzrhrB8a0A2Jt+V0wmVyjFggvXPoH5lsJWhW09xuYZH5k
+         zfdoubKnWRLCTdEViiGbS5viLz/xBM88pWwk+tnhUKAubdNsuxzzRhZIliylqZBXyL95
+         wwwznhsTMwONnqLsWdTWjuxxJ6jHAsCxF7oGcM/3S6kfRMH76UFxTR46kP1/clQKBB8o
+         2pdv/5oY+AiOjWHEp+os2fAI2ks5zPOvwQWlj/7T1o0Bi0hUae44tS56glDHs2cYrZ7o
+         cHz8o4ZRyab0ymMVvLk1ezw3a5OtA2klHIf5/NBwcgnriBtUdreUrCC9jed4qA8MEBvM
+         Nmwg==
+X-Forwarded-Encrypted: i=1; AKwUvByWJ0Vj/RDlPC3unwVu+P8JE2xGynNgaxQ8JZX26jRiKYkxVqeOwhE5rC6/4qvnk1D+TxE=@vger.kernel.org
+X-Gm-Message-State: AFuF++l8JXJ5pwgfXUnKeo7d98gH4OKolpgq5DvOBNs+jK5dSVVT8PLH
+	ezbk4Jg8jW5AB3ll2QJIcb8CW7/jAvtViBBtzFQ/wy1SJlyPH/UYZwGc
+X-Gm-Gg: AYBFou3u4k2BWQgB1D3UYPwX4L2OZFpvtM5zfAl5YWSCr4srsWWTVjHACbF6fkJR6jf
+	P7SOMzuPrxt2yq6xW0VQ2TKWilNKOmCpF/ZUaY7GsVTGB+F9Ojc/dT1tnvq9LZumtNKxxhWf372
+	YqCexpSyNJ4c1WJBLsKqfZLe2TmGVPJ9BAscLrnyyhPLBAuwqqpO4sriqE3c9Qdm/2cOYu8GN47
+	JhkgchwcQ/FMrYv7SwRQOqv6nFNfFWIN8qbr1m079jHG7t+Sc+m99X21mPQfeQTwZEEqsh4wiAW
+	hLYGo96bE7m0hHuLwL3HSXvKaNaCHuYdtxpyQ7ctnIOYG4C/tgaOKA1iz3ngTTFrXQJH5JalzMq
+	SuoL4engj1V4zgDls91a4OfIPzcQylFWZCVMIfz46gBPIZYabBp5dxEKRDq4qqXAus5WoB2Yla5
+	HXGTvtmCc7orRhCfCz6jwb+IrEM707deN1U+KM3sObRLexGRcpvC4N6+Tyxdyolztu38A=
+X-Received: by 2002:a05:6820:61b:b0:6b7:83c5:fe00 with SMTP id 006d021491bc7-6ca9d147147mr11628526eaf.65.1790039897801;
+        Mon, 21 Sep 2026 18:18:17 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:5d::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6d1dbd52475sm117155eaf.1.2026.09.21.18.18.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 18:18:17 -0700 (PDT)
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+Subject: [PATCH net-next v2 0/6] vsock: assign the guest vsock device to a
+ network namespace
+Date: Mon, 21 Sep 2026 18:18:03 -0700
+Message-Id: <20260921-vsock-guest-ns-v2-0-693bd78fde9e@meta.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 10/10] perf/x86/intel: Check only PMC bits in
- PEBS_ENABLED when detecting host PEBS usage
-To: Sean Christopherson <seanjc@google.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, linux-perf-users@vger.kernel.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Jim Mattson <jmattson@google.com>, Mingwei Zhang <mizhang@google.com>,
- Stephane Eranian <eranian@google.com>, Sashiko Bot <sashiko-bot@kernel.org>
-References: <20260921191418.950933-1-seanjc@google.com>
- <20260921191418.950933-11-seanjc@google.com>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <20260921191418.950933-11-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEzXsWoC/13NQQqDMBBA0auEWTslidUaV71HcZHqqKGYlEwaL
+ OLdC1l2/eH9A5iiI4ZeHBApO3bBQy90JWBcrV8I3QS9AC11K7taYeYwvnD5ECf0jJNs7Xxt1GT
+ bG1QC3pFmtxfwAZ4SetoTDJWA1XEK8VtOWZVeUCP1P5oVSjTGNHVXk7Hd875RspcxbDCc5/kDv
+ f1HJLUAAAA=
+X-Change-ID: 20260831-vsock-guest-ns-d06af451da67
+To: Stefano Garzarella <sgarzare@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Shuah Khan <shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
+ Donald Hunter <donald.hunter@gmail.com>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+ kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, sargun@sargun.me, 
+ jlinbox@meta.com, Stanislav Fomichev <sdf.kernel@gmail.com>, 
+ Bobby Eshleman <bobbyeshleman@meta.com>
+X-Mailer: b4 0.14.3
 
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+vsock network namespaces let a host put each VM in a namespace of its
+own. A guest has no equivalent yet. It has a single G2H device that
+cannot be assigned to a network namespace.
 
-Thanks.
+This series lets a guest move that device into a network namespace. A
+new generic netlink family, "vsock", supports the command
+VSOCK_CMD_DEV_NETNS_SET which assigns the device to the namespace the
+request was sent from. The namespace's existing ns_mode then decides who
+may use it: a "global" namespace shares the device with every other
+global namespace, and a "local" namespace keeps the host connection to
+itself. The device starts out in the initial namespace, so until the
+command is issued nothing has moved and no mode has changed. There is no
+explicit unassign as assigning the device back to the initial namespace
+is equivalent.
 
-On 9/22/2026 3:14 AM, Sean Christopherson wrote:
-> When checking to see if guest PEBS usage should be disabled due to host
-> PEBS usage, filter out non-counter bits in PEBS_ENABLE to avoid getting
-> false positives in the unlikely scenario that "Enable Precise Store" is
-> enabled without PEBS actually being active for any PMCs.
->
-> Note, the other "hidden" usage of pebs_mask is already explicitly masked
-> with intel_ctrl:
->
->   .guest = intel_ctrl & ~cpuc->intel_ctrl_exclude_guest_mask & ~pebs_mask,
->
-> I.e. removing the non-counter bits from pebs_mask doesn't change the value
-> that is loaded into arr[global_ctrl].guest.
->
-> Fixes: 854250329c02 ("KVM: x86/pmu: Disable guest PEBS temporarily in two rare situations")
-> Suggested-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-> Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/all/20260508234018.F06AEC2BCB0@smtp.kernel.org
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/events/intel/core.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-> index d9315bb2f221..1ff0586c7b71 100644
-> --- a/arch/x86/events/intel/core.c
-> +++ b/arch/x86/events/intel/core.c
-> @@ -5323,7 +5323,7 @@ static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr,
->  	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
->  	struct perf_guest_switch_msr *arr = cpuc->guest_switch_msrs;
->  	u64 intel_ctrl = hybrid(cpuc->pmu, intel_ctrl);
-> -	u64 pebs_mask = cpuc->pebs_enabled & x86_pmu.pebs_capable;
-> +	u64 pebs_mask = intel_ctrl & cpuc->pebs_enabled & x86_pmu.pebs_capable;
->  	u64 guest_pebs_mask;
->  	int global_ctrl;
->  
-> @@ -5375,7 +5375,7 @@ static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr,
->  	 * the guest wants to use for PEBS, (c) are not excluded from counting
->  	 * in the guest, and (d) _are_ excluded from counting in the host.
->  	 */
-> -	guest_pebs_mask = pebs_mask & intel_ctrl & guest_pebs->enable &
-> +	guest_pebs_mask = pebs_mask & guest_pebs->enable &
->  			  ~cpuc->intel_ctrl_exclude_guest_mask &
->  			  cpuc->intel_ctrl_exclude_host_mask;
->  
+The command requires CAP_NET_ADMIN in the initial user namespace, so
+that an unprivileged user namespace cannot claim the device.
+
+Connections that can no longer reach the device after a move are reset,
+so that a namespace which has lost access cannot keep using a socket it
+opened while it still had access. Following netdevs, the device returns
+to the initial namespace when the namespace it was moved to is deleted.
+
+Transports opt in through a new netns_assign_allow flag. Only
+virtio-vsock sets it here, because it is the only guest transport
+that I am able to test against.
+
+Based off of Stefano's original series:
+https://lore.kernel.org/all/20200116172428.311437-1-sgarzare@redhat.com/
+
+Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://lore.kernel.org/all/20200427142518.uwssa6dtasrp3bfc@steredhat/
+
+Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+---
+Changes in v2:
+- Replace the IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS ioctl with the "vsock"
+  genl family and VSOCK_CMD_DEV_NETNS_SET
+- RST the peer from the reset sweep, v1 only set TCP_CLOSE locally, so
+  the peer waited on a connection the guest had abandoned (Stefano)
+- Drop the vsock_assign_g2h_netns helper patch, the tests use ynl cli.py
+- Note why only virtio-vsock opts in (Stefano)
+- Add a getter to the uAPI
+- Various fixes (see individual patch change list for more details)
+- Link to v1: https://lore.kernel.org/r/20260902-vsock-guest-ns-v1-0-9995383e9a8b@meta.com
+
+---
+Bobby Eshleman (6):
+      vsock: constify the transport in vsock_for_each_connected_socket()
+      vsock: rename the vsock pernet operations
+      vsock: add a netlink command to assign the g2h device to a netns
+      vsock/virtio: support guest device network namespace
+      selftests/vsock: test the guest vsock device network namespace
+      selftests/vsock: test the netns assign privilege checks
+
+ Documentation/admin-guide/sysctl/net.rst |  23 ++
+ Documentation/netlink/specs/vsock.yaml   |  68 +++++
+ MAINTAINERS                              |   2 +
+ drivers/vhost/vsock.c                    |   6 +-
+ include/linux/virtio_vsock.h             |   3 +
+ include/net/af_vsock.h                   |  19 +-
+ include/uapi/linux/vsock.h               |  28 ++
+ net/vmw_vsock/Makefile                   |   2 +-
+ net/vmw_vsock/af_vsock.c                 | 374 ++++++++++++++++++++++--
+ net/vmw_vsock/virtio_transport.c         |  24 +-
+ net/vmw_vsock/virtio_transport_common.c  |  27 +-
+ net/vmw_vsock/vsock_nl_gen.c             |  36 +++
+ net/vmw_vsock/vsock_nl_gen.h             |  20 ++
+ tools/net/ynl/Makefile.deps              |   1 +
+ tools/testing/selftests/vsock/config     |   1 +
+ tools/testing/selftests/vsock/vmtest.sh  | 473 ++++++++++++++++++++++++++++++-
+ 16 files changed, 1060 insertions(+), 47 deletions(-)
+---
+base-commit: 8830e65ed46de41f849eefb8ba227d4852c460f6
+change-id: 20260831-vsock-guest-ns-d06af451da67
+
+Best regards,
+-- 
+Bobby Eshleman <bobbyeshleman@meta.com>
+
