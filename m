@@ -1,33 +1,33 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2A851991C;
-	Tue, 22 Sep 2026 21:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B5F354CF5F;
+	Tue, 22 Sep 2026 22:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790114050; cv=none; b=qlg+Huo3kgyIQWgjkmsJrfHttut+1oGjnHkhzRpvRmXEp0cC8LZdLvojzX3I9KRDnWt50DsPtHT6DWjU9eBVzFhMTGaDVA+ucaWeiHmlq+LaYxKF3p3CJ4w/80yKlwkqjDDuaP0lSQt8gzearFIeR7+wduNFYel5rrEvyuc8m6o=
+	t=1790114699; cv=none; b=fOhxDKVDOPDiXf7HmM8l5NqnI/8khlYwkhPETQoGK6OuG/VahtKTW0GHZp+BYWAqnkA/HCgzSK8JpL2vuBqqTSn63tkdygS/P0+aGKg9dS2HSiTjzDtsaxzHeDBrV0RR1jQPTLgpqnkB+gsugVZswPLckn7sQbyaBz4yVetSWfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790114050; c=relaxed/simple;
-	bh=iEXKQcOzPMWsKYq75EaN1jiHJmAyzN7PwBoNzOtpC8s=;
+	s=arc-20240116; t=1790114699; c=relaxed/simple;
+	bh=Pme4KNcFZXJCIoYwtV2Ju4v44jpGiA6KmoFoYffHKlo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RysxuvHoaoeau/Aadbtbqw5TUBTjgmDQ+Gmuy6d/YEsKhj6iaL8Ue+KqZVz4BSrLJUjJV9/DY58cJK6IUAsix+r7FGUQKQtptT17cxG45tySS+TUe6PM2lfUOtGxACbs9m2Rz/Naniu5vAvNYI/0Xwutf6MdpcKe0Qe+FqqV8Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Oo+XUytA; arc=none smtp.client-ip=217.140.110.172
+	 In-Reply-To:Content-Type; b=ZEKWm1KzdlUfQRDukqgPr+EPjF+gIbVLk/pWlIV9W8wSICUNl51byBe8r1POdy0s+dJ6B8dRcE5x+eU7HQTr7uCF0Wk6DB1KJM5R2h9LwGPcveprxtkh4GzQfvv0iEZqArPJer2hmzWtlqqbNgWpHp5+uqXRNpW45jr+88lgICM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=iUzMrFNN; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Oo+XUytA"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="iUzMrFNN"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 345A21576;
-	Tue, 22 Sep 2026 14:53:54 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D76001576;
+	Tue, 22 Sep 2026 15:04:43 -0700 (PDT)
 Received: from [10.57.9.113] (unknown [10.57.9.113])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A78413F86C;
-	Tue, 22 Sep 2026 14:53:54 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3A9ED3F632;
+	Tue, 22 Sep 2026 15:04:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790114037; bh=iEXKQcOzPMWsKYq75EaN1jiHJmAyzN7PwBoNzOtpC8s=;
+	t=1790114687; bh=Pme4KNcFZXJCIoYwtV2Ju4v44jpGiA6KmoFoYffHKlo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Oo+XUytAkDyV7Fg+PyMe7Zxe7vGy6ZfCfXw6bhiHy3FmXwXm3igb53OC7fXqwk2aA
-	 he530u1cUMeV+mpe6hv50rPvo5d7JeAOVBYfRDmkigHtNOUiTluS4EKTFJC3kRrFJY
-	 TFjqq5HT+a5NTBNXq06KQJiu5AtKO/xsciJ3ehWc=
-Message-ID: <528f3c4a-723f-47ad-a387-6e6a4179c96a@arm.com>
-Date: Tue, 22 Sep 2026 22:53:48 +0100
+	b=iUzMrFNN2YDLQ/vBLkf5ziJp0MauZmc6HYaYVirUs9GjhN/W5+KiMaqyM/TSCVOSZ
+	 pNVGncyNZjg1NMBjqp+vvC8eTuIBydnjAOYGnLuEN87pTaXuSNq9gIUFCO49EjZzxL
+	 eUOm6uN1kKE8gf+vWa19FeEJ1R64dIb4XZcoflDY=
+Message-ID: <fa2f4766-0795-464a-80ca-2f3fd1c5140b@arm.com>
+Date: Tue, 22 Sep 2026 23:04:42 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -82,17 +82,6 @@ On 22/09/2026 20:25, Jonathan Cameron wrote:
 > Why?  I don't mind the decision but telling us what was chosen is something
 > we can see in the code - patch description should give us the stuff we
 > can't see.
-
-I have modified the paragraph to :
-
-"Fix this by always "fixing" the timer offsets to 0 and marking that the
-timer offset is set in the kvm->arch.flags at KVM init time for
-protected VMs. This prevents the access to the VM specific vm_offset at
-low cost. A userspace writing to the CNT*CT_EL0 would observe success,
-without any real effect. This is cleaner over spilling *_is_protected()"
-checks and "matches" what we really do in practise. i.e., always run
-with "fixed counter offset of 0".
-
 > 
 > One comment on the comment below.
 >>
@@ -140,7 +129,13 @@ with "fixed counter offset of 0".
 > 	Protected VMs don't allow the offset to be set from userspace,
 > 	whether via writes to the counters or the dedicated ioctl.
 
-Ack, will improve it.
+LLM suggests:
+
+
+    * Protected VMs don't allow userspace to set counter offsets,
+    * either via counter register writes or the dedicated ioctl.
+
+Have updated the comment.
 
 Cheers
 Suzuki
