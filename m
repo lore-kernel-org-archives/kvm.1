@@ -1,109 +1,87 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448F4480954
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 18:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3D049B466;
+	Tue, 22 Sep 2026 18:52:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790103038; cv=none; b=GrwUbvyyy4ibtJ20tMQraPj8eGTt3t5xKdDAKpjqQSU6Cmluc/u+HIVM4auJaqs0K8pEEsDBIMsju+XGFkNe0pXUSvLt/wfTsTaBpDBbHgPMFo/TmOEg51Fp5K72B4SpKPpfFiGJm/YoOj5yc71IlujYJdQTrK0e5KgZF4e77KE=
+	t=1790103174; cv=none; b=elWriGXDrwgjvitXuL+lVIT76jWKnfVFwSzNLDG+yXXr7Ua+W/LJWZ3NXf7nGFz0MqjTSG/gpjERlXroENw0v8oUVvyjeYBVr2fmIypa9IRl4n4UIJHGbqVd/wg3hFK8ok/8pDTajr81Vs2hJRHcuCchFXr/IvJBxjW25/Ww8Co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790103038; c=relaxed/simple;
-	bh=YFV4f8xEQ5682y8KbTX6/j8Tl/peDO19QjRXYpb/Rxk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SkdRlysLzsvrhxWiST/BCu/OwP0gpm3+10Sq7Aysy+ur+UOoUq643p0h9rGgKUpi0FvXlbcsxTV/OOpBxsl2yNZ3SGvdEJMHMDwkj4SVCMoBm7FKfWHuV+kKKDDo2t6MYaGo1PfWOiS9AKIFcFsDPagpiMeFNshubym6GZTQzqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gAxBzKoq; arc=none smtp.client-ip=209.85.210.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1790103174; c=relaxed/simple;
+	bh=SKnjfd3Up2eiyVkP6CZIh4TLyINFI0j3BoHkSww6FSQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LvbwKsWEsh5UALQC/OvljyQG4y/WhS5WOcSbrpuktxmhgu7J2tuCn8LnC2+zWaOhnOXMN6BRnx5j7BJXdu076j7C/NzFdlnzJzu96HmOVzYYp3YZK4dVaOO92yhEnBWsxe4feutC1Ugh3oyeqTi+QeM3VkrlDdfzjHkz1aPU60s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hMiZHKSa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gAxBzKoq"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8696b921ac0so190718b3a.3
-        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 11:50:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790103034; x=1790707834; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=754YlWijxBQPELZeMlF4jFJNY3ow3QX/KSaNLc/AacQ=;
-        b=gAxBzKoqt2Mwwwim6M+5FOZNYEqh1HnqNBr0IIuM5ui6JOHF7tBz00muTLE62Rav5G
-         7S3K3Hd3rzaOFVdNImIO9FiP/Mmgb7/cC4euVzokZonKxUE154GCE3AgtYUyUpHR2cbo
-         2ak6LBLIMgPvUd5vhZldvl3FvfT6vubONG6yhEmMiIWmpOVvbqhjeCtPJjugKm0+FtgY
-         P8QvMcyS5au7Lxd0I8v9PgR1UnMpBZaJ7zIwprf1e4iHEpiTJfeE1GFR66FUjmtvhSG5
-         MTm6dfEf8ImcS6/zeeTr+qMCKI3TY+aAM3LtpE6ROCggkzWAHPFYVZPy5NcYdMt9jvlv
-         W2Lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790103034; x=1790707834;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=754YlWijxBQPELZeMlF4jFJNY3ow3QX/KSaNLc/AacQ=;
-        b=GO5+ArU+SlprBnVOeNvaKm6zZr4g8vKT8DIXgtow0L2d8sIEYNw8M+F+CG3WH5HxvS
-         hx92xF8bE+QQrNuW1dC2nmD0UhAhR0vfgG8PJHsfEsYtO97gcA7zjUHnOShRdBeTIQ5F
-         6zPipG5pM7bKgwcBZEeljFpi7eyVK/2Cn5uKIEUIp8j8kYs1O1ZhIpvuOKJ8J+eeIIpH
-         syYcEcA/U77iv+aJe3skz7O6y8uGfgEcPGaes2jVrWPniWTUz5o3ELJkChSaP2nE/Ae1
-         vEI49nynBDD2v3GFDL3B6zMsg2a1/2aCmwY3tw/grhPWPkJ6lN0H/GnsAlCiHd49Fgin
-         DoRQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz2YgxgSy+A4Oc9o2I3A0zOc4yLoV38eh/+nyJMk4h+HFAIa9CD1WYN/YCMzObVJsxnWzY=@vger.kernel.org
-X-Gm-Message-State: AFuF++kyt9Y/hAERRGmYVd+UreLpkEwhNUksgEVmzW48Y0KfbV+TYcgB
-	FptnxZb1hQbPlZY4w2lRdmlXpo38iR7eX1xklg4yOU7lPySepe8AZ8lhXZ4J7KgPj/fwQdJGqgZ
-	bxV4Jfw==
-X-Received: from pgdi2.prod.google.com ([2002:a05:6a02:51e2:b0:cc4:aa77:305b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:d508:b0:3da:1e7b:ea27
- with SMTP id adf61e73a8af0-3ddf7eb3f57mr382659637.21.1790103034178; Tue, 22
- Sep 2026 11:50:34 -0700 (PDT)
-Date: Tue, 22 Sep 2026 11:50:33 -0700
-In-Reply-To: <CAEvNRgFZBHqiZuXawTjDU1oPR=u3yqBzXW5ku+B2rvMAbBM3vA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hMiZHKSa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B081F000FF;
+	Tue, 22 Sep 2026 18:52:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790103168;
+	bh=MXpVSnMgs3Z7izHUy03zYCf6znjQJnlKV3nqic4hNd8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hMiZHKSa7U2bacA1JtdlXZZKizxqaV55VvMSi9xha2q/7AZ+JiVih9cjUTQUctOl7
+	 QAlEn6eljWYbWC+Fz4EXb9rmE5ojWeeBrSGbHLk4fDkR9lbzMqbH23B6hBcShNnyYz
+	 /8clYd3RYb46IaI1HeC0/uWpcX3FhktX1Q9z22DTqUH9UV8WpXXcYdYiCrCNdx/BXh
+	 xr1U9hzn+VpFq508+U8fd8gbqrNJdSOefDdl4iRccuM7WLEMiYhu5gnzPvZ2NzB31/
+	 MiK9ENsSDmNW3uPiDtkVtsuHJpVogFYliYjrZk9qmhMIvjeFpebZmmpVkUYrfOEQ8l
+	 lwtZHgf2NRE8A==
+Date: Tue, 22 Sep 2026 19:52:39 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Oliver Upton <oupton@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
+	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Mark Rutland <mark.rutland@arm.com>, Fuad Tabba <fuad.tabba@linux.dev>, 
+	Randy Dunlap <rdunlap@infradead.org>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Jack Thomson <jackabt@amazon.com>, Jack Thomson <jackabt.amazon@gmail.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Vincent Donnefort <vdonnefort@google.com>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+	Leo Soares Passos <Leo.Bras@arm.com>, Wei-Lin Chang <weilin.chang@arm.com>
+Subject: Re: [PATCH v3 01/14] KVM: Allow architectures to disallow pre-fault
+Message-ID: <arLNQJ2ZbcZ6xivb@gremlin>
+References: <20260922-kvm-arm-prefault-v3-0-787bd3bc7e3f@kernel.org>
+ <20260922-kvm-arm-prefault-v3-1-787bd3bc7e3f@kernel.org>
+ <arKxjsxuO1F5ExrY@kernel.org>
+ <arK5n9HrbZMCOHOt@google.com>
+ <arK5ynpRi7VbY7Ek@gremlin>
+ <arK8seJVT9wYgVCP@google.com>
+ <arK8-Hec3-5o4jYs@gremlin>
+ <arLLnYvkXSFr6f6u@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260806170602.4112602-1-seanjc@google.com> <CAEvNRgFZBHqiZuXawTjDU1oPR=u3yqBzXW5ku+B2rvMAbBM3vA@mail.gmail.com>
-Message-ID: <arLN-ZrD1oQETuPk@google.com>
-Subject: Re: [PATCH v2 0/2] KVM: TDX: INIT_MEM_REGION fixes
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Sashiko Bot <sashiko-bot@kernel.org>, Yan Zhao <yan.y.zhao@intel.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Haotian Jiang <jianghaotian.sunday@gmail.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arLLnYvkXSFr6f6u@google.com>
 
-On Tue, Sep 22, 2026, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
-> 
-> > I completely lost track of this, meant to post these patches weeks ago.
-> > Compile tested only.
+On Tue, Sep 22, 2026 at 11:40:29AM -0700, Sean Christopherson wrote:
+> > > But look at it from an x86 perspective.  Pretty much everyone will look at this
+> > > and expect:
+> > >
+> > >   bool kvm_arch_vcpu_allow_pre_fault_memory(struct kvm_vcpu *vcpu)
+> > >   {
+> > > 	return vcpu->kvm->arch.pre_fault_allowed;
+> > >   }
 > >
-> > v2:
-> >  - Fix an off-by-one bug.
-> >  - Use gpa_t instead of raw u64.
-> >  - Tweak the order of checks to bundle similar checks together, and to perform
-> >    the super basic checks (alignment, size, etc.) first.
+> > I'm not sure I really get your point here at all? :)
 > >
-> > v1: https://lore.kernel.org/all/ak0skG064rhKUC8d@google.com
-> >
-> > Haotian Jiang (1):
-> >   KVM: TDX: Reject INIT_MEM_REGION if number of bytes would overflow a
-> >     u64
-> >
-> > Sean Christopherson (1):
-> >   KVM: TDX: Fix a benign off-by-one bug on the end GPA for
-> >     INIT_MEM_REGION
-> >
-> >  arch/x86/kvm/vmx/tdx.c | 10 +++++++---
-> >  1 file changed, 7 insertions(+), 3 deletions(-)
-> >
-> >
-> > base-commit: a806d364ef288a6443a1337820ea8410a7ccc6b3
-> > --
-> > 2.55.0.679.g6767b8d81c-goog
-> 
-> Looks good to me, just a question on the use of check_*_overflow: I
-> thought Sean didn't like burying an out-param in an if-statement? [1]
+> > Why would it matter what people who are too lazy to go check the implementation
+> > assume about an arch hook?
+>
+> Because I don't hate the people that contribute to KVM, and want to make it as
+> easy as possible for them to not make mistakes?
 
-I don't, but in this case I found it to be the lesser evil.  I think it helps
-that both the out-params are used only in the same if-statement.  One could argue
-that's even *more* evil, but t doesn't "surprise" me as much, e.g. I'm not having
-to hunt for where some variable in the main loop is set.
+Haha well I think I misunderstood you here, I see the point that you might
+assume some state like this rather than an explicit conditional, and the inline
+comment suggested by Oliver makes things a bit clearer.
 
-> [1] https://lore.kernel.org/all/ag8BmtzxTlcuA_zy@google.com
+--
+Cheers, Lorenzo
