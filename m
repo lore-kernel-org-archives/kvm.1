@@ -1,193 +1,229 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52EF51DE1F;
-	Tue, 22 Sep 2026 14:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8604554CF5F
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 14:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790086959; cv=none; b=r85+CXgkgxIODpsxoiAzokTztD80EOgcG7FBBv5FoFr5/+ISPcx7W7AKUg3r2ZYJTiJ92D2AdYOoNbQq7OAUc8V44ySui+eeXZR82pJapnhcUYxOgHko2PPnmhhJWONHP5EnfhjliXiHibb3Oo1Se7veFny23P4gYIfH0hx6PBU=
+	t=1790086960; cv=none; b=YBOpNijH1oOxEZDFSXvnGoS9b0bTo7kvQOsPaq0wmav0cMPa2FxAzaGiju9rhWfb0UsoJvxeZC+df7B8cQIOJCAJin6Qo27R63+EgFJAbcWtk+gd0auJN5E5W+6CQlURnNpJqDVQooHchXnkkdQgbpfivUKSGb8ehShzZLNLzTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790086959; c=relaxed/simple;
-	bh=msjJuGaxSoQQshOdxCcSplNXF6DjNI5rv4QST/Zjo0s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=DnuxNK/RgLd43sGpqjF4gSGGwCTSJKPvISi8p5X697TrH9NpNyyNRbXhw2zBfuJNZqAxTQjH1S+ilTQtkUNpRgAjUgVUNtx98Q5UgmdJhFa2s0wf2KkSmcTKMsb70nDTNgOsNnJekK5OxxWHGIjloQd6lThk4J+KUrMd0a72Iho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oKHS5DRa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790086960; c=relaxed/simple;
+	bh=riuafCmkTkPBvgEasem6g/Rjz6oVl1IK9bQ68eKJ560=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=XZSPw+GMAnZRAMG6TgZoTL3CSfmsnz4dUnRMkSoAFrjrLLWbY9F/WQgl+SRs0mBIz/OLJV5GnINLZSK1T5brxhpLjYdRNoouXPPZ6nTJ7mCMXlnowsk7xp3GvpaobIvaQ2HnL9KgosP5lnLknD/pltM9b/79xsFPQofHSv/XBTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RJCxzK4w; arc=none smtp.client-ip=209.85.216.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oKHS5DRa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 145C31F000FF;
-	Tue, 22 Sep 2026 14:22:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790086957;
-	bh=L3oO91V4IF4G60vcONMUAfnhjyKqf9fK8HxPqZ7yDx8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=oKHS5DRaI08HjzcvWtYe1RxTCulSKE9K7GAetzK1gAmlKpTZtwVOLsZGx+vxwsIoF
-	 4Fc0Mpej6Jcl6qB59u6qmZuL/+YTub0JsQVybmm6RTyI7v0Jc4UxNynINCYcqAYyW0
-	 NYoQhMY5BLRmt+GhwBGFKduN/BOXph8W1gyKSjcp7z+JdYuGyjY7WwsNHrETDFwZ0a
-	 nyH5Hqi31sadWwRn4whOeg/UOMWCcDyVHsD4okuN88AvFXXac7qasNQ1QrBwPhQqN7
-	 Fl2HjDnnomdmMKFbIv9ftdOEOq/4D5bQZpbVWAvFeve0a6jmcSu42XdS8Mh5BuB2Qj
-	 WY0Nem/ttVZzg==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	Fuad Tabba <tabba@google.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Jack Thomson <jackabt@amazon.com>,
-	Jack Thomson <jackabt.amazon@gmail.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Leo Soares Passos <Leo.Bras@arm.com>
-Subject: Re: [PATCH v2 00/13] KVM: arm64: Add KVM_PRE_FAULT_MEMORY support
-In-Reply-To: <arKB2imOcg4MhXMF@gremlin>
-References: <20260914-kvm-arm-prefault-v2-0-26fb47f74b73@kernel.org>
- <yq5abj9p38vq.fsf@kernel.org> <arJ1BDEzY5CANjjB@gremlin>
- <yq5a8q4t305j.fsf@kernel.org> <arKB2imOcg4MhXMF@gremlin>
-Date: Tue, 22 Sep 2026 19:52:25 +0530
-Message-ID: <yq5a5wzx2wny.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RJCxzK4w"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-396901263b6so7304017a91.2
+        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 07:22:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790086957; x=1790691757; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=epWZK8RwacVhKdrC+bFLFuapKZC1iM5N0HUxIK8CzxI=;
+        b=RJCxzK4wk72IPIJSi7Y3EL4b9ZKJ9nb6tW3ymM7XfSUzVthYGQS7XpDpflfFdU80zA
+         duT7iFuRfJc5U1LjY5tLLvP1RnEqVbzcIBMnfuICZTRMX7CRozq1+veP7P8V+jYMawZy
+         81Ty2eTeEmqg0a8QNmTImmkGbl7WdwwgksZSjeqqXc8oZ2OoszERjYQo30ln/G2MdzF8
+         7LFAyDsTstcmYJmUHGEyDgxFogDzXIVrX7a0hTrABTTuNRKdTmTj8aTU18EA4PrjbmVb
+         SGxIB7cyOZrK26clqxQ83LIRaZUakE2KKMRcwbW4wClcYH6LW9iu0oA/QzgWmpH9HrgG
+         JU5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790086957; x=1790691757;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=epWZK8RwacVhKdrC+bFLFuapKZC1iM5N0HUxIK8CzxI=;
+        b=lbukbyBblfI9n9+MQ03KqryO/+I2eV+IS0eqyFRI+xeqJYKeLa507MqsSVJC97lP8T
+         wRVZJMcebduOKzH0Uep87NWXN8AxPuLXhErqsHKCsM1E1fV3VcEy2+YWAY1zc3TyqCUV
+         LCAD60qOCm5OJPMtE8tP4P8wtg/oSzusWfhDOCzyImcl43Y0QHqIbc9RzWsJjjv+57xY
+         EajAomOhGKlz7k/GTddmYbzqMi43enP0BQrPyWIbl1mkNc5BX8ct1/CwPuC6LPaO/Jqr
+         QD9194F+MBGq9doOUo7LTyzEEA44HE/9QJK+y8SBv2q8ywOpOCnxsbpIvoAFP5+i0SIU
+         lm4A==
+X-Forwarded-Encrypted: i=1; AKwUvBxnUKt1N7Dsg/IM61XF9WYlaC3cy15h21XYM5zjFJpMX4gd7WPuwIZ67uv+/9M5oiFsR8s=@vger.kernel.org
+X-Gm-Message-State: AFuF++lE+qWt2BgfWQ2uPYlsmp06BTx5NhSqp3SWbcZEne657OoS+HNi
+	zhR6+Lg/M9+b0muUnAmL2tu0Mwro4I3mSqM8F4M1gry1PG4dFbDXMQj5J5jSusVSLWB5lPtXR7g
+	gdOQJsw==
+X-Received: from pjqo20.prod.google.com ([2002:a17:90a:ac14:b0:3a0:3615:5d88])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1b42:b0:39e:6c69:7773
+ with SMTP id 98e67ed59e1d1-3a073233f70mr1352174a91.28.1790086957097; Tue, 22
+ Sep 2026 07:22:37 -0700 (PDT)
+Date: Tue, 22 Sep 2026 07:22:36 -0700
+In-Reply-To: <arH581gvxmSMPSKA@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20260826165647.769231-1-seanjc@google.com> <aq/XwK71uNfLvUux@yzhao56-desk.sh.intel.com>
+ <arEzv8b2IMHYcHsZ@google.com> <arH581gvxmSMPSKA@yzhao56-desk.sh.intel.com>
+Message-ID: <arKPLKedX4fs8Zef@google.com>
+Subject: Re: [PATCH v2] KVM: guest_memfd: Elaborate on how release() vs.
+ get_pfn() is safe against UAF
+From: Sean Christopherson <seanjc@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Vishal Annapurve <vannapurve@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-"Lorenzo Stoakes (ARM)" <ljs@kernel.org> writes:
+On Tue, Sep 22, 2026, Yan Zhao wrote:
+> On Mon, Sep 21, 2026 at 06:40:15AM -0700, Sean Christopherson wrote:
+> > > > +	 * Note!  synchronize_srcu() is _not_ needed after nullifying memslot
+> > > > +	 * bindings as slot->gmem.file cannot be set back to a non-null value
+> > > > +	 * without the memslot first being deleted.  I.e. this relies on the
+> > > > +	 * synchronize_srcu_expedited() in kvm_swap_active_memslots() to ensure
+> > > > +	 * kvm_gmem_get_pfn() (which runs with kvm->srcu held for read) can't
+> > > > +	 * grab a reference to slot->gmem.file even if the struct file object
+> > > > +	 * is reallocated.
+> Does "reallocated" here refer to the case (*) below?
 
-> On Tue, Sep 22, 2026 at 06:37:04PM +0530, Aneesh Kumar K.V wrote:
->> "Lorenzo Stoakes (ARM)" <ljs@kernel.org> writes:
->>
->> > On Tue, Sep 22, 2026 at 03:28:33PM +0530, Aneesh Kumar K.V wrote:
->> >> > This is because pKVM instantiates vCPUs upon run,
->> >> >
->> >>
->> >> Can pKVM instantiate the hyp vCPU during pre-faulting ?
->> >
->> > It would be an unusual and unexpected thing to do - suddenly a pre-fault
->> > operation is initialising a vCPU explicitly for pKVM.
->> >
->> > A caller is not going to reasonably expect this and might treat a failure to
->> > pre-alloc as fine to carry on whereas in fact it was a failure to initailised a
->> > pKVM vCPU.
->> >
->> > It'd also require significant changes to how pKVM is set up, right now it's
->> > hardcoded to be done unconditionally at run via kvm_arch_vcpu_run_pid_change()
->> > -> pkvm_create_hyp_vcpu(), so all that would have to change and be checked and
->> > tested and... that'd be really out of scope I think :)
->> >
->> > And pre-faulting really makes most sense BEFORE you run a VM. It doesn't make so
->> > much sense mid-run.
->> >
->> > But more fundamentally, the stage 2 page tables, as I understand it, are owned
->> > by pKVM and so aren't really available to be pre-faulted.
->> >
->> > Maybe unprotected-under-pKVM VMs but then it's questionable as to how useful
->> > that would be given that it would be confusing to users vs. how it works for
->> > other VMs.
->> >
->> > So in general, no I don't think it's a good idea.
->> >
->> > And even if we wanted to pursue some version of this, it's _definitely_ out
->> > of scope for the initial pre-faulting bring-up series.
->> >
->> >>
->> >>
->> >> > but pre-faulting is  typically performed before a vCPU is run.  It would be confusing and
->> >> > inconsistent to error out on non-running vCPUs but to pre-fault running
->> >> > ones.
->> >>
->> >>
->> >> I use KVM pre-faulting when transitioning pages from shared to private
->> >
->> > You mean you'd prefer to use? Or you are using it on another arch?
->> >
->> >> with CoCo guest. This ensures that a trusted device can DMA to private
->> >> memory before the guest accesses it.
->> >
->> > Hm what do you mean by private memory?
->> >
->> > I see:
->> >
->> > #ifndef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
->> > static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
->> > {
->> > 	return false;
->> > }
->> > #endif
->> >
->> > And only x86 selects KVM_GENERIC_MEMORY_ATTRIBUTES?
->> >
->> > Do you mean something else?
->> >
->>
->> I am using this with ARM CCA-DA, based on the patch series from Jack Thomson <jackabt.amazon@gmail.com>.
->>
->> https://gitlab.arm.com/linux-arm/kvmtool-cca/-/commit/80e7aad61c5639de2f0cb4a5525dad0c96156428
->>
->> We do this while the VM is running.
->
-> Right, that's a non-mainline kernel I guess? Which presumably implements private memory.
->
-> Jack himself experienced a panic with his pKVM code, so the code you're using is
-> not upstreamable, unfortunately. And he'd already shelved pKVM support AFAICT.
->
-> And reviewers pointed out actually implementing the pKVM stuff properly would be
-> quite involved, even if you wanted to do that (hence follow-up).
->
-> Also you end up stuck with the same problems as I mentioned above - you can't
-> sanely bring the vCPU pre-run, so now you have extremely weird behaviour - only
-> pre-faults if vCPU initialised, running, and unprotected pKVM.
->
+Yes.  I'll clarify this with:
 
-IIUC, pkvm_pgtable_stage2_map() only uses the hyp vCPU's pKVM memcache
-(&vcpu->vcpu.arch.pkvm_memcache). I agree that this does not need to be
-addressed in this series. However, there is also a desire to keep the CCA
-and pKVM code paths similar by using helpers such as kvm_vm_is_protected().
-Since an RMM can create a stage-2 mapping without a REC (vCPU), rejecting
-pre-faulting for all protected VM configurations may be incorrect. I can
-handle this in my series though.
+		 * is reallocated (for use as a different file).
 
-I also want to point out that there are use cases for pre-faulting while
-the VM is running.
+> > > > +	 * file_ref_put() provides a full barrier, and __get_file_rcu() the
+> > > > +	 * matching acquire barrier, to ensure that kvm_gmem_get_file() (via
+> > > > +	 * __get_file_rcu()) sees refcount==0 or fails the "file reloaded"
+> > > > +	 * check (file != NULL due to nullifying the file pointer here).
+> > > > +	 *
+> > > > +	 * Unlike most other users of get_file_rcu(), where callers don't care
+> > > > +	 * if they race with a write, only that they have a reference to _a_
+> > > > +	 * live file, kvm_gmem_get_pfn() needs to get the exact file that is
+> > > > +	 * associated with the memslot.  Without the aforementioned SRCU
+> > > > +	 * synchronization, the following could happen:
+> > > > +	 *
+> > > > +	 *  CPU0				CPU1
+> > > > +	 *  kvm_gmem_get_pfn()
+> > > > +	 *    f = X (from slot->gmem.file)
+> > > > +	 *					kvm_gmem_release())
+> > > > +	 *					  slot->gmem.file = NULL
+> > > > +	 *
+> > > > +	 *					kvm_set_memory_region()
+> > > > +	 *					  slot deleted
+> > > > +	 *
+> > > > +	 *					kvm_set_memory_region()
+> > > > +	 *					  slot created
+> > > > +	 *					  slot->gmem.file = f (alloc the same object)
+> Case (*):
+> 
+> I thought "reallocated" refers to this case, which get_file_active() cannot
+> guarantee against.
 
->
-> Protected pKVM support is a whole other layer of complexity and it's not obvious
-> that you're really achieving what pre-fault is supposed to.
->
-> In any case Oliver literally just asked me to _simplify_ weird edge cases for
-> this series :) so I am not sure something like that is going to be accepted.
->
-> Are you sure you're actually running in pKVM mode btw? CCA doesn't AFAICT? In
-> which case this series _should_ work fine for you.
->
+Ya.
 
+> > > > +	 *
+> > > > +	 *  get_file_active()
+> > > > +	 *    file = f
+> > > > +	 *    file_reloaded = f
+> > > > +	 *
+> > > > +	 * <KVM does weird things with an old memslot+file>
+> > > > +	 *
+> > > > +	 * Obviously KVM would be broken in many places if the synchronization
+> > > > +	 * were omitted, but it's important to note that get_file_active() does
+> > > > +	 * NOT guarantee a reference to the correct file was obtained, only
+> > > > +	 * that the file doesn't point at a reallocated object.
+> > > reallocated -> reloaded?
+> > 
+> > No, "reallocated" is correct.  From the comment for SLAB_TYPESAFE_BY_RCU:
+> > 
+> >   * This delays freeing the SLAB page by a grace period, it does _NOT_
+> >   * delay object freeing. This means that if you do kmem_cache_free()
+> >   * that memory location is free to be reused at any time. Thus it may
+> >   * be possible to see another object there in the same RCU grace period.
+> >   *
+> >   * This feature only ensures the memory location backing the object
+> >   * stays valid, the trick to using this is relying on an independent
+> >   * object validation pass. Something like:
+> >   *
+> >   * ::
+> >   *
+> >   *  begin:
+> >   *   rcu_read_lock();
+> >   *   obj = lockless_lookup(key);
+> >   *   if (obj) {
+> >   *     if (!try_get_ref(obj)) // might fail for free objects
+> >   *       rcu_read_unlock();
+> >   *       goto begin;
+> >   *
+> >   *     if (obj->key != key) { // not the object we expected
+> >   *       put_ref(obj);
+> >   *       rcu_read_unlock();
+> >   *       goto begin;
+> >   *     }
+> >   *   }
+> >   *  rcu_read_unlock();
+> > 
+> > The above pseudocode is what get_file_active() is doing; it verifies the found
+> > file ("obj" above) is the correct file.  Specifically, from __get_file_rcu():
+> > 
+> > 	 * If the pointers don't match the file has been reallocated by
+> > 	 * SLAB_TYPESAFE_BY_RCU.
+> Yeah, I understand this is what you mean by "reallocated" :)
+> However, I think case (*) above could also be considered a form of "reallocated".
+> Would it make sense to rename "reallocated" to "reassigned" in case (*)?
 
-It is not pKVM; it runs in Realm mode.
+Oooh, I see what you're getting at.  Yes, I agree, "reallocated" isn't the best
+description here.  Hmm, but neither is "reloaded" or "reassigned", because it
+doesn't fully guard against the pointer being reassigned, e.g. if the pointer is
+reassigned before the the first load.
 
->
-> Anyway, if we really do need to add something for pKVM it needs to be a follow
-> up. Let's get the basics working first :)
->
+How about this?
 
-sure.
+	 * Obviously KVM would be broken in many places if the synchronization
+	 * were omitted, but it's important to note that get_file_active() does
+	 * NOT guarantee a reference to the "original" file was obtained, only
+	 * that it grabbed a reference for the returned file, i.e. didn't grab
+	 * a reference for file A, but then returned a pointer to file B.
 
-> (Note that kvmtool will need to be updated to retry pre-fault on -EAGAIN, -EINTR
->  as this series can, albeit unlikely, return -EAGAIN.)
->
+And the whole thing as a diff:
 
-I will check this when I rebase my kernel onto this series.
-
--aneesh
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 9a112daa5df9..483998f0df58 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -312,7 +312,7 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
+ 	 * synchronize_srcu_expedited() in kvm_swap_active_memslots() to ensure
+ 	 * kvm_gmem_get_pfn() (which runs with kvm->srcu held for read) can't
+ 	 * grab a reference to slot->gmem.file even if the struct file object
+-	 * is reallocated.
++	 * is reallocated (for use as a different file).
+ 	 *
+ 	 * file_ref_put() provides a full barrier, and __get_file_rcu() the
+ 	 * matching acquire barrier, to ensure that kvm_gmem_get_file() (via
+@@ -327,7 +327,7 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
+ 	 *
+ 	 *  CPU0				CPU1
+ 	 *  kvm_gmem_get_pfn()
+-	 *    f = X (from slot->gmem.file)
++	 *    slot->gmem.file == A
+ 	 *					kvm_gmem_release())
+ 	 *					  slot->gmem.file = NULL
+ 	 *
+@@ -336,18 +336,19 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
+ 	 *
+ 	 *					kvm_set_memory_region()
+ 	 *					  slot created
+-	 *					  slot->gmem.file = f (alloc the same object)
++	 *					  slot->gmem.file = B (alloc the same object)
+ 	 *
+ 	 *  get_file_active()
+-	 *    file = f
+-	 *    file_reloaded = f
++	 *    file = B
++	 *    file_reloaded = B
+ 	 *
+ 	 * <KVM does weird things with an old memslot+file>
+ 	 *
+ 	 * Obviously KVM would be broken in many places if the synchronization
+ 	 * were omitted, but it's important to note that get_file_active() does
+-	 * NOT guarantee a reference to the correct file was obtained, only
+-	 * that the file doesn't point at a reallocated object.
++	 * NOT guarantee a reference to the "original" file was obtained, only
++	 * that it grabbed a reference for the returned file, i.e. didn't grab
++	 * a reference for file A, but then returned a pointer to file B.
+ 	 */
+ 	xa_for_each(&f->bindings, index, slot)
+ 		WRITE_ONCE(slot->gmem.file, NULL);
