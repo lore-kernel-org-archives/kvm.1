@@ -1,150 +1,133 @@
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19E039B947;
-	Tue, 22 Sep 2026 02:16:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F202576E
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 02:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790043420; cv=none; b=f8poGhKaKtorF9TY6J5gSq3XlHK/K666WeERILsvOSTmGkoXXkx9JboJejcCldnCussaFZGTh5wzBaNj2Gecl9EbUTXRWY8wIiXIdPSRJfagWuRCZZJ6mqzM/TloWS25zrxfloUDRMFTMBmjb7zX1LTBnvoG77ypyHUAvhncqbk=
+	t=1790043525; cv=none; b=cSUyU3IsMUpREKEfuawKD3MYjF14xieox6lx7n9FMowqDhRNF9vDstlC9q4XmVt97kTK0G3L+LaP/7NA2BayaWDu6Gk2Sxa77S/g3C0krAwsSxt9NbTbENonr9E30l1nIxuAuaUF1sbanksINTlGR+4DbGEoRM1/SXKxLeVAYUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790043420; c=relaxed/simple;
-	bh=2vGBkI0xknqIEXH3MvA83d12Tvd7oJWD49BR1aQp6NE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QJVDoGciDDQqfM3u+g+aZPEYc3g1Neb//BFFE8ijKiaaBKqx2ln69yRWOj4KuzaUvMMio+OT09JYqoaagbsLPNmMG+9Jo6dZ/4yefSBZ7eHFL83MuQmaG47XtSLl6wI5kMsrz4rKG79rZatNIHCnw/g/41vizKejO3XlpEGP9WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=hbacuVnL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TrhAFyE5; arc=none smtp.client-ip=202.12.124.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1790043525; c=relaxed/simple;
+	bh=cLOAfuodSXvKhZPtEvK2P01F4GvXWZUsUCQ4tbLvm5k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jAZCdmWJTX8OERzIiMcLydbMzWA3FpwZxcmMOE4lBcigoTARu1tHkr6BqFOiH8pzzSHmy1jDhcHgoVSPq+xtv6RgUfU8FPqZyXvhj92/RbwFaYt6rsVvtZQKuXNzlCbOsLcSDHuvgmN+ip2e1PdLezHPPNfTn7WZaJf9FQeYvnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=FtYYgo64; arc=none smtp.client-ip=74.125.227.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="hbacuVnL";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TrhAFyE5"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 097A67A006C;
-	Mon, 21 Sep 2026 22:16:51 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Mon, 21 Sep 2026 22:16:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1790043410;
-	 x=1790129810; bh=m5CLsYmH6SWKRQjuSodBxtKihfzSya8kG6HdASdWy8I=; b=
-	hbacuVnLzriYn8pry5OTtRRAhCkDYi8Dqg7/3FI9lwv+9wgCNGxwxrQAe2sEj+EZ
-	+Pz3IqnmE2Lly5WyQi8kn/n/i6s9Liws+Lr5cFDbUtFqCpcVU0QOhL81XGY4Tqv7
-	G37jfoTPDyuRf1ZKSqf1lpeFQ0n6m9N9EDI+cEesamk4o/RebjSk8F+5WRI852ts
-	dOfIseffoFnKDgzmppBfQtsHntwNTZBIkZ1Nsa6m4uP+10ENzXK84+3IHIHQ3ByS
-	Ebt04H05FXr8V+FTs3Ze+MVqDBIQHlMAKjuJs04XMNFSWvBR1zb72DJxOepUtK3Q
-	n3Q6s3Ngi9ZXvzOd79wItQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790043410; x=
-	1790129810; bh=m5CLsYmH6SWKRQjuSodBxtKihfzSya8kG6HdASdWy8I=; b=T
-	rhAFyE5ENPCYKUFx6jh7HWxG+BQm5jzmjvCNLwCGC0xUwGdQYR5mrq2NxVpCTfWf
-	bzdP2gVrO2wYqJGAtSnVsd+q3rL5d6ayoYnZTWdnNLaFEiJmve7noQ6Npb46LSoT
-	zDjiEAeNybgAhEqLULSPjE+t+A9Cd26NvVSk+mDBxlZlsIwDgQp78bJca9kZILjf
-	cfH3PW2xJ6EpGx0Z8uw77OzzTgjl4N6SkNfzyaZ7UUP0kOxFNI0mFA/4V/0UmPSE
-	4pqfp0zUdJJT2+C2mn0eQEkWuX8MRTtafYvniFWLVwKyfb4d+zvzuD/xpeFDgwtE
-	OxxXiJGT/cL0KKsqI3TMA==
-X-ME-Sender: <xms:EuWxagC5gPip0GkT3GLFF3Cucex_spHkbiZTWF8yNPhz4mLaIVh0Zg>
-    <xme:EuWxagKApE4P88CDms9j-q3mYyxVb3N113gphFRig2ASn1CeNG8mlzCZ_Inj9yrzm
-    smHniyGvqqMPA4wRi_U55v-wElB48f4IX_JKinEFzaxbHZ20H0r10o>
-X-ME-Received: <xmr:EuWxaq_eHNTulr2sCGvdgLDToflpM3K2SilqpI7G0ursdIi7RtZs3nZK2dgHig>
-X-ME-Proxy-Cause: dmFkZTGXJSHqMq/BnZYJ0YweOb4rS2VUXpPM7d5+lSYGhnppGFsNjl5Bysv+w6+cDnCJ/7
-    /L3Cxi42gIwxQ2NUo+88ApQMAdaEv47yc8fAsLypxGx87oHF4HT7ama3q0ueulG4TPc0DY
-    g9aq/+AIZ/88RBFY6z24OfxBW3WPjyGYAaKrF0WRpWdqsttcvGMxliaYSaCPsYHObnA4na
-    kPveiLHd3CCXxarYrwtQo6T70Ls9xKt0FRJqIrLM1i8XMnEKMgqeJVG7tIy0ld86sgmRqY
-    QTP1Xf0Z/CD0h9dlYVSVFIdwBL83CGpVR9ekjjvy4BxnnVieSYFxqs3RHn4BnowjRSHsN7
-    rR//SOuezp5pQ6FuD1S1ndDvE5zpymT9GuUjVB8dP5lzw3ALHldut5NIS/6oiZLPowXQv9
-    TRZ7gMnoQiIU5aIuTKGPh3BqvqFZwzMMm3aXU65kDgNxnIKonMXCWbecS8kP5RX289tXz2
-    Hj5NExCOWlHCL6fcQAPufnCRokTwGuKT2IIioF/EZ32xonW32mEpfHQ+vL/CCd17lKWVlX
-    Um6Ez5U6axfaPG2f6aCJ8jEGMdxDzvskH6XWSC2/paWTXm/OnBkHlLBEQMjZl+xpSzBkyC
-    9vdFX30KJl29H35c3LsWlXtRU3O9mVVFmD1q6ONEmUccVX0uSUQtztjIO2nA
-X-ME-Proxy: <xmx:EuWxau_W1x2-NDQipzUW5KVfi9wy_HQ3II-Qa9w8iQnQuTF5KG5Kzg>
-    <xmx:EuWxas_1PBC75ic96o06tbmTggd832JMjmnBx7xExkhdFUGVZxHFTg>
-    <xmx:EuWxahIkMK_cU7BrCKUG537jRVn7tXkTwlWXxdEIbR7gWjdEPpAvVQ>
-    <xmx:EuWxapTSXb-X0IoQY12VWELMLb1wtLcemW0HdeOcYPMjiVEGH6xejA>
-    <xmx:EuWxas-uI8cnIjDIfIlpGs0nsFmR3Ht-TR0ilNH9WF533A9lceMYECv8>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 21 Sep 2026 22:16:43 -0400 (EDT)
-Date: Mon, 21 Sep 2026 20:14:12 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: <mhonap@nvidia.com>
-Cc: <jgg@ziepe.ca>, <ankita@nvidia.com>, <jic23@kernel.org>,
- <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
- <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
- <dave@stgolabs.net>, <alison.schofield@intel.com>,
- <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
- <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
- <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
- <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
- <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
- <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
- alex@shazbot.org
-Subject: Re: [PATCH v5 17/27] vfio/cxl: Own the whole component register BAR
-Message-ID: <20260921201412.78b7219a@shazbot.org>
-In-Reply-To: <20260916183540.3813685-18-mhonap@nvidia.com>
-References: <20260916183540.3813685-1-mhonap@nvidia.com>
-	<20260916183540.3813685-18-mhonap@nvidia.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="FtYYgo64"
+Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-39b910bdf2eso2506836a91.2
+        for <kvm@vger.kernel.org>; Mon, 21 Sep 2026 19:18:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1790043523; x=1790648323; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5WQok9u00TIs2XVurEer//vmyvUbX92gGWOe15d0Bq0=;
+        b=FtYYgo645P619XnUC0cf7k3Bom+tbVit8UWbuykQn6m6yEAhhngoz5E95W8wXnk3Tv
+         fwmhBgLaEf2XooGjODiE6mH8QHcs8F36s9Ai2Ekpalzt5cyFOiD2UJ5+9HtAZX1He7Ha
+         DMOjDRUtCK3gHXzqrphPzEWdojwt/bnm6i2W4Go3O/LjmDKn+77TJbFHk+HJ4t027k1u
+         qQeDiHgNt4QHNHpFmxUm+r13qpcyBH0w8rhp4lFrySMzhAzjRaLNg8J7uG/ulqQe7rKC
+         kX4d/iQiVpDuMf2VO+EIxepEdxMnqjsbAP1yIldkSrHGfAUVky/+IiZa0cI4kl7vOdyl
+         yGQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790043523; x=1790648323;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5WQok9u00TIs2XVurEer//vmyvUbX92gGWOe15d0Bq0=;
+        b=ZKqqn7hDHbUFx0MlImne7yYLrP6OqA+5US3XYxrVOickC/hp2rRg4pjJryvfKH1W4C
+         wx2tMzzxadqq469z8+urpULmKz5RGxYIpYrjJhBsfxMmEUYdUCYn8Y8bVid4bMamxGjP
+         xw4LKNXkaAElEw6rjrvwJwiof5f052+MqVAT5Q8PYyajYPluQ+W263O1wCsvBovIY2D/
+         Kx/gt3C0jSVoONH8u7Oo3vCejvPZxQsswDKHeQ1wPDxzH/intrG20MEEJj3P1BplDPnu
+         DdvF2rmRMq01smPUrUw8a9wqyUYZz9rA0cmhMyclMO8Bp9HTJkVhnipJgmwW/QoyBmGW
+         kBzg==
+X-Forwarded-Encrypted: i=1; AKwUvBwqbjoCgbuZdlDQEskOSNIkIc+VHVfauQVrAfSfCya+XQ+GgUWK7p4f1jExXcglydjJARo=@vger.kernel.org
+X-Gm-Message-State: AFuF++krfYHgHsvpMmdcoV3WSjAVtDPzckiEpSVNooUKsjC1ltyAY/FW
+	I6ejdDtW099d81PS0Du+UeJN6jLVTowkrdygK4tkmhKt4N3uW2B+9jfVJcvzQef9VZy0PBbH/FK
+	xF1NF
+X-Gm-Gg: AYBFou2+KHcpcl8Sc9SQ5aoehWIPJTtaESroTY0FjcaYuOsSBZiWS++o7RDwJK6qX5/
+	y2nX0Fgg4CmM7bgTBkBE4OG77GIgvtwYhVLZ5qqNMNo91nvcIl+Nm3XT9pXpejpV3M4Lr5fwoom
+	lrw+KLHmJ+waZ03rkS+sn5Aw5qSCJKz5PmhqTljrRhaXwgszSVtNa7vVBvGvsY6omTa9Tmqy9NX
+	G7uOnygEKUmzc9s9vvxF3V3ebtms1YKOvZm2ViIPy4M0JcFs9KJSsaArB95aP+9Hizeb3qHjcPc
+	f82PmbuKDM3C8TILFPhSL7QUbzkn7wdLAaG06RFRtP5DbKMNHyT27LAm3AFYyS33Q9wSU5Ypopi
+	EeFmeRU39Z9gJ2rKfQMbdB9MGCDR/Waav8MD19hzKy7/BnYkKJGHuNJHiVfQ7BrZ8QDcy1yEYg6
+	aWUt/VSVGK9qWmAV+ioNqeoZDP1S6YEp43vbpMFynqtjPj1qXJCHIC20F5yaxCjga77aKeqrf9G
+	VmCDvJMOC2rvSmGVP6DjwrhwQlDr7BNau4Y2fdBqPsQoWptEclg8Kg2GqpLVQ==
+X-Received: by 2002:a17:90b:590e:b0:39e:5166:df84 with SMTP id 98e67ed59e1d1-39e54d1121bmr18157424a91.16.1790043522580;
+        Mon, 21 Sep 2026 19:18:42 -0700 (PDT)
+Received: from FJ7FR2JRQ3.bytedance.net ([139.177.225.231])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a06747204csm1823793a91.11.2026.09.21.19.18.36
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 21 Sep 2026 19:18:40 -0700 (PDT)
+From: Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
+To: Anup Patel <anup@brainfault.org>
+Cc: Atish Patra <atish.patra@linux.dev>,
+	Andy Chiu <tchiu@tenstorrent.com>,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
+Subject: [PATCH] RISC-V: KVM: Fix build with vector support disabled
+Date: Tue, 22 Sep 2026 10:18:24 +0800
+Message-ID: <20260922021823.44251-2-zhangzhanpeng.jasper@bytedance.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 17 Sep 2026 00:05:30 +0530
-<mhonap@nvidia.com> wrote:
+The kernel-mode vector context handling added unconditional calls to
+get_cpu_vector_context(), put_cpu_vector_context() and
+__kvm_riscv_vector_restore() in vcpu.c. With CONFIG_RISCV_ISA_V=n, these
+calls fail to build due to missing declarations.
 
-> From: Manish Honap <mhonap@nvidia.com>
-> 
-> devm_cxl_probe_mem() maps the component registers through the CXL core,
-> which by default claims each HDM and RAS sub-block. That collides with
-> the full-BAR request vfio-pci-core makes when the guest opens the device.
-> 
-> After the component registers are discovered, declare the containing BAR
-> owned with cxl_reg_map_add_owned_resource(). The core then ioremaps the
-> sub-blocks without requesting them, so vfio-pci-core owns the whole BAR
-> and the requests do not collide.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Manish Honap <mhonap@nvidia.com>
-> ---
->  drivers/vfio/pci/cxl/vfio_cxl_core.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/drivers/vfio/pci/cxl/vfio_cxl_core.c b/drivers/vfio/pci/cxl/vfio_cxl_core.c
-> index 0d92e6a409c1..5c8a63833a43 100644
-> --- a/drivers/vfio/pci/cxl/vfio_cxl_core.c
-> +++ b/drivers/vfio/pci/cxl/vfio_cxl_core.c
-> @@ -89,6 +89,15 @@ static int vfio_cxl_init_device(struct vfio_pci_core_device *vdev)
->  		goto err;
->  	}
->  
-> +	/*
-> +	 * vfio-pci-core requests the whole component-register BAR when the
-> +	 * guest opens the device. Declare that BAR owned so the CXL core
-> +	 * ioremaps the HDM and RAS sub-blocks without claiming them, and the
-> +	 * full-BAR request does not collide.
-> +	 */
-> +	cxl_reg_map_add_owned_resource(&cxl->cxlds.reg_map,
-> +				       pci_resource_n(pdev, pdev->hdm->hdm_bar));
-> +
+The get/put helpers already have no-op definitions in asm/vector.h, but
+kvm_vcpu_vector.h only includes that header when CONFIG_RISCV_ISA_V is
+enabled. Include it unconditionally and provide a no-op implementation
+of __kvm_riscv_vector_restore() for the disabled configuration, matching
+the other vector context helpers.
 
-The result of this operation is setting a singleton "owned" pointer to
-this resource, whereas the name suggests it's adding the resource to
-some set of owned resources.  Is "set" really the more idiomatic verb
-for this than "add"?  Thanks,
+The paths that set RISCV_V_VCPU_NEED_RESTORE are compiled out when vector
+support is disabled, so the restore stub does not discard any live
+vector state. Keep it __always_inline for its noinstr caller. The vector
+enabled implementation is unchanged.
 
-Alex
+Fixes: b5060a4aa33d ("RISC-V: KVM: fix vcpu vector context handling for kernel-mode vector")
+Signed-off-by: Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
+---
+ arch/riscv/include/asm/kvm_vcpu_vector.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
->  	if (!cxl->cxlds.reg_map.component_map.hdm_decoder.valid) {
->  		pci_err(pdev, "vfio-cxl: HDM decoder registers not found\n");
->  		ret = -ENODEV;
+diff --git a/arch/riscv/include/asm/kvm_vcpu_vector.h b/arch/riscv/include/asm/kvm_vcpu_vector.h
+index 6371d5ea5392..50d4789b9cac 100644
+--- a/arch/riscv/include/asm/kvm_vcpu_vector.h
++++ b/arch/riscv/include/asm/kvm_vcpu_vector.h
+@@ -11,9 +11,9 @@
+ #define __KVM_VCPU_RISCV_VECTOR_H
+ 
+ #include <linux/types.h>
++#include <asm/vector.h>
+ 
+ #ifdef CONFIG_RISCV_ISA_V
+-#include <asm/vector.h>
+ #include <asm/kvm_host.h>
+ 
+ static __always_inline void __kvm_riscv_vector_save(struct kvm_cpu_context *context)
+@@ -55,6 +55,10 @@ static inline void kvm_riscv_v_exit(void)
+ 
+ struct kvm_cpu_context;
+ 
++static __always_inline void __kvm_riscv_vector_restore(struct kvm_cpu_context *context)
++{
++}
++
+ static inline void kvm_riscv_vcpu_vector_reset(struct kvm_vcpu *vcpu)
+ {
+ }
+
+base-commit: 93f51579e7df248780214094418f205253383cc5
+-- 
+2.50.1 (Apple Git-155)
 
