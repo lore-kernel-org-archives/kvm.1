@@ -1,86 +1,46 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD26418A33;
-	Tue, 22 Sep 2026 08:00:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C773252BE24
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 08:02:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790064057; cv=none; b=QOrgsCVoi3XU9Ygj8MWhvfvsJD8wRBb0c2jvMSQ9abnp2AWqH2EvHD3kkkLot6lX1zCWfrNxXMaKSJ+LUVfoZPoxBTDmFAZzWueZHW3oNW80hYnkkLQyKtODqvBFJ2wKWaUt9WXjCn0APEfxGmh2k8llQjlRwgx+fl744lJ8ZFE=
+	t=1790064139; cv=none; b=UJ998N3wSuZuWsK2WrvxrmWg1/IXPUPKLPbgEB4Rgz5ALX8FRh8tGueq5a4gFsuRLc6oHU17klm/D486PLw2ajGdSe6l4wf7Di7RKXr1i2t+XZP1StGvBqiIGf1y77QUa3+oacvOyQN8QxOVxvMyKpcr2j2JH9fbW0ggXqQi+Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790064057; c=relaxed/simple;
-	bh=KjXRAKBgA8kr840ceo2LLAxRSSi3+MTJxaR9wGSm1cA=;
+	s=arc-20240116; t=1790064139; c=relaxed/simple;
+	bh=wkKAcio3Y55EeiEbM3WCtnsWodS4VAIQrf3BT29nRiE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cggYE0nKU2yb98R7AoYm9Exd7o5B1C9QfCoeLvQWMa9x/UhwFaWDxDTp0Vy/aZvY/Yn2rXS6yT+eA5zk4Bp/ASGyFstZFmZ7hO2OhqfdA8EmfDQE+DOQxrPo3PSUMk4dr9ZEEIiyUvzoJd+RHJSA6LUVRMwLkw4QtRLW5S6W9aM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Ukvu0I1+; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=eRAwb3CWRWR7dIdxIL2rBzzAIyXsREl6HINVftilO02LoikK5kkaa4w2PpJbUaUOgbGOwTP7EvrY4ZSIiYAfGLZvMHg9C60E94V2mYL2/M+/vCTl1SQ4Bb21nNUKbgh7zSiZDbHhgiwK8MNWCv7fo+i4+AgEG7Kig7GQTfVAO6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SBtbkT96; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Ukvu0I1+"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68M05PHT2948356;
-	Tue, 22 Sep 2026 08:00:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=K41nxNHDZw9WuqUB9kOBGLojLVfZ1z
-	UsuTyHMCvuj0Q=; b=Ukvu0I1+4IpPCQ1IIWZcPbdM3hjJSGwEYPdjWOQKHbuMul
-	AAp1/n7hr9N6f37CwRHa5UexxICbKz458q5rLTbKNR7szwnPKOJpwdgydzbcthO4
-	u5pdr+jNe58Buf4ASH7VdLY2hs7GsiKn66BhuAleaQKJgVpOkYWEeB00OgEscsBW
-	K9YNC8LVzwz+ScURXVrilx/vWnIxiWLZd9cKXff+zggXtsgOq4JXjJwGp4iEA0vI
-	xul+Jqj8nZ8TQ7W9NbhJUIOzxn2KaDYjQZVC7BhZZlFMqaX3DCQn5qfKqriT0SdU
-	r6iJFwSDwK/GxQyjpZ9VO0IFTMbYEhhKyo5w059Q==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskgs4mar-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 22 Sep 2026 08:00:24 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68M5Xnd82025383;
-	Tue, 22 Sep 2026 08:00:23 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gt53vh0dg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Sep 2026 08:00:23 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68M80Iqn43581786
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 22 Sep 2026 08:00:19 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DD3A82004B;
-	Tue, 22 Sep 2026 08:00:18 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8944120040;
-	Tue, 22 Sep 2026 08:00:18 +0000 (GMT)
-Received: from osiris (unknown [9.224.76.185])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 22 Sep 2026 08:00:18 +0000 (GMT)
-Date: Tue, 22 Sep 2026 10:01:55 +0200
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        x86@kernel.org, Alex Williamson <alex@shazbot.org>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Andreas Grapentin <gra@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Eric Farman <farman@linux.ibm.com>, Farhan Ali <alifm@linux.ibm.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Halil Pasic <pasic@linux.ibm.com>,
-        Harald Freudenberger <freude@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Holger Dengler <dengler@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Jason Herne <jjherne@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
-        Tony Krowiak <akrowiak@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>
-Subject: Re: [PATCH v2] vfio: Use file-based reference counting for KVM
-Message-ID: <20260922080155.316969-A-seiden@linux.ibm.com>
-References: <20260903-vfio-v2-1-ef4cd4190ae7@linux.ibm.com>
- <apmsZ3j0mtZq4Lp9@google.com>
- <20260918134543.84754-B-seiden@linux.ibm.com>
- <20260918153811.GE11599@ziepe.ca>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SBtbkT96"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C931F00893;
+	Tue, 22 Sep 2026 08:02:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790064125;
+	bh=90yoPo0e8nZJPx2vt6mPG2SJAIwo1F2IUw8Vwwr2glo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=SBtbkT96sQEIr9U8s3KpVjZusgnwOcci8SF8triD9a2TQD2FNJ1K6/vx7O7q4Dv7k
+	 q4goMKO+EI8jnJBLU+HyhIg7q9sGkBsHKD6u3cYonQWGuuWk9J+4jgYAhXlevgroj2
+	 g4TlUyNxdRJtdooU3Vz8EBkNdWRoNxmLG0AE32UF+hAyS/xqo1duVX4MV29QbE9Ikc
+	 F8f0m+Grmdn/E+C15DNnTNN5r8e5DHhUnLqyZ2WkjVJOa0eWeXvTOWhBI6mDO/Zo5T
+	 SMV9B8Ga2h4IpZdChPLx0QB0GA6OsFhbpKWJMtmKJ0cmQY/Eh1GcHonHFQVrIl3Z08
+	 22f7sonZyZp5w==
+Date: Tue, 22 Sep 2026 10:01:59 +0200
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Michael Roth <michael.roth@amd.com>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, berrange@redhat.com,
+	kchamart@redhat.com, pierrick.bouvier@oss.qualcomm.com,
+	peter.maydell@linaro.org, mst@redhat.com, cohuck@redhat.com,
+	pbonzini@redhat.com, eblake@redhat.com, armbru@redhat.com,
+	lorenzo.pieralisi@linaro.org, gshan@redhat.com,
+	enju.kohei@fujitsu.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+	kvm@vger.kernel.org
+Subject: Re: [RFC v4 03/24] target/arm: Add confidential guest support
+Message-ID: <arI197vJkW75p50c@lpieralisi>
+References: <20260903193611.1058589-1-mathieu.poirier@linaro.org>
+ <20260903193611.1058589-4-mathieu.poirier@linaro.org>
+ <dhrvydsmaw22xqx5d5i5s7fdyjxupz27yxp6trv2tesysp4npj@quvzrxjvfipz>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -89,59 +49,171 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260918153811.GE11599@ziepe.ca>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=V/XoQuni c=1 sm=1 tr=0 ts=6ab23598 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=zNZwmuGfLEkv831Cx38A:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: wkStHpHJPnFxFDq3vGQdjHpelJ3jvpIT
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIyMDEwOCBTYWx0ZWRfX+LXjD/rTXbF4
- 3dtr+aXQFhUYsWIxHAqR0yNPszLm6pWiC2h/OPT335CL2Yjq8SSMnJTRubITE8pH4QmViAP1hm2
- ahfpzT/9PS3tBvQUmEDCWNDh0Zd9c/IAQqKMVuWkGedfhZ9PqOQxA+eVmTCkhKEGOkJ6OMiGKgz
- IEvq0ojVzF1ipqgHsB6Oxvrvl8MtozX9qP1NqVU5ZyyhwuEaaAAk6PzECYqnsj1JcLUtXfiKi+o
- RH4Gam48cJj4lQjtADYE+9xafhsedWL15DozXrQ5crvtDINGh0LTQMAb0XuLvDiTegLCQkND4CS
- exaTSFszX5a8Dp41W0eVl2DEBaqWT9uaM1aTwIegPL6530aewd0fD34HtLi1F+VkPZn+DBBbd0f
- oWQk8ZFfFA5Uh6Tb40KQg+jiRX1pikyCYVS6rr+xy/SycFm//zaEuHkpc/JK1ydqW40W6/cLwev
- itSW9deSvJqINcbG9VA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIyMDEwOCBTYWx0ZWRfXyu66dnDBWEXz
- ZitOd8Rl5tTEyQ7lQVFqC0ZGVtiAwu1+xBkP86OcZjnnQotpxspm+d/orUIBMXZzCZQbhCIqfdB
- ve21yvr0woxFjb/v9xf6O8EP0jNwjwc=
-X-Proofpoint-GUID: GR8sdXhledxhSurGln-LEM4Uj_4aCpjg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-21_07,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 malwarescore=0 clxscore=1015 phishscore=0
- bulkscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609220108
+In-Reply-To: <dhrvydsmaw22xqx5d5i5s7fdyjxupz27yxp6trv2tesysp4npj@quvzrxjvfipz>
 
-On Fri, Sep 18, 2026 at 12:38:11PM -0300, Jason Gunthorpe wrote:
-> On Fri, Sep 18, 2026 at 03:45:43PM +0200, Steffen Eiden wrote:
-> > I sent the changes incorporated in the main series[1] in 5 patches:
+On Tue, Sep 15, 2026 at 04:27:21PM -0500, Michael Roth wrote:
+> On Thu, Sep 03, 2026 at 01:35:50PM -0600, Mathieu Poirier wrote:
+> > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > > 
-> > KVM: Introduce file_to_kvm_<arch>() infrastructure 	- adds the macros
-> > KVM: Add file back-pointer to struct kvm		- adds the file field
-> > KVM: x86: Use file_to_kvm_x86() in SEV
-> > KVM/vfio: Use file-based reference counting for KVM	- the swotch in one go
-> > KVM: Restrict kvm_get_kvm/kvm_put_kvm export to internal KVM modules
+> > Add a new RmeGuest object, inheriting from ConfidentialGuestSupport, to
+> > support the Arm Realm Management Extension (RME). It is instantiated by
+> > passing on the command-line:
 > > 
-> > I needed to do the switch in one go (i.e. merge 5->3) otherwhise
-> > there would be conflicts.
+> >   -M virt,confidential-guest-support=<id>
+> >   -object rme-guest,id=<id>
+> > 
+> > This is only the skeleton. Support will be added in following patches.
+> > 
+> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+> > ---
+> >  docs/system/confidential-guest-support.rst |  1 +
+> >  qapi/qom.json                              | 13 +++++++
+> >  target/arm/kvm-rme.c                       | 42 ++++++++++++++++++++++
+> >  target/arm/meson.build                     |  5 ++-
+> >  4 files changed, 60 insertions(+), 1 deletion(-)
+> >  create mode 100644 target/arm/kvm-rme.c
+> > 
+> > diff --git a/docs/system/confidential-guest-support.rst b/docs/system/confidential-guest-support.rst
+> > index 562a7c3c2852..abb56923ad13 100644
+> > --- a/docs/system/confidential-guest-support.rst
+> > +++ b/docs/system/confidential-guest-support.rst
+> > @@ -42,5 +42,6 @@ Currently supported confidential guest mechanisms are:
+> >  * POWER Protected Execution Facility (PEF) (see :ref:`power-papr-protected-execution-facility-pef`)
+> >  * s390x Protected Virtualization (PV) (see :doc:`s390x/protvirt`)
+> >  * AWS Nitro Enclaves (see :doc:`nitro`)
+> > +* Arm Realm Management Extension (RME)
+> >  
+> >  Other mechanisms may be supported in future.
+> > diff --git a/qapi/qom.json b/qapi/qom.json
+> > index 776b13027fd8..52997c29a32d 100644
+> > --- a/qapi/qom.json
+> > +++ b/qapi/qom.json
+> > @@ -1288,6 +1288,17 @@
+> >    'data': { '*pretty': 'bool',
+> >              '*close-action': 'MonitorQMPCloseAction' } }
+> >  
+> > +##
+> > +# @RmeGuestProperties:
+> > +#
+> > +# Properties for rme-guest objects.
+> > +#
+> > +# Since: 11.1
+> > +##
+> > +{ 'struct': 'RmeGuestProperties',
+> > +  'base': 'ConfidentialGuestSupportProperties',
 > 
-> It seems to me many people want this vfio conversion, can it try to go
-> this cycle? IDK if it can meet that linked to the s390 stuff?
+> Just FYI, based on input from Markus I'm planning to drop this
+> ConfidentialGuestSupportProperties base type from my series
+> since it's probably only SNP/TDX that need to be able to switch
+> it on/off, whereas this series appears to use/require it from
+> the start.
 > 
-> Jason
+> I'm not exactly sure what it will look like for v3 yet, but if you
+> were based on v2 you'd instead probably just do the following in the
+> instance_init function for your rme-guest instance:
+> 
+>   cgs->allow_convert_in_place = true;
+>   cgs->convert_in_place = true;
+> 
+> rather than exposing it as a cmdline option.
 
-yes, I will send a v3 later this week to this spin-off. Sory for not
-making this clear in the original message.
+Yep, it won't be an option for CCA Realms anyway since that will be
+the baseline.
 
-I  wanted to get some review input (from Sashiko) with the patches in
-the main series before sending another round here potentially triggering
-the same report twice.
+Thanks,
+Lorenzo
 
-	Steffen
+> Thanks,
+> 
+> Mike
+> 
+> > +  'data': {} }
+> > +
+> >  ##
+> >  # @ObjectType:
+> >  #
+> > @@ -1346,6 +1357,7 @@
+> >      { 'name': 'pr-manager-helper',
+> >        'if': 'CONFIG_LINUX' },
+> >      'qtest',
+> > +    'rme-guest',
+> >      'rng-builtin',
+> >      'rng-egd',
+> >      { 'name': 'rng-random',
+> > @@ -1427,6 +1439,7 @@
+> >        'pr-manager-helper':          { 'type': 'PrManagerHelperProperties',
+> >                                        'if': 'CONFIG_LINUX' },
+> >        'qtest':                      'QtestProperties',
+> > +      'rme-guest':                  'RmeGuestProperties',
+> >        'rng-builtin':                'RngProperties',
+> >        'rng-egd':                    'RngEgdProperties',
+> >        'rng-random':                 { 'type': 'RngRandomProperties',
+> > diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
+> > new file mode 100644
+> > index 000000000000..42e1d1e7b859
+> > --- /dev/null
+> > +++ b/target/arm/kvm-rme.c
+> > @@ -0,0 +1,42 @@
+> > +/*
+> > + * QEMU Arm RME support
+> > + *
+> > + * SPDX-License-Identifier: GPL-2.0-or-later
+> > + *
+> > + * Copyright Linaro 2026
+> > + */
+> > +
+> > +#include "qemu/osdep.h"
+> > +
+> > +#include "hw/core/boards.h"
+> > +#include "hw/core/cpu.h"
+> > +#include "kvm_arm.h"
+> > +#include "migration/blocker.h"
+> > +#include "qapi/error.h"
+> > +#include "qom/object_interfaces.h"
+> > +#include "system/confidential-guest-support.h"
+> > +#include "system/kvm.h"
+> > +#include "system/runstate.h"
+> > +
+> > +#define TYPE_RME_GUEST "rme-guest"
+> > +OBJECT_DECLARE_SIMPLE_TYPE(RmeGuest, RME_GUEST)
+> > +
+> > +struct RmeGuest {
+> > +    ConfidentialGuestSupport parent_obj;
+> > +};
+> > +
+> > +OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
+> > +                                          CONFIDENTIAL_GUEST_SUPPORT,
+> > +                                          { TYPE_USER_CREATABLE }, { })
+> > +
+> > +static void rme_guest_class_init(ObjectClass *oc, const void *data)
+> > +{
+> > +}
+> > +
+> > +static void rme_guest_init(Object *obj)
+> > +{
+> > +}
+> > +
+> > +static void rme_guest_finalize(Object *obj)
+> > +{
+> > +}
+> > diff --git a/target/arm/meson.build b/target/arm/meson.build
+> > index 0369f96b4cc6..9d322a7aad28 100644
+> > --- a/target/arm/meson.build
+> > +++ b/target/arm/meson.build
+> > @@ -31,7 +31,10 @@ arm_common_user_system_ss.add(when: 'TARGET_AARCH64', if_true: files(
+> >  arm_common_system_ss.add(files(
+> >    'arm-qmp-cmds.c',
+> >  ))
+> > -arm_system_ss.add(when: 'CONFIG_KVM', if_true: files('hyp_gdbstub.c', 'kvm.c'))
+> > +arm_system_ss.add(when: 'CONFIG_KVM', if_true: files(
+> > +  'hyp_gdbstub.c',
+> > +  'kvm.c',
+> > +  'kvm-rme.c'))
+> >  arm_system_ss.add(when: 'CONFIG_HVF', if_true: files('hyp_gdbstub.c'))
+> >  
+> >  arm_user_ss.add(files('cpu.c'))
+> > -- 
+> > 2.43.0
+> > 
+> > 
