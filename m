@@ -1,135 +1,240 @@
-Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD593A71AD
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 18:06:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790100362; cv=pass; b=uKTk7z7eFaH12Wg2BHiZe+QzYIMy33VwkXnibwBtmOtT0A7BvLcCoFngTWwNqcaOGPlolE4ysY9QOneKAIVXqFWVoZ/u+zqd/KnQ/3/Zin99jHwirrtgae4HM7G4h5rASS+TQ2SnDtqFLAN6exelr4FZix35BckzQT6KkO99934=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790100362; c=relaxed/simple;
-	bh=m++GKzPyuU7UHVuvb7Ivk6mNPNP0mzBVQQ4H9v+ex2g=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OtTv6aia7+2fdINUfCzUC7pzxTR5CJaHNtBAUXyqkxWzQltq90jrqugHDXoMIUPY6PuX8rfRFgBOucqttFk/bbxZrVu6VbIc1lqynlEiCVBVjSeBpltuBvVYfqxaHEitpIaks6noZBP3Wz4Gwattza579muk9bw8I4PBPhPuMhY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TF7OwM9d; arc=pass smtp.client-ip=74.125.224.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183A741A575;
+	Tue, 22 Sep 2026 18:07:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790100476; cv=none; b=fFkaioBpLksR8e8SqseO6ZYzaMD03usXH5ifS2WgC2s/W+QQA2AWm7WPDxe3WvNaZLG/QPlfDY6Fn+d6rMebX3IlxvOoWudGB2ERa4mKwHtzDvMvvexPEQllIuq7kkr15LGBe8jOttPG3GN36FD5YodQ+KhZr+ONivq+fq8E5KI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790100476; c=relaxed/simple;
+	bh=O5NoYloG7xYDgVh/bOtDr0EbSnoomHvovkii+n0xso4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PepuXattCgmLiVKgkwaXB/Qu36u7vRryfS0jzF6nIy0UfvZieHLHhUOSDQU0udBzSp6QSTzUuErJj4wKMsm04bc95j1/O/xRKhjybmsjylmUZ+iAuDn6jxrU+4fSOsqNRCevTbhWrbhS9wr9uNZyAFA0vzQ2eKeW7iltfG18nEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hrInqBzN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TF7OwM9d"
-Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-66e56a1fe83so97035d50.2
-        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 11:06:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790100360; cv=none;
-        d=google.com; s=arc-20260327;
-        b=U178ZAv1Hu7TMHVAFpD7wNhMfMC7vNK+h79YZQh4NsTx2XbyS4Y73T7c9ZJ8qEnJ7w
-         o/wdN+TqD8rBpG8lQuSvVhX1EchEqjXzCdPpG2ChAVmTNGZGvh5lDaSHPkGf2D+gsZD5
-         cUV6rMYeEkuJg5bZbbdr+2nxKJq/tSIc2K2z/lzC0+oAzpaoaYgHr3d+CKC81qM00z4b
-         +SsDeJEt+QKCeZKK0W/0cxLdxoXMtsG9i64CAxFBOp63XwzHcRv8IX8Rzuhk+l0b+CxI
-         yqybjNXZfeLLZytTI4E8obLNfo06Jse+9iUD8m7WpQFHNK8fYjLIsWwEr5xjY0FkD0pu
-         WW4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=lf7w8zPr6dt4VhD0eugxOymopbvSQ3RHlj+JN+XDuo8=;
-        fh=KM1WQt2MVUpxTCNr+guAxDZK4DUgK4cQgsDAG5Mr04I=;
-        b=jBLSc3vdKChVHnxVLy2VA5wSmXHehpK2mO46W6f8/ADL+KFhsyu1SjUpNu+DpmRgBP
-         WePHB9Wy/knGw16BFMOd7DxmLLIndOnlxiPD9kaZ32DCsJJCzUp7dWlMzp+s9rTI274S
-         j9Pte/BsvMK5QgI9iOie2oPTSGkHnbAbT6AQDNxPjwDKYOqbFKJiWxIBUZNmQGEn6sg0
-         ELhSzEctiNgwRF+FDS3sJsm07s2WIjJgOwWloXJKl0y6+TmVOXsgdyy2FroV0K5n9fX7
-         nvSytgBXMyVAoU6q/6uFV7ExVNHrNqSEe91wr6z2vmxLPtbZj40UVfKSr+JpHDyJCNGo
-         Kdyw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790100360; x=1790705160; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lf7w8zPr6dt4VhD0eugxOymopbvSQ3RHlj+JN+XDuo8=;
-        b=TF7OwM9d87e88gdlAAFs/xW9gM3CHo5HBAMw7enXZJL9z/zMQ2OzNCPkGpnkH2KlkT
-         /Ib0P3bAQchVr1qFiWwCY7LXdJtLxH2kcy1tr1IuFb0RjtKPio+pDBAAUgJeubd2iRoi
-         IZzV6OulXPxBgSCJmKwMTz6qlf/uyThW+chdC1HTWp6E7FrjMZ2uIAJL0WRbHN3HbGuT
-         +3yVLhjdXs/fkjGPkSGhzgZEfgZhiBlWlhLHjd7lLJ5rQjJVGsf97SnPwGLWIk+ch92x
-         BnxFQyYLa5m/T7GI5VP7JSJGaEJHm5BhKasgE5jviAvCklsFDQT+j0FPJ3TmriL7pyLw
-         xHVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790100360; x=1790705160;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lf7w8zPr6dt4VhD0eugxOymopbvSQ3RHlj+JN+XDuo8=;
-        b=HWgjNIXQMnHcTqabpftzMumPwRD1nynCS8gwIXVX3Bn7yD+7GOE37cfEKc2XAVisDe
-         JaIijBWeNYEchP5af6j9x8nN4pYCdT9iNpp/eMmpZcBgb0WqOBjC5onjkwreo5cRUrXO
-         eAsmNonnHwZmOT3bKAZdEgN12GNgVFDKKS+0yr+lTaWOibl1WXpvYdROeFoSJwWPHR8R
-         1OhvfMNXRJbyR5x6ZOBtKfC/J3CAyyBa8novCP4UaY8M8zBfy6aWIvyIqz/fE6UqI/Ks
-         a6pUFb2g7CTWT8T/0wMptuupkFjOWrI8lxUXFEORlfKpP1MAwo6RlPoXguw60mLv19gp
-         pb2g==
-X-Gm-Message-State: AFuF++kCrrm9Y7jj1Ydjl1jnrl+qp2g2/vwWXROSmZXuFg9qh4UonjRc
-	HQ3voKXWqhfy+sF5O2TnztBXlDit5h5yhs7E96dSxBFSUZiuyXomrVbYVWUm98Tl8sGfQ3vvjyk
-	PdPGiIYkvulBpHMastx84VDWZS1+TW17OSQorH6gL
-X-Gm-Gg: AYBFou2p/o+pm9Fsy4dM0ZlFqVxIMVX/VXWvSysdwwfKWOtSYZLvqTkH++zJxVTuXWm
-	/M8lFyTEd8+09qqKZnYjB956Sge0PY2MzzOD91GaLiGKKT5Q7FmgTck9U/CmAM1upeJs4t+ICUY
-	6DySEhLtejRq5qPyQYEQl0ieKIHGassaILpa22bJJwzeNblp4CubFinelaZMPcCy8PG/W2OnLUt
-	oe9vTHASVYVWMVmDCiHpE5yOYyRxHrzzMM1jjqNdaMvgbHdRZcEEQ3v48c0KDQU8s/jZnH3BC/1
-	hBNoKtvyVv2vLgbwohcwLa1uft2dVRS0NwKMgqhi1manG3+J6c94TxPRn1y0medyJyuel1dSFf+
-	AG3cr2t5XJDEjf08QSTMZlMAQ2DcGF6tPyRfG3m8Hdg==
-X-Received: by 2002:a05:690e:1286:b0:672:c272:f6ec with SMTP id
- 956f58d0204a3-672d59bebf8mr157304d50.80.1790100358515; Tue, 22 Sep 2026
- 11:05:58 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 22 Sep 2026 11:05:57 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 22 Sep 2026 11:05:57 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260806170602.4112602-1-seanjc@google.com>
-References: <20260806170602.4112602-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hrInqBzN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A8E1F000FF;
+	Tue, 22 Sep 2026 18:07:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790100474;
+	bh=kb+JzYBVjZ9xE5OHKGAs6buy9QveH8O/36VzTdTmQvE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hrInqBzNV4tJiXiZRrcGk9/EK7PT8Ecw9NiMTg5FJ+q93MSdUGUuLcoW1mSD2L/Ju
+	 TKFIt/lc06QBmc2Fd7Mtmf6ExYIqb1ttPPbfAIAd2RXWTIA3C8fgvHsFs2Mc3cWG8z
+	 9Dgr8xK6tf/XvvZnNpFYNU4yhMWGtXEavvbww5rbd8dp35z5Uy6MERA6AKszfldh16
+	 WvlFBegdMarxEIkPVrYigek7HKcfSkQAEBNRg8Q2v/zItd9+0vj8BzZdSQ144qY7P8
+	 HbsZMWiU7mbGNeWzxcsWReXhu/OZbZ5gW2+IsG+Edhrxr7FPtfMi5M9/rnDrI0eSe9
+	 ATAE9RwR8JiKg==
+Date: Tue, 22 Sep 2026 11:07:53 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Jack Thomson <jackabt@amazon.com>,
+	Jack Thomson <jackabt.amazon@gmail.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Leo Soares Passos <Leo.Bras@arm.com>,
+	Wei-Lin Chang <weilin.chang@arm.com>
+Subject: Re: [PATCH v3 01/14] KVM: Allow architectures to disallow pre-fault
+Message-ID: <arLD-eZ6dRvfZ52q@kernel.org>
+References: <20260922-kvm-arm-prefault-v3-0-787bd3bc7e3f@kernel.org>
+ <20260922-kvm-arm-prefault-v3-1-787bd3bc7e3f@kernel.org>
+ <arKxjsxuO1F5ExrY@kernel.org>
+ <arK5n9HrbZMCOHOt@google.com>
+ <arK5ynpRi7VbY7Ek@gremlin>
+ <arK8seJVT9wYgVCP@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 22 Sep 2026 11:05:57 -0700
-X-Gm-Features: AcwNN1Vwfxfy5stGyMAgpGhv0mGDDhp716mx7weUKBt_bAXRsWwCzdRg7UtOnP4
-Message-ID: <CAEvNRgFZBHqiZuXawTjDU1oPR=u3yqBzXW5ku+B2rvMAbBM3vA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] KVM: TDX: INIT_MEM_REGION fixes
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Sashiko Bot <sashiko-bot@kernel.org>, Yan Zhao <yan.y.zhao@intel.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>, Haotian Jiang <jianghaotian.sunday@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arK8seJVT9wYgVCP@google.com>
 
-Sean Christopherson <seanjc@google.com> writes:
+On Tue, Sep 22, 2026 at 10:36:49AM -0700, Sean Christopherson wrote:
+> On Tue, Sep 22, 2026, Lorenzo Stoakes (ARM) wrote:
+> > On Tue, Sep 22, 2026 at 10:23:43AM -0700, Sean Christopherson wrote:
+> > > Rather than have kvm_arch_vcpu_allow_pre_fault_memory(), what if we add a more
+> > > generic kvm_is_vcpu_loadable()?  That way we don't need to worry as much about
+> > > the return value, the connection to vcpu_load() is obvious, and we don't need to
+> > > add another pre-check if future (or cleaned-up existing?) ioctls want to do
+> > > vcpu_load() in common code.
+> > 
+> > ...this is exactly what I started out with.
+> > 
+> > But then you are in a pickle, because _really_ you need to do that check in
+> > vcpu_load(). Which is a void function. Which is called by every single
+> > architecture all over the place.
+> > 
+> > So you'd have actually no way of signalling the error back.
+> > 
+> > Of course those places are arch code and you could say 'arches should know
+> > better and if they call it it's fine not to call the arch 'can you load'
+> > function.
+> 
+> Yes, that's my vote.  It'd be easy enough to clarify that "rule" with a comment
+> in linux/kvm_host.h.
 
-> I completely lost track of this, meant to post these patches weeks ago.
-> Compile tested only.
->
-> v2:
->  - Fix an off-by-one bug.
->  - Use gpa_t instead of raw u64.
->  - Tweak the order of checks to bundle similar checks together, and to perform
->    the super basic checks (alignment, size, etc.) first.
->
-> v1: https://lore.kernel.org/all/ak0skG064rhKUC8d@google.com
->
-> Haotian Jiang (1):
->   KVM: TDX: Reject INIT_MEM_REGION if number of bytes would overflow a
->     u64
->
-> Sean Christopherson (1):
->   KVM: TDX: Fix a benign off-by-one bug on the end GPA for
->     INIT_MEM_REGION
->
->  arch/x86/kvm/vmx/tdx.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
->
->
-> base-commit: a806d364ef288a6443a1337820ea8410a7ccc6b3
-> --
-> 2.55.0.679.g6767b8d81c-goog
+I feel like trying to make this generic will wind up under-documenting
+the single example we have with the pre fault ioctl. Putting the comment
+into a header practically guarantees that nobody will read it either.
 
-Looks good to me, just a question on the use of check_*_overflow: I
-thought Sean didn't like burying an out-param in an if-statement? [1]
+I'd favor doing something like below and sticking the comment inline in
+the ioctl handler. Unless I'm missing something blatantly obvious, I
+don't see why the x86 or s390 pre-conditions can't be tested early too.
 
-[1] https://lore.kernel.org/all/ag8BmtzxTlcuA_zy@google.com/
+But I don't care enough to bikeshed this any further.
 
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+Thanks,
+Oliver
+
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index 8b080804bc90..396e64875fe7 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -1852,6 +1852,14 @@ static int kvm_arm_vcpu_set_events(struct kvm_vcpu *vcpu,
+ 	return __kvm_arm_vcpu_set_events(vcpu, events);
+ }
+ 
++int kvm_arch_pre_fault_allowed(struct kvm_vcpu *vcpu)
++{
++	if (!kvm_vcpu_initialized(vcpu))
++		return -ENOEXEC;
++
++	return 0;
++}
++
+ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 			 unsigned int ioctl, unsigned long arg)
+ {
+diff --git a/arch/s390/kvm/s390/s390.c b/arch/s390/kvm/s390/s390.c
+index 5c73f43782a7..47fe032444f4 100644
+--- a/arch/s390/kvm/s390/s390.c
++++ b/arch/s390/kvm/s390/s390.c
+@@ -5784,6 +5784,14 @@ void kvm_arch_commit_memory_region(struct kvm *kvm, struct kvm_memory_slot *old,
+ 	s390_kvm_mmu_commit_memory_region(kvm, old, new, change);
+ }
+ 
++int kvm_arch_pre_fault_allowed(struct kvm_vcpu *vcpu)
++{
++	if (kvm_is_ucontrol(vcpu->kvm))
++		return -EINVAL;
++
++	return 0;
++}
++
+ /**
+  * kvm_arch_vcpu_pre_fault_memory() -- pre-fault and link gmap dat tables
+  * @vcpu: the vcpu that shall appear to have generated the fault-in.
+@@ -5810,9 +5818,6 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu, struct kvm_pre_fault_
+ 	gpa_t end;
+ 	int rc;
+ 
+-	if (kvm_is_ucontrol(vcpu->kvm))
+-		return -EINVAL;
+-
+ 	rc = kvm_s390_faultin_gfn(vcpu, NULL, &f);
+ 	if (rc == PGM_ADDRESSING)
+ 		return -ENOENT;
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 064ecc33b926..c35fd2868c20 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -5086,6 +5086,14 @@ static int kvm_tdp_page_prefault(struct kvm_vcpu *vcpu, gpa_t gpa,
+ 	}
+ }
+ 
++int kvm_arch_pre_fault_allowed(struct kvm_vcpu *vcpu)
++{
++	if (!vcpu->kvm->arch.pre_fault_allowed)
++		return -EOPNOTSUPP;
++
++	return 0;
++}
++
+ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
+ 				    struct kvm_pre_fault_memory *range)
+ {
+@@ -5095,9 +5103,6 @@ long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
+ 	u64 end;
+ 	int r;
+ 
+-	if (!vcpu->kvm->arch.pre_fault_allowed)
+-		return -EOPNOTSUPP;
+-
+ 	if (kvm_is_gfn_alias(vcpu->kvm, gpa_to_gfn(range->gpa)))
+ 		return -EINVAL;
+ 
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 03bfc92864b6..bff842548c04 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1693,6 +1693,7 @@ int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu);
+ bool kvm_arch_dy_runnable(struct kvm_vcpu *vcpu);
+ bool kvm_arch_dy_has_pending_interrupt(struct kvm_vcpu *vcpu);
+ bool kvm_arch_vcpu_preempted_in_kernel(struct kvm_vcpu *vcpu);
++int kvm_arch_pre_fault_allowed(struct kvm_vcpu *vcpu);
+ void kvm_arch_pre_destroy_vm(struct kvm *kvm);
+ void kvm_arch_create_vm_debugfs(struct kvm *kvm);
+ 
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 65eb26a0520d..07f2ce7a3cb3 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3961,6 +3961,11 @@ bool __weak kvm_arch_dy_has_pending_interrupt(struct kvm_vcpu *vcpu)
+ 	return false;
+ }
+ 
++int __weak kvm_arch_pre_fault_allowed(struct kvm_vcpu *vcpu)
++{
++	return 0;
++}
++
+ void kvm_vcpu_on_spin(struct kvm_vcpu *me, bool yield_to_kernel_mode)
+ {
+ 	int nr_vcpus, start, i, idx, yielded;
+@@ -4353,7 +4358,7 @@ static int kvm_vcpu_ioctl_get_stats_fd(struct kvm_vcpu *vcpu)
+ static int kvm_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
+ 				     struct kvm_pre_fault_memory *range)
+ {
+-	int idx;
++	int idx, ret;
+ 	long r;
+ 	u64 full_size;
+ 
+@@ -4365,6 +4370,14 @@ static int kvm_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
+ 	    range->gpa + range->size <= range->gpa)
+ 		return -EINVAL;
+ 
++	/*
++	 * Certain architectures (e.g. arm64) need to reject the ioctl 'early'
++	 * before vcpu_load().
++	 */
++	ret = kvm_arch_pre_fault_allowed(vcpu);
++	if (ret)
++		return ret;
++
+ 	vcpu_load(vcpu);
+ 	idx = srcu_read_lock(&vcpu->kvm->srcu);
+
+Thanks,
+Oliver
