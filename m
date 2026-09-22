@@ -1,178 +1,192 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C534A3F02
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 19:32:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564414A4EF4
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 19:36:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790105535; cv=none; b=ZmQhjMOcv3Am9l23pMJMiWOwxwsrPcwAX7aCrlNpZFhPRNjjssZdiVxR9KsdrW1HGeFRE5qv2RCwVokmQKEd8mrB7NHzt3kSO1EvnLPQZlZqwgATwHTXunqi7VHikjuJkk05K2oO5quQxqjtb6IGajQYViA2sbV6UfZsPBkgs2g=
+	t=1790105778; cv=none; b=W6eb9B0fdIGz0jOWr1TsidoA+dsKZ8LHg03Mw4ys9dh5mV4poJYqzbxuRmWlZBSGCUM4mFH90x22rtmMQgvPCms+2nqMG6HJL6VTdNJwwGgFfY47a7OBXrDuri7Fs2zjG86zctoBmmdc3qLKQcyPKWTeTtXq1HI8Vnzb5isRX8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790105535; c=relaxed/simple;
-	bh=3x6/JyG2QRiEHjZ/xYj/5Qj4VWGdcUhP8IUq90zVg7k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Af5af5/IHd6GFPf+fF2PpVL9YZTLob/IyJ7BlKhLuAQTXBYtmWgNDZcPKv19r3R9CC4YWdCAisSmQJj1gC390HutamZnvv/RSURnExRepHi82tYy5sFmRPR0gGvoC+UuhUZ/os07MMZBCd10kORKdyD6alNgD/HmLPgOoITUxIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mCBOY85K; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=WHarx+uT; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1790105778; c=relaxed/simple;
+	bh=iU/Hm2nUIXt5eC5TICqGKbZ8QQc9HPgN2KxZxbl5Bkk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=M4SSn2m71L1SBi9kXaYagt74EoZ+xooRgRNbmOugq6++YDJwRPbF4Y5F1BSshTmKEP0CHvRMixZMfvaLxAT+PyJKFHR1CPiQVPb2JkBNOjzKL2Pq5FguxGAZxMYtpj26ZGYjOVYQkIjtloRyWFXVurZth7JfXFtd7OPx9BboUHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iQZKnUpq; arc=none smtp.client-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mCBOY85K";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="WHarx+uT"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68MI745m1509184
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 19:32:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	66fYIWxsQudt93HBnJi2uy8V6Tpbsup06vZEiSMqw5s=; b=mCBOY85KbLe6Pzpu
-	w5tm5HyGuUICD9mdEO3H8lTMZIUCpf8AFei1DXXS08QcLVEtJAxzdKRouWwQSc8h
-	43rMJ5W1G/3/MVoZ2NVTiP/aQRMF77qEnmqQr2ICtHVBKx95XcXwwBBhZhzUNaZi
-	4ndM2W/aTGtdu7zacVeMqWQ2F3VzLdj4PunQFUE+vprQYm/aptc2G6sRML9ovMWo
-	yGS6qAyhXuNhOmXGFzD0eUXu9QZnEXJqdkkYXPyREtygffmSqExP88MnuZblKRRl
-	XasuB15LtZUeR0l/fOncloKgrNSR+OdcY5agE8c8BwuZJn6mILvg5/4XKbLOSOWd
-	p2gtXA==
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gux7xrjen-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 19:32:12 +0000 (GMT)
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-32b8c2b30c4so179068eec.1
-        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 12:32:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iQZKnUpq"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-86a2639398cso415146b3a.3
+        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 12:36:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790105531; x=1790710331; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:organization
-         :references:in-reply-to:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=66fYIWxsQudt93HBnJi2uy8V6Tpbsup06vZEiSMqw5s=;
-        b=WHarx+uTUyIk1ESTm/9cupC66nI5c1HnMTh6TidMnu6uNHyM51oDhJZUCJg43olbWI
-         fLSh3W5J0AJlDPLPxQwwOfZAyLkmn3501eDjQSEfSnL8gnkd2xBj0cXDjxh3nqsrhsTA
-         r8mG9PiPe6h4BViELQURChR4tPg8Z1btteVEOJm2MGuvxIshelUcR+jsVR+DAopjndoI
-         xh9EOKOeyD7Kz1Sn2edrQP06JNDKT4l0DB/gC9Xvm75nmHly8MlSzSF48TLfzUk66ws5
-         tTCGN1u+U9+1ThVYwRAxY3ByTbEquyxhGfl1UL5jmrcOPQi2TV567t1b/382d0Od9bbz
-         +b/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790105531; x=1790710331;
-        h=content-transfer-encoding:content-type:mime-version:organization
-         :references:in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1790105777; x=1790710577; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=66fYIWxsQudt93HBnJi2uy8V6Tpbsup06vZEiSMqw5s=;
-        b=IW5X8hJOm1HjSfTnpaN67d+uLGD//XYRLo2Cly1aPLMZWIIcKV5JTO2nChc65kaQT5
-         HnYpSGru5tFudCSx9ZF7jMM8kQhzAlWes7FU1pLaK4mFODbkeE/12mKP6jbretjl3/3z
-         D9yc9vLSjHjn0XB1r9O6deMLr+ss19iZsOd8bS+JFpnT8C91lRaP/x4WjFnEdh4MhREn
-         DhczgVQHzdG+PiW0joIArpooAleSDrRnRbA7tKxinurBX7HRrkOTm9egc4wdyBzBlHIN
-         1yYec12sDiry+eVD3ywawfIFeKsD1O05bii3RTJARVLGejTrhAyGMpKdMx7R0AxdzfnN
-         4LnA==
-X-Gm-Message-State: AFuF++n+uMZrHj7XrmoekSaPiI8awa1rwuMmfweeg2/eNSQkvZj9sQpF
-	fG/B/sfqTHpTARTmFOk4IQFa4ipldSissukJiELR2Hkmqubqe9b7zosBPze34qyfxkEMse2EOCw
-	QwCqqAxDUky0oSc0q3X+Iab6i0WtrvaUkKCbb0sCb8eoRrdv6fFguIm1MWooFyH4=
-X-Gm-Gg: AYBFou0sSrqphU4kgzHYoIbDnkd3eHyKJ+FTUqWPVCskcgleGhEJwXpAVMk5Ou74keA
-	itms0gGQJD1X6Hg9Dqico7vAo0u1OQULY4MjSQHjj6rhPPg8MjEoONR/u3nFvJmRj1gHMX8YQ3d
-	wlYIcyZbZcKCUlFyJ6InuzMGBUI+AuuxxzXSbQIraDbuuwE4TCKFz/bLscyL9Q4gGB0YBqbk+GP
-	bp+3E0Y6R74MBi5OsJffpuDuxpsAQ0//cYBBoXU1pGc5FwO/V7groNKHlmO+Htw0q6AW76czjg7
-	yEpsFSoWD5tCB9I0IMgoe2hRV2VTkRDDu3MJufY/cW27MX1AKtPLcXnmRzjfMpktrg7UYtDqquP
-	Jam7LyMSVUHqcq5fnCcLq21uA7+VtVqdYMEjcqj44i9r6PfD4hPjq3jY=
-X-Received: by 2002:a05:7300:e9cd:20b0:33c:5cef:1b97 with SMTP id 5a478bee46e88-33e8c24ccffmr310629eec.11.1790105531322;
-        Tue, 22 Sep 2026 12:32:11 -0700 (PDT)
-X-Received: by 2002:a05:7300:e9cd:20b0:33c:5cef:1b97 with SMTP id 5a478bee46e88-33e8c24ccffmr310598eec.11.1790105530772;
-        Tue, 22 Sep 2026 12:32:10 -0700 (PDT)
-Received: from localhost (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33e96358e2bsm386472eec.16.2026.09.22.12.32.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 12:32:10 -0700 (PDT)
-Date: Tue, 22 Sep 2026 12:32:05 -0700
-From: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
-        will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
-        aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
-        joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
-        linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
-        sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
-        WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
-        Fuad
- Tabba <fuad.tabba@linux.dev>
-Subject: Re: [PATCH v19 03/20] KVM: arm64: Include kvm_emulate.h in
- kvm/arm_psci.h
-Message-ID: <20260922123205.000019b4@oss.qualcomm.com>
-In-Reply-To: <20260920212845.707-4-suzuki.poulose@arm.com>
-References: <20260920212845.707-1-suzuki.poulose@arm.com>
-	<20260920212845.707-4-suzuki.poulose@arm.com>
-Organization: Qualcomm
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-w64-mingw32)
+        bh=bIL+sMCbuRErwmOZKYZI3yloR3lh18Frxp7kLWuzaUc=;
+        b=iQZKnUpqxuTs3OuYTaB+V2vOmbIf4eAA6qQzGE0V7qxQyR+jRB8MmzGeo8fMV0PKIX
+         5RDeqyMy87RYdXNtxkijQCONUXk+i9glpWauLq3rshnMSkd6vqwigxU1kIEDwiYoS5Ed
+         Qgz/hMR9Ojo5uVVFz08fOxdN+jROF8ZO5l+f84Cly9HSYl5/0Y0cn/cjLWaawnqZctaD
+         vKAv/fci10dHdA47Mxrz/z1+04fSCx/mCgSHoe/Yvqg8nTUIyz4l7jXIStJXaxuFxtI2
+         tzX3HW48Vpa3ZeQr6prEFswX1WUcMcz/yI4iRUzHPVm6up/AOXBfgrbmm/FaJOCSdGor
+         X7nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790105777; x=1790710577;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bIL+sMCbuRErwmOZKYZI3yloR3lh18Frxp7kLWuzaUc=;
+        b=HyNvGliprX9JMutN5ve+MV28ah5BHY1YA8p/PCcGQ65rixxndQGNdJVtw9qUkiZhYn
+         M7DZVdLXlOrem9oq9FEB/MXXEbHzDNFLMQm0hh3Do1YhcUI6Jq8xzVzyOSN9ZkKsioIS
+         hA/So/IyCFAv+s9m9Yw1hyqRWAhnznEWUlIBFgqZweR9+z9R9kKxL1gz7HME7UJaLvpX
+         R5a6aF5i58RZDeJq9tebrKU3VFAFQn5nE5eIPkLlEX4kYEISm1+CsdxhEnCUixG2GpjZ
+         DVIX+wakz/S+BgeSxkfGicNgPuXAio/jSAfqM/p4NTTRLXUwKDDU6e9gBf9ZFscWm1Fx
+         D+nA==
+X-Forwarded-Encrypted: i=1; AKwUvByF4FBRc1/hYinDsM2fAK427+LDh9cjvSYJb5FPiyXX7amBJr5s5rWnnfRf/aAK/AG9Gog=@vger.kernel.org
+X-Gm-Message-State: AFuF++nwlNGmUlcQ90R3ayAUWEunrs1aEei9vVDY4hNHnVKmqJDYpEjn
+	RYmzz4NQ6y2RxIvNkg/jE+zwag/52MhrWocF+sFjE1Kr6VeZtJ7Rmnak3Kzto2JeuaE97NYRTG+
+	yMNtLTw==
+X-Received: from pfbdn3.prod.google.com ([2002:a05:6a00:4983:b0:848:7bbd:284b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2da1:b0:857:7337:5db7
+ with SMTP id d2e1a72fcca58-87d1a0b617fmr572184b3a.21.1790105776263; Tue, 22
+ Sep 2026 12:36:16 -0700 (PDT)
+Date: Tue, 22 Sep 2026 12:36:15 -0700
+In-Reply-To: <arLSICws8RVdS-EA@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: BQyvaO38b2mWJalCLcGgTZwuelrmnfWc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIyMDI4NiBTYWx0ZWRfXywN9fmT7/Ux8
- r77rQxP/I81BDDU9Xept25kC0zF6mmIYtl8dO0K7kudfrwb+3rSUg7a70YImN5/qq9yOm0AXmru
- d3xFJbvNdCjfUokrF7ypuLUwtbV4wUvk3aGmvA/H291CWNiaUkV++40a8pqD4d5Tp1ih1n3EreQ
- +veBnwbCS3mBKDeTCKNbrubYZ+nf6h8L+l0LDOhNEPZkWw7cgGgZMxkUjw0kE1WnmYnJJ+rKCfc
- pjKQC9JGGeO3z/b+/Dj/m9NXy+PltgjQuyy7c/0oi31BhVwIS3lTZ1L3eurdvMAG5sKKCSlNa32
- yIq9mRlmkdcMndI+leUnq9vMCf7q4iYwILnWpir+1rp4cSiF7RqzrXePxvUaudgGlhY6A4224Da
- qhuRqBN6usHXcGm2y8FFtYhFYs9uQqsdjRiJLyIAxHNhU1pdMUd+KF9f1upZLYj8gdlrXr03dbO
- pylcXyqrSrmcc3EqBDw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIyMDI4NiBTYWx0ZWRfXwZxapjw9/saW
- H4NEJsfeBTMQUiUSfTLhGVLQQcN3KvgRI50eVgbZ7Em1Gh8OFDKDugdhXsPaGBMJJ9HZKDeugfS
- 5ACyb3lju98RA3Jh2t5/lJaqND5Nssc=
-X-Authority-Analysis: v=2.4 cv=QsDLTlyd c=1 sm=1 tr=0 ts=6ab2d7bc cx=c_pps
- a=cFYjgdjTJScbgFmBucgdfQ==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=7CQSdrXTAAAA:8 a=20KFwNOVAAAA:8 a=EUspDBNiAAAA:8 a=NCrhtLsLQcMXYuDHnY4A:9
- a=QEXdDO2ut3YA:10 a=scEy_gLbYbu1JhEsrz4S:22 a=a-qgeE7W1pNrGK8U0ZQC:22
-X-Proofpoint-ORIG-GUID: BQyvaO38b2mWJalCLcGgTZwuelrmnfWc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-22_03,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 clxscore=1015 lowpriorityscore=0 phishscore=0 bulkscore=0
- suspectscore=0 impostorscore=0 adultscore=0 malwarescore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609220286
+Mime-Version: 1.0
+References: <20260903062856.2090499-1-naveen@kernel.org> <aqROi4Gp_vPvsOtp@google.com>
+ <arK6ygKGfbqga3ij@blrnaveerao1> <arLSICws8RVdS-EA@google.com>
+Message-ID: <arLYrxstIphr3EvH@google.com>
+Subject: Re: [PATCH] KVM: SVM: Clear AVIC Physical ID table entry if vCPU
+ creation fails
+From: Sean Christopherson <seanjc@google.com>
+To: Naveen N Rao <naveen@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Dmytro Maluka <dmaluka@chromium.org>, 
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Sun, 20 Sep 2026 22:28:28 +0100
-Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+On Tue, Sep 22, 2026, Sean Christopherson wrote:
+> On Tue, Sep 22, 2026, Naveen N Rao wrote:
+> > On Fri, Sep 11, 2026 at 11:55:07AM -0700, Sean Christopherson wrote:
+> > > On Thu, Sep 03, 2026, Naveen N Rao (AMD) wrote:
+> > > > diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+> > > > index 3b037e385523..bc2c699380b3 100644
+> > > > --- a/arch/x86/kvm/svm/avic.c
+> > > > +++ b/arch/x86/kvm/svm/avic.c
+> > > > @@ -885,6 +885,16 @@ int avic_init_vcpu(struct vcpu_svm *svm)
+> > > >  	return ret;
+> > > >  }
+> > > >  
+> > > > +void avic_vcpu_free(struct kvm_vcpu *vcpu)
+> > > > +{
+> > > > +	u32 max_id = x2avic_enabled ? x2avic_max_physical_id : AVIC_MAX_PHYSICAL_ID;
+> > > 
+> > > I don't love the duplicate (triplicate?) code, and looking at the usage in
+> > > avic_init_backing_page() with fresh eyes sketched me out.  It's "fine", because
+> > > KVM will reject vCPU creation if vcpu_id >= kvm->arch.max_vcpu_ids, i.e. checking
+> > > only the architectural max won't exceed this max:
+> > > 
+> > > 	return min(kvm->arch.max_vcpu_ids - 1, arch_max);
+> > > 
+> > > But it's hard to see that, and I can't think of any reason why being paranoid
+> > > during vCPU creation/destruction would be a bad thing.
+> > 
+> > Agreed.
+> > 
+> > > 
+> > > Assuming it actually works (haven't tested yet), I'll send a v2 with a prep patch
+> > > to add:
+> > > 
+> > >   static bool avic_is_addressable_vcpu(struct kvm_vcpu *vcpu)
+> > >   {
+> > > 	return (vcpu->vcpu_id * sizeof(u64)) <
+> > > 	       PAGE_SIZE << avic_get_physical_id_table_order(vcpu->kvm);
+> > >   }
+> > 
+> > Unless you are planning to replace similar checks in __avic_vcpu_load() 
+> > and __avic_vcpu_put(), 
+> 
+> Heh, I had coded up exactly that (and then completely forgot that I was going to
+> send a v2, *sigh*).
+> 
+> > I think it will be simpler to just check the id 
+> > itself and avoid dealing with the table size:
+> > 	return vcpu->vcpu_id <= __avic_get_max_physical_id(kvm, NULL);
+> > 
+> > This helper can then also be used in avic_init_backing_page().
+> 
+> Eww, I missed that wrinkle.   Keying off the table order could get a false negative
+> in avic_init_backing_page(), at least in theory.
+> 
+> What if we do both, sort of?  Convert load/put, and add a sanity check in
+> avic_init_vmcb() as well?
 
-> Fix a potential build error (like below, when asm/kvm_emulate.h gets
-> included after the kvm/arm_psci.h) by including the missing header file
-> in kvm/arm_psci.h:
->=20
-> ./include/kvm/arm_psci.h: In function =E2=80=98kvm_psci_version=E2=80=99:
-> ./include/kvm/arm_psci.h:29:13: error: implicit declaration of function
->    =E2=80=98vcpu_has_feature=E2=80=99; did you mean =E2=80=98cpu_have_fea=
-ture=E2=80=99? [-Werror=3Dimplicit-function-declaration]
->    29 |         if (vcpu_has_feature(vcpu, KVM_ARM_VCPU_PSCI_0_2)) {
-> 	         |             ^~~~~~~~~~~~~~~~
-> 			       |             cpu_have_feature
->=20
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+Uh, I think I had a brain fart and forgot that load()/put() are only called if
+AVIC is or was active.   So unless I'm having a brain fart *now*...
 
-Seems like some of these precursor bits would ideally be picked up
-asap - though that does confuse the LLM magic.
+I like your code a lot more.  I don't see any reason to keep the check on
+avic_get_physical_id_table_order() in load()/put().  If we screw up that math
+*and* don't notice immediately, then we deserve the OOB explosions.
 
-> ---
->  include/kvm/arm_psci.h | 2 ++
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/include/kvm/arm_psci.h b/include/kvm/arm_psci.h
-> index f86a006d67136..06c20612e9e7d 100644
-> --- a/include/kvm/arm_psci.h
-> +++ b/include/kvm/arm_psci.h
-> @@ -10,6 +10,8 @@
->  #include <linux/kvm_host.h>
->  #include <uapi/linux/psci.h>
-> =20
-> +#include <asm/kvm_emulate.h>
-> +
->  #define KVM_ARM_PSCI_0_1	PSCI_VERSION(0, 1)
->  #define KVM_ARM_PSCI_0_2	PSCI_VERSION(0, 2)
->  #define KVM_ARM_PSCI_1_0	PSCI_VERSION(1, 0)
+So this?  Probably over two patches to isolate the changes to load()/put() from
+the change to avic_init_backing_page().
+
+diff --git arch/x86/kvm/svm/avic.c arch/x86/kvm/svm/avic.c
+index 3b037e385523..e767e43bfb40 100644
+--- arch/x86/kvm/svm/avic.c
++++ arch/x86/kvm/svm/avic.c
+@@ -395,6 +395,11 @@ static phys_addr_t avic_get_backing_page_address(struct vcpu_svm *svm)
+        return __sme_set(__pa(svm->vcpu.arch.apic->regs));
+ }
+ 
++static bool avic_is_addressable_vcpu(struct kvm_vcpu *vcpu)
++{
++       return vcpu->vcpu_id <= __avic_get_max_physical_id(vcpu->kvm, NULL);
++}
++
+ void avic_init_vmcb(struct vcpu_svm *svm, struct vmcb *vmcb)
+ {
+        struct kvm_svm *kvm_svm = to_kvm_svm(svm->vcpu.kvm);
+@@ -412,7 +417,6 @@ void avic_init_vmcb(struct vcpu_svm *svm, struct vmcb *vmcb)
+ 
+ static int avic_init_backing_page(struct kvm_vcpu *vcpu)
+ {
+-       u32 max_id = x2avic_enabled ? x2avic_max_physical_id : AVIC_MAX_PHYSICAL_ID;
+        struct kvm_svm *kvm_svm = to_kvm_svm(vcpu->kvm);
+        struct vcpu_svm *svm = to_svm(vcpu);
+        u32 id = vcpu->vcpu_id;
+@@ -425,7 +429,7 @@ static int avic_init_backing_page(struct kvm_vcpu *vcpu)
+         * avic_vcpu_load() expects to be called if and only if the vCPU has
+         * fully initialized AVIC.
+         */
+-       if (id > max_id) {
++       if (avic_is_addressable_vcpu(vcpu)) {
+                kvm_set_apicv_inhibit(vcpu->kvm, APICV_INHIBIT_REASON_PHYSICAL_ID_TOO_BIG);
+                vcpu->arch.apic->apicv_active = false;
+                return 0;
+@@ -1045,8 +1049,7 @@ static void __avic_vcpu_load(struct kvm_vcpu *vcpu, int cpu,
+        if (WARN_ON(h_physical_id & ~AVIC_PHYSICAL_ID_ENTRY_HOST_PHYSICAL_ID_MASK))
+                return;
+ 
+-       if (WARN_ON_ONCE(vcpu->vcpu_id * sizeof(entry) >=
+-                        PAGE_SIZE << avic_get_physical_id_table_order(vcpu->kvm)))
++       if (WARN_ON_ONCE(!avic_is_addressable_vcpu(vcpu)))
+                return;
+ 
+        /*
+@@ -1108,8 +1111,7 @@ static void __avic_vcpu_put(struct kvm_vcpu *vcpu, enum avic_vcpu_action action)
+ 
+        lockdep_assert_preemption_disabled();
+ 
+-       if (WARN_ON_ONCE(vcpu->vcpu_id * sizeof(entry) >=
+-                        PAGE_SIZE << avic_get_physical_id_table_order(vcpu->kvm)))
++       if (WARN_ON_ONCE(!avic_is_addressable_vcpu(vcpu)))
+                return;
+ 
+        /*
 
