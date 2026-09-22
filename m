@@ -1,84 +1,84 @@
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2975632B5
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 22:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7497E52F27D
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 22:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790115152; cv=none; b=j1e+67DgdjaHSnE5R+3gU+jM+4iRq/vigW3O3QScFDr3fMMIuZF06BaJhE6W3dkKiqZ/7AIfgYySvgenNt3e58IvU1qmTUlrRLAo21z85ZdLZbVZN2anCHNEXKNtrvrJpkhVbYYbRL37zpNWaHhF7zzrq2p3eQWiG9XlLR/jfI0=
+	t=1790115331; cv=none; b=jDKgiidOyt+TO5vF828aDVWSjpg64Nh9c4GJlQtMKivEHM3aOCPasWSy+SnKixrqtWWkgPP54Z1GRmtcShD61ty7jkZysU9KU+2713Yq3J9gXsoHZIrPfBBiGI2KMj9iENTPujecoZ4aw4ZHKplcKjhM3kKxSMTceP3YZcx9gYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790115152; c=relaxed/simple;
-	bh=ilYK4JBuirT8HWj9lb7kNesQ7ONo66yaGSx6NVf2VE0=;
+	s=arc-20240116; t=1790115331; c=relaxed/simple;
+	bh=2I+RK594+7yvlbEyJzoCiZ3ZLN/AQWF6AlkeQkLTv14=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nmGucagotO4g/ZtjOnLOg17Y5c60KlK+uRy7/MNgxY/FjjgaGD3CqQXmQ0Pvm/skq6AZSkYbcO1cxRYrxwvLYox/kbnhPVbrHqfSyjVgDK5UOReWqfmtpCMR8ai8xhpEthqv6NkbqGJ0EpG20w4yCcmV1uT2kXXMB1ToFRsn12E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Xi5iBYok; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=cYsild8b; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=MinEc4DqsNffswKPfRzFpmR3Sa4sh6zeT0S2fF3k/tGOQTgAxPzRJoTdkr1R80KyZWdFTPSrv22j5K7+UsPKLU7xvVo8hSE5AB7kEfKGj9cB2fyVC9T4OsPd1M7jkO6Riouxzc31quhFWvv1vOMUK+A+nI2pIdrgcRIl8xxSEwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LUIg3yqi; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ZScst4Lp; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Xi5iBYok";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="cYsild8b"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LUIg3yqi";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ZScst4Lp"
 Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68MI7QYB900432
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 22:12:16 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68MI7QPF900443
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 22:15:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	uALtqlrWboMDydUPTyFJwMEQxzN3BoTDOpL4FS6bPkg=; b=Xi5iBYokt2Ym60y1
-	vpsVpXo8tMWGOaetwjaQuZwvfcEM0uLpPU1gEgyshw/wom2fcML7yMokSyv/bN67
-	aPzoeG3QveP9rSjDgKD6X7DEI+TDD2KRztD8yWHPGJC4Dv1hHaR34TrBwrqxAKgH
-	xit/WxV4HJQg6GhWjom3Kks0KUcjV/MNt60Re4x1Z3XuDYRpTWIuKd7pxK5+4bN9
-	6ylLrW5+P47ZKjuSE1vH9XSMXXmCeiaiUP/ZjdPsoGm3xsT/0g8XYPSBYqSK5dhQ
-	oghfRPror1+lpoUXwjMxNR9csqCnxWGFBdinqWCmNv1vmhasJO9sOcaeQvliyR+i
-	F6C7Kg==
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gunjyv20t-1
+	3J+Y3qFDHro/ofj9RaFrKGahhFH3oBBHZcDF842RuqY=; b=LUIg3yqi9TH9y9gg
+	F/mIr66JscemBMTu6ta06KCd3tUQmpN94F8XDNu2Egp5ULhY9mPCicRZtFxQgTPd
+	HGWoa3EhlM3QVW+9XNz2U1tdp77dEZ64XmmdcwCnIPWNS8kMKkGmaS/Skqccsero
+	ZInCQfVzqdZdF6ngjyH+Lsf4v/G0j7PHPaIMQIDuXKK+RYV3dTQ+QE3CsiYEa3b0
+	BocityRN+JBLonLjGZKk7WPacf64e9IPfnE9NpzTgFwsb8D0R87Ii7AqmXA78xqy
+	6qwoFni+9GOvuAsazk/Dr435tBhsXyyNAEHOW9B54SD34831GriuIr8E0HdmbVGo
+	2zdD0w==
+Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gunjyv2gs-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 22:12:16 +0000 (GMT)
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-33c35f5ca6cso402176eec.1
-        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 15:12:15 -0700 (PDT)
+	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 22:15:17 +0000 (GMT)
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-33bb08e80a8so252997eec.0
+        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 15:15:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790115135; x=1790719935; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1790115316; x=1790720116; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:organization
          :references:in-reply-to:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=uALtqlrWboMDydUPTyFJwMEQxzN3BoTDOpL4FS6bPkg=;
-        b=cYsild8bryg/75OyURp6l7gX3+6acFQnU6ZA5xnXg0zyaQWpaAtzkAnqQqUvMKnoTr
-         bia0AOmUpizhFGkSg4BwhG/YpZgnOXEuh7qhimvqmumGHV1So4kq2fZhG7pxtiM+cOiF
-         f+z1t3fTVZLclhbfbpK9leJno4ccrAzgIvm5YwFzQW099exU/KwEnl9N0qmQgi8rn6rZ
-         pLhuZPNMFC2wCwQXj7gHPk/P3RaWUkMxTPATMhpIKz0jI4kfdWAzTDvr2YybThDUUsOc
-         /HGMentaV1KMhU7eAW7Dqs/Ycw/j8YI+Gr1b712m8kj7m/8+0jYVqOBc9wyYsnco4LC6
-         pArg==
+        bh=3J+Y3qFDHro/ofj9RaFrKGahhFH3oBBHZcDF842RuqY=;
+        b=ZScst4Lpe97iX75gCsYgKPhRQduVizXLcG9KhP1KoGPylhFA1oN773svihE6I0DDY2
+         +QGgZcPhfE2KiXEBliSNiIh0BVA423t4qcSSWr6piiV4n1WU7r49y+KDby3va1wr/it7
+         7HfuxvgdU6zq29DAR/tpTyqbouPTFkPcXpwA87bMXmQBnKmWZQehy7jXSDa095UsnxRq
+         wIsqbZIHuKBsu6ZMe5tex/vr0wDCdLXm7+clR/+grhaSNX7RrJA4sN2RkG7yIbOsOQay
+         WbthgLujwgs36BTL3lyvFm4LYMt5VS+zlA2XRB0x9pqYQSrX79IMcruXDh8d+dGa/hyY
+         PqEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790115135; x=1790719935;
+        d=1e100.net; s=20260707; t=1790115316; x=1790720116;
         h=content-transfer-encoding:content-type:mime-version:organization
          :references:in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=uALtqlrWboMDydUPTyFJwMEQxzN3BoTDOpL4FS6bPkg=;
-        b=2MIgVcnrJI8Rb0dG+igebG0fG94mhT3Q6EUNhTQK1REiQDq2hi8jPIoAR2d05H2SPg
-         X3vxpJXdmlzK9lmcNuWKigYAJDiC23orh9mt+Q7lNA/ns+aj/FAxBjJIBqLSybAn1jtg
-         6jCHcnRUkf8eBnsByA2XEvAfWcWSi1re02efG102WxsQu8vMzPFZwGfykL0Iy6qLkQgP
-         tHl6obUTlVccqQKCU7xdmbmMPWI1OR22qQiF+VVQWD9MI8raQ/lLrVqIP0NfdgVF9AAi
-         ywZJUUYz/dB0kq+7x49sgcg3VKelsnZmumA5wkoKo/5BZzM3R2gnPjTHpZeBCW/vTeHg
-         NLcA==
-X-Gm-Message-State: AFuF++nqTVjApQXFtBR2pzkh08jkbbAz15MVos/eIHfoHkUdCz16/9qj
-	esKoO0ZHoJVnlZAQ9wj2OyQPNJ8faqPTL2HZvz7r2ocfw8UDtBCu7Pwsl0tLmM0iI39i6/pKfZt
-	T/I7S5rOsDU0S+4oyI0laOsIYDWVEME7WXgjB3Crk9QQTM0GlPqGnnIs=
-X-Gm-Gg: AYBFou1KSB+A4bFrFaMfdQali+ACYH9F3Aw0NgzQwxwCWRNnsFlUxX0rvdYsd0MVtbS
-	eNRlJm3GbhnfinhabuaVZ4LL2JXy0NiHBXW6xlOSXSEa2prOB1+HDi6gXLlyr1jcYKyIOHJV+FN
-	P0YgA1G/Vk2n99nIoNQgsJUmmq39CvwDvS4ekXCkWRknjm83NXhskAUNIc6+kSVmc+3XNRv9wDz
-	BmV9yLIq231szz6DuJHuPf2HYZkqb0g3QGcCJDdCgP5rVOg20ho8xCI1uZyhofoJDQlNXjvM+DW
-	eNTJFNtFbnUvk7YCfDQ/NQU+hbegG0DdI1bEZgztLeGr0uvBJs/83svEHY5PZG/Tf6vVGXHz0n6
-	cycFkF4xqoiRAm70aZEtU+cLL+kUuvQqR1jJIHFwK7z8SI6Du8b3pF6I=
-X-Received: by 2002:a05:693c:8948:10b0:33b:de3b:8b09 with SMTP id 5a478bee46e88-33e8e1b4b4cmr574488eec.40.1790115134446;
-        Tue, 22 Sep 2026 15:12:14 -0700 (PDT)
-X-Received: by 2002:a05:693c:8948:10b0:33b:de3b:8b09 with SMTP id 5a478bee46e88-33e8e1b4b4cmr574460eec.40.1790115133819;
-        Tue, 22 Sep 2026 15:12:13 -0700 (PDT)
+        bh=3J+Y3qFDHro/ofj9RaFrKGahhFH3oBBHZcDF842RuqY=;
+        b=gMJL58EF+5twFHMWepbadaxqvDbUrR6DirjmWrRLpLr1Iprat1MGMJmxQpRtay22u8
+         tMSDKKZLM8RnDyhQKZKy+wHbU3Waawgha6RXc9HW7p5njLFtKb7VLJLZDrfF6iTIpbrq
+         EOuzrC6C8wfG+Wi6jULLWPbBoIrMYecn8KJgjSfYB/Cam4SOqdmlpYpQQ/pzUoCz/lka
+         MnnsYBszcpN5/hXe+8P1ngYSlIWmTW4rzd5eqWJwM/P4wQlN9pd33HMAZog90ky/6HGz
+         3IfauGtkIjAH12yFFIq4YvlK6DxgYH6Skbgm3LTQZ/oEPZmqvFjBVWVmf0BNe9imByGo
+         kgkw==
+X-Gm-Message-State: AFuF++moBnKtQMvidQIR7Y+aJSxU8wR1ZI0VY7D4B/OBAZ4SaKQbJTpK
+	ccJrJcYpn6yd/Uu/pnmClMbg5VZH9YYURX6qCXJ3w4xhyCaUZH4N9LTn3BvxLRUbmb5OO45swlm
+	LUINwdibTHhlt4K2deGWkzAIJUFmY/4zdCN0yEVmEV129gd21k5//xY4=
+X-Gm-Gg: AYBFou2AazCmhIuHLFmQ7wFNFGIjwsgJzNg+TRCvtJbLSLZsDYkfF+y5hP2bmDR/J6b
+	FusdsJc24tD7ZL513KjImAZ4lwdjRPGPP6AcCmDFlUBT/r6tNA8wZCLMon/2+e7HmOqCAKFx1U9
+	QgRd2iMKNqzjVVZor4iJG+5PbQ0KjW51DVLgGt81l6tRdMtJS40vsiWn0Hkii1KuSH9ReqKTScv
+	9g/TZ4fZmn9x7dLd58PMDeJph8IzDZ4eo0NguTtiTYuQNxpzuYXeF2z8AFhxCqwNFeK8FMIad7b
+	HsOE9qZvGz/ZQBakx6UFu2A/Xx5dQH6+ohcOjI8wLb04NgAHkU3k5JAQHqtLS0FEJSJVlOwc3ho
+	cNpLdVOZcWDaEHOxow58C3R9AqkF4u7dfxREsBRikqKWf7Uii3kYMyw==
+X-Received: by 2002:a05:7300:e9ce:10b0:33e:6c5a:37c3 with SMTP id 5a478bee46e88-33e6c5a3aeamr850800eec.1.1790115315788;
+        Tue, 22 Sep 2026 15:15:15 -0700 (PDT)
+X-Received: by 2002:a05:7300:e9ce:10b0:33e:6c5a:37c3 with SMTP id 5a478bee46e88-33e6c5a3aeamr850779eec.1.1790115315280;
+        Tue, 22 Sep 2026 15:15:15 -0700 (PDT)
 Received: from localhost (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33e95c7d003sm1032300eec.9.2026.09.22.15.12.11
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33e9625825asm1072047eec.13.2026.09.22.15.15.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 15:12:13 -0700 (PDT)
-Date: Tue, 22 Sep 2026 15:12:02 -0700
+        Tue, 22 Sep 2026 15:15:14 -0700 (PDT)
+Date: Tue, 22 Sep 2026 15:15:10 -0700
 From: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
 To: Suzuki K Poulose <suzuki.poulose@arm.com>
 Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
@@ -88,13 +88,15 @@ Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
         joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
         linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
         sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
-        WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-Subject: Re: [PATCH v19 07/20] KVM: arm64: Add vcpu load/put call backs for
- flavors
-Message-ID: <20260922151202.0000549c@oss.qualcomm.com>
-In-Reply-To: <20260920212845.707-8-suzuki.poulose@arm.com>
+        WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+        Fuad
+ Tabba <fuad.tabba@linux.dev>
+Subject: Re: [PATCH v19 08/20] KVM: arm64: Reuse kvm_stage2_unmap_range in
+ kvm_unmap_gfn_range
+Message-ID: <20260922151510.00003c76@oss.qualcomm.com>
+In-Reply-To: <20260920212845.707-9-suzuki.poulose@arm.com>
 References: <20260920212845.707-1-suzuki.poulose@arm.com>
-	<20260920212845.707-8-suzuki.poulose@arm.com>
+	<20260920212845.707-9-suzuki.poulose@arm.com>
 Organization: Qualcomm
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-w64-mingw32)
 Precedence: bulk
@@ -105,25 +107,25 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: e2jnPZRB72ltg19gWCh2Ks9xr1iSoLpx
-X-Authority-Analysis: v=2.4 cv=KqHYSmWN c=1 sm=1 tr=0 ts=6ab2fd40 cx=c_pps
- a=cFYjgdjTJScbgFmBucgdfQ==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+X-Proofpoint-GUID: GakJR9JvHO2mTQJpZjDaIzVNidt8fV_I
+X-Authority-Analysis: v=2.4 cv=KqHYSmWN c=1 sm=1 tr=0 ts=6ab2fdf5 cx=c_pps
+ a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
  a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
  a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
- a=7CQSdrXTAAAA:8 a=VwQbUJbxAAAA:8 a=eF-YeP4ItYG6qj9G5aAA:9 a=CjuIK1q_8ugA:10
- a=scEy_gLbYbu1JhEsrz4S:22 a=a-qgeE7W1pNrGK8U0ZQC:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIyMDMwMSBTYWx0ZWRfX42yvqzxHfdVk
- 5XT3f5JNc7XunArR2uWHFBx1ZRpEAz/7rkHbXpwXn7ML4czi3edk5paGebV/7H7KCnT946UDjDS
- bAAEM77J4Nyr/bpDrkg7UA1BwsRz5fdp9dHFApotlYVK6cVgx9x5hKACzpFzcxi0tEbGY9J3Z1f
- c60eOFvvJJmFYeHwfZpHZ8oPw3ZDmfl5XsL9/piDcAB/zOrUjAbJ6bz0cagAlnSfc7CHgybpuKN
- G9xQLuqtuCipXbavzzlD/hoD9drGtLS+A6uK3fueX72zu7rsF0OzY4jF7TbDRvtls5wSmTVIHMn
- yrO84XVMAUIPe5GU3fKJHKpcISmE+RmMoxxWaVLVDAM30kq458dOE1XVqSNApKGMNEvUbM2X4zk
- /pumFCbDoIZtQk3zqaD9uiG7TqU+sz9vhNKS4Sh4K37N3hiWb/jL5LS4oxGltaOJnTgEQGVbVdO
- s7O0kxMpjNlP75vw1tg==
-X-Proofpoint-ORIG-GUID: e2jnPZRB72ltg19gWCh2Ks9xr1iSoLpx
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIyMDMwMSBTYWx0ZWRfX3522uNoGd2Bt
- bSUOCzMo0tifV0QD37LT8NbQvcVCewHkfRL8frpGg2hTrqCX+WxAhvwiddrhYJfSygMScSyWgy8
- UgiO0Y+qTTLmxz/VoMDNGa7i2Zzx3Yk=
+ a=7CQSdrXTAAAA:8 a=EUspDBNiAAAA:8 a=kMqVnm4xDtAkP_aMvZEA:9 a=CjuIK1q_8ugA:10
+ a=6Ab_bkdmUrQuMsNx7PHu:22 a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIyMDMwMSBTYWx0ZWRfX0wQzCDIvr+3o
+ wWPvckAdLfSJY2mnRFfyLEjQkyL9Smw04wb6AeQuo4REJpWsYWcBY4UcN/n1VDBQWyaYdiYDiov
+ drwGP+w6hganRRrU9Rl2bW2Mi266zJQDvnfyIHDFrR4xMSb9ej76pddGbYmwjSjK6YD5z2NVNIY
+ ecq6EZ0N/RQowHCTusuKdMbOwoKXF2sJdUQ9bCzZWOMeR1NixicHJfncTW94RPL5unamXrETHGB
+ p++/MJIr44vJd4Y6LfD3DtY4vYXvvvVHsfKdqQL2NYDxDpx87ZaMRcHHD21PgC8rTZOLD8BUZin
+ PZqO8iTYDTDqkuCxAVYdO2+3U5b/R4T2vMLdIgYfSD+FbDqK577zkinkxQ9v9vGV1uIeSSNLfXl
+ DBoBUE2tdI8PUfeRSsUYjlNrFxoeBCLEjdVCYZAuXLwCit30pGSSeBkMEYkXpsOcmFaLXSIZP8j
+ Bld1hNpOLA1H5Or+pCA==
+X-Proofpoint-ORIG-GUID: GakJR9JvHO2mTQJpZjDaIzVNidt8fV_I
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIyMDMwMSBTYWx0ZWRfX60oWHcCm3r3a
+ mTasJYbduI3nWgFlh1Ujdc05ePzr4r1b27AIrln4rMCgYiRVGJEmwH67oBpIJHUUb5zqriBraky
+ sjQA95AM2sASLakj5nvf5uqvyHgY6/o=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-22_03,2026-09-21_02,2025-10-01_01
@@ -133,113 +135,51 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609220301
 
-On Sun, 20 Sep 2026 22:28:32 +0100
+On Sun, 20 Sep 2026 22:28:33 +0100
 Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
 
-> Add VM flavor specific handlers for VCPU load/put, in an effort to make it
-> easier to follow the code. pauth traps were removed from VMs running PKVM
-> as it is a no-op for them.
+> In preparation for adding VM specific backends for stage2 operation,
+> switch to kvm_stage2_unmap_range() instead of __unmap_stage2_range()
+> from the kvm_unmap_gfn_range(). Drop the bail out check for protected
+> VMs and defer that to the one in kvm_stage2_unmap_range(). Later we
+> would replace the logic in kvm_stage2_unmap_range() with VM specific
+> backends.
 > 
-> Based on a patch by Marc Zyngier
+> No functional changes intended.
 > 
-> Suggested-by: Marc Zyngier <maz@kernel.org>
+> Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
- 
-A couple of comments on this one.
+
+Trivial thing inline. Otherwise this is fine.
+
+Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
 
 > ---
-> Changes since v17:
->  - Use macro to initialize the per-flavor ops
->  - Add a wrapper to initialise ops in the vcpu structure.
->  - Add BUILD_BUG_ON for the array size
->  - Remove irrelevant comment about the order of timer loading for !VHE
->  - Use the explicti kvm_call_hyp_nvhe for nVHE flavor
->  - Don't call nvhe_vcpu_put from pkvm_vcpu_put, open code them
->  - Drop cpu argument for vcpu_load() callback. We set the cpu
->    before the callbacks are invoked
-
-
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index c74706ed9a531..9b977dc734220 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-
-> +static void nvhe_vcpu_load(struct kvm_vcpu *vcpu)
-> +{
-> +	vcpu_prepare_mmu(vcpu);
-> +	kvm_timer_vcpu_load(vcpu);
-> +	kvm_vgic_load(vcpu);
-> +	kvm_vcpu_load_debug(vcpu);
-> +	kvm_vcpu_load_fgt(vcpu);
-> +	kvm_arch_vcpu_load_fp(vcpu);
-> +	kvm_vcpu_pmu_restore_guest(vcpu);
-> +
-> +	vcpu_load_pvtime(vcpu);
-> +	vcpu_set_wfx_traps(vcpu);
-> +	vcpu_set_pauth_traps(vcpu);
-
-Now it isn't called from the pkvm path can you remove the defenses
-in there on !is_protected_kvm_enabled()?
-
-> +}
-> +
-
-> +
-> +static void pkvm_vcpu_put(struct kvm_vcpu *vcpu)
-> +{
-> +	kvm_call_hyp_nvhe(__vgic_v3_save_aprs, &vcpu->arch.vgic_cpu.vgic_v3);
-> +	kvm_call_hyp_nvhe(__pkvm_vcpu_put);
-> +
-> +	/* __pkvm_vcpu_put implies a sync of the state */
-> +	if (kvm_vm_is_unprotected_pkvm(vcpu->kvm))
-> +		vcpu_set_flag(vcpu, PKVM_HOST_STATE_DIRTY);
-> +
-> +	kvm_vcpu_put_debug(vcpu);
-> +	kvm_arch_vcpu_put_fp(vcpu);
-> +	kvm_timer_vcpu_put(vcpu);
-> +	kvm_vgic_put(vcpu);
-> +	kvm_vcpu_pmu_restore_host(vcpu);
-
-May have been incorrect or pointless but wasn't kvm_arm_vmid_clear_active()
-previously called in this path?  Would be nice to tweak that to be under
-an appropriate gate in a precursor patch with explanation of why.
-
-> +}
-> +
-> +void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
-> +{
-> +	vcpu->arch.vcpu_ops->vcpu_put(vcpu);
->  	vcpu_clear_on_unsupported_cpu(vcpu);
->  	vcpu->cpu = -1;
->  }
-> @@ -2136,6 +2187,37 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
->  	}
->  }
-
-> +
-> +#define KVM_VCPU_OPS(flavor, ops)		\
-> +	[(flavor)] = (ops)
-> +
-> +static const struct kvm_vcpu_ops *arm64_vcpu_ops[] = {
-> +	KVM_VCPU_OPS(VM_VHE, &vhe_vcpu_ops),
-> +	KVM_VCPU_OPS(VM_NVHE, &nvhe_vcpu_ops),
-> +	KVM_VCPU_OPS(VM_PKVM, &pkvm_vcpu_ops),
-> +	KVM_VCPU_OPS(VM_PROTECTED_PKVM, &pkvm_vcpu_ops),
-
-I'd put these in same order as the enum. Given the construction
-doesn't really matter but just feels more natural when reading
-the code to check they are all there (obviously the BUILD_BUG
-below also does that).
-
-> +};
-> +
-> +static void kvm_init_vcpu_ops(struct kvm_vcpu *vcpu)
-> +{
-> +	BUILD_BUG_ON(ARRAY_SIZE(arm64_vcpu_ops) != VM_FLAVOR_MAX);
-> +	vcpu->arch.vcpu_ops = arm64_vcpu_ops[vcpu->kvm->arch.vm_flavor];
-> +}
-> +
->  static unsigned long nvhe_percpu_size(void)
+>  arch/arm64/kvm/mmu.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index 0f4e8b71fa85d..03f2017a7404a 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -2436,12 +2436,12 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
+>  
+>  bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
 >  {
->  	return (unsigned long)CHOOSE_NVHE_SYM(__per_cpu_end) -
+> -	if (!kvm->arch.mmu.pgt || kvm_vm_is_protected(kvm))
+> +	if (!kvm->arch.mmu.pgt)
+>  		return false;
+>  
+> -	__unmap_stage2_range(&kvm->arch.mmu, range->start << PAGE_SHIFT,
+> -			     (range->end - range->start) << PAGE_SHIFT,
+> -			     range->may_block);
+> +	kvm_stage2_unmap_range(&kvm->arch.mmu, range->start << PAGE_SHIFT,
+> +				(range->end - range->start) << PAGE_SHIFT,
+
+Looks like indent is 1 too many space.
+
+> +				range->may_block);
+>  
+>  	kvm_nested_s2_unmap(kvm, range->may_block);
+>  	return false;
 
