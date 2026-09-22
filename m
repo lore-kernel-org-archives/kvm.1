@@ -1,33 +1,33 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9BE425CF0;
-	Tue, 22 Sep 2026 08:15:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9CD41A50B;
+	Tue, 22 Sep 2026 08:16:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790064922; cv=none; b=kpW5juk3MxPdx1kuO4/6I2+a2ZmzktyEFHGUV8CAR/y29SxXMAQ5qYL1HpENnq0yyPDMYm9BU/R1OkbKMBe/A7r0D1djJgJLeFsYX6Y9HxvMui81vEtgbp9mwOpri6/Obxkak9Nq5azkj4Lvtd4jHCpIIl/jZn/WyTOKcaapmkE=
+	t=1790065019; cv=none; b=AhA5GX2hHJYkLcawUnDepwhAmHXSQccSMuT6K2UX3zVv553l11pkyv7x8dCvk2y5jpqlYFne7KwBQGtfKo+96AcbIuUX1yC7r1PAUtcg+SyTlOol6BX3HMGShbAqdV0NWFWpW+1x3T/TqOpSiiWPEHOQHdxMhkEKUSmyHcTQ2/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790064922; c=relaxed/simple;
-	bh=UIctCbKbjqQeNi5rYE8Gdj0Gm4xFFRg7tGz24qBNN9k=;
+	s=arc-20240116; t=1790065019; c=relaxed/simple;
+	bh=4HbwZEfa+cRQWF9f/+A2Lw6siv1Umc8ka3GRgBT5ZFY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d2X5NYWcs7/rOipX4eoLXn19kAcnxKX3dWgFhcpcd9qtDNTRhSoiEbsXDYOQzqmIb8kPYvNfWielqYin079B6ecmnSPmjNgwF3HApM9Fna0X1OKr8oVZ7qDMHMuBMhYfu+r+M7kr56cKBDwHaCTCvJjcxUx1VwLQO4sxGsHxqMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JhNIVhUl; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=kSRbv8Pzh1t2ucFlt6Iov9T5tKQvb/0ZjzKPhnTbZ715YqxG9QJOHAtyzBR/RlQ3kVQHCAuPpBWEBcYwjr/968KyYtcWUUwJwZJTM4tEpR/QOBwBEBUO2K1F8MWG6/XZKDrLFcp9D7ASv9nBzQZGIQsAcMObdEWn3NrjEbVyFxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=gsyPGIOz; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JhNIVhUl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9827E1F000FF;
-	Tue, 22 Sep 2026 08:15:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790064917;
-	bh=fhzoQNQ0VfgKCcXVFnPtD58zap0GdE2AcvAcdXtfgsg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=JhNIVhUl5x3h+6u8lzN+OA9Yq05A9r9IrBnK45vLsH0omuW1A6IqD7dVg5kapwvP3
-	 Su5j578yDlhHLslPHirlj/rw7V6iHqBpvfQGVeEl5YfA48QGHUf8Qx3sLmF7X+q8YB
-	 Edb0jVK+dt0eDXn26Zhvpd9qzjuqHO1Vu9RrEzAFiJtJteF0jR30dIogbtVUzx1GYw
-	 wBgv8CtWVjL/CQZqR5ptgHdHNG7bQcL6EeQp54BYvUzJVDaxammrkK6UgSHcSWZ6yG
-	 CdQJmJa6wYto7mx3pOQW7cvwT3Bnck+UCnIjLhErKT6lzBbT2lr39xrUeTn29sPyGf
-	 XIeTq9vfnLO8g==
-Message-ID: <3035149f-c74c-4af3-a084-f7eb563b925c@kernel.org>
-Date: Tue, 22 Sep 2026 10:15:10 +0200
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="gsyPGIOz"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD6ED1576;
+	Tue, 22 Sep 2026 01:16:52 -0700 (PDT)
+Received: from [10.0.128.141] (unknown [10.0.128.141])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A0DD83F632;
+	Tue, 22 Sep 2026 01:16:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790065016; bh=4HbwZEfa+cRQWF9f/+A2Lw6siv1Umc8ka3GRgBT5ZFY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=gsyPGIOzdWO+7ye4dvf4hgM8YlaXqCY8aW4qTmiRM4liCZm/4j7epoLXFMjUuyYgq
+	 22WHSurfxTtl16xdShGOI671c4pDflaXqa3NWYCEcvA9GEWQUsd9G7fGYZt/KyixOz
+	 Au29k3hFlPbdtvH21rGaxqyuBdOyF7JuWcqA4Fnk=
+Message-ID: <beee950f-0659-43dd-9c5e-0a51722ea54a@arm.com>
+Date: Tue, 22 Sep 2026 09:16:52 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,90 +35,115 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/6] KVM: Only bind memslot to guest_memfd instance for
- CREATE operations
-To: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- Stefan Teodorescu <fane@google.com>, Dennis Tighe <dtighe@google.com>,
- Sashiko Bot <sashiko-bot@kernel.org>, Ackerley Tng <ackerleytng@google.com>,
- Yan Zhao <yan.y.zhao@intel.com>
-References: <20260922001332.1121266-1-seanjc@google.com>
- <20260922001332.1121266-4-seanjc@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260922001332.1121266-4-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v18] arm64: mm: Handle Granule Protection Faults (GPFs)
+Content-Language: en-GB
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260913070459.2547407-1-suzuki.poulose@arm.com>
+ <aqrGPK0lFBFXL2qY@arm.com> <985520fa-99b0-4620-bfee-8e6321b36104@arm.com>
+ <aqvCwM_73qMpqzvV@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <aqvCwM_73qMpqzvV@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 9/22/26 02:13, Sean Christopherson wrote:
-> For additional defense-in-depth, and to avoid having to handle impossible
-> unwind scenarios when binding to a memslot fails, bind a memslot to a gmem
-> instance only when for CREATE operations, i.e. don't attempt to establish a
-
-s/when for/for/
-
-> binding for MOVE and FLAGS_ONLY operations.  And when FLAGS_ONLY operations
-> are eventually supported (this is currently all dead code), creating a new
-> binding would be incorrect; KVM instead needs to do a 1:1 replacement of
-> the existing binding, i.e. FLAGS_ONLY will need its own dedicated handling.
+On 17/09/2026 11:36, Catalin Marinas wrote:
+> Hi Suzuki,
 > 
-> Update the relevant TODO to make a better guess as to what needs to be done
-> to support toggling dirty logging for guest_memfd memslots.
+> On Thu, Sep 17, 2026 at 10:03:14AM +0100, Suzuki K Poulose wrote:
+>> On 16/09/2026 17:39, Catalin Marinas wrote:
+>>> On Sun, Sep 13, 2026 at 08:04:58AM +0100, Suzuki K Poulose wrote:
+>>>> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+>>>> index 75c3e463df2ef..dc3a87902a60c 100644
+>>>> --- a/arch/arm64/mm/fault.c
+>>>> +++ b/arch/arm64/mm/fault.c
+>>>> @@ -914,6 +914,24 @@ static int do_tag_check_fault(unsigned long far, unsigned long esr,
+>>>>    	return 0;
+>>>>    }
+>>>> +static int do_gpf_ptw(unsigned long far, unsigned long esr, struct pt_regs *regs)
+>>>> +{
+>>>> +	const struct fault_info *inf = esr_to_fault_info(esr);
+>>>> +	unsigned long addr = untagged_addr(far);
+>>>> +
+>>>> +	die_kernel_fault(inf->name, addr, esr, regs);
+>>>> +	return 0;
+>>>> +}
+>>>> +
+>>>> +static int do_gpf(unsigned long far, unsigned long esr, struct pt_regs *regs)
+>>>> +{
+>>>> +	if (!user_mode(regs) && !is_el1_instruction_abort(esr) &&
+>>>> +	    fixup_exception(regs, esr))
+>>>> +		return 0;
+>>>> +
+>>>> +	return 1;
+>>>> +}
+>>>
+>>> We discussed briefly offline. With the latest patches around, would we
+>>> ever end up with private memory mapped in the VMM and hence the GPF? If
+>>> not, I would still keep this handling but add a
+>>> WARN_ON_ONCE(user_mode(regs)).
+>>>
+>>> However, can we end up delegating a non-guest_memfd memslot page as
+>>> protected?
+>>>
+>>> I played a bit with codex and it reckons it's possible if a guest_memfd
+>>> memslot is deleted after its IPA range has been initialised with
+>>> RIPAS=RAM. Removing the memslot unmaps and undelegates any data pages
+>>> but leaves the RMM state as RAM. The VMM can then install an ordinary
+>>> memslot over the same GPA range.
+>>
+>> This should be prevented by the following predicates:
+>>
+>> 1) Realms only support guest_memfd backed memslots for mappable memory.
+>> 2) Memslots cannot be created after the Realm is created, as is with the
+>> protected VMs. (This check seems to have been lost over the iterations,
+>>   but should be reinstated).
 > 
-> Because it's dead code, no functional change intended.
+> If that's the intended model, I think it should work. But v18 doesn't
+> enforce either of them. I noticed the second predicate for pKVM only -
+> your 'Widen the scope of "protected" VMs' patch makes this restriction
+> explicit to pKVM.
+
+Yes, like I said, that seems to have lost. I will put that back in. This
+is not in the v18/v19, but will add it for the next iteration.
+
 > 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
+> For the first one, if !kvm_slot_has_gmem(), it simply continues with the
+> registration.
+> 
+>>> A subsequent private-IPA S2 fault sees the non-guest_memfd slot, takes
+>>> user_mem_abort(), GUPs the user page and passes it to
+>>> realm_map_protected(). The userspace mapping remains present, so a later
+>>> EL0 access can generate a GPF.
+>>
+>> The Realm mem abort code should prevent this by ensuring that the
+>> memslot is backed by gmem for private_faults. With the mandate of
+>> in-place conversion, even the shared pages must come from the
+>> gmem backed memslots.
+> 
+> IIUC this only works if the memslot is gmem but I can't see what
+> prevents ordinary slots from being assigned to realms. I think we can
+> enter the user_mem_abort() -> realm_map_ipa() for ordinary slots unless
+> we prevent the deletion of the original slots and enforce gmem only
+> slots early.
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Correct. For CCA, we can mandate that the private faults are only
+faulted in from gmem memslots or the "trusted device private" memslots
+when we eventually get the DA support.
 
--- 
-Cheers,
+I will address this for v20 of the integration series
 
-David
+Cheers
+Suzuki
+
+
+
+> 
+
