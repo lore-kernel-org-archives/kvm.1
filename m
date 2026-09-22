@@ -1,411 +1,171 @@
-Received: from mail-oi2-f12.google.com (mail-oi2-f12.google.com [74.125.231.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F705448B0
-	for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 15:06:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.204
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790089572; cv=pass; b=lAbFx1F+qilVcRvH86ckusbubNl7fny5IHpvpMeCJl2F2JBHMh0Zt32I0OAhQUFsod6ySaOG8fVTvinHQWQmejqQgICVbtolikfwzk9sb8R0Bbu6VuDGgW0M4UidIy3cQjyJVwbQurVxYsxh9TQ7BJS37ARkYUwZ9QviIKmulLI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790089572; c=relaxed/simple;
-	bh=ONVmGvo87pUI426xuRcPM9yTSoJzn0EJCE96fjQSUjo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t1DuBzhGidiQJlg2Clj7Ft+XunCYGVL9BCmOBToqMJhXhFw/2d9qYuA6wmJPhZEXbLfy0zbuW+dMmd/0Zdd38VBNiPvVIBoAXt5oeudsWUrtQwAMvg7DrtdopKpJwVgKa2KpLRzCx7hjNK/vrbuEk2V/ZeZ0fQCQoqKxPa9pgyc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nAQ1PQXN; arc=pass smtp.client-ip=74.125.231.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C7453F6AA;
+	Tue, 22 Sep 2026 15:15:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790090103; cv=none; b=TGA2GdrO9ZFYYaXcNCSEba8BIsZZKFqvhQOqEs963qVvKXsipWAM3wpD36BJiLRT0SY5wyG/nF34X+EM++gNKs0YkrCPSC6tdzbX8fRU0iSItwKDbmexAqNPisdCFPpb6biC6qmpl3Gv/WYVfskqUDxQDf4C5rtZw/Qf6AL1mbM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790090103; c=relaxed/simple;
+	bh=qfLhNMxLDQamnRL3jBZjojzJCuPyPkvcYSCFDpX/jF8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jR6Ya8PEBJ/tT18Kl1HUs9MzB8p7tL6TL7ZulJuT9LmgTSHpRDxN7KQYQxhZvddFddfE3eIhE8rtLJaSo5bNXozvC6gvW/a5afBWQihCAOfry2SDmgGcpqphL1VTEk5ws8Lz30mWl9wsG9dBjTzEFuiitS5cdZOVQdS3LXl74xM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=id03qeF4; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nAQ1PQXN"
-Received: by mail-oi2-f12.google.com with SMTP id 46e09a7af769-800ba39944eso6144a34.0
-        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 08:06:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790089569; cv=none;
-        d=google.com; s=arc-20260327;
-        b=rpPoRnvcRYiebd8/oqVS8Lcv1b4zuMTMQW25lRQGDmIsq7FH+8BSk98lrP7lScArZj
-         82WrbLPigPkXJf5PfFlPmwMb0kGGI+plZ9AFfRm7Ya70Uis6T6q1VbooMbEyoMuieAP5
-         HPFwnJOdkLko9zQ3dV+C00Kq1X2L8BEPi5vN1fz2RqZSe0kRJ9a+DC3xybEZ1XB08BVy
-         ChmQ9aPJEYkkJFuRp0ehoay1xrnrfrOByw7k5eAnQGh8dzRv4QHRgy6VVeEGYVeDnRFA
-         T8gGU1hKKTktsqpbuFaC2OuhKZsFK1KaZEmMahCnE1ebm/JYSHJAZlYawyu3imjKIDI7
-         mIoQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=UkF8/vdFwFhIlxbTxtZ4OfBy/J+EAcxCqWudSjYRllg=;
-        fh=pIhg2y4/jt7aOcnVlCZwJt4ZjOtne5dv4yj0Gq7wsAE=;
-        b=A67aLme+VuzMFfTtB3+1OR9aROUP+RIQG20LNqwxW3fSFj1HcbdfurYSh/UF7NG+3u
-         JZQvapesls9jBx8tO0gBYEZqPIV5pDPAby9f4utR6Bw8kFfQdPi20g14RL6r4UArYae/
-         7iZfDT+hC7Vx26+YbadlEHL3a27eOi1Sml1EvoPPY+fP35DrGJMVGXsJEHu6YQgQ6yoR
-         j+sL+ZowHE4Xhl75DsGveLbRMvD/uH+NDGlgAFL+kYp6z3bcK8kCfXBNDuiOClcyMHc0
-         9P0hx0fM1tP1gMzIXgtCbpAYMXJh3NYNdxlv6r5/9u61U25z0YvZdiA8fEMu46BqBxMY
-         v0Ug==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790089569; x=1790694369; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UkF8/vdFwFhIlxbTxtZ4OfBy/J+EAcxCqWudSjYRllg=;
-        b=nAQ1PQXNVOaQcxIphZX0BNj62ywHZd45gb0VZsmewE7fnZDHe0c7j5JooKz2daglwN
-         Dlu1dsh4Gwhxz8p0PtVFMutXky/fa0SfdoKcSS6E+Lo2n5Qhs3Yp8v6WnTL9UPDcJg7j
-         j6zH/TjEbLv/r6HgjbfX5C2dzRStxuwlpwy212Tt/hItGU/etkYiYl4nGcX3ZKANbeba
-         1V38neoTjFdGgsluyy4CdjTBuZqtD66zILS6YfvyXMe1gG4F0z8rvNczxIJMoZyk1HjD
-         YJfacSuLZe8SqWgNZAOzWt6WidloFxUS/7kQJds90QMCPPOJBWy8OrLe3TEsh3wjzOiS
-         ZHOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790089569; x=1790694369;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UkF8/vdFwFhIlxbTxtZ4OfBy/J+EAcxCqWudSjYRllg=;
-        b=R+NzdVKWTHpn5En75EBipfCz5dEZimy+u+F9n+XNIhqPCksn2dXrTfRKagXlNqUwzU
-         DnvEqs4KzrjESEyhKEeDZsEelRDDXP1IK0igv2oi46Bv58U6zm86fEbk+M2vBCVnJJ68
-         o1LI7+GJ0sPFnqNeCbEGMgba7K8VwLaS3KlAaiz2arwrhKXBLvlLFJK+SgeyeD1nsCIg
-         LMxl/q3yFpZ5ObRGHZbD9M5Q6FN5qxj2YQ1cH4W3Lsbe+WE1ljRatQjQoNAfumanFQ2c
-         z4+1wkdLzvKWLF9oKg2d2Yjlnv+GZTr5kB4DdLmAem6zI6s/Zg6vA8LL87EnS0Yw5YKz
-         aAFA==
-X-Forwarded-Encrypted: i=1; AKwUvBzNMShxr8Kzo8boNddRUT+Xbl9pvWehWc9BVlcGkTx6UW/lI0rNpJwAxyZreBx8Fxo4Zio=@vger.kernel.org
-X-Gm-Message-State: AFuF++nylFEQw+zeCeLqILFMdVHaVis3+rUqQCEaYtUQu2chqY6oOIVG
-	9Wdkth4+P63cveJn4Ch0ud9QzIxFz6mVXSG4YE8LtnTjpvWFFOalvDHhoNxqUlyWNF6UCkOwuFm
-	8wIfmmvLMI7v+aJUJ+wzPWh08aKy6jfM=
-X-Gm-Gg: AYBFou0THPQezaDgiUptEoZE3ilxIRU91kj36QeVE1DheCp5WtqgRWV/4YxrzXO2cEZ
-	766W1l134oa1/D77WZ4t5wui2GOSfNu6pMtZDHmPIni+nCqYmNko5UOfNbMiEmTdLA+T5axWkLV
-	FwB8238DrupIJL3IX+G5YB9lXfEHLFov1g1Jni0svgZpGz7PJ4DO64oknwJTaqMzpj8nXblldsk
-	akZtGDoeU8hpE+Lrygj3lP6HvcJZRkYq+uewI1UdMURCEnWalAHgxa2KQ/OGrjRkboS8N/yycpR
-	/ZeAQS4aDpJGro/G9Z6iSylM+yUJZ9sbv/bqipzXOqVBQN42+X77MNzb+FwoD5r++LiT4S3/flV
-	vWX7FCGBz8InrHjLHSWldmsR9QwYirPdYX2MdOiBKrA==
-X-Received: by 2002:a05:6830:710b:b0:805:24d6:cb5 with SMTP id
- 46e09a7af769-80e1e2cd412mr15435182a34.3.1790089567093; Tue, 22 Sep 2026
- 08:06:07 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="id03qeF4"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D06C41576;
+	Tue, 22 Sep 2026 08:14:55 -0700 (PDT)
+Received: from [10.57.9.253] (unknown [10.57.9.253])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 778833F86F;
+	Tue, 22 Sep 2026 08:14:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790090099; bh=qfLhNMxLDQamnRL3jBZjojzJCuPyPkvcYSCFDpX/jF8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=id03qeF4VWrD2FyYassCVvtscxdW55gRzwGJdpvJgtyiQ3TdEIEUt2WyO0ePxhU9Y
+	 a0+jXmaJ6rch0a6KggX/v5JwO/mQ+8LlpGzR+8c3+f5YGW2Ev3f+HJI9gRU3IdaDPz
+	 2wjKveDSTNbtxF9X/+0KOXnvUQJF2YXWpFvlcBww=
+Message-ID: <359c7adb-e18e-423d-a5a1-6031eb17e421@arm.com>
+Date: Tue, 22 Sep 2026 16:14:54 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260922071807.2533884-1-airlied@gmail.com>
-In-Reply-To: <20260922071807.2533884-1-airlied@gmail.com>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Tue, 22 Sep 2026 11:05:54 -0400
-X-Gm-Features: AcwNN1WCc1J-PDBCZhZYxVxsotQxDDlpubu-GLAK738d9Deq071zD5m-4kdMkkM
-Message-ID: <CADnq5_NL3OtNOGGP2Cmhx0F7fe0coqQVR-md8mXZuxuX+FyKhg@mail.gmail.com>
-Subject: Re: [PATCH] pci/vgaarb: pass a data pointer to be used in the decode
- callback (v2)
-To: Dave Airlie <airlied@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, linux-pci@vger.kernel.org, 
-	kvm@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, Dave Airlie <airlied@redhat.com>, 
-	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Alex Deucher <alexander.deucher@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18] arm64: mm: Handle Granule Protection Faults (GPFs)
+Content-Language: en-GB
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260913070459.2547407-1-suzuki.poulose@arm.com>
+ <aqrGPK0lFBFXL2qY@arm.com> <985520fa-99b0-4620-bfee-8e6321b36104@arm.com>
+ <aqvCwM_73qMpqzvV@arm.com> <749ab0c9-810d-4989-8fa5-1706124f05bc@arm.com>
+ <arKVcjCOJf8p9rWL@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <arKVcjCOJf8p9rWL@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 22, 2026 at 3:18=E2=80=AFAM Dave Airlie <airlied@gmail.com> wro=
-te:
->
-> From: Dave Airlie <airlied@redhat.com>
->
-> This changes the vgaarb client API so that the user can pass a
-> private data pointer into the register that will get used in
-> the decode callback.
->
-> This allows a bunch of pdev conversions in the drivers, and lets
-> some future vfio cleanups be nicer.
->
-> I'd like to merge this via the drm next tree but also fine with
-> it going via pci.
->
-> Signed-off-by: Dave Airlie <airlied@redhat.com>
-> Cc: Alex Williamson <alex@shazbot.org>
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
+On 22/09/2026 15:49, Catalin Marinas wrote:
+> On Tue, Sep 22, 2026 at 02:21:13PM +0100, Suzuki K Poulose wrote:
+>> I had another look and we could handle this via kvm_fault_is_gmem_abort()
+>> see in arch/arm64/kvm/mmu.c:
+>>
+>>
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index 87e49251e0447..af5a4bf961aae 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+>> @@ -1731,6 +1731,9 @@ static int gmem_abort(const struct kvm_s2_fault_desc
+>> *s2fd)
+>>          gfn_t gfn;
+>>          int ret;
+>>
+>> +       if (!kvm_slot_has_gmem(s2fd->memslot))
+>> +               return -EINVAL;
+> 
+> I wonder whether we should add a KVM_BUG_ON() here. With the rest of the
+> changes, we should never get in this situation. Well, to be revisited
+> for private devices.
 
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Sure, I could add that
 
-> ---
-> v2: fix loongson (spotted by sashiko)
-> ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |  6 +++---
->  drivers/gpu/drm/i915/display/intel_vga.c   |  7 ++++---
->  drivers/gpu/drm/loongson/lsdc_drv.c        |  4 ++--
->  drivers/gpu/drm/nouveau/nouveau_vga.c      |  6 +++---
->  drivers/gpu/drm/radeon/radeon_device.c     |  7 +++----
->  drivers/pci/vgaarb.c                       | 13 +++++++++----
->  drivers/vfio/pci/vfio_pci_core.c           |  9 +++++----
->  include/linux/vgaarb.h                     |  8 +++++---
->  8 files changed, 34 insertions(+), 26 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm=
-/amd/amdgpu/amdgpu_device.c
-> index 62b5b4a23f17..1344b2b1bd16 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> @@ -1435,10 +1435,10 @@ bool amdgpu_device_should_use_aspm(struct amdgpu_=
-device *adev)
->   * Enable/disable vga decode (all asics).
->   * Returns VGA resource flags.
->   */
-> -static unsigned int amdgpu_device_vga_set_decode(struct pci_dev *pdev,
-> +static unsigned int amdgpu_device_vga_set_decode(void *data,
->                 bool state)
->  {
-> -       struct amdgpu_device *adev =3D drm_to_adev(pci_get_drvdata(pdev))=
-;
-> +       struct amdgpu_device *adev =3D (struct amdgpu_device *)data;
->
->         amdgpu_asic_set_vga_state(adev, state);
->         if (state)
-> @@ -4208,7 +4208,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
->          * ignore it
->          */
->         if ((adev->pdev->class >> 8) =3D=3D PCI_CLASS_DISPLAY_VGA)
-> -               vga_client_register(adev->pdev, amdgpu_device_vga_set_dec=
-ode);
-> +               vga_client_register(adev->pdev, amdgpu_device_vga_set_dec=
-ode, adev);
->
->         px =3D amdgpu_device_supports_px(adev);
->
-> diff --git a/drivers/gpu/drm/i915/display/intel_vga.c b/drivers/gpu/drm/i=
-915/display/intel_vga.c
-> index 4966fd7eea92..0889edb36190 100644
-> --- a/drivers/gpu/drm/i915/display/intel_vga.c
-> +++ b/drivers/gpu/drm/i915/display/intel_vga.c
-> @@ -283,9 +283,10 @@ void intel_vga_disable(struct intel_display *display=
-)
->         intel_de_posting_read(display, vga_reg);
->  }
->
-> -static unsigned int intel_vga_set_decode(struct pci_dev *pdev, bool enab=
-le_decode)
-> +static unsigned int intel_vga_set_decode(void *data, bool enable_decode)
->  {
-> -       struct intel_display *display =3D to_intel_display(pdev);
-> +       struct intel_display *display =3D (struct intel_display *)data;
-> +       struct pci_dev *pdev =3D to_pci_dev(display->drm->dev);
->         unsigned int decodes =3D VGA_RSRC_NORMAL_IO | VGA_RSRC_NORMAL_MEM=
-;
->
->         drm_dbg_kms(display->drm, "%s VGA decode due to VGA arbitration\n=
-",
-> @@ -331,7 +332,7 @@ void intel_vga_register(struct intel_display *display=
-)
->          * then we do not take part in VGA arbitration and the
->          * vga_client_register() fails with -ENODEV.
->          */
-> -       ret =3D vga_client_register(pdev, intel_vga_set_decode);
-> +       ret =3D vga_client_register(pdev, intel_vga_set_decode, display);
->         drm_WARN_ON(display->drm, ret && ret !=3D -ENODEV);
->  }
->
-> diff --git a/drivers/gpu/drm/loongson/lsdc_drv.c b/drivers/gpu/drm/loongs=
-on/lsdc_drv.c
-> index 3fd828d23271..5a13df31eb90 100644
-> --- a/drivers/gpu/drm/loongson/lsdc_drv.c
-> +++ b/drivers/gpu/drm/loongson/lsdc_drv.c
-> @@ -254,7 +254,7 @@ lsdc_create_device(struct pci_dev *pdev,
->
->  /* For multiple GPU driver instance co-exixt in the system */
->
-> -static unsigned int lsdc_vga_set_decode(struct pci_dev *pdev, bool state=
-)
-> +static unsigned int lsdc_vga_set_decode(void *data, bool state)
->  {
->         return VGA_RSRC_NORMAL_IO | VGA_RSRC_NORMAL_MEM;
->  }
-> @@ -291,7 +291,7 @@ static int lsdc_pci_probe(struct pci_dev *pdev, const=
- struct pci_device_id *ent)
->
->         pci_set_drvdata(pdev, ddev);
->
-> -       vga_client_register(pdev, lsdc_vga_set_decode);
-> +       vga_client_register(pdev, lsdc_vga_set_decode, NULL);
->
->         drmm_kms_helper_poll_init(ddev);
->
-> diff --git a/drivers/gpu/drm/nouveau/nouveau_vga.c b/drivers/gpu/drm/nouv=
-eau/nouveau_vga.c
-> index 29a801124e56..6662e30466f2 100644
-> --- a/drivers/gpu/drm/nouveau/nouveau_vga.c
-> +++ b/drivers/gpu/drm/nouveau/nouveau_vga.c
-> @@ -9,9 +9,9 @@
->  #include "nouveau_vga.h"
->
->  static unsigned int
-> -nouveau_vga_set_decode(struct pci_dev *pdev, bool state)
-> +nouveau_vga_set_decode(void *data, bool state)
->  {
-> -       struct nouveau_drm *drm =3D pci_get_drvdata(pdev);
-> +       struct nouveau_drm *drm =3D (struct nouveau_drm *)data;
->         struct nvif_object *device =3D &drm->client.device.object;
->
->         if (drm->client.device.info.family =3D=3D NV_DEVICE_INFO_V0_CURIE=
- &&
-> @@ -103,7 +103,7 @@ nouveau_vga_init(struct nouveau_drm *drm)
->                 return;
->         pdev =3D to_pci_dev(dev->dev);
->
-> -       vga_client_register(pdev, nouveau_vga_set_decode);
-> +       vga_client_register(pdev, nouveau_vga_set_decode, drm);
->
->         /* don't register Thunderbolt eGPU with vga_switcheroo */
->         if (pci_is_thunderbolt_attached(pdev))
-> diff --git a/drivers/gpu/drm/radeon/radeon_device.c b/drivers/gpu/drm/rad=
-eon/radeon_device.c
-> index 9523240110a6..cf8a6bd00c77 100644
-> --- a/drivers/gpu/drm/radeon/radeon_device.c
-> +++ b/drivers/gpu/drm/radeon/radeon_device.c
-> @@ -1076,10 +1076,9 @@ void radeon_combios_fini(struct radeon_device *rde=
-v)
->   * Enable/disable vga decode (all asics).
->   * Returns VGA resource flags.
->   */
-> -static unsigned int radeon_vga_set_decode(struct pci_dev *pdev, bool sta=
-te)
-> +static unsigned int radeon_vga_set_decode(void *data, bool state)
->  {
-> -       struct drm_device *dev =3D pci_get_drvdata(pdev);
-> -       struct radeon_device *rdev =3D dev->dev_private;
-> +       struct radeon_device *rdev =3D (struct radeon_device *)data;
->         radeon_vga_set_state(rdev, state);
->         if (state)
->                 return VGA_RSRC_LEGACY_IO | VGA_RSRC_LEGACY_MEM |
-> @@ -1431,7 +1430,7 @@ int radeon_device_init(struct radeon_device *rdev,
->         /* if we have > 1 VGA cards, then disable the radeon VGA resource=
-s */
->         /* this will fail for cards that aren't VGA class devices, just
->          * ignore it */
-> -       vga_client_register(rdev->pdev, radeon_vga_set_decode);
-> +       vga_client_register(rdev->pdev, radeon_vga_set_decode, rdev);
->
->         if (rdev->flags & RADEON_IS_PX)
->                 runtime =3D true;
-> diff --git a/drivers/pci/vgaarb.c b/drivers/pci/vgaarb.c
-> index 3de05aee7859..3e58b2c05c85 100644
-> --- a/drivers/pci/vgaarb.c
-> +++ b/drivers/pci/vgaarb.c
-> @@ -51,7 +51,8 @@ struct vga_device {
->         unsigned int mem_norm_cnt;      /* normal MEM count */
->         bool bridge_has_one_vga;
->         bool is_firmware_default;       /* device selected by firmware */
-> -       unsigned int (*set_decode)(struct pci_dev *pdev, bool decode);
-> +       unsigned int (*set_decode)(void *data, bool decode);
-> +       void *set_decode_data;
->  };
->
->  static LIST_HEAD(vga_list);
-> @@ -935,6 +936,7 @@ EXPORT_SYMBOL(vga_set_legacy_decoding);
->   * vga_client_register - register or unregister a VGA arbitration client
->   * @pdev: PCI device of the VGA client
->   * @set_decode: VGA decode change callback
-> + * @data: private data to pass to callback
->   *
->   * Clients have two callback mechanisms they can use.
->   *
-> @@ -956,15 +958,18 @@ EXPORT_SYMBOL(vga_set_legacy_decoding);
->   * Returns: 0 on success, -ENODEV on failure
->   */
->  int vga_client_register(struct pci_dev *pdev,
-> -               unsigned int (*set_decode)(struct pci_dev *pdev, bool dec=
-ode))
-> +               unsigned int (*set_decode)(void *data, bool decode),
-> +               void *data)
->  {
->         unsigned long flags;
->         struct vga_device *vgadev;
->
->         spin_lock_irqsave(&vga_lock, flags);
->         vgadev =3D vgadev_find(pdev);
-> -       if (vgadev)
-> +       if (vgadev) {
->                 vgadev->set_decode =3D set_decode;
-> +               vgadev->set_decode_data =3D data;
-> +       }
->         spin_unlock_irqrestore(&vga_lock, flags);
->         if (!vgadev)
->                 return -ENODEV;
-> @@ -1464,7 +1469,7 @@ static void vga_arbiter_notify_clients(void)
->         spin_lock_irqsave(&vga_lock, flags);
->         list_for_each_entry(vgadev, &vga_list, list) {
->                 if (vgadev->set_decode) {
-> -                       new_decodes =3D vgadev->set_decode(vgadev->pdev,
-> +                       new_decodes =3D vgadev->set_decode(vgadev->set_de=
-code_data,
->                                                          new_state);
->                         vga_update_device_decodes(vgadev, new_decodes);
->                 }
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
-_core.c
-> index 6757054e9d87..b04ce3ded08c 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -162,9 +162,10 @@ static inline void vfio_pci_core_debugfs_init(struct=
- vfio_pci_core_device *vdev)
->   * has no way to get to it and routing can be disabled externally at the
->   * bridge.
->   */
-> -static unsigned int vfio_pci_set_decode(struct pci_dev *pdev, bool singl=
-e_vga)
-> +static unsigned int vfio_pci_set_decode(void *data, bool single_vga)
->  {
-> -       struct vfio_pci_core_device *vdev =3D dev_get_drvdata(&pdev->dev)=
-;
-> +       struct vfio_pci_core_device *vdev =3D data;
-> +       struct pci_dev *pdev =3D vdev->pdev;
->         struct pci_dev *tmp =3D NULL;
->         unsigned char max_busnr;
->         unsigned int decodes;
-> @@ -2159,10 +2160,10 @@ static int vfio_pci_vga_init(struct vfio_pci_core=
-_device *vdev)
->         if (ret)
->                 return ret;
->
-> -       ret =3D vga_client_register(pdev, vfio_pci_set_decode);
-> +       ret =3D vga_client_register(pdev, vfio_pci_set_decode, vdev);
->         if (ret)
->                 return ret;
-> -       vga_set_legacy_decoding(pdev, vfio_pci_set_decode(pdev, false));
-> +       vga_set_legacy_decoding(pdev, vfio_pci_set_decode(vdev, false));
->         return 0;
->  }
->
-> diff --git a/include/linux/vgaarb.h b/include/linux/vgaarb.h
-> index 97129a1bbb7d..71a364669eaf 100644
-> --- a/include/linux/vgaarb.h
-> +++ b/include/linux/vgaarb.h
-> @@ -33,7 +33,8 @@ struct pci_dev *vga_default_device(void);
->  void vga_set_default_device(struct pci_dev *pdev);
->  int vga_remove_vgacon(struct pci_dev *pdev);
->  int vga_client_register(struct pci_dev *pdev,
-> -               unsigned int (*set_decode)(struct pci_dev *pdev, bool sta=
-te));
-> +               unsigned int (*set_decode)(void *data, bool state),
-> +               void *data);
->  #else /* CONFIG_VGA_ARB */
->  static inline void vga_set_legacy_decoding(struct pci_dev *pdev,
->                 unsigned int decodes)
-> @@ -59,7 +60,8 @@ static inline int vga_remove_vgacon(struct pci_dev *pde=
-v)
->         return 0;
->  }
->  static inline int vga_client_register(struct pci_dev *pdev,
-> -               unsigned int (*set_decode)(struct pci_dev *pdev, bool sta=
-te))
-> +               unsigned int (*set_decode)(void *data, bool state),
-> +               void *data)
->  {
->         return 0;
->  }
-> @@ -97,7 +99,7 @@ static inline int vga_get_uninterruptible(struct pci_de=
-v *pdev,
->
->  static inline void vga_client_unregister(struct pci_dev *pdev)
->  {
-> -       vga_client_register(pdev, NULL);
-> +       vga_client_register(pdev, NULL, NULL);
->  }
->
->  #endif /* LINUX_VGA_H */
-> --
-> 2.54.0
->
+> 
+> Also maybe move it to the caller, kvm_vm_mem_abort(), and not change
+> kvm_fault_is_gmem_abort(). Something like:
+> 
+> 	if (private_ipa_fault(kvm, s2fd->fault_ipa) &&
+> 	    KVM_BUG_ON(!kvm_slot_has_gmem(s2fd->memslot), kvm))
+> 		return -EIO;
+> 
+> To me it makes more sense for gmem_abort() to be called only *if* it's a
+> gmem slot. So any inconsistency, avoiding user_mem_abort() for private
+> memory, should be done in the caller. I assume the caller will also have
+> to route the private device path as well rather than rely on
+> gmem_abort().
+
+Agree.
+
+> 
+>> +
+>>          if (!perm_fault) {
+>>                  memcache = get_mmu_memcache(vcpu);
+>>                  ret = topup_mmu_memcache(vcpu, memcache);
+>> @@ -2277,10 +2280,12 @@ static bool private_ipa_fault(struct kvm *kvm,
+>> phys_addr_t fault_ipa);
+>>   static bool kvm_fault_is_gmem_abort(struct kvm *kvm,
+>>                                      const struct kvm_s2_fault_desc *s2fd)
+>>   {
+>> -       if (!kvm_slot_has_gmem(s2fd->memslot))
+>> -               return false;
+>>          if (kvm_memslot_is_gmem_only(s2fd->memslot))
+>>                  return true;
+>> +       /*
+>> +        * For Realms, all private faults must be backed by GMEM.
+>> +        * TODO: Handle Trusted device private memory mappings.
+>> +        */
+>>          if (private_ipa_fault(kvm, s2fd->fault_ipa))
+>>                  return true;
+>>          return false;
+>>
+>>
+>> Also, I have the following hunk for preventing memslot modifications.
+>> I will add this to v20 integration branch, which is almost ready ;-)
+>>
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index 582b48e34486b..87e49251e0447 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+>> @@ -2783,6 +2783,18 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
+>>          }
+>>   }
+>>
+>> +static bool kvm_prevents_memslot_change(struct kvm *kvm, enum kvm_mr_change change)
+>> +{
+>> +       /* Cannot modify memslots once a pVM has run or Realm created */
+>> +       if (change != KVM_MR_DELETE && change != KVM_MR_MOVE)
+>> +               return false;
+>> +
+>> +       if ((kvm_vm_is_protected_pkvm(kvm) && pkvm_hyp_vm_is_created(kvm)) ||
+>> +            kvm_realm_is_created(kvm))
+>> +               return true;
+>> +       return false;
+>> +}
+>> +
+>>   int kvm_arch_prepare_memory_region(struct kvm *kvm,
+>>                                     const struct kvm_memory_slot *old,
+>>                                     struct kvm_memory_slot *new,
+>> @@ -2791,12 +2803,9 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
+>>          hva_t hva, reg_end;
+>>          int ret = 0;
+>>
+>> -       if (kvm_vm_is_protected_pkvm(kvm)) {
+>> -               /* Cannot modify memslots once a pVM has run. */
+>> -               if (pkvm_hyp_vm_is_created(kvm) &&
+>> -                   (change == KVM_MR_DELETE || change == KVM_MR_MOVE)) {
+>> +       if (kvm_vm_is_protected(kvm)) {
+>> +               if (kvm_prevents_memslot_change(kvm, change))
+>>                          return -EPERM;
+>> -               }
+>>
+>>                  if (new &&
+>>                      new->flags & (KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY)) {
+> 
+> I think this should work.
+
+Cheers
+Suzuki
+
+> 
+> Thanks.
+> 
+
