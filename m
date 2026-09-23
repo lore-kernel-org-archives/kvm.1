@@ -1,157 +1,240 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38864481FC7;
-	Wed, 23 Sep 2026 20:59:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050F0475337
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 21:36:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790197171; cv=none; b=nnY3qx8I+0qB94cIaqshijlJDKX13aCEHWiqFo9G7jIxpFmxjRjAvL7e0/ZzSeHhr1JJemubo7viGr8BDf65XSOn0Cut7AfZgCc6RDVh7mdCUHwHeHGgwuAafLRQGLS7D0ZVQ0nlEhfnzHcmO1/p0FnJfyiapjINTXESVGFFZjU=
+	t=1790199401; cv=none; b=uSDbC3sKb1r4n3FtskwPSPhzAv+JLpXEmqrXLn8JL25ld3NWDIS9jfAnqiSRwtZ629kZNeA3nrdTsamuXoU18n6R8vkRnC9bTzD8VJSIjUBkSXM0bInXpG9/0Yt1B+OKgvlEojdDdDYU5GEOrz/7P52l/EqBp7hTOh+fUXfrSc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790197171; c=relaxed/simple;
-	bh=XjLg0A25jRw5IumqJVTczAk25TCLJcI4jyt9XoU+w/0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=EDZw1lyD64iYKOzh0IKfVVaxhx78D3XP30jLFINhxcnrATmwtdxEFx7iN9O/bNTfW9HCHHN6x5a738cvKyGMiRRJkBqndZEfit+P46LUZWOGimvhGDQu2Tp5wu0g+I+p95QxtDbmcCmqmmDRdpsRLNlj7fdcCAX2vCNmiu+iN6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QqomW+yl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790199401; c=relaxed/simple;
+	bh=2v7xpp0V30n6l/pTJU1KpDXJXjO7sRpXKNopKA8DGxc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ARw3L5EIX6ZtgGzFSMDa+3vimUI0+PWZEnmJ+MPqg8W4dhGziU/2GlqvdYQfH5/QFKiFvn96paG3wGMyrl8VN7iLzly2W/6eWzJnlY8A5TMNr2DqJJvihrpEpfNb2ZpnTiGjt4psYwDJ4+Y/p/G2ZkPDbrfyfka1PdTsfr8nZ2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MT/0YJkF; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MSZ8ezYh; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QqomW+yl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602181F000FF;
-	Wed, 23 Sep 2026 20:59:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790197169;
-	bh=IEdNn3aUwe4HImBS9dDjkJ7weHk8oU+emztUHcnANtw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=QqomW+ylpw/PDwHN9aiavnvl81CPHF9/3wUqB+c4utej/ylTCBDXi9PwjpqywO48f
-	 qpoH7O7V2ClBBAc6veRhtMn+YFtMQU57vfRRpftyeQqjMJfAsiI9koqG0HNVwhCxgx
-	 R2GvCdoiPC4W9beZtTMPNobd5zj6RbzdrEwxEVKM1eZUatzQEvrfrNBVdeiQPs/LpV
-	 DwdHrQgMIQpCmpB/94BNzCIP6mSvzojtmhqdzFOsMOPHldJz4VxIcOTMjPZNGq7I+K
-	 PLTTmlIUxjLF+suBD4fBrd4SJ3YFZXArduF8R+tUZnRjDKVw2i5gzgIa3K7+IjzRot
-	 egDJ2t3wrj7MQ==
-Date: Wed, 23 Sep 2026 15:59:28 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-pci@vger.kernel.org,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Sean Christopherson <seanjc@google.com>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MT/0YJkF";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MSZ8ezYh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790199397;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7jL6cT+RcKiUtKQK8HLnjuEugj7EU5PPkjwVYFt6osI=;
+	b=MT/0YJkF1B/oQ3WN8pkQtdvphBwloHOYZ/cI07tFuStaFakn3/Vcevbd38eJt0XeKKKBdB
+	Vxqdq4NV/UFXm+DFbp0cGlxUBIeTXn901wxQ5/8U6216WAiO4lIi3j5WHF4amVrxewrZdJ
+	Ax3Qta9nOQgV2PMOmWw8e2YASAM1cQs=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-271-QueJX4yYOZGXx9x8h1QYSw-1; Wed, 23 Sep 2026 17:36:36 -0400
+X-MC-Unique: QueJX4yYOZGXx9x8h1QYSw-1
+X-Mimecast-MFC-AGG-ID: QueJX4yYOZGXx9x8h1QYSw_1790199396
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93a1de6d5c3so270252585a.3
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 14:36:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1790199396; x=1790804196; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=7jL6cT+RcKiUtKQK8HLnjuEugj7EU5PPkjwVYFt6osI=;
+        b=MSZ8ezYhPJWJ9Iry9v29onraMpawSf05S3KJBIK3J0TO3lHP9000bBFCyf0aIqHRuC
+         rF2bkZ2GOrVq63Xb97TCx0RZrkuH+cGYtL1B3XoMCQlChxZR0F6xtTci33qLaMTBy++8
+         VLjiiK+ejZjv0mSy/6hhI+7IApcCgH5WfOX6oi+WdxEty2RXRf4xJ0zCaiwv2ZYCcR4V
+         3hJd1fnHDVKla0AoYPefY5ILuKbeSBWiSbysngFOTRdafrb8qf/5gXHCpRsoX1S9fxzw
+         1UmZCKfWJcbAnvZJFU88rUSQp2QedyXu7yzgYK0pgr7G+cZL1Sd4fx7//JlBtLHgyzV4
+         x2Dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790199396; x=1790804196;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7jL6cT+RcKiUtKQK8HLnjuEugj7EU5PPkjwVYFt6osI=;
+        b=0XIXLBcg96LmdjefI9sGpLczuVFzL2REH+2sIG7V9kB+cFNte8j1aVKvRzmHcjbmsc
+         8fAzVyqK0go/vY6Lz91QWcOuqmqynLOMVrzvPJ1s42JfefyO3E43M1SqVz2w3AjmUXF4
+         +nwp0rvDZzoXLJFsBn1hjTlFZme+zfNtSAFz9tXI/m2jrG/mmnx3AhHUiUHC/Ij1fjfa
+         IQ+wRohacTJfkZiAdv4MMpeoTAMVBhhzXgVS/OsASuUJw5MEkEioSv939HUZ9X+h0DOr
+         mZQnvWLBmdJP9Ivo7aZUuUovWEa+q0rqdJGGQZyJcXQWzJvf75m/y4vIjuPBRwbJcAsl
+         3xrw==
+X-Forwarded-Encrypted: i=1; AKwUvBzkEUZAnxHiXF2i1MmiFxp2ysDV9+Uuf7WCyo97ez/NYHKXxzAPmVKI+dAUooWBRwZaS1w=@vger.kernel.org
+X-Gm-Message-State: AFuF++mvTj8UAvQQKX4lz1iAhfbpqBVVPauKnjwV/3KJbGZSNJbSZ58y
+	Y1Vtvf12FSR6DDGyBN3bv5oEhvsLH+p5ep4VBmmv1xcQuPXns3kpAoDAaR2eKZZfHSwrjOXf5im
+	FJveAx3q5t3k4cXBwokuyVFw4HeQrv0HPZx2yHlCrfH8nH293K2lnig==
+X-Gm-Gg: AYBFou0Svo4l9iWtZMJxAstTMkc4xS/dPL+iCK57AWCPgdzMuiBG9CL8l+TFAG1NKXT
+	AdSeruWeWxBD5tS9J1QZtCn4Mu9fEdN5f93RFKoUiSrAQzAgnC2F5cSJr35oGlfLnBETBXXJYfF
+	D5jJ/g7MfcazJRw+qF2/LqnbKwQS2rwfo08HPxcVNBj3tAQlhe9pdDx/+p2iQRpuf8bWTHJcaQM
+	TWSfE4Bc6B0ga6JrFN+XH50MZbOxQX65FTI5OOxqD20yEARq8U998LF+thZk0JOjBeQ9i6al/1k
+	HYjzIE6z89YrXT/IicNtnwE5W/ALxmtKWtCMhHVJsYL74+hyXUF9jD//LXFS8qT2E9+Xxe4=
+X-Received: by 2002:a05:620a:a2c4:10b0:939:c9e9:81a1 with SMTP id af79cd13be357-93c344f87femr54404785a.42.1790199395752;
+        Wed, 23 Sep 2026 14:36:35 -0700 (PDT)
+X-Received: by 2002:a05:620a:a2c4:10b0:939:c9e9:81a1 with SMTP id af79cd13be357-93c344f87femr54401985a.42.1790199395227;
+        Wed, 23 Sep 2026 14:36:35 -0700 (PDT)
+Received: from localhost ([142.188.212.246])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c2f3c6fdfsm142515085a.45.2026.09.23.14.36.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 14:36:34 -0700 (PDT)
+Date: Wed, 23 Sep 2026 17:36:33 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Kishen Maloor <kishen.maloor@intel.com>
+Cc: Artem Bityutskiy <dedekind1@gmail.com>,
+	Tony Lindgren <tony.lindgren@linux.intel.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ashish Kalra <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Fabiano Rosas <farosas@suse.de>, Jon Grimm <Jon.Grimm@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jini Susan George <jinisusan.george@amd.com>,
-	Kees Cook <kees@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Kim Phillips <kim.phillips@amd.com>, Joerg Roedel <jroedel@suse.de>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	"Tycho Andersen (AMD)" <tycho@kernel.org>,
-	Liam Merwick <liam.merwick@oracle.com>,
-	Michael Kerrisk <mtk.manpages@gmail.com>,
-	Suresh Siddha <suresh.b.siddha@intel.com>,
-	Xiaotian Feng <dfeng@redhat.com>,
-	Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>,
-	Andi Kleen <ak@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Tony Luck <tony.luck@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Carlos =?utf-8?B?TMOzcGV6?= <clopez@suse.de>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jori Koolstra <jkoolstra@xs4all.nl>,
-	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Ian Campbell <ian.campbell@citrix.com>,
-	Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>,
-	Petr Tesarik <ptesarik@suse.com>,
-	David Howells <dhowells@redhat.com>,
-	Haavard Skinnemoen <hskinnemoen@atmel.com>,
-	Kenji Kaneshige <kaneshige.kenji@jp.fujitsu.com>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Ilias Stamatis <ilstam@amazon.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Toshi Kani <toshi.kani@hp.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Jiang Liu <jiang.liu@linux.intel.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Palmer Dabbelt <palmerdabbelt@google.com>,
-	linux-coco@lists.linux.dev, xen-devel@lists.xenproject.org,
-	iommu@lists.linux.dev, linux-mm@kvack.org, aik@ozlabs.ru,
-	Santosh Shukla <santosh.shukla@amd.com>,
-	"Pratik R . Sampat" <prsampat@amd.com>,
-	Scott Soule Cheloha <scott.cheloha@amd.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Fuad Tabba <tabba@google.com>
-Subject: Re: [RFC PATCH kernel 02/17] pci/tsm: Fix stale comment about TDI
- report range start
-Message-ID: <20260923205928.GA1942391@bhelgaas>
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Steven Price <steven.price@arm.com>,
+	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
+	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
+	=?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Peter Fang <peter.fang@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org
+Subject: Re: [RFC PATCH v2 0/4] Add KVM API for confidential guest live
+ migration
+Message-ID: <arRGYbvXgq8LLYQH@zhexu-thinkpadt14gen5.rmtcaon.csb>
+References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
+ <d78207fcc5936b5822b708238d862b0e10f9f5c3.camel@gmail.com>
+ <aqxbMGLwvtT8zkEb@zhexu-thinkpadt14gen5.rmtcaon.csb>
+ <a4ec3af5-5494-4fb4-bf66-e3a8b67325e3@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260916115159.1938195-3-aik@amd.com>
+In-Reply-To: <a4ec3af5-5494-4fb4-bf66-e3a8b67325e3@intel.com>
 
-On Wed, Sep 16, 2026 at 09:51:42PM +1000, Alexey Kardashevskiy wrote:
-> The PCIe spec r6 and later defines the MMIO range start in 4K units which
-> was not the intention. The upcoming change makes it a byte address.
-> The structure is already fixed to match the new definition but the comment
-> is stale, fix it.
+On Sun, Sep 20, 2026 at 04:56:20PM -0700, Kishen Maloor wrote:
+> Hi Peter,
 
-Please include specific reference to current spec, e.g.,
-"PCIe r7.0, sec x".
+Hi, Kishen,
 
-I'm not sure who's intention is referred to here.
-
-Please make the subject line match others in drivers/pci in style,
-including capitalization.  Use "git log --oneline drivers/pci" to see.
-
-> Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-> ---
->  drivers/pci/tsm/core.c | 1 -
->  1 file changed, 1 deletion(-)
 > 
-> diff --git a/drivers/pci/tsm/core.c b/drivers/pci/tsm/core.c
-> index 9ac216ad896d..2a18be5be56e 100644
-> --- a/drivers/pci/tsm/core.c
-> +++ b/drivers/pci/tsm/core.c
-> @@ -623,7 +623,6 @@ EXPORT_SYMBOL_GPL(pci_tsm_mmio_teardown);
->  #define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_IS_UPDATABLE BIT(3)
->  #define PCI_TSM_DEVIF_REPORT_MMIO_ATTR_RANGE_ID GENMASK(31, 16)
->  
-> -/* An interface report 'pfn' is 4K in size */
->  struct pci_tsm_devif_mmio {
->  	__le64 phys;
->  	__le32 nr_pfns;
-> -- 
-> 2.55.0
+> Thank you for your comments. Just adding a few other details to
+> complement Artem's response. 
 > 
+> On 9/17/26 2:27 PM, Peter Xu wrote:
+> > On Fri, Sep 04, 2026 at 09:24:25PM +0300, Artem Bityutskiy wrote:
+> >> On Mon, 2026-08-31 at 10:13 +0300, Tony Lindgren wrote:
+> > ...
+> >> - Should the same uAPIs also support traditional VMs? But the only use-case
+> >>   I imagine here is "for testing purposes".
+> > 
+> > This is an interesting idea, I think this could be useful.  Especially, I
+> > wonder if you already have it done and PoC branches you can share, so that
+> > I can play with it.
+> 
+> I had once attempted this and hit a breaking case while migrating regular VMs.
+> I didn't dig further since the primary use of this UAPI set is with CoCo VMs.
+> 
+> Here's what I gathered: KVM-mediated transfer needs KVM to resolve a GFN to the
+> HVA where the data lands, and on x86 QEMU mutates that mapping at runtime in a
+> way that is opaque to KVM. For the PAM window QEMU overlays a separate region on
+> top of pc.ram, and KVM sees only the flattened view, the winning memslot, with
+> no way to address what that slot shadows. On the source, firmware reprograms PAM
+> and QEMU drops the overlay. On the destination the firmware never runs, so it still
+> has its boot-time layout and the overlay is still in place. So importing, say, GFN 0xc0
+> lands on the overlay's backing store, which is a read-only memslot, and the GFN->HVA
+> translation fails. I suppose even if it were writable, the data would land there
+> rather than in the pc.ram underneath where it belongs. Without mediation, QEMU is
+> able to write to the HVA directly, so the problem doesn't arise.
+> 
+> Generally, I think KVM mediation only works if KVM's view of memory is authoritative.
+> TDX skirts this issue entirely because QEMU doesn't create overlays for TDX VMs.
+
+I see this one slightly differently, and I have a major question on the
+choice of GPA for KVM's memory access API.
+
+If reusing GET_DIRTY_LOG, it means slot_id works for CoCo like before
+because that's the old interface there.
+
+But the new KVM_EXPORT_MEM (vice versa) used GPA arrays.  Could I ask why
+the change?
+
+IIUC this is the fundamental reason why you hit that PAM issue: at a
+specific GPA, QEMU/KVM can map different things, hence GPA is not yet an
+unified identifier for a physical page that guest uses.  However, (slot_id,
+slot_offset) will be.
+
+If the migration memory access API will be using that instead of GPA, I
+think problems will be gone because then the PAM regions (likely, pc.ram
+underneath) will be migrated in form of KVM memslots, destination apply
+that to the PAM's (slot_id, slot_offset), then when switchover, that PAM
+memory region will be enabled by QEMU and it will be visible to destination
+QEMU when VM starts on destination.
+
+I'm actually not sure if such (e.g. PAM) will ever be supported at all in
+CoCo context, but it seems to me using (slot_id, slot_offset) (for each
+entry; it can also be an array) is more flexible than GPA arrays in that it
+allows GPA mapping to change on the fly if needed even during migration.
+
+I'm not sure if that's explicitly forbidden for CoCo, though.
+
+> 
+> > ...
+> > Could you elaborate this ITERATION operation?  Is that something the
+> > userapp must do after full scan of a round of guest memory?
+> 
+> Essentially, yes. TDX migration architecture delimits such pre-copy rounds as
+> "migration epochs" and emits an epoch token at each round boundary that needs to be
+> consumed on the destination. It allows the TDX module to verify that everything from
+> the prior round has been received at the destination and that two versions of the
+> same GPA aren't sent in the same epoch. It is userspace that decides where a round
+> ends, but any deviation from this model and migration would fail.
+
+I'm a bit surprised that TDX will also monitor how many times the same GPA
+is updated per iteration.  What if below happens:
+
+  ...
+  ITERATION sync n
+  GET_DIRTY_LOG, see page P dirty
+  migrate page P
+  GET_DIRTY_LOG, see page P dirty again
+  migrate page P again   <--------------------- [a]
+  ITERATION sync n+1
+  ...
+
+Would above crash on destination TDX at step [a] applying P 2nd time?  Or
+does it mean GET_DIRTY_LOG can only be invoked once per iteration?
+
+> 
+> > 
+> >>>        |    (repeat until convergence)                  |
+> >>>  CMD(STOP_AND_COPY/PAUSE)                               |
+> >>>  CMD(STOP_AND_COPY/TD_STATE) --- VM state ------> CMD(STOP_AND_COPY/TD_STATE)
+> >>>  KVM_EXPORT_VCPU             --- vCPU state ----> KVM_IMPORT_VCPU
+> >>>  KVM_EXPORT_MEMORY           -- final memory ---> KVM_IMPORT_MEMORY
+> > 
+> > When read/write encrypted memories, two questions:
+> > 
+> > - Is there an upper bound of the buffer size per-page?
+> 
+> Yes. For TDX a 4KB guest page produces exactly 4KB of encrypted payload plus a small
+> fixed amount of ancillary data. The bound can be pre-computed and userspace 
+> can size its buffers accordingly. The UAPI itself doesn't impose one. The vendor 
+> implementation decides how pages and ancillary data are laid out.
+
+Get it now.  I still think if that varies across impl, it might be good to
+somehow notify the userapp on choosing the buffer size.
+
+But nah, it's not a big deal - when there's retry, userapp can always probe
+with any size then double it until it fits..
+
+Thanks,
+
+-- 
+Peter Xu
+
