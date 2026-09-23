@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7432B556B81
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 16:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700A455408C
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 16:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790182385; cv=none; b=NDsrvB8qQ12BXLnuLJsV5S91zBm9S0AWMx6iZ1+TMNC+EznH6gTL/mOX/eUiHE/EAw7YdrwtbhgokJrBQhUZhD5f7F+b2K7SuPV91brx8nIhowco2aveTn7AO/vgJO0q9H3umZMhq2yhhm3Yt53jLgm2qtmnWGzJxlmVouD/JAo=
+	t=1790182431; cv=none; b=e1ostE85x3LxBDIxUwQNvJy8ai7FhVihjokeWZPOjcAnGAeMR1Gdz1rQmUT0b8cmNlgS2rZJQPnziF9RlSRG/WjQjLChzfchOUkg8pB+a09cejVRcdMzx77m51wrjGfuL/mZnJzBObRt+ohBvvH69wZOXArL0OLKTKDAr8Cq0Jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790182385; c=relaxed/simple;
-	bh=JX72rW3BuU2DWlTQZVFBpC3rZT/ua9g8z8BkoQ4+NDg=;
+	s=arc-20240116; t=1790182431; c=relaxed/simple;
+	bh=NV+QiVZDYUgsZIju9thP3oAYtiVsfOM7qQ0Za3wGzbA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=f10PvAEzy9OatG/NNwB6eyoWyFyK7NVzbl87XEifWga2fiEfSBZvRbYxrCY/pLDuezPirg5WX9BLD2aAFj0JQSKj2x4e8y6f9ENUDjx2Q74g0o6MC/8yqpxHMiHyS8dKQKTJ365Dhk+bV4EDLQIEl1UzGUdmWhQ4bI2oUpNTH4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ob7+uyee; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=NCnnzEn9fzRm2asRwfn5fGNBK7mnn+taqeYJp+gV4zlu30wyaCDFNdQz57rwipyfIaGk6JlTgnloeXrsAB9qsb0NjHinUFctp6xqNo3dYXZ6n8okxnYMGnkjNEdOm6gOv1L2AVYsrfUZD+5dH2Js7xdt2T0Sbvuqnc++vXOGaSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oLWkDN7t; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ob7+uyee"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1662E1F000FF;
-	Wed, 23 Sep 2026 16:53:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oLWkDN7t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAAF01F000FF;
+	Wed, 23 Sep 2026 16:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790182384;
-	bh=8LKx2w6Atc9RNnebK/VkYmSfOkjzDcITEEXjlS/iT3w=;
+	s=k20260515; t=1790182430;
+	bh=tMpK0+Z+Or634gRRo0MmjLXBH4XcKPXl9e+yYgSkhA8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ob7+uyeen5QRuiAc3LkVQg+IYLAKjviIyRhJlkrET6yemIpMVy8794DUflL0gqTIW
-	 xkhI9r10Rsqy2XQPC2fcibNO61kwtZRlVOdk5gKSBCu2vx9rX2cNkZVDAy4EGJzttN
-	 L2EO5qPLfmS/604UqbktJa3JZerXVKFkX7UWM8eVm7bzXeu6XD7HB3KGAUKMHy0VDI
-	 qqHHcP1LRhdFhXbcsxIyd3t/ehzfx345Cf6TK/flPZUW0ky5Dh94V+MMcpvzOeQ/+a
-	 EuH+3saI2SB+ET8a9U61ihHJZOMijpcjsWFrLMeWjsBZ52SFsX1wC8ikRHrUA46KmQ
-	 RA41R8TastXNA==
+	b=oLWkDN7t9hmk+UEzq7n05M0U0GtzZkA263Nr2rtMSPtfVCQijW2ByVofOa7B10Xef
+	 0M8DRxyrJcuxoVF3fKwn5654yokg4ZpNPFD6jdyPQ11Fq4r36+hWbR5HNpbBMQrAS0
+	 d8PhQRU81vJ/9T1cark55Gbb3IRNaymoi6EQOh0rzhiumoIqovYCuQ1GAmcE9sx+5a
+	 4tPW5up0BL/qIFQcqsqSta+POutpyBc2HZ1hub+ZhyI8OxCrb8cNe9hX7vIxFZ9jRm
+	 8sSL4Zemd9L+LzwakmNTeVKRX/iqiHsBQzprNlj4OkwNfzMP8zHs9ydvRoSvvS+8no
+	 SWn1EDIKKaFfw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] KVM: SEV: Do cache maintenance on the source VM
- during intra-host migration
+Subject: Re: [PATCH 1/2] KVM: SEV: Free have_run_cpus during VM destruction
+ even if VM is no longer SEV
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Sean Christopherson" <seanjc@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260923163721.1584779-3-seanjc@google.com>
+In-Reply-To: <20260923163721.1584779-2-seanjc@google.com>
 References: <20260923163721.1584779-1-seanjc@google.com>
- <20260923163721.1584779-3-seanjc@google.com>
+ <20260923163721.1584779-2-seanjc@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 23 Sep 2026 16:53:03 +0000
-Message-Id: <20260923165304.1662E1F000FF@smtp.kernel.org>
+Date: Wed, 23 Sep 2026 16:53:49 +0000
+Message-Id: <20260923165349.CAAF01F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,68 +47,70 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Critical] kvm: sev: TOCTOU race in sev_migrate_from causes host memory c=
-orruption
+- [Critical] kvm: double free of sev->have_run_cpus on initialization failu=
+re
 --
 
-commit b97586a7411bd5d8a55967b35859f6e485f10868
+commit 35fcc7370ece167eff16a7738a6c47e4815c1ae4
 Author: Sean Christopherson <seanjc@google.com>
 
-KVM: SEV: Do cache maintenance on the source VM during intra-host migration
+KVM: SEV: Free have_run_cpus during VM destruction even if VM is no longer =
+SEV
 
-This commit manually performs cache maintenance on the source VM during
-intra-host migration. Since the source VM is converted to a non-SEV VM,
-automatic memory reclaim flows will not trigger the required cache
-maintenance, potentially leaving stale data in the CPU caches.
+Unconditionally free SEV's "have run CPUs" cpumask in the VM destroy path,
+i.e. even for what appear to be non-SEV VMs, as an SEV VM becomes a non-SEV
+VM if its state is intra-host migrated.
 
 > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index c9242c936a401..71923cb72d1d1 100644
+> index 63e8cfa9bf559..c9242c936a401 100644
 > --- a/arch/x86/kvm/svm/sev.c
 > +++ b/arch/x86/kvm/svm/sev.c
-> @@ -2048,6 +2048,12 @@ static void sev_migrate_from(struct kvm *dst_kvm, =
-struct kvm *src_kvm)
->  	src->pages_locked =3D 0;
->  	src->es_active =3D false;
+> @@ -2981,13 +2981,17 @@ void sev_vm_destroy(struct kvm *kvm)
+>  	struct list_head *head =3D &sev->regions_list;
+>  	struct list_head *pos, *q;
 > =20
 > +	/*
-> +	 * Do cache maintenance on the source VM as it is no longer an SEV VM,
-> +	 * i.e. memory reclaim flows won't trigger cache maintenance on the VM.
+> +	 * Free the mask even if the VM is not *currently* an SEV VM, as it may
+> +	 * have been an SEV VM prior to intra-host migration.
 > +	 */
-> +	sev_writeback_caches(src_kvm);
+> +	free_cpumask_var(sev->have_run_cpus);
 
 [Severity: Critical]
-Is there a race condition here if memory is reclaimed concurrently?
+Can this cause a double free of sev->have_run_cpus?
 
-If a userspace process or kernel reclaim triggers a memory unmap (for
-example, via MADV_DONTNEED) concurrently with the KVM ioctl, it could happen
-in the window between setting src->active to false and calling
-sev_writeback_caches():
+If a user issues a KVM_SEV_INIT ioctl and __sev_guest_init() fails after
+allocating the cpumask, the error path in __sev_guest_init() frees the
+mask but leaves the pointer intact:
 
-CPU1 in sev_migrate_from():
-    src->active =3D false;
+arch/x86/kvm/svm/sev.c:__sev_guest_init() {
+    ...
+e_free:
+	free_cpumask_var(sev->have_run_cpus);
+    ...
+}
 
-CPU2 running concurrent unmap:
-    Since active is false, the automatic cache flush in
-    sev_guest_memory_reclaimed is skipped.
-    The host frees and reallocates the page.
+Because free_cpumask_var() receives the mask by value, the pointer remains
+dangling. When the user later closes the VM file descriptor,
+kvm_destroy_vm() calls sev_vm_destroy().
 
-CPU1 in sev_migrate_from():
-    sev_writeback_caches(src_kvm);
-    Executes a hardware cache flush (wbnoinvd), which writes the guest's old
-    dirty ciphertext over the new page owner's data.
-
-Because sev_migrate_from runs without mmap_lock or mmu_lock, MMU notifiers
-can run concurrently. Can this cause host memory corruption by overwriting
-newly allocated host pages with stale ciphertext?
+Prior to this patch, the early return on !sev_guest(kvm) prevented the seco=
+nd
+free. By moving free_cpumask_var() before the !sev_guest(kvm) check, won't
+we unconditionally double free the dangling pointer?
 
 > +
->  	list_cut_before(&dst->regions_list, &src->regions_list, &src->regions_l=
-ist);
+>  	if (!sev_guest(kvm))
+>  		return;
 > =20
->  	mutex_lock(&sev_mirror_lock);
-
-[ ... ]
+>  	WARN_ON(!list_empty(&sev->mirror_vms));
+> =20
+> -	free_cpumask_var(sev->have_run_cpus);
+> -
+>  	/*
+>  	 * If this is a mirror VM, remove it from the owner's list of a mirrors
+>  	 * and skip ASID cleanup (the ASID is tied to the lifetime of the owner=
+).
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260923163721.1584=
-779-1-seanjc@google.com?part=3D2
+779-1-seanjc@google.com?part=3D1
