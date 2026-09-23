@@ -1,143 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD6341DDEC;
-	Wed, 23 Sep 2026 08:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A03441618
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 09:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790153879; cv=none; b=cDegpxq1VMG1EfHufNBDiJuxGNewlckc/VlBFIy5e73L8aiz5DLKBD2yqxrJCC1zhFYQG5CrNIarT6L4vPsiVkLa0J/C/o0WuVcQxkPz5F1yZZsG+6xy+nfYon6pilTebONhyukPJcaWXtmBow80Brv6/TNgF9haQ+pP8RlZnRk=
+	t=1790154287; cv=none; b=dZXNKRIcOxTOJn6PMFOcrypUqM7rk4DWhxU4V0/mvCRr1Mt0uQ1ABBmqaXaw2xsqF9VNfESAygInDBmZXjoTDHCt1h/XlVt4qy5KDh0AlIgwgAserq/Oe5YwkVQapSCkdGXNQZyPKJuVlENukWsQbLe4Rby3yPvsq9fwNEPJL18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790153879; c=relaxed/simple;
-	bh=NbxeVu7GQLPX31Zd04XaMUDdaWB7vEAx8Jmlhh/1e94=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PlCACv5r12DxK3VvBMUnekWHdevec1z+QQ9X3FQUweD3qnMRhq+qH/CaEidvaRjT2mQSK0ycXxRCTZhqg3tO2fksKqvuxjT5o59hx4ToDl27e7Xwyd61Z77KW1Y3NDMIEGxI6ptsTqXsrhPfdBSovG3m51DzzeWlduUhZlcuqKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XXowWt4z; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790154287; c=relaxed/simple;
+	bh=F76rJF6rJyKJ9l8ks9XlH+gyCTXUKy31iCnWUKjvOe0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=R7sa6z7jbqdJ3ZA+Z+Blhj4MV1QEnabQ/dtFCUk2C+ypAL6XxAunCGrCF1UZH78OEPvJId4lAzSwDKFwdJ5ShYQjZfkKE/4dXRLU7u73kVxxqe1Nu9GhO9SRglkCKW3vxajc+/9l9rtfogR8UsOXq2y8Wjqxa8uWWUe599HF4UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VWCfLDns; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XXowWt4z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D981F000FF;
-	Wed, 23 Sep 2026 08:57:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VWCfLDns"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6791F00893;
+	Wed, 23 Sep 2026 09:04:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790153877;
-	bh=zEbllmgiFfsLRk0pKgzNXwTCI+1F1P5ofJi8LFNISns=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XXowWt4ziL/56y/Y94hdTEZbLLr97gz3vPYecgnU+2OLdzbRXNjVt79AFC23MY5tr
-	 oTJY4tAIVUSxYNA273DbifXhFQN5PmgBpv0TsVokaKinyjXefw20slNXoVFuzwiHLS
-	 F6ZYPX0Cqw7UBvBS+5fOLuIQVKaCqWPhvvdVx7EVb3HJaQ4wuHkk+WrSgfva1xzANX
-	 bHdWs2TB7EVaJ4pr9L0v2ILwyY9eS00lIEN1Y7x7dNWVkC56JD9zi1iKd9QoWfdwqu
-	 /X8/fzcyQTfJjStJTXhyCnJotJ5LbvBVoTP27bIDNCCQV90j0yhBvB6DJjUfHmgpLx
-	 LQAT+4T8xfxRQ==
-Date: Wed, 23 Sep 2026 09:57:27 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <mkp@kernel.org>, 
-	Jaya Kumar <jayalk@intworks.biz>, Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, 
-	Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	selinux@vger.kernel.org, linux-sound@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
-	fuse-devel@lists.linux.dev, Takashi Iwai <tiwai@suse.de>, 
-	Emil Tsalapatis <emil@etsalapatis.com>
-Subject: Re: [PATCH v3 00/40] mm: make VMA flag semantics explicit, eliminate
- VM_SPECIAL
-Message-ID: <arOMefPN1gxMpyx8@gremlin>
-References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
+	s=k20260515; t=1790154285;
+	bh=fp0Px9NCaBEq8uaaDYKK+Ud2ioVOuzzI3JCjUnpy6FE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=VWCfLDns0A0BIMpWokhTeBJB2xlc4Neng1Izi3430H5/eW2BH+9qLPUqZ/dFYE/VJ
+	 D8n0K+BdaQBq58cVu5JzcEGmHu4JyM7MTYFqSZ0ivggDvSyDHYxvIBr/nqW+IuEYWy
+	 AzzLuq0CDl1mubocIAVubq2Zcmhg5l/c9uqvLb+Qh5SwbTGpivz3Flty0ZrejJfKO+
+	 S5vh8IYR6XJMC7W8Z2e6rVasha8ikVvo9/iuBvpBjmLFKzK1oU0kKfKe7y9COGf+cR
+	 sHdj9pIYvwelroiwJMh4FYZuBu0lZJ9F83q7xBd6AK32+It9YhsZnjTIcuwfvC323N
+	 gv+pUtq5kOhcw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] RISC-V: KVM: Serialize and atomize the IMSIC's TOPEI
+ read-and-clear operation
+Reply-To: sashiko-reviews@lists.linux.dev
+To: BillXiang <xiangwencheng@lanxincomputing.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260923085631.1384021-1-xiangwencheng@lanxincomputing.com>
+References: <20260923085631.1384021-1-xiangwencheng@lanxincomputing.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 23 Sep 2026 09:04:45 +0000
+Message-Id: <20260923090445.7A6791F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
 
-I know everybody is very busy but I'd appreciate if people could take the time
-to have a look at this if possible!
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] riscv: kvm: build error due to undeclared 'eflags'
+--
 
-I asked an LLM to look at review replies per week in mm (see below), and
-clearly 7.3 is an insane cycle, which I understand.
+commit 216b97a6c827bbe2a6897aa0efd6984c531cf514
+Author: BillXiang <xiangwencheng@lanxincomputing.com>
 
-(And dropping the THP M, remarkably, has not resulted in a drop in review
-workload for me).
+RISC-V: KVM: Serialize and atomize the IMSIC's TOPEI read-and-clear operati=
+on
+   =20
+This commit adds synchronization to the IMSIC TOPEI read-and-clear path to
+ensure it remains atomic with respect to interrupt injections.
 
-However, I'd also ask people to perhaps 'give a little back' to those who
-are doing a lot of review also :) review can be thankless at the best of
-times, but having your own work sit there unreviewed for weeks while you
-are working so hard to review others' work is a little much.
+Link: https://lore.kernel.org/kvm-riscv/20260923070332.1376132-1-xiangwench=
+eng@lanxincomputing.com/
 
-Thanks!
+> diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
+> index c1af23e79ae06..490c55419eb22 100644
+> --- a/arch/riscv/kvm/aia_imsic.c
+> +++ b/arch/riscv/kvm/aia_imsic.c
 
-┌───────────────────┬──────┬──────┬──────┬──────┬──────┬──────┬───────┐
-│      person       │ 6.17 │ 6.18 │ 6.19 │ 7.0  │ 7.1  │ 7.2  │  7.3  │
-├───────────────────┼──────┼──────┼──────┼──────┼──────┼──────┼───────┤
-│ David Hildenbrand │ 84.8 │ 70.8 │ 44.5 │ 74.7 │ 80.3 │ 85.7 │ 107.0 │
-├───────────────────┼──────┼──────┼──────┼──────┼──────┼──────┼───────┤
-│ Lorenzo Stoakes   │ 50.9 │ 25.1 │ 16.0 │ 45.4 │ 35.2 │ 40.1 │ 52.1  │
-├───────────────────┼──────┼──────┼──────┼──────┼──────┼──────┼───────┤
-│ Mike Rapoport     │ 11.8 │ 17.7 │ 12.8 │ 17.8 │ 30.1 │ 21.0 │ 24.1  │
-├───────────────────┼──────┼──────┼──────┼──────┼──────┼──────┼───────┤
-│ Zi Yan            │ 17.3 │ 12.8 │ 15.0 │ 14.4 │ 10.2 │ 24.0 │ 28.7  │
-├───────────────────┼──────┼──────┼──────┼──────┼──────┼──────┼───────┤
-│ Vlastimil Babka   │ 15.6 │ 19.3 │ 12.5 │ 23.8 │ 17.8 │ 25.2 │ 14.7  │
-├───────────────────┼──────┼──────┼──────┼──────┼──────┼──────┼───────┤
-│ SeongJae Park     │ 16.2 │ 7.7  │ 13.3 │ 23.4 │ 22.8 │ 17.0 │ 19.2  │
-├───────────────────┼──────┼──────┼──────┼──────┼──────┼──────┼───────┤
-│ Shakeel Butt      │ 13.0 │ 5.3  │ 11.7 │ 9.6  │ 7.2  │ 8.2  │ 14.5  │
-├───────────────────┼──────┼──────┼──────┼──────┼──────┼──────┼───────┤
-│ Harry Yoo         │ 10.6 │ 15.0 │ 11.7 │ 15.0 │ 10.9 │ 11.3 │ 6.8   │
-├───────────────────┼──────┼──────┼──────┼──────┼──────┼──────┼───────┤
-│ Baolin Wang       │ 6.0  │ 3.0  │ 4.1  │ 7.1  │ 6.7  │ 6.4  │ 17.4  │
-├───────────────────┼──────┼──────┼──────┼──────┼──────┼──────┼───────┤
-│ Kiryl Shutsemau   │ 5.6  │ 3.3  │ 2.2  │ 3.0  │ 0.9  │ 2.9  │ 16.2  │
-└───────────────────┴──────┴──────┴──────┴──────┴──────┴──────┴───────┘
+[ ... ]
+
+> @@ -912,12 +911,15 @@ int kvm_riscv_vcpu_aia_imsic_rmw(struct kvm_vcpu *v=
+cpu, unsigned long isel,
+>  	struct imsic_mrif_eix *eix;
+>  	int r, rc =3D KVM_INSN_CONTINUE_NEXT_SEPC;
+>  	struct imsic *imsic =3D vcpu->arch.aia_context.imsic_state;
+> +	unsigned long flags;
+> =20
+>  	/* If IMSIC vCPU state not initialized then forward to user space */
+>  	if (!imsic)
+>  		return KVM_INSN_EXIT_TO_USER_SPACE;
+> =20
+>  	if (isel =3D=3D KVM_RISCV_AIA_IMSIC_TOPEI) {
+> +		raw_spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
+> +
+>  		/* Read pending and enabled interrupt with highest priority */
+>  		topei =3D imsic_mrif_topei(imsic->swfile, imsic->nr_eix,
+>  					 imsic->nr_msis);
+
+[ ... ]
+
+> @@ -934,16 +936,20 @@ int kvm_riscv_vcpu_aia_imsic_rmw(struct kvm_vcpu *v=
+cpu, unsigned long isel,
+>  					  eix->eip);
+>  			}
+>  		}
+> +		if (wr_mask)
+> +			__imsic_swfile_extirq_update(vcpu);
+> +
+> +		raw_spin_unlock_irqrestore(&imsic->swfile_extirq_lock, eflags);
+
+[Severity: Low]
+Does this cause a build failure? The local variable is declared as flags at
+the top of kvm_riscv_vcpu_aia_imsic_rmw(), but this unlock path attempts to
+use eflags instead, which appears to be undeclared.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260923085631.1384=
+021-1-xiangwencheng@lanxincomputing.com?part=3D1
