@@ -1,154 +1,137 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C291A9F85;
-	Wed, 23 Sep 2026 00:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB842E0914;
+	Wed, 23 Sep 2026 00:28:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790123295; cv=none; b=lVC14wEGW6ZX3AlRCjQA09pkSGc2j7dMDskafXvVgTnAWfxvAcRTWvCWApnSoLmKK+J2rwIrt2dxbTt24a7Su0lZmAGz9DpX6JmQlEIbVBcfr0qA+cRA4C+VrUXAE6XI7uGS+uDVgv6vo9tMq/zROFqGcf8dMLsviot1rwO/Wl0=
+	t=1790123297; cv=none; b=NbRsDLdzZAFNRa7rObyHNh0yc8uZ+7DSt9rwWybpvJgjjFmvZ1/gSB82oKSubZo/hKir1oUXk0YQEo/KpfqvoGILLJZM2hTu5pIb/7guZ6Z/bUovENXpnVl4ZLrlEVcaKW9MJdfnihl2rq1VyJeEuZW04j0jAwsZ0/X45rtX6RQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790123295; c=relaxed/simple;
-	bh=VaJKW+0Lel/ioTsk74Ie7TY3LGQ1dBZXZQ4cSarsurE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JMRgXDUri6drh5V6Mii6TmBcelAob2UJ7AWYy45iqEhBFRo9e3e9dCjAuDurm+9jZKNYBscbTxPaQbUKoJHSAtMRIvXNh0WrdF2m4M5qONFS0QNYlJStgDVvMEUO6nqc7COlpTPNVgAp9FC+coaWUTw9iWpqoQ07hLxTYz07/bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hU72jtip; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1790123297; c=relaxed/simple;
+	bh=e/8AUG/U+Kxf1s5zTCI9RybjwZNolay9RX9f+zXPy9E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jjuxpugz0WrccF7ORp6VEPbU/PlinQ1ULMn3LGo9wGab8cUmrB5MPx1ywLUhJ+mWRwYkJfH+jVaEc3fgXSfREOzWHMc4obSwjOu34iwwXAvkHUtMFDvnQqmPI9bsdmV8m88A5sdzIZwTtWY8TCCsPJ3n0BjcZ6PnR+JOWe+eklE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=MQK7JvYj; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hU72jtip"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790123293; x=1821659293;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=VaJKW+0Lel/ioTsk74Ie7TY3LGQ1dBZXZQ4cSarsurE=;
-  b=hU72jtipa60ykide7JM85vcJlexPLw6hLJjKZl8ILoFwa535jGD793mL
-   xfMJTqGPxMk28AyWKk/0fVCZm9VqTKZATVS0/0DmhsLsEMiOzfmENqTGI
-   1eUOEhdJxMl7Zd54N2CgwAG9RCOEBmJdUsBmgYzXhPypcuMB2NRNSdqMX
-   Sq3dL+PxhpqwFvR+0fKHfBkJ7V417n6rCvRaZQLXc9ms7l7yjmPwrgfrB
-   yWS+mIT4kJsAAa5hH/AZwAxac4wH8rmsxy1xfSYBh86ksJGhgP3AW1TtN
-   dUvm3eN8NGPqfoCIIs+fZKD8c/S4MO0zOPiNchW0ToHQMwx6vHBFB5OxN
-   g==;
-X-CSE-ConnectionGUID: QZD6QLbiTwefbBgYcuuNXg==
-X-CSE-MsgGUID: O31fXBx3Rle339hskgmmOQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="101363795"
-X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
-   d="scan'208";a="101363795"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 17:28:12 -0700
-X-CSE-ConnectionGUID: wNKBc32vQAyJR4LSZ7FEKg==
-X-CSE-MsgGUID: y5zJAeLIT/m5KlqZA+0p7Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
-   d="scan'208";a="299623106"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 17:28:08 -0700
-Message-ID: <4c553712-d2b3-44d5-9c09-ba51a5f3729e@linux.intel.com>
-Date: Wed, 23 Sep 2026 08:28:02 +0800
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="MQK7JvYj"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1C0D840E0173;
+	Wed, 23 Sep 2026 00:28:13 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 2CL9VprPB2RT; Wed, 23 Sep 2026 00:28:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1790123283; bh=Aei0PnNzOTQ4gUUS/HiOefLQYuJlYg4D48KXdNRhLDU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MQK7JvYj3uTqo4iUnmytE6B5PDXhZoHcJ3o/w4h4dEhyK+MtCeOiu2G2pxo22Ydds
+	 yO56SIIGgm6XzZST5WFFu7gOeB2fZb4DaznqdN/85dtnA3jMfdSGUEQk8tYxkF64Fq
+	 NHBYNCotYo8eIEZQUf5UzDDXoD3QF8mgGHCS93ThPVcvnwfhQ0uEouyTgzvRoharKx
+	 OA+cwI9oy6qb0rPVAeBL5BRc7UqrsdMDSkUa9QHk8IR6ko52rdlKBS50K1iUnoYVN5
+	 +/XdhL/TckndyuB0WZQB4kTLRrYI9BlpVfqrcmabOl0brkPsDg66U8M+9oO0R/Smr4
+	 O7aGjmfiaVkDXLA1HSeHnFL2qmYHq4PTKFcNvrzLYFEbD2wtKhP3ACspeF4u3IEvOZ
+	 xjyBPOHI+H6jjKDnV0Ycem0FnkLcXVFm8QNb0d6/s7cR5TM6p5oBOgFqnrO9hKbYNf
+	 lFazQltkWOpOC1fIm6wy65dG53wFcrdj6pzDsF6btEHJflW+2afwzSA5pEsNU8IPop
+	 EtyaOCkvwj3n0x8BBaaJNjd7kMNzXbSfM6GuLA5A6nsF+BlBAPisVt/d1Lp4qapRGo
+	 3O5FPuJ6QMqrav1S8AFqxhESdv+FRYQ73VtM3vK3dc9DSrw6gLg8Z3POwVCvg452Ao
+	 gF0g9uZVEPi69dLu4GxxvA2Q=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6899640E015D;
+	Wed, 23 Sep 2026 00:27:43 +0000 (UTC)
+Date: Tue, 22 Sep 2026 17:27:40 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Ingo Molnar <mingo@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Jinchao Wang <wangjinchao600@gmail.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>, linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, x86@kernel.org,
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH v17 01/13] x86/mce: Fix hardware debug register
+ corruption on task migration
+Message-ID: <20260923002740.GAarMc_PJBsgo8Z-G9@fat_crate.local>
+References: <179005108298.388919.4535333252892590932.stgit@devnote2>
+ <179005109564.388919.3937970081044095776.stgit@devnote2>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/4] KVM: TDX: Filter configurable CPUID bits
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Gao, Chao" <chao.gao@intel.com>, "seanjc@google.com" <seanjc@google.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "kas@kernel.org" <kas@kernel.org>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
- "Maloor, Kishen" <kishen.maloor@intel.com>,
- "dedekind1@gmail.com" <dedekind1@gmail.com>,
- "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>,
- "nik.borisov@suse.com" <nik.borisov@suse.com>
-References: <20260917072548.2314491-1-binbin.wu@linux.intel.com>
- <20260917072548.2314491-4-binbin.wu@linux.intel.com>
- <d6bf5183b74b6c6f595001ee753405ea94a6042d.camel@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <d6bf5183b74b6c6f595001ee753405ea94a6042d.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <179005109564.388919.3937970081044095776.stgit@devnote2>
 
-
-
-On 9/23/2026 8:16 AM, Edgecombe, Rick P wrote:
-> On Thu, 2026-09-17 at 15:25 +0800, Binbin Wu wrote:
->> Filter the directly configurable CPUID bits reported through
->> KVM_TDX_CAPABILITIES against KVM's TDX allowlist, and drop the hardcoded
->> denylist based filtering.
->>
->> The TDX module reports directly configurable CPUID bits that it supports
->> for a TD, but KVM must not expose bits that it doesn't support, as blindly
->> exposing a host state clobbering feature can lead to host state corruption.
->> The existing denylist, which clears only TSX and WAITPKG, is not fail-safe.
->>
->> Add tdx_get_cpuid_cfg_mask() to get the mask of directly configurable bits
->> allowed by KVM for a given CPUID register, covering both feature bits,
->> which come from tdx_cpu_cfg_caps[], and non-feature bits, which are
->> enumerated at runtime.  Apply the mask to every CPUID entry reported
->> through KVM_TDX_CAPABILITIES.
->>
->> With the allowlist in place, newly introduced TDX directly configurable
->> CPUID bits stay hidden from userspace until KVM explicitly opts in.
->>
->> Note, filtering KVM_TDX_CAPABILITIES intentionally stops advertising the
->> directly configurable bits that aren't in the allowlist, as the
->> corresponding features are unsupported or cannot be properly virtualized.
+On Tue, Sep 22, 2026 at 01:24:55PM +0900, Masami Hiramatsu (Google) wrote:
+> From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 > 
-> I think we need to more loudly call out that this is an ABI change and we expect
-> it not to impact other VMMs because...
-
-OK, will do this for this patch and patch 4.
-
-Thanks!
-
+> In exc_machine_check_user(), local_db_save() and local_db_restore() are
+> invoked in the outer entry stubs (DEFINE_IDTENTRY_MCE_USER,
+> DEFINE_FREDENTRY_MCE, and DEFINE_IDTENTRY_RAW), surrounding
+> exc_machine_check_user().
 > 
->>
->> Update the documentation to reflect the ABI change.
->>
-
-[...]
-
->> +#define TDX_CPUID_ALL_ALLOWED_MASK	GENMASK_U32(31, 0)
->> +
->> +static u32 tdx_get_cpuid_cfg_non_feature_mask(u32 function, u32 index, int reg)
->> +{
->> +	/*
->> +	 * For a leaf/subleaf/register that will never be repurposed to hold
->> +	 * feature bits, it's safe to return TDX_CPUID_ALL_ALLOWED_MASK, i.e.
->> +	 * leave the TDX module's CPUID config mask intact.
->> +	 */
->> +	switch (function) {
->> +	case 1:
->> +		if (reg == CPUID_EAX || reg == CPUID_EBX)
->> +			return TDX_CPUID_ALL_ALLOWED_MASK;
->> +		return 0;
->> +	case 4:
->> +	case 0x18:
->> +	case 0x1f:
->> +		return TDX_CPUID_ALL_ALLOWED_MASK;
->> +	case 0x24:
->> +		if (index == 0 && reg == CPUID_EBX)
->> +			return GENMASK_U32(7, 0);
->> +		return 0;
->> +	case 0x80000008:
->> +		if (reg == CPUID_EAX)
->> +			return TDX_CPUID_ALL_ALLOWED_MASK;
+> However, exc_machine_check_user() calls irqentry_exit_to_user_mode(),
+> which handles pending thread work and may schedule() if TIF_NEED_RESCHED
+> is set. If the task migrates to another CPU during schedule(),
+> local_db_restore() runs on the new CPU with the dr7 state saved from the
+> old CPU. This corrupts the new CPU's DR7 hardware debug register and
+> leaves the old CPU's DR7 disabled.
+> In short, local_db_save() and local_db_restore() pair must be run
+> on the same CPU.
 > 
-> There are reserved bits in some of these. Are these "no feature bit" assumptions
-> checked somehow?
+> To fix this, move local_db_save() and local_db_restore() inside
+> exc_machine_check_user() and exc_machine_check_kernel(). In
+> exc_machine_check_user(), DR7 is saved and restored strictly around
+> do_machine_check() to avoid schedule() during migration. In
+> exc_machine_check_kernel(), local_db_save() is called at the entry point
+> to prevent early memory accesses from triggering nested #DB exceptions,
+> and restored on all exits.
+> 
+> Fixes: cd840e424f27 ("x86/entry, mce: Disallow #DB during #MC")
+> Assisted-by: Antigravity:gemini-3.8-flash
 
-Xiaoyao mentioned it in v3 too.
+verify_tags: WARNING: Zapping LLM ads tag: ['Antigravity:gemini-3.8-flash'].
 
-Sean suggested in v2 that "Realistically, CPUID.0x1.E{A,B}X are never going to be
-repurposed to hold feature bits, and so generating a mask of allowed bits adds
-unnecessary cognitive load and maintenance.  Ditto for CPUID 0x4, 0x18, and 0x1F."
-https://lore.kernel.org/kvm/aj1fi_0SBxMK5WOB@google.com/
+Needs to be:
 
-If we really have concerns, I can change it to exclude reserved bits in the next
-version.
+Assisted-by: LLM
+
+Please fix all your patches.
+
+> Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+> ---
+> Changes in v15:
+>  - Move local_db_save() to the entry of exc_machine_check_kernel() and
+>    restore it on early return from mce_check_crashing_cpu() to prevent
+>    nested #DB on watched variables.
+> Changes in v14:
+>  - Newly added.
+> ---
+>  arch/x86/kernel/cpu/mce/core.c |   27 ++++++++++-----------------
+>  1 file changed, 10 insertions(+), 17 deletions(-)
+
+Yah, makes sense.
+
+I'm thinking this needs to be CC:stable and I should take it in now.
+
+Peter?
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
