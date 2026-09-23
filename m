@@ -1,109 +1,169 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FA145DF61;
-	Wed, 23 Sep 2026 07:59:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E803468C22;
+	Wed, 23 Sep 2026 08:14:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790150387; cv=none; b=ZAPLh7nrPEnsoc7VKIcDmhfAbKfiIf6HD/xHEOUynooz1TZHUIfCQ7GE01MhKMt3XCUDR3ADSnGfKAGr8UoXDkvI6YEDFUt+zKmaF7wKiozkSh83byERPj3kzxZZ0asz4mQzrau89plEOUNgHcRUa1wOLCGMD70nCkIb7yaDnhc=
+	t=1790151254; cv=none; b=QkkydmTFgWKAv42om4OWOTP2WXvd+NDzpqIbfBr2bbIQB/StloH9myvyumT1py3C5kxnJMf7DgQA4YfbdXf3dn6W8Fx1t/qvt0Bq2V3E0futs8NLiGhSsiuaL5B0D5i08i0ES9psdiyw84kHOie5pMk3Y+zcvsi0JNyfjboKJns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790150387; c=relaxed/simple;
-	bh=8rw3+c4kPtR72QWHxMWMRr1gNJlZjyztVlhL0rhpLDA=;
+	s=arc-20240116; t=1790151254; c=relaxed/simple;
+	bh=aN2ZWo/23w37qNKgpNUnQ0H6NGD03WPhBvg03+MG/94=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fs+OXcEZ0AUaSSXBWONB7oodvLcp0mvLnnwqZ+2yxRj6nC9cqmH6WjBwnugr2LtRSiQBMgrJmJOsKxZw/b1PKmS/9QJ846I8LpKC6+42o/AqRg9ZxM/1LxH0il9J1S2kCQXyGuMP76AIjRyUqkBi7vQL+2Lf+anmGgVD1jDVYfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ps+1welo; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=HR064HOt5Vnx77PFMZX0U1VDnIMihgT7audwW0G9+h8lBGhW6m4zH+0Zu06olSrHZnuTsQH47N4NPhfOE/ee1UP8ci5iG6uHAU/yt2ufBcMHAmqs71yOo97b1iHdkL1yvuM0CZ8JXayl+R78fG8Bce5Xkd7XBoxGrFXU7BRYeQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mCJlfOwt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ps+1welo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790150384; x=1821686384;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8rw3+c4kPtR72QWHxMWMRr1gNJlZjyztVlhL0rhpLDA=;
-  b=Ps+1welokkG32YHbQc4GmkjXqDqa7JfENsGUErot4ijq5jeTzWGfJioJ
-   NfnEMvCJ+rZhzuP58ALONk00Dk/j002EZYo0E9zO5Pg7RdgNbqJ1IE6MF
-   ZKhtHsCDnUZ+9wRcjOcJ4dKFtr4QDi+WT+o1yOcpZ/uW/XPt5D2o74cxA
-   f5y8s66GFQRHGnbTiN7C3Y6P31yierzkECT9eGA+7KOPIq/kV9ex3arHN
-   JmKCvm5TNlw8yGYm653YMeratU9aVs8Ogcj36zjCtXE3g+kvbJCW49N5Y
-   lDAHJ0GypohfvKitDNqkLA8iNaW2GwbZJNk8EUxnWivdUMMPyDZVoS91O
-   A==;
-X-CSE-ConnectionGUID: MdhoCvdMQweOfsG+096ZRg==
-X-CSE-MsgGUID: Wo1PjFTZQmmt+PARcWsbPA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="94639989"
-X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
-   d="scan'208";a="94639989"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 00:59:31 -0700
-X-CSE-ConnectionGUID: Po7jkFkVSc2JkQTQNtzy6A==
-X-CSE-MsgGUID: Ahay1OAaSNGIRt0bt+dd4A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
-   d="scan'208";a="270023355"
-Received: from bradocaj-mobl.ger.corp.intel.com (HELO localhost) ([10.245.246.235])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 00:59:25 -0700
-Date: Wed, 23 Sep 2026 10:59:22 +0300
-From: Tony Lindgren <tony.lindgren@linux.intel.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kas@kernel.org,
-	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
-	xiaoyao.li@intel.com, sohil.mehta@intel.com,
-	adrian.hunter@intel.com, kishen.maloor@intel.com,
-	peter.fang@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, chao.gao@intel.com,
-	artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org,
-	nik.borisov@suse.com
-Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Configure add-on features on TDX
- module init
-Message-ID: <arOG2s3VZMQjLWey@tlindgre-MOBL1>
-References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
- <20260915102658.713079-3-yilun.xu@linux.intel.com>
- <arIqtGbSRHGw8fiT@tlindgre-MOBL1>
- <arOAL2Klu+L91JiI@yilunxu-OptiPlex-7050>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mCJlfOwt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 376301F000FF;
+	Wed, 23 Sep 2026 08:13:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790151252;
+	bh=4asDkf1r4nhSOrT7R8hAyZcEQKKYrXhZ/zPFbXlZHas=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mCJlfOwtX67y203buKELQIT2TJkfDrkJVRWjviTUThii3FIl01hNmt/2/N5niDJsO
+	 pMfVhn9hKYcyv1hPNTj3q8nO0Pds6VFO+rGQe1AtibuYmlGhfEvG5fzsVNd5VZj00d
+	 fkgcgDIaUfRNs16fD4U8B+bk8I0EVqFfud76K+T15hPjY5Wnzx7h17G1IEpBvKdbdT
+	 fwOMBpLGIgd0Nxsna3HHhcpWKXrmzcnrf1IYhuJaw4NDIion+IMG6MmbJbYDpOjNxG
+	 ds54K/vBGhy978o0s9QlAtQmkuOq1eOy+SdadnN3yilV4MeGzEJApyN21XCzbDlSMz
+	 y5uiJtnDQNScw==
+Date: Wed, 23 Sep 2026 09:13:40 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <mkp@kernel.org>, 
+	Jaya Kumar <jayalk@intworks.biz>, Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, 
+	Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev, 
+	Takashi Iwai <tiwai@suse.de>
+Subject: Re: [PATCH v2 00/40] mm: make VMA flag semantics explicit, eliminate
+ VM_SPECIAL
+Message-ID: <arOCPN02xB7mykju@gremlin>
+References: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org>
+ <20260914180811.057cba8fcc48d6e0b53a2683@linux-foundation.org>
+ <0b064fe6-ddb3-4f26-a1f2-2e9dd88d590f@kernel.org>
+ <CAJuCfpFBichJH4OcmSHTb1rOuQBT6k5pXeua9_KgpWjDBKvsYw@mail.gmail.com>
+ <aq6kzpK7wPl3iFGe@gremlin>
+ <aq6lW9FvL69QeA9H@gremlin>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <arOAL2Klu+L91JiI@yilunxu-OptiPlex-7050>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aq6lW9FvL69QeA9H@gremlin>
 
-On Wed, Sep 23, 2026 at 03:30:55PM +0800, Xu Yilun wrote:
-> On Tue, Sep 22, 2026 at 10:13:56AM +0300, Tony Lindgren wrote:
-> > On Tue, Sep 15, 2026 at 06:26:55PM +0800, Xu Yilun wrote:
-> > > --- a/arch/x86/virt/vmx/tdx/tdx.c
-> > > +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> > > @@ -998,6 +998,15 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
-> > >  	return ret;
-> > >  }
-> > >  
-> > > +/* List all kernel supported add-on features0 bits here */
-> > > +#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0	(0)
-> > > +
-> > > +static __init u64 get_tdx_addon_features0(void)
-> > > +{
-> > > +	return tdx_sysinfo.features.tdx_features0 &
-> > > +		TDX_KERNEL_SUPPORTED_ADDON_FEATURES0;
-> > > +}
-> > 
-> > How about get_tdx_supported_addon_features() for the above? It makes the
-> 
-> mm.. I think this would make a bit confusion. "tdx_supported" reads like
-> the module supported features, which is just .tdx_features0. But here we
-> want both the module & kernel support. I'm thinking of:
-> 
->  get_tdx_addon_features0(), just as is
-> 
->  or
-> 
->  tdx_get_supported_addon_features0(), maybe this is better?
+On Sat, Sep 19, 2026 at 04:09:13PM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Sat, Sep 19, 2026 at 04:05:57PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > On Fri, Sep 18, 2026 at 01:31:24PM -0700, Suren Baghdasaryan wrote:
+> > > On Fri, Sep 18, 2026 at 1:21 PM David Hildenbrand (Arm)
+> > > <david@kernel.org> wrote:
+> > > >
+> > > > On 9/15/26 03:08, Andrew Morton wrote:
+> > > > > On Mon, 14 Sep 2026 15:57:20 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+> > > > >
+> > > > >> The VM_SPECIAL / VMA_SPECIAL_FLAGS mask conflates several unrelated
+> > > > >> properties:
+> > > > >>
+> > > > >> ...
+> > > > >>
+> > > > >> It's all rather a mess.
+> > > > >>
+> > > > >> This series brings some order to things by both limiting what drivers can
+> > > > >> do with VMA flags and switching to using predicates that describe
+> > > > >> behaviour, not arbitrary flags.
+> > > > >
+> > > > > That's a lot of patches.
+> > > > >
+> > > > > Review is thin and I expect this won't improve a lot.  Lots of "no
+> > > > > functional changes" changes.
+> > > >
+> > > > I'll expect to go through all of them. Might just take a bit ;)
+> > >
+> > > ditto
+> >
+> > Thanks guys!
+>
+> Note v3 has been posted to fix a stupid bug in 1/40 + attack some very trivial
+> sashiko stuff
+>
+> https://lore.kernel.org/linux-mm/20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org/
 
-Something to describe it's masked with Linux supported features would be
-nicest.
+Just a gentle nudge on this :)
 
-Maybe something like get_tdx_masked_features0() or just
-get_tdx_usable_features0()?
+If you guys or anybody else has some time it'd be appreciated! (obv. the v3 as
+linked above not this v2!)
+
+I know the series seems intimidating but most of the commits are very small and
+it's been in -next for a while.
+
+>
+> >
+> > >
+> > > >
+> > > > --
+> > > > Cheers,
+> > > >
+> > > > David
+> >
+> > --
+> > Cheers, Lorenzo
+>
+> --
+> Cheers, Lorenzo
+
+--
+Cheers, Lorenzo
