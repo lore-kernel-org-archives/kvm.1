@@ -1,158 +1,114 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82F1569F20;
-	Wed, 23 Sep 2026 19:36:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790192187; cv=none; b=C9W9eGUSBEgsBxbiiB3hLKC+iT1b7x9MVt9xWHZldXXqd0Butt8BOdzQv+b+QsOsI2ciYAITFGlmjvpl8kye8RWyozPLKlMWcuZSO9u9YHY+wMY+DHK6tqiwggUe68GuxRMfdlW3qlCpojmowO4Gkg0x+QxyB77/02RzmnmiSdk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790192187; c=relaxed/simple;
-	bh=qbyegVfPVisMftvM9w19I2vmSLxDxgBL+oYOVHk7UT8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hKtAf/G4ihvbJcl0Sl+W5FaO+MFw+rL3hUlvL8tAYBPJ6piDtHoNcmxef2NtJ0kszJhg/AvRrFLcjQVZuzZB4bmOcBEuH0Sl1FSgoGXV+JQ4eXpe2nn2Gg6rxHtGPqWQNtuY1PsEcBW0ejG9z5hlZOwusYz393DGb6DJgk/aR3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gk2L7gGs; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0B656852F
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 19:49:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790192990; cv=pass; b=i6ave51I6FKgQYnwUNAzEBlcasJ+NLpRGYSn+4nhL0SJHqffi7WUiHrKqKJvfW/JOdeWDf1MiK5wWYHXMhVHHRXZUHWsiHxMqsRHpk6JU5s4oB7Elu+xU2FKj0I1Pa+DA8HsWBe6ePA+gK+XjxBM4mCRHa8pyjvdjOq8Yh6l6To=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790192990; c=relaxed/simple;
+	bh=RksxLKnB3yS+nYXEiKhMFhIcCH6JcEIqRI8Y/4IK6Kw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=G3AoXhgvOgO/l57di00FCIb1n/ArvjEBey3hK9RNk69/sKGwgGgSfo30GWKoNh+3mvWVsqNMPVuF8cldyG9CoDvy/Gia5Rdm/ShnJMORKK0F7PITA0xn6B77hl+CmL32aBQA049G+83yyPUqi+7YEdKlSNZD0WCTa3lcQlergig=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LaEh9T+V; arc=pass smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gk2L7gGs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790192186; x=1821728186;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=qbyegVfPVisMftvM9w19I2vmSLxDxgBL+oYOVHk7UT8=;
-  b=Gk2L7gGs3MUpjNaygCBme6le3VQ+UyFdX4koLHlZnivvG4uta9PEShBs
-   eiMT4lq3/NKJoztMK1vcV6EnORppWw5Ce667GFjMKxE/06HkLRWRhCyYE
-   D4CQnUvYafwfm/NSgQwBayYhG5HS71IlcgjuXxKfA1ay4apa5R6nWs/wr
-   wJ9njTxH/vOb1YUvH+xgGw7bAjVYNmZWaMb2eQ3IbMdlt9wDtlxwLyw8S
-   8+fQ8FJZ778hNujGazYQX+itOYGuI+50AMQEVUk06PKsIhT4QE7Tp5kCs
-   FYp34rZUHRcO2r9JNgZZ+TpAdXn64iTLTOc50d8clqVlQjF2t0YOizRme
-   A==;
-X-CSE-ConnectionGUID: tgqtSWwXSA+kMHjhVI5GLg==
-X-CSE-MsgGUID: YJvV8JRsTg24VYTMMw2F2A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="94745869"
-X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
-   d="scan'208";a="94745869"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 12:36:25 -0700
-X-CSE-ConnectionGUID: V7WQAby/SG+8UCxdRYJ8CA==
-X-CSE-MsgGUID: rL2ba/rySBKoESyRt8MCQQ==
-X-ExtLoop1: 1
-Received: from smtp.ostc.intel.com ([10.54.69.131])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 12:36:24 -0700
-Received: from cwf-2s5.sh.intel.com (cwf-2s5.sh.intel.com [10.239.48.132])
-	by smtp.ostc.intel.com (Postfix) with ESMTP id 813186393;
-	Wed, 23 Sep 2026 12:36:20 -0700 (PDT)
-From: Shreshth Srivastava <shreshth.srivastava@intel.com>
-To: Juergen Gross <jgross@suse.com>,
-	linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	llvm@lists.linux.dev
-Cc: tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	hpa@zytor.com,
-	xin@zytor.com,
-	nathan@kernel.org,
-	ndesaulniers@google.com,
-	jpoimboe@kernel.org,
-	peterz@infradead.org,
-	boris.ostrovsky@oracle.com,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v5 00/17] x86/msr: Inline rdmsr/wrmsr instructions
-Date: Wed, 23 Sep 2026 15:36:17 -0400
-Message-ID: <20260923193619.1408940-1-shreshth.srivastava@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260911084211.3149957-1-jgross@suse.com>
-References: <20260911084211.3149957-1-jgross@suse.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LaEh9T+V"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6a5f95a879cso2684a12.0
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 12:49:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790192986; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PzkL5jmF+o2dixd+4mmmtSo9fXChBH+ap4xEeBWocngRNQDPGakg26aD/KfSt62z+E
+         O87BSPjO2+bWgRn5Fk9bONWBg/Qr0JROYGLe/kSPqNppEXWyflXBx2hQeg+iYKCx03/A
+         aUCm1k5vidjBKXh72uAsZB+UxpnijVA3VrDzkxqxXB7qcGmApDgDd7TC0o9qh/a1JoBB
+         aziIKdZj7ZPOK26cywywYPsVbmPslOotyzxo/b4ESGHWgxRnpMkI0F+FkjJPNVnWkZ8Y
+         SBer4BgLH56y0WiZnxmGXWGRBsT/mEvvXQlALj4T+TA8aHfB+SslCVN+PLTYD+Sd81je
+         bgrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Zg+TRF2hlMBWlKMGW490ituj1VT149iHCF+fbR91AZY=;
+        fh=t4ylIoRZq4JtwucN9ZBW4o/CfeCEkZnL8rS9UL7eZmw=;
+        b=hRLIpk6hzDxeRIv7tfebvs9rkJDx13Sx12RxsMxQ3zdzX10/JOxMwlDP7K5Ci/LhGm
+         1RZP0o0rOGadHvqbebZUXO51ginqXo5PFiFgxSYjysIv8vPTRHSh/qzMdKxrWjpBLivb
+         WGMC25ULPUIptXn9Q1wlST2TUO96mqN9xH/cAi02AkbTfuSC4/JSaonLs2WAHRM6jVvH
+         Td+Dul47H5x4os/m3icmNNkBuClLH3TqSKvv0UgzaJOVLQ6kQwZoqqggLyLZGPWQegQL
+         t13b+xKF1KVeQmcLrXwDekvYfYHelodbTMlDw1b4V8K673BaoOn5d9Rbf0/ctHrZlVkw
+         6srQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790192986; x=1790797786; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Zg+TRF2hlMBWlKMGW490ituj1VT149iHCF+fbR91AZY=;
+        b=LaEh9T+VhpbtNX3w/zEMWVHTzQaNgN2gquOOZCGIATw0zL58ufmqhUvrJALMVBT2dI
+         5M9C6MHdaknAoJUBO8gJa59Hd7+Gbp321zW9hwkUUZI4DxbdjLsnmdFG94knMYDYzlgi
+         UaoEF1dgi1mXvTpU+nfoE/dIsBxjSbA76K8nOxHTXmwauJ7yOB9b2OuONgns9v6NJOL8
+         DTWLoO/EIIDhWLzQp7RRj5uP0tl4iLYfR+SBKXYD13HC1iYWVSsQKeN/1cGKADA1W2y/
+         LwIWmo7Nf/FqVmEC/MHG43lZIvmiRlyF88vV7h//Pkhx4J8IyBvGFFc729mJjUCNYQ0X
+         BqhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790192986; x=1790797786;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Zg+TRF2hlMBWlKMGW490ituj1VT149iHCF+fbR91AZY=;
+        b=J7gTpfLfbW8sg3UHjKUxPSXBmvaUH3/nZyD0ouPdKQzNWm5E6Zann+e3z9T0YJbEEt
+         9K31KKGbqd+SGgAmq+TfZs4P4LPtNsgtKspNahIL4jGeQut9PY1AgsJUx2PhacZyhtPo
+         AXshHLLU87GQlKoq1C8DhHRz4NKYCgOp/h+X4VC1GueQXZr0y6HMxKmGBX20ACSu3Gfc
+         EhFJPeP1njUleYcXFgnGpu0W4DjQy0Vj/b4rEIsVIfBidFP2iQHvyO166pVdd7pC1LTn
+         5ymqLbOAA3ADgemfANIaZG8eig5sJA9b/bF4F6rMfil4+RDjvzfrgEa+MXfOqSUTiYv1
+         A7bA==
+X-Forwarded-Encrypted: i=1; AKwUvByiZQj4niHMZeJRBjK7Y8uyudM3gOaSeC9Ua2ZjhASUTMZD8WfMdB4CqbOjgNoGqxa85YE=@vger.kernel.org
+X-Gm-Message-State: AFuF++ly/MXAnI2hFJwaGw+OrgvQIo3tbXgrhgx4PqwshxG7qZQohRw/
+	wtzC7q7yeJ2WqLdn08R121XdcCqY1TXq7O8vDnvuWkadJIeF265bV/P2+MAtFSQ3SiM5Il6bgJB
+	zd5LCsFDbEJO4bu+c0I2CGS6eKY6VD0HYWaXwczSg
+X-Gm-Gg: AYBFou185xaS/P8INOiTC/4SzXuy3kcwsSttLddIWLR6LY8KTFU697aDoayOz0yqENe
+	gNEXLYciQk8RlLHiIF5epX9TaOaX4VwlOMn9dlADjszPdzBiKQAGWnvvPK/KxlLYWIb7NqeZYLV
+	faNVKiPwEu4kA+GlWgKGE+QKI69xtsYvZEgeYPgaG+lSE8UADzueh+Fpc5RJyS/jimgFLtAbk0+
+	OS7XWCPbphyZlIVJlvxdV7ph+7om9pDwMwz4et0Orm/sL8Krrb6tW95xq29+zmzLCW4J1Khn3id
+	aAKzbEclGgL3mPGTj0DGaRO4Jrz28UhNZInOtvqxCXlUfoKApO3F97s=
+X-Received: by 2002:a05:6402:1c0f:b0:69a:f1cf:4849 with SMTP id
+ 4fb4d7f45d1cf-6aac7c0a102mr17386a12.2.1790192985525; Wed, 23 Sep 2026
+ 12:49:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1790171702.git.zhang_wei@open-hieco.net> <ece0aca2e99edc2cc626e0a8e61ccace80a28d74.1790171702.git.zhang_wei@open-hieco.net>
+In-Reply-To: <ece0aca2e99edc2cc626e0a8e61ccace80a28d74.1790171702.git.zhang_wei@open-hieco.net>
+From: Jim Mattson <jmattson@google.com>
+Date: Wed, 23 Sep 2026 12:49:33 -0700
+X-Gm-Features: AclHuK9wDS3j_kFU_z29aQCAAxsQCqLzUICOjyr0No49JpSQevHnMBu9QJNROds
+Message-ID: <CALMp9eTyC5fhWnhbf1_npF30NuQzoAmuTbJe5mkG5Kv3_P3a=g@mail.gmail.com>
+Subject: Re: [PATCH v8 1/8] KVM: x86: Provide INVLPG linear address to
+ intercept handlers
+To: Tina Zhang <zhang_wei@open-hieco.net>
+Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, zhouyanjing@hygon.cn, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11.09.26 10:41, Juergen Gross wrote:
-> When building a kernel with CONFIG_PARAVIRT_XXL the paravirt
-> infrastructure will always use functions for reading or writing MSRs,
-> even when running on bare metal.
-
-Hi Juergen,
-
-This doesn't build with CONFIG_PARAVIRT_XXL=y. 16/17 and 17/17 are where
-it breaks, but the cause is the .byte fallbacks: ASM_WRMSRNS_IMM from
-08/17 and ASM_RDMSR_IMM from 10/17 don't end in a separator, unlike the
-.insn variants above them.
-
-  #define ASM_RDMSR_IMM				\
-	" .byte 0xc4,0xe7,0x7b,0xf6,0xc0; .long %c[msr]"
-
-That worked while they were only ever the last argument of an
-ALTERNATIVE(), which appends its own newline. 16/17 concatenates them
-with ASM_CLRERR:
-
-	ASM_RDMSR_IMM ASM_CLRERR, X86_FEATURE_MSR_IMM,	\
-
-so the .long operand runs into the xor. From
-make arch/x86/kernel/cpu/common.s:
-
-	.byte 0xc4,0xe7,0x7b,0xf6,0xc0; .long 266xor %rdx,%rdx
-
-  paravirt-msr.h:165: Error: junk at end of line, first unrecognized character is `x'
-
-clang reports "error: unexpected token" in the same place. 71 objects
-fail, the same 71 either way, no vmlinux.
-
-msr.h chooses between the .insn form and the .byte fallback with:
-
-	#if defined(CONFIG_AS_IS_GNU) && CONFIG_AS_VERSION >= 24100
-
-Two kinds of toolchain end up on the .byte side of that test:
-
-  - GNU as older than 2.41. RHEL 9 and CentOS Stream 9 ship 2.35, and
-    Documentation/process/changes.rst sets the minimum at 2.30, so this
-    is a supported configuration rather than an old outlier.
-  - clang, any version. CONFIG_AS_IS_GNU is never set for clang, so the
-    && short-circuits and the version comparison is never reached. Your
-    08/17 comment already notes that clang has no .insn support.
-
-gcc with binutils 2.41 or newer takes the .insn path, where both macros
-do end in a separator, and is unaffected.
-
-Reproduced on v7.3-rc2 with your v3 00/13, v2 0/5 and v5 00/17 applied in
-that order, x86_64 defconfig plus HYPERVISOR_GUEST, PARAVIRT, XEN and
-XEN_PV. gcc 11.5.0 with GNU as 2.35.2, and clang 21.1.7.
-
-Terminating both fallbacks fixes it, and both toolchains then build
-vmlinux with no errors or warnings:
-
-diff --git a/arch/x86/include/asm/msr.h b/arch/x86/include/asm/msr.h
-index eba325ecfe4c..529c13553c63 100644
---- a/arch/x86/include/asm/msr.h
-+++ b/arch/x86/include/asm/msr.h
-@@ -78,9 +78,9 @@ static inline void do_trace_rdpmc(u32 msr, u64 val, int failed) {}
-  * form MSR access instructions reference %rax as the register operand.
-  */
- #define ASM_RDMSR_IMM				\
--	" .byte 0xc4,0xe7,0x7b,0xf6,0xc0; .long %c[msr]"
-+	" .byte 0xc4,0xe7,0x7b,0xf6,0xc0; .long %c[msr]\n\t"
- #define ASM_WRMSRNS_IMM				\
--	" .byte 0xc4,0xe7,0x7a,0xf6,0xc0; .long %c[msr]"
-+	" .byte 0xc4,0xe7,0x7a,0xf6,0xc0; .long %c[msr]\n\t"
- #endif
-
- #define RDMSR_AND_SAVE_RESULT			\
-
-ASM_WRMSRNS needs no change, _ASM_BYTES() already emits a semicolon.
-
-The WRMSRNS line belongs in 08/17 and the RDMSR line in 10/17.
-
-Thanks,
-Shreshth
+On Wed, Sep 23, 2026 at 7:02=E2=80=AFAM Tina Zhang <zhang_wei@open-hieco.ne=
+t> wrote:
+>
+> INVLPG's memory operand is decoded with NoAccess, and thus src_val does
+> not contain the operand address.  Intercept handlers therefore cannot
+> construct exit state that reports the linear address from the existing
+> x86_instruction_info fields.
+>
+> Add get_invlpg_linear_addr() to compute the address through __linearize()=
+,
+> using the same flags as em_invlpg(), and pass the result through
+> x86_instruction_info.
+>
+> Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
+Reviewed-by: Jim Mattson <jmattson@google.com>
