@@ -1,307 +1,253 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE99576ECB
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 22:21:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7857B3D0910;
+	Wed, 23 Sep 2026 22:26:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.5
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790202062; cv=pass; b=Gk1aWda0m8M7SyMqOY3Rdv8iRcZKN309u7gCzD3sFKJnBybDr7U0TYK1Dkn2CYhfXaGrIvKPb/SH3xPjBYgfJ9juj+W6K5uflHn/YngpcjSssWtFpb6ItM28psXqTIrWEw9DlUWUTtSAbRJZwmBsHlpZpF7+E8U55HgTemc8ac4=
+	t=1790202412; cv=fail; b=E1CZOsVbTMdXQPLRiD+VS0iI9L5XX9nFgSjuUjbx3kUcfbulmWUX01SBlUcQ/lJKyIY/he8nfAM71HGgn/Uu8FmYsGBZgJ8d0racXq0NEkgXzim3KTBrAaVoV2xaygeTS6GfOAzmaybTcwm92Ldk24r5YeCdiXqxHLdUyF7RYNg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790202062; c=relaxed/simple;
-	bh=ljpoITL+ddmUXtoxzFrCdARrrjkZ2MpJG8I2LiiH2vA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uHUK3mnsSFsxTS6aMNzTAdH1+SYZfUYNHvjmBp055nTNya6t1xBnulDvOe50Nj/ex5vjOEw1KnRP1mCwKcbpPLXC44nSMbubzsfnW3AtYvuITiG0M5sQxdVDVfmUBnWuJwoXnxl+aznNJ3wBMepQ0YByeG+G1RK+BBGQtwti7kw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j4rcZp+O; arc=pass smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1790202412; c=relaxed/simple;
+	bh=vnEErchuGilofef39uz4EWPETJrk5VWWf/ZzZS+WGAE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=OMVtHvj3SGOy5wMvKEgFMhFEs9/86NmnOJJIZKx5VyajTLjA1sgMMga83EFmV/2ZKDnH10h49cOZrru1idX0u0cddz6q/lQG4B2y2KZMz8g9KwkK0KefLAAS8M8u/US0sSsxNusk95ZWCLh4ty10+yr5BSQ3DlXjEWA1ATbfuPE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MnNRI2QO; arc=fail smtp.client-ip=192.198.163.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j4rcZp+O"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6a5f9b036f9so1763a12.1
-        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 15:21:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790202059; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ZJg8Le15/ZUn1FO4i6YR9nJOSKrg6DzMbYakQ2Q7TleE+yD3cfMr29D+OvUDl5Qncu
-         C/612ZV2qFHdMCwjRepA6dOS8gsF8tYSPqs+rvdI0bVU0fpqMBCdIApSEIkb0X31vscF
-         oG43Clxzq5AAgzgyaKrm1O84DUGUnQZZV1AoxERKtDA0jqz7tAAk25mpRVhBW+FVmHHn
-         PUahf2BeKs6oyYPI3Vv6gkDOJMuvS2uuRv+Eq9j/ZDqMbX7cawjeC81ZjGfe01p3H+Q/
-         pVveBZjko5IxGbRe3iQmJFFaIBFMyhG7+6ltV2CsYDk6a2HOQ7hqmEh5DPY2yrra966W
-         3pug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=H78LtMLqPdutyOe/A+aVYBWCZPz7tjSiHvt4+KB9tTE=;
-        fh=3d+jpd2DFoY/olvao+69M+D4nlezWu7lAV5OIJ8m6I0=;
-        b=nROBZsOo5e8LWGzAYLvWdty3WW1OwOysPcb1hQAqHQXHTRLjToWqE7GcMqlF0YJVQJ
-         TCp9LVHIDOzbl4rjHL7FD0BMHQp0ybdQOJK+Z0BzNJvA2+uif8utkjvoNwCmHCzrZWtM
-         uL80ppbnLUDOeSkom2Mifd6Ti9/abY3TNhWk3MnxoRzadH/qt8pmWF5SH8LkpNi+1Qb0
-         ini5jFgBIT+d3VRaxn+SdOAmhtW9SLi52XQEImh1B1K0QsKOaVZcaLQbQ/CNddLteYdU
-         ZuVBMFZwW5LYLIGtSy3VvDErItCfz3meQHRuPDGCnF3paI66ciJEjBt4ZpihoCqoWfPv
-         Rojw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790202059; x=1790806859; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=H78LtMLqPdutyOe/A+aVYBWCZPz7tjSiHvt4+KB9tTE=;
-        b=j4rcZp+ORSTGqd6kHKmHpb5pEjOnRqTuCIB6cLmY5YYyZhtXFDH/1D07P5lrRbz8Bi
-         w5qLNLIbgnqk6BThULEHdQwGPO3IxVArvxtTGXYxQfhzQC8SWReNbQhvev6GAWYq0E0g
-         Tf4cSSqEDso1ilef2cBxIhh34UgzeMG2/w4QVtrIMrcte16TOWqS0z3y59vKfvW/eA4f
-         bmipIAzDbToqB1esxp6brPXFmiEXRuN87eos0d/bNk0vTISO6evXUI5rvcc/th8WVC2F
-         7IMY5bz4wNTOgi/J73WraIon5XC1Ljuw8dEotpzfX5r3PVfUQxdU7NQ5RFgUK6CT0nrK
-         o82g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790202059; x=1790806859;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=H78LtMLqPdutyOe/A+aVYBWCZPz7tjSiHvt4+KB9tTE=;
-        b=Gjiwfrqs8DXbMR7XXBVq6E8xgkc64+aLpq/4tcq9YmQUwZORTWVwFVq3xlDxDabBaT
-         5YbIKOsPlEaTCPxEvwT0De5lehxfHvFCxbzviLtI/RI4Pq0SyooyfED4Fg/1LOu9kSbK
-         E6uH7fMZ+uymjADLZb7ZjwiApX0IyRwTaEHuwNgsE+UMtHsc+pF0ufKBR7QKAQGc0U/t
-         +/5MUVQmEukm76szTQBaONepdAt04PwaB6wzoFaTudX+83Ef5EgN/dnjlCt3QrGwxqfQ
-         oBZ+yM00abqXo86lnvcPtyq4Mi6piVQiimQAmOyrJO0uP0PWnwmaHkrfqXgAlde9Xc8t
-         ZDKg==
-X-Forwarded-Encrypted: i=1; AKwUvBzRmTZ/dmq7Q0W64CDmw4OY520Pbbm/Z8fNue+/KKpQdaK364bBPAew7vesjCC+ok1T1Vc=@vger.kernel.org
-X-Gm-Message-State: AFuF++kFILF6GtJwWDM/ITwe/kZpPAQ6JX5bBOSgsdjmEQCT7TMjB27Q
-	0pJRHZkQpjwwN4IuetdaV6S6omW3SIQsUjyKfQTCvYbYAU/znbEpJixCKohZMav4JonGjWfGsaN
-	VX0LnUTfB7sIuTFEgFH2sEy6MMsRTqhrRpKfXfae3
-X-Gm-Gg: AYBFou2toMmF/qelBOxFKUQD87ZJUUHLAdNf9aKCdofTFXvOvt1JYRK26KKOto0Lffp
-	7hzDHcmLafG/t7chmVlc3ojJ4UqUfyC4yHslDnAqRNTqde3I/H3S68eZNLkRsDovFtCFWeIsa+3
-	p7rIQuH3SYk4jAszdTHKvqETTvgxRF2yF+10mnQuE13DZMGnWQ939NV097SCtUK2SmkO+WJ7hKO
-	n4RnAacxVwWialmFPygoAReurGgrnVTboxDEcwAYn27Z39P1g0HGwjyP3uJ7xKxgVoJy1TGDJvJ
-	VaoxEh+HvuIa8zaocMpuDfN5Qvn/ZBmZy/mHbgWXe2zj7CGtVKZ/skE=
-X-Received: by 2002:a05:6402:70d:b0:6aa:1cdf:d859 with SMTP id
- 4fb4d7f45d1cf-6aac7d2429dmr22782a12.14.1790202058283; Wed, 23 Sep 2026
- 15:20:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MnNRI2QO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790202410; x=1821738410;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=vnEErchuGilofef39uz4EWPETJrk5VWWf/ZzZS+WGAE=;
+  b=MnNRI2QO10KR/eIHBGakAHB5EYRnVyDSNUxRM/HJP6u2fU+o9k6BgzvQ
+   0YnNSXcc+zj2hDilHBMa0gGmk2mUzVOk8Vax1zdgwFSx+6T5ckEHUDfnj
+   21XBk1IutAEpAbfdxoN3oT6bqBh1ACsvfJvZPsTVFhGI4DrG7evF3Yjt6
+   z/c/YRoJ7WugXuQyJ5UYLm0o3saZWjSE7+Eybu8KwMvU45PPJhhBuUPE3
+   eFEs7PPBf8t1/o4kzqM0/cQI+NXvv2h2T291d5Vgy66bevufOl3+AF9yR
+   xYQdC/SuQuJwp5YxC7vsytU9J0EZNc/BjRbwxfhfhMvbxMOHOm8C8BKyt
+   A==;
+X-CSE-ConnectionGUID: YT/oYdd4R+WSIFDGeMoyvA==
+X-CSE-MsgGUID: oERZpLqpRieunyOvjomPMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="1450011"
+X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
+   d="scan'208";a="1450011"
+Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+  by fmvoesa115.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 15:26:50 -0700
+X-CSE-ConnectionGUID: oxdYk17+TYeMCBzhzkkkLA==
+X-CSE-MsgGUID: QKw4gO7UQVOiTIw/+LurCQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
+   d="scan'208";a="4923481"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa012.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 15:26:48 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 23 Sep 2026 15:26:47 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Wed, 23 Sep 2026 15:26:47 -0700
+Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.34) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 23 Sep 2026 15:26:47 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wTKZmgGRipeqXWg7LJ0I7ZHSQAqT+ROVmdxOkqfGFZRA525oFIRn3hl/fzRA5TR0Wabs9vgvXaFiwPaSlVoAkGj4u55ztVbAwc2rIRCI5JZVc+5X9et0Q8RE0UHKNsJZlCFHrZqYT3i+3iECHwj5Vr0QDr6U8wYd2qju3YWGpGn766WxHs16BwU5+VcurYc0BCqQgteAELjf05q/amcj3ie4TBylD5kX0fnU91s0Q+5f1LeKLDumTyndPu5fQTXlgwRS9px73fniQwmjuP9Uf8Q5d8WpE5PADtye6c3OZt240aZCgScgDhc9vvme+4VA8x194c40feqijjxnAEKtow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vnEErchuGilofef39uz4EWPETJrk5VWWf/ZzZS+WGAE=;
+ b=nutmJhJEtmslyVcrZE/y9WG7szU7LfyOJQqNmvxyDvqJ1MYoWE5SuiWnRcZfTGkt/5m2odXq++LpmsJKiFs/QyrH+/CSzsNhewgDlxWR3JHqS/aw3T1lcktDx4q/z/DA8SvB9AX0OcA67WCZbJiJuAn/hScJgLC0Dfw4bU6fQza0393OaYY0fwnktXOZQ5qGuHw2eqIFyanW1fy4BtZ8vmKLb6gtjLP8dGCcaf73nqtM2TN7loogWyG/ltT1WKbWG/MNfo3wM63Qz1qeblH2BbRDoUCQBqLr8EzOrZLcM+cufPEGdCkJ+qsLJpknuUbnvKNtsLCpo4zahb9UG71h9Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SN7PR11MB6776.namprd11.prod.outlook.com (2603:10b6:806:263::21)
+ by LV1PR11MB8850.namprd11.prod.outlook.com (2603:10b6:408:2b4::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Wed, 23 Sep
+ 2026 22:26:40 +0000
+Received: from SN7PR11MB6776.namprd11.prod.outlook.com
+ ([fe80::9c32:5b6b:3a48:dfa1]) by SN7PR11MB6776.namprd11.prod.outlook.com
+ ([fe80::9c32:5b6b:3a48:dfa1%4]) with mapi id 15.21.0451.014; Wed, 23 Sep 2026
+ 22:26:40 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Gao, Chao" <chao.gao@intel.com>
+CC: "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
+	"kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "mingo@redhat.com"
+	<mingo@redhat.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "tglx@kernel.org" <tglx@kernel.org>
+Subject: Re: [RFC PATCH v2 02/10] x86/virt/tdx: Convert the version metadata
+ reader
+Thread-Topic: [RFC PATCH v2 02/10] x86/virt/tdx: Convert the version metadata
+ reader
+Thread-Index: AQHdR3IW9Vo4ecSFX0OAytf8FV4/R7bcxk+A
+Date: Wed, 23 Sep 2026 22:26:40 +0000
+Message-ID: <390fc4d56769f87d91949e900262640b52b505b7.camel@intel.com>
+References: <20260918132946.76533-1-chao.gao@intel.com>
+	 <20260918132946.76533-3-chao.gao@intel.com>
+In-Reply-To: <20260918132946.76533-3-chao.gao@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.44.4-0ubuntu2.1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN7PR11MB6776:EE_|LV1PR11MB8850:EE_
+x-ms-office365-filtering-correlation-id: 30bbf9e6-0006-4fda-c225-08df19c1bd3c
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016|23010399003|38070700021|10067099003|56012099006|4143699003|11063799006|18002099003|22082099003;
+x-microsoft-antispam-message-info: 9i57D/JEV38TN2QdjsYNb6aWGqgq3hk9aeaurB00bVIgXaw8WewIeiGhwTAdLTPLzB2yDtXnYKqsb/0oW427UsCCA2LUigTolzKSp+bZd4sn1I0460FjnyDymbQcRwMiPpsdmGNGGkT0rRa3bdKYPtaIdEvRfSo6JuIvwNqKwZNR7y1kYxweUsOswMAtAcKipGYOMQsTmGOnhZoTGz8RZySRBfNQHUnBrbjgLviepidHtaKvRZ0yqBQjLGmN5I2r/Hf14m1FYz1Bc7TInmQK/1u0bMrXKBZhrISfpvIFkDOLa02ask+zsDWiE1fMJX6P3MYwKKaTbuGOLn74wdAuQpbYF6ZqGJRgys5Ar+yC/lsXEhBMkD8MolhpR+bZ7uc7WhTYyf6FEBCUNhNwISKJnGarpHFSUjuvb03MJFAOD7c+I6u9NEUR6gf5uS5IGoUXTf8oIYvbnOjOVJftm4AkdCCyk00lIKZ6uryDjiqgkWArdiYolAbBWWS6fniw6EXLULOmpArw6s5HX9A1I6jeAI0k3ZfjpBblp6HS9yT4rLNXVrK1a3dI4GMzGoNbE7jRC6laBOemiyKx7h/C5rUDMQ8P3k9hUQ9AUFr90GDT4DXQFOiyU4zMPVCg8I/zKhLN3CFxAQPQPcIUS7Zp+OPXcQm6Za6jN85nok/9tjkbypAuVZMhysVJL9e+p4P1VG3TnU5yIUDDag0yzATjV9H4r6WHbHJCVoT3Pz0rKe+bJNI=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR11MB6776.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(23010399003)(38070700021)(10067099003)(56012099006)(4143699003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Yk1xUXRzb0ZVRnY0RWg1RndBdkkvdTcyN21POE4xQmlLdm96VjQ2aVd0ZEll?=
+ =?utf-8?B?WlNhMXRMbTQ1cWZSWFFsbXRrWEVnSXRPcTAydW9jajh0L2pqbU9sN1BKMTJC?=
+ =?utf-8?B?N0tQTVFYNDFocGpvbFpCM2F3bWVsdHZkenJSNlI0UTlVRnFOZENiYi9FQmF2?=
+ =?utf-8?B?bTNCcUJ6MXVmZ3g5Y2dpNm1uM1NybFY1U2lPYXhKYWQwQ2lMbXFicGg3RkZV?=
+ =?utf-8?B?UXV1TFQrcE9VY2pTcTdvaTlRWk1wL0IrQXVPMDNkandJdUpKMjk0bklTM3VG?=
+ =?utf-8?B?a29nMjBLYS82UlYyZE96U1llTkdkSlFSd1VWWnpqNzJJWVFXTzE3SnlPT1dx?=
+ =?utf-8?B?TWJUclVXUkJwd1I3M0RDa3RYVnBjSUpLb0hOSEErQkVNaHhJbiticmNLdUkz?=
+ =?utf-8?B?TVZQNjdMZEZaZTFJM1R6aGt3bmdKYWNGTWpLY29PSE1KN3N6TGpYSHlJcy9T?=
+ =?utf-8?B?T2xoYy95bnJ5OG9mQTdXWnMvbEc1SmlXKy8rMUZhUmJRd1pYNURPd1g3Uzlp?=
+ =?utf-8?B?OXJ3ME40T3pydGd6THlSL1MyM0M1blphZW1NY01EMmxqdE9nUlJBSVZLVUND?=
+ =?utf-8?B?REpEYkF1WTF6R1JFcTVuVGF6ZXE4V2lPWmpNdGtqZ0o4U3FHTDNTQkdNak1s?=
+ =?utf-8?B?TEtYbWxTWWVCMDlianZkc3BGbWIydHkvbTlYeGZZTFB5K2ZoQzFzVUNlTlhv?=
+ =?utf-8?B?TmxvVE56Tml2clQxZnhlNktnYWRQbmRzQ1JFOTZQb2dPVmpaRytaM3lTTXQ3?=
+ =?utf-8?B?b2JNMjdSMldVdkVDcG12QWoxbjBHNENFQTdVU0J4aW1VdXBXU2IrVWszZGh5?=
+ =?utf-8?B?VEpIWTZEWWpWL1JCTzdlSFVBanJXcmdXMlRUb21zZFBvaUh3K0JZZVprV3Bh?=
+ =?utf-8?B?Wkt3VG1DWjl4TW92eFVQb0kvWVRqSms4WHViT3JsTm5vY1MvTmwxWXF4eG00?=
+ =?utf-8?B?ZG1uclkrRk04OEJ6dXZzT2hOQXpvNkNkby9KMXhTRG5PaEhIc0lVN1g2WXp0?=
+ =?utf-8?B?UkhVUVdFWFB6R1o0eGdtbVVWeW1DaUpMZ3QrOUpOTHZTZ0pWQm5yV1NVb3JE?=
+ =?utf-8?B?ODdpM0RoK2JIUEdKVW45TEcyOEdiaU9KWDRtR3RGOTBYOG9WL1QrblMrU3Vu?=
+ =?utf-8?B?TEVRbDFpOE1zL2ZYeVpyV3M4ZlF6WWFtQWFTMWQxZ0t6SE1JUEtZaTdGTnNu?=
+ =?utf-8?B?MzRhWk96ck94ODNiSlRrTjVTaXM0V0tIbmZZVGFobE0vYkZCTStHNWR3Y1pJ?=
+ =?utf-8?B?cm9VMW5nbmxOUE5OT29hbE1xWkpMUi9Bb2dFWWxRaGxpeW5MaThSRU8xN2tL?=
+ =?utf-8?B?ZlZZbWNlRVJkVG1QSWNaY1BEdFEvNEJvd2xUZkdrQ0NvRnhhTnI5TGM4czZN?=
+ =?utf-8?B?RHRBUUZET0sxTGxReHN1SFdhcENPclhFeWZvSmdiRzlFRnN6OStxQkZxL0Jz?=
+ =?utf-8?B?VzNYckc4NzNDSjNoV2hMZ3BNd2F5aHdRZ2o2NkJYYVpWWFRGVDBFSnQ4RWlN?=
+ =?utf-8?B?SDZMUVNWWUh6QzRWbUFwQkNuekRKUldLVTIvZFA1SWhxaTB1aHhSNFVDMGNh?=
+ =?utf-8?B?NE1Zdm9kNmFmdGZKdks4aWNHYjBlaHJEL2dOaFp4UndlcGZ6V3BhNnp1NXd0?=
+ =?utf-8?B?a25mNDFadXh0UTBkOHREenFRaEtRUVA1RVl6cStjYjBJZjdXbWpQbGlyTDIr?=
+ =?utf-8?B?eEUvYm0zdjF0eTdIRUh6cFN3eEpXRDZORHNWMEx3Yy9pNm03aXNSeWpyMkFt?=
+ =?utf-8?B?TWkzNEN6ZzJka2l6ZTkzZUZvZmdSbXB3QTF1TVhPOHA3UlgrNE10aitGWDl1?=
+ =?utf-8?B?RndOVSsvd2N3L3V2L3FsOGludk02L2NUclRZSTRPaWxzQTFJZnFjanBDV0Y4?=
+ =?utf-8?B?ZVArbTllNThSTm8ybWhzVDlTdnNLYm53V2RxaUhUZk1zdS9tMHJzMm5tZjNh?=
+ =?utf-8?B?ZXJSdmMzS2pUM2VyM0tqNUh5RFJQT2NiUTArYUxZWEdnOERXUFppekhydytl?=
+ =?utf-8?B?ZXRJWi9IaHdDU2xMZmVaR1hQZkFjMzdVaFVXcmJYVmZSTU5UTm92K0lpeXdT?=
+ =?utf-8?B?S2RGWjY2djVWcjFOdjFmRjJUWlk0dHIwcnVBWmdQYlFyVERTYWNlNG1oRUhI?=
+ =?utf-8?B?TDR0bXA1c1BmeEZLbHVnclI0UXZMRzVJcVNTNHNKZzYvVTZiT3FWaGwxRkRN?=
+ =?utf-8?B?WSs2K1hxK0gxaVNienNxWmNEU0RVdjlRNlltbXlxN1Y0M0FuVnQzTmdnV1VH?=
+ =?utf-8?B?Z0FGWlpVSVg5Z2dqeTRqa3FEQXhTM3UzYWZteGIyalZDMm93a1B1ZVJJR3ZN?=
+ =?utf-8?B?UFJJcThEano5cGU0dnhBdjBnTWZ4enAwL3JLRlJiNjZwL0d1a2xMcWJkMlhH?=
+ =?utf-8?Q?iu0Iw5c8tORhUuhM=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <BA78F0BFE25C494090D33A10F391AE8C@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1790171702.git.zhang_wei@open-hieco.net> <b614e927c6c1ce9265cb9a37b296b0b30598da72.1790171702.git.zhang_wei@open-hieco.net>
-In-Reply-To: <b614e927c6c1ce9265cb9a37b296b0b30598da72.1790171702.git.zhang_wei@open-hieco.net>
-From: Jim Mattson <jmattson@google.com>
-Date: Wed, 23 Sep 2026 15:20:46 -0700
-X-Gm-Features: AclHuK-m_XpDfXwZpbOInUSIvV8XfLNXMUuMKPM1PWOMbUcNZTtYq4cU9I3GuUk
-Message-ID: <CALMp9eT1qMk7V7=md68LEXvmWH5ecj1YBn-YHoQ-vzJziaP5VA@mail.gmail.com>
-Subject: Re: [PATCH v8 5/8] KVM: nSVM: Fetch DecodeAssist bytes for
- synthesized faults
-To: Tina Zhang <zhang_wei@open-hieco.net>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, zhouyanjing@hygon.cn, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Exchange-RoutingPolicyChecked: xwMYm//Vxbd0/SwMgmJC1nHU42C/95wD5runAIER/CgJkUWNxB5l2Vfo8zuwGj9JFUTRsNh8kMuulrDJIT6gVZQiSdTK0FdHLht/NbkFX4MAQOADs1ckWjrmkwUG2bJtTNoLW/Any0TukrceDZhLaf4T+xdHo1vjf7H9b9KCqlQWYX8VEKcrqZok3t54YGaNKhdys7OgJj5FVbwAa83U9CYo4Zs5m8A/F1XAerPHeABz4VhhB+nKTd5Y9j82ZCWyWPam1tJ6VvfqtJU6fXbjyqL8dyP9NF8cy/TCcO9LgdKnkOUPyqWjxors66VyJpPFJP6jrhKk+/zaRuUqBnGSGQ==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB6776.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 30bbf9e6-0006-4fda-c225-08df19c1bd3c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Sep 2026 22:26:40.3946
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 6aW0q0jMVcy2J4hl5oEWcYMFcPT5eDKQJRj91UkzwagmoFOIgtP8zJ1Et3Fop/0z6bVyxxeu6e1JGxz086GKNMVi9wYFQiXF74VYqjWUQZ8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV1PR11MB8850
+X-OriginatorOrg: intel.com
 
-On Wed, Sep 23, 2026 at 7:03=E2=80=AFAM Tina Zhang <zhang_wei@open-hieco.ne=
-t> wrote:
->
-> Hardware-reflected #NPF and #PF VM-Exits can propagate instruction bytes
-> from VMCB02, but KVM-synthesized exits have no hardware-provided state fo=
-r
-> the current exit.
->
-> Extend kvm_read_guest_virt_helper() to optionally report the number of
-> bytes read, including partial reads.  Add kvm_fetch_guest_virt() to apply
-> instruction-fetch permissions and return that count, reusing the generic
-> helper's page-by-page read loop.
->
-> When a synthesized data #NPF or #PF has no valid VMCB02 instruction bytes=
-,
-> fetch up to 15 bytes from L2's RIP while constructing VMCB12.  Preserve
-> the bytes already read if a subsequent read cannot be completed.
->
-> For instruction fetches, truncate each linear address to 32 bits outside
-> 64-bit mode and stop at a non-canonical address in 64-bit mode.  Limit
-> the fetch window at the code-segment limit outside 64-bit mode.
->
-> Do not attempt the fallback for SEV guests, as KVM cannot read encrypted
-> guest memory directly.
->
-> Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
-> ---
->  arch/x86/kvm/svm/nested.c | 41 +++++++++++++++++++++++++---
->  arch/x86/kvm/x86.c        | 56 +++++++++++++++++++++++++++++++--------
->  arch/x86/kvm/x86.h        |  2 ++
->  3 files changed, 85 insertions(+), 14 deletions(-)
->
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index e839f61211c9..813b0fc663c6 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
-> @@ -78,22 +78,57 @@ static void nested_svm_invalidate_vmcb02_insn_bytes(s=
-truct vcpu_svm *svm)
->         svm->nested.vmcb02_insn_bytes_valid =3D false;
->  }
->
-> +static u8 nested_svm_get_insn_bytes_len(struct kvm_vcpu *vcpu, u8 max_by=
-tes)
-> +{
-> +       if (!is_64_bit_mode(vcpu)) {
-> +               u32 eip =3D kvm_rip_read(vcpu);
-> +               u32 limit =3D to_svm(vcpu)->vmcb->save.cs.limit;
-> +
-> +               if (eip > limit)
-> +                       return 0;
-> +               max_bytes =3D min_t(u64, max_bytes, (u64)limit - eip + 1)=
-;
-> +       }
-> +
-> +       return max_bytes;
-> +}
-> +
-> +static u8 nested_svm_fetch_insn_bytes(struct kvm_vcpu *vcpu, u8 *bytes,
-> +                                     u8 max_bytes)
-> +{
-> +       gva_t rip =3D kvm_get_linear_rip(vcpu);
-> +
-> +       max_bytes =3D nested_svm_get_insn_bytes_len(vcpu, max_bytes);
-> +
-> +       return kvm_fetch_guest_virt(vcpu, rip, bytes, max_bytes);
-> +}
-> +
->  static void nested_svm_update_vmcb12_insn_bytes(struct kvm_vcpu *vcpu,
->                                                 struct vmcb *vmcb12,
->                                                 const struct vmcb *vmcb02=
-)
->  {
->         struct vcpu_svm *svm =3D to_svm(vcpu);
-> +       const u8 max_bytes =3D sizeof(vmcb12->control.insn_bytes);
->
->         if (!guest_cpu_cap_has(vcpu, X86_FEATURE_DECODEASSISTS))
->                 goto out;
->
-> -       if (!nested_svm_vmexit_supports_insn_bytes(vmcb02) ||
-> -           !svm->nested.vmcb02_insn_bytes_valid) {
-> +       if (!nested_svm_vmexit_supports_insn_bytes(vmcb02)) {
->                 nested_svm_invalidate_insn_bytes(vmcb12);
->                 goto out;
->         }
->
-> -       nested_svm_copy_insn_bytes(vmcb12, vmcb02);
-> +       if (svm->nested.vmcb02_insn_bytes_valid) {
-> +               nested_svm_copy_insn_bytes(vmcb12, vmcb02);
-> +               goto out;
-> +       }
-> +
-> +       if (!is_sev_guest(vcpu))
-> +               vmcb12->control.insn_len =3D
-> +                       nested_svm_fetch_insn_bytes(vcpu,
-> +                                                   vmcb12->control.insn_=
-bytes,
-> +                                                   max_bytes);
-> +       else
-> +               nested_svm_invalidate_insn_bytes(vmcb12);
->
->  out:
->         svm->nested.vmcb02_insn_bytes_valid =3D false;
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 1705e7be46ec..ad8b35f2219d 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -4772,20 +4772,34 @@ gpa_t kvm_mmu_gva_to_gpa_system(struct kvm_vcpu *=
-vcpu, gva_t gva,
->
->  static int kvm_read_guest_virt_helper(gva_t addr, void *val, unsigned in=
-t bytes,
->                                       struct kvm_vcpu *vcpu, u64 access,
-> -                                     struct x86_exception *exception)
-> +                                     struct x86_exception *exception,
-> +                                     unsigned int *bytes_read)
->  {
->         struct kvm_pagewalk *gva_walk =3D &vcpu->arch.gva_walk;
->         void *data =3D val;
->         int r =3D X86EMUL_CONTINUE;
->
->         while (bytes) {
-> -               gpa_t gpa =3D gva_walk->gva_to_gpa(vcpu, gva_walk, addr, =
-access, exception);
-> +               gpa_t gpa;
->                 unsigned offset =3D addr & (PAGE_SIZE-1);
->                 unsigned toread =3D min(bytes, (unsigned)PAGE_SIZE - offs=
-et);
->                 int ret;
->
-> -               if (gpa =3D=3D INVALID_GPA)
-> -                       return X86EMUL_PROPAGATE_FAULT;
-> +               /* Apply address wrapping or canonicality checks before e=
-ach fetch chunk. */
-> +               if (access & PFERR_FETCH_MASK) {
-> +                       if (!is_64_bit_mode(vcpu))
-> +                               addr =3D (u32)addr;
-> +                       else if (is_noncanonical_address(addr, vcpu, 0)) =
-{
-> +                               r =3D X86EMUL_UNHANDLEABLE;
-> +                               goto out;
-> +                       }
-> +               }
-
-I hadn't anticipated the need for this special-case, and it's more
-intrusive than just returning the number of bytes read.
-
-I see now that it's complicated to match the behavior of the
-emulator's __do_insn_fetch_bytes(). You could clamp the number of
-bytes to read up-front to deal with the end of the address space, but
-you would still need a second call to handle the wrap.  Something like
-the following (mangled by my MUA):
-
-static unsigned int __kvm_fetch_guest_virt(struct kvm_vcpu *vcpu, gva_t add=
-r,
-  void *val, unsigned int bytes)
-{
-struct x86_exception exception =3D {};
-unsigned int bytes_read;
-u64 access =3D PFERR_FETCH_MASK;
-
-if (kvm_x86_call(get_cpl)(vcpu) =3D=3D 3)
-access |=3D PFERR_USER_MASK;
-
-kvm_read_guest_virt_helper(addr, val, bytes, vcpu, access,
-  &exception, &bytes_read);
-return bytes_read;
-}
-
-unsigned int kvm_fetch_guest_virt(struct kvm_vcpu *vcpu, gva_t addr,
- void *val, unsigned int bytes)
-{
-unsigned int first, bytes_read;
-bool wraps;
-u64 avail;
-
-/* An instruction-sized fetch can wrap at most once. */
-if (WARN_ON_ONCE(bytes > X86_MAX_INSTRUCTION_LENGTH))
-return 0;
-
-if (!is_64_bit_mode(vcpu)) {
-addr =3D (u32)addr;
-avail =3D BIT_ULL(32) - addr;
-wraps =3D true;
-} else if (is_noncanonical_address(addr, vcpu, 0)) {
-return 0;
-} else if (addr < BIT_ULL(63)) {
-avail =3D BIT_ULL(vcpu_virt_addr_bits(vcpu) - 1) - addr;
-wraps =3D false;
-} else {
-avail =3D -addr;
-wraps =3D true;
-}
-
-first =3D min_t(u64, bytes, avail);
-bytes_read =3D __kvm_fetch_guest_virt(vcpu, addr, val, first);
-
-if (wraps && bytes_read =3D=3D first && first < bytes)
-bytes_read +=3D __kvm_fetch_guest_virt(vcpu, 0, val + first,
-    bytes - first);
-
-return bytes_read;
-}
-
-I think this solution may be worse than what you have now, but I will
-defer to Sean. Maybe he will have a better idea. (Maybe my suggestion
-to return the number of bytes read was misguided.)
-
-Reviewed-by: Jim Mattson <jmattson@google.com>
+T24gRnJpLCAyMDI2LTA5LTE4IGF0IDA2OjI5IC0wNzAwLCBDaGFvIEdhbyB3cm90ZToNCj4gV2l0
+aCB0aGUgaGVscGVyIHRvIHJlYWQgYSB0YWJsZSBvZiBtZXRhZGF0YSBmaWVsZHMgaW4gcGxhY2Us
+IHRoZQ0KPiBleGlzdGluZyBtZXRhZGF0YSByZWFkZXJzIGNhbiBiZSBzdGFuZGFyZGl6ZWQgb24g
+aXQuDQo+IA0KPiBDb252ZXJ0IHRoZSB2ZXJzaW9uIG1ldGFkYXRhIHJlYWRlcjogYWRkIGEgdGFi
+bGUgdGhhdCBwYWlycyBlYWNoIGZpZWxkIElEDQo+IHdpdGggdGhlICdzdHJ1Y3QgdGR4X3N5c19p
+bmZvX3ZlcnNpb24nIG1lbWJlciB0aGF0IGhvbGRzIGl0cyB2YWx1ZSwgYW5kDQo+IHJlYWQgYWxs
+IHZlcnNpb24gZmllbGRzIGJ5IHdhbGtpbmcgdGhhdCB0YWJsZS4NCj4gDQo+IE5hbWUgdGhlIGZp
+ZWxkIElEcyBmb3IgcmVhZGFiaWxpdHksIHNvIHRoZSB0YWJsZSBlbnRyaWVzIGRvbid0IGNhcnJ5
+IHJhdw0KPiBoZXggbGl0ZXJhbHMuDQo+IA0KPiBBbHNvIGFkZCByZWFkX3N5c19tZXRhZGF0YV90
+YWJsZSgpIG1hY3JvIHRvIGRlcml2ZSB0aGUgbnVtYmVyIG9mIGVudHJpZXMNCj4gd2l0aCBBUlJB
+WV9TSVpFKCkgc28gdGhhdCBjYWxsZXJzIGRvbid0IG5lZWQgdG8gcGFzcyBpdCBzZXBhcmF0ZWx5
+Lg0KPiANCj4gQUkgd2FzIHVzZWQgdW5kZXIgc3VwZXJ2aXNpb24gdG8gcmV2aWV3IGNvZGUgYW5k
+IHdvcmtzaG9wIGxvZ3MuIEl0IHN1Z2dlc3RzDQo+IGFkZGluZyByZWFkX3N5c19tZXRhZGF0YV90
+YWJsZSgpIG1hY3JvLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogQ2hhbyBHYW8gPGNoYW8uZ2FvQGlu
+dGVsLmNvbT4NCj4gLS0tDQo+ICBhcmNoL3g4Ni92aXJ0L3ZteC90ZHgvdGR4LmMgICAgICAgICAg
+ICAgICAgIHwgMjEgKysrKysrKysrKysrKysrKysrKy0tDQo+ICBhcmNoL3g4Ni92aXJ0L3ZteC90
+ZHgvdGR4LmggICAgICAgICAgICAgICAgIHwgMTAgKysrKysrKysrKw0KPiAgYXJjaC94ODYvdmly
+dC92bXgvdGR4L3RkeF9nbG9iYWxfbWV0YWRhdGEuYyB8IDE1IC0tLS0tLS0tLS0tLS0tLQ0KPiAg
+MyBmaWxlcyBjaGFuZ2VkLCAyOSBpbnNlcnRpb25zKCspLCAxNyBkZWxldGlvbnMoLSkNCj4gDQo+
+IGRpZmYgLS1naXQgYS9hcmNoL3g4Ni92aXJ0L3ZteC90ZHgvdGR4LmMgYi9hcmNoL3g4Ni92aXJ0
+L3ZteC90ZHgvdGR4LmMNCj4gaW5kZXggNWNkOWM2ZWI5OGMyLi4wYzhiNTcxZjUxODYgMTAwNjQ0
+DQo+IC0tLSBhL2FyY2gveDg2L3ZpcnQvdm14L3RkeC90ZHguYw0KPiArKysgYi9hcmNoL3g4Ni92
+aXJ0L3ZteC90ZHgvdGR4LmMNCj4gQEAgLTQwOCw4ICs0MDgsOCBAQCBzdHJ1Y3QgZmllbGRfbWFw
+cGluZyB7DQo+ICB9Ow0KPiAgDQo+ICAvKiBSZWFkIGVhY2ggbWV0YWRhdGEgZmllbGQgbGlzdGVk
+IGluIEBtYXBwaW5nc1tdIGludG8gQGRhdGEuICovDQo+IC1zdGF0aWMgaW50IF9fbWF5YmVfdW51
+c2VkIF9fcmVhZF9zeXNfbWV0YWRhdGFfdGFibGUoY29uc3Qgc3RydWN0IGZpZWxkX21hcHBpbmcg
+Km1hcHBpbmdzLA0KPiAtCQkJCQkJICAgIGludCBudW1fbWFwcGluZ3MsIHZvaWQgKmRhdGEpDQo+
+ICtzdGF0aWMgaW50IF9fcmVhZF9zeXNfbWV0YWRhdGFfdGFibGUoY29uc3Qgc3RydWN0IGZpZWxk
+X21hcHBpbmcgKm1hcHBpbmdzLA0KPiArCQkJCSAgICAgaW50IG51bV9tYXBwaW5ncywgdm9pZCAq
+ZGF0YSkNCj4gIHsNCj4gIAlpbnQgaSwgcmV0Ow0KPiAgCXU2NCB2YWw7DQo+IEBAIC00MzEsNiAr
+NDMxLDIzIEBAIHN0YXRpYyBpbnQgX19tYXliZV91bnVzZWQgX19yZWFkX3N5c19tZXRhZGF0YV90
+YWJsZShjb25zdCBzdHJ1Y3QgZmllbGRfbWFwcGluZyAqDQo+ICAJLnNpemUJCT0gc2l6ZW9mX2Zp
+ZWxkKF90eXBlLCBfbWVtYmVyKSwJCVwNCj4gIH0NCj4gIA0KPiArI2RlZmluZSBURFhfU1lTSU5G
+T19NQVBfVkVSU0lPTihfZmllbGRfaWQsIF9tZW1iZXIpIFwNCj4gKwlURFhfU1lTSU5GT19NQVAo
+X2ZpZWxkX2lkLCBzdHJ1Y3QgdGR4X3N5c19pbmZvX3ZlcnNpb24sIF9tZW1iZXIpDQo+ICsNCj4g
+K3N0YXRpYyBjb25zdCBzdHJ1Y3QgZmllbGRfbWFwcGluZyB2ZXJzaW9uX21hcHBpbmdzW10gPSB7
+DQo+ICsJVERYX1NZU0lORk9fTUFQX1ZFUlNJT04oTUlOT1JfVkVSU0lPTiwgIG1pbm9yX3ZlcnNp
+b24pLA0KPiArCVREWF9TWVNJTkZPX01BUF9WRVJTSU9OKE1BSk9SX1ZFUlNJT04sICBtYWpvcl92
+ZXJzaW9uKSwNCj4gKwlURFhfU1lTSU5GT19NQVBfVkVSU0lPTihVUERBVEVfVkVSU0lPTiwgdXBk
+YXRlX3ZlcnNpb24pLA0KPiArfTsNCj4gKw0KPiArI2RlZmluZSByZWFkX3N5c19tZXRhZGF0YV90
+YWJsZShfdGFibGUsIF9kYXRhKSBcDQo+ICsJX19yZWFkX3N5c19tZXRhZGF0YV90YWJsZShfdGFi
+bGUsIEFSUkFZX1NJWkUoX3RhYmxlKSwgX2RhdGEpDQoNClNob3VsZCB0aGlzIGdvIGluIHRoZSBw
+cmV2aW91cyBwYXRjaD8NCg0KPiArDQo+ICtzdGF0aWMgaW50IGdldF90ZHhfc3lzX2luZm9fdmVy
+c2lvbihzdHJ1Y3QgdGR4X3N5c19pbmZvX3ZlcnNpb24gKnZlcnNpb24pDQo+ICt7DQo+ICsJcmV0
+dXJuIHJlYWRfc3lzX21ldGFkYXRhX3RhYmxlKHZlcnNpb25fbWFwcGluZ3MsIHZlcnNpb24pOw0K
+PiArfQ0KDQpJJ20gbm90IHN1cmUgd2UgbmVlZCBhbGwgb2YgdGhlc2UgaGVscGVycyB0aGF0IGFy
+ZSBlYWNoIG9ubHkgY2FsbGVkIG9uY2U/DQoNCj4gKw0KPiAgI2luY2x1ZGUgInRkeF9nbG9iYWxf
+bWV0YWRhdGEuYyINCj4gIA0KPiAgc3RhdGljIF9faW5pdCBpbnQgY2hlY2tfZmVhdHVyZXMoc3Ry
+dWN0IHRkeF9zeXNfaW5mbyAqc3lzaW5mbykNCj4gZGlmZiAtLWdpdCBhL2FyY2gveDg2L3ZpcnQv
+dm14L3RkeC90ZHguaCBiL2FyY2gveDg2L3ZpcnQvdm14L3RkeC90ZHguaA0KPiBpbmRleCBhODg2
+YzU0ZGVjYWEuLjQ0MTI0ZjM5OTcwMyAxMDA2NDQNCj4gLS0tIGEvYXJjaC94ODYvdmlydC92bXgv
+dGR4L3RkeC5oDQo+ICsrKyBiL2FyY2gveDg2L3ZpcnQvdm14L3RkeC90ZHguaA0KPiBAQCAtNjAs
+NiArNjAsMTYgQEANCj4gICAqLw0KPiAgI2RlZmluZSBURFhfVkVSU0lPTl9TSElGVAkJMTYNCj4g
+IA0KPiArLyoNCj4gKyAqIFREWCBnbG9iYWwgbWV0YWRhdGEgZmllbGQgSURzLg0KPiArICoNCj4g
+KyAqIFNlZSAiZ2xvYmFsX21ldGFkYXRhLnBkZiIgaW4gSW50ZWwgVERYIE1vZHVsZSBBQkkgRGVm
+aW5pdGlvbnMuDQo+ICsgKi8NCj4gKy8qIENsYXNzICJURFggTW9kdWxlIFZlcnNpb24iICovDQo+
+ICsjZGVmaW5lIFREWF9NRF9GSUVMRF9JRF9NSU5PUl9WRVJTSU9OCQkJMHgwODAwMDAwMTAwMDAw
+MDAzVUxMDQo+ICsjZGVmaW5lIFREWF9NRF9GSUVMRF9JRF9NQUpPUl9WRVJTSU9OCQkJMHgwODAw
+MDAwMTAwMDAwMDA0VUxMDQo+ICsjZGVmaW5lIFREWF9NRF9GSUVMRF9JRF9VUERBVEVfVkVSU0lP
+TgkJCTB4MDgwMDAwMDEwMDAwMDAwNVVMTA0KPiArDQo+ICAvKiBURFggcGFnZSB0eXBlcyAqLw0K
+PiAgI2RlZmluZQlQVF9OREEJCTB4MA0KPiAgI2RlZmluZQlQVF9SU1ZECQkweDENCj4gZGlmZiAt
+LWdpdCBhL2FyY2gveDg2L3ZpcnQvdm14L3RkeC90ZHhfZ2xvYmFsX21ldGFkYXRhLmMgYi9hcmNo
+L3g4Ni92aXJ0L3ZteC90ZHgvdGR4X2dsb2JhbF9tZXRhZGF0YS5jDQo+IGluZGV4IDk4ZWJmMTdh
+YWIxYy4uOTUxMGJmNWY2ZTdkIDEwMDY0NA0KPiAtLS0gYS9hcmNoL3g4Ni92aXJ0L3ZteC90ZHgv
+dGR4X2dsb2JhbF9tZXRhZGF0YS5jDQo+ICsrKyBiL2FyY2gveDg2L3ZpcnQvdm14L3RkeC90ZHhf
+Z2xvYmFsX21ldGFkYXRhLmMNCj4gQEAgLTcsMjEgKzcsNiBAQA0KPiAgICogSW5jbHVkZSB0aGlz
+IGZpbGUgdG8gb3RoZXIgQyBmaWxlIGluc3RlYWQuDQo+ICAgKi8NCj4gIA0KPiAtc3RhdGljIGlu
+dCBnZXRfdGR4X3N5c19pbmZvX3ZlcnNpb24oc3RydWN0IHRkeF9zeXNfaW5mb192ZXJzaW9uICpz
+eXNpbmZvX3ZlcnNpb24pDQo+IC17DQo+IC0JaW50IHJldCA9IDA7DQo+IC0JdTY0IHZhbDsNCj4g
+LQ0KPiAtCWlmICghcmV0ICYmICEocmV0ID0gcmVhZF9zeXNfbWV0YWRhdGFfZmllbGQoMHgwODAw
+MDAwMTAwMDAwMDAzLCAmdmFsKSkpDQo+IC0JCXN5c2luZm9fdmVyc2lvbi0+bWlub3JfdmVyc2lv
+biA9IHZhbDsNCj4gLQlpZiAoIXJldCAmJiAhKHJldCA9IHJlYWRfc3lzX21ldGFkYXRhX2ZpZWxk
+KDB4MDgwMDAwMDEwMDAwMDAwNCwgJnZhbCkpKQ0KPiAtCQlzeXNpbmZvX3ZlcnNpb24tPm1ham9y
+X3ZlcnNpb24gPSB2YWw7DQo+IC0JaWYgKCFyZXQgJiYgIShyZXQgPSByZWFkX3N5c19tZXRhZGF0
+YV9maWVsZCgweDA4MDAwMDAxMDAwMDAwMDUsICZ2YWwpKSkNCj4gLQkJc3lzaW5mb192ZXJzaW9u
+LT51cGRhdGVfdmVyc2lvbiA9IHZhbDsNCj4gLQ0KPiAtCXJldHVybiByZXQ7DQo+IC19DQo+IC0N
+Cj4gIHN0YXRpYyBfX2luaXQgaW50IGdldF90ZHhfc3lzX2luZm9fZmVhdHVyZXMoc3RydWN0IHRk
+eF9zeXNfaW5mb19mZWF0dXJlcyAqc3lzaW5mb19mZWF0dXJlcykNCj4gIHsNCj4gIAlpbnQgcmV0
+ID0gMDsNCg0K
