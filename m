@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953CFF507;
-	Wed, 23 Sep 2026 00:04:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5942223336;
+	Wed, 23 Sep 2026 00:14:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790121847; cv=none; b=VtuZd9MZ19p7Y5bqCvk7IKwe+AWWK3W0gO3GvZc+DYj3r/qV8y4/Ad8Dqp92VYUFuiqfBvGA70lGESU83r6Njwm+E17HXKYANz9mxalaMSmtKWZ7xBXacCKip/WJtwnUfU38mqFvoaIXosx7l0PyzBcAG/4/06lSK08cc2wFe3I=
+	t=1790122475; cv=none; b=HopHda57FDZEWDMxbMh+gV5mpln/PnsKS5GJDL0Yo+XGh7eouGKKEnLjLyDL5+k8zIcRoF23aOkz3HW0WZTHOHXZ1dHiZNVQWXVa7p/fNMzL394Y9eiwn8b8GiOc+IV30sI8JaZNBE6HR9Nno9GguKln4uVLe04Eb6+nO+VSriU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790121847; c=relaxed/simple;
-	bh=8tKEuCLmRQFdnPFHe6SE98eZqIUccDtzXWBe+Y5FBio=;
+	s=arc-20240116; t=1790122475; c=relaxed/simple;
+	bh=iJLhGRbBbehh8W9wFnYVnh/lqEFJP7x3mwjmAF01Z3E=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tML9TIUxLq2ghX7qcZnYcChQz0sq3xIPrH4HNwt5obbSc24rqm/IgHcbR7DY2cwPvU6/sgOEYoHCkF31bT7qdkIraAQT+jggHesuJXwmLXBWzf7YLEJveifTFPJFtrVQncVM6lDmMtGZsQ8HxWoMGTxM/pWke+hxFEwPIEXnBJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z2hDX9UE; arc=none smtp.client-ip=192.198.163.13
+	 In-Reply-To:Content-Type; b=dpJQFUqt1KzHxxBaIodpBuz1yKnoubg9W/N7oTYnaZ+7LkQ0FoxM6bW1GLLIq84YoanWLrjv1eg+fkAHZ58Zj5SDLpAzNBcq58mzMC/L5mJdbLkHbTernDMYnziRuNfN+j0A6fY5Jl5wC+GOCXFQEqOCKDFJLhj1uld4mnunvsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KSw6EUrG; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z2hDX9UE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KSw6EUrG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790121846; x=1821657846;
+  t=1790122474; x=1821658474;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=8tKEuCLmRQFdnPFHe6SE98eZqIUccDtzXWBe+Y5FBio=;
-  b=Z2hDX9UEuHjDcb+gUBVbLyIXMTbLpJBL1BF2AbJy8rNfKTFWgpOao2Yy
-   0wBC5z1aiXNOyxOqrflW+QNZmt3+Tf+2dKS/CBXrE9YMwJH8FPKWcdcmI
-   E6ZoI+MK5G8TDKupMT+Hg9Ls1iZneYjp2iLukPQhUQKNhN55smRX7lSK2
-   IXn+2yryz7Xv0aUXfpNU6nvPIabtpywfyni0PGcPBg1ZBI9HJan3vI1Hp
-   mgp3P0Wf4k3fqcB+VV0fsx5UTd/kdG3YIdfZs5bX2I9r4aJ8dn3S9qYEE
-   dxQn7+ZQJkxSS0rCHDsNg39kufc2tzuBZ5T4fZbMKgtQLBYlTvsxJhjle
-   A==;
-X-CSE-ConnectionGUID: X0h8tYx5TKWkRMePuWUAKQ==
-X-CSE-MsgGUID: 58LpvCrqTlObRZc2WMPSdA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="93272951"
+  bh=iJLhGRbBbehh8W9wFnYVnh/lqEFJP7x3mwjmAF01Z3E=;
+  b=KSw6EUrGI97MaJiOFREOGLYH0mJTW2v5sURNDybSD4D9bccbmrRQsCwt
+   Zm7ggWydIdOh0vZexDe8ycdxwa92Dn84RFQVd5nrCHwplBJI8KhYvEkht
+   NHCD4NQjW7K4hZ3SnLmDXZDCZM+8GxJjaZPN6276dlasz+ZzVresxrGaa
+   dsq9/Y+bkeikYUEbsbzDoghr8E7eE7h49WLjnytIqNUMWoJPY4Lh4fzar
+   9vyHrA3h1cdHo2ZJF+3yY7PVCfxM+wtfI9VYZoiCzpFJUyGB8iPMoeaFy
+   16szQns7v7Y0HsgFq6n8yDY0uOAh57DK1LPS0kDl7Bpq3wat5VqgX8m+y
+   g==;
+X-CSE-ConnectionGUID: 8TudpsRQThGkvWAYQ9uZmw==
+X-CSE-MsgGUID: yzLdc4/dSYumcXWGpBoM6Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="90644191"
 X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
-   d="scan'208";a="93272951"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 17:04:03 -0700
-X-CSE-ConnectionGUID: WGMqdp18RxeBTTYM/hykGw==
-X-CSE-MsgGUID: bngKGEPWStuMweu0rXZG6Q==
+   d="scan'208";a="90644191"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 17:14:33 -0700
+X-CSE-ConnectionGUID: E4sZTzCSTTKcM2GkQzWKtQ==
+X-CSE-MsgGUID: C52nxrynSjqJlgw6GSlATg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
-   d="scan'208";a="271937255"
+   d="scan'208";a="4418033"
 Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 17:04:00 -0700
-Message-ID: <1cc1a933-59e6-4e56-9b3d-3d556c8883dd@linux.intel.com>
-Date: Wed, 23 Sep 2026 08:03:53 +0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 17:14:30 -0700
+Message-ID: <5ff81fc4-d144-4b2b-8375-d2f63e0dd618@linux.intel.com>
+Date: Wed, 23 Sep 2026 08:14:27 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,7 +52,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/4] KVM: TDX: Report CORE_CAPABILITIES as configurable
+Subject: Re: [PATCH v4 1/4] KVM: TDX: Track configurable CPUID bits allowed by
+ KVM
 To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
 Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
@@ -66,35 +67,71 @@ Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
  "andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>,
  "nik.borisov@suse.com" <nik.borisov@suse.com>
 References: <20260917072548.2314491-1-binbin.wu@linux.intel.com>
- <20260917072548.2314491-3-binbin.wu@linux.intel.com>
- <7c5543092453fd1509695e2e17024fe20e45ee9a.camel@intel.com>
+ <20260917072548.2314491-2-binbin.wu@linux.intel.com>
+ <a8ce5d830a04d99ec47cdc727e1761bd4031d544.camel@intel.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <7c5543092453fd1509695e2e17024fe20e45ee9a.camel@intel.com>
+In-Reply-To: <a8ce5d830a04d99ec47cdc727e1761bd4031d544.camel@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 9/23/2026 5:11 AM, Edgecombe, Rick P wrote:
+On 9/23/2026 8:01 AM, Edgecombe, Rick P wrote:
 > On Thu, 2026-09-17 at 15:25 +0800, Binbin Wu wrote:
->> Add CORE_CAPABILITIES (CPUID.0x7.0.EDX[30]) to KVM's allowlist of TDX
->> directly configurable CPUID feature bits, even though KVM doesn't support
->> MSR_IA32_CORE_CAPS for TDX guests, to accommodate the legacy TDX module
->> definition and userspace's stale knowledge of it.
 >>
->> Older TDX specifications define the CORE_CAPABILITIES CPUID bit as
->> fixed-1, so userspace may expect the bit to be enabled for TDs.  #VE
->> reduction turns it into a directly configurable bit, so leaving it out of
->> the allowlist would make the bit impossible to enable once KVM starts
->> validating userspace's CPUID input, i.e. would be a surprising behavior
->> change for such userspace.
+>> Allow MWAIT, XTPR, and HT through TDX_CFG_EXTRA_F(), as these bits are
+>> not advertised in kvm_cpu_caps[].  The remaining directly configurable
+>> feature bits outside kvm_cpu_caps[] are left out of the allowlist:
+>>
+>>   - Features forced to zero when #VE is reduced,
+>>
 > 
-> Since #VE reduction is controlled from the guest side, this is a bit confusing.
-> Turning on #VE reduction can't change CORE_CAPABILITIES configurability status
-> because it's too late. You mean that this was changed from fixed-1 to
-> configurable to support #VE reduction arch? (I'm not sure why though).
+> Sorry, I'm not following this logic exactly. The guest can control it's own view
+> of CPUID. Why do we need to filter the host setting them via direct
+> configuration, just because the guest can change it's view to exclude them?
 
-Yes, a fixed-1 bit was changed to directly configurable bit if it is a
-#VE reduction bit, regardless the guest enables #VE reduction or not.
 
-I.e. CORE_CAPABILITIES was fixed-1 bit, but now it's directly configurable
-by the definition of the specs.
+These feature neither supported by the TDX module nor supported by the KVM.
+If the guest enabled the #VE reduction, the access to the related MSRs will
+cause #GP. If the guest doesn't enabled the #VE redcution, #VE cannot be
+supported by KVM since the related MSRs are not support by KVM.
+
+So the guest cannot use these features anyway.
+> 
+>>  or lacking KVM support
+>>     for the associated MSRs: EST, TM2, SDBG, DCA, ACPI, ACC (TM), RDT_A,
+>>     RDT_M, TME, PCONFIG, and CORE_CAPABILITIES.  Handle CORE_CAPABILITIES
+>>     in a subsequent patch.
+>>
+>>   - Features tied to IA32_MISC_ENABLE bits that a TD cannot set when
+>>     TDCS.TD_CTLS.REDUCE_VE is set: CID and PBE.
+>>
+>>   - Features that can clobber host state and lack KVM support for TDX:
+>>     FRED.
+> 
+> I think we can't say this quite yet. The arch isn't finalized
+
+Oh, right. I should be more rigorous.
+
+> 
+>>
+>>   - Unsupported features: PREFETCHWT1 (Xeon Phi only), PSN (absent from
+>>     TDX-capable CPUs), AMX-TRANSPOSE (never implemented on an Intel
+>>     platform), and RAO_INT (defined only for future processors).
+>>
+>> Filtering KVM_TDX_CAPABILITIES in a subsequent patch will intentionally
+> 
+> Nit: "patch" -> "change"
+> 
+> This is drilled into my head working on the tip side. I'm not sure if Sean has
+> the same allergy though.
+
+Will update it.
+
+> 
+>> stop advertising the excluded bits as configurable, as the corresponding
+>> features are unsupported or cannot be properly virtualized.
+>>
+>> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
+> 
+> Overall it looks very good to me.
+
