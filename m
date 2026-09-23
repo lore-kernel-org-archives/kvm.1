@@ -1,88 +1,170 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from va-2-42.ptr.blmpb.com (va-2-42.ptr.blmpb.com [209.127.231.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95711397936;
-	Wed, 23 Sep 2026 09:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281BF433E61
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 09:17:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790154965; cv=none; b=MuD4a6A/0hfkYyX6PQ3JjCu0dwipKjZvClQ20LnJ8/sTpY5A67iWWjOCkFplePusY8ZOMS6cTnU/7tbZIiJ/HsSu7/2Cw7L0LoNLHJZ+e9xDjUOHJ9UZK/Ux6o6ekOgsHRfSSEF5LQUIn+VQcXc6tYIsAevUZzAoiAPSrStpZUU=
+	t=1790155056; cv=none; b=da0R1y9CetA9fPM0L+om5qpirCZ5Vb6+QOtiezjZPS8IPP6gAx85OSziFFforH4xKuq+vAPDaUbMH1luv8GtCgITxMw+S8P4dk0zAfcQTIJnMlfJ44I6GSKghniNSqjkGLXlXHa/fvvUjtklBuGqG8Ced0KR0C+1oQWe5nQ+wrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790154965; c=relaxed/simple;
-	bh=QZaNMiuPOTWXuTVAqUvTyUac5XykdcD6UFqPlP9jct4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tyIBgBlv5XmgPF+v9Ac9d7wyPzDTM0S/aUrVyYHq64m9qNTkOv+xHqkhcSUjARwIzGHes2d3wWzMdG9Q9pBSdRxaRcadj7TydhrNR1AvKlCAGEWbKekSRnP97XDduLFJRY0tJ7oFujTAhkWDFgKCSN/ISZzAbpOYmacCIIhuzbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=vdpd31Ch; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1790155056; c=relaxed/simple;
+	bh=/fsUZjkzQ81iJixu+iZ/uVnyUIRlQNXwreJvymVt2Xo=;
+	h=Content-Type:Cc:From:Subject:Date:Mime-Version:To:Message-Id; b=Sv7D7cLcqcRXoBp9piTi50WJHPFiO8PupNcVfLcp1S61m9EE5Wae8p4k8GbBcCEnwWc2XPRR0OCnHnGzCVFBgUccIedL1Hi1TuP6xn6kPjBirmD2FfcgGMV0m9UW4ZPPLQSRm82VVjQRe7T+ERam6xMz9j/XuxsZ6cjCZHpHol4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lanxincomputing.com; spf=pass smtp.mailfrom=lanxincomputing.com; dkim=pass (2048-bit key) header.d=lanxincomputing-com.20200927.dkim.feishu.cn header.i=@lanxincomputing-com.20200927.dkim.feishu.cn header.b=uDefCHjg; arc=none smtp.client-ip=209.127.231.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lanxincomputing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lanxincomputing.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="vdpd31Ch"
+	dkim=pass (2048-bit key) header.d=lanxincomputing-com.20200927.dkim.feishu.cn header.i=@lanxincomputing-com.20200927.dkim.feishu.cn header.b="uDefCHjg"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=WTwhp9A/SCl0ODNS9CuWwWOw8IfovcPATQvYCi+U9zQ=; b=vdpd31Chti1ak9N7JLYTNBvpxy
-	lMQTBtkCMrHzSbNvzHMRywna8hN0otUtVAki7FUqjbtXLwPZu+IF0/NSznudu/3Een6JgUwkW5eV0
-	0nlWUF8xFhAWyG8s0gtDXUo4GIDUdvZBFKykVYDRIIf8WMogBsC6vOndyh8B3tLvFOmEcM09dl5f6
-	GqV9QEsbGZkVdd7PpmHROQGjhK28UsmFhiaIH1fUykrcv/dzSLBWs8rWlqwfvlV1+gDd3vqk2MS0e
-	p3Mlk7vRpsZAVe1359gPp68ELNGicRpmcuW3VB6svGJSqLPf3bj48vavWpcN9h5ysL6E96FIzsd1n
-	ZGhTeIjg==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x9J51-0000000CWTG-2CsZ;
-	Wed, 23 Sep 2026 09:15:55 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 1AC693008E2; Wed, 23 Sep 2026 11:15:55 +0200 (CEST)
-Date: Wed, 23 Sep 2026 11:15:55 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Ingo Molnar <mingo@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Jinchao Wang <wangjinchao600@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-perf-users@vger.kernel.org, x86@kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Subject: Re: [PATCH v17 02/13] perf/x86, KVM: Prevent host debug register
- leak into guest OS on NMI
-Message-ID: <20260923091555.GX776954@noisy.programming.kicks-ass.net>
-References: <179005108298.388919.4535333252892590932.stgit@devnote2>
- <179005110742.388919.1509641807739909065.stgit@devnote2>
+ s=s1; d=lanxincomputing-com.20200927.dkim.feishu.cn; t=1790155040;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=8LW/UL97F9n2RNOfFVINEJLOceLsBC25MrzyAVvWnbk=;
+ b=uDefCHjgcCMFKMiDslcXKwkrVnkKvahGTjdAcbzSY7QvuN5MiLn4A1h4dbfCjvBHAHtkQG
+ 0y75daKGDzO21+u7+akUZ9dmyUKII5pPi164nyfnqDRw1mZYcVUGuoGuz5X13V4o1wPHZ3
+ TIXtUxZkwNmDkxksTlqx6rMJbaMgXVIYL3axs1PtVHzweZ+YujWZE1T7AwdZ1sYeF/p4ME
+ rkrRAs/Hch4nO68BWvO+V9/uc22lBHsjGWHs4EJ7TrdUlGPzXE3V8P4Ia60KnlTmbtJmp+
+ eIRAZ7lITUDX7wieJxYZLHHeyetpYzougVuNYoeVklLmZpdHgC0zaGOQHdKfVw==
+X-Lms-Return-Path: <lba+26ab3991f+a3f3bd+vger.kernel.org+xiangwencheng@lanxincomputing.com>
+Content-Type: text/plain; charset=UTF-8
+Cc: <xb@ultrarisc.com>, <atish.patra@linux.dev>, <pjw@kernel.org>, 
+	<palmer@dabbelt.com>, <aou@eecs.berkeley.edu>, <alex@ghiti.fr>, 
+	<pbonzini@redhat.com>, <graf@amazon.com>, 
+	<kvm-riscv@lists.infradead.org>, <kvm@vger.kernel.org>, 
+	<linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>, 
+	<xiangwencheng@lanxincomputing.com>
+From: "BillXiang" <xiangwencheng@lanxincomputing.com>
+Subject: [PATCH v3] RISC-V: KVM: Serialize and atomize the IMSIC's TOPEI read-and-clear operation
+Date: Wed, 23 Sep 2026 17:16:58 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <179005110742.388919.1509641807739909065.stgit@devnote2>
+Mime-Version: 1.0
+X-Original-From: BillXiang <xiangwencheng@lanxincomputing.com>
+X-Mailer: git-send-email 2.53.0
+Content-Transfer-Encoding: 7bit
+To: <anup@brainfault.org>
+Message-Id: <20260923091658.1421475-1-xiangwencheng@lanxincomputing.com>
+Received: from lanxin-ThinkBook-16-G5-IRH ([123.120.5.129]) by smtp.feishu.cn with ESMTP; Wed, 23 Sep 2026 17:17:18 +0800
 
-On Tue, Sep 22, 2026 at 01:25:07PM +0900, Masami Hiramatsu (Google) wrote:
-> diff --git a/arch/x86/kernel/hw_breakpoint.c b/arch/x86/kernel/hw_breakpoint.c
-> index f846c15f21ca..0473a5c95856 100644
-> --- a/arch/x86/kernel/hw_breakpoint.c
-> +++ b/arch/x86/kernel/hw_breakpoint.c
-> @@ -102,6 +102,9 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
->  
->  	lockdep_assert_irqs_disabled();
->  
-> +	if (perf_guest_in_guest())
+The TOPEI read-and-clear must be atomic with respect to
+interrupt injection (set_bit in EIP). Otherwise an
+interrupt injected between the topei read and the
+clear_bit could be silently dropped.
 
-That naming is hilariously bad :-)
+v3:
+ - fix undefined eflags
 
-> +		return -EBUSY;
-> +
->  	for (i = 0; i < HBP_NUM; i++) {
->  		struct perf_event **slot = this_cpu_ptr(&bp_per_reg[i]);
->  
+v2:
+ - fix patch file curruption
 
-Note how the other -EBUSY return is a WARN. Why is silently not doing
-anything not a WARN in this case?
+v1: https://lore.kernel.org/kvm-riscv/20260923070332.1376132-1-xiangwencheng@lanxincomputing.com/
 
-And I suppose this is KGDB again?
+Signed-off-by: BillXiang <xiangwencheng@lanxincomputing.com>
+---
+ arch/riscv/kvm/aia_imsic.c | 42 +++++++++++++++++++++++++-------------
+ 1 file changed, 28 insertions(+), 14 deletions(-)
+
+diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
+index c1af23e79ae0..c440088651ec 100644
+--- a/arch/riscv/kvm/aia_imsic.c
++++ b/arch/riscv/kvm/aia_imsic.c
+@@ -607,26 +607,25 @@ static void imsic_vsfile_cleanup(struct imsic *imsic)
+ 		kvm_riscv_aia_free_hgei(old_vsfile_cpu, old_vsfile_hgei);
+ }
+ 
+-static void imsic_swfile_extirq_update(struct kvm_vcpu *vcpu)
++static void __imsic_swfile_extirq_update(struct kvm_vcpu *vcpu)
+ {
+ 	struct imsic *imsic = vcpu->arch.aia_context.imsic_state;
+ 	struct imsic_mrif *mrif = imsic->swfile;
+-	unsigned long flags;
+-
+-	/*
+-	 * The critical section is necessary during external interrupt
+-	 * updates to avoid the risk of losing interrupts due to potential
+-	 * interruptions between reading topei and updating pending status.
+-	 */
+-
+-	raw_spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
+ 
+ 	if (imsic_mrif_atomic_read(mrif, &mrif->eidelivery) &&
+ 	    imsic_mrif_topei(mrif, imsic->nr_eix, imsic->nr_msis))
+ 		kvm_riscv_vcpu_set_interrupt(vcpu, IRQ_VS_EXT);
+ 	else
+ 		kvm_riscv_vcpu_unset_interrupt(vcpu, IRQ_VS_EXT);
++}
++
++static void imsic_swfile_extirq_update(struct kvm_vcpu *vcpu)
++{
++	struct imsic *imsic = vcpu->arch.aia_context.imsic_state;
++	unsigned long flags;
+ 
++	raw_spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
++	__imsic_swfile_extirq_update(vcpu);
+ 	raw_spin_unlock_irqrestore(&imsic->swfile_extirq_lock, flags);
+ }
+ 
+@@ -912,12 +911,15 @@ int kvm_riscv_vcpu_aia_imsic_rmw(struct kvm_vcpu *vcpu, unsigned long isel,
+ 	struct imsic_mrif_eix *eix;
+ 	int r, rc = KVM_INSN_CONTINUE_NEXT_SEPC;
+ 	struct imsic *imsic = vcpu->arch.aia_context.imsic_state;
++	unsigned long flags;
+ 
+ 	/* If IMSIC vCPU state not initialized then forward to user space */
+ 	if (!imsic)
+ 		return KVM_INSN_EXIT_TO_USER_SPACE;
+ 
+ 	if (isel == KVM_RISCV_AIA_IMSIC_TOPEI) {
++		raw_spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
++
+ 		/* Read pending and enabled interrupt with highest priority */
+ 		topei = imsic_mrif_topei(imsic->swfile, imsic->nr_eix,
+ 					 imsic->nr_msis);
+@@ -934,16 +936,20 @@ int kvm_riscv_vcpu_aia_imsic_rmw(struct kvm_vcpu *vcpu, unsigned long isel,
+ 					  eix->eip);
+ 			}
+ 		}
++		if (wr_mask)
++			__imsic_swfile_extirq_update(vcpu);
++
++		raw_spin_unlock_irqrestore(&imsic->swfile_extirq_lock, flags);
+ 	} else {
+ 		r = imsic_mrif_rmw(imsic->swfile, imsic->nr_eix, isel,
+ 				   val, new_val, wr_mask);
+ 		/* Forward unknown IMSIC register to user-space */
+ 		if (r)
+ 			rc = (r == -ENOENT) ? 0 : KVM_INSN_ILLEGAL_TRAP;
+-	}
+ 
+-	if (wr_mask)
+-		imsic_swfile_extirq_update(vcpu);
++		if (wr_mask)
++			imsic_swfile_extirq_update(vcpu);
++	}
+ 
+ 	return rc;
+ }
+@@ -1050,9 +1056,17 @@ int kvm_riscv_vcpu_aia_imsic_inject(struct kvm_vcpu *vcpu,
+ 	if (imsic->vsfile_cpu >= 0) {
+ 		writel(iid, imsic->vsfile_va + IMSIC_MMIO_SETIPNUM_LE);
+ 	} else {
++		/*
++		 * Serialize the EIP set + external-irq update against the
++		 * TOPEI read-and-clear path so that an injected interrupt
++		 * cannot be silently lost when the guest acknowledges a
++		 * different (or the same) interrupt concurrently.
++		 */
++		raw_spin_lock(&imsic->swfile_extirq_lock);
+ 		eix = &imsic->swfile->eix[iid / BITS_PER_TYPE(u64)];
+ 		set_bit(iid & (BITS_PER_TYPE(u64) - 1), eix->eip);
+-		imsic_swfile_extirq_update(vcpu);
++		__imsic_swfile_extirq_update(vcpu);
++		raw_spin_unlock(&imsic->swfile_extirq_lock);
+ 	}
+ 
+ 	read_unlock_irqrestore(&imsic->vsfile_lock, flags);
+-- 
+2.53.0
