@@ -1,83 +1,99 @@
-Received: from mta0.migadu.com (out-163.mta0.migadu.com [91.218.175.163])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC49493D40
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 11:01:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD9249BD68;
+	Wed, 23 Sep 2026 11:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790161307; cv=none; b=PalvrwHXOIcqm9+ajXjCdTXjioQQAY36MhNBX8XSEkf4/VVszhZd4n9D2FQsfjzTNnOpAlm63StPIo5qc9uy5MWLIXqyGXSErckfNJVmbf53pOQXVpsDdCrjZRy8re+eQOVDMH+sb+TB38RJe70CQRpw7IF3NfmLwGsnc3AyHIM=
+	t=1790161468; cv=none; b=ayQekLCw+HRxl3CS8cgj7EQKqpmt0+/sFxZIEzyT4hn/JNaiqJq+g8o+ZkNk4xECMMy7EM+iWxwk+ZQHJzVh6awKL8M9P1XLJ9zxrQZTv2G61iNznwRylldQPmdUW2niiQEfl9ueVWBNZJ9Ulg35LgCoj9JPb1U+iG9FmTBMIzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790161307; c=relaxed/simple;
-	bh=5K+iPpF8DDgclPsRQeL7zsBmY6cYvKrH6RbiTc5jglc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=II8NtYLZxKB60xqvW5fKF64fJhBdJu6mxIqUw2NtnBMnH0G2ZAHp8bnnOidLIvLFeXvcVxyQ6dR1tMzYb8fEcQFBuFluvmDPfdhqBZHxkPdbbn4ZIolHm8uVSj+h3eud3eICUQU2ABfkJZnFS/mV3Bvy+YaAYY8n4vKwSrxy7SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TKKaryU9; arc=none smtp.client-ip=91.218.175.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1790161468; c=relaxed/simple;
+	bh=zGjMIFygYqqz687r0Dm5FHB9zulLKHdqaxokHtzat/0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qXOY38cotmwqreY0w8/ghmdwjKVwJfzI2+/URhOBBw94+Ee1Efl0meNGU28s5+SbkmKaDSgnXuMXKk+O1v7j+iSijJiDTjASzz5bKj123uUOMqqlJhkm0xUY3RzlZ/YcPUQxUwWxsc+tnybTAMM/P5uuFSKXHMEe2DxWBd4qm/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ghzlVDic; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TKKaryU9"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=5K+iPpF8DDgclPsRQeL7zsBmY6cYvKrH6RbiTc5jglc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790161297; v=1; x=1790766097;
- b=TKKaryU9BxGYWZxpAFV/3MlIrBYtlLnBz3/yEKLnwmlwRWP49yQKT200swXSXtZC51c/jB3c
- 7p00VbPaO+mbjabjTjAj++sWHevmvRVUAVScl3FsOQSHaG28D+mkUdVWmJM8qBkVmihFUqgIiiv
- atOXJq20Bt6ceudte3TTXadE=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 1fd6a6d180a7c459;
-	Wed, 23 Sep 2026 11:01:37 +0000
-X-Mizu-Trace-ID: 1fd6a6d180a7c459
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5b83c1421ecso4469e87.1
-        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 04:01:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBz/SdLG2M+9Sb1DJ8TqkXRNSsOFHiYD0GCY2oMfCL/jXoJaQGMPnNOJbrtbogV0rYFf+Wo=@vger.kernel.org
-X-Gm-Message-State: AFuF++mXEjWyWvLO7Jz1cL+BXM463q9N5y8VY8GRrcJLoUfzn5drFDVh
-	b4xEORDv0OPKYmtplzxvZFqMTak2DZK9QeDXGoNeiLkaCk5zMpJSmjGMsQ6VqzmVWdn0l4GPedj
-	LAkqOTj6UgiT/gjKfkFqhY38i6i7HhB2JDA3bq2VD
-X-Received: by 2002:a05:6512:648a:b0:5b6:4ad:d6ba with SMTP id
- 2adb3069b0e04-5b8d91673a2mr101791e87.15.1790161291757; Wed, 23 Sep 2026
- 04:01:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ghzlVDic"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790161464; x=1821697464;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zGjMIFygYqqz687r0Dm5FHB9zulLKHdqaxokHtzat/0=;
+  b=ghzlVDic6G5jPO39akH+3R5j7n46uaFUZMM8/WHyFy94MxbB11XlZT3w
+   HEaJAfeGfQ325/E+IdRfUPi11WSlPkNT/4dgZQvLIWTcAMmq1JPV2O8Va
+   Ym/PUrOJ5hpEINLPEf9h9+Evh50RR9yes9rXG3/WR7TTMRHKyGaBlh39h
+   coI5myozv8it2WniHd+uHwFtdyBahrLuCQAXY0CS6q8U6n+1x6sXtD0IL
+   ZBukH/rNi/RX0T3TKW/w5oelQLgy7CtV3mUMq/53m+wTPNaO4hS4PA2a2
+   reoxTNixsyFagzXozGC254sz8uTZO9eR8Xisfup3KBP5Zjk5Vr4fru2je
+   g==;
+X-CSE-ConnectionGUID: 1QONjn5VSvmIYvQjstq08w==
+X-CSE-MsgGUID: Rcwv5mziQMS4yBW2rSj02Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="78398399"
+X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
+   d="scan'208";a="78398399"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 04:04:19 -0700
+X-CSE-ConnectionGUID: TVU7IVoTRMahSqgIQUYcpQ==
+X-CSE-MsgGUID: IXCmbDfGQim3ZgcvijNH+w==
+X-ExtLoop1: 1
+Received: from zhaoliu1-desk.sh.intel.com (HELO localhost) ([10.238.208.118])
+  by fmviesa003.fm.intel.com with ESMTP; 23 Sep 2026 04:04:17 -0700
+Date: Wed, 23 Sep 2026 19:04:16 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: "Chang S. Bae" <chang.seok.bae@intel.com>
+Cc: pbonzini@redhat.com, seanjc@google.com, kvm@vger.kernel.org,
+	x86@kernel.org, linux-kernel@vger.kernel.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v7 00/20] KVM: x86: Enable APX for guests
+Message-ID: <arOyMJmOZVRp7Byr@intel.com>
+References: <20260902021804.718676-1-chang.seok.bae@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260922-kvm-arm-prefault-v3-0-787bd3bc7e3f@kernel.org>
- <20260922-kvm-arm-prefault-v3-7-787bd3bc7e3f@kernel.org> <20260922143157.0E84B1F000FF@smtp.kernel.org>
-In-Reply-To: <20260922143157.0E84B1F000FF@smtp.kernel.org>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Wed, 23 Sep 2026 12:00:55 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTziT=qEvCpjGriVhC5g7=nyQNfvEQenw-JXSJuWtJwTRg@mail.gmail.com>
-X-Gm-Features: AcwNN1VlY5oTU2GdC6G6YKOfl5LmibKipPAp5RDM2yTy_ZaXda-g-wUfh5go1wI
-Message-ID: <CA+EHjTziT=qEvCpjGriVhC5g7=nyQNfvEQenw-JXSJuWtJwTRg@mail.gmail.com>
-Subject: Re: [PATCH v3 07/14] KVM: arm64: Size the stage-2 memcache from the
- fault MMU
-To: sashiko-reviews@lists.linux.dev
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, 
-	Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260902021804.718676-1-chang.seok.bae@intel.com>
 
-Hi Lorenzo,
+On Wed, Sep 02, 2026 at 02:17:44AM +0000, Chang S. Bae wrote:
+> Date: Wed,  2 Sep 2026 02:17:44 +0000
+> From: "Chang S. Bae" <chang.seok.bae@intel.com>
+> Subject: [PATCH v7 00/20] KVM: x86: Enable APX for guests
+> X-Mailer: git-send-email 2.53.0
+> 
+> Dear KVM maintainers,
+> 
+> This respin is primarily a rebase onto v7.3, with the following minor
+> changes:
+> 
+>  * Patch 8: Adjust the core API usage from static_cpu_has() to
+>    cpu_feature_enabled().
+>  * Patch 2: Fix an unintended code comment change that was previously
+>    leaked to next patch.
+> 
+> Please let me know if there are any remaining issues that should be
+> addressed. I'm trying to figure out the next steps for the series.
+> 
+> Otherwise, I would appreciate your consideration for picking up this.
 
-On Tue, 22 Sep 2026 15:31:56 +0100, sashiko-bot@kernel.org wrote:
-[...]
-> Does this decoupling of s2fd->mmu and vcpu->arch.hw_mmu cause a spurious
-> allocation downstream in kvm_s2_fault_map()?
-[...]
-> Could this lead to an unnecessary allocation in the ioctl path that might
-> spuriously fail and return -ENOMEM to userspace?
+Hi Chang,
 
-Sashiko might be right about this one, though the mismatch comes from
-patch 5 rather than this patch: patch 5 moves kvm_s2_fault_map()'s pgt
-to s2fd->mmu and leaves the allocation check above it on
-s2fd->vcpu->arch.hw_mmu. Could patch 5 switch that check to s2fd->mmu
-as well, the way gmem_abort() tests pgt->mmu?
+I tested this series with QEMU master, and no regression was found.
 
-This patch looks fine to me though.
+my tests include:
 
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+1) Check APX enumeration & XSTATE in L1 & L2 VM.
+2) (with AI help) Collect instruction test cases from LLVM/GCC and
+   create some new, then test them in L1 & L2 VM.
+3) Expand the selftest to cover additional KVM instruction-emulator
+   cases.
 
-Cheers,
-/fuad
+All tests are passed at my side, so,
+
+Tested-by: Zhao Liu <zhao1.liu@intel.com>
+
