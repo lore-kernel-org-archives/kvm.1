@@ -1,195 +1,151 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403683A255A
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 14:31:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790173879; cv=pass; b=WH+05lFcrUMYKp/eVjzAWq7/vFUKqNkcDBCGkwgw/uKsDHiPfuoZejVdVD+IuAR8ClgvLzwJHr2LtsLU4i+OmmWzKszjffnYRbhHiwvg6aDPkXElO4b9AWYDv7dgSkqETynx/dwtEYH7uzk/4tmClnev9nUpyW8zOoBsK15Nycc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790173879; c=relaxed/simple;
-	bh=3IRQTfCkVu29EAhzhIq8HL8xV9bhN+vmwTvfaTzW1hg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=joOMuYgqO8yQkYljmF7ZtwyGi/TDFLkUy6vbsrM76KX3iG/zLoJlLogaMiF21iZN3INycNFv0kH4+vJ+dBQK3YrVpT4bvd7KjooC67oSEa0DYilYSrY6wpRa2i5oEvbXaZbeWS3WmwVgl5jtG1ZLzHlFXMfb0Zv3/wonBVEVi4M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C+1Ohl3z; arc=pass smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E744352F264
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 14:32:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790173968; cv=none; b=ROwsPG5kaMvM3pWAAU1bDY80JOPPcGxUuMonH/Yy9owbFpSLqaYCGT3LKO4/TiHfjxKpladwseDRbUM0gPqxOGXXYCwGnCiYIEjbf/zggMz1nR9o3f3ei/lM0zCdRmbI9t4SBaD84QIPQhtobuP043nd0wehF2ZfizlLUY3xu/c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790173968; c=relaxed/simple;
+	bh=S7rAkPuZSZMbYQIfkDVKURs4Ono2lI5WQLQVCr5CGDI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uxbxLWA8wNrjdzU5mhH4nrbeTq7BDMzeY44+rXgdtJ3Lhb8tk2xDwBhNPk5ZZdm0kXPExkGzDLzeg0ZxTOp1AcouhjHPJjRKIFWiiESjJUVCnWLPl46THcft0zsdJrJQjCw1UQXqgOgqbGPv/V6eAmcitMUxEeoucKUK5BtVJvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mdmqPp28; arc=none smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C+1Ohl3z"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-53113d72966so260601cf.1
-        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 07:31:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790173876; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Uacm7FXoYeieeOGAVVS9lCE52ElGRHjXs80+gWCxzJQT91YY9wimYQs376Pg/2SVdK
-         FRLnbiKJTcZuT9HoiEGvxvzyUesDEbO+sLrwF6ZZ95ABObSYFTSChDHtwLBFrwET3bmj
-         Dg0qQJwWEPZc4IGeBRIOMTmjVUYbfMqWBZss8NVI/SJ8l41w38iCcmwLNCCVhjgijZ0j
-         0lwvjzjtaG/XbT+euQMkX87e1mIusbC61cyg/wA5bHCXXczi3ertatLJVjFrbQDYvp0l
-         rWEj8BPsSQRplg5hV4flV6GpNMJ6eT0FI7H9M+DYTOuyZsW+K2Ros7ikT8lmyPm9uQ1E
-         +M9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3IRQTfCkVu29EAhzhIq8HL8xV9bhN+vmwTvfaTzW1hg=;
-        fh=6Nls7ra5cFQpEVVekB6gjscZ2mkIDm43YzrAXssg+Ao=;
-        b=qSpiBVXCOfKjshEZ4uEIJG2rsGwu7r/An7uhNF7LtVSsKOiD64ABr3YVSyZEDVZxD4
-         /TqULcYEiaU0cQN0P9/nj5PLTo/+/l5CsOOt4U/rEel/486eLX6yBgLyHqO+pJfXrvfM
-         TRtuvF1YFLnEvVX6uF4Ar5JrN8bt277GpdFAdj85T3IEC3HJKzWDvMLqe1GLLtIpxJIb
-         2GjBhEMWqmBV4DftFeDR0aPrUuDD2465jlN4kl1tb/1rY6IVfoZOUcZdy2b2NnP4qWjy
-         8dJzJ2JW3Ahyh3JzIPZVbmU37oA9V3FBu6TeAlh0GQwhRKsOgECVC178CvXiOt9U3G60
-         h3Iw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mdmqPp28"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396cccbba91so563556a91.1
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 07:32:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790173876; x=1790778676; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=linaro.org; s=google; t=1790173966; x=1790778766; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=3IRQTfCkVu29EAhzhIq8HL8xV9bhN+vmwTvfaTzW1hg=;
-        b=C+1Ohl3zbsMrjh1dB/zOjZD8WctelSpuD7HSjz83HtCzxAu2uQCdrvdk6mQA/qDmED
-         XPmCruc/0qesoh5ZaUY/8kYU55YuQDkrL+NWB4/GzBktzO6vR8i1QACk+3pme9wnGQCn
-         VZQmjl8KrY0HTHromA139b+tgbWQilZ3lTmZ8bgk7A7cwz+FVWfgOIYzhOmTDxAQ89K+
-         VZ5tGKKWdn2SxsyXoo0ZRNPy/7aL5Z2Tdfk7aj0pDU/c4b+4zxQCe6XqJRfIBBmHEG8r
-         fY+QEIfNks1XUT2d6WUeW6MkoHO+EYXflKlYvUF0fbOWU0DbvpsKlrTvHc30tBgH/z4n
-         u9Ww==
+        bh=7rhO8zdKOr8jmD+SfzN1wHrIhUden50az9FhzT+ZY8k=;
+        b=mdmqPp28IGHF+NKj9wAayNk7MVkLgVlCNCkixI5BktES03GMQ55V/dYOl5TJicpb2/
+         rx5S2YVwHAa0dxHRCK263IEdo7J7HelyXNyXHcFWuHUtzMqXpYsv5fZ2W9T7zIQGxeau
+         pQICE4fjlR89YLOoiP/MOut3o5YqXOuE54PprAO18ZKtOJ/Gu5ueyLwcp9IrykmS3g5i
+         BrmsFEIspOhCUM4s5qRKzsV4MxYzVwxuz0IH5VGmofBNtoJou3hqnDm+SCTUHKQfbolC
+         b3aO4AwR2+AJMKREOAIJk6p1SdWEkAdxkAKDB9fV9XkLqspEuCg4nZkS4OPZQtC7Boh1
+         CEow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790173876; x=1790778676;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790173966; x=1790778766;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=3IRQTfCkVu29EAhzhIq8HL8xV9bhN+vmwTvfaTzW1hg=;
-        b=PjhhILeph+H5h3UuY7RrFntgjhicNhmqa4KydghEzZYmHlC6GUyZtMWwb6uIxCN5wc
-         3hWKMtlsy1iArOfdjp/0O4FU7lp6qMQLSIDSS3lE5D7vQ3x0flXg1n7Fxq3iuxSh2HoO
-         BGzLqgUgWTw9xF580c1wH2cny1qfVSTWQtWhdX5AL4ebdCSCiDb899qiO7ug6G5cI+Ub
-         ENaomDmbzNA305p4/hj0YawaW7joP0PEbBcPVLhcSP0M2ihom8FvVPTXnZgZLmvwArc4
-         Cm4Oq8ugBQUWZKkQAjX5zuLNYxfCPc0C9IUksdW9S0kgxSJAcOvUMINmiuoy1i1sMb7V
-         xtLw==
-X-Forwarded-Encrypted: i=1; AKwUvBy7Hi4UBkHhjW/5AYeajF55AavWalNF1ai7vDDKkwDdqLEMjz4FzjUxgQJPzKKUMPoWDWs=@vger.kernel.org
-X-Gm-Message-State: AFuF++kAlHQXu9emevsOEg5QzApbsNzys/bhKZZu9PAZ8Aklqf9uYLbF
-	gUaTfGyyO4+OQ6/rmAT60x2VsgsTTM0W+c8OTFgFfZ0wTt4gwj21q7S2qYScKTT63LYHLwubc1s
-	Va9my+qJu3wEfuWXUXiC/k7Jmvc0c6lwb1cJxoFf8
-X-Gm-Gg: AYBFou1xfGF5iKLlHJNp2bhqecLRha1Bb0Mr/rXnYkCkzon9CB03Lh0KoCF4FsRZqLI
-	5NhVAGiww+10KhE6tfj1IRMkzqGDqKTOfzgNFYCeduUoanTLnLJ99YI8oRAYWfXr6skmDNrsvuW
-	vMrQxkubne58AJ0sF8eTrGfUeyQI/Q4rlLls33YiH+u9/bK/yoH6n1Zxkh8r50EMSQMa045UWHR
-	MeL45ZrTUB1wpcokHiXOrda16ivOPgFlXCNKqo9FMKj1ZW1SXUOMFpInH5bpGSx08IDzSlcQKwv
-	FQ2txioSd3WUXEDO+XYLDsIMSW/hfK2fXqPboEixFAuans+DcaBPk56mAnVk1P6TOnpN4fQ2crb
-	1HeUhezC7bQ==
-X-Received: by 2002:a05:622a:260e:b0:532:9d15:2e5a with SMTP id
- d75a77b69052e-532ede89b29mr14598791cf.1.1790173874906; Wed, 23 Sep 2026
- 07:31:14 -0700 (PDT)
+        bh=7rhO8zdKOr8jmD+SfzN1wHrIhUden50az9FhzT+ZY8k=;
+        b=NcpYyby/4KXi4zgl2db7htk+B7p7KoW6hozZffoeEQ0xUjBLu+BnpaEJ6OIKnsr8ig
+         JO3VpGhBgIxZuMnKlR6FdNLdv4asYlO0wn6tWehKDDU2A6iV4tX3rOlYMryA7dmimb+J
+         2JMr1fHyOt5CJ/5N2AIFJ35I+Njj+pAbalMHabKJgHzDaQ/e4oB8HDXOdwUsCY0KseHf
+         mfcsXTNHrKHT+E1PAXlsb0NWANSNAeLZEf3ykyBsT8vNL0UnzsuIiW+k2gTQ67Np6qF0
+         5Jd815ojXwUD/ECvz2qv+2OVcYXyWqTQrzGzZaGfZHw+PA0+Biqo1qc594K9sbFD3ZpF
+         mo0g==
+X-Forwarded-Encrypted: i=1; AKwUvByfY2uEbAUnZPUUokmF0v0N8BVChLaDaP/coIOboJtked1jb9N4gyq42aowMnh4LpbdCOk=@vger.kernel.org
+X-Gm-Message-State: AFuF++kuJzy4hSniWFxdxTxdBweW5d3srRihUbWQRMZF/I5lawcIuDBe
+	lMuRsblDdcDK6r47hKi37Oz50+p+BHNFD9/SpmfSJBJsmr2cdCMi27zUB4iLGsgfSnJy31zhTSw
+	pMwi2
+X-Gm-Gg: AYBFou3O8eXDSactwrdaa9E+vn6WNjpq/y44qo/8Q55wYCnruzb03yaBYWpiq4xHC3J
+	gOA/92QcjJkoP5mI+5rXIFwmQBYpMXC9kgo+3/GYG2DggX1H1OWVeCvxcfcVel3t5hL1hgqRtGE
+	oswIp11rRoxZIyQuO4Kvn30Nozo18fdpCo4KNVpziYJfMltj4mQdX/JUeoAQFiE7t6krLGLr+UA
+	x6PQL36Hdx0VpOwHX305c79teYFOtRJzHCy26ipwoHlz107+0aBEWo24ljPkTcAwSFwZP3i1jOr
+	jZLReSLFnoYrgJVWvTgkNWSSWhbRS+85irHybrwMhxo8UWfU/hQN5tejZLTe6tzsuuLREKMXmjq
+	JL53pCOarPJN2olqubgs57nNuHHneYg5T6IDZkQs8nUNXDaoOYGXC69LGr0mFrbiUPnHoqSHUDL
+	HI1q19w+tX7Dh9LqAZ+0rxie7hbP7/p8RIbtuKWXg0OKhsHyF1pf9OKSmsq89Ryg2bb1XnEx4M+
+	cH8oHOscA==
+X-Received: by 2002:a17:90b:2552:b0:398:9c39:520f with SMTP id 98e67ed59e1d1-3a07e51cf1fmr2382544a91.15.1790173965946;
+        Wed, 23 Sep 2026 07:32:45 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:b4a:dc6a:68e:2592])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a07db882a5sm5446811a91.1.2026.09.23.07.32.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 07:32:45 -0700 (PDT)
+Date: Wed, 23 Sep 2026 08:32:41 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, maz@kernel.org, will@kernel.org,
+	catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+	oupton@kernel.org, gshan@redhat.com, joey.gouly@arm.com,
+	tabba@google.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev,
+	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
+	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
+	lpieralisi@kernel.org, enju.kohei@fujitsu.com
+Subject: Re: [PATCH v18 00/23] KVM: arm64: CCA: Add basic plumbing for Realms
+Message-ID: <arPjCZL2IfvTKMml@p14s>
+References: <20260915160141.3543048-1-suzuki.poulose@arm.com>
+ <aqrsmUTxDVbKJn8k@p14s>
+ <yq5aecel3aj3.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org>
- <20260914180811.057cba8fcc48d6e0b53a2683@linux-foundation.org>
- <0b064fe6-ddb3-4f26-a1f2-2e9dd88d590f@kernel.org> <CAJuCfpFBichJH4OcmSHTb1rOuQBT6k5pXeua9_KgpWjDBKvsYw@mail.gmail.com>
- <aq6kzpK7wPl3iFGe@gremlin> <aq6lW9FvL69QeA9H@gremlin> <arOCPN02xB7mykju@gremlin>
- <b007cd0f-29ef-457a-8e44-63ab26f3bcd0@kernel.org>
-In-Reply-To: <b007cd0f-29ef-457a-8e44-63ab26f3bcd0@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 23 Sep 2026 07:31:02 -0700
-X-Gm-Features: AclHuK_ZGTwaB8ygIyiOyIIeQNRzbEtns-G_Cds8CuZ4q61CHw7YMjTifucik0o
-Message-ID: <CAJuCfpHL=dHjT=O4S88ZBvT1DyodAtCL9QTryepzs3EMwoECDQ@mail.gmail.com>
-Subject: Re: [PATCH v2 00/40] mm: make VMA flag semantics explicit, eliminate VM_SPECIAL
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
-	Takashi Iwai <tiwai@suse.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>, Simona Vetter <simona@ffwll.ch>, 
-	Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
-	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-usb@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	selinux@vger.kernel.org, linux-sound@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
-	fuse-devel@lists.linux.dev, Takashi Iwai <tiwai@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5aecel3aj3.fsf@kernel.org>
 
-On Wed, Sep 23, 2026 at 1:40=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 9/23/26 10:13, Lorenzo Stoakes (ARM) wrote:
-> > On Sat, Sep 19, 2026 at 04:09:13PM +0100, Lorenzo Stoakes (ARM) wrote:
-> >> On Sat, Sep 19, 2026 at 04:05:57PM +0100, Lorenzo Stoakes (ARM) wrote:
-> >>>
-> >>> Thanks guys!
-> >>
-> >> Note v3 has been posted to fix a stupid bug in 1/40 + attack some very=
- trivial
-> >> sashiko stuff
-> >>
-> >> https://lore.kernel.org/linux-mm/20260917-b4-mmap-prepare-vma-flag-san=
-ify-v3-0-4583d8a23bca@kernel.org/
+On Tue, Sep 22, 2026 at 02:52:56PM +0530, Aneesh Kumar K.V wrote:
+> Mathieu Poirier <mathieu.poirier@linaro.org> writes:
+> 
+> > Hi Suzuki,
 > >
-> > Just a gentle nudge on this :)
+> > On Tue, Sep 15, 2026 at 05:01:18PM +0100, Suzuki K Poulose wrote:
+> 
+>  [ ... 42 lines skipped ... ] 
+> 
+> >> 
+> >> [0] Arm CCA KVM Support v16 : https://lore.kernel.org/all/20260803134403.80630-1-steven.price@arm.com
+> >> [1] Linux firmware RMI https://lore.kernel.org/all/20260912083611.2513845-1-suzuki.poulose@arm.com
+> >> [2] Linux GPF Host https://lore.kernel.org/all/20260913070459.2547407-1-suzuki.poulose@arm.com
+> >> [3] https://git.gitlab.arm.com/linux-arm/linux-cca/ cca/cca-host/kvm-v18/integration
+> >> [4] https://support.arm.com/documentation/den0137/2-0bet3/
 > >
-> > If you guys or anybody else has some time it'd be appreciated! (obv. th=
-e v3 as
-> > linked above not this v2!)
+> > When testing on the FVP model with the above baselines, I get the following
+> > error messagaes in a loop, preventing the system from reaching the command line:
 > >
-> > I know the series seems intimidating but most of the commits are very s=
-mall and
-> > it's been in -next for a while.
->
-> Busy with too many other things sorry. Its time will come.
+> > [    3.112577] Freeing unused kernel memory: 3520K
+> > [    3.115398] Run /sbin/init as init process
+> > [    3.142926] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> > total 512 (slots), used 511 (slots)
+> > [    3.150111] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> > total 512 (slots), used 511 (slots)
+> > [    3.177190] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> > total 512 (slots), used 511 (slots)
+> > [    3.197194] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> > total 512 (slots), used 511 (slots)
+> > [    3.217188] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> > total 512 (slots), used 511 (slots)
+> > [    3.237194] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> > total 512 (slots), used 511 (slots)
+> > [    3.257181] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> > total 512 (slots), used 511 (slots)
+> > [    3.277189] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> > total 512 (slots), used 511 (slots)
+> > [    3.297193] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> > total 512 (slots), used 511 (slots)
+> > [    3.317188] virtio-pci 0000:00:02.0: swiotlb buffer is full (sz: 4096 bytes),
+> > total 512 (slots), used 511 (slots)
+> > [    8.157185] swiotlb_tbl_map_single: 241 callbacks suppressed
+> >
+> > I get the same result with v17.  Have you seen this before?  Perhaps a kernel
+> > option that needs to be adjusted?
+> >
+> 
+> This is due to a change in the swiotlb setup.
+> 
+> https://lore.kernel.org/all/yq5azeyxyfol.fsf@kernel.org
+> 
+> You can increase the swiotlb size using the swiotlb= kernel command-line
 
-Had to take care of the pile of bugs but I'm on it now.
+What size do you recommend setting it at?
 
->
-> --
-> Cheers,
->
-> David
+> option. I also have a patch series in progress to address this issue:
+> 
+> https://lore.kernel.org/all/20260921063628.362078-1-aneesh.kumar@kernel.org
+> 
+> -aneesh
+> 
