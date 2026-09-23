@@ -1,125 +1,123 @@
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3406B3859EF
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 16:33:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550AA3C2BAF
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 16:37:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790181212; cv=none; b=iFKOJvuGTwYqRSzi7A32f/vJS3uzaTkD81+AcTuPJ9P9wp7WT9zmmGIc6xSwOE/V45c1nholyuyP8Rdo5U9wlTsRK3nZ8/D5c9eZyQYNrifmZTG6BPQbkErTKzIEg9lDkChqM8KfRlnnaBk13vmadAGeBHssol0dtNN0pHOs0V0=
+	t=1790181452; cv=none; b=BhkWtSatyPPkTJjr7tocIoqwp6A6yOouInZkXxTh66G6vvatHcoIpSNIOjioMDL39JyNjOfLr4gPFM0ginZlCjFgrJCi5HW20lt3CEhxyAXLxS2C9o31/dtGzxZhNV6fo2gyunI4I3FZ/SM1rNQ3cJAt7DShJZIgJPIDeu4I+I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790181212; c=relaxed/simple;
-	bh=UmEqer6UG9O3E6DIbEIr7SZYSphsfnJwtmb/wPRplb4=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=PMVR6cKmP3mVlnKdagHuZKttdIYVZMU+azI7QO7zbJ0RpUzlThi/BNehBQg8t5qrnFC/PmC1ujrcgWNhjBZ3D/WYIaMxeY7TAHo/kmvlGXEY6hySLCgb0Bn3CxwztVAabvGj5BbzXYSab8c3belqEZ1x95W4m9Wc+HZTZaGTeR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hh3oQ+i+; arc=none smtp.client-ip=209.85.216.70
+	s=arc-20240116; t=1790181452; c=relaxed/simple;
+	bh=zTOUcaCt240nb92PTX7QIIcvMN9v3Cdh/XmoPJBK/5M=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=PxI1nRIlf/6g1afqxrquKaNLJtluHHnIicwatgSGg5KH7rieZLXbNyxkEmaxTxia6lACwClvyhuH2BF1n5M2E28ukifqjL54CB22q1vDzBa7wDIk0EqwuZkdFGJgxRj9am1muz4autXHZQ3HNwzStbDJsrpma32a7yMAEpqKJ+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kHVv2pIS; arc=none smtp.client-ip=209.85.216.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hh3oQ+i+"
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38e8e864ef0so1236353a91.0
-        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 09:33:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kHVv2pIS"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-39d8646b10eso879847a91.1
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 09:37:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790181204; x=1790786004; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eXmgICAmgo6FOUU/+FNDCUIVBGaQ+4Ki2nli9SL6tEk=;
-        b=hh3oQ+i+slcRSq+KidKbqa6iBrKX+GmoEsGQN1ileRhW1w4kBQDb4FzW8VJ/tzSJy5
-         LKuJzbt83l98/QfYF8Sjg89rMPSmTRTUhy1EY6SfjZulK5t45bB4y1oGgpcbPs8riOwC
-         HEtCUMz5yY4nPjtmlwTQgbb5l+xgLaUJYlNMxWikLP3oR8Z0Z243OjhbM6Ta9z9hnos1
-         cks0eEzZDICGfZXNGLCMYmuWJbRJDFbnVD2UHVN/VgMZwKjM6MOGkTYWxJiS82jFUUnS
-         aPCiyjw9T51RTN0ZGbClsNwWbw2P314o2TnAYKG/jFXnDSN4iAzEkXtjyTJn2O87v1Mu
-         dZpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790181204; x=1790786004;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=google.com; s=20251104; t=1790181445; x=1790786245; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=eXmgICAmgo6FOUU/+FNDCUIVBGaQ+4Ki2nli9SL6tEk=;
-        b=AuDWgmAKWTntQlNqKy5bTt8S3gjFkTkpqrag7drumripIriAtEGNLCWfoexzckQymS
-         toXg1/0wx9PkjldT08RYAhDlQJs6gUqISjPJrObvROIWMX06XdyIQopo+qpfCo0UzNrb
-         +JF5cexW+U2wLO5TcN7mgCOfjuU1RS15q/ogRCjFAtGhq2JUh8eqZuUlDyrjBl0L0oMa
-         FL6RTR4gHH6zGiqa0AJ6VZ38ywJSApq2I5mTWT0lpZVaCiyuBLXx/aBAYfIxQ4Z/CBoA
-         Bwm6ZVZuEHs+/B+GmtIGVh8g+oLDi6CMCjmdsl9xzFah4xDmFgyVmPVZVL3VMHsUu5t2
-         hm+w==
-X-Forwarded-Encrypted: i=1; AKwUvBwda2McfsY19e/QvRsw5NKrHBUy49hGwnCZzqVc1D/DN5lrKwDeKdpfQlXBWF9l2/ZlGXs=@vger.kernel.org
-X-Gm-Message-State: AFuF++kpalAcA4nE45neiGcjQZXRLJUQtC0IqRIPMlbO+ohlhxZ/4NlN
-	VJ8qWluWqZ8i6JVcqyywJWP3Vbrn0rXpDhIkzZVTGV4XLUsstfvbD5rbCuddc48CoJbZ39U7zQZ
-	5nd162g==
-X-Received: from pjsc3.prod.google.com ([2002:a17:90a:bf03:b0:3a0:8ea7:1935])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d10:b0:3a0:8050:2ec7
- with SMTP id 98e67ed59e1d1-3a08050315amr1517256a91.13.1790181202701; Wed, 23
- Sep 2026 09:33:22 -0700 (PDT)
+        bh=bYrIdvD8zMWPuhUgl0XksfWM3W3WC1TXZ4H6c8j0l2g=;
+        b=kHVv2pISNriAyJYddBzpbO0gw4Zt2JgA/Lh3Sr7crkofeXDyOT3Yk1zBWu5jE1hyQI
+         9lUEuNQBFJwHWmwbppTFZQmM6WJ6WrjS1TEfqDjS7/+oLNkhtuLyYJon9JSDL5g6MPfE
+         h/1XjseFnLqt0BiU0laWOzcjpKTiciHOmcqEwe6665PMvq6pFPZFkBYsJMaMywkJsZP1
+         WU5JSPdJz2NF+ktUO8bKN0NljSJGMkNdrxHE+i7fmvb+jBMAh4yLKTNrbEa5e57e5cha
+         eD3I6ugMBdXuOSR+L51YX0Y3XXH0+BAcUDHyO6r2jVvJldAXR8QsrhQExxjDezFdtoLI
+         LIVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790181445; x=1790786245;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bYrIdvD8zMWPuhUgl0XksfWM3W3WC1TXZ4H6c8j0l2g=;
+        b=f6tBMXucEXZo9lS+LNigJ4DxAWeqA2CBQlrnBJCAPyEkRS2PIZc82NiVFQ6kY7xcBu
+         WxBs8R9Ymy2B3Wp9/BfQT4Bv3hObqvZbDqnx8TabQkS5hq6qqVeaYnQcAcmLlyMj24Xa
+         r+oxy8c6YkzDZnxH9OsLiMMr+3fEpXyt0qOVBRq3A5P7ekTRQ/mfGGkMvt/ixQ0Y5wp4
+         mw56mI+9f/qYuTxUg8tycXGy13qaG4t7ieCPBDwt+1FZoJbF8yaiSLEjTf1+7hpWkMVp
+         4zkVTk4tPRO3FdgyETCIRnYrUsxl3SZIYUSSJ4Dfx/L0SNQBXBt6DOjB6LHWarZC71/r
+         QULQ==
+X-Gm-Message-State: AFuF++nRJ8W+8UzZrdY+/LBEBh7/0p4sI670DJjDwmzuduRTO7C946l4
+	hggtQdCGaJ1OrGm1txND9/uAstCFBS8nEB0uteP4vk5dMQ22GS66OfVJCQas6vZufAzsSu4xoNn
+	E4TvUJA==
+X-Received: from pjbkx13.prod.google.com ([2002:a17:90b:228d:b0:3a0:669a:2710])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2fce:b0:3a0:3881:eabe
+ with SMTP id 98e67ed59e1d1-3a07e4ee868mr2664097a91.5.1790181445180; Wed, 23
+ Sep 2026 09:37:25 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 23 Sep 2026 09:33:15 -0700
+Date: Wed, 23 Sep 2026 09:37:21 -0700
+In-Reply-To: <20260923163721.1584779-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260923163721.1584779-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260923163315.1580860-1-seanjc@google.com>
-Subject: [PATCH] KVM: TDX: Synthesize SHUTDOWN instead of returning -EIO on
- unhandled EPT violation
+Message-ID: <20260923163721.1584779-3-seanjc@google.com>
+Subject: [PATCH 2/2] KVM: SEV: Do cache maintenance on the source VM during
+ intra-host migration
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, kvm@vger.kernel.org, x86@kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	James Houghton <jthoughton@google.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Yan Zhao <yan.y.zhao@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Ackerley Tng <ackerleytng@google.com>, Vishal Annapurve <vannapurve@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Stefan Teodorescu <fane@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Synthesize a triple fault, i.e. exit to userspace with KVM_EXIT_SHUTDOWN,
-instead of returning -EIO from KVM_RUN if KVM encounters an EPT Violation
-due to a guest access to a pending page.  Returning -EIO implies KVM is
-buggy, and most VMMs will respond by completely terminating the VM, versus
-rebooting the VM in response to KVM_EXIT_SHUTDOWN.  I.e. give the VMM the
-option of trying to keep the VM (from the end user's perspective) alive.
+Manually perform cache maintenance on the source VM during intra-host
+migration to ensure no stale data is left in CPU caches after the VM is
+destroyed.  Because the source VM is "converted" to a non-SEV VM, KVM's
+memory reclaim flows won't trigger cache maintenance, e.g. when all guest
+memory is reclaimed in response to detaching from the mmu_notifier.
 
-Ideally, KVM would probably exit with KVM_EXIT_MEMORY_FAULT, but KVM would
-need to extend run->memory_fault so that userspace knows the fault can't be
-handled.  This scenario specifically occurs when the guest has deliberately
-disabled #VEs on unaccepted memory for security purposes, i.e. the guest
-literally disabled the mechanism that tells it it screwed up.  But, because
-this is fatal, and the whole point is to NOT try to fixup the fault,
-jumping through hoops to return MEMORY_FAULT instead of SHUTDOWN doesn't
-make a whole lot of sense.
+Note, relying on the destination VM to do cache maintenance isn't an option
+as KVM doesn't require identical guest memory configurations, i.e. the
+source VM may have access to memory that the destination VM does not.
+Enforcing equivalent memory configurations is infeasible, as it would
+require a *deep* comparison of memslots, e.g. to verify that not only are
+the memslot identical, but what the memslots point at is also identical.
 
-Fixes: e6a85781f783 ("KVM: TDX: Detect unexpected SEPT violations due to pending SPTEs")
+Fixes: b56639318bb2 ("KVM: SEV: Add support for SEV intra host migration")
 Cc: stable@vger.kernel.org
-Cc: James Houghton <jthoughton@google.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: Ackerley Tng <ackerleytng@google.com>
-Cc: Vishal Annapurve <vannapurve@google.com>
+Reported-by: Stefan Teodorescu <fane@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
+ arch/x86/kvm/svm/sev.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Compile tested only.
-
- arch/x86/kvm/vmx/tdx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 7173ef3fc398..eb82f739a7c0 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1938,8 +1938,8 @@ static int tdx_handle_ept_violation(struct kvm_vcpu *vcpu)
- 		if (tdx_is_sept_violation_unexpected_pending(vcpu)) {
- 			pr_warn("Guest access before accepting 0x%llx on vCPU %d\n",
- 				gpa, vcpu->vcpu_id);
--			kvm_vm_dead(vcpu->kvm);
--			return -EIO;
-+			kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
-+			return 1;
- 		}
- 		/*
- 		 * Always treat SEPT violations as write faults.  Ignore the
-
-base-commit: 30b5175943e709911702d8a9364145e911f57e3f
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index c9242c936a40..71923cb72d1d 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2048,6 +2048,12 @@ static void sev_migrate_from(struct kvm *dst_kvm, struct kvm *src_kvm)
+ 	src->pages_locked = 0;
+ 	src->es_active = false;
+ 
++	/*
++	 * Do cache maintenance on the source VM as it is no longer an SEV VM,
++	 * i.e. memory reclaim flows won't trigger cache maintenance on the VM.
++	 */
++	sev_writeback_caches(src_kvm);
++
+ 	list_cut_before(&dst->regions_list, &src->regions_list, &src->regions_list);
+ 
+ 	mutex_lock(&sev_mirror_lock);
+@@ -2187,6 +2193,10 @@ int sev_vm_move_enc_context_from(struct kvm *kvm, unsigned int source_fd)
+ 	 * the set of CPUs from the source.  If a CPU was used to run a vCPU in
+ 	 * the source VM but is never used for the destination VM, then the CPU
+ 	 * can only have cached memory that was accessible to the source VM.
++	 * Furthermore, KVM *must* perform cache maintenance on the source VM,
++	 * as the source VM may have access to memory that the destination VM
++	 * does not, i.e. KVM could skip flushes if memory is reclaimed from
++	 * the old VM but not the new VM.
+ 	 */
+ 	if (!zalloc_cpumask_var(&dst_sev->have_run_cpus, GFP_KERNEL_ACCOUNT)) {
+ 		ret = -ENOMEM;
 -- 
 2.55.0.1082.g2b9226bbc0-goog
 
