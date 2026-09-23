@@ -1,64 +1,64 @@
-Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
+Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D18526AA7
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 13:22:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F1B24A047
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 13:22:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790169771; cv=none; b=uRmJYZcedWwyakgZflZxczfW3wfmBAbUS+t0CajLKAJAkV5YWsfad2cCbkFXvC0PPLEbbyHpPQBR1f0sptyAfhmIL7o+mgFnArVQfOmHM/3wnsB8QCFRuJdcS9v4cCZ7hM5JuCWO6rd1bC7ewWp+ZlRTShMgdKiML7fZIZnbomU=
+	t=1790169780; cv=none; b=ZSigGXemQ/L2j6tiPNE7iE0KVGv0Uaf5opV59puTW2bQu8ULkS112Dyladr+LJPOMc7BIW+Z6Z2dflOKzaZToASCHNFfFyLOg3hBhLuzEOXp3I8G6Ct9dVKOis6oupgnFyDf+7c3bBmA4LzQ3PiCx0NsBILqJ9SDmXSUQ7JsqzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790169771; c=relaxed/simple;
-	bh=11p9dF1xutd7yRJXUu+NqYbj1sX3XbSyidNwsHuljeM=;
+	s=arc-20240116; t=1790169780; c=relaxed/simple;
+	bh=994PQl8V51agIcM8vtn6n3LVdhwP8HQHP/BLXq99pl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3mosuuYTbucclZt0WbMJk4QEt/CDxwBMsgTdXh8c1UcV1RnaPR3qi/0n9PLeMWsxtofm7yEblGzZkEKF87ekfVKd2tH7fo50RWe0dHX3XXpyvYPT7jr069jbQI4ArckmmMrdc+Fsta8QrP+OeAP6QJyWOkGV963V1ltYHJ+aOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IdiyimCd; arc=none smtp.client-ip=74.125.229.12
+	 MIME-Version; b=GBq91CR8jvaO4JeGpAXEuGGqrXE5vbof8t3Q3ReEqULbnphxTnp3eAn94SMDFeCL6cEmeZ3KFOTZumtRVUHpDO6nwUh4H4qiMcjRuCgqSaRmLwkPc9C+ZZL1CKubTCoQT+03rm0nJK2tLfjghTNauIfhE4tpHwRG9eHqxtZUmV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V4g0jyhv; arc=none smtp.client-ip=74.125.229.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IdiyimCd"
-Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-32dec843c37so1562333eec.3
-        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 06:22:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V4g0jyhv"
+Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33c24422d4dso1030811eec.2
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 06:22:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790169768; x=1790774568; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790169777; x=1790774577; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=qFqvsxy7L8PH7M6DU9x+2jtR9XBAWYnvWHhVICE/SQI=;
-        b=IdiyimCdiJ+wPqPZ+iVoITSqMYQ8c2hchaelwvLp+F839/XTsNxoBlRTjIS6pyRgiG
-         PQ5hyDOI07NKSGnSPA8VhWpLpSlSYjzwdw5ASIxMJ7yXQP0kloeG1U21d16qZHugLf0O
-         dUzRKwNzWdrWSD6ognbW2Ncr3e4UElDwFoYKSkKK7iwJl27iTNe5WwpFMqvgd19DZGyh
-         ZtVBf5Vr9WPwVQMJmyDa4RRPoSS11bIOkg8+v/jqEV+hxqHetAnQmb++TfgjDKuXK8GI
-         eHO6zMkeLPkL9kLurS90SAJyTQQSPE8HXJ+RAeZOFoFFgNxbgZNdTEWMR6Cqj0rDZHcl
-         z0AA==
+        bh=P+y3C9rGVvFAkdWFKio2TWsWiPkrJ96pOnUImryyekQ=;
+        b=V4g0jyhvrb+FONj4BIsg4/B8fVgvfnQlOH1+kIw3rzv+Igxa4vOHmlwx7d4WGrwPGX
+         QRqsQwhIpe2qruEHeVcqWtgrfHXsmQpOVGljM10Jiao0qgl7+PA+1PTk5Jhn+AWyLIzw
+         nhSVrmbPmMkRxZeqg99pb/URKr732NwNRN2EcnM9c30fRRVowOOM1K5MhvaLV05KwmhF
+         5Nk1Nq4U6iPgL571/TcMoa16UTdCvgmWjsJuCYSWvwryW55mT/Ik8FhdRMZP/cXawPLv
+         Mcly/SJIonINLMKUdztjA4Xlb7PfjQTM3R6cD0Zuubhrx2LmjA4BnS4zaK5ryIm2Fepf
+         hrhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790169768; x=1790774568;
+        d=1e100.net; s=20260707; t=1790169777; x=1790774577;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qFqvsxy7L8PH7M6DU9x+2jtR9XBAWYnvWHhVICE/SQI=;
-        b=IrR4ZCttZ067Zcg2kSyT/9FpmixhFPSe43GWFelaxg5cPaOfr3JwKxcMgkJp8Llgd3
-         RtjRWS3dhRRy+Ci1p2Iz8toVj1vipeCMXhZa6YuO+3CDeqe/zwKv7un84Q08mAEn08U+
-         BBuY/LX6ZgmnCInKdyvrQHA0WVP+DXq1qhB3QaVPK3CY8xMK7oVLmPBlifNW4h0ria/u
-         9ewDLjDLZwKdohW20BrTePYW1xzLD/TGL3bDaQpjkev1n9E/rJ/4I4b/VGkxuEyWVFXh
-         8t6TOkFXqN6eI2/VK/t0NIwoXcxMyeIUPAyaptx/mSmaqqn04Qh9NEqWhqI6HIKxdYhP
-         ugIg==
-X-Forwarded-Encrypted: i=1; AKwUvBzjpg+Il7oWoDfP2Bi7vxh528k28PeHyl/t0InKoVdzgp07Yu3BicT6SeTSQv7xVFYBhqA=@vger.kernel.org
-X-Gm-Message-State: AFuF++lHmcBIB+pexrpG7bZcO7p3/zJKK7ylh3jmv+TlvEipsK+8UPL7
-	T08AYqBU6K7wl3SVOtsTlTtyVqwiKR5spun0+UicdstpqVSyLpaUD/1D
-X-Gm-Gg: AYBFou3NGeZnBStwWl9rMjTKV0CSrcfOQYmIAowfRJlO0o5EmsKCTgNTlcPmvVbMzJU
-	BMSbA8ThBgsbIZcz+OD0dYMDMh8sU9XTqmRNZULDkVX3wFm/NulSJPUuBb6nYu7YuVjQaxacKQW
-	lbritJ7AYlPNi8nG0ZHgJjgUu3U2i3Mu0WzBbiktNyH8h+7VkXQwiT0Eq0C6y9OZrvSCR41KGjw
-	+m+EkIgQricqtRgl5BJMg8QWVhEQyxXx88tiWKw0JNSWAIQ1eqR6foOaGlXufRpo1Z3V0dc36gB
-	XxqvZ8BeBAl24+l0KixT/x0CM/AMvIpQqXM9qiP8W/73II6E40ilvkGUXDg6P+bHwkrHXVJeLUS
-	mqBlmJ8JiTo50fzR2MT7cLfXSUS/9Y4B/6zrPqHlDqP7KKDxZ65mFKsi1WX3q/xWbeKfBRD+Zi8
-	v0dPGUziOwyKeFCxYCxMwaqBiD9SU1XS7eRrRaakJDZ/ANOIlTvhTrTQORXzBGmRKhYhAYvBPum
-	KxfrVnjis+KyuuEkD6zwWPbPWi2G6I=
-X-Received: by 2002:a05:7300:59a1:b0:33b:e842:d272 with SMTP id 5a478bee46e88-33e8be6c06bmr2642017eec.5.1790169767812;
-        Wed, 23 Sep 2026 06:22:47 -0700 (PDT)
+        bh=P+y3C9rGVvFAkdWFKio2TWsWiPkrJ96pOnUImryyekQ=;
+        b=fC50cSkXdry9aFZIYetJjB5CKLRcwnrTw5sRsGma6Cb31Y4yf9EJkue2bstbZQEUwA
+         CnqNteGY3qmPB/DooeZA0y5tMopDxG2cDb37blHFHXjhwdlO4JKBjOclE4ouumJAvvZr
+         QRvp1r7Z6pRuGftCzQSAApqTGvjQUGoy+6kYvqXXQVmhKXKBYEFujoGfFaiQLSxPF4W4
+         Od94z1keTiy8mw2l7QXHpE3+3xSpqWgiyqdh54U5UikkoE/+kCAJzG6DKyft3Ltr74HA
+         vVwaGr9OqhmABDobgVKlJtqLE69sCCTYR33o+Go8NJxsi0iCF1OIOnwGCz+k6x8eeNa4
+         9kbQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz1vAxSpBQo7pwtdGp9cgjRdYGVZlQTpxBTNvCf6Aej9ubk6MR0X0GqDtKpti9VmpOIoLg=@vger.kernel.org
+X-Gm-Message-State: AFuF++kE0NMP3SdFvY0kMdXpucUjRsmwK6OfiKjwZUcRjVuK5xbNUf8I
+	uG8PaRTauVBWL06IwoepydcY+3QwZFDJoUBMwEMRE8cG5+muTnKjh4S4
+X-Gm-Gg: AYBFou1vcGkaHZNu/B9sYDyXAp5YRsGBHHeXNLdCCBSLZiWNz0iAXVidn3hUB6DleO7
+	avIjZv03fVKxcSe/UyyofEOi57JDfzXFheXZL1hGiAV8KBJYUveIpLwlFWnbwO/bfgmP6i5aNRM
+	wwJ5XhqMLIbfb0mMeafUmQoIow4hB7KKo92F4F9Z9piPd/eudPuLKtbIXDuTbIkazndqyBQVgT+
+	z5SIR9XF+bIlnnIxClR6N1XWibRaiBdB6R6QbNPB6lohGYFR82V97Fumkq/sO+JzFivCaitChs4
+	VmZmdnEo0XXf2mFoKnLL++21MiMopyuk9THPfKUHDnc2wyyptOCqFZoLmcqb+LvXA4JzwMiv/s8
+	I6NYIimnMfHeKNTryyT0L9FclAIDF0H6RFCqMZ6RLU8v3wEvqWqE0ZVxHh0VxmVw7PoGtJCX66x
+	CQAnscJSzS2Xq1lvbGnrkrEy98Iwxro22Yv5y6wYsZJ9l3RLMr7+wVES1jxIQFAkKaKyUIw0sb9
+	6VMUVWtN7SpL+An+MrSMxPVlH1rJLI=
+X-Received: by 2002:a05:7300:311a:b0:339:7357:b225 with SMTP id 5a478bee46e88-33e905f47cbmr2532490eec.16.1790169776667;
+        Wed, 23 Sep 2026 06:22:56 -0700 (PDT)
 Received: from WIN-BH9M8FJACR9 ([103.94.185.75])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-33e97236754sm5553695eec.29.2026.09.23.06.22.40
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-33e97236754sm5553695eec.29.2026.09.23.06.22.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 06:22:47 -0700 (PDT)
+        Wed, 23 Sep 2026 06:22:55 -0700 (PDT)
 From: Yonggang Luo <luoyonggang@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Cornelia Huck <cohuck@redhat.com>,
@@ -102,9 +102,9 @@ Cc: Cornelia Huck <cohuck@redhat.com>,
 	qemu-arm@nongnu.org,
 	qemu-s390x@nongnu.org,
 	Brian Cain <brian.cain@oss.qualcomm.com>
-Subject: [PATCH v3 036/114] target/riscv: select ELF dump class from target_riscv64
-Date: Wed, 23 Sep 2026 21:15:10 +0800
-Message-ID: <20260923131635.1894-37-luoyonggang@gmail.com>
+Subject: [PATCH v3 037/114] target/riscv: replace TARGET_* macros in CSR helpers
+Date: Wed, 23 Sep 2026 21:15:11 +0800
+Message-ID: <20260923131635.1894-38-luoyonggang@gmail.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260923131635.1894-1-luoyonggang@gmail.com>
 References: <20260923131635.1894-1-luoyonggang@gmail.com>
@@ -116,35 +116,77 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-- Replace TARGET_RISCV64 with target_riscv64() so dump class still
-  follows the QEMU target, not guest MXL.
+- Use target_long_bits() instead of TARGET_LONG_BITS for the CSR
+  write mask.
+- Use target_riscv64() instead of TARGET_RISCV64 for MISA RV64 and
+  the PMP address mask.
 
 Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
 ---
- target/riscv/arch_dump.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ target/riscv/tcg/csr.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/target/riscv/arch_dump.c b/target/riscv/arch_dump.c
-index 12b68799070..2704bd8d94e 100644
---- a/target/riscv/arch_dump.c
-+++ b/target/riscv/arch_dump.c
-@@ -175,11 +175,11 @@ int cpu_get_dump_info(ArchDumpInfo *info,
+diff --git a/target/riscv/tcg/csr.c b/target/riscv/tcg/csr.c
+index 061bc9db77b..0b96fff6b96 100644
+--- a/target/riscv/tcg/csr.c
++++ b/target/riscv/tcg/csr.c
+@@ -18,6 +18,7 @@
+  */
  
-     info->d_machine = EM_RISCV;
+ #include "qemu/osdep.h"
++#include "qemu/target-info.h"
+ #include "qemu/log.h"
+ #include "qemu/timer.h"
+ #include "cpu.h"
+@@ -2143,17 +2144,18 @@ static RISCVException read_misa_i128(CPURISCVState *env, int csrno,
+ static RISCVException read_misa(CPURISCVState *env, int csrno,
+                                 target_ulong *val)
+ {
+-    target_ulong misa;
++    uint64_t misa;
  
--#if defined(TARGET_RISCV64)
--    info->d_class = ELFCLASS64;
--#else
--    info->d_class = ELFCLASS32;
+     switch (env->misa_mxl) {
+     case MXL_RV32:
+-        misa = (target_ulong)MXL_RV32 << 30;
++        misa = (uint64_t)MXL_RV32 << 30;
+         break;
+-#ifdef TARGET_RISCV64
+     case MXL_RV64:
+-        misa = (target_ulong)MXL_RV64 << 62;
++        if (!target_riscv64()) {
++            g_assert_not_reached();
++        }
++        misa = (uint64_t)MXL_RV64 << 62;
+         break;
 -#endif
-+    if (target_riscv64()) {
-+        info->d_class = ELFCLASS64;
-+    } else {
-+        info->d_class = ELFCLASS32;
-+    }
+     default:
+         g_assert_not_reached();
+     }
+@@ -5430,13 +5432,11 @@ static RISCVException read_pmpaddr(CPURISCVState *env, int csrno,
+      * here to avoid complaints about masking bits 0-53
+      * of a potential 32 bit target_ulong '*var'.
+      */
+-#ifdef TARGET_RISCV64
+-    if (env->misa_mxl == MXL_RV64
++    if (target_riscv64() && env->misa_mxl == MXL_RV64
+         && csrno >= CSR_PMPADDR0 && csrno <= CSR_PMPADDR63) {
+-        target_ulong read_mask = MAKE_64BIT_MASK(0, 54);
++        uint64_t read_mask = MAKE_64BIT_MASK(0, 54);
+         *val &= read_mask;
+     }
+-#endif
+     return RISCV_EXCP_NONE;
+ }
  
-     info->d_endian = (env->mstatus & MSTATUS_UBE) != 0 ?
-                      ELFDATA2MSB : ELFDATA2LSB;
+@@ -5755,7 +5755,7 @@ RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
+ RISCVException riscv_csr_write_i64(CPURISCVState *env, int csrno, uint64_t val)
+ {
+     return riscv_csrrw(env, csrno, NULL, val,
+-                       MAKE_64BIT_MASK(0, TARGET_LONG_BITS), 0);
++                       MAKE_64BIT_MASK(0, target_long_bits()), 0);
+ }
+ 
+ RISCVException riscv_csr_read_i64(CPURISCVState *env, int csrno, uint64_t *res)
 -- 
 2.52.0.windows.1
 
