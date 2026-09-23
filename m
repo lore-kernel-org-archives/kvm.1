@@ -1,200 +1,181 @@
-Received: from SEYPR02CU001.outbound.protection.outlook.com (mail-koreacentralazolkn19013075.outbound.protection.outlook.com [52.103.74.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050703BFACE;
-	Wed, 23 Sep 2026 09:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.74.75
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790156748; cv=fail; b=ZHWpdvPJOBkjThfg+dwnHCZdghujlkEqookdocLNHrJNhe4xKBTMh3ho+QLUa0bobIkErcw1NETROImXDUshiR5LsrbmrhsQn/g+b2wbO8s2shbqIKlbSd6TWD8CVNhtBFRWcRZP9cb4igtU7D+RR2m7eRDCSUjQzjrM5I5JoGM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790156748; c=relaxed/simple;
-	bh=FllcTvqCAVQaQNfCNwsBotLkwyUDI2YJqXiqmDuH9wg=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=cdNs5bzWBcLRcFUWKu++Ms8YmHl5Uz/RFKjpGFcSKO3DbhL/hv+7NGQhdU9E3Uu4q/RQTCIxKWPtZOVw0IcdIP5edlOIxUD3ZS6BWcnRPh4qo5a30PUMFul6tEYtCv+vC3sp97MaGB14h2eC30KGtpfST91hw7cNLHaQq7AFw58=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=gAhB3pDq; arc=fail smtp.client-ip=52.103.74.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF6A47F3D2
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 09:54:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790157295; cv=none; b=kjJBAbbooPAhHQsZ8Iuh+ENsJgLHADVEJYTiU1NnSIdtwYDpoFdVU1Oyby2buUxsqkiIfsiuSpWHFkBIwFN/Kl1v99XUML9By9BzNXj3OBfasmBNpHat3QUjW6KY0ohiO99589GYKuf9Ks9SZjvCMYiyBrr/GpWszBu8FIO75Ws=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790157295; c=relaxed/simple;
+	bh=ORWzwlnjPxIPXwwIl71ibZqlgxSHR3cDOmeid8ApVjM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pupV2mUaFYFg1aHbzyty7KjFRTGhxePitiltrb+puvgHqNXJkpjh3V+uKYzf6BwKjM2tGeTbbNYH0pkbVuI1EBPDdmjfIIa7NZ7wN9IPsrrh3DC9Kw1Pir5xhrqWBW773F5YBE3nqCk/JwrBVOS4zezAF85DDn1uP28vFu+qPSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LFCwYKrB; arc=none smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="gAhB3pDq"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EB4KxDj4srG3+wZ1pRhRjEA6fMyOALq3IWTvsoZB1UKPMNiNsdG+NN1G3DF9TKvFgF04T+YcwQtWws6b9e1xgGOHItiRqC2YwsXCz/tU/UFZQDrIw+41I3+i+lcX9s0aRTjISvbHY8x6MtPebSPB2tS5rC1vZLrMXDGg1U1LzA1MO4Q6BrqPDXAtrdyIfU1RXkhyGhlTlavUWxBkLE0n5rbP93hBDdxJ6cb1XaoRVd6gehvqE3VEzJ66yncK+SdSAkKSUIwfyXzHZP3HGcRgz4B7H6VlqRA9EheFHgz6ASYR+iE9BRo6CAulgHZT/yQFHM2zN6v1pFl0EVs1iTF5wQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wInSErQltcloLt/Fi+ttXV2P8hxOQ8jqerbBJnadsDg=;
- b=jVizshcS966Hkrc1fJYHU+TODEiHH4pX3DIWXzezkT8Hoi5wHorJhOxx/WDXwGwuBpvCHk7jcjihrK/a7czJvmCVIcsFizPTE6qO+bAcP7+IPHpncaOgSLVeDHxCQljZBlSf4r0iKNKM0Bj8itmTSSDJA/9HmvtJHzIDVfmv9Ih1exFmyzcCKtIXYGDA3cC0j7hWzSBZbFQDy57QdKtXwbB0cFAkk98JEWm+MZGakczpBTr+0h7y3HQwmQ3rWZHbx4bw4cmz3Qj1woxPm+4mN8jb/atYI3wdiLG2laTzL9YkSEfljgjlfWKsVjlqhEgQu7+yNaEr3S5aUvG/uN6oyg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wInSErQltcloLt/Fi+ttXV2P8hxOQ8jqerbBJnadsDg=;
- b=gAhB3pDq3k9qeHJ/cpy0+HTjF2KhJRdXUACfhZLwWFK6OwHRdEKuzyVCO8kFjLeQSpvdusu1bSUUpvLr9Y0F5sU4zCKmdogMMJdF7jAzdG2XU78lt2gjr0fTHOTKSaaOiE7DN10KzmvKdig3GMhuj3faC41i8CRe22cKEiyVVs2cEqqRWmMgSMIMrQWQKBb8mJ36TL9sNFtDOWY+TeamnC52of/fzMdOdVyxKmKHPumT0QLoC5/w1Z6aki63lGa1byqTWRGgu7kAV1mzzF3ouDbh1wy37Jnb4gQ7En/NU1X5K1JxX05RHjIb2ftqnSnguwLAl9cJV9DFy1QALFAMFw==
-Received: from SE3PR04MB8922.apcprd04.prod.outlook.com (2603:1096:101:2e9::7)
- by KUXPR04MB9418.apcprd04.prod.outlook.com (2603:1096:d10:9e::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.13; Wed, 23 Sep
- 2026 09:45:39 +0000
-Received: from SE3PR04MB8922.apcprd04.prod.outlook.com
- ([fe80::3450:f139:5238:8f58]) by SE3PR04MB8922.apcprd04.prod.outlook.com
- ([fe80::3450:f139:5238:8f58%5]) with mapi id 15.21.0451.012; Wed, 23 Sep 2026
- 09:45:39 +0000
-Message-ID:
- <SE3PR04MB8922DDB6052BFCE83F49778EF3822@SE3PR04MB8922.apcprd04.prod.outlook.com>
-Date: Wed, 23 Sep 2026 17:45:32 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] RISC-V: KVM: Disallow GPA-width changes after AIA
- init
-To: Pengpeng Hou <hppiscas@163.com>, anup@brainfault.org
-Cc: Alexandre Ghiti <alex@ghiti.fr>,
- Andrew Jones <andrew.jones@oss.qualcomm.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Atish Patra <atish.patra@linux.dev>,
- Fangyu Yu <fangyu.yu@linux.alibaba.com>, Guo Ren <guoren@kernel.org>,
- kvm-riscv@lists.infradead.org, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>
-References: <cover.1789872556.git.hppiscas@163.com>
- <fbe7337f6989994ad4dbc4dc03a67e8ebfa61f8d.1789872556.git.hppiscas@163.com>
-Content-Language: en-US
-From: "Nutty.Liu" <nutty.liu@hotmail.com>
-In-Reply-To: <fbe7337f6989994ad4dbc4dc03a67e8ebfa61f8d.1789872556.git.hppiscas@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TPYP295CA0003.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:7d0:9::14) To SE3PR04MB8922.apcprd04.prod.outlook.com
- (2603:1096:101:2e9::7)
-X-Microsoft-Original-Message-ID:
- <828b9f46-22e1-427d-a963-b80f497b63c1@hotmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LFCwYKrB"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccb1a990so557672a91.3
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 02:54:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790157291; x=1790762091; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=O/p+TOshpoie9dAYVqfiIsQZZYf+Pgovp0T9es4CnLs=;
+        b=LFCwYKrBB4mHn/nk1nuU63ZkQAuECsBU3jvaEOWmoGKY6SrYbkhMlCLr2dPAIm878e
+         UnJa9Llxg24VKLiyBTKUtHxEyssLjBEfFcUnlcn2O4ZXQRuFDur4QPk7pmSBVpbeiGFZ
+         XJmUsyTPwY3QpzcKKAnEF3RPPvDgomwUycTaIaMcdz22jpJDeXpkvuX2eLuHxoQ+LhYS
+         wNr75Yhw7s4h51YTsiIYH92NsIeTcCkx5OSpoKwdIaQpjEX8HdUXzsin3poSheHxcvxW
+         Y/kd9mkm6jKANhNS5V1r5dMlxqPDngTGisX3vAd1KrF2zilYWLXfkz86wb7WodSpVA0z
+         n/kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790157291; x=1790762091;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=O/p+TOshpoie9dAYVqfiIsQZZYf+Pgovp0T9es4CnLs=;
+        b=WF4fZmCimgPBXtTFzRDCslrOENoxXYUScdt6WklJnF/dGSl6umytBP6Q73CVGtuvjq
+         hDDiKGkkPXQUY+07q1t2xaefH6bbQyz0ayY3bGzVnPrQsvgP21gDitAzV/c5ahT5i8yP
+         KlGoWSyahuAMgVS1p7esm4+e/Xb/DNEd+A2kejRZQmi7buBjVYHWUCAktXAGdDRdtvA5
+         00d38Kme45BS8nV57KGUyx9d9dtgvYtNlwg1HodKVKiT9FrBu5hpk/ssPoUdq/TQpnPW
+         mNba7nnnk7/jQSovRiGLhBl8WuZ083IMGJ2AvDBOwB8cAi/QM4+qvrotrE0RTmoDN/UT
+         r8dA==
+X-Forwarded-Encrypted: i=1; AKwUvBw2GzsSNBYTF1hj8sxXx66QTNrtvqdZeDRl/thMDgtsktQcqZShGXvsJ4PbvzfybSppM6c=@vger.kernel.org
+X-Gm-Message-State: AFuF++lJB+0RrdFEN+RI+dOcmWQYMfBvkjG8P1wX7tStaRnE1Z+V3lph
+	i5IWjsQyXwYMs2IA5QXxlOgGco9KZrc4eflt+apowb9uG5aHJmEQ4Fr2
+X-Gm-Gg: AYBFou2SFrm5E8+vt/Y1DHvm5mlyg8u2C+uDLGGNJoNH+Qx8Ve51qaL6l1qJMOwLWIx
+	3g8cViFc8+07cg7ImXzB/BvwPV8de+bLYv3hj8aDWpn0ngeW0jzPTkBMninFnd2GpDwX9MXv7Ly
+	kdSmo2Jy9Fm8nMvEKRULUYihQzXKfaXN2aHzIRuXxsxWYSqUevTt0DNYNKJAd4L0kqQ/gXRc54/
+	5tfyYZXcHj43UPwuUHuWhIWYkarBs4RMJv0qON2KROmjY8/JFKY1wQN2jeqGZn1B/ftWToGMeYS
+	LqXw04jptfJ03hCYLTWHJLXdlobbTcBbUwwqdhRDmJA3LLoeMSTACre6ewTtQomagnHYyfCAfKi
+	l96hlm9io9mSsy/jqv/RLkIXf+29r2GHzSlDJ4ebKLTx38t5ZO64NjCVzI00hAiX1Ljr2vTYuWC
+	/675xKmmKtMKe+7e3QDCpDnlaeRZtAucgRUdWbfWi2eN451ioUAZiQeoOkMwNvQQ29vEGmiXB6W
+	bp2rkhW
+X-Received: by 2002:a17:90b:1c09:b0:39e:237c:50e0 with SMTP id 98e67ed59e1d1-3a07e4a2554mr1921438a91.13.1790157290738;
+        Wed, 23 Sep 2026 02:54:50 -0700 (PDT)
+Received: from gmail.com ([185.220.238.43])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df6a5a982esm8000105ad.22.2026.09.23.02.54.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 02:54:50 -0700 (PDT)
+From: Kunwu Chan <kunwu.chan@gmail.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Kunwu Chan <kunwu.chan@gmail.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rcu@vger.kernel.org,
+	pbonzini@redhat.com,
+	seanjc@google.com,
+	paul@xen.org,
+	paulmck@kernel.org,
+	kunwu.chan@linux.dev,
+	nh-open-source@amazon.com
+Subject: Re: [PATCH 00/17] KVM: Use atomic SRCU for gfn-to-pfn cache, reinstate guest mode for x86 nesting
+Date: Wed, 23 Sep 2026 17:54:33 +0800
+Message-ID: <20260923095435.591542-1-kunwu.chan@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <84e1f6c28becdf94ccb72f5c64c0001768167fc2.camel@infradead.org>
+References: 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SE3PR04MB8922:EE_|KUXPR04MB9418:EE_
-X-MS-Office365-Filtering-Correlation-Id: 141af514-c240-4b86-f210-08df19576c75
-X-MS-Exchange-SLBlob-MailProps:
-	cn60g5V53KM6CoYXTTNjh34iAhmnTq1HmPGebyoaWM6xaHaAdfOvjelPuGPMX3OKwt9DVVtLvkBTm2ZjE4CJlSAd4BhoY4jgapAK/Vd5SU5AQExHWtnMPQOo5OUKmS/cvomI/cF6ErL/wmG3vRgwIP8uh0ViwV6u4AWVs2H6knp/p/NEsY4rPyEEMNOuedGnXyKRB3RXKOBPKoeCWvwrj3r/MtLu0ly7wSAYyE50Ng86ACTPKu77SfizENO7Cvo8ntQzixT1OEHZgJRDW6I1rDl/XiRna8zhWkb3MJCSlP9FRGLksk1rT31LRAKEKhg6QPD894REL5mbFPTmetLwsX0Kevh3NDu8oTaLQZLHHl7c4UFxtb4VdV6qT1/yssGrIgr7a1fwkqPRzIi31MSZLEuhevS6xMPSr+csbBIsFyf2k4RiixcEgyBlGsQg4FsmZNvsmJh960NbFGLwULppUXPXcFA04h11zAtAuC0bIzJzP6uj/La8S5Y+evNR3O9Dmy6MB87A0PhsPjtdaJNybXs/p7iIHyABmo5H78wP/oyf7TMcvbSQZhb/HsBmXb5oJrVej/dHDqZbh3kF+hK2TIF+RO3ucB7D6fK9hXZocVSOIRGtfTQb2AKNUZ8VQ6L3KgAjDAIyLZzRR3ebzKU6VW5exsfQuZHv62+kHcGYTD9IgI5uJIyzNe0Xoi17D6Wf7RNKUfau1pZVrOWpRQJfEHNg7DYkupZWrBYSAVqsz3gaV7Av1OhpvbvHngVmyc3M0rr204DP+TvNKtYjGY76Cfza0/5GD01PTEVMKSfcK+4semFRxqS4B+ZSrzIhtGBj1OsFUBkXR4kua/VlAwxNOSt1SdOph0QeknME7J33GfoBM2A/9dLLBA==
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|23021999003|15080799012|24121999003|22091999003|19101099003|55001999006|6090799003|19110799012|41001999006|5072599009|8060799015|4140399003|25010399006|52005399003|40105399003|2607281247196008|1602099012|10035399007|4302099013|440099028|3412199025;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?S1NhK3RTTDF4bnJ2MnRtTzgwV3B3YklHM1JxTktpSTNIc29ZWDlBRHpxU21o?=
- =?utf-8?B?eHhTMUh5UEF3bE5DSmFhWE93QUtsRU5BZ1BQajZFMHkvZVFrcCtCU0VYbjA5?=
- =?utf-8?B?cGQ0Q0Q3KzFvMDJoQUxYS3BlQ1o5NFc0Rysyd1hQdVk3Ky9xMFRNM0ptTWdT?=
- =?utf-8?B?NjRsd1UzOVI1aG9vUzA0a09KLzBkaFV1RmRDdzAyTHltQVoyLy9vSGNjODdP?=
- =?utf-8?B?QWxlTlczTjFVUlgrRG12Nm5nMzUwL0R6SjlWZ3lYVnRzSnRpVWc2NndmUzc0?=
- =?utf-8?B?SkhsVzU1THMrR2J6V1BJK2JOR0xMcnF2TlpWMDVYK1dIRFJ1QUM1Y2VrVUEx?=
- =?utf-8?B?MUJ3MTdYMEpSWm5BT3k2YXJzajRieHlJWG82M0RsNmNxcDMrR1NZZ3lyQ3hy?=
- =?utf-8?B?aGcwTW93NXJUdVZRVFZ3RVJ2SXlCV3R1UllZN05nQjl2WVVzUWE0NCtiMnZR?=
- =?utf-8?B?TFlTNktpZVJYL1lWOE5iaEdxL2tUd2JFQi93Z3pQVnZ1WkxnZVRnaHNyVzhM?=
- =?utf-8?B?c0htMFdqU2IreTJWNGltQkVYYTRTM3A5OXhWak5KMk15UUlhNU5NWDRCUkxQ?=
- =?utf-8?B?Zk1BV3ZveXltVXk1WTFYbjlEcUtHTUkxa25CenJzNjRFNWQrYlFrcUhNY1Ru?=
- =?utf-8?B?ZEkxNFVWRXBDQkZmUUx1T2xOSW9QWmc2aklNNExIVnhkSjJHdkVpNHRwclNv?=
- =?utf-8?B?MTRxUG45V0E0U1ljc1Iwc05TcnRwZWUrZ3M3QlB1TVdLVkxuN05QVkJ5akpL?=
- =?utf-8?B?dFFkRm9LancvYlFOMk1LZHh4cUk4UjNaMDlOWGJDMGlOVDB2Y3dQbC8vOXQ2?=
- =?utf-8?B?eGxpTmhBQ2NHVldFKzNOMVlkVUVNcjIvNE9iYWhuang5djg2Q0VXeWQ2NEFm?=
- =?utf-8?B?N0R1bjhZV0NvQldKOEZnQmthOXRlSzh2QUZDeHk3S0VQOWZnVUloSGIveGNT?=
- =?utf-8?B?ZlMwOElrTFc5TUh3VkFHMStoRzh2TmFURlBieXhuMUVBUmhiUlFhRmZWeFhR?=
- =?utf-8?B?SnR4akZCTnlpTVBqUnJXVU1nMm9oN1dlYXhzUmNuR3cvMW5KTU9tMVlqZHpP?=
- =?utf-8?B?QVozY0hJbmttNnphMFdYcHlMWXlnaytuOTJwRW9ZakYxbHB2MmEybUtTOFdj?=
- =?utf-8?B?YkRTd2R3MTdJdmlaZ1Y2Qk42azRaUHQ5Rnp6eE9ad1hlNkdYRzQ1RXZuTE40?=
- =?utf-8?B?WmRyczJ4QU4vWXMvcGF2MTJjU0hpcndGVzhEeE1rTklmTHVPa052VXRiZEZl?=
- =?utf-8?B?S1hUNWVJcUJqR3VvV0xVRDFlWE0wK0ZFTUYwc3ZEUGM4RDNkbG9lU1dRTkY2?=
- =?utf-8?B?ekEvbUxUa1llb3dpa1NRZ0x5dzdJZkk2UENXVHhJTlgvTGZnZDZ1UENIdG52?=
- =?utf-8?B?THZMVk5ZYU0wN0ZjUG5kcWduMkhFZFBIUXJUZkp3SnN0VkJGRGx4ak9BOFA4?=
- =?utf-8?B?TmtNaUhScWVaQVlkd1p6YTl6bm1nY29BUnZDZzNWdXk0ZEt4UGdvWUxnMm5a?=
- =?utf-8?B?ajd0dlB6RVY5RjViMFh5MTBoNzJRSEIxVzV6TGlQcGphUXZURHlYeTVFa2l0?=
- =?utf-8?B?MEo5Zz09?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aDhiS3pjNndtWW1HQXNjcWJUY3hOdXJXVkgvc3l4YTlaaVExajZUZVZrTktT?=
- =?utf-8?B?SW1pWjgrK2lCZy9CNkp0eVN6cEJqMXBTUzVrV1hzd2o4RjlYS2pGbCtPTTRv?=
- =?utf-8?B?ZnNjM2dzTCtvdTBKUUJuVS9UTVJKTG8raTZRZzA3VU1BKzFuNjBKYUdaRUt3?=
- =?utf-8?B?NXNKZC9YaEI0SFZVMDdoSjNJbjhOaU04bElkUWgvRTU5VTNXc092UW5iaERK?=
- =?utf-8?B?VlZtL2Y1eWlhU09CekRBd2J4Z2dZWlRvQWdkMlkxRGFvazkybGFWa2xDRGFP?=
- =?utf-8?B?aWZSTXc5bEMvcEQ2SVRjZzBnS1NtS2ZQaGJEVzMybHYycmxCVW5ndFNvZkV5?=
- =?utf-8?B?OU1wNk5KTXZKci92b1NBaHdXTStOSUxRbDRoR20vTzdxL0U5a2x3VGFiSWlp?=
- =?utf-8?B?emJLaUhiYVVCMzY0Y0RTelRXWDV3bEx1MEsrSjUxQ0o2blRNTU9TTytsVzZs?=
- =?utf-8?B?V0lySEt3TEQ4bjE3cTlDRlBrSEs3c2V1QmpsY1R3eWJocEZYTTZ2eU9YSGMr?=
- =?utf-8?B?QUYvZ2l6dU5oaUVGOGlDV2VkMUUwRUJLUlFPRzg3Z1JBeGExZ3JMQzJQQ1VX?=
- =?utf-8?B?d2xhWEJsbFB2amZxSGJQZlVvdmduYXhjS0hzbzRoM012c0l6czVvampYL2g4?=
- =?utf-8?B?VFBJcXZDMlhwSDl5MGZnYXVsWFpHSXQ1SmdEVzM2a21IMW1RV0UrMjlhZGtm?=
- =?utf-8?B?UEZYaEplQzZGQU1PWHM1MGhnN1FvdVZPUlpmbmpoSjJjZzJkbzNLTjdtTlVM?=
- =?utf-8?B?S1Q0bVRSdERxR3kyY3hwem1jMThEb1hhU3NhVmxFaFI0UTMxNXpsVDVMR3R6?=
- =?utf-8?B?NTZ4SzBrc2lWeklmTmFYakNpQ2FsNCtjOFNndTQvREdHWmpHOGxuTUwzZEVF?=
- =?utf-8?B?YzRweE5aNGZGM0o2ZHJWc3lyb21UZTJEM0pLUHc5Wk8rcUhuZlBzWS9RUDBX?=
- =?utf-8?B?a1FFTDVnZjExRjJadmJJOE5ydE5lWEFxNURBdDZ1MUc5U1pZQ3pySVRZb0Rv?=
- =?utf-8?B?d1RZTmh2cXp6Q2xtZmVXdjlXdHlvODlqN1hOcXNmditRWVloVmE0WmtidlYy?=
- =?utf-8?B?eG8wblhHSHNiOGdobHVQQ3NaaTdqaXhmN2lFU01YVnloZGhLeFo5cDhaalF6?=
- =?utf-8?B?SEFZRW9jRTNkY0JOUHQ0Vlp0dVpmb0xLSDcvUE5xbFFBenU1S1R6enJxaUt2?=
- =?utf-8?B?SllucDU3WmFXMW1POGh0aEZqcTkrNUpCYUlaY3pCTXBCWkZsNVNEOEZTSkhr?=
- =?utf-8?B?ZElyNGVvZ1FaeUxTU3oyOXZiU29scU8rdThSV0JSeHFVYktpRG9vZjNSWmJr?=
- =?utf-8?B?VWJEUEwxd3BxcUhQL1BzaEVKclF3UFNCSHVvRDFid05mWWM0RnFxcUN1L2lF?=
- =?utf-8?B?QUhiMXh3aldIMmhwQW9xWWMzR3NYeW1IbldtaEFES3Z4ZzVyN1pRRlJ2amlI?=
- =?utf-8?B?ejh1UkZTK2JKVjdTQzdaaGRJcys3ZnIzT3ZwcUZWcnRuNloxL0x4K2RrV3lx?=
- =?utf-8?B?Qm9UUG8wNmhzVm9TOHo5bEhBNDhqRWZDMUxWdEJHdDZNcmt1MXV3QWFrQk45?=
- =?utf-8?B?OUY3U1lnNTdOMmx0UFhEdUVXM2tMeDB1WEdMUFZibmZTdG5Rb3cydlVXbkQx?=
- =?utf-8?B?U2QzVUtFeWNjSm5KaXRiYUtlemFzYXdXQ3pIRXpCY05xSGEyaUZzQkVabE1j?=
- =?utf-8?B?MnRoTTlnbmZkT1VqRVpQSkVSWGNYbUV1aW1zckM5Wkt0aEQ2alkrUnR3K0Jy?=
- =?utf-8?B?YjMzQzJXUGllb29JYkxwOVIrMEdOWVVUWmM4ZURkZ0VWOFRyV3h5dk4wZU5j?=
- =?utf-8?B?M1orSmxVOFFVVk16aGd2T1E3a0F6N1hreHhKUFZ1YWo1aEhGOFczNUhhVkx3?=
- =?utf-8?Q?exK+ZTWKVfugL?=
-X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-c3e7a.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 141af514-c240-4b86-f210-08df19576c75
-X-MS-Exchange-CrossTenant-AuthSource: SE3PR04MB8922.apcprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 09:45:39.0283
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: KUXPR04MB9418
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+On Tue, 22 Sep 2026 12:37:43 +0200 David Woodhouse <dwmw2@infradead.org> wrote:
 
-On 9/20/2026 9:09 PM, Pengpeng Hou wrote:
-> KVM_ENABLE_CAP(KVM_CAP_VM_GPA_BITS) allows userspace to reduce the
-> stage-2 GPA width while a VM has no vCPUs or memory slots.
->
-> AIA initialization can complete with an APLIC and no vCPUs or memory
-> slots. The APLIC MMIO device has then been registered, but the existing
-> checks still allow userspace to shrink the GPA width below its address.
->
-> Reject GPA-width changes after AIA initialization. Both paths hold
-> kvm->lock, serializing the width change with AIA initialization.
->
-> The issue was found by our static-analysis tool.
->
-> Fixes: 7263b4fdb0b2 ("RISC-V: KVM: Reuse KVM_CAP_VM_GPA_BITS to select HGATP.MODE")
-> Reviewed-by: Anup Patel <anup@brainfault.org>
-> Assisted-by: gpt 5
-> Signed-off-by: Pengpeng Hou <hppiscas@163.com>
-Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
+> On Tue, 2026-09-22 at 11:16 +0800, KunWu Chan wrote:
+> > Do you happen to have any numbers comparing the GPC invalidation
+> > latency with regular SRCU vs. `synchronize_srcu_atomic()`? If there
+> > are also numbers with the reader-free fastpath, that would be useful
+> > for understanding its impact as well.
+> 
+> Yeah, I built some latency tests and was posting results in the earlier
+> thread¹, on a few different test hosts.
+> 
+> I compared against the existing rwlock, as well as SRCU both with and
+> without the try_synchronize_srcu() fast path. Mostly looking at the
+> invalidation latency, since that was Sean's stated concern with the
+> original RCU-based proof of concept.
+> 
+> All from the same test: 12 concurrent guest-memory invalidation
+> reproducers hammering the Xen shinfo/vcpu_info caches, 300 second
+> windows, measuring the invalidation drain end-to-end.
+> 
+> 192-way Granite Rapids, PREEMPT_RT production config:
+> 
+>   rwlock (before this series)              avg  4.4µs   max 3.85ms
+>   synchronize_srcu_expedited() drain       avg  8.6µs   max 810µs
+>   synchronize_srcu_atomic() + fastpath     avg  ~3µs    max 801µs
+> 
+> The A/B numbers I have for the reader-free fast path were on different
+> hardware (128-way Ice Lake, production-like config):
+> 
+>   synchronize_srcu_atomic(), no fastpath   avg 8.0µs   max 6.0ms
+>   with the inline no-readers proof         avg 3.6µs   max 326µs
+> 
+> If you want, it isn't much effort for me to tell my friend to redo any
+> of the measurements.
+> 
+> ¹ https://lore.kernel.org/all/0d4af6318ac67486858be1df8d436147b444a2d2.camel@infradead.org/
+> 
+
+Hi David,
+
+Thanks, this is very helpful. I've put the results together below.
+
+KVM GPC invalidation drain latency
+
+128-way Ice Lake:
+┌──────────────────────────────────┬──────────────┬──────────────┐
+│ Implementation                   │ Avg          │ Max          │
+├──────────────────────────────────┼──────────────┼──────────────┤
+│ Baseline (rwlock)                │ not provided │ not provided │
+├──────────────────────────────────┼──────────────┼──────────────┤
+│ synchronize_srcu_expedited()     │ not provided │ not provided │
+├──────────────────────────────────┼──────────────┼──────────────┤
+│ synchronize_srcu_atomic()        │ 8.0us        │ 6.0ms        │
+├──────────────────────────────────┼──────────────┼──────────────┤
+│ synchronize_srcu_atomic() +      │ 3.6us        │ 326us        │
+│   reader-free fastpath           │              │              │
+└──────────────────────────────────┴──────────────┴──────────────┘
+
+192-way Granite Rapids:
+┌──────────────────────────────────┬──────────────┬──────────────┐
+│ Implementation                   │ Avg          │ Max          │
+├──────────────────────────────────┼──────────────┼──────────────┤
+│ Baseline (rwlock)                │ 4.4us        │ 3.85ms       │
+├──────────────────────────────────┼──────────────┼──────────────┤
+│ synchronize_srcu_expedited()     │ 8.6us        │ 810us        │
+├──────────────────────────────────┼──────────────┼──────────────┤
+│ synchronize_srcu_atomic()        │ not provided │ not provided │
+├──────────────────────────────────┼──────────────┼──────────────┤
+│ synchronize_srcu_atomic() +      │ ~3us         │ 801us        │
+│   reader-free fastpath           │              │              │
+└──────────────────────────────────┴──────────────┴──────────────┘
+Note: Avg / Max are the average and maximum end-to-end invalidation drain latency.
+The measurements use 12 concurrent guest-memory invalidation reproducers 
+hammering the Xen shinfo/vcpu_info caches over 300-second windows.
+
+On the 128-way Ice Lake system, the reader-free fastpath reduces the
+average latency from 8.0us to 3.6us, and the maximum from 6.0ms to
+326us.
+
+The 192-way Granite Rapids result is from a separate hardware
+configuration, so I kept it separate from the 128-way A/B comparison.
+
+The only missing comparison is the 192-way Granite Rapids result for
+synchronize_srcu_atomic() without the reader-free fastpath. If you
+already have that result, it would be useful to add it. No need to
+rerun the measurement just for this table if you don't have it.
+
+Could you please confirm that I transcribed the numbers correctly?
 
 Thanks,
-Nutty
-> ---
-> Changes since v1: https://lore.kernel.org/r/4852f3b8985c353811fa065e4701d76dc9a7f086.1786512671.git.pengpeng@iscas.ac.cn/
-> - No change to the code; retain Anup's Reviewed-by.
-> - Rebase and clarify the locking description.
->
->   arch/riscv/kvm/vm.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
-> index a9f083f..66edfaa 100644
-> --- a/arch/riscv/kvm/vm.c
-> +++ b/arch/riscv/kvm/vm.c
-> @@ -250,7 +250,8 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
->   		mutex_lock(&kvm->lock);
->   		mutex_lock(&kvm->slots_lock);
->   
-> -		if (kvm->created_vcpus || !kvm_are_all_memslots_empty(kvm))
-> +		if (kvm->created_vcpus || !kvm_are_all_memslots_empty(kvm) ||
-> +		    kvm_riscv_aia_initialized(kvm))
->   			r = -EBUSY;
->   		else
->   			kvm->arch.pgd_levels = new_levels;
->
+Kunwu
+
