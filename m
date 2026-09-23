@@ -1,57 +1,57 @@
-Received: from mta0.migadu.com (out-45.mta0.migadu.com [91.218.175.45])
+Received: from mta0.migadu.com (out-211.mta0.migadu.com [91.218.175.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079934A0133
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 11:08:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31DD47CC67
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 11:18:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790161697; cv=none; b=BrMJl9Hyh5UNI7Lrk57hboEFmUSp0fZ10HvNFoV4BgFasD3MTxkIaMTYVPJ0rPB+EHT+ksOF8NQCi5CA8rBUyNBoHjMWwLavL8/6eiCN+7MJubL71nv8fLt3aqAnF8ve0paMDVXFa9NHTvv9+qADrY1cTl4Ww7sAy5mT3k9yPMc=
+	t=1790162331; cv=none; b=NzvfMJyCK9EqmeVoiI/slzBHi9iMV9+krqGEKqk8wDyazsaBqFaFks/asubjiJX4MaGHsr2QFhTMD+e0BXbe93cjkm4ao1VpwYvYMzO+10atiwuz0AV74o34DZzz4UzrSRFQVCG3k6X2YNFxy9Nw0Y9bEEhbNwjSXGTursHD2yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790161697; c=relaxed/simple;
-	bh=IOAKMmCBlI6Y5ADecDu+BXYPFKPVLUehlx/wlSNc7CU=;
+	s=arc-20240116; t=1790162331; c=relaxed/simple;
+	bh=89HG7hn4Kzj5UE8Z7ANkfgcmDmkP7G7K3Oq+gIvcB8g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dVlip6t4KMXvnzOiNX3nSc8xTMjd8rFn0MGWBF+cECRtz7OJ0bgXGworvIw8NffQzrQrQmRN9gHSgxh0qrvMUelR9qcCn7EqqB2vq45u0CBDXTsRFmq4hgBQHdAKHAcLORsh5W/lFJTFyow3dNa0W4OyMvE4ZRWHKtGcgIJe2w8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=K1f5KnAK; arc=none smtp.client-ip=91.218.175.45
+	 To:Cc:Content-Type; b=LfW7qxyr44uC3Xc7pS0RLGoBuCiooKqD2dKdA57QwQvt4TrkFzCRZeRkeF47COY2f5gBwacwDHVG7Az0NH2osbtOMIZG0Ba2gC5XuoRjXN+soNnSQ3I8FUm7OZAcJ4Iuzp6isVcwqmthE0BQIY2upYtbU5+fR2mZmeqi5eRtmA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=KdqMPrek; arc=none smtp.client-ip=91.218.175.211
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="K1f5KnAK"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="KdqMPrek"
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=IOAKMmCBlI6Y5ADecDu+BXYPFKPVLUehlx/wlSNc7CU=;
+DKIM-Signature: a=rsa-sha256; bh=89HG7hn4Kzj5UE8Z7ANkfgcmDmkP7G7K3Oq+gIvcB8g=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790161693; v=1; x=1790766493;
- b=K1f5KnAK3X79y758eL3FPSJ/DANtoCt/5fZbbIs46sjxtFnbxpJg5c/iOJeC9eMyRifWDCPP
- F6HMfi87SOY71tTVfJuKEJSidQwPGHr5pK1Ahs96T+6YAWS8njVuPiSbp5cCa7a4TWMO5StEGHt
- DFXaXhdzPS4yIBM0luvWvjxU=
+ t=1790162327; v=1; x=1790767127;
+ b=KdqMPrekLrC/5IiOtG9WhZ7CjRLE8f3T2sv3gCEeaA8Kk8LjD0TYolBhewHVPARf57Irh/EI
+ FyJd6Yqvzgh1E3U1gGqmPr/GgdXK42ErwaxJC0qice4LuWuIc4/9F9bHNe9o/d/FQd+DQSiHL/h
+ UvvVSlQwLA/xPluADfiSK/9g=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id d230ef521c69ae94;
-	Wed, 23 Sep 2026 11:08:13 +0000
-X-Mizu-Trace-ID: d230ef521c69ae94
+Received: by smtp.migadu.com with ESMTPS id 7c8269ab479b64a1;
+	Wed, 23 Sep 2026 11:18:47 +0000
+X-Mizu-Trace-ID: 7c8269ab479b64a1
 X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5b83c1421ecso4544e87.1
-        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 04:08:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBx3yODkp8o6+dzZ8xI5RdY6Y0SiBs9IKeQQG18NMixCgH3MgqrVreZeHA3Qj84YpQwFZBM=@vger.kernel.org
-X-Gm-Message-State: AFuF++lpTXO9aWVPoAEz2aIInW4Ln2wBIJpizs3X/iH88c7nGhV2BWbN
-	5r3nfBmIUqEoJMZsml2ZHDWzWuMd65agoYwQas5b8NDNMH+hTgY2pEgGTVynFoJ2pj8sw49okuw
-	G4HszTtXQROtadolzoRW00k/vxmFtjONha2f/X12J
-X-Received: by 2002:a05:6512:648a:b0:5b6:4ad:d6ba with SMTP id
- 2adb3069b0e04-5b8d91673a2mr102638e87.15.1790161689001; Wed, 23 Sep 2026
- 04:08:09 -0700 (PDT)
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5b778bdb5b8so4882e87.1
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 04:18:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxXGVy1sIXsZF3/uMa1mR7Rk2ztTmZB1X1u+w2d+12XZR9C/g4VczrNEpFOIpLmNpNWk+k=@vger.kernel.org
+X-Gm-Message-State: AFuF++ljazR3PtCuxlAsf6SYRYBCwerGou0xwvQulUwXPd5F5BFOys+P
+	JwOXoKSSm1c0bJgHYg28pRxZ1DVoYPzCTnGUXBFQZtGVfxMxSL/4CmCkoHSo33fR4yj6Y/je60x
+	Wl90IGpqfKznrx8XDkAgQPbngBKNBh+yHT/6R0HjK
+X-Received: by 2002:a05:6512:acd:b0:5b8:d049:c45f with SMTP id
+ 2adb3069b0e04-5b8d8853d0fmr127952e87.14.1790162326446; Wed, 23 Sep 2026
+ 04:18:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260922-kvm-arm-prefault-v3-0-787bd3bc7e3f@kernel.org> <20260922-kvm-arm-prefault-v3-9-787bd3bc7e3f@kernel.org>
-In-Reply-To: <20260922-kvm-arm-prefault-v3-9-787bd3bc7e3f@kernel.org>
+References: <20260922-kvm-arm-prefault-v3-0-787bd3bc7e3f@kernel.org> <20260922-kvm-arm-prefault-v3-10-787bd3bc7e3f@kernel.org>
+In-Reply-To: <20260922-kvm-arm-prefault-v3-10-787bd3bc7e3f@kernel.org>
 From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Wed, 23 Sep 2026 12:07:32 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTzY6KFekqaUX4RLRyFmSkFhOeWDZE4LjBF6owdLM8oHhw@mail.gmail.com>
-X-Gm-Features: AcwNN1USJQu0cBxPqG4Fa3XJmPPBE73PzJ6UtD9si6PNBcHUySSR3TM9mD5mIUk
-Message-ID: <CA+EHjTzY6KFekqaUX4RLRyFmSkFhOeWDZE4LjBF6owdLM8oHhw@mail.gmail.com>
-Subject: Re: [PATCH v3 09/14] KVM: arm64: Pass walk flags to kvm_pgtable_get_leaf()
+Date: Wed, 23 Sep 2026 12:18:10 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTyCc=T+HkvWv1g2Fg3OxGaa1i8Hdv296ivPc94jQqZq9g@mail.gmail.com>
+X-Gm-Features: AcwNN1XC5SLsTqs8zqxJrWyrAoHwz-wo27sOUtBe-7VaIdl2y8EQBRd7i4qQqDs
+Message-ID: <CA+EHjTyCc=T+HkvWv1g2Fg3OxGaa1i8Hdv296ivPc94jQqZq9g@mail.gmail.com>
+Subject: Re: [PATCH v3 10/14] KVM: arm64: Implement KVM_PRE_FAULT_MEMORY
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
 	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
@@ -68,30 +68,29 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
 	Wei-Lin Chang <weilin.chang@arm.com>
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 22 Sept 2026 at 15:19, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
->
-> From: Jack Thomson <jackabt@amazon.com>
->
-> Allow callers of kvm_pgtable_get_leaf() to specify the page-table walk
-> flags, in preparation for performing walks under the MMU read lock.
->
-> Reading a stage-2 leaf while only holding the read lock requires
-> KVM_PGTABLE_WALK_SHARED: parallel faults (which also only hold the read
-> lock) can unlink table pages and free them via RCU, so the walker must
-> be inside an RCU read-side critical section, which the shared walk flag
-> provides via kvm_pgtable_walk_begin().
->
-> All existing callers either hold the write lock, walk with interrupts
-> disabled, or run at hyp where shared walks are rejected; they keep the
-> current behaviour by passing no flags.
->
-> No functional change intended.
->
-> Signed-off-by: Jack Thomson <jackabt@amazon.com>
-> [ljs: fixup new kvm_pgtable_get_leaf() invocation]
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Hi Lorenzo,
 
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+On Tue, 22 Sep 2026 15:18:04 +0100, "Lorenzo Stoakes (ARM)"
+<ljs@kernel.org> wrote:
+[...]
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+[...]
+> +static long __pre_fault_s2(struct kvm_s2_mmu *mmu, struct kvm_vcpu *vcpu,
+> +                           gpa_t gpa, struct kvm_memory_slot *memslot, s8 level)
+[...]
+> +        if (is_gmem)
+> +                ret = gmem_abort(&s2fd, &result);
+> +        else
+> +                ret = user_mem_abort(&s2fd, &result);
+
+When kvm_gmem_get_pfn() fails, gmem_abort() calls
+kvm_prepare_memory_fault_exit() before returning, which on this path
+writes vcpu->run's exit_reason and memory_fault fields outside
+KVM_RUN. If that happens on a vCPU between its KVM_EXIT_MMIO and its
+next KVM_RUN, kvm_arch_vcpu_ioctl_run() reads KVM_EXIT_MEMORY_FAULT
+instead, skips kvm_handle_mmio_return(), and the guest repeats the
+access. Could gmem_abort() skip that exit when result is set?
+user_mem_abort() never writes kvm_run.
 
 Cheers,
 /fuad
