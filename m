@@ -1,143 +1,120 @@
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29AB843DEC8;
-	Wed, 23 Sep 2026 08:26:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EDC53C1089;
+	Wed, 23 Sep 2026 08:37:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790152020; cv=none; b=jsIX/DlIagwA0Ebd7KEdDfsPqoz2EV60hAlcVnUc7W19GbXVHUJ5bEb/nsVsW9OzNupzkBCtM343wWda+ANsVKoppoyS5VwERFUc6wuXQDoxMjon6I7LTx/OITMzdUH/j0fy/c5su1ayUZijD/aJfoW6VVGhojKAH9VvGtwmGMM=
+	t=1790152685; cv=none; b=th24kgMFv5KpdwMr4wlZ4l7MisAtGA14KlwCMCtSw3k13msrbS1deenq2OCfyAsggopq0Edff+0rnWGyUStE8q5n7X2S6sjxiQx33zXFpWTp8nRzJB83tapIqv74SH0p2WOohczUbzNykLIzVgc75vv/P8ojvkS8w1MOeVxvIUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790152020; c=relaxed/simple;
-	bh=7BM5U2fsxFxR2NNaq11ND+ksOkOn64Eu3s+GRHuzl5A=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PlDX6Sa/oAoZz3A3Heze62w3N+8Y+Amzs/NOUiEA1n9YHfMqB9cBGvM0DwIhZCWRtEX6I3hLLmm8N8hV8PjaR4ha8P/uzO3ozNvZ8WiDrsPOIjqn+cYM9lOM1t26+0YYbFrGs7PE1gOoRGYrOR42Izft0MyCRchW0OB8oGKB+ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=J6hfzxs2; arc=none smtp.client-ip=113.46.200.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1790152685; c=relaxed/simple;
+	bh=FrR8b3Mzv3qdqtgXmfRNRlQ4l6oSfUahCbwP603V/HY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AA14DLU9dap3puWPWSSUz8Qeer84i8HSgxCI9uXkirNCoT+LBcvz/5ZLATzgwlJ2HswNPiRrpjEjrpp/fvWdwOSa9JT7rBdtD3LQ7NYK1JGl+BfJFLDj7CoATJkqTth+G9ntiQPNYUB4X/2iVaXRb++Yfzi1dEZ9tlo9WPqnp3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iY7q8yI5; arc=none smtp.client-ip=192.198.163.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="J6hfzxs2"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=YRV3LIFZS0hRqQvTFi6Gfnm2jHFREmO9P48739NqNSE=;
-	b=J6hfzxs2FUNbJVqAOuSRujGHA3ACdegzmnJExMtvo/FHbeb3bU3vPSzh2dN+mWtJnqpcDmWEN
-	erU25qwQPTSN+nhgGZlL8Es1OMlS+9MMBVYjmgV2DxeXB8rDQqK2OojCk8NL2jTVbVkXGGgwZMm
-	ly7WN6sF0nonsRUtvkL0i34=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hqVBM1TfBznTVd;
-	Wed, 23 Sep 2026 16:14:51 +0800 (CST)
-Received: from whupemk100014.china.huawei.com (unknown [7.152.184.20])
-	by mail.maildlp.com (Postfix) with ESMTPS id A4D664057C;
-	Wed, 23 Sep 2026 16:26:55 +0800 (CST)
-Received: from huawei.com (10.50.163.32) by whupemk100014.china.huawei.com
- (7.152.184.20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 23 Sep
- 2026 16:26:54 +0800
-From: Longfang Liu <liulongfang@huawei.com>
-To: <alex.williamson@redhat.com>, <jgg@nvidia.com>
-CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<liulongfang@huawei.com>
-Subject: [PATCH v5 2/2] hisi_acc_vfio_pci: reject live migration on 64KB page with QM_HW_V3 hardware
-Date: Wed, 23 Sep 2026 16:25:51 +0800
-Message-ID: <20260923082551.1754351-3-liulongfang@huawei.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260923082551.1754351-1-liulongfang@huawei.com>
-References: <20260923082551.1754351-1-liulongfang@huawei.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iY7q8yI5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790152672; x=1821688672;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FrR8b3Mzv3qdqtgXmfRNRlQ4l6oSfUahCbwP603V/HY=;
+  b=iY7q8yI5bgjAXMOSV+LiNXxxPP8232fIsHGMsvnXK0FHuKRmQJ336Cct
+   OcCUBCTIvdTeKcY+bxHxqqyL4TNhBKh+il7ISnC2lsejE7Ec5B61VI/5S
+   vgXSx0Gr+zPcQvG1cLMTcJIObwxmMTk19c+XGapFd/HNmivDfbjvqyI4C
+   wJGq7R453V7D7XgS1SfqOWAfLUVVnEUgvgOSWWgEzLLw918s9ytvwK5gH
+   Ck+YeDwJ+Ow5M9cFshjigz/J4xu52A1KkjLaHWNWh/+rlO3eYvzgKT2ib
+   CGN3kxZI/epC2oEVXYazifqvbv1sNpoKbL9yW8DMmnv+FejtTu7MR/Uoc
+   Q==;
+X-CSE-ConnectionGUID: oU+PhisuQS6oZUBvQcKv6w==
+X-CSE-MsgGUID: rwzUmp8DSEKqclEdpxnyJw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="1330894"
+X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
+   d="scan'208";a="1330894"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa115.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 01:37:49 -0700
+X-CSE-ConnectionGUID: bsfpIpVcQCe3xKoL05+I7Q==
+X-CSE-MsgGUID: LVOFLOgfTbeBmfgqRfwTsA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
+   d="scan'208";a="278259741"
+Received: from bradocaj-mobl.ger.corp.intel.com (HELO localhost) ([10.245.246.235])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 01:37:44 -0700
+Date: Wed, 23 Sep 2026 11:37:41 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Chao Gao <chao.gao@intel.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, yilun.xu@linux.intel.com,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [RFC PATCH v2 00/10] TDX: Stop auto-generating the global
+ metadata code
+Message-ID: <arOP1cXNYPbS0eZ1@tlindgre-MOBL1>
+References: <20260918132946.76533-1-chao.gao@intel.com>
+ <arNnJO3aKDlCD2Uz@tlindgre-MOBL1>
+ <arOLgHrOf8tlTwfv@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- whupemk100014.china.huawei.com (7.152.184.20)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arOLgHrOf8tlTwfv@intel.com>
 
-On QM_HW_V3 (VF_CTRL mode) hardware with 64KB pages, the functional
-region and migration registers share one BAR2 physical page with no
-isolation, which leaks migration registers to the guest and causes
-guest kernel calltrace under the KVM emulated device scheme.
+On Wed, Sep 23, 2026 at 04:19:12PM +0800, Chao Gao wrote:
+> On Wed, Sep 23, 2026 at 08:44:04AM +0300, Tony Lindgren wrote:
+> >On Fri, Sep 18, 2026 at 06:29:19AM -0700, Chao Gao wrote:
+> >> This series cleans up the TDX global metadata code. It has two goals:
+> >> 
+> >> 1. Replace the generated code with a table-driven metadata reader.
+> >> 
+> >> 2. Make the existing code easier to read and maintain, and simplify
+> >>    adding new metadata fields.
+> >> 
+> >> During the v1 review, Dave raised concerns about signing off on
+> >> AI-generated code. I have since rewritten the affected patches based on
+> >> my own understanding of the code.
+> >> 
+> >> The main goal of this RFC is to agree on whether the table-driven reader is
+> >> the right replacement for the generated code. Please raise any concerns or
+> >> alternative design ideas.
+> >
+> >For alternatives, I wonder if grouping the metadata would help in the long
+> >run. Some of TDX metadata needs to be cached. Some of the metadata is init
+> >time data for how much memory to allocate etc. Some of the metadata needs
+> >to be re-read after TDX module update.
+> 
+> I agree that TDX metadata should be cached only when there is a reason to.
+> 
+> And yes, some init-time data is cached even though nothing reads it after
+> init: max_tdmrs, max_reserved_per_tdmr and the pamt_*_entry_size fields are
+> only needed while building the TDMRs.
+> 
+> Only the version fields are re-read after a module update. Splitting them
+> out of struct tdx_sys_info would be a good improvement, so the rest of the
+> structure could then be __ro_after_init.
+> 
+> These are cleanups that can be done in a separate series.
 
-The previous fix rejected the device in hisi_acc_vf_qm_init() during
-open_device, returning -EINVAL and breaking passthrough entirely.
-Move the drv_mode check into a helper called from probe() so that a
-VF_CTRL device on a 64KB page is bound to the generic ops, keeping
-passthrough working while disabling live migration.
+Yes OK agreed.
 
-Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
-Signed-off-by: Longfang Liu <liulongfang@huawei.com>
----
- .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 32 ++++++++++++-------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+> >Should we have the table-driven metadata reader use the TDX module
+> >metadata directly by default instead of always copying the data? That
+> >could be used for the init time data. And data could still be cached for
+> >CPUIDs etc.
+> 
+> The table-driven reader doesn't impose caching. It maps field IDs to
+> members of whatever structure the caller passes, so the destination can be
+> a cached global or a stack local. For init-time data, we can read it into a
+> stack local the same way the handoff class is read in tdx_module_shutdown().
 
-diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-index 6a09252258b9..3b014f248078 100644
---- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-+++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-@@ -1196,13 +1196,6 @@ static int hisi_acc_vf_qm_init(struct hisi_acc_vf_core_device *hisi_acc_vdev)
- 	struct hisi_qm *vf_qm = &hisi_acc_vdev->vf_qm;
- 	struct hisi_qm *pf_qm = hisi_acc_vdev->pf_qm;
- 	struct pci_dev *vf_dev = vdev->pdev;
--	u32 val;
--
--	val = readl(pf_qm->io_base + QM_MIG_REGION_SEL);
--	if (pf_qm->ver > QM_HW_V3 && (val & QM_MIG_REGION_EN))
--		hisi_acc_vdev->drv_mode = HW_ACC_MIG_PF_CTRL;
--	else
--		hisi_acc_vdev->drv_mode = HW_ACC_MIG_VF_CTRL;
- 
- 	if (hisi_acc_vdev->drv_mode == HW_ACC_MIG_PF_CTRL) {
- 		/*
-@@ -1670,21 +1663,34 @@ static void hisi_acc_vf_debugfs_exit(struct hisi_acc_vf_core_device *hisi_acc_vd
- 	hisi_acc_vdev->debug_migf = NULL;
- }
- 
-+static enum hw_drv_mode hisi_acc_vf_get_drv_mode(struct hisi_qm *pf_qm)
-+{
-+	u32 val;
-+
-+	val = readl(pf_qm->io_base + QM_MIG_REGION_SEL);
-+	if (pf_qm->ver > QM_HW_V3 && (val & QM_MIG_REGION_EN))
-+		return HW_ACC_MIG_PF_CTRL;
-+
-+	return HW_ACC_MIG_VF_CTRL;
-+}
-+
- static int hisi_acc_vfio_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- {
- 	struct hisi_acc_vf_core_device *hisi_acc_vdev;
- 	const struct vfio_device_ops *ops = &hisi_acc_vfio_pci_ops;
-+	enum hw_drv_mode drv_mode = HW_ACC_MIG_VF_CTRL;
-+	resource_size_t func_len;
- 	struct hisi_qm *pf_qm;
--	int vf_id;
- 	int ret;
- 
- 	pf_qm = hisi_acc_get_pf_qm(pdev);
- 	if (pf_qm && pf_qm->ver >= QM_HW_V3) {
--		vf_id = pci_iov_vf_id(pdev);
--		if (vf_id >= 0)
--			ops = &hisi_acc_vfio_pci_migrn_ops;
-+		func_len = pci_resource_len(pdev, VFIO_PCI_BAR2_REGION_INDEX) >> 1;
-+		drv_mode = hisi_acc_vf_get_drv_mode(pf_qm);
-+		if (drv_mode == HW_ACC_MIG_VF_CTRL && func_len < PAGE_SIZE)
-+			pci_warn(pdev, "migration not supported on 64KB pages with QM_HW_V3\n");
- 		else
--			pci_warn(pdev, "migration support failed, continue with generic interface\n");
-+			ops = &hisi_acc_vfio_pci_migrn_ops;
- 	}
- 
- 	hisi_acc_vdev = vfio_alloc_device(hisi_acc_vf_core_device,
-@@ -1692,6 +1698,8 @@ static int hisi_acc_vfio_pci_probe(struct pci_dev *pdev, const struct pci_device
- 	if (IS_ERR(hisi_acc_vdev))
- 		return PTR_ERR(hisi_acc_vdev);
- 
-+	hisi_acc_vdev->drv_mode = drv_mode;
-+
- 	dev_set_drvdata(&pdev->dev, &hisi_acc_vdev->core_device);
- 	ret = vfio_pci_core_register_device(&hisi_acc_vdev->core_device);
- 	if (ret)
--- 
-2.43.0
-
+OK thanks, nice to hear you have already considered the next steps. Might
+be worth updating the cover letter for the follow up options too.
