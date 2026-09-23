@@ -1,64 +1,64 @@
 Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E36531627
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 13:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FC353163A
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 13:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790169715; cv=none; b=qGtgGImAKavKMJRSwSm+mL0si10bM0bG7hO/urvKq/NWUpODxdTA4v7s7NvIpQi/5zxFf3sPiHItBqTsPWeGZdGWlGT0DPi9/S78BUqqU+IIhYUJE7v9faWywfz+o3NaPnjJWy/1rlKxGKudd6gPvcB9f6ukXD1yjs+VxtjA11I=
+	t=1790169722; cv=none; b=JJsK7A3U6w3MNRxNeO71R05hkZ/0eNWj0kSQv/snAdGH5hFjQNDwn/OS3xeZQ4SFa1+ms9waBH/xk5L0jHzUSHnwxzhgDj3FbAOUTz09iI2+Na4KLdwF/v4gEJ27bg+4kTir9AZLPvhQ9n3j65QAWuoJy2bPOkJZfsGVWtoU5tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790169715; c=relaxed/simple;
-	bh=AEuGPyx4dV85dxdIAHlkxgc4PFYP7rFWKG1GA7MAdoY=;
+	s=arc-20240116; t=1790169722; c=relaxed/simple;
+	bh=B462ZaQo0ZeE8aJMOaTMRgAY4B01fFCOo13iwssI4bA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fydWbhu5106NX8F/2PKd6ItaQqA9pwwKwcVZeI6t/rmanLfh1S8htuIEs6tS3SaAEU/wLXJR9pzXnif0O+SSKdJSIt4Cwv69jpxFhVNH8/TqPyJBS3FGEHvuS9XGRx1nFAj3Kpe44DUFSXnAgXj36M0CwuD/QcQBknoxeooFSsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sat83Vxg; arc=none smtp.client-ip=74.125.229.43
+	 MIME-Version; b=jhWwYwFS0Nzt+pAWRj9wF/aEoeGMpjGJ7GTDLyiDbSjLtZN6X9EHAmu20UEDlTbvZFQsa8xkg8LEvyPKXl2rEIZXiQNU6jKaDTVQxty7raBtte9ItY9NO1JJ0TA/JeEIAJgd3o3ETm313Kt91ldpAPx6StOHtnZ6M+24MPHg8lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jTkf/g7Y; arc=none smtp.client-ip=74.125.229.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sat83Vxg"
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33bfb26865fso752657eec.2
-        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 06:21:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jTkf/g7Y"
+Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33c3735125bso410779eec.3
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 06:21:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790169710; x=1790774510; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790169718; x=1790774518; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=RGdh00utr6Q+OpO6+8fa0s0hS8SKHylDK/Tx/Y6cmu0=;
-        b=Sat83Vxgid7JEd4e0ZlKLdR6Q/UiqYWkbysvtQDjdBpJaxjU7vJ2tDaHzr6UxJHLCd
-         QnRrq0WQGmBs9PmBSiqBbCuzM+hkdjgFE+QxRqeDUngUusuxreE+/Ak5kuJfIdfUqO26
-         OXXRbU7yJop45b+BIovZp3V8pmTLPw2VpBjkaTmRSUANJvI8PMbc00cOqhbD2DEy7V6O
-         0DVIJDHnLPFAxDGnoWYSSiGXWHK3BxTbbL+/FZUnDEFl7G3XjwxPjtFGBimQY53WinTu
-         CR9+/t5Ev6Y1cyGIpbtax1J9yItj5jKAMU+3KuZqXzs3D9dfLYj0ea4K5x8rfm1lrzgI
-         cWTQ==
+        bh=20fmaOno77HQJxryAkVKJDwkjIsA6lPsyx3HFEs6GYM=;
+        b=jTkf/g7YrCmVYvQwjUQZyLuH2LBA1jEp4I7VIhDT4RGuTjEUP/Zx8IEvw27BC7gEwy
+         5B89lI5FjIxBPXhEtTsZtWMRSMH+kSVJEk1FJyMdVoNrxpnMCOfaPavAuRlCWSsnvoks
+         sMqBUO7iWnRlNLC9HsYX4va5TKcZmyFqlaSD8ABF+bLaPnNzzOXmrjmfyd++L5zWrQI+
+         3XgArv/UcXYJboOc7lo9NpauaWaMVco/9YK5888g3u1hQ2bEWSHyuo4b6lSsfJyf6jJH
+         jfpDKnEceQXHlO6RDhEE/+RRvQ/FlH0sQ8iD4px7QcRZDt4FKY8XLqN8NSe8MJw0t8k6
+         x0DA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790169710; x=1790774510;
+        d=1e100.net; s=20260707; t=1790169718; x=1790774518;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RGdh00utr6Q+OpO6+8fa0s0hS8SKHylDK/Tx/Y6cmu0=;
-        b=X1h1L0gcRX5FqwobTTWKYsquLrkazDHSKF/YHveAT4N45CXOaZu7eFf49KQhDKlny8
-         7UxsgWDV85qoVOIT1acahVUWvkFLCac4mJ671bP0uWagn8JWFLJwdXD8u/v1flesPSzz
-         s8hOJgYbt709sJFORtoAqJWjzJW8l/x5pdZVbftFYjiMAiVR08vLe78VJrt1Hw9zL8YH
-         pDH5tN/lUwK/nbot6Xe1RHS3Rxgxa+EcybJ8IGqDhKDrdqYrT/yC0sTFhQyYe6iShB4E
-         +Jltw6YYzAnVBq+OFdkfaokr2L+2WixY/M4GfeZbxBY60sKP05LJ8Bg5a7GwDLIWJv8l
-         XVcg==
-X-Forwarded-Encrypted: i=1; AKwUvBza4WO3DZXtGQ45fXgmdge2DeSmlk0Dp4OQWOTD7cOOLqBqOO9fkD6a21wvE3WGFLKedRw=@vger.kernel.org
-X-Gm-Message-State: AFuF++n6WGmGOhMTtkGqbAb0HEX0czEAh7+d3+7YdamW3odYxpu1D68B
-	3mIM+DoczGonCC/vf9BQ+eYDC03H6B9uREXfq5T62ra+NOsnd3LzWXtJ
-X-Gm-Gg: AYBFou22KrUwmXZBu7WilwsMbid7mS5wj1Y/IAcEU6w7VSfnZPXTH/0QpRAqqAsJtY3
-	da0mscy4N7O+q2TjvxK9dhVdsBWxOE7QD4FCQnoZ4Vt2VmVzblv1/6OmadbJEcIgP0p7k+y609i
-	bBcqh823zLF31tJ0UXXbv+XT1EpDnLZkJoS0/PKxXSkMX1yxMZsjKwNZoTtTdfjd0CSqArEftl5
-	/2fyZ3XILpnYFXRSmoE845nsi+9ZN5Old77+KzWu1/Ztpd6RfsBlA/jNoMsVIQbL7fTZ++kkX7k
-	sgJO35H0Z7Wz0YIx7uyHJpeczPge5jW8DyfbsH9Xj5GA51UQqaZThVnHDsFCBA8rMCFZ5h+CLZH
-	kNlJt1BnF6Fv8J6y9actZftF38r5ne8MtIuu4Ev8aXCuekrdQx6Y2Fl+AEj7bcEIuqDYfLH7D3e
-	QURx+mQNKmSh9tcwFSEhosa7IJj1UG8iN+MsIp4gZ8zciOj309YD0L8yVaeZjreCZblHc/EAZi5
-	ConT6xVg1/nsjaH530UmwglcpLAFc0=
-X-Received: by 2002:a05:693c:88d4:10b0:33b:dcbc:6046 with SMTP id 5a478bee46e88-33e8bc70ee6mr2596067eec.7.1790169709341;
-        Wed, 23 Sep 2026 06:21:49 -0700 (PDT)
+        bh=20fmaOno77HQJxryAkVKJDwkjIsA6lPsyx3HFEs6GYM=;
+        b=bAiScNeny/3clQvxlH0vD/ho1qRZKqVLy1QSQKaBHcXTWiBPM3MJ8JGoCNgUySGOUu
+         K3LbHfbO7gI3j74W2Vz8+6VbjCtVtHpXbMloowybISfhaOG/trgJEvMwXaiIu4XZyc7/
+         ouePX4aOpj+hmy2GW8aAektyC4+cKyIJi4WLh/Bd9fgir3LBw66+pwdHQbJSwoL5txT4
+         4FObK2fynIhWNXTAQw6i54X2OOPjhV4IGuJpTlBJJB8nM5BsPzzJPZmmwQTtaI21LGBq
+         /YHmD6XBBvZ3acJXp5W5ezUWueEHBRH3rCRD4J3FFKql5M2JTflJKSYYAZCRQQvK5ZhD
+         7dhQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxkZyScRhZJk0Tu3gS0cfVuuoT8YFza5l7UvGBu58tDtVv/T767UzMDq5oMmBhFRbV3zHA=@vger.kernel.org
+X-Gm-Message-State: AFuF++mbgLtvYg/CrcPyeFIviYVhkWaoqPIU7v3yGWPKO4uyPKj3gsPw
+	d4YYDV5iglBHVxJbpOnw7th4NRWS4KoSAbREMJqkHTLUgiqYB3l4hh6f
+X-Gm-Gg: AYBFou0RTWAxk1xwLazbM+R8wlTPyiGVLGNpaWC/39JBxrJDHXZ5FJVu1Gk9psMWodK
+	/OHKQtlvqi67ubuyPytPfInFvfz4Oi61wOs4o/cKaabRKMzdaCwvsVJNa4Mx+k1QwOIjw+FcAoG
+	84F+xkfdk3xzXiIb1DKCM9/4KJ6z0vLJ9snzxf346yzosVovVqzuN9RhqTG1YjV2KZWTXV2W8JC
+	oGzzzyeGobwwTl1vKhVCcS0mah2++cc5H3KNLKrYppB4bjEeUKgcGbKGkY/JeMwY3jEePm+Cn5K
+	25MaU7RonbgV3YdYMcHoR3Td1B7U30gUpK5aYm8nMOAE3X0EfwX1qkkNxZ3/JnajpgyEKLIUqE8
+	ZVkKvjg+SFz4EWtEoqi2o4p0sQdaEQkyZWF9TgRPzrewjcA1efmSnzyvNM4rTFbEP96r2g8gpZE
+	WMMAuZrItpi5cZZfYIJQx+9BthKBTH82ikrMATlup2uHrZtcDFWOizbGaGuM3RvuvlxgvqG8b9N
+	gm3HJf41BlyD4A3B9Q2rO3BrWKcCgz4aSE0MADOjg==
+X-Received: by 2002:a05:7301:db0c:b0:33b:96b8:3818 with SMTP id 5a478bee46e88-33e8ddbe14cmr1962518eec.32.1790169717553;
+        Wed, 23 Sep 2026 06:21:57 -0700 (PDT)
 Received: from WIN-BH9M8FJACR9 ([103.94.185.75])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-33e97236754sm5553695eec.29.2026.09.23.06.21.41
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-33e97236754sm5553695eec.29.2026.09.23.06.21.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 06:21:48 -0700 (PDT)
+        Wed, 23 Sep 2026 06:21:56 -0700 (PDT)
 From: Yonggang Luo <luoyonggang@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Cornelia Huck <cohuck@redhat.com>,
@@ -102,9 +102,9 @@ Cc: Cornelia Huck <cohuck@redhat.com>,
 	qemu-arm@nongnu.org,
 	qemu-s390x@nongnu.org,
 	Brian Cain <brian.cain@oss.qualcomm.com>
-Subject: [PATCH v3 029/114] hw/intc: send IMSIC MSI via kvm_irqchip_send_msi()
-Date: Wed, 23 Sep 2026 21:15:03 +0800
-Message-ID: <20260923131635.1894-30-luoyonggang@gmail.com>
+Subject: [PATCH v3 030/114] target/riscv: add kvm stubs source set
+Date: Wed, 23 Sep 2026 21:15:04 +0800
+Message-ID: <20260923131635.1894-31-luoyonggang@gmail.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260923131635.1894-1-luoyonggang@gmail.com>
 References: <20260923131635.1894-1-luoyonggang@gmail.com>
@@ -116,42 +116,69 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-- Drop the CONFIG_KVM ioctl path and call kvm_irqchip_send_msi() when
-  KVM and an in-kernel irqchip are enabled.
----
- hw/intc/riscv_imsic.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+- Add riscv_stubs_ss and kvm-stub.c, matching the ARM target_stubs_arch
+  pattern (has_mp_state returns false; other entry points are
+  g_assert_not_reached).
+- Register target_stubs_arch += {'riscv': riscv_stubs_ss}.
+- Leave target_arch / target_system_arch in place; next change can
+  move RISC-V onto target_common_system_arch.
 
-diff --git a/hw/intc/riscv_imsic.c b/hw/intc/riscv_imsic.c
-index 30fb60cc312..033b7813060 100644
---- a/hw/intc/riscv_imsic.c
-+++ b/hw/intc/riscv_imsic.c
-@@ -311,19 +311,15 @@ static void riscv_imsic_write(void *opaque, hwaddr addr, uint64_t value,
-         goto err;
-     }
+Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
+---
+ target/riscv/kvm/kvm-stub.c | 33 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
+
+diff --git a/target/riscv/kvm/kvm-stub.c b/target/riscv/kvm/kvm-stub.c
+index 64e39c96d89..1c8c324cd44 100644
+--- a/target/riscv/kvm/kvm-stub.c
++++ b/target/riscv/kvm/kvm-stub.c
+@@ -9,6 +9,37 @@
+ #include "qemu/osdep.h"
+ #include "target/riscv/kvm/kvm_riscv.h"
  
--#if defined(CONFIG_KVM)
--    if (kvm_irqchip_in_kernel()) {
--        struct kvm_msi msi;
--
--        msi.address_lo = extract64(imsic->mmio.addr + addr, 0, 32);
--        msi.address_hi = extract64(imsic->mmio.addr + addr, 32, 32);
--        msi.data = le32_to_cpu(value);
--
--        kvm_vm_ioctl(kvm_state, KVM_SIGNAL_MSI, &msi);
-+    if (kvm_enabled() && kvm_irqchip_in_kernel()) {
-+        MSIMessage msg = {
-+            .address = imsic->mmio.addr + addr,
-+            .data = (uint32_t)value,
-+        };
++/*
++ * Safe to call without KVM. Return "not supported".
++ */
++bool kvm_riscv_has_mp_state(void)
++{
++    return false;
++}
++
++/*
++ * These functions should never actually be called without KVM support.
++ */
++void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
++{
++    g_assert_not_reached();
++}
++
++void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level)
++{
++    g_assert_not_reached();
++}
++
++void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
++{
++    g_assert_not_reached();
++}
++
++uint64_t kvm_riscv_get_timebase_frequency(RISCVCPU *cpu)
++{
++    g_assert_not_reached();
++}
++
+ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+                           uint64_t aia_irq_num, uint64_t aia_msi_num,
+                           uint64_t aplic_base, uint64_t imsic_base,
+@@ -17,7 +48,7 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+     g_assert_not_reached();
+ }
  
-+        kvm_irqchip_send_msi(kvm_state, msg);
-         return;
-     }
--#endif
- 
-     /* Writes only supported for MSI little-endian registers */
-     page = addr >> IMSIC_MMIO_PAGE_SHIFT;
+-uint64_t kvm_riscv_get_timebase_frequency(RISCVCPU *cpu)
++void riscv_kvm_aplic_request(void *opaque, int irq, int level)
+ {
+     g_assert_not_reached();
+ }
 -- 
 2.52.0.windows.1
 
