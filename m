@@ -1,66 +1,60 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7A84508E0;
-	Wed, 23 Sep 2026 07:32:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D79446821;
+	Wed, 23 Sep 2026 07:47:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790148728; cv=none; b=QImRx4tppkHVu+ahXyjtufk4BcCEGCyIVvvd3OHcIHB1auOXA9mi3Q0w6lB1vr0uZrPCDnXDBfs4nbA47m8gPKzLkXXxr/whZ/9ghdj3FPyMpnTk+9OlMSiwfmzhGh0954YONXuoclz2yTYcfhL5aF41sCVXqSSOblTMqSTp9tE=
+	t=1790149672; cv=none; b=XRPf+oudwB3u+9wBc8WNUWgt/HDDUqW75/f3oOKUJ+GYoT4eI3Do4MIiA0wSq/hWCpSYC+PF1V5gMatkTIUFeV+FfENMtBJ8H3wAnELAm5VyDVHkfrPBRiXeNs4UjN99KFRKHCoVBEV8tYzc46sUloxZNZr05KrpN/eeD55rhyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790148728; c=relaxed/simple;
-	bh=SHoV46IGp0r1Mgw9p20NaWVqyYQSQSikZbfLmgAsLa4=;
+	s=arc-20240116; t=1790149672; c=relaxed/simple;
+	bh=2dDicVXRAjt7NPjDCajgGPNXdxkyaqGKL9o+Y6VYnfM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jH/uhj2nNZ+zTcsuZl/zjRLfS1TrQNFrJ/GNmmsfM53Cjew/WDg6av/gU2mcM/LrCVKX/4SdGxGzm59e/KPWEDH0mKP89YPJxF8oXmSdFuEeRuHymP6Pa6VhK9AvDJ4zIDRw73PTQS/EntcffcP9r5rkkeg2DIyDuX6ORXXsQ5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SogCKDo8; arc=none smtp.client-ip=192.198.163.5
+	 Content-Type:Content-Disposition:In-Reply-To; b=FoUy7eLe2tBLErrmtt6lC7pbiNyINssp/ted9psxCpo8O2ejwEg6WLN1+XW5n4VPyhxi9qu7SSdMAsI1xtv4Q8mg94FRnFKELuo+tBX7PAYR0HvSLHfyntloO8bZhGVz3MM50goqhXk06F0tRr5496eH+/wIHhzqkc8sgcUZ8bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bc4syK+1; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SogCKDo8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bc4syK+1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790148725; x=1821684725;
+  t=1790149670; x=1821685670;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=SHoV46IGp0r1Mgw9p20NaWVqyYQSQSikZbfLmgAsLa4=;
-  b=SogCKDo8Gfr6qUMOnKcqit1XA/9cgECEvFF+Xyl5NXradzz4GqQesfD7
-   Ixp399yTNb+bI/9AyJAjIpq+BK+dl1O/Ll8F3g/tiomyUy9N9m6H1zLJI
-   jCimPGZlEn2m5KzNdPx/BwYInQne1hpvVNRLGfZsbBghQ5+t0u/iZImLC
-   S1iP3kvjX/ARsp2ewoUVgdjXYUyLwERhhxpgxWLK9EwMipAHFGJcDhVcT
-   e2haSnVXu2f4UbciFCtJBRuExdRnNb7AP0puR+pe1X91qui4n0iGi7NXu
-   GQq3byqTbyFKoxY78VZQJvmbXknExKuwfrsV+iXEtCxuJ89uzomjhJ4kF
+  bh=2dDicVXRAjt7NPjDCajgGPNXdxkyaqGKL9o+Y6VYnfM=;
+  b=Bc4syK+1Wa4/X/brPCdI1JqyFQr9D8es2rFdZgHgk4WpvxTuFbu3Uo2X
+   jwfkf87tfIdxDMj5WCIse+fVhHKAjzLYg3QUeKWy1ua4lzkyHki6fB3bZ
+   oiLXDi/j7Jrj5eK2ZFpU6MuSWZVLTYQ/KGey9iec/zyI2IhGgBTxk+zYx
+   F9onwXn8Z8qbj17zgUaMq1P46Ds0acWQrP7y6vRALjxAF7AGf4a//u5Vh
+   /Uq4am22++CgU2MBClf/zrPVJlfO8zjD1437K2DRslARLRCPrsLtd5uLX
+   Mtj6/ag4QKaDcJq+EjThzVlsTrxoJ77ByTXWiGIOVuHoiqMhRatIXNhdU
    g==;
-X-CSE-ConnectionGUID: Q9PATbWXRMudQQSMs0Ix+Q==
-X-CSE-MsgGUID: xR2N23XYT5qw75P2RvwTQQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="1320714"
+X-CSE-ConnectionGUID: jCH2w/+LTHeGvzbQcoB75A==
+X-CSE-MsgGUID: VvUOSWRoTV+7fm08Ar3sCQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="101406681"
 X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
-   d="scan'208";a="1320714"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa115.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 00:32:05 -0700
-X-CSE-ConnectionGUID: 4DfhbtCoSZeiI95kED0xJA==
-X-CSE-MsgGUID: TJSv5C3BQleQTGNgnnwlOg==
+   d="scan'208";a="101406681"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 00:47:50 -0700
+X-CSE-ConnectionGUID: XHnquBthT6GR4+uFk/kjvg==
+X-CSE-MsgGUID: 2/7LKeoRSKWkytcAL7Tmlw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
-   d="scan'208";a="272978551"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa007.fm.intel.com with ESMTP; 23 Sep 2026 00:31:59 -0700
-Date: Wed, 23 Sep 2026 15:30:55 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Tony Lindgren <tony.lindgren@linux.intel.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kas@kernel.org,
-	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
-	xiaoyao.li@intel.com, sohil.mehta@intel.com,
-	adrian.hunter@intel.com, kishen.maloor@intel.com,
-	peter.fang@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, chao.gao@intel.com,
-	artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org,
-	nik.borisov@suse.com
-Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Configure add-on features on TDX
- module init
-Message-ID: <arOAL2Klu+L91JiI@yilunxu-OptiPlex-7050>
-References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
- <20260915102658.713079-3-yilun.xu@linux.intel.com>
- <arIqtGbSRHGw8fiT@tlindgre-MOBL1>
+   d="scan'208";a="4565033"
+Received: from bradocaj-mobl.ger.corp.intel.com (HELO localhost) ([10.245.246.235])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 00:47:45 -0700
+Date: Wed, 23 Sep 2026 10:47:41 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: pbonzini@redhat.com, dave.hansen@intel.com, seanjc@google.com,
+	x86@kernel.org, kas@kernel.org, adrian.hunter@intel.com,
+	yan.y.zhao@intel.com, binbin.wu@intel.com, xiaoyao.li@intel.com,
+	chao.gao@intel.com, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH 1/2] x86/virt/tdx: Drop tdx_clflush_*()
+Message-ID: <arOEHVklXn3VGBQt@tlindgre-MOBL1>
+References: <20260922205215.870563-1-rick.p.edgecombe@intel.com>
+ <20260922205215.870563-2-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -69,40 +63,15 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <arIqtGbSRHGw8fiT@tlindgre-MOBL1>
+In-Reply-To: <20260922205215.870563-2-rick.p.edgecombe@intel.com>
 
-On Tue, Sep 22, 2026 at 10:13:56AM +0300, Tony Lindgren wrote:
-> On Tue, Sep 15, 2026 at 06:26:55PM +0800, Xu Yilun wrote:
-> > --- a/arch/x86/virt/vmx/tdx/tdx.c
-> > +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> > @@ -998,6 +998,15 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
-> >  	return ret;
-> >  }
-> >  
-> > +/* List all kernel supported add-on features0 bits here */
-> > +#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0	(0)
-> > +
-> > +static __init u64 get_tdx_addon_features0(void)
-> > +{
-> > +	return tdx_sysinfo.features.tdx_features0 &
-> > +		TDX_KERNEL_SUPPORTED_ADDON_FEATURES0;
-> > +}
-> 
-> How about get_tdx_supported_addon_features() for the above? It makes the
+On Tue, Sep 22, 2026 at 01:52:14PM -0700, Rick Edgecombe wrote:
+> In practice this bit has never been set by any TDX module, so flushing
+> is unneeded. Going forward the TDX docs will be updated to clarify that
+> CLFLUSH_BEFORE_ALLOC will never be set in any future TDX module either.
 
-mm.. I think this would make a bit confusion. "tdx_supported" reads like
-the module supported features, which is just .tdx_features0. But here we
-want both the module & kernel support. I'm thinking of:
+Should there be a separate patch first before these two patches to bail
+out if the TDX module TDX_FEATURES0 CLFLUSH_BEFORE_ALLOC bit is ever set?
 
- get_tdx_addon_features0(), just as is
-
- or
-
- tdx_get_supported_addon_features0(), maybe this is better?
-
-> calling code a bit more readable without having to figure out what it
-> returns.
-> 
-> Other than that:
-> 
-> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+Then dropping the related code would be safe to do without having to
+ponder if it's safe to do.
