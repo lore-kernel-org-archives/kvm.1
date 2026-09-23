@@ -1,64 +1,64 @@
-Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
+Received: from mail-dl2-f12.google.com (mail-dl2-f12.google.com [74.125.229.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F1B24A047
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 13:22:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D2952FE35
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 13:23:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790169780; cv=none; b=ZSigGXemQ/L2j6tiPNE7iE0KVGv0Uaf5opV59puTW2bQu8ULkS112Dyladr+LJPOMc7BIW+Z6Z2dflOKzaZToASCHNFfFyLOg3hBhLuzEOXp3I8G6Ct9dVKOis6oupgnFyDf+7c3bBmA4LzQ3PiCx0NsBILqJ9SDmXSUQ7JsqzA=
+	t=1790169788; cv=none; b=H9i21oaR/ZhDjp8jfdQxYtEPlWmVRbYkHS92x22QVLmNdX0qrcXMBr8hIWGklJEi1vNT8Qj+apA/jjLDbWlXWv6ftvLjhp/4OsxTELFP1/s93JO99EbpJ0qx0im3iiU4HYJdDmHL3aq7LgEGa1zaHIAnX75N6u+Z5Y9hg2rgA2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790169780; c=relaxed/simple;
-	bh=994PQl8V51agIcM8vtn6n3LVdhwP8HQHP/BLXq99pl8=;
+	s=arc-20240116; t=1790169788; c=relaxed/simple;
+	bh=MbDQB6HN5ojntoT7o4p1HD0PolpTednELR2bdRYTDdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GBq91CR8jvaO4JeGpAXEuGGqrXE5vbof8t3Q3ReEqULbnphxTnp3eAn94SMDFeCL6cEmeZ3KFOTZumtRVUHpDO6nwUh4H4qiMcjRuCgqSaRmLwkPc9C+ZZL1CKubTCoQT+03rm0nJK2tLfjghTNauIfhE4tpHwRG9eHqxtZUmV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V4g0jyhv; arc=none smtp.client-ip=74.125.229.43
+	 MIME-Version; b=LiPlCxHL3Ilcu9ihdr+Br/7HPHcyayo+V9LBxN97vPVmzBxm8F7zO0DUPdFWu80mc42TL49ZS0zxd5+VZX5Ug9Efo4IapDfFU+RoJ9vqcRj77cmp8w+QOJgBQrOdL/Fdty04Ly4E/uqwiz5gl2hfZ9wFaQZJ/8ZdlRjH4qaZbXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pNHOwfht; arc=none smtp.client-ip=74.125.229.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V4g0jyhv"
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33c24422d4dso1030811eec.2
-        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 06:22:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pNHOwfht"
+Received: by mail-dl2-f12.google.com with SMTP id a92af1059eb24-142dd04f7f2so1049878c88.0
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 06:23:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790169777; x=1790774577; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790169787; x=1790774587; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=P+y3C9rGVvFAkdWFKio2TWsWiPkrJ96pOnUImryyekQ=;
-        b=V4g0jyhvrb+FONj4BIsg4/B8fVgvfnQlOH1+kIw3rzv+Igxa4vOHmlwx7d4WGrwPGX
-         QRqsQwhIpe2qruEHeVcqWtgrfHXsmQpOVGljM10Jiao0qgl7+PA+1PTk5Jhn+AWyLIzw
-         nhSVrmbPmMkRxZeqg99pb/URKr732NwNRN2EcnM9c30fRRVowOOM1K5MhvaLV05KwmhF
-         5Nk1Nq4U6iPgL571/TcMoa16UTdCvgmWjsJuCYSWvwryW55mT/Ik8FhdRMZP/cXawPLv
-         Mcly/SJIonINLMKUdztjA4Xlb7PfjQTM3R6cD0Zuubhrx2LmjA4BnS4zaK5ryIm2Fepf
-         hrhQ==
+        bh=B9wmWDAGxCIEbiXb+JeTWZOg+WBaBPZDk+tkeJy0Fzg=;
+        b=pNHOwfhtB8nuHI8wvgDgzIPzbQFTaVlWP17c85qdvMQLs/FVajj5+LfpceQ4Z1e9uW
+         0uV9U5pfor8rBl3Rg3Dns/R9vF7Gk+5NHX4Hg29LJT/dBfqxslmyLcpsfBjTfqHcG3p1
+         FoDo13wz1OBJq0D6UCTWmL0hK3vMTWzfVomT8+AAedohQc396uRnaa+Ba0BOf9ihfaDG
+         8SBQdE8VZu9WlUVzmy+qdlIlp9yU+xbmdjCpumesTFbHsTNRXucfsIJ+8VT5RDBBMzy4
+         6r7CbpEhjhoMi+fUoIBl016xGStpVGaPcvO8DLPpU20gE5FeY0gcsCErOMrfeRjtycQK
+         XYwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790169777; x=1790774577;
+        d=1e100.net; s=20260707; t=1790169787; x=1790774587;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=P+y3C9rGVvFAkdWFKio2TWsWiPkrJ96pOnUImryyekQ=;
-        b=fC50cSkXdry9aFZIYetJjB5CKLRcwnrTw5sRsGma6Cb31Y4yf9EJkue2bstbZQEUwA
-         CnqNteGY3qmPB/DooeZA0y5tMopDxG2cDb37blHFHXjhwdlO4JKBjOclE4ouumJAvvZr
-         QRvp1r7Z6pRuGftCzQSAApqTGvjQUGoy+6kYvqXXQVmhKXKBYEFujoGfFaiQLSxPF4W4
-         Od94z1keTiy8mw2l7QXHpE3+3xSpqWgiyqdh54U5UikkoE/+kCAJzG6DKyft3Ltr74HA
-         vVwaGr9OqhmABDobgVKlJtqLE69sCCTYR33o+Go8NJxsi0iCF1OIOnwGCz+k6x8eeNa4
-         9kbQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz1vAxSpBQo7pwtdGp9cgjRdYGVZlQTpxBTNvCf6Aej9ubk6MR0X0GqDtKpti9VmpOIoLg=@vger.kernel.org
-X-Gm-Message-State: AFuF++kE0NMP3SdFvY0kMdXpucUjRsmwK6OfiKjwZUcRjVuK5xbNUf8I
-	uG8PaRTauVBWL06IwoepydcY+3QwZFDJoUBMwEMRE8cG5+muTnKjh4S4
-X-Gm-Gg: AYBFou1vcGkaHZNu/B9sYDyXAp5YRsGBHHeXNLdCCBSLZiWNz0iAXVidn3hUB6DleO7
-	avIjZv03fVKxcSe/UyyofEOi57JDfzXFheXZL1hGiAV8KBJYUveIpLwlFWnbwO/bfgmP6i5aNRM
-	wwJ5XhqMLIbfb0mMeafUmQoIow4hB7KKo92F4F9Z9piPd/eudPuLKtbIXDuTbIkazndqyBQVgT+
-	z5SIR9XF+bIlnnIxClR6N1XWibRaiBdB6R6QbNPB6lohGYFR82V97Fumkq/sO+JzFivCaitChs4
-	VmZmdnEo0XXf2mFoKnLL++21MiMopyuk9THPfKUHDnc2wyyptOCqFZoLmcqb+LvXA4JzwMiv/s8
-	I6NYIimnMfHeKNTryyT0L9FclAIDF0H6RFCqMZ6RLU8v3wEvqWqE0ZVxHh0VxmVw7PoGtJCX66x
-	CQAnscJSzS2Xq1lvbGnrkrEy98Iwxro22Yv5y6wYsZJ9l3RLMr7+wVES1jxIQFAkKaKyUIw0sb9
-	6VMUVWtN7SpL+An+MrSMxPVlH1rJLI=
-X-Received: by 2002:a05:7300:311a:b0:339:7357:b225 with SMTP id 5a478bee46e88-33e905f47cbmr2532490eec.16.1790169776667;
-        Wed, 23 Sep 2026 06:22:56 -0700 (PDT)
+        bh=B9wmWDAGxCIEbiXb+JeTWZOg+WBaBPZDk+tkeJy0Fzg=;
+        b=vu8qUP+a0qc1DWIdUmkSUkrsHKeVYDq0KPo63cgIwVlo4WmaqDi7BjTJmAuTxNFn5R
+         lQdRNuYMTBuDkxOToa/H4AquxlNSDxtZkd9xzZSPToMnDKMOc/JSw4ATDIhDl5kWs/xD
+         tlCL+7zSg10YYhRserdfT7Oj1ybkOEvehMQ1D/7PU5Y3sRJ7mTw2I/ayNZoJ8r6FTrya
+         51einsFY692bUp7sddSLv/vjzdJfhC3sNhIGkglDSisbFIR/XcBIAmnBk+E0lOTzgeyW
+         Gatk5jNRqYi0xMVO1+fKtRImwYCVKjZ0yo2Rnw2DgBWo9R1ZHLirNtnmWG4TCe4CxypK
+         U5UQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxa/Q3w/PmVSU+eszTu/8TSGBsUcZH+YVmK2lEpVRnoa0oH4IgyXabfN6vINsWacTXkPfQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++kLjKxN3tKBB/2/lJbUDF4V5ttZxCGFvOMa/W2JMKDh09vbRAyd
+	c1xAILASgJveDbDsLIcNo65sgEYApatQ7q3dPMPbI1oHrOzw8GsYXSRH
+X-Gm-Gg: AYBFou0T31+M0tzGKvsRTsjOKqS7JJdnkdPzaC4to7CvAYSyLvxTY6/I4NX76Cxjqr9
+	CQCEnRhs9nguYrT2Je95k8kejagBzyMHMXp9z8NdudbZX3F/C/k5SsJvuzkY9BPzsUSfXwzJrEo
+	RBmwOjV1qwIS6hOm/u4ZRphKjuMxAERFsHuGpF3RSzJ70AsoBSJztdwraZc1sgGIzbVxh+me5it
+	pfskWFHBHpg6BaaQJB2V9cUBXZu1O3f9Dswp+cCtqJWKZqfvUubk4QVtVTJeen6IfE+avxmTxvA
+	FH3NvEXKJQssfA68p9We7bfh1HOP4oFVKf6VvqaVNPDc13FL2x+Wq+lVrt9NvtgZnxaF6Jbj1ez
+	T+dBr6fioD7Pg9e92vvLfqmNdLqvQfPUtvMpRf5xOjzC8rcw33ZCb1hyCfSRdYM/LzTbguuLVma
+	IVFCdZRwXGDNhuHHfbcX0MiW41FnWb7bxrwQ/bjOKWMmTELsn3vLB2A9qlZlQyzBA4/qBCogTnz
+	whfrCeSEcUPxjN/rMQscaCkRam0uJQH/NdWNENmXg==
+X-Received: by 2002:a05:693c:88c6:10b0:33c:e93:764b with SMTP id 5a478bee46e88-33e8e3add75mr2436826eec.37.1790169785754;
+        Wed, 23 Sep 2026 06:23:05 -0700 (PDT)
 Received: from WIN-BH9M8FJACR9 ([103.94.185.75])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-33e97236754sm5553695eec.29.2026.09.23.06.22.49
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-33e97236754sm5553695eec.29.2026.09.23.06.22.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 06:22:55 -0700 (PDT)
+        Wed, 23 Sep 2026 06:23:04 -0700 (PDT)
 From: Yonggang Luo <luoyonggang@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Cornelia Huck <cohuck@redhat.com>,
@@ -102,9 +102,9 @@ Cc: Cornelia Huck <cohuck@redhat.com>,
 	qemu-arm@nongnu.org,
 	qemu-s390x@nongnu.org,
 	Brian Cain <brian.cain@oss.qualcomm.com>
-Subject: [PATCH v3 037/114] target/riscv: replace TARGET_* macros in CSR helpers
-Date: Wed, 23 Sep 2026 21:15:11 +0800
-Message-ID: <20260923131635.1894-38-luoyonggang@gmail.com>
+Subject: [PATCH v3 038/114] target/riscv: use target_long_bits in pmpaddr granule checks
+Date: Wed, 23 Sep 2026 21:15:12 +0800
+Message-ID: <20260923131635.1894-39-luoyonggang@gmail.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260923131635.1894-1-luoyonggang@gmail.com>
 References: <20260923131635.1894-1-luoyonggang@gmail.com>
@@ -116,77 +116,43 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-- Use target_long_bits() instead of TARGET_LONG_BITS for the CSR
-  write mask.
-- Use target_riscv64() instead of TARGET_RISCV64 for MISA RV64 and
-  the PMP address mask.
+- Replace TARGET_LONG_BITS with target_long_bits() for TOR/NAPOT
+  PMP address masking.
 
 Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
 ---
- target/riscv/tcg/csr.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ target/riscv/tcg/pmp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/tcg/csr.c b/target/riscv/tcg/csr.c
-index 061bc9db77b..0b96fff6b96 100644
---- a/target/riscv/tcg/csr.c
-+++ b/target/riscv/tcg/csr.c
-@@ -18,6 +18,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qemu/target-info.h"
+diff --git a/target/riscv/tcg/pmp.c b/target/riscv/tcg/pmp.c
+index 41b55519a8e..03ee7c74300 100644
+--- a/target/riscv/tcg/pmp.c
++++ b/target/riscv/tcg/pmp.c
+@@ -23,6 +23,7 @@
  #include "qemu/log.h"
- #include "qemu/timer.h"
+ #include "qapi/error.h"
  #include "cpu.h"
-@@ -2143,17 +2144,18 @@ static RISCVException read_misa_i128(CPURISCVState *env, int csrno,
- static RISCVException read_misa(CPURISCVState *env, int csrno,
-                                 target_ulong *val)
- {
--    target_ulong misa;
-+    uint64_t misa;
- 
-     switch (env->misa_mxl) {
-     case MXL_RV32:
--        misa = (target_ulong)MXL_RV32 << 30;
-+        misa = (uint64_t)MXL_RV32 << 30;
-         break;
--#ifdef TARGET_RISCV64
-     case MXL_RV64:
--        misa = (target_ulong)MXL_RV64 << 62;
-+        if (!target_riscv64()) {
-+            g_assert_not_reached();
-+        }
-+        misa = (uint64_t)MXL_RV64 << 62;
-         break;
--#endif
-     default:
-         g_assert_not_reached();
-     }
-@@ -5430,13 +5432,11 @@ static RISCVException read_pmpaddr(CPURISCVState *env, int csrno,
-      * here to avoid complaints about masking bits 0-53
-      * of a potential 32 bit target_ulong '*var'.
-      */
--#ifdef TARGET_RISCV64
--    if (env->misa_mxl == MXL_RV64
-+    if (target_riscv64() && env->misa_mxl == MXL_RV64
-         && csrno >= CSR_PMPADDR0 && csrno <= CSR_PMPADDR63) {
--        target_ulong read_mask = MAKE_64BIT_MASK(0, 54);
-+        uint64_t read_mask = MAKE_64BIT_MASK(0, 54);
-         *val &= read_mask;
-     }
--#endif
-     return RISCV_EXCP_NONE;
- }
- 
-@@ -5755,7 +5755,7 @@ RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
- RISCVException riscv_csr_write_i64(CPURISCVState *env, int csrno, uint64_t val)
- {
-     return riscv_csrrw(env, csrno, NULL, val,
--                       MAKE_64BIT_MASK(0, TARGET_LONG_BITS), 0);
-+                       MAKE_64BIT_MASK(0, target_long_bits()), 0);
- }
- 
- RISCVException riscv_csr_read_i64(CPURISCVState *env, int csrno, uint64_t *res)
++#include "qemu/target-info.h"
+ #include "target/riscv/tcg/csr.h"
+ #include "trace.h"
+ #include "exec/cputlb.h"
+@@ -643,14 +644,14 @@ target_ulong pmpaddr_csr_read(CPURISCVState *env, uint32_t addr_index)
+             /* fallthrough */
+         case PMP_AMATCH_TOR:
+             /* Bit [g-1:0] read all zero */
+-            if (g >= 1 && g < TARGET_LONG_BITS) {
++            if (g >= 1 && g < target_long_bits()) {
+                 uint64_t granule = 1ULL << g;
+                 val = ROUND_DOWN(val, granule);
+             }
+             break;
+         case PMP_AMATCH_NAPOT:
+             /* Bit [g-2:0] read all one */
+-            if (g >= 2 && g < TARGET_LONG_BITS) {
++            if (g >= 2 && g < target_long_bits()) {
+                 val = deposit64(val, 0, g - 1, -1ULL);
+             }
+             break;
 -- 
 2.52.0.windows.1
 
