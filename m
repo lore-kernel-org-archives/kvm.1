@@ -1,64 +1,64 @@
-Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
+Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247FB24DD17
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 13:17:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E13152D2D6
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 13:17:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790169453; cv=none; b=uEty4CuV9V1w0LDSSN9sddzd2KmVVEb4fx1xAyD9CTWNCXS9cJ8nAp4KFedjCqUSz/4ES9kDU6Ml4oRwxwcvAYuAQsNnrwFjpl+Matb9/2fhPThmihRiBhuiv2MVUb9aSJi3fG+6MVtHQFMT3ZfgDqZ7LYocQ2+tfYAmbPiKYB8=
+	t=1790169458; cv=none; b=HmCPAozsB0zAtMWSU0UnLIRbaN/9/sXrB8aK/X2VH+7AFb2PDXQj3A4/5fsDx4WmYT6zoX/hLTSapR+64Lrj3FizQRJhthVQYN33E2vVmlhyCo49dwsv3DxrQiIG1TCBni/me/ZNrHQSklcRKA/EfzPQQZ9taX2zlmk7HGjk1lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790169453; c=relaxed/simple;
-	bh=bd8mgaG+qvquP+2clWMKiUl2nXg5ZFJBVTRodzsU0bI=;
+	s=arc-20240116; t=1790169458; c=relaxed/simple;
+	bh=j4vie8DKKVIP+U5Ja5oPVn2pj4FSigufkiZYHWZnLWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TLBOx9+RPvBhugX5O3jKRWgMoiHRAMtd2D1BH2nsywZBEVSn4Xh9fmURJ8BSBu5TWb7DtluIrfVf3hxVivbj9OikX8aKREjW4vBdrU3dHXhZ6dZoR4/pHFYhhGmdQ965mpdpRAilWFMvFnvMJ2jai1GFbxu8dC4o66eWQYazGg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K2MG05T3; arc=none smtp.client-ip=74.125.229.43
+	 MIME-Version; b=usXis/5L2/wnPMjsDibFaociQxokes7nmrQgjqPGRwXX1aiW+QBpjDAztPzUfUDv+YzdE1HYkZRMC6ENKC77okpf+1CnGF9afK+jMgOu5zYRrfFB9/g93ZMZ4ZAmFvdKvFSvM/FbCixc63OHdyHbi5iqNfZeZxIrTCn3DlOEVII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cinkT1xe; arc=none smtp.client-ip=74.125.229.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K2MG05T3"
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33e652b7178so487530eec.1
-        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 06:17:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cinkT1xe"
+Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-328664ef783so541157eec.0
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 06:17:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790169451; x=1790774251; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790169456; x=1790774256; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=qkiRWh0yDSkP2OT8vLUxuaEaTt8B1WJVNLebJyYrgq0=;
-        b=K2MG05T3MdLm3n1ygoPozLaQfSw/cZnN9K5s3+2ZaSJDfhnzXSJYd/ps3UJ28JJqW4
-         KQkotf0XuYYYX/0QXTgkUzSok9ON8OiHllHBCJP66rdJ/2Zkv/8dYT7lROUl+bgsJGFV
-         1gpko3zfeHLTAu5c1N0193ntR/SU9G1wTgevsbMKo1OYAqwl4ydgbsrqgwVGUp9tFXsr
-         Y/bEobYW2LwUaItwP2zkLC3V3nb2BOv1gSzrz36mBd8SrymsneGXUyvWLNi1DOZAqGpQ
-         rdJ/65cVB9GUl5AY02gplknh0uMW9TDRlAlM09fB53NRkfmvPBuUPEKmfKvan+pPk7Vo
-         g/vA==
+        bh=ElUpYvhknnIwSPfbcSK8wY490g/9t35RPhM2WyomKNg=;
+        b=cinkT1xeYBfNuNh8IMUl2ZKMloxqC5Zkb/U9IGnku9KsQUX3ryMBbvO3Cg0EHn+VLL
+         /R4eoX/EkfUvMMD7JdhLK36xTZWnKWGWxowzG3ekxA8i9z44o/VG/jaeod7bBSlocvRK
+         U+G+mNVv9SDBHroNXmh0YnOwyOX2DZDviKPj41na5uxTECyUxJpjgWLePSnjXw0F6//E
+         mk13xloyPZshe7civiPXeYbB8gbbfbt9fNXDWhmbuMK8XRWybO658/WeAHd+7RH5W3QX
+         x6g1AMK5orxqydzS9wIsqb7ItMnBTRz0pgqh5yjElw7AnRJV9VhCbAa9Tame4hU1sDBe
+         FbFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790169451; x=1790774251;
+        d=1e100.net; s=20260707; t=1790169456; x=1790774256;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qkiRWh0yDSkP2OT8vLUxuaEaTt8B1WJVNLebJyYrgq0=;
-        b=Qcp19eBz1OB6ve30u1ZIsSxPOTjZpG1hp0xxTGHAX4lGLLaniG44KavNa4zI8MYP0v
-         QpsD68JNd9zy0x633ZXEOTgvpi5WE6Rmuc8d7VecSyrCtLVu8LmeVL0ZuBNEF38aHPap
-         JW2GIEEmenoj8INDpgMMsgWRH6xraU4YkRRonOZpJnUM1L7ugfZjceXikxRBMBuuprMO
-         oEnqIc6EnL07YuXTljVDursonQa9flLTYwgGACdElfpbBTkyrYWbuP86QCp+5NPv/6LV
-         JENFaFdrZNzLMytKByN9IK963O+Ci578VtFPVdVt38V6NS7u8XEFvJHv10wEHrU989In
-         zLLg==
-X-Forwarded-Encrypted: i=1; AKwUvBzksJE8VxaQwhfSAegZ8mrBxfZUHrdmyjhFju8sXdo0lbgoo4fsq5OcXDTPQgLZXUbFOQ8=@vger.kernel.org
-X-Gm-Message-State: AFuF++kp9pf/QSdyTB/jCDSSWQR+qkC6eBujWYTkx73wRsNvh4BWFL9t
-	ET0CEO3aKarkUZska8sic/ErE2UDEwaBd13xZPAPlYcXee5FsTvjds0p
-X-Gm-Gg: AYBFou3+T3tFEcntgscWMN6TckkXFAq4Hv25szknESX4aVn8sx9N8hOVVUCwvzDNlZk
-	VTFcsLAxteOCfWVsE08FPboFdePRcAuX/j11FWjYT7Qz0t3C/UX39IhInP40wQ8HujIJ4nrvzBx
-	s3VCGDQ1sjxOMckldJgUrDTYpZ2sJL1Zwy9UjvwQpA8Y1Jkn8IICO+MSG+L1vlfxdcuEWeL94eK
-	wHV3uqCicQh+XYfMDdO6irNBjzBxgeImUJtwr2k8ZN1Vu5rrRr9oJY4J0uOC89j8E6/GzytB85V
-	zx0b3pGtck5Ifwmu4U08YSC5E0DuZXdyXzEkrrX9OccXCXiZ1yT3YaiPWlDi8sWCc+l4Srm6H6P
-	bOP1J5AxWUkh/X9mRemtJWo1GbSA11gVpxiJ6k+9yb2GteRhP/QpcOXWsTnEjOJbsKkpT5TwUQD
-	kKTJQpzNjui+TR+pa1LeoA3vS21IpzJW+Eci5BxjfemG3O6Vc/5biaFwCuuJ5UzqRdxeMYl8STE
-	i7VVGF1BR8bqF+LnarrFU+H3W+Z5PM=
-X-Received: by 2002:a05:693c:228f:b0:33c:3134:1055 with SMTP id 5a478bee46e88-33e8c53b899mr2375553eec.12.1790169445480;
-        Wed, 23 Sep 2026 06:17:25 -0700 (PDT)
+        bh=ElUpYvhknnIwSPfbcSK8wY490g/9t35RPhM2WyomKNg=;
+        b=GQjjdjYbl+U4WZQCNIsmHo4+XGMhq17bVkxi2sfqGcUS/JTq/KkNW3WkyogFjgJHFu
+         oFiLVGdefrHhAlFe+BZ7eGhosdSeBZUHVRVL6ivYELRdmOY2e7Yzum7ksUBPuJgJ4e0C
+         mKpu+ju6n/fwJaZuVLGFI3N7sIJybuw2dqK3gkAnnXV6nkd2iRq2UagGj1EN8qMnw76d
+         qXYb6Pzzv/ZyDFgcKK+9R7/7H7iBP/Z+beaVpYAPi14iKUHysPsDSKtkAm1NvwK+v0LN
+         i8V8f7uMHmAwBUl1uciJBmespZjdptLMSmHI1+8rLuXX3+erTwUl+8mnyuqcUFlBS/jS
+         EM0w==
+X-Forwarded-Encrypted: i=1; AKwUvBxEtSsw18CYasLdphcqiZ8kvi0Vu5OP+mVTCRdaSVuZQtAQeAWdEB2XRNiVgbvz+ppTi8g=@vger.kernel.org
+X-Gm-Message-State: AFuF++mUXDDiFWAcpgN/Q2bI/FNCiyvmK8mct/ZtlrMlZ6+X/vxn+3R7
+	uEDf5muuHN0FVr+IWpyPbjXbaARmR6629lxkkPvG4M6FOjH8LIFGuUJ0
+X-Gm-Gg: AYBFou19iggCAemW7WevQ4O80k3S2ebJrmrWiEy/GWEymim9O3VIydM7drkBKgDNTVz
+	ljLbehgu6TS9DG8f3OJOuAL9F49TEQLtY4mFL7juV+U/XMkY2vd6i4TFoapm0DVpuOHjjmlYshm
+	9zi+nq/x78a5gUvCwvJKM8c9YNMEfC+rKmU3g5jSQ6i4v0xwMYKEt33e8IBGD2Q5zCI/BzSYYk3
+	KFQNAOtcGlAuSwLxUS1uPCXSvldpsCCqaBaFvALWdyY5gjDl0M0gOMIjyQBM+uy787IcAM7ll4o
+	1F8j1mNEyhKanl+AgaoYzbCKYh/cl3HmUB6H9l8jgAliyVSVnxFkCzc2zZUFeI5tyXcp+c9ZZQI
+	MTji2XC9AAvtwVekMm7htC9dWCyuSYa4rEHPQ9m7Sg6UOAglswcrg6kVY7BFYGB80tCm0bsMoWB
+	KtVl6VS4vkvoOHwVOCiOwjxiBTzNRaUD1ge6PYjadbCehBCKCTobb7xBTfeHCIHze5u8/Odsjhm
+	lQnbHO71v6HcJt0HCG0Wg4vZl6bdllrle8ZdzSXEA==
+X-Received: by 2002:a05:7300:b286:b0:30e:f0a5:8762 with SMTP id 5a478bee46e88-33e8d9ca3c8mr2607807eec.19.1790169455486;
+        Wed, 23 Sep 2026 06:17:35 -0700 (PDT)
 Received: from WIN-BH9M8FJACR9 ([103.94.185.75])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-33e97236754sm5553695eec.29.2026.09.23.06.17.16
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-33e97236754sm5553695eec.29.2026.09.23.06.17.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 06:17:23 -0700 (PDT)
+        Wed, 23 Sep 2026 06:17:33 -0700 (PDT)
 From: Yonggang Luo <luoyonggang@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Cornelia Huck <cohuck@redhat.com>,
@@ -102,9 +102,9 @@ Cc: Cornelia Huck <cohuck@redhat.com>,
 	qemu-arm@nongnu.org,
 	qemu-s390x@nongnu.org,
 	Brian Cain <brian.cain@oss.qualcomm.com>
-Subject: [PATCH v3 004/114] target-info: rename target-info-impl.h to target-info-def.h
-Date: Wed, 23 Sep 2026 21:14:38 +0800
-Message-ID: <20260923131635.1894-5-luoyonggang@gmail.com>
+Subject: [PATCH v3 005/114] target-info: set cpu_type from TARGET_BASE_ARCH
+Date: Wed, 23 Sep 2026 21:14:39 +0800
+Message-ID: <20260923131635.1894-6-luoyonggang@gmail.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260923131635.1894-1-luoyonggang@gmail.com>
 References: <20260923131635.1894-1-luoyonggang@gmail.com>
@@ -116,116 +116,144 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Rename the TargetInfo structure header and its include guard.
+target-info-def.c no longer includes cpu.h, so CPU_RESOLVING_TYPE
+is unavailable. Emit TARGET_BASE_ARCH as an uppercase identifier in
+config-target.h and set cpu_type to TYPE_${TARGET_BASE_ARCH}_CPU.
+
+Alias the base-arch tokens whose QOM name differs: TYPE_I386_CPU,
+TYPE_OR1K_CPU, TYPE_PPC_CPU, TYPE_S390X_CPU, and TYPE_SH4_CPU.
+
+Drop the ArchCPU parent_obj and env offsetof checks with the cpu.h
+include. Page-size checks stay, via cpu-param.h.
 
 Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
 ---
- include/qemu/{target-info-impl.h => target-info-def.h} | 4 ++--
- include/qemu/target-info-qom.h                         | 2 +-
- page-vary-common.c                                     | 2 +-
- page-vary-system.c                                     | 2 +-
- target-info-def.c                                      | 2 +-
- target-info-qom.c                                      | 2 +-
- target-info.c                                          | 2 +-
- 7 files changed, 8 insertions(+), 8 deletions(-)
- rename include/qemu/{target-info-impl.h => target-info-def.h} (94%)
+ include/qemu/target-info-def.h |  2 +-
+ meson.build                    |  1 +
+ target-info-def.c              | 11 +++--------
+ target/i386/cpu-qom.h          |  1 +
+ target/or1k/cpu-qom.h          |  1 +
+ target/ppc/cpu-qom.h           |  1 +
+ target/s390x/cpu-qom.h         |  1 +
+ target/sh4/cpu-qom.h           |  1 +
+ 8 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/include/qemu/target-info-impl.h b/include/qemu/target-info-def.h
-similarity index 94%
-rename from include/qemu/target-info-impl.h
-rename to include/qemu/target-info-def.h
-index cf42aabbc8b..8019d2c7196 100644
---- a/include/qemu/target-info-impl.h
+diff --git a/include/qemu/target-info-def.h b/include/qemu/target-info-def.h
+index 8019d2c7196..ebd88463aea 100644
+--- a/include/qemu/target-info-def.h
 +++ b/include/qemu/target-info-def.h
-@@ -6,8 +6,8 @@
-  * SPDX-License-Identifier: GPL-2.0-or-later
-  */
- 
--#ifndef QEMU_TARGET_INFO_IMPL_H
--#define QEMU_TARGET_INFO_IMPL_H
-+#ifndef QEMU_TARGET_INFO_DEF_H
-+#define QEMU_TARGET_INFO_DEF_H
- 
- #include "qapi/qapi-types-common.h"
- #include "qapi/qapi-types-machine.h"
-diff --git a/include/qemu/target-info-qom.h b/include/qemu/target-info-qom.h
-index 91be415ed33..0f6772e65c3 100644
---- a/include/qemu/target-info-qom.h
-+++ b/include/qemu/target-info-qom.h
-@@ -9,7 +9,7 @@
- #ifndef QEMU_TARGET_INFO_QOM_H
- #define QEMU_TARGET_INFO_QOM_H
- 
--#include "qemu/target-info-impl.h"
-+#include "qemu/target-info-def.h"
- #include "qom/object.h"
- 
- #define TYPE_TARGET_INFO "target-info"
-diff --git a/page-vary-common.c b/page-vary-common.c
-index ddd08633788..5a4654725a8 100644
---- a/page-vary-common.c
-+++ b/page-vary-common.c
-@@ -20,7 +20,7 @@
- #define IN_PAGE_VARY 1
- 
- #include "qemu/osdep.h"
--#include "qemu/target-info-impl.h"
-+#include "qemu/target-info-def.h"
- #include "exec/page-vary.h"
- 
- /* WARNING: This file must *not* be complied with -flto. */
-diff --git a/page-vary-system.c b/page-vary-system.c
-index 6c49c10e23b..9773685dc16 100644
---- a/page-vary-system.c
-+++ b/page-vary-system.c
-@@ -20,7 +20,7 @@
- #include "qemu/osdep.h"
- #include "exec/page-vary.h"
- #include "exec/tlb-flags.h"
--#include "qemu/target-info-impl.h"
-+#include "qemu/target-info-def.h"
- 
- QEMU_BUILD_BUG_ON(TLB_FLAGS_MASK & ((1u < TARGET_PAGE_BITS_MIN) - 1));
- 
+@@ -19,7 +19,7 @@ typedef struct TargetInfo {
+     SysEmuTarget target_arch;
+     /* runtime equivalent of TARGET_LONG_BITS definition */
+     unsigned long_bits;
+-    /* runtime equivalent of CPU_RESOLVING_TYPE definition */
++    /* runtime equivalent of TYPE_${TARGET_BASE_ARCH}_CPU definition */
+     const char *cpu_type;
+     /* related to TARGET_BIG_ENDIAN definition */
+     EndianMode endianness;
+diff --git a/meson.build b/meson.build
+index 8bd2d725ca0..20345860c9f 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3378,6 +3378,7 @@ foreach target : target_dirs
+       # Note that TARGET_BASE_ARCH ends up in config-target.h but it is
+       # not used to select files from sourcesets.
+       config_target_data.set('TARGET_' + v.to_upper(), 1)
++      config_target_data.set(k, v.to_upper())
+     elif k == 'TARGET_NAME' or k == 'CONFIG_QEMU_INTERP_PREFIX'
+       config_target_data.set_quoted(k, v)
+     elif v == 'y'
 diff --git a/target-info-def.c b/target-info-def.c
-index d121b8c0170..fa19cabc55f 100644
+index fa19cabc55f..f167f5f2ac1 100644
 --- a/target-info-def.c
 +++ b/target-info-def.c
-@@ -8,7 +8,7 @@
- 
- #include "qemu/osdep.h"
+@@ -10,15 +10,10 @@
  #include "qemu/target-info.h"
--#include "qemu/target-info-impl.h"
-+#include "qemu/target-info-def.h"
+ #include "qemu/target-info-def.h"
  #include "qemu/target-info-init.h"
- #include "hw/core/boards.h"
- #include "cpu.h"
-diff --git a/target-info-qom.c b/target-info-qom.c
-index 6965e4d1169..2b38673a3f8 100644
---- a/target-info-qom.c
-+++ b/target-info-qom.c
-@@ -9,7 +9,7 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "qom/object.h"
--#include "qemu/target-info-impl.h"
-+#include "qemu/target-info-def.h"
- #include "qemu/target-info-init.h"
- #include "qemu/target-info-qom.h"
+-#include "hw/core/boards.h"
+-#include "cpu.h"
+-#include "exec/cpu-defs.h"
++#include "cpu-qom.h"
++#include "cpu-param.h"
+ #include "exec/page-vary.h"
  
-diff --git a/target-info.c b/target-info.c
-index bba4503151a..9abe72b1f55 100644
---- a/target-info.c
-+++ b/target-info.c
-@@ -9,7 +9,7 @@
- #include "qemu/osdep.h"
- #include "qemu/target-info.h"
- #include "qemu/target-info-qapi.h"
--#include "qemu/target-info-impl.h"
-+#include "qemu/target-info-def.h"
- #include "qapi/error.h"
+-/* Validate correct placement of CPUArchState. */
+-QEMU_BUILD_BUG_ON(offsetof(ArchCPU, parent_obj) != 0);
+-QEMU_BUILD_BUG_ON(offsetof(ArchCPU, env) != sizeof(CPUState));
+-
+ /* Validate target page size, if invariant. */
+ #ifndef TARGET_PAGE_BITS_VARY
+ QEMU_BUILD_BUG_ON(TARGET_PAGE_BITS < TARGET_PAGE_BITS_MIN);
+@@ -28,7 +23,7 @@ static const TargetInfo target_info_stub = {
+     .target_name = TARGET_NAME,
+     .target_arch = glue(SYS_EMU_TARGET_, TARGET_ARCH),
+     .long_bits = TARGET_LONG_BITS,
+-    .cpu_type = CPU_RESOLVING_TYPE,
++    .cpu_type = glue(TYPE_, glue(TARGET_BASE_ARCH, _CPU)),
+     .endianness = TARGET_BIG_ENDIAN ? ENDIAN_MODE_BIG : ENDIAN_MODE_LITTLE,
+ #ifdef TARGET_PAGE_BITS_VARY
+     .page_bits_vary = true,
+diff --git a/target/i386/cpu-qom.h b/target/i386/cpu-qom.h
+index d4e216d000c..7619c4a4826 100644
+--- a/target/i386/cpu-qom.h
++++ b/target/i386/cpu-qom.h
+@@ -27,6 +27,7 @@
+ #else
+ #define TYPE_X86_CPU "i386-cpu"
+ #endif
++#define TYPE_I386_CPU TYPE_X86_CPU
  
- const char *target_name(void)
+ OBJECT_DECLARE_CPU_TYPE(X86CPU, X86CPUClass, X86_CPU)
+ 
+diff --git a/target/or1k/cpu-qom.h b/target/or1k/cpu-qom.h
+index 14bac33312e..c0d5e9e81ba 100644
+--- a/target/or1k/cpu-qom.h
++++ b/target/or1k/cpu-qom.h
+@@ -12,6 +12,7 @@
+ #include "hw/core/cpu.h"
+ 
+ #define TYPE_OPENRISC_CPU "or1k-cpu"
++#define TYPE_OR1K_CPU TYPE_OPENRISC_CPU
+ 
+ OBJECT_DECLARE_CPU_TYPE(OpenRISCCPU, OpenRISCCPUClass, OPENRISC_CPU)
+ 
+diff --git a/target/ppc/cpu-qom.h b/target/ppc/cpu-qom.h
+index 8247fa23367..428cdc85488 100644
+--- a/target/ppc/cpu-qom.h
++++ b/target/ppc/cpu-qom.h
+@@ -28,6 +28,7 @@
+ #else
+ #define TYPE_POWERPC_CPU "powerpc-cpu"
+ #endif
++#define TYPE_PPC_CPU TYPE_POWERPC_CPU
+ 
+ OBJECT_DECLARE_CPU_TYPE(PowerPCCPU, PowerPCCPUClass, POWERPC_CPU)
+ 
+diff --git a/target/s390x/cpu-qom.h b/target/s390x/cpu-qom.h
+index c59bb1eab15..07a8c881fe5 100644
+--- a/target/s390x/cpu-qom.h
++++ b/target/s390x/cpu-qom.h
+@@ -23,6 +23,7 @@
+ #include "hw/core/cpu.h"
+ 
+ #define TYPE_S390_CPU "s390x-cpu"
++#define TYPE_S390X_CPU TYPE_S390_CPU
+ 
+ OBJECT_DECLARE_CPU_TYPE(S390CPU, S390CPUClass, S390_CPU)
+ 
+diff --git a/target/sh4/cpu-qom.h b/target/sh4/cpu-qom.h
+index 6cf5fbb0745..08fa92106e9 100644
+--- a/target/sh4/cpu-qom.h
++++ b/target/sh4/cpu-qom.h
+@@ -23,6 +23,7 @@
+ #include "hw/core/cpu.h"
+ 
+ #define TYPE_SUPERH_CPU "superh-cpu"
++#define TYPE_SH4_CPU TYPE_SUPERH_CPU
+ 
+ #define TYPE_SH7750R_CPU SUPERH_CPU_TYPE_NAME("sh7750r")
+ #define TYPE_SH7751R_CPU SUPERH_CPU_TYPE_NAME("sh7751r")
 -- 
 2.52.0.windows.1
 
