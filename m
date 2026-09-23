@@ -1,162 +1,714 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADA251C32C;
-	Wed, 23 Sep 2026 12:58:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD0A49E13D
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 13:16:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790168313; cv=none; b=jrf6jGu2UDYmZfMS2mh42vQkcfoBa51/snPD200oW6vklqRPig6kOYaOCIBgknRPhTOsuGtqVKI+n5TXEHVlJYfJSFV/+17sgiyctT3kLj1gSwKQ7xDpIkpaMl4tXKmOOQWOhUGkq5z6pJvqGoQ9d7Wyv9KhhYdlROijZOlCwyc=
+	t=1790169413; cv=none; b=qc0+H7+S08u4/kCVlUjCEANX/s6kj94NX/PhhyO6C7swoLu4GAvsHmrUibNLVItl4xfiityEK8Fd54GwSqcnmQ9kUROBjRQMeIjb7mfEEDWSYEGJSDa6+ksDaWolbKDgKuzDU6if/Y1dP1f3SFUzORm/+2LDMKP8e0fTZxU0Vio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790168313; c=relaxed/simple;
-	bh=703Ro7IEAM+WNjEfOCYl4fQECkT/xcvjqeC+cG8mwUE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GxC0mMSzh390WHdIhpj9SvAGvmQnGtwbqlSS2wydjNqkVmKO9v1bKNmqfRVlJ/x3Ua5pVaWBL3gn6/+JL3D2118LTyJmMa2t0pGioUDSKpgC1NC1FiV6QCFHOXf14BBS+CeAYyKXK7GSVMazlOP3IEahZplQUpKYNRjNCNZBBY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hEKZAhjJ; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1790169413; c=relaxed/simple;
+	bh=BJ4v4tXFLNF0m2TSky3L096NziFBCNwsqJN2P4e2qAc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YVYorp35pQcXkQr+L+V0N5uc3yKVmLfTM0P7lN+Rfl9xZpfFCdsOvMNOEFY3NLqYu/GNTbc5mPKTE7jb7hhIgbuXfhbpncH4nILJccE8HGNx15bWnAFMJ95EpkEXSJTwEvs8IGhhN1+x8iqMo0LgGCLqohSlhSYzVvlZ5w61Oco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HU5slrNZ; arc=none smtp.client-ip=74.125.82.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hEKZAhjJ"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68N8ZbLR2940654;
-	Wed, 23 Sep 2026 12:58:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=m5wlbJ
-	gesI/vUIz5jgVCshLG1H4PTC1DYRalSn9rh0Q=; b=hEKZAhjJh1LDqX4cDnh+MK
-	CPHX9aKhz10mo0pmyXS1q6S/jO6bBBdrp5cqnWzoTLU0ntlxpV1YJr4Kwy16nAIu
-	P+IHyoBepXOKUbUVM0a9gPcC0DjR9Xz//YouOCXOqOAv4ZfuaOhLaAemDCRVK5Hd
-	cLrzXtT0SspTVJwDrLQor+4XlxfH6GUptRMJmX/gT/8+oMrJyRAqgMjRPAx/om6f
-	gxpkBWz21udn2oR2eYZZTzpx8boYSm0C33A+zEgEBfxWSwF32rW+W2kTbYPloeNk
-	IxHhnBcxMZGElzygAyxozEP8aRrDXwOWCl0Gh9fu6jf4t5QBsYPtO3tLycaTXufA
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskdvavse-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 23 Sep 2026 12:58:27 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68NCNJWA2891803;
-	Wed, 23 Sep 2026 12:58:26 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gu5bkh08t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Sep 2026 12:58:26 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68NCwMDB45154626
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 23 Sep 2026 12:58:23 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C7CF420043;
-	Wed, 23 Sep 2026 12:58:22 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6CCAA20040;
-	Wed, 23 Sep 2026 12:58:22 +0000 (GMT)
-Received: from [9.111.80.133] (unknown [9.111.80.133])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 23 Sep 2026 12:58:22 +0000 (GMT)
-Message-ID: <eee880b8-8b1e-43ff-b1c0-2836cae0084b@linux.ibm.com>
-Date: Wed, 23 Sep 2026 14:58:22 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HU5slrNZ"
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-3115c4451c8so635306eec.1
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 06:16:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790169409; x=1790774209; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=p8tyiRwxKQdp0RZD4SXOyBX8lB+B9XyIJi0FcZ12QW8=;
+        b=HU5slrNZYLlYyE98hapyzD/i93srdk7zdAzbDuV5pDXiD/PBvw51iI/4oKQRjKF+OL
+         G4h4NmpHlmGXojzHUDmNzgvLmEVjNLiB+pLQDh+PHN/mghvz1quARwzdESx8PZro+7z2
+         VWzj9JNv+gz4UsxvWuNAwJ8C6mbZhalcbFwZUDEZePjmBn0BdYb6ghHiDPlQXDyFohjy
+         agd7rwa9GV6/KoAAT3JkIOQ6oetU8wdI0ksZL/GJ4hJ/A5sKY9jjRSetNTSnQ/qqqzz8
+         NyibJmHTGDdYRhd7ergxD0ms7WRJfhtvmXnH4+umAQDsOwyT4xRqnI8mRScyKsjynHYt
+         TfFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790169409; x=1790774209;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=p8tyiRwxKQdp0RZD4SXOyBX8lB+B9XyIJi0FcZ12QW8=;
+        b=YjH3Dtj0LbuaDKjXlZQk+KDnky03MY3JSewQkWx5rXVRDt7hRiMzMQ51imyHP/uTpD
+         O0lHd3selAzSNW/hIUWyP4jNuICBuC7MrJRoaGRZ7Mee+rA6sIMmZx9hgZjvs5wqRASa
+         Nmgn6uEFP52xtrREhpsjzL5iPsf8As6RsowTQ2m12cLEACkDNuoXsjK9If+ztCJTito4
+         9oIVccCfLcLWqh3cSSZtz/v7gJMqbRLZ0k7dBJr40j8qaV/22W5dMtwxC9SKnbUBTOjO
+         L028UwEQL8RZukZ+8CzRgGRKvKAJngroUiUqW3+XWNkxjjeW7QgdyCrehjRIidqjcZR8
+         Iw5w==
+X-Forwarded-Encrypted: i=1; AKwUvBzoEzQq1SSxZkrgbNiEzGV7lCuq2hPmnnA45BNqCZlTcBRkYQ68GF/cA8sVpocN/h4WW+k=@vger.kernel.org
+X-Gm-Message-State: AFuF++kdl6OQu0DsXyLy/UqWOSzpxFEXOPQaF+zGbV8r/+ysHB2zsRzl
+	eTJMHiJy48VXC/X480SWUuCgBbaRBITiOel0/+GIGxESK/tvtHEkv0xB
+X-Gm-Gg: AYBFou1GVCIlsklR9Q3gmHK3QgmnDtuzQOx+1PpwxSf/S4ubjGWm5un0uezYrNvYgMo
+	5rHFCzevYQbFiJO0zCniTbxtXK14v51n57x5dGbzjMNEyegS5m7yAnbhcfNEuVxBGEkE8fNDozK
+	r6XyoffIB076UMleo3qc3mj4AMfGNJxRa3xR/d3TGNuZ1TYMZK7NQRctJ/R56r0CnIDc9f/dr7d
+	HM8jeagVDBJnVhhSPg2jMN4o7rJZxwGBG48xdLYRWPiFUesHXGvq/Tx+FE0aIFQB9Bp9SpOUwsd
+	ZyX18yg7rRiblK2KhsXzOBKGKRYVFEHjZGZ6K9Y7A4v8/DMrZYMaSQK3m9jlSspcmIk508yoN8G
+	TnGzIQ+ddrPHPvLdkPffKlEKGkhpBenrRdC5nhIudW7QZ4p2JMeeAq3QlcnbW/VIBkKhM7X0cw5
+	vNO1RE0dG3XIIiQ6x5lCoalw7dmdR3Zr9Oz4luUZ+1C0N15ivyjGkhCoQRhjmgBwHCZYrYITBSp
+	bEsnhx5y/EW9p6t3yqlVRYMxGa6pYY=
+X-Received: by 2002:a05:7301:d586:b0:33e:5f5a:4b55 with SMTP id 5a478bee46e88-33e5f5a53f6mr2889546eec.19.1790169407963;
+        Wed, 23 Sep 2026 06:16:47 -0700 (PDT)
+Received: from WIN-BH9M8FJACR9 ([103.94.185.75])
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-33e97236754sm5553695eec.29.2026.09.23.06.16.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 06:16:46 -0700 (PDT)
+From: Yonggang Luo <luoyonggang@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Cornelia Huck <cohuck@redhat.com>,
+	xen-devel@lists.xenproject.org,
+	Chao Liu <chao.liu@processmission.com>,
+	Igor Mammedov <imammedo@redhat.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Daniel Henrique Barboza <daniel.barboza@oss.qualcomm.com>,
+	Peter Xu <peterx@redhat.com>,
+	Eric Blake <eblake@redhat.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
+	Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Fabiano Rosas <farosas@suse.de>,
+	Xianglai Li <lixianglai@loongson.cn>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Max Filippov <jcmvbkbc@gmail.com>,
+	qemu-ppc@nongnu.org,
+	Zhao Liu <zhao1.liu@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Bibo Mao <maobibo@loongson.cn>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Laurent Vivier <laurent@vivier.eu>,
+	David Hildenbrand <david@kernel.org>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	=?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	qemu-riscv@nongnu.org,
+	kvm@vger.kernel.org,
+	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Stafford Horne <shorne@gmail.com>,
+	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+	Markus Armbruster <armbru@redhat.com>,
+	Weiwei Li <liwei1518@gmail.com>,
+	Song Gao <17746591750@163.com>,
+	qemu-arm@nongnu.org,
+	qemu-s390x@nongnu.org,
+	Brian Cain <brian.cain@oss.qualcomm.com>
+Subject: [PATCH v3 000/114] single-binary: link multi-targets into qemu-system
+Date: Wed, 23 Sep 2026 21:14:34 +0800
+Message-ID: <20260923131635.1894-1-luoyonggang@gmail.com>
+X-Mailer: git-send-email 2.52.0.windows.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 11/21] KVM: s390: vsie: Add helper reset_vsie_page()
- and unshadow_intercept()
-To: Christoph Schlameuss <schlameuss@linux.ibm.com>, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Eric Farman <farman@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
-        Nico Boehr <nrb@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
-        Shuah Khan <shuah@kernel.org>, Sean Christopherson <seanjc@google.com>
-References: <20260918-vsie-sigpi-v7-0-f39806eaae37@linux.ibm.com>
- <20260918-vsie-sigpi-v7-11-f39806eaae37@linux.ibm.com>
-Content-Language: en-US
-From: Janosch Frank <frankja@linux.ibm.com>
-Autocrypt: addr=frankja@linux.ibm.com; keydata=
- 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
-In-Reply-To: <20260918-vsie-sigpi-v7-11-f39806eaae37@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: nfg8gSRJQztVlnjZUOI9Fj-vSlQklqXR
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDA1MCBTYWx0ZWRfX1eZM80CC6tI5
- SYfTzHpNojZkwbUpNtU5S2XfWWGCeNeqHI/JHXMNpNDbaUqT0P+iGgnFf81vIvviDHr34uYOBOB
- /kivraDSTTwbgJDr/rPzs4FSbMyIEcE=
-X-Authority-Analysis: v=2.4 cv=FLiOVOos c=1 sm=1 tr=0 ts=6ab3ccf3 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=01tizzF2ymvp2yp13ZkA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: uVlP_YznVjlC5q0WShHlyzS0fIiZSbC-
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDA1MCBTYWx0ZWRfX2z3Rj7iLFZAb
- HXGiRBBe1jnZbbbaepu+Vx5RY7Q2R04vzAoSVK1jT/D3w3lnGelG6tEAUYTT41cfpZwmymcv95T
- 3VMTNWYuCxoNbJhDH0XRJokslUHrohJ1hA3C+/9/oSs7mufIYd2vvyADZqGsKIljnH18SzaU/18
- 1MZVxf7pS0T777R9uTIIe6SP7LjZQOSOUqL3SblDIM29/jTyB1+MuJYAo8zbF+p/48nu75dJPI9
- 4JaEjpdXtvxnlbfQuwJw2FIYOa5IxPi0eZ5uql5rkfs9SDOSwALOrjSRuj6sOqjHnfe+Fko25Ga
- ntf7s/TerujQIyeD+UZimEs6RNIn7ci9KYAtqqDBcWTPggOUl5LWSBvOvjCDy892wbd+IMU6T+Q
- ht1porY3y76zqXacHZTb04c1+7zmr3OgXVmYbL5oHytzRDaaDTnPdbaoBLYkXyDofn90CSn+71F
- Hvb2SvnMgiGyyARKu3Q==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-23_04,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0 phishscore=0 spamscore=0 clxscore=1015
- suspectscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609230050
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On 9/18/26 5:09 PM, Christoph Schlameuss wrote:
-> Extract helper method from existing code to reuse in new code.
-> 
-> reset_vsie_page() clears and releases gmap related to vsie_page.
-> 
-> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+This series produces one qemu-system binary that can run ARM (32 and
+64), RISC-V (32 and 64), and MicroBlaze.
+Upstream filters machines with TypeInfo.is_available. This series
+passes a TargetInfo into that callback, uniquifies QOM names that
+collide in one process, and compiles those targets once so they can
+share qemu-system.
+
+A combined link cannot keep C symbols or QOM type names that were
+unique only because each qemu-system-$arch was a separate binary.
+These patches remove those collisions:
+
+- TYPE_ACCEL_CPU is the fixed abstract type accel-cpu, registered
+  once next to TYPE_ACCEL. Leaf names still encode the CPU type so
+  accel_init_cpu_interfaces() can look up "<accel>-" plus
+  target_cpu_type() (tcg-accel-arm-cpu).
+- virt QOM names are prefixed: arm-virt, riscv-virt, and the same
+  for or1k, hexagon, loongarch, m68k, and xtensa. Boards keep
+  -machine virt via machine_class_set_name(). query-machines returns
+  the QOM type in MachineInfo typename.
+- virt ACPI helpers and RISC-V TCG crc32/crc32c/wfi helpers get an
+  arch prefix so the combined link does not need meson -D name
+  mangling. LoongArch virt_acpi_setup is renamed in the same pass.
+
+Target selection has to work with more than one TargetInfo:
+
+- The combined binary takes arch:name on -M/-machine and in a
+  [machine] type (aarch64:virt). arch: binds the target. microblaze:
+  runs that target's default machine. arm, aarch64, riscv32, and
+  riscv64 have no default. No -M leaves target none and the empty
+  none machine. qemu-system-$arch keeps the historic -M name.
+  -M help lists every target; arch:help lists one. query-targets
+  lists each linked target, including none.
+- TargetInfo is a constructor list. target_info_select() picks the
+  entry, including SYS_EMU_TARGET_NONE. is_available takes const
+  TargetInfo *. While the target is still none, QOM skips the
+  unavailable filter so grouped -M help can list every machine.
+- query-cpu-definitions, dump notes, and Angel semihosting sit on
+  TargetCpuOps indexed by target_arch(). Registration uses a
+  QEMU_ARCH_* bitmask so one object can fill ARM and AARCH64. The
+  table is target-ops.h / target-ops.c.
+
+qemu-system-$TARGET is still built, including the Windows *w twin.
+qemu-system is extra. It links each target whose arch sources are
+only target-info-def.c: arm, aarch64, riscv32, riscv64, and
+microblaze. Do not add qemu-systemw for that binary. A GUI
+twin would keep QEMU exporting data from the .exe into DLLs, and
+those data exports cannot be delay-loaded (qdev_prop_array and
+other qdev_prop_*). That would block enabling modules globally on
+Windows.
+
+Examples:
+
+  qemu-system -M aarch64:virt ...
+  qemu-system -M microblaze:petalogix-s3adsp1800 ...
+  qemu-system-riscv64 -M virt ...
+
+A bare machine name on qemu-system needs an arch: prefix. An unknown
+target fails with "target '...' is not available".
+
+Prerequisites:
+  [PATCH v2 0/9] machine: uniquify virt QOM names
+  https://patchew.org/QEMU/20260922215533.641-1-luoyonggang@gmail.com/
+  [PATCH 00/21] accel/tcg: share raise_excp across TCG targets
+  https://patchew.org/QEMU/20260918004225.827-1-luoyonggang@gmail.com/
+  [PATCH v5 00/11] single-binary: Compile hw/riscv once
+  https://patchew.org/QEMU/20260918-hw-riscv-cpu-int-v5-0-f98c5a244636@rev.ng/
+
+v1: https://patchew.org/QEMU/20260823150731.896-1-luoyonggang@gmail.com/
+v2: https://patchew.org/QEMU/20260826184229.1145-1-luoyonggang@gmail.com/
+branch: https://gitlab.com/lygstate-qemu/qemu/-/tree/single-binary-arm-riscv?ref_type=heads
+x86_64 and i386: https://gitlab.com/lygstate-qemu/qemu/-/tree/combined-binary-multi-targets?ref_type=heads
+
+Changes v2 -> v3:
+- Drop -target. v2 parsed a target_name token and required it on
+  bare qemu-system, with -target ? to list names. v3 selects the
+  target with arch:name on -M. No -M leaves target none. -M help
+  and arch:help list machines.
+- Rebased onto current master. Upstream is_available(void) replaces
+  TYPE_TARGET_SPECIFIC. v3 passes const TargetInfo * into
+  is_available. The v2 patches that registered TYPE_TARGET_SPECIFIC
+  on ARM and RISC-V virt are dropped.
+- TargetInfo is a constructor list, not chosen from argv[0].
+  target_info_select() sets the current entry. Add SysEmuTarget
+  none. A single-target binary does not switch TargetInfo; arch:
+  must match that binary or the machine is rejected.
+- Drop -Dsingle_binary. qemu-system is built from
+  single_binary_supported_targets once arch_srcs are only
+  target-info-def.c. microblaze joins ARM and RISC-V. Per-target
+  binaries stay. Still no qemu-systemw for the combined binary.
+- Unique virt QOM names extend past ARM and RISC-V to or1k,
+  hexagon, loongarch, m68k, and xtensa. query-machines returns
+  MachineInfo typename.
+- TargetCpuOps is an array indexed by target_arch(), registered
+  with a QEMU_ARCH_* bitmask. The header moves from
+  target-info-qom.h to target-ops.h.
+- Those targets are compiled once: ARM, RISC-V, and MicroBlaze fold
+  into common source sets, TARGET_* ifdefs become runtime checks, and
+  KVM moves to system_ss.
+
+Pierrick Bouvier (2):
+  configs/targets: remove target info definitions
+  target-info: rename target-info-stub.c in target-info-def.c
+
+Yonggang Luo (112):
+  meson: stale qemu-version.h only when .git exists
+  target-info: rename target-info-impl.h to target-info-def.h
+  target-info: set cpu_type from TARGET_BASE_ARCH
+  target: remove CPU_RESOLVING_TYPE
+  vl: parse early options before target-info init
+  target-info: replace QOM registration with a constructor list
+  tests/unit: add test-target-info
+  tests/qtest: prepare machine-list-test for combined qemu-system
+  kconfig: rename REGISTER to HW_REGISTER
+  target-info: add TargetKconfig
+  target-info: add target_is_* helpers for each architecture
+  target-info: add i386 and x86_64 helpers
+  qom: pass TargetInfo to is_available
+  module: use static ModuleEntry and per-type DSO lists
+  module: add before/after hooks and module_call_init_fn
+  qom: register late types through module_call_init_fn
+  qom: inherit is_available and filter after MODULE_INIT_QOM
+  tests/unit: add module-init and qom is-available tests
+  hw/arm/virt: prefix ACPI helpers with arm_virt_
+  hw/riscv/virt: prefix ACPI helpers with riscv_virt_
+  hw/loongarch/virt: prefix ACPI helper with loongarch_virt_
+  target/riscv: uniquify TCG crc32, crc32c, and wfi helper names
+  hw/riscv: gate boards with target_is_base_riscv
+  hw/intc: use target_long_bits in IMSIC geilen
+  hw/misc/riscv_cmgcr: replace target_ulong with uint64_t
+  hw/intc: use kvm_enabled() in APLIC AIA helpers
+  hw/intc: send IMSIC MSI via kvm_irqchip_send_msi()
+  target/riscv: add kvm stubs source set
+  tcg: fix off-by-one in helper extend-free assert
+  gdbstub: drop per-target cpu-param.h from helpers.h
+  hw/riscv: expand boston-aia and microblaze-v-generic to TypeInfo
+  target/riscv: Include migration/vmstate.h instead of migration/cpu.h
+    in machine.c
+  target/riscv: gate CPU types with TargetInfo
+  target/riscv: select ELF dump class from target_riscv64
+  target/riscv: replace TARGET_* macros in CSR helpers
+  target/riscv: use target_long_bits in pmpaddr granule checks
+  target/riscv: preserve signed XLEN semantics without target_long
+  target/riscv: replace leftover TARGET_LONG_BITS
+  target/riscv: select monitor width at runtime
+  target/riscv: replace target-width format macros
+  target/riscv: replace TARGET_LONG_BITS in translate
+  target-info: add tl_is_64() and target_is_tl32/64 helpers
+  target-info: dispatch CPU QMP, dump, and Angel semihosting
+  tcg: give TCGv its own type and runtime tl ops
+  exec: allow target_long.h, abi_ptr.h and cpu-ldst.h from common code
+  migration: add TargetInfo-gated vmstate fields
+  target/i386: always compile XMM, YMMH, and Hi16 VMSD
+  target/i386: replace VMSTATE_UINTTL with 32/64 TI fields
+  target/ppc: replace VMSTATE_UINTTL with 32/64 TI fields
+  target/sparc: replace VMSTATE_UINTTL with 32/64 TI fields
+  target/mips: replace VMSTATE_UINTTL with 32/64 TI fields
+  hw/hexagon: drop unused migration/cpu.h include
+  migration: remove unused cpu.h
+  target/riscv: gate KVM CPU VMSDs with target_has_kconfig_kvm
+  target/riscv: use tcg_imm_tl in translate
+  target/riscv: select FP and amocas width at runtime
+  target/riscv: drop TARGET_RISCV XL shortcuts in translate
+  target/riscv: select KVM host CPU width at runtime
+  accel: use a shared TYPE_ACCEL_CPU parent
+  kvm: always compile guest debug
+  hw/i386: move APIC_DEFAULT_ADDRESS to apic.h
+  kvm: stop including cpu.h from kvm.h
+  kvm: default kvm_arch_reset_parked_vcpu in stubs
+  kvm: drop COMPILING_PER_TARGET wrap around kvm_arch APIs
+  kvm: add split irqchip and send_msi stubs
+  kvm: replace TARGET_S390X and TARGET_PPC hints
+  kvm: move kvm_ss to system_ss
+  system: add qemu_host_arch() and reject unavailable -accel
+  kvm: add AccelClass is_available for host/guest pairing
+  hvf: add AccelClass is_available for host/guest pairing
+  xen: add AccelClass is_available for host/guest pairing
+  nitro: add AccelClass is_available for host/guest pairing
+  mshv: add AccelClass is_available for host/guest pairing
+  whpx: add AccelClass is_available for host/guest pairing
+  target/i386/nvmm: add AccelClass is_available for host/guest pairing
+  accel: replace ACCEL_CPU_NAME with accel_cpu_register_type
+  whpx: move whpx_ss to system_ss
+  hw/riscv: move boards and irqchip onto hw_common_arch
+  target/riscv: include target_long.h in TCG helpers
+  target/riscv: compile CPU and TCG once
+  target/arm: replace target_long in A64 translate
+  target/arm: use 64-bit TCG addresses in A64 translate
+  target/arm: move kvm_arm_set_cpreg_mig_tolerances to kvm.c
+  target/arm: allow -cpu host with Nitro
+  target/arm: gate -cpu host with TypeIsAvailable
+  target/arm: fix family-common KVM compile
+  tests/qtest: raise aspeed_smc-test timeout to 12 minutes
+  hw/intc: move ARM GIC kvm/hvf/whpx onto arm_common_ss
+  target/arm: fold arm_ss into common source sets
+  meson: link shared objects into qemu-system
+  target/microblaze: fold system sources into common source sets
+  meson: add microblaze-softmmu to the combined qemu-system list
+  boards: remove unused DEFINE_MACHINE_WITH_INTERFACES
+  hw/arm: set virt TypeInfo.is_available
+  hw/arm: set remaining 32-bit machine TypeInfo.is_available
+  hw/arm: set aarch64-only machine TypeInfo.is_available
+  hw/microblaze: set petalogix-s3adsp1800 TypeInfo.is_available
+  hw/arm: expand leftover 32-bit DEFINE_MACHINE to TypeInfo
+  hw/arm: expand imx8mm-evk DEFINE_MACHINE to TypeInfo
+  hw/microblaze: expand petalogix-ml605 and xlnx-zynqmp-pmu to TypeInfo
+  hw/i386: set TYPE_X86_MACHINE TypeInfo.is_available
+  hw/block/dataplane: move xen-block onto system_ss
+  hw/remote: move multiprocess memory onto remote_ss
+  hw/remote: set x-remote TypeInfo.is_available
+  target-info: add SysEmuTarget none
+  accel/tcg: tolerate NULL target_cpu_type for -M none
+  qom: skip unavailable filter when target_none()
+  module: load every arch-tagged module when target is none
+  target-info: select combined qemu-system target by name
+  vl: parse arch: machine types on combined qemu-system
+  qapi: add query-targets
+  tests/qtest: cover combined qemu-system machines and accel-cpu
+
+ MAINTAINERS                                   |    1 -
+ accel/accel-common.c                          |   62 +-
+ accel/hvf/hvf-all.c                           |   15 +
+ accel/kvm/kvm-accel-ops.c                     |    4 -
+ accel/kvm/kvm-all.c                           |   45 +-
+ accel/kvm/meson.build                         |    2 +-
+ accel/mshv/mshv-all.c                         |    8 +
+ accel/nitro/nitro-accel.c                     |    8 +
+ accel/stubs/kvm-stub.c                        |   11 +
+ accel/tcg/tcg-all.c                           |    9 +-
+ accel/whpx/meson.build                        |    2 +-
+ accel/whpx/whpx-common.c                      |   32 +-
+ accel/xen/xen-all.c                           |   18 +
+ configs/targets/aarch64-softmmu.c             |   25 -
+ configs/targets/aarch64-softmmu.mak           |    1 -
+ configs/targets/arm-softmmu.c                 |   25 -
+ configs/targets/i386-softmmu.mak              |    2 -
+ configs/targets/loongarch64-softmmu.mak       |    1 -
+ configs/targets/meson.build                   |    6 -
+ configs/targets/ppc-softmmu.mak               |    1 -
+ configs/targets/ppc64-softmmu.mak             |    1 -
+ configs/targets/riscv32-softmmu.c             |   24 -
+ configs/targets/riscv64-softmmu.c             |   24 -
+ configs/targets/riscv64-softmmu.mak           |    1 -
+ configs/targets/s390x-softmmu.mak             |    1 -
+ configs/targets/x86_64-softmmu.mak            |    2 -
+ hw/Kconfig                                    |    2 +-
+ hw/arm/aspeed_ast1040_evb.c                   |    1 +
+ hw/arm/aspeed_ast10x0_evb.c                   |    2 +
+ hw/arm/aspeed_ast2400_palmetto.c              |    1 +
+ hw/arm/aspeed_ast2400_quanta-q71l.c           |    1 +
+ hw/arm/aspeed_ast2400_supermicrox11.c         |    1 +
+ hw/arm/aspeed_ast2500_evb.c                   |    1 +
+ hw/arm/aspeed_ast2500_g220a.c                 |    1 +
+ hw/arm/aspeed_ast2500_romulus.c               |    1 +
+ hw/arm/aspeed_ast2500_supermicro-x11spi.c     |    1 +
+ hw/arm/aspeed_ast2500_tiogapass.c             |    1 +
+ hw/arm/aspeed_ast2500_witherspoon.c           |    1 +
+ hw/arm/aspeed_ast2500_yosemitev2.c            |    1 +
+ hw/arm/aspeed_ast2600_anacapa.c               |    1 +
+ hw/arm/aspeed_ast2600_bletchley.c             |    1 +
+ hw/arm/aspeed_ast2600_catalina.c              |    1 +
+ hw/arm/aspeed_ast2600_evb.c                   |    1 +
+ hw/arm/aspeed_ast2600_fby35.c                 |    1 +
+ hw/arm/aspeed_ast2600_fuji.c                  |    1 +
+ hw/arm/aspeed_ast2600_gb200nvl.c              |    1 +
+ hw/arm/aspeed_ast2600_rainier.c               |    1 +
+ hw/arm/aspeed_ast2600_sanmiguel.c             |    1 +
+ hw/arm/aspeed_ast27x0-fc.c                    |    2 +-
+ hw/arm/aspeed_ast27x0_evb.c                   |    4 +-
+ hw/arm/ax3000-evk.c                           |    1 +
+ hw/arm/b-l475e-iot01a.c                       |    1 +
+ hw/arm/bananapi_m2u.c                         |   22 +-
+ hw/arm/collie.c                               |    1 +
+ hw/arm/cubieboard.c                           |   23 +-
+ hw/arm/digic_boards.c                         |   19 +-
+ hw/arm/exynos4_boards.c                       |    2 +
+ hw/arm/imx25_pdk.c                            |   19 +-
+ hw/arm/imx8mm-evk.c                           |   23 +-
+ hw/arm/imx8mp-evk.c                           |    1 +
+ hw/arm/integratorcp.c                         |   23 +-
+ hw/arm/kzm.c                                  |   19 +-
+ hw/arm/max78000fthr.c                         |   19 +-
+ hw/arm/mcimx6ul-evk.c                         |   19 +-
+ hw/arm/mcimx7d-sabre.c                        |   23 +-
+ hw/arm/microbit.c                             |    1 +
+ hw/arm/mps2-tz.c                              |    5 +
+ hw/arm/mps2.c                                 |    4 +
+ hw/arm/mps3r.c                                |    1 +
+ hw/arm/msf2-som.c                             |   19 +-
+ hw/arm/musca.c                                |    2 +
+ hw/arm/netduino2.c                            |   19 +-
+ hw/arm/netduinoplus2.c                        |   19 +-
+ hw/arm/npcm7xx_boards.c                       |    5 +
+ hw/arm/npcm8xx_boards.c                       |    1 +
+ hw/arm/olimex-stm32-h405.c                    |   19 +-
+ hw/arm/omap_sx1.c                             |    2 +
+ hw/arm/orangepi.c                             |   23 +-
+ hw/arm/raspi.c                                |    7 +-
+ hw/arm/raspi4b.c                              |    2 +-
+ hw/arm/realview.c                             |    4 +
+ hw/arm/sabrelite.c                            |    1 +
+ hw/arm/sbsa-ref.c                             |    1 +
+ hw/arm/stellaris.c                            |    2 +
+ hw/arm/stm32vldiscovery.c                     |   19 +-
+ hw/arm/versatilepb.c                          |    2 +
+ hw/arm/vexpress.c                             |    2 +
+ hw/arm/virt-acpi-build.c                      |    4 +-
+ hw/arm/virt.c                                 |   13 +-
+ hw/arm/xen-pvh.c                              |    1 +
+ hw/arm/xilinx_zynq.c                          |    1 +
+ hw/arm/xlnx-versal-virt.c                     |    2 +
+ hw/arm/xlnx-zcu102.c                          |    1 +
+ hw/block/dataplane/meson.build                |    2 +-
+ hw/core/Kconfig                               |    2 +-
+ hw/core/cpu-system.c                          |   23 +
+ hw/core/machine-qmp-cmds.c                    |   57 +
+ hw/core/meson.build                           |    2 +-
+ hw/dma/Kconfig                                |    4 +-
+ hw/hexagon/hexagon_dsp.c                      |    1 -
+ hw/i2c/Kconfig                                |    2 +-
+ hw/i386/acpi-common.c                         |    1 +
+ hw/i386/sgx.c                                 |    1 +
+ hw/i386/vmport.c                              |    1 +
+ hw/i386/x86.c                                 |    2 +
+ hw/intc/arm_gic_kvm.c                         |    1 +
+ hw/intc/arm_gicv3_its_kvm.c                   |    1 +
+ hw/intc/arm_gicv3_kvm.c                       |    1 +
+ hw/intc/meson.build                           |   16 +-
+ hw/intc/riscv_aplic.c                         |   14 +-
+ hw/intc/riscv_imsic.c                         |   18 +-
+ hw/intc/s390_flic.c                           |    1 +
+ hw/intc/s390_flic_kvm.c                       |    1 +
+ hw/loongarch/virt-acpi-build.c                |    6 +-
+ hw/loongarch/virt.c                           |    2 +-
+ hw/microblaze/petalogix_ml605_mmu.c           |   19 +-
+ hw/microblaze/petalogix_s3adsp1800_mmu.c      |    1 +
+ hw/microblaze/xlnx-zynqmp-pmu.c               |   19 +-
+ hw/misc/meson.build                           |    4 +-
+ hw/misc/riscv_cmgcr.c                         |    2 +-
+ hw/remote/machine.c                           |    3 +
+ hw/remote/meson.build                         |    4 +-
+ hw/riscv/boston-aia.c                         |    4 +-
+ hw/riscv/k230.c                               |    5 +-
+ hw/riscv/microblaze-v-generic.c               |   19 +-
+ hw/riscv/microchip_pfsoc.c                    |    5 +-
+ hw/riscv/opentitan.c                          |    5 +-
+ hw/riscv/shakti_c.c                           |    5 +-
+ hw/riscv/sifive_e.c                           |    1 +
+ hw/riscv/sifive_u.c                           |    1 +
+ hw/riscv/spike.c                              |    1 +
+ hw/riscv/tt_atlantis.c                        |    5 +-
+ hw/riscv/virt-acpi-build.c                    |    2 +-
+ hw/riscv/virt.c                               |    7 +-
+ hw/riscv/xiangshan_kmh.c                      |    5 +-
+ hw/s390x/css.c                                |    1 +
+ hw/s390x/s390-pci-bus.c                       |    1 +
+ hw/s390x/s390-pci-inst.c                      |    1 +
+ hw/s390x/virtio-ccw.c                         |    1 +
+ hw/timer/meson.build                          |    2 +-
+ hw/usb/Kconfig                                |    2 +-
+ include/accel/accel-cpu-target.h              |   31 -
+ include/accel/accel-cpu.h                     |   13 +
+ include/accel/tcg/cpu-ldst.h                  |    4 +-
+ include/exec/abi_ptr.h                        |    7 +-
+ include/exec/helper-head.h.inc                |   21 +-
+ include/exec/poison.h                         |    2 +
+ include/exec/target_long.h                    |   13 +
+ include/gdbstub/helpers.h                     |    3 -
+ include/hw/arm/virt.h                         |    4 +-
+ include/hw/core/boards.h                      |   10 +-
+ include/hw/i386/apic.h                        |    3 +
+ include/hw/loongarch/virt.h                   |    2 +-
+ include/hw/riscv/virt.h                       |    4 +-
+ include/migration/cpu.h                       |   30 -
+ include/migration/vmstate.h                   |  125 ++
+ include/qemu/base-arch-defs.h                 |    9 +
+ include/qemu/config-file.h                    |    2 +
+ include/qemu/module.h                         |   41 +-
+ include/qemu/queue.h                          |   10 +
+ include/qemu/target-info-def.h                |   90 ++
+ include/qemu/target-info-impl.h               |   42 -
+ include/qemu/target-info-init.h               |   53 -
+ include/qemu/target-info-qom.h                |   30 -
+ include/qemu/target-info-select.h             |   24 +
+ include/qemu/target-info.h                    |  214 +++-
+ include/qemu/target-kconfig-has.h             |    7 +
+ include/qemu/target-kconfig.h                 |   34 +
+ include/qemu/target-ops.h                     |   58 +
+ include/qom/object.h                          |   27 +-
+ include/semihosting/common-semi.h             |   63 +-
+ include/system/kvm.h                          |   23 +-
+ include/system/kvm_int.h                      |    2 -
+ include/tcg/tcg-op-common.h                   |    2 +
+ include/tcg/tcg-op-gvec-common.h              |   12 +
+ include/tcg/tcg-op-gvec.h                     |   12 -
+ include/tcg/tcg-op-mem.h                      |   96 +-
+ include/tcg/tcg-op-tl.h                       | 1133 +++++++++++++++++
+ include/tcg/tcg-op.h                          |  293 +----
+ include/tcg/tcg.h                             |   42 +-
+ meson.build                                   |  221 +++-
+ migration/savevm.c                            |    4 +
+ migration/trace-events                        |    1 +
+ migration/vmstate-types.c                     |   86 ++
+ migration/vmstate.c                           |  135 +-
+ page-vary-common.c                            |    2 +-
+ page-vary-system.c                            |    2 +-
+ qapi/machine.json                             |   48 +-
+ qemu-options.hx                               |   11 +-
+ qom/object.c                                  |  145 ++-
+ rust/util/src/module.rs                       |   16 +-
+ scripts/gen-target-kconfig.py                 |  162 +++
+ stubs/dump.c                                  |   27 -
+ stubs/kvm.c                                   |    4 +
+ stubs/meson.build                             |    3 +-
+ stubs/qmp-cpu.c                               |   21 -
+ stubs/target-info-select.c                    |   14 +
+ system/arch_init.c                            |   19 +
+ system/target-info-select.c                   |   26 +
+ system/vl.c                                   |  319 ++++-
+ target-info-stub.c => target-info-def.c       |   20 +-
+ target-info-qom.c                             |   55 -
+ target-info.c                                 |  213 +++-
+ target-kconfig.c                              |   20 +
+ target-ops.c                                  |   50 +
+ target/alpha/cpu.h                            |    2 -
+ target/arm/arch_dump.c                        |    8 +-
+ target/arm/arm-qmp-cmds.c                     |   15 +-
+ target/arm/common-semi-target.c               |   26 +-
+ target/arm/cpu.c                              |    6 +-
+ target/arm/cpu.h                              |    3 +-
+ target/arm/cpu64.c                            |   80 +-
+ target/arm/hvf/hvf-stub.c                     |   14 +
+ target/arm/hvf/meson.build                    |    1 +
+ target/arm/kvm-stub.c                         |    5 +
+ target/arm/kvm.c                              |   40 +-
+ target/arm/kvm_arm.h                          |    9 +
+ target/arm/meson.build                        |   11 +-
+ target/arm/tcg/translate-a64.c                |    6 +-
+ target/arm/tcg/translate-a64.h                |    3 +
+ target/arm/tcg/translate-sme.c                |    5 +-
+ target/arm/tcg/translate-sve.c                |   18 +-
+ target/arm/whpx/whpx-all.c                    |    1 -
+ target/arm/whpx/whpx-stub.c                   |    5 +
+ target/avr/cpu.h                              |    2 -
+ target/hexagon/common-semi-target.c           |   26 +-
+ target/hexagon/cpu.h                          |    1 -
+ target/hppa/cpu.h                             |    2 -
+ target/i386/arch_dump.c                       |    8 +-
+ target/i386/cpu-qom.h                         |    1 +
+ target/i386/cpu-system.c                      |   12 +-
+ target/i386/cpu.c                             |    6 +-
+ target/i386/cpu.h                             |   12 +-
+ target/i386/hvf/hvf-cpu.c                     |   13 +-
+ target/i386/kvm/kvm-cpu.c                     |   12 +-
+ target/i386/kvm/kvm_i386.h                    |    2 +
+ target/i386/kvm/xen-emu.c                     |    1 +
+ target/i386/machine.c                         |   94 +-
+ target/i386/mshv/mshv-cpu.c                   |   12 +-
+ target/i386/nvmm/nvmm-all.c                   |   28 +-
+ target/i386/tcg/tcg-cpu.c                     |   12 +-
+ target/i386/whpx/whpx-all.c                   |    1 -
+ target/loongarch/arch_dump.c                  |    8 +-
+ target/loongarch/cpu.h                        |    2 -
+ target/loongarch/kvm/kvm.c                    |    1 +
+ target/loongarch/kvm/kvm_loongarch.h          |    2 +
+ target/loongarch/loongarch-qmp-cmds.c         |   15 +-
+ target/m68k/cpu.h                             |    2 -
+ target/microblaze/cpu.h                       |    2 -
+ target/microblaze/meson.build                 |    2 +-
+ target/mips/cpu.h                             |    2 -
+ target/mips/system/machine.c                  |  124 +-
+ target/mips/system/mips-qmp-cmds.c            |   15 +-
+ target/none/cpu-param.h                       |    6 +
+ target/none/cpu-qom.h                         |    6 +
+ target/or1k/cpu-qom.h                         |    1 +
+ target/or1k/cpu.h                             |    2 -
+ target/ppc/arch_dump.c                        |    8 +-
+ target/ppc/cpu-qom.h                          |    1 +
+ target/ppc/cpu.h                              |    2 -
+ target/ppc/cpu_init.c                         |    1 +
+ target/ppc/kvm.c                              |   24 +-
+ target/ppc/machine.c                          |   78 +-
+ target/ppc/ppc-qmp-cmds.c                     |   15 +-
+ target/riscv/arch_dump.c                      |   18 +-
+ target/riscv/common-semi-target.c             |   28 +-
+ target/riscv/cpu.c                            |  133 +-
+ target/riscv/cpu.h                            |    9 +-
+ target/riscv/helper.h                         |    6 +-
+ target/riscv/internals.h                      |   12 +-
+ target/riscv/kvm/kvm-cpu.c                    |  115 +-
+ target/riscv/kvm/kvm-stub.c                   |   33 +-
+ target/riscv/kvm/meson.build                  |    2 +-
+ target/riscv/machine.c                        |   16 +-
+ target/riscv/meson.build                      |   18 +-
+ target/riscv/monitor.c                        |   41 +-
+ target/riscv/riscv-qmp-cmds.c                 |   15 +-
+ target/riscv/tcg/bitmanip_helper.c            |   14 +-
+ target/riscv/tcg/cpu_helper.c                 |   53 +-
+ target/riscv/tcg/crypto_helper.c              |    1 +
+ target/riscv/tcg/csr.c                        |   20 +-
+ .../tcg/insn_trans/trans_privileged.c.inc     |    2 +-
+ target/riscv/tcg/insn_trans/trans_rvb.c.inc   |   18 +-
+ target/riscv/tcg/insn_trans/trans_rvd.c.inc   |   18 +-
+ target/riscv/tcg/insn_trans/trans_rvf.c.inc   |   11 +-
+ target/riscv/tcg/insn_trans/trans_rvi.c.inc   |   12 +-
+ target/riscv/tcg/insn_trans/trans_rvm.c.inc   |    6 +-
+ .../riscv/tcg/insn_trans/trans_rvzacas.c.inc  |   32 +-
+ target/riscv/tcg/insn_trans/trans_rvzfh.c.inc |    8 +-
+ target/riscv/tcg/insn_trans/trans_xlrbr.c.inc |    4 +-
+ .../riscv/tcg/insn_trans/trans_xthead.c.inc   |    2 +-
+ target/riscv/tcg/m128_helper.c                |    3 +-
+ target/riscv/tcg/meson.build                  |    8 +-
+ target/riscv/tcg/op_helper.c                  |    2 +-
+ target/riscv/tcg/pmp.c                        |    5 +-
+ target/riscv/tcg/tcg-cpu.c                    |   13 +-
+ target/riscv/tcg/translate.c                  |  123 +-
+ target/riscv/tcg/vector_helper.c              |   21 +-
+ target/riscv/tcg/vector_internals.c           |    2 +-
+ target/riscv/tcg/vector_internals.h           |    9 +-
+ target/rx/cpu.h                               |    2 -
+ target/s390x/arch_dump.c                      |    8 +-
+ target/s390x/cpu-qom.h                        |    1 +
+ target/s390x/cpu.h                            |    3 -
+ target/s390x/cpu_models_system.c              |   15 +-
+ target/sh4/cpu-qom.h                          |    1 +
+ target/sh4/cpu.h                              |    2 -
+ target/sparc/cpu.h                            |    2 -
+ target/sparc/machine.c                        |   24 +-
+ target/tricore/cpu.h                          |    2 -
+ target/xtensa/cpu.h                           |    2 -
+ tcg/tcg.c                                     |   42 +-
+ tests/qtest/accel-cpu-qom-test.c              |   82 ++
+ tests/qtest/fuzz/fuzz.c                       |    3 -
+ tests/qtest/machine-list-combined-test.c      |  111 ++
+ tests/qtest/machine-list-test.c               |   94 ++
+ tests/qtest/machine-list-test.inc.h           |  876 +++++++++++++
+ tests/qtest/machine-option-test.c             |  714 +++++++++++
+ tests/qtest/meson.build                       |   31 +-
+ tests/unit/check-qom-interface.c              |   12 +-
+ tests/unit/check-qom-proplist.c               |   13 +-
+ tests/unit/meson.build                        |   13 +
+ tests/unit/test-io-channel-websock.c          |    7 +-
+ tests/unit/test-io-task.c                     |    7 +-
+ tests/unit/test-module-init.c                 |  186 +++
+ tests/unit/test-qdev-global-props.c           |   14 +-
+ tests/unit/test-qdev.c                        |    8 +-
+ tests/unit/test-qom-is-available.c            |  250 ++++
+ tests/unit/test-ram-discard-manager.c         |    7 +-
+ tests/unit/test-target-info.c                 |   38 +
+ tests/unit/test-target-kconfig-has.c          |   22 +
+ tests/unit/test-vmstate.c                     |  377 +++++-
+ ui/console-vc.c                               |   13 +-
+ ui/dbus.c                                     |    8 +-
+ ui/gtk.c                                      |   10 +-
+ ui/spice-app.c                                |    7 +-
+ util/module.c                                 |  171 ++-
+ util/qemu-config.c                            |   10 +-
+ 338 files changed, 8224 insertions(+), 1876 deletions(-)
+ delete mode 100644 configs/targets/aarch64-softmmu.c
+ delete mode 100644 configs/targets/arm-softmmu.c
+ delete mode 100644 configs/targets/meson.build
+ delete mode 100644 configs/targets/riscv32-softmmu.c
+ delete mode 100644 configs/targets/riscv64-softmmu.c
+ delete mode 100644 include/accel/accel-cpu-target.h
+ delete mode 100644 include/migration/cpu.h
+ create mode 100644 include/qemu/target-info-def.h
+ delete mode 100644 include/qemu/target-info-impl.h
+ delete mode 100644 include/qemu/target-info-init.h
+ delete mode 100644 include/qemu/target-info-qom.h
+ create mode 100644 include/qemu/target-info-select.h
+ create mode 100644 include/qemu/target-kconfig-has.h
+ create mode 100644 include/qemu/target-kconfig.h
+ create mode 100644 include/qemu/target-ops.h
+ create mode 100644 include/tcg/tcg-op-tl.h
+ create mode 100644 scripts/gen-target-kconfig.py
+ delete mode 100644 stubs/dump.c
+ delete mode 100644 stubs/qmp-cpu.c
+ create mode 100644 stubs/target-info-select.c
+ create mode 100644 system/target-info-select.c
+ rename target-info-stub.c => target-info-def.c (71%)
+ delete mode 100644 target-info-qom.c
+ create mode 100644 target-kconfig.c
+ create mode 100644 target-ops.c
+ create mode 100644 target/arm/hvf/hvf-stub.c
+ create mode 100644 target/none/cpu-param.h
+ create mode 100644 target/none/cpu-qom.h
+ create mode 100644 tests/qtest/accel-cpu-qom-test.c
+ create mode 100644 tests/qtest/machine-list-combined-test.c
+ create mode 100644 tests/qtest/machine-list-test.c
+ create mode 100644 tests/qtest/machine-list-test.inc.h
+ create mode 100644 tests/qtest/machine-option-test.c
+ create mode 100644 tests/unit/test-module-init.c
+ create mode 100644 tests/unit/test-qom-is-available.c
+ create mode 100644 tests/unit/test-target-info.c
+ create mode 100644 tests/unit/test-target-kconfig-has.c
+
+-- 
+2.52.0.windows.1
+
