@@ -1,121 +1,99 @@
-Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
+Received: from mta0.migadu.com (out-25.mta0.migadu.com [91.218.175.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28CC05372F3
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 18:30:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73ED054936F
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 18:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790188261; cv=none; b=ov1U1QEWtxtRT7H3SbM087qJ4r15DV17nS8jpBAV3EKnMwYh5C5psCokRJiS4vG3CAiaIiSwutMyMzFHN86wuntSSYfjKXqrgkMYt5ac3qGAf1pMsA7brXswMSUA/pftwUNElFC3Xy7GoWPIUY24HPOeEOLwJwlhMH5nd4Tsjfk=
+	t=1790189599; cv=none; b=TlsbtFhwjfA75ZKqfbxaQ0eLcIz6gzeQf44oE33wSv12du82KmDl3TFw7GyaHXpbtX5l8w22f6pHc1K8kEA9WoGEVpt4hkbSlR0BGBsEiKM0OmJ6RKa32gQYOsukE5bqrjM09ZDV7vPT6HXtGkWmFN5XEneAYqojsrTlink1Z4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790188261; c=relaxed/simple;
-	bh=lWag3oM9sYGpdHyGnDE7rA3iXeVqrktsZhX6pT4UGs4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OVVRke9H7pcAi9YkKFu6+IxpY/pRcY32jIE9zzMWZIafyk+wjvM9vu8uG5TyYWxeJJV5FlvHJrslA4SmlU+/HJuAR5cS3ShsBSpsuMomVgxg3vbmUzvTnwiATiO/fReEOvU/QMU61Tp6C6rT+X2WQl8W6psFK7eju84cOl7syCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wH+pf7ZJ; arc=none smtp.client-ip=74.125.228.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1790189599; c=relaxed/simple;
+	bh=VQwGs8kxbwA/pw10zZlCJcbl8pu79WWCbvhBxYPCINQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Uc117U+9+gzLIeiAN+OdPscDfaxyjdueEcwa3z4S1DELpL8hcUGPy8yzeaO3voyW2OImCFT0Hl0kJEcXmDH0l6w6Tzq7lal60Gb5ZVpVHx7mfTeIi5a0iTUe90vM5trAz+w5TCFfojo1ZyySen0G/4btHUfiAyMsw4PnMo2XSqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=G1pzLp3f; arc=none smtp.client-ip=91.218.175.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wH+pf7ZJ"
-Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-8623e5d435cso442315b3a.1
-        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 11:30:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790188254; x=1790793054; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qQbES28pq+4+5SdsOxa0hPCoAfkWzPeIh6+fD64KIF8=;
-        b=wH+pf7ZJOq8XzJE5WdC73W3WZbhnDuc/f3aiTHblBQTT0/CnMuM8TdyrjHmeBjCDor
-         TRuRy/QiZ+b5BLMJLf9DiUuagUrK9vZDJ6mWMTsK1BtKS8z5J5nt2aUs2Y8lDlCt182J
-         aW6uYwg2v2k91qopC288FwvW56Rm3AVpEY7KrRWkrC7sUS3oxsTQySWZjMiU3+Zdor+m
-         Rw2PKXGk1NN8BXpEIyvukkeXthyIssQzYsniR7OCIWictoIhqvRGEJHSpSokla1Z2WiU
-         lHb1Ipn7w/+jiDdby4qqH+LBCG9fwNaHDLOzqdSiGhTF8aJqoLxiLrueXMF+vkwHOhSv
-         lu4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790188254; x=1790793054;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qQbES28pq+4+5SdsOxa0hPCoAfkWzPeIh6+fD64KIF8=;
-        b=d7WYfIxz0FaaA+UgEYxLeRDDc2Aw9vuSvMk5mnM/FoZ5hbmxEokwf/f+Wlok8vBIG6
-         S/IRWWVLpmBcf8hExN+jle0bzIafiSjxuk/qkS9Lq935KqleeIUiNLLtpFIDQfrdKwAT
-         9aI2L2aXwmmx6EyoenUlb0+4rVe45hmOFfVOm2yW4Vmc3cY784GYCwo+daknqIkYCzII
-         KzoqXpt7w0qrJgNkq8kjpSSEVrvBTCgjnKf+J+dsre0qe/OFecWOgjm36Rwd8VEao6St
-         /ithV82DtkjByHITiYLs6nJL2kbAHg4VDJH1XSqdrTSj9kYDnHgaN67jYR1GCq/g/IHu
-         NIdA==
-X-Forwarded-Encrypted: i=1; AKwUvBxVExMHznd6dink175fDf9GDbF7K9WgaCIKmhQjJ8Sj79DrcQBoCi5KivMwV25uUB3HGW4=@vger.kernel.org
-X-Gm-Message-State: AFuF++m4599JxVNhw5vPAk8bNyLbE4uG0dmqoeD2TuRbwG9nYcZbu9Ln
-	qPhderSvUgDeC7ledjcGdlmtdDi1+o2biccfWy8PqZGaG0cN88Mk8fSzIZDDuKS4lQ==
-X-Gm-Gg: AYBFou3wL5LbgowKHMCBiHcoNqhC30Tk9HOZvjDOFDElRP2x6aSpy8RhT9YRgejZjq2
-	3iChmch6ugx3RITXoOI3VRQFuS1WBkLMKh8zA6UiKntml70KKRPI6hBWTNfMTMy/XP1+BT+gv/j
-	j9IlWiatbtlLsIFHgZejmzpazaz7aICPapym8UtGLfsODUMwUdcJ75DebCIoZL2CUrOyau5UweG
-	GeCbXUTKcsmNsTyrY+Gkg0REGk0Z+VvnhGQdfLhEkbCVzUkbYLJnl7TV0NWQ08EcqB8aQNamzzY
-	XxM9oqX3NNSCtu/DtB0KSH9+n60ztA3yD91Fe1QC1piTb9X5IKgWJPYCdk8dixc/flbS2j5ZlYA
-	akmP6u6xVdpMIZPTQ05AAsNFluMvim0L+39azdbeBfRTm3VHnLp9CocUuoS0+4Z7TCpw0BlA/8Y
-	Im/RqErCr4VZ9C3TPV7nFlnx5laz+L18NNMk42lM+3OBfpoPBZV+xQuK/4q4WeGy4Ey+DMDb7xZ
-	FNDegokMiUxT8I59pN7oDiI5KnBxHJJqbl9LebHiV9vqKr2/5g=
-X-Received: by 2002:a05:6a20:7290:b0:3db:131b:8d8 with SMTP id adf61e73a8af0-3de0e7300c0mr45910637.14.1790188251251;
-        Wed, 23 Sep 2026 11:30:51 -0700 (PDT)
-Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87d1d5c12besm1736810b3a.29.2026.09.23.11.30.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 11:30:50 -0700 (PDT)
-Date: Wed, 23 Sep 2026 18:30:46 +0000
-From: David Matlack <dmatlack@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alex Williamson <alex@shazbot.org>, Fuad Tabba <fuad.tabba@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>, kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev, Leon Romanovsky <leon@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org,
-	Marc Zyngier <maz@kernel.org>, Mark Bloch <mbloch@nvidia.com>,
-	netdev@vger.kernel.org, Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Steffen Eiden <seiden@linux.ibm.com>, Shuah Khan <shuah@kernel.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Tariq Toukan <tariqt@nvidia.com>, Zenghui Yu <yuzenghui@huawei.com>,
-	patches@lists.linux.dev
-Subject: Re: [PATCH v7 00/10] mlx5 support for VFIO self test
-Message-ID: <arQa1khEHzKOfkCK@google.com>
-References: <0-v7-c6d30e8ce1e4+3dfa6-mlx5st_jgg@nvidia.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="G1pzLp3f"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=VQwGs8kxbwA/pw10zZlCJcbl8pu79WWCbvhBxYPCINQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790189585; v=1; x=1790794385;
+ b=G1pzLp3fkghE33EmmS8VrI4y2T9FIZ0P+8oKefPKyK7WDPXwPwjIhJPdxEUR0uf/Vsvgblxw
+ B2nu3SnDuYTh/qM5zSKmaQh4DMoBlTBWIAiwiP5Rb0efkLUmyMmreTPBWrLH7Q58AoI4m9SXkDR
+ 9i2g04GKKoDoFyumfTLodAJU=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id c604465d4a958db1;
+	Wed, 23 Sep 2026 18:53:05 +0000
+X-Mizu-Trace-ID: c604465d4a958db1
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5b8c42da963so1803e87.0
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 11:53:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzRXzqPBRE/DrCWgc8eUOSUm/rClQgHZik/+kTlj8Dn8TfI/1jUtys+citQThKtpI18R00=@vger.kernel.org
+X-Gm-Message-State: AFuF++mWzcHuwvxoV0sGEu7t51dB9aCoVqzlzOpqs1obiptavyMmK7C0
+	iaYBmJWpa7F6XCB1WPtrO5QcvRsPoIzrgZR9IGkKldhgRpBywj/KMpMzVs0PxT4FgkFSZ3OV0LV
+	SrzsFXUmJRo34mn+yGBoZHApziHPqanm4fPvLEK5z
+X-Received: by 2002:a05:6512:124d:b0:5ae:cf5f:4a88 with SMTP id
+ 2adb3069b0e04-5b8dda15fd4mr50291e87.8.1790189584139; Wed, 23 Sep 2026
+ 11:53:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0-v7-c6d30e8ce1e4+3dfa6-mlx5st_jgg@nvidia.com>
+References: <20260923-kvm-arm-prefault-v4-0-d4b0b4dfa8c3@kernel.org> <20260923-kvm-arm-prefault-v4-1-d4b0b4dfa8c3@kernel.org>
+In-Reply-To: <20260923-kvm-arm-prefault-v4-1-d4b0b4dfa8c3@kernel.org>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Wed, 23 Sep 2026 19:52:27 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTzDYSuBVEc+SMdDa41sq-ET=m_oWW0gL9dYf+AumPYPUg@mail.gmail.com>
+X-Gm-Features: AclHuK9102l5jXhHZm0wjY1xcBMQ6NzdYFil2Hlxj79BuZjg_2Y9X0YS37SYzUc
+Message-ID: <CA+EHjTzDYSuBVEc+SMdDa41sq-ET=m_oWW0gL9dYf+AumPYPUg@mail.gmail.com>
+Subject: Re: [PATCH v4 01/14] KVM: Allow architectures to disallow pre-fault
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Mark Rutland <mark.rutland@arm.com>, 
+	Randy Dunlap <rdunlap@infradead.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, David Hildenbrand <david@kernel.org>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, Jack Thomson <jackabt@amazon.com>, 
+	Jack Thomson <jackabt.amazon@gmail.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
+	Vincent Donnefort <vdonnefort@google.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+	Sean Christopherson <seanjc@google.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+	Leo Soares Passos <Leo.Bras@arm.com>, Wei-Lin Chang <weilin.chang@arm.com>, linux-s390@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 2026-09-21 07:35 PM, Jason Gunthorpe wrote:
-> Add an mlx5 driver to VFIO self test. This is largely a remix of the
-> existing VFIO mlx5 driver in rdma-core. It uses an RDMA loopback QP
-> to issue RDMA WRITE operations which effectively perform memory
-> copies using DMA. Since mlx5 has a stable programming ABI this
-> should work on devices from CX5 to current HW. The device FW must
-> support the QP loopback configuration.
+Hi Lorenzo,
 
-> v7:
->  - Fix some compilation problems, kvm and the igb
+On Wed, 23 Sep 2026 16:15:44 +0100, "Lorenzo Stoakes (ARM)"
+<ljs@kernel.org> wrote:
+[...]
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+[...]
+> +int kvm_arch_pre_fault_allowed(struct kvm_vcpu *vcpu)
+> +{
+> +        if (!vcpu->kvm->arch.pre_fault_allowed)
+> +                return -EOPNOTSUPP;
+> +
+> +        return 0;
+> +}
 
-> Jason Gunthorpe (10):
->   net/mlx5: Add IFC structures for CQE and WQE
->   net/mlx5: Move HW constant groups from device.h/cq.h to mlx5_ifc.h
->   net/mlx5: Extract MLX5_SET/GET macros into mlx5_ifc_macros.h
->   net/mlx5: Add ONCE and MMIO accessor variants to mlx5_ifc_macros.h
->   selftests: Add additional kernel functions to tools/include/
->   vfio: selftests: Allow drivers to specify required region size
->   vfio: selftests: Add dev_dbg
->   vfio: selftests: Add mlx5 driver - HW init and command interface
->   vfio: selftests: Add mlx5 driver - data path and memcpy ops
->   vfio: selftests: mlx5 driver - add send_msi support
+nit: the comment above the smp_rmb() in tdx_sept_map_leaf_spte() still
+says pre_fault_allowed is read by kvm_arch_vcpu_pre_fault_memory(),
+but after this patch it's read here.
 
->  .../selftests/kvm/include/arm64/processor.h   |    4 +-
->  tools/testing/selftests/kvm/irq_test.c        |    2 -
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 
-Sean and Marc/Oliver, can you take a look at the changes Jason made to
-KVM selftests as part of this series before we merge this into the VFIO
-tree?
+Cheers,
+/fuad
