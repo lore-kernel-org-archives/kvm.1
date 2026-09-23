@@ -1,104 +1,108 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A852414A27;
-	Wed, 23 Sep 2026 07:30:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7A84508E0;
+	Wed, 23 Sep 2026 07:32:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790148623; cv=none; b=pT+l2HBxuSQy/pmex3+sOSkALmhqgPawwPnvA0w8ipMKRhEsydm9gZ1pQmXuZCjN+vh9aGiqBuUVyaYLxX/zb+XZEbh9UepuJK764TzIY1f/iCkBtpq7kShHvcAyjjUR+adYj8SagJFExnTuhXyzZQ8NLMJXJgy3owk7IsuoKIo=
+	t=1790148728; cv=none; b=QImRx4tppkHVu+ahXyjtufk4BcCEGCyIVvvd3OHcIHB1auOXA9mi3Q0w6lB1vr0uZrPCDnXDBfs4nbA47m8gPKzLkXXxr/whZ/9ghdj3FPyMpnTk+9OlMSiwfmzhGh0954YONXuoclz2yTYcfhL5aF41sCVXqSSOblTMqSTp9tE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790148623; c=relaxed/simple;
-	bh=C1iVFAsRGzQ01xpSelZwvWYCC+dug6K7I4nqba/msFc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UAlfF0u84eUBWskP/Vy1u1NX+KBMYbYpN7sp6DRjqy7cbdDj8M+EDLrXHwpOZKIQt3gGMEMUTSC7WGlhfj4xUqVcOdUBdmCLL7C6xvoPPqRz/QMeLO3tKDHYyWmprVNy8tLRmBmmO1kbM7VuaLyc17mNo5zbOqIl5vE2vzzBTtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LY4MtG/N; arc=none smtp.client-ip=192.198.163.8
+	s=arc-20240116; t=1790148728; c=relaxed/simple;
+	bh=SHoV46IGp0r1Mgw9p20NaWVqyYQSQSikZbfLmgAsLa4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jH/uhj2nNZ+zTcsuZl/zjRLfS1TrQNFrJ/GNmmsfM53Cjew/WDg6av/gU2mcM/LrCVKX/4SdGxGzm59e/KPWEDH0mKP89YPJxF8oXmSdFuEeRuHymP6Pa6VhK9AvDJ4zIDRw73PTQS/EntcffcP9r5rkkeg2DIyDuX6ORXXsQ5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SogCKDo8; arc=none smtp.client-ip=192.198.163.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LY4MtG/N"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SogCKDo8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790148622; x=1821684622;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=C1iVFAsRGzQ01xpSelZwvWYCC+dug6K7I4nqba/msFc=;
-  b=LY4MtG/N5l3sSR+1KUYS2kLrVU9xkBgHIzWNFg9QArXa0ZEeOk13nnGu
-   MHuadRdF0TDkJdFqqMdZ8vsjaY2Lzun60xNzsHR/zO7Dv2/1zMbS4PEIw
-   4rPEGgnTBMTRc0MTX0mi3s6yUmUj0lSb2L3UKM53fJWy/+XMmZnSxiwm1
-   Poi/gXsJxFdCkWfL/OXtH0vppG3BJ3ONF9x43Ve2VTFynYdUwTffTG/AZ
-   igRYydbz98JajQlTzzi7X5kGHDPilx1tRDcMHBnJSv0pZ8JtqIGeEj24h
-   8ci47HF37z5fKtE7LJGCGHuwgd0s9fYlcwDje5LVOl1WnKDt4sju9ahVv
-   Q==;
-X-CSE-ConnectionGUID: Q35m9yxgRKic92SPddxGug==
-X-CSE-MsgGUID: 75cRdhNcRTm8C8YGikKgEA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="108314340"
+  t=1790148725; x=1821684725;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SHoV46IGp0r1Mgw9p20NaWVqyYQSQSikZbfLmgAsLa4=;
+  b=SogCKDo8Gfr6qUMOnKcqit1XA/9cgECEvFF+Xyl5NXradzz4GqQesfD7
+   Ixp399yTNb+bI/9AyJAjIpq+BK+dl1O/Ll8F3g/tiomyUy9N9m6H1zLJI
+   jCimPGZlEn2m5KzNdPx/BwYInQne1hpvVNRLGfZsbBghQ5+t0u/iZImLC
+   S1iP3kvjX/ARsp2ewoUVgdjXYUyLwERhhxpgxWLK9EwMipAHFGJcDhVcT
+   e2haSnVXu2f4UbciFCtJBRuExdRnNb7AP0puR+pe1X91qui4n0iGi7NXu
+   GQq3byqTbyFKoxY78VZQJvmbXknExKuwfrsV+iXEtCxuJ89uzomjhJ4kF
+   g==;
+X-CSE-ConnectionGUID: Q9PATbWXRMudQQSMs0Ix+Q==
+X-CSE-MsgGUID: xR2N23XYT5qw75P2RvwTQQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="1320714"
 X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
-   d="scan'208";a="108314340"
-Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 00:30:19 -0700
-X-CSE-ConnectionGUID: PiTlRojYS4STvyIKuL3YIQ==
-X-CSE-MsgGUID: YXsGaH0rQk2IEGhrPFSBCw==
+   d="scan'208";a="1320714"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa115.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 00:32:05 -0700
+X-CSE-ConnectionGUID: 4DfhbtCoSZeiI95kED0xJA==
+X-CSE-MsgGUID: TJSv5C3BQleQTGNgnnwlOg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
-   d="scan'208";a="4778806"
-Received: from unknown (HELO [10.238.2.139]) ([10.238.2.139])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 00:30:14 -0700
-Message-ID: <7698d2fc-fd72-4772-a017-a4a16f34cda6@linux.intel.com>
-Date: Wed, 23 Sep 2026 15:30:11 +0800
+   d="scan'208";a="272978551"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa007.fm.intel.com with ESMTP; 23 Sep 2026 00:31:59 -0700
+Date: Wed, 23 Sep 2026 15:30:55 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Tony Lindgren <tony.lindgren@linux.intel.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kas@kernel.org,
+	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
+	xiaoyao.li@intel.com, sohil.mehta@intel.com,
+	adrian.hunter@intel.com, kishen.maloor@intel.com,
+	peter.fang@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, chao.gao@intel.com,
+	artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org,
+	nik.borisov@suse.com
+Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Configure add-on features on TDX
+ module init
+Message-ID: <arOAL2Klu+L91JiI@yilunxu-OptiPlex-7050>
+References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
+ <20260915102658.713079-3-yilun.xu@linux.intel.com>
+ <arIqtGbSRHGw8fiT@tlindgre-MOBL1>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] x86/virt/tdx: Drop tdx_clflush_*()
-To: Yan Zhao <yan.y.zhao@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: pbonzini@redhat.com, dave.hansen@intel.com, seanjc@google.com,
- x86@kernel.org, kas@kernel.org, adrian.hunter@intel.com,
- binbin.wu@intel.com, xiaoyao.li@intel.com, chao.gao@intel.com,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-References: <20260922205215.870563-1-rick.p.edgecombe@intel.com>
- <20260922205215.870563-2-rick.p.edgecombe@intel.com>
- <arNirJownovqY66q@yzhao56-desk.sh.intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <arNirJownovqY66q@yzhao56-desk.sh.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arIqtGbSRHGw8fiT@tlindgre-MOBL1>
 
-On 9/23/2026 1:25 PM, Yan Zhao wrote:
-> On Tue, Sep 22, 2026 at 01:52:14PM -0700, Rick Edgecombe wrote:
->> The TDX module exposes a bit (CLFLUSH_BEFORE_ALLOC) to say whether it
->> requires some memory to be flushed from the cache before being handed
-> Drop "some"?
+On Tue, Sep 22, 2026 at 10:13:56AM +0300, Tony Lindgren wrote:
+> On Tue, Sep 15, 2026 at 06:26:55PM +0800, Xu Yilun wrote:
+> > --- a/arch/x86/virt/vmx/tdx/tdx.c
+> > +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> > @@ -998,6 +998,15 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
+> >  	return ret;
+> >  }
+> >  
+> > +/* List all kernel supported add-on features0 bits here */
+> > +#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0	(0)
+> > +
+> > +static __init u64 get_tdx_addon_features0(void)
+> > +{
+> > +	return tdx_sysinfo.features.tdx_features0 &
+> > +		TDX_KERNEL_SUPPORTED_ADDON_FEATURES0;
+> > +}
 > 
->> to the TDX module.
->>
->> During the initial TDX upstreaming, it was decided it would be simplest
->> to just always flush in these cases, rather than checking for the bit and
-> "in these cases" is ambiguous.
+> How about get_tdx_supported_addon_features() for the above? It makes the
 
-I assume "some memory" and "these cases" refer to memory pages allocated for
-TD private memory or TD control structures. I agree with Yan that it would be
-better to just state that explicitly.
+mm.. I think this would make a bit confusion. "tdx_supported" reads like
+the module supported features, which is just .tdx_features0. But here we
+want both the module & kernel support. I'm thinking of:
 
+ get_tdx_addon_features0(), just as is
+
+ or
+
+ tdx_get_supported_addon_features0(), maybe this is better?
+
+> calling code a bit more readable without having to figure out what it
+> returns.
 > 
->> having conditional logic. So currently the kernel flushes in several
->> places when handing memory to the TDX module.
->>
->> In practice this bit has never been set by any TDX module, so flushing
->> is unneeded. Going forward the TDX docs will be updated to clarify that
-> "Going forward, ...".
+> Other than that:
 > 
->> CLFLUSH_BEFORE_ALLOC will never be set in any future TDX module either.
->>
->> So make code even simpler by just deleting all the CLFLUSH_BEFORE_ALLOC
->> handling.
->>
->> AI was used to review the change.
->>
->> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
