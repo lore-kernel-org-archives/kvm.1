@@ -1,64 +1,64 @@
-Received: from mail-dl2-f42.google.com (mail-dl2-f42.google.com [74.125.229.170])
+Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732D25304D1
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 13:22:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EF35328C5
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 13:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790169736; cv=none; b=PdHEMsZRGXNcAvEq6UkczCeImqbHVCVG220p7Qsp/KLPG2w544HvYys7UzPUpTQaPfAIZsTmkqfuxLN52xm3VOSwmTTGmmaEdER8sg5+jnZiHFwugNIBYuEJv7TanaFD8ous/2CcW8ZrJVIdTtyzvJgfOmWBAiVhGFod2Ps0c+o=
+	t=1790169746; cv=none; b=jVvLf6jgB9anTTvzQP6UJMsNS3m7RJf5LqdjKkUiQ6LNATMoQdIPVsxU8JyPFGB57cxrmPOCkz8RQlFQF8uQSo9goEUkzQ4GaBzEF/cvZ3gOKLt+jd24NAp6p9I22cxEumYfd5CF6I1sPYFZMzrDd8CyhPGudwTa48GXZ4ZuOyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790169736; c=relaxed/simple;
-	bh=jUn3qqyUEtQaZvX9hV0wZkqiXMDN8j17gg9/OOyFXck=;
+	s=arc-20240116; t=1790169746; c=relaxed/simple;
+	bh=u5SQazvSZYG6DNPdDdW/qfbNX5hpingPPYclU8CLUkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tGVCJIojJz8wyZCdX9/G/1B3sRaTHMQnJ8unSDzUykf9EbB0Q2o0xktKGge7FuVZLvZ34+C4NC7ta8FKSlWf7BDlaDs/MJn1on8uhzYJZ1ENKbNg1LNjcjVlmg+kluU/p76QhQC+60p8NEMMbMCeMVyYnDAd3ew0XqxapK6Inbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g0vHJPg4; arc=none smtp.client-ip=74.125.229.170
+	 MIME-Version; b=HQfmJctnGGDO/tYZnkndS2GfxC/12Bdb6sFdqqxv8vFdKs1PfvWCOGE083Z/Emk7HLxVEDMnjkcrjU+5O6+cdIQq6lkwofduWmg8sLWbPWixeN00czYotUQfC+FghoPHpR4Qg+UEVNRhhfOG8D2Ak3I/pOwHA/cbiHctPCoIAuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WnTTlNZK; arc=none smtp.client-ip=74.125.229.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g0vHJPg4"
-Received: by mail-dl2-f42.google.com with SMTP id a92af1059eb24-142dce6e237so679038c88.3
-        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 06:22:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WnTTlNZK"
+Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-328664b7528so679060eec.2
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 06:22:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790169734; x=1790774534; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790169743; x=1790774543; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=dE9e1D/hNDaJ+34nzjVxm6PaKrug7kV63zAG9/GlOBQ=;
-        b=g0vHJPg4IBJwcZHRDzJXRuCdmTvRwqC3GeqBzT9LIx5hlEyaDAZT6m1ggBl8UH8W4p
-         JzQLu3hPHB3WHc+PmidWOgfTd6KGVM9iW7wrXsEoAboVP7RA3pS5ujJZdp8ovuBq6gZX
-         FAh/xWwID8OF/GGhAdoKJoAyKbZ0suUn3GL7Jz7lUoGqIHJNgP9LZG60Y7lmK8Y5alhr
-         9s/Fa4aLNZrCIMOSzaTkWlahUxhVuQFBK01mso49e82KNNGPJtSYhCGhHCuswPc7MHDA
-         DQ4lTchfxWTXDE/rS3FcgcAiQxzp8b7Wa4v9yYcjuYBkcILjapVXTUQ+viWOFhueWJm6
-         3v3Q==
+        bh=gZLlHjgFKGd97ZAl0jDOPJ4J/L8M7/uJxBZfNAi1MwY=;
+        b=WnTTlNZKpf1CGzgEFkyrfgBwEMABnrMVw4om6dyWjltSk7GHSF7qCHnj3zmhqc8Lvv
+         iMH8/2CK1Yh6Y8jBrsjSTA3Pv71q27qT6hXUgGQGzaoG/J9JQUAZgluQrIjlBMOD/jvd
+         fzXM9R/dtDzqr0d6mFAY8qz/tmcz9cDQ2n916gOJq81agNHocBNPcJZ+Ykpho9pmz/fo
+         GDW8UzV3GefoTZqfHki3Fm0FGSIwMLaBnc3AodhBW58/Kh006AepVPzr9qvR8Serdh+r
+         XRCw2m7Z2PbkO/0+U84w53xsKxJ81IrEoP8j7BTEXFrXQRKFC7P0Fw1SJJSho++1QZfl
+         B1rQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790169734; x=1790774534;
+        d=1e100.net; s=20260707; t=1790169743; x=1790774543;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dE9e1D/hNDaJ+34nzjVxm6PaKrug7kV63zAG9/GlOBQ=;
-        b=JnBb/j5uTH5/qsqAplskvLUTxysZ3YjFpbYph55Uz6M/21NUNMeHN+IGqEyJWDl4Hm
-         PAYghRrKmYKCQ1msSEsoDeHSsXOBuXpaPRTUSFQRv47TGoTNw3oGy4k7+jBHTY5Y0wjn
-         vNa3e3wFlajN3dPXGVD8ebXcYsYQ5Sb7IoO3LnfosVEPi1r2P2WIHaVODiFRJKT1hSso
-         tzToRKIibmayN6mEO8GzBdVvJhBX6VUto2J/jW17pu5uGdI5UBrQJyjLo0bEZZOqlvTD
-         v5MDittQgWmI9dEZfKPj+2hfK/LlNNGfSK7PaXqs61NzZalaVCwEBp7KmYwY086QDtXr
-         iJmg==
-X-Forwarded-Encrypted: i=1; AKwUvBxzpyeWsJBjIDHHQM0v2orAmExUF3bA1kwjvEwKM4pQLrUoMTXM+qOt1UT2mAPvnYD4AsY=@vger.kernel.org
-X-Gm-Message-State: AFuF++nIFlRmHf3h8mFYMsdfnlHJYtvs3qGDR3BXcOLlGSoQ1HmAb/hV
-	Dqd5Y3R2nDF6/pERSIexd2Osa3GeTHol0127YtUP6Prkzo1bebPWVgp8
-X-Gm-Gg: AYBFou0Vqn0bNWkwmi0bGWaKTyDDz7WGg3yeJ4zqBUXJb396JZvJjDuzChnJEwchq6b
-	ZbsUi/r4aamQqH9dvOdDg0vqIpYehEYXusq8E2b/U2xsiIwUhbYBXLb7rHYrVgKlfBt4ivD4lDl
-	D1WrvzhtiunTpTDo2AG9DXakt1duHqIYdD0lDtUeh3J5N+GlQ46I4fQVWzXk/jA1ypE5y2rnbtD
-	jyS1EAkm+WCX4rE87m2PPulm+NIBRvxSqYUfcEYGwFOjJJHMjp8VcirpbwF8nZOvOXDBrYsMU4B
-	/CNHdJliVcFAayE+hSJ4dhbTKAG02fd1PNccwuR93P4VpnVvUBQmJaRBR/1YIdpxK3TrUcxWVbA
-	kln9pTbQlmqmElmrV+kAgVYyQmtY52UR9XAlsCRmuFOeTqXMF54WBTeGv8wycBaXkeuSJYHollr
-	Mx/zSSgiG6M2Q0HVWmwJFZMk7X9pTNvrTB75hIkQSbAeCcq81VIILcYLSzcaVoDdht68tYtiyPl
-	4H8ZCO1enc/wQw1MubPV6VjvNrvnwM=
-X-Received: by 2002:a05:7022:6b87:b0:143:57c1:6242 with SMTP id a92af1059eb24-144f917e7a9mr3802797c88.26.1790169734421;
-        Wed, 23 Sep 2026 06:22:14 -0700 (PDT)
+        bh=gZLlHjgFKGd97ZAl0jDOPJ4J/L8M7/uJxBZfNAi1MwY=;
+        b=VpEjHeiiTZt2tDBGQKlSspM/tTaHhpwUVtiIIE74QPmf850SL76Cdz0m2Mj4SotsvU
+         IbmklwKqQYbWNEGGH8I91F6esSNYKTD0pi/jeJa0M+soAFprChIYfGfTomGkWFukeUhm
+         5AOhuOWDH6cnvjxO4B42KJLDXES+SdUjkK26XwLn7/U6OhakgP6rPaRj5u7o44bFBZtb
+         HOb20ozwowOiq5OSGhOZzboT8WF7uNa5YIkNyiGOPHJwMeXu7D49BDgwbByu1XeRdYUZ
+         gd2JP11bQwio80WDZiss9C8GS1oA7Fx+xYWYZAlUP5G24//34NlvEYRP0VPHCVktYDf7
+         x6Qw==
+X-Forwarded-Encrypted: i=1; AKwUvBywIYj48iRUKRwrZGJS403G6VHcfDWWORc2yTvVbEI5IR/rXTwaR+DqJ5kZlmYSHkz7Nzw=@vger.kernel.org
+X-Gm-Message-State: AFuF++kiXMquKsMmyowhSLP7AhqQgr2j/Mfu6BfM55o8AyBx0eycVXs4
+	eL7jfHNCfmwuw8Iq6wIcipOknu54syRQouhBmyBVjmV+KPtVpOdnbAGI
+X-Gm-Gg: AYBFou2njZAOhhMHY6Ba2uvI9Fwy+NK+P/CaZ4ZOfNZxY6EQIdLSxx2lPBjlNon0pP1
+	1AgmjURHrX74idebpW9zoncUb9PJhv7eus7hYVYE80hF6KClZfGm252xoUpcPKWmLJkKEBIch67
+	z6qlHs/Q+rQVqCTDacrtWknf6KYcDlCsji5Nf4lJJtfix2krZxLd4RbefNnNu3xiQM8fu4lZ9W2
+	e5HnqIjL98X5JeaVmL/XdqHkqqJ27+3/uQvXEcWTdGAcgcJPYLM52uZ7PHdQmea+sM2rWdXqnV3
+	qB4khIfGSaQdaci6BLek2vomCE5nvMT3P97niVQ0Mvoceny4tdVorg5bo3HvaNcfJsCNnoTbwOc
+	hnXNxN+gibCD+NiDxIlJwL7Mg3erNRs1zINVtEmgO3M6q4HlcBSfwDXuXsNYCqKk/EESLsJDYiH
+	PZVeKdERYR/lQGSDbIrReZHEDb+0Pm38Vd1aICbR7JO8oQ5cWgc2lCE2P7klekmekxYVNlRL11M
+	UJNg/hqqMG/Fk3wlKR72rAwYgalXq1jVqwMEFwjUg==
+X-Received: by 2002:a05:7301:c016:b0:33b:d4c9:561f with SMTP id 5a478bee46e88-33e8bb7c1ffmr2536095eec.5.1790169742689;
+        Wed, 23 Sep 2026 06:22:22 -0700 (PDT)
 Received: from WIN-BH9M8FJACR9 ([103.94.185.75])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-33e97236754sm5553695eec.29.2026.09.23.06.22.07
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-33e97236754sm5553695eec.29.2026.09.23.06.22.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 06:22:13 -0700 (PDT)
+        Wed, 23 Sep 2026 06:22:21 -0700 (PDT)
 From: Yonggang Luo <luoyonggang@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Cornelia Huck <cohuck@redhat.com>,
@@ -102,9 +102,9 @@ Cc: Cornelia Huck <cohuck@redhat.com>,
 	qemu-arm@nongnu.org,
 	qemu-s390x@nongnu.org,
 	Brian Cain <brian.cain@oss.qualcomm.com>
-Subject: [PATCH v3 032/114] gdbstub: drop per-target cpu-param.h from helpers.h
-Date: Wed, 23 Sep 2026 21:15:06 +0800
-Message-ID: <20260923131635.1894-33-luoyonggang@gmail.com>
+Subject: [PATCH v3 033/114] hw/riscv: expand boston-aia and microblaze-v-generic to TypeInfo
+Date: Wed, 23 Sep 2026 21:15:07 +0800
+Message-ID: <20260923131635.1894-34-luoyonggang@gmail.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260923131635.1894-1-luoyonggang@gmail.com>
 References: <20260923131635.1894-1-luoyonggang@gmail.com>
@@ -116,28 +116,56 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-- Stop including cpu-param.h from gdbstub/helpers.h so once-compiled
-  gdbstub can use the helpers without TARGET_* macros.
+Replace DEFINE_MACHINE with TypeInfo on boston-aia and
+amd-microblaze-v-generic. Set is_available to target_is_base_riscv.
 
 Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
 ---
- include/gdbstub/helpers.h | 3 ---
- 1 file changed, 3 deletions(-)
+ hw/riscv/microblaze-v-generic.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/include/gdbstub/helpers.h b/include/gdbstub/helpers.h
-index b2f41d6d280..7250e457c2c 100644
---- a/include/gdbstub/helpers.h
-+++ b/include/gdbstub/helpers.h
-@@ -15,9 +15,6 @@
- #include "qemu/bswap.h"
+diff --git a/hw/riscv/microblaze-v-generic.c b/hw/riscv/microblaze-v-generic.c
+index 3f07ab21328..9b60a955152 100644
+--- a/hw/riscv/microblaze-v-generic.c
++++ b/hw/riscv/microblaze-v-generic.c
+@@ -14,6 +14,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "qemu/target-info.h"
+ #include "qemu/units.h"
  #include "qemu/target-info.h"
+ #include "qapi/error.h"
+@@ -177,8 +178,10 @@ static void mb_v_generic_init(MachineState *machine)
+     create_unimplemented_device("qspi", QSPI_BASEADDR, 0x10000);
+ }
  
--#ifdef COMPILING_PER_TARGET
--#include "cpu-param.h"
--#endif
+-static void mb_v_generic_machine_init(MachineClass *mc)
++static void mb_v_generic_machine_class_init(ObjectClass *oc, const void *data)
+ {
++    MachineClass *mc = MACHINE_CLASS(oc);
++
+     mc->desc = "AMD Microblaze-V generic platform";
+     mc->init = mb_v_generic_init;
+     mc->min_cpus = 1;
+@@ -188,4 +191,16 @@ static void mb_v_generic_machine_init(MachineClass *mc)
+     mc->default_cpus = 1;
+ }
  
- /*
-  * The GDB remote protocol transfers values in target byte order. As
+-DEFINE_MACHINE("amd-microblaze-v-generic", mb_v_generic_machine_init)
++static const TypeInfo mb_v_generic_machine_class_init_typeinfo = {
++    .name = MACHINE_TYPE_NAME("amd-microblaze-v-generic"),
++    .parent = TYPE_MACHINE,
++    .class_init = mb_v_generic_machine_class_init,
++    .is_available = target_is_base_riscv,
++};
++
++static void mb_v_generic_machine_class_init_register_types(void)
++{
++    type_register_static(&mb_v_generic_machine_class_init_typeinfo);
++}
++
++type_init(mb_v_generic_machine_class_init_register_types)
 -- 
 2.52.0.windows.1
 
