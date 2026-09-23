@@ -1,99 +1,138 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-145.mta1.migadu.com [95.215.58.145])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD9249BD68;
-	Wed, 23 Sep 2026 11:04:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B933A7587
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 11:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790161468; cv=none; b=ayQekLCw+HRxl3CS8cgj7EQKqpmt0+/sFxZIEzyT4hn/JNaiqJq+g8o+ZkNk4xECMMy7EM+iWxwk+ZQHJzVh6awKL8M9P1XLJ9zxrQZTv2G61iNznwRylldQPmdUW2niiQEfl9ueVWBNZJ9Ulg35LgCoj9JPb1U+iG9FmTBMIzs=
+	t=1790161551; cv=none; b=sr21qxaLJZZD7I3N08zxhs2kGsin68Nh1nTKirBA680ENjsot8rBt6I9lzDelFj3Jf8dyGUFrBoG4kU39QPohcL+hRFFNshfAKuwWQP7tF+QN+CvO78cBaCt6NYiIZrG5c9bOOxdFqTInoeLYGpx0jekZRsHSCKE0OpfYlz0owU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790161468; c=relaxed/simple;
-	bh=zGjMIFygYqqz687r0Dm5FHB9zulLKHdqaxokHtzat/0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qXOY38cotmwqreY0w8/ghmdwjKVwJfzI2+/URhOBBw94+Ee1Efl0meNGU28s5+SbkmKaDSgnXuMXKk+O1v7j+iSijJiDTjASzz5bKj123uUOMqqlJhkm0xUY3RzlZ/YcPUQxUwWxsc+tnybTAMM/P5uuFSKXHMEe2DxWBd4qm/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ghzlVDic; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790161551; c=relaxed/simple;
+	bh=kHep/UoJdFlSFtMOk5eTsBvsgTZFrj+duqNAdJba03Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sSR18lbMSpFUgU5W0arE96voo2pY5T0/LgvZkCiYY+zpyMQhYDY7eXk4K10AYltV3sIRIufPx2/yntV/2AKPQ9KSHk9A1BaLNCyiVtP/1uLb82vauHrBRs/JUzYE56U87+x1nfjj35XBNpY5gxo2+/D04d/pDnMjxpjkw6HBYsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=G9JVWcXx; arc=none smtp.client-ip=95.215.58.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ghzlVDic"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790161464; x=1821697464;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=zGjMIFygYqqz687r0Dm5FHB9zulLKHdqaxokHtzat/0=;
-  b=ghzlVDic6G5jPO39akH+3R5j7n46uaFUZMM8/WHyFy94MxbB11XlZT3w
-   HEaJAfeGfQ325/E+IdRfUPi11WSlPkNT/4dgZQvLIWTcAMmq1JPV2O8Va
-   Ym/PUrOJ5hpEINLPEf9h9+Evh50RR9yes9rXG3/WR7TTMRHKyGaBlh39h
-   coI5myozv8it2WniHd+uHwFtdyBahrLuCQAXY0CS6q8U6n+1x6sXtD0IL
-   ZBukH/rNi/RX0T3TKW/w5oelQLgy7CtV3mUMq/53m+wTPNaO4hS4PA2a2
-   reoxTNixsyFagzXozGC254sz8uTZO9eR8Xisfup3KBP5Zjk5Vr4fru2je
-   g==;
-X-CSE-ConnectionGUID: 1QONjn5VSvmIYvQjstq08w==
-X-CSE-MsgGUID: Rcwv5mziQMS4yBW2rSj02Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="78398399"
-X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
-   d="scan'208";a="78398399"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 04:04:19 -0700
-X-CSE-ConnectionGUID: TVU7IVoTRMahSqgIQUYcpQ==
-X-CSE-MsgGUID: IXCmbDfGQim3ZgcvijNH+w==
-X-ExtLoop1: 1
-Received: from zhaoliu1-desk.sh.intel.com (HELO localhost) ([10.238.208.118])
-  by fmviesa003.fm.intel.com with ESMTP; 23 Sep 2026 04:04:17 -0700
-Date: Wed, 23 Sep 2026 19:04:16 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: "Chang S. Bae" <chang.seok.bae@intel.com>
-Cc: pbonzini@redhat.com, seanjc@google.com, kvm@vger.kernel.org,
-	x86@kernel.org, linux-kernel@vger.kernel.org,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v7 00/20] KVM: x86: Enable APX for guests
-Message-ID: <arOyMJmOZVRp7Byr@intel.com>
-References: <20260902021804.718676-1-chang.seok.bae@intel.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="G9JVWcXx"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=kHep/UoJdFlSFtMOk5eTsBvsgTZFrj+duqNAdJba03Y=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790161542; v=1; x=1790766342;
+ b=G9JVWcXxhRKoYaz+VObIY7RqO6JcArdp6rKqbOJy1zAjIYti36x2SZzXeo31m8Ko2+Z00xGV
+ T5+rEFcIT3PGCQ+VaO5UvjaPSeFSQuw+fCYac//ZlqsmbUU20nzSY3zkwxnsEgihwCVkfXzUO9B
+ +4Bykx/odZwtzo8QwnHqmmxo=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id f91ccaabda877b65;
+	Wed, 23 Sep 2026 11:05:41 +0000
+X-Mizu-Trace-ID: f91ccaabda877b65
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5b8c42da963so5318e87.0
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 04:05:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByIS6i97iLGZeCdTlxs3vWIl4j3XZB2/w34XRCid/P8LrsehhMvq84hHge9rH15sgfKQFM=@vger.kernel.org
+X-Gm-Message-State: AFuF++lttiXwrMiQLjfpF730uwhjB4OzdUtonam93IOeBFnbSfg1aJhQ
+	EOv5rGCh90bNAmOGoxa7lQWUGFdujmtAGMgk+Hcx6fqhCLqY2JgFRoMdua8uiuvyu2WONgOInXy
+	HR0Kn7M89g17ehss8cwkVz0rBTe46PfHEN/j1UDdf
+X-Received: by 2002:ac2:4c54:0:b0:5b8:cc2e:2fe6 with SMTP id
+ 2adb3069b0e04-5b8d915cbe7mr97644e87.5.1790161539952; Wed, 23 Sep 2026
+ 04:05:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260902021804.718676-1-chang.seok.bae@intel.com>
+References: <20260922-kvm-arm-prefault-v3-0-787bd3bc7e3f@kernel.org> <20260922-kvm-arm-prefault-v3-8-787bd3bc7e3f@kernel.org>
+In-Reply-To: <20260922-kvm-arm-prefault-v3-8-787bd3bc7e3f@kernel.org>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Wed, 23 Sep 2026 12:05:03 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTwSRAGe4iP2E2V=b+baQ_GRYpYoNzJSft385m9E5RvEMg@mail.gmail.com>
+X-Gm-Features: AcwNN1Xp8lA6R1poRNOfE-88mv5Px32o87Y3m3XsUHw9H9Pq7uMPdjPzqDpKw3o
+Message-ID: <CA+EHjTwSRAGe4iP2E2V=b+baQ_GRYpYoNzJSft385m9E5RvEMg@mail.gmail.com>
+Subject: Re: [PATCH v3 08/14] KVM: arm64: Propagate EHWPOISON in kvm_s2_fault_pin_pfn()
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Mark Rutland <mark.rutland@arm.com>, 
+	Randy Dunlap <rdunlap@infradead.org>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Jack Thomson <jackabt@amazon.com>, Jack Thomson <jackabt.amazon@gmail.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Vincent Donnefort <vdonnefort@google.com>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Sean Christopherson <seanjc@google.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Leo Soares Passos <Leo.Bras@arm.com>, 
+	Wei-Lin Chang <weilin.chang@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Sep 02, 2026 at 02:17:44AM +0000, Chang S. Bae wrote:
-> Date: Wed,  2 Sep 2026 02:17:44 +0000
-> From: "Chang S. Bae" <chang.seok.bae@intel.com>
-> Subject: [PATCH v7 00/20] KVM: x86: Enable APX for guests
-> X-Mailer: git-send-email 2.53.0
-> 
-> Dear KVM maintainers,
-> 
-> This respin is primarily a rebase onto v7.3, with the following minor
-> changes:
-> 
->  * Patch 8: Adjust the core API usage from static_cpu_has() to
->    cpu_feature_enabled().
->  * Patch 2: Fix an unintended code comment change that was previously
->    leaked to next patch.
-> 
-> Please let me know if there are any remaining issues that should be
-> addressed. I'm trying to figure out the next steps for the series.
-> 
-> Otherwise, I would appreciate your consideration for picking up this.
+On Tue, 22 Sept 2026 at 15:19, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+>
+> Currently kvm_s2_fault_pin_pfn() handles a poisoned page directly by
+> sending a SIGBUS signal itself.
+>
+> This is an odd place to do it, the caller should decide what to do with
+> errors, so move the handling to the sole caller, user_mem_abort().
+>
+> This lays the foundation for stage 2 pre-faulting which, arising from a
+> synthetic fault, should not send a signal.
+>
+> In order to do so, check to see if user_mem_abort()'s caller has set result
+> - i.e. whether it wants to be informed about the outcome of the fault
+> handling.
+>
+> If it does, then it is implied that it should handle the -EHWPOISON error
+> itself. This is the case for pre-faulting.
+>
+> Otherwise this is real hardware, so send the signal.
+>
+> No functional change intended.
+>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Hi Chang,
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 
-I tested this series with QEMU master, and no regression was found.
+Cheers,
+/fuad
 
-my tests include:
-
-1) Check APX enumeration & XSTATE in L1 & L2 VM.
-2) (with AI help) Collect instruction test cases from LLVM/GCC and
-   create some new, then test them in L1 & L2 VM.
-3) Expand the selftest to cover additional KVM instruction-emulator
-   cases.
-
-All tests are passed at my side, so,
-
-Tested-by: Zhao Liu <zhao1.liu@intel.com>
-
+> ---
+>  arch/arm64/kvm/mmu.c | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index 221ea069f9bb..2576b967d20e 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -2016,10 +2016,8 @@ static int kvm_s2_fault_pin_pfn(const struct kvm_s2_fault_desc *s2fd,
+>                                       kvm_s2_fault_is_write(s2fd) ? FOLL_WRITE : 0,
+>                                       &s2vi->map_writable, &s2vi->page);
+>         if (unlikely(is_error_noslot_pfn(s2vi->pfn))) {
+> -               if (s2vi->pfn == KVM_PFN_ERR_HWPOISON) {
+> -                       kvm_send_hwpoison_signal(s2fd->hva, __ffs(s2vi->vma_pagesize));
+> -                       return 0;
+> -               }
+> +               if (s2vi->pfn == KVM_PFN_ERR_HWPOISON)
+> +                       return -EHWPOISON;
+>                 return -EFAULT;
+>         }
+>
+> @@ -2261,6 +2259,13 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd,
+>          * get block mapping for device MMIO region.
+>          */
+>         ret = kvm_s2_fault_pin_pfn(s2fd, &s2vi);
+> +       if (ret == -EHWPOISON) {
+> +               /* If result is specified, let the caller handle this. */
+> +               if (result)
+> +                       return -EHWPOISON;
+> +               kvm_send_hwpoison_signal(s2fd->hva, __ffs(s2vi.vma_pagesize));
+> +               return 0;
+> +       }
+>         if (ret != 1)
+>                 return ret;
+>
+>
+> --
+> 2.55.0
+>
