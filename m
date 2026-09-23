@@ -1,162 +1,342 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836EE49BD92;
-	Wed, 23 Sep 2026 12:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D78350129B;
+	Wed, 23 Sep 2026 12:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790167221; cv=none; b=hmgijv3ExG2aFHNxdHGVM8+fLMlOHOhnWjPoKAD+D91Up09pd9V+eyhBP6Pg74yvLcu2CHzPCaB9RV+c84WM5v5GTfITm51vVEOSKcJxkiRA5ENljBAjJI0rvUtiAEKwiKnmHvbTbVE+uXGhmkGYB6ZJYakk3SGPOC22YLzHEKI=
+	t=1790167594; cv=none; b=eFSxqhoQSJPA94cIFd6Xsq2EerpIypmUNob+ueK2t5314Jc+3ishbybxYDr+HUknWaanAZUMUhd5eYmLY88Ylkt+unGdfdPHPCInJXCbHeNTr6prg5fLgdX6ekcev+4Qjwl6O57AnJsuYiDwIYQcxN5hzbH2SPyL/bEyXfoPTx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790167221; c=relaxed/simple;
-	bh=rJY8ge6rCZ9Q8pODTJ6F7OwUoTa9UdStelKSER073QQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S3iowQPDivp0ZcgWeWfBrK9S6J90msn0W9TrfoswR8KD9AKqpqfQzGCasrPBTl1i9eoLRC2pNVD700IWTATqh+6X4k9STvDOx8ZbZQCA+oBQNygagrHaiH3rRnEwg0kfrS5L2SFTVk6XxmGWsDS9pkYyQcUMbPHGEeJiaPpyahs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=EjCEfRu7; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1790167594; c=relaxed/simple;
+	bh=t7e1nfGxHNmrDNX6QfK4dqISXW7xeANntYXIlgJBYFI=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=AAyYash9d9JUrA1Zl2T9HWw4mdCueLgjWHaF5Z74jkF0ikTCSmNe2hyDpovEmymjVDpfc5lPRxyJ2kSMtP6uxGu0kFvPDZ8q0zW6qrP3FbPY7w32P8TivyRa2tHNM9yQEkunlf+Wo2hpO24UJ2wJh33+3Hhka8cbQMlopbzqIKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CrWiKmjH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EjCEfRu7"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68N8Zscd1031451;
-	Wed, 23 Sep 2026 12:40:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=CPtNgf
-	2ejJUELxCf3lAR9MsJWtYgjCZqIvaI4J0wC+8=; b=EjCEfRu7MHpQFJH3eMxfk9
-	tAm5NfWvl+BBCkzwkiRjaKbKmwWWSqtnWnBElSzOnD3BhVJKJ0Lh+bpbpJV5aR7N
-	eyX5HiXH+A+JvaltXQpPdtCz1GmgPWaDY1wo8O82r6n3gYlJtfKImQiGQbsmJEyO
-	lPQVOwmULbqVEldvygSmXKaRnGcWXAlTfiQsVRKb9WjqaW/KYfQTyq0Ss/miCQMF
-	0vlUHp59TPqHNHb/FgZjhln+dKKKJvq8KLgm2etgeM3th3w9rgsWpBopslcJQGWw
-	ThmbaXNfKQBIQUj1e4IuTw2eRJ8/j5Tn+NX6dHRI09+lT9FcIO+yv3MlvusIfp0w
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gske1u84t-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 23 Sep 2026 12:40:16 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68N95hlr005936;
-	Wed, 23 Sep 2026 12:40:15 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gvbu8rtfq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Sep 2026 12:40:15 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68NCeArl31588674
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 23 Sep 2026 12:40:11 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D083C20043;
-	Wed, 23 Sep 2026 12:40:10 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7BC3820040;
-	Wed, 23 Sep 2026 12:40:10 +0000 (GMT)
-Received: from [9.111.80.133] (unknown [9.111.80.133])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 23 Sep 2026 12:40:10 +0000 (GMT)
-Message-ID: <5df0f9d6-6856-4b19-b5b8-a54aa23f2095@linux.ibm.com>
-Date: Wed, 23 Sep 2026 14:40:10 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CrWiKmjH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459301F000FF;
+	Wed, 23 Sep 2026 12:46:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790167593;
+	bh=hvEATMHT8LppXMY0FVV0LoMbdtpDyVnS655+tRllo2k=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=CrWiKmjHshxqOwkbah01Mw2iJUiDqL6nYF43KbhteUpDjZFlCaN9jtGKpXi2D2qKk
+	 E3aaCpH7y6p+UGNXuTTA85f85Y8/bxLGzaKWgQs8ul13j76scKj67o1NTX8iZPyRV5
+	 Rc0rGZx4UZMj+vhFeEKoIqFtMqXzIhM2yY2ZwlZxTSS0MQx6d2nWS/tUQ/LzuOLk2p
+	 Kfnv2azgZm++VOkmN7f1SK32aXtpNlsPAa8Y2ARugeNTEB4edGhXEuKRuz+W76U8Tq
+	 2Mm3iaQgMq0QDOaLSe7E3sqjRk+5Xu2ZLXqOEJvhp7E7GEP3NYJF9Po4dGn0vR0eEG
+	 ZY/8NJEJHxr3A==
+Subject: Re: [PATCH v2] vsock: keep SOCK_SEQPACKET message boundaries on
+ interrupted send
+From: netdev-bot+sashiko@kernel.org
+To: bartlomiej.dmitruk@isec.pl
+Cc: stefanha@redhat.com, sgarzare@redhat.com, mst@redhat.com,
+ jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, kvm@vger.kernel.org, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Wed, 23 Sep 2026 12:46:31 +0000
+Message-ID: <179016759182.2160803.6151329514063340647@kernel.org>
+In-Reply-To: <20260919122916.28226-1-bartlomiej.dmitruk@isec.pl>
+References: <20260919122916.28226-1-bartlomiej.dmitruk@isec.pl>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 09/21] KVM: s390: vsie: Replace radix_tree with xarray
- addr_to_page
-To: Christoph Schlameuss <schlameuss@linux.ibm.com>, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Eric Farman <farman@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
-        Nico Boehr <nrb@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
-        Shuah Khan <shuah@kernel.org>, Sean Christopherson <seanjc@google.com>
-References: <20260918-vsie-sigpi-v7-0-f39806eaae37@linux.ibm.com>
- <20260918-vsie-sigpi-v7-9-f39806eaae37@linux.ibm.com>
-Content-Language: en-US
-From: Janosch Frank <frankja@linux.ibm.com>
-Autocrypt: addr=frankja@linux.ibm.com; keydata=
- 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
-In-Reply-To: <20260918-vsie-sigpi-v7-9-f39806eaae37@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: mnh-KRU2lOsUcHdmtoMdPllIBLgladeP
-X-Authority-Analysis: v=2.4 cv=EOCTQFZC c=1 sm=1 tr=0 ts=6ab3c8b0 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
- a=DponMWe7-xSqsNA-YoAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDA1MCBTYWx0ZWRfX9I8LQ6wkk5XY
- qdPcgA+dp55YqqzKtM5aRHS+tszc3g4kraNIW+qA0+buia/AFsitTPsSrQhNt7xEny0s9meKA79
- ipqqZN+7yAvp4HGBtIjM12Zv19KNG7I=
-X-Proofpoint-GUID: P3dycCgMYcO32UV5YkNXIeIEhBaEilBb
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDA1MCBTYWx0ZWRfX4VujMLD7MbHw
- gzYXPqjyuaCWkAjjYTNo5cP73wq64VuVZlmyIkx20JcdWKkhSVsrSLD15+2wGsfzbZ2Y4yShc8/
- O/41x1ntHQbZ2XizQ28pCSgPLrOA93T94c6THB+K8SMFIf+PleEwdffJIFXqB1fA8QmG53S7GqH
- c/bVnEZDmpl7h5bcA1MCKtNpb0dCx0FS1PGhfotqIr4p40cgQtJs7t/Wg+SKJOoo6yP/4mdB2da
- mihjROk198Rlw/UCMcg33ZHSTiE0FGE6qBsFoheZMGylDL/OqtKfHwiIho3Vmz2TzMM/C7CV7ZI
- qho2HzR+N0JIvAJny2wZt5bp1izjiibPJCUYFBp9517WmBAFcSUVFzs/6X61hFQ9MAj0cGPajKX
- utFg4B/aSVNmhtzJ2d2+41zyOS/t+ncghmwvWRMWCrj14wr7wvCq76jMHNlLctgeYBkwbdvEBXh
- 55JLWsRSQJdplxegYBw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-23_04,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0 priorityscore=1501 clxscore=1015 spamscore=0
- adultscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609230050
 
-On 9/18/26 5:09 PM, Christoph Schlameuss wrote:
-> The underlying implementation of radix_tree is xarray since v4.20.
-> Changing to the xarray API directly relaxes some of the locking
-> obligations and provides more symmetry with the next vsie changes in
-> the series.
-> 
-> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+Thank you for your contribution! Sashiko AI review found 6 potential
+issue(s) to consider.
+
+Critical: 0 · High: 3 · Medium: 2 · Low: 1
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] vhost-vsock is left with an unsatisfiable atomic wait: the new
+  whole-message wait (`min_space = len - total_written`) in…
+- [High] Waiting for whole-message credit does not make the SEQPACKET
+  enqueue atomic, so EOM-less orphan fragments — the exact corruption…
+- [High] The `len > transport->seqpacket_max_size(vsk)` feasibility test
+  is evaluated once at the top of the outer `while (total_written <…
+- [Medium] The commit message claims "SOCK_STREAM behaviour is unchanged
+  (min_space == 1 reproduces the old 'wait while space == 0')", but that…
+- [Medium] Raising the wake-up threshold from 1 byte to the full message
+  length makes SEQPACKET send liveness depend on the peer proactively…
+- [Low] The patch fixes a user-visible SOCK_SEQPACKET framing bug
+  (interrupted credit-limited sends leaving EOM-less fragments that the…
+
+--
+
+vsock: keep SOCK_SEQPACKET message boundaries on interrupted send
+
+The patch makes vsock_connectible_sendmsg() wait until a whole remaining
+SOCK_SEQPACKET message fits in the transmit window before enqueuing it, so
+an error during the wait leaves no EOM-less fragments behind.  A new
+optional seqpacket_max_size() transport op, implemented by the virtio and
+loopback transports, is used to reject up front a message that could never
+fit, with -EMSGSIZE.
+
+A few questions below.
+
+[Severity: Low]
+
+This fixes a user-visible SEQPACKET framing problem but carries no Fixes:
+tag and no Cc: stable.  Should it point at the commit that added SEQPACKET
+handling to the generic send loop ("af_vsock: implement send logic for
+SEQPACKET"), so backport tooling can pick the affected stable trees?
+
+> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> index 9b71479a2b29..01fc9ac6fa2b 100644
+> --- a/net/vmw_vsock/af_vsock.c
+> +++ b/net/vmw_vsock/af_vsock.c
+> @@ -2250,9 +2250,32 @@ static int vsock_connectible_sendmsg(struct socket *sock, struct msghdr *msg,
+>  
+>  	while (total_written < len) {
+>  		ssize_t written;
+> +		s64 min_space;
+> +
+> +		if (sk->sk_type == SOCK_SEQPACKET) {
+> +			/* A SEQPACKET message must be delivered atomically, so
+> +			 * wait until the whole remaining message fits before
+> +			 * enqueuing.  Otherwise a credit-limited partial send that
+> +			 * later errors out (e.g. -EINTR) leaves EOM-less fragments
+> +			 * that the peer merges into the next message.
+> +			 *
+> +			 * Reject a message that can never fit up front so the wait
+> +			 * below cannot block forever (a peer may advertise a small
+> +			 * buf_alloc); this mirrors the -EMSGSIZE the transport
+> +			 * returns for an oversized message.
+> +			 */
+> +			if (transport->seqpacket_max_size &&
+> +			    len > transport->seqpacket_max_size(vsk)) {
+> +				err = -EMSGSIZE;
+> +				goto out_err;
+> +			}
+
+[Severity: High]
+
+The new wait threshold below applies to every SOCK_SEQPACKET socket, but
+this -EMSGSIZE escape is gated on the new optional op.  vhost_transport in
+drivers/vhost/vsock.c does not register it:
+
+	.seqpacket_dequeue        = virtio_transport_seqpacket_dequeue,
+	.seqpacket_enqueue        = virtio_transport_seqpacket_enqueue,
+	.seqpacket_allow          = vhost_transport_seqpacket_allow,
+	.seqpacket_has_data       = virtio_transport_seqpacket_has_data,
+
+so transport->seqpacket_max_size is NULL there and this branch is skipped,
+while min_space still becomes len - total_written.
+
+What happens on a host-side SEQPACKET sendmsg() whose len exceeds the
+window?  vsock_stream_has_space() -> virtio_transport_stream_has_space() ->
+virtio_transport_has_space() is capped by virtio_transport_tx_buf_size() =
+min(peer_buf_alloc, buf_alloc):
+
+net/vmw_vsock/virtio_transport_common.c:virtio_transport_has_space() {
+	bytes = (s64)virtio_transport_tx_buf_size(vvs) -
+		(vvs->tx_cnt - vvs->peer_fwd_cnt);
+	...
+}
+
+Can the loop condition vsock_stream_has_space(vsk) < min_space ever become
+false in that case?  A blocking sender would sleep in wait_woken() until
+SO_SNDTIMEO or a signal, and a non-blocking one would keep getting -EAGAIN,
+where before this change virtio_transport_seqpacket_enqueue() returned
+-EMSGSIZE immediately.
+
+Since peer_buf_alloc is taken verbatim from peer headers in
+virtio_transport_space_update(), can a guest advertising a small buf_alloc
+hold a host process inside sendmsg()?
+
+Does tools/testing/vsock/vsock_test.c:test_seqpacket_bigmsg_client() still
+pass on vhost-vsock?  It expects the immediate error:
+
+	send_buf(fd, data, buf_size, 0, -EMSGSIZE);
+
+> +			min_space = len - total_written;
+> +		} else {
+> +			min_space = 1;
+> +		}
+
+[Severity: High]
+
+Does waiting for whole-message credit actually make the enqueue atomic?
+virtio_transport_send_pkt_info() still splits the payload into
+VIRTIO_VSOCK_MAX_PKT_BUF_SIZE (64K) chunks and hands each skb to send_pkt()
+as it goes, and EOM is stamped only on the chunk where the iterator drains:
+
+net/vmw_vsock/virtio_transport_common.c:virtio_transport_alloc_skb() {
+	if (msg_data_left(info->msg) == 0 &&
+	    info->type == VIRTIO_VSOCK_TYPE_SEQPACKET) {
+		hdr->flags |= cpu_to_le32(VIRTIO_VSOCK_SEQ_EOM);
+	...
+}
+
+If a later chunk fails, the loop breaks but the error is replaced by a
+positive partial count:
+
+net/vmw_vsock/virtio_transport_common.c:virtio_transport_send_pkt_info() {
+	skb = virtio_transport_alloc_skb(...);
+	if (!skb) {
+		ret = -ENOMEM;
+		break;
+	}
+	...
+	/* Return number of bytes, if any data has been sent. */
+	if (rest_len != pkt_len)
+		ret = pkt_len - rest_len;
+}
+
+So for a message larger than 64K whose second fragment hits -ENOMEM, or a
+copy failure on an unmapped part of the user iovec, doesn't this loop see
+written > 0, add it to total_written, recompute min_space and re-enter the
+wait with EOM-less fragments already at the peer?  Any later out_err exit
+(-EINTR, -EAGAIN, sk_err, peer RCV_SHUTDOWN) then abandons them, and
+virtio_transport_seqpacket_do_dequeue() only advances msg_count on an EOM
+skb:
+
+	if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM) {
+		msg_ready = true;
+		vvs->msg_count--;
+
+virtio_transport_get_credit() can also grant less than requested if the
+window shrank after the wait:
+
+	ret = min_t(u32, credit, virtio_transport_has_space(vvs));
+
+which produces the same short, EOM-less write.
+
+Separately, the size test above compares the full len rather than
+len - total_written, so on a second iteration a shrunken maximum can return
+-EMSGSIZE in the middle of a partially transmitted message.  Should the
+transport enqueue itself be made transactional (emit EOM or discard on
+abort) instead of, or in addition to, extending the wait here?
+
+>  
+>  		add_wait_queue(sk_sleep(sk), &wait);
+> -		while (vsock_stream_has_space(vsk) == 0 &&
+> +		while (vsock_stream_has_space(vsk) < min_space &&
+>  		       sk->sk_err == 0 &&
+>  		       !(sk->sk_shutdown & SEND_SHUTDOWN) &&
+>  		       !(vsk->peer_shutdown & RCV_SHUTDOWN)) {
+
+[Severity: Medium]
+
+The commit message says:
+
+  "SOCK_STREAM behaviour is unchanged (min_space == 1 reproduces the old
+  "wait while space == 0")"
+
+Is that accurate for transports whose stream_has_space() can return a
+negative error?  The comparison is signed, so < 1 is also true for negative
+values, while the old == 0 test was not.  vsock_stream_has_space() passes
+the raw s64 through, and VMCI does not clamp:
+
+net/vmw_vsock/vmci_transport.c:vmci_transport_stream_has_space() {
+	return vmci_qpair_produce_free_space(vmci_trans(vsk)->qpair);
+}
+
+vmci_q_header_free_space() returns a negative error when the shared
+queue-pair indices are out of range:
+
+include/linux/vmw_vmci_defs.h:vmci_q_header_free_space() {
+	if (tail >= produce_q_size || head >= produce_q_size)
+		return VMCI_ERROR_INVALID_SIZE;
+}
+
+Before this change that negative value skipped the wait and
+vmci_transport_stream_enqueue() reported -ENOMEM to userspace.  With the
+new test, doesn't a blocking STREAM sender sleep instead (sk_err is 0 and
+no shutdown bit is set), and a non-blocking one get -EAGAIN?
+
+[Severity: Medium]
+
+Raising the wake threshold from one byte to the full message length also
+makes SEQPACKET send liveness depend on the peer advertising enough credit
+on its own.  Linux never sends VIRTIO_VSOCK_OP_CREDIT_REQUEST:
+
+net/vmw_vsock/virtio_transport_common.c:virtio_transport_notify_send_pre_block() {
+	return 0;
+}
+
+So a sender blocked on vsock_stream_has_space(vsk) < len cannot solicit a
+credit refresh.  For a peer whose credit-update policy uses hysteresis
+(the same heuristic Linux uses on its stream receive path, updating only
+when free_space < VIRTIO_VSOCK_MAX_PKT_BUF_SIZE || low_rx_bytes), can the
+cached peer_fwd_cnt/peer_buf_alloc stay below len with no further packets
+arriving, now that the partial data that used to keep the exchange moving
+is no longer sent?  Linux peers mask this because
+virtio_transport_seqpacket_do_dequeue() calls
+virtio_transport_send_credit_update() unconditionally, so the exposure
+looks limited to non-Linux peers.
+
+> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> index f225f53ed4ba..e10e7b95807e 100644
+> --- a/net/vmw_vsock/virtio_transport_common.c
+> +++ b/net/vmw_vsock/virtio_transport_common.c
+> @@ -994,6 +994,19 @@ virtio_transport_seqpacket_enqueue(struct vsock_sock *vsk,
+>  }
+>  EXPORT_SYMBOL_GPL(virtio_transport_seqpacket_enqueue);
+>  
+> +u32 virtio_transport_seqpacket_max_size(struct vsock_sock *vsk)
+> +{
+> +	struct virtio_vsock_sock *vvs = vsk->trans;
+> +	u32 max_size;
+> +
+> +	spin_lock_bh(&vvs->tx_lock);
+> +	max_size = virtio_transport_tx_buf_size(vvs);
+> +	spin_unlock_bh(&vvs->tx_lock);
+> +
+> +	return max_size;
+> +}
+> +EXPORT_SYMBOL_GPL(virtio_transport_seqpacket_max_size);
+
+[Severity: High]
+
+This returns a snapshot of min(peer_buf_alloc, buf_alloc) taken under
+tx_lock, and the lock is dropped before the value is used.  The feasibility
+test in vsock_connectible_sendmsg() runs once per outer iteration, before
+add_wait_queue(), and the inner predicate only re-reads
+vsock_stream_has_space(), sk_err and the shutdown bits.  Meanwhile the wait
+releases the socket lock:
+
+	release_sock(sk);
+	timeout = wait_woken(&wait, TASK_INTERRUPTIBLE, timeout);
+	lock_sock(sk);
+
+During that window the bound can shrink from the peer side:
+
+net/vmw_vsock/virtio_transport_common.c:virtio_transport_space_update() {
+	vvs->peer_buf_alloc = le32_to_cpu(hdr->buf_alloc);
+	vvs->peer_fwd_cnt = le32_to_cpu(hdr->fwd_cnt);
+}
+
+or locally via setsockopt(SO_VM_SOCKETS_BUFFER_SIZE):
+
+net/vmw_vsock/virtio_transport_common.c:virtio_transport_notify_buffer_size() {
+	vvs->buf_alloc = *val;
+}
+
+Consider sendmsg(len = 128K) passing the check with a 256K window, then
+sleeping; a peer credit update lowers peer_buf_alloc to 64K and wakes the
+sender.  The sender re-tests only vsock_stream_has_space(vsk) < min_space,
+which virtio_transport_has_space() can no longer satisfy, sk_err is 0 and
+no shutdown bit is set, so doesn't it sleep again indefinitely with the
+default infinite SO_SNDTIMEO?  Before the patch the sender either made
+partial progress or got -EMSGSIZE from
+virtio_transport_seqpacket_enqueue().
+
+Would it work to fold the maximum-size test into the wait predicate, so it
+is re-evaluated after each wakeup under the same lock that computes the
+available space?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260919122916.28226-1-bartlomiej.dmitruk%40isec.pl
