@@ -1,138 +1,126 @@
-Received: from mta1.migadu.com (out-145.mta1.migadu.com [95.215.58.145])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B933A7587
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 11:05:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.145
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E92949DBA4;
+	Wed, 23 Sep 2026 11:06:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790161551; cv=none; b=sr21qxaLJZZD7I3N08zxhs2kGsin68Nh1nTKirBA680ENjsot8rBt6I9lzDelFj3Jf8dyGUFrBoG4kU39QPohcL+hRFFNshfAKuwWQP7tF+QN+CvO78cBaCt6NYiIZrG5c9bOOxdFqTInoeLYGpx0jekZRsHSCKE0OpfYlz0owU=
+	t=1790161583; cv=none; b=seLX+7KvOCq8uw2kMsj4Tu5cIdk13WCGRpYgvK7FvPi+OED76SgaCAmFhUIW5OJcz+c6yapbGtKJO/WvhUrcsjHsR51f/1iFR2IkRaSu7jajQuNxcAEuHb+uje0QEyZb+XJOPsoIdQZoe8mv3nS7Pq2Hnbv2BNQyYgPsXyDlSu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790161551; c=relaxed/simple;
-	bh=kHep/UoJdFlSFtMOk5eTsBvsgTZFrj+duqNAdJba03Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sSR18lbMSpFUgU5W0arE96voo2pY5T0/LgvZkCiYY+zpyMQhYDY7eXk4K10AYltV3sIRIufPx2/yntV/2AKPQ9KSHk9A1BaLNCyiVtP/1uLb82vauHrBRs/JUzYE56U87+x1nfjj35XBNpY5gxo2+/D04d/pDnMjxpjkw6HBYsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=G9JVWcXx; arc=none smtp.client-ip=95.215.58.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1790161583; c=relaxed/simple;
+	bh=AiLb+XIqqeogh5YIbkCt/ug3YDrQxWlGcnRvc7/OSzg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=auvT2lbsXrnnLB24s3yDbhqFdwY4k+WJUdmsx+6EDr4ETWCSmM/WHN1BF8Ft02W2VTg6EYqqDWXpN+11D7nqBuT6DfO/EvU3+Nh7F2KXyFWTaFyTETVMnSe1yBMCf6VtQoPtGmP7fAk5EWbBoTYRK9SbaLId5YQFZdYdX1x1HYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=RZd6PDCE; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="G9JVWcXx"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=kHep/UoJdFlSFtMOk5eTsBvsgTZFrj+duqNAdJba03Y=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790161542; v=1; x=1790766342;
- b=G9JVWcXxhRKoYaz+VObIY7RqO6JcArdp6rKqbOJy1zAjIYti36x2SZzXeo31m8Ko2+Z00xGV
- T5+rEFcIT3PGCQ+VaO5UvjaPSeFSQuw+fCYac//ZlqsmbUU20nzSY3zkwxnsEgihwCVkfXzUO9B
- +4Bykx/odZwtzo8QwnHqmmxo=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id f91ccaabda877b65;
-	Wed, 23 Sep 2026 11:05:41 +0000
-X-Mizu-Trace-ID: f91ccaabda877b65
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5b8c42da963so5318e87.0
-        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 04:05:40 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByIS6i97iLGZeCdTlxs3vWIl4j3XZB2/w34XRCid/P8LrsehhMvq84hHge9rH15sgfKQFM=@vger.kernel.org
-X-Gm-Message-State: AFuF++lttiXwrMiQLjfpF730uwhjB4OzdUtonam93IOeBFnbSfg1aJhQ
-	EOv5rGCh90bNAmOGoxa7lQWUGFdujmtAGMgk+Hcx6fqhCLqY2JgFRoMdua8uiuvyu2WONgOInXy
-	HR0Kn7M89g17ehss8cwkVz0rBTe46PfHEN/j1UDdf
-X-Received: by 2002:ac2:4c54:0:b0:5b8:cc2e:2fe6 with SMTP id
- 2adb3069b0e04-5b8d915cbe7mr97644e87.5.1790161539952; Wed, 23 Sep 2026
- 04:05:39 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="RZd6PDCE"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 06D531516;
+	Wed, 23 Sep 2026 04:06:17 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F314F3F86F;
+	Wed, 23 Sep 2026 04:06:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790161580; bh=AiLb+XIqqeogh5YIbkCt/ug3YDrQxWlGcnRvc7/OSzg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RZd6PDCElzn8tIotWwrvT9WVNfhaf+E0nsTzPz7biVZvPKwP8gDLv/16qknBwwCeE
+	 XZqVX7rtPhnEOmnIpGuocfxi5mPtjFIoFr3VFosboC1I/0xJVnx9XIJolkmsXAj5+B
+	 BQkCyZnQEJkrsTacXF5+UJGQn1YF7TiEHuz/UsaY=
+Date: Wed, 23 Sep 2026 12:06:15 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Will Deacon <will@kernel.org>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, maz@kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+	gshan@redhat.com, joey.gouly@arm.com, tabba@google.com,
+	yuzenghui@huawei.com, linux-coco@lists.linux.dev,
+	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
+	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
+	lpieralisi@kernel.org, enju.kohei@fujitsu.com
+Subject: Re: [PATCH v18] arm64: mm: Handle Granule Protection Faults (GPFs)
+Message-ID: <arOyp8WUrYBAjrGH@arm.com>
+References: <20260913070459.2547407-1-suzuki.poulose@arm.com>
+ <arK3tsTV6EDhI-nt@willie-the-truck>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260922-kvm-arm-prefault-v3-0-787bd3bc7e3f@kernel.org> <20260922-kvm-arm-prefault-v3-8-787bd3bc7e3f@kernel.org>
-In-Reply-To: <20260922-kvm-arm-prefault-v3-8-787bd3bc7e3f@kernel.org>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Wed, 23 Sep 2026 12:05:03 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTwSRAGe4iP2E2V=b+baQ_GRYpYoNzJSft385m9E5RvEMg@mail.gmail.com>
-X-Gm-Features: AcwNN1Xp8lA6R1poRNOfE-88mv5Px32o87Y3m3XsUHw9H9Pq7uMPdjPzqDpKw3o
-Message-ID: <CA+EHjTwSRAGe4iP2E2V=b+baQ_GRYpYoNzJSft385m9E5RvEMg@mail.gmail.com>
-Subject: Re: [PATCH v3 08/14] KVM: arm64: Propagate EHWPOISON in kvm_s2_fault_pin_pfn()
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Mark Rutland <mark.rutland@arm.com>, 
-	Randy Dunlap <rdunlap@infradead.org>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Jack Thomson <jackabt@amazon.com>, Jack Thomson <jackabt.amazon@gmail.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Vincent Donnefort <vdonnefort@google.com>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Sean Christopherson <seanjc@google.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Leo Soares Passos <Leo.Bras@arm.com>, 
-	Wei-Lin Chang <weilin.chang@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arK3tsTV6EDhI-nt@willie-the-truck>
 
-On Tue, 22 Sept 2026 at 15:19, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
->
-> Currently kvm_s2_fault_pin_pfn() handles a poisoned page directly by
-> sending a SIGBUS signal itself.
->
-> This is an odd place to do it, the caller should decide what to do with
-> errors, so move the handling to the sole caller, user_mem_abort().
->
-> This lays the foundation for stage 2 pre-faulting which, arising from a
-> synthetic fault, should not send a signal.
->
-> In order to do so, check to see if user_mem_abort()'s caller has set result
-> - i.e. whether it wants to be informed about the outcome of the fault
-> handling.
->
-> If it does, then it is implied that it should handle the -EHWPOISON error
-> itself. This is the case for pre-faulting.
->
-> Otherwise this is real hardware, so send the signal.
->
-> No functional change intended.
->
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+On Tue, Sep 22, 2026 at 06:15:34PM +0100, Will Deacon wrote:
+> On Sun, Sep 13, 2026 at 08:04:58AM +0100, Suzuki K Poulose wrote:
+> > From: Steven Price <steven.price@arm.com>
+> > 
+> > If the host attempts to access granules that have been delegated for use
+> > in a realm these accesses will be caught and will trigger a Granule
+> > Protection Fault (GPF).
+> > 
+> > A fault during a page walk signals a bug in the kernel and is handled by
+> > oopsing the kernel. A non-page walk fault could be caused by user space
+> > having access to a page which has been delegated to the kernel and will
+> > trigger a SIGBUS to allow debugging why user space is trying to access a
+> > delegated page.
+> > 
+> > There is work in progress to unmap the guest_memfd backed private pages from the
+> > linear map. Until we get that support, we could get spurious GPFs from within
+> > the kernel, e.g., load_unaligned_zeropad(). So, try to fix them up for now.
+> > 
+> > Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> > Signed-off-by: Steven Price <steven.price@arm.com>
+> > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > ---
+> > Changes since v17:
+> >  * Pass untagged address to die_kernel_fault() - Sashiko
+> >  * Explicitly check !user_mode() for fixups - Catalin
+> >  * Switch to BUS_OBJERR for si_code from SI_KERNEL - Catalin
+> >  * Clarify the commit description about the upcoming work on
+> >    unmapping guest_memfd backed pages from linear map
+> > Changes since v16:
+> >  * Update the commit description to indicate why we try to fixup GPFs
+> > Changes since v10:
+> >  * Don't call arm64_notify_die() in do_gpf() but simply return 1.
+> > Changes since v2:
+> >  * Include missing "Granule Protection Fault at level -1"
+> > ---
+> >  arch/arm64/mm/fault.c | 30 ++++++++++++++++++++++++------
+> >  1 file changed, 24 insertions(+), 6 deletions(-)
+> 
+> I still don't think we should do this, given that the plan is to unmap
+> the memory from the linear map. If this thing fires, it's a kernel bug
+> and it should be fatal.
 
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+If the linear unmapping gets merged first, I agree, no need to handle
+these faults. I haven't followed that series, so no idea where it is at.
 
-Cheers,
-/fuad
+However, I'd still keep part of this patch - the reporting and panic but
+without the actual exception table recovery. There's some value in
+killing user-space and WARN (or pr_ratelimited) without a full panic, it
+helps with debugging. That's what do_bad() via arm64_notify_die() gives
+us currently anyway.
 
-> ---
->  arch/arm64/kvm/mmu.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 221ea069f9bb..2576b967d20e 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -2016,10 +2016,8 @@ static int kvm_s2_fault_pin_pfn(const struct kvm_s2_fault_desc *s2fd,
->                                       kvm_s2_fault_is_write(s2fd) ? FOLL_WRITE : 0,
->                                       &s2vi->map_writable, &s2vi->page);
->         if (unlikely(is_error_noslot_pfn(s2vi->pfn))) {
-> -               if (s2vi->pfn == KVM_PFN_ERR_HWPOISON) {
-> -                       kvm_send_hwpoison_signal(s2fd->hva, __ffs(s2vi->vma_pagesize));
-> -                       return 0;
-> -               }
-> +               if (s2vi->pfn == KVM_PFN_ERR_HWPOISON)
-> +                       return -EHWPOISON;
->                 return -EFAULT;
->         }
->
-> @@ -2261,6 +2259,13 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd,
->          * get block mapping for device MMIO region.
->          */
->         ret = kvm_s2_fault_pin_pfn(s2fd, &s2vi);
-> +       if (ret == -EHWPOISON) {
-> +               /* If result is specified, let the caller handle this. */
-> +               if (result)
-> +                       return -EHWPOISON;
-> +               kvm_send_hwpoison_signal(s2fd->hva, __ffs(s2vi.vma_pagesize));
-> +               return 0;
-> +       }
->         if (ret != 1)
->                 return ret;
->
->
-> --
-> 2.55.0
->
+So maybe we can keep it to just:
+
+static int do_gpf(unsigned long far, unsigned long esr, struct pt_regs *regs)
+{
+	if (user_mode(regs)) {
+		pr_alert_ratelimited("%s[%d]: granule protection fault at 0x%016lx\n",
+				current->comm, task_pid_nr(current),
+				untagged_addr(far));
+		mem_abort_decode(esr);
+	}
+
+	return 1;
+}
+
+and we get the SIGBUS or panic via do_mem_abort(). No recovery for
+uaccess though, we get the same kernel panic.
+
+-- 
+Catalin
