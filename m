@@ -1,68 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DCE33FE33;
-	Wed, 23 Sep 2026 01:18:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E356A334C3B;
+	Wed, 23 Sep 2026 01:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790126325; cv=none; b=tjYpiAgx/SJQrC2dxR+Ac96rdgf7zgq8vMmWxQ+cBcl0Z0Qg4Ifz7ZFGc7eh+dadkoYbv15i+x+gJiHHRKhemjXKFurLQoHMsK5OXDJbjKtfJFvJAKIx88tT7ht/z+vbC3tGI8L78N8XzefDU6+ouvRWhefPNQBUrA2k3X/jJQI=
+	t=1790126729; cv=none; b=jtAM7yeUFOU8jkwTSAQ8T6/hoS51XNGZA1F2USWyzO9BECYh5lSjvm1l9sy2GMECJL3dK96ffGtebiqJwX7wrcUBfBlE07kRnhJAYx8VECWRyNknmEL9cAgkYV/4g6ByTEO1eXrIn5bJr50z3yj9xo58BzapbvaHwYh40GXxTfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790126325; c=relaxed/simple;
-	bh=EWvGYvZMrKA47YLN9XsLmGIbha4b03bzr9pWxtJOZ7Q=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=MoEI3sw//3LyJwYtyJliwOHUtXs1wFuM/jyW6HPgOpfhm9JZZ1CmCnC3RFKWjXkGAHG9HCfbo8LDb1i79oAG5KcG0BcNv6zuFizwUqNEV0TpF/nk5g3+vbalKtBQzim8kLZtaM6nQKilT2zR1m264lCefjdsJehm+VTDZu5H/Ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jltPK8nB; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jltPK8nB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359C21F00898;
-	Wed, 23 Sep 2026 01:18:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790126324;
-	bh=EWvGYvZMrKA47YLN9XsLmGIbha4b03bzr9pWxtJOZ7Q=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jltPK8nBLcIudMbaPGz71Pyx7XQyPOppY99MCmrMIqap5jxQ/7ynH/iNk4uWtS9ze
-	 tDqk/rTvpcw80AdzC4RLbY7d9aVXJIwdKz8Ci9j3VDVfWXHdlsEdOajCFjMliFhUvS
-	 2rXzOsWhwvJUji7i8U/SaNKgLl/sGu/VmpLL2bJQMsaOeivtCp+1JmelMN+RuepM94
-	 IWKSTGVsZX+5dMIyVEPCxmhvKkU/IFvSXAt2iURSHZvHT1QOM1sTtq8rljTdex3y2j
-	 6Zg6OI6aacOVJBtS5dLPGiblIk0mLNeNW1gz1rngzZnkvFTM19ok1s19RY7E4PyhM4
-	 r2zMDE9UvIUNw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net-next v2 6/6] selftests/vsock: test the netns assign
- privilege checks
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Bobby Eshleman" <bobbyeshleman@gmail.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, virtualization@lists.linux.dev, kvm@vger.kernel.org, "Eugenio
- Perez" <eperezma@redhat.com>
-In-Reply-To: <20260921-vsock-guest-ns-v2-6-693bd78fde9e@meta.com>
-References: <20260921-vsock-guest-ns-v2-0-693bd78fde9e@meta.com>
- <20260921-vsock-guest-ns-v2-6-693bd78fde9e@meta.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 23 Sep 2026 01:18:43 +0000
-Message-Id: <20260923011844.359C21F00898@smtp.kernel.org>
+	s=arc-20240116; t=1790126729; c=relaxed/simple;
+	bh=yC39ZVBmE6KWA4Bz6dca0X886Ye+9W/oGTKx3N9Tk0I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pEyEIoDGKsAYTbTXrs006c0Y+YGJpqtfnPbIVrVgzedGM5Aw3MRtPe3PqCcwGsBcB9iYXkXFhdiwc1foOU6QDYhgcHVttmrW3cTpXP+i4GaQMCg4ABOG47ryol+EHf/NDiES984xeqGcVxEFV5jVVTxDADyyYLWgSsgE3luZCqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8CxPtOEKrNqS9wOAA--.43380S3;
+	Wed, 23 Sep 2026 09:25:24 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowJBx6c2EKrNqyQIkAA--.45699S2;
+	Wed, 23 Sep 2026 09:25:24 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>,
+	kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Tao Cui <cuitao@kylinos.cn>
+Subject: [PATCH v2 0/2] LoongArch: KVM: Code cleanup with MSI intterupt injection
+Date: Wed, 23 Sep 2026 09:18:01 +0800
+Message-Id: <20260923011803.1057945-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJBx6c2EKrNqyQIkAA--.45699S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-> From: Bobby Eshleman <bobbyeshleman@meta.com>
->=20
-> VSOCK_CMD_DEV_NETNS_SET refuses callers without CAP_NET_ADMIN in the
-> init user namespace.
->=20
-> Add two tests: one confirms that CAP_NET_ADMIN is required even by a
-> privileged user and the other confirms that CAP_NET_ADMIN in an
-> unprivileged user ns alone is insufficient.
->=20
-> CONFIG_USER_NS is needed to test the CAP_NET_ADMIN + unprivileged user
-> ns case.
->=20
-> Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+Here is to remove some unnecessary parameter checking when injecting
+MSI interrupt, include MSI level parameter and vcpu::arch::dmsintc_state
+NULL pointer etc.
+---
+v1 ... v2:
+  1. Remove function dmsintc_deliver_msi_to_vcpu() and inline it in
+     dmsintc_set_irq().
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+  2. Keep return value with -1 rather than -EINVAL when level == 0
+     in kvm_set_msi(). Return value with 0 is one option also, now keep
+     similar with other architectures, will modify this in future when the
+     final solution is made.
+---
+Bibo Mao (2):
+  LoongArch: KVM: Remove parameter line when inject MSI
+  LoongArch: KVM: Remove duplicated checking with DMSI irq injection
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260921-vsock-gues=
-t-ns-v2-0-693bd78fde9e@meta.com?part=3D6
+ arch/loongarch/include/asm/kvm_dmsintc.h |  3 +-
+ arch/loongarch/include/asm/kvm_pch_pic.h |  2 +-
+ arch/loongarch/kvm/intc/dmsintc.c        | 37 +++++-------------------
+ arch/loongarch/kvm/intc/pch_pic.c        |  6 ++--
+ arch/loongarch/kvm/irqfd.c               |  4 +--
+ 5 files changed, 15 insertions(+), 37 deletions(-)
+
+
+base-commit: 93f51579e7df248780214094418f205253383cc5
+-- 
+2.39.3
 
