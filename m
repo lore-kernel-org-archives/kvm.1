@@ -1,161 +1,195 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176C8470121
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 14:26:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790173567; cv=none; b=WJ0rT9XcvxaVZ5expyw6/n7lA7N/oMIbarlPjoMuX5iCQP1HqpMf8ZABqm08Iuyir3KeCSBVeTN0w+swxTs0Hc9N1/NSXimwVyLSMOeNmFNY2vxpe1GCggBdB5MIDwjW9KfWJGsEyrrTRf6dZs5VhYBXADJ+Evpuy8dWmiRgHTo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790173567; c=relaxed/simple;
-	bh=1YTFLJwnMY0NKNS2OtCc9bXobP2dlQvVFJHEkPGHysQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AILGDAFNQ8UeZCDszu/4tjbcxa9hCnr9XXtz2tVUNI1okVuVYucXzyBIiKEjbRWrCNGcAbHxJ3DZL9TTcb9+5CISLDj5ASJ8mI8X2WRG5SEzpDZ8AI4CTuEz+fQcGtsMtgKpnj+qZPMExZXtZmgNFCcHHT4YlHPkCDXuPGdfQNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DLSyJIvf; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403683A255A
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 14:31:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790173879; cv=pass; b=WH+05lFcrUMYKp/eVjzAWq7/vFUKqNkcDBCGkwgw/uKsDHiPfuoZejVdVD+IuAR8ClgvLzwJHr2LtsLU4i+OmmWzKszjffnYRbhHiwvg6aDPkXElO4b9AWYDv7dgSkqETynx/dwtEYH7uzk/4tmClnev9nUpyW8zOoBsK15Nycc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790173879; c=relaxed/simple;
+	bh=3IRQTfCkVu29EAhzhIq8HL8xV9bhN+vmwTvfaTzW1hg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=joOMuYgqO8yQkYljmF7ZtwyGi/TDFLkUy6vbsrM76KX3iG/zLoJlLogaMiF21iZN3INycNFv0kH4+vJ+dBQK3YrVpT4bvd7KjooC67oSEa0DYilYSrY6wpRa2i5oEvbXaZbeWS3WmwVgl5jtG1ZLzHlFXMfb0Zv3/wonBVEVi4M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C+1Ohl3z; arc=pass smtp.client-ip=209.85.160.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DLSyJIvf"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-39533bb224cso1305974a91.3
-        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 07:26:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C+1Ohl3z"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-53113d72966so260601cf.1
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 07:31:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790173876; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Uacm7FXoYeieeOGAVVS9lCE52ElGRHjXs80+gWCxzJQT91YY9wimYQs376Pg/2SVdK
+         FRLnbiKJTcZuT9HoiEGvxvzyUesDEbO+sLrwF6ZZ95ABObSYFTSChDHtwLBFrwET3bmj
+         Dg0qQJwWEPZc4IGeBRIOMTmjVUYbfMqWBZss8NVI/SJ8l41w38iCcmwLNCCVhjgijZ0j
+         0lwvjzjtaG/XbT+euQMkX87e1mIusbC61cyg/wA5bHCXXczi3ertatLJVjFrbQDYvp0l
+         rWEj8BPsSQRplg5hV4flV6GpNMJ6eT0FI7H9M+DYTOuyZsW+K2Ros7ikT8lmyPm9uQ1E
+         +M9g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3IRQTfCkVu29EAhzhIq8HL8xV9bhN+vmwTvfaTzW1hg=;
+        fh=6Nls7ra5cFQpEVVekB6gjscZ2mkIDm43YzrAXssg+Ao=;
+        b=qSpiBVXCOfKjshEZ4uEIJG2rsGwu7r/An7uhNF7LtVSsKOiD64ABr3YVSyZEDVZxD4
+         /TqULcYEiaU0cQN0P9/nj5PLTo/+/l5CsOOt4U/rEel/486eLX6yBgLyHqO+pJfXrvfM
+         TRtuvF1YFLnEvVX6uF4Ar5JrN8bt277GpdFAdj85T3IEC3HJKzWDvMLqe1GLLtIpxJIb
+         2GjBhEMWqmBV4DftFeDR0aPrUuDD2465jlN4kl1tb/1rY6IVfoZOUcZdy2b2NnP4qWjy
+         8dJzJ2JW3Ahyh3JzIPZVbmU37oA9V3FBu6TeAlh0GQwhRKsOgECVC178CvXiOt9U3G60
+         h3Iw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790173565; x=1790778365; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3MsYvpeTZi0d6eNTQmjhnZBm0jq5CS+fPYDZgBnoyFk=;
-        b=DLSyJIvf3f2HgLtPguwy5YTilbWMovyKFfSO6n33Ot3bIzeTaGLZP9vCAEXsAkKsGM
-         W1lYBjmgkljWoQF75H807xy6E6/6O5YucviCeE+bmn+4MjfQADCEl6x86h1lgl0hZFLo
-         iA0Hpg2F01DcItjd0Fj+RDbZ1nqs0RQk+0oO/9aoOt+mSJmCI+3JOT1dS8hEY88BcX6Y
-         pVcFxzpnI/ToojeBZRDO9hpNx2BXWxO0vqAZSynHUWAmtNdwO/9rErALxJM07bmDG9fo
-         klL7N031IAJj3IEBPVnPvJLEkSVysJO1GVr+fFSET0UJ7ARFuc08EhEcp+Ptij0YyT0i
-         rYVQ==
+        d=google.com; s=20251104; t=1790173876; x=1790778676; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3IRQTfCkVu29EAhzhIq8HL8xV9bhN+vmwTvfaTzW1hg=;
+        b=C+1Ohl3zbsMrjh1dB/zOjZD8WctelSpuD7HSjz83HtCzxAu2uQCdrvdk6mQA/qDmED
+         XPmCruc/0qesoh5ZaUY/8kYU55YuQDkrL+NWB4/GzBktzO6vR8i1QACk+3pme9wnGQCn
+         VZQmjl8KrY0HTHromA139b+tgbWQilZ3lTmZ8bgk7A7cwz+FVWfgOIYzhOmTDxAQ89K+
+         VZ5tGKKWdn2SxsyXoo0ZRNPy/7aL5Z2Tdfk7aj0pDU/c4b+4zxQCe6XqJRfIBBmHEG8r
+         fY+QEIfNks1XUT2d6WUeW6MkoHO+EYXflKlYvUF0fbOWU0DbvpsKlrTvHc30tBgH/z4n
+         u9Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790173565; x=1790778365;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3MsYvpeTZi0d6eNTQmjhnZBm0jq5CS+fPYDZgBnoyFk=;
-        b=c6zzlwF22yiJDMexUl4an7qpenyI04D7cQpNruuiZxNznIbWfXrc0lsIQRofZdNgD0
-         nzTHpodd6SB2ZFXk6b4QjUhjQVidLEDomfWF219/FaXBZf9+bM3el0xNIOFSLFQysZyf
-         fV482IBMfuTkxLI9tijusXaOD+vBWTQJDHJDD6PiHZ4DHmvyrycM3T4XAXE9r/acz6E9
-         DUOCDjNzxeWfuQbMbh9n6GbeuQmgebCOnDwuvT5qtpO4qYLFlEyFO38oNYfXH/unRRGH
-         hO1od8yaieUZGqCgxhwCp7s/DbW8/38vPodzbAmoeg4l26DbAwmTooEajkucKH8I2BCk
-         awUQ==
-X-Forwarded-Encrypted: i=1; AKwUvByrR8/n+y2H8IN6yOsvA9X6N4QVgy0S6ZS1z3fEgwE4+4u26+06fAjpLfzr7x3wufn8fIQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++kFmW7Y/u5Q/tiz75TmP4Te1kAbHmZ0aFVSfOhRrCDcWsk4+x6/
-	+Y6Jz8AWf2eF7Owi+z1K4/oFQGnB2qBUIMICBFezAx85eeWJvy+/GkK68aU/Y/ti0x2PymBIxDE
-	d6HPelA==
-X-Received: from pjqh22.prod.google.com ([2002:a17:90a:a896:b0:3a0:7f0d:4e59])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3142:b0:39e:6a7e:ee1d
- with SMTP id 98e67ed59e1d1-3a07e654a0emr2647265a91.41.1790173565202; Wed, 23
- Sep 2026 07:26:05 -0700 (PDT)
-Date: Wed, 23 Sep 2026 07:26:04 -0700
-In-Reply-To: <arNa66B3tmJc7Kbd@yzhao56-desk.sh.intel.com>
+        d=1e100.net; s=20260707; t=1790173876; x=1790778676;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3IRQTfCkVu29EAhzhIq8HL8xV9bhN+vmwTvfaTzW1hg=;
+        b=PjhhILeph+H5h3UuY7RrFntgjhicNhmqa4KydghEzZYmHlC6GUyZtMWwb6uIxCN5wc
+         3hWKMtlsy1iArOfdjp/0O4FU7lp6qMQLSIDSS3lE5D7vQ3x0flXg1n7Fxq3iuxSh2HoO
+         BGzLqgUgWTw9xF580c1wH2cny1qfVSTWQtWhdX5AL4ebdCSCiDb899qiO7ug6G5cI+Ub
+         ENaomDmbzNA305p4/hj0YawaW7joP0PEbBcPVLhcSP0M2ihom8FvVPTXnZgZLmvwArc4
+         Cm4Oq8ugBQUWZKkQAjX5zuLNYxfCPc0C9IUksdW9S0kgxSJAcOvUMINmiuoy1i1sMb7V
+         xtLw==
+X-Forwarded-Encrypted: i=1; AKwUvBy7Hi4UBkHhjW/5AYeajF55AavWalNF1ai7vDDKkwDdqLEMjz4FzjUxgQJPzKKUMPoWDWs=@vger.kernel.org
+X-Gm-Message-State: AFuF++kAlHQXu9emevsOEg5QzApbsNzys/bhKZZu9PAZ8Aklqf9uYLbF
+	gUaTfGyyO4+OQ6/rmAT60x2VsgsTTM0W+c8OTFgFfZ0wTt4gwj21q7S2qYScKTT63LYHLwubc1s
+	Va9my+qJu3wEfuWXUXiC/k7Jmvc0c6lwb1cJxoFf8
+X-Gm-Gg: AYBFou1xfGF5iKLlHJNp2bhqecLRha1Bb0Mr/rXnYkCkzon9CB03Lh0KoCF4FsRZqLI
+	5NhVAGiww+10KhE6tfj1IRMkzqGDqKTOfzgNFYCeduUoanTLnLJ99YI8oRAYWfXr6skmDNrsvuW
+	vMrQxkubne58AJ0sF8eTrGfUeyQI/Q4rlLls33YiH+u9/bK/yoH6n1Zxkh8r50EMSQMa045UWHR
+	MeL45ZrTUB1wpcokHiXOrda16ivOPgFlXCNKqo9FMKj1ZW1SXUOMFpInH5bpGSx08IDzSlcQKwv
+	FQ2txioSd3WUXEDO+XYLDsIMSW/hfK2fXqPboEixFAuans+DcaBPk56mAnVk1P6TOnpN4fQ2crb
+	1HeUhezC7bQ==
+X-Received: by 2002:a05:622a:260e:b0:532:9d15:2e5a with SMTP id
+ d75a77b69052e-532ede89b29mr14598791cf.1.1790173874906; Wed, 23 Sep 2026
+ 07:31:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260922001332.1121266-1-seanjc@google.com> <20260922001332.1121266-7-seanjc@google.com>
- <arJsKA8MkSdpQxNm@yzhao56-desk.sh.intel.com> <arKG2UnTWySdOAkc@google.com> <arNa66B3tmJc7Kbd@yzhao56-desk.sh.intel.com>
-Message-ID: <arPhfHnMNbvthwGu@google.com>
-Subject: Re: [PATCH v5 6/6] KVM: guest_memfd: Drop superfluous WRITE_ONCE()
- when binding a memslot
-From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Stefan Teodorescu <fane@google.com>, 
-	Dennis Tighe <dtighe@google.com>, Sashiko Bot <sashiko-bot@kernel.org>, 
-	Ackerley Tng <ackerleytng@google.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+References: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org>
+ <20260914180811.057cba8fcc48d6e0b53a2683@linux-foundation.org>
+ <0b064fe6-ddb3-4f26-a1f2-2e9dd88d590f@kernel.org> <CAJuCfpFBichJH4OcmSHTb1rOuQBT6k5pXeua9_KgpWjDBKvsYw@mail.gmail.com>
+ <aq6kzpK7wPl3iFGe@gremlin> <aq6lW9FvL69QeA9H@gremlin> <arOCPN02xB7mykju@gremlin>
+ <b007cd0f-29ef-457a-8e44-63ab26f3bcd0@kernel.org>
+In-Reply-To: <b007cd0f-29ef-457a-8e44-63ab26f3bcd0@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 23 Sep 2026 07:31:02 -0700
+X-Gm-Features: AclHuK_ZGTwaB8ygIyiOyIIeQNRzbEtns-G_Cds8CuZ4q61CHw7YMjTifucik0o
+Message-ID: <CAJuCfpHL=dHjT=O4S88ZBvT1DyodAtCL9QTryepzs3EMwoECDQ@mail.gmail.com>
+Subject: Re: [PATCH v2 00/40] mm: make VMA flag semantics explicit, eliminate VM_SPECIAL
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+	Takashi Iwai <tiwai@suse.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>, Simona Vetter <simona@ffwll.ch>, 
+	Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, 
+	Peter Xu <peterx@redhat.com>, Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-usb@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	selinux@vger.kernel.org, linux-sound@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
+	fuse-devel@lists.linux.dev, Takashi Iwai <tiwai@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 23, 2026, Yan Zhao wrote:
-> On Tue, Sep 22, 2026 at 06:47:05AM -0700, Sean Christopherson wrote:
-> > On Tue, Sep 22, 2026, Yan Zhao wrote:
-> > > The WRITE_ONCE() in kvm_gmem_unbind() and kvm_gmem_release() are also invoked
-> > > when the memslot is inactive and unreachable -- are they also superfluous?
-> > 
-> > The WRITE_ONCE() in release() is necessary, because the file could be freed/released
-> > while it is still attached to a memslot.
-> Ah, release() can occur on an active memslot, so WRITE_ONCE() is needed to 
-> ensure the READ_ONCE() in get_file_active() works correctly.
+On Wed, Sep 23, 2026 at 1:40=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 9/23/26 10:13, Lorenzo Stoakes (ARM) wrote:
+> > On Sat, Sep 19, 2026 at 04:09:13PM +0100, Lorenzo Stoakes (ARM) wrote:
+> >> On Sat, Sep 19, 2026 at 04:05:57PM +0100, Lorenzo Stoakes (ARM) wrote:
+> >>>
+> >>> Thanks guys!
+> >>
+> >> Note v3 has been posted to fix a stupid bug in 1/40 + attack some very=
+ trivial
+> >> sashiko stuff
+> >>
+> >> https://lore.kernel.org/linux-mm/20260917-b4-mmap-prepare-vma-flag-san=
+ify-v3-0-4583d8a23bca@kernel.org/
+> >
+> > Just a gentle nudge on this :)
+> >
+> > If you guys or anybody else has some time it'd be appreciated! (obv. th=
+e v3 as
+> > linked above not this v2!)
+> >
+> > I know the series seems intimidating but most of the commits are very s=
+mall and
+> > it's been in -next for a while.
+>
+> Busy with too many other things sorry. Its time will come.
 
-Yep.
+Had to take care of the pile of bugs but I'm on it now.
 
-> > I _think_ the one in unbind() is now superfluous after 0ee2c883b62d ("KVM:
-> > guest_memfd: take the invalidate lock when unbinding a dying file"), but that one
-> > needs more analysis.
-> Hmm, the line "CLASS(gmem_get_file, file)(slot)" in kvm_gmem_get_pfn() is not
-> protected by the invalidate lock.
-
-CLASS(gmem_get_file) can never be protected by the invalidate lock.  Or rather,
-doing CLASS(gmem_get_file) while holding the invalidate lock is nonsensical,
-because taking the lock requires a reference to the inode, and if you have a
-(stable) reference to the inode, there's no reason to get a reference to a file.
-
-> It should be superfluous even before commit 0ee2c883b62d, since "the caller is
-> responsible for ensuring the slot is unreachable before unbinding" ?
-
-Yes, I just haven't spent enough time thinking about it to be 100% confident :-)
-
-> > > Do we need the READ_ONCE() in __kvm_gmem_get_pfn(), considering that other slot
-> > > fields (e.g., slot->gmem.pgoff) are read without READ_ONCE()?
-> > 
-> > Yes, it's needed, because of the aforementioned release().  The other slot fields
-> > are only ever modified when the slot is inactive, i.e. unreachable.  That's why
-> > I think the unbind() WRITE_ONCE() is unnecessary; KVM should only unbind when the
-> > slot is inactive.
-> Maybe the READ_ONCE() in __kvm_gmem_get_pfn() is not necessary?
-> When __kvm_gmem_get_pfn() is invoked, a file refcount must have been taken, so a
-> concurent release() is not possible.
-
-No?  KVM doesn't hold a reference to the file.  Oooh, you're not talking about a
-long-term reference, you're talking about the reference acquired by kvm_gmem_get_file().
-
-Oh, duh.  That READ_ONCE() is purely for a sanity check.
-
-	struct file *slot_file = READ_ONCE(slot->gmem.file);
-
-	...
-
-	if (file != slot_file) {
-		WARN_ON_ONCE(slot_file);
-		return ERR_PTR(-EFAULT);
-	}
-
-So it's not strictly necessary, but since the entire point is to verify the slot
-pointer hasn't been clobbered, we do want the READ_ONCE() to guarantee the check
-is actually performed as intended.
-
-But given that it should be impossible for release() to run concurrently (see
-above), and should be impossible for kvm_gmem_unbind() to run on a live memslot,
-then I'm pretty sure we can do this:
-
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index a13445c26d9d..1aeffb5bd2b0 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -1130,14 +1130,11 @@ static struct folio *__kvm_gmem_get_pfn(struct file *file,
- 					pgoff_t index, kvm_pfn_t *pfn,
- 					int *max_order)
- {
--	struct file *slot_file = READ_ONCE(slot->gmem.file);
- 	struct gmem_file *f = file->private_data;
- 	struct folio *folio;
- 
--	if (file != slot_file) {
--		WARN_ON_ONCE(slot_file);
-+	if (WARN_ON_ONCE(file != READ_ONCE(slot->gmem.file)))
- 		return ERR_PTR(-EFAULT);
--	}
- 
- 	if (xa_load(&f->bindings, index) != slot) {
- 		WARN_ON_ONCE(xa_load(&f->bindings, index));
-
-Or just drop the check entirely?   But I think it's worth keeping the check,
-especially since __kvm_gmem_get_pfn() will run under the invalidate lock once
-in-place conversion lands (see "KVM: guest_memfd: Introduce per-gmem attributes,
-use to guard user mappings").  At that point, the check would actually provide
-meaningful protection against KVM bugs.
+>
+> --
+> Cheers,
+>
+> David
