@@ -1,230 +1,105 @@
-Received: from mta1.migadu.com (out-77.mta1.migadu.com [95.215.58.77])
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6D1490BEC
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 18:25:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78DDC5275B8
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 18:26:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790187945; cv=none; b=GSWwjtWvtqY7zPU2j/Lg7Ixc/+iHzTPq6soKrMmByWqECTZQrMs4oDebHc7nI0gbajM4CunanBMHPBstNXvsPnlSREIw54ew27zRV2b9HEJuHzSbDq2+Aasae++iF8DzSav/UshCmA6jyDa1hdr/0fHQ5fa417EqmqbcblZxZ/U=
+	t=1790187976; cv=none; b=cuYyUNCBr8NYJ8JA0BkE545Oqg0CFYQ6Qmhb2cGLW2Bs3/10UYB1/6u4ltoHJj91jC3bTEQN84FAARdqQVDwr//ycDBC7TNj8rH9RKttXaRKEGUqdQVZmODAfGfNdPtJuNh87ddStQboxX6yBzh8e7/gxg0Hjk3hIHfEo3faJfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790187945; c=relaxed/simple;
-	bh=mMdmK/9FycFUxVc3A/OffoN2VrdlqvuqAa1VcwPdc94=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gJEbC9vXEo87gZz39XBmtMTFPJfcrPzCmj5ZPaiw8lejLPWXEejJ2Kmnok/oUQ9WqEQKp2m3mm3M0BZn9C2JCaw9xuzRcj0nbewcyPA9XT0UG6k9JqxwrNkmJt6rD7UYj6Id9VCmNDcHfuLJgYq5LDr1rtflotb+CPh+kaf6Nkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=bJcemxHz; arc=none smtp.client-ip=95.215.58.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1790187976; c=relaxed/simple;
+	bh=LhiPso6phLQM0wA+k6tjmIhIVqDrjbY4C0VTVIyFW7k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qrW44SD2W/Ees9hqM87HBmg/jtWnu0a33UjFrGhHh8Y97qjcy+EVMMhqYgCqycg3hnO3hFOfuiqvHruTAZNzPnhlwnOChvbXTiljJYiV/DdOKCgMU7Bi8YdBtRG3PKedpT/eJsn66cEKxJBvxC74OOxtKQji3xgQ+9bf6u2g0dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cb3d6YzW; arc=none smtp.client-ip=74.125.227.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="bJcemxHz"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=mMdmK/9FycFUxVc3A/OffoN2VrdlqvuqAa1VcwPdc94=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790187938; v=1; x=1790792738;
- b=bJcemxHz+d/s5iTT2mbxw53qdO7q1EOgdtHYI29PrWCAE8mFEUw0Lz8izpBhPnZrWQ+djxpi
- 9XVpZTH6L90sEEudFbUYOby5Bpl5rW8YRROZdNMchhsEzfFwmMV9azzb9FtcsHTxWUOF/NFhZOf
- TxxJChkVZ2330sM6v3F6bc+k=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 8c4255362b3b8077;
-	Wed, 23 Sep 2026 18:25:38 +0000
-X-Mizu-Trace-ID: 8c4255362b3b8077
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5b83c1421ecso1028e87.1
-        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 11:25:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByee2N1QBYd0hI6lXQAcBYOaSOlbRWhEjt7v3sWU5gZ1nyXTi7gNoJo5xdmhALeUIg18Ow=@vger.kernel.org
-X-Gm-Message-State: AFuF++kgsP+D4mRXhoAnR/0aGGQaesniI45WiUrEz5S/Go8P2KPLl7v8
-	BxiuL0g0GLbaZ2+oGhCzrMs8jOt545nd890DP0ImjoZYplTTyfomqHfK+KJRuIsZIHfqbGkzptZ
-	JPvMCo2zhZzUy+6zW/n8NCZmsAwTlKPQjO2uqO9Ff
-X-Received: by 2002:a05:6512:3dac:b0:5b8:9d6d:21b3 with SMTP id
- 2adb3069b0e04-5b8dda16235mr43733e87.6.1790187937034; Wed, 23 Sep 2026
- 11:25:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cb3d6YzW"
+Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2d747f01363so7678975ad.2
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 11:26:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790187972; x=1790792772; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LNon7FG4gNvQZ8cTIn7dGZggjcYoEo+V3D2k9W/8Sxo=;
+        b=cb3d6YzW6nrGuRRS6oSU6xIv3mfNSvAfD4J+NhlQOOwGhtfYHTTWnAIK8qaVqc1gkc
+         r0EMkPHPvvuRU99MGAgbwLazKtATFcwxTWwuJdRVO4+8BXBh8alzfX+EQfop05AIYzub
+         06zcGdrRIZeWntKW7Z/GsG8cDvxIw95aqKmtrB4GUybxBPseaSwjRFdzyNfnsxZG72WS
+         i5rhwkf9o7Wlgs9oHqgmGnk8IXv+DAZEyXpVj2V0OHPL8M1QD/gqAlmwtAmJhqAp/zhs
+         SElDmw4UvXWAAA0OKEDvJioloFPEYLJAT8X61OdhF18NghTfdBl6cuVTC59eTKPNsS4b
+         LLKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790187972; x=1790792772;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LNon7FG4gNvQZ8cTIn7dGZggjcYoEo+V3D2k9W/8Sxo=;
+        b=Nqbv+7pXKNgScb7nae+tbjrpHkcqZV3OEMQ676T9/NI/B0okHOtVXL5ydDUFtPkH6y
+         iHFrr7uaIZhMmYkOKiYX4Bl/xrPFdx3HiazFxH7CeAqIBEQQVAUXbMbOG/Lj/VEj5oY0
+         nTdqeJd1RWfyAdezPp7zx4b1zYMQs7EBio+B9qUIp79+QJxaBFQ7p5w8DDhDtuh9mXFw
+         79NCEg8jZirTwSsqiN4u1S7EZ8RaitkZ4x23CnKXK9X+0SU9jOUte/wVAyRNwDI0W0UP
+         4vgGMQNaiukozYVc0C6UA2N0CgTGTmTfliH3r65BeFGjJVkMDjhPsiTH/jmyxHnlmOWO
+         R07Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzZO3E0LOF9QTG6i8tF/5ym18Ru2YbBL3CqbjW/FiFjIk2M4XCrMEMuiqe2mutt2byOgi8=@vger.kernel.org
+X-Gm-Message-State: AFuF++nyjB1j2jp3HjhGBpeRauMCmeKqHbdkARh7MS448ueZVP4+BJw+
+	JqDucC0HqBKJBNSHFRR7VHkcZwFag4nwU1dMIifkz7skXbQy3sot1yF7YiGPcZB2fQ==
+X-Gm-Gg: AYBFou2lWCumSElmCpgpO/cBGolQleixoxYrWpEHUsl3j3B62g71p0YSYPKTO++LCU0
+	oNfNSaMJxJ1ejoR+Qo1PjXmzx11pa5+Y8W45ykvp/QOdr5cwge13M5Y+NnGLNC5O7wfq/Jdl+lJ
+	UwpWkYkcWGwbFgiV1IHW6NmlCabGItD5xlLxciinQNmhv2UsObav3fkTEp5dwlitPBV4BIrbGWE
+	IbK6MwpXepYSLqiMjctXRy4b9TSJ9DybO7zyv09TUC+kMGew3nkAJXioMV4glAm+TgbFnge4DY9
+	XzkGBeQK0PBMaaskVCr5LwP3U9/A+cIgWn5MsYh/jDjamGnyNWf7Erm5sHIzix+9qFiWTwaENEq
+	y36QLW24hEBoZEOWB4jP/3f+jPSubTDNAFNA7skuVj1sM0CSSi962ApjS7BSsmGcyX4+COKNTWp
+	zlmHO/iMkQjH2CQESspYWBXuBT9KKj5g28bWQVJIo0/G4BRhQKD/2OT+MQTfymUahdq7lwoPIoK
+	TZiAsDaX+UEmaWYJv+qiRRWP3ynfZtZay36rYD7fJyDYI9ZXV0=
+X-Received: by 2002:a17:902:ef52:b0:2df:3b09:664 with SMTP id d9443c01a7336-2df69dcdbf3mr30657015ad.32.1790187971787;
+        Wed, 23 Sep 2026 11:26:11 -0700 (PDT)
+Received: from google.com (132.200.185.35.bc.googleusercontent.com. [35.185.200.132])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df6a5eea15sm15475075ad.64.2026.09.23.11.26.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 11:26:10 -0700 (PDT)
+Date: Wed, 23 Sep 2026 18:26:06 +0000
+From: David Matlack <dmatlack@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, Fuad Tabba <fuad.tabba@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, Leon Romanovsky <leon@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org,
+	Marc Zyngier <maz@kernel.org>, Mark Bloch <mbloch@nvidia.com>,
+	netdev@vger.kernel.org, Oliver Upton <oupton@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Steffen Eiden <seiden@linux.ibm.com>, Shuah Khan <shuah@kernel.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Tariq Toukan <tariqt@nvidia.com>, Zenghui Yu <yuzenghui@huawei.com>,
+	patches@lists.linux.dev
+Subject: Re: [PATCH v7 06/10] vfio: selftests: Allow drivers to specify
+ required region size
+Message-ID: <arQZvkNtgq-NlUkh@google.com>
+References: <0-v7-c6d30e8ce1e4+3dfa6-mlx5st_jgg@nvidia.com>
+ <6-v7-c6d30e8ce1e4+3dfa6-mlx5st_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260923-kvm-arm-prefault-v4-0-d4b0b4dfa8c3@kernel.org> <20260923-kvm-arm-prefault-v4-6-d4b0b4dfa8c3@kernel.org>
-In-Reply-To: <20260923-kvm-arm-prefault-v4-6-d4b0b4dfa8c3@kernel.org>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Wed, 23 Sep 2026 19:25:00 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTy0TtqA=7d_H8MJPrjSC8LorA8eAoQV2iNq92vyhc4MDA@mail.gmail.com>
-X-Gm-Features: AclHuK-RIUiERhmleh7yaYY2uX18OLxNzJklGSRzD4NKIMEsTg5kd5iC90vfRLg
-Message-ID: <CA+EHjTy0TtqA=7d_H8MJPrjSC8LorA8eAoQV2iNq92vyhc4MDA@mail.gmail.com>
-Subject: Re: [PATCH v4 06/14] KVM: arm64: Propagate and use
- kvm_s2_fault_result on S2 fault
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Mark Rutland <mark.rutland@arm.com>, 
-	Randy Dunlap <rdunlap@infradead.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Janosch Frank <frankja@linux.ibm.com>, David Hildenbrand <david@kernel.org>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Jack Thomson <jackabt@amazon.com>, 
-	Jack Thomson <jackabt.amazon@gmail.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
-	Vincent Donnefort <vdonnefort@google.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
-	Sean Christopherson <seanjc@google.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-	Leo Soares Passos <Leo.Bras@arm.com>, Wei-Lin Chang <weilin.chang@arm.com>, linux-s390@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6-v7-c6d30e8ce1e4+3dfa6-mlx5st_jgg@nvidia.com>
 
-On Wed, 23 Sept 2026 at 16:17, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
->
-> When stage 2 page tables fault the net result may either be that a page is
-> mapped, an error occurred or the fault should be retried (-EAGAIN).
->
-> When a fault succeeds it may be upgraded to a PMD size via
-> transparent_hugepage_adjust().
->
-> In order to support KVM pre-faulting the outcome of the fault and the
-> mapping size must be recorded.
->
-> Track the mapping size via new kvm_s2_fault_result struct, which is
-> threaded through gmem_abort(), user_mem_abort() and kvm_s2_fault_map().
->
-> PKVM and SEA aren't relevant to synthetic pre-faulting so neither
-> kvm_inject_sea() nor pkvm_mem_abort() are altered.
->
-> Actual hardware faulting doesn't require this information, so
-> kvm_handle_guest_abort() simply passes NULL kvm_s2_fault_result to
-> gmem_abort() and user_mem_abort().
->
-> A non-NULL result also tells the abort handlers that the caller is
-> pre-faulting rather than a vcpu, in which case -EAGAIN is propagated to the
-> caller to allow the pre-fault to be retried.
->
-> Likewise, only prepare a KVM_EXIT_MEMORY_FAULT in gmem_abort() when a real
-> fault is being handled, as this updates vcpu state.
->
-> No functional change intended.
->
-> Suggested-by: Vincent Donnefort <vdonnefort@google.com>
-> Reviewed-by: Oliver Upton <oupton@kernel.org>
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+On 2026-09-21 07:35 PM, Jason Gunthorpe wrote:
+> Add a region_size field to struct vfio_pci_driver_ops so drivers can
+> declare how much DMA-mapped region they need. The mlx5 driver will need
+> ~18MB for firmware pages. Existing drivers pass in the sizeof their state
+> struct. Since drivers all use only their declared state we can use the
+> value directly and remove the SZ_2M hard coding.
+> 
+> Assisted-by: Claude:claude-opus-4.6
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
-
-Cheers,
-/fuad
-
-> ---
->  arch/arm64/kvm/mmu.c | 43 +++++++++++++++++++++++++++++++------------
->  1 file changed, 31 insertions(+), 12 deletions(-)
->
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 9d799f7c1e62..ee2a4f0faa14 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -1659,6 +1659,10 @@ struct kvm_s2_fault_desc {
->         struct kvm_s2_mmu       *mmu;
->  };
->
-> +struct kvm_s2_fault_result {
-> +       unsigned long mapping_size;
-> +};
-> +
->  static bool kvm_s2_fault_is_perm(const struct kvm_s2_fault_desc *s2fd)
->  {
->         return esr_fsc_is_permission_fault(s2fd->esr);
-> @@ -1684,7 +1688,8 @@ static u64 kvm_s2_perm_fault_granule(const struct kvm_s2_fault_desc *s2fd)
->         return BIT(ARM64_HW_PGTABLE_LEVEL_SHIFT(level));
->  }
->
-> -static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
-> +static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
-> +                     struct kvm_s2_fault_result *result)
->  {
->         bool write_fault, exec_fault;
->         bool perm_fault = kvm_s2_fault_is_perm(s2fd);
-> @@ -1728,8 +1733,10 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
->
->         ret = kvm_gmem_get_pfn(kvm, s2fd->memslot, gfn, &pfn, &page, NULL);
->         if (ret) {
-> -               kvm_prepare_memory_fault_exit(s2fd->vcpu, s2fd->fault_ipa, PAGE_SIZE,
-> -                                             write_fault, exec_fault, false);
-> +               /* If result is non-NULL this is a synthetic fault. */
-> +               if (!result)
-> +                       kvm_prepare_memory_fault_exit(s2fd->vcpu, s2fd->fault_ipa, PAGE_SIZE,
-> +                                                     write_fault, exec_fault, false);
->                 kfree(mapping);
->                 return ret;
->         }
-> @@ -1784,7 +1791,13 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
->         if ((prot & KVM_PGTABLE_PROT_W) && !ret)
->                 mark_page_dirty_in_slot(kvm, s2fd->memslot, gfn);
->
-> -       return ret != -EAGAIN ? ret : 0;
-> +       if (ret == -EAGAIN)
-> +               return result ? ret : 0;
-> +
-> +       if (result && !ret)
-> +               result->mapping_size = PAGE_SIZE;
-> +
-> +       return ret;
->  }
->
->  struct kvm_s2_fault_vma_info {
-> @@ -2108,7 +2121,8 @@ static int kvm_s2_fault_compute_prot(const struct kvm_s2_fault_desc *s2fd,
->  static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
->                             const struct kvm_s2_fault_vma_info *s2vi,
->                             enum kvm_pgtable_prot prot,
-> -                           void *memcache)
-> +                           void *memcache,
-> +                           struct kvm_s2_fault_result *result)
->  {
->         enum kvm_pgtable_walk_flags flags = KVM_PGTABLE_WALK_SHARED;
->         struct kvm_guest_s2_mapping *mapping = NULL;
-> @@ -2209,12 +2223,17 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
->                 mark_page_dirty_in_slot(kvm, s2fd->memslot,
->                                         gpa_to_gfn(canonical_ipa));
->
-> -       if (ret != -EAGAIN)
-> -               return ret;
-> -       return 0;
-> +       if (ret == -EAGAIN)
-> +               return result ? ret : 0;
-> +
-> +       if (result && !ret)
-> +               result->mapping_size = mapping_size;
-> +
-> +       return ret;
->  }
->
-> -static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd)
-> +static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd,
-> +                         struct kvm_s2_fault_result *result)
->  {
->         bool perm_fault = kvm_s2_fault_is_perm(s2fd);
->         struct kvm_s2_fault_vma_info s2vi = {};
-> @@ -2253,7 +2272,7 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd)
->                 return ret;
->         }
->
-> -       return kvm_s2_fault_map(s2fd, &s2vi, prot, memcache);
-> +       return kvm_s2_fault_map(s2fd, &s2vi, prot, memcache, result);
->  }
->
->  /* Resolve the access fault by making the page young again. */
-> @@ -2532,9 +2551,9 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->                                 !kvm_s2_fault_is_exec(&s2fd));
->
->                 if (kvm_slot_has_gmem(memslot))
-> -                       ret = gmem_abort(&s2fd);
-> +                       ret = gmem_abort(&s2fd, NULL);
->                 else
-> -                       ret = user_mem_abort(&s2fd);
-> +                       ret = user_mem_abort(&s2fd, NULL);
->         }
->
->         if (ret == 0)
->
-> --
-> 2.55.0
->
+Reviewed-by: David Matlack <dmatlack@google.com>
