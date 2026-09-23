@@ -1,64 +1,64 @@
-Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
+Received: from mail-dl2-f12.google.com (mail-dl2-f12.google.com [74.125.229.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19945304CF
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 13:21:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B0A5335B4
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 13:21:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790169700; cv=none; b=aQ7H1S+nPqffIMJRoMux70xEqo9zTy6M3xTvNlNrWpL3nXq7ybqXAPhnCrIjuUDTLIh8eM1uI/ydGrkrqUleoogl9i7Sn/iIbc+zfYxk0oXOWl1xoYD7Img+f1UKv88sXLIO/eHNACvuGY7Q5bAx4rI70vETN5qS07hu8saWNGM=
+	t=1790169709; cv=none; b=qTPx/xi6rEF8BZtBXCP9gKeweM8mMrtVxeuqofjRaRBjaLHe0Z5hwkX+FNXo78kHwp+nmkwudSOIB+shpIvL7C0RdUkyfizVLcHyAU/acHilNeTR9RObV3t2/a60+5ZuMlYHCjJUEdQUXKv0/msAwGHMqb42Xv5Nw0g/xasM8Y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790169700; c=relaxed/simple;
-	bh=LWRwbrXMKQ4eb4oZms6UZHR4kVgKcj+pWE9HoBBFydc=;
+	s=arc-20240116; t=1790169709; c=relaxed/simple;
+	bh=7AGHKT6bbEPJNns+yT6veipFv7H5mvnoArgoBoXh3gA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZKSYetKH097S1GoS5KhQ62MPcmLLO1/5UtzFGpbWwN3F9aKYE1BIaQOefOrVP2aTAbKNx0HuNepAkVq733Xr633vv5N1Zki3LekfIy3NCAPzmzHCFlmjkTehKLcCOvutAsIQ3je1kjDhz+NZlxy7+G3awFeyOjZN5bE/zkEkP2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D0CK8ds7; arc=none smtp.client-ip=74.125.229.43
+	 MIME-Version; b=Ikx8OWoHB6gCUwV12+L9IL7sJTVTDrwtll6xAEwPd8Tf11l25dHxXr8rn7VXs/ih3SnvHIbU3NnPePnry5IAj2xL5f5RzFhJ+sAlHsGQN+bIJZgaw4DXg3k5BMXeQmDQBAWiQhM56TkJLpTeJKrVfK8Efm/NX1x413O5lSJ8HfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QpEuhto2; arc=none smtp.client-ip=74.125.229.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D0CK8ds7"
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33e46a15703so622985eec.0
-        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 06:21:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QpEuhto2"
+Received: by mail-dl2-f12.google.com with SMTP id a92af1059eb24-142dd04edb5so1438851c88.2
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 06:21:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790169692; x=1790774492; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790169701; x=1790774501; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=huS4A6FsKFDWrrXfwa21/vS+oZaWC4wTWSJg3SCD6Do=;
-        b=D0CK8ds7W6psy0KmzYhxMK/CAAP4ORvoj95BjwqmgM6Duteae7gUKBdP5Me90pefl4
-         xf0qA6FqeId1AW8IgpqE3dxOagNYr3kqC9idD+K/RD3hi+TO6mRK5w0bozb/RHEt5Tm9
-         L/dUkUpyKojZFLOK0XpkT2K05C6TdIJqfBnmPozH08qiiFRcUAcjdN9zwFyOOn2vOLqP
-         jBs+nBEDxIGqKPG4HJqW+SNU4nRiptExh3AQjDQFOlYPNDqrGuVHZdudiNyluvf4S04m
-         mu7Ysx3jpF63aJZVHtX3erDtr0qrpD0/UJzJjLSeS/RJ5sVf6Ux++lUHMKcSm/GsTRtG
-         V8fQ==
+        bh=BQcT2TCunpJ4XJOGDsLRORw+wafc2yMdlkK9/vuTXoQ=;
+        b=QpEuhto2Jhh5Fs1mbRxBz5Z2TnbyOBlJojuMMUf8FMaEjgX41xYl+e0yMxlRbo1RAs
+         DpTsL/T+IrwYJXW7gq3B2TFEKKpvP+Hg30BfyY7rP5+Bk/H19LAiQ2z5FGnZhdTsYr4M
+         ZyK0eEwQTRhMXfdkAtwvt/CZXzHFr2MRD5vsQE7actGoilEg+GgjztwucurKAz5gnlxt
+         u6lAzqNuLRGDpbF6BfEjCh7y4oV7fcKxb4Cyr+MGtOC/o+YJAD22PlI/PBPNrrdHZHUl
+         GpyKOdw6pC3FkYWmAc9d0v6Y4B6bujpe/tXgmHcVKVppmiF9/tkOg8P+fgJV7ek8XkH5
+         tMbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790169692; x=1790774492;
+        d=1e100.net; s=20260707; t=1790169701; x=1790774501;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=huS4A6FsKFDWrrXfwa21/vS+oZaWC4wTWSJg3SCD6Do=;
-        b=J954EP8qaXrCSsTkOAKdZylLcvt3LPkoBxo3h+pm3WnkCgsxqiN/zTlQIXdH5otfKv
-         0lCitNNCV5+WZn9zRqcNYMf1Ln0NwgtxemYW1zVjAQd/y2tVl2DO5vfjar+WDik4I/M/
-         dS6A698nA8WaAcoWulLQRnnwZfP5AoFLrvI+CQOT00IJUorVrSs7wSfz8Wut9cOZtEXJ
-         ssmg7vLxalmeZfzGxqKHK2wPMYiALsGrarCzeNQ1aQweRdbITlJTtEM7phjqyxYYES58
-         efQ/Uht409y9BfNGDI3FwUvSlpkqTMQZvHmqqkjW8fz77rRVqesqJGHon4Z+Sj9DcRE8
-         98mA==
-X-Forwarded-Encrypted: i=1; AKwUvByq4QjOEZvZiw+IDD91QC+iE2m1Kt6d7ryNa4Ae8aPyxrxlQZDq07uWk15p+DVm+/X8VAc=@vger.kernel.org
-X-Gm-Message-State: AFuF++mmuVT8cUpiRM1OwogVE90HLngsF7X3XCCExep2OFA53YY6tDMp
-	3Yx9PJcp03bfLtmFhfsdgQxqzMXlxZx5aulUbcgUF/jmAKb2c3BMEsI3
-X-Gm-Gg: AYBFou0oDNjnaUSwneWRFs3ruGqFyOZ4RTCdQk3Z+nUtCawDWadhKuLdCcvDTak3yBT
-	dbr+FqZMQusHyjqQDQDgwE8fY/ueaAVB7Ia6BMmSFEczmRfvkrBphV+upLKMHosZnUgRbfkk9qn
-	391QBVw9AgurYGN0Xru6h1Diosc9RYCGCdYjJTpx7pOcY0OuVaJw8ZShz0SowpW0uXtj1cb6b/1
-	sLKuQYgPHz+mPr93yA8xKhltIWoCNeQpeDZTRF0MsxQWT6aP31xeY2alau93Pjn6Hz46bTOsxqJ
-	5+LJMH0C/b6WdSwzx1J2YRdK4O0TepGRAB66OICmH87lUnb4LqtJ/D2YZol+dDPfj47hTbVMbBe
-	DqIjlamC0oO6p6A+MELcEGZBwaY/VX644IIDoBqZ+1lPrjMruJflcyczgg4W1Uo1MqgD2q8BqzF
-	BeoKUhmauEEg6JCgjyo2IX8Pwi8Qg/fY+Fj4Hku5379tIIcvMxf51lzPl2Xbtg3wAKzssX+Pmd1
-	cbGwFH4Wb7qViHUMQR69rtKGxBBnk2CTIggtfqf9w==
-X-Received: by 2002:a05:693c:42d9:b0:33b:e75b:cc42 with SMTP id 5a478bee46e88-33e8d7d8b7bmr2063395eec.19.1790169691801;
-        Wed, 23 Sep 2026 06:21:31 -0700 (PDT)
+        bh=BQcT2TCunpJ4XJOGDsLRORw+wafc2yMdlkK9/vuTXoQ=;
+        b=uadf2LAub1qId+HB6/AYABXls1ZGCR9C+blBQBu7FN9SWUaRSkwzM03kkIKGU7068o
+         /71nzWGJaOfdD+Kqr+DhYs5Lyo2GQe35+YqJ9g0dRy2RZ9MNgELa9Ve3r1CwdKhg4IOW
+         b9WH0XKMe33/NAIhQBXFuoDD1ywhxneWhC8iSQD5VhjW1e3/1skN+RS0kiIZMSol0ifp
+         rF0X/zYysklej1X4147HDNGcpoeh/H1BQ39sxJLjdLJAwhy1uzk+3853wKSmXENSmBp7
+         Qb+ItuhHHmR6mpJR6I2+HDRB/DydJowJlVW8kb8b7Fr/j9AZFrBAP+EuxivSlWWNiP4L
+         X1eA==
+X-Forwarded-Encrypted: i=1; AKwUvBxMIsg+mH2qgUfXvoJavgPmc6CzhB5obsDKj2BQ9sPZJyxPzV7XpHtT8BIpfPTlxmSrU/c=@vger.kernel.org
+X-Gm-Message-State: AFuF++mROLezzoj8cFARJsYqv9JlL+qT7Dqt2+BHFDYQOA93Xf3xmDqa
+	bKhJKtolRlY3xGlp6t3vcGvCCxyMhKmnxxoeF7iZOQ96h4WjA+Cc1eY6
+X-Gm-Gg: AYBFou1UslCIlZY0LArgZLY91bE1DD3uKGhx+VEpcCfaNuevYhCjv0uaTABEaW3cBXc
+	Hvj4AwIHa0LFy9B5NR1AydTULWJfUS+W/4gjOboubgVaakxCgS/GWoG8VhZrOEUnsAoW56WuvCI
+	TPqrfMRNatT0wfUGXGk/4zVm8k51lnK8wqb8Z/OhXhZbwiF7oTwLg5xIv7IAI6nY2+s699b7sEH
+	fGdbf5roEqR3fvisiz8KOoKgo1l6V3zjesZhqP6dQvtr2bUWy7at2Lk/yUXKhXm//apBf27hAax
+	J4jEkShAzUxrag/QU6MWIpgzS6HRdQINY/c3LMYl33jnFarSs7iAsezoLh/h91SY7T/0TWDvPt8
+	pYoCp9+jv9u+IX5QVPc5qJs4cYuNrH4xNz2Xjq5PcuKKLXR1GEAdtvm/blHvOaV71Oj7sj94/o8
+	RUn29GNubYHxnUgIlDtNeOBP35LBsZWd8XSEugVHRxp2JbSs8gNdwA9To/dnoU23cW2sckdT+Jg
+	zwnKlwJsBQPhVPkA8bMDn4msVqvKJeuMfaJZWMEVN4=
+X-Received: by 2002:a05:701b:4551:10b0:144:fd7c:84f4 with SMTP id a92af1059eb24-144fd7c8641mr1564469c88.5.1790169700288;
+        Wed, 23 Sep 2026 06:21:40 -0700 (PDT)
 Received: from WIN-BH9M8FJACR9 ([103.94.185.75])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-33e97236754sm5553695eec.29.2026.09.23.06.21.22
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-33e97236754sm5553695eec.29.2026.09.23.06.21.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 06:21:29 -0700 (PDT)
+        Wed, 23 Sep 2026 06:21:39 -0700 (PDT)
 From: Yonggang Luo <luoyonggang@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Cornelia Huck <cohuck@redhat.com>,
@@ -102,9 +102,9 @@ Cc: Cornelia Huck <cohuck@redhat.com>,
 	qemu-arm@nongnu.org,
 	qemu-s390x@nongnu.org,
 	Brian Cain <brian.cain@oss.qualcomm.com>
-Subject: [PATCH v3 027/114] hw/misc/riscv_cmgcr: replace target_ulong with uint64_t
-Date: Wed, 23 Sep 2026 21:15:01 +0800
-Message-ID: <20260923131635.1894-28-luoyonggang@gmail.com>
+Subject: [PATCH v3 028/114] hw/intc: use kvm_enabled() in APLIC AIA helpers
+Date: Wed, 23 Sep 2026 21:15:02 +0800
+Message-ID: <20260923131635.1894-29-luoyonggang@gmail.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260923131635.1894-1-luoyonggang@gmail.com>
 References: <20260923131635.1894-1-luoyonggang@gmail.com>
@@ -116,27 +116,54 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-- Change get_exception_base() to return uint64_t so the GCR model
-  compiles in libsystem_riscv with -DCPU_DEFS_H.
-- Match reset_base and cpu_set_exception_base(), which already use
-  uint64_t.
+- Replace CONFIG_KVM ifdefs in riscv_use_emulated_aplic and
+  riscv_aplic_set_kvm_msicfgaddr with kvm_enabled().
 ---
- hw/misc/riscv_cmgcr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/intc/riscv_aplic.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/hw/misc/riscv_cmgcr.c b/hw/misc/riscv_cmgcr.c
-index 0390996f78b..2086a33f08e 100644
---- a/hw/misc/riscv_cmgcr.c
-+++ b/hw/misc/riscv_cmgcr.c
-@@ -110,7 +110,7 @@ static uint64_t gcr_read(void *opaque, hwaddr addr, unsigned size)
-     return 0;
+diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
+index d8e25bfda14..03a0852b8b8 100644
+--- a/hw/intc/riscv_aplic.c
++++ b/hw/intc/riscv_aplic.c
+@@ -167,7 +167,10 @@ bool riscv_is_kvm_aia_aplic_imsic(bool msimode)
+ 
+ bool riscv_use_emulated_aplic(bool msimode)
+ {
+-#ifdef CONFIG_KVM
++    if (!kvm_enabled()) {
++        return true;
++    }
++
+     if (tcg_enabled()) {
+         return true;
+     }
+@@ -177,21 +180,20 @@ bool riscv_use_emulated_aplic(bool msimode)
+     }
+ 
+     return kvm_kernel_irqchip_split();
+-#else
+-    return true;
+-#endif
  }
  
--static inline target_ulong get_exception_base(RISCVGCRVPState *vps)
-+static inline uint64_t get_exception_base(RISCVGCRVPState *vps)
+ void riscv_aplic_set_kvm_msicfgaddr(RISCVAPLICState *aplic, hwaddr addr)
  {
-     return vps->reset_base & GCR_CL_RESET_BASE_RESETBASE_MSK;
+-#ifdef CONFIG_KVM
++    if (!kvm_enabled()) {
++        return;
++    }
++
+     if (riscv_use_emulated_aplic(aplic->msimode)) {
+         addr >>= APLIC_xMSICFGADDR_PPN_SHIFT;
+         aplic->kvm_msicfgaddr = extract64(addr, 0, 32);
+         aplic->kvm_msicfgaddrH = extract64(addr, 32, 32) &
+                                  APLIC_MMSICFGADDRH_VALID_MASK;
+     }
+-#endif
  }
+ 
+ /*
 -- 
 2.52.0.windows.1
 
