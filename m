@@ -1,65 +1,64 @@
-Received: from mail-dl2-f42.google.com (mail-dl2-f42.google.com [74.125.229.170])
+Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C135D53163B
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 13:20:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5265326B8
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 13:21:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790169667; cv=none; b=CRMXpHBCKEo16em/5mEdKAQbPa9fk20fBwbnrH97tTWzw1thQ1hvTJhutfQLNFhW5r2QI98wZYh+2U6xMbi5OcaUB+to+uzQUqXX6sk7d3g2gOtfe/8Nmp5B3tgVzHEkQ4WxxYFBjgC4YFoqlW4Ga00RYtQc3aherDwWvLu+wl8=
+	t=1790169680; cv=none; b=hQM8HuD+GpL7hBkdAdOZ6pYBbxt70r+ENBSlEvsbYpBm1v+dRVPp/TvemEXCGZXTNi3NAvL5TGFUpRoFPS16ggVPHLFzNwwZCdG0TeuEXSmvPbiBUou9Y+FKRZz2ljeKWDZjB8mtAgfhwvpWp5LGQ1Dk5FWOdzdJaGMcvvTyw0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790169667; c=relaxed/simple;
-	bh=3gl3v9H3YIjzAoX13jPV9Ijshap4AQnU19UqfeYokZQ=;
+	s=arc-20240116; t=1790169680; c=relaxed/simple;
+	bh=YuEx8RuWPYGUpMhAjYFdyyFPadMa1hs5LDkA+3BwS1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pwklT/5X85nPZgmtPQiSZr2KrqRr1XWBJQ3goZfgvdCeD/LxCt5T4B1nVRlI3ttt+dHTd3IYIu+OXDdvUKVP9mCeP4QEg16ZUxrIVq2EOoEtwaMq2KXDUD+QfUznKXuShguoqquzy6e/JmkTIliX5M+Z+BzmUSch/Q1DSw7bgD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QjDYwglJ; arc=none smtp.client-ip=74.125.229.170
+	 MIME-Version; b=VWales7xVN3Kld7zSDQcGu3KKtLJWMxY21LtEckLsPpULLcIYRDYzQSO/nFbL4xTC27B7c/21+ztL+AWMOiUofb/AEY5LtLNvWbO8377Ned8zPvgg1C2NfKKySLvwFD+FCBwCeeS/PTza3qmAPBDyZks0K9VXMNzDdgKpfpTpXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p5PHPZiJ; arc=none smtp.client-ip=74.125.229.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QjDYwglJ"
-Received: by mail-dl2-f42.google.com with SMTP id a92af1059eb24-142dd046b85so492431c88.3
-        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 06:20:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p5PHPZiJ"
+Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-33bb1a50f6fso374874eec.2
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 06:21:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790169652; x=1790774452; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=eK1WJJTOKN3JQC4zjqi0U64pp0hPplv7AhkYIkHOF98=;
-        b=QjDYwglJeTUV1xkl9oRGgor4AlwjPssyBbbjSLmacfZdQB5oCsOGZa/uQtaaeCOgn0
-         2gPZHjgiyo2TrFh27250ugQ+Pwmhc9eHF5pN5RTAvZ5IEUWCM56KkFG84gCqa2INeNpf
-         5yogD2h8FJbntz/x6TII65NGkdbQJiZ0cZAMezZT1D25n/0AuoTPqz2tmN+3oNS3Yyn9
-         CYvMvwPjTHRsK8kUK0VY7jrSiceDmRZLwFkdhP80kwcBWkpCNyhWPO+L2oofraC0iNxx
-         qD4bszO/hg+QKXt454Rg6to3nOdZybnFum1VPnWLno3C3vnoQEpemZ6rwrgEoyrp5z3s
-         NcFQ==
+        d=gmail.com; s=20251104; t=1790169667; x=1790774467; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=qin3vLUrrbcXuVdau3Ouu4JIt8wWynB3TLlDqfsVk5s=;
+        b=p5PHPZiJs1cL7DSdNM0iJAICneE4aZLBRBc7CHLUtpWWJXdZD+IgXitUymoEC7lDXd
+         EsKPIOMj1kewxR+EzQAtQkaHeq9GKyruIOXxQ886xVA81AISd3AFSiOJCeN84HYmR0OD
+         qpnTRudNEBdu9pP+Nkru/poXXA8ZRN47W4NzN/7UjYDX3SllSExzaZuHYOywDEgXDUuQ
+         T808RttceXk29E5I4/WHHX0tI8EFyxtN+IONuWe6iI62/zQvVboQ1S+bIqKBDGH7+fZb
+         6n3V3gKRwejaGg8vyA2rnKy0dwwTSclq9wr2IuW0D+MzgHONP88VOmY1huRn3N5kj5K7
+         ttiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790169652; x=1790774452;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eK1WJJTOKN3JQC4zjqi0U64pp0hPplv7AhkYIkHOF98=;
-        b=B4uiT8w28pmfKGJDsa/fiKL5JuYbQIvPtZsLXePohMHtGX9w8uor/7n9L30OtXYyeK
-         UN13L9INDgwF/sogPKvwN5ID7n3BZN40QM89Q2LoGCu/bh+jNRI/BK58vZWjuReRIWWk
-         Wv3kRcA7u+e0HGMKmwSw8wGdYKIapgRMT6cVMZiPk65wjcDhzEJRGSmeCivrBWRt7Svo
-         wYC4xwxOEMCeI7J/tilYPrhp+kQjzQO1w7dvYdTGo6ihfxo5OYF/x7xBBkFrZxWMZWPK
-         Kd6hRDCIa4/5MlFh6/FF8ce59LU8Oo2cAVHN/2zQ4K7zm7q+4JrkfujW371T3lW6VC7X
-         1dLg==
-X-Forwarded-Encrypted: i=1; AKwUvBzXQm2lu75nNOpQbKLEw5AxoSd3A7JHoENr/V2yFZcOeZnZPfJLwaoMhw9zaXDeIkdtL2o=@vger.kernel.org
-X-Gm-Message-State: AFuF++lw9Jiq5WW5+Wm3mPf2kg92RyysmgxpC6j0CKC/T+IIH3OrYVwM
-	KeK7b9VI5DU/wnu1ehcler2Xvk6je/KM2tGZdDRQImy7+vmDVIHCWPR8
-X-Gm-Gg: AYBFou27GgNXIkbKO6e5rQKxW6MQFvCCmOGH1gcDftGaPEV8LLLdE0ajLUcBQ603Bvh
-	zrReSHpez0Jvdfi1bScRVAg4Gn4w+FX+8s2259pxo4EsaPtifpb+7YfhxV98t7DWakQZu78uXzb
-	Mj6N7x37+SHK9F8rKt01ooYIlPiHuE3r9TnGRlkBH5DyXWZCFyV6aYauwC4IQZtryFrKMaYZumL
-	V0HyaXLmoqf9DwhLwQ4ohQwY4y/H+li7LeGUW+4yxiHQ+PmGspAUJXLUO52EkVRCdEPrNUpytc5
-	uxb/xG8/Jg7fldNko5w8PXBCSc7LJoD6WPL/dqvAR377zl1Pzh2zcQDos12whoFTxG/eDzzmzhK
-	vS7M9x9QCvESQzjGayyZtQfZcPbYHiC5IfZu6051rzeKBKzHRvFwECWa7E5w0g7Hb2xxWQhcHnv
-	kio7L7kMAzuA0bu10N7Jpdwr+4cWu6NARIP/bcydtTnRluULrQH05P/bXnGS8W7R5fXiUFAteaG
-	d4ZfTDnM0sCCvJYT0kLHgdk5xEnMhxkhLB9MXikqQ==
-X-Received: by 2002:a05:701b:42d3:10b0:143:5c2a:e488 with SMTP id a92af1059eb24-144f8fc7b95mr2889651c88.0.1790169652322;
-        Wed, 23 Sep 2026 06:20:52 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790169667; x=1790774467;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qin3vLUrrbcXuVdau3Ouu4JIt8wWynB3TLlDqfsVk5s=;
+        b=AzpgVeAMVM0dJ1sY9NrIj6xAyPuuUD5TtBwU0tkYnRCUdE4lhg3BmAiXJzyvGc3P5R
+         CNl4IlDV3XJm+jxJu+O2Qz1I1ae0FDtEyGqDa5+p1QdWpJ3lwkC8q4UiDlXLGhDF2qNn
+         60vcCf+j+w0fLL5BC7z5SIWAHUkmEdnpCMGxU1J1oBk8UhKefzx9IzclMaLU3Vag8Llq
+         bJ2ucB/L2s5BnQQmxLWv2O4r7zWPu0zpDWlrxyhcGkZzQrnEnMGNuL7djQVmH8tFGtDT
+         xwYWOHPjyinEAvmcGXDIUZm10gFHL/wajDERfOE82Md+Q+09URfuw7zMGmuemgzetabN
+         esyA==
+X-Forwarded-Encrypted: i=1; AKwUvBzvgVFXG6reUeBYMm6HUce/dwnpaygNz1gqais+RbWAZIlWBEUdFFFsiuZIamV1dFP8+Lw=@vger.kernel.org
+X-Gm-Message-State: AFuF++l4tfbcDittP62wZweQufiEupBiREocS3ZplVvjJYPUTiCo0nB1
+	ntNk4VeMLKO9OTukbBpS+N5ZTOEYiRBA1Ak6Ms3ppI0k9VShUVDfPFej
+X-Gm-Gg: AYBFou2/MZLCwuNR5KQtyoBABdWwvBJWKr1vBSJQ8gb+dv6WW4rIwI5GqV1HHZWDSju
+	UHNHuBhOJhLqx3vBuf3q3IsVRF8hxRUjYgBy2lfCB+e6KjAHDfGA08excqht4UZgh1Yj2A9miBl
+	jXLIurqoRn3VBLDTRmWSGZAT0IZ9pcIzcrpyBh4vF0VFT1wMZ6fNGsIeE+AGybnLiYfLFbN9IrE
+	K2UrS18H0THdhK9ABXqIGf3KuslrgEZYgD+6bJhVHogqPDI2gvqeC0AL8gpYXUpCOl4ppqskFlT
+	TZ6vTJ/XEkyusMD2fvd3mIRDKq7/LLrxj+H6BWpzASFtJvEwgx0IbgC95rGpH7QcJiCZYQPw9mZ
+	+WgSp70WeMUZNXn+d8XQLTvIgt+UbgMt/2LQ1mzAeEr4WtyyekTci3dTDNGFPqy9ShSfljmfnMK
+	ZJNR+VJyJh5OqWsV9QV2wbRcaQ49xz68YlJxZSpbeyeU/UOEEZT+lsy9W2GCmN8gLAdNEJjl4AI
+	HogBT19RzpvuAv2FMSiKoPA85dt5Dfse3eVH6LFnA==
+X-Received: by 2002:a05:7300:a224:b0:33c:141b:73a5 with SMTP id 5a478bee46e88-33e8e1afe12mr2620027eec.41.1790169661766;
+        Wed, 23 Sep 2026 06:21:01 -0700 (PDT)
 Received: from WIN-BH9M8FJACR9 ([103.94.185.75])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-33e97236754sm5553695eec.29.2026.09.23.06.20.42
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-33e97236754sm5553695eec.29.2026.09.23.06.20.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 06:20:50 -0700 (PDT)
+        Wed, 23 Sep 2026 06:20:59 -0700 (PDT)
 From: Yonggang Luo <luoyonggang@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Cornelia Huck <cohuck@redhat.com>,
@@ -103,9 +102,9 @@ Cc: Cornelia Huck <cohuck@redhat.com>,
 	qemu-arm@nongnu.org,
 	qemu-s390x@nongnu.org,
 	Brian Cain <brian.cain@oss.qualcomm.com>
-Subject: [PATCH v3 023/114] hw/loongarch/virt: prefix ACPI helper with loongarch_virt_
-Date: Wed, 23 Sep 2026 21:14:57 +0800
-Message-ID: <20260923131635.1894-24-luoyonggang@gmail.com>
+Subject: [PATCH v3 024/114] target/riscv: uniquify TCG crc32, crc32c, and wfi helper names
+Date: Wed, 23 Sep 2026 21:14:58 +0800
+Message-ID: <20260923131635.1894-25-luoyonggang@gmail.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260923131635.1894-1-luoyonggang@gmail.com>
 References: <20260923131635.1894-1-luoyonggang@gmail.com>
@@ -115,81 +114,113 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-- virt_acpi_setup is the same C symbol used by ARM and RISC-V virt.
-  Rename it now so a later combined binary does not need meson -D
-  prefixes for LoongArch.
-- Rename the file-local virt_is_acpi_enabled to
-  loongarch_virt_is_acpi_enabled to match.
+- ARM already exports helper_crc32, helper_crc32c, helper_wfi, and the
+  matching helper_info_* objects. RISC-V used the same DEF_HELPER names,
+  which collide in a combined qemu-system link.
+- Rename the RISC-V helpers to riscv_crc32, riscv_crc32c, and riscv_wfi
+  so the generated C symbols are unique without meson -D prefixes.
 
 Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@oss.qualcomm.com>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/loongarch/virt-acpi-build.c | 6 +++---
- hw/loongarch/virt.c            | 2 +-
- include/hw/loongarch/virt.h    | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ target/riscv/helper.h                              | 6 +++---
+ target/riscv/tcg/bitmanip_helper.c                 | 4 ++--
+ target/riscv/tcg/insn_trans/trans_privileged.c.inc | 2 +-
+ target/riscv/tcg/insn_trans/trans_xlrbr.c.inc      | 4 ++--
+ target/riscv/tcg/op_helper.c                       | 2 +-
+ 5 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/hw/loongarch/virt-acpi-build.c b/hw/loongarch/virt-acpi-build.c
-index 600ef60fc58..b9df9b3a127 100644
---- a/hw/loongarch/virt-acpi-build.c
-+++ b/hw/loongarch/virt-acpi-build.c
-@@ -674,7 +674,7 @@ static const VMStateDescription vmstate_acpi_build = {
-     },
- };
+diff --git a/target/riscv/helper.h b/target/riscv/helper.h
+index 9458a5152be..ef629b3c650 100644
+--- a/target/riscv/helper.h
++++ b/target/riscv/helper.h
+@@ -83,8 +83,8 @@ DEF_HELPER_FLAGS_1(unzip, TCG_CALL_NO_RWG_SE, tl, tl)
+ DEF_HELPER_FLAGS_1(zip, TCG_CALL_NO_RWG_SE, tl, tl)
+ DEF_HELPER_FLAGS_2(xperm4, TCG_CALL_NO_RWG_SE, tl, tl, tl)
+ DEF_HELPER_FLAGS_2(xperm8, TCG_CALL_NO_RWG_SE, tl, tl, tl)
+-DEF_HELPER_FLAGS_2(crc32, TCG_CALL_NO_RWG_SE, tl, tl, tl)
+-DEF_HELPER_FLAGS_2(crc32c, TCG_CALL_NO_RWG_SE, tl, tl, tl)
++DEF_HELPER_FLAGS_2(riscv_crc32, TCG_CALL_NO_RWG_SE, tl, tl, tl)
++DEF_HELPER_FLAGS_2(riscv_crc32c, TCG_CALL_NO_RWG_SE, tl, tl, tl)
  
--static bool virt_is_acpi_enabled(LoongArchVirtMachineState *lvms)
-+static bool loongarch_virt_is_acpi_enabled(LoongArchVirtMachineState *lvms)
+ /* Floating Point - Half Precision */
+ DEF_HELPER_FLAGS_3(fadd_h, TCG_CALL_NO_RWG, i64, env, i64, i64)
+@@ -134,7 +134,7 @@ DEF_HELPER_1(sret, tl, env)
+ DEF_HELPER_1(mret, tl, env)
+ DEF_HELPER_1(mnret, tl, env)
+ DEF_HELPER_1(ctr_clear, void, env)
+-DEF_HELPER_1(wfi, void, env)
++DEF_HELPER_1(riscv_wfi, void, env)
+ DEF_HELPER_1(wrs_nto, void, env)
+ DEF_HELPER_1(tlb_flush, void, env)
+ DEF_HELPER_1(tlb_flush_all, void, env)
+diff --git a/target/riscv/tcg/bitmanip_helper.c b/target/riscv/tcg/bitmanip_helper.c
+index d8d94bca7ba..5af3efe194d 100644
+--- a/target/riscv/tcg/bitmanip_helper.c
++++ b/target/riscv/tcg/bitmanip_helper.c
+@@ -117,7 +117,7 @@ target_ulong HELPER(xperm8)(target_ulong rs1, target_ulong rs2)
+     return do_xperm(rs1, rs2, 3);
+ }
+ 
+-target_ulong HELPER(crc32)(target_ulong rs1, target_ulong sz)
++target_ulong HELPER(riscv_crc32)(target_ulong rs1, target_ulong sz)
  {
-     if (lvms->acpi == ON_OFF_AUTO_OFF) {
-         return false;
-@@ -682,7 +682,7 @@ static bool virt_is_acpi_enabled(LoongArchVirtMachineState *lvms)
+     for (target_ulong i = 0; i < sz; i++) {
+         rs1 = crc32_table[rs1 & 0xFF] ^ (rs1 >> 8);
+@@ -126,7 +126,7 @@ target_ulong HELPER(crc32)(target_ulong rs1, target_ulong sz)
+     return rs1;
+ }
+ 
+-target_ulong HELPER(crc32c)(target_ulong rs1, target_ulong sz)
++target_ulong HELPER(riscv_crc32c)(target_ulong rs1, target_ulong sz)
+ {
+     for (target_ulong i = 0; i < sz; i++) {
+         rs1 = crc32c_table[rs1 & 0xFF] ^ (rs1 >> 8);
+diff --git a/target/riscv/tcg/insn_trans/trans_privileged.c.inc b/target/riscv/tcg/insn_trans/trans_privileged.c.inc
+index a8eaccef67e..0df78e89745 100644
+--- a/target/riscv/tcg/insn_trans/trans_privileged.c.inc
++++ b/target/riscv/tcg/insn_trans/trans_privileged.c.inc
+@@ -144,7 +144,7 @@ static bool trans_wfi(DisasContext *ctx, arg_wfi *a)
+ #ifndef CONFIG_USER_ONLY
+     decode_save_opc(ctx, 0);
+     gen_update_pc(ctx, ctx->cur_insn_len);
+-    gen_helper_wfi(tcg_env);
++    gen_helper_riscv_wfi(tcg_env);
      return true;
+ #else
+     return false;
+diff --git a/target/riscv/tcg/insn_trans/trans_xlrbr.c.inc b/target/riscv/tcg/insn_trans/trans_xlrbr.c.inc
+index 01da2b6ce1d..795231f0839 100644
+--- a/target/riscv/tcg/insn_trans/trans_xlrbr.c.inc
++++ b/target/riscv/tcg/insn_trans/trans_xlrbr.c.inc
+@@ -29,11 +29,11 @@ static bool gen_crc(DisasContext *ctx, arg_r2 *a,
+ #define TRANS_CRC32(NAME, SIZE) \
+     static bool trans_crc32_##NAME(DisasContext *ctx, arg_r2 *a) \
+     { if (SIZE == 8) { REQUIRE_64BIT(ctx); }; \
+-      return gen_crc(ctx, a, gen_helper_crc32, tcg_constant_tl(SIZE)); }
++      return gen_crc(ctx, a, gen_helper_riscv_crc32, tcg_constant_tl(SIZE)); }
+ #define TRANS_CRC32C(NAME, SIZE) \
+     static bool trans_crc32c_##NAME(DisasContext *ctx, arg_r2 *a) \
+     { if (SIZE == 8) { REQUIRE_64BIT(ctx); }; \
+-      return gen_crc(ctx, a, gen_helper_crc32c, tcg_constant_tl(SIZE)); }
++      return gen_crc(ctx, a, gen_helper_riscv_crc32c, tcg_constant_tl(SIZE)); }
+ 
+ TRANS_CRC32(b, 1);
+ TRANS_CRC32(h, 2);
+diff --git a/target/riscv/tcg/op_helper.c b/target/riscv/tcg/op_helper.c
+index a00370a7973..4f4932614f1 100644
+--- a/target/riscv/tcg/op_helper.c
++++ b/target/riscv/tcg/op_helper.c
+@@ -591,7 +591,7 @@ void helper_ctr_clear(CPURISCVState *env)
+     riscv_ctr_clear(env);
  }
  
--void virt_acpi_setup(LoongArchVirtMachineState *lvms)
-+void loongarch_virt_acpi_setup(LoongArchVirtMachineState *lvms)
+-void helper_wfi(CPURISCVState *env)
++void HELPER(riscv_wfi)(CPURISCVState *env)
  {
-     AcpiBuildTables tables;
-     AcpiBuildState *build_state;
-@@ -692,7 +692,7 @@ void virt_acpi_setup(LoongArchVirtMachineState *lvms)
-         return;
-     }
- 
--    if (!virt_is_acpi_enabled(lvms)) {
-+    if (!loongarch_virt_is_acpi_enabled(lvms)) {
-         ACPI_BUILD_DPRINTF("ACPI disabled. Bailing out.\n");
-         return;
-     }
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 2b003443eb0..18923500fc2 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -242,7 +242,7 @@ static void virt_done(Notifier *notifier, void *data)
-     LoongArchVirtMachineState *lvms = container_of(notifier,
-                                       LoongArchVirtMachineState, machine_done);
-     virt_build_smbios(lvms);
--    virt_acpi_setup(lvms);
-+    loongarch_virt_acpi_setup(lvms);
-     virt_fdt_setup(lvms);
- }
- 
-diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
-index 09529de48bd..4316a414f44 100644
---- a/include/hw/loongarch/virt.h
-+++ b/include/hw/loongarch/virt.h
-@@ -132,7 +132,7 @@ struct LoongArchVirtMachineState {
- 
- #define TYPE_LOONGARCH_VIRT_MACHINE  MACHINE_TYPE_NAME("loongarch-virt")
- OBJECT_DECLARE_SIMPLE_TYPE(LoongArchVirtMachineState, LOONGARCH_VIRT_MACHINE)
--void virt_acpi_setup(LoongArchVirtMachineState *lvms);
-+void loongarch_virt_acpi_setup(LoongArchVirtMachineState *lvms);
- void virt_fdt_setup(LoongArchVirtMachineState *lvms);
- 
- static inline bool virt_has_dmsi(LoongArchVirtMachineState *lvms)
+     CPUState *cs = env_cpu(env);
+     bool rvs = riscv_has_ext(env, RVS);
 -- 
 2.52.0.windows.1
 
