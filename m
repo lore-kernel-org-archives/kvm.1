@@ -1,64 +1,64 @@
-Received: from mail-dy2-f15.google.com (mail-dy2-f15.google.com [74.125.229.15])
+Received: from mail-dl2-f43.google.com (mail-dl2-f43.google.com [74.125.229.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCEE524AE6
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 13:20:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A670147798A
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 13:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790169613; cv=none; b=faX24R5WubT4iG6o+b4/kT3EU+BkBqcmmlVcNLPyFr/NCawVUoFpQZcLSxI22VEihJMQQqbVE4Md78+24auMAPVFvKtzbU2PfzLFYjBJJ51yLNHoguFJwWcB0uKY6Rw1Ne/TbUSxyIRSlmOmtb1FjpngtZpNF5ME4wRGZ1Poo1A=
+	t=1790169626; cv=none; b=POhzzq3UwTcLigXw5YD0tXyH8aopT1bYknPSm+qePFL+bcmZ5/z/sK5+nbLL/b4weM0lKdU30rxGP0qVRTZVvrS8u6/iFMNki8NdJsCsL8YRr2tnXnChc3jxBbgsJSnZgs5rlLovk5UKTSHL13URx559h+dWvFJKCtthLQXaQNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790169613; c=relaxed/simple;
-	bh=5jbpiM9r+soU8iHq0A758qw0mMJ/cWwm3oEx9E44BnI=;
+	s=arc-20240116; t=1790169626; c=relaxed/simple;
+	bh=GrYsfDcKE0H0p3m5ZLWrRin+m5OJc9l0m5Z/SxjnjIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WYUQbPPO3syls7WraiwtzwMprbbLNLRGN+4BqwLvcHZ2dJ3eHysxSgVZ/o+P1cLi+YvBOUMghfhkVwXp8tqN9rByDMIutODslSFmLF9MmbHS1XBV0d/GLNtW946wWLlYIRX6NHTYgAdfanAANRuPRyyQxt23hyu/F5ftei63u6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P93gHbp/; arc=none smtp.client-ip=74.125.229.15
+	 MIME-Version; b=AY6/h1IicimxYC959YN7aZbodGDzBi2jcaoNu13O6TVnpglARKUyQnom0k+iHDXugl/eJ0MnWImX/JD3IpUyCxZJxCNun4Nh2d+hGpRBsSJIWqdZLkfRH/es8gX1xX6Isgr2n5Ntwa29xzsxt+NiZ//ceR2uzK9Pfm1L7CqrfUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aggXg7AC; arc=none smtp.client-ip=74.125.229.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P93gHbp/"
-Received: by mail-dy2-f15.google.com with SMTP id 5a478bee46e88-32dec843c37so1556986eec.3
-        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 06:20:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aggXg7AC"
+Received: by mail-dl2-f43.google.com with SMTP id a92af1059eb24-1438f55921fso338808c88.1
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 06:20:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790169599; x=1790774399; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790169609; x=1790774409; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=bgYFeWF3ExMdjkoIhx1M6bQ8cLDb8ZfAeE7NuNbtMe0=;
-        b=P93gHbp/x+L4gPTGCmhUdgewdw6Go7pFISdWLJKsFs7CR9hvQgKhX73T/giUiN6gpk
-         EuPXz0S5MuYBydP/xa8rcsZl5SwMZtC+qopPow3WSyJTllvgrDb/iELJz7yRGkO95Bx6
-         777Pmt8PDku1cMMWTEP0xMHwLLf1lM838FkZwJ5ekE3HFiJR8cJw6Skp8c+bjsQR6TBQ
-         zo9iqUrAdKejn6K8ZriWjEGtBapwRajp1oeN+D/6I6/UMpWLZUVCVUHUfsLJbRpn4Miw
-         042D4HIDLu26AgCGkYCSdiKHY9KVcM4lRmFfaJBpBMzesw8nJWInbb+ZC1m3Hm2eNuZk
-         NOUw==
+        bh=R0NEODEUKGZurnafAxCJE2mvY+onJpkfc8axTrsuyg4=;
+        b=aggXg7ACXEnF2YOJjSD3iTa0w2zPgj8i/m1pS9YOECysxtTaI5MluapQXGarPxqlYB
+         qWEa+o1ypOOytcGiAmoy9TlXyRN1pkFfolK51VQpPTaACnBxHfs2pWKvd/8Z8tflPaCs
+         6o62nVhjfV6oKmWOekaTnZsbcE4wON1mI19FM1KPQ5/S5YVfhga+YCZo3c82hFBh2FwY
+         iyU00HivlDNSCl4q04fwPuQlq9mPROSEMJAVhpNuMvnLhEA+Dr7HPYvKCVUj4ZQeyTdN
+         QhtFUamPpmANF/94/1jtl9Pd6nMhAT0r//2u79PzXNJ21pgZcONnu3UwhEFn/ArcTWjC
+         IxmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790169599; x=1790774399;
+        d=1e100.net; s=20260707; t=1790169609; x=1790774409;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bgYFeWF3ExMdjkoIhx1M6bQ8cLDb8ZfAeE7NuNbtMe0=;
-        b=fk5wqTaWhzExMN9lb6Z/NklJzdnqy+p9PSxGgUTLIExD9BwaHYwmuzcQZHwHK7eJ3A
-         l3utTIvdWkoZkLu2hM2Gwwzy01yXWZVJqYg8Fj+Z7KqGcfgczv7ri8h2EBPwskXjnjeV
-         i5U6aU+5tOKO1xPt4y6lslNR8bNN2J+OXG6iOPHtupsLwUWcizMZ+Zh3WrlRRV+y8Qaf
-         qIL+EwwatPcFLDw7n4uvKqhEcA2Qn4KxNF8P+jcaie2xo9JIVk87PGdi+pJAyuV83jBM
-         WB/mLuN1NkS1kw069hKHnJYHloQ3+YnVLRZJ88/+b6xHOaH7GM0tj7bWUlyzaRIEDJPy
-         iiTQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxaBu5g5ce6zeZv0pNJBVoRLvIjKzUxydaA88yxnq7lNomlW8ugNjUbrxXuEPKd82zu7/0=@vger.kernel.org
-X-Gm-Message-State: AFuF++nQljcBPqQW+Kjop7lRJrjrh1VZ/pyooQ30HeVc1WrLCEia0hX2
-	o9J1b8M0xDcYMRMh1WHPYI1+7iix3BuWONMfLChhKW8PRtQ80Qs1oDQ8
-X-Gm-Gg: AYBFou0sKp+9PMJLulObtqCqsZ74hpugeRTS3sajICEEB6Ps5ba4c8htZKTmmcQuoNU
-	X2hQSbxFTB9lPB9vcOaE3O2D1Rkz6/eoCpOR3z8jfuwmO2BISPKAsSwBKunonvdGJDJVlahgKai
-	tmj5dF+hV129AAZ6CI/t67tIaxTC/SJh2OQIznXObL004QQf0E09/JSTi8ufrY1bwX9vLwUj6FZ
-	i0rRTaPuD0X0CkTv3ym8wIUbF6VggwUt6dcM52lCSPP7GZ3hWs/N4LXGshQ7+yKFX0veDAsuWUI
-	EY0Ak4Y51tPkkNDtxGESdW+EKOJ65l1dDX1yXA+1iOks6exRgp7UbqixCIXkGc4kGOQr+ntZW+e
-	0+dNLN20pRensv06jT/R21O3eSrllpMYjru3iBA0A0zDFWI4fI4lHgoLxUFf922xFPJhM/gVxXV
-	0OR23RZztCS5GFSp6qfxCOmv3hKk1GDeIdBW/XKjUW3FW9oOBupf2donCuUbfHIczYWJwJw6mgs
-	Y+mQu4Bmg3qiEPFyKQmRoIsj5UieN0=
-X-Received: by 2002:a05:7300:220d:b0:33b:f206:845 with SMTP id 5a478bee46e88-33e8e0b4537mr4054962eec.32.1790169598799;
-        Wed, 23 Sep 2026 06:19:58 -0700 (PDT)
+        bh=R0NEODEUKGZurnafAxCJE2mvY+onJpkfc8axTrsuyg4=;
+        b=j34TocSOqVYDx478pDeVCIEdiTLlSdrt3lLZ3xEvjSHXcCrdOUgRPI8mg1QUYgsjSa
+         jMh4bVOyNkpY5uNmCd3q/S7o2UiVhoPk15U23LviygZ8eKNdtTZslWJZnxhZ1exEbbD5
+         kIm/XDaNeZrIt08NchZGtbHCbwwHPDNgT8WH1Z135M2G3KG06a/PFO1SzzwkvY3ryIhl
+         CcR70frQepM3s+ECzKrNrFWpWqUNQwcWKUq3HA56VkY0O2ydZdTRpWLZ738Gxv038r+7
+         dw8XgxYdZAxlECF6dL/C2WXb0YaCsmK6JBJFjYFBkG1eRwO2kjjLP/gap0FtYA9ipqyY
+         OcxQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzwWEAXBUt6gaNCxgXl6u+9nGXPtNWp+2RoA/pQrQqnUVMH3TQleBqpIk/p6ViJ6QPcmME=@vger.kernel.org
+X-Gm-Message-State: AFuF++mb7YppCoBOmRvMxUyl2pSwERLa3hSUj5lEiwyhJC7mED68axVG
+	zwMOwvO1tO3CDImakyfkfwNsk+RGb79Xs2YvawUb3TjB4ZkK02iNpK72
+X-Gm-Gg: AYBFou3pMgdNEim7xhL7EKhuxfNnAXYayjXw6ei/81EW/1i8GcR6EpIhYieCljZa2rD
+	6+HsgnRCoUnDFUGGz8tj7zrVWb+e4Ew6+GJXFojrzQUmhhEweEGxWqDLFK7WApPAyEOeeeym12M
+	XrgoqyayR7GmsoEwrjP8KapoIdr4WRWfv0rsLFYXZelPWJLB94y+h8Y5IpZsigqXUZTX+tW4vyU
+	vh2mqEmpOjOdVTcJHwmHHeXC+jLowJNjU3tgpbTxY6hxUBIgREnN2GntEjSHipOIg6MJVRcCmot
+	kt/jKgm6yCW0ZFHhNb5Ni2GfhToRyzcA2GaMu7UZfEw9oQHS74uqUjt/31YHi+jfKCyJOOjupGZ
+	gG56RiYGwALQUyCtR9kkt8dbKKeV8qKKkVy0YAxGrnV7cmBDn0eZoPpWZSwPAI7Ezuevvan949Q
+	Wb2QUpK1m5Gs6Omf5rWz1kRZMwa699aYrjd5pme8A2b4BYnUtKIXpgCPUS5qpEM/eAxbdubxGGq
+	q02NwvqU8t6Pn/B+3iIWDFUa/XkKhY=
+X-Received: by 2002:a05:693c:60cd:b0:33b:e306:2e27 with SMTP id 5a478bee46e88-33ea3eb055bmr2839410eec.5.1790169609054;
+        Wed, 23 Sep 2026 06:20:09 -0700 (PDT)
 Received: from WIN-BH9M8FJACR9 ([103.94.185.75])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-33e97236754sm5553695eec.29.2026.09.23.06.19.50
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-33e97236754sm5553695eec.29.2026.09.23.06.19.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 06:19:57 -0700 (PDT)
+        Wed, 23 Sep 2026 06:20:06 -0700 (PDT)
 From: Yonggang Luo <luoyonggang@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Cornelia Huck <cohuck@redhat.com>,
@@ -102,9 +102,9 @@ Cc: Cornelia Huck <cohuck@redhat.com>,
 	qemu-arm@nongnu.org,
 	qemu-s390x@nongnu.org,
 	Brian Cain <brian.cain@oss.qualcomm.com>
-Subject: [PATCH v3 018/114] qom: register late types through module_call_init_fn
-Date: Wed, 23 Sep 2026 21:14:52 +0800
-Message-ID: <20260923131635.1894-19-luoyonggang@gmail.com>
+Subject: [PATCH v3 019/114] qom: inherit is_available and filter after MODULE_INIT_QOM
+Date: Wed, 23 Sep 2026 21:14:53 +0800
+Message-ID: <20260923131635.1894-20-luoyonggang@gmail.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260923131635.1894-1-luoyonggang@gmail.com>
 References: <20260923131635.1894-1-luoyonggang@gmail.com>
@@ -116,389 +116,284 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Display early_init, the console-vc fallback, the PPC KVM host CPU,
-and unit-test types register after MODULE_INIT_QOM. Route them
-through module_call_init_fn so they take the same before/init/after
-path as a late DSO.
+Parents are not all registered at type_register time, so a type
+cannot inherit is_available then.
+
+After MODULE_INIT_QOM, and after a late DSO, inherit the callback
+from the parent, drop types that fail target_info(), and report a
+missing parent. Skip that filter for MODULE_INIT_PHASE_DSO_BEFORE.
+The inherit walk colors each type once, so it is O(N) in the number
+of types. TYPE_INTERFACE and TYPE_OBJECT use target_is_any().
+type_register_static aborts if it runs outside the QOM before/after
+hooks.
 
 Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
 ---
- target/ppc/kvm.c                      | 12 +++++++++++-
- tests/unit/check-qom-interface.c      | 12 +++++++++---
- tests/unit/check-qom-proplist.c       | 13 +++++++++----
- tests/unit/test-io-channel-websock.c  |  7 ++++++-
- tests/unit/test-io-task.c             |  7 ++++++-
- tests/unit/test-qdev-global-props.c   | 14 ++++++++++----
- tests/unit/test-qdev.c                |  8 +++++++-
- tests/unit/test-ram-discard-manager.c |  7 ++++++-
- ui/console-vc.c                       | 13 ++++++++++---
- ui/dbus.c                             |  8 +++++++-
- ui/gtk.c                              | 10 +++++++++-
- ui/spice-app.c                        |  7 ++++++-
- 12 files changed, 96 insertions(+), 22 deletions(-)
+ include/qemu/target-info.h |   9 +++
+ qom/object.c               | 134 +++++++++++++++++++++++++++++++++++--
+ target-info.c              |   6 ++
+ 3 files changed, 145 insertions(+), 4 deletions(-)
 
-diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
-index 8e89a6c665c..a3c16850a18 100644
---- a/target/ppc/kvm.c
-+++ b/target/ppc/kvm.c
-@@ -22,6 +22,7 @@
- #include <linux/kvm.h>
+diff --git a/include/qemu/target-info.h b/include/qemu/target-info.h
+index 440da63e6cf..790fc74e9d3 100644
+--- a/include/qemu/target-info.h
++++ b/include/qemu/target-info.h
+@@ -53,6 +53,15 @@ const char *target_cpu_type(void);
+  */
+ bool target_big_endian(void);
  
++/**
++ * target_is_any:
++ * @ti: TargetInfo to inspect
++ *
++ * Returns true for every TargetInfo. Usable as TypeInfo.is_available
++ * for types that are not target-scoped (TYPE_OBJECT).
++ */
++bool target_is_any(const TargetInfo *ti);
++
+ /**
+  * target_is_base_arm:
+  * @ti: TargetInfo to inspect
+diff --git a/qom/object.c b/qom/object.c
+index a3e75927e82..d0f9242ac99 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -14,6 +14,7 @@
  #include "qapi/error.h"
-+#include "qemu/module.h"
- #include "qemu/error-report.h"
- #include "cpu.h"
- #include "cpu-models.h"
-@@ -2706,6 +2707,13 @@ static void pseries_machine_class_fixup(ObjectClass *oc, void *opaque)
-     mc->default_cpu_type = TYPE_HOST_POWERPC_CPU;
- }
- 
-+static TypeInfo host_cpu_type_info;
-+
-+static void kvm_ppc_register_host_cpu_type_qom(void)
-+{
-+    type_register_static(&host_cpu_type_info);
-+}
-+
- static int kvm_ppc_register_host_cpu_type(void)
- {
-     TypeInfo type_info = {
-@@ -2722,7 +2730,9 @@ static int kvm_ppc_register_host_cpu_type(void)
-         return -1;
-     }
-     type_info.parent = object_class_get_name(OBJECT_CLASS(pvr_pcc));
--    type_register_static(&type_info);
-+    host_cpu_type_info = type_info;
-+    module_call_init_fn(MODULE_INIT_QOM, kvm_ppc_register_host_cpu_type_qom,
-+                        &error_abort);
-     /* override TCG default cpu type with 'host' cpu model */
-     object_class_foreach(pseries_machine_class_fixup, TYPE_SPAPR_MACHINE,
-                          false, NULL);
-diff --git a/tests/unit/check-qom-interface.c b/tests/unit/check-qom-interface.c
-index 86ae5f6c3b1..1da051ed98b 100644
---- a/tests/unit/check-qom-interface.c
-+++ b/tests/unit/check-qom-interface.c
-@@ -12,6 +12,7 @@
- #include "qemu/osdep.h"
- 
- #include "qom/object.h"
-+#include "qapi/error.h"
- #include "qemu/module.h"
- 
- 
-@@ -86,14 +87,19 @@ static void interface_intermediate_test(void)
-     test_interface_impl(TYPE_INTERMEDIATE_IMPL);
- }
- 
-+static void register_types(void)
-+{
-+    type_register_static(&test_if_info);
-+    type_register_static(&direct_impl_info);
-+    type_register_static(&intermediate_impl_info);
-+}
-+
- int main(int argc, char **argv)
- {
-     g_test_init(&argc, &argv, NULL);
- 
-     module_call_init(MODULE_INIT_QOM);
--    type_register_static(&test_if_info);
--    type_register_static(&direct_impl_info);
--    type_register_static(&intermediate_impl_info);
-+    module_call_init_fn(MODULE_INIT_QOM, register_types, &error_abort);
- 
-     g_test_add_func("/qom/interface/direct_impl", interface_direct_test);
-     g_test_add_func("/qom/interface/intermediate_impl",
-diff --git a/tests/unit/check-qom-proplist.c b/tests/unit/check-qom-proplist.c
-index 89de92b7d91..074a69a7fd3 100644
---- a/tests/unit/check-qom-proplist.c
-+++ b/tests/unit/check-qom-proplist.c
-@@ -703,15 +703,20 @@ static void test_qom_partial_path(void)
-     object_unparent(cont1);
- }
- 
--int main(int argc, char **argv)
-+static void register_types(void)
- {
--    g_test_init(&argc, &argv, NULL);
--
--    module_call_init(MODULE_INIT_QOM);
-     type_register_static(&dummy_info);
-     type_register_static(&dummy_dev_info);
-     type_register_static(&dummy_bus_info);
-     type_register_static(&dummy_backend_info);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+
-+    module_call_init(MODULE_INIT_QOM);
-+    module_call_init_fn(MODULE_INIT_QOM, register_types, &error_abort);
- 
-     g_test_add_func("/qom/proplist/createlist/tree",
-                     test_dummy_createlist_tree);
-diff --git a/tests/unit/test-io-channel-websock.c b/tests/unit/test-io-channel-websock.c
-index 88da24f993d..d4a92572866 100644
---- a/tests/unit/test-io-channel-websock.c
-+++ b/tests/unit/test-io-channel-websock.c
-@@ -219,10 +219,15 @@ static void test_websock_stalled_write(const void *opaque)
-     g_assert_true(g_str_has_prefix(reply, "HTTP/1.1 400 Bad Request\r\n"));
- }
- 
-+static void register_types(void)
-+{
-+    type_register_static(&qio_channel_stall_info);
-+}
-+
- int main(int argc, char **argv)
- {
-     module_call_init(MODULE_INIT_QOM);
--    type_register_static(&qio_channel_stall_info);
-+    module_call_init_fn(MODULE_INIT_QOM, register_types, &error_abort);
-     g_test_init(&argc, &argv, NULL);
- 
- #define TEST_BAD_REQUEST(name, request)                         \
-diff --git a/tests/unit/test-io-task.c b/tests/unit/test-io-task.c
-index b1c8ecb7abb..55c4a64f041 100644
---- a/tests/unit/test-io-task.c
-+++ b/tests/unit/test-io-task.c
-@@ -279,11 +279,16 @@ static void test_task_thread_failure(void)
- }
- 
- 
-+static void register_types(void)
-+{
-+    type_register_static(&dummy_info);
-+}
-+
- int main(int argc, char **argv)
- {
-     g_test_init(&argc, &argv, NULL);
-     module_call_init(MODULE_INIT_QOM);
--    type_register_static(&dummy_info);
-+    module_call_init_fn(MODULE_INIT_QOM, register_types, &error_abort);
-     g_test_add_func("/crypto/task/complete", test_task_complete);
-     g_test_add_func("/crypto/task/cancel", test_task_cancel);
-     g_test_add_func("/crypto/task/datafree", test_task_data_free);
-diff --git a/tests/unit/test-qdev-global-props.c b/tests/unit/test-qdev-global-props.c
-index 8ea362cbb90..e0aaee05d8b 100644
---- a/tests/unit/test-qdev-global-props.c
-+++ b/tests/unit/test-qdev-global-props.c
-@@ -27,6 +27,7 @@
- #include "hw/core/qdev-properties.h"
- #include "qom/object.h"
- #include "qapi/error.h"
-+#include "qemu/module.h"
- #include "qapi/visitor.h"
- 
- 
-@@ -302,17 +303,22 @@ static void test_subclass_global_props(void)
-     g_assert_cmpuint(mt->prop2, ==, 104);
- }
- 
--int main(int argc, char **argv)
-+static void register_types(void)
- {
--    g_test_init(&argc, &argv, NULL);
--
--    module_call_init(MODULE_INIT_QOM);
-     type_register_static(&static_prop_type);
-     type_register_static(&subclass_type);
-     type_register_static(&dynamic_prop_type);
-     type_register_static(&hotplug_type);
-     type_register_static(&nohotplug_type);
-     type_register_static(&nondevice_type);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+
-+    module_call_init(MODULE_INIT_QOM);
-+    module_call_init_fn(MODULE_INIT_QOM, register_types, &error_abort);
- 
-     test_init_machine();
- 
-diff --git a/tests/unit/test-qdev.c b/tests/unit/test-qdev.c
-index 77c3eee7171..5755fa57b58 100644
---- a/tests/unit/test-qdev.c
-+++ b/tests/unit/test-qdev.c
-@@ -2,6 +2,7 @@
- #include "hw/core/qdev-properties.h"
- #include "qom/object.h"
- #include "qapi/error.h"
-+#include "qemu/module.h"
- #include "qapi/visitor.h"
- 
- 
-@@ -89,12 +90,17 @@ static void test_qdev_double_realization(void)
- }
- 
- 
-+static void register_types(void)
-+{
-+    type_register_static(&my_dev_type_info);
-+}
-+
- int main(int argc, char **argv)
- {
-     g_test_init(&argc, &argv, NULL);
- 
-     module_call_init(MODULE_INIT_QOM);
--    type_register_static(&my_dev_type_info);
-+    module_call_init_fn(MODULE_INIT_QOM, register_types, &error_abort);
-     test_init_machine();
- 
-     g_test_add_func("/qdev/free-properties",
-diff --git a/tests/unit/test-ram-discard-manager.c b/tests/unit/test-ram-discard-manager.c
-index 3d39a1e94ba..5bdcf9b074c 100644
---- a/tests/unit/test-ram-discard-manager.c
-+++ b/tests/unit/test-ram-discard-manager.c
-@@ -1187,12 +1187,17 @@ static void test_replay_discarded(void)
-     test_teardown();
- }
- 
-+static void register_types(void)
-+{
-+    type_register_static(&test_rds_info);
-+}
-+
- int main(int argc, char **argv)
- {
-     g_test_init(&argc, &argv, NULL);
- 
-     module_call_init(MODULE_INIT_QOM);
--    type_register_static(&test_rds_info);
-+    module_call_init_fn(MODULE_INIT_QOM, register_types, &error_abort);
- 
-     g_test_add_func("/ram-discard-manager/single-source/basic",
-                     test_single_source_basic);
-diff --git a/ui/console-vc.c b/ui/console-vc.c
-index 53d9e9d39b3..c998a0dd807 100644
---- a/ui/console-vc.c
-+++ b/ui/console-vc.c
-@@ -6,6 +6,7 @@
- 
- #include "chardev/char.h"
- #include "qapi/error.h"
-+#include "qemu/module.h"
- #include "qemu/option.h"
- #include "qemu/queue.h"
  #include "qom/compat-properties.h"
-@@ -349,10 +350,16 @@ static const TypeInfo char_vc_type_info = {
-     .class_init = char_vc_class_init,
- };
- 
-+static void register_default_char_vc(void)
-+{
-+    type_register_static(&char_vc_type_info);
-+}
-+
- void qemu_console_early_init(void)
- {
--    /* set the default vc driver */
--    if (!object_class_by_name(TYPE_CHARDEV_VC)) {
--        type_register_static(&char_vc_type_info);
-+    /* set the default vc driver if a display backend did not */
-+    if (object_class_by_name(TYPE_CHARDEV_VC)) {
-+        return;
-     }
-+    module_call_init_fn(MODULE_INIT_QOM, register_default_char_vc, &error_abort);
- }
-diff --git a/ui/dbus.c b/ui/dbus.c
-index 7be0f8e2611..34b33bb9ca1 100644
---- a/ui/dbus.c
-+++ b/ui/dbus.c
-@@ -38,6 +38,7 @@
- #include "qemu/audio.h"
- #include "audio/audio_int.h" /* FIXME: use QOM dynamic cast instead of drv->name */
- #include "qapi/error.h"
+ #include "qom/object.h"
 +#include "qemu/module.h"
- #include "trace.h"
- 
- #include "dbus.h"
-@@ -623,6 +624,11 @@ static const TypeInfo dbus_vc_type_info = {
-     .class_init = dbus_vc_class_init,
- };
- 
-+static void register_dbus_char_vc(void)
-+{
-+    type_register_static(&dbus_vc_type_info);
-+}
-+
- static void
- early_dbus_init(DisplayOptions *opts)
- {
-@@ -638,7 +644,7 @@ early_dbus_init(DisplayOptions *opts)
- 
-     using_dbus_display = 1;
- 
--    type_register_static(&dbus_vc_type_info);
-+    module_call_init_fn(MODULE_INIT_QOM, register_dbus_char_vc, &error_abort);
- }
- 
- static void
-diff --git a/ui/gtk.c b/ui/gtk.c
-index ed7ffc06b15..2ddc1f8a901 100644
---- a/ui/gtk.c
-+++ b/ui/gtk.c
-@@ -38,6 +38,7 @@
+ #include "qom/object_interfaces.h"
+ #include "qemu/target-info-qapi.h"
  #include "qemu/cutils.h"
+@@ -40,6 +41,7 @@
+ #include "qobject/qnum.h"
+ #include "qobject/qstring.h"
  #include "qemu/error-report.h"
- #include "qemu/main-loop.h"
-+#include "qemu/module.h"
- #include "qemu-main.h"
++#include "qemu/queue.h"
  
- #include "ui/console.h"
-@@ -2893,6 +2894,13 @@ static void gtk_display_init(DisplayState *ds, DisplayOptions *opts)
-     qemu_main = NULL;
- }
+ #define MAX_INTERFACES 32
  
-+#if defined(CONFIG_VTE)
-+static void register_gtk_char_vc(void)
-+{
-+    type_register_static(&char_gd_vc_type_info);
-+}
-+#endif
+@@ -81,11 +83,16 @@ struct TypeImpl
+ 
+     int num_interfaces;
+     InterfaceImpl interfaces[MAX_INTERFACES];
 +
- static void early_gtk_display_init(DisplayOptions *opts)
- {
-     /* The QEMU code relies on the assumption that it's always run in
-@@ -2946,7 +2954,7 @@ static void early_gtk_display_init(DisplayOptions *opts)
-     keycode_map = gd_get_keymap(&keycode_maplen, &keycode_xorgevdev);
++    QTAILQ_ENTRY(TypeImpl) register_node;
+ };
  
- #if defined(CONFIG_VTE)
--    type_register_static(&char_gd_vc_type_info);
-+    module_call_init_fn(MODULE_INIT_QOM, register_gtk_char_vc, &error_abort);
- #endif
+ static Type type_interface;
+ 
+ static GHashTable *type_table;
++static QTAILQ_HEAD(, TypeImpl) type_register_list =
++    QTAILQ_HEAD_INITIALIZER(type_register_list);
++static bool type_qom_registering;
+ 
+ static bool enumerating_types;
+ 
+@@ -95,6 +102,21 @@ static void type_table_add(TypeImpl *ti)
+     g_hash_table_insert(type_table, (void *)ti->name, ti);
  }
  
-diff --git a/ui/spice-app.c b/ui/spice-app.c
-index fe3df62bfa5..dae3415ec8d 100644
---- a/ui/spice-app.c
-+++ b/ui/spice-app.c
-@@ -132,6 +132,11 @@ static void spice_app_cleanup(void)
-     g_clear_pointer(&app_dir, g_free);
- }
- 
-+static void register_spice_char_vc(void)
++static void type_table_remove(TypeImpl *ti)
 +{
-+    type_register_static(&char_vc_type_info);
++    int i;
++
++    assert(!enumerating_types);
++    g_hash_table_remove(type_table, (void *)ti->name);
++    QTAILQ_REMOVE(&type_register_list, ti, register_node);
++    g_free((char *)ti->name);
++    g_free((char *)ti->parent);
++    for (i = 0; i < ti->num_interfaces; i++) {
++        g_free((char *)ti->interfaces[i].typename);
++    }
++    g_free(ti);
 +}
 +
- static void spice_app_display_early_init(DisplayOptions *opts)
+ static TypeImpl *type_table_lookup(const char *name)
  {
-     QemuOpts *qopts;
-@@ -170,7 +175,7 @@ static void spice_app_display_early_init(DisplayOptions *opts)
-         exit(1);
+     return g_hash_table_lookup(type_table, name);
+@@ -171,18 +193,20 @@ static TypeImpl *type_register_internal(const TypeInfo *info)
+         abort();
      }
  
--    type_register_static(&char_vc_type_info);
-+    module_call_init_fn(MODULE_INIT_QOM, register_spice_char_vc, &error_abort);
+-    if (info->is_available && !info->is_available(target_info())) {
+-        return NULL;
+-    }
+-
+     ti = type_new(info);
  
-     sock_path = g_strjoin("", app_dir, "/", "spice.sock", NULL);
-     qopts = qemu_opts_create(list, NULL, 0, &error_abort);
+     type_table_add(ti);
++    QTAILQ_INSERT_TAIL(&type_register_list, ti, register_node);
+     return ti;
+ }
+ 
+ TypeImpl *type_register_static(const TypeInfo *info)
+ {
++    if (!type_qom_registering) {
++        fprintf(stderr, "Registering '%s' outside QOM before/after\n",
++                info->name);
++        abort();
++    }
+     assert(info->parent);
+     return type_register_internal(info);
+ }
+@@ -316,6 +340,8 @@ static void type_initialize_interface(TypeImpl *ti, TypeImpl *interface_type,
+ 
+     iface_impl = type_new(&info);
+     iface_impl->parent_type = parent_type;
++    g_assert(interface_type->is_available);
++    iface_impl->is_available = interface_type->is_available;
+     type_initialize(iface_impl);
+     g_free((char *)info.name);
+ 
+@@ -1159,6 +1185,7 @@ bool object_class_is_secure(ObjectClass *klass)
+ 
+ TypeIsAvailable *object_class_get_is_available(ObjectClass *klass)
+ {
++    g_assert(klass->type->is_available);
+     return klass->type->is_available;
+ }
+ 
+@@ -3297,12 +3324,109 @@ static void object_class_init(ObjectClass *klass, const void *data)
+                                   NULL);
+ }
+ 
++static bool type_qom_before(ModuleInitPhase phase, Error **errp)
++{
++    (void)errp;
++    (void)phase;
++
++    type_qom_registering = true;
++    return true;
++}
++
++enum TypeVisitColor {
++    TYPE_VISIT_GRAY = 1,
++    TYPE_VISIT_BLACK,
++};
++
++static bool type_update_is_available(TypeImpl *type, GHashTable *visit,
++                                     Error **errp)
++{
++    TypeImpl *parent;
++    gpointer color;
++
++    color = g_hash_table_lookup(visit, type);
++    if (color == GINT_TO_POINTER(TYPE_VISIT_BLACK)) {
++        return true;
++    }
++    if (color == GINT_TO_POINTER(TYPE_VISIT_GRAY)) {
++        error_setg(errp, "Type '%s' has a cyclic parent chain",
++                   type->name);
++        return false;
++    }
++
++    g_hash_table_insert(visit, type, GINT_TO_POINTER(TYPE_VISIT_GRAY));
++
++    parent = type_get_parent(type);
++    if (!parent) {
++        if (strcmp(type->name, TYPE_OBJECT) != 0 &&
++            strcmp(type->name, TYPE_INTERFACE) != 0) {
++            error_setg(errp,
++                       "Type '%s' does not inherit from %s or %s",
++                       type->name, TYPE_OBJECT, TYPE_INTERFACE);
++            return false;
++        }
++    } else {
++        if (!type_update_is_available(parent, visit, errp)) {
++            return false;
++        }
++        if (!type->is_available) {
++            type->is_available = parent->is_available;
++        }
++    }
++
++    g_hash_table_insert(visit, type, GINT_TO_POINTER(TYPE_VISIT_BLACK));
++    return true;
++}
++
++static bool type_qom_after(ModuleInitPhase phase, Error **errp)
++{
++    TypeImpl *type, *next;
++    GHashTable *visit;
++    Error *local_err = NULL;
++
++    type_qom_registering = false;
++    if (phase == MODULE_INIT_PHASE_DSO_BEFORE) {
++        return true;
++    }
++
++    visit = g_hash_table_new(NULL, NULL);
++    QTAILQ_FOREACH(type, &type_register_list, register_node) {
++        if (!type_update_is_available(type, visit, &local_err)) {
++            break;
++        }
++    }
++    g_hash_table_destroy(visit);
++
++    if (local_err) {
++        error_propagate(errp, local_err);
++        return false;
++    }
++
++    QTAILQ_FOREACH_SAFE(type, &type_register_list, register_node, next) {
++        g_assert(type->is_available);
++        if (!type->is_available(target_info())) {
++            type_table_remove(type);
++        }
++    }
++
++    QTAILQ_FOREACH(type, &type_register_list, register_node) {
++        if (type->parent && !type_table_lookup(type->parent)) {
++            error_setg(errp, "Type '%s' is missing its parent '%s'",
++                       type->name, type->parent);
++            return false;
++        }
++    }
++
++    return true;
++}
++
+ static void __attribute__((constructor)) register_types(void)
+ {
+     static const TypeInfo interface_info = {
+         .name = TYPE_INTERFACE,
+         .class_size = sizeof(InterfaceClass),
+         .abstract = true,
++        .is_available = target_is_any,
+     };
+ 
+     static const TypeInfo object_info = {
+@@ -3310,9 +3434,11 @@ static void __attribute__((constructor)) register_types(void)
+         .instance_size = sizeof(Object),
+         .class_init = object_class_init,
+         .abstract = true,
++        .is_available = target_is_any,
+     };
+ 
+     type_table = g_hash_table_new(g_str_hash, g_str_equal);
+     type_interface = type_register_internal(&interface_info);
+     type_register_internal(&object_info);
++    register_module_hooks(MODULE_INIT_QOM, type_qom_before, type_qom_after);
+ }
+diff --git a/target-info.c b/target-info.c
+index 36f75ece36f..a9ab4b465d3 100644
+--- a/target-info.c
++++ b/target-info.c
+@@ -96,6 +96,12 @@ bool target_big_endian(void)
+     return target_endian_mode() == ENDIAN_MODE_BIG;
+ }
+ 
++bool target_is_any(const TargetInfo *ti)
++{
++    (void)ti;
++    return true;
++}
++
+ bool target_is_base_arm(const TargetInfo *ti)
+ {
+     switch (ti->target_arch) {
 -- 
 2.52.0.windows.1
 
