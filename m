@@ -1,164 +1,194 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A928F414A27;
-	Wed, 23 Sep 2026 06:42:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767A12580F3;
+	Wed, 23 Sep 2026 06:45:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790145753; cv=none; b=eJi2SA5APV7fcNu5AL+8m+J8k1JChaD87o8EcjPUsr2CA14ctRQCowSaqGM86pydtoralXy/eLULtQYccfMfFfDDeA+vrKP27F1mcGFpLaTnHAggwOF9zH0i/IQqT4bIVeK9Wy1nyiZzuRb/OR6pri1fxOl8gmo4M3h3Kh3gyZU=
+	t=1790145952; cv=none; b=OegT3oWQvnZFW0LaBM5xHDg+dYJe82VZfMmyObA/YglHFWaQFxnveHMnqo5dRlYRn058fpN5L6aghtf6ySd0yjmLXzBiSlTtYBcjAIYhZllAlGsO2wWAgk88y3vJ+9+keIMhFwMIG3R7M/1YHiTlTnNMw+wwAiTTh0VvH4Ztc+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790145753; c=relaxed/simple;
-	bh=Z3gPbuK5qepuqx2fCRdB3pvyPoSFEwvQ7ryb6Thvrxs=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=rDE4b5Fg+nxW2nuwMxKH8oMvEsgWeQ6mGyjteCEJKO3ytjQZ95GvVotBTwxYLyUgjjvuB3Am6qu9LfOa7oJiEIWnbdtLWH4R1qiFjUlfsiVGTGMdyaELtgGsCAXIqhRL+s4vN9/5w5xHcOdSLxiG/N0PTSblnjrN/sv2fRDwZg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8AxYdHQdLNqUfEOAA--.44198S3;
-	Wed, 23 Sep 2026 14:42:24 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJAxlMzMdLNqOBckAA--.49011S2;
-	Wed, 23 Sep 2026 14:42:22 +0800 (CST)
-Subject: Re: [PATCH] KVM: LoongArch: selftests: Enable HW PTW by auto
- detection method
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>,
- kvm@vger.kernel.org, loongarch@lists.linux.dev,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260923012356.1058379-1-maobibo@loongson.cn>
- <CAAhV-H4AvjyfmjPiUBxBsWjRNFpP5c4sWK0+ZH-e1gjtrxBhMg@mail.gmail.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <0b746444-df7f-1edd-8fd0-1736c96ac366@loongson.cn>
-Date: Wed, 23 Sep 2026 14:43:46 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1790145952; c=relaxed/simple;
+	bh=MLuL1g2afY6v8AIDThBP3sZOTU6cYHdmv52kPhLU+Yo=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=UGwK4rOkiWHUnOdF95cBaT9picMSdZxlMaOz1n9rtvM+//OVW0mVU3Z2ePvGcKrDr+mmGk1FrG+CnFYypOQxHxD/wqieGHxkbIlybE8G9WorjD6efS6Tnc1A0tLdsWj4NT3PrD1lwSkYAS1P55aKyJgFHy1kUN1llpTs4Zb5JXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=NZ9Dwjjn; arc=none smtp.client-ip=113.46.200.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="NZ9Dwjjn"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=YhEYlQtke+vQduVm9Z6KEKMJC26Mh7lyGkZCjMz2Plw=;
+	b=NZ9Dwjjn6QuFCf6eiSTTGGK88hLpBvw5wxl3s9wrodnYl/Hwm3J2GYkRvsuj7gM5uAZjpuo2E
+	U6YC+xNraueOQ/QM9JjjraZ1bbA5t8MkG9Brcig34iIKgLleST/e6+ejVzd+Q9rkUnfSIUCAoEA
+	0fXfaq7UMc9lVc4UwRUuImI=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4hqRyk6mRkz1cyPY;
+	Wed, 23 Sep 2026 14:34:38 +0800 (CST)
+Received: from whupemk100014.china.huawei.com (unknown [7.152.184.20])
+	by mail.maildlp.com (Postfix) with ESMTPS id 396A240572;
+	Wed, 23 Sep 2026 14:45:41 +0800 (CST)
+Received: from [10.67.121.110] (10.67.121.110) by
+ whupemk100014.china.huawei.com (7.152.184.20) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 23 Sep 2026 14:45:40 +0800
+Subject: Re: [PATCH v4 1/2] hisi_acc_vfio_pci: fix NULL dereference in
+ reset_prepare on PF passthrough
+To: Alex Williamson <alex@shazbot.org>
+CC: <alex.williamson@redhat.com>, <jgg@nvidia.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260918084244.1485837-1-liulongfang@huawei.com>
+ <20260918084244.1485837-2-liulongfang@huawei.com>
+ <20260920082641.64d66616@shazbot.org>
+ <f0a43a0f-b317-964f-207c-f96d1f0a6478@huawei.com>
+ <20260922165928.5c062fc0@shazbot.org>
+From: liulongfang <liulongfang@huawei.com>
+Message-ID: <9f9a061e-9309-fe6f-f3dc-968d92ad537c@huawei.com>
+Date: Wed, 23 Sep 2026 14:45:39 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAAhV-H4AvjyfmjPiUBxBsWjRNFpP5c4sWK0+ZH-e1gjtrxBhMg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxlMzMdLNqOBckAA--.49011S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxGF47Aw4fWryxAr18ArW7ZFc_yoWrXF17pF
-	yvkF4Ygr48KF17Ka4kXwn09F1aqrs2kr4xKry3trZ0yr1UZryfXryxKF9xuFy5XwsYq3WS
-	v3Z7Ca13ZF4DX3cCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
-	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y
-	6r17McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
-	1lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
-	JVW8JwCFI7km07C267AKxVWUXVWUAwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
-	vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IY
-	x2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26c
-	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAF
-	wI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jFa0PUUUUU=
+In-Reply-To: <20260922165928.5c062fc0@shazbot.org>
+Content-Type: text/plain; charset="gbk"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ whupemk100014.china.huawei.com (7.152.184.20)
 
-
-
-On 2026/9/23 下午12:25, Huacai Chen wrote:
-> Hi, Bibo,
+On 2026/9/23 6:59, Alex Williamson wrote:
+> On Mon, 21 Sep 2026 16:15:12 +0800
+> liulongfang <liulongfang@huawei.com> wrote:
 > 
-> On Wed, Sep 23, 2026 at 9:31 AM Bibo Mao <maobibo@loongson.cn> wrote:
+>> On 2026/9/20 22:26, Alex Williamson wrote:
+>>> On Fri, 18 Sep 2026 16:42:43 +0800
+>>> Longfang Liu <liulongfang@huawei.com> wrote:
+>>>   
+>>>> When a PF is bound to the driver via driver_override and passed
+>>>> through to a VM, its pf_qm stays NULL. The PCI error handler
+>>>> reset_prepare() runs during open_device through
+>>>> pci_try_reset_function(), before the mig_ops gate, and dereferences
+>>>> the NULL pf_qm for the timeout log, crashing the kernel.
+>>>>
+>>>> Move the mig_ops check to the entry of reset_prepare() and
+>>>> aer_reset_done() so non-migration devices skip the QM_RESETTING
+>>>> coordination. Also clear set_reset_flag together with QM_RESETTING
+>>>> in aer_reset_done(); the flag was never cleared before, so a later
+>>>> timed-out reset could release a foreign lock. Replace
+>>>> pci_iov_vf_id() >= 0 with pdev->is_virtfn in probe() for clearer
+>>>> on-VF gating.
+>>>>
+>>>> Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
+>>>> Fixes: a22099ed7936f ("hisi_acc_vfio_pci: fix VF reset timeout issue")
+>>>> Signed-off-by: Longfang Liu <liulongfang@huawei.com>
+>>>> ---
+>>>>  .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 19 ++++++++++++-------
+>>>>  1 file changed, 12 insertions(+), 7 deletions(-)
+>>>>
+>>>> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+>>>> index 86362ec424a5..8ff69c8d1ff7 100644
+>>>> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+>>>> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+>>>> @@ -1154,9 +1154,14 @@ static void hisi_acc_vf_pci_reset_prepare(struct pci_dev *pdev)
+>>>>  {
+>>>>  	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
+>>>>  	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
+>>>> -	struct device *dev = &qm->pdev->dev;
+>>>> +	struct device *dev = &pdev->dev;
+>>>>  	u32 delay = 0;
+>>>>  
+>>>> +	if (!hisi_acc_vdev->core_device.vdev.mig_ops) {
+>>>> +		dev_err(dev, "device not support migration\n");
+>>>> +		return;
+>>>> +	}  
+>>>
+>>> Why is not supporting migration worthy of a dev_err()?!  Resets are a
+>>> normal operation.  Generating a log to nag the lack of migration
+>>> support on every reset is unacceptable.  
 >>
->> Add HW PTW feature when VM is created. This feature is detected firstly,
->> enable it if it is available on host machine. With HW PTW feature enabled,
->> refill exception will not happen and it is not necessary to set refill
->> exception entry.
->>
->> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->> ---
->>   .../selftests/kvm/include/loongarch/processor.h  |  3 +++
->>   .../selftests/kvm/lib/loongarch/processor.c      | 16 ++++++++++++++--
->>   2 files changed, 17 insertions(+), 2 deletions(-)
->>
->> diff --git a/tools/testing/selftests/kvm/include/loongarch/processor.h b/tools/testing/selftests/kvm/include/loongarch/processor.h
->> index 0e59daa8024e..8d9fabdc89e3 100644
->> --- a/tools/testing/selftests/kvm/include/loongarch/processor.h
->> +++ b/tools/testing/selftests/kvm/include/loongarch/processor.h
->> @@ -79,6 +79,7 @@
->>   #define  CPUCFG2_LASX                  BIT(7)
->>   #define  CPUCFG2_LLFTP                 BIT(14)
->>   #define  CPUCFG2_LLFTPREV              GENMASK(17, 15)
->> +#define  CPUCFG2_PTW                   BIT(24)
->>
->>   /* LoongArch Basic CSR registers */
->>   #define LOONGARCH_CSR_CRMD             0x0 /* Current mode info */
->> @@ -128,6 +129,8 @@
->>   #define LOONGARCH_CSR_PGD              0x1b
->>   #define LOONGARCH_CSR_PWCTL0           0x1c
->>   #define LOONGARCH_CSR_PWCTL1           0x1d
->> +#define  CSR_PWCTL1_PTW_SHIFT          24
->> +#define  CSR_PWCTL1_PTW                        BIT_ULL(CSR_PWCTL1_PTW_SHIFT)
->>   #define LOONGARCH_CSR_STLBPGSIZE       0x1e
->>   #define LOONGARCH_CSR_CPUID            0x20
->>   #define LOONGARCH_CSR_KS0              0x30
->> diff --git a/tools/testing/selftests/kvm/lib/loongarch/processor.c b/tools/testing/selftests/kvm/lib/loongarch/processor.c
->> index 47bbde3e205a..35e35c62759f 100644
->> --- a/tools/testing/selftests/kvm/lib/loongarch/processor.c
->> +++ b/tools/testing/selftests/kvm/lib/loongarch/processor.c
->> @@ -282,6 +282,7 @@ void loongarch_vcpu_setup(struct kvm_vcpu *vcpu)
->>          unsigned int cfg;
->>          unsigned long val;
->>          struct kvm_vm *vm = vcpu->vm;
->> +       bool has_ptw = false;
->>
->>          switch (vm->mode) {
->>          case VM_MODE_P36V47_16K:
->> @@ -300,6 +301,12 @@ void loongarch_vcpu_setup(struct kvm_vcpu *vcpu)
->>          ret = __kvm_has_device_attr(vm->fd, KVM_LOONGARCH_VM_FEAT_CTRL, KVM_LOONGARCH_VM_FEAT_LASX);
->>          if (!ret)
->>                  cfg |= CPUCFG2_LASX;
->> +       ret = __kvm_has_device_attr(vm->fd, KVM_LOONGARCH_VM_FEAT_CTRL, KVM_LOONGARCH_VM_FEAT_PTW);
->> +       if (!ret) {
->> +               cfg |= CPUCFG2_PTW;
->> +               has_ptw = true;
->> +       }
->> +
->>          loongarch_set_cpucfg(vcpu, LOONGARCH_CPUCFG2, cfg);
->>          cfg = read_cpucfg(LOONGARCH_CPUCFG6);
->>          loongarch_set_cpucfg(vcpu, LOONGARCH_CPUCFG6, cfg);
->> @@ -338,6 +345,9 @@ void loongarch_vcpu_setup(struct kvm_vcpu *vcpu)
->>
->>          /* PGD page shift and width */
->>          val = (vm->page_shift + width * (vm->mmu.pgtable_levels - 1)) | width << 6;
->> +       if (has_ptw)
->> +               val |= CSR_PWCTL1_PTW;
->> +
->>          loongarch_set_csr(vcpu, LOONGARCH_CSR_PWCTL1, val);
->>          loongarch_set_csr(vcpu, LOONGARCH_CSR_PGDL, vm->mmu.pgd);
->>
->> @@ -345,8 +355,10 @@ void loongarch_vcpu_setup(struct kvm_vcpu *vcpu)
->>           * Refill exception runs on real mode
->>           * Entry address should be physical address
->>           */
->> -       val = addr_gva2gpa(vm, (unsigned long)handle_tlb_refill);
->> -       loongarch_set_csr(vcpu, LOONGARCH_CSR_TLBRENTRY, val);
->> +       if (!has_ptw) {
-> Why not just check CPUCFG2_PTW in cfg? In this way we can drop has_ptw.
-Variable cfg is overwritten by the later sentence
-  cfg = read_cpucfg(LOONGARCH_CPUCFG6);
-
+>> How about changing it to a dev_info() then? Since users will notice errors when initiating
+>> a migration, an explicit log is necessary to pinpoint the cause and facilitate subsequent
+>> troubleshooting.
 > 
-> Huacai
-> 
->> +               val = addr_gva2gpa(vm, (unsigned long)handle_tlb_refill);
->> +               loongarch_set_csr(vcpu, LOONGARCH_CSR_TLBRENTRY, val);
->> +       }
->>
->>          /*
->>           * General exception runs on page-enabled mode
->>
->> base-commit: 93f51579e7df248780214094418f205253383cc5
->> --
->> 2.39.3
->>
+> No, reset is a normal operation, it has nothing to do with migration.
+> Migration support is discoverable.  If you want something in the log,
+> it should be there once, at probe time.
+>
 
+OK, I'll add a dev_info() log in the probe function.
+
+>>>> +
+>>>>  	/* All reset requests need to be queued for processing */
+>>>>  	while (test_and_set_bit(QM_RESETTING, &qm->misc_ctl)) {
+>>>>  		msleep(1);
+>>>> @@ -1174,12 +1179,14 @@ static void hisi_acc_vf_pci_aer_reset_done(struct pci_dev *pdev)
+>>>>  	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
+>>>>  	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
+>>>>  
+>>>> -	if (hisi_acc_vdev->set_reset_flag)
+>>>> -		clear_bit(QM_RESETTING, &qm->misc_ctl);
+>>>> -
+>>>>  	if (!hisi_acc_vdev->core_device.vdev.mig_ops)
+>>>>  		return;
+>>>>  
+>>>> +	if (hisi_acc_vdev->set_reset_flag) {
+>>>> +		clear_bit(QM_RESETTING, &qm->misc_ctl);
+>>>> +		hisi_acc_vdev->set_reset_flag = false;
+>>>> +	}
+>>>> +
+>>>>  	mutex_lock(&hisi_acc_vdev->state_mutex);
+>>>>  	hisi_acc_vf_reset(hisi_acc_vdev);
+>>>>  	mutex_unlock(&hisi_acc_vdev->state_mutex);
+>>>> @@ -1670,13 +1677,11 @@ static int hisi_acc_vfio_pci_probe(struct pci_dev *pdev, const struct pci_device
+>>>>  	struct hisi_acc_vf_core_device *hisi_acc_vdev;
+>>>>  	const struct vfio_device_ops *ops = &hisi_acc_vfio_pci_ops;
+>>>>  	struct hisi_qm *pf_qm;
+>>>> -	int vf_id;
+>>>>  	int ret;
+>>>>  
+>>>>  	pf_qm = hisi_acc_get_pf_qm(pdev);
+>>>>  	if (pf_qm && pf_qm->ver >= QM_HW_V3) {
+>>>> -		vf_id = pci_iov_vf_id(pdev);
+>>>> -		if (vf_id >= 0)
+>>>> +		if (pdev->is_virtfn)
+>>>>  			ops = &hisi_acc_vfio_pci_migrn_ops;
+>>>>  		else
+>>>>  			pci_warn(pdev, "migration support failed, continue with generic interface\n");  
+>>>
+>>> I still reject the redundant is_virtfn check here.  I don't find
+>>> support for the claim that it's a convention among variant drivers, nor
+>>> does it do anything here or to the next patch.  pf_qm is
+>>> deterministically NULL for pdev->is_virtfn.  Thanks,
+>>>  
+>>
+>> Even if left unchanged here, a later patch will anyway replace this complex logic with an is_virtfn check
+>> to handle the pci_resource_len inspection during probe.
+> 
+> Are you talking about patch 2/2 that leaves it like this:
+> 
+> 	pf_qm = hisi_acc_get_pf_qm(pdev);
+> 	if (pf_qm && pf_qm->ver >= QM_HW_V3 && pdev->is_virtfn) {
+>
+
+OK,  I will remove pdev->is_virtfn in the next version.
+
+Thanks.
+Longfang.
+
+> Where once again I quote the source of pf_qm:
+> 
+> static struct hisi_qm *hisi_acc_get_pf_qm(struct pci_dev *pdev)
+> {
+> 	struct hisi_qm  *pf_qm;
+> 	struct pci_driver *pf_driver;
+>                 
+> 	if (!pdev->is_virtfn)
+> 		return NULL;
+> 
+> Please stop wasting time on this.
+> .
+> 
