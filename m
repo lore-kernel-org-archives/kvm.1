@@ -1,130 +1,95 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 094E735F18B;
-	Wed, 23 Sep 2026 01:31:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A555367B94;
+	Wed, 23 Sep 2026 02:18:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790127084; cv=none; b=og6kN+0wT5zuKaTCaPFoCeh5lp7c6EsI/GwOHTBRSO5gd6Y8vJcNn7XR1sUDLAPDh28bgJaU/zHTYJa4gPoCsbrao2j50Q12NFo6fBS2r7tY/KYIx5NJf8Co3dNEXapOF8wDumZ8S5I7injwi3cYg7eIcmMRzyQcMBpI6d1E79U=
+	t=1790129928; cv=none; b=kmK7WIUTZI822P71LmjwYVKP2/ocut9/ECq/rr0pbvA90dqDNgnxmq/54wzJllv3V9I2fboFDd3p4O1SXBlBi6sAN8IV0oRkOKRp8UYH/7Z3xotYbTHfmLBInERy2CZg/RrAojmjTpJMRQLYdokPY5Z9f5XlaU2F+gVFMl5YlpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790127084; c=relaxed/simple;
-	bh=rAhP4ycQCC6kZ0Cn2Gr67i5s82Iz0iIBumYuC/rA9Bs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=b2qWDWKf9Gya4lOiN2pJAkX5tWqOGYl8urbfpdbUokfVfX3k62HDm08WKD4HSMxiPCSS8UjU5xcxzsVGcLJjJ7/pcLZszInyrXIF7KDLt06lgs1Z3xBhB56ZrTeh4BJ6eSNG3gxuvfZz8z7eFJoMjv5uOaWU0Pdy6GHB/qKOBpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8AxXdLmK7Nq4dwOAA--.43711S3;
-	Wed, 23 Sep 2026 09:31:18 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJDxE+TlK7NqTgMkAA--.46508S2;
-	Wed, 23 Sep 2026 09:31:17 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] KVM: LoongArch: selftests: Enable HW PTW by auto detection method
-Date: Wed, 23 Sep 2026 09:23:56 +0800
-Message-Id: <20260923012356.1058379-1-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
+	s=arc-20240116; t=1790129928; c=relaxed/simple;
+	bh=O+LCRIQTYZVhktauqoEd3NdKsW3tvkPlu7H78yGl9nI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=YJXx7O84MyQjTeL8pZuHbfIeKBGsjs8yC06d66qmlqkywJ3q1cP48l0i+O42m0gQbDkU/ceiqkdWCvOxIr8GDcBwlfJMKTv5p9rwxyH1J8bk0ErgeWOTbtkAYBDWI7Jc7/erXOPcL4aqxeZBEmZYsRyb8tiRuEHmT7zqToirhEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ESDodc3n; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ESDodc3n"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790129926; x=1821665926;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=O+LCRIQTYZVhktauqoEd3NdKsW3tvkPlu7H78yGl9nI=;
+  b=ESDodc3niX34Difik3CxXAP9h7C+w+HkJiPgXsDWH2PFqDoLQrlGK3OK
+   vWOU9FoBh+Qfs33XZe/IX+aXYkxfv0GQMDZV0Js799AnHMKWKHawg8QMe
+   +XtwN5OIXYtPqrRczJ+jWitq2OLHfGQu+O+Y0JULqcfzYcjJcYvK3fmWj
+   /Oj7Zeg3yqgBLD6QJztni0NARVwfl/j8qTjlQEpcCfzNej4UL/xb57w2o
+   NfY18WJIrSBbPNfqSjtAJ+8CV6TDXHerlw9dpN8dImeVsCt3eO+NkipNt
+   JQFy6SY3XfSpQ6mw3CbgyxF1XDYEmiIpYwkzsC7CnO/onzOF73giw/LwC
+   g==;
+X-CSE-ConnectionGUID: U4UosHHVTByU3TUF7JVRgA==
+X-CSE-MsgGUID: fcfqmnY5QsWoq9n432l0JA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="116312452"
+X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
+   d="scan'208";a="116312452"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 19:18:45 -0700
+X-CSE-ConnectionGUID: 5BPqopjgTCGiZxmZtb15ng==
+X-CSE-MsgGUID: 5jXiAqvIRS+eJAA8dnM//A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
+   d="scan'208";a="273579086"
+Received: from unknown (HELO [10.238.208.182]) ([10.238.208.182])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 19:18:43 -0700
+Message-ID: <3c6e968e-f625-4ea7-b815-1c9be7d2bef3@intel.com>
+Date: Wed, 23 Sep 2026 10:18:36 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxE+TlK7NqTgMkAA--.46508S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] x86/virt/tdx: Drop tdh_phymem_page_wbinvd_*()
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>, pbonzini@redhat.com,
+ dave.hansen@intel.com, seanjc@google.com, x86@kernel.org, kas@kernel.org,
+ adrian.hunter@intel.com, yan.y.zhao@intel.com, binbin.wu@intel.com,
+ chao.gao@intel.com, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+References: <20260922205215.870563-1-rick.p.edgecombe@intel.com>
+ <20260922205215.870563-3-rick.p.edgecombe@intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260922205215.870563-3-rick.p.edgecombe@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add HW PTW feature when VM is created. This feature is detected firstly,
-enable it if it is available on host machine. With HW PTW feature enabled,
-refill exception will not happen and it is not necessary to set refill
-exception entry.
+On 9/23/2026 4:52 AM, Rick Edgecombe wrote:
+> In the early days of TDX it was expected that pages being reclaimed from 
+> the TDX module would need any cacheline from their private KeyID alias 
+> flushed. The TDX docs describe doing this in a couple cases, for example 
+> reclaiming the TDR memory:
+>   Flush MODIFIED cache lines: this is required to avoid corruption due to
+>   cache line aliasing. Note that all cache lines for all other TD pages
+>   must have been flushed before the TDR page was reclaimed.
+> 
+> For a similar reasons as why the CLFLUSH_BEFORE_ALLOC features0 bit was
+> never actually set in any TDX module, this flush of the private KeyID
+> cachelines turned out to not be needed by the final TDX solution. However,
+> the TDX docs were never updated to reflect that.
+> 
+> Since private KeyID virtual mappings are reserved for TDX use, the TDX
+> module has to do the clflush itself. The TDH.PHYMEM.PAGE.WBINVD SEAMCALL
+> leaf was created for this purpose.
+> 
+> So drop the kernel code that calls this SEAMCALL and the two helpers that
+> facilitate it. With the removal of tdh_phymem_page_wbinvd_tdr(),
+> tdx_global_keyid no longer needs to be kept around as a global variable.
+> It just needs to be selected and provided to the TDX module during initial
+> setup. However, don't churn the code to remove the global variable because
+> it fits neatly with the other KeyID partitioning global data. It is also
+> foreseeable that this would be used in the future for other SEAMCALLs that
+> require the passing the global KeyID.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- .../selftests/kvm/include/loongarch/processor.h  |  3 +++
- .../selftests/kvm/lib/loongarch/processor.c      | 16 ++++++++++++++--
- 2 files changed, 17 insertions(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/kvm/include/loongarch/processor.h b/tools/testing/selftests/kvm/include/loongarch/processor.h
-index 0e59daa8024e..8d9fabdc89e3 100644
---- a/tools/testing/selftests/kvm/include/loongarch/processor.h
-+++ b/tools/testing/selftests/kvm/include/loongarch/processor.h
-@@ -79,6 +79,7 @@
- #define  CPUCFG2_LASX			BIT(7)
- #define  CPUCFG2_LLFTP			BIT(14)
- #define  CPUCFG2_LLFTPREV		GENMASK(17, 15)
-+#define  CPUCFG2_PTW			BIT(24)
- 
- /* LoongArch Basic CSR registers */
- #define LOONGARCH_CSR_CRMD		0x0 /* Current mode info */
-@@ -128,6 +129,8 @@
- #define LOONGARCH_CSR_PGD		0x1b
- #define LOONGARCH_CSR_PWCTL0		0x1c
- #define LOONGARCH_CSR_PWCTL1		0x1d
-+#define  CSR_PWCTL1_PTW_SHIFT		24
-+#define  CSR_PWCTL1_PTW			BIT_ULL(CSR_PWCTL1_PTW_SHIFT)
- #define LOONGARCH_CSR_STLBPGSIZE	0x1e
- #define LOONGARCH_CSR_CPUID		0x20
- #define LOONGARCH_CSR_KS0		0x30
-diff --git a/tools/testing/selftests/kvm/lib/loongarch/processor.c b/tools/testing/selftests/kvm/lib/loongarch/processor.c
-index 47bbde3e205a..35e35c62759f 100644
---- a/tools/testing/selftests/kvm/lib/loongarch/processor.c
-+++ b/tools/testing/selftests/kvm/lib/loongarch/processor.c
-@@ -282,6 +282,7 @@ void loongarch_vcpu_setup(struct kvm_vcpu *vcpu)
- 	unsigned int cfg;
- 	unsigned long val;
- 	struct kvm_vm *vm = vcpu->vm;
-+	bool has_ptw = false;
- 
- 	switch (vm->mode) {
- 	case VM_MODE_P36V47_16K:
-@@ -300,6 +301,12 @@ void loongarch_vcpu_setup(struct kvm_vcpu *vcpu)
- 	ret = __kvm_has_device_attr(vm->fd, KVM_LOONGARCH_VM_FEAT_CTRL, KVM_LOONGARCH_VM_FEAT_LASX);
- 	if (!ret)
- 		cfg |= CPUCFG2_LASX;
-+	ret = __kvm_has_device_attr(vm->fd, KVM_LOONGARCH_VM_FEAT_CTRL, KVM_LOONGARCH_VM_FEAT_PTW);
-+	if (!ret) {
-+		cfg |= CPUCFG2_PTW;
-+		has_ptw = true;
-+	}
-+
- 	loongarch_set_cpucfg(vcpu, LOONGARCH_CPUCFG2, cfg);
- 	cfg = read_cpucfg(LOONGARCH_CPUCFG6);
- 	loongarch_set_cpucfg(vcpu, LOONGARCH_CPUCFG6, cfg);
-@@ -338,6 +345,9 @@ void loongarch_vcpu_setup(struct kvm_vcpu *vcpu)
- 
- 	/* PGD page shift and width */
- 	val = (vm->page_shift + width * (vm->mmu.pgtable_levels - 1)) | width << 6;
-+	if (has_ptw)
-+		val |= CSR_PWCTL1_PTW;
-+
- 	loongarch_set_csr(vcpu, LOONGARCH_CSR_PWCTL1, val);
- 	loongarch_set_csr(vcpu, LOONGARCH_CSR_PGDL, vm->mmu.pgd);
- 
-@@ -345,8 +355,10 @@ void loongarch_vcpu_setup(struct kvm_vcpu *vcpu)
- 	 * Refill exception runs on real mode
- 	 * Entry address should be physical address
- 	 */
--	val = addr_gva2gpa(vm, (unsigned long)handle_tlb_refill);
--	loongarch_set_csr(vcpu, LOONGARCH_CSR_TLBRENTRY, val);
-+	if (!has_ptw) {
-+		val = addr_gva2gpa(vm, (unsigned long)handle_tlb_refill);
-+		loongarch_set_csr(vcpu, LOONGARCH_CSR_TLBRENTRY, val);
-+	}
- 
- 	/*
- 	 * General exception runs on page-enabled mode
-
-base-commit: 93f51579e7df248780214094418f205253383cc5
--- 
-2.39.3
-
+What about TDH.PHYMEM.CACHE.WB? Can it be dropped as well?
