@@ -1,143 +1,127 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43520363083
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 04:20:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C5638F25C
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 04:20:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790137226; cv=none; b=IsNpPCw6Zs9960u9MLDv9jmUGS/1HyLphQb5m0Hhaw2DRMLuHtYa5tCc0dTy+vW1ja2dxVsipGxcfKREF05rC18eARht1kTljo5wARnBI+Yk/S/wwJN4A9U2gpbuzhSlvC/g/LfWtNVoEs2HbnLcXig3J2XmFBReeml0/creJkc=
+	t=1790137234; cv=none; b=cFDQeGqqVCR8XhfYKTdalajpwc7mRahnlzIhtB8J0QwqmXJUb2x3dxebZgjvHq76kvZcKx4fEPeAPZ1qGrYTG66KnSzsvLfBOOsDLFDqrs+PJlNJl5do2rik+sOyY22b5MC85QVJVfuNKPJA5Du5vo6CrMEElpF20kDhhS2roJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790137226; c=relaxed/simple;
-	bh=hM9FnilNgsJFxgnCumf3LJM15OZIZrKHUkXqf8citY8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bIS+BsZn12+ca4iBNPbgGFroCtX0MhsaP664A+3QFUZvtXgEe+hYhJBqpHvr/NhGYj6LNCTbM6jCeclDWT+7/Bhp3D1vUxyWYJ8gfwuHO//KcDvtb1blkUc/grekVCy9ToxNd5/xqDw0byvcEzi7V1pWKBPIyzYpJdABjZHC2Ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OUDprH0N; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1790137234; c=relaxed/simple;
+	bh=kEXCmh5KjACa9jlo2r6L+uwToMUdSFNrNLsT/1Kvc9w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=q7jqqyaceaqZDAeJ4R0ZzGmk9q4+dmch/36LmgvALUWwiWsy822nJ8H+W+XjYkQeZhTvwmqD9TYoEG6KgVz4ZRem8a9DhcK6iiRRzNMjBaaHB1MaZR5Mg/Avm5dHtOK4qZe76WClI9oro3Bwu/LaDvB/NUt5IFixfjsFL2MQYwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DooG22bG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OUDprH0N"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790137224; x=1821673224;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hM9FnilNgsJFxgnCumf3LJM15OZIZrKHUkXqf8citY8=;
-  b=OUDprH0NsYUWaUJXUm9o2pB4Mpg9NEKoi6t4qJ6UgVgK8lYumE1c1FS7
-   rmBL+eT9WhapX6oLqsGRgwxwmsyXALy4QkEz00BTvbjeO1on+eebE49OL
-   tYOSFnhVHNuB1G2Dbh3mRVVmr5bz0UC0dxkGz9DlG77zF2qVcZdebHF8p
-   uHVaWZBa6wXWi483zUWNcZnB2NOVvLMMuJBWD14GtjPFzti2mTgwlZeZ9
-   /xvodSIjWnL4PsAWaHWtOAN4uWy+LK+w9FrG3C26dLGa+u/GJhU8Zivcq
-   VXH19+W2UUGO9MXCpeWG8X3ziN+2yid9326z+V8aFVvFdDOlasaX4AG+H
-   w==;
-X-CSE-ConnectionGUID: +NHZ/tXoQCWdrQmGfmnGGQ==
-X-CSE-MsgGUID: Ihkk2aXPQ9W5d1IOaxrxqQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="116323479"
-X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
-   d="scan'208";a="116323479"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 21:20:23 -0700
-X-CSE-ConnectionGUID: /JMKO42nRLGh+dgRK+yJig==
-X-CSE-MsgGUID: Tq2JRI9eQiSnQsnIkmurEQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; 
-   d="scan'208";a="278183150"
-Received: from bradocaj-mobl.ger.corp.intel.com (HELO localhost) ([10.245.246.235])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 21:20:15 -0700
-Date: Wed, 23 Sep 2026 07:20:07 +0300
-From: Tony Lindgren <tony.lindgren@linux.intel.com>
-To: Artem Bityutskiy <dedekind1@gmail.com>
-Cc: Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Fabiano Rosas <farosas@suse.de>, Jon Grimm <Jon.Grimm@amd.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Steven Price <steven.price@arm.com>,
-	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
-	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
-	=?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Kishen Maloor <kishen.maloor@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Peter Fang <peter.fang@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org
-Subject: Re: [RFC PATCH v2 0/4] Add KVM API for confidential guest live
- migration
-Message-ID: <arNTd7L2IrqSND-C@tlindgre-MOBL1>
-References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
- <d78207fcc5936b5822b708238d862b0e10f9f5c3.camel@gmail.com>
- <aqxbMGLwvtT8zkEb@zhexu-thinkpadt14gen5.rmtcaon.csb>
- <84bf61e0e810859ed735dc92ab94167727c2e560.camel@gmail.com>
- <aq1ehHk7OUYaGCe5@zhexu-thinkpadt14gen5.rmtcaon.csb>
- <f2889dd6e44333b2a5bbd4bd32a4557c3b50a3cc.camel@gmail.com>
- <arJNemNy_SK3mt_c@tlindgre-MOBL1>
- <d36468632f54e15c9107169af03b436f22e0a90f.camel@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DooG22bG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB601F0089B
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 04:20:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790137233;
+	bh=xRu4IFymWzU2DAq2/pstQkXppKLOwgDVdrPuqvOzeKg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=DooG22bGzqj86xMITRCYrjpoW0RFqwnABVByxGQ4CZVPtrr1cDx9NkNBBxF0JPD+M
+	 Hz+F510Hq+9ODp+qe5tuF6anjMWjWba7hM4kjWuyjI605r6piR319gmu6NBtQ598IK
+	 4KGwvAUnyJmoBMNXXk47eDermkyxmW02HOsd/xKwBZE5Hx1B/nKy/1336M4+8Bkf4I
+	 gnzoFVhFQiHvWAsSTDlGM87AKN5fPjgl8b8d9FcBMtqoJcQt/esafLBle2kznTaEDK
+	 FTw+H35H2zo5rnEvQrU9vqWIDWNJVayesSaOWMSqUQ8cIlQ7m+RmwbVZHuILU1OFaE
+	 fNCeb6HGA/stw==
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a6056be4d2so393197a12.1
+        for <kvm@vger.kernel.org>; Tue, 22 Sep 2026 21:20:33 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwYsTCxoLiLpC4LazRidRQEL1MsO/qWRXZVfSFZiVWTQY/4kz3yR/NeR/WPUgEy/FYR0Ak=@vger.kernel.org
+X-Gm-Message-State: AFuF++lkYS0SS3/+FOIs17JjUOAHVIMrcDrR4sCtoXMFO0O2CD8EKSqt
+	VRY7wkvuGP76opNjXVG1gcF0/KMJ79Ngpv6o01Q0qX8ZapRBYNU/8/Kr6ZyVYJjsgiNMa1cAioq
+	yaPjLWFQNP6wxUKl58fQI87tMbjfGMAU=
+X-Received: by 2002:a05:6402:44d3:b0:6aa:aad5:9cef with SMTP id
+ 4fb4d7f45d1cf-6aab38337fdmr966870a12.6.1790137231703; Tue, 22 Sep 2026
+ 21:20:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d36468632f54e15c9107169af03b436f22e0a90f.camel@gmail.com>
+References: <20260922103931.215091-1-nagachaithanya9911@gmail.com>
+In-Reply-To: <20260922103931.215091-1-nagachaithanya9911@gmail.com>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Wed, 23 Sep 2026 12:20:18 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5toptaidoEvkuSeqg8ufSOcMxNqO4nXUOcs=7M7MwivQ@mail.gmail.com>
+X-Gm-Features: AcwNN1UCQ1_Q9X_oEYpqr3iAEWtLdmB9_bsmlaQaWqFXwc6YN0IFf1Wsyqbm3Yg
+Message-ID: <CAAhV-H5toptaidoEvkuSeqg8ufSOcMxNqO4nXUOcs=7M7MwivQ@mail.gmail.com>
+Subject: Re: [PATCH] LoongArch: KVM: Return the actual error code in kvm_ipi_create()
+To: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+Cc: Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	WANG Xuerui <kernel@xen0n.name>, Xianglai Li <lixianglai@loongson.cn>, kvm@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 22, 2026 at 02:54:29PM +0300, Artem Bityutskiy wrote:
-> On Tue, 2026-09-22 at 12:42 +0300, Tony Lindgren wrote:
-> > 
-> > > Anyway, if I can get the TDX module to allow dirty tracking independent of
-> > > migration, we could pick either mechanism, or even implement both and add a
-> > > TDX-specific ioctl to select which one to use. We could plug either method
-> > > into the KVM_DIRTY_LOG ioctl - both would work, just differently.
-> > 
-> > Note that for TDX write-blocking is an older approach. The non-blocking
-> > SEAMCALLs were added because of the issues noticed. Both features are not
-> > usable the same time.
-> 
-> But let me clarify one point: write-blocking (the WP-based mechanism) isn't
-> broken - it works fine. For fairness:
-> 
-> - MMU-intrusiveness - valid argument.
-> - It is "older" - not on its own a strong argument. Older does not
->   automatically make it categorically worse.
+Hi, Chaithanya
 
-Correct. And I'm of course a bit biased on the write-blocking migration
-after tinkering with it some so please excuse me.
+On Tue, Sep 22, 2026 at 6:39=E2=80=AFPM Chaithanya Lagisetty
+<nagachaithanya9911@gmail.com> wrote:
+>
+> kvm_ipi_create() registers the IPI device on the IOCSR bus and jumps to
+> the error label when that fails. The error path then discards the error
+> code that kvm_io_bus_register_dev() reported and returns -EFAULT
+> instead:
+>
+>         ret =3D kvm_io_bus_register_dev(kvm, KVM_IOCSR_BUS, IOCSR_IPI_BAS=
+E,
+>                                       IOCSR_IPI_SIZE, device);
+>         mutex_unlock(&kvm->slots_lock);
+>         if (ret < 0) {
+>                 kvm_pr_unimpl("%s: Initialize IOCSR dev failed, ret =3D %=
+d\n",
+>                               __func__, ret);
+>                 goto err;
+>         }
+>         ...
+> err:
+>         kfree(s);
+>         return -EFAULT;
+>
+> kvm_io_bus_register_dev() fails with -ENOMEM or -ENOSPC, so userspace
+> creating a KVM_DEV_TYPE_LOONGARCH_IPI device is told that it passed a
+> bad address when the real problem is that the host is out of memory or
+> out of IOCSR bus slots. -EFAULT is reserved for faulting user addresses,
+> and the remaining -EFAULT returns in this file are get_user() failures,
+> where it is correct.
+>
+> Return ret instead. It is guaranteed to hold a valid negative errno
+> because the ret < 0 branch above is the only path that reaches the error
+> label. This also matches kvm_eiointc_create(), which already propagates
+> the kvm_io_bus_register_dev() error code unchanged.
+>
+> Only compile-tested; the fix is a straight propagation of an error code
+> that the adjacent kvm_pr_unimpl() already logs.
+>
+> Fixes: c532de5a67a7 ("LoongArch: KVM: Add IPI device support")
+> Assisted-by: Cursor:claude-opus-5
+> Signed-off-by: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+> ---
+>  arch/loongarch/kvm/intc/ipi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/loongarch/kvm/intc/ipi.c b/arch/loongarch/kvm/intc/ipi.=
+c
+> index 7b333a4a0430..672ec053a997 100644
+> --- a/arch/loongarch/kvm/intc/ipi.c
+> +++ b/arch/loongarch/kvm/intc/ipi.c
+> @@ -431,7 +431,7 @@ static int kvm_ipi_create(struct kvm_device *dev, u32=
+ type)
+>
+>  err:
+>         kfree(s);
+> -       return -EFAULT;
+> +       return ret;
+Why not remove the "err" label and return at the "goto" statement?
 
-For reference, there are earlier WIP patches from 2023 for TDX using the
-write-blocking at [0] and [1] below. While the write-blocking itself seems
-fairly straight forward, it's interaction with live migration is complicated
-to unblock pages.
+Huacai
 
-You may want to add a VM exit and TDX module unblock for each 4K page to the
-list for the TDX write-blocking migration.
- 
-> Side note: although I always try to remember that if there is a real need,
-> we can work with the TDX module architects on the  ABI to reduce that
-> intrusiveness. I do not see the need yet, though.
-> 
-> > If non-blocking is enabled for a TDX module write-blocking cannot be used.
-> > Also note that the dirty log scan features depend on non-blocking features
-> > being enabled.
-> 
-> To make it more pronounced: Tony says the blocking vs. non-blocking TDX
-> export mode is:
-> 
-> - Global for all TDs, not a per-TD choice.
-> - Decided at TDX module initialization time, and cannot be changed without
->   re-initializing or updating the module. So in practice, it's a kernel
->   init time decision.
-> 
-> So my suggestion that both could be implemented and selected via a uAPI is
-> moot in practice.
-
-Yup. If somebody really needs it, selecting write-blocking migration could
-be a module param.
-
-[0] https://github.com/intel-staging/tdx/commit/d6c63ebf463297a076984fe248aabeba0fa58864
-[1] https://github.com/intel-staging/tdx/commit/782649ab74c1b3f05df7e38d5fc8e3f907a9394e
+>  }
+>
+>  static void kvm_ipi_destroy(struct kvm_device *dev)
+> --
+> 2.43.0
+>
