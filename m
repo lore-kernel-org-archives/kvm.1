@@ -1,194 +1,218 @@
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767A12580F3;
-	Wed, 23 Sep 2026 06:45:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371AE3EFFC2
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 06:51:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790145952; cv=none; b=OegT3oWQvnZFW0LaBM5xHDg+dYJe82VZfMmyObA/YglHFWaQFxnveHMnqo5dRlYRn058fpN5L6aghtf6ySd0yjmLXzBiSlTtYBcjAIYhZllAlGsO2wWAgk88y3vJ+9+keIMhFwMIG3R7M/1YHiTlTnNMw+wwAiTTh0VvH4Ztc+k=
+	t=1790146278; cv=none; b=T+fIvdmaibsb0wOlYJLlr5yUiKSt/wucSTC4sXMJ3KNcv4RCY+hr/x5ZEO2MYasSxDf9ylsRZ18xbBQEvHJvf1HQqun1vzQQC1oPqvCRSpCJrShSrfT7BrGvjHPhPbv0FyRBzuFZFa1lXdhPxUevsT5YTU1TeBDKotjii921DPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790145952; c=relaxed/simple;
-	bh=MLuL1g2afY6v8AIDThBP3sZOTU6cYHdmv52kPhLU+Yo=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=UGwK4rOkiWHUnOdF95cBaT9picMSdZxlMaOz1n9rtvM+//OVW0mVU3Z2ePvGcKrDr+mmGk1FrG+CnFYypOQxHxD/wqieGHxkbIlybE8G9WorjD6efS6Tnc1A0tLdsWj4NT3PrD1lwSkYAS1P55aKyJgFHy1kUN1llpTs4Zb5JXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=NZ9Dwjjn; arc=none smtp.client-ip=113.46.200.224
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1790146278; c=relaxed/simple;
+	bh=0mngPl7KWIvpaE7OO1ZplHJVHIc1+52hFYNxFM41UA4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zb0CYd8Oqy/53N0qR2JLupAMGyDsw4IZEmb1tcKgQ+cjH/itdkSELf80vWgUDAQPt0I3Vq1jSfOQ0RWhf2gP3ti9hTCVFnIPSbZjuMcwGQVE+G+alYQKRPAtdflb/eLhifB4+CMfYI03rZplHh5JZgwZ7nbW8BtZjDheSkKGqM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZjU0S7g8; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="NZ9Dwjjn"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=YhEYlQtke+vQduVm9Z6KEKMJC26Mh7lyGkZCjMz2Plw=;
-	b=NZ9Dwjjn6QuFCf6eiSTTGGK88hLpBvw5wxl3s9wrodnYl/Hwm3J2GYkRvsuj7gM5uAZjpuo2E
-	U6YC+xNraueOQ/QM9JjjraZ1bbA5t8MkG9Brcig34iIKgLleST/e6+ejVzd+Q9rkUnfSIUCAoEA
-	0fXfaq7UMc9lVc4UwRUuImI=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4hqRyk6mRkz1cyPY;
-	Wed, 23 Sep 2026 14:34:38 +0800 (CST)
-Received: from whupemk100014.china.huawei.com (unknown [7.152.184.20])
-	by mail.maildlp.com (Postfix) with ESMTPS id 396A240572;
-	Wed, 23 Sep 2026 14:45:41 +0800 (CST)
-Received: from [10.67.121.110] (10.67.121.110) by
- whupemk100014.china.huawei.com (7.152.184.20) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 23 Sep 2026 14:45:40 +0800
-Subject: Re: [PATCH v4 1/2] hisi_acc_vfio_pci: fix NULL dereference in
- reset_prepare on PF passthrough
-To: Alex Williamson <alex@shazbot.org>
-CC: <alex.williamson@redhat.com>, <jgg@nvidia.com>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260918084244.1485837-1-liulongfang@huawei.com>
- <20260918084244.1485837-2-liulongfang@huawei.com>
- <20260920082641.64d66616@shazbot.org>
- <f0a43a0f-b317-964f-207c-f96d1f0a6478@huawei.com>
- <20260922165928.5c062fc0@shazbot.org>
-From: liulongfang <liulongfang@huawei.com>
-Message-ID: <9f9a061e-9309-fe6f-f3dc-968d92ad537c@huawei.com>
-Date: Wed, 23 Sep 2026 14:45:39 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZjU0S7g8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790146274; x=1821682274;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0mngPl7KWIvpaE7OO1ZplHJVHIc1+52hFYNxFM41UA4=;
+  b=ZjU0S7g8+r6K1/xvvb1BeppyN0Ehx+9ZJp97q3ZAEoRNa8Ri5ex8q5AT
+   pSsiXhS6IZIKzOj1YqQnINhclaTIgk++ugDnNoYRokU32hjUM88gcUdHO
+   aTlzkssiFTKA5rBB1BBpBx6yKIGsQAR5teVGIpnPwgaFyWmzt7Ng3GY8+
+   c2P1MRz1ermDLr8tXrgOlwsrZ/CpKc3oLY1Pt3294sbZVuEBv+su/0NHa
+   u0eUvBAkno3j7P2wxcE/H4NIH3xmy9xcGWEwgXGuykCZbvqAZnRJC5BFc
+   WnWQj9zRrkHEXO1PQi3XphDlvHvLj1QzIYDTMrYot3MvQJ7riVtmsp9l7
+   A==;
+X-CSE-ConnectionGUID: HZ8i01C/QyuKdcGbe1BGbQ==
+X-CSE-MsgGUID: xRHbp5MhQIOPqD6TMHrbtg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="90831056"
+X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
+   d="scan'208";a="90831056"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 23:51:11 -0700
+X-CSE-ConnectionGUID: O2KnseYsSOSd7QpmEBureQ==
+X-CSE-MsgGUID: 01ZAONYmRkS0IKeJvKA+kg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
+   d="scan'208";a="4761836"
+Received: from bradocaj-mobl.ger.corp.intel.com (HELO localhost) ([10.245.246.235])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 23:51:03 -0700
+Date: Wed, 23 Sep 2026 09:50:59 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Kishen Maloor <kishen.maloor@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Peter Xu <peterx@redhat.com>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Fabiano Rosas <farosas@suse.de>, Jon Grimm <Jon.Grimm@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Steven Price <steven.price@arm.com>,
+	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
+	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
+	=?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Peter Fang <peter.fang@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org
+Subject: Re: [RFC PATCH v2 2/4] KVM: x86: Add optional KVM_CAP_LIVE_MIGRATION
+ and KVM_MIGRATE_CMD
+Message-ID: <arN20-sGytS6BlZc@tlindgre-MOBL1>
+References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
+ <20260831071304.762939-3-tony.lindgren@linux.intel.com>
+ <ab3c9e32-ab34-49bf-937a-4d3d736fb4dc@intel.com>
+ <arDHbjcwaRFcHb08@tlindgre-MOBL1>
+ <arDVIEobkRr3E7yS@tlindgre-MOBL1>
+ <ae22e1df-c09c-4f8a-8010-41e542e4c663@intel.com>
+ <arIfu_A1e6KEokWI@tlindgre-MOBL1>
+ <288de298-2773-4fa5-8020-21b61bbcad67@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260922165928.5c062fc0@shazbot.org>
-Content-Type: text/plain; charset="gbk"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- whupemk100014.china.huawei.com (7.152.184.20)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <288de298-2773-4fa5-8020-21b61bbcad67@intel.com>
 
-On 2026/9/23 6:59, Alex Williamson wrote:
-> On Mon, 21 Sep 2026 16:15:12 +0800
-> liulongfang <liulongfang@huawei.com> wrote:
+On Tue, Sep 22, 2026 at 05:37:33PM -0700, Kishen Maloor wrote:
+> On 9/21/26 11:27 PM, Tony Lindgren wrote:
+> > Oh right thanks. I think this is really the maximum transfer buffer size
+> > Peter asked, not just a hint to userspace :)
 > 
->> On 2026/9/20 22:26, Alex Williamson wrote:
->>> On Fri, 18 Sep 2026 16:42:43 +0800
->>> Longfang Liu <liulongfang@huawei.com> wrote:
->>>   
->>>> When a PF is bound to the driver via driver_override and passed
->>>> through to a VM, its pf_qm stays NULL. The PCI error handler
->>>> reset_prepare() runs during open_device through
->>>> pci_try_reset_function(), before the mig_ops gate, and dereferences
->>>> the NULL pf_qm for the timeout log, crashing the kernel.
->>>>
->>>> Move the mig_ops check to the entry of reset_prepare() and
->>>> aer_reset_done() so non-migration devices skip the QM_RESETTING
->>>> coordination. Also clear set_reset_flag together with QM_RESETTING
->>>> in aer_reset_done(); the flag was never cleared before, so a later
->>>> timed-out reset could release a foreign lock. Replace
->>>> pci_iov_vf_id() >= 0 with pdev->is_virtfn in probe() for clearer
->>>> on-VF gating.
->>>>
->>>> Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
->>>> Fixes: a22099ed7936f ("hisi_acc_vfio_pci: fix VF reset timeout issue")
->>>> Signed-off-by: Longfang Liu <liulongfang@huawei.com>
->>>> ---
->>>>  .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 19 ++++++++++++-------
->>>>  1 file changed, 12 insertions(+), 7 deletions(-)
->>>>
->>>> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
->>>> index 86362ec424a5..8ff69c8d1ff7 100644
->>>> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
->>>> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
->>>> @@ -1154,9 +1154,14 @@ static void hisi_acc_vf_pci_reset_prepare(struct pci_dev *pdev)
->>>>  {
->>>>  	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
->>>>  	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
->>>> -	struct device *dev = &qm->pdev->dev;
->>>> +	struct device *dev = &pdev->dev;
->>>>  	u32 delay = 0;
->>>>  
->>>> +	if (!hisi_acc_vdev->core_device.vdev.mig_ops) {
->>>> +		dev_err(dev, "device not support migration\n");
->>>> +		return;
->>>> +	}  
->>>
->>> Why is not supporting migration worthy of a dev_err()?!  Resets are a
->>> normal operation.  Generating a log to nag the lack of migration
->>> support on every reset is unacceptable.  
->>
->> How about changing it to a dev_info() then? Since users will notice errors when initiating
->> a migration, an explicit log is necessary to pinpoint the cause and facilitate subsequent
->> troubleshooting.
-> 
-> No, reset is a normal operation, it has nothing to do with migration.
-> Migration support is discoverable.  If you want something in the log,
-> it should be there once, at probe time.
->
+> It is a strict upper bound. Maybe it's semantics, but I called 
+> it a "hint" because allocating for that entire size could be optional.
+> If a userspace driver for say TDX wants to send smaller batches (say 128) then 
+> it can refer to the spec, do the math, and allocate 131 pages and the kernel 
+> should permit that; it's not wrong. If userspace ever allocates less room than 
+> a call requires, it would fail. A different userspace driver could simply 
+> allocate that max size and be done; no need to refer to the spec or do the math. 
+> It is for this second case where I thought returning the upper bound would be 
+> useful. Hence the earlier suggestion.
 
-OK, I'll add a dev_info() log in the probe function.
+OK 
+ 
+> >>>>>> +struct kvm_transfer_buffer {
+> >>>>>> +	__u64 address;
+> >>>>>> +	__u32 size;
+> >>>>>> +	__u32 reserved;
+> >>>>>> +};
+> >>>>>
+> >>>>> Should this struct include a 'capacity' field (u32) that is set on each command?
+> >>>>> It would be the number of bytes writable at address.
+> >>>>> size would be the input length on entry (0 if the command passes none), and the
+> >>>>> number of bytes produced on return (0 if none).
+> >>>>
+> >>>> Hmm so the transfer command return value can return how many bytes were
+> >>>> written of the input. But yeah we don't know how many bytes were written
+> >>>> back to the transfer buffer as result of the transfer command.
+> >>
+> >> The transfer command return value could return how many bytes were written into the buffer.
+> >> But in an input-output call, the kernel handler wouldn't know how many bytes it could write,
+> >> or for that matter even how many pages to pin up front in case it needs to return an output
+> >> because 'size' couldn't simultaneously convey the input length and buffer capacity. That was
+> >> the gap that I thought a read-only 'capacity' field could bridge. Of course, this
+> >> assumes that the output is written in-place.
+> > 
+> > Hmm yeah this inplace capacity vs transferred issue remains still. So I
+> > agree we need to specify the capacity in struct kvm_transfer_buffer like
+> > you suggested.
+> 
+> To be clear, I think the in/out split for the buffers along with the convention 
+> I laid out closes that gap I saw without needing a 'capacity' field.
+> Because out/size could now unambiguously convey capacity on entry and output
+> length on return.
 
->>>> +
->>>>  	/* All reset requests need to be queued for processing */
->>>>  	while (test_and_set_bit(QM_RESETTING, &qm->misc_ctl)) {
->>>>  		msleep(1);
->>>> @@ -1174,12 +1179,14 @@ static void hisi_acc_vf_pci_aer_reset_done(struct pci_dev *pdev)
->>>>  	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
->>>>  	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
->>>>  
->>>> -	if (hisi_acc_vdev->set_reset_flag)
->>>> -		clear_bit(QM_RESETTING, &qm->misc_ctl);
->>>> -
->>>>  	if (!hisi_acc_vdev->core_device.vdev.mig_ops)
->>>>  		return;
->>>>  
->>>> +	if (hisi_acc_vdev->set_reset_flag) {
->>>> +		clear_bit(QM_RESETTING, &qm->misc_ctl);
->>>> +		hisi_acc_vdev->set_reset_flag = false;
->>>> +	}
->>>> +
->>>>  	mutex_lock(&hisi_acc_vdev->state_mutex);
->>>>  	hisi_acc_vf_reset(hisi_acc_vdev);
->>>>  	mutex_unlock(&hisi_acc_vdev->state_mutex);
->>>> @@ -1670,13 +1677,11 @@ static int hisi_acc_vfio_pci_probe(struct pci_dev *pdev, const struct pci_device
->>>>  	struct hisi_acc_vf_core_device *hisi_acc_vdev;
->>>>  	const struct vfio_device_ops *ops = &hisi_acc_vfio_pci_ops;
->>>>  	struct hisi_qm *pf_qm;
->>>> -	int vf_id;
->>>>  	int ret;
->>>>  
->>>>  	pf_qm = hisi_acc_get_pf_qm(pdev);
->>>>  	if (pf_qm && pf_qm->ver >= QM_HW_V3) {
->>>> -		vf_id = pci_iov_vf_id(pdev);
->>>> -		if (vf_id >= 0)
->>>> +		if (pdev->is_virtfn)
->>>>  			ops = &hisi_acc_vfio_pci_migrn_ops;
->>>>  		else
->>>>  			pci_warn(pdev, "migration support failed, continue with generic interface\n");  
->>>
->>> I still reject the redundant is_virtfn check here.  I don't find
->>> support for the claim that it's a convention among variant drivers, nor
->>> does it do anything here or to the next patch.  pf_qm is
->>> deterministically NULL for pdev->is_virtfn.  Thanks,
->>>  
->>
->> Even if left unchanged here, a later patch will anyway replace this complex logic with an is_virtfn check
->> to handle the pci_resource_len inspection during probe.
+But for an inplace buffer use with some input data smaller than the output
+data, would it work? To me it seems you need both buffer size and data
+size for that.
+ 
+> > To me size is already the size of the buffer though. So instead of changing
+> > size to capacity, how about something like datasize or len for the input
+> > and output transfer length?
 > 
-> Are you talking about patch 2/2 that leaves it like this:
-> 
-> 	pf_qm = hisi_acc_get_pf_qm(pdev);
-> 	if (pf_qm && pf_qm->ver >= QM_HW_V3 && pdev->is_virtfn) {
->
+> But I understand that (and please correct me if I'm wrong):
+> a) You'd still prefer to not have 'size' serve that double duty.
+> b) 'size' in your mental model already means buffer capacity.
 
-OK,  I will remove pdev->is_virtfn in the next version.
+Heh yes correct for the above.
+ 
+> In that case, we could add a 'datasize' field to convey the length
+> of valid data in the buffer, like this:
+> 
+> struct kvm_transfer_buffer {
+>     __u64 address;
+>     __u32 size;
+>     __u32 datasize;
+>     __u64 reserved;
+> };
 
-Thanks.
-Longfang.
+Maybe bufsize and datasize? Then the difference would be obvious while
+reading the code.
 
-> Where once again I quote the source of pf_qm:
+> The convention then becomes:
+> - A non-zero 'datasize' on 'in' at call entry conveys that there is input.
+> - A non-zero 'datasize' on 'out' at call exit conveys that there is output.
+> - out/datasize on call entry is ignored.
+> - in/size and out/size are seeded with the buffer capacity.
 > 
-> static struct hisi_qm *hisi_acc_get_pf_qm(struct pci_dev *pdev)
-> {
-> 	struct hisi_qm  *pf_qm;
-> 	struct pci_driver *pf_driver;
->                 
-> 	if (!pdev->is_virtfn)
-> 		return NULL;
+> > 
+> >>>> How about if we add the bytes returned to the transfer struct? Then the
+> >>>> kvm_transfer_buffer can stay as just a buffer. 
+> >>>
+> >>> Actually, for the possible cases with input+output, we could reserve space
+> >>> in the transfer struct for another struct kvm_transfer_buffer for the
+> >>> results?
+> >>
+> >> Yes, say an 'in' and 'out' kvm_transfer_buffer inside struct kvm_migrate_cmd should
+> >> close this out and shouldn't require a 'capacity' field. Maybe we then establish this
+> >> convention:
+> >> - A non-zero 'size' on 'in' at call entry would signal that there is input.
+> >> - A non-zero 'size' on 'out' at call entry would convey the buffer capacity.
+> >> - A non-zero 'size' on 'out' at call exit would convey that there is output.
+> >> - A zeroed 'size' on 'out' at call exit would convey that there is no output.
+> > 
+> > Looks doable to me but with the inplace issue as above.. Sounds like we just
+> > need to reserve space for a case with a separate output buffer though.
 > 
-> Please stop wasting time on this.
-> .
+> To be clear, this is what I thought we were talking about :)
+
+Heh yeah we're talking two things with the inplace use vs two buffers :)
+
+> To add a 2nd kvm_transfer_buffer to kvm_migrate_cmd, like this:
 > 
+> struct kvm_migrate_cmd {
+>      __u16 command;
+>      __u16 flags;
+>      __u32 reserved;
+>      struct kvm_transfer_buffer in;
+>      struct kvm_transfer_buffer out;
+> };
+> 
+> If there is agreement on this model, then yeah, we'd want to define
+> these fields now, since the struct can't grow later without a new ioctl
+> number.
+
+Based on what we've discussed, my preference is the following:
+
+Keep the current buf naming. For the EXPORT/IMPORT type functions the use
+should be obvious from the transfer type. 
+
+Reserve enough space for a separate output buffer or results buffer or
+whatever it might get called if such a use case ever pops up.
+
+Add the datasize to struct kvm_transfer_buffer like you suggested and
+rename size to bufsize.
