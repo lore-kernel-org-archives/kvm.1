@@ -1,58 +1,57 @@
-Received: from mta1.migadu.com (out-20.mta1.migadu.com [95.215.58.20])
+Received: from mta1.migadu.com (out-52.mta1.migadu.com [95.215.58.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBAA63EFFC5
-	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 18:25:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B534A43078B
+	for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 18:25:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790187910; cv=none; b=S68sLwZmAhiPs9FaNyjKMGXZhtU5rHZmYko/1uhzkARtMSq4zDiqT2xX8K0bCnp/Tr0VBuH0taYmPiVEBdnNkOhF+i66zrIZCLG9cBiPBlzkvblYPwsBd3PQXIML/HWHKZ+/E9fhuH24axcE5qcD+UDhsC8kk+XhJ2v8olq0NeE=
+	t=1790187936; cv=none; b=HvoaKhOXnqd20+1Djip98uGmCUIH7/Lew/8Glj/Ou/0KaKgbLHVOxjHjO04t/KAMUb2BQp0uFw36seSNoIvdp86PSO459+gotclJSF76deU8xB4AiVT+M1RIujLrX6bIt0weLm3Gna02eA1DwE0gVPq5vYy4BGXivsv1MwQGFTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790187910; c=relaxed/simple;
-	bh=icKpVwDolFVv+1u7uqlBuvsRyBBd3V2KuR/bENnyVWA=;
+	s=arc-20240116; t=1790187936; c=relaxed/simple;
+	bh=eBhoSZys/skO8VhIcCPkCwRrgSwHPSgz35h6Fpfdqy0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EwYHhtQr53J5f9KmwlxV0BJOSdQiXO86zT1fR8SBfONVgZkjBCJwIZRM95ugkooR8q+wSiYreCTbOvpcsn7cjzzfPwMPUKu3dcuGZmwpk6A9jwi6jPs63+wT9fPFdd13mLTzD2ZKSosVZ20kQU0BDLPgNoVr0BGJdgQ+QSfuYbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QQGafGQz; arc=none smtp.client-ip=95.215.58.20
+	 To:Cc:Content-Type; b=rbRH3u1mNW9Jfgh1oIM7s43gMUkPdwxR4pfF8zQGaAg16DqYar3Uk87o5u2joLvUdq8H9jAhh3IshxautvF3AgtvrHgPH2t0u4qowScC95F/EvSn6UNEBgeS1EphawMtSPnvbe+NIvVW1Jc/Zh7TWeX2ZO0teYfSxTt08zkKrZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Z7ziTbHb; arc=none smtp.client-ip=95.215.58.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QQGafGQz"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Z7ziTbHb"
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=icKpVwDolFVv+1u7uqlBuvsRyBBd3V2KuR/bENnyVWA=;
+DKIM-Signature: a=rsa-sha256; bh=eBhoSZys/skO8VhIcCPkCwRrgSwHPSgz35h6Fpfdqy0=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790187905; v=1; x=1790792705;
- b=QQGafGQzkoxkn/pUqWljspLfWyiFGpy7La04wQX2m5rQa4x+V08h/gMCbLidZzILrVFD3QIa
- hduplzpI0oDH1oEc+x8G2VFQQSW54L0LaxwzHGL/FwRxQo+QKLxH24PCbl5JqVYWtVh9EFMSAlt
- DdVYiqjoMevh1I2Ls2nrwxSw=
+ t=1790187927; v=1; x=1790792727;
+ b=Z7ziTbHbwmayRVpmrTaiBdgfDpBhH00EGT1KO+Z4+tytUOMJnSWd8kf1fjma/TCZ9n3EWN2V
+ 1RLmm5zFQn1KmYPi1A7szKSSkA9fWN02yFWmU9vJC2mujYbrUBz9JmXL6TfwCkcPE4ak/SzpmYo
+ EOLBR3lmrYWLe/MDNUfJPmlI=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 48e20699d3c9e9fa;
-	Wed, 23 Sep 2026 18:25:05 +0000
-X-Mizu-Trace-ID: 48e20699d3c9e9fa
+Received: by smtp.migadu.com with ESMTPS id c66e70acffcfe154;
+	Wed, 23 Sep 2026 18:25:22 +0000
+X-Mizu-Trace-ID: c66e70acffcfe154
 X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5b83c1421ecso1012e87.1
-        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 11:25:05 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxVWxfwPBNnwjR+nTNLyv1XgY/UO5oWzvE4sItt59gDaBwbaikdunXY2eRPmSNfuq7jGa8=@vger.kernel.org
-X-Gm-Message-State: AFuF++n21IyxoUqQjfRe13dg68FvlvMniBxa8BK/ax/lqPHzwcHBxmU8
-	ZLhm+2sxNnn0Vw/tN846gb9UibAoK2FuRaTDI8/Lg2T3Lisz555/QqaCIBuemSOatlao3xadbFw
-	UAvQ6qADQWZ0fUxdhHi1THipGYto6ZEub9TFaD2df
-X-Received: by 2002:a05:6512:2348:b0:5b8:c8f2:16c4 with SMTP id
- 2adb3069b0e04-5b8dda16356mr41989e87.10.1790187904131; Wed, 23 Sep 2026
- 11:25:04 -0700 (PDT)
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5b778bdb5b8so1049e87.1
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 11:25:22 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBycEo0LhVZPlUEygmjCYBkNJaXQTAGcf22lCDrwZUzrQf8W0JlxOpIvvMT+G/JTK7ebY/E=@vger.kernel.org
+X-Gm-Message-State: AFuF++l4nOLM2dt6jQqDpwRPVLdrVFWEJGxkmFwOMD43lC192hQWDtfl
+	JQw7wR5LIchwqoE8kUzohNsP1aCWRfXfl7ZuA2lIXPVL1YE9MKLUHvlWq6c2nnw1TNqqz7xQZRg
+	h0Tn/WA4NC7rAtKcFp5IdLKchLje4Fn6uO6OXvG5C
+X-Received: by 2002:a05:6512:2395:b0:5b8:b502:9a76 with SMTP id
+ 2adb3069b0e04-5b8de5cbe34mr31894e87.13.1790187921175; Wed, 23 Sep 2026
+ 11:25:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260923-kvm-arm-prefault-v4-0-d4b0b4dfa8c3@kernel.org> <20260923-kvm-arm-prefault-v4-5-d4b0b4dfa8c3@kernel.org>
-In-Reply-To: <20260923-kvm-arm-prefault-v4-5-d4b0b4dfa8c3@kernel.org>
+References: <20260923-kvm-arm-prefault-v4-0-d4b0b4dfa8c3@kernel.org> <20260923-kvm-arm-prefault-v4-2-d4b0b4dfa8c3@kernel.org>
+In-Reply-To: <20260923-kvm-arm-prefault-v4-2-d4b0b4dfa8c3@kernel.org>
 From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Wed, 23 Sep 2026 19:24:27 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTwP60W9Hbh+QXnzO0jp2WLuBDFHgAMpOh7NJjtBPvMHMA@mail.gmail.com>
-X-Gm-Features: AclHuK9tcjGuGMhNzNDTCbr0CDkbARnDYHgYTOmN_66FCQTilOlmgllNeI6N8aU
-Message-ID: <CA+EHjTwP60W9Hbh+QXnzO0jp2WLuBDFHgAMpOh7NJjtBPvMHMA@mail.gmail.com>
-Subject: Re: [PATCH v4 05/14] KVM: arm64: Propagate and use mmu in s2fd when
- handling guest aborts
+Date: Wed, 23 Sep 2026 19:24:45 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTzAK5HvyQaGQyzA8KckLj8hhg2g=ibXVxLhpMd4akvrOA@mail.gmail.com>
+X-Gm-Features: AclHuK-LVBecQrvB6_SGAbPJR_XCf_HtzjMFK7HtibXH2JM7oY3kOspYw5Nd0jM
+Message-ID: <CA+EHjTzAK5HvyQaGQyzA8KckLj8hhg2g=ibXVxLhpMd4akvrOA@mail.gmail.com>
+Subject: Re: [PATCH v4 02/14] arm64: Add ESR fault helpers
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
 	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
@@ -75,20 +74,16 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
 	Leo Soares Passos <Leo.Bras@arm.com>, Wei-Lin Chang <weilin.chang@arm.com>, linux-s390@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 23 Sept 2026 at 16:17, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+On Wed, 23 Sept 2026 at 16:16, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
 >
-> kvm_handle_guest_abort() establishes a kvm_s2_fault_desc data structure,
-> s2fd, to store and propagate state to either pkvm_mem_abort(), gmem_abort()
-> or user_mem_abort() handlers.
+> Add helper functions which operate directly on an ESR value rather than
+> trying to access the register itself.
 >
-> Each of these, however, examines the state of the stage 2 MMU via
-> vcpu->arch.hw_mmu.
+> These mirror equivalent KVM vCPU wrappers in kvm_emulate.h and allow those
+> wrappers and KVM's stage-2 fault handling to operate on a plain ESR value.
 >
-> Introduce an s2fd->mmu field to abstract this and propagate it to callers.
->
-> Similar to adding the esr field, this allows injection of synthetic faults
-> with the ultimate intention of implementing stage 2 page table
-> pre-faulting.
+> This is needed to later generate a synthetic fault for the stage-2 page
+> table pre-faulting mechanism.
 >
 > No functional change intended.
 >
@@ -101,102 +96,71 @@ Cheers,
 /fuad
 
 > ---
->  arch/arm64/kvm/mmu.c | 19 +++++++++++--------
->  1 file changed, 11 insertions(+), 8 deletions(-)
+>  arch/arm64/include/asm/esr.h         | 29 +++++++++++++++++++++++++++++
+>  arch/arm64/include/asm/kvm_emulate.h | 10 ++++++++++
+>  2 files changed, 39 insertions(+)
 >
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index cb677ab76484..9d799f7c1e62 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -1656,6 +1656,7 @@ struct kvm_s2_fault_desc {
->         struct kvm_memory_slot  *memslot;
->         unsigned long           hva;
->         unsigned long           esr;
-> +       struct kvm_s2_mmu       *mmu;
->  };
+> diff --git a/arch/arm64/include/asm/esr.h b/arch/arm64/include/asm/esr.h
+> index f816f5d77f1a..86756fc9bb5a 100644
+> --- a/arch/arm64/include/asm/esr.h
+> +++ b/arch/arm64/include/asm/esr.h
+> @@ -437,6 +437,35 @@
+>  #ifndef __ASSEMBLER__
+>  #include <asm/types.h>
 >
->  static bool kvm_s2_fault_is_perm(const struct kvm_s2_fault_desc *s2fd)
-> @@ -1689,7 +1690,7 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
->         bool perm_fault = kvm_s2_fault_is_perm(s2fd);
->         enum kvm_pgtable_walk_flags flags = KVM_PGTABLE_WALK_SHARED;
->         enum kvm_pgtable_prot prot = KVM_PGTABLE_PROT_R;
-> -       struct kvm_pgtable *pgt = s2fd->vcpu->arch.hw_mmu->pgt;
-> +       struct kvm_pgtable *pgt = s2fd->mmu->pgt;
->         struct kvm_guest_s2_mapping *mapping = NULL;
->         unsigned long mmu_seq;
->         struct page *page;
-> @@ -1805,7 +1806,7 @@ static int pkvm_mem_abort(const struct kvm_s2_fault_desc *s2fd)
+> +static __always_inline bool esr_trap_is_iabt(unsigned long esr)
+> +{
+> +       return ESR_ELx_EC(esr) == ESR_ELx_EC_IABT_LOW;
+> +}
+> +
+> +/* Always check for S1PTW *before* using this. */
+> +static __always_inline bool esr_dabt_is_write(unsigned long esr)
+> +{
+> +       return esr & ESR_ELx_WNR;
+> +}
+> +
+> +static __always_inline bool esr_dabt_is_cm(unsigned long esr)
+> +{
+> +       return esr & ESR_ELx_CM;
+> +}
+> +
+> +static __always_inline bool esr_abt_is_sea(unsigned long esr)
+> +{
+> +       switch (esr & ESR_ELx_FSC) {
+> +       case ESR_ELx_FSC_EXTABT:
+> +       case ESR_ELx_FSC_SEA_TTW(-1) ... ESR_ELx_FSC_SEA_TTW(3):
+> +       case ESR_ELx_FSC_SECC:
+> +       case ESR_ELx_FSC_SECC_TTW(-1) ... ESR_ELx_FSC_SECC_TTW(3):
+> +               return true;
+> +       default:
+> +               return false;
+> +       }
+> +}
+> +
+>  static inline unsigned long esr_brk_comment(unsigned long esr)
 >  {
->         unsigned int flags = FOLL_HWPOISON | FOLL_LONGTERM | FOLL_WRITE;
->         struct kvm_vcpu *vcpu = s2fd->vcpu;
-> -       struct kvm_pgtable *pgt = vcpu->arch.hw_mmu->pgt;
-> +       struct kvm_pgtable *pgt = s2fd->mmu->pgt;
->         struct mm_struct *mm = current->mm;
->         struct kvm *kvm = vcpu->kvm;
->         void *hyp_memcache;
-> @@ -2121,7 +2122,7 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
->         gfn_t gfn;
->         int ret;
+>         return esr & ESR_ELx_BRK64_ISS_COMMENT_MASK;
+> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
+> index a3c1928bdf74..654e8c1b4461 100644
+> --- a/arch/arm64/include/asm/kvm_emulate.h
+> +++ b/arch/arm64/include/asm/kvm_emulate.h
+> @@ -336,6 +336,16 @@ static __always_inline u64 kvm_vcpu_get_esr(const struct kvm_vcpu *vcpu)
+>         return vcpu->arch.fault.esr_el2;
+>  }
 >
-> -       if (kvm_is_nested_s2_mmu(kvm, s2fd->vcpu->arch.hw_mmu)) {
-> +       if (kvm_is_nested_s2_mmu(kvm, s2fd->mmu)) {
->                 mapping = kmalloc_obj(struct kvm_guest_s2_mapping,
->                                       GFP_KERNEL_ACCOUNT);
->                 if (!mapping) {
-> @@ -2131,7 +2132,7 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
->         }
->
->         kvm_fault_lock(kvm);
-> -       pgt = s2fd->vcpu->arch.hw_mmu->pgt;
-> +       pgt = s2fd->mmu->pgt;
->         ret = -EAGAIN;
->         if (mmu_invalidate_retry(kvm, s2vi->mmu_seq))
->                 goto out_unlock;
-> @@ -2363,6 +2364,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
+> +static __always_inline bool esr_abt_is_s1ptw(unsigned long esr)
+> +{
+> +       return esr & ESR_ELx_S1PTW;
+> +}
+> +
+> +static __always_inline bool esr_abt_is_exec_fault(unsigned long esr)
+> +{
+> +       return esr_trap_is_iabt(esr) && !esr_abt_is_s1ptw(esr);
+> +}
+> +
+>  static inline bool guest_hyp_wfx_traps_enabled(const struct kvm_vcpu *vcpu)
 >  {
->         struct kvm_s2_trans nested_trans, *nested = NULL;
->         unsigned long esr = kvm_vcpu_get_esr(vcpu);
-> +       struct kvm_s2_mmu *mmu = vcpu->arch.hw_mmu;
->         phys_addr_t fault_ipa; /* The address we faulted on */
->         phys_addr_t ipa; /* Always the IPA in the L1 guest phys space */
->         struct kvm_memory_slot *memslot;
-> @@ -2392,7 +2394,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->                 }
->
->                 /* Falls between the IPA range and the PARange? */
-> -               if (fault_ipa >= BIT_ULL(VTCR_EL2_IPA(vcpu->arch.hw_mmu->vtcr))) {
-> +               if (fault_ipa >= BIT_ULL(VTCR_EL2_IPA(mmu->vtcr))) {
->                         fault_ipa |= FAR_TO_FIPA_OFFSET(kvm_vcpu_get_hfar(vcpu));
->
->                         return kvm_inject_sea(vcpu, is_iabt, fault_ipa);
-> @@ -2429,8 +2431,8 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->          * nothing to walk and we treat it as a 1:1 before going through the
->          * canonical translation.
->          */
-> -       if (kvm_is_nested_s2_mmu(vcpu->kvm,vcpu->arch.hw_mmu) &&
-> -           vcpu->arch.hw_mmu->nested_stage2_enabled) {
-> +       if (kvm_is_nested_s2_mmu(vcpu->kvm, mmu) &&
-> +           mmu->nested_stage2_enabled) {
->                 u32 esr;
->
->                 ret = kvm_walk_nested_s2(vcpu, fault_ipa, &nested_trans);
-> @@ -2505,7 +2507,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->         }
->
->         /* Userspace should not be able to register out-of-bounds IPAs */
-> -       VM_BUG_ON(ipa >= kvm_phys_size(vcpu->arch.hw_mmu));
-> +       VM_BUG_ON(ipa >= kvm_phys_size(mmu));
->
->         if (esr_fsc_is_access_flag_fault(esr)) {
->                 handle_access_fault(vcpu, fault_ipa);
-> @@ -2520,6 +2522,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->                 .memslot        = memslot,
->                 .hva            = hva,
->                 .esr            = esr,
-> +               .mmu            = mmu,
->         };
->
->         if (kvm_vm_is_protected(vcpu->kvm)) {
+>         u64 esr = kvm_vcpu_get_esr(vcpu);
 >
 > --
 > 2.55.0
