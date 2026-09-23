@@ -1,246 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6343569F1F;
-	Wed, 23 Sep 2026 19:21:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82F1569F20;
+	Wed, 23 Sep 2026 19:36:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790191271; cv=none; b=Ti3f9hU6vR0mLIP56rworNxhnbVr9WWiRd985R77ZTOebTCMhO/3Gj6QA2DewxOK++7hPkmyLivmH+Utf2zZgUmT7eAiqmbvI4fkNyx2vnb3tM/503HB3to5MXvJVzL0eVbBLdJk38fNpPCvrQqCYDFI7Q9yEKIy8hydlrj9sGM=
+	t=1790192187; cv=none; b=C9W9eGUSBEgsBxbiiB3hLKC+iT1b7x9MVt9xWHZldXXqd0Butt8BOdzQv+b+QsOsI2ciYAITFGlmjvpl8kye8RWyozPLKlMWcuZSO9u9YHY+wMY+DHK6tqiwggUe68GuxRMfdlW3qlCpojmowO4Gkg0x+QxyB77/02RzmnmiSdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790191271; c=relaxed/simple;
-	bh=JyB88lU8D8plLkT8atp1POiJmxbZ97970p8UnhC5dIY=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=e3K+pUhI3if/QL7Kfsrh9cO+PcJ9NEdwulD7tpJZ/nvISA55TigSR5d1rKM5m6EFeuCdlT6Gz8X8I3XmrVhVq+XxgUct+bD79WY39vzkfdMQZ17ZYlUmALcaA1mUgrbvOhJNp3glFS62d3KQu1n83b2tZM9VAoIcViFxnkyvjxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XODkItKQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790192187; c=relaxed/simple;
+	bh=qbyegVfPVisMftvM9w19I2vmSLxDxgBL+oYOVHk7UT8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hKtAf/G4ihvbJcl0Sl+W5FaO+MFw+rL3hUlvL8tAYBPJ6piDtHoNcmxef2NtJ0kszJhg/AvRrFLcjQVZuzZB4bmOcBEuH0Sl1FSgoGXV+JQ4eXpe2nn2Gg6rxHtGPqWQNtuY1PsEcBW0ejG9z5hlZOwusYz393DGb6DJgk/aR3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gk2L7gGs; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XODkItKQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CFA21F00893;
-	Wed, 23 Sep 2026 19:21:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790191269;
-	bh=MvAguG7XJjS5iXlWWMhU76RJL95W7uHcHbawUFlVNyE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XODkItKQaAOYarTSRjvSHqTRRZDng4evF9SQnTCxxfKxvXVwlGXwlNvA2xO+PZvMA
-	 9rg234UN9nnIZV6CT+cpxITrLHKJApSUMzE1pdNzCMnHr7jx8JZcJ90fozg9LKEnAV
-	 O1bppkT07sCdBQ/GCEdQa4GcGMRkoiHrwVaCO1uW2x8AtCPa/yGMr/hCzeXyVKIvW9
-	 ULlSzSErYp7xykehvOJzQEtDjc79zbWmVioe6qxQ7S2SQ1t7F15olxROeaqEVSstIq
-	 rsYOu9VbkP6/uX95VJjQFiFZwG7ouOrBrzObnBzQiGsDsKHspgORIsz2MqWWxxmx7N
-	 l3D/qPPmKcPIw==
-Subject: Re: [PATCH net-next v2 6/6] selftests/vsock: test the netns assign
- privilege checks
-From: netdev-bot+sashiko@kernel.org
-To: bobbyeshleman@gmail.com
-Cc: sgarzare@redhat.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
- skhan@linuxfoundation.org, stefanha@redhat.com, mst@redhat.com,
- jasowangio@gmail.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
- shuah@kernel.org, rdunlap@infradead.org, donald.hunter@gmail.com,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org, sargun@sargun.me, jlinbox@meta.com,
- sdf.kernel@gmail.com, bobbyeshleman@meta.com
-Date: Wed, 23 Sep 2026 19:21:07 +0000
-Message-ID: <179019126776.2160803.16648507383433583043@kernel.org>
-In-Reply-To: <20260921-vsock-guest-ns-v2-6-693bd78fde9e@meta.com>
-References: <20260921-vsock-guest-ns-v2-6-693bd78fde9e@meta.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gk2L7gGs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790192186; x=1821728186;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=qbyegVfPVisMftvM9w19I2vmSLxDxgBL+oYOVHk7UT8=;
+  b=Gk2L7gGs3MUpjNaygCBme6le3VQ+UyFdX4koLHlZnivvG4uta9PEShBs
+   eiMT4lq3/NKJoztMK1vcV6EnORppWw5Ce667GFjMKxE/06HkLRWRhCyYE
+   D4CQnUvYafwfm/NSgQwBayYhG5HS71IlcgjuXxKfA1ay4apa5R6nWs/wr
+   wJ9njTxH/vOb1YUvH+xgGw7bAjVYNmZWaMb2eQ3IbMdlt9wDtlxwLyw8S
+   8+fQ8FJZ778hNujGazYQX+itOYGuI+50AMQEVUk06PKsIhT4QE7Tp5kCs
+   FYp34rZUHRcO2r9JNgZZ+TpAdXn64iTLTOc50d8clqVlQjF2t0YOizRme
+   A==;
+X-CSE-ConnectionGUID: tgqtSWwXSA+kMHjhVI5GLg==
+X-CSE-MsgGUID: YJvV8JRsTg24VYTMMw2F2A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="94745869"
+X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
+   d="scan'208";a="94745869"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 12:36:25 -0700
+X-CSE-ConnectionGUID: V7WQAby/SG+8UCxdRYJ8CA==
+X-CSE-MsgGUID: rL2ba/rySBKoESyRt8MCQQ==
+X-ExtLoop1: 1
+Received: from smtp.ostc.intel.com ([10.54.69.131])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 12:36:24 -0700
+Received: from cwf-2s5.sh.intel.com (cwf-2s5.sh.intel.com [10.239.48.132])
+	by smtp.ostc.intel.com (Postfix) with ESMTP id 813186393;
+	Wed, 23 Sep 2026 12:36:20 -0700 (PDT)
+From: Shreshth Srivastava <shreshth.srivastava@intel.com>
+To: Juergen Gross <jgross@suse.com>,
+	linux-kernel@vger.kernel.org,
+	x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	llvm@lists.linux.dev
+Cc: tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	hpa@zytor.com,
+	xin@zytor.com,
+	nathan@kernel.org,
+	ndesaulniers@google.com,
+	jpoimboe@kernel.org,
+	peterz@infradead.org,
+	boris.ostrovsky@oracle.com,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v5 00/17] x86/msr: Inline rdmsr/wrmsr instructions
+Date: Wed, 23 Sep 2026 15:36:17 -0400
+Message-ID: <20260923193619.1408940-1-shreshth.srivastava@intel.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260911084211.3149957-1-jgross@suse.com>
+References: <20260911084211.3149957-1-jgross@suse.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On 11.09.26 10:41, Juergen Gross wrote:
+> When building a kernel with CONFIG_PARAVIRT_XXL the paravirt
+> infrastructure will always use functions for reading or writing MSRs,
+> even when running on bare metal.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Hi Juergen,
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+This doesn't build with CONFIG_PARAVIRT_XXL=y. 16/17 and 17/17 are where
+it breaks, but the cause is the .byte fallbacks: ASM_WRMSRNS_IMM from
+08/17 and ASM_RDMSR_IMM from 10/17 don't end in a separator, unlike the
+.insn variants above them.
 
-- [Medium] Both new selftests
-  (`test_ns_guest_assign_g2h_netns_no_cap_net_admin_fails`,…
-- [Low] The two new shared-VM tests omit the `vm_reset_g2h()` cleanup
-  that every other ns_guest_assign_g2h_netns_* test in USE_SHARED_VM…
+  #define ASM_RDMSR_IMM				\
+	" .byte 0xc4,0xe7,0x7b,0xf6,0xc0; .long %c[msr]"
 
---
+That worked while they were only ever the last argument of an
+ALTERNATIVE(), which appends its own newline. 16/17 concatenates them
+with ASM_CLRERR:
 
-selftests/vsock: test the netns assign privilege checks
+	ASM_RDMSR_IMM ASM_CLRERR, X86_FEATURE_MSR_IMM,	\
 
-Adds two vmtest.sh cases that attempt VSOCK_CMD_DEV_NETNS_SET without
-CAP_NET_ADMIN and from an unprivileged user namespace, and enables
-CONFIG_USER_NS in the vsock selftest config.
+so the .long operand runs into the xor. From
+make arch/x86/kernel/cpu/common.s:
 
-> diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-> index e94cc2fd90ccd..4f42bcdac3f6c 100755
-> --- a/tools/testing/selftests/vsock/vmtest.sh
-> +++ b/tools/testing/selftests/vsock/vmtest.sh
+	.byte 0xc4,0xe7,0x7b,0xf6,0xc0; .long 266xor %rdx,%rdx
 
-[ ... ]
+  paravirt-msr.h:165: Error: junk at end of line, first unrecognized character is `x'
 
-> @@ -187,6 +195,8 @@ readonly TEST_DESCS=(
->  	ns_guest_assign_g2h_netns_host_connect_ok
->  	ns_guest_assign_g2h_netns_reset_on_ns_delete_ok
->  	ns_guest_assign_g2h_netns_old_conn_send_fails
-> +	ns_guest_assign_g2h_netns_no_cap_net_admin_fails
-> +	ns_guest_assign_g2h_netns_unpriv_user_ns_fails
->  )
->  readonly NS_MODES=("local" "global")
+clang reports "error: unexpected token" in the same place. 71 objects
+fail, the same 71 either way, no vmlinux.
 
-[Severity: Low]
-Both new tests are added to USE_SHARED_VM but neither calls
-vm_reset_g2h() on any exit path, unlike every other
-ns_guest_assign_g2h_netns_* test in that list.
+msr.h chooses between the .insn form and the .byte fallback with:
 
-Should these follow the sibling pattern?  If the privilege check under
-test is broken, the assign succeeds and the guest's single g2h device is
-left owned by the transient namespace created by unshare, while the
-harness moves on to the next test in the same VM.
+	#if defined(CONFIG_AS_IS_GNU) && CONFIG_AS_VERSION >= 24100
 
-The kernel does restore this by itself once that namespace is reaped:
+Two kinds of toolchain end up on the .byte side of that test:
 
-net/vmw_vsock/af_vsock.c:vsock_g2h_net_reset() {
-	if (likely(rcu_access_pointer(vsock_g2h_net) != net))
-		return;
+  - GNU as older than 2.41. RHEL 9 and CentOS Stream 9 ship 2.35, and
+    Documentation/process/changes.rst sets the minimum at 2.30, so this
+    is a supported configuration rather than an old outlier.
+  - clang, any version. CONFIG_AS_IS_GNU is never set for clang, so the
+    && short-circuits and the version comparison is never reached. Your
+    08/17 comment already notes that clang has no .insn support.
 
-	mutex_lock(&vsock_register_mutex);
-	if (rcu_access_pointer(vsock_g2h_net) == net)
-		rcu_assign_pointer(vsock_g2h_net, &init_net);
-	...
-}
+gcc with binutils 2.41 or newer takes the .insn path, where both macros
+do end in a separator, and is unaffected.
 
-registered as .pre_exit in vsock_pernet_ops, and the next test's
-vm_ns_assign_g2h() overwrites the pointer anyway.  The residual window is
-the asynchronous teardown that ..._reset_on_ns_delete_ok already documents
-("the namespace itself is dismantled from a workqueue, so the device does
-not come back the same instant").  Since the new tests are appended last
-in TEST_NAMES and USE_SHARED_VM, a default run is unaffected; this only
-shows up with selective or reordered invocation.
+Reproduced on v7.3-rc2 with your v3 00/13, v2 0/5 and v5 00/17 applied in
+that order, x86_64 defconfig plus HYPERVISOR_GUEST, PARAVIRT, XEN and
+XEN_PV. gcc 11.5.0 with GNU as 2.35.2, and clang 21.1.7.
 
-[ ... ]
+Terminating both fallbacks fixes it, and both toolchains then build
+vmlinux with no errors or warnings:
 
-> @@ -1832,6 +1842,48 @@ test_ns_guest_assign_g2h_netns_reset_on_ns_delete_ok() {
->  	return "${KSFT_PASS}"
->  }
->  
-> +test_ns_guest_assign_g2h_netns_no_cap_net_admin_fails() {
-> +	local cmd="unshare -n setpriv --bounding-set=-net_admin"
-> +	local rc
-> +
-> +	vm_ssh "init_ns" -- "${cmd}" python3 /root/ynl/cli.py --no-schema \
-> +		--spec /root/ynl/vsock.yaml --do dev-netns-set &>/dev/null
-> +	rc=$?
-> +
-> +	if [[ "${rc}" -eq 0 ]]; then
-> +		log_host "assign unexpectedly succeeded without CAP_NET_ADMIN"
-> +		return "${KSFT_FAIL}"
-> +	fi
-> +
-> +	return "${KSFT_PASS}"
-> +}
+diff --git a/arch/x86/include/asm/msr.h b/arch/x86/include/asm/msr.h
+index eba325ecfe4c..529c13553c63 100644
+--- a/arch/x86/include/asm/msr.h
++++ b/arch/x86/include/asm/msr.h
+@@ -78,9 +78,9 @@ static inline void do_trace_rdpmc(u32 msr, u64 val, int failed) {}
+  * form MSR access instructions reference %rax as the register operand.
+  */
+ #define ASM_RDMSR_IMM				\
+-	" .byte 0xc4,0xe7,0x7b,0xf6,0xc0; .long %c[msr]"
++	" .byte 0xc4,0xe7,0x7b,0xf6,0xc0; .long %c[msr]\n\t"
+ #define ASM_WRMSRNS_IMM				\
+-	" .byte 0xc4,0xe7,0x7a,0xf6,0xc0; .long %c[msr]"
++	" .byte 0xc4,0xe7,0x7a,0xf6,0xc0; .long %c[msr]\n\t"
+ #endif
 
-[Severity: Medium]
-Can this test pass without the capability check ever being reached?  The
-only assertion is rc -eq 0 => FAIL, output is discarded with &>/dev/null,
-and there is no positive control, so any nonzero status reads as
-KSFT_PASS.
+ #define RDMSR_AND_SAVE_RESULT			\
 
-A few concrete sources of a nonzero status that are not -EPERM:
+ASM_WRMSRNS needs no change, _ASM_BYTES() already emits a semicolon.
 
-net/vmw_vsock/af_vsock.c:vsock_nl_dev_netns_set_doit() {
-	int err = vsock_g2h_net_assign(genl_info_net(info));
+The WRMSRNS line belongs in 08/17 and the RDMSR line in 10/17.
 
-	if (err == -ENODEV)
-		NL_SET_ERR_MSG(info->extack,
-			       "no guest-to-host transport is loaded");
-	else if (err == -EOPNOTSUPP)
-	...
-}
-
-and cli.py collapses all of those to the same status as -EPERM:
-
-tools/net/ynl/pyynl/cli.py:main() {
-    except NlError as e:
-        print(e)
-        sys.exit(1)
-}
-
-vm_ssh() also returns ssh's own status, so a transport failure (255) or a
-remote shell failure (127, e.g. an installed util-linux that does not
-accept setpriv --bounding-set=-net_admin) is indistinguishable from the
-expected refusal.  A python-side failure such as a missing
-/root/ynl/vsock.yaml exits 1 too.
-
-Would it be worth asserting the privileged case succeeds first?  The file
-already has the helper the sibling tests use as a precondition:
-
-vm_ns_assign_g2h() {
-	local ns=$1
-	local nspid=$2
-
-	vm_ns_exec "${ns}" "${nspid}" "python3 /root/ynl/cli.py --no-schema \
-		--spec /root/ynl/vsock.yaml --do dev-netns-set"
-}
-
-On the changelog note "ynl's cli.py does not report the errno": is that
-accurate?  NlError.__str__() in tools/net/ynl/pyynl/lib/ynl.py does:
-
-        msg += os.strerror(self.error)
-
-so the error string is printed and the test could match "Operation not
-permitted" instead of sending everything to /dev/null.
-
-> +
-> +test_ns_guest_assign_g2h_netns_unpriv_user_ns_fails() {
-> +	local unpriv_uid=65534
-> +	local unpriv
-> +	local rc
-> +
-> +	unpriv="setpriv --reuid=${unpriv_uid} --regid=${unpriv_uid}"
-> +	unpriv="${unpriv} --clear-groups"
-> +
-> +	if ! vm_ssh "init_ns" -- "${unpriv} unshare -U true"; then
-> +		log_host "unprivileged user namespaces unavailable, skipping"
-> +		return "${KSFT_SKIP}"
-> +	fi
-> +
-> +	vm_ssh "init_ns" -- "${unpriv} unshare -Urn" \
-> +		python3 /root/ynl/cli.py --no-schema \
-> +		--spec /root/ynl/vsock.yaml --do dev-netns-set &>/dev/null
-> +	rc=$?
-> +
-> +	if [[ "${rc}" -eq 0 ]]; then
-> +		log_host "assign unexpectedly succeeded for unprivileged user"
-> +		return "${KSFT_FAIL}"
-> +	fi
-> +
-> +	return "${KSFT_PASS}"
-> +}
-
-[Severity: Medium]
-Same rc != 0 => KSFT_PASS inference here, plus the availability probe is
-not the command being measured:
-
-	probe:    ${unpriv} unshare -U true
-	measured: ${unpriv} unshare -Urn python3 /root/ynl/cli.py ...
-
-If the extra -r/-n setup or the python startup under uid 65534 fails, the
-result is KSFT_PASS rather than KSFT_SKIP or KSFT_FAIL, and the child user
-namespace never actually holds CAP_NET_ADMIN, which is the condition the
-commit message says is being tested:
-
-    the other confirms that CAP_NET_ADMIN in an unprivileged user ns
-    alone is insufficient.
-
-Would checking the reported error string, or asserting the privileged
-assign works in the same test, make these two cases fail if
-GENL_ADMIN_PERM is ever dropped from VSOCK_CMD_DEV_NETNS_SET?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260921-vsock-guest-ns-v2-0-693bd78fde9e%40meta.com
+Thanks,
+Shreshth
