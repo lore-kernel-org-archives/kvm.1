@@ -1,36 +1,35 @@
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E89340A6F;
-	Wed, 23 Sep 2026 01:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 094E735F18B;
+	Wed, 23 Sep 2026 01:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790126730; cv=none; b=NzR6Tt2Lpn1vIL/hEcyaAmRV3i9rhYB8wR55Mh571TiE5TBQSkF5sKCw50tHxuDBAU2rNPlpj7eUKRb9EMaA9Ej2uC4ZxopMAsHkcxU9QIPpI9aQi3xfJIPxgLZFo7rRLGeMMT5+uswuAq3/shV5ltaG/8ioBA1gemSSHIrgZTw=
+	t=1790127084; cv=none; b=og6kN+0wT5zuKaTCaPFoCeh5lp7c6EsI/GwOHTBRSO5gd6Y8vJcNn7XR1sUDLAPDh28bgJaU/zHTYJa4gPoCsbrao2j50Q12NFo6fBS2r7tY/KYIx5NJf8Co3dNEXapOF8wDumZ8S5I7injwi3cYg7eIcmMRzyQcMBpI6d1E79U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790126730; c=relaxed/simple;
-	bh=k8rHS55MgpgmLFzdDArshj1+YZnAVCY3dlNP48hX514=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nKZ1G2M9sX2Ji+R9UD63sW+KV4T2vIc9uYPyQaB2mFmqH8No84GGKVF1xjPjuWYQ5cJW3PpTVodNEmSJ9j24TWM7l5kQfUNQc/ZaIh+DCDle6p2tvBS8tOvJwGJo0P6kDoykxyqdvPb6BbmkljzRP9LcEhYBmoZRz420gE61YWg=
+	s=arc-20240116; t=1790127084; c=relaxed/simple;
+	bh=rAhP4ycQCC6kZ0Cn2Gr67i5s82Iz0iIBumYuC/rA9Bs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=b2qWDWKf9Gya4lOiN2pJAkX5tWqOGYl8urbfpdbUokfVfX3k62HDm08WKD4HSMxiPCSS8UjU5xcxzsVGcLJjJ7/pcLZszInyrXIF7KDLt06lgs1Z3xBhB56ZrTeh4BJ6eSNG3gxuvfZz8z7eFJoMjv5uOaWU0Pdy6GHB/qKOBpE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8DxjdKGKrNqU9wOAA--.43329S3;
-	Wed, 23 Sep 2026 09:25:26 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8AxXdLmK7Nq4dwOAA--.43711S3;
+	Wed, 23 Sep 2026 09:31:18 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJBx6c2EKrNqyQIkAA--.45699S3;
-	Wed, 23 Sep 2026 09:25:25 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowJDxE+TlK7NqTgMkAA--.46508S2;
+	Wed, 23 Sep 2026 09:31:17 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Huacai Chen <chenhuacai@kernel.org>
-Cc: WANG Xuerui <kernel@xen0n.name>,
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
 	kvm@vger.kernel.org,
 	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Tao Cui <cuitao@kylinos.cn>
-Subject: [PATCH v2 1/2] LoongArch: KVM: Remove parameter line when inject MSI
-Date: Wed, 23 Sep 2026 09:18:02 +0800
-Message-Id: <20260923011803.1057945-2-maobibo@loongson.cn>
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] KVM: LoongArch: selftests: Enable HW PTW by auto detection method
+Date: Wed, 23 Sep 2026 09:23:56 +0800
+Message-Id: <20260923012356.1058379-1-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20260923011803.1057945-1-maobibo@loongson.cn>
-References: <20260923011803.1057945-1-maobibo@loongson.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -38,140 +37,94 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBx6c2EKrNqyQIkAA--.45699S3
+X-CM-TRANSID:qMiowJDxE+TlK7NqTgMkAA--.46508S2
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
 	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
 	nUUI43ZEXa7xR_UUUUUUUUU==
 
-With MSI interrupt, there is intterupt set injection, no interrupt
-clear action. DMSI interrupt controller is specially for MSI irqchip.
-And there is checking with parameter level in most upper function
-kvm_set_msi() and kvm_arch_set_irq_inatomic() already, here remove
-duplicated line parameter checking in MSI injection leaf functions.
+Add HW PTW feature when VM is created. This feature is detected firstly,
+enable it if it is available on host machine. With HW PTW feature enabled,
+refill exception will not happen and it is not necessary to set refill
+exception entry.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Reviewed-by: Tao Cui <cuitao@kylinos.cn>
 ---
- arch/loongarch/include/asm/kvm_dmsintc.h | 3 +--
- arch/loongarch/include/asm/kvm_pch_pic.h | 2 +-
- arch/loongarch/kvm/intc/dmsintc.c        | 9 +++------
- arch/loongarch/kvm/intc/pch_pic.c        | 6 +++---
- arch/loongarch/kvm/irqfd.c               | 4 ++--
- 5 files changed, 10 insertions(+), 14 deletions(-)
+ .../selftests/kvm/include/loongarch/processor.h  |  3 +++
+ .../selftests/kvm/lib/loongarch/processor.c      | 16 ++++++++++++++--
+ 2 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/kvm_dmsintc.h b/arch/loongarch/include/asm/kvm_dmsintc.h
-index 7c0158764d84..e19b3f5b3c52 100644
---- a/arch/loongarch/include/asm/kvm_dmsintc.h
-+++ b/arch/loongarch/include/asm/kvm_dmsintc.h
-@@ -22,7 +22,6 @@ struct dmsintc_state {
- int kvm_loongarch_register_dmsintc_device(void);
- void kvm_loongarch_unregister_dmsintc_device(void);
- void dmsintc_inject_irq(struct kvm_vcpu *vcpu);
--int dmsintc_set_irq(struct kvm *kvm, u64 addr, int data, int level);
--int dmsintc_deliver_msi_to_vcpu(struct kvm *kvm, struct kvm_vcpu *vcpu, u32 vector, int level);
-+int dmsintc_set_irq(struct kvm *kvm, u64 addr, int data);
+diff --git a/tools/testing/selftests/kvm/include/loongarch/processor.h b/tools/testing/selftests/kvm/include/loongarch/processor.h
+index 0e59daa8024e..8d9fabdc89e3 100644
+--- a/tools/testing/selftests/kvm/include/loongarch/processor.h
++++ b/tools/testing/selftests/kvm/include/loongarch/processor.h
+@@ -79,6 +79,7 @@
+ #define  CPUCFG2_LASX			BIT(7)
+ #define  CPUCFG2_LLFTP			BIT(14)
+ #define  CPUCFG2_LLFTPREV		GENMASK(17, 15)
++#define  CPUCFG2_PTW			BIT(24)
  
- #endif
-diff --git a/arch/loongarch/include/asm/kvm_pch_pic.h b/arch/loongarch/include/asm/kvm_pch_pic.h
-index 887b0431fd20..19ed1494c114 100644
---- a/arch/loongarch/include/asm/kvm_pch_pic.h
-+++ b/arch/loongarch/include/asm/kvm_pch_pic.h
-@@ -72,6 +72,6 @@ struct kvm_kernel_irq_routing_entry;
- int kvm_loongarch_register_pch_pic_device(void);
- void kvm_loongarch_unregister_pch_pic_device(void);
- void pch_pic_set_irq(struct loongarch_pch_pic *s, int irq, int level);
--int pch_msi_set_irq(struct kvm *kvm, struct kvm_kernel_irq_routing_entry *e, int level);
-+int pch_msi_set_irq(struct kvm *kvm, struct kvm_kernel_irq_routing_entry *e);
+ /* LoongArch Basic CSR registers */
+ #define LOONGARCH_CSR_CRMD		0x0 /* Current mode info */
+@@ -128,6 +129,8 @@
+ #define LOONGARCH_CSR_PGD		0x1b
+ #define LOONGARCH_CSR_PWCTL0		0x1c
+ #define LOONGARCH_CSR_PWCTL1		0x1d
++#define  CSR_PWCTL1_PTW_SHIFT		24
++#define  CSR_PWCTL1_PTW			BIT_ULL(CSR_PWCTL1_PTW_SHIFT)
+ #define LOONGARCH_CSR_STLBPGSIZE	0x1e
+ #define LOONGARCH_CSR_CPUID		0x20
+ #define LOONGARCH_CSR_KS0		0x30
+diff --git a/tools/testing/selftests/kvm/lib/loongarch/processor.c b/tools/testing/selftests/kvm/lib/loongarch/processor.c
+index 47bbde3e205a..35e35c62759f 100644
+--- a/tools/testing/selftests/kvm/lib/loongarch/processor.c
++++ b/tools/testing/selftests/kvm/lib/loongarch/processor.c
+@@ -282,6 +282,7 @@ void loongarch_vcpu_setup(struct kvm_vcpu *vcpu)
+ 	unsigned int cfg;
+ 	unsigned long val;
+ 	struct kvm_vm *vm = vcpu->vm;
++	bool has_ptw = false;
  
- #endif /* __ASM_KVM_PCH_PIC_H */
-diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/dmsintc.c
-index 89f980d867be..79e56e330aeb 100644
---- a/arch/loongarch/kvm/intc/dmsintc.c
-+++ b/arch/loongarch/kvm/intc/dmsintc.c
-@@ -43,13 +43,10 @@ void dmsintc_inject_irq(struct kvm_vcpu *vcpu)
- 	}
- }
+ 	switch (vm->mode) {
+ 	case VM_MODE_P36V47_16K:
+@@ -300,6 +301,12 @@ void loongarch_vcpu_setup(struct kvm_vcpu *vcpu)
+ 	ret = __kvm_has_device_attr(vm->fd, KVM_LOONGARCH_VM_FEAT_CTRL, KVM_LOONGARCH_VM_FEAT_LASX);
+ 	if (!ret)
+ 		cfg |= CPUCFG2_LASX;
++	ret = __kvm_has_device_attr(vm->fd, KVM_LOONGARCH_VM_FEAT_CTRL, KVM_LOONGARCH_VM_FEAT_PTW);
++	if (!ret) {
++		cfg |= CPUCFG2_PTW;
++		has_ptw = true;
++	}
++
+ 	loongarch_set_cpucfg(vcpu, LOONGARCH_CPUCFG2, cfg);
+ 	cfg = read_cpucfg(LOONGARCH_CPUCFG6);
+ 	loongarch_set_cpucfg(vcpu, LOONGARCH_CPUCFG6, cfg);
+@@ -338,6 +345,9 @@ void loongarch_vcpu_setup(struct kvm_vcpu *vcpu)
  
--int dmsintc_deliver_msi_to_vcpu(struct kvm *kvm,
--				struct kvm_vcpu *vcpu, u32 vector, int level)
-+static int dmsintc_deliver_msi_to_vcpu(struct kvm_vcpu *vcpu, u32 vector)
- {
- 	struct dmsintc_state *ds = &vcpu->arch.dmsintc_state;
+ 	/* PGD page shift and width */
+ 	val = (vm->page_shift + width * (vm->mmu.pgtable_levels - 1)) | width << 6;
++	if (has_ptw)
++		val |= CSR_PWCTL1_PTW;
++
+ 	loongarch_set_csr(vcpu, LOONGARCH_CSR_PWCTL1, val);
+ 	loongarch_set_csr(vcpu, LOONGARCH_CSR_PGDL, vm->mmu.pgd);
  
--	if (!level)
--		return 0;
- 	if (!vcpu || vector >= 256)
- 		return -EINVAL;
- 	if (!ds)
-@@ -65,7 +62,7 @@ int dmsintc_deliver_msi_to_vcpu(struct kvm *kvm,
- 	return 0;
- }
+@@ -345,8 +355,10 @@ void loongarch_vcpu_setup(struct kvm_vcpu *vcpu)
+ 	 * Refill exception runs on real mode
+ 	 * Entry address should be physical address
+ 	 */
+-	val = addr_gva2gpa(vm, (unsigned long)handle_tlb_refill);
+-	loongarch_set_csr(vcpu, LOONGARCH_CSR_TLBRENTRY, val);
++	if (!has_ptw) {
++		val = addr_gva2gpa(vm, (unsigned long)handle_tlb_refill);
++		loongarch_set_csr(vcpu, LOONGARCH_CSR_TLBRENTRY, val);
++	}
  
--int dmsintc_set_irq(struct kvm *kvm, u64 addr, int data, int level)
-+int dmsintc_set_irq(struct kvm *kvm, u64 addr, int data)
- {
- 	unsigned int irq, cpu;
- 	struct kvm_vcpu *vcpu;
-@@ -78,7 +75,7 @@ int dmsintc_set_irq(struct kvm *kvm, u64 addr, int data, int level)
- 	if (!vcpu)
- 		return -EINVAL;
- 
--	return dmsintc_deliver_msi_to_vcpu(kvm, vcpu, irq, level);
-+	return dmsintc_deliver_msi_to_vcpu(vcpu, irq);
- }
- 
- static int kvm_dmsintc_ctrl_access(struct kvm_device *dev,
-diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
-index 2b63b0c2c7ce..220fc23ffe8c 100644
---- a/arch/loongarch/kvm/intc/pch_pic.c
-+++ b/arch/loongarch/kvm/intc/pch_pic.c
-@@ -68,20 +68,20 @@ void pch_pic_set_irq(struct loongarch_pch_pic *s, int irq, int level)
- }
- 
- /* msi irq handler */
--int pch_msi_set_irq(struct kvm *kvm, struct kvm_kernel_irq_routing_entry *e, int level)
-+int pch_msi_set_irq(struct kvm *kvm, struct kvm_kernel_irq_routing_entry *e)
- {
- 	u64 msg_addr = (((u64)e->msi.address_hi) << 32) | e->msi.address_lo;
- 
- 	if (cpu_has_msgint && kvm->arch.dmsintc &&
- 		msg_addr >= kvm->arch.dmsintc->msg_addr_base &&
- 		msg_addr < (kvm->arch.dmsintc->msg_addr_base + kvm->arch.dmsintc->msg_addr_size)) {
--		return dmsintc_set_irq(kvm, msg_addr, e->msi.data, level);
-+		return dmsintc_set_irq(kvm, msg_addr, e->msi.data);
- 	}
- 
- 	if (e->msi.data >= EIOINTC_IRQS)
- 		return -EINVAL;
- 
--	eiointc_set_irq(kvm->arch.eiointc, e->msi.data, level);
-+	eiointc_set_irq(kvm->arch.eiointc, e->msi.data, 1);
- 
- 	return 0;
- }
-diff --git a/arch/loongarch/kvm/irqfd.c b/arch/loongarch/kvm/irqfd.c
-index 40ed1081c4b6..2e9c32023752 100644
---- a/arch/loongarch/kvm/irqfd.c
-+++ b/arch/loongarch/kvm/irqfd.c
-@@ -29,7 +29,7 @@ int kvm_set_msi(struct kvm_kernel_irq_routing_entry *e,
- 	if (!level)
- 		return -1;
- 
--	return pch_msi_set_irq(kvm, e, level);
-+	return pch_msi_set_irq(kvm, e);
- }
- 
- /*
-@@ -78,7 +78,7 @@ int kvm_arch_set_irq_inatomic(struct kvm_kernel_irq_routing_entry *e,
- 		pch_pic_set_irq(kvm->arch.pch_pic, e->irqchip.pin, level);
- 		return 0;
- 	case KVM_IRQ_ROUTING_MSI:
--		return pch_msi_set_irq(kvm, e, level);
-+		return pch_msi_set_irq(kvm, e);
- 	default:
- 		return -EWOULDBLOCK;
- 	}
+ 	/*
+ 	 * General exception runs on page-enabled mode
+
+base-commit: 93f51579e7df248780214094418f205253383cc5
 -- 
 2.39.3
 
