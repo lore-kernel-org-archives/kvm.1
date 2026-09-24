@@ -1,119 +1,90 @@
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99B3397E9A
-	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 21:54:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C214DD6F5
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 21:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790286889; cv=none; b=evC6K6zP1KZ+QzQyO8MVCPKr5op8Ug/XJIxHjhUMugSiWqG6CVyHXC0uHLILYN1Wfo7UnJsfN5u3Gam38z1++bLoLz0tZlgbd6U679lXicrzxzLr173neG/jcgkfAPdIoRzro/2A0l9atymZqzGRtKobqhfFfWZMnAQ+DUJD2wc=
+	t=1790286895; cv=none; b=XoZzS7hpeK/wHZNBO7YVJUm7kbW7bINLwjjNU0gxUHVsL1YPMHhtZV02wtFjmEfDNsYFdmxkhdK/TSYJ4VMwuepnL0cxZXBxryBX6TvmcOwHx1RpuDnGydzN40YHg0x51tbVHAA+nZ1FcFwDVcHCGvjTvUVBxb9i+mW30PBXJtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790286889; c=relaxed/simple;
-	bh=+iz/qUQS3BYLz0YmbGG2HcxYcjxGg4hNl4MhPBnFET4=;
+	s=arc-20240116; t=1790286895; c=relaxed/simple;
+	bh=OQX9CvPDhGR2shu/TIA+wjRgAwE7A9IPpcBu1ixJB7I=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=senYsj3MHhVW8GAeEksDc1JCi9wU2FINP54L1WOnH9T/EqoCL8eCbfcEV35gtmj5ml8RKjCw9lPbdNEHvMdgSRCtc18fFNmhjNBNdvxWiAsaFpA9UYFErX8ikKZa78ZScZ79PSjbycWyG/cZSMxgxlJ0zUrCqCLLQ52Trfz8pD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J4QlYbEg; arc=none smtp.client-ip=209.85.216.70
+	 To:Cc:Content-Type; b=M2p8SZxxRcud0HyStZbOwtZWSywhIZOFaFS6E9DJjaw+OqZtTvj3GiL2I1411BtR2jAccgU9zQjuqoqzxrehNI76XSjR1Aq5gfjr34/nA3QmvlqqPW5liK2jnPN+CuF9VUUER5agvzliCfJb3pfUGRsdHGAEwQrG3O+DDURZQmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WLvbMIDu; arc=none smtp.client-ip=209.85.215.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J4QlYbEg"
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-396901263b6so277784a91.2
-        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 14:54:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WLvbMIDu"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cb11535e6a1so119621a12.0
+        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 14:54:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790286888; x=1790891688; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790286893; x=1790891693; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Ls/WIqLZ9h1Yk/ZfyOfON5RY+uFXSZy1PRrGAAaFYz4=;
-        b=J4QlYbEgrw13Bt8a13hvTUyo61LSQGOLjsLja/5OqYmknfEm0ds7tkzgvd4IDZYMzd
-         XlrutZ2IZ9aK3ZPwfUtr4yaJezG8XXpNgl6knK/5WsgRJNn9ikuADKADYiVG0JY854ua
-         +0CoXoWDUoa2lg4SCEKq279OjJP9ps5HMBItXNxO3RrQGFSt1KAGvSyCUiHO3+RHhXZl
-         gw7ku0MlXb8TRMV1wyN3Tlq2UYF50ygZSyE6y1fac6pwfEzxMuHOVO75EBfMEu9ii3y/
-         Cx9KBeAFbsHCs2Fp6ZZRvD0sQ9LgBSsUwX/awQue0t5FcpIH5uK4S+OdPTydzCL9vk1a
-         aevA==
+        bh=sUjYBLPEX7UvUbeFt5DBnQoHHGDwCpPBBsqlU3yK4EA=;
+        b=WLvbMIDuNrO05fvEyJvr+A6st/+3F0Iv0fJUDc57B6aNPGGiWjgnbeUTpYOe0NjGyl
+         9nNFqUEnDEdyo4cH2F7zFjSU8q7lgfKCu8RE5QLA3HzTDPqXvRvb6IAcUrf2fme9GzMz
+         iLSuujICPOKJZoTCfWK6k5WASXZlg+kxVRERegZ+Vva/zV2t/0Lug48HW4xdG/Fwv0+u
+         AYiV60//xkBE+DiqaGyH4Q/8JulGM2ee7snSQ3l9+swk//VOuOgRKmD4rXVBiag1x6e4
+         tFczUPIsSCXFXUB5nYZbmGH7GosZRjEaSo01qNDXmATtidKGptGvXjbZgw1Yexp+nVJR
+         KqgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790286888; x=1790891688;
+        d=1e100.net; s=20260707; t=1790286893; x=1790891693;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Ls/WIqLZ9h1Yk/ZfyOfON5RY+uFXSZy1PRrGAAaFYz4=;
-        b=ISEtXxS6w66T+TqcY14RRJWgNytTuNX2Gw92VL/gDmlo3fiAHGjQZLjJxtZ1P4p16h
-         0SrW2tpUdKClSw+3ni8x5IwaZna4LuXj/XN5k0YfoNmuk+yoOiTlrGU/apS5UR11y+mA
-         ZdDulFsotjmkK4VNbsWnjT3LUdkVx7rAI8RMxiFvPF4mB8fuO+f8U9pryTnELxWPYWp/
-         b0PTUYJSJ8ahUpTQz9qPh4k/ov87LzIDFSlKWGwdKYW32bimEUTagxNZQdXmDi887GTm
-         dxP7ydn+HfrZjcaacMSPf331v5lVyoDJKFyQLdzwImGNpkdqWrjhTLJZ0hyopvxlx6V0
-         iQZA==
-X-Gm-Message-State: AFuF++nveh9C238Ix+gKVXNQdzAroPS9ItB10fA6FaLxZ6+WxyZ95tLT
-	fAIL4xmCwsTsBMz2ZqBettVm3Jz8r/GVeN98zMrICQ1kZ0/qjEfuavzE+ROOlut+TMpO1jMIdjt
-	v9kYjgw==
-X-Received: from plaq19.prod.google.com ([2002:a17:903:2053:b0:2dd:2d81:c97])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ce8f:b0:2dd:ad73:5b71
- with SMTP id d9443c01a7336-2df7dbbc22amr32887625ad.33.1790286887686; Thu, 24
- Sep 2026 14:54:47 -0700 (PDT)
-Date: Thu, 24 Sep 2026 14:51:59 -0700
-In-Reply-To: <20260915175335.138547-1-davimaba.v@proton.me>
+        bh=sUjYBLPEX7UvUbeFt5DBnQoHHGDwCpPBBsqlU3yK4EA=;
+        b=QEc6zxXiRB3TPvfpt86DOTvE/tMgf4JGjjmkfM0Knl6ArR1QUr4bDep0zq40mTRR+w
+         iQLAXJyKG3kpvZzvK2k0cEZVDcRig8UNxEdtXtJ/gPHpVLj4uHHO2pC2KjqYjhVNmY2C
+         boMbLseQyHunh8YrF299oew6ZqNAzsNXvFaCUxhHz2PKHpSSBGpKAuw7+wTHwei+vcQM
+         6vYF7ee87aKST2hNXFRv2UpIP1qNmS4pjS6Pepfm2gGLudWZAB9yyjORL0BVfApNn7tg
+         YDji8taRAkePEUlt8SMtoGcuZVPJ3jdVtvcMtSQ/y55p9b4SlLwprBe7cRMx4j4rgooS
+         XFew==
+X-Gm-Message-State: AFuF++l7WMUABPdSbZBP3SBfFNVWreToyKdRbi3mkW45ItrLCoz6edJn
+	TrOjhL0Xx5galZ0EmmakpU+U1Kh+n1AtvoA8BqXjTAgyME9H3lwZGzfjWLQGXkk/BgCIjFxn4Oz
+	fP1pjDA==
+X-Received: from pgbcq2.prod.google.com ([2002:a05:6a02:4082:b0:cc1:5705:ff3b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a28:b0:3cc:f280:ebc6
+ with SMTP id adf61e73a8af0-3de0e70bac6mr3731054637.5.1790286892996; Thu, 24
+ Sep 2026 14:54:52 -0700 (PDT)
+Date: Thu, 24 Sep 2026 14:52:01 -0700
+In-Reply-To: <20260921211608.1030158-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260915175335.138547-1-davimaba.v@proton.me>
+References: <20260921211608.1030158-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <179028303710.1997669.4762091811625597120.b4-ty@b4>
-Subject: Re: [PATCH v4 0/3] KVM: Fix and account mem_attr_array reservations
- abandoned on ENOMEM
+Message-ID: <179028361655.2004564.18333703645554243194.b4-ty@b4>
+Subject: Re: [PATCH v2 0/2] KVM: x86: Ensure userspace can't run L2 with stale PFNs
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, 
-	David Ballesteros <davimaba.v@proton.me>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jinwoo Lee <rkskek9254@gmail.com>, Stefan Teodorescu <fane@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, 15 Sep 2026 17:53:40 +0000, David Ballesteros wrote:
-> Three small fixes to KVM's per-page memory attributes: release the xarray
-> reservations that KVM_SET_MEMORY_ATTRIBUTES abandons when it fails partway
-> through (1/3), make kvm_range_has_memory_attributes() agree with itself
-> about what such a reservation means (2/3), and charge the xa_nodes to the
-> caller's memcg as the code already intended (3/3).
+On Mon, 21 Sep 2026 14:16:06 -0700, Sean Christopherson wrote:
+> Fix a class of bugs where KVM (a) lets userspace run L2 with potentially stale
+> PFNs and (b) fails to set kvm_run appropriately and so could unintentionally
+> cause a well-behaved VMM to run afoul of (a).
 > 
->   1/3  Release the reservations abandoned on ENOMEM.  This is a plain bug:
->        xa_reserve() materializes entries GFN-by-GFN before the store phase,
->        and on failure the loop bails without releasing what it reserved.  A
->        later clear covering them does erase them, but nothing obliges
->        userspace to issue one; absent that, the reclaim path is
->        kvm_destroy_vm().  The retained entries are not inert -- an
->        abandoned reservation is an XA_ZERO_ENTRY, which
->        kvm_range_has_memory_attributes()'s !attrs fast path counts as
->        present (raw xas_find()) while kvm_get_memory_attributes() treats
->        it as absent, so a straddling hugepage over such an entry is marked
->        mixed and KVM stops using a hugepage for a range whose attributes
->        are uniform.  xa_release() erases only entries still reserved,
->        leaving pre-existing value entries untouched.
+> v2:
+>  - Re-pend KVM_REQ_GET_NESTED_STATE_PAGES in the common vcpu_enter_guest()
+>    path.
+>  - Fix the kvm_run bug(s).
 > 
 > [...]
 
-Applied patch 3, with a heavily modified changelog, to kvm-x86 fixes.  For the
-reservation behavior, I went with Zeng Chi's fix to have KVM treat ZERO values
-as "no attributes".  Having dangling reservations is a-ok, the memcg accounting
-really needs to do the right thing there.
+Applied to kvm-x86 fixes, thanks!
 
-In the future, please don't have AI directly write changelogs.  It's fine to
-let AI generate a rough draft, for me at least, AI tends to be far too verbose
-and uses terminology that isn't common in Linux/upstream.  In other words, AI
-tends to write changelogs (and bug reports) that require far too much effort
-to understand.
-
-I apologize in advance if you wrote the changelogs, i.e. if I am falsely
-accusing you of being a robot.  If AI didn't write the changelogs, well, you
-do one heck of a job of imitating some of my newfound "friends" :-)
-
-Gripes about AI aside, than you very much for the fixes!
-
-[1/3] KVM: Release memory-attribute reservations abandoned on ENOMEM
-      [SKIP]
-[2/3] KVM: Make kvm_range_has_memory_attributes() consistent about reservations
-      [SKIP]
-[3/3] KVM: Account mem_attr_array nodes to the caller's memcg
-      https://github.com/kvm-x86/linux/commit/382e5d514b6f
+[1/2] KVM: x86: Re-pend GET_NESTED_STATE_PAGES if getting said pages fails
+      https://github.com/kvm-x86/linux/commit/10180a277549
+[2/2] KVM: x86: Fill kvm_run exit fields in common get_nested_state_pages() error paths
+      https://github.com/kvm-x86/linux/commit/c1214f293d77
 
 --
 https://github.com/kvm-x86/linux/tree/next
