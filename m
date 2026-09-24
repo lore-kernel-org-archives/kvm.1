@@ -1,120 +1,143 @@
-Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D12314A98;
-	Wed, 23 Sep 2026 23:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.141
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790207981; cv=none; b=epx4KVztH40NIJ9hlOtdqHqhIdlChbeeNpahcOQhJ2IbTOEsqfVJ/VjgW6x5cDrHOiFme31ikY28CC+0OqrxBVDjm63YxLJXNIet1gn4g3kpAu+rFiQef6UCfqRSYXQQTp+J75MNujwiRCUHYzq7BddOj23Val6mu0zdNPfpu0U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790207981; c=relaxed/simple;
-	bh=rl20KffuHLifSjIai9JG53BDGfyJQlK0QAVe68gOQsA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NMFFNMbshbgZgdCYo6CieJQ4NjrFq6dpOsxQH2yQ6T/S7Zi630A72CLaWIBLPNqSOJ/avaZYbSJDqVLJffRxC5ODKpTcFUyAf3H1E6eA6VHvEMeCPiuESHbfU+c6Z7kLx4wwnkH+K7vySFDzMkbCs4DaGYy9RHQdlnXz1yA6z7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jstarks.net; spf=pass smtp.mailfrom=jstarks.net; dkim=pass (2048-bit key) header.d=jstarks.net header.i=@jstarks.net header.b=GNLeXu+9; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=XTulnCOc; arc=none smtp.client-ip=202.12.124.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jstarks.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jstarks.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5764326AE5
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 00:03:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.182
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790208230; cv=pass; b=DQOKadInItPlGA4B5eDdWA1vIUoiejz5WPtr+KSoYUiqKOyYG5Kx8iiczB0NBGl3BJgDzSGXULrjO3QIfLUObxvxbutoChmy8HT4GV9BoKVFlpK+4t6m53K/x9mFO2ixa/srZijtAzveIylWCiByLJT4pvLvqgM9wywDcjQGqYw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790208230; c=relaxed/simple;
+	bh=i5wuNzpc5WDc6HWeWDqM/EGiLl0MHtsGMySScfyZ8rs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jeSkSkwWV16gcufF4dIA9cc0J6M7wrNxgKkgmwOxwFV5eaJi0PnCnvuDlID/5ogXei85akiPncvO08gH1H6CMPUpCAJe+pDIqEALOnzlb5qCnY4eb2z3bG/EGWyoPgv6GOr0435F5V+NgYidMS7ogFc6RBnubW4a1BFTfG3WraA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XQJFl+Fu; arc=pass smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jstarks.net header.i=@jstarks.net header.b="GNLeXu+9";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="XTulnCOc"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.stl.internal (Postfix) with ESMTP id 404051300DA2;
-	Wed, 23 Sep 2026 19:59:37 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Wed, 23 Sep 2026 19:59:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jstarks.net; h=
-	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1790207977; x=1790211577; bh=L7EGaKcamO
-	r9RV8xqP5Tu6hwqK+HFnYJrG6zbzRy8eE=; b=GNLeXu+9gckaXobbnJ1MuaQdpN
-	yToxvI8fvhV+of5bGe+Z9OJnYJ/yNtRM/UEfl7cvpVX4Pb6axB+tiH81/UQVD7yz
-	hcTj6nX1vFjwEr9HodOJYJDJPqCCieBrynQPco3YOhJBZ+q/hs8SkX2PCy1vaHjO
-	e1e2TGRBQTsuH211/eqLNaUJ5IR5oFeJoiBKDMPrGm5OnSyDMe1ZQPO9ImLhMbL7
-	Pq7A6vbNKTO8cbyp2szeyka11yXNYBjN/l7iN1IiNVmpx2iJyPDsFcXmlRDNFR8N
-	b2C66Y0jy2SAEw753QTZvg6As4/LTNRTFM7KOPElHBtW3+/uIgWvjXQts5fA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1790207977; x=1790211577; bh=L7EGaKcamOr9RV8xqP5Tu6hwqK+HFnYJrG6
-	zbzRy8eE=; b=XTulnCOcy0W16/SIq+lM9IkDZS9QMgOLH9DJHCAB0HRdiMqIB1l
-	h3I5XjmmyEY+o+Dpa8/deD2Dmqp0u8RwhvHuxLiLtt+YbYJgZ1UFfMMoeMANjNGJ
-	hUxPYSFsgwk2LlPoIf44Dx0uA7guyPAIDywce52YsGtNwaBqPDRYOCx0YAAcPICI
-	t76xZpK2iM1zD4uX4fAe9FxubgFAQyHNZVl8K6l7KreyE/dvkNQApK2STcv6lh76
-	J7JfjnEAuQ8yEqFIgQ+8OVCHH6XzPCP3l/DeLTwN4QN2GbIK2xZP8cyxwH5C30dG
-	Gp0dbgyBOdlB1SlFN0vwLiI8AOPW20Fo5SQ==
-X-ME-Sender: <xms:52e0auRbxO9TapK-HtYTGgaSgsM6QsmopCU9vV_6qdaoe87yKmRFEw>
-    <xme:52e0akKsaLkFOYRVxgBQ_aZDxGn48qDo7UnGCTISHJkhe2nYsPftQ2CRC-y_wlveH
-    336Oio09_vMztuHJnpANv2UlQckHoKmIudIWxfwKCpd2l1W5Ipk-6vs>
-X-ME-Received: <xmr:52e0as-x5oMPrkO8mY3cUJ8qZvzXb1tMPAU_wArF5oN_AsSXGoeSIygFEueDgDYQgujPshlvd6t44wu6>
-X-ME-Proxy-Cause: dmFkZTEEr3Zo+wTIMlmxZhOOcWTw8Q6j9fKqM8F3viAtF0lOzGgBq3kaB7VempZURbAQG7
-    MM85Yo7oMlnff07MPTErnMoR2UoyHrLJ8HVMg9MmlCfSKU7R1im+CJpNDEMpbUUA2gzwZ7
-    lI0A2TXMi5s9H4YwjY21TYhD1ccE+lEahALH0F7eoFJQa0xRLMXhEPBO30qVVg9w4uNNZG
-    mAv3EiwLVBDxPdkUh694RwsUZMpuzMZSbUiOXgEiDZNmGyTo+DdwZaZudeIk7qYQx0Fmbp
-    E+eNBt0+Xbv+6zq5oTGmDS57CfyzGCdRTbySOJYuQTuipLeKL/v1yQdPFW3R9GLwo4RqLF
-    KXGaj2+ISHudSFLVWXCWLdok9Oi6wk178cptL0siXGEPeDHzJuf1inVFfNXoYAZVQFP3u4
-    NEJ5XMbdlH0K5asmZOAKCx3/tar5E27OVjXUgL25GCKuPj51A8Q9mW1/ze330K0620uTli
-    agrStgkSAH+tk8G2auY1YzkCiN3vmktjeZnC7PDx+RP1phnXegyHAzrebeJT+9DqyeAcjU
-    hVrFVwGx4grHR9kgYXyo54iJ/1n5QC3gt1s34/KTcQgcF2OHmn99HX7ycGCELV82W3QGEI
-    DjzRMLmT2Hcv797xdgQ2vwnD0Ciuyk4aXW7K6KMsV4KvF1nMK4WfIim75rDA
-X-ME-Proxy: <xmx:52e0amBgn3fTE4a3d2dniaf2lzcghPVmTO50CGyzVaTPcWYLGvwfIg>
-    <xmx:52e0ampNIdNKH9wJO4SD4R7Y8VkPzh9KU8qD416QnOeQFZus-NVIYA>
-    <xmx:52e0avLZLsWeLc8j6c-GTCLyZ9YGKty3TsWeiz3kbdrsY7uj5Cm2jA>
-    <xmx:52e0aoLV_xm7tfSlHWl9Zx__hw1wzYwM-RPq1W4J2mH5OdkS8ARrBQ>
-    <xmx:6Ge0alMmmVoIT8tcE9fkK1fbTcxiTxy0w8H8UoGyaaZPh5fOCSSn87Nz>
-Feedback-ID: i1b3e4abd:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 23 Sep 2026 19:59:32 -0400 (EDT)
-Date: Wed, 23 Sep 2026 16:59:30 -0700
-From: John Starks <dev@jstarks.net>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, YiFei Zhu <zhuyifei@google.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
-	Vipin Sharma <vipinsh@google.com>, John Starks <jostarks@microsoft.com>
-Subject: Re: [PATCH v5 15/18] iommufd: Persist iommu hardware pagetables for
- live update
-Message-ID: <goxdwq6ny332pnrojvp4nuz2mliofd3yxd73fpjnbesq3e34fe@jq4d7v7rbwx3>
-References: <20260921004834.2601285-1-skhawaja@google.com>
- <20260921004834.2601285-16-skhawaja@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XQJFl+Fu"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-52faa58bff5so61321cf.0
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 17:03:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790208228; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Kldn4ey23u9rM+PunX/spbn9jQbXHascse6yl0eRymSSkB0xtnZyxa/YPjok2/HgcN
+         rIhuEpl1AszHWJ6tfdwaHzHNXX0w4olC0YXNdfTIyqO6RysOEorsq8BlsSh8LSz16s8w
+         p9VzN6KH+ybgPnBpX6SaGToKsOoqgSuSZ/69bf/Rah1YKgXalbAWMi89DkDLIVu+SbSc
+         qvg38XHSqyiN1H9mCz4lRkL3OqvsZSyMLRuGiJe/LgvRn4zMFcoEDQGqCsaK05NMO34M
+         RBy0xSiOAZQKnB0VAbY3j3L9OsJotaVoUatJE1z+7pEFbWNmEs9nnWZCU9cbgjczwnTH
+         /3FA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=i5wuNzpc5WDc6HWeWDqM/EGiLl0MHtsGMySScfyZ8rs=;
+        fh=ppP0ayaIkhDxZ6t1ezFDTd8gaGNWHV3hE+ngFXDkgV8=;
+        b=LqoAggrvHUAOSo4hUznvPnxSANdDpYX4VxY9lsho+P0y3qvegUhsJK/u1by+zaLRuD
+         lxZ56fnN5RcWLsD5lVgrC4aaBdwyQGNybmHArZOQ5l/8UkqabrTzxN83Xxo7RBHfU5gu
+         fQOz9EgB1l4+yVX+EfNlqTy1QmuJBY227AjJG43xVDAGD/XaJEQIXIu/sVBHTgYXAxJW
+         M4sMoLqBdV4UP55sz9X7zF2j+CbrNwUDFCvLWQk1MKvRlPC7Y/vn62mTZw+SYZSgJ5dC
+         30Kb5Wax8Ty4m3dpVtgBk1B6K5CFjmOmY5QVPXTij9UrUil38qYvIhZif0P5rh/bh9t0
+         emnA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790208228; x=1790813028; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=i5wuNzpc5WDc6HWeWDqM/EGiLl0MHtsGMySScfyZ8rs=;
+        b=XQJFl+Fu5AWt/OHnSVp8nDxu6JTcigtAYVNak6nyy42xLOGu42vGLOVby02sRQysky
+         QuOfez8Kk0AWNtPIEHSTAJ6SgvnofLTdpLCXMjW/ugKUe+yu1LykZNmjdeoSeCko2z22
+         UghWtFeoGIEzTpd+n7MK7OrAXgUhXlLRQWynbVBwWOfzusHFAeMqf9ztRys8iL8n81Tc
+         SwxHTODItLFNwXmMEtSlRPTjxj29HGUUDAeAxN1PuDdOaP9iHzchtN62ekSk3/eXq3cE
+         C97ELE2FecS1MhIfWkLWaqx1H86CWDAGReMRNG9H/0MlLAay37dlKWFDaor/ooiPuyFy
+         yhsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790208228; x=1790813028;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=i5wuNzpc5WDc6HWeWDqM/EGiLl0MHtsGMySScfyZ8rs=;
+        b=Itt1+C7Sl8KX7GV2TcZdgYIosavrZw4qUSdK6F3PKr7GYF0flJhNxnNvBOfn4eb25z
+         XYooH1rp3AsQjRKSH6wti178FwwAMAhRjVSAkZ2lMEHZaWvSPGChL2vow9HGAIIFRhBu
+         tEAyUdvDvvlbL3xOaj7l5lZGfiZg2Jt/QwD+CberBVp17owAGUZV5t/6BuzyW302RbsJ
+         GVV/TLHUXyL+i+3KTuLpRpetezN//gvwK3AC8QCQjxbb/VrMWVZZe5uHZESNjzUJZgyw
+         +KFdCBcr1tgwfCPpxUKW6E4Fnlwe17PmuSgAZnl1F1vchwH/no9WMPVjmo2eUlDfEjGq
+         ypFw==
+X-Forwarded-Encrypted: i=1; AKwUvBz8RfodFLBHYPy5pMOaFBzMUrnGzdUgI5/G8cx6Lf9ETetLHI0mim0N3VIL1v0WToKRHvc=@vger.kernel.org
+X-Gm-Message-State: AFuF++k420gbTKr6HzXDK6xDz3+vNWOT0vV6xTjUJVfvSDxVu3a61iQg
+	MoHXybIOCOiArSEOhuQuckZjn6M+MfLbYq7XkhF0rcrI0TTvl9kjXqjWVQcyB96mnEt9+xFMmvj
+	IdKIpWr8RnQHGUdqiGpSR5gd4x6Xuqxly+w8LFq5B
+X-Gm-Gg: AYBFou0Txg4H8CWS8x+51MWnLXolHh1FSBtnuU+nLveFhsbXeyx6OrGMZPRqowMCTzG
+	GtIPRbTRnAMQWp7MDSCC2uhrPz8zSPYMr5B771efkO5AMBOiA6CdvEjjkvBizEXh5Em8oy0+u0U
+	vTxcbcxZg34xFzuTjyo4hwC5/4Q5CEPbzLk3BnLPAzQgTy7ovnCW06CRizAt7g+Z5yE8iXgstIp
+	4hI5tPJ5YFS6/urRREFuKeoSbAb+GYpvVOYZskzrDbcZnVLq2bVihgqLLPsNPY+Y/XtZdGBJR4t
+	wzve38YpsAdLm6ht+U6WJgMbO1QxH59igrtJlbZmpGZgQrWqGF2nB7rpRmocctF1PcbXCpC2C0F
+	TSarejkNpVPDCVrVt/qwWaN8=
+X-Received: by 2002:a05:622a:2507:b0:531:6de:6028 with SMTP id
+ d75a77b69052e-532f9d11258mr7798591cf.13.1790208227286; Wed, 23 Sep 2026
+ 17:03:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260921004834.2601285-16-skhawaja@google.com>
+References: <28f7a805c57da35d86b5c495cdf2b613a61d235e.camel@intel.com>
+ <aqvtG90zWq6SkU8L@google.com> <3f97caf660cbe460b8bbaf3f2a72e4b6a3ea83d9.camel@intel.com>
+ <aqxGN2Zc8sOl2RKx@google.com> <906d0cb6515b396f4e9d74f1d546c902ea3ce49a.camel@intel.com>
+ <aqyAED5ZK48eEZtq@google.com> <56a61983c03806120e607dfd1e1b7c9046c1f54b.camel@intel.com>
+ <aq048KmPN5WPQ4sQ@google.com> <7d40bcd97e01390a345ce1dbe26264e7b064a619.camel@intel.com>
+ <aq2t5wJGLtsltMza@google.com> <arG3KvaVqWCDAyM9@intel.com>
+ <12541025-6579-4baf-911d-dcf1453b3e27@intel.com> <CAGtprH8t2OAh59XeWGtBLUX4JXaJm_NDpPE1ZJeGTjppKWrSLA@mail.gmail.com>
+In-Reply-To: <CAGtprH8t2OAh59XeWGtBLUX4JXaJm_NDpPE1ZJeGTjppKWrSLA@mail.gmail.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Wed, 23 Sep 2026 17:03:35 -0700
+X-Gm-Features: AclHuK-Kzmj2oaU6ic8oRVJmNSiD7U5A7TObREdVllm9wJeM4ytUhxflIb0kq_I
+Message-ID: <CAGtprH8syQUQf9PjPe8o6rBFSg+01k=Hb4cvvn3TqED3uWb+yQ@mail.gmail.com>
+Subject: Re: TDG quote analysis
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Peter Fang <peter.fang@intel.com>, Sean Christopherson <seanjc@google.com>, 
+	Rick P Edgecombe <rick.p.edgecombe@intel.com>, Yilun Xu <yilun.xu@intel.com>, 
+	Elena Reshetova <elena.reshetova@intel.com>, Binbin Wu <binbin.wu@intel.com>, 
+	"kas@kernel.org" <kas@kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 21, 2026 at 12:48:31AM +0000, Samiullah Khawaja wrote:
-> From: YiFei Zhu <zhuyifei@google.com>
-> +
-> +		/*
-> +		 * When this memory file was mapped it should be sealed and seal
-> +		 * should be sealed. This means that since mapping was done the
-> +		 * memory file was not grown or shrink and the pages being used
-> +		 * until now remain pinned and preserved.
-> +		 */
-> +		if ((pages->seals & req_seals) != req_seals) {
-> +			ret = -EINVAL;
-> +			break;
-> +		}
-> +
+On Tue, Sep 22, 2026 at 9:09=E2=80=AFPM Vishal Annapurve <vannapurve@google=
+.com> wrote:
+>
+> On Mon, Sep 21, 2026 at 4:06=E2=80=AFPM Dave Hansen <dave.hansen@intel.co=
+m> wrote:
+> >
+> > On 9/21/26 16:00, Peter Fang wrote:
+> > >> is how to hide the fact that someone in the future might think follo=
+wing AMD's
+> > >> lead and putting a precious resource into a tiny microprosser on a s=
+low bus is a
+> > >> fantastic idea.
+> > > As shocking as it sounds, there are actually cloud providers out ther=
+e
+> > > that are wanting this, or at the very least wanting to see how it goe=
+s
+> > > in real deployment. I think memory side channel attacks are a real
+> > > concern for some of them. But yeah this is not great from a performan=
+ce
+> > > perspective.
+> >
+> > I'll believe it when I see it (on this mailing list).
+> >
+> > If folks want complexity and low performance in the kernel for
+> > side-channel defense, then I'm your guy. I've made half a career out of
+> > it. All that I ask is that they come and ask for it in the open. Here,
+> > please.
+>
+> Google is tracking use cases for deploying S3M-based attestation for
+> both TDX guest workloads and host workloads.
+>
 
-Is this sealing business sufficient? Even with the specified
-seals, user mode can still punch a hole in the memfd after it
-has been mapped. This will disassociate those pages from the memfd
-but leave them referenced by the HWPT.
-
-Then, when the memfd gets preserved, the hole will be filled
-by a new set of pages, and only those pages that will be
-preserved across the kexec. The original set, unless I'm missing
-something, will be dangling in the HWPT, allowing attached
-devices to DMA to the wrong memory.
+To clarify this statement further and address the discussion from the
+PUCK meeting: Google is tracking use cases for deploying S3M based
+signing of attestation quotes (or S3M-based quoting as referred to in
+this thread) for TDX guest workloads.
