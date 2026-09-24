@@ -1,22 +1,21 @@
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121383DDAE4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130743DDB04
 	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 03:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790221208; cv=none; b=HM3RbOFqyQSu83AlPQjOU6AYv3s+lLMHPL8X146IfJQhiQyH2fc9gAi8WwcKxqPXtTonDCd0YO4p6/zoYJLPjEnIjeEDH9cv2F4N641IjG3Noh7TE/ekXrdny6yHbLsWx7nepTZJEgY9qqdgD6JGTavGI1VW++yG5YpC6etmnH8=
+	t=1790221208; cv=none; b=V3yfV8rFwFZwj3CwWpAZ8h97kYbGXEVSLwZTroVAZKXY6XsH5ggoIHznEZsL494/YJAWREKjVjy5t7Co1hl+kvsNSLSnM1no1d7ICrN3CGSAGxkXgwmWuGWD5cdCQ3YV14u77ilgqKfKtzMxUFM1w7oHxStvLPKyXzWAKl0XfJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790221208; c=relaxed/simple;
-	bh=AgVgLaxsDwiH1LlZdYfqBywMgKE5RCInqlwUihdgqa4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gfw3ghEY2KkjBgYLzJBm6IHDn8Tra4QDHStBrNoMc3FqAxHuSN2qlqORtCNX90ExU04dQ44P4qBwIf6QcIqxq8792SaDNGpyO9elvrvGdSrd6i2ImnLbGekL8iAmieoALW6L9ueAXv3NCgQ+w9G54pCqfFHH2pP50eIcMRvXhyI=
+	bh=KE3peNXmwpNk89q/SFifyqAdPH7STLkje8RWX2IaelA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ljINLAOzCnOiWKo3Ezf7amHeegXs44IujgUIUc5jPYInWfZxR2a296IeLozO74ugC9uxvEHmKpd2Fs+IN0E4r8D/iO/OwymstCrEVNey2LWDXbWddWeXZt8pFvtjq2EBvGPa37V5TlxQqAsrr9tlZb8DiwMWXYo6oYThfyzvWUc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from localhost (unknown [122.194.100.201])
-	by APP-01 (Coremail) with SMTP id qwCowAA3Cu6Im7RqGU_JCA--.41621S2;
-	Thu, 24 Sep 2026 11:39:52 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowAAH3fCFm7Rq4E7JCA--.41214S2;
+	Thu, 24 Sep 2026 11:39:49 +0800 (CST)
 From: Xiang W <wangxiang@iscas.ac.cn>
 To: kvm@vger.kernel.org,
 	kvm-riscv@lists.infradead.org
@@ -24,12 +23,10 @@ Cc: andrew.jones@linux.dev,
 	pbonzini@redhat.com,
 	thuth@redhat.com,
 	Xiang W <wangxiang@iscas.ac.cn>
-Subject: [kvm-unit-tests PATCH 6/7] riscv: efi: Allow ACPI boots
-Date: Thu, 24 Sep 2026 11:39:44 +0800
-Message-ID: <20260924033945.176581-7-wangxiang@iscas.ac.cn>
+Subject: [kvm-unit-tests PATCH 0/7] riscv: ACPI boot and BRS-I SBI tests
+Date: Thu, 24 Sep 2026 11:39:38 +0800
+Message-ID: <20260924033945.176581-1-wangxiang@iscas.ac.cn>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260924033945.176581-1-wangxiang@iscas.ac.cn>
-References: <20260924033945.176581-1-wangxiang@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -37,60 +34,113 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAA3Cu6Im7RqGU_JCA--.41621S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrtr1DtF18CrWxur1fGr1UGFg_yoWfArb_Cr
-	Z7Aa97ZryYqFZrA3WUJrn5tF1rGws3Wr1DZF4UKF4jk34xWF1Yk3yvkr18A3WrAFyDGrn2
-	kanrJay7Gw4kGjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbsAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-	6F4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	JF0_Jw1lc2xSY4AK67AK6r48MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
-	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
-	67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMIIF0xvE2I
-	x0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
-	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
-	UI43ZEXa7VUUZ2-5UUUUU==
+X-CM-TRANSID:qwCowAAH3fCFm7Rq4E7JCA--.41214S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxAF15Kw18KF4DCr1xWrW8Xrb_yoW5Aw17pa
+	n0kFWYyr98GF93Jw4fZ3Wvkry3Xr1rua13tr4xJr1UA3y7GrWUXFnrtw4UtF9xXFs3X3W2
+	9a1Y9F1rCr1DGw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvm14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26r
+	xl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v2
+	6r126r1DMxkIecxEwVAFwVW8GwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJV
+	W8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF
+	1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6x
+	IIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvE
+	x4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnU
+	UI43ZEXa7VUUpBT5UUUUU==
 X-CM-SenderInfo: pzdqw5pldqwq5lvft2wodfhubq/
 
-riscv/efi/run rejected EFI_USE_ACPI=y because CPU, timer and ISA
-discovery aborted without a DT. Those paths can now walk MADT and
-RHCT, so drop the early exit.
+Hi,
 
-The existing runner already omits -machine acpi=off when
-EFI_USE_ACPI=y. QEMU virt defaults to ACPI enabled, so no extra
-acpi=on flag is required. DT boots are unchanged: they still pass
-acpi=off.
+This series lets RISC-V kvm-unit-tests boot on BRS-I platforms that
+describe the system with UEFI + ACPI instead of a device tree, and adds
+a first unit test for the SBI rules in the RISC-V Boot and Runtime
+Services specification [1].
 
-Tested with:
+The RISC-V port currently assumes a DT for CPU bring-up, timer
+frequency, ISA-string parsing and console setup. BRS-I firmware
+typically does not provide a usable DT, and often has no MMIO UART
+either. Without these changes the existing tests abort in setup before
+they can exercise SBI.
+
+Patches 1-4 teach the RISC-V library to initialize from ACPI when a DT
+is absent:
+
+  - locate the ACPI 2.0 RSDP via the EFI configuration table
+  - parse MADT RINTC entries for hart / CPU bring-up
+  - read the timebase frequency from RHCT
+  - parse the ISA string from RHCT Hart Info nodes (match by ACPI UID)
+
+The RSDP is left in EFI_ACPI_RECLAIM_MEMORY; the RISC-V allocator does
+not reuse that region, so the table is not copied aside.
+
+Patch 5 splits CONFIG_SBI_CONSOLE out of the UART driver. io_init()
+becomes a no-op and puts() issues SBI DBCN CONSOLE_WRITE directly, so
+EFI/ACPI guests no longer depend on a described MMIO UART to print.
+
+Patch 6 drops the EFI runner's EFI_USE_ACPI=y early exit. The runner
+already omits -machine acpi=off in that case; QEMU virt defaults to
+ACPI enabled.
+
+Patch 7 adds riscv/riscv-brs.c for:
+
+  SBI_010  spec version >= 2.0
+  SBI_020  HSM required
+  SBI_030  TIME required unless Sstc
+  SBI_040  IPI required unless Ssaia
+  SBI_050  RFENCE required unless Ssaia
+  SBI_060  PMU required unless Smcsrind + Sscsrind + Smcdeleg + Ssccfg
+  SBI_070  DBCN required when ACPI SPCR Interface Type is 0x15
+
+The new test is in group "riscv-brs nodefault", so it is not part of
+the default run_tests.sh pass. DT-only QEMU virt is unchanged.
+
+Based on kvm-unit-tests master (5a221342).
+
+[1] https://github.com/riscv-non-isa/riscv-brs
+
+Testing
+=======
+Build:
+
+  ./configure --arch=riscv64 \
+              --cross-prefix=riscv64-linux-gnu- \
+              --console=sbi --enable-efi && make
+
+EFI + ACPI (BRS-I style):
 
   EFI_USE_ACPI=y EFI_UEFI=/path/to/RISCV_VIRT_CODE.fd \
     ./riscv/efi/run riscv/riscv-brs.efi
 
-Signed-off-by: Xiang W <wangxiang@iscas.ac.cn>
----
- riscv/efi/run | 5 -----
- 1 file changed, 5 deletions(-)
+Please review.
 
-diff --git a/riscv/efi/run b/riscv/efi/run
-index b9b75440..a53b3a2c 100755
---- a/riscv/efi/run
-+++ b/riscv/efi/run
-@@ -39,11 +39,6 @@ if [ ! -f "$EFI_UEFI" ]; then
- 	exit 2
- fi
- 
--if [ "$EFI_USE_ACPI" = "y" ]; then
--	echo "ACPI not available"
--	exit 2
--fi
--
- # Remove the TEST_CASE from $@
- shift 1
- 
+Xiang W (7):
+  riscv: Initialize the ACPI RSDP from the EFI system table
+  riscv: Add ACPI support for CPU initialization
+  riscv: Add ACPI support for timer frequency discovery
+  riscv: Add ACPI support for ISA string discovery
+  riscv: Decouple SBI console from UART init
+  riscv: efi: Allow ACPI boots
+  riscv: Add BRS SBI requirement tests
+
+ lib/acpi.h                |  67 ++++++++++++++-
+ lib/riscv/asm/isa.h       |   5 ++
+ lib/riscv/asm/processor.h |   1 +
+ lib/riscv/asm/sbi.h       |   2 +
+ lib/riscv/io.c            |  50 +++++------
+ lib/riscv/isa.c           |  82 ++++++++++++++++--
+ lib/riscv/setup.c         |  55 ++++++++++++
+ lib/riscv/timer.c         |  37 ++++++---
+ riscv/Makefile            |   1 +
+ riscv/efi/run             |   5 --
+ riscv/riscv-brs.c         | 171 ++++++++++++++++++++++++++++++++++++++
+ riscv/unittests.cfg       |   4 +
+ 12 files changed, 424 insertions(+), 56 deletions(-)
+ create mode 100644 riscv/riscv-brs.c
+
 -- 
 2.47.3
 
