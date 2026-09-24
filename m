@@ -1,102 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-163.mta0.migadu.com [91.218.175.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6407237E2E2;
-	Thu, 24 Sep 2026 06:04:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D7E3D3301
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 06:09:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790229849; cv=none; b=ncjH2JQqmFOPJLUUFDfp8aCDPzr2/klRH4KkcATn5LzUcJ9532JjFRbKFXlYHwSK/4gtKCwtylWMdsFgGM7uW2S+ettNadebWeFEvmoYLxZHwjzpHDOV13c0fPnrBrJ6xAmv2BeWCQYsYhYSOiRj5E6+EY9KZwaEDZgx+Dwx0ho=
+	t=1790230150; cv=none; b=MOxYdVFuiCL/+FKxLk50ra7Hq/YbTupWj5RrFo59eYP3+ZpMp0zapB517Z28ahNDID4ZNTEyWqh9d74lW+aW+TFsdZ1EB964uy1lnaB/s6ZEGWd3q7IRy0pVkT334/ebVzPojb5zhqWxpP7EKIyKcvvIrbXHqvoi3AqMgHfSqT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790229849; c=relaxed/simple;
-	bh=8OIggYykPpbqH0cNgvDs8tkmYEGFXAtwdGTiVl18Qbs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=W92GwF5giPRUWyKmhFDDy/Q3IHVChfhYRRTn7vzwEhZyBkH+jOKkc/KURfV8K9Fy4s4D/Iw6Q+Lq3kiS68fgILCFjVCt6cy+9t2ZjTsJ+5V8L9/wRdPLiLXbphHXsSBT2dtcpr94e3iDXavK7XrwnyRQuYDy6gSugtwbb0D8kMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I/ttgRO4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790230150; c=relaxed/simple;
+	bh=RyyiC0ofM8CGzkXnRUfQTw+HLZ/pLb7WijiCtVOlmu0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PpnO1VAMKhVe+sqASCECX+X1NhCld9u67JDw82sS9qF3Qq+zWH7acy3MGJ7QAfNwmPDOkIgQPrHiVBehQvUPLkYcgUe6OiAI0JtLPq0elf9bxa7bAYYWCg2d9yZK6rd5hsiN+64tkPMyUqMLnXc6O+bdZ89680nLV8GueyCxfDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RfW7RsN8; arc=none smtp.client-ip=91.218.175.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I/ttgRO4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FEF41F000FF;
-	Thu, 24 Sep 2026 06:04:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790229847;
-	bh=r85Nf4Srb/iBhnlbT0L3eStB1iPLgO4vX4v+Ock+8jo=;
-	h=From:Date:Subject:To:Cc;
-	b=I/ttgRO4a5bMMWnm/y3e1sP4hi2WGbt9DePQDXc8NPj2KY2amjK2aqloQjFBK7jUS
-	 mRWkN1RFvjHxLpfmv1d2dJwEpHWC8oH+ONCKN9Cq1D+AqNRgq1AfOJH82vP05g54JY
-	 6tPj68kqZkeG1TD5GgnsLNP/veY173h7HbdbfEEAer2eO45y6H2+dffju1kzmPqd/d
-	 d/lqnAsjZmbbqd+McD/HZ29GmtC7i3kfifvrMV7Oop6R2hLIhZxIqPZSWoF6vt6uRG
-	 QUrW6cMMo0mMD+HGL8moXHwum7vC0/hEiqgrDAPgrkagxD5IylvQdCKGWSRz04scXO
-	 yPa/aU68oJ8vA==
-From: "GUO Ren (XuanTie)" <guoren@kernel.org>
-Date: Thu, 24 Sep 2026 06:03:49 +0000
-Subject: [PATCH] RISC-V: KVM: AIA: Initialize per-CPU HGEI free_bitmap only
- once
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="RfW7RsN8"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=RyyiC0ofM8CGzkXnRUfQTw+HLZ/pLb7WijiCtVOlmu0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790230147; v=1; x=1790834947;
+ b=RfW7RsN8k6J8O8pfRX5b8NvXcYEkGsWeFv4yT9wnukzdh+HAqKuTa7AHJWOoydt/izJ5GJlm
+ 6Si7fkerhdq8Eu+ywImqh/cxCelXFK3ksXvAGlywH3/3xNamGQGvFudgeYW2sdxmFjrPPtp0W9t
+ SlKZZEfau+NuqrKN+BPzbGa4=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 825facd3672e799c;
+	Thu, 24 Sep 2026 06:09:07 +0000
+X-Mizu-Trace-ID: 825facd3672e799c
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5b83c1421ecso3595e87.1
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 23:09:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwgvbaSlAkmaFBx2w68diXnRHl2gsQICVpZXm57dLFTq82LQ7X06x/0Lox4GazYCnfJOjI=@vger.kernel.org
+X-Gm-Message-State: AFuF++n8IkIb8S7dnYRptcOYzgxqYCt0yYxjgtRWTaSH62OF/RelNivc
+	3qd8WwB5hKBNXqGEaZqcn3pD4jJ5Pv08z2xciGaHiFzzeU2WbFpLvdW0pKViuFeqK9HmpOZvKze
+	JVhubuL/pzC0hguBHZv0724HtTxAfKB04l5fvt6xF
+X-Received: by 2002:a05:6512:1358:b0:5b2:a967:c0e1 with SMTP id
+ 2adb3069b0e04-5b8dd6d2b18mr130595e87.0.1790230141441; Wed, 23 Sep 2026
+ 23:09:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260924-free_bitmap_initialized-v1-1-4cfb73a0d04b@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAES9tGoC/yXMQQ6CMBBG4auQWdsEGyTgVYwh03aKv9FK2mqMh
- LtbYPkt3pspSYQkOlczRfkg4RUKjoeK7I3DKAqumHSt27rXjfJRZDDIT54GBGTwAz9xio2zfcM
- n3XlDpZ6ieHy38+W6O73NXWxed7Qsf6JY0Ut7AAAA
-X-Change-ID: 20260924-free_bitmap_initialized-abdc94a528fb
-To: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>
-Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
- "GUO Ren (XuanTie)" <guoren@kernel.org>
-X-Mailer: b4 0.16.0
+References: <20260923-kvm-arm-prefault-v4-0-d4b0b4dfa8c3@kernel.org> <20260923-kvm-arm-prefault-v4-12-d4b0b4dfa8c3@kernel.org>
+In-Reply-To: <20260923-kvm-arm-prefault-v4-12-d4b0b4dfa8c3@kernel.org>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Thu, 24 Sep 2026 07:08:25 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTxAah=pvuTqSYE0-jkXmgWJBrVD33nCThS4SNJN-kfNmw@mail.gmail.com>
+X-Gm-Features: AclHuK_kb7tirLzxpH1tqzJpHCuAErXckpMiZSE-Wc4zTJclc5slHcBac4UN3_w
+Message-ID: <CA+EHjTxAah=pvuTqSYE0-jkXmgWJBrVD33nCThS4SNJN-kfNmw@mail.gmail.com>
+Subject: Re: [PATCH v4 12/14] KVM: selftests: Enable pre_fault_memory_test for arm64
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Mark Rutland <mark.rutland@arm.com>, 
+	Randy Dunlap <rdunlap@infradead.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, David Hildenbrand <david@kernel.org>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, Jack Thomson <jackabt@amazon.com>, 
+	Jack Thomson <jackabt.amazon@gmail.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
+	Vincent Donnefort <vdonnefort@google.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+	Sean Christopherson <seanjc@google.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+	Leo Soares Passos <Leo.Bras@arm.com>, Wei-Lin Chang <weilin.chang@arm.com>, linux-s390@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-kvm_riscv_aia_enable() may run more than once on the same CPU.  The
-per-CPU free_bitmap only needs to be initialized once, from the HGEIE
-width discovered on that CPU.  Perform the HGEIE probe and bitmap
-setup only on the first call, and set free_bitmap_initialized after
-the bitmap has been populated.
+On Wed, 23 Sept 2026 at 16:18, Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+>
+> From: Jack Thomson <jackabt@amazon.com>
+>
+> Enable the pre_fault_memory_test to run on arm64 by making it work with
+> different guest page sizes and testing multiple guest configurations.
+>
+> Add an assert on the exit reason, comparing against UCALL_EXIT_REASON so
+> the check is portable, as arm64 exits with KVM_EXIT_MMIO while x86 uses
+> KVM_EXIT_IO.
+>
+> Signed-off-by: Jack Thomson <jackabt@amazon.com>
+> [ljs: merge conflict resolution with commit c847704619da ("KVM: selftests:
+>  Fix pre_fault_memory_test to run on s390"), commit message accuracy fixup]
+> Reviewed-by: Oliver Upton <oupton@kernel.org>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Signed-off-by: GUO Ren (XuanTie) <guoren@kernel.org>
----
- arch/riscv/kvm/aia.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 
-diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
-index b3b466e4db33..a65748321f7d 100644
---- a/arch/riscv/kvm/aia.c
-+++ b/arch/riscv/kvm/aia.c
-@@ -610,6 +610,9 @@ void kvm_riscv_aia_enable(void)
- 	lc = (gc) ? this_cpu_ptr(gc->local) : NULL;
- 	hgctrl = this_cpu_ptr(&aia_hgei);
- 
-+	if (hgctrl->free_bitmap_initialized)
-+		goto skip_hgctrl_init;
-+
- 	/* Figure-out number of bits in HGEIE */
- 	csr_write(CSR_HGEIE, -1UL);
- 	hgctrl->nr_hgei = fls_long(csr_read(CSR_HGEIE));
-@@ -634,12 +637,11 @@ void kvm_riscv_aia_enable(void)
- 	} while (!atomic_try_cmpxchg(&kvm_riscv_aia_nr_hgei, &aia_nr_hgei, hgctrl->nr_hgei));
- 
- 	raw_spin_lock_irqsave(&hgctrl->lock, flags);
--	if (!hgctrl->free_bitmap_initialized) {
--		hgctrl->free_bitmap = (hgctrl->nr_hgei) ? GENMASK_ULL(hgctrl->nr_hgei, 1) : 0;
--		hgctrl->free_bitmap_initialized = true;
--	}
-+	hgctrl->free_bitmap = (hgctrl->nr_hgei) ? GENMASK_ULL(hgctrl->nr_hgei, 1) : 0;
-+	hgctrl->free_bitmap_initialized = true;
- 	raw_spin_unlock_irqrestore(&hgctrl->lock, flags);
- 
-+skip_hgctrl_init:
- 	csr_write(CSR_HVICTL, aia_hvictl_value(false));
- 	csr_write(CSR_HVIPRIO1, 0x0);
- 	csr_write(CSR_HVIPRIO2, 0x0);
-
----
-base-commit: 93f51579e7df248780214094418f205253383cc5
-change-id: 20260924-free_bitmap_initialized-abdc94a528fb
-
-Best regards,
---  
-GUO Ren (XuanTie) <guoren@kernel.org>
-
+Cheers,
+/fuad
