@@ -1,82 +1,136 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5405F3002CF
-	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 13:55:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7593437B01F;
+	Thu, 24 Sep 2026 14:00:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790258158; cv=none; b=lFy+C8yyBIGv9jILJLz8GWhAdWLfRfYroPiQpMhsd0Ua7QxTfvUqvZrmeuh+pm8yHPhKORkWwwGiE2t8s7ZHohSZNN7PA0F119ZWQiIhWssO7cnj+rFr5x8sea43m8AYRpq6CP1zV4psoeujUM6oKgZbF5A/Siin3RWxfC11aE4=
+	t=1790258423; cv=none; b=bZlrKLIlzV4/4q5LqDlEFV9N/fKQ/aOu4xFD2TkFneQ0gKSnM1yRA2SS48rBfpuuqP2vIhzmLazzSLDWc+aB4lZZLcQ0sar+rpCJnONiPfA4oThh5GpvDktkGTd0Tmp3YsHkFkuU4xHrOOAxscJOii84T0BxLCEz7AyK3SguLUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790258158; c=relaxed/simple;
-	bh=7CDtzh4z0CdqypNI8DxFycAekERpE8E986pd4O2J03c=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VSwPxwXwgEAweU3ddD6ROWsUSPg1GHU2ixi2ALW8rEOWakendGbWqxgpr+0S0/+l/oBWz1SVqrLgviLxNU81PgeM5NvlNwpTmVq59ArVKvqyehNeAVmNrMy5dCGFoKZsamdL6iW2Sz+A8+Kv0HIU5d5rFcvn265pkpseKabU8fE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZIgz69T7; arc=none smtp.client-ip=209.85.214.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1790258423; c=relaxed/simple;
+	bh=N0CgHWvT4CqQPTe1I7MycN0e+Vt9fWvmF43IiK8ENrE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Dir3KIQzO2fbdDRrbMobsK23n3dmD3za1I+CKzHBujlN7k6KVlkT2kJLd9Ma25tYAzOsckF3ashec7VpqbPuwxx/PfRAtjIWZHjXCcjPJOn29FQxK+Miv+Nd/xxq6ktwC5rneyntlkHl2VG73wjJKmMQTucOgKcTnq1BaF1B4s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S0lgVTDe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZIgz69T7"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2ce7dfd33ffso14765655ad.0
-        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 06:55:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790258156; x=1790862956; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KkxGGQAcZQfF96GEV0BfePCSivvqi5OVjJFPctkp1vk=;
-        b=ZIgz69T72VRjYmeOGg3jTSzTSVVRfI2esIxCZtXA2q71RUJAB9oxhH57bZrSaQhXz3
-         QBegtAo+IkrQV2Wo+qaHod5STXp9clM1h39wc7zOZ5E2LTUhkj8acroVohKmjy4dkCcR
-         LclkGl6e518uCASlDkIBjRbx6XHllklP99S1TzszvYWQyatu/JRfeIYuMFUWKbZqiHIQ
-         HyEpY0IfzAIJW1BrBYvRpf6eK2/UQi3hiKggPxEKRX10tU4rS8Lh8BEiCwEl/KRHWqMD
-         DPrM1LcmVuPdVCyaodOrAWTbEo/kUvhhDIVWYNZLxhH044c/9zMfOWnunxESp/lAjuz8
-         BRyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790258156; x=1790862956;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KkxGGQAcZQfF96GEV0BfePCSivvqi5OVjJFPctkp1vk=;
-        b=p/+KWieeNU5CnaVKNrtI2hNGV3wDymrGREt+BK8zhw7VCxDxmCNYroUS7ZPmK0XFaa
-         HGBgoU/pxvcjZswtyY5jzVHO1JSerODo6KV5c6PN7WVYpE9TzFjovr5kIN1tf+4rfcL3
-         0q7R4o0G5QMBYXiRx90Udl7LgolbVhKMXH9O3Ax62coz2z+t32CMIUx1MKDwr7swfsTM
-         hSOY/geE41DKSPEerwgcjK7zQpTKiKRVwi0ysKbCoJbtbCBiZuOQ+a+FOaOMTTlTMKW8
-         gcoPmrdNAPvS9m0jrJyr05EQUryiOKqh+bPI/gvM2B1taiR7MBYHQGAyTxHjFd90oe8J
-         8vQw==
-X-Forwarded-Encrypted: i=1; AKwUvBzw2fPxF9Yov+4uvBzJ6MCiGnuPvmKz7bFs6IDLIB7ywUswuCthOZnBbwKqgyJawnV39vY=@vger.kernel.org
-X-Gm-Message-State: AFuF++kb1odMlL/y7zywjY/psLs7lHqJ4nAOA1j/TIW/oD+ySIpUZ0E5
-	lIRVpoNg5hO5WGwt0+j3YR1y8AFkj5SLEJsI8xjsx8R6FQeQICzuRbhwLsy8zQOFTuCTipwEM/f
-	X3DcXuQ==
-X-Received: from plbm10.prod.google.com ([2002:a17:902:d18a:b0:2df:69be:94b6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2310:b0:2dd:ad73:5b74
- with SMTP id d9443c01a7336-2df7dc36d85mr22967295ad.36.1790258156375; Thu, 24
- Sep 2026 06:55:56 -0700 (PDT)
-Date: Thu, 24 Sep 2026 06:55:55 -0700
-In-Reply-To: <arUGoepfp97GY8aK@blrnaveerao1>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S0lgVTDe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92941F000FF;
+	Thu, 24 Sep 2026 14:00:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790258422;
+	bh=UH2eDW/zv6+OGh6316gRX/ezBMuyptHoi+ba7gVS1+k=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=S0lgVTDelu7OjhYFNUBBsutPDgtyRFC4FazuAO1SIPiSXD28togPOg3VIrZdDau/5
+	 nCatuHDR7n1KbRbOBzd2MayAHAknNewia4w7VFhpX4gVeL55MBEvcvmSEYpAuR013W
+	 Kt/v/4HkIXBSloJnd9qSXZUlrtt40j1znsw/HNRK7Popvy+IiGytQDd6H0Bka53zpa
+	 Cjwm5DKnDIuV9LjpNOrbVzaHQi82Th/inCbtG57lCoBeuCdQoYAm8L675+7fDZ/YBI
+	 YDkSsN+bF97AbNEyB2BQS2j2P9HsCNe8PO9XvO+SzpLFrj2S26kcSrIarkouVgotZD
+	 C6E4zRya2qKvw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v19 2/7] firmware: arm_rmm: Check for RMI support at
+ init
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Suzuki K Poulose" <suzuki.poulose@arm.com>
+Cc: "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, "Marc
+ Zyngier" <maz@kernel.org>
+In-Reply-To: <20260924135201.850038-3-suzuki.poulose@arm.com>
+References: <20260924135201.850038-1-suzuki.poulose@arm.com>
+ <20260924135201.850038-3-suzuki.poulose@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 24 Sep 2026 14:00:21 +0000
+Message-Id: <20260924140021.C92941F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260923155108.1550622-1-seanjc@google.com> <20260923155108.1550622-4-seanjc@google.com>
- <arUGoepfp97GY8aK@blrnaveerao1>
-Message-ID: <arUr6xuC2d7A_ZI7@google.com>
-Subject: Re: [PATCH v2 3/3] KVM: SVM: Clear AVIC Physical ID table entry if
- vCPU creation fails
-From: Sean Christopherson <seanjc@google.com>
-To: Naveen N Rao <naveen@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Atish Patra <atishp@meta.com>
-Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Sep 24, 2026, Naveen N Rao wrote:
-> On Wed, Sep 23, 2026 at 08:51:08AM -0700, Sean Christopherson wrote:
-> > From: Naveen N Rao <naveen@kernel.org>
-> 
-> Nit: I noticed this because I thought I had fixed it, but the From: tag 
-> above does not seem to carry (AMD) attribution even though the patch I 
-> posted seems to have the correct form. I checked 'b4 am' and that seems 
-> to be doing the right thing too. Anything I'm missing?
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] arm_rmm: Infinite loop on RMI_BUSY in rmi_smccc_invoke()
+- [Low] arm_rmm: Mismatch between RmiFeatureRegister comment and cache arra=
+y size
+--
 
-Nope, the problem was on my end.  I was running an older version of b4, and it
-was dropping the "(AMD)" part.  I'll manually fixup this one when applying.
+commit 60040821cdd521215265aeca5b99bd6299a20114
+Author: Steven Price <steven.price@arm.com>
+
+firmware: arm_rmm: Check for RMI support at init
+
+This commit introduces basic RMI support detection and initialization.
+It queries the RMI version and reads the initial feature registers
+to expose them for later use.
+
+> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rm=
+i.c
+> new file mode 100644
+> index 0000000000000..3baba931f92e4
+> --- /dev/null
+> +++ b/drivers/firmware/arm_rmm/rmi.c
+> @@ -0,0 +1,109 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2023-2026 ARM Ltd.
+> + */
+> +
+> +#include <linux/cpufeature.h>
+> +#include <linux/memblock.h>
+> +#include <linux/arm-rmi-cmds.h>
+> +#include <linux/slab.h>
+> +
+> +#include <asm/memory.h>
+> +#include <asm/pgtable-hwdef.h>
+> +
+> +/* RMM defines RmiFeatureRegister0 to RmiFeatureRegister5. */
+> +static unsigned long rmi_feat_reg_cache[5] __ro_after_init;
+
+[Severity: Low]
+Is the size of this array correct? The comment mentions registers 0 to 5,
+which would require 6 elements.
+
+When arm64_init_rmi() calls rmi_read_features(), it iterates up to
+ARRAY_SIZE(rmi_feat_reg_cache) which is 5, silently ignoring the 6th
+register during initialization. Any attempt to read index 5 via
+rmi_feat_reg() will hit a WARN_ON and return 0.
+
+[ ... ]
+
+> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
+> new file mode 100644
+> index 0000000000000..5c6c563c81555
+> --- /dev/null
+> +++ b/include/linux/arm-rmi-cmds.h
+> @@ -0,0 +1,48 @@
+
+[ ... ]
+
+> +static inline void rmi_smccc_invoke(struct arm_smccc_1_2_regs *regs)
+> +{
+> +	struct arm_smccc_1_2_regs args =3D *regs;
+> +	long status;
+> +	int i =3D 0;
+> +
+> +	while (i < RMM_BLOCKED_RETRY_COUNT) {
+> +		arm_smccc_1_2_invoke(&args, regs);
+> +
+> +		status =3D RMI_RESULT_STATUS(regs->a0);
+> +		if (status !=3D RMI_BUSY && status !=3D RMI_BLOCKED)
+> +			break;
+> +		if (status =3D=3D RMI_BLOCKED)
+> +			i++;
+> +		cpu_relax();
+> +	}
+
+[Severity: High]
+Can this loop run infinitely if the firmware continuously returns RMI_BUSY?
+
+If RMM returns RMI_BUSY, the loop continues without incrementing the counter
+i. While the retry count bounds RMI_BLOCKED, RMI_BUSY appears completely
+unbounded. This could lead to a soft lockup and freeze the host CPU.
+
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260924135201.8500=
+38-1-suzuki.poulose@arm.com?part=3D2
