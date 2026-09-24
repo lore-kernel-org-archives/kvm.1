@@ -1,256 +1,130 @@
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
+Received: from mail-dl2-f42.google.com (mail-dl2-f42.google.com [74.125.229.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EC84052D4
-	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 08:07:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8E3421231
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 08:10:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790237281; cv=none; b=KAjT5Avokxh/R4PWUk4QZE6TtgX9Mzy4HWvSERlQoqpGyrzhq+9z771Tq+bQ9UVUTv8Y7umv6Ds6ZoP95/vfz4Co6BIuJ3kpwt+LftwDiNFgh6Iqplh4vnBFawRUxJQXKkcZkuh+zEhROQ7HrU+TE8tKIyq5UMN8vS4gUNXpoek=
+	t=1790237419; cv=none; b=MdTubEYFxR3BCNJKcaN+k+Md23qhZ4lHMAwD9HjYyhYMt3Whcr5jdMYfPprCoMDo7tdkOe/Wa+rpUZU9w23GV5Yqwxric7H2aOk4kAzW3kTNa1vOWzArSKYKq17Flkl7WKZ3SBJR1+1UoyBLfxaWzXnR7NN7enzJip+CE02hHyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790237281; c=relaxed/simple;
-	bh=iRkl3pQoS1G3AewbQwpmyHvMydRGnhwIEx5duYABjRY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GRFtKmT2ZFYplKWAa62BHvJpZcB2yyqUOZAqElB33Usnvc9q6dYpw+Do25x0Ok67pP9N6O7fKtMaTSByupQKaEz/TuJnGXwBbip+FMM2zGIqEO9lNY91kE78Vt+16fTAk3jmVu3wOYNYQGF6P9KBSHECdSZsalp5m6yM8rhdrOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P90q+FND; arc=none smtp.client-ip=74.125.227.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790237419; c=relaxed/simple;
+	bh=EbRsjy+izD4FGJar3RutZAfTClGR/6Al7JWVZmKxHY4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=coBR4cwHriz4gGPH02K7cYZrcmu1K/DyiTNtXq2F4u0fTUvOoZoKjc9ZWaWkLSAqrgIFjwVkfeej0C1Vi8Ib1Of2D/6YANrjRgQEZQs9cVJlB7y+mknjkqHFVinVOud6lqHbWcP3XOBfQF/pq9Oo6H/rMxFTrRy9VaVjl0eJpOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=PpuEfPXR; arc=none smtp.client-ip=74.125.229.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P90q+FND"
-Received: by mail-pj2-f1.google.com with SMTP id 98e67ed59e1d1-398e10200a6so450281a91.1
-        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 01:07:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="PpuEfPXR"
+Received: by mail-dl2-f42.google.com with SMTP id a92af1059eb24-144e32aaa1cso1145991c88.2
+        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 01:10:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790237278; x=1790842078; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uOvLdVAqIzEI0jpywFTRHK7Tdgrb3wuhoBjpWMIpUXc=;
-        b=P90q+FNDA4WZ7lnx4dNATCeuz4jwMZNvAZpkWZoYgxacwN8dY8Z050aPWSuLGlfih9
-         QGQa64P6JYmTQyhpaUbSvN00IQPgGEa3OGg6lf8LkkRvkmRcKRFYlHScTaCrVmWLKgJD
-         iRyH/xd6GgN1Unb4p3JJqfxNadnKjKwaq5TBkb4GEImsW+jyfcSqpDkxDb4dcGmgCMXN
-         I/3bbQVVQWlRKIVyJwfBXezWgV8d1PGnzikb1QFwKChEwKy6ECrcOdRIDOwDdzshuwVa
-         bpQ6TfCZt5G7pdUfWPgGfvNvoUbmPBqy+LoOgaoa//Sh97OTvncVU9IMgZZWjE3Hx6Z4
-         PppA==
+        d=sifive.com; s=google; t=1790237414; x=1790842214; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=qskrl8FoTONerp5XUUFpCXSU5ueWew9f+qB/NK4x0zg=;
+        b=PpuEfPXRwHMTUojmCS/YioyB9usD++Z+cpeaYfwxCZsAHHUqWoPSj89EA9FtDqAThc
+         lVfV5+tP4nEURQZhxX2PJOQ+1wkPVW+9gWWcxxxEN/S8y82XZaggQW+TbWAqOUmKTyn2
+         kCucJkMLHgshvIqaTnQfd9CydoWFoOJR6uNvWFU/PAi46ords6/iT49g19Ug9nKgY7xt
+         Yfn7eWoaVXYqIsdKds3nXrr/KRvBl0MvRmyGzoS8B31cS5XxyBqJeO5igdt+m2zxl+oX
+         3jhBhE3Mwpt//x7i6VsGY6gocivU3M9GSCqLXQ8BgtH6Q4JZdDF0K0ka4r9YU8Zj6TFY
+         cg2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790237278; x=1790842078;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uOvLdVAqIzEI0jpywFTRHK7Tdgrb3wuhoBjpWMIpUXc=;
-        b=HeDmZDler7E8CBe0lSnab++fv/sX+2g7mOQ1k95GmBk1TGTi6wShOtv/YXamqgXwKQ
-         TqVef1TCGxZxynziqev7u/ms22Xu8RuWrzfudL4iD/tp788S2oDFHGHyKJ029rreDq5j
-         wx2MENGblOBqjn/XkZFCvhhqEf6HM+KwGYnrYUgXRnLYjpkqTqf1lv3CdZDBh/STlk4W
-         TDDjKoPGzIuHuiU07EX7lO6BYAuCwJ/mRyunV2VW9xXsAK4gH9an472zxqj5xps2Rxn0
-         doJ5d66U/Po18q4U/FQxTXu8ZEM0W2qSN3qgDjsWJhy1MRrpYw3ys9Mif7dpwV3ARxwy
-         Vxww==
-X-Forwarded-Encrypted: i=1; AKwUvBzS1st6dMyumaLwoKVj9noTiVcGREQO3GsOQHn9t6AnTz7nDtCjgsVh6CiXo6m3rELiA9g=@vger.kernel.org
-X-Gm-Message-State: AFuF++lVI059//issGuQr66RW2TvghwviS4QI0/9jLnFg3eFveczBWRl
-	iApg2iQaBhZzThlQZHxoDLTu80QIOQUYdCeBYfCgPPSxKPY60NMkn+Hp
-X-Gm-Gg: AYBFou27vr2j4AamI6syielwM7OQkegbCzGCnCebSwtBiznzfLbBhmqjAnDoMwI7MPx
-	VWCwhotkfx3w7Wr5Mn1nyzFAXWrx7tGa1Dvv6O98g19tkndJhhlfDiKhll9TiHw4QrSR3O4a4/K
-	d9N+0y1RmmnJRo5qpBM4tvvuJSiNGwMCjd/SUO2Kg3hYqzLsWS9RAcwGw/u5cwzsy/tHLdQc6gx
-	aZqiJ8MNRg0Ei+hGA/Pn7NIU5WnvpkU4CANmPx9dcFKqqH9CtZEdmBpk0zkDey9duhkwBTSKGA4
-	lG3ntiyHC1JmDAQPzTXupmUpUniy8ZhyTB7NkvGOI0Fyl7lnJ8LkbHk/SpToPJenTzPz6R9PweT
-	dzgKvwrUsoSeRhZznOyE2qt23tTqJ6+UGbRqs++VdRvMQrqsnbAjvtckHSfeyrkqVVMKm9cmUd9
-	gxO4FcqibufuaKzguf9WgTRyzD+SSnwOwrcwdPLqq9WdigeqxPZ2DL3ZzD+3QBkGCX2ddOJJonU
-	k4m+rrLbp5TNuuGyxe3i1ZRRTno5z3++6Nn3pry
-X-Received: by 2002:a17:90b:3c0e:b0:39b:92bb:9eef with SMTP id 98e67ed59e1d1-3a098ce1c3emr1521749a91.22.1790237278174;
-        Thu, 24 Sep 2026 01:07:58 -0700 (PDT)
-Received: from HXDQXTDYHN.bytedance.net ([203.208.167.150])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0976cacbesm3418356a91.13.2026.09.24.01.07.51
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 24 Sep 2026 01:07:57 -0700 (PDT)
-From: Jinmeng Zhou <jinmengzhou22@gmail.com>
-X-Google-Original-From: Jinmeng Zhou <zhoujinmeng@bytedance.com>
-To: seanjc@google.com,
-	pbonzini@redhat.com,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	hpa@zytor.com,
-	feng.wu@intel.com
-Cc: x86@kernel.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Jinmeng Zhou <zhoujinmeng@bytedance.com>,
-	Guixiong Wei <weiguixiong@bytedance.com>
-Subject: [PATCH] KVM: x86: Wake blocked vCPUs before offlining a CPU
-Date: Thu, 24 Sep 2026 16:06:48 +0800
-Message-Id: <20260924080648.51014-1-zhoujinmeng@bytedance.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+        d=1e100.net; s=20260707; t=1790237414; x=1790842214;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=qskrl8FoTONerp5XUUFpCXSU5ueWew9f+qB/NK4x0zg=;
+        b=iuxly95S+aIkXNWRPjd71XIgVp+Xh7NPyY5H2e3LFNCWON9FkuRu0spNR9W1bKDZjk
+         ghRZZEmPL8ud/G5P91QURyrmXpREGdz2C3hB26Y9i9/HQkWFkmBHlVc1P75UIdo/oBH6
+         gXm+EiKZ8/Fs0cx6r4LJWDHDW2a90IBbBWht1zLitG1nWbRhiK/eussjEu5dRWkpUr3c
+         NTObX14ZeBf8vCQ1el4LITLS1F73ZQHx+iV8RPPHDxavcjhcM0+zfc/LqNOcfPwrZ9Yg
+         gy794odO+vxDJQfMJcdSyHqSQJpM0aNBDX0dGtK/aslcMgG0SDUOm28ddSLXFw5nzBpz
+         F69A==
+X-Forwarded-Encrypted: i=1; AKwUvBylSlKg3QyQIWnPySsR0tLFK4ncUT+oTE4t+3O1iiD4+LhqetMs6+bMAx3cLUDlFbw3+vE=@vger.kernel.org
+X-Gm-Message-State: AFuF++mGDrAjU7Ta8IaXELrECRmaP8l0J+ezBcr909tFUy/Pm2dZQ7HH
+	vKOBh9R1rnLnvgGJEJn9L4HKUSAFQNaeufwAt41qOiLm1TWxc8M390KGpjk/2eLEv8ssl1HLhCU
+	Hgdb8oyr5ss5OYJF7Tifzcd02qjzB5Pjo8riYBDcotUn4HztcUuxT+Q3OPfIdJFw/EH+yOADE82
+	HnU/Bp11PDenAdy9/e2VEg+aGQ5UKQaQwGk/7yA05KIlRaOZe/
+X-Gm-Gg: AYBFou2t4BCQ+UbH9mMirLP3I4FsfgAsbFVfHYvyhAHcYvtx/S2PsVmJ1LUOEFbcJtM
+	crLBEgYw+Mjy5EmROLWZoTWStbWfKR6dymTpe0j3HpDxTjytjFMDYBVFE11nse69LF5otwAwvku
+	VTOAxomgqGS/Ikx4RAgVPf7oc9zqjq7MNl92aq6VNvItXPtiN+sZ1tZe0Dwb5HOvNPwso1q7AOR
+	cA3MTIhu5MXehh6imEabSqpRheBU8JzfiWejetOCf/Is7pR5LVffd85s8G1UciAlJNSNixMU42/
+	YL9rMB5dX/kehFZBkYTIwnOvmIvTlTxwRf2E2GnJ4FCaDGtoQeoSiCpzw67Ffp8SxVAdNL5ocPn
+	W+2AmgpD50x7x8TaeGK0yWLpB86nkEwgFQgx3mTKDYpB2szrm1auoy8or3amotpd0fiVUHOsR1n
+	HaTz5+muryaAkpFR/NIYP2RMgySCX3l430GYm76yH4NB3gYxeHsVQuXmKT4/G5mqY9pzScbWOvJ
+	Hx2nlJh5bAR65VAnGo=
+X-Received: by 2002:a05:701b:42c5:20b0:143:298f:33b6 with SMTP id a92af1059eb24-14503fe4a39mr1479373c88.46.1790237413336;
+        Thu, 24 Sep 2026 01:10:13 -0700 (PDT)
+Received: from sw07.internal.sifive.com ([4.53.31.132])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144f9390183sm10838473c88.0.2026.09.24.01.10.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 01:10:12 -0700 (PDT)
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Date: Thu, 24 Sep 2026 01:10:10 -0700
+Subject: [PATCH] RISC-V: KVM: fix the Zicbo[m|z|p] block sizes in
+ GET_ONE_REG
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260924-kvm_fix_cbosize-v1-1-e57eec1b19cb@sifive.com>
+X-B4-Tracking: v=1; b=H4sIAOLatGoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDSyMT3eyy3Pi0zIr45KT84syqVF3DpDSj5JQUIwuj5CQloK6ColSgNNj
+ E6FgIv7g0KSs1uQRkjFJtLQCMNJxCcwAAAA==
+X-Change-ID: 20260924-kvm_fix_cbosize-1bf2cdd282cb
+To: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>
+Cc: greentime.hu@sifive.com, vincent.chen@sifive.com, zong.li@sifive.com, 
+ Anup Patel <anup.patel@oss.qualcomm.com>, kvm@vger.kernel.org, 
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Yong-Xuan Wang <yongxuan.wang@sifive.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790237412; l=1573;
+ i=yongxuan.wang@sifive.com; s=20260424; h=from:subject:message-id;
+ bh=EbRsjy+izD4FGJar3RutZAfTClGR/6Al7JWVZmKxHY4=;
+ b=ktuwHwkl+sNKmTBsvPQ0ePdlIJCd1cN4B/8rlGZcLD78YaixmZ3+Sr9zf3M4Ve+OkLZfg1JZ5
+ NDnGj8FH/u6AD44JXwxKm5xyMK8rr/ydh0aXz4LawdWbz5iOAe6oTgj
+X-Developer-Key: i=yongxuan.wang@sifive.com; a=ed25519;
+ pk=+8NCHB1ZJvZthQAmZspOAaqjo+/snaW8mFSiDx45HxY=
 
-Posted-interrupt wakeup state is tied to the physical CPU on which a vCPU
-blocks. CPU hotplug migrates sleeping tasks before KVM's CPU offline
-callback, but the vCPU remains on the old CPU's wakeup list and its posted
-interrupt descriptor still targets the old physical APIC.
+The kvm_riscv_vcpu_get_reg_config() should return the block size when
+the host supports the corresponding extensions.
 
-If a device posts an interrupt after the old CPU becomes unavailable, the
-wakeup notification cannot make the blocked vCPU runnable. The vCPU cannot
-repair the stale notification destination because that happens only after
-the vCPU is scheduled back in.
-
-Add an architecture hook to KVM's CPU offline path and a corresponding
-optional x86 vendor callback. After CPUHP_AP_SCHED_WAIT_EMPTY has migrated
-tasks away from the dying CPU, have VMX set KVM_REQ_UNBLOCK and wake every
-vCPU on that CPU's posted-interrupt wakeup list. The vCPUs then unblock on
-online CPUs and the existing load path rebuilds their wakeup-list and
-posted-interrupt destination state.
-
-Fixes: bf9f6ac8d749 ("KVM: Update Posted-Interrupts Descriptor when vCPU is blocked")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jinmeng Zhou <zhoujinmeng@bytedance.com>
-Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
+Fixes: 298276da73ca ("RISC-V: KVM: Zicbo[m|z|p] block sizes should be always present in ONE_REG")
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 ---
- arch/x86/include/asm/kvm-x86-ops.h |  1 +
- arch/x86/include/asm/kvm_host.h    |  1 +
- arch/x86/kvm/vmx/main.c            |  1 +
- arch/x86/kvm/vmx/posted_intr.c     | 23 +++++++++++++++++++++++
- arch/x86/kvm/vmx/posted_intr.h     |  1 +
- arch/x86/kvm/x86.c                 |  5 +++++
- include/linux/kvm_host.h           |  2 ++
- virt/kvm/kvm_main.c                |  5 +++++
- 8 files changed, 39 insertions(+)
+ arch/riscv/kvm/vcpu_onereg.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index e213c9ae3e301..27df8ebc97785 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -17,6 +17,7 @@
- KVM_X86_OP(check_processor_compatibility)
- KVM_X86_OP(enable_virtualization_cpu)
- KVM_X86_OP(disable_virtualization_cpu)
-+KVM_X86_OP_OPTIONAL(prepare_cpu_offline)
- KVM_X86_OP(hardware_unsetup)
- KVM_X86_OP(has_emulated_msr)
- KVM_X86_OP(vcpu_after_set_cpuid)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 683bb8bf43a94..f230843e8566a 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1509,6 +1509,7 @@ struct kvm_x86_ops {
- 
- 	int (*enable_virtualization_cpu)(void);
- 	void (*disable_virtualization_cpu)(void);
-+	void (*prepare_cpu_offline)(unsigned int cpu);
- 	cpu_emergency_virt_cb *emergency_disable_virtualization_cpu;
- 
- 	void (*hardware_unsetup)(void);
-diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index 4c52ab8d07869..b3d61a85ba3bc 100644
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -894,6 +894,7 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
- 
- 	.enable_virtualization_cpu = vmx_enable_virtualization_cpu,
- 	.disable_virtualization_cpu = vt_op(disable_virtualization_cpu),
-+	.prepare_cpu_offline = pi_wakeup_cpu_offline,
- 	.emergency_disable_virtualization_cpu = vmx_emergency_disable_virtualization_cpu,
- 
- 	.has_emulated_msr = vt_op(has_emulated_msr),
-diff --git a/arch/x86/kvm/vmx/posted_intr.c b/arch/x86/kvm/vmx/posted_intr.c
-index 4a6d9a17da238..2d6cca1606bd1 100644
---- a/arch/x86/kvm/vmx/posted_intr.c
-+++ b/arch/x86/kvm/vmx/posted_intr.c
-@@ -266,6 +266,29 @@ void pi_wakeup_handler(void)
- 	raw_spin_unlock(spinlock);
- }
- 
-+void pi_wakeup_cpu_offline(unsigned int cpu)
-+{
-+	struct list_head *wakeup_list = &per_cpu(wakeup_vcpus_on_cpu, cpu);
-+	raw_spinlock_t *spinlock = &per_cpu(wakeup_vcpus_on_cpu_lock, cpu);
-+	struct vcpu_vt *vt;
-+	unsigned long flags;
-+
-+	/*
-+	 * CPUHP_AP_SCHED_WAIT_EMPTY has already migrated tasks away from the
-+	 * dying CPU.  Force blocked vCPUs to leave the block loop so that their
-+	 * PI wakeup state is rebuilt on an online CPU before the old notification
-+	 * destination becomes unreachable.
-+	 */
-+	raw_spin_lock_irqsave(spinlock, flags);
-+	list_for_each_entry(vt, wakeup_list, pi_wakeup_list) {
-+		struct kvm_vcpu *vcpu = vt_to_vcpu(vt);
-+
-+		kvm_make_request(KVM_REQ_UNBLOCK, vcpu);
-+		kvm_vcpu_wake_up(vcpu);
-+	}
-+	raw_spin_unlock_irqrestore(spinlock, flags);
-+}
-+
- void __init pi_init_cpu(int cpu)
- {
- 	INIT_LIST_HEAD(&per_cpu(wakeup_vcpus_on_cpu, cpu));
-diff --git a/arch/x86/kvm/vmx/posted_intr.h b/arch/x86/kvm/vmx/posted_intr.h
-index a4af39948cf04..41414c583a063 100644
---- a/arch/x86/kvm/vmx/posted_intr.h
-+++ b/arch/x86/kvm/vmx/posted_intr.h
-@@ -11,6 +11,7 @@
- void vmx_vcpu_pi_load(struct kvm_vcpu *vcpu, int cpu);
- void vmx_vcpu_pi_put(struct kvm_vcpu *vcpu);
- void pi_wakeup_handler(void);
-+void pi_wakeup_cpu_offline(unsigned int cpu);
- void __init pi_init_cpu(int cpu);
- void pi_apicv_pre_state_restore(struct kvm_vcpu *vcpu);
- bool pi_has_pending_interrupt(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 79468ddfe4736..ea0ded5d64509 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -9820,6 +9820,11 @@ void kvm_arch_disable_virtualization_cpu(void)
- 		__module_get(THIS_MODULE);
- }
- 
-+void kvm_arch_prepare_cpu_offline(unsigned int cpu)
-+{
-+	kvm_x86_call(prepare_cpu_offline)(cpu);
-+}
-+
- bool kvm_vcpu_is_reset_bsp(struct kvm_vcpu *vcpu)
- {
- 	return vcpu->kvm->arch.bsp_vcpu_id == vcpu->vcpu_id;
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 03bfc92864b6e..d24fd09881dbf 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1685,6 +1685,8 @@ void kvm_arch_disable_virtualization(void);
-  */
- int kvm_arch_enable_virtualization_cpu(void);
- void kvm_arch_disable_virtualization_cpu(void);
-+/* Called after tasks have migrated away from an offlining CPU. */
-+void kvm_arch_prepare_cpu_offline(unsigned int cpu);
- #endif
- bool kvm_vcpu_has_events(struct kvm_vcpu *vcpu);
- int kvm_arch_vcpu_runnable(struct kvm_vcpu *vcpu);
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 65eb26a0520d8..2169130302ca0 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -5610,6 +5610,10 @@ __weak void kvm_arch_disable_virtualization(void)
- 
- }
- 
-+__weak void kvm_arch_prepare_cpu_offline(unsigned int cpu)
-+{
-+}
-+
- static int kvm_enable_virtualization_cpu(void)
- {
- 	if (__this_cpu_read(virtualization_enabled))
-@@ -5647,6 +5651,7 @@ static void kvm_disable_virtualization_cpu(void *ign)
- 
- static int kvm_offline_cpu(unsigned int cpu)
- {
-+	kvm_arch_prepare_cpu_offline(cpu);
- 	kvm_disable_virtualization_cpu(NULL);
- 	return 0;
- }
--- 
-2.39.5
+diff --git a/arch/riscv/kvm/vcpu_onereg.c b/arch/riscv/kvm/vcpu_onereg.c
+index 877ba823fc74..f2b125569449 100644
+--- a/arch/riscv/kvm/vcpu_onereg.c
++++ b/arch/riscv/kvm/vcpu_onereg.c
+@@ -50,13 +50,13 @@ static int kvm_riscv_vcpu_get_reg_config(struct kvm_vcpu *vcpu,
+ 		reg_val = vcpu->arch.isa[0] & KVM_RISCV_BASE_ISA_MASK;
+ 		break;
+ 	case KVM_REG_RISCV_CONFIG_REG(zicbom_block_size):
+-		reg_val = (kvm_riscv_isa_check_host(ZICBOM)) ? 0 : riscv_cbom_block_size;
++		reg_val = (kvm_riscv_isa_check_host(ZICBOM)) ? riscv_cbom_block_size : 0;
+ 		break;
+ 	case KVM_REG_RISCV_CONFIG_REG(zicboz_block_size):
+-		reg_val = (kvm_riscv_isa_check_host(ZICBOZ)) ? 0 : riscv_cboz_block_size;
++		reg_val = (kvm_riscv_isa_check_host(ZICBOZ)) ? riscv_cboz_block_size : 0;
+ 		break;
+ 	case KVM_REG_RISCV_CONFIG_REG(zicbop_block_size):
+-		reg_val = (kvm_riscv_isa_check_host(ZICBOP)) ? 0 : riscv_cbop_block_size;
++		reg_val = (kvm_riscv_isa_check_host(ZICBOP)) ? riscv_cbop_block_size : 0;
+ 		break;
+ 	case KVM_REG_RISCV_CONFIG_REG(mvendorid):
+ 		reg_val = vcpu->arch.mvendorid;
+
+---
+base-commit: b5060a4aa33d7d78a8c1837ab08ef0c81ea96650
+change-id: 20260924-kvm_fix_cbosize-1bf2cdd282cb
 
