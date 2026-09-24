@@ -1,175 +1,124 @@
-Received: from OS8PR02CU002.outbound.protection.outlook.com (mail-japanwestazolkn19012048.outbound.protection.outlook.com [52.103.66.48])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D803B5F48
-	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 01:51:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.66.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790214664; cv=fail; b=A4kFxE3dSOL3XicXx14vr6udFzMIPYM2ov/z75m6BGHriW/oiz1mfydqhdHEdZBOSWok5Bhjj62w9m/8vIbIWzuj9PFs5jVSE2CtGvseWjphE8kDd58zQv7ixZhZcxSwwjPqz06s+6Bo7LxG/uhiqCBU1++73POV0ZVG2xj6Gis=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790214664; c=relaxed/simple;
-	bh=SYoIhO8FTO898k7MAa0ODEtAGF9+1bNI2uDIUhtgeDU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Y/vDFgnrE8uQBUK4+v8snTRSKNBKr8v96btHWcWT9l5QpPsa1l1KsyEQLgVbgJpw5kUiAxdsGBZ6WIB2Gp2h2HDAJbLDc9Rct+R6Zakx67LCczyJmKV1XRtn5n4RWqfQbPKdUtEjruWnJw1LUGEfMILuoGeBwUneLTydT3dm2yk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=lJEXwpQv; arc=fail smtp.client-ip=52.103.66.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7E8394EB7;
+	Thu, 24 Sep 2026 01:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790214764; cv=none; b=ls1nG5wDV3HlY/ks2eoiLSC7sJ2fM6xSs+aWU5A1mVZvFDpt2+0qPuHfNon2hQZEu85zopRxpEqvRaTrW4Dpvyv/uuIARygl1RxBXa8KPZCahGo4VzJPvV67jbollXZ4apJ5r66CJ/4/I03hqSdgYIgrF3b38DU3nNnvgmAgOY4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790214764; c=relaxed/simple;
+	bh=5wjKolRkOj1eM6tQhXMmGAq+yZ6O5IWDpFid/YcLe5Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hr+JjeEkctUMrq3T4EdhV+YSBCQ+Omi8QgkIGsf4lfRau9qf1zsPR+VJZsMteAiFOGgLGNPoVNpn0i9/G038BI+OyOIoPPqQFjQdBJx/FAM2ETm53YCQ9qtnzCamE5ircIR8XvitakEifCYo7WDc9QZMeA+5/48XEpWoOUM4wtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H40OSsWn; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="lJEXwpQv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z5hiaLRt9iCi6G2puXSobh2WkaclKhPk5jRtewAzq3bZ1OWFzuyaJwpUfMzZwJx9vlrkfZucBw9jEAUwfE0O8vi7urPNWvrF1sGyy9Z8I8RR5sXuDVjL9x57HD9YkvFD25cXZmBFXLd8ibQIwh56qnkSHEX0p79ichU+pPjfDS5bV6OuQ4JbMY5ChFWhcmWnjstFx8oi6UEB5GOLBn7v7e6znCGjk+uOwfAoRcI3EoKdYqSp+uiujQkzDWJF8hBd9FL8U+3MOpw2DJaeLHHwoP2C7tgJhSwE/bGSh+HrnFQnUQCcgdjc5P0fHrS2xfMC78qJ5WiqK3SbVFKZhGDdjA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9abixG0uIwN2AzLnd2/rXblv/j8ai/ADLB1tfe9itTE=;
- b=boMYLVnvyXqsQKcWBeEBnRQjyX50JkLH5o5lE2rpuCAtr0J2TkfTO99mgxeNaj+xx22Qbu4RhcxTBlcpXlRUBqcvkCidlXD0IYHS/l/7L+Xi6zAIjGK15lG6127fqs/iqn/OnuFCAAeit61/iJKDHrw3DTxwjrJYGK+9hXXhOCdhbtnWV3iHGIyI3ev5kSOTv+qLUoXLBVxNR1eGje15eSDbS3Z3OL/jIzk8P0R5YrYOLLOpJpQYOAozItixvplh10ahS0lfmtf12ED4BrnYPFymJHisMfeE5CtSb5u4C67v5HPNwpQKF/m6LkFqjviogdzV3oF4oKxiCRaeCKv4Yw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9abixG0uIwN2AzLnd2/rXblv/j8ai/ADLB1tfe9itTE=;
- b=lJEXwpQvqLmXLcU7m00ZysrnaOc9ztouMCRtM+Pt63nI8SRBmKOqZ7N/ar5yFnOj/LCC/NmAhmplZZAk/ykF6mC/COZ3mD5nH2RIlJAQWkZdtjhMfXs4X+miHRzUYsWAI+unupXqza9/BB0j91Hm18EEDfTeBKZ3cGhGJcggk+lG6+BS98gVBkdyShaijyIR/XAZ7gCoqckTiof3bUr27qhC5ECsCfE0Gkx79i5QixVI47ucIoOH7sW0qBlnsZ9IyrCahhSZt8Dpbr/TOisYPYMemqZWd8Qlk4DOVhns5DdKJwAtlpjs1a9IdJS+zvIN8PYT7AVt5wvvw5jxz+HSoA==
-Received: from SI2PR01MB4393.apcprd01.prod.exchangelabs.com
- (2603:1096:4:1b0::7) by SI4PR01MB7982.apcprd01.prod.exchangelabs.com
- (2603:1096:4:298::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.17; Thu, 24 Sep
- 2026 01:50:55 +0000
-Received: from SI2PR01MB4393.apcprd01.prod.exchangelabs.com
- ([fe80::c735:fab8:6e3d:6d1c]) by SI2PR01MB4393.apcprd01.prod.exchangelabs.com
- ([fe80::c735:fab8:6e3d:6d1c%4]) with mapi id 15.21.0451.014; Thu, 24 Sep 2026
- 01:50:54 +0000
-Message-ID:
- <SI2PR01MB4393F419F425D1D54C389A54DC812@SI2PR01MB4393.apcprd01.prod.exchangelabs.com>
-Date: Thu, 24 Sep 2026 09:50:45 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 1/4] Documentation: KVM: Add live migration API for
- confidential guests
-To: Peter Xu <peterx@redhat.com>,
- Tony Lindgren <tony.lindgren@linux.intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>,
- Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
- Fabiano Rosas <farosas@suse.de>, Jon Grimm <Jon.Grimm@amd.com>,
- Pankaj Gupta <pankaj.gupta@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
- Steven Price <steven.price@arm.com>, Anup Patel <anup@brainfault.org>,
- Samuel Ortiz <sameo@rivosinc.com>, =?UTF-8?B?SmFrdWIgUsWvxb5pxI1rYQ==?=
- <jakub.ruzicka@matfyz.cz>, =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>,
- Vishal Annapurve <vannapurve@google.com>,
- Elena Reshetova <elena.reshetova@intel.com>, Kai Huang
- <kai.huang@intel.com>, Kishen Maloor <kishen.maloor@intel.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Peter Fang <peter.fang@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Xu Yilun <yilun.xu@linux.intel.com>,
- kvm@vger.kernel.org
-References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
- <20260831071304.762939-2-tony.lindgren@linux.intel.com>
- <aq0iC5z0HFn5Rb2D@zhexu-thinkpadt14gen5.rmtcaon.csb>
-Content-Language: en-US
-From: Wei Wang <wei.w.wang@hotmail.com>
-In-Reply-To: <aq0iC5z0HFn5Rb2D@zhexu-thinkpadt14gen5.rmtcaon.csb>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TP0P295CA0032.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:910:4::20) To SI2PR01MB4393.apcprd01.prod.exchangelabs.com
- (2603:1096:4:1b0::7)
-X-Microsoft-Original-Message-ID:
- <d7c1d759-02ce-4a59-acc9-d5cbf68cdedc@hotmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H40OSsWn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790214762; x=1821750762;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5wjKolRkOj1eM6tQhXMmGAq+yZ6O5IWDpFid/YcLe5Y=;
+  b=H40OSsWnx7584Ll8USzJeWn0s7dpiWyXrVThuZRIpydWlubcGMXQPjFH
+   bo/Qx7EfpGf06NGb8WjEssxeCMmt6Z2scxDvs8xHGYnYUwrKwfXwtzMh0
+   7dyP+MLXgRnVqQXNCIcY9TgF11WYe0iiFEKKceDho+bRl3orxcNuKN//F
+   kO9SFDKI69/eII7fsbJCo33pnzB+Ap4u4DUHMYil6PkjaPO5f1kmk8svt
+   SOJexc1Q5SKpXorUdCwwHaKX2pKabNrLLR5bFqpTw/S7jc4NTVvhVaDpX
+   lzqKrqaRmd2ZCa0dYFGQbzym25NgvKOER9/4afzbcHdTQWhVssDtTeX4R
+   g==;
+X-CSE-ConnectionGUID: c3scD4IWSHWsuKiATXR5Tg==
+X-CSE-MsgGUID: CK/e03XVSYicrXSZeB78Hg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="93469019"
+X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
+   d="scan'208";a="93469019"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 18:52:41 -0700
+X-CSE-ConnectionGUID: evZScJL4Sqm+7L+p/NbmgA==
+X-CSE-MsgGUID: UscXWhvFTpS1/iSTbCkr/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
+   d="scan'208";a="273051153"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa010.fm.intel.com with ESMTP; 23 Sep 2026 18:52:36 -0700
+Date: Thu, 24 Sep 2026 09:51:26 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>,
+	"nik.borisov@suse.com" <nik.borisov@suse.com>,
+	"Mehta, Sohil" <sohil.mehta@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"Gao, Chao" <chao.gao@intel.com>,
+	"Fang, Peter" <peter.fang@intel.com>,
+	"Maloor, Kishen" <kishen.maloor@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Configure add-on features on TDX
+ module init
+Message-ID: <arSCHompqC1OTWbA@yilunxu-OptiPlex-7050>
+References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
+ <20260915102658.713079-3-yilun.xu@linux.intel.com>
+ <2f6ac9afef52386fc491145222ea46e54c24a73f.camel@intel.com>
+ <arEYMCfdvmiqE4aR@yilunxu-OptiPlex-7050>
+ <9cbc8edd0a2f21e69521a7f2dd9f1a1114f2362d.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SI2PR01MB4393:EE_|SI4PR01MB7982:EE_
-X-MS-Office365-Filtering-Correlation-Id: 883d8cd4-aec5-476a-28fc-08df19de4426
-X-MS-Exchange-SLBlob-MailProps:
-	q6Zzr5Fg03EuTjII8LIIKTD3uyhoagb3c5iVLatXaCuA5+JnWQIax4vxjSlGyf3McRybTlgGsc3r1Q2eJFGXBF103gr/sKmLmMzwr0+OM0IcCdsysZjMkgfleO6GWmOh2yZK/Bz0EWwIco42/xewKK+UYgdAE08wltCM10NKmaO2ud1A1m++cZ0YXj+LlpiMIj1xZMjpfeHdItU8TcnBRyeQq7xY0w0A2vRqjdB+TQDyk/9EAfQa5QywJYE18grNiHkAxQ4s5KP5IilXF6Xz0MykYmAysW2jCZqgifjw7sqqPjaJ0wm2E8PLUPHuljriuhGz6wp7pbPuZKYmPDb39rqesGQeAIcFnfcb/KirYv4VyPv+j/Q1XZPN3Ea5LyklBWIEBkuTqWHlOo/PAgemqJz5+OhMPV/LQlFl+0Z/pXBMbEHqRXR3Ycbu/To6eRJDsxT3CSWcz66FP+MARkBz1P1R+2MHOohmbqCAxJiDCgMxKr5XMATHzWetgCQzMNcdFOFGg/oyQgGmtQpJ96qLlFhDRTLFILSftnkROCofpm/wERRk5fxs2zJGVkNU8u7nU1G1+XsCNgleKG7KMPyzXC0UOM1AxaK+RvJ9zLEKBuAt+nNFvOKdf3dNjvMp84GNdeVScD1WTSxCuzmu8pKN2iMH5gVwk/0PfUz2Lw6Ka/mX98rkfTF6hMuqUGT8kW3M
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|6090799003|19110799012|8060799015|7042599007|15080799012|45011099003|25010399006|37011999003|4140399003|5072599009|16041099003|23021999003|440099028|3412199025|41105399003|40105399003|53005399003|2607281247196008;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bWRKYzAzZFBEL0dId2t1TDBvV1RYUXJFQXNlR205dWtsQ3pSRit3UHpoa1Vr?=
- =?utf-8?B?azd0dy9UMkNkc2ZsbHd3OFFZS1d0cEJucHdGTm10Uk9rNmR1bElGRGp4WGFS?=
- =?utf-8?B?R0xDUlNUbE1TS0hqcXRPV3hQR3RiWFJ5R1l0NGs5VmZ4TnBSdi91UURXWFJy?=
- =?utf-8?B?ZENhRUFuNlpDNC9zQ3hVVjJXaG9QRm1XVTZxUXNCV1lIVjlSRE1ES1ZqRW8w?=
- =?utf-8?B?eXlaRVpNV3hkTWU0bmlGTlpVVHdlN1NQcmM0eUJraUJua0p6UjZuUFpsbTJa?=
- =?utf-8?B?eG55dmtnL1VkQ3dEeHZSSWRNM25DQUNmVnVNcy9UaktDVisyaHBrbkZxMzk3?=
- =?utf-8?B?YUtXdHlZS01LcGFveWJKSFo2UTZQQmczdlpTQkhVdmY1VVMxUU5XVkZiVTlR?=
- =?utf-8?B?Z2VJVTNveWlyQitBSTlCVmhTTFNSa2dpQkJMdkUzQXE1ODltd1hVZWFqdEFK?=
- =?utf-8?B?TFZMSDVkcGtwZVo3eEdXWElzNVl0Q1hrNlRCem92eW9lR1RYSU52L2Foa2VI?=
- =?utf-8?B?RmxFdjVOdW95eHdheXJ1OTFnZ2djbU81S1E2VDhXWGYxcWppN3NacTdxbFpq?=
- =?utf-8?B?WExFM1F3bllVeGdmRkxvTHdSRUF0aEJCdGM0VlFtb2VLa3padldGdWYzaWRv?=
- =?utf-8?B?UVhPUjBZSkFEUE92RFlCeXdkVkE4MUU3U3dPT1pqb1luMndRNVlzS1MzVUFj?=
- =?utf-8?B?K1M3cjNDZEo3Q3pTSzJIaVpJZzVhdGpkTklpWmxWdEdyckF3dXNmRmYrOEJa?=
- =?utf-8?B?bllaWGE2eWdGbE5rOUp0WFBSQkgxTCttc014cUI2cUFUdC93N3NFNTFmVFh4?=
- =?utf-8?B?NXpKd0ZKSGhGcytaU3AraHVkT3VXc09SVzVvbWpXbkhwTGcra2g1Sm1hdmVw?=
- =?utf-8?B?ancyZkRWa2N4SitwZEl6aFZyaEYxZVpwVlJyRVdtSVlnSmtnMTIwZy9uMmVQ?=
- =?utf-8?B?R3F0cnhHcVZJVFRzQWhDcXhhTzNGVE5RZ0lWUHJidGVGdlhMUDAwZFk2cFBJ?=
- =?utf-8?B?Rms4N1pkK0lYL3AwMXh0Tk9ra1JUVGxLVmM3ZElMdTkzSVZZWnJxN1FLMENj?=
- =?utf-8?B?UmNFeW8zRmhpeUlDRTBIakJ0OVpSRXJ5Qlp2VkY0Nm1acUc4UGxDRWF1Nlhp?=
- =?utf-8?B?Szc1aitLdDVJUGQraTdBTzM0Ti9WTE1mejVJWkZsRW9rdjhTMkhURXEwbERo?=
- =?utf-8?B?T2xxa1NMM2FQdFFqRHlDMEluNkRJUkt6M1ZwYzU2N3ZwVGdabTdyYlFudDdZ?=
- =?utf-8?B?Z1NQeWVFbWkvV1B0dXJFVkdQYXVhTTB6NDdWdFA3RG1pMTdybFhuVHBnalpY?=
- =?utf-8?B?dkkrSkg4RUZtOTFpOTVDbXE2ZHZ0eEhxU2k4RXBUdEJaNlQwc3VRamppenR2?=
- =?utf-8?B?QkprRTRQaWxScXRpRkI3OWRSMTFmRHZvVHhhRC9RbEdZbnQzZGFHVHJ2Y3Uz?=
- =?utf-8?B?U2Fzbjk0SS8zRmZnQ3FQYTIxRkkxUlY1bnpJZFBBPT0=?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?a3JsVjhORDFRNnJTdWtGa0taSEQzYlN3SlRUYWcxaUxnd2VndkpIdnFuS2JH?=
- =?utf-8?B?UTd0d0V3d2M0T0RvSXJMcTVSdkwvb3hpcjBKeVppK2prQmxNWlZTcm54U0I5?=
- =?utf-8?B?QmpSdlo3SGo4d2pFa1pZOEd3L3hyQWxiMHdsS1orMSt5MFo3akdoMFo5SjBr?=
- =?utf-8?B?RFVmQW9ERkozc2l5ekJjdUN5NFNGRFNJYzB0TzhFcjZkcENsZ2dUTE05aWdx?=
- =?utf-8?B?MG5jL0h1OStMZitoN3BqZkZUQnJNYnBwNjVHak5kVDZRak9kSno1ZlZzSEtS?=
- =?utf-8?B?YkpSRWxIazgrYTFaY1VTQTAzMnlvWlY4OVFOVjIvYTE0Q3V0S1FqdzU1eFRG?=
- =?utf-8?B?VzVRK1RQWUZHbEEwSVplRmNIc2N1RThObElSY2ZqOC9HeGtpdThDSW5yMlRL?=
- =?utf-8?B?ck82RVhOa2Vqd2ZDNGU0MU4rTno2dU9DOVJhUTN4L2NFRVRvM2xVYTdXbFJi?=
- =?utf-8?B?cHAvaFJLTnQwRTJZOU5DS05IRCt0K2JZaFZDSzQrZFBRUVYvRmdkKysyM1Vp?=
- =?utf-8?B?ZGJKZ2ZFd2hIQ2EyNmJqUXBINjM3M0kyMVhpRVZFdEZQVVJ6aXVEQ2o5NWpV?=
- =?utf-8?B?dC95dU0zNzZ4UW55NkxYaUg2T0dBVmRkMHlhN1NwaUhQMmIyRmR4L0Q4YW9F?=
- =?utf-8?B?VzMzc3N4TS9yZW8yN0VCUWpldVhiakZyMEVZcFJQOURSMHpwNnRXbjJWYzFy?=
- =?utf-8?B?ejMwR1B3eXVGZVNIWVN2TTFWdm5vWkV0WXBiMHg5QkkrQVlwNm9TeUJPaUZJ?=
- =?utf-8?B?Kzk4RzNFMStCcWVwMXJHTnpRMkNTWkJ6d3hCRUsxS1FWYmxZZVlsODZCWXli?=
- =?utf-8?B?U0dWamtCbHpQN0xXL2xiOVd6N2ZTWVhUMFkyNmIrYmU1MFRadTNuRWd5eU1s?=
- =?utf-8?B?TTlzMmQrSVFkNU01MGg4SnlZUHNORjFyWXowcVhDTEdSR0V6K2dvUWVGVzR6?=
- =?utf-8?B?UWFFVW5zSGljU3JPSVNqeVZwMDk2RzQzdGFxNkZabWZKcCthNERYSXN1WFNO?=
- =?utf-8?B?U21xNVdYb21Pek1ENVB3a1F4L1YvQ2JQRDhYQlpaUFRQNjRraW5UTFFuNE1z?=
- =?utf-8?B?TVRMY1Z1Qkt3TElucFkyeUQ5SVc4UHRpdUdHc2tqWlhCK3Y0QWRiQ0hmaW1u?=
- =?utf-8?B?dWZwUERPQ2pBQnl6RWVvL0pIelFFdDBVSVlFWktEWlBFM0Nac01GdE5UOXVh?=
- =?utf-8?B?UGNBYXpQcUEzdlVwZVlUZDU2Z09vVkZEb2puTXIyS3JnYWJZVnVIc0NrZDR1?=
- =?utf-8?B?eWdSVDkzNTFlQVBpbnRWbDNBSU5CZlZyQ2pJeWJXZ3I5ck1tRDJJQUV5QUdz?=
- =?utf-8?B?Q0kwMmx4MFR0V2x4MitWMWFwaVJHbXBaaE9PQmZQNzdGTjNWZjBQWWk4citP?=
- =?utf-8?B?TjQ1WXVWS1FrS2tRbktTcUw0NEVlUVRYWmYxQldFMVlYNEM3SkhqYjNUOXNR?=
- =?utf-8?B?dzdpRzVKcWdKdm8wOFdydkdCS25HSWJIT1Fobk9OOTNoQTMwU2V4TEl0YVVk?=
- =?utf-8?B?eEVEMlRiZm0wc1BCeGR6QW1JUDVEUEs2eGhYTWM1aEFwTUNGNXhMbExETXFo?=
- =?utf-8?B?MVBFLzAxU2tpa3IvdHIrMmhZVlQxWWRSUjVvQmRHV1VSUmFkTW9ibkRBejYy?=
- =?utf-8?B?SWJiWUZ4UlhOcHRsM0lrQVpva2xqbDQ1MEZmSzVkUURsMTk3bVBVajlSTUVn?=
- =?utf-8?B?ZW05Y3RYckVEdWpxY2JRSysxQXRQZTFlQWRFbmdycHNQWUFKNVNKcWJKNVZQ?=
- =?utf-8?B?OERMYmlNSVNLZnNaSzVleGcyd25VdS9qVE9maWZqd3JrRXNIRUxldWNvYysx?=
- =?utf-8?B?TWlSOUpxTy9ZVEV4RHlibUhlOXI5cS9oc2xUTkc4NDZPK2F3Q0hoYmJ6VEFZ?=
- =?utf-8?Q?on3tJNw3Wup+7?=
-X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-3e488.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 883d8cd4-aec5-476a-28fc-08df19de4426
-X-MS-Exchange-CrossTenant-AuthSource: SI2PR01MB4393.apcprd01.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2026 01:50:54.6828
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SI4PR01MB7982
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9cbc8edd0a2f21e69521a7f2dd9f1a1114f2362d.camel@intel.com>
 
-On 9/18/26 7:35 PM, Peter Xu wrote:
-> On Mon, Aug 31, 2026 at 10:13:01AM +0300, Tony Lindgren wrote:
->> +:Capability: KVM_CAP_LIVE_MIGRATION
+On Tue, Sep 22, 2026 at 02:48:58PM +0000, Edgecombe, Rick P wrote:
+> On Mon, 2026-09-21 at 19:42 +0800, Xu Yilun wrote:
+> > > It seems inconsistent that global_keyid is passed in even though it is
+> > > basically global state, while addon_features0 is retrieved from the global
+> > > state. Passing the result of get_tdx_addon_features0() in from the caller
+> > > doesn't make a ton of sense. And we already reference tdx_global_keyid
+> > > globally from another seamcall wrapper. So I'd think dropping the arg when
+> > > you create the wrapper would be best in the end.
+> > > 
+> > > The smallest change to stay consistent would be go add an addon_features0
+> > > arg to tdx_sys_config(), but it's hard to justify as good code. I'd maybe go
+> > > with the global_keyid change and it probably is a separate patch, but we are
+> > > brushing up against mixing cleanup and feature enabling... thoughts?
+> > 
+> > I'm not sure. My thought would be removing "u64 global_keyid" argument
+> > for the new added tdx_sys_config(), to make this patch reasonable.
 > 
-> IMHO this is slightly misleading, some "CONFIDENTIAL_" or other prefix
-> would be nice.
+> Ok.
 > 
-An earlier version of this series used KVM_CAP_CGM (CGM stands for
-Confidential Guest Migration). I think it's cleaner to use a short
-CGM prefix for the related uAPIs, so they're easy to identify as a group.
+> > 
+> > And the cleaning up of its caller - config_tdx_module() - could be in a
+> > separate cleanup patch out of this series, make sense?
+> 
+> Hmm, I'm not sure about that. I'd think you would need one patch to remove
+> global_keyid arg and use the global reference. That stands on its own.
+> 
+> Another patch to extract the helper. BTW, since the goal of this series is to
+> get acked, I'd think the cleanup patches could still go ahead.
+
+Per the discussion [1], I'll leave the global_keyid unchanged. It's good
+to pass the value of a global var around, to show we are not modifying it.
+
+Thanks for connecting the 2 discussions.
+
+[1]: https://lore.kernel.org/lkml/199d392a-02da-430b-95ee-b176ed0f43de@intel.com/
+
+> 
+> > 
+> > make W=1 doesn't complain, but maybe shashiko will.
+> 
+> 
