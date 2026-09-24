@@ -1,234 +1,204 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366B941F5CA;
-	Thu, 24 Sep 2026 07:49:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790236193; cv=none; b=cPC48FTR4ZJzYOBuoBFdjNF4Bs5kIeIP3RWFam/32vL9dS0eFo1iQBSgBY/YS8m913KI7VUFcHk0QrPYUR+lQ/0KqQuGQfJajW9j1UBicLG2knuy5XrxYd/ODUhr1LbDmbxvMJMTsIz7fTX+c9Pwbmjmp4j6BFhNWgab/+lY7II=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790236193; c=relaxed/simple;
-	bh=TpkAp2xl8VUoc1MOiXnXhebcZEXL65twEmm9Rhkh8n4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qRgRoVoXGShFpoEszj1/pLrl24lk5z3GfSPz+XpipYs3CNomopJUrUj0f3VXqG1AQNJRtYsMcHtMxkYCHMl1JOxw2CzKBpFQtwqHZTsBYo3kA3HESoXL0rZpG49coiel6klCCnIcHfe2RxUIGNsn7sthww06g3/h1/+IsoXKwsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H1XnexKv; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B222E30AAD8;
+	Thu, 24 Sep 2026 07:54:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790236466; cv=fail; b=MlJ9HYj+bRpTHNwpFAmQ8xleO9jphWfx3tb1uDFYPUVLqu0TC6GEIDI4Yh7/NmP0vr3CJyriVHtljWCCRNb8rlL43l+F3heF5cpe9CMsgKCerRraBf44w7RHpxN8ZWgGPYmaF/cAa+CqY/qJmZiDp2G1MqMET5Cax7Kwwvxz7iA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790236466; c=relaxed/simple;
+	bh=LITYmTmoOjb09q1csEu5dsdbjCyub3F+qHsx7g3P/YI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=X58rKU/DjzbH2V4PZ24ZQLYeiNisEOpS6lcVY2bqkv2ZtC/ivTyQ5hzbWisS+sYDZnVl+58TreNcsGq6LEzFOOJk1VF2MYLI0+EbzI3PGFqZGwX5L4e9onCO7H4VjAtYvUE/9OdneDGYR/CH3lC1GQL300lEJCdbjC3C18h2GiA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q5UaW2xT; arc=fail smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H1XnexKv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q5UaW2xT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790236191; x=1821772191;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=TpkAp2xl8VUoc1MOiXnXhebcZEXL65twEmm9Rhkh8n4=;
-  b=H1XnexKvPRZ40sGVQH07L1FBnFbF5ZulxW2eE3xWTgb+k3Rmi8TDIHbO
-   WbMglvmC62bV4UsEJRfUesRGwnlpjV94iqwjpk5RkDGTDRExWc1wM+ODz
-   mUO7ofYkTYkgoggcjN93egFxGn/FXUMu4AkN3ooW/C1lYkNPNV1ydNOJj
-   pnbiJ5qNfrhZCyPjXyXem93g0kdqE2Jji/WtuvX7FD6QzSVzVLP6yVO+a
-   +4Goyw0oVbxsbJRBohJdUk6jJebfLIqWWMTqm/2KZlnoClJHHu9F88veX
-   KhptnAJ+e1lTdEaFBYLSAEjYgd/+6t5dNTqJQAvAy28Ui6BuDwY+oEOsz
-   A==;
-X-CSE-ConnectionGUID: w07YFKpgTXW3qAyyWT2SrA==
-X-CSE-MsgGUID: vrGrBs13Scy6Su/eftgFvQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="89954810"
+  t=1790236465; x=1821772465;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=LITYmTmoOjb09q1csEu5dsdbjCyub3F+qHsx7g3P/YI=;
+  b=Q5UaW2xTape1WApZVExhTytNhJlIu4AlnxNFmZjS46q/1aThbsl1QV+Q
+   IH9rWca+g0xYZJHskgYGFz8MR/9LBuw/7uDqwCruvWA1oJhKVUjWUWWKs
+   uTkU2TQdh1QnCR5LB3iIvrioOiQcURdtujsHWaud5dNp1KjcVuoHdycNQ
+   6Y9TmHwWgzEv5mclV0UlQtArtAMEmZgwF6usUS0ZunrIQ2/eM7VWMCbrK
+   HE+ARMfmnWCLSIwolp7Ra3MBVv88VeXvwfEr/njtFgdjhmGDZ0YISgl76
+   L8SzJvdndp1hOxJpDd49FVBglHUJ4FnI57KL4HLZZNuf1bBabP4aa/P68
+   Q==;
+X-CSE-ConnectionGUID: LTAuNQXpQUy3aNJJcVbQsw==
+X-CSE-MsgGUID: EMlZxru/T/+Ke1hCstfP7A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="89770319"
 X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
-   d="scan'208";a="89954810"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 00:49:50 -0700
-X-CSE-ConnectionGUID: 0JZefgtJRYa0w/pdGw1cXA==
-X-CSE-MsgGUID: KFuxz9k/TmejVKzhHLlL7Q==
+   d="scan'208";a="89770319"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 00:54:24 -0700
+X-CSE-ConnectionGUID: iMCfGK8wSPufX5XmMhUF4w==
+X-CSE-MsgGUID: /lPYUOM9TYiyPJM0kXeYeA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
-   d="scan'208";a="271783705"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 00:49:48 -0700
-Message-ID: <062f5365-7eb5-4e04-9c84-f5ecd566f019@linux.intel.com>
-Date: Thu, 24 Sep 2026 15:49:45 +0800
+   d="scan'208";a="277700112"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 00:54:24 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Thu, 24 Sep 2026 00:54:23 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Thu, 24 Sep 2026 00:54:23 -0700
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.38) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Thu, 24 Sep 2026 00:54:12 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eNwJ1XNP6AYnTTVHjWSrvdM+8//zBMFfp8BNIR0Z9NYbpf5vbEFubPsBbjBnUknDMZKDtl5p8ik9eO2obfELy8q5bAehW3nrX7LzO7q+ui72q9kyKHVs+sP5+4sOTvyHE+x2tusGmcp22xw+WdUXK/CqIyPps+J4+M/94BmM4CVzyuQT69pamF3jJ7EIaBKvFGRs/XFnzRpRGmT3csBCrKpS4NOij5D+n6QJo+OcbA+hcyf2y62h69K+oh6zuFPBgrMJpO0ItCRGnrRuglvkpUwgAUTLQAeQRZzWfqWpS5RmU2A39OfEWRw4Sz40+Yjy+/MvJTWvjOzCDtcqyfdpWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aBAJrvPZcjWfXa8Ch2MrvxvXckKWEUj9vPg1MTeBZkM=;
+ b=M71BlvOi64x8SBFScEYi7agsIpGPkbfo13gEQ8xLiNQNjnFQThpDFYAUV0qNOUE93CCEk12eaEjS3BfI+4MfwdGcUiuMIF1WrpSMe9b8K+tl21S1CoDwKfyDfyXMAkJqdos+Czz9OJebD9IS/sbhJo8DYQRLuNLONGdkeEa0jF3181O6PEJY1cU0XPltpeTTwPEpPu4lHZoXW4K8IA/ece3kz0z4zmWw26S6H8UqJFp/73COD00uL2K6nHsoluWyYSalg29omGz0UrQU80s7ZzwnhSgNfsGaJgXohHhE8kqRMznHYj8Bt/EEuLzNY6sW4+vGJMiKXhANMm7Ex//ljg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CO1PR11MB4835.namprd11.prod.outlook.com (2603:10b6:303:9e::22)
+ by DS0PR11MB6350.namprd11.prod.outlook.com (2603:10b6:8:cd::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.428.22; Thu, 24 Sep 2026 07:53:45 +0000
+Received: from CO1PR11MB4835.namprd11.prod.outlook.com
+ ([fe80::d051:d948:c209:9225]) by CO1PR11MB4835.namprd11.prod.outlook.com
+ ([fe80::d051:d948:c209:9225%4]) with mapi id 15.21.0451.014; Thu, 24 Sep 2026
+ 07:53:45 +0000
+From: "Tian, Kevin" <kevin.tian@intel.com>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+CC: Jason Gunthorpe <jgg@ziepe.ca>, Alexey Kardashevskiy <aik@amd.com>, "Bjorn
+ Helgaas" <helgaas@kernel.org>, Joerg Roedel <joro@8bytes.org>, "Jonathan
+ Cameron" <jic23@kernel.org>, Nicolin Chen <nicolinc@nvidia.com>, Samuel Ortiz
+	<sameo@rivosinc.com>, Steven Price <steven.price@arm.com>, Suzuki K Poulose
+	<Suzuki.Poulose@arm.com>, Will Deacon <will@kernel.org>, Xu Yilun
+	<yilun.xu@linux.intel.com>, Shameer Kolothum
+	<shameerali.kolothum.thodi@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: RE: [RFC PATCH v6 02/11] vfio: cdev: Reject duplicate bind before
+ updating KVM file
+Thread-Topic: [RFC PATCH v6 02/11] vfio: cdev: Reject duplicate bind before
+ updating KVM file
+Thread-Index: AQHdRq1Ig+cVqk+GgEy3sNP+dGd3HLbdZQ7Q
+Date: Thu, 24 Sep 2026 07:53:45 +0000
+Message-ID: <CO1PR11MB483540981ADED57ABF6EB4878C812@CO1PR11MB4835.namprd11.prod.outlook.com>
+References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
+ <20260917140159.1163281-3-aneesh.kumar@kernel.org>
+In-Reply-To: <20260917140159.1163281-3-aneesh.kumar@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CO1PR11MB4835:EE_|DS0PR11MB6350:EE_
+x-ms-office365-filtering-correlation-id: f2445dee-2401-4818-9e4f-08df1a10f587
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|366016|376014|7416014|1800799024|38070700021|10067099003|56012099006|4143699003|22082099003|18002099003|11063799006;
+x-microsoft-antispam-message-info: QM86vTUzZZN/RBWeoUZkmpP5VepEBSVvTFCYdDFhPXwTjd6U9o0akx5y3zhyoRhjEFS7YtRXWOjCpUupPBblipL2wFgA/XrrkmlmlSSuk84DgpOFfReEQEVCIQ02DQezX3LXHqbneAjC1hB2uTXCEznLFjymJFqeqioTgDfzuIg0t+CgUJ06Rz+pUMJr/Y4VLEndUxvckgUxeMVPMw1lyhnDKB2OgMorGpT1XJdaPtPOsuSaWOognjidDw0Jy7nXwr1y2IaYDNeZXcwJe2Y1R7SL3JiUNKoTKerdP4qZ7QvMHqrodZHrLARyQkb2KwptwwJG7i5oVH2RMfiHzTlf3RQXn38wIPkKRoIEcNt2gCIhVS2fkGHD7phJrlQsdlIdJrdf5L3KU9snVrYmH+ij03sI9CS/UKvwOd9WyJ/D4MYD8Y9DYA0ceGEiToEWIIOBfeLawUU+L17cFZDMjzQYNc9o+Ltln17Uew7ovhzbqyxQaFJmpjilvuv4OxnyGgNXNwBJ/OpHIuZI6nC4/uYsBt6BkLPkP7u6kf4FWPyUODeXWNiQM4bYknY280zEb100SKuvbdVQsp7GgzorcdjaFWNSknBUKFEoR3AitzcdXdCGIdbWILPBE01Qge0761RepRpiKDrksx92kUPQ07AsDw4erwQY15l2GlmVw1bUR4E2TuVzSsv0LxSeAelsH9pDFyYziqAh4m1EyCSx7e7cMjsGx2j78JDLnWT1/hkUze8=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB4835.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(7416014)(1800799024)(38070700021)(10067099003)(56012099006)(4143699003)(22082099003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?osrQi5VZNPqH85wmfnS3iZKIOzPN56KBjulvbOkbXZpFcelQzT0c0YtdmT9U?=
+ =?us-ascii?Q?4Q3ifS0tIsswEjX+fZ9MX0+3ie7jzxupiig7S6BSuAFq1knx7OlO9tUOBsYi?=
+ =?us-ascii?Q?T/lCtVzUkqbBCdHGCvpW1vOi8SElBeUgL4Pg5ohh7Ui2CDO4g2e+C9MVlkuD?=
+ =?us-ascii?Q?mUxFSxgfn42cvij6ieSXbnTH3754LX2Ru6cAzq9GgBDWDZ7vxjph/rI+tY1Y?=
+ =?us-ascii?Q?3N8kBXb++2UOuRsYaqg+ZqDJd8CvlUkuZeYRmpyo7/Qux+YQFt4jX2JVBjA9?=
+ =?us-ascii?Q?brikZhbBt2SibYGXZA65pcHyupQxp/MjfODMJZm7H9Cwv8RR8JXwHEn+JMHV?=
+ =?us-ascii?Q?prn7Is0PfNiMvLqvYa94NFD9tpisuiKo+cOgXHoa5faw9O5WGBTVrMsVhCMW?=
+ =?us-ascii?Q?TCXFUXtxm1X/zZXohscbzFTertWYaF8DVemd0Zh5dH1jz6JVVYlW3hv0VJ/N?=
+ =?us-ascii?Q?OzPZAflTbqauckQ+5zOdnXH/ivqATiDGaZ84bzibZBpEeo2/yuJjij2Ilb2X?=
+ =?us-ascii?Q?aBwtvQMRvCDIq7+rzEVVrp0yK1e11KILm+shPuJhc0QUtKWJ3qLhvBsqrKKE?=
+ =?us-ascii?Q?tgbY0VmEkmqASiB7VpDFNT7d6wHmoPbNCk70wcwj8gAgKz9jIDuwVfITOk1v?=
+ =?us-ascii?Q?Sp7oYAnTATyGy3hEnyHdC3fBC4qbFt7xRydIMg6qRj7JVxEi/kntSag3qWZF?=
+ =?us-ascii?Q?AjSJczmEJuyL2376kX7+FUJ+3vea2HYRD3+6FsM8a+YndfjZqlu4JMXRBetG?=
+ =?us-ascii?Q?XPZfMZGtNY5qx0nE1pF/g3DvpFEz9QUyAtWD2qgg0IoEJif0RszWOkQvdsst?=
+ =?us-ascii?Q?RkF/fRuuukOOHD2Y+6ouOZWKR3TphoOw5kuc9RmWqL2D4CgOoebkw5q0KWyO?=
+ =?us-ascii?Q?P83kTWURs4dHzYzxrC/WqV/ysf4BcrFLzMoAbNvtTLguW7v0VOMldA4KcBUM?=
+ =?us-ascii?Q?tvzsV7qP0AI/pqdSPwioV516l3xXMIiDv7kA/nUGJXGS6zGL8qfXBJ0gaEbk?=
+ =?us-ascii?Q?HG/aZVU8gZL8W01388mE/QF7Vxa2wll2iMbPm4shCmDqvlcgMv0Hx1bCP+8Z?=
+ =?us-ascii?Q?7Jn5I34VyLdMLhMWz1tQ01lv1Cs/knLQqBDsjSeIzpPmdyYhu9eKyAG/bbXv?=
+ =?us-ascii?Q?AxrqCjwjIRoghQcabQEY67U6SjfvL70PzS4OBGAV+UE3wBM6WxqV9hFkPpjg?=
+ =?us-ascii?Q?z1jXWHc2lsDyFbA7L7ezuTbVgi/pbAHpEzMwSUFmywJO/WOIgqWXB+p5nVm1?=
+ =?us-ascii?Q?yt9oJuwCJFf4umqeFjEbSh7OQ4oTJwhGepBzb44/rpz4jL7omgNgWc9ai5WK?=
+ =?us-ascii?Q?GM3p4PjzuZc4AP3WpnlH7dK34gxYUghDeZCGk9txuf0nU5AKfiGokJ7HEmmt?=
+ =?us-ascii?Q?206znNapJT4cp3ia/VI9HJXot+gyiNIatNkKopqTOpijVtQbrN8X8OWawfog?=
+ =?us-ascii?Q?dqCL1bI+GxgVAJdK4wN41gaTKnlUT5L7IPbcH25QpvN5Ih019GZfS/r7tjRu?=
+ =?us-ascii?Q?gVO5zsyWn0fuoVrahjJnCY3CLYnNXjHqbBdXPdkNhAhBzVi/fbeAJ2rRNaM5?=
+ =?us-ascii?Q?R90kXCo8a8Mgk+axHEk7yJvpk9mxVGQOMFHf26az69bnLSg9UG7Q+V9Z98jg?=
+ =?us-ascii?Q?kXHDCL/Tu/wT0sEtZ8U7ZDkdiTygyAYHetpMjTQ0OApk/51Zy5GZZtfLCpuT?=
+ =?us-ascii?Q?KH2IeZ/9yDyF07u7I0cJOmyZ+NRwqGxP64I/pntg+Cl+kEZx?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/4] KVM: TDX: Track configurable CPUID bits allowed by
- KVM
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, seanjc@google.com,
- pbonzini@redhat.com, dave.hansen@linux.intel.com, andrew.cooper3@citrix.com,
- nik.borisov@suse.com, kas@kernel.org, rick.p.edgecombe@intel.com,
- chao.gao@intel.com, tony.lindgren@linux.intel.com, kishen.maloor@intel.com,
- dedekind1@gmail.com
-References: <20260917072548.2314491-1-binbin.wu@linux.intel.com>
- <20260917072548.2314491-2-binbin.wu@linux.intel.com>
- <39047bbc-757d-4131-a25c-5a7743fd591a@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <39047bbc-757d-4131-a25c-5a7743fd591a@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Exchange-RoutingPolicyChecked: 20QworIHPpG60k3nWXkKIsqw78l9k5Ju+1E/QJAU7kY819+JS3DEcPke8SgIuR/Sd9wJ7zIQUXpOnOO6PYw4+oL86RyxXzD+wugcVv4zIMvQ4flDTX3wx3movUkP9Z53rKWSplQzzp06+keqyvXRZVfK6M7H3CDIIdr+aNK4m9luBuIVEGeJ8bOr0vTU+yUvZ80B8vN9maVYPcPDhkEj98fEJ9VcUFkmL69/zKBqPyQu+pzC94YIm66lzMA0c4P9Ff3ODq+1zpaDphlPP5nSWmzhgqtNBhwVGoVvm+pqu1tMh0nyXvWiXzpOIAoVrTzqK5ejL1y1oJA2tEo5e5riFA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4835.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f2445dee-2401-4818-9e4f-08df1a10f587
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Sep 2026 07:53:45.0521
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 2QVM1+GRkk5du7ckJxiR1C3tME51M3yZpBlyrLqfEwrxDzt2Ntolnm0kMfRTkHIbCd2Cb+wmqgWO3dn33RNXAA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB6350
+X-OriginatorOrg: intel.com
 
-On 9/24/2026 2:36 PM, Xiaoyao Li wrote:
+> From: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> Sent: Thursday, September 17, 2026 10:02 PM
+>=20
+> The cdev path only supports one bound/open device fd, but
+> VFIO_DEVICE_BIND_IOMMUFD only checked the per-file access_granted flag
+> before capturing the KVM file reference. A second fd for the same device
+> could therefore replace device->kvm_file, fail later in vfio_df_open()
+> because open_count is already nonzero, and then clear the active KVM
+> association during error cleanup.
+>=20
+> Reject the bind while holding dev_set->lock if the device is already
+> open, matching the existing cdev single-open rule before touching the
+> device-wide KVM state.
+>=20
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 
-Thanks a lot for the detailed review!
+could you send it out as a separate fix?
 
-> On 9/17/2026 3:25 PM, Binbin Wu wrote:
->> Add tdx_cpu_cfg_caps[] to track the subset of TDX directly configurable
->> CPUID feature bits that KVM supports, and build the masks during TDX
->> hardware setup via tdx_initialize_cpu_cfg_caps().
->>
->> The TDX module reports the CPUID bits that the VMM can directly configure
->> for a TD, but KVM cannot blindly expose all reported bits to userspace.
->> Certain features imply additional architectural state, e.g. one or more
->> MSRs, that KVM must explicitly manage across host/guest transitions to
->> prevent host state corruption.  The existing hardcoded denylist cannot
->> account for new host state clobbering features introduced by future TDX
->> modules.
->>
->> Except for a few fixed-1 bits required for basic TDX support, host state
->> clobbering features are either directly configurable or gated by TD
->> ATTRIBUTES/XFAM, which KVM already validates.  Tracking only the directly
->> configurable bits to build an allowlist is therefore sufficient.
->>
->> Organize tdx_cpu_cfg_caps[] following kvm_cpu_caps[] so that the masks can
->> be built with similar feature-name based initializers.  Directly
->> configurable non-feature bits will be handled separately.
->>
->> The allowlist is prepared to be consumed by later patches to filter
->> KVM_TDX_CAPABILITIES and to reject unsupported CPUID input to
->> KVM_TDX_INIT_VM, so that newly introduced TDX directly configurable CPUID
->> feature bits stay hidden from userspace until KVM explicitly opts in.
->>
->> By default, intersect the allowlist with kvm_cpu_caps[] via TDX_CFG_F().
->> Requiring support for non-TDX VMs avoids committing to TDX-specific
->> behavior before general KVM support is established, and respects KVM's
->> logic around disabling certain features, since the reasons for disabling
->> them could apply to TDX as well.  Allow exceptions through
->> TDX_CFG_EXTRA_F() only with sufficient justification.
-> 
-> One name just crosses my mind. How about TDX_CFG_INDEP_F()? where INDEP stands
-> for independent.
-> 
-> - TDX_CFG_F() for features that are dependent on kvm_cpu_caps[]
-> - TDX_CFG_INDEP_F() for features not dependent on kvm_cpu_caps[]
-
-I am not sure if it's better.
-But if people prefer independent to extra, I would use TDX_CFG_INDEPENDENT_F()
-instead.
-
-> 
->> Add comments as placeholders for HLE, RTM, WAITPKG and FRED, which KVM
->> doesn't support for TDX yet.
-> 
-> 1. why add comments for them? Because implementation wise, they are possible to
-> be supported by KVM but just current KVM doesn't have code to support them yet?
-> 
-> If so, are the others the features that are concluded to be impossible to be
-> supported by KVM?
-> 
-> 2. We don't need to talk about FRED, which is even not suppported for normal VMs
-> yet. Unless we are trying to enable FRED for TDs specifically.
-
-OK, I will drop them to avoid confusion.
-
-> 
->> Allow MWAIT, XTPR, and HT through TDX_CFG_EXTRA_F(), as these bits are
->> not advertised in kvm_cpu_caps[].  The remaining directly configurable
->> feature bits outside kvm_cpu_caps[] are left out of the allowlist:
->>
->>   - Features forced to zero when #VE is reduced, or lacking KVM support
->>     for the associated MSRs: EST, TM2, SDBG, DCA, ACPI, ACC (TM), RDT_A,
->>     RDT_M, TME, PCONFIG, and CORE_CAPABILITIES.  Handle CORE_CAPABILITIES
->>     in a subsequent patch.
-> 
-> why not split into two category? Because they are overlapped?
-> 
->   - Features forced to zero when #VE is reduced
->   - Features lack KVM support
->
-
-Yes, there is overlap between them.
-If split into two categories, it would be:
-- Features forced to zero when #VE is reduced, which also lack KVM support
-- Features unrelated to #VE reduction that lack KVM support
-
-Because the changelog was already getting quite long, I combined them into a
-single category.
- 
-> As for "features forced to zero when #VE is reduced", do you mean when TDX
-> module supports "#VE reduction" feature, the features becomes fixed0? or when
-> guest enables "reduce #VE", the guest see a 0 value even though the feature is
-> still configurable to host userspace and host userspace configure it to 1?
-
-
-#VE is reduced means the guest reduced the related #VE, i.e. TDCS.TD_CTRL.REDUCE_VE
-is 1 and the related bit in TDCS.FEATURE_PARAVIRT_CTRL is 0.
-
-> 
->>   - Features tied to IA32_MISC_ENABLE bits that a TD cannot set when
->>     TDCS.TD_CTLS.REDUCE_VE is set: CID and PBE.
-> 
-> What is CID?
-
-X86_FEATURE_CID, Context ID, more specifically, L1 CONTEXT ID
-
-> and Is PBE related to any bit of IA32_MISC_ENABLE? Did you mean PEBS instead?
-
-X86_FEATURE_PBE, Pending Break Enable.
-
-Since kernel already has X86_FEATURE_XXX for them, so I use them directly without
-other description.
-
-> 
-> I don't understand what this category. It talks about something when
-> TDCS.TD_CTLS.REDUCE_VE is set, which depends on guest TD's behavior. So what if
-> the guest TD doesn't set TDCS.TD_CTLS.REDUCE_VE?
-
-If the guest set TDCS.TD_CTLS.REDUCE_VE, write 1 to the the related bit trigger #GP.
-If the guest doesn't set TDCS.TD_CTLS.REDUCE_VE, the value is passed to KVM, and
-KVM will save the value without do corresponding virtualization.
-
-Considering TDCS.TD_CTLS.REDUCE_VE is set by the Linux guest by default, it should
-not allow these features.
-
-> 
->>   - Features that can clobber host state and lack KVM support for TDX:
->>     FRED.
->>
->>   - Unsupported features: PREFETCHWT1 (Xeon Phi only), PSN (absent from
->>     TDX-capable CPUs), AMX-TRANSPOSE (never implemented on an Intel
->>     platform), and RAO_INT (defined only for future processors).
-> 
-> PREFETCHWT1 (if the name is correct) is not supported by the kernel right? For
-> such unknown features, it's straightforward to not support it.
-> 
-> AMX-TRANSPOSE has been turned into reserved, and kernel never supports it. I
-> think we don't need to mention it at all.
-
-The guest could be other OS, not just Linux.
-
-> 
-> RAO_INT is fixed 0 for TDX 1.5?
-
-I was doing this patch series based on the latest CSV version of the CPUID
-virtualization document from "Intel TDX Module ABI Definitions" updated in June 2026.
-https://cdrdv2.intel.com/v1/dl/getContent/795381
-
-> 
-> At last, I think we can just classify all of the above as 3 types:
-> 
-> - Features that are directly configurable by TDX and in kvm_cpu_caps[].
->   use TDX_CFG_F()
-> 
-> - Features that are directly configurable by TDX and KVM actually supports them
->   or KVM can support them but not in kvm_cpu_caps[]. Use TDX_CFG_EXTRA_F().
->   For example, MWAIT, XTPR, and HT.
-> 
-> - Features that are directly configurable by TDX but KVM or kenrel doesn't
->   support them.
->   For example, RDT_A, RDT_M, PREFETCHWT1, PSN,
-
-Because excluding some bits changes the ABI, I listed all these directly configurable
-features out of kvm_cpu_caps[] to explain why we must exclude some bits.
+> ---
+>  drivers/vfio/device_cdev.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/vfio/device_cdev.c b/drivers/vfio/device_cdev.c
+> index ca75ab8eb7bd..67e48f7ebfc3 100644
+> --- a/drivers/vfio/device_cdev.c
+> +++ b/drivers/vfio/device_cdev.c
+> @@ -115,8 +115,8 @@ long vfio_df_ioctl_bind_iommufd(struct
+> vfio_device_file *df,
+>  		return ret;
+>=20
+>  	mutex_lock(&device->dev_set->lock);
+> -	/* one device cannot be bound twice */
+> -	if (df->access_granted) {
+> +	/* The cdev path only supports one bound/open device fd. */
+> +	if (df->access_granted || device->open_count) {
+>  		ret =3D -EINVAL;
+>  		goto out_unlock;
+>  	}
+> --
+> 2.43.0
 
