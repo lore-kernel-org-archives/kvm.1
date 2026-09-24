@@ -1,187 +1,202 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC3D242925;
-	Thu, 24 Sep 2026 21:47:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C8B4DF4AD
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 21:53:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790286433; cv=none; b=IWFfK43EIhKw5CzyWdtA8tjjT0ng/hpwDYs5oPIb5V/mxef/d3M4d346PXzzgVC4rPwY7nTXd3KRuaiFQ8uSKoRqG510WEYPRupI+YGb+k7wObiR5wtVOivls93eHlSwppH/e3bmI7+ePdoscsNZXxteASQ2iErHZ6jAaDMPSfs=
+	t=1790286788; cv=none; b=lGzu1NzeoiZfX20nLPLrZfwDLn23c6uro2YQsKmSfiChme2VtPSzpKPUmqQZmW7BUrWYNfiNS1EQGxbqYlwDwP1/XKIrIv5u0LwhjYmMFFbM6tvWZkq8AnRQIHB5Q6bLq7NpUC5WK7TvN6u9PhQkfASdVXedpjqQhE249QZYK4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790286433; c=relaxed/simple;
-	bh=By+orAmivfFph/4Pp4KGg0gf6vQlQvaRbFP78qt4u8o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sTIGMB9VA87bUfu7EdYUEglPcJm6AWR0sKZIaInuOocPED0tU8YM3cqmhKUp8sgJMiq6zFuy1qArKe4vaXKKUx6LqO36Lj2boAgMmfs7wgFQLoJRNoxCfr5sIm+eBrngrsK+LM8iTAzBb8p791DhHnA0pXziyhyhc+dogVSXIw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=aQp3cMP+; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1790286788; c=relaxed/simple;
+	bh=d9PT2GdoWFZBMlVJHZrFv1etxubcAqj+sYkXP3zDxNc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=tTm+A57IcMaTv6Rbd3gukAQyxTQdhhnDO8ysQC7nOPU4XYkf1txgDsvZfLiu9QBy3nH19MegAb2TiOZqf25+CY8EE21mfodZNolUCS7zKLROjKifWxWRlQ6g+yiOGaxf1y6jDIp3d/rfZoH5FAigTjpzMxStMRSMSySiUSqw+7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sasaO8LV; arc=none smtp.client-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="aQp3cMP+"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68OJ5k0T3079487;
-	Thu, 24 Sep 2026 21:47:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=r7jXVs
-	RxYauBKt36pI/M7tRGg7/lUkj5oqapcJKREpE=; b=aQp3cMP+5E02tbAr5XZC3F
-	5vQmWBSRrI+YnmESr2+XPk9KAb8X0/NpZWBvfxSBlinbbybFJOAa6jNUgxnnkqVw
-	GAIbchv79xeRar2SmuarMPAR8sFhgdlMo7IaP1TSxrT/heS/FFIp19O3Hy4KtM2r
-	Jfp1oEmxlaeD34bWQBBFvxj0Q1uyhPgMMvbTqawJrcUlSR14bk5ZP06tfd42fiZ0
-	jzDvS4d/sVtX/xvB8agPcGsHkeVUMCPkdEk19RwrF+STB0BqmGQsbskLMUm+pTm+
-	FQMIVMpvjLNJNzeokDgX6v1bNDkiXpyl9Mt0/gaOoveIKerP3Mo6j5f2bmyFBAqg
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskg2uvn6-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 24 Sep 2026 21:47:10 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68OIlbaP2516022;
-	Thu, 24 Sep 2026 21:47:09 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gvbu8yryr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Sep 2026 21:47:09 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68OLl8eQ24838714
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 24 Sep 2026 21:47:08 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 265915805A;
-	Thu, 24 Sep 2026 21:47:08 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 91E5F58052;
-	Thu, 24 Sep 2026 21:47:07 +0000 (GMT)
-Received: from [9.61.5.111] (unknown [9.61.5.111])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 24 Sep 2026 21:47:07 +0000 (GMT)
-Message-ID: <bb74e30c-ee6c-474e-b60c-f2f55928f49b@linux.ibm.com>
-Date: Thu, 24 Sep 2026 17:47:07 -0400
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sasaO8LV"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc44d708055so224142a12.0
+        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 14:53:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790286786; x=1790891586; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=96howwJpIzasaCW/3Q0EcsFpl6itohsELojaGu9d8N0=;
+        b=sasaO8LV2aC+eJ22ZSls5e76IWjl5wQbLHC58f+m7GBcqu6ME6MAUYipxXJY5CV1+m
+         tCdY1yvxX5ZBUf+M+OL2cu3tgYoCtz8+vNYuxLbay2kHBOCUUn8H0EY2WCgMPFj+OSFT
+         w+RrM4+Gqdy6L0dSmEGiKwEctOQHKydA+DGIcxnb7snyQiQ+zeAxvIueBKhR+zEZBesn
+         npWdmNiKooIcSPNt7tzTFAjlMAgB9CDDhgPbcG87n1luyzYd+rSNCR26jeq1XGgx0ydP
+         6xPeGQukJU+tB1MRM1M66d5C6w2fIAZ3RbgreRTVSqDUsc3vBZcaO9IPd1S85g/zGWvJ
+         /AUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790286786; x=1790891586;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=96howwJpIzasaCW/3Q0EcsFpl6itohsELojaGu9d8N0=;
+        b=CaWegPWL1OLT6cO45HJlKnUTUuUAbUJE8zYzaN9Fk0jP6CEARPoovLDXjZIvJYsGdP
+         MJOM8svqlpemYJN2jYWRw4CfJnmffITck6/ZKpSEUJqa2WJKVK+hVG5VdMTmE7DWb3Ok
+         Gv9j6yUlyE7I6xqC9RQFT1IPWofVuB2xBjvG3U2KIBiZQMMGOZ77fFkPr9RxbPRO8Qr+
+         0zM/M96N/yQJwtAmbDJinkQCKm2fOrC4frf4KrwQ7B+uLO1JjKxXLQC3A0+2L4x36EV9
+         W5gvapWMhruVHTZBo0lJ2G/je/Lp4af8W2TYBhvP8VHyfMhhSzUyy2LB6NJ2TLR2tcqY
+         SFCg==
+X-Gm-Message-State: AFuF++mMSl1LiLLha+alrkRWhIA58qE16gOGY2yEWtkrdTSS2l8g4Cyr
+	wrUkJ7kg4PYoYstosBnRzphBD7JxDGDQqeoaDQ8FuwzqX6gDEjuQwalUvVgasDFySIrHIpzj3m4
+	Pn2Eolg==
+X-Received: from pgbcw5.prod.google.com ([2002:a05:6a02:4285:b0:cc7:513b:37d9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:439e:b0:3d3:ae50:97ce
+ with SMTP id adf61e73a8af0-3de0e755869mr3534504637.27.1790286786082; Thu, 24
+ Sep 2026 14:53:06 -0700 (PDT)
+Date: Thu, 24 Sep 2026 14:51:49 -0700
+In-Reply-To: <20260910-gmem-inplace-conversion-v13-0-dd6fbf94f4e1@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 5/6] s390/vfio-ap: fix queue state leakage to guest and
- host
-To: sashiko-reviews@lists.linux.dev
-Cc: linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, kvm@vger.kernel.org,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>
-References: <20260904223531.1611088-1-akrowiak@linux.ibm.com>
- <20260904223531.1611088-6-akrowiak@linux.ibm.com>
- <20260904224637.A2C711F00A3D@smtp.kernel.org>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <20260904224637.A2C711F00A3D@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ck98XoivYAs1lshw2vz3zo3KlUOhM33e
-X-Authority-Analysis: v=2.4 cv=I43w19gg c=1 sm=1 tr=0 ts=6ab59a5e cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=OB2yBHD6Z5LEc4g70-sA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI0MDA4OCBTYWx0ZWRfX/sJ59/R/KTos
- X4JGPIHjGf4suz3xq37YidnMsHSZTeIlfS7fM0HSvlxR3fBwSz30/WxMPoMscfkkVrPiAMEuMkP
- 75p8G91IG0I+bKmczr6mudl0eLiaYmzcZj8kIpoc/ratvZefZUHMXkd6ldkHi97NpB+Z59CDlF2
- 31x6cxqopwSAmHBazMnKGgJ02VrvqBZdd/hkSTvsSPF7FXsDN3MQPQpkL1kAdphIQFtiOYMLOmr
- MmC3swaHO+hj1trP4LsskL1dtyFb1qj2m1Ozubz8g3ILkCS4vL645Q967ksAVDToxHkwJI0pTDf
- 2Qypk2CIru7mVXobe2cqDjs6q0KOj7OZi8c1ZV5shyKHnUAYy05bXbKBuGl4KwZJG1dMePqc52L
- C8xmKY1VzHye2TlmX6z6QT+79woIoTtT8RkRG3X6tJwPEodmHeAdfSR50hAZPAI75KLomVuFG8Z
- Q4aE4OQSSS4VNSQ6t2w==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI0MDA4OCBTYWx0ZWRfX/STh3xfGRfh6
- CDE9Q78/4qNK77t4ACJWijnhTpAXwP/SFTJqdnjHt5L19SYPUVGuPZcZ6uLy4XbjNSQiZN/lt5i
- OrH+7hx9vuwCFa3JAwDgJEFw7I37zUI=
-X-Proofpoint-GUID: ck98XoivYAs1lshw2vz3zo3KlUOhM33e
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-24_05,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 adultscore=0 suspectscore=0 impostorscore=0
- lowpriorityscore=0 bulkscore=0 phishscore=0 priorityscore=1501 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609240088
+Mime-Version: 1.0
+References: <20260910-gmem-inplace-conversion-v13-0-dd6fbf94f4e1@google.com>
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+Message-ID: <179028368162.2007072.12117327378679658047.b4-ty@b4>
+Subject: Re: [PATCH v13 00/44] guest_memfd: In-place conversion support
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Fuad Tabba <fuad.tabba@linux.dev>, 
+	Ackerley Tng <ackerleytng@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
+Content-Type: text/plain; charset="utf-8"
 
+On Thu, 10 Sep 2026 16:55:26 -0700, Ackerley Tng wrote:
+> Here's v13. Thanks everyone for the comments and fast responses!
+> We're now at ~3 weeks to soft-close at 7.3-rc5.
+> 
+> v13 is based on 7.3-rc2 and:
+> 
+> + Hugh's patch to export lru_cache_drain_for_folio()
+> + Another series [1], which makes kvm_gmem_get_pfn() NOT return a
+>   refcounted page to KVM.
+> 
+> [...]
 
+Applied to kvm-x86 coco.  A *huge* thanks to everyone who helped with this!
 
-On 9/4/26 6:46 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
->
-> Pre-existing issues:
-> - [High] A hardware error during queue reset circumvents the newly introduced security check, incorrectly marking a potentially un-zeroized queue as 'passable'.
-> --
->
-> commit 239f603c9ac4d1441b4d22a11bde0df9a2b5aa5c
-> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
->
-> s390/vfio-ap: fix queue state leakage to guest and host
->
-> This commit introduces an upper bound on the wait time for a queue reset
-> to complete and prevents the leakage of queue state to guests. It ensures
-> zeroization is strictly confirmed by returning true in _queue_passable()
-> only when the response code is AP_RESPONSE_NORMAL.
->
->> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
->> --- a/drivers/s390/crypto/vfio_ap_ops.c
->> +++ b/drivers/s390/crypto/vfio_ap_ops.c
->> @@ -785,14 +785,14 @@ static bool _queue_passable(struct vfio_ap_queue *q)
->>   	if (!q)
->>   		return false;
->>   
->> -	switch (q->reset_status.response_code) {
->> -	case AP_RESPONSE_NORMAL:
->> -	case AP_RESPONSE_DECONFIGURED:
->> -	case AP_RESPONSE_CHECKSTOPPED:
->> -		return true;
->> -	default:
->> -		return false;
->> -	}
->> +	/*
->> +	 * A queue is only passable if zeroization was confirmed by
->> +	 * apq_reset_check() via TAPQ status bit verification. This is
->> +	 * indicated by reset_status.response_code == AP_RESPONSE_NORMAL (0).
->> +	 * This is to protect against leaking the internal state of the queue
->> +	 * to the guest.
->> +	 */
->> +	return q->reset_status.response_code == AP_RESPONSE_NORMAL;
->>   }
-> [ ... ]
->
->> @@ -2129,7 +2153,7 @@ static void apq_reset_check(struct work_struct *reset_work)
->>   			 */
->>   			vfio_ap_free_aqic_resources(q);
->>   			return;
-> [Severity: High]
-> This is a pre-existing issue, but does this error path leave
-> q->reset_status.response_code set to AP_RESPONSE_NORMAL if a hardware or
-> firmware fault occurs?
->
-> When vfio_ap_mdev_reset_queue() successfully initiates a reset, ap_zapq()
-> returns AP_RESPONSE_NORMAL (0), which is initially copied into
-> q->reset_status.
->
-> If ap_tapq() subsequently returns an invalid response code causing
-> apq_status_check() to return -EIO, this workqueue function aborts and frees
-> the AQIC resources. However, it exits without updating q->reset_status to a
-> failure state.
->
-> Because _queue_passable() now strictly checks for AP_RESPONSE_NORMAL, could
-> this fail-open state result in an un-zeroized queue being incorrectly passed
-> to an untrusted guest, leaking cryptographic key material?
+[01/44] KVM: guest_memfd: Optimize away conversion overheads via dead-code elimination
+        https://github.com/kvm-x86/linux/commit/54623a16bbdc
+[02/44] KVM: guest_memfd: Use kvm_mem_is_private() when populating guest_memfd memory
+        https://github.com/kvm-x86/linux/commit/fa7b8b1bb5d0
+[03/44] KVM: guest_memfd: Introduce per-gmem attributes, use to guard user mappings
+        https://github.com/kvm-x86/linux/commit/1ae5be958ff7
+[04/44] KVM: Rename KVM_GENERIC_MEMORY_ATTRIBUTES to KVM_VM_MEMORY_ATTRIBUTES
+        https://github.com/kvm-x86/linux/commit/44e17d0a3663
+[05/44] KVM: Enumerate support for PRIVATE memory iff kvm_arch_has_private_mem is defined
+        https://github.com/kvm-x86/linux/commit/c2ae2bc1a311
+[06/44] KVM: Rename memory attribute APIs to prepare for in-place gmem conversion
+        https://github.com/kvm-x86/linux/commit/a84ef89cbf91
+[07/44] KVM: Rename kvm_mem_is_private() to kvm_is_private_gfn()
+        https://github.com/kvm-x86/linux/commit/98fd6e30bd14
+[08/44] KVM: Provide generic interface for checking memory private/shared status
+        https://github.com/kvm-x86/linux/commit/8ab5719fbcdc
+[09/44] KVM: guest_memfd: Stub in ability to enable in-place shared<=>private conversion
+        https://github.com/kvm-x86/linux/commit/ee1168fb7313
+[10/44] KVM: Consolidate private memory and guest_memfd ifdeffery in kvm_host.h
+        https://github.com/kvm-x86/linux/commit/bcc640eabbb2
+[11/44] KVM: guest_memfd: Invalidate both SHARED and PRIVATE mappings for in-place conversions
+        https://github.com/kvm-x86/linux/commit/e088c7f86bef
+[12/44] KVM: guest_memfd: Always fault from guest_memfd if in-place conversion is enabled
+        https://github.com/kvm-x86/linux/commit/2e646bcfcf90
+[13/44] KVM: guest_memfd: Pass mapping type filter to invalidation helper
+        https://github.com/kvm-x86/linux/commit/2f7f4e102880
+[14/44] KVM: guest_memfd: Add base support for KVM_SET_MEMORY_ATTRIBUTES2
+        https://github.com/kvm-x86/linux/commit/799c9fadc639
+[15/44] KVM: guest_memfd: Ensure pages are not in use before conversion
+        https://github.com/kvm-x86/linux/commit/dcde2f853ff4
+[16/44] KVM: guest_memfd: Call arch make_shared callback for to-shared conversion
+        https://github.com/kvm-x86/linux/commit/6fa1dab756fd
+[17/44] KVM: guest_memfd: Return early if range already has requested attributes
+        https://github.com/kvm-x86/linux/commit/856852ef2108
+[18/44] KVM: guest_memfd: Zero page while getting pfn
+        https://github.com/kvm-x86/linux/commit/cb0544296a33
+[19/44] KVM: SEV: Make 'uaddr' parameter optional for KVM_SEV_SNP_LAUNCH_UPDATE
+        https://github.com/kvm-x86/linux/commit/edcc3f42981e
+[20/44] KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
+        https://github.com/kvm-x86/linux/commit/af602a96f401
+[21/44] KVM: Move KVM_VM_MEMORY_ATTRIBUTES config definition to x86
+        https://github.com/kvm-x86/linux/commit/31670c382efc
+[22/44] KVM: Let userspace disable per-VM mem attributes, enable per-gmem attributes
+        https://github.com/kvm-x86/linux/commit/537ec2b15fdd
+[23/44] KVM: guest_memfd: Enable INIT_SHARED on guest_memfd for x86 Coco VMs
+        https://github.com/kvm-x86/linux/commit/b5ed1ee2a7a0
+[24/44] KVM: selftests: Create gmem fd before "regular" fd when adding memslot
+        https://github.com/kvm-x86/linux/commit/b312cab4e48c
+[25/44] KVM: selftests: Rename guest_memfd{,_offset} to gmem_{fd,offset}
+        https://github.com/kvm-x86/linux/commit/8d5f49000f8b
+[26/44] KVM: selftests: Add support for mmap() on guest_memfd in core library
+        https://github.com/kvm-x86/linux/commit/ee455183c92b
+[27/44] KVM: selftests: Add selftests global for guest memory attributes capability
+        https://github.com/kvm-x86/linux/commit/c3e48c166e35
+[28/44] KVM: selftests: Add helpers for calling ioctls on guest_memfd
+        https://github.com/kvm-x86/linux/commit/0bbbd2b02bf0
+[29/44] KVM: selftests: Test basic single-page conversion flow
+        https://github.com/kvm-x86/linux/commit/eaef4ed5fabc
+[30/44] KVM: selftests: Test conversion flow when INIT_SHARED
+        https://github.com/kvm-x86/linux/commit/e5fa04dc920e
+[31/44] KVM: selftests: Test conversion precision in guest_memfd
+        https://github.com/kvm-x86/linux/commit/492080a3d4e5
+[32/44] KVM: selftests: Test conversion before allocation
+        https://github.com/kvm-x86/linux/commit/97137c140360
+[33/44] KVM: selftests: Convert with allocated folios in different layouts
+        https://github.com/kvm-x86/linux/commit/5362c5fb88f6
+[34/44] KVM: selftests: Test that truncation does not change shared/private status
+        https://github.com/kvm-x86/linux/commit/bfb9b5a286ea
+[35/44] KVM: selftests: Test that shared/private status is consistent across processes
+        https://github.com/kvm-x86/linux/commit/8b72eaa766b6
+[36/44] KVM: selftests: Add helpers to pin pages with CONFIG_GUP_TEST
+        https://github.com/kvm-x86/linux/commit/e8a40b9a604e
+[37/44] KVM: selftests: Test conversion with elevated page refcount
+        https://github.com/kvm-x86/linux/commit/0db3f14f40c4
+[38/44] KVM: selftests: Reset shared memory after hole-punching
+        https://github.com/kvm-x86/linux/commit/c235250e8bc1
+[39/44] KVM: selftests: Provide function to look up guest_memfd details from gpa
+        https://github.com/kvm-x86/linux/commit/ee6f4c381903
+[40/44] KVM: selftests: Provide common function to set memory attributes
+        https://github.com/kvm-x86/linux/commit/f49dd8ba330e
+[41/44] KVM: selftests: Make TEST_EXPECT_SIGBUS thread-safe
+        https://github.com/kvm-x86/linux/commit/ef72e71da099
+[42/44] KVM: selftests: Set up page size and alignment independently for guest_memfd
+        https://github.com/kvm-x86/linux/commit/710169986d9b
+[43/44] KVM: selftests: Update private_mem_conversions_test for in-place conversions
+        https://github.com/kvm-x86/linux/commit/e24e534ff850
+[44/44] KVM: selftests: Update private memory exits test to work with per-gmem attributes
+        https://github.com/kvm-x86/linux/commit/37e0791600e5
 
-This will be fixed in the next version.
-
->
->> -
->> +		}
->>   		if (elapsed >= AP_RESET_MAX_WAIT) {
->>   			/*
->>   			 * Zeroization confirmed (ret == 0): the TAPQ status bits
->> @@ -2143,8 +2167,10 @@ static void apq_reset_check(struct work_struct *reset_work)
->>   			 * queue cannot generate interrupts, so the NIB page is
->>   			 * no longer a DMA target and it is safe to free it.
->>   			 */
-
+--
+https://github.com/kvm-x86/linux/tree/next
