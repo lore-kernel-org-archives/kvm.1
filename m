@@ -1,119 +1,153 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010063.outbound.protection.outlook.com [52.101.46.63])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD27F414DFA
-	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 19:40:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790278827; cv=none; b=OBMK5nPwBVzFKx+9ErzDwOYbZwk5fHJ9gJ7mde/QDevTlEfsrrR25JhX9XLdqYWINAn6IeMpAFm/G18XnmoMS1fuvqs0gVSaiin3X3CCEd/Fn5dOuqND3ysaon7Isuxr2N1AeoGD9A3HihSICsRxLhJE7jNHX082xyNvnY7JqeE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790278827; c=relaxed/simple;
-	bh=v2mr3yEeVPCA53lv8cWAiEEbb7C20MRdeH9IJtvRkCE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=agFYtnWKMh7CiTO5XVsaDQpOdoEOvNIZckuuiGLt/MVoJrfFXUHHiMrE204K6Tgm2dzKOBAmFJVhxwDqFNcrOyRSKz4T+WU7Ue/TQG27/ju7g9IABvyQFUs8HeQHAM3kphHrnBClR6v9+YEOVcPhrtZvxIpzcCr9gnl5Cixwdow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eq/9jZfy; arc=none smtp.client-ip=209.85.216.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE4038D01B;
+	Thu, 24 Sep 2026 19:42:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790278924; cv=fail; b=dPslObhF9h/sfJcaHzs5Ops0fLiMFlf08C+PYVtT9cfigfjvy01Tzzuhi9XnO271+ThgzygARTk8YhM1jtHGe20GMrn+38XEY98JXiSEdK0p9ISPhoPUj3HhELoObMjfmlZprCwM5zPl/FXm9ZCYmwVqvb0PKHICjHPq1dsjJaI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790278924; c=relaxed/simple;
+	bh=EHwSWXYQUK0S1nMCih7PW2Y0H/XaTJzBQMWNSPkZWcM=;
+	h=Content-Type:Subject:From:To:Cc:In-Reply-To:References:Date:
+	 Message-Id:MIME-Version; b=r7AQh+O7cgq18fvSkDOlo4uQf9cxso341m4znDUa/XqiqLzO9mU4IqsdtN0qOp5zgVrJoLG4pI1+0nyEDdJfjcvblNVwqxduY45yDeVWg+bCk/SClh+b38/Awrj4dvqYW0a4cesoH2VJztIwKYC3CG6OPRE9HF4VT7fU0GVn5Vo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ILMYQfck; arc=fail smtp.client-ip=52.101.46.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eq/9jZfy"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-39af92138f9so234206a91.0
-        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 12:40:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790278825; x=1790883625; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gTjGHblkjZzhraXaqnhHaeUgHULa4Gd97a7Hy/6dpCQ=;
-        b=eq/9jZfySlVnBTKdp7AW6n2nnS4sv5A75EMdwNbY4hKF1ehvXzsAwVb8px8ardvgDY
-         +Y3pQuZ8A/hzP9tCIbNf4j8U1fadQhiN3U3GETy3Smwf18PRJ/IF7DyTa22wVtb1Vp+g
-         75/mdTLRcO3OSA4CXxxAUp5UIvAy4B1LewgtN8YlRoZfAJCkOU9xrLTajkSy+VZUTi6e
-         SFPL1NSjC0JprnhkFGPidMNrO+siuoOvoYQsVZ0Hh5WCSOoxzt6ebWImKijqdXeihd1x
-         OxdPF1By1T16yNQbEAqEwyanFq/U3iDJVBVQsrLt93SVGbWRLdIHpIA6+dfK+S5ScE7Z
-         TvLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790278825; x=1790883625;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gTjGHblkjZzhraXaqnhHaeUgHULa4Gd97a7Hy/6dpCQ=;
-        b=FdKmD1BpxlImtvfO30hgHQC4prdSdCN4V9qD0Js93/v+PoRfT4B594yPsdDvMhmOv2
-         Mm3fgnyVTtIsN040/vGgZSgsbJx0QfLIQXHgBorXGYGGbz9U5lYlPt0mYD6247ovqGNh
-         pPsECMOW6UdhQgSVZA5EBxOrjlZyz/vpPqJAoZUFRonkBawST7GfcXcDuOWogC7Pi75k
-         wDgoPOQa/rr2OfV53Ed2+8Giz+JHearKcPzindmKWkixJs5JJncDgM0/f9Yx+u5rWQGY
-         WX/nLOIsWlkNOKsDIapWVW8IkcpL1Gscmxr/1NaIlNNlbvW1585K9oCLJEVV8rR+m0PT
-         h53Q==
-X-Forwarded-Encrypted: i=1; AKwUvBzoMTnLHRAcvWELvJVTty01yZ9gz5PmAVvuLaqNocFA+mPOh8t6GUImrvi5rzkNHiMcM5s=@vger.kernel.org
-X-Gm-Message-State: AFuF++ndFnzCas77HxKXU0qx/4SsOjQsoaTk5D5szav96uxIn7jfGOXd
-	5S+p7TJ/mKm1WqV27+VrKOWCm0fysrgEPC9ufCJML4hTTA5otQbapRs525Au4rxjbMKQkazC5lW
-	ITSdOrA==
-X-Received: from pjbem2.prod.google.com ([2002:a17:90b:142:b0:3a0:6f00:2a50])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2f84:b0:39e:3221:aff5
- with SMTP id 98e67ed59e1d1-3a098608b12mr1720472a91.9.1790278824909; Thu, 24
- Sep 2026 12:40:24 -0700 (PDT)
-Date: Thu, 24 Sep 2026 12:40:24 -0700
-In-Reply-To: <arV6iiz4kB8LrByl@google.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ILMYQfck"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qBqmHEySvhd8W5Nd/P1+SZShZmTjtQVY2Yqr4vBGfhFKglMlInCE1N/Nn+J3rFHry6pN7/anX5Lj97X406moGX8sLTthGUalpbgJhwnV8V8L5gpgpDQGc3jST0HkFrDrjv9IAGJbwKj+Pqj1LOTKcMKv0MVeQZp72wtxMKNI+tLOllxjye7to0DCNdq16tDmZrekiZ7ojXolSSU4JlYLSHOtsjzy/XHx/XvqLZjom6sfSC2wfFqqaMC8hdS3gO3adNy3CxxXiHoJ0Jgdr+pIJWKvXnflIIEmV3ng3tCxYx5N7+XIuGs5E7g1tKrIHlHSydVtjHZyaGsy9g8MJoh+2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iRmX0QSvAsLWK19U/nDby/C1fVhn4l/29RzzrX3TevA=;
+ b=hm69i2VdOVvASKuSeWS2eaMvdMpDEUXWVbs/KWwsZ+5LgAXz4FVothO0dVva+eI9bpFfeO359aAoMc+YmHlzECJRGtCGCBrh2Tt64dnqroNW8DZiXAQydXCdVYEFG4h+KCG1CIo2rwDZqpw5Lwphm+POihhrvisxRlIxQY1F/hJvWbKPOlNf0ltoU9Hx51DRyNHjk4sgNrEx6VFdeHPl3ztJT2EwIT6vQwCFfLJyHjwlKoB6S66y4wcsyCWm8TRhf7jcxTtZ6d0WGFaTVlLvmJeMOwf//3yvhhZOS6Pc3YO1PKm+gTg4LIYc5udno9ahIKIR/fRqt/lyI6k7ThYHrA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iRmX0QSvAsLWK19U/nDby/C1fVhn4l/29RzzrX3TevA=;
+ b=ILMYQfckDlFKM7awhLaAL2TJ0KaoXrYP1TYxrUfz7zzslMau2NFIbk/e/SaEi1zPbWqDOc9ir+QlCdT9l5Fanj1mktuTNvC7R6vmd9KTEUYULKA1sowMvnq0qUdZomP/LKwI2kGBZg6ThsN57Zn/zF3b7GgF3cHpb5Dye3ve/AO+tBvl7QeZF1LBj/rG6QCq2GskkiZJxD6RNsRDhV8tbCFg6NSoLqfIIF8GR/NySplOFK28gYbP6DG0yUcyTujhNPWUYszLKNOjidM7Q/bylpOPhQ/5GaLBzvF+w/fpo61CPrnfNnYqGpI//xSToDaoNBWDMjXx7OML404m+b8oxw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12) by CYYPR12MB8854.namprd12.prod.outlook.com
+ (2603:10b6:930:b8::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Thu, 24 Sep
+ 2026 19:41:58 +0000
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0451.014; Thu, 24 Sep 2026
+ 19:41:58 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [RFC PATCH v6 05/11] iommu: Add a helper to validate a vIOMMU
+ parent
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev, iommu@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+ Jason Gunthorpe <jgg@ziepe.ca>, Alexey Kardashevskiy <aik@amd.com>, 
+ Bjorn Helgaas <helgaas@kernel.org>, Joerg Roedel <joro@8bytes.org>, 
+ Jonathan Cameron <jic23@kernel.org>, Kevin Tian <kevin.tian@intel.com>, 
+ Nicolin Chen <nicolinc@nvidia.com>, Samuel Ortiz <sameo@rivosinc.com>, 
+ Steven Price <steven.price@arm.com>, 
+ Suzuki K Poulose <Suzuki.Poulose@arm.com>, Will Deacon <will@kernel.org>, 
+ Xu Yilun <yilun.xu@linux.intel.com>, 
+ Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <20260917140159.1163281-6-aneesh.kumar@kernel.org>
+References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
+ <20260917140159.1163281-6-aneesh.kumar@kernel.org>
+Date: Thu, 24 Sep 2026 16:41:54 -0300
+Message-Id: <179027891416.104879.10365675178574704349.b4-review@b4>
+X-Mailer: b4 0.17-dev
+X-ClientProxiedBy: SJ0PR03CA0072.namprd03.prod.outlook.com
+ (2603:10b6:a03:331::17) To CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260922001332.1121266-1-seanjc@google.com> <20260922001332.1121266-5-seanjc@google.com>
- <CAEvNRgH6w_a9+2rOr6r+47JqWc+-8cHq=c7r76nYG2i5deOxSg@mail.gmail.com>
- <arV4SS8FHwd6Qjs1@google.com> <arV6iiz4kB8LrByl@google.com>
-Message-ID: <arV8qBw-aC5f2nUX@google.com>
-Subject: Re: [PATCH v5 4/6] KVM: guest_memfd: Split bind() into
- prepare()+commit() phases
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Stefan Teodorescu <fane@google.com>, 
-	Dennis Tighe <dtighe@google.com>, Sashiko Bot <sashiko-bot@kernel.org>, 
-	Yan Zhao <yan.y.zhao@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|CYYPR12MB8854:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4f9a8428-ebfb-42c6-faf3-08df1a73e4e8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|10067099003|56012099006|11063799006|22082099003|18002099003|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	DGdZI+8GzEWQhTxpe10TSDp3zC+OO5+kvQrZe1icPxPWfPer6cWKgHDWJfM/lP2iiHSys7jmcVYuyM4ng5WI6rhHeETNCBNLvnXzg9S+T0OApVkN1Y398yeNKivEoLcy+xM9CTa8iPWd11G3u5oU0lveHQ99BAFRWy4VFeJcaLicS+QTHKiQ7iJT57RFl+1ePuBdLkGujNHAkfjX89p8iSdIkjeq/UrGJlUBoJb4vSja3JiwuL7tuSCyDnMDrZBb+8Ce8Sadp5NZnTB27pteEL2tPV0eZxWU3+vJ3AcVNr7RQqAznQ/Kse96ckf1YWyN5oPq2lsWCMZbdgrMC7OIGJFR5iB0RyzDY/mYgfYIiyUMP1vBwUixwvIdGNgW2HrncvDvZalDQw/fqlpTpZlfxDSr4UQHLSAMBiXisB5PL+vD/4nL+PvBQAUHDMDcxgTFlBFukUrY4Z6lP3dIBuAWT51VihOM56vdy7k+duD1LWAZwgAXaZENXaU7gWRL3Jge6U95Q3vynyaR5IPAHA7GEkG1lCH/gVRRal1i6GPB4r1Lge8jEHP6HISgYO9ZYxnXI7DfvDasRBnEQ7L65BgjCEVwAdYR0UrfERIBv6ZCSJqPsh9VvF9qoUTcaIYHMNzYSWacUDBfOii4PHJDcc6U3wzX886Ic+7syoFDlKARUqc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MXVJaGZURW50WDdncys4Mk4xS3kydDQ1eVhzak5ITUtYcno2M3ZWd2FEMHpR?=
+ =?utf-8?B?ZkxxUEQ2VFFweDJHRVg4Ly9oQ1owWjVOWkhSQkJXU2NIWk5QcTl3NzlZZHhF?=
+ =?utf-8?B?S3dmLzF1ajFvUm5YSmdEN1JTcFZsTkc5akFmeDdmWThRYThGQUNYWmZ0dVpy?=
+ =?utf-8?B?YmY2ejBvd2ZFTHpGZUdFa012Uk5RNnpPWkdKRTZjWW0zOStwWUZWQ3FoYjAw?=
+ =?utf-8?B?WTBQb2g0MzJRWGwvaFNFaDJ1YUluM3R2MHB1S0xzNjdEdXhwTDN5aEJ4ZnVr?=
+ =?utf-8?B?ZmNNZjgrZnkwV0ZXU21TdmV2RHZaNWt0WHk0U0c4SHpoR3BzUXc5VGMzeDVV?=
+ =?utf-8?B?N1pnZ3pLMndqN3hOb0w1clhUMnBYUU11cUZsU3h3SVhEZ2dvUFFEVDNZSFVF?=
+ =?utf-8?B?RXJCVnVsYlluTjdQc1U2NC92NCtISXFrL2dhT0xkaC9VRGxJL3RkeGZqZjVj?=
+ =?utf-8?B?RWQ1UGtFZ2J6cThPOTE5MS8wZWp3aDdnZVR2aER2TGUrN1R2d0V6dXR3ZDMx?=
+ =?utf-8?B?TGJPQ0MxM3IwUUEzWFBNRWpLTzFZbUJLREpnV2FHSllRaWFVYUZnK25pUW5Y?=
+ =?utf-8?B?b3JSSlNxQWNHejZMQnBMT0JDZ04wcjNla252Ym9ZMm5MV2t1dnJ3aVEwQ2JR?=
+ =?utf-8?B?UXdtU1UxdVN1cWRYU2d1WDVEenJXTFdwQTFHVkU5UnZYTXk1SkJKRStybkZs?=
+ =?utf-8?B?RndYRnY2WkJyTkl3bE1OSkludCsvYUJhNW9NbXJCUlltcThhZ1R2QjRPVGVW?=
+ =?utf-8?B?aWwxQTJxUTJiUkUrd3BiZXg1bDVOL2NyOFhvVTBuckpwSDNrTXd4YmxRSlVq?=
+ =?utf-8?B?RVFRcXZqMEZOUDNWUGszZm9oYjcrQVBzaGtLazM1Nm9vWnF2MWFuWTRCS2pw?=
+ =?utf-8?B?R0h6Q2txQlVlQVU4WUVmZURsMXBXT3NYSG5JdEd4MTA3bkZtNGZ0akl6aWUx?=
+ =?utf-8?B?VDN5TmpGRkZLZnZZZ2txRE1mb3VEWnVpMnJHckNhazI3cGlVdFgyYTBYc2w4?=
+ =?utf-8?B?dUhoN3lQZ0tTSTgzZ0Y2Q3lqNXdQWEVyMzYrdHdPMjR4Zm5RSmkzMUZkTXhO?=
+ =?utf-8?B?My9OZUJUU0NYeXVIY1VxV2hzRkNXOG4yNzFsaFhHWkJEcklhMC9TZEZVdHF2?=
+ =?utf-8?B?MHRUYlpzZ2RGdHBib0k4dnMwc2lXV1VtMGJKc0tQeTVOT2d6aXJwd2lzR3VG?=
+ =?utf-8?B?V1A1MENNZ0ZIejlJS3FjUSt1YmRQZDIvL2xTT0IrUjVJL1RVOThhdSsxZmJG?=
+ =?utf-8?B?ZW5YN2VEcSs4alNZbXdGeUZEZ2FBdnQxcmZzOEViaWVEQTJhWjRnV24rTC8v?=
+ =?utf-8?B?VWVoQ3UwdmpERFFQRVdxNkp1M2ZMZ1IzOEV5UWIwK1c5QjRPOTFQKzd6YTBH?=
+ =?utf-8?B?TThFWE94V3p2TGJFcUVFZXJXSnE5SndsTHFlSE9EY0N2QXZ2aTk1emxUZzAr?=
+ =?utf-8?B?WGt3aG1BaThnNFBzeDB2RTA5WlBUdklqNXlWVGVQYlJQV0VXMnREMW9odW9U?=
+ =?utf-8?B?ZmlNMHBCTlZhSndmak9hU0tvbHlZWXNoVVJEWTlPbVBXM3NYSWVzMUpEWjVp?=
+ =?utf-8?B?eE9LRFg2czBRM2pYVm5EUzJZcTBlb2hlUFVDQXZ0MThGZTlyWWNGa1FrcS96?=
+ =?utf-8?B?YnVVSHFjN0pMN29OZlhmdk40OTVTc1lFelFxQXYzN1RKRGswRjVmanA3T2Uy?=
+ =?utf-8?B?SHZSYVBjMUkxZVd1NElUNS9hK2xEMitMSGs0TTM1ODZwWDJ5dmRnSkkzM1Rr?=
+ =?utf-8?B?djA4WTE4M0hoYnBUZzZpa3B0RTl1VXZqOFlpSGFpSzA4L3JHWkFtSGNwSk1N?=
+ =?utf-8?B?bVkyUitWMXlFMUUvZURpMWp5dmhWOUN2WVB2S21PaHpmWlRKSXpON2cybzV2?=
+ =?utf-8?B?cFNsWFNweHVVbXBpWUE3SUIwbndTTTVzKzVzdUUvVklUN1RnZ2l6OG1WNVBi?=
+ =?utf-8?B?c2QxL1hHbXIrTzBnbHJ1YTV4TnB5UGxGQVFvblBvK2lPc3dJOUJaRGt3cXZa?=
+ =?utf-8?B?MlVWNkVGRXRNMFRlbGlUT1QxUUVaTVg4Rk5waW1NR1RJSTJsQ0MzQU85NHBn?=
+ =?utf-8?B?NVNUaytFQzZIUncxYi9pQWVmbW9nYVA3R0dsMUVDSWxFV3dKcUVqMzdpY0x0?=
+ =?utf-8?B?TlF5OWRFZWRTdzdjT3JvMjRCVVpibVdreGRhd08zWjJjdHRCTkF4eXRMR2Jr?=
+ =?utf-8?B?dUJGcmltdHdpUXB4VjZUUDR6blNRYWNPY1VlR0lPWmVQcVNUNTNWaDFxV1pQ?=
+ =?utf-8?B?UWd1U0d2eVV4QmZnUVZZQXBIMEFmaEh5SS9uRmNTQlkreDYwN0lGbys1TUNL?=
+ =?utf-8?Q?3zuuEGZBOdmBoO41xY?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4f9a8428-ebfb-42c6-faf3-08df1a73e4e8
+X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2026 19:41:57.5086
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /dMoqyjG4gbgdxQhxx4cSbjSeHBSMHgBPH4PCp3hnW3Sb/+SD0P41PUpz41t8mYX
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8854
 
-On Thu, Sep 24, 2026, Sean Christopherson wrote:
-> On Thu, Sep 24, 2026, Sean Christopherson wrote:
-> > On Thu, Sep 24, 2026, Ackerley Tng wrote:
-> > But after fiddling with this for an hour or so, I realized that if we fully commit
-> > to configuring new.gmem in kvm_set_memory_region(), then we can move the prepare()
-> > call into kvm_prepare_memory_region() without needing to plumb extra parameters,
-> > and make the gmem stuff look a lot more like the rest of the memslot code.  E.g.
-> > 
-> > 	if (mem->flags & KVM_MEM_GUEST_MEMFD) {
-> > #ifdef CONFIG_KVM_GUEST_MEMFD
-> > 		new->gmem.file = fget(mem->guest_memfd);
-> > 		if (!new->gmem.file) {
-> > 			r = -EBADF;
-> > 			goto out;
-> > 		}
-> > 
-> > 		new->gmem.pgoff = mem->guest_memfd_offset >> PAGE_SHIFT;
-> > #endif
-> > 	}
-> > 
-> > 	r = kvm_set_memslot(kvm, old, new, change);
-> > 
-> > 	/*
-> > 	 * Drop the reference to the gmem file, even on success.  The file pins
-> > 	 * KVM, not the other way 'round.  Active bindings are invalidated if
-> > 	 * the file is closed before memslots are destroyed.
-> > 	 */
-> > #ifdef CONFIG_KVM_GUEST_MEMFD
-> > 	if (new->gmem.file)
-> > 		fput(new->gmem.file);
-> > #endif
-> > 
-> > Not being able to get rid of the #ifdefs is a shame, but from a control flow
-> > perspective, this feels more right than anything else.  Full diff (not fully
-> > tested, and would need to be split into 3+ patches):
-> 
-> Actually, plumbing in @old and @change can wait.  As much as I want to make the
-> calls match the other prepare()+commit() hooks, @old and @change aren't needed
-> until flags-only updates come along, and adding them at that time provide a better
-> git history as the additional plumbing will directly precede their usage (or maybe
-> even be in the same patch).
+> [ ... 18 lines skipped ... ]
+> +int iommu_viommu_validate_parent(struct device *dev,
+> +		enum iommu_viommu_type type, struct iommu_domain *parent_domain)
+> +{
 
-Aaaaand talking to myself again.  I take this back.  Plumbing in @change is
-desirable, otherwise both kvm_set_memory_region() and kvm_prepare_memory_region()
-need to check KVM_MR_CREATE, which is ugly and unnecessarily fragile.
+I didn't see anything that calls this? I can't imagine what it would
+be needed for?
+
+The TSM viommu should use a NULL parent domain, it doesn't have an
+iommufd managed S2.
+
+-- 
+Jason
