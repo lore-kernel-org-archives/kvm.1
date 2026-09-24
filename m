@@ -1,170 +1,130 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31374A0F0C
-	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 15:56:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C516A18C02E
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 16:03:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790265389; cv=none; b=WbGLYo30EMQcrc5LnjbqPjFTBEiXM62g7XSd06fdTzwTd1QNhHhCDvVPCeYC25auYh8VLRVt3+FC6GFBZnjYHrBH8eccMoS5bfhY+d42ZYeW7pzHVZ11ZKyMYpEPXTQayt+6FioeDDhFaoG0Q/qXAHryaxjiwWvsArg4/r8Ei0E=
+	t=1790265798; cv=none; b=kPJrQDmeZXxNNDEo6scCQmJ4Zz8xEoZ3lR4Xt/AkHcy9LwnUcTcJkE+sOla4IgkJ/oPozh8gEP3EHxoRzt1/R+hsslRzeQWdJhWaRyGuXVG/wc8s1VMvIk23LnrmHwVleRJWH5UMKh4UxoYK/Pkz66UCk0N19KjwOx4uhQ4HvEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790265389; c=relaxed/simple;
-	bh=SzpsF1R44Ubodi/lWdByRj3ussGr5imnuwlywY4gVK4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mpV3i1Nxc1S1nN9duFwgDeH/CRyOu5cQWD94KDXIyPH9XJc08s0UECPX+oXr7vx+gig5EBnr3sa9d9Yg2LNSxVArRqO68KVF9FU7OVMqyzpm49WDbkqTP77za/h2NskhI4uYzHFeGMssMmeVc3ZYs6yp6OCCkDD82slmTTuuBek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FUBoAsq6; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=UshE4h47; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790265798; c=relaxed/simple;
+	bh=sIu7q9A3nLQNOvwfYwyjAY4pGIVlyo889PjENpnEg40=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=WTdm0c7h6ZtUeNXTs7pwLROll9Ztthleo7Wpk7qWFIgkaU471qqpYdQDRiyDMWxSltmSVU+D6Mgm+B3uW589/6kPLdtjozpdgFiN8CGNUkGM33aehO0AWZBqvKNzcc79oObcUV9p8qcVamrGFBSSuSpif5x5yKvQgbqSRLCQyms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uTXQRVom; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FUBoAsq6";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="UshE4h47"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790265386;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BsIicbnwmHZxyMI07vJAKZ5x+YHru/pqorNr3bVuoUs=;
-	b=FUBoAsq6gRxq3IqRfTzLK1igZqfsUWybo1WnUgvo0llcwx2WQ8l+Mpt40ppz2SPiTaerdc
-	Fgs7EIMJrgzGaYT1NoI5iCjqKaqRt3/siFY4ONpec4UlPc35oD1I+CKPJ4sEeLjSKY6GJF
-	+1dMOQL3I+lU5QB11gwfK7comqeQEQY=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-612-2Yb1A0iBN5SYdfotMgeBZw-1; Thu, 24 Sep 2026 11:56:23 -0400
-X-MC-Unique: 2Yb1A0iBN5SYdfotMgeBZw-1
-X-Mimecast-MFC-AGG-ID: 2Yb1A0iBN5SYdfotMgeBZw_1790265382
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c2939083cefso231905266b.1
-        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 08:56:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uTXQRVom"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-862a0aa7d2aso33399b3a.1
+        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 09:03:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790265382; x=1790870182; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BsIicbnwmHZxyMI07vJAKZ5x+YHru/pqorNr3bVuoUs=;
-        b=UshE4h47sI9NtWfWCugd+LddLlvaa7IXNIR2zXv1pn0UWX77z2W8IiMbg3cFLOsP4c
-         EIfrab0R59uhfBMlpROLHM1hi3E8xcuLbc2PTsXbr4EiDqoIYIpt4wwdW/ZURcMPJT6Z
-         xAvGt0sOKqJ9/XZwO9mok/dS+QGyeH/gipNoU7BZ1ZB0MTrYZYL/Nx/uI/qSS6F9QvNY
-         LVVjMWvROYKaBIZtrp5gwl6BmGgHNKAwdbUyrmWPPI4Sma3Y+ob/KHB7fdeNCytrpa47
-         QvC4d8x+dx3CnY0LPBu3h/7hBQuj5oJoUxk82MAVnG4JzKYHfTXluh39a9SfPFUyAEZN
-         RazQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790265382; x=1790870182;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1790265796; x=1790870596; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=BsIicbnwmHZxyMI07vJAKZ5x+YHru/pqorNr3bVuoUs=;
-        b=UilJrC4+wZUWR7tzOaKtS0z733nFTnPI1EhUB+MBjTg7onbAE3gPg3VtU3PhOrPsOo
-         vX/Hu7UkBHGtkdFXx7cPvydI7SV+/Wd3RXX6VZwiTjfU/SJM1GGmTvgyuqeD0QD6W1Hv
-         MnESbhU/HyDyC2k3sRYecj9r/rTL1ZHDoPZIR7/0kR5SEDfWFhOcTCB02ES/pk/qApQr
-         sJKeY2iG1FFRFt2k+YaSMPXBvq1Tn6+OxdcBeNK8k47Y98MDokDubwVsS8KJBN6KWPMy
-         oraJt0S8N3DCiGBNlL0QQxraUcbfS0jN5oX+mmjCoBDJ4F+Q/PCr5UHSGy5qfxrW5j1x
-         gMZg==
-X-Forwarded-Encrypted: i=1; AKwUvBwjZwDyb6HuAHofmS/9Pr50hjyW1U9CEL5d91ir2sNssxNuJZNEf+rkDVLh/Wf5nCVEgmQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++nRL3pZAU/X0BjM5XAxtLk/ltSoF+vkTH1Xw2s1D5PzmNsrfhPs
-	3yhp1D9fSHDDV9UaPfm74MNlPjMd+CTKDTLFw1CRyQvf79KgsQfw6OoHh+yUBgzI1gvPC9CB+69
-	j5+ZVO5V0t2Gn5aMwtkl/G0KUjVA8cv12Xd8V8DNPCWpCK2nfDuLBdA==
-X-Gm-Gg: AYBFou3cqRTBlyTr4dRU6zdgFc9GddUCK5Qg7EDTgxtgO+XqeyHZDf6YWA9xqnknu1w
-	Jn7HPZ5iTk/1iqHDJdB0ff1rQbBQWkvlOp48p+K4tbpE+OUVCS7dnuDAV6exalU5ju6g89PG6ws
-	sAkEyZKoLXmOlvTYTtDplvyARvUoP2q0R9ElvmmM9+6Jja278oMeoqSbO5AC3RMFD8lXxeHNMmc
-	LhJIFnCRoK0cVES15yTbVgNjbAAYIbIoKGXyH93XWg7wXWfKMUMKSZhWjNpuLRUucCOi9gLfB/e
-	Vq6Bt6SHdHkmCMHZ4Fv2WqqruuxdsXYoH2/jeUO2d7YIeWF0JbHQJLRh7/euXBrpOUG4RbJLsKg
-	CH/dVINPSOkJg/5Fw8v3WCRZHM5LeWLNSQ9Wq7m75ZwNMEi0644tarnJai5KyehNbdQ==
-X-Received: by 2002:a17:907:968b:b0:c26:1648:a072 with SMTP id a640c23a62f3a-c2ac2594bcdmr230040866b.45.1790265382169;
-        Thu, 24 Sep 2026 08:56:22 -0700 (PDT)
-X-Received: by 2002:a17:907:968b:b0:c26:1648:a072 with SMTP id a640c23a62f3a-c2ac2594bcdmr230038666b.45.1790265381573;
-        Thu, 24 Sep 2026 08:56:21 -0700 (PDT)
-Received: from redhat.com (2a02-ab04-0158-f000-2548-f3bd-8b42-b18f.dynamic.v6.chello.sk. [2a02:ab04:158:f000:2548:f3bd:8b42:b18f])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2aae33e046sm312897966b.8.2026.09.24.08.56.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 08:56:21 -0700 (PDT)
-Date: Thu, 24 Sep 2026 11:56:19 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Fang Xieyan <fangxy@xiaopeng.com>
-Cc: Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Rusty Russell <rusty@rustcorp.com.au>, stable@vger.kernel.org,
-	virtualization@lists.linux.dev, kvm@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vringh: reject empty / undersized indirect descriptor
- tables
-Message-ID: <20260924114316-mutt-send-email-mst@kernel.org>
-References: <20260924030627.13287-1-fangxy@xiaopeng.com>
+        bh=+JeZX99gxXiB6y1Oy8n/FpHxL7PYkdZSHmEmkbXoc/s=;
+        b=uTXQRVomAf54wR8MquNCHhRscg+AE2nm1gX16mkVloBYgOqrkna0zPL3Aq4WvU6rPM
+         zAOd6lAURc1HGqF4yUB1XtCFlYTNxOWaMR35z5UtY9DIn2bioBhj1RoQp5WcNTeuFNKY
+         z0aNkp975hEOZUS3M1RXo1DjakaWtiKA4KbRASvbI2wF3jo+UFILBztt5MBGWPksSK4y
+         lSlrgevLFSFW2SzDFm6ABzWMA5r0cVCY8QUeFDkDHWTO0mu7Z4C4R02ZzURdBxj2NbvD
+         Tcgg4Z4sHtJbUhlySIGsEFJfj0M8ecqdl/DIb/q0OtnMHkwY51gTMZGxT4RD0rVuACK9
+         Wl/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790265796; x=1790870596;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+JeZX99gxXiB6y1Oy8n/FpHxL7PYkdZSHmEmkbXoc/s=;
+        b=FWl81MfHP6nqSdj2aGAAioy15eiZQz3CRGZhO7aj5XhgM7mqO+czqh2TOsfhUVr1CV
+         Ub4P9HhHZNuIxwUXvSWiJ/GqE2pxWbqoY+gS5nGeYPDL6xhHBZX8xGCMaDR2DuH3fMLW
+         4XnXZ9A8wy5ygLJna0WII4tEWS4t7HqLTV4OCsrWEJOoUVMnfOenHPZp9rWIYT6dLucV
+         9vL0qKQOR3TKX/Do3NrHam5JYSGnHlbCMKMghL6t+VCNbzEJW/Mc3RmjD8JvNCfd4Oyf
+         ABr6xk6bHUXUPOZDlR4CtFqAEni+wlkkVxZ+kUSkJ+9Cw1khCFK/p4zsj68q6BkPc+DD
+         G8HA==
+X-Forwarded-Encrypted: i=1; AKwUvBzSWoaPapUHPlNs0JPBvF2w1Xg5KO0vEoDPcWyKuokw9SaDa+hUG3Q7+othPoypnGV1n74=@vger.kernel.org
+X-Gm-Message-State: AFuF++kjESlS4M876s9XJVWEGZnIdnnJ7/hvgfL3pkYee+5qfD9iGHrQ
+	EpD3gnCICthoocyZalSVN0Qa4wcjHGuWypY+VWP70dfyf8LppAMLdOi8XbhHN8/O4BwYckRgfrt
+	/wI37Nw==
+X-Received: from pgdi2.prod.google.com ([2002:a05:6a02:51e2:b0:cc4:b427:4edc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:4d07:b0:3da:e7dd:45d5
+ with SMTP id adf61e73a8af0-3de0e74f454mr2975826637.20.1790265795874; Thu, 24
+ Sep 2026 09:03:15 -0700 (PDT)
+Date: Thu, 24 Sep 2026 09:03:15 -0700
+In-Reply-To: <5949c545-2104-4824-b007-5345fe0e5d7f@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260924030627.13287-1-fangxy@xiaopeng.com>
+Mime-Version: 1.0
+References: <20260923163315.1580860-1-seanjc@google.com> <50ccc54c-6cbb-4ae2-a84a-4dcbc958f91c@intel.com>
+ <arUv_KydBD2kWkIo@google.com> <5949c545-2104-4824-b007-5345fe0e5d7f@intel.com>
+Message-ID: <arVJwzMXGSXeFryO@google.com>
+Subject: Re: [PATCH] KVM: TDX: Synthesize SHUTDOWN instead of returning -EIO
+ on unhandled EPT violation
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, James Houghton <jthoughton@google.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
+	Ackerley Tng <ackerleytng@google.com>, Vishal Annapurve <vannapurve@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Sep 24, 2026 at 11:06:27AM +0800, Fang Xieyan wrote:
-> move_to_indirect() rejects an indirect descriptor table only when its
-> length is not an exact multiple of sizeof(struct vring_desc).  A guest
-> descriptor with VRING_DESC_F_INDIRECT and len == 0 passes that check, so
-> *desc_max becomes 0, yet __vringh_iov() keeps walking the (empty) table
-> and aborts with -ELOOP only after reading one full descriptor past its
-> end -- leaking 16 bytes of memory adjacent to the table into a kernel
-> stack variable.
+On Thu, Sep 24, 2026, Xiaoyao Li wrote:
+> On 9/24/2026 10:13 PM, Sean Christopherson wrote:
+> > On Thu, Sep 24, 2026, Xiaoyao Li wrote:
+> >> On 9/24/2026 12:33 AM, Sean Christopherson wrote:
+> >>> Synthesize a triple fault, i.e. exit to userspace with KVM_EXIT_SHUTDOWN,
+> >>> instead of returning -EIO from KVM_RUN if KVM encounters an EPT Violation
+> >>> due to a guest access to a pending page.  Returning -EIO implies KVM is
+> >>> buggy, and most VMMs will respond by completely terminating the VM, versus
+> >>> rebooting the VM in response to KVM_EXIT_SHUTDOWN.  I.e. give the VMM the
+> >>> option of trying to keep the VM (from the end user's perspective) alive.
+> >>
+> >> But reboot isn't good, neither.
+> >>
+> >> I still think a new specific exit reason[1] would be better, as I suggested before.
+> >>
+> >> [1] https://lore.kernel.org/kvm/1b0ea352-c645-461b-9e19-5202791f8e2d@intel.com
+> > 
+> > Doh, I completely forgot about that patch.  *sigh*
+> > 
+> > I actually thought KVM_EXIT_MEMORY_FAULT this time around, but I was worried that
+> > it would confuse a VMM.  And practically speaking, the VMM can't do anything other
+> > than print some diagnostic details and try to reboot the VM, because the guest has
+> > very deliberately opted out of #VEs.
+> > 
+> > An alternative to KVM_EXIT_SHUTDOWN would be
+> > 
+> >   vcpu->run->exit_reason = KVM_EXIT_SYSTEM_EVENT;
+> >   vcpu->run->system_event.type = KVM_SYSTEM_EVENT_TDX_FATAL;
+> >   vcpu->run->system_event.ndata = 1;
+> >   vcpu->run->system_event.data[0] = gpa;
+> > 
+> > So that the VMM could log the guilty GPA.  Though I'm not sure I like overloading
+> > an explicit guest event.
+> > 
+> > As for KVM_EXIT_GUEST_ERROR, I don't see the point.  As above, the VMM can't do
+> > anything other than reboot the VM.  I doubt Linux-as-a-guest will ever support an
+> > interface that allows recovering from this situation, because again, the entire
+> > point is treat unaccepted accesses as fatal conditions.
+> > 
+> > All in all, I think my vote is still for SHUTDOWN.
 > 
-> Reject any len smaller than one descriptor, before the existing stride
-> check, so no descriptor is ever fetched from an empty table.
-> 
-> Fixes: f87d0fbb5798 ("vringh: host-side implementation of virtio rings.")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Hawkeye:GLM-5.3-flash
-> Assisted-by: Qoder:Qwen3.8-Max
-> Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
-> ---
->  drivers/vhost/vringh.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> Leak path: once move_to_indirect() sets *desc_max = 0 and points *descs
-> at the (empty) table, the next __vringh_iov() iteration first runs
-> 
-> 	err = copy(vrh, &desc, &descs[i], sizeof(desc));
-> 
-> i.e. a 16-byte read from descs[0] -- one full struct vring_desc past the
-> end of the table -- *before* the "indirect_count > desc_max" test fires.
-> When the guest page backing the table sits just before a sensitive host
-> page, those 16 bytes are attacker-influenced adjacent memory.
+> My concern is that userspace cannot differentiate between triple fault and
+> accessing a pending page if we return KVM_EXIT_SHUTDOWN. It's not friendly for
+> debugging.
 
+Hmm, I disagree.  It's not friendly for *triage* given a bug report from a third
+party, but for actual debug, I doubt it will matter since the exact exit reason
+is available with trace_kvm_exit().
 
-> The multiple-of-16 stride check is kept for defense in depth.
-> 
-> Userspace reproducer (move_to_indirect()/__vringh_iov() extracted verbatim,
-> 2048-byte region followed by a guarded red zone):
-> 
->     [VULNERABLE] return=-62 (-ELOOP)  OOB-read=YES  bytes-past-region=16
->     [PATCHED   ] return=-22 (-EINVAL) OOB-read=no   bytes-past-region=0
-
-it seems nicer not to fail with EINVAL not with ELOOP as we currently
-do, so the patch is fine. but the commit log if weird, looks like
-an ai hallucination.
-
-
-"an attacker" "vulnerable" and "leak" - is there an implication that this is a
-security problem somehow? Because I do not see how this data gets
-anywhere.
-
-> 
-> diff --git a/drivers/vhost/vringh.c b/drivers/vhost/vringh.c
-> index 9066f9f..0767748 100644
-> --- a/drivers/vhost/vringh.c
-> +++ b/drivers/vhost/vringh.c
-> @@ -197,8 +197,9 @@ static int move_to_indirect(const struct vringh *vrh,
->  	}
->  
->  	len = vringh32_to_cpu(vrh, desc->len);
-> -	if (unlikely(len % sizeof(struct vring_desc))) {
-> -		vringh_bad("Strange indirect len %u", desc->len);
-> +	if (unlikely(len < sizeof(struct vring_desc) ||
-> +		     len % sizeof(struct vring_desc))) {
-> +		vringh_bad("Invalid indirect len %u", desc->len);
->  		return -EINVAL;
->  	}
->  
-> -- 
-> 2.50.1
-
+And for triage, IMO this scenario isn't interesting enough to warrant special
+treatment.  There are myriad ways to end up in triple fault, i.e. why the guest
+ended up in a shutdown scenario is never going to be something that can fully
+debugged given only run->exit_reason.  E.g. if the guest did not opt out of #VEs
+for this scenario, then it's not at all difficult to imagine scenarios where
+accessing unaccepted memory leads to a triple fault.
