@@ -1,316 +1,488 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A7540D574;
-	Thu, 24 Sep 2026 19:12:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4DD4BFE94
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 19:14:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790277176; cv=none; b=r995/91gtNTDHJzflNosRGtZbnOw7TwhO89y10iiO+5Ajc8FMqflfikgr2ji3Q59O+m1CPSoiZaWSmzg9QRm88a3U+Dz3w/GfXXijmzBcMr/SSs7sGqPxph9WrOh04p3bl8TzhG3gUO+toyb7YgZYphq65uouq1cgIFlBHCdha8=
+	t=1790277247; cv=none; b=gU2j33D0D37CcBhDFP3BKAClArT3BQv74Id0cGBxR8frNRp09xRtYAHLhID+fd50p5TxFwv5qEH/P7Rpl2vnb8+o3t8iqvPj3IILUwOVIDj73NuHAmNBTjiQgYNeHg2PAbQTsX9EQGzVLzBtyrvZg/hNtPTVvbyX+BTlyggjCf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790277176; c=relaxed/simple;
-	bh=YJeXth6Tx3z3uAzpOJYtZ2VydeRwjpUyOkYrzwMIB04=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Xjb9E0NtcJ8k7a/o9jEeN6jVpq3mIh8Ka6zqpen3OdKYebdav931jpdggMxrky+W/PaJqXtzlCeydhoYZNlbd+srDMtVzpQFhdPGmRKzMaa0mJd6+QK4nz9lnFgroRQ3s910yDfGj27AGdmxJonR7YUJgHmo8g9Fh2wlmUr4dSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T7RydNq4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790277247; c=relaxed/simple;
+	bh=EwBJUIoyp9JY6RVbxRaq5HHhHm5yl1iuR6dtegQ7JlA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=M9nppJwkHAd3Hhr4Hhp7JlGxE3fcVGiQUM95VDbq2M2jv4f7zJRUzmL7h3Kq9mtDFRXpYRbYEAU+g+x8phTYftgDPuefJUr8vP6/icHoB3iM6X+nz4ZsjT6E62PM3xnPvOnv2M4oXPjKMYNEYSid3Bd+45uBxFBmFB7H38+G3rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=grAZx5ct; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=gKx8iCpL; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T7RydNq4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D3E1F000FF;
-	Thu, 24 Sep 2026 19:12:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790277175;
-	bh=6TTM/G+mPP5S3WhNhICuGYcbs6efnmaLhLn+ZuN6Lb4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=T7RydNq4uO2Hc7l8rDc5+JkeeN2lnJkB5TgUBXdT7Gav95ZwqfXXqV+9LbV6GcMZp
-	 ++8+C66b3rrkEsktcX0zBsMVMO5Awv82gKcUVj83Kcf0L+lS0mGb0O12WIYnTOb00Y
-	 PNMARTBfnyV/2o7kBRWZ9uUKM8v55rsOBk1X5a5jHFRX1h78Vk1Ok/AKkUvGBxykKR
-	 pXw2p9z+w3F+mUY4Qq5/GdfVhkX+qafcnnCh/QFSrdv0WIZKdvRNboIEM3Sl2svd3K
-	 mxsZXkQ08i6mE8FuwjKg4OxBHJabQ89U2gSTYym5vfTCPHwB+XJ5A2iPimVdOZ2N5G
-	 lM0hzJCF92GNg==
-Date: Thu, 24 Sep 2026 14:12:53 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Dave Airlie <airlied@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
-	Dave Airlie <airlied@redhat.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: Re: [PATCH] pci/vgaarb: pass a data pointer to be used in the decode
- callback
-Message-ID: <20260924191253.GA1994586@bhelgaas>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="grAZx5ct";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="gKx8iCpL"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68OIdjHM2996412
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 19:14:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	7v7mwV3kL+pNqZlpuPeN3iMHS9Dj14zbCE44HBuwDdc=; b=grAZx5ctnOkhdTlJ
+	Tbx3UTtNyuHD/sr5o5S9iAosrcwL9vTgFX5n+qgkBa8eJlCDluGlJmxRGLzQFDp9
+	DNTotWQ7bej5dT0xfn70EAehqKhfhEvCn3M9xVQrr3bE6g8+ythywAZx/OeJitpd
+	N58VTQPEmBCKldJPszmeAMbxozdDm3HfnGTEFFMBUwRnLZP+l9asNVg8vEV0aBhS
+	B47EBSt9mP94NZbIGO1X1Y/YrRm6XrQwu8J4zQDrIgiYlXT/tP86H8pL55G7Lf8f
+	e22DjROzCJFkF16UcHQcoqsBhj2kMOts7bn6k0M/hwe6kJItxVTabXAQga7Wyqm6
+	eidmPg==
+Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gw4651pph-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 19:14:03 +0000 (GMT)
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-33310847fcaso134351eec.1
+        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 12:14:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1790277243; x=1790882043; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:organization
+         :references:in-reply-to:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=7v7mwV3kL+pNqZlpuPeN3iMHS9Dj14zbCE44HBuwDdc=;
+        b=gKx8iCpLaqaDHYJch1uMV0ie2JMS9GwP5CFYg5MPCGxXOAQXv5G2vL5ZmnQ867aHHK
+         1dEJQPNL5L9B6tbkjcOteJmfNLOXmVFxHa2vIHkcnMjcESdrAo/DoOJ+msril4aM3MuA
+         pvMJppisaeaVobX99i2drwwsje33kazNfYs/fY4o+3esxQP9dN6GPPvS5XkZRZbMbFiw
+         1+TtGoDQCq3yKkigzHBTWMfGKO2b1hBnwvFLQb9rJhOJTN1+gGGYKUQJHD28xjeeoDOL
+         wdAWXOIPI7SSG5TVFHgJS8LlmowOAtj2bK2t/4egu11Q+68SkIZMzgle+oOMTbSQAkC8
+         CC2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790277243; x=1790882043;
+        h=content-transfer-encoding:content-type:mime-version:organization
+         :references:in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7v7mwV3kL+pNqZlpuPeN3iMHS9Dj14zbCE44HBuwDdc=;
+        b=LE0LIaiSTktZWL2UTyHtFQdu4DRwj4Psbgq3w8XgX5NCJ3uf5v++BNfVlznrY+mg1f
+         S5K0JGhZzQvxJewsQr8X64DfGDiL/GW/YQd2hivVr5aJCscFt0O0Rh/QvAWiUzduFAtX
+         XZEVyK2DIKBpGa1JQ1tcu61+VLsz/vngDum0lyydcbvckDYGsKPWjQr3YO/Gutkg+Rct
+         5AcVGCq3qyGlyieYzkt3sjGCXFpnh8UNLK4AjT2yhA6J6G37lx3JXaLrJObEKgIj+UZo
+         glLIl1LYRvIa7bVn3fkAME7T3h7GYziaHxXgBps0mEO45xbj4kloNWFjlHh1MFma3Zwp
+         1wXg==
+X-Gm-Message-State: AFuF++nf3wJ961NvJGc+wsry7WalFGqEzcQrYbS2LTs6AM+1eiREc9B2
+	EE2P6JaXagwATPaXj8KkIlx9KstA6kSmsB2mvXfughHv540cxn60aao9vr1CFMWpY9yIVEuAF3F
+	CGBNmur1mVhhJQdec8n4Bf0Dgz6ZYVxj/J1+9Kx3KQLFLycxuM0p5zdI=
+X-Gm-Gg: AYBFou1C7CWiJr7xUVdrMTCsaKpbL+gQKjD4VcvZJcKZcgubgGhjycJ7M8czAeIrQ+U
+	c6tXU9bxUZk4MORVHPmf3Y9w79giH5/7dpJBwKH9PZ1ZF/MlV+fZ2qmv+l8UaMJgoQldgJR1nvb
+	O8Q8tTudp6TL9qLpIU3QCCJTDEIuw5U5X6oWaTyqwaWXaRgnp3t7XEs7L0Wi07qBmr7+0PF2B2X
+	sV7LqHI1l9BDwPbc5BJX+GCLfE37C/Vak/xjpAQ1qckyJ3x/XQn83DSbohBFOQvSq8WsEy8zT8m
+	3eWOseB+B4UyOpdn5X7t9l+6Bs0urx1+yXyou+6pfR+dWDJCaB9MEK/RcGocHAPVcM0UQr3D2sZ
+	4WVjP4b/YepwIMVjU5vz+EVA6EL/nU9e8a9kKkxaex/M7sDc22D/KoQ==
+X-Received: by 2002:a05:7300:1905:b0:33b:fc17:e786 with SMTP id 5a478bee46e88-33fff65015fmr3559964eec.16.1790277242520;
+        Thu, 24 Sep 2026 12:14:02 -0700 (PDT)
+X-Received: by 2002:a05:7300:1905:b0:33b:fc17:e786 with SMTP id 5a478bee46e88-33fff65015fmr3559927eec.16.1790277241676;
+        Thu, 24 Sep 2026 12:14:01 -0700 (PDT)
+Received: from localhost (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-341447576b9sm641843eec.15.2026.09.24.12.13.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 12:14:01 -0700 (PDT)
+Date: Thu, 24 Sep 2026 12:13:56 -0700
+From: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+        will@kernel.org, catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+        aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+        joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+        linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+        sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+        WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+        sudeep.holla@arm.com
+Subject: Re: [PATCH v19 4/7] firmware: arm_rmm: Add support for SRO
+Message-ID: <20260924121356.00000d4d@oss.qualcomm.com>
+In-Reply-To: <20260924135201.850038-5-suzuki.poulose@arm.com>
+References: <20260924135201.850038-1-suzuki.poulose@arm.com>
+	<20260924135201.850038-5-suzuki.poulose@arm.com>
+Organization: Qualcomm
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260922064111.2468741-1-airlied@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=Wrq+otfv c=1 sm=1 tr=0 ts=6ab5767b cx=c_pps
+ a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
+ a=7CQSdrXTAAAA:8 a=EUspDBNiAAAA:8 a=g7tT_HrEe4iQpSKoiZcA:9 a=CjuIK1q_8ugA:10
+ a=6Ab_bkdmUrQuMsNx7PHu:22 a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-ORIG-GUID: LbhBf7KeZL_Io1EkAVuMKwmw9xqYhDPx
+X-Proofpoint-GUID: LbhBf7KeZL_Io1EkAVuMKwmw9xqYhDPx
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI0MDA3OCBTYWx0ZWRfX+H+8BUJFZ8Yh
+ O9EU3xbjQjC28sQCDyFoX4bZZrOXXk01tEcEqlkBCaxeV+2csI5bFACjwoNjm+3Zy8P8+JGNbLl
+ d4pqFPbcYVaHha5lKI5cUIryuZ8GA+JYrrLj3xhwZLNa2UM3Yems7Y0S8dmbyC2eWnSop8QNqvh
+ Od7y5mpBwcooEob1K/sgujOg9IREPUgNAj0GazpVWW6zIyQPc1iEhcUVCcQtwpdmKJchrGg99G1
+ RsyAnDoSh40U19Kt3qw94VvG+Z2593mNVGvjFCVJ/q7Pxz56dco8Ql5n9MeRY0nVQuSGWGjoXEn
+ kCXJ5Mb1gtXknk5uAUeMNypMJfvEAVjYh1oDG7ds+NOGChEKDnvsNKvTcvomRZG1ff8Efft6kJ9
+ Zu07dYrmGe29mLVu++3cgtMQ/WaO0mgOnDB1thxD9qUv/1DTkYc9lf8SxqPN13m4r5SfMIfysIQ
+ IGtsKIZNLT/+tQ7qfqw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI0MDA3OCBTYWx0ZWRfX5KcykbB3U+iv
+ oc01k17nTd8TRRgWQwadOrDQf5Fyf03RZmwN8kEFNH0Z+TDZlLooNwM2FFr4T/ajcp6OsCFmLpN
+ FpK3FhGXc+BO6KolfFzwdftPAw26AtA=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-24_05,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0 bulkscore=0
+ suspectscore=0 priorityscore=1501 clxscore=1015 malwarescore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609240078
 
-On Tue, Sep 22, 2026 at 04:41:11PM +1000, Dave Airlie wrote:
-> From: Dave Airlie <airlied@redhat.com>
+On Thu, 24 Sep 2026 14:51:58 +0100
+Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+
+> From: Steven Price <steven.price@arm.com>
 > 
-> This changes the vgaarb client API so that the user can pass a
-> private data pointer into the register that will get used in
-> the decode callback.
+> RMM v2.0 introduces the concept of "Stateful RMI Operations" (SRO). This
+> means that an SMC can return with an operation still in progress. The
+> host is expected to continue the operation until it reaches a conclusion
+> (either success or failure). During this process the RMM can request
+> additional memory ('donate') or hand memory back to the host
+> ('reclaim'). The host can request an in progress operation is cancelled,
+> but still continue the operation until it has completed (otherwise the
+> incomplete operation may cause future RMM operations to fail).
 > 
-> This allows a bunch of pdev conversions in the drivers, and lets
-> some future vfio cleanups be nicer.
+> The SRO is tracked using a struct rmi_sro_state object which keeps track
+> of any memory which has been allocated but not yet consumed by the RMM
+> or reclaimed from the RMM. This allows the memory to be reused in a
+> future request within the same operation. It will also permit an
+> operation to be done in a context where memory allocation may be
+> difficult (e.g. atomic context) with the option to abort the operation
+> and retry the memory allocation outside of the atomic context. The
+> memory stored in the struct rmi_sro_state object can then be reused on
+> the subsequent attempt.
 > 
-> I'd like to merge this via the drm next tree but also fine with
-> it going via pci.
+> Wrappers for SRO RMI commands are also provided here because they depend
+> on the rmi_sro_execute() implementation added by this patch.
+> Delegate/undelegate handles are also added here because they now use the
+> SRO/stateful command infrastructure and are also used for the memory
+> DONATE/RECLAIM flows.
 > 
-> Signed-off-by: Dave Airlie <airlied@redhat.com>
-> Cc: Alex Williamson <alex@shazbot.org>
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-This seems fine to me, except for the
-drivers/gpu/drm/loongson/lsdc_drv.c build error
-(https://lore.kernel.org/all/202609241037.1RwqQnfb-lkp@intel.com) the
-new kernel-doc issue
-(https://lore.kernel.org/all/202609241015.1yXHBzfy-lkp@intel.com).
+Nice.  Everything I spotted this time around is pretty trivial.
+So assuming you'll clean up and bits that make sense to you for v20
 
-You could also update the subject line to match the
-drivers/pci/vgaarb.c history:
+Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
 
-  PCI/VGA: Pass a data pointer ...
-
-With all that, I'm fine with this being merged via the drm tree:
-
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
 > ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |  6 +++---
->  drivers/gpu/drm/i915/display/intel_vga.c   |  7 ++++---
->  drivers/gpu/drm/nouveau/nouveau_vga.c      |  6 +++---
->  drivers/gpu/drm/radeon/radeon_device.c     |  7 +++----
->  drivers/pci/vgaarb.c                       | 13 +++++++++----
->  drivers/vfio/pci/vfio_pci_core.c           |  9 +++++----
->  include/linux/vgaarb.h                     |  8 +++++---
->  7 files changed, 32 insertions(+), 24 deletions(-)
+>  drivers/firmware/arm_rmm/rmi.c | 666 +++++++++++++++++++++++++++++++++
+>  include/linux/arm-rmi-cmds.h   |  41 ++
+>  2 files changed, 707 insertions(+)
 > 
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> index 62b5b4a23f17..1344b2b1bd16 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> @@ -1435,10 +1435,10 @@ bool amdgpu_device_should_use_aspm(struct amdgpu_device *adev)
->   * Enable/disable vga decode (all asics).
->   * Returns VGA resource flags.
->   */
-> -static unsigned int amdgpu_device_vga_set_decode(struct pci_dev *pdev,
-> +static unsigned int amdgpu_device_vga_set_decode(void *data,
->  		bool state)
->  {
-> -	struct amdgpu_device *adev = drm_to_adev(pci_get_drvdata(pdev));
-> +	struct amdgpu_device *adev = (struct amdgpu_device *)data;
->  
->  	amdgpu_asic_set_vga_state(adev, state);
->  	if (state)
-> @@ -4208,7 +4208,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
->  	 * ignore it
->  	 */
->  	if ((adev->pdev->class >> 8) == PCI_CLASS_DISPLAY_VGA)
-> -		vga_client_register(adev->pdev, amdgpu_device_vga_set_decode);
-> +		vga_client_register(adev->pdev, amdgpu_device_vga_set_decode, adev);
->  
->  	px = amdgpu_device_supports_px(adev);
->  
-> diff --git a/drivers/gpu/drm/i915/display/intel_vga.c b/drivers/gpu/drm/i915/display/intel_vga.c
-> index 4966fd7eea92..0889edb36190 100644
-> --- a/drivers/gpu/drm/i915/display/intel_vga.c
-> +++ b/drivers/gpu/drm/i915/display/intel_vga.c
-> @@ -283,9 +283,10 @@ void intel_vga_disable(struct intel_display *display)
->  	intel_de_posting_read(display, vga_reg);
->  }
->  
-> -static unsigned int intel_vga_set_decode(struct pci_dev *pdev, bool enable_decode)
-> +static unsigned int intel_vga_set_decode(void *data, bool enable_decode)
->  {
-> -	struct intel_display *display = to_intel_display(pdev);
-> +	struct intel_display *display = (struct intel_display *)data;
-> +	struct pci_dev *pdev = to_pci_dev(display->drm->dev);
->  	unsigned int decodes = VGA_RSRC_NORMAL_IO | VGA_RSRC_NORMAL_MEM;
->  
->  	drm_dbg_kms(display->drm, "%s VGA decode due to VGA arbitration\n",
-> @@ -331,7 +332,7 @@ void intel_vga_register(struct intel_display *display)
->  	 * then we do not take part in VGA arbitration and the
->  	 * vga_client_register() fails with -ENODEV.
->  	 */
-> -	ret = vga_client_register(pdev, intel_vga_set_decode);
-> +	ret = vga_client_register(pdev, intel_vga_set_decode, display);
->  	drm_WARN_ON(display->drm, ret && ret != -ENODEV);
->  }
->  
-> diff --git a/drivers/gpu/drm/nouveau/nouveau_vga.c b/drivers/gpu/drm/nouveau/nouveau_vga.c
-> index 29a801124e56..6662e30466f2 100644
-> --- a/drivers/gpu/drm/nouveau/nouveau_vga.c
-> +++ b/drivers/gpu/drm/nouveau/nouveau_vga.c
-> @@ -9,9 +9,9 @@
->  #include "nouveau_vga.h"
->  
->  static unsigned int
-> -nouveau_vga_set_decode(struct pci_dev *pdev, bool state)
-> +nouveau_vga_set_decode(void *data, bool state)
->  {
-> -	struct nouveau_drm *drm = pci_get_drvdata(pdev);
-> +	struct nouveau_drm *drm = (struct nouveau_drm *)data;
->  	struct nvif_object *device = &drm->client.device.object;
->  
->  	if (drm->client.device.info.family == NV_DEVICE_INFO_V0_CURIE &&
-> @@ -103,7 +103,7 @@ nouveau_vga_init(struct nouveau_drm *drm)
->  		return;
->  	pdev = to_pci_dev(dev->dev);
->  
-> -	vga_client_register(pdev, nouveau_vga_set_decode);
-> +	vga_client_register(pdev, nouveau_vga_set_decode, drm);
->  
->  	/* don't register Thunderbolt eGPU with vga_switcheroo */
->  	if (pci_is_thunderbolt_attached(pdev))
-> diff --git a/drivers/gpu/drm/radeon/radeon_device.c b/drivers/gpu/drm/radeon/radeon_device.c
-> index 9523240110a6..cf8a6bd00c77 100644
-> --- a/drivers/gpu/drm/radeon/radeon_device.c
-> +++ b/drivers/gpu/drm/radeon/radeon_device.c
-> @@ -1076,10 +1076,9 @@ void radeon_combios_fini(struct radeon_device *rdev)
->   * Enable/disable vga decode (all asics).
->   * Returns VGA resource flags.
->   */
-> -static unsigned int radeon_vga_set_decode(struct pci_dev *pdev, bool state)
-> +static unsigned int radeon_vga_set_decode(void *data, bool state)
->  {
-> -	struct drm_device *dev = pci_get_drvdata(pdev);
-> -	struct radeon_device *rdev = dev->dev_private;
-> +	struct radeon_device *rdev = (struct radeon_device *)data;
->  	radeon_vga_set_state(rdev, state);
->  	if (state)
->  		return VGA_RSRC_LEGACY_IO | VGA_RSRC_LEGACY_MEM |
-> @@ -1431,7 +1430,7 @@ int radeon_device_init(struct radeon_device *rdev,
->  	/* if we have > 1 VGA cards, then disable the radeon VGA resources */
->  	/* this will fail for cards that aren't VGA class devices, just
->  	 * ignore it */
-> -	vga_client_register(rdev->pdev, radeon_vga_set_decode);
-> +	vga_client_register(rdev->pdev, radeon_vga_set_decode, rdev);
->  
->  	if (rdev->flags & RADEON_IS_PX)
->  		runtime = true;
-> diff --git a/drivers/pci/vgaarb.c b/drivers/pci/vgaarb.c
-> index 3de05aee7859..3e58b2c05c85 100644
-> --- a/drivers/pci/vgaarb.c
-> +++ b/drivers/pci/vgaarb.c
-> @@ -51,7 +51,8 @@ struct vga_device {
->  	unsigned int mem_norm_cnt;	/* normal MEM count */
->  	bool bridge_has_one_vga;
->  	bool is_firmware_default;	/* device selected by firmware */
-> -	unsigned int (*set_decode)(struct pci_dev *pdev, bool decode);
-> +	unsigned int (*set_decode)(void *data, bool decode);
-> +	void *set_decode_data;
->  };
->  
->  static LIST_HEAD(vga_list);
-> @@ -935,6 +936,7 @@ EXPORT_SYMBOL(vga_set_legacy_decoding);
->   * vga_client_register - register or unregister a VGA arbitration client
->   * @pdev: PCI device of the VGA client
->   * @set_decode: VGA decode change callback
-> + * @data: private data to pass to callback
->   *
->   * Clients have two callback mechanisms they can use.
->   *
-> @@ -956,15 +958,18 @@ EXPORT_SYMBOL(vga_set_legacy_decoding);
->   * Returns: 0 on success, -ENODEV on failure
->   */
->  int vga_client_register(struct pci_dev *pdev,
-> -		unsigned int (*set_decode)(struct pci_dev *pdev, bool decode))
-> +		unsigned int (*set_decode)(void *data, bool decode),
-> +		void *data)
->  {
->  	unsigned long flags;
->  	struct vga_device *vgadev;
->  
->  	spin_lock_irqsave(&vga_lock, flags);
->  	vgadev = vgadev_find(pdev);
-> -	if (vgadev)
-> +	if (vgadev) {
->  		vgadev->set_decode = set_decode;
-> +		vgadev->set_decode_data = data;
+> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+> index c9ea964fd9081..035f21d3f26b6 100644
+> --- a/drivers/firmware/arm_rmm/rmi.c
+> +++ b/drivers/firmware/arm_rmm/rmi.c
+
+> +
+> +int rmi_undelegate_range(phys_addr_t phys,
+> +			 unsigned long size)
+> +{
+> +	long ret = 0;
+> +	unsigned long top = phys + size;
+> +	unsigned long out_top;
+> +
+> +	while (phys < top) {
+> +		ret = rmi_granule_range_undelegate(phys, top, &out_top);
+> +
+> +		if (ret == RMI_SUCCESS) {
+> +			/* Buggy RMM ? Let the caller leak the pages */
+> +			if (WARN_ON(out_top <= phys))
+> +				return -ENXIO;
+> +			phys = out_top;
+> +		} else {
+
+Similar to below, why not deal with error case first and reduce indent of
+the good path.
+
+> +			break;
+> +		}
 > +	}
->  	spin_unlock_irqrestore(&vga_lock, flags);
->  	if (!vgadev)
->  		return -ENODEV;
-> @@ -1464,7 +1469,7 @@ static void vga_arbiter_notify_clients(void)
->  	spin_lock_irqsave(&vga_lock, flags);
->  	list_for_each_entry(vgadev, &vga_list, list) {
->  		if (vgadev->set_decode) {
-> -			new_decodes = vgadev->set_decode(vgadev->pdev,
-> +			new_decodes = vgadev->set_decode(vgadev->set_decode_data,
->  							 new_state);
->  			vga_update_device_decodes(vgadev, new_decodes);
->  		}
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index 6757054e9d87..b04ce3ded08c 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -162,9 +162,10 @@ static inline void vfio_pci_core_debugfs_init(struct vfio_pci_core_device *vdev)
->   * has no way to get to it and routing can be disabled externally at the
->   * bridge.
->   */
-> -static unsigned int vfio_pci_set_decode(struct pci_dev *pdev, bool single_vga)
-> +static unsigned int vfio_pci_set_decode(void *data, bool single_vga)
->  {
-> -	struct vfio_pci_core_device *vdev = dev_get_drvdata(&pdev->dev);
-> +	struct vfio_pci_core_device *vdev = data;
-> +	struct pci_dev *pdev = vdev->pdev;
->  	struct pci_dev *tmp = NULL;
->  	unsigned char max_busnr;
->  	unsigned int decodes;
-> @@ -2159,10 +2160,10 @@ static int vfio_pci_vga_init(struct vfio_pci_core_device *vdev)
->  	if (ret)
->  		return ret;
->  
-> -	ret = vga_client_register(pdev, vfio_pci_set_decode);
-> +	ret = vga_client_register(pdev, vfio_pci_set_decode, vdev);
->  	if (ret)
->  		return ret;
-> -	vga_set_legacy_decoding(pdev, vfio_pci_set_decode(pdev, false));
-> +	vga_set_legacy_decoding(pdev, vfio_pci_set_decode(vdev, false));
->  	return 0;
->  }
->  
-> diff --git a/include/linux/vgaarb.h b/include/linux/vgaarb.h
-> index 97129a1bbb7d..71a364669eaf 100644
-> --- a/include/linux/vgaarb.h
-> +++ b/include/linux/vgaarb.h
-> @@ -33,7 +33,8 @@ struct pci_dev *vga_default_device(void);
->  void vga_set_default_device(struct pci_dev *pdev);
->  int vga_remove_vgacon(struct pci_dev *pdev);
->  int vga_client_register(struct pci_dev *pdev,
-> -		unsigned int (*set_decode)(struct pci_dev *pdev, bool state));
-> +		unsigned int (*set_decode)(void *data, bool state),
-> +		void *data);
->  #else /* CONFIG_VGA_ARB */
->  static inline void vga_set_legacy_decoding(struct pci_dev *pdev,
->  		unsigned int decodes)
-> @@ -59,7 +60,8 @@ static inline int vga_remove_vgacon(struct pci_dev *pdev)
->  	return 0;
->  }
->  static inline int vga_client_register(struct pci_dev *pdev,
-> -		unsigned int (*set_decode)(struct pci_dev *pdev, bool state))
-> +		unsigned int (*set_decode)(void *data, bool state),
-> +		void *data)
->  {
->  	return 0;
->  }
-> @@ -97,7 +99,7 @@ static inline int vga_get_uninterruptible(struct pci_dev *pdev,
->  
->  static inline void vga_client_unregister(struct pci_dev *pdev)
->  {
-> -	vga_client_register(pdev, NULL);
-> +	vga_client_register(pdev, NULL, NULL);
->  }
->  
->  #endif /* LINUX_VGA_H */
-> -- 
-> 2.54.0
-> 
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(rmi_undelegate_range);
+
+> +/*
+> + * rmi_delegate_range: Delegate a physically contiguous range.
+> + * We iterate over the range until we hit an error. So we may
+> + * return an error, but with a partially delegated range. The
+> + * caller must always look at the @out_phys to figure out, how
+> + * much progress was made.
+> + *
+> + * @phys:	Base of the physical address range
+> + * @size:	Size of the physical address range
+> + * @out_phys:	Top of the range that was completed. This is always
+> + *		valid, irrespective of the result.
+> + *
+> + * Returns RMI_SUCCESS on successful completion. Otherwise, returns
+> + * the Linux error number or the RMI status code as described
+> + * by the RMM spec for RMI_GRANULE_DELEGATE_RANGE or RMI_BLOCKED.
+> + */
+> +int rmi_delegate_range(phys_addr_t phys,
+> +		       unsigned long size,
+> +		       phys_addr_t *out_phys)
+> +{
+> +	long ret = 0;
+> +	unsigned long top = phys + size;
+> +	unsigned long out_top;
+> +
+> +	while (phys < top) {
+> +		ret = rmi_granule_range_delegate(phys, top, &out_top);
+> +
+> +		if (ret == RMI_SUCCESS) {
+
+My instinct here would be to flip this and have the error out of line given
+it breaks anyway and that gives you smaller indent for that ocmment block.
+
+		if (ret != RMI_SUCCESS)
+			break;
+
+		/*
+		 * Buggy RMM ? Let the caller handle the failure. We can't know
+		 * how far the RMM delegated in this iteration, so we return 
+ 		 * the best known good limit. RMM can deal with granules 
+		 * already in "undelegated" in a given range. So, it is fine
+		 * for the caller to try the range we return.
+		 */
+		if (WARN_ON...
+
+> +			/*
+> +			 * Buggy RMM ? Let the caller handle the failure.
+> +			 * We can't know how far the RMM delegated in this
+> +			 * iteration, so we return the best known good limit.
+> +			 * RMM can deal with granules already in "undelegated"
+> +			 * in a given range. So, it is fine for the caller to
+> +			 * try the range we return.
+> +			 */
+> +			if (WARN_ON(out_top <= phys)) {
+> +				ret = -ENXIO;
+> +				break;
+> +			}
+> +			phys = out_top;
+> +		} else {
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (out_phys)
+> +		*out_phys = phys;
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(rmi_delegate_range);
+
+...
+
+> +
+> +static int rmi_sro_donate_noncontig(struct rmi_sro_state *sro,
+> +				    unsigned long sro_handle,
+> +				    unsigned long donatereq,
+> +				    struct arm_smccc_1_2_regs *out_regs,
+> +				    gfp_t gfp)
+> +{
+
+...
+
+> +
+> +	/* Gather the suitable entries to the end of the list */
+> +	i = 0;
+> +	while (i <  addr_list_start && found < count) {
+> +		unsigned long entry = sro->addr_list[i];
+> +
+> +		if (RMI_ADDR_RANGE_BLOCK_SIZE(entry) == block_size_fld &&
+> +		    RMI_ADDR_RANGE_COUNT(entry) == 1 &&
+> +		    RMI_ADDR_RANGE_STATE(entry) == state) {
+> +			addr_list_start--;
+> +			swap(sro->addr_list[addr_list_start],
+> +			     sro->addr_list[i]);
+> +			found++;
+> +			/* Continue from the swapped in entry */
+> +			continue;
+> +		}
+> +		/* skip past the entry */
+
+Bit random on comment capitalization.  Have a quick final look through.
+For instance I think this one is Skip to match Continue above.
+
+> +		i++;
+> +	}
+
+...
+
+
+> +
+> +static int rmi_sro_reclaim(struct rmi_sro_state *sro,
+> +			   unsigned long sro_handle,
+> +			   struct arm_smccc_1_2_regs *out_regs)
+> +{
+> +	unsigned long capacity;
+> +
+> +	/*
+> +	 * We don't do a partial free of the entries. So for
+> +	 * now free the entire address list as we prepare
+> +	 * to reclaim more from the RMM.
+
+Rewrap to use all that nice space up to 80 chars!  I guess a refactoring
+side effect.
+
+> +	 */
+> +	if (rmi_sro_ensure_capacity(sro, 1))
+> +		rmi_sro_free(sro);
+> +
+> +	capacity = RMI_MAX_ADDR_LIST - sro->addr_count;
+> +
+> +	rmi_op_mem_reclaim(sro_handle,
+> +			   virt_to_phys(&sro->addr_list[sro->addr_count]),
+> +			   capacity, out_regs);
+> +
+> +	/*
+> +	 * RMI_OP_MEM_RECLAIM always return RMI_INCOMPLETE, except when the
+> +	 * input parameters were invalid.
+> +	 */
+> +	if (WARN_ON_ONCE(RMI_RESULT_STATUS(out_regs->a0) != RMI_INCOMPLETE))
+> +		return -EINVAL;
+> +	if (WARN_ON_ONCE(out_regs->a1 > capacity))
+> +		out_regs->a1 = capacity;
+> +
+> +	sro->addr_count += out_regs->a1;
+> +
+> +	return 0;
+> +}
+
+> +
+> +long rmi_sro_memxfer_execute(struct rmi_sro_state *sro, gfp_t gfp)
+> +{
+> +	struct arm_smccc_1_2_regs *regs = &sro->regs;
+> +	bool cancelled = false;
+> +	unsigned long sro_handle;
+> +
+> +	rmi_smccc_invoke(regs);
+> +
+> +	sro_handle = regs->a1;
+> +	while (RMI_RESULT_STATUS(regs->a0) == RMI_INCOMPLETE) {
+> +		bool can_cancel = RMI_RESULT_CAN_CANCEL(regs->a0) == RMI_OP_CAN_CANCEL;
+
+For a flag that is "can" or "cannot", do we need the RMI_OP_CAN_CANCEL (1) / RMI_OP_CANNOT_CANCEL (0)
+defines?  Doesn't feel like we'll ever get RMI_OP_UNKNOWN_IF_IT_CAN_CANCEL and I can't think
+of any other more reasonable options that would justify needing the explicit field value
+match.
+
+To me
+
+		bool can_cancel = RMI_RESULT_CAN_CANCEL(regs->a0);
+
+is obvious enough.  I don't care that much though so up to you.
+
+
+> +		int ret = 0;
+> +
+> +		switch (RMI_RESULT_MEMREQ(regs->a0)) {
+> +		case RMI_OP_MEM_REQ_NONE:
+> +			rmi_op_continue(sro_handle, RMI_CONTINUE_KEEP_GOING,
+> +					regs);
+> +			break;
+> +		case RMI_OP_MEM_REQ_DONATE:
+> +			ret = rmi_sro_donate(sro, sro_handle, regs->a2, regs,
+> +					     gfp);
+> +			break;
+> +		case RMI_OP_MEM_REQ_RECLAIM:
+> +			ret = rmi_sro_reclaim(sro, sro_handle, regs);
+> +			break;
+> +		default:
+> +			WARN_ON_ONCE(1);
+> +			ret = -ENXIO;
+> +			break;
+> +		}
+> +
+> +		if (ret) {
+> +			/*
+> +			 * All memory donating SROs must be cancellable. So a
+> +			 * failure in memory allocation shouldn't be an issue.
+> +			 * However, if we encounter a random failure (e.g.,
+> +			 * buggy RMM), don't loop forever, just give up.
+> +			 */
+> +			if (WARN_ON_ONCE(!can_cancel))
+> +				return ret;
+> +			/*
+> +			 * If we have already cancelled, and came back here due
+> +			 * to an error in MEMREQ, then there is no point
+> +			 * in going in loops.
+> +			 */
+> +			if (WARN_ON_ONCE(cancelled))
+> +				break;
+> +			rmi_op_cancel(sro_handle, regs);
+> +			cancelled = true;
+> +
+> +			if (WARN_ON_ONCE(RMI_RESULT_STATUS(regs->a0) != RMI_INCOMPLETE))
+> +				return ret;
+> +		}
+> +	}
+> +
+> +	if (cancelled)
+> +		return -ECANCELED;
+> +
+> +	return regs->a0;
+> +}
+> +EXPORT_SYMBOL_GPL(rmi_sro_memxfer_execute);
+> +
+> +/*
+> + * rmi_sro_execute: Execute an RMI command that is Stateful but not memory
+> + * tranfserring. Takes regs, filled with the FIDs and the arguments in place.
+
+Spell check. Transferring.  Also why does Stateful get a capital letter and
+Memory Transferring does not.  They seem to both be properties of the comman
+so I'd expect some consistency.
+
+> + *
+> + * Returns :
+> + *  -ECANCELLED - If the operation had to be aborted and SRO was cancellable.
+> + *  Otherwise, returns the result of the RMI command.
+> + */
+> +long rmi_sro_execute(struct arm_smccc_1_2_regs *regs)
+> +{
+> +	bool cancelled = false;
+> +	unsigned long sro_handle = regs->a1;
+> +
+> +	rmi_smccc_invoke(regs);
+> +
+> +	sro_handle = regs->a1;
+> +	while (RMI_RESULT_STATUS(regs->a0) == RMI_INCOMPLETE) {
+> +		bool can_cancel = RMI_RESULT_CAN_CANCEL(regs->a0) == RMI_OP_CAN_CANCEL;
+> +
+> +		switch (RMI_RESULT_MEMREQ(regs->a0)) {
+> +		case RMI_OP_MEM_REQ_NONE:
+> +			rmi_op_continue(sro_handle, RMI_CONTINUE_KEEP_GOING,
+> +					regs);
+> +			break;
+> +		default:
+> +			WARN_ON_ONCE(1);
+> +			if (!can_cancel)
+> +				return regs->a0;
+> +			/*
+> +			 * We can't get here normally, but handle this anyway
+> +			 * for a buggy RMM implementation.
+> +			 */
+> +			if (cancelled)
+> +				return -ECANCELED;
+> +			rmi_op_cancel(sro_handle, regs);
+> +			cancelled = true;
+> +		}
+> +	}
+> +
+> +	if (cancelled)
+> +		return -ECANCELED;
+> +
+> +	return regs->a0;
+> +}
+> +EXPORT_SYMBOL_GPL(rmi_sro_execute);
+
