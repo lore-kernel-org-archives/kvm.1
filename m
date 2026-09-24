@@ -1,392 +1,298 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo2-f18.google.com (mail-oo2-f18.google.com [74.125.231.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5720B2AD2E;
-	Thu, 24 Sep 2026 00:54:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50D9254AFF
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 00:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790211261; cv=none; b=ceRUJjPv0U43Hf5aau8irck37dX2VLz55UjrsmQi7ab6ODKQF9aYr1cOdYkLdJ07mp1eHKyOCnckHLHyKm8HHbmi+6/DdMflZGmHpB/g0KvEKsu1fL1yag3a3m8qumrONJ1qBDG5bwuGXXExCKDfOJ2pl5gIeRK+2HI5J4vylik=
+	t=1790211332; cv=none; b=BDmrIgvIN7KYO4DSgywpjqkL418+d1cnG0USmNdDKcTxDoJEn3HsPhZGKWN7vZG3qrwPNIztNuvji8d5pLdSkrjmrrWT9BZ3YX9arn7p2IV30iLarjlo2CyCrEgQE3lSKuqdb+4TXTLaTWKGBwZnD+DUwf5XoTwtctg0OHckL4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790211261; c=relaxed/simple;
-	bh=hj1afspDTZChgEQ+55mfMNH6cKzUiikF8sTCti2+qOI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MzTdtBAJCkkfiJG4HtdQe95DM3et2Rt6MRtugP+ESiq/6eZOGoL2hQTaKYiv6R3tYBTSTJqOcUYOJA6VImvBwE0z2XIXMPKiSkmH8CCDv+I6FbRy4EsgyGUqdn+LsRpHphYKmyV+JcnpybO/I6CTULjCEcDL46lk69oLAU+YB54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fKu5ipBn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790211332; c=relaxed/simple;
+	bh=+3lgLeKyGoruCl5bCKhJ3T83Paha5+SBWFamsUnyxf0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ahQkSHHHUSdiArZIY5b1Y92lRfq5SYXa+YU7FgNLjNQ2rN4iL3peoMAXBaQzHoFvfAZogwiWCR5BcjFxPZq8BuWuYZtfXZ2I58D8Ywpqi6NQ1Bqg8wiurpoMX5ofr0GIsmNwNL+OLELeobZPNnBIxhm3G7TaZL0YM8Sk6mBKPio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RAC8yCSI; arc=none smtp.client-ip=74.125.231.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fKu5ipBn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4142D1F000FF;
-	Thu, 24 Sep 2026 00:54:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790211258;
-	bh=5ny6G4QGhCW6cY8aBkrWvz1OpCgET+94cns7jDOrINU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=fKu5ipBn9sKvTREnbqLVb64OCOEHtjiKVFC0DuhKHMUaUGnzJeXcfgDZKgcWvBTUk
-	 w5vKtgg0Ei1axBJwBTf51BT+v3eINiby41XKT8gH6SDsMaBqNzEzOflfhCySKZlNHn
-	 hAv6NV9VkWL1n/Vnlu41mu788iN+r+UBtlP4lKqP6IEbTPtbN/YC014ftwqpmJSAI0
-	 H6qcjiovG2Rvu7jCLCxbOAVfqFySB8Eig/kHB0I16uyIVbfaRPTujyM/Sr8c567sbU
-	 DCyLfhpGdbXyJnHHLt7dITdirUvKOGSLxhrBkwG2FAueHl4VBWwhQyNWYdUtqgG6GO
-	 4EPgkdP3B/vFg==
-Date: Thu, 24 Sep 2026 01:54:09 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Manish Honap <mhonap@nvidia.com>
-Cc: Gregory Price <gourry@gourry.net>, "alex@shazbot.org"
- <alex@shazbot.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>, Ankit Agrawal
- <ankita@nvidia.com>, "dave.jiang@intel.com" <dave.jiang@intel.com>,
- "alejandro.lucero-palau@amd.com" <alejandro.lucero-palau@amd.com>,
- Srirangan Madhavan <smadhavan@nvidia.com>, "corbet@lwn.net"
- <corbet@lwn.net>, "skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
- "dave@stgolabs.net" <dave@stgolabs.net>, "alison.schofield@intel.com"
- <alison.schofield@intel.com>, "vishal.l.verma@intel.com"
- <vishal.l.verma@intel.com>, "iweiny@kernel.org" <iweiny@kernel.org>,
- "ming.li@zohomail.com" <ming.li@zohomail.com>, Yishai Hadas
- <yishaih@nvidia.com>, Shameer Kolothum Thodi <skolothumtho@nvidia.com>,
- "kevin.tian@intel.com" <kevin.tian@intel.com>, "bhelgaas@google.com"
- <bhelgaas@google.com>, "dmatlack@google.com" <dmatlack@google.com>,
- "kees@kernel.org" <kees@kernel.org>, "gustavoars@kernel.org"
- <gustavoars@kernel.org>, Neo Jia <cjia@nvidia.com>, Krishnakant Jaju
- <kjaju@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>, Zhi Wang
- <zhiw@nvidia.com>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-cxl@vger.kernel.org"
- <linux-cxl@vger.kernel.org>, "linux-pci@vger.kernel.org"
- <linux-pci@vger.kernel.org>, "linux-kselftest@vger.kernel.org"
- <linux-kselftest@vger.kernel.org>, "linux-hardening@vger.kernel.org"
- <linux-hardening@vger.kernel.org>
-Subject: Re: [PATCH v5 26/27] Documentation: vfio-pci: Document CXL Type-2
- device passthrough
-Message-ID: <20260924015409.3681ad6d@jic23-hlaptop>
-In-Reply-To: <IA1PR12MB9030771093FA13DCB01C481EBD842@IA1PR12MB9030.namprd12.prod.outlook.com>
-References: <20260916183540.3813685-1-mhonap@nvidia.com>
-	<20260916183540.3813685-27-mhonap@nvidia.com>
-	<aqrl_FyWEBOZundU@gourry-fedora-PF4VCD3F>
-	<IA1PR12MB9030771093FA13DCB01C481EBD842@IA1PR12MB9030.namprd12.prod.outlook.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RAC8yCSI"
+Received: by mail-oo2-f18.google.com with SMTP id 006d021491bc7-6b390bcab0cso866728eaf.2
+        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 17:55:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790211330; x=1790816130; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=FfxOZpGwcVSI/AA/FeGaBOP+LTq0nuPyB8Q6sUgl39Y=;
+        b=RAC8yCSIs8pHIsurtJ8Y9VAoEzTjaKQFYiHerJU+V5l/gqtYzFnMfWcHgCawBMfQCv
+         6YJJ2SLy49VuXvUDPu2uH31YAAhfPzFsZ/9G/i1yBOy/y6BKAJF3qZKD0fFMsinwMeKh
+         tLJvVFpTZSDkh4LIGzgvHODZcv3nGXfgKo+KGbtNb27eqA7EyvGJbURVSLqSvqvjb5q2
+         rILJHm0MACSsujgle3lBb9Av3FSgY8/M0gLisr8b9Rt4TKp/SsX/UeYDHAmX61GUpYEB
+         kEbnUya7qpRQSVkE9XOVHTeHfSQ3Qp5zr2t+eLKR0nVsXf/zL9nJowIgBmzXwJVskIQI
+         Hl8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790211330; x=1790816130;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=FfxOZpGwcVSI/AA/FeGaBOP+LTq0nuPyB8Q6sUgl39Y=;
+        b=BFZVXUYSQCjELhYTMhK/+QOif/ld9B4GQE9hhZwGPB1Xx12ZINwyumBFWzPPf7bYA8
+         TxDokPtEf1L037qjOTaBnzHplUS0OS4OU9Og3gP09spMus2JMFbKOusbOo3JedSN5LLd
+         SVQNqZLMFuw+SwwtPz+OsdnrAt0xn7aJ30Aof7M39nCJhXHHmDZC6ov/37beUn0drely
+         LFhcD+ObfcFGedvFpdbd1aE1D7DN9Vt9DUP3JH4+wcupXViidII/HeINYxkzS355BXnm
+         R+pELbLkw1p9W60d6gcnzsDV0fo+d0wHpkUmqw4mduo2u/rijX+CBlpVOsD3bz/pnpxP
+         XmeQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzwdKfXMWvNjN/IZHJn0QE3Y2/8NyHswuKUo9ABFyHn3OfPZdEHY0FdSxYpJzTpexP8VoE=@vger.kernel.org
+X-Gm-Message-State: AFuF++nmxonorwKLxAFKmjIpiU31MN38RTsqvBfqFyf8Ahmy9wVQ6nC7
+	ssgIzCCoUoQ0ZIynQqEMi76GrxLpgZ4t4p0XIlOuagP4FR+uU9Cm1qly
+X-Gm-Gg: AYBFou2ztsMMj78SqQQNOHuhpX4r5Ww2S0l8xXy6fiHcQAKmmyl/BXVp3oxgqNKkMBA
+	xGBmmjkYedpqjUpEykVVnN9vA+kHTFAFeErz1PXAs5ZHhyWb0YNUPzHwnwoaaE+UdK2zRwEOALC
+	FHv8HNSAaK8pufwFmT4lz6lcYBqTsvs1CWFRLyyV0BiqaMV20VAHvgObLuKG3x5uKWYv3uTK6X+
+	VXIVbos0Lpmmu4HEOsEHF9qZg1x0u2vXu6+EzJkctwYNqI+tqqZrbA6sqw9KayALQ55LIu1uIdA
+	v/Ly68/JsN5lkRFG+bxlD9Bva50fZ/xj7h6eCOAbBX8MneUCyUadwgFigdeBj9edT+4eJLYW+Dd
+	+lSnswk/jAmTDU+AkolSkU3SZOrkKm9tTxRcBjpB7AMEw8tCo57E1uS/O8zDQbQPsKiJd0WUxfQ
+	GxI5DU+A+L5qU2xIUOnGt5rsPSJYs8huk6ZeJdIg/8UmO2tTl6Xjxht3Zv6+XrK1FMiyOtWYOrf
+	NnonquLVJQTcpJuaX4I
+X-Received: by 2002:a4a:e906:0:b0:6d0:1fe7:1744 with SMTP id 006d021491bc7-6d441d73979mr913528eaf.83.1790211329662;
+        Wed, 23 Sep 2026 17:55:29 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:56::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-491ed1e75a1sm859150fac.4.2026.09.23.17.55.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 17:55:27 -0700 (PDT)
+Date: Wed, 23 Sep 2026 17:55:23 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: sgarzare@redhat.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	corbet@lwn.net, skhan@linuxfoundation.org, stefanha@redhat.com,
+	mst@redhat.com, jasowangio@gmail.com, xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com, shuah@kernel.org, rdunlap@infradead.org,
+	donald.hunter@gmail.com, virtualization@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, sargun@sargun.me, jlinbox@meta.com,
+	sdf.kernel@gmail.com, bobbyeshleman@meta.com
+Subject: Re: [PATCH net-next v2 6/6] selftests/vsock: test the netns assign
+ privilege checks
+Message-ID: <arR0+/7pGWSY+NrD@devvm29614.prn0.facebook.com>
+References: <20260921-vsock-guest-ns-v2-6-693bd78fde9e@meta.com>
+ <179019126776.2160803.16648507383433583043@kernel.org>
+ <arRttf9k4yKahe4R@devvm29614.prn0.facebook.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <arRttf9k4yKahe4R@devvm29614.prn0.facebook.com>
 
-On Mon, 21 Sep 2026 09:43:34 +0000
-Manish Honap <mhonap@nvidia.com> wrote:
-
-> Hello Gregory,
-> 
-> Thank you for the careful read of the documentation. I will rework the
-> sections you flagged as below:
-> 
-
-Hi Manish,
-
-It is much more helpful to reply inline with the relevant sections so we can
-see the context wrt to what Gregory was asking.  That saves others
-reading the discussion from having to carefully build up a global model
-of what was said to understand what the replies are about.  Also I'll hazzard
-a guess that Gregory may have read enough code since he sent the review
-that he has already forgotten some of his own comments! (maybe that's just
-me!)  I appreciate that doesn't always work if you are going to address
-the comment via more radical restructuring.  Or in short, please don't
-top post!
-
-Thanks,
-
-Jonathan
-
-
-> - Address model
-> 
->   I will update the wording to mention that VMM does know the GPA: it builds
->   the guest's CFMWS window and so chooses the guest-physical range the device
->   can inhabit. What the host owns is the HPA and the placement within it, not
->   knowledge of the GPA.
->   I will add the two models you described, fixed placement for an accelerator
->   that needs exact physical placement versus no fixed placement for pooled or
->   compressed memory, with a small HPA/GPA example, and note that the current
->   series under discussion implements the fixed-offset case.
-> 
-> - Virtual decoders
-> 
->   I will rename the The "Guest decoder and commit" section to "Virtual
->   decoders" and add a short flow showing a guest vdecoder write being absorbed
->   and a live read returning COMMITTED from the host-locked physical decoder.
-> 
-> - "The kernel virtualizes ..."
-> 
->   I will update it to say vfio-pci-core (its config-space permission hooks).
-> 
-> - guest IOAS, stage-2 mapping, and struct-page-less coherent memory
-> 
->   I will define these terms where first used and include that the range is
->   handed to the device whole and never onlined as system RAM. I will also add
->   details why a stale stage-2 mapping must not outlive the HDM window, and how
->   the VMM rebuilds it.
-> 
-> - Reset
-> 
->   I will reword this section. FLRs are virtualized so a guest reset can't
->   inflict physical CXL.mem/decoder effects on the host rather than loose
->   wording "must not take an FLR"
-> 
-> I can share the revised text ahead of the v6 posting if that is easier to
-> review.
-> 
-> Thanks,
-> Manish
-> 
-> > -----Original Message-----
-> > From: Gregory Price <gourry@gourry.net>
-> > Sent: Thursday, September 17, 2026 1:03 AM
-> > To: Manish Honap <mhonap@nvidia.com>
-> > Cc: alex@shazbot.org; jgg@ziepe.ca; Ankit Agrawal <ankita@nvidia.com>;
-> > jic23@kernel.org; dave.jiang@intel.com; alejandro.lucero-palau@amd.com;
-> > Srirangan Madhavan <smadhavan@nvidia.com>; corbet@lwn.net;
-> > skhan@linuxfoundation.org; dave@stgolabs.net; alison.schofield@intel.com;
-> > vishal.l.verma@intel.com; iweiny@kernel.org; ming.li@zohomail.com; Yishai
-> > Hadas <yishaih@nvidia.com>; Shameer Kolothum Thodi
-> > <skolothumtho@nvidia.com>; kevin.tian@intel.com; bhelgaas@google.com;
-> > dmatlack@google.com; kees@kernel.org; gustavoars@kernel.org; Neo Jia
-> > <cjia@nvidia.com>; Krishnakant Jaju <kjaju@nvidia.com>; Vikram Sethi
-> > <vsethi@nvidia.com>; Zhi Wang <zhiw@nvidia.com>; linux-
-> > doc@vger.kernel.org; linux-kernel@vger.kernel.org; kvm@vger.kernel.org;
-> > linux-cxl@vger.kernel.org; linux-pci@vger.kernel.org; linux-
-> > kselftest@vger.kernel.org; linux-hardening@vger.kernel.org
-> > Subject: Re: [PATCH v5 26/27] Documentation: vfio-pci: Document CXL Type-
-> > 2 device passthrough
+On Wed, Sep 23, 2026 at 05:24:21PM -0700, Bobby Eshleman wrote:
+> On Wed, Sep 23, 2026 at 07:21:07PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> > Thank you for your contribution! Sashiko AI review found 2 potential
+> > issue(s) to consider.
 > > 
-> > External email: Use caution opening links or attachments
+> > Critical: 0 · High: 0 · Medium: 1 · Low: 1
 > > 
+> > If you believe none of the issues are legitimate, please reply to each
+> > issue of Medium severity or higher and explain why the AI is wrong.
+> > If any of them are legitimate and you plan to respin, please let patchwork
+> > know by including "pw-bot: cr" as a separate line at the end of your reply
+> > (one such reply per series is enough).
 > > 
-> > On Thu, Sep 17, 2026 at 12:05:39AM +0530, mhonap@nvidia.com wrote:  
-> > > From: Manish Honap <mhonap@nvidia.com>
+> > - [Medium] Both new selftests
+> >   (`test_ns_guest_assign_g2h_netns_no_cap_net_admin_fails`,…
+> > - [Low] The two new shared-VM tests omit the `vm_reset_g2h()` cleanup
+> >   that every other ns_guest_assign_g2h_netns_* test in USE_SHARED_VM…
+> > 
+> > --
+> > 
+> > selftests/vsock: test the netns assign privilege checks
+> > 
+> > Adds two vmtest.sh cases that attempt VSOCK_CMD_DEV_NETNS_SET without
+> > CAP_NET_ADMIN and from an unprivileged user namespace, and enables
+> > CONFIG_USER_NS in the vsock selftest config.
+> > 
+> > > diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
+> > > index e94cc2fd90ccd..4f42bcdac3f6c 100755
+> > > --- a/tools/testing/selftests/vsock/vmtest.sh
+> > > +++ b/tools/testing/selftests/vsock/vmtest.sh
+> > 
+> > [ ... ]
+> > 
+> > > @@ -187,6 +195,8 @@ readonly TEST_DESCS=(
+> > >  	ns_guest_assign_g2h_netns_host_connect_ok
+> > >  	ns_guest_assign_g2h_netns_reset_on_ns_delete_ok
+> > >  	ns_guest_assign_g2h_netns_old_conn_send_fails
+> > > +	ns_guest_assign_g2h_netns_no_cap_net_admin_fails
+> > > +	ns_guest_assign_g2h_netns_unpriv_user_ns_fails
+> > >  )
+> > >  readonly NS_MODES=("local" "global")
+> > 
+> > [Severity: Low]
+> > Both new tests are added to USE_SHARED_VM but neither calls
+> > vm_reset_g2h() on any exit path, unlike every other
+> > ns_guest_assign_g2h_netns_* test in that list.
+> > 
+> > Should these follow the sibling pattern?  If the privilege check under
+> > test is broken, the assign succeeds and the guest's single g2h device is
+> > left owned by the transient namespace created by unshare, while the
+> > harness moves on to the next test in the same VM.
+> > 
+> > The kernel does restore this by itself once that namespace is reaped:
+> > 
+> > net/vmw_vsock/af_vsock.c:vsock_g2h_net_reset() {
+> > 	if (likely(rcu_access_pointer(vsock_g2h_net) != net))
+> > 		return;
+> > 
+> > 	mutex_lock(&vsock_register_mutex);
+> > 	if (rcu_access_pointer(vsock_g2h_net) == net)
+> > 		rcu_assign_pointer(vsock_g2h_net, &init_net);
+> > 	...
+> > }
+> > 
+> > registered as .pre_exit in vsock_pernet_ops, and the next test's
+> > vm_ns_assign_g2h() overwrites the pointer anyway.  The residual window is
+> > the asynchronous teardown that ..._reset_on_ns_delete_ok already documents
+> > ("the namespace itself is dismantled from a workqueue, so the device does
+> > not come back the same instant").  Since the new tests are appended last
+> > in TEST_NAMES and USE_SHARED_VM, a default run is unaffected; this only
+> > shows up with selective or reordered invocation.
+> 
+> Yes, these tests should call it regardless. Relying on cleanup makes the
+> pass/fail race-y.
+> 
+> > 
+> > [ ... ]
+> > 
+> > > @@ -1832,6 +1842,48 @@ test_ns_guest_assign_g2h_netns_reset_on_ns_delete_ok() {
+> > >  	return "${KSFT_PASS}"
+> > >  }
 > > >  
-> > 
-> > 1) Thank you so much for writing documentation, i truly appreciate this.
-> > 
-> > 2) I apologize in advance for my terseness, I know writing is hard,
-> >    please do not interpret this as disliking your writing or series.
-> >   
-> > > +Address model
-> > > +=============
+> > > +test_ns_guest_assign_g2h_netns_no_cap_net_admin_fails() {
+> > > +	local cmd="unshare -n setpriv --bounding-set=-net_admin"
+> > > +	local rc
 > > > +
-> > > +The HDM memory is a coherent host physical range (HPA). The host
-> > > +kernel resolves that range before the guest sees the device, and owns
-> > > +it for the bind lifetime. The guest only chooses where the memory
-> > > +appears in its own physical address space (GPA), by programming a
-> > > +virtual endpoint HDM decoder. The guest never reprograms the physical  
-> > decoder.  
+> > > +	vm_ssh "init_ns" -- "${cmd}" python3 /root/ynl/cli.py --no-schema \
+> > > +		--spec /root/ynl/vsock.yaml --do dev-netns-set &>/dev/null
+> > > +	rc=$?
 > > > +
-> > > +The kernel holds the HPA and does not see the GPA. The guest programs
-> > > +a GPA and does not see the HPA. The VMM holds the device fd, reads
-> > > +the committed base from the decoder-register region described below,
-> > > +and maps the HPA-backed HDM region at the GPA the guest committed.
-> > > +The base the guest reads back is the GPA, not the HPA.
-> > > +  
-> > 
-> > I think this must be slightly inaccurate / imprecise wording.
-> > 
-> > The host *must* provide some form of physical memory window to the guest
-> > at initialization time, otherwise the guest has no way to know - at boot time -
-> > that there's even a window of memory it can use.
-> > 
-> > That's what the CFMWS is.  This is initialized by the hypervisor - which is
-> > controlled by the host.
-> > 
-> > So the host (at least the VMM) must know, for the region the entire device
-> > *could* inhabit, what that GPA is - because it's the one that makes the CFMWS
-> > for the guest.
-> > 
-> > If this is not the case, then something is missing from this documentation to
-> > explain why.
-> > 
-> > 
-> > If you're actually trying to say is that the GPA's programmed into the virtual
-> > decoders are largely symbolic - this at best feels a bit inaccurate and simply an
-> > implementation detail.
-> > 
-> > The host's virtio device could enforce ....:
-> > 
-> > Host Range:
-> >    CFMWS HPA - [0x10000, 0x20000]
-> >                    |         |
-> > Guest Range:       |         |
-> >    CFMWS GPA - [0x50000, 0x60000]
-> > 
-> > In that case, you'd get the following translation...
-> >    vdecoder0.0 - [0x58000, 0x60000]
-> >    CFMWS GPA   - [0x58000, 0x60000]
-> >    CFMWS HPA   - [0x18000, 0x20000]
-> > 
-> > Or the virtio device could not enforce that and let the host page-fault just hand
-> > it a random page from the actual CXL device.
-> > 
-> >    vdecoder0.0 - [0x58000, 0x60000]
-> >    CFMWS GPA   - [0x58000, 0x60000]
-> >                          |
-> >               No discrete host mapping
-> > 
-> > 
-> > The former makes sense if the device (accelerator) requires exact physical
-> > placement to do its accelerator nonsense.
-> > 
-> > The latter makes sense if the device (accelerator) doesn't care about placement
-> > (compressed memory).
-> > 
-> > This is not saying we need support both out of the box, but we shouldn't lock
-> > ourselves into the former unless there's some reason why the latter is not
-> > reasonable.
-> > 
-> > Can you please help document what the actual expected behavior is with
-> > examples in the Address model section so it's easier to understand the intent?
-> > That will help quite a bit.
-> >   
-> > > +Guest decoder and commit
-> > > +========================
+> > > +	if [[ "${rc}" -eq 0 ]]; then
+> > > +		log_host "assign unexpectedly succeeded without CAP_NET_ADMIN"
+> > > +		return "${KSFT_FAIL}"
+> > > +	fi
 > > > +
-> > > +The guest programs its virtual endpoint decoder through the trapped
-> > > +region: it writes a base (a GPA), a size, and then the COMMIT bit.
-> > > +The host already resolved and committed the physical placement before
-> > > +the guest ran,  
+> > > +	return "${KSFT_PASS}"
+> > > +}
 > > 
-> > So the host does know GPA, just not exact placement.
-> >   
-> > > so a live read of the decoder always shows COMMITTED and the
-> > > +guest's commit poll completes. The physical decoder is never
-> > > +rewritten; the guest's writes are absorbed.
-> > > +  
+> > [Severity: Medium]
+> > Can this test pass without the capability check ever being reached?  The
+> > only assertion is rc -eq 0 => FAIL, output is discarded with &>/dev/null,
+> > and there is no positive control, so any nonzero status reads as
+> > KSFT_PASS.
 > > 
-> > Rather clunky, round-about way to say "The guest decoders are
-> > virtualized".   If possible, it would be nice to formalize this concept
-> > into "Virtual Decoders" - since that's what this is.
+> > A few concrete sources of a nonzero status that are not -EPERM:
 > > 
-> > With that concept i think you can probably generate some nice diagrams that
-> > show how the guest vdecoder's interact with the host drivers.
-> >   
-> > > +The VMM observes the commit, reads the committed base, and maps the
-> > > +HDM region at that GPA.
-> > > +  
+> > net/vmw_vsock/af_vsock.c:vsock_nl_dev_netns_set_doit() {
+> > 	int err = vsock_g2h_net_assign(genl_info_net(info));
 > > 
-> > So the host does know the GPA.
-> >   
-> > > +CXL Device DVSEC
-> > > +================
+> > 	if (err == -ENODEV)
+> > 		NL_SET_ERR_MSG(info->extack,
+> > 			       "no guest-to-host transport is loaded");
+> > 	else if (err == -EOPNOTSUPP)
+> > 	...
+> > }
+> > 
+> > and cli.py collapses all of those to the same status as -EPERM:
+> > 
+> > tools/net/ynl/pyynl/cli.py:main() {
+> >     except NlError as e:
+> >         print(e)
+> >         sys.exit(1)
+> > }
+> > 
+> > vm_ssh() also returns ssh's own status, so a transport failure (255) or a
+> > remote shell failure (127, e.g. an installed util-linux that does not
+> > accept setpriv --bounding-set=-net_admin) is indistinguishable from the
+> > expected refusal.  A python-side failure such as a missing
+> > /root/ynl/vsock.yaml exits 1 too.
+> > 
+> > Would it be worth asserting the privileged case succeeds first?  The file
+> > already has the helper the sibling tests use as a precondition:
+> > 
+> > vm_ns_assign_g2h() {
+> > 	local ns=$1
+> > 	local nspid=$2
+> > 
+> > 	vm_ns_exec "${ns}" "${nspid}" "python3 /root/ynl/cli.py --no-schema \
+> > 		--spec /root/ynl/vsock.yaml --do dev-netns-set"
+> > }
+> > 
+> > On the changelog note "ynl's cli.py does not report the errno": is that
+> > accurate?  NlError.__str__() in tools/net/ynl/pyynl/lib/ynl.py does:
+> > 
+> >         msg += os.strerror(self.error)
+> > 
+> > so the error string is printed and the test could match "Operation not
+> > permitted" instead of sending everything to /dev/null.
+> 
+> I considered this but felt like grepping stderr/stdout is somewhat
+> unnatural. My plan was to later propose that cli.py returns the err via
+> exit code, and then update these tests.
+> 
+> First checking the privileged assign sounds like a reasonable middle
+> ground to rule out the other error states.
+> 
+> > 
 > > > +
-> > > +The kernel virtualizes the CXL Device DVSEC body through the
-> > > +config-space permission hooks. Reads and writes inside the DVSEC body
-> > > +use a per-open shadow; a guest write stays in the shadow and does not  
-> > reach hardware.  
-> > > +Accesses outside the DVSEC body go to the device as usual.
-> > > +  
-> > 
-> > "The kernel" - what part? vfio-pci ? the vmm ?
-> > 
-> >   
-> > > +DMA and iommufd
-> > > +===============
+> > > +test_ns_guest_assign_g2h_netns_unpriv_user_ns_fails() {
+> > > +	local unpriv_uid=65534
+> > > +	local unpriv
+> > > +	local rc
 > > > +
-> > > +A Type-2 accelerator issues ATS-translated DMA to addresses inside
-> > > +its own HDM window, so that range must be present in the guest IOAS
-> > > +that backs the nested stage-2 translation.  
-> > 
-> > Type-2, ATS, DMA, HDM window, guest IOAS, stage-2 translation
-> > 
-> > I think the only thing i don't know in this sentence is "guest IOAS" and it's still
-> > hurting my brain to read.
-> > 
-> > Are all accelerators expect to have this particular interaction, or just yours?
-> >   
-> > > The HDM range is struct-page-less coherent
-> > > +memory, which a userspace-VA ``IOMMU_IOAS_MAP`` cannot pin.
-> > > +  
-> > 
-> > The hardest part about writing about virtualization is keeping a consistent
-> > mental model from section to section.
-> > 
-> > which userspace? guest? host?  (i presume guest here)
-> > 
-> > `struct-page-less coherent memory`
-> >    e.g. the host never hotplugs this, it hands the entire region
-> >    directly to the VFIO device, right?
-> > 
-> >    I think this would be nice to spell out somewhere.
-> >   
-> > > +The HDM memory region is therefore exportable as a dma-buf:
-> > > +``VFIO_DEVICE_FEATURE_DMA_BUF`` on that region returns an fd that
-> > > +iommufd maps with ``IOMMU_IOAS_MAP_FILE``, mapping the physical  
-> > range  
-> > > +without a VA or a page pin. The dma-buf is revoked whenever the
-> > > +mapping is torn down (reset, power transition, teardown), so a stale
-> > > +stage-2 mapping cannot outlive the HDM window.
-> > > +  
-> > 
-> > For the sake of readers, I think either a little bit more information on this
-> > "stage-2 mapping" concept is needed to make sense of what's going on here
-> > and why it mustn't outlive the HDM window.
-> >   
-> > > +Reset
-> > > +=====
+> > > +	unpriv="setpriv --reuid=${unpriv_uid} --regid=${unpriv_uid}"
+> > > +	unpriv="${unpriv} --clear-groups"
 > > > +
-> > > +A CXL Type-2 function must not take a Function Level Reset: an FLR
-> > > +resets the coherent CXL.mem state and the HDM decoder. The PCI core
-> > > +reflects this by preferring the CXL reset over FLR, so a function
-> > > +reset of a CXL device runs the CXL DVSEC reset sequence, which resets
-> > > +the function and then restores the HDM decoder and the PCI config state.
-> > > +  
-> > 
-> > I think what you're trying to say is that FLRs are never passed to the device
-> > because it can cause physical device effects that defeat the purpose of the
-> > virtualization, yes?
-> > 
-> > So we virtualize FLRs...
-> >   
-> > > +A guest requests a reset by writing Initiate CXL Reset in the DVSEC.
-> > > +That write only stamps completion in the shadow. The real reset runs
-> > > +at the vfio reset points (the reset ioctl and a virtualized FLR through config  
-> > space):
-> > 
-> > As you describe here.
-> > 
-> > So it's not that an accelerator "must not take an FLR" - it's that FLRs are
-> > virtualized to prevent deleterious effects on the host / hardware.
-> > 
-> > Am I misunderstanding this?
-> >   
-> > > +the kernel zaps the HDM mapping and revokes the dma-buf, then runs
-> > > +the CXL reset, which always clears the device memory, and restores
-> > > +and re-samples the decoder afterwards. A CXL port masks Secondary Bus
-> > > +Reset by default, so a ``VFIO_DEVICE_PCI_HOT_RESET`` does not reach
-> > > +the endpoint and the HDM state is untouched. If the port has SBR
-> > > +unmasked the reset can decommit the decoder without restoring it, so
-> > > +the reset_done handler gates HDM access; a ``VFIO_DEVICE_RESET`` then
-> > > +runs the CXL reset sequence and restores it.
+> > > +	if ! vm_ssh "init_ns" -- "${unpriv} unshare -U true"; then
+> > > +		log_host "unprivileged user namespaces unavailable, skipping"
+> > > +		return "${KSFT_SKIP}"
+> > > +	fi
 > > > +
-> > > +The decoder register region is served by live reads of the hardware
-> > > +decoder with guest writes absorbed: the decoder is committed and
-> > > +locked by the host, so a guest can neither decommit nor reprogram it,
-> > > +and the kernel keeps no shadow of the decoder state.  
+> > > +	vm_ssh "init_ns" -- "${unpriv} unshare -Urn" \
+> > > +		python3 /root/ynl/cli.py --no-schema \
+> > > +		--spec /root/ynl/vsock.yaml --do dev-netns-set &>/dev/null
+> > > +	rc=$?
+> > > +
+> > > +	if [[ "${rc}" -eq 0 ]]; then
+> > > +		log_host "assign unexpectedly succeeded for unprivileged user"
+> > > +		return "${KSFT_FAIL}"
+> > > +	fi
+> > > +
+> > > +	return "${KSFT_PASS}"
+> > > +}
 > > 
-> > This is basically what I said at the beginning - it must either be that the host
-> > provides locked auto-decoders at boot, or it must provide proper virtualization
-> > so that the decoders settings are fully virtualized.
+> > [Severity: Medium]
+> > Same rc != 0 => KSFT_PASS inference here, plus the availability probe is
+> > not the command being measured:
 > > 
-> > Seems it's the former, and that makes sense.  Please correct me if i'm
-> > misunderstanding.
-> >   
-> > > After a reset the kernel restores and
-> > > +re-samples the firmware-committed decoder, so the geometry the guest
-> > > +reads back is unchanged. A VMM that dropped its HDM mapping, for
-> > > +example across a reset or a D3hot->D0 transition, must rescan the
-> > > +decoder and rebuild its
-> > > +stage-2 mapping before it resumes HDM access.
-> > > +  
+> > 	probe:    ${unpriv} unshare -U true
+> > 	measured: ${unpriv} unshare -Urn python3 /root/ynl/cli.py ...
 > > 
-> > Yeah i think we need a bit more information about this stage-2 mapping
-> > rebuild to make sense of this.  Maybe I'm just not read-up enough on this
-> > particular setup - is there another part of the docs you can link to that talk
-> > about this, or are you able to share some details as to what this rebuild
-> > process looks like?
+> > If the extra -r/-n setup or the python startup under uid 65534 fails, the
+> > result is KSFT_PASS rather than KSFT_SKIP or KSFT_FAIL, and the child user
+> > namespace never actually holds CAP_NET_ADMIN, which is the condition the
+> > commit message says is being tested:
 > > 
-> > ~Gregory  
+> >     the other confirms that CAP_NET_ADMIN in an unprivileged user ns
+> >     alone is insufficient.
+> > 
+> > Would checking the reported error string, or asserting the privileged
+> > assign works in the same test, make these two cases fail if
+> > GENL_ADMIN_PERM is ever dropped from VSOCK_CMD_DEV_NETNS_SET?
+> 
+> Yep, can follow the same approach as above.
 
+pw-bot: cr
