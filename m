@@ -1,205 +1,275 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCAD47143D;
-	Thu, 24 Sep 2026 11:32:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A758A220F2A;
+	Thu, 24 Sep 2026 11:41:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790249554; cv=none; b=CeMG3lm8d+JYDip+LGyK2dEy9o+71W2FikwEorfXOzA7qagjThhNSVEyxkeFVkZeRY0O4PYQhka0sTZ7q88amaIiB3gPfZ62wr6gryzvMPq6NLgPgq4lSDqGw/dMkytemOaL/LtKy7bGJ53Ann4fOIdmP6ECRXPN2kkOiuP7oQ0=
+	t=1790250116; cv=none; b=GewFATDniF5sKii2JJlR/hlU2jxqf1zlWswXexrNwtAgAxEdkdwBUAVCZQz5q3QOE6J0PLWLoEav/TL15b6BtNCsfJZXuuja8Ia1b/MTIC91tgC3gPMDeMuY7OAXqZc59aXeUY9HLB6IkhP1G5+qyyeq2aLfXDh9gjCQM0bkeS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790249554; c=relaxed/simple;
-	bh=UjE3VK3mwNMPeS6UwemiwW2OZK9FhUpbf7clt4mI3p8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Cc:To:Subject:
-	 References:In-Reply-To; b=JLRMtkXxulkmnZKFwN+dtfhqT2G4FC4kdbW75iIMgKrlANKh1+AeV4lJ88nIY1dlaFgYzoFdckjz5+yvGpwJpXf/vlIKhQjWauUoDoFYp/dYFjx8C9fq2e18kEHba0c6+flLLta7H7lrGJhhZH2jQIh7uvX/EqOdoVLjfQz+ovk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ORVzJNZY; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1790250116; c=relaxed/simple;
+	bh=otvjFuyq6kH012fr3aOVX2Jq0X9BxSEiV72+IfUwzLE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CQaAUO4gPtG/6PQGvso9sQD+qAGCSTuZ4s4kWquzp3KHaKnYD3U4tkgn1/r6sk2FNID6NjslKrDOYPQYq6frxYmtZXcpHb5DeEdBVglJqeVbGc5Luk9TAS0tUAn/P59Iy5vIbx0sSNHtMYYGR+TEgWFA1sDVeWtq1UoS0+8fZBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Us7BZnDr; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ORVzJNZY"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68O5brrH1179979;
-	Thu, 24 Sep 2026 11:32:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=vvrvEB
-	P7yRHGEHdwu1SXSug+UxCecF+8PDKLe2ytAfg=; b=ORVzJNZYeu8MnSl/dCLpqL
-	mT8XoDx6Z2tmwL8BzonPq+6vk+cWdQMNfOTxt14cP/oGzZJll11+/CrWQvAynAc9
-	w7hnplvNYouoL3HVwPvGsoaHzvzXxaYfwNhPSxYDAjVI2xkll3gSt+Wc9aIxq9Hj
-	EtatkC5xmVTwFZFaQz37sSFfq7vp6cAa97yFcR1dYg1MwhRMSB+pD3SK/qWn/y8h
-	sAUu8ds2zi9fPz7NCJskK/zK+GxsYpVUssd98mVUgSK9FMpXu2qbCt1Rcp+tS/Ux
-	isMjIN1uAK/MstnlsMDlOgLSqkMtuBuOnVb+bloRc3VSnWSRD6pdZT22EnFrDlew
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gske1r1uv-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 24 Sep 2026 11:32:21 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68OA57UN212369;
-	Thu, 24 Sep 2026 11:32:21 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gvu7e9ng7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Sep 2026 11:32:21 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68OBWH9A41484794
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 24 Sep 2026 11:32:17 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6864920043;
-	Thu, 24 Sep 2026 11:32:17 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5153B20040;
-	Thu, 24 Sep 2026 11:32:17 +0000 (GMT)
-Received: from darkmoore (unknown [9.224.78.25])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 24 Sep 2026 11:32:17 +0000 (GMT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Us7BZnDr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790250113; x=1821786113;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=otvjFuyq6kH012fr3aOVX2Jq0X9BxSEiV72+IfUwzLE=;
+  b=Us7BZnDr0NjlYYmnVt1YEU+ig5cMbnZrcjMhLFRTRm+tyNqmR+BgYzqN
+   UppGzU+WQYsfX+ZOQAk7Q5qyDv5jlXtRoZb0jthnwZu9BLH2SgCxn+NQx
+   zDdBzbI2Uazx55RkxeoYLhSgP7kBzP9gBh2OgU4Z4Y3tH5OBFxI5q1IMW
+   MTalzZ8VWNU1zMNNXUMFBDl5iNCUkzHg6Rap9vTUEgkxXxoXKI/Gc3Ql5
+   OUUWHCr2UzqZ5NPB+SdkpT1y2smHVhXIDCKtDhKNtjqfaqnMF5vLYT3Qy
+   +/cX9iVYxjxcuUD5qq0ba/1vxvathmsGeqB2DCYQxQySfzUBV8TGALshH
+   Q==;
+X-CSE-ConnectionGUID: ow4LMnjGSp6UU3x1plEqqw==
+X-CSE-MsgGUID: x0I3iBLLRJihDDmdphzO6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="93736186"
+X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
+   d="scan'208";a="93736186"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 04:41:50 -0700
+X-CSE-ConnectionGUID: zBVjP67HRJetQEU5QxdfVA==
+X-CSE-MsgGUID: c10untGtQmiyFPB6v5EW3Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
+   d="scan'208";a="301930706"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 04:41:47 -0700
+Message-ID: <8bcba51e-2a3b-44b8-89cd-aebfd1e50cfd@linux.intel.com>
+Date: Thu, 24 Sep 2026 19:41:44 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/4] KVM: TDX: Track configurable CPUID bits allowed by
+ KVM
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, seanjc@google.com,
+ pbonzini@redhat.com, dave.hansen@linux.intel.com, andrew.cooper3@citrix.com,
+ nik.borisov@suse.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+ chao.gao@intel.com, tony.lindgren@linux.intel.com, kishen.maloor@intel.com,
+ dedekind1@gmail.com
+References: <20260917072548.2314491-1-binbin.wu@linux.intel.com>
+ <20260917072548.2314491-2-binbin.wu@linux.intel.com>
+ <39047bbc-757d-4131-a25c-5a7743fd591a@intel.com>
+ <062f5365-7eb5-4e04-9c84-f5ecd566f019@linux.intel.com>
+ <eca53031-fd47-4471-9d05-d73295a0f57e@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <eca53031-fd47-4471-9d05-d73295a0f57e@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 24 Sep 2026 13:32:12 +0200
-Message-Id: <DLNIHTBTMVCN.63H29I8Y56E2@linux.ibm.com>
-From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
-Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>,
-        "Christian Borntraeger"
- <borntraeger@linux.ibm.com>,
-        "Claudio Imbrenda" <imbrenda@linux.ibm.com>,
-        "David Hildenbrand" <david@kernel.org>,
-        "Eric Farman"
- <farman@linux.ibm.com>,
-        "Heiko Carstens" <hca@linux.ibm.com>,
-        "Nico Boehr"
- <nrb@linux.ibm.com>,
-        "Sven Schnelle" <svens@linux.ibm.com>,
-        "Vasily Gorbik"
- <gor@linux.ibm.com>,
-        "Paolo Bonzini" <pbonzini@redhat.com>,
-        "Shuah Khan"
- <shuah@kernel.org>,
-        "Sean Christopherson" <seanjc@google.com>
-To: "Janosch Frank" <frankja@linux.ibm.com>,
-        "Christoph Schlameuss"
- <schlameuss@linux.ibm.com>,
-        <kvm@vger.kernel.org>, <linux-s390@vger.kernel.org>
-Subject: Re: [PATCH v7 08/21] KVM: s390: vsie: Create helpers to alloc and
- free vsie_pages
-X-Mailer: aerc 0.22.0
-References: <20260918-vsie-sigpi-v7-0-f39806eaae37@linux.ibm.com>
- <20260918-vsie-sigpi-v7-8-f39806eaae37@linux.ibm.com>
- <14552c47-8b20-41a6-a194-5aee626251de@linux.ibm.com>
-In-Reply-To: <14552c47-8b20-41a6-a194-5aee626251de@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: FHRKVITGtxA2GqPvyf20-RfGb_IYiDgt
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI0MDA0NiBTYWx0ZWRfX2gBirj7eSXMH
- 8BFP4xouQ86Id1rlmhAVjwubIcglUX9xMySs3KSk0xn1wdwA1qvJcIR3qP/uHwnam71gRqyheW2
- tNS9IlAq61GFTWhTDTHT7ojyDzCFD+xIWCfGwvBJWHE/boCG0JIiMAwhiyrlFeSYTEEjdKIxagP
- xjRBSxLrKrPfGgfYMMjUC5zJSruAHqo979C+tGGAbzI5C/zQoIT8eiomZ7paV165++6ZJ5CjsbN
- lQDu7m73bAeaQ4S4yS7Lirb/u4GZM7X1VCjxMX70hbkKmoW3DB6d/XZYDBQlvyZ1torg3E+TR1N
- jx8gPIMwQyD5EFJSq6dMeEXPjoUfG/fgnlyTCBns4i7CejLQSJNCsM5TjtD4/uFGhADpG04j2LE
- iGaG48wzCn9rTSK7ybdgiiZPTxqZvCAulhcpwvzRX/eAuslRdvfT6AHxaTQTK3OTc5lkB6eOW+7
- Gg4A0CpLFo6qg3mADMA==
-X-Authority-Analysis: v=2.4 cv=O/KsLx9W c=1 sm=1 tr=0 ts=6ab50a46 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=txTgCb6B7qFG2BPPUQIA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI0MDA0NiBTYWx0ZWRfX9DH3+Kj6bSlt
- wcEo7GVaWGuWmysFDtpKoKYgaEhGoAWWL7yY6jRFe0mSl7oa/Wca3aktvjK/Vp2FNhHT22jBIRQ
- bOA2VNgMd1Hjl1c8Aliw2OHZPQSnfzM=
-X-Proofpoint-GUID: TIc-0JM8Vq8rUlY02IH_u476Vi9W2Hfr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-24_02,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0 phishscore=0 impostorscore=0 suspectscore=0
- bulkscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609240046
+Content-Transfer-Encoding: 7bit
 
-On Wed Sep 23, 2026 at 1:54 PM CEST, Janosch Frank wrote:
-> On 9/18/26 5:09 PM, Christoph Schlameuss wrote:
->> Encapsulate allocation of struct vsie_page and free into its own methods
->> to allow this from multiple code paths.
->>=20
->> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
->> ---
->>   arch/s390/kvm/s390/vsie.c | 26 ++++++++++++++++++++++----
->>   1 file changed, 22 insertions(+), 4 deletions(-)
->>=20
->> diff --git a/arch/s390/kvm/s390/vsie.c b/arch/s390/kvm/s390/vsie.c
->> index afc2e56fcabf..e7005bade757 100644
->> --- a/arch/s390/kvm/s390/vsie.c
->> +++ b/arch/s390/kvm/s390/vsie.c
->> @@ -1502,6 +1502,24 @@ static void put_vsie_page(struct vsie_page *vsie_=
-page)
->>   	clear_bit(VSIE_PAGE_IN_USE, &vsie_page->flags);
->>   }
->>  =20
->> +static void free_vsie_page(struct vsie_page *vsie_page)
->> +{
->> +	free_page((unsigned long)vsie_page);
->> +}
->> +
->> +static struct vsie_page *alloc_vsie_page(struct kvm *kvm)
->> +{
->> +	struct vsie_page *vsie_page;
->> +
->> +	vsie_page =3D (struct vsie_page *)__get_free_page(GFP_KERNEL_ACCOUNT |=
- __GFP_ZERO | GFP_DMA);
->> +	if (!vsie_page)
->> +		return vsie_page;
->> +
->> +	/* Mark it as invalid until it resides in the tree. */
->> +	vsie_page->scb_gpa =3D ULONG_MAX;
->
-> I'd appreciate a properly named constant in favor of the comment being=20
-> repeated. This has been a thorn in my side for a while now.
->
-> #define VSIE_PAGE_INV ULONG_MAX
->
+[...]
 
-Yes, I like it. Makes it easier to grasp directly without the comments.
+>>>> Allow MWAIT, XTPR, and HT through TDX_CFG_EXTRA_F(), as these bits are
+>>>> not advertised in kvm_cpu_caps[].  The remaining directly configurable
+>>>> feature bits outside kvm_cpu_caps[] are left out of the allowlist:
+>>>>
+>>>>   - Features forced to zero when #VE is reduced, or lacking KVM support
+>>>>     for the associated MSRs: EST, TM2, SDBG, DCA, ACPI, ACC (TM), RDT_A,
+>>>>     RDT_M, TME, PCONFIG, and CORE_CAPABILITIES.  Handle CORE_CAPABILITIES
+>>>>     in a subsequent patch.
+>>>
+>>> why not split into two category? Because they are overlapped?
+>>>
+>>>   - Features forced to zero when #VE is reduced
+>>>   - Features lack KVM support
+>>>
+>>
+>> Yes, there is overlap between them.
+>> If split into two categories, it would be:
+>> - Features forced to zero when #VE is reduced, which also lack KVM support
+>> - Features unrelated to #VE reduction that lack KVM support
+>>
+>> Because the changelog was already getting quite long, I combined them into a
+>> single category.
+> 
+> I think that should be OK. It only adds 2-3 lines?
 
->> +	return vsie_page;
->> +}
->> +
->>   /*
->>    * Get or create a vsie page for a scb address.
->>    *
->> @@ -1537,7 +1555,7 @@ static struct vsie_page *get_vsie_page(struct kvm =
-*kvm, unsigned long addr)
->>  =20
->>   	mutex_lock(&kvm->arch.vsie.mutex);
->>   	if (kvm->arch.vsie.page_count < nr_vcpus) {
->> -		vsie_page =3D (void *)__get_free_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO=
- | GFP_DMA);
->
-> Can't we go the kzalloc route like Mike did for the other page=20
-> allocations? Maybe we can then also get rid of the free function that=20
-> you're introducing?
->
-> https://lore.kernel.org/kvm/20260906-s390-kvm-v2-0-2cf6434e6646@kernel.or=
-g/
->
+OK.
 
-Sure, I do not see a reason not to as long as kzalloc() guarantees the page
-alignment (which it does).
-Will do the same for the vsie_sca allocation in the other patch (which then
-should also be guaranteed to be page aligned continuous memory).
+> 
+>>> As for "features forced to zero when #VE is reduced", do you mean when TDX
+>>> module supports "#VE reduction" feature, the features becomes fixed0? or when
+>>> guest enables "reduce #VE", the guest see a 0 value even though the feature is
+>>> still configurable to host userspace and host userspace configure it to 1?
+>>
+>>
+>> #VE is reduced means the guest reduced the related #VE, i.e. TDCS.TD_CTRL.REDUCE_VE
+>> is 1 and the related bit in TDCS.FEATURE_PARAVIRT_CTRL is 0.
+> 
+> I think "features forced to zero when #VE is reduced" doesn't matter at all
+> here.
 
->> +		vsie_page =3D alloc_vsie_page(kvm);
->>   		if (!vsie_page) {
->>   			mutex_unlock(&kvm->arch.vsie.mutex);
->>   			return ERR_PTR(-ENOMEM);
->> @@ -1557,9 +1575,9 @@ static struct vsie_page *get_vsie_page(struct kvm =
-*kvm, unsigned long addr)
->>   		if (vsie_page->scb_gpa !=3D ULONG_MAX)
->>   			radix_tree_delete(&kvm->arch.vsie.addr_to_page,
->>   					  vsie_page->scb_gpa >> SCB_ALIGNMENT_SHIFT);
+I think it still matters.
 
+If there is a feature that is virtualized by the TDX module itself, but KVM doesn't
+support it for non-TDX VMs, I think it should be allowed.
+
+These features can't be added to the allow list because neither TDX module nor
+KVM do the virtualization for them.
+
+
+ KVM cannot predict TD's behavior and KVM cannot make decision just based
+> on one of the possibility of TD's behavior. i.e., KVM still needs to consider if
+> it can support the features when TD doesn't enable reduce_ve. So what really
+> matters is KVM doesn't/cannot support these features correctly.
+> 
+> So it's just one category: features not supported by KVM.
+> We don't need to talk #VE reduction at all.
+> 
+>>>
+>>>>   - Features tied to IA32_MISC_ENABLE bits that a TD cannot set when
+>>>>     TDCS.TD_CTLS.REDUCE_VE is set: CID and PBE.
+>>>
+>>> What is CID?
+>>
+>> X86_FEATURE_CID, Context ID, more specifically, L1 CONTEXT ID
+> 
+> My bad. I only search 'CID' in arch/x86/kvm/cpuid.c where uses CNXT-ID instead
+> of CID.
+> 
+>>> and Is PBE related to any bit of IA32_MISC_ENABLE? Did you mean PEBS instead?
+>>
+>> X86_FEATURE_PBE, Pending Break Enable.
+>>
+>> Since kernel already has X86_FEATURE_XXX for them, so I use them directly without
+>> other description.
+>>
+>>>
+>>> I don't understand what this category. It talks about something when
+>>> TDCS.TD_CTLS.REDUCE_VE is set, which depends on guest TD's behavior. So what if
+>>> the guest TD doesn't set TDCS.TD_CTLS.REDUCE_VE?
+>>
+>> If the guest set TDCS.TD_CTLS.REDUCE_VE, write 1 to the the related bit trigger #GP.
+>> If the guest doesn't set TDCS.TD_CTLS.REDUCE_VE, the value is passed to KVM, and
+>> KVM will save the value without do corresponding virtualization.
+>>
+>> Considering TDCS.TD_CTLS.REDUCE_VE is set by the Linux guest by default, it should
+>> not allow these features.
+> 
+> After some search, I find that X86_FEATURE_CID (CPUID.0x1:ECX[10]) is related to
+> MSR_IA32_MISC_ENABLE[24], which seems to be a model specific bit.
+> 
+> And on SDM, vol3. 14.5.6 L1 Data Cache Context Mode
+> 
+>   L1 data cache context mode is a feature of processors based on the Intel
+>   NetBurst microarchitecture that support Intel Hyper-Threading Technology.
+>   When CPUID.01H:ECX[10] =1, the processor supports setting L1 data cache
+>   context mode using the L1 data cache context mode flag (IA32_MISC_ENABLE[bit
+>   24]). Selectable modes are adaptive mode (default) and shared mode.
+> 
+> CPUID.0x1:ECX[10] is 0 on SPR and EMR (I didn't check more). It looks this CPUID
+> bit will not show up on any TDX capable CPUs. I think we can report it to TDX
+> architects and just make the bit fixed0 as a spec fix?
+
+I think we can confirm with the TDX module team. If it will never show up on TDX
+capable CPUs, then this is similar to PREFETCHWT1. 
+
+But I am not sure we want new fixed-0 bits.
+
+> 
+> For X86_FEATURE_PBE (CPUID.0x1:EDX[31]), it's related to bit 10 of MSR
+> IA32_MISC_ENABLE. The CPUID is 1 on SPR and EMR. But bit 10 of MSR
+> IA32_MISC_ENABLE is always 0 and setting bit 10 to 1 fails. It seems though
+> CPUID.0x1:EDX[31] is set to 1, but it's not related to bit 10 of MSR
+> IA32_MISC_ENABLE?
+
+In the ISE (319433-062, table 1-6), it says:
+  PBE:
+  Pending Break Enable. The processor supports the use of the FERR#/PBE# pin
+  when the processor is in the stop-clock state (STPCLK# is asserted) to signal
+  the processor that an interrupt is pending and that the processor should
+  return to normal operation to handle the interrupt. Bit 10 (PBE enable) in the
+  IA32_MISC_ENABLE MSR enables this capability.
+
+TDX module doesn't allow IA32_MISC_ENABLE[10] to be 1 is since it's reserved
+TDCS.TD_CTLS.REDUCE_VE is set, so my understanding was the CPUID bit should be 0. 
+
+It seems bit 10 is phased out in IA32_MISC_ENABLE on modern processors like SPR
+and EMR, since the bit 10 is reserved in "IA-32 Architectural MSRs" table. But
+somehow, CPUID still reports PBE as supported.
+
+I don't know why the CPUID is disconnected with the MSR.
+But this bit is present on the host, I think we can add it to the allowlist.
+
+> 
+>>>
+>>>>   - Features that can clobber host state and lack KVM support for TDX:
+>>>>     FRED.
+>>>>
+>>>>   - Unsupported features: PREFETCHWT1 (Xeon Phi only), PSN (absent from
+>>>>     TDX-capable CPUs), AMX-TRANSPOSE (never implemented on an Intel
+>>>>     platform), and RAO_INT (defined only for future processors).
+>>>
+>>> PREFETCHWT1 (if the name is correct) is not supported by the kernel right? For
+>>> such unknown features, it's straightforward to not support it.
+>>>
+>>> AMX-TRANSPOSE has been turned into reserved, and kernel never supports it. I
+>>> think we don't need to mention it at all.
+>>
+>> The guest could be other OS, not just Linux.
+> 
+> why guest OS matters? Are you considering the compatibility that it will break
+> the case where host userspace configures them to TDs and the TD OS (other than
+> Linux) is using them? If from this perspective, other bits will be a concern as
+> well.
+
+That's the reason I explained in the commit message why other bits should not be
+added to the allow list because if they are used, since they are can't be properly
+virtualized, there should have been issues already before this patch series.
+
+> 
+>>>
+>>> RAO_INT is fixed 0 for TDX 1.5?
+>>
+>> I was doing this patch series based on the latest CSV version of the CPUID
+>> virtualization document from "Intel TDX Module ABI Definitions" updated in June 2026.
+>> https://cdrdv2.intel.com/v1/dl/getContent/795381
+> 
+> I see, it might be defined for TDX 2.0/3.0.
+> 
+>>>
+>>> At last, I think we can just classify all of the above as 3 types:
+>>>
+>>> - Features that are directly configurable by TDX and in kvm_cpu_caps[].
+>>>   use TDX_CFG_F()
+>>>
+>>> - Features that are directly configurable by TDX and KVM actually supports them
+>>>   or KVM can support them but not in kvm_cpu_caps[]. Use TDX_CFG_EXTRA_F().
+>>>   For example, MWAIT, XTPR, and HT.
+>>>
+>>> - Features that are directly configurable by TDX but KVM or kenrel doesn't
+>>>   support them.
+>>>   For example, RDT_A, RDT_M, PREFETCHWT1, PSN,
+>>
+>> Because excluding some bits changes the ABI, I listed all these directly configurable
+>> features out of kvm_cpu_caps[] to explain why we must exclude some bits.
+> 
+> I think all the bits that are directly configurable but out of kvm_cpu_caps[]
+> and not supported by KVM fall into the last category. You can just list all of
+> them instead of my "for example".
+
+As I mentioned above, if there is a feature that is virtualized by the TDX module itself,
+but KVM doesn't support it for non-TDX VMs, it should be allowed. Although I don't have
+a concrete example. I think we still need to mention #VE reduction to some degree, but
+let me see how to simplify the description.
+
+> 
+> As for the bits like FRED/RAO_INT, we don't need to consider them since they are
+> not generally supported by KVM.  They are just the new features to KVM, which
+> can be just treated as unknown though the TDX spec has defined the
+> virtualization type of them.
 
