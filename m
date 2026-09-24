@@ -1,118 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FC432D0EE;
-	Thu, 24 Sep 2026 06:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F96540B6E9;
+	Thu, 24 Sep 2026 06:22:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790230438; cv=none; b=PtWaVcwRj42WqGUsISCIZ/cnuJupnPFhroAUeDxFYuq3bfzs8sO0fEx3buLP0EV0fhc3fVyK2erL/S6etwNfqviMkZyQNBH8d3l9M0LTwNL8+6FbaJL9gv+fpqueiTwvfrpjJ9MMi+m3ZytpkQMhr24JCtn+gWwL9l3xJXeQsws=
+	t=1790230976; cv=none; b=CQQ7H3HJ6IYhU0o1XE0u/WaWYPy8AEB5U5Z+69vU4cLlhwenCBmNivZY8H0ddT0fdW+g5EHkVDt50LJP3gow+UNRduxiGCjGBDcomWcCnYUf1QRxrmAwdSNwD0gXtz6Y65pTX/e6affLFjzHoPCeuPx7sftyGCpooUFwScCpCXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790230438; c=relaxed/simple;
-	bh=br8lAzeqVyzB+uljBzUroXIIRvT7Z6JZYmbmVLAxM1k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=leAcVbrgIN6jMfD76GiRc2qvQVNsIG/YIcQbwDqn/hV/9qVUee3UXPoFw+0XWk3F0xu8UWAIaXjAmAGNsr1Yp1VgcXLUxUabbN4KVNEh5yGE446r0ez1/+6UwxjhyPXrfBmmJ4DFkx+dAgQjxwEILEn2NLe126xD8/UwVHXJyqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KP2IfeUz; arc=none smtp.client-ip=192.198.163.15
+	s=arc-20240116; t=1790230976; c=relaxed/simple;
+	bh=7gKXLqvPGhCYH5CgY5BJYuBxMlou+PHvMii1eSmIJhM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PqyO3qPj97uYou17Oc0KFiWdcKSfXzWfsOWmRQqtNxAaOnSXUdGUapp5/gZvYF2QGN5hLZkR4CdCcIvLzRz72svTPiS01zxRmUiEZXV/h7qUTn+tcnspaStVcJTNXmFtBL1Y+Nq64ISsQF84aeGMUDCMw9v9qMQ62dI6PaEPifw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PKepHUh+; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KP2IfeUz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PKepHUh+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790230437; x=1821766437;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=br8lAzeqVyzB+uljBzUroXIIRvT7Z6JZYmbmVLAxM1k=;
-  b=KP2IfeUzfMFxIaDVl2hfkvm9qAKuCIqsPD86kMY12jC00GublTxazIAM
-   UuG8GW1GLJhSLj0wTjgQChloxD2yBKoRpMZieUfgwucT47D/osp56zpb7
-   lgUqPn0xTaHhbkp1gOgo9I7K/aFApOqKm69Kdwmc4tDNIrjlDj+eh8N9I
-   Q55KT0jv81KE2aOQkFKYmVL2k2GoXOCC/LA6C9i6nPu83t6nzxGTCgDOU
-   RPlfG/8q0BJ3u6RZhbqxEaLMgR/EwPi/Kb+IqF48MVpmZaagVVNg6KLJ+
-   604TcXGPhamGS8YVFUt29bZd5MFq1Fsv7TYndon/HVZkMWfYyYyfU0MOp
+  t=1790230973; x=1821766973;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7gKXLqvPGhCYH5CgY5BJYuBxMlou+PHvMii1eSmIJhM=;
+  b=PKepHUh+bAPX4uNCLO3qQWt1PYY41AiAxoqX2V5w/wx4EpHKAiY5OIGm
+   vlkCwKouPwjdkob4UrfffuNzpsLMtn2ht3TkU/7ImAwJ0DtKSy/WIyMXo
+   EVW+qJ/JEtYnh33wbri5dMP3BupO03K0J/LB/Y8deIo38h3AmFHCahIGL
+   mRPA1ZBj8KbliALIzBqqA7ywq7SfgzR2HjKEZw7BxM6TBHL9Rzg4DWRTz
+   fOmARoSgJmsfe0uw2ZQxSaz8vscdv86X4m3eY4Xcr5jzy5QY2GheOw76B
+   DPVoQVGEVoDykIBs8Wd4Y3lTuaQYtsIlGe+iNFUe32IkiY2beBq8D1U8L
    A==;
-X-CSE-ConnectionGUID: nLZjzL28QbOS1RGdyADRGg==
-X-CSE-MsgGUID: 2ytHctbyR5e8dmzgIriYng==
-X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="91095658"
+X-CSE-ConnectionGUID: qRtPO7qzT56NDtCzegUSLQ==
+X-CSE-MsgGUID: vnjo3cGkQQ+cD0QlxdguVw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="101524923"
 X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
-   d="scan'208";a="91095658"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 23:13:56 -0700
-X-CSE-ConnectionGUID: cRyTJIP+S7aDR5zVonHKkg==
-X-CSE-MsgGUID: iEBfnuXrSreyJf3fqTtMEA==
+   d="scan'208";a="101524923"
+Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 23:22:52 -0700
+X-CSE-ConnectionGUID: pT2swsmOQDuwLrqOgn46JA==
+X-CSE-MsgGUID: 5EywObruTVCWO+2OonedHQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
-   d="scan'208";a="274102054"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 23:13:53 -0700
-Message-ID: <7ba1284c-69d9-43fa-8a44-1dbf30f209e1@linux.intel.com>
-Date: Thu, 24 Sep 2026 14:13:50 +0800
+   d="scan'208";a="5051226"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.246.13])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 23:22:45 -0700
+Date: Thu, 24 Sep 2026 09:22:42 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kas@kernel.org,
+	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
+	xiaoyao.li@intel.com, sohil.mehta@intel.com,
+	adrian.hunter@intel.com, kishen.maloor@intel.com,
+	peter.fang@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, chao.gao@intel.com,
+	artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org,
+	nik.borisov@suse.com
+Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Configure add-on features on TDX
+ module init
+Message-ID: <arTBssCBAody54ZF@tlindgre-MOBL1>
+References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
+ <20260915102658.713079-3-yilun.xu@linux.intel.com>
+ <arIqtGbSRHGw8fiT@tlindgre-MOBL1>
+ <arOAL2Klu+L91JiI@yilunxu-OptiPlex-7050>
+ <arOG2s3VZMQjLWey@tlindgre-MOBL1>
+ <arR96/Tpz4cQpfYZ@yilunxu-OptiPlex-7050>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 01/10] x86/virt/tdx: Add a helper to read a table
- of metadata fields
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, yilun.xu@linux.intel.com,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>
-References: <20260918132946.76533-1-chao.gao@intel.com>
- <20260918132946.76533-2-chao.gao@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260918132946.76533-2-chao.gao@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arR96/Tpz4cQpfYZ@yilunxu-OptiPlex-7050>
 
-On 9/18/2026 9:29 PM, Chao Gao wrote:
->  
-> +/*
-> + * Map a TDX global metadata field to a structure member.
-> + * @field_id: The TDX global metadata field ID.
-> + * @size: The size of the structure member.
-> + * @offset: The member's offset within its containing structure.
-> + */
-> +struct field_mapping {
-> +	u64 field_id;
-> +	size_t size;
-> +	int offset;
+On Thu, Sep 24, 2026 at 09:33:31AM +0800, Xu Yilun wrote:
+> On Wed, Sep 23, 2026 at 10:59:22AM +0300, Tony Lindgren wrote:
+> > On Wed, Sep 23, 2026 at 03:30:55PM +0800, Xu Yilun wrote:
+> > > On Tue, Sep 22, 2026 at 10:13:56AM +0300, Tony Lindgren wrote:
+> > > > On Tue, Sep 15, 2026 at 06:26:55PM +0800, Xu Yilun wrote:
+> > > > > --- a/arch/x86/virt/vmx/tdx/tdx.c
+> > > > > +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> > > > > @@ -998,6 +998,15 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
+> > > > >  	return ret;
+> > > > >  }
+> > > > >  
+> > > > > +/* List all kernel supported add-on features0 bits here */
+> > > > > +#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0	(0)
+> > > > > +
+> > > > > +static __init u64 get_tdx_addon_features0(void)
+> > > > > +{
+> > > > > +	return tdx_sysinfo.features.tdx_features0 &
+> > > > > +		TDX_KERNEL_SUPPORTED_ADDON_FEATURES0;
+> > > > > +}
+> > > > 
+> > > > How about get_tdx_supported_addon_features() for the above? It makes the
+> > > 
+> > > mm.. I think this would make a bit confusion. "tdx_supported" reads like
+> > > the module supported features, which is just .tdx_features0. But here we
+> > > want both the module & kernel support. I'm thinking of:
+> > > 
+> > >  get_tdx_addon_features0(), just as is
+> > > 
+> > >  or
+> > > 
+> > >  tdx_get_supported_addon_features0(), maybe this is better?
+> > 
+> > Something to describe it's masked with Linux supported features would be
+> > nicest.
+> > 
+> > Maybe something like get_tdx_masked_features0() or just
+> > get_tdx_usable_features0()?
+> 
+> I like "usable", and I want to keep "addon", not all usable features are
+> listed here:
+> 
+>   get_tdx_usable_addon_features0()
 
-Nit:
-Is it better to align the type of "size" and "offset" with size_t?
-Since it's already 24 bytes per entry on x86_64, there is no extra memory cost.
-
-> +};
-> +
-> +/* Read each metadata field listed in @mappings[] into @data. */
-> +static int __maybe_unused __read_sys_metadata_table(const struct field_mapping *mappings,
-> +						    int num_mappings, void *data)
-> +{
-> +	int i, ret;
-> +	u64 val;
-> +
-> +	for (i = 0; i < num_mappings; i++) {
-> +		ret = read_sys_metadata_field(mappings[i].field_id, &val);
-> +		if (ret)
-> +			return ret;
-> +		memcpy((char *)data + mappings[i].offset, &val, mappings[i].size);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +#define TDX_SYSINFO_MAP(_field, _type, _member)			\
-> +{								\
-> +	.field_id	= TDX_MD_FIELD_ID_##_field,		\
-> +	.offset		= offsetof(_type, _member),		\
-> +	.size		= sizeof_field(_type, _member),		\
-> +}
-> +
->  #include "tdx_global_metadata.c"
->  
->  static __init int check_features(struct tdx_sys_info *sysinfo)
-
+Sounds good to me.
