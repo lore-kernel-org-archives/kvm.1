@@ -1,117 +1,82 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C1E3002CF;
-	Thu, 24 Sep 2026 13:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5405F3002CF
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 13:55:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790258120; cv=none; b=INcuNwNb0BXpMMHjVMEWV6l9hAWXcyroICoeRjjtn5JV2vyCeyOenR+2NC7WU/Gy4Todqtd8Rc9CCq3illnupT7NKannzsyd115XflE6R0QMTXLKqFbiQnJixpmSCro34LjBnP+RjCdVkZHw6WElGpr5xoW7WhtHshJX6JUO7D8=
+	t=1790258158; cv=none; b=lFy+C8yyBIGv9jILJLz8GWhAdWLfRfYroPiQpMhsd0Ua7QxTfvUqvZrmeuh+pm8yHPhKORkWwwGiE2t8s7ZHohSZNN7PA0F119ZWQiIhWssO7cnj+rFr5x8sea43m8AYRpq6CP1zV4psoeujUM6oKgZbF5A/Siin3RWxfC11aE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790258120; c=relaxed/simple;
-	bh=i0m8X0NeKCKWHI8I4JyxU1Si9NAvo3LDWQUg6AYtzY8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mu97GTn0DjRwqEUpmiU7r8hKbk9PslnBVnsI5SErwLSuIipDGh6CcGHmDQRnTrSLLXTuQmqgOIdNXjEpPWa9Deu+RDSfKDhCfv0rZcC3Wx4vlEQRVz9D+uscfF/8nDQqjbXBivyPCrB3lbiuN5rF30trz2GGG5D+3dNmmb4fouc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lRoVtjgq; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790258158; c=relaxed/simple;
+	bh=7CDtzh4z0CdqypNI8DxFycAekERpE8E986pd4O2J03c=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=VSwPxwXwgEAweU3ddD6ROWsUSPg1GHU2ixi2ALW8rEOWakendGbWqxgpr+0S0/+l/oBWz1SVqrLgviLxNU81PgeM5NvlNwpTmVq59ArVKvqyehNeAVmNrMy5dCGFoKZsamdL6iW2Sz+A8+Kv0HIU5d5rFcvn265pkpseKabU8fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZIgz69T7; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lRoVtjgq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790258119; x=1821794119;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=i0m8X0NeKCKWHI8I4JyxU1Si9NAvo3LDWQUg6AYtzY8=;
-  b=lRoVtjgqhopCFYS6HqjwZ5NeL3Qi4DjBGWCKzkDOGFkUIKCUDmx7PCnq
-   l/pFSEPGjzWNAwJHxYaKLaW684SH535IgU6475cZ8eXuK4NDrO1ITuATL
-   jSIq0TsuOiyjx6TbgIJbaliDhkeR0J4yCTn4RuBjyMwdAo6qeyVuesBOm
-   dZkFj6GkE0lmhWtr9FKlLP+2D5DbuxHMStaWz03xyzsWtJZhynWpGRL/c
-   2RDxghueLYY/qeb9kPBHOgr8ea+MPOGdu9cIGLrjHGm+71YzE6p0WIxs9
-   Wy9yT8qhOlt0O3eiiQgQSU2xH2DYZASJR5E65NP5t47GdVCvmSFs+qdzj
-   A==;
-X-CSE-ConnectionGUID: OK1ZKDKBQ+q63ZTKKR8qzQ==
-X-CSE-MsgGUID: zbCyR8plRWSZDS5Qtl9s3A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="93747394"
-X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
-   d="scan'208";a="93747394"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 06:55:19 -0700
-X-CSE-ConnectionGUID: Hy+8FGAnTAaVAQwvALjFyg==
-X-CSE-MsgGUID: r6+PzA13SL2McLPGOBW2mQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
-   d="scan'208";a="273608809"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 06:55:15 -0700
-Message-ID: <3278bae0-1a30-478f-8488-c762ac0246fa@intel.com>
-Date: Thu, 24 Sep 2026 21:55:12 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZIgz69T7"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2ce7dfd33ffso14765655ad.0
+        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 06:55:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790258156; x=1790862956; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KkxGGQAcZQfF96GEV0BfePCSivvqi5OVjJFPctkp1vk=;
+        b=ZIgz69T72VRjYmeOGg3jTSzTSVVRfI2esIxCZtXA2q71RUJAB9oxhH57bZrSaQhXz3
+         QBegtAo+IkrQV2Wo+qaHod5STXp9clM1h39wc7zOZ5E2LTUhkj8acroVohKmjy4dkCcR
+         LclkGl6e518uCASlDkIBjRbx6XHllklP99S1TzszvYWQyatu/JRfeIYuMFUWKbZqiHIQ
+         HyEpY0IfzAIJW1BrBYvRpf6eK2/UQi3hiKggPxEKRX10tU4rS8Lh8BEiCwEl/KRHWqMD
+         DPrM1LcmVuPdVCyaodOrAWTbEo/kUvhhDIVWYNZLxhH044c/9zMfOWnunxESp/lAjuz8
+         BRyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790258156; x=1790862956;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=KkxGGQAcZQfF96GEV0BfePCSivvqi5OVjJFPctkp1vk=;
+        b=p/+KWieeNU5CnaVKNrtI2hNGV3wDymrGREt+BK8zhw7VCxDxmCNYroUS7ZPmK0XFaa
+         HGBgoU/pxvcjZswtyY5jzVHO1JSerODo6KV5c6PN7WVYpE9TzFjovr5kIN1tf+4rfcL3
+         0q7R4o0G5QMBYXiRx90Udl7LgolbVhKMXH9O3Ax62coz2z+t32CMIUx1MKDwr7swfsTM
+         hSOY/geE41DKSPEerwgcjK7zQpTKiKRVwi0ysKbCoJbtbCBiZuOQ+a+FOaOMTTlTMKW8
+         gcoPmrdNAPvS9m0jrJyr05EQUryiOKqh+bPI/gvM2B1taiR7MBYHQGAyTxHjFd90oe8J
+         8vQw==
+X-Forwarded-Encrypted: i=1; AKwUvBzw2fPxF9Yov+4uvBzJ6MCiGnuPvmKz7bFs6IDLIB7ywUswuCthOZnBbwKqgyJawnV39vY=@vger.kernel.org
+X-Gm-Message-State: AFuF++kb1odMlL/y7zywjY/psLs7lHqJ4nAOA1j/TIW/oD+ySIpUZ0E5
+	lIRVpoNg5hO5WGwt0+j3YR1y8AFkj5SLEJsI8xjsx8R6FQeQICzuRbhwLsy8zQOFTuCTipwEM/f
+	X3DcXuQ==
+X-Received: from plbm10.prod.google.com ([2002:a17:902:d18a:b0:2df:69be:94b6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2310:b0:2dd:ad73:5b74
+ with SMTP id d9443c01a7336-2df7dc36d85mr22967295ad.36.1790258156375; Thu, 24
+ Sep 2026 06:55:56 -0700 (PDT)
+Date: Thu, 24 Sep 2026 06:55:55 -0700
+In-Reply-To: <arUGoepfp97GY8aK@blrnaveerao1>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/4] KVM: TDX: Track configurable CPUID bits allowed by
- KVM
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, seanjc@google.com,
- pbonzini@redhat.com, dave.hansen@linux.intel.com, andrew.cooper3@citrix.com,
- nik.borisov@suse.com, kas@kernel.org, rick.p.edgecombe@intel.com,
- chao.gao@intel.com, tony.lindgren@linux.intel.com, kishen.maloor@intel.com,
- dedekind1@gmail.com
-References: <20260917072548.2314491-1-binbin.wu@linux.intel.com>
- <20260917072548.2314491-2-binbin.wu@linux.intel.com>
- <39047bbc-757d-4131-a25c-5a7743fd591a@intel.com>
- <062f5365-7eb5-4e04-9c84-f5ecd566f019@linux.intel.com>
- <eca53031-fd47-4471-9d05-d73295a0f57e@intel.com>
- <8bcba51e-2a3b-44b8-89cd-aebfd1e50cfd@linux.intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <8bcba51e-2a3b-44b8-89cd-aebfd1e50cfd@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260923155108.1550622-1-seanjc@google.com> <20260923155108.1550622-4-seanjc@google.com>
+ <arUGoepfp97GY8aK@blrnaveerao1>
+Message-ID: <arUr6xuC2d7A_ZI7@google.com>
+Subject: Re: [PATCH v2 3/3] KVM: SVM: Clear AVIC Physical ID table entry if
+ vCPU creation fails
+From: Sean Christopherson <seanjc@google.com>
+To: Naveen N Rao <naveen@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Atish Patra <atishp@meta.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On 9/24/2026 7:41 PM, Binbin Wu wrote:
-...
->>>> As for "features forced to zero when #VE is reduced", do you mean when TDX
->>>> module supports "#VE reduction" feature, the features becomes fixed0? or when
->>>> guest enables "reduce #VE", the guest see a 0 value even though the feature is
->>>> still configurable to host userspace and host userspace configure it to 1?
->>>
->>>
->>> #VE is reduced means the guest reduced the related #VE, i.e. TDCS.TD_CTRL.REDUCE_VE
->>> is 1 and the related bit in TDCS.FEATURE_PARAVIRT_CTRL is 0.
->>
->> I think "features forced to zero when #VE is reduced" doesn't matter at all
->> here.
+On Thu, Sep 24, 2026, Naveen N Rao wrote:
+> On Wed, Sep 23, 2026 at 08:51:08AM -0700, Sean Christopherson wrote:
+> > From: Naveen N Rao <naveen@kernel.org>
 > 
-> I think it still matters.
-> 
-> If there is a feature that is virtualized by the TDX module itself, but KVM doesn't
-> support it for non-TDX VMs, I think it should be allowed.
-> 
-> These features can't be added to the allow list because neither TDX module nor
-> KVM do the virtualization for them.
+> Nit: I noticed this because I thought I had fixed it, but the From: tag 
+> above does not seem to carry (AMD) attribution even though the patch I 
+> posted seems to have the correct form. I checked 'b4 am' and that seems 
+> to be doing the right thing too. Anything I'm missing?
 
-... <snip>
->> I think all the bits that are directly configurable but out of kvm_cpu_caps[]
->> and not supported by KVM fall into the last category. You can just list all of
->> them instead of my "for example".
-> 
-> As I mentioned above, if there is a feature that is virtualized by the TDX module itself,
-> but KVM doesn't support it for non-TDX VMs, it should be allowed. Although I don't have
-> a concrete example. I think we still need to mention #VE reduction to some degree, but
-> let me see how to simplify the description.
-
-(This reply only concentrates on the discussion of "if there is a feature that
-is virtualized by the TDX module itself")
-
-If you are talking about the features related to #VE, I think there is no.
-Because if TDX module itself can virtualize the feature, then it shouldn't be
-#VE at all. #VE means it needs para-virt support from host VMM.
-
-If you are talking about the features unrelated to #VE. I think it's just the
-case I argued for in previous v3, that we can support a feature for TDX first
-before non-TDX VMs. I think we all agreed that such case can happen and we
-decided to support such case when there is a real case.
+Nope, the problem was on my end.  I was running an older version of b4, and it
+was dropping the "(AMD)" part.  I'll manually fixup this one when applying.
