@@ -1,193 +1,102 @@
-Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA334B7A4B
-	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 17:05:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790269509; cv=pass; b=niPge0Kf2JfntLTqLa7emJWeRT3yGVpKiiRvoL+hM5wqxyjPxF836cUoPf16uqtrO2BLQgi6uIf/Qjo5QYSGeBH0qBHnE+2XllT6O1o4z2xt8lxghkUQIQpuJOqnchz/+cipzhpWNZlv7va8++9N36O+rvZBLAFv0k9tY9t73tI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790269509; c=relaxed/simple;
-	bh=1F8/rz3ypcsoCgDUnUPkG7WkBCl4kCGuN1jCJU9T35k=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UfdxAd7NdHAKTvimgFU3WASYBPl9JmtYPditECzJ+Clf5JTHclTdfk6jD423iEBElQMqpxc+UTmEJA4xDfHMIrlwCT1vXcYM7wDIflaYcTJXD0+xLanwzkAJFR/zjNKg8NHmrhjUECt9Moh8xqOuS2sCBDRVnWaHmPGGkeiK2VI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s5wdWVwc; arc=pass smtp.client-ip=74.125.230.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719F64A3F17
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 17:10:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790269826; cv=none; b=ZkdrhRmFICM9pns+VUF317tZguFwJiJKL/01t4zjKwCSe9HyV6OP0eWSAPv2IZ1WJHNRgBprCE7m2dF7ZSGh0V9qKdKK7qAyMGv67LlrN5k7/4+bCITu0JjFYpzSUqm4pueBU+f2RtsFdQJPfCwtLEBgybZPvwcB9+prfQOFs34=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790269826; c=relaxed/simple;
+	bh=xT64NIlMh8pIe5ecVgBrXsUOxFiPNMLxtcPdfQhZyIs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=mN+tIazCZBxAlJOepUhZXySPj7+Qo8NwpEr1Emc26a1NqPb4IJHt1z/nxGmfRxXr/d9+QD15xVbyOgpv/HTd+VpjUKA1yO2EXGPMMtJPQctUqeX35da2D5jdBdTyu0qpaYRg5LmQH+hB+a6Yw73nlgF31Qu9gIFRnagExNBaW/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dw+mJNvn; arc=none smtp.client-ip=209.85.210.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s5wdWVwc"
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-90cdfbd148aso733786d6.2
-        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 10:05:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790269506; cv=none;
-        d=google.com; s=arc-20260327;
-        b=o7vdyr13VKi35fstOgDapUJ4uM6c8pgJbIizKNs2pPqWIPZ2XQxGlhxl1MCubLVoek
-         Oa56dBvJUyuA2cfZmM5wY6XxOnQ0HOSzjBSO8xK1LrsyG0T7hUkSwDXC0woSsA0QChVi
-         +G2SpuCeGmgNMeciWa7VS1Eau33qHlBeYyxQ3EBMzaril2zIi/3EwnM7W5G4nRxnvxOs
-         QiylFU2ozhoLFa5m5QM55JjRk25oeGKXmXhK09fwAZDFRTyOssIhws0LqfgQA90kZ4+I
-         HaYLnsgL8MQk2rritpIueJQoa3SSqtAvUFZYaRSsaUw6jvtsgtmMoqFUeglru/UmaHRr
-         Xmfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=OHcWMQ1Z3aW3bHAxm3qzvYkMiIOMbOZVWxnCDEHnj30=;
-        fh=pZzI/K6dg++hi8F1p3mr7n9fLdLEo4m+vUj9GPuyD3A=;
-        b=IvM47/kXfvuL3UBEAEovRviGrqQHngNJqRVSw8PnDsdLjY4MtbTQGq3PTYUFiCITvD
-         y2KkdLOE+81UHj+yDkI743tLUAUY9WFGliheOuKg5U+mp+mwOUFq34dVFlOXemobOfN+
-         emoeyTwOqGLDfwzOHCjOMi+hgcW3q7/C9UpIHhbZL79xdGNpmRhsUw907DANUou2oT7E
-         3nCIHAh05VYb2XwuokFrm91zCoH9KVpVUsVqNG4wL72Dd3lWuuHsbWSAsAucF6wRCHEv
-         1PI8q7d++PQeRiJdAAw5C7cBRH/DShV3CdC4jL9l8p1+5wydvjPMIKDt7W0DevV5i6F/
-         J6Uw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dw+mJNvn"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8645a62066dso96761b3a.0
+        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 10:10:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790269506; x=1790874306; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1790269824; x=1790874624; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=OHcWMQ1Z3aW3bHAxm3qzvYkMiIOMbOZVWxnCDEHnj30=;
-        b=s5wdWVwc5chjFqw2cWCygu2xSMRvyyJf5NFwiFfSSQvFMOVGSbt8gkny9PTMMJTc52
-         yHZMs9R/JVxLJjKgptEPtXI/kYOyeWwcmUKY6tSsDiTGO43LilqoZHkloUcvLGPWTFoI
-         PaGqpr8l0jlYeQww8GvXDfpx2MPg/SIJ5geyxpZcSV2+AJ7SIU5OSe6bz3gzBHOtoObF
-         FMAZj4AsT8QvtstcM+JzkKTY1ujPqPrtR19K0jI5ZqzJ60Mz86/jpPYQ1CEQZ88AH/8c
-         HxImTm1F8JH+l730uPkU74cgWmu5QWVe/hlhLpuwqjQIwoiOtxWmSKNe99myPbBrL0qO
-         UXqQ==
+        bh=1o1i2f/hTrS1n0Ninzv8Gte0+MRdXhRWFBn8i4nuoHM=;
+        b=dw+mJNvnSwqqZLAWgwkUb7J5ZGKuFg33lIK7PMZKFvaJ7vcgStinZYYymPjpw/U/bc
+         yI2Niq+tI3gE3Z+D9jI7Asxeboi9GoFEwa/gmRSEtxKuz81u5IaI9kqMI/uON7Oj4D8t
+         /jJVaPXhbY6naad/vti5mm0F6r0LCNpEOm3AE4a5H3X5LoXH+/xl3YooQSrGoB/fjzJl
+         siZFm0BcIOcfZKfoRe6BCdoKqy2MyqO0goTJonV2Cro6wu1N5EzFiQRdUGyyp3ve3ly3
+         2cK2Cr/AS7WDm8x+x90anv4dz2JSE8fhC9mxhJ43MYogdS7fFXZio+k+zgOzBhQ68/Vn
+         Wc4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790269506; x=1790874306;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1790269824; x=1790874624;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=OHcWMQ1Z3aW3bHAxm3qzvYkMiIOMbOZVWxnCDEHnj30=;
-        b=K27OLI/BshQevVRGvV0djMyyenqhOuy5z/KDXH4uS1nMNLykGhHNc0N4Uts3zFs9tC
-         CbF3tjfIYgRkjSGNTx/8KIKZ8+trz7Mitx8wRhfRgGXN8RATlZJyHFSAW1xlDk7ALL1H
-         4BWnSzO2CHliI5waUAc0IUxusrVIafEg1uNMq9lZfVOfP5NvB32WyiBnvqUl1PCTdui5
-         CwJtdjvxv7Xmxvgh9oADfMOc9Z6O2yiJE7Y0mzfvxNn37XH4libxUpgLY8TyP3S8/Md6
-         JUAMAsn6b/RXur8Npn5gmaonez1eDL7dgZ9TDODumE70Lv2FkrJSmYNNY+xH9IkDNuVe
-         uZow==
-X-Forwarded-Encrypted: i=1; AKwUvBwWOUuLtEkO6JDD3kxRWWSOyyGVoWvIX0kAyql3S/nXNsqDSsrfAaQczryub2yGloE9AQM=@vger.kernel.org
-X-Gm-Message-State: AFuF++mOqV916RbATuEOuXmLxnLISQQ0T/88gviHnLnG/UccWbn7ITtM
-	NJokCEuokqUhXwOgHfVtqexehaPFKyLbM4ucCBcNPZzHKlpX7rnGPv6NBWXZJMwdFPIZQsUPMJD
-	Znlp5yUaSb6BFIRyOKw4Mb8KeGiClYGd4x7k9xBCt
-X-Gm-Gg: AYBFou39EMastUewAh5SXOxX5n5MEUuSpgZ4kdugd2lDqjMXhfgqgaeh2LeQZSck3HB
-	Z/St6aFFDlpm7tKSPeWTSo8p3re9aR8lXyRDDcVsfP0bYVaFw0+SwGUCscA16qVwdAonvv3yUbu
-	CQPnDrk8eA+i349UnispoME21RRuTP7I2haRYQFDIRs5GYVmYcTYACobzysrHIcbWfysZ2oXmzV
-	NdIxVjSCW9s7ViLStRy+mTtRfLqFVblvHlk+QorTcewP9kD9JxemRdiv2ZpjSKKhl7ZZPjDRSmg
-	+yyi/MMv5mit7DwRhnQ4rGlgITvWP9696zdfydmmKdK2h7NnRMuIFVpWNu1raGcI4NQZq00mXXs
-	I8/HxCSVWifVtKMTPIUnrnXMFHOHSVx2E3nEXYcEvDA==
-X-Received: by 2002:a05:6214:4a83:b0:912:cec:7450 with SMTP id
- 6a1803df08f44-91421b1851amr31284116d6.0.1790269505101; Thu, 24 Sep 2026
- 10:05:05 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 24 Sep 2026 10:05:04 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 24 Sep 2026 10:05:04 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260924135201.850038-2-suzuki.poulose@arm.com>
-References: <20260924135201.850038-1-suzuki.poulose@arm.com> <20260924135201.850038-2-suzuki.poulose@arm.com>
+        bh=1o1i2f/hTrS1n0Ninzv8Gte0+MRdXhRWFBn8i4nuoHM=;
+        b=ToSioH/wKM5j7G1E1uh+fwUMpVoB/ApC7Jo0fPCFXc2fbe2ycGxorqLhW84O6LMK3W
+         Q6oMOc8QGiD8Z/YCxxcIRoDm+q/E8opz10reSZdkD0MwmPwOCYWSNA9JsEGKzXbTKtKg
+         GQ2alcY+BMZLjQNp8qH8EF+1cob4pnH3w7A73bZFbz7JOzNtWfPMy0pWqxeXEfsqiOkN
+         FNKsBidd4dbnp8i1qejxQyq6XOKp2CfSAqF33g7SjIQmCQE3zsN6lChmFe9n9Q1NjIEg
+         t7qTX7ZgLxCsDpOXPSKyHKm6m1uCjg/tz1/NOnyaBDFosn4V1nahMZ/lj8XPFvYzInMx
+         55EQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxpYaSMsE8bVHO192SezTUPXuQ6C8R+sTMrufmSXXmyvi9mVDmmh9B62e3Ex0D5+td4meI=@vger.kernel.org
+X-Gm-Message-State: AFuF++kU4+8XHdM+kBfn8h73SAYSJKHGPFs1UEu7fsiUzBIdnBmz0+wZ
+	yB0EFihnxRQ/fpPZ7lBWEXvxSlX7V8f43HzuQ26cmKtHjXOkjdNQgKXZpGPVD5Vyvf40ItKhSXt
+	AgWJrcQ==
+X-Received: from pgbfp2.prod.google.com ([2002:a05:6a02:2ce2:b0:cc4:ac62:d4ef])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3408:b0:3dd:85a8:4c5f
+ with SMTP id adf61e73a8af0-3de0e76286amr3010885637.38.1790269823517; Thu, 24
+ Sep 2026 10:10:23 -0700 (PDT)
+Date: Thu, 24 Sep 2026 10:10:22 -0700
+In-Reply-To: <daily-reply-0006-re-kvm-mmu-derive-child-role-5-15@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Thu, 24 Sep 2026 10:05:04 -0700
-X-Gm-Features: AclHuK_DlezgNpJkyQ6-N0Dq0ZFyu15Ut5n5SPUx6_YH9nitYJ5xMl_wRWW9wVM
-Message-ID: <CAEvNRgH8Hwt6_VaFxJVvytZ4La1R7bUN2emc37_fWecF9j2-YA@mail.gmail.com>
-Subject: Re: [PATCH v19 1/7] firmware: arm_rmm: Add SMC definitions for
- calling the RMM
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, 
-	gshan@redhat.com, joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com, 
-	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, 
-	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, 
-	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com, 
-	sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20260913155523.7423-4-k@mgml.me> <daily-reply-0006-re-kvm-mmu-derive-child-role-5-15@kernel.org>
+Message-ID: <arVZfjUskXC54OKZ@google.com>
+Subject: Re: [PATCH 5.15.y v3 3/7] KVM: x86/mmu: Derive shadow MMU page role
+ from parent
+From: Sean Christopherson <seanjc@google.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, stable@vger.kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
+	David Matlack <dmatlack@google.com>, Kenta Akagi <k@mgml.me>
+Content-Type: text/plain; charset="us-ascii"
 
-Suzuki K Poulose <suzuki.poulose@arm.com> writes:
+On Mon, Sep 14, 2026, Sasha Levin wrote:
+> > -	role.direct = direct;
+> > -	if (role.direct)
+> > -		role.gpte_is_8_bytes = true;
+> > [...]
+> > +	if (!role.gpte_is_8_bytes) {
+> > +		struct kvm_mmu_page *parent_sp = sptep_to_sp(sptep);
+> > +		role.quadrant = (sptep - parent_sp->spt) % 2;
+> 
+> The "if (role.direct) role.gpte_is_8_bytes = true;" that kvm_mmu_get_page()
+> used to do is removed here, and kvm_mmu_child_role() does not put it back.
+> 
+> That works upstream because the field there is has_4_byte_gpte, which
+> defaults to 0. On 5.15 the field is gpte_is_8_bytes, the inverse, so the
+> translation flips: for a non-paging guest
+> kvm_calc_shadow_root_page_role_common() leaves gpte_is_8_bytes at 0 while
+> kvm_calc_shadow_mmu_root_page_role() sets direct to 1, and a direct shadow
+> page ends up with a quadrant stamped onto it.
+> 
+> Keeping "if (role.direct) role.gpte_is_8_bytes = true;" in
+> kvm_mmu_child_role() preserves the upstream behaviour. The alternative is to
+> backport the upstream role-computation change first so the field carries the
+> mainline sense.
 
->
-> [...snip...]
->
-> +
-> +/*
-> + * Note many of these fields are smaller than u64 but all fields have u64
-> + * alignment, so use u64 to ensure correct alignment.
-> + */
-> +struct rmm_config {
-> +	union { /* 0x0 */
-> +		struct {
-> +			u64 tracking_region_size;
-> +			u64 rmi_granule_size;
-> +		};
-> +		u8 sizer[SZ_4K];
-> +	};
-> +};
-> +
-> +static_assert(sizeof(struct rmm_config) == SZ_4K);
-> +
-> +#define RMI_REALM_PARAM_FLAG_MEC_POLICY_MASK	GENMASK(8, 7)
-> +#define RMI_REALM_PARAM_FLAG_LFA_POLICY_MASK	GENMASK(6, 5)
-> +#define RMI_REALM_PARAM_FLAG_DA			BIT(3)
-> +#define RMI_REALM_PARAM_FLAG_PMU		BIT(2)
-> +#define RMI_REALM_PARAM_FLAG_SVE		BIT(1)
-> +
-> +#define RMI_HASH_SHA_256			0
-> +#define RMI_HASH_SHA_512			1
-> +#define RMI_HASH_SHA_384			2
-> +
-> +struct realm_params {
-> +	union { /* 0x0 */
-> +		struct {
-> +			u64 flags0;
-> +			u64 s2sz;
-> +			u64 sve_vl;
-> +			u64 num_bps;
-> +			u64 num_wps;
-> +			u64 pmu_num_ctrs;
-> +			u64 hash_algo;
-> +			u64 num_aux_planes;
-> +		};
-> +		u8 padding0[0x400];
+I vote to backport the relevant upstream commits.  Reviewing this without those
+commits is a pain.  I think it's these, to get fairly clean cherry-picks?
 
-The union + sizer concept is cool. Technically this one isn't a padding,
-it's also a sizer? (same for the other structs below.
-
-> +	};
-> +	union { /* 0x400 */
-> +		struct {
-> +			u8 rpv[64];
-> +			u64 ats_plane;
-> +		};
-> +		u8 padding1[0x400];
-> +	};
-> +	union { /* 0x800 */
-> +		struct {
-> +			u64 padding2;
-> +			u64 rtt_base;
-> +			s64 rtt_level_start;
-> +			u64 rtt_num_start;
-> +			u64 flags1;
-> +			u64 max_num_vdevs;
-> +		};
-> +		u8 padding3[0x700];
-> +	};
-> +	union { /* 0xf00 */
-> +		struct {
-> +			u8 padding4[0x80];
-> +			u64 aux_rtt_base[3];
-> +		};
-> +		u8 padding5[0x100];
-> +	};
-> +};
-> +
-> +static_assert(sizeof(struct realm_params) == SZ_4K);
-> +
-
-Does declaring this struct as packed matter? I guess the static_assert()
-has the same effect.
-
->
-> [...snip...]
->
+  dc1ce45575b3401102568dd60ba8894849d1d64b KVM: MMU: update comment on the number of page role combinations
+  41e35604eaff2266ba8523787ebe99c5ca4c4045 KVM: X86: Remove useless code to set role.gpte_is_8_bytes when role.direct
+  b46a13cb7ea1137b2e01dfaafcacd5cd79db8390 KVM: X86: Calculate quadrant when !role.gpte_is_8_bytes
+  bb3b394d35e80d7a58ce015191e4960a13f54ba5 KVM: X86: Rename gpte_is_8_bytes to has_4_byte_gpte and invert the direction
