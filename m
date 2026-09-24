@@ -1,148 +1,316 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB74411FA4;
-	Thu, 24 Sep 2026 19:12:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A7540D574;
+	Thu, 24 Sep 2026 19:12:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790277134; cv=none; b=AGgrWm61daSQbIDv45qGSoCL8YvoAYy5fI/Hx0PxzWeKC4+tiRBuxaM6/7s7pGr/ZEN5vQ6fKm5h/xjfFAyrg3pXNkC5yWzCURYbczF7ySO7UsD3ROpaAQQJT1SWP+jZqGB62g8+9+d8dqhWJ15bAZGjNCyT1oc5oqRlc/ECbI4=
+	t=1790277176; cv=none; b=r995/91gtNTDHJzflNosRGtZbnOw7TwhO89y10iiO+5Ajc8FMqflfikgr2ji3Q59O+m1CPSoiZaWSmzg9QRm88a3U+Dz3w/GfXXijmzBcMr/SSs7sGqPxph9WrOh04p3bl8TzhG3gUO+toyb7YgZYphq65uouq1cgIFlBHCdha8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790277134; c=relaxed/simple;
-	bh=iQAhKztCzsr8r+EhfuxBYz1DVlc+xX7Qew50BYGeSRQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XZgRRfXbL7OhxvdeMRYajRa+tTZq9x70IzYvo8YoAKQe66zacWqj1dAo3jUw1XMb2e7G6+4lS8mG5YsFZBDTLDx8Dx0CDr+d7iwM+g/dxL1deMDv8JrenXvyD/SW/lqcTtBt/C7TCz31SYLtEteXp9cRRnMBZnEKG4oaUDit9DU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HeJdmEmv; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790277176; c=relaxed/simple;
+	bh=YJeXth6Tx3z3uAzpOJYtZ2VydeRwjpUyOkYrzwMIB04=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Xjb9E0NtcJ8k7a/o9jEeN6jVpq3mIh8Ka6zqpen3OdKYebdav931jpdggMxrky+W/PaJqXtzlCeydhoYZNlbd+srDMtVzpQFhdPGmRKzMaa0mJd6+QK4nz9lnFgroRQ3s910yDfGj27AGdmxJonR7YUJgHmo8g9Fh2wlmUr4dSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T7RydNq4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HeJdmEmv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790277133; x=1821813133;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=iQAhKztCzsr8r+EhfuxBYz1DVlc+xX7Qew50BYGeSRQ=;
-  b=HeJdmEmvlgG30AMkWQ/bZEm+4Gx+bCxZ3ZfKgyz/L1I9L7oaekwpIXxq
-   GX3jovvKLhJZP/s5KhZK6bs+97QNhpHMuVwnRjKox+bXI4KojaNbdrskR
-   J9f6x6jgTLqTgkoKxi3KxSIU8oYwpG4YqQyuV5UTJr491U5Cvu8a0aM6o
-   nTi9G3tsv8ZfcIx03fxW7WmS9s4CSE/3YDPu+1CNVpAO0qrDzah2eWJ4P
-   E07q27z1mlpgfTDX/ZQdAL9twOel3yfYHJy+MHZzsUJ6vLaLDXSjtn703
-   RhkqtK9utgv8Zc/refJVovycxeJcJ6CSLXxYP8FPiM/sFVT5KEdbOSh7A
-   g==;
-X-CSE-ConnectionGUID: 20O1bvbKRQSKlmyRbihmdg==
-X-CSE-MsgGUID: +DvwRBbCQs+Dz6GMhFUR+w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11915"; a="101590821"
-X-IronPort-AV: E=Sophos;i="6.27,121,1787036400"; 
-   d="scan'208";a="101590821"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 12:12:12 -0700
-X-CSE-ConnectionGUID: q5NBtB4OT1KsXVu0aemscw==
-X-CSE-MsgGUID: r/GMJ0xjSE6G1v1jiaUzhg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,121,1787036400"; 
-   d="scan'208";a="278841646"
-Received: from jjgreens-desk24.amr.corp.intel.com (HELO [10.125.110.171]) ([10.125.110.171])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 12:12:11 -0700
-Message-ID: <2042fa92-0b33-4ce2-a288-8eebda2b7305@intel.com>
-Date: Thu, 24 Sep 2026 12:12:11 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T7RydNq4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D3E1F000FF;
+	Thu, 24 Sep 2026 19:12:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790277175;
+	bh=6TTM/G+mPP5S3WhNhICuGYcbs6efnmaLhLn+ZuN6Lb4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=T7RydNq4uO2Hc7l8rDc5+JkeeN2lnJkB5TgUBXdT7Gav95ZwqfXXqV+9LbV6GcMZp
+	 ++8+C66b3rrkEsktcX0zBsMVMO5Awv82gKcUVj83Kcf0L+lS0mGb0O12WIYnTOb00Y
+	 PNMARTBfnyV/2o7kBRWZ9uUKM8v55rsOBk1X5a5jHFRX1h78Vk1Ok/AKkUvGBxykKR
+	 pXw2p9z+w3F+mUY4Qq5/GdfVhkX+qafcnnCh/QFSrdv0WIZKdvRNboIEM3Sl2svd3K
+	 mxsZXkQ08i6mE8FuwjKg4OxBHJabQ89U2gSTYym5vfTCPHwB+XJ5A2iPimVdOZ2N5G
+	 lM0hzJCF92GNg==
+Date: Thu, 24 Sep 2026 14:12:53 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Dave Airlie <airlied@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, linux-pci@vger.kernel.org,
+	kvm@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+	Dave Airlie <airlied@redhat.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: Re: [PATCH] pci/vgaarb: pass a data pointer to be used in the decode
+ callback
+Message-ID: <20260924191253.GA1994586@bhelgaas>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 02/10] x86/virt/tdx: Convert the version metadata
- reader
-To: Chao Gao <chao.gao@intel.com>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
- "kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "tglx@kernel.org" <tglx@kernel.org>
-References: <20260918132946.76533-1-chao.gao@intel.com>
- <20260918132946.76533-3-chao.gao@intel.com>
- <390fc4d56769f87d91949e900262640b52b505b7.camel@intel.com>
- <arS6D6KoPbqVBtPl@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <arS6D6KoPbqVBtPl@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260922064111.2468741-1-airlied@gmail.com>
 
-On 9/23/26 22:50, Chao Gao wrote:
->>> +static int get_tdx_sys_info_version(struct tdx_sys_info_version *version)
->>> +{
->>> +	return read_sys_metadata_table(version_mappings, version);
->>> +}
->> I'm not sure we need all of these helpers that are each only called once?
-> I'd prefer to keep them, for a few reasons:
+On Tue, Sep 22, 2026 at 04:41:11PM +1000, Dave Airlie wrote:
+> From: Dave Airlie <airlied@redhat.com>
 > 
-> 1. This one is actually called twice: from get_tdx_sys_info() and from
->    tdx_module_run_update().
+> This changes the vgaarb client API so that the user can pass a
+> private data pointer into the register that will get used in
+> the decode callback.
+> 
+> This allows a bunch of pdev conversions in the drivers, and lets
+> some future vfio cleanups be nicer.
+> 
+> I'd like to merge this via the drm next tree but also fine with
+> it going via pci.
+> 
+> Signed-off-by: Dave Airlie <airlied@redhat.com>
+> Cc: Alex Williamson <alex@shazbot.org>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
 
-Neither has any real space constraints, I'll note.
+This seems fine to me, except for the
+drivers/gpu/drm/loongson/lsdc_drv.c build error
+(https://lore.kernel.org/all/202609241037.1RwqQnfb-lkp@intel.com) the
+new kernel-doc issue
+(https://lore.kernel.org/all/202609241015.1yXHBzfy-lkp@intel.com).
 
-> 2. The helper name describes what is being read better than a bare
->    read_sys_metadata_table() call.
+You could also update the subject line to match the
+drivers/pci/vgaarb.c history:
 
-What part? that it comes from "sys_info" as opposed to it being
-"metadata". Meh. Why does it matter?
+  PCI/VGA: Pass a data pointer ...
 
-> 3. Some helpers do more than read a table (see get_tdx_sys_info_td_conf()).
->    Without per-class helpers, get_tdx_sys_info() would open-code
->    read_sys_metadata_table() for some classes and call a helper for
->    others, which looks inconsistent. With one helper per metadata class,
->    every class is read the same way.
+With all that, I'm fine with this being merged via the drm tree:
 
-I value lower levels of abstraction over naming consistency.
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
-Remove the helper, please.
+> ---
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |  6 +++---
+>  drivers/gpu/drm/i915/display/intel_vga.c   |  7 ++++---
+>  drivers/gpu/drm/nouveau/nouveau_vga.c      |  6 +++---
+>  drivers/gpu/drm/radeon/radeon_device.c     |  7 +++----
+>  drivers/pci/vgaarb.c                       | 13 +++++++++----
+>  drivers/vfio/pci/vfio_pci_core.c           |  9 +++++----
+>  include/linux/vgaarb.h                     |  8 +++++---
+>  7 files changed, 32 insertions(+), 24 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+> index 62b5b4a23f17..1344b2b1bd16 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+> @@ -1435,10 +1435,10 @@ bool amdgpu_device_should_use_aspm(struct amdgpu_device *adev)
+>   * Enable/disable vga decode (all asics).
+>   * Returns VGA resource flags.
+>   */
+> -static unsigned int amdgpu_device_vga_set_decode(struct pci_dev *pdev,
+> +static unsigned int amdgpu_device_vga_set_decode(void *data,
+>  		bool state)
+>  {
+> -	struct amdgpu_device *adev = drm_to_adev(pci_get_drvdata(pdev));
+> +	struct amdgpu_device *adev = (struct amdgpu_device *)data;
+>  
+>  	amdgpu_asic_set_vga_state(adev, state);
+>  	if (state)
+> @@ -4208,7 +4208,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+>  	 * ignore it
+>  	 */
+>  	if ((adev->pdev->class >> 8) == PCI_CLASS_DISPLAY_VGA)
+> -		vga_client_register(adev->pdev, amdgpu_device_vga_set_decode);
+> +		vga_client_register(adev->pdev, amdgpu_device_vga_set_decode, adev);
+>  
+>  	px = amdgpu_device_supports_px(adev);
+>  
+> diff --git a/drivers/gpu/drm/i915/display/intel_vga.c b/drivers/gpu/drm/i915/display/intel_vga.c
+> index 4966fd7eea92..0889edb36190 100644
+> --- a/drivers/gpu/drm/i915/display/intel_vga.c
+> +++ b/drivers/gpu/drm/i915/display/intel_vga.c
+> @@ -283,9 +283,10 @@ void intel_vga_disable(struct intel_display *display)
+>  	intel_de_posting_read(display, vga_reg);
+>  }
+>  
+> -static unsigned int intel_vga_set_decode(struct pci_dev *pdev, bool enable_decode)
+> +static unsigned int intel_vga_set_decode(void *data, bool enable_decode)
+>  {
+> -	struct intel_display *display = to_intel_display(pdev);
+> +	struct intel_display *display = (struct intel_display *)data;
+> +	struct pci_dev *pdev = to_pci_dev(display->drm->dev);
+>  	unsigned int decodes = VGA_RSRC_NORMAL_IO | VGA_RSRC_NORMAL_MEM;
+>  
+>  	drm_dbg_kms(display->drm, "%s VGA decode due to VGA arbitration\n",
+> @@ -331,7 +332,7 @@ void intel_vga_register(struct intel_display *display)
+>  	 * then we do not take part in VGA arbitration and the
+>  	 * vga_client_register() fails with -ENODEV.
+>  	 */
+> -	ret = vga_client_register(pdev, intel_vga_set_decode);
+> +	ret = vga_client_register(pdev, intel_vga_set_decode, display);
+>  	drm_WARN_ON(display->drm, ret && ret != -ENODEV);
+>  }
+>  
+> diff --git a/drivers/gpu/drm/nouveau/nouveau_vga.c b/drivers/gpu/drm/nouveau/nouveau_vga.c
+> index 29a801124e56..6662e30466f2 100644
+> --- a/drivers/gpu/drm/nouveau/nouveau_vga.c
+> +++ b/drivers/gpu/drm/nouveau/nouveau_vga.c
+> @@ -9,9 +9,9 @@
+>  #include "nouveau_vga.h"
+>  
+>  static unsigned int
+> -nouveau_vga_set_decode(struct pci_dev *pdev, bool state)
+> +nouveau_vga_set_decode(void *data, bool state)
+>  {
+> -	struct nouveau_drm *drm = pci_get_drvdata(pdev);
+> +	struct nouveau_drm *drm = (struct nouveau_drm *)data;
+>  	struct nvif_object *device = &drm->client.device.object;
+>  
+>  	if (drm->client.device.info.family == NV_DEVICE_INFO_V0_CURIE &&
+> @@ -103,7 +103,7 @@ nouveau_vga_init(struct nouveau_drm *drm)
+>  		return;
+>  	pdev = to_pci_dev(dev->dev);
+>  
+> -	vga_client_register(pdev, nouveau_vga_set_decode);
+> +	vga_client_register(pdev, nouveau_vga_set_decode, drm);
+>  
+>  	/* don't register Thunderbolt eGPU with vga_switcheroo */
+>  	if (pci_is_thunderbolt_attached(pdev))
+> diff --git a/drivers/gpu/drm/radeon/radeon_device.c b/drivers/gpu/drm/radeon/radeon_device.c
+> index 9523240110a6..cf8a6bd00c77 100644
+> --- a/drivers/gpu/drm/radeon/radeon_device.c
+> +++ b/drivers/gpu/drm/radeon/radeon_device.c
+> @@ -1076,10 +1076,9 @@ void radeon_combios_fini(struct radeon_device *rdev)
+>   * Enable/disable vga decode (all asics).
+>   * Returns VGA resource flags.
+>   */
+> -static unsigned int radeon_vga_set_decode(struct pci_dev *pdev, bool state)
+> +static unsigned int radeon_vga_set_decode(void *data, bool state)
+>  {
+> -	struct drm_device *dev = pci_get_drvdata(pdev);
+> -	struct radeon_device *rdev = dev->dev_private;
+> +	struct radeon_device *rdev = (struct radeon_device *)data;
+>  	radeon_vga_set_state(rdev, state);
+>  	if (state)
+>  		return VGA_RSRC_LEGACY_IO | VGA_RSRC_LEGACY_MEM |
+> @@ -1431,7 +1430,7 @@ int radeon_device_init(struct radeon_device *rdev,
+>  	/* if we have > 1 VGA cards, then disable the radeon VGA resources */
+>  	/* this will fail for cards that aren't VGA class devices, just
+>  	 * ignore it */
+> -	vga_client_register(rdev->pdev, radeon_vga_set_decode);
+> +	vga_client_register(rdev->pdev, radeon_vga_set_decode, rdev);
+>  
+>  	if (rdev->flags & RADEON_IS_PX)
+>  		runtime = true;
+> diff --git a/drivers/pci/vgaarb.c b/drivers/pci/vgaarb.c
+> index 3de05aee7859..3e58b2c05c85 100644
+> --- a/drivers/pci/vgaarb.c
+> +++ b/drivers/pci/vgaarb.c
+> @@ -51,7 +51,8 @@ struct vga_device {
+>  	unsigned int mem_norm_cnt;	/* normal MEM count */
+>  	bool bridge_has_one_vga;
+>  	bool is_firmware_default;	/* device selected by firmware */
+> -	unsigned int (*set_decode)(struct pci_dev *pdev, bool decode);
+> +	unsigned int (*set_decode)(void *data, bool decode);
+> +	void *set_decode_data;
+>  };
+>  
+>  static LIST_HEAD(vga_list);
+> @@ -935,6 +936,7 @@ EXPORT_SYMBOL(vga_set_legacy_decoding);
+>   * vga_client_register - register or unregister a VGA arbitration client
+>   * @pdev: PCI device of the VGA client
+>   * @set_decode: VGA decode change callback
+> + * @data: private data to pass to callback
+>   *
+>   * Clients have two callback mechanisms they can use.
+>   *
+> @@ -956,15 +958,18 @@ EXPORT_SYMBOL(vga_set_legacy_decoding);
+>   * Returns: 0 on success, -ENODEV on failure
+>   */
+>  int vga_client_register(struct pci_dev *pdev,
+> -		unsigned int (*set_decode)(struct pci_dev *pdev, bool decode))
+> +		unsigned int (*set_decode)(void *data, bool decode),
+> +		void *data)
+>  {
+>  	unsigned long flags;
+>  	struct vga_device *vgadev;
+>  
+>  	spin_lock_irqsave(&vga_lock, flags);
+>  	vgadev = vgadev_find(pdev);
+> -	if (vgadev)
+> +	if (vgadev) {
+>  		vgadev->set_decode = set_decode;
+> +		vgadev->set_decode_data = data;
+> +	}
+>  	spin_unlock_irqrestore(&vga_lock, flags);
+>  	if (!vgadev)
+>  		return -ENODEV;
+> @@ -1464,7 +1469,7 @@ static void vga_arbiter_notify_clients(void)
+>  	spin_lock_irqsave(&vga_lock, flags);
+>  	list_for_each_entry(vgadev, &vga_list, list) {
+>  		if (vgadev->set_decode) {
+> -			new_decodes = vgadev->set_decode(vgadev->pdev,
+> +			new_decodes = vgadev->set_decode(vgadev->set_decode_data,
+>  							 new_state);
+>  			vga_update_device_decodes(vgadev, new_decodes);
+>  		}
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 6757054e9d87..b04ce3ded08c 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -162,9 +162,10 @@ static inline void vfio_pci_core_debugfs_init(struct vfio_pci_core_device *vdev)
+>   * has no way to get to it and routing can be disabled externally at the
+>   * bridge.
+>   */
+> -static unsigned int vfio_pci_set_decode(struct pci_dev *pdev, bool single_vga)
+> +static unsigned int vfio_pci_set_decode(void *data, bool single_vga)
+>  {
+> -	struct vfio_pci_core_device *vdev = dev_get_drvdata(&pdev->dev);
+> +	struct vfio_pci_core_device *vdev = data;
+> +	struct pci_dev *pdev = vdev->pdev;
+>  	struct pci_dev *tmp = NULL;
+>  	unsigned char max_busnr;
+>  	unsigned int decodes;
+> @@ -2159,10 +2160,10 @@ static int vfio_pci_vga_init(struct vfio_pci_core_device *vdev)
+>  	if (ret)
+>  		return ret;
+>  
+> -	ret = vga_client_register(pdev, vfio_pci_set_decode);
+> +	ret = vga_client_register(pdev, vfio_pci_set_decode, vdev);
+>  	if (ret)
+>  		return ret;
+> -	vga_set_legacy_decoding(pdev, vfio_pci_set_decode(pdev, false));
+> +	vga_set_legacy_decoding(pdev, vfio_pci_set_decode(vdev, false));
+>  	return 0;
+>  }
+>  
+> diff --git a/include/linux/vgaarb.h b/include/linux/vgaarb.h
+> index 97129a1bbb7d..71a364669eaf 100644
+> --- a/include/linux/vgaarb.h
+> +++ b/include/linux/vgaarb.h
+> @@ -33,7 +33,8 @@ struct pci_dev *vga_default_device(void);
+>  void vga_set_default_device(struct pci_dev *pdev);
+>  int vga_remove_vgacon(struct pci_dev *pdev);
+>  int vga_client_register(struct pci_dev *pdev,
+> -		unsigned int (*set_decode)(struct pci_dev *pdev, bool state));
+> +		unsigned int (*set_decode)(void *data, bool state),
+> +		void *data);
+>  #else /* CONFIG_VGA_ARB */
+>  static inline void vga_set_legacy_decoding(struct pci_dev *pdev,
+>  		unsigned int decodes)
+> @@ -59,7 +60,8 @@ static inline int vga_remove_vgacon(struct pci_dev *pdev)
+>  	return 0;
+>  }
+>  static inline int vga_client_register(struct pci_dev *pdev,
+> -		unsigned int (*set_decode)(struct pci_dev *pdev, bool state))
+> +		unsigned int (*set_decode)(void *data, bool state),
+> +		void *data)
+>  {
+>  	return 0;
+>  }
+> @@ -97,7 +99,7 @@ static inline int vga_get_uninterruptible(struct pci_dev *pdev,
+>  
+>  static inline void vga_client_unregister(struct pci_dev *pdev)
+>  {
+> -	vga_client_register(pdev, NULL);
+> +	vga_client_register(pdev, NULL, NULL);
+>  }
+>  
+>  #endif /* LINUX_VGA_H */
+> -- 
+> 2.54.0
+> 
