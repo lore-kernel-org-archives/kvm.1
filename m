@@ -1,102 +1,93 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA5835C6B2
-	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 21:54:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E88949DB80
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 21:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790286863; cv=none; b=CRXMWHCtmMby6IUYq3gm7RoDJRtOZZJqpDJUVMNBhdsYfA/dwGkiN6p6CberCGDbXgmwmSjlHSI5vzGZcxV1SS5fB2fg+VkmW4+GjGa5yNqID+0tkzyt20gtUiZ3d2+VaPIbrnlr3HYnL/e6yzbU8GaEuz+K3AmSfaeREsWUv4M=
+	t=1790286868; cv=none; b=i3zo4c5K//ORMGOWVl1MIoFSnWtHZWL9gKOMrCT5JVcUsd3G1VB5M5fyqkt+gupiDCEkQYJSPGJN0R4hdLgAKhr0IVH1IL36rbG6JxfZQmudwVKOzju8B9ClVPmVe1jg5jDJX8v2vf2SoyNEmJP+g5Z0qRd3rFtXp5N78TYa7v0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790286863; c=relaxed/simple;
-	bh=xTahTtFed8Jg3VFQn7KACSupmZMdDeChaT/0NazBTeU=;
+	s=arc-20240116; t=1790286868; c=relaxed/simple;
+	bh=K/LIHyiYa5gID+5jEsxZuhFyjO7rvUwqI7ZTaB8OIBo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=je5XlGlVc6XgoNyYeJz1SWe4fRFwhiml0EnyQK2hwavU+5E1d/iW71H6n6AI3YNE+RW8CZewp7nreV2mT76dafgOAs+DAthz0dFVD4Vgx39ifXLlups0tMx1qZLpXrrEJLFDyBgCHXvJg70XpIxm8RpK1jUSMdIqbu1Q8JQvHxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wVzH35KT; arc=none smtp.client-ip=209.85.214.199
+	 To:Cc:Content-Type; b=sYVaWH1p1rmN3IpKs09phzGgv9QF7Zw3f3qm5N878E99BuAusc+ft3Y4AHtzg4efZi+gidqegsOhQLl8f8Y+7uFY2MdKW9ctxVKJVNoP8er9CSOUQQld7NjOX1UuWc1x7vrEMxWWR45Or9D8dgwYy5v3Ihkx+giDFUUBN8bUp+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rxQaQub3; arc=none smtp.client-ip=209.85.214.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wVzH35KT"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2df375fb9b2so2281125ad.2
-        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 14:54:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rxQaQub3"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2dd53f2b27cso2254275ad.0
+        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 14:54:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790286862; x=1790891662; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790286867; x=1790891667; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=VpjZi+2mwo7JweFezCYtC+Z8hNKRiKMEMcyjp829kk8=;
-        b=wVzH35KTUR94X4cMYHUe6idOxJB+Zb5O7wyHQd+ZOIqs+6J90R7AFPFLWTsaSE0AUc
-         +lCzfi1abpL2+jxcE4p2OCc2t7m2LjtBsbwyQSBzgboqD30gespdrAxSmKGOBnjpglaO
-         Vw8+YoqL4poH8LNi8Aa8FX28SD6scpl4YG1Gm0d+vIZLjo7WhrFqgh36wrgD7m1Xo7Ef
-         mrOX/dGwlGroLp7SPPeeG4cPcXJ1LnNYNDPmAi08+RAEvWEeWJfBIEXnX6so00EJ2I7f
-         VklMfhvlgVgVKu1RPKUIQnjcPdO6hEvxZd+ADO7gLQxka73hQdZjdewrALPuGvzl+pGp
-         UR7g==
+        bh=SQ/usSA1tKKAOs+40+4Ubs2RZtDv59Vb7xFxUDV6QEU=;
+        b=rxQaQub3iwMbsTXUwk6tRJ4UjpNa3yE3a6PzUgyee7tp5YCXyRR6LsUrOG0oE1Nlo+
+         /0+GW0X81J/SD7aQXNcB47FTLO624XPfjvjVeibZFp1fINT6zI+DGgP3o+cTp5pd7kKF
+         pr2ekLHTVfdNHe+Gsf5yWMUuD4R/s6nq5BmpRf31oare9QDL0vYO7PtRPpDN643NHB+d
+         5TX+e+w81LBxciFxKoVZCj8gfk6CB58o7h0bxRyWvk+09XQV0tLwP2gyqt0TRf1NqgZe
+         tDg1WhVMbffEVtSNn/Gkl83tCXQwMnzQJ7pRFzolk+VRnGjDSquku/Qo/GXRl4I0DOp1
+         eHhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790286862; x=1790891662;
+        d=1e100.net; s=20260707; t=1790286867; x=1790891667;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=VpjZi+2mwo7JweFezCYtC+Z8hNKRiKMEMcyjp829kk8=;
-        b=KnV9PX0IAmCsMQPuaQGvF62xAyWUAZLbXgyDUPXjNysr7dZD5t+2tUdxOzkFBtrDw1
-         zHWgcYbeNl4jd1wEXnTpWlJtGcbX4O8BGOthGtsbe0bmtLAeDlcOq3kxzYfk/I2dHcqR
-         nH+TO7afc/vqnPjLBw3amcCXMorXKV4tZJsGeVoMgFCDhUVaPB009g8A5TV3C/YaN8p7
-         G7AoCh8gtdHPaufclXD1nx5ppgFj4LWsm5BKTCI8vivaXwQb/sVWsN8RKdILranDZuiY
-         pOBXr4tctL81wuv9CK++p3nzZuTl/QvBpfz6ca/g+eAtw4NalIbAj2wXu8kaMehvf6qO
-         E6Ug==
-X-Forwarded-Encrypted: i=1; AKwUvBxSt7gX57fJWZI8KVxpGRZw4XLcA6JHQzmOdzLkK64PO/jZtXwcBJsE5VC2tTeAR20OjqQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++mCyd3Q7fuBS/Vy9ek9A/sTnAEHatkUjS3OXbR96LRaGUbm0cwP
-	5aH63Dp3cuPfN+wnQnElN0UjtESKAoa3zRpyUwUmfvLTsMybTvuhXn2uBsJ6td5+IOFSSxmF90j
-	tqEzjnw==
-X-Received: from plei4.prod.google.com ([2002:a17:902:e484:b0:2dd:5303:f008])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:b08:b0:2df:915a:6fb7
- with SMTP id d9443c01a7336-2df915a7362mr4516335ad.29.1790286861611; Thu, 24
- Sep 2026 14:54:21 -0700 (PDT)
-Date: Thu, 24 Sep 2026 14:51:55 -0700
-In-Reply-To: <20260922001332.1121266-1-seanjc@google.com>
+        bh=SQ/usSA1tKKAOs+40+4Ubs2RZtDv59Vb7xFxUDV6QEU=;
+        b=uZShnenksoIgz1DhtIyq6tjx5Cl/6FKQId3X2i77fs2dz02+k1Kdi7szfdFEiXhhAG
+         CsnbkIGu6RZ9HgOaT1o06eGMa8VUNEsSePFbFH4v25i0pp86vZ0B+X4Ej8jqmZpQAn3b
+         IuC9QN2NPvHX2pPQw2Y/dXT53ASUs112VGzEm2Na+BgBz+KV7OeuD82se+PoIBgqS6ms
+         CKEd5+UavDSQaBElhxspLmitkiL2ivQGTMw67T4jEV44q4+0Y/MqcHNLfxlfOcrpxt0f
+         h1D1HVvNWLBlpwSwbNN1WAD0P0oGr4T5fDJxJrs8xto0Qj4eV/BeatNCtzUh9fz4+0hX
+         LBAw==
+X-Gm-Message-State: AFuF++mNGPBUjoP6GhM0nVsevqoGzDm+5p5v/2t+EywWgPdzAVv7LlMm
+	u1fpBjMN5XEcd1tlQ5cfh/lGP8tjHgsKeRF6dw1xj9/fWwSY6pGI3acOXYEVbKvtIsH1kRpHGOv
+	TKuYY6w==
+X-Received: from pgbfq21.prod.google.com ([2002:a05:6a02:2995:b0:c88:e5cb:265])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:2d07:b0:3dd:a195:dd57
+ with SMTP id adf61e73a8af0-3de0e933c4fmr3612027637.57.1790286866556; Thu, 24
+ Sep 2026 14:54:26 -0700 (PDT)
+Date: Thu, 24 Sep 2026 14:51:57 -0700
+In-Reply-To: <20260901-gmem-unbind-fix-v2-1-12febe1d2216@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260922001332.1121266-1-seanjc@google.com>
+References: <20260901-gmem-unbind-fix-v2-1-12febe1d2216@amd.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <179028364504.2005087.210259701923191014.b4-ty@b4>
-Subject: Re: [PATCH v5 0/6] KVM: guest_memfd: Fix binding bugs
+Message-ID: <179028369935.2007941.14069102369239125063.b4-ty@b4>
+Subject: Re: [PATCH v2] KVM: guest_memfd: take the invalidate lock when
+ unbinding a dying file
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Stefan Teodorescu <fane@google.com>, Dennis Tighe <dtighe@google.com>, 
-	Sashiko Bot <sashiko-bot@kernel.org>, Ackerley Tng <ackerleytng@google.com>, 
-	Yan Zhao <yan.y.zhao@intel.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	David Hildenbrand <david@kernel.org>, Shivank Garg <shivankg@amd.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Sashiko <sashiko-bot@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, 21 Sep 2026 17:13:26 -0700, Sean Christopherson wrote:
-> Sorry for the spam, I am hoping to get this applied before the in-place
-> conversion series, and I really want to get that series applied this week.
-> I finally gave up and split bind() into prepare()+commit(), and I actually
-> like the end result.  The only really ugly part is an extra #ifdef, but
-> otherwise gifting the gmem file reference back to kvm_set_memory_region()
-> avoids the TOCTOU issues and weird juggling that led me to initially reject
-> a prepare()+commit() solution.
+On Tue, 01 Sep 2026 07:20:38 +0000, Shivank Garg wrote:
+> kvm_gmem_unbind() takes mapping->invalidate_lock only if the
+> get_file_active() succeeds. When the guest_memfd file is dying, its
+> reference count is already zero so get_file_active fails and the binding
+> is removed without holding the invalidate lock.
+> 
+> kvm_gmem_invalidate_{start,end}() checks f->bindings independently to
+> decide whether to begin or end KVM MMU invalidation. So, the bindings
+> must therefore remain stable between the two calls. Otherwise, unbind
+> can remove a binding after start increments mmu_invalidate_in_progress,
+> but before end finds the binding and decrements it.
+> Example, unbind race with memory failure:
 > 
 > [...]
 
-Applied to kvm-x86 coco.  I'll send another series to address Ackerley's
-feedback (I would do the more agressive cleanups on top no matter what, to keep
-the fixes minimal for LTS kernels).
+Applied to kvm-x86 coco, thanks!
 
-[1/6] KVM: guest_memfd: Gracefully handle xarray errors when binding a memslot
-      https://github.com/kvm-x86/linux/commit/e6ecb88711d9
-[2/6] KVM: Use goto to handle errors during memslot preparation
-      https://github.com/kvm-x86/linux/commit/23a205797cec
-[3/6] KVM: Only bind memslot to guest_memfd instance for CREATE operations
-      https://github.com/kvm-x86/linux/commit/513333a55460
-[4/6] KVM: guest_memfd: Split bind() into prepare()+commit() phases
-      https://github.com/kvm-x86/linux/commit/83411f32b8ad
-[5/6] KVM: guest_memfd: Establish memslot<=>guest_memfd bindings *after* memslot is ready
-      https://github.com/kvm-x86/linux/commit/3fe5d2944e5a
-[6/6] KVM: guest_memfd: Drop superfluous WRITE_ONCE() when binding a memslot
-      https://github.com/kvm-x86/linux/commit/48252615eb78
+[1/1] KVM: guest_memfd: take the invalidate lock when unbinding a dying file
+      https://github.com/kvm-x86/linux/commit/0ee2c883b62d
 
 --
 https://github.com/kvm-x86/linux/tree/next
