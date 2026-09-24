@@ -1,72 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C027D283142;
-	Thu, 24 Sep 2026 15:38:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B354A3F17;
+	Thu, 24 Sep 2026 15:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790264335; cv=none; b=ePfOomP4ebiWg+j4hSiY1ylXJOGCr515NquM56iOaoKv345sfMX0RTEPhxwDiM5ie1JO7hzfWEaYZ8I+PANfuRll7P7js5ftqVWcx5veA2LnCe/OSmuTCoWenrzeRWT/Nv+VxV6MpED8WHSWMsBoJPeHI0rI3ytCal8XkZqfd+A=
+	t=1790264596; cv=none; b=fhxP9nXHuzgxE+p0CsGtV6NfVsWTJ1by9/AqWMl0DHdNAlto5epf58TkPIRPoz+FM4KwLOsUDRhHkOqG1AdbgUomLeePQseHllCxgKg76rr0+8yMKuBOcbT9fprQc/5plqwPnPqz9SZ1iDBNd9oXChv0gvZYM9K6pW6tKg0CjiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790264335; c=relaxed/simple;
-	bh=mWIxE53dNbsNhT47c3nH58jBRfaByTW7aWRghCyGy1k=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Sqwi4j7OzajNYwmiRM5Db6Gjh1MtUUgKlVhQvdf6NFiiqZxx9XlRlhUX4YyVXYirSttLZYoyc0ScmacVNQbEhmYyK8vRaKHBQCF7SSrt7ig6PSpYxHs1+NVN2mMRgBLKJ/cKJ8tNZRoWgWrCOiZyEvSYDi4FuSlVPzhf5kX2r38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bTBPhELI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790264596; c=relaxed/simple;
+	bh=CHYzUrkQMcLRWPgUeFO4PnGKYjBY2rlqkQkNha1Cbug=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k7yfPUqAsK1fylaSFdU12MuB/kMw4czC6shP3YnrpZil/EtzGNV5oSFBhQLVKxCK4vgK6oH+vJJTJ2sTZKorT7GJzSAemrOoxDRIzcpd1FMYEWQqb27E8TFtmZXSF0pPACHzvCf0O9ENFk7BA68buD01eGDVr4FgD5Yw92In3Sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=HIJqAdNy; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bTBPhELI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F7021F000FF;
-	Thu, 24 Sep 2026 15:38:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790264334;
-	bh=akutNHbzTxDEF9m34BiAHrNOwltYDiuyMm35he8BXEo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bTBPhELIRN3O0FFn8rpkmZEmYBQLN/8ZJX9fWuZ2YU+nsYszze+8Po6E2Jpkx1/U2
-	 csSAmCdllvo6txJLC5zGIYOQEIRXycEUR2jXLQiZCsxHIWtiRgVdUo8BIveljHW2nQ
-	 UbCjydyZNZc1l/gbAwQpobRjn0br/M5EesAtxQ67z9UrKC8jsDW8Wx2ZQne4Y4AGls
-	 INJ91jqLgCH/y0bJchnHu7Ii1zPf9g9rdXPPFTLIz0IMAmVDkydnbNJGdFCibyKJqZ
-	 RR5RoUM9ekOIuy56k9wImJFfBzeSmO59rpxTjSeQikGWDqnHT0bD5Y7TlHBal8T0IU
-	 Chd99eqtvZhOw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 5/9] vfio/pci: Add a helper to create a DMABUF for a
- BAR-map VMA
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Matt Evans" <matt@ozlabs.org>
-Cc: linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org, media-ci@linuxtv.org, kvm@vger.kernel.org
-In-Reply-To: <20260924152159.49702-6-matt@ozlabs.org>
-References: <20260924152159.49702-1-matt@ozlabs.org>
- <20260924152159.49702-6-matt@ozlabs.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 24 Sep 2026 15:38:53 +0000
-Message-Id: <20260924153854.2F7021F000FF@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="HIJqAdNy"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6D3041E4D;
+	Thu, 24 Sep 2026 08:43:07 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CF9313F86F;
+	Thu, 24 Sep 2026 08:43:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790264590; bh=CHYzUrkQMcLRWPgUeFO4PnGKYjBY2rlqkQkNha1Cbug=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HIJqAdNykH8EhX/o4szrcmNL2hM8vYBQdTMIpdVNJshRaywuATNN5gF4n/QX1BnTg
+	 XtsOxiOMg8zogPeJu2NBU17QrQOExbg/hDgGHr4MJN5g6NXyxxN7q+UpuIYN/c81Sg
+	 nsEJPj/PyTPKM7HefB3zd3xr+c+qWipNz99kZd3Y=
+Date: Thu, 24 Sep 2026 16:43:04 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Will Deacon <will@kernel.org>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, maz@kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+	gshan@redhat.com, joey.gouly@arm.com, tabba@google.com,
+	yuzenghui@huawei.com, linux-coco@lists.linux.dev,
+	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
+	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
+	lpieralisi@kernel.org, enju.kohei@fujitsu.com
+Subject: Re: [PATCH v18] arm64: mm: Handle Granule Protection Faults (GPFs)
+Message-ID: <arVFCCykzWJctPXP@arm.com>
+References: <20260913070459.2547407-1-suzuki.poulose@arm.com>
+ <arK3tsTV6EDhI-nt@willie-the-truck>
+ <arOyp8WUrYBAjrGH@arm.com>
+ <arP0IF0MjFUv36AP@willie-the-truck>
+ <49dcab27-1d03-4df2-b7cb-4df4eda6d909@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <49dcab27-1d03-4df2-b7cb-4df4eda6d909@arm.com>
 
-> This helper, vfio_pci_core_mmap_prep_dmabuf(), creates a single-range
-> DMABUF for the purpose of mapping a PCI BAR.  This is used in a future
-> commit by VFIO's ordinary mmap() path.
->=20
-> This function transfers ownership of the VFIO device fd to the
-> DMABUF, which fput()s when it's released.
->=20
-> Refactor the existing vfio_pci_core_feature_dma_buf() to split out
-> export code common to the two paths, VFIO_DEVICE_FEATURE_DMA_BUF and
-> this new VFIO_BAR mmap().
->=20
-> By exchanging the VMA file, we lose the original device path in
-> /proc/<pid>/maps, lsof, etc.  Generate a debug-oriented synthetic
-> 'filename' for BAR mappings based on the BDF, plus resource index.
-> (This does not apply to explicitly-exported DMABUFs which are named by
-> DMA_BUF_SET_NAME.)
->=20
-> Signed-off-by: Matt Evans <matt@ozlabs.org>
+On Wed, Sep 23, 2026 at 05:04:06PM +0100, Suzuki K Poulose wrote:
+> On 23/09/2026 16:45, Will Deacon wrote:
+> > On Wed, Sep 23, 2026 at 12:06:15PM +0100, Catalin Marinas wrote:
+> > > However, I'd still keep part of this patch - the reporting and panic but
+> > > without the actual exception table recovery. There's some value in
+> > > killing user-space and WARN (or pr_ratelimited) without a full panic, it
+> > > helps with debugging. That's what do_bad() via arm64_notify_die() gives
+> > > us currently anyway.
+> > > 
+> > > So maybe we can keep it to just:
+> > > 
+> > > static int do_gpf(unsigned long far, unsigned long esr, struct pt_regs *regs)
+> > > {
+> > > 	if (user_mode(regs)) {
+> > > 		pr_alert_ratelimited("%s[%d]: granule protection fault at 0x%016lx\n",
+> > > 				current->comm, task_pid_nr(current),
+> > > 				untagged_addr(far));
+> > > 		mem_abort_decode(esr);
+> > > 	}
+> > > 
+> > > 	return 1;
+> > > }
+> > > 
+> > > and we get the SIGBUS or panic via do_mem_abort(). No recovery for
+> > > uaccess though, we get the same kernel panic.
+> > 
+> > But how can this ever occur in user mode?
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Only if we have a kernel bug.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260924152159.4970=
-2-1-matt@ozlabs.org?part=3D5
+> > I'm fine with making that part unconditional.
+> 
+> Agree, if the user mode can hit this, a page is mapped in the EL0 and
+> it can as well cause the Kernel to hit a GPF.
+> Also if make the handling unconditional, we end up calling
+> die_kernel_fault() and that does the mem_abort_decode() causing
+> duplicate logs.
 
+If we just return 1 here without anything printed (or rely on do_bad()),
+we don't get any info when the user tripped over such pages. Printing
+without the user_mode() check duplicates the mem_abort_decode() for the
+kernel.
+
+If we want panic always here even if only the user triggered it, we can
+do like do_gpf_ptw() (and keep a single function for both). However,
+die_kernel_fault() is a bit confusing as it prints "kernel access" when
+it was user.
+
+If we go with forced signal for EL0 faults (only helpful if we want to
+continue debugging), I'd keep the warning, maybe as WARN_RATELIMIT() or
+a printk. It would be very similar to our current do_bad() behaviour -
+kernel => panic, user => kill, but with more information when it
+happened in user space.
+
+-- 
+Catalin
