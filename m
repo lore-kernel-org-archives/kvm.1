@@ -1,36 +1,36 @@
 Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010063.outbound.protection.outlook.com [52.101.46.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE4038D01B;
-	Thu, 24 Sep 2026 19:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7A43905E6;
+	Thu, 24 Sep 2026 19:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.63
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790278924; cv=fail; b=dPslObhF9h/sfJcaHzs5Ops0fLiMFlf08C+PYVtT9cfigfjvy01Tzzuhi9XnO271+ThgzygARTk8YhM1jtHGe20GMrn+38XEY98JXiSEdK0p9ISPhoPUj3HhELoObMjfmlZprCwM5zPl/FXm9ZCYmwVqvb0PKHICjHPq1dsjJaI=
+	t=1790278927; cv=fail; b=PG5PfSjR92be2xAFKPmBIP8bi2KVaYUG9+Ecs4rGP210aTFk3h/Ww6VAHOi8dc72ECfFgNU2ym2lqax19KGoCh9vvUVqP2CKIRd/QSxPagjWUTRgsRuKgqbQrQt3Ou7mmWmJbzjxQqTndjyUgeYYr0N11od9KfFGqfuY7bfzyqc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790278924; c=relaxed/simple;
-	bh=EHwSWXYQUK0S1nMCih7PW2Y0H/XaTJzBQMWNSPkZWcM=;
+	s=arc-20240116; t=1790278927; c=relaxed/simple;
+	bh=gPs2zcymHBDwW+WjEK7+zp2nzD0cZ6wqO4cXHyEox+M=;
 	h=Content-Type:Subject:From:To:Cc:In-Reply-To:References:Date:
-	 Message-Id:MIME-Version; b=r7AQh+O7cgq18fvSkDOlo4uQf9cxso341m4znDUa/XqiqLzO9mU4IqsdtN0qOp5zgVrJoLG4pI1+0nyEDdJfjcvblNVwqxduY45yDeVWg+bCk/SClh+b38/Awrj4dvqYW0a4cesoH2VJztIwKYC3CG6OPRE9HF4VT7fU0GVn5Vo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ILMYQfck; arc=fail smtp.client-ip=52.101.46.63
+	 Message-Id:MIME-Version; b=VGLiFyXkU8KbCqFIhopJV+WX3tdA+36BbLLWkTygNMf3cWFuVfB1MRIjRioM5Gw7vy+N8KT1htKh3tUWYX8tEvIzcI2bq1DjLbvojKdp73i1mON6dxTkMRKPDRicQMcKT7B9B7OU2Udl74f0zYLW+yQDmMCfQj2P/cTBdtidt9M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=WDLi+Cfh; arc=fail smtp.client-ip=52.101.46.63
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ILMYQfck"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WDLi+Cfh"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qBqmHEySvhd8W5Nd/P1+SZShZmTjtQVY2Yqr4vBGfhFKglMlInCE1N/Nn+J3rFHry6pN7/anX5Lj97X406moGX8sLTthGUalpbgJhwnV8V8L5gpgpDQGc3jST0HkFrDrjv9IAGJbwKj+Pqj1LOTKcMKv0MVeQZp72wtxMKNI+tLOllxjye7to0DCNdq16tDmZrekiZ7ojXolSSU4JlYLSHOtsjzy/XHx/XvqLZjom6sfSC2wfFqqaMC8hdS3gO3adNy3CxxXiHoJ0Jgdr+pIJWKvXnflIIEmV3ng3tCxYx5N7+XIuGs5E7g1tKrIHlHSydVtjHZyaGsy9g8MJoh+2g==
+ b=n+eZC1yIIxRW0Te67/T/DsjR/G1iDBz0dNh+pr7jdg/siL9UMSzJFE0QqwqvrlSS+8lSN3+tL69rgXDPQBtisfQ2UhIeNgMqb8leXfCQ9lM11mx+UJ8aFgvyKhQz0p0sKmLr7msmZjiDom8IxoKimtyKhUkggyl/nt2TPaPRsMdSWtXIog0VXBS/9Wi+L0xvVH/tZVpBaKEGeU3b6t4Xj03+msMTrqjBrfTEGI+UjmsphMnSEUlXW8xT5GZXlI71BYEDgBSldroJLBwiHkZFIMVY8Q8yKr+t3M0RISCe2WKEmjmt8Ak7BVjvCmOsxIwlDBNx7fiZsu5Kg/VYxla1xw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iRmX0QSvAsLWK19U/nDby/C1fVhn4l/29RzzrX3TevA=;
- b=hm69i2VdOVvASKuSeWS2eaMvdMpDEUXWVbs/KWwsZ+5LgAXz4FVothO0dVva+eI9bpFfeO359aAoMc+YmHlzECJRGtCGCBrh2Tt64dnqroNW8DZiXAQydXCdVYEFG4h+KCG1CIo2rwDZqpw5Lwphm+POihhrvisxRlIxQY1F/hJvWbKPOlNf0ltoU9Hx51DRyNHjk4sgNrEx6VFdeHPl3ztJT2EwIT6vQwCFfLJyHjwlKoB6S66y4wcsyCWm8TRhf7jcxTtZ6d0WGFaTVlLvmJeMOwf//3yvhhZOS6Pc3YO1PKm+gTg4LIYc5udno9ahIKIR/fRqt/lyI6k7ThYHrA==
+ bh=HPLmUzvkbyaI/wqMTt0oPyV7G9cEafoYR7309cUBA3A=;
+ b=ScQwUADOgQ61Ys6JXiTgQab38l8W5emVC9OwWJ3e1/DydcOG/2W2CzOSKJc1hQLaCF2EDSf0J0UBSwRaT1hXE6eSvf6sjJYSk3qDgYBSGPqGCWbf8A/RfjLWViEZ/mhS7i2is4Uos210X2E+bRktZpHCYPlVAej/rRswp2Z60rPqCz27Edy43RKvYQAOIriRZX3ciyabqUHFYL7BKw7ywd9lVaqRkp5wCleeUoIyKgtxV6YZ91la3XFEanUmDtgK4zeud7rCagQMeEfljPPOc+KcLnYqCa4MqSBM4pV1FUB+005lOVCPIoGXgYbP/OA+GVfXTq19Gr7NunVOKdvgiA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iRmX0QSvAsLWK19U/nDby/C1fVhn4l/29RzzrX3TevA=;
- b=ILMYQfckDlFKM7awhLaAL2TJ0KaoXrYP1TYxrUfz7zzslMau2NFIbk/e/SaEi1zPbWqDOc9ir+QlCdT9l5Fanj1mktuTNvC7R6vmd9KTEUYULKA1sowMvnq0qUdZomP/LKwI2kGBZg6ThsN57Zn/zF3b7GgF3cHpb5Dye3ve/AO+tBvl7QeZF1LBj/rG6QCq2GskkiZJxD6RNsRDhV8tbCFg6NSoLqfIIF8GR/NySplOFK28gYbP6DG0yUcyTujhNPWUYszLKNOjidM7Q/bylpOPhQ/5GaLBzvF+w/fpo61CPrnfNnYqGpI//xSToDaoNBWDMjXx7OML404m+b8oxw==
+ bh=HPLmUzvkbyaI/wqMTt0oPyV7G9cEafoYR7309cUBA3A=;
+ b=WDLi+CfhLNg5ccA0UOPwWsiWsrOhFyn3n2MYmenrxbzvKfPlPIhi8dK+Dpp2PspYbmxYTNOrOxIA/TijfoZbg9QbXCjKzbnzo74az2dnl5dJjAma55m3w8Zmk/vBo6Ez2N0sEGv4MZBGtbzWS7e/QYwO9e6CfuZpIRbN8TjWoeEGae0c5QgaRfQA0P1qknf5pID4TIU+XjJqbadWvcDL9629l4VD3+FrHKqMn1Bj03KpQGAJjBQIAl86wuQBKVpE9tIXT5YWdJYr41RWdSIjIZLqRQ8E9B2NhL9hVBtottZv+QfncN+gnYkVKTcOglQY/x+QzAv1I/UFgkXDlgkKUw==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CHBPR12MB731189.namprd12.prod.outlook.com
@@ -44,8 +44,8 @@ Received: from CHBPR12MB731189.namprd12.prod.outlook.com
  19:41:58 +0000
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [RFC PATCH v6 05/11] iommu: Add a helper to validate a vIOMMU
- parent
+Subject: Re: [RFC PATCH v6 09/11] iommufd: Add the vdevice TSM request
+ ioctl
 From: Jason Gunthorpe <jgg@nvidia.com>
 To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 Cc: linux-coco@lists.linux.dev, iommu@lists.linux.dev, 
@@ -59,14 +59,14 @@ Cc: linux-coco@lists.linux.dev, iommu@lists.linux.dev,
  Xu Yilun <yilun.xu@linux.intel.com>, 
  Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>, 
  Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <20260917140159.1163281-6-aneesh.kumar@kernel.org>
+In-Reply-To: <20260917140159.1163281-10-aneesh.kumar@kernel.org>
 References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
- <20260917140159.1163281-6-aneesh.kumar@kernel.org>
+ <20260917140159.1163281-10-aneesh.kumar@kernel.org>
 Date: Thu, 24 Sep 2026 16:41:54 -0300
-Message-Id: <179027891416.104879.10365675178574704349.b4-review@b4>
+Message-Id: <179027891417.104879.282447770434616733.b4-review@b4>
 X-Mailer: b4 0.17-dev
-X-ClientProxiedBy: SJ0PR03CA0072.namprd03.prod.outlook.com
- (2603:10b6:a03:331::17) To CHBPR12MB731189.namprd12.prod.outlook.com
+X-ClientProxiedBy: PH0PR07CA0043.namprd07.prod.outlook.com
+ (2603:10b6:510:e::18) To CHBPR12MB731189.namprd12.prod.outlook.com
  (2603:10b6:610:33d::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -76,78 +76,172 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|CYYPR12MB8854:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4f9a8428-ebfb-42c6-faf3-08df1a73e4e8
+X-MS-Office365-Filtering-Correlation-Id: 30df708c-03ff-4261-a561-08df1a73e4f6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|10067099003|56012099006|11063799006|22082099003|18002099003|4143699003;
+	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|10067099003|56012099006|3023799007|11063799006|22082099003|18002099003|4143699003;
 X-Microsoft-Antispam-Message-Info:
-	DGdZI+8GzEWQhTxpe10TSDp3zC+OO5+kvQrZe1icPxPWfPer6cWKgHDWJfM/lP2iiHSys7jmcVYuyM4ng5WI6rhHeETNCBNLvnXzg9S+T0OApVkN1Y398yeNKivEoLcy+xM9CTa8iPWd11G3u5oU0lveHQ99BAFRWy4VFeJcaLicS+QTHKiQ7iJT57RFl+1ePuBdLkGujNHAkfjX89p8iSdIkjeq/UrGJlUBoJb4vSja3JiwuL7tuSCyDnMDrZBb+8Ce8Sadp5NZnTB27pteEL2tPV0eZxWU3+vJ3AcVNr7RQqAznQ/Kse96ckf1YWyN5oPq2lsWCMZbdgrMC7OIGJFR5iB0RyzDY/mYgfYIiyUMP1vBwUixwvIdGNgW2HrncvDvZalDQw/fqlpTpZlfxDSr4UQHLSAMBiXisB5PL+vD/4nL+PvBQAUHDMDcxgTFlBFukUrY4Z6lP3dIBuAWT51VihOM56vdy7k+duD1LWAZwgAXaZENXaU7gWRL3Jge6U95Q3vynyaR5IPAHA7GEkG1lCH/gVRRal1i6GPB4r1Lge8jEHP6HISgYO9ZYxnXI7DfvDasRBnEQ7L65BgjCEVwAdYR0UrfERIBv6ZCSJqPsh9VvF9qoUTcaIYHMNzYSWacUDBfOii4PHJDcc6U3wzX886Ic+7syoFDlKARUqc=
+	pFa1zVwzGhWpi5k0EFGrP2Tbn5J1+lv6RFP1BqQxurE29YxqHCIlEpW7nmN9bMRu+/0L17VyVWX+glPubqufXgEP6JNGF5NNWfE3HTanAx1FL5e5orCCjFfSfRW04kQlqEY+rFqDwMTiEu4ZIvAwzbSH4drltoUnMGFMvp9BZKBFnpFGE8bcm9ZNipCeGqWNJ8vcm/RrEz8T3wE0TkrXViXEa4Lbx72N4THAWxSwMh54d+WPQB4C9yTZh0+yO5HEY4eWdfFlGWwQAvB8u08sVoTGft0/uEAWBtOi1oQsBLFk4VUnwlBWQ+X5ZKi/gQEErriIfBIPyXpbzsU60ryOScBTfOvUIdpZR+UrGxg9c7Sy+qPNoSxUMFUZ4ruCMuYaNTINBa8iqFyNnFYiZpIiHM2xmUeb8CSJRifGpHnQaE0+jIcIJUXA9VvFzpFqpQyM2lAgonZl7mWk0Z7XoUAFSuQewydF5ME9ooO/+M2Z233J5F09LhAgeaD7GvV36lK1OuWWyhsdNqtQoDYf9ZPRmsmcbkxVVPy/T4+26sOo0ZDwWQYzVVmee50Nn0d9Oa3eE4p/IqZxnAjYyq76n1xDoHL0g6IPoloJhe8+3S7nxXL1GNtvw73WL93wOwxh4fe9uBmaKMCrF1zm7Sd26dq0BowqxBD88Qc4AysNxTa1SMw=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003)(4143699003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(10067099003)(56012099006)(3023799007)(11063799006)(22082099003)(18002099003)(4143699003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MXVJaGZURW50WDdncys4Mk4xS3kydDQ1eVhzak5ITUtYcno2M3ZWd2FEMHpR?=
- =?utf-8?B?ZkxxUEQ2VFFweDJHRVg4Ly9oQ1owWjVOWkhSQkJXU2NIWk5QcTl3NzlZZHhF?=
- =?utf-8?B?S3dmLzF1ajFvUm5YSmdEN1JTcFZsTkc5akFmeDdmWThRYThGQUNYWmZ0dVpy?=
- =?utf-8?B?YmY2ejBvd2ZFTHpGZUdFa012Uk5RNnpPWkdKRTZjWW0zOStwWUZWQ3FoYjAw?=
- =?utf-8?B?WTBQb2g0MzJRWGwvaFNFaDJ1YUluM3R2MHB1S0xzNjdEdXhwTDN5aEJ4ZnVr?=
- =?utf-8?B?ZmNNZjgrZnkwV0ZXU21TdmV2RHZaNWt0WHk0U0c4SHpoR3BzUXc5VGMzeDVV?=
- =?utf-8?B?N1pnZ3pLMndqN3hOb0w1clhUMnBYUU11cUZsU3h3SVhEZ2dvUFFEVDNZSFVF?=
- =?utf-8?B?RXJCVnVsYlluTjdQc1U2NC92NCtISXFrL2dhT0xkaC9VRGxJL3RkeGZqZjVj?=
- =?utf-8?B?RWQ1UGtFZ2J6cThPOTE5MS8wZWp3aDdnZVR2aER2TGUrN1R2d0V6dXR3ZDMx?=
- =?utf-8?B?TGJPQ0MxM3IwUUEzWFBNRWpLTzFZbUJLREpnV2FHSllRaWFVYUZnK25pUW5Y?=
- =?utf-8?B?b3JSSlNxQWNHejZMQnBMT0JDZ04wcjNla252Ym9ZMm5MV2t1dnJ3aVEwQ2JR?=
- =?utf-8?B?UXdtU1UxdVN1cWRYU2d1WDVEenJXTFdwQTFHVkU5UnZYTXk1SkJKRStybkZs?=
- =?utf-8?B?RndYRnY2WkJyTkl3bE1OSkludCsvYUJhNW9NbXJCUlltcThhZ1R2QjRPVGVW?=
- =?utf-8?B?aWwxQTJxUTJiUkUrd3BiZXg1bDVOL2NyOFhvVTBuckpwSDNrTXd4YmxRSlVq?=
- =?utf-8?B?RVFRcXZqMEZOUDNWUGszZm9oYjcrQVBzaGtLazM1Nm9vWnF2MWFuWTRCS2pw?=
- =?utf-8?B?R0h6Q2txQlVlQVU4WUVmZURsMXBXT3NYSG5JdEd4MTA3bkZtNGZ0akl6aWUx?=
- =?utf-8?B?VDN5TmpGRkZLZnZZZ2txRE1mb3VEWnVpMnJHckNhazI3cGlVdFgyYTBYc2w4?=
- =?utf-8?B?dUhoN3lQZ0tTSTgzZ0Y2Q3lqNXdQWEVyMzYrdHdPMjR4Zm5RSmkzMUZkTXhO?=
- =?utf-8?B?My9OZUJUU0NYeXVIY1VxV2hzRkNXOG4yNzFsaFhHWkJEcklhMC9TZEZVdHF2?=
- =?utf-8?B?MHRUYlpzZ2RGdHBib0k4dnMwc2lXV1VtMGJKc0tQeTVOT2d6aXJwd2lzR3VG?=
- =?utf-8?B?V1A1MENNZ0ZIejlJS3FjUSt1YmRQZDIvL2xTT0IrUjVJL1RVOThhdSsxZmJG?=
- =?utf-8?B?ZW5YN2VEcSs4alNZbXdGeUZEZ2FBdnQxcmZzOEViaWVEQTJhWjRnV24rTC8v?=
- =?utf-8?B?VWVoQ3UwdmpERFFQRVdxNkp1M2ZMZ1IzOEV5UWIwK1c5QjRPOTFQKzd6YTBH?=
- =?utf-8?B?TThFWE94V3p2TGJFcUVFZXJXSnE5SndsTHFlSE9EY0N2QXZ2aTk1emxUZzAr?=
- =?utf-8?B?WGt3aG1BaThnNFBzeDB2RTA5WlBUdklqNXlWVGVQYlJQV0VXMnREMW9odW9U?=
- =?utf-8?B?ZmlNMHBCTlZhSndmak9hU0tvbHlZWXNoVVJEWTlPbVBXM3NYSWVzMUpEWjVp?=
- =?utf-8?B?eE9LRFg2czBRM2pYVm5EUzJZcTBlb2hlUFVDQXZ0MThGZTlyWWNGa1FrcS96?=
- =?utf-8?B?YnVVSHFjN0pMN29OZlhmdk40OTVTc1lFelFxQXYzN1RKRGswRjVmanA3T2Uy?=
- =?utf-8?B?SHZSYVBjMUkxZVd1NElUNS9hK2xEMitMSGs0TTM1ODZwWDJ5dmRnSkkzM1Rr?=
- =?utf-8?B?djA4WTE4M0hoYnBUZzZpa3B0RTl1VXZqOFlpSGFpSzA4L3JHWkFtSGNwSk1N?=
- =?utf-8?B?bVkyUitWMXlFMUUvZURpMWp5dmhWOUN2WVB2S21PaHpmWlRKSXpON2cybzV2?=
- =?utf-8?B?cFNsWFNweHVVbXBpWUE3SUIwbndTTTVzKzVzdUUvVklUN1RnZ2l6OG1WNVBi?=
- =?utf-8?B?c2QxL1hHbXIrTzBnbHJ1YTV4TnB5UGxGQVFvblBvK2lPc3dJOUJaRGt3cXZa?=
- =?utf-8?B?MlVWNkVGRXRNMFRlbGlUT1QxUUVaTVg4Rk5waW1NR1RJSTJsQ0MzQU85NHBn?=
- =?utf-8?B?NVNUaytFQzZIUncxYi9pQWVmbW9nYVA3R0dsMUVDSWxFV3dKcUVqMzdpY0x0?=
- =?utf-8?B?TlF5OWRFZWRTdzdjT3JvMjRCVVpibVdreGRhd08zWjJjdHRCTkF4eXRMR2Jr?=
- =?utf-8?B?dUJGcmltdHdpUXB4VjZUUDR6blNRYWNPY1VlR0lPWmVQcVNUNTNWaDFxV1pQ?=
- =?utf-8?B?UWd1U0d2eVV4QmZnUVZZQXBIMEFmaEh5SS9uRmNTQlkreDYwN0lGbys1TUNL?=
- =?utf-8?Q?3zuuEGZBOdmBoO41xY?=
+	=?utf-8?B?MGxOSVF6WGg5VXYzK2NmelZKUE9Vb2lpUjJrU2txT0pEUXp4RFF6UGpLTWVG?=
+ =?utf-8?B?Z1p6Y2htMEVEZ0ZvMHlvMlhpK1VDQWR6KzBkUFg2aGVodHVURjFreHdES2RU?=
+ =?utf-8?B?SmpSbW1RcEJMd0ZGVmtHcjFrNVE5d3JJNlhHVzdSZThkeThaa255OXByMDQv?=
+ =?utf-8?B?TXJ2LzlrVnZ0M1ptcVVvM3Yva3RJaXpuRHRrWGs3VXg2MzdTTTFGMGpJSWFT?=
+ =?utf-8?B?WXh1OFRHeCtlNWYrZk9BZnZnVnM1c0tRSkJNOHF0bnk3UWNadlVFa1pZUllX?=
+ =?utf-8?B?YmdoZFZVak5HS04yRk9hVFUvUUI1NnhHUTBpZ1ZzQUVhNWIvVVhKKzA5UlN0?=
+ =?utf-8?B?N2w3QmptRFZwMzVJVmpGZEVpVTJGR1llTElRakRHbGFLZnZHVDhCZDRpSmdX?=
+ =?utf-8?B?Y0RIcTZqb0RYRzB4TUZtVnhyOXlrYXR5Z1A5S3FCZTFaNUdKR2JVQVdhdTBw?=
+ =?utf-8?B?TUNaeFoyazZTaitFMnRjbFBnRitCSGVCVDV1SDJjZjYzN3lSSnZiWjdsUldh?=
+ =?utf-8?B?UnVJemN0anlaZ1dKd3FleDZDbzF6Wmg0eGN6aFhaRG54dXN4d1NMTEV6OHoz?=
+ =?utf-8?B?S0tMRnY1aXJ1VDMzZ0hQaTdKajJNeTlxWnJDa2lQZlZSZUdmZlpwMGFnUkt2?=
+ =?utf-8?B?Ry9LNE93SUt6RFd0S0g4TyszenkyNVpaUkhSb0tycjk4WEhhazBtTzBwZG5C?=
+ =?utf-8?B?bmV1WDhxN09GbmVSY210ZVlBczdNaVJ1aHUrNHlCSFNGMWNoeDRBVm4zMzNm?=
+ =?utf-8?B?UUQ0a3BwOFVadkdhc29qVG82blo1RDRGazNKbUVPU2RRMUNiSTlmVVpmbHcy?=
+ =?utf-8?B?eVkrRkczeDJEQVJwVnRFS2J2c1ByZ21WVHJTTjlZUVoyQk5ybnJEb0ZNMG40?=
+ =?utf-8?B?ZDM2RS9Jd3lVOFo5REFxelNMdWdjQU5MbzBBMXZDVEtCSlViRXRocDZtdWNl?=
+ =?utf-8?B?NVJVY0JkaFVtOU5CR3V3K0c1ZndKak5jYjZKb3VZZnhiRnFaUUdxQ09sZTNh?=
+ =?utf-8?B?TFcxQWpqRTFGeUc3cmRSSVU3UmY2ZTlIRThXT29QMHhkTlhsY1V6MHRJd0hj?=
+ =?utf-8?B?dUk4UVA4QWNydm02VnhWeWNFUHUya0xXaDBOemVwZzRlL3h6b0JDRUh3TWpv?=
+ =?utf-8?B?b2FZWFRNUi8xdFdRNnAxeElwcCsxSHd1MjdZenh3cnJiOTg2TjFBYnpHZ0Zl?=
+ =?utf-8?B?T1p5amVScE5GRk03aGlUQmJQb3d6RHV1S0Vuc2FNUFhJQllHSzdlZmVBT3No?=
+ =?utf-8?B?SHlJN0Y2RXFuc2VZYXhxY1pNaWx2eTlTY2xzdWdNNkVCM05jdGg4TGUxKzl5?=
+ =?utf-8?B?TkdUZkZSOHh1VEN6S3ZRNGd0d0pacU1DRkxpTWdqQVRiendCeWZ4RDJLeHhO?=
+ =?utf-8?B?NzFXVW9YYzhzb255M2Q3TFZxTm9Ma0dmcWEwa1lSOW9EcjlINkRtc05qL1po?=
+ =?utf-8?B?RkZSUFpPVTFTVG5OZVdIU04rNCtoWC9ramdzMSthZGJreDdVc0hmNjZ3UktD?=
+ =?utf-8?B?aGF4SzhGZVd5bHM2aHNzVE5KWm5rVWFQVzFDeFhnZE1CSWRiL3ZURHNyR3pC?=
+ =?utf-8?B?SXdxeU8wLzhIajNDTzlUdEJuZUNaZ3NYd213L2lISGUxU3lWd0tvSGRncStT?=
+ =?utf-8?B?NGpPSVI1cHJtdTVTcWRod1d2TnFaYWFTYm51TGt1Y1ZtY1JmRmUwcnBSeXNm?=
+ =?utf-8?B?NDNiMDk2eFJXTldNTXEybGtkNG1YRGpPZnd4VU0xY1dWZ01mc2NMMTVPMUh5?=
+ =?utf-8?B?bVgvb1RvQkVPRndSck9qQ3JpQ1cvcmcxTFRKdE1aMUpZT0lHcE1yWElqb3Ax?=
+ =?utf-8?B?Q0hwalN6YjYyQXI3Wk1sUjFERWI0b1N5UVczbEZnNHI4T2NyRm1VMlJZV1dT?=
+ =?utf-8?B?K3F4UFVRWnhFNXJqdVJLSHJnYlBnSHJwOVBuM0dKNms1bXptb1RDMkdmTEF3?=
+ =?utf-8?B?bGZLaDl5VzBXcG1nbytRbXlGL0ZXdWRsdlVDbWxRUDRCVndxc2VsRFdMZFFT?=
+ =?utf-8?B?aG5RdFQ5cFV0bDFEaEFINjZUeW9aNktDQTFmVmdVSDl5akpidWlSMFh0Z1ll?=
+ =?utf-8?B?bU1hSEZCZ3BHcDVURkdROFVQOFMzL2tlNUl6b2FYYWN5L2JRaGRLOEw3Ui9E?=
+ =?utf-8?B?aXg0YTlNaWQ4bUtLdHhFYUN5Z1Z0aGZ1VTVZZ1hYMWVPd25zM20vRTFLbmh5?=
+ =?utf-8?B?WkNNbEVVb1VSRkV0TEF4djQrcXhlSy9JR0VXanBwOVk1Vmd5dEw2cjA5ZWlm?=
+ =?utf-8?B?S2dOdEZEZHU1V0VxVENTZGxwc08zMjFzWHlmU0k1SVFSaFFvMXJkbm5MUFFl?=
+ =?utf-8?Q?jVCwhmiqcfyfBYqlBf?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4f9a8428-ebfb-42c6-faf3-08df1a73e4e8
+X-MS-Exchange-CrossTenant-Network-Message-Id: 30df708c-03ff-4261-a561-08df1a73e4f6
 X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2026 19:41:57.5086
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2026 19:41:57.5887
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /dMoqyjG4gbgdxQhxx4cSbjSeHBSMHgBPH4PCp3hnW3Sb/+SD0P41PUpz41t8mYX
+X-MS-Exchange-CrossTenant-UserPrincipalName: yHBSmPYzWsMQ54QoqZPYmRVkZC+kqPQs5ziM53BXKYte5BKBqlt0O/I067ZBujD8
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8854
 
-> [ ... 18 lines skipped ... ]
-> +int iommu_viommu_validate_parent(struct device *dev,
-> +		enum iommu_viommu_type type, struct iommu_domain *parent_domain)
+> [ ... 95 lines skipped ... ]
+> +static bool iommufd_vdevice_tsm_req_arch_valid(u32 tvm_arch)
 > +{
+> +	switch (tvm_arch) {
+> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_CCA:
+> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_SEV:
+> +	case IOMMU_VDEVICE_TSM_TVM_ARCH_TDX:
+> +		return true;
+> +	default:
+> +		return false;
+> +	}
+> +}
 
-I didn't see anything that calls this? I can't imagine what it would
-be needed for?
+Generally speaking we should not do things like this, the viommu
+object should declare what it supports if we want to have validation
+on the iommufd side.
 
-The TSM viommu should use a NULL parent domain, it doesn't have an
-iommufd managed S2.
+> [ ... 140 lines skipped ... ]
+> +#ifdef CONFIG_TSM
+> +/**
+> + * struct tsm_guest_req_info - parameters for a guest-initiated TSM request
+> + * @op: operation for the guest-initiated request
+> + * @tvm_arch: guest TVM architecture
+> + * @req: request data buffer filled by guest
+> + * @req_len: the size of @req filled by guest
+> + * @resp: response data buffer filled by host
+> + * @resp_len: the size of @resp buffer filled by guest
+> + */
+> +struct tsm_guest_req_info {
+> +	enum iommu_vdevice_tsm_guest_req_op op;
+> +	enum iommu_vdevice_tsm_guest_tvm_arch tvm_arch;
+> +	sockptr_t req;
+> +	size_t req_len;
+> +	sockptr_t resp;
+> +	size_t resp_len;
+> +};
+
+Why is this struct in tsm land?
+
+I'm not seeing why the iommufd interface should be locked to tsm, as I
+said other viommus need this kind of command channel too. Can't we
+have a general one?
+
+Why would it ever not be tied to userspace pointers? I don't want
+an in kernel user ever using this kind of struct?
+
+> [ ... 34 lines skipped ... ]
+> +/**
+> + * enum iommu_vdevice_tsm_guest_req_op - operation for guest TSM requests
+> + * @TSM_REQ_VALIDATE_MMIO: Validate MMIO for the TDI
+> + * @TSM_REQ_SET_TDI_STATE: Set TDI state
+> + * @TSM_REQ_SEV_ENABLE_DMA: Enable SEV DMA
+
+That seems wrong.. The hypervisor should not have control over T=1
+DMA.
+
+> + * @TSM_REQ_SEV_DISABLE_DMA: Disable SEV DMA
+> + * @TSM_REQ_READ_OBJECT: Read a TSM object
+> + * @TSM_REQ_REGEN_OBJECT: Regenerate a TSM object
+> + * @TSM_REQ_OBJECT_INFO: Read TSM object information
+> + */
+
+These operations will need alot more commentary. Use kdocs inside the
+enum below to make that easier.
+
+> [ ... 10 lines skipped ... ]
+> +/**
+> + * struct iommu_vdevice_tsm_req - ioctl(IOMMU_VDEVICE_TSM_REQ)
+> + * @size: sizeof(struct iommu_vdevice_tsm_req)
+> + * @vdevice_id: vDevice ID the guest request is for
+> + * @op: One of enum iommu_vdevice_tsm_guest_req_op
+> + * @tvm_arch: One of enum iommu_vdevice_tsm_guest_tvm_arch
+> + * @req_len: Size in bytes of the input payload at @req_uptr
+> + * @resp_len: Size in bytes of the output buffer at @resp_uptr
+> + * @req_uptr: Userspace pointer to the guest-provided request payload
+> + * @resp_uptr: Userspace pointer to the guest response buffer
+> + * @tsm_code: TSM-specific result code returned by the TSM implementation
+> + *
+> + * Forward a TSM request to the TSM bound vDevice. This is intended for
+> + * guest TSM/TDISP message transport where the host kernel only marshals
+> + * bytes between userspace and the TSM implementation.
+> + *
+> + * The request operation is guest initiated. The TSM backend validates
+> + * @tvm_arch against its bound TVM architecture assumptions.
+> + *
+> + * The request payload is read from @req_uptr/@req_len. If a response is
+> + * expected, userspace provides @resp_uptr/@resp_len as writable storage for
+> + * response bytes returned by the TSM path.
+> + *
+> + * The ioctl is only suitable for commands and results that the host kernel
+> + * has no use, the host is only facilitating guest to TSM communication.
+> + */
+> +struct iommu_vdevice_tsm_req {
+> +	__u32 size;
+> +	__u32 vdevice_id;
+> +	__u32 op;
+> +	__u32 tvm_arch;
+> +	__u32 req_len;
+> +	__u32 resp_len;
+> +	__aligned_u64 req_uptr;
+> +	__aligned_u64 resp_uptr;
+> +	__aligned_u64 tsm_code;
+
+out_tsm_code
 
 -- 
 Jason
