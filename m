@@ -1,177 +1,127 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6601044065A
-	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 14:55:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8310486403;
+	Thu, 24 Sep 2026 15:10:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790261746; cv=none; b=lgWYPM4090ubmT8axHCdY/lubskTI/Jl3tK+aEHTO9v7l/tXZbGNOdis4ySBV37McyWTFRSfPTFJ1z86/QfajQcog+pwGrBo+sBff7DFWHiozrXKU6zUKDrrqE31w2pkmDkb/uXHZkPXoM+Pqul+NUFLuLlFuHMWJXr6C2uAHW4=
+	t=1790262657; cv=none; b=KbAQCGsUEZrceMGm5tc88IkJwVHAPbPe/LUD3UIlyV4T8l/J4nzta/yEkAhJF8NOMqi7SnWjvKdoubpvl2pQE8UPaXR3w+FJs6zX7azsdo6hU9UID3VYNQKVcGqM461in77EMyWUPncjtOKwFpoB2OF7kLYx+Yi3U4SO7JLc6f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790261746; c=relaxed/simple;
-	bh=b5V5cIZLU8hlEyl9xnRq6vDvMkK3WNR9AD+lAL6zb7o=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OFHq1CCkMGBFSYrQzG31zFqjEECVh73z2oun976nsn1M/BWdpsWsKp40IbiOoYrBtSwj8jfpnl0fNxAl6nkRAvJK9Ve5OtvOK9eLkwhiyqLgy5drKVIpriNhqPbkX1BtUold1vCE5XBdjBKZKqTYGNJ7d4yw71EPXzMiQqa5S0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bxOdxZ0b; arc=none smtp.client-ip=209.85.214.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1790262657; c=relaxed/simple;
+	bh=J4PxJwYUM5sMYfdjBgCo523m5WgcPASuSDSGoxhe1HY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s4uV6WBR0pNOPR93jszm/lzuxZ//WCUwAGLHn7/TCW+2jkWfCqzCfGqKUzL3XVod4KRIToe1XPTG44uWR2BDE7t9kgdF6vjQpBrujyuygOXE6QsZrwZUko787vmhuQQv/D/dd05mYYJ9N/n7tqb4y0YiyGcAu8mhR1p59xN3TSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=evUEc3vH; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bxOdxZ0b"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d94f086fedso22058975ad.1
-        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 07:55:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790261744; x=1790866544; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NJA6+TyaqV1MSLc4kyfe+npiP/DQmyuJ2EVEHCwB3Gc=;
-        b=bxOdxZ0bNqDIjcfJ+O1thU9G4XuwLcnsby+I544PCpChkBYvw7XsiIwjPvOJB9MGKw
-         CSUcaUEnv270/XxLEWbxTZFbE7lkI7QVQuflgcljql+X4xWHUA9nSfQHVhQ51qDUVWSh
-         ivb9qiIF3eGReqaL6HD2EAJEAd8+eahCwj/SITHFL4R4D0bdYLwj9zjSf3TDCOh6fsDS
-         gXL0n3n+9Ljsw5pBwITjxCrgwraKh59kbM0I0UaJzMCfQ9yY0O5+X0D8rRm6s+glqhXG
-         qvUutqXxq612VzvY+cg7LqVrSjd8uhvoAdlB/VaMH8qGpRs1Bgv53Z/vEA0KT8VYX9v3
-         Kvhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790261744; x=1790866544;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NJA6+TyaqV1MSLc4kyfe+npiP/DQmyuJ2EVEHCwB3Gc=;
-        b=Dg23tqtwIZIGXp1kO35G+NNrxVC1vCWip5CQ4eFAOtb4T5p81E8ph2qtOz1t8Ps6AB
-         YMkl2uQb8mVZicMoL8qITPyJ7CKgeD3tZiQqNFZYaZ/sB6aU//42kPUKvelIkcN/MlOX
-         gcPT5A5Mt3jkECaS+itWGP+LcCbC72A7fB3Qa9sBky2qp0kT4uX+B3/jwaYlf4MbOz0L
-         FrMhbdplzKnD4I34vmeVyHAy9cNJD2RW4/uuHnkmn6/rMQ1QE92EBUKhdgZq4D4jXO7p
-         fExiPH0S8TFv/HP/Q+LwYXrRZLgLg0Ig+s0ZA+v8q1Xl58JbjdevPQDxYtaKzf2rhHCz
-         mxuA==
-X-Forwarded-Encrypted: i=1; AKwUvBwUI7vOLnfKf1Dw7hHr1EYsFIIeE65dGqrh8SruD2hcVJkP4C57g81KwQCdgxIZkA4VEYY=@vger.kernel.org
-X-Gm-Message-State: AFuF++ko7RGey2UvFctWhXmZdmQNc6zpeO8vib5tKsFGeCRt0bObYDXu
-	bCo+mJepRhFzv9HBgkfIsBnachq1fW1e0veNReSHwXgLRNmT1pW+hl54jfJODcCTFIjr0lpXJPo
-	C1rlX9Q==
-X-Received: from plqu20.prod.google.com ([2002:a17:902:a614:b0:2dd:c066:f654])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3804:b0:2dd:c100:424a
- with SMTP id d9443c01a7336-2df7e247c77mr22889315ad.46.1790261743478; Thu, 24
- Sep 2026 07:55:43 -0700 (PDT)
-Date: Thu, 24 Sep 2026 07:55:42 -0700
-In-Reply-To: <20260924080648.51014-1-zhoujinmeng@bytedance.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="evUEc3vH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790262655; x=1821798655;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=J4PxJwYUM5sMYfdjBgCo523m5WgcPASuSDSGoxhe1HY=;
+  b=evUEc3vHTwwJk2u0LZwBRGHT1Pjt256BMk4f0fomvqfUBKe8cxmnNqOv
+   zwcR34+62kk0JtCk4VwsBKvIzFO8emnTi5OAVx70aFZ5rZDRbCr0Lo3kC
+   i8uMocfFv3NcWclT3yC0V6OCYzDf6BkDBRrJRWmRYMSxe6q5cjp9KLqUA
+   WdG1LWlwXQst2Gg7nib81yYEFvXT+v/afztvywXuAH2EmbvzQZ+GxcVEp
+   IydYUeqgrVeduHAVvQHZSmOQl46WHQVwYDwxFaPqeGjI0Oui6rmSRxNMX
+   ldIrkJJnmj2ndYE5mcKLH068CQ3utYbhoFyKoSGG+1j605C42Qy4Iqj97
+   A==;
+X-CSE-ConnectionGUID: IhnBU3gSTYS7PZEfA2YOGg==
+X-CSE-MsgGUID: zPhxQ6GTQB6xJuGbQZfymw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11915"; a="116562128"
+X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
+   d="scan'208";a="116562128"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 08:10:44 -0700
+X-CSE-ConnectionGUID: uPsVsKU0STuuqSjjvzZ6ew==
+X-CSE-MsgGUID: hNBp8MSmRou0dNPoNn1JgA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
+   d="scan'208";a="273622964"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 08:10:42 -0700
+Message-ID: <b4111d9e-197d-4d94-a87f-676ca91b0646@linux.intel.com>
+Date: Thu, 24 Sep 2026 23:10:39 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260924080648.51014-1-zhoujinmeng@bytedance.com>
-Message-ID: <arU57oqykUfeKqv2@google.com>
-Subject: Re: [PATCH] KVM: x86: Wake blocked vCPUs before offlining a CPU
-From: Sean Christopherson <seanjc@google.com>
-To: Jinmeng Zhou <jinmengzhou22@gmail.com>
-Cc: pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, hpa@zytor.com, feng.wu@intel.com, x86@kernel.org, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Jinmeng Zhou <zhoujinmeng@bytedance.com>, Guixiong Wei <weiguixiong@bytedance.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/4] KVM: TDX: Track configurable CPUID bits allowed by
+ KVM
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, seanjc@google.com,
+ pbonzini@redhat.com, dave.hansen@linux.intel.com, andrew.cooper3@citrix.com,
+ nik.borisov@suse.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+ chao.gao@intel.com, tony.lindgren@linux.intel.com, kishen.maloor@intel.com,
+ dedekind1@gmail.com
+References: <20260917072548.2314491-1-binbin.wu@linux.intel.com>
+ <20260917072548.2314491-2-binbin.wu@linux.intel.com>
+ <39047bbc-757d-4131-a25c-5a7743fd591a@intel.com>
+ <062f5365-7eb5-4e04-9c84-f5ecd566f019@linux.intel.com>
+ <eca53031-fd47-4471-9d05-d73295a0f57e@intel.com>
+ <8bcba51e-2a3b-44b8-89cd-aebfd1e50cfd@linux.intel.com>
+ <3278bae0-1a30-478f-8488-c762ac0246fa@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <3278bae0-1a30-478f-8488-c762ac0246fa@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 24, 2026, Jinmeng Zhou wrote:
-> Posted-interrupt wakeup state is tied to the physical CPU on which a vCPU
-> blocks. CPU hotplug migrates sleeping tasks before KVM's CPU offline
-> callback, but the vCPU remains on the old CPU's wakeup list and its posted
-> interrupt descriptor still targets the old physical APIC.
+On 9/24/2026 9:55 PM, Xiaoyao Li wrote:
+> On 9/24/2026 7:41 PM, Binbin Wu wrote:
+> ...
+>>>>> As for "features forced to zero when #VE is reduced", do you mean when TDX
+>>>>> module supports "#VE reduction" feature, the features becomes fixed0? or when
+>>>>> guest enables "reduce #VE", the guest see a 0 value even though the feature is
+>>>>> still configurable to host userspace and host userspace configure it to 1?
+>>>>
+>>>>
+>>>> #VE is reduced means the guest reduced the related #VE, i.e. TDCS.TD_CTRL.REDUCE_VE
+>>>> is 1 and the related bit in TDCS.FEATURE_PARAVIRT_CTRL is 0.
+>>>
+>>> I think "features forced to zero when #VE is reduced" doesn't matter at all
+>>> here.
+>>
+>> I think it still matters.
+>>
+>> If there is a feature that is virtualized by the TDX module itself, but KVM doesn't
+>> support it for non-TDX VMs, I think it should be allowed.
+>>
+>> These features can't be added to the allow list because neither TDX module nor
+>> KVM do the virtualization for them.
 > 
-> If a device posts an interrupt after the old CPU becomes unavailable, the
-> wakeup notification cannot make the blocked vCPU runnable. The vCPU cannot
-> repair the stale notification destination because that happens only after
-> the vCPU is scheduled back in.
+> ... <snip>
+>>> I think all the bits that are directly configurable but out of kvm_cpu_caps[]
+>>> and not supported by KVM fall into the last category. You can just list all of
+>>> them instead of my "for example".
+>>
+>> As I mentioned above, if there is a feature that is virtualized by the TDX module itself,
+>> but KVM doesn't support it for non-TDX VMs, it should be allowed. Although I don't have
+>> a concrete example. I think we still need to mention #VE reduction to some degree, but
+>> let me see how to simplify the description.
 > 
-> Add an architecture hook to KVM's CPU offline path and a corresponding
-> optional x86 vendor callback. After CPUHP_AP_SCHED_WAIT_EMPTY has migrated
-> tasks away from the dying CPU, have VMX set KVM_REQ_UNBLOCK and wake every
-> vCPU on that CPU's posted-interrupt wakeup list. The vCPUs then unblock on
-> online CPUs and the existing load path rebuilds their wakeup-list and
-> posted-interrupt destination state.
+> (This reply only concentrates on the discussion of "if there is a feature that
+> is virtualized by the TDX module itself")
 > 
-> Fixes: bf9f6ac8d749 ("KVM: Update Posted-Interrupts Descriptor when vCPU is blocked")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jinmeng Zhou <zhoujinmeng@bytedance.com>
-> Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
+> If you are talking about the features related to #VE, I think there is no.
+> Because if TDX module itself can virtualize the feature, then it shouldn't be
+> #VE at all. #VE means it needs para-virt support from host VMM.
 
-SoB chain is wrong.  Whoever sends the patch needs to come last.  And presumably
-there's a missing "Co-developed-by: Guixiong Wei <weiguixiong@bytedance.com>".
-The patch also needs a "From: Jinmeng Zhou <zhoujinmeng@bytedance.com>" since
-you're using a different address to send the email.
+I was thinking a hypothetical scenario, but this #VE reduction thing is already
+complicated enough, I shouldn't not muddy the waters with a hypothetical scenario.
 
-> diff --git a/arch/x86/kvm/vmx/posted_intr.c b/arch/x86/kvm/vmx/posted_intr.c
-> index 4a6d9a17da238..2d6cca1606bd1 100644
-> --- a/arch/x86/kvm/vmx/posted_intr.c
-> +++ b/arch/x86/kvm/vmx/posted_intr.c
-> @@ -266,6 +266,29 @@ void pi_wakeup_handler(void)
->  	raw_spin_unlock(spinlock);
->  }
->  
-> +void pi_wakeup_cpu_offline(unsigned int cpu)
-> +{
-> +	struct list_head *wakeup_list = &per_cpu(wakeup_vcpus_on_cpu, cpu);
-> +	raw_spinlock_t *spinlock = &per_cpu(wakeup_vcpus_on_cpu_lock, cpu);
-> +	struct vcpu_vt *vt;
-> +	unsigned long flags;
-> +
-> +	/*
-> +	 * CPUHP_AP_SCHED_WAIT_EMPTY has already migrated tasks away from the
+Anyway, I will try to simplify the commit message without mentioning #VE reduction.
 
-IIUC, CPUHP_AP_SCHED_WAIT_EMPTY just waits for task migrations to complete,
-CPUHP_AP_ACTIVE => sched_cpu_deactivate() is what actually initiates the migration.
-That matters because I think it means we can repurpose CPUHP_AP_X86_KVM_CLK_ONLINE.
+> 
+> If you are talking about the features unrelated to #VE. I think it's just the
+> case I argued for in previous v3, that we can support a feature for TDX first
+> before non-TDX VMs. I think we all agreed that such case can happen and we
+> decided to support such case when there is a real case.
 
-> +	 * dying CPU.  Force blocked vCPUs to leave the block loop so that their
-> +	 * PI wakeup state is rebuilt on an online CPU before the old notification
-> +	 * destination becomes unreachable.
-> +	 */
-> +	raw_spin_lock_irqsave(spinlock, flags);
-> +	list_for_each_entry(vt, wakeup_list, pi_wakeup_list) {
-> +		struct kvm_vcpu *vcpu = vt_to_vcpu(vt);
-> +
-> +		kvm_make_request(KVM_REQ_UNBLOCK, vcpu);
-
-Hrm, KVM_REQ_UNBLOCK is going to cause spurious wakeups for the vCPU.  That isn't
-the end of the world, but it's definitely undesirable, especially since these
-flows are shared with SUSPEND+RESUME.
-
-If we attach to CPUHP_AP_X86_KVM_CLK_ONLINE, can we do a bare __kvm_vcpu_wake_up(),
-so that the task (temporarily) wakes up and gets migrated to a new pCPU before this
-pCPU goes down?
-
-> +		kvm_vcpu_wake_up(vcpu);
-> +	}
-> +	raw_spin_unlock_irqrestore(spinlock, flags);
-> +}
-> +
->  void __init pi_init_cpu(int cpu)
->  {
->  	INIT_LIST_HEAD(&per_cpu(wakeup_vcpus_on_cpu, cpu));
-> diff --git a/arch/x86/kvm/vmx/posted_intr.h b/arch/x86/kvm/vmx/posted_intr.h
-> index a4af39948cf04..41414c583a063 100644
-> --- a/arch/x86/kvm/vmx/posted_intr.h
-> +++ b/arch/x86/kvm/vmx/posted_intr.h
-> @@ -11,6 +11,7 @@
->  void vmx_vcpu_pi_load(struct kvm_vcpu *vcpu, int cpu);
->  void vmx_vcpu_pi_put(struct kvm_vcpu *vcpu);
->  void pi_wakeup_handler(void);
-> +void pi_wakeup_cpu_offline(unsigned int cpu);
->  void __init pi_init_cpu(int cpu);
->  void pi_apicv_pre_state_restore(struct kvm_vcpu *vcpu);
->  bool pi_has_pending_interrupt(struct kvm_vcpu *vcpu);
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 79468ddfe4736..ea0ded5d64509 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -9820,6 +9820,11 @@ void kvm_arch_disable_virtualization_cpu(void)
->  		__module_get(THIS_MODULE);
->  }
->  
-> +void kvm_arch_prepare_cpu_offline(unsigned int cpu)
-
-I don't love adding an arch hook for this, because CPUHP_AP_KVM_ONLINE is tied to
-KVM_GENERIC_HARDWARE_ENABLING=y.  I think I'd rather turn CPUHP_AP_X86_KVM_CLK_ONLINE
-into a slightly more generic CPUHP_AP_X86_KVM_ONLINE
-
-> +{
-> +	kvm_x86_call(prepare_cpu_offline)(cpu);
-
-My vote for the names would just be "cpu_offline", i.e. no "prepare".
+Yep.
