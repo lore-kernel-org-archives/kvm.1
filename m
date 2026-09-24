@@ -1,21 +1,22 @@
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130743DDB04
-	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 03:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F3B3CF032
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 03:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790221208; cv=none; b=V3yfV8rFwFZwj3CwWpAZ8h97kYbGXEVSLwZTroVAZKXY6XsH5ggoIHznEZsL494/YJAWREKjVjy5t7Co1hl+kvsNSLSnM1no1d7ICrN3CGSAGxkXgwmWuGWD5cdCQ3YV14u77ilgqKfKtzMxUFM1w7oHxStvLPKyXzWAKl0XfJU=
+	t=1790221208; cv=none; b=XheIiF8oGtIplCdqSPjRxgAd/5ucUo9KoS3UImJN/gKzX2lrLPOhLbkSPBy7ib6RVLkpHmNIM5QHr9ZsZDG9Jmt3p2SDRvG57LPJY9EEcBPSK/5IGjHq4mglSidsPDUCvapkCGXs7JXtFwXPNgFpay10KsbQISko/tNqiI/lRJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790221208; c=relaxed/simple;
-	bh=KE3peNXmwpNk89q/SFifyqAdPH7STLkje8RWX2IaelA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ljINLAOzCnOiWKo3Ezf7amHeegXs44IujgUIUc5jPYInWfZxR2a296IeLozO74ugC9uxvEHmKpd2Fs+IN0E4r8D/iO/OwymstCrEVNey2LWDXbWddWeXZt8pFvtjq2EBvGPa37V5TlxQqAsrr9tlZb8DiwMWXYo6oYThfyzvWUc=
+	bh=ipEoCe62kAnNo/mkuL/5ZJJeJWni8j5pEIBr3EvPr6E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=F3Vhki9Ly/MmqpUsBpEoUwYlAB0MQ9f+Ibf67jvLyu9ngYYl5eZMdx7HzcQ0LlCWGmNaS4isQYQayrrw6cg881NhtONpbzsLXowC0y/7VQEgK9pGGZ20MkUAz/OnB/snkC8KV9VIkH3DLOtgS3OhbM7hdDb1O8Uy4xSlZGTwc9I=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from localhost (unknown [122.194.100.201])
-	by APP-01 (Coremail) with SMTP id qwCowAAH3fCFm7Rq4E7JCA--.41214S2;
-	Thu, 24 Sep 2026 11:39:49 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowAA3D_OGm7Rq707JCA--.1196S2;
+	Thu, 24 Sep 2026 11:39:50 +0800 (CST)
 From: Xiang W <wangxiang@iscas.ac.cn>
 To: kvm@vger.kernel.org,
 	kvm-riscv@lists.infradead.org
@@ -23,10 +24,12 @@ Cc: andrew.jones@linux.dev,
 	pbonzini@redhat.com,
 	thuth@redhat.com,
 	Xiang W <wangxiang@iscas.ac.cn>
-Subject: [kvm-unit-tests PATCH 0/7] riscv: ACPI boot and BRS-I SBI tests
-Date: Thu, 24 Sep 2026 11:39:38 +0800
-Message-ID: <20260924033945.176581-1-wangxiang@iscas.ac.cn>
+Subject: [kvm-unit-tests PATCH 1/7] riscv: Initialize the ACPI RSDP from the EFI system table
+Date: Thu, 24 Sep 2026 11:39:39 +0800
+Message-ID: <20260924033945.176581-2-wangxiang@iscas.ac.cn>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260924033945.176581-1-wangxiang@iscas.ac.cn>
+References: <20260924033945.176581-1-wangxiang@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -34,113 +37,89 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAAH3fCFm7Rq4E7JCA--.41214S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxAF15Kw18KF4DCr1xWrW8Xrb_yoW5Aw17pa
-	n0kFWYyr98GF93Jw4fZ3Wvkry3Xr1rua13tr4xJr1UA3y7GrWUXFnrtw4UtF9xXFs3X3W2
-	9a1Y9F1rCr1DGw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvm14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+X-CM-TRANSID:qwCowAA3D_OGm7Rq707JCA--.1196S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7uFy3Ar45Wr47Jr4fKFyUKFg_yoW8CFyUpa
+	yYyFW5GrW8GrWxJ3sayr1jk343Ar4SgFy7J397Aan8Aa15ZrWDZF1kta4avF13XFyrta1Y
+	qan29ryrWan0y3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvl14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
 	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
 	JVWxJr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26r
 	xl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
-	6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
+	6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
 	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v2
 	6r126r1DMxkIecxEwVAFwVW8GwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJV
 	W8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF
 	1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6x
-	IIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvE
-	x4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnU
-	UI43ZEXa7VUUpBT5UUUUU==
+	IIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvE
+	x4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvj
+	DU0xZFpf9x0JUIPfdUUUUU=
 X-CM-SenderInfo: pzdqw5pldqwq5lvft2wodfhubq/
 
-Hi,
+On EFI boots without a DT, ACPI table lookup needs a valid RSDP.
+Fetch the ACPI 2.0 table from the EFI configuration table and
+register it with set_efi_rsdp() before cpu_init() and
+timer_get_frequency().
 
-This series lets RISC-V kvm-unit-tests boot on BRS-I platforms that
-describe the system with UEFI + ACPI instead of a device tree, and adds
-a first unit test for the SBI rules in the RISC-V Boot and Runtime
-Services specification [1].
+The RSDP lives in EFI_ACPI_RECLAIM_MEMORY, which the RISC-V
+allocator does not reuse, so there is no need to copy it aside.
 
-The RISC-V port currently assumes a DT for CPU bring-up, timer
-frequency, ISA-string parsing and console setup. BRS-I firmware
-typically does not provide a usable DT, and often has no MMIO UART
-either. Without these changes the existing tests abort in setup before
-they can exercise SBI.
+Signed-off-by: Xiang W <wangxiang@iscas.ac.cn>
+---
+ lib/riscv/setup.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-Patches 1-4 teach the RISC-V library to initialize from ACPI when a DT
-is absent:
-
-  - locate the ACPI 2.0 RSDP via the EFI configuration table
-  - parse MADT RINTC entries for hart / CPU bring-up
-  - read the timebase frequency from RHCT
-  - parse the ISA string from RHCT Hart Info nodes (match by ACPI UID)
-
-The RSDP is left in EFI_ACPI_RECLAIM_MEMORY; the RISC-V allocator does
-not reuse that region, so the table is not copied aside.
-
-Patch 5 splits CONFIG_SBI_CONSOLE out of the UART driver. io_init()
-becomes a no-op and puts() issues SBI DBCN CONSOLE_WRITE directly, so
-EFI/ACPI guests no longer depend on a described MMIO UART to print.
-
-Patch 6 drops the EFI runner's EFI_USE_ACPI=y early exit. The runner
-already omits -machine acpi=off in that case; QEMU virt defaults to
-ACPI enabled.
-
-Patch 7 adds riscv/riscv-brs.c for:
-
-  SBI_010  spec version >= 2.0
-  SBI_020  HSM required
-  SBI_030  TIME required unless Sstc
-  SBI_040  IPI required unless Ssaia
-  SBI_050  RFENCE required unless Ssaia
-  SBI_060  PMU required unless Smcsrind + Sscsrind + Smcdeleg + Ssccfg
-  SBI_070  DBCN required when ACPI SPCR Interface Type is 0x15
-
-The new test is in group "riscv-brs nodefault", so it is not part of
-the default run_tests.sh pass. DT-only QEMU virt is unchanged.
-
-Based on kvm-unit-tests master (5a221342).
-
-[1] https://github.com/riscv-non-isa/riscv-brs
-
-Testing
-=======
-Build:
-
-  ./configure --arch=riscv64 \
-              --cross-prefix=riscv64-linux-gnu- \
-              --console=sbi --enable-efi && make
-
-EFI + ACPI (BRS-I style):
-
-  EFI_USE_ACPI=y EFI_UEFI=/path/to/RISCV_VIRT_CODE.fd \
-    ./riscv/efi/run riscv/riscv-brs.efi
-
-Please review.
-
-Xiang W (7):
-  riscv: Initialize the ACPI RSDP from the EFI system table
-  riscv: Add ACPI support for CPU initialization
-  riscv: Add ACPI support for timer frequency discovery
-  riscv: Add ACPI support for ISA string discovery
-  riscv: Decouple SBI console from UART init
-  riscv: efi: Allow ACPI boots
-  riscv: Add BRS SBI requirement tests
-
- lib/acpi.h                |  67 ++++++++++++++-
- lib/riscv/asm/isa.h       |   5 ++
- lib/riscv/asm/processor.h |   1 +
- lib/riscv/asm/sbi.h       |   2 +
- lib/riscv/io.c            |  50 +++++------
- lib/riscv/isa.c           |  82 ++++++++++++++++--
- lib/riscv/setup.c         |  55 ++++++++++++
- lib/riscv/timer.c         |  37 ++++++---
- riscv/Makefile            |   1 +
- riscv/efi/run             |   5 --
- riscv/riscv-brs.c         | 171 ++++++++++++++++++++++++++++++++++++++
- riscv/unittests.cfg       |   4 +
- 12 files changed, 424 insertions(+), 56 deletions(-)
- create mode 100644 riscv/riscv-brs.c
-
+diff --git a/lib/riscv/setup.c b/lib/riscv/setup.c
+index a30aa0c4..8c22120d 100644
+--- a/lib/riscv/setup.c
++++ b/lib/riscv/setup.c
+@@ -226,10 +226,31 @@ void setup(const void *fdt, phys_addr_t freemem_start)
+ 
+ #ifdef CONFIG_EFI
+ #include <efi.h>
++#include <acpi.h>
+ 
+ extern unsigned long exception_vectors;
+ extern unsigned long boot_hartid;
+ 
++static efi_status_t setup_rsdp(efi_bootinfo_t *efi_bootinfo __unused)
++{
++	efi_status_t status;
++	struct acpi_table_rsdp *rsdp;
++
++	/*
++	 * RSDP resides in an EFI_ACPI_RECLAIM_MEMORY region, which is not used
++	 * by kvm-unit-tests RISC-V memory allocator. So it is not necessary to
++	 * copy the data structure to another memory region to prevent
++	 * unintentional overwrite.
++	 */
++	status = efi_get_system_config_table(ACPI_20_TABLE_GUID, (void **)&rsdp);
++	if (status != EFI_SUCCESS)
++		return status;
++
++	set_efi_rsdp(rsdp);
++
++	return EFI_SUCCESS;
++}
++
+ static efi_status_t efi_mem_init(efi_bootinfo_t *efi_bootinfo)
+ {
+ 	struct mem_region *freemem_mr = NULL, *code, *data;
+@@ -273,6 +294,14 @@ efi_status_t setup_efi(efi_bootinfo_t *efi_bootinfo)
+ 		return status;
+ 	}
+ 
++	if (!dt_available()) {
++		status = setup_rsdp(efi_bootinfo);
++		if (status != EFI_SUCCESS) {
++			printf("Cannot find RSDP in EFI system table\n");
++			return status;
++		}
++	}
++
+ 	cpu_init();
+ 	timer_get_frequency();
+ 	thread_info_init();
 -- 
 2.47.3
 
