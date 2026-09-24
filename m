@@ -1,196 +1,392 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F91D199947
-	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 00:44:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790210677; cv=fail; b=W3IjWz6SWwuMidWdI+yXmrlt+WgpW4/u52xI8335oJplTWOAg4/yz8ZjoPeScmwz2AurBChBWj/SNGQKgpF/Qj5SngeEDceXfemZl+ZG9lGt/0pdFXC3oNwvYGkQQS/tV3C5Ix/eeaN6z2JuqfCD7WoEUqqeaPvS6qhm5E5r1rs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790210677; c=relaxed/simple;
-	bh=O/7ScXkYfJjA/ZqzXeD39IRlHHo0btpwM1IC/NFfghw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=VdU/jPMwWvTDTUGV3u9a58bXxzbV1H5/8USHzhE+0/YuPSMdoXe8vvQqlr09xgYndGAxYvs9QRJ19TWRL69+ySHnYWaFI5CU/N9vCvhe6ZrRwhUvCQUb5lURSCeKs0uGMFz7fCEfYmvd5G4KlxCnc5XyR7P9yQ0C6xKxBZ/KeX4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jtU0uUjw; arc=fail smtp.client-ip=192.198.163.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5720B2AD2E;
+	Thu, 24 Sep 2026 00:54:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790211261; cv=none; b=ceRUJjPv0U43Hf5aau8irck37dX2VLz55UjrsmQi7ab6ODKQF9aYr1cOdYkLdJ07mp1eHKyOCnckHLHyKm8HHbmi+6/DdMflZGmHpB/g0KvEKsu1fL1yag3a3m8qumrONJ1qBDG5bwuGXXExCKDfOJ2pl5gIeRK+2HI5J4vylik=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790211261; c=relaxed/simple;
+	bh=hj1afspDTZChgEQ+55mfMNH6cKzUiikF8sTCti2+qOI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MzTdtBAJCkkfiJG4HtdQe95DM3et2Rt6MRtugP+ESiq/6eZOGoL2hQTaKYiv6R3tYBTSTJqOcUYOJA6VImvBwE0z2XIXMPKiSkmH8CCDv+I6FbRy4EsgyGUqdn+LsRpHphYKmyV+JcnpybO/I6CTULjCEcDL46lk69oLAU+YB54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fKu5ipBn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jtU0uUjw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790210676; x=1821746676;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=O/7ScXkYfJjA/ZqzXeD39IRlHHo0btpwM1IC/NFfghw=;
-  b=jtU0uUjw9LdrcRk+MhvJVCd9BQY/CYT/UUA5iNgK6IwJYHtOoM3OLTMk
-   0HNVvVf04y/eJmE829bl5+g6YNNBHi0gMMMSrcvC/ch1jm1BeL67rF2ot
-   YxihHZMp7GLW6PGu0L3b3JwOTR/lsL1KKCjRRgw8hBuKmBs73oOyXhEEQ
-   nD756dt4gBVAEmcJhltreBsKwYzW+BY2HGX8p3ohboTjiW61slAFNdCt/
-   DFwIcTXm3aygEviz+pv2gtHLBY08Yq8fFSnJSZDS5oSkrmIMK9iq5CB1C
-   G6L5REzlgOTOCoMz3m9+WwF77wAS9XNNUq0VzdkMTQY3ILn6/eOAduwjF
-   Q==;
-X-CSE-ConnectionGUID: Sw4qTM86RLCvcUPAva8iqw==
-X-CSE-MsgGUID: /9wDnw0GRmWjk3QoOVCIHA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="1463068"
-X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
-   d="scan'208";a="1463068"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa115.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 17:44:35 -0700
-X-CSE-ConnectionGUID: E2gTiDbQSMuTvWRxpyzpmg==
-X-CSE-MsgGUID: sfK3qy8hREew8/47WTFAZg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
-   d="scan'208";a="274028234"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 17:44:35 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 23 Sep 2026 17:44:34 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Wed, 23 Sep 2026 17:44:34 -0700
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.69) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 23 Sep 2026 17:44:34 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RkqrPS6T2345cu+ZtEElGtBgytZa13l1JrruzFer8q3UKmnCm3f+WKUwb6j+So6NH2XPTGD95wNf75oDLtE6RZVr9yKvnpeg92xpBnatet/FteDG6+Ox91CFxh6r1uqOiADtKOgngevHGcddP5A3xGEbgYezlGRoCy6vwDfGFtmbtHpVGq/aVfkXn+W/YSrxY0VZz70bT52lumWnHeTX40oa7mC9DzaDFPOcEuS0e4/Bgj2FxtxFWWH42zWTU9xsWtz5dvqeISeuiH3KwJoQkB8CsoI7uZwESNFwZn8wQqbIZGFdirkUwwtMroMVZxrx4oLaxG4mi6mNfsIu0dXYFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=O/7ScXkYfJjA/ZqzXeD39IRlHHo0btpwM1IC/NFfghw=;
- b=gV/jd+Ya1dzKjSyDk+hLYdBX1uw5aAbiazQ0wr/FZIgYdm3ag2VHFNsO8we3+Ylyyzn3FUdLfKY1NHtlrfjmIaxCotF2OtLatApl77S0sv37NhoWUId7Krg06jqTtAaWMtNgtwBG+F7wJb9voAP8YU3gLrDTIyfn0VSoxtRmmQ590EqBM8cyaXPpwRSjsQcJyZpRtOhGXhj7wav5LmcLQxfVdziBcy96tGNJCHk4bSBbku+USWhkyoXZF2HsKNGSOGgdJUnSn1VGM8iNkCcSCbVt3U2i6rd+gEgjrg6R8O1gVAtgA6xSB6anZBDr0ZQTF5/e3Ti/jXDI0kcmeFux0g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6771.namprd11.prod.outlook.com (2603:10b6:510:1b5::20)
- by SA0PR11MB4541.namprd11.prod.outlook.com (2603:10b6:806:94::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Thu, 24 Sep
- 2026 00:44:26 +0000
-Received: from PH7PR11MB6771.namprd11.prod.outlook.com
- ([fe80::effa:162e:c9c9:a1b4]) by PH7PR11MB6771.namprd11.prod.outlook.com
- ([fe80::effa:162e:c9c9:a1b4%4]) with mapi id 15.21.0451.014; Thu, 24 Sep 2026
- 00:44:26 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "Annapurve, Vishal" <vannapurve@google.com>, "seanjc@google.com"
-	<seanjc@google.com>
-CC: "Xu, Yilun" <yilun.xu@intel.com>, "Reshetova, Elena"
-	<elena.reshetova@intel.com>, "Wu, Binbin" <binbin.wu@intel.com>, "Hansen,
- Dave" <dave.hansen@intel.com>, "kas@kernel.org" <kas@kernel.org>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "Fang, Peter"
-	<peter.fang@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Subject: Re: TDG quote analysis
-Thread-Topic: TDG quote analysis
-Thread-Index: AQHdRXUGnV1D6jtpckytZt9IbBOCMLbRf7KAgAANsICAAAqMAIAAM3uAgAAIGQCAAA/ugIAAEEIAgADUxICAAEy5gIAAHYGAgAAafICAACp6AIAAK0aAgACxHQCAAFN8AIAAN/OAgATPvgCAAAGNgIAB5vGAgAFNq4CAAAQXAIAAB1GA
-Date: Thu, 24 Sep 2026 00:44:26 +0000
-Message-ID: <3ae12b120c7aa2ca56e46bb9a5b2a7b7fc501131.camel@intel.com>
-References: <906d0cb6515b396f4e9d74f1d546c902ea3ce49a.camel@intel.com>
-	 <aqyAED5ZK48eEZtq@google.com>
-	 <56a61983c03806120e607dfd1e1b7c9046c1f54b.camel@intel.com>
-	 <aq048KmPN5WPQ4sQ@google.com>
-	 <7d40bcd97e01390a345ce1dbe26264e7b064a619.camel@intel.com>
-	 <aq2t5wJGLtsltMza@google.com> <arG3KvaVqWCDAyM9@intel.com>
-	 <12541025-6579-4baf-911d-dcf1453b3e27@intel.com>
-	 <CAGtprH8t2OAh59XeWGtBLUX4JXaJm_NDpPE1ZJeGTjppKWrSLA@mail.gmail.com>
-	 <CAGtprH8syQUQf9PjPe8o6rBFSg+01k=Hb4cvvn3TqED3uWb+yQ@mail.gmail.com>
-	 <arRsRkn1V8A3xUE5@google.com>
-In-Reply-To: <arRsRkn1V8A3xUE5@google.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.44.4-0ubuntu2.1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6771:EE_|SA0PR11MB4541:EE_
-x-ms-office365-filtering-correlation-id: a75931d3-0dfc-4ddf-b5fe-08df19d4fc2a
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|10067099003|56012099006|11063799006|4143699003|18002099003|22082099003|38070700021;
-x-microsoft-antispam-message-info: 0XpBQ3OAL1MD5aQ56RIQJcJbffpqzemxiaNdxa71NyWyyN/xXulmKDa7WYW7pJO611LvSm09mxjwfGr/HP8fnhQR6ErsgtrZaASDFOmQZGdVu7gVKsBmLYDuZ/DNh8x5f8RclLPVNMKwTCnxlgSBviq2rqIn7PpPF4Sidx0YlV+roORmuwSeu9DUzjwvlDBp5duau+kLOUcwGesFdErtmKNHBzyraqIrijq6qyhsnlKob5BMKYv5r4M0GqETaWU9QjgHwMrriEwILQtBKywDInhF2J4JSf2K5XE6zeSPMvnQzx89OJncKDA0HnCgUlZXxXTMenVh+9MwXB7GGpvZFKTBzfmjocmRiCKX4WvbL8hOIQtTBn+Mxjb8rPKi6t2AZGli9Id5kAYIH8/x+7zG87FlCjevwY5KbqCqcksqVUxonMpSC7rng02C35agzXN40/9vUlG1Q2234aq6gI8/jR+Eysf616siqbBPOf302GJ07zOMamfx1hCLpwFHSEMJ2XU7YcHaDPMXVGrQSSXHLNxKaOFmgp4fJ16Xw/Z6Lx2/EyX5FR5EH2GVSLV1+yE1+3iVl9XXrRfXuHxcksJFUzrSaSdaYCwtFXaK7/cAdItGzRAHTNF7rVF7cl0S3XIIfAC/sJNvm9N64CZnSbUV+lkVaVjm3S6vbdTk0HfnKKnWJegZuOzOdUGuQt2skuvJLv5PXhetuaJnhFMkS8zGjfwLF5MSwnDDi/VmzsmDeZM=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6771.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(10067099003)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VUJ4cU1jWDd0TmkzL3dsY3hDQkZvamN6TFZQck1rMWRLaGQ4NWlYbFQ4N1dV?=
- =?utf-8?B?RHJkUUEyN1ZvTU9TUEdubkhWbUlUNTFmdDNVSk5jMllMVmNCVnVuYW9TZEF5?=
- =?utf-8?B?RlF2ZlpBTFZMZ2pUb21sUzJVMmxDMno2aUNINEVkWDFBVkJ1THhSSlROaHU1?=
- =?utf-8?B?dkptdFpsNHFKdUpFVWpPdG0zbFd1T21KUlpyOUVVRERzeFRFZDFubHBVSDA0?=
- =?utf-8?B?S0d1aFcwUHE0a0dnOHhOQkcrZWVQbzlEMisybEpTa2hpR0lWSWpPbEtScnpk?=
- =?utf-8?B?dm95RzZ6RzFEZ3JjWXNqUmw5ZnZQcllFTEplMCt6TmkrWXFSQkttV3pBaXdh?=
- =?utf-8?B?amZ6Q1hUR3N5YTlyNE1hMThSTkFtVXp2bTdEeHo4M1J5a3pKRVd2T2NRK3gz?=
- =?utf-8?B?WEFEQ1dOUEgxZC9BYVFwOXo1dkxRYllQSHM2dWlrNGNpNGhHVmF0Mk5EV04z?=
- =?utf-8?B?ZkxZVDBLOFY1UFkwbWcrM2xYNU93QVRoZTBwUnVZYnJBTmZRL09SeXVTNGlN?=
- =?utf-8?B?ZFZvM25HdDZjTFhYRU9VYmk0MHFTaWVGMTlpMDc0RS9zRFowd3cxTjBuakJj?=
- =?utf-8?B?dEQ1SlRwTXptajBVRFdveVl6dFp4Q1RmZDZjVEZORFRTc3hlQiswYWxhWXFR?=
- =?utf-8?B?ek12Qm1xVE5mQzJIMzdDR2JFYU9HamhXN2ZTdzlJc3BJdVljTTlGNEU4L3hJ?=
- =?utf-8?B?NXJuU2lvdTkvQ2E4WDZCMHZIaXMwS1pmQmhVcDc2R0treUZhZ29pcEJKK1RZ?=
- =?utf-8?B?Sm5oS2c5cTRqWUwrR1VtamZwSmE2NThCeHJ0UUkrMXZVNUNRdlhQQUlxWlUr?=
- =?utf-8?B?WTdnbWYvclpDMjdubFVuZzNFS0tvL3lxSmlicGU4Rm5PSTlvRDZVYVFOVDd1?=
- =?utf-8?B?RkhkRWdURDI3NVJJazRzRW9vUlRITngxcldLdmFpQWxONVNiTlgycEg5NVRM?=
- =?utf-8?B?M243V2pzaEdPWWJpTVRqV3hRRDFpbFhqLzVZbDVzb0U4Z2IrenRvanVsSk1F?=
- =?utf-8?B?OThKdDNwQWR5bm11RDVpSmhTNGhCWEhTN0pnZVdpa3VWOFpDV0xrbzdvQjd4?=
- =?utf-8?B?SDlRYlJpRVNTcEFiR0x0SlFpWlI5SWhtSHBZaGRpcEk4dm9ZcmRrWnF4UjJE?=
- =?utf-8?B?Q3JPdS84Kzd4Y2ZBRm1uQVlUQjVFMCtEallSK1JPM1p0RUgwbUpURXhHd3Rx?=
- =?utf-8?B?dHByL042ZkhXbVY5UGswTVFIM2FpTzY5djZvSXIvTUhKbTVNaDUzL0pWMmo0?=
- =?utf-8?B?dmZ5RjhsUHNNblRFZExmTkN2bnYxck0yaFlkS05keEJ3SlNWN3IxWmJJeHBp?=
- =?utf-8?B?T3hEVmVuVmg1L29aazdIaUszWFJEVm9JWjZjZlhJV0N0bG9qTEo1RThvazVa?=
- =?utf-8?B?YlFpV3Z0YXlsZ29vbGxsdmxNQnIwbmxMK01jWG1mbXJtb1k1NVBaTmJsVWdn?=
- =?utf-8?B?ZlVJWndwOTFGUEFLWWR2dklFekIzd0UrWStrcmk1SWExT25hdzd4anZJU2F3?=
- =?utf-8?B?RXRPVnIwTEJKOHl0ME5HSUJYeUtJV1NCUHlVaVpUaGh1clNRQjBxd0tFZmEx?=
- =?utf-8?B?QldiRjZmeUxQV3hKM2M2SHF5a0dBZjJnOXQvS0tma1I3QmMvalczMi9MRXlB?=
- =?utf-8?B?UHFOaVJUZnR4TllSQ3BmeDJTVlhJOWkyM3RpQzBOQ3lnTjlZYi83aHdoTm8w?=
- =?utf-8?B?a3FjaWlHZVNSRDA1aFpicE90NkxxU2xVaWRkTEtrYnYwZ1QzMkI2SDJRQTIv?=
- =?utf-8?B?dHVMbzQwbFhPd2wyeWZLWno0R0VhcGl5WHlkK05BKzk5VnJQTUhKTjNGWHY1?=
- =?utf-8?B?SG1zeEc2SnpaeTg5dTBPbWJqQXhtR2d6djkrVDlGMXl6ZStTb3ZuM0NpdVlF?=
- =?utf-8?B?YjQyOUFBSHZtZjQxT0tONzcxakxpVWM3MTltMFg3cTErSmE1aStJVkc5SXlI?=
- =?utf-8?B?REU3TTVBdGtBQU1YVndPR0ZRUUp4WnQvQVZ5d05hZGNLT0xHSUxRTjFCR044?=
- =?utf-8?B?YUNaYVpWV1pZL0dnY1ozUWhzbFkva1pVQm1XVmJCVkpiMmJIc1VHVkg1NVpq?=
- =?utf-8?B?SkJZbmMxUlZ2WlQwMjJwd0dNOU5LU2RYc0l2K3hFYWFvZm5qSTFqVW1Idm1i?=
- =?utf-8?B?TlRub2xkd0dBcGI3QVZXcGE2UDFZaThqVDR2Vm1nRXBVbGQzVjE5OGJGcFhl?=
- =?utf-8?B?R0lHNG9tbWtpN2tIQUZUZjdNb1U1WkFhWWVzMDg2empqVlZVc0c4YlBITlhX?=
- =?utf-8?B?c1U0cERXUTRaN0F4ZUU5dHZQaFM5MWx3S3h3bVZvTmpQVmRaeFBtbndLbFVh?=
- =?utf-8?B?eXhnQ2FFUFpHZTUrZ1JQclBsR2VNMExMRFp4VzJBcVNuVEsvL01IVkpEYzUz?=
- =?utf-8?Q?CvFR1qGQf53bpvqE=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <DA9BE918A32CEB4B953488E8CCFF1875@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fKu5ipBn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4142D1F000FF;
+	Thu, 24 Sep 2026 00:54:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790211258;
+	bh=5ny6G4QGhCW6cY8aBkrWvz1OpCgET+94cns7jDOrINU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=fKu5ipBn9sKvTREnbqLVb64OCOEHtjiKVFC0DuhKHMUaUGnzJeXcfgDZKgcWvBTUk
+	 w5vKtgg0Ei1axBJwBTf51BT+v3eINiby41XKT8gH6SDsMaBqNzEzOflfhCySKZlNHn
+	 hAv6NV9VkWL1n/Vnlu41mu788iN+r+UBtlP4lKqP6IEbTPtbN/YC014ftwqpmJSAI0
+	 H6qcjiovG2Rvu7jCLCxbOAVfqFySB8Eig/kHB0I16uyIVbfaRPTujyM/Sr8c567sbU
+	 DCyLfhpGdbXyJnHHLt7dITdirUvKOGSLxhrBkwG2FAueHl4VBWwhQyNWYdUtqgG6GO
+	 4EPgkdP3B/vFg==
+Date: Thu, 24 Sep 2026 01:54:09 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Manish Honap <mhonap@nvidia.com>
+Cc: Gregory Price <gourry@gourry.net>, "alex@shazbot.org"
+ <alex@shazbot.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>, Ankit Agrawal
+ <ankita@nvidia.com>, "dave.jiang@intel.com" <dave.jiang@intel.com>,
+ "alejandro.lucero-palau@amd.com" <alejandro.lucero-palau@amd.com>,
+ Srirangan Madhavan <smadhavan@nvidia.com>, "corbet@lwn.net"
+ <corbet@lwn.net>, "skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
+ "dave@stgolabs.net" <dave@stgolabs.net>, "alison.schofield@intel.com"
+ <alison.schofield@intel.com>, "vishal.l.verma@intel.com"
+ <vishal.l.verma@intel.com>, "iweiny@kernel.org" <iweiny@kernel.org>,
+ "ming.li@zohomail.com" <ming.li@zohomail.com>, Yishai Hadas
+ <yishaih@nvidia.com>, Shameer Kolothum Thodi <skolothumtho@nvidia.com>,
+ "kevin.tian@intel.com" <kevin.tian@intel.com>, "bhelgaas@google.com"
+ <bhelgaas@google.com>, "dmatlack@google.com" <dmatlack@google.com>,
+ "kees@kernel.org" <kees@kernel.org>, "gustavoars@kernel.org"
+ <gustavoars@kernel.org>, Neo Jia <cjia@nvidia.com>, Krishnakant Jaju
+ <kjaju@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>, Zhi Wang
+ <zhiw@nvidia.com>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-cxl@vger.kernel.org"
+ <linux-cxl@vger.kernel.org>, "linux-pci@vger.kernel.org"
+ <linux-pci@vger.kernel.org>, "linux-kselftest@vger.kernel.org"
+ <linux-kselftest@vger.kernel.org>, "linux-hardening@vger.kernel.org"
+ <linux-hardening@vger.kernel.org>
+Subject: Re: [PATCH v5 26/27] Documentation: vfio-pci: Document CXL Type-2
+ device passthrough
+Message-ID: <20260924015409.3681ad6d@jic23-hlaptop>
+In-Reply-To: <IA1PR12MB9030771093FA13DCB01C481EBD842@IA1PR12MB9030.namprd12.prod.outlook.com>
+References: <20260916183540.3813685-1-mhonap@nvidia.com>
+	<20260916183540.3813685-27-mhonap@nvidia.com>
+	<aqrl_FyWEBOZundU@gourry-fedora-PF4VCD3F>
+	<IA1PR12MB9030771093FA13DCB01C481EBD842@IA1PR12MB9030.namprd12.prod.outlook.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: wu2eHzdqzhsILpm2MJWE6hRWt0qzVBRasap/YH6iPG1l9A6sON4EPTn3ira0A+qqRY0Eo/5i4WDFOShHnFTO4c+0qMFE8cnSP8SaLPBLoI3AzJcdyUNvwXVSaa9PFQBjpfBP5GqJiCHnRxNU6jwxqxuF8XSel5f2ziBSU/oOn4Eo7PAbPkeywVNArpZEHLxsdPdwCFS0Eiwtb7xsesOCm5xs/r9xgwOkmz2UyvfP6onz7nN30nJGoqOdaBTxDgks83FXCiv/isvOAOBcoPyb0/aXQbPUtpZuB1JRl/gnec5wJNHBuO5j1tQgcfIn+4h04zmoHqwNSSEazftDtlBFgQ==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6771.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a75931d3-0dfc-4ddf-b5fe-08df19d4fc2a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Sep 2026 00:44:26.4180
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: inAOjectjJOQ+JjmGB+IQXbo/Yc+BncFcuuxnd+Wc7YqgXOxOfvVMUW2xtEGVoe2ZzRVw6TRIHHwG/PhVz+JmpbAVI2kFIeZGhV+IdRahok=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4541
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-T24gV2VkLCAyMDI2LTA5LTIzIGF0IDE3OjE4IC0wNzAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
-b3RlOg0KPiBGcm9tIGFuIHVwc3RyZWFtIHBlcnNwZWN0aXZlLCBJIHRoaW5rIHdlIGRvbid0IGNh
-cmU/wqAgT3IgcmF0aGVyLCB3ZSAqc2hvdWxkbid0Kg0KPiBoYXZlIHRvIGNhcmUgYmV5b25kIGxl
-dHRpbmcgdGhlIGFkbWluIGZsaXAgYSBURFggTW9kdWxlIHN3aXRjaC7CoCBJJ20gYS1vayBsZXR0
-aW5nDQo+IGVuZCB1c2VycyBvcHQtaW4gdG8gdWx0cmEtcGFyYW5vaWQgbW9kZSwgd2l0aCBhIHBp
-bGUgb2YgZGlzY2xhaW1lcnMgYXJvdW5kIHRoZQ0KPiBzaG9ydGNvbWluZ3MgYW5kIHRyYWRlb2Zm
-cyBpbnZvbHZlZC7CoCBJLmUuIEkgZG9uJ3QgcmVhbGx5IGNhcmUgaG93IHRoZSBxdW90ZSBpcw0K
-PiBnZW5lcmF0ZWQsIEkganVzdCBkb24ndCB3YW50IHRvIGNhcnJ5IGFueSBrZXJuZWwvS1ZNIGNv
-ZGUgdG8gbWFrZSBpdCBsZXNzIHBhaW5mdWwNCj4gKGFuZCBpdCBzaG91bGQgYWJzb2x1dGVseSBi
-ZSBvcHQtaW4pLg0KDQpJIHRoaW5rIHRoZSBkaXJlY3Rpb24gaXMgdG8gYmFzaWNhbGx5IHB1bnQg
-b24gTGludXggUzNNIGRlc2lnbiBmb3IgdGhlIGluaXRpYWwNCnVwc3RyZWFtIGltcGxlbWVudGF0
-aW9uLiBCdXQgYmFzZWQgb24gdG9kYXksIEkgdGhpbmsgd2Ugd291bGQgaGF2ZSBzZXZlcmFsDQpv
-cHRpb25zLiBUaGlzIGlzIGdvb2QgdGhpbmcgdG8gZG8gZm9yIG5vdyBJIHRoaW5rLCBiZWNhdXNl
-IHRoZSBURFggYXJjaCBzaWRlIG9mDQpTM00gYmFzZWQgYXR0ZXN0YXRpb24gaXMgc3RpbGwgZnV6
-enkuDQoNClRoYW5rcyBhbGwgZm9yIGFsbCB0aGUgYXR0ZW50aW9uIGluIGhlbHBpbmcgY2xvc2Ug
-b3V0IGEgZGlyZWN0aW9uIQ0KDQoNCg0K
+On Mon, 21 Sep 2026 09:43:34 +0000
+Manish Honap <mhonap@nvidia.com> wrote:
+
+> Hello Gregory,
+> 
+> Thank you for the careful read of the documentation. I will rework the
+> sections you flagged as below:
+> 
+
+Hi Manish,
+
+It is much more helpful to reply inline with the relevant sections so we can
+see the context wrt to what Gregory was asking.  That saves others
+reading the discussion from having to carefully build up a global model
+of what was said to understand what the replies are about.  Also I'll hazzard
+a guess that Gregory may have read enough code since he sent the review
+that he has already forgotten some of his own comments! (maybe that's just
+me!)  I appreciate that doesn't always work if you are going to address
+the comment via more radical restructuring.  Or in short, please don't
+top post!
+
+Thanks,
+
+Jonathan
+
+
+> - Address model
+> 
+>   I will update the wording to mention that VMM does know the GPA: it builds
+>   the guest's CFMWS window and so chooses the guest-physical range the device
+>   can inhabit. What the host owns is the HPA and the placement within it, not
+>   knowledge of the GPA.
+>   I will add the two models you described, fixed placement for an accelerator
+>   that needs exact physical placement versus no fixed placement for pooled or
+>   compressed memory, with a small HPA/GPA example, and note that the current
+>   series under discussion implements the fixed-offset case.
+> 
+> - Virtual decoders
+> 
+>   I will rename the The "Guest decoder and commit" section to "Virtual
+>   decoders" and add a short flow showing a guest vdecoder write being absorbed
+>   and a live read returning COMMITTED from the host-locked physical decoder.
+> 
+> - "The kernel virtualizes ..."
+> 
+>   I will update it to say vfio-pci-core (its config-space permission hooks).
+> 
+> - guest IOAS, stage-2 mapping, and struct-page-less coherent memory
+> 
+>   I will define these terms where first used and include that the range is
+>   handed to the device whole and never onlined as system RAM. I will also add
+>   details why a stale stage-2 mapping must not outlive the HDM window, and how
+>   the VMM rebuilds it.
+> 
+> - Reset
+> 
+>   I will reword this section. FLRs are virtualized so a guest reset can't
+>   inflict physical CXL.mem/decoder effects on the host rather than loose
+>   wording "must not take an FLR"
+> 
+> I can share the revised text ahead of the v6 posting if that is easier to
+> review.
+> 
+> Thanks,
+> Manish
+> 
+> > -----Original Message-----
+> > From: Gregory Price <gourry@gourry.net>
+> > Sent: Thursday, September 17, 2026 1:03 AM
+> > To: Manish Honap <mhonap@nvidia.com>
+> > Cc: alex@shazbot.org; jgg@ziepe.ca; Ankit Agrawal <ankita@nvidia.com>;
+> > jic23@kernel.org; dave.jiang@intel.com; alejandro.lucero-palau@amd.com;
+> > Srirangan Madhavan <smadhavan@nvidia.com>; corbet@lwn.net;
+> > skhan@linuxfoundation.org; dave@stgolabs.net; alison.schofield@intel.com;
+> > vishal.l.verma@intel.com; iweiny@kernel.org; ming.li@zohomail.com; Yishai
+> > Hadas <yishaih@nvidia.com>; Shameer Kolothum Thodi
+> > <skolothumtho@nvidia.com>; kevin.tian@intel.com; bhelgaas@google.com;
+> > dmatlack@google.com; kees@kernel.org; gustavoars@kernel.org; Neo Jia
+> > <cjia@nvidia.com>; Krishnakant Jaju <kjaju@nvidia.com>; Vikram Sethi
+> > <vsethi@nvidia.com>; Zhi Wang <zhiw@nvidia.com>; linux-
+> > doc@vger.kernel.org; linux-kernel@vger.kernel.org; kvm@vger.kernel.org;
+> > linux-cxl@vger.kernel.org; linux-pci@vger.kernel.org; linux-
+> > kselftest@vger.kernel.org; linux-hardening@vger.kernel.org
+> > Subject: Re: [PATCH v5 26/27] Documentation: vfio-pci: Document CXL Type-
+> > 2 device passthrough
+> > 
+> > External email: Use caution opening links or attachments
+> > 
+> > 
+> > On Thu, Sep 17, 2026 at 12:05:39AM +0530, mhonap@nvidia.com wrote:  
+> > > From: Manish Honap <mhonap@nvidia.com>
+> > >  
+> > 
+> > 1) Thank you so much for writing documentation, i truly appreciate this.
+> > 
+> > 2) I apologize in advance for my terseness, I know writing is hard,
+> >    please do not interpret this as disliking your writing or series.
+> >   
+> > > +Address model
+> > > +=============
+> > > +
+> > > +The HDM memory is a coherent host physical range (HPA). The host
+> > > +kernel resolves that range before the guest sees the device, and owns
+> > > +it for the bind lifetime. The guest only chooses where the memory
+> > > +appears in its own physical address space (GPA), by programming a
+> > > +virtual endpoint HDM decoder. The guest never reprograms the physical  
+> > decoder.  
+> > > +
+> > > +The kernel holds the HPA and does not see the GPA. The guest programs
+> > > +a GPA and does not see the HPA. The VMM holds the device fd, reads
+> > > +the committed base from the decoder-register region described below,
+> > > +and maps the HPA-backed HDM region at the GPA the guest committed.
+> > > +The base the guest reads back is the GPA, not the HPA.
+> > > +  
+> > 
+> > I think this must be slightly inaccurate / imprecise wording.
+> > 
+> > The host *must* provide some form of physical memory window to the guest
+> > at initialization time, otherwise the guest has no way to know - at boot time -
+> > that there's even a window of memory it can use.
+> > 
+> > That's what the CFMWS is.  This is initialized by the hypervisor - which is
+> > controlled by the host.
+> > 
+> > So the host (at least the VMM) must know, for the region the entire device
+> > *could* inhabit, what that GPA is - because it's the one that makes the CFMWS
+> > for the guest.
+> > 
+> > If this is not the case, then something is missing from this documentation to
+> > explain why.
+> > 
+> > 
+> > If you're actually trying to say is that the GPA's programmed into the virtual
+> > decoders are largely symbolic - this at best feels a bit inaccurate and simply an
+> > implementation detail.
+> > 
+> > The host's virtio device could enforce ....:
+> > 
+> > Host Range:
+> >    CFMWS HPA - [0x10000, 0x20000]
+> >                    |         |
+> > Guest Range:       |         |
+> >    CFMWS GPA - [0x50000, 0x60000]
+> > 
+> > In that case, you'd get the following translation...
+> >    vdecoder0.0 - [0x58000, 0x60000]
+> >    CFMWS GPA   - [0x58000, 0x60000]
+> >    CFMWS HPA   - [0x18000, 0x20000]
+> > 
+> > Or the virtio device could not enforce that and let the host page-fault just hand
+> > it a random page from the actual CXL device.
+> > 
+> >    vdecoder0.0 - [0x58000, 0x60000]
+> >    CFMWS GPA   - [0x58000, 0x60000]
+> >                          |
+> >               No discrete host mapping
+> > 
+> > 
+> > The former makes sense if the device (accelerator) requires exact physical
+> > placement to do its accelerator nonsense.
+> > 
+> > The latter makes sense if the device (accelerator) doesn't care about placement
+> > (compressed memory).
+> > 
+> > This is not saying we need support both out of the box, but we shouldn't lock
+> > ourselves into the former unless there's some reason why the latter is not
+> > reasonable.
+> > 
+> > Can you please help document what the actual expected behavior is with
+> > examples in the Address model section so it's easier to understand the intent?
+> > That will help quite a bit.
+> >   
+> > > +Guest decoder and commit
+> > > +========================
+> > > +
+> > > +The guest programs its virtual endpoint decoder through the trapped
+> > > +region: it writes a base (a GPA), a size, and then the COMMIT bit.
+> > > +The host already resolved and committed the physical placement before
+> > > +the guest ran,  
+> > 
+> > So the host does know GPA, just not exact placement.
+> >   
+> > > so a live read of the decoder always shows COMMITTED and the
+> > > +guest's commit poll completes. The physical decoder is never
+> > > +rewritten; the guest's writes are absorbed.
+> > > +  
+> > 
+> > Rather clunky, round-about way to say "The guest decoders are
+> > virtualized".   If possible, it would be nice to formalize this concept
+> > into "Virtual Decoders" - since that's what this is.
+> > 
+> > With that concept i think you can probably generate some nice diagrams that
+> > show how the guest vdecoder's interact with the host drivers.
+> >   
+> > > +The VMM observes the commit, reads the committed base, and maps the
+> > > +HDM region at that GPA.
+> > > +  
+> > 
+> > So the host does know the GPA.
+> >   
+> > > +CXL Device DVSEC
+> > > +================
+> > > +
+> > > +The kernel virtualizes the CXL Device DVSEC body through the
+> > > +config-space permission hooks. Reads and writes inside the DVSEC body
+> > > +use a per-open shadow; a guest write stays in the shadow and does not  
+> > reach hardware.  
+> > > +Accesses outside the DVSEC body go to the device as usual.
+> > > +  
+> > 
+> > "The kernel" - what part? vfio-pci ? the vmm ?
+> > 
+> >   
+> > > +DMA and iommufd
+> > > +===============
+> > > +
+> > > +A Type-2 accelerator issues ATS-translated DMA to addresses inside
+> > > +its own HDM window, so that range must be present in the guest IOAS
+> > > +that backs the nested stage-2 translation.  
+> > 
+> > Type-2, ATS, DMA, HDM window, guest IOAS, stage-2 translation
+> > 
+> > I think the only thing i don't know in this sentence is "guest IOAS" and it's still
+> > hurting my brain to read.
+> > 
+> > Are all accelerators expect to have this particular interaction, or just yours?
+> >   
+> > > The HDM range is struct-page-less coherent
+> > > +memory, which a userspace-VA ``IOMMU_IOAS_MAP`` cannot pin.
+> > > +  
+> > 
+> > The hardest part about writing about virtualization is keeping a consistent
+> > mental model from section to section.
+> > 
+> > which userspace? guest? host?  (i presume guest here)
+> > 
+> > `struct-page-less coherent memory`
+> >    e.g. the host never hotplugs this, it hands the entire region
+> >    directly to the VFIO device, right?
+> > 
+> >    I think this would be nice to spell out somewhere.
+> >   
+> > > +The HDM memory region is therefore exportable as a dma-buf:
+> > > +``VFIO_DEVICE_FEATURE_DMA_BUF`` on that region returns an fd that
+> > > +iommufd maps with ``IOMMU_IOAS_MAP_FILE``, mapping the physical  
+> > range  
+> > > +without a VA or a page pin. The dma-buf is revoked whenever the
+> > > +mapping is torn down (reset, power transition, teardown), so a stale
+> > > +stage-2 mapping cannot outlive the HDM window.
+> > > +  
+> > 
+> > For the sake of readers, I think either a little bit more information on this
+> > "stage-2 mapping" concept is needed to make sense of what's going on here
+> > and why it mustn't outlive the HDM window.
+> >   
+> > > +Reset
+> > > +=====
+> > > +
+> > > +A CXL Type-2 function must not take a Function Level Reset: an FLR
+> > > +resets the coherent CXL.mem state and the HDM decoder. The PCI core
+> > > +reflects this by preferring the CXL reset over FLR, so a function
+> > > +reset of a CXL device runs the CXL DVSEC reset sequence, which resets
+> > > +the function and then restores the HDM decoder and the PCI config state.
+> > > +  
+> > 
+> > I think what you're trying to say is that FLRs are never passed to the device
+> > because it can cause physical device effects that defeat the purpose of the
+> > virtualization, yes?
+> > 
+> > So we virtualize FLRs...
+> >   
+> > > +A guest requests a reset by writing Initiate CXL Reset in the DVSEC.
+> > > +That write only stamps completion in the shadow. The real reset runs
+> > > +at the vfio reset points (the reset ioctl and a virtualized FLR through config  
+> > space):
+> > 
+> > As you describe here.
+> > 
+> > So it's not that an accelerator "must not take an FLR" - it's that FLRs are
+> > virtualized to prevent deleterious effects on the host / hardware.
+> > 
+> > Am I misunderstanding this?
+> >   
+> > > +the kernel zaps the HDM mapping and revokes the dma-buf, then runs
+> > > +the CXL reset, which always clears the device memory, and restores
+> > > +and re-samples the decoder afterwards. A CXL port masks Secondary Bus
+> > > +Reset by default, so a ``VFIO_DEVICE_PCI_HOT_RESET`` does not reach
+> > > +the endpoint and the HDM state is untouched. If the port has SBR
+> > > +unmasked the reset can decommit the decoder without restoring it, so
+> > > +the reset_done handler gates HDM access; a ``VFIO_DEVICE_RESET`` then
+> > > +runs the CXL reset sequence and restores it.
+> > > +
+> > > +The decoder register region is served by live reads of the hardware
+> > > +decoder with guest writes absorbed: the decoder is committed and
+> > > +locked by the host, so a guest can neither decommit nor reprogram it,
+> > > +and the kernel keeps no shadow of the decoder state.  
+> > 
+> > This is basically what I said at the beginning - it must either be that the host
+> > provides locked auto-decoders at boot, or it must provide proper virtualization
+> > so that the decoders settings are fully virtualized.
+> > 
+> > Seems it's the former, and that makes sense.  Please correct me if i'm
+> > misunderstanding.
+> >   
+> > > After a reset the kernel restores and
+> > > +re-samples the firmware-committed decoder, so the geometry the guest
+> > > +reads back is unchanged. A VMM that dropped its HDM mapping, for
+> > > +example across a reset or a D3hot->D0 transition, must rescan the
+> > > +decoder and rebuild its
+> > > +stage-2 mapping before it resumes HDM access.
+> > > +  
+> > 
+> > Yeah i think we need a bit more information about this stage-2 mapping
+> > rebuild to make sense of this.  Maybe I'm just not read-up enough on this
+> > particular setup - is there another part of the docs you can link to that talk
+> > about this, or are you able to share some details as to what this rebuild
+> > process looks like?
+> > 
+> > ~Gregory  
+
