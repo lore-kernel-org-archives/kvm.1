@@ -1,93 +1,119 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E88949DB80
-	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 21:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99B3397E9A
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 21:54:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790286868; cv=none; b=i3zo4c5K//ORMGOWVl1MIoFSnWtHZWL9gKOMrCT5JVcUsd3G1VB5M5fyqkt+gupiDCEkQYJSPGJN0R4hdLgAKhr0IVH1IL36rbG6JxfZQmudwVKOzju8B9ClVPmVe1jg5jDJX8v2vf2SoyNEmJP+g5Z0qRd3rFtXp5N78TYa7v0=
+	t=1790286889; cv=none; b=evC6K6zP1KZ+QzQyO8MVCPKr5op8Ug/XJIxHjhUMugSiWqG6CVyHXC0uHLILYN1Wfo7UnJsfN5u3Gam38z1++bLoLz0tZlgbd6U679lXicrzxzLr173neG/jcgkfAPdIoRzro/2A0l9atymZqzGRtKobqhfFfWZMnAQ+DUJD2wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790286868; c=relaxed/simple;
-	bh=K/LIHyiYa5gID+5jEsxZuhFyjO7rvUwqI7ZTaB8OIBo=;
+	s=arc-20240116; t=1790286889; c=relaxed/simple;
+	bh=+iz/qUQS3BYLz0YmbGG2HcxYcjxGg4hNl4MhPBnFET4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sYVaWH1p1rmN3IpKs09phzGgv9QF7Zw3f3qm5N878E99BuAusc+ft3Y4AHtzg4efZi+gidqegsOhQLl8f8Y+7uFY2MdKW9ctxVKJVNoP8er9CSOUQQld7NjOX1UuWc1x7vrEMxWWR45Or9D8dgwYy5v3Ihkx+giDFUUBN8bUp+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rxQaQub3; arc=none smtp.client-ip=209.85.214.198
+	 To:Cc:Content-Type; b=senYsj3MHhVW8GAeEksDc1JCi9wU2FINP54L1WOnH9T/EqoCL8eCbfcEV35gtmj5ml8RKjCw9lPbdNEHvMdgSRCtc18fFNmhjNBNdvxWiAsaFpA9UYFErX8ikKZa78ZScZ79PSjbycWyG/cZSMxgxlJ0zUrCqCLLQ52Trfz8pD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J4QlYbEg; arc=none smtp.client-ip=209.85.216.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rxQaQub3"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2dd53f2b27cso2254275ad.0
-        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 14:54:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J4QlYbEg"
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-396901263b6so277784a91.2
+        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 14:54:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790286867; x=1790891667; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790286888; x=1790891688; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SQ/usSA1tKKAOs+40+4Ubs2RZtDv59Vb7xFxUDV6QEU=;
-        b=rxQaQub3iwMbsTXUwk6tRJ4UjpNa3yE3a6PzUgyee7tp5YCXyRR6LsUrOG0oE1Nlo+
-         /0+GW0X81J/SD7aQXNcB47FTLO624XPfjvjVeibZFp1fINT6zI+DGgP3o+cTp5pd7kKF
-         pr2ekLHTVfdNHe+Gsf5yWMUuD4R/s6nq5BmpRf31oare9QDL0vYO7PtRPpDN643NHB+d
-         5TX+e+w81LBxciFxKoVZCj8gfk6CB58o7h0bxRyWvk+09XQV0tLwP2gyqt0TRf1NqgZe
-         tDg1WhVMbffEVtSNn/Gkl83tCXQwMnzQJ7pRFzolk+VRnGjDSquku/Qo/GXRl4I0DOp1
-         eHhA==
+        bh=Ls/WIqLZ9h1Yk/ZfyOfON5RY+uFXSZy1PRrGAAaFYz4=;
+        b=J4QlYbEgrw13Bt8a13hvTUyo61LSQGOLjsLja/5OqYmknfEm0ds7tkzgvd4IDZYMzd
+         XlrutZ2IZ9aK3ZPwfUtr4yaJezG8XXpNgl6knK/5WsgRJNn9ikuADKADYiVG0JY854ua
+         +0CoXoWDUoa2lg4SCEKq279OjJP9ps5HMBItXNxO3RrQGFSt1KAGvSyCUiHO3+RHhXZl
+         gw7ku0MlXb8TRMV1wyN3Tlq2UYF50ygZSyE6y1fac6pwfEzxMuHOVO75EBfMEu9ii3y/
+         Cx9KBeAFbsHCs2Fp6ZZRvD0sQ9LgBSsUwX/awQue0t5FcpIH5uK4S+OdPTydzCL9vk1a
+         aevA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790286867; x=1790891667;
+        d=1e100.net; s=20260707; t=1790286888; x=1790891688;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=SQ/usSA1tKKAOs+40+4Ubs2RZtDv59Vb7xFxUDV6QEU=;
-        b=uZShnenksoIgz1DhtIyq6tjx5Cl/6FKQId3X2i77fs2dz02+k1Kdi7szfdFEiXhhAG
-         CsnbkIGu6RZ9HgOaT1o06eGMa8VUNEsSePFbFH4v25i0pp86vZ0B+X4Ej8jqmZpQAn3b
-         IuC9QN2NPvHX2pPQw2Y/dXT53ASUs112VGzEm2Na+BgBz+KV7OeuD82se+PoIBgqS6ms
-         CKEd5+UavDSQaBElhxspLmitkiL2ivQGTMw67T4jEV44q4+0Y/MqcHNLfxlfOcrpxt0f
-         h1D1HVvNWLBlpwSwbNN1WAD0P0oGr4T5fDJxJrs8xto0Qj4eV/BeatNCtzUh9fz4+0hX
-         LBAw==
-X-Gm-Message-State: AFuF++mNGPBUjoP6GhM0nVsevqoGzDm+5p5v/2t+EywWgPdzAVv7LlMm
-	u1fpBjMN5XEcd1tlQ5cfh/lGP8tjHgsKeRF6dw1xj9/fWwSY6pGI3acOXYEVbKvtIsH1kRpHGOv
-	TKuYY6w==
-X-Received: from pgbfq21.prod.google.com ([2002:a05:6a02:2995:b0:c88:e5cb:265])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:2d07:b0:3dd:a195:dd57
- with SMTP id adf61e73a8af0-3de0e933c4fmr3612027637.57.1790286866556; Thu, 24
- Sep 2026 14:54:26 -0700 (PDT)
-Date: Thu, 24 Sep 2026 14:51:57 -0700
-In-Reply-To: <20260901-gmem-unbind-fix-v2-1-12febe1d2216@amd.com>
+        bh=Ls/WIqLZ9h1Yk/ZfyOfON5RY+uFXSZy1PRrGAAaFYz4=;
+        b=ISEtXxS6w66T+TqcY14RRJWgNytTuNX2Gw92VL/gDmlo3fiAHGjQZLjJxtZ1P4p16h
+         0SrW2tpUdKClSw+3ni8x5IwaZna4LuXj/XN5k0YfoNmuk+yoOiTlrGU/apS5UR11y+mA
+         ZdDulFsotjmkK4VNbsWnjT3LUdkVx7rAI8RMxiFvPF4mB8fuO+f8U9pryTnELxWPYWp/
+         b0PTUYJSJ8ahUpTQz9qPh4k/ov87LzIDFSlKWGwdKYW32bimEUTagxNZQdXmDi887GTm
+         dxP7ydn+HfrZjcaacMSPf331v5lVyoDJKFyQLdzwImGNpkdqWrjhTLJZ0hyopvxlx6V0
+         iQZA==
+X-Gm-Message-State: AFuF++nveh9C238Ix+gKVXNQdzAroPS9ItB10fA6FaLxZ6+WxyZ95tLT
+	fAIL4xmCwsTsBMz2ZqBettVm3Jz8r/GVeN98zMrICQ1kZ0/qjEfuavzE+ROOlut+TMpO1jMIdjt
+	v9kYjgw==
+X-Received: from plaq19.prod.google.com ([2002:a17:903:2053:b0:2dd:2d81:c97])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ce8f:b0:2dd:ad73:5b71
+ with SMTP id d9443c01a7336-2df7dbbc22amr32887625ad.33.1790286887686; Thu, 24
+ Sep 2026 14:54:47 -0700 (PDT)
+Date: Thu, 24 Sep 2026 14:51:59 -0700
+In-Reply-To: <20260915175335.138547-1-davimaba.v@proton.me>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260901-gmem-unbind-fix-v2-1-12febe1d2216@amd.com>
+References: <20260915175335.138547-1-davimaba.v@proton.me>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <179028369935.2007941.14069102369239125063.b4-ty@b4>
-Subject: Re: [PATCH v2] KVM: guest_memfd: take the invalidate lock when
- unbinding a dying file
+Message-ID: <179028303710.1997669.4762091811625597120.b4-ty@b4>
+Subject: Re: [PATCH v4 0/3] KVM: Fix and account mem_attr_array reservations
+ abandoned on ENOMEM
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	David Hildenbrand <david@kernel.org>, Shivank Garg <shivankg@amd.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Sashiko <sashiko-bot@kernel.org>
+To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, 
+	David Ballesteros <davimaba.v@proton.me>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, 01 Sep 2026 07:20:38 +0000, Shivank Garg wrote:
-> kvm_gmem_unbind() takes mapping->invalidate_lock only if the
-> get_file_active() succeeds. When the guest_memfd file is dying, its
-> reference count is already zero so get_file_active fails and the binding
-> is removed without holding the invalidate lock.
+On Tue, 15 Sep 2026 17:53:40 +0000, David Ballesteros wrote:
+> Three small fixes to KVM's per-page memory attributes: release the xarray
+> reservations that KVM_SET_MEMORY_ATTRIBUTES abandons when it fails partway
+> through (1/3), make kvm_range_has_memory_attributes() agree with itself
+> about what such a reservation means (2/3), and charge the xa_nodes to the
+> caller's memcg as the code already intended (3/3).
 > 
-> kvm_gmem_invalidate_{start,end}() checks f->bindings independently to
-> decide whether to begin or end KVM MMU invalidation. So, the bindings
-> must therefore remain stable between the two calls. Otherwise, unbind
-> can remove a binding after start increments mmu_invalidate_in_progress,
-> but before end finds the binding and decrements it.
-> Example, unbind race with memory failure:
+>   1/3  Release the reservations abandoned on ENOMEM.  This is a plain bug:
+>        xa_reserve() materializes entries GFN-by-GFN before the store phase,
+>        and on failure the loop bails without releasing what it reserved.  A
+>        later clear covering them does erase them, but nothing obliges
+>        userspace to issue one; absent that, the reclaim path is
+>        kvm_destroy_vm().  The retained entries are not inert -- an
+>        abandoned reservation is an XA_ZERO_ENTRY, which
+>        kvm_range_has_memory_attributes()'s !attrs fast path counts as
+>        present (raw xas_find()) while kvm_get_memory_attributes() treats
+>        it as absent, so a straddling hugepage over such an entry is marked
+>        mixed and KVM stops using a hugepage for a range whose attributes
+>        are uniform.  xa_release() erases only entries still reserved,
+>        leaving pre-existing value entries untouched.
 > 
 > [...]
 
-Applied to kvm-x86 coco, thanks!
+Applied patch 3, with a heavily modified changelog, to kvm-x86 fixes.  For the
+reservation behavior, I went with Zeng Chi's fix to have KVM treat ZERO values
+as "no attributes".  Having dangling reservations is a-ok, the memcg accounting
+really needs to do the right thing there.
 
-[1/1] KVM: guest_memfd: take the invalidate lock when unbinding a dying file
-      https://github.com/kvm-x86/linux/commit/0ee2c883b62d
+In the future, please don't have AI directly write changelogs.  It's fine to
+let AI generate a rough draft, for me at least, AI tends to be far too verbose
+and uses terminology that isn't common in Linux/upstream.  In other words, AI
+tends to write changelogs (and bug reports) that require far too much effort
+to understand.
+
+I apologize in advance if you wrote the changelogs, i.e. if I am falsely
+accusing you of being a robot.  If AI didn't write the changelogs, well, you
+do one heck of a job of imitating some of my newfound "friends" :-)
+
+Gripes about AI aside, than you very much for the fixes!
+
+[1/3] KVM: Release memory-attribute reservations abandoned on ENOMEM
+      [SKIP]
+[2/3] KVM: Make kvm_range_has_memory_attributes() consistent about reservations
+      [SKIP]
+[3/3] KVM: Account mem_attr_array nodes to the caller's memcg
+      https://github.com/kvm-x86/linux/commit/382e5d514b6f
 
 --
 https://github.com/kvm-x86/linux/tree/next
