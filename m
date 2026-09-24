@@ -1,151 +1,108 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8618646AED1
-	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 16:33:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACBF456DE0
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 16:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790267582; cv=none; b=RzA/PyjMoTePoeoXK0VudHvDOf10t/A+9jmaU5O3bynhVdc6F7dC/zxMVKJ1WkUQc1aFVYOtYvHmYogLQp/lBni4a3UN3ra2htJPuUo9ZrbtaskeONbtY03mAgRW/bRJdPggQ/7O2w3AKbDPAwHaQCYfaaZWD5cnGM7r8kqBdCA=
+	t=1790267895; cv=none; b=BLVrdWLlBZD3HULxFTm0DJ1ot7JZ4KqdAXpnjZkmjsaBsA9jeHz+iBtCApt9NF07WbzYPKfcU4HWjRTajKlvQf99Ow/AxG4R/OYNJPo1OvTdCGBnGcttDUbN+eXibAkAkluw2aoFADexFf84tG0RMrniqewxpzhMFJPwRYvHTao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790267582; c=relaxed/simple;
-	bh=6jk4WNq35FvtRPXwxvwFFQkIMdTLJNaw0ZthxIMDruE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BQmInMTPULyIXXB/0g28XbsTW98ZN+JB6KEJABBFWx0JLYZcwZW53uuEt4rpswrOPWnc7XjFgvP6m56vG4ylYjlDR8hbwIEyu4yK7X1dWkBUxEpOLfI5SP3QqWZlC9bEF5Y+l3InQOF/Vyq9Hla9TSmoTnMk31yZj7PYvQ3fML8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Liz9XyzJ; arc=none smtp.client-ip=209.85.215.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1790267895; c=relaxed/simple;
+	bh=Y6dfgoDu9ENyHz35342iESy0PYqePxl/sIn9jSurkUk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JG6ZzNHm5zW1jgrquJE3ip6+u6Fl87Pcms7URa7RnRqDmby87opdW+fnXW5hzmzT3DUQO+XeEdRGFmB5CID5EZFk4OQfqlpqVw7Fn3nvNnWLJyhOhsgp/0cKWdWxNRPdpBqOL40gQ+JB9SQ42+vuu6x7+tgw5rg3onkwSPczeys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=DELaQ6H+; arc=none smtp.client-ip=74.125.230.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Liz9XyzJ"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc76d91f6a7so504004a12.2
-        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 09:33:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="DELaQ6H+"
+Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-52fb76543e2so141221cf.1
+        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 09:38:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790267580; x=1790872380; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4FrL8f+6ILVgPFeXZ79NGmNXRfQTnNh/rpX573POM54=;
-        b=Liz9XyzJXHDZLtyzO+Ji1OVq/7HSs0ajW1gz5T6luK7zemEnHnhchgrDr6ZzxcSePt
-         4qmTTUFQuQmy4/tX/7B3kCzQucc85DWhXjlj3XAJ5A+mMoOJZgrF0c2xl6N99gtwIMtZ
-         6w7xdUdJvrCY0eBzNbGoGknJLOw1w0yuMIPrW7zhcxGX31zja3ofXdwzzX1kwKC8NsYg
-         ELqfBmHK+uL2xCFxgrnPL1e6rto9WptOqJ4jSLSwhus5kus4NqtjrUt9uZ8/Dd451Lk4
-         LzKIf+XxmieZ5GkffQrZ9hxBAD754W2rnWMqN7LZzkffZHvYa/9DrX9jGqWqe74RogEA
-         L1SQ==
+        d=gourry.net; s=google; t=1790267891; x=1790872691; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LuPrvXBzY5FQ+f/5fzbveR9yF272P1V2+jsIcGJNdC0=;
+        b=DELaQ6H+GoqYKhSPbbw83I2UghjOPLUKt/HJzwYXOl5vd4By1b/ewKsZIbd9ahXhZb
+         TJDLBT2drAnq8j1D4gtZjKdZE54vfhHIW07z7SMjyhNrpJZ88lIXL27llafwJKgt7Hvw
+         zeqWn52o1fsiwmzoo4rrDQZv3h3IiFJnFO2iuBnkUsGA3ktjvtFHA3Jr6K2ZEcGMg8M1
+         1di2ZTIAJ2yTB2V6zmlctv6zG6tcG5IvMF9RkWmI06r7tX+skZxDuVThBB0MSr3NZe3S
+         B2+XxiOTA95Xk/3/+mlBZ2rpvQSIcAx9lD43yFxhcrOBvTesr5mE416XkZK5Fw1vsdLx
+         5Q7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790267580; x=1790872380;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4FrL8f+6ILVgPFeXZ79NGmNXRfQTnNh/rpX573POM54=;
-        b=Kgn3HYYLzVh4ne7l58vpQEp/N0fcTIXt5wOY5KpARMKwFKF/T2ZE2cQMpQtlnEDWL3
-         tLQgL8ui4ziqwvJASIIPIDFZKgw35NMEcpZj2TLg0OM4Z1S7vQ8ZVVyYAvO8dH4P7inb
-         UoCbtSSEMoMndz9BpXRDr2++zb5vaW5vdF97SuNTUAQG7dL6sp24+mWFMB+YQmkhKQbX
-         jiSh0Gqi/r+QC7Tmx/OCPgQvt3lNW2hE6cVA8bPlGu/6rX89Mm4S/Qr2Pawln/4raiZ2
-         lujjZvEkI8Bz0ADr6Lm0J3ZoANz6+tzIVIbiPtribDk7kqfclwXkGu/JqsJuGd0iFcxU
-         T9RQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy7saBZDg1Igh0sNiVzk/jurqPYcgMmtE2gDBK/NRQfzZeXzNYbbhDUQDzUSoY2l/QA4C0=@vger.kernel.org
-X-Gm-Message-State: AFuF++nzLpfyjAW4dZ76YPs+fSND4AuLVCUsUjXnud98WpxBS+yPG62t
-	lNhy6YPzm2gho30q43msHhBKCBegkaxYM/lAVCuzuX9AKCAN6wnnKv1w5TKFaBP9pYsFVBSrEvL
-	Tf7oGcg==
-X-Received: from pgdu19.prod.google.com ([2002:a05:6a02:2f53:b0:cc7:5e81:4448])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2250:b0:39e:4c7f:8b1b
- with SMTP id 98e67ed59e1d1-3a098e37392mr2572091a91.32.1790267579477; Thu, 24
- Sep 2026 09:32:59 -0700 (PDT)
-Date: Thu, 24 Sep 2026 09:32:58 -0700
-In-Reply-To: <20260922071945.693714-2-fuad.tabba@linux.dev>
+        d=1e100.net; s=20260707; t=1790267891; x=1790872691;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LuPrvXBzY5FQ+f/5fzbveR9yF272P1V2+jsIcGJNdC0=;
+        b=MfYA5MzKVS1RJa1h0yZelCfgagfIoe4dz/umPQ1sISCXEZ/SyYgGXB3JSYfIhB5LzX
+         77yVpUVPcRdRnU3cBrBBTSmN+1cyLQzmiXlKQZ+1EtknWsu+CUhBzhHGeaSxoqsZgJQO
+         ab4VWb+OdVOVVwLWKdYF8nkWlU33QiVbKaaMLu4w8CooHTnTWpb5nIxolyIYlK4gg6Sk
+         qv2OKxdNts5qK83RDkY66tiX0OL9LTBk/HZHR6Ra+emabkoFOtzXAIeH8Olr6368qH+Q
+         hMIxO1LHZ1cRbNCZXETMQmPGlay3PDxT+GdIs4XBeQGbWmLlaoz+s/UhaHERVlKnQQkV
+         gfCQ==
+X-Forwarded-Encrypted: i=1; AKwUvBywxH+iw3756Os8FLE10IOC3rBmOW5Cs6NRFcYbfCLR9jmvRj8xrkqkuUTaMMPOqt3qanQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++laAhW9trnFlRZKosv7DkrkbiB8XikhynRWhYykHKpO9rav0YYb
+	H9DY6L4W1GS5YmzKB5UDfjwWijOeeO8KF7A7pSGz95a04mt1hzMOf1bujoyAc6yh0Ek=
+X-Gm-Gg: AYBFou0mywidiA7Utat5ckh6d2qzx9ejyNAs5RCwS7HfKGGHMfCX2T1jbCchZcG5QAK
+	w/mad6waP3iAwmpmDAvvZDNRsNxw0UHEkuyX6zNCAlOmukVH5iw5BNBacSVDJlqLJrM98Q3S8Gy
+	7bFp51T+JLJfSb8pTnssQYBjRXcCJ27I8UhooDQsS/p31dlEpcMJL8DQ64MqpSRbaqGPkQoaxY6
+	YmQpRWmte6mC49ttpaEEqdebgZav48RCJmbFlaWrdkp4MffcNAA7nw9VP37mPl76ySmyg3sF0An
+	gU5R9z5fcSQb+ljPo0k1CKxI4dpRGucfEmTt/RtVyTVxHYKmR8kRKKVbQh21qn3pUP1tTmV4Gwm
+	twoIwAaezQLPqKTFMNHZUq6Vk0Ik82sAzWq5Gl/rIMGbkfwReam9QtbhLnPrnqE9RcMjUn7q5QS
+	8xAraVrdsebWhrtYSy6xL8syQ93akqwxWdrwZR8Tfgm84R86am4uU3bpV32psU/FRhuThRwgftI
+	IboB6ZMqbExB9Fpi0uP9iertswVUnXqk+vkmf1miU6znNpVy7HCRHY=
+X-Received: by 2002:ac8:5743:0:b0:530:d860:ffba with SMTP id d75a77b69052e-532fe9f05bamr29797891cf.6.1790267890993;
+        Thu, 24 Sep 2026 09:38:10 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532eb32f6aasm45064551cf.16.2026.09.24.09.38.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 09:38:10 -0700 (PDT)
+Date: Thu, 24 Sep 2026 12:38:08 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev
+Subject: Re: [PATCH v3 03/40] mm/vma: introduce and use
+ vma_[flags_]can_merge()
+Message-ID: <arVRqJZkql6sGunt@gourry-fedora-PF4VCD3F>
+References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
+ <20260917-b4-mmap-prepare-vma-flag-sanify-v3-3-4583d8a23bca@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260922071945.693714-1-fuad.tabba@linux.dev> <20260922071945.693714-2-fuad.tabba@linux.dev>
-Message-ID: <arVQutV75u2gGVr4@google.com>
-Subject: Re: [PATCH v2 1/2] KVM: selftests: Fix arm64 sysreg header dependencies
-From: Sean Christopherson <seanjc@google.com>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	"Michal =?utf-8?Q?Koutn=C3=BD?=" <mkoutny@suse.com>, James Houghton <jthoughton@google.com>, Will Deacon <will@kernel.org>, 
-	Fuad Tabba <tabba@google.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	cgroups@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-3-4583d8a23bca@kernel.org>
 
-On Tue, Sep 22, 2026, Fuad Tabba wrote:
-> The rule generating the arm64 sysreg header targets the generated
-> directory, and its only prerequisite is tools/arch/arm64/tools/*,
-> which expands to the inner Makefile. An existing directory looks up
-> to date, so an incremental build never regenerates sysreg-defs.h for
-> a change to the sysreg table. A selftest referencing a register added
-> to the table since then fails with undeclared SYS_* identifiers. Clean
-> builds are unaffected.
+On Thu, Sep 17, 2026 at 05:22:12PM +0100, Lorenzo Stoakes (ARM) wrote:
+> Replace the open-coded VMA_SPECIAL_FLAGS check in the VMA merge logic with
+> two new functions vma_flags_can_merge() and vma_can_merge() and update the
+> merge logic to use the former.
 > 
-> Always recurse into tools/arch/arm64/tools, whose Makefile already
-> tracks the generator's inputs, and target the header rather than its
-> directory. The recursion leaves the header untouched when nothing
-> changed, so the dependents rebuild only when the header does.
+> This abstracts the check and expresses it in terms of the desired behaviour
+> rather than an arbitrary and confusing VMA flag.
 > 
-> Fixes: 70c7b704ca725 ("KVM: selftests: Avoid using forced target for generating arm64 headers")
-> Link: https://lore.kernel.org/r/arGRhHgP_izSwW4T@kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
-> ---
->  tools/testing/selftests/kvm/Makefile.kvm | 16 +++++++++++-----
->  1 file changed, 11 insertions(+), 5 deletions(-)
+> This also lays the groundwork for making further improvements in VMA flag
+> usage.
 > 
-> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-> index 96bab7002d39e..81dca3dbc16b4 100644
-> --- a/tools/testing/selftests/kvm/Makefile.kvm
-> +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> @@ -303,10 +303,16 @@ arm64_hdr_outdir := $(tools_dir)/
->  endif
->  
->  GEN_HDRS := $(arm64_hdr_outdir)arch/arm64/include/generated/
-> +GEN_SYSREG_DEFS := $(GEN_HDRS)asm/sysreg-defs.h
->  CFLAGS += -I$(GEN_HDRS)
->  
-> -$(GEN_HDRS): $(wildcard $(arm64_tools_dir)/*)
-> +# The inner Makefile tracks the generator's inputs and leaves the header
-> +# untouched when nothing changed, so dependents rebuild only when it does.
-> +$(GEN_SYSREG_DEFS): FORCE
->  	$(MAKE) -C $(arm64_tools_dir) OUTPUT=$(arm64_hdr_outdir)
-> +
-> +FORCE:
-> +.PHONY: FORCE
->  endif
+> Also update the userland VMA tests to reflect the change.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Definitely doesn't have to be now, but at some point should we split out some of
-this arch-specific sub-Makefiles?  It's nice not having to hunt around to figure
-out which tests are supported by which arch, but the amount of arch specific goo
-we're accruing is getting unwieldy.
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
 
->  no-pie-option := $(call try-run, echo 'int main(void) { return 0; }' | \
-> @@ -359,10 +365,10 @@ EXTRA_CLEAN += $(GEN_HDRS) \
->  	       $(TEST_GEN_OBJ) \
->  	       cscope.*
->  
-> -$(LIBKVM_C_OBJ): $(OUTPUT)/%.o: %.c $(GEN_HDRS)
-> +$(LIBKVM_C_OBJ): $(OUTPUT)/%.o: %.c $(GEN_SYSREG_DEFS)
->  	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
->  
-> -$(LIBKVM_S_OBJ): $(OUTPUT)/%.o: %.S $(GEN_HDRS)
-> +$(LIBKVM_S_OBJ): $(OUTPUT)/%.o: %.S $(GEN_SYSREG_DEFS)
->  	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
->  
->  # Compile the string overrides as freestanding to prevent the compiler from
-> @@ -372,10 +378,10 @@ $(LIBKVM_STRING_OBJ): $(OUTPUT)/%.o: %.c
->  	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c -ffreestanding $< -o $@
->  
->  $(shell mkdir -p $(sort $(dir $(TEST_GEN_PROGS))))
-> -$(SPLIT_TEST_GEN_OBJ): $(GEN_HDRS)
-> +$(SPLIT_TEST_GEN_OBJ): $(GEN_SYSREG_DEFS)
->  $(TEST_GEN_PROGS): $(LIBKVM_OBJS)
->  $(TEST_GEN_PROGS_EXTENDED): $(LIBKVM_OBJS)
-> -$(TEST_GEN_OBJ): $(GEN_HDRS)
-> +$(TEST_GEN_OBJ): $(GEN_SYSREG_DEFS)
->  
->  cscope: include_paths = $(LINUX_TOOL_INCLUDE) $(LINUX_HDR_PATH) include lib ..
->  cscope:
-> -- 
-> 2.39.5
-> 
