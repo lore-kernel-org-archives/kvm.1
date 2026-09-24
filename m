@@ -1,202 +1,106 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C8B4DF4AD
-	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 21:53:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B544E379B
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 21:53:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790286788; cv=none; b=lGzu1NzeoiZfX20nLPLrZfwDLn23c6uro2YQsKmSfiChme2VtPSzpKPUmqQZmW7BUrWYNfiNS1EQGxbqYlwDwP1/XKIrIv5u0LwhjYmMFFbM6tvWZkq8AnRQIHB5Q6bLq7NpUC5WK7TvN6u9PhQkfASdVXedpjqQhE249QZYK4A=
+	t=1790286796; cv=none; b=HubO3mWpC36xD04Swv8TskBR1irApnAMW2USaKE7EX5TLo6os4O902y+f/skNcSoaI9wi9dK3hLNB9P5JGgSRsdv3EEJ/O/nBzZrcYaSCSNq+nHVHvDoZP9HIPRxZ+LDRbQXdQ/PcIcnscakWeppVoY0sVb18zSdpIQBtH6Ql9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790286788; c=relaxed/simple;
-	bh=d9PT2GdoWFZBMlVJHZrFv1etxubcAqj+sYkXP3zDxNc=;
+	s=arc-20240116; t=1790286796; c=relaxed/simple;
+	bh=RbSuvXpZGJzj7DyvR5wUr6ym4Nnq30Ym0ZQqCgZv2e4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tTm+A57IcMaTv6Rbd3gukAQyxTQdhhnDO8ysQC7nOPU4XYkf1txgDsvZfLiu9QBy3nH19MegAb2TiOZqf25+CY8EE21mfodZNolUCS7zKLROjKifWxWRlQ6g+yiOGaxf1y6jDIp3d/rfZoH5FAigTjpzMxStMRSMSySiUSqw+7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sasaO8LV; arc=none smtp.client-ip=209.85.215.200
+	 To:Cc:Content-Type; b=fSakh8QOu3Y3FdoyhnNBDvNllt5Ldk/NR29OjmBvbHiNWSgKpRQ3stXtCsWhGAA+2uMqEj9l9t3Sog8K33xw9XOqhTvRJrIpdM+1X8BUtWzlJ0X77jrNVBdM3/Emr//jY0TWua6zHpQ3FwVhHr3m48HXNY6/MG8LXSOdbR+oMXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u8ip4hsX; arc=none smtp.client-ip=209.85.216.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sasaO8LV"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc44d708055so224142a12.0
-        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 14:53:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u8ip4hsX"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-39b77130a7fso268414a91.2
+        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 14:53:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790286786; x=1790891586; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790286791; x=1790891591; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=96howwJpIzasaCW/3Q0EcsFpl6itohsELojaGu9d8N0=;
-        b=sasaO8LV2aC+eJ22ZSls5e76IWjl5wQbLHC58f+m7GBcqu6ME6MAUYipxXJY5CV1+m
-         tCdY1yvxX5ZBUf+M+OL2cu3tgYoCtz8+vNYuxLbay2kHBOCUUn8H0EY2WCgMPFj+OSFT
-         w+RrM4+Gqdy6L0dSmEGiKwEctOQHKydA+DGIcxnb7snyQiQ+zeAxvIueBKhR+zEZBesn
-         npWdmNiKooIcSPNt7tzTFAjlMAgB9CDDhgPbcG87n1luyzYd+rSNCR26jeq1XGgx0ydP
-         6xPeGQukJU+tB1MRM1M66d5C6w2fIAZ3RbgreRTVSqDUsc3vBZcaO9IPd1S85g/zGWvJ
-         /AUQ==
+        bh=6LkhgjIPo4LQGHd0bFnsw+pSTli362MQLpClW50HsSw=;
+        b=u8ip4hsXZjYKo0/NLX1BwjJaC4gBAmy1XdO39VjPw5H3XSxbB7GkGlJKrpQUAK4s8A
+         du6dRREUDc/txuUNqgmifo0zXCjZOUJRvecq0Ij2rrIObXgozG3ROlk3p96eqV3Rlq6H
+         0VZgFQggx6if0cRZKzYWCC6YjVcXBpqxK17eahjRUX/oA1AEJ/SdXmiz8cn0L8rm1Yon
+         Y13vLKjLsQ7xvCBH3yzR/Qeeu22BiJb6CB/joUSsLJIAnoRhJFRTW5ilTW4mJ92UzG3q
+         GuHUfErxnYmJ4J0LOQGgRGfeB9VKqhDQE7jSsTblK46+OBE0rEozAsPCk9yb4gxtAEjp
+         osWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790286786; x=1790891586;
+        d=1e100.net; s=20260707; t=1790286791; x=1790891591;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=96howwJpIzasaCW/3Q0EcsFpl6itohsELojaGu9d8N0=;
-        b=CaWegPWL1OLT6cO45HJlKnUTUuUAbUJE8zYzaN9Fk0jP6CEARPoovLDXjZIvJYsGdP
-         MJOM8svqlpemYJN2jYWRw4CfJnmffITck6/ZKpSEUJqa2WJKVK+hVG5VdMTmE7DWb3Ok
-         Gv9j6yUlyE7I6xqC9RQFT1IPWofVuB2xBjvG3U2KIBiZQMMGOZ77fFkPr9RxbPRO8Qr+
-         0zM/M96N/yQJwtAmbDJinkQCKm2fOrC4frf4KrwQ7B+uLO1JjKxXLQC3A0+2L4x36EV9
-         W5gvapWMhruVHTZBo0lJ2G/je/Lp4af8W2TYBhvP8VHyfMhhSzUyy2LB6NJ2TLR2tcqY
-         SFCg==
-X-Gm-Message-State: AFuF++mMSl1LiLLha+alrkRWhIA58qE16gOGY2yEWtkrdTSS2l8g4Cyr
-	wrUkJ7kg4PYoYstosBnRzphBD7JxDGDQqeoaDQ8FuwzqX6gDEjuQwalUvVgasDFySIrHIpzj3m4
-	Pn2Eolg==
-X-Received: from pgbcw5.prod.google.com ([2002:a05:6a02:4285:b0:cc7:513b:37d9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:439e:b0:3d3:ae50:97ce
- with SMTP id adf61e73a8af0-3de0e755869mr3534504637.27.1790286786082; Thu, 24
- Sep 2026 14:53:06 -0700 (PDT)
-Date: Thu, 24 Sep 2026 14:51:49 -0700
-In-Reply-To: <20260910-gmem-inplace-conversion-v13-0-dd6fbf94f4e1@google.com>
+        bh=6LkhgjIPo4LQGHd0bFnsw+pSTli362MQLpClW50HsSw=;
+        b=WXwPLQS/3xokzFGwIhXwK5uDJx7ZrrMyBgzyctsS10w0Pfr5tVGIECxhmqS7M1fUbn
+         BVc3A+PyWO3baPxOuhy5k2EQ1F7rJ5liwNBR+RIMjXf7qQDeHMzBM4Qeb+8/KsI8FrYo
+         mUcRej/oCN8hnbTovTk/9sUeRdRIRVCkKurSK7tKKE1hekFDDpOSVD5ExnnLdYs+uyRO
+         Nn/gSTGDos06RuBTAUb9nXdcGrTyEFovMfDnuJbl1K4tdM1GWMY3M8owl1RDK5S/DNQa
+         enULpvVl/vJMZ30uCTiOorOEBqsX0002G8Yu3YDs189CQhKn1PiA153Win94TGa7b49F
+         Cq8Q==
+X-Gm-Message-State: AFuF++nbcp0PeD4sQ2Q8xGmq0bUwox57szB6tlXcfWVpoquCHsJvUZO7
+	PhoIuHUyhqLlUq7+xUi2wovGvwBrVMFu660blrf1LzOycEp9huWzyf1kznK3dnIFlrIf3s7znWN
+	HCgeBkA==
+X-Received: from pjrv22.prod.google.com ([2002:a17:90a:bb96:b0:3a0:9658:1de6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2703:b0:3a0:2ffd:1a4b
+ with SMTP id 98e67ed59e1d1-3a098ce5269mr3354853a91.25.1790286791218; Thu, 24
+ Sep 2026 14:53:11 -0700 (PDT)
+Date: Thu, 24 Sep 2026 14:51:51 -0700
+In-Reply-To: <20260826-gmem-no-return-page-v4-0-3bb9c1ddb4e3@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260910-gmem-inplace-conversion-v13-0-dd6fbf94f4e1@google.com>
+References: <20260826-gmem-no-return-page-v4-0-3bb9c1ddb4e3@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <179028368162.2007072.12117327378679658047.b4-ty@b4>
-Subject: Re: [PATCH v13 00/44] guest_memfd: In-place conversion support
+Message-ID: <179028368772.2007408.8775233545709825615.b4-ty@b4>
+Subject: Re: [PATCH v4 0/5] Stop returning struct page from guest_memfd PFN lookup
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
-	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Fuad Tabba <fuad.tabba@linux.dev>, 
-	Ackerley Tng <ackerleytng@google.com>
+	"H. Peter Anvin" <hpa@zytor.com>, Ashish Kalra <ashish.kalra@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, Brijesh Singh <brijesh.singh@amd.com>, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, David Hildenbrand <david@kernel.org>, Yan Zhao <yan.y.zhao@intel.com>, 
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>, 
+	Fuad Tabba <fuad.tabba@linux.dev>, Ackerley Tng <ackerleytng@google.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, 10 Sep 2026 16:55:26 -0700, Ackerley Tng wrote:
-> Here's v13. Thanks everyone for the comments and fast responses!
-> We're now at ~3 weeks to soft-close at 7.3-rc5.
+On Wed, 26 Aug 2026 09:01:45 +0000, Ackerley Tng wrote:
+> v4 splits out a new patch (3) that makes use of KVM MMU invalidation logic
+> introduced into the RMP fault handling in patch 2 to avoid warning on a
+> benign case.
 > 
-> v13 is based on 7.3-rc2 and:
+> Other changes in v4:
 > 
-> + Hugh's patch to export lru_cache_drain_for_folio()
-> + Another series [1], which makes kvm_gmem_get_pfn() NOT return a
->   refcounted page to KVM.
+> + Took Sean's version of the changelog for patch 2
+> + Picked up Fuad's Reviewed-by: and Tested-by:
 > 
 > [...]
 
-Applied to kvm-x86 coco.  A *huge* thanks to everyone who helped with this!
+Applied to kvm-x86 coco, thanks!
 
-[01/44] KVM: guest_memfd: Optimize away conversion overheads via dead-code elimination
-        https://github.com/kvm-x86/linux/commit/54623a16bbdc
-[02/44] KVM: guest_memfd: Use kvm_mem_is_private() when populating guest_memfd memory
-        https://github.com/kvm-x86/linux/commit/fa7b8b1bb5d0
-[03/44] KVM: guest_memfd: Introduce per-gmem attributes, use to guard user mappings
-        https://github.com/kvm-x86/linux/commit/1ae5be958ff7
-[04/44] KVM: Rename KVM_GENERIC_MEMORY_ATTRIBUTES to KVM_VM_MEMORY_ATTRIBUTES
-        https://github.com/kvm-x86/linux/commit/44e17d0a3663
-[05/44] KVM: Enumerate support for PRIVATE memory iff kvm_arch_has_private_mem is defined
-        https://github.com/kvm-x86/linux/commit/c2ae2bc1a311
-[06/44] KVM: Rename memory attribute APIs to prepare for in-place gmem conversion
-        https://github.com/kvm-x86/linux/commit/a84ef89cbf91
-[07/44] KVM: Rename kvm_mem_is_private() to kvm_is_private_gfn()
-        https://github.com/kvm-x86/linux/commit/98fd6e30bd14
-[08/44] KVM: Provide generic interface for checking memory private/shared status
-        https://github.com/kvm-x86/linux/commit/8ab5719fbcdc
-[09/44] KVM: guest_memfd: Stub in ability to enable in-place shared<=>private conversion
-        https://github.com/kvm-x86/linux/commit/ee1168fb7313
-[10/44] KVM: Consolidate private memory and guest_memfd ifdeffery in kvm_host.h
-        https://github.com/kvm-x86/linux/commit/bcc640eabbb2
-[11/44] KVM: guest_memfd: Invalidate both SHARED and PRIVATE mappings for in-place conversions
-        https://github.com/kvm-x86/linux/commit/e088c7f86bef
-[12/44] KVM: guest_memfd: Always fault from guest_memfd if in-place conversion is enabled
-        https://github.com/kvm-x86/linux/commit/2e646bcfcf90
-[13/44] KVM: guest_memfd: Pass mapping type filter to invalidation helper
-        https://github.com/kvm-x86/linux/commit/2f7f4e102880
-[14/44] KVM: guest_memfd: Add base support for KVM_SET_MEMORY_ATTRIBUTES2
-        https://github.com/kvm-x86/linux/commit/799c9fadc639
-[15/44] KVM: guest_memfd: Ensure pages are not in use before conversion
-        https://github.com/kvm-x86/linux/commit/dcde2f853ff4
-[16/44] KVM: guest_memfd: Call arch make_shared callback for to-shared conversion
-        https://github.com/kvm-x86/linux/commit/6fa1dab756fd
-[17/44] KVM: guest_memfd: Return early if range already has requested attributes
-        https://github.com/kvm-x86/linux/commit/856852ef2108
-[18/44] KVM: guest_memfd: Zero page while getting pfn
-        https://github.com/kvm-x86/linux/commit/cb0544296a33
-[19/44] KVM: SEV: Make 'uaddr' parameter optional for KVM_SEV_SNP_LAUNCH_UPDATE
-        https://github.com/kvm-x86/linux/commit/edcc3f42981e
-[20/44] KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
-        https://github.com/kvm-x86/linux/commit/af602a96f401
-[21/44] KVM: Move KVM_VM_MEMORY_ATTRIBUTES config definition to x86
-        https://github.com/kvm-x86/linux/commit/31670c382efc
-[22/44] KVM: Let userspace disable per-VM mem attributes, enable per-gmem attributes
-        https://github.com/kvm-x86/linux/commit/537ec2b15fdd
-[23/44] KVM: guest_memfd: Enable INIT_SHARED on guest_memfd for x86 Coco VMs
-        https://github.com/kvm-x86/linux/commit/b5ed1ee2a7a0
-[24/44] KVM: selftests: Create gmem fd before "regular" fd when adding memslot
-        https://github.com/kvm-x86/linux/commit/b312cab4e48c
-[25/44] KVM: selftests: Rename guest_memfd{,_offset} to gmem_{fd,offset}
-        https://github.com/kvm-x86/linux/commit/8d5f49000f8b
-[26/44] KVM: selftests: Add support for mmap() on guest_memfd in core library
-        https://github.com/kvm-x86/linux/commit/ee455183c92b
-[27/44] KVM: selftests: Add selftests global for guest memory attributes capability
-        https://github.com/kvm-x86/linux/commit/c3e48c166e35
-[28/44] KVM: selftests: Add helpers for calling ioctls on guest_memfd
-        https://github.com/kvm-x86/linux/commit/0bbbd2b02bf0
-[29/44] KVM: selftests: Test basic single-page conversion flow
-        https://github.com/kvm-x86/linux/commit/eaef4ed5fabc
-[30/44] KVM: selftests: Test conversion flow when INIT_SHARED
-        https://github.com/kvm-x86/linux/commit/e5fa04dc920e
-[31/44] KVM: selftests: Test conversion precision in guest_memfd
-        https://github.com/kvm-x86/linux/commit/492080a3d4e5
-[32/44] KVM: selftests: Test conversion before allocation
-        https://github.com/kvm-x86/linux/commit/97137c140360
-[33/44] KVM: selftests: Convert with allocated folios in different layouts
-        https://github.com/kvm-x86/linux/commit/5362c5fb88f6
-[34/44] KVM: selftests: Test that truncation does not change shared/private status
-        https://github.com/kvm-x86/linux/commit/bfb9b5a286ea
-[35/44] KVM: selftests: Test that shared/private status is consistent across processes
-        https://github.com/kvm-x86/linux/commit/8b72eaa766b6
-[36/44] KVM: selftests: Add helpers to pin pages with CONFIG_GUP_TEST
-        https://github.com/kvm-x86/linux/commit/e8a40b9a604e
-[37/44] KVM: selftests: Test conversion with elevated page refcount
-        https://github.com/kvm-x86/linux/commit/0db3f14f40c4
-[38/44] KVM: selftests: Reset shared memory after hole-punching
-        https://github.com/kvm-x86/linux/commit/c235250e8bc1
-[39/44] KVM: selftests: Provide function to look up guest_memfd details from gpa
-        https://github.com/kvm-x86/linux/commit/ee6f4c381903
-[40/44] KVM: selftests: Provide common function to set memory attributes
-        https://github.com/kvm-x86/linux/commit/f49dd8ba330e
-[41/44] KVM: selftests: Make TEST_EXPECT_SIGBUS thread-safe
-        https://github.com/kvm-x86/linux/commit/ef72e71da099
-[42/44] KVM: selftests: Set up page size and alignment independently for guest_memfd
-        https://github.com/kvm-x86/linux/commit/710169986d9b
-[43/44] KVM: selftests: Update private_mem_conversions_test for in-place conversions
-        https://github.com/kvm-x86/linux/commit/e24e534ff850
-[44/44] KVM: selftests: Update private memory exits test to work with per-gmem attributes
-        https://github.com/kvm-x86/linux/commit/37e0791600e5
+[1/5] KVM: SEV: Treat unassigned RMP entry as benign race on PSMASH failure
+      https://github.com/kvm-x86/linux/commit/211606532680
+[2/5] KVM: SEV: Drop page refcount early during RMP fault handling
+      https://github.com/kvm-x86/linux/commit/375b32931b5d
+[3/5] KVM: SEV: Check for invalidation before warning on unassigned RMP entry
+      https://github.com/kvm-x86/linux/commit/acafcf32c83e
+[4/5] KVM: SEV: Drop page refcount early in VMSA reload
+      https://github.com/kvm-x86/linux/commit/3c427e5c0347
+[5/5] KVM: guest_memfd: Stop returning struct page from PFN lookup
+      https://github.com/kvm-x86/linux/commit/89fbe3de01cc
 
 --
 https://github.com/kvm-x86/linux/tree/next
