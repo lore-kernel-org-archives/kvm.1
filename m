@@ -1,211 +1,200 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl2-f12.google.com (mail-dl2-f12.google.com [74.125.229.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAEF389111;
-	Thu, 24 Sep 2026 10:06:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44E13AB269
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 10:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790244426; cv=none; b=WAK3f+UPmfhIe+iFYK+N0VyDAIFIMi/8gCuxFyvfjXiahNwaOTR3bW3Pz81Fdklyd7ihKmFDoKBGRIyQj3RlXzhPL204rfWx2jnnHyPuSlFa2FXffAdWbw8COVCOGjzY9tJsgxOqJG7htr2k6L0+h9EjHJaAJ2F9rEkKbMjBL3c=
+	t=1790244991; cv=none; b=WM/JIkrwIG+GsO1joCspjv8SS9cGzaLJ1SZb/3vTVIwdBfF2bV/fCk1QTxjUWtjrhYWC0KY4VZKsS1aF47nYUbA2BfVry4DzxS6p5JQ1psb4ncDQ+HBLc4J+MB9yA/MSghHrnvRP1sfB/lfu4klUjSptpjgQ9nbz24E5H9h4N2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790244426; c=relaxed/simple;
-	bh=3BdFtZaQx/hN1F8B7NWjXGwFzEqYe+EiIIZXC/z69vI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dy7kV6WcyzC+RPhPDp8Z+ppMFtXxCI9seff01cMnschqi0aoK+bc0pA+Q584fgFoyW6W+vCKH7SEyDAPukkjZRkGWVfVYKES6yRzHNPfv7DbRh5eyxaDFBLCI4gMvcC0FgBZxtsy7LmassO1EE8cK1vhQaREznCKooR2knDS/Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PLQwBAOG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790244991; c=relaxed/simple;
+	bh=MiE+4ItnXmHUBKhLrUz3zntIZyWtLRntpAxtOY0u6BY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Hx0YxiH3dCoNhtXJLfjp+6dzxbjF3h9wa7xaC41zGnKs+GPqik8AFg6LMlzeaCHqypjfq8ckUTwGOOUeC+/ssnJ43KzIJuWyWfBY2X+EidUrEqypMbJrnNntBDGcrhkzGfwHt6ncz1TrBvurVb5tm1vJ1P0XjfhnI1rpdjwl0ME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=g9DSzDqs; arc=none smtp.client-ip=74.125.229.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PLQwBAOG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C321F00893;
-	Thu, 24 Sep 2026 10:06:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790244413;
-	bh=Tmln/mtpzj8HRD3oGhB2G+T5+fAuKHxHe9EIDa4XupE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PLQwBAOGo9zDSHvR7HKzryQ/BMyFMtzGN+nCViQmJtAxtR/cVtie3h8+uTfYAAuqI
-	 031IL8YiCRbRgN3Lu0GdOWHF3up1c5eAkeUhEPdxuJ9q/SthtjUJM4e5DTQk3971Cv
-	 +R/NIvQEe5TAium5bmdEyB/qSUVvrKQ3N2k6WtmzwCU8Hw7KqZ3HuHqonUNceqtFUI
-	 gkBAcKeGMzG5vw33mskB8GCIprFrs11XV7eTU1DX4P4aEFuLfxG1bzkZcra4RB+dUr
-	 UBz/croW/YGWjUjo9iUnRJL3m1e4m9BS//Qzg5nKK/0JyOftW1GHHLTSp3iQSWnW2G
-	 YCgs9xZC0a5iw==
-Date: Thu, 24 Sep 2026 11:06:21 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
-	Doug Gilbert <dgilbert@interlog.com>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>, 
-	Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev
-Subject: Re: [PATCH v3 04/40] mm: consistently validate VMA state after
- mmap[_prepare] hooks
-Message-ID: <arT1xJpWlFlRHUFY@gremlin>
-References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
- <20260917-b4-mmap-prepare-vma-flag-sanify-v3-4-4583d8a23bca@kernel.org>
- <DLN7FLRJGS5Y.1T8T274W2NS6L@nvidia.com>
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="g9DSzDqs"
+Received: by mail-dl2-f12.google.com with SMTP id a92af1059eb24-142dd025d06so1642262c88.1
+        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 03:16:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1790244979; x=1790849779; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=u7LK00oqDOE3QAV0dIPEwP0ZWU0x/VHk80FlxiovFNw=;
+        b=g9DSzDqs8LuN4AeYdsx4K6TuX9oqHEq/5mGCol5OmHfpvvB/Z+YqSHP1/5ZWdeRQu6
+         LBGKRLG1aqpGKVEbw8mzJ88IkmLVih4LqVGyffPKdO0Yc9oW4aBQilS051gTuWwki36D
+         /7Gbq+fpXNW0PXiIR9pw1ZzTAdpGdmetqMO++m9CXuXIjcldqc6JFrcAZ12gZ+gYU/vv
+         UZSWcvUlSuhROTmptcAf6g51snHEhuSmOTj3AmGbdlt1aC+SMwg4/Ibw+DIVxzVcr3zz
+         o7+IxAf0D9ldllmkktLMbfncuhkTghJ5QT5aw49Le7pk6EYPtKI35yLj8WQWj7NJORar
+         txvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790244979; x=1790849779;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=u7LK00oqDOE3QAV0dIPEwP0ZWU0x/VHk80FlxiovFNw=;
+        b=gkmBORrHg/KQt7dwL1m2ckwgsK8lAWv6Fi+r8yqYFLB8KR3i1CyrcZPioawkJ4e9Ux
+         c78wzfstGWQLG8M7DVGPYNBV8B0kA/T8FW3P1zhhLWGz+FcsYNfVZcP4w9Pe5hFDGiUa
+         JnlBrGWs9EUvshoO0v1/CDuMy547HReOukri965Ex23rMCg4PU/f4FuvpUikJy4/wdnJ
+         e06FmTZTMkhgMijN0DThsRE+DoO+G9sJZFZZk7RHg1dXQqy2Qf2PG4YtNd9AP9nvpOFE
+         SIhx/AfDxlkmGDsnBAHRpZYFLfmlbZ8UZ107IAu4STzPs0FvopUePCsaCZ20YirsNafP
+         zI0w==
+X-Forwarded-Encrypted: i=1; AKwUvBz+GrIipsxf6OXRpSbb+mXQ92y8tKTIKqQkhoWmd/1sydC1cFzVJFsMBT3Aly5hoYLNwXg=@vger.kernel.org
+X-Gm-Message-State: AFuF++n+I8P86/dKjw3DwOiLo/OLQ2iJnT1fIeMHtgwxQVsVWxFqPArE
+	MP0F3crH4EpAMoRpxQ4KkVB23Rh4/HLq8JKexYQWGbdqVq9/alYbqfvZaBJT6TAIfXs9mH84zK3
+	Pku28VxFK3w==
+X-Gm-Gg: AYBFou1o0xs9IkN83ryqAkTWH9MCuUl+45dzsNk1FObCrerZgys3hAtmsSvRCQalUDV
+	bd+M8w9dh9RhC620X6qaOgOLDtVcIQGRPos6p4J+JajaEow36jx53+MzKhZgKjBMeQth1h0nOOr
+	wERXPYnkya2lkThmTEGBEgHkaupcp3o7B2KyaglPrvjgeDS5ZmvA8tQsNekc/+zwb1mMdztd1SG
+	szOZee6MFFpZQOntJhUN4ZqsR/LHGr+Wemb9/PfVKkbMDJ5J9+cFQipbj3QmNm5n2V+2rKNFbHX
+	omos8Uh78UWin3U/Da1wqKgPAngyk6OLP5xZae24E+famO7xCYcIu/ospAKk0FUO4K2T2SiaA5F
+	fjwXEkNp2cqnO0Xyl6S2vWOISXZhZwwrl/4sEk/lJET/MP9Tz6kh9+k2dHY0PRCX6m83nBUkQzA
+	3qctjRin7btZDiE8RRjIJbh4fvqkimSza/yasV+ohArJszGjwIjHoFB2aOzUF3vz6wAFQBzOoQO
+	m3rXTXCjZyBdA2GmWs=
+X-Received: by 2002:a05:7300:c019:10b0:33b:c24c:47cd with SMTP id 5a478bee46e88-340035bf9d9mr1782888eec.16.1790244978791;
+        Thu, 24 Sep 2026 03:16:18 -0700 (PDT)
+Received: from sw07.internal.sifive.com ([4.53.31.132])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33e975223fcsm12254595eec.31.2026.09.24.03.16.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 03:16:18 -0700 (PDT)
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Date: Thu, 24 Sep 2026 03:16:13 -0700
+Subject: [PATCH v2] RISC-V: Clear HSTATUS.HU on CPU initialization
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DLN7FLRJGS5Y.1T8T274W2NS6L@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260924-hstatus_hu-v2-1-7e970f5f1d8d@sifive.com>
+X-B4-Tracking: v=1; b=H4sIAGz4tGoC/22NywrCMBBFf6XM2kgTHw2u/A8pkqZTM4JNySRBK
+ f13m7p1eeDcc2dgDIQMl2qGgJmY/LiC2lVgnRkfKKhfGVStzrWWjXAcTUx8d0kYabQ2qrFNJ2E
+ dTAEHem+xW/tjTt0TbSyFYjji6MNne8uyeH/DWQoplLang+2H7ljrK9NAGffWv6BdluULdtg/e
+ rcAAAA=
+X-Change-ID: 20260817-hstatus_hu-a1a88a27c7b1
+To: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>
+Cc: greentime.hu@sifive.com, vincent.chen@sifive.com, zong.li@sifive.com, 
+ kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Yong-Xuan Wang <yongxuan.wang@sifive.com>, 
+ Samuel Holland <samuel.holland@sifive.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790244977; l=3822;
+ i=yongxuan.wang@sifive.com; s=20260424; h=from:subject:message-id;
+ bh=MiE+4ItnXmHUBKhLrUz3zntIZyWtLRntpAxtOY0u6BY=;
+ b=lJsDgeDAFpzkUZgwbf6xofjnxNK0j5K+KDvcLG59+7QXUPCuV2SrHNbl6effhqne9YSnrJDPl
+ DbbQVpzEO2jBsZbYKau8bP8WWRoX/urfT4BpbtZmYrJ8aUni4lV7kqg
+X-Developer-Key: i=yongxuan.wang@sifive.com; a=ed25519;
+ pk=+8NCHB1ZJvZthQAmZspOAaqjo+/snaW8mFSiDx45HxY=
 
-On Wed, Sep 23, 2026 at 10:52:06PM -0400, Zi Yan wrote:
-> On Thu Sep 17, 2026 at 12:22 PM EDT, Lorenzo Stoakes (ARM) wrote:
-> > When the f_op->mmap_prepare or deprecated f_op->mmap hooks are invoked, the
-> > driver might have done something crazy that is not permitted by the kernel.
-> >
-> > Currently we check for three such cases in __mmap_new_file_vma(), but only
-> > if the legacy f_op->mmap hook is used:
-> >
-> > * Did sparc ADI result in invalid flags?
-> >
-> > * Did the driver alter vma->vm_start?
-> >
-> > * Did the driver make a file-backed mapping on a read-only file writable?
-> >
-> > Generalise these checks for both mmap_prepare and mmap and apply to all
-> > invocations of mmap_file(), the f_op->mmap and f_op->mmap_prepare handling
-> > in the core VMA code and the mmap_prepare compatibility layer.
-> >
-> > Also extend the vm_start check to vm_end also - drivers must not change the
-> > VMA range at all.
-> >
-> > We also WARN_ON_ONCE() on these conditions as they are things that should
-> > simply not occur in the kernel and it's important to call it out when it
-> > does.
-> >
-> > We invoke mmap_prepare_validate() after mmap_action_prepare(), as mmap
-> > actions often manipulate state in the descriptor thus providing the final
-> > state the VMA will be derived from.
-> >
-> > Also call mmap_validate_vma_flags() in insert_vm_struct() to ensure that
-> > special regions which are inserted (such as a VDSO or VVAR) also satisfy
-> > the sanity checks.
-> >
-> > This way every VMA established through an mmap hook, whether via mmap() or
-> > the compatibility layer, or inserted via insert_vm_struct(), has been
-> > validated. brk() VMAs never pass through a driver hook and so need no such
-> > check.
-> >
-> > While we're here, also fixup a couple disjoint blocks of #ifdef CONFIG_MMU.
-> >
-> > Finally, update the VMA userland tests to reflect the change.
-> >
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> >  mm/internal.h                   |  51 ++++++++++++--------
-> >  mm/util.c                       |  19 ++++++--
-> >  mm/vma.c                        | 100 ++++++++++++++++++++++++++++++++++------
-> >  mm/vma.h                        |  25 ++++++++--
-> >  tools/testing/vma/include/dup.h |  10 ++++
-> >  5 files changed, 163 insertions(+), 42 deletions(-)
-> >
-> <snip>
-> > +
-> > +/* Check to ensure a driver hasn't done something crazy. */
-> > +static int mmap_validate(unsigned long prev_start, unsigned long prev_end,
-> > +			 unsigned long curr_start, unsigned long curr_end,
-> > +			 const vma_flags_t *prev_flags,
-> > +			 const vma_flags_t *curr_flags)
-> > +{
-> > +	bool was_maywrite, is_maywrite;
-> > +
-> > +	/* Drivers cannot alter the range of the VMA. */
-> > +	if (WARN_ON_ONCE(prev_start != curr_start || prev_end != curr_end))
-> > +		return -EINVAL;
-> > +
-> > +	was_maywrite = vma_flags_test(prev_flags, VMA_MAYWRITE_BIT);
-> > +	is_maywrite = vma_flags_test(curr_flags, VMA_MAYWRITE_BIT);
-> > +
-> > +	/* A driver may not make a previously unwritable mapping writable. */
-> > +	if (WARN_ON_ONCE(!was_maywrite && is_maywrite))
->
-> Is it driver specific or generally applicable to all mmap(_preppare)
-> operations? Is the comment too specific?
->
-> During my LLM quiz, making memfd write seals writable via a
-> hypothetically wrong shmem_mmap_prepare() implementation is an example
-> for this WARN_ON_ONCE. It is not driver related. Let me know if I get it
-> wrong.
+The RISC-V privileged specification does not mandate HSTATUS reset
+values, leaving the HU bit potentially set after hardware reset.
+When HU=1, hypervisor instructions (HLV/HLVX/HSV) can execute in
+U-mode to access guest memory, which may cause unintended behavior
+if not explicitly controlled.
 
-Driver is taken to mean anything with an mmap or mmap_prepare hook, like a
-general term for that.
+Clear HSTATUS.HU during CPU initialization to ensure hypervisor
+instructions are only available in HS-mode, preventing unexpected
+guest memory access from U-mode code.
 
-If we start getting into calling it different if it's a file system or memfd or
-something then it becomes quite hard to talk about it.
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
+---
+Changes in v2:
+- Clear the hstatus.hu in the arch core setup instead of kvm core setup
+(sashiko)
+- Link to v1: https://patch.msgid.link/20260817-hstatus_hu-v1-1-28c53cdfb408@sifive.com
+---
+ arch/riscv/include/asm/cpufeature.h |  2 ++
+ arch/riscv/kernel/cpufeature.c      | 12 ++++++++++++
+ arch/riscv/kernel/setup.c           |  2 ++
+ arch/riscv/kernel/smpboot.c         |  2 ++
+ arch/riscv/kernel/suspend.c         |  2 ++
+ 5 files changed, 20 insertions(+)
 
-And yeah I hate that it's not a good name because driver makes you think
-something in drivers/* or an OOT one or something but the kernel makes it vague
-:)
+diff --git a/arch/riscv/include/asm/cpufeature.h b/arch/riscv/include/asm/cpufeature.h
+index 739fcc84bf7b..5efa72823475 100644
+--- a/arch/riscv/include/asm/cpufeature.h
++++ b/arch/riscv/include/asm/cpufeature.h
+@@ -40,6 +40,8 @@ extern u32 thead_vlenb_of;
+ 
+ void __init riscv_user_isa_enable(void);
+ 
++void riscv_clear_hypervisor_csr(void);
++
+ #define _RISCV_ISA_EXT_DATA(_name, _id, _subset_exts, _subset_exts_size, _validate) {	\
+ 	.name = #_name,									\
+ 	.property = #_name,								\
+diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+index f46aa5602d74..80767a016602 100644
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -1183,6 +1183,18 @@ void __init riscv_user_isa_enable(void)
+ 		pr_warn("Zicbop disabled as it is unavailable on some harts\n");
+ }
+ 
++void riscv_clear_hypervisor_csr(void)
++{
++	if (!riscv_has_extension_unlikely(RISCV_ISA_EXT_h))
++		return;
++
++	/*
++	 * Clear HSTATUS.HU to restrict hypervisor instructions to HS-mode.
++	 * This prevents user-mode from executing HLV/HSV instructions.
++	 */
++	csr_clear(CSR_HSTATUS, HSTATUS_HU);
++}
++
+ #ifdef CONFIG_RISCV_ALTERNATIVE
+ /*
+  * Alternative patch sites consider 48 bits when determining when to patch
+diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+index 52d1d2b8f338..bf42efd848f6 100644
+--- a/arch/riscv/kernel/setup.c
++++ b/arch/riscv/kernel/setup.c
+@@ -364,6 +364,8 @@ void __init setup_arch(char **cmdline_p)
+ 
+ 	if (!IS_ENABLED(CONFIG_RISCV_ISA_ZBB) || !riscv_isa_extension_available(NULL, ZBB))
+ 		static_branch_disable(&efficient_ffs_key);
++
++	riscv_clear_hypervisor_csr();
+ }
+ 
+ bool arch_cpu_is_hotpluggable(int cpu)
+diff --git a/arch/riscv/kernel/smpboot.c b/arch/riscv/kernel/smpboot.c
+index f6ef57930b50..a9de2dae804c 100644
+--- a/arch/riscv/kernel/smpboot.c
++++ b/arch/riscv/kernel/smpboot.c
+@@ -244,6 +244,8 @@ asmlinkage __visible void smp_callin(void)
+ 
+ 	numa_add_cpu(curr_cpuid);
+ 
++	riscv_clear_hypervisor_csr();
++
+ 	pr_debug("CPU%u: Booted secondary hartid %lu\n", curr_cpuid,
+ 		cpuid_to_hartid_map(curr_cpuid));
+ 
+diff --git a/arch/riscv/kernel/suspend.c b/arch/riscv/kernel/suspend.c
+index 3efbf7874f3b..db220966f782 100644
+--- a/arch/riscv/kernel/suspend.c
++++ b/arch/riscv/kernel/suspend.c
+@@ -43,6 +43,8 @@ void suspend_save_csrs(struct suspend_context *context)
+ 
+ void suspend_restore_csrs(struct suspend_context *context)
+ {
++	riscv_clear_hypervisor_csr();
++
+ 	csr_write(CSR_SCRATCH, 0);
+ 	if (riscv_has_extension_unlikely(RISCV_ISA_EXT_XLINUXENVCFG))
+ 		csr_write(CSR_ENVCFG, context->envcfg);
 
-Naming is hard...
+---
+base-commit: b5060a4aa33d7d78a8c1837ab08ef0c81ea96650
+change-id: 20260817-hstatus_hu-a1a88a27c7b1
 
->
-> Otherwise, LGTM.
->
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-
-Thanks!
-
->
->
-> --
-> Best Regards,
-> Yan, Zi
->
-
---
-Cheers, Lorenzo
