@@ -1,200 +1,192 @@
-Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F8E3F5BFD;
-	Thu, 24 Sep 2026 18:05:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD354A386D;
+	Thu, 24 Sep 2026 18:07:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790273158; cv=none; b=p3PVD0qJns7OJ4t6jF7pO+j2f9GABCiYT0gHWewTAXP86BT03lRWJwjjRjt1DO8NH/W4AgivwEQ9DMJQtzA4TCGvJgOa4b7Svg/fi/JFoVCga6fGZcGUoIM7/vYYVAcy49ZxKCEUMG0vskaaeYtvuB6CWxJ/puAtc/ma+Hhjjd0=
+	t=1790273241; cv=none; b=bXQZLAjN9qkbmQgpH9Z9DWx+/rQ+3/4McnbR+KplQE/LThbv5Hvxc6oxMpkWBrpbGIeG4kS7yBBqoK59Mm+1YuBuAzwKOgMik1TnOWL8UrkILF1fHhuJYUoJIPMcO5RaEQbT/WAstlHutnj/dUcLCM8RLu/lGeCfyYzC9jOVK50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790273158; c=relaxed/simple;
-	bh=FWFsNnSzhu1fiE5WtHS0RJuAvLpbRr/sFjwMzAyL1/A=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jyXuk94FFeWIArSjV5kI+A/FX56w2J3Wm6Vuc5tDzknebOa3r6LV33w9I3MVnWbsoPhVuFy4/dLxHFf/aAoxbaF02mumULPoAKVvvs5z37yC91IoL760wCNjA1yCAO0GgPy3J6R1aOW+EKPUP3XEeZSX3D8N7lvatY1Db5g1eEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=LgvpoTU6; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=c133arE5; arc=none smtp.client-ip=202.12.124.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1790273241; c=relaxed/simple;
+	bh=QTADa+FhIxUlxG6MXI1foJIul5G3DiJBAFn/qjY0HNw=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=CS8t2x3AS1B7Zvb5nvmkiNJjVneKJnKSDxS7TUtGYd+L6f2SSyjU8DWv7mJWpy7ZfxmTO1/dycxbMU0cjUPfwnkfkzQOOBU89/n6Ga1EGdhBGH3Ry455lMos9WuZ38Yk5R6aOuUTeCKfeWpsr/1llPZHWWHYUL6UbDWx/fuYtqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nl0xuJIT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="LgvpoTU6";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="c133arE5"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id 1E7941D00098;
-	Thu, 24 Sep 2026 14:05:53 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Thu, 24 Sep 2026 14:05:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1790273152;
-	 x=1790359552; bh=LnOMZElOTssHpcgTXTzuI+vdxp3by2LgyupIgEe64/0=; b=
-	LgvpoTU6OCuSsvOGNgKv4W+ifIhyoYKNdLeVIolJybTO6aztahAh6agUZw/2THtY
-	jbVAfyInscEY/mST8IlJ5ZD5G+DwjfFh3n9NvYcxB0yT/pV53CdOIuBmFHOE9/dt
-	a0IN6X/D7Qan+6FQIjK4ajpNF0090IrTCL34fE8hg7Uh0vDIxX9QAybuwwKY1sxN
-	al0s9KNXO6suUN4hyI+Y/Vrthpr5m9Yftrk+AGoFU12y0QzczgEKoZHHGkFtx9GA
-	sxuHt5WcpK6+w8sJbzK1jql+4xAsp9g/R/2hjvwLGeUcKMDHStTXEwTZoOvdft28
-	hkwwa+/7r1LGnaoKYrU/uQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790273152; x=
-	1790359552; bh=LnOMZElOTssHpcgTXTzuI+vdxp3by2LgyupIgEe64/0=; b=c
-	133arE5YXKbNp1SHN91JG9h6x9OXU60Xr7Z0DeRxE4K6EbRuyj/UMi5oUSa4Wds1
-	JHukH66zouRUWV1jhYHRR/3r6scRvqivG0s1b34K6Gg60jARY4cUgN7uN8+1K4hi
-	SxlcuyOlSalPQPjeSBYCDTT52mmeJtNwedE5Gmftko1IzIQOQjhpCj9/S9EqBJjH
-	pXuUoMYm4O7XIb7VADk4qMJIgBEwrT6aDi9Vz6sqUu9eENZLSkg4Q4FaCEHSkiWV
-	GFXF+76b4B/rULOQzJKWVqb4fkv7kcCEIZyf2TIEgj7n8IWcjJoWRcD8u/J56z+B
-	nASqzH2F/g1zUSGqwRfnw==
-X-ME-Sender: <xms:gGa1asiYYzcwCU4drX12PGo9ZDKeimJOQr2URByXX05GD9Z6WUYoWQ>
-    <xme:gGa1aqNLSoEjajYYjw4uRzS9VDU6uVJ2a9FCibTZRgW0I0dUp9UFb4N7axpGg-9OU
-    7jDLqEdV5vlh0r7TwVk-mpzIvTHjyxhvciVa8PU-EYlQa4UgfGgTAQ>
-X-ME-Received: <xmr:gGa1ak-kksG0UUBZM27h3DslEX7X1-sQ5AUOSd42fjFhLZ3CIC4zs6NnViHjkQ>
-X-ME-Proxy-Cause: dmFkZTEcpyhqwH37txrXJNJQlslykEF3owGmeiGtpJKBmGvar0NgW2vQqDs6r4dxYAP/E3
-    D9vSKhCe0U+nc9+tFbW4yEgeD7qkfQOxuS4eAHHzj11Li6x/R+xBVhyz5LVz2s4OPlPYsv
-    odGoxcqdmiIJpTQLrmbssMJ33uO44/ksB/2KOH7OQpFftF2Caa/Ltj80nhm4ENAgX6ClBZ
-    7xwuraWb9EYOKmcgClXEI9N1+/oTiZkbBuBvXHuFC/7CNj5JYItYog06cOv7RwUJVyacOS
-    KgFIPujM1kn5Cy7vkWENJwwuvPI6uubu4WWNFIZiwsjB5oH+AudZhJwjj3e5p1/dU+fRl2
-    qfhWwLJG00Zpe+SD37YT5GAQ0u0c3cF8og0jPPRefz2VuN6vg/IyN7RfibHj1jNTAHTgTK
-    z7MDuxtlJfzhKafTTC3gB6lybmttRnHPwHd/WNESmnlUI0VdUn1HmHYkf1vTiPOQ6kkTCu
-    p/WOqBkVKQiUBaJkeGmR5biXapmFkK0IAETFt0QMNFDxi2+/GFU3mmz1LH6QclWecLtK3t
-    asR9MEP/ANEE4pHOSfGAvWfDSCRdiDXbm937l2bG9y26gIFWmwH5kj1JFQBWyfHdtrD0+P
-    u5tohWkdp4XDS/yNdhIdwcvgUbn0S+qESB4FEs82/qJ9Hgo8JrHeLPu5Vn3Q
-X-ME-Proxy: <xmx:gGa1ajdApqjRcM6PG1sWhF_oRpEO3NgggHmZiqCyWnpM2_no79pvuw>
-    <xmx:gGa1aryh4kPhRAVkbK2buy7V5K1S2UCtkVy-NpePYVbylmKkyZTSrg>
-    <xmx:gGa1agKaOy0FCqjKqg2GVq-AA0cSkXTeh9OsM3jgvorkQ6kB-DV-bg>
-    <xmx:gGa1alEUI5IVBe_RYibsXrxy-1QsiHXtdKTXXldXQDuE9zoL3MqVNA>
-    <xmx:gGa1asH3f60Yle92vwzJ5HjK5tDVc_gSKh2b4x-e5-T1WhInzAi9i2hD>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 24 Sep 2026 14:05:51 -0400 (EDT)
-Date: Thu, 24 Sep 2026 12:05:48 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: David Matlack <dmatlack@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm <kvm@vger.kernel.org>, Alex
- Williamson <alex.williamson@nvidia.com>, linux-kernel
- <linux-kernel@vger.kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian
- <kevin.tian@intel.com>, Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v2 2/4] vfio: selftests: Verify a failed second open
- preserves the vf_token
-Message-ID: <20260924120548.75097986@shazbot.org>
-In-Reply-To: <20260911170429.1642480-3-alex.williamson@nvidia.com>
-References: <20260911170429.1642480-1-alex.williamson@nvidia.com>
-	<20260911170429.1642480-3-alex.williamson@nvidia.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nl0xuJIT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93DF81F000FF;
+	Thu, 24 Sep 2026 18:07:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790273240;
+	bh=g/EOuW3OQyQk+/jztAPPOuiWKoxO/McPBzlGeSgrEOQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Nl0xuJITVygldgfdyf706DX7nG34pg7uHEwKUBL6eKWKzVisoJQ90dmp3FHsVO4Pv
+	 Ulz+2HwOvhixfCWyCO2d+jR59xj3hlxAYZS4umURLi24t0WM+gV4gk5pZW/fesywrA
+	 gxYv/84vy6ieduqwGtqEtw/8u9JsPQFYRkhnTQ7HN6OJSVGl/cYGAAZFjdR/ib2Qpw
+	 +H38B+OqtJxAx7Sle5n2/0l3YJmPIMZq/gAlIUc8zUgM3TBhwGwAKuK5zOreqdxXuE
+	 PQWDXE4QfscEaeu5u3aPrOg+4+9ZbMJdH+5bIzTACv8i9L5eDC/gGNP00AzDn+Zz7z
+	 NWrC42d/u6Upg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v9 19/22] KVM: arm64: Detect overflows for the
+ Partitioned PMU
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Colton Lewis" <coltonlewis@google.com>
+Cc: kvm@vger.kernel.org, "Marc Zyngier" <maz@kernel.org>, kvmarm@lists.linux.dev, "Oliver
+ Upton" <oupton@kernel.org>, linux-perf-users@vger.kernel.org
+In-Reply-To: <20260924172928.2110956-20-coltonlewis@google.com>
+References: <20260924172928.2110956-1-coltonlewis@google.com>
+ <20260924172928.2110956-20-coltonlewis@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 24 Sep 2026 18:07:19 +0000
+Message-Id: <20260924180719.93DF81F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-Hey David,
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Critical] kvm: arm64: PMU partition clears hardware PMOVSSET_EL0 without=
+ restore
+- [High] kvm: arm64: Data race in PMOVSSET_EL0 update against NMI handler
+- [Medium] kvm: arm64: kvm_pmu_should_notify_user() indirectly alters hardw=
+are PMU state
+--
 
-Ping, you suggested[1] this selftest, I think this series is only
-blocked by an ack here.  Thanks,
+commit ff8f6a7646a20c591702abbe44679f3e9bd4462d
+Author: Colton Lewis <coltonlewis@google.com>
 
-Alex
+KVM: arm64: Detect overflows for the Partitioned PMU
 
-[1]https://lore.kernel.org/all/aqHdXvfcfCJbLajM@google.com/
+When re-entering the VM or synchronizing PMU state after a guest counter
+overflow interrupt, evaluate whether any enabled and unmasked guest
+counter has overflowed and update the virtual PMU interrupt level in
+the vGIC accordingly.
 
-On Fri, 11 Sep 2026 11:04:25 -0600
-Alex Williamson <alex.williamson@nvidia.com> wrote:
+> diff --git a/arch/arm64/kvm/pmu-direct.c b/arch/arm64/kvm/pmu-direct.c
+> --- a/arch/arm64/kvm/pmu-direct.c
+> +++ b/arch/arm64/kvm/pmu-direct.c
 
-> The cdev path enforces a single open per device and rejects a second
-> bind of an already open device.  That rejection must happen before the
-> bind can mutate state shared across opens, notably the PF vf_token, so
-> that a bind which cannot complete leaves the current opener's state
-> untouched.
-> 
-> Add a regression test that binds a PF with one token, attempts a
-> second bind of the same PF with a different token, then initializes a
-> VF with the original token.  The VF init succeeds only if the second
-> bind left the PF vf_token intact; a regression that clobbered it to
-> the second token would make the VF init fail.
-> 
-> Additionally add a second separate test that enforces the -EBUSY
-> errno on second open so that the vf_token clobber and errno testing
-> are independent.
-> 
-> These hazards are specific to the cdev/iommufd single-open path, so
-> the tests run only in iommufd mode.
-> 
-> Suggested-by: David Matlack <dmatlack@google.com>
-> Assisted-by: LLM
-> Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
-> ---
->  .../selftests/vfio/vfio_pci_sriov_uapi_test.c | 57 +++++++++++++++++++
->  1 file changed, 57 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c b/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c
-> index 19d657d00b75..b57e4498443f 100644
-> --- a/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c
-> +++ b/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c
-> @@ -157,6 +157,63 @@ TEST_F(vfio_pci_sriov_uapi_test, override_token)
->  	ASSERT_COND_VF_CREATION(ret);
+[ ... ]
+
+> @@ -534,6 +534,61 @@ void kvm_pmu_handle_guest_irq(u64 pmovsr)
+> =20
+>  	for_each_set_bit(i, (unsigned long *)&govf, 64)
+>  		set_bit(i, (unsigned long *)__ctxt_sys_reg(&vcpu->arch.ctxt, PMOVSSET_=
+EL0));
+> +
+> +	if (kvm_pmu_part_overflow_status(vcpu)) {
+> +		kvm_make_request(KVM_REQ_IRQ_PENDING, vcpu);
+> +
+> +		if (!in_nmi())
+> +			kvm_vcpu_kick(vcpu);
+> +		else
+> +			irq_work_queue(&vcpu->arch.pmu.overflow_work);
+> +	}
+> +}
+> +
+> +/**
+> + * kvm_pmu_part_overflow_status() - Determine if any guest counters have=
+ overflowed
+[ ... ]
+> +bool kvm_pmu_part_overflow_status(struct kvm_vcpu *vcpu)
+> +{
+> +	u64 mask =3D kvm_vcpu_pmu_guest_counter_mask(vcpu);
+> +	u64 pmovs, pmint, pmcr;
+> +	unsigned long flags;
+> +	bool overflow;
+> +
+> +	local_irq_save(flags);
+> +	if (vcpu->arch.pmu.loaded_on_cpu &&
+> +	    vcpu =3D=3D kvm_get_running_vcpu()) {
+> +		u64 hw_ovf =3D read_sysreg(pmovsset_el0) & mask;
+> +
+> +		if (hw_ovf) {
+> +			__vcpu_rmw_sys_reg(vcpu, PMOVSSET_EL0, |=3D, hw_ovf);
+
+[Severity: High]
+Is this non-atomic update vulnerable to a race with pseudo-NMIs?
+
+Since local_irq_save() does not mask pseudo-NMIs on ARM64, the PMU interrupt
+can fire as an NMI and invoke kvm_pmu_handle_guest_irq(), which updates this
+exact software state using an atomic set_bit().
+
+When the NMI returns, this interrupted non-atomic read-modify-write
+operation will complete and could silently overwrite the NMI handler's
+updates, resulting in lost interrupts and corrupted hardware state.
+
+> +			write_sysreg(hw_ovf, pmovsclr_el0);
+
+[Severity: Critical]
+Does this break the guest's ability to read the overflow bit?
+
+The hardware overflow register is cleared here and the state is saved to the
+software context, but the canonical software state is never written back to
+the hardware before the guest accesses it directly.
+
+Because the partitioned PMU grants the guest direct, untrapped EL0/EL1
+access to PMOVSSET_EL0 for its assigned counters, failing to restore this
+will cause the guest to read a cleared hardware register (a 0 value) upon
+resuming execution, permanently breaking its ability to identify which
+counter overflowed.
+
+> +		}
+> +		pmint =3D read_pmintenset();
+> +		pmcr =3D read_pmcr();
+> +	} else {
+> +		pmint =3D __vcpu_sys_reg(vcpu, PMINTENSET_EL1);
+> +		pmcr =3D __vcpu_sys_reg(vcpu, PMCR_EL0);
+> +	}
+> +
+> +	pmovs =3D __vcpu_sys_reg(vcpu, PMOVSSET_EL0);
+> +	local_irq_restore(flags);
+> +
+> +	overflow =3D (pmcr & ARMV8_PMU_PMCR_E) && (mask & pmovs & pmint);
+> +
+> +	if (overflow && kvm_pmu_get_access(vcpu) =3D=3D VCPU_PMU_ACCESS_FREE)
+> +		kvm_pmu_set_guest_owned(vcpu);
+> +
+> +	return overflow;
 >  }
->  
-> +TEST(failed_second_open_does_not_clobber_token)
-> +{
-> +	struct vfio_pci_device *pf = NULL, *pf_second_fd = NULL, *vf = NULL;
-> +	struct iommu *iommu;
-> +	int ret;
-> +
-> +	iommu = iommu_init("iommufd");
-> +
-> +	/* Create and bind PF using UUID_1 */
-> +	ret = device_init(pf_bdf, iommu, UUID_1, &pf);
-> +	ASSERT_EQ(ret, 0);
-> +
-> +	/*
-> +	 * Attempt to open the same PF again and bind it with a *different*
-> +	 * token (UUID_2).  Return value intentionally unenforced.
-> +	 */
-> +	device_init(pf_bdf, iommu, UUID_2, &pf_second_fd);
-> +
-> +	/*
-> +	 * Attempt to initialize a VF using the original PF token (UUID_1).
-> +	 * If the failed open above clobbered the PF's token (i.e. updated it to
-> +	 * UUID_2), this VF initialization will fail.
-> +	 */
-> +	ret = device_init(vf_bdf, iommu, UUID_1, &vf);
-> +	ASSERT_EQ(ret, 0);
-> +
-> +	device_cleanup(vf);
-> +	device_cleanup(pf_second_fd);
-> +	device_cleanup(pf);
-> +	iommu_cleanup(iommu);
-> +}
-> +
-> +TEST(failed_second_open_returns_ebusy)
-> +{
-> +	struct vfio_pci_device *pf = NULL, *pf_second_fd = NULL;
-> +	struct iommu *iommu;
-> +	int ret;
-> +
-> +	iommu = iommu_init("iommufd");
-> +
-> +	/* Create and bind PF using UUID_1 */
-> +	ret = device_init(pf_bdf, iommu, UUID_1, &pf);
-> +	ASSERT_EQ(ret, 0);
-> +
-> +	/*
-> +	 * Attempt to open the same PF again and bind it with a *different*
-> +	 * token (UUID_2). This must fail with EBUSY because it's a second open.
-> +	 * Previously failed with EINVAL.
-> +	 */
-> +	ret = device_init(pf_bdf, iommu, UUID_2, &pf_second_fd);
-> +	ASSERT_EQ(ret, -EBUSY);
-> +
-> +	device_cleanup(pf_second_fd);
-> +	device_cleanup(pf);
-> +	iommu_cleanup(iommu);
-> +}
-> +
->  static void vf_teardown(void)
->  {
->  	/*
 
+> diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
+> --- a/arch/arm64/kvm/pmu-emul.c
+> +++ b/arch/arm64/kvm/pmu-emul.c
+
+[ ... ]
+
+> @@ -296,8 +296,14 @@ bool kvm_pmu_should_notify_user(struct kvm_vcpu *vcp=
+u)
+>  {
+>  	struct kvm_sync_regs *sregs =3D &vcpu->run->s.regs;
+>  	bool run_level =3D sregs->device_irq_level & KVM_ARM_DEV_PMU;
+> +	bool overflow;
+> =20
+> -	return kvm_pmu_overflow_status(vcpu) !=3D run_level;
+> +	if (kvm_pmu_is_partitioned(vcpu->kvm))
+> +		overflow =3D kvm_pmu_part_overflow_status(vcpu);
+
+[Severity: Medium]
+Does this call introduce hardware-altering side effects into a runnable
+status predicate?
+
+kvm_arch_vcpu_runnable() evaluates kvm_pmu_should_notify_user() in sleep
+polling loops (like kvm_vcpu_block). However, kvm_pmu_part_overflow_status()
+conditionally transitions PMU access to VCPU_PMU_ACCESS_GUEST_OWNED and
+invokes kvm_pmu_load(), forcing hardware register writes from a pure getter.
+
+Triggering hardware reprogramming inside waitqueue checks violates
+architectural layering and could introduce latency or synchronization issue=
+s.
+
+> +	else
+> +		overflow =3D kvm_pmu_emul_overflow_status(vcpu);
+> +
+> +	return overflow !=3D run_level;
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260924172928.2110=
+956-1-coltonlewis@google.com?part=3D19
