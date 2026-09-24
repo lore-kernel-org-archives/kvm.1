@@ -1,33 +1,69 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2243F4746C4;
-	Thu, 24 Sep 2026 10:49:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790246970; cv=none; b=XaUlT/o90AkzEdqFPt9+AGOtERY3pCZTPz3QQWPm9XQEn/aG/jVFLXUMSq/B0pbwANIQRo4SUhHpJKcY8vbhoDSvGIkR7SMvkqjewowRtEe8DojUiVNLHf6Go3gMtBwNzYCCcqdPH1ki4YOkEXukqOZPWsecFvgGS/88NhVhR1Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790246970; c=relaxed/simple;
-	bh=Ag41tBiO61VwQ+kewkVFaahq+25iFQPI5Fv2AnmNV18=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p3ow61Cd7bMQzm+alhEFFmcnEZoH/qAA9n2/1PKOGlDavl9d3qk6bVopn44pC+q+rm3jrWqDQvPTZ9+n6PvCA3A1d2shjARDT+DHcNJkCmFOXy1q8ad+kYDqh/GR6ZYw+wd79GTjhFaYu5g5xYIJ2e3GBMmYnpuMqBlBl1j6yE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=q9yC7wHd; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012007.outbound.protection.outlook.com [52.101.43.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38452407CDF;
+	Thu, 24 Sep 2026 11:15:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790248533; cv=fail; b=M4jB723HwBIB3vMEaUtt7c+Mep8DdJdguqce0Z8eh5AST/w5JiYmrkLO+NvO8n/CX3mi/vwZpCAMysmO+y9M+LG0ydqaCO3/4OIC8U9/NsNvgilblLaxQMN184JvqzITenFsRxnZy+wy6SAxlZnpKN9fhkTtnJY1ygxRaGZKOGs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790248533; c=relaxed/simple;
+	bh=+YOcHY4BEjrCMqN6YSHRdM8yHSm4jCR1m2ACyfmb9js=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=h3yvKar5YGMXEQY9yUdyzVjpf/t7RSNPWVk2siWBY/Gy8ELD5ZgL+TjtUp99q+8MAL8K2nOheGQ1GQJUHkg26B5jDlogA4EC3Brl7168Dw3WalAUbG5jDEt2krUgJ9+fg9puKrhz3sluB6s+Xfx0pDaoG+5ApuHM6R1ZK+dXTdw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=mnEjbHLf; arc=fail smtp.client-ip=52.101.43.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="q9yC7wHd"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D97E6143D;
-	Thu, 24 Sep 2026 03:49:23 -0700 (PDT)
-Received: from [10.0.128.141] (Suzukis-MBP.cambridge.arm.com [10.0.128.141])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D96DE3F86C;
-	Thu, 24 Sep 2026 03:49:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790246967; bh=Ag41tBiO61VwQ+kewkVFaahq+25iFQPI5Fv2AnmNV18=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=q9yC7wHdZXpuo4PysDrfAcK3SJ5rRf3qlhEGCDKFRN/YbqljYcD3v55a9UEEeEKHV
-	 r/bRMjCJ8n9qahCY2sAApK5n+VSeCXhOv4APeMR+LM0WMtPMwu/W/yGltTK5+G1Q9j
-	 ST88bkpe6fcITNgu0XVklHs8Ydj28yBvcwNn+Ywg=
-Message-ID: <1734c61b-88ed-42e0-a342-fdacca49297c@arm.com>
-Date: Thu, 24 Sep 2026 11:49:23 +0100
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="mnEjbHLf"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wdkZ9cdo1y0jzA2YkYgtrZQxW6awtimuKfuZDXylAcbSAkgZCgchAnYhcgxPb0TN55laSXKkCwJWzY5eVQRV9yXqPnsfuZA5CLUJzDyLgzHeG3kx8ZV3OLqJtlM1JPme5fNbN9o7sPtVEuAV5iCIqLreInLrktDtJmbmuQI7EJRMWU8Vwkj3XxpSKXPcofHeyeAORQ6qrJB9xfxx1HNQsbU+kVllkeSYf+Hn4/VKKH5mQT034UNgaxBAPLfLgklNNDIrQdJYJ0DMcvArMyx9G0RzDgBZyaltIxBQW5QC8gl8vROZ9yOCM4qvG6P+NTBqYpiF/N7Yg5bNA4xn4n1LLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+YOcHY4BEjrCMqN6YSHRdM8yHSm4jCR1m2ACyfmb9js=;
+ b=XGh/rhjvdS8bJjHtkU9k3TVb6fhrDQ3qmvcVN47o3tLx2zOfIv5lvLDozlXZAiNxdFdHJjNAdEZyQiRjuTcdbYhRpEbdcbe/rmBTkXBP9L1jAvzRPk6hqqH2btQUx5E0YjhOp2a075gC0MjewogV3MrQlTlKGOp6vmxryqUoYxajzt0N/CqIkYWGj1HJnCP9aa4mW5ubhJFr48B4h6zDGr9+gFtL4JYO3LxVwNtXH0Rh43GOlfVjU7vLna22wI+mVWmqQCiXIatdCWJezNeVJxkJenDN4CDOwyyAS10iXGj4u9/1gCW3L5y7WcdHGTK2f2AiN3kZrxiu16BVqCxdew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+YOcHY4BEjrCMqN6YSHRdM8yHSm4jCR1m2ACyfmb9js=;
+ b=mnEjbHLfHXnA8pznqRzImrJmQh1TJnkhqUq/GUn4Xwf8xCFxduuJc3iqVJu/nKQ8dhh58zGwC/+6SpodYfgluuaqQ5wxW80mDTsBdS8OaRZjzkdLs/dOvtouJtpeTBVut4TstrfLDgnRXrsce2HlBmc2qKviZob6j1WSawDgJN0=
+Received: from MW4PR03CA0075.namprd03.prod.outlook.com (2603:10b6:303:b6::20)
+ by CY8PR12MB8265.namprd12.prod.outlook.com (2603:10b6:930:72::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Thu, 24 Sep
+ 2026 11:15:19 +0000
+Received: from CO1PEPF00012E65.namprd05.prod.outlook.com
+ (2603:10b6:303:b6:cafe::13) by MW4PR03CA0075.outlook.office365.com
+ (2603:10b6:303:b6::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.18 via Frontend Transport; Thu,
+ 24 Sep 2026 11:15:19 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CO1PEPF00012E65.mail.protection.outlook.com (10.167.249.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.451.8 via Frontend Transport; Thu, 24 Sep 2026 11:15:18 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 24 Sep
+ 2026 06:15:04 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 24 Sep
+ 2026 06:15:04 -0500
+Received: from [192.168.1.3] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Thu, 24 Sep 2026 06:14:57 -0500
+Message-ID: <43fb3d8a-0736-44ae-bd7f-01e701d4b7d9@amd.com>
+Date: Thu, 24 Sep 2026 16:44:50 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,102 +71,70 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 00/20] KVM: arm64: CCA: Add basic plumbing for Realms
-Content-Language: en-GB
-To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260920212845.707-1-suzuki.poulose@arm.com>
- <a5dbea3b-d175-42d2-a29d-9280c92236da@redhat.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <a5dbea3b-d175-42d2-a29d-9280c92236da@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v10 00/28] KVM: Enable FRED support with KVM VMX
+To: Sohil Mehta <sohil.mehta@intel.com>, <kvm@vger.kernel.org>,
+	<x86@kernel.org>
+CC: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+	<seanjc@google.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+	<skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>, Xin Li
+	<xin@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra
+	<peterz@infradead.org>, Andrew Cooper <andrew.cooper3@citrix.com>, "Tom
+ Lendacky" <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
+	Shivansh Dhiman <shivansh.dhiman@amd.com>, David Woodhouse
+	<dwmw@amazon.co.uk>, Chao Gao <chao.gao@intel.com>, Binbin Wu
+	<binbin.wu@linux.intel.com>, Zhao Liu <zhao1.liu@intel.com>, Yosry Ahmed
+	<yosry@kernel.org>, David Matlack <dmatlack@google.com>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>
+References: <20260911213659.2025974-1-sohil.mehta@intel.com>
+Content-Language: en-US
+From: Shivansh Dhiman <shivansh.dhiman@amd.com>
+In-Reply-To: <20260911213659.2025974-1-sohil.mehta@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF00012E65:EE_|CY8PR12MB8265:EE_
+X-MS-Office365-Filtering-Correlation-Id: c3a4cd40-a92c-4d83-68b8-08df1a2d1e0d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|7416014|1800799024|36860700016|30052699003|23010399003|10067099003|22082099003|18002099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	4+/Uy0cJHSX3rRgVCaD2vngN+e9Bx9DjRzRg2nnnlZrWPS8c4BrYuWH6mPspegzkNiZS/3m+AtzddOWXlLxrHJ39ZSEhirLFbLr9J53X5UVodWd263bfquceguAFZ2ofq3RKJwjNuh+Mk+z9CHev//no4tJBTt9Zz2V7LAvb+FEt+rWxtkOb2PtN8VZJRVzU8iv5xxNO3UMns51i08tIB6IzCZqQ58eRT6MP/hMGbsMZVWT/4/0rkSzTduJKyzhmqxb4zQTcEKBBq0ksPi9VSoDa20FqyAlF/3QRQZ5oWybwxGBQS/w6BeJmyivq5VNgLsqTCNe9t4ySh+BnG1yNmj0loV0uyOiRgDrf9wMk9mBdmbKhkvd5HaBd2sUHq2IzGcMV/9gSL7EjIo6WNO2VJPrwaiUrIV/1H/6ghchmXO3GZD986l0BYlitOyUoeccYgA9gjrTnJyJNPmnfYv16FIvFNm//KvKH29scH0S71oNkhafLeNpTUCy8KdQVQMU+nC4dvcoayoQggGLonUSMya7FfejLfgMg2mOGutAez1WHERlXN4NdtCqt7wfDtt0VOCrF3z6MAhhr47ysrwhOumyms1q6pHFex8svyQ2ojr4/UXRiDZPgucU7lfoTBF68hFq6XnbbhesxN2Z08bGEVB5YqcIPWaAu5Q4SpqNjl17I8mCvbb+e5HvJyVaLTINY27xeRSL9WJwrSFA5Lru8kg==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(1800799024)(36860700016)(30052699003)(23010399003)(10067099003)(22082099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	MP4Xa21R5JrTq/5t4+/FxQRWub/UBxjj3aFUpgUcuqbQw3/X+igIUcE6cxHb25mHKMFTFpoJq77y02LsWFd5w7qYsfsKXU4kUtl54j5rDDcL36Kd9b1hg1lfaERcQ5frVrwtZS5GB/ggrysZydwZsibzFHXD5RhJDP7MypyCV0HjlCoVD2Vc4uI6n4m6m1sQpLDmfVN320vm/Z00kTOXGZSjASst7alt8Q1w5uuqLMEPlw4ZlnyCZfom1cdOKlh8kYJOybjhEOAYRrhN9muNFMicCRkwxaREP+x3REuPWRslQGJtg4R83AJH9pVhQeHSM7/FNcvasklxYIeqpAsNt5WrQr9zcjfvAdBqx88YPjFxdnKoP/+TgnFydgKmtOjkfDxoKI9zAybTvAhjRZj+uY+VTJXjg5GUSu4yDJ0Q7OJgRp1VoSi4AMxNZd2jAP4h
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2026 11:15:18.9225
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c3a4cd40-a92c-4d83-68b8-08df1a2d1e0d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF00012E65.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8265
 
-On 24/09/2026 11:40, Gavin Shan wrote:
-> On 9/21/26 7:28 AM, Suzuki K Poulose wrote:
->> This series is a trimmed down version of the Arm CCA KVM support, 
->> previously
->> posted here [0]. Like in the v17, we have tried to split the entire 
->> series
->> into the following chunks.
->>
->>   1) Base RMM RMI support under drivers/firmware/arm_rmm -> [1]
->>   2) Linux Host support for handling GPFs - [2]
->>   3) NEW: Enlighten KVM arm64 about the different VM types and use call
->>      backs for the VM type, rather than spilling the is_this_type_of_vm()
->>      everywhere. Adds VCPU and Stage2 MMU related callbacks with support
->>      for the existing VM types. There are other places where we may be
->>      able to abstract, but those need careful performance evaluations
->>      to make sure they are fit (e.g., vcpu_run)
->>
->>     With that in place we generalise the predicate 
->> "kvm_vm_is_protected()"
->>     to cover all  "Confidential" VMs (which includes Protected VM and 
->> Realms),
->>     allowing us to handle common themes without having to do things 
->> like :
->>
->>       if (kvm_vm_is_protected() || kvm_vm_is_realm())
->>
->>     Also replaces the code with precise check for a given VM type to
->>     avoiding combination of if (). e.g,, kvm_vm_is_unprotected_pkvm(kvm).
->>     The checks under arch/arm64/kvm/{nvhe,pkvm} still retain the 
->> vm_is_protected()
->>     check as pVMs are the only possible protected VMs there.
->>   4) Bare minimal Realm VM support without the actual functionality to
->>      run a Realm. This would help the maintainers to review the series in
->>      smaller chunks. This doesn't depend on [1] and can be independently
->>      merged, without being "functional".
->>      This series includes vcpu operations and the s2 vm operations, which
->>      do need the RMI driver backend to be meaningful. But the KVM handler
->>      is in the right shape. The remaining changes would be added once the
->>      RMI firmware library lands. Also covers the SET_ONE_REG/GET_ONE_REG
->>
->>   5) Core implementation of the RMI driver for KVM and actual 
->> enablement of the
->>      Realm support. This depends on (1), (2) and the guest-memfd-in-place
->>      conversion series v12 from Ackerley. This is available here at 
->> the integration
->>      branch [3]
->>
->> This series is comprised of (3) and (4) above.
->>
->> The integration branch has been tested with the following components:
->>
->>    tf-RMM:   main branch (commit 5e6e2acd) compliant to RMM-v2.0-beta3 
->> [4]
->>    kvmtool: git@git.gitlab.arm.com:linux-arm/kvmtool-cca.git cca/kvm-v18
->>
->> [0] Arm CCA KVM Support v16 : https://lore.kernel.org/ 
->> all/20260803134403.80630-1-steven.price@arm.com
->> [1] Linux firmware RMI https://lore.kernel.org/ 
->> all/20260912083611.2513845-1-suzuki.poulose@arm.com
->> [2] Linux GPF Host https://lore.kernel.org/ 
->> all/20260913070459.2547407-1-suzuki.poulose@arm.com
->> [3] https://git.gitlab.arm.com/linux-arm/linux-cca/ cca/cca-host/kvm- 
->> v19/integration
->> [4] https://support.arm.com/documentation/den0137/2-0bet3/
->>
-> 
-> Apart from the issue found against PATCH[v19 05/20], I didn't see more 
-> issues with this
-> series in my tests where kselftest/kvm cases and kvm-unit-tests are done 
-> on various
-> combinations: 4KB host kernel, 64KB host kernel, kernel parameter "kvm- 
-> arm.mode=
-> {nvhe, protected}" or nil. So with the found issue caused by PATCH[v19 
-> 05/20] fixed:
-> 
-> Tested-by: Gavin Shan <gshan@redhat.com>
 
-Thank you Gavin, much appreciated !
 
-Cheers
-Suzuki
+On 12-09-26 03:06, Sohil Mehta wrote:
+> Opens
+> -----
 
+> AMD compatibility: The SVM enabling [5] builds on the same common
+> plumbing but I haven't had a chance to look at the series yet. Shivansh,
+> please let me know if there are any incompatibilities. I assume most of
+> the opens apply to SVM as well so resolutions would help both vendors.
+
+Thanks for the series Sohil. I've been able to run SVM side of vFRED with
+changes rebased on top of this series. So, no incompatibilities in common
+plumbing as of now. Will let you know if anything comes up.
+
+Cheers,
+Shivansh
