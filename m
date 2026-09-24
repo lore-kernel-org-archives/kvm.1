@@ -1,200 +1,193 @@
-Received: from mail-dl2-f12.google.com (mail-dl2-f12.google.com [74.125.229.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44E13AB269
-	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 10:16:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B603470428
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 10:17:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790244991; cv=none; b=WM/JIkrwIG+GsO1joCspjv8SS9cGzaLJ1SZb/3vTVIwdBfF2bV/fCk1QTxjUWtjrhYWC0KY4VZKsS1aF47nYUbA2BfVry4DzxS6p5JQ1psb4ncDQ+HBLc4J+MB9yA/MSghHrnvRP1sfB/lfu4klUjSptpjgQ9nbz24E5H9h4N2k=
+	t=1790245044; cv=none; b=gMWF/Yjn083retiFjDkyJowmr2R92ITPV3u7y0iKjHodu/uuQjV7R3TUe3+mGZndVy41zObngWXmY4y441lU9DjPR5p8O/A3H9Q6gzDF+FYdOQPe/UCcBT1gLtww54a+6r6TXd1SAfWv6CAuHDYea/Bx4zXAOCdDx2PcKsXyzGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790244991; c=relaxed/simple;
-	bh=MiE+4ItnXmHUBKhLrUz3zntIZyWtLRntpAxtOY0u6BY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Hx0YxiH3dCoNhtXJLfjp+6dzxbjF3h9wa7xaC41zGnKs+GPqik8AFg6LMlzeaCHqypjfq8ckUTwGOOUeC+/ssnJ43KzIJuWyWfBY2X+EidUrEqypMbJrnNntBDGcrhkzGfwHt6ncz1TrBvurVb5tm1vJ1P0XjfhnI1rpdjwl0ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=g9DSzDqs; arc=none smtp.client-ip=74.125.229.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
+	s=arc-20240116; t=1790245044; c=relaxed/simple;
+	bh=OLQtN8/9/Nf4flz3Kt2BUy4OlOf9PndZym7N2lg6lbA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KlO0WPGas9kdMDbRSrGmqPPn/IdEKjDAAnTTWXP8U2qQUOOViz3QwE7W2IXCA/AGoxCP8uSYDSTruP+3GcrNcbZyGzRZHb8TafKTvzjiQ8LSwPu8w1cGzuFOiimZKjIIr/bruiKhRf+RCJ24XI3x1iDN+umVMitWr14Mqli2xis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a62eB1VJ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SLC4QTgF; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="g9DSzDqs"
-Received: by mail-dl2-f12.google.com with SMTP id a92af1059eb24-142dd025d06so1642262c88.1
-        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 03:16:21 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a62eB1VJ";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SLC4QTgF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790245034;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H6EUUW1m1zoaB7DVxqcfClkBe+yQHGLp6gBbcFMHwFk=;
+	b=a62eB1VJw75EktJS75+2xdXvr1XdUTzZGANOZ6VNC2K0i37XkEM8udyTyctf9fc+AKAPln
+	XW0baWTvX4xpvYoXgo98WNM1uDEe0X2xP1nFeFFKflB0F6mEu+k2nNaPuqaICwupl8noAZ
+	Y1Tvd58bMrb1sEWfEUbSeZJfgEJEcD4=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-17-8CeLE9wOOiq5d5fpcDabfw-1; Thu, 24 Sep 2026 06:17:12 -0400
+X-MC-Unique: 8CeLE9wOOiq5d5fpcDabfw-1
+X-Mimecast-MFC-AGG-ID: 8CeLE9wOOiq5d5fpcDabfw_1790245031
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-486f768517dso1453345f8f.1
+        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 03:17:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1790244979; x=1790849779; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=u7LK00oqDOE3QAV0dIPEwP0ZWU0x/VHk80FlxiovFNw=;
-        b=g9DSzDqs8LuN4AeYdsx4K6TuX9oqHEq/5mGCol5OmHfpvvB/Z+YqSHP1/5ZWdeRQu6
-         LBGKRLG1aqpGKVEbw8mzJ88IkmLVih4LqVGyffPKdO0Yc9oW4aBQilS051gTuWwki36D
-         /7Gbq+fpXNW0PXiIR9pw1ZzTAdpGdmetqMO++m9CXuXIjcldqc6JFrcAZ12gZ+gYU/vv
-         UZSWcvUlSuhROTmptcAf6g51snHEhuSmOTj3AmGbdlt1aC+SMwg4/Ibw+DIVxzVcr3zz
-         o7+IxAf0D9ldllmkktLMbfncuhkTghJ5QT5aw49Le7pk6EYPtKI35yLj8WQWj7NJORar
-         txvA==
+        d=redhat.com; s=google; t=1790245031; x=1790849831; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=H6EUUW1m1zoaB7DVxqcfClkBe+yQHGLp6gBbcFMHwFk=;
+        b=SLC4QTgFAAmhmFB0lfmX2GhPXUY3bABWcBSfVj+xcAe18+GN19WX5pbtqMUPDVKuOd
+         b5EOf+bxKaW+wnvqX0YMlANb0wCPN4K7JS+1xJks1Kc2rbctUkYGOpT6sdevnenxfMJe
+         DnhkShpfo94T4Ie/gNC1s9yBQUlOBuqDe4r3zuvvDplxCz4nqa4iQMX+dgCnkWoNXRTQ
+         njDHVkAgJOpFzZ29AMlOvMFAOVdzqLavI59ltEFrDcV14ryLvSU93A6mvcYUiv4VXOXb
+         hLYxdUFD1R4p1CxxhHWRbTIdTv1fjL22IglA5Wo0GXSAWUSbVqhikZaqk7IOGUiB5iW7
+         A4SA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790244979; x=1790849779;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=u7LK00oqDOE3QAV0dIPEwP0ZWU0x/VHk80FlxiovFNw=;
-        b=gkmBORrHg/KQt7dwL1m2ckwgsK8lAWv6Fi+r8yqYFLB8KR3i1CyrcZPioawkJ4e9Ux
-         c78wzfstGWQLG8M7DVGPYNBV8B0kA/T8FW3P1zhhLWGz+FcsYNfVZcP4w9Pe5hFDGiUa
-         JnlBrGWs9EUvshoO0v1/CDuMy547HReOukri965Ex23rMCg4PU/f4FuvpUikJy4/wdnJ
-         e06FmTZTMkhgMijN0DThsRE+DoO+G9sJZFZZk7RHg1dXQqy2Qf2PG4YtNd9AP9nvpOFE
-         SIhx/AfDxlkmGDsnBAHRpZYFLfmlbZ8UZ107IAu4STzPs0FvopUePCsaCZ20YirsNafP
-         zI0w==
-X-Forwarded-Encrypted: i=1; AKwUvBz+GrIipsxf6OXRpSbb+mXQ92y8tKTIKqQkhoWmd/1sydC1cFzVJFsMBT3Aly5hoYLNwXg=@vger.kernel.org
-X-Gm-Message-State: AFuF++n+I8P86/dKjw3DwOiLo/OLQ2iJnT1fIeMHtgwxQVsVWxFqPArE
-	MP0F3crH4EpAMoRpxQ4KkVB23Rh4/HLq8JKexYQWGbdqVq9/alYbqfvZaBJT6TAIfXs9mH84zK3
-	Pku28VxFK3w==
-X-Gm-Gg: AYBFou1o0xs9IkN83ryqAkTWH9MCuUl+45dzsNk1FObCrerZgys3hAtmsSvRCQalUDV
-	bd+M8w9dh9RhC620X6qaOgOLDtVcIQGRPos6p4J+JajaEow36jx53+MzKhZgKjBMeQth1h0nOOr
-	wERXPYnkya2lkThmTEGBEgHkaupcp3o7B2KyaglPrvjgeDS5ZmvA8tQsNekc/+zwb1mMdztd1SG
-	szOZee6MFFpZQOntJhUN4ZqsR/LHGr+Wemb9/PfVKkbMDJ5J9+cFQipbj3QmNm5n2V+2rKNFbHX
-	omos8Uh78UWin3U/Da1wqKgPAngyk6OLP5xZae24E+famO7xCYcIu/ospAKk0FUO4K2T2SiaA5F
-	fjwXEkNp2cqnO0Xyl6S2vWOISXZhZwwrl/4sEk/lJET/MP9Tz6kh9+k2dHY0PRCX6m83nBUkQzA
-	3qctjRin7btZDiE8RRjIJbh4fvqkimSza/yasV+ohArJszGjwIjHoFB2aOzUF3vz6wAFQBzOoQO
-	m3rXTXCjZyBdA2GmWs=
-X-Received: by 2002:a05:7300:c019:10b0:33b:c24c:47cd with SMTP id 5a478bee46e88-340035bf9d9mr1782888eec.16.1790244978791;
-        Thu, 24 Sep 2026 03:16:18 -0700 (PDT)
-Received: from sw07.internal.sifive.com ([4.53.31.132])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33e975223fcsm12254595eec.31.2026.09.24.03.16.17
+        d=1e100.net; s=20260707; t=1790245031; x=1790849831;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=H6EUUW1m1zoaB7DVxqcfClkBe+yQHGLp6gBbcFMHwFk=;
+        b=B4z0YYO1+ce8jn7UuM343tLnJO171D0ZWotEnHSPJCTPmdHvOQ2+b53VeW0eanWtAE
+         Wo2cdjlcVd9vSYDQprWpxBpRPpXAq46eYnCK7el2z3VVp0DktjpUxzHAMndIHbaDcAlm
+         2K+c7BKBgHa+6MUwX7iFNi4BqmtZJVlz0AHndFyGCt4dStA4MpJmKpLTmdzZCr0p1nog
+         uRuwfKcmv7DmaryPQGPnlol3gE7x/ILjNmf3eyy1Q58G8v4x9K2vDRBJ+XSJ70IdE5IG
+         sbOabmNyrn+RSOephm8bsrn2b6Z8WxqIcxpOWTeNutP2nEh+ihj0UtgKOnkfjLppatzZ
+         ljtQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzOezSdgm6VUAYLC+AYXGoyTcN9g61X3GKg3PR79Pm6T2T5Tr1iwr+MvHxq+QLevReu91Q=@vger.kernel.org
+X-Gm-Message-State: AFuF++mVO8NWCLxJL58Kt3rwslSYe9XvR8XYw/mn4Zv3Q6IvWB1imKCw
+	9tFqjCgjLMR99QRFKUQMDOX8avB5qggA8KohG9XaMAbOzIhcF+0uoPCi3dApiQch7a1B9IQ/Fuo
+	BoxXsKqa2/1t16GChFVp9sSMqaQ1xDhHHZveeU7yvSST3ng5EoRv7VA==
+X-Gm-Gg: AYBFou1NGwH9F22BBzQJ+fNpKil5iPZk+lX0xBdG9rZ2os6uhoC+7VHOQzMBZSvrTee
+	8AzSv1TTFxKPM66Uq0Lf+mckFVtaWIiQg0CquCv5bs/IOuLcY+g2M9RDi/e2BXAUFB7XpmfGBCr
+	R+f9GE55OBdkj+ikNltOpp52ZqAORop2bLnWv2DL+Xx5QnYwFyLnoLzDk4iPXpsbYK0QIM9p0h0
+	qKik4nkAdz7zBYAuezZIrTqdmi0/NLkVH4jMI3/RORdTZoiF4v7aWks7/6kgr+oc5eUDbCceSYM
+	TLJYnBTKukSLNlrrtaiaQIKckJPZL1205b3RZRSvG36GilcOdwxwHaSFhYZOFDxq5VS1NMv8T6b
+	es4WBWeSzK00fC8jt0/Ma3dxvZH1gl2Dg29hUr5hsxJclZcys07Y=
+X-Received: by 2002:a5d:5e93:0:b0:487:27f9:82a with SMTP id ffacd0b85a97d-488716f74b7mr3255255f8f.31.1790245031491;
+        Thu, 24 Sep 2026 03:17:11 -0700 (PDT)
+X-Received: by 2002:a5d:5e93:0:b0:487:27f9:82a with SMTP id ffacd0b85a97d-488716f74b7mr3255203f8f.31.1790245030920;
+        Thu, 24 Sep 2026 03:17:10 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-134-131.retail.telecomitalia.it. [82.53.134.131])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-488684863d9sm13714443f8f.12.2026.09.24.03.17.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 03:16:18 -0700 (PDT)
-From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Date: Thu, 24 Sep 2026 03:16:13 -0700
-Subject: [PATCH v2] RISC-V: Clear HSTATUS.HU on CPU initialization
+        Thu, 24 Sep 2026 03:17:10 -0700 (PDT)
+Date: Thu, 24 Sep 2026 12:17:04 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Asias He <asias@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 3/5] vsock: Enforce no-transport invariant for
+ TCP_LISTEN sockets
+Message-ID: <arT3jXoS7OaU6Tsc@sgarzare-redhat>
+References: <20260915-vsock-connect-reset-closing-v2-0-a1d9abb472f7@rbox.co>
+ <20260915-vsock-connect-reset-closing-v2-3-a1d9abb472f7@rbox.co>
+ <aqp7CV9DnfsG1GJc@sgarzare-redhat>
+ <0bc40e5c-8790-4a36-84bc-80e0bfe6b504@rbox.co>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260924-hstatus_hu-v2-1-7e970f5f1d8d@sifive.com>
-X-B4-Tracking: v=1; b=H4sIAGz4tGoC/22NywrCMBBFf6XM2kgTHw2u/A8pkqZTM4JNySRBK
- f13m7p1eeDcc2dgDIQMl2qGgJmY/LiC2lVgnRkfKKhfGVStzrWWjXAcTUx8d0kYabQ2qrFNJ2E
- dTAEHem+xW/tjTt0TbSyFYjji6MNne8uyeH/DWQoplLang+2H7ljrK9NAGffWv6BdluULdtg/e
- rcAAAA=
-X-Change-ID: 20260817-hstatus_hu-a1a88a27c7b1
-To: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>
-Cc: greentime.hu@sifive.com, vincent.chen@sifive.com, zong.li@sifive.com, 
- kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Yong-Xuan Wang <yongxuan.wang@sifive.com>, 
- Samuel Holland <samuel.holland@sifive.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790244977; l=3822;
- i=yongxuan.wang@sifive.com; s=20260424; h=from:subject:message-id;
- bh=MiE+4ItnXmHUBKhLrUz3zntIZyWtLRntpAxtOY0u6BY=;
- b=lJsDgeDAFpzkUZgwbf6xofjnxNK0j5K+KDvcLG59+7QXUPCuV2SrHNbl6effhqne9YSnrJDPl
- DbbQVpzEO2jBsZbYKau8bP8WWRoX/urfT4BpbtZmYrJ8aUni4lV7kqg
-X-Developer-Key: i=yongxuan.wang@sifive.com; a=ed25519;
- pk=+8NCHB1ZJvZthQAmZspOAaqjo+/snaW8mFSiDx45HxY=
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <0bc40e5c-8790-4a36-84bc-80e0bfe6b504@rbox.co>
 
-The RISC-V privileged specification does not mandate HSTATUS reset
-values, leaving the HU bit potentially set after hardware reset.
-When HU=1, hypervisor instructions (HLV/HLVX/HSV) can execute in
-U-mode to access guest memory, which may cause unintended behavior
-if not explicitly controlled.
+On Tue, Sep 22, 2026 at 03:18:13PM +0200, Michal Luczaj wrote:
+>On 9/16/26 14:30, Stefano Garzarella wrote:
+>> On Tue, Sep 15, 2026 at 03:15:14PM +0200, Michal Luczaj wrote:
+>>> A non-blocking connect() running in parallel with a blocking connect(),
+>>> combined with a racy listen() that hits right after a connect timeout:
+>>> TCP_SYN_SENT -> TCP_CLOSE -> TCP_LISTEN, while the connect() loop is still
+>>> in progress.
+>>>
+>>> Enforce the invariant. Prevent a socket from becoming a listener after
+>>> acquiring a transport.
+>>
+>> We should improve this comment; it's not entirely clear to me, TBH.
+>
+>The race I was thinking about:
+>
+>sk is CLOSE UNCONNECTED
+>non-blocking connect():
+>  sk := SYN_SENT CONNECTING
+>  enqueue vsock_connect_timeout()
+>                                   blocking connect():
+>                                     release_sock()
+>                                     schedule_timeout()
+>vsock_connect_timeout():
+>  sk := CLOSE UNCONNECTED
+>listen():
+>  sk := LISTEN UNCONNECTED
+>                                     lock_sock()
+>                                     sk is TCP_LISTEN UNCONNECTED
+>
+>It's not really critical (blocking connect() just timeouts), but I thought
+>the invariant should be enforced once and for all.
 
-Clear HSTATUS.HU during CPU initialization to ensure hypervisor
-instructions are only available in HS-mode, preventing unexpected
-guest memory access from U-mode code.
+I see, would it better to do this change in net-next?
 
-Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
----
-Changes in v2:
-- Clear the hstatus.hu in the arch core setup instead of kvm core setup
-(sashiko)
-- Link to v1: https://patch.msgid.link/20260817-hstatus_hu-v1-1-28c53cdfb408@sifive.com
----
- arch/riscv/include/asm/cpufeature.h |  2 ++
- arch/riscv/kernel/cpufeature.c      | 12 ++++++++++++
- arch/riscv/kernel/setup.c           |  2 ++
- arch/riscv/kernel/smpboot.c         |  2 ++
- arch/riscv/kernel/suspend.c         |  2 ++
- 5 files changed, 20 insertions(+)
+>
+>>> @@ -1973,13 +1973,13 @@ static int vsock_listen(struct socket *sock, int backlog)
+>>> 		goto out;
+>>> 	}
+>>>
+>>> -	if (sock->state != SS_UNCONNECTED) {
+>>> +	vsk = vsock_sk(sk);
+>>> +
+>>> +	if (sock->state != SS_UNCONNECTED || vsk->transport) {
+>>
+>> Are we changing the behavior when an error occurs?
+>>
+>> If we call `connect()` on a socket (with no others running in parallel),
+>> it fails, and then when we call `listen()`, it now fails, whereas before
+>> it didn't. Can this happen? Is that what we want?
+>
+>Ah, true, I didn't consider that. So yeah, we'd changing the behaviour.
+>
+>> If so, we should mention it at least in the commit description; if not,
+>> perhaps we should unassign the transport in the `connect` call.
+>
+>Do you mean immediately un-assign on every transition from SYN_SENT to
+>CLOSE (failure, timeout, signal)? Then we could also drop the re-assign
+>logic. I think that's a nice idea.
 
-diff --git a/arch/riscv/include/asm/cpufeature.h b/arch/riscv/include/asm/cpufeature.h
-index 739fcc84bf7b..5efa72823475 100644
---- a/arch/riscv/include/asm/cpufeature.h
-+++ b/arch/riscv/include/asm/cpufeature.h
-@@ -40,6 +40,8 @@ extern u32 thead_vlenb_of;
- 
- void __init riscv_user_isa_enable(void);
- 
-+void riscv_clear_hypervisor_csr(void);
-+
- #define _RISCV_ISA_EXT_DATA(_name, _id, _subset_exts, _subset_exts_size, _validate) {	\
- 	.name = #_name,									\
- 	.property = #_name,								\
-diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
-index f46aa5602d74..80767a016602 100644
---- a/arch/riscv/kernel/cpufeature.c
-+++ b/arch/riscv/kernel/cpufeature.c
-@@ -1183,6 +1183,18 @@ void __init riscv_user_isa_enable(void)
- 		pr_warn("Zicbop disabled as it is unavailable on some harts\n");
- }
- 
-+void riscv_clear_hypervisor_csr(void)
-+{
-+	if (!riscv_has_extension_unlikely(RISCV_ISA_EXT_h))
-+		return;
-+
-+	/*
-+	 * Clear HSTATUS.HU to restrict hypervisor instructions to HS-mode.
-+	 * This prevents user-mode from executing HLV/HSV instructions.
-+	 */
-+	csr_clear(CSR_HSTATUS, HSTATUS_HU);
-+}
-+
- #ifdef CONFIG_RISCV_ALTERNATIVE
- /*
-  * Alternative patch sites consider 48 bits when determining when to patch
-diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-index 52d1d2b8f338..bf42efd848f6 100644
---- a/arch/riscv/kernel/setup.c
-+++ b/arch/riscv/kernel/setup.c
-@@ -364,6 +364,8 @@ void __init setup_arch(char **cmdline_p)
- 
- 	if (!IS_ENABLED(CONFIG_RISCV_ISA_ZBB) || !riscv_isa_extension_available(NULL, ZBB))
- 		static_branch_disable(&efficient_ffs_key);
-+
-+	riscv_clear_hypervisor_csr();
- }
- 
- bool arch_cpu_is_hotpluggable(int cpu)
-diff --git a/arch/riscv/kernel/smpboot.c b/arch/riscv/kernel/smpboot.c
-index f6ef57930b50..a9de2dae804c 100644
---- a/arch/riscv/kernel/smpboot.c
-+++ b/arch/riscv/kernel/smpboot.c
-@@ -244,6 +244,8 @@ asmlinkage __visible void smp_callin(void)
- 
- 	numa_add_cpu(curr_cpuid);
- 
-+	riscv_clear_hypervisor_csr();
-+
- 	pr_debug("CPU%u: Booted secondary hartid %lu\n", curr_cpuid,
- 		cpuid_to_hartid_map(curr_cpuid));
- 
-diff --git a/arch/riscv/kernel/suspend.c b/arch/riscv/kernel/suspend.c
-index 3efbf7874f3b..db220966f782 100644
---- a/arch/riscv/kernel/suspend.c
-+++ b/arch/riscv/kernel/suspend.c
-@@ -43,6 +43,8 @@ void suspend_save_csrs(struct suspend_context *context)
- 
- void suspend_restore_csrs(struct suspend_context *context)
- {
-+	riscv_clear_hypervisor_csr();
-+
- 	csr_write(CSR_SCRATCH, 0);
- 	if (riscv_has_extension_unlikely(RISCV_ISA_EXT_XLINUXENVCFG))
- 		csr_write(CSR_ENVCFG, context->envcfg);
+yeah, that!
 
----
-base-commit: b5060a4aa33d7d78a8c1837ab08ef0c81ea96650
-change-id: 20260817-hstatus_hu-a1a88a27c7b1
+>
+>---
+>
+>I've addressed all your other comments for v2 and went through Ashiko's
+>reports (side effects of lockless peer_shutdown write, imperfect
+>no-transport TCP_LISTENER enforcement). I've decided to try the
+>eager-unassign approach. I think/hope this way we sidestep the lockless
+>writes and enforce the invariant without breaking the API, while fixing the
+>bugs.
+>
+>This should probably be RFC, but I'm posting as v3[1] so netdev's LLM can
+>have a go (too). Hope I'm not breaking any workflow. Let me know what you
+>think.
+
+I think you can add RFC also on a v3 patch, just to make it clear you 
+are not sure it's ready to be merged.
+
+That said, thanks for that :-) I'll take a look today or next week 
+because I'm off tomorrow.
+
+I'm just worried it's becoming too big for net. Anyway, I'll comment 
+there.
+
+Thanks,
+Stefano
 
