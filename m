@@ -1,104 +1,118 @@
-Received: from mta1.migadu.com (out-51.mta1.migadu.com [95.215.58.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9C6349CFF
-	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 06:09:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FC432D0EE;
+	Thu, 24 Sep 2026 06:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790230185; cv=none; b=B4VQidYzqBTLttUtwTrI5/9eG2oQL5aYGyArxmQpAsu/73Q7PejwkeW0fG9qwEtBDh/4VTeGk14hA79dslqZI7x2eSknf/pBXMlRpVOiyzlaEciZSuptjCxG6wKgfEBy9xCTgkcYuM+AwNQcBaPcMXYuxiacSJS5satb+i86N6Q=
+	t=1790230438; cv=none; b=PtWaVcwRj42WqGUsISCIZ/cnuJupnPFhroAUeDxFYuq3bfzs8sO0fEx3buLP0EV0fhc3fVyK2erL/S6etwNfqviMkZyQNBH8d3l9M0LTwNL8+6FbaJL9gv+fpqueiTwvfrpjJ9MMi+m3ZytpkQMhr24JCtn+gWwL9l3xJXeQsws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790230185; c=relaxed/simple;
-	bh=0CUsutr5c/pwyjZUne1mfLzu7Ng+TMFz2fiafLg6SYM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MjwjnVOLz8UZPWDUwHmC8YKzoWgOro3PXs9CVtifIbyxveUdJQLe0X0c3wKf7lKKLxfI/bgrB8je1XTkg2PqDlVcs64mOPOvNf/IuOgn/YCax8/ynsRJ/2zVgHHb1KKaYZWPfQtfn5A37undskhdz9/LhGxkwquyg/XhbvnMDjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=UKCUwCsh; arc=none smtp.client-ip=95.215.58.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1790230438; c=relaxed/simple;
+	bh=br8lAzeqVyzB+uljBzUroXIIRvT7Z6JZYmbmVLAxM1k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=leAcVbrgIN6jMfD76GiRc2qvQVNsIG/YIcQbwDqn/hV/9qVUee3UXPoFw+0XWk3F0xu8UWAIaXjAmAGNsr1Yp1VgcXLUxUabbN4KVNEh5yGE446r0ez1/+6UwxjhyPXrfBmmJ4DFkx+dAgQjxwEILEn2NLe126xD8/UwVHXJyqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KP2IfeUz; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="UKCUwCsh"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=0CUsutr5c/pwyjZUne1mfLzu7Ng+TMFz2fiafLg6SYM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790230181; v=1; x=1790834981;
- b=UKCUwCshvqwnydCXpABgaEn243UDLeQGF/DaHRDgvNuFcp0xvE9Nzy9cbCp7BYM3AojONF1l
- xkO1NLdje586zElMUCJqMg/+Q4pugso2+Qc1Sh34qZrBg2gYTl3xHT5XUnRj4HPbjNs+0SxlElg
- XGn1Sl7i8YTB5Ng8VN4g71XQ=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id effbd6b78f3fd6a1;
-	Thu, 24 Sep 2026 06:09:41 +0000
-X-Mizu-Trace-ID: effbd6b78f3fd6a1
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5b5e5aaf7deso5744e87.0
-        for <kvm@vger.kernel.org>; Wed, 23 Sep 2026 23:09:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwzQlRJbzbfI0iHibc6bNineyryulUGOafQmN7UfIw2xxZ+gRnWGh2L4z7IuZqAB7FbzHA=@vger.kernel.org
-X-Gm-Message-State: AFuF++m6aBvHsVin+OOdde3TvZ99kXBbxyzY3voFLgGkErtULr304LhT
-	feCJAtfJRzw0iYBto7Pgqe1BUIhRFseJw5reUGdtfpfpn7/Ounie3KUXecOhxfkrKDUsEN/9eOu
-	SzIF9psyz/cKxfI1WYm439siXYFhCOXQAtXAuqwpa
-X-Received: by 2002:a05:6512:3b28:b0:5b8:caec:cc77 with SMTP id
- 2adb3069b0e04-5b8de5c4ceamr119554e87.7.1790230180648; Wed, 23 Sep 2026
- 23:09:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KP2IfeUz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790230437; x=1821766437;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=br8lAzeqVyzB+uljBzUroXIIRvT7Z6JZYmbmVLAxM1k=;
+  b=KP2IfeUzfMFxIaDVl2hfkvm9qAKuCIqsPD86kMY12jC00GublTxazIAM
+   UuG8GW1GLJhSLj0wTjgQChloxD2yBKoRpMZieUfgwucT47D/osp56zpb7
+   lgUqPn0xTaHhbkp1gOgo9I7K/aFApOqKm69Kdwmc4tDNIrjlDj+eh8N9I
+   Q55KT0jv81KE2aOQkFKYmVL2k2GoXOCC/LA6C9i6nPu83t6nzxGTCgDOU
+   RPlfG/8q0BJ3u6RZhbqxEaLMgR/EwPi/Kb+IqF48MVpmZaagVVNg6KLJ+
+   604TcXGPhamGS8YVFUt29bZd5MFq1Fsv7TYndon/HVZkMWfYyYyfU0MOp
+   A==;
+X-CSE-ConnectionGUID: nLZjzL28QbOS1RGdyADRGg==
+X-CSE-MsgGUID: 2ytHctbyR5e8dmzgIriYng==
+X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="91095658"
+X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
+   d="scan'208";a="91095658"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 23:13:56 -0700
+X-CSE-ConnectionGUID: cRyTJIP+S7aDR5zVonHKkg==
+X-CSE-MsgGUID: iEBfnuXrSreyJf3fqTtMEA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
+   d="scan'208";a="274102054"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 23:13:53 -0700
+Message-ID: <7ba1284c-69d9-43fa-8a44-1dbf30f209e1@linux.intel.com>
+Date: Thu, 24 Sep 2026 14:13:50 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260923-kvm-arm-prefault-v4-0-d4b0b4dfa8c3@kernel.org>
-In-Reply-To: <20260923-kvm-arm-prefault-v4-0-d4b0b4dfa8c3@kernel.org>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Thu, 24 Sep 2026 07:09:04 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTw-OXzqXbs8phvXKpbR5UCx6munmFQni80eH6G4gD_k_w@mail.gmail.com>
-X-Gm-Features: AclHuK_Ine4NnKUQcaZ0yB1SSKmzV1yVXJdk5G12ur315eMZsDY4KFVeV3Z9hpE
-Message-ID: <CA+EHjTw-OXzqXbs8phvXKpbR5UCx6munmFQni80eH6G4gD_k_w@mail.gmail.com>
-Subject: Re: [PATCH v4 00/14] KVM: arm64: Add KVM_PRE_FAULT_MEMORY support
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Mark Rutland <mark.rutland@arm.com>, 
-	Randy Dunlap <rdunlap@infradead.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Janosch Frank <frankja@linux.ibm.com>, David Hildenbrand <david@kernel.org>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Jack Thomson <jackabt@amazon.com>, 
-	Jack Thomson <jackabt.amazon@gmail.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
-	Vincent Donnefort <vdonnefort@google.com>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
-	Sean Christopherson <seanjc@google.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-	Leo Soares Passos <Leo.Bras@arm.com>, Wei-Lin Chang <weilin.chang@arm.com>, linux-s390@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 01/10] x86/virt/tdx: Add a helper to read a table
+ of metadata fields
+To: Chao Gao <chao.gao@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, yilun.xu@linux.intel.com,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>
+References: <20260918132946.76533-1-chao.gao@intel.com>
+ <20260918132946.76533-2-chao.gao@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260918132946.76533-2-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Lorenzo,
+On 9/18/2026 9:29 PM, Chao Gao wrote:
+>  
+> +/*
+> + * Map a TDX global metadata field to a structure member.
+> + * @field_id: The TDX global metadata field ID.
+> + * @size: The size of the structure member.
+> + * @offset: The member's offset within its containing structure.
+> + */
+> +struct field_mapping {
+> +	u64 field_id;
+> +	size_t size;
+> +	int offset;
 
-On Wed, 23 Sep 2026 16:15:43 +0100, "Lorenzo Stoakes (ARM)"
-<ljs@kernel.org> wrote:
-> This series implements the KVM stage 2 page table pre-faulting feature for
-> arm64.
+Nit:
+Is it better to align the type of "size" and "offset" with size_t?
+Since it's already 24 bytes per entry on x86_64, there is no extra memory cost.
 
-Retested as follows (let's see if this one sticks ;) ):
+> +};
+> +
+> +/* Read each metadata field listed in @mappings[] into @data. */
+> +static int __maybe_unused __read_sys_metadata_table(const struct field_mapping *mappings,
+> +						    int num_mappings, void *data)
+> +{
+> +	int i, ret;
+> +	u64 val;
+> +
+> +	for (i = 0; i < num_mappings; i++) {
+> +		ret = read_sys_metadata_field(mappings[i].field_id, &val);
+> +		if (ret)
+> +			return ret;
+> +		memcpy((char *)data + mappings[i].offset, &val, mappings[i].size);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +#define TDX_SYSINFO_MAP(_field, _type, _member)			\
+> +{								\
+> +	.field_id	= TDX_MD_FIELD_ID_##_field,		\
+> +	.offset		= offsetof(_type, _member),		\
+> +	.size		= sizeof_field(_type, _member),		\
+> +}
+> +
+>  #include "tdx_global_metadata.c"
+>  
+>  static __init int check_features(struct tdx_sys_info *sysinfo)
 
-QEMU/arm64 -cpu max:
-- guests boot on VHE, nVHE and protected-mode hosts, protected guests included
-- pre_fault_memory_test (all guest modes, anonymous, THP, hugetlb and
-shmem backing) and nv_pre_fault_memory_test pass
-- pre-faulting an uninitialised vCPU returns -ENOEXEC
-- a failed guest_memfd pre-fault leaves kvm_run's exit_reason alone
-- dirty_log_test, demand_paging_test, mmu_stress_test and
-stage2_block_transitions also pass
-
-Apple M4 (nVHE, 4K and 16K pages):
-- pre_fault_memory_test passes on the five guest modes available
-there, with the same backings
-- in protected mode (4K pages), the cap isn't advertised, the ioctl
-returns -EOPNOTSUPP before and after vCPU init, and guests boot
-
-Tested-by: Fuad Tabba <fuad.tabba@linux.dev>
-
-Cheers,
-/fuad
