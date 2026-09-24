@@ -1,95 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FDF3242BD;
-	Thu, 24 Sep 2026 01:31:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360D5339363;
+	Thu, 24 Sep 2026 01:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790213508; cv=none; b=pNxUm9Zqs+Tc84LXNBJsNilNrRGwPYYb2AnJb2cV+/bROyM1QaRiKzPfIPKMm1uAPCPqzxhJpApiVuUD+zny0Y0eWRR2MnfvrvF7TD2m/IJIqEij2aVib+HkJ3wxHC5gZX1xOZzSBQ3YJAKMHdIXpf9QsKpzqS3U0srwt+/asNI=
+	t=1790213691; cv=none; b=dr4xm5BqwzB1fpr4IdhzXXf33t/KglxR+nyhrvlbGS6yfjOWi4q7WLLfN0wEyReHy7RSfzFttWsqhV3wGkdQhXenDiTR50MqCYXpVsJv4OZ4nG+2vO1qggiVAMa3Zfkl2AVZupKUoW5Lm5KDJSU27OqszoYFnDvNqOsLr+3Ff/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790213508; c=relaxed/simple;
-	bh=AfbUml1zJZuQ7JQDHXkKhPCakS6f3z7l1oMwGfmQH8w=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=CwDghJxuCRqqHtlL8oaxydnHvommFG5ZAyZ3f9nBXJngqJ2k8hMTIYzdefvlz3Ujsj3y8IJz+8/ZwiEBvUjS53FBQTxxI2RfxbR3uJokKoONP+Vb3bKLTuCTd55WNTDoLMC/y/zy+faMlkSYRPjL60VbWdFzCMWArNsS/+fRUFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CgtzvATJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790213691; c=relaxed/simple;
+	bh=FfF54ZUBc7946Xqa5diHmOO3E7Zp3pwB4IlWQgStZVY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z26UY5ypZ/840s0SCdZd+EPYpoQ0LJJ2PkYxDZvdTLcGLLNTb6jBZmfWtf0qHWbg75t2fPpxZ06Jeh6p+vCc1U65y7TyEDMdFZdeqnf+KB0jmjJQJnzSh/C+URpKuDRaaBRwouo9IU0GhCDBhh5LaFqtIM8rAbLY+dhrp6l/USE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f9/iSqeB; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CgtzvATJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E9F1F000FF;
-	Thu, 24 Sep 2026 01:31:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790213506;
-	bh=VuGY/Y4MYw5Lk44aMfqov/6Tvy5hvDKuLf8QBS3Ct+E=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=CgtzvATJ8hrijhakctAOEKQonRdEqfGNIX4T10dnY0tszwSl7UtIb3O90PE1k3h9+
-	 vpIxzLi0tlhs632g8SGvZe7MTRl5MHgEVYwmT9qjrPnIx3OEziMQngAfZsR9+iscEx
-	 KilQmaZxjVBCNJiQrTNUzkalNR3kZMVBRavdIksd7xZqvZT4IPaiM+GmZ1aQCK1vr8
-	 xu/0mBkSfGgcZR3b02udLurUOwa3SpvZNn3/hy+XtBLego51MSNVNQuUWxsDjRWMZ/
-	 DImLrOAVfaOoIA0HjrjG7m2iB2VeVERW5rZSQXdA3IUJUerm2mO7cpjcz2y2HDwJwr
-	 BZ7d2NmoFfJog==
-Date: Thu, 24 Sep 2026 10:31:40 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, "Masami Hiramatsu (Google)"
- <mhiramat@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Ingo Molnar
- <mingo@kernel.org>, Jinchao Wang <wangjinchao600@gmail.com>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Thomas Gleixner
- <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>, Alexander
- Shishkin <alexander.shishkin@linux.intel.com>, Ian Rogers
- <irogers@google.com>, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-perf-users@vger.kernel.org, x86@kernel.org, Paolo Bonzini
- <pbonzini@redhat.com>, kvm@vger.kernel.org
-Subject: Re: [PATCH v17 02/13] perf/x86, KVM: Prevent host debug register
- leak into guest OS on NMI
-Message-Id: <20260924103140.0a40bb18812cbb913be5e662@kernel.org>
-In-Reply-To: <arPjK1-PVp_UqAsQ@google.com>
-References: <179005108298.388919.4535333252892590932.stgit@devnote2>
-	<179005110742.388919.1509641807739909065.stgit@devnote2>
-	<20260923085139.GV776954@noisy.programming.kicks-ass.net>
-	<arPjK1-PVp_UqAsQ@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f9/iSqeB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790213687; x=1821749687;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FfF54ZUBc7946Xqa5diHmOO3E7Zp3pwB4IlWQgStZVY=;
+  b=f9/iSqeBO+A3Oz59qeiMWoVb5xJdOkBBGgjxq/KJkaCEpE9L+fqusE8A
+   Mp5UYM+5tgYRvUuiYX/R+b79lveXpdrRULeApkiomjRekN59jtspoLMjS
+   eTCoJI3AHLyxtWiESpgGESHHrefMONkBEOaLNE6FtKewIKK75Sq7QX0la
+   ySjlWIRq0bZu1SFrM8o9S8MYUCW0SZw2zf7Bjc00ZMD7Ur2S0dwQpIUSL
+   MBPqWMjYsYoWkr/RJKpBBzw+0e66mo8RgpLPTz2tgtMIcwiBgbnnm79mm
+   FDeW+1rLjiOGrhRVRm3TKtCpS6R7GgowBWZCldDqa1OYKVrUlup41MJfQ
+   g==;
+X-CSE-ConnectionGUID: ll/AsDGPR7OEgvm2HtqX9A==
+X-CSE-MsgGUID: aWrQns4LQseT4+Y2XLSlxA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="101545814"
+X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
+   d="scan'208";a="101545814"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 18:34:45 -0700
+X-CSE-ConnectionGUID: qknp7SOLTiihXN8jSY14Pg==
+X-CSE-MsgGUID: +TclqIg1Qq++45vXccFjlg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
+   d="scan'208";a="273337574"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa007.fm.intel.com with ESMTP; 23 Sep 2026 18:34:42 -0700
+Date: Thu, 24 Sep 2026 09:33:31 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Tony Lindgren <tony.lindgren@linux.intel.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kas@kernel.org,
+	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
+	xiaoyao.li@intel.com, sohil.mehta@intel.com,
+	adrian.hunter@intel.com, kishen.maloor@intel.com,
+	peter.fang@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, chao.gao@intel.com,
+	artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org,
+	nik.borisov@suse.com
+Subject: Re: [PATCH v2 2/5] x86/virt/tdx: Configure add-on features on TDX
+ module init
+Message-ID: <arR96/Tpz4cQpfYZ@yilunxu-OptiPlex-7050>
+References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
+ <20260915102658.713079-3-yilun.xu@linux.intel.com>
+ <arIqtGbSRHGw8fiT@tlindgre-MOBL1>
+ <arOAL2Klu+L91JiI@yilunxu-OptiPlex-7050>
+ <arOG2s3VZMQjLWey@tlindgre-MOBL1>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arOG2s3VZMQjLWey@tlindgre-MOBL1>
 
-On Wed, 23 Sep 2026 07:33:15 -0700
-Sean Christopherson <seanjc@google.com> wrote:
-
-> On Wed, Sep 23, 2026, Peter Zijlstra wrote:
-> > On Tue, Sep 22, 2026 at 01:25:07PM +0900, Masami Hiramatsu (Google) wrote:
-> > > From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+On Wed, Sep 23, 2026 at 10:59:22AM +0300, Tony Lindgren wrote:
+> On Wed, Sep 23, 2026 at 03:30:55PM +0800, Xu Yilun wrote:
+> > On Tue, Sep 22, 2026 at 10:13:56AM +0300, Tony Lindgren wrote:
+> > > On Tue, Sep 15, 2026 at 06:26:55PM +0800, Xu Yilun wrote:
+> > > > --- a/arch/x86/virt/vmx/tdx/tdx.c
+> > > > +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> > > > @@ -998,6 +998,15 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
+> > > >  	return ret;
+> > > >  }
+> > > >  
+> > > > +/* List all kernel supported add-on features0 bits here */
+> > > > +#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0	(0)
+> > > > +
+> > > > +static __init u64 get_tdx_addon_features0(void)
+> > > > +{
+> > > > +	return tdx_sysinfo.features.tdx_features0 &
+> > > > +		TDX_KERNEL_SUPPORTED_ADDON_FEATURES0;
+> > > > +}
 > > > 
-> > > When KVM enters a guest OS, host hardware breakpoints are disabled
-> > > before running the guest. However, an NMI can occur while executing
-> > > in guest mode or during guest transition, where
-> > > arch_install_hw_breakpoint() can be invoked from NMI context.
+> > > How about get_tdx_supported_addon_features() for the above? It makes the
 > > 
-> > How? AFAICT perf doesn't do that. arch_install_hw_breakpoint() is called
-> > through pmu::add() which is strictly IPI context.
+> > mm.. I think this would make a bit confusion. "tdx_supported" reads like
+> > the module supported features, which is just .tdx_features0. But here we
+> > want both the module & kernel support. I'm thinking of:
+> > 
+> >  get_tdx_addon_features0(), just as is
+> > 
+> >  or
+> > 
+> >  tdx_get_supported_addon_features0(), maybe this is better?
 > 
-> I assume it's:
+> Something to describe it's masked with Linux supported features would be
+> nicest.
 > 
->   kgdb_nmi_handler()
->   |
->   -> kgdb_nmicallin()
->      |
->      -> kgdb_cpu_enter()
->         |
->         -> arch_kgdb_ops.correct_hw_break()
->            |
->            -> kgdb_correct_hw_break()
->               |
->               -> arch_install_hw_breakpoint()
+> Maybe something like get_tdx_masked_features0() or just
+> get_tdx_usable_features0()?
 
-Yes, it is done by KGDB. perf has no problem with it.
+I like "usable", and I want to keep "addon", not all usable features are
+listed here:
 
-Thank you,
-
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+  get_tdx_usable_addon_features0()
