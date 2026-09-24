@@ -1,60 +1,60 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81081254B03;
-	Thu, 24 Sep 2026 12:46:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF9F25A640;
+	Thu, 24 Sep 2026 12:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790253984; cv=none; b=ZI7/yWQyfVIPttHWsKm5eeJ0Q4n4IAE4xgdkP4q3cdOkweIB3osFYF/OPCIxa2tl8bjL2DzIlhMZZYyC5gYSpPLhIXgPnTPnBlRn+4OA/t/qMhHJDT1po/d4+QTT1R0Ft5v2mlib4AEebh/caKEHeXem096E6blJJuKQFu48zRA=
+	t=1790254194; cv=none; b=F2KntmG45frjV3aq2t/GWDaAyigaS9zaKdqWa2+UQSfy63tMHHdYS3H4pIF4Ip50+yxXVOnITL+aoJECBwYeMcmzPVGIv/yVOXJJGLJUGiqCEYOZTgc5IjQcA0MC4lnBGjq8QC3l8x3vovAJCco5KLLhEtBtMBGCssgB8uZuG2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790253984; c=relaxed/simple;
-	bh=woPiFzpOJ0G566NXe1D6gTY4O9zvGoaqRizHF7K/zG4=;
+	s=arc-20240116; t=1790254194; c=relaxed/simple;
+	bh=hm9lccC/5GkhUlUUy6yq/Qs/yfkw6XGykRq5Yxficfo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ml+Sh/HrRRmm8oV4fnBhirfpOUjudW+YQY54IT7yE1BBY7pOgUKCYBtYFXjpLVEvHQbyKMcT3Up6J26Dz9aSExr61MqgRXcBSMMhoaZ1y3UAu+tUPwW0yGr0r3ss8Pb1RM0a0SXPSa1ri+yk3Iz25qF7++B+UIuk/A8SW73J34k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mgIrcEHF; arc=none smtp.client-ip=148.163.156.1
+	 In-Reply-To:Content-Type; b=VWSoaSV/LzIArxqslsFZwY8v9OSK5j79Ao1PwMly/+wIX8MO1DlThmzP3sdvKYM/1tJW1mNHtqPu/QW5IO1O5dcZW/976tUtJPqA7piwBLL9zAmvQ01x2Kwq89Kz+CFHR92Z3JiTXFU4embE77PwedhA+QqoZrlvW8O8chRW0Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=AoW8OMf1; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mgIrcEHF"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68OC637G2182984;
-	Thu, 24 Sep 2026 12:46:19 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="AoW8OMf1"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68OC6NXw2028389;
+	Thu, 24 Sep 2026 12:49:41 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Kr1DIt
-	6Ri1+aennY4JTGAwtlFkIygFdN74drYrU054Y=; b=mgIrcEHFc7FALmOwG4Q/VI
-	Gw71TEDOCxHpOPB1f8A6mxLi9/kIAb6P0Km+Yo3PsQE5AEaPfsN6HgpZFPF70szS
-	cvrDYRnU7GNQ8NY09aQhR4vvv5MXBBpSoJULvk0WhK7wJQY5VTrgDnvDhqboES01
-	7oiQIhhqT4tE+G5D26jLBWSdrc5Qn+ENM8p0k9+agDo05U8pPaxmU37dzHbdF4sV
-	pt2FX5YPVAN/I0lJbccktNoIdxurfN7bkc116qCLOxOOfiGRIO9dHsaFhLgltA06
-	5vXSvVNcvDy2aIHJ/QDNRkTAdFAPm31r1XKg+QFPfZkOrgvbRMr4TqgnDbWF/zrg
+	:message-id:mime-version:references:subject:to; s=pp1; bh=y4VrHI
+	CWVqgB2RYnCshNPELH3cVu+IGtJ7vUa8SezFA=; b=AoW8OMf1FayLISkIo1QHwL
+	cFAWQxDbGUYkC1NqWdYeqlY4FuRaYc/uoajCBS3sxHfwkNdRnqPsb4HVcx6bMszp
+	I2K0zsbxwKo9WRUaiXC6qcg1bOB54BvRF1qSiK4wqXncgkvFPHNuNOKGud4oPk6e
+	7DSs6etDZEsITYf9XcTNSBHKU7RcG9rZx0ddfuOZu9xlPZ/f3e03QCHi6t4UmeuE
+	eyRib7cT2zxIUErJAMj5tIkmJfKw3Gzd5xS7MhG7mgEDj5vNWR8vYpA24mtBQXpQ
+	0d9mmo3F6wnFMWpQmGmSjFnlXZRx2o0KoTDL/D0HC6UXfmzSEVmRWM5jncu0jPcA
 	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskgsh239-1
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gske1rfhh-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 24 Sep 2026 12:46:19 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68OCHYJV2060501;
-	Thu, 24 Sep 2026 12:46:18 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gvb6qnsty-1
+	Thu, 24 Sep 2026 12:49:41 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68OCHXkJ2008825;
+	Thu, 24 Sep 2026 12:49:40 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gvbt2wp70-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 24 Sep 2026 12:46:18 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68OCkEPA39321980
+	Thu, 24 Sep 2026 12:49:40 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68OCndfK1639064
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 24 Sep 2026 12:46:14 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A94932004D;
-	Thu, 24 Sep 2026 12:46:14 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4D27F2004B;
-	Thu, 24 Sep 2026 12:46:14 +0000 (GMT)
-Received: from [9.111.22.143] (unknown [9.111.22.143])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 24 Sep 2026 12:46:14 +0000 (GMT)
-Message-ID: <9ea2d72c-279a-4ab6-b2b8-9392f070a3b9@linux.ibm.com>
-Date: Thu, 24 Sep 2026 14:46:14 +0200
+	Thu, 24 Sep 2026 12:49:39 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 655EB58053;
+	Thu, 24 Sep 2026 12:49:39 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9E1AD58059;
+	Thu, 24 Sep 2026 12:49:36 +0000 (GMT)
+Received: from [9.61.84.233] (unknown [9.61.84.233])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 24 Sep 2026 12:49:36 +0000 (GMT)
+Message-ID: <0256f343-fda7-492a-b987-91a6aaa4a5b8@linux.ibm.com>
+Date: Thu, 24 Sep 2026 08:47:43 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,183 +62,152 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 14/21] KVM: s390: vsie: Add helper to pin and unpin
- multiple guest pages
-To: Christoph Schlameuss <schlameuss@linux.ibm.com>, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
+Subject: Re: [PATCH v3 4/5] KVM/vfio: Use file-based reference counting for
+ KVM
+To: Steffen Eiden <seiden@linux.ibm.com>,
         Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
         Claudio Imbrenda <imbrenda@linux.ibm.com>,
         David Hildenbrand <david@kernel.org>,
-        Eric Farman <farman@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
-        Nico Boehr <nrb@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
-        Shuah Khan <shuah@kernel.org>, Sean Christopherson <seanjc@google.com>
-References: <20260918-vsie-sigpi-v7-0-f39806eaae37@linux.ibm.com>
- <20260918-vsie-sigpi-v7-14-f39806eaae37@linux.ibm.com>
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini
+ <pbonzini@redhat.com>,
+        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Farhan Ali <alifm@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
+        Tony Krowiak <akrowiak@linux.ibm.com>,
+        Halil Pasic <pasic@linux.ibm.com>,
+        Harald Freudenberger <freude@linux.ibm.com>,
+        Holger Dengler <dengler@linux.ibm.com>,
+        Alex Williamson <alex@shazbot.org>
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
+References: <20260924-vfio-v3-0-4a294307797b@linux.ibm.com>
+ <20260924-vfio-v3-4-4a294307797b@linux.ibm.com>
 Content-Language: en-US
-From: Janosch Frank <frankja@linux.ibm.com>
-Autocrypt: addr=frankja@linux.ibm.com; keydata=
- xsFNBFubpD4BEADX0uhkRhkj2AVn7kI4IuPY3A8xKat0ihuPDXbynUC77mNox7yvK3X5QBO6
- qLqYr+qrG3buymJJRD9xkp4mqgasHdB5WR9MhXWKH08EvtvAMkEJLnqxgbqf8td3pCQ2cEpv
- 15mH49iKSmlTcJ+PvJpGZcq/jE42u9/0YFHhozm8GfQdb9SOI/wBSsOqcXcLTUeAvbdqSBZe
- zuMRBivJQQI1esD9HuADmxdE7c4AeMlap9MvxvUtWk4ZJ/1Z3swMVCGzZb2Xg/9jZpLsyQzb
- lDbbTlEeyBACeED7DYLZI3d0SFKeJZ1SUyMmSOcr9zeSh4S4h4w8xgDDGmeDVygBQZa1HaoL
- Esb8Y4avOYIgYDhgkCh0nol7XQ5i/yKLtnNThubAcxNyryw1xSstnKlxPRoxtqTsxMAiSekk
- 0m3WJwvwd1s878HrQNK0orWd8BzzlSswzjNfQYLF466JOjHPWFOok9pzRs+ucrs6MUwDJj0S
- cITWU9Rxb04XyigY4XmZ8dywaxwi2ZVTEg+MD+sPmRrTw+5F+sU83cUstuymF3w1GmyofgsU
- Z+/ldjToHnq21MNa1wx0lCEipCCyE/8K9B9bg9pUwy5lfx7yORP3JuAUfCYb8DVSHWBPHKNj
- HTOLb2g2UT65AjZEQE95U2AY9iYm5usMqaWD39pAHfhC09/7NQARAQABzSVKYW5vc2NoIEZy
- YW5rIDxmcmFua2phQGxpbnV4LmlibS5jb20+wsF3BBMBCAAhBQJbm6Q+AhsjBQsJCAcCBhUI
- CQoLAgQWAgMBAh4BAheAAAoJEONU5rjiOLn4p9gQALjkdj5euJVI2nNT3/IAxAhQSmRhPEt0
- AmnCYnuTcHRWPujNr5kqgtyER9+EMQ0ZkX44JU2q7OWxTdSNSAN/5Z7qmOR9JySvDOf4d3mS
- bMB5zxL9d8SbnSs1uW96H9ZBTlTQnmLfsiM9TetAjSrR8nUmjGhe2YUhJLR1v1LguME+YseT
- eXnLzIzqqpu311/eYiiIGcmaOjPCE+vFjcXL5oLnGUE73qSYiujwhfPCCUK0850o1fUAYq5p
- CNBCoKT4OddZR+0itKc/cT6NwEDwdokeg0+rAhxb4Rv5oFO70lziBplEjOxu3dqgIKbHbjza
- EXTb+mr7VI9O4tTdqrwJo2q9zLqqOfDBi7NDvZFLzaCewhbdEpDYVu6/WxprAY94hY3F4trT
- rQMHJKQENtF6ZTQc9fcT5I3gAmP+OEvDE5hcTALpWm6Z6SzxO7gEYCnF+qGXqp8sJVrweMub
- UscyLqHoqdZC2UG4LQ1OJ97nzDpIRe0g6oJ9ZIYHKmfw5jjwH6rASTld5MFWajWdNsqK15k/
- RZnHAGICKVIBOBsq26m4EsBlfCdt3b/6emuBjUXR1pyjHMz2awWzCq6/6OWs5eANZ0sdosNq
- dq2v0ULYTazJz2rlCXV89qRa7ukkNwdBSZNEwsD4eEMicj1LSrqWDZMAALw50L4jxaMD7lPL
- jJbazsFNBFubpD4BEADAcUTRqXF/aY53OSH7IwIK9lFKxIm0IoFkOEh7LMfp7FGzaP7ANrZd
- cIzhZi38xyOkcaFY+npGEWvko7rlIAn0JpBO4x3hfhmhBD/WSY8LQIFQNNjEm3vzrMo7b9Jb
- JAqQxfbURY3Dql3GUzeWTG9uaJ00u+EEPlY8zcVShDltIl5PLih20e8xgTnNzx5c110lQSu0
- iZv2lAE6DM+2bJQTsMSYiwKlwTuv9LI9Chnoo6+tsN55NqyMxYqJgElk3VzlTXSr3+rtSCwf
- tq2cinETbzxc1XuhIX6pu/aCGnNfuEkM34b7G1D6CPzDMqokNFbyoO6DQ1+fW6c5gctXg/lZ
- 602iEl4C4rgcr3+EpfoPUWzKeM8JXv5Kpq4YDxhvbitr8Dm8gr38+UKFZKlWLlwhQ56r/zAU
- v6LIsm11GmFs2/cmgD1bqBTNHHcTWwWtRTLgmnqJbVisMJuYJt4KNPqphTWsPY8SEtbufIlY
- HXOJ2lqUzOReTrie2u0qcSvGAbSfec9apTFl2Xko/ddqPcZMpKhBiXmY8tJzSPk3+G4tqur4
- 6TYAm5ouitJsgAR61Cu7s+PNuq/pTLDhK+6/Njmc94NGBcRA4qTuysEGE79vYWP2oIAU4Fv6
- gqaWHZ4MEI2XTqH8wiwzPdCQPYsSE0fXWiYu7ObeErT6iLSTZGx4rQARAQABwsFfBBgBCAAJ
- BQJbm6Q+AhsMAAoJEONU5rjiOLn4DDEP/RuyckW65SZcPG4cMfNgWxZF8rVjeVl/9PBfy01K
- 8R0hajU40bWtXSMiby7j0/dMjz99jN6L+AJHJvrLz4qYRzn2Ys843W+RfXj62Zde4YNBE5SL
- jJweRCbMWKaJLj6499fctxTyeb9+AMLQS4yRSwHuAZLmAb5AyCW1gBcTWZb8ON5BmWnRqeGm
- IgC1EvCnHy++aBnHTn0m+zV89BhTLTUal35tcjUFwluBY39R2ux/HNlBO1GY3Z+WYXhBvq7q
- katThLjaQSmnOrMhzqYmdShP1leFTVbzXUUIYv/GbynO/YrL2gaQpaP1bEUEi8lUAfXJbEWG
- dnHFkciryi092E8/9j89DJg4mmZqOau7TtUxjRMlBcIliXkzSLUk+QvD4LK1kWievJse4mte
- FBdkWHfP4BH/+8DxapRcG1UAheSnSRQ5LiO50annOB7oXF+vgKIaie2TBfZxQNGAs3RQ+bga
- DchCqFm5adiSP5+OT4NjkKUeGpBe/aRyQSle/RropTgCi85pje/juYEn2P9UAgkfBJrOHvQ9
- Z+2Sva8FRd61NJLkCJ4LFumRn9wQlX2icFbi8UDV3do0hXJRRYTWCxrHscMhkrFWLhYiPF4i
- phX7UNdOWBQ90qpHyAxHmDazdo27gEjfvsgYMdveKknEOTEb5phwxWgg7BcIDoJf9UMC
-In-Reply-To: <20260918-vsie-sigpi-v7-14-f39806eaae37@linux.ibm.com>
+From: "Jason J. Herne" <jjherne@linux.ibm.com>
+In-Reply-To: <20260924-vfio-v3-4-4a294307797b@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=V/XoQuni c=1 sm=1 tr=0 ts=6ab51b9b cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+X-Proofpoint-ORIG-GUID: VuPTRVlfVh_aR3aEiGtkbeufOzj_RQPh
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI0MDA1MiBTYWx0ZWRfXyyvwNlWlDoUG
+ d+Q8HdEF4tZSQ1nTnu3N5mDsRmAR7oiYrb7dS6JcHqrB/IYg2W0vJZ7LDvr7bzQneTcg1mwxQva
+ p0JFdXT5hyFMJ8BFBZ8/w+A315WlE1xk1dYf9Ht7cBxVhj7cLLbKTeUqKUCb924kNdHtcS/ZaIa
+ dvwvYfAUYUPK17Qw5HXeW5v7fF9R+V5GkQD6M/dhErxOP/IHsDqQ6YINgw6zy9tPkA1rpkK5C8K
+ pVsQneejI56XQmyIpKxVqT6U8hohS47GWklEs6aeuPWSyoCLxQdpEMtYtJ5twU5L8b88JojWtMY
+ b9TYyz3i2ti5WGNFjL141CZCczVFnm7TcyYrL3RI2sxuQqpkR0Y0Y+nSW+ItgKzALXlPe+XaEv9
+ SJLUMA3eeKBY7aFvRCakh1Sguy6XABDMtPgCYU82wLFvLTwdIj06P4St7yuFrI1/Us0l4R88EEu
+ 7VcT1PbLRSklYN8uNBw==
+X-Authority-Analysis: v=2.4 cv=O/KsLx9W c=1 sm=1 tr=0 ts=6ab51c65 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=-ZQdvhKmTahj40bXq3EA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: yxcCaiAY_VP1hxeDCzN291mhdm1Aq_Mr
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI0MDA1MiBTYWx0ZWRfX3rzU2v9zZsva
- ckI+uXfHpapuObKJ3LmjsNibVxvp/0pl2shNDqJoZUpwDVuzGt2o6FHtVcs/LavblZcKsDzs69W
- KlfLqwRyKuZ6shOsEU3yaXAnZ+xhQNWwmSXOS2mvPi36imnFHL7qpDVOPz/8ttHTg7EGCCNp1dm
- 0dhSvYPPYQrrhkKSoM97YN3rUWz1LIUKvnWmXPub0wG0F1dAOklwi1oIv7K8BFCfw4vIQcBQog7
- 0mnP1bjngAQu1wA2WTogiGdljGZCqMaoeyiXAi384aTdP17ySQPXeSRyZAJ+S46YOo/1/DjDe09
- LQbOnyGIuv06ynEiRlDx2BzP6GmrCDmWVmSXNTIDe2srI81GseL+tLNOIKE4fhvLd4zYbK85HqW
- Fx1Oz0F72+ANiRfcQC2aDlCWvjo5I0jJL7unOUcLJrHEBoAE2zGol8stjF9MEBGwSNNozBITzDl
- LJRIubA3DoGBCfyZaiw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI0MDA1MiBTYWx0ZWRfXxygBcKvK781o
- SNR0gdAjO8wwXwdueIWAiHzF3Rc/McdVwbN842D7LwAHtRhvI+jzitwR4NgCeVNAaREiI+uxDk0
- kPv0PYefdA/wH/gVM/15wOyLKa2y7co=
-X-Proofpoint-GUID: eaXrEOa_2hl_W48CdbEi2qTbeybgO7aB
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=Ikd4Dj_1AAAA:8
+ a=1XWaLZrsAAAA:8 a=VnNF1IyMAAAA:8 a=lFuzCTX72hcPMOq5MnUA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI0MDA1MiBTYWx0ZWRfXwHIPapv4zwhG
+ ng3bF1CAkzA/I1Lu/OngQ3Te9USvuZiZS8nYC6esfs1WwEHVuGmm0FcMyfIlZloeZ2hMNjN72KX
+ UAhBl6sY8OgX7rOiQJVC0FTuPcm1gm8=
+X-Proofpoint-GUID: 46gO1ejmXxZHVzLRdZbUxADVJ2T8xNmk
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-24_03,2026-09-21_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 malwarescore=0 clxscore=1015 phishscore=0
- bulkscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0 suspectscore=0
+ clxscore=1015 malwarescore=0 phishscore=0 impostorscore=0 suspectscore=0
+ bulkscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0 spamscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609240052
 
-On 9/18/26 5:09 PM, Christoph Schlameuss wrote:
-> To handle vSIE configurations with an ssca we need to pin and unpin
-> multiple consecutive guest-2 pages in guest-1. As these might not be
-> consecutive in guest-1 it is necessary to iterate over all pages and
-> store guest and host addresses for later use.
+On 9/24/26 4:58 AM, Steffen Eiden wrote:
+> Replace manual module reference counting with file-based reference
+> counting for KVM integration. Previously, VFIO used symbol_get() to
+> obtain function pointers for kvm_get_kvm_safe() and kvm_put_kvm(),
+> then manually tracked module references through these symbols. This
+> approach required storing the put_kvm function pointer in each device
+> and carefully managing symbol references.
 > 
-> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+> Pass struct file pointers instead of struct kvm pointers throughout the
+> VFIO-KVM interface, leveraging the kernel's existing file reference
+> counting via get_file()/get_file_active() and fput(). Convert the x86
+> page-track API and update s390 vfio to use file_to_kvm_<arch>(). This
+> simplifies the code and removes all remaining externally exported
+> symbols for KVM which would appear twice for when a second concurrent
+> KVM module is introduced.
+> 
+> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+> Co-developed-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
 > ---
->   arch/s390/kvm/s390/vsie.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 45 insertions(+)
-> 
-> diff --git a/arch/s390/kvm/s390/vsie.c b/arch/s390/kvm/s390/vsie.c
-> index 1b88470efd4a..fa43b6c46bbb 100644
-> --- a/arch/s390/kvm/s390/vsie.c
-> +++ b/arch/s390/kvm/s390/vsie.c
-> @@ -71,6 +71,11 @@ static_assert(sizeof(struct vsie_page) == PAGE_SIZE);
->   static_assert(offsetof(struct vsie_page, mcck_info) == offsetof(struct sie_page, mcck_info));
->   static_assert(IS_ALIGNED(offsetof(struct vsie_page, crycb), 8));
+>   arch/s390/include/asm/kvm_host_s390.h |  2 +-
+>   arch/s390/kvm/s390/pci.c              |  9 ++++--
+>   arch/x86/include/asm/kvm_page_track.h |  8 ++---
+>   arch/x86/kvm/mmu/page_track.c         | 22 +++++++++-----
+>   drivers/s390/crypto/vfio_ap_ops.c     | 20 ++++++++----
+>   drivers/vfio/group.c                  | 11 ++++++-
+>   drivers/vfio/vfio.h                   | 12 ++++----
+>   drivers/vfio/vfio_main.c              | 57 +++++++++++------------------------
+>   include/linux/vfio.h                  |  5 ++-
+>   virt/kvm/vfio.c                       | 13 +++++---
+>   10 files changed, 85 insertions(+), 74 deletions(-)
+> ...
+> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+> index 940c0ff668be..556e643244f2 100644
+> --- a/drivers/s390/crypto/vfio_ap_ops.c
+> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+> @@ -1822,17 +1822,27 @@ static const struct attribute_group *vfio_ap_mdev_attr_groups[] = {
 >   
-> +struct kvm_address_pair {
-> +	gpa_t gpa;
-> +	hpa_t hpa;
-> +};
-> +
->   static inline bool sie_uses_esca(struct kvm_s390_sie_block *scb)
+>   /**
+>    * vfio_ap_mdev_set_kvm - sets all data for @matrix_mdev that are needed
+> - * to manage AP resources for the guest whose state is represented by @kvm
+> + * to manage AP resources for the guest whose state is represented by
+> + * @kvm_file
+>    *
+>    * @matrix_mdev: a mediated matrix device
+> - * @kvm: reference to KVM instance
+> + * @kvm_file: the KVM VM file this vfio device is associated with
+>    *
+> - * Return: 0 if no other mediated matrix device has a reference to @kvm;
+> + * Return: 0 if no other mediated matrix device has a reference to the VM;
+>    * otherwise, returns an -EPERM.
+>    */
+>   static int vfio_ap_mdev_set_kvm(struct ap_matrix_mdev *matrix_mdev,
+> -				struct kvm *kvm)
+> +				struct file *kvm_file)
 >   {
->   	return (scb->ecb2 & ECB2_ESCA);
-> @@ -251,6 +256,46 @@ static void unpin_guest_page(struct kvm *kvm, gpa_t gpa, hpa_t hpa)
->   	mark_page_dirty(kvm, gpa_to_gfn(gpa));
+> +	struct kvm *kvm;
+> +
+> +	if (!kvm_file)
+> +		return -ENOENT;
+> +
+> +	kvm = file_to_kvm_s390(kvm_file);
+> +	if (!kvm)
+> +		return -ENOENT;
+> +
+>   	if (kvm->arch.crypto.crycbd) {
+>   		get_update_locks_for_kvm(kvm);
+>   		if (kvm->arch.crypto.pqap_hook) {
+> @@ -1841,7 +1851,6 @@ static int vfio_ap_mdev_set_kvm(struct ap_matrix_mdev *matrix_mdev,
+>   		}
+>   		kvm->arch.crypto.pqap_hook = &matrix_mdev->pqap_hook;
+>   
+> -		kvm_get_kvm(kvm);
+>   		matrix_mdev->kvm = kvm;
+>   		vfio_ap_mdev_update_guest_apcb(matrix_mdev);
+>   		release_update_locks_for_kvm(kvm);
+> @@ -1894,7 +1903,6 @@ static void vfio_ap_mdev_unset_kvm(struct ap_matrix_mdev *matrix_mdev)
+>   		matrix_mdev->kvm = NULL;
+>   
+>   		release_update_locks_for_kvm(kvm);
+> -		kvm_put_kvm(kvm);
+>   	}
 >   }
 >   
-> +/* unpin multiple guest pages pinned with pin_guest_pages() */
-> +static void unpin_guest_pages(struct kvm *kvm, struct kvm_address_pair *addr, unsigned int nr_pages)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < nr_pages; i++) {
-> +		unpin_guest_page(kvm, addr[i].gpa, addr[i].hpa);
-> +		addr[i].gpa = 0;
-> +		addr[i].hpa = 0;
-> +	}
-> +}
-> +
-> +/*
-> + * pin nr_pages consecutive guest pages
-> + */
-
-Why is this multi line?
-
-> +static int pin_guest_pages(struct kvm *kvm, gpa_t gpa, unsigned int nr_pages,
-> +			   struct kvm_address_pair *addr, unsigned int *nr_pages_pinned)
-> +{
-
-s/addr/addrs/ ?
-Same for unpin?
-
-> +	int rc = 0, i;
-> +	hpa_t hpa;
-> +
-> +	gpa = gpa & PAGE_MASK;
-> +
-> +	/* the guest pages may not be mapped continuously, so pin each page */
-> +	for (i = 0; i < nr_pages; i++) {
-> +		rc = pin_guest_page(kvm, gpa + PAGE_SIZE * i, &hpa);
-> +		if (rc)
-> +			goto err;
-
-There's no reason for the goto, is there?
-If not, please inline the err label.
-
-
-Apart from these nits the patch looks fine.
-
-> +		addr[i].gpa = gpa + PAGE_SIZE * i;
-> +		addr[i].hpa = hpa;
-> +	}
-> +	*nr_pages_pinned = i;
-> +	return rc;
-> +
-> +err:
-> +	unpin_guest_pages(kvm, addr, i);
-> +	*nr_pages_pinned = 0;
-> +	return rc;
-> +}
-> +
->   /* copy the updated intervention request bits into the shadow scb */
->   static void update_intervention_requests(struct vsie_page *vsie_page)
->   {
-> 
-
+Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
