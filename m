@@ -1,106 +1,90 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B544E379B
-	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 21:53:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2399C49DB80
+	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 21:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790286796; cv=none; b=HubO3mWpC36xD04Swv8TskBR1irApnAMW2USaKE7EX5TLo6os4O902y+f/skNcSoaI9wi9dK3hLNB9P5JGgSRsdv3EEJ/O/nBzZrcYaSCSNq+nHVHvDoZP9HIPRxZ+LDRbQXdQ/PcIcnscakWeppVoY0sVb18zSdpIQBtH6Ql9A=
+	t=1790286821; cv=none; b=kNVIaOUcn2yTxr3wAMGuGRBg3Wyl33xdGgLV4A7wAn+FdtbAdEIBpfmVW6ZQK6rASHITQ9zfIo57siF70Ih0PtinyUoED4a8O/wP2cGSd61dGXUCuF/2AA1iTduoWCRUFIoj8Z2dP576wq11nNwczwC7ZcQv+Fx8q+jsrcLngoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790286796; c=relaxed/simple;
-	bh=RbSuvXpZGJzj7DyvR5wUr6ym4Nnq30Ym0ZQqCgZv2e4=;
+	s=arc-20240116; t=1790286821; c=relaxed/simple;
+	bh=TIp+gIIdLq4cktELq+hOpwoqupHiH3XvzAWI33S58iY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fSakh8QOu3Y3FdoyhnNBDvNllt5Ldk/NR29OjmBvbHiNWSgKpRQ3stXtCsWhGAA+2uMqEj9l9t3Sog8K33xw9XOqhTvRJrIpdM+1X8BUtWzlJ0X77jrNVBdM3/Emr//jY0TWua6zHpQ3FwVhHr3m48HXNY6/MG8LXSOdbR+oMXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u8ip4hsX; arc=none smtp.client-ip=209.85.216.72
+	 To:Cc:Content-Type; b=ezXX/elNkJ/ViHVNpm1HY7HYQlJMNu7Sg37Ra0K7xMuygNSTWL8otHkYHeUAwbwdfjFSdofn9jtz+kUjKkzicblBLvg6ZxnBYjJ7CzTLzG0SUtoCEC9/CKXrQOPHdkJErem/3Ci8O7/7IzC44gevuMrp6IWt1KLV0kG5fFfga0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vRhgWsZC; arc=none smtp.client-ip=209.85.214.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u8ip4hsX"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-39b77130a7fso268414a91.2
-        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 14:53:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vRhgWsZC"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d02df2bf09so1514145ad.0
+        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 14:53:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790286791; x=1790891591; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790286819; x=1790891619; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6LkhgjIPo4LQGHd0bFnsw+pSTli362MQLpClW50HsSw=;
-        b=u8ip4hsXZjYKo0/NLX1BwjJaC4gBAmy1XdO39VjPw5H3XSxbB7GkGlJKrpQUAK4s8A
-         du6dRREUDc/txuUNqgmifo0zXCjZOUJRvecq0Ij2rrIObXgozG3ROlk3p96eqV3Rlq6H
-         0VZgFQggx6if0cRZKzYWCC6YjVcXBpqxK17eahjRUX/oA1AEJ/SdXmiz8cn0L8rm1Yon
-         Y13vLKjLsQ7xvCBH3yzR/Qeeu22BiJb6CB/joUSsLJIAnoRhJFRTW5ilTW4mJ92UzG3q
-         GuHUfErxnYmJ4J0LOQGgRGfeB9VKqhDQE7jSsTblK46+OBE0rEozAsPCk9yb4gxtAEjp
-         osWg==
+        bh=Btaghd/Mv+1f+gI69Pd/U/027XFnS34zNCKX9stSM6A=;
+        b=vRhgWsZCULQspL3VOACTDa+IkoSPtgY7S6rZ3XRl/btt/7++ngSVq7oLtVZPpokpxm
+         iaW1QE1Tn1aRVvqX2XFNKe2KrJDyZguLuPwZXsjR34w3NXvkrHcBxYCBsnfa8vVBbJNC
+         E8IVvkIaAxuac1nPwHZpk3dSAH3Ftapm18I2ntZC0Ms2D6HGjFlY0FFMKyCtV68K68ll
+         ia+/v81A7D7JoiVlaSwZYZu9aaC8SJeYDEFJQLDgELcpEDEuikzZIapchGa+AoL1bpR3
+         nyjkp5V0A3Sq2baUhRoq0mx7osLZR9ZuAUJySeJRDF1vOBfwlIf9GpS3F9CuOQ1gTUg1
+         CWJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790286791; x=1790891591;
+        d=1e100.net; s=20260707; t=1790286819; x=1790891619;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=6LkhgjIPo4LQGHd0bFnsw+pSTli362MQLpClW50HsSw=;
-        b=WXwPLQS/3xokzFGwIhXwK5uDJx7ZrrMyBgzyctsS10w0Pfr5tVGIECxhmqS7M1fUbn
-         BVc3A+PyWO3baPxOuhy5k2EQ1F7rJ5liwNBR+RIMjXf7qQDeHMzBM4Qeb+8/KsI8FrYo
-         mUcRej/oCN8hnbTovTk/9sUeRdRIRVCkKurSK7tKKE1hekFDDpOSVD5ExnnLdYs+uyRO
-         Nn/gSTGDos06RuBTAUb9nXdcGrTyEFovMfDnuJbl1K4tdM1GWMY3M8owl1RDK5S/DNQa
-         enULpvVl/vJMZ30uCTiOorOEBqsX0002G8Yu3YDs189CQhKn1PiA153Win94TGa7b49F
-         Cq8Q==
-X-Gm-Message-State: AFuF++nbcp0PeD4sQ2Q8xGmq0bUwox57szB6tlXcfWVpoquCHsJvUZO7
-	PhoIuHUyhqLlUq7+xUi2wovGvwBrVMFu660blrf1LzOycEp9huWzyf1kznK3dnIFlrIf3s7znWN
-	HCgeBkA==
-X-Received: from pjrv22.prod.google.com ([2002:a17:90a:bb96:b0:3a0:9658:1de6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2703:b0:3a0:2ffd:1a4b
- with SMTP id 98e67ed59e1d1-3a098ce5269mr3354853a91.25.1790286791218; Thu, 24
- Sep 2026 14:53:11 -0700 (PDT)
-Date: Thu, 24 Sep 2026 14:51:51 -0700
-In-Reply-To: <20260826-gmem-no-return-page-v4-0-3bb9c1ddb4e3@google.com>
+        bh=Btaghd/Mv+1f+gI69Pd/U/027XFnS34zNCKX9stSM6A=;
+        b=2VkghFPSNKSaOK2LAIuqiqJiNiWcGVZBysz4yZo492c1DBUerMoLMenMLRb1Uhz0xH
+         mrRdn95iNEE0vFsuUPHWWRI+N8PRRz37n6A9OXX1oHmT5+KQh3iDT18XBVi/JK0Ph76x
+         KxoXS8dawnuaZCncDDLmQGOOnB8XuQRSjUjoc4DaGRgZFyLdhDcSoHvABdeXsLg6Yb7h
+         812lGBUI0o+/kc6YGJQxx3C1jU5uq/myP4Yp+Ip2p6xcEBGUvV7yh2TjgbHaXJLXXavN
+         szHw2ZO1qOqJVto8gEnZNOf6kzDJzHOghfWbwt5ajZ9X40kUyJVC0m0x+38KhoAhx9/1
+         0X4Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxwSSUTfioi6xpSC7pzwwUwvcmvdngpHGrkCBiQFVHH6DXXGpdh6nH0Q6CY+zy0h9Qy6zM=@vger.kernel.org
+X-Gm-Message-State: AFuF++nrq8SStqE2qQhx4l3q5cGiNWI820xxappqJAL0TIoJ3hy0dwAP
+	7JElQ0r3Xo/Eb7NOFfewSbkkBrCCJrs/Zz3u95fizIcLk5H87HHuYTwqgZW6+0RWgZMjj9QIhKU
+	X9xgN2g==
+X-Received: from plss20.prod.google.com ([2002:a17:902:c654:b0:2dd:a9d1:e5af])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:26d0:b0:2db:257c:9fd5
+ with SMTP id d9443c01a7336-2df7dc2a162mr30302595ad.16.1790286819065; Thu, 24
+ Sep 2026 14:53:39 -0700 (PDT)
+Date: Thu, 24 Sep 2026 14:51:53 -0700
+In-Reply-To: <20260826165647.769231-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260826-gmem-no-return-page-v4-0-3bb9c1ddb4e3@google.com>
+References: <20260826165647.769231-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <179028368772.2007408.8775233545709825615.b4-ty@b4>
-Subject: Re: [PATCH v4 0/5] Stop returning struct page from guest_memfd PFN lookup
+Message-ID: <179028369147.2007668.960049765709883203.b4-ty@b4>
+Subject: Re: [PATCH v2] KVM: guest_memfd: Elaborate on how release() vs.
+ get_pfn() is safe against UAF
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ashish Kalra <ashish.kalra@amd.com>, 
-	Michael Roth <michael.roth@amd.com>, Brijesh Singh <brijesh.singh@amd.com>, 
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, David Hildenbrand <david@kernel.org>, Yan Zhao <yan.y.zhao@intel.com>, 
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>, 
-	Fuad Tabba <fuad.tabba@linux.dev>, Ackerley Tng <ackerleytng@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Yan Zhao <yan.y.zhao@intel.com>, Vishal Annapurve <vannapurve@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, 26 Aug 2026 09:01:45 +0000, Ackerley Tng wrote:
-> v4 splits out a new patch (3) that makes use of KVM MMU invalidation logic
-> introduced into the RMP fault handling in patch 2 to avoid warning on a
-> benign case.
+On Wed, 26 Aug 2026 09:56:47 -0700, Sean Christopherson wrote:
+> Add more context and information to the comment in kvm_gmem_release() that
+> explains why there's no synchronization on RCU _or_ kvm->srcu.  Point (b)
+> from commit 67b43038ce14 ("KVM: guest_memfd: Remove RCU-protected attribute
+> from slot->gmem.file")
 > 
-> Other changes in v4:
-> 
-> + Took Sean's version of the changelog for patch 2
-> + Picked up Fuad's Reviewed-by: and Tested-by:
+>       b) kvm->srcu ensures that kvm_gmem_unbind() and freeing of a memslot
+>          occur after the memslot is no longer visible to kvm_gmem_get_pfn().
 > 
 > [...]
 
-Applied to kvm-x86 coco, thanks!
+Applied to kvm-x86 coco.  I'll follow-up with another cleanup for get_pfn() at
+some point.  Thanks!
 
-[1/5] KVM: SEV: Treat unassigned RMP entry as benign race on PSMASH failure
-      https://github.com/kvm-x86/linux/commit/211606532680
-[2/5] KVM: SEV: Drop page refcount early during RMP fault handling
-      https://github.com/kvm-x86/linux/commit/375b32931b5d
-[3/5] KVM: SEV: Check for invalidation before warning on unassigned RMP entry
-      https://github.com/kvm-x86/linux/commit/acafcf32c83e
-[4/5] KVM: SEV: Drop page refcount early in VMSA reload
-      https://github.com/kvm-x86/linux/commit/3c427e5c0347
-[5/5] KVM: guest_memfd: Stop returning struct page from PFN lookup
-      https://github.com/kvm-x86/linux/commit/89fbe3de01cc
+[1/1] KVM: guest_memfd: Elaborate on how release() vs. get_pfn() is safe against UAF
+      https://github.com/kvm-x86/linux/commit/53c34396c19e
 
 --
 https://github.com/kvm-x86/linux/tree/next
