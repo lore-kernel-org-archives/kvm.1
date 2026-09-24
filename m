@@ -1,193 +1,236 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B603470428
-	for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 10:17:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D2E47255A;
+	Thu, 24 Sep 2026 10:22:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790245044; cv=none; b=gMWF/Yjn083retiFjDkyJowmr2R92ITPV3u7y0iKjHodu/uuQjV7R3TUe3+mGZndVy41zObngWXmY4y441lU9DjPR5p8O/A3H9Q6gzDF+FYdOQPe/UCcBT1gLtww54a+6r6TXd1SAfWv6CAuHDYea/Bx4zXAOCdDx2PcKsXyzGk=
+	t=1790245342; cv=none; b=CSWHBXrJofu5Q9q6UwjWp/cjDpezTNFtn6x9iS6RFztIejDmXIfzwu5ADUJ8pgOAwH3Askao0lSNfhCf40lFKQuTgKOA3FV/t6iZV5ha0iasxyp6UbS+Bab/eQcHW+bIRLNpmNNIn3reBeHiSViTPQez8igmrHhJ/dag9+0K4NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790245044; c=relaxed/simple;
-	bh=OLQtN8/9/Nf4flz3Kt2BUy4OlOf9PndZym7N2lg6lbA=;
+	s=arc-20240116; t=1790245342; c=relaxed/simple;
+	bh=OEAvVEvSSYrtFac6frED2AShJLA9smPR3WlZU2YjXiA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KlO0WPGas9kdMDbRSrGmqPPn/IdEKjDAAnTTWXP8U2qQUOOViz3QwE7W2IXCA/AGoxCP8uSYDSTruP+3GcrNcbZyGzRZHb8TafKTvzjiQ8LSwPu8w1cGzuFOiimZKjIIr/bruiKhRf+RCJ24XI3x1iDN+umVMitWr14Mqli2xis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a62eB1VJ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SLC4QTgF; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=sLk8ZWKAzosq6zgGp9i/GMBo2veFrjj6lUBk4PvN8FKoKl8p8Hzs6b8yiFAMOVFeLW3HV+Yi9ah2G5KDcSd7wpI+jUNfyTQ5RNUitkrjKAXskJ8CVgTIG7MeKFZVelWD/RSC2pu6kIBivC3TcL41GOLyytx5YNZfzODJp0QOInQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bK5oWCb3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a62eB1VJ";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SLC4QTgF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790245034;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H6EUUW1m1zoaB7DVxqcfClkBe+yQHGLp6gBbcFMHwFk=;
-	b=a62eB1VJw75EktJS75+2xdXvr1XdUTzZGANOZ6VNC2K0i37XkEM8udyTyctf9fc+AKAPln
-	XW0baWTvX4xpvYoXgo98WNM1uDEe0X2xP1nFeFFKflB0F6mEu+k2nNaPuqaICwupl8noAZ
-	Y1Tvd58bMrb1sEWfEUbSeZJfgEJEcD4=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-17-8CeLE9wOOiq5d5fpcDabfw-1; Thu, 24 Sep 2026 06:17:12 -0400
-X-MC-Unique: 8CeLE9wOOiq5d5fpcDabfw-1
-X-Mimecast-MFC-AGG-ID: 8CeLE9wOOiq5d5fpcDabfw_1790245031
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-486f768517dso1453345f8f.1
-        for <kvm@vger.kernel.org>; Thu, 24 Sep 2026 03:17:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790245031; x=1790849831; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=H6EUUW1m1zoaB7DVxqcfClkBe+yQHGLp6gBbcFMHwFk=;
-        b=SLC4QTgFAAmhmFB0lfmX2GhPXUY3bABWcBSfVj+xcAe18+GN19WX5pbtqMUPDVKuOd
-         b5EOf+bxKaW+wnvqX0YMlANb0wCPN4K7JS+1xJks1Kc2rbctUkYGOpT6sdevnenxfMJe
-         DnhkShpfo94T4Ie/gNC1s9yBQUlOBuqDe4r3zuvvDplxCz4nqa4iQMX+dgCnkWoNXRTQ
-         njDHVkAgJOpFzZ29AMlOvMFAOVdzqLavI59ltEFrDcV14ryLvSU93A6mvcYUiv4VXOXb
-         hLYxdUFD1R4p1CxxhHWRbTIdTv1fjL22IglA5Wo0GXSAWUSbVqhikZaqk7IOGUiB5iW7
-         A4SA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790245031; x=1790849831;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=H6EUUW1m1zoaB7DVxqcfClkBe+yQHGLp6gBbcFMHwFk=;
-        b=B4z0YYO1+ce8jn7UuM343tLnJO171D0ZWotEnHSPJCTPmdHvOQ2+b53VeW0eanWtAE
-         Wo2cdjlcVd9vSYDQprWpxBpRPpXAq46eYnCK7el2z3VVp0DktjpUxzHAMndIHbaDcAlm
-         2K+c7BKBgHa+6MUwX7iFNi4BqmtZJVlz0AHndFyGCt4dStA4MpJmKpLTmdzZCr0p1nog
-         uRuwfKcmv7DmaryPQGPnlol3gE7x/ILjNmf3eyy1Q58G8v4x9K2vDRBJ+XSJ70IdE5IG
-         sbOabmNyrn+RSOephm8bsrn2b6Z8WxqIcxpOWTeNutP2nEh+ihj0UtgKOnkfjLppatzZ
-         ljtQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzOezSdgm6VUAYLC+AYXGoyTcN9g61X3GKg3PR79Pm6T2T5Tr1iwr+MvHxq+QLevReu91Q=@vger.kernel.org
-X-Gm-Message-State: AFuF++mVO8NWCLxJL58Kt3rwslSYe9XvR8XYw/mn4Zv3Q6IvWB1imKCw
-	9tFqjCgjLMR99QRFKUQMDOX8avB5qggA8KohG9XaMAbOzIhcF+0uoPCi3dApiQch7a1B9IQ/Fuo
-	BoxXsKqa2/1t16GChFVp9sSMqaQ1xDhHHZveeU7yvSST3ng5EoRv7VA==
-X-Gm-Gg: AYBFou1NGwH9F22BBzQJ+fNpKil5iPZk+lX0xBdG9rZ2os6uhoC+7VHOQzMBZSvrTee
-	8AzSv1TTFxKPM66Uq0Lf+mckFVtaWIiQg0CquCv5bs/IOuLcY+g2M9RDi/e2BXAUFB7XpmfGBCr
-	R+f9GE55OBdkj+ikNltOpp52ZqAORop2bLnWv2DL+Xx5QnYwFyLnoLzDk4iPXpsbYK0QIM9p0h0
-	qKik4nkAdz7zBYAuezZIrTqdmi0/NLkVH4jMI3/RORdTZoiF4v7aWks7/6kgr+oc5eUDbCceSYM
-	TLJYnBTKukSLNlrrtaiaQIKckJPZL1205b3RZRSvG36GilcOdwxwHaSFhYZOFDxq5VS1NMv8T6b
-	es4WBWeSzK00fC8jt0/Ma3dxvZH1gl2Dg29hUr5hsxJclZcys07Y=
-X-Received: by 2002:a5d:5e93:0:b0:487:27f9:82a with SMTP id ffacd0b85a97d-488716f74b7mr3255255f8f.31.1790245031491;
-        Thu, 24 Sep 2026 03:17:11 -0700 (PDT)
-X-Received: by 2002:a5d:5e93:0:b0:487:27f9:82a with SMTP id ffacd0b85a97d-488716f74b7mr3255203f8f.31.1790245030920;
-        Thu, 24 Sep 2026 03:17:10 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-134-131.retail.telecomitalia.it. [82.53.134.131])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-488684863d9sm13714443f8f.12.2026.09.24.03.17.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 03:17:10 -0700 (PDT)
-Date: Thu, 24 Sep 2026 12:17:04 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Asias He <asias@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2 3/5] vsock: Enforce no-transport invariant for
- TCP_LISTEN sockets
-Message-ID: <arT3jXoS7OaU6Tsc@sgarzare-redhat>
-References: <20260915-vsock-connect-reset-closing-v2-0-a1d9abb472f7@rbox.co>
- <20260915-vsock-connect-reset-closing-v2-3-a1d9abb472f7@rbox.co>
- <aqp7CV9DnfsG1GJc@sgarzare-redhat>
- <0bc40e5c-8790-4a36-84bc-80e0bfe6b504@rbox.co>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bK5oWCb3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75DC61F000FF;
+	Thu, 24 Sep 2026 10:21:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790245340;
+	bh=/kufuYs8c40R6+aOEF8XLRCigB/kXlHZjyeo0hfMBwU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bK5oWCb3icJZsdzewTtJXUj2g8+OdPY584wvobmFjH9caA6XHPZPOxLC+ENgAYis7
+	 FMWfW3kg0b1pKU0W7dpIcpkH9wgepYgd+Vs0xeodvPvhS2Z2eCR6zzIfxbc+F4vYn1
+	 crr7Q7r6oewUJpom74jt6mX2gF6IAipPmH/f96jRZvGrtuVNztKClju5BP2uHo6kW6
+	 734wktJAnH1jO9c7SkfE4BGx5XUqUo3nH1YffnP3W3u3mHAJ7/dU+/pRlEDaapTJOL
+	 hEriCB9vp3MVrONwH7vOYcoqLNO15CHvH8FuBJLz8aDKeueJxc7YfwK4KfyNmRNl7E
+	 8UCm0PUzGxdsg==
+Date: Thu, 24 Sep 2026 11:21:49 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+	Doug Gilbert <dgilbert@interlog.com>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>, 
+	Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev
+Subject: Re: [PATCH v3 24/40] mm/mlock: eliminate weird VMA_IO_BIT abuse and
+ simplify
+Message-ID: <arT3K71l86fUVldk@gremlin>
+References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
+ <20260917-b4-mmap-prepare-vma-flag-sanify-v3-24-4583d8a23bca@kernel.org>
+ <93672B94-BB0C-4713-8F8A-3619D81DB7BB@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0bc40e5c-8790-4a36-84bc-80e0bfe6b504@rbox.co>
+In-Reply-To: <93672B94-BB0C-4713-8F8A-3619D81DB7BB@nvidia.com>
 
-On Tue, Sep 22, 2026 at 03:18:13PM +0200, Michal Luczaj wrote:
->On 9/16/26 14:30, Stefano Garzarella wrote:
->> On Tue, Sep 15, 2026 at 03:15:14PM +0200, Michal Luczaj wrote:
->>> A non-blocking connect() running in parallel with a blocking connect(),
->>> combined with a racy listen() that hits right after a connect timeout:
->>> TCP_SYN_SENT -> TCP_CLOSE -> TCP_LISTEN, while the connect() loop is still
->>> in progress.
->>>
->>> Enforce the invariant. Prevent a socket from becoming a listener after
->>> acquiring a transport.
->>
->> We should improve this comment; it's not entirely clear to me, TBH.
+On Wed, Sep 23, 2026 at 04:06:14PM -0400, Zi Yan wrote:
+> On 17 Sep 2026, at 12:22, Lorenzo Stoakes (ARM) wrote:
 >
->The race I was thinking about:
+> > When performing mlock() or munlock() otherwise normal VMAs have VMA_IO_BIT
+> > solely to fix a race with migration which might otherwise double-count
+> > mlock VMAs.
+> >
+> > This is unnecessary - at the point of applying folio mlock state, whether
+> > setting or clearing PG_mlocked, we know whether or not we are locking.
+> >
+> > Solve this in two ways - thread a boolean through the page table walk
+> > indicating whether a lock or unlock is being performed, and run a locking
+> > walk with VMA_LOCKONFAULT_BIT set and VMA_LOCKED_BIT cleared.
+> >
+> > This state never occurs otherwise, as VMA_LOCKONFAULT_BIT always implies
+> > VMA_LOCKED_BIT. These are also always cleared together.
+> >
+> > Then, update folio_add_lru_vma() and mlock_folio() to check only for
+> > VMA_LOCKED_BIT, and update try_to_unmap_one() to check for VMA_LOCKED_MASK
+> > instead.
+> >
+> > Also remove the useless invocation of allow_mlock_munlock() which simply
+> > returns true if unlocking and instead rename it to allow_mlock() and only
+> > call it when locking.
+> >
+> > Finally, with the other mlock abuse of VMA_IO_BIT addressed, update
+> > mlock_vma_folio() and folio_add_lru_vma() to simply test for
+> > VMA_LOCKED_BIT. munlock_vma_folio() tests VMA_LOCKED_MASK instead, as an
+> > unmap racing with the locking walk must still munlock folios the walk has
+> > already counted.
+> >
+> > While here, also replace some deprecated VMA flag predicates.
+> >
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > ---
+> >  mm/folio.c    |  2 +-
+> >  mm/internal.h | 10 +++++++---
+> >  mm/mlock.c    | 51 +++++++++++++++++++--------------------------------
+> >  mm/rmap.c     |  4 +++-
+> >  4 files changed, 30 insertions(+), 37 deletions(-)
+> >
+> > diff --git a/mm/folio.c b/mm/folio.c
+> > index 47a437e0f7fd..35e242b48870 100644
+> > --- a/mm/folio.c
+> > +++ b/mm/folio.c
+> > @@ -505,7 +505,7 @@ void folio_add_lru_vma(struct folio *folio, struct vm_area_struct *vma)
+> >  {
+> >  	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
+> >
+> > -	if (unlikely((vma->vm_flags & (VM_LOCKED | VM_SPECIAL)) == VM_LOCKED))
+> > +	if (vma_test(vma, VMA_LOCKED_BIT))
 >
->sk is CLOSE UNCONNECTED
->non-blocking connect():
->  sk := SYN_SENT CONNECTING
->  enqueue vsock_connect_timeout()
->                                   blocking connect():
->                                     release_sock()
->                                     schedule_timeout()
->vsock_connect_timeout():
->  sk := CLOSE UNCONNECTED
->listen():
->  sk := LISTEN UNCONNECTED
->                                     lock_sock()
->                                     sk is TCP_LISTEN UNCONNECTED
->
->It's not really critical (blocking connect() just timeouts), but I thought
->the invariant should be enforced once and for all.
+> I think it is worth documenting VMA_LOCKONFAULT_BIT alone means mlock in
+> progress, like you did in munlock_vma_folio(). Just to keep the protocol
+> explicit for all the readers.
 
-I see, would it better to do this change in net-next?
+Well I'm not sure it's necessary here honestly, because this never checked
+VMA_LOCKED_MASK anyway, and VMA_LOCKONFAULT_BIT never made a difference.
+
+So the meaning of VMA_LOCKED_BIT here is strictly 'is it locked' and it's
+correctly handled.
+
+And I fear that it becomes whack-a-mole - the neat thing about this change is
+that you no longer have to special case the stupid VM_SPECIAL thing, and can in
+fact do the 'normal' thing of _just checking_ VMA_LOCKED_BIT :)
+
+So I think it's better not to.
 
 >
->>> @@ -1973,13 +1973,13 @@ static int vsock_listen(struct socket *sock, int backlog)
->>> 		goto out;
->>> 	}
->>>
->>> -	if (sock->state != SS_UNCONNECTED) {
->>> +	vsk = vsock_sk(sk);
->>> +
->>> +	if (sock->state != SS_UNCONNECTED || vsk->transport) {
->>
->> Are we changing the behavior when an error occurs?
->>
->> If we call `connect()` on a socket (with no others running in parallel),
->> it fails, and then when we call `listen()`, it now fails, whereas before
->> it didn't. Can this happen? Is that what we want?
+> >  		mlock_new_folio(folio);
+> >  	else
+> >  		folio_add_lru(folio);
+> > diff --git a/mm/internal.h b/mm/internal.h
+> > index b2c6c9435021..84aa3e6c8bac 100644
+> > --- a/mm/internal.h
+> > +++ b/mm/internal.h
+> > @@ -971,8 +971,7 @@ void mlock_folio(struct folio *folio);
+> >  static inline void mlock_vma_folio(struct folio *folio,
+> >  				struct vm_area_struct *vma)
+> >  {
+> > -	/* The VM_IO check prevents migration from double-counting during mlock. */
+> > -	if (unlikely((vma->vm_flags & (VM_LOCKED|VM_SPECIAL)) == VM_LOCKED))
+> > +	if (vma_test(vma, VMA_LOCKED_BIT))
 >
->Ah, true, I didn't consider that. So yeah, we'd changing the behaviour.
->
->> If so, we should mention it at least in the commit description; if not,
->> perhaps we should unassign the transport in the `connect` call.
->
->Do you mean immediately un-assign on every transition from SYN_SENT to
->CLOSE (failure, timeout, signal)? Then we could also drop the re-assign
->logic. I think that's a nice idea.
+> Ditto.
 
-yeah, that!
+Similar reasoning to above.
 
 >
->---
+> >  		mlock_folio(folio);
+> >  }
+> >
+> > @@ -989,7 +988,12 @@ static inline void munlock_vma_folio(struct folio *folio,
+> >  	 * always munlock the folio and page reclaim will correct it
+> >  	 * if it's wrong.
+> >  	 */
+> > -	if (unlikely(vma->vm_flags & VM_LOCKED))
+> > +	/*
+> > +	 * VMA_LOCKONFAULT_BIT alone marks an mlock walk in progress, see
+> > +	 * mlock_vma_pages_range(). An unmap racing with the walk must still
+> > +	 * munlock folios the walk has already counted.
+> > +	 */
+
+Here it's worth mentioning, as it's specifically relying on the new
+behaviour. Although it's neatly using the VMA_LOCKED_MASK to handle both the
+locked case and the 'being locked' case :)
+
+> > +	if (unlikely(vma_test_any_mask(vma, VMA_LOCKED_MASK)))
+> >  		munlock_folio(folio);
+> >  }
+> >
 >
->I've addressed all your other comments for v2 and went through Ashiko's
->reports (side effects of lockless peer_shutdown write, imperfect
->no-transport TCP_LISTENER enforcement). I've decided to try the
->eager-unassign approach. I think/hope this way we sidestep the lockless
->writes and enforce the invariant without breaking the API, while fixing the
->bugs.
+> Why I am commenting in the middle of the series? Because I am taking
+> a quiz given by LLM based on this series to get myself enough background
+> knowledge to review this series. This mlock part came up at part E
+> and I only have part F left before I can do the full review. :)
+
+Thanks! :) I really appreciate you taking the time to look at this! Sorry it's
+so large.
+
+I held this series back from last cycle to help with review load, then spent
+some time fixing various AI-discovered things, and all the patches are necessary
+(well for the most part) to get where the series needs to go.
+
+I think the change is worth it though!
+
 >
->This should probably be RFC, but I'm posting as v3[1] so netdev's LLM can
->have a go (too). Hope I'm not breaking any workflow. Let me know what you
->think.
+> Best Regards,
+> Yan, Zi
 
-I think you can add RFC also on a v3 patch, just to make it clear you 
-are not sure it's ready to be merged.
-
-That said, thanks for that :-) I'll take a look today or next week 
-because I'm off tomorrow.
-
-I'm just worried it's becoming too big for net. Anyway, I'll comment 
-there.
-
-Thanks,
-Stefano
-
+--
+Cheers, Lorenzo
