@@ -1,286 +1,237 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE83222A4EE;
-	Thu, 24 Sep 2026 09:30:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60AF838D406;
+	Thu, 24 Sep 2026 10:03:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790242243; cv=none; b=puZ2ilhXYWVMtyoAMsU1VvuROEts6d0am2vVlCeib707LNVTP8YVatFLKXpQYZY4iIymEItNJXxXCOzO6t3jjaT7uLNZw25FxJkMlfVHPD+8yA57d6808DKUmuaosUlgGvcW/OEbEcr883EWUlGqexM1YMP7MaKvWiyYAhLFnEk=
+	t=1790244251; cv=none; b=Xu6ATFNCvoAx2GDfD3bZ6ZklpHvT4dVaTkscCC4FzeR+fwG9wA3Sim6OT76EO5gC04HdfTfeSjy27RmM0cHZbIfPAIxvcnsTJXSWUuZ61i6JjBxHaA07VXIn7NKvkZXTEaW467lPqGGqS1OK092emfjU7+tWX/0eC5E+bGyyzhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790242243; c=relaxed/simple;
-	bh=uRbXECVa57tm4T6YlvH/CitT0T3Ec9bEFz84rOg1SE0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VyBiQWzhlRKp29IJ1SIYJRXnFEUg0aciSeBXZA18Gx1IHASfsBkbWjV760het3cw1IRFt3lh6qjCbLDFIP0LM5tXocxMCdolk/jHKouXRLY+jXN5DjL2YDuKdKiRobeJaGkmeofrZVEvQ6jdqW+24sUOgiom0BmNhtAr0kLRcgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dLGRqKCS; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790244251; c=relaxed/simple;
+	bh=vbbMFj8U5zQ0DLQ+H49dKoTliQh3lrv6oisq4q6G+00=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CS9IPY4FtTkjCQDMTbzEQI+R8Zgi9BRXu6IqYUYmAmLXmA6E66nealO4ulPqg5i9fQ8g+pggC5U+EtAEZJCAyxuyibKsuFsmpw3XZIPIMo6rFs4rlDYtETQ3x58/VWCbw1iDdcYxUDUXcRr0LEcYVnqvrJx9fDN1FlFA5rO4Wss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DMbxskam; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dLGRqKCS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790242240; x=1821778240;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=uRbXECVa57tm4T6YlvH/CitT0T3Ec9bEFz84rOg1SE0=;
-  b=dLGRqKCS8Y7I5p9Lj2NmnFE4nLKC0yY41AVTJpoYI/j/YaMYQ4Ul1306
-   o5X3i+GU0/Ja55cDcAxPB1ODD9T0+JMre5UoPk/ib9x3F8TaBPoW+q778
-   tpOydfho5buc9DbCACkYg/QK9/54v1MGcCWWwvdVgIndGO5gS7PGs6YFI
-   e/nwnZtBsM+Cstx3rPLhYqeZ+0DiQE6hIvNUtkpl7yNgE/brzRGVpJKk0
-   NurWRZOAXNGBXNuzmoNPcmrFyMS7dv8xBqHZir4RQcitqr5Uqq6P2ydAR
-   XJuxfOrhLsgq5MXs/xh0zLvzMYVphAcl88OuvqqMdX7wrbkihRDsXo3AI
-   A==;
-X-CSE-ConnectionGUID: laGEd5KrS6qBqDbFhc4ZTA==
-X-CSE-MsgGUID: 7yfRFE3fRFmokcuv+zRi7Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="90129802"
-X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
-   d="scan'208";a="90129802"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 02:30:38 -0700
-X-CSE-ConnectionGUID: dgpsANy8RXy5X5fss4cD1g==
-X-CSE-MsgGUID: ljf8FQFCRIqWSWaaEWqmAg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
-   d="scan'208";a="272565765"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 02:30:35 -0700
-Message-ID: <eca53031-fd47-4471-9d05-d73295a0f57e@intel.com>
-Date: Thu, 24 Sep 2026 17:30:32 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DMbxskam"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097291F000FF;
+	Thu, 24 Sep 2026 10:03:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790244234;
+	bh=Q6qe1GeJ9XQcp2Qtuu+QjoS116ZDPXf6D3ecAVzIRhY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DMbxskamLqIuQ517s1qWGAAn1E+xsD1IWLYGPnumbRx6pTv8bCwHJNooLP/0Y9MmF
+	 ewyfTQFlrtMHi0vbNbmoGXeP02wTiKXQwMUnfW6BJPnwha3F6zTor4G266x5NCtrLZ
+	 UINk2FfnnrWpmI4AgQSRtCEaaer/qXtOU6XcHLmcrADLmAXvRTfOudurStBkH10L0j
+	 cHXvTwq8BsOo1ESnuzegeDjHk5jwPxjbI7VL3VpDQNaTCWwI1ExYzT3hhqIHmtSCUY
+	 phCcWTevzoeBg5AakjX55gtjhS7DlK4HJYPRuO/TGOEmjyYP86Mnf1i03HAWs2ule+
+	 sZHwPnp+ZmfYA==
+Date: Thu, 24 Sep 2026 11:03:23 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+	Doug Gilbert <dgilbert@interlog.com>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>, 
+	Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev
+Subject: Re: [PATCH v3 01/40] mm/vma: fix mmap_prepare file handling, remove
+ file_doesnt_need_get
+Message-ID: <arTvHhdoxZi_LslN@gremlin>
+References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
+ <20260917-b4-mmap-prepare-vma-flag-sanify-v3-1-4583d8a23bca@kernel.org>
+ <26EB9785-2909-4D49-A755-09A72BA94BD0@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/4] KVM: TDX: Track configurable CPUID bits allowed by
- KVM
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, seanjc@google.com,
- pbonzini@redhat.com, dave.hansen@linux.intel.com, andrew.cooper3@citrix.com,
- nik.borisov@suse.com, kas@kernel.org, rick.p.edgecombe@intel.com,
- chao.gao@intel.com, tony.lindgren@linux.intel.com, kishen.maloor@intel.com,
- dedekind1@gmail.com
-References: <20260917072548.2314491-1-binbin.wu@linux.intel.com>
- <20260917072548.2314491-2-binbin.wu@linux.intel.com>
- <39047bbc-757d-4131-a25c-5a7743fd591a@intel.com>
- <062f5365-7eb5-4e04-9c84-f5ecd566f019@linux.intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <062f5365-7eb5-4e04-9c84-f5ecd566f019@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <26EB9785-2909-4D49-A755-09A72BA94BD0@nvidia.com>
 
-On 9/24/2026 3:49 PM, Binbin Wu wrote:
-> On 9/24/2026 2:36 PM, Xiaoyao Li wrote:
-> 
-> Thanks a lot for the detailed review!
-> 
->> On 9/17/2026 3:25 PM, Binbin Wu wrote:
->>> Add tdx_cpu_cfg_caps[] to track the subset of TDX directly configurable
->>> CPUID feature bits that KVM supports, and build the masks during TDX
->>> hardware setup via tdx_initialize_cpu_cfg_caps().
->>>
->>> The TDX module reports the CPUID bits that the VMM can directly configure
->>> for a TD, but KVM cannot blindly expose all reported bits to userspace.
->>> Certain features imply additional architectural state, e.g. one or more
->>> MSRs, that KVM must explicitly manage across host/guest transitions to
->>> prevent host state corruption.  The existing hardcoded denylist cannot
->>> account for new host state clobbering features introduced by future TDX
->>> modules.
->>>
->>> Except for a few fixed-1 bits required for basic TDX support, host state
->>> clobbering features are either directly configurable or gated by TD
->>> ATTRIBUTES/XFAM, which KVM already validates.  Tracking only the directly
->>> configurable bits to build an allowlist is therefore sufficient.
->>>
->>> Organize tdx_cpu_cfg_caps[] following kvm_cpu_caps[] so that the masks can
->>> be built with similar feature-name based initializers.  Directly
->>> configurable non-feature bits will be handled separately.
->>>
->>> The allowlist is prepared to be consumed by later patches to filter
->>> KVM_TDX_CAPABILITIES and to reject unsupported CPUID input to
->>> KVM_TDX_INIT_VM, so that newly introduced TDX directly configurable CPUID
->>> feature bits stay hidden from userspace until KVM explicitly opts in.
->>>
->>> By default, intersect the allowlist with kvm_cpu_caps[] via TDX_CFG_F().
->>> Requiring support for non-TDX VMs avoids committing to TDX-specific
->>> behavior before general KVM support is established, and respects KVM's
->>> logic around disabling certain features, since the reasons for disabling
->>> them could apply to TDX as well.  Allow exceptions through
->>> TDX_CFG_EXTRA_F() only with sufficient justification.
->>
->> One name just crosses my mind. How about TDX_CFG_INDEP_F()? where INDEP stands
->> for independent.
->>
->> - TDX_CFG_F() for features that are dependent on kvm_cpu_caps[]
->> - TDX_CFG_INDEP_F() for features not dependent on kvm_cpu_caps[]
-> 
-> I am not sure if it's better.
-> But if people prefer independent to extra, I would use TDX_CFG_INDEPENDENT_F()
-> instead.
-> 
->>
->>> Add comments as placeholders for HLE, RTM, WAITPKG and FRED, which KVM
->>> doesn't support for TDX yet.
->>
->> 1. why add comments for them? Because implementation wise, they are possible to
->> be supported by KVM but just current KVM doesn't have code to support them yet?
->>
->> If so, are the others the features that are concluded to be impossible to be
->> supported by KVM?
->>
->> 2. We don't need to talk about FRED, which is even not suppported for normal VMs
->> yet. Unless we are trying to enable FRED for TDs specifically.
-> 
-> OK, I will drop them to avoid confusion.
-> 
->>
->>> Allow MWAIT, XTPR, and HT through TDX_CFG_EXTRA_F(), as these bits are
->>> not advertised in kvm_cpu_caps[].  The remaining directly configurable
->>> feature bits outside kvm_cpu_caps[] are left out of the allowlist:
->>>
->>>   - Features forced to zero when #VE is reduced, or lacking KVM support
->>>     for the associated MSRs: EST, TM2, SDBG, DCA, ACPI, ACC (TM), RDT_A,
->>>     RDT_M, TME, PCONFIG, and CORE_CAPABILITIES.  Handle CORE_CAPABILITIES
->>>     in a subsequent patch.
->>
->> why not split into two category? Because they are overlapped?
->>
->>   - Features forced to zero when #VE is reduced
->>   - Features lack KVM support
->>
-> 
-> Yes, there is overlap between them.
-> If split into two categories, it would be:
-> - Features forced to zero when #VE is reduced, which also lack KVM support
-> - Features unrelated to #VE reduction that lack KVM support
-> 
-> Because the changelog was already getting quite long, I combined them into a
-> single category.
+On Wed, Sep 23, 2026 at 10:20:43PM -0400, Zi Yan wrote:
+> On 17 Sep 2026, at 12:22, Lorenzo Stoakes (ARM) wrote:
+>
+> > The map->file_doesnt_need_get flag is confusing and the existing
+> > implementation has holes.
+> >
+> > Drivers are permitted to change the owning file of a mapping. If they do
+> > so, they are required to take a reference on that file.
+> >
+> > The mmap() operation which ultimately invokes __mmap_region() is guaranteed
+> > to drop the refcount for the original file the mapping was made under, but
+> > this is not true for the replaced file.
+> >
+> > This has been addressed so far by tracking map->file_doesnt_need_get, which
+> > is rather poorly named and unfortunately fails to correctly track whether
+> > or not an additional put were needed in a number of cases.
+> >
+> > Make life easier by removing this flag, and instead drop the reference for
+> > both mmap_prepare and the deprecated mmap callback in a new function
+> > put_map().
+> >
+> > Track whether this needs to be done by aligning mmap_state with
+> > vm_area_desc and store the original file in the map->file field, keeping
+> > the updated file in map->vm_file.
+> >
+> > In order to have the same behaviour for both types of hooks, only drop the
+> > reference __mmap_new_file_vma() itself took in its error path, deferring
+> > the replaced file's reference to put_map().
+> >
+> > To make this work correctly, map->vm_file has to be updated before any
+> > error handling, so update __mmap_new_file_vma() and call_mmap_prepare() to
+> > set this field first.
+> >
+> > Also when mmap_prepare() changes the file and is then merged, the reference
+> > count also must be decremented, so update the logic to call put_map() in
+> > this case too.
+> >
+> > Also update __compat_vma_mmap() to manually perform this step for stacked
+> > file systems using the compatibility layer, and update
+> > compat_set_vma_from_desc() to replace vma_set_file() with a correct
+> > refcount/file update.
+> >
+> > No in-tree driver is impacted by the incorrect implementation of this
+> > currently (no driver that does this is mergeable for one), so this does not
+> > need to be a fix.
+> >
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > ---
+> >  mm/internal.h |  1 +
+> >  mm/util.c     |  5 +++-
+> >  mm/vma.c      | 83 +++++++++++++++++++++++++++++++++++------------------------
+> >  mm/vma.h      |  6 +++--
+> >  4 files changed, 59 insertions(+), 36 deletions(-)
+> >
+> > diff --git a/mm/internal.h b/mm/internal.h
+> > index 0dca33db068f..fe576d468af4 100644
+> > --- a/mm/internal.h
+> > +++ b/mm/internal.h
+> > @@ -7,6 +7,7 @@
+> >  #ifndef __MM_INTERNAL_H
+> >  #define __MM_INTERNAL_H
+> >
+> > +#include <linux/file.h>
+> >  #include <linux/fs.h>
+> >  #include <linux/khugepaged.h>
+> >  #include <linux/mm.h>
+> > diff --git a/mm/util.c b/mm/util.c
+> > index bf0513d1d3d0..016932780925 100644
+> > --- a/mm/util.c
+> > +++ b/mm/util.c
+> > @@ -1228,8 +1228,11 @@ int __compat_vma_mmap(struct vm_area_desc *desc,
+> >
+> >  	/* Perform any preparatory tasks for mmap action. */
+> >  	err = mmap_action_prepare(desc);
+> > -	if (err)
+> > +	if (err) {
+> > +		if (desc->vm_file != vma->vm_file)
+> > +			fput(desc->vm_file);
+> >  		return err;
+> > +	}
+> >  	/* Update the VMA from the descriptor. */
+> >  	compat_set_vma_from_desc(vma, desc);
+> >  	/* Complete any specified mmap actions. */
+> > diff --git a/mm/vma.c b/mm/vma.c
+> > index 55917d097933..fa784f069da4 100644
+> > --- a/mm/vma.c
+> > +++ b/mm/vma.c
+> > @@ -24,7 +24,8 @@ struct mmap_state {
+> >  		vm_flags_t vm_flags;
+> >  		vma_flags_t vma_flags;
+> >  	};
+> > -	struct file *file;
+> > +	struct file *file;	/* mmap()-specified file. */
+>
+> IIUC, file is never assigned other than MMAP_STATE() and should not
+> change after mmap(). Could it be made const to prevent any change?
+> I assume mmap_state will not need to handle the nesting issue like
+> vm_area_desc, so file can be const.
 
-I think that should be OK. It only adds 2-3 lines?
+Oh I had assumed that this couldn't be const and I thought I'd checked that, but
+seems not, it can be :)
 
->> As for "features forced to zero when #VE is reduced", do you mean when TDX
->> module supports "#VE reduction" feature, the features becomes fixed0? or when
->> guest enables "reduce #VE", the guest see a 0 value even though the feature is
->> still configurable to host userspace and host userspace configure it to 1?
-> 
-> 
-> #VE is reduced means the guest reduced the related #VE, i.e. TDCS.TD_CTRL.REDUCE_VE
-> is 1 and the related bit in TDCS.FEATURE_PARAVIRT_CTRL is 0.
+Will fix that up for v4 thanks!
 
-I think "features forced to zero when #VE is reduced" doesn't matter at all
-here. KVM cannot predict TD's behavior and KVM cannot make decision just based
-on one of the possibility of TD's behavior. i.e., KVM still needs to consider if
-it can support the features when TD doesn't enable reduce_ve. So what really
-matters is KVM doesn't/cannot support these features correctly.
+>
+> > +	struct file *vm_file;	/* May be updated by mmap_prepare. */
+> >  	pgprot_t page_prot;
+> >
+> >  	/* User-defined fields, perhaps updated by .mmap_prepare(). */
+> > @@ -43,8 +44,6 @@ struct mmap_state {
+> >
+> >  	/* Determine if we can check KSM flags early in mmap() logic. */
+> >  	bool check_ksm_early :1;
+> > -	/* If .mmap_prepare changed the file, we don't need to pin. */
+> > -	bool file_doesnt_need_get :1;
+> >  };
+> >
+> >  #define MMAP_STATE(name, mm_, vmi_, addr_, len_, pgoff_, anon_pgoff_, vma_flags_, file_) \
+> > @@ -58,6 +57,7 @@ struct mmap_state {
+> >  		.pglen = PHYS_PFN(len_),				\
+> >  		.vma_flags = vma_flags_,				\
+> >  		.file = file_,						\
+> > +		.vm_file = file_,					\
+> >  		.page_prot = vma_flags_to_page_prot(vma_flags_),	\
+> >  	}
+> >
+>
+>
+> Best Regards,
+> Yan, Zi
 
-So it's just one category: features not supported by KVM.
-We don't need to talk #VE reduction at all.
-
->>
->>>   - Features tied to IA32_MISC_ENABLE bits that a TD cannot set when
->>>     TDCS.TD_CTLS.REDUCE_VE is set: CID and PBE.
->>
->> What is CID?
-> 
-> X86_FEATURE_CID, Context ID, more specifically, L1 CONTEXT ID
-
-My bad. I only search 'CID' in arch/x86/kvm/cpuid.c where uses CNXT-ID instead
-of CID.
-
->> and Is PBE related to any bit of IA32_MISC_ENABLE? Did you mean PEBS instead?
-> 
-> X86_FEATURE_PBE, Pending Break Enable.
-> 
-> Since kernel already has X86_FEATURE_XXX for them, so I use them directly without
-> other description.
-> 
->>
->> I don't understand what this category. It talks about something when
->> TDCS.TD_CTLS.REDUCE_VE is set, which depends on guest TD's behavior. So what if
->> the guest TD doesn't set TDCS.TD_CTLS.REDUCE_VE?
-> 
-> If the guest set TDCS.TD_CTLS.REDUCE_VE, write 1 to the the related bit trigger #GP.
-> If the guest doesn't set TDCS.TD_CTLS.REDUCE_VE, the value is passed to KVM, and
-> KVM will save the value without do corresponding virtualization.
-> 
-> Considering TDCS.TD_CTLS.REDUCE_VE is set by the Linux guest by default, it should
-> not allow these features.
-
-After some search, I find that X86_FEATURE_CID (CPUID.0x1:ECX[10]) is related to
-MSR_IA32_MISC_ENABLE[24], which seems to be a model specific bit.
-
-And on SDM, vol3. 14.5.6 L1 Data Cache Context Mode
-
-  L1 data cache context mode is a feature of processors based on the Intel
-  NetBurst microarchitecture that support Intel Hyper-Threading Technology.
-  When CPUID.01H:ECX[10] =1, the processor supports setting L1 data cache
-  context mode using the L1 data cache context mode flag (IA32_MISC_ENABLE[bit
-  24]). Selectable modes are adaptive mode (default) and shared mode.
-
-CPUID.0x1:ECX[10] is 0 on SPR and EMR (I didn't check more). It looks this CPUID
-bit will not show up on any TDX capable CPUs. I think we can report it to TDX
-architects and just make the bit fixed0 as a spec fix?
-
-For X86_FEATURE_PBE (CPUID.0x1:EDX[31]), it's related to bit 10 of MSR
-IA32_MISC_ENABLE. The CPUID is 1 on SPR and EMR. But bit 10 of MSR
-IA32_MISC_ENABLE is always 0 and setting bit 10 to 1 fails. It seems though
-CPUID.0x1:EDX[31] is set to 1, but it's not related to bit 10 of MSR
-IA32_MISC_ENABLE?
-
->>
->>>   - Features that can clobber host state and lack KVM support for TDX:
->>>     FRED.
->>>
->>>   - Unsupported features: PREFETCHWT1 (Xeon Phi only), PSN (absent from
->>>     TDX-capable CPUs), AMX-TRANSPOSE (never implemented on an Intel
->>>     platform), and RAO_INT (defined only for future processors).
->>
->> PREFETCHWT1 (if the name is correct) is not supported by the kernel right? For
->> such unknown features, it's straightforward to not support it.
->>
->> AMX-TRANSPOSE has been turned into reserved, and kernel never supports it. I
->> think we don't need to mention it at all.
-> 
-> The guest could be other OS, not just Linux.
-
-why guest OS matters? Are you considering the compatibility that it will break
-the case where host userspace configures them to TDs and the TD OS (other than
-Linux) is using them? If from this perspective, other bits will be a concern as
-well.
-
->>
->> RAO_INT is fixed 0 for TDX 1.5?
-> 
-> I was doing this patch series based on the latest CSV version of the CPUID
-> virtualization document from "Intel TDX Module ABI Definitions" updated in June 2026.
-> https://cdrdv2.intel.com/v1/dl/getContent/795381
-
-I see, it might be defined for TDX 2.0/3.0.
-
->>
->> At last, I think we can just classify all of the above as 3 types:
->>
->> - Features that are directly configurable by TDX and in kvm_cpu_caps[].
->>   use TDX_CFG_F()
->>
->> - Features that are directly configurable by TDX and KVM actually supports them
->>   or KVM can support them but not in kvm_cpu_caps[]. Use TDX_CFG_EXTRA_F().
->>   For example, MWAIT, XTPR, and HT.
->>
->> - Features that are directly configurable by TDX but KVM or kenrel doesn't
->>   support them.
->>   For example, RDT_A, RDT_M, PREFETCHWT1, PSN,
-> 
-> Because excluding some bits changes the ABI, I listed all these directly configurable
-> features out of kvm_cpu_caps[] to explain why we must exclude some bits.
-
-I think all the bits that are directly configurable but out of kvm_cpu_caps[]
-and not supported by KVM fall into the last category. You can just list all of
-them instead of my "for example".
-
-As for the bits like FRED/RAO_INT, we don't need to consider them since they are
-not generally supported by KVM.  They are just the new features to KVM, which
-can be just treated as unknown though the TDX spec has defined the
-virtualization type of them.
+--
+Cheers, Lorenzo
