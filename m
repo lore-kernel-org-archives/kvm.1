@@ -1,92 +1,89 @@
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC34E503BCC
-	for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 22:45:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3619364044
+	for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 22:45:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790376336; cv=none; b=lf+0D6Ph2ijCseD6Y734/Gu6l+b7iX2hC/EeqVqAce8fp37TeyO7d3ZmHjBGpa1hcDUgZiKsB65YgEckZoKoRvO6v5bAOvstMc2fCjACLsYcS2qU1ALK1Wh49YoXQFji0SaVQGZ4lbQgWCb5ZzaA3zv3uFAqlT9O/+PpxUZnHNQ=
+	t=1790376340; cv=none; b=KePE2uCXg1uXUiGTrkhlxuC3U2anGCbqHOOUbuBAza7QugCDvc0lhuc0S6sYQ17oX+ZFSpshAD/YI9WMx0iPe+uQhH/JYNiA3NRXDd8nRUtsSNI+HWHW2pC0ncsj/5EjLvrW+0igm0SntSkjVgZBrhzJTQPdImVNXs2OK8tzjxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790376336; c=relaxed/simple;
-	bh=z1rVDmoeAEoisl0tsyRg3Uxy4LvmKBL7BADhM170khM=;
+	s=arc-20240116; t=1790376340; c=relaxed/simple;
+	bh=N+4yZVzkMs+f9cIlA9Xr0uOlMvD/oElKJXxSs8/GKKA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=IbJu/AVpOeyptxBlFuA5qaXMO/QQb+Q0F96kVNwqF9vPfzGtqToGOIHQtS2mJOTISZTsEsacQGPWL/wfPe3QEPLnUnBUmNtJhlZs3m0lNcCU47w4tswd4hev5V9xltVAg/5vqVHUON+H27htKCVxURqXpFLqiXsQUeEz2Rn8lLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nPYAZfo1; arc=none smtp.client-ip=209.85.210.198
+	 To:Cc:Content-Type; b=SpUEQSvXqFJnWw33uixLrgG7Q4dpJmgHHaDahHM90ujByMYicPZRVAh8wpoCHDSvSCUUerNdbTBoqEREhu+g8uYgZUE87HNTuIQ3R+PFV7xq5C6ImYWAIMTjKS1RNpea3D7Weo/4psxoOo/+FoH1DnU1vU5P8S5n6275FlIPvnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VXYnLm1w; arc=none smtp.client-ip=209.85.214.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nPYAZfo1"
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-86a59faf521so1158220b3a.2
-        for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 15:45:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VXYnLm1w"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2df375fb9b2so13590615ad.2
+        for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 15:45:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790376334; x=1790981134; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790376338; x=1790981138; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=u7TJ4aVC+0axratBuQICVCZVWZd3avX2KzEt7nT2hAI=;
-        b=nPYAZfo1+1rCJBp7CyHm4edcvmJboIXNjR5CbDqDlJTHQul8KL4QGAkYaclu42koX/
-         1jQhUudctCg7bI2l7X9ep6eYobYUZ7WYjDh4QWCtmRXGEcsnqJK60ILtBjmQKYKEPJfe
-         xEVz68xpJ+xofLtLNULmTdl0p0jwNgU928Zl1ReG5vuAWABFsJtyrBz/NGjnMTTitRmQ
-         hO4QXzD+Je7YfWsc3PhQnQKDjcpkmEqf5JqsReOjgAVVyceQo4m9YWPnka9o4bXq+3DP
-         iCTzjjrsRejPZIO8ELWJlTK+LHLCpiX1YyijPT6OZhiJYIgzqgAIstVxQbmun5FvaeVz
-         Mz7A==
+        bh=HAIaSFhiuqSTDhKHb1IxQ05pNxL75k/WRp1YS6mD+YA=;
+        b=VXYnLm1wtz3F5a/aG8cRimfu/AurHVY2X4w6vYWgMNpOyWcbaSAHAp9VGweicLgpaN
+         BjoOFTdqyAmi4qspD7ciWy7FGpo0qffrY8zeBHZz8Hwr8PWVUP5MVx13/l0yU3vQphLF
+         2s9kRFz1eMWITSSBQI/1UomFEc0hyE/3AE9+1a7/6c83v3DiUqWP6K5f3oRH8Ozt6Yg3
+         v2Z+/TXeE3db3y0ddS9cKLs+nsRntcPaenjP42U3npD9/AOXju49ylSIBO6Kf0SBJRKj
+         c2hHCtDoKbNAW0MwGBv66DFutfsN28hfK23MlAMP6IhxmHejg/5unFcZpjHPLQdEUkOC
+         ocxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790376334; x=1790981134;
+        d=1e100.net; s=20260707; t=1790376338; x=1790981138;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=u7TJ4aVC+0axratBuQICVCZVWZd3avX2KzEt7nT2hAI=;
-        b=HWCyO4DP4uirHZdlxt/BkqavD8hckNGcWMMno4PS1+UUqWEjKp3GsB4BUD8ZB2hZec
-         HS10XmiLoF+wk9+JCyELNMSD5USOqaLnUXQQshfdf/QsqnvAjJYj0M/BdralnhNDcOXc
-         jcwf3ccfJJ7V58DcR+ydGub3ZxxWM2dCh/fmMBg1xZaykyXtGSCtp9/8I6OTsoRwqSAy
-         +EV3OVoBVsHhcsOlanpiwMewKydxSVL+Ii8QK0emx5vQetafT1kZbx5HwxQrlRgb5IcB
-         tHwwNbLDp2sebkLfndAwDPVqyt58lbdv28MO0lQ+l41YqKtLIAO9LCeoslupQpRNqvw3
-         F6Sg==
-X-Gm-Message-State: AFuF++mAkjh3gqnDRRF0/+S1fl+MYEs7emC/rpdnd8VhRN1GcXkr4LSN
-	uynJXmXYZ5pSOzuB8iXs0D8EsvHRJXkM7H0zKs2LNWLMP0NfXTrtORB2HRxixsqVf/7djHGHxvz
-	m8uTKKA==
-X-Received: from pgm14.prod.google.com ([2002:a05:6a02:608e:b0:cc7:8cdf:c48d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6f88:b0:3cd:9bb1:c6f5
- with SMTP id adf61e73a8af0-3de0e6f1229mr6303054637.10.1790376333965; Fri, 25
- Sep 2026 15:45:33 -0700 (PDT)
-Date: Fri, 25 Sep 2026 15:44:59 -0700
-In-Reply-To: <20260527151232.4058615-1-seanjc@google.com>
+        bh=HAIaSFhiuqSTDhKHb1IxQ05pNxL75k/WRp1YS6mD+YA=;
+        b=pclP28sQbaK0IS5xfeDHWFYs3XgBqzq8j0QlFa3jLME8oexxKF0ZD+eS2JMe2NHDOo
+         fkJ0WaAYTKNu4DOvhdgctQcrC8HuohXjPGt0D/nW1+B54sXNMu/Uv9uyEEuPPnSA3P19
+         JVXt622cNszbs3SzCTH8uy0cAv9vp881D0ddOlEfw6LFt4u6M5KjP5WFGCfCDGIsll1S
+         7jD3p4Lq0sn3pGOvPgDnR/mBxmwfnGmlKM5Km7MzEUmxNvFKOT/AxZqlZalyMeiai3HR
+         lqhBWVxAAZwyLtUtB9m0jg6MItvm6sX+TgOIBKB61SYuhT8xHCZZ6T3EQVcHpizanZ/X
+         oGsw==
+X-Forwarded-Encrypted: i=1; AKwUvBzv1EAxfJDApEu8MCWLh/KL9I1M3JZb07pGCwCpJc1JkdSWFPqo+Gkb1a5UzWz/aiS5VfE=@vger.kernel.org
+X-Gm-Message-State: AFuF++kzrEmBBHfypsFs7eQ8i8Nns0oayiy8VZsdqpyHMUIllU0cG407
+	A/ou8Kt2cABlLDvyWp8Z3Ba2pL7YsFOyWGSAJFYse8Dx/xwCa7VOztplqHoAaFuQfGon4YkhNGP
+	/S2TX7Q==
+X-Received: from plrs4.prod.google.com ([2002:a17:902:b184:b0:2db:1a39:c145])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:37c5:b0:2dd:5363:3219
+ with SMTP id d9443c01a7336-2df7dc2bfe2mr57388105ad.20.1790376338038; Fri, 25
+ Sep 2026 15:45:38 -0700 (PDT)
+Date: Fri, 25 Sep 2026 15:45:01 -0700
+In-Reply-To: <20260716100716.1313-1-yexun@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260527151232.4058615-1-seanjc@google.com>
+References: <20260716100716.1313-1-yexun@linux.alibaba.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <179037621801.2352728.233718043154169321.b4-ty@b4>
-Subject: Re: [kvm-unit-tests PATCH v3 0/2] nVMX: Improve DEBUGCTL test coverage
+Message-ID: <179037621326.2352619.4289475653019649274.b4-ty@b4>
+Subject: Re: [kvm-unit-tests PATCH v4] x86/lam: Allocate test page from
+ AREA_LOW instead of AREA_NORMAL
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Chenyi Qiang <chenyi.qiang@intel.com>
+To: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
+	Yexuan Yang <yexun@linux.alibaba.com>
+Cc: binbin.wu@linux.intel.com, chao.gao@intel.com, pbonzini@redhat.com
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, 27 May 2026 08:12:30 -0700, Sean Christopherson wrote:
-> Current nested debugctls test focuses on DR7 value and fakes the result of
-> IA32_DEBUGCTLMSR in comment. Although the test can pass because DR7 is the
-> only criterion to determine the result, there are some error messages
-> appearing in dmesg due to accessing to BTF | LBR bits in IA32_DEBUGCTLMSR
-> with report_ignored_msrs KVM parameter enabled.
-> 
-> Clean up the old test so that it focuses on DR7, then add a separate test for
-> DEBUGCTLMSR bits that are actually supported and can be validated during VMX
-> transitions.
+On Thu, 16 Jul 2026 18:07:16 +0800, Yexuan Yang wrote:
+> The lam test does not set a guest memory size in x86/unittests.cfg, so
+> QEMU falls back to the default of 128 MiB. AREA_NORMAL starts at PFN
+> BIT(36-12), i.e. physical 64 GiB, which is never initialized in a
+> 128 MiB guest. As a result, alloc_pages_flags(0, AREA_NORMAL) returns
+> NULL and test_lam_user() ends up running its LAM checks against a NULL
+> pointer, which is semantically meaningless even if the metadata-bit
+> arithmetic happens to succeed.
 > 
 > [...]
 
-Applied to kvm-x86 next, with a comment to explain starting at '1', and a fix
-for the redudnant '0'.
+Applied to kvm-x86 next, thanks!
 
-[1/2] nVMX: Remove the IA32_DEBUGCTLMSR access in debugctls test
-      https://github.com/kvm-x86/kvm-unit-tests/commit/071c710553e0
-[2/2] x86/vmx: (Re)Add a nVMX test to validate load/save of DEBUGCTL
-      https://github.com/kvm-x86/kvm-unit-tests/commit/067685479059
+[1/1] x86/lam: Allocate test page from AREA_LOW instead of AREA_NORMAL
+      https://github.com/kvm-x86/kvm-unit-tests/commit/5ce4dcd089c1
 
 --
 https://github.com/kvm-x86/kvm-unit-tests/tree/next
