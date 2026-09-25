@@ -1,145 +1,311 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B238E2DF6F4
-	for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 22:04:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBACF440A3E;
+	Fri, 25 Sep 2026 22:05:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790373869; cv=none; b=NZ6rIQldfd9S0bKRe56ND9Ze29ciAvrxXiXaIa64+ZfuAe+scyX8lLN9pb3ezn2VoZZsiqrHtGidl5J7najN1YUwHk+qE6DYSYeV7KuB71+C4F8mlSzYBfq2EcRSb0Erb5oM4PLUgOwiShEK1+t62yS/YR9Jtfs1G95EguCDmgg=
+	t=1790373939; cv=none; b=PNxGnu3S1SA7Av1qHKlQS4N18K3UDtQ9HiIzTG94hmK5zknamYNCGidz1/apJZ19RGwkf9kBev9nz4XI7RqKVEApkWwA1NqJmhcv2TkU6sgiDx5FsoK6Eyy/7sJOPuMCOv/AIqtMs5ElSJQFa48FPCDn5qSeT87kH4Kd7dQnMJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790373869; c=relaxed/simple;
-	bh=HAP/sFklTJPiQKLsjznjzZZN3nbst3jpCvp5m9djKik=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k59xNjjqL5jxlFT44s3dGVLuiqqaoxnMztRMGBAnqK2PFF4y+HveBpvOklBdL6gU8Be1E87dA3bcmfWJOVwKhMWHDj0RM2MVmjfAs9Xqt2tdWWczZ54YcdQKe7heRkV3i/+vghPdbG63t2IZFYqiPMVTZyhKPxTh+UID9XH+rM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Vn3bnv/r; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1790373939; c=relaxed/simple;
+	bh=2EOpSBVwiFTyJODrgdVakePWlXOI6UWDhn5KowBzIQ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OzrHuRszoq2ahITQ8RARyoFZIL/EMAz2dlH0EtWw14o1Irff/3M6/eUBEjpn80swtXcJeDpPWQfm3xifEc7HpqPUls9gWS6E0i5g/DzlaGwHrCEHr/dYJyf1i6DkIgd0X8TB73EYCc+i1DdSElVjRQbPgLoFVvUX9LWHdTH6DyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aW/1X2dA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Vn3bnv/r"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2d8facae850so21445ad.0
-        for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 15:04:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790373867; x=1790978667; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ksyuSwUH2dGx1asD3+Rht2rW0CHu4s19+UlL6wUtms0=;
-        b=Vn3bnv/r56IioWKUSiP5ascRSINxgMXtSxvPJU+Jch8/YXzNS8HcmS1cO3AQJrypG7
-         DxY0YWyv40gN9phTHEV0agjk+7RMqnoGZ5RYUxyDfjgYl3OgKb2Pj8tZjwmFu9ir3Xlc
-         0j0a8U4Skwl30PTHKzrv/TjGUMxZQIgF1l6opYcQ77SaQqQl2gcp1FMHWWEjdsjwpUb/
-         rko4FOMiyKaV9RS5lAkzQZNVxSdZio293+5Cem7ZtUBsahg30MyhWPkYr+oFrhI6Dsdd
-         B+nbtPmlRrCv/+nLFNZFpALELn9TfoK9pDD4abC1fXaaBVsiEre9kjUcfrWiFrdpyGkX
-         +XGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790373867; x=1790978667;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ksyuSwUH2dGx1asD3+Rht2rW0CHu4s19+UlL6wUtms0=;
-        b=B363Gm8aJBEYEAYaIJ7Dtbj6CfuOxogIpK7QQTkrUQBsfGN/U2AUsVjksus6ETLdCq
-         hvTTzQ4Q/LOEubPiPoqxhYy2/PNnEXr9ZAGPWEIxcFmsnaDsoM0tS8iX5vWOxCkOBEHJ
-         GdnSvrgAcGZjoUAvRbqg8DnLvC9RM0SrWZoSb+n8V4zmBIJXZgWV1LlnXGZhsftLERXd
-         QhyQY1uTY81dxUaCR1x3zDgDarUl+abVV7t/lFQqsVklgPmV6Sayb5cApd5otLEszDBb
-         TdZg1+6wGWbXPrTbkRb91n5ZtwWuL1lGdAaknqLUTylQHnAg2jSt1xY/Cb8/7Hxthg2h
-         72RA==
-X-Forwarded-Encrypted: i=1; AKwUvBwVHMI4sxsaDeY7LU88pHDV8SF45LBofwPVhhyg1WFIMx3ufZfrxKrpNCYJ3ORLTX4cwgI=@vger.kernel.org
-X-Gm-Message-State: AFuF++m6dbBB5c64KbGEjshZ9SzGwRrhOozp3WDgdBKr9aDhnTyGSvE6
-	A+8PtZXksK525jLbWNuHPQAyv+mJhbSOlGSTU+eNJHHb96elkjy4vNaWjX+Pt9AjtA==
-X-Gm-Gg: AYBFou2tv7RlivpJztAOvqQ3+OOHZ2vaP1i7UCEdjcd+ZLjdLoLbEINIOKpQjg79GlP
-	r213IMw9zlH3PH6YVuF/gm8g2fndOhPXlqeoZyWwm+NNn8hNWABn0CSUBxlMtTWQ6i7bQBd2tZl
-	yRhpjEpb0ScKSGWbbS/MwWIciLuhsraZ9xH9/qSdrUfbinu0uEx/d0GK+76nhQe0gMbwp0zIfvk
-	5p2cI+ogKz6XigEr2L98s5xm2QkXh4Ko2Z3E9tOfDb0cRW23Zflw1BTrHxUaI/rEi8Zt6CCtDfA
-	cNGWtKzZ2B/aJGo4KYfoWCWiGvophCh4JJXevmcYDOmzTZFKxB7QkSOrEEmce4r5jOzGT09QqT9
-	BvY72p6pN077KIUDbOkZVgNKELpux0fSRL/lMeEr7JZpOO7Cp3hJybFL/mmzHQ01A+xeS+HqVim
-	GGJKWmYq2vUToVgrw2nV2R9jgu6uX0IQdSB18N7VmjpXyPky+EiHjbkVI9/fLu43lZhkl5l7V0B
-	DyUID63Q1ev71wN9evdjPhU/Gs9a/7S
-X-Received: by 2002:a17:903:46c6:b0:2c9:d89f:fd98 with SMTP id d9443c01a7336-2dfa968787fmr718815ad.1.1790373866593;
-        Fri, 25 Sep 2026 15:04:26 -0700 (PDT)
-Received: from google.com (230.0.127.34.bc.googleusercontent.com. [34.127.0.230])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a097663fd0sm12373594a91.9.2026.09.25.15.04.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 15:04:25 -0700 (PDT)
-Date: Fri, 25 Sep 2026 22:04:22 +0000
-From: Lisa Wang <wyihan@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Andrew Jones <ajones@ventanamicro.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Chenyi Qiang <chenyi.qiang@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Erdem Aktas <erdemaktas@google.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Isaku Yamahata <isaku.yamahata@intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>, linux-kselftest@vger.kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Roger Wang <runanwang@google.com>,
-	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	x86@kernel.org
-Subject: Re: [PATCH v14 12/22] KVM: selftests: Require guest_memfd for TDX VMs
-Message-ID: <arbv5jEZ439Yo_UE@google.com>
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-12-15ad654a50db@google.com>
- <ef53ccf8-00c4-4a50-985e-425a2d40583d@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aW/1X2dA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79301F000FF;
+	Fri, 25 Sep 2026 22:05:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790373937;
+	bh=l+YfFAXDtzOvvAcpNn6JM07GzhHKVnZX6drhhNawXKk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=aW/1X2dAcrgTp6XTDHYRMTvAIo3LsC0iWnytkzVEcKaiv3k8e7ot3mkyzAj9pd6S2
+	 s5YoLVCD4DscVM+BZ7b8QabDnL2am+4sOjnDiaD01LQX860U7sek8Yhc5IXJ/ThyD2
+	 7CAHYsbH2iA9OHQ2d/g1TjDTOQy+bZ51RmEa1LpKc5uyYSO9gXaNk5HIlbhGhkEfvS
+	 lAuY+eel3A196tXEYYZA7IA+eX38zrquyLZUPBxBU4xUDt/6OkF5TrA3pI4R2BeN1q
+	 Q4oIWBhYHXEwAOKY+msEAGZPZ8YUTTIT+WYGMAjNM28Jp+0D5VIsE3uDucb2BTtZ9J
+	 2HMxrLbIeJKZg==
+Date: Fri, 25 Sep 2026 23:05:28 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: <mhonap@nvidia.com>
+Cc: <alex@shazbot.org>, <jgg@ziepe.ca>, <ankita@nvidia.com>,
+ <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
+ <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+ <dave@stgolabs.net>, <alison.schofield@intel.com>,
+ <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
+ <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+ <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
+ <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
+ <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+ <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>
+Subject: Re: [PATCH v5 09/27] vfio/pci: Add a generic excluded-range list
+Message-ID: <20260925230528.33f70daf@jic23-hlaptop>
+In-Reply-To: <20260916183540.3813685-10-mhonap@nvidia.com>
+References: <20260916183540.3813685-1-mhonap@nvidia.com>
+	<20260916183540.3813685-10-mhonap@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ef53ccf8-00c4-4a50-985e-425a2d40583d@intel.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Aug 14, 2026 at 03:42:48PM +0800, Xiaoyao Li wrote:
-> >   static bool is_guest_memfd_required(struct vm_shape shape)
-> >   {
-> >   #ifdef __x86_64__
-> > -	return shape.type == KVM_X86_SNP_VM;
-> > +	return (shape.type == KVM_X86_SNP_VM || shape.type == KVM_X86_TDX_VM);
+On Thu, 17 Sep 2026 00:05:22 +0530
+<mhonap@nvidia.com> wrote:
+
+> From: Manish Honap <mhonap@nvidia.com>
 > 
-> Instead of updating is_guest_memfd_required(), I'm thinking how about just
-> replacing is_guest_memfd_required() with vm_arch_has_protected_memory()?
-
-vm_arch_has_protected_memory() returns true for SEV, but an SEV VM is
-expected not to use guest_memfd. If we replace is_guest_memfd_required()
-with vm_arch_has_protected_memory(), we need an extra test to ensure
-SEV VMs work well without guest_memfd.
-
-Thus, I prefer keeping is_guest_memfd_required().
-
-> > @@ -27,6 +27,7 @@ static struct ucall_header *ucall_pool;
-> >   void ucall_init(struct kvm_vm *vm, gpa_t mmio_gpa)
-> >   {
-> > +	struct userspace_mem_region *region;
-> >   	struct ucall_header *hdr;
-> >   	struct ucall *uc;
-> >   	gva_t gva;
-> > @@ -37,6 +38,13 @@ void ucall_init(struct kvm_vm *vm, gpa_t mmio_gpa)
-> >   	hdr = (struct ucall_header *)addr_gva2hva(vm, gva);
-> >   	memset(hdr, 0, sizeof(*hdr));
-> > +	region = vm_get_mem_region(vm, MEM_REGION_DATA);
-> > +	if (region->region.flags & KVM_MEM_GUEST_MEMFD) {
-> > +		size_t aligned_sz = align_up(sizeof(*hdr), vm->page_size);
-> > +
-> > +		vm_mem_set_shared(vm, addr_gva2gpa(vm, gva), aligned_sz);
-> > +	}
+> The MSI-X table is virtualized in vfio_pci_bar_rw() by an open-coded
+> x_start/x_end window that fills reads with -1 and drops writes. Now that
+> a generic excluded-range list expresses the same fill/drop behavior,
+> register the MSI-X table as a read and write excluded range instead of
+> special-casing it in the read/write path.
 > 
-> this diff about the ucall needs to be a separate patch. What's the reason to
-> add it to this patch in this version?
-
-Thanks. Will separate in the next version.
-
-> >   	for (i = 0; i < KVM_MAX_VCPUS; ++i) {
-> >   		uc = &hdr->ucalls[i];
-> >   		uc->hva = uc;
-> > 
+> Add the range when the MSI-X capability is parsed in
+> vfio_pci_core_enable() and clear the list in vfio_pci_core_disable()
+> alongside the config teardown. The read/write path now relies solely on
+> vfio_pci_bar_find_exclusion(), so MSI-X and a provider's (e.g. vfio-cxl)
+> trapped registers share one mechanism.
 > 
+> No functional change.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+A few things inline that might tidy up the implementation and make
+it a little more readable. Also you've use object allocators in some
+places but not universally.  
+
+Jonathan
+
+> ---
+>  drivers/vfio/pci/vfio_pci_core.c | 209 +++++++++++++++++++++++++++++++
+>  drivers/vfio/pci/vfio_pci_priv.h |   9 ++
+>  drivers/vfio/pci/vfio_pci_rdwr.c |   8 ++
+>  include/linux/vfio_pci_core.h    |  14 +++
+>  4 files changed, 240 insertions(+)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 9a75c30b67e2..9e4fa5d088a4 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -24,6 +24,7 @@
+>  #include <linux/pci.h>
+>  #include <linux/pm_runtime.h>
+>  #include <linux/slab.h>
+> +#include <linux/sort.h>
+>  #include <linux/types.h>
+>  #include <linux/uaccess.h>
+>  #include <linux/vgaarb.h>
+> @@ -1012,6 +1013,204 @@ static int msix_mmappable_cap(struct vfio_pci_core_device *vdev,
+>  	return vfio_info_add_capability(caps, &header, sizeof(header));
+>  }
+>  
+> +struct vfio_pci_excluded_range {
+> +	struct list_head	entry;
+> +	int			bar;
+> +	u64			start;
+> +	u64			size;
+> +	u32			flags;
+> +};
+> +
+> +int vfio_pci_core_add_excluded_range(struct vfio_pci_core_device *vdev, int bar,
+> +				     u64 start, u64 size, u32 flags)
+> +{
+> +	struct vfio_pci_excluded_range *range;
+> +
+> +	range = kzalloc_obj(*range);
+> +	if (!range)
+> +		return -ENOMEM;
+> +
+I'd be tempted to do kmalloc_obj and
+	*range = (struct vfio_pci_excluded_range) {
+		.bar = bar,
+		.start = start,
+		.size = size,
+		.flags = flags,
+	};
+	list_add_tail(...)
+
+> +	range->bar = bar;
+> +	range->start = start;
+> +	range->size = size;
+> +	range->flags = flags;
+> +	list_add_tail(&range->entry, &vdev->excluded_ranges);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(vfio_pci_core_add_excluded_range);
+> +
+> +static void vfio_pci_free_excluded_ranges(struct vfio_pci_core_device *vdev)
+> +{
+> +	struct vfio_pci_excluded_range *range, *tmp;
+> +
+> +	list_for_each_entry_safe(range, tmp, &vdev->excluded_ranges, entry) {
+> +		list_del(&range->entry);
+> +		kfree(range);
+> +	}
+> +}
+
+
+> +
+> +/* A page-aligned mmap hole, derived from an mmap-excluded range. */
+> +struct vfio_pci_mmap_hole {
+> +	u64 start;
+> +	u64 end;
+> +};
+This is just a range. Do we need another define for this specific case?
+
+> +/*
+> + * Advertise the BAR as mmappable minus every page-aligned mmap-excluded hole.
+> + * A BAR can carry several holes at unrelated offsets (for example an MSI-X
+> + * table and one or more trapped CXL component sub-blocks, which the CXL spec
+> + * locates by pointer, not at fixed offsets).
+> + * Collect the holes, page-align and sort them, coalesce any that overlap or
+> + * touch, and advertise the gaps.
+> + */
+> +static int vfio_pci_excluded_sparse_cap(struct vfio_pci_core_device *vdev,
+> +					int index, struct vfio_info_cap *caps)
+> +{
+> +	u64 bar_len = pci_resource_len(vdev->pdev, index);
+> +	struct vfio_region_info_cap_sparse_mmap *sparse;
+> +	struct vfio_pci_excluded_range *range;
+> +	struct vfio_pci_mmap_hole *holes;
+> +	int nr_holes = 0, nr_areas = 0, i, j;
+
+Generally avoid mixing declarations with assignment with those that don't
+on a single line. It is harder to read than splitting them into each
+time of declaration.
+
+> +	size_t size;
+> +	u64 pos;
+> +	int ret;
+> +
+> +	list_for_each_entry(range, &vdev->excluded_ranges, entry)
+> +		if (range->bar == index &&
+> +		    (range->flags & VFIO_PCI_EXCLUDE_MMAP))
+> +			nr_holes++;
+> +
+> +	if (!nr_holes)
+> +		return 0;
+> +
+	struct vfio_pci_mmap_hole *holes __free(kfree) =
+		kzalloc_objs(*holes, nr_holes);
+or something like that.  Kees is well his way to getting rid of almost
+all places where objects are allocated in non typesafe ways.
+
+> +	holes = kmalloc_array(nr_holes, sizeof(*holes), GFP_KERNEL);
+> +	if (!holes)
+> +		return -ENOMEM;
+> +
+> +	/*
+> +	 * mmap is page granular, so each hole rounds out to the page boundaries
+> +	 * enclosing its excluded sub-range. The byte-granular exclusion still
+> +	 * governs the fault and read/write paths; only the advertised mmap areas
+> +	 * round to whole pages.
+> +	 */
+> +	i = 0;
+> +	list_for_each_entry(range, &vdev->excluded_ranges, entry) {
+> +		if (range->bar != index ||
+> +		    !(range->flags & VFIO_PCI_EXCLUDE_MMAP))
+> +			continue;
+
+		holes[i++] = (struct vfio_pci_mmap_hole) {
+			.start = ALIGN_DOWN(range->start, PAGE_SIZE),
+			.end = ALIGN(range->start + range->size, PAGE_SIZE),
+		};
+
+Mind you vfio_pci_mmap_hole seems a lot like a range. So maybe just use a
+struct range then you get 
+
+		holes[i++] = DEFINE_RANGE(ALIGN_DOWN(range->start, PAGE_SIZE),
+					  ALIGN(range->start + range->size, PAGE_SIZE));
+
+
+> +		holes[i].start = ALIGN_DOWN(range->start, PAGE_SIZE);
+> +		holes[i].end = ALIGN(range->start + range->size, PAGE_SIZE);
+> +		i++;
+> +	}
+> +
+> +	sort(holes, nr_holes, sizeof(*holes), vfio_pci_mmap_hole_cmp, NULL);
+> +
+> +	/* Coalesce holes that overlap or touch after page alignment. */
+> +	for (i = 0, j = 0; i < nr_holes; i++) {
+> +		if (j && holes[i].start <= holes[j - 1].end)
+> +			holes[j - 1].end = max(holes[j - 1].end, holes[i].end);
+> +		else
+> +			holes[j++] = holes[i];
+> +	}
+> +	nr_holes = j;
+> +
+> +	/* One mmappable area per gap: before, between, and after the holes. */
+> +	for (i = 0, pos = 0; i < nr_holes; i++) {
+> +		if (holes[i].start > pos)
+> +			nr_areas++;
+> +		pos = holes[i].end;
+> +	}
+> +	if (pos < bar_len)
+> +		nr_areas++;
+> +
+> +	size = struct_size(sparse, areas, nr_areas);
+
+	struct vfio_region_info_cap_sparse_mmap *sparse =
+		kzalloc_flex(*sparse, areas, nr_areas);
+
+> +	sparse = kzalloc(size, GFP_KERNEL);
+> +	if (!sparse) {
+> +		kfree(holes);
+with the __free above this can simply return.
+> +		return -ENOMEM;
+> +	}
+> +
+> +	sparse->header.id = VFIO_REGION_INFO_CAP_SPARSE_MMAP;
+> +	sparse->header.version = 1;
+> +	sparse->nr_areas = nr_areas;
+> +
+> +	for (i = 0, j = 0, pos = 0; i < nr_holes; i++) {
+> +		if (holes[i].start > pos) {
+> +			sparse->areas[j].offset = pos;
+> +			sparse->areas[j].size = holes[i].start - pos;
+> +			j++;
+Bit of a long line because of the indent but I'd still go for setting whole
+structure in one shot - so something like:
+
+			sparse->areas[j++] = (struct vfio_region_sparse_mmap_area) {
+				.offset = pos,
+				.size = holes[i].start - pos,
+			};
+> +		}
+> +		pos = holes[i].end;
+> +	}
+> +	if (pos < bar_len) {
+> +		sparse->areas[j].offset = pos;
+> +		sparse->areas[j].size = bar_len - pos;
+
+Similar for setting it in one go so we only do the indexing
+once + looks more like above (where this trick is more advantageous!)
+
+		sparse->areas[j] = (struct vfio_sparse_mmap_area) {
+			.offset = pos,
+			.size = bar_len - pos, 
+		};
+
+
+> +	}
+> +
+> +	kfree(holes);
+
+This looks like a good place to use __free magic to simplify things.
+
+> +	ret = vfio_info_add_capability(caps, &sparse->header, size);
+> +	kfree(sparse);
+> +	return ret;
+> +}
+> +
+
+
