@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1FF184;
-	Fri, 25 Sep 2026 02:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267A21A683E;
+	Fri, 25 Sep 2026 03:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790303223; cv=none; b=CQ1NDdLAz54mAJu0Sxo5jR67LqgebVz3xzKgU5TyzhNdvOrQn/6ijX1y4HpYvweKAXKqaJJArP1iBDMOU1y6n286sORw+dtwvRTDpz7POUclJ7BqpyZLnQOvPFqbnedyrvIga7owQChx3MapDquAWZpjEBegQ8Tec7RwomzYqms=
+	t=1790305208; cv=none; b=iit/RXBej3fZJ+hAA5qzXy1v47tvt/TK3l3jmLWafmXz5W/Kfn1+z/dOlwYo0liARakT1+2xw0OwcMu7OPfykgTr0M0cjNChwmdniS4igtr/gzQgJDaWi83iK7wTYIxYhwiHCuHLS/Q1qo2N2X/Xgh4VllO8FtjABN+k87wdTDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790303223; c=relaxed/simple;
-	bh=6PXS7H4wFEJClTzUFNo4UzuQSmfvDpFmThwxZEYbYB8=;
+	s=arc-20240116; t=1790305208; c=relaxed/simple;
+	bh=5rmfYaGINJ/VuePjbpT1uaCwRMKMO2sSoGuVdwCS+5s=;
 	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=Fbp50tEInoMlHLI3aS8SanHwDlA3otuqY2mQebFYZRsG7vA+/B4TDx5IIqYgNPX1wUIngdll15fIZx0z7zCJxzx5nWTPF0Xf2lOCr4q149ohrDk/Txej8tFgH8LtH0MWBOx9HtcXfjHTQnvyOTk8SUeOzS7EDuo/z+MC1rEOqxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oQIipZNM; arc=none smtp.client-ip=100.103.45.18
+	 Mime-Version:Content-Type; b=fIa3xJGMQAq7vZNch3SBl4haNVBJlWzl02YEfwdFrfuvIONB0HAuGA+ro7xaiVTYPX4TpFXbgC+xSW8NaG07t7gtqqELMi2xr/f0Vh72kKfq+kG0q8Trbz4GrJBf8bleWW09UqksrVLSVAnEyQZ/ZfbQM6Z2a9uDIaW0WWAfdy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ON1Z6auH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oQIipZNM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C5A1F000FF;
-	Fri, 25 Sep 2026 02:27:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ON1Z6auH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 567091F000FF;
+	Fri, 25 Sep 2026 03:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790303221;
-	bh=xIV86QW+Coqh6Iuh30T332CDhfsBi3YyDaDo9LRNPcg=;
+	s=k20260515; t=1790305206;
+	bh=Tr1nw+NGjFDcIfdU/bYk0r7LrX+jhAPSXpBCk1FzwQ4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=oQIipZNMlSPo/4Rd0UOQ3e3qgWvs2ojWz933HYzGA4Vlhc/V9spMb266t7N0wa5Vb
-	 aRXPhDyjSyxQUGgBh0UpkGP2Fx9+mwY0DW/Z70JuYW0hinIzy8XNhowlRC0Mm0aKiP
-	 Q0CItD8NRoByJQU0EN1KBi9eblXtpgmLSdnchioIXehUuhFrlaRc3RH7Kie+EqFlxy
-	 zTo6N+TLrZy4UO77r5+fJ1XXyRo9jaA7N6VIVEvJTcGjUPXTbgWb9mx0aA8XQjcijA
-	 BQ+bJA2zn3YskhogbVpDtOsCKlLIxpZd+xj0lyq4P961n89Jg1SgR9oXTub+12QfLS
-	 HqaufgPpI9JvQ==
-Date: Fri, 25 Sep 2026 11:26:57 +0900
+	b=ON1Z6auHobCB4vhnxx4TrrPV9dzR2u3AzGGz4TPitmbf3fCB1r5LAbI9F0bHddksa
+	 NPUV/1r2rMI+niGrydiVdhgvor3HGDvZwpxAwVvlZtRoAOdPRyEiXojkNyl4cZSqv2
+	 QtJktFO9dYVCnx+ZdjQz4/EENah41clBMA0BYXr08XZinM/QHpZhsXcz8sIct1ILbV
+	 s38b/RSzOGG64E1Nd9PNr5gO4slg7unHHluHYjZ5TOhLXkYxsR3Ovkpf1yGwKWlioE
+	 6jQoAGkBDFjv9vv+gstoCHQcXVx+ts8mzqiG4wrAlD28J3sqc0gDgoaSa95iV3wS56
+	 O9ndU3oiBsptw==
+Date: Fri, 25 Sep 2026 12:00:02 +0900
 From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 To: sashiko-reviews@lists.linux.dev
 Cc: sashiko-bot@kernel.org, linux-perf-users@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, kvm@vger.kernel.org
-Subject: Re: [PATCH v17 10/13] tracing/wprobe: Add set_wprobe and
- clear_wprobe event triggers
-Message-Id: <20260925112657.541352e9e87b745bd56ea76c@kernel.org>
-In-Reply-To: <20260922044325.587F31F00898@smtp.kernel.org>
+ kvm@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH v17 13/13] tracing/wprobe: Support BTF struct offset
+ resolution in set_wprobe trigger
+Message-Id: <20260925120002.521be50edaa0e144dbcc97c8@kernel.org>
+In-Reply-To: <20260922044331.1EB901F000FF@smtp.kernel.org>
 References: <179005108298.388919.4535333252892590932.stgit@devnote2>
-	<179005120276.388919.1645992887114424511.stgit@devnote2>
-	<20260922044325.587F31F00898@smtp.kernel.org>
+	<179005123942.388919.17930857651144049898.stgit@devnote2>
+	<20260922044331.1EB901F000FF@smtp.kernel.org>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -45,130 +45,85 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 22 Sep 2026 04:43:24 +0000
+On Tue, 22 Sep 2026 04:43:30 +0000
 sashiko-bot@kernel.org wrote:
 
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
-> - [High] tracing/wprobe: NMI deadlock in wprobe_trigger() when count is not specified
-> - [High] tracing/wprobe: CPU hotplug race in __register_trace_wprobe() misses new CPUs
-> - [Medium] tracing/wprobe: TOCTOU race in wprobe_trigger() corrupts watchpoint address
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Medium] trace: incorrect BTF kflag check in get_offset_of_field() allows wild offsets
 > --
 > 
-> commit b9f67542e6bf772512bb8cbf3c3011379c301eb4
+> commit 3bc53bf9a42b7270af7bd91985c43e9cafe48496
 > Author: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 > 
-> tracing/wprobe: Add set_wprobe and clear_wprobe event triggers
+> tracing/wprobe: Support BTF struct offset resolution in set_wprobe trigger
 > 
-> Add set_wprobe and clear_wprobe event triggers to dynamically attach
-> and detach hardware breakpoint address monitoring based on event field
-> contents.
+> This commit allows the set_wprobe trigger to use BTF struct offset
+> resolution to specify the target address field.
 > 
 > Link: https://lore.kernel.org/all/59637b96946653393a7ad3c7de094094796b39c2.1785067572.git.wangjinchao600@gmail.com/
 > 
 > > diff --git a/kernel/trace/trace_wprobe.c b/kernel/trace/trace_wprobe.c
-> > index 9c6100b63e8d9..f1d6aa320f213 100644
+> > index f1d6aa320f213..121310b72522f 100644
 > > --- a/kernel/trace/trace_wprobe.c
 > > +++ b/kernel/trace/trace_wprobe.c
-> > @@ -193,20 +217,130 @@ static int __register_trace_wprobe(struct trace_wprobe *tw)
 > 
 > [ ... ]
 > 
-> >  	tw->bp_event = register_wide_hw_breakpoint(&attr, wprobe_perf_handler, tw);
-> >  	if (IS_ERR_PCPU(tw->bp_event)) {
-> >  		int ret = PTR_ERR_PCPU(tw->bp_event);
-> >  
-> >  		tw->bp_event = NULL;
-> >  		return ret;
+> > @@ -1165,6 +1166,213 @@ static void wprobe_trigger_free(struct event_trigger_data *data)
 > >  	}
-> >  
-> > +	mutex_lock(&wprobe_mutex);
-> > +	list_add(&tw->active_list, &active_wprobes);
-> > +	mutex_unlock(&wprobe_mutex);
-> > +
-> 
-> [Severity: High]
-> Does this code have a race condition with CPU hotplug?
-> 
-> Looking at __register_trace_wprobe(), it calls register_wide_hw_breakpoint()
-> which installs breakpoints and releases the hotplug lock internally.
-> 
-> If a new CPU comes online immediately after that lock is released, but before
-> this wprobe is added to active_wprobes under wprobe_mutex, could the
-> wprobe_cpu_online() callback miss the wprobe? This would leave the new CPU
-> without hardware breakpoints installed for this probe.
-
-Hmm, OK. Taking a cpus_read_lock() for both can avoid this issue.
-
-> 
-> >  	return 0;
 > >  }
-> 
-> [ ... ]
-> 
-> > @@ -767,9 +923,608 @@ static int trace_wprobe_show(struct seq_file *m, struct dyn_event *ev)
-> 
-> [ ... ]
-> 
-> > +static void wprobe_trigger(struct event_trigger_data *data,
-> > +			   struct trace_buffer *buffer,  void *rec,
-> > +			   struct ring_buffer_event *event)
+> >  
+> > +#ifdef CONFIG_PROBE_EVENTS_BTF_ARGS
+> > +
+> > +static int get_offset_of_field(struct btf *btf, const struct btf_type *type, char *field_name)
 > > +{
-> > +	struct wprobe_trigger_data *wprobe_data = data->private_data;
-> > +	struct trace_wprobe *tw = wprobe_data->tw;
-> > +	unsigned long target_addr, addr = 0, flags;
+> > +	const struct btf_member *field;
+> > +	const struct btf_type *mtype;
+> > +	int bitoffs = 0;
+> > +	u32 anon_offs;
+> > +	char *next;
 > > +
-> > +	if (wprobe_data->field) {
-> > +		if (!rec)
-> > +			return;
-> > +		addr = *(unsigned long *)((char *)rec + wprobe_data->offset);
-> > +		addr += wprobe_data->adjust;
-> > +	}
+> > +	do {
+> > +		next = strchr(field_name, '.');
+> > +		if (next)
+> > +			*next++ = '\0';
 > > +
-> > +	raw_spin_lock_irqsave(&tw->lock, flags);
+> > +		field = btf_find_struct_member(btf, type, field_name, &anon_offs, &mtype);
+> > +		if (IS_ERR_OR_NULL(field))
+> > +			return -ENOENT;
 > > +
-> 
-> [Severity: High]
-> Could this raw_spin_lock_irqsave() cause a deadlock if interrupted by an NMI?
-> 
-> When no count limit is specified (EVENT_TRIGGER_FL_COUNT is not set),
-> wprobe_trigger() takes tw->lock before calling __wprobe_count_func().
-> 
-> If an NMI interrupts a CPU already holding tw->lock and hits a trace event
-> that fires the same uncounted trigger, it will attempt to acquire tw->lock
-> again here. Since the in_nmi() check is located inside __wprobe_count_func(),
-> the NMI would spin forever before realizing it shouldn't proceed.
-
-Ah, indeed. It should check in_nmi() earlier than the spin lock.
-
-> 
-> > +	if (!(data->flags & EVENT_TRIGGER_FL_COUNT)) {
-> > +		if (!__wprobe_count_func(data, addr)) {
-> > +			atomic_inc(&tw->missed);
-> > +			goto out;
-> > +		}
-> > +	}
+> > +		if (btf_type_kflag(mtype)) {
 > 
 > [Severity: Medium]
-> Is there a time-of-check to time-of-use (TOCTOU) race here for counted
-> triggers?
-> 
-> For counted triggers, wprobe_count_func() is called locklessly by the trace
-> core, which evaluates __wprobe_count_func(). Then, wprobe_trigger() is called
-> and takes tw->lock. Because EVENT_TRIGGER_FL_COUNT is set, the state
-> validation check (__wprobe_count_func()) is explicitly skipped under the lock.
-> 
-> If a counted trigger fires concurrently on multiple CPUs, both might
-> observe the unset address locklessly. Could the second CPU unconditionally
-> overwrite tw->addr, breaking the exclusive trigger constraint?
+> Is it intentional to check btf_type_kflag() on the member type (mtype)
+> instead of the parent struct type (type)?
 
-Hmm, indeed. I think the current event trigger subsystem is not well
-designed for the concurrency. Let me move the data->count update to
-wprobe_trigger() inside tw->lock critical region.
+Oops, I thought I had fixed this issue...
 
-Thank you,
+> If the member's kflag is checked instead of the parent struct's kflag,
+> bitfield members can bypass the explicit rejection check and compute wildly
+> incorrect memory offsets. This happens because field->offset contains the
+> bitfield size in the upper 8 bits when the parent struct's kflag is set.
+
+Yeah, kflag is the attribute of the  parept structure's type.
+
+Thanks,
+
+> 
+> > +			/* Reject bitfield member access */
+> > +			if (BTF_MEMBER_BITFIELD_SIZE(field->offset))
+> > +				return -EINVAL;
+> > +			bitoffs += anon_offs + BTF_MEMBER_BIT_OFFSET(field->offset);
+> > +		} else {
+> > +			bitoffs += anon_offs + field->offset;
+> > +		}
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/179005108298.388919.4535333252892590932.stgit@devnote2?part=13
+
 
 -- 
 Masami Hiramatsu (Google) <mhiramat@kernel.org>
