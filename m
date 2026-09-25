@@ -1,152 +1,190 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C300D4B1CE1
-	for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 16:03:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663184D7D5A
+	for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 16:04:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790352186; cv=none; b=VOmyzN1A0lYxPnBL4WDyRV+a0q8eJQWXNN+6HFZlgkF6ovDDDOmzcmPvA6iNLjJ/jveAZih2iYFEI4HadrBLEX5CR5SlYEw8fh5vLyUxZI6nD7MAIcAdEV1jYida15jr4D7PvjLOdGW0Rb7vsCmcKJMIZ7FJU28FZLSeTuJxso8=
+	t=1790352250; cv=none; b=kaLrtY+ShlJ/7MUp71HB7VSvgYCaUa9qAyLSLz4ydGnysaiEK9r7lWv41Re7VuCPvTOYnqLI7d7SFk/8VYp6zqVNRVt24h94YwytWufAxL2aI2nrH79U7vew7v6BMTWRwgU9wySHlnfCGngsy3aC94wX5U5hcFj9w7nBthXY85w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790352186; c=relaxed/simple;
-	bh=JZCiMhMj9Qi1hwAH9YEFbNu41lkzW5HMsRwV5LvxLlY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GQ93QTm/ScCom/zxbsrKPQ82rlx4f859s6X7wXniTLH5tu7jKPqEvCOm6y+R5hfiteNorh3JBqvkb/fKBfJfusiTMmO6gzzURrqaLPmCDovnjF9skbTG5/mFWlJ5jPjnQo2OlGrpAS+U0zKTvoAuPYorFOSbY21V+L3W/KKNaXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CHIwSdtj; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=O8ImMFwm; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1790352250; c=relaxed/simple;
+	bh=vMYXJiN4wozVvK0QVEIssopj/SVbqP6pLH/wIHxT+ks=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VMMJpZenbgS5K8XKSFjuP6UNxFEqdJHMdfdidfMU7331VmrA0H+VJKI99jJha+qX2Zol2X9c0viWfnMFsLSQidgqzmOd4FwQw3E/TvR1AqAogHU0KBpm0g8sbBClNy9PlNwYLU+sL3/koD1T1AJhzydTk7w5k4IJxZqpRD157OE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=omtRSAWC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CHIwSdtj";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="O8ImMFwm"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68PG1fL51668863
-	for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 16:03:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=pPUscgiiGEE2Ts6w5N0M5vrxQHmauRrDTsR
-	QpGYB8bo=; b=CHIwSdtj/Lo9jqq+QUDkDZGz5er9nK0n/ommKXcOJ3ouoxXBwYZ
-	GJFYPJoqGOOQVQY3Ck5zZR0Oe3H5c4P3ZPwA8DgCCts3xY2kyJ2DM2XwL+hCT3vs
-	+huoMoGs3NEoGKPtvOUpsHUHgZlXKxnJYhiBajxGYaeWKSaQSisInxkFX/MduxQX
-	zoIyo8LGTCLBKBDRI9Q9gKyeAXglMOdn2BFrFeXUOJAsROkDUjY+SUYJSHNP0V/I
-	ZAqqvSBAev5cV/NXqOltAuw/MHUKNha2o2n2lAKVgWjEFaLH5hvSSiN3TZEeSQiH
-	W6RwmnYSLQfAFYAnoSAaD5yKdTqfZ6tbw3g==
-Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com [209.85.217.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gw898v9dv-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 16:03:03 +0000 (GMT)
-Received: by mail-vs1-f71.google.com with SMTP id ada2fe7eead31-78fbc5a4cf8so1949931137.0
-        for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 09:03:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790352183; x=1790956983; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pPUscgiiGEE2Ts6w5N0M5vrxQHmauRrDTsRQpGYB8bo=;
-        b=O8ImMFwm8e+k569S6yaClhxmtN2rBkILtnCqpZNP52f+Y9SEHbPVKDFpEr6/ke7c4f
-         JUeV2bWsNGWJOiRXR6kcNrcO05IyuvbjR0izkR0o0TL273/VsV8xRg958cJCOzwkAghg
-         /Z4ols//r3a45ARIUOXwgotlzz5CGRFXKFBnGhxpxjlr5H47RimsBFtqELd8KWAL+NZR
-         JgozIB8GSK2b6MnPx3xjEqCz946fuqakJNo4mbSgti+2OueK4EvJULRzJWPKIxTUfoRW
-         ZR2wg7BjOuuAjkzQJpg+QwqETTK7qcaMAJM91x9HceW5Subo9FEwtQm9LejH/Ft+pwvY
-         gKvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790352183; x=1790956983;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pPUscgiiGEE2Ts6w5N0M5vrxQHmauRrDTsRQpGYB8bo=;
-        b=xa6RhVFYTolTb3tdMCX+E7sH8eJUagqJJcuwghDGmvalMG7CAkoSCml+iuWKMh0Fd9
-         aizYs51TK5VsTf33ZSfeES2eeCUFtAWsXPjhB01/QR6VLnRPLQRIOhlJrwbFoyIwqvUL
-         U7J7345TD/3WsecYLQWe+ZYe5WLph3bn8e5pYe4+vVt8NGrmlYTXI+Q3w/Hw3ILOljQL
-         ONvg4DwFO4sCOu3NeERFbtY7MIpmIJi7vDgMUEFREOl7MRKjzRjQNGPP3KQSCqctDNpA
-         mroev406e+CaHG1ALThQWD91YN8266hL+pujxGmZPkx12+OQ0nX7HExDEQThaGMGucO9
-         2wcQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz0uJm22KRE0zcq7R6K2xHYzJDHrp64qRI4pLm4e8rkUa1kVYGoxk5REmB98UbHSmOuPlc=@vger.kernel.org
-X-Gm-Message-State: AFuF++kWrv5DZngFiE49bx/zxS+7dcG+7gIi72XRZN3zQN3U7R4hVj4Z
-	04AgDJFRMaCP+2yzFu1L++ne5A7xh0gml10oQx8KUtOnz/xfJFV7i0d2J/jMFRoQDnBg30vuK0L
-	pzEzHR4lgIKuTEtwxsZjSBfonRccYFiFHdBsdjz0YF3+CUqLCnrhvAgw=
-X-Gm-Gg: AYBFou0q/YM3JZeFGFSB06ZVr4NhbRnKUzPcLRwiJcQK/y0bnyL5lrvGuK/aN881f/V
-	9X+oeQQSvbFx0Tmj30LS8y+TnZVzajEHS3mwWAtRkjAgBb5pQkE4RZgPR1JbSE0fYj9CG+NVtoW
-	IbdTuZoaJt6WWqZdCtm9iHbosB4kRcNmt6QV0sigZVQRSsg7b7p2BJ9fLOIXuOWa6josokSqOaG
-	z8/jv6SJs3jAoCi1Oq7IPeh9l+dpFCWvZdRUF/WCh+vikqlH9EtpWHRluYprr2erj7jy+P9R4zm
-	GtBAQgYCTlAUETz9cCWGnWL8rcf9ePjyLNxGwWAZuKGGLaNtNSe3NUBBWLmD4T4+02N7pyk8Wuy
-	sgJcHYNnEt3e3oWlIL0N04pg1RB0Mkrb40PfCtg==
-X-Received: by 2002:a67:ef82:0:b0:7a7:69a1:add2 with SMTP id ada2fe7eead31-7af1f1fd553mr1987015137.30.1790352182765;
-        Fri, 25 Sep 2026 09:03:02 -0700 (PDT)
-X-Received: by 2002:a67:ef82:0:b0:7a7:69a1:add2 with SMTP id ada2fe7eead31-7af1f1fd553mr1986990137.30.1790352182076;
-        Fri, 25 Sep 2026 09:03:02 -0700 (PDT)
-Received: from localhost (ip-86-49-245-11.bb.vodafone.cz. [86.49.245.11])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a84221bsm8151098f8f.36.2026.09.25.09.03.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 09:03:01 -0700 (PDT)
-From: Andrew Jones <andrew.jones@oss.qualcomm.com>
-To: kvm-riscv@lists.infradead.org
-Cc: anup@brainfault.org, atish.patra@linux.dev, pjw@kernel.org,
-        palmer@dabbelt.com, kvm@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] RISC-V: KVM: Reject vCPU creation after AIA initialization
-Date: Fri, 25 Sep 2026 18:03:00 +0200
-Message-ID: <20260925160300.467884-1-andrew.jones@oss.qualcomm.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="omtRSAWC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822B71F000FF;
+	Fri, 25 Sep 2026 16:04:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790352248;
+	bh=7VMcO05t+EmQUene7zWg2zftst5DVaGzFSjsbUQIws4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=omtRSAWCvx68t1e4vSrMKlEhFnF77b++zeSwaCgBpMPh20yaX6VjLbIMwgKw0Id0A
+	 a3rkYsVFVGq3zhd0FD2pbTu1MHQT64EzH03qMG3mULepz++zJqK8qpqcTAvqACf/Ym
+	 tYhpNcFImK0K4wTojhsk20K2ehJI/6pDOuQtW95a68GZN4E7/kywluemvHxFXrBJpG
+	 0BjJxIPe3iGzi927gN37dyZmpKcCshKgURlrTryliUTqQr77zDxbTNC4bo7YT8GvkU
+	 BlIbEqqUNmDlaab5Bcjtpzfig3y+ShMTpU/5mJfhX6n4VVJ5BjqoMwHPSli8+DL70t
+	 iC/EWIGiWWYCQ==
+Date: Fri, 25 Sep 2026 11:03:49 -0500
+From: "Serge Hallyn (AMD)" <sergeh@kernel.org>
+To: Tony Lindgren <tony.lindgren@linux.intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Peter Xu <peterx@redhat.com>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Fabiano Rosas <farosas@suse.de>, Jon Grimm <Jon.Grimm@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Steven Price <steven.price@arm.com>,
+	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
+	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
+	=?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Kishen Maloor <kishen.maloor@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Peter Fang <peter.fang@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org
+Subject: Re: [RFC PATCH v2 0/4] Add KVM API for confidential guest live
+ migration
+Message-ID: <arabZS5cIkPgw6ef@shallyn-amd>
+References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI1MDA2MyBTYWx0ZWRfX9VVOSyGjQOaS
- uz5luQiK/ZCsPLJhJn7Lsj8A7FZLNMqq4O6Sdo7UkZ2lqF4mEwHwiL0KnmxS4a/v+BxfVpi1XKj
- HANi1xqix4YSE8cFmJfS69s35ashrpsH4r4VdFFiulr0GmSswoDcMxRjL1Bzc2muM7Y27Q0KusF
- IejmUfbS72U0QKIZxKxLbzuXJp5qZdjgpGLSNLKg8v5ja2e8GOBicj5EhCyGmuAtiL2ep4pRFRt
- I7mTnCtEYTGxMqfpe2xH2FDJus/UzZkcT+q4la9H6eHDci3I/lOwKYBSDwxaWlGwfLfyQvK+1My
- 68VKXohrkQFt4ggGN9inxGdJ118k/T1IJPUtE3eT5Gqe9TDly2YW3lMmtuowXk1Z2bMLiMl9kat
- 5T2xrYW2hUUQUlCxeRFVD2LR7Tlyn9uSiub/Bc/1TV0S30zfvBV7exhfKq1iPHiKQCi5UPNzv43
- eIAUYY4/rv8B0E/4d/g==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI1MDA2MyBTYWx0ZWRfX6B/i5giN/9uK
- FuOYgJden0Ff+xdSqqNUopu9WoRzMxpMMO2W0oeqKVNVnkrvOif+GNAXzPpImX6H3hapz2jAKPo
- Lhy7vM2COqVxclcaupwjxUyl8fM+fP0=
-X-Proofpoint-GUID: LOU6GFUW2M5DzATUXJuhhRV9T0XFZqcx
-X-Proofpoint-ORIG-GUID: LOU6GFUW2M5DzATUXJuhhRV9T0XFZqcx
-X-Authority-Analysis: v=2.4 cv=EJWTQFZC c=1 sm=1 tr=0 ts=6ab69b37 cx=c_pps
- a=P2rfLEam3zuxRRdjJWA2cw==:117 a=4CXLxsOAgPM/krjtHEZQyA==:17
- a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22 a=EUspDBNiAAAA:8
- a=9vyTzsUqMagNZt02PzcA:9 a=ODZdjJIeia2B_SHc_B0f:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-25_03,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 clxscore=1015 spamscore=0
- lowpriorityscore=0 suspectscore=0 impostorscore=0 bulkscore=0 phishscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609250063
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
 
-AIA initialization sets up per-vCPU IMSIC state by iterating over all
-online vCPUs. Creating another vCPU afterwards leaves it without
-initialized IMSIC state, but KVM currently permits that sequence.
+On Mon, Aug 31, 2026 at 10:13:00AM +0300, Tony Lindgren wrote:
+> Hi all,
+> 
+> As discussed in a recent PUCK call, Sean suggested we post what Intel is
+> using for the KVM live migration API for TDX as an example to see if we
+> can come up with APIs that are not vendor specific.
+> 
+> The goal of this patch series is to start a discussion about live migration
+> kernel APIs for CoCo guests.
+> 
+> Tom, since you mentioned that AMD SEV-SNP and Intel TDX live migration
+> sound similar, can you please take a look how the API might work for
+> SEV-SNP?
+> 
+> For CoCo VMs, the guest memory and vCPU states are not accessible to the
+> userspace or KVM for live migration. The memory and vCPU states need to be
+> extracted into encrypted blobs on the source, and decrypted on the
+> destination. Before live migration, an encryption key needs to be
+> negotiated between the source and destination.
+> 
+> The layer handling the encryption for live migration is implementation
+> specific. It can be the TDX module or Coconut-SVSM for example.
+> 
+> For CoCo VMs, the KVM_MEMORY_ENCRYPT_OP ioctl() has been used with vendor
+> specific sub-commands. Adding more vendor specific sub-commands is an
+> option also for live migration. However, depending on how similar the KVM
+> needs are, it may be possible to have a common API.
+> 
+> For TDX, we're using a group of ioctl()s that might be possible to adapt
+> also for other CoCo implementations.
+> 
+> Artem has put together a brief description below of the example API and the
+> migration flow:
 
-Reject KVM_CREATE_VCPU once AIA initialization succeeds. Both paths are
-serialized by kvm->lock, so checking the initialized state from
-kvm_arch_vcpu_precreate() freezes the vCPU set used by AIA.
+Hi Tony,
 
-Fixes: 89d01306e34d ("RISC-V: KVM: Implement device interface for AIA irqchip")
-Signed-off-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
----
- arch/riscv/kvm/vcpu.c | 3 +++
- 1 file changed, 3 insertions(+)
+is there any pubically available qemu git branch or patchset to show
+how you currently are driving this?
 
-diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-index e062ca19f9d8..ccf2def834f1 100644
---- a/arch/riscv/kvm/vcpu.c
-+++ b/arch/riscv/kvm/vcpu.c
-@@ -138,6 +138,9 @@ static void kvm_riscv_reset_vcpu(struct kvm_vcpu *vcpu, bool kvm_sbi_reset)
- 
- int kvm_arch_vcpu_precreate(struct kvm *kvm, unsigned int id)
- {
-+	if (kvm_riscv_aia_initialized(kvm))
-+		return -EBUSY;
-+
- 	return 0;
- }
- 
--- 
-2.43.0
-
+> Example API
+> ===========
+> 
+> - KVM_CAP_LIVE_MIGRATION - if a VM supports live migration through this
+>   uAPI.
+> - KVM_MIGRATE_CMD - the main ioctl that drives the migration phases. Each
+>   command takes vendor-specific flags and a buffer for the blob that travels
+>   between the hosts.
+>   - KVM_MIGRATE_SETUP - establish the migration session and transfer the
+>     immutable VM state.
+>   - KVM_MIGRATE_ITERATION - close a memory copy round.
+>   - KVM_MIGRATE_STOP_AND_COPY - pause the VM and transfer the remaining VM
+>     state.
+>   - KVM_MIGRATE_END - complete the migration, or abort it.
+> - KVM_EXPORT_MEMORY - export memory pages on the source host.
+> - KVM_IMPORT_MEMORY - import memory pages on the destination host.
+> - KVM_EXPORT_VCPU - export vCPU state on the source host.
+> - KVM_IMPORT_VCPU - import vCPU state on the destination host.
+> 
+> Dirty page tracking does not add a new uAPI. Userspace keeps using
+> KVM_GET_DIRTY_LOG and KVM_CLEAR_DIRTY_LOG.
+> 
+> Migration flow
+> ==============
+> 
+>  Source host                                      Destination host
+>  ===========                                      ================
+> 
+>  CMD(SETUP/SESSION)          <--- setup msgs ---> CMD(SETUP/SESSION)
+>        |    (repeated)                                  |
+>  CMD(SETUP/IMMUTABLE_STATE)  - immutable state -> CMD(SETUP/IMMUTABLE_STATE)
+>        |                                                |
+>  KVM_GET_DIRTY_LOG                                      |
+>  KVM_EXPORT_MEMORY           --- memory data ---> KVM_IMPORT_MEMORY
+>  CMD(ITERATION)              --- epoch token ---> CMD(ITERATION)
+>        |    (repeat until convergence)                  |
+>  CMD(STOP_AND_COPY/PAUSE)                               |
+>  CMD(STOP_AND_COPY/TD_STATE) --- VM state ------> CMD(STOP_AND_COPY/TD_STATE)
+>  KVM_EXPORT_VCPU             --- vCPU state ----> KVM_IMPORT_VCPU
+>  KVM_EXPORT_MEMORY           -- final memory ---> KVM_IMPORT_MEMORY
+>  CMD(ITERATION/DONE)         --- start token ---> CMD(ITERATION)
+>        |                                                |
+>  CMD(END)                                         CMD(END)
+> 
+> For the TDX implementation, the above map to the TDX module SEAMCALLs.
+> 
+> Regards,
+> 
+> Tony
+> 
+> Changes since v1 at [0] below:
+> 
+> - Drop KVM_MIGRATE_CMD sub-command PREPARE, SETUP sub-command has been
+>   enough for TDX at least
+> 
+> - Rename KVM_MIGRATE_CMD sub-command KVM_MIGRATE_TOKEN to
+>   KVM_MIGRATE_ITERATION
+> 
+> - Rename KVM_MIGRATE_CMD sub-command KVM_MIGRATE_SOURCE_BLACKOUT to
+>   KVM_MIGRATE_STOP_AND_COPY
+> 
+> - Add x86 ioctl handling
+> 
+> [0] https://lore.kernel.org/kvm/20251006113524.1573116-1-tony.lindgren@linux.intel.com/
+> 
+> 
+> Tony Lindgren (4):
+>   Documentation: KVM: Add live migration API for confidential guests
+>   KVM: x86: Add optional KVM_CAP_LIVE_MIGRATION and KVM_MIGRATE_CMD
+>   KVM: x86: Add optional KVM_EXPORT_MEMORY and KVM_IMPORT_MEMORY
+>   KVM: x86: Add optional KVM_EXPORT_VCPU and KVM_IMPORT_VCPU
+> 
+>  Documentation/virt/kvm/api.rst     | 205 +++++++++++++++++++++++++++++
+>  arch/x86/include/asm/kvm-x86-ops.h |   6 +
+>  arch/x86/include/asm/kvm_host.h    |   6 +
+>  arch/x86/kvm/x86.c                 | 102 ++++++++++++++
+>  include/uapi/linux/kvm.h           |  43 ++++++
+>  5 files changed, 362 insertions(+)
+> 
+> 
+> base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+> -- 
+> 2.43.0
+> 
