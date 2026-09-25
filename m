@@ -1,130 +1,184 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58404AB3C1
-	for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 17:31:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E593A1A58
+	for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 17:37:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790357496; cv=none; b=tMn8lpt2v0WAR5W/EvxhHYMB8gMpZPq92Is2KzllWzSf+6FXLL8yzOKPMVuGSEkkEE+UTjRUOBYndnlfLfx3MbWDppHQKJBeSrzdoNTg+5GP/uPx1T/a11kD27YTCLhCqV6SHV4JHqdyMJvJ+hVXmtsTQlMUnZ/XL/DovuazR5Y=
+	t=1790357878; cv=none; b=MrHI7prBm9ZT9bTXENVrpiUNMYAiPQGE26TxsrMpvMXJtac2Ssij3Fu9W2bVxc4XoFWA8vp3P95D5YCSZZ0lOOTm2MRwjI5fnAPVYruRXhsv8XeRcoAbDW7wiM9U/utKTsKoS4BDRxipIrDF0J32WTJ9YMwAppFuxuzuiTn536M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790357496; c=relaxed/simple;
-	bh=4DoFX/YBpRy7JF49hbwfc/peTk/uuTMAY2oZkVM5mWU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MSNjGwijqPq/eh+0E9CN/vEZ5lbkwLXMKG90Y1GyNJkkbeFbgSKo4vVgzTm0xeCvpPQYDIsTPM4vl9zQ7eRPvGT/eyAmw1bAaW1AldkESuhXcLPudMbYNvlp+lICUkxhQWTvB12gYzyt7jQinRkgl48Fzxtwl6+pM9MfZ9i58gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ivLuFr+4; arc=none smtp.client-ip=209.85.216.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1790357878; c=relaxed/simple;
+	bh=Bdl08usoKa5ZLUDFYc2INVDx6kIHXm3j1JVQnycIzAU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ACJnDHAiKDZiri1ZUZFU+8XUU/ROu2NmcVZtcjKHeGb7CrpZ02GXTy5qbE4Fnj/WEUbgmIPKfBCvzJZRSiOuqAHCpp7WivlsLRdVK9l9WoZ7SYlkIuoZGMhE0WnMcKszXZu7lXwpZTdqPhReQp7cdRLRj63DhgCGOzIkmbO8X98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J1IiK30x; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ivLuFr+4"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-39de4a68f7cso967719a91.1
-        for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 10:31:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790357494; x=1790962294; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tiH0o0CKyETGieh/W9nxysiE6dokq2oy//rDmGSPlXI=;
-        b=ivLuFr+48p7jvnL7Kng42kdOq83ZUGPyPbOHpqRd0cw32GUuEX7EwDaHHQUraSK6N0
-         2/HvhjOJhJIveTj+ddzP27YwuzGmPwho6HrP7RxBsctAIJxiSAupJQs2JP4lYXb2UX8K
-         PDxMwYIMfP6UhTK96NNtIEEnVwvjHLiDmwpgEoK1Y+EYMJexWtFZrjCAkv4FhsOP4ZK5
-         X9oO+cMLXji7GQ1FWS/yRq2W7q8hvCzm/sYxHEbPegG/w80BuB9XJiUv5XJ0H3cdfS6B
-         oZ81ErKERfm4pXeYNGL58+gAF/xye850RLNkDLEWcgEMIejY0C1cH4ScP1C4hzvVA5Q/
-         +ZYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790357494; x=1790962294;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tiH0o0CKyETGieh/W9nxysiE6dokq2oy//rDmGSPlXI=;
-        b=GdyAk8aCtv47KzAE9S3FRPp/MNCJzR1mQIoeT/JgfBozIV9tRPhq2KechUlS5kYcPm
-         KcAxrXd1BoZyDnulf4IL9nB8mTqrS1sWFwDVxfcVMWbLNrUcT3YbXflUR1TmlZTQor74
-         qPXbrXsGMdXoX230dfu1kqKk6pxu2fF1a/cTv07nikBojknTwmyQc5WXGtSqq/Df3nNP
-         kB1wWQKlSwogVTDLnBpLxdFZt8mVESXl0JfRpzIXiazEcEzL3LbzAOmxF8djXqLdaLO7
-         q+PRi78Yt0AwhWCRhLK2+huNYmlnY/v6qn+zplCmzvV4DQf+loaDqkEV55qOJKwAdhlz
-         e5/g==
-X-Forwarded-Encrypted: i=1; AKwUvBwnXC09lcMc8CzW2l/DdxQr5W6SQLi8YsRCjJA/2KObqgyBKWIra7mwmLjxNbb+es8yooY=@vger.kernel.org
-X-Gm-Message-State: AFuF++nJvs6XVJKFqpB4WuiD2hFyZSVIg91tzhQxL/klBMsuUyLP3NFN
-	BSoAgzWLf4tEXjtoR8oWQljR0I+1VYJ2Qypxh+EekWwc1M0futEJ9TzOJRHDI3kubh/zq0b5d3O
-	1j8j+JQ==
-X-Received: from pjbrt18.prod.google.com ([2002:a17:90b:5092:b0:3a0:7480:2e85])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:384b:b0:3a0:c360:a562
- with SMTP id 98e67ed59e1d1-3a0c360bd58mr1587941a91.14.1790357493852; Fri, 25
- Sep 2026 10:31:33 -0700 (PDT)
-Date: Fri, 25 Sep 2026 10:31:33 -0700
-In-Reply-To: <20260721050600.87268-2-shivansh.dhiman@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J1IiK30x"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77AB1F00899
+	for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 17:37:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790357876;
+	bh=fHsW8/DFZORknHBuSvP/MhtmL9u48N0qxeDqzEMHIFg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=J1IiK30xByLTifqrJZPNP7pkKrKHSgjirje+BXzReFYTUKtLUD8K2ExghgiDDN4VM
+	 TqCTH5hqtGEtSrjPjgGfK+N73J9HcdDC05kwaOyObknSucQ7qcxtGWtN7IGuP8BdkL
+	 K1Ud+Dzxn4kwGWPCvXxDCD2XN1KN9k/COIDZOb2DjqnNpqPVunPvDhFlmbbhzaAaJl
+	 xpteHchtdMkxA9eMkLjYtmV+K1nS8vn4CZbqUkc2VPwMugUBhcaDzV+mSOtoaOgj0F
+	 zEDIhPNAPmE75iHkxluJ1gA9O/n3qxhbk0UsEQv6toPRe1rMMMlyp2RekI6Tw2SC8U
+	 DLq+mM83tdJeg==
+Received: by mail-lr2-f35.google.com with SMTP id 38308e7fff4ca-3a6287d59b2so9236071fa.2
+        for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 10:37:56 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBz6aXjG5peCv3QnTbPYZa5XLimyBpqM6kGI4rHiyGeOItuyl2Rm1EhMpEGTt9QIx84b3Ho=@vger.kernel.org
+X-Gm-Message-State: AFuF++l6QUyTn0Ac3fSZh1i0N3uTVCxGC2jw6kyI264mlwcFlBSvtyws
+	fs7jBytTr1WMHQOfaGnuerUYEuB1oQYzerMEsqJErd9Wmgq7vePCA1WPd/uHRzBoeQWBXxrtwsx
+	hO7l80tE06GyhnGsUKnVXZUgq+TcC8NQ=
+X-Received: by 2002:a2e:a596:0:b0:3a3:74b7:fc03 with SMTP id
+ 38308e7fff4ca-3a63c0f53efmr17009951fa.15.1790357875094; Fri, 25 Sep 2026
+ 10:37:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260721050600.87268-1-shivansh.dhiman@amd.com> <20260721050600.87268-2-shivansh.dhiman@amd.com>
-Message-ID: <arav9aN48nEZTv7V@google.com>
-Subject: Re: [PATCH v4 1/5] KVM: SVM: Refactor svm_update_lbrv()
-From: Sean Christopherson <seanjc@google.com>
-To: Shivansh Dhiman <shivansh.dhiman@amd.com>
-Cc: pbonzini@redhat.com, tglx@linutronix.de, mingo@redhat.com, 
-	kvm@vger.kernel.org, x86@kernel.org, yosry@kernel.org, jmattson@google.com, 
-	thomas.lendacky@amd.com, nikunj.dadhania@amd.com, ravi.bangoria@amd.com, 
-	santosh.shukla@amd.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+References: <20260915131310.1053834-1-aharivel@redhat.com> <20260915131310.1053834-2-aharivel@redhat.com>
+In-Reply-To: <20260915131310.1053834-2-aharivel@redhat.com>
+From: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
+Date: Fri, 25 Sep 2026 19:36:16 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0h-EC+kvo0wPEVv8FmL56UQuXqhZvFHEb8t1+qhfoDLqQ@mail.gmail.com>
+X-Gm-Features: AclHuK9Q1SZqt3r_g5KTt1HbKlHHGOBg8LuKOQuSFEPhRy8I7-wLps_FCe6cYPQ
+Message-ID: <CAJZ5v0h-EC+kvo0wPEVv8FmL56UQuXqhZvFHEb8t1+qhfoDLqQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] cpuidle: add per-CPU latency_limit_ns sysfs attribute
+To: Anthony Harivel <aharivel@redhat.com>
+Cc: linux-pm@vger.kernel.org, rafael@kernel.org, daniel.lezcano@linaro.org, 
+	seanjc@google.com, pbonzini@redhat.com, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The shortlog is effectively "do work".  Be more precise.
+On Tue, Sep 15, 2026 at 3:13=E2=80=AFPM Anthony Harivel <aharivel@redhat.co=
+m> wrote:
+>
+> Add a per-CPU sysfs attribute at:
+>   /sys/devices/system/cpu/cpuN/cpuidle/latency_limit_ns
+>
+> This allows privileged userspace to set a governor-respected upper
+> bound on the exit latency for idle state selection on a given CPU.
 
-On Tue, Jul 21, 2026, Shivansh Dhiman wrote:
-> Rewrite the enable_lbrv computation in svm_update_lbrv() as a series of
-> 'if' statements. Rename nested_vmcb12_has_lbrv() to nested_lbrv_enabled(),
-> expose it, and use it instead of open-coding the nested LBRV check.
+Which is already present in the form of
 
-This is super duper obviously two separate and *barely* related patches.
+/sys/devices/system/cpu/cpuN/power/pm_qos_resume_latency_us
 
-> No functional change intended.
-> 
-> Suggested-by: Yosry Ahmed <yosry@kernel.org>
-> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
-> Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+See Documentation/admin-guide/pm/cpuidle.rst for more information.
+
+> When set (non-zero), cpuidle_governor_latency_req() returns the
+> minimum of the existing PM QoS constraints and latency_limit_ns,
+> so all governors (menu, TEO, haltpoll) automatically respect it
+> without per-governor modifications.
+>
+> Use case: cloud operators running mixed workloads can cap idle
+> depth on CPUs pinned to latency-sensitive VMs while allowing other
+> CPUs to enter deep C-states for energy savings. The interface is
+> latency-based (nanoseconds) rather than C-state-index-based, making
+> it portable across Intel/AMD/ARM without uarch-specific tuning.
+>
+> Signed-off-by: Anthony Harivel <aharivel@redhat.com>
 > ---
-> Changelog:
-> v3 -> v4:
->  * Rename nested_vmcb12_has_lbrv() to nested_lbrv_enabled() (Yosry).
-
-I don't like this change.  Unlike nested_vgif_enabled(), this is *only* checking
-the effective vmcb12.  Once the guest_cpu_cap_has() code is moved elsewhere, I
-don't see any point in keeping the helper.
-
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index ef69a51ab27f..e9f2456982d4 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -880,9 +880,13 @@ void svm_update_lbrv(struct kvm_vcpu *vcpu)
->  {
->  	struct vcpu_svm *svm = to_svm(vcpu);
->  	bool current_enable_lbrv = svm->vmcb->control.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR;
-> -	bool enable_lbrv = (svm->vmcb->save.dbgctl & DEBUGCTLMSR_LBR) ||
-> -			    (is_guest_mode(vcpu) && guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
-> -			    (svm->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR));
-> +	bool enable_lbrv = false;
+>  drivers/cpuidle/governor.c | 10 +++++++++-
+>  drivers/cpuidle/sysfs.c    | 36 ++++++++++++++++++++++++++++++++++++
+>  include/linux/cpuidle.h    |  1 +
+>  3 files changed, 46 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/cpuidle/governor.c b/drivers/cpuidle/governor.c
+> index 5d0e7f78c6c5..4c6f77ce2028 100644
+> --- a/drivers/cpuidle/governor.c
+> +++ b/drivers/cpuidle/governor.c
+> @@ -112,6 +112,8 @@ s64 cpuidle_governor_latency_req(unsigned int cpu)
+>         int device_req =3D dev_pm_qos_raw_resume_latency(device);
+>         int global_req =3D cpu_latency_qos_limit();
+>         int global_wake_req =3D cpu_wakeup_latency_qos_limit();
+> +       struct cpuidle_device *dev;
+> +       s64 result;
+>
+>         if (global_req > global_wake_req)
+>                 global_req =3D global_wake_req;
+> @@ -119,5 +121,11 @@ s64 cpuidle_governor_latency_req(unsigned int cpu)
+>         if (device_req > global_req)
+>                 device_req =3D global_req;
+>
+> -       return (s64)device_req * NSEC_PER_USEC;
+> +       result =3D (s64)device_req * NSEC_PER_USEC;
 > +
-> +	if (svm->vmcb->save.dbgctl & DEBUGCTLMSR_LBR)
-> +		enable_lbrv = true;
+> +       dev =3D per_cpu(cpuidle_devices, cpu);
+> +       if (dev && dev->latency_limit_ns && dev->latency_limit_ns < resul=
+t)
+> +               result =3D dev->latency_limit_ns;
 > +
-> +	if (is_guest_mode(vcpu) && nested_lbrv_enabled(vcpu))
-> +		enable_lbrv = true;
-
-This is begging for short-circuit logic (which was kinda the point of the existing
-code).  An if-elif is silly, and I agree that squeezing everything into variable
-initialization is hard to read, so I think we should do:
-
-static bool svm_need_lbr_virtualization(struct kvm_vcpu *vcpu)
-{
-	struct vcpu_svm *svm = to_svm(vcpu);
-
-	if (svm->vmcb->save.dbgctl & (DEBUGCTLMSR_LBR | DEBUGCTLMSR_BUS_LOCK_DETECT))
-		return true;
-
-	return is_guest_mode(vcpu) &&
-	       (svm->nested.ctl.misc_ctl2 & SVM_MISC2_ENABLE_V_LBR);
-}
-
-
-		bool enable_lbrv = svm_need_lbr_virtualization(vcpu);
+> +       return result;
+>  }
+> diff --git a/drivers/cpuidle/sysfs.c b/drivers/cpuidle/sysfs.c
+> index b81d22479234..d060a4b7facc 100644
+> --- a/drivers/cpuidle/sysfs.c
+> +++ b/drivers/cpuidle/sysfs.c
+> @@ -207,8 +207,44 @@ static void cpuidle_sysfs_release(struct kobject *ko=
+bj)
+>         complete(&kdev->kobj_unregister);
+>  }
+>
+> +static ssize_t show_latency_limit_ns(struct cpuidle_device *dev, char *b=
+uf)
+> +{
+> +       return sysfs_emit(buf, "%llu\n", dev->latency_limit_ns);
+> +}
+> +
+> +static ssize_t store_latency_limit_ns(struct cpuidle_device *dev,
+> +                                      const char *buf, size_t count)
+> +{
+> +       u64 value;
+> +       int err;
+> +
+> +       if (!capable(CAP_SYS_ADMIN))
+> +               return -EPERM;
+> +
+> +       err =3D kstrtou64(buf, 0, &value);
+> +       if (err)
+> +               return err;
+> +
+> +       dev->latency_limit_ns =3D value;
+> +
+> +       return count;
+> +}
+> +
+> +static struct cpuidle_attr attr_latency_limit_ns =3D {
+> +       .attr =3D { .name =3D "latency_limit_ns", .mode =3D 0644 },
+> +       .show =3D show_latency_limit_ns,
+> +       .store =3D store_latency_limit_ns,
+> +};
+> +
+> +static struct attribute *cpuidle_device_default_attrs[] =3D {
+> +       &attr_latency_limit_ns.attr,
+> +       NULL,
+> +};
+> +ATTRIBUTE_GROUPS(cpuidle_device_default);
+> +
+>  static const struct kobj_type ktype_cpuidle =3D {
+>         .sysfs_ops =3D &cpuidle_sysfs_ops,
+> +       .default_groups =3D cpuidle_device_default_groups,
+>         .release =3D cpuidle_sysfs_release,
+>  };
+>
+> diff --git a/include/linux/cpuidle.h b/include/linux/cpuidle.h
+> index a2485348def3..f70d6288e13d 100644
+> --- a/include/linux/cpuidle.h
+> +++ b/include/linux/cpuidle.h
+> @@ -101,6 +101,7 @@ struct cpuidle_device {
+>         u64                     last_residency_ns;
+>         u64                     poll_limit_ns;
+>         u64                     forced_idle_latency_limit_ns;
+> +       u64                     latency_limit_ns;
+>         struct cpuidle_state_usage      states_usage[CPUIDLE_STATE_MAX];
+>         struct cpuidle_state_kobj *kobjs[CPUIDLE_STATE_MAX];
+>         struct cpuidle_driver_kobj *kobj_driver;
+> --
+> 2.55.0
+>
+>
