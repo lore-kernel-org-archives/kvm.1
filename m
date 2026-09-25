@@ -1,180 +1,271 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FE23389115;
-	Fri, 25 Sep 2026 09:03:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B473C47C10B;
+	Fri, 25 Sep 2026 09:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790327011; cv=none; b=IQV0LTsUDYIOOH9L/pYhyRXLPXGT/1vVQoCY/EAE4VcOXtIMYTW0LOXrojFTpNKQmbgkzedGrYZq6PFhjtDLn/fMz1jKb7A1WNEvEp6qkE1SZErHz4sEZgE9kNLfVeMxSLjpd7Dbvs5xHvOdbO2Dn90Dfhh4xoAkoNGHvfQRBBo=
+	t=1790327603; cv=none; b=ufAi36bI2WKzbCs9M2pYVB9XZy3C7k5gRxmjHgMUAZoiCxXM0/6R84sYnllDGSUq5TzZi3ow5dZK4TSlWNjJdnC5Mk0SL5fVJ0k7VEglVHEt6Vr1ehWFEe8TrWo/+hXFjYHiuxS8Ap3HRe69asyX3WA1BC44T6EPC8mS3N3Muuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790327011; c=relaxed/simple;
-	bh=sOAlpYevyEEeqo1Lx6FnS3Y7E3aUZb0OVhb2WCb8c0o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iBW4n2Wvn2O9cKQNxQ4/KMiN1m4wnPfzltTqs6tEOockIXY8czf90D/J/DbqaMolePlKt4AFXeSv80IzpoGvnC4JT36rNKTITLUQzx7R/p68N+/XQ0xDlAWHXuaZGnzuaWUNAY7JRPJoLDaBITF5mO1fi8T7uBZvpFJig33zvBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ule2hsFw; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790327603; c=relaxed/simple;
+	bh=Tk8lnLCIykMhwm4FM62K4d7d7QJOAD1dpQSl1O/g2h4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BMuTZigNeyXY/MMRlXWwpVhOMZOOi8C7EA4/h615K5aeMjPdPGqKPC+T/5cryzp/VTJ9d0VGzrgfBuMgfLPrLYRWHn9B5xbeyD+F14wIWdlIXLTBnsVxYVZFMjgzHcjBtbeSH9e4cj/51QQprRD4r4+8O+qccaR/RWw2zv10Pbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K2qi0Whp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ule2hsFw"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3C4DE1758;
-	Fri, 25 Sep 2026 02:03:25 -0700 (PDT)
-Received: from [10.57.10.88] (unknown [10.57.10.88])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 57A9A3F86C;
-	Fri, 25 Sep 2026 02:03:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790327008; bh=sOAlpYevyEEeqo1Lx6FnS3Y7E3aUZb0OVhb2WCb8c0o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ule2hsFwr8aED801DCcqIgLrUcWuQutUQXVi9350MdfOoGlVbmTrOv7pRQ7HqRVnV
-	 gGCzsDpOqeDYg8meXD0+euDrJXWydl1ypuJ6Jvwv4Ofhui1FX7gF81H2fkpJy0kamF
-	 eQv78mxZEV1sYyrBH7fDPXjnD3kqprKDEvQuPnHk=
-Message-ID: <0c41a8a4-c4b5-4ca7-b1c9-8aaa1958e4bb@arm.com>
-Date: Fri, 25 Sep 2026 10:03:23 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K2qi0Whp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A0E1F000FF;
+	Fri, 25 Sep 2026 09:12:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790327601;
+	bh=yfSL2ku4OKsR1ZwNLU9aq+Cv4BSlDAV3gm6yCuANvXg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=K2qi0Whp5/6TRdhA6MhlGYRilQhTQ8jPlG08QvTUUmQwkWOHWgmSx5AdhFTFi0qw/
+	 r4+3OumzOouGc7txXhbbk80xasHy05dho7/yw8n5cfGkWIhweFLORuSQD6wUTgF3bF
+	 dlK10/x8cBD+DlIEYdpY/JpYJifQA5N4twHg7jDXzl6B1XyEXIXzNDQx16+MJsnNtN
+	 sTXe6Jh9EmnWLdP4R1YQtEnnOP8lnDSORnscuubhZoG/xGcNI3ROCCX9s0YjPIJIxI
+	 MdK5fq25MLwiukRwd6j6BdAO4Z4mjaXg/lCXJQXPIaGguKLjAmtHiggDOa9mUzFR4Z
+	 ur0MJU3/gDHOA==
+Date: Fri, 25 Sep 2026 10:12:50 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "Liam R. Howlett" <liam@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <mkp@kernel.org>, 
+	Jaya Kumar <jayalk@intworks.biz>, Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, 
+	Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev
+Subject: Re: [PATCH v3 01/40] mm/vma: fix mmap_prepare file handling, remove
+ file_doesnt_need_get
+Message-ID: <arY3xqkPCgZj3IVD@gremlin>
+References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
+ <20260917-b4-mmap-prepare-vma-flag-sanify-v3-1-4583d8a23bca@kernel.org>
+ <qpkcjtl5jbip46zxcpyogsk4phmhetfvrvgftxhsxlbxjhucnn@h3a64dfoxcmj>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 0/7] firmware: arm_rmm: Add RMM v2.0 base RMI support
-Content-Language: en-GB
-To: Gavin Shan <gshan@redhat.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
- sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
-References: <20260924135201.850038-1-suzuki.poulose@arm.com>
- <fd404549-9c40-4fdf-9259-104c28b64c76@redhat.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <fd404549-9c40-4fdf-9259-104c28b64c76@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <qpkcjtl5jbip46zxcpyogsk4phmhetfvrvgftxhsxlbxjhucnn@h3a64dfoxcmj>
 
-On 25/09/2026 07:29, Gavin Shan wrote:
-> On 9/24/26 11:51 PM, Suzuki K Poulose wrote:
->> This series adds the generic firmware layer for talking to the Realm
->> Management Monitor (RMM), as specified by the RMM v2.0-bet3
->> specification[1]. It is the first part of the Arm CCA host support that
->> was previously posted as part of the larger KVM series.
->>
->> The split allows this RMM support to be used as a base for other work,
->> including Aneesh's PCI IDE support with Arm CCA RMM as the TSM,
->>   without depending on the KVM Realm support that will follow as separate
->>   series. (See more on that below)
->>
->> The series adds:
->>
->>   * The RMI SMC definitions and direct-call wrappers.
->>
->>   * RMM discovery and version checks during firmware init.
->>
->>   * RMM host configuration, including the host page size.
->>
->>   * Stateful RMI Operation (SRO) infrastructure for commands which the 
->> RMM
->>     can complete across multiple SMC calls while requesting or returning
->>     memory to the host.
->>
->>   * Verification that granule tracking is available at fine granularity.
->>     Fine-grained tracking allows each granule in the system to be tracked
->>     independently, which is required before individual granules can be
->>     delegated. A future series will add support for dynamically supplying
->>     memory to the RMM for this tracking.
->>
->>   * Support for fully firmware-managed systems, where the Granule 
->> Protection
->>     Tables for memory regions are allocated and managed by firmware. 
->> RMM v2.0
->>     also allows dynamic GPT creation on demand; support for that will 
->> be added
->>     in a later series.
->>
->>   * Wrappers for the RMI commands that are used for managing the 
->> "Realm VM"
->>     lifecycle. This is added in to make it easier for the on-going KVM 
->> support
->>     to evolve in parallel pieces.
->>
->> If the platform firmware cannot manage the granule tracking or the 
->> GPTs, we
->> bail out and deactivate the RMM, reclaiming any memory that we have 
->> donated.
->>
->> The RMM v2.0 spec introduces Stateful RMI Operations (SROs), which allow
->> the RMM to complete an operation over several SMC calls while requesting
->> or returning memory to the host. This allows interrupts to be handled in
->> the middle of an operation and lets the RMM dynamically allocate memory
->> for internal tracking purposes. For example, RMI_REC_CREATE no longer
->> needs auxiliary granules to be provided up front, and can instead
->> request memory during the operation.
->>
->> This series applies on v7.3-rc2 and a branch is available at [2]. The KVM
->> CCA support that builds on this series is available at [3] as an 
->> integration
->> branch. The KVM support depends on guest-memfd-in-place conversion 
->> support v13
->> from Ackerley [4], we plan to split that into parts, which apply 
->> cleanly on
->> v7.3-rcx without any dependency and is in progress. This will be made 
->> available
->> as soon as it is ready. Until then [3] shows how this base series 
->> enables KVM
->> CCA support. You may find the tf-RMM [5] and kvmtool support [6] below.
->>
->> [1] RMM spec : https://support.arm.com/documentation/den0137/2-0bet3/
->> [2] This series: https://gitlab.arm.com/linux-arm/linux-cca.git cca/ 
->> cca-host/fw_rmm/v19
->> [3] KVM CCA v17 integration branch: https://gitlab.arm.com/linux-arm/ 
->> linux-cca.git cca/cca/cca-host/kvm-v20/integration
-> 
-> s/v17/v20 ?
+(forgive my possibly semi-broken efforts to trim the mail)
 
-Yikes, I have pushed this in the kvm-v20, with the changes to the 
-RMI_RESULT instead of RMI_RETURN etc. So the branch is correct, but the 
-description is not. I will rectify that
+On Thu, Sep 24, 2026 at 03:00:44PM -0400, Liam R. Howlett wrote:
+> On 26/09/17 05:22PM, Lorenzo Stoakes (ARM) wrote:
 
+> > diff --git a/mm/internal.h b/mm/internal.h
+> > index 0dca33db068f..fe576d468af4 100644
+> > --- a/mm/internal.h
+> > +++ b/mm/internal.h
+> > @@ -7,6 +7,7 @@
+> >  #ifndef __MM_INTERNAL_H
+> >  #define __MM_INTERNAL_H
+> >
+> > +#include <linux/file.h>
+> >  #include <linux/fs.h>
+> >  #include <linux/khugepaged.h>
+> >  #include <linux/mm.h>
+> > diff --git a/mm/util.c b/mm/util.c
+> > index bf0513d1d3d0..016932780925 100644
+> > --- a/mm/util.c
+> > +++ b/mm/util.c
+> > @@ -1228,8 +1228,11 @@ int __compat_vma_mmap(struct vm_area_desc *desc,
+> >
+> >  	/* Perform any preparatory tasks for mmap action. */
+> >  	err = mmap_action_prepare(desc);
+> > -	if (err)
+> > +	if (err) {
+> > +		if (desc->vm_file != vma->vm_file)
+> > +			fput(desc->vm_file);
+> >  		return err;
+> > +	}
+> >  	/* Update the VMA from the descriptor. */
+> >  	compat_set_vma_from_desc(vma, desc);
+> >  	/* Complete any specified mmap actions. */
+> > diff --git a/mm/vma.c b/mm/vma.c
+> > index 55917d097933..fa784f069da4 100644
+> > --- a/mm/vma.c
+> > +++ b/mm/vma.c
+> > @@ -24,7 +24,8 @@ struct mmap_state {
+> >  		vm_flags_t vm_flags;
+> >  		vma_flags_t vma_flags;
+> >  	};
+> > -	struct file *file;
+> > +	struct file *file;	/* mmap()-specified file. */
+>
+> I guess renaming file to mmaped_file would be a lot more changes.
 
->> [4] Gmem inplace conversion https://github.com/googleprodkernel/linux- 
->> cc/tree/guest_memfd-inplace-conversion-v13
->> [5] TF-RMM https://git.trustedfirmware.org/TF-RMM/tf-rmm.git main 
->> (commit: 134266ae)
->> [6] kvmtool https://gitlab.arm.com/linux-arm/kvmtool-cca.git tag:cca- 
->> kvm-v20 (Also cca/kvm-v18)
->>
->> Known issues: RMMv2.0 spec.
->>   * RmiOpMemDonateReq:count (Uint14) is incompatible with 
->> RmiAddrRangeDesc4KB
->>    (Uint10) and RmiAddrRangeDesc16KB (Uint12). i.e., a larger 
->> contiguous request
->>    may not be satisfiable by the host. This is resolved in the RMM 
->> spec, by clamping
->>    the upper limit on the number to match the RmiAddrRangeDesc* and 
->> will be published
->>    in the next release.
->>   * RMM to clarify the scenarios that triggers the RMI_BLOCKED and the
->>     recommendations to limit the cases.
->>
-> 
-> Applied this series on top of upstream linux v7.3.rc4. The built kernel 
-> can boot up on
-> GH200 machine and CCA host emulated by QEMU with various combinations: 
-> 4KB or 64KB base
-> page size, CONFIG_ARM_RMM_RMI is {Y, N}. The RMI is only detected and 
-> configured on CCA
-> host when the base page size is 4KB because RMM only support 4KB granule 
-> size at present.
-> Details can be found from TF-RMM/runtime/rmi/ 
-> granule.c::smc_rmm_config_set(). Besides,
-> some of the added functions based on the RMI calls aren't covered by the 
-> tests obviously.
-> So I think this series doesn't introduce regressions at least.
-> 
-> Tested-by: Gavin Shan <gshan@redhat.com>
+Yeah :) and want to keep things sync'd with vm_area_desc.
 
-Thanks Gavin ! Much appreciated
+Can always obviously follow up later with renames sync'd across both.
 
-Cheers
-Suzuki
+<snip>
+
+> >  static int __mmap_new_file_vma(struct mmap_state *map,
+> >  			       struct vm_area_struct *vma)
+> > @@ -2593,20 +2597,23 @@ static int __mmap_new_file_vma(struct mmap_state *map,
+> >  	struct vma_iterator *vmi = map->vmi;
+> >  	int error;
+> >
+> > -	vma->vm_file = map->file;
+> > -	if (!map->file_doesnt_need_get)
+> > -		get_file(map->file);
+> > +	vma->vm_file = map->vm_file;
+> > +	if (map_same_file(map))
+> > +		get_file(map->vm_file);
+> >
+> > -	if (!map->file->f_op->mmap)
+> > +	if (!map->vm_file->f_op->mmap)
+> >  		return 0;
+> >
+> >  	error = mmap_file(vma->vm_file, vma);
+> > +	map->vm_file = vma->vm_file;
+> > +
+>
+> You set vma->vm_file to map->vm_file unconditionally above, is this
+> necessary?
+
+Yeah, because the mmap hook can change vma->vm_file, and this is necessary
+for the correct file refcount accounting.
+
+The accounting is actually very tricky, because the file that was passed
+via mmap() is fput() after the operation is done but if its swapped then
+you have to make sure everything works out correctly on both error and
+success paths.
+
+Which this patch does (with a lot of AI review checking to make sure it's
+not broken! FWIW)
+
+<snip>
+
+> > @@ -2688,7 +2694,7 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap,
+> >  	}
+> >
+> >  	/* Invoke callbacks. */
+> > -	if (map->file)
+> > +	if (map->vm_file)
+> >  		error = __mmap_new_file_vma(map, vma);
+> >  	else if (!is_anon)
+> >  		error = shmem_zero_setup(vma);
+> > @@ -2797,11 +2803,15 @@ static int call_mmap_prepare(struct mmap_state *map,
+> >  	int err;
+> >
+> >  	/* Invoke the hook. */
+> > -	err = vfs_mmap_prepare(map->file, desc);
+> > +	err = vfs_mmap_prepare(map->vm_file, desc);
+> >  	if (err)
+> >  		return err;
+> >
+> > -	/* It's invalid for mmap_preprare hooks to clear vm_ops. */
+> > +	/* Update first so file refcount tracked correctly. */
+> > +	if (desc->vm_file != map->vm_file)
+> > +		map->vm_file = desc->vm_file;
+> > +
+> > +	/* It's invalid for mmap_prepare hooks to clear vm_ops. */
+>
+> The less rare of prepare ;)
+
+Haha 'It's a rare prepare that would dare' is what I'd LIKE to put here as a
+comment but probably can't :P
+
+<snip>
+
+> > +static void put_map(struct mmap_state *map)
+>
+>
+> I like the put_map_file() instead, like Suren suggested.. but maybe
+> put_map_vm_file(), especially since it could be read as put to the file
+> pointer instead of vm_file.
+
+Ack, and of course to bikeshed it a bit :P maybe map_put_vm_file() so the
+'put vm_file' bit is clearer?
+
+<snip>
+
+> > diff --git a/mm/vma.h b/mm/vma.h
+> > index e97bd2dfa786..f15faa83f3d6 100644
+> > --- a/mm/vma.h
+> > +++ b/mm/vma.h
+> > @@ -394,8 +394,10 @@ static inline void compat_set_vma_from_desc(struct vm_area_struct *vma,
+> >
+> >  	/* Mutable fields. Populated with initial state. */
+> >  	vma_set_pgoff(vma, desc->pgoff);
+> > -	if (desc->vm_file != vma->vm_file)
+> > -		vma_set_file(vma, desc->vm_file);
+> > +	if (desc->vm_file != vma->vm_file) {
+> > +		fput(vma->vm_file);
+> > +		vma->vm_file = desc->vm_file;
+>
+> This isn't going to be racy somehow, right?
+
+No, at this point the VMA write lock is held and everything should be
+pinned correctly.
+
+The vma_set_file() dance was the problematic bit here as it didn't
+handle the file refcount properly.
+
+>
+> > +	}
+> >  	vma->flags = desc->vma_flags;
+> >  	vma->vm_page_prot = desc->page_prot;
+> >
+> >
+> > --
+> > 2.55.0
+> >
+
+--
+Cheers, Lorenzo
