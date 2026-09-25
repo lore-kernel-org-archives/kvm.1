@@ -1,173 +1,151 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D9F4E13E7
-	for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 16:10:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0304E2F3B;
+	Fri, 25 Sep 2026 16:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790352644; cv=none; b=Pt9b6NRF4gzWDLtO/Wl7ezvogzHGvfWTCIN9bBEbi4evrrupjyLXte/Mu2/aEHZYkFVk3nsuaD0MhauJBB7LZYUyknqaAIvRZjHmKClTXVsRIfjm3kqbyX+eURWx54N3y8ljX8zAJ0f/0Tw2qO66u5rdT/3g0h1i+QzYdYuPuVs=
+	t=1790354580; cv=none; b=sVOaGcddTWsUCkpJppSmLOeJ/+K84/19+tNAqo5GOR+yQsSdP8/ClOqjts/yaTfEmFNwUSCCHi1YDycLQfjujcydtYGdXRZydMFSQ0BSpMpZAHw4EJOS96m1esfQQoP4qfV4npUqTDylpNs2Tok+/exT4mTKPQBjJFl9trkyKC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790352644; c=relaxed/simple;
-	bh=7VEA427ZI5xoviEL+ab5QjV9AmDy8LeRj5+8UZplDTc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uAX9buL6JxJSoYpUZkpxOAi73Ju/Q75c99li3hYRSuLxgYoWLl726HHnhGCBSWqXmJArB/bJHe6nGlxVnXrmAH/dUbvPqRVKOxF92jsYIrQtjJsyjBHGr72gFu/BICOCSNGWy8MsIOOaQBe2zPTWJo+lzxr/He91VvGQsYbPqpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YeW5FInb; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790354580; c=relaxed/simple;
+	bh=O5sbNKI/8hIC1rgKBOybPs1hHlK7ry3JZUBZbb/JU/g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dB0x20UACCiT5hE676GMuZJ0tUkMilj6+mxYAGjjKXymYpML3kR4RIQxx2e26IQgQJ32V5OSsUF/Bfl8M6tdW1NqacSALXgIYqIjUaltWD+kE6VRp35GvI11rptzoDoI3uCn6de70OHkTCQmLi4Vc/tz9GQMcXlcdglafcglDZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=hVf2XdSc; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YeW5FInb"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-49e73e541d7so2341785e9.0
-        for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 09:10:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790352636; x=1790957436; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aH6diTs8gNRzCNhYXYtlFdmXwTeE1+K2YSTWsii/I0U=;
-        b=YeW5FInbK2E3AeoHM3rgIC35a2IXQ+Xj874MtsxXexgn42V141RGfvvj935ze5FT26
-         l+ylWXmjkbVAMXgXib85MENj8W6GNTyotlKC3nqvFSt54ha6tDQM1cIbs93VCRMbf5WS
-         Eci8XARZvnwTTkS3u9fkNPECDDO6EdhFplQRBQhhdn47nDg+kr00UF0bnq4qCDnwADxy
-         gnmaGNUBYoz9tStbl7LUjITmTcfRAn7HrfxD3Wz6HIlUBTrYIgqPdMoLEkaMFXxOkHOR
-         ICOh8CpDzaTmgtaRoDMSHx9VD8kNeGAmH6W9ws4K00CsQF/EOAahR3quGaOSI8WJnT3Y
-         PRCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790352636; x=1790957436;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aH6diTs8gNRzCNhYXYtlFdmXwTeE1+K2YSTWsii/I0U=;
-        b=1k28ULLB5vdOAWSZRv/TlICo7mTtaOKQMphBtvykz6xjAYWJr6bVsuwTgOKm1d8cbV
-         K9Xxre4k9p1sYAagl0rC28i9oy246qM60sAiJQRLeCRXAwU+rKN/J24JSty7V9sNYwoJ
-         IsYKE5psi5fZ3jBrOzUZf3El8XNh4TaNVjfp9B0UxxR42RKgK8ZsGZJEVODCHA2D+foB
-         DLAX3YcHsj3JYcFQzFkO8pjTcARulqh4ikfMw7+s0jNlrfuQfMd3DNXVrgEqkIdi0RU4
-         vYQRMDXVrbY5i03FdN54iXdhHT2Zph30gDAzuK1csBQVDelCE2dPYgcfQ835jzuy9bV6
-         joEQ==
-X-Forwarded-Encrypted: i=1; AKwUvBznHLJIVchhRjczxVuXlOoIgP5IZGKIuvQQR/f8wcE1aQXSgO1i1Wx/hLE8JJi1u/+wdzI=@vger.kernel.org
-X-Gm-Message-State: AFuF++keSp1EJcoiEYnTJe1B6Qz7iDGA55n1Kdv3C68rCf45uDquMLRR
-	7yu6bbGodoqGfuIhYp7ImN1pg7sKAer7vV/E+x6jVT0bAEkeafF9ApkS
-X-Gm-Gg: AYBFou1fRsfH3GpYdQClmG0YKQobJ5oGRfxlxHpldCf6tV1M9lRwFziC4egnUKVxG8U
-	B3xEE8i4flqV2S2SrXhgIPB8S4LCcw4cuPoDQPxMTpiLGQaLqutqHz0p5OOzayA7HPHddy41xeX
-	40dpdBSozlownDlLmGaLm3m31NQ66KlADM/f9Y7yBoqaUewRV70BYBaFDYNQrm9GoA7IPKZEaWe
-	28YBEbAJgW7HhUw5kiFFfdvgx6zbOz3IpxP1Dliu8NdW6Wog905qDEepMJpFZT9wxhCApzFodGT
-	MWb6+7cFswFwxm28OPy1aBIPsnyBN5SVusY+t4KmUrqgtAoEraJVBFrAjx07FGYPvql1rwbJ0M9
-	yFYdM0LoUI6vYH7kmksY3qb4ZAWZwPEzje/XcDCpRorXrUugbCrOJnjSZmsaZ0G/BqEqPtArrG2
-	OTFr77dGiEzVd3WYd0eDk7+782XfInV11udtR88DCqZALb5tNfyMkP0iRW5RDwappZeNFO4BF5U
-	fZVCWEyBXQg60IbiA6mG3ElT9YILwI8dN1nGSu/1IqYOlzckUMEui4=
-X-Received: by 2002:a05:600c:5955:b0:49f:e29f:55ec with SMTP id 5b1f17b1804b1-49fe66f1af5mr85015775e9.9.1790352636084;
-        Fri, 25 Sep 2026 09:10:36 -0700 (PDT)
-Received: from andreayoga.wind3.hub ([31.189.116.68])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a64f9bcsm8196828f8f.32.2026.09.25.09.10.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 09:10:35 -0700 (PDT)
-From: Andrea Parri <parri.andrea@gmail.com>
-To: Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>
-Cc: Andrea Parri <parri.andrea@gmail.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <skolothumtho@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Jiaqi Yan <jiaqiyan@google.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] vfio/nvgrace-gpu: Skip PFN registration for empty memory regions
-Date: Fri, 25 Sep 2026 18:10:16 +0200
-Message-ID: <20260925161024.189771-1-parri.andrea@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="hVf2XdSc"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F19A169C;
+	Fri, 25 Sep 2026 09:42:36 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B87E3F86F;
+	Fri, 25 Sep 2026 09:42:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790354559; bh=O5sbNKI/8hIC1rgKBOybPs1hHlK7ry3JZUBZbb/JU/g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hVf2XdScH/58yUk45BIMnxm19IlI7CCdS1+PH4A3lE0oPIlF/VnruTYA9tdwfB++q
+	 tPALc4GdmxDZeRm3O69AumG5nuzFw10fti+WPdDM8P/WWPcR06/EG2TuL4kXguw8FS
+	 tOxXhZwLUBa3ggNoDVUh/E34iEH5FW3oavECMG3c=
+Date: Fri, 25 Sep 2026 17:42:34 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+	will@kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+	sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+Subject: Re: [PATCH v19 5/7] firmware: arm_rmm: Activate the RMM
+Message-ID: <araketG70TIKeNuf@arm.com>
+References: <20260924135201.850038-1-suzuki.poulose@arm.com>
+ <20260924135201.850038-6-suzuki.poulose@arm.com>
+ <arZmXFw5Jw2IbAmA@arm.com>
+ <a11aba04-eaaa-43fd-988b-a2581b1b2fdb@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a11aba04-eaaa-43fd-988b-a2581b1b2fdb@arm.com>
 
-nvgrace_gpu_open_device() registers nvdev->resmem only when it has a
-length, but registers nvdev->usemem unconditionally.  In fallback mode,
-where the ACPI memory properties are missing or the C2C link is down,
-usemem.memlength is zero, so the empty region is still registered.
+On Fri, Sep 25, 2026 at 04:02:24PM +0100, Suzuki K Poulose wrote:
+> On 25/09/2026 13:17, Catalin Marinas wrote:
+> > On Thu, Sep 24, 2026 at 02:51:59PM +0100, Suzuki K Poulose wrote:
+> > > From: Steven Price <steven.price@arm.com>
+> > > 
+> > > Activate the RMM after the basic configuration. This is a memory
+> > > transferring stateful operation.
+> > > 
+> > > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > > Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
+> > > Signed-off-by: Steven Price <steven.price@arm.com>
+> > > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > > ---
+> > > Changes since v17:
+> > >   * Inline RMM_ACTIVATE command and remove the definitions from arm-rmi-cmds.h
+> > >   * Use scope-based cleanup to free sro object
+> > > Changes since v16:
+> > >   * Split into a new patch
+> > > ---
+> > >   drivers/firmware/arm_rmm/rmi.c | 13 ++++++++++++-
+> > >   1 file changed, 12 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+> > > index 035f21d3f26b6..0859f256e192b 100644
+> > > --- a/drivers/firmware/arm_rmm/rmi.c
+> > > +++ b/drivers/firmware/arm_rmm/rmi.c
+> > > @@ -834,7 +834,18 @@ static int __init arm64_init_rmi(void)
+> > >   	if (ret)
+> > >   		return ret;
+> > > -	return 0;
+> > > +	/* Activate the RMM */
+> > > +	struct rmi_sro_state *sro __free(kfree) = kmalloc_obj(*sro);
+> > > +	if (!sro)
+> > > +		return -ENOMEM;
+> > > +
+> > > +	ret = rmi_sro_memxfer_cmd(sro, GFP_KERNEL, SMC_RMI_RMM_ACTIVATE);
+> > > +	if (ret) {
+> > > +		pr_err("RMM activate failed (%d)\n", ret);
+> > > +		ret = ret < 0 ? ret : -ENXIO;
+> > > +	}
+> > > +
+> > > +	return ret;
+> > 
+> > It was raised earlier this year [1] but I'm not sure it concluded. How
+> > do we handle kexec and kdump? I think RMI_RMM_DEACTIVATE only succeeds
+> > if nothing is delegated, so it would need all realms torn down first. If
+> > that's not feasible, we could at least block (non-crash) kexec like pKVM
+> > does.
+> 
+> You are right, we can't DEACTIVATE until all granules have been
+> "undelegated" back. Not just the Realms, but also the GPTs/Tracking
+> Metadata etc would need to be reclaimed (when we get to support
+> dynamic GPT/Tracking metadata). For now, we should block the kexec.
 
-register_pfn_address_space() then inserts a node covering
-[0, ULONG_MAX].  Nothing removes it, because the fallback device table
-closes through vfio_pci_core_close_device() rather than
-nvgrace_gpu_close_device().  A second open fails with -EBUSY, and once
-the device is unbound the node outlives the nvdev that contains it, so a
-later registration or a memory-failure event walks freed memory.
+Looking more into this (and the memory hotplug story), I find it strange
+that simply having RME and a valid RMM imposes all these restrictions
+even if we never run or intend to run a realm. How common will
+RME-capable systems with RMM firmware be that are not used for CoCo? Or
+do we expect only CoCo systems to have capable/configured firmware (RME
+may be present in silicon anyway)?
 
-The node also captures every memory-failure report for a PFN with no
-struct page.  The callback rejects every VMA of the fallback device, so
-no process is killed, but the failure is logged as MF_RECOVERED rather
-than MF_IGNORED.
+Ideally we'd defer the RMM configuration and activation (and the
+tracking/GPT checks) until we first attempt to start a realm, keeping
+only the RMI_VERSION/FEATURES probing at boot. Not sure how feasible
+this is (memory is more fragmented by then for any contiguous donation).
+If we manage it, kexec and memory hotplug just work on hosts that never
+start a realm.
 
-Guard the usemem registration with its length, matching the resmem
-handling.  Fallback mode then registers nothing and the existing close
-path is correct.  Guard the unregistration the same way.
+The next best thing for kexec is to tear down the realms, undelegate
+the granules and deactivate the RMM before invoking kexec (with kdump
+that's harder as we likely no longer have a controlled shutdown).
 
-On the unfixed tree a second open after unbind reports:
+Similarly with memory hotplug, allow it if we haven't started any realms
+and refuse realm creation afterwards if untracked memory was onlined.
+Also, if the memory is onlined to ZONE_MOVABLE, neither guest_memfd nor
+the kernel allocations we delegate come from there, so we could allow
+it even with realms running.
 
-  BUG: KASAN: slab-use-after-free in interval_tree_iter_first+0x209/0x310
-  ...
-   interval_tree_iter_first+0x209/0x310
-   register_pfn_address_space+0x97/0x100
-   nvgrace_gpu_open_device+0x21c/0x730
-   vfio_df_open+0x213/0x520
-  ...
-  Allocated by task 152:
-   _vfio_alloc_device+0x3a/0x500
-   nvgrace_gpu_probe+0xcb/0x660
+> > Kdump gets even more interesting if it starts accessing delegated pages
+> > and getting GPF.
+> > 
+> > [1] https://lore.kernel.org/r/CABpDEukEO4Y_fg8fv5Nr1_Pw_qOK=2UmioXk=WyPEzoEprPcGA@mail.gmail.com
+> 
+> Kdump may be a bit more easier, as the kdump kernel is supposed to use
+> the "reserved" region and vmcore access could handle the GPF and
+> provide "0"s to the reader ? May be this is one case where the
+> host needs to be able to handle GPFs.
 
-The fix should be safe because memlength already decided whether the
-range was meaningful: full mode always has a nonzero usemem.memlength,
-and fallback mode never calls nvgrace_gpu_close_device().  The guard
-only skips a registration that could never have been unregistered.
+Yes, I think so. I now realised that metadata delegation to the RMM
+doesn't come from guest_memfd, so that's another case not helped by the
+old series to unmap guest_memfd from the linear map. I'll reply to the
+GPF thread.
 
-Fixes: e5f19b619fa0 ("vfio/nvgrace-gpu: register device memory for poison handling")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
----
-Tested on x86-64 under virtme-ng with KASAN, not on Grace hardware. The
-driver was bound through driver_override to a QEMU cxl-type3 function,
-whose CXL Device DVSEC reports the memory as valid and active, so probe
-takes the fallback path; the device was opened through a noiommu VFIO
-cdev. Without the patch the second open fails with -EBUSY and, after
-unbind and rebind, the next open hits the KASAN report quoted above.
-With the patch neither happens.
-
- drivers/vfio/pci/nvgrace-gpu/main.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
-index 963fd8ded20d1..326b991732148 100644
---- a/drivers/vfio/pci/nvgrace-gpu/main.c
-+++ b/drivers/vfio/pci/nvgrace-gpu/main.c
-@@ -207,9 +207,12 @@ static int nvgrace_gpu_open_device(struct vfio_device *core_vdev)
- 			goto error_exit;
- 	}
- 
--	ret = nvgrace_gpu_vfio_pci_register_pfn_range(core_vdev, &nvdev->usemem);
--	if (ret && ret != -EOPNOTSUPP)
--		goto register_mem_failed;
-+	if (nvdev->usemem.memlength) {
-+		ret = nvgrace_gpu_vfio_pci_register_pfn_range(core_vdev,
-+							      &nvdev->usemem);
-+		if (ret && ret != -EOPNOTSUPP)
-+			goto register_mem_failed;
-+	}
- 
- 	vfio_pci_core_finish_enable(vdev);
- 	nvdev->bar0_base = io;
-@@ -235,7 +238,8 @@ static void nvgrace_gpu_close_device(struct vfio_device *core_vdev)
- 	if (nvdev->resmem.memlength)
- 		unregister_pfn_address_space(&nvdev->resmem.pfn_address_space);
- 
--	unregister_pfn_address_space(&nvdev->usemem.pfn_address_space);
-+	if (nvdev->usemem.memlength)
-+		unregister_pfn_address_space(&nvdev->usemem.pfn_address_space);
- 
- 	/* Unmap the mapping to the device memory cached region */
- 	if (nvdev->usemem.memaddr) {
-
-base-commit: f49a343b305c0b6c19a3b50c0bbf10bcd0e2e8fd
 -- 
-2.53.0
-
+Catalin
