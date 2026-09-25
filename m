@@ -1,69 +1,138 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFC04302FC;
-	Fri, 25 Sep 2026 18:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBDF314A619;
+	Fri, 25 Sep 2026 19:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790362119; cv=none; b=c2NJkwXJxXXi6qeFq3Xq2Kc9nh2Bo86OAhmaX4ePo8Cfz6fWPxnqZR+WTAwOc4s475isl9mB14EJdD16uO9evwCGsI1yVANwXbU3nFzDpSMaQdJgsTXGBGD93D0EMmO943LbFPs51khGUjyaOKFDWp+6LJjwcaitqSJsd7VUanc=
+	t=1790365703; cv=none; b=ZkC8OQ/hkf64/E0UbOYLLMyseqbEPl4EF4F0ZasDQ5acMFiDemBmEbq9MaJ1r3yUDzA8maam9Jm72phVE6bNFPluqOGBkU1PIl71jxu2yrNRHKUJqeEERgmgorMiSbdhYIUGLFOllE0LrhrXSUnL+eedvkaU+aah5CjI8pGm5mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790362119; c=relaxed/simple;
-	bh=v597xxRoqaLyRWVJAUNDPYTFUXIwPtMYhIGpjBbvo8w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RKOapZK4hFTRaEvnuayvCyB1ZK2WHB065UhM9gNpXXNniquzH0qZOW2dtOZd4BMW1lrBTz5zwtyqPY3qZ3zgpuqM0jg2YhqUFsCp/DGNBH1qOAL1rVXvCyUMRUByStbbD9xsvhLQoJXlgapztjKYSc1S2fFG4vmAWW7qAQA6W/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dtpkkkdQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790365703; c=relaxed/simple;
+	bh=TciHMdDlrdsa9ERMoFTjGhAHbHf8M+vgHxNh6dXT4go=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WLcUNnghaIbupEISqHXqvF/gZtU56kKb/NN7fizPNxnd5xi+0IQ7g6Qz8gp9dM6P/Tr1dF20ywAhV2pKNOyjmIJ1BXC11TM/QcIrrjLp+jB7J1SmGJnjTMPv8Qb+jPgz3GXLMVbG2ysEfBF7OeXT6q4BoJnF87uKuJ6eVYhF/HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aiVZjVmE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dtpkkkdQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D541F0089C;
-	Fri, 25 Sep 2026 18:48:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aiVZjVmE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DDF91F000FF;
+	Fri, 25 Sep 2026 19:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790362116;
-	bh=b/H6EFLlQfTgJpgg3A5ph13hVMMua26joQYGc6TG13E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dtpkkkdQyajIO+9LVRO9Q1BhGnExME44Zo00YZLL0OzqIsyj9XTcuFE70+qqb+PxO
-	 z7DYaLssPeS+OoBK0ckryMD58MA1A3bJ4KJaDOc06bViOvXhYlohONdRDDvVVHNiqA
-	 gMF9113ZyKw17Kci9GlBz17b2WuyIH29GDSF8dWld2G+xusrZ8fnTzhpMNoJz4hEYS
-	 /KdK+xtWcmEj3suMPVtlfja15MH7S3Tf1MgKQ38cHy4JZiP2hMegpfl2MPl+Azk71g
-	 V9t297T6CS+HvhTLM9GRCvXa5Rjou+ycYlrzy+B7PWph9jzGZdUZXj1N7JaLNKUxqh
-	 vlUQqL0+dx5ag==
-From: Sasha Levin <sashal@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Sasha Levin <sashal@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	stable@vger.kernel.org,
+	s=k20260515; t=1790365701;
+	bh=iihkM/7KvK/mt1x0eZrWDrnWJRfMoQnZsgo9hNqe2G8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=aiVZjVmEy1ThNnYtiCN1cN+s5ZqCNT+FP/swQUZVuNiJ7kWC5BDeOeCFutI34nVGg
+	 0LmSxyMmeP4LR6IkdRtS1PgHj7BOOsVIFqSAcmDRbbVl3OR6nELyLXXoQXeZMtZnya
+	 LRxoZRnnfLul7IArKgbVPoCGVm2OUfn3az67oNC3dNhjHhBkPBF+DWAVDY7lDtXs1M
+	 j8rUW8SnEeQydrHCrUGimqDN1e/LZAMlUrBS2RTTE8/V1uMt30mpk3s2yLtwonRJof
+	 qTMGhtCJ9ZH8Pjg2pML5wI+IpiO9QdcvOHn2S/qup/K655+EVWVOB4ee8O6G80lb/v
+	 gFFDHLdg3Ec9A==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xABu6-0000000Daim-3CXI;
+	Fri, 25 Sep 2026 19:48:18 +0000
+Date: Fri, 25 Sep 2026 20:48:18 +0100
+Message-ID: <86eceh3yf1.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
-	Peter Xu <peterx@redhat.com>,
-	David Matlack <dmatlack@google.com>,
-	Kenta Akagi <k@mgml.me>
-Subject: Re: [PATCH 5.15.y v3 3/7] KVM: x86/mmu: Derive shadow MMU page role from parent
-Date: Fri, 25 Sep 2026 14:48:06 -0400
-Message-ID: <2026-09-25-daily-reply-0014-re-kvm-mmu-role-prereqs-5-15@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <arVZfjUskXC54OKZ@google.com>
-References: <20260913155523.7423-4-k@mgml.me> <daily-reply-0006-re-kvm-mmu-derive-child-role-5-15@kernel.org> <arVZfjUskXC54OKZ@google.com>
+	Jonathan Corbet <corbet@lwn.net>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Jack Thomson <jackabt@amazon.com>,
+	Jack Thomson <jackabt.amazon@gmail.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Leo Soares Passos <Leo.Bras@arm.com>,
+	Wei-Lin Chang <weilin.chang@arm.com>,
+	linux-s390@vger.kernel.org
+Subject: Re: [PATCH v4 00/14] KVM: arm64: Add KVM_PRE_FAULT_MEMORY support
+In-Reply-To: <arY1uKfUBXRpauaN@gremlin>
+References: <20260923-kvm-arm-prefault-v4-0-d4b0b4dfa8c3@kernel.org>
+	<86ik3u4asq.wl-maz@kernel.org>
+	<arY1uKfUBXRpauaN@gremlin>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: ljs@kernel.org, catalin.marinas@arm.com, will@kernel.org, oupton@kernel.org, joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, pbonzini@redhat.com, corbet@lwn.net, mark.rutland@arm.com, fuad.tabba@linux.dev, rdunlap@infradead.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, david@kernel.org, hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, svens@linux.ibm.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, skhan@linuxfoundation.org, shuah@kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, jackabt@amazon.com, jackabt.amazon@gmail.com, alexandru.elisei@arm.com, vdonnefort@google.com, aneesh.kumar@kernel.org, seanjc@google.com, imbrenda@linux.ibm.com, Leo.Bras@arm.com, weilin.chang@arm.com, linux-s390@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-> I vote to backport the relevant upstream commits.  Reviewing this without those
-> commits is a pain.  I think it's these, to get fairly clean cherry-picks?
->
->   dc1ce45575b3401102568dd60ba8894849d1d64b KVM: MMU: update comment on the number of page role combinations
->   41e35604eaff2266ba8523787ebe99c5ca4c4045 KVM: X86: Remove useless code to set role.gpte_is_8_bytes when role.direct
->   b46a13cb7ea1137b2e01dfaafcacd5cd79db8390 KVM: X86: Calculate quadrant when !role.gpte_is_8_bytes
->   bb3b394d35e80d7a58ce015191e4960a13f54ba5 KVM: X86: Rename gpte_is_8_bytes to has_4_byte_gpte and invert the direction
+On Fri, 25 Sep 2026 09:51:41 +0100,
+"Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+> 
+> On Thu, Sep 24, 2026 at 10:08:37PM +0100, Marc Zyngier wrote:
+> > On Wed, 23 Sep 2026 16:15:43 +0100,
+> > "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+> > >
+> > > This series implements the KVM stage 2 page table pre-faulting feature for
+> > > arm64.
+> >
+> > [...]
+> >
+> > > base-commit: 23ddf997ab16b5f4aa9f948f5a68f5b35e4e398f
+> >
+> > In the future, please don't do this. I've just nuked this commit from
+> > kvmarm/next as I rebuilt it, and using such a random commit is
+> > counter-productive. Just stick to an -rc tag from Linus' tree, and
+> > that's it. I'm perfectly happy to deal with the outcome (conflicts and
+> > other funny things).
+> 
+> Ack! No problem, will do.
+> 
+> Do you prefer that people stick to the same -rc base from the start or OK to
+> roll it over to latest Linus's tree?
 
-Agreed. Those four apply to 5.15 in that order without conflicts.
+We generally pick -rc3 as the merge base for all topic branches, so
+something -rc{1,2,3} are ideal. If you depend on something that is in
+a further -rc, we can manage. But keep in mind that around -rc6, the
+tree is closed to new features and becomes fixes only. So if you find
+yourself basing something on -rc5, you're already playing with fire.
 
-Kenta, could you send a v4 that starts with them and then carries 3/7 and
-4/7 in their upstream has_4_byte_gpte form? 3/7 doesn't apply on top of
-them as it is now.
+Thanks,
+
+	M.
 
 -- 
-Thanks,
-Sasha
+Without deviation from the norm, progress is not possible.
