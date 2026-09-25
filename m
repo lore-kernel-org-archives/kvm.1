@@ -1,229 +1,242 @@
-Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013019.outbound.protection.outlook.com [40.93.196.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBB44F55A0
-	for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 20:55:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790369723; cv=none; b=dfmsXomZ6ZXSmqqoveo/tapQgOdn6anH9Olw1jdSNdP+FzqXCZ0CrZPnzxifeyhjsjmnUMS0cwhBzAdtNrG4CsfKB/gm9/l8xmSUEk0ekJpl7rKfV5Rypp5z+kL85f/prsd21/jOf2u4YH3IjmOwIqLMTJDfRCFY/1ATCYqECVo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790369723; c=relaxed/simple;
-	bh=24yjjZnXY1DYpKHmlWT+MX+eqe42maAyhosiwvUV4Vc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iadiu/IXswAPapWMgUANcWVvbqDmNZbycp0qeszxRp0VFK8LZqdRGqCyZBvA6l08Nan3W1iDo0tGmrE1aFZdfJ0r6lsoSQNI+jhVWivn9djb4LtH7OmGWf8o6EwrFmTYsVEUS9MTQWgxhN/UUDnCzmXex4UUxaF1A1PcNdic9ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i/c/VDNV; arc=none smtp.client-ip=74.125.228.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA30361667;
+	Fri, 25 Sep 2026 21:02:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790370127; cv=fail; b=C9yaH2ia3xHSB/mLXlbqXD06lrmAi6sLHmJdHI9eaXDUXdVDj0ZxBcqSF8EgEEloq2nlydZEkHHlTKsmOHw3HF0SUBGr8zpG31mQZ+lceQ2nuYLT2A8K4c8P3Mc49kTf1SuYR8cUBjjDRHfS4UcxFk/8cIeqEQcyY8cYFNeuSpg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790370127; c=relaxed/simple;
+	bh=SUMlbruU9xfNrYZ36GVGpU1Ez/0NmVG8drGcjKXKPZw=;
+	h=Content-Type:Date:Message-Id:Subject:Cc:To:From:References:
+	 In-Reply-To:MIME-Version; b=WOEA3nQ1P6Z0M+CknV+vwV+gGV5DXJZAf7ZPvAHsU/zC6ZD1VOReerISUqJqSdfEV9poXs5RF1nC7cGjqd/vbaFfEcgrP79L8SiQAH4vTFJMGGx5l8gmB8mRrVfTBy4C4BOdnUs0XzsyI2u30ntzyh00/oLi/9o4MTTgSmVD/Do=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qU6hRrBN; arc=fail smtp.client-ip=40.93.196.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i/c/VDNV"
-Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc4d2fe2056so499787a12.2
-        for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 13:55:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790369721; x=1790974521; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=IBZGc7Te6ndEEpx/gGdvka8Znd6f8zDQu/S2hFPgZOI=;
-        b=i/c/VDNVHCPWl97WQJskVHZAtqvnrn7g4eSpFAaI3IJdWU35ZK0KntL4ozB8baPFqa
-         wjyEn4QmYcGrqFhbRxDNPAkGx15DHOG6hG+M5NfrQiyv/5VXILvu4uiD93F8VLw3UUpU
-         vj3TAbTHgNJSlhztLvPUu/EKh+gYPVIfGQ81tpkak1Q4+KqI+iVHeZbW7v6EZhYPXgju
-         sd6MI5Yi4tPPkjtviY10AEP/WoFOvsQjGw4sX6/nhdBWYqmax30IdYQksPvaIXhdGMsD
-         nK5H8QiFwMxFql1mZGirnW3vgSDR+BqyCSDYGFARLUwyFSEXeE14EIMawf+EGL2o9eZ9
-         Bt1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790369721; x=1790974521;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IBZGc7Te6ndEEpx/gGdvka8Znd6f8zDQu/S2hFPgZOI=;
-        b=NRx0C+YSrazuof+/5HqqTTqdFPtW07lyfHdLRF7iZv1ZA67ffPOoY4nl96gpEFVxzY
-         p9UkR7kfbSeFyodsXDjAZCwAiJ3CkJuCnnngl0nb/aPGTUaQbu1FKHH6jT68/RYqPTAK
-         sqdZ9v2WSN3LeQ1dIu0pGuuzLC525jm6jiPQksKTjY1vsShvsb6lq1+/nTiqzJiKMj1j
-         /DzyGI4Y3dFpiBu1Rgiqhz99mqv0OUjRV5TNRCM7FGVajTmVzqCaeDTzAcc+owlhpnbL
-         OCAkyw+sNaR1zrCqveBnh8XaXdkLup6YuvgRL9I+Wg+hJ8YmUzhDIgkx4dRnxzuMEzKS
-         OZ1g==
-X-Forwarded-Encrypted: i=1; AKwUvByVwbqsYXeMKg0JCcB0GIHBCdxRKypZjOwdxtsT02FdnSL0X6WFQ7bFC+/iZ9yWbDskN8Q=@vger.kernel.org
-X-Gm-Message-State: AFuF++lrxCFOfvGb9X3iOOcoyu9AafXuG6S9ggmo2Sg65jwaFrixLoco
-	ko5t0BFbWzG2F8BfF6da+5VKEaM2WD7oggo3YUTWX/t8xiSw+MNapwfh7XT5ryvt1w==
-X-Gm-Gg: AYBFou3AxSGlhI73EGoScDdGmZwqeJdeaep0/60QV3pyh3doAn+JNZRHnQgcQFpZBD0
-	MoDn3dzKXIJDKIQKIKce9HJgLO2j6bXmeKfCoP2IMmrQXp4QT0ePSrpnOEslvVHoeAAJPi3haTQ
-	A8tX2BG0nbMt0LVs2G2RKG9KGKjyL1qR6x+g3JdCk/j93+y245YoPxrzjB/29H5WA76dQBVR+9q
-	xKSrNmuG+jKNu3P0CW7drSFaBR/lZfGFsTVkET2m74IeclfFcQTzrQEHvrI7hU1CtjrRPOLn1em
-	O6+Lk42OzyJsXgYjwDwQMB9ljK8a8Lrh/Ryq9cb726+lkQX975iEKyNBclqy3hzRuc4w/QXXhO9
-	vPPfbfd/B7MqKbcHj0hPnKbqj7SgoDO7wEtpoWDqoT5Cn31gITKN32izYwmeNLHM6fwbCd3QCIC
-	wBaf1PI6e1Fjm7Iqpd7szTxgAoxN7h6IoPc5ewG+RpwdaJhYVWYNrYchS+EPU6/EC4pv/AnxKPd
-	HPgi3wmmtYG4yGr8o1y66fLhfe2L9wXySZ4cxw0
-X-Received: by 2002:a17:90b:224b:b0:39e:6a81:f34f with SMTP id 98e67ed59e1d1-3a098bb63femr5626684a91.41.1790369720447;
-        Fri, 25 Sep 2026 13:55:20 -0700 (PDT)
-Received: from google.com (192.150.203.35.bc.googleusercontent.com. [35.203.150.192])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b99917besm6043758a91.14.2026.09.25.13.55.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 13:55:18 -0700 (PDT)
-Date: Fri, 25 Sep 2026 20:55:13 +0000
-From: David Matlack <dmatlack@google.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Alex Mastro <amastro@fb.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Rubin Du <rubind@nvidia.com>, Josh Hilke <jrhilke@google.com>,
-	Vipin Sharma <vipinsh@google.com>, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Hisam Mehboob <hisamshar@gmail.com>
-Subject: Re: [PATCH] vfio: selftests: Remove libuuid dependency
-Message-ID: <arbfsdQ72pIew9TB@google.com>
-References: <20260925013110.3447626-1-skhawaja@google.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qU6hRrBN"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BSN1YvUeJz8JZ7+rYvwHguK61Z5DVBjm4pJakGf8J39leaBgGauyVS5hf1XEACCglSuQ8Djk4CEJUvFuaIDQmSmV355GmZZqlhmJJmMoXvPgid1pK5183whysIjaH+3Jta+LFceqdMH4thLAquh1vbn/a4GuojkSbmSf3C0i3SG70WSDdgdGNfcv3X3jrnijLR8zHDs/tdSiMDhxajbGy/pWpEUZVgmxUHdL2oLoa3o5ZRCiqELLNG2GiMTgVV3kh5dvfeU6W33GrNpRQe4AgLjAiZhJfo+cep0qhVsluxZZC8QKDlw56YsBDe+wjnNR5/636huWK3Tv/g4YcwQUpg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jcqA/8ravJEVTJI6stmpYCqH+repWWqzPh8/7ZJwres=;
+ b=uzINNDfH2f/WBhyUywzk9PbTOY/65E23ZtWYxT7fDi+khiP+CVwB606A/+zF2Q84862akhCbmjRToA6Vv2cZLJJb7CnrygibgY28jPYeh35h115r7PNNNCJ+SB9xdmzxQQZsgYq1MlQ3iwgvrBQEEST19Yz97SPLEMVb2GXD5m3L1RbxxAl7iQgPjJNMXgnsOlqVeByY/TcfO5XIyFRO9T/4vAkHHVhQWk43L9kP5WezVqawRQYEhBlj5ZIWwJb+VDAYinuW0FBtTuap/EhitC52pN7bH/R9Fl4ZRYUqcY81q5sXSR1iG996TmMEWF2NjQcquk1iXSu1T0dTX3aQQg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jcqA/8ravJEVTJI6stmpYCqH+repWWqzPh8/7ZJwres=;
+ b=qU6hRrBNrpfqQxArV95wP+qUev44jq4pSajvpzCr21DsBnfcmDh/idv1k7N1yFCBbWeZqv3VY4T5zyr2l0ecEKVYeWjdU28TRhKHdAoIC3cU523/i81AEMc1gqjZBZPQWLMeWtqDV21XtzupbL0AIGZ0O2MetyWOEf1OgqCjg3ULQpzXEZxYFnbEFl67qqtM+NJyBa6YrTLqRxwaZtJNZBMQHHWnvoIyALrxe5zHW3uwJcBzAKPf8KY8Ox/8SMWwnLhgdlTIExwRJ1URFhHwRoMAoGrKlWvSQ0ladp4f7EZmfYotDQTg8A/UGld+FAQekKI6iyYwb2VpBs1IXvcTLg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by LV3PR12MB9353.namprd12.prod.outlook.com (2603:10b6:408:21b::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.19; Fri, 25 Sep
+ 2026 21:01:57 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0451.014; Fri, 25 Sep 2026
+ 21:01:57 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 25 Sep 2026 17:01:51 -0400
+Message-Id: <DLOP8IH392ZU.2X2GPOP2NYK4X@nvidia.com>
+Subject: Re: [PATCH v3 09/40] docs: filesystems: update mmap_prepare docs
+ for discontig kernel pgs
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+ <linux-rdma@vger.kernel.org>, <selinux@vger.kernel.org>,
+ <linux-sound@vger.kernel.org>, <bpf@vger.kernel.org>,
+ <linux-scsi@vger.kernel.org>, <linux-fbdev@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-trace-kernel@vger.kernel.org>,
+ <linux-perf-users@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+ <linux-fsdevel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <kvmarm@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
+ <kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>,
+ <linux-riscv@lists.infradead.org>, <linux-s390@vger.kernel.org>,
+ <sparclinux@vger.kernel.org>, <fuse-devel@lists.linux.dev>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>,
+ "Vlastimil Babka" <vbabka@kernel.org>, "Jann Horn" <jannh@google.com>,
+ "Pedro Falcato" <pfalcato@suse.de>, "David Hildenbrand" <david@kernel.org>,
+ "Mike Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan"
+ <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Jonathan Corbet"
+ <corbet@lwn.net>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Dennis Dalessandro" <dennis.dalessandro@cornelisnetworks.com>, "Jason
+ Gunthorpe" <jgg@ziepe.ca>, "Leon Romanovsky" <leon@kernel.org>, "Paul
+ Moore" <paul@paul-moore.com>, "Stephen Smalley"
+ <stephen.smalley.work@gmail.com>, "Jaroslav Kysela" <perex@perex.cz>,
+ "Takashi Iwai" <tiwai@suse.com>, "Alexei Starovoitov" <ast@kernel.org>,
+ "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii Nakryiko"
+ <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar
+ Kartikeya Dwivedi" <memxor@gmail.com>, "Baolin Wang"
+ <baolin.wang@linux.alibaba.com>, "Nico Pache" <nico.pache@linux.dev>, "Ryan
+ Roberts" <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry
+ Song" <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama
+ Arif" <usama.arif@linux.dev>, "Kiryl Shutsemau" <kas@kernel.org>, "Doug
+ Gilbert" <dgilbert@interlog.com>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
+ <mkp@kernel.org>, "Jaya Kumar" <jayalk@intworks.biz>, "Simona Vetter"
+ <simona@ffwll.ch>, "Helge Deller" <deller@gmx.de>, "Sebastian Reichel"
+ <sre@kernel.org>, "John Hubbard" <jhubbard@nvidia.com>, "Peter Xu"
+ <peterx@redhat.com>, "Masami Hiramatsu" <mhiramat@kernel.org>, "Oleg
+ Nesterov" <oleg@redhat.com>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Thomas Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
+ <dave.hansen@linux.intel.com>, <x86@kernel.org>, "Arnaldo Carvalho de Melo"
+ <acme@kernel.org>, "Namhyung Kim" <namhyung@kernel.org>, "Mark Rutland"
+ <mark.rutland@arm.com>, "Rik van Riel" <riel@surriel.com>, "Harry Yoo"
+ <harry@kernel.org>, "Juri Lelli" <juri.lelli@redhat.com>, "Vincent Guittot"
+ <vincent.guittot@linaro.org>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Will Deacon" <will@kernel.org>, "Aneesh Kumar K.V"
+ <aneesh.kumar@kernel.org>, "Nick Piggin" <npiggin@gmail.com>, "Arnd
+ Bergmann" <arnd@arndb.de>, "Muchun Song" <muchun.song@linux.dev>, "Oscar
+ Salvador" <osalvador@suse.de>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, "Jan Kara" <jack@suse.cz>, "Marc Zyngier"
+ <maz@kernel.org>, "Oliver Upton" <oupton@kernel.org>, "Catalin Marinas"
+ <catalin.marinas@arm.com>, "Madhavan Srinivasan" <maddy@linux.ibm.com>,
+ "Anup Patel" <anup@brainfault.org>, "Paul Walmsley" <pjw@kernel.org>,
+ "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>,
+ "Christian Borntraeger" <borntraeger@linux.ibm.com>, "Janosch Frank"
+ <frankja@linux.ibm.com>, "Claudio Imbrenda" <imbrenda@linux.ibm.com>,
+ "Alexander Gordeev" <agordeev@linux.ibm.com>, "Gerald Schaefer"
+ <gerald.schaefer@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>,
+ "Vasily Gorbik" <gor@linux.ibm.com>, "David S. Miller"
+ <davem@davemloft.net>, "Andreas Larsson" <andreas@gaisler.com>, "Alexander
+ Viro" <viro@zeniv.linux.org.uk>, "Christian Brauner" <brauner@kernel.org>,
+ "Matthew Brost" <matthew.brost@intel.com>, "Joshua Hahn"
+ <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>, "Byungchul Park"
+ <byungchul@sk.com>, "Gregory Price" <gourry@gourry.net>, "Ying Huang"
+ <ying.huang@linux.alibaba.com>, "Alistair Popple" <apopple@nvidia.com>,
+ "Chris Li" <chrisl@kernel.org>, "Kairui Song" <kasong@tencent.com>, "Kemeng
+ Shi" <shikemeng@huaweicloud.com>, "Nhat Pham" <nphamcs@gmail.com>, "Baoquan
+ He" <baoquan.he@linux.dev>, "Youngjun Park" <youngjun.park@lge.com>,
+ "Johannes Weiner" <hannes@cmpxchg.org>, "Qi Zheng" <qi.zheng@linux.dev>,
+ "Shakeel Butt" <shakeel.butt@linux.dev>, "Axel Rasmussen"
+ <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu"
+ <weixugc@google.com>, "Chengming Zhou" <chengming.zhou@linux.dev>, "Michal
+ Hocko" <mhocko@kernel.org>, "Miklos Szeredi" <miklos@szeredi.hu>, "Xu Xin"
+ <xu.xin@linux.dev>
+From: "Zi Yan" <ziy@nvidia.com>
+X-Mailer: aerc 0.22.0
+References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org> <20260917-b4-mmap-prepare-vma-flag-sanify-v3-9-4583d8a23bca@kernel.org>
+In-Reply-To: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-9-4583d8a23bca@kernel.org>
+X-ClientProxiedBy: YQBPR0101CA0090.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:4::23) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260925013110.3447626-1-skhawaja@google.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|LV3PR12MB9353:EE_
+X-MS-Office365-Filtering-Correlation-Id: edf265e5-c947-4645-88d2-08df1b483c68
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|921020|10067099003|11063799006|4143699003|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	FLtaJ9ZALhQwBsRFcwzKy9Kd8SxHnIIhzOQ8HriAP9dpabnDLWKsGYRowv0fjoYUxwJCaMRFzrIfUDLr5N1P/kvxXSsqXdm4SToGyG14VSqQOl1mIVJ2MeAarZ+54ejCYdnMshw9AREQzKC/su/8bkJ480VpxGK0rmrv5Qnzigpbj9Cfmc2c4C90qGbarsdIlccH4JsOe0pKYiTmPi7cn0ybqWeeAC1FWJzqPFJdZBqdvZ2kR4nVq6tXc/9hh9VQcaFz26L54FSEiOG6ZGVlyjf3o5lW/Lk7l3KVV47jQtsOz4gY359Rovoicr3eTx2NglgLKGg9Hdr5PWWuzerLzvIF9S1jHJaQzlpn6jx3O4N81fC6NS4vzx0NJU3PDL7mX0Kg+jjNUUuIJbjtt8TMJHujV8GgCwClFc/4h+GcbEmFIRhgqeLGcpCceZGnt95ptDWS8P6oN6MYdzfIvHeP55GD0RiAa49YKBW9ccm7vK5B/S+dJmfmG4LFS8BRfAoevDVlLAvZQocQUm8Zps58jCwISlELvek36MXn/aCVp6u7xdXo6wEhe4i/GdmZ2Ow8FGbWUYucFqL3UHnF6Mim1x8Hai5EQh/sTqvhnqciCaLnhqPZL+jQLRuJt+uagZxvFyQkLvpHjAD4P6skHW0Arb/FoLz3gIzM3QERf/941OekSNSWBEIgLvVgYySqfw1eAxg+dFvwoA6YFf7XHIg2qQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(921020)(10067099003)(11063799006)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Q2tRYitWYnJMc1dRQUQ3QStxOGkyNXd3eVFJSnFXSE9QRXVQVGpJZ1pBQytx?=
+ =?utf-8?B?ZC9nUUJzUTlvcnM3blROZUJQY2Zwd3NVS0VUVjNkeWkzekNIVExVdjRWNU9Z?=
+ =?utf-8?B?dFUrTGxiK2c1bnUyWWYwOFEzS3ozcnpVaUZadWwzKzNjbkVnYlJyOHZDdEJi?=
+ =?utf-8?B?RU13eXFidW95b1VWaFNHdW1DWVNmZUxrdzNvbG02ZFdGb29qb1FYb1dxbFg2?=
+ =?utf-8?B?OGZaaXpjQ0JvelBnUFlhQUQ1WDlISUhCWFlSNi9uVDg5TTJZN2U2aGdqR0g1?=
+ =?utf-8?B?eTF4NUljUXorZ09Wc29sNHczRE8yZ0xycEkrOTI3YmF6akQremFFZFkyRE1G?=
+ =?utf-8?B?UEhFRFUwLzNOVzhVdmE4N0gxalRpb2xtOVEydWVzRlRHN01NWDlnZ0UvbmJE?=
+ =?utf-8?B?Uk5BOTVldWpwVEp0WlBOUnBGbkhsb1dGT1hTSDlJS0taWnExc1dqbjdyN01z?=
+ =?utf-8?B?Q01NRG4vN1lSOFBEY0hSeTBnZUI0OVZkM0FKVkxINkY4TnovblBlSldHb25m?=
+ =?utf-8?B?R0lQV01IS3Q2ZEJ0UUpyakt1Tnh6aHZ4OHpQM2UwWTB3SkJFU3hIOWpCak4w?=
+ =?utf-8?B?UU5rVXNXVno1ajJOWURTcmM0WTEwdDBxTHBQM0M0V0JUK0d4T0Z0bWM1NTl6?=
+ =?utf-8?B?UWk5dFkzREZJb2pPS2VKTVF2Rng3ZWVJTlFnNVEzTGRTaHhXdGUwUlQ1Mjg2?=
+ =?utf-8?B?Uy9qNEtSdTFMMDZXZ1QvQ08xUW5aOVAzalc5V2hYc1BVOUFvS0dVcjQyVlNM?=
+ =?utf-8?B?K1hDSnNxbUEzMUtTWVI0Yno5UVZSblNoK0JzRjIwZ3ZsSXk1OStSaktVdVNw?=
+ =?utf-8?B?SEJEMjB4bklaNWkvYkVpVDltdG1JRGkvRXJpYjFocTNNZndCRnc2d3paMmVX?=
+ =?utf-8?B?ZlFCakk2dGNRcHNkRjYzeVAvcFNTenpmV2RYejUya0JacFNRQm5CM3RVM3ZO?=
+ =?utf-8?B?KzNYcWZXUUk1ckcrWWJOdlpXNTBoRS81eTEvdC8yYm9oUzZ2VUhGRmR6bGtS?=
+ =?utf-8?B?ZERqUVovZENLbmR4V0RiZjVzNmhLOXR2bUVLczdONWI1ajE1c3BpYWtyNlY0?=
+ =?utf-8?B?SEVsNTU5UUZNUVBHVHorQlcxN2VpZ1lGbWxBRlR3TVJjcTBaTW1yOTg2OU5q?=
+ =?utf-8?B?dEpsVExWVHBVQVNCZ0JDMk1sU1dkV05QT0xuWkh0VDdpTko5cFlQTGFvNDNn?=
+ =?utf-8?B?ODJVanJGNFlIbTF5QkJpUXg2aERIaUFKaDBsYk01L3VzOS9HZmZqcjNidkZD?=
+ =?utf-8?B?Q01pNW15UlRuZEtVak9TemJoUi9JUCtUaVRpaVliN25CZ0NxK1hjMGJXSVh5?=
+ =?utf-8?B?dnlPNGJOVVdxVEJoYXJ4MnZtYlV3MTY4Y0Zva1hZdzJTc1Q3aDBLd2hhNll5?=
+ =?utf-8?B?ZnJ5R2x6RlVhcUd2M3dxVmJJTFVKcHlFMjZpSk1YZDFHU0RiY296aFErYjNu?=
+ =?utf-8?B?NFJYVjhKWDY5a3FBMEJSWGgzNDNuQms4cUl0dUoxTWI4ZFpVa2p5QkZVYndi?=
+ =?utf-8?B?MWxOc2xxSEhCakhvOW9yb3B6VTNGNlFWTEVCU3V2TG1RekFuUUhMNmpySEVk?=
+ =?utf-8?B?YVNJeUQxSVFiaUFQZWNWdFBXWWxYKzM3cWhCV1N3b3VnQkFEenc0bDZVeTZ4?=
+ =?utf-8?B?ZitvVFk4d3A5R2k5MHZESFFtcE05cktIUmhNOHJSNGtjSmt1NkpmbzJTRnQ3?=
+ =?utf-8?B?dC9ZNyttWXc3UCtZOCtJRjNzeTU5NGxnbnBFOGUrbFNsa1grQk80NVd1MTN2?=
+ =?utf-8?B?ZXp3RGc0c0hrMTVibk5tWCtqeVp5TWsrMmE1UlI2TUJodEx2UW9UM3dWNWhI?=
+ =?utf-8?B?OGVWY0dLUHpiakNYZmp2RUI2OVZ1T2RMNUY2dncrSndyY3ErZlBqSzFmaGFl?=
+ =?utf-8?B?aHk3NXBXdU1tWG5ETHhQVmMxSFhNMmF5WlpVNkF1YkpEWjRORW93dkQzZjFO?=
+ =?utf-8?B?OStlRXFRVlE5R2d2c3ZqbmIzSlA1SC8yTXltS2dIQU1xQ0d3OGg1N1p1cnZW?=
+ =?utf-8?B?UGEvemwySHhpdk50cXdPbXJhQkR6L3JuSkhSSjdYaDhYR1kzVE1NREIyQXI4?=
+ =?utf-8?B?TExkVmpCZTNYTFBseGtnaEJ4UE1wQ3VCMHpVTGxnT01WWUlaTzB0MlNJTjh6?=
+ =?utf-8?B?YmxacmlxSHAvQ0hNdDIvTlJtRlV1QlY5VStON1dXbUlidVdGMWlkazB3K3c2?=
+ =?utf-8?B?V09lVXpQemY3VGVkZnlkZzBSWXRzUHIzWHJXdytwSVROUng1bTV3bUtkRmo3?=
+ =?utf-8?B?bXpUSUhVM1pCc0ZMYzV0ZVpqb1hXUENXYnlWWVFxZnFrMW5YRVdaY2VpdTRk?=
+ =?utf-8?Q?omsE94nfnfBSyzrqtw?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: edf265e5-c947-4645-88d2-08df1b483c68
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2026 21:01:57.7097
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xEqkynh4TwubVa662mfBuxGxlo66Ffe0nJf8ROqgloPDEP1qMa83mZpLKehx6Pig
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9353
 
-On 2026-09-25 01:30 AM, Samiullah Khawaja wrote:
-> Libvfio depends on an external dependency libuuid for parsing vf_tokens.
-> Building it in cross compilation environments gives the following error,
-> 
->  ld: cannot find -luuid: No such file or directory
-
-It also complicates compiling with glibc alternatives like musl. See
-https://lore.kernel.org/kvm/c2f7e904-2646-4b01-864d-d185221c7f56@gmail.com/
-
-Please mention that as well for historical context.
-
-> As it is only used for parsing vf_tokens, remove the dependency by open
-> coding the parser where it is required.
-> 
-> Tested by running vfio_pci_sriov_uapi_test selftest.
-> 
-> Assisted-by: Claude:claude-opus-5
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+On Thu Sep 17, 2026 at 12:22 PM EDT, Lorenzo Stoakes (ARM) wrote:
+> Describe the newly introduced discontiguous kernel page mapping mechanism=
+,
+> detailing how to use it sensibly and how the API looks.
+>
+> Explicitly detail the various discontiguous actions available and how to
+> use them.
+>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > ---
->  tools/testing/selftests/vfio/lib/libvfio.mk   |  2 -
->  .../selftests/vfio/lib/vfio_pci_device.c      | 57 ++++++++++++++++---
->  2 files changed, 50 insertions(+), 9 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/vfio/lib/libvfio.mk b/tools/testing/selftests/vfio/lib/libvfio.mk
-> index bcfa74ae040e..7d6916ca3940 100644
-> --- a/tools/testing/selftests/vfio/lib/libvfio.mk
-> +++ b/tools/testing/selftests/vfio/lib/libvfio.mk
-> @@ -29,8 +29,6 @@ $(LIBVFIO_O_DIRS):
->  
->  CFLAGS += -I$(LIBVFIO_SRCDIR)/include
->  
-> -LDLIBS += -luuid
-> -
->  $(LIBVFIO_O): $(LIBVFIO_OUTPUT)/%.o : $(LIBVFIO_SRCDIR)/%.c | $(LIBVFIO_O_DIRS)
->  	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
->  
-> diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> index 4063a0e2b3df..774d1e90ec0e 100644
-> --- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> +++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> @@ -23,11 +23,54 @@
->  #include <linux/types.h>
->  #include <linux/vfio.h>
->  
-> -#include <uuid/uuid.h>
-> -
->  #include "kselftest.h"
->  #include <libvfio.h>
->  
-> +/*
-> + * Minimal replacement for libuuid's uuid_parse(). libuuid is part of
-> + * util-linux and is routinely absent from cross-compilation sysroots, which
-> + * makes the vfio selftests unbuildable for non-native architectures. The only
-> + * thing needed from it is parsing a VF token, so open-code that instead.
-> + */
-> +#define VFIO_UUID_LEN		16
-> +#define VFIO_UUID_STR_LEN	36
-> +
-> +static int vfio_uuid_hexval(char c)
-> +{
-> +	if (c >= '0' && c <= '9')
-> +		return c - '0';
-> +	if (c >= 'a' && c <= 'f')
-> +		return c - 'a' + 10;
-> +	if (c >= 'A' && c <= 'F')
-> +		return c - 'A' + 10;
-> +	return -1;
-> +}
-> +
-> +static int vfio_uuid_parse(const char *in, unsigned char uu[VFIO_UUID_LEN])
+>  Documentation/filesystems/mmap_prepare.rst | 81 ++++++++++++++++++++++++=
+++++++
+>  1 file changed, 81 insertions(+)
+>
+<snip>
 
-Do we need the vfio_/VFIO_ prefixes now that we aren't linking libuuid?
+> +* ``discontig_kernel_map_page()`` - Maps a single page, correctly handli=
+ng
+> +  compound pages (if the compound page is bigger than the remaining page=
+s in the
+> +  VMA, then only those pages that fit will be mapped). For a compound pa=
+ge, the
+> +  head page must be passed.
+> +* ``discontig_kernel_map_page_range()`` - Map an array of pages of a spe=
+cified
+> +  size. Note that if the number of pages specified exceeds the VMA size =
+then an
+> +  error will arise.
 
-> +{
-> +	const char *p = in;
-> +	int i, hi, lo;
-> +
-> +	if (strlen(in) != VFIO_UUID_STR_LEN)
-> +		return -1;
-> +
-> +	for (i = 0; i < VFIO_UUID_LEN; i++) {
-> +		if (i == 4 || i == 6 || i == 8 || i == 10) {
-> +			if (*p++ != '-')
-> +				return -1;
-> +		}
-> +
-> +		hi = vfio_uuid_hexval(*p++);
-> +		lo = vfio_uuid_hexval(*p++);
-> +		if (hi < 0 || lo < 0)
-> +			return -1;
-> +
-> +		uu[i] = (hi << 4) | lo;
-> +	}
-> +
-> +	return 0;
-> +}
+Why do mapping a compound page and a page range have different behaviors
+on the bound? Either both do partial mappings or give errors when a
+given input cannot be mapped as a whole in the VMA.
 
-Please move the uuid changes into lib/uuid.c and
-lib/include/libvfio/uuid.h in case we want to use them elsewhere in the
-future.
 
-> +
->  static void vfio_pci_irq_set(struct vfio_pci_device *device,
->  			     u32 index, u32 vector, u32 count, int *fds)
->  {
-> @@ -167,13 +210,13 @@ static void vfio_device_feature_set(int fd, u16 feature, void *data, size_t data
->  
->  void vfio_device_set_vf_token(int fd, const char *vf_token)
->  {
-> -	uuid_t token_uuid = {0};
-> +	unsigned char token_uuid[VFIO_UUID_LEN] = {0};
 
-Any reason not to define a uuid_t?
+--=20
+Best Regards,
+Yan, Zi
 
->  
->  	VFIO_ASSERT_NOT_NULL(vf_token, "vf_token is NULL");
-> -	VFIO_ASSERT_EQ(uuid_parse(vf_token, token_uuid), 0);
-> +	VFIO_ASSERT_EQ(vfio_uuid_parse(vf_token, token_uuid), 0);
->  
->  	vfio_device_feature_set(fd, VFIO_DEVICE_FEATURE_PCI_VF_TOKEN,
-> -				token_uuid, sizeof(uuid_t));
-> +				token_uuid, sizeof(token_uuid));
->  }
->  
->  static void vfio_pci_region_get(struct vfio_pci_device *device, int index,
-> @@ -415,10 +458,10 @@ int __vfio_device_bind_iommufd(int device_fd, int iommufd, const char *vf_token)
->  		.argsz = sizeof(args),
->  		.iommufd = iommufd,
->  	};
-> -	uuid_t token_uuid;
-> +	unsigned char token_uuid[VFIO_UUID_LEN];
->  
->  	if (vf_token) {
-> -		VFIO_ASSERT_EQ(uuid_parse(vf_token, token_uuid), 0);
-> +		VFIO_ASSERT_EQ(vfio_uuid_parse(vf_token, token_uuid), 0);
->  		args.flags |= VFIO_DEVICE_BIND_FLAG_TOKEN;
->  		args.token_uuid_ptr = (u64)token_uuid;
->  	}
-> 
-> base-commit: 3d7783543c2646af69ad65825e810060494bea21
-> -- 
-> 2.56.0.rc1.315.gc6ed9934b7-goog
-> 
