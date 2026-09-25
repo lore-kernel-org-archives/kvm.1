@@ -1,240 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792DA4FECCD;
-	Fri, 25 Sep 2026 22:22:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9E64E8DF3
+	for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 22:45:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790374979; cv=none; b=qTrYxjYDGL8QNxizJCz1r263p/X3rTqSedYjQV3J6DUzZo3SsdMJG+Q1w7hSHjy/LKppscy9X5QK0yIVooffjibT3jZX7AKHr3m8z2cEw8qpusLzh0JDokUbh6dj5MMQ6PzmWYHJVggklXGLC7UjS2WSKyAf/K762ZFmsNxkFiI=
+	t=1790376306; cv=none; b=Z1fuCuszAdg5RLrAFqCU1JvJPBAA79gpADTfx7VdY4rws8MncUW5EJvKqHPVn1VCFn1Tm4SYZuLXOWbyfX5D3U4QD6ViPomNuG5oMqbz3HzaEs6fBCdapWFEMPUh0KstCUcvlYKepP7XOX//bT1szvPaOaqWViWPjxba96EKA/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790374979; c=relaxed/simple;
-	bh=gBU/v7lqms1redELFB8Hvl/sJjVFhl/Kc5ntjxiwMkE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sZe6fm/srQeL7WpdItWMCZdYyKXkhUrupTCDcXgY8xBCxZsllI9qfms3KRzFY52hF3basDXvveJ5in95Wb0W/iAKPizs94o8dWFj+zXXhi6hfgWM01MEJ9T5ODj/Zb3bqc3V6oqGTXwvYz+obpiPReqpbbOy/LCNE4X5bJI//98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CUesvpNo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790376306; c=relaxed/simple;
+	bh=oluzl8LBDUZPNZm2HsXfzuanivWf3PdYjuCE83YYad8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=htHzkaOAfJmJpGug+3DQG3MiMunkOt/uy9r4eJh3y/hfL06cP2KfJBUCSQGAjor5eemBuTY+ZLY7Lgo/VxjAysdayy1Cqmdp94l58hsIFs1rdcVksZKYW3xWJSIITaMJp/RUHkECUlLmR99KF43SC21eL8tAXOT/nvZBYA3noo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dckwRG0l; arc=none smtp.client-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CUesvpNo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 570191F00893;
-	Fri, 25 Sep 2026 22:22:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790374976;
-	bh=5eoijW9TbkwoxX6wQbNeciAfEkqIZ8Exnen5xO3IGjo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=CUesvpNoA1DJAc7JNv3akHQEgyZOXtFpTBdPlbotZt8iwbUVVaUBaeE8XW3TXDquB
-	 R7xv3p3fG+5Et5zE70L0gndxUJITsQCH1pZOQo6NIoHKy7r1y51pK7g0M7M4Dh/3Qi
-	 Bp2bbthKAle+U7NA2S0J0jJLxAb9vJLg9CnKSPS3hd0vDTWe8L3ZERrXzvrvAFMLS7
-	 8vwnNm2EmaqJ1MRsBhcQ4UpzLlSegLc7aOIL1eHdm1SFCsP474BmEA14od+qSBJi4f
-	 4KrGFiKAqFlyAuKtitK2HTfk6kS+YbuacGwkDQJICi5KbZBN1X/1sm+Pjyp0jdT02j
-	 WewiXOZPBZ1aw==
-Date: Fri, 25 Sep 2026 23:22:50 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: <mhonap@nvidia.com>
-Cc: <alex@shazbot.org>, <jgg@ziepe.ca>, <ankita@nvidia.com>,
- <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
- <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
- <dave@stgolabs.net>, <alison.schofield@intel.com>,
- <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
- <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
- <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
- <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
- <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
- <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>
-Subject: Re: [PATCH v5 16/27] vfio/cxl: Create the CXL memdev and set media
- ready at bind
-Message-ID: <20260925232250.7d408311@jic23-hlaptop>
-In-Reply-To: <20260916183540.3813685-17-mhonap@nvidia.com>
-References: <20260916183540.3813685-1-mhonap@nvidia.com>
-	<20260916183540.3813685-17-mhonap@nvidia.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dckwRG0l"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2dc7337e2a7so12052885ad.0
+        for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 15:45:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790376304; x=1790981104; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yqtGrJ5jqflW5xBMt0Uv8Bmx2KOs025F8InGi5xIw2M=;
+        b=dckwRG0l3M37qgxaL1UHaW/xBP/Gl69ZqqGbUBVB9Nh0EBjuYnORKtbXM/bhl6JvR3
+         wBF3EbMEYDNrBsQPU9pK3j2Q/p/7W6IxtAtHwBepAQQ77lIGKjkjts9lvCLteJT0HpBG
+         uIxLtfB5+sXKn216fnnVsvGAIwgdQ23FF28SunXFStDSx67BYxA/O+bzLk2P9NQ5pXMo
+         B4VXl4AxUN+1JjSlFWwAWvkBIQDnJZNlovLxTzSq2rZV5/mz2UYbdvGEIRfeGtMPOp9G
+         CnUe+ZQzmsT/v08aDvZGGOh9BEshAGcY3jZebNmrxwlqEH7is0o0/bxCYNRDgyYeUpt/
+         MjoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790376304; x=1790981104;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=yqtGrJ5jqflW5xBMt0Uv8Bmx2KOs025F8InGi5xIw2M=;
+        b=Gn0KYQUWV0f4kPyPAy3gMbQq6FeGuaD2CgQCjBQup1bsQuZybL3PJ4s8+bkXzi+nc8
+         WodC1ACTU/MmuQ3tS1NDdSkxJlK+r/w9lUzWe3+j1AsPCQB8K1+Sg23RxAsNiS8u7pPq
+         lzBfEiLeHG7g363f+Ht7JZV+FVJGAC+JziCSGJzOML9pcawAv0OmeTIxNzwlieIpsuNX
+         E69oavvmhq6qTNMOnjhAFKVrjA/qL57PXMoVJXFUnY3wyg2Cq5F+HkQMeuUNH7QZjhvE
+         z/9RIfOkQizVqmFhn8GmJb+RK99HDZKuEr8G2BQ+EnC/SqlCsTWXWFEVk+pLwJRV2Z1N
+         g2MQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzwN1QBpzj865BbbtWU3UdO1gc36hMmwta6Vk/g/q+R3MmK4UaRjdoLCklmR0HVfAa0DG0=@vger.kernel.org
+X-Gm-Message-State: AFuF++nIEI3ryBQnzavMYbOnRGexowbXPFR7jB6NBXJfQiF2ej40hMGJ
+	JopMUnrwEJSvBlglNVpJ/wcQ0NW4xI5SZubabvdp/YTfyjiOh3HZn3Q5WV1PcCbnUoTaZCKz4Od
+	vr5IoMg==
+X-Received: from plhv16.prod.google.com ([2002:a17:903:2390:b0:2df:980f:45a1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d4c8:b0:2dd:c100:80ba
+ with SMTP id d9443c01a7336-2df7e669010mr56323425ad.53.1790376304089; Fri, 25
+ Sep 2026 15:45:04 -0700 (PDT)
+Date: Fri, 25 Sep 2026 15:44:50 -0700
+In-Reply-To: <20260519080127.69056-1-imammedo@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260519080127.69056-1-imammedo@redhat.com>
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+Message-ID: <179037624996.2353293.17045219308855902250.b4-ty@b4>
+Subject: Re: [kvm-unit-tests PATCH v2] x86/svm: work around Virtual
+ VMLOAD/VMSAVE bug on Naples and Rome
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
+	Igor Mammedov <imammedo@redhat.com>
+Cc: pbonzini@redhat.com, babu.moger@amd.com, thomas.lendacky@amd.com, 
+	michael.roth@amd.com, naveen@kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, 17 Sep 2026 00:05:29 +0530
-<mhonap@nvidia.com> wrote:
+On Tue, 19 May 2026 10:01:27 +0200, Igor Mammedov wrote:
+> AMD Family 17h models 0x00-0x0f (Naples/Zen+) and 0x30-0x3f (Rome/Zen2)
+> have a hardware bug where Virtual VMLOAD/VMSAVE causes spurious VMEXITs
+> on VMLOAD/VMSAVE even with intercepts disabled, when the VMCB physical
+> address as seen by L1 falls in [0x78000000, 0x80000000) range.
+> Reserve this range on affected CPUs so the page allocator would never
+> allocate the VMCB there.
+> 
+> [...]
 
-> From: Manish Honap <mhonap@nvidia.com>
-> 
-> At bind, build the CXL memory device for the passed-through Type-2
-> accelerator so it joins the CXL topology and its HDM region resolves to a
-> host physical range. A Type-2 device has no mailbox, so there is no
-> media-ready register to poll: set media ready directly once the component
-> registers validate (mirroring drivers/net/ethernet/sfc/efx_cxl.c)
-> 
-> As per current vfio-cxl support, reject a device with:
-> - more than one HDM decoder
-> - interleaving enabled
-> - whose reset the host cannot service
-> 
-> The CXL-core allocations are grouped with devres so a failed bind unwinds
-> them: init failure falls back to plain vfio-pci with the device still
-> bound, so devm would otherwise hold them until unbind.
-> 
-> A low-power transition would reset the CXL Type-2 function and lose
-> its CXL.mem contents, so keep it in D0 while it is assigned.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Manish Honap <mhonap@nvidia.com>
-A small thing inline.
+Applied to kvm-x86 next, thanks!
 
-> ---
->  drivers/vfio/pci/cxl/vfio_cxl_core.c | 118 +++++++++++++++++++++++++++
->  drivers/vfio/pci/vfio_pci_core.c     |  16 ++++
->  2 files changed, 134 insertions(+)
-> 
-> diff --git a/drivers/vfio/pci/cxl/vfio_cxl_core.c b/drivers/vfio/pci/cxl/vfio_cxl_core.c
-> index cd5d41856404..0d92e6a409c1 100644
-> --- a/drivers/vfio/pci/cxl/vfio_cxl_core.c
-> +++ b/drivers/vfio/pci/cxl/vfio_cxl_core.c
-> @@ -6,15 +6,132 @@
->   */
->  
->  #include <linux/module.h>
-> +#include <linux/pci.h>
-> +#include <linux/range.h>
->  #include <linux/vfio_pci_core.h>
-> +#include <cxl/cxl.h>
-> +#include <cxl/pci.h>
-> +
-> +/**
-> + * struct vfio_cxl_state - per-device state for a vfio-cxl device
-> + * @cxlds: CXL device state; kept first for devm_cxl_dev_state_create()
-> + * @cxlmd: memory device joined to the CXL topology at bind
-> + * @hpa_range: host physical range of the HDM region
-> + */
-> +struct vfio_cxl_state {
-> +	struct cxl_dev_state cxlds;
-> +	struct cxl_memdev *cxlmd;
-> +	struct range hpa_range;
-> +};
->  
->  static int vfio_cxl_init_device(struct vfio_pci_core_device *vdev)
->  {
-> +	struct pci_dev *pdev = vdev->pdev;
-> +	struct vfio_cxl_state *cxl;
-> +	struct cxl_memdev *cxlmd;
-> +	u64 hdm_size, serial;
-> +	u16 dvsec;
-> +	int ret;
-> +
-> +	/*
-> +	 * pdev->hdm is cached at PCI enumeration, before any driver binds, so a
-> +	 * device without it has no usable HDM decoder. Fall back to plain
-> +	 * vfio-pci rather than deferring the bind forever.
-> +	 */
-> +	if (!pdev->hdm)
-> +		return -ENODEV;
-> +
-> +	/* The guest drives one virtual decoder; multiple are unsupported. */
-> +	if (pdev->hdm->decoder_count != 1)
-> +		return -EOPNOTSUPP;
-> +
-> +	/* An interleaved decoder cannot be mapped 1:1 to the guest. */
-> +	if (pdev->hdm->settings[0].interleave_ways != 1)
-> +		return -EOPNOTSUPP;
-> +
-> +	/*
-> +	 * The guest drives resets through the CXL Device DVSEC and polls the
-> +	 * shadow for completion. If the host cannot service a function-scoped
-> +	 * CXL reset, that request could never complete, so refuse the device
-> +	 * rather than advertise a reset the guest would poll on forever.
-> +	 */
-> +	if (!cxl_reset_capable(pdev))
-> +		return -EOPNOTSUPP;
-> +
-> +	hdm_size = range_len(&pdev->hdm->settings[0].hpa_range);
-> +	if (!hdm_size)
-> +		return -ENXIO;
-> +
-> +	dvsec = pci_find_dvsec_capability(pdev, PCI_VENDOR_ID_CXL,
-> +					  PCI_DVSEC_CXL_DEVICE);
-> +	serial = pci_get_dsn(pdev);
-> +
-> +	/*
-> +	 * Group the CXL-core allocations so a later failure unwinds them here.
-> +	 * A failed init falls back to plain vfio-pci with the device still
-> +	 * bound, so devm would otherwise hold them until unbind.
-> +	 */
-> +	if (!devres_open_group(&pdev->dev, NULL, GFP_KERNEL))
-> +		return -ENOMEM;
-> +
+[1/1] x86/svm: work around Virtual VMLOAD/VMSAVE bug on Naples and Rome
+      https://github.com/kvm-x86/kvm-unit-tests/commit/1cb376031ed1
 
-I'd be tempted to factor out the stuff that is unwound via the
-group. If this were simple a call to a helper function, that helper could
-return directly on error giving us simpler code flow.  Then
-you'd just check the helper return to find out if you should close
-or release the group.
-
-> +	cxl = devm_cxl_dev_state_create(&pdev->dev, CXL_DEVTYPE_DEVMEM, serial,
-> +					dvsec, struct vfio_cxl_state, cxlds,
-> +					false);
-> +	if (!cxl) {
-> +		ret = -ENOMEM;
-> +		goto err;
-> +	}
-> +
-> +	ret = cxl_pci_setup_regs(pdev, CXL_REGLOC_RBI_COMPONENT,
-> +				 &cxl->cxlds.reg_map);
-> +	if (ret) {
-> +		pci_err(pdev, "vfio-cxl: no component registers\n");
-> +		goto err;
-> +	}
-> +
-> +	if (!cxl->cxlds.reg_map.component_map.hdm_decoder.valid) {
-> +		pci_err(pdev, "vfio-cxl: HDM decoder registers not found\n");
-> +		ret = -ENODEV;
-> +		goto err;
-> +	}
-> +
-> +	/*
-> +	 * A Type-2 accelerator has no mailbox and no media-ready register, so
-> +	 * set media ready directly.
-> +	 */
-> +	cxl->cxlds.media_ready = true;
-> +
-> +	ret = cxl_set_capacity(&cxl->cxlds, hdm_size);
-> +	if (ret)
-> +		goto err;
-> +
-> +	cxlmd = devm_cxl_probe_mem(&cxl->cxlds, &cxl->hpa_range);
-> +	if (IS_ERR(cxlmd)) {
-> +		ret = PTR_ERR(cxlmd);
-> +		goto err;
-> +	}
-> +
-> +	cxl->cxlmd = cxlmd;
-> +	devres_close_group(&pdev->dev, NULL);
-> +
-> +	/*
-> +	 * Powering a CXL Type-2 function down and back up reinitializes its
-> +	 * device state and discards the contents of its coherent memory. Pin
-> +	 * it in D0 for as long as it is assigned so CXL.mem stays intact.
-> +	 */
-> +	vdev->disable_idle_d3 = true;
-> +	vdev->cxl = cxl;
-> +
->  	return 0;
-> +
-> +err:
-> +	devres_release_group(&pdev->dev, NULL);
-> +	return ret;
->  }
->  
->  static void vfio_cxl_release_device(struct vfio_pci_core_device *vdev)
->  {
-> +	vdev->cxl = NULL;
->  }
->  
->  static int vfio_cxl_open_device(struct vfio_pci_core_device *vdev)
-> @@ -59,3 +176,4 @@ module_exit(vfio_cxl_exit);
->  
->  MODULE_LICENSE("GPL");
->  MODULE_DESCRIPTION("VFIO support for CXL Type-2 devices");
-> +MODULE_IMPORT_NS("CXL");
+--
+https://github.com/kvm-x86/kvm-unit-tests/tree/next
