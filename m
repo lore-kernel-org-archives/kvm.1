@@ -1,89 +1,92 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65330509EEB
-	for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 22:45:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC34E503BCC
+	for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 22:45:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790376331; cv=none; b=XQooFm4kynzVIzFcQ8Gnvy9kEr/XU99a1B92WquWKXUce6niUjGpP0DzrYg0t4CE7mOTNfyBZDzXGamKYE6dsTQwBUvXngfEW2w+4jdyhH8rsFod9LLtD78vOp37herbVsvkWp+AiKn2eifmUw3BuDHyU3qRSEW2KO7L6hT0qTw=
+	t=1790376336; cv=none; b=lf+0D6Ph2ijCseD6Y734/Gu6l+b7iX2hC/EeqVqAce8fp37TeyO7d3ZmHjBGpa1hcDUgZiKsB65YgEckZoKoRvO6v5bAOvstMc2fCjACLsYcS2qU1ALK1Wh49YoXQFji0SaVQGZ4lbQgWCb5ZzaA3zv3uFAqlT9O/+PpxUZnHNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790376331; c=relaxed/simple;
-	bh=6cKteXVKQNu6j1iDV0IrXiC/q2L8FWS9DWXUxR+6VcU=;
+	s=arc-20240116; t=1790376336; c=relaxed/simple;
+	bh=z1rVDmoeAEoisl0tsyRg3Uxy4LvmKBL7BADhM170khM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OSC9vODU+L8Qck+1j7U7khkijQC0yZQESjaSUngi0eNzuNgta1qJV+nD18YhXrKuj7actJbDbAHsyOMOFcXUIcUFhRnCUuUKBVikK4lGGBfhSNxpZRnidr7PRuH3SkOTxIhuwIX8EAELNZG4eZuRSrgOxID24G6zylh5WOckTAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S3q2HhWy; arc=none smtp.client-ip=209.85.216.72
+	 To:Cc:Content-Type; b=IbJu/AVpOeyptxBlFuA5qaXMO/QQb+Q0F96kVNwqF9vPfzGtqToGOIHQtS2mJOTISZTsEsacQGPWL/wfPe3QEPLnUnBUmNtJhlZs3m0lNcCU47w4tswd4hev5V9xltVAg/5vqVHUON+H27htKCVxURqXpFLqiXsQUeEz2Rn8lLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nPYAZfo1; arc=none smtp.client-ip=209.85.210.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S3q2HhWy"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3968bb86fb7so1466126a91.2
-        for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 15:45:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nPYAZfo1"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-86a59faf521so1158220b3a.2
+        for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 15:45:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790376330; x=1790981130; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790376334; x=1790981134; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=QpJAaRA5oPU+jEqf0QTawQo0EHVqddCOijLczxIlXSo=;
-        b=S3q2HhWypjxSMI+Nacan1yzPyUTeKJtc6lZDU7+Z2OePnMmG0Mf12f+Ym2B8WOa//F
-         HBYmSatpvgfoUDEztspL4gv7AxlL5ohD2K/M/yrqZZPo2Qk1YUp25DX/tUKCYuxYCm8e
-         42DgbrWML+hf+QBxggo61WHaTY3QYASBddYv5UxlShvuOii4qulycH5PfqjjciQ+NKk8
-         ZB19qcYWYCZ60qt24F9sPKUTP7uWaIBMOyPseaC1rqZke+1NLC1O3eoKSOQQuTxrADQX
-         MZ+DbOjPgiYVF4YD0C/Th2khMgoTRwEy1tFqmdtjAg43u1CV5DtRHRDwnmQzPNd2YjzW
-         dd6A==
+        bh=u7TJ4aVC+0axratBuQICVCZVWZd3avX2KzEt7nT2hAI=;
+        b=nPYAZfo1+1rCJBp7CyHm4edcvmJboIXNjR5CbDqDlJTHQul8KL4QGAkYaclu42koX/
+         1jQhUudctCg7bI2l7X9ep6eYobYUZ7WYjDh4QWCtmRXGEcsnqJK60ILtBjmQKYKEPJfe
+         xEVz68xpJ+xofLtLNULmTdl0p0jwNgU928Zl1ReG5vuAWABFsJtyrBz/NGjnMTTitRmQ
+         hO4QXzD+Je7YfWsc3PhQnQKDjcpkmEqf5JqsReOjgAVVyceQo4m9YWPnka9o4bXq+3DP
+         iCTzjjrsRejPZIO8ELWJlTK+LHLCpiX1YyijPT6OZhiJYIgzqgAIstVxQbmun5FvaeVz
+         Mz7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790376330; x=1790981130;
+        d=1e100.net; s=20260707; t=1790376334; x=1790981134;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=QpJAaRA5oPU+jEqf0QTawQo0EHVqddCOijLczxIlXSo=;
-        b=dvfk11l1G33pSEVJkGqZZXpmiVYqcc9SHJfD92xO45nQiIgvugnsWtEGBGzfBMaSu/
-         fktvZjxNOS/cmsm5CJUKp8UqqQEFlsSspmz4UP6O7rNEbumi9KEiGJLmCOMDpToVecrG
-         zgcSTNFKvZa++vd8+rWr6nDnw9YGM3Q/zpnrVRqmQ+G7XLDP7GuBvpBUMqAiN3oDpJ3W
-         XrZcTVdq7I3j1cR+yro5wFFnY2Q17re5Fx4oqMPOudYXzXxPK+NjPb50JsUW4wpvEYnu
-         DrIaNlX4brt/LcQKNhWl3MUybkBpe2t2dUWzB/UwgBq+lr8QDKyYLYJrzpOCyMdu6u1F
-         Ml/g==
-X-Forwarded-Encrypted: i=1; AKwUvBxSd9fQNQAuti0Xcv6cKw1tI2kzf8l7jTMvSVvTBHEMPeCJW6q0vyrgdlVu7HRCjol530c=@vger.kernel.org
-X-Gm-Message-State: AFuF++lZlr1PJNnOEfV8y+eD1rciVIX+5OISkpWIQ/Y+P7ehhH07vLTW
-	GNLelsEE32DvDYx4rVJlr3qdEEL2sF91PaYRGx790BEPs8LcS65IAGbBYRfqvE0Zv5Rk20oSfg6
-	qxTQWAA==
-X-Received: from pgut8.prod.google.com ([2002:a65:6088:0:b0:cc7:6c9d:d39])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:510a:b0:3a0:9640:802e
- with SMTP id 98e67ed59e1d1-3a0986ec975mr6144420a91.8.1790376329481; Fri, 25
- Sep 2026 15:45:29 -0700 (PDT)
-Date: Fri, 25 Sep 2026 15:44:57 -0700
-In-Reply-To: <20260512210847.3039048-1-pbonzini@redhat.com>
+        bh=u7TJ4aVC+0axratBuQICVCZVWZd3avX2KzEt7nT2hAI=;
+        b=HWCyO4DP4uirHZdlxt/BkqavD8hckNGcWMMno4PS1+UUqWEjKp3GsB4BUD8ZB2hZec
+         HS10XmiLoF+wk9+JCyELNMSD5USOqaLnUXQQshfdf/QsqnvAjJYj0M/BdralnhNDcOXc
+         jcwf3ccfJJ7V58DcR+ydGub3ZxxWM2dCh/fmMBg1xZaykyXtGSCtp9/8I6OTsoRwqSAy
+         +EV3OVoBVsHhcsOlanpiwMewKydxSVL+Ii8QK0emx5vQetafT1kZbx5HwxQrlRgb5IcB
+         tHwwNbLDp2sebkLfndAwDPVqyt58lbdv28MO0lQ+l41YqKtLIAO9LCeoslupQpRNqvw3
+         F6Sg==
+X-Gm-Message-State: AFuF++mAkjh3gqnDRRF0/+S1fl+MYEs7emC/rpdnd8VhRN1GcXkr4LSN
+	uynJXmXYZ5pSOzuB8iXs0D8EsvHRJXkM7H0zKs2LNWLMP0NfXTrtORB2HRxixsqVf/7djHGHxvz
+	m8uTKKA==
+X-Received: from pgm14.prod.google.com ([2002:a05:6a02:608e:b0:cc7:8cdf:c48d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6f88:b0:3cd:9bb1:c6f5
+ with SMTP id adf61e73a8af0-3de0e6f1229mr6303054637.10.1790376333965; Fri, 25
+ Sep 2026 15:45:33 -0700 (PDT)
+Date: Fri, 25 Sep 2026 15:44:59 -0700
+In-Reply-To: <20260527151232.4058615-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260512210847.3039048-1-pbonzini@redhat.com>
+References: <20260527151232.4058615-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <179037625346.2353373.17509444671245229087.b4-ty@b4>
-Subject: Re: [PATCH kvm-unit-tests] taskswitch: add test for ICEBP delivery
- via taskgate
+Message-ID: <179037621801.2352728.233718043154169321.b4-ty@b4>
+Subject: Re: [kvm-unit-tests PATCH v3 0/2] nVMX: Improve DEBUGCTL test coverage
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: dwmw@amazon.co.uk
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, 12 May 2026 23:08:47 +0200, Paolo Bonzini wrote:
-> ICEBP (INT1, opcode 0xF1) generates #DB as a trap, and this
-> triggers a corner case in SVM.
+On Wed, 27 May 2026 08:12:30 -0700, Sean Christopherson wrote:
+> Current nested debugctls test focuses on DR7 value and fakes the result of
+> IA32_DEBUGCTLMSR in comment. Although the test can pass because DR7 is the
+> only criterion to determine the result, there are some error messages
+> appearing in dmesg due to accessing to BTF | LBR bits in IA32_DEBUGCTLMSR
+> with report_ignored_msrs KVM parameter enabled.
 > 
-> When you get TASK_SWITCH (which always has fault semantics), you look at
-> the vectoring event type to decide whether it was logically caused by a
-> trap, and therefore whether to move %rip forwards before entering the
-> new task.
+> Clean up the old test so that it focuses on DR7, then add a separate test for
+> DEBUGCTLMSR bits that are actually supported and can be validated during VMX
+> transitions.
 > 
 > [...]
 
-Applied to kvm-x86 next, thanks!
+Applied to kvm-x86 next, with a comment to explain starting at '1', and a fix
+for the redudnant '0'.
 
-[1/1] taskswitch: add test for ICEBP delivery via taskgate
-      https://github.com/kvm-x86/kvm-unit-tests/commit/2245e28da7f7
+[1/2] nVMX: Remove the IA32_DEBUGCTLMSR access in debugctls test
+      https://github.com/kvm-x86/kvm-unit-tests/commit/071c710553e0
+[2/2] x86/vmx: (Re)Add a nVMX test to validate load/save of DEBUGCTL
+      https://github.com/kvm-x86/kvm-unit-tests/commit/067685479059
 
 --
 https://github.com/kvm-x86/kvm-unit-tests/tree/next
