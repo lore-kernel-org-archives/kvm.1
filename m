@@ -1,101 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60B83AFAEA
-	for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 16:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C4F3DA5A0;
+	Fri, 25 Sep 2026 17:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790354997; cv=none; b=LEar2v70dRKMOZvP+XGYEoimNm0Dh1+clkSVLxQmdnyS/JYxEv7C1ms1AQsDxHIaqRgCZBjSM/N9Itd9wP1+xdn5bQ606ARdWzgMVWvL3Hb/6DJyHweFX1lwOOdMYzmtYfMVaUNaCATtyGNp9M9dPkqtkobR+Y/7CCfVVRuOdQc=
+	t=1790356042; cv=none; b=eN6nXegVgduuBsTlG+RGwfQsjY0jUJaBWkkwXkPM5dtnJuyDmNPYYxnn/ymx0ewFCKG5Ru//5XjRseQLX7hAWBOtwPg3vIZ6sawbzgpcgiV5FJHEVtrJn17H1bZZbegCPwKjR1Texr5ULNYwMblLvm0bggruieDXIVAe9yNKRkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790354997; c=relaxed/simple;
-	bh=ybpnPiewI5hD8i1HJuxtluWtjfYkoFoAc7TBpg6MjJ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dexahXWtQY0d1r8kLV1kV1zifruIb/J159ErYv8ShpO5hRhyAHqRqCRseRIMFDfHBJI3ubxytxzvywh+tjOdfn+ea9kIdcP5LBzsaNCLJsd7+Wt8FXh+pzQciSCBvoJeJ81o7RyVOofxGZHwN6csIYQDpt4hiJuNLN3St1v8omg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kKLJaR34; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790356042; c=relaxed/simple;
+	bh=ixzfrU8lMEsDTomOcbMGSENbu/A9XPEY12QX9G9g3I0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZG6tP3YKyW+5eFgQ3Zq3kn6MydLdz7rC0SPFoAqOdu0igZAf261F+gyOAwJPs/Q+4iMBhgd0raI36e/NB0wDfgs8qe1DTSTTv/CBY0Rk4AzuxpShMAIPbNrY04938huOdPSCqTCaRjYrdlmSRC3vWOu7HFiKmrn1hBZi7LpElks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=EHpt1dnk; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kKLJaR34"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E011F000FF;
-	Fri, 25 Sep 2026 16:49:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790354990;
-	bh=CSR1dNFry5HDkFro5l0N2s8MlUG7mEY2ilKQL+nMXFI=;
-	h=From:To:Cc:Subject:Date;
-	b=kKLJaR34fiSv4I8ZiYf0KIoc1sSfB8yRBfZ77A7iY1Xqt8dQgJlahhcMG8TFwk8vC
-	 1O1gVaTlFYe8qOxhhM+Uu9d6IuI24WG9m0Hc8qm/vdKaZXP55Ygy+wS9Q2PYUUrORl
-	 iHoHhr4an3SFYZY+NtwK6gJAR5BzzG4A4lyXrE9bxNurAaT3uw+OhvUbZtw4i0iEn9
-	 A+dMer/I0ACsdlVWYDP2Pw0Aw+VBzDS17CRXm3EiaTxQnVRI8B75KorS14GiR48Yn6
-	 qW/qfUxd903nkiMbsSSP0cPP4hdXGSRpXj5EDnObyWzrQHOncPqlNpMSIQ63H6JEBT
-	 9HAWT4uH4rCQg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Logan Odell <loganodell@google.com>,
-	David Matlack <dmatlack@google.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Tarun Sahu <tarunsahu@google.com>
-Cc: kexec@lists.infradead.org, kvm@vger.kernel.org,
-	Pratyush Yadav <pratyush@kernel.org>
-Subject: LPC 2026: Live update BoF?
-Date: Fri, 25 Sep 2026 18:49:46 +0200
-Message-ID: <2vxzse2x46ol.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="EHpt1dnk"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0B9EF169C;
+	Fri, 25 Sep 2026 10:07:11 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6F93D3F86F;
+	Fri, 25 Sep 2026 10:07:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790356034; bh=ixzfrU8lMEsDTomOcbMGSENbu/A9XPEY12QX9G9g3I0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EHpt1dnkgmEtCXRicfI03eywssdpZdbGJitm2LyU3/txbYynDGJW9GXrNQawbZEyw
+	 3QDLIL1w9E0vjFWl3xfYaRKn3caSX1J1hyvAayOZ7OCj9NKUhHV57vPR+0QirXYeeJ
+	 MOzJAeppFl24SLREnFIB5jWlehs2ggbnYJhv2Z8s=
+Date: Fri, 25 Sep 2026 18:07:08 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Will Deacon <will@kernel.org>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, maz@kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org,
+	gshan@redhat.com, joey.gouly@arm.com, tabba@google.com,
+	yuzenghui@huawei.com, linux-coco@lists.linux.dev,
+	gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com,
+	alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com,
+	lpieralisi@kernel.org, enju.kohei@fujitsu.com
+Subject: Re: [PATCH v18] arm64: mm: Handle Granule Protection Faults (GPFs)
+Message-ID: <araqPCdcSnqZqPWz@arm.com>
+References: <20260913070459.2547407-1-suzuki.poulose@arm.com>
+ <arK3tsTV6EDhI-nt@willie-the-truck>
+ <arOyp8WUrYBAjrGH@arm.com>
+ <arP0IF0MjFUv36AP@willie-the-truck>
+ <49dcab27-1d03-4df2-b7cb-4df4eda6d909@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <49dcab27-1d03-4df2-b7cb-4df4eda6d909@arm.com>
 
-Hi all,
+On Wed, Sep 23, 2026 at 05:04:06PM +0100, Suzuki K Poulose wrote:
+> On 23/09/2026 16:45, Will Deacon wrote:
+> > On Wed, Sep 23, 2026 at 12:06:15PM +0100, Catalin Marinas wrote:
+> > > On Tue, Sep 22, 2026 at 06:15:34PM +0100, Will Deacon wrote:
+> > > > On Sun, Sep 13, 2026 at 08:04:58AM +0100, Suzuki K Poulose wrote:
+> > > > > From: Steven Price <steven.price@arm.com>
+> > > > > 
+> > > > > If the host attempts to access granules that have been delegated for use
+> > > > > in a realm these accesses will be caught and will trigger a Granule
+> > > > > Protection Fault (GPF).
+> > > > > 
+> > > > > A fault during a page walk signals a bug in the kernel and is handled by
+> > > > > oopsing the kernel. A non-page walk fault could be caused by user space
+> > > > > having access to a page which has been delegated to the kernel and will
+> > > > > trigger a SIGBUS to allow debugging why user space is trying to access a
+> > > > > delegated page.
+> > > > > 
+> > > > > There is work in progress to unmap the guest_memfd backed private pages from the
+> > > > > linear map. Until we get that support, we could get spurious GPFs from within
+> > > > > the kernel, e.g., load_unaligned_zeropad(). So, try to fix them up for now.
+> > > > > 
+> > > > > Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > > > > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > > > > Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> > > > > Signed-off-by: Steven Price <steven.price@arm.com>
+> > > > > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> > > > > ---
+> > > > > Changes since v17:
+> > > > >   * Pass untagged address to die_kernel_fault() - Sashiko
+> > > > >   * Explicitly check !user_mode() for fixups - Catalin
+> > > > >   * Switch to BUS_OBJERR for si_code from SI_KERNEL - Catalin
+> > > > >   * Clarify the commit description about the upcoming work on
+> > > > >     unmapping guest_memfd backed pages from linear map
+> > > > > Changes since v16:
+> > > > >   * Update the commit description to indicate why we try to fixup GPFs
+> > > > > Changes since v10:
+> > > > >   * Don't call arm64_notify_die() in do_gpf() but simply return 1.
+> > > > > Changes since v2:
+> > > > >   * Include missing "Granule Protection Fault at level -1"
+> > > > > ---
+> > > > >   arch/arm64/mm/fault.c | 30 ++++++++++++++++++++++++------
+> > > > >   1 file changed, 24 insertions(+), 6 deletions(-)
+> > > > 
+> > > > I still don't think we should do this, given that the plan is to unmap
+> > > > the memory from the linear map. If this thing fires, it's a kernel bug
+> > > > and it should be fatal.
+> > > 
+> > > If the linear unmapping gets merged first, I agree, no need to handle
+> > > these faults. I haven't followed that series, so no idea where it is at.
+> 
+> There doesn't seem to be much progress on that series. Brendan
+> volunteered to resurrect the series, taking over from Nikita [0].
+> But looks like Brendan is not working on this anymore. Will see
+> if someone is really planning to look at it.
+> 
+> [0] https://lore.kernel.org/all/DJJ35VLH2PE5.DFD8OYXEOH97@linux.dev
 
-We have had some discussions recently about the scope of the KHO/LUO ABI
-and what kind of backwards and forwards compatibility we should support.
-The two main threads that I have seen are [0] and [1]. I have also been
-in various 1:1 discussions about this with many people, and I have seen
-all sorts of varying opinions.
+I just realised that this only solves part of the problem. Normal kernel
+allocations are delegated RMM metadata and they'll also trigger GPF
+faults. Kdump is another point raised here:
 
-While Logan has a talk about live update versioning on the Live Update
-MC [2], it is a 20 minute slot and I am not sure we will have enough
-time to fully flesh out the discussion. I am also not sure what exactly
-Logan plans to talk about, but from reading the abstract, it seems to be
-around the mechanics of handling multiple versions. So perhaps we should
-keep Logan's talk about the mechanics, and we can discuss the policy
-around ABI stability separately?
+https://lore.kernel.org/all/a11aba04-eaaa-43fd-988b-a2581b1b2fdb@arm.com/
 
-So I propose that we schedule a Live Update BoF. The main topic will be
-around ABI stability, but if time permits, we can have secondary topics
-too.
+I think rmi_delegate_range() covers the non-kdump cases, both for
+metadata and realm memory, we could unmap the linear map there (map it
+back in rmi_undelegate_range()).
 
-I see two open BoF slots:
+For kdump, we have /proc/vmcore that may be mmap'ed or read() syscalls.
+I think Alper proposed an idea to use copy_from_kernel_nofault() (with
+exception recovery in do_gpf()) but we'd still need to block
+mmap_vmcore() or somehow handle SIGBUS in makedumpfile unless it does
+this already.
 
-  1. Monday between 12:00 and 13:30. This overlaps eBPF, Refereed,
-     Toolchains, Device and Specific Purpose Memory, Safe Systems MC,
-     Android MC, Monitoring and Observability MC, and DRM Rust Workshop.
-
-     I think this slot is great because I think none of the overlaps are
-     major conflicts with this interest group.
-
-  2. Wednesday between 15:00 and 15:45. This overlaps with Networking,
-     Live Patching MC, Confidential Computing MC, sched_ext MC, and Driver
-     Core MC.
-
-     This slot is not as good I think because I reckon KVM folks might
-     be interested in the Confidential Compute MC.
-
-So I propose we have the Live Update BoF on Monday between 12:00 and
-13:00. The BoF slots are first-come-first-serve, so I'd like to book it
-soon-ish.
-
-Thoughts?
-
-[0] https://lore.kernel.org/kexec/2vxzik5f311e.fsf@kernel.org/#r
-[1] https://lore.kernel.org/kexec/20260904160009.GV4157646@nvidia.com/#r
-[2] https://lpc.events/event/20/contributions/2613/
+So, I think we should revisit the GPF handling. If we manage to unmap
+all delegated pages, we could limit the exception handling to
+is_kdump_kernel(). Otherwise we keep the exception handling as proposed
+earlier, maybe with some warnings like EL0 access.
 
 -- 
-Regards,
-Pratyush Yadav
+Catalin
