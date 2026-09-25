@@ -1,33 +1,33 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC5BB381AE3;
-	Fri, 25 Sep 2026 15:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51CDD39060A;
+	Fri, 25 Sep 2026 15:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790348560; cv=none; b=nwzGmL6Tqlniz+qtrUo6z3S0/yUnRsQz4dYug3RLJuPC2rip0KmVxnoJPc0Zo1p5+6q4a7zSbWXVI+434EBFYaQW0gA04THfFEPKRh/SWzGxbfpJagOvr1LIkVkfjh+3NvNSDHiGA8HVpXSoB9cok183to786fCDPPMj4mXnXXY=
+	t=1790349108; cv=none; b=lWzBjjYFhKrTUaU7fNODH8Lk+qpXN3wKTZDVo6D7TEM/FZCelTfFZUyIcLYoI2O535Wz75jKp7kGJ+Rdoft3XEGIwIE7nq70Zpn1Ci/MBxR3U0S/dDoSRS1is2QLfVUviHn4RkHR+azmx7zcQ6naf6oyz5kgeHtoxNQ+LyNOL0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790348560; c=relaxed/simple;
-	bh=85LE8mJXVs6JArsgWcvXfC7Xtvt9iQDJisLQSCB8z5M=;
+	s=arc-20240116; t=1790349108; c=relaxed/simple;
+	bh=wPC5lNilhf3g0ykmlhDe9z3lcOVejBMEEngMil4nDQo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TSktFfwCIhg+YMRM/wBxhhcTqbFWGsPx9xGOQ0rW7RlBdQXJMXfFAvm9llOseS/GBljaqPS6IpVVeDm7c+Hp9PXRYmIOiNki5slxjXensfFKAKb6besEtEnpcnp26THd6z3gsDoUTpYyos0cUK5pY3cYf4T3D3Y9zsQ2r+MI7Dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=H5MONHZC; arc=none smtp.client-ip=217.140.110.172
+	 In-Reply-To:Content-Type; b=D5PaRuyrv8ERgIUFwuL03243AyLRXAnme4R5Dm8uD1+kriS1zn9khWisyTM5TLXw5uORzDX66KY995uhzcUw0wc5yaCqs5y8DoS0iXKh26UCxBNt0JVZbrVuXCtkjd2Thws17L7mk7IHj2T8L/vdaMiEJVSukLFC1MFkPkuZTRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=jQXFy/Z+; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="H5MONHZC"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="jQXFy/Z+"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C359C1688;
-	Fri, 25 Sep 2026 08:02:25 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 108581688;
+	Fri, 25 Sep 2026 08:11:31 -0700 (PDT)
 Received: from [10.57.10.17] (unknown [10.57.10.17])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 223813F85F;
-	Fri, 25 Sep 2026 08:02:26 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5DAFF3F86F;
+	Fri, 25 Sep 2026 08:11:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790348549; bh=85LE8mJXVs6JArsgWcvXfC7Xtvt9iQDJisLQSCB8z5M=;
+	t=1790349094; bh=wPC5lNilhf3g0ykmlhDe9z3lcOVejBMEEngMil4nDQo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=H5MONHZCwvGc1eZswUFSIojrHQj6YlW7HZ5fNwn+jQVdGMqH/vBhYivsTR+JAtuyG
-	 Z/4jawUWYLuSRUIzDSPuriwInkylUHXsMJhTc4Rj+oQV87AUNcaPhHFRAvPX5/iJGO
-	 ZBeCQ+HGppvRK0/Wh/iPt2aKQErK4VUKtP3RuAS4=
-Message-ID: <a11aba04-eaaa-43fd-988b-a2581b1b2fdb@arm.com>
-Date: Fri, 25 Sep 2026 16:02:24 +0100
+	b=jQXFy/Z+hOKQzu4smPueogxcbPLKqe0jGtvG3FjpRmixbGar4J4NYMXhPcPqog6MN
+	 HqUWHnxdA4c+Za2T8HTRoyf8J3kkA2wTdECa34oWJL1t6xpZsznO0zJkB+9tFCcylg
+	 YDluTrvH3SJmD+BpUvnInL/ivQfaLlpO2Q65Iqtg=
+Message-ID: <0c959443-6d4f-4dba-957c-420cb128b7cc@arm.com>
+Date: Fri, 25 Sep 2026 16:11:29 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,7 +35,7 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 5/7] firmware: arm_rmm: Activate the RMM
+Subject: Re: [PATCH v19 4/7] firmware: arm_rmm: Add support for SRO
 Content-Language: en-GB
 To: Catalin Marinas <catalin.marinas@arm.com>
 Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
@@ -48,77 +48,153 @@ Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
  WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
  sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
 References: <20260924135201.850038-1-suzuki.poulose@arm.com>
- <20260924135201.850038-6-suzuki.poulose@arm.com> <arZmXFw5Jw2IbAmA@arm.com>
+ <20260924135201.850038-5-suzuki.poulose@arm.com> <arZgDmHV8uK1kv8R@arm.com>
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <arZmXFw5Jw2IbAmA@arm.com>
+In-Reply-To: <arZgDmHV8uK1kv8R@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 25/09/2026 13:17, Catalin Marinas wrote:
-> On Thu, Sep 24, 2026 at 02:51:59PM +0100, Suzuki K Poulose wrote:
->> From: Steven Price <steven.price@arm.com>
->>
->> Activate the RMM after the basic configuration. This is a memory
->> transferring stateful operation.
->>
->> Reviewed-by: Gavin Shan <gshan@redhat.com>
->> Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->> ---
->> Changes since v17:
->>   * Inline RMM_ACTIVATE command and remove the definitions from arm-rmi-cmds.h
->>   * Use scope-based cleanup to free sro object
->> Changes since v16:
->>   * Split into a new patch
->> ---
->>   drivers/firmware/arm_rmm/rmi.c | 13 ++++++++++++-
->>   1 file changed, 12 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
->> index 035f21d3f26b6..0859f256e192b 100644
->> --- a/drivers/firmware/arm_rmm/rmi.c
->> +++ b/drivers/firmware/arm_rmm/rmi.c
->> @@ -834,7 +834,18 @@ static int __init arm64_init_rmi(void)
->>   	if (ret)
->>   		return ret;
->>   
->> -	return 0;
->> +	/* Activate the RMM */
->> +	struct rmi_sro_state *sro __free(kfree) = kmalloc_obj(*sro);
->> +	if (!sro)
->> +		return -ENOMEM;
+On 25/09/2026 12:50, Catalin Marinas wrote:
+> On Thu, Sep 24, 2026 at 02:51:58PM +0100, Suzuki K Poulose wrote:
+>> +static int rmi_sro_donate_contig(struct rmi_sro_state *sro,
+>> +				 unsigned long sro_handle,
+>> +				 unsigned long donatereq,
+>> +				 struct arm_smccc_1_2_regs *out_regs,
+>> +				 gfp_t gfp)
+>> +{
+>> +	unsigned long block_size_fld = RMI_DONATE_BLOCK_SIZE(donatereq);
+>> +	unsigned long block_size = rmi_addr_block_size_to_bytes(block_size_fld);
+>> +	unsigned long count = RMI_DONATE_COUNT(donatereq);
+>> +	unsigned long state = RMI_DONATE_STATE(donatereq);
+>> +	unsigned long size = block_size * count;
+>> +	unsigned long addr_range;
+>> +	unsigned long donated_granules;
+>> +	unsigned long donated_size;
+>> +	int ret;
+>> +	void *virt;
+>> +	phys_addr_t phys;
 >> +
->> +	ret = rmi_sro_memxfer_cmd(sro, GFP_KERNEL, SMC_RMI_RMM_ACTIVATE);
->> +	if (ret) {
->> +		pr_err("RMM activate failed (%d)\n", ret);
->> +		ret = ret < 0 ? ret : -ENXIO;
+>> +	/*
+>> +	 * The RMM specification requires contiguous allocations are always a
+>> +	 * power of 2
+>> +	 */
+>> +	if (WARN_ON_ONCE(!is_power_of_2(size)))
+>> +		return -EINVAL;
+>> +
+>> +	/* Reuse the cached address range if we have one */
+>> +	for (int i = 0; i < sro->addr_count; i++) {
+>> +		unsigned long entry = sro->addr_list[i];
+>> +
+>> +		if (RMI_ADDR_RANGE_BLOCK_SIZE(entry) == block_size_fld &&
+>> +		    RMI_ADDR_RANGE_COUNT(entry) == count &&
+>> +		    RMI_ADDR_RANGE_STATE(entry) == state &&
+>> +		    IS_ALIGNED(RMI_ADDR_RANGE_ADDR(entry), size)) {
+>> +			sro->addr_count--;
+>> +			swap(sro->addr_list[sro->addr_count],
+>> +			     sro->addr_list[i]);
+>> +
+>> +			goto mem_donate;
+>> +		}
 >> +	}
 >> +
->> +	return ret;
+>> +	ret = rmi_sro_ensure_capacity(sro, 1);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	virt = alloc_pages_exact(size, gfp);
+>> +	if (!virt)
+>> +		return -ENOMEM;
+>> +	phys = virt_to_phys(virt);
+>> +
+>> +	if (state == RMI_OP_MEM_DELEGATED) {
+>> +		phys_addr_t delegated_phys;
+>> +
+>> +		if (rmi_delegate_range(phys, size, &delegated_phys)) {
+>> +			if (!rmi_undelegate_range(phys, delegated_phys - phys))
+>> +				free_pages_exact(virt, size);
+>> +			return -ENXIO;
+>> +		}
+>> +	}
+>> +
+>> +	addr_range = phys & RMI_ADDR_RANGE_ADDR_MASK;
+>> +	FIELD_MODIFY(RMI_ADDR_RANGE_BLOCK_SIZE_MASK, &addr_range, block_size_fld);
+>> +	FIELD_MODIFY(RMI_ADDR_RANGE_COUNT_MASK, &addr_range, count);
 > 
-> It was raised earlier this year [1] but I'm not sure it concluded. How
-> do we handle kexec and kdump? I think RMI_RMM_DEACTIVATE only succeeds
-> if nothing is delegated, so it would need all realms torn down first. If
-> that's not feasible, we could at least block (non-crash) kexec like pKVM
-> does.
+> Courtesy of an LLM - if we get a contiguous/4K pages request for 4MB
+> (1024 pages), the above 10-bit field becomes 0. Should we reject the
+> request or the updated spec will guarantee this won't happen?
 
-You are right, we can't DEACTIVATE until all granules have been
-"undelegated" back. Not just the Realms, but also the GPTs/Tracking
-Metadata etc would need to be reclaimed (when we get to support
-dynamic GPT/Tracking metadata). For now, we should block the kexec.
+The spec is being updated to clamp the "maximum" count to match the
+granule size. (Also called out in the Cover letter as "Known Issues")
+This will be available with beta4 version of the spec.
+
 > 
-> Kdump gets even more interesting if it starts accessing delegated pages
-> and getting GPF.
+> Somewhat related, with RMI_BLOCK_L2 or higher and appropriate count we
+> can easily go over the MAX_PAGE_ORDER allocation and fail alloc_pages()
+> (the contig case). IIUC, the kernel can reject the donation but current
+> TF-RMM does not report RMI_OP_CAN_CANCEL (R_SZVNK says it can be
+> cancelled). It gets complicated if we want to support large contiguous
+
+Ack, I will get this fixed in the TF-RMM.
+
+> allocations here (e.g. alloc_contig_pages() can sleep). I'd rather just
+> cancel the request, not support such large sizes.
 > 
-> [1] https://lore.kernel.org/r/CABpDEukEO4Y_fg8fv5Nr1_Pw_qOK=2UmioXk=WyPEzoEprPcGA@mail.gmail.com
+> [...]
+> 
+>> +static int rmi_sro_donate_noncontig(struct rmi_sro_state *sro,
+>> +				    unsigned long sro_handle,
+>> +				    unsigned long donatereq,
+>> +				    struct arm_smccc_1_2_regs *out_regs,
+>> +				    gfp_t gfp)
+>> +{
+>> +	unsigned long block_size_fld = RMI_DONATE_BLOCK_SIZE(donatereq);
+>> +	unsigned long block_size = rmi_addr_block_size_to_bytes(block_size_fld);
+>> +	unsigned long count = RMI_DONATE_COUNT(donatereq);
+>> +	unsigned long state = RMI_DONATE_STATE(donatereq);
+>> +	unsigned long found = 0;
+>> +	unsigned long donated_granules;
+>> +	unsigned long granules_per_block = block_size >> PAGE_SHIFT;
+>> +	unsigned long consumed_blocks;
+>> +	int addr_list_start = sro->addr_count;
+>> +	int ret, i;
+> 
+> [...]
+> 
+>> +	for (int i = 0, src = addr_list_start + consumed_blocks;
+> 
+> Nit: we have 'int ret, i' earlier already, so you can drop the 'int'
+> here.
+> 
+> [...]
+> 
+>> +/*
+>> + * rmi_sro_execute: Execute an RMI command that is Stateful but not memory
+>> + * tranfserring. Takes regs, filled with the FIDs and the arguments in place.
+>> + *
+>> + * Returns :
+>> + *  -ECANCELLED - If the operation had to be aborted and SRO was cancellable.
+> 
+> Nit: -ECANCELED.
+> 
 
-Kdump may be a bit more easier, as the kdump kernel is supposed to use
-the "reserved" region and vmcore access could handle the GPF and
-provide "0"s to the reader ? May be this is one case where the
-host needs to be able to handle GPFs.
+Ack
 
-Cheers
+>> + *  Otherwise, returns the result of the RMI command.
+>> + */
+>> +long rmi_sro_execute(struct arm_smccc_1_2_regs *regs)
+>> +{
+>> +	bool cancelled = false;
+>> +	unsigned long sro_handle = regs->a1;
+>> +
+>> +	rmi_smccc_invoke(regs);
+>> +
+>> +	sro_handle = regs->a1;
+> 
+> Nit: drop the first initialisation maybe?
+
+Of course, I will do that. Thanks for spotting.
+
 Suzuki
 
 > 
