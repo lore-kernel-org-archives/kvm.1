@@ -1,151 +1,106 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0304E2F3B;
-	Fri, 25 Sep 2026 16:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA453AE707;
+	Fri, 25 Sep 2026 16:48:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790354580; cv=none; b=sVOaGcddTWsUCkpJppSmLOeJ/+K84/19+tNAqo5GOR+yQsSdP8/ClOqjts/yaTfEmFNwUSCCHi1YDycLQfjujcydtYGdXRZydMFSQ0BSpMpZAHw4EJOS96m1esfQQoP4qfV4npUqTDylpNs2Tok+/exT4mTKPQBjJFl9trkyKC8=
+	t=1790354910; cv=none; b=A1E1YltgFQtZCTWa+WuOrXdKJuQzkeOeUbNAvxnJ+Y0yU7N8PVae34hiCgCCd+qb8IU2tbn7z7UKljaNdLblzUSMTp/DrFWABs9+P0PJGHsKoYmBfwQVmpblNRVD1E2n8O/iAyGO8N5egqLiiPdjCcqUsAPBXfvyfsJ5+r5QnXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790354580; c=relaxed/simple;
-	bh=O5sbNKI/8hIC1rgKBOybPs1hHlK7ry3JZUBZbb/JU/g=;
+	s=arc-20240116; t=1790354910; c=relaxed/simple;
+	bh=e4bNro2X21tF+YZ1/Bwbzw8T1iQC6aqrOuNMIg8HB/s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dB0x20UACCiT5hE676GMuZJ0tUkMilj6+mxYAGjjKXymYpML3kR4RIQxx2e26IQgQJ32V5OSsUF/Bfl8M6tdW1NqacSALXgIYqIjUaltWD+kE6VRp35GvI11rptzoDoI3uCn6de70OHkTCQmLi4Vc/tz9GQMcXlcdglafcglDZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=hVf2XdSc; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=kVcsR9Rk0ZhjMSKmAltg7MwzliyMv9i+CbVM1k/6HC/A0F7VsYKIESvVtnwaiUaChffR0JooohAb6xJ6+wvLdH1PNpva2Aa+BkkWpgQ2BSOInu/q399be0OYnOqjiS/SvMNvjiRCaUXI52POA9xXtcH1zspBlEV9zHJ0VE7YGRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=X7vs4Ffl; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="hVf2XdSc"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F19A169C;
-	Fri, 25 Sep 2026 09:42:36 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B87E3F86F;
-	Fri, 25 Sep 2026 09:42:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790354559; bh=O5sbNKI/8hIC1rgKBOybPs1hHlK7ry3JZUBZbb/JU/g=;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="X7vs4Ffl"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1BDD840E015D;
+	Fri, 25 Sep 2026 16:48:18 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id pTpcwLsaCmSk; Fri, 25 Sep 2026 16:48:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1790354888; bh=yV5eIZXRVx/VnMpigs9MBnv0ybrd5AqZPTL7Q5MFX2U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hVf2XdScH/58yUk45BIMnxm19IlI7CCdS1+PH4A3lE0oPIlF/VnruTYA9tdwfB++q
-	 tPALc4GdmxDZeRm3O69AumG5nuzFw10fti+WPdDM8P/WWPcR06/EG2TuL4kXguw8FS
-	 tOxXhZwLUBa3ggNoDVUh/E34iEH5FW3oavECMG3c=
-Date: Fri, 25 Sep 2026 17:42:34 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
-	will@kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
-	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
-	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
-	sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
-Subject: Re: [PATCH v19 5/7] firmware: arm_rmm: Activate the RMM
-Message-ID: <araketG70TIKeNuf@arm.com>
-References: <20260924135201.850038-1-suzuki.poulose@arm.com>
- <20260924135201.850038-6-suzuki.poulose@arm.com>
- <arZmXFw5Jw2IbAmA@arm.com>
- <a11aba04-eaaa-43fd-988b-a2581b1b2fdb@arm.com>
+	b=X7vs4FflKGPKZRodhKoU7LLoOQvO+6/Ou4pCRmKVK3dv85bhLQe03Fajt1qX2GjFA
+	 ZjvsKllDT73HGncSmZEcT1aDol7fkeLUgvmmR54V5+J5ExzdraIPJl2QTLkX8xSpNC
+	 YtZanZXV4q0UXfW2WnWH8srD0h3YOduqCq1RKarcSmqBkruPSHLawHphi+h2J8pCpw
+	 EXFXFBEvWnjiuMaGEBeRXiuo0cembBzmpKltZk3ykoGteDZLOnxBGEMKSlNdX5387o
+	 WfGKEbNGIkgjfeog8Ztm37eu6NFLLsVObNP8QpSZuO+fguQA+DnyWjG6lGL5yvwFYH
+	 +CB1UPkO+LC8/kNcUFBgT+TpUDB4DPdj0afh7NCIfozvJkMtfkEGT8czRSeeFSpK9G
+	 R5MvrubhCUUC4pArOe7iSVuGoqrLAn+BVSuSIra89ez3yXtryiMIESuEsoNYSJlM62
+	 jRAUKA4OhG59pUMA2Ch5GJx2xC0swKzattiQjkYdUFX28yvDeAkuxcCiCiVAdswYmO
+	 5/mH15VVCcGKKsL29VvKbhW8t0eZVcq20Pweu7y8BQWPeSTCTxcA2R+OzsGtEMDwdq
+	 wAwAKGXgnGAYjBmCwmz5JwboV3P+ovEAk27XvXeyehkRs3dPzVmRmbgvm+id2kQJTg
+	 tHxMCcneEdZdaOn4iGbZQjTU=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 78B2240E00E7;
+	Fri, 25 Sep 2026 16:47:51 +0000 (UTC)
+Date: Fri, 25 Sep 2026 09:47:48 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Kim Phillips <kim.phillips@amd.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Naveen Rao <naveen.rao@amd.com>,
+	David Kaplan <david.kaplan@amd.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Nathan Fontenot <nathan.fontenot@amd.com>
+Subject: Re: [PATCH v5 1/8] x86/bugs: Allow forcing Automatic IBRS with SNP
+ active using spectre_v2=eibrs
+Message-ID: <20260925164748.GAaraltFwtJs59WAsj@fat_crate.local>
+References: <20260826223510.3669875-1-kim.phillips@amd.com>
+ <20260826223510.3669875-2-kim.phillips@amd.com>
+ <20260903040330.GNapjxkgMd2Ey38egR@fat_crate.local>
+ <01b57e61-df45-44a6-848b-c19eae226ad0@amd.com>
+ <20260924014517.GEarSArVM12m_ZshhA@fat_crate.local>
+ <67fb182c-4baa-4b3e-b59c-64cec20839c2@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <a11aba04-eaaa-43fd-988b-a2581b1b2fdb@arm.com>
+In-Reply-To: <67fb182c-4baa-4b3e-b59c-64cec20839c2@amd.com>
 
-On Fri, Sep 25, 2026 at 04:02:24PM +0100, Suzuki K Poulose wrote:
-> On 25/09/2026 13:17, Catalin Marinas wrote:
-> > On Thu, Sep 24, 2026 at 02:51:59PM +0100, Suzuki K Poulose wrote:
-> > > From: Steven Price <steven.price@arm.com>
-> > > 
-> > > Activate the RMM after the basic configuration. This is a memory
-> > > transferring stateful operation.
-> > > 
-> > > Reviewed-by: Gavin Shan <gshan@redhat.com>
-> > > Reviewed-by: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
-> > > Signed-off-by: Steven Price <steven.price@arm.com>
-> > > Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> > > ---
-> > > Changes since v17:
-> > >   * Inline RMM_ACTIVATE command and remove the definitions from arm-rmi-cmds.h
-> > >   * Use scope-based cleanup to free sro object
-> > > Changes since v16:
-> > >   * Split into a new patch
-> > > ---
-> > >   drivers/firmware/arm_rmm/rmi.c | 13 ++++++++++++-
-> > >   1 file changed, 12 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
-> > > index 035f21d3f26b6..0859f256e192b 100644
-> > > --- a/drivers/firmware/arm_rmm/rmi.c
-> > > +++ b/drivers/firmware/arm_rmm/rmi.c
-> > > @@ -834,7 +834,18 @@ static int __init arm64_init_rmi(void)
-> > >   	if (ret)
-> > >   		return ret;
-> > > -	return 0;
-> > > +	/* Activate the RMM */
-> > > +	struct rmi_sro_state *sro __free(kfree) = kmalloc_obj(*sro);
-> > > +	if (!sro)
-> > > +		return -ENOMEM;
-> > > +
-> > > +	ret = rmi_sro_memxfer_cmd(sro, GFP_KERNEL, SMC_RMI_RMM_ACTIVATE);
-> > > +	if (ret) {
-> > > +		pr_err("RMM activate failed (%d)\n", ret);
-> > > +		ret = ret < 0 ? ret : -ENXIO;
-> > > +	}
-> > > +
-> > > +	return ret;
-> > 
-> > It was raised earlier this year [1] but I'm not sure it concluded. How
-> > do we handle kexec and kdump? I think RMI_RMM_DEACTIVATE only succeeds
-> > if nothing is delegated, so it would need all realms torn down first. If
-> > that's not feasible, we could at least block (non-crash) kexec like pKVM
-> > does.
-> 
-> You are right, we can't DEACTIVATE until all granules have been
-> "undelegated" back. Not just the Realms, but also the GPTs/Tracking
-> Metadata etc would need to be reclaimed (when we get to support
-> dynamic GPT/Tracking metadata). For now, we should block the kexec.
+On Thu, Sep 24, 2026 at 01:45:52PM -0500, Kim Phillips wrote:
+> For a guest-dominated host that trade plausibly goes the other way, and only
+> the admin knows their deployment.
 
-Looking more into this (and the memory hotplug story), I find it strange
-that simply having RME and a valid RMM imposes all these restrictions
-even if we never run or intend to run a realm. How common will
-RME-capable systems with RMM firmware be that are not used for CoCo? Or
-do we expect only CoCo systems to have capable/configured firmware (RME
-may be present in silicon anyway)?
+Just holding down the current arguments here *without* AI:
 
-Ideally we'd defer the RMM configuration and activation (and the
-tracking/GPT checks) until we first attempt to start a realm, keeping
-only the RMI_VERSION/FEATURES probing at boot. Not sure how feasible
-this is (memory is more fragmented by then for any contiguous donation).
-If we manage it, kexec and memory hotplug just work on hosts that never
-start a realm.
+We have had an internal discussion in the past about this already. It can
+potentially cause performance disadvantages in certain scenarios.
 
-The next best thing for kexec is to tear down the realms, undelegate
-the granules and deactivate the RMM before invoking kexec (with kdump
-that's harder as we likely no longer have a controlled shutdown).
+If this is ever going to go anywhere, I would like to see:
 
-Similarly with memory hotplug, allow it if we haven't started any realms
-and refuse realm creation afterwards if untracked memory was onlined.
-Also, if the memory is onlined to ZONE_MOVABLE, neither guest_memfd nor
-the kernel allocations we delegate come from there, so we could allow
-it even with realms running.
+- a proper use case which people are *actually* asking for
 
-> > Kdump gets even more interesting if it starts accessing delegated pages
-> > and getting GPF.
-> > 
-> > [1] https://lore.kernel.org/r/CABpDEukEO4Y_fg8fv5Nr1_Pw_qOK=2UmioXk=WyPEzoEprPcGA@mail.gmail.com
-> 
-> Kdump may be a bit more easier, as the kdump kernel is supposed to use
-> the "reserved" region and vmcore access could handle the GPF and
-> provide "0"s to the reader ? May be this is one case where the
-> host needs to be able to handle GPFs.
+- have it properly documented in Documentation/admin-guide/hw-vuln/ along with
+  the potential impact so that people can make an *informed* decision whether
+  they really want it
 
-Yes, I think so. I now realised that metadata delegation to the RMM
-doesn't come from guest_memfd, so that's another case not helped by the
-old series to unmap guest_memfd from the linear map. I'll reply to the
-GPF thread.
+Thx.
 
 -- 
-Catalin
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
