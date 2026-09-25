@@ -1,33 +1,33 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F365E403135;
-	Fri, 25 Sep 2026 08:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5413448BA7;
+	Fri, 25 Sep 2026 08:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790326216; cv=none; b=n6xV1I3LkESYQtvypOe+t0i4T20p7mO3jLD4TSbXjGV8tjvE01JIajFPQVCa3DNGD0Q94f0J58Dwn1ROp47lNjtMF/42P7XQYTo9pcJlZRrGMiKKQX2ncQeNmopDj1lNRiHbtn0XAAjnyg8hJeYnCnWHzxr8WStDF48fsyUAT9U=
+	t=1790326278; cv=none; b=jyn5he1M/ei0dHM/Ih7/Ae79vSbxdZNguwJ/C1lHXoEKX13VXVCDVbA3ZYrDocgS9NzVNyThPHf7DxgHPq6A6/zRsJQayQcwNNmUZ/DH+uSUiotBZxSg0RysBAqWTo4sozO3O9yk/EtwcNpyVKVje8NRGQgYiTezdcw0YgXDuWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790326216; c=relaxed/simple;
-	bh=LjG3pnRJrIkzli/nj9tOlSO8QVv035Dy5xyI+7WVsA0=;
+	s=arc-20240116; t=1790326278; c=relaxed/simple;
+	bh=fZFt/ovr62lmtilpmcNcwd33GhGHy+KYsVKhY1PdPm4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JJsStWE7g+yhrp7EYCV2uEsbm9zhq0EMKYbp0x6zNJ1bcNRpgIyDJsG3fHRxvipLWKZrTSbsDq6YGjGdf4rMruDb0OIUxEH7MhGACpwBInyLzsnuMLgSPxc08Yn5lICHSSpZg/r4CaMF3tAEgx9z/x4HJ55qimhdOJVPwjKjE6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=aJpydRZq; arc=none smtp.client-ip=217.140.110.172
+	 In-Reply-To:Content-Type; b=pdkx5fHPuTkUwKFpW+7bvJkgreaHl2M0ja8l7aj90Fu8cN1uSk0H9bnkYO16wNmukC6l5Mk4cR0p2fCvS9RO5tnt1JfHpOQfcZKj28j5dD0JfSH+jaOjRo3vWvS6w2UTcvw8zQaowWMMCXght21PbNghavIIBCPTxCORPjpKLpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=rkoUn5FU; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="aJpydRZq"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="rkoUn5FU"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 589D4497;
-	Fri, 25 Sep 2026 01:50:09 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A4820497;
+	Fri, 25 Sep 2026 01:51:06 -0700 (PDT)
 Received: from [10.57.10.88] (unknown [10.57.10.88])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9BA193F86C;
-	Fri, 25 Sep 2026 01:50:09 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E76743F86C;
+	Fri, 25 Sep 2026 01:51:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790326212; bh=LjG3pnRJrIkzli/nj9tOlSO8QVv035Dy5xyI+7WVsA0=;
+	t=1790326270; bh=fZFt/ovr62lmtilpmcNcwd33GhGHy+KYsVKhY1PdPm4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aJpydRZqDX03ImCyUCSiuiaJMPCxRu8RyBwKnqoMoxxchYA2ksIiSqO+J+yXXVr16
-	 vJpmt66PzxwTDksPTlstFNb6jkuHtnyHmvFP85TQGvulieFaQe1p7QWmYCHiGa7JQl
-	 4EnkAbtaHXAl+0IaR+n8EJejUGC5F6xGKmwe3dKY=
-Message-ID: <a5f54b02-3b44-4e7e-b043-a670f91c5421@arm.com>
-Date: Fri, 25 Sep 2026 09:50:08 +0100
+	b=rkoUn5FUz90XxWVaSzAEimdJbnnlRVmexbZxgfGtO1OW2VUJt/zq8SuVLin5teVD1
+	 6pdYmN0XB4eKgrioqlZ7ePRIPiSoLnP5lKbipYQaQXotu4kYXb16rXynoJ/uD/2Byy
+	 JLfGeL2sGWip+veR3zBdTlLGiNv99DaX5pCe0Oaw=
+Message-ID: <c48703b3-3cd7-473d-8ae1-d6389e57b757@arm.com>
+Date: Fri, 25 Sep 2026 09:51:05 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -48,13 +48,13 @@ Cc: maz@kernel.org, will@kernel.org, catalin.marinas@arm.com,
  sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
 References: <20260924135201.850038-1-suzuki.poulose@arm.com>
  <20260924135201.850038-3-suzuki.poulose@arm.com>
- <295014e8-24d7-494a-8f3e-0e17794d024f@redhat.com>
+ <1ffe72ff-f20b-4621-a586-10e0358fee67@redhat.com>
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <295014e8-24d7-494a-8f3e-0e17794d024f@redhat.com>
+In-Reply-To: <1ffe72ff-f20b-4621-a586-10e0358fee67@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 25/09/2026 06:43, Gavin Shan wrote:
+On 25/09/2026 01:00, Gavin Shan wrote:
 > On 9/24/26 11:51 PM, Suzuki K Poulose wrote:
 >> From: Steven Price <steven.price@arm.com>
 >>
@@ -112,32 +112,13 @@ On 25/09/2026 06:43, Gavin Shan wrote:
 >>   create mode 100644 include/linux/arm-rmi-cmds.h
 >>
 > 
-> [...]
+> Some nitpicks below, with them addressed:
 > 
->> diff --git a/drivers/firmware/arm_rmm/Makefile b/drivers/firmware/ 
->> arm_rmm/Makefile
->> new file mode 100644
->> index 0000000000000..65171988fdcae
->> --- /dev/null
->> +++ b/drivers/firmware/arm_rmm/Makefile
->> @@ -0,0 +1,2 @@
->> +
->> +obj-$(CONFIG_ARM_RMM_RMI)    = rmi.o
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
 > 
-> Unnecessary blank line at the top in Makefile. Besides, why doesn't this 
-> come
-> as below? :)
-> 
-> obj-$(CONFIG_ARM_RMM_RMI)    += rmi.o
 
-Good point, now that the ARM_RMM_RSI is also getting merged there.
+Thank you Gavin, much appreciated ! I have addressed the comments below
+and the Makefile one.
 
 Cheers
 Suzuki
-
-> 
-> Thanks,
-> Gavin
-> 
-> 
-
