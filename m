@@ -1,311 +1,227 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from flow-b8-smtp.messagingengine.com (flow-b8-smtp.messagingengine.com [202.12.124.143])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBACF440A3E;
-	Fri, 25 Sep 2026 22:05:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1824570E1;
+	Fri, 25 Sep 2026 22:06:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.143
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790373939; cv=none; b=PNxGnu3S1SA7Av1qHKlQS4N18K3UDtQ9HiIzTG94hmK5zknamYNCGidz1/apJZ19RGwkf9kBev9nz4XI7RqKVEApkWwA1NqJmhcv2TkU6sgiDx5FsoK6Eyy/7sJOPuMCOv/AIqtMs5ElSJQFa48FPCDn5qSeT87kH4Kd7dQnMJg=
+	t=1790374019; cv=none; b=KnF68ceULhHuwl9zGkE4KpadXcCo6dieB5pZxfwwdQhfx5EslvNRRqqmxFUm61zWlvrkq5cvHzh+nhe/R7TNEO8c9DNfZghyHYFtelAJXDWBWnFnOEHVl2jJ5/y+PipPF236SrMZILhlIa2RU+2llb4QyylhhFtBloJ9bPGDfJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790373939; c=relaxed/simple;
-	bh=2EOpSBVwiFTyJODrgdVakePWlXOI6UWDhn5KowBzIQ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OzrHuRszoq2ahITQ8RARyoFZIL/EMAz2dlH0EtWw14o1Irff/3M6/eUBEjpn80swtXcJeDpPWQfm3xifEc7HpqPUls9gWS6E0i5g/DzlaGwHrCEHr/dYJyf1i6DkIgd0X8TB73EYCc+i1DdSElVjRQbPgLoFVvUX9LWHdTH6DyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aW/1X2dA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790374019; c=relaxed/simple;
+	bh=lS1TxV0OL5XbjJoEVVQOxIs/WZv/eAgyubI3NbbQssI=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=qBMOiV8XKYqE2k6LV4zGN+Ym0gNRay1evLw51EiIATao+r3QN1HLgUuNYoQbBZRKgtdG00suqHJJz+Zv+bRDauX/f0jlv9G/IRgVP00uVEiVlZR+Q36ywtU3gzLx0vNyhQ4Hrtw0SPFpKcOD9ivHoE8kPXv9GeTZh5VBN3yN2IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=VV93A+GB; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=aGXV+YUS; arc=none smtp.client-ip=202.12.124.143
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aW/1X2dA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79301F000FF;
-	Fri, 25 Sep 2026 22:05:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790373937;
-	bh=l+YfFAXDtzOvvAcpNn6JM07GzhHKVnZX6drhhNawXKk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=aW/1X2dAcrgTp6XTDHYRMTvAIo3LsC0iWnytkzVEcKaiv3k8e7ot3mkyzAj9pd6S2
-	 s5YoLVCD4DscVM+BZ7b8QabDnL2am+4sOjnDiaD01LQX860U7sek8Yhc5IXJ/ThyD2
-	 7CAHYsbH2iA9OHQ2d/g1TjDTOQy+bZ51RmEa1LpKc5uyYSO9gXaNk5HIlbhGhkEfvS
-	 lAuY+eel3A196tXEYYZA7IA+eX38zrquyLZUPBxBU4xUDt/6OkF5TrA3pI4R2BeN1q
-	 Q4oIWBhYHXEwAOKY+msEAGZPZ8YUTTIT+WYGMAjNM28Jp+0D5VIsE3uDucb2BTtZ9J
-	 2HMxrLbIeJKZg==
-Date: Fri, 25 Sep 2026 23:05:28 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: <mhonap@nvidia.com>
-Cc: <alex@shazbot.org>, <jgg@ziepe.ca>, <ankita@nvidia.com>,
- <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
- <smadhavan@nvidia.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
- <dave@stgolabs.net>, <alison.schofield@intel.com>,
- <vishal.l.verma@intel.com>, <iweiny@kernel.org>, <ming.li@zohomail.com>,
- <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
- <bhelgaas@google.com>, <dmatlack@google.com>, <kees@kernel.org>,
- <gustavoars@kernel.org>, <cjia@nvidia.com>, <kjaju@nvidia.com>,
- <vsethi@nvidia.com>, <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
- <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>
-Subject: Re: [PATCH v5 09/27] vfio/pci: Add a generic excluded-range list
-Message-ID: <20260925230528.33f70daf@jic23-hlaptop>
-In-Reply-To: <20260916183540.3813685-10-mhonap@nvidia.com>
-References: <20260916183540.3813685-1-mhonap@nvidia.com>
-	<20260916183540.3813685-10-mhonap@nvidia.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="VV93A+GB";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="aGXV+YUS"
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailflow.stl.internal (Postfix) with ESMTP id 573C313003B9;
+	Fri, 25 Sep 2026 18:06:52 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Fri, 25 Sep 2026 18:06:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1790374011;
+	 x=1790381211; bh=JrMmm48wWb5nfElfLTql9tnPeB0+8MEVeYNyAgGoaQE=; b=
+	VV93A+GBv2P9/qrRdwAhHm15SknYpPDoE9Rusj/hHzckBkjJVEcdDlJTHlO4p/7E
+	MsStEr6lA9ZZpv80ctYjcMxWtVfeFtMzS2Pz6b48b4mBBrO1C9yPQ1m/yB4jrJsU
+	Txgptg/CZdFHDOAYUVRGXXi1vMAjXp9R2q/zkAVgu2JU57U6eOhopKB9vdNOWomM
+	8KEOhPJEGjfknNt7dRh1N3UcGrPPo322SVDR7u2P7ODyCz9fXvOMVKwB4BGJLV4d
+	p1vZk++EfDAgCFACQelPXp+bGzwficcKO8bwIm5qbPT1tKzqp+6Byy8nrSst/iUF
+	5iM/+XBRXhRzlq/3FdZWSw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790374011; x=
+	1790381211; bh=JrMmm48wWb5nfElfLTql9tnPeB0+8MEVeYNyAgGoaQE=; b=a
+	GXV+YUSmJZBpt2RL3eFg0yROgDvjwUpne/3aX5qHc2ia1wEVE/khGVzWW2IGsz5l
+	hd3jDKQVGFxsM4ytzm0w/bh9v/Q0fmxggROD5amVZbL2IpyazCJKEmXcfYygtqXQ
+	BNuhNcefmS8wBdPbdpsyQgC85zo4DoYIA7PTlnLy/b0B7TGhHrMTVWAcQVUniEoZ
+	1QJGFj+nGWa8IGhxIs0v/xiIAUYiBM7D6MMeI7Tqf0DCWrqnH693KRkitqw3jAgQ
+	k0QlTsip1+o1bnRtNhMLSAe/LoZeLLRCKWTKQF0vQQ12dvxRPUWAYPzU7TrYn2iP
+	xq/lsXF6iBqKAWrtf+W5Q==
+X-ME-Sender: <xms:cvC2aiSvwM8it39YGAo0r2BFMlajZQzHCF1-wybOlfFNnzuJE4_VgQ>
+    <xme:cvC2aim-IxtOzGmBKYQptfJ-5tq7fGqg-34DIWlZzsqMywgEQ0mR0QgqWq_6cb9JX
+    NjtResFg31PUDdRrYBtL-YJLF1e2pjmDFCJzHcjJRCB_VemwzQ9RdVm>
+X-ME-Proxy-Cause: dmFkZTGWorUwcHDaphCYw8v7P4r6eX5pMArEM2/fjfsVfdD8oh9PHyAFGRqsP8lKRNOvro
+    Ftaux56ZQWBnJufjCK4NoTl5gmyZyS2NrT/mOlvXaJbBgwyJlksfmDxh/T6ep3Q5rP1X5I
+    Gg3BUF69X8e0yxuG8tIsosXhwJWN04kZfd3Hs8hAZ/+JOdcATDpskVHlGuS/IemkueryOR
+    hIuVjhFQk7CePHMlVc9CQ7MECLINzrqb9LdZmsZGkkEkpHSYSPer552CpRSKn34v37USct
+    HhFuvihTiBMck5qt8HqfIL/ioFLlYd+AoG7CwtlhshQQ5QWzjlxpGOjuQuzfN0lyT2CNBA
+    xiE3/XVFoRJUnTcPHXnnP4ULg2/OhUw0cUVTM2Hl8kzEGyQmxm0APQJMTvjFGoCeexOfR/
+    jaxLRyktqvX8daF3L239waW+lQXkj8NIMZ45sRs0hondG/NYNiUtlwijloNURLVJpSRs1n
+    HjrVk8mAadcUojfqUFKMkwbvd1knunWFqf3wFKqO35MyuIsff+Lt3vTDKNneO2MS2loK5e
+    Q/dybw3p42QGSplvXOieL4zZL+ZwpJVbWdxv7+d9YbwYEGdtccmCLCVTEkoohZKIitwDZF
+    bbnjGJjj38fYWu6AOjGxXX1gJyhzi0LUn/N6YtrvJoDdXC/mveLWJ3hmsmrw
+X-ME-Proxy: <xmx:dvC2amzBvlQCAD5sW2JaXm3j0P9ai-oMPjy5v8vXmarN-S8XKRnZUw>
+    <xmx:dvC2auHhsX2b7IMnKKPnB_m7lyGmqEgN3tOfWJI43cbUmyqJIJe9DQ>
+    <xmx:dvC2avqA9un_ie7CCszm4rHR5kIbiuuqJAmgxGMKC0t4LTi-ke-ZMg>
+    <xmx:dvC2avxp2MUpSON7EdEvlibuWv90i4hC2qOqz0DFeopE6Lyo9tYUDA>
+    <xmx:e_C2asxjh4_ZZbt6wpAEkh3al--Q2E5cOHCufEezSsf4Ch9A-LWaZN6L>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 548BB32A0087; Fri, 25 Sep 2026 18:06:42 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-ThreadId: AJwEWD5WPnhk
+Date: Sat, 26 Sep 2026 00:06:22 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Lorenzo Stoakes" <ljs@kernel.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ "Jann Horn" <jannh@google.com>, "Pedro Falcato" <pfalcato@suse.de>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ "Mike Rapoport" <rppt@kernel.org>,
+ "Suren Baghdasaryan" <surenb@google.com>,
+ "Michal Hocko" <mhocko@suse.com>, "Jonathan Corbet" <corbet@lwn.net>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Dennis Dalessandro" <dennis.dalessandro@cornelisnetworks.com>,
+ "Jason Gunthorpe" <jgg@ziepe.ca>, "Leon Romanovsky" <leon@kernel.org>,
+ "Paul Moore" <paul@paul-moore.com>,
+ "Stephen Smalley" <stephen.smalley.work@gmail.com>,
+ "Jaroslav Kysela" <perex@perex.cz>, "Takashi Iwai" <tiwai@suse.com>,
+ "Alexei Starovoitov" <ast@kernel.org>,
+ "Daniel Borkmann" <daniel@iogearbox.net>,
+ "Andrii Nakryiko" <andrii@kernel.org>,
+ "Eduard Zingerman" <eddyz87@gmail.com>,
+ "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Zi Yan" <ziy@nvidia.com>,
+ "Baolin Wang" <baolin.wang@linux.alibaba.com>,
+ "Nico Pache" <nico.pache@linux.dev>,
+ "Ryan Roberts" <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>,
+ "Barry Song" <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>,
+ "Usama Arif" <usama.arif@linux.dev>,
+ "Kirill A. Shutemov" <kas@kernel.org>,
+ "Doug Gilbert" <dgilbert@interlog.com>,
+ "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Martin K. Petersen" <mkp@kernel.org>,
+ "Jaya Kumar" <jayalk@intworks.biz>, "Simona Vetter" <simona@ffwll.ch>,
+ "Helge Deller" <deller@gmx.de>, "Sebastian Reichel" <sre@kernel.org>,
+ "John Hubbard" <jhubbard@nvidia.com>, peterx <peterx@redhat.com>,
+ "Masami Hiramatsu" <mhiramat@kernel.org>,
+ "Oleg Nesterov" <oleg@redhat.com>,
+ "Peter Zijlstra" <peterz@infradead.org>,
+ "Thomas Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "Arnaldo Carvalho de Melo" <acme@kernel.org>,
+ "Namhyung Kim" <namhyung@kernel.org>,
+ "Mark Rutland" <mark.rutland@arm.com>, "Rik van Riel" <riel@surriel.com>,
+ "Harry Yoo" <harry@kernel.org>, "Juri Lelli" <juri.lelli@redhat.com>,
+ "Vincent Guittot" <vincent.guittot@linaro.org>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
+ "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>,
+ "Dave Airlie" <airlied@gmail.com>, "Will Deacon" <will@kernel.org>,
+ "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Muchun Song" <muchun.song@linux.dev>,
+ "Oscar Salvador" <osalvador@suse.de>,
+ "Matthew Wilcox" <willy@infradead.org>, "Jan Kara" <jack@suse.cz>,
+ "Marc Zyngier" <maz@kernel.org>, "Oliver Upton" <oupton@kernel.org>,
+ "Catalin Marinas" <catalin.marinas@arm.com>,
+ "Madhavan Srinivasan" <maddy@linux.ibm.com>,
+ "Anup Patel" <anup@brainfault.org>, "Paul Walmsley" <pjw@kernel.org>,
+ "Palmer Dabbelt" <palmer@dabbelt.com>,
+ "Albert Ou" <aou@eecs.berkeley.edu>,
+ "Christian Borntraeger" <borntraeger@linux.ibm.com>,
+ "Janosch Frank" <frankja@linux.ibm.com>,
+ "Claudio Imbrenda" <imbrenda@linux.ibm.com>,
+ "Alexander Gordeev" <agordeev@linux.ibm.com>,
+ "Gerald Schaefer" <gerald.schaefer@linux.ibm.com>,
+ "Heiko Carstens" <hca@linux.ibm.com>,
+ "Vasily Gorbik" <gor@linux.ibm.com>,
+ "David S . Miller" <davem@davemloft.net>,
+ "Andreas Larsson" <andreas@gaisler.com>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Christian Brauner" <brauner@kernel.org>,
+ "Matthew Brost" <matthew.brost@intel.com>,
+ "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>,
+ "Byungchul Park" <byungchul@sk.com>, "Gregory Price" <gourry@gourry.net>,
+ "Ying Huang" <ying.huang@linux.alibaba.com>,
+ "Alistair Popple" <apopple@nvidia.com>, "Chris Li" <chrisl@kernel.org>,
+ "Kairui Song" <kasong@tencent.com>,
+ "Kemeng Shi" <shikemeng@huaweicloud.com>,
+ "Nhat Pham" <nphamcs@gmail.com>, "Baoquan He" <baoquan.he@linux.dev>,
+ "Youngjun Park" <youngjun.park@lge.com>,
+ "Johannes Weiner" <hannes@cmpxchg.org>, "Qi Zheng" <qi.zheng@linux.dev>,
+ "Shakeel Butt" <shakeel.butt@linux.dev>,
+ "Axel Rasmussen" <axelrasmussen@google.com>,
+ "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>,
+ "Chengming Zhou" <chengming.zhou@linux.dev>,
+ "Michal Hocko" <mhocko@kernel.org>, "Miklos Szeredi" <miklos@szeredi.hu>,
+ "Xu Xin" <xu.xin@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-rdma@vger.kernel.org, selinux@vger.kernel.org,
+ linux-sound@vger.kernel.org, bpf@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ Linux-Arch <linux-arch@vger.kernel.org>, linux-fsdevel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ fuse-devel@lists.linux.dev, "Takashi Iwai" <tiwai@suse.de>,
+ "Emil Tsalapatis" <emil@etsalapatis.com>
+Message-Id: <d4d7d4c2-a1d5-41d0-b1c8-8ea0cc5a0397@app.fastmail.com>
+In-Reply-To: 
+ <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
+References: 
+ <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
+Subject: Re: [PATCH v3 00/40] mm: make VMA flag semantics explicit, eliminate
+ VM_SPECIAL
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
-On Thu, 17 Sep 2026 00:05:22 +0530
-<mhonap@nvidia.com> wrote:
+On Thu, Sep 17, 2026, at 18:22, Lorenzo Stoakes (ARM) wrote:
+>
+>  mm/vma.c                                   | 246 +++++++++++++++++++-------
 
-> From: Manish Honap <mhonap@nvidia.com>
-> 
-> The MSI-X table is virtualized in vfio_pci_bar_rw() by an open-coded
-> x_start/x_end window that fills reads with -1 and drops writes. Now that
-> a generic excluded-range list expresses the same fill/drop behavior,
-> register the MSI-X table as a read and write excluded range instead of
-> special-casing it in the read/write path.
-> 
-> Add the range when the MSI-X capability is parsed in
-> vfio_pci_core_enable() and clear the list in vfio_pci_core_disable()
-> alongside the config teardown. The read/write path now relies solely on
-> vfio_pci_bar_find_exclusion(), so MSI-X and a provider's (e.g. vfio-cxl)
-> trapped registers share one mechanism.
-> 
-> No functional change.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Manish Honap <mhonap@nvidia.com>
-A few things inline that might tidy up the implementation and make
-it a little more readable. Also you've use object allocators in some
-places but not universally.  
+Hi Lorenzo,
 
-Jonathan
+I see that in linux-next there is a new build failure in some
+configurations in code that you are changing here:
 
-> ---
->  drivers/vfio/pci/vfio_pci_core.c | 209 +++++++++++++++++++++++++++++++
->  drivers/vfio/pci/vfio_pci_priv.h |   9 ++
->  drivers/vfio/pci/vfio_pci_rdwr.c |   8 ++
->  include/linux/vfio_pci_core.h    |  14 +++
->  4 files changed, 240 insertions(+)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index 9a75c30b67e2..9e4fa5d088a4 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -24,6 +24,7 @@
->  #include <linux/pci.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/slab.h>
-> +#include <linux/sort.h>
->  #include <linux/types.h>
->  #include <linux/uaccess.h>
->  #include <linux/vgaarb.h>
-> @@ -1012,6 +1013,204 @@ static int msix_mmappable_cap(struct vfio_pci_core_device *vdev,
->  	return vfio_info_add_capability(caps, &header, sizeof(header));
->  }
->  
-> +struct vfio_pci_excluded_range {
-> +	struct list_head	entry;
-> +	int			bar;
-> +	u64			start;
-> +	u64			size;
-> +	u32			flags;
-> +};
-> +
-> +int vfio_pci_core_add_excluded_range(struct vfio_pci_core_device *vdev, int bar,
-> +				     u64 start, u64 size, u32 flags)
-> +{
-> +	struct vfio_pci_excluded_range *range;
-> +
-> +	range = kzalloc_obj(*range);
-> +	if (!range)
-> +		return -ENOMEM;
-> +
-I'd be tempted to do kmalloc_obj and
-	*range = (struct vfio_pci_excluded_range) {
-		.bar = bar,
-		.start = start,
-		.size = size,
-		.flags = flags,
-	};
-	list_add_tail(...)
+mm/vma.c: In function '__mmap_region':
+mm/vma.c:3083:1: error: the frame size of 1552 bytes is larger than 1536 bytes [-Werror=frame-larger-than=]
 
-> +	range->bar = bar;
-> +	range->start = start;
-> +	range->size = size;
-> +	range->flags = flags;
-> +	list_add_tail(&range->entry, &vdev->excluded_ranges);
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(vfio_pci_core_add_excluded_range);
-> +
-> +static void vfio_pci_free_excluded_ranges(struct vfio_pci_core_device *vdev)
-> +{
-> +	struct vfio_pci_excluded_range *range, *tmp;
-> +
-> +	list_for_each_entry_safe(range, tmp, &vdev->excluded_ranges, entry) {
-> +		list_del(&range->entry);
-> +		kfree(range);
-> +	}
-> +}
+I don't immediately see anything that you did that would have introduced
+something bad that wasn't already there, so it's likely just gone from
+just below the limit I was using for my testing to just above. The 1536
+byte limit is what I use on 64-bit builds with KASAN and otherwise
+still has a clean build (with a small number of local fixup patches).
 
+What I see is that this function has multiple structures on the
+stack that have nontrivial sizes:
 
-> +
-> +/* A page-aligned mmap hole, derived from an mmap-excluded range. */
-> +struct vfio_pci_mmap_hole {
-> +	u64 start;
-> +	u64 end;
-> +};
-This is just a range. Do we need another define for this specific case?
+        VMA_ITERATOR(vmi, mm, addr); /* 104 bytes */
+        MMAP_STATE(map, mm, &vmi, addr, len,...); /* 384 bytes */
+        struct vm_area_desc desc; /* 128 bytes */
 
-> +/*
-> + * Advertise the BAR as mmappable minus every page-aligned mmap-excluded hole.
-> + * A BAR can carry several holes at unrelated offsets (for example an MSI-X
-> + * table and one or more trapped CXL component sub-blocks, which the CXL spec
-> + * locates by pointer, not at fixed offsets).
-> + * Collect the holes, page-align and sort them, coalesce any that overlap or
-> + * touch, and advertise the gaps.
-> + */
-> +static int vfio_pci_excluded_sparse_cap(struct vfio_pci_core_device *vdev,
-> +					int index, struct vfio_info_cap *caps)
-> +{
-> +	u64 bar_len = pci_resource_len(vdev->pdev, index);
-> +	struct vfio_region_info_cap_sparse_mmap *sparse;
-> +	struct vfio_pci_excluded_range *range;
-> +	struct vfio_pci_mmap_hole *holes;
-> +	int nr_holes = 0, nr_areas = 0, i, j;
+The config that caused this is https://pastebin.com/raw/5M95qHy5,
+which is an x86-64 build with CONFIG_KASAN_STACK enabled, and likely
+a few other configuration options that made it a little worse.
+KASAN_STACK tends to double the stack size used by structures
+in order to catch out-of-bounds accesses.
 
-Generally avoid mixing declarations with assignment with those that don't
-on a single line. It is harder to read than splitting them into each
-time of declaration.
+If I sprinkle some 'noinline_for_stack' annotations on functions
+called by __mmap_region(), I can get the size down to 1144 in this
+config, but that doesn't sound like a great workaround.
 
-> +	size_t size;
-> +	u64 pos;
-> +	int ret;
-> +
-> +	list_for_each_entry(range, &vdev->excluded_ranges, entry)
-> +		if (range->bar == index &&
-> +		    (range->flags & VFIO_PCI_EXCLUDE_MMAP))
-> +			nr_holes++;
-> +
-> +	if (!nr_holes)
-> +		return 0;
-> +
-	struct vfio_pci_mmap_hole *holes __free(kfree) =
-		kzalloc_objs(*holes, nr_holes);
-or something like that.  Kees is well his way to getting rid of almost
-all places where objects are allocated in non typesafe ways.
+The large stack usage is potentially harmful if this ends up
+in call chains that have additional large stack usage (e.g.
+kmalloc() leading to reclaim). Any ideas for how to reduce it here?
 
-> +	holes = kmalloc_array(nr_holes, sizeof(*holes), GFP_KERNEL);
-> +	if (!holes)
-> +		return -ENOMEM;
-> +
-> +	/*
-> +	 * mmap is page granular, so each hole rounds out to the page boundaries
-> +	 * enclosing its excluded sub-range. The byte-granular exclusion still
-> +	 * governs the fault and read/write paths; only the advertised mmap areas
-> +	 * round to whole pages.
-> +	 */
-> +	i = 0;
-> +	list_for_each_entry(range, &vdev->excluded_ranges, entry) {
-> +		if (range->bar != index ||
-> +		    !(range->flags & VFIO_PCI_EXCLUDE_MMAP))
-> +			continue;
-
-		holes[i++] = (struct vfio_pci_mmap_hole) {
-			.start = ALIGN_DOWN(range->start, PAGE_SIZE),
-			.end = ALIGN(range->start + range->size, PAGE_SIZE),
-		};
-
-Mind you vfio_pci_mmap_hole seems a lot like a range. So maybe just use a
-struct range then you get 
-
-		holes[i++] = DEFINE_RANGE(ALIGN_DOWN(range->start, PAGE_SIZE),
-					  ALIGN(range->start + range->size, PAGE_SIZE));
-
-
-> +		holes[i].start = ALIGN_DOWN(range->start, PAGE_SIZE);
-> +		holes[i].end = ALIGN(range->start + range->size, PAGE_SIZE);
-> +		i++;
-> +	}
-> +
-> +	sort(holes, nr_holes, sizeof(*holes), vfio_pci_mmap_hole_cmp, NULL);
-> +
-> +	/* Coalesce holes that overlap or touch after page alignment. */
-> +	for (i = 0, j = 0; i < nr_holes; i++) {
-> +		if (j && holes[i].start <= holes[j - 1].end)
-> +			holes[j - 1].end = max(holes[j - 1].end, holes[i].end);
-> +		else
-> +			holes[j++] = holes[i];
-> +	}
-> +	nr_holes = j;
-> +
-> +	/* One mmappable area per gap: before, between, and after the holes. */
-> +	for (i = 0, pos = 0; i < nr_holes; i++) {
-> +		if (holes[i].start > pos)
-> +			nr_areas++;
-> +		pos = holes[i].end;
-> +	}
-> +	if (pos < bar_len)
-> +		nr_areas++;
-> +
-> +	size = struct_size(sparse, areas, nr_areas);
-
-	struct vfio_region_info_cap_sparse_mmap *sparse =
-		kzalloc_flex(*sparse, areas, nr_areas);
-
-> +	sparse = kzalloc(size, GFP_KERNEL);
-> +	if (!sparse) {
-> +		kfree(holes);
-with the __free above this can simply return.
-> +		return -ENOMEM;
-> +	}
-> +
-> +	sparse->header.id = VFIO_REGION_INFO_CAP_SPARSE_MMAP;
-> +	sparse->header.version = 1;
-> +	sparse->nr_areas = nr_areas;
-> +
-> +	for (i = 0, j = 0, pos = 0; i < nr_holes; i++) {
-> +		if (holes[i].start > pos) {
-> +			sparse->areas[j].offset = pos;
-> +			sparse->areas[j].size = holes[i].start - pos;
-> +			j++;
-Bit of a long line because of the indent but I'd still go for setting whole
-structure in one shot - so something like:
-
-			sparse->areas[j++] = (struct vfio_region_sparse_mmap_area) {
-				.offset = pos,
-				.size = holes[i].start - pos,
-			};
-> +		}
-> +		pos = holes[i].end;
-> +	}
-> +	if (pos < bar_len) {
-> +		sparse->areas[j].offset = pos;
-> +		sparse->areas[j].size = bar_len - pos;
-
-Similar for setting it in one go so we only do the indexing
-once + looks more like above (where this trick is more advantageous!)
-
-		sparse->areas[j] = (struct vfio_sparse_mmap_area) {
-			.offset = pos,
-			.size = bar_len - pos, 
-		};
-
-
-> +	}
-> +
-> +	kfree(holes);
-
-This looks like a good place to use __free magic to simplify things.
-
-> +	ret = vfio_info_add_capability(caps, &sparse->header, size);
-> +	kfree(sparse);
-> +	return ret;
-> +}
-> +
-
-
+     Arnd
