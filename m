@@ -1,113 +1,148 @@
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5960C3148C9
-	for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 11:19:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8EE73DDDCD
+	for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 11:30:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790335185; cv=none; b=Eg8pU6XUx5U74emVB4l5wQb9PGEhzzrqbMiN0Z1iV6/hjSxX+cD69yT/J8g9BBJOASiWk1yiQtBFZBk3BoQxD9FaV5O3+cD+39fj7dC5ftittuObr5mPl7FeP9/EfeehThwaI9h1zU13s7M4LP+SWlV1JbFucp2T9fboT2GJKto=
+	t=1790335852; cv=none; b=M9+3ql446+dTYJ0jQhrclTDmxfGXW3BjjfYXnC/P1RAFbFZKoyRmi6ftCzkiob06JnwIsrcgGCB3+rfNmZpc44T1NUzQZMGVFmu5B79cXwtxnd5mfY6qymEJHOIDOcRmPP61oMg7qqK7KcaaRWuI7h0Tpr1KoMl9S5y6anm9cfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790335185; c=relaxed/simple;
-	bh=wSluQmSSorSp9ZHinGh5VyHG4yg7o2jMaeGz1BYn03g=;
+	s=arc-20240116; t=1790335852; c=relaxed/simple;
+	bh=U5jzh/wrq5mofA952aJ0mIvvu9S4cjBPBZinv7n9nmo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E2OYvGvHHJrnqntWqYc6EBdSco8NFqkk9IE3pTSRd7PlPXKlZHtjv6riz2F4BpHjhbvXcDzwM37rooKyNoiKEDPkRsFtBqwKbhtq7TyDNyYj8QtgKZuBqEuzw4CFgEJ262TcUAAJvWDr4P1btzZszxu0nizrvudTKn4l62gl3l8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=Anpt9Fav; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FkS1+yI2; arc=none smtp.client-ip=202.12.124.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+	 Content-Type:Content-Disposition:In-Reply-To; b=sHZnjmDeiE3dRzuuuMPjCgPcJykGjO5KcNxh+vYCUsnV4q2JMM53W+MfRB8KQDXOfVypljVLe9CQ6smnAFTgUL4z3AutaSSPoWIQvNlDdKP+hAS1jDJ7dalXHsNTkFSklozdhRnfL3wjTflQBrRgiPr0IZ9EMP9mEdxzh0H7oXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K+DieUdD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="Anpt9Fav";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FkS1+yI2"
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 3317A7A00D1;
-	Fri, 25 Sep 2026 07:19:41 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Fri, 25 Sep 2026 07:19:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
-	 t=1790335181; x=1790421581; bh=br5qg3sOBqD4VUHI35euHRC7GezouLRE
-	XInGGSs+VI4=; b=Anpt9FavthLZoIA6nKOXZg8FSdV9x8sIdQBheF2t7EFBkRwC
-	HVCHiYcZgJaeOjDf/XBFZN36wAMFz3vE3pcIQ7h2Zfv1eEphv3jqtIAjbwNpkVfj
-	mkN6RPp8L6H8iHAWUCJnjp4RX/qNztgBbB4rZ60jjMVQWZLfXILuhEcGscvBMHxm
-	7LLvEN/OJdjlmQqdwpOLC35TN7xf7fS+0zu41HbWKqcg6wr8gAPCAtJx7S1yNE0i
-	2pZxi1hsY+f1GimrXLabG4n8dQTS/45tBZSPbb/j3WT2mxeA1LWq7jiiwJyjNyBi
-	+EBMmWnxfVY6yE+a7XhaQyHOB64rhDKG3X6Drg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790335181; x=
-	1790421581; bh=br5qg3sOBqD4VUHI35euHRC7GezouLREXInGGSs+VI4=; b=F
-	kS1+yI2KBkgqpc5d5zUEgzh7pN+32IvGiFRJTDqfrh4pDVsE8hHCvTZWqr7mK30S
-	EQNZM8uO5Xq/34dv2GW37pg1IXmX6JumpgA/+pwk0VafFpCY2BwitMQVQ2bSFLUJ
-	nHPUAbyszVf4TkgN6vgXNL3fKZGRJY3yPeYyPRa/Re9WHG8591pUJTMm916qcZ8y
-	DmsW0EkmsadNk0Up6WatSwLBXQgbIecQ0GnYqbJ7XO8o/V+zJg1dKpM3VMwuVSxD
-	lWUCYbGzFhyUiUfRdAULYcOPkeH3Hkq+hufUv4npaWqfzV2bJfJkDQnc3tzm4isL
-	b08Edu2K4yZSU1F2nHklw==
-X-ME-Sender: <xms:zFi2at4OgSjC0YdCP2QvAy-plim6kk0BzqGiAuIIErC-vZGesyFFyQ>
-    <xme:zFi2ar1GL6e_7i4a2O6yTIoi0cOGiLzd0zjJ_6mw6u0CkNKzBYuhc3xJ2Z7pFRFyJ
-    Ti4NStgrzI_57VlE11HB-77pqxvyfj9NTS2WSO__C6VOKxLGNeDAss>
-X-ME-Received: <xmr:zFi2akzyl6Mus_b3E6tAX4ggZlE734hr4ztR5XkntIK1uvVCZW4mafjqsR8>
-X-ME-Proxy-Cause: dmFkZTGvQ80WebMSBUckFVV0jr3YL9tpWR/04NOusVjI66dlelAkWycWX+k3hFhwbjINRn
-    bZCU4oDfTAEw3Tr9PsxAgQU0BFsqV7rLEFIqYCEgitYabbUUZTzGUEzDguUD59aHyYRusn
-    NVTgQRb4m+ovjCmPKWNN+muzuCv22amZmKkA3ShSZ5UNm1La00sh4z/0kOydDe8pW+N/vD
-    VBMSVi7Z+jhr5Z9cs1dei38nThW8mIC32EWA31MUeiwmb3ev8FvFmKIaSdLxVnRhTQCjNB
-    i3uS+lApeBuJPKq+dsjjxu4rKSeIAgIi5d1cXq2mRJWPrw6cRPf0Ql2fRT91N+otYCtotq
-    MRaVYiJ9d7n1XGc6TfELpiZL3aupgV0GHMjzD+eHeWpYCdj/Nwx7qsJga6pQCRqFOIJ0Ic
-    sor5WVP3wZlMa3f7wSgoJo/EFvVhuCaalDOHgk1NYmh42rXIs9Yd8kK7vXcsjtAzSTy4vZ
-    IbCMh6jMD9Jmlz5nEkUBWhWIEmN3iDqABzV7wdbRk8zmUIUfNUU+HLVU+er2H40UKKZg/2
-    cAoaasKmSa2Tg5F/4ChJ3cONlQqFFBpKveCYgAxaAlRuZHV4TZmG85RuWI4AxZviOPCTTP
-    PIUCQFl/EfMGywKIvE/CRM6UpwzU6pq/tKNYQKdlcFQfKHSpdmWE5A1P8uuQ
-X-ME-Proxy: <xmx:zFi2akk89B4U8leOA6eGwXjASlbv2Lq0WjP0DxHj-nn9nTrEyiZWGw>
-    <xmx:zFi2an_jaDfpxxKQYA_IGGSdvahXoV8M5O0QuXcdRJeioqwCEuOw5g>
-    <xmx:zFi2avq1ZfhdAMevUkNBG5PKcDR0pa3OCpeH2qRfi7EiojGIpcGe5Q>
-    <xmx:zFi2arKzJnaUoJPss5dRTH36efTEzWBUkZjQVfwTbFJiszENj30cZg>
-    <xmx:zVi2ahkCoCduSoy34kze4xjFE3a8j9OcJtYI3f5X_X3-ObHubhZN4uV4>
-Feedback-ID: ie3994620:Fastmail
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K+DieUdD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE7A81F00898;
+	Fri, 25 Sep 2026 11:30:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790335851;
+	bh=PfKUWWPdibuZbpDvMSuWg21M+osPtSxvRUv3Zz8XAbs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=K+DieUdDJaQJ3vhMc/+aNjb2JCyKLh3KSGijRAQptqKjnoVZrI7MT66wEVvlrqR6m
+	 vOgZjec0TFiJQSTBkC0rhQBT7Yayy701HgSnPLCjTiZmZ8L1++Sik0eYEgFuzGi4gG
+	 WwWuW0y5ckhXEdhIRshUeCzog47TAOHgA1zJk+PrkmO+/C+DRDS6tpMsW3rQdypDkZ
+	 UiRoJLU759uHMqJACeaGDjFbUtSpRXfBly9R46krrvDhNzne10c9HcE6jzjjf8GQRm
+	 mZu7dXKx1gKzd43QQRRQBI75rUzEr26V1z3hMfC8ED7wRox3ypBXxISukzL7Nq2p9p
+	 ECyKMIdG4rn8w==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 933EF198005A;
+	Fri, 25 Sep 2026 07:30:47 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Fri, 25 Sep 2026 07:30:49 -0400
+X-ME-Sender: <xms:Z1u2apWjZllxcj6kK4bVg0P5jl8VllepPzWD9fm2nyl_exwNWa32zQ>
+    <xme:Z1u2atjLMRlQXRdwVw6X6V9pHfwUGE6j9HVEkT-nw9AmXTjDek7I2YvfSLpAtUoCH
+    NjGVGNmQOKWapgM9IqE8Spimx15R8KAMkGGP3eRmt_8bFn7LFYfbb9Gnw>
+X-ME-Received: <xmr:Z1u2at4aNfujvh_mA6DpP4jN_jCKqCLeleZbPWrEsn2gdc6KdwMvVFlelnI>
+X-ME-Proxy-Cause: dmFkZTE8J5BbVZeb+640mllbYW7069CIPU8sTayV1dW0ccjnVUHaZmhv7bVQePrG7CDBvl
+    JGmq9rRiegi1EaWX2c5A6tgH3GTS3+iAEsrO6HT2SvGPAxpy+8GZCbAHjYUrtaEOUgTWgR
+    ShEdiElsRKBIlvFVQhElHtBq3poKvlNgT65xtg+qsDapXeostnjxPG0YW7uyKEADovgRt1
+    gWj9lT9SeM949b+99O6Q1rTHGHhhbFQP6gRsd289+Qng067FXCWRyzXqYTu0VWJw+q8ikJ
+    eoQhQgcP9ssyGGYoBdOn3J5nA2iym/ys5UPhkv+KYq4LkbEGy6ZghHZcqTLL+DNSCFAUq9
+    beIykgW/Yg/RG5At6oq2aXHFQQ7D9g7FiD/0upGjbC8SDxo1aLWvmTQtI7NrjTwnAega4+
+    GLph1/wDjudg3rVkegKME9VBwI6/4EZW7iJ10eQqyC0E/HUyAzWsMnKJD4AZsLyjQHJaLO
+    ixu/oMQTJ2GcOd7DRHM+o7PIxACA6d0IseizbBuXP6rNLpAGjxJHqS3YyYkMUpZ7eSwxZN
+    voHz42S6mDzt4tNC4O/dr1cV8mZkaSi6K2M/mC5si2oRAMYoHRU3RSvP9HaUZdrnV/IiZ4
+    NJZzfOJTKkqs/w0qqfFiXjQnuHO/Fev22aZ2dkR91mO9BVYjdaE6w0m/Jc3w
+X-ME-Proxy: <xmx:Z1u2al71Q2aP0qO8DflnE2s5yDNAHJnsGoVgdP68j73FPgwYBJvTSw>
+    <xmx:Z1u2arE_0h4Ou9Po-tlACd4XZxWzZa5adTZPqlPJNuj4sWr2xp6eXw>
+    <xmx:Z1u2ajw2MzlTWeBxFJSpxCEzUwK8VWpB7heTMCwTDUMvda_FaK2XoA>
+    <xmx:Z1u2ar0lybSr2AgK4Kn2gnTHVJ5jvqCq-sMkyP3a_KgvLBuy6TpEAw>
+    <xmx:Z1u2amMOa7qBHTwGtR0adYkOCnpEUz_1u_9CTwMyNHBi2WSvbZ7tChlK>
+Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 25 Sep 2026 07:19:40 -0400 (EDT)
-Date: Fri, 25 Sep 2026 12:19:39 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: dave.hansen@linux.intel.com, rick.p.edgecombe@intel.com, 
-	xiaoyao.li@intel.com, linux-coco@lists.linux.dev, kvm@vger.kernel.org, x86@kernel.org, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-Subject: Re: [PATCH v2] x86/tdx: Harden exports
-Message-ID: <arZYKKo7fHFzosNY@thinkstation>
-References: <20260917110714.1587301-1-nik.borisov@suse.com>
+ 25 Sep 2026 07:30:46 -0400 (EDT)
+Date: Fri, 25 Sep 2026 12:30:45 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Vishal Verma <vishal.l.verma@intel.com>
+Cc: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] x86/early_printk: Add earlyprintk=tdx to drive
+ the UART with TDVMCALLs
+Message-ID: <arZbBqArD9NqWPry@thinkstation>
+References: <20260922-b4-tdx_earlyprintk_tdcalls-v3-0-6ebaa599df10@intel.com>
+ <20260922-b4-tdx_earlyprintk_tdcalls-v3-2-6ebaa599df10@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260917110714.1587301-1-nik.borisov@suse.com>
+In-Reply-To: <20260922-b4-tdx_earlyprintk_tdcalls-v3-2-6ebaa599df10@intel.com>
 
-On Thu, Sep 17, 2026 at 02:07:14PM +0300, Nikolay Borisov wrote:
-> tdx_* function aren't supposed to be used by the kernel at large, rather
-> they are mostly used by KVM and a very small number of them are exposed
-> via the tdx-guest/tdx-host drivers. Reflect this fact in their
-> EXPORT_SYMBOL* declarations.
+On Tue, Sep 22, 2026 at 02:20:07PM -0600, Vishal Verma wrote:
+> @@ -111,6 +112,23 @@ ANNOTATE_NOENDBR_SYM(io_serial_out);
+>  DEFINE_STATIC_CALL(serial_in, io_serial_in);
+>  DEFINE_STATIC_CALL(serial_out, io_serial_out);
+>  
+> +#ifdef CONFIG_INTEL_TDX_GUEST
+> +/*
+> + * A TDX guest cannot execute port I/O instructions, so ask the VMM to do it.
+> + */
+> +static __noendbr unsigned int tdx_serial_in(unsigned long addr, int offset)
+> +{
+> +	return tdx_inb(addr + offset);
+> +}
+> +ANNOTATE_NOENDBR_SYM(tdx_serial_in);
+> +
+> +static __noendbr void tdx_serial_out(unsigned long addr, int offset, int value)
+> +{
+> +	tdx_outb(value, addr + offset);
+> +}
+> +ANNOTATE_NOENDBR_SYM(tdx_serial_out);
+> +#endif /* CONFIG_INTEL_TDX_GUEST */
+> +
+>  static int early_serial_putc(unsigned char ch)
+>  {
+>  	unsigned timeout = 0xffff;
+> @@ -196,6 +214,22 @@ static __init void early_serial_init(char *s)
+>  	early_serial_hw_init(divisor);
+>  }
+>  
+> +#ifdef CONFIG_INTEL_TDX_GUEST
+> +/*
+> + * Use early_serial_base (COM1) and same default baud rate as
+> + * "earlyprintk=serial"
+> + */
+> +static __init void early_serial_tdx_init(void)
+> +{
+> +	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
+> +		static_call_update(serial_in, tdx_serial_in);
+> +		static_call_update(serial_out, tdx_serial_out);
+> +	}
+> +
+> +	early_serial_hw_init(115200 / DEFAULT_BAUD);
+> +}
+> +#endif /* CONFIG_INTEL_TDX_GUEST */
+> +
+>  static __noendbr void mem32_serial_out(unsigned long addr, int offset, int value)
+>  {
+>  	u32 __iomem *vaddr = (u32 __iomem *)addr;
+> @@ -414,6 +448,13 @@ static int __init setup_early_printk(char *buf)
+>  			early_serial_init(buf + 4);
+>  			early_console_register(&early_serial_console, keep);
+>  		}
+> +#ifdef CONFIG_INTEL_TDX_GUEST
+> +		if (!strncmp(buf, "tdx", 3)) {
+> +			early_serial_tdx_init();
+> +			early_console_register(&early_serial_console, keep);
+> +			break;
+> +		}
+> +#endif
 
-Subject could be better. Something like "x86/tdx: Restrict attestation
-exports to the tdx-guest driver"?
+All these #ifdefs in early_printk.c can go. X86_FEATURE_TDX_GUEST is a
+disabled feature without CONFIG_INTEL_TDX_GUEST, so
+cpu_feature_enabled() folds to zero and the compiler drops the
+static_call_update() calls and the wrappers with them.
 
-The changelog still talks about KVM and tdx-host. Rewrite it.
-
-> Reported-by: Michal Koutný <mkoutny@suse.com>
-
-Maybe Suggested-by rather than Reported-by? There is no bug here.
-
-> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
-
-With that fixed you can use my:
-
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Add stubs for tdx_inb() and tdx_outb() to the #else branch in
+<asm/tdx.h> and make the "tdx" case unconditional.
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
