@@ -1,214 +1,208 @@
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010018.outbound.protection.outlook.com [52.101.56.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735FA4F55B3;
-	Fri, 25 Sep 2026 20:51:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790369478; cv=none; b=S06WLH8ywIJkIB7W43+gOAS7Jj7ehmwox4qzktZ1xbHbN4W9oWDvCO9r03cPabYJ6UmDIXnxxfZTKuue2q1XMOKPVUWwFfR4mD+NlXnN0Psi536cpbSGOqnNKIdcZu3BZ6VAu7y8E3eFoCFEtqKxdgfQlKMHmWifGLPXd1UErNw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790369478; c=relaxed/simple;
-	bh=RIoPdRwTiHH1lN+08xLxvRRPr/CFxxY5ugqYO4YzDpQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q7198ASbLICP0VFlrYmPL3U0eKUQccck8gyG6qEZ0kJhlrGwwOle0L2/7uRiwxR+GPQWWd8Np0JENi016MdaSWE3rJ/HjIi6+FG5jMw5GSGEyKWIaGxzRd/90Njybq+0WHTzN0lR5SrIs2Y7sWsIeDhVjI36VdE+hTXkPRapWTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=gBSn4wNc; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=afcr6c9C; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E803B27E8;
+	Fri, 25 Sep 2026 20:51:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790369505; cv=fail; b=UA6MF6uULAS82Rw52yWd/M0HrqVuvbFO+GbHLSkokD+7/0beV+YUQVo9iIBfEm1m7HyuTpvPX+0RIoDzLPIxyhi+paXPdbLEn8UQ1Co4dpRZsy0UYA3FYMt9lky8zB1INeAaBQghhjf2s3AqFXBP2leeN4jE/u16I+G+MDOGCC4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790369505; c=relaxed/simple;
+	bh=Cq8yt8s/tTprMYtxWe399admSt/QaPAS/Ey7rajEkcY=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=T0MZGuhK7WCyYC1c/GmAhySrq1EvoNhaV9AQJg2OTigWX31V78oVuVvOCapkYYCtrxk/w86YqBJ/NaVtxbj9evUCCzwoSKXKTi+Iw3uoHrzvIj95JFHNDs4mbv6C26ssUsTxjCWOe2CI5mKVpjXrAn8+bqit/C/MRszERaYePjU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nqHNu22c; arc=fail smtp.client-ip=52.101.56.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="gBSn4wNc";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="afcr6c9C"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 71AD3140013D;
-	Fri, 25 Sep 2026 16:51:09 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Fri, 25 Sep 2026 16:51:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1790369469;
-	 x=1790455869; bh=ZNEN+dXoF8P6Ekb3ewN4oyB6/0I/6Vth7Pj0sviOB30=; b=
-	gBSn4wNc8HBxBA1HZIcTePQLMorz0TUdwLm/Ys8MC3cDOlfPQ56lpkpmJBRS1dNp
-	8Dk3uQSf7IXsYewYa+3Ldyth/714TgMyOL3ERsb5jkszBz+wiHYGJBFVaed+PK2e
-	9nSDNxbpfEa3QjS9olTN5CDYeeGRWc1wsvAhqcyhPKImEF12M8TWLlcKUpHBLvTd
-	ZeX+hX/j3L+TZ/kAz8Lg0b9YfDomPDE/jhs/9d3SrXT+MVuEDXI+W9w426iirqAb
-	tcR303/RiSGpep6TlbBaLlASv5cElq6D28Tbxz7QeiTJfN+MH4QuW8c+l6BP0Mnr
-	01k8KvlQS1ho+/kPhTVBDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790369469; x=
-	1790455869; bh=ZNEN+dXoF8P6Ekb3ewN4oyB6/0I/6Vth7Pj0sviOB30=; b=a
-	fcr6c9CbtHpTpFf+QuTGh/UWjsaNTeYkvi5+Ue+qHkfFLLMYjTitRU74PwLtI2cn
-	4dUjgTW4Xdgp814AhbVfv4s6ISgL4vQo7KOeey0P75J5YO1o7rZewFb5jBSt6ouz
-	TB+aBSsIevWTfE5S4b1iJZEwlScBTvC1aB0O3/tb1Zvu4ENK3U5rDNOfr7B5Zyqy
-	5VLJZYZB6FPIRTt4w2rGY94RuyW+R4p6Mws7QeD7m3ZB4UIw7URifITS4ur//DSm
-	cxozmjf+hxJVh5zE3b3aAiRsHMGU8k1fCGa1wWAoeWxDyHIZ5irRuJxZA1D2K2Ot
-	yvwNDBJvFLF6GUvV9hNBQ==
-X-ME-Sender: <xms:vd62arTMrHUQXJzISkkPCe8q6a_wv6O0uhydgFo7hQd6DnnlrTtDPA>
-    <xme:vd62aoMuA3cyNbG4lrbzjWs9gll_NLlKniEThCmR_5vcVit1ElGgrlVQDi7tturi-
-    IM20AVEndPFyFW7bxhqveyYJeFhmKwmfjOb-qcAuCOgRrqr6gNNgu4>
-X-ME-Received: <xmr:vd62akWT04oR_6mVb6LdnnNqyt5GyLxRTKi_VhFdx8iTJWMVKhjcEhGGHjxZ_g>
-X-ME-Proxy-Cause: dmFkZTFWklYdqvYQ68I78RbZLhjyaCMouOoOz+Wr3uDGRpJQZ3+VpP0tm4K0UYpW2hgqXE
-    vb6etJbG4/DqSHJDqMXjToTnYrKkAnZN62KdIwwQYCVVzOQMTaZ6L3AMXLFwBtnX63Ntst
-    NabAi9E1xS1LdeVSPtFTmulXVDmHfM0u+Npm94wFIDoOOI3AOJr3kXWvAwYYayING240zO
-    NvRyBW2IQk3FURul+/XaGzJaogOKgjXsorWlvRfNUVU7m8tndfGCEelZyvtF5sNP+1yFjb
-    /OgYFxVYj2hkAI2/xegGfLgk4pMBt4XZvSlTbtQ+231niL87re+1O5VJPYKCk4xNJLx1lF
-    R15kXQr7u+8h2iEI5pBnQVXCz364iLjXCPdrzASvNY0FTbCCif8962FhnlS2dmWFDSe0Sn
-    j93g1hcuFdxqJrztPU2wXOP2d98GlRteSL63QfIFNjt55+reCQLiy78zSEpqixGM0DfWcu
-    YuL2khLCjSbubs1nd44sDVxZPjXXHRV+Ur1GKqkSolVOH3U7oCjth0LRcc/VefOtD2H8Kt
-    8q09czCEG1prz40FNKH0GrgO5pDzuDYB/d/b+eulNuJUNQxfRMsO1QFl3McSJnA3ocCNWU
-    D+tafA0ccpNg6A0XNL9cOFsfKEJsIK1X8pXtKZ390je53Ruu+He1tSzOQnfA
-X-ME-Proxy: <xmx:vd62aveYLudcDa1M9lk6_KtuOceqeFZBcmJW4w6K1C9eMe3mrxdObQ>
-    <xmx:vd62agueCyXGQsKI_9KFZpdwWyocdOn6vVo07psBCPA4u1zsSgo5hQ>
-    <xmx:vd62au9Wtffs7rmvWCLT3HvD_ueb8m9EBAhOOcbClXLYpG4U_27__w>
-    <xmx:vd62ar16uv-DhVT6eRfl6Y1hjQtldGy1BkCeOITSivL-8DVy-11SZw>
-    <xmx:vd62am1O8na6A-2ITq0OHJ-8T8N4dXMoT5hopt7x78lSftaNrBwszDhc>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 25 Sep 2026 16:51:08 -0400 (EDT)
-Date: Fri, 25 Sep 2026 14:49:32 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Samuel Crossley <samuelcrossley@gmail.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, alex@shazbot.org
-Subject: Re: [PATCH v2] vfio/type1: avoid walking reserved-only mappings
- while unpinning
-Message-ID: <20260925144932.485c2dec@shazbot.org>
-In-Reply-To: <20260919-vfio-v2-1-68e7ed355972@gmail.com>
-References: <20260919-vfio-v2-1-68e7ed355972@gmail.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nqHNu22c"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pG7IFANSz5GCHvI+YqTfbOSPhlIloOAym3Xc9dZahvFKx/ycgmWt5nEB0Y6T1krf9haD/K5j5m5Aholi+trqnTqBSbVfywHBiryGQM1s+Opz6G/2jg64vajqR1UaUQ1tO+efhSwlNsDFr78EC/pFsB3yI30m5l58bAmHglcuNPlFlyiPaobKX/vwWnvd5ebQwb127k1dJAGX+nndIZxbyIc1du5yndEnh1tfwfFKC6ivs1Ztn0frpiTXdVf1Qitmxs4/eDlIybwBtD+G6ymNNdOvF+y8j/Z9yT7wzRc9FXNbXVJNTTNY7Qy80JKX7fWPf7DbAL0KxJOF5XRXINlZRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tvsCrAu5ayMDUpGwaP/lU1BHN2vk059qtfdL4sWdx4Q=;
+ b=k7kUN2QTbBAuJLUSItbocKbY9/ORhUxPjDhx+9+zhujmhNA8WlPeCCCe9BZX1gyvBmf1LkBOoy1Ah9oZlWTA5KSZqqcsMW1sNZ1OVZiH7M6Vh8I/7Gycb/sEKU519PxuF5ASWktbZOInmeZH7c84ikbPsGbgnct+nvxu98hdTmRaXUP5pvI7Arr08zpPy1x/Tj/hmV2xGaJ/H9jjkZ60vov+4/mfYFagTmkcusqCJID9JRke+DWHNX+lQtJMTpD763pDvKWZDd7E7P5upkCcFwvTy7/UT3iVZ1bYvxy0WPr0fe/+pNp4jLxFXvNXKlrOC/o6RyuuPeWyjbJeFeKyNA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tvsCrAu5ayMDUpGwaP/lU1BHN2vk059qtfdL4sWdx4Q=;
+ b=nqHNu22cc6ELeLWPDo9qQqrRdXvtsSOnIoiX+8OiITxaTUjN7bca2uRiA/EtWShYsdHHBVkJN0qErJ46uyFYDTgkCVFk0QST+9AkT+iQtoaqEw7AgLrbFTtxIh/UlArH5wtLqELLMsM/oVq2gZGjzHWGl7nGD5ABwbdsk7+R3t2CiPRqq7f/7OeahjoK7Rd9R644mHaRvxKJaOp0DnmdKlcIA20zw0UnLRK90go+uf14hUK7rSoX2WwDfcnkEsW7neqRfns+Vvkh9vDhg3pQP+vTRzjmzQ1/8OgWfjcLDPmV0Qvnylgg8SGHP8ZuajvGVC026hvnqUixPeKSl2BGUw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV3PR12MB9411.namprd12.prod.outlook.com (2603:10b6:408:215::20)
+ by PH7PR12MB7820.namprd12.prod.outlook.com (2603:10b6:510:268::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Fri, 25 Sep
+ 2026 20:51:39 +0000
+Received: from LV3PR12MB9411.namprd12.prod.outlook.com
+ ([fe80::98b7:86de:b69:2a15]) by LV3PR12MB9411.namprd12.prod.outlook.com
+ ([fe80::98b7:86de:b69:2a15%5]) with mapi id 15.21.0451.014; Fri, 25 Sep 2026
+ 20:51:39 +0000
+From: Alex Williamson <alex.williamson@nvidia.com>
+To: Alex Williamson <alex@shazbot.org>,
+	kvm <kvm@vger.kernel.org>
+Cc: Alex Williamson <alex.williamson@nvidia.com>,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Yi Liu <yi.l.liu@intel.com>,
+	David Matlack <dmatlack@google.com>
+Subject: [PATCH v3] vfio: selftests: Verify a failed second open preserves the vf_token
+Date: Fri, 25 Sep 2026 14:51:32 -0600
+Message-ID: <20260925205134.3505611-1-alex.williamson@nvidia.com>
+X-Mailer: git-send-email 2.53.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: IA1P220CA0012.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:208:461::16) To LV3PR12MB9411.namprd12.prod.outlook.com
+ (2603:10b6:408:215::20)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR12MB9411:EE_|PH7PR12MB7820:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1fdc3731-99bf-41c1-0975-08df1b46cbf6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|10067099003|3023799007|11063799006|56012099006|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	4MjsvYDK6blRafV7ZukChUkzjWHQrUlsicqQKMR7Ojaqetya6A0yaULBjDmeXkh2BO091AD5UlhDIO3oaSJpdWktVnQgdttFSKCdG/R7fp6ND3r7QIWjkobupSs2be6BOl1VATN1z+WD48i08OoXb95KMW6/DMKowF9rKdUuwAej2lUUYo8aOAiCBVhuL2o1sLAp9psNEzT5ANHQ+QhxAw16b/GrE9bqLYzxKJFYF45jkkUv0ojCuUpBFkIngeBPEWOUh/IIyBc6Tzf18mdLro4gmMk67Y7+y2zkTs0gp/uA4W2cpqfyILqK2lVe1T5DztqpXWYZY+rBgbpvD9ItfxLsaYrhFpaXCA5wDaIzkplMRLGDW42wSVpYUXQYXBcLus09EU+26PKPTJojlpkXRMxTtjA7IqPM9X9wy4/TbWU5DMcbnMVNhyFbR0XFHvYULXp24wCUHMudCV8g3wMXtc9B5mCCcfI5TxydpPo/6dFkvMvld2MKtIm+cOHZ7Lj0ge7MpuQaLtgwiLOCWQXMuH0LJjOSmsxXU7EnygErpYB0WP6DiQ/cYmbJuQ0JgB9KhuTZ9bISlY5a3hHJzTeqtVpPigtkF5k0leRjIGAgk2W4ui3gvumdu3GiahxY9NATa8K8bU1osllbyPV5lc0Gb90eAG0hmHkoENMhOWuvksI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(10067099003)(3023799007)(11063799006)(56012099006)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?XQqFAMLplUQS3jdAtmDzSfRPgiSy8i81uT1cFAhNlBb06OLO/QADnAbdMBFE?=
+ =?us-ascii?Q?AL+VDalCheZeiYhEpBH9ca/wTxyGRgYxi8u0NEXBfzkQXZ8iW454JcmLs1QI?=
+ =?us-ascii?Q?xnYgDT5QuofmspyqQ07ulFnq9fbFPkvF+rl5BGkBmxYqHNodkIzZ2PsDuIMH?=
+ =?us-ascii?Q?ruPOGh+zvQFmDzbf0YEoMnpEY0ah4bTSrYBxJRu6DlnhTs4sg52mjFPvSLNv?=
+ =?us-ascii?Q?+Mz6lnetNWc1G+l27gx4YcpWfiat51sZmatxIvaTsjX4dFolJNgK9TKnotqj?=
+ =?us-ascii?Q?IVTpo1z57ZiATAp5EjKpWhwihyzib46RlSD2KbFhA87LcLx0fOKWdki7L0xk?=
+ =?us-ascii?Q?S47VX08U3W51zArkTGJSYL/aaERmbjdfBSNT22BMHs6jM2UmV96trpZzKXre?=
+ =?us-ascii?Q?A3ai23jes7OJZP643PPcVWZ3GAsHqivmTEqwNhxcUnryiL4rw5ZMYUKRh2xY?=
+ =?us-ascii?Q?tje5xueXT8kukgpOVEwxV8asAyyAgEEGC5gge1/k1TLiraMF1jF7AJSjViuP?=
+ =?us-ascii?Q?iQCJ2ynt2YPN4ucR87+RQkHssoSBtkLdBewpE4Z6I3Q2oWmX9sK8fMnS88NS?=
+ =?us-ascii?Q?Y7svMNyPjb4hNLJDmJQOHY6Ok1jcYWzR7F8aJLMnFQXMLgi/HZIsjuZno+FA?=
+ =?us-ascii?Q?2zQL/srDt8wMuJ4WIacHcFfRvNvqYvaV0wfKan84QIbcNU0e+2v6M7LG5o7x?=
+ =?us-ascii?Q?KRjmkP7jfv0mBbwlOOUo2x4LKC7fYnd5kJDKJwqSZgwAOnWgfCBF/qp1glzp?=
+ =?us-ascii?Q?9wyTaa6cQ4yZH4onqsaJfYjO6/Y+OaiUtMSVoumgTFzIXn8zP0Lj/jtWapDZ?=
+ =?us-ascii?Q?ELggxt++6YZDMDueHtdwRkIS+JcZZzlfi3XT2o2UaDlEdvTewQd+5/MMWes6?=
+ =?us-ascii?Q?qMeqeGI56fd6NiPVE/RghVXzKzNRRwD02qIqsniderTSdiJDAtyj72z01M3B?=
+ =?us-ascii?Q?Y5GrIOv80PyhXfsGWzaJ+rMlYM/l2V/UKTGXFs+mAQG+V/0OBwwgQov9qK1V?=
+ =?us-ascii?Q?3hmIjeGs8AOCcmfUWKbgILKYLYhHPxx0CPK1hFetcqkOHh44+qTOq0rYrywH?=
+ =?us-ascii?Q?XGxHtMgCmg+6p9i6NWjB8XOd3dlx9m3qgZHs69YW71k1HPoEkOlMBjgitdEN?=
+ =?us-ascii?Q?Ysi8MxdXcCsurFaWzyGcUwlyy26ZsnbjA8hKSkIN5pXxCQBNoBsMqUS1A9tp?=
+ =?us-ascii?Q?73TUcgc9wbReaN1XTnTZ2jdJLVSIrOUGEroZZNWwXU0k/KNZgKFyg9m4Qf7V?=
+ =?us-ascii?Q?f7+LVQJN4CCfHDOHjxTkN+6BT0BAo3u2WIOTJGVdxNm5Due2FGxGW23+KHPT?=
+ =?us-ascii?Q?bO28rCyOcXuTqFYiFt1dZVt3KtNd3NVejE2J4379FFAoR6kMOKf8G7impic3?=
+ =?us-ascii?Q?p2j8qXDh8pEhUDF1R+SfkzATiR8V+MHYcuItjkiKMsKX7Stk03klV/kdPg6v?=
+ =?us-ascii?Q?B53li4rwPmPTDohpuOCCW5u7xGvAtoOhkVjjv56krmdZduSU4s1jhHwc+Xg4?=
+ =?us-ascii?Q?zzRRb+1tqwVPaUWVcdanitdVb7lwvBWbI/WWReQJyPOhGv5eaPHlQpzfo1hz?=
+ =?us-ascii?Q?diuaiRX4rXOPLfhaOshmdBgkcekqJzjAq5gYlBmDvTpo21GTVvMnWWH7hyei?=
+ =?us-ascii?Q?tQROhGsmPFMPQlyPK6of1EwzMSJ7mI3ljh3X/NMY1O0bxVcgcmDGTvnhm00P?=
+ =?us-ascii?Q?EcO77cUO3dwwDcoi3OdgK328VXhn1uowVkeXKelatRkwHejMiF/9DBMPPoF9?=
+ =?us-ascii?Q?gnWQbMgqqw=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1fdc3731-99bf-41c1-0975-08df1b46cbf6
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9411.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2026 20:51:39.6045
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0jyNp9kSRtH6K8RPdZsoa6C2NP59dlJI0J3avgkDKtK2i8pK38MbOwLZiGfV388pdGmOCQQSnE8Lm8QSGWgIYg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7820
 
-On Sat, 19 Sep 2026 15:13:03 -0700
-Samuel Crossley <samuelcrossley@gmail.com> wrote:
+The cdev path enforces a single open per device and rejects a second
+bind of an already open device.  That rejection must happen before the
+bind can mutate state shared across opens, notably the PF vf_token, so
+that a bind which cannot complete leaves the current opener's state
+untouched.  Before the fix in commit 258ba46543ab ("vfio: Reject a
+second cdev open before mutating shared device state"), the second bind
+mutated the vf_token and only then failed with -EINVAL.  It is now
+rejected early with -EBUSY.
 
-> Tearing down a large device-passthrough DMA mapping can process tens of
-> millions of reserved pfns in a single VFIO_IOMMU_UNMAP_DMA.  A 128 GiB
-> reserved mapping holds about 33.6 million 4KiB pfns, and
-> vfio_unpin_pages_remote() walks every one of them whenever dma->has_rsvd
-> is set, because reserved and non-reserved pfns might be mixed.  For a
-> mapping that contains only reserved pfns every put_pfn() is a no-op, but
-> each one still pays for the pfn_valid()/PageReserved() classification.
-> 
-> Seen on GPU-passthrough hosts running 6.13 with the v6.18 type1 series
-> backported, where a single VFIO_IOMMU_UNMAP_DMA held a CPU past the
-> soft-lockup watchdog (host identification, register dump and module list
-> trimmed):
-> 
->  watchdog: BUG: soft lockup - CPU#261 stuck for 22s! [qemu-system-x86:134503]
->  RIP: 0010:vfio_unpin_pages_remote+0x139/0x2a0 [vfio_iommu_type1]
->  Code: 90 4c 89 e1 48 c1 e9 34 75 74 4c 89 e1 48 c1 e9 22 75 6b 48 8b 0d f7 6f c2 e3 48 85 c9 74 5f 4c 89 e2 48 c1 ea 16 48 8b 0c d1 <48> 85 c9 74 4f 41 8b 55 30 4c 89 e6 48 c1 ee 0f 83 e6 7f c1 e6 05
->  Call Trace:
->   <IRQ>
->   ? watchdog_timer_fn+0x3d6/0x440
->   ? running_clock+0x10/0x10
->   ? hrtimer_interrupt+0x185/0x580
->   ? __sysvec_apic_timer_interrupt+0x44/0xe0
->   ? sysvec_apic_timer_interrupt+0x6b/0x80
->   </IRQ>
->   <TASK>
->   ? asm_sysvec_apic_timer_interrupt+0x16/0x20
->   ? vfio_unpin_pages_remote+0x139/0x2a0 [vfio_iommu_type1]
->   vfio_sync_unpin+0x96/0xf0 [vfio_iommu_type1]
->   vfio_unmap_unpin+0x324/0x3d0 [vfio_iommu_type1]
->   vfio_remove_dma+0x25/0xa0 [vfio_iommu_type1]
->   vfio_iommu_type1_ioctl+0xcd5/0x1760 [vfio_iommu_type1]
->   ? amd_pmu_v2_enable_all+0xa/0x30
->   ? perf_pmu_sched_task+0xbf/0xf0
->   x64_sys_call+0x282/0x1ac0
->   ? syscall_trace_enter+0x1e5/0x1f0
->   do_syscall_64+0x68/0x130
->   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-> 
-> RIP is the mem_section root test in pfn_valid(), inlined into put_pfn()
-> through is_invalid_reserved_pfn(), so the stall is in the dma->has_rsvd
-> per-page loop.  mem_section[] has no root for that pfn, so pfn_valid()
-> returns false and put_pfn() does nothing - for every pfn in the mapping.
-> 
-> Track whether the mapping also contains non-reserved pfns and skip the
-> walk entirely for reserved-only mappings.  Mixed mappings keep the
-> existing per-pfn walk, and ordinary mappings keep the existing batched
-> unpin path.
-> 
-> Tested on an affected host: reserved-only mappings up to 128 GiB take the
-> new path and complete in microseconds.  The ordinary-page path was
-> exercised unchanged.
-> 
-> Suggested-by: Alex Williamson <alex@shazbot.org>
-> Link: https://lore.kernel.org/all/20260803154707.71cc0d6b@shazbot.org/
-> Signed-off-by: Samuel Crossley <samuelcrossley@gmail.com>
-> ---
-> This is the reserved-only fast path you suggested on v1, tested on
-> the affected hosts. There is indeed no evidence that the non-reserved
-> VFIO path needs chunking, and agree any such change to
-> unpin_user_page_range_dirty_lock() would belong in mm, so not
-> including it in this patch.
-> ---
-> Changes in v2:
-> - Replace v1's cond_resched() chunking with the reserved-only fast path.
-> - Tested on an affected host; reserved-only mappings up to 128 GiB now
->   complete in microseconds instead of walking ~33.6M pfns.
-> - Link to v1: https://patch.msgid.link/20260723-vfio-v1-1-3b59579916c6@gmail.com
-> ---
->  drivers/vfio/vfio_iommu_type1.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-> index c8151ba54de3..f7addfbe1aab 100644
-> --- a/drivers/vfio/vfio_iommu_type1.c
-> +++ b/drivers/vfio/vfio_iommu_type1.c
-> @@ -94,6 +94,7 @@ struct vfio_dma {
->  	bool			lock_cap;	/* capable(CAP_IPC_LOCK) */
->  	bool			vaddr_invalid;
->  	bool			has_rsvd;	/* has 1 or more rsvd pfns */
-> +	bool			has_non_rsvd;	/* has 1 or more !rsvd pfns */
->  	struct task_struct	*task;
->  	struct rb_root		pfn_list;	/* Ex-user pinned pfn list */
->  	unsigned long		*bitmap;
-> @@ -791,6 +792,7 @@ static long vfio_pin_pages_remote(struct vfio_dma *dma, unsigned long vaddr,
->  
->  out:
->  	dma->has_rsvd |= rsvd;
-> +	dma->has_non_rsvd |= !rsvd;
->  	ret = vfio_lock_acct(dma, lock_acct, false);
->  
->  unpin_out:
-> @@ -821,11 +823,13 @@ static long vfio_unpin_pages_remote(struct vfio_dma *dma, dma_addr_t iova,
->  	long unlocked = 0, locked = vpfn_pages(dma, iova, npage);
->  
->  	if (dma->has_rsvd) {
-> -		unsigned long i;
-> +		if (dma->has_non_rsvd) {
-> +			unsigned long i;
->  
-> -		for (i = 0; i < npage; i++)
-> -			if (put_pfn(pfn++, dma->prot))
-> -				unlocked++;
-> +			for (i = 0; i < npage; i++)
-> +				if (put_pfn(pfn++, dma->prot))
-> +					unlocked++;
-> +		}
->  	} else {
->  		put_valid_unreserved_pfns(pfn, npage, dma->prot);
->  		unlocked = npage;
-> 
-> ---
-> base-commit: 4e3c1fc8abcb8eff062150b4340fa4569696d645
-> change-id: 20260723-vfio-decd86bf3cf6
-> 
-> Best regards,
-> --  
-> Samuel Crossley <samuelcrossley@gmail.com>
-> 
+Add a regression test that binds a PF with one token, attempts a second
+bind of the same PF with a different token, then initializes a VF with
+the original token.  The VF init succeeds only if the rejected second
+bind left the PF vf_token intact; a regression that clobbered it to the
+second token would make the VF init fail.  The -EBUSY errno is checked
+with EXPECT_EQ() so the clobber assertion still runs if the rejection
+returns a different error.
 
-Applied to vfio next for v7.4.  Thanks,
+This hazard is specific to the cdev/iommufd single-open path, so the
+test runs only in iommufd mode.
 
-Alex
+Suggested-by: David Matlack <dmatlack@google.com>
+Assisted-by: LLM
+Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+---
+
+v3 following v2 from [1], incorporating David's suggestions to combine
+the tests using EXPECT_EQ() rather than ASSERT_EQ() so that we still
+test both aspects without duplicating code.  -EINVAL reference moved to
+commit log.  Remaining patches from [1] applied to vfio next branch.
+
+[1] https://lore.kernel.org/all/20260911170429.1642480-3-alex.williamson@nvidia.com/
+
+ .../selftests/vfio/vfio_pci_sriov_uapi_test.c | 35 +++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+
+diff --git a/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c b/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c
+index 19d657d00b75..87f42aae340c 100644
+--- a/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c
++++ b/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c
+@@ -157,6 +157,41 @@ TEST_F(vfio_pci_sriov_uapi_test, override_token)
+ 	ASSERT_COND_VF_CREATION(ret);
+ }
+ 
++TEST(failed_second_open_does_not_clobber_token)
++{
++	struct vfio_pci_device *pf = NULL, *pf_second_fd = NULL, *vf = NULL;
++	struct iommu *iommu;
++	int ret;
++
++	iommu = iommu_init("iommufd");
++
++	/* Create and bind PF using UUID_1 */
++	ret = device_init(pf_bdf, iommu, UUID_1, &pf);
++	ASSERT_EQ(ret, 0);
++
++	/*
++	 * Attempt to open the same PF again and bind it with a *different*
++	 * token (UUID_2).  This must fail with -EBUSY because the cdev path
++	 * only supports a single open per device.  Enforce it with EXPECT_EQ()
++	 * so the clobber assertion below still runs if the errno differs.
++	 */
++	ret = device_init(pf_bdf, iommu, UUID_2, &pf_second_fd);
++	EXPECT_EQ(ret, -EBUSY);
++
++	/*
++	 * Attempt to initialize a VF using the original PF token (UUID_1).
++	 * If the failed open above clobbered the PF's token (i.e. updated it to
++	 * UUID_2), this VF initialization will fail.
++	 */
++	ret = device_init(vf_bdf, iommu, UUID_1, &vf);
++	ASSERT_EQ(ret, 0);
++
++	device_cleanup(vf);
++	device_cleanup(pf_second_fd);
++	device_cleanup(pf);
++	iommu_cleanup(iommu);
++}
++
+ static void vf_teardown(void)
+ {
+ 	/*
+
+base-commit: bc78c90728cd74d1c7335fef786fa51968bdebad
+-- 
+2.53.0
+
