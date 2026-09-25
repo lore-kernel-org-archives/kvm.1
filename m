@@ -1,190 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CB748D86E;
-	Fri, 25 Sep 2026 13:03:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CDE4A3844;
+	Fri, 25 Sep 2026 13:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.117.225.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790341390; cv=none; b=blEGFWpQJARQXjslwBe3XCK85/Dir4FSRb82zaezcte3jEIzQJtNmaTZU4ETtIAzTWip2a8G3SXSN5SbneQPICksJm9jYFvYt1kud5OX/x3rU+csEVa97gz9dtqGgWAQ6r3TsZwoIhdXvfoqpX4VNbLVTeJPVDu78B8d0ug1gwg=
+	t=1790343866; cv=none; b=T2S47wfiEpdUVoBBIiyjh7xMZV89/mwavT1El6l0yRvc4ttBdebcfBtWGZftd0vdeV4wLs+SErB06pMRbUwImktvU0q02VchTfKcuCiaTQUS25z2r5wST1HG/2MAI0zePQSC2Pvz+6pdD94yJaOuGNYnYhCoT2Jbc8WDmfJSxWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790341390; c=relaxed/simple;
-	bh=EGuyb9F6r+KylcUwxyOFiSCGEKoqfoc20Mm4eTrXLE8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=CW8imZw2EshTHW3ZFPtQYhrGwVmkO98yZJ0dyzbSsh7sGgtaHUALOclqon8ncYOmY0yp90pFGfVclpxpji25aDx2nXICWrGbWwu8hiuHhv3H+8AFK33gGAj+pINnuokjD+/x4AXy+yvcTC+2/zJgafkjAi8k+Jhtky2/sBv6vKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BSp6HHFr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790343866; c=relaxed/simple;
+	bh=nGGG+MtBjARiLhSZAfUGEfNq5HzGBD6Fm/5cv+SY0Gg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fUwlDms01QZfI+2KNlA0xQH25r6tXta+yi9g/itKZ+GrYPsOtgOibrTFCnvVFZ7LlkU0f8DzIBrIeQT8Ch7/tUUYr2aGp1K8ez2Vh4mmL06wyn1goBU6oDpGWN6DVeI9b8Wlo2h1TO97KCHPkS2ggPPWeWFUALATDOXppd1p968=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=BMRaqaYT; arc=none smtp.client-ip=130.117.225.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BSp6HHFr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D988B1F000FF;
-	Fri, 25 Sep 2026 13:03:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790341389;
-	bh=VdVpGypdOborRTs6aMZgX/4R1iWBP8q+oMOK0hbNEw8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BSp6HHFrW9kRFsOtqLE53mANrjg61rRkP/XCEiNiyFnB7MLKz04uQKheSlq9rNHid
-	 yKWH2lFu7fQbOOEx/TL6yvTsIcPaHyh8PTBJDk8i5uLWMPzZL0jRDLFhONV0D/c85N
-	 mVgZFUhNp7BJrmY5UQeCORiERkiut7oD9ZBketXWWIWeJcr5M5Hy1j+IpT2zVud7YN
-	 u5I3svxQrOBlGN4EpmrQ54PR85L4VruLrvaLwppllr4nBleWvNE3Sf5Asq0CZSoO0t
-	 PMXP+PYcbSva1JPCQq+aYtrYfZcpdsRW5UssH+8K1H9Zqomjn5skxnGZ5bpocST0n9
-	 4I1MfJTTVt/Tw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 5/6] s390/vfio-ap: fix queue state leakage to guest
- and host
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
-Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
- Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Christian
- Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20260925124551.665448-6-akrowiak@linux.ibm.com>
-References: <20260925124551.665448-1-akrowiak@linux.ibm.com>
- <20260925124551.665448-6-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 25 Sep 2026 13:03:08 +0000
-Message-Id: <20260925130308.D988B1F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="BMRaqaYT"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
+	Content-Type; bh=r+SX5mpVsJj4bSe5fVeKN2CFHOlH307yKu1jEYAwyKA=; b=BMRaqaYTVtYS
+	hYAWjP5cY6/PbFH26IQbl751ZLpALIYEkDjNgqP7wwFMuV/btMo5JEd2m3mfdzVYkukGfzMLum2pa
+	rSyKvaDgMLmZB+SISEqHP/WUn/HFZhxHAl5iojBRtjk/niL0G/EPXuDOgw4vEdCT/IW7cr80wNeO2
+	iQ2u1voS802MKG7lBNUxPKigohTz1gUh6ZkNpx2r1X6Oby23dPWFmnf/PTw4ni2ihL04loVsTKQD0
+	pOS/wWbT9BqpNgJ+ZbDN5e/MhtMnIrvCf1ZAVQmLK0fp4deYYceUeNmkYEjVCWA89p+TOUm+KVujV
+	MHnfzJHHbjpsfqCP76xx2Q==;
+Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=LekKit-T14)
+	by relay.virtuozzo.com with esmtp (Exim 4.96)
+	(envelope-from <eva.kurchatova@virtuozzo.com>)
+	id 1xA6As-008eJw-37;
+	Fri, 25 Sep 2026 15:44:15 +0200
+From: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+To: Shuah Khan <shuah@kernel.org>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org,
+	Eva Kurchatova <eva.kurchatova@virtuozzo.com>,
+	linux-kselftest@vger.kernel.org,
+	x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org
+Subject: [PATCH] selftests/tdx: skip when the TDX guest device is absent
+Date: Fri, 25 Sep 2026 16:43:57 +0300
+Message-ID: <20260925134409.3639204-1-eva.kurchatova@virtuozzo.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] crypto: vfio: Use-After-Free of vfio_ap_queue in vfio_ap_on_qstate=
-_transition
-- [High] crypto: vfio: TOCTOU on q->matrix_mdev leads to unprotected KVM st=
-ate updates and deadlocks
-- [Low] crypto: vfio: Incorrect comment for __drv_notify_qstate_transitioned
---
+verify_report fails outside a TDX guest, where /dev/tdx_guest does not
+exist.
 
-commit 6964322bafaab43ec603a04a262b5d1370b6779d
-Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+Skip only when the device node is missing, so that a real open()
+failure, EPERM or EBUSY, still fails the test instead of being
+reported as a skip.
 
-s390/vfio-ap: fix queue state leakage to guest and host
+Signed-off-by: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+---
+ tools/testing/selftests/tdx/tdx_guest_test.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-This patch limits the wait for a queue reset to complete and prevents the
-leakage of queue state to a guest. It introduces an on_qstate_transition
-callback to track queue state changes and restricts queue passability to
-fully zeroized states.
+diff --git a/tools/testing/selftests/tdx/tdx_guest_test.c b/tools/testing/selftests/tdx/tdx_guest_test.c
+index dfaefa685519..c31cc77cc7df 100644
+--- a/tools/testing/selftests/tdx/tdx_guest_test.c
++++ b/tools/testing/selftests/tdx/tdx_guest_test.c
+@@ -135,6 +135,8 @@ TEST(verify_report)
+ 	int devfd, i;
+ 
+ 	devfd = open(TDX_GUEST_DEVNAME, O_RDWR | O_SYNC);
++	if (devfd < 0 && errno == ENOENT)
++		SKIP(return, "TDX guest device is not available");
+ 	ASSERT_LT(0, devfd);
+ 
+ 	/* Generate sample report data */
+-- 
+2.55.0
 
-Cc: stable@vger.kernel.org
-
-> diff --git a/drivers/s390/crypto/ap_bus.c b/drivers/s390/crypto/ap_bus.c
-> index d82df5b4e2db3..a53cfad3543eb 100644
-> --- a/drivers/s390/crypto/ap_bus.c
-> +++ b/drivers/s390/crypto/ap_bus.c
-[ ... ]
-> @@ -1979,6 +1979,28 @@ static inline void notify_scan_complete(void)
->  			 __drv_notify_scan_complete);
->  }
-> =20
-> +/* Helper function for notify_config_changed */
-> +static int __drv_notify_qstate_transitioned(struct device_driver *drv, v=
-oid *data)
-
-[Severity: Low]
-Is this comment accurate? It states this is a helper function for
-notify_config_changed, but the function name and usage indicate it is a
-helper for notify_qstate_transitioned.
-
-> +{
-[ ... ]
-> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio=
-_ap_ops.c
-> index ffc2d8715bd96..cd4a436c43194 100644
-> --- a/drivers/s390/crypto/vfio_ap_ops.c
-> +++ b/drivers/s390/crypto/vfio_ap_ops.c
-[ ... ]
-> @@ -3309,3 +3310,46 @@ void vfio_ap_on_scan_complete(struct ap_config_inf=
-o *new_config_info,
-> =20
->  	mutex_unlock(&matrix_dev->guests_lock);
->  }
-> +
-> +/**
-> + * vfio_ap_on_qstate_transition:
-> + *
-> + * AP bus callback notifying the vfio_ap device driver that the state of=
- a
-> + * queue has transitioned.
-> + *
-> + * @qstate_trans: the object containing a reference to the queue device =
-and the
-> + *		  state to which it transitioned.
-> + */
-> +void vfio_ap_on_qstate_transition(struct ap_qstate_transition *qstate_tr=
-ans)
-> +{
-> +	struct vfio_ap_queue *q =3D vfio_ap_find_queue(qstate_trans->queue->qid=
-);
-> +	DECLARE_BITMAP(apm_filtered, AP_DEVICES);
-> +
-> +	/*
-> +	 * If the queue is not bound to the vfio_ap device driver, then it won't
-> +	 * be passed through to a guest; so, no need to continue.
-> +	 */
-> +	if (!q)
-> +		return;
-> +
-> +	get_update_locks_for_mdev(q->matrix_mdev);
-
-[Severity: High]
-Can this dereference a freed pointer?
-
-If vfio_ap_find_queue() reads the device's drvdata and drops the device
-reference before returning, q has no reference count. Because
-vfio_ap_on_qstate_transition() holds no locks, a concurrent sysfs unbind
-can invoke vfio_ap_mdev_remove_queue(), which clears drvdata and calls
-kfree(q).
-
-This would cause a use-after-free when reading q->matrix_mdev.
-
-Additionally, is there a TOCTOU race when reading q->matrix_mdev without
-locks?
-
-If q->matrix_mdev is NULL here, get_update_locks_for_mdev() will skip
-acquiring kvm->lock. If another thread concurrently updates q->matrix_mdev
-to a non-NULL value while waiting on guests_lock, this could lead to issues
-later in the function.
-
-> +
-> +	switch (qstate_trans->new_state) {
-> +	case AP_QUEUE_CONFIG_ON:
-> +	case AP_QUEUE_CHKSTOP_OFF:
-> +		vfio_ap_mdev_reset_queue(q);
-> +		flush_work(&q->reset_work);
-
-[Severity: High]
-Does this also cause a use-after-free for the same reason? Passing the
-potentially freed queue object to vfio_ap_mdev_reset_queue(q) and flushing
-its work struct could trigger further memory corruption.
-
-> +
-> +		if (q->matrix_mdev) {
-> +			if (vfio_ap_mdev_filter_matrix(q->matrix_mdev, apm_filtered)) {
-> +				vfio_ap_mdev_update_guest_apcb(q->matrix_mdev);
-
-[Severity: High]
-If q->matrix_mdev changed concurrently after get_update_locks_for_mdev()
-was called, could this update the KVM guest state without having acquired
-the proper KVM locks?
-
-> +				reset_queues_for_apids(q->matrix_mdev, apm_filtered);
-> +			}
-> +		}
-> +		break;
-> +	default:
-> +		break;
-> +	}
-> +
-> +	release_update_locks_for_mdev(q->matrix_mdev);
-
-[Severity: High]
-If q->matrix_mdev was modified between the initial acquisition and here,
-would this call mutex_unlock() on a lock it did not acquire, or leave
-an acquired lock perpetually locked?
-
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260925124551.6654=
-48-1-akrowiak@linux.ibm.com?part=3D5
