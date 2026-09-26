@@ -1,185 +1,109 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D681381AF0
-	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 05:33:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E51D331EBA
+	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 05:42:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790400794; cv=none; b=TMP/KZqIAHF1eVROMh6Kog/cMMX15NhrP0daz9Hmy7z2ZpnklFk6zAbZkxcgU/IBH0S4b4hSOmUdTnMVGTRxTAuUvcRfCp1yNbwGE4C+aWipRy6Ir8Qt0k9mYms/d0wQd6MsqvxXBm0hQ21fn8Kj4U5eZatCHxMyRPOPkeapilA=
+	t=1790401366; cv=none; b=DUs8NRHxlsiqrvbscK49GkQ7331jDOolucTeiCoc1SHZX4qQWSFJVr3M4zIvcYNBIDsfCaakx7h/pjIg7ElazLOCn90xtJ8E2wyeYacLU+/+DP07nUi3r9STviwNLUC4VlqOHh2NqnR7OpE2jy1vfEfLs+1/MYbCyLpZ/oEtdFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790400794; c=relaxed/simple;
-	bh=LMp023DhEIXcR4ErkWRS5BQ4rWfJzKmQCi8TPCAek/Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KjD29XWZ5FC19mxtvH2cvUn4Lh08nu6L08ABd3iLjqFlBBjp3BSSHAkmt9gJSLxpVPwyzeYiafYf4Uaq69E0REpRV+2O7r+MG51UuQ6Vnuk0QDpZau8aUlyPf+5i2b0DBLpzVf1GHfe7NWMtCf9VDJIxsWptKNQtpYiQO40Klhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HuffYMjD; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790401366; c=relaxed/simple;
+	bh=T/EDwSqyNSgs61PdX7X+nkNKsYuhX+sEv78xhdsThyo=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=g0MBJqIR/hVOkBfSrAPKpJsGpMF18Ziyz2Js4oB3WQeWOam1TIB10AiCp5vegY6vAvaLegT5mlztZ3Bww/ItmsAZw0VZOJnirLSk0YsDwUyiE+aGpQ36P5DFK7Xk9FpK2j4kQ0h3bQseAvVf/4dei3YYbUvPrxmSIWj6WIL/Q20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YpjZMwv8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HuffYMjD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790400786;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KNVOV0eyh2M4+KXjnLvAqRSBgpIqHoq9eBpyO/IwUuQ=;
-	b=HuffYMjDwaXMUeFhR/soNHEDO9/DuwiZg6fuKbDMBLqL45juxpeWoFO9mCsMxtLUYq4KKM
-	hdyO7CRw9BFYctYFpt5OltQq7U/AyEqfxYK/MswxGBR3jL4iJd3Q/yvyq+22i1fdzABXhi
-	3xZ9MgVmzuFgzYzm5EyfMVT9kfUUytE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-639-_MJzJGMYNsaCeHo6A5fh7Q-1; Sat,
- 26 Sep 2026 01:33:04 -0400
-X-MC-Unique: _MJzJGMYNsaCeHo6A5fh7Q-1
-X-Mimecast-MFC-AGG-ID: _MJzJGMYNsaCeHo6A5fh7Q_1790400783
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 633B418005BE;
-	Sat, 26 Sep 2026 05:33:03 +0000 (UTC)
-Received: from virtlab1023.virt.eng.rdu2.dc.redhat.com (virtlab1023.virt.eng.rdu2.dc.redhat.com [10.18.48.26])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CEA891956086;
-	Sat, 26 Sep 2026 05:33:02 +0000 (UTC)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 11/11] KVM: selftests: Extend nested x2APIC test to validate using eVMCS for vmcs12
-Date: Sat, 26 Sep 2026 01:32:53 -0400
-Message-ID: <20260926053253.195597-12-pbonzini@redhat.com>
-In-Reply-To: <20260926053253.195597-1-pbonzini@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YpjZMwv8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 063B41F000FF;
+	Sat, 26 Sep 2026 05:42:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790401365;
+	bh=mFWv3wmThY0Bwsy8GCdj630qTfD7tfMsfDCT+F9zkC0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=YpjZMwv8MAcV9W5cb4pem+XgyOwzluu7h4KbnYfu/5c57i9E+Umj1p0uKiBnaZ3Wl
+	 hmbUKJG3Uo9G77EokF0EOkYdvXlPqNiFDe3L/Crd7XFbSe/dM1Cr0twVAchyrnH5+u
+	 e4iDY8gLed6ODjFHqHXYfcLZn+lQ7vfbd3AhikYTQ1iBL2shCkEsJtzK/qtkTWLDbr
+	 +5pUDP2nMyQKe8UIfWL4VDwRbqnJ3wrQHhY/XAAI1CJGuIoWpckVn6SPJTiGF62TgN
+	 PepxPAXe/8M6QpSYmfzJ1gGAtprGERTZFn/Gt1MGjTJpm6sHqB5tqmgHirMG/sVGgU
+	 vZPSBXMwoSV3Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 05/11] KVM: SVM: Use the active VMCB's MSR bitmap when
+ checking if MSR is intercepted
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Paolo Bonzini" <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260926053253.195597-6-pbonzini@redhat.com>
 References: <20260926053253.195597-1-pbonzini@redhat.com>
+ <20260926053253.195597-6-pbonzini@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 26 Sep 2026 05:42:44 +0000
+Message-Id: <20260926054245.063B41F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-From: Sean Christopherson <seanjc@google.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Critical] kvm: svm: invalid pointer dereference in msr_write_intercepted=
+ due to SME/SEV C-bit
+--
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20260813223610.2043560-7-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- .../selftests/kvm/x86/nested_x2apic_test.c    | 53 +++++++++++++++----
- 1 file changed, 42 insertions(+), 11 deletions(-)
+commit 043abbaa7ab3cef236605eca71fa3da8b7711f0e
+Author: Sean Christopherson <seanjc@google.com>
 
-diff --git a/tools/testing/selftests/kvm/x86/nested_x2apic_test.c b/tools/testing/selftests/kvm/x86/nested_x2apic_test.c
-index e94d4e77256b..eb89d5bfc0fe 100644
---- a/tools/testing/selftests/kvm/x86/nested_x2apic_test.c
-+++ b/tools/testing/selftests/kvm/x86/nested_x2apic_test.c
-@@ -50,12 +50,24 @@ static void l1_svm_code(struct svm_test_data *svm)
- 	stgi();
- }
- 
--static void l1_vmx_code(struct vmx_pages *vmx)
-+static void l1_vmx_code(struct vmx_pages *vmx, struct hyperv_test_pages *hv_pages)
- {
- 	u64 control;
- 
-+	if (hv_pages) {
-+		wrmsr(HV_X64_MSR_GUEST_OS_ID, HYPERV_LINUX_OS_ID);
-+		enable_vp_assist(hv_pages->vp_assist_gpa, hv_pages->vp_assist);
-+		evmcs_enable();
-+	}
-+
- 	GUEST_ASSERT_EQ(prepare_for_vmx_operation(vmx), true);
--	GUEST_ASSERT_EQ(load_vmcs(vmx), true);
-+
-+	if (hv_pages) {
-+		GUEST_ASSERT(load_evmcs(hv_pages));
-+		current_evmcs->hv_enlightenments_control.msr_bitmap = 1;
-+	} else {
-+		GUEST_ASSERT(load_vmcs(vmx));
-+	}
- 
- 	prepare_vmcs(vmx, NULL);
- 	GUEST_ASSERT_EQ(vmwrite(GUEST_RIP, (unsigned long)l2_guest_code), 0);
-@@ -128,14 +140,14 @@ static void l1_test_x2apic_intercepts(void)
- 	nr_irqs = 0;
- }
- 
--static void l1_guest_code(void *test_data)
-+static void l1_guest_code(void *test_data, void *hv_pages)
- {
- 	x2apic_enable();
- 
- 	if (this_cpu_has(X86_FEATURE_SVM))
- 		l1_svm_code(test_data);
- 	else
--		l1_vmx_code(test_data);
-+		l1_vmx_code(test_data, hv_pages);
- 
- 	GUEST_ASSERT_EQ(x2apic_read_reg(APIC_TASKPRI), 0);
- 	x2apic_write_reg(APIC_TASKPRI, 0xf0);
-@@ -150,9 +162,9 @@ static void l1_guest_code(void *test_data)
- 	GUEST_DONE();
- }
- 
--static void __test_x2apic_intercepts(void)
-+static void __test_x2apic_intercepts(bool use_evmcs)
- {
--	gva_t nested_test_data_gva;
-+	gva_t nested_test_data_gva, hv_pages_gva = 0;
- 	struct kvm_vcpu *vcpu;
- 	struct kvm_vm *vm;
- 	struct ucall uc;
-@@ -169,7 +181,14 @@ static void __test_x2apic_intercepts(void)
- 	else
- 		vcpu_alloc_vmx(vm, &nested_test_data_gva);
- 
--	vcpu_args_set(vcpu, 1, nested_test_data_gva);
-+	if (use_evmcs) {
-+		vcpu_set_hv_cpuid(vcpu);
-+		vcpu_enable_evmcs(vcpu);
-+
-+		vcpu_alloc_hyperv_test_pages(vm, &hv_pages_gva);
-+	}
-+
-+	vcpu_args_set(vcpu, 2, nested_test_data_gva, hv_pages_gva);
- 
- 	vcpu_run(vcpu);
- 
-@@ -188,17 +207,29 @@ static void __test_x2apic_intercepts(void)
- 	kvm_vm_free(vm);
- }
- 
--#define test_x2apic_intercepts(inhibit_apic_setting)	\
-+#define _test_x2apic_intercepts(inhibit_apic_setting)	\
- do {							\
-+							\
- 	inhibit_apic_setting;				\
- 							\
--	__test_x2apic_intercepts();			\
-+	__test_x2apic_intercepts(use_evmcs);		\
- } while (0)
- 
-+#define test_x2apic_intercepts(use_evmcs_setting)	\
-+do {							\
-+	bool use_evmcs_setting;				\
-+							\
-+	_test_x2apic_intercepts(inhibit_apicv = true);	\
-+	_test_x2apic_intercepts(inhibit_apicv = false);	\
-+} while (0)
-+
-+
- int main(int argc, char *argv[])
- {
- 	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM) || kvm_cpu_has(X86_FEATURE_VMX));
- 
--	test_x2apic_intercepts(inhibit_apicv = true);
--	test_x2apic_intercepts(inhibit_apicv = false);
-+	test_x2apic_intercepts(use_evmcs = false);
-+
-+	if (kvm_has_cap(KVM_CAP_HYPERV_ENLIGHTENED_VMCS))
-+		test_x2apic_intercepts(use_evmcs = true);
- }
--- 
-2.52.0
+KVM: SVM: Use the active VMCB's MSR bitmap when checking if MSR is intercep=
+ted
 
+This commit modifies KVM to use the MSR permission bitmap of the active VMCB
+instead of maintaining separate tracking logic. It dynamically calculates t=
+he
+virtual address of the bitmap from the physical address stored in the VMCB
+control area using __va().
+
+Message-ID: <20260826195833.844526-1-seanjc@google.com>
+
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index f4f488328ea42..1f279cd91ecfb 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -673,16 +673,7 @@ static void clr_dr_intercepts(struct vcpu_svm *svm)
+> =20
+>  static bool msr_write_intercepted(struct vcpu_svm *svm, u32 msr)
+>  {
+[ ... ]
+> -	void *msrpm =3D is_guest_mode(&svm->vcpu) ? svm->nested.msrpm : svm->ms=
+rpm;
+> +	void *msrpm =3D __va(svm->vmcb->control.msrpm_base_pa);
+
+[Severity: Critical]
+Does this introduce an invalid pointer dereference when SME or SEV is activ=
+e?
+
+When Secure Memory Encryption (SME) or Secure Encrypted Virtualization (SEV)
+is enabled, physical addresses programmed into hardware structures must
+include the encryption bit (C-bit). KVM enforces this by setting the bit
+when populating svm->vmcb->control.msrpm_base_pa.
+
+Since __va() on x86 directly adds PAGE_OFFSET to the physical address
+without masking out the encryption C-bit, passing the raw physical address
+here appears to create an out-of-bounds virtual address. When
+svm_test_msr_bitmap_write() immediately dereferences this address, won't
+it cause a host panic via a kernel page fault (#PF or #GP)?
+
+Because msr_write_intercepted() is called during VM execution paths, could
+a local user with /dev/kvm privileges trigger this to cause a denial of
+service on SME/SEV-enabled hardware?
+
+(Note: This issue appears to remain unfixed in the final state of the patch
+series at commit 497a001eb419947b).
+
+> =20
+>  	return svm_test_msr_bitmap_write(msrpm, msr);
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260926053253.1955=
+97-1-pbonzini@redhat.com?part=3D5
