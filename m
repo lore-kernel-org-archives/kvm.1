@@ -1,64 +1,64 @@
 Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7495733E
-	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 07:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C51344046
+	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 07:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790406247; cv=none; b=ek93Fuk4cM0elC61o71GEeTzXztUMbuLJsDd0uJ+EGvU4lpLk/kODy9S0YtinWJMub3HxfvO+Bp9oLT/N0p8nEjOHaNYdypxbTmVZgxNsb+Z65/Ae/qHJNyZ9hYKAbGHDdjS7Q4N+WBkjsPYjRCez9kwwBJHIJkpm3qUXevIL90=
+	t=1790406251; cv=none; b=eODdCZO6sI7/8pOmtEhae36J/OHC+cgKGyrHvs6lNSmyXxNQ9kh3xUO8GZoCvE2lC1PHwI4ZHNNNw2HFOjb42hF/kHS8vkhRXjaI3vElXu75JvxtpB8/2WlO7nXM0gNloDRZLYI+aCyQn0Ia/aU7X9yyHRkT0t10matxLmid2c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790406247; c=relaxed/simple;
-	bh=m7YnrIwBHZIXlSaxV2tKrEoA+mBBjGA9xf1y9TgzDho=;
+	s=arc-20240116; t=1790406251; c=relaxed/simple;
+	bh=DR8VjmQLqySSuZ3VqShd5B2GMsBQoN9xfwFiazETnRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xs128RSRUo4h7pBkxhpMhjDDPWItfNt7rzKowkUVYsRM2VcVH5e9ou24aVD3ynBDhmXJqX8dDXUSb2K9LvCGF7UN5yjyLACDqPhJ7x2kWw4XiWO1wGafnKQlKbSIZVJZaiajfendNghz8aNAOde5reNoZFAh19t5y4KH9Hv/0QY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FO6n3Snd; arc=none smtp.client-ip=74.125.229.43
+	 MIME-Version; b=gS9zkn5v0VT81snhqtN0O9PdhQKGW67QZguhGNwuMUxznsHSQ4/9QCuirmA6L6qlFcCnrTYPZPbeLSvxOoBM+nzhVu/eMkRxYXnEIQ4KWEqhIPuMKLwAbxYPG4PBtHX8lpevXSs3gr7rLVNpaO1s6chKZmw+BAULuquHn78s/qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hdiP54QQ; arc=none smtp.client-ip=74.125.229.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FO6n3Snd"
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33c11ef641aso1880785eec.1
-        for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 00:04:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hdiP54QQ"
+Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-3396cec93b6so1847317eec.3
+        for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 00:04:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790406245; x=1791011045; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790406249; x=1791011049; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=HQgaQ3pRlQZWTe+kZSuEPjW/N+yjSW5+B1zpZJSKnLc=;
-        b=FO6n3SndnmEudiH4qh1ge+laMcZ+/lcrMjxyPJgbeBhGyBgqO5Pwo0/4B6gOQyZ5jh
-         EuH4/111R3hoAmwk1HztCSjTf8rUOWk9B0JC964bOBLy+RwdsOOVdzCn0O1ZKRe6+J57
-         9JctWsuEm+mcj7YceXjVylVK/bS/lHRXkR7J8OdseKSkRrPlfi/vv2Pdps7BxfwCfEPj
-         fndbFS/tGi1jcYEhT/95dlcivIbmKD/TAp3ziGfv4s9z8mPeK3jJQXdA54qQ2+qxwVCX
-         2PZXPLVDo7obJIgFPfjdaSR3FT47/eV1TjqhCYyvuLR0QNRikEdiZWiVFcfPhV4tPdv6
-         mfdg==
+        bh=RNlqCeZxxjHAxzDk9z7qImwINCBhWsreM3aP9qjpGBI=;
+        b=hdiP54QQU0jiCtlu1W9aQSgc1mVeaqDFQVwzD1KWMVvSLJ2WagcTy6OgIsVMLhx3Jb
+         Fr+RSGth9to3IPA9LL4xUFPq+JbSAUsVL90SksKuZA92snbNlt7Do7+KHDN3UQe1HZHi
+         OXrOHO/HWGPn4BPwV/4KY+juLWXRo4xr0VhaOup26j8ozF/vBv6hKqOFapzIxMNuJG+g
+         NurIcDuxqUyYPnzIAFBfO1dXMdbBHuyP+M7RMLGWZVVbPVLgcS6PcM2eYzuj93uS/Vtg
+         GiN9TmT/auxKqVFYObJb+le/9mw1VDp9B5HL5/mDpdvnH6TwWyw48g9aRH2FiFuswNYz
+         RzGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790406245; x=1791011045;
+        d=1e100.net; s=20260707; t=1790406249; x=1791011049;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HQgaQ3pRlQZWTe+kZSuEPjW/N+yjSW5+B1zpZJSKnLc=;
-        b=ZfpG/+uzRkOx0vEpAEBjisX5NqBQrQ/9aYEe5dKoi9fbXd+A+LR5Cuv92GDnR6QlZX
-         R0Z0p/HLjqhRxVRTAmbddN4bS/eFGTRkJt4GwJpYt0wZqb9eUOxXtPT51pmoQzc0nOg5
-         O2IyKK8rtvu7bEQlO3nyWiur8fWjhL/3dAEHjwxLEAP4VpinRT32si58bUUAKAk9vcXL
-         3p5RKtkO4vW0YdaDMjUytSYzdnw8+iR7f5qDCc6CprLy+7AsARPeaLit9Poi9SvMMiV9
-         KrAJtq98RcHX0Pd0bLHaOj3xjSV4hQU/r5+r0mBChXRZWkyRnbMWdfni/vVmWjm8YHtT
-         FH+Q==
-X-Forwarded-Encrypted: i=1; AKwUvByVeve66rlKfq4vxTt+0jT9B5whxSPX1lhc+ZgJSqn39W9HEOyxnzgDdzqZFdmfXoqdtsM=@vger.kernel.org
-X-Gm-Message-State: AFuF++kFKamEtsdQAkKmHH7AKp/fvYT6433pg36OQr1w/KM5WesSB1rm
-	nNXIA/ZAUgh2hM++EtiV/MFTRnxfZ2zh73Mt2jSF0KMH3a0SWIKj6aC4
-X-Gm-Gg: AYBFou2Yo0RaNKLZYRrVV1Pp6a/kmn1G+qEK8awMrIC1gUIyOtxdwgfdlZZYXlE4qsZ
-	abn3uDhJ2LEgyzsnLUx0yuAxibPbiJHpSt6D8L46V00kPpL1YBXAASX5BQ5dPJ6YZak+hMW3GZx
-	DQDu37dtJL1OKTTi5k7vZ6WqAGJESZ7hGpNffCYvgH9dseWyfy7jMqmXWQAQqmmEMlRcfsZta5b
-	NS3OVm9pLgtPfdBA5eOv4yCnSpx1ZyZpt/e7h+QDF/djO+RzbdqJuxK/IvGYqj7Gz13yBrTIC/k
-	/VFKeZZ3+nJxmhkWAtMg/Rjhba4cM6RsMi6FyheN2I1jbJiiOkjsvSXjOYoxOM2065Ax0Y0MLWc
-	M4CtrHK6+AbTr+8BYwpiPG0aiOtwegr3Y43lyUWen0fqf9b9AaRFxA72kf9iLgHKKcEcslYYCej
-	AmIYRRBfDEqIaIpCEr6vqC7GWM/+mQv9GsEamoDK53VMJtdAjlDhwurRh9nrTlvRayGiP6ymZAj
-	MYtsS8vaS+D2EYPs9J+Ha1tZPB0t74=
-X-Received: by 2002:a05:7301:7191:b0:33c:35ec:c2b4 with SMTP id 5a478bee46e88-34271a9026dmr2161927eec.24.1790406245422;
-        Sat, 26 Sep 2026 00:04:05 -0700 (PDT)
+        bh=RNlqCeZxxjHAxzDk9z7qImwINCBhWsreM3aP9qjpGBI=;
+        b=TNt4RYF2f8GKtsjoVEPrAz/zApw3+AK/hal7WZNcjKPnXkMwtLrxFtaPThN/U0FxG9
+         3E7FY7LxGhgh/UWW3vRPw00UvLCbTlDy9C41w4hovQTTxrw3e/R3S3mbaQpssqxvx8Ao
+         NXgqXtlgY49bIwMx7+qgGPUWZLXyAnoX2+tbNRhhZbSmIaM0X3AFNNszHxjNgjC7qeVx
+         i3Gv2NdL623h+CsGujCtwBNUbN7oUJQ3uaU/OxHWjD687jJe070E5HrZ6N6u5CBMgYC9
+         3P4JHNNWdsXGsNnu3joSZ+uVqb0FvXVStn7Fx13ex05+dzEshWspw5lemTX4y7xU2Ibl
+         pwLw==
+X-Forwarded-Encrypted: i=1; AKwUvBy1/734qLxAsfPWhN5HPtF5xCbpFnYkqa1wuJscVoP+nOorJYZvMbPHk+oZqIBiYRO5gTU=@vger.kernel.org
+X-Gm-Message-State: AFuF++nFkSd8DbPzuIwvOIRuf/p17gZE1rBSTNF+ApDk4oJSzTPHpPNF
+	snFXt/WfC9IQDVLXcW+9yrpuOuCoM9cskbSTbheh6jGkARvf+VdRI2kGSIM1V23K
+X-Gm-Gg: AYBFou1LowqGvHc7hGM+2eUnF5TRYVclmD1DPrePKrc7Jk/8zcza5+slQDYsGcNI3cu
+	jPai3q05j1l1OwGDyGLQGaLizjCbAdYLJBB+ZsDRfWH2+jmQA8et3vKws5J0mffVn3D6xABxoaG
+	3ofXUQKowQV1YUAQRVL9I7GRhKjwxjDFMGcbMaEGWR14LugKS6PuO0ol8wRbdb4B4cJg7N7qQtr
+	y2RsDMDAzNHwajE1Z56OKViFr9CRN4A3a2QH6g5qFeXAFzPChlhJQ/ChuprMQQxcheYuanx2zIp
+	Bbp7BD6uDGgjaanCSw2Gs8aKmNBTdPjR7ZmPkv46m8WSyi29T9Mz7Tp9wUKrat4ghfRsN94Hdvw
+	wrSo9EXdYvIfuSUvPGGwj4m5klqtKNtCFAdPRrwssp9esKYxdxI8Tb//g2PWo/FoCKpWNteNH59
+	5v0UghHGRHNI0hJTpn/f4h097vxXpm3O30NkiItvcchPNSyJVPfnD0ACCoIFXxHU2mNSyIsTnPV
+	APbRB2yN77fcr1AkggeMe7XLvyTrvI=
+X-Received: by 2002:a05:7300:a987:b0:333:fe81:85dd with SMTP id 5a478bee46e88-3426fbbe744mr3025019eec.3.1790406249289;
+        Sat, 26 Sep 2026 00:04:09 -0700 (PDT)
 Received: from WIN-BH9M8FJACR9 ([103.94.185.75])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-34145c166cfsm10615141eec.28.2026.09.26.00.04.02
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-34145c166cfsm10615141eec.28.2026.09.26.00.04.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 00:04:04 -0700 (PDT)
+        Sat, 26 Sep 2026 00:04:08 -0700 (PDT)
 From: Yonggang Luo <luoyonggang@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -74,9 +74,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
 	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [PATCH v4 46/55] qapi: add query-targets
-Date: Sat, 26 Sep 2026 15:00:45 +0800
-Message-ID: <20260926070057.1234-47-luoyonggang@gmail.com>
+Subject: [PATCH v4 47/55] target-info: add target_is_microblaze
+Date: Sat, 26 Sep 2026 15:00:46 +0800
+Message-ID: <20260926070057.1234-48-luoyonggang@gmail.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260926070057.1234-1-luoyonggang@gmail.com>
 References: <20260926070057.1234-1-luoyonggang@gmail.com>
@@ -88,109 +88,63 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-query-targets lists each linked target, including none, with its
-arch, endianness, and the machines that target accepts.
+Add target_is_microblaze() and target_microblaze(). The first
+reports SYS_EMU_TARGET_MICROBLAZE. The second checks the current
+TargetInfo.
 
 Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
 ---
- hw/core/machine-qmp-cmds.c | 30 ++++++++++++++++++++++++++++++
- qapi/machine.json          | 35 +++++++++++++++++++++++++++++++++++
- 2 files changed, 65 insertions(+)
+ include/qemu/target-info.h | 15 +++++++++++++++
+ target-info.c              | 10 ++++++++++
+ 2 files changed, 25 insertions(+)
 
-diff --git a/hw/core/machine-qmp-cmds.c b/hw/core/machine-qmp-cmds.c
-index 9c08b17510a..c7b73efa31d 100644
---- a/hw/core/machine-qmp-cmds.c
-+++ b/hw/core/machine-qmp-cmds.c
-@@ -21,6 +21,7 @@
- #include "qapi/qobject-input-visitor.h"
- #include "qapi/type-helpers.h"
- #include "qemu/uuid.h"
-+#include "qemu/target-info-def.h"
- #include "qemu/target-info.h"
- #include "qemu/target-info-qapi.h"
- #include "qom/qom-qobject.h"
-@@ -173,6 +174,35 @@ QemuTargetInfo *qmp_query_target(Error **errp)
-     return info;
+diff --git a/include/qemu/target-info.h b/include/qemu/target-info.h
+index 812e4b04a7b..17fafa0888e 100644
+--- a/include/qemu/target-info.h
++++ b/include/qemu/target-info.h
+@@ -210,6 +210,21 @@ bool target_is_s390x(const TargetInfo *ti);
+  */
+ bool target_s390x(void);
+ 
++/**
++ * target_is_microblaze:
++ * @ti: TargetInfo to inspect
++ *
++ * Returns whether @ti is Microblaze.
++ */
++bool target_is_microblaze(const TargetInfo *ti);
++
++/**
++ * target_microblaze:
++ *
++ * Returns whether the target architecture is Microblaze.
++ */
++bool target_microblaze(void);
++
+ /**
+  * target_is_base_riscv:
+  * @ti: TargetInfo to inspect
+diff --git a/target-info.c b/target-info.c
+index b25e2ada438..0716e2021b8 100644
+--- a/target-info.c
++++ b/target-info.c
+@@ -204,6 +204,16 @@ bool target_s390x(void)
+     return target_is_s390x(target_info());
  }
  
-+TargetMachinesList *qmp_query_targets(Error **errp)
++bool target_is_microblaze(const TargetInfo *ti)
 +{
-+    TargetMachinesList *head = NULL;
-+    TargetMachinesList **tail = &head;
-+    GSList *machines, *el;
-+    TargetInfoNode *node;
-+
-+    machines = object_class_get_list(TYPE_MACHINE, false);
-+    QLIST_FOREACH(node, target_info_list(), next) {
-+        const TargetInfo *ti = node->info;
-+        TargetMachines *row = g_new0(TargetMachines, 1);
-+        strList **names = &row->machines;
-+
-+        row->arch = ti->target_arch;
-+        row->endianness = ti->endianness;
-+        for (el = machines; el; el = el->next) {
-+            MachineClass *mc = el->data;
-+
-+            if (!object_class_get_is_available(OBJECT_CLASS(mc))(ti)) {
-+                continue;
-+            }
-+            QAPI_LIST_APPEND(names, g_strdup(mc->name));
-+        }
-+        QAPI_LIST_APPEND(tail, row);
-+    }
-+    g_slist_free(machines);
-+    return head;
++    return ti->target_arch == SYS_EMU_TARGET_MICROBLAZE;
 +}
 +
- HotpluggableCPUList *qmp_query_hotpluggable_cpus(Error **errp)
++bool target_microblaze(void)
++{
++    return target_is_microblaze(target_info());
++}
++
+ bool target_is_base_riscv(const TargetInfo *ti)
  {
-     MachineState *ms = MACHINE(qdev_get_machine());
-diff --git a/qapi/machine.json b/qapi/machine.json
-index 6aaa2af709a..d8cdea6203e 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -307,6 +307,41 @@
- ##
- { 'command': 'query-target', 'returns': 'QemuTargetInfo' }
- 
-+##
-+# @TargetMachines:
-+#
-+# One registered system target and the machines that can run on it.
-+#
-+# @arch: the target architecture
-+#
-+# @endianness: the target endianness
-+#
-+# @machines: machine type names, not aliases
-+#
-+# Since: 11.2
-+##
-+{ 'struct': 'TargetMachines',
-+  'data': { 'arch': 'SysEmuTarget',
-+            'endianness': 'EndianMode',
-+            'machines': ['str'] } }
-+
-+##
-+# @query-targets:
-+#
-+# Return each target linked into this QEMU binary and the machines
-+# whose availability check accepts that target.
-+#
-+# Since: 11.2
-+#
-+# .. qmp-example::
-+#
-+#     -> { "execute": "query-targets" }
-+#     <- { "return": [ { "arch": "aarch64", "endianness": "little",
-+#                        "machines": [ "virt" ] } ] }
-+##
-+{ 'command': 'query-targets',
-+  'returns': ['TargetMachines'] }
-+
- ##
- # @UuidInfo:
- #
+     switch (ti->target_arch) {
 -- 
 2.52.0.windows.1
 
