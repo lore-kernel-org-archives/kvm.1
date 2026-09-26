@@ -1,64 +1,64 @@
-Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
+Received: from mail-dl2-f42.google.com (mail-dl2-f42.google.com [74.125.229.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBC7344046
-	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 07:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8555733E
+	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 07:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790406240; cv=none; b=JUUZZGVpgrx/fel99CxEOQUgTqlQBHUjV3EVFgr1smkYSa9xOk8Aj/EUPf+8Czv7H1y5750JS+morzwPz1qXvMtOWSH8aFH+s6cxcMKssNcxUbH1LtO64EUXBzU3EJy/6BaSaApP59lQJGK1OhZ1u/y3a6068K0nj8sO+Wx4cks=
+	t=1790406244; cv=none; b=LoYHn8cxM2dopDs5bdAuJvskVQD4NXLxL7uZmkb+saPBK6OP9Pt0Etxyq5WrgUmEZI55GxIwoR8+vWTVd1y+qJtdVZdFQmzBZk6XOGjUMkULMxYQD3NzLYmba5K+o/vI2/EWDmuadPY30n7tgs2nkb+lO7l9Zzko8MkTkOmWjZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790406240; c=relaxed/simple;
-	bh=DqY7GypdtmRBkgMxvb3G4GAtNv+nmrv2qe98ryGgktg=;
+	s=arc-20240116; t=1790406244; c=relaxed/simple;
+	bh=Ajyl4vuW8c3i0gdCGVztW06XoMio3RxRbzsZp+qyAdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQjkhX4rA6Upt20c3mJyDVzj8pMT80ySyK9SunHBb9HRKzYnZozjZz2lMUPTv36Vi1Qm+RmNY19xlR4k3YzLt4t6CMaxxzl35jAjpHUGPxASqnOaME3eMfnCHxlUkIYM+O2XjO2eEUKUgrBfz4Cq28/m94j0caoY0ap5wFCaT8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bYQFWDSd; arc=none smtp.client-ip=74.125.229.12
+	 MIME-Version; b=pAGfH85NIj1Wp5y09bDEFfLby20TBTQO8HWKsekCmEXITOdlWXvVIkgNOCRAu1hilgA2CMbzp3rREnffIF97EbK8NYcsCVtEAkh0NtXlFuP+MZaZRPdtHMrXH9vBriijXjjYiCh9Y/re9QkL4XwniA7CsbBDGsAFJ497ZTJkfIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CI/7ukWQ; arc=none smtp.client-ip=74.125.229.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bYQFWDSd"
-Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-3396cec93b6so1847221eec.3
-        for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 00:03:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CI/7ukWQ"
+Received: by mail-dl2-f42.google.com with SMTP id a92af1059eb24-144e32aaa1cso869669c88.2
+        for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 00:04:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790406238; x=1791011038; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790406242; x=1791011042; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=qCXIFUQwlVnS7FqE0wXM3scWpVNsZr5+GJNgga1dkVI=;
-        b=bYQFWDSdQ63bU6IPmA3+ID65SDc0/mr4B1C+d3Tu2etIOT+rfgcpw9qxx+KO63bQzi
-         4gqJfF89fweuYrS98powXR4EoBnAXU93NkTZ6OY8iQmx5arHVs7BMIZfre63jvNbxqI6
-         g29Df4/4KLe0qOEF1GmmZ9y0HbCgdD8Ng5kQ9ftXXm4HKNOxCZWGTHdKQ8kltLoQIya6
-         gyGQLNGigveKeVSeHGSvYfzeiBm64ZW6abPyEeR7yZyXssm3vfxqAMETNP26BJcviMO5
-         Ndr6KxDZ/B2EHlgD+24VYRRqEs2esMhic5zkxEtrUVV4vyr9sWfAnTuViXTemEh7HOMp
-         SErg==
+        bh=mKOEnoJQ/ccsACw/aTGJU/jJy11AbBBe19tBMAh69fU=;
+        b=CI/7ukWQi9xtcJQCSaix7i9R6douOsDhceXx5vvYS39Xn7mktjpUiqf00RBdsINWoY
+         rfneKFlRPqGN7ZctK0pIaDRuMOxOFQ4TNvBYv+YgR00Y1d/QIgmrotwcltmkIMPu6CFo
+         ixJVckPkX0qwT4GfF0YRyVV8XthKLq7k/AADpPsiAXQ8GKVwxySrq0PmhKcMVCA8L4hK
+         JJSLYgJffjNZ7PwHJToa7DiADRGhex7ta3+bslEF/RPvVaEYyyZFIG6wPuo4RhBtv5Oe
+         ncSU3hcF+D2jAwh48VEFYHTuffnanIpzHtJO7jMzgCYSjDhjkgiAAqxD6uTnq+xP4aOK
+         D8hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790406238; x=1791011038;
+        d=1e100.net; s=20260707; t=1790406242; x=1791011042;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qCXIFUQwlVnS7FqE0wXM3scWpVNsZr5+GJNgga1dkVI=;
-        b=ymBDo6ZsXTJd1OGso/IbjTCeXzZAl/LGxcRPY9XYvEsdDsB74uy0st114io5Dpd9F+
-         9S9UfCIlhFowfh9+x3TKl8a54R2mOXwwjbXMrgAf7Vx1KdjoxQb9lLZHinA02+qey38f
-         fOTl0K5ac6+BR0CyorD2o/7pPj0CoTgcAlgzwiXOw2Hf+FhxV0Ytb0vPni8fon/KFLAZ
-         1ylevbRcMazXgSWiOvtcsdXIDPOlOZmoS5730GQigTPVIvF/pyFSsmb+ChWk1iQgAMP8
-         2ozuIjv2gu1agiWQutxsJczMs+zJzZmbZxW0plYce/5L+tHYukWqilXMLbWYyfvb4Upt
-         qsLQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxVs0kS0QoDbwfP9gRoPhQPXREACGbDTswqryQdPMBl7y0k4ydBHhyEKoVH1v+k3vl3WaQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++kjecHzADVT2pT3VaDab8hg8Ez5j5PNXNSUu8+RA+9Q9IM/u43Q
-	x7TDeXpjqchousKezxK2slJB9xMIM2cVQd1aN7Gn0raP9PPfdsvZ02hM0lraose0
-X-Gm-Gg: AYBFou25JJ0yuX801taK6hS5kyluycLgkKH5Kh6i9g0PT1DyWO6qTWk7dEwJ/tsvFqd
-	k0Fdo0audSGNHmCutaWpS+egmnWgLFHk3W8mbHIQLs/KQLlim0j0TD0Vr4u15NcHZTmVp6vxwJN
-	n/Qz+n4dbCwl2nIQS9Wcas96NZoPDxlLQOFgpoYea87fo04Fkg0Uo8yMUOh0qiShNT3eTI3LbtD
-	w9+diOirjqnKrrFQG2t3wQf4fk91yOmFaMaChXyoAoP6nxbSadlz8fpVFc+dlOljcFBMyMTWPkl
-	n1I9xB8xGKM+8RiJLVNBZDLHMCP8mZeWaz7BnvlilNT2y7H0BfnJ9OTwxrC7fCZMX22aHKR1Okd
-	LuSsXyEnWw2MpAtFbAGRJYxcV8dmGTnyVrYlBpcbAUQPfgZqFOG22ABUSnb8tRk+Ddc0sQj8i5j
-	I7uHx6pHeY9ZCjEUvJxykzW1PriyGlN1WnXGXAcaPjPsal6/Eu1U2u5OeYm/jyDJboydKXt16wv
-	j5i/ujJLakPfYvGt/p84MyxMoF3C9w=
-X-Received: by 2002:a05:7300:d0a7:b0:33b:dab1:d6b5 with SMTP id 5a478bee46e88-342705aee26mr2037757eec.11.1790406237841;
-        Sat, 26 Sep 2026 00:03:57 -0700 (PDT)
+        bh=mKOEnoJQ/ccsACw/aTGJU/jJy11AbBBe19tBMAh69fU=;
+        b=zi4U85Ugrf2+rygQOvxJCGb+mt34+r/6CCRymqNsFFxfZs6t5eiz2CeBuWnEVtw6Rm
+         m60lBFke5f0XvtUAW/fZIeEWpC22J17DYrWIJxnEuAWi3twyCkoA8fwOzRi2m0dpDerB
+         kgjNwACBnorWN8fDoljyW7kGLnxxZE+JP8NbacmaHcDMamVl/rnpKPsViPgTBCGQLFUF
+         dQ5rsjCqneOG/h5AsHhFIwCakRtG2BVAs/W6P5bzrLxfhGvbCaM3cJot769ueuH9OjFy
+         VkiYIH6mbjJx99c3DjRd9Dl6aTKSXco4AUEGk+bvP3U/Mb8XdDk62TQCq8leI7hTW+iu
+         8H9g==
+X-Forwarded-Encrypted: i=1; AKwUvByVLNiIzkxsEXnAHevwwYS4qwA/NBlAVCrBvdCAKw+e3V3KOvlNhU4d0wrF3QI+qKjvyQ4=@vger.kernel.org
+X-Gm-Message-State: AFuF++lnIXORq76SIgJo37/r7s+zKdCh3bV8zV89E0j+9/C9e8bGKelP
+	iKcWKZX1nrsD1Dxi3kGIvm8/z+1TPuxwrQ74uk85pqKVZn5lZ7eTGqF1
+X-Gm-Gg: AYBFou2VZ7ywYTaVWvK1N0/so2E7tNWAXcvkeTPreWytHXcICM6osgVQZYFt5ukhXe8
+	L7uJlFV6fk+x0usp3uoDBbT4yAANtiArSMW1vlWD13CH//JHjLmCzO3XlfpDiGAkUjEtR4HbUFw
+	Wx8qAxiaWSlvAkPulCWQsKmkcYAxUSMD715ndCY9oBlsI1G0xkPG442+ZBGxrL8q5aB1Dw/Rtwo
+	ORjlL/FUqCjIj3IcoIoJb67bjzq7YEsgXWrpJmVsUw7YIVyaIqEJ3DPQHr0aANA5cAKdzskgXVp
+	fNb4O5ej2lal8cGsEUBkkPBEPRGjOvInzl+qxA8Uk0yCLhv4zgzU5wtEzWMEcRqmf6XNbNjqeGZ
+	DrFHoWLgO2hmUKzfoU6xccB3xIl46KZ5UE6pF7ajKS5e6j8dukwpV3h2ZqouPJt3ghHQ4hjOtEp
+	SesyqsGtKvgtpUmhxC+R5mT9YDGbTun0DnqjhAJKs2eT2xo4AnsFNHllkSPYx6UJ1ANhpBZYHH7
+	m0kt3Q6UiUV082EFPcH1SI5nnRiJz8=
+X-Received: by 2002:a05:7022:f502:b0:141:aa71:6f4c with SMTP id a92af1059eb24-146ce1a9aacmr2071858c88.10.1790406241683;
+        Sat, 26 Sep 2026 00:04:01 -0700 (PDT)
 Received: from WIN-BH9M8FJACR9 ([103.94.185.75])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-34145c166cfsm10615141eec.28.2026.09.26.00.03.54
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-34145c166cfsm10615141eec.28.2026.09.26.00.03.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 00:03:57 -0700 (PDT)
+        Sat, 26 Sep 2026 00:04:00 -0700 (PDT)
 From: Yonggang Luo <luoyonggang@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -74,9 +74,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
 	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [PATCH v4 44/55] target-info: select combined qemu-system target by name
-Date: Sat, 26 Sep 2026 15:00:43 +0800
-Message-ID: <20260926070057.1234-45-luoyonggang@gmail.com>
+Subject: [PATCH v4 45/55] vl: parse arch: machine types on combined qemu-system
+Date: Sat, 26 Sep 2026 15:00:44 +0800
+Message-ID: <20260926070057.1234-46-luoyonggang@gmail.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260926070057.1234-1-luoyonggang@gmail.com>
 References: <20260926070057.1234-1-luoyonggang@gmail.com>
@@ -88,254 +88,513 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The combined qemu-system binary can select a registered target by
-name, or stay on SYS_EMU_TARGET_NONE. A single-target binary does
-not switch target.
+The combined binary takes arch:name on -M/-machine and in a
+[machine] type from the default config file or -readconfig, and
+selects that target before QOM init. The default file is read
+first. -nouserconfig skips only that file. select_machine()
+matches the machine in the selected target.
+qemu_read_config_file_cb() supplies the callback for that early
+pass. qemu-options.hx documents arch:name and arch:help.
 
-The none entry is the same target-info-def.c stub as other targets,
-compiled with TARGET_BASE_ARCH NONE. target/none/cpu.h supplies
-ArchCPU for that stub, and cpu-param.h sets
-TARGET_VIRT_ADDR_SPACE_BITS. TYPE_NONE_CPU is NULL because there is
-no none CPU QOM type.
-
-type_register_internal() keeps types on the combined binary and
-filters them with TypeInfo.is_available. A single-target binary
-still omits types that cannot run.
+- A later bare name keeps the last arch prefix
+- Last -M wins for help
+- Plain -M help lists every target; arch:help lists one target
+- qemu-system-<arch> still prints machine help after early options
 
 Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
 ---
- include/qemu/target-info-select.h | 24 +++++++++++++++++++++
- meson.build                       | 35 +++++++++++++++++++++++++++++++
- qom/object.c                      |  8 ++++++-
- stubs/meson.build                 |  1 +
- stubs/target-info-select.c        | 14 +++++++++++++
- system/target-info-select.c       | 26 +++++++++++++++++++++++
- target/none/cpu-param.h           |  7 +++++++
- target/none/cpu-qom.h             |  6 ++++++
- target/none/cpu.h                 | 18 ++++++++++++++++
- 9 files changed, 138 insertions(+), 1 deletion(-)
- create mode 100644 include/qemu/target-info-select.h
- create mode 100644 stubs/target-info-select.c
- create mode 100644 system/target-info-select.c
- create mode 100644 target/none/cpu-param.h
- create mode 100644 target/none/cpu-qom.h
- create mode 100644 target/none/cpu.h
+ include/qemu/config-file.h |   2 +
+ qemu-options.hx            |  11 +-
+ system/vl.c                | 294 ++++++++++++++++++++++++++++++++++---
+ util/qemu-config.c         |  10 +-
+ 4 files changed, 291 insertions(+), 26 deletions(-)
 
-diff --git a/include/qemu/target-info-select.h b/include/qemu/target-info-select.h
-new file mode 100644
-index 00000000000..0659bb47567
---- /dev/null
-+++ b/include/qemu/target-info-select.h
-@@ -0,0 +1,24 @@
-+#ifndef QEMU_TARGET_INFO_SELECT_H
-+#define QEMU_TARGET_INFO_SELECT_H
-+
-+/**
-+ * target_combined_binary:
-+ *
-+ * Returns: %true if this is the combined qemu-system binary.
-+ */
-+bool target_combined_binary(void);
-+
-+typedef struct Error Error;
-+
-+/**
-+ * target_info_select_by_name:
-+ * @name: target_name to select, or NULL
-+ * @errp: error location
-+ *
-+ * Combined qemu-system only. NULL selects "none". Every name, including
-+ * "none", is looked up in target_info_list(). The stub is a no-op on
-+ * single-target binaries.
-+ */
-+void target_info_select_by_name(const char *name, Error **errp);
-+
-+#endif
-diff --git a/meson.build b/meson.build
-index 7ab5c7971a8..96f493cb746 100644
---- a/meson.build
-+++ b/meson.build
-@@ -4618,6 +4618,41 @@ if single_binary_available
-   endforeach
-   single_binary_objects += single_binary_target_info_objects
+diff --git a/include/qemu/config-file.h b/include/qemu/config-file.h
+index 51b310fa3b4..f733b0e9769 100644
+--- a/include/qemu/config-file.h
++++ b/include/qemu/config-file.h
+@@ -22,6 +22,8 @@ int qemu_config_parse(FILE *fp, QemuOptsList **lists, const char *fname,
+ void qemu_config_do_parse(const char *group, QDict *qdict, void *opaque, Error **errp);
  
-+  none_config_target_data = configuration_data()
-+  none_config_target_data.set_quoted('TARGET_NAME', 'none')
-+  none_config_target_data.set('TARGET_ARCH', 'NONE')
-+  none_config_target_data.set('TARGET_BASE_ARCH', 'NONE')
-+  none_config_target_data.set('TARGET_LONG_BITS', 64)
-+  none_config_target_data.set('TARGET_BIG_ENDIAN', 0)
-+  none_config_target_h = configure_file(output: 'none-config-target.h',
-+                                        configuration: none_config_target_data)
-+  none_config_devices_data = configuration_data()
-+  foreach k, v : single_binary_config
-+    if v == 'y'
-+      none_config_devices_data.set(k, 1)
-+    endif
-+  endforeach
-+  none_config_devices_h = configure_file(output: 'none-config-devices.h',
-+                                         configuration: none_config_devices_data)
-+  qemu_none_ss = ss.source_set()
-+  qemu_none_ss.add(files('system/target-info-select.c'))
-+  qemu_none_ss.add(target_info_def)
-+  qemu_none_src = qemu_none_ss.apply(single_binary_config, strict: false)
-+  qemu_none = static_library('qemu-none',
-+                             sources: qemu_none_src.sources() + genh +
-+                                      [none_config_target_h,
-+                                       none_config_devices_h],
-+                             dependencies: qemu_none_src.dependencies(),
-+                             include_directories: include_directories(
-+                               'target' / 'none'),
-+                             c_args: [
-+                               '-DCOMPILING_PER_TARGET',
-+                               '-DCONFIG_TARGET="none-config-target.h"',
-+                               '-DCONFIG_DEVICES="none-config-devices.h"',
-+                             ],
-+                             build_by_default: false)
-+  single_binary_objects += qemu_none.extract_objects(qemu_none_src.sources())
-+
-   single_binary_link_args = emulator_link_args
-   single_binary_link_args += enable_modules ? ['@block.syms', '@qemu.syms'] : []
-   qemu_system_name = 'qemu-system'
-diff --git a/qom/object.c b/qom/object.c
-index 76b0b0806b3..2ce6c369df5 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -16,6 +16,7 @@
- #include "qom/object.h"
- #include "qom/object_interfaces.h"
- #include "qemu/target-info-qapi.h"
+ int qemu_read_config_file(const char *filename, QEMUConfigCB *f, Error **errp);
++int qemu_read_config_file_cb(const char *filename, QEMUConfigCB *f,
++                             void *opaque, Error **errp);
+ 
+ /* Parse QDict options as a replacement for a config file (allowing multiple
+    enumerated (0..(n-1)) configuration "sections") */
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 2f6863180b0..32be1ceeda2 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -27,6 +27,8 @@ ERST
+ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
+     "-machine [type=]name[,prop=value[,...]]\n"
+     "                selects emulated machine ('-machine help' for list)\n"
++    "                use arch:name (e.g. aarch64:virt) on the combined binary\n"
++    "                '-machine help' lists all targets; use arch:help for one\n"
+     "                property accel=accel1[:accel2[:...]] selects accelerator\n"
+     "                supported accelerators are kvm, xen, hvf, nitro, nvmm, whpx, mshv or tcg (default: tcg)\n"
+     "                vmport=on|off|auto controls emulation of vmport (default: auto)\n"
+@@ -53,7 +55,14 @@ DEF("machine", HAS_ARG, QEMU_OPTION_machine, \
+ SRST
+ ``-machine [type=]name[,prop=value[,...]]``
+     Select the emulated machine by name. Use ``-machine help`` to list
+-    available machines.
++    available machines. On a single-target binary this lists that
++    target. On the combined qemu-system binary, ``-machine help``
++    lists every target; pass ``arch:name`` (for example
++    ``aarch64:virt``) to select one, or ``arch:help`` (for example
++    ``aarch64:help``) to list that target only. A ``[machine]``
++    ``type`` in the default config file or ``-readconfig`` uses the
++    same form. The default file is read first. A later bare name
++    keeps the last arch prefix.
+ 
+     For architectures which aim to support live migration compatibility
+     across releases, each release will introduce a new versioned machine
+diff --git a/system/vl.c b/system/vl.c
+index 7f1381d84ff..1bdd5b2da05 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -28,6 +28,8 @@
+ #include "qemu/units.h"
+ #include "qemu/module.h"
+ #include "qemu/target-info.h"
 +#include "qemu/target-info-select.h"
- #include "qemu/cutils.h"
- #include "qemu/memalign.h"
- #include "qapi/visitor.h"
-@@ -171,7 +172,12 @@ static TypeImpl *type_register_internal(const TypeInfo *info)
-         abort();
-     }
- 
--    if (info->is_available && !info->is_available(target_info())) {
-+    /*
-+     * Single-target binaries omit types that cannot run. The combined
-+     * binary keeps them and filters with is_available per target.
-+     */
-+    if (!target_combined_binary() && info->is_available &&
-+        !info->is_available(target_info())) {
-         return NULL;
-     }
- 
-diff --git a/stubs/meson.build b/stubs/meson.build
-index 29b6644b254..3765537778d 100644
---- a/stubs/meson.build
-+++ b/stubs/meson.build
-@@ -3,6 +3,7 @@
- # below, so that it is clear who needs the stubbed functionality.
- 
- stub_ss.add(files('cpu-get-clock.c'))
-+stub_ss.add(files('target-info-select.c'))
- stub_ss.add(files('fdset.c'))
- stub_ss.add(files('iothread-lock.c'))
- stub_ss.add(files('is-daemonized.c'))
-diff --git a/stubs/target-info-select.c b/stubs/target-info-select.c
-new file mode 100644
-index 00000000000..5c9e8dc6e19
---- /dev/null
-+++ b/stubs/target-info-select.c
-@@ -0,0 +1,14 @@
-+#include "qemu/osdep.h"
-+#include "qemu/target-info-select.h"
-+#include "qapi/error.h"
-+
-+bool target_combined_binary(void)
-+{
-+    return false;
-+}
-+
-+void target_info_select_by_name(const char *name, Error **errp)
-+{
-+    (void)name;
-+    (void)errp;
-+}
-diff --git a/system/target-info-select.c b/system/target-info-select.c
-new file mode 100644
-index 00000000000..4b4a9fdf256
---- /dev/null
-+++ b/system/target-info-select.c
-@@ -0,0 +1,26 @@
-+#include "qemu/osdep.h"
 +#include "qemu/target-info-def.h"
-+#include "qemu/target-info-select.h"
-+#include "qapi/error.h"
-+
-+bool target_combined_binary(void)
+ #include "exec/cpu-common.h"
+ #include "exec/page-vary.h"
+ #include "hw/core/qdev-properties.h"
+@@ -842,6 +844,12 @@ static bool usb_parse(const char *cmdline, Error **errp)
+ /***********************************************************/
+ /* machine registration */
+ 
++/* Same grouping as -M help: each machine must have is_available. */
++static bool machine_class_in_target(MachineClass *mc, const TargetInfo *ti)
 +{
-+    return true;
++    return object_class_get_is_available(OBJECT_CLASS(mc))(ti);
 +}
 +
-+void target_info_select_by_name(const char *name, Error **errp)
+ static MachineClass *find_machine(const char *name, GSList *machines)
+ {
+     GSList *el;
+@@ -850,6 +858,9 @@ static MachineClass *find_machine(const char *name, GSList *machines)
+         MachineClass *mc = el->data;
+ 
+         if (!strcmp(mc->name, name) || !g_strcmp0(mc->alias, name)) {
++            if (!machine_class_in_target(mc, target_info())) {
++                continue;
++            }
+             return mc;
+         }
+     }
+@@ -866,6 +877,9 @@ static MachineClass *find_default_machine(GSList *machines)
+         MachineClass *mc = el->data;
+ 
+         if (mc->is_default) {
++            if (!machine_class_in_target(mc, target_info())) {
++                continue;
++            }
+             assert(default_machineclass == NULL && "Multiple default machines");
+             default_machineclass = mc;
+         }
+@@ -874,6 +888,106 @@ static MachineClass *find_default_machine(GSList *machines)
+     return default_machineclass;
+ }
+ 
++/*
++ * Split "aarch64:virt". "aarch64:" binds arch and leaves an empty name.
++ * A leading colon is not a prefix. *machine_name always takes the latest
++ * parsed name; NULL type leaves it unchanged. keep_target leaves
++ * *machine_target unchanged when the new type has no prefix.
++ */
++static void machine_type_parse_target(const char *type,
++                                      char **machine_name,
++                                      char **machine_target,
++                                      bool keep_target)
 +{
-+    TargetInfoNode *node;
++    const char *colon = NULL;
++    const char *parsed_name = NULL;
++    const char *parsed_target = NULL;
 +
-+    if (!name) {
-+        name = "none";
++    if (type) {
++        colon = strchr(type, ':');
++        if (!colon || colon == type) {
++            parsed_name = type;
++        } else {
++            parsed_target = type;
++            parsed_name = colon + 1;
++        }
 +    }
 +
-+    QLIST_FOREACH(node, target_info_list(), next) {
-+        if (!strcmp(name, node->info->target_name)) {
-+            target_info_select(node->info);
++    if (parsed_name) {
++        g_free(*machine_name);
++        *machine_name = g_strdup(parsed_name);
++    }
++    if (parsed_target || !keep_target) {
++        g_free(*machine_target);
++        *machine_target = parsed_target ?
++            g_strndup(parsed_target, colon - parsed_target) : NULL;
++    }
++}
++
++typedef struct MachineTypeOpt {
++    char *type;
++    char *name;
++    char *target;
++    bool help;
++} MachineTypeOpt;
++
++static void machine_type_opt_clear(MachineTypeOpt *opt)
++{
++    g_free(opt->type);
++    g_free(opt->name);
++    g_free(opt->target);
++    opt->type = NULL;
++    opt->name = NULL;
++    opt->target = NULL;
++}
++
++G_DEFINE_AUTO_CLEANUP_CLEAR_FUNC(MachineTypeOpt, machine_type_opt_clear)
++
++/* A bare name keeps the previous arch prefix. */
++static void machine_type_opt_set(MachineTypeOpt *opt, const char *type,
++                                 bool help)
++{
++    if (!type && !help) {
++        return;
++    }
++    if (type) {
++        g_free(opt->type);
++        opt->type = g_strdup(type);
++        machine_type_parse_target(opt->type, &opt->name, &opt->target, true);
++    }
++    opt->help = help || (type && opt->name && is_help_option(opt->name));
++}
++
++static void qemu_config_set_machine_type(const char *group, QDict *qdict,
++                                         void *opaque, Error **errp)
++{
++    MachineTypeOpt *opt = opaque;
++
++    (void)errp;
++    if (strcmp(group, "machine") != 0) {
++        return;
++    }
++    machine_type_opt_set(opt, qdict_get_try_str(qdict, "type"), false);
++}
++
++static void machine_type_config_file(const char *filename, bool optional,
++                                     MachineTypeOpt *opt)
++{
++    Error *err = NULL;
++    int ret;
++
++    ret = qemu_read_config_file_cb(filename, qemu_config_set_machine_type,
++                                   opt, &err);
++    if (ret < 0) {
++        if (optional && ret == -ENOENT) {
++            error_free(err);
++            return;
++        }
++        error_report_err(err);
++        exit(1);
++    }
++}
++
+ static void version(void)
+ {
+     printf("QEMU emulator version " QEMU_FULL_VERSION "\n"
+@@ -1563,25 +1677,31 @@ static gint machine_class_cmp(gconstpointer a, gconstpointer b, gpointer d)
+                   object_class_get_name(OBJECT_CLASS(mc1)));
+ }
+ 
+-static void machine_help_func(const QDict *qdict)
++static void machine_help_print_target(GSList *machines, const TargetInfo *ti,
++                                      const char *machine_target)
+ {
+-    g_autoptr(GSList) machines = NULL;
++    bool printed = false;
+     GSList *el;
+-    const char *type = qdict_get_try_str(qdict, "type");
++    bool combined = target_combined_binary();
++    bool print_header = combined && !machine_target;
+ 
+-    machines = object_class_get_list(TYPE_MACHINE, false);
+-    if (type) {
+-        ObjectClass *machine_class = OBJECT_CLASS(find_machine(type, machines));
+-        if (machine_class) {
+-            type_print_class_properties(object_class_get_name(machine_class));
+-            return;
+-        }
++    if (!combined) {
++        g_assert(ti == target_info());
++    } else if (machine_target && ti != target_info()) {
++        /* -M arch:help: skip every target except the selected one. */
++        return;
+     }
+ 
+-    printf("Supported machines are:\n");
+-    machines = g_slist_sort_with_data(machines, machine_class_cmp, NULL);
+     for (el = machines; el; el = el->next) {
+         MachineClass *mc = el->data;
++
++        if (!machine_class_in_target(mc, ti)) {
++            continue;
++        }
++        if (print_header && !printed) {
++            printf("%s:\n", ti->target_name);
++            printed = true;
++        }
+         if (mc->alias) {
+             printf("%-20s %s (alias of %s)\n", mc->alias, mc->desc, mc->name);
+         }
+@@ -1590,6 +1710,54 @@ static void machine_help_func(const QDict *qdict)
+                mc->deprecation_reason ? " (deprecated)" : "",
+                object_class_is_secure(OBJECT_CLASS(mc)) ? " (secure)" : "");
+     }
++
++    if (print_header && printed) {
++        printf("\n");
++    }
++}
++
++static void machine_help_func(const char *type,
++                              const char *machine_name,
++                              const char *machine_target)
++{
++    g_autoptr(GSList) machines = NULL;
++    MachineClass *mc = NULL;
++    TargetInfoNode *node;
++
++    machines = object_class_get_list(TYPE_MACHINE, false);
++
++    if (machine_name && *machine_name && !is_help_option(machine_name)) {
++        mc = find_machine(machine_name, machines);
++        if (mc) {
++            type_print_class_properties(object_class_get_name(OBJECT_CLASS(mc)));
++            return;
++        }
++        if (target_none()) {
++            error_report("machine type \"%s\" needs an arch: prefix",
++                         machine_name);
++            exit(1);
++        }
++        error_report("unsupported machine type: \"%s\"", type);
++        exit(1);
++    }
++
++    if (type && (!machine_name || !*machine_name)) {
++        if (!target_none()) {
++            mc = find_default_machine(machines);
++            if (!mc) {
++                error_report("No machine specified, and there is no default");
++                exit(1);
++            }
++            type_print_class_properties(object_class_get_name(OBJECT_CLASS(mc)));
 +            return;
 +        }
 +    }
-+    error_setg(errp, "target '%s' is not available", name);
++
++    printf("Supported machines are:\n");
++    machines = g_slist_sort_with_data(machines, machine_class_cmp, NULL);
++    QLIST_FOREACH(node, target_info_list(), next) {
++        machine_help_print_target(machines, node->info, machine_target);
++    }
+ }
+ 
+ static void
+@@ -1684,18 +1852,58 @@ static MachineClass *select_machine(QDict *qdict, Error **errp)
+     const char *machine_type = qdict_get_try_str(qdict, "type");
+     g_autoptr(GSList) machines = object_class_get_list(TYPE_MACHINE, false);
+     MachineClass *machine_class = NULL;
++    g_autofree char *machine_target = NULL;
++    g_autofree char *machine_name = NULL;
+ 
+     if (machine_type) {
+-        machine_class = find_machine(machine_type, machines);
++        machine_type_parse_target(machine_type, &machine_name, &machine_target, false);
++        if (machine_target && strcmp(target_name(), machine_target) != 0) {
++            error_setg(errp, "machine type \"%s\" is not available "
++                       "for target %s", machine_type, target_name());
++            error_append_hint(errp,
++                              "Use -machine help to list supported "
++                              "machines\n");
++            return NULL;
++        }
++    }
++
++    if (machine_name && *machine_name) {
++        machine_class = find_machine(machine_name, machines);
+         if (!machine_class) {
+-            error_setg(errp, "unsupported machine type: \"%s\"", machine_type);
++            if (machine_target && target_none()) {
++                error_setg(errp, "machine type \"%s\" is not available "
++                           "for target %s", machine_type, target_name());
++            } else if (target_none()) {
++                error_setg(errp,
++                           "machine type \"%s\" needs an arch: prefix",
++                           machine_name);
++                error_append_hint(errp,
++                                  "Use -M arch:name (e.g. aarch64:virt) "
++                                  "or -machine help\n");
++                return NULL;
++            } else {
++                error_setg(errp, "unsupported machine type: \"%s\"",
++                           machine_type);
++            }
+         }
+-        qdict_del(qdict, "type");
+-    } else {
++    } else if (!target_none()) {
+         machine_class = find_default_machine(machines);
+         if (!machine_class) {
+             error_setg(errp, "No machine specified, and there is no default");
+         }
++    } else {
++        machine_class = find_machine("none", machines);
++        if (!machine_class) {
++            error_setg(errp, "No machine specified");
++            error_append_hint(errp,
++                              "Use -M arch:name (e.g. aarch64:virt) or "
++                              "-machine help\n");
++            return NULL;
++        }
++    }
++
++    if (machine_type) {
++        qdict_del(qdict, "type");
+     }
+ 
+     if (!machine_class) {
+@@ -2872,6 +3080,9 @@ void qemu_init(int argc, char **argv)
+     const char *optarg;
+     MachineClass *machine_class;
+     bool userconfig = true;
++    int parse_opt_pass = 0;
++    /* Combined: NULL target selects NONE. Single-target stub ignores this. */
++    g_auto(MachineTypeOpt) machine_opt = { };
+     FILE *vmstate_dump_file = NULL;
+ 
+     qemu_add_opts(&qemu_drive_opts);
+@@ -2911,9 +3122,23 @@ void qemu_init(int argc, char **argv)
+     error_init(argv[0]);
+     qemu_init_exec_dir(argv[0]);
+ 
+-    /* first pass of option parsing */
++    /*
++     * Pass 0 records -nouserconfig. Pass 1 parses -M and -readconfig
++     * into machine_opt. The loop ends only after pass 1.
++     */
+     optind = 1;
+-    while (optind < argc) {
++    for (parse_opt_pass = 0; parse_opt_pass < 2;) {
++        if (optind >= argc) {
++            if (parse_opt_pass == 0 && userconfig) {
++                g_autofree char *file =
++                    get_relocated_path(CONFIG_QEMU_CONFDIR "/qemu.conf");
++
++                machine_type_config_file(file, true, &machine_opt);
++            }
++            parse_opt_pass += 1;
++            optind = 1;
++            continue;
++        }
+         if (argv[optind][0] != '-') {
+             /* disk image */
+             optind++;
+@@ -2923,7 +3148,27 @@ void qemu_init(int argc, char **argv)
+             popt = lookup_opt(argc, argv, &optarg, &optind);
+             switch (popt->index) {
+             case QEMU_OPTION_nouserconfig:
+-                userconfig = false;
++                if (parse_opt_pass == 0) {
++                    userconfig = false;
++                }
++                break;
++            case QEMU_OPTION_M:
++            case QEMU_OPTION_machine:
++                if (parse_opt_pass == 1) {
++                    bool help = false;
++                    g_autoptr(QDict) dict = qdict_new();
++                    const char *type;
++
++                    keyval_parse_into(dict, optarg, "type", &help,
++                                      &error_fatal);
++                    type = qdict_get_try_str(dict, "type");
++                    machine_type_opt_set(&machine_opt, type, help);
++                }
++                break;
++            case QEMU_OPTION_readconfig:
++                if (parse_opt_pass == 1) {
++                    machine_type_config_file(optarg, false, &machine_opt);
++                }
+                 break;
+             }
+         }
+@@ -2931,6 +3176,8 @@ void qemu_init(int argc, char **argv)
+ 
+     os_setup_limits();
+ 
++    target_info_select_by_name(machine_opt.target, &error_fatal);
++
+     module_init_info(qemu_modinfo);
+     module_allow_arch(target_name());
+ 
+@@ -3435,10 +3682,6 @@ void qemu_init(int argc, char **argv)
+                     bool help;
+ 
+                     keyval_parse_into(machine_opts_dict, optarg, "type", &help, &error_fatal);
+-                    if (help) {
+-                        machine_help_func(machine_opts_dict);
+-                        exit(EXIT_SUCCESS);
+-                    }
+                     break;
+                 }
+             case QEMU_OPTION_accel:
+@@ -3770,6 +4013,11 @@ void qemu_init(int argc, char **argv)
+     qemu_process_early_options();
+ 
+     qemu_process_help_options();
++    if (machine_opt.help) {
++        machine_help_func(machine_opt.type, machine_opt.name,
++                          machine_opt.target);
++        exit(EXIT_SUCCESS);
++    }
+     qemu_maybe_daemonize(pid_file);
+ 
+     /*
+diff --git a/util/qemu-config.c b/util/qemu-config.c
+index d1fc49c507d..f0ef711450e 100644
+--- a/util/qemu-config.c
++++ b/util/qemu-config.c
+@@ -183,7 +183,8 @@ int qemu_config_parse(FILE *fp, QemuOptsList **lists, const char *fname, Error *
+     return qemu_config_foreach(fp, qemu_config_do_parse, lists, fname, errp);
+ }
+ 
+-int qemu_read_config_file(const char *filename, QEMUConfigCB *cb, Error **errp)
++int qemu_read_config_file_cb(const char *filename, QEMUConfigCB *cb,
++                             void *opaque, Error **errp)
+ {
+     FILE *f = fopen(filename, "r");
+     int ret;
+@@ -193,11 +194,16 @@ int qemu_read_config_file(const char *filename, QEMUConfigCB *cb, Error **errp)
+         return -errno;
+     }
+ 
+-    ret = qemu_config_foreach(f, cb, vm_config_groups, filename, errp);
++    ret = qemu_config_foreach(f, cb, opaque, filename, errp);
+     fclose(f);
+     return ret;
+ }
+ 
++int qemu_read_config_file(const char *filename, QEMUConfigCB *cb, Error **errp)
++{
++    return qemu_read_config_file_cb(filename, cb, vm_config_groups, errp);
 +}
-diff --git a/target/none/cpu-param.h b/target/none/cpu-param.h
-new file mode 100644
-index 00000000000..3c0818a2f02
---- /dev/null
-+++ b/target/none/cpu-param.h
-@@ -0,0 +1,7 @@
-+#ifndef NONE_CPU_PARAM_H
-+#define NONE_CPU_PARAM_H
 +
-+#define TARGET_PAGE_BITS 9
-+#define TARGET_VIRT_ADDR_SPACE_BITS 64
-+
-+#endif
-diff --git a/target/none/cpu-qom.h b/target/none/cpu-qom.h
-new file mode 100644
-index 00000000000..114faa8077a
---- /dev/null
-+++ b/target/none/cpu-qom.h
-@@ -0,0 +1,6 @@
-+#ifndef QEMU_NONE_CPU_QOM_H
-+#define QEMU_NONE_CPU_QOM_H
-+
-+#define TYPE_NONE_CPU NULL
-+
-+#endif
-diff --git a/target/none/cpu.h b/target/none/cpu.h
-new file mode 100644
-index 00000000000..ffb9a0d28dc
---- /dev/null
-+++ b/target/none/cpu.h
-@@ -0,0 +1,18 @@
-+#ifndef QEMU_NONE_CPU_H
-+#define QEMU_NONE_CPU_H
-+
-+#include "cpu-qom.h"
-+#include "hw/core/cpu.h"
-+
-+#define CPU_RESOLVING_TYPE TYPE_NONE_CPU
-+
-+typedef struct CPUArchState {
-+    uint64_t unused;
-+} CPUArchState;
-+
-+struct ArchCPU {
-+    CPUState parent_obj;
-+    CPUArchState env;
-+};
-+
-+#endif
+ static bool config_parse_qdict_section(QDict *options, QemuOptsList *opts,
+                                        Error **errp)
+ {
 -- 
 2.52.0.windows.1
 
