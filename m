@@ -1,64 +1,64 @@
-Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
+Received: from mail-dl2-f32.google.com (mail-dl2-f32.google.com [74.125.229.160])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA45D345731
-	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 07:02:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D17345731
+	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 07:02:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.160
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790406154; cv=none; b=beAMmRZ6ZwFbeg0Q+cbis+JxJ65Ugv86fmCsPaKPHYWCqxYQLaaOIkO9epfnInzi02Y9hvWPk2lfMdmqnyO1kPscSEaRz3hxqkFflCQP+X6p+Deuu/AT/v11MN1mmpTYx7F/UK9J7je6/gBNisNaVKB5wQzFV7M9AmI8CjffQ5Q=
+	t=1790406158; cv=none; b=ows8epF8Mf9dzyP/CxRaYSv8ortrZXyX0o5u7ZwQ9PT5DEhRWAaWuDw+P+RpPfE22ePsJA3nfc4XuSbmb6rMhIWcEYypv/D8QpwuEBGZqVK/v57BUvHU4mEj7DbQVoNSd4SBacYjZ33XyrygZ8ufHHgQ9B/NK4mxjl/JaQ4qPkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790406154; c=relaxed/simple;
-	bh=Jhrlq5XAtF0cuKnguPorxji/kkXUZROYmKPFLK4nFac=;
+	s=arc-20240116; t=1790406158; c=relaxed/simple;
+	bh=2ENpVG/R6V1qv0chn+lAC5VLq79P2++YyHKJTvStFfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=totYn6tGCZwFKchBwKyNuB52/gPB1T2smSYNjdBcWcWY/4C0y4bZxyVM+4LuMjk+SRipJ05g23B+JbhmHgA4CBUI2eCNKsP19oQbY8N4FRjwjcU9e/IJDd8pr4WVqwzKY7PsZULyLfFUU4fKY9I/dUfeNiiQzd0j9Ch+BiQn950=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o63VBgqc; arc=none smtp.client-ip=74.125.229.12
+	 MIME-Version; b=F2MEnvUtvWh88Ji7htfdhiMsqHXBkyBPZBz7yxcw4W7KVYVWYPHiPHKqKNXJUv6fXgHEJ7N78MwymCR1tD4xYovwQkfZaggC9D2FmuDvBCExg8f1pOjU3bE1ZdcrIU0ltzSKBtBF6bu3ccHnXMa+Q1odwA73AtQ6X9OUK+uljMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X0xyaaP4; arc=none smtp.client-ip=74.125.229.160
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o63VBgqc"
-Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-33b9e805130so1110747eec.1
-        for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 00:02:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X0xyaaP4"
+Received: by mail-dl2-f32.google.com with SMTP id a92af1059eb24-1437b77c274so827092c88.3
+        for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 00:02:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790406152; x=1791010952; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790406156; x=1791010956; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=VtvK64eD6Oei73yOgbqEAR1VlYxIZN+qs4TLFfACmJs=;
-        b=o63VBgqcxdw2C+l7Gp8bd2Iv087OTD4b6zmEn/o2RXYWphU78ceVcbmpkyg/fb88sV
-         XV9GKv/n/MK5pc5RXDVhnjdj9XFJgaiundxIXlqfdUiRMv4muVtlYc0nlCyGDD0fbq8q
-         CNbtcvb3EY3hxeM/PG6cV8q9rwOK//0oBR2NN2nlm57kWcYMdolzkx8JveoVf/bYuhUz
-         XK4mKYgVVlqyTJ7k+55N/ZAsg57fkQBCirRoVskd6Y4B/7ZB0dlFkI4LJTC4Qq3FpHvr
-         zRVxxu3tCbetEcm5X/ceYn1fNBG0DTEYMXEk35Fvmwp6BVgf3waKke/vvagrbz7anQQw
-         yxjQ==
+        bh=0zRIL5w+/7j7HI00vae8hs9ukAVd9SKBuffZMonHGDA=;
+        b=X0xyaaP44rnKLIQyhfb7wbv2/vJfFyb+FY1eCmkQqHHWal5F+O3KHd48OjtT3rppBh
+         FQDlRNmZOZ6mX8xFZsgU5ancDn1wj5P8CPUv+ls7Lx8JTPjWhMeppcZYHKCUsDOq+sFx
+         TJrAD8W/V35WiwUq/qScXA7Eu3SdNgWo+r7U+NmMMP6PQiAvxY7R4cSEHq4wm8gLfVJw
+         YsK5pSzKzrjbsWOAVErXNmIw00FiomzBAmleQ4l0cGvZHUgL7C74tpT+ypvVgHx4Pc8F
+         /gzLI0kohfhyRDkLNiZ+VTqLOg/UKeA4htBwBAJZU0ZIEPyxzTf7SB3EFl/5oJVSjcRX
+         tV6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790406152; x=1791010952;
+        d=1e100.net; s=20260707; t=1790406156; x=1791010956;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VtvK64eD6Oei73yOgbqEAR1VlYxIZN+qs4TLFfACmJs=;
-        b=kU4LfXczpIg6cWLYygZEak5djBGXIbDLZr/jcy7OqqY7u58PHbBU5A7Nyexx/YhVSQ
-         KbARPeFgDhD/wcTUvzNRfNiYPU6E8i1VAH0pDnMxw7y98vD1A2UJQ1iWOyV7min3VQPw
-         iuxH4UH0lwTvUA/r4n9cxbFO6fiP5LvUzw0EsKhoXa9Ihf6+Wme56k3fxFOnGUW2vF3S
-         o2knMWcM+Lqdbd3vHYJuHKYsj2xvMM0UKaFhx8GkjggVml5mBKa30EuXFd5qvkA0+MIe
-         jWZjYssruwxfV7u0qwG4m/K+totdJ0M+tn79bDGzravgoPAhF5S3YxJnGFUA4d8ExgHt
-         Rb0Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwUaWUacdk/xcTXTH38RlvOkUZIZ+UfehzkGfTzp9g+WOpeLoQR+jkQQwe2eoT8jF4Bz3g=@vger.kernel.org
-X-Gm-Message-State: AFuF++nuCDNnG+9xfEbLZC1FNLLTc2eSEgauyVEm4MgCnwV7v0lMhnhQ
-	Qj7wa6HDUZ2GGG47jlCVPqP8t+nRFbnc7rKRraRkdg0n62NolHeEn7u8
-X-Gm-Gg: AYBFou3apTD7stD2mrK3MewSj11zPS77QjBpbqYZHn0pODiHYq2LoGh6uwK9ulrhKIU
-	7U7Dd/WB8UnlJne2FNzc+1LATnxb9puk3vG9+N5ejo+NzcqJQYD9a9RWkbEGYNvkfuO0MoNIjXK
-	Mqa5fJ212pW/sudfiJpMh+IMajVO/XLdAmgPyfLRr5uTEU6b8tsJbskoGP4e4GvtcLgJNxWDVQY
-	hPofUeLgwpZDGyUk2qJVrWyEO3jcPEOFcmcLTqci/aZUuTmfjFDK1DIjxgEdHiY1P8+uDcWilQZ
-	3ofW9aMllp4VC/2YdWr3MXvi85p5O5Ky6Of8hduCK3x4pMy/YUmCpDxz+oK8UDAPruWfETM+NLP
-	KFWVOe3vAHMQNCOWIZ/b43HjD9LbNr/sWRbKFdxnPQ6xK3HfD8a8/DSlZSU9jYc+b792u2OvVjZ
-	4ViJSpnPbA32p45Mdc9O7B9w6kQEltFrWmxwqGCQwDZjtiDeZaapd8KlCPmPALD7eKcePv4BDKX
-	kz8rZcL0ttbxU5bDdt6G5M8sEbkXjI=
-X-Received: by 2002:a05:7300:3b28:b0:33e:6b65:5eb6 with SMTP id 5a478bee46e88-34273c40a64mr3037346eec.30.1790406151876;
-        Sat, 26 Sep 2026 00:02:31 -0700 (PDT)
+        bh=0zRIL5w+/7j7HI00vae8hs9ukAVd9SKBuffZMonHGDA=;
+        b=G9+caFNrGdh5GWhXGomAPgK7O/g0pDn2ZDgD+GAb79xkviusdAm5Jzz0QZfq79/k8I
+         kN8JP/GgWAfiBuTKiCwNErJYBUyong8qdV8r361YXuY/w4x4SX1x3jCe4d2b8OrebMrL
+         BSRw5PAe0aZeLQyAoQsto13sBnsvyaGhmJ9fcsy4qT4NkJEufNRAqgIhPqImkOrnsGBg
+         v+pJyFYzhQE/fl9DOjH2akK1GgJsODPGy3XYoe5sWspNmIvocG+eT/inCL6kSRfd/WK0
+         42r9438Mnawv+HgTHa2PwlayZi606nTxmdkihHN7bTWqGgkQqsZBvPAG0W9zXI1kOAt5
+         JNtQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxEck02MWmTF+HWy6JuRw+bjs59kYLCsGPJeaDKGnqTqmHCknU33xZXpwY1V7+TgRBl53E=@vger.kernel.org
+X-Gm-Message-State: AFuF++kVslEuiZfUxNtKc6HTohCu1XljwmXjbIWptjrme2yk0euZDhwT
+	8Rk0cMyHPxDpVcyhFTlEayrQPfe9a3CBXrmQg/rUwQnMeOQPxa23Y8ex
+X-Gm-Gg: AYBFou05SBxy0GUE3mgABiBRBV2Zt46Fvvqym0IBfcMP3uumnXN6eD05mMQ2NG5vExe
+	hO/ZsBb+Xk4Db9ZzMAShDmsWPb3kC4Kx/5+ovyrR8UV//mARK1Fc6lN9S+l2ZRa97yyoq4talv9
+	Li8zBAdWWT8awGoZjH0LHp+ngLbAoQWZy3pR1UAHE1spl0+ifv16cgwTo9lO9EHbgLt9SLnv+85
+	nqa33SUd13n5KaWN4ANAxwmJiPBwJ50P4r8qrIlA6VwBlldjaXeRW7bb3jmVFYL6Vyabo+y8uVz
+	1uyyL2PaDjD3QQefxHybuESriv17PDxJ0Sl15QHTv7OYl0Kd82Bdz50rikclni8S4AjQbUbjWLs
+	rNj2U25CT4cPb3OvYUPPyXa9LgvteE35DjBzO8kKcdDC7UyVGBJ0PZmNwrKvv0qzFBT3QOfHgcp
+	WY3FsslKvzya1L1702GEEyOX5o0r3/UKv2zfn9degTKARFIYtaeFAl77olVM7tAhDOCSMJxzwsB
+	FOKkcrN3k7ODeRUW5/hfhnPvu8ZP9kMP+0g+Fl25w==
+X-Received: by 2002:a05:701b:4254:10b0:143:2982:1045 with SMTP id a92af1059eb24-146d02aa3b9mr1963884c88.38.1790406155693;
+        Sat, 26 Sep 2026 00:02:35 -0700 (PDT)
 Received: from WIN-BH9M8FJACR9 ([103.94.185.75])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-34145c166cfsm10615141eec.28.2026.09.26.00.02.27
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-34145c166cfsm10615141eec.28.2026.09.26.00.02.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 00:02:30 -0700 (PDT)
+        Sat, 26 Sep 2026 00:02:34 -0700 (PDT)
 From: Yonggang Luo <luoyonggang@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -74,9 +74,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
 	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [PATCH v4 22/55] tcg: dispatch TL memory helpers from tcg-op-mem.h
-Date: Sat, 26 Sep 2026 15:00:21 +0800
-Message-ID: <20260926070057.1234-23-luoyonggang@gmail.com>
+Subject: [PATCH v4 23/55] tcg: dispatch tcg_gen_*_tl without TARGET_LONG_BITS
+Date: Sat, 26 Sep 2026 15:00:22 +0800
+Message-ID: <20260926070057.1234-24-luoyonggang@gmail.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260926070057.1234-1-luoyonggang@gmail.com>
 References: <20260926070057.1234-1-luoyonggang@gmail.com>
@@ -88,539 +88,835 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Move tcg_temp_new, tcg_global_mem_new, qemu ld/st, and the atomic
-*_tl helpers into tcg-op-mem.h. Width follows tl_is_64(), and
-TCG_ADDRESS_BITS is no longer forced to TARGET_LONG_BITS.
-
-tcg_type_tl, the TL casts, and tcgv_tl_temp live in tcg.h so helper
-wrappers can see them. Per-target tcgv_tl_temp aliases tcgv_i32_temp
-or tcgv_i64_temp. The common-build inline picks the width with
-tl_is_64(). A common build aliases TCGv_va to TCGv. Per-target
-builds still use TARGET_LONG_BITS unless the caller sets
-TCG_ADDRESS_BITS. Unit tests cover both fixed widths and a 32-bit VA
-with a 64-bit target long.
+Replace the TARGET_LONG_BITS aliases in tcg-op.h with the runtime
+helpers in tcg-op-tl.h. The width follows tl_is_64(), and tcg-op.h
+no longer includes exec/target_long.h.
 
 Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
 ---
- include/tcg/tcg-op-mem.h               | 114 +++++++++++++++++++++++--
- include/tcg/tcg-op.h                   |  61 -------------
- include/tcg/tcg.h                      |  51 +++++++++++
- tests/unit/meson.build                 |  10 +++
- tests/unit/test-tcg-op-mem-config32.h  |   2 +
- tests/unit/test-tcg-op-mem-config64.h  |   2 +
- tests/unit/test-tcg-op-mem-tl32.c      |  26 ++++++
- tests/unit/test-tcg-op-mem-tl64.c      |  26 ++++++
- tests/unit/test-tcg-op-mem-va32-tl64.c |  35 ++++++++
- tests/unit/test-tcg-op-mem.c           |  51 +++++++++++
- 10 files changed, 310 insertions(+), 68 deletions(-)
- create mode 100644 tests/unit/test-tcg-op-mem-config32.h
- create mode 100644 tests/unit/test-tcg-op-mem-config64.h
- create mode 100644 tests/unit/test-tcg-op-mem-tl32.c
- create mode 100644 tests/unit/test-tcg-op-mem-tl64.c
- create mode 100644 tests/unit/test-tcg-op-mem-va32-tl64.c
- create mode 100644 tests/unit/test-tcg-op-mem.c
+ include/tcg/tcg-op-tl.h | 568 ++++++++++++++++++++++++++++++++++++++++
+ include/tcg/tcg-op.h    | 228 +---------------
+ 2 files changed, 569 insertions(+), 227 deletions(-)
+ create mode 100644 include/tcg/tcg-op-tl.h
 
-diff --git a/include/tcg/tcg-op-mem.h b/include/tcg/tcg-op-mem.h
-index ea35a02fb40..82aa8a62caf 100644
---- a/include/tcg/tcg-op-mem.h
-+++ b/include/tcg/tcg-op-mem.h
-@@ -8,24 +8,57 @@
- #ifndef TCG_TCG_OP_MEM_H
- #define TCG_TCG_OP_MEM_H
- 
--#ifndef TCG_ADDRESS_BITS
--#error TCG_ADDRESS_BITS must be defined
--#endif
--
- #include "tcg/tcg-op-common.h"
-+#include "qemu/target-info.h"
-+
-+static inline TCGv tcg_temp_new(void)
-+{
-+    if (tl_is_64()) {
-+        return tcg_tl_from_i64(tcg_temp_new_i64());
-+    }
-+    return tcg_tl_from_i32(tcg_temp_new_i32());
-+}
-+
-+static inline TCGv tcg_global_mem_new(TCGv_ptr reg, intptr_t off,
-+                                      const char *name)
-+{
-+    if (tl_is_64()) {
-+        return tcg_tl_from_i64(tcg_global_mem_new_i64(reg, off, name));
-+    }
-+    return tcg_tl_from_i32(tcg_global_mem_new_i32(reg, off, name));
-+}
-+
-+#ifdef TCG_ADDRESS_BITS
-+# define TCG_VA_BITS TCG_ADDRESS_BITS
-+#elif defined(COMPILING_PER_TARGET)
-+# define TCG_VA_BITS TARGET_LONG_BITS
-+#endif
- 
--#if TCG_ADDRESS_BITS == 32
-+#ifdef TCG_VA_BITS
-+# if TCG_VA_BITS == 32
- typedef TCGv_i32 TCGv_va;
- #define TCG_TYPE_VA TCG_TYPE_I32
- #define tcgv_va_temp tcgv_i32_temp
- #define tcgv_va_temp_new tcg_temp_new_i32
--#elif TCG_ADDRESS_BITS == 64
-+# elif TCG_VA_BITS == 64
- typedef TCGv_i64 TCGv_va;
- #define TCG_TYPE_VA TCG_TYPE_I64
- #define tcgv_va_temp tcgv_i64_temp
- #define tcgv_va_temp_new tcg_temp_new_i64
-+# else
-+#  error
-+# endif
- #else
--#error
+diff --git a/include/tcg/tcg-op-tl.h b/include/tcg/tcg-op-tl.h
+new file mode 100644
+index 00000000000..e05d00a9aaa
+--- /dev/null
++++ b/include/tcg/tcg-op-tl.h
+@@ -0,0 +1,568 @@
++/* SPDX-License-Identifier: MIT */
 +/*
-+ * Without a fixed TCG_ADDRESS_BITS, the VA width follows tcg_type_tl()
-+ * at translation time. TCGv_va names the address role in APIs, but it
-+ * aliases TCGv because their runtime widths are identical. This is
-+ * semantic separation, not C type separation.
++ * target_ulong TCG ops. Width follows target_long_bits() at
++ * translate time. Does not include exec/target_long.h.
 + */
-+typedef TCGv TCGv_va;
-+#define TCG_TYPE_VA tcg_type_tl()
-+#define tcgv_va_temp tcgv_tl_temp
-+#define tcgv_va_temp_new tcg_temp_new
- #endif
- 
- static inline void
-@@ -125,4 +158,71 @@ DEF_ATOMIC2(tcg_gen_atomic_umax_fetch, i64)
- #undef DEF_ATOMIC2
- #undef DEF_ATOMIC3
- 
-+static inline void tcg_gen_qemu_ld_tl(TCGv v, TCGv_va a, TCGArg i, MemOp m)
++
++#ifndef TCG_TCG_OP_TL_H
++#define TCG_TCG_OP_TL_H
++
++#include "tcg/tcg-op-mem.h"
++
++/* Load: same callee name on i32 and i64. */
++#define DEF_TL_LD(NAME)                                                 \
++    static inline void tcg_gen_##NAME##_tl(TCGv r, TCGv_ptr b,          \
++                                           tcg_target_long o)           \
++    {                                                                   \
++        if (tl_is_64()) {                                               \
++            tcg_gen_##NAME##_i64(tcg_i64_from_tl(r), b, o);             \
++        } else {                                                        \
++            tcg_gen_##NAME##_i32(tcg_i32_from_tl(r), b, o);             \
++        }                                                               \
++    }
++
++DEF_TL_LD(ld)
++DEF_TL_LD(ld8u)
++DEF_TL_LD(ld8s)
++DEF_TL_LD(ld16u)
++DEF_TL_LD(ld16s)
++#undef DEF_TL_LD
++
++/* i32 target long is the full register, so a 32-bit load is ld. */
++
++static inline void tcg_gen_ld32u_tl(TCGv r, TCGv_ptr b, tcg_target_long o)
 +{
 +    if (tl_is_64()) {
-+        tcg_gen_qemu_ld_i64(tcg_i64_from_tl(v), a, i, m);
++        tcg_gen_ld32u_i64(tcg_i64_from_tl(r), b, o);
 +    } else {
-+        tcg_gen_qemu_ld_i32(tcg_i32_from_tl(v), a, i, m);
++        tcg_gen_ld_i32(tcg_i32_from_tl(r), b, o);
 +    }
 +}
 +
-+static inline void tcg_gen_qemu_st_tl(TCGv v, TCGv_va a, TCGArg i, MemOp m)
++static inline void tcg_gen_ld32s_tl(TCGv r, TCGv_ptr b, tcg_target_long o)
 +{
 +    if (tl_is_64()) {
-+        tcg_gen_qemu_st_i64(tcg_i64_from_tl(v), a, i, m);
++        tcg_gen_ld32s_i64(tcg_i64_from_tl(r), b, o);
 +    } else {
-+        tcg_gen_qemu_st_i32(tcg_i32_from_tl(v), a, i, m);
++        tcg_gen_ld_i32(tcg_i32_from_tl(r), b, o);
 +    }
 +}
 +
-+#define DEF_ATOMIC2_TL(N)                                       \
-+    static inline void N##_tl(TCGv r, TCGv_va a, TCGv v,        \
-+                              TCGArg i, MemOp m)                \
-+    {                                                           \
-+        if (tl_is_64()) {                                       \
-+            N##_i64(tcg_i64_from_tl(r), a, tcg_i64_from_tl(v),  \
-+                    i, m);                                      \
-+        } else {                                                \
-+            N##_i32(tcg_i32_from_tl(r), a, tcg_i32_from_tl(v),  \
-+                    i, m);                                      \
-+        }                                                       \
++/* Store: same callee name on i32 and i64. */
++#define DEF_TL_ST(NAME)                                                 \
++    static inline void tcg_gen_##NAME##_tl(TCGv v, TCGv_ptr b,          \
++                                           tcg_target_long o)           \
++    {                                                                   \
++        if (tl_is_64()) {                                               \
++            tcg_gen_##NAME##_i64(tcg_i64_from_tl(v), b, o);             \
++        } else {                                                        \
++            tcg_gen_##NAME##_i32(tcg_i32_from_tl(v), b, o);             \
++        }                                                               \
 +    }
 +
-+#define DEF_ATOMIC3_TL(N)                                       \
-+    static inline void N##_tl(TCGv r, TCGv_va a, TCGv o,        \
-+                              TCGv n, TCGArg i, MemOp m)        \
-+    {                                                           \
-+        if (tl_is_64()) {                                       \
-+            N##_i64(tcg_i64_from_tl(r), a, tcg_i64_from_tl(o),  \
-+                    tcg_i64_from_tl(n), i, m);                  \
-+        } else {                                                \
-+            N##_i32(tcg_i32_from_tl(r), a, tcg_i32_from_tl(o),  \
-+                    tcg_i32_from_tl(n), i, m);                  \
-+        }                                                       \
++DEF_TL_ST(st)
++DEF_TL_ST(st8)
++DEF_TL_ST(st16)
++#undef DEF_TL_ST
++
++/* i32 target long is the full register, so a 32-bit store is st. */
++
++static inline void tcg_gen_st32_tl(TCGv r, TCGv_ptr b, tcg_target_long o)
++{
++    if (tl_is_64()) {
++        tcg_gen_st32_i64(tcg_i64_from_tl(r), b, o);
++    } else {
++        tcg_gen_st_i32(tcg_i32_from_tl(r), b, o);
++    }
++}
++
++static inline void tcg_gen_movi_tl(TCGv r, tcg_imm_tl i)
++{
++    if (tl_is_64()) {
++        tcg_gen_movi_i64(tcg_i64_from_tl(r), i);
++    } else {
++        tcg_gen_movi_i32(tcg_i32_from_tl(r), i);
++    }
++}
++
++static inline void tcg_gen_discard_tl(TCGv v)
++{
++    if (tl_is_64()) {
++        tcg_gen_discard_i64(tcg_i64_from_tl(v));
++    } else {
++        tcg_gen_discard_i32(tcg_i32_from_tl(v));
++    }
++}
++
++static inline void tcg_gen_subfi_tl(TCGv r, tcg_imm_tl i, TCGv x)
++{
++    if (tl_is_64()) {
++        tcg_gen_subfi_i64(tcg_i64_from_tl(r), i, tcg_i64_from_tl(x));
++    } else {
++        tcg_gen_subfi_i32(tcg_i32_from_tl(r), i, tcg_i32_from_tl(x));
++    }
++}
++
++/* Unary: same callee name on i32 and i64. */
++#define DEF_TL_UNOP(NAME)                                               \
++    static inline void tcg_gen_##NAME##_tl(TCGv r, TCGv v)              \
++    {                                                                   \
++        if (tl_is_64()) {                                               \
++            tcg_gen_##NAME##_i64(tcg_i64_from_tl(r), tcg_i64_from_tl(v)); \
++        } else {                                                        \
++            tcg_gen_##NAME##_i32(tcg_i32_from_tl(r), tcg_i32_from_tl(v)); \
++        }                                                               \
 +    }
 +
-+DEF_ATOMIC3_TL(tcg_gen_atomic_cmpxchg)
++DEF_TL_UNOP(mov)
++DEF_TL_UNOP(neg)
++DEF_TL_UNOP(abs)
++DEF_TL_UNOP(not)
++DEF_TL_UNOP(ext8u)
++DEF_TL_UNOP(ext8s)
++DEF_TL_UNOP(ext16u)
++DEF_TL_UNOP(ext16s)
++DEF_TL_UNOP(clrsb)
++DEF_TL_UNOP(ctpop)
++DEF_TL_UNOP(hswap)
++DEF_TL_UNOP(revbit8)
++#undef DEF_TL_UNOP
 +
-+DEF_ATOMIC2_TL(tcg_gen_atomic_xchg)
-+DEF_ATOMIC2_TL(tcg_gen_atomic_fetch_add)
-+DEF_ATOMIC2_TL(tcg_gen_atomic_fetch_and)
-+DEF_ATOMIC2_TL(tcg_gen_atomic_fetch_or)
-+DEF_ATOMIC2_TL(tcg_gen_atomic_fetch_xor)
-+DEF_ATOMIC2_TL(tcg_gen_atomic_fetch_smin)
-+DEF_ATOMIC2_TL(tcg_gen_atomic_fetch_umin)
-+DEF_ATOMIC2_TL(tcg_gen_atomic_fetch_smax)
-+DEF_ATOMIC2_TL(tcg_gen_atomic_fetch_umax)
-+DEF_ATOMIC2_TL(tcg_gen_atomic_add_fetch)
-+DEF_ATOMIC2_TL(tcg_gen_atomic_and_fetch)
-+DEF_ATOMIC2_TL(tcg_gen_atomic_or_fetch)
-+DEF_ATOMIC2_TL(tcg_gen_atomic_xor_fetch)
-+DEF_ATOMIC2_TL(tcg_gen_atomic_smin_fetch)
-+DEF_ATOMIC2_TL(tcg_gen_atomic_umin_fetch)
-+DEF_ATOMIC2_TL(tcg_gen_atomic_smax_fetch)
-+DEF_ATOMIC2_TL(tcg_gen_atomic_umax_fetch)
++/* Binary: same callee name on i32 and i64. */
++#define DEF_TL_BINOP(NAME)                                              \
++    static inline void tcg_gen_##NAME##_tl(TCGv r, TCGv x, TCGv y)      \
++    {                                                                   \
++        if (tl_is_64()) {                                               \
++            tcg_gen_##NAME##_i64(tcg_i64_from_tl(r), tcg_i64_from_tl(x), \
++                                 tcg_i64_from_tl(y));                   \
++        } else {                                                        \
++            tcg_gen_##NAME##_i32(tcg_i32_from_tl(r), tcg_i32_from_tl(x), \
++                                 tcg_i32_from_tl(y));                   \
++        }                                                               \
++    }
 +
-+#undef DEF_ATOMIC2_TL
-+#undef DEF_ATOMIC3_TL
++DEF_TL_BINOP(add)
++DEF_TL_BINOP(sub)
++DEF_TL_BINOP(and)
++DEF_TL_BINOP(or)
++DEF_TL_BINOP(xor)
++DEF_TL_BINOP(andc)
++DEF_TL_BINOP(eqv)
++DEF_TL_BINOP(nand)
++DEF_TL_BINOP(nor)
++DEF_TL_BINOP(orc)
++DEF_TL_BINOP(shl)
++DEF_TL_BINOP(shr)
++DEF_TL_BINOP(sar)
++DEF_TL_BINOP(mul)
++DEF_TL_BINOP(div)
++DEF_TL_BINOP(rem)
++DEF_TL_BINOP(divu)
++DEF_TL_BINOP(remu)
++DEF_TL_BINOP(clz)
++DEF_TL_BINOP(ctz)
++DEF_TL_BINOP(rotl)
++DEF_TL_BINOP(rotr)
++DEF_TL_BINOP(smin)
++DEF_TL_BINOP(umin)
++DEF_TL_BINOP(smax)
++DEF_TL_BINOP(umax)
++DEF_TL_BINOP(ussub)
++#undef DEF_TL_BINOP
 +
- #endif /* TCG_TCG_OP_MEM_H */
++/* Immediate: same callee name on i32 and i64. */
++#define DEF_TL_OPI(NAME)                                                \
++    static inline void tcg_gen_##NAME##_tl(TCGv r, TCGv x, tcg_imm_tl i) \
++    {                                                                   \
++        if (tl_is_64()) {                                               \
++            tcg_gen_##NAME##_i64(tcg_i64_from_tl(r), tcg_i64_from_tl(x), i); \
++        } else {                                                        \
++            tcg_gen_##NAME##_i32(tcg_i32_from_tl(r), tcg_i32_from_tl(x), i); \
++        }                                                               \
++    }
++
++DEF_TL_OPI(addi)
++DEF_TL_OPI(subi)
++DEF_TL_OPI(andi)
++DEF_TL_OPI(ori)
++DEF_TL_OPI(xori)
++DEF_TL_OPI(muli)
++DEF_TL_OPI(shli)
++DEF_TL_OPI(shri)
++DEF_TL_OPI(sari)
++DEF_TL_OPI(clzi)
++DEF_TL_OPI(ctzi)
++DEF_TL_OPI(rotli)
++DEF_TL_OPI(rotri)
++#undef DEF_TL_OPI
++
++static inline void tcg_gen_brcond_tl(TCGCond cond, TCGv x, TCGv y,
++                                     TCGLabel *l)
++{
++    if (tl_is_64()) {
++        tcg_gen_brcond_i64(cond, tcg_i64_from_tl(x), tcg_i64_from_tl(y), l);
++    } else {
++        tcg_gen_brcond_i32(cond, tcg_i32_from_tl(x), tcg_i32_from_tl(y), l);
++    }
++}
++
++static inline void tcg_gen_brcondi_tl(TCGCond cond, TCGv x, tcg_imm_tl i,
++                                      TCGLabel *l)
++{
++    if (tl_is_64()) {
++        tcg_gen_brcondi_i64(cond, tcg_i64_from_tl(x), i, l);
++    } else {
++        tcg_gen_brcondi_i32(cond, tcg_i32_from_tl(x), i, l);
++    }
++}
++
++#define DEF_TL_COND(NAME)                                               \
++    static inline void tcg_gen_##NAME##_tl(TCGCond cond, TCGv r,        \
++                                           TCGv x, TCGv y)              \
++    {                                                                   \
++        if (tl_is_64()) {                                               \
++            tcg_gen_##NAME##_i64(cond, tcg_i64_from_tl(r),              \
++                                 tcg_i64_from_tl(x), tcg_i64_from_tl(y)); \
++        } else {                                                        \
++            tcg_gen_##NAME##_i32(cond, tcg_i32_from_tl(r),              \
++                                 tcg_i32_from_tl(x), tcg_i32_from_tl(y)); \
++        }                                                               \
++    }
++
++DEF_TL_COND(setcond)
++DEF_TL_COND(negsetcond)
++#undef DEF_TL_COND
++
++#define DEF_TL_CONDI(NAME)                                              \
++    static inline void tcg_gen_##NAME##_tl(TCGCond cond, TCGv r,        \
++                                           TCGv x, tcg_imm_tl i)        \
++    {                                                                   \
++        if (tl_is_64()) {                                               \
++            tcg_gen_##NAME##_i64(cond, tcg_i64_from_tl(r),              \
++                                 tcg_i64_from_tl(x), i);                \
++        } else {                                                        \
++            tcg_gen_##NAME##_i32(cond, tcg_i32_from_tl(r),              \
++                                 tcg_i32_from_tl(x), i);                \
++        }                                                               \
++    }
++
++DEF_TL_CONDI(setcondi)
++DEF_TL_CONDI(negsetcondi)
++#undef DEF_TL_CONDI
++
++static inline void tcg_gen_movcond_tl(TCGCond cond, TCGv r, TCGv c1,
++                                      TCGv c2, TCGv v1, TCGv v2)
++{
++    if (tl_is_64()) {
++        tcg_gen_movcond_i64(cond, tcg_i64_from_tl(r), tcg_i64_from_tl(c1),
++                            tcg_i64_from_tl(c2), tcg_i64_from_tl(v1),
++                            tcg_i64_from_tl(v2));
++    } else {
++        tcg_gen_movcond_i32(cond, tcg_i32_from_tl(r), tcg_i32_from_tl(c1),
++                            tcg_i32_from_tl(c2), tcg_i32_from_tl(v1),
++                            tcg_i32_from_tl(v2));
++    }
++}
++
++static inline void tcg_gen_trunc_tl_i32(TCGv_i32 r, TCGv v)
++{
++    if (tl_is_64()) {
++        tcg_gen_extrl_i64_i32(r, tcg_i64_from_tl(v));
++    } else {
++        tcg_gen_mov_i32(r, tcg_i32_from_tl(v));
++    }
++}
++
++static inline void tcg_gen_trunc_i64_tl(TCGv r, TCGv_i64 v)
++{
++    if (tl_is_64()) {
++        tcg_gen_mov_i64(tcg_i64_from_tl(r), v);
++    } else {
++        tcg_gen_extrl_i64_i32(tcg_i32_from_tl(r), v);
++    }
++}
++
++static inline void tcg_gen_extu_i32_tl(TCGv r, TCGv_i32 v)
++{
++    if (tl_is_64()) {
++        tcg_gen_extu_i32_i64(tcg_i64_from_tl(r), v);
++    } else {
++        tcg_gen_mov_i32(tcg_i32_from_tl(r), v);
++    }
++}
++
++static inline void tcg_gen_ext_i32_tl(TCGv r, TCGv_i32 v)
++{
++    if (tl_is_64()) {
++        tcg_gen_ext_i32_i64(tcg_i64_from_tl(r), v);
++    } else {
++        tcg_gen_mov_i32(tcg_i32_from_tl(r), v);
++    }
++}
++
++static inline void tcg_gen_extu_tl_i64(TCGv_i64 r, TCGv v)
++{
++    if (tl_is_64()) {
++        tcg_gen_mov_i64(r, tcg_i64_from_tl(v));
++    } else {
++        tcg_gen_extu_i32_i64(r, tcg_i32_from_tl(v));
++    }
++}
++
++static inline void tcg_gen_ext_tl_i64(TCGv_i64 r, TCGv v)
++{
++    if (tl_is_64()) {
++        tcg_gen_mov_i64(r, tcg_i64_from_tl(v));
++    } else {
++        tcg_gen_ext_i32_i64(r, tcg_i32_from_tl(v));
++    }
++}
++
++static inline void tcg_gen_ext32u_tl(TCGv r, TCGv v)
++{
++    if (tl_is_64()) {
++        tcg_gen_ext32u_i64(tcg_i64_from_tl(r), tcg_i64_from_tl(v));
++    } else {
++        tcg_gen_mov_i32(tcg_i32_from_tl(r), tcg_i32_from_tl(v));
++    }
++}
++
++static inline void tcg_gen_ext32s_tl(TCGv r, TCGv v)
++{
++    if (tl_is_64()) {
++        tcg_gen_ext32s_i64(tcg_i64_from_tl(r), tcg_i64_from_tl(v));
++    } else {
++        tcg_gen_mov_i32(tcg_i32_from_tl(r), tcg_i32_from_tl(v));
++    }
++}
++
++static inline void tcg_gen_ext_tl(TCGv r, TCGv v, MemOp opc)
++{
++    if (tl_is_64()) {
++        tcg_gen_ext_i64(tcg_i64_from_tl(r), tcg_i64_from_tl(v), opc);
++    } else {
++        tcg_gen_ext_i32(tcg_i32_from_tl(r), tcg_i32_from_tl(v), opc);
++    }
++}
++
++static inline void tcg_gen_bswap16_tl(TCGv r, TCGv v, int flags)
++{
++    if (tl_is_64()) {
++        tcg_gen_bswap16_i64(tcg_i64_from_tl(r), tcg_i64_from_tl(v), flags);
++    } else {
++        tcg_gen_bswap16_i32(tcg_i32_from_tl(r), tcg_i32_from_tl(v), flags);
++    }
++}
++
++static inline void tcg_gen_bswap32_tl(TCGv r, TCGv v, int flags)
++{
++    if (tl_is_64()) {
++        tcg_gen_bswap32_i64(tcg_i64_from_tl(r), tcg_i64_from_tl(v), flags);
++    } else {
++        tcg_gen_bswap32_i32(tcg_i32_from_tl(r), tcg_i32_from_tl(v));
++    }
++}
++
++static inline void tcg_gen_bswap64_tl(TCGv r, TCGv v)
++{
++    tcg_debug_assert(tl_is_64());
++    tcg_gen_bswap64_i64(tcg_i64_from_tl(r), tcg_i64_from_tl(v));
++}
++
++static inline void tcg_gen_bswap_tl(TCGv r, TCGv v)
++{
++    if (tl_is_64()) {
++        tcg_gen_bswap64_i64(tcg_i64_from_tl(r), tcg_i64_from_tl(v));
++    } else {
++        tcg_gen_bswap32_i32(tcg_i32_from_tl(r), tcg_i32_from_tl(v));
++    }
++}
++
++static inline void tcg_gen_wswap_tl(TCGv r, TCGv v)
++{
++    tcg_debug_assert(tl_is_64());
++    tcg_gen_wswap_i64(tcg_i64_from_tl(r), tcg_i64_from_tl(v));
++}
++
++static inline void tcg_gen_revbit32_tl(TCGv r, TCGv v, int flags)
++{
++    if (tl_is_64()) {
++        tcg_gen_revbit32_i64(tcg_i64_from_tl(r), tcg_i64_from_tl(v), flags);
++    } else {
++        tcg_gen_revbit32_i32(tcg_i32_from_tl(r), tcg_i32_from_tl(v));
++    }
++}
++
++static inline void tcg_gen_revbit64_tl(TCGv r, TCGv v)
++{
++    tcg_debug_assert(tl_is_64());
++    tcg_gen_revbit64_i64(tcg_i64_from_tl(r), tcg_i64_from_tl(v));
++}
++
++static inline void tcg_gen_revbit_tl(TCGv r, TCGv v)
++{
++    if (tl_is_64()) {
++        tcg_gen_revbit64_i64(tcg_i64_from_tl(r), tcg_i64_from_tl(v));
++    } else {
++        tcg_gen_revbit32_i32(tcg_i32_from_tl(r), tcg_i32_from_tl(v));
++    }
++}
++
++static inline void tcg_gen_concat_tl_i64(TCGv_i64 r, TCGv lo, TCGv hi)
++{
++    if (tl_is_64()) {
++        tcg_gen_concat32_i64(r, tcg_i64_from_tl(lo), tcg_i64_from_tl(hi));
++    } else {
++        tcg_gen_concat_i32_i64(r, tcg_i32_from_tl(lo), tcg_i32_from_tl(hi));
++    }
++}
++
++static inline void tcg_gen_extr_i64_tl(TCGv lo, TCGv hi, TCGv_i64 v)
++{
++    if (tl_is_64()) {
++        tcg_gen_extr32_i64(tcg_i64_from_tl(lo), tcg_i64_from_tl(hi), v);
++    } else {
++        tcg_gen_extr_i64_i32(tcg_i32_from_tl(lo), tcg_i32_from_tl(hi), v);
++    }
++}
++
++static inline void tcg_gen_deposit_tl(TCGv r, TCGv x, TCGv y, unsigned pos,
++                                      unsigned len)
++{
++    if (tl_is_64()) {
++        tcg_gen_deposit_i64(tcg_i64_from_tl(r), tcg_i64_from_tl(x),
++                            tcg_i64_from_tl(y), pos, len);
++    } else {
++        tcg_gen_deposit_i32(tcg_i32_from_tl(r), tcg_i32_from_tl(x),
++                            tcg_i32_from_tl(y), pos, len);
++    }
++}
++
++#define DEF_TL_EXTRACT(NAME)                                            \
++    static inline void tcg_gen_##NAME##_tl(TCGv r, TCGv v,              \
++                                           unsigned pos, unsigned len)  \
++    {                                                                   \
++        if (tl_is_64()) {                                               \
++            tcg_gen_##NAME##_i64(tcg_i64_from_tl(r), tcg_i64_from_tl(v), \
++                                 pos, len);                             \
++        } else {                                                        \
++            tcg_gen_##NAME##_i32(tcg_i32_from_tl(r), tcg_i32_from_tl(v), \
++                                 pos, len);                             \
++        }                                                               \
++    }
++
++DEF_TL_EXTRACT(deposit_z)
++DEF_TL_EXTRACT(extract)
++DEF_TL_EXTRACT(sextract)
++#undef DEF_TL_EXTRACT
++
++static inline void tcg_gen_extract2_tl(TCGv r, TCGv lo, TCGv hi,
++                                      unsigned ofs)
++{
++    if (tl_is_64()) {
++        tcg_gen_extract2_i64(tcg_i64_from_tl(r), tcg_i64_from_tl(lo),
++                             tcg_i64_from_tl(hi), ofs);
++    } else {
++        tcg_gen_extract2_i32(tcg_i32_from_tl(r), tcg_i32_from_tl(lo),
++                             tcg_i32_from_tl(hi), ofs);
++    }
++}
++
++static inline TCGv tcg_constant_tl(tcg_imm_tl val)
++{
++    if (tl_is_64()) {
++        return tcg_tl_from_i64(tcg_constant_i64(val));
++    }
++    return tcg_tl_from_i32(tcg_constant_i32(val));
++}
++
++#define DEF_TL_ADD2(NAME)                                               \
++    static inline void tcg_gen_##NAME##_tl(TCGv rl, TCGv rh, TCGv al,   \
++                                           TCGv ah, TCGv bl, TCGv bh)   \
++    {                                                                   \
++        if (tl_is_64()) {                                               \
++            tcg_gen_##NAME##_i64(tcg_i64_from_tl(rl), tcg_i64_from_tl(rh), \
++                                 tcg_i64_from_tl(al), tcg_i64_from_tl(ah), \
++                                 tcg_i64_from_tl(bl), tcg_i64_from_tl(bh)); \
++        } else {                                                        \
++            tcg_gen_##NAME##_i32(tcg_i32_from_tl(rl), tcg_i32_from_tl(rh), \
++                                 tcg_i32_from_tl(al), tcg_i32_from_tl(ah), \
++                                 tcg_i32_from_tl(bl), tcg_i32_from_tl(bh)); \
++        }                                                               \
++    }
++
++DEF_TL_ADD2(add2)
++DEF_TL_ADD2(sub2)
++#undef DEF_TL_ADD2
++
++static inline void tcg_gen_addcio_tl(TCGv r, TCGv co, TCGv x, TCGv y,
++                                     TCGv ci)
++{
++    if (tl_is_64()) {
++        tcg_gen_addcio_i64(tcg_i64_from_tl(r), tcg_i64_from_tl(co),
++                           tcg_i64_from_tl(x), tcg_i64_from_tl(y),
++                           tcg_i64_from_tl(ci));
++    } else {
++        tcg_gen_addcio_i32(tcg_i32_from_tl(r), tcg_i32_from_tl(co),
++                           tcg_i32_from_tl(x), tcg_i32_from_tl(y),
++                           tcg_i32_from_tl(ci));
++    }
++}
++
++#define DEF_TL_MUL2(NAME)                                               \
++    static inline void tcg_gen_##NAME##_tl(TCGv rl, TCGv rh,            \
++                                           TCGv x, TCGv y)              \
++    {                                                                   \
++        if (tl_is_64()) {                                               \
++            tcg_gen_##NAME##_i64(tcg_i64_from_tl(rl), tcg_i64_from_tl(rh), \
++                                 tcg_i64_from_tl(x), tcg_i64_from_tl(y)); \
++        } else {                                                        \
++            tcg_gen_##NAME##_i32(tcg_i32_from_tl(rl), tcg_i32_from_tl(rh), \
++                                 tcg_i32_from_tl(x), tcg_i32_from_tl(y)); \
++        }                                                               \
++    }
++
++DEF_TL_MUL2(mulu2)
++DEF_TL_MUL2(muls2)
++DEF_TL_MUL2(mulsu2)
++#undef DEF_TL_MUL2
++
++static inline void tcg_gen_dup_tl_vec(unsigned vece, TCGv_vec r, TCGv v)
++{
++    if (tl_is_64()) {
++        tcg_gen_dup_i64_vec(vece, r, tcg_i64_from_tl(v));
++    } else {
++        tcg_gen_dup_i32_vec(vece, r, tcg_i32_from_tl(v));
++    }
++}
++
++static inline void tcg_gen_dup_tl(unsigned vece, TCGv r, TCGv v)
++{
++    if (tl_is_64()) {
++        tcg_gen_dup_i64(vece, tcg_i64_from_tl(r), tcg_i64_from_tl(v));
++    } else {
++        tcg_gen_dup_i32(vece, tcg_i32_from_tl(r), tcg_i32_from_tl(v));
++    }
++}
++
++static inline tcg_imm_tl dup_const_tl(unsigned vece, uint64_t c)
++{
++    if (tl_is_64()) {
++        return dup_const(vece, c);
++    }
++    if (__builtin_constant_p(vece)) {
++        switch (vece) {
++        case MO_8:
++            return 0x01010101ul * (uint8_t)c;
++        case MO_16:
++            return 0x00010001ul * (uint16_t)c;
++        case MO_32:
++            return 0x00000001ul * (uint32_t)c;
++        default:
++            qemu_build_not_reached();
++        }
++    }
++    return (uint32_t)dup_const(vece, c);
++}
++
++#endif /* TCG_TCG_OP_TL_H */
 diff --git a/include/tcg/tcg-op.h b/include/tcg/tcg-op.h
-index 6835ad97901..158df47bf18 100644
+index 158df47bf18..99cd2779687 100644
 --- a/include/tcg/tcg-op.h
 +++ b/include/tcg/tcg-op.h
-@@ -16,37 +16,12 @@
- #error must include QEMU headers
- #endif
+@@ -10,238 +10,12 @@
  
--#define TCG_ADDRESS_BITS TARGET_LONG_BITS
- #include "tcg/tcg-op-mem.h"
- 
--#if TARGET_LONG_BITS == 32
--# define TCG_TYPE_TL  TCG_TYPE_I32
--#elif TARGET_LONG_BITS == 64
--# define TCG_TYPE_TL  TCG_TYPE_I64
--#else
--# error
--#endif
+ #include "tcg/tcg-op-common.h"
+ #include "tcg/insn-start-words.h"
+-#include "exec/target_long.h"
 -
+-#ifndef TARGET_LONG_BITS
+-#error must include QEMU headers
+-#endif
+ 
+ #include "tcg/tcg-op-mem.h"
++#include "tcg/tcg-op-tl.h"
+ 
  #if INSN_START_WORDS != 3
  # error Mismatch with insn-start-words.h
  #endif
  
--#if TARGET_LONG_BITS == 32
--#define tcg_temp_new() tcg_temp_new_i32()
--#define tcg_global_mem_new tcg_global_mem_new_i32
--#define tcgv_tl_temp tcgv_i32_temp
--#define tcg_gen_qemu_ld_tl tcg_gen_qemu_ld_i32
--#define tcg_gen_qemu_st_tl tcg_gen_qemu_st_i32
--#elif TARGET_LONG_BITS == 64
--#define tcg_temp_new() tcg_temp_new_i64()
--#define tcg_global_mem_new tcg_global_mem_new_i64
--#define tcgv_tl_temp tcgv_i64_temp
--#define tcg_gen_qemu_ld_tl tcg_gen_qemu_ld_i64
--#define tcg_gen_qemu_st_tl tcg_gen_qemu_st_i64
+-#if TARGET_LONG_BITS == 64
+-#define tcg_gen_movi_tl tcg_gen_movi_i64
+-#define tcg_gen_mov_tl tcg_gen_mov_i64
+-#define tcg_gen_ld8u_tl tcg_gen_ld8u_i64
+-#define tcg_gen_ld8s_tl tcg_gen_ld8s_i64
+-#define tcg_gen_ld16u_tl tcg_gen_ld16u_i64
+-#define tcg_gen_ld16s_tl tcg_gen_ld16s_i64
+-#define tcg_gen_ld32u_tl tcg_gen_ld32u_i64
+-#define tcg_gen_ld32s_tl tcg_gen_ld32s_i64
+-#define tcg_gen_ld_tl tcg_gen_ld_i64
+-#define tcg_gen_st8_tl tcg_gen_st8_i64
+-#define tcg_gen_st16_tl tcg_gen_st16_i64
+-#define tcg_gen_st32_tl tcg_gen_st32_i64
+-#define tcg_gen_st_tl tcg_gen_st_i64
+-#define tcg_gen_add_tl tcg_gen_add_i64
+-#define tcg_gen_addi_tl tcg_gen_addi_i64
+-#define tcg_gen_sub_tl tcg_gen_sub_i64
+-#define tcg_gen_neg_tl tcg_gen_neg_i64
+-#define tcg_gen_abs_tl tcg_gen_abs_i64
+-#define tcg_gen_subfi_tl tcg_gen_subfi_i64
+-#define tcg_gen_subi_tl tcg_gen_subi_i64
+-#define tcg_gen_and_tl tcg_gen_and_i64
+-#define tcg_gen_andi_tl tcg_gen_andi_i64
+-#define tcg_gen_or_tl tcg_gen_or_i64
+-#define tcg_gen_ori_tl tcg_gen_ori_i64
+-#define tcg_gen_xor_tl tcg_gen_xor_i64
+-#define tcg_gen_xori_tl tcg_gen_xori_i64
+-#define tcg_gen_not_tl tcg_gen_not_i64
+-#define tcg_gen_shl_tl tcg_gen_shl_i64
+-#define tcg_gen_shli_tl tcg_gen_shli_i64
+-#define tcg_gen_shr_tl tcg_gen_shr_i64
+-#define tcg_gen_shri_tl tcg_gen_shri_i64
+-#define tcg_gen_sar_tl tcg_gen_sar_i64
+-#define tcg_gen_sari_tl tcg_gen_sari_i64
+-#define tcg_gen_brcond_tl tcg_gen_brcond_i64
+-#define tcg_gen_brcondi_tl tcg_gen_brcondi_i64
+-#define tcg_gen_setcond_tl tcg_gen_setcond_i64
+-#define tcg_gen_setcondi_tl tcg_gen_setcondi_i64
+-#define tcg_gen_negsetcond_tl tcg_gen_negsetcond_i64
+-#define tcg_gen_negsetcondi_tl tcg_gen_negsetcondi_i64
+-#define tcg_gen_mul_tl tcg_gen_mul_i64
+-#define tcg_gen_muli_tl tcg_gen_muli_i64
+-#define tcg_gen_div_tl tcg_gen_div_i64
+-#define tcg_gen_rem_tl tcg_gen_rem_i64
+-#define tcg_gen_divu_tl tcg_gen_divu_i64
+-#define tcg_gen_remu_tl tcg_gen_remu_i64
+-#define tcg_gen_discard_tl tcg_gen_discard_i64
+-#define tcg_gen_trunc_tl_i32 tcg_gen_extrl_i64_i32
+-#define tcg_gen_trunc_i64_tl tcg_gen_mov_i64
+-#define tcg_gen_extu_i32_tl tcg_gen_extu_i32_i64
+-#define tcg_gen_ext_i32_tl tcg_gen_ext_i32_i64
+-#define tcg_gen_extu_tl_i64 tcg_gen_mov_i64
+-#define tcg_gen_ext_tl_i64 tcg_gen_mov_i64
+-#define tcg_gen_ext8u_tl tcg_gen_ext8u_i64
+-#define tcg_gen_ext8s_tl tcg_gen_ext8s_i64
+-#define tcg_gen_ext16u_tl tcg_gen_ext16u_i64
+-#define tcg_gen_ext16s_tl tcg_gen_ext16s_i64
+-#define tcg_gen_ext32u_tl tcg_gen_ext32u_i64
+-#define tcg_gen_ext32s_tl tcg_gen_ext32s_i64
+-#define tcg_gen_ext_tl tcg_gen_ext_i64
+-#define tcg_gen_bswap16_tl tcg_gen_bswap16_i64
+-#define tcg_gen_bswap32_tl tcg_gen_bswap32_i64
+-#define tcg_gen_bswap64_tl tcg_gen_bswap64_i64
+-#define tcg_gen_bswap_tl tcg_gen_bswap64_i64
+-#define tcg_gen_hswap_tl tcg_gen_hswap_i64
+-#define tcg_gen_wswap_tl tcg_gen_wswap_i64
+-#define tcg_gen_revbit8_tl tcg_gen_revbit8_i64
+-#define tcg_gen_revbit32_tl tcg_gen_revbit32_i64
+-#define tcg_gen_revbit64_tl tcg_gen_revbit64_i64
+-#define tcg_gen_revbit_tl tcg_gen_revbit64_i64
+-#define tcg_gen_concat_tl_i64 tcg_gen_concat32_i64
+-#define tcg_gen_extr_i64_tl tcg_gen_extr32_i64
+-#define tcg_gen_andc_tl tcg_gen_andc_i64
+-#define tcg_gen_eqv_tl tcg_gen_eqv_i64
+-#define tcg_gen_nand_tl tcg_gen_nand_i64
+-#define tcg_gen_nor_tl tcg_gen_nor_i64
+-#define tcg_gen_orc_tl tcg_gen_orc_i64
+-#define tcg_gen_clz_tl tcg_gen_clz_i64
+-#define tcg_gen_ctz_tl tcg_gen_ctz_i64
+-#define tcg_gen_clzi_tl tcg_gen_clzi_i64
+-#define tcg_gen_ctzi_tl tcg_gen_ctzi_i64
+-#define tcg_gen_clrsb_tl tcg_gen_clrsb_i64
+-#define tcg_gen_ctpop_tl tcg_gen_ctpop_i64
+-#define tcg_gen_rotl_tl tcg_gen_rotl_i64
+-#define tcg_gen_rotli_tl tcg_gen_rotli_i64
+-#define tcg_gen_rotr_tl tcg_gen_rotr_i64
+-#define tcg_gen_rotri_tl tcg_gen_rotri_i64
+-#define tcg_gen_deposit_tl tcg_gen_deposit_i64
+-#define tcg_gen_deposit_z_tl tcg_gen_deposit_z_i64
+-#define tcg_gen_extract_tl tcg_gen_extract_i64
+-#define tcg_gen_sextract_tl tcg_gen_sextract_i64
+-#define tcg_gen_extract2_tl tcg_gen_extract2_i64
+-#define tcg_constant_tl tcg_constant_i64
+-#define tcg_gen_movcond_tl tcg_gen_movcond_i64
+-#define tcg_gen_add2_tl tcg_gen_add2_i64
+-#define tcg_gen_sub2_tl tcg_gen_sub2_i64
+-#define tcg_gen_addcio_tl tcg_gen_addcio_i64
+-#define tcg_gen_mulu2_tl tcg_gen_mulu2_i64
+-#define tcg_gen_muls2_tl tcg_gen_muls2_i64
+-#define tcg_gen_mulsu2_tl tcg_gen_mulsu2_i64
+-#define tcg_gen_smin_tl tcg_gen_smin_i64
+-#define tcg_gen_umin_tl tcg_gen_umin_i64
+-#define tcg_gen_smax_tl tcg_gen_smax_i64
+-#define tcg_gen_umax_tl tcg_gen_umax_i64
+-#define tcg_gen_ussub_tl tcg_gen_ussub_i64
+-#define tcg_gen_dup_tl_vec  tcg_gen_dup_i64_vec
+-#define tcg_gen_dup_tl tcg_gen_dup_i64
+-#define dup_const_tl dup_const
 -#else
--#error Unhandled TARGET_LONG_BITS value
--#endif
+-#define tcg_gen_movi_tl tcg_gen_movi_i32
+-#define tcg_gen_mov_tl tcg_gen_mov_i32
+-#define tcg_gen_ld8u_tl tcg_gen_ld8u_i32
+-#define tcg_gen_ld8s_tl tcg_gen_ld8s_i32
+-#define tcg_gen_ld16u_tl tcg_gen_ld16u_i32
+-#define tcg_gen_ld16s_tl tcg_gen_ld16s_i32
+-#define tcg_gen_ld32u_tl tcg_gen_ld_i32
+-#define tcg_gen_ld32s_tl tcg_gen_ld_i32
+-#define tcg_gen_ld_tl tcg_gen_ld_i32
+-#define tcg_gen_st8_tl tcg_gen_st8_i32
+-#define tcg_gen_st16_tl tcg_gen_st16_i32
+-#define tcg_gen_st32_tl tcg_gen_st_i32
+-#define tcg_gen_st_tl tcg_gen_st_i32
+-#define tcg_gen_add_tl tcg_gen_add_i32
+-#define tcg_gen_addi_tl tcg_gen_addi_i32
+-#define tcg_gen_sub_tl tcg_gen_sub_i32
+-#define tcg_gen_neg_tl tcg_gen_neg_i32
+-#define tcg_gen_abs_tl tcg_gen_abs_i32
+-#define tcg_gen_subfi_tl tcg_gen_subfi_i32
+-#define tcg_gen_subi_tl tcg_gen_subi_i32
+-#define tcg_gen_and_tl tcg_gen_and_i32
+-#define tcg_gen_andi_tl tcg_gen_andi_i32
+-#define tcg_gen_or_tl tcg_gen_or_i32
+-#define tcg_gen_ori_tl tcg_gen_ori_i32
+-#define tcg_gen_xor_tl tcg_gen_xor_i32
+-#define tcg_gen_xori_tl tcg_gen_xori_i32
+-#define tcg_gen_not_tl tcg_gen_not_i32
+-#define tcg_gen_shl_tl tcg_gen_shl_i32
+-#define tcg_gen_shli_tl tcg_gen_shli_i32
+-#define tcg_gen_shr_tl tcg_gen_shr_i32
+-#define tcg_gen_shri_tl tcg_gen_shri_i32
+-#define tcg_gen_sar_tl tcg_gen_sar_i32
+-#define tcg_gen_sari_tl tcg_gen_sari_i32
+-#define tcg_gen_brcond_tl tcg_gen_brcond_i32
+-#define tcg_gen_brcondi_tl tcg_gen_brcondi_i32
+-#define tcg_gen_setcond_tl tcg_gen_setcond_i32
+-#define tcg_gen_setcondi_tl tcg_gen_setcondi_i32
+-#define tcg_gen_negsetcond_tl tcg_gen_negsetcond_i32
+-#define tcg_gen_negsetcondi_tl tcg_gen_negsetcondi_i32
+-#define tcg_gen_mul_tl tcg_gen_mul_i32
+-#define tcg_gen_muli_tl tcg_gen_muli_i32
+-#define tcg_gen_div_tl tcg_gen_div_i32
+-#define tcg_gen_rem_tl tcg_gen_rem_i32
+-#define tcg_gen_divu_tl tcg_gen_divu_i32
+-#define tcg_gen_remu_tl tcg_gen_remu_i32
+-#define tcg_gen_discard_tl tcg_gen_discard_i32
+-#define tcg_gen_trunc_tl_i32 tcg_gen_mov_i32
+-#define tcg_gen_trunc_i64_tl tcg_gen_extrl_i64_i32
+-#define tcg_gen_extu_i32_tl tcg_gen_mov_i32
+-#define tcg_gen_ext_i32_tl tcg_gen_mov_i32
+-#define tcg_gen_extu_tl_i64 tcg_gen_extu_i32_i64
+-#define tcg_gen_ext_tl_i64 tcg_gen_ext_i32_i64
+-#define tcg_gen_ext8u_tl tcg_gen_ext8u_i32
+-#define tcg_gen_ext8s_tl tcg_gen_ext8s_i32
+-#define tcg_gen_ext16u_tl tcg_gen_ext16u_i32
+-#define tcg_gen_ext16s_tl tcg_gen_ext16s_i32
+-#define tcg_gen_ext32u_tl tcg_gen_mov_i32
+-#define tcg_gen_ext32s_tl tcg_gen_mov_i32
+-#define tcg_gen_ext_tl tcg_gen_ext_i32
+-#define tcg_gen_bswap16_tl tcg_gen_bswap16_i32
+-#define tcg_gen_bswap32_tl(D, S, F) tcg_gen_bswap32_i32(D, S)
+-#define tcg_gen_bswap_tl tcg_gen_bswap32_i32
+-#define tcg_gen_hswap_tl tcg_gen_hswap_i32
+-#define tcg_gen_revbit8_tl tcg_gen_revbit8_i32
+-#define tcg_gen_revbit32_tl(D, S, F) tcg_gen_revbit32_i32(D, S)
+-#define tcg_gen_revbit_tl tcg_gen_revbit32_i32
+-#define tcg_gen_concat_tl_i64 tcg_gen_concat_i32_i64
+-#define tcg_gen_extr_i64_tl tcg_gen_extr_i64_i32
+-#define tcg_gen_andc_tl tcg_gen_andc_i32
+-#define tcg_gen_eqv_tl tcg_gen_eqv_i32
+-#define tcg_gen_nand_tl tcg_gen_nand_i32
+-#define tcg_gen_nor_tl tcg_gen_nor_i32
+-#define tcg_gen_orc_tl tcg_gen_orc_i32
+-#define tcg_gen_clz_tl tcg_gen_clz_i32
+-#define tcg_gen_ctz_tl tcg_gen_ctz_i32
+-#define tcg_gen_clzi_tl tcg_gen_clzi_i32
+-#define tcg_gen_ctzi_tl tcg_gen_ctzi_i32
+-#define tcg_gen_clrsb_tl tcg_gen_clrsb_i32
+-#define tcg_gen_ctpop_tl tcg_gen_ctpop_i32
+-#define tcg_gen_rotl_tl tcg_gen_rotl_i32
+-#define tcg_gen_rotli_tl tcg_gen_rotli_i32
+-#define tcg_gen_rotr_tl tcg_gen_rotr_i32
+-#define tcg_gen_rotri_tl tcg_gen_rotri_i32
+-#define tcg_gen_deposit_tl tcg_gen_deposit_i32
+-#define tcg_gen_deposit_z_tl tcg_gen_deposit_z_i32
+-#define tcg_gen_extract_tl tcg_gen_extract_i32
+-#define tcg_gen_sextract_tl tcg_gen_sextract_i32
+-#define tcg_gen_extract2_tl tcg_gen_extract2_i32
+-#define tcg_constant_tl tcg_constant_i32
+-#define tcg_gen_movcond_tl tcg_gen_movcond_i32
+-#define tcg_gen_add2_tl tcg_gen_add2_i32
+-#define tcg_gen_sub2_tl tcg_gen_sub2_i32
+-#define tcg_gen_addcio_tl tcg_gen_addcio_i32
+-#define tcg_gen_mulu2_tl tcg_gen_mulu2_i32
+-#define tcg_gen_muls2_tl tcg_gen_muls2_i32
+-#define tcg_gen_mulsu2_tl tcg_gen_mulsu2_i32
+-#define tcg_gen_smin_tl tcg_gen_smin_i32
+-#define tcg_gen_umin_tl tcg_gen_umin_i32
+-#define tcg_gen_smax_tl tcg_gen_smax_i32
+-#define tcg_gen_umax_tl tcg_gen_umax_i32
+-#define tcg_gen_ussub_tl tcg_gen_ussub_i32
+-#define tcg_gen_dup_tl_vec  tcg_gen_dup_i32_vec
+-#define tcg_gen_dup_tl tcg_gen_dup_i32
 -
- #if TARGET_LONG_BITS == 64
- #define tcg_gen_movi_tl tcg_gen_movi_i64
- #define tcg_gen_mov_tl tcg_gen_mov_i64
-@@ -152,24 +127,6 @@
- #define tcg_gen_smax_tl tcg_gen_smax_i64
- #define tcg_gen_umax_tl tcg_gen_umax_i64
- #define tcg_gen_ussub_tl tcg_gen_ussub_i64
--#define tcg_gen_atomic_cmpxchg_tl tcg_gen_atomic_cmpxchg_i64
--#define tcg_gen_atomic_xchg_tl tcg_gen_atomic_xchg_i64
--#define tcg_gen_atomic_fetch_add_tl tcg_gen_atomic_fetch_add_i64
--#define tcg_gen_atomic_fetch_and_tl tcg_gen_atomic_fetch_and_i64
--#define tcg_gen_atomic_fetch_or_tl tcg_gen_atomic_fetch_or_i64
--#define tcg_gen_atomic_fetch_xor_tl tcg_gen_atomic_fetch_xor_i64
--#define tcg_gen_atomic_fetch_smin_tl tcg_gen_atomic_fetch_smin_i64
--#define tcg_gen_atomic_fetch_umin_tl tcg_gen_atomic_fetch_umin_i64
--#define tcg_gen_atomic_fetch_smax_tl tcg_gen_atomic_fetch_smax_i64
--#define tcg_gen_atomic_fetch_umax_tl tcg_gen_atomic_fetch_umax_i64
--#define tcg_gen_atomic_add_fetch_tl tcg_gen_atomic_add_fetch_i64
--#define tcg_gen_atomic_and_fetch_tl tcg_gen_atomic_and_fetch_i64
--#define tcg_gen_atomic_or_fetch_tl tcg_gen_atomic_or_fetch_i64
--#define tcg_gen_atomic_xor_fetch_tl tcg_gen_atomic_xor_fetch_i64
--#define tcg_gen_atomic_smin_fetch_tl tcg_gen_atomic_smin_fetch_i64
--#define tcg_gen_atomic_umin_fetch_tl tcg_gen_atomic_umin_fetch_i64
--#define tcg_gen_atomic_smax_fetch_tl tcg_gen_atomic_smax_fetch_i64
--#define tcg_gen_atomic_umax_fetch_tl tcg_gen_atomic_umax_fetch_i64
- #define tcg_gen_dup_tl_vec  tcg_gen_dup_i64_vec
- #define tcg_gen_dup_tl tcg_gen_dup_i64
- #define dup_const_tl dup_const
-@@ -275,24 +232,6 @@
- #define tcg_gen_smax_tl tcg_gen_smax_i32
- #define tcg_gen_umax_tl tcg_gen_umax_i32
- #define tcg_gen_ussub_tl tcg_gen_ussub_i32
--#define tcg_gen_atomic_cmpxchg_tl tcg_gen_atomic_cmpxchg_i32
--#define tcg_gen_atomic_xchg_tl tcg_gen_atomic_xchg_i32
--#define tcg_gen_atomic_fetch_add_tl tcg_gen_atomic_fetch_add_i32
--#define tcg_gen_atomic_fetch_and_tl tcg_gen_atomic_fetch_and_i32
--#define tcg_gen_atomic_fetch_or_tl tcg_gen_atomic_fetch_or_i32
--#define tcg_gen_atomic_fetch_xor_tl tcg_gen_atomic_fetch_xor_i32
--#define tcg_gen_atomic_fetch_smin_tl tcg_gen_atomic_fetch_smin_i32
--#define tcg_gen_atomic_fetch_umin_tl tcg_gen_atomic_fetch_umin_i32
--#define tcg_gen_atomic_fetch_smax_tl tcg_gen_atomic_fetch_smax_i32
--#define tcg_gen_atomic_fetch_umax_tl tcg_gen_atomic_fetch_umax_i32
--#define tcg_gen_atomic_add_fetch_tl tcg_gen_atomic_add_fetch_i32
--#define tcg_gen_atomic_and_fetch_tl tcg_gen_atomic_and_fetch_i32
--#define tcg_gen_atomic_or_fetch_tl tcg_gen_atomic_or_fetch_i32
--#define tcg_gen_atomic_xor_fetch_tl tcg_gen_atomic_xor_fetch_i32
--#define tcg_gen_atomic_smin_fetch_tl tcg_gen_atomic_smin_fetch_i32
--#define tcg_gen_atomic_umin_fetch_tl tcg_gen_atomic_umin_fetch_i32
--#define tcg_gen_atomic_smax_fetch_tl tcg_gen_atomic_smax_fetch_i32
--#define tcg_gen_atomic_umax_fetch_tl tcg_gen_atomic_umax_fetch_i32
- #define tcg_gen_dup_tl_vec  tcg_gen_dup_i32_vec
- #define tcg_gen_dup_tl tcg_gen_dup_i32
- 
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index 7790228eeef..61c0ea78946 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -30,6 +30,7 @@
- #include "qemu/bitops.h"
- #include "qemu/plugin.h"
- #include "qemu/queue.h"
-+#include "qemu/target-info.h"
- #include "tcg/tcg-mo.h"
- #include "tcg/target-reg-bits.h"
- #include "tcg-target.h"
-@@ -520,6 +521,56 @@ static inline TCGTemp *tcgv_i64_temp(TCGv_i64 v)
-     return tcgv_i32_temp((TCGv_i32)v);
- }
- 
-+static inline TCGType tcg_type_tl(void)
-+{
-+    return tl_is_64() ? TCG_TYPE_I64 : TCG_TYPE_I32;
-+}
-+
-+/* Runtime TCGType from tcg_type_tl(); not a compile-time constant. */
-+#define TCG_TYPE_TL tcg_type_tl()
-+
-+static inline TCGv_i64 tcg_i64_from_tl(TCGv v)
-+{
-+    tcg_debug_assert(tl_is_64());
-+    return (TCGv_i64)v;
-+}
-+
-+static inline TCGv_i32 tcg_i32_from_tl(TCGv v)
-+{
-+    tcg_debug_assert(!tl_is_64());
-+    return (TCGv_i32)v;
-+}
-+
-+static inline TCGv tcg_tl_from_i64(TCGv_i64 v)
-+{
-+    tcg_debug_assert(tl_is_64());
-+    return (TCGv)v;
-+}
-+
-+static inline TCGv tcg_tl_from_i32(TCGv_i32 v)
-+{
-+    tcg_debug_assert(!tl_is_64());
-+    return (TCGv)v;
-+}
-+
-+#ifdef COMPILING_PER_TARGET
-+# if TARGET_LONG_BITS == 32
-+#  define tcgv_tl_temp tcgv_i32_temp
-+# elif TARGET_LONG_BITS == 64
-+#  define tcgv_tl_temp tcgv_i64_temp
-+# else
-+#  error Unhandled TARGET_LONG_BITS value
-+# endif
-+#else
-+static inline TCGTemp *tcgv_tl_temp(TCGv v)
-+{
-+    if (tl_is_64()) {
-+        return tcgv_i64_temp(tcg_i64_from_tl(v));
-+    }
-+    return tcgv_i32_temp(tcg_i32_from_tl(v));
-+}
-+#endif
-+
- static inline TCGTemp *tcgv_i128_temp(TCGv_i128 v)
- {
-     return tcgv_i32_temp((TCGv_i32)v);
-diff --git a/tests/unit/meson.build b/tests/unit/meson.build
-index c806dbc4ffa..dc139889c1d 100644
---- a/tests/unit/meson.build
-+++ b/tests/unit/meson.build
-@@ -43,6 +43,16 @@ tests = {
-   'test-qgraph': ['../qtest/libqos/qgraph.c'],
-   'check-qom-interface': [qom],
-   'check-qom-proplist': [qom],
-+  'test-tcg-op-mem': [qom],
-+  'test-tcg-op-mem-tl32': [declare_dependency(compile_args: [
-+    '-DCOMPILING_PER_TARGET',
-+    '-DCONFIG_TARGET="test-tcg-op-mem-config32.h"'])],
-+  'test-tcg-op-mem-tl64': [declare_dependency(compile_args: [
-+    '-DCOMPILING_PER_TARGET',
-+    '-DCONFIG_TARGET="test-tcg-op-mem-config64.h"'])],
-+  'test-tcg-op-mem-va32-tl64': [declare_dependency(compile_args: [
-+    '-DCOMPILING_PER_TARGET',
-+    '-DCONFIG_TARGET="test-tcg-op-mem-config64.h"'])],
-   'test-target-info': [qom, declare_dependency(
-     objects: target_info_def_objects.values(),
-     compile_args: ['-DTARGET_INFO_DEF_COUNT=@0@'.format(
-diff --git a/tests/unit/test-tcg-op-mem-config32.h b/tests/unit/test-tcg-op-mem-config32.h
-new file mode 100644
-index 00000000000..37183223edc
---- /dev/null
-+++ b/tests/unit/test-tcg-op-mem-config32.h
-@@ -0,0 +1,2 @@
-+#define TARGET_LONG_BITS 32
-+#define TARGET_BIG_ENDIAN 0
-diff --git a/tests/unit/test-tcg-op-mem-config64.h b/tests/unit/test-tcg-op-mem-config64.h
-new file mode 100644
-index 00000000000..bcc429333bf
---- /dev/null
-+++ b/tests/unit/test-tcg-op-mem-config64.h
-@@ -0,0 +1,2 @@
-+#define TARGET_LONG_BITS 64
-+#define TARGET_BIG_ENDIAN 0
-diff --git a/tests/unit/test-tcg-op-mem-tl32.c b/tests/unit/test-tcg-op-mem-tl32.c
-new file mode 100644
-index 00000000000..1af53172cdb
---- /dev/null
-+++ b/tests/unit/test-tcg-op-mem-tl32.c
-@@ -0,0 +1,26 @@
-+/*
-+ * tcg-op-mem.h with TARGET_LONG_BITS == 32.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "tcg/tcg-op-mem.h"
-+
-+static void test_tl32_aliases(void)
-+{
-+    g_assert_cmpint(TARGET_LONG_BITS, ==, 32);
-+    g_assert_true(__builtin_types_compatible_p(__typeof__(tcg_temp_new()),
-+                                               TCGv_i32));
-+    g_assert_true(__builtin_types_compatible_p(
-+                      __typeof__(tcg_global_mem_new(NULL, 0, "t")), TCGv_i32));
-+    g_assert_true(__builtin_types_compatible_p(__typeof__(tcgv_tl_temp),
-+                                               __typeof__(tcgv_i32_temp)));
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+    g_test_add_func("/tcg/op-mem/tl32", test_tl32_aliases);
-+    return g_test_run();
-+}
-diff --git a/tests/unit/test-tcg-op-mem-tl64.c b/tests/unit/test-tcg-op-mem-tl64.c
-new file mode 100644
-index 00000000000..956c428fc31
---- /dev/null
-+++ b/tests/unit/test-tcg-op-mem-tl64.c
-@@ -0,0 +1,26 @@
-+/*
-+ * tcg-op-mem.h with TARGET_LONG_BITS == 64.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "tcg/tcg-op-mem.h"
-+
-+static void test_tl64_aliases(void)
-+{
-+    g_assert_cmpint(TARGET_LONG_BITS, ==, 64);
-+    g_assert_true(__builtin_types_compatible_p(__typeof__(tcg_temp_new()),
-+                                               TCGv_i64));
-+    g_assert_true(__builtin_types_compatible_p(
-+                      __typeof__(tcg_global_mem_new(NULL, 0, "t")), TCGv_i64));
-+    g_assert_true(__builtin_types_compatible_p(__typeof__(tcgv_tl_temp),
-+                                               __typeof__(tcgv_i64_temp)));
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+    g_test_add_func("/tcg/op-mem/tl64", test_tl64_aliases);
-+    return g_test_run();
-+}
-diff --git a/tests/unit/test-tcg-op-mem-va32-tl64.c b/tests/unit/test-tcg-op-mem-va32-tl64.c
-new file mode 100644
-index 00000000000..acb834f7cb5
---- /dev/null
-+++ b/tests/unit/test-tcg-op-mem-va32-tl64.c
-@@ -0,0 +1,35 @@
-+/*
-+ * tcg-op-mem.h with a 32-bit VA and a 64-bit target long.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+
-+#define TCG_ADDRESS_BITS 32
-+#include "tcg/tcg-op-mem.h"
-+
-+static void test_va32_tl64(void)
-+{
-+    g_assert_cmpint(TARGET_LONG_BITS, ==, 64);
-+    g_assert_cmpint(TCG_ADDRESS_BITS, ==, 32);
-+    g_assert_cmpint(tcg_type_tl(), ==, TCG_TYPE_I64);
-+    g_assert_cmpint(TCG_TYPE_VA, ==, TCG_TYPE_I32);
-+    g_assert_true(__builtin_types_compatible_p(__typeof__(tcg_temp_new()),
-+                                               TCGv_i64));
-+    g_assert_true(__builtin_types_compatible_p(
-+                      __typeof__(tcg_global_mem_new(NULL, 0, "t")), TCGv_i64));
-+    g_assert_true(__builtin_types_compatible_p(__typeof__(tcgv_tl_temp),
-+                                               __typeof__(tcgv_i64_temp)));
-+    g_assert_true(__builtin_types_compatible_p(__typeof__(tcgv_va_temp_new()),
-+                                               TCGv_i32));
-+    g_assert_true(__builtin_types_compatible_p(__typeof__(tcgv_va_temp),
-+                                               __typeof__(tcgv_i32_temp)));
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+    g_test_add_func("/tcg/op-mem/va32-tl64", test_va32_tl64);
-+    return g_test_run();
-+}
-diff --git a/tests/unit/test-tcg-op-mem.c b/tests/unit/test-tcg-op-mem.c
-new file mode 100644
-index 00000000000..b6bda01e93b
---- /dev/null
-+++ b/tests/unit/test-tcg-op-mem.c
-@@ -0,0 +1,51 @@
-+/*
-+ * Compile tcg-op-mem.h with no fixed VA width.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/target-info-def.h"
-+#include "tcg/tcg-op-mem.h"
-+
-+static const TargetInfo tl32_info = {
-+    .target_name = "tl32",
-+    .long_bits = 32,
-+};
-+
-+static const TargetInfo tl64_info = {
-+    .target_name = "tl64",
-+    .long_bits = 64,
-+};
-+
-+static void test_runtime_tl_ops(void)
-+{
-+    TCGType expect = tl_is_64() ? TCG_TYPE_I64 : TCG_TYPE_I32;
-+
-+    g_assert_cmpint(tcg_type_tl(), ==, expect);
-+    g_assert_true(__builtin_types_compatible_p(__typeof__(tcg_temp_new()),
-+                                               TCGv));
-+    g_assert_true(__builtin_types_compatible_p(
-+                      __typeof__(tcg_global_mem_new(NULL, 0, "t")), TCGv));
-+    g_assert_true(__builtin_types_compatible_p(
-+                      __typeof__(tcgv_tl_temp((TCGv)NULL)), TCGTemp *));
-+}
-+
-+static void test_runtime_tl_width(void)
-+{
-+    target_info_select(&tl32_info);
-+    g_assert_false(tl_is_64());
-+    g_assert_cmpint(tcg_type_tl(), ==, TCG_TYPE_I32);
-+
-+    target_info_select(&tl64_info);
-+    g_assert_true(tl_is_64());
-+    g_assert_cmpint(tcg_type_tl(), ==, TCG_TYPE_I64);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+    g_test_add_func("/tcg/op-mem/runtime-tl", test_runtime_tl_ops);
-+    g_test_add_func("/tcg/op-mem/runtime-tl-width", test_runtime_tl_width);
-+    return g_test_run();
-+}
+-#define dup_const_tl(VECE, C)                                      \
+-    (__builtin_constant_p(VECE)                                    \
+-     ? (  (VECE) == MO_8  ? 0x01010101ul * (uint8_t)(C)            \
+-        : (VECE) == MO_16 ? 0x00010001ul * (uint16_t)(C)           \
+-        : (VECE) == MO_32 ? 0x00000001ul * (uint32_t)(C)           \
+-        : (qemu_build_not_reached_always(), 0))                    \
+-     :  (target_long)dup_const(VECE, C))
+-
+-#endif /* TARGET_LONG_BITS == 64 */
+ #endif /* TCG_TCG_OP_H */
 -- 
 2.52.0.windows.1
 
