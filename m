@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6F030C632;
-	Sat, 26 Sep 2026 00:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3483731AA92;
+	Sat, 26 Sep 2026 00:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790383852; cv=none; b=iLMsU9R/Vk9V4o7tVwQiGM+yUy3aeHm0Zd82gh5dY6WYjj7lsILqOD7L+Gov4DIB5XypGuKl+ouJr4HIPY692A0RjT8UWtygXiL1z/MGxRQSy7V1RYXR79O6Qf6T7SLTmAiy00HxIE+Lo9LQCg3+WE9Up/m6+NQrNAbJSKIM+E8=
+	t=1790383852; cv=none; b=h1yBo2JWgGEu7zSNQn/2TobfLuUVp678xR+JXKXJsUUo1ic9oX4u9DkcP6hjQ33Et4S2GYEESqIMWH+Aej5vJw8DewY9eWgWt1qKEKdznZ3cBt+PWMyfN2zPHkykm6UIokKAjzmNrezzK7xvArtkue49Z17psIiqbSdkSataGxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790383852; c=relaxed/simple;
-	bh=mZ6OpaKM8VSu2SUTDptmmvQXAdF/0DN8J0W5GQhjVxA=;
+	bh=clzJl7tat7edqHdDSmDO0zl3L0rUROd5Ujs5P0wIAzk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qiktlNRLEwrnvNwTXRQrosTzw8aAFMkCm/LJXyRIYjkjabM0uCJ8lWy6YQC0VA9BbypM1xWLzDPErOyrW0VAnHC9wm81o2wH74Te5hV1ajfzFFKwAScKpR23Of+ax3I88y7CFIZRfgV6BRvBB3coCVsA+j9vzT3EvsWRUNx1sw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UspMjIxQ; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=HxYiJLa59Wyp6UEIl8EnCK2V68x0hCQ94xeym68Hy5KEWruBdj1PLso3KYTM6wXnvF1AS9NJwmOZnp4LS9og8uOjNgbbKC+orVf7xIMkN7XDRL84NVgKSfdT4af7xK8IcYY15EHs+a42OAyaaJSzR5+swISUJFx8zUVdgrlP6RI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CIQ2+pr1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UspMjIxQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B91C7C2BD04;
-	Sat, 26 Sep 2026 00:50:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CIQ2+pr1"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0BB5FC4AF13;
+	Sat, 26 Sep 2026 00:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1790383851;
-	bh=mZ6OpaKM8VSu2SUTDptmmvQXAdF/0DN8J0W5GQhjVxA=;
+	s=k20201202; t=1790383852;
+	bh=clzJl7tat7edqHdDSmDO0zl3L0rUROd5Ujs5P0wIAzk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=UspMjIxQEFvLsiPa9D9JSrei2wJz1ci0gFONIhtAqb67tNFtAT5mLgMCFE/dSH/BB
-	 ZOmZDz/RyUGjmGAitUGHv0I22Jp68jtWVc/gVDn+5ZWrpcP/kP8gYBxkt9HSTo6mFj
-	 PsFMRlr2JTrPguxNGQD9PDc+PJWCKaMcs75jihPYuvTygWEMfpJZUqQSbtIF0Aofkj
-	 DZ6EFz45igxPuiqL0zsK7RA9FaxomxQZRG5Ceis+7cwuatYA2KleYQ4wBm3Bz/wkw+
-	 9L+HNygzTF8LZY3DfKoCFwESTGhlcCE0g2W/HJCeOnGJxd8ZiytYlmIwNZ0pfzg31r
-	 Uy8ALX2tguiHg==
+	b=CIQ2+pr1/IFy1J/Cqj4xAxFux/GIa20NPau6WtfoEaI34fPTFtJyPnFqcyYL8ObnE
+	 TnWxKE2Hxw4sMDJYa/Ckq8gdthUDuYAw4r/VWKJxWi3CukaUmmdTgcCZpMSbjXVqY1
+	 78h3b85NmurNGGPwHvKk+MycCnRDgDghOBaopcuAa0L88dcwRrMyBUXW4o/WicUnZw
+	 uFI29kJeWFuq9nEtT/e3CLso0y1kXapkhMeM3H9qMfcamQ2J3l/ZfP8NkNEPd5Cu7F
+	 FfPUS3t3uwyGhHGoFlWbJ9ON7yN/XIyViunsF+WGWlGYCWBeelYKtx/7sNeHfKq8HV
+	 Y4rwL8EOMdA0Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A14E9C9830E;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EB871C98331;
 	Sat, 26 Sep 2026 00:50:51 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 25 Sep 2026 17:50:54 -0700
-Subject: [PATCH RFC 07/17] KVM: selftests: Test rejection of unsupported
- filesystem for resource_fd
+Date: Fri, 25 Sep 2026 17:50:58 -0700
+Subject: [PATCH RFC 11/17] KVM: selftests: Test guest_memfd with anonymous
+ fsmount() tmpfs pool
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260925-gmem-tmpfs-backend-v1-7-d36159822d18@google.com>
+Message-Id: <20260925-gmem-tmpfs-backend-v1-11-d36159822d18@google.com>
 References: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
 In-Reply-To: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
 To: Hugh Dickins <hughd@google.com>, 
@@ -64,11 +64,11 @@ Cc: kernel-team@android.com, kernel-team@meta.com,
  linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790383850; l=1760;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790383850; l=2594;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=c84B6n44NVtK2sHukMLB5KU4J3iKw7GkSZw3Puqe1NE=;
- b=mcUInbCP1l8RBE0LpSG40yF7SVS0NuEdAcubDuydYZGl6HTZiLO6aKz+MNMBBt9W88whJp98Y
- rYy1PfGCdV/CUbRH++lB6miMh/H7JzZ5SsHOreuZCnL0q9f+cNQcqzO
+ bh=Si9JGry309vjF8hKL0mCR4ckxqZZ+FxcLQB0xL3xoag=;
+ b=PyIIYTVR6N2jUy7YaNCs+XJW/WTb8muHJXoGFl1QAit/5T4X7y8M5Oq8R5MHlWF7Xs+QkWAos
+ p6iAVxid4mbCy3dVT3rzd/VcyoiQCU2KkivZkLfKJ9j/KwsTlzd0Lpd
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -78,55 +78,75 @@ Reply-To: ackerleytng@google.com
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Add test coverage verifying that passing a directory file descriptor
-from an unsupported filesystem without provider operations as a resource
-file fails with EOPNOTSUPP.
+Add test coverage verifying that creating a guest_memfd backed by an
+anonymous tmpfs mount descriptor returned by fsmount() succeeds and
+reports the requested file size.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/guest_memfd_test.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ tools/testing/selftests/kvm/guest_memfd_test.c | 35 ++++++++++++++++++++------
+ 1 file changed, 27 insertions(+), 8 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index 84b958b9ef715..31bc74c4c26bd 100644
+index e8199ed17b0f8..73212d5307049 100644
 --- a/tools/testing/selftests/kvm/guest_memfd_test.c
 +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -436,6 +436,27 @@ static void test_resource_fd_invalid(struct kvm_vm *vm)
- 	TEST_ASSERT_EQ(errno, EBADF);
+@@ -541,12 +541,23 @@ static void test_resource_fd_tmpfs_huge(struct kvm_vm *vm)
+ 	close(pool_fd);
  }
  
-+static void test_resource_fd_unsupported_fs(struct kvm_vm *vm)
-+{
-+	int fd, file_fd;
-+
-+	/*
-+	 * Passing an FD from an unsupported filesystem without provider ops
-+	 * (e.g. the /proc mount root directory) is rejected by KVM with
-+	 * EOPNOTSUPP.
-+	 */
-+	file_fd = open("/proc", O_DIRECTORY | O_RDONLY);
-+	TEST_ASSERT(file_fd >= 0, "open /proc failed");
-+
-+	fd = __vm_create_guest_memfd_resource(vm, page_size,
-+					      GUEST_MEMFD_FLAG_USE_RESOURCE,
-+					      file_fd);
-+	TEST_ASSERT(fd < 0, "guest_memfd with /proc fd should fail");
-+	TEST_ASSERT_EQ(errno, EOPNOTSUPP);
-+
-+	close(file_fd);
-+}
-+
- #define ____gmem_test(__test, __vm, __flags, __gmem_size, args...)	\
- do {									\
- 	int fd = vm_create_guest_memfd(__vm, __gmem_size, __flags);	\
-@@ -495,6 +516,7 @@ static void test_guest_memfd(unsigned long vm_type)
- 	test_guest_memfd_flags(vm);
+-#define ____gmem_test(__test, __vm, __flags, __gmem_size, args...)	\
+-do {									\
+-	int fd = vm_create_guest_memfd(__vm, __gmem_size, __flags);	\
+-									\
+-	test_##__test(args);						\
+-	close(fd);							\
++#define ____gmem_test(__test, __vm, __flags, __gmem_size, args...)		\
++do {										\
++	int pool_fd = -1;							\
++	int fd;									\
++										\
++	if ((__flags) & GUEST_MEMFD_FLAG_USE_RESOURCE) {			\
++		pool_fd = create_tmpfs_pool_fd("never", true, __gmem_size);	\
++		fd = vm_create_guest_memfd_resource(__vm, __gmem_size,		\
++						    __flags, pool_fd);		\
++	} else {								\
++		fd = vm_create_guest_memfd(__vm, __gmem_size, __flags);	\
++	}									\
++										\
++	test_##__test(args);							\
++	close(fd);								\
++	if (pool_fd >= 0)							\
++		close(pool_fd);							\
+ } while (0)
  
- 	test_resource_fd_invalid(vm);
-+	test_resource_fd_unsupported_fs(vm);
+ #define __gmem_test(__test, __vm, __flags, __gmem_size)			\
+@@ -606,15 +617,23 @@ static void test_guest_memfd(unsigned long vm_type)
+ 	test_resource_fd_tmpfs_huge(vm);
  
  	__test_guest_memfd(vm, 0);
++	__test_guest_memfd(vm, GUEST_MEMFD_FLAG_USE_RESOURCE);
  
+ 	flags = vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS);
+-	if (flags & GUEST_MEMFD_FLAG_MMAP)
++	if (flags & GUEST_MEMFD_FLAG_MMAP) {
+ 		__test_guest_memfd(vm, GUEST_MEMFD_FLAG_MMAP);
++		__test_guest_memfd(vm, GUEST_MEMFD_FLAG_MMAP |
++				       GUEST_MEMFD_FLAG_USE_RESOURCE);
++	}
+ 
+ 	/* MMAP should always be supported if INIT_SHARED is supported. */
+-	if (flags & GUEST_MEMFD_FLAG_INIT_SHARED)
++	if (flags & GUEST_MEMFD_FLAG_INIT_SHARED) {
+ 		__test_guest_memfd(vm, GUEST_MEMFD_FLAG_MMAP |
+ 				       GUEST_MEMFD_FLAG_INIT_SHARED);
++		__test_guest_memfd(vm, GUEST_MEMFD_FLAG_MMAP |
++				       GUEST_MEMFD_FLAG_INIT_SHARED |
++				       GUEST_MEMFD_FLAG_USE_RESOURCE);
++	}
+ 
+ 	kvm_vm_free(vm);
+ }
 
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
