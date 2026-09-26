@@ -1,64 +1,64 @@
-Received: from mail-dy2-f29.google.com (mail-dy2-f29.google.com [74.125.229.29])
+Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6009234DB41
-	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 07:04:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948E8547063
+	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 07:04:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790406266; cv=none; b=OQ9ayM8aeKLRo8mUX5aZsE++YLIkh7M0WN1QFo5UT9yPaNU6NbZWncOpf2oj5pf0GxvMbJ5/kYzOxXeAY1oVeuxJvoavqf/F0z2K0vg3Y0LZe0A1xf8x6+Xh/TjallMu8ozY2MMWxZDGytmX6yHQmWC6F+R6ic0z03tRoS1YgAw=
+	t=1790406270; cv=none; b=g7pW/TF/ljLZZ2726y5S/SJE1Alr9Z49QbopO+utlWBn1Dl/mXy4KdLrk3akdfu/tiQpsfrMIjzfkw/w+KkjPsSAR3jRmydyGy0aP4aI0QkQyn35MvRHIDtd+1ZYGl+1soZE5FV2UF7ntlAWurqiszv5KV7rlUtT44BOK5HkZSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790406266; c=relaxed/simple;
-	bh=Pk7USaznz2qmZGOY4XXIneKytEwGMiHqsL6qEJLtUVQ=;
+	s=arc-20240116; t=1790406270; c=relaxed/simple;
+	bh=Rf+YWt1EeNmx2dSLTuXKTkgKJYY3AaxRKQJEve/17u0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vByJbLmx+ukYdZJjhSIYINhW29cob5Q0Iq9wkS8grc3ouwtOgR0oLTFOLn1MICr4X6ypHKB44EGDgQTEDl/tZSWZlOwzNPtrI1ZZjR3cen4LUcWAjPHQ8RGwVyk1gUQohkO4wibaTgfoeEtqpst7/NWMbRvJxHzUBWAY30IwEDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y/6KUCim; arc=none smtp.client-ip=74.125.229.29
+	 MIME-Version; b=XClb5S9pRcLSQhqciX5Ao0ZyRR+M8o5ZBN1I9f+m3mi7sintSYU3YKTYRjUIB016ZpfwClKA6YqXedsjQkJs4pbJFhsxR76qQUua8kup23Ky1L8RTcBxyIwSxfuzVKlN86cgthkSQJxQRpb+hsornj44+6Rlh8+AiCr77fgU7Ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y7MliVpe; arc=none smtp.client-ip=74.125.229.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y/6KUCim"
-Received: by mail-dy2-f29.google.com with SMTP id 5a478bee46e88-3427493501eso504231eec.1
-        for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 00:04:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y7MliVpe"
+Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-341f6327b95so909822eec.0
+        for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 00:04:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790406264; x=1791011064; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790406269; x=1791011069; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=xBSqXEkr1ev4UBbYnYTwgul/tvqRWOfBQ9ClBL2I6+g=;
-        b=Y/6KUCimiJ8rGvu0KhXNlFayH7bQtMjoPTadkkM46xrfembf9ETzVdAwDfiZjazwg9
-         dPA7SBJ7n3We4XsyNoVvjZcwJs/rr2PNJRBeKLWJs/koKyozG2mgHixbSNzuaWm7YS9U
-         /ZHNsyBSM8cjZWbyL95q3lgZ7d0RDU35eJInp2ccxi2oBy0kwoeS3U7gug9Zb6wzL+yu
-         JPc1wceuxmzxDzBkDF0YGznIsnAUPQAEW5IeyL1oDNrtjRk8aTdUf7DLQ+ykqd4ykWzP
-         mXrp5eAkVA8aMZLkbGXj4qYk8RzB6FCCZSUbUPgx0mOdHFvDGYk8kHTiKDHKJqCuDsxh
-         jKQg==
+        bh=VCuHWY6Hw+A4Xk8E6Eag+wxaYi6gJJVKssV/rB0uMSY=;
+        b=Y7MliVpeQ9eGAOb4kGQ75teGjTfqmxJYMYlhXy4Jl7TIq3Sl8s8oSn/FwPQaM1HUFe
+         0uu560m+MmzntBH29anh17wXHI2d/wKOkbNhoQLZPcGBo/DykKDPrGn5OJC1a9xC3G33
+         D0dYSBcRxsGOppLWbSx49Icf6F+Dg3P7k3wjPoiqGIQuMTDSPPlrO4nYHXMRxaovE4gx
+         MXclEdX5cvI3V9q7ftLB1mN2dqvl3VQ9GFtfoR8OtZQF/TAU9V+wufdiBZAOnWbas7qw
+         afxeSJabZu6WS8zeiQP/XZ9MDNIkHYqPKQTJ9q9uR4k6xwTNbml0GKupp41S+ExsBCKi
+         1luw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790406264; x=1791011064;
+        d=1e100.net; s=20260707; t=1790406269; x=1791011069;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xBSqXEkr1ev4UBbYnYTwgul/tvqRWOfBQ9ClBL2I6+g=;
-        b=eiR4IANXYxR8SgnMh6G/iNMMp3e0VZSl6ovRqYPIbIemCF5BLEn9IpENwmbfiQaMRu
-         QPmX8rtHZuE+NDtiLAX/JoncMi09+55m5NrVYeRjGJJwkTtL630xBzDgf3OCoCwLt3Dd
-         Fynxe3CqXsRHkzZtaNs1U+l9fJFPO9KilztjEqGXOMhxfN/hJ1do7ZO2fO2QxFo5En8Y
-         oZmLKLfgA/crJQChJatP5XEvKHiNmDOXWqjMbFyCCJuWkcbf1JM9mO37oguV1oeCveZw
-         fq4GS+nuPyb5e6BG34buGDOKr0HWZBNbTvkgK1RkoGd0D9THDw+VWzwuVp3Xjv0o//Ka
-         UDjA==
-X-Forwarded-Encrypted: i=1; AKwUvByLVQ3ZvnZOhYBhfYY9XXxItU/H2xhlboiwHLsb9IT8lFmGsozFB+EXmRB0wsPVCeagh9c=@vger.kernel.org
-X-Gm-Message-State: AFuF++l671duepgiDpEozbTZ3TgF9prcLemw4nFb7rJnXPiMcttl7AO9
-	uFjyVV84tT8A2RlY5Xk4bmHuUGxFvrqTYynGEyOMutlOaK4WIXQrH0QR
-X-Gm-Gg: AYBFou1z1/sMpDWZJdAoTAiN+UHVu/ZnEMt8s3gAbykFgmorYkdHW+BQ9NxT8AcNyuK
-	zl6+ZQAJySdrcB0TtsOEYGFuyQ3r5TDVtIHpsIlAIyN0pQ/DF6TTkriozkuqmmG/kUEgXqhRash
-	GEkApH2mMDOmLcJ3uo+L5D8O6Cj1FlSj9rtYvyJbySbcrW1el3I76y7RP43j3VMmldGj02Wc8NQ
-	A5LqtZ5Mgvd29pHdW2xdVTyKSl0Dkao7d6JzK3zkZVg0d2+Gcx1R8cXMoXfl/WQj8hUQqmWz3mi
-	qUY9NIDaq4Ow/8vtL2VmYbUflVK0/PSQ/rhS4KO3hm91nSSTchPRMwbe5A3sguKZuOtm8NMWll4
-	H1hdo6jhMRJEYA08esKnu2dQNFH5fqwNMJjnDEDBy0eNBoXtJ3lkCK4hWyLZHtxkn+IrhYxNfd5
-	IrDBauChwx2trn705MPZtEIjLdHDpGMJWwyKz3tPIYieOBVXJ4DMBjjsl7McwnpOXNHieAhIJOu
-	YBEyRO0jXsfxU+bOcc6z6Zm534rBeiyqdA/23mJcg==
-X-Received: by 2002:a05:7300:7fa7:b0:341:85c0:91ca with SMTP id 5a478bee46e88-3427217a1d7mr3157912eec.22.1790406264285;
-        Sat, 26 Sep 2026 00:04:24 -0700 (PDT)
+        bh=VCuHWY6Hw+A4Xk8E6Eag+wxaYi6gJJVKssV/rB0uMSY=;
+        b=TbrObBbCAEu/iZ4rgAAPSyud5lR8EPxfCiBVCOF1s/xVGFNue93NZj2ZPXgBgrYTnk
+         Di8RqZ1xTZM1eDGMPSz9pGAsENYpQmLFWq3dEXQCmHhv2q/UETWWRclxYGFS6yGg4BDw
+         NkAQ6DU3YWfguE0NbCqHuCprFwultxdQBVKekkhQigt0RtTfJZLFQ7yYphoYPldCDoKC
+         1RNhvKbBxXTV+yz/5tYumPmdZojR+2un2E/So+uP8TsyGI+RXaJSvrux0MhzYG0xGKm0
+         D6OAEscJjjReTB0PByM2ny9719b6alDafvGAisGz08HUHr7AmeEert/8kkz1I9oTeGKI
+         nk1g==
+X-Forwarded-Encrypted: i=1; AKwUvBxYv+Y1aVMMf77u2s5hmOxNRtpgP/OgQ8IA0aPyaVbkBpfTEdQ9wKIPJ3PTWRG3h6VgSG0=@vger.kernel.org
+X-Gm-Message-State: AFuF++kEnMw+oPIBy1TTn4AEtVzbFIbd/iFJlqAbGyMozaEfxtKswF/Y
+	Pvmr9/9KLBoUTKcMbOVoBhUWwxPup+BgFr7ZHEVz9KdJ+cynG9X9obwp
+X-Gm-Gg: AYBFou3My1LuHTGwzoubDmxSSL7grMx3o9DuN2BCEnzTQ4az0wizTgFNwKtNcY2MXyR
+	zjCadKVBS48Io4BocAPQSHZ57AxyiVha3qyDcP1xA/8XSTU1gAc9D7CFMo/Hb9VijWnnClysj2t
+	Aa6c/u0TwXEGcj4E+XkuiCtE+iCML1t4AB/6vUoRBXGNyYUwvGigsNNlYTO74mLHR4E0vknZFES
+	uRTNAb3dLGfijwdHJ2W4gjpJa2Ic7zHU0sgUki7ceyWlTHX187tv1F6RX75vSieiY/9WvPtmRZL
+	Gy5DQtdAl31sebqga2W3EcAlb+sMnHKDJO/0jEj6f7DeSdUvaYdJhNuOZxFNF+JcQ/0qRJcRHYa
+	AEIVu5Eb9edaTi4E1nfpUbGDwZl5U/417Gyf+s+Ph33U9D6HEVtxC/RGlRlPD51gFK38vVXMkC9
+	k2f51pKJh6VdXNFTNpuoUQicxecNCezKzr2h+odZ64YI1N/S2Ghb+Bp8xZYmQhU0Du3NC92tfkw
+	pdcZi4Z6DWsE4pFMdT9mPfpb2eldobZzGuDrPHfIQ==
+X-Received: by 2002:a05:7300:d941:b0:328:3542:b73e with SMTP id 5a478bee46e88-342707b5de8mr1811320eec.15.1790406268100;
+        Sat, 26 Sep 2026 00:04:28 -0700 (PDT)
 Received: from WIN-BH9M8FJACR9 ([103.94.185.75])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-34145c166cfsm10615141eec.28.2026.09.26.00.04.20
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-34145c166cfsm10615141eec.28.2026.09.26.00.04.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 00:04:23 -0700 (PDT)
+        Sat, 26 Sep 2026 00:04:27 -0700 (PDT)
 From: Yonggang Luo <luoyonggang@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -74,9 +74,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
 	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [PATCH v4 51/55] hw/arm: expand imx8mm-evk DEFINE_MACHINE to TypeInfo
-Date: Sat, 26 Sep 2026 15:00:50 +0800
-Message-ID: <20260926070057.1234-52-luoyonggang@gmail.com>
+Subject: [PATCH v4 52/55] hw/arm: set virt TypeInfo.is_available
+Date: Sat, 26 Sep 2026 15:00:51 +0800
+Message-ID: <20260926070057.1234-53-luoyonggang@gmail.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260926070057.1234-1-luoyonggang@gmail.com>
 References: <20260926070057.1234-1-luoyonggang@gmail.com>
@@ -88,61 +88,26 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace DEFINE_MACHINE_EXTENDED with a TypeInfo, rename
-imx8mm_evk_machine_init to imx8mm_evk_machine_class_init, and set
-is_available to target_is_aarch64.
+Set TypeInfo.is_available to target_is_base_arm on
+DEFINE_VIRT_MACHINE_IMPL.
 
 Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
 ---
- hw/arm/imx8mm-evk.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ hw/arm/virt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/arm/imx8mm-evk.c b/hw/arm/imx8mm-evk.c
-index c3215b11cb9..5dfd8250459 100644
---- a/hw/arm/imx8mm-evk.c
-+++ b/hw/arm/imx8mm-evk.c
-@@ -8,6 +8,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qemu/target-info.h"
- #include "system/address-spaces.h"
- #include "hw/arm/boot.h"
- #include "hw/arm/fsl-imx8mm.h"
-@@ -122,8 +123,10 @@ static const char *imx8mm_evk_get_default_cpu_type(const MachineState *ms)
-     return ARM_CPU_TYPE_NAME("cortex-a53");
- }
- 
--static void imx8mm_evk_machine_init(MachineClass *mc)
-+static void imx8mm_evk_machine_class_init(ObjectClass *oc, const void *data)
- {
-+    MachineClass *mc = MACHINE_CLASS(oc);
-+
-     mc->desc = "NXP i.MX 8MM EVK Board";
-     mc->init = imx8mm_evk_init;
-     mc->max_cpus = FSL_IMX8MM_NUM_CPUS;
-@@ -133,6 +136,18 @@ static void imx8mm_evk_machine_init(MachineClass *mc)
-     mc->get_default_cpu_type = imx8mm_evk_get_default_cpu_type;
- }
- 
--DEFINE_MACHINE_EXTENDED("imx8mm-evk", MACHINE, Imx8mmEvkMachineState,
--                        imx8mm_evk_machine_init, false, false,
--                        NULL)
-+static const TypeInfo imx8mm_evk_machine_class_init_typeinfo = {
-+    .name          = TYPE_IMX8MM_EVK_MACHINE,
-+    .parent        = TYPE_MACHINE,
-+    .class_init    = imx8mm_evk_machine_class_init,
-+    .instance_size = sizeof(Imx8mmEvkMachineState),
-+    .abstract      = false,
-+    .is_available  = target_is_aarch64,
-+};
-+
-+static void imx8mm_evk_machine_class_init_register_types(void)
-+{
-+    type_register_static(&imx8mm_evk_machine_class_init_typeinfo);
-+}
-+
-+type_init(imx8mm_evk_machine_class_init_register_types)
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 3eecf094bcc..a0a954ce693 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -132,6 +132,7 @@ static void arm_virt_compat_default_set(MachineClass *mc)
+         .name = MACHINE_VER_TYPE_NAME("virt", __VA_ARGS__), \
+         .parent = TYPE_VIRT_MACHINE, \
+         .class_init = MACHINE_VER_SYM(class_init, virt, __VA_ARGS__), \
++        .is_available = target_is_base_arm, \
+     }; \
+     static void MACHINE_VER_SYM(register, virt, __VA_ARGS__)(void) \
+     { \
 -- 
 2.52.0.windows.1
 
