@@ -1,112 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CBB33CE80;
-	Sat, 26 Sep 2026 00:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E52E2DF3F2
+	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 00:56:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790383852; cv=none; b=jh72Oxi3KV110DZLtyzqcHGlN9imcLunYS+50jCCcXNE/jp+EWpvxVrhpYjJ/WuT+wZLRcgPAfoAFYe5+JZMGBp+u6g2PbUbK+K4XUOByFgjaiVkH4dJjdwOMLA0M1H6IlOpx7UfOqsw7JVxfddpX4mc4YdDNG0ee41DNzxBE+A=
+	t=1790384162; cv=none; b=P8pH23JDnD92VJqOwdoS0B2hcSsAnZcnXbXATqwStGRb1lILL0ZVmgxXiQY2vkKZfXRJIDCF8SD6PYew3BC2otRwuQke3sAPDGDjap5OUYeNdHEVVow8Q4s8tu1k8wuI7nF4qVFjxKJBPnXqYzNL4IdWFupCko1x9yX1R2P31Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790383852; c=relaxed/simple;
-	bh=CucdfZJ5/85W8a22Su/Z2GlUAjLT1OZjtxKxL9yuu3E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=l/kdnYLiNA1vdvQPqK5vtHo7u4PHPUcYCN6Urx8pfOZh00CRLJrKfDA4Y/SKCs+NtdFOnEkGsrnDNbBe1Qu+sWvesravtHh3ztwVqZDld+GGOr3Z/28o14kXAoIJKAnoGOtCEZNcoBwW179/+KZCR8kr41DYiJi7WcHJcwYda9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ne5o860R; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1790384162; c=relaxed/simple;
+	bh=egMb6CzK84Lvga6QGTOqa9a4moRv52bs6/H7i3g4SsA=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Z2iIHnLVGGxgckCht11bsUTfj03E+/7plKWhsMQce8agL29vCbqSQoGVULRogfStVmFOAgYACL1JfHlsfcbC9IVzfo47qgqVRJmtP3UPEf6goTvY634+U243Sr/nV3qiqkzLz9RiJNt68LFmV+pxL1sdWEJGGdjU8GU29cxCqe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hgsrWj6j; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ne5o860R"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7B592C2BD00;
-	Sat, 26 Sep 2026 00:50:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1790383852;
-	bh=CucdfZJ5/85W8a22Su/Z2GlUAjLT1OZjtxKxL9yuu3E=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ne5o860RKYhFrnwbDUH++4v069HuXzs0E3w1k7y/IyEMOCV4Xi8QBpKUCkFlDd/xI
-	 WlV3FIXeEI9cIM+ILxgEzL23nrSB65be6AWlCBrEeMKyfZ3m8XVFmZDQkuQgjmii6S
-	 9YfENZj3n+jExUgPXaFeUWpuUjP+AYaFdMyj41qCny93zxMoNRq40ZMPfbQhDNDMZD
-	 QyxUCoNlti6pGNYuyTkhOjEsWzsUz68xsDzZVy/42SMsYu2RtURk1mkS7V+dJQW2a/
-	 LdlHd6DE8ZU4IbwrB62+eRmZlr+5IRsgbGGOr8nXpzWPakdgVuRnHiibn1XorTqLCb
-	 RIgPKaN2rJ8YQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 689E6C9830E;
-	Sat, 26 Sep 2026 00:50:52 +0000 (UTC)
-From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 25 Sep 2026 17:51:04 -0700
-Subject: [PATCH RFC 17/17] KVM: selftests: Document testing TODOs
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hgsrWj6j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C181F000FF;
+	Sat, 26 Sep 2026 00:56:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790384161;
+	bh=WuZIaPwLDottPjB4qgTAzO76Xq4Sw33Dz3bLk7UEIOo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=hgsrWj6jChajP77SiHd01Yec3kdnqSY8XhywCxxJIPeqTV+NWVnidYSI+hC20q1mJ
+	 t4sVXCwXzUuvXkahT8SmzTfym26vJy+NAVGP86qc8LR2ekzNeNTe1k2WfBeovmFnCO
+	 q8h4V+vtuPJtSDcmuZJTV0wcZkTqpdvVGC+XRvVKIYm5zZ8uL4YwnCmSWy17W/wy8E
+	 5WQfYGlv+FGSTfQtrN1HKI8YBO+v4P8YYLc22DvUqyJm4JSSBrBnID/jClymKCtQnR
+	 13ikrmS3JmGDmJcZQO5o0rCoSm+br6xelUPCmSFPxAINalBVzGatZ+h+SPVRcS712z
+	 Ifq+xlqhso2Qg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RFC 07/17] KVM: selftests: Test rejection of unsupported
+ filesystem for resource_fd
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ackerley Tng" <ackerleytng@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260925-gmem-tmpfs-backend-v1-7-d36159822d18@google.com>
+References: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
+ <20260925-gmem-tmpfs-backend-v1-7-d36159822d18@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 26 Sep 2026 00:56:00 +0000
+Message-Id: <20260926005600.D3C181F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260925-gmem-tmpfs-backend-v1-17-d36159822d18@google.com>
-References: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
-In-Reply-To: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
-To: Hugh Dickins <hughd@google.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Sean Christopherson <seanjc@google.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Randy Dunlap <rdunlap@infradead.org>, Shuah Khan <shuah@kernel.org>, 
- vannapurve@google.com, erdemaktas@google.com, jxgao@google.com, 
- rientjes@google.com, fvdl@google.com, jthoughton@google.com, 
- tarunsahu@google.com, pratyush@kernel.org, fuad.tabba@linux.dev, 
- Gregory Price <gourry@gourry.net>, David Woodhouse <dwmw2@infradead.org>, 
- yan.y.zhao@intel.com, michael.roth@amd.com, suzuki.poulose@arm.com, 
- Christian Brauner <brauner@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
- Nicolin Chen <nicolinc@nvidia.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
- aik@amd.com, aneesh.kumar@kernel.org, Vlastimil Babka <vbabka@kernel.org>
-Cc: kernel-team@android.com, kernel-team@meta.com, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Ackerley Tng <ackerleytng@google.com>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790383850; l=1099;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=zKFuTq3Amq3TlVl+Ae6LwDfBtexGkdVicUSVbrDs3Rw=;
- b=D5SgQu2KvK/CN8bmAnbeQJqiDr8hZKAUtYrBjvO7ze+1Wl1dU9raEmcyKScXL3hs51t3QYlt9
- k3mic0lnyeeA1v9aJ7kZuFyx/opXA3gFDc8InOKEYvCNEcaPlQDJKRu
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
- pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
- auth_id=649
-X-Original-From: Ackerley Tng <ackerleytng@google.com>
-Reply-To: ackerleytng@google.com
 
-From: Ackerley Tng <ackerleytng@google.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] kvm: selftests: missing capability check for GUEST_MEMFD_FLAG_US=
+E_RESOURCE
+--
 
-Remind myself about all the tests (A)I did not write.
+commit 12edbf910d6d9507b605565dea5dca809a2eece9
+Author: Ackerley Tng <ackerleytng@google.com>
 
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- tools/testing/selftests/kvm/guest_memfd_test.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+KVM: selftests: Test rejection of unsupported filesystem for resource_fd
 
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index bf369874f2647..4e5d00df899a6 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -721,6 +721,16 @@ static void test_guest_memfd(unsigned long vm_type)
- 
- 	test_guest_memfd_flags(vm);
- 
-+	/*
-+	 * TODO: Test that guest_memfd creation rejects a read-only tmpfs mount
-+	 * (e.g. MOUNT_ATTR_RDONLY) with EROFS.
-+	 *
-+	 * TODO: Test that guest_memfd creation rejects an ID-mapped tmpfs mount
-+	 * (e.g. MOUNT_ATTR_IDMAP) lacking write or execute/search permissions
-+	 * with EACCES.
-+	 *
-+	 * TODO: Test mpol fallback to mount config.
-+	 */
- 	test_resource_fd_invalid(vm);
- 	test_resource_fd_unsupported_fs(vm);
- 	test_resource_fd_tmpfs_file(vm);
+This commit adds test coverage to verify that passing a directory file
+descriptor from an unsupported filesystem fails with EOPNOTSUPP.
 
--- 
-2.56.0.rc1.315.gc6ed9934b7-goog
+> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testi=
+ng/selftests/kvm/guest_memfd_test.c
+> index 84b958b9ef715..31bc74c4c26bd 100644
+> --- a/tools/testing/selftests/kvm/guest_memfd_test.c
+> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+[ ... ]
+> @@ -495,6 +516,7 @@ static void test_guest_memfd(unsigned long vm_type)
+>  	test_guest_memfd_flags(vm);
+> =20
+>  	test_resource_fd_invalid(vm);
+> +	test_resource_fd_unsupported_fs(vm);
 
+[Severity: Medium]
+Does this new test invocation need to verify if the underlying KVM module
+supports the GUEST_MEMFD_FLAG_USE_RESOURCE capability before running?
 
+The test_guest_memfd() function unconditionally calls
+test_resource_fd_unsupported_fs(), which passes the
+GUEST_MEMFD_FLAG_USE_RESOURCE flag to KVM. On older kernels lacking this
+feature, the ioctl will reject the unknown flag with -EINVAL.
+
+Since the test explicitly expects -EOPNOTSUPP, this mismatch will cause the
+assertion to fail and abort the test run, unexpectedly breaking backward
+compatibility for the test suite.
+
+> =20
+>  	__test_guest_memfd(vm, 0);
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260925-gmem-tmpfs=
+-backend-v1-0-d36159822d18@google.com?part=3D7
