@@ -1,59 +1,55 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2841348C4A
-	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 05:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064BE36AB57
+	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 05:33:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790400783; cv=none; b=twffEKo3xXvKxbWDRnFsxhe2GOEv6FafRjdJfTclDyLI25tG96YsrXU4qw8cQXwZrJNm6LlakACzhUGjSC13vYssUkyiRyaer3jGesv5H4/WqNO7/I1r1OpAmm4c/pJqKnsehsjZX0vzxuqPQ04v80OV+jZ5cH0AQ5GgRUfI20A=
+	t=1790400784; cv=none; b=sw5oOlbMlob8ykihw484+hIwYtjC7ZFYJbO0zTygx4/h10EY+1piIfYuUuvTp3TVJT+QTrTnJEFK+GmcqFaO/SPqlv0R0ZcSlmfYoMZtIyik1fCqr4Q28wSkAyIEJvXpcvcrb3qMK6I4uBOMxaby3GkSJN6DzR/AyaETMbRwp0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790400783; c=relaxed/simple;
-	bh=UHidOX1h5rkNPOmxeoBXFalSIwJq30tlVvb26oTn4PQ=;
+	s=arc-20240116; t=1790400784; c=relaxed/simple;
+	bh=LP1Mo/+qtlNiDbET+icLfCVVnZivL4paAfEKkoG9vcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kzSYmVz+MsrmU+WmXHaN1fQSb4NTQ+x6IgfXJJzFkGxCgRDCYtsUMESoOJNanKA1H4aUwjLou0f6ikK75Wc3i/WnuHhiHkwADX25/YjL7QeIxXxhM2h/Pgq6CEKjk9jyz+jDdXO6ajR8MYQxQbsWdJ9MPH1DpG52FO/3CDxClEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EfAq0yBX; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=rKIysGB9swU7E9RWZ78xHZXawxycpOAKV9Tau/mKYOx3IrLctB8hIdiTUK3zW5rfi0eC8BrL05rtvhWTPVm3YlTwCRpiwjsqveo+L1YtplOBoIW/377UcUcJN9kYUahP6w/TJx3Tji7otvBj/xJZAaoMUiAvPUEZBBisxRVn/Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gzhQPRBd; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EfAq0yBX"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gzhQPRBd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790400781;
+	s=mimecast20190719; t=1790400782;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mydJGLik20szAmekuOZywCxXeIbJ+ZXqC7OHbSNFa7I=;
-	b=EfAq0yBXeG8ClMG5Zkq68idet19gDtZmwZvSkLfTSZ8/pAbiYKNzmyn9UAPf8oIw52p/e2
-	vYbZ2Q0GNrWoXMlk1dYu2EjSC2ETiL7KNJah7Gkkfgxdp3rbKIl43vDaLct/9l1OSAeelo
-	JH70hqJ5C6ULjvYqhqod1IYBq5DoaHw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=k+mFmNWrgUdoHUEMI2VAYZJLdPonHlkU8azhPXbczd0=;
+	b=gzhQPRBd7CEzBtovz4Hw1sODPISNcabfhZR+Uo7TY9hSiCcqAFYfJqTffVNR1BsgtHwM3R
+	Rp+SOQ4Oek0n5tn74RpqJj8aF4L1a61KwYh2gSUDOtv5LKCTwdDBxKfs26HqRwKRDV9O4P
+	oaXpEstZ3mb9Fpubmc7axCVbDodUC/8=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-435-BFpWQpdsNFCdA-Fw2BE4fw-1; Sat,
- 26 Sep 2026 01:32:57 -0400
-X-MC-Unique: BFpWQpdsNFCdA-Fw2BE4fw-1
-X-Mimecast-MFC-AGG-ID: BFpWQpdsNFCdA-Fw2BE4fw_1790400776
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-320-Hcta0zbcOm-jLNcFpjSWhQ-1; Sat,
+ 26 Sep 2026 01:32:58 -0400
+X-MC-Unique: Hcta0zbcOm-jLNcFpjSWhQ-1
+X-Mimecast-MFC-AGG-ID: Hcta0zbcOm-jLNcFpjSWhQ_1790400777
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D71FD1954B24;
-	Sat, 26 Sep 2026 05:32:55 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 54BCD180062F;
+	Sat, 26 Sep 2026 05:32:57 +0000 (UTC)
 Received: from virtlab1023.virt.eng.rdu2.dc.redhat.com (virtlab1023.virt.eng.rdu2.dc.redhat.com [10.18.48.26])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D332D1956086;
-	Sat, 26 Sep 2026 05:32:54 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BA7C31956086;
+	Sat, 26 Sep 2026 05:32:56 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: Sean Christopherson <seanjc@google.com>,
-	stable@vger.kernel.org,
-	Stefan Teodorescu <fane@google.com>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Jim Mattson <jmattson@google.com>
-Subject: [PATCH 01/11] KVM: SVM: Preserve TLB control (i.e. pending TLB flush) on failed VMRUN
-Date: Sat, 26 Sep 2026 01:32:43 -0400
-Message-ID: <20260926053253.195597-2-pbonzini@redhat.com>
+	Yosry Ahmed <yosry@kernel.org>
+Subject: [PATCH 03/11] KVM: SVM: Don't mark ASID fields as dirty when setting control.tlb_ctl
+Date: Sat, 26 Sep 2026 01:32:45 -0400
+Message-ID: <20260926053253.195597-4-pbonzini@redhat.com>
 In-Reply-To: <20260926053253.195597-1-pbonzini@redhat.com>
 References: <20260926053253.195597-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -68,92 +64,52 @@ X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
 From: Sean Christopherson <seanjc@google.com>
 
-Don't reset the VMCB's TLB control back to "do nothing" on a failed VMRUN,
-as empirical testing shows that the CPU performs the requested TLB flush if
-and only if VMRUN is successful, i.e. clearing TLB control on a failed
-VMRUN effectively drops a TLB flush.
+Don't mark the ASID as dirty in the VMCB when requesting a TLB flush via
+control.tlb_ctl.  Per "15.15.3 VMCB Clean Field" of the July 2026, Revision
+3.45 version of the APM:
 
-Explicitly track the need to flush all ASIDs on a per-CPU basis, as the
-ASID reuse condition is tied to the pCPU, not to the vCPU.  As a bonus,
-this also obviates the need to avoid clobbering FLUSH_ALL_ASID with
-TLB_CONTROL_FLUSH_ASID, e.g. in svm_flush_tlb_asid().
+  The following are explicitly not cached and not represented by Clean bits:
 
-Deliberately don't bother saving/restoring the "old" tlb_ctl on failure,
-in quotes because it's not exactly the old tlb_ctl, it's the tlb_ctl from
-after pre_svm_run(), but before updating tlb_ctl for flush_all_asids.  If
-VMRUN fails and TLB_CONTROL_FLUSH_ALL_ASID is forced, then the next
-successful run of the VMCB *may* unnecessarily flush all ASIDs, which
-strictly speaking could result in noisy neighbor issues.  However, the
-fact that new_asid() is already guest-triggerable, because of KVM's flawed
-behavior of clearing the ASID on emulated INIT, means that a guest can
-already trigger a flush of all ASIDs at roughly the same rate.  And once
-KVM stops clobbering the ASID on emulated INIT, *or* assigns a static ASID
-to each vCPU, this flaw goes away.
+    * TLB_Control
 
-Fixes: 38e5e92fe8c0 ("KVM: SVM: Implement Flush-By-Asid feature")
-Cc: stable@vger.kernel.org
-Reported-by: Stefan Teodorescu <fane@google.com>
+Fixes: 7e8e6eed75e2 ("KVM: SVM: Move asid to vcpu_svm")
 Suggested-by: Yosry Ahmed <yosry@kernel.org>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Jim Mattson <jmattson@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20260904170642.3291466-2-seanjc@google.com>
+Message-ID: <20260904170642.3291466-4-seanjc@google.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/svm/svm.c | 13 ++++++++++---
- arch/x86/kvm/svm/svm.h |  1 +
- 2 files changed, 11 insertions(+), 3 deletions(-)
+ arch/x86/kvm/svm/sev.c | 1 -
+ arch/x86/kvm/svm/svm.c | 4 +---
+ 2 files changed, 1 insertion(+), 4 deletions(-)
 
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 6aa86a78711e..3448d56520c6 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -3620,7 +3620,6 @@ int pre_sev_run(struct vcpu_svm *svm, int cpu)
+ 
+ 	sd->sev_vmcbs[asid] = svm->vmcb;
+ 	svm->vmcb->control.tlb_ctl = TLB_CONTROL_FLUSH_ASID;
+-	vmcb_mark_dirty(svm->vmcb, VMCB_ASID);
+ 	return 0;
+ }
+ 
 diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 7d59d301e1e5..afbaaaab84ed 100644
+index b63e7c69aa1c..830ace75e986 100644
 --- a/arch/x86/kvm/svm/svm.c
 +++ b/arch/x86/kvm/svm/svm.c
-@@ -1902,8 +1902,7 @@ static void new_asid(struct vcpu_svm *svm, struct svm_cpu_data *sd)
- 	if (sd->next_asid > sd->max_asid) {
- 		++sd->asid_generation;
- 		sd->next_asid = sd->min_asid;
--		svm->vmcb->control.tlb_ctl = TLB_CONTROL_FLUSH_ALL_ASID;
--		vmcb_mark_dirty(svm->vmcb, VMCB_ASID);
-+		sd->flush_all_asids = true;
- 	}
- 
- 	svm->current_vmcb->asid_generation = sd->asid_generation;
-@@ -4528,6 +4527,11 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+@@ -4527,10 +4527,8 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
  		svm->vmcb->control.asid = svm->asid;
  		vmcb_mark_dirty(svm->vmcb, VMCB_ASID);
  	}
-+	if (this_cpu_ptr(&svm_data)->flush_all_asids) {
-+		svm->vmcb->control.tlb_ctl = TLB_CONTROL_FLUSH_ALL_ASID;
-+		vmcb_mark_dirty(svm->vmcb, VMCB_ASID);
-+	}
-+
+-	if (this_cpu_ptr(&svm_data)->flush_all_asids) {
++	if (this_cpu_ptr(&svm_data)->flush_all_asids)
+ 		svm->vmcb->control.tlb_ctl = TLB_CONTROL_FLUSH_ALL_ASID;
+-		vmcb_mark_dirty(svm->vmcb, VMCB_ASID);
+-	}
+ 
  	svm->vmcb->save.cr2 = vcpu->arch.cr2;
  
- 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_ERAPS) &&
-@@ -4618,7 +4622,10 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 		vcpu->arch.nested_run_pending = 0;
- 	}
- 
--	svm->vmcb->control.tlb_ctl = TLB_CONTROL_DO_NOTHING;
-+	if (!svm_is_vmrun_failure(svm->vmcb->control.exit_code)) {
-+		this_cpu_ptr(&svm_data)->flush_all_asids = false;
-+		svm->vmcb->control.tlb_ctl = TLB_CONTROL_DO_NOTHING;
-+	}
- 
- 	/*
- 	 * Unconditionally mask off the CLEAR_RAP bit, the AND is just as cheap
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index e958943b8162..84f19026d3e8 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -376,6 +376,7 @@ struct svm_cpu_data {
- 	u32 next_asid;
- 	u32 min_asid;
- 
-+	bool flush_all_asids;
- 	bool bp_spec_reduce_set;
- 
- 	struct vmcb *save_area;
 -- 
 2.52.0
 
