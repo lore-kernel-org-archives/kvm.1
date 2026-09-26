@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B42315D32;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0B33112B2;
 	Sat, 26 Sep 2026 00:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790383852; cv=none; b=LWAjWqkiKSmn4wQeH8pxzSM96Cd9+vqL4qKQSCNmWRKXBLY96ITlfe1AAppiRWOcoc69fpLtg9MLwyJv1OCslPQrZ6F04hjxe66dxhbRlPkiku93z/Vb+PJTOQok4kdQACFhzy3IL8TbmtHUjxc2dzsSSze1l0voq6hk09Ls7ek=
+	t=1790383852; cv=none; b=fgyn6QRH8UKbF4p93Lz+pzf/XvN/CE7gy6v+TfBKTaye9PgMkwmupjUZujJoalJ81k4JEjbqFfhvZR/V4RRgorWwdui7CdsBQexeFPZ/eDQIKMBEUAbDUJ2+ckhPn8MyQbc8ZDBJ0H5K7bqGzMTnWvTcJjUNqF/h3pedBRRNUBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790383852; c=relaxed/simple;
-	bh=bPm6ZaQk+kt/I6sAAcBSCrNyHmK+Z/anevzTBBSqifg=;
+	bh=liqnGaVxdQZUr+SxRatM6jYTFXLCR3vxDWNamKgblq8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DQsSzFmoTrH2khSiFsL2zOvBSo4I4AmNoo/oJPc4SeoZt9S3QxZx4w+XJM6CcxMbeiPex18T911CxHmWBMHNRiXEmMktOQSE6wDIYfgk1Uo5+wd7Z5eHC5vfXo/KW5vSAcXKyDfTPfgHqHawpPMw4mgl81h7jpQpQyfBlmB+RzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ozaTqiC4; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=jzJVbdqvZ5O7SXInac9cBLEUb2n6Gl6oDATS2cpG8OI7fZcWGBAn05Q4EeDLJn7/mx+8NWiRflGRRM6HhLEnOfRvtU7jHuMVuDvWx2hma71PPuLwbeYrsIZIflzhC4kYOemthKtrZxt+rfLzptXf7ruEI+m/pQmqhIwVjemZXA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZW4YcAr8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ozaTqiC4"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id EC293C2BCF6;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZW4YcAr8"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D9A6CC2BCFD;
 	Sat, 26 Sep 2026 00:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1790383852;
-	bh=bPm6ZaQk+kt/I6sAAcBSCrNyHmK+Z/anevzTBBSqifg=;
+	s=k20201202; t=1790383851;
+	bh=liqnGaVxdQZUr+SxRatM6jYTFXLCR3vxDWNamKgblq8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ozaTqiC4V04B2iYpKwpfal2K3UJdgWQA4ZqQ1uG4CfkeORwBYm5Q8pVkBoFeEjCYa
-	 31bhdvH9XymD1cJ3q2E9bjEL8HPa5miX+cBv7814Klm6idQrgjfv2h213ZL0BTCjOX
-	 4WkisO1VmqA8dnmCGJR8oMYvp/IC/77hzAt4FtCxXinokR/ngltV1sofyEUNDOWHjq
-	 OdnkE72IJZ4+QPUDe01xTDvaZNqURoBQ1GOldHbEMCsaCcqsUVQjgUJGYDn20M2VtH
-	 TaQJ+pBt9WP0Ifx2KG7c7PP/VcOQ8ije+Pr/YWp9siTGQNXjT8ybqAxEfR3pp7T+xU
-	 ghTpLKWMkQ5Rw==
+	b=ZW4YcAr8zEw6RprjXZNXegMg6fPKlJpw8XAr2KcCvJKDVNDelpLV72b9a6ZP1+P3e
+	 2RDkg56kZ0PXG4m7HEWSbD0+vSMrd6Z3ddVRykS3xlJqGb+ZFzaPtfV77bqY8mGtZS
+	 zp5PJkIL0EZUucw/9u7eFdonuism8eoWK33TgVlR6NOnYGZ37ezHaMUXtyfrbpEI1N
+	 2fYv0i1TFE3f1Yqh6hNTD4KvZKhGv578rTeVbpAqrNEFZM7Z5ApZqBM1no28cL7nny
+	 OJ8uD2fORW7YLwDKJGGR3KzHaASjN9egcObI3/t5SQ2c2+Zm4Z0jN49fohRtSZrgWY
+	 TzqnL9eysI6HA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D8B35C9832F;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C76B0C9832A;
 	Sat, 26 Sep 2026 00:50:51 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 25 Sep 2026 17:50:57 -0700
-Subject: [PATCH RFC 10/17] KVM: selftests: Test rejection of hugepage tmpfs
+Date: Fri, 25 Sep 2026 17:50:56 -0700
+Subject: [PATCH RFC 09/17] KVM: selftests: Test rejection of swap tmpfs
  mounts
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260925-gmem-tmpfs-backend-v1-10-d36159822d18@google.com>
+Message-Id: <20260925-gmem-tmpfs-backend-v1-9-d36159822d18@google.com>
 References: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
 In-Reply-To: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
 To: Hugh Dickins <hughd@google.com>, 
@@ -64,11 +64,11 @@ Cc: kernel-team@android.com, kernel-team@meta.com,
  linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790383850; l=1598;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790383850; l=2877;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=uHRD08KWJ33IfEmWlgc0kkQt05Gpcc9eJdkNLri4xT0=;
- b=KVKUJLxxCYvtA5PDFe3Kp6RxITzYbR1FXKIlwN3Ce6FqDa1idF+AAVjWn1CGwjlIZcUQZUsTe
- xcWXqn7k6exC4aW6OmpLcFJPBcw5uw8u3PZ1DNLU6V+yKSf5vxzxbsK
+ bh=5xkNo+br1h4L99FBlpcbpIchm5gYtDbafhYivlve/RE=;
+ b=Yf0MTimFpeP1F0O9CabGUA5VbTmVvRQvNwWt9G2lt6epCRofDg+tFnu1TRfsb8Q00G+NQPfQ2
+ LYbxro03D5JCDwPzJ9nW2zl6/2PFMe9fGlCcRtB9BWU+1IAXEAkqVxq
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -79,32 +79,73 @@ Reply-To: ackerleytng@google.com
 From: Ackerley Tng <ackerleytng@google.com>
 
 Ensure that guest_memfd creation fails with -EINVAL when passed a tmpfs
-resource pool mount descriptor that has huge pages enabled, as required
-by the tmpfs guest_memfd provider implementation.
+resource pool mount descriptor that has swap enabled, as required by
+the tmpfs guest_memfd provider implementation.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/guest_memfd_test.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ tools/testing/selftests/kvm/guest_memfd_test.c | 50 ++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
 diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index 5d017164d7b45..e8199ed17b0f8 100644
+index a7a1b5470cb2c..5d017164d7b45 100644
 --- a/tools/testing/selftests/kvm/guest_memfd_test.c
 +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -526,6 +526,21 @@ static void test_resource_fd_tmpfs_swap(struct kvm_vm *vm)
- 	close(pool_fd);
+@@ -13,6 +13,7 @@
+ 
+ #include <linux/bitmap.h>
+ #include <linux/falloc.h>
++#include <linux/mount.h>
+ #include <linux/sizes.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+@@ -477,6 +478,54 @@ static void test_resource_fd_tmpfs_file(struct kvm_vm *vm)
+ 	close(file_fd);
  }
  
-+static void test_resource_fd_tmpfs_huge(struct kvm_vm *vm)
++static int create_tmpfs_pool_fd(const char *huge, bool noswap, size_t size)
++{
++	char size_str[32];
++	int fs_fd, mnt_fd;
++
++	TEST_ASSERT(size && IS_ALIGNED(size, page_size),
++		    "Pool size '0x%zx' must be positive and page-aligned", size);
++
++	fs_fd = syscall(__NR_fsopen, "tmpfs", FSOPEN_CLOEXEC);
++	TEST_ASSERT(fs_fd >= 0, "fsopen failed");
++
++	if (noswap)
++		TEST_ASSERT(!syscall(__NR_fsconfig, fs_fd, FSCONFIG_SET_FLAG,
++				     "noswap", NULL, 0), "fsconfig noswap failed");
++
++	if (huge)
++		TEST_ASSERT(!syscall(__NR_fsconfig, fs_fd, FSCONFIG_SET_STRING,
++				     "huge", huge, 0), "fsconfig huge failed");
++
++	snprintf(size_str, sizeof(size_str), "%zu", size);
++	TEST_ASSERT(!syscall(__NR_fsconfig, fs_fd, FSCONFIG_SET_STRING,
++			     "size", size_str, 0), "fsconfig size failed");
++
++	TEST_ASSERT(!syscall(__NR_fsconfig, fs_fd, FSCONFIG_CMD_CREATE,
++			     NULL, NULL, 0), "fsconfig create failed");
++
++	mnt_fd = syscall(__NR_fsmount, fs_fd, FSMOUNT_CLOEXEC, 0);
++	TEST_ASSERT(mnt_fd > 0, "fsmount failed");
++
++	close(fs_fd);
++	return mnt_fd;
++}
++
++static void test_resource_fd_tmpfs_swap(struct kvm_vm *vm)
 +{
 +	int pool_fd, fd;
 +
-+	pool_fd = create_tmpfs_pool_fd("always", true, page_size);
++	pool_fd = create_tmpfs_pool_fd("never", false, page_size);
 +
 +	fd = __vm_create_guest_memfd_resource(vm, page_size,
 +					      GUEST_MEMFD_FLAG_USE_RESOURCE,
 +					      pool_fd);
-+	TEST_ASSERT(fd < 0, "guest_memfd with huge-enabled tmpfs should fail");
++	TEST_ASSERT(fd < 0, "guest_memfd with swap-enabled tmpfs should fail");
 +	TEST_ASSERT_EQ(errno, EINVAL);
 +
 +	close(pool_fd);
@@ -113,11 +154,11 @@ index 5d017164d7b45..e8199ed17b0f8 100644
  #define ____gmem_test(__test, __vm, __flags, __gmem_size, args...)	\
  do {									\
  	int fd = vm_create_guest_memfd(__vm, __gmem_size, __flags);	\
-@@ -588,6 +603,7 @@ static void test_guest_memfd(unsigned long vm_type)
+@@ -538,6 +587,7 @@ static void test_guest_memfd(unsigned long vm_type)
+ 	test_resource_fd_invalid(vm);
  	test_resource_fd_unsupported_fs(vm);
  	test_resource_fd_tmpfs_file(vm);
- 	test_resource_fd_tmpfs_swap(vm);
-+	test_resource_fd_tmpfs_huge(vm);
++	test_resource_fd_tmpfs_swap(vm);
  
  	__test_guest_memfd(vm, 0);
  
