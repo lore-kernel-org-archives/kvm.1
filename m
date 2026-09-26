@@ -1,74 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56210272E56;
-	Sat, 26 Sep 2026 16:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3A1369D47;
+	Sat, 26 Sep 2026 16:27:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790439363; cv=none; b=jc8/rP3f3tV7gqI60JQV+caQxYdSR4k2QZui+7jswvR5jbkxxH22Sgq+WMI02xHfGOhi6OiVgr4UVvulAsvWpq/+7KdcMqJTRMgAdKMjcgACJeGaL4eTe0xCx1wj+WSAtXJObDEox9ENTNxcndXz2A1dMcB4PG4GI/6ioIQ5jWE=
+	t=1790440031; cv=none; b=K1ROIRqkuJceVI15UvBB7kT5A1dcJ7vJOQkmvzVKCQspljlwPI/vvopTIQZoi8rXUNqLVlIc8U14yKi/qJ3dm8KpdZ9NSZ4MM40i5MHJMw0mvX9gpBaCZ30tsKGXpmlOJnnVLJt0d/hTzFXlqdloz6wtkjnG1+6DD2aPBI2FygY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790439363; c=relaxed/simple;
-	bh=koJdcjq/zxVsqRg8BoZjo0AeCO/+whsDFtkvTmURmqY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=O1kbqhMg5+qmwnsLN7LCl4e0kRoa2IGeuN+PvRx4MaWYf56DoTXUfKSEQ67816yImpXswa2MK1m4+Iezab091qzrdnw9mHvnGLD82sXI21skfAsJuu8sNT0AoTV8dNNieKM2SHtMw9fxjAsPNw1OzYlTtxfKLZNZVgyztC3kxqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZXbJXf3C; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790440031; c=relaxed/simple;
+	bh=+dALVJc9JSH+owpBS/unmTGDmxCqOpoeRSnzD/YF4rs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=JKcjHzIfg1Zvjq85n0pDCqHexuEXf+NL83Jyh61ukd7RnUMFhsZ860Qw5Jyhif3zLZMGNKpd434FynFfgueAK8hD0b5mq3IQqVZUAI2mddnSqRs2F4lJrGDEHbCcBSr/ogsZfXD4XhzLWXv1aR2Wdvl3N6PuvcS409AkNBFSehE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=VT39lYNm; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZXbJXf3C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A301F000FF;
-	Sat, 26 Sep 2026 16:16:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790439361;
-	bh=pURLcO7UGj5kYuwalRzZ8iE9wpSw4sCWI7WDvd9AV/k=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZXbJXf3CxF7DiSLnh/Yca7TTaSAeVJ/FzcctjD9Bm9NJKjGQziPJBRRyqhrrhowml
-	 VPAD6zUHzAlXpOnFIsndc8wDsU7jUm3V082bu9EcE0bSDMnUHEop4ZDBIjvr0T5mDT
-	 jRUpCODUawGKF1bjYT0pHD8zc01OZc7i5Vjk2tT793o0JirPZMu40M0cPFLCA7fpaX
-	 VpjH+LbgojkPx022mAKvZb02CqjBBz2r67fttvajz4YL+6Vwvr2WELC12IcVIe4/lk
-	 7Bc2b063cNbEUO/Fqgg1jnYIuBBlrfMVS0IUuxBiMylQxBdRT5zPtPNRi9b0V8/gyY
-	 aNsorYQAnoLXA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] vringh: reject empty / undersized indirect
- descriptor tables
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Fang Xieyan" <fangxy@xiaopeng.com>
-Cc: virtualization@lists.linux.dev, kvm@vger.kernel.org, "Eugenio Perez" <eperezma@redhat.com>, "Michael
- S. Tsirkin" <mst@redhat.com>
-In-Reply-To: <20260926160755.21485-1-fangxy@xiaopeng.com>
-References: <20260924030627.13287-1-fangxy@xiaopeng.com>
- <20260926160755.21485-1-fangxy@xiaopeng.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 26 Sep 2026 16:16:01 +0000
-Message-Id: <20260926161601.A4A301F000FF@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="VT39lYNm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=OC
+	/0wtYpR6XqN/W3IRAPjvRMqoNyj5HdME8Oy/DlXho=; b=VT39lYNm8t5ZDopjtj
+	PgAmf+P3Augzze5dBMl8CK7Kf4gTaDwXHesEWNN18URq/EtKnHH5h4PplcvqcDf3
+	hExz4uTSI4C9sKQWrpmSqB9dEC+Va1MFKITKkQFphyWnEVvuOUFiOHrbd+UMdXfY
+	QG7KzWadBfhhOzBWFgv/Bt/Aw=
+Received: from pc.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wD3v6EU8rdq1Ce5Aw--.54526S3;
+	Sun, 27 Sep 2026 00:26:13 +0800 (CST)
+From: Jiale Yao <yaojiale02@163.com>
+To: Alex Williamson <alex@shazbot.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Matt Evans <mattev@meta.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Jiale Yao <yaojiale02@163.com>
+Subject: [PATCH 1/3] vfio/pci: Drain eventfd RCU callbacks on module exit
+Date: Sun, 27 Sep 2026 00:25:50 +0800
+Message-Id: <20260926162554.163197-2-yaojiale02@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260926162554.163197-1-yaojiale02@163.com>
+References: <20260926162554.163197-1-yaojiale02@163.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3v6EU8rdq1Ce5Aw--.54526S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7JrW3Kw1fAFWkuF13Gw48WFg_yoWkWFb_C3
+	yrZ3yxX3y7Cw4fKw12vF43u3sIya4agFsYyF18tF9xtry7tFn8WrsrGFnrXFy8Kr47Arnr
+	J3yDXw1Yvw15CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRuWlvUUUUUU==
+X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbC7wVOiGq38iVDgQAA3k
 
-> move_to_indirect() validates an indirect descriptor table only with
-> "len % sizeof(struct vring_desc)".  A descriptor flagged
-> VRING_DESC_F_INDIRECT with len =3D=3D 0 passes that test, so *desc_max is
-> set to 0 while *descs points at the empty table.  __vringh_iov() then
-> copies one struct vring_desc from descs[0] -- 16 bytes past the end of
-> the table -- before the "indirect_count > desc_max" loop detection
-> aborts the walk.  The over-read value is discarded when the walk aborts
-> and is never used to map anything, but the access itself is out of
-> bounds.
->=20
-> Reject any len smaller than one descriptor, alongside the existing
-> stride check, so an empty table is refused with -EINVAL and no
-> descriptor is ever fetched from it.
->=20
-> Fixes: f87d0fbb5798 ("vringh: host-side implementation of virtio rings.")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Hawkeye:GLM-5.3-flash
-> Assisted-by: Qoder:Qwen3.8-Max
-> Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
+vfio_pci_eventfd_replace_locked() defers freeing replaced eventfds to
+vfio_pci_eventfd_rcu_free(). A callback can remain queued after
+close_device() returns and the device driver module reference is dropped.
+Once the dependent driver is removed, vfio-pci-core can be unloaded while
+the callback still points into its module text.
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Wait for outstanding RCU callbacks before vfio-pci-core exits.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260926160755.2148=
-5-1-fangxy@xiaopeng.com?part=3D1
+Fixes: 98693e0897f7 ("vfio/pci: Use RCU for error/request triggers to avoid circular locking")
+Signed-off-by: Jiale Yao <yaojiale02@163.com>
+---
+ drivers/vfio/pci/vfio_pci_core.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index 6757054e9d87..9bce419c52c8 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -2675,6 +2675,7 @@ static void vfio_pci_dev_set_try_reset(struct vfio_device_set *dev_set)
+ static void vfio_pci_core_cleanup(void)
+ {
+ 	vfio_pci_uninit_perm_bits();
++	rcu_barrier();
+ }
+ 
+ static int __init vfio_pci_core_init(void)
+-- 
+2.34.1
 
