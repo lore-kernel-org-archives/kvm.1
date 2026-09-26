@@ -1,64 +1,64 @@
-Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
+Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197B03403E3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DB2345731
 	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 07:02:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790406138; cv=none; b=sMR+cmcRgQTvahXEDbxd8vVLSqapCD7GP9W8+KgxmlQ9eRGIp9PGQfBruWOq/FiY43gY3yD/cIEnrc3HobN9cHOJjBbnSCmC/1Vfn8s0/xtg5aBVDKR4SN8EHgRlhKYcpWndo+uQt2f80P9veURAqr57M8GRj9cwISKqhxOjwt4=
+	t=1790406138; cv=none; b=qy1I9LttYQLJgHW7f3gaz5ksZ3I+4yK3oNGxVanRKnIA+kuei7mtwjE09/983bph+ea3QUkLqU+nS4VfJOKpOc54ACWP3SZ2wKQGMLYL1vRZpWvSg4M/9VkanuJFWcr9iHpqqDiy0dTTaaswllw9pSTLscuZpopshaRZyIwRVMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790406138; c=relaxed/simple;
-	bh=fFbYGmG8GkruSnnN1GGqot/Q9RX7vwFd3h3ZCFJbs78=;
+	bh=uBzZE9qHqZzMWfKyAjzyaNmqUQ1Q72EzErxiiLg8dM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L7eHUiFc8fGOdOKdTANSg4hOJHxeUluMWY2JlQckzer2Yq5D8iV6dcYpUlOCEk+r1Q57o+3qAmNP1iViqD5QHHiKUS/wzzBpjgB+C/4KXX2BqDrU+RF9x9ZCLMvSpijwUNerzq2HPZyD9Q0P3lzKez2s1coyR6/N9Y2ah59A754=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f/W5XJ6L; arc=none smtp.client-ip=74.125.229.42
+	 MIME-Version; b=oDCJNDXdaq4pm2PODJsRw4o/RAvhYF3WOtG8j9PSITx3j9MLnJfaS/I3Z5bs6arKcnxzZDSzjUZPALinLcNM8qmX9UDY/fogaVFojG4JggfTwS7P20wB7vPOTg5ympCX7YpE2shiWtxh9QbnpRzo6plWkC/dHWqe+B/pdloqjU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bO2rI5CE; arc=none smtp.client-ip=74.125.229.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f/W5XJ6L"
-Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-34182b58c7eso1211312eec.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bO2rI5CE"
+Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-328664b7528so1430334eec.2
         for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 00:02:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790406136; x=1791010936; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790406137; x=1791010937; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=0gM6IoquW3yjdS4WUjO1V8C4p7BWFFY+pJ3+gr7qZBo=;
-        b=f/W5XJ6LmdiZ+0x/VA5xxhAC13yQFbg7DNNweQcIo5iL3Z9nmF4D1K9Zetq1c53JON
-         g1DvUhNGRpKE6ha4tZHtAbGUlVHQzVuOypFsM3lBMwE1CQkNT6f+2o9qefqsB5orU6Eo
-         h6d1KGEveCMNgEp4pGYLuXneO5iAX0gslDVcJaE3mpjXOOzvgq4ZdyCu7FL9x7dO5yfp
-         DOKedrIuNezq6k+xybEv9CJdxTdfJ4xlNpx4K/oQIX/nwLA3HfLBQQa4YPfyYve5SXsA
-         UfCBlQl4TWyYF09mXV77BftkNJJEyN9NRhyUZ1qEjn/o7iObUTfa3gh5I0k7FVMIhQg3
-         vI3A==
+        bh=z8w8edACRSxH2Wzeeah29WdtkMXhnRnHLSCk5jpXu3o=;
+        b=bO2rI5CEoAE0qH5cY0mciFJFfopV7JDonLG5drTEIWCdFiRC9ThbVvUtCJmN6romas
+         Z6N0ecvMEM7RK9cyKtvO9PWXJLAfpk6qYgHWdcWXfDLvZV1uCVwK78LMwLLGpXPhpZOD
+         oeQEGS9C3OmEISnf0k6sznog9JPv4TJh36vWPT+LyuxZlvgag80EF41f/88E0lK3C+T0
+         jo5Bdn9K1tq8gTnE6Fn7lAfs/fkcKsI+Sor4+uRv3GrAbFyIYsZD6BDwObkYmJSKXJWT
+         KLjNw7Zvsm2DUeN0gWTk2DnY7YAg61NTNRipwkV9GlxNUhh3nUXP0NqRKZ0YwM8PBZgd
+         w98g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790406136; x=1791010936;
+        d=1e100.net; s=20260707; t=1790406137; x=1791010937;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0gM6IoquW3yjdS4WUjO1V8C4p7BWFFY+pJ3+gr7qZBo=;
-        b=s0yrGqMgOZzcEY9ydEuZdUjVA0IlQIrpDoFUyW1Nm/Yzwod8aC/nxBVOqmwjI514iV
-         FuuZvTfJNxvmEJVPIbWFSnsUk3Jx3MX3fOWVX7xAKY48sBpZzuvkNDsqgbo1iNtbOYfg
-         0kwMFidlZFK04Od8JlmiEBVUaoUC0rrRXVJ8QxK+rjiS4N8acqB1pluAAsSuuF3V6QEt
-         R0oJO9iRB1dSvDzOcJd2Wq7czJ8pnInP1Mzpi1La37tqRsVCdRxnl0PFGcw/LHS8b9gP
-         ALpBIds3M3LTDXj0qFgtxKQPuMjXQXiCupBgenWYPk6XqMEm7c5cUQ1vYg/FPBvIPlML
-         S3vA==
-X-Forwarded-Encrypted: i=1; AKwUvBxm6ttW/8eE1kRiqNo0feYUwMfKxBtUkvTUQ2+gc4RYnARiCRi+c0U1DPxjwFjbu5vcT2A=@vger.kernel.org
-X-Gm-Message-State: AFuF++luc2p0uxBJw2GL1esGCCG2QL4/fTXl6qHfBchQTzjLqKF+BfiF
-	7v8+iAdZWRSH3S8fvYzkCWqAT8sVNmQZLxWcmrAIl6MyU4X0ZolUVPhI
-X-Gm-Gg: AYBFou1xgqqtg/pLLI5eCYvC1UWFHrqENzmFJJVV5AyAQVyFJ8YZg+V9IIqUNInnj/l
-	ZWQKqVN+tRB+LpONyNBZw0ExnbGevA7yawhudiHv0l11ttGTsjhPaFVJXl9phYuMVMfkYCd62tx
-	vImmSZ0t3XyDBDd3hkDbDRyiKYBtC2bRJLleA2YE0q98isgOuAnWwKxXWgh2gTCCAZpCiMcH6CL
-	fwXPxjLJzwBYlRE267OFLYcwRI4sSFnkkJPcJLrXEvS8ce2ysSex/vB9/bQbc2e0/H9u6CxWTTu
-	SUSJEENf70wXNf4nZaPr5syRXs3oey2gow8IE6N1s4fPt+g5A6r7LbGb3CZ33uy8YK8SE79anfA
-	b5CkIk2pLgjeWbU+yYcg0+N1gHEdaAdyfR5FERutISKYu+oSkjk5U5ZtJqjEJJFTd6+zZqxQdb+
-	rT6uOvUHDMLUdnT4zjw4jSn7rb3tO/DcobyZF7wSjo6di1w1Q3KkOPozA9bVF3GvkwU6M7+EYnn
-	i3kibxPLzHH/oxiU/5nlPGJopkQy+4=
-X-Received: by 2002:a05:7301:a2d:b0:33c:e82:70c7 with SMTP id 5a478bee46e88-34272b598d8mr2099056eec.30.1790406135670;
-        Sat, 26 Sep 2026 00:02:15 -0700 (PDT)
+        bh=z8w8edACRSxH2Wzeeah29WdtkMXhnRnHLSCk5jpXu3o=;
+        b=O8oLMV6KIMLIwfnIQdCMlzj0RVASH6TesNYe+aoASqZqufw2JVgK9EWAIIHMB4cfFz
+         RZC0thDqZl2B1uViIuiAolsor+8ZJdXsfK81YG+CTX8qOm9PCBjBgS4iR7JWBiksZ35p
+         7dAl/xOn0OYL2BqrtjKD5nVR+sWpGUC+cX/nLFICCCsPQHNFQOgpjbPKmV5VATVeBNXO
+         VuPwTa3u90llBCExC0uB7QE99VpQLDo9XjCS4KlqMWvDr/YOx2w7HPmCvh0Suc1Mx0Pt
+         Mh9XBsUkycKAf3QKNMsvW/7zt2juJZHH5+ym47qJ2cDgaCln6bufjwW6Oyab8M28AQ2n
+         QtEQ==
+X-Forwarded-Encrypted: i=1; AKwUvByyHMAJikP4/Uz8d9p1X5KSxIR3DHkh3Mm7xZWRVART8VSLQdepaScOn19nDVmiG9dBWGM=@vger.kernel.org
+X-Gm-Message-State: AFuF++mXW2KJbW3xUWt7pCICvXSwhOHmIRR49qLcLxEuUnM8mUOIhZHB
+	Q0FqCfegQKur5CWMsl0EervIxqE2/FGJYluditZaY+ukqMdwrKGDTnyq
+X-Gm-Gg: AYBFou191fo7W4hX663qEH8dX3UByBMBMcDlXDHovMg/J2tWu8nMNE4Co4O0IJXPhve
+	a+8m/aRVKFQkqljdv6BsYJRThBYibzuXYfuXSxxGQhuvO/DB2TjfOHYIiwK/pjIgumnuaJA80B4
+	BMlGHwMlXtlxFPgnNKS+4pfaC217PNncWWRyfxP+uMxUrCOyFNFGsZtEkIoT2b1DiU5Zdf3+VfR
+	22SmP5zCtV9wm9sew1+UdLgJ3cm+DU0Ze6aLGktZNp1WvC40X7SKhHyZ0vSf3b5vbK44W/16YRT
+	+BNjaq2r1Fyclo5l2moCsTU1kVRtnamHta69FPSZ115bvqR/oQL9YfaWQ/wT/H3G7i/nIRUNFmJ
+	1+bLfZc5oXCp2eRScpElCWzeGMg4Z22H4BL4/tqWGBBrB5CtW+TyCkM+VGEZzdCsmd/GF2sNrd4
+	bF3Eu3f0MRuotYVW0kTj5ShWAxMFbJP+s48xZNf6oDyB3bIr841Sdksykm2nX9ebAOoMNqSelI/
+	MKmPJJQu7iegJaYDiwBQBWBICnXT1I=
+X-Received: by 2002:a05:7301:4887:b0:33b:c2bc:d288 with SMTP id 5a478bee46e88-34272e5e6a3mr2167820eec.35.1790406131848;
+        Sat, 26 Sep 2026 00:02:11 -0700 (PDT)
 Received: from WIN-BH9M8FJACR9 ([103.94.185.75])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-34145c166cfsm10615141eec.28.2026.09.26.00.02.12
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-34145c166cfsm10615141eec.28.2026.09.26.00.02.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 00:02:14 -0700 (PDT)
+        Sat, 26 Sep 2026 00:02:11 -0700 (PDT)
 From: Yonggang Luo <luoyonggang@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -74,9 +74,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
 	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [PATCH v4 18/55] target/arm: use vaddr for the A64 insn_start pc
-Date: Sat, 26 Sep 2026 15:00:17 +0800
-Message-ID: <20260926070057.1234-19-luoyonggang@gmail.com>
+Subject: [PATCH v4 17/55] target/arm: replace target_long in A64 translate
+Date: Sat, 26 Sep 2026 15:00:16 +0800
+Message-ID: <20260926070057.1234-18-luoyonggang@gmail.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260926070057.1234-1-luoyonggang@gmail.com>
 References: <20260926070057.1234-1-luoyonggang@gmail.com>
@@ -88,27 +88,37 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-aarch64_tr_insn_start records the guest pc as vaddr. Common compiles
-have no per-target target_ulong for that value.
+- Change gen_pc_plus_diff and gen_a64_update_pc to take int64_t.
+  Family-common has no signed target_long under -DCPU_DEFS_H.
+- Match translate.h and the A32 gen_pc_plus_diff signature.
 
 Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
 ---
- target/arm/tcg/translate-a64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/arm/tcg/translate-a64.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index a9b29583f43..50c2b491ce2 100644
+index c60f4c4103d..a9b29583f43 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -11115,7 +11115,7 @@ static void aarch64_tr_tb_start(DisasContextBase *db, CPUState *cpu)
- static void aarch64_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    target_ulong pc_arg = dc->base.pc_next;
-+    vaddr pc_arg = dc->base.pc_next;
+@@ -184,7 +184,7 @@ static void reset_btype(DisasContext *s)
+     }
+ }
  
-     if (tb_cflags(dcbase->tb) & CF_PCREL) {
-         pc_arg &= ~TARGET_PAGE_MASK;
+-static void gen_pc_plus_diff(DisasContext *s, TCGv_i64 dest, target_long diff)
++static void gen_pc_plus_diff(DisasContext *s, TCGv_i64 dest, int64_t diff)
+ {
+     assert(s->pc_save != -1);
+     if (tb_cflags(s->base.tb) & CF_PCREL) {
+@@ -194,7 +194,7 @@ static void gen_pc_plus_diff(DisasContext *s, TCGv_i64 dest, target_long diff)
+     }
+ }
+ 
+-void gen_a64_update_pc(DisasContext *s, target_long diff)
++void gen_a64_update_pc(DisasContext *s, int64_t diff)
+ {
+     gen_pc_plus_diff(s, cpu_pc, diff);
+     s->pc_save = s->pc_curr + diff;
 -- 
 2.52.0.windows.1
 
