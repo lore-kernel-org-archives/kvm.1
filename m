@@ -1,64 +1,64 @@
-Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
+Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4F214ABE
-	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 07:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ED113A168E
+	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 07:02:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790406168; cv=none; b=EhHPXCBmfhKTb37ff5vkbk8Qsq5QjZ/vTk0wJM3kIsrvK+qECCGOzzaw7nkPfLKy97yxq+PqkdsbM9tsgQOmKivBbIesElzSLf34dfRWPV4cwCvsXb23aZilGQUPjxwgG+a+yfwQf7TU7uVid5U2NMt9sopIGz0IVbDlZCeGg1Q=
+	t=1790406170; cv=none; b=H6OBy/MvRHTaw/alTMBQedRySvALq3CpajMrVdt3xTD3srlWtz5istVuFSZzsflQgMJaYrnBXN7OZJJ1yoeFPXEwT3vbRvDnggHJxbmUegH6SefTdLi7Lihb9Ya0FJsmywsHapA51IKBDeKdeca5xYYstPDJbwyasFFjADcsU9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790406168; c=relaxed/simple;
-	bh=+GMw0VnuMctqHfurPl9pKH38cBmASQpT6H2E7jbKpA0=;
+	s=arc-20240116; t=1790406170; c=relaxed/simple;
+	bh=MR+NAF54LL/HgF+jfuf2LKJGvEOyyJwNncYOaNLfP8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kiqeeLXYXqcYUnDHRVJwcWJX/eWlTHWUqeWLFF38a/ACj0SWvJSNKeYP2AdIGS7dI6KpPTjz/pJ8U6Qe4D3uDhl5qbtB8Lj7ibO5uBAfeUCKenjFkLLGVRxAtUmbXUq2cXS1XvkI6i0CVz975tR9OofyXOatKiqHgrI1eBMrjJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ilZ7C+fa; arc=none smtp.client-ip=74.125.229.43
+	 MIME-Version; b=W7vYqXJjgMk9vIm7eUVv09orr0WhDBNUSuMqVv6RHmD1YwkyF0eD9BT8UffCQ9zDNjsXGPm+7FB3IcAq7RTWpKIzKS1dGkcMpIt4Jyvq2kVyC8rZcSyYT+EU8L0eI/KEQrQQd5c1ubvCPLqg+S906p+muUDAd84qHypfwWO3lnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aDUxdmqh; arc=none smtp.client-ip=74.125.229.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ilZ7C+fa"
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33bfb26865fso1387864eec.2
-        for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 00:02:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aDUxdmqh"
+Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-3437a48f386so62166eec.3
+        for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 00:02:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790406164; x=1791010964; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790406168; x=1791010968; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=+/cSI9KSeYzGrYLevJhsdqe9Hab1ATMpzGrHMp6RW0U=;
-        b=ilZ7C+fatFQ1OttakiaasqU7XlUsTOMjVkcGxs8SYtmoyI6ZnmQlUwP7gop7paiDl0
-         Do90Fx6Oq1+dh5l4pH7iq1aSifLm+35BCNAT+WX8z8A8rlhqGGwIlt+RlJlglbgQwUYN
-         20ntBXgQA+uqfHyVlq6kP5ONT6CTcun2r+mdsVjhGw4vHqQ4D0m3eBXSA9CVxMF3Nymj
-         xkimonFhdw9Wt4r7E7WZAhgcq9VeUMYLYcRaDPyfgeTrB4i0hDbj7d0YDkASHQeTGjYX
-         h/SBJVK0779KNIFx9XLbDjpUMeRyKWGmNP3K4T3Wu3AnviVtdPgh8jVV9c22U73U7QfD
-         Mfig==
+        bh=13Vpk3slAVMN43yepfwDbpWXacf+qhSBumghvgGIwSM=;
+        b=aDUxdmqhKFyucr+xfxJbmUBAAVTbCDCGy64vC1HB7RhKxeiVy9xECLjEbcaGXIIkJN
+         3Njn9Ss1v8l3TxWSaw0KhDhaTuzRMMcN/Wpj57coMk8p0rYVTSylyLwtrr5T6nNizIq8
+         yOeIOxauKG0lriweC+RTck7XhauZUx5/dKJIwn13v9ih/cDv6/bhtg/gD+d7vJiChRoA
+         TeVUiXarV/mXs7BzH7riREsCKlgOBgYytN1wOAnk3G+Mf2gjzUo+Pw2KbZYlGCCSvTsC
+         gB073H4hS0cThnr+V65XAnkng4IvjSckfOVuCx0gT6b/P7JSK9aVph7ZBihe17JmuXtn
+         dcdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790406164; x=1791010964;
+        d=1e100.net; s=20260707; t=1790406168; x=1791010968;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+/cSI9KSeYzGrYLevJhsdqe9Hab1ATMpzGrHMp6RW0U=;
-        b=QixVE9dJeUhan6fcRFsaZI1sFGrOpzuHKXxkqJ1sgcy6r2VUWPp0w1I+VzVDbjCvv2
-         TVNncC9Syv96U32e9KNFc1spxwELr71gvowtUzBJ/akDdu9QKVM2VCNdfTb3mp01Vwtd
-         cmTr1eFOPdZvu/jWc0/IkNOHBIAE6WTTiDqLR1ne04y4UqW9D3ec4AwRkIs/HEvwvO+6
-         CfXV7eKX2g8sCG3ykMQEclNAoup1R6KDs7zBlrHp5VM4whzH/5eiO3Dzgd6JHZ09i7Iw
-         AlBkmeh7e0kj8P7xNpcYHsBeQ/ia+3KxS17l//HslcoCuXArluBnO7C/glSuU66RGJzn
-         6fNA==
-X-Forwarded-Encrypted: i=1; AKwUvBzoJNXXgBkWtFZV40OchpcDzeBwcWrhpLj9YVJ7sQs2tgLUOI1mNEhBzxTrF1F+b3LHM5o=@vger.kernel.org
-X-Gm-Message-State: AFuF++nQis6XjBOK3bJLGfJXNRGSPTu6C8fiIpELMXVRvCYD3S3zY2NV
-	QpG77LuKRw5tT3F3BZiimFaAYAg4HCuvGAqC4jcpIsUIqc6ThofEZqdo
-X-Gm-Gg: AYBFou0pY8lfrXb/jwTW0aLdrn73J34ccCShGPByFofujsCq4ZWDZehBJkGHkV4l9l9
-	Aglzc7uzmibiqOcEMsgD/SxrjI71/B8rTHE2NkdywJ1AuM19w9RymhkFYndbJ37JjOiL7U/aAzw
-	JxH8hH6iS2IYF3MnOxu1b34xlFFytUsB3gJ3d7tfsrt7g02ZTjuDKsP2UFA9EeXJk7OO1VZ1yhp
-	2h+KjnguZUS3hsdQrccC4w6Jm1csHLF7kCX6AjCpXEdlkJi947sIMhKsz5lXZedlMAZesNag3SS
-	C/xLIGl95OTd4Wn5EKruVxk6k6baF1HgQZkHzy+ETnhGupk3tj5yCuyBUThqrwT6mX1jOmKiSeD
-	qax/voCgAhvbsQt6tQGtdXFopvdrgZFWstlICvbdjhOm8O4CnXYJFKQnFCFT0NJ0Dq186E3ljKb
-	PPoOuQPCyVY2iFbgF5p5L0NuoZCAEyapuyTSk+7J/yFaNuR2JA5d3jAKXA0zeGVvQJlec5IkKdR
-	mPBK6kOduCLD5iFacQEIJvsHFDpdGA=
-X-Received: by 2002:a05:7301:7e04:b0:33b:c122:6bd4 with SMTP id 5a478bee46e88-342701bed7amr1810144eec.6.1790406164340;
-        Sat, 26 Sep 2026 00:02:44 -0700 (PDT)
+        bh=13Vpk3slAVMN43yepfwDbpWXacf+qhSBumghvgGIwSM=;
+        b=oGJgGjemMwVP29bNRbIAE5XGiNeLy2Q85oJt5iK90ivjvjBQyw/dFrq9rnaJTzNhQz
+         nkV/FLLeDUGXEJs/HbKz4tFFpDG2ksApXGKbkAWrt8fSuh/VYGEKT3mLeH/WS7DCdWLD
+         DLolNiCzV1x4wtjDlxXnRBUMev1eDHBEVfeZiU3cDs2kuzmPqRsBL9vCLoOtQ7JbuffG
+         ApB2WsfrMkVpNuc9MQKnPJSHPbxDZ5HtGBpSN0S12rYW76iwmjdmPa8kvGAPuZR9g5f/
+         ogM7BhVFtkCpireak5BsYfCVFGIIq/7JNJULG1ZbgO9tB9Dlo0YsVMVQ6sdwDZgP8IXU
+         aK6w==
+X-Forwarded-Encrypted: i=1; AKwUvBwSfqmDmghATFso2vWbbizF4M0p1iA+9REonKv9Fp7f9IQ371jW+R120UVQlvuZWXNF2C0=@vger.kernel.org
+X-Gm-Message-State: AFuF++mp5PnS8GCPqOcmTrrAhtfNEWdD+YwZorYy2qkCkTdR3oXYmn/y
+	YRToiSe0AR+/ocJzsu918blFNzRlAiz1XRDpe6WnW7BJLjO+8Oudncc5
+X-Gm-Gg: AYBFou3clQKva8Dam1knhJiRi5yM0IZXua7FaflGryIfJgKeZpYr4uDlR++MQ9dWyi0
+	2nid7zd6eD6GM+iuw3L7DSEAzb4qdVFaRlEHzKWGaHtpRkDUezbHNzMgwoJaOrwqQOTGXalf2mz
+	QXJ+uPrNGlZX7OJVdyKWF97Sup4j0YIem4S2xxRc9zNGXLb2HESdGi+AtDYYoHqRFnZmCXdLu14
+	POKPNBICSp+btlSiuNcyPV6NzJC9yakx+b6SjwbspOIs0CM8SlBuAZI603+CxzX+wi8ZlyAOt2T
+	aK3gnzoWY5k3GxgmL+vpv2ZZUYmVtF9zvl/YAtQ3vQ5+fKP0WYkh1LZsquVgGME7Y7PbBMdIx6z
+	VOSqynfxy7m5Ffn5soplg0JuQtNb5h17mgfizp3e2MndCCJ2R3bKZaaDtVuzT/rpJIhYeyMlEjW
+	uYo1ITZEhHeNVgBBLvM/GzRR/0trqY0+b/NiCl5/SjLKBRsb6ZJJBN/AqL9e0QhpUClRJTrbLX6
+	A3+5h7w4+EkL7LzD4mn5F3RmDtpZnQ=
+X-Received: by 2002:a05:7300:ae0f:b0:33b:eadd:9013 with SMTP id 5a478bee46e88-342705b9cb5mr2029096eec.6.1790406168140;
+        Sat, 26 Sep 2026 00:02:48 -0700 (PDT)
 Received: from WIN-BH9M8FJACR9 ([103.94.185.75])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-34145c166cfsm10615141eec.28.2026.09.26.00.02.40
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-34145c166cfsm10615141eec.28.2026.09.26.00.02.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 00:02:43 -0700 (PDT)
+        Sat, 26 Sep 2026 00:02:47 -0700 (PDT)
 From: Yonggang Luo <luoyonggang@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -74,9 +74,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
 	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [PATCH v4 25/55] tcg: give common-system helper tl an i64 slot
-Date: Sat, 26 Sep 2026 15:00:24 +0800
-Message-ID: <20260926070057.1234-26-luoyonggang@gmail.com>
+Subject: [PATCH v4 26/55] accel/tcg: move helper_exit_atomic next to cpu_loop_exit_atomic
+Date: Sat, 26 Sep 2026 15:00:25 +0800
+Message-ID: <20260926070057.1234-27-luoyonggang@gmail.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260926070057.1234-1-luoyonggang@gmail.com>
 References: <20260926070057.1234-1-luoyonggang@gmail.com>
@@ -88,160 +88,123 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-dh_alias_tl stays tl. In common-system code the helper C slot stays
-uint64_t and the typecode stays i64, because one typemask is shared
-by 32- and 64-bit guests. tcg_gen_callN zero-extends an I32 temp into
-that slot and truncates an i64 return.
+helper_exit_atomic only forwards to cpu_loop_exit_atomic. Define it
+in cpu-exec-common.c with that function, and move its DEF_HELPER line
+to cpu-exec-common.h. That file emits helper_info_exit_atomic.
+tcg-runtime.c keeps the integer helpers.
 
 Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
 ---
- include/exec/helper-head.h.inc | 21 ++++++++++++++++++--
- tcg/tcg.c                      | 35 ++++++++++++++++++++++++++++++++--
- 2 files changed, 52 insertions(+), 4 deletions(-)
+ accel/tcg/cpu-exec-common.c        | 10 ++++++++++
+ accel/tcg/cpu-exec-common.h        |  1 +
+ accel/tcg/tcg-runtime.c            |  8 --------
+ accel/tcg/tcg-runtime.h            |  2 --
+ include/exec/helper-gen-common.h   |  4 ++++
+ include/exec/helper-proto-common.h |  4 ++++
+ 6 files changed, 19 insertions(+), 10 deletions(-)
+ create mode 100644 accel/tcg/cpu-exec-common.h
 
-diff --git a/include/exec/helper-head.h.inc b/include/exec/helper-head.h.inc
-index 7dec5f5b067..6612937c5ae 100644
---- a/include/exec/helper-head.h.inc
-+++ b/include/exec/helper-head.h.inc
-@@ -45,16 +45,29 @@
- #define dh_ctype_noreturn G_NORETURN void
- #define dh_ctype(t) dh_ctype_##t
+diff --git a/accel/tcg/cpu-exec-common.c b/accel/tcg/cpu-exec-common.c
+index 68077c8fd9d..d20cece1c5f 100644
+--- a/accel/tcg/cpu-exec-common.c
++++ b/accel/tcg/cpu-exec-common.c
+@@ -23,8 +23,13 @@
+ #include "qemu/plugin.h"
+ #include "qemu/main-loop.h"
+ #include "accel/tcg/cpu-loop.h"
++#include "exec/helper-proto-common.h"
+ #include "internal-common.h"
  
-+#define dh_alias_tl tl
- #ifdef COMPILING_PER_TARGET
- # include "exec/target_long.h"
- # if TARGET_LONG_BITS == 32
--#  define dh_alias_tl i32
- #  define dh_typecode_tl dh_typecode_i32
- # else
--#  define dh_alias_tl i64
- #  define dh_typecode_tl dh_typecode_i64
- # endif
- # define dh_ctype_tl target_ulong
-+#else
-+/*
-+ * Common-system helper FFI only: helper_info.typemask is compile-time
-+ * and shared by 32- and 64-bit guests, so the C/libffi slot is
-+ * max(i32, i64) -- always i64 / uint64_t. This is not the TCG temp
-+ * width. TCGv_tl stays dynamic (I32 or I64 via tcg_type_tl());
-+ * tcgv_tl_temp() is the handle-to-TCGTemp accessor and is valid for
-+ * either size. Call lowering zero-extends an I32 temp into this
-+ * unsigned i64 slot (dh_typecode_tl is i64, not s64). A helper C
-+ * body that needs a signed guest value must narrow to XLEN and
-+ * sign-extend itself; (int64_t)arg is not a 32-bit sign-extend.
-+ */
-+# define dh_typecode_tl dh_typecode_i64
-+# define dh_ctype_tl uint64_t
- #endif /* COMPILING_PER_TARGET */
- 
- #if __SIZEOF_POINTER__ == 4
-@@ -76,6 +89,7 @@
- #define dh_retvar_decl0_i64 TCGv_i64 retval
- #define dh_retval_decl0_i128 TCGv_i128 retval
- #define dh_retvar_decl0_ptr TCGv_ptr retval
-+#define dh_retvar_decl0_tl TCGv_tl retval
- #define dh_retvar_decl0(t) glue(dh_retvar_decl0_, dh_alias(t))
- 
- #define dh_retvar_decl_void
-@@ -84,6 +98,7 @@
- #define dh_retvar_decl_i64 TCGv_i64 retval,
- #define dh_retvar_decl_i128 TCGv_i128 retval,
- #define dh_retvar_decl_ptr TCGv_ptr retval,
-+#define dh_retvar_decl_tl TCGv_tl retval,
- #define dh_retvar_decl(t) glue(dh_retvar_decl_, dh_alias(t))
- 
- #define dh_retvar_void NULL
-@@ -92,6 +107,7 @@
- #define dh_retvar_i64 tcgv_i64_temp(retval)
- #define dh_retvar_i128 tcgv_i128_temp(retval)
- #define dh_retvar_ptr tcgv_ptr_temp(retval)
-+#define dh_retvar_tl tcgv_tl_temp(retval)
- #define dh_retvar(t) glue(dh_retvar_, dh_alias(t))
- 
- #define dh_typecode_void 0
-@@ -115,6 +131,7 @@
- #define dh_callflag_i64  0
- #define dh_callflag_i128 0
- #define dh_callflag_ptr  0
-+#define dh_callflag_tl   0
- #define dh_callflag_void 0
- #define dh_callflag_noreturn TCG_CALL_NO_RETURN
- #define dh_callflag(t) glue(dh_callflag_, dh_alias(t))
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index ecc1f54c1bf..ba2a1127f92 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -2515,6 +2515,8 @@ static void tcg_gen_callN(void *func, TCGHelperInfo *info,
-                           TCGTemp *ret, TCGTemp **args)
- {
-     TCGv_i64 extend_free[MAX_CALL_IARGS];
-+    TCGv_i64 ret_temp = NULL;
-+    TCGTemp *orig_ret = ret;
-     int n_extend = 0;
-     TCGOp *op;
-     int i, n, pi = 0, total_args;
-@@ -2524,6 +2526,19 @@ static void tcg_gen_callN(void *func, TCGHelperInfo *info,
-         g_once_init_leave(HELPER_INFO_INIT(info), HELPER_INFO_INIT_VAL(info));
-     }
- 
-+    /*
-+     * An I32 temp in an i64 slot is zero-extended; s64 is sign-extended.
-+     * The call returns the wide temp, then extrl writes the I32 back.
-+     */
-+    if (ret != NULL && ret->type == TCG_TYPE_I32) {
-+        unsigned typecode = info->typemask & 7;
++#define HELPER_H "accel/tcg/cpu-exec-common.h"
++#include "exec/helper-info.c.inc"
++#undef  HELPER_H
 +
-+        if (typecode == dh_typecode_i64 || typecode == dh_typecode_s64) {
-+            ret_temp = tcg_temp_ebb_new_i64();
-+            ret = tcgv_i64_temp(ret_temp);
-+        }
-+    }
-+
-     total_args = info->nr_out + info->nr_in + 2;
-     op = tcg_op_alloc(INDEX_op_call, total_args);
+ bool tcg_allowed;
  
-@@ -2560,8 +2575,19 @@ static void tcg_gen_callN(void *func, TCGHelperInfo *info,
-     for (i = 0; i < n; i++) {
-         const TCGCallArgumentLoc *loc = &info->in[i];
-         TCGTemp *ts = args[loc->arg_idx] + loc->tmp_subindex;
-+        TCGCallArgumentKind kind = loc->kind;
- 
--        switch (loc->kind) {
-+        if (kind == TCG_CALL_ARG_NORMAL && ts->type == TCG_TYPE_I32) {
-+            unsigned typecode =
-+                extract32(info->typemask, (loc->arg_idx + 1) * 3, 3);
-+
-+            if (typecode == dh_typecode_i64 ||
-+                typecode == dh_typecode_s64) {
-+                kind = TCG_CALL_ARG_EXTEND_U + (typecode & 1);
-+            }
-+        }
-+
-+        switch (kind) {
-         case TCG_CALL_ARG_NORMAL:
-         case TCG_CALL_ARG_BY_REF:
-         case TCG_CALL_ARG_BY_REF_N:
-@@ -2574,7 +2600,7 @@ static void tcg_gen_callN(void *func, TCGHelperInfo *info,
-                 TCGv_i64 temp = tcg_temp_ebb_new_i64();
-                 TCGv_i32 orig = temp_tcgv_i32(ts);
- 
--                if (loc->kind == TCG_CALL_ARG_EXTEND_S) {
-+                if (kind == TCG_CALL_ARG_EXTEND_S) {
-                     tcg_gen_ext_i32_i64(temp, orig);
-                 } else {
-                     tcg_gen_extu_i32_i64(temp, orig);
-@@ -2602,6 +2628,11 @@ static void tcg_gen_callN(void *func, TCGHelperInfo *info,
-     for (i = 0; i < n_extend; ++i) {
-         tcg_temp_free_i64(extend_free[i]);
-     }
-+
-+    if (ret_temp != NULL) {
-+        tcg_gen_extrl_i64_i32(temp_tcgv_i32(orig_ret), ret_temp);
-+        tcg_temp_free_i64(ret_temp);
-+    }
+ /*
+@@ -120,3 +125,8 @@ void cpu_loop_exit_atomic(CPUState *cpu, uintptr_t pc)
+     cpu->exception_index = EXCP_ATOMIC;
+     cpu_loop_exit_restore(cpu, pc);
  }
++
++void HELPER(exit_atomic)(CPUArchState *env)
++{
++    cpu_loop_exit_atomic(env_cpu(env), GETPC());
++}
+diff --git a/accel/tcg/cpu-exec-common.h b/accel/tcg/cpu-exec-common.h
+new file mode 100644
+index 00000000000..922acc2179d
+--- /dev/null
++++ b/accel/tcg/cpu-exec-common.h
+@@ -0,0 +1 @@
++DEF_HELPER_FLAGS_1(exit_atomic, TCG_CALL_NO_WG, noreturn, env)
+diff --git a/accel/tcg/tcg-runtime.c b/accel/tcg/tcg-runtime.c
+index 7c0aab98a80..764c62c684d 100644
+--- a/accel/tcg/tcg-runtime.c
++++ b/accel/tcg/tcg-runtime.c
+@@ -23,10 +23,7 @@
+  */
+ #include "qemu/osdep.h"
+ #include "qemu/host-utils.h"
+-#include "exec/cpu-common.h"
+ #include "exec/helper-proto-common.h"
+-#include "accel/tcg/cpu-loop.h"
+-#include "accel/tcg/getpc.h"
  
- void tcg_gen_call0(void *func, TCGHelperInfo *info, TCGTemp *ret)
+ #define HELPER_H  "accel/tcg/tcg-runtime.h"
+ #include "exec/helper-info.c.inc"
+@@ -129,8 +126,3 @@ uint64_t HELPER(ctpop_i64)(uint64_t arg)
+ {
+     return ctpop64(arg);
+ }
+-
+-void HELPER(exit_atomic)(CPUArchState *env)
+-{
+-    cpu_loop_exit_atomic(env_cpu(env), GETPC());
+-}
+diff --git a/accel/tcg/tcg-runtime.h b/accel/tcg/tcg-runtime.h
+index 0b832176b33..9b4c1c24916 100644
+--- a/accel/tcg/tcg-runtime.h
++++ b/accel/tcg/tcg-runtime.h
+@@ -22,8 +22,6 @@ DEF_HELPER_FLAGS_1(ctpop_i64, TCG_CALL_NO_RWG_SE, i64, i64)
+ 
+ DEF_HELPER_FLAGS_1(lookup_tb_ptr, TCG_CALL_NO_WG_SE, cptr, env)
+ 
+-DEF_HELPER_FLAGS_1(exit_atomic, TCG_CALL_NO_WG, noreturn, env)
+-
+ #ifndef IN_HELPER_PROTO
+ /*
+  * Pass calls to memset directly to libc, without a thunk in qemu.
+diff --git a/include/exec/helper-gen-common.h b/include/exec/helper-gen-common.h
+index 834590dc4e5..ed5521ad881 100644
+--- a/include/exec/helper-gen-common.h
++++ b/include/exec/helper-gen-common.h
+@@ -7,6 +7,10 @@
+ #ifndef HELPER_GEN_COMMON_H
+ #define HELPER_GEN_COMMON_H
+ 
++#define HELPER_H "accel/tcg/cpu-exec-common.h"
++#include "exec/helper-gen.h.inc"
++#undef  HELPER_H
++
+ #define HELPER_H "accel/tcg/tcg-runtime.h"
+ #include "exec/helper-gen.h.inc"
+ #undef  HELPER_H
+diff --git a/include/exec/helper-proto-common.h b/include/exec/helper-proto-common.h
+index 76e6c25becb..28afa7782d0 100644
+--- a/include/exec/helper-proto-common.h
++++ b/include/exec/helper-proto-common.h
+@@ -9,6 +9,10 @@
+ 
+ #include "qemu/atomic128.h"  /* for HAVE_CMPXCHG128 */
+ 
++#define HELPER_H "accel/tcg/cpu-exec-common.h"
++#include "exec/helper-proto.h.inc"
++#undef  HELPER_H
++
+ #define HELPER_H "accel/tcg/tcg-runtime.h"
+ #include "exec/helper-proto.h.inc"
+ #undef  HELPER_H
 -- 
 2.52.0.windows.1
 
