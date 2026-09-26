@@ -1,64 +1,64 @@
-Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
+Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30ADC34DB41
-	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 07:03:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD055733E
+	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 07:03:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790406217; cv=none; b=K++cst2gnfYhIEkfh17+pXTG/CqeI/BZN0N1hXtIXANEh4YZ8kwi8qjwJMh7fF2KgTijri7aXNdfiwrFAnnKdiXx87tNbn4uJPQq6Ol5Qo+65HtLb99SwlqGQlVv1iDAgkgAifoiR1GuFha30x3kbgc0u/up3ivbvWUdwSaExeY=
+	t=1790406220; cv=none; b=HUK2oZYY7RUN/wgEhIP9QTnkG5yJ4VfF3HvraUVlDRWASG+gHsaXwrxFBf+faP82bnEcd2nsQuDXlWNs9V7E+LUtynmdlHp32x3wyC8gK0UtSO5LexchFQgJMaW65dS8pAHIgrQLXNVaecNEwp2JcqgX/CsBPwuIrsppnge0kF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790406217; c=relaxed/simple;
-	bh=BTgrpQDjxpYRq3G3R9OznRnDPAmx70zgky90y+6TASA=;
+	s=arc-20240116; t=1790406220; c=relaxed/simple;
+	bh=bXKFtx302gHa7P7DQb/qVd7y7US/9psgrLsPdbxtul4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iUarbn/UXewkXTkLnVrkD01GPSwObTW46QPtIRKuyapkN4/yDkwmoKe+gf4Jr7f7HNh5YCpVAwmKO1kYVRoAqqNnsMXF8HoBHlK7+l6y+RiW4p5V+buT0xIxsnaCeAT1jOwQ/PHKvr6Jx3eoGOeJYmSOo2miL/1QlwWexeYi7xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r6R4QGJI; arc=none smtp.client-ip=74.125.229.42
+	 MIME-Version; b=cQ2rY0cdBZwdliTqeQhQabx58z+tjbniW4UZBd2rdhxFzPUoFQWqb5+Am0zn1xiXgO4G5tDAKafXjLI3U2h5p7uL9jKxyFAEiefhhhOL+RoP2qsnyq7vBm7C/7/LFNeVXaKVrvK3qiYsOdVeDiqAGy6Kbhq7YRFEKkE5PnXCAUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RgIqbifu; arc=none smtp.client-ip=74.125.229.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r6R4QGJI"
-Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-3411e0ace19so778791eec.3
-        for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 00:03:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RgIqbifu"
+Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-33be7dfcfc1so2109986eec.1
+        for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 00:03:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790406215; x=1791011015; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790406219; x=1791011019; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/KvXUSAQ15EFG7szh+0eupDvXY39FOdCzcgiBxzTtMs=;
-        b=r6R4QGJIv5eOaizc9uBGQdTg/wbxU+8bimn60lZtYlq68p13vS8In/vl33p1DjYozB
-         cwpei4KDdCX2QOfXOQXEblNdWJ7PtS8mWIZeyCb/tDeQyDg4ukq8N5sGPB7NwNfgrwzz
-         9b3S6oyGiul3XT+ZBNkQt8keYmiOqYMdD2QnGewzrviomh1olAWRgJrBKQPn9SLbNECy
-         YkZINH9HjnG9ru8ufEF9HPCe6R6WxtZ1Z+eyLS9GBXFW8EobpQREX/nl1CDs8ORPXZ+Q
-         WtFOLZuoGzI37UY/YjhpBqkOds3y3z1jsqwsFJVHrw8NxNB5W5ja496ea63fv2T2gd0x
-         vqaw==
+        bh=7wEmknfoBmg3TeWeQqrxAB6fpgRVpCKeiHIEFEVt1/A=;
+        b=RgIqbifu1VC4B0JP7W18VP4ijaiPoiEMk0m532WHcQdp1Jqp3BEIX+L3Sm4NTctNNo
+         Zq3S4xPesd42uo5+CbEgn1Mx2bsUb6ZiJSgxn84GvGP7bNsfHo/KV1WPWlGm5dhQIpjg
+         YVfKdvTYfKE00AG0awH3TUrprEhkMIaMWo1cdqBQ7jZR9Xi0ngjw8MIYv0NIvBKh7yNP
+         4VQGEhtWWHuh6VHadAhPe0Xx8j7Tzf0Y8qjYyt8NfHTTSXXLFaSZJn9Ef1lqVFyQlVyW
+         VFRwFB+vcjSRAUVW/7hZtpOqLNGMFOtMpdSMVsat2OIvjpfbsyW0hh5PUgju8SO6BWYm
+         r+Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790406215; x=1791011015;
+        d=1e100.net; s=20260707; t=1790406219; x=1791011019;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/KvXUSAQ15EFG7szh+0eupDvXY39FOdCzcgiBxzTtMs=;
-        b=CiI6WT2cmE70SnAxSetXQweCixkrVUpbM6z+kWokasEJtn7g+lQKmfAMKaqICL+39K
-         g/S3g7Ny9UkEIVlGUWBTOdc39M5/WwlzXS6HM8vR6e5kObM2bPWisdaw/9sTkFSVOBQW
-         QvXabBPVBqR/FHuIfyeawhgGdAsNrbS/OZUrIgr/v/MQIzl52GZpfBtGcXZumatSPVZa
-         2HJgtjJHIqixBZSuNDU/ohEa+RON5iJ+xfvAkfiE5Y0NK+O4P1mqOyPAfc8+h3JGVtPU
-         cXuqzKuvEBtRfZBzyGJs6Ew96erGF/qCinv9a6Tu2upxu7j8M6rOZ0rU4GtE7vHSX0zO
-         aO9w==
-X-Forwarded-Encrypted: i=1; AKwUvBzLq79o3V2StiYzwpiCytn6tpoLhuUFz25ouStNhxUIBTiPGPuTSU1Acl1j8XZ0Re/AxIY=@vger.kernel.org
-X-Gm-Message-State: AFuF++n5pc7kloYkRKtz4KAnI5wlqAzxeUVUxhm148Q1XujxMex94Dks
-	k6fFKMzYIqfjB+coH7hlzq24EU519aBTSX96dJtAhZeRXUCloJJAeB5u
-X-Gm-Gg: AYBFou1ZpLvxIcp9i9eQ47qRE3StVdue29i/TGv58Lg0jOgdn9PFf0pQKUbcN15W4ya
-	Xj+oWPFCWEALSVvvIcGSbsAxIOw9e8eCwgXEtiyEvYVAfK5zy3qoYrE71DVXCiDQVnc1QXW3ptm
-	kfG5xKQm3bDM5WH6kd2QpiIlVgAcXhNohxupLgao0gENiZkMfHtjwABx9scqnPHrBLQZ3221eXC
-	TrFtwgOYhpZq9xmAv51/O4mND8FXgsd6eytNcxREFmB9cQX1xK6Q3VaRPGyls/n+KjRz9frjJ/y
-	mOQ8lUX/e9rrW1+yHMZmrzgrZzlOc9nMWwI/Ysb76zBAxMWcIPKJN7AMdYFxmxQAiD4e874sQ7G
-	CL7jWD/w8bwAT1v9sb25I0lU1rGo2tVbwaTQvgd5aYvV+QNFdZP1SlAmwpiGNw4M5TTUvmv/oU3
-	aJGr5qEW0IGe+6y/wFP0+qOoZt4TCdROOjHOYp9VaOqcr9l7x+15w/9Nu6eRd4FHoiItK/DNZ8d
-	ktYHp6kYgQzzNSKqBETyvUeFCFeOHA=
-X-Received: by 2002:a05:7300:f588:b0:333:f4ee:da89 with SMTP id 5a478bee46e88-34273347be9mr2169044eec.35.1790406215338;
-        Sat, 26 Sep 2026 00:03:35 -0700 (PDT)
+        bh=7wEmknfoBmg3TeWeQqrxAB6fpgRVpCKeiHIEFEVt1/A=;
+        b=WW9PwTJaUhTXJN+vxZaXqIht3UzbPUDuB3XucKudTYIfbtH8JH6ZlbFGE8fp/p+nyp
+         eE+b4wm7of9DoEZaDu5bQC0eGYQvgYH0FytOycCqcp0KJTi0QG9cEVkkE/WoIXnhpxRW
+         0BnLWOiuQHAhE1HrilbTvroon0RG1bvfksDMbed4feIzq75qO/oeH8bhe59/atkxaUds
+         jC+rscGvFaOczFbZgeT6NvMbGHJWoX9moyhM9iAIwgxoXimr2XGFAWPMDqrA0QPoXpgL
+         F/lT4UeZOtykmkyeotHBdFKgnwDAO7TQ1Hv5U1l9JjBUMP9AFQMhbvZEtqxYo6yXl9yg
+         7nQA==
+X-Forwarded-Encrypted: i=1; AKwUvByIEbilmzQb4/86pJxwEpdNKQeVW2Ab7e1NXKBdQzWStvRaeGinKWgNOPACvya3+utv2Sg=@vger.kernel.org
+X-Gm-Message-State: AFuF++lM8JHlYQf5+vBNHMokzvIq9r9R2qioUbYgc1gows2cymWHZJVu
+	Z5XuZMAdZRrvOkAapOpApiGAhfJUFU+c4rC9fa7NFlw3VW2pKDoYCrxp
+X-Gm-Gg: AYBFou1chQXd+9zJmnVi/CzK/Choki90jJyvG2+WY0cr43vJpAdACFaAEpxhu+yEM1c
+	fU38B4dVlLaqFmpdJ1taGXPbTbJgwoDykDhexnAPE6AltSiOheVd6LZVrDhx1nvvgj3bzkh4lpY
+	as88BFhKCZ/M6Hd9ndndp8ByP2qMLdFeblRfWiYZ/vhlA0xFoijdrUgwbXE4l56DRvGaDsUSbYu
+	rSNWBwER+KdkmAooNvzjX6AQRgSOlYfClgc4WrDOEes99yFTFkrGFLQajDs8f2+vdb8q4ew3mJL
+	pUFrqyam5VnElapLkh04DXGjV9Vk9crcRANMeCBEoQyyvqjvOFFt+xZMomNjArSVC3P722J2TEY
+	ZVgsXVMV0y7V1l2EEPvfunKjSZZky+4waQjFWVxM9oH7r7asouFb0VHIQKoRMwFn2mYvfXeBdyz
+	3qWCrP8xJd93ji9HPK7NKqSgCefql1tG+tTakeJw7Hnbqfqrwy0x+Ygh5muAdUq0CVytFZdgErL
+	xBIADjFJ6ACGb28xKp96jCn+Zp72Xs=
+X-Received: by 2002:a05:7301:4201:b0:33b:ea8c:811b with SMTP id 5a478bee46e88-3426fbbeb5dmr2159328eec.5.1790406218912;
+        Sat, 26 Sep 2026 00:03:38 -0700 (PDT)
 Received: from WIN-BH9M8FJACR9 ([103.94.185.75])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-34145c166cfsm10615141eec.28.2026.09.26.00.03.31
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-34145c166cfsm10615141eec.28.2026.09.26.00.03.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 00:03:34 -0700 (PDT)
+        Sat, 26 Sep 2026 00:03:38 -0700 (PDT)
 From: Yonggang Luo <luoyonggang@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -74,9 +74,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
 	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [PATCH v4 38/55] target/arm: fold arm_ss into common source sets
-Date: Sat, 26 Sep 2026 15:00:37 +0800
-Message-ID: <20260926070057.1234-39-luoyonggang@gmail.com>
+Subject: [PATCH v4 39/55] target/microblaze: fold system sources into common source sets
+Date: Sat, 26 Sep 2026 15:00:38 +0800
+Message-ID: <20260926070057.1234-40-luoyonggang@gmail.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260926070057.1234-1-luoyonggang@gmail.com>
 References: <20260926070057.1234-1-luoyonggang@gmail.com>
@@ -88,33 +88,27 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add arm_ss to arm_common_user_system_ss and arm_system_ss to
-arm_common_system_ss. Drop target_arch and target_system_arch
-so ARM CPU objects are not built per target.
+Add microblaze_system_ss to microblaze_common_system_ss and drop
+target_system_arch so mmu.c and machine.c are not built per target.
 
 Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
 ---
- target/arm/meson.build | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/microblaze/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/arm/meson.build b/target/arm/meson.build
-index 0369f96b4cc..11815a0908d 100644
---- a/target/arm/meson.build
-+++ b/target/arm/meson.build
-@@ -68,11 +68,11 @@ if 'CONFIG_TCG' in config_all_accel
-    subdir('tcg')
- endif
+diff --git a/target/microblaze/meson.build b/target/microblaze/meson.build
+index 9c1ecd1cf1c..93138637bf2 100644
+--- a/target/microblaze/meson.build
++++ b/target/microblaze/meson.build
+@@ -21,7 +21,7 @@ microblaze_system_ss.add(files(
+   'mmu.c',
+   'machine.c',
+ ))
++microblaze_common_system_ss.add_all(microblaze_system_ss)
  
-+arm_common_user_system_ss.add_all(arm_ss)
- arm_user_ss.add_all(arm_common_user_system_ss)
- arm_common_system_ss.add_all(arm_common_user_system_ss)
-+arm_common_system_ss.add_all(arm_system_ss)
- 
--target_arch += {'arm': arm_ss}
--target_system_arch += {'arm': arm_system_ss}
- target_user_arch += {'arm': arm_user_ss}
- target_common_arch += {'arm': arm_common_ss}
- target_common_system_arch += {'arm': arm_common_system_ss}
+ target_user_arch += {'microblaze': microblaze_user_ss}
+-target_system_arch += {'microblaze': microblaze_system_ss}
+ target_common_system_arch += {'microblaze': microblaze_common_system_ss}
 -- 
 2.52.0.windows.1
 
