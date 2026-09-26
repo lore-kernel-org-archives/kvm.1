@@ -1,140 +1,205 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CFA3E559A
-	for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 23:33:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA0D2652A2;
+	Sat, 26 Sep 2026 00:50:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790379205; cv=none; b=TW8/2kC9fu2oOF2IqE9WVk0nH7wCvzkBozLAmuDBaarHnTmF81cB0sq5uGLaxeB1RTKWmfaVoJRhWo655b2H3gWIjFyj+s1bIOqsLdu+BI3GSYXaTZ/Iy7UPRT4IDVRDJd0WB4F378PDa+FollYxNgIh1djfDJ883dFmY/JvkeY=
+	t=1790383851; cv=none; b=s4Sqt48ec1WUkRIxKFxzGqEhzwpICbj1/Hisifyq5TRQK4thyO5Qr5zBoXRp1eWTo12V7OaUE2aPx2TrOEucxLX1N430NEXMtpX6dS1uHy3UnZeqBW19S6Uwg3LRH6Hv+HGFqNWW/izbOwD7rvcX7gFv2MglqJcTTLUou6V2Mco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790379205; c=relaxed/simple;
-	bh=mcYrt5VznRv8xtuGmmz9RZEWNXtS2yxga0xjjsgK9vQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=uxywCTSUB5KvECsEMQq9fVge1MtTriYuDoWwcKXRrnBoruRFLP/G/sxr0hNYoODSDg/p7MbGqNlFdd11o/x5OlVA/ke8qIZA3C11aAHpwwzMxSo9Psf53IUmwknHRsFSiYHpN7ODBbEWMvmChMIHz0OwLM0PE7Olw+rz8V78dMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rMM/BXio; arc=none smtp.client-ip=209.85.215.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1790383851; c=relaxed/simple;
+	bh=QZuGgIfedRt6E2ddYyTGPhayZrDoNOZ8hXwJcvPCbUk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Wa73HQ6iAhBQ0UBQjFE1esE2HSSIg60ruhdl//1s8fpTpObZausAWI+NBCbgTr178t44OzUxC5PQJgWgw0apil+H8Cdre/fsbfEjG1HoTsZ0HpeeagE5h6D/eNYr+RFZMx1qEzxgM3Van/EhjFjQtmoZpgJlkKSk7S0RWoGMTLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SL4wWBaL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rMM/BXio"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-ca8aee88725so765460a12.3
-        for <kvm@vger.kernel.org>; Fri, 25 Sep 2026 16:33:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790379203; x=1790984003; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=T4sLdZTMrez8W3xJ+o5SfezWJjq5FwH6Cki+1HKf74k=;
-        b=rMM/BXioOnsMK33TlBbDO+tKNTx8/P2ckEk1Tv84HSBlzJ7Usyn57bQDllc7WeK4dj
-         A8h5zLTwfxXxuqK3+T10hhJbHJn60YIg8zQ6yQ+fBypxR3byBVhhdtrbNJx4LV/kLB1n
-         Q0yrlU9Lz4Ac+pDc6IbQZ/Sz407cY26XgR1Klh2JpzIoolfkJuI0MmhgjdqchpfuE8Hl
-         ayl2p99a2P5sjOsz8Y4fTE1dfbJ0plWPBwWBUPBj5GnYWTjKavDThu4ascgUpAo/XL+3
-         9GdKIrpL3twJeORpn/EFmFSimg/YlF4aj6+XGXNbaUxr8xbQIE7OJYVzl2KteasKr9Ea
-         ZRBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790379203; x=1790984003;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=T4sLdZTMrez8W3xJ+o5SfezWJjq5FwH6Cki+1HKf74k=;
-        b=ZLPEAtnYb1YCfMCuafOKUEyhhOLeSTWjoBh0YSpSNXZinjlMY+AaY5+NxDJlCUs8S7
-         a7uVqbW+q8Ul28xV3KEadRoeOM6KI17cPr60k7D3flTGfDhs6M3ExXeTgxsPIfrxeBpL
-         KYOSjAZYRN5F+BSkaW1oc/Oz3ekAKvYjS9zoKyatXZ12NDaOu0Ivm8JxA3sj2tVwJSau
-         YYcyY5Mz84Jpaub9gjf5QpSknPyXmTno8CsLq6KMycw8UebpD25w14aEVwZqe2X5/BEW
-         7kdRk5dTJV4eQIlCqIr00Cz2LeWT3nsVvlrVttPIyiZyYd4UaqiBeBmlNrdYIc2u6p3t
-         Qt8Q==
-X-Gm-Message-State: AFuF++nObjMthznbAtZJYFHY4v4GkRJ+FQiPrwsX8p+iygujgehcW19C
-	pybE8YHima62oz3iXPSAfMcDAIWD3qVK0u+PdUNUEgsGUZ58BBeHLlhbJZLSO2xHJAHTwOYf7LB
-	iVAwM3g==
-X-Received: from ploc16.prod.google.com ([2002:a17:902:8490:b0:2df:a4d3:2d98])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:8d0:b0:2dd:c100:7cb8
- with SMTP id d9443c01a7336-2df7dc55ffemr64340045ad.52.1790379202896; Fri, 25
- Sep 2026 16:33:22 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 25 Sep 2026 16:33:21 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SL4wWBaL"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 62F1CC2BCFB;
+	Sat, 26 Sep 2026 00:50:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1790383851;
+	bh=QZuGgIfedRt6E2ddYyTGPhayZrDoNOZ8hXwJcvPCbUk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=SL4wWBaL0A1NCCKm2k6XsrkSbrdgIbmexUyMwPhGGQMRwe6vPntwE56QPfUbwnh/B
+	 ExCh7c/0XGy5dEnoIIb4HCLSF0azYMFTvvNadXW4wMHj44imX8TUUu/mrF9iiOrcSW
+	 3pYxIpiizcU9xtyVnS0CsLsi0ETuDadTPWeCbYlaHUDDSnFhTrxpQQwTeGd09QPhcT
+	 1tEKSF9YjCaXhwNtNgIS8Q9qMYGGWhmn08/fzjY/0UqeqvB2YiAyOINVwq9BAcGh6F
+	 JDcqrfeBCKxFfU38exIy06kH7sKDi1YN2cjZzC7Xo+IfytRWOjSiNaZBbxvG1veCAe
+	 pAZTGzjAWkqyA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49E83C9830E;
+	Sat, 26 Sep 2026 00:50:51 +0000 (UTC)
+From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Date: Fri, 25 Sep 2026 17:50:49 -0700
+Subject: [PATCH RFC 02/17] KVM: guest_memfd: Support provider folio
+ allocation
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260925233321.2381319-1-seanjc@google.com>
-Subject: [GIT PULL] KVM: Fixes for 7.3-rcN
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260925-gmem-tmpfs-backend-v1-2-d36159822d18@google.com>
+References: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
+In-Reply-To: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
+To: Hugh Dickins <hughd@google.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Sean Christopherson <seanjc@google.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, Shuah Khan <shuah@kernel.org>, 
+ vannapurve@google.com, erdemaktas@google.com, jxgao@google.com, 
+ rientjes@google.com, fvdl@google.com, jthoughton@google.com, 
+ tarunsahu@google.com, pratyush@kernel.org, fuad.tabba@linux.dev, 
+ Gregory Price <gourry@gourry.net>, David Woodhouse <dwmw2@infradead.org>, 
+ yan.y.zhao@intel.com, michael.roth@amd.com, suzuki.poulose@arm.com, 
+ Christian Brauner <brauner@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ Nicolin Chen <nicolinc@nvidia.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
+ aik@amd.com, aneesh.kumar@kernel.org, Vlastimil Babka <vbabka@kernel.org>
+Cc: kernel-team@android.com, kernel-team@meta.com, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Ackerley Tng <ackerleytng@google.com>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790383850; l=4521;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=k2wJag3xpkJiPwETrEDU9zeAf8p9w5PDeeJUkL2Wy30=;
+ b=owZKCzvSRlsk4pNWUHrAac7TjSqV4V9OZ2vm5pyo4kxj3zk6HBlqYl6Pp0x4cTb4Dcq5IAsvj
+ UN0BwPL00V3AdOv5deqq4zfA+D0roElHz1GSsNK5j/d5HO5QLYV9Gc7
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
+ pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
+ auth_id=649
+X-Original-From: Ackerley Tng <ackerleytng@google.com>
+Reply-To: ackerleytng@google.com
 
-Please pull a variety of fixes.  Nothing is super urgent, but all of these can
-be fatal to the host and/or guest (except for the selftest change, which fixes
-a regression that was introduced in 7.3).
+From: Ackerley Tng <ackerleytng@google.com>
 
-The following changes since commit d599822bdb66aeec5ec76297b0fc6efaaeefe07c:
+If this guest_memfd was created with a provider, use the provider to
+allocate a folio. For folio-based providers, using guest_memfd's filemap is
+better because folio->mapping would be guest_memfd's mapping, and so
+guest_memfd can handle anything that makes decisions based off
+folio->mapping, like memory_failure().
 
-  Merge tag 'kvm-s390-master-7.3-1' of https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux into HEAD (2026-09-04 17:34:28 +0200)
+Going along these lines of using gmem's filemap, passing gmem's filemap for
+the provider to insert into seems awkward. At least for tmpfs, the
+insertion function does a lot of stuff and assumes stuff about the filemap
+being a tmpfs one (completely fair). I think it's better to use gmem's
+filemap and do charging (memcg) and inode accounting according to
+guest_memfd's rules though, hence insertion is done within gmem, in a gmem
+filemap.
 
-are available in the Git repository at:
+Going back to folio->mapping pointing to the gmem filemap, we could have
+special memory failure handling for guest_memfd folios too, if there's some
+kind of central registry of all PFNs belonging to guest_memfd? There are
+other usages of folio->mapping, but gmem doesn't participate in those since
+gmem doesn't do swap, etc now.
 
-  https://github.com/kvm-x86/linux.git tags/kvm-x86-fixes-7.3-rc5
+For non-folio-based providers, here's my suggestion: Don't provide
+.alloc_folio(), provide some equivalent callback for pfns, track pfns in
+gmem. The provider can force gmem to return the folios anytime, the
+.attach() can be bidirectional.
 
-for you to fetch changes up to 119e9db233ad0f4cbd4cfb9f9385a7bca378b37d:
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+---
+ virt/kvm/guest_memfd.c | 44 ++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 40 insertions(+), 4 deletions(-)
 
-  KVM: Don't pre-reserve xarray entries when storing empty/NULL attributes (2026-09-22 08:36:16 -0700)
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index a13445c26d9d6..5ac2d558c8dd8 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -3,6 +3,7 @@
+ #include <linux/backing-dev.h>
+ #include <linux/falloc.h>
+ #include <linux/fs.h>
++#include <linux/guest_memfd.h>
+ #include <linux/kvm_host.h>
+ #include <linux/maple_tree.h>
+ #include <linux/mempolicy.h>
+@@ -35,6 +36,9 @@ struct gmem_inode {
+ 	struct inode vfs_inode;
+ 	struct list_head gmem_file_list;
+ 
++	void *provider;
++	const struct guest_memfd_provider_operations *provider_ops;
++
+ 	u64 flags;
+ 	/*
+ 	 * Every index in this inode, whether memory is populated or
+@@ -50,6 +54,16 @@ static __always_inline struct gmem_inode *GMEM_I(struct inode *inode)
+ 	return container_of(inode, struct gmem_inode, vfs_inode);
+ }
+ 
++static inline struct folio *gmem_provider_alloc_folio(struct gmem_inode *gi,
++						      pgoff_t index,
++						      struct mempolicy *mpol)
++{
++	if (!gi->provider_ops || !gi->provider_ops->alloc_folio)
++		return ERR_PTR(-EOPNOTSUPP);
++
++	return gi->provider_ops->alloc_folio(gi->provider, index, mpol);
++}
++
+ #define kvm_gmem_for_each_file(f, inode) \
+ 	list_for_each_entry(f, &GMEM_I(inode)->gmem_file_list, entry)
+ 
+@@ -128,6 +142,7 @@ static bool kvm_gmem_range_has_attributes(struct inode *inode,
+  */
+ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+ {
++	struct gmem_inode *gi = GMEM_I(inode);
+ 	/* TODO: Support huge pages. */
+ 	struct mempolicy *policy;
+ 	struct folio *folio;
+@@ -140,10 +155,29 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+ 	if (!IS_ERR(folio))
+ 		return folio;
+ 
+-	policy = mpol_shared_policy_lookup(&GMEM_I(inode)->policy, index);
+-	folio = __filemap_get_folio_mpol(inode->i_mapping, index,
+-					 FGP_LOCK | FGP_CREAT,
+-					 mapping_gfp_mask(inode->i_mapping), policy);
++	policy = mpol_shared_policy_lookup(&gi->policy, index);
++	/*
++	 * TODO: Refactor the internal PAGE_SIZE gmem could be an internal
++	 * provider with internal provider_ops.
++	 */
++	if (gi->provider_ops) {
++		folio = gmem_provider_alloc_folio(gi, index, policy);
++		if (!IS_ERR(folio)) {
++			int r = filemap_add_folio(inode->i_mapping, folio,
++						  index, GFP_KERNEL);
++			if (r) {
++				folio_put(folio);
++				folio = ERR_PTR(r);
++			} else {
++				folio_mark_accessed(folio);
++			}
++		}
++	} else {
++		folio = __filemap_get_folio_mpol(inode->i_mapping, index,
++						 FGP_LOCK | FGP_CREAT,
++						 mapping_gfp_mask(inode->i_mapping),
++						 policy);
++	}
+ 	mpol_cond_put(policy);
+ 
+ 	/*
+@@ -1334,6 +1368,8 @@ static struct inode *kvm_gmem_alloc_inode(struct super_block *sb)
+ 	mt_init_flags(&gi->attributes, MT_FLAGS_LOCK_EXTERN | MT_FLAGS_USE_RCU);
+ 
+ 	gi->flags = 0;
++	gi->provider = NULL;
++	gi->provider_ops = NULL;
+ 	INIT_LIST_HEAD(&gi->gmem_file_list);
+ 	return &gi->vfs_inode;
+ }
 
-----------------------------------------------------------------
-KVM fixes for 7.3-rcN
+-- 
+2.56.0.rc1.315.gc6ed9934b7-goog
 
- - Fix a brown paper bag bug where KVM would incorrectly treat Intel PMU MSRs
-   as valid on AMD.
 
- - Fix a regression in the hardware disable selftest where it checked the wrong
-   macro when detecting glibc support (breaks at least musl).
-
- - Never clear KVM_REQ_VM_DEAD so that dead VMs stay dead, which is especially
-   important for KVM_BUG_ON() flows, which often guard more dangerous bugs.
-
- - Re-pend GET_NESTED_STATE_PAGES if getting the pages fails, to fix a bug
-   where KVM would let userspace run a broken setup with stale vmcs12 pages.
-
- - Fix a class of bugs where KVM would fail to fill kvm_run exit fields if
-   getting nested pages failed.
-
- - Treat reserved entries in the memory attributes xarray as "no attributes",
-   to fix false positives when checking for mixed attributes.
-
- - Fix memcg accounting for the memory attributes xarray (the xarray library
-   subtly requires the xarray to be configured for accounting upfront; the gfp
-   flags taken at runtime are used only rarely).
-
- - Don't pre-reserve xarray entries when storing empty attributes, as storing
-   NULL must not require memory allocation (KVM and other subsystems heavily
-   rely on this behavior).
-
-----------------------------------------------------------------
-David Ballesteros (1):
-      KVM: Ensure memory attributes xarray nodes are accounted to the caller's memcg
-
-Jim Mattson (1):
-      KVM: x86/pmu: Move Intel PMU global MSRs to intel_is_valid_msr()
-
-Sean Christopherson (4):
-      KVM: selftests: Use __GLIBC__, not _GNU_SOURCE, to detect actual glibc
-      KVM: Never clear KVM_REQ_VM_DEAD from a vCPU's requests
-      KVM: x86: Re-pend GET_NESTED_STATE_PAGES if getting said pages fails
-      KVM: x86: Fill kvm_run exit fields in common get_nested_state_pages() error paths
-
-Zeng Chi (2):
-      KVM: Don't treat reserved xarray entries as having memory attributes
-      KVM: Don't pre-reserve xarray entries when storing empty/NULL attributes
-
- arch/arm64/kvm/arm.c                               |  2 +-
- arch/x86/kvm/mmu/mmu.c                             |  2 +-
- arch/x86/kvm/pmu.c                                 |  8 -----
- arch/x86/kvm/svm/nested.c                          |  7 +----
- arch/x86/kvm/vmx/nested.c                          | 15 ++++------
- arch/x86/kvm/vmx/pmu_intel.c                       |  3 ++
- arch/x86/kvm/vmx/tdx.c                             |  2 +-
- arch/x86/kvm/x86.c                                 |  6 +++-
- include/linux/kvm_host.h                           |  9 ++++--
- .../testing/selftests/kvm/hardware_disable_test.c  |  6 ++--
- virt/kvm/kvm_main.c                                | 35 ++++++++++++++++++----
- 11 files changed, 56 insertions(+), 39 deletions(-)
