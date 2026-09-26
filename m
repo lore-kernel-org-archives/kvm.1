@@ -1,64 +1,64 @@
-Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
+Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95483403E3
-	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 07:02:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1231737B018
+	for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 07:02:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790406146; cv=none; b=RRTIPTFwNcYXq4FY0th7VaqDlAF4jfF2/qXvFdE3IsPTbPv1G37WAocj6022bIQ8LMgVt2cGTAvG0aFbe/VSGkZyuZOmstmuJUBYC5whnA2QhpwZSulA3x6V7RPgI/FBq3OM+MB1AS1mgoK+jSPWpw4YjEKnhAlRKAqHoFlpoyA=
+	t=1790406150; cv=none; b=AXyb6aUJuP3r2kyAWgUv7Y8EWgTsfRPlloMUophh97r4nIyJk8eRFLHvnPgz38239SqTYBER9SycQsKxavnVEx2bDX2CwHy/tzGD/PvOuaiWhk21pEnG5t5AMY9EgEmU0gsbje7lB57iaOf05nPGg0Ns1S8YzI7KFTd9WuMt5nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790406146; c=relaxed/simple;
-	bh=peqUd6TPX+c9R28JUIBZP9wL2AhktP8yvEohe7SxWHM=;
+	s=arc-20240116; t=1790406150; c=relaxed/simple;
+	bh=gl0VkMXU88WMJ7p9JJUhk0v/bM3nT4KH+i+LhxTj8F4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N4lU7iU/q3is37S4cAb2efujMDdv5toI/T31fNvWf+p0+pK3uYC2VjYGc+zxqun0vujf+4dt+D8Ltt3CtgClwu2U1Lc8M94IMxz3St9MgaL7tfJvvxYnnJxsCTW+QYvJSyXlUoVsQ51oTVLg94K48g8wYtBlCLWSppvDyKDfitw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hamTWDrH; arc=none smtp.client-ip=74.125.229.12
+	 MIME-Version; b=i3VId34RXHjHseX493nc8RNohi8NsJzkNFUwM/NVgeVl7NWqgIiR+Xi9Ir7T/OvAJ9bjcZhzEcTYMSYvBGsSjbE0mhtABtF7xkaqGbWOBWYmq/Bfqj5OfKaph7MIT83ZQV6JteJQTv9Pc9szF+8rOIoFBU8SYkT5dJcNBAAAAzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DwHkL2hm; arc=none smtp.client-ip=74.125.229.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hamTWDrH"
-Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-33be7dfcfc1so2109014eec.1
-        for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 00:02:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DwHkL2hm"
+Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-342773d94a7so514173eec.0
+        for <kvm@vger.kernel.org>; Sat, 26 Sep 2026 00:02:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790406144; x=1791010944; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790406148; x=1791010948; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=cnOA8ZdlJhQBU9fK/Dc46VHKpyYEAW7BmSzf+fIYK8U=;
-        b=hamTWDrHjUlQaiMRAuJjO/KI3JVLguNcvCapsRR35KxHe6KMTr+5qaWCI8o+d8Cqes
-         TRUpoZ2giodj4lbtTQsau05XrHRf5Ku0A9oif9w8jknx/NntPBTCatlPCn2pYIBhlYDb
-         dxfMOtfFHpyWEW7KxFbIH3e+89evYr5LhpBDhPVMHyjhqiKkmmywn4oPdBsSLYx+pjux
-         2zvUMnXYRlLNOWO9jEX1PqW11fHVembSKZ+eXXqfJNa1DdFuO/G+oLnJ8g9WJSAD2PNW
-         4yKcByy4eky85Sf1pQn8V1IXFraGbZ0FBp3QInYCSs3CopiEVP+ocFF2g33+ism0krIA
-         caTQ==
+        bh=bqOXJpcEbtCWrtmJAKf798JnZn7rLuJzP3qPIyqX4mA=;
+        b=DwHkL2hm0wBWWn70pFnHIAu1dKT+aPIYc+hCWMHfeDG6s9RhweZSs3C1zlNdd1dByQ
+         2LZ8dP5gKjDFIAjynhLp5jIdxtpFqeUvEqsI/zL/E9jiEc0qBBbFugLUPIh0dOZbkT7d
+         bt8R8DMReD0ihf0T88rkGIm1X/KRuDCHIsF1nnp7ZudrUirLDnDHI15HliHPbp/GsmqG
+         Bx3MgRK/IQX4a44YBH8Z4TkeytZZv8LK12bCe+yOf+sVNsWey0JD9nqdRytaGjpHTswO
+         v8MOlBHrxWg09K5QKPpIA5KLWuuaRfRLoCOnFbEzhYDJZT3Mwnq1C/RfuXpWEkK2zrWF
+         GavA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790406144; x=1791010944;
+        d=1e100.net; s=20260707; t=1790406148; x=1791010948;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cnOA8ZdlJhQBU9fK/Dc46VHKpyYEAW7BmSzf+fIYK8U=;
-        b=HOjf996dnCkgQNa3LvN5KAAVDy1YWEGrHtfzqcZKbTtFtE8HIXdmylUrikLI2pZed9
-         4uOAOJbnYYz6Rpgg2GailJqiedcOrS/GJctugrsf7Df1khFCYiV6R/ZpIcx4QhLz4qBS
-         ZNncuYBfYbusNwmUyDETICC/waJCNB+U972G2QITkMPw/iE+wu6kfliLNUtu3cqhCgdx
-         qr8DVeJuSLYoQSopZugmEhN3BGsjdbtX2oUq2MeA2XCE7QSilxTyStd0yZuxOwMZyIiQ
-         4hnwdjGEJDbAtmH+S5Z4kCCtJTL3Y2AFlrk6hjtJfPaixNvw7WD81tGvehqWg8EKnORD
-         /Z5A==
-X-Forwarded-Encrypted: i=1; AKwUvBzfYeGtWN5luqmQiBpsywKrNwj50t9am9vqox145Ip12jxYVBSd0VlpfmlDNeMxbMsPiCM=@vger.kernel.org
-X-Gm-Message-State: AFuF++majonO9LmXTlQ3nM4FSzhYjKpn5DVmbUF9C6EFdHVqI/7bZuMm
-	Bxpu4QAILw6zVk0mQFnAUEMSUjoZHlIjLxN5yR27y15NkFvZqfhmJOeM
-X-Gm-Gg: AYBFou3UgJRPcRYz6VkZwhQobjojiU1foiXXxAesboFt9G+ZybolOBR2UwE7SHUdJaG
-	q2cwQ9bi9MfXHo6gLJiA0kG84gS7pasNTWUEOAe82G0vE7Qp0pwa4uLIzqGk8S8z2gvjJFO0mMF
-	/ZJ7Fc1vjnpdSeomB72F33FGLMBxyvSNvTMwlahO53lJaxgjOkTQ0KTC+C4Ie/oslwoXQhP9FZt
-	XAuAckJ8hehkhgYU5b61Ldfg4fRFLbDrTENN7RVVfaa+IEnoZ86JpCHQDRMOuYy64J1aBxYxgGs
-	INdpoQkyKuTOL3bFQ1QaipSsl5suIMgjeE+LfFs/HZ8dlAy6UWKjhJ5+HfgpFgqLxVbaGFnN33G
-	LSOKF5VcIMXHHdakqQtpmCEm+NHL5HLZYn0HagGTEBbcISK6OKx929tdMldTGKMmx+7EWlQS9rt
-	flLZAxfe7c77kcxcdBn2R64VcXVlIP+isRhQhDPbG32kuwgTTWdBhkd6cCqoqjnlTx2/cgIP3+A
-	ywcKkugCTbFronFhmYVGBJAIQKaIQn3mb/4C17ILw==
-X-Received: by 2002:a05:7300:bf9a:b0:33c:357c:d33e with SMTP id 5a478bee46e88-34272466706mr2124882eec.28.1790406139317;
-        Sat, 26 Sep 2026 00:02:19 -0700 (PDT)
+        bh=bqOXJpcEbtCWrtmJAKf798JnZn7rLuJzP3qPIyqX4mA=;
+        b=Ctjxw1uNLwwvYtFj0S1oSOb+qJEXVAOvrStK4vYl9yT6+JBSkZGHq7UbJUUEJrm3t5
+         ZfHcOchhV/u8tXeLj9BzagEhr4/b86sS17DydxdGko2thgd3ONgBM3FO7cY5OeyV8v7z
+         DZcOZm5T8DAhaxv4A8zgH20bZS+bN8Sl+uLW7c9wJA6u+3+SyyCdcxdshg81yDc9uO9a
+         X6VODFSs/hHR+Honsq7dljEyZwUdKLq8MHA7+NukiI7sww4HWjosQmbiX8BqZ3CUCUxF
+         UqUjXshe2rs8xklz4TH+Sc4FSmJ0zPEhd0vFnf/KYN6jw5gRfIVITFdSWgm5dsYEPvM3
+         Hxsg==
+X-Forwarded-Encrypted: i=1; AKwUvBz0Rhna0z1Z6ICPdMhhZ098osYjvruASS2BpwVW9fVZTHY44Ians4fwzr0n5d80cnwdWQM=@vger.kernel.org
+X-Gm-Message-State: AFuF++kFT/x7K5IUceQWr6pRd5iTKSvp/pn23mi2qEa6VF5hF6eG7fiM
+	YSOw0zpEA5ilKGrqd2CgKJAqZZpn9elh5Q6q4QUrZmDZqHHWD6npl6jT
+X-Gm-Gg: AYBFou0F8DyZ2OFX+j8BjwmqbpViOR9/FvVojHGhvzWqs8OSNVT4fe9ilA3z9wkQDcy
+	j7f+FsPd1ubtOm7/0eyaqg/9Q9HbuFcz7Ir8QCZZ+pgdHktbq/O5HMvbcOPHdX8tISgoPF1EW4Q
+	ddfuazSh0ddCPeUeJ+RetXEFKUbXzj8WSxcciJDcDjAds6lItwukxzNXkYx6fZpFNd8hMwIr9Kr
+	4MLySyhrFQjQ1RAVe6JB1O40Jk2f8QOiKyHp8hRiXnp+I6XTnD/04S4nlE56WxXMJUYoxTYNlJr
+	YJlVumdy+AQyumgEoQ9ttsE0MefmX5gUX/ykzpI5K2nEqZHqUuwv8jsVpmbb+qE9TuHUbLjzMfw
+	yY0O4R+9MlHGP8Y92OUqoxIT7YSPoo2QCIZbxmg0PkyLZeABPnp7F8AvEZD1EopgPNi8pz1EMbF
+	vcsfZPDu6xLswc7hEKhbTGn5pSIW08fz1l/ZIvHmuIZedUUF/wBSjSxq0KaEr2ySU+LzX7i5k6h
+	jejs6TQ0O2wYonddTB2L2s/QRFFzXg=
+X-Received: by 2002:a05:693c:26c9:b0:328:3944:ee53 with SMTP id 5a478bee46e88-3426f9bf753mr2045145eec.2.1790406147406;
+        Sat, 26 Sep 2026 00:02:27 -0700 (PDT)
 Received: from WIN-BH9M8FJACR9 ([103.94.185.75])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-34145c166cfsm10615141eec.28.2026.09.26.00.02.16
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-34145c166cfsm10615141eec.28.2026.09.26.00.02.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 00:02:18 -0700 (PDT)
+        Sat, 26 Sep 2026 00:02:26 -0700 (PDT)
 From: Yonggang Luo <luoyonggang@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -74,9 +74,9 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
 	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [PATCH v4 19/55] tests/qtest: raise aspeed_smc-test timeout to 12 minutes
-Date: Sat, 26 Sep 2026 15:00:18 +0800
-Message-ID: <20260926070057.1234-20-luoyonggang@gmail.com>
+Subject: [PATCH v4 21/55] tcg: declare TCGv in tcg.h
+Date: Sat, 26 Sep 2026 15:00:20 +0800
+Message-ID: <20260926070057.1234-22-luoyonggang@gmail.com>
 X-Mailer: git-send-email 2.52.0.windows.1
 In-Reply-To: <20260926070057.1234-1-luoyonggang@gmail.com>
 References: <20260926070057.1234-1-luoyonggang@gmail.com>
@@ -88,29 +88,76 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The two AST2400 block-protect cases walk a 32MB flash 16 times each.
-On this host that is about 220 seconds per case, so the whole test
-passes 6 minutes and meson sends SIGTERM at the old 360 second limit.
-
-Raise the slow_qtests entry to 720 seconds.
+Move the TCGv typedef into tcg.h. Per-target builds keep it as an
+alias of TCGv_i32 or TCGv_i64. Common-system builds use an opaque
+TCGv, with TCGv_tl and tcg_imm_tl beside it. The tcg_gen_*_tl macros
+stay in tcg-op.h.
 
 Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
 ---
- tests/qtest/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/tcg/tcg-op.h |  2 --
+ include/tcg/tcg.h    | 22 ++++++++++++++++++++--
+ 2 files changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 8c53bb2e30e..aef99d2bf52 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -1,6 +1,6 @@
- slow_qtests = {
-   'ahci-test': 150,
--  'aspeed_smc-test': 360,
-+  'aspeed_smc-test': 720,
-   'bios-tables-test' : 910,
-   'cdrom-test' : 610,
-   'device-introspect-test' : 720,
+diff --git a/include/tcg/tcg-op.h b/include/tcg/tcg-op.h
+index 37211642365..6835ad97901 100644
+--- a/include/tcg/tcg-op.h
++++ b/include/tcg/tcg-op.h
+@@ -32,14 +32,12 @@
+ #endif
+ 
+ #if TARGET_LONG_BITS == 32
+-typedef TCGv_i32 TCGv;
+ #define tcg_temp_new() tcg_temp_new_i32()
+ #define tcg_global_mem_new tcg_global_mem_new_i32
+ #define tcgv_tl_temp tcgv_i32_temp
+ #define tcg_gen_qemu_ld_tl tcg_gen_qemu_ld_i32
+ #define tcg_gen_qemu_st_tl tcg_gen_qemu_st_i32
+ #elif TARGET_LONG_BITS == 64
+-typedef TCGv_i64 TCGv;
+ #define tcg_temp_new() tcg_temp_new_i64()
+ #define tcg_global_mem_new tcg_global_mem_new_i64
+ #define tcgv_tl_temp tcgv_i64_temp
+diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+index 7669dc1c2db..7790228eeef 100644
+--- a/include/tcg/tcg.h
++++ b/include/tcg/tcg.h
+@@ -179,8 +179,11 @@ typedef tcg_target_ulong TCGArg;
+     * TCGv_vaddr: an integer type wide enough to hold a target pointer type
+     * TCGv_vec  : a host vector type; the exact size is not exposed
+                   to the CPU front-end code.
+-    * TCGv      : an integer type the same size as target_ulong
+-                  (an alias for either TCGv_i32 or TCGv_i64)
++    * TCGv      : an integer type the same size as target_ulong.
++                  Per-target compiles alias TCGv_i32 or TCGv_i64.
++                  Common-system compiles use a distinct opaque TCGv;
++                  use tcg_gen_*_tl.
++    * TCGv_tl   : alias of TCGv for helper-head glue(TCGv_, tl)
+    The compiler's type checking will complain if you mix them
+    up and pass the wrong sized TCGv to a function.
+ 
+@@ -203,6 +206,21 @@ typedef struct TCGv_i64_d *TCGv_i64;
+ typedef struct TCGv_i128_d *TCGv_i128;
+ typedef struct TCGv_ptr_d *TCGv_ptr;
+ typedef struct TCGv_vec_d *TCGv_vec;
++#ifdef COMPILING_PER_TARGET
++# include "exec/target_long.h"
++# if TARGET_LONG_BITS == 32
++typedef TCGv_i32 TCGv;
++# elif TARGET_LONG_BITS == 64
++typedef TCGv_i64 TCGv;
++# else
++#  error Unhandled TARGET_LONG_BITS value
++# endif
++typedef target_long tcg_imm_tl;
++#else
++typedef struct TCGv_d *TCGv;
++typedef int64_t tcg_imm_tl;
++#endif
++typedef TCGv TCGv_tl;
+ typedef TCGv_ptr TCGv_env;
+ 
+ #if __SIZEOF_POINTER__ == 4
 -- 
 2.52.0.windows.1
 
