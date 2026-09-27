@@ -1,82 +1,74 @@
-Received: from www5210.sakura.ne.jp (www5210.sakura.ne.jp [133.167.8.150])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204B9379C35;
-	Sat, 26 Sep 2026 17:21:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=133.167.8.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D2137EFFD;
+	Sun, 27 Sep 2026 06:13:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790443301; cv=none; b=b089AMChkEDkreGmYHLXG94vsHLWkhkvkEuEoPPH1Hyw1bKj60Qc1yo7EzG9Ry39DI2Rgk6e/Xhg4hQIAWzCUKV34lHiVToiQmB7LVYRAWo+5DSKOuDcwy+QnVo/CUVx8vBvvJjttKeleG+yTqruw+jNTbdDavYjOeVjTkaDMoQ=
+	t=1790489600; cv=none; b=T2uNAsYB+T/T7qB5lcmPyZL/WdVuDastRvGr2NS12Sg15GAQn/QQC96jokUdet2KcGbxKRtdq4F78y3FRWmT/efIw25oX7h0QbM3AFn7wg2awTpIT/mgEEh0gof08pywucwV72FDgWksMtCKUp222vy6a06FiG9j2TNrRzQzyjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790443301; c=relaxed/simple;
-	bh=PKAmzdVbyaF31KV/p+hs0qg3JKH38sTcP725YVbI91g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VyhAy9WWmQBjuf6pBaIr6+znOxKGN7Wu4r99SIf/iJvgrOtsj7jrJn5GdQkHcQnEJZqxbJmAEyZFj6Y7X1B0wpTYC3ECr+0Le1iBW8gjhNnVSc8f0xbEW097VrJGuplaRTn/hnYlnsEopgDO8jsT7QkrsIbAeYmf1AS2vR5u7qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mgml.me; spf=pass smtp.mailfrom=mgml.me; dkim=pass (2048-bit key) header.d=mgml.me header.i=@mgml.me header.b=mAUDJpo2; arc=none smtp.client-ip=133.167.8.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mgml.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mgml.me
+	s=arc-20240116; t=1790489600; c=relaxed/simple;
+	bh=kdin6L0IVJjrk+QOsk1dPyg8rF3qB1OP0mS63CgSzCc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=P9yuBJN+mY3c9fbELYn0HjRmx4PPeGiLg6LiRF+DB1hKawPWOtxf1TKtybGzA7v0O1Zsmbr7Su2fysyMICEwS+t4ig/QnSNE+bEs8YmP+/z2wMcnNU1qexuFwyQ6wFaMs+ywuRgt7qenqb5Roso8Itvd/CtMHh/aYiGyDaOpLkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=mbapcwrm; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mgml.me header.i=@mgml.me header.b="mAUDJpo2"
-Received: from NEET ([104.28.193.80])
-	(authenticated bits=0)
-	by www5210.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 68QHLFGj099249
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Sun, 27 Sep 2026 02:21:15 +0900 (JST)
-	(envelope-from k@mgml.me)
-DKIM-Signature: a=rsa-sha256; bh=komxAsBAeKVWiVU9cEuuT6C8YxdblA0qxPXmNE/d9VQ=;
-        c=relaxed/relaxed; d=mgml.me;
-        h=From:Message-ID:To:Subject:Date;
-        s=rs20250315; t=1790443275; v=1;
-        b=mAUDJpo2z87DwYwujDD6ONIoBCctJCrf+3xZrGX7g+j5JNVAjM1tM+3cpp7hu+wG
-         7OJpiMgaFApIjyX+Dwto/qdOJjaiCnq+lEPknO5dFLFsuB/iyTsZwBVCXPnH2tuW
-         lqHEvd6Q89Ut5IojLvyIvvUV/uJEhhdUS2tjA+fCssihsowK4aPIi7cLTQGukcRQ
-         +540fw1+kQ1WBsGgnpJcgNWcBxwU+CZu2QNRKMLYV+bNIv618Ti738CY2L8JIIxL
-         UdyMoJe2LtGJpmCseA0X1hmlYGfKo8XVhKuomi+hBpkCJrw8fp8kNQZT9HmeI1YS
-         e2ZM4NdF5KBRBW0ZpACkQw==
-Message-ID: <b2be67b6-137f-4381-86fb-0d7bc74dbd3f@mgml.me>
-Date: Sun, 27 Sep 2026 02:21:15 +0900
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="mbapcwrm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail2; t=1790489592; x=1790748792;
+	bh=JZdBH5RBcOxyj1ZZYidO9SxOgrHbVHCuiLvkH6A15Dg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=mbapcwrmZw63dw8ABgcc9K4QT6f9qfgUy78MrM0KoP+7KnHzxpGhaYeT+DQwElfPL
+	 PeHww4Gk9XtZDKUwjndRtsnhVYiYqlVf47cBaeBwV8Rjaixfm9TXy4XKDMDOV05V/M
+	 mB9UFc46yqz+H5327bFrjrcvPO1MtXnnJ5KRIxb3OZ06QMhIONy1xEH4f6YBk9S5dK
+	 TN151etAgeYWXVEzocwMEW1l712PyZPS2iEfoTmqM/WJ2Kq907z2i8Aa2SAIGNg6n1
+	 7X9p8TNWBstUqGuPvHZbn9YZyQ0Pspt5wmnNgVDhrGI3CiMScmyRmkrUJDSpSceyhV
+	 8kSVxjJxWf7Lw==
+Date: Sun, 27 Sep 2026 06:13:08 +0000
+To: Sean Christopherson <seanjc@google.com>
+From: David Ballesteros <davimaba.v@proton.me>
+Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/3] KVM: Fix and account mem_attr_array reservations abandoned on ENOMEM
+Message-ID: <shvokigIdaYF83vU8rik51QxCt-IWzK_vNIV72voXL13vdzqLnE4pdpMT-le6GLd7K8VWiWRTn7lpzJDzLBGYxPIhgdbr5MfPwnUY9lc1ME=@proton.me>
+In-Reply-To: <179028303710.1997669.4762091811625597120.b4-ty@b4>
+References: <20260915175335.138547-1-davimaba.v@proton.me> <179028303710.1997669.4762091811625597120.b4-ty@b4>
+Feedback-ID: 219068424:user:proton
+X-Pm-Message-ID: 844c56fc53ee4a4ce873b2a65ac00800158fd6b7
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15.y v3 3/7] KVM: x86/mmu: Derive shadow MMU page role
- from parent
-To: Sasha Levin <sashal@kernel.org>, Sean Christopherson <seanjc@google.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, stable@vger.kernel.org,
-        Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
-        David Matlack <dmatlack@google.com>
-References: <20260913155523.7423-4-k@mgml.me>
- <daily-reply-0006-re-kvm-mmu-derive-child-role-5-15@kernel.org>
- <arVZfjUskXC54OKZ@google.com>
- <2026-09-25-daily-reply-0014-re-kvm-mmu-role-prereqs-5-15@kernel.org>
-Content-Language: en-US
-From: Kenta Akagi <k@mgml.me>
-In-Reply-To: <2026-09-25-daily-reply-0014-re-kvm-mmu-role-prereqs-5-15@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
 
+Haha, I didn't even realize using AI would make me sound like a bot
+until now...
 
-On 2026/09/26 3:48, Sasha Levin wrote:
->> I vote to backport the relevant upstream commits.  Reviewing this without those
->> commits is a pain.  I think it's these, to get fairly clean cherry-picks?
->>
->>   dc1ce45575b3401102568dd60ba8894849d1d64b KVM: MMU: update comment on the number of page role combinations
->>   41e35604eaff2266ba8523787ebe99c5ca4c4045 KVM: X86: Remove useless code to set role.gpte_is_8_bytes when role.direct
->>   b46a13cb7ea1137b2e01dfaafcacd5cd79db8390 KVM: X86: Calculate quadrant when !role.gpte_is_8_bytes
->>   bb3b394d35e80d7a58ce015191e4960a13f54ba5 KVM: X86: Rename gpte_is_8_bytes to has_4_byte_gpte and invert the direction
-> 
-> Agreed. Those four apply to 5.15 in that order without conflicts.
-> 
-> Kenta, could you send a v4 that starts with them and then carries 3/7 and
-> 4/7 in their upstream has_4_byte_gpte form? 3/7 doesn't apply on top of
-> them as it is now.
-Hi Sasha, Sean,
+Jokes aside, I truly appreciate your kindness. I have to admit that
+even though I tried to review everything as thoroughly as possible,
+this was my very first patch submission, which is why I found it a bit tric=
+ky to follow all the conventions (though that's no excuse). I definitely le=
+aned too heavily on AI for the write-up. With that said, I understand the e=
+xtra work it causes and I am truly sorry. If there's a next time, I'll writ=
+e it myself -- AI at most for a rough first pass, but the words that reach =
+the list in general will be mine. Best regards, and thanks for the guidance=
+ and patience.
 
-Thank you for the review and suggestion. 
-Understood, I'll test and send v4.
+David Ballesteros
 
-Thanks,
-Akagi
+On 24/09/26 16:54, Sean Christopherson wrote:
+> In the future, please don't have AI directly write changelogs.  It's
+> fine to let AI generate a rough draft, for me at least, AI tends to
+> be far too verbose and uses terminology that isn't common in
+> Linux/upstream.  In other words, AI tends to write changelogs (and
+> bug reports) that require far too much effort to understand.
+>
+> Gripes about AI aside, than you very much for the fixes!
+
