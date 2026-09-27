@@ -1,125 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2683C10BB
-	for <kvm@vger.kernel.org>; Sun, 27 Sep 2026 08:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569153B774D;
+	Sun, 27 Sep 2026 09:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790496703; cv=none; b=SHFw3QZ+zU/4xifG2qh7LtA27FIJfGuht1CqNTR0S2llIsoe7A53d5hf6QgBnYlh13m1356xdGTMY8bKLUPH2U5lP5ZTBAnJOrn6fgLONvhGKr1tg3PKglfePZqfT9sXdAbBfMaDFVoDOpNHWajWsmDqLzipd+NKuE1v6Xn2kq4=
+	t=1790501210; cv=none; b=reCSQXY/FMRYWrpqyROpa8mJDArhzWiP7A7PHlVO7koguXo5lr0wxCpBEwuwCfjgtRlv1sTpZBAEazVlkZOTSSh1Re+aIKBrMfDwtlUJ0KgrRyS1zCJjnnDExyXJPMxJWU1KN+oZR9g8SI8SVi95r73BWVJwND5VOinf1X46BSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790496703; c=relaxed/simple;
-	bh=TPvs3QQQOfRrKdnSi+/hoqODV0WBh4yTcnGfA3v5bvU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=dhTvKewGpynCqeAocfS0CUzjZW63URDGXTpWSyD2PagUhHEls2driWpgKE3z+BvyponoX32sg/Eal553byH6ghYX6B49QyTvLOA1Yw3OHH2cacf4L6BRErtSQ3q93junaQzBcHuGUhIIIGwOajmdy02deWae7yGs7R1UCQvrbwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IAaZYgj9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790501210; c=relaxed/simple;
+	bh=BO3QlRhpnfqxiDO44avy+RfuhNMwFFPndng/0/616TM=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TXnqGLp+alLTW4kEiRYPT4NT4ww8tbhTvgqY0pOfqAEwxbPxdg82oLMRkQEjJr6rR6tBresK1talILpBJaPDQFDEOWxv5cHoD+v1PA0evHqzmIPzfxo8tflZerzslQ+iFdnxlugtC76csdk5AsR6rV7IL1j7A45zSVfE/k3x9RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nahUchTv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IAaZYgj9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D741F00893;
-	Sun, 27 Sep 2026 08:11:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nahUchTv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E07901F000FF;
+	Sun, 27 Sep 2026 09:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790496701;
-	bh=ZzEWVBE41Bu7ZT/3rI6hmY4fx/4Va2K1CEelumts1As=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IAaZYgj9Z1h8wRISEciPAFUTyWGMNAPPFC44oY+rc1R4+WM1mMQUxtOLfKvLYLIq7
-	 0iCFCrTNbzjxidmrx6Qni4Qc5IYlgZRlj6ee3OTIku7LpvTSOBvBElKrbZ/rJWRpCl
-	 0aJxEfZiNZXblVtbQ6mtXSqGkjnOr2Xuatsf3fScTMWJa8PpFqqaRs2QxBXlJPCrRR
-	 7a1AlwZpAFYDWnAqG1cXwqhkcFH19Gol7Vmd0GV6emzDo9BPERqrN9yLvcnR+mixRP
-	 KuzLSjvc8wIrG3Vhz5F/sG5wfnJiygUYqRy9lMCKDOMN1CAavnldwW8rcdUpDbeLKS
-	 JugaS0h+F0KBg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 4/6] LoongArch: KVM: Rebase steal time counter in vcpu
- context
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tao Cui" <cui.tao@linux.dev>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260927075240.3007947-5-cui.tao@linux.dev>
-References: <20260927075240.3007947-1-cui.tao@linux.dev>
- <20260927075240.3007947-5-cui.tao@linux.dev>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 27 Sep 2026 08:11:40 +0000
-Message-Id: <20260927081141.68D741F00893@smtp.kernel.org>
+	s=k20260515; t=1790501208;
+	bh=3onWVfvrHSYSeqY8OGyYXzuHU2DeYUoxFP2LAD1MXJA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=nahUchTvDhWpdqx0fKMdmnMg8P1zwnwqPQ4MN2q4WiuMkzK4PNA4ndLQdkxZqtwH7
+	 ohUW54YcrMQwDWq7cDYlUo21+zhoYMdjuOT66WHZxCJM2WnoI2uLdS6ntKf8Yw6bO3
+	 RRWxM3n2xkS5qQZvXv4uSDsHo+F/Ho6Wh5hl4exfF8tY/tnjq/Qlsk5pX3yP4mVZWU
+	 PjuC9TIEqAoRE5Tu7V4Ul+zXJHL8BxXIggtZZWj2e58QR9HKjxasdgX5wZJ34Joke6
+	 /Fig+uZrfMoIKjOAnvWi4HTG/OM63RQhX84Wb43BNG2aH9+6K5VN9/Vfzf4fkX4k7l
+	 ueSWVq1IOg/yA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xAl9i-0000000DxKg-2ofv;
+	Sun, 27 Sep 2026 09:26:46 +0000
+Date: Sun, 27 Sep 2026 10:29:54 +0100
+Message-ID: <87v77r2ga5.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	will@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	steven.price@arm.com,
+	aneesh.kumar@kernel.org,
+	oupton@kernel.org,
+	gshan@redhat.com,
+	joey.gouly@arm.com,
+	tabba@google.com,
+	yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev,
+	gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com,
+	alpergun@google.com,
+	fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com,
+	lpieralisi@kernel.org,
+	enju.kohei@fujitsu.com,
+	sudeep.holla@arm.com,
+	jonathan.cameron@oss.qualcomm.com
+Subject: Re: [PATCH v19 2/7] firmware: arm_rmm: Check for RMI support at init
+In-Reply-To: <f7662116-ef8e-4f97-90a4-07173236617b@arm.com>
+References: <20260924135201.850038-1-suzuki.poulose@arm.com>
+	<20260924135201.850038-3-suzuki.poulose@arm.com>
+	<arZQCiF3iqp9eCsy@arm.com>
+	<f7662116-ef8e-4f97-90a4-07173236617b@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: suzuki.poulose@arm.com, catalin.marinas@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, will@kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, steven.price@arm.com, aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com, joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com, sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] kvm: LoongArch: steal time drops first preemption delay due to 0=
- sentinel
---
+On Fri, 25 Sep 2026 16:23:49 +0100,
+Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+> 
+> On 25/09/2026 11:42, Catalin Marinas wrote:
+> > On Thu, Sep 24, 2026 at 02:51:56PM +0100, Suzuki K Poulose wrote:
+> >> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+> >> index 32102c3912fa7..e8b29983b0021 100644
+> >> --- a/arch/arm64/kernel/cpufeature.c
+> >> +++ b/arch/arm64/kernel/cpufeature.c
+> >> @@ -293,6 +293,7 @@ static const struct arm64_ftr_bits ftr_id_aa64isar3[] = {
+> >>   static const struct arm64_ftr_bits ftr_id_aa64pfr0[] = {
+> >>   	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_CSV3_SHIFT, 4, 0),
+> >>   	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_CSV2_SHIFT, 4, 0),
+> >> +	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_RME_SHIFT, 4, 0),
+> > 
+> > I think we end up exposing this to (any) guest unless we mask it out in
+> > sanitise_id_aa64dfr0_el1(). Do the guests care about the RME version? I
+> 
+> Valid point. I personally don't think this matters. The FEAT_RME alone
+> is not useful or harmful. I could mask it in KVM as a safe bet.
 
-commit c0824aa7f32e751198a471b8af7a3432b9a7ad2e
-Author: Tao Cui <cuitao@kylinos.cn>
+Is there *any* case where the guest (realm or not) should know it is
+running on RME enabled HW? I can perfectly imagine that someone would
+implement something looking like CCA on non-RME systems.
 
-LoongArch: KVM: Rebase steal time counter in vcpu context
+	M.
 
-KVM_SET_DEVICE_ATTR(PVTIME GPA) initializes st.last_steal from the
-ioctl thread's run_delay, but kvm_update_stolen_time() accumulates the
-vcpu thread's run_delay; the first delta can be negative and wraps in
-u64, so the guest reads a steal time close to 2^64.
-
-Drop the initialization from the attr path and lazily rebase the
-counter on the first steal update, which runs in vcpu context like the
-hypercall path.
-
-> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-> index ed9e092c97ba7..714bd87d1cea5 100644
-> --- a/arch/loongarch/kvm/vcpu.c
-> +++ b/arch/loongarch/kvm/vcpu.c
-[ ... ]
-> @@ -187,8 +188,14 @@ static void kvm_update_stolen_time(struct kvm_vcpu *=
-vcpu)
->  	smp_wmb();
-> =20
->  	unsafe_get_user(steal, &st->steal, out);
-> -	steal +=3D current->sched_info.run_delay - vcpu->arch.st.last_steal;
-> -	vcpu->arch.st.last_steal =3D current->sched_info.run_delay;
-> +	/* acquire pairs with the smp_wmb in the attr path */
-> +	smp_rmb();
-> +	last_steal =3D READ_ONCE(vcpu->arch.st.last_steal);
-> +	if (!last_steal)
-> +		/* first update in vcpu context: rebase the counter */
-> +		last_steal =3D current->sched_info.run_delay;
-> +	steal +=3D current->sched_info.run_delay - last_steal;
-> +	WRITE_ONCE(vcpu->arch.st.last_steal, current->sched_info.run_delay);
-
-[Severity: Medium]
-Since last_steal uses 0 as a sentinel value to indicate an uninitialized
-baseline, what happens if a fresh VCPU thread's current->sched_info.run_del=
-ay
-is exactly 0 during its first call to kvm_update_stolen_time()?
-
-If run_delay is 0, last_steal remains 0. When the VCPU is later preempted
-and run_delay grows, the next update will still see last_steal =3D=3D 0.
-It appears this treats it as an uninitialized state, rebasing to the new
-run_delay without adding the preemption delay to the guest's steal time.
-Does this permanently swallow the first preemption delay?
-
-[ ... ]
-> @@ -1204,8 +1211,10 @@ static int kvm_loongarch_pvtime_set_attr(struct kv=
-m_vcpu *vcpu,
->  	srcu_read_unlock(&kvm->srcu, idx);
-> =20
->  	if (!ret) {
-> -		vcpu->arch.st.guest_addr =3D gpa;
-> -		vcpu->arch.st.last_steal =3D current->sched_info.run_delay;
-> +		WRITE_ONCE(vcpu->arch.st.last_steal, 0);
-
-[Severity: Medium]
-This sets 0 as the sentinel, establishing the ambiguity between an
-uninitialized state and a valid run_delay value of 0. Could a different
-sentinel value (like U64_MAX) be used instead to avoid overlapping with
-a zero run_delay?
-
-> +		/* publish the new address only after clearing the rebase sentinel */
-> +		smp_wmb();
-> +		WRITE_ONCE(vcpu->arch.st.guest_addr, gpa);
->  		kvm_make_request(KVM_REQ_STEAL_UPDATE, vcpu);
->  	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260927075240.3007=
-947-1-cui.tao@linux.dev?part=3D4
+-- 
+Jazz isn't dead. It just smells funny.
