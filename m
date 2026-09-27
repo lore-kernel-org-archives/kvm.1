@@ -1,110 +1,129 @@
-Received: from mta1.migadu.com (out-68.mta1.migadu.com [95.215.58.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F503CBE95
-	for <kvm@vger.kernel.org>; Sun, 27 Sep 2026 07:53:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F84B3876CD
+	for <kvm@vger.kernel.org>; Sun, 27 Sep 2026 08:05:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790495618; cv=none; b=IfD5PYvzTGsdHvvSW6jRQeRUxjQygojxHja8p7rAidtfqDRM83PBK1KoRP/KvbXWLO2mlYyGJL0NHXnDUonxT5JtZ1o8IbV2h6A54GnqCpLQc+xQPnMYJ8IxhgbZfNsQzYfFGaoQ7ZDhzDfkcJ8jLHqw0BixzDRE20wjv0E+CIA=
+	t=1790496302; cv=none; b=Koq2RQe9a5g6QILP6xZIdZn0vDMPIzhNU3AiLy2TlHRKNMMbgAcUkmthIvv/Sr+ePI7H/34StUWztzv+0My0ya2m0u0Fnm4I1et4mpiKkL2xctj4yOe98zw+QVl/4VblHU9JMm+93yKHV89olksnIQn8y6UZXAp/cLURKfsBlc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790495618; c=relaxed/simple;
-	bh=XCswxa9b/tXHdsukhzPqYOjn9XQ9Tfvmw3A9PCSdgF4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ehgJWnveflixqKr8np8/DIAS+PRPW9cq6+GEH8vFEUS9i11yKsqZuNnf531vv4X9q0THJKhaLHYb3mSOt2zukjiRVN64YiOwVIv3f4/2KlsTzsg6X+eJA0ixqZ1nIdPbSr+QnRO33uokyAXvZ72EsJ62gTCWFApM4GvDrCfYFB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iztnD04W; arc=none smtp.client-ip=95.215.58.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1790496302; c=relaxed/simple;
+	bh=jokSKFB/N9WkFUXBJZswI6iJKEJnQF6V3/zesAljNe0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=HAuy24x7RBt9HoLxq59RBrwOBPb1kXRDEWpyiib57gVPpny4H4Fng+kq7YnoCTAKiT8ZxV+btiCE0Yaww4utAq91NZTkTm1BGHLLIrQecWFkCcjYSPtI2GfvdKM8tyAioTbxiTRIzp1mIbMQgNGHdo4czVnUb9+lTFqO9xCDKVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X1prqNpn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iztnD04W"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=XCswxa9b/tXHdsukhzPqYOjn9XQ9Tfvmw3A9PCSdgF4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790495611; v=1; x=1791100411;
- b=iztnD04W19FWX4RUiG6R0FngmshhHxAiTIdwmkd8UO/667GqBCTRuyWBZTnatpoQ1XvTdvL6
- toQ7Fd3fNSv6AC4XatKsAu4pFj9Zv1SZ8afM5Wkqk1didvmijmiydFpIYkW6x1ChihGiZpKtiZn
- BB7be2zJBjz/HMJ1UVm6WkWo=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 2c34b2d94c18373c;
-	Sun, 27 Sep 2026 07:53:31 +0000
-X-Mizu-Trace-ID: 2c34b2d94c18373c
-X-Migadu-Flow: FLOW_OUT
-From: Tao Cui <cui.tao@linux.dev>
-To: maobibo@loongson.cn,
-	gaosong@loongson.cn,
-	zhaotianrui@loongson.cn
-Cc: loongarch@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	chenhuacai@kernel.org,
-	kernel@xen0n.name,
-	nagachaithanya9911@gmail.com,
-	cui.tao@linux.dev,
-	Tao Cui <cuitao@kylinos.cn>
-Subject: [PATCH 6/6] LoongArch: KVM: Reject repeated PCH-PIC CTRL_INIT
-Date: Sun, 27 Sep 2026 15:52:40 +0800
-Message-ID: <20260927075240.3007947-7-cui.tao@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260927075240.3007947-1-cui.tao@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X1prqNpn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4BC61F000FF;
+	Sun, 27 Sep 2026 08:05:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790496301;
+	bh=ZB/MXrTsRajs21sersAfuUhWTl980+9WcbXgO91mWCc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=X1prqNpnLelquyyWCnjghfBsw07FR62cLyDJSDDSE04UTXwdWdyn0Xc4iGNCtkZIu
+	 frOMDTa4oY3ilD3MeWBWuYyCel/ornkRi07mGQUskbZ6nUF4+EF76viwYTAFggvVbk
+	 va8hWZTcL2MjULuiZk9w+VZUfkbeeabHPgI6l3tQHWjzx7j77lndTyUn7uzsJDJVzu
+	 1kS0ysK8bjBf5XhJpv22GOvp2fC5xMTRwJ1RRT90/QYVurJx61v2pFs3AmgiBgaHSh
+	 vOlGeyFfY+4cGyDwuRY+fxTALK2EoAR0m7QxsyrkQzCW49QXP9sJzGdhOpaLGUqubz
+	 uJkHeFrd4WunQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 3/6] LoongArch: KVM: Load dmsintc pointer once in
+ pch_msi_set_irq
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Tao Cui" <cui.tao@linux.dev>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260927075240.3007947-4-cui.tao@linux.dev>
 References: <20260927075240.3007947-1-cui.tao@linux.dev>
+ <20260927075240.3007947-4-cui.tao@linux.dev>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 27 Sep 2026 08:05:00 +0000
+Message-Id: <20260927080500.C4BC61F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Tao Cui <cuitao@kylinos.cn>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] kvm: missing READ_ONCE() allows TOCTOU NULL dereference in MSI rou=
+ting
+--
 
-KVM_DEV_LOONGARCH_PCH_PIC_CTRL_INIT has no guard against repeated
-invocation: every call overwrites pch_pic_base and registers the same
-kvm_io_device on the MMIO bus at the new address, while
-kvm_pch_pic_destroy() unregisters only one bus range.  After a repeated
-init, MMIO to the stale ranges computes its register offset against the
-new base and silently reads 0 / drops writes, and the leftover bus
-entries persist until the VM is destroyed.
+commit f8043137fe3c6524e920d9def763b80d52f1f8ae
+Author: Tao Cui <cuitao@kylinos.cn>
 
-Reject a repeated init with -EBUSY, a null address with -EINVAL, and
-only set pch_pic_base after the bus registration succeeds so a failed
-init does not leave the device half-initialized.  The registration
-error is propagated instead of being replaced with -EFAULT.
+LoongArch: KVM: Load dmsintc pointer once in pch_msi_set_irq
 
-Fixes: d206d9514873 ("LoongArch: KVM: Add PCHPIC user mode read and write functions")
-Signed-off-by: Tao Cui <cuitao@kylinos.cn>
----
- arch/loongarch/kvm/intc/pch_pic.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+This commit attempts to fix a time-of-check to time-of-use race
+condition by loading the kvm->arch.dmsintc pointer into a local variable
+once before checking it. This is intended to prevent a concurrent device
+removal from causing a NULL pointer dereference.
 
-diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
-index 136211f154d4..2baf9ecf0c8a 100644
---- a/arch/loongarch/kvm/intc/pch_pic.c
-+++ b/arch/loongarch/kvm/intc/pch_pic.c
-@@ -285,7 +285,10 @@ static int kvm_pch_pic_init(struct kvm_device *dev, u64 addr)
- 	struct kvm_io_device *device;
- 	struct loongarch_pch_pic *s = dev->kvm->arch.pch_pic;
- 
--	s->pch_pic_base = addr;
-+	if (!addr)
-+		return -EINVAL;
-+	if (s->pch_pic_base)
-+		return -EBUSY;
- 	device = &s->device;
- 	/* init device by pch pic writing and reading ops */
- 	kvm_iodevice_init(device, &kvm_pch_pic_ops);
-@@ -293,8 +296,11 @@ static int kvm_pch_pic_init(struct kvm_device *dev, u64 addr)
- 	/* register pch pic device */
- 	ret = kvm_io_bus_register_dev(kvm, KVM_MMIO_BUS, addr, PCH_PIC_SIZE, device);
- 	mutex_unlock(&kvm->slots_lock);
-+	if (ret < 0)
-+		return ret;
- 
--	return (ret < 0) ? -EFAULT : 0;
-+	s->pch_pic_base = addr;
-+	return 0;
- }
- 
- /* used by user space to get or set pch pic registers */
--- 
-2.43.0
+> diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/=
+dmsintc.c
+> index 194b9f748550e..802c8f9920935 100644
+> --- a/arch/loongarch/kvm/intc/dmsintc.c
+> +++ b/arch/loongarch/kvm/intc/dmsintc.c
+> @@ -70,11 +70,13 @@ int dmsintc_set_irq(struct kvm *kvm, u64 addr, int da=
+ta, int level)
+>  	unsigned int irq, cpu;
+>  	struct kvm_vcpu *vcpu;
+> =20
+> -	if (!kvm->arch.dmsintc)
+> +	struct loongarch_dmsintc *s =3D kvm->arch.dmsintc;
 
+[Severity: High]
+Does this assignment prevent the C compiler from reloading the pointer from
+memory? Without a READ_ONCE() wrapper around kvm->arch.dmsintc, the compiler
+is permitted to optimize away the local storage and emit multiple loads from
+the shared memory location. This could reintroduce the exact race condition
+and NULL pointer dereference that this patch is trying to fix.
+
+> +
+> +	if (!s)
+>  		return -EINVAL;
+> =20
+>  	irq =3D (addr >> AVEC_IRQ_SHIFT) & AVEC_IRQ_MASK;
+> -	cpu =3D (addr >> AVEC_CPU_SHIFT) & kvm->arch.dmsintc->cpu_mask;
+> +	cpu =3D (addr >> AVEC_CPU_SHIFT) & s->cpu_mask;
+>  	if (cpu >=3D KVM_MAX_VCPUS)
+>  		return -EINVAL;
+
+[ ... ]
+
+> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/=
+pch_pic.c
+> index 2ac207271bab1..3517dcc42d22d 100644
+> --- a/arch/loongarch/kvm/intc/pch_pic.c
+> +++ b/arch/loongarch/kvm/intc/pch_pic.c
+> @@ -74,10 +74,11 @@ void pch_pic_set_irq(struct loongarch_pch_pic *s, int=
+ irq, int level)
+>  int pch_msi_set_irq(struct kvm *kvm, struct kvm_kernel_irq_routing_entry=
+ *e, int level)
+>  {
+>  	u64 msg_addr =3D (((u64)e->msi.address_hi) << 32) | e->msi.address_lo;
+> +	struct loongarch_dmsintc *dmsintc =3D kvm->arch.dmsintc;
+
+[Severity: High]
+Could the compiler similarly reload kvm->arch.dmsintc here since it lacks a
+READ_ONCE() wrapper? It seems like multiple memory accesses could still occ=
+ur
+during the address-window comparison below, exposing the vulnerability
+during concurrent device removal.
+
+> =20
+> -	if (cpu_has_msgint && kvm->arch.dmsintc &&
+> -		msg_addr >=3D kvm->arch.dmsintc->msg_addr_base &&
+> -		msg_addr < (kvm->arch.dmsintc->msg_addr_base + kvm->arch.dmsintc->msg_=
+addr_size)) {
+> +	if (cpu_has_msgint && dmsintc &&
+> +		msg_addr >=3D dmsintc->msg_addr_base &&
+> +		msg_addr < (dmsintc->msg_addr_base + dmsintc->msg_addr_size)) {
+>  		return dmsintc_set_irq(kvm, msg_addr, e->msi.data, level);
+>  	}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260927075240.3007=
+947-1-cui.tao@linux.dev?part=3D3
