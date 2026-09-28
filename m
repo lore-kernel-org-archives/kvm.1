@@ -1,154 +1,110 @@
-Received: from mta0.migadu.com (out-190.mta0.migadu.com [91.218.175.190])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD05483BFA
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 09:24:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.190
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57E0486E62;
+	Mon, 28 Sep 2026 09:28:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790587490; cv=none; b=Y4fVWNuFCMbcR7TpdocS0jdPw1LPQdTSb2G1pCFAeeY3OXFjkkbQYN5rBkrzWw1TrSc9wnUdFhdbXbhPnJ6SO2lNxhoBFMRafn+9EIDAKCZIsKfISjEb2hyhGk+qWgcxvq55k0K7pOQnh43zkcatkaIrrkIjxUGxARFzkBJ+tro=
+	t=1790587716; cv=none; b=e2zZ9yjQ+Tq0+sg1xngC9/UNqZquJocirHVHMscpQNkUw/yR1QUT0+2BTTrWSR0kRQMVzIg25WgtmLSZLVUDixQ1r6hBUdCYc45Avm69yMCGSpNC7S/hNXnJ6pT4KCKMc2+xTgg6CwHBqFeRXgehYzju02ok/eWQELT8XuSdsJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790587490; c=relaxed/simple;
-	bh=HxNwpHe0nHsH16nYk3/3aMin7+3c9bVF1RTMSXmtCuE=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=LwvJs5LFOCeCMXOrVlLXjntwytg6XleyrfB4eTjrjSwNpQnG2096OSfmz2H8gUeSTA5zo1p+Etq9w1ahjg5NJs8YneQ0h5A3GG9lTDRZJErCA4oZh9AqZoeIe4hgarqu7hDsln+YkwPy9lLmickcziZHR1OLRteMjtsZ0hqrsIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QPhpoxYS; arc=none smtp.client-ip=91.218.175.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1790587716; c=relaxed/simple;
+	bh=uP3vTQXZtzAeaAZv+6YX+YSO0w12PlBKUn8pseTb+Yo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rzWkYoMKHBZ/BNhLV81f2G6psTcLWoElJVX7/6ATsTyNTTySNkbMHiCT3kFJw1KWtEY0AJrY9tbqXgTHDIeT0yDuUcQec/ZLyNYWAor53vs/oUgcr47/fHmDcQh5LG8D3Z8/bPB5n07pFqjKIBex018aRYEMKtKwYhuUCNFALqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=bM9akU5S; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QPhpoxYS"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=HxNwpHe0nHsH16nYk3/3aMin7+3c9bVF1RTMSXmtCuE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790587486; v=1; x=1791192286;
- b=QPhpoxYSjKH3PdIbQuHd94yXAuuXcYNXhuJTievVvLsgidgeUB6Yx2iezKBuTOKxyeDE6X8C
- tE3Db+9hGuHrexhPl0s3XjqckRVyyc9zhe5J0gcQGS9mT2llMs9HHZEkI8EH13kzls2BARAOelb
- FAq1eZnqnLccQzLfhNa3pDFY=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 9c7b60c04c93c979;
-	Mon, 28 Sep 2026 09:24:46 +0000
-X-Mizu-Trace-ID: 9c7b60c04c93c979
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <8531bc11-b191-42c0-829d-36f831f6288e@linux.dev>
-Date: Mon, 28 Sep 2026 17:24:38 +0800
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="bM9akU5S"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B53681595;
+	Mon, 28 Sep 2026 02:28:30 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5C5C13F763;
+	Mon, 28 Sep 2026 02:28:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790587714; bh=uP3vTQXZtzAeaAZv+6YX+YSO0w12PlBKUn8pseTb+Yo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bM9akU5SlyI3b64Zov0KeHC1Sj09KC1x8hbI82z6m+V4PSOd5TpznWKQUsy22jDf1
+	 ucZSePmQCDQp85e3rY8vm2KWD73kE8B+0GSQofWdwddw/npvyQW9/kCJ43rUwhnsPD
+	 JANrhcdXIcnY8JGgT8Y++SNmZimsYiHsAQqObTvg=
+Date: Mon, 28 Sep 2026 10:28:20 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+	will@kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+	sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+Subject: Re: [PATCH v19 4/7] firmware: arm_rmm: Add support for SRO
+Message-ID: <arozNIQ-fQ0XQViI@arm.com>
+References: <20260924135201.850038-1-suzuki.poulose@arm.com>
+ <20260924135201.850038-5-suzuki.poulose@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: cui.tao@linux.dev, loongarch@lists.linux.dev, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, chenhuacai@kernel.org, kernel@xen0n.name,
- nagachaithanya9911@gmail.com, Tao Cui <cuitao@kylinos.cn>
-Subject: Re: [PATCH 2/6] LoongArch: KVM: Guard against NULL irqchip in irq
- injection
-To: Bibo Mao <maobibo@loongson.cn>, gaosong@loongson.cn,
- zhaotianrui@loongson.cn
-References: <20260927075240.3007947-1-cui.tao@linux.dev>
- <20260927075240.3007947-3-cui.tao@linux.dev>
- <4b4aba4a-c609-93f5-51e8-3b70a8baf6ad@loongson.cn>
-From: Tao Cui <cui.tao@linux.dev>
-In-Reply-To: <4b4aba4a-c609-93f5-51e8-3b70a8baf6ad@loongson.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260924135201.850038-5-suzuki.poulose@arm.com>
 
+On Thu, Sep 24, 2026 at 02:51:58PM +0100, Suzuki K Poulose wrote:
+> +long rmi_sro_memxfer_execute(struct rmi_sro_state *sro, gfp_t gfp)
+> +{
+> +	struct arm_smccc_1_2_regs *regs = &sro->regs;
+> +	bool cancelled = false;
+> +	unsigned long sro_handle;
+> +
+> +	rmi_smccc_invoke(regs);
+> +
+> +	sro_handle = regs->a1;
+> +	while (RMI_RESULT_STATUS(regs->a0) == RMI_INCOMPLETE) {
+> +		bool can_cancel = RMI_RESULT_CAN_CANCEL(regs->a0) == RMI_OP_CAN_CANCEL;
+> +		int ret = 0;
+> +
+> +		switch (RMI_RESULT_MEMREQ(regs->a0)) {
+> +		case RMI_OP_MEM_REQ_NONE:
+> +			rmi_op_continue(sro_handle, RMI_CONTINUE_KEEP_GOING,
+> +					regs);
+> +			break;
+> +		case RMI_OP_MEM_REQ_DONATE:
+> +			ret = rmi_sro_donate(sro, sro_handle, regs->a2, regs,
+> +					     gfp);
+> +			break;
+> +		case RMI_OP_MEM_REQ_RECLAIM:
+> +			ret = rmi_sro_reclaim(sro, sro_handle, regs);
+> +			break;
+> +		default:
+> +			WARN_ON_ONCE(1);
+> +			ret = -ENXIO;
+> +			break;
+> +		}
 
+Another thing I came across while looking whether we can defer the
+activation. It seems that the spec (I_JVYCH) lists some SROs as
+PE-bound. Nothing here or in rmi_sro_execute() disables migration and
+the memory allocation paths can even sleep with GFP_KERNEL.
 
-在 2026/9/28 12:14, Bibo Mao 写道:
-> 
-> 
-> On 2026/9/27 下午3:52, Tao Cui wrote:
->> From: Tao Cui <cuitao@kylinos.cn>
->>
->> The irqfd injection path dispatches through the irq routing table
->> without the kvm_arch_irqchip_in_kernel() gate that protects
->> KVM_IRQ_LINE: kvm_set_pic_irq() and kvm_arch_set_irq_inatomic() call
->> pch_pic_set_irq(kvm->arch.pch_pic, ...) and pch_msi_set_irq() calls
->> eiointc_set_irq(kvm->arch.eiointc, ...) directly, so a routing entry
->> that outlives the corresponding in-kernel irqchip dereferences a NULL
->> (or, before the previous patch, a freed) device.
->>
->> Make pch_pic_set_irq(), eiointc_set_irq() and dmsintc_set_irq()
->> tolerate a NULL device.
->>
->> Fixes: 1928254c5ccb ("LoongArch: KVM: Add irqfd support")
->> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
->> ---
->>   arch/loongarch/kvm/intc/dmsintc.c | 3 +++
->>   arch/loongarch/kvm/intc/eiointc.c | 5 ++++-
->>   arch/loongarch/kvm/intc/pch_pic.c | 3 +++
->>   3 files changed, 10 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/dmsintc.c
->> index 63072595c01b..e27f448bb54f 100644
->> --- a/arch/loongarch/kvm/intc/dmsintc.c
->> +++ b/arch/loongarch/kvm/intc/dmsintc.c
->> @@ -70,6 +70,9 @@ int dmsintc_set_irq(struct kvm *kvm, u64 addr, int data, int level)
->>       unsigned int irq, cpu;
->>       struct kvm_vcpu *vcpu;
->>   +    if (!kvm->arch.dmsintc)
->> +        return -EINVAL;
->> +
-> There is kvm->arch.dmsintc checking in its caller function pch_msi_set_irq().
-> 
->>       irq = (addr >> AVEC_IRQ_SHIFT) & AVEC_IRQ_MASK;
->>       cpu = (addr >> AVEC_CPU_SHIFT) & kvm->arch.dmsintc->cpu_mask;
->>       if (cpu >= KVM_MAX_VCPUS)
->> diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
->> index fe0a1918f26f..c68f9033638a 100644
->> --- a/arch/loongarch/kvm/intc/eiointc.c
->> +++ b/arch/loongarch/kvm/intc/eiointc.c
->> @@ -112,8 +112,11 @@ static inline void eiointc_update_sw_coremap(struct loongarch_eiointc *s,
->>   void eiointc_set_irq(struct loongarch_eiointc *s, int irq, int level)
->>   {
->>       unsigned long flags;
->> -    unsigned long *isr = (unsigned long *)s->isr;
->> +    unsigned long *isr;
->>   +    if (!s)
->> +        return;
-> When is it possible that parameter s is NULL? There is kvm_arch_irqchip_in_kernel() checking in kvm_send_userspace_msi().
-> 
->> +    isr = (unsigned long *)s->isr;
->>       spin_lock_irqsave(&s->lock, flags);
->>       level ? __set_bit(irq, isr) : __clear_bit(irq, isr);
->>       eiointc_update_irq(s, irq, level);
->> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
->> index 62c09b5f3937..88666425d800 100644
->> --- a/arch/loongarch/kvm/intc/pch_pic.c
->> +++ b/arch/loongarch/kvm/intc/pch_pic.c
->> @@ -48,6 +48,9 @@ void pch_pic_set_irq(struct loongarch_pch_pic *s, int irq, int level)
->>   {
->>       u64 mask = BIT(irq);
->>   +    if (!s)
->> +        return;
->> +
-> When is it possible that parameter s is NULL? I think that when in kernel irqchip is removed, there is no way to inject line IRQ in kernel side.
-> 
+Do we need to disable preemption (only for rmi_sro_execute()) or at
+least migration (the memxfer path)? We did something similar for the RSI
+attestation token loop, commit 24f55f511b9e ("virt: arm-cca-guest: use
+migrate_disable() for attestation token requests").
 
-Thanks for looking into this.
+With only migration disabled, another thread on the same CPU
+issuing a PE-bound SRO would get RMI_BLOCKED (R_NDXSG). In theory, we
+can get a priority inversion case (maybe this doesn't happen with the
+current implementation, just looking at the API design). The RMI_BLOCKED
+fix not to loop forever probably saves us but the caller would have to
+actively sleep or give up before retrying (i.e. don't move the busy loop
+higher app the call stack).
 
-You're right. I rechecked the lifetime rules after your comments, and
-my reasoning for this patch was flawed.
+Another option is to have a per-CPU mutex here and serialise the SROs
+which are PE-bound (there are some precedents for per-CPU mutexes in the
+kernel).
 
-I had assumed an irqfd could remain active after the corresponding
-in-kernel irqchip had been removed. In fact, that state is not
-reachable. The irqchip devices are not destroyed during the lifetime
-of a running VM, and during VM teardown irqfds are released before
-the irqchip devices are destroyed. For DMSINTC, the rollback path is
-already guarded by `pch_msi_set_irq()`.
-
-So these NULL checks are not protecting a real execution path. I'll
-drop this patch in the next revision.
-
-Thanks,
-Tao
-
-> Regards
-> Bibo Mao
->>       spin_lock(&s->lock);
->>       if (level)
->>           s->irr |= mask; /* set irr */
->>
-> 
-
+-- 
+Catalin
