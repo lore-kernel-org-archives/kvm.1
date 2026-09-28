@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB713B774D;
-	Mon, 28 Sep 2026 20:16:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B964F2EFD95;
+	Mon, 28 Sep 2026 20:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790626577; cv=none; b=pqF2pSgqXxg3gRJQIOIVtk86Lm1rkaiITRYr9tnlGSHGrFANoJujZfXfpZAxEQflA1HYJDFdtbxOtdGbsS6G6YpB/P7rBjUrc0D0uLwbt56cjVZBLwO3yQkYOOHLymyvX9wHC2B46daMhorJGvV/JCLDY04oXmagy5bA06ZZ2JI=
+	t=1790627529; cv=none; b=n82Rwh7Mcm3lD+yRYcc88vrcKr/9YGAPRDkYq8CoTd4nwUY4ntiEfA2BJnlJeeE9mWXQlhLX0tfU7c4Exs5T962dDu6FnCfcUfRFxm8B+UYhjkJx8wsjyzK+3gRAWtMavxKSKVPZeitpR4gwzS9NGgrozMGBWMbFfVpVhseuGfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790626577; c=relaxed/simple;
-	bh=laWMqDwKNyVHhN/CJ9050mBI5WkmEpnHUc0KpFpy9Ms=;
+	s=arc-20240116; t=1790627529; c=relaxed/simple;
+	bh=QJT/VFsfMuyTEhWOGSXQHsacyCLEai39rY7yoGo5fQw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oNvhJ8JnfFwhyCXy37Gw1W78P7YpYQVWLDpofwzN/8eVTH+1+i5Hb9QPv8SAIxkXSj5ocYN/pfUnpvJfPL8yCYWkQlGNtWVHQ2eKLzVnWg8DR6AydKl86JbQJfiVvVuBU+bLPfCdgE13PkltyviXGgWMKPSz9fbzmPTUQoqL/TU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BoXY1HQB; arc=none smtp.client-ip=192.198.163.18
+	 In-Reply-To:Content-Type; b=Nk84RTyf3hCkGdUg2Wq1r/K+nDlxI5LyJQdT3ganfuYztnbp+F7Vkmtc0p0NLbHD3IPnvNdjdkQO4p6RWsrmYGBB/vTi0X8ilwLbHluFA5IHscjZAeEolJVdS1t6n93LIP1Cr5JMA38y+g/wsqSZKXi0Usc94q6mIQfVY1C734o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ma1XlGr9; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BoXY1HQB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ma1XlGr9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790626575; x=1822162575;
+  t=1790627527; x=1822163527;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=laWMqDwKNyVHhN/CJ9050mBI5WkmEpnHUc0KpFpy9Ms=;
-  b=BoXY1HQBVBkHinaHq38CB466tkvtGUboJL+o43zGZiEZHHzlcMfHnyFO
-   aPe4qMw6Kw4GlHclTCAQgtRUGVhxp1edAZ2oA4KyrbKOKami6D9cLXnjd
-   saAUktpB2wP1wxyhjcJagdzQFQ7J3Q/HZmbmQMl0eE2XacvPFgkVpOteR
-   3pL6VLgc0YMvBhyfq3svpYsemoNijUsoSg49TLIm1j6e81vMwi2hwrDNI
-   6mEpW06330V7X/7rEbrbpa/2NdxygTzSoFnDog+MMLhGvTTbRNgHTeXc9
-   ga9cvmJo1cOFC0fYjZMuUh+BZNaDLuGswxk2cUDxPFJQkpWNKQRuRA64b
+  bh=QJT/VFsfMuyTEhWOGSXQHsacyCLEai39rY7yoGo5fQw=;
+  b=Ma1XlGr9IfeOJ/trtZWqAfzS93NZ3tYOG65e7fKfn6wL9QgpOio9LtaQ
+   8Hj1KBfF3ezCsrk1N9Mjs/AOM18Fnn+PlPXNGbw3RehnHB6AZIE/bEkUX
+   Bn6tGFSV4yaKfMru4yO9yvavCtEeSrfZ68jzE1gA0UnpN3YXq+E2nydL+
+   8Mf69/K+Gzva0KA/fYm4WwrZnbuHI6MuFUfxPVa/nAdSvGC0C1hYr3TAw
+   cTJUFUmgQ5fQokjuu6sglVMcmZehhmy7QXPjHFykd1gtzY8mJpWaELbFn
+   6a1Mxmyl7pcmyjSf2Bbsin6WfxvbYs74c9Vmu9ZI9N7dmD9ESNAf8LRp8
    A==;
-X-CSE-ConnectionGUID: fpFc46vjS6yUSJEnkL1zLQ==
-X-CSE-MsgGUID: 20S6vZJBRfyrnwmIupzTFg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="90464121"
+X-CSE-ConnectionGUID: 5xGgvmAITE6XlOwWuzQ5vw==
+X-CSE-MsgGUID: tDQD7URXQ6a3b0gaZMLUow==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="107719259"
 X-IronPort-AV: E=Sophos;i="6.27,129,1787036400"; 
-   d="scan'208";a="90464121"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 13:16:14 -0700
-X-CSE-ConnectionGUID: lENdmf/XTF2I3brpvOpvTA==
-X-CSE-MsgGUID: +oQCzvnwSlSOl1ubXbFAsA==
+   d="scan'208";a="107719259"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 13:32:07 -0700
+X-CSE-ConnectionGUID: jJoEi9HITqSvgDucda2zTw==
+X-CSE-MsgGUID: gKJbCuUnQTqQ7Ia4XLTiAQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,129,1787036400"; 
-   d="scan'208";a="274690778"
+   d="scan'208";a="274265891"
 Received: from soc-pf446t5c.clients.intel.com (HELO [10.24.80.90]) ([10.24.80.90])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 13:16:15 -0700
-Message-ID: <bf7e44c9-7a94-4771-9afa-d4bb513ffd32@linux.intel.com>
-Date: Mon, 28 Sep 2026 13:16:14 -0700
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 13:32:07 -0700
+Message-ID: <61a63fcb-c40c-4259-b314-9ec63b0bc847@linux.intel.com>
+Date: Mon, 28 Sep 2026 13:32:06 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,8 +52,7 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/6] virt: tdx-guest: Give the Quote buffer an explicit
- type
+Subject: Re: [PATCH v5 5/6] x86/tdx: Add a helper to query maximum Quote size
 To: Peter Fang <peter.fang@intel.com>,
  Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>
@@ -66,168 +65,128 @@ Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
  Sean Christopherson <seanjc@google.com>,
  Artem Bityutskiy <artem.bityutskiy@intel.com>
 References: <20260928100913.2265687-1-peter.fang@intel.com>
- <20260928100913.2265687-3-peter.fang@intel.com>
+ <20260928100913.2265687-6-peter.fang@intel.com>
 Content-Language: en-US
 From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20260928100913.2265687-3-peter.fang@intel.com>
+In-Reply-To: <20260928100913.2265687-6-peter.fang@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi,
 
 On 9/28/2026 3:08 AM, Peter Fang wrote:
-> The Quote buffer is always a "struct tdx_quote_buf", but its global
-> pointer is a "void *". A function would have to convert it back to make
-> sense of it.
+> TDX attestation report ("Quote") sizes can grow with newer crypto
+> algorithms, so guests can no longer rely on a fixed-size buffer for the
+> Quote.
 > 
-> Declare the global with its actual type, and give it a better name.
+> The TDX module added a new ABI that reports the largest possible Quote
+> size via a metadata field [1]. Add a helper to query the size instead of
+> exposing tdg_vm_rd() directly, as it can read arbitrary metadata fields.
 > 
-> This creates variable shadowing in wait_for_quote_completion(), so
-> rename its parameter for clarity.
+> The reported size covers every Quote type the platform can produce,
+> including SGX-based Quotes.
+> 
+> Thanks to Xu Yilun for suggesting this in an off-list discussion.
+
+If the patch is suggested by Xu Uilun you can use Suggested-by:
+
 > 
 > AI was used under supervision to collect/apply feedback, review code and
 > workshop logs.
 > 
+> [1] Intel TDX Module ABI Definitions, August 2026, TD-scope metadata
+>     field "TD_QUOTE_MAX_SIZE"
+> 
 > Signed-off-by: Peter Fang <peter.fang@intel.com>
 > ---
-
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-
-
 > v5:
->  - New patch. [Dave]
+>  - Drop unused EXPORT_SYMBOL_GPL(). [Dave]
+>  - Use an error code to report failure. [Dave]
+>  - Drop the u32 cast. [Dave]
+>  - Replace the kernel-doc comment with a one-liner. [Dave]
+>  - Drop the RB tags, as the code changed substantially.
+> v4:
+>  - Update the TDCS_QUOTE_MAX_SIZE encoding to 0x9010000200000007. [1]
+>  - Provide documentation for the metadata field. [Rick, Kiryl]
+>  - Document that the reported size covers every Quote type. [Xiaoyao]
+>  - Document that a module update does not change the reported size.
+>    [Tony]
+>  - Add Tony's Reviewed-by.
+> v3:
+>  - No code changes. Add Binbin's Reviewed-by.
+> v2:
+>  - Keep the explicit (u32) cast to document the metadata field width.
+>    [Binbin]
+>  - Note that Xu Yilun's suggestion was made in an off-list discussion.
+>    [Sathya]
+>  - Drop the Assisted-by tags, as the code was not written by AI.
 > ---
->  drivers/virt/coco/tdx-guest/tdx-guest.c | 35 ++++++++++++-------------
->  1 file changed, 17 insertions(+), 18 deletions(-)
+>  arch/x86/coco/tdx/tdx.c           | 16 ++++++++++++++++
+>  arch/x86/include/asm/shared/tdx.h |  1 +
+>  arch/x86/include/asm/tdx.h        |  2 ++
+>  3 files changed, 19 insertions(+)
 > 
-> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-> index d0303e31e816..896eb0a09c4a 100644
-> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-> @@ -192,7 +192,7 @@ struct tdx_quote_buf {
->  };
->  
->  /* Quote data buffer */
-> -static void *quote_data;
-> +static struct tdx_quote_buf *quote_buf;
->  
->  /* Lock to streamline quote requests */
->  static DEFINE_MUTEX(quote_lock);
-> @@ -209,7 +209,7 @@ static long tdx_get_report0(struct tdx_report_req __user *req)
->  			     USER_SOCKPTR(req->tdreport));
+> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> index bcaf4180a8db..323e1efc78ea 100644
+> --- a/arch/x86/coco/tdx/tdx.c
+> +++ b/arch/x86/coco/tdx/tdx.c
+> @@ -198,6 +198,22 @@ u64 tdx_hcall_get_quote(void *buf, size_t size)
 >  }
+>  EXPORT_SYMBOL_GPL(tdx_hcall_get_quote);
 >  
-> -static void free_quote_buf(void *buf)
-> +static void free_quote_buf(struct tdx_quote_buf *buf)
+> +/*
+> + * Ask the TDX module what the largest possible Quote might be.
+> + */
+> +int tdx_get_max_quote_size(u64 *max_quote_size)
+> +{
+> +	u64 err;
+> +
+> +	err = tdg_vm_rd(TDCS_QUOTE_MAX_SIZE, max_quote_size);
+> +
+> +	/* Old modules do not support this. Tell the caller. */
+> +	if (err)
+> +		return -EINVAL;
+
+I think -ENODEV or -EOPNOTSUPP is more appropriate return value
+for unsupported case.
+
+Also tdg_vm_rd() updates max_quote_size on error case as well.
+
+You can reset it or use local variable to skip passing incorrect
+value on error case.
+
+> +
+> +	return 0;
+> +}
+> +
+>  static void __noreturn tdx_panic(const char *msg)
 >  {
->  	size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
->  	unsigned int count = len >> PAGE_SHIFT;
-> @@ -222,25 +222,25 @@ static void free_quote_buf(void *buf)
->  	free_pages_exact(buf, len);
->  }
+>  	struct tdx_module_args args = {
+> diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+> index f20e91d7ac35..6f106d4b1a58 100644
+> --- a/arch/x86/include/asm/shared/tdx.h
+> +++ b/arch/x86/include/asm/shared/tdx.h
+> @@ -50,6 +50,7 @@
+>  /* TDX TD-Scope Metadata. To be used by TDG.VM.WR and TDG.VM.RD */
+>  #define TDCS_CONFIG_FLAGS		0x1110000300000016
+>  #define TDCS_TD_CTLS			0x1110000300000017
+> +#define TDCS_QUOTE_MAX_SIZE		0x9010000200000007
+>  #define TDCS_NOTIFY_ENABLES		0x9100000000000010
+>  #define TDCS_TOPOLOGY_ENUM_CONFIGURED	0x9100000000000019
 >  
-> -static void *alloc_quote_buf(void)
-> +static struct tdx_quote_buf *alloc_quote_buf(void)
->  {
->  	size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
->  	unsigned int count = len >> PAGE_SHIFT;
-> -	void *addr;
-> +	struct tdx_quote_buf *buf;
+> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+> index a3c37d61e676..6a465827d8f9 100644
+> --- a/arch/x86/include/asm/tdx.h
+> +++ b/arch/x86/include/asm/tdx.h
+> @@ -83,6 +83,8 @@ int tdx_mcall_extend_rtmr(u8 index, u8 *data);
 >  
-> -	addr = alloc_pages_exact(len, GFP_KERNEL | __GFP_ZERO);
-> -	if (!addr)
-> +	buf = alloc_pages_exact(len, GFP_KERNEL | __GFP_ZERO);
-> +	if (!buf)
->  		return NULL;
+>  u64 tdx_hcall_get_quote(void *buf, size_t size);
 >  
-> -	if (set_memory_decrypted((unsigned long)addr, count))
-> +	if (set_memory_decrypted((unsigned long)buf, count))
->  		return NULL;
+> +int tdx_get_max_quote_size(u64 *max_quote_size);
+> +
+>  void __init tdx_dump_attributes(u64 td_attr);
+>  void __init tdx_dump_td_ctls(u64 td_ctls);
 >  
-> -	return addr;
-> +	return buf;
->  }
->  
->  /*
->   * wait_for_quote_completion() - Wait for Quote request completion
-> - * @quote_buf: Address of Quote buffer.
-> + * @buf: Address of Quote buffer.
->   * @timeout: Timeout in seconds to wait for the Quote generation.
->   *
->   * As per TDX GHCI v1.0 specification, sec titled "TDG.VP.VMCALL<GetQuote>",
-> @@ -249,7 +249,7 @@ static void *alloc_quote_buf(void)
->   * or error code after processing is complete. So wait till the status
->   * changes from GET_QUOTE_IN_FLIGHT or the request being timed out.
->   */
-> -static int wait_for_quote_completion(struct tdx_quote_buf *quote_buf, u32 timeout)
-> +static int wait_for_quote_completion(struct tdx_quote_buf *buf, u32 timeout)
->  {
->  	int i = 0;
->  
-> @@ -257,7 +257,7 @@ static int wait_for_quote_completion(struct tdx_quote_buf *quote_buf, u32 timeou
->  	 * Quote requests usually take a few seconds to complete, so waking up
->  	 * once per second to recheck the status is fine for this use case.
->  	 */
-> -	while (quote_buf->status == GET_QUOTE_IN_FLIGHT && i++ < timeout) {
-> +	while (buf->status == GET_QUOTE_IN_FLIGHT && i++ < timeout) {
->  		if (msleep_interruptible(MSEC_PER_SEC))
->  			return -EINTR;
->  	}
-> @@ -268,7 +268,6 @@ static int wait_for_quote_completion(struct tdx_quote_buf *quote_buf, u32 timeou
->  static int tdx_report_new_locked(struct tsm_report *report, void *data)
->  {
->  	u8 *buf;
-> -	struct tdx_quote_buf *quote_buf = quote_data;
->  	struct tsm_report_desc *desc = &report->desc;
->  	u32 out_len;
->  	int ret;
-> @@ -285,7 +284,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
->  	if (desc->inblob_len != TDX_REPORTDATA_LEN)
->  		return -EINVAL;
->  
-> -	memset(quote_data, 0, GET_QUOTE_BUF_SIZE);
-> +	memset(quote_buf, 0, GET_QUOTE_BUF_SIZE);
->  
->  	/* Update Quote buffer header */
->  	quote_buf->version = GET_QUOTE_CMD_VER;
-> @@ -296,7 +295,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
->  	if (ret)
->  		return ret;
->  
-> -	err = tdx_hcall_get_quote(quote_data, GET_QUOTE_BUF_SIZE);
-> +	err = tdx_hcall_get_quote(quote_buf, GET_QUOTE_BUF_SIZE);
->  	if (err) {
->  		pr_err("GetQuote hypercall failed, status:%llx\n", err);
->  		return -EIO;
-> @@ -417,8 +416,8 @@ static int __init tdx_guest_init(void)
->  	if (ret)
->  		goto deinit_mr;
->  
-> -	quote_data = alloc_quote_buf();
-> -	if (!quote_data) {
-> +	quote_buf = alloc_quote_buf();
-> +	if (!quote_buf) {
->  		pr_err("Failed to allocate Quote buffer\n");
->  		ret = -ENOMEM;
->  		goto free_misc;
-> @@ -431,7 +430,7 @@ static int __init tdx_guest_init(void)
->  	return 0;
->  
->  free_quote:
-> -	free_quote_buf(quote_data);
-> +	free_quote_buf(quote_buf);
->  free_misc:
->  	misc_deregister(&tdx_misc_dev);
->  deinit_mr:
-> @@ -444,7 +443,7 @@ module_init(tdx_guest_init);
->  static void __exit tdx_guest_exit(void)
->  {
->  	tsm_report_unregister(&tdx_tsm_ops);
-> -	free_quote_buf(quote_data);
-> +	free_quote_buf(quote_buf);
->  	misc_deregister(&tdx_misc_dev);
->  	tdx_mr_deinit(tdx_attr_groups[0]);
->  }
 
 -- 
 Sathyanarayanan Kuppuswamy
