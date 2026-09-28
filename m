@@ -1,118 +1,136 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC221496D5E
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 10:12:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8CA848033B;
+	Mon, 28 Sep 2026 10:13:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790590345; cv=none; b=EmeiLa/3iAr5K+KWCFv47JZs4Td7V4owVI7XE8CViUa9ew9zdOK17Lagu4q9DFLNUGqZxsRAIFMnLUDgT4Wh+RrP9VTLzQmiQBMLdVa3dW601CZ2UZC9ktpzQkVC5yvwET3PEAXltS4z19UXotIgFGPYdfO+vzsSrIuaebCgsLE=
+	t=1790590431; cv=none; b=mlo9zmOhYIyLOsaA+cz9GLPeGhXpgeFqtozpwyWUDU+I8MbCQzfKoFjFHEUYV7Daoq+y1K5Lj7xAr2LXBKBXe6DCzh4vmkRBU61eTon213i0KzeIGOHL4L5Whi57ZwE+j24/j51oKA+uRZSAaHk+TPE/IHfP0uXsTb7o2EHK/s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790590345; c=relaxed/simple;
-	bh=D9WZtmamHXSciMAAtuCq/ma/hHGvwwedbpaf0bXn7zE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dTqTb73ieFNmdSyfGXdLbzauDTgXlfD16dZh2nF/EBlh9oW0J7/h8UPDtAJzh1Vk6VxuFHJ8zlv9NrBObAqyGzskeuEGjNapmz/ZfAGX5PygDfBaVkBOVVLcVHei9aFlrZbXdkyXjKAiNmTVCCLEQGGvnT0l4JZisilinZjeuuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MbU1sgCW; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=R9VtdMq3; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790590431; c=relaxed/simple;
+	bh=L4rj5sebU0MgVvbIqYSRSR7LTOTUxoD15WXyP2ljPok=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ckaujv0NF8Du1ThoddQ3PWA2z+PWpX5nGv9LcSu785L1o5lolhyhaiHYIOWUGZU5kxCFHLCzzv/47QIpw+2EVMbx21XfaQe/ay2zytBoT9otsRIMNQqQn75OSurTChKL4ivoOO3UkMrB0VoMXyoz/8MAlZrBGCkPku23bpfSlow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=FtXcuGe5; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MbU1sgCW";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="R9VtdMq3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790590342;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=D9WZtmamHXSciMAAtuCq/ma/hHGvwwedbpaf0bXn7zE=;
-	b=MbU1sgCWFx/DMvWxVd9W0y/NvxOESu/txFx+qy4fNLaduvqpThDjGO0QlUIPQkDRUO9Nnq
-	txtvKnREwkPE9l1ss1M8NvrfYsW/k6xDZcOyzvPqxNMR6nY6+tMW9K7RTmWT35KnZ98Fy8
-	INN174qjP6QitNTwFlDDv0Q/CTlaYMM=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-167-IYzId9UHNC-GcRJHGViA2A-1; Mon, 28 Sep 2026 06:12:21 -0400
-X-MC-Unique: IYzId9UHNC-GcRJHGViA2A-1
-X-Mimecast-MFC-AGG-ID: IYzId9UHNC-GcRJHGViA2A_1790590340
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47f6e8b5996so2620375f8f.2
-        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 03:12:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790590340; x=1791195140; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=D9WZtmamHXSciMAAtuCq/ma/hHGvwwedbpaf0bXn7zE=;
-        b=R9VtdMq3bW/zo1qzDPtl3athhA2y6oB32PcYX+epo2p1OzunDtf0CqCA+A+ZoasXRb
-         T/flNfWvqO2A03ubU0G/FDM3MhpO4i10VT4464m8Szdog8IpTFZq67fuATxT/n3n0BPA
-         vAUTP2gLaKkIYTWPsGJ/cyeWo1CYhqkkj7Y9ry2p9o14LoNC3sBpAKdZNZ6BNvR13tB8
-         IjfBvkjQrerPn0T3V9HojiHOUnRSZ6uiUZt7HnEWDmSd7VyoIVLQyYL99pmzBYRwSp2Z
-         Qmqr8CFEnNWEu94i5acOxgy4zqHbsAL/bg7lRp70NaXjjFJLde25GpUmEgHjinVifZ3T
-         +qUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790590340; x=1791195140;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=D9WZtmamHXSciMAAtuCq/ma/hHGvwwedbpaf0bXn7zE=;
-        b=G9hBJvRCjOrc6BZrLXyX68WMCYryIjEr3HjV90+ypxUBckqNo2SI0vZ8D55VII9eIW
-         3fe4e8Ks8L0bEPKyLPPWxufxDWEUXSUmpbGEsYSygzqh0LnZ3Qpkc6LE/UojwKJd57d/
-         V9sJt5GK+Kb3/4HwQhv6HjgmZPvGWqrgk64SgI833VEFZ77k0Ny//oNDo+wCvV0/4F08
-         D0iIPFJ5vtW2vdvYkP7wrKCOi8IAKVwvIhO9drzv6L9vI1vnk++5D6Xp3FO8U3Idz4fc
-         ubVVFfyPXrWXuibNtZnEsvwkZioIXDRRXmwtrXLqa50r+/fF8gSdJeihifqEd6E8vyHt
-         uy2w==
-X-Forwarded-Encrypted: i=1; AKwUvBy9V85BOyJm3Ma+BBwDlS2h0JA9ChT+PW2V68PVHlYgWosV/f/vJU0tY3VjrkFcNlxfmDE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKMsCqLHd+NE3M46pjbOEibYgXG6fZeH7MyfT2gdBOV0RnjSpuK
-	pyaVf+QAF+qc676p81jhv7MruSqqHeW6CxwxOJHTXpPvBBdX3DDrzIzwQk0GUF7RYJ+hzSpk32S
-	uOjNAjAV6Hv/DF9rPibfM21o9AN4qNI9xVfAmE8xQfq/67vkRYJUs4g==
-X-Gm-Gg: AYBFou1VKCaKDyinBBqE9d4vrJLQco4t0akQJAwaE2AoZtv5bDHq8mAMcpZ496K8LIT
-	1HIYLAGYPifOL9Cr47V+9zti886P8hUouBvAa//siSgDIAvT0jd5gdDsADnSQj7Ct+76AbfI9Mw
-	m45mnOf/WcS2XJohsry4BnFDshsgFe72YiAf8Tjo0/ll67L0+Z0oBFisPqUjnvSelKn4Xz/IvPB
-	tSI6L0WJJzoAGXBrExZ2JRTI8/h4l/sRCLxbE2PsXrqD04Uhdwj8iD1qvr0oOU5JiqQsrxTGxrm
-	D3IHtLEpxQxFfvlitw0IY9ZycEhAXXCySKmCO9fMBv/1pGYVyUq2AksmqFQ4UpLN1P1oq6YDtK2
-	NS/g5afx3qfiDdDXPgtu/cyDeB6Sm/ovWPV4=
-X-Received: by 2002:a05:6000:401f:b0:488:8111:6f56 with SMTP id ffacd0b85a97d-48881117121mr15322489f8f.8.1790590340180;
-        Mon, 28 Sep 2026 03:12:20 -0700 (PDT)
-X-Received: by 2002:a05:6000:401f:b0:488:8111:6f56 with SMTP id ffacd0b85a97d-48881117121mr15322447f8f.8.1790590339801;
-        Mon, 28 Sep 2026 03:12:19 -0700 (PDT)
-Received: from leonardi-redhat ([176.206.38.69])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a34a638sm25765327f8f.9.2026.09.28.03.12.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 03:12:19 -0700 (PDT)
-Date: Mon, 28 Sep 2026 12:12:16 +0200
-From: Luigi Leonardi <leonardi@redhat.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
-	Stefano Garzarella <sgarzare@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowangio@gmail.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3 2/8] vsock: simplify error check condition
-Message-ID: <aro9DiEB3GPIMnMu@leonardi-redhat>
-References: <20260922-vsock-connect-reset-closing-v3-0-78907b8200d4@rbox.co>
- <20260922-vsock-connect-reset-closing-v3-2-78907b8200d4@rbox.co>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="FtXcuGe5"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 83A0D1595;
+	Mon, 28 Sep 2026 03:13:40 -0700 (PDT)
+Received: from [10.57.12.79] (unknown [10.57.12.79])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8F3253F86F;
+	Mon, 28 Sep 2026 03:13:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790590424; bh=L4rj5sebU0MgVvbIqYSRSR7LTOTUxoD15WXyP2ljPok=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FtXcuGe5Bf9/0/FkzKwLKEy+JoJg8ovzaYSX2D2/AliXaV5Mu/9pP37XIhE5v6fV3
+	 zwG/SPm1X9FHl8h9u4+rG242LQ2Y7sNXNJEj09s0mPMYE1rl1NvyZRqzOeDT+hBKCE
+	 BAvBPp1hyT7DyFZ0607j5nyKtRA6XXRnoD1oNYF4=
+Message-ID: <4fabad44-280f-40e6-95bb-49011cd2f185@arm.com>
+Date: Mon, 28 Sep 2026 11:13:39 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260922-vsock-connect-reset-closing-v3-2-78907b8200d4@rbox.co>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v19 4/7] firmware: arm_rmm: Add support for SRO
+Content-Language: en-GB
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+ sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com,
+ Gareth Stockwell <Gareth.Stockwell@arm.com>
+References: <20260924135201.850038-1-suzuki.poulose@arm.com>
+ <20260924135201.850038-5-suzuki.poulose@arm.com> <arozNIQ-fQ0XQViI@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <arozNIQ-fQ0XQViI@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 22, 2026 at 03:14:56PM +0200, Michal Luczaj wrote:
->On success, vsock_assign_transport() ensures transport != NULL.
->Drop the redundant check.
->
->Signed-off-by: Michal Luczaj <mhal@rbox.co>
->---
->
+On 28/09/2026 10:28, Catalin Marinas wrote:
+> On Thu, Sep 24, 2026 at 02:51:58PM +0100, Suzuki K Poulose wrote:
+>> +long rmi_sro_memxfer_execute(struct rmi_sro_state *sro, gfp_t gfp)
+>> +{
+>> +	struct arm_smccc_1_2_regs *regs = &sro->regs;
+>> +	bool cancelled = false;
+>> +	unsigned long sro_handle;
+>> +
+>> +	rmi_smccc_invoke(regs);
+>> +
+>> +	sro_handle = regs->a1;
+>> +	while (RMI_RESULT_STATUS(regs->a0) == RMI_INCOMPLETE) {
+>> +		bool can_cancel = RMI_RESULT_CAN_CANCEL(regs->a0) == RMI_OP_CAN_CANCEL;
+>> +		int ret = 0;
+>> +
+>> +		switch (RMI_RESULT_MEMREQ(regs->a0)) {
+>> +		case RMI_OP_MEM_REQ_NONE:
+>> +			rmi_op_continue(sro_handle, RMI_CONTINUE_KEEP_GOING,
+>> +					regs);
+>> +			break;
+>> +		case RMI_OP_MEM_REQ_DONATE:
+>> +			ret = rmi_sro_donate(sro, sro_handle, regs->a2, regs,
+>> +					     gfp);
+>> +			break;
+>> +		case RMI_OP_MEM_REQ_RECLAIM:
+>> +			ret = rmi_sro_reclaim(sro, sro_handle, regs);
+>> +			break;
+>> +		default:
+>> +			WARN_ON_ONCE(1);
+>> +			ret = -ENXIO;
+>> +			break;
+>> +		}
+> 
+> Another thing I came across while looking whether we can defer the
+> activation. It seems that the spec (I_JVYCH) lists some SROs as
+> PE-bound. Nothing here or in rmi_sro_execute() disables migration and
+> the memory allocation paths can even sleep with GFP_KERNEL.
 
-LGTM!
+No, this is not required. I agree this is confusing. I will get it
+clarified.
 
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+So, there are two different sources for the SRO contexts. One is a 
+global pool and the other an Object.
 
-Thanks,
-Luigi
+e.g., For an RMI operation on an Object, SRO context can be the object
+itself (e.g., REC_CREATE, REALM_ACTIVATE etc.)
+
+However, when there is no reliable object for the command (e.g., 
+RMI_GRANULE_RANGE_DELEGATE), the RMM must allocate a context from
+the global pool. Now, the "PE" in there comes from a recommendation
+to the RMM implementations, that the global pool size must depend on
+the number of PEs on the system. This doesn't mean that the SRO
+handles are only bound to those PEs. I will get this clarified
+in the RMM spec.
+
+Cheers
+Suzuki
+
+
+
+> 
+> Do we need to disable preemption (only for rmi_sro_execute()) or at
+> least migration (the memxfer path)? We did something similar for the RSI
+> attestation token loop, commit 24f55f511b9e ("virt: arm-cca-guest: use
+> migrate_disable() for attestation token requests").
+> 
+> With only migration disabled, another thread on the same CPU
+> issuing a PE-bound SRO would get RMI_BLOCKED (R_NDXSG). In theory, we
+> can get a priority inversion case (maybe this doesn't happen with the
+> current implementation, just looking at the API design). The RMI_BLOCKED
+> fix not to loop forever probably saves us but the caller would have to
+> actively sleep or give up before retrying (i.e. don't move the busy loop
+> higher app the call stack).
+> 
+> Another option is to have a per-CPU mutex here and serialise the SROs
+> which are PE-bound (there are some precedents for per-CPU mutexes in the
+> kernel).
+> 
 
