@@ -1,45 +1,46 @@
 Received: from www5210.sakura.ne.jp (www5210.sakura.ne.jp [133.167.8.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF5A4F4D1A;
-	Mon, 28 Sep 2026 16:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6744E36C6;
+	Mon, 28 Sep 2026 16:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=133.167.8.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790613908; cv=none; b=ezNMNe/bqYu4scyWwER60rrFHAPlN6uKRnrqkYDLuTmsztmut9RWl7/kp3iI1ab+OrtBggcMSQ2zaqhsN8sQyyX23QofSLhxYUpFH7Dc0HqA07BAqgsyxP2PTiHUAr/uFzdpP3VN/W8mFQqcGv7urgyJ+92/pHWcxpneUvc++fA=
+	t=1790613916; cv=none; b=XR9X3fJA5iZ1L/M6Hzbnd9CsSLkhGbmV/BitOXZAZlR3A6AwJFU2Q2On+mdJPKEeBEXVeX0WljRSmGXiEVf29VUCW1/tNRHjaKVahDYMhXCh6SH3BpSr1LDFNYhDuW9NNcHdlV270Mx8hzPzF5nQQVHN4Ayy8ETEktVsgsAlpRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790613908; c=relaxed/simple;
-	bh=1iSs/vrWHDlC2vp1ysdAiuMR483Lav+FKygNYu6jyBU=;
+	s=arc-20240116; t=1790613916; c=relaxed/simple;
+	bh=1OOobdQ11weU6moeZZwpm09bo1wxAbWBw0kRHCrV7w4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Js1aa3nRPcwXQB1lZvoITVKp1O14OBXisZRxdkYjhp9ouNg7aBkJ7si5G022SAx5CeH8h9D33wQ/kIYCHbc/gRvkRR/Ho23Zy9CwCbZxFrDOEDswzVJ4/kxUUPYG44tqVg7TMSzTMQ31sNBGzj/KR1c81oWTDMB5Uc/XvwgrHMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mgml.me; spf=pass smtp.mailfrom=mgml.me; dkim=pass (2048-bit key) header.d=mgml.me header.i=@mgml.me header.b=WEGH5ozs; arc=none smtp.client-ip=133.167.8.150
+	 MIME-Version; b=h9jATAevtImWe3kXFztu7O8hal6aY7HNn/Co27XlvOrjh7hHyQ0RSISfxoglXHLoN7JojyQXc+a9Z8lwbJ4p7kwPBqCcmiByH71Sx4912qtWJPtnVGITjlE1l+W/7TZ6HuMhat2I4Nkrx/paUHTpy7GQf744t7CF8zVO7R2bbAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mgml.me; spf=pass smtp.mailfrom=mgml.me; dkim=pass (2048-bit key) header.d=mgml.me header.i=@mgml.me header.b=H7lTqJNm; arc=none smtp.client-ip=133.167.8.150
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mgml.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mgml.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mgml.me header.i=@mgml.me header.b="WEGH5ozs"
+	dkim=pass (2048-bit key) header.d=mgml.me header.i=@mgml.me header.b="H7lTqJNm"
 Received: from fedora ([104.28.225.80])
 	(authenticated bits=0)
-	by www5210.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 68SGijNm080644
+	by www5210.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 68SGijNv080644
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Tue, 29 Sep 2026 01:44:50 +0900 (JST)
+	Tue, 29 Sep 2026 01:44:51 +0900 (JST)
 	(envelope-from k@mgml.me)
-DKIM-Signature: a=rsa-sha256; bh=qljtLoYmPRL1jB9MR4rFR4VrJjKYSmEFjcRWwNcZwss=;
+DKIM-Signature: a=rsa-sha256; bh=hUGRy2GkFjaSCXn2GuMXP39zgxkYt/YuZGXtbIDdFGY=;
         c=relaxed/relaxed; d=mgml.me;
         h=From:Message-ID:To:Subject:Date;
-        s=rs20250315; t=1790613890; v=1;
-        b=WEGH5ozsysmIp1e7azQv8ThlYNVXLQivA5pUqHAnb1A40yCjFurBJ+zuwG3jJ1lG
-         fWk/cqXTfpkM3s3WGcYYcYRunHPq2ZlWB8YWoF33YQiGeFaqg+23T1QoIeHW8WzZ
-         hDIK+YTATmFTyUEKkTe7dShazqvetefZYYnod4/Ysm94UrF1PgvdyPqnRNB9eDX7
-         mn3BT3YAm9jpBUJPKFL5IKSQgpR85nCF1wOrhjG95Nqb3JSUgTnFXKXaPFEnmVZq
-         KHMWoWyoV08u2r1jC+0vVpBA4GwMmjeYyOE9Rz2acDgJ9jOMCg0OzC5zQpdgtt+H
-         mLPk1xItqL0KcWFYm8tczw==
+        s=rs20250315; t=1790613892; v=1;
+        b=H7lTqJNmyWY75WhnOs3cwQD5yRh1tP/TjhFbB408hTjlEzSsLXvSc+FalUCs/+Lt
+         Tq5CXtinxyRVLlVFyUpdvDZxHgW2BsooJwrUJxHsBanxoEl6jDUjmlGwcHrhzvvA
+         EgIg/aEdB8JIeQ7ebAnqMCZHBV4h35+BqGg1NtRKOGQSGOYi86fIYiTM9nTKTTcY
+         7G5TajT9uegbvuH7Gp/yQMB6bmELyUGjigdvjoZDskYdHUfpqX69WJkLzBXflf5C
+         KKxz36TO0mzZgNhQ+0r8wc6DNpa4/aw7zMYI3ys3uPUiD9smgMBOy1dwtQyRwGSC
+         TfP/1dn7M2C5623rjDcLBg==
 From: Kenta Akagi <k@mgml.me>
 To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, stable@vger.kernel.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, David Matlack <dmatlack@google.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Sean Christopherson <seanjc@google.com>, Kenta Akagi <k@mgml.me>
-Subject: [PATCH 5.15.y v4 01/11] KVM: x86/mmu: Use a bool for direct
-Date: Tue, 29 Sep 2026 01:44:17 +0900
-Message-ID: <20260928164427.4699-2-k@mgml.me>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Alexander Bulekov <bkov@amazon.com>,
+        Fred Griffoul <fgriffo@amazon.co.uk>, Kenta Akagi <k@mgml.me>
+Subject: [PATCH 5.15.y v4 10/11] KVM: x86: Fix shadow paging use-after-free due to unexpected GFN
+Date: Tue, 29 Sep 2026 01:44:26 +0900
+Message-ID: <20260928164427.4699-11-k@mgml.me>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260928164427.4699-1-k@mgml.me>
 References: <20260928164427.4699-1-k@mgml.me>
@@ -51,48 +52,151 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: David Matlack <dmatlack@google.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 27a59d57f073f21f029df1517c2c0a1abea5b0ce upstream.
+commit 0cb2af2ea66ad8ff195c156ea690f11216285bdf upstream.
 
-The parameter "direct" can either be true or false, and all of the
-callers pass in a bool variable or true/false literal, so just use the
-type bool.
+The shadow MMU computes GFNs for direct shadow pages using sp->gfn plus
+the SPTE index. This assumption breaks for shadow paging if the guest
+page tables are modified between VM entries (similar to commit
+aad885e77496, "KVM: x86/mmu: Drop/zap existing present SPTE even
+when creating an MMIO SPTE", 2026-03-27).  The flow is as follows:
 
-No functional change intended.
+- a PDE is installed for a 2MB mapping, and a page in that area is
+  accessed.  KVM creates a kvm_mmu_page consisting of 512 4KB pages;
+  the kvm_mmu_page is marked by FNAME(fetch) as direct-mapped because
+  the guest's mapping is a huge page (and thus contiguous).
 
-Reviewed-by: Lai Jiangshan <jiangshanlai@gmail.com>
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: David Matlack <dmatlack@google.com>
-Message-Id: <20220516232138.1783324-3-dmatlack@google.com>
+- the PDE mapping is changed from outside the guest.
+
+- the guest accesses another page in the same 2MB area.  KVM installs
+  a new leaf SPTE and rmap entry; the SPTE uses the "correct" GFN
+  (i.e. based on the new mapping, as changed in the previous step) but
+  that GFN is outside of the [sp->gfn, sp->gfn + 511] range; therefore
+  the rmap entry cannot be found and removed when the kvm_mmu_page
+  is zapped.
+
+- the memslot that covers the first 2MB mapping is deleted, and the
+  kvm_mmu_page for the now-invalid GPA is zapped.  However, rmap_remove()
+  only looks at the [sp->gfn, sp->gfn + 511] range established in step 1,
+  and fails to find the rmap entry that was recorded by step 3.
+
+- any operation that causes an rmap walk for the same page accessed
+  by step 3 then walks a stale rmap and dereferences a freed kvm_mmu_page.
+  This includes dirty logging or MMU notifier invalidations (e.g., from
+  MADV_DONTNEED).
+
+The underlying issue is that KVM's walking of shadow PTEs assumes that
+if a SPTE is present when KVM wants to install a non-leaf SPTE, then the
+existing kvm_mmu_page must be for the correct gfn.  Because the only way
+for the gfn to be wrong is if KVM messed up and failed to zap a SPTE...
+which shouldn't happen, but *actually* only happens in response to a
+guest write.
+
+That bug dates back literally forever, as even the first version of KVM
+assumes that the GFN matches and walks into the "wrong" shadow page.
+However, that was only an imprecision until 2032a93d66fa ("KVM: MMU:
+Don't allocate gfns page for direct mmu pages") came along.
+
+Fix it by checking for a target gfn mismatch and zapping the existing
+SPTE.  That way the old SP and rmap entries are gone, KVM installs
+the rmap in the right location, and everyone is happy.
+
+Fixes: 2032a93d66fa ("KVM: MMU: Don't allocate gfns page for direct mmu pages")
+Fixes: 6aa8b732ca01 ("kvm: userspace interface")
+Reported-by: Alexander Bulekov <bkov@amazon.com>
+Reported-by: Fred Griffoul <fgriffo@amazon.co.uk>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Link: https://patch.msgid.link/20260503201029.106481-1-pbonzini@redhat.com/
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Kenta Akagi <k@mgml.me>
 ---
- arch/x86/kvm/mmu/mmu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kvm/mmu/mmu.c  | 33 ++++++++++++++-------------------
+ arch/x86/kvm/mmu/spte.h |  5 +++++
+ 2 files changed, 19 insertions(+), 19 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index c0257bbb25c3..f5cfbf973e85 100644
+index 6410ca9d2faf..7e2afd0b5180 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -1738,7 +1738,7 @@ static void drop_parent_pte(struct kvm_mmu_page *sp,
- 	mmu_spte_clear_no_track(parent_pte);
+@@ -188,6 +188,8 @@ static struct percpu_counter kvm_total_used_mmu_pages;
+ static void mmu_spte_set(u64 *sptep, u64 spte);
+ static union kvm_mmu_page_role
+ kvm_mmu_calc_root_page_role(struct kvm_vcpu *vcpu);
++static int mmu_page_zap_pte(struct kvm *kvm, struct kvm_mmu_page *sp,
++			    u64 *spte, struct list_head *invalid_list);
+ 
+ struct kvm_mmu_role_regs {
+ 	const unsigned long cr0;
+@@ -1180,18 +1182,6 @@ static void drop_spte(struct kvm *kvm, u64 *sptep)
+ 		rmap_remove(kvm, sptep);
  }
  
--static struct kvm_mmu_page *kvm_mmu_alloc_page(struct kvm_vcpu *vcpu, int direct)
-+static struct kvm_mmu_page *kvm_mmu_alloc_page(struct kvm_vcpu *vcpu, bool direct)
+-static void drop_large_spte(struct kvm *kvm, u64 *sptep)
+-{
+-	struct kvm_mmu_page *sp;
+-
+-	sp = sptep_to_sp(sptep);
+-	WARN_ON(sp->role.level == PG_LEVEL_4K);
+-
+-	drop_spte(kvm, sptep);
+-	kvm_flush_remote_tlbs_with_address(kvm, sp->gfn,
+-			KVM_PAGES_PER_HPAGE(sp->role.level));
+-}
+-
+ /*
+  * Write-protect on the specified @sptep, @pt_protect indicates whether
+  * spte write-protection is caused by protecting shadow page table.
+@@ -2192,7 +2182,8 @@ static struct kvm_mmu_page *kvm_mmu_get_child_sp(struct kvm_vcpu *vcpu,
  {
- 	struct kvm_mmu_page *sp;
+ 	union kvm_mmu_page_role role;
  
-@@ -2079,7 +2079,7 @@ static struct kvm_mmu_page *kvm_mmu_get_page(struct kvm_vcpu *vcpu,
- 					     gfn_t gfn,
- 					     gva_t gaddr,
- 					     unsigned level,
--					     int direct,
-+					     bool direct,
- 					     unsigned int access)
+-	if (is_shadow_present_pte(*sptep) && !is_large_pte(*sptep))
++	if (is_shadow_present_pte(*sptep) && !is_large_pte(*sptep) &&
++	    spte_to_child_sp(*sptep) && spte_to_child_sp(*sptep)->gfn == gfn)
+ 		return ERR_PTR(-EEXIST);
+ 
+ 	role = kvm_mmu_child_role(sptep, direct, access);
+@@ -2270,12 +2261,16 @@ static void __link_shadow_page(struct kvm_vcpu *vcpu,
+ 
+ 	BUILD_BUG_ON(VMX_EPT_WRITABLE_MASK != PT_WRITABLE_MASK);
+ 
+-	/*
+-	 * If an SPTE is present already, it must be a leaf and therefore
+-	 * a large one.  Drop it and flush the TLB before installing sp.
+-	 */
+-	if (is_shadow_present_pte(*sptep))
+-		drop_large_spte(vcpu->kvm, sptep);
++	if (is_shadow_present_pte(*sptep)) {
++		struct kvm_mmu_page *parent_sp;
++		LIST_HEAD(invalid_list);
++
++		parent_sp = sptep_to_sp(sptep);
++		WARN_ON_ONCE(parent_sp->role.level == PG_LEVEL_4K);
++
++		mmu_page_zap_pte(vcpu->kvm, parent_sp, sptep, &invalid_list);
++		kvm_mmu_remote_flush_or_zap(vcpu->kvm, &invalid_list, true);
++	}
+ 
+ 	spte = make_nonleaf_spte(sp->spt, sp_ad_disabled(sp));
+ 
+diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
+index 31d6456d8ac3..31d03d15415c 100644
+--- a/arch/x86/kvm/mmu/spte.h
++++ b/arch/x86/kvm/mmu/spte.h
+@@ -267,6 +267,11 @@ static inline bool is_executable_pte(u64 spte)
+ 	return (spte & (shadow_x_mask | shadow_nx_mask)) == shadow_x_mask;
+ }
+ 
++static inline struct kvm_mmu_page *spte_to_child_sp(u64 spte)
++{
++	return to_shadow_page(spte & PT64_BASE_ADDR_MASK);
++}
++
+ static inline kvm_pfn_t spte_to_pfn(u64 pte)
  {
- 	bool direct_mmu = vcpu->arch.mmu->direct_map;
+ 	return (pte & PT64_BASE_ADDR_MASK) >> PAGE_SHIFT;
 -- 
 2.53.0
 
