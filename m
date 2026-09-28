@@ -1,81 +1,116 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCCBC4E36CF;
-	Mon, 28 Sep 2026 15:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mta0.migadu.com (out-228.mta0.migadu.com [91.218.175.228])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA2828686
+	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 15:25:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790608294; cv=none; b=uUG9fGwlQhf/Aa/U+/JDOM6Ob0Tb+jzRW1aFd0JIq3q6FKBh8GHtJ05ykC1797xBkO5nXYVWFsjzS+TADRX/CKsH/QoXudInvqfjncy8vWxv+HetYwcCpQx7lF+W60yEXsOpkj+cuu7k+b2Qq/5bubOA2PP7yOPO8bqqOUJFRNE=
+	t=1790609116; cv=none; b=A4haO76y6aCTo/tZqcLEi7xWIhW+XFDaS7P1wIiLN8CLTOB5WYYocpjXNoSDOOCI88J4VA7yrtc+S2YILCRXHBprBikT10Czi9+spVG3YbS9hpf2Naw1jaxONYgrWKMG472WY11thGa0LRa9NKzqMCivdZFxp+dGdZWJFdeDojs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790608294; c=relaxed/simple;
-	bh=Hc6ZuvaXlauagEGx+TDoCIpa+OmpCGHn1bAN2lvRNK0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ovnyFUsa7+sN8cKpnFqOiyImwXhYb8zGCEGlCyTU328yRbrGhv7yxdIbng1FbAto4D35z+/dIuTpMGDUAj8wze2WtO8CVNbBMHTOa2dP4C5ss+4ciJCvtnulTWlJm09fbXIfI8CnKuGiU4kW4m3WzVl6BfrcJw1nPZnaat8L1LE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Q/rdgTRw; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790609116; c=relaxed/simple;
+	bh=s41ieSguAC04yFXFLtnQHHE7zfUrtIP1s8AWwaR+J+o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hYWYmu2VHODrZq2St0D4YNXl/4/7j2MTVAU3/zT5eOrDRCc1tpEJfc7AamaoxD/3ufqFpdWlo/lM1mMK0MGqAX2OIzIphQ4k8+U1ltku3jth7QbA3rDeVIeTb4xlPs0q340J1IxCgMVm3GcxOTf7k/bL1s7XmB+NwUyOL8sPNQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=mPkGYQvm; arc=none smtp.client-ip=91.218.175.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Q/rdgTRw"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5FF571758;
-	Mon, 28 Sep 2026 08:11:28 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AADD03F763;
-	Mon, 28 Sep 2026 08:11:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790608291; bh=Hc6ZuvaXlauagEGx+TDoCIpa+OmpCGHn1bAN2lvRNK0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q/rdgTRw0IwSGfaXeojr45nvCaK8teKmg2S6xpipCML0NkCzlkKSs1gFhpwfzSluc
-	 DBb73c42I6LDgDbqy9l2zkhq0f8wdYDcqsp/Qe2+FU3nu9Eyhmx9PLKz6SnqQoNjbf
-	 waSikuiYa0PdFkLkD6u5zq/WbdEOeOhKgHxI1tgo=
-Date: Mon, 28 Sep 2026 16:11:23 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Steffen Eiden <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Grapentin <gra@linux.ibm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Friedrich Welter <fritz@linux.ibm.com>,
-	Fuad Tabba <tabba@google.com>, Gautam Gala <ggala@linux.ibm.com>,
-	Hariharan Mari <hari55@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>, Marc Zyngier <maz@kernel.org>,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="mPkGYQvm"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=s41ieSguAC04yFXFLtnQHHE7zfUrtIP1s8AWwaR+J+o=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790609112; v=1; x=1791213912;
+ b=mPkGYQvmppfa+fOw3hQpUUbhAMtQHgRfMHtdDUXqU+WDP0rmwjdcbdOK+zR5FIijNkVO9Avq
+ ETe5r6zDijFAnhBMWtLiGyI7T2Jnd2A7z91Gek0+tJqBp2WiXYY3Qg1rJuav/uSg0d3j2Qdwj8f
+ fOymlSnlSXiqYPfKHUhfxSR4=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 8f5f8dc529bfd712;
+	Mon, 28 Sep 2026 15:25:09 +0000
+X-Mizu-Trace-ID: 8f5f8dc529bfd712
+X-Migadu-Flow: FLOW_OUT
+From: Fuad Tabba <fuad.tabba@linux.dev>
+To: Marc Zyngier <maz@kernel.org>,
 	Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: Joey Gouly <joey.gouly@arm.com>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v8 15/29] arm64: Prepare sharing arm64 headers with s390
-Message-ID: <arqDm9EGd7-rqvWp@arm.com>
-References: <20260918133107.1042730-1-seiden@linux.ibm.com>
- <20260918133107.1042730-16-seiden@linux.ibm.com>
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Jing Zhang <jingzhangos@google.com>,
+	Karl Mehltretter <kmehltretter@gmail.com>,
+	Fuad Tabba <tabba@google.com>,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1 00/10] KVM: arm64: Nested stage-2 walk error handling and other small fixes
+Date: Mon, 28 Sep 2026 16:24:57 +0100
+Message-Id: <20260928152507.2116110-1-fuad.tabba@linux.dev>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260918133107.1042730-16-seiden@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 18, 2026 at 03:30:52PM +0200, Steffen Eiden wrote:
-> Prepare the sharing of arm64 headers with s390 by moving definitions
-> inside headers to reduce the number of shared markers. Clean up includes
-> to further streamline the sharing of headers.
-> 
-> No functional change.
-> 
-> Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+Hi folks,
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Small KVM/arm64 fixes that came out of reviewing Karl's SMCCC filter
+series [1], and it just kept growing.
+
+The first two are WARNs that userspace or a guest can trigger: the
+SMCCC filter one on an allocation failure userspace can force with a
+memory cgroup limit, which Sashiko raised [2], the nested one when an
+L1 guest programs an invalid VTCR_EL2. Patches 3 and 4 are the same
+walk's return values. With an invalid VTCR_EL2 or a stage-2 descriptor
+KVM can't read, AT S12E{0,1}{R,W} was retried forever instead of
+retiring with the fault in PAR_EL1. Reporting the unreadable descriptor
+as a Data Abort instead, for the stage-1 walks too, is a separate
+change I'll send later. Patch 5 extends the AT selftest to cover the
+SL0 case.
+
+The three documentation patches fix identifiers in api.rst that don't
+exist anywhere in the tree, and the last two fix selftest leaks.
+
+Based on Linux 7.3-rc3 (fd73f4a665989; also applies to torvalds/master
+fd179f8a05be3).
+
+Cheers,
+/fuad
+
+[1] https://lore.kernel.org/all/20260829054856.70549-1-kmehltretter@gmail.com/
+[2] https://lore.kernel.org/all/20260829055809.29AD31F000E9@smtp.kernel.org/
+
+Fuad Tabba (10):
+  KVM: arm64: Don't WARN on SMCCC filter reserved range allocation
+    failure
+  KVM: arm64: nv: Don't WARN on an invalid VTCR_EL2
+  KVM: arm64: nv: Don't loop on AT S12E{0,1}{R,W} with an invalid
+    VTCR_EL2
+  KVM: arm64: nv: Return a failed stage-2 descriptor read as a fault
+  KVM: arm64: selftests: Test AT S12E1R with an invalid VTCR_EL2.SL0
+  Documentation: KVM: Fix the name of the SMCCC filter attribute
+  Documentation: KVM: Fix the name of KVM_ARM_SET_COUNTER_OFFSET
+  Documentation: KVM: Fix the name of KVM_ARM_FEATURE_ID_RANGE_IDX
+  KVM: arm64: selftests: Free the VMs in smccc_filter and psci_test
+  KVM: arm64: selftests: Free the thread arrays in vgic_lpi_stress
+
+ Documentation/virt/kvm/api.rst                |  6 ++--
+ arch/arm64/kvm/hypercalls.c                   |  2 +-
+ arch/arm64/kvm/nested.c                       | 11 +++-----
+ tools/testing/selftests/kvm/arm64/at.c        | 28 +++++++++++++++++++
+ tools/testing/selftests/kvm/arm64/psci_test.c |  5 +++-
+ .../selftests/kvm/arm64/smccc_filter.c        |  2 ++
+ .../selftests/kvm/arm64/vgic_lpi_stress.c     |  3 ++
+ 7 files changed, 45 insertions(+), 12 deletions(-)
+
+
+base-commit: fd73f4a6659897191fa0d40695fe370925dd3780
+-- 
+2.39.5
+
