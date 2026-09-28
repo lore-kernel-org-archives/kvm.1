@@ -1,109 +1,125 @@
-Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3CA331ECB
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 07:25:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.41
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C36468C13;
+	Mon, 28 Sep 2026 07:59:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790580350; cv=none; b=K0fPZjbPxLKJ6PfsI0WhSoTwcO7tRszR1Pwdgb0Fy1SDOwkywaRfS+WBDojDU8Yss7JVhQeizQEPG718eOIyknD4cTTLI4MzzUUwQdzTJ+vBECIIswgPNiCAUTu85q3IDyfpNdnH4oemRhl4B+ppiq0F/Rh2OU4kXrsft8mDBDc=
+	t=1790582382; cv=none; b=GhhEk7mDf+viflgkKQDAOk5gHzsmp8oF/z/aQgkz8s9uvS/yFyWVqAWoV+3WBcg89eeL1zCyjile5QCg6oSEC1unBbPyqpn8nveZM6+DZ/31JVu99KXnWMlzgqehWj1Hfr8+9HTb/jtfaYJWhZ5H7pK81Yb+7xA5oJ757uRbk3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790580350; c=relaxed/simple;
-	bh=q08SMMXYiHrB/t+BG5Y3bR6naNmrNNO29kDK3fVq4k4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oWk+XNIaRQyRtZLkjJ/9lTwuECUNHDnCRR0l6rah8SYxhwMdOi2eIbVKD3MCEwrRSyXeYTfsSfO3sE9/LjmhS2hiUSS/xlIRW4pel7IK3hl76mk5NqLkL5yQ1r6FTiKCRZlB9TENSWD/p6ugSoaZ3iyVCQ2b8c81mbY8r24x6NQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mxXUNGf3; arc=none smtp.client-ip=74.125.229.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mxXUNGf3"
-Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-34346932d93so1102270eec.3
-        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 00:25:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790580348; x=1791185148; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7ROGDvtvh53/QQPkABiv5e4DoVYicohxxFWZJETjDQU=;
-        b=mxXUNGf3q1qj3KXBeHHYrUEtIYoOOVdlS+fsvzI1n7wpUw2qRSb/N2njJEWmcZIbaK
-         cMA7Hw8qMPFJjCKjacumBU5NvQSrdNvLF810Z2nOzw3ujVr47G5t4g+yMlvvz9WShOT4
-         sE2mTWGIp8z2vvaxuzXwwj3RwDxCkbVH+ZGvCCRAANs2bFuCOBP0rC82Are5OimLsd7s
-         t6kAnzpJZNX15TyOhqGGmfUMRcamkOwG1dxOCXjDka0ymwGFvDYNVvPAd1MYkRcfoCB6
-         24UdTctkqKP9h1hZmmsB15X5UZQ47k2fo26JxxZZYAP+0SiZpE4r8X3o0JypwLzeBzk5
-         CVnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790580348; x=1791185148;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7ROGDvtvh53/QQPkABiv5e4DoVYicohxxFWZJETjDQU=;
-        b=zHSkZ3nhz2MhCwZIbXQ6+BT29544iBf1dr1o76AyGqdvI49XgmYO+Fr09DLfEACqvt
-         QIdp5PwaaRMfqHKUeph1w+2C2twO0e2ZGoRuFjmsJ1O6Mj/pkEz8uUZ1hjNt4xTSyrF6
-         yqioNbfR+HE/Ivm1fbjYGzk/TYFcIPSN2x3ZftwkTPBllEMHCJkYpVj4QKZB02QoQs3d
-         QSUiFB90VUQxIstxz1MwKB3Ar6AiWCnCdTDF/oSmvaFDbmZ3hT63kpbDWHbixShbjNHf
-         pcaCyw1u1OV1ZwdHC84Qi8EpGIRLwQQDWOIb97NSHUmZllmwyh4y/ZtI5ldw4p9FaMV0
-         lFiA==
-X-Forwarded-Encrypted: i=1; AKwUvBzv+ZXNLpUuss3efeX8St4dLpFL0A4qur4lcCpTAepw4TRJuojHerWUzCNuRyYXy+MiSIQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIXZ8Oe/Qreu98Zr78HoG6nyZRGYBp2itsOblcCZuESRuXJ/jZN
-	SKTtFkxr9k6q5z+3tk9M2g2QMpfJxuprFzn1wsG/bLiqGmeB2ObwpAzE
-X-Gm-Gg: AYBFou1uaDotsjNFFMobkADADG0kcYMn720yEWQmjWi1NamdOjrylvONnPbIhmeRFBn
-	Qx2KnFE4CEldByRsDZ0NopZKMrLSHHtHnZ+Tvkh5PTbOfPDpkx3S34Qk9nepgCtewEB/17SYky7
-	enaU0drCcBPqphZHNKm3aBoD9uKVVAGhz5B64mkYdUUCT0p2/TOhpBoJ7MSuYUSKwHxCDDJ28uT
-	QMoJQEsehjXhIHihkOjYrFiIihDee7UqXS2fBVfX+AIsL2y2e1pydKghcDGGK7LcKMEzgl76dEQ
-	pnei6zBVE4YvXapko1bKeibymOF76M9oBv1bYIGM5+2+N7BpD0QjV0OZ9/uElz1ycZ8Q8Z/uCaA
-	z+35hqANi/cWfLArYJhu6Is9FSLHUleX7o8nCbDTLdtmf4wOxZvHPfVKnMp1lLeeQa/L9DXxArC
-	3KUtO0tzLXKx0pTBUQULmOeCiDsYV9JnzPEd5V1Yfk9In7ONx5IUZy/H1/8xd2637nQF8+YzE4n
-	OuhmCLBL1Xvlg==
-X-Received: by 2002:a05:7301:78c6:b0:33b:edf8:1919 with SMTP id 5a478bee46e88-342707b407dmr9263412eec.13.1790580348291;
-        Mon, 28 Sep 2026 00:25:48 -0700 (PDT)
-Received: from wujing.localdomain ([23.254.208.9])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34145d0fc9fsm27735529eec.25.2026.09.28.00.25.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 00:25:47 -0700 (PDT)
-From: Qiliang Yuan <odys.yuan@gmail.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: Qiliang Yuan <odys.yuan@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	linux-hyperv@vger.kernel.org
-Subject: Re: [PATCH] KVM: x86: Clear CR3[63:32] on SMM entry from long mode
-Date: Mon, 28 Sep 2026 15:25:34 +0800
-Message-ID: <20260928072534.1987-1-odys.yuan@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260928-kvm-smm-cr3-upper-bits-v1-1-138f52dd531e@gmail.com>
-References: <20260928-kvm-smm-cr3-upper-bits-v1-1-138f52dd531e@gmail.com>
+	s=arc-20240116; t=1790582382; c=relaxed/simple;
+	bh=4kl2el4FpHcVHqxsS4pGEvHLvJHgWdZsn2aHeqzIC4Q=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=SakwRzNZftAS5XrdekmiWV2DTs5OvKDk6aMvQw6w6xkL+PjkP6tOR2/xkBINird3pMjaCiviaKTJ0OCiJzL16qgnk4Ntou6kq0cngyOdyHHdzPD4kMkoVBYCJudcJ6zl3CjLswONOHMFRpr2l0TALbk9PHPs/47lGJ8hKlfxam8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8CxvtJqHrpqU3EQAA--.48063S3;
+	Mon, 28 Sep 2026 15:59:38 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJCx9cxpHrpqVP8lAA--.52959S2;
+	Mon, 28 Sep 2026 15:59:37 +0800 (CST)
+Subject: Re: [PATCH 6/6] LoongArch: KVM: Reject repeated PCH-PIC CTRL_INIT
+To: Tao Cui <cui.tao@linux.dev>, gaosong@loongson.cn, zhaotianrui@loongson.cn
+Cc: loongarch@lists.linux.dev, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, chenhuacai@kernel.org, kernel@xen0n.name,
+ nagachaithanya9911@gmail.com, Tao Cui <cuitao@kylinos.cn>
+References: <20260927075240.3007947-1-cui.tao@linux.dev>
+ <20260927075240.3007947-7-cui.tao@linux.dev>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <d3a560db-f4f2-6cfe-6742-ca5de9f5719c@loongson.cn>
+Date: Mon, 28 Sep 2026 16:01:02 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <20260927075240.3007947-7-cui.tao@linux.dev>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCx9cxpHrpqVP8lAA--.52959S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7tFW3Cry8JryDKr47XF48Xwc_yoW8KF48pr
+	WrCa9xCFW8Kr129Fs7Zwn3XF1I9Fs7uw4S9a45AFyYkwn0gryrKFy8A3yDX3WDJ395AF1I
+	qr4fGa90va1UAabCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	XVWUAwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
+	8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
+	Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
+	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4s2-UUUUU
 
-+Cc Hyper-V folks and linux-hyperv, since the failure is triggered by
-Hyper-V's handling of VMRUN for a nested (L1) hypervisor, i.e. KVM
-running on WSL2.
 
-For the Hyper-V side: the VMRUN is rejected when the guest state has
-CR0.PG=0, EFER.LMA=0 and CR3[63:32] != 0, a combination that bare-metal
-SVM does not reject.  Is that check intentional?  If it is not, a
-Hyper-V fix would help older KVM versions as well; either way the patch
-avoids creating that state in the first place.
 
-The full patch is here:
-https://lore.kernel.org/r/20260928-kvm-smm-cr3-upper-bits-v1-1-138f52dd531e@gmail.com
+On 2026/9/27 下午3:52, Tao Cui wrote:
+> From: Tao Cui <cuitao@kylinos.cn>
+> 
+> KVM_DEV_LOONGARCH_PCH_PIC_CTRL_INIT has no guard against repeated
+> invocation: every call overwrites pch_pic_base and registers the same
+> kvm_io_device on the MMIO bus at the new address, while
+> kvm_pch_pic_destroy() unregisters only one bus range.  After a repeated
+> init, MMIO to the stale ranges computes its register offset against the
+> new base and silently reads 0 / drops writes, and the leftover bus
+> entries persist until the VM is destroyed.
+> 
+> Reject a repeated init with -EBUSY, a null address with -EINVAL, and
+> only set pch_pic_base after the bus registration succeeds so a failed
+> init does not leave the device half-initialized.  The registration
+> error is propagated instead of being replaced with -EFAULT.
+> 
+> Fixes: d206d9514873 ("LoongArch: KVM: Add PCHPIC user mode read and write functions")
+> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+> ---
+>   arch/loongarch/kvm/intc/pch_pic.c | 10 ++++++++--
+>   1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
+> index 136211f154d4..2baf9ecf0c8a 100644
+> --- a/arch/loongarch/kvm/intc/pch_pic.c
+> +++ b/arch/loongarch/kvm/intc/pch_pic.c
+> @@ -285,7 +285,10 @@ static int kvm_pch_pic_init(struct kvm_device *dev, u64 addr)
+>   	struct kvm_io_device *device;
+>   	struct loongarch_pch_pic *s = dev->kvm->arch.pch_pic;
+>   
+> -	s->pch_pic_base = addr;
+> +	if (!addr)
+> +		return -EINVAL;
+To detect repeated init, I think it will be better add a BOOL type 
+variable such ready/has_init for this. In theory device with physical 
+address 0 is possible.
 
-Thanks,
-Qiliang
+> +	if (s->pch_pic_base)
+> +		return -EBUSY;
+-EEXIST or 0 if it is created already?
+
+Regards
+Bibo Mao
+>   	device = &s->device;
+>   	/* init device by pch pic writing and reading ops */
+>   	kvm_iodevice_init(device, &kvm_pch_pic_ops);
+> @@ -293,8 +296,11 @@ static int kvm_pch_pic_init(struct kvm_device *dev, u64 addr)
+>   	/* register pch pic device */
+>   	ret = kvm_io_bus_register_dev(kvm, KVM_MMIO_BUS, addr, PCH_PIC_SIZE, device);
+>   	mutex_unlock(&kvm->slots_lock);
+> +	if (ret < 0)
+> +		return ret;
+>   
+> -	return (ret < 0) ? -EFAULT : 0;
+> +	s->pch_pic_base = addr;
+> +	return 0;
+>   }
+>   
+>   /* used by user space to get or set pch pic registers */
+> 
+
