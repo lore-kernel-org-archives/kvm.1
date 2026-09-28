@@ -1,182 +1,244 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E29489FB9;
-	Mon, 28 Sep 2026 09:08:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F5B486BB2;
+	Mon, 28 Sep 2026 09:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790586504; cv=none; b=VhsaxG+KnDlYL4GaFN3W3ZJ8fKJj6x8LpDHKnTASmwKzTXQIOqbesojz50jzZ4l+aaB0y7k1eM2g8VrC0ln2Dv8gE4oWiTtmIdtiOWe7vzRxnrslMYyKTUDLBISuMYoUJA98sgxwITLTduTlMnEZ7zX7Lj5HOJ1qfAd4oTHQzH0=
+	t=1790586537; cv=none; b=pVkOb4efe/3GfPc9TFDEANn/YvvXx8njwjdWoVfU8i8bU+zp8iej/H4jOOjOnEqbLRVQj918nGOVfhPOw1VX+wpU/isHDdz2IJP36lZ8+FkwtNZw9vCYgll+zopGm6WHqBkkBFnxOnyGgJQAAqbJLIau/eBWyGO8vccMGpLMYv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790586504; c=relaxed/simple;
-	bh=8QxEVS0jJi+6e55UXb8k9bqPSxR74dQMx6bz8LUh3ys=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=RQUMPXF+IFVjhvJyNCckfRd4N4VTuY/W3vnMHaU5TJPa0m+8KgZ4CmoehHThlH7QNC5PpDaFh3+0B2bk0keYwLi72fBJ8+1HzbZC1Ioee27fmhA4tU79gOFM4uXBozIUEOO11Qsd9Nc4byfwJy49Lla8wpLzm5/UwMPwDcijmKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=j9M6RMu3; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790586537; c=relaxed/simple;
+	bh=rrBM2my4gpP3XexCMlX2KUuX5BJ7lv5uqFGfHxy0R5w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fpEVR3Ea8Y6BbrBO1u93WrB8TFPa6MZFdBJxhXRiUpafdSvcEuQRHpNifoCcqmI5eF8CcHN2tX+yqGE2lbxEkBiQn3/s3FHtr13evoxBrSpc7vXzsxwUO+HeYVBJU9mwz4CXxH5LVRSvAZ8GXzttKQfO3EsuyE6Wbr1A7SaW/4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VMyW5RvF; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="j9M6RMu3"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D25C71570;
-	Mon, 28 Sep 2026 02:08:17 -0700 (PDT)
-Received: from [10.57.12.79] (unknown [10.57.12.79])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 10D593F763;
-	Mon, 28 Sep 2026 02:08:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790586501; bh=8QxEVS0jJi+6e55UXb8k9bqPSxR74dQMx6bz8LUh3ys=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=j9M6RMu3S8zakwg6JRtfvWLDrHJer7eiDjZZICaHfH7tODt9uE2w10JBizs5wuZzJ
-	 +hKgRXyHRXZh6mhrqMviEKCa1NwBCIrInUtLBX0qgTjeJZjGDXo/fZ+aTFLMaCPcxm
-	 uvcWJu2CK82TmeKxYQJ2qV4ezrldT1X+rzjyJYpA=
-Message-ID: <70d47475-e26e-40e1-b409-b0c16aecb8c0@arm.com>
-Date: Mon, 28 Sep 2026 10:08:16 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VMyW5RvF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790586535; x=1822122535;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=rrBM2my4gpP3XexCMlX2KUuX5BJ7lv5uqFGfHxy0R5w=;
+  b=VMyW5RvFnO9BlGREbXaAjnHMzWpQ4K4RmW/4e0ab1Dka5sZzyKr62NTi
+   ylsOQJS+pam7NkVQ/PKep1wsOsPGaF3YxPUj5pb3Mkd3PLosC6MiaZsOz
+   ivPKFzoJZFeaFBAOJL+wvdsnGRymQXA13iSiagzk7WTE5KXWcCIi1sHL1
+   Q965vnM1PdToMVNLAeuc9W6fiuEfb701zn6zwIW1EVE5g962ABZO9iTCa
+   liuEEwpQQNlmaO1nN+M40e/wzVmUoZ/mlKcKnMiHbnc9Vq/L73xidteCo
+   iqo2DQTveQgMYtD9bzP527KsrQdZtP30XxPOc/439w2AfI2IXKBJQ2kwT
+   A==;
+X-CSE-ConnectionGUID: 2bNOWcjtSTe2pD4XgBGHAQ==
+X-CSE-MsgGUID: UV1pVFdBTnWN/vXoMmmpuQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11918"; a="90047042"
+X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
+   d="scan'208";a="90047042"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 02:08:55 -0700
+X-CSE-ConnectionGUID: b8A9UppnRxiNBXDkG3ngvw==
+X-CSE-MsgGUID: UztXR8iITGilYGM2bCX2Xw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
+   d="scan'208";a="271488167"
+Received: from yzhao56-desk.sh.intel.com ([10.239.47.61])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 02:08:48 -0700
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com,
+	dave.hansen@intel.com
+Cc: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	x86@kernel.org,
+	rick.p.edgecombe@intel.com,
+	kas@kernel.org,
+	tabba@google.com,
+	ackerleytng@google.com,
+	michael.roth@amd.com,
+	david@kernel.org,
+	vannapurve@google.com,
+	sagis@google.com,
+	vbabka@suse.cz,
+	thomas.lendacky@amd.com,
+	nik.borisov@suse.com,
+	pgonda@google.com,
+	fan.du@intel.com,
+	jun.miao@intel.com,
+	francescolavra.fl@gmail.com,
+	jgross@suse.com,
+	xiaoyao.li@intel.com,
+	kai.huang@intel.com,
+	binbin.wu@linux.intel.com,
+	chao.p.peng@intel.com,
+	chao.gao@intel.com,
+	farrah.chen@intel.com,
+	yan.y.zhao@intel.com
+Subject: [PATCH v4 01/17] x86/virt/tdx: Enhance tdx_pamt_get/put() to support huge pages
+Date: Mon, 28 Sep 2026 17:08:08 +0800
+Message-ID: <20260928090808.15484-1-yan.y.zhao@intel.com>
+X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20260928090729.15468-1-yan.y.zhao@intel.com>
+References: <20260928090729.15468-1-yan.y.zhao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 5/7] firmware: arm_rmm: Activate the RMM
-Content-Language: en-GB
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
- will@kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
- sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
-References: <20260924135201.850038-1-suzuki.poulose@arm.com>
- <20260924135201.850038-6-suzuki.poulose@arm.com> <arZmXFw5Jw2IbAmA@arm.com>
- <a11aba04-eaaa-43fd-988b-a2581b1b2fdb@arm.com> <araketG70TIKeNuf@arm.com>
- <12e83d88-de4c-4230-aac2-1796123320ad@arm.com>
-In-Reply-To: <12e83d88-de4c-4230-aac2-1796123320ad@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 25/09/2026 18:50, Suzuki K Poulose wrote:
-> Hi Catalin
-> 
-> On 25/09/2026 17:42, Catalin Marinas wrote:
->> On Fri, Sep 25, 2026 at 04:02:24PM +0100, Suzuki K Poulose wrote:
->>> On 25/09/2026 13:17, Catalin Marinas wrote:
->>>> On Thu, Sep 24, 2026 at 02:51:59PM +0100, Suzuki K Poulose wrote:
->>>>> From: Steven Price <steven.price@arm.com>
->>>>>
->>>>> Activate the RMM after the basic configuration. This is a memory
->>>>> transferring stateful operation.
->>>>>
-> 
-> ...
-> 
->>>>> +
->>>>> +    ret = rmi_sro_memxfer_cmd(sro, GFP_KERNEL, SMC_RMI_RMM_ACTIVATE);
->>>>> +    if (ret) {
->>>>> +        pr_err("RMM activate failed (%d)\n", ret);
->>>>> +        ret = ret < 0 ? ret : -ENXIO;
->>>>> +    }
->>>>> +
->>>>> +    return ret;
->>>>
->>>> It was raised earlier this year [1] but I'm not sure it concluded. How
->>>> do we handle kexec and kdump? I think RMI_RMM_DEACTIVATE only succeeds
->>>> if nothing is delegated, so it would need all realms torn down 
->>>> first. If
->>>> that's not feasible, we could at least block (non-crash) kexec like 
->>>> pKVM
->>>> does.
->>>
->>> You are right, we can't DEACTIVATE until all granules have been
->>> "undelegated" back. Not just the Realms, but also the GPTs/Tracking
->>> Metadata etc would need to be reclaimed (when we get to support
->>> dynamic GPT/Tracking metadata). For now, we should block the kexec.
->>
->> Looking more into this (and the memory hotplug story), I find it strange
->> that simply having RME and a valid RMM imposes all these restrictions
->> even if we never run or intend to run a realm. How common will
->> RME-capable systems with RMM firmware be that are not used for CoCo? Or
->> do we expect only CoCo systems to have capable/configured firmware (RME
->> may be present in silicon anyway)?
-> 
-> There is another angle to this :
-> 
-> RMM may act as a TSM (as in the Trusted Security Manager in PCI TDISP)
-> context and provide setting up IDE connection between the RootPort/
-> EndPoint. So, the trigger point for the RMM activation would become the 
-> "First Delegate" request.
-> 
-> Running an RMM just for the "TSM" functionality is not ideal.
-> In the absence of RMM, Linux can act as the baremetal TSM. But when the
-> RMM is present, we must use the RMM as the TSM, especially if the
-> Device will be assigned to a Realm.
-> 
-> FEAT_RME capable systems don't need to enable RMM unless they want to
-> run CoCo guests.
-> 
->>
->> Ideally we'd defer the RMM configuration and activation (and the
->> tracking/GPT checks) until we first attempt to start a realm, keeping
->> only the RMI_VERSION/FEATURES probing at boot. Not sure how feasible
->> this is (memory is more fragmented by then for any contiguous donation).
->> If we manage it, kexec and memory hotplug just work on hosts that never
->> start a realm.
->>
->> The next best thing for kexec is to tear down the realms, undelegate
->> the granules and deactivate the RMM before invoking kexec (with kdump
->> that's harder as we likely no longer have a controlled shutdown).
-> 
-> This is quite complicated, when we get the dynamic metadata support,
-> especially with the self-describing L1GPT and Tracking metadata.
-> But not impossible.
+The TDX module uses PAMT to track metadata for every physical page (within
+TDMR) across three levels: 1GB, 2MB, and 4KB. The VMM is responsible for
+providing backing pages for the PAMT. Without Dynamic PAMT (DPAMT), all
+PAMT backing pages are allocated statically at system boot time. With DPAMT
+enabled, PAMT backing pages tracking physical pages at the 4KB level
+(referred to as DPAMT pages) are dynamically installed and uninstalled at
+runtime.
 
-Looking at this again we could :
+Currently, the VMM invokes tdx_pamt_get()/tdx_pamt_put() to install and
+uninstall DPAMT pages under the assumption that all physical pages are
+tracked at 4KB level.  However, when a guest page is mapped as a huge page
+in the S-EPT, the TDX module tracks it directly at the huge page level,
+meaning installation and uninstallation of DPAMT pages for huge pages is
+neither needed nor applicable.
 
-a. If the user triggers a graceful kexec reboot, i.e, without forced,
-    we should be able to deactivate the RMM. Since all processes are
-    killed, Realm VMs must be off and all granules reclaimed.
-    When we get to dynamic GPT/Tracking, we should additionally
-    reclaim them back.
-b. For forced reboot kexec, I don't think there is a safe way.
+Add a "level" parameter to tdx_pamt_get()/tdx_pamt_put() so the helpers
+can skip DPAMT page installation and uninstallation for huge pages.
 
-We have two options here :
+TD control pages (including S-EPT page table pages) are managed by the TDX
+module at the 4KB level. Therefore, pass PG_LEVEL_4K to
+tdx_pamt_get()/tdx_pamt_put() for those pages.
 
-1. Disable kexec reboot (allowing kexec kdump) when the RMM is active
-    at kexec_load. I prefer this for now, and we could goto 2 eventually.
+This patch is based on earlier work from Kiryl Shutsemau.
+Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+---
+ arch/x86/include/asm/tdx.h  |  4 ++--
+ arch/x86/kvm/vmx/tdx.c      | 14 +++++++++-----
+ arch/x86/virt/vmx/tdx/tdx.c | 12 ++++++------
+ 3 files changed, 17 insertions(+), 13 deletions(-)
 
-2. Back out from machine_kexec() if the RMM was still active.
-    This allows (a) above.
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 48efd3eac375..e2790ac2c521 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -135,8 +135,8 @@ static inline void tdx_init_pamt_cache(struct tdx_pamt_cache *cache)
+ 
+ void tdx_free_pamt_cache(struct tdx_pamt_cache *cache);
+ int tdx_topup_pamt_cache(struct tdx_pamt_cache *cache, unsigned long npages);
+-int tdx_pamt_get(kvm_pfn_t pfn, struct tdx_pamt_cache *cache);
+-void tdx_pamt_put(kvm_pfn_t pfn);
++int tdx_pamt_get(kvm_pfn_t pfn, enum pg_level level, struct tdx_pamt_cache *cache);
++void tdx_pamt_put(kvm_pfn_t pfn, enum pg_level level);
+ 
+ int tdx_guest_keyid_alloc(void);
+ u32 tdx_get_nr_guest_keyids(void);
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 1f0dba322640..410c149bf776 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -1710,14 +1710,18 @@ static int tdx_sept_map_nonleaf_spte(struct kvm *kvm, gfn_t gfn,
+ 	if (!sept_pt)
+ 		return -EIO;
+ 
+-	ret = tdx_pamt_get(page_to_pfn(sept_pt), &to_tdx(vcpu)->pamt_cache);
++	/*
++	 * An S-EPT page table page is tracked by the TDX module at 4KB level,
++	 * so pass 4KB instead of the target S-EPT level.
++	 */
++	ret = tdx_pamt_get(page_to_pfn(sept_pt), PG_LEVEL_4K, &to_tdx(vcpu)->pamt_cache);
+ 	if (KVM_BUG_ON(ret, kvm))
+ 		return ret;
+ 
+ 	err = tdh_mem_sept_add(&to_kvm_tdx(kvm)->td, gpa, level, sept_pt,
+ 			       &entry, &level_state);
+ 	if (err)
+-		tdx_pamt_put(page_to_pfn(sept_pt));
++		tdx_pamt_put(page_to_pfn(sept_pt), PG_LEVEL_4K);
+ 
+ 	if (unlikely(tdx_operand_busy(err)))
+ 		return -EBUSY;
+@@ -1745,7 +1749,7 @@ static int tdx_sept_map_leaf_spte(struct kvm *kvm, gfn_t gfn, enum pg_level leve
+ 
+ 	WARN_ON_ONCE((new_spte & VMX_EPT_RWX_MASK) != VMX_EPT_RWX_MASK);
+ 
+-	ret = tdx_pamt_get(pfn, &to_tdx(vcpu)->pamt_cache);
++	ret = tdx_pamt_get(pfn, level, &to_tdx(vcpu)->pamt_cache);
+ 	if (KVM_BUG_ON(ret, kvm))
+ 		return ret;
+ 
+@@ -1767,7 +1771,7 @@ static int tdx_sept_map_leaf_spte(struct kvm *kvm, gfn_t gfn, enum pg_level leve
+ 		ret = tdx_mem_page_add(kvm, gfn, level, pfn);
+ 
+ 	if (ret)
+-		tdx_pamt_put(pfn);
++		tdx_pamt_put(pfn, level);
+ 
+ 	return ret;
+ }
+@@ -1862,7 +1866,7 @@ static int tdx_sept_remove_leaf_spte(struct kvm *kvm, gfn_t gfn,
+ 		return -EIO;
+ 
+ 	tdx_quirk_reset_paddr(PFN_PHYS(pfn), PAGE_SIZE);
+-	tdx_pamt_put(pfn);
++	tdx_pamt_put(pfn, level);
+ 	return 0;
+ }
+ 
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 33253869e2fd..43f813afc5b1 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -2112,14 +2112,14 @@ static u64 tdh_phymem_pamt_remove(kvm_pfn_t pfn, struct page **pamt_pages)
+ static DEFINE_SPINLOCK(dpamt_lock);
+ 
+ /* Bump DPAMT refcount for the given pfn and allocate DPAMT backing if needed. */
+-int tdx_pamt_get(kvm_pfn_t pfn, struct tdx_pamt_cache *cache)
++int tdx_pamt_get(kvm_pfn_t pfn, enum pg_level level, struct tdx_pamt_cache *cache)
+ {
+ 	struct page *pamt_pages[TDX_DPAMT_ENTRY_PAGE_CNT];
+ 	atomic_t *dpamt_refcount;
+ 	u64 tdx_status;
+ 	int ret;
+ 
+-	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
++	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo) || level != PG_LEVEL_4K)
+ 		return 0;
+ 
+ 	ret = alloc_pamt_array(pamt_pages, cache);
+@@ -2157,13 +2157,13 @@ int tdx_pamt_get(kvm_pfn_t pfn, struct tdx_pamt_cache *cache)
+ EXPORT_SYMBOL_FOR_KVM(tdx_pamt_get);
+ 
+ /* Drop DPAMT refcount for the given pfn and free DPAMT backing if needed. */
+-void tdx_pamt_put(kvm_pfn_t pfn)
++void tdx_pamt_put(kvm_pfn_t pfn, enum pg_level level)
+ {
+ 	struct page *pamt_pages[TDX_DPAMT_ENTRY_PAGE_CNT] = {};
+ 	atomic_t *dpamt_refcount;
+ 	u64 tdx_status;
+ 
+-	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
++	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo) || level != PG_LEVEL_4K)
+ 		return;
+ 
+ 	dpamt_refcount = tdx_find_dpamt_refcount(pfn);
+@@ -2243,7 +2243,7 @@ struct page *tdx_alloc_control_page(void)
+ 	if (!page)
+ 		return NULL;
+ 
+-	if (tdx_pamt_get(page_to_pfn(page), NULL)) {
++	if (tdx_pamt_get(page_to_pfn(page), PG_LEVEL_4K, NULL)) {
+ 		__free_page(page);
+ 		return NULL;
+ 	}
+@@ -2261,7 +2261,7 @@ void tdx_free_control_page(struct page *page)
+ 	if (!page)
+ 		return;
+ 
+-	tdx_pamt_put(page_to_pfn(page));
++	tdx_pamt_put(page_to_pfn(page), PG_LEVEL_4K);
+ 	__free_page(page);
+ }
+ EXPORT_SYMBOL_FOR_KVM(tdx_free_control_page);
+-- 
+2.43.2
 
-> 
->>
->> Similarly with memory hotplug, allow it if we haven't started any realms
->> and refuse realm creation afterwards if untracked memory was onlined.
->> Also, if the memory is onlined to ZONE_MOVABLE, neither guest_memfd nor
->> the kernel allocations we delegate come from there, so we could allow
->> it even with realms running.
-> 
-> I will double check this.
-
-Yep, we could do this, and I have added the following hunk :
-
-diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
-index b7332b066044d..51343e9d5c2a9 100644
---- a/drivers/firmware/arm_rmm/rmi.c
-+++ b/drivers/firmware/arm_rmm/rmi.c
-@@ -997,6 +997,11 @@ static int rmi_memory_notifier(struct 
-notifier_block *nb,
-
-         start = PFN_PHYS(arg->start_pfn);
-         end = PFN_PHYS(arg->start_pfn + arg->nr_pages);
-+
-+       /* Neither guest-memfd nor the kernel allocations can come from 
-MOVABLE */
-+       if (page_zonenum(phys_to_page(start)) == ZONE_MOVABLE)
-+               return NOTIFY_DONE;
-+
-         ret = rmi_prepare_memory(start, end);
-
-         return notifier_from_errno(ret);
-
-Suzuki
