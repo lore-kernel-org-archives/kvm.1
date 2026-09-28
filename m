@@ -1,340 +1,235 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D388A37E5C5;
-	Mon, 28 Sep 2026 20:14:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB713B774D;
+	Mon, 28 Sep 2026 20:16:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790626446; cv=none; b=bhLbQ4HiNn5KGV6N2fUxEK9vDiI7+pz+VIwdgKVcPw+XXIbM/MDe7EiB39M/B7JmapfiCnTzLpvNzrz3ESlqPfovdK9+FKh0xgUlxSohXYNFK69+OEmbmU1ro5gDPHTyMuyVdN/5rl8bEjvh9uLfiniYnok0rOIA9TC5Dn+dgNY=
+	t=1790626577; cv=none; b=pqF2pSgqXxg3gRJQIOIVtk86Lm1rkaiITRYr9tnlGSHGrFANoJujZfXfpZAxEQflA1HYJDFdtbxOtdGbsS6G6YpB/P7rBjUrc0D0uLwbt56cjVZBLwO3yQkYOOHLymyvX9wHC2B46daMhorJGvV/JCLDY04oXmagy5bA06ZZ2JI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790626446; c=relaxed/simple;
-	bh=Mh5uGHFwQngAoZW+kINsiufJMqoEwV95xfGdWGlnXhI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=ptOR1FzLqemZwMxoZfqBXB7rbEbbCYlRF927YlTUE81BEXgr+JNIRQqrti8pQOfRlcCWCV3+9cF7V9ATCkla70iQf9JZoDHBtrxG3rxerCWC76CZvp5EvQT/3j8CLUDo0NiRFXOJF5pgDvN7Jq4o0cW6dJIh+6aidKeDnhcD3DE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HtUSlHA2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790626577; c=relaxed/simple;
+	bh=laWMqDwKNyVHhN/CJ9050mBI5WkmEpnHUc0KpFpy9Ms=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oNvhJ8JnfFwhyCXy37Gw1W78P7YpYQVWLDpofwzN/8eVTH+1+i5Hb9QPv8SAIxkXSj5ocYN/pfUnpvJfPL8yCYWkQlGNtWVHQ2eKLzVnWg8DR6AydKl86JbQJfiVvVuBU+bLPfCdgE13PkltyviXGgWMKPSz9fbzmPTUQoqL/TU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BoXY1HQB; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HtUSlHA2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0FD81F000FF;
-	Mon, 28 Sep 2026 20:14:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790626443;
-	bh=z6/DSl04QmKGk6YuZMP+BDUkmoRWb0b5amxIjsDiNEo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=HtUSlHA2FgdGKupaemsf6ub9i792HTZdwd9wl1m95efJlYKa9UXax3Kv7DRNCpaQh
-	 z+iL+Rxwu77wNfiDADoegIxfBzrscFlDi6oL2jd16kjHzMcwdk8hjuhcmDYUmpvbIb
-	 El49Zcmk71vnHxNYMmOZSGLbwpivXX1EUlzIgLxaVlxkdvgjEL4BNFnCYDjwvSCK99
-	 T+CfLUszTIalI0Qz/3CGA3rnviyoeHjTbjbuf//KgMQm4s3CHuYpRdQgBUM2sKPPf2
-	 IYNiG1j36JzADe5jlzKd7ylz8k4JvdZmGDZNXoPxMemlM0MPhWLXtiYPgaho+YYHCJ
-	 5q0ciyL4ZmK1A==
-Date: Mon, 28 Sep 2026 15:14:01 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Dave Airlie <airlied@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
-	Dave Airlie <airlied@redhat.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: Re: [PATCH] pci/vgaarb: pass a data pointer to be used in the decode
- callback (v2)
-Message-ID: <20260928201401.GA2256773@bhelgaas>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BoXY1HQB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790626575; x=1822162575;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=laWMqDwKNyVHhN/CJ9050mBI5WkmEpnHUc0KpFpy9Ms=;
+  b=BoXY1HQBVBkHinaHq38CB466tkvtGUboJL+o43zGZiEZHHzlcMfHnyFO
+   aPe4qMw6Kw4GlHclTCAQgtRUGVhxp1edAZ2oA4KyrbKOKami6D9cLXnjd
+   saAUktpB2wP1wxyhjcJagdzQFQ7J3Q/HZmbmQMl0eE2XacvPFgkVpOteR
+   3pL6VLgc0YMvBhyfq3svpYsemoNijUsoSg49TLIm1j6e81vMwi2hwrDNI
+   6mEpW06330V7X/7rEbrbpa/2NdxygTzSoFnDog+MMLhGvTTbRNgHTeXc9
+   ga9cvmJo1cOFC0fYjZMuUh+BZNaDLuGswxk2cUDxPFJQkpWNKQRuRA64b
+   A==;
+X-CSE-ConnectionGUID: fpFc46vjS6yUSJEnkL1zLQ==
+X-CSE-MsgGUID: 20S6vZJBRfyrnwmIupzTFg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="90464121"
+X-IronPort-AV: E=Sophos;i="6.27,129,1787036400"; 
+   d="scan'208";a="90464121"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 13:16:14 -0700
+X-CSE-ConnectionGUID: lENdmf/XTF2I3brpvOpvTA==
+X-CSE-MsgGUID: +oQCzvnwSlSOl1ubXbFAsA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,129,1787036400"; 
+   d="scan'208";a="274690778"
+Received: from soc-pf446t5c.clients.intel.com (HELO [10.24.80.90]) ([10.24.80.90])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 13:16:15 -0700
+Message-ID: <bf7e44c9-7a94-4771-9afa-d4bb513ffd32@linux.intel.com>
+Date: Mon, 28 Sep 2026 13:16:14 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260922071807.2533884-1-airlied@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/6] virt: tdx-guest: Give the Quote buffer an explicit
+ type
+To: Peter Fang <peter.fang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>,
+ Tony Lindgren <tony.lindgren@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Artem Bityutskiy <artem.bityutskiy@intel.com>
+References: <20260928100913.2265687-1-peter.fang@intel.com>
+ <20260928100913.2265687-3-peter.fang@intel.com>
+Content-Language: en-US
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20260928100913.2265687-3-peter.fang@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 22, 2026 at 05:18:07PM +1000, Dave Airlie wrote:
-> From: Dave Airlie <airlied@redhat.com>
+Hi,
+
+On 9/28/2026 3:08 AM, Peter Fang wrote:
+> The Quote buffer is always a "struct tdx_quote_buf", but its global
+> pointer is a "void *". A function would have to convert it back to make
+> sense of it.
 > 
-> This changes the vgaarb client API so that the user can pass a
-> private data pointer into the register that will get used in
-> the decode callback.
+> Declare the global with its actual type, and give it a better name.
 > 
-> This allows a bunch of pdev conversions in the drivers, and lets
-> some future vfio cleanups be nicer.
+> This creates variable shadowing in wait_for_quote_completion(), so
+> rename its parameter for clarity.
 > 
-> I'd like to merge this via the drm next tree but also fine with
-> it going via pci.
+> AI was used under supervision to collect/apply feedback, review code and
+> workshop logs.
 > 
-> Signed-off-by: Dave Airlie <airlied@redhat.com>
-> Cc: Alex Williamson <alex@shazbot.org>
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-
-The only diff between v1
-(https://lore.kernel.org/all/20260922064111.2468741-1-airlied@gmail.com)
-and this is the trivial Loongson change.
-
-It looks like the new kernel-doc warning is still there:
-https://lore.kernel.org/all/202609241015.1yXHBzfy-lkp@intel.com/
-
-And it would still be nice to update the subject line as I mentioned:
-https://lore.kernel.org/all/20260924191253.GA1994586@bhelgaas
-
-I'm still fine with it being merged via drm.
-
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-
+> Signed-off-by: Peter Fang <peter.fang@intel.com>
 > ---
-> v2: fix loongson (spotted by sashiko)
+
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+
+
+> v5:
+>  - New patch. [Dave]
 > ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |  6 +++---
->  drivers/gpu/drm/i915/display/intel_vga.c   |  7 ++++---
->  drivers/gpu/drm/loongson/lsdc_drv.c        |  4 ++--
->  drivers/gpu/drm/nouveau/nouveau_vga.c      |  6 +++---
->  drivers/gpu/drm/radeon/radeon_device.c     |  7 +++----
->  drivers/pci/vgaarb.c                       | 13 +++++++++----
->  drivers/vfio/pci/vfio_pci_core.c           |  9 +++++----
->  include/linux/vgaarb.h                     |  8 +++++---
->  8 files changed, 34 insertions(+), 26 deletions(-)
+>  drivers/virt/coco/tdx-guest/tdx-guest.c | 35 ++++++++++++-------------
+>  1 file changed, 17 insertions(+), 18 deletions(-)
 > 
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> index 62b5b4a23f17..1344b2b1bd16 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> @@ -1435,10 +1435,10 @@ bool amdgpu_device_should_use_aspm(struct amdgpu_device *adev)
->   * Enable/disable vga decode (all asics).
->   * Returns VGA resource flags.
->   */
-> -static unsigned int amdgpu_device_vga_set_decode(struct pci_dev *pdev,
-> +static unsigned int amdgpu_device_vga_set_decode(void *data,
->  		bool state)
->  {
-> -	struct amdgpu_device *adev = drm_to_adev(pci_get_drvdata(pdev));
-> +	struct amdgpu_device *adev = (struct amdgpu_device *)data;
->  
->  	amdgpu_asic_set_vga_state(adev, state);
->  	if (state)
-> @@ -4208,7 +4208,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
->  	 * ignore it
->  	 */
->  	if ((adev->pdev->class >> 8) == PCI_CLASS_DISPLAY_VGA)
-> -		vga_client_register(adev->pdev, amdgpu_device_vga_set_decode);
-> +		vga_client_register(adev->pdev, amdgpu_device_vga_set_decode, adev);
->  
->  	px = amdgpu_device_supports_px(adev);
->  
-> diff --git a/drivers/gpu/drm/i915/display/intel_vga.c b/drivers/gpu/drm/i915/display/intel_vga.c
-> index 4966fd7eea92..0889edb36190 100644
-> --- a/drivers/gpu/drm/i915/display/intel_vga.c
-> +++ b/drivers/gpu/drm/i915/display/intel_vga.c
-> @@ -283,9 +283,10 @@ void intel_vga_disable(struct intel_display *display)
->  	intel_de_posting_read(display, vga_reg);
->  }
->  
-> -static unsigned int intel_vga_set_decode(struct pci_dev *pdev, bool enable_decode)
-> +static unsigned int intel_vga_set_decode(void *data, bool enable_decode)
->  {
-> -	struct intel_display *display = to_intel_display(pdev);
-> +	struct intel_display *display = (struct intel_display *)data;
-> +	struct pci_dev *pdev = to_pci_dev(display->drm->dev);
->  	unsigned int decodes = VGA_RSRC_NORMAL_IO | VGA_RSRC_NORMAL_MEM;
->  
->  	drm_dbg_kms(display->drm, "%s VGA decode due to VGA arbitration\n",
-> @@ -331,7 +332,7 @@ void intel_vga_register(struct intel_display *display)
->  	 * then we do not take part in VGA arbitration and the
->  	 * vga_client_register() fails with -ENODEV.
->  	 */
-> -	ret = vga_client_register(pdev, intel_vga_set_decode);
-> +	ret = vga_client_register(pdev, intel_vga_set_decode, display);
->  	drm_WARN_ON(display->drm, ret && ret != -ENODEV);
->  }
->  
-> diff --git a/drivers/gpu/drm/loongson/lsdc_drv.c b/drivers/gpu/drm/loongson/lsdc_drv.c
-> index 3fd828d23271..5a13df31eb90 100644
-> --- a/drivers/gpu/drm/loongson/lsdc_drv.c
-> +++ b/drivers/gpu/drm/loongson/lsdc_drv.c
-> @@ -254,7 +254,7 @@ lsdc_create_device(struct pci_dev *pdev,
->  
->  /* For multiple GPU driver instance co-exixt in the system */
->  
-> -static unsigned int lsdc_vga_set_decode(struct pci_dev *pdev, bool state)
-> +static unsigned int lsdc_vga_set_decode(void *data, bool state)
->  {
->  	return VGA_RSRC_NORMAL_IO | VGA_RSRC_NORMAL_MEM;
->  }
-> @@ -291,7 +291,7 @@ static int lsdc_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
->  
->  	pci_set_drvdata(pdev, ddev);
->  
-> -	vga_client_register(pdev, lsdc_vga_set_decode);
-> +	vga_client_register(pdev, lsdc_vga_set_decode, NULL);
->  
->  	drmm_kms_helper_poll_init(ddev);
->  
-> diff --git a/drivers/gpu/drm/nouveau/nouveau_vga.c b/drivers/gpu/drm/nouveau/nouveau_vga.c
-> index 29a801124e56..6662e30466f2 100644
-> --- a/drivers/gpu/drm/nouveau/nouveau_vga.c
-> +++ b/drivers/gpu/drm/nouveau/nouveau_vga.c
-> @@ -9,9 +9,9 @@
->  #include "nouveau_vga.h"
->  
->  static unsigned int
-> -nouveau_vga_set_decode(struct pci_dev *pdev, bool state)
-> +nouveau_vga_set_decode(void *data, bool state)
->  {
-> -	struct nouveau_drm *drm = pci_get_drvdata(pdev);
-> +	struct nouveau_drm *drm = (struct nouveau_drm *)data;
->  	struct nvif_object *device = &drm->client.device.object;
->  
->  	if (drm->client.device.info.family == NV_DEVICE_INFO_V0_CURIE &&
-> @@ -103,7 +103,7 @@ nouveau_vga_init(struct nouveau_drm *drm)
->  		return;
->  	pdev = to_pci_dev(dev->dev);
->  
-> -	vga_client_register(pdev, nouveau_vga_set_decode);
-> +	vga_client_register(pdev, nouveau_vga_set_decode, drm);
->  
->  	/* don't register Thunderbolt eGPU with vga_switcheroo */
->  	if (pci_is_thunderbolt_attached(pdev))
-> diff --git a/drivers/gpu/drm/radeon/radeon_device.c b/drivers/gpu/drm/radeon/radeon_device.c
-> index 9523240110a6..cf8a6bd00c77 100644
-> --- a/drivers/gpu/drm/radeon/radeon_device.c
-> +++ b/drivers/gpu/drm/radeon/radeon_device.c
-> @@ -1076,10 +1076,9 @@ void radeon_combios_fini(struct radeon_device *rdev)
->   * Enable/disable vga decode (all asics).
->   * Returns VGA resource flags.
->   */
-> -static unsigned int radeon_vga_set_decode(struct pci_dev *pdev, bool state)
-> +static unsigned int radeon_vga_set_decode(void *data, bool state)
->  {
-> -	struct drm_device *dev = pci_get_drvdata(pdev);
-> -	struct radeon_device *rdev = dev->dev_private;
-> +	struct radeon_device *rdev = (struct radeon_device *)data;
->  	radeon_vga_set_state(rdev, state);
->  	if (state)
->  		return VGA_RSRC_LEGACY_IO | VGA_RSRC_LEGACY_MEM |
-> @@ -1431,7 +1430,7 @@ int radeon_device_init(struct radeon_device *rdev,
->  	/* if we have > 1 VGA cards, then disable the radeon VGA resources */
->  	/* this will fail for cards that aren't VGA class devices, just
->  	 * ignore it */
-> -	vga_client_register(rdev->pdev, radeon_vga_set_decode);
-> +	vga_client_register(rdev->pdev, radeon_vga_set_decode, rdev);
->  
->  	if (rdev->flags & RADEON_IS_PX)
->  		runtime = true;
-> diff --git a/drivers/pci/vgaarb.c b/drivers/pci/vgaarb.c
-> index 3de05aee7859..3e58b2c05c85 100644
-> --- a/drivers/pci/vgaarb.c
-> +++ b/drivers/pci/vgaarb.c
-> @@ -51,7 +51,8 @@ struct vga_device {
->  	unsigned int mem_norm_cnt;	/* normal MEM count */
->  	bool bridge_has_one_vga;
->  	bool is_firmware_default;	/* device selected by firmware */
-> -	unsigned int (*set_decode)(struct pci_dev *pdev, bool decode);
-> +	unsigned int (*set_decode)(void *data, bool decode);
-> +	void *set_decode_data;
+> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> index d0303e31e816..896eb0a09c4a 100644
+> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
+> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> @@ -192,7 +192,7 @@ struct tdx_quote_buf {
 >  };
 >  
->  static LIST_HEAD(vga_list);
-> @@ -935,6 +936,7 @@ EXPORT_SYMBOL(vga_set_legacy_decoding);
->   * vga_client_register - register or unregister a VGA arbitration client
->   * @pdev: PCI device of the VGA client
->   * @set_decode: VGA decode change callback
-> + * @data: private data to pass to callback
->   *
->   * Clients have two callback mechanisms they can use.
->   *
-> @@ -956,15 +958,18 @@ EXPORT_SYMBOL(vga_set_legacy_decoding);
->   * Returns: 0 on success, -ENODEV on failure
->   */
->  int vga_client_register(struct pci_dev *pdev,
-> -		unsigned int (*set_decode)(struct pci_dev *pdev, bool decode))
-> +		unsigned int (*set_decode)(void *data, bool decode),
-> +		void *data)
->  {
->  	unsigned long flags;
->  	struct vga_device *vgadev;
+>  /* Quote data buffer */
+> -static void *quote_data;
+> +static struct tdx_quote_buf *quote_buf;
 >  
->  	spin_lock_irqsave(&vga_lock, flags);
->  	vgadev = vgadev_find(pdev);
-> -	if (vgadev)
-> +	if (vgadev) {
->  		vgadev->set_decode = set_decode;
-> +		vgadev->set_decode_data = data;
-> +	}
->  	spin_unlock_irqrestore(&vga_lock, flags);
->  	if (!vgadev)
->  		return -ENODEV;
-> @@ -1464,7 +1469,7 @@ static void vga_arbiter_notify_clients(void)
->  	spin_lock_irqsave(&vga_lock, flags);
->  	list_for_each_entry(vgadev, &vga_list, list) {
->  		if (vgadev->set_decode) {
-> -			new_decodes = vgadev->set_decode(vgadev->pdev,
-> +			new_decodes = vgadev->set_decode(vgadev->set_decode_data,
->  							 new_state);
->  			vga_update_device_decodes(vgadev, new_decodes);
->  		}
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index 6757054e9d87..b04ce3ded08c 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -162,9 +162,10 @@ static inline void vfio_pci_core_debugfs_init(struct vfio_pci_core_device *vdev)
->   * has no way to get to it and routing can be disabled externally at the
->   * bridge.
->   */
-> -static unsigned int vfio_pci_set_decode(struct pci_dev *pdev, bool single_vga)
-> +static unsigned int vfio_pci_set_decode(void *data, bool single_vga)
+>  /* Lock to streamline quote requests */
+>  static DEFINE_MUTEX(quote_lock);
+> @@ -209,7 +209,7 @@ static long tdx_get_report0(struct tdx_report_req __user *req)
+>  			     USER_SOCKPTR(req->tdreport));
+>  }
+>  
+> -static void free_quote_buf(void *buf)
+> +static void free_quote_buf(struct tdx_quote_buf *buf)
 >  {
-> -	struct vfio_pci_core_device *vdev = dev_get_drvdata(&pdev->dev);
-> +	struct vfio_pci_core_device *vdev = data;
-> +	struct pci_dev *pdev = vdev->pdev;
->  	struct pci_dev *tmp = NULL;
->  	unsigned char max_busnr;
->  	unsigned int decodes;
-> @@ -2159,10 +2160,10 @@ static int vfio_pci_vga_init(struct vfio_pci_core_device *vdev)
+>  	size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
+>  	unsigned int count = len >> PAGE_SHIFT;
+> @@ -222,25 +222,25 @@ static void free_quote_buf(void *buf)
+>  	free_pages_exact(buf, len);
+>  }
+>  
+> -static void *alloc_quote_buf(void)
+> +static struct tdx_quote_buf *alloc_quote_buf(void)
+>  {
+>  	size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
+>  	unsigned int count = len >> PAGE_SHIFT;
+> -	void *addr;
+> +	struct tdx_quote_buf *buf;
+>  
+> -	addr = alloc_pages_exact(len, GFP_KERNEL | __GFP_ZERO);
+> -	if (!addr)
+> +	buf = alloc_pages_exact(len, GFP_KERNEL | __GFP_ZERO);
+> +	if (!buf)
+>  		return NULL;
+>  
+> -	if (set_memory_decrypted((unsigned long)addr, count))
+> +	if (set_memory_decrypted((unsigned long)buf, count))
+>  		return NULL;
+>  
+> -	return addr;
+> +	return buf;
+>  }
+>  
+>  /*
+>   * wait_for_quote_completion() - Wait for Quote request completion
+> - * @quote_buf: Address of Quote buffer.
+> + * @buf: Address of Quote buffer.
+>   * @timeout: Timeout in seconds to wait for the Quote generation.
+>   *
+>   * As per TDX GHCI v1.0 specification, sec titled "TDG.VP.VMCALL<GetQuote>",
+> @@ -249,7 +249,7 @@ static void *alloc_quote_buf(void)
+>   * or error code after processing is complete. So wait till the status
+>   * changes from GET_QUOTE_IN_FLIGHT or the request being timed out.
+>   */
+> -static int wait_for_quote_completion(struct tdx_quote_buf *quote_buf, u32 timeout)
+> +static int wait_for_quote_completion(struct tdx_quote_buf *buf, u32 timeout)
+>  {
+>  	int i = 0;
+>  
+> @@ -257,7 +257,7 @@ static int wait_for_quote_completion(struct tdx_quote_buf *quote_buf, u32 timeou
+>  	 * Quote requests usually take a few seconds to complete, so waking up
+>  	 * once per second to recheck the status is fine for this use case.
+>  	 */
+> -	while (quote_buf->status == GET_QUOTE_IN_FLIGHT && i++ < timeout) {
+> +	while (buf->status == GET_QUOTE_IN_FLIGHT && i++ < timeout) {
+>  		if (msleep_interruptible(MSEC_PER_SEC))
+>  			return -EINTR;
+>  	}
+> @@ -268,7 +268,6 @@ static int wait_for_quote_completion(struct tdx_quote_buf *quote_buf, u32 timeou
+>  static int tdx_report_new_locked(struct tsm_report *report, void *data)
+>  {
+>  	u8 *buf;
+> -	struct tdx_quote_buf *quote_buf = quote_data;
+>  	struct tsm_report_desc *desc = &report->desc;
+>  	u32 out_len;
+>  	int ret;
+> @@ -285,7 +284,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
+>  	if (desc->inblob_len != TDX_REPORTDATA_LEN)
+>  		return -EINVAL;
+>  
+> -	memset(quote_data, 0, GET_QUOTE_BUF_SIZE);
+> +	memset(quote_buf, 0, GET_QUOTE_BUF_SIZE);
+>  
+>  	/* Update Quote buffer header */
+>  	quote_buf->version = GET_QUOTE_CMD_VER;
+> @@ -296,7 +295,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
 >  	if (ret)
 >  		return ret;
 >  
-> -	ret = vga_client_register(pdev, vfio_pci_set_decode);
-> +	ret = vga_client_register(pdev, vfio_pci_set_decode, vdev);
+> -	err = tdx_hcall_get_quote(quote_data, GET_QUOTE_BUF_SIZE);
+> +	err = tdx_hcall_get_quote(quote_buf, GET_QUOTE_BUF_SIZE);
+>  	if (err) {
+>  		pr_err("GetQuote hypercall failed, status:%llx\n", err);
+>  		return -EIO;
+> @@ -417,8 +416,8 @@ static int __init tdx_guest_init(void)
 >  	if (ret)
->  		return ret;
-> -	vga_set_legacy_decoding(pdev, vfio_pci_set_decode(pdev, false));
-> +	vga_set_legacy_decoding(pdev, vfio_pci_set_decode(vdev, false));
->  	return 0;
->  }
+>  		goto deinit_mr;
 >  
-> diff --git a/include/linux/vgaarb.h b/include/linux/vgaarb.h
-> index 97129a1bbb7d..71a364669eaf 100644
-> --- a/include/linux/vgaarb.h
-> +++ b/include/linux/vgaarb.h
-> @@ -33,7 +33,8 @@ struct pci_dev *vga_default_device(void);
->  void vga_set_default_device(struct pci_dev *pdev);
->  int vga_remove_vgacon(struct pci_dev *pdev);
->  int vga_client_register(struct pci_dev *pdev,
-> -		unsigned int (*set_decode)(struct pci_dev *pdev, bool state));
-> +		unsigned int (*set_decode)(void *data, bool state),
-> +		void *data);
->  #else /* CONFIG_VGA_ARB */
->  static inline void vga_set_legacy_decoding(struct pci_dev *pdev,
->  		unsigned int decodes)
-> @@ -59,7 +60,8 @@ static inline int vga_remove_vgacon(struct pci_dev *pdev)
+> -	quote_data = alloc_quote_buf();
+> -	if (!quote_data) {
+> +	quote_buf = alloc_quote_buf();
+> +	if (!quote_buf) {
+>  		pr_err("Failed to allocate Quote buffer\n");
+>  		ret = -ENOMEM;
+>  		goto free_misc;
+> @@ -431,7 +430,7 @@ static int __init tdx_guest_init(void)
 >  	return 0;
->  }
->  static inline int vga_client_register(struct pci_dev *pdev,
-> -		unsigned int (*set_decode)(struct pci_dev *pdev, bool state))
-> +		unsigned int (*set_decode)(void *data, bool state),
-> +		void *data)
+>  
+>  free_quote:
+> -	free_quote_buf(quote_data);
+> +	free_quote_buf(quote_buf);
+>  free_misc:
+>  	misc_deregister(&tdx_misc_dev);
+>  deinit_mr:
+> @@ -444,7 +443,7 @@ module_init(tdx_guest_init);
+>  static void __exit tdx_guest_exit(void)
 >  {
->  	return 0;
+>  	tsm_report_unregister(&tdx_tsm_ops);
+> -	free_quote_buf(quote_data);
+> +	free_quote_buf(quote_buf);
+>  	misc_deregister(&tdx_misc_dev);
+>  	tdx_mr_deinit(tdx_attr_groups[0]);
 >  }
-> @@ -97,7 +99,7 @@ static inline int vga_get_uninterruptible(struct pci_dev *pdev,
->  
->  static inline void vga_client_unregister(struct pci_dev *pdev)
->  {
-> -	vga_client_register(pdev, NULL);
-> +	vga_client_register(pdev, NULL, NULL);
->  }
->  
->  #endif /* LINUX_VGA_H */
-> -- 
-> 2.54.0
-> 
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
+
