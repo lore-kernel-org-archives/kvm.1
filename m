@@ -1,159 +1,267 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed2-f39.google.com (mail-ed2-f39.google.com [74.125.228.103])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12CC4D599E;
-	Mon, 28 Sep 2026 14:23:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790605415; cv=none; b=HpqAxbs2YpGUPnIv+kq6QifhTwkv1kL5z7zHXi3oSrPR1m3oOAHbm/ijL8G3+Q4igGTRCHFvRmzyYKh8oQo2q5ZbpF/7c5hbi83YwzJeDNZsVdSHaNoCkF+gieoaRh9AGwN9fLHB16+BZ1ftt565lVTrJPUgIqN+IjQv9VK9riM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790605415; c=relaxed/simple;
-	bh=P9PqO5qfr930naBjEJYBYKBsPVV2btuw00OrnlZSvyg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FmEiXjfiKWMh9WEjjZFsB5VwqFHK8WzIuiU5gVYV6Z+ss9nZQ4yzp+/m6ZMLOcSJ3WmeG/OfObeeMF/6jATWQG9NZpUFm49o1Q+i6mAZtwTuIpbduAjqQl6cwG0zEr29zsPLC4M0FZNFTOfOzdCdDIGakgZ2aDPNOmLbOXgA+QY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=SgtpN1qA; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111694D9F99
+	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 14:24:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.103
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790605498; cv=pass; b=hUQ/coCVzGctNKNLxZK/nBc+tsFHsTMKFokUHWGGYrA/2W9/aVM6Uo2mRheC5SHGEgci6gQ39K6ik2hT9ypTrljXNFoWyOiuR3o6gI4gGTq+Ixc3mnGFc93a6i11F0VqP0Myi39q0+ladR2HVg422d2MM3SNxU8X+d0yqlXr5L4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790605498; c=relaxed/simple;
+	bh=zV/x34xUvR3c3WOoN6J6UJVr6RTUzKrUeID2Y6fuWGU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=a/KDs3zx1r7WPwpqVgZBP4yH4P7HyS+30HV4lRYkM7uMZ3lKJ2C+jjgDWZKRRHWL8ejNR+wX1hdD+nGUTsqX29w/1a5Fgs2+EggdHRUgaMKnK/crQO+sJEsiLLrdk5EWpkn44Xa66gbGwuSAJH0CK6JbtI2u/WzvawXCDqan9mU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BL5W5v7I; arc=pass smtp.client-ip=74.125.228.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="SgtpN1qA"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68SBZZVv1047082;
-	Mon, 28 Sep 2026 14:23:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=269Qr/2f+mli5iZf5LjqCG3Wsfifp4
-	/qh4IuSPn08jE=; b=SgtpN1qASY6d0PD/W/Oe9D2ym8/5/iRdQSQ2eFEdKDxVVH
-	j6H0M5X2Zyhsgvl4VyUy6p0mmA8bpfwCe6Eb3/MFepx1LTfznN21FX09qLp7krhi
-	IpbWporLsvfFTZkapCZ7CSjWSgzzAhRUwMNSzOse2Z6j65mkUzJWhS6/Fm6azY5v
-	VrTIlF8e5POPLfPhDBoZC21D3QuJcW6VF/5OC6sVdHbOQ83gsNC+iNCXxdKkphGB
-	SeCA3e4xtKDID0US2EbHCiRrqw7xYWMds29o7dxeiWY+IKDjoeMqIdVh5rjdVQDv
-	HsKmQgvgBsXLojZD8vL+2FUuu2PeWvPxlEaJsYTg==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5j51y8x-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 28 Sep 2026 14:23:13 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68SBHufQ076700;
-	Mon, 28 Sep 2026 14:23:12 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gxsvhdgya-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 28 Sep 2026 14:23:11 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68SEN1Zh55705980
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 28 Sep 2026 14:23:01 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 38ABC20040;
-	Mon, 28 Sep 2026 14:23:01 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5552B2004D;
-	Mon, 28 Sep 2026 14:23:00 +0000 (GMT)
-Received: from osiris (unknown [9.87.129.112])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 28 Sep 2026 14:23:00 +0000 (GMT)
-Date: Mon, 28 Sep 2026 16:22:58 +0200
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Hendrik Brueckner <brueckner@linux.ibm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
-        Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Friedrich Welter <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>,
-        Gautam Gala <ggala@linux.ibm.com>,
-        Hariharan Mari <hari55@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>,
-        Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>,
-        Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-        Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v8 23/29] KVM: s390: Add basic arm64 kvm module
-Message-ID: <20260928142258.53077-B-seiden@linux.ibm.com>
-References: <20260918133107.1042730-1-seiden@linux.ibm.com>
- <20260918133107.1042730-24-seiden@linux.ibm.com>
- <arp2njz3Dro0sQ6Z@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BL5W5v7I"
+Received: by mail-ed2-f39.google.com with SMTP id 4fb4d7f45d1cf-6aa0ee64afdso3606431a12.0
+        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 07:24:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790605494; cv=none;
+        d=google.com; s=arc-20260327;
+        b=B3mhsZZ4NFu5W/4noK323MbFFyae1LELG9qSaQ8hHM0cgRVM+4mCCvOD3Gic9TrMjf
+         WpuTWPR48mnfiJ680qaZKMtJioIY6e1DZ1wKnKa+QLUrXm1jFl6VMD2DOj2lLyA0Yyte
+         qeSQcEmXmN4/RkcrpFhPbVIIk1tAC0EBlKtI0UQNsgG8CFYXiBYgvUG0bJiB0NXawlSw
+         K7yeOFHwkIBbm90EC+CmABl+G36t0qq+d43oDiMVeDD4CY2vl5/W/NgV6Z8Nc0xXbkgD
+         lKTWGL/eQpcCrQ0sCL/u/SuN4oacZrv2dEe0/Nb1j5pDdtK35QQ1rat4m6XbTcgHAoZn
+         IOBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:dkim-signature;
+        bh=cFi7chTl/dXnccUH1qK76VepQPSMCTxgrhW/RRhkUhE=;
+        fh=gLLZOjKlpIatgfWYBDie6havjwWZvKX+cV7S2Vx2XEg=;
+        b=eGCCzpVPLhIbaLbPW6nIttXoEk4LTWM09tvYeWEot96s6ibwa72G7V5RrRIhszPOOt
+         mTFUOX31AKFsr7vT+sWQozW8jUKTr5RMkLDXiigNbiB4db3gHryIpjOvVnIWRuhDN4Jo
+         /8HALwmFHn4Szj0TObRy03aevbc3ol4Bbk91+HRos39nRgyCz3WmBtPKcDyDatxe9OWu
+         RXdM4dQHlAhcJJU6ShISFYJW2icFrP/Ycib5XJACclpC5M8OlLLrEPI/okCDUPeNYG32
+         skCUKYPD9hRRG4WuQsfyfjp0KRauh7yWqxC0gRducmJGQKeAHx1STBPdKTdfQC7uRGxe
+         8y+Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790605494; x=1791210294; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:reply-to:in-reply-to:references:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=cFi7chTl/dXnccUH1qK76VepQPSMCTxgrhW/RRhkUhE=;
+        b=BL5W5v7I1F7SEwhk0FoNAoeMyxvf/NSXXwY/2m5zRYOb92SX5OctnqfS0de15lRnSB
+         gYoPNtz/A2KfbZm4INcXSdR7zegWRXOy9TE0byLkyPXpUiqPpJn+PQoTsWhziRrzQB0N
+         wIA1Emr3Jvh1+qf/7qgGX42gQkFeUFVcMWImQgKW/uv7TZJZ4cRN8BheyHIOss8Ca7DQ
+         0kwaWm7er9BbWFLbvKxm4oSna1pg2Zl5ZcWiesZK1TMD8bjDTBBwAPKwNf627MfOaClU
+         1k24V9LF1gL311JOUHsm+MY+lJLXnLu5HPi4XdYmyw3SwE29Hg1Y2KhWbNYTB5ljrVQ2
+         ZprA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790605494; x=1791210294;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:reply-to:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cFi7chTl/dXnccUH1qK76VepQPSMCTxgrhW/RRhkUhE=;
+        b=ynrLFXaQ4YyQwgOzBQJzFdmdZibWQKCMAunFnr2Sz6Dx5jXM5VlYsmgmEDBYEFbc/i
+         HfiwF3UrSWR7GsBkW3shxrV6vVTsloxkdDdZn0HufUW8+Z+EE+UYaGAl3g8gFoYXlhew
+         FK/rxHkHBDvfy4Y9yuwV7k+6nFZVVflUjuj4au5IwtT7XQ/ddwhJl3quXjNkyJCfRopD
+         a1eus+7yO4PuWELQsO6S7Qri7zQPz4nFfcu4jn3DklL8WJ1nzRUF1dmBnBR5xHUSa9hn
+         Ff7cxf+gP9lGV1s8vpYBj5yrAPUzseDwShFk5B4ysma8qNyG7QR8L8UVduOQqS7bUGH3
+         euUA==
+X-Forwarded-Encrypted: i=1; AKwUvBxWOk/wQJpnJtldpoj6ReoHy1/WxfzRY4wsiuZK2M+FonrpfCb2CoICBh5DbAEkuOhbwOw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKTCFCWDHs2Om9MihVSvOhluLKRa45vVIsz0n4bXthbdc/+3IN/
+	USwOUBp5aQxOWOK0yf15WqljaFJRiB/1KI740CCEgTQcORr6vW8MosfOitKPwjBom+YI8AQVni9
+	6uGbugKmrvmuJNWSSWhNW63SYaG/pi3c=
+X-Gm-Gg: AYBFou22BobB4nVRfvMZuShES6GWTymqHz08vx8P9IBDrW1fGprYeVFERA+BQGb6LC4
+	WuaHO+qajewcIbpIWx/tHHwxjIPWmn4F7cuz9xlOwQlUYbAG6nTBHe6esps9eN0J+Xxkm6Vwgfb
+	F4GlIwS/eluxQkHRfCpO11QNYDkkcSa4RvWKcjDrKq3u3F+snNWfEjLQVwP3zJc4pZ9tj0vPmUh
+	4v9+aNseTc6/T04Xr6USOWYCsEqXrcQJis/ruRxWSnzN6lEEZUy+F2opoVjOP8ah68f0FXCHeJu
+	xof1wUMy7tGDZgSbtfZHxaslMJAgbuHhgPfyGktcz6iNQVoNbskn1lw=
+X-Received: by 2002:a05:6402:2406:b0:6aa:734b:1a2d with SMTP id
+ 4fb4d7f45d1cf-6aac908f34amr10185339a12.39.1790605493584; Mon, 28 Sep 2026
+ 07:24:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arp2njz3Dro0sQ6Z@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI4MDA1NiBTYWx0ZWRfX5dsVumWdYdWF
- AZKYtE84fjB98wl/6dKGXlvs+Ly0IWzRCQtvVYltXc1mz74v1LhjwW6iWDIHvD2yRLVeoi+m7Mu
- yIk64PRIjmPyPlIfSdGB+VOWLJva8y4=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI4MDA1NiBTYWx0ZWRfX1BAFPlgJV6Nv
- OXuy0WD/1RHa0kE+XIyTFbFO0IriHeyB0GcbFKbrEk8jdJ0wmFsNwH5qPRXpsYgmjbSg+5w0LIQ
- tcxLO+zEOA+xHAAbg1KOw+eY5rjOUvN8sHC7rD5TEMrFcGeULBy1iIklCpZ/dkV+M+UzrPLQ9+E
- cnBqCflGGYWtjXzUZWTWpeVt6yiq+hbX/zgc1c2pgY0eUKYVn2vsJAFhZkrVqmaYBEmwCa+Nq5+
- jOrXaFxPCoQZZjWm46w595wiEMMZkm1EvkInymRJ4ZBlGi/qDLOAJeabAu97U4X2g0vcrKKbdTQ
- 3thPAiKwu33JqADp2A6jHwtzHwyUCz0jU+nM9gT4zH1H1a5VhJvDpf6VoTQgvEDMRXpIOYHNW90
- 6hRy/f0GcczR20Nvqz10T/S8rpOrc80UtbSY+6nijgyTmln/Yok1fUAu5oQKbbhHcNprHz7Sy+k
- dzmHX6gNcIvh7qwV4XA==
-X-Proofpoint-GUID: -opRUxCBQ87ofTNi4olODdbsoM2GysKf
-X-Authority-Analysis: v=2.4 cv=RKcmjIi+ c=1 sm=1 tr=0 ts=6aba7851 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=kmqKt6rW6CT7MOcbZeAA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: QDIhRafS2tv1KtcByMsVqsVtQuv9E7le
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-28_03,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 priorityscore=1501 spamscore=0 bulkscore=0 impostorscore=0
- adultscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609280056
+References: <20260926070057.1234-1-luoyonggang@gmail.com> <20260926070057.1234-47-luoyonggang@gmail.com>
+ <aro93NuZBXYGbD33@redhat.com>
+In-Reply-To: <aro93NuZBXYGbD33@redhat.com>
+Reply-To: luoyonggang@gmail.com
+From: Yonggang Luo <luoyonggang@gmail.com>
+Date: Mon, 28 Sep 2026 22:24:39 +0800
+X-Gm-Features: AclHuK_TF7EH46o0FV_02vjDQ7TfERSCRkWxvOvxDGTBInzpkGOWpF_MFAtARQg
+Message-ID: <CAE2XoE9AAz8KfJrpErBaZvW5p5COxfE1yveA_AMPwa0j=ghyEA@mail.gmail.com>
+Subject: Re: [PATCH v4 46/55] qapi: add query-targets
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
+	=?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@oss.qualcomm.com>, 
+	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>, Fabiano Rosas <farosas@suse.de>, 
+	Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Alistair Francis <alistair@alistair23.me>, Peter Maydell <peter.maydell@linaro.org>, 
+	=?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+	qemu-arm@nongnu.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 28, 2026 at 04:15:58PM +0200, Hendrik Brueckner wrote:
-> On Fri, Sep 18, 2026 at 03:31:00PM +0200, Steffen Eiden wrote:
-> > Add basic code for the new arm64 on s390 KVM implementation.
-> > Add kernel module boilerplate code and trivial functions.
-> > Add tracing scaffolding.
-> > 
-> > Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
-> > ---
-> >  arch/s390/kvm/arm64/arm.c   | 147 ++++++++++++++++++++++++++++++++++++
-> >  arch/s390/kvm/arm64/arm.h   |  44 +++++++++++
-> >  arch/s390/kvm/arm64/guest.c |  92 ++++++++++++++++++++++
-> >  arch/s390/kvm/arm64/trace.h |  18 +++++
-> >  4 files changed, 301 insertions(+)
-> >  create mode 100644 arch/s390/kvm/arm64/arm.c
-> >  create mode 100644 arch/s390/kvm/arm64/arm.h
-> >  create mode 100644 arch/s390/kvm/arm64/guest.c
-> >  create mode 100644 arch/s390/kvm/arm64/trace.h
-> > 
-> > diff --git a/arch/s390/kvm/arm64/arm.c b/arch/s390/kvm/arm64/arm.c
-> > new file mode 100644
-> > index 000000000000..8b056fc836d7
-> > --- /dev/null
-> > +++ b/arch/s390/kvm/arm64/arm.c
-> 
-> [..]
-> 
-> > +static int __init kvm_s390_arm64_init(void)
-> > +{
-> > +	if (!sclp.has_aef)
-> > +		return -ENXIO;
-> 
-> I suggest to use -ENODEV here to be consistent with s390 kvm module.
-> The arm64 module also return -ENODEV when not available.
+On Mon, Sep 28, 2026 at 6:14=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
+edhat.com> wrote:
+>
+> I don't think that we need to report machines though.
+> We already have 'query-machines' which gives much broader
+> information on the machines. "MachineInfo" needs to
+> gain
+>
+>    "targets": ["SysEmuTarget"]
+>
+> to list which target(s) a machine can be used with.
+>
 
-Makes sense. Thanks
+This is my final design for the query-target / query-targets / query-machin=
+es,
+for consistency and testability.
 
-	Steffen
+Per review: reuse `QemuTargetInfo` for both target commands, drop the
+per-target machine list, and let
+`MachineInfo` say which target(s) each machine runs on.
+`QemuTargetInfo` stays small; `query-target` and `query-targets` return a
+derived struct that adds the target's device and accel Kconfig state.
+
+## QemuTargetInfo
+
+```
+{ 'struct': 'QemuTargetInfo',
+  'data': { 'arch': 'SysEmuTarget' } }  # since 1.2
+```
+
+`mips` and `mipsel` are distinct `SysEmuTarget` values; the target value
+identifies the system emulator, including its endianness, rather than only
+the underlying architecture family.
+
+## QemuTargetDetails: QemuTargetInfo plus kconfig
+
+```
+{ 'struct': 'QemuTargetDetails',
+  'base': 'QemuTargetInfo',
+  'data': { 'kconfig': 'any' } }
+```
+
+`kconfig` maps every device and accel `CONFIG_*` symbol to whether it
+is enabled for that target.
+
+For example, `TYPE_NITRO_ENCLAVE_MACHINE` is available only when
+`CONFIG_NITRO_ENCLAVE` is enabled for the target:
+
+```
+{ "arch": "x86_64",
+  "kconfig": { "CONFIG_NITRO_ENCLAVE": true } }
+```
+
+Examples below are trimmed.
+
+## query-target (now returns QemuTargetDetails)
+
+Adding members to a return type is backward compatible; existing
+clients reading only `arch` are unaffected.
+
+```
+{ 'command': 'query-target', 'returns': 'QemuTargetDetails' }
+```
+
+Single-target binary (`qemu-system-aarch64`):
+
+```
+-> { "execute": "query-target" }
+<- { "return": { "arch": "aarch64",
+                 "kconfig": { "CONFIG_ARM_VIRT": true,
+                              "CONFIG_Q35": false,
+                              ... } } }
+```
+
+## query-targets (new, returns ['QemuTargetDetails'])
+
+Single-target binary:
+
+```
+-> { "execute": "query-targets" }
+<- { "return": [ { "arch": "aarch64",
+                   "kconfig": { "CONFIG_ARM_VIRT": true,
+                                "CONFIG_Q35": false, ... } } ] }
+```
+
+Combined `qemu-system` linking aarch64 and riscv64 (`none` is always
+present):
+
+```
+-> { "execute": "query-targets" }
+<- { "return": [ { "arch": "aarch64",
+                   "kconfig": { "CONFIG_ARM_VIRT": true,
+                                "CONFIG_RISCV_VIRT": false, ... } },
+                 { "arch": "riscv64",
+                   "kconfig": { "CONFIG_ARM_VIRT": false,
+                                "CONFIG_RISCV_VIRT": true, ... } },
+                 { "arch": "none",
+                   "kconfig": { "CONFIG_ARM_VIRT": false,
+                                "CONFIG_RISCV_VIRT": false, ... } } ] }
+```
+
+## query-machines: MachineInfo gains targets
+
+```
+{ 'struct': 'MachineInfo',
+  'data': { 'name': 'str', 'typename': 'str', ...existing members...,
+            'targets': ['QemuTargetInfo'] } }   # since 11.2
+```
+
+Combined `qemu-system` (other MachineInfo members trimmed):
+
+```
+-> { "execute": "query-machines" }
+<- { "return": [
+       { "name": "virt-11.2", "typename": "arm-virt-11.2-machine",
+         "alias": "virt", "is-default": false,
+         "cpu-max": 512, "deprecated": false, "secure": true,
+         "targets": [ { "arch": "aarch64" } ] },
+       { "name": "virt", "typename": "riscv-virt-machine",
+         "cpu-max": 512, "deprecated": false,
+         "secure": true,
+         "targets": [ { "arch": "riscv64" } ] },
+       { "name": "none", "typename": "none-machine",
+         "cpu-max": 1, "deprecated": false,
+         "secure": false,
+         "targets": [ { "arch": "aarch64" },
+                      { "arch": "riscv64" },
+                      { "arch": "none" } ] }
+     ] }
+```
+
+Single-target binary: every entry has exactly one element in
+`targets`, equal to `query-target`'s `arch`.
+
+A client that wants the old "machines per target" view filters
+`query-machines` on `targets`.
+
+## Open questions for the list
+
+Machine names are not unique in a combined binary (`virt` above exists
+for aarch64 and riscv64). `typename` is the unique QOM identity, so the
+list contains one `MachineInfo` per `typename`; `targets` lists the
+targets on which that machine type is available.
+
+1. `kconfig` on `QemuTargetDetails`. The use case is tests telling "not
+   built" apart from "missing". Open points:
+   - `'any'` (a JSON object) vs. a list of enabled symbol names.
+     The object makes a typo (symbol absent) distinguishable from
+     "disabled" (`false`).
+   - Stable, or an `unstable` feature, given that Kconfig symbol
+     names are internal and can be renamed.
+   - Size: several hundred entries per target, which is why it is
+     in `QemuTargetDetails` (`query-target`, `query-targets`) and not
+     in `QemuTargetInfo` (which contains only the target architecture).
+
+--=20
+         =E6=AD=A4=E8=87=B4
+=E7=A4=BC
+=E7=BD=97=E5=8B=87=E5=88=9A
+Yours
+    sincerely,
+Yonggang Luo
