@@ -1,108 +1,172 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827D44E5349
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 15:41:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB30F4E0B85;
+	Mon, 28 Sep 2026 15:43:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790610097; cv=none; b=Y+tAyKf0Mkx+MtD/NJmpNgwu41llMSnt2S23kR4qPrcHZ/Yp/N/ebMALAwtnPfspK2iQwxT9y2r2kTOVPQRkUMDl5KDNsoXuFNVQjlimFU+U18uWXgnvD50kqfUYikW7Lh2+rocqkPoMw7WPqotEFR/qdZvi0pmTykk0M/cmaUY=
+	t=1790610195; cv=none; b=cLOTQj5lcxnWkOuJy6YeZw7xT7kfEemKHepCu9m7dL1Qre2JXS/AsSQLkL7RkdLeeDuO1QfTh92FxIv2WuWwImb2x+Mw7iJI7DZe9WrquoZ9xh0W5TFjlXnkAWBkKSFQAMQwMdNQQ4qEJzhQAf9Wa9HCGv3o+mOky4G41gxBBCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790610097; c=relaxed/simple;
-	bh=9Msw6I067+6iBsgwsr/Bt4ePiirOGUBNmkcsMmUbeO4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ki2oNC7Jjt/+A5qRre1iEZ7QRv6QIGk/sy1d8sLtKK9scRXLrjBTn/xyj/fZTWNPYcgZFzLmHKhHORkhgBMdllxHBj96WXbcOUpvgFABNMnqruLXVijB7PXTvTZ8Olks0c7tZJpIZRLRlzvzvZQFLgRprBmRdA2Fy+WThb7fYwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UJo6vSKr; arc=none smtp.client-ip=209.85.215.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1790610195; c=relaxed/simple;
+	bh=KsqOujjQ/oW8ig5DcOGJOdeLYwsIDW7kbTI96hTCUh0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fKFcX/XXUG33nwqmgHdKd6s+iX6S0V7P5JrZ5tKDKMkMflo5yeXG06CHvt9kRcMgY+ITLYsScq1l+mSxasH3kZxVvSSn8BzyEbUXtwvM+pwnnEiDJEyBiOZfuSxqysaSVVkYwOpkFm3BpKW+LxEl8Vi/B53DcTnEKpNGSfuWBwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BcT7OKmu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UJo6vSKr"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc489e7a701so3899698a12.2
-        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 08:41:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790610096; x=1791214896; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=vK0Krog7rzU4pR4Isc7XjCheGIHMrcN1uvJXgDIv7WA=;
-        b=UJo6vSKrdb1FJJmAC5rwm2jy7fh5IGeHhMa36zwuacU/6z2+ufQhkslHMue57nkQMD
-         oskhJF+Q9a8/+Vfetl2OlnyDeoTtllz7n3aER8GpcZRG7qgg7IAnUwWUB21Xc44Avdui
-         xVhjS7OXwiqJn14gn/C67rQ7ZfKINQjlvlUmeqZgXJvoL4smzR8rImsCadLq14q3o1WK
-         ZtwTICgXPU13Q2b80JcoMJbUiAzDtf93Yc1SXdaZ+t49vFqg9uJicghzDiSjKSfDn8xl
-         QAin0+mbMBr+DTIc/E7e+gzPPcjGKJM31lxfrqFOQTMqA1rVUh0a0B5Siy080/mBuYbF
-         ZLhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790610096; x=1791214896;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vK0Krog7rzU4pR4Isc7XjCheGIHMrcN1uvJXgDIv7WA=;
-        b=dwjgfOk0xvxbR2tCPhJQ023KmEXNV7jBpy6PRdzvJAAjYqTw2o0pfurm+HvU1aJ4u3
-         Q6xUeofnCEweDd10rkM4ZfDHfPtSSFsq6NcIglK6jTomkDtEwZRdARtbSoKNkxCjekOE
-         769biLa3QSl43ZJe9izDdZxSmimrCtl6xMEf+ON4uxExkqQM0YmeVFSpaqBjjLpAPLTi
-         dmMcVizkDIQIT+o1Sbx1+nd0UMepweFSvycZF57GusuDntkyfZc52MocnzznMzqpO1bI
-         uxKwcNe22IBFC9XIWNrfGQNeE/C6PSql5wEVtfs5IgnK1mBGW0ug9vO2tuhyHluq6qdP
-         HnWw==
-X-Gm-Message-State: AFuF++mZOYox1m/A7+6nHW8alfFUACa/p5qpknJCjkkjHpq6y+/c3P18
-	knRPQbpwvwaql9+AAiTKZhAzVOwAHlAjnnJ/RXNWu/mIya8218JSkfWeHGaS9jzfMBtErGlggKm
-	5xVV6bg==
-X-Received: from pgbbm24.prod.google.com ([2002:a65:6e98:0:b0:cc7:85ef:361e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:d48b:b0:3dd:85a8:cb7f
- with SMTP id adf61e73a8af0-3de0e8a05bamr11668505637.34.1790610095566; Mon, 28
- Sep 2026 08:41:35 -0700 (PDT)
-Date: Mon, 28 Sep 2026 08:41:34 -0700
-In-Reply-To: <CABgObfZeA_q_prxJhbdNqYpE8quPD360LhVBQv8ypcPpLA-Mhg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BcT7OKmu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20611F000FF;
+	Mon, 28 Sep 2026 15:43:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790610193;
+	bh=WvjIK8lMJjZQ6TYt7Ry3gctA6WmwroJ6f2WMOorPUPQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BcT7OKmuAFs0uf8ul2TBIRFuaFueW7Kb6CkzFZ6XOaDunxOrqBe3KUlh+ZEoGfa87
+	 0sFowvcUP1n3cQ9adY6DXnGNtxKliItjrZLIi1dzwLIu2B69nx2HEeuPisLLMIXS7B
+	 Ipbw7ltcGWYiwYGy/ZpT+Loe+Ro15NquMCbhIUxVi8E6ns+fWEGvcG8SRFTOsnTUaH
+	 UKob4f0VJ5rmvuZS0XKoe0csPSxFdsEIt8eWw2yZ1w+GTPlHToC3Lb3DS3b76k3+RJ
+	 1jPorzDrT/qUDBznGdaeIQGbtNGG64lPI0jSEGHv+WvAU5TweAl2ClO3M2pY36cIdB
+	 yUD8iGWfYi0bw==
+Date: Mon, 28 Sep 2026 16:43:06 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Ben Horgan <ben.horgan@arm.com>, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 3/3] KVM: selftests: arm64: Make set_id_regs bitfield
+ validatity checks non-fatal
+Message-ID: <arqIqSd33vvr1_lC@gremlin>
+References: <20260901-kvm-arm64-set-id-regs-aarch64-v7-0-7b065b0bda9a@kernel.org>
+ <20260901-kvm-arm64-set-id-regs-aarch64-v7-3-7b065b0bda9a@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260925233321.2381319-1-seanjc@google.com> <CABgObfZeA_q_prxJhbdNqYpE8quPD360LhVBQv8ypcPpLA-Mhg@mail.gmail.com>
-Message-ID: <arqKrvYupBpAM2WI@google.com>
-Subject: Re: [GIT PULL] KVM: Fixes for 7.3-rcN
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260901-kvm-arm64-set-id-regs-aarch64-v7-3-7b065b0bda9a@kernel.org>
 
-On Sat, Sep 26, 2026, Paolo Bonzini wrote:
-> On Sat, Sep 26, 2026 at 1:33=E2=80=AFAM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> >
-> > Please pull a variety of fixes.  Nothing is super urgent, but all of th=
-ese can
-> > be fatal to the host and/or guest (except for the selftest change, whic=
-h fixes
-> > a regression that was introduced in 7.3).
-> >
-> > The following changes since commit d599822bdb66aeec5ec76297b0fc6efaaeef=
-e07c:
-> >
-> >   Merge tag 'kvm-s390-master-7.3-1' of https://git.kernel.org/pub/scm/l=
-inux/kernel/git/kvms390/linux into HEAD (2026-09-04 17:34:28 +0200)
-> >
-> > are available in the Git repository at:
-> >
-> >   https://github.com/kvm-x86/linux.git tags/kvm-x86-fixes-7.3-rc5
-> >
-> > for you to fetch changes up to 119e9db233ad0f4cbd4cfb9f9385a7bca378b37d=
-:
-> >
-> >   KVM: Don't pre-reserve xarray entries when storing empty/NULL attribu=
-tes (2026-09-22 08:36:16 -0700)
->=20
-> Pulled, thanks. I added on top the SEV cache writeback patches which
-> are not present here.
+Typo in subject: validatity -> validity
 
-Heh, because they're buggy.  Sashiko pointed out flaws in both[1][2].  I ha=
-ve
-fixes (will send them shortly); I was late on posting v2 because it took me=
- forever
-to figure out a not-awful solution for the double-free issue due to the ann=
-oying
-CONFIG_CPUMASK_OFFSTACK behavior.
+On Tue, Sep 01, 2026 at 07:50:03PM +0100, Mark Brown wrote:
+> Currently when set_id_regs encounters a problem checking validation of
+> writes to feature registers it uses an immediately fatal assert to report
+> the problem. This is not idiomatic for kselftest, and it is also not great
+> for usability. The affected bitfield is not clearly reported and further
+> tests do not have their results reported.
+>
+> Switch to using standard kselftest result reporting for the two asserts
+> we do, these are non-fatal asserts so allow the program to continue and the
+> test names include the affected field.
+>
+> Reviewed-by: Ben Horgan <ben.horgan@arm.com>
+> Signed-off-by: Mark Brown <broonie@kernel.org>
 
-[1] https://lore.kernel.org/all/20260923165304.1662E1F000FF@smtp.kernel.org
-[2] https://lore.kernel.org/all/20260923165349.CAAF01F000FF@smtp.kernel.org
+One NIT below and typo noted above, with those addressed LGTM so:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+>  tools/testing/selftests/kvm/arm64/set_id_regs.c | 22 ++++++++++++++++------
+>  1 file changed, 16 insertions(+), 6 deletions(-)
+>
+> diff --git a/tools/testing/selftests/kvm/arm64/set_id_regs.c b/tools/testing/selftests/kvm/arm64/set_id_regs.c
+> index 3aa8886e8b70..385e1f1c0133 100644
+> --- a/tools/testing/selftests/kvm/arm64/set_id_regs.c
+> +++ b/tools/testing/selftests/kvm/arm64/set_id_regs.c
+> @@ -422,6 +422,7 @@ static u64 test_reg_set_success(struct kvm_vcpu *vcpu, u64 reg,
+>  	u8 shift = ftr_bits->shift;
+>  	u64 mask = ftr_bits->mask;
+>  	u64 val, new_val, ftr;
+> +	bool match;
+>
+>  	val = vcpu_get_reg(vcpu, reg);
+>  	ftr = (val & mask) >> shift;
+> @@ -434,7 +435,10 @@ static u64 test_reg_set_success(struct kvm_vcpu *vcpu, u64 reg,
+>
+>  	vcpu_set_reg(vcpu, reg, val);
+>  	new_val = vcpu_get_reg(vcpu, reg);
+> -	TEST_ASSERT_EQ(new_val, val);
+> +	match = new_val == val;
+> +	if (!match)
+> +		ksft_print_msg("%lx != %lx\n", new_val, val);
+> +	ksft_test_result(match, "%s valid write succeeded\n", ftr_bits->name);
+
+Same pattern (I wonder, not for this series, but perhaps a follow up whether
+this could be generalised?)
+
+>
+>  	return new_val;
+>  }
+> @@ -446,6 +450,7 @@ static void test_reg_set_fail(struct kvm_vcpu *vcpu, u64 reg,
+>  	u64 mask = ftr_bits->mask;
+>  	u64 val, old_val, ftr;
+>  	int r;
+> +	bool match;
+>
+>  	val = vcpu_get_reg(vcpu, reg);
+>  	ftr = (val & mask) >> shift;
+> @@ -462,7 +467,10 @@ static void test_reg_set_fail(struct kvm_vcpu *vcpu, u64 reg,
+>  		    "Unexpected KVM_SET_ONE_REG error: r=%d, errno=%d", r, errno);
+>
+
+NIT:
+
+There's a:
+
+	TEST_ASSERT(r < 0 && errno == EINVAL,
+		    "Unexpected KVM_SET_ONE_REG error: r=%d, errno=%d", r, errno);
+
+Above, do we want to make that non-fatal too?
+
+>  	val = vcpu_get_reg(vcpu, reg);
+> -	TEST_ASSERT_EQ(val, old_val);
+> +	match = val == old_val;
+> +	if (!match)
+> +		ksft_print_msg("%lx != %lx\n", val, old_val);
+> +	ksft_test_result(match, "%s invalid write rejected\n", ftr_bits->name);
+>  }
+>
+>  static u64 test_reg_vals[KVM_ARM_FEATURE_ID_RANGE_SIZE];
+> @@ -502,7 +510,11 @@ static void test_vm_ftr_id_regs(struct kvm_vcpu *vcpu, bool aarch64_only)
+>  		for (int j = 0;  ftr_bits[j].type != FTR_END; j++) {
+>  			/* Skip aarch32 reg on aarch64 only system, since they are RAZ/WI. */
+>  			if (aarch64_only && sys_reg_CRm(reg_id) < 4) {
+> -				ksft_test_result_skip("%s on AARCH64 only system\n",
+> +				ksft_print_msg("%s on AARCH64 only system\n",
+> +					       ftr_bits[j].name);
+> +				ksft_test_result_skip("%s invalid write rejected\n",
+> +						      ftr_bits[j].name);
+> +				ksft_test_result_skip("%s valid write succeeded\n",
+>  						      ftr_bits[j].name);
+>  				continue;
+>  			}
+> @@ -514,8 +526,6 @@ static void test_vm_ftr_id_regs(struct kvm_vcpu *vcpu, bool aarch64_only)
+>
+>  			test_reg_vals[idx] = test_reg_set_success(vcpu, reg,
+>  								  &ftr_bits[j]);
+> -
+> -			ksft_test_result_pass("%s\n", ftr_bits[j].name);
+>  		}
+>  	}
+>  }
+> @@ -882,7 +892,7 @@ int main(void)
+>  		ID_REG_RESET_UNCHANGED_TEST;
+>  	for (i = 0; i < ARRAY_SIZE(test_regs); i++)
+>  		for (j = 0; test_regs[i].ftr_bits[j].type != FTR_END; j++)
+> -			test_cnt++;
+> +			test_cnt += 2;
+>
+>  	ksft_set_plan(test_cnt);
+>
+>
+> --
+> 2.47.3
+>
+>
+
+--
+Cheers, Lorenzo
