@@ -1,257 +1,185 @@
-Received: from mail-ed2-f34.google.com (mail-ed2-f34.google.com [74.125.228.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09CC3B3887
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 18:50:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEABC3B42F7;
+	Mon, 28 Sep 2026 18:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790621419; cv=pass; b=GxR7yy1f4WzHfQ0XhtEGMqk++2S746N7usnD7wVtPeWHgO1qE68zQ+dIEBtt4VWN+VDBWnlFCTD9hVMobfyJIcdeIFAmV3qtUqwoIv//tGHVzzxT3vRH2bGj3mTVcZY4Qg8NS/d830zspkCTs0WNQYdKaGRWWB6pMTMRPwM4V40=
+	t=1790621441; cv=fail; b=ouU9MPb2lVOZ0TNiGWiAVhPWLWB6tK3I0505BRwK0yLPCBjsQVIT37P3URT1kSzx2nCE8prL2OBySOf5ElmOdKr5gnItLFx4NsUdnOJiftbKmLTSS6vSU/NXHm+ISOv7oz6ryecqMLr2ALUsmMOlg1rxgOyVNZ5NHNZ8o6TJuqk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790621419; c=relaxed/simple;
-	bh=MUq2IVaELHmXZg4HVFc9uac3c+iiYOqoyuXOPCliCvs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JglHy54hHmkEXbpUXa1yGwVxER+xpfypiU12gPAqK3fs0LZEKU0zRGt9NPAP3KiL4VNhKGGj8tJ41PHAnZ1JiHNrz52qspPrqlN5iHffLnxO9zSTKkJnrHBNUlVSdDkbRkYJzv6ZUsKrfMGRUAkMX4hTntrnBoC0+kJnqBW/GlI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=juEWVmGm; arc=pass smtp.client-ip=74.125.228.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790621441; c=relaxed/simple;
+	bh=Yb1tmht3LK4HDtby7PODhyVy0MzULVtqlyua2vDfTOc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=sAJ31KwI1lKgA4Lxw+n0PSTiQ9EOZfVJIB/jOfGijuNY04uXGY5A+BaSpQW2bAxuWRbNQS2YhnJHZJEHfwX5jjcA9GEoCeFMv39AZ9FaNB/sKzwfy0FuWRkpzgoK8ZCEhGCJydo+TSkuekNSlFuu8Plu9c3VodKyHOVXSc7BHhc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ebsMmnDY; arc=fail smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="juEWVmGm"
-Received: by mail-ed2-f34.google.com with SMTP id 4fb4d7f45d1cf-6aaea178c96so3990794a12.3
-        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 11:50:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790621416; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bMW6rD8F13h8iei+kDKXmgc3Tib6vjvDY0FOHeducpo8pz+djHdngzrck91+p51HV4
-         WIpw2vtq6h6zwb0q6WKq1gdT9iJtd4gOknHOk5eKQusCpPRXmSCqEuRiCU45gob2gl1A
-         ZW+UtBnW+sWbKm2ZB+PLwt8p2JQ2YtvucN0t8gVX4ePeoEXHtQUT244SwhxC4/owmMKf
-         DfO+QkGdyDr2tSKUhr8vZ4rFzhLPZC9RaY1HPtwzpC9MJBcl0DNxC5FrjS2VvmB4XWPQ
-         JTduGuUOp2SBXXCOWDkq65O6NWvYOYGCWISQR/nMl7d+gb5egBBlBRXCf9mebV1e3FL7
-         G8cQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:dkim-signature;
-        bh=cNWNsOCJ4AlO+zLzUIcfQWq7CBexHD/3GmlH1NAXYOk=;
-        fh=t2MM47Ne7kdH51J9wj01Cu3iOQVZfdn8lk8PV86T5lM=;
-        b=K/hy5fg8YB8a2nhkwxLzeJOOrGD1fxKsFED+sxjBJGHdps22Nj6kjGCDbB4IXOBCjU
-         5cipzhE0zgagC1YRjoShC7wGmUUVY6O0yiYGOJbezZf38XNtABs6P05IhPbi0ZkO4K6W
-         lEtNahNJo/No4RjbfbeGfFJi9XzYLYjSmuBpQyqoDN5HQOcjtQsO+2uQ91FZv9Mnq7Yt
-         m3HFZ0CFjOoEBPrES41MYECBQ6SYOTaYO/k70WPh0OsSC4jXqPPOey0HX5nxmIkJ9Dlh
-         BFPFXrXlEDZcitLAuXrxDyXjDSdPVR7koLemUHVoIMKV2Zn4uI3MLcRzlnpyshhnh93y
-         5GPg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790621416; x=1791226216; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:reply-to:in-reply-to:references:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=cNWNsOCJ4AlO+zLzUIcfQWq7CBexHD/3GmlH1NAXYOk=;
-        b=juEWVmGmZEQ1bnNHR8u3sdFBDMje41beNQhrpcX+brmm0PAMb4yiPcpauSfPq/uV0i
-         gIdWIYALzaHbpjvgH72yubf63/DLulY+n06cU9CSq/SwuvI5Iap6VJd6M4xrFXKFckNu
-         7eCCV0u2VwAdQr27lFRF1ENKdvww6k1zTBGtvleXIWsBuI+eeh/t0pb53KF5+juVc7kc
-         qq3gjxYAj7Skxz0A9QnasUV9M+zZZuw03MeRCaVZBNAT6KTcDe+KodVAFODcfvhJUiK+
-         wlZ7V7Oqk7+PMFCfqkLhEEMrfZRAEc0eXNCuAwem6XVkJJ13FsbFmhBERwCEWnnsAZm/
-         XiGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790621416; x=1791226216;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:reply-to:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cNWNsOCJ4AlO+zLzUIcfQWq7CBexHD/3GmlH1NAXYOk=;
-        b=b4qcm2EThpAlt6H8QDyR4VDv4TUL1hnQnztzIPBRF2nyf0fp3YHOCP/MygXsh96Yx2
-         TgxFVFZpJ3/etlRrx97O+ZK3IJXWYReaRT708UNDoCaAbHZx/m/xWNqjavDZpPBezD/l
-         I0xYq9B8f5ci4JqcggtkKnxVBMC48/H0eSVeRaFVJgB+/1iZ+ZVAwHdHxRloLYryGI5m
-         JhIA14f4jZ9wA8WjnDcr630SYvmLEluqKGR+zWWD0qdmih+cxTH/cNf5hanPRATjZeVm
-         nMJeJ5uybJMwtghBzccHhsNTYMgk4ZRGfsc5CNXlZVGMi2gFZZX5A2Xj4tzMQuii4B/m
-         3qww==
-X-Forwarded-Encrypted: i=1; AKwUvBxeLR0HT551yTA688Us2xV/iowHN5OaD8zS4Q3Vy+OhiNwD48Wfeg85HjYPa9MqO4AUMsU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLzGECkoyWGrN/t7eq5Ear1X7j/RroeJDo66h8ZAqv1kHkGXl+V
-	IRv+QP7fTi2YWQgLMkEFtfd+xfZQktCFPDyXB1584SjbTx3+e0jYpqY22muxhYLBUj3P/jcL0/s
-	sDBt/TjUXc0gGnxmQvpgXWAOw7aHFZpQ=
-X-Gm-Gg: AYBFou0BGYhJW0S2P2/Z3GXUP1+aGXGUicwdd43MUVS6YrLXnwgJxbKE+AMWaEjRPHI
-	aZLOUxDvAUfufYx+Bk8/Kto82XSl4fjv/lLhjt1+9tFdFKO+e5lkl7bY5wggQMY3AIxhWsyGdpn
-	ozwiJ/gZqJ74gwRIXps6PrHE7eMVA6eHvY/WbAp/RaMDcZlL1M+Qj8V4rsULE9LvxBv6yN0zzOM
-	NNHCcvTRFhMlWR8ZlxXKvvhdqsp8k3tj3rh4FjORMg9sg+IeIJMhEpU0cpRe7JLSrt/KHvA9ual
-	Dty8B8PzmR1m6VufQfRFjNByy7YZ1vwInXphzTzztwHsdrxz/47kPAQ=
-X-Received: by 2002:a05:6402:52cf:b0:6ac:813a:a1de with SMTP id
- 4fb4d7f45d1cf-6ac813aaf45mr2454700a12.31.1790621415614; Mon, 28 Sep 2026
- 11:50:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ebsMmnDY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790621438; x=1822157438;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=Yb1tmht3LK4HDtby7PODhyVy0MzULVtqlyua2vDfTOc=;
+  b=ebsMmnDYs6Y9rl8bqcO42POJNYng1t7z0AvaX9ldqYKtIE+3lGDbam3S
+   LOh2d+3GrclA3WSshxUek+xfNN+a2F+PaRslIcG5o89cLRT6J2vk3wZuG
+   ODfzhaLyFMsSyMld2rz8R0NiX2rBtdo/eeGiQH3RUVUax+EmAYzFlQuLl
+   zIPeCqwizQ5ORPy+/JrQAHRJmXgNHPvSITHitwzDMVQQ0Yaeb1ThvjNta
+   TuixCME3dEugjCbB7AIqObZw6oQIga7icYythi420HOb7v1AXDbiLEMnL
+   9MhBmArKbjzNYwqi7i15Bos+nhL5CDjmdB0twEE6+0tk/2eWvJhVzZVqQ
+   Q==;
+X-CSE-ConnectionGUID: //KqCUJtRxqfTRFKLDYs5A==
+X-CSE-MsgGUID: PocI/i+cRtOSnk/Gb3/xJw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="91350466"
+X-IronPort-AV: E=Sophos;i="6.27,129,1787036400"; 
+   d="scan'208";a="91350466"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 11:50:37 -0700
+X-CSE-ConnectionGUID: BpcWkcWeTt2t/Vqq7DCHpA==
+X-CSE-MsgGUID: /7a/e3etRfWYMWr3Hji4zA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,129,1787036400"; 
+   d="scan'208";a="283221415"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 11:50:37 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Mon, 28 Sep 2026 11:50:36 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Mon, 28 Sep 2026 11:50:36 -0700
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.9) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Mon, 28 Sep 2026 11:50:36 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wUkLpLeldyn+rTv2Gg8EclRBygCkGdT5Ic+D5tzBtCA9bOj1wrHG9ibRPf1i1qQ0u+CHqzo+DrY2S6B6KG6vHH4TsDrnAztPqq4AwD5xMscjdBsZ4MV5unsNyonYgTP6TAlg+EeAaUUK4LL7R3ixcMaJqbAtfwhzxt/oliC2x1RJMo4p5e8s6r3QZCgu1xqUd0qvO4fFin8Uju3WsW+UJ94FEO209mu4+59VB/ZZgK+KtRuL0edc4gLHEUm0n3xJ2YwUF+emS7OSVDP9dxxeRxavx5rzlDxOR1U1HCrTcEzFWCIIcRa272aPBMIEKLFDikIS69LDPuGXeIi78735rg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Yb1tmht3LK4HDtby7PODhyVy0MzULVtqlyua2vDfTOc=;
+ b=wSOQU+LM9a5vDnDjhJ8G3y9CPbAt66E2CBvPqM/a+M8c2P+FzZSSzUzxPFD3tbo+T6z7EP6TxyzEnHD/ZtQvrZEXirTU2Qg3xhczyrzbyYDmW4yu40Aa9YsVQMfzDDGHpIrf0LG2epq13b96iuUGpZ6RdqUVYArNJ+y/1AQJ5P/OtpzVjfwP754aj4FCgLF6sXrnxNtXz65qeWJ0ZowkPP5nX870vGE+Qo0bbkGakXlG2Ie5C1rQXTIrsdneL3bzLHmTIa/6U57SZo9pJJJWI4+8uRXRhMktD1qSh6bWK7UeRsAaocXQYV5BYFxuSWWmSuIPZuxrXNS8bEfDuIYLNg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6771.namprd11.prod.outlook.com (2603:10b6:510:1b5::20)
+ by SJ0PR11MB6719.namprd11.prod.outlook.com (2603:10b6:a03:478::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Mon, 28 Sep
+ 2026 18:50:33 +0000
+Received: from PH7PR11MB6771.namprd11.prod.outlook.com
+ ([fe80::effa:162e:c9c9:a1b4]) by PH7PR11MB6771.namprd11.prod.outlook.com
+ ([fe80::effa:162e:c9c9:a1b4%4]) with mapi id 15.21.0451.014; Mon, 28 Sep 2026
+ 18:50:32 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "kas@kernel.org"
+	<kas@kernel.org>, "Fang, Peter" <peter.fang@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
+CC: "seanjc@google.com" <seanjc@google.com>, "bp@alien8.de" <bp@alien8.de>,
+	"x86@kernel.org" <x86@kernel.org>, "binbin.wu@linux.intel.com"
+	<binbin.wu@linux.intel.com>, "hpa@zytor.com" <hpa@zytor.com>,
+	"mingo@redhat.com" <mingo@redhat.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"tglx@kernel.org" <tglx@kernel.org>, "kvm@vger.kernel.org"
+	<kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "Bityutskiy, Artem"
+	<artem.bityutskiy@intel.com>, "tony.lindgren@linux.intel.com"
+	<tony.lindgren@linux.intel.com>
+Subject: Re: [PATCH v5 5/6] x86/tdx: Add a helper to query maximum Quote size
+Thread-Topic: [PATCH v5 5/6] x86/tdx: Add a helper to query maximum Quote size
+Thread-Index: AQHdTzGsoGIHh9qePk+bCG/ii8ItOrbkVhWA
+Date: Mon, 28 Sep 2026 18:50:32 +0000
+Message-ID: <bd235459708f5233444f31270d8785c0818c107f.camel@intel.com>
+References: <20260928100913.2265687-1-peter.fang@intel.com>
+	 <20260928100913.2265687-6-peter.fang@intel.com>
+In-Reply-To: <20260928100913.2265687-6-peter.fang@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.44.4-0ubuntu2.1 
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB6771:EE_|SJ0PR11MB6719:EE_
+x-ms-office365-filtering-correlation-id: 7cc1c9a9-50e1-4119-7921-08df1d915ff8
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024|23010399003|4143699003|10067099003|6133799003|11063799006|56012099006|22082099003|18002099003|38070700021;
+x-microsoft-antispam-message-info: bS6gWPWyAv3BzJsNJel6m+naPFzCEXrEQsEGkwr9ZEJHC4rjdDdHNJa5jhtcKIFdNu+4gL8+2BBAikY5nSLzrhNImFpLMvJxRlSlmL96zVurH5txu/pmcMFkoZrN356ZzW/6rcQip8N6CFRVWgmGdqvvDE5nCrxnJ/tnmDVECAW6fC7NgL8Ji0GSY9MMnC8vFHOmnXJyFY8v7Scy3ti/OvTRwFM/yxs4yFmba13NbvcZuv6rimKooPrPh9DpC8gKYaNA/mia7+JA+NNujq80e00E8/nMAAajnTavWlIiIJjJtOXPu4OQxT7+tY+vNVQxMfER5k0O/l99Ec1C3DJHBfYKDD/x8VuLgzuEkp1sDPHI99tdmjVmdsmOST10cvMWEk89dONrJ460gKRoHmdmj2208b34pNbNYUP1stJAh4x3B7ij5WJvjcx70NzJTS7rgBzE2by8VplVNZe7l53LRGNLpjFeotcQWbH6GYiINsZIM+qqZjHW6QUraea4a7XZr0O7iJa8MSELqarXNiopAMIxBzL6MPn5/HzZPhgsKn6br1HvtXgHEqsxKPVqVVUn0pyqeGGtJnx97HzJEHouN7NCGnskIm9WP2FRuoHSo34rJGVaF+7/QJ9Oj6/FB5uzOeePh8GZIFsftz4SRtBT73O5FIePAVEP0RegeZRJPdVEPK6xerQzzAP5Y3Nu2rhlNlIiPR65rr0vBdEGobWRPBrvezUipos6nK42oTDlnPU=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6771.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(23010399003)(4143699003)(10067099003)(6133799003)(11063799006)(56012099006)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?T1RMWVdEWjc2UTIxSUhoZ29ZM1FlRUgrTHE0bG5ReS9UdWV0TUx3UHcva05Q?=
+ =?utf-8?B?NGZ3YzE3Z0M1eUJEaGRKOVZmL2NVaEgvdmlhU2YvMWlvZ0ZUdGpYR1R6ZDNu?=
+ =?utf-8?B?cG82S0lhYVVCVGFsOERIazEvU1BPN01xbUlWM3FIMDIrdWROSEZVNnVOd0tU?=
+ =?utf-8?B?bElSbnk1aDVyRGxGRXJXQVpiZDB6NHRmeTJGV3h0ODVrMUVPREJMNWViYklT?=
+ =?utf-8?B?NkVDdkFZbDhXQ0VGVXhNV0JwbUhINC8zYzk0aEp4Q3MwYmxoOHd6dWlndEk3?=
+ =?utf-8?B?b2E0TEdQUHowRHRteE51NVhpUnorSWxQZjlJeThvZlZISkQxMzhuK0pJY3pP?=
+ =?utf-8?B?ZCt6cWxOb25HdFNkNVVMTjdJQmRWSktadHRxYkFDbG9qMDZuNlMxTk8xem5p?=
+ =?utf-8?B?U00vYXQ2bHRPN3lkSDF5a3FSdFBZWDdJY0xacnBBa1AzdGFZZm9KMUpoNzND?=
+ =?utf-8?B?em56TlQ3anl0L1VEaitNMHNSWDVhLzVUbHdyVEhPV0VwQzRJU3Z6ZG4ycjJ0?=
+ =?utf-8?B?REhCVmdSTWx6bUJIVDZyOW9lY2d6OXdhcnJQVFExdzJGRTN3QU1pUzZLZENT?=
+ =?utf-8?B?R2xYb3I4R3ladDB1dEdId2lQOGVVMGtKMjBFb291STRwYWZaNzhCcmZhblEx?=
+ =?utf-8?B?N1Vkc2Ntb2xXSmpRU0U5ckVkY3R2bTZjZ3NLa3hZYzhGOERyd0l1QTlGaklw?=
+ =?utf-8?B?WFJBNGtUZWVMOXlRNmE5eG5xTFdneTR2TUNhTmEwaTI3NUFaOS9pWUNuRllU?=
+ =?utf-8?B?QnhiblBRZWxTTktCZ2F5WUNMUEpKRWJ1V3lJNGpIMUI5dWpnN1NpWnlSK3pD?=
+ =?utf-8?B?cDcrYmFpV1dpejBGb2ROVkRML2NtckdpQ1RCV2JKbmlaeitKM0ZrSE80a0Ra?=
+ =?utf-8?B?eHZrYU52WG4wWFlNaFI3SDE1TkNPcUQ2bjN3WitnNjI3NzBwejhxMzgxRnFF?=
+ =?utf-8?B?czJzc1NQeUhJd0x3cTZPOU55VG1yczhsSG9nNDlFOEZNTGd4Vlp6T2MwdTBv?=
+ =?utf-8?B?aTdEYUl5TVBhR3Fzck43K3N2bWNTQ3NmdU1sVHdTbVZyQWE4ejJjQ1VOWVNl?=
+ =?utf-8?B?Q0lubExneHpSZ2IvaExnNjQvajg5R1Uva3gzNHJReXBwRW11QmpTREFmQXp1?=
+ =?utf-8?B?T1g0Wmt0VU9zTjViNmtQeWIyR0NDcWs3ZFBhU0VsWS94MVR0SG1Gd3lSTmtq?=
+ =?utf-8?B?N3JZT0JuVXkyajNOUkJrN1piWERmYmo3Y0R2ak9qblpJSWdzNXRwZGVCbEtH?=
+ =?utf-8?B?eGVBOHMrMjc5YVVhNEhxV1U4QUs4VktoTnpzUVJ5R2x4WkxXZUdVOS9TK1R2?=
+ =?utf-8?B?QlI2VGU2MFZXZ0ZzUSt2UzdkUUFncG9JWm40RnIvL0hCaUs3VzdyaHFEakRP?=
+ =?utf-8?B?eUJ4K21jZGZuYy9ReWRnOHhqOW5EZklFQmxwRWlTamgzL1dFUjBsc1owRHND?=
+ =?utf-8?B?VXFqNUVoMUY3ZFVNN3pSSlVZMlFJZ2UybWczQUx4a21oV2M3WldFRC9GTDgv?=
+ =?utf-8?B?akM0R0ZRMXdmSFBvWjB2bUdmZ1k0YitYL1hFMElvTGVQc21Ba1I0WkdReWVr?=
+ =?utf-8?B?VGxQcVlSUFVoV1J3c2ZtZEVJYnl0WWNtUER1YlNTd0o4SmFvT0k0bzllbnN2?=
+ =?utf-8?B?ZnBXbVpHYnFJWXVGaWNWTExrc0NqUG8ydFVoaE5SOGVnMjRWUDJxaFNKRTdT?=
+ =?utf-8?B?SDVEV1BLdnZCSEhhQmdEbmpJanB4alR2N1VUQzFrbFpVT2dhbTljQmZzY0V4?=
+ =?utf-8?B?ZGZoNEwrWVdld0V0QmlCMnZhK1lLU083MmFlVVB2SW5DMDZtclgxeE93Q0hI?=
+ =?utf-8?B?WUMycXVzdk9tcGFlNWdOcll0K2lrREdEZlQ2STcwRmZ6TUFBN3U3OEppVXNm?=
+ =?utf-8?B?Wm5qL1FXSkFRTXhIdVR6aFUwNktWT1V4VVlaa3JDWUtNZ0dNdUhJL1ZKSW8y?=
+ =?utf-8?B?UENIcGc2M1F3YWdSQ3Y3V0pkYWsxVkpEZ3ZJbkxlTjhTZlNibTVEek1JRmll?=
+ =?utf-8?B?dys1VzRwdkx4aTd3cUZzSW9JbDYySXYxV0srN0ljQWZTb3NRNnl5SWl2SmFT?=
+ =?utf-8?B?dzlOM2dhUTFRNytzclpMRVh0MkFQUFlFOEM4dnIxNHQ3UHY1Mnh3Y1ZVR3hT?=
+ =?utf-8?B?VEpZQnJma3FVZ2NqSE5Nb1dhRmlEVnV5T21ONXpHaHYvMk0vSTdNdFNKLzNm?=
+ =?utf-8?B?Ri9iemZZWkF1TS9pb2VJYjgxcVkzMFU5UUpYOGxNVldTdC93cXY4VXlGd0NH?=
+ =?utf-8?B?WE0rdkl2aWw5RXZNbDhxVnU3SEhVc09rOGlYcWFpWVZ3ajhYWHo2bGJ0N2xW?=
+ =?utf-8?B?SXNPS3RNeWpiOHF1dzZCVDBQSXhnKzdkUFNZT1hjVTBTSk93dUdTUWN6ZmhP?=
+ =?utf-8?Q?1PCpoWx+UCecIABc=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9ECE3BC0661A7B439D9208143C835AC2@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260926070057.1234-1-luoyonggang@gmail.com> <20260926070057.1234-47-luoyonggang@gmail.com>
- <aro93NuZBXYGbD33@redhat.com> <87e7c5ae-c78c-4a47-b9ba-9851ce5757d9@oss.qualcomm.com>
- <CAE2XoE9qsZZ+AnfGQ797SQj5yXP8SDOZyxYoKP=oh57UPFqq0Q@mail.gmail.com> <a4b7056e-1651-4167-86e0-e7eaa3941d02@oss.qualcomm.com>
-In-Reply-To: <a4b7056e-1651-4167-86e0-e7eaa3941d02@oss.qualcomm.com>
-Reply-To: luoyonggang@gmail.com
-From: Yonggang Luo <luoyonggang@gmail.com>
-Date: Tue, 29 Sep 2026 02:50:01 +0800
-X-Gm-Features: AclHuK9MjNSmaMmQn-0GfArQrUjas0ym97Kf1QeFVREkyJZ8FhppqJVItRfEd-4
-Message-ID: <CAE2XoE_0=iEY4uSQ6dBwHpJOhuQOL5SrVbO3kDjMFSrJwbVoVg@mail.gmail.com>
-Subject: Re: [PATCH v4 46/55] qapi: add query-targets
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@oss.qualcomm.com>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
-	qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
-	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
-	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>, Fabiano Rosas <farosas@suse.de>, 
-	Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Alistair Francis <alistair@alistair23.me>, Peter Maydell <peter.maydell@linaro.org>, 
-	=?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
-	qemu-arm@nongnu.org, kvm@vger.kernel.org, Thomas Huth <thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Exchange-RoutingPolicyChecked: OL4WnKbpIQfxHL7wdijTFELmkl92+x4T45vHtsL7in7OeiFHYhSvyMOZCbSE//5bC3uqV/67LgZm75kvAFRd3euzSlRwsT4S6Kg3U60IHXM0xaS2NtViv67GR4aZ94/At6QATLztYWyNQwpVudsagbmTH5hKvluHmcKT6yqcdMzX2GzVjVtA0FaULyK8t9xeqxfjJZHKOeXX80CQvxR5QKSCVIGP7zY0G288NIGL23t+rcfxTnOnNWJgvI6GGLN5jcU9yKtyolRvOKpOF7Lz4zJ8oDufLBmVXJiWS8mJbFAEuzLOJ2fo+bDrMiy7FPeS5PIPsVQ29EEk/wXh40SvJg==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6771.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7cc1c9a9-50e1-4119-7921-08df1d915ff8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Sep 2026 18:50:32.7170
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: lXzlPoAjqFnbMh2QewA3mlPB9+jlahVj5sGa4RWgaWxpUEgfmyMJiO1Ai2wtpkH/CEkKmAn4dAdsOqzknUYL3qckusg/8mb476sYAFIjLY0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB6719
+X-OriginatorOrg: intel.com
 
-On Mon, Sep 28, 2026 at 7:34=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
-<philmd@oss.qualcomm.com> wrote:
->
-> On 28/9/26 12:51, Yonggang Luo wrote:
-> > On Mon, Sep 28, 2026 at 6:39=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <
-> > philmd@oss.qualcomm.com> wrote:
-> >>
-> >> On 28/9/26 12:13, Daniel P. Berrang=C3=83=C2=A9 wrote:
-> >>> On Sat, Sep 26, 2026 at 03:00:45PM +0800, Yonggang Luo wrote:
-> >>>> query-targets lists each linked target, including none, with its
-> >>>> arch, endianness, and the machines that target accepts.
-> >>>>
-> >>>> Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
-> >>>> ---
-> >>>>    hw/core/machine-qmp-cmds.c | 30 ++++++++++++++++++++++++++++++
-> >>>>    qapi/machine.json          | 35 +++++++++++++++++++++++++++++++++=
-++
-> >>>>    2 files changed, 65 insertions(+)
-> >>>
-> >>>
-> >>>> diff --git a/qapi/machine.json b/qapi/machine.json
-> >>>> index 6aaa2af709a..d8cdea6203e 100644
-> >>>> --- a/qapi/machine.json
-> >>>> +++ b/qapi/machine.json
-> >>>> @@ -307,6 +307,41 @@
-> >>>>    ##
-> >>>>    { 'command': 'query-target', 'returns': 'QemuTargetInfo' }
-> >>>>
-> >>>> +##
-> >>>> +# @TargetMachines:
-> >>>> +#
-> >>>> +# One registered system target and the machines that can run on it.
-> >>>> +#
-> >>>> +# @arch: the target architecture
-> >>>> +#
-> >>>> +# @endianness: the target endianness
-> >>>> +#
-> >>>> +# @machines: machine type names, not aliases
-> >>>> +#
-> >>>> +# Since: 11.2
-> >>>> +##
-> >>>> +{ 'struct': 'TargetMachines',
-> >>>> +  'data': { 'arch': 'SysEmuTarget',
-> >>>> +            'endianness': 'EndianMode',
-> >>>> +            'machines': ['str'] } }
-> >>>
-> >>> We already have  'QemuTargetInfo' struct which is used
-> >>> with 'query-target', that should also be used with the
-> >>> new 'query-targets' command.
-> >>>
-> >>> We need to add the 'endianness' field to QemuTargetInfo.
-> >>
-> >> Why do we want to expose endianness, and what endianness to
-> >> expose? Endianness is a runtime bit state of CPUs. Sometime
-> >> this bit is hardwired but that is an implementation detail.
-> >
-> > For some targets it's, but for some targets it's not. for example
-> >
-> > mips-softmmu.mak
-> > mipsel-softmmu.mak
-> > mips64el-softmmu.mak
-> > mips64-softmmu.mak
-> >
-> >
-> > mips64el-softmmu.mak
-> > mips64-softmmu.mak
-> > only differ the endianless
-> If you look at git / mailing list history you'll see I spent more
-> than a year unifying QEMU endianness. It was too much work for a
-> single person so we decided to reduce the scope to ARM + MicroBlaze
-> for single binary and we got MicroBlaze unified. We don't want
-> an endianness-specific single binary. I'm not sure what you are
-> trying to build, you didn't clearly explained what is your goal here.
->
-> You can find series unifying endianness for MIPS, not merged because
-> more things need to be addressed and not the priority.
-
-
-Oh it's because target_arch is not setup properly for those arch
-
-
-From bcffa0d129fd864037b4e0f7b2f46f4889e76509 Mon Sep 17 00:00:00 2001
-From: Yonggang Luo <luoyonggang@gmail.com>
-Date: Tue, 29 Sep 2026 02:47:48 +0800
-Subject: [PATCH] target-info: preserve full softmmu target identity
-
-Generate a full SysEmuTarget token separately from TARGET_ARCH, so variant
-targets such as mipsel retain their QMP identity while user-mode targets
-continue using the base architecture token.
-
-Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
----
- meson.build       | 5 +++++
- target-info-def.c | 4 ++++
- 2 files changed, 9 insertions(+)
-
-diff --git a/meson.build b/meson.build
-index d63174ea8a4..e86daa47228 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3319,6 +3319,9 @@ foreach target : target_dirs
-   endif
-
-   config_target +=3D keyval.load('configs/targets' / target + '.mak')
-+  if target.endswith('-softmmu')
-+    config_target +=3D { 'TARGET_SYS_EMU': config_target['TARGET_NAME'] }
-+  endif
-
-   target_kconfig =3D []
-   foreach sym: accelerators
-@@ -3374,6 +3377,8 @@ foreach target : target_dirs
-       # do nothing
-     elif k =3D=3D 'TARGET_ARCH'
-       config_target_data.set(k, v.to_upper())
-+    elif k =3D=3D 'TARGET_SYS_EMU'
-+      config_target_data.set(k, v.to_upper())
-     elif k =3D=3D 'TARGET_BASE_ARCH'
-       # Note that TARGET_BASE_ARCH ends up in config-target.h but it is
-       # not used to select files from sourcesets.
-diff --git a/target-info-def.c b/target-info-def.c
-index c02d98e6875..54e499712bf 100644
---- a/target-info-def.c
-+++ b/target-info-def.c
-@@ -28,7 +28,11 @@ QEMU_BUILD_BUG_ON(TARGET_PAGE_BITS < TARGET_PAGE_BITS_MI=
-N);
-
- static const TargetInfo target_info_stub =3D {
-     .target_name =3D TARGET_NAME,
-+#ifdef CONFIG_SOFTMMU
-+    .target_arch =3D glue(SYS_EMU_TARGET_, TARGET_SYS_EMU),
-+#else
-     .target_arch =3D glue(SYS_EMU_TARGET_, TARGET_ARCH),
-+#endif
-     .long_bits =3D TARGET_LONG_BITS,
-     .cpu_type =3D CPU_RESOLVING_TYPE,
-     .endianness =3D TARGET_BIG_ENDIAN ? ENDIAN_MODE_BIG : ENDIAN_MODE_LITT=
-LE,
---=20
-2.52.0.windows.1
-
-
-
-
-
---=20
-         =E6=AD=A4=E8=87=B4
-=E7=A4=BC
-=E7=BD=97=E5=8B=87=E5=88=9A
-Yours
-    sincerely,
-Yonggang Luo
+T24gTW9uLCAyMDI2LTA5LTI4IGF0IDAzOjA4IC0wNzAwLCBQZXRlciBGYW5nIHdyb3RlOg0KPiBb
+MV0gSW50ZWwgVERYIE1vZHVsZSBBQkkgRGVmaW5pdGlvbnMsIEF1Z3VzdCAyMDI2LCBURC1zY29w
+ZSBtZXRhZGF0YQ0KPiDCoMKgwqAgZmllbGQgIlREX1FVT1RFX01BWF9TSVpFIg0KDQpUaGUgbGF0
+ZXN0IHNlZW1zIHRvIGJlIEp1bmUgMjAyNjoNCmh0dHBzOi8vd3d3LmludGVsLmNvbS9jb250ZW50
+L3d3dy91cy9lbi9kZXZlbG9wZXIvdG9vbHMvdHJ1c3QtZG9tYWluLWV4dGVuc2lvbnMvZG9jdW1l
+bnRhdGlvbi5odG1sDQoNClNvIHdoZXJlIGlzIHRoaXM/IERvZXMgaXQgc2F5IGFueXRoaW5nIGFi
+b3V0IGJlaW5nIHBhZ2UgYWxpZ25lZCBhbHJlYWR5Pw0K
