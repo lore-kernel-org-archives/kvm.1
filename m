@@ -1,96 +1,109 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50831440A2F;
-	Mon, 28 Sep 2026 07:24:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3CA331ECB
+	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 07:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790580258; cv=none; b=edKjGNdvcEKst0EdSqJkmRsX4pkiEwD0Kbv9muq6NUDkyInHc/6XCdqKKO3rpVYJpCaQobxRR77vA8K+Po5cYTc67fe3VhA3OnF5UcET/su64Zjgmxgo7xaXGYhKWZezAZyCZS78RUm5WsloV2atBjOtF/icvVmLeNSDovemow0=
+	t=1790580350; cv=none; b=K0fPZjbPxLKJ6PfsI0WhSoTwcO7tRszR1Pwdgb0Fy1SDOwkywaRfS+WBDojDU8Yss7JVhQeizQEPG718eOIyknD4cTTLI4MzzUUwQdzTJ+vBECIIswgPNiCAUTu85q3IDyfpNdnH4oemRhl4B+ppiq0F/Rh2OU4kXrsft8mDBDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790580258; c=relaxed/simple;
-	bh=pTRrziAADNEo3SKTEZv+QdRm+LRgn0RQf61ooZ/Ph6I=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=M+nDgu/WRtciAyK6IeS5li0LJlXbaSowWWk87cMxN7hEnmtwyC3rS2L/8NSYmUgfkMORjuhUngQOr3/ZFECoQ3mlQxAKd6IgZWgHOGD/eIXdPXFAPPmPZo/6XUnuB5cdQxpyKoTTp1BZsh0JpxKbXIm4t1D5pVm1zoadHLdkKTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8Cx_9IfFrpqoW4QAA--.48232S3;
-	Mon, 28 Sep 2026 15:24:15 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJDxTs8eFrpqAv0lAA--.15195S2;
-	Mon, 28 Sep 2026 15:24:14 +0800 (CST)
-Subject: Re: [PATCH 5/6] LoongArch: KVM: Propagate real error code in
- kvm_pch_pic_create
-To: Tao Cui <cui.tao@linux.dev>, gaosong@loongson.cn, zhaotianrui@loongson.cn
-Cc: loongarch@lists.linux.dev, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, chenhuacai@kernel.org, kernel@xen0n.name,
- nagachaithanya9911@gmail.com, Tao Cui <cuitao@kylinos.cn>
-References: <20260927075240.3007947-1-cui.tao@linux.dev>
- <20260927075240.3007947-6-cui.tao@linux.dev>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <d3c94dd4-c449-82ca-981b-fcb1cc7c8003@loongson.cn>
-Date: Mon, 28 Sep 2026 15:25:39 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1790580350; c=relaxed/simple;
+	bh=q08SMMXYiHrB/t+BG5Y3bR6naNmrNNO29kDK3fVq4k4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oWk+XNIaRQyRtZLkjJ/9lTwuECUNHDnCRR0l6rah8SYxhwMdOi2eIbVKD3MCEwrRSyXeYTfsSfO3sE9/LjmhS2hiUSS/xlIRW4pel7IK3hl76mk5NqLkL5yQ1r6FTiKCRZlB9TENSWD/p6ugSoaZ3iyVCQ2b8c81mbY8r24x6NQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mxXUNGf3; arc=none smtp.client-ip=74.125.229.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mxXUNGf3"
+Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-34346932d93so1102270eec.3
+        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 00:25:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790580348; x=1791185148; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7ROGDvtvh53/QQPkABiv5e4DoVYicohxxFWZJETjDQU=;
+        b=mxXUNGf3q1qj3KXBeHHYrUEtIYoOOVdlS+fsvzI1n7wpUw2qRSb/N2njJEWmcZIbaK
+         cMA7Hw8qMPFJjCKjacumBU5NvQSrdNvLF810Z2nOzw3ujVr47G5t4g+yMlvvz9WShOT4
+         sE2mTWGIp8z2vvaxuzXwwj3RwDxCkbVH+ZGvCCRAANs2bFuCOBP0rC82Are5OimLsd7s
+         t6kAnzpJZNX15TyOhqGGmfUMRcamkOwG1dxOCXjDka0ymwGFvDYNVvPAd1MYkRcfoCB6
+         24UdTctkqKP9h1hZmmsB15X5UZQ47k2fo26JxxZZYAP+0SiZpE4r8X3o0JypwLzeBzk5
+         CVnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790580348; x=1791185148;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7ROGDvtvh53/QQPkABiv5e4DoVYicohxxFWZJETjDQU=;
+        b=zHSkZ3nhz2MhCwZIbXQ6+BT29544iBf1dr1o76AyGqdvI49XgmYO+Fr09DLfEACqvt
+         QIdp5PwaaRMfqHKUeph1w+2C2twO0e2ZGoRuFjmsJ1O6Mj/pkEz8uUZ1hjNt4xTSyrF6
+         yqioNbfR+HE/Ivm1fbjYGzk/TYFcIPSN2x3ZftwkTPBllEMHCJkYpVj4QKZB02QoQs3d
+         QSUiFB90VUQxIstxz1MwKB3Ar6AiWCnCdTDF/oSmvaFDbmZ3hT63kpbDWHbixShbjNHf
+         pcaCyw1u1OV1ZwdHC84Qi8EpGIRLwQQDWOIb97NSHUmZllmwyh4y/ZtI5ldw4p9FaMV0
+         lFiA==
+X-Forwarded-Encrypted: i=1; AKwUvBzv+ZXNLpUuss3efeX8St4dLpFL0A4qur4lcCpTAepw4TRJuojHerWUzCNuRyYXy+MiSIQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIXZ8Oe/Qreu98Zr78HoG6nyZRGYBp2itsOblcCZuESRuXJ/jZN
+	SKTtFkxr9k6q5z+3tk9M2g2QMpfJxuprFzn1wsG/bLiqGmeB2ObwpAzE
+X-Gm-Gg: AYBFou1uaDotsjNFFMobkADADG0kcYMn720yEWQmjWi1NamdOjrylvONnPbIhmeRFBn
+	Qx2KnFE4CEldByRsDZ0NopZKMrLSHHtHnZ+Tvkh5PTbOfPDpkx3S34Qk9nepgCtewEB/17SYky7
+	enaU0drCcBPqphZHNKm3aBoD9uKVVAGhz5B64mkYdUUCT0p2/TOhpBoJ7MSuYUSKwHxCDDJ28uT
+	QMoJQEsehjXhIHihkOjYrFiIihDee7UqXS2fBVfX+AIsL2y2e1pydKghcDGGK7LcKMEzgl76dEQ
+	pnei6zBVE4YvXapko1bKeibymOF76M9oBv1bYIGM5+2+N7BpD0QjV0OZ9/uElz1ycZ8Q8Z/uCaA
+	z+35hqANi/cWfLArYJhu6Is9FSLHUleX7o8nCbDTLdtmf4wOxZvHPfVKnMp1lLeeQa/L9DXxArC
+	3KUtO0tzLXKx0pTBUQULmOeCiDsYV9JnzPEd5V1Yfk9In7ONx5IUZy/H1/8xd2637nQF8+YzE4n
+	OuhmCLBL1Xvlg==
+X-Received: by 2002:a05:7301:78c6:b0:33b:edf8:1919 with SMTP id 5a478bee46e88-342707b407dmr9263412eec.13.1790580348291;
+        Mon, 28 Sep 2026 00:25:48 -0700 (PDT)
+Received: from wujing.localdomain ([23.254.208.9])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34145d0fc9fsm27735529eec.25.2026.09.28.00.25.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 00:25:47 -0700 (PDT)
+From: Qiliang Yuan <odys.yuan@gmail.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: Qiliang Yuan <odys.yuan@gmail.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	linux-hyperv@vger.kernel.org
+Subject: Re: [PATCH] KVM: x86: Clear CR3[63:32] on SMM entry from long mode
+Date: Mon, 28 Sep 2026 15:25:34 +0800
+Message-ID: <20260928072534.1987-1-odys.yuan@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260928-kvm-smm-cr3-upper-bits-v1-1-138f52dd531e@gmail.com>
+References: <20260928-kvm-smm-cr3-upper-bits-v1-1-138f52dd531e@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260927075240.3007947-6-cui.tao@linux.dev>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxTs8eFrpqAv0lAA--.15195S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj9xXoWrKw1ftrWUGF1fWFWDKrWfWFX_yoWkAFc_Cr
-	43KwnrWw48Ja1Uua1av3W8GF43XFs8JFZavr93Zry7G34DtrWDJr48Jw1ava4q9w48AFs8
-	Ga4kJrZ0yFnFvosvyTuYvTs0mTUanT9S1TB71UUUUjUqnTZGkaVYY2UrUUUUj1kv1TuYvT
-	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
-	cSsGvfJTRUUUbS8YFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
-	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
-	w2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
-	W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
-	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q
-	6rW5McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
-	1lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
-	JVW8JwCFI7km07C267AKxVWUXVWUAwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
-	vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IY
-	x2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26c
-	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAF
-	wI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jz2NtUUUUU=
 
++Cc Hyper-V folks and linux-hyperv, since the failure is triggered by
+Hyper-V's handling of VMRUN for a nested (L1) hypervisor, i.e. KVM
+running on WSL2.
 
+For the Hyper-V side: the VMRUN is rejected when the guest state has
+CR0.PG=0, EFER.LMA=0 and CR3[63:32] != 0, a combination that bare-metal
+SVM does not reject.  Is that check intentional?  If it is not, a
+Hyper-V fix would help older KVM versions as well; either way the patch
+avoids creating that state in the first place.
 
-On 2026/9/27 下午3:52, Tao Cui wrote:
-> From: Tao Cui <cuitao@kylinos.cn>
-> 
-> kvm_pch_pic_create() replaces the real error of
-> kvm_setup_default_irq_routing() with a fixed -ENOMEM.  Return the
-> actual code, as kvm_eiointc_create() already does; the kvm_ipi_create()
-> case is fixed separately by "Return the actual error code in
-> kvm_ipi_create()" (Chaithanya Lagisetty).
-> 
-> Fixes: 1928254c5ccb ("LoongArch: KVM: Add irqfd support")
-> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-> ---
->   arch/loongarch/kvm/intc/pch_pic.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
-> index e33d6693c37c..136211f154d4 100644
-> --- a/arch/loongarch/kvm/intc/pch_pic.c
-> +++ b/arch/loongarch/kvm/intc/pch_pic.c
-> @@ -448,7 +448,7 @@ static int kvm_pch_pic_create(struct kvm_device *dev, u32 type)
->   
->   	ret = kvm_setup_default_irq_routing(kvm);
->   	if (ret)
-> -		return -ENOMEM;
-> +		return ret;
->   
->   	s = kzalloc_obj(struct loongarch_pch_pic);
->   	if (!s)
-> 
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+The full patch is here:
+https://lore.kernel.org/r/20260928-kvm-smm-cr3-upper-bits-v1-1-138f52dd531e@gmail.com
 
+Thanks,
+Qiliang
