@@ -1,48 +1,48 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0438848BD3B;
-	Mon, 28 Sep 2026 09:10:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9264648D88E;
+	Mon, 28 Sep 2026 09:10:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790586642; cv=none; b=qUbvw18CaC+D1h+f8+Dxjr/zTAdLqE6iPNkxJn5acnhmNYhwEpPI0bAI6TxlRv+jDIDXIr+B0X9O5wPzxjYknqrnB3+OUxnZm7ST7VA4SWmmaJ/lz9U4I7n0KQPaCqNk12Ef39F/+DAKNCG4M1roaG60eZJp4fR7SmLbqrNh11M=
+	t=1790586645; cv=none; b=ru2S1dnIf8aaXcXsTvrjULZl9l8gibFMea8lDfXntOfpugO56xXkSwOZqOTWc159r3W2+PO6yEpsWH39XIMIF/0SnFdJMenM9KDpgOqrwMcYEqe2U9leb4kllm8vVrGlsQoH2A5CD16Kg+rzQpQGMLTyV4DvhdkJV73ozaaZbEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790586642; c=relaxed/simple;
-	bh=EY1bespzjGnuC5RVtlkNh5SkE+tN047x8njGv4VhDBQ=;
+	s=arc-20240116; t=1790586645; c=relaxed/simple;
+	bh=AAq1RVzqG6l3botCdG86t4B7fwf5FhCkgjkcqcyPKaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V5Ot6IKNdRtPG/i2am/c+LMK1A1jAy0Ro+h8wI1Nt4BoYjG4xqg1tD6qJ5GEEfeiEcMXYfJcWP58Dc3qb0F1Rh9qTyQNa3Chwi2KlOQ3d1l2RQWWPJaCMyupqOIX8u6ohFonw1KXKQhb0GikvwK2sbHGVfmGxJ9MZSDmIWNGsvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Eza85sMq; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=DMyxefWtPYZY5jqZ0g8D3AWupJrPPwxbSZg4sYZNlC3vSxTn0vUGDFZVwcf/Sn8Kb3T25j8IykdWOviFySMAFenqYNlZgIOoYCk72VTQp5DRxxX9JQKhYGaE0T2RA+WG4byALga4Bv41BKEbvEbcjBbmcF5K9TAsour3b0gX87o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UIagDtC2; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Eza85sMq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UIagDtC2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790586641; x=1822122641;
+  t=1790586645; x=1822122645;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=EY1bespzjGnuC5RVtlkNh5SkE+tN047x8njGv4VhDBQ=;
-  b=Eza85sMq6VFvU3jwZL/K5fxBHrpf2Cls0V0DnQU8lyfvRVyOU0dN7bTA
-   ImhmryGaDDuCbxxbx72ImNx/K6I63uS2YjVkza6Jpi7+nfjXr8+1KQZZz
-   YGWzD5DikyHXLj6GRVypS1SjDC0Qp7XbVKw/6zUXUzDiVl+rg5+DBxqZ1
-   AoUmQ6RcnHkGZkKyFnpS2udipAVQBZQji8xDOHmeTcl7EQcF5iA4nUY0t
-   934rU3C2HvLL1aCcul4eR+nqtxQ5WL6Mm7vxiDJ2B2cAzn52niGXtizbg
-   iKhRTkTIMwXjxwFfiMsb6u2uObBqRmWjyl73cwc/5YlV/W6wvJM1XJt6K
+  bh=AAq1RVzqG6l3botCdG86t4B7fwf5FhCkgjkcqcyPKaU=;
+  b=UIagDtC2wHThzwbYN3i04B2y+WoeKFZDKlsavrH+/nXAbyAD8HWm4vVN
+   LSzpELoEyL+Fi1UiWIoghjb4D5eaaNTOoqNPLEXnQgIno1YCKMhRRuA3a
+   FxJjWnK8QXPsbHhXqdHqlLr8B3Bs8sd6iGOtCu3Wo/qODkK/jTuZD7qaA
+   d93uJ46Vtsj0P4ujZVVgEpZFdlBgcbsOgfAUuOThTCcazTc5llWP/tXjh
+   O0OiHaiuuAT+kOMRlJ7LdH0wySv0aIYYC6R7yepmnUIsuiI/BAbl7sQqY
+   oam1nQMrbqPtSVugIqQfqitStcznT4W1lDWH4ZlAaB1SmFBu6ZHaIrP/j
    A==;
-X-CSE-ConnectionGUID: Hqbu/e2pQr2QdZ2x0lmxKg==
-X-CSE-MsgGUID: HMzmo3mqQFmFHoR9kjqZ6A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11918"; a="90148023"
+X-CSE-ConnectionGUID: Ea96QoRSSvKfwgpiRgjOCA==
+X-CSE-MsgGUID: S5cNzOy3SQGRJuOD5jK48A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11918"; a="90323330"
 X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
-   d="scan'208";a="90148023"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 02:10:25 -0700
-X-CSE-ConnectionGUID: zntLRV4VTky22gpV/uf6vg==
-X-CSE-MsgGUID: wGjfPyP4RIeweNo63hw4Ag==
+   d="scan'208";a="90323330"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 02:10:44 -0700
+X-CSE-ConnectionGUID: c+eYX7ftQrSgnHCBi9PpeA==
+X-CSE-MsgGUID: YYOiF+lESBGyYtVRhuQ5Wg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
-   d="scan'208";a="275120479"
+   d="scan'208";a="304487080"
 Received: from yzhao56-desk.sh.intel.com ([10.239.47.61])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 02:10:19 -0700
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 02:10:39 -0700
 From: Yan Zhao <yan.y.zhao@intel.com>
 To: seanjc@google.com,
 	pbonzini@redhat.com,
@@ -73,9 +73,9 @@ Cc: linux-kernel@vger.kernel.org,
 	chao.gao@intel.com,
 	farrah.chen@intel.com,
 	yan.y.zhao@intel.com
-Subject: [PATCH v4 05/17] KVM: x86/tdp_mmu: Alloc external_spt page for mirror page table splitting
-Date: Mon, 28 Sep 2026 17:09:46 +0800
-Message-ID: <20260928090946.15551-1-yan.y.zhao@intel.com>
+Subject: [PATCH v4 06/17] KVM: x86/mmu: Allocate DPAMT pages for vCPU-induced page split
+Date: Mon, 28 Sep 2026 17:10:05 +0800
+Message-ID: <20260928091005.15567-1-yan.y.zhao@intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20260928090729.15468-1-yan.y.zhao@intel.com>
 References: <20260928090729.15468-1-yan.y.zhao@intel.com>
@@ -87,91 +87,90 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+From: Sean Christopherson <seanjc@google.com>
 
-Enhance tdp_mmu_alloc_sp_for_split() to allocate a page table page for the
-external page table in preparation for splitting the mirror page table.
+Extend the TDP MMU to allocate Dynamic PAMT backing pages (DPAMT pages) for
+vCPU-induced huge page splits in mirror roots when DPAMT is enabled.
 
-When the mirror page table is split in tdp_mmu_split_huge_page(), the
-corresponding external page table also needs to be split. Therefore,
-allocate external_spt in tdp_mmu_alloc_sp_for_split() to prepare for the
-splitting.
+Leverage the .topup_external_cache() interface to topup the DPAMT cache
+when allocating a new child page table for splitting. The DPAMT cache is
+currently a per-vCPU thread-local list. When a vCPU-induced page split
+occurs, DPAMT pages can be drawn locklessly from the list.
 
-The external_spt will be gifted to the TDX module and mapped as a page
-table page in the S-EPT during splitting. Since the TDX module will
-initialize the page content in the DEMOTE SEAMCALL, there is no need to
-zero external_spt.
+Pass min_nr_spts as 1 to .topup_external_cache(), indicating there's one
+new S-EPT page table page. So, tdx_topup_external_pamt_cache() will
+allocate DPAMT page pairs for both the newly added S-EPT page table page
+and the demoted guest private page.
 
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-[sean: use __get_free_page(), let is_mirror_root be const and called once]
+tdp_mmu_alloc_sp_for_split() is currently not reachable from a non-vCPU
+context for mirror roots, since dirty page tracking is not yet allowed on
+mirror roots. So, simply add a WARN if tdx_topup_external_pamt_cache() is
+invoked under a non-vCPU context.
+
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-Co-developed-by: Yan Zhao <yan.y.zhao@intel.com>
 Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
 ---
-v4:
-- "bool mirror" --> "bool is_mirror_sp". (Sean)
-- Use __get_free_page() instead of get_zeroed_page(). (Sean)
-- let is_mirror_root be const and called once. (Sean)
-
-v3:
-- Removed unnecessary declaration of tdp_mmu_alloc_sp_for_split(). (Kai)
-- Fixed a typo in the patch log. (Kai)
-
-RFC v2:
-- NO change.
-
-RFC v1:
-- Rebased and simplified the code.
+v4: new patch.
 ---
- arch/x86/kvm/mmu/tdp_mmu.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ arch/x86/kvm/mmu/tdp_mmu.c | 24 +++++++++++++++---------
+ arch/x86/kvm/vmx/tdx.c     |  3 +++
+ 2 files changed, 18 insertions(+), 9 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index 001449142d32..f3311317a63a 100644
+index f3311317a63a..472419963a19 100644
 --- a/arch/x86/kvm/mmu/tdp_mmu.c
 +++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -1466,7 +1466,7 @@ bool kvm_tdp_mmu_wrprot_slot(struct kvm *kvm,
- 	return spte_set;
- }
- 
--static struct kvm_mmu_page *tdp_mmu_alloc_sp_for_split(void)
-+static struct kvm_mmu_page *tdp_mmu_alloc_sp_for_split(bool is_mirror_sp)
- {
- 	struct kvm_mmu_page *sp;
- 
-@@ -1480,6 +1480,15 @@ static struct kvm_mmu_page *tdp_mmu_alloc_sp_for_split(void)
+@@ -1475,21 +1475,27 @@ static struct kvm_mmu_page *tdp_mmu_alloc_sp_for_split(bool is_mirror_sp)
  		return NULL;
+ 
+ 	sp->spt = (void *)__get_free_page(GFP_KERNEL_ACCOUNT);
+-	if (!sp->spt) {
+-		kmem_cache_free(mmu_page_header_cache, sp);
+-		return NULL;
+-	}
++	if (!sp->spt)
++		goto err_spt;
+ 
+ 	if (is_mirror_sp) {
+ 		sp->external_spt = (void *)__get_free_page(GFP_KERNEL_ACCOUNT);
+-		if (!sp->external_spt) {
+-			free_page((unsigned long)sp->spt);
+-			kmem_cache_free(mmu_page_header_cache, sp);
+-			return NULL;
+-		}
++		if (!sp->external_spt)
++			goto err_external_spt;
++
++		if (kvm_x86_call(topup_external_cache)(kvm_get_running_vcpu(), 1))
++			goto err_external_split;
  	}
  
-+	if (is_mirror_sp) {
-+		sp->external_spt = (void *)__get_free_page(GFP_KERNEL_ACCOUNT);
-+		if (!sp->external_spt) {
-+			free_page((unsigned long)sp->spt);
-+			kmem_cache_free(mmu_page_header_cache, sp);
-+			return NULL;
-+		}
-+	}
-+
  	return sp;
++
++err_external_split:
++	free_page((unsigned long)sp->external_spt);
++err_external_spt:
++	free_page((unsigned long)sp->spt);
++err_spt:
++	kmem_cache_free(mmu_page_header_cache, sp);
++	return NULL;
  }
  
-@@ -1527,6 +1536,7 @@ static int tdp_mmu_split_huge_pages_root(struct kvm *kvm,
- 					 gfn_t start, gfn_t end,
- 					 int target_level, bool shared)
+ /* Note, the caller is responsible for initializing @sp. */
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 11792a490330..3dcddf1b48c5 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -1630,6 +1630,9 @@ void tdx_load_mmu_pgd(struct kvm_vcpu *vcpu, hpa_t root_hpa, int pgd_level)
+ 
+ static int tdx_topup_external_pamt_cache(struct kvm_vcpu *vcpu, int min_nr_spts)
  {
-+	const bool is_mirror_root = is_mirror_sp(root);
- 	struct kvm_mmu_page *sp = NULL;
- 	struct tdp_iter iter;
- 
-@@ -1559,7 +1569,7 @@ static int tdp_mmu_split_huge_pages_root(struct kvm *kvm,
- 			else
- 				write_unlock(&kvm->mmu_lock);
- 
--			sp = tdp_mmu_alloc_sp_for_split();
-+			sp = tdp_mmu_alloc_sp_for_split(is_mirror_root);
- 
- 			if (shared)
- 				read_lock(&kvm->mmu_lock);
++	if (WARN_ON_ONCE(!vcpu))
++		return -EIO;
++
+ 	/*
+ 	 * Minus one page to exclude the root SPT, but plus one page for a
+ 	 * possible 4KB private mapping.
 -- 
 2.43.2
 
