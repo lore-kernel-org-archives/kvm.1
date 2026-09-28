@@ -1,136 +1,153 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8CA848033B;
-	Mon, 28 Sep 2026 10:13:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971E74973AA
+	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 10:14:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790590431; cv=none; b=mlo9zmOhYIyLOsaA+cz9GLPeGhXpgeFqtozpwyWUDU+I8MbCQzfKoFjFHEUYV7Daoq+y1K5Lj7xAr2LXBKBXe6DCzh4vmkRBU61eTon213i0KzeIGOHL4L5Whi57ZwE+j24/j51oKA+uRZSAaHk+TPE/IHfP0uXsTb7o2EHK/s0=
+	t=1790590443; cv=none; b=Mzp51N2YTqsSJZyl1y6sgx0IKjiqRUq61NgmUADj92s3CBL0kFvrhl5ZKR1Jie1YlI/3banBGa6aEmcZ8ipn77VnmQIjnUbyJ/YPqDYCdkchmS68eauMjFXI/J+k6rNim3+Sw/tZ3K4pOfmPkvmwQ8GXXZU7VLxUghsmqzijuyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790590431; c=relaxed/simple;
-	bh=L4rj5sebU0MgVvbIqYSRSR7LTOTUxoD15WXyP2ljPok=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ckaujv0NF8Du1ThoddQ3PWA2z+PWpX5nGv9LcSu785L1o5lolhyhaiHYIOWUGZU5kxCFHLCzzv/47QIpw+2EVMbx21XfaQe/ay2zytBoT9otsRIMNQqQn75OSurTChKL4ivoOO3UkMrB0VoMXyoz/8MAlZrBGCkPku23bpfSlow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=FtXcuGe5; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790590443; c=relaxed/simple;
+	bh=VZp64+mXhjMQ79RW/kguo2bQvLtTDxYhD4w6Hue2Ejg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IOJl8PXNQ2wuxE1rQvlSWKihuPyYcnMqA/Ozmyea1NE/goEZLpBwmmh5INepUR/70jZd/VvXHrjVNlJl3kZ4WRH2xAA1kHG4Fl+RgA4M4Qxtc9sY/O4dUyeLm4eWtUZv5n4xm4TrtT+MyEv1o43E5Fd7NWxP4zU1Yew/qfHCqpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EX9uSR/2; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="FtXcuGe5"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 83A0D1595;
-	Mon, 28 Sep 2026 03:13:40 -0700 (PDT)
-Received: from [10.57.12.79] (unknown [10.57.12.79])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8F3253F86F;
-	Mon, 28 Sep 2026 03:13:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790590424; bh=L4rj5sebU0MgVvbIqYSRSR7LTOTUxoD15WXyP2ljPok=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FtXcuGe5Bf9/0/FkzKwLKEy+JoJg8ovzaYSX2D2/AliXaV5Mu/9pP37XIhE5v6fV3
-	 zwG/SPm1X9FHl8h9u4+rG242LQ2Y7sNXNJEj09s0mPMYE1rl1NvyZRqzOeDT+hBKCE
-	 BAvBPp1hyT7DyFZ0607j5nyKtRA6XXRnoD1oNYF4=
-Message-ID: <4fabad44-280f-40e6-95bb-49011cd2f185@arm.com>
-Date: Mon, 28 Sep 2026 11:13:39 +0100
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EX9uSR/2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790590440;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
+	bh=WfspKtklugh/OYlKtKuxjrPv/b7W5PFR1FRmVmYBQRs=;
+	b=EX9uSR/2mpihPkKFA8/uBHiE+aR//AMaWiI1F6WJoOt7hMZVCu3L1j5zj+8Pq1PpAZKBx0
+	S8MnftbzMms8FACzrGhLrsQ9GMMWqp2eT7uflpsMT9xWqhy+sKdOIR1BhonoKtKmXio+v8
+	fITKALVNw3/rTm4vZfyWGCLJEF9Ay6I=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-322-3q5wHjZTPt24_x-CQkTmEA-1; Mon,
+ 28 Sep 2026 06:13:57 -0400
+X-MC-Unique: 3q5wHjZTPt24_x-CQkTmEA-1
+X-Mimecast-MFC-AGG-ID: 3q5wHjZTPt24_x-CQkTmEA_1790590435
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1D72B1954229;
+	Mon, 28 Sep 2026 10:13:55 +0000 (UTC)
+Received: from redhat.com (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 848C01956095;
+	Mon, 28 Sep 2026 10:13:51 +0000 (UTC)
+Date: Mon, 28 Sep 2026 11:13:48 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Yonggang Luo <luoyonggang@gmail.com>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
+	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
+	Fabiano Rosas <farosas@suse.de>,
+	Laurent Vivier <lvivier@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Alistair Francis <alistair@alistair23.me>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	=?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+	qemu-arm@nongnu.org, kvm@vger.kernel.org
+Subject: Re: [PATCH v4 46/55] qapi: add query-targets
+Message-ID: <aro93NuZBXYGbD33@redhat.com>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+References: <20260926070057.1234-1-luoyonggang@gmail.com>
+ <20260926070057.1234-47-luoyonggang@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 4/7] firmware: arm_rmm: Add support for SRO
-Content-Language: en-GB
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
- will@kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
- sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com,
- Gareth Stockwell <Gareth.Stockwell@arm.com>
-References: <20260924135201.850038-1-suzuki.poulose@arm.com>
- <20260924135201.850038-5-suzuki.poulose@arm.com> <arozNIQ-fQ0XQViI@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <arozNIQ-fQ0XQViI@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260926070057.1234-47-luoyonggang@gmail.com>
+User-Agent: Mutt/2.4.0 (2026-06-19)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On 28/09/2026 10:28, Catalin Marinas wrote:
-> On Thu, Sep 24, 2026 at 02:51:58PM +0100, Suzuki K Poulose wrote:
->> +long rmi_sro_memxfer_execute(struct rmi_sro_state *sro, gfp_t gfp)
->> +{
->> +	struct arm_smccc_1_2_regs *regs = &sro->regs;
->> +	bool cancelled = false;
->> +	unsigned long sro_handle;
->> +
->> +	rmi_smccc_invoke(regs);
->> +
->> +	sro_handle = regs->a1;
->> +	while (RMI_RESULT_STATUS(regs->a0) == RMI_INCOMPLETE) {
->> +		bool can_cancel = RMI_RESULT_CAN_CANCEL(regs->a0) == RMI_OP_CAN_CANCEL;
->> +		int ret = 0;
->> +
->> +		switch (RMI_RESULT_MEMREQ(regs->a0)) {
->> +		case RMI_OP_MEM_REQ_NONE:
->> +			rmi_op_continue(sro_handle, RMI_CONTINUE_KEEP_GOING,
->> +					regs);
->> +			break;
->> +		case RMI_OP_MEM_REQ_DONATE:
->> +			ret = rmi_sro_donate(sro, sro_handle, regs->a2, regs,
->> +					     gfp);
->> +			break;
->> +		case RMI_OP_MEM_REQ_RECLAIM:
->> +			ret = rmi_sro_reclaim(sro, sro_handle, regs);
->> +			break;
->> +		default:
->> +			WARN_ON_ONCE(1);
->> +			ret = -ENXIO;
->> +			break;
->> +		}
+On Sat, Sep 26, 2026 at 03:00:45PM +0800, Yonggang Luo wrote:
+> query-targets lists each linked target, including none, with its
+> arch, endianness, and the machines that target accepts.
 > 
-> Another thing I came across while looking whether we can defer the
-> activation. It seems that the spec (I_JVYCH) lists some SROs as
-> PE-bound. Nothing here or in rmi_sro_execute() disables migration and
-> the memory allocation paths can even sleep with GFP_KERNEL.
-
-No, this is not required. I agree this is confusing. I will get it
-clarified.
-
-So, there are two different sources for the SRO contexts. One is a 
-global pool and the other an Object.
-
-e.g., For an RMI operation on an Object, SRO context can be the object
-itself (e.g., REC_CREATE, REALM_ACTIVATE etc.)
-
-However, when there is no reliable object for the command (e.g., 
-RMI_GRANULE_RANGE_DELEGATE), the RMM must allocate a context from
-the global pool. Now, the "PE" in there comes from a recommendation
-to the RMM implementations, that the global pool size must depend on
-the number of PEs on the system. This doesn't mean that the SRO
-handles are only bound to those PEs. I will get this clarified
-in the RMM spec.
-
-Cheers
-Suzuki
+> Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
+> ---
+>  hw/core/machine-qmp-cmds.c | 30 ++++++++++++++++++++++++++++++
+>  qapi/machine.json          | 35 +++++++++++++++++++++++++++++++++++
+>  2 files changed, 65 insertions(+)
 
 
+> diff --git a/qapi/machine.json b/qapi/machine.json
+> index 6aaa2af709a..d8cdea6203e 100644
+> --- a/qapi/machine.json
+> +++ b/qapi/machine.json
+> @@ -307,6 +307,41 @@
+>  ##
+>  { 'command': 'query-target', 'returns': 'QemuTargetInfo' }
+>  
+> +##
+> +# @TargetMachines:
+> +#
+> +# One registered system target and the machines that can run on it.
+> +#
+> +# @arch: the target architecture
+> +#
+> +# @endianness: the target endianness
+> +#
+> +# @machines: machine type names, not aliases
+> +#
+> +# Since: 11.2
+> +##
+> +{ 'struct': 'TargetMachines',
+> +  'data': { 'arch': 'SysEmuTarget',
+> +            'endianness': 'EndianMode',
+> +            'machines': ['str'] } }
 
-> 
-> Do we need to disable preemption (only for rmi_sro_execute()) or at
-> least migration (the memxfer path)? We did something similar for the RSI
-> attestation token loop, commit 24f55f511b9e ("virt: arm-cca-guest: use
-> migrate_disable() for attestation token requests").
-> 
-> With only migration disabled, another thread on the same CPU
-> issuing a PE-bound SRO would get RMI_BLOCKED (R_NDXSG). In theory, we
-> can get a priority inversion case (maybe this doesn't happen with the
-> current implementation, just looking at the API design). The RMI_BLOCKED
-> fix not to loop forever probably saves us but the caller would have to
-> actively sleep or give up before retrying (i.e. don't move the busy loop
-> higher app the call stack).
-> 
-> Another option is to have a per-CPU mutex here and serialise the SROs
-> which are PE-bound (there are some precedents for per-CPU mutexes in the
-> kernel).
-> 
+We already have  'QemuTargetInfo' struct which is used
+with 'query-target', that should also be used with the
+new 'query-targets' command.
+
+We need to add the 'endianness' field to QemuTargetInfo.
+
+I don't think that we need to report machines though.
+We already have 'query-machines' which gives much broader
+information on the machines. "MachineInfo" needs to
+gain
+
+   "targets": ["SysEmuTarget"]
+
+to list which target(s) a machine can be used with.
+
+
+> +
+> +##
+> +# @query-targets:
+> +#
+> +# Return each target linked into this QEMU binary and the machines
+> +# whose availability check accepts that target.
+> +#
+> +# Since: 11.2
+> +#
+> +# .. qmp-example::
+> +#
+> +#     -> { "execute": "query-targets" }
+> +#     <- { "return": [ { "arch": "aarch64", "endianness": "little",
+> +#                        "machines": [ "virt" ] } ] }
+> +##
+> +{ 'command': 'query-targets',
+> +  'returns': ['TargetMachines'] }
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
+|: https://libvirt.org          ~~          https://entangle-photo.org :|
+|: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
 
