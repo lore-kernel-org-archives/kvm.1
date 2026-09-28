@@ -1,58 +1,58 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFB73DA7FF;
-	Mon, 28 Sep 2026 12:29:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C952264D9;
+	Mon, 28 Sep 2026 12:32:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790598566; cv=none; b=BANGIcXtiPgmntBNhmBD/4OjSG39eyEByG7fOyRcs94abPh2qvWedyGgCHwxkWfH42PhOicfD+NN6QaMyH+qXh0dB9Ny04kx1Iu/CC1M62dRLfE7Lg7jPHpqfuyoO3KFiIN9sqMWAbnmN26fy9fRNb3twRcRsPmVWehm/JTLcpU=
+	t=1790598736; cv=none; b=M+A8nVAMsdf5QPNvwBkOZFFR241uo2OPLOzOiBsESD0T/iKC+k4jWtUZJPznt+rJNRh9aud6zFq5h9mHEGuCQALK4+Fwqg5e7hsGqOSHQ7tHCtM4lX04LMdYBserf26UgoyryI6RVmahbPMl+q5sE9S/vW1t8X3Gyv0XWIZhST4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790598566; c=relaxed/simple;
-	bh=lkuepaZa13J5l4gWNouNE5EwAE/GWbHv2BVXt5TcBms=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BwQoOkk2Je5Z4zNNWumFyM4GZAf48JH0sWFTfDDXW+LvWdS5UhdLgWynJ9iikKZoV6QK+bfFT7MtYHi2urL7zEHlwpDtO5ysMvvwQN2f59mWFGxaDU9ktZWIZnCH4vhGdDm/8J2PaHO9Nb8H7ZcJQInioIFg76Qi8GNRomU71Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=e7qlTRnS; arc=none smtp.client-ip=148.163.158.5
+	s=arc-20240116; t=1790598736; c=relaxed/simple;
+	bh=uHlA7KRJP/MrVEKhBIg2C2BuxuFIZkCLNeSulR1bOb0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A9e8nHyB3paZEkCiZ2mLfSP1HeUbNupct/utl0fCiMBWmdAcFQzMx3TzTWMXy0jDx8YTF1HESKul6obwOt2CsGH0uCguCcdH4Hr/Bk4fCbUCDjVL6RjlY406QTd7+ozLGjqWKl+4ZTZrFLDluzbADoyZx+JPDPf3ehccOwoclK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=B/Cug50B; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="e7qlTRnS"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68SBZW4K3971195;
-	Mon, 28 Sep 2026 12:29:10 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="B/Cug50B"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68SBZZKE1047082;
+	Mon, 28 Sep 2026 12:32:02 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=2Y2Ubg
-	dV+77CAyq+MVK/R24FHgPjixP/AxA2RLOoCjo=; b=e7qlTRnSkaXHbePaVmfJ6e
-	y9UarR2qc3YUr1O1JfHFEf/BLM4k+6vU1SWSYt7ir3+QKfW/JjtnoEnSp4DxIEhy
-	tOiHvYfAPKQh5WIxtmlmUf1K0VY1SDkc2yMEUaNSJm+b9+iw/3hPXDNIkBHFOOa9
-	ZsRwNLwfpfdu5ufMAGJNeZ2AkxmZ+RSQDrBkOnMihV1Wv3zHL0Ri3z92BucuLcaI
-	zTn4RM+qAFOiOEuRk6LTJIPtznj7MNnrshHQ8li5meUUO8i84IxqsSb/6ojD7bZ5
-	4Yinl4TsTwEgeJaef6UkfPM9KNMo2zDFNrEKJBjj/8Z8lt/0NjR3be1Ef5EdlmrQ
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx4fe0yjb-1
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=cWVmcFQgkWwK5TQ2EqXUonYtZWJMhC
+	3DjJ3zw153gL8=; b=B/Cug50B6TFCsq9Er9mT+zxJKqiTaXFCgPh1eIspxRz9IB
+	Rl8RYuT1zKUz+SDcAZPtj7ueIG5VyVLjgkxehBoj14GqmvPKmGrwyjGlm1EeqIG1
+	pB+0B727EV0aiE+LghxPh9Fw7t4N6BlsOnqnGO/7/tVhq30ZHlaB22nGaaSWq5d/
+	5rTeY0JCDWaHfyvKlip3HFhROc9YfcXWVZJNfc+lz+rUnEELjZd2f320fvhhpfAN
+	te7kO0KkEFGfyYPIO9YVnQ2z4mg2PLjxiDjtKs1n7uEl//TpI2BGYK3CNidyY6YH
+	vH8AidAVf1OFz/Ynb1obMkh0K0uy/J/3qCaSO3hQ==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5j51a8j-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 28 Sep 2026 12:29:09 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68SBHX9R069407;
-	Mon, 28 Sep 2026 12:29:08 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gxrcpnawc-1
+	Mon, 28 Sep 2026 12:32:01 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68SBHXE5017627;
+	Mon, 28 Sep 2026 12:32:00 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gxsck55sc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 28 Sep 2026 12:29:08 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68SCT4eP17236386
+	Mon, 28 Sep 2026 12:32:00 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68SCVuJX32506164
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 28 Sep 2026 12:29:04 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BF4A420049;
-	Mon, 28 Sep 2026 12:29:04 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 93B0B20040;
-	Mon, 28 Sep 2026 12:29:00 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.124.213.32])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 28 Sep 2026 12:29:00 +0000 (GMT)
+	Mon, 28 Sep 2026 12:31:56 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A4C1A20040;
+	Mon, 28 Sep 2026 12:31:56 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1E4BE2004B;
+	Mon, 28 Sep 2026 12:31:53 +0000 (GMT)
+Received: from fedora (unknown [9.5.7.39])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 28 Sep 2026 12:31:52 +0000 (GMT)
+Date: Mon, 28 Sep 2026 18:02:04 +0530
 From: Amit Machhiwal <amachhiw@linux.ibm.com>
 To: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
@@ -66,96 +66,67 @@ Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
         Harsh Prateek Bora <harshpb@linux.ibm.com>,
         R Nageswara Sastry <rnsastry@linux.ibm.com>,
         Alexander Graf <agraf@suse.de>, linux-hardening@vger.kernel.org,
-        stable@vger.kernel.org, Avi Kivity <avi@redhat.com>
-Subject: [RESEND PATCH 3/3] KVM: PPC: Fix get_d_signext() 12-bit displacement for paired-single D-form
-Date: Mon, 28 Sep 2026 17:58:37 +0530
-Message-ID: <20260928122837.8782-4-amachhiw@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260928122837.8782-1-amachhiw@linux.ibm.com>
-References: <20260928122837.8782-1-amachhiw@linux.ibm.com>
+        stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] KVM: PPC: Book3S HV: Add SRCU protection for
+ virtual-mode HPT hcalls
+Message-ID: <20260928180031.2e2f0bdc-13-amachhiw@linux.ibm.com>
+Mail-Followup-To: Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, kvm-ppc@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Gautam Menghani <gautam@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+	R Nageswara Sastry <rnsastry@linux.ibm.com>, Alexander Graf <agraf@suse.de>, linux-hardening@vger.kernel.org, 
+	stable@vger.kernel.org
+References: <20260928113704.48912-1-amachhiw@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260928113704.48912-1-amachhiw@linux.ibm.com>
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=FYWiV5+6 c=1 sm=1 tr=0 ts=6aba5d95 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=WFAfMJoNLMmZCboqhGUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI4MDA0OCBTYWx0ZWRfX2P2BRo1CjjVg
- zWyzmgOJwwPMAt/G9F+rhyITKaHfkTjJQFBsxfv6mOcJmn7/As7ygt2sskVmLrLskz9xfjnxWcP
- LSyTg+UhjNnS/w5a8WsfX89WLJULIa8=
-X-Proofpoint-ORIG-GUID: QeW55F1-NeXaPWm6KxJ_mgznFsazK91V
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI4MDA0OCBTYWx0ZWRfX5mY1ak6FMoL2
- OrhPNIwFxQg1BRKRzhHkugITgX+11x6f5JwTinqHbKHu/u7LoOXNa3Cpbj/FVROhrwfNQJHRR/D
- NIctN4d+BT1sdUb6h8CDNJc41r1o6iW0fDxiue4RdfIue23YmZ+KORekZk8dUi1264iGYBlSa4D
- V3ab2mz3purUBauZpq7MYKTeGFHa5Aip5dI9KJyfCGsOMz/bW1aamN9F7+LtE9idJxDsgc6ec3C
- l0KRfPH9I3KmBScfed/9Wxc0tZzPjbkbMQ4RLbCwT5UqsoqP4hrNNqs7xjkUBrj1phPpWq53bCd
- FSvpdEN/JRsRzZ6naB9eb6LJ+z51gvTCpArmgp3zccNZjJyLvcwH1NNf2hl2IZ+kssexMwG/OtN
- bqPWytrKRdWtA/eXov1ddCk5594QiN/THcFn+7L65KX86aFAKx9S5DwECnEhJp/T+TdqJGa3wVT
- tDFr0K+RhYWa3awz+8g==
-X-Proofpoint-GUID: wNslpQ4PfKg_tBauqa648K6_t9rDmket
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI4MDA0OCBTYWx0ZWRfXwZz865v3Qh6H
+ z1WlFEUZc4nfAXnwMk/XklARZY1Z1H8jfobrvbT+9VipO9sny37qN6pG5thKvxJ+Ftx3Pb+4H1V
+ yKQ+5wJCC1cO2C/ROXQm+Hot1sdUJB4=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI4MDA0OCBTYWx0ZWRfXzPlq/CVXvVcP
+ cXh40P9rZsQdPwrdEskbXCA3a9DQJauuUSABJwzj2mU9cERNHbWPmrB0qKdfACYeC4PEB4byinP
+ 80jOl01v2g++oxucCisXhhxJkJ4nisSjgUQ7IaXrcoi002tWvsAKvLTmT43Y5WByO48d0wBa/tt
+ Zk4ibQkdCFCTw9IXnvaYf1sNWzZUD4VYYvbGUjJhPwkd1rteRS2tq/6BOQe+SDj7ReJdR4SRoEQ
+ qOYzjeB4utO6HAmG7uPZNIrt/jN6YjLdrhfX2Utg/MJ8dyuv0UDwCW6OBORENWGYYvX6JYFcDoM
+ DqfdjkiQvIF8opF/0XhrBzJB9oWjJEtr2+U3pI+L89KRIPNzXTsDgb1BLnU9KMPJt/DmsXZy0YP
+ oRm/jeRdZqUrmNSu1e5dlBYMQueI8vdIOAIqci+uOqWFBOJlAOxHqS+2FPBpmgOd0UIXAWIOnVc
+ bgLL4ilHryRqdlAhobw==
+X-Proofpoint-GUID: AZRzVH3h1Z9MhqPtwlS-GvIfWJ_q1lpa
+X-Authority-Analysis: v=2.4 cv=RKcmjIi+ c=1 sm=1 tr=0 ts=6aba5e42 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=idfDjKrkMIz4rnwQVkIA:9 a=CjuIK1q_8ugA:10 a=Qzt0FRFQUfIA:10
+X-Proofpoint-ORIG-GUID: S5WsGqJVWKqwvg_OQSi0FUlEMEYG9jrK
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-28_03,2026-09-21_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015 impostorscore=0 spamscore=0 phishscore=0
- priorityscore=1501 malwarescore=0 bulkscore=0 lowpriorityscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609280048
+ clxscore=1015 priorityscore=1501 spamscore=0 bulkscore=0 impostorscore=0
+ adultscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609280048
 
-get_d_signext() has two compounding bugs since its introduction in 2010:
+Hi all,
 
-1. The extraction mask 0x8FF silently drops bits 8-10 of the 12-bit D
-   field (PPC ISA bits 21-23), corrupting any displacement that has any
-   of those bits set.
+Apologies for the noise.  Due to a mishap while sending, the cover letter (0/3)
+was omitted and patch 1/3 was posted as the thread parent.
 
-2. The sign-magnitude idiom "-(d & 0x7ff)" is wrong for two's-complement:
-   for D=0xFFC (encoding of -4) it returns -252 instead of -4.
+I have resent the entire series cleanly with the cover letter (0/3) included:
 
-Together these errors produce a wrong effective address for psq_l, psq_lu,
-psq_st, and psq_stu whenever the displacement is negative or is a positive
-value >= 0x100 with bits 8-10 set — essentially any real-world paired-
-single stack-relative access.
+https://lore.kernel.org/all/20260928122837.8782-1-amachhiw@linux.ibm.com/
 
-The D field occupies the bottom 12 bits of the instruction word (confirmed
-by the adjacent W and I extractions via inst_get_field(inst,16,16) and
-inst_get_field(inst,17,19)). Replace the open-coded logic with the standard
-sign_extend32(inst & 0xfff, 11), which correctly performs two's-complement
-sign extension from 12 bits to 32 bits.
+Please discard this thread and follow up on the resent series instead.
 
-Fixes: 831317b605e7 ("KVM: PPC: Implement Paired Single emulation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
----
- arch/powerpc/kvm/book3s_paired_singles.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
-
-diff --git a/arch/powerpc/kvm/book3s_paired_singles.c b/arch/powerpc/kvm/book3s_paired_singles.c
-index bc39c76c9d9f..532f96293de0 100644
---- a/arch/powerpc/kvm/book3s_paired_singles.c
-+++ b/arch/powerpc/kvm/book3s_paired_singles.c
-@@ -479,12 +479,7 @@ static bool kvmppc_inst_is_paired_single(struct kvm_vcpu *vcpu, u32 inst)
- 
- static int get_d_signext(u32 inst)
- {
--	int d = inst & 0x8ff;
--
--	if (d & 0x800)
--		return -(d & 0x7ff);
--
--	return (d & 0x7ff);
-+	return sign_extend32(inst & 0xfff, 11);
- }
- 
- static int kvmppc_ps_three_in(struct kvm_vcpu *vcpu, bool rc,
--- 
-2.54.0 (Apple Git-157)
-
+Thanks,
+Amit
