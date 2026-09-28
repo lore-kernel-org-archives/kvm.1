@@ -1,67 +1,67 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A1349739E;
-	Mon, 28 Sep 2026 10:11:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3BF498935;
+	Mon, 28 Sep 2026 10:11:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790590267; cv=fail; b=bkLzUhOtzZA/LnuDJXcAo9M9QgxYWwJHK5I7N9cSQCzl4UrEcd8x3S5zHLpPKbZAEkxie/03MTA8cjyulpzKewoeR2IHpQuTj9OKmQxY/J8R/4i1j224cNcTN/jVHzkiDFQRgnAONUvZsPjJdLNhWxYxkGAaZr0FsuBrCiEFe64=
+	t=1790590270; cv=fail; b=MnPzYinZhLmI/x9L/yC/e1B13D98EiZw3DKWb99OfywDRs5gPCtAWbXCkUAY78RdXEo024vkDaiAT01OVdfl+2311olPLERawFXWS61D+Al9ZQuFR+XfEIvMI3BYmTXAyNNKVvQpDRz1RLCnaj8oIeJZF1w79wRLluNu9pAXBjY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790590267; c=relaxed/simple;
-	bh=/oeYUcuriQ0FG/ogE84IzZwaFI7IMQwSxJlZ6k2aeig=;
+	s=arc-20240116; t=1790590270; c=relaxed/simple;
+	bh=LyfRkSiirpISXHB3c1OdLlc0lyUZOnqoD/WORAFOVDU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=menH6WxKJKGivu+wucTPSvowd8dIoCAOykH/Ym9TEXP1rRFR6NldIEMNJV6OXbScZN5Ic+MbMxDp6Mf0pD7Jqt5cSPgyYnqdemNXwEEVqcNg8ZCJnGgzXOYmm5yrQYBmpygVPTYOp9p57ArkEULqvVFLWS5qcEytRDy0JXffpj4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Kc8K9Qzy; arc=fail smtp.client-ip=192.198.163.9
+	 Content-Type:MIME-Version; b=tSEoGTzjeGldtupSynxaOHWZJQir/90zRAngBHSFd1hJ9yyhCsoOGtCJcDwQJ08TgBJj118IQXK1+Jx7SRi7EGNgGdPI1qDXYlk4iYialDeAhzVGsOcRAWTZx1MI7jBdDh02NIzhfOXRJpRb/fgvsg5l8N5bdOZpt1gBAOm4aiA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BUJ96DZw; arc=fail smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Kc8K9Qzy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BUJ96DZw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790590264; x=1822126264;
+  t=1790590268; x=1822126268;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:content-transfer-encoding:mime-version;
-  bh=/oeYUcuriQ0FG/ogE84IzZwaFI7IMQwSxJlZ6k2aeig=;
-  b=Kc8K9Qzyc5KNKmRBGnGdnMOj4gnuaFubUxq2h1Okth1ss12LqQgT88Uc
-   nRm3VSkzFXX1KN1XbZsd0J3hFTVafIwM78w3cEgw7NeSHbnErZDs6FYUv
-   nNjqgCt7kg/tpJSMRrhW7mxobN1z3GKuqPDmnmaNu596AVcjetcPWAWg7
-   1HoaTsCO5ibtYXdvEQllkIfQdydllCq9uSd3oHpDEKY53M9ctEd1BC+i5
-   7oOV+xkEyAtqOuzyw1ZhAcRh3/TQFRmvurfv+WzWql5enA92G20cE8PIP
-   5D2EYLg4H+NZjDZPQwbyuFUba0VgnXjTkcyQa1uLLpOdfAbMgk0QELstM
-   w==;
-X-CSE-ConnectionGUID: kzYGFeggTvu4CrlVseB3zw==
-X-CSE-MsgGUID: FtHYU2U6Qp+QU7hoHshVQA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11918"; a="101944050"
+  bh=LyfRkSiirpISXHB3c1OdLlc0lyUZOnqoD/WORAFOVDU=;
+  b=BUJ96DZwjVfysZW9c4tJMYlL3RNHX7fYSN2FDLyRfK95zlO4yyveeJcS
+   MLaMSslqQvPstbuAOwlqVhC9t9k+7JWU0EOfCh7FJvE+PUVdWL5mVsILv
+   U8wAPmIfHPXpm204YV/Rp9m8vDqwnSZcK3lUZ8qN4GFONBp2lgiudnZDK
+   ZKV+EYWSoyyz3rckKkYK9vt1hBCA3QGXQVEatdikLUsTvKPdske0cBLf+
+   GHK6AvGWVSAtDVJnbkSFRdEPn5hsOawCDBshsPbIsTl9HgVnB0GNEUkOm
+   OaiHvqA4vyN2qVYliGsKUlT03Mb8wyt8O6+eurX2TdaYG81gxlhMehqv6
+   A==;
+X-CSE-ConnectionGUID: jE1vaLDwSyyYoz+tlUAOAw==
+X-CSE-MsgGUID: ORZlHZ9HQkS6D1z60W+1Rg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11918"; a="116814260"
 X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
-   d="scan'208";a="101944050"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 03:11:03 -0700
-X-CSE-ConnectionGUID: 43gyFm7YTlqSW9GF6JvVIQ==
-X-CSE-MsgGUID: NW6QS/6XTAGzxf+fO0TAgw==
+   d="scan'208";a="116814260"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 03:11:07 -0700
+X-CSE-ConnectionGUID: p1YZCLInR9G9CAnF5vigWA==
+X-CSE-MsgGUID: 1tFk54lGSbmXHcqyp5Oa+A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
-   d="scan'208";a="274524268"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 03:11:04 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+   d="scan'208";a="278376583"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 03:11:07 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Mon, 28 Sep 2026 03:11:03 -0700
+ 15.2.2562.46; Mon, 28 Sep 2026 03:11:06 -0700
 Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Mon, 28 Sep 2026 03:11:03 -0700
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.62)
+ 15.2.2562.46 via Frontend Transport; Mon, 28 Sep 2026 03:11:06 -0700
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.26)
  by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Mon, 28 Sep 2026 03:11:02 -0700
+ 15.2.2562.46; Mon, 28 Sep 2026 03:11:06 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fdZGx36GDos6WHa9EgbDBt5FuL+Q7/ZclZYpmbAzWx5ZZFKIi5UrY9psJH3psKsQSllWKXrWHcAnpskIY4IprLHKMXZbNhdBBuM7SuG9nzcuLkXXx8lQ36YZJNTl7DbYwEK5e45lnuRf5N4frtZUgiHkZd7zY0THwlXJCViBC53U9xxH2c6138yMn1ByjXluUQZ9fkJmOndB7WoHmlE+ogjUuO2ttp9qnehhO61Sex3DaZrAKflsIyda+3boyPD2s0tSPHFzkXBh48v1d+dMzTK0vzJONGTo80YiFx5B4mRtRMFGdCOjOIM6yH8dvloMi452naaH6G+gmKWbqVQFvg==
+ b=J+nsM3o3TNVOB9VNidkg8EUMsVU5KUBmceCigSi+lnc9RinMrE8+GGQR2YK+HSoS9k3G7dPTHq2RxtHVRN+khEzEcGDJISwGhTZRbRMFBe3S9FtS8aPDGFZpOeF+cSoa1348mr+Idu+xfAtvkPZZqTLlGi1zkO7Vb4OkEXZt6o7ZjcyDvTAPfuZrpmL7gq4eeELIfK/mSDr227fwpdWmRyGBU11LGmYvphtvP7t4eTIWEcqk+qHNEmRg2CkBDpDoWSV4JiTRowygY/5h/JAT/rM3P3OTwzRNRmWv+l5KQH94vfHuFqd2CJJR4jPhYG8871osSGW4LaAkx5EBaNY0UQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SE84EfFf/iPTTrguuFqektvdfKERGTzOdKuP8Nd4quo=;
- b=AH+IWE0OpzA8X2+WcsPpygyM7oqpIx8Y1G632kWBpckpQk+d00A54kx8FcWqjK7tfkwMGt7awJHVhazoQH/7uf+uRPh/nSYQve7eNCBeUHLvfzgGPgggzdrIYmd+JwiEhdBo0DoxfxlYFY/rHa5SpdvO+y+6QKnrxZWXQaiLDVYZggsmeSUp47CN9zXX9gBHP2HVS9eqXFKkvg5ejzdYR2VBhDE3oxu27li2H6uPn4mllaA1lJB/EusFZmWdB9CClsJmHvZwK3QR39Q8RwZq4xVelvumea0hY9nzShw/uX24o4Du1V1Up2DwGepJnzMfcEOyBFIhj7am7uDn40k5BQ==
+ bh=uhY2qY9rzJCOG+aJ/hNtv9cjDOeq+wse/1p3qyiW33A=;
+ b=usZWQcqG+4CK6cKXmbvFY/H0glaGCBR+NhiAqTwiGjgtKKpKAL8YUvgX36zzcYNrA2WpbycmTv3Jv8nQrVl0yAaOiTznT2oJ8lagvuPqoiqjq8IukGYcMnSmr611mlColT4zKVs/QSH4L+KlKY8KP9zEWRwgnZJGxd5qNhK24QDhKZ5wKTrfNhauus3VNjLcsnFGUw7c/iSuVpGRmfB4PlwG872zI9ws6gv/N+LW3QFTnK8hFpOksXoEQ6oBEohvWQCflrP5CAW9fS1IgjLRmBsvygs+rYVLiuxFVPHb0t4ViD5TVrceC8SERtGGGX4eFTV+irCuxgjoRVRyvKM0kg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -71,11 +71,11 @@ Received: from CH3PR11MB435924.namprd11.prod.outlook.com
  (2603:10b6:610:34a::8) by DS6PR11MB896703.namprd11.prod.outlook.com
  (2603:10b6:8:499::16) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Mon, 28 Sep
- 2026 10:11:01 +0000
+ 2026 10:11:04 +0000
 Received: from CH3PR11MB435924.namprd11.prod.outlook.com
  ([fe80::1696:c90e:60af:a0cd]) by CH3PR11MB435924.namprd11.prod.outlook.com
  ([fe80::1696:c90e:60af:a0cd%6]) with mapi id 15.21.0451.022; Mon, 28 Sep 2026
- 10:11:01 +0000
+ 10:11:04 +0000
 From: Peter Fang <peter.fang@intel.com>
 To: Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau
 	<kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, "Kuppuswamy
@@ -88,9 +88,9 @@ CC: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
 	<tony.lindgren@linux.intel.com>, Sean Christopherson <seanjc@google.com>,
 	Artem Bityutskiy <artem.bityutskiy@intel.com>, Peter Fang
 	<peter.fang@intel.com>
-Subject: [PATCH v5 3/6] virt: tdx-guest: Calculate the Quote buffer size safely
-Date: Mon, 28 Sep 2026 03:08:14 -0700
-Message-ID: <20260928100913.2265687-4-peter.fang@intel.com>
+Subject: [PATCH v5 5/6] x86/tdx: Add a helper to query maximum Quote size
+Date: Mon, 28 Sep 2026 03:08:16 -0700
+Message-ID: <20260928100913.2265687-6-peter.fang@intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260928100913.2265687-1-peter.fang@intel.com>
 References: <20260928100913.2265687-1-peter.fang@intel.com>
@@ -107,115 +107,156 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH3PR11MB435924:EE_|DS6PR11MB896703:EE_
-X-MS-Office365-Filtering-Correlation-Id: 420b74cf-9c55-40a4-650a-08df1d48cc43
+X-MS-Office365-Filtering-Correlation-Id: 4fff95bd-3e9e-4f8e-1619-08df1d48ce2b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|1800799024|7416014|366016|10067099003|56012099006|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: z+yyUUDBE4FeD6EE3LJnBz7VKnxH/QHNaPAcuhA4mbqObEyL0o7x/219YexxSbCxiRkZAejDU6g9le/bnKONnyvy7Q8gddFmSt9C8Rag7b55uPUF1lefXnmPWosd9GdNfqr0SGUqpSf4Gylo8MK5ftqAVDPeA6DkMhtnsIkumG61DsD8AcAbGYqPZqihQ7aT8rtuZep6Z3OVa9TiIhST+ApxlkYYPrdzmTLKWCXEZ8GkOYlpXDxOtAW9Ww1VUD4ejJt4wJHp1QhwQ5AyAbH7urC3Z/1x0fkQwrB7/ZEX1jOLU9U6nahUzcg/4HBMKzkyGF5PLBbO3bcEp+DTiJ8KihukCePkTqz1Djyr9JoKO/IIs6lDrg5s6VCt5nJznoO2oPGdekUFHt1o8reVgbfxezWTw/8nADozrEnfASq+qLmqijT9ptWvJ2vqcRq8zzERbDBusJgmojcnGsZnwu6uGdehau8XEwTym3LrL6CwQBxqPKT1rpFTMlJPXzlTS4fG63X0lzwaraNVm1E/x0jKrxNXooRCmLTuIhb4jpKOBwkqTca49V399JU6gP/WLMvYB00i6ReldGmxBkIXXZZYxQyGt/yXU+qS6zmoUZuYZiQ9JE+Pc+3P8D1Wr8uDmfHwhh1dUfK7gS9dSsy/G4ZqDktpM7KIEWwYx+JbXEE1wZM=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB435924.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(7416014)(366016)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|1800799024|7416014|366016|10067099003|56012099006|11063799006|6133799003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: lel3VLMMMGTZ6vM0WqCtngCCsQ2Hi/R/AJqK9B4aShowwhaZX5HzXYqjQ22l+IIpvHP5NghETtcVCy87kF0ndiGuhxGTR43Vi27cOXe1bFI65C0kdJ4zMGTjRIf7VCdBrv7mk6iSaEhZ84ILqWUFPytShFBdCO6VGUPRHVuQCMA/owWUP0dK8Oc5cKgSI0vNYCJHAaF1Cd+MbWC/5mIUFECeegrNxPQS2uvFf/BUwED0uXueAM1R5ywFn2b2kyYPeCTNTgc+NrbG4iF+rybypJO/+spNSZwI7WGtGPzmz7Gj1skYAXdTdIO2UeZ4Ui8f4lq3zFnYUxjb/92qXu9/Q7Pa5H8oR3GSEEc+67F+wh9z8i912ArnvVas+LX7H4Ui0LLYMf6FPrX4buFneaDjdXocgUoAH2kK6V1X6S2Pm42M0cwIdhqIHnqzHfq6UiECuA9Lp61xcx3ZlEwIprar362/xXuP5nHGJ4HdkZvS4o/aFGLOv0RPDB7f3gymVN3TTSdptjnsJzo1h/hWVbIgDpxYuAZ6I7JV26VZrIsRuhxI/QXGTD3lJ0H5ZdBMjN9s2SUocCG4A6YSfjSwWw2N5tm/9QO59T7Dr3QYnpyWeKOrV8bGo08KlOoppv9uCcqx7dTDxmVRd70mdy7kOMRoEtpOrPEOEvihiiLe1jtb6SE=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB435924.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(7416014)(366016)(10067099003)(56012099006)(11063799006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?/RIstjriHVyTtzaBp9dCjW3qBssauP94CaVRH2jXOltkyu9c7cWE1B9Xo+nJ?=
- =?us-ascii?Q?yRaEAu44bmnzKgVj95jOzYq7MrGCbrGP4euUrdlB16/CuveUS7ZvlhKTsjc7?=
- =?us-ascii?Q?SDUdeXLUk9kEdhLmJDplNjWAUqenIAViE40ky6Q0zELSc7GEZ0VMAJ78AmUv?=
- =?us-ascii?Q?fvaqvdTb8kwByuNVK+5W0SWVX9UQ3U4dYYiFHJEuTKwgsk7aJpqwZlQVS1Hl?=
- =?us-ascii?Q?mQzrDfQzWNL5vtbe5XeOAc/1PpLlnDcxTGieyY8/W4epcaxoo/TZPgMskxa4?=
- =?us-ascii?Q?wFs8QeXpS6SeebH9JoIXnSD54oBLW8txzSbDZElATX460s6hTJssKuyW/1RC?=
- =?us-ascii?Q?2ARSkHYwTKpvwOEAFS6ogc51wPGr1N29RtOPU5m3IzMCkNS+wRPwvXD6+/dL?=
- =?us-ascii?Q?g+pbgt7DQ4abAOaY/zqrR4lA9v0kemVUXNhw+ceHprcRt2QCPk4BW2pcCxuR?=
- =?us-ascii?Q?N2bFj6D8JA+B+b2d4156qx4VSAIvudRJmd8OCG7rtnpUjQ3QqxokJEuQ1KY4?=
- =?us-ascii?Q?gKeCtDwmP2R7PNFfw757iv7r2WeixQa4L2diwD5C1EFx7jrgwLgHlM5UWd3F?=
- =?us-ascii?Q?LmJlzNpzh+CR5nz1HRf0F9Jla9mGvQb8DnJ0SaGsRkbP7EUcC3DJ5HLi/gwF?=
- =?us-ascii?Q?UvHXaPuJomGbGl+dW2lh1pGSHXwWqVqHJq037fyZSykx0JQLeMCltPSC7+2Y?=
- =?us-ascii?Q?GEc5S1XmnrpweqsDdPeX+Y73v/4C26s276UVfuovvrHt0dHG/TH1aKwI2ctt?=
- =?us-ascii?Q?jRTKrIwwiCdbccGzfhlb3yq/q0d3vkWvCXNIwar60gEcY7S8CybLD+rtU8Kq?=
- =?us-ascii?Q?fKDj/WmxSVsERrssDRAe19FTcIP+5rI0+2FzBm8VX4cm3s+/z6FfrxyzNp8F?=
- =?us-ascii?Q?1I1jxmJ/fvnGtJUCYGJgajgxJYyR0voGESkfAxnm8D9wlUSdmn4CVGQnzHHq?=
- =?us-ascii?Q?lUhRii6dx4ozX+lPWouV98l6yOVheW7Rh0whOwy/MdH9+cAQ+X+Z49uiecCc?=
- =?us-ascii?Q?6rfwrU+ErvBHeJEHejaVBnh7hc50eCi3AcAdq0WSXjjuCVhTp/Plo3ZG8WM7?=
- =?us-ascii?Q?BjUtrRcazV8OfQD+r8RXEPz2OV9M9X7EMg4VW4cL2ZH9Mu7qPdR5Do6Qifh/?=
- =?us-ascii?Q?pvnkxvbsZ/R7yAYYZ3PG94LbanEVRjUw6bLagIyGZgM9uMX6UctT9R66G2kf?=
- =?us-ascii?Q?ydnsjaHc57hZqu1H/Tn9AN+XIfZFsMXnokJKq+BHwDptgClp9KaKO2ddKrb9?=
- =?us-ascii?Q?4S6zONYmcacLpSn8HSzvds9dM/RQE9l/ua72w3Wu5llW93fhsI8mtpX7g0OK?=
- =?us-ascii?Q?J2BYkcSy/3WqyctFdKoNkMHDFkkvJPksBcJaPgvSAXnW4nPWtubRuPjaZwr/?=
- =?us-ascii?Q?FBOnvj3IeRbuHXZeA7QUvsNJrHIXPVL903YVO/xgsAg/UjBdtN3aTu/b7xi3?=
- =?us-ascii?Q?sHj8rbgj/8YoPX/pkRU/vntI5eNo8QHFKZmw0XBm6V0FTWXW3IhyI6ygpE+V?=
- =?us-ascii?Q?kPtL+AZD5z3fvPcG2Y23wGcV+pfyi4rSJLef5hWNDlklIaF6cKWrpTxMpUW7?=
- =?us-ascii?Q?ngcJByXI4r+WC4GRjpSitqfFI8gryugmg2vLmGjYn9Jb1iNgN0aKDr6Y4Rsq?=
- =?us-ascii?Q?xhgvPHGo5JihzLx9duLMzgrjl9W5c3wYGyD7sWeB/FZ+ZaUVt5F3B/USiGj1?=
- =?us-ascii?Q?FPwPLeh73zaCEnPUTGiGZA1CjSxV4DHhp+iDEfHLj6gOkMNUFK2ndrg1XKqd?=
- =?us-ascii?Q?8oIxRZOlfg=3D=3D?=
-X-Exchange-RoutingPolicyChecked: 4S6/4IhivzNKWolcErRbxVSCrP+racXB5r4nUvdTehqJTYuZzufbw4WzJr7RwTVJHVWSL7O57MQsBxHxyygCvGxQxzrmYfdflOXYQOXJDv0mD5LTNDwPjtCkKM9Exm0V1W+iGosck82lcs9TakosWNcquH5iPCnUsbqWY+qjJ1Ws3VbCyLx8fC5gZrfZyJUXriwFlPMc1IRNhhcZVQRwvVxlX54JS6OlelStkdXCS2Hzrm2JUJV5S49LohRG+xfoSSKoA1bP+pqbzoIX0Bj2//hw0TcUyLKUP/atsHNDRvCOLD2Ohya5t67/a24Gbh/RxmSK2GiOAnr2QeVh746P+w==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 420b74cf-9c55-40a4-650a-08df1d48cc43
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?e6CYtRA8QIY3+xuR0LxPuZiEO6BKLxwqGKzOvers8W7271FZW1nYVBRguMQO?=
+ =?us-ascii?Q?RJ2A6zOHZyGK1rSqwHflZwMUznFpj9rOHQtPyNTbsuGBc3FKzbLlWS/OWxY8?=
+ =?us-ascii?Q?JOcj3V56uDMcpFBZd8Exyr7Bg8rNsaNVB+FrOQpCXM1QH2Aa/DM+TCOMBfGy?=
+ =?us-ascii?Q?rfOeXArP+iL/m5adsei5AdYO1hsXkSoRW+zZgAcTUyWX1i7uhojAR0k1Mtoa?=
+ =?us-ascii?Q?Q5W0bVKOi1UReQkmr2bHaZXfhVxDVzZTa8IW6c+caBqnnmWtWKkvV61YYDzE?=
+ =?us-ascii?Q?dKv2n//e0OlTjmMTeYzoMbkNldhPJWoz3V2FFpJo7HFJmH1aDHyEUCtBEUbG?=
+ =?us-ascii?Q?WqI0vik0jcJzgMYmvhrN/HKCDh3OMMAWXjykVmqn0/ua7iZDbM7e8SrdAjBM?=
+ =?us-ascii?Q?Cubo/IM4ru9IpEox3ajTGKYYz8ZPNVjWaOwBDsUHz9oPaJk1oXz5KGyuNgns?=
+ =?us-ascii?Q?0hCggOnIJS3znEPqvTA5n0UbH1CvvfUlmmpeuVKrJZDjWt16S7S+7LgcTe0X?=
+ =?us-ascii?Q?NZ4DCzpcvUCGkknYOhn+fL0JL4HiXg7LLpJKHW3sMo7llzwFv5FXe+Jg3UlK?=
+ =?us-ascii?Q?ZCF2YgMV55BQdG7NX4UmVlILeCDzWsPIn2PAnR4DDNhOOprRrxRjYD63tTdn?=
+ =?us-ascii?Q?kdrSuUKbJNHLR0uY0yuBRIoSa42GuksC5/LmEqOHjcpk+3HcL/A3l2ICdTiK?=
+ =?us-ascii?Q?3KR9IOQ76i66qLlC4oWOxKSIuXsXApJktGACTLHyi9x6LLCHPj82AKmO1mU9?=
+ =?us-ascii?Q?a0zX253pmRjiZ8jBUxwPjH30Q+4JbDd12Zrhgalq9BH5jB43qO7blupmIBhA?=
+ =?us-ascii?Q?ssOQc0vPxTPXpkLrnojzKBIhRFyYsE83DQWhnglO5tommCcKQm/AKeJbtMA6?=
+ =?us-ascii?Q?oC09xJ0QwWZ9s78HtmcHZoBMcfyYVFH56veE2lgFCahZ+2a7YrhlGGSpe3wI?=
+ =?us-ascii?Q?PadeWmbOt0OmdXWyjXnazD6+42YWVyStD0P2ULBwfaam8MyqjrUDoejcJWHQ?=
+ =?us-ascii?Q?U0hymWIf6VbVpVSGfI9PjyssKQylcaRs1zlfPN/r7fLxE8dI2EsF8uTrdB0a?=
+ =?us-ascii?Q?zgrL3/RwODdl7/c6FSOCSghbjNFSTDke+sESqOpR9u/GhqqIJQToZK2dYiST?=
+ =?us-ascii?Q?22NYYs77bY+kCgfwJM04gU9tAFq4aZqgDQFMbXhU4M1+uQaDhZYFmV8mUDhu?=
+ =?us-ascii?Q?tsa4FiLOV4lJmzRpj0CTpn6JpPvYR5LijoMK8lCRSqCyiedYiTNXwgHQ1Kyh?=
+ =?us-ascii?Q?kifBvXeOayfQ3zVUcaE/3Jk70bK4hkoB8owyAJUEV53BthxvEYEzxz0vUc3Y?=
+ =?us-ascii?Q?Yyk7c0Vdd9v+68gx1mrFRbXBJ9ykLUxghbMK3e2EID8Db0ofQeUX2cEGH8iv?=
+ =?us-ascii?Q?8KwIV7LmS5yn1iOH0Hu88TnOXb2ej7GN70e/EXqGcEjld/LLhoRmGhx605T2?=
+ =?us-ascii?Q?xiWoMJMHT7KO3bPsinr19EMAzeCBhY7BAFuPWGyAjCYJeCkU/vfsoHxyvpUO?=
+ =?us-ascii?Q?hIgEONLl4U+hqQsJLFGC9QcLlJbmjkZRYWCNqaWLxiLsQSifobjfXBXNw3ro?=
+ =?us-ascii?Q?9mFjhR0bzWmmWUCsP5I6v5LVUkgCpjsCPmr+hB4tMBIeMmQX/2R15VB4+Jot?=
+ =?us-ascii?Q?ARTPrgzM0XeciaY7y5FMqJaUT+VljNQhRfFNhJ+xW93crxQVNi/MqRUqFAtD?=
+ =?us-ascii?Q?Ghu0WkRtv2YpEn6zRmyOOKMuKbKzR0OoQwHSJs6jgO3Aqwl0dEjATG+42/1/?=
+ =?us-ascii?Q?yG7Zp1+l8g=3D=3D?=
+X-Exchange-RoutingPolicyChecked: 0X8NtLwzCL8ZBjFyHWExdIhScsgCfRwpxNsylTSA44MYg7mQQTDuT8TtpEXUwrHdfLj2KFzsl6dTF9/0Io5+kCOnuOC0ZXQwmnE95lWbEBnn2yk6Mv8Bmvg9sI0fOqxtNk5QJNY+yRbexIAxc1IhycPtqWAgF2qZ0XZOsEtWNdIMDwLDLYZ2OtujHawe8RPhH8fjtUEQtJnHLh3FsyMaXuXpa8Bav16jUc45VBLPqnlooaahv4PLrE+a+aXQMuQMJukxo6qwrcSe7c9J83a/BAXZA3SdSIDQP2T3ypF8yKxHlP1VxKL+dFtptQv8OWhGCloE98mFFdv4KmN/wwL4Ww==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4fff95bd-3e9e-4f8e-1619-08df1d48ce2b
 X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB435924.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2026 10:11:01.2589
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2026 10:11:04.4512
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ec90VI7eRN8jQlneLgIAqe3t9jhIialy6EVmi/omYhStvRkN6wFxts0TdE0BxY5+9ltSgoA2rK4C/v3n0AHNGA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: m36inFoI8BgdtY0u6wso3+k8nYrmIqvRDkNBfOVxIRGtgphgyVnFt295BPqGT6j/UcUV+M+nPxrgRHz8kAJ/pw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR11MB896703
 X-OriginatorOrg: intel.com
 
-struct tdx_quote_buf has a trailing flexible array member.
-struct_size_t() calculates the size of this kind of struct safely. It
-handles overflow, which helps since the Quote size comes from the host.
+TDX attestation report ("Quote") sizes can grow with newer crypto
+algorithms, so guests can no longer rely on a fixed-size buffer for the
+Quote.
 
-Use it to rewrite the bounds check logic, since
+The TDX module added a new ABI that reports the largest possible Quote
+size via a metadata field [1]. Add a helper to query the size instead of
+exposing tdg_vm_rd() directly, as it can read arbitrary metadata fields.
 
-  "header_size + data_size > buf_size"
+The reported size covers every Quote type the platform can produce,
+including SGX-based Quotes.
 
-... is more readable than "data_size > buf_size - header_size".
+Thanks to Xu Yilun for suggesting this in an off-list discussion.
 
-This also prepares for a later change that needs the same
-"header_size + data_size" calculation for the Quote buffer size.
+AI was used under supervision to collect/apply feedback, review code and
+workshop logs.
 
-AI was used to review code.
+[1] Intel TDX Module ABI Definitions, August 2026, TD-scope metadata
+    field "TD_QUOTE_MAX_SIZE"
 
 Signed-off-by: Peter Fang <peter.fang@intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
 v5:
- - Rename TDX_QUOTE_BUF_LEN() to TDX_QUOTE_TOTAL_SIZE(). [Dave]
- - Add Kiryl's Reviewed-by.
+ - Drop unused EXPORT_SYMBOL_GPL(). [Dave]
+ - Use an error code to report failure. [Dave]
+ - Drop the u32 cast. [Dave]
+ - Replace the kernel-doc comment with a one-liner. [Dave]
+ - Drop the RB tags, as the code changed substantially.
 v4:
- - No code changes.
- - Add Reviewed-by tags. [Sathya, Tony, Xiaoyao, Binbin]
+ - Update the TDCS_QUOTE_MAX_SIZE encoding to 0x9010000200000007. [1]
+ - Provide documentation for the metadata field. [Rick, Kiryl]
+ - Document that the reported size covers every Quote type. [Xiaoyao]
+ - Document that a module update does not change the reported size.
+   [Tony]
+ - Add Tony's Reviewed-by.
 v3:
- - Split out the use of struct_size_t() for buffer length from the v2
-   "Allocate Quote buffer dynamically" patch to refactor first. [Dave]
- - Drop the Reviewed-by tags from v2 (Kiryl, Binbin) as the patch was
-   reworked.
+ - No code changes. Add Binbin's Reviewed-by.
+v2:
+ - Keep the explicit (u32) cast to document the metadata field width.
+   [Binbin]
+ - Note that Xu Yilun's suggestion was made in an off-list discussion.
+   [Sathya]
+ - Drop the Assisted-by tags, as the code was not written by AI.
 ---
- drivers/virt/coco/tdx-guest/tdx-guest.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/coco/tdx/tdx.c           | 16 ++++++++++++++++
+ arch/x86/include/asm/shared/tdx.h |  1 +
+ arch/x86/include/asm/tdx.h        |  2 ++
+ 3 files changed, 19 insertions(+)
 
-diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-index 896eb0a09c4a..b30439584886 100644
---- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-+++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-@@ -170,7 +170,7 @@ static void tdx_mr_deinit(const struct attribute_group *mr_grp)
- #define GET_QUOTE_SUCCESS		0
- #define GET_QUOTE_IN_FLIGHT		0xffffffffffffffff
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index bcaf4180a8db..323e1efc78ea 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -198,6 +198,22 @@ u64 tdx_hcall_get_quote(void *buf, size_t size)
+ }
+ EXPORT_SYMBOL_GPL(tdx_hcall_get_quote);
  
--#define TDX_QUOTE_MAX_LEN		(GET_QUOTE_BUF_SIZE - sizeof(struct tdx_quote_buf))
-+#define TDX_QUOTE_TOTAL_SIZE(n)		struct_size_t(struct tdx_quote_buf, data, n)
++/*
++ * Ask the TDX module what the largest possible Quote might be.
++ */
++int tdx_get_max_quote_size(u64 *max_quote_size)
++{
++	u64 err;
++
++	err = tdg_vm_rd(TDCS_QUOTE_MAX_SIZE, max_quote_size);
++
++	/* Old modules do not support this. Tell the caller. */
++	if (err)
++		return -EINVAL;
++
++	return 0;
++}
++
+ static void __noreturn tdx_panic(const char *msg)
+ {
+ 	struct tdx_module_args args = {
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index f20e91d7ac35..6f106d4b1a58 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -50,6 +50,7 @@
+ /* TDX TD-Scope Metadata. To be used by TDG.VM.WR and TDG.VM.RD */
+ #define TDCS_CONFIG_FLAGS		0x1110000300000016
+ #define TDCS_TD_CTLS			0x1110000300000017
++#define TDCS_QUOTE_MAX_SIZE		0x9010000200000007
+ #define TDCS_NOTIFY_ENABLES		0x9100000000000010
+ #define TDCS_TOPOLOGY_ENUM_CONFIGURED	0x9100000000000019
  
- /* struct tdx_quote_buf: Format of Quote request buffer.
-  * @version: Quote format version, filled by TD.
-@@ -314,7 +314,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index a3c37d61e676..6a465827d8f9 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -83,6 +83,8 @@ int tdx_mcall_extend_rtmr(u8 index, u8 *data);
  
- 	out_len = READ_ONCE(quote_buf->out_len);
+ u64 tdx_hcall_get_quote(void *buf, size_t size);
  
--	if (out_len > TDX_QUOTE_MAX_LEN)
-+	if (TDX_QUOTE_TOTAL_SIZE(out_len) > GET_QUOTE_BUF_SIZE)
- 		return -EFBIG;
++int tdx_get_max_quote_size(u64 *max_quote_size);
++
+ void __init tdx_dump_attributes(u64 td_attr);
+ void __init tdx_dump_td_ctls(u64 td_ctls);
  
- 	buf = kvmemdup(quote_buf->data, out_len, GFP_KERNEL);
 -- 
 2.53.0
 
