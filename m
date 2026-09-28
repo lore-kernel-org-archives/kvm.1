@@ -1,157 +1,133 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010067.outbound.protection.outlook.com [52.101.85.67])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012045.outbound.protection.outlook.com [40.93.195.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D063914E8
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 18:39:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89013AE1AD;
+	Mon, 28 Sep 2026 18:48:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790620754; cv=fail; b=CUH6jTMZIAHYE3m9o4kkRbRBZ8B3tY6lzRPnKeeCEy0IGcm7zzTqr3agVYi9/XF4uU5wZZQb4nqCKAkxvZsajdmjT1Zdu/ciP1d/7zIFYLjLRe3cot174KRprULY5Mr1g07q2tC/L3fo4MD8DcyepPdxdxW6blKunzeRJPvIGGs=
+	t=1790621310; cv=fail; b=asCyNEgRMZ+XbrSbpgrtR2QjRpunvRtP0PwT8zmCnBbNRBzvTbg+H5MvXTvT5GjORIR/0lMRp3akhS7rK1D35EvgAAxOLwMphof6GOo005R2q0YxbO54dte9rCAYbysA+ch6+5372cxW+z3BRDIFWl5OT2D6EZkIJZjho0/4+Pc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790620754; c=relaxed/simple;
-	bh=cNov14qr7rUHEGmm7KiSZlaSeHD7qzPTcT2KlfFvlZc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=JL2xH4hKcOA1+70wJHU3KAiphvTC6qu8lkY+WMLTrs0Y8CHGamiSmIAu8kGI6xhXaIQK3dIaKscGRGiBbyWQwMLEUbcJASpP3ZJhwVTpypC6U5i/puybVX4q/TO5SsTiHFyHkm9kOa0twsGNFXiNXHzQJvs2WtYyiG7NXygHEjI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=PnUhp0dA; arc=fail smtp.client-ip=52.101.85.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1790621310; c=relaxed/simple;
+	bh=eTnU6L1E6UpfmMKGspuSVglLAKgc9Wf09FmItPFT854=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y0MQHDk3rlfbs1MiegrvwMV1O7YKz5O1uWylbtbMh08IsY7dQa19M5fcNnZCZpxBlTIIX2lUKRtCkCChCx5Rd99Rj8vT00MlZDIpUZxvH9Z1AZ5iGtGGlJFdsP+Lc5mR9QoHaLVvReab4SyE5J6yJbFn9u1zGkEMn+RsZyZhhME=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DahIoI5a; arc=fail smtp.client-ip=40.93.195.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="PnUhp0dA"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DahIoI5a"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=G4ycH+FgtYLGWnuOojtat7scixCd7fiJSqc5xweM6HvTk9ZPW12zw2eRxptc582pnmgBWLhavDc5W8FtjOqyRqvlcDI5G6ZtURbL55XIiJB0kap463rEQQeHJn5grUNPzSZFVF3Az0t0jGWXpShMMdGHs+TZY4epKvSMZb4JJ+JEtMetEZc8HwyjfLyDlm1oYgZ8kZcvb1LVcum2crqSS1UzbYC3iEyF5l5uGrxmLL6BSTs8bTHIBCwXfBcGSRzFnQeOA2Fn0SAL9xe1JrzufUBmm9hY3vW7cYhBIBAg67K5fMTGNLww06JMqXNLuKlfqAQJMbgW+BHg9u9SnRwrjg==
+ b=uL5xNimCRYH380ik1lDTUao8uf8dSjMX3T2rLmBQSPU+VXyL0l1KxY29oZomM9At0Y0g89eOFhemJXzVn2xxFTD6xAPoYn40tzm9yoOjFw2mAk8/9ta0i34as61Iblq7NQWp1YRt4NyOQaB3BNPMnstV1kaX4BEyFNthbtnn1ElJQT+9KLfa0rS8HmUrcAFzoR83V26kloGqnFbbfGlcRjnHifdxmYLUkVkOjWti53tgP1XZGOH2iYjcMXKUBzjYiasLoGafmfMR+ZKvx1DF5ZQkWQ6RGuALYSP94TtM4IWhwg5s/v+0llSvC6edbYTaI/hU//SY1U7SwD6i2fcd6w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=U9t4F8RNHSlBfH2LkEevH5qlVrTI/rAcVpp8nmEkOOM=;
- b=chiaQQkgla+RpoXgapzDBfLHd9hT785ccPuBeRN20T4/CQdNc39DGQepCczV9olMzERw6PJfNqWuKBA35YO1M7UFZeOfgrSN2aA54YKCfxYc1A4+goggZKMUAUtnmrKc4btx52+SxO4cTH8Y4C5eocRyzo+CdyXImnELr7ZS4UzHjulrpg/YrS9D2HcebVjhLJm7dMskY46P4q9/1P56OMe/h3tMPJS5pmkSdNYzpXhyk/d8QapsQaTI1Mc6vaHiwekelcXe1xIBL63TkcwZRZ4o52qa99RVQh+A3AIdrnQi8soZPs43MDH+GvUJeX4gunwizESGYp6H31rE8YD36A==
+ bh=PnbzCrBsTbXPqso5ihCwGtl7L7qiy/fAlDUSMTYgKX8=;
+ b=jLWp0lgFgAM7R+pdOz+mFcIGgkwpRE/5b655wOQCIByy5jE9OHKA9uBdffadjVyUR+r+JFH4YGYqf4Ns0vCFvGrH7KEZFL5a/xlpqnwT0K9XVdJ1DySogZVEGeur5Jk3Pj4HRPViziydIPmLdgmGE3h9IhQW5rHAzPvTXal5moGDDIsiXA7TbKLwd06ueeLqsqMp/HTgTPG8CEDQrsTrIsEiftRkQAmxgbPx0k4GqRgsroDDHuR99XvOnw9v9FGZ7A77WSgUb9D5L5DqTm+09ryvcVcxsVzMWYF/24bAkr4Z32YNqcywMo2VmtiCtqrpIT4qYBHCPhJrsuejK6/zNw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=U9t4F8RNHSlBfH2LkEevH5qlVrTI/rAcVpp8nmEkOOM=;
- b=PnUhp0dAch8d+L559EyJ+WR+EDRyP/QMGi0iVLkMxO4gW8+u2SkFClKvw2xSZ5RePCKoU5m4nOU9s3LWZVwTr7WzQHV6BNriPSWltQbCenM5fF1Tkc8Xs4iFcsr3Xolq8aUJdwJEfTX8yCatx98HLnVjctMOG2yuLjpV6KA+P40=
-Received: from CY5PR15CA0249.namprd15.prod.outlook.com (2603:10b6:930:66::16)
- by CY8PR12MB8265.namprd12.prod.outlook.com (2603:10b6:930:72::8) with
+ bh=PnbzCrBsTbXPqso5ihCwGtl7L7qiy/fAlDUSMTYgKX8=;
+ b=DahIoI5ay4ZiM7a5ZIm7l3PFeDqVWVVHsWVAcyu4/9BXwJTFm6idyoI6n6aVny/OfKvUQx89C8c8wtoP262W6zgqZDUb/Sd/7cVktV2VvW5rFB8XdYTA0eLi+kx++smffwRWY4f1cfWGnX7Sk/RULEtkbWkTDRX0p0hzjrFVxKzlbjmHGTxQAXWs2vqV2EGdDf6/xFT54km1MbH+nO9XAYclLXvY04MGHrmQ/vwjwB/a1/m2IiWDDXwrtY+lMn865Z8fcZvAdOS+xnYQ5FICc36XEmQSjvoHcs2OCfJvmBWUGdUeGOWtkquJAGS4EWCXRb6n+3DSlZhDo4e1krafyg==
+Received: from BN9PR03CA0162.namprd03.prod.outlook.com (2603:10b6:408:f4::17)
+ by PH0PR12MB7929.namprd12.prod.outlook.com (2603:10b6:510:284::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Mon, 28 Sep
- 2026 18:39:05 +0000
-Received: from SN1PEPF00036F3C.namprd05.prod.outlook.com
- (2603:10b6:930:66:cafe::8a) by CY5PR15CA0249.outlook.office365.com
- (2603:10b6:930:66::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.21; Mon, 28 Sep
+ 2026 18:48:19 +0000
+Received: from LV8PEPF0000006C.namprd03.prod.outlook.com
+ (2603:10b6:408:f4:cafe::68) by BN9PR03CA0162.outlook.office365.com
+ (2603:10b6:408:f4::17) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.24 via Frontend Transport; Mon,
- 28 Sep 2026 18:39:05 +0000
+ 28 Sep 2026 18:48:19 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- SN1PEPF00036F3C.mail.protection.outlook.com (10.167.248.20) with Microsoft
+ is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ LV8PEPF0000006C.mail.protection.outlook.com (10.167.248.36) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.472.14 via Frontend Transport; Mon, 28 Sep 2026 18:39:05 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.472.14 via Frontend Transport; Mon, 28 Sep 2026 18:48:19 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 28 Sep
- 2026 13:39:02 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 11:47:44 -0700
+Received: from sonangrm.nvidia.com (10.126.231.37) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 28 Sep
- 2026 13:39:02 -0500
-Received: from [192.168.1.13] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Mon, 28 Sep 2026 13:38:58 -0500
-Message-ID: <87db41f8-e025-4152-b152-94131735beac@amd.com>
-Date: Tue, 29 Sep 2026 00:08:57 +0530
+ 2026 11:47:43 -0700
+Date: Tue, 29 Sep 2026 00:17:30 +0530
+From: Sonang Patel <sonangp@nvidia.com>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+CC: <linux-coco@lists.linux.dev>, <iommu@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Alexey Kardashevskiy <aik@amd.com>, Bjorn Helgaas
+	<helgaas@kernel.org>, Joerg Roedel <joro@8bytes.org>, Jonathan Cameron
+	<jic23@kernel.org>, Kevin Tian <kevin.tian@intel.com>, Nicolin Chen
+	<nicolinc@nvidia.com>, Samuel Ortiz <sameo@rivosinc.com>, Steven Price
+	<steven.price@arm.com>, Suzuki K Poulose <Suzuki.Poulose@arm.com>, "Will
+ Deacon" <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>, "Shameer
+ Kolothum" <shameerali.kolothum.thodi@huawei.com>, Paolo Bonzini
+	<pbonzini@redhat.com>
+Subject: Re: [RFC PATCH v6 11/11] PCI/TSM: Add reference-counted contexts for
+ vdevice providers
+Message-ID: <arq2Ql3-q9EApe3X@sonangrm.nvidia.com>
+References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
+ <20260917140159.1163281-12-aneesh.kumar@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/5] KVM: SVM: Add Bus Lock Detect support and refactor
- LBRV
-To: Sean Christopherson <seanjc@google.com>
-CC: <pbonzini@redhat.com>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<kvm@vger.kernel.org>, <x86@kernel.org>, <yosry@kernel.org>,
-	<jmattson@google.com>, <thomas.lendacky@amd.com>, <nikunj.dadhania@amd.com>,
-	<ravi.bangoria@amd.com>, <santosh.shukla@amd.com>, Shivansh Dhiman
-	<shivansh.dhiman@amd.com>
-References: <20260721050600.87268-1-shivansh.dhiman@amd.com>
- <arazNV7Y93gnflU2@google.com> <arb9YBIW8C5KXuXK@google.com>
-Content-Language: en-US
-From: Shivansh Dhiman <shivansh.dhiman@amd.com>
-In-Reply-To: <arb9YBIW8C5KXuXK@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260917140159.1163281-12-aneesh.kumar@kernel.org>
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3C:EE_|CY8PR12MB8265:EE_
-X-MS-Office365-Filtering-Correlation-Id: 84889881-405b-4d30-c86a-08df1d8fc613
+X-MS-TrafficTypeDiagnostic: LV8PEPF0000006C:EE_|PH0PR12MB7929:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3e28e56e-57c8-4b5c-81d5-08df1d911091
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|1800799024|36860700016|23010399003|4143699003|10067099003|11063799006|56012099006|22082099003|18002099003;
+	BCL:0;ARA:13230040|82310400026|36860700016|23010399003|376014|7416014|1800799024|10067099003|11063799006|18002099003|22082099003|56012099006|4143699003;
 X-Microsoft-Antispam-Message-Info:
-	mjNlCEo/dUPw4Hr0NZxZmXV0bJdszMzG2Qj1nPDm53DFdEJZgPXKnbU7+F0hYo8fj0HG3Sxaelr1/HePURrLliu4Y3yJqEZVN/5qyrFVYlYiHkVxECaW+JltC5Nzqxk+Dj0TkS9mL25RwunEFKIzjmsBHcuC/l2saxQYodQoMRe9rhlXwEd3PC5EMJXkcJqWFu6dea7EVAxYAtIuN0hCcQ+cgeb2nTXw82XjqTFzZ2XvoiXSYv+rMlSvRA/+NIu8+gKUatp+aSDtAXpUDtYdAFWYZ6X+WOcLuptElNiF+d3Zs2pJG2kBbOFG50sBEerOQp1DJ8Td6tbssTEtDKqrVi+ja0lFf/iSabG9Q6AW7kshv8jHf9vfWBB+eIqtIha/9P/qk6V66Y/j6bANQfKRWoPBm96KskwRMwpJ0cJdoQV8kxsSwhuIu2wH6t/vwqP7B4/fjBOW3p5XBfI+DrdO8ASLRFxii5WmrtWA6Zwpz5AnasOePvOOFecVS/LCidKJcptaX50MEma+2dpz5nJMhVPdQX1+35fJiVi7198x+ETdCDJaidgLaXz4h7HGLV2TgFC38ELOzwxNoOAohUUZ2iP/x0KMBJNLDsf99lM4Tz4L6KddLfYCBilFW0odFbOYpV+KH+M8G9OCJcyDjWwesSWhkmbABEH5R4cTlB05aUW6GL1zF9F0ZnQHIfmST2uisIyATfw3b6mJKSUYCxhE5g==
+	x2S2aLbtgJ1WEN8NLzW+wSNZz4CAy38VnWOtWcLsBlw08hu21zDhI6ZIt1EDdH6VaRgKyPFRtz1wSDG+jD4ufXMjnUtm4IXpGwQcKzZJM2ayQd2iZ1JPIC1DilmqUZeNXhv1xXirzw7HdJroF2mHkp1SkuEox7B1mrV51HA4qh3J544P7lVXD7s60QytlXn8CSZ4fGyiTuEjMqi1Pn0Rp23hKHStGEV3uAmLfEIkjLJges7T+Puokxs8GbTpW2TMBqX9umimgf1utiuqnBBMM7k+QMeFp/xVrU5QvrbeSHYxJUheZuSWKaUESG22W0Mv28QEGJNJPqVkTf1cfyDsqTJwLAz/cWodaU63gomG3QXS+ETp29O0+5FGBrauOSzrPihjZ7C0sKJylaQvzGjDMNrFYKrnkMc0FCAMy6f6LHNXaB01Q03/rx661NZXgBgTqoMRw1M70JfFlpMaN2+E/+YibI9BC1MyKDDxGGhSOdOCjkA/7PyzbHLeCwNFVPF1y2KswgSs6/ZB2A6hj2bKFxXYOSzj7d0RRciWGqqBA+foHVFbK66uCnQi6Gb7six5hpAPWhVh7BLquqaD/LDaMj/mGaO345L+fuviFCKdH6nloeRdMJnTT+Q6xOUWFdvlUBYmPPcuzevppR0xrTeXae8uaFg+89ME5tox1QhL5khmbW1ONkrmWX7bzNv3Rm2yxd/ktofl7QtP/IKdMp5ftA==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(1800799024)(36860700016)(23010399003)(4143699003)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(23010399003)(376014)(7416014)(1800799024)(10067099003)(11063799006)(18002099003)(22082099003)(56012099006)(4143699003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	WDDnrxwbjFloby/8hfOfKXNqTQA9EXGOnSJ1ar4N69mIgxSct5DCohsiLuu6pWmJ10S2VkEvHKBsDe5CTb5XutyzEGmkVIlg0wxb7TNgwrCas9gihItjxo76nzv0AAQXicPb8V6slCygFpcTFsR7/FkScB9/KvNkjrBV4eeYpnbtyxmpZQFeJdrTton8rzfyD0ReCn8VOoXBJ47/5TNTYmJp+HVZThk9o60hKwLNnpHU9P0avTF3UsbvaQE5Qwqp9x2KWAESKVh2XTnCnyqVHVi9YN9U4t7iq3YRbn1pQj79CAWvsSE5s6Jej57FCZWQjmpJ0HXwC4aP4C2c2X0wBLKBJtMKH/bcGfdN4xCCMRDQFhVPs94ifKgxUUBP1G3KrZt3n/5gU76mJbME+JW+9aM9zwg8PcPSt62yPBFp4uygagH2xtqRDj61SQCpq4JN
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2026 18:39:05.0266
+	FAQclJpiKjRvntL9hZKCNRc0ifwPLcpWctEk5kIGdp4Aks7j9rH3YLZSu5PRnOM8G7/iy/b7e6uUSHrXevVzySnICfcf25xbOP612RqudgpOxUSCowmQxc/NNnTKn6yN15zHieZ7NCxHboCH6ZLXM6bCAOgy0G2lTYY3AaaIBqWmDzSJKEy/eO/nlqntydeIQ6mv8WiUJlK3fzW9eyuv0rMzscXs71/ZNjPA1ncnLMG6N4dQRuk7eJaT1NtSWvU0Eb+OwhQTtFdWjlSo7trgCq64ppng0xs/D8tcn95urw3GeqZhM9MhSGaB423P8BlMchstdL1Qtp6/nqaF6rYToVuHZSHvOsbU9Fyw77pH9HxWFDFb3dNKXinBUcU4odZF/I5kdNXO4KjPMzEvE+GzEkbUDNYyShDrV4dv9UZN5er5EKaBLElSo7wXIhwsKB+F
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2026 18:48:19.3460
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 84889881-405b-4d30-c86a-08df1d8fc613
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3e28e56e-57c8-4b5c-81d5-08df1d911091
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF00036F3C.namprd05.prod.outlook.com
+	LV8PEPF0000006C.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8265
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7929
 
+On Thu, 17 Sep 2026 19:31:59 +0530, Aneesh Kumar K.V (Arm) wrote:
+> +		if (is_pci_tsm_pf0(pdev)) {
+> +			if (pci_tsm_disconnect(pdev))
+> +				pci_warn(pdev, "TSM connection is still in use\n");
+> +		} else {
+> +			tsm_remove(pdev->tsm);
+> +		}
 
+What happens if the PCI device is removed (e.g. sysfs remove, surprise
+hot-unplug) while the vDEVICE/TDI still exists?
+Since removal cannot be refused, should the remove path still force
+the unbind/unlock?
 
-On 26-09-26 04:31, Sean Christopherson wrote:
-> On Fri, Sep 25, 2026, Sean Christopherson wrote:
->> On Tue, Jul 21, 2026, Shivansh Dhiman wrote:
->>> Shivansh Dhiman (5):
->>>   KVM: SVM: Refactor svm_update_lbrv()
->>>   KVM: nSVM: Disable LBRV in nested control cache when unsupported
->>>   KVM: nSVM: Sanitize nested DR6 using kvm_dr6_fixed()
->>>   KVM: SVM: Turn DEBUGCTL_RESERVED_BITS into a helper
->>>   KVM: SVM: Add Bus Lock Detect support
->>
->> I'll send a v5 as I have variety of changes (I already responded to each patch),
->> and I'm not in the mood to deal with another version as I'm quite grumpy that no
->> one bothered to follow up on Sashiko's bug report, or to write tests.
->>
->> I'll also post a KUT testcase, which I created to verify the bug Sashiko pointed
->> out as well as the fix. 
-> 
-> You know what I *love* doing on a Friday afternoon?  Debugging ucode bugs because
-> apparently hardware engineers are also allergic to testing.  Or maybe the APM just
-> sucks more than usual.   But the behavior fundamentally breaks virtualization, so
-> IMO it's a hardware/ucode bug.
-> 
-> On Turin (the only AMD hardware with Bus Lock Detect I've tested), hardware/ucode
-> forces DR6.BLD=1 if DEBUGCTL.BLCKDB=0, even on software writes and even on loads
-> of DR6 via VMRUN (this last bit is what really throws a wrench in virtualization).
-> 
-> Software can still read DR6.BLD=0 if DEBUGCTL.BLCKDB=0, but if anything touches
-> DR6, DR6.BLD gets clobbered back to '1'.  E.g. if the guest gets into a state
-> where DR6.BLD=0 and DEBUGCTL.BLCKDB=0, then AFAICT *any* #VMEXIT will end up
-> setting guest.DR6.BLD=1 on the subsequent VMRUN, which is just a wee bit problematic
-> because it means asynchronous #VMEXITs, e.g. for host IRQs, clobber guest state.
-> 
-> I'm still going to post v5 because I'm fairly confident the KVM implementation
-> is correct, and the bug is easy enough to workaround in the testcases, but needless
-> to say, I'm not happy at the moment.
-
-Thanks, Sean, for taking up this series and digging into this issue. We're looking
-into the DR6.BLD behavior and I'll follow up with more information.
-
-Shivansh
+Thanks,
+Sonang Patel
