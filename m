@@ -1,33 +1,33 @@
-Received: from mta0.migadu.com (out-29.mta0.migadu.com [91.218.175.29])
+Received: from mta0.migadu.com (out-39.mta0.migadu.com [91.218.175.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557C24E80B1
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 15:25:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C804E66A9
+	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 15:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790609167; cv=none; b=kQLSC7WYY8h1Zhw+HfkYzJZ6ugaQPL3HO+hup3ICbaWF1+mRwbfy0ZgyreGQoLhSIDHcaGPtL2YgJCX/RkFC5ZIzGdurFEsIaVsogsCrlWIARRDs4b45wMnC1y87tIEv1WfXgUE8ruPiZVnrTSqD2F4AME0uUnoEfQzjY0cc8d8=
+	t=1790609170; cv=none; b=lfuXFM39Hp8iQRRVGDfewiJhXhX3tLhE9vGeCXq7XRpRKbSQN4zhH8WupjMtUe+glcuiROodkEvfbjjzDLyj/Jvk8kKhUZaoeW8abcsm1+iPLLFlRaJkCrSS/ldOYRdV8O/DAuztyQ2J7lkRj4hptSmr7EH4n121/5YXxeM/y1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790609167; c=relaxed/simple;
-	bh=TZTf+tvw3LUL1bGKJNCtbY5lbMJJlJLgbm/WT+dWO1Q=;
+	s=arc-20240116; t=1790609170; c=relaxed/simple;
+	bh=3L7Qz5BjFOrFp7kkec0T9qY4CbqaUJC/XAFU7nYMJMk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qhHCCwmS5WShO8st8GcQeNLvd9rR8LEbeKy6+7RrL/jwr/YCdCz4qsC1XW4F1np3sE7NKMwno5xTF2/wUIiVGfhcJngHXnD8KpBco1APrDB3l9bizt9LoFzw4DUl4EJCXqqsDC1L6DZAu9FPx59mOP/zBIrDf+pd7UbO0o2HVo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=j39hHouN; arc=none smtp.client-ip=91.218.175.29
+	 MIME-Version; b=J6qD/5fsH3ic3mgTVz7g0N0Y7tT6P1rtoEuM5k9FdOZtQn8viPdkZniM24xKzlf08eZSWmlxjSfk17am1QaVj/lWS4Nl4vE/UpCljQdSrLRkEmGP8Ap7Jvxr9s1hi1ga2fxIem+6R3ZCX8+EgGXRRgcmIRyjoqLq/lU4Sa6DhTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=s/JAsyXe; arc=none smtp.client-ip=91.218.175.39
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="j39hHouN"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="s/JAsyXe"
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=TZTf+tvw3LUL1bGKJNCtbY5lbMJJlJLgbm/WT+dWO1Q=;
+DKIM-Signature: a=rsa-sha256; bh=3L7Qz5BjFOrFp7kkec0T9qY4CbqaUJC/XAFU7nYMJMk=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790609158; v=1; x=1791213958;
- b=j39hHouNIEU2yuKOVqgJ/b5WTHD3VCn2N/TV7RiFcgKtAwxZQYx6UaMbz6W6l1DDgAH7c45E
- pRb4USg6MeAVAi9xr8LrFMmnOgo6tz4EmtnetlhS3x4L/SHK4JI1iuZN1rPi6QDpxxUye20dhfT
- wP9tY0bNqKn4BKlryWHQGatE=
+ t=1790609160; v=1; x=1791213960;
+ b=s/JAsyXegFh7oadOn0Dhh06laKgTKL51JDWnE1scDDiKoLWgehBO69DYSdKicF6cDu8BVj+3
+ z+U2QRy+EX8e7RzHf8lx2QOnRbMUDfvBuk7eeA6AmMTlQGL1RKXYyHbgxVDi+sH4eoERcLDzcCG
+ 8nUIy6KG5BQvxQKeJ2TWRiSM=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 5cf54109416d45bb;
-	Mon, 28 Sep 2026 15:25:57 +0000
-X-Mizu-Trace-ID: 5cf54109416d45bb
+Received: by smtp.migadu.com with ESMTPS id 18ace68e8bd67107;
+	Mon, 28 Sep 2026 15:25:59 +0000
+X-Mizu-Trace-ID: 18ace68e8bd67107
 X-Migadu-Flow: FLOW_OUT
 From: Fuad Tabba <fuad.tabba@linux.dev>
 To: Marc Zyngier <maz@kernel.org>,
@@ -47,9 +47,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	kvm@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 07/10] Documentation: KVM: Fix the name of KVM_ARM_SET_COUNTER_OFFSET
-Date: Mon, 28 Sep 2026 16:25:04 +0100
-Message-Id: <20260928152507.2116110-8-fuad.tabba@linux.dev>
+Subject: [PATCH v1 09/10] KVM: arm64: selftests: Free the VMs in smccc_filter and psci_test
+Date: Mon, 28 Sep 2026 16:25:06 +0100
+Message-Id: <20260928152507.2116110-10-fuad.tabba@linux.dev>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20260928152507.2116110-1-fuad.tabba@linux.dev>
 References: <20260928152507.2116110-1-fuad.tabba@linux.dev>
@@ -61,28 +61,53 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The KVM_ARM_SET_COUNTER_OFFSET section of api.rst names the ioctl
-KVM_ARM_SET_CNT_OFFSET, which doesn't exist.
+test_pad_must_be_zero() and host_test_system_off2() create a VM and
+never free it, unlike every other test in their files. Free them.
 
-Fixes: 1935d34afaebe ("KVM: arm64: Document KVM_ARM_SET_CNT_OFFSETS and co")
 Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
 ---
- Documentation/virt/kvm/api.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/kvm/arm64/psci_test.c    | 5 ++++-
+ tools/testing/selftests/kvm/arm64/smccc_filter.c | 2 ++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index fabb1d4bf8f8d..e5efdc56f3d29 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -6265,7 +6265,7 @@ set to 0s by userspace.
+diff --git a/tools/testing/selftests/kvm/arm64/psci_test.c b/tools/testing/selftests/kvm/arm64/psci_test.c
+index e775faf208680..7feb7394fe110 100644
+--- a/tools/testing/selftests/kvm/arm64/psci_test.c
++++ b/tools/testing/selftests/kvm/arm64/psci_test.c
+@@ -239,9 +239,10 @@ static void host_test_system_off2(void)
+ 	u64 psci_version = 0;
+ 	int nr_shutdowns = 0;
+ 	struct kvm_run *run;
++	struct kvm_vm *vm;
+ 	struct ucall uc;
  
- This capability indicates that userspace is able to apply a single VM-wide
- offset to both the virtual and physical counters as viewed by the guest
--using the KVM_ARM_SET_CNT_OFFSET ioctl and the following data structure:
-+using the KVM_ARM_SET_COUNTER_OFFSET ioctl and the following data structure:
+-	setup_vm(guest_test_system_off2, &source, &target);
++	vm = setup_vm(guest_test_system_off2, &source, &target);
  
- ::
+ 	psci_version = vcpu_get_reg(target, KVM_REG_ARM_PSCI_VERSION);
  
+@@ -276,6 +277,8 @@ static void host_test_system_off2(void)
+ 
+ 	TEST_ASSERT(get_ucall(source, &uc) == UCALL_DONE, "Guest did not exit cleanly");
+ 	TEST_ASSERT(nr_shutdowns == 2, "Two shutdown events were expected, but saw %d", nr_shutdowns);
++
++	kvm_vm_free(vm);
+ }
+ 
+ int main(void)
+diff --git a/tools/testing/selftests/kvm/arm64/smccc_filter.c b/tools/testing/selftests/kvm/arm64/smccc_filter.c
+index 21e41880261b4..d5e4ba074a5c6 100644
+--- a/tools/testing/selftests/kvm/arm64/smccc_filter.c
++++ b/tools/testing/selftests/kvm/arm64/smccc_filter.c
+@@ -105,6 +105,8 @@ static void test_pad_must_be_zero(void)
+ 				  KVM_ARM_VM_SMCCC_FILTER, &filter);
+ 	TEST_ASSERT(r < 0 && errno == EINVAL,
+ 		    "Setting filter with nonzero padding should return EINVAL");
++
++	kvm_vm_free(vm);
+ }
+ 
+ /* Ensure that userspace cannot filter the Arm Architecture SMCCC range */
 -- 
 2.39.5
 
