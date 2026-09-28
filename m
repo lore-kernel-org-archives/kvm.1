@@ -1,110 +1,164 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57E0486E62;
-	Mon, 28 Sep 2026 09:28:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mta0.migadu.com (out-5.mta0.migadu.com [91.218.175.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C098D32E121
+	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 09:29:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790587716; cv=none; b=e2zZ9yjQ+Tq0+sg1xngC9/UNqZquJocirHVHMscpQNkUw/yR1QUT0+2BTTrWSR0kRQMVzIg25WgtmLSZLVUDixQ1r6hBUdCYc45Avm69yMCGSpNC7S/hNXnJ6pT4KCKMc2+xTgg6CwHBqFeRXgehYzju02ok/eWQELT8XuSdsJk=
+	t=1790587752; cv=none; b=PhL52alVfWRadKkeAN4fJf6YgGMjqIgEFPPOIKdjkWkIVJ0rL2XpQUegl13U4oFARWMzvays6B8iN5771BYIG9Js+ZZnbzWXMQN/QI0+nWVTpDypLaYH/6YM9pNeEoxDcIng10f986SYjnRtB/wGyvFfkXo9B0Oh9zF7g9ylOXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790587716; c=relaxed/simple;
-	bh=uP3vTQXZtzAeaAZv+6YX+YSO0w12PlBKUn8pseTb+Yo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rzWkYoMKHBZ/BNhLV81f2G6psTcLWoElJVX7/6ATsTyNTTySNkbMHiCT3kFJw1KWtEY0AJrY9tbqXgTHDIeT0yDuUcQec/ZLyNYWAor53vs/oUgcr47/fHmDcQh5LG8D3Z8/bPB5n07pFqjKIBex018aRYEMKtKwYhuUCNFALqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=bM9akU5S; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790587752; c=relaxed/simple;
+	bh=61K6+vmzqsUZVtZu4pTLUg1VKRDC6b+cTmykUL3l5d8=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=lYpWHLwSB07lqWyvH/8sgYPVTm/qx7HHNIMIV0IFRMoXjKdOuKqoA8x0sAmWdjhJ3+zu9F4W0P/t/Qib3TQ4KlSrlm3I0sObZ7tm8oadEB+PYe9WnPIvjsiS7EkHsEcwHVW5qF4AOXLO8pkiUvZXiw28NjPKThl387pn2p3IF74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xwVqgK8U; arc=none smtp.client-ip=91.218.175.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="bM9akU5S"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B53681595;
-	Mon, 28 Sep 2026 02:28:30 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5C5C13F763;
-	Mon, 28 Sep 2026 02:28:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790587714; bh=uP3vTQXZtzAeaAZv+6YX+YSO0w12PlBKUn8pseTb+Yo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bM9akU5SlyI3b64Zov0KeHC1Sj09KC1x8hbI82z6m+V4PSOd5TpznWKQUsy22jDf1
-	 ucZSePmQCDQp85e3rY8vm2KWD73kE8B+0GSQofWdwddw/npvyQW9/kCJ43rUwhnsPD
-	 JANrhcdXIcnY8JGgT8Y++SNmZimsYiHsAQqObTvg=
-Date: Mon, 28 Sep 2026 10:28:20 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
-	will@kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
-	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
-	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
-	sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
-Subject: Re: [PATCH v19 4/7] firmware: arm_rmm: Add support for SRO
-Message-ID: <arozNIQ-fQ0XQViI@arm.com>
-References: <20260924135201.850038-1-suzuki.poulose@arm.com>
- <20260924135201.850038-5-suzuki.poulose@arm.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xwVqgK8U"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=61K6+vmzqsUZVtZu4pTLUg1VKRDC6b+cTmykUL3l5d8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790587747; v=1; x=1791192547;
+ b=xwVqgK8U91ZzHgZWU/Q7l1FVAdEKFpwCy9YG0fr6tiXatYGIcL8aiIHLFJUYsdXdDh+Hekwu
+ mmsQaLcG9/ZPczALPMntsM0ivUIEeUAzmkaj9utKzn5L9hV2NfqnC58PaQldU8+B6Ymqtyuy4ru
+ mfOQ12G5OwRub5JVMNwsbrr0=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 6b386df4d52f3baf;
+	Mon, 28 Sep 2026 09:29:07 +0000
+X-Mizu-Trace-ID: 6b386df4d52f3baf
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <272a796e-3d2b-4766-9e68-28d9092073a1@linux.dev>
+Date: Mon, 28 Sep 2026 17:28:58 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260924135201.850038-5-suzuki.poulose@arm.com>
+User-Agent: Mozilla Thunderbird
+Cc: cui.tao@linux.dev, loongarch@lists.linux.dev, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, chenhuacai@kernel.org, kernel@xen0n.name,
+ nagachaithanya9911@gmail.com, Tao Cui <cuitao@kylinos.cn>
+Subject: Re: [PATCH 4/6] LoongArch: KVM: Rebase steal time counter in vcpu
+ context
+To: Bibo Mao <maobibo@loongson.cn>, gaosong@loongson.cn,
+ zhaotianrui@loongson.cn
+References: <20260927075240.3007947-1-cui.tao@linux.dev>
+ <20260927075240.3007947-5-cui.tao@linux.dev>
+ <789eaa76-50a1-61bf-0419-0f45beb45a92@loongson.cn>
+From: Tao Cui <cui.tao@linux.dev>
+In-Reply-To: <789eaa76-50a1-61bf-0419-0f45beb45a92@loongson.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 24, 2026 at 02:51:58PM +0100, Suzuki K Poulose wrote:
-> +long rmi_sro_memxfer_execute(struct rmi_sro_state *sro, gfp_t gfp)
-> +{
-> +	struct arm_smccc_1_2_regs *regs = &sro->regs;
-> +	bool cancelled = false;
-> +	unsigned long sro_handle;
-> +
-> +	rmi_smccc_invoke(regs);
-> +
-> +	sro_handle = regs->a1;
-> +	while (RMI_RESULT_STATUS(regs->a0) == RMI_INCOMPLETE) {
-> +		bool can_cancel = RMI_RESULT_CAN_CANCEL(regs->a0) == RMI_OP_CAN_CANCEL;
-> +		int ret = 0;
-> +
-> +		switch (RMI_RESULT_MEMREQ(regs->a0)) {
-> +		case RMI_OP_MEM_REQ_NONE:
-> +			rmi_op_continue(sro_handle, RMI_CONTINUE_KEEP_GOING,
-> +					regs);
-> +			break;
-> +		case RMI_OP_MEM_REQ_DONATE:
-> +			ret = rmi_sro_donate(sro, sro_handle, regs->a2, regs,
-> +					     gfp);
-> +			break;
-> +		case RMI_OP_MEM_REQ_RECLAIM:
-> +			ret = rmi_sro_reclaim(sro, sro_handle, regs);
-> +			break;
-> +		default:
-> +			WARN_ON_ONCE(1);
-> +			ret = -ENXIO;
-> +			break;
-> +		}
 
-Another thing I came across while looking whether we can defer the
-activation. It seems that the spec (I_JVYCH) lists some SROs as
-PE-bound. Nothing here or in rmi_sro_execute() disables migration and
-the memory allocation paths can even sleep with GFP_KERNEL.
 
-Do we need to disable preemption (only for rmi_sro_execute()) or at
-least migration (the memxfer path)? We did something similar for the RSI
-attestation token loop, commit 24f55f511b9e ("virt: arm-cca-guest: use
-migrate_disable() for attestation token requests").
+在 2026/9/28 15:23, Bibo Mao 写道:
+> 
+> 
+> On 2026/9/27 下午3:52, Tao Cui wrote:
+>> From: Tao Cui <cuitao@kylinos.cn>
+>>
+>> KVM_SET_DEVICE_ATTR(PVTIME GPA) initializes st.last_steal from the
+>> ioctl thread's run_delay, but kvm_update_stolen_time() accumulates the
+>> vcpu thread's run_delay; the first delta can be negative and wraps in
+> I think that ioctl thread is the vCPU thread itself in KVM mode, there will be many potential problems when one thread set registers of vCPU while vCPU is running.
+> 
 
-With only migration disabled, another thread on the same CPU
-issuing a PE-bound SRO would get RMI_BLOCKED (R_NDXSG). In theory, we
-can get a priority inversion case (maybe this doesn't happen with the
-current implementation, just looking at the API design). The RMI_BLOCKED
-fix not to loop forever probably saves us but the caller would have to
-actively sleep or give up before retrying (i.e. don't move the busy loop
-higher app the call stack).
+You're right. I assumed KVM_SET_DEVICE_ATTR() could be issued
+from a thread different from the vCPU thread. Looking at the expected
+userspace flow again, the pvtime GPA is registered by the guest kernel
+via hypercall (which runs in vCPU context), or set by the vCPU thread
+itself before entering KVM_RUN. In both cases `last_steal` and the
+subsequent steal updates use the same task's `run_delay`, so the
+negative delta I described cannot occur.
 
-Another option is to have a per-CPU mutex here and serialise the SROs
-which are PE-bound (there are some precedents for per-CPU mutexes in the
-kernel).
+I'll drop this patch as well.
 
--- 
-Catalin
+Thanks,
+Tao> Regards
+> Bibo Mao
+>> u64, so the guest reads a steal time close to 2^64.
+>>
+>> Drop the initialization from the attr path and lazily rebase the
+>> counter on the first steal update, which runs in vcpu context like the
+>> hypercall path.  Re-registering a GPA clears the rebase sentinel first
+>> and publishes the address with a write barrier; the reader side loads
+>> the address and sentinel with READ_ONCE and a read barrier so a
+>> concurrent re-registration is not observed half-applied.
+>>
+>> Fixes: b4ba157044ea ("LoongArch: KVM: Add PV steal time support in host side")
+>> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+>> ---
+>>   arch/loongarch/kvm/vcpu.c | 25 +++++++++++++++++--------
+>>   1 file changed, 17 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+>> index 8e028be3f0a9..d931a5a802f6 100644
+>> --- a/arch/loongarch/kvm/vcpu.c
+>> +++ b/arch/loongarch/kvm/vcpu.c
+>> @@ -154,12 +154,13 @@ static void kvm_update_stolen_time(struct kvm_vcpu *vcpu)
+>>       u32 version;
+>>       u64 steal;
+>>       gpa_t gpa;
+>> +    u64 last_steal;
+>>       struct kvm_memslots *slots;
+>>       struct kvm_steal_time __user *st;
+>>       struct gfn_to_hva_cache *ghc;
+>>         ghc = &vcpu->arch.st.cache;
+>> -    gpa = vcpu->arch.st.guest_addr;
+>> +    gpa = READ_ONCE(vcpu->arch.st.guest_addr);
+>>       if (!(gpa & KVM_STEAL_PHYS_VALID))
+>>           return;
+>>   @@ -187,8 +188,14 @@ static void kvm_update_stolen_time(struct kvm_vcpu *vcpu)
+>>       smp_wmb();
+>>         unsafe_get_user(steal, &st->steal, out);
+>> -    steal += current->sched_info.run_delay - vcpu->arch.st.last_steal;
+>> -    vcpu->arch.st.last_steal = current->sched_info.run_delay;
+>> +    /* acquire pairs with the smp_wmb in the attr path */
+>> +    smp_rmb();
+>> +    last_steal = READ_ONCE(vcpu->arch.st.last_steal);
+>> +    if (!last_steal)
+>> +        /* first update in vcpu context: rebase the counter */
+>> +        last_steal = current->sched_info.run_delay;
+>> +    steal += current->sched_info.run_delay - last_steal;
+>> +    WRITE_ONCE(vcpu->arch.st.last_steal, current->sched_info.run_delay);
+>>       unsafe_put_user(steal, &st->steal, out);
+>>         smp_wmb();
+>> @@ -1122,7 +1129,7 @@ static int kvm_loongarch_pvtime_get_attr(struct kvm_vcpu *vcpu,
+>>               || attr->attr != KVM_LOONGARCH_VCPU_PVTIME_GPA)
+>>           return -ENXIO;
+>>   -    gpa = vcpu->arch.st.guest_addr;
+>> +    gpa = READ_ONCE(vcpu->arch.st.guest_addr);
+>>       if (put_user(gpa, user))
+>>           return -EFAULT;
+>>   @@ -1197,7 +1204,7 @@ static int kvm_loongarch_pvtime_set_attr(struct kvm_vcpu *vcpu,
+>>           return -EINVAL;
+>>         if (!(gpa & KVM_STEAL_PHYS_VALID)) {
+>> -        vcpu->arch.st.guest_addr = gpa;
+>> +        WRITE_ONCE(vcpu->arch.st.guest_addr, gpa);
+>>           return 0;
+>>       }
+>>   @@ -1208,8 +1215,10 @@ static int kvm_loongarch_pvtime_set_attr(struct kvm_vcpu *vcpu,
+>>       srcu_read_unlock(&kvm->srcu, idx);
+>>         if (!ret) {
+>> -        vcpu->arch.st.guest_addr = gpa;
+>> -        vcpu->arch.st.last_steal = current->sched_info.run_delay;
+>> +        WRITE_ONCE(vcpu->arch.st.last_steal, 0);
+>> +        /* publish the new address only after clearing the rebase sentinel */
+>> +        smp_wmb();
+>> +        WRITE_ONCE(vcpu->arch.st.guest_addr, gpa);
+>>           kvm_make_request(KVM_REQ_STEAL_UPDATE, vcpu);
+>>       }
+>>   @@ -1800,7 +1809,7 @@ static void kvm_vcpu_set_pv_preempted(struct kvm_vcpu *vcpu)
+>>       struct kvm_memslots *slots;
+>>       struct kvm_steal_time __user *st;
+>>   -    gpa = vcpu->arch.st.guest_addr;
+>> +    gpa = READ_ONCE(vcpu->arch.st.guest_addr);
+>>       if (!(gpa & KVM_STEAL_PHYS_VALID))
+>>           return;
+>>  
+> 
+
