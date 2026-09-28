@@ -1,225 +1,154 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-190.mta0.migadu.com [91.218.175.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23FB494828;
-	Mon, 28 Sep 2026 09:13:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD05483BFA
+	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 09:24:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790586803; cv=none; b=PW7QH7ZzD8s5FtJZqWbCUlKiOdvFm8VM+Px5Q1cgidN6g2Oc1owIYlVjqUEwQS06Sv/FQK37iDNAtA3UwIOi63mjE8H0Q5hLUSWtkQwfK4sM4uPDXFzt9eX+4iWNEnJuDWs3NntkHy4x37NG0arocQD/saVW1lyTFBcn5soGaaQ=
+	t=1790587490; cv=none; b=Y4fVWNuFCMbcR7TpdocS0jdPw1LPQdTSb2G1pCFAeeY3OXFjkkbQYN5rBkrzWw1TrSc9wnUdFhdbXbhPnJ6SO2lNxhoBFMRafn+9EIDAKCZIsKfISjEb2hyhGk+qWgcxvq55k0K7pOQnh43zkcatkaIrrkIjxUGxARFzkBJ+tro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790586803; c=relaxed/simple;
-	bh=Zs0PcY+OPMU1xbhjHjIQt7XuYp7Tqca/1NiQs7YUttA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IOEzCpduiGW2I4qErzQwcOlyU/gOvJFKSRW3LfadMlmE76P/KDLBESaHnd5JsuV8sxrC3rXvdxUOop0vK5yTkwl5VOmq1cJQSe394SMbtWXW+E/9+OK9x5w1nfClTQUP0VnvdfRRP2qY/CG9hZT0KKLNP66tgFPTcDHExdnGwpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HNDOKAvW; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1790587490; c=relaxed/simple;
+	bh=HxNwpHe0nHsH16nYk3/3aMin7+3c9bVF1RTMSXmtCuE=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=LwvJs5LFOCeCMXOrVlLXjntwytg6XleyrfB4eTjrjSwNpQnG2096OSfmz2H8gUeSTA5zo1p+Etq9w1ahjg5NJs8YneQ0h5A3GG9lTDRZJErCA4oZh9AqZoeIe4hgarqu7hDsln+YkwPy9lLmickcziZHR1OLRteMjtsZ0hqrsIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QPhpoxYS; arc=none smtp.client-ip=91.218.175.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HNDOKAvW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790586801; x=1822122801;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Zs0PcY+OPMU1xbhjHjIQt7XuYp7Tqca/1NiQs7YUttA=;
-  b=HNDOKAvWL2G7TbuzN1w/X84rcdUOflfiDG+7LiD/6ivZuZwNaP8kjEo/
-   Ps43nzx1anJVs9HZpXXj1LH1tCjSUqlxcWhZpNI07qtZYSZJhrKzZCwah
-   mKmmbBLbfyf5pTppHolzyTGrPquKj+rU4ZlGt64oKEbkqWPVi9DJoOVux
-   NX+9vqhvwPWhDcyydhTZVpiSAlQhgvexpmVSMSaQBj+rzHDDtLOrqyAQd
-   +Vhrek96vvxnVO7tlRLjw/gIeS1Jftf15Q+4040C6IY6rY6dDtfaxrW63
-   o4Ypil1XJQNJ+TJ6SS403YHBwYb+HOf/SQh7xmRvsUI4aTdoVKvoU92id
-   g==;
-X-CSE-ConnectionGUID: 6QS9lqqwS+ysp1GiN9SRkg==
-X-CSE-MsgGUID: H9NwmAGeQFa31cNK7o+QJA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11918"; a="90333858"
-X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
-   d="scan'208";a="90333858"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 02:13:21 -0700
-X-CSE-ConnectionGUID: uLqjoijSTBWmCnZPbK01DA==
-X-CSE-MsgGUID: yhw2ag5NQk27IUacmpnjlA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
-   d="scan'208";a="279725146"
-Received: from yzhao56-desk.sh.intel.com ([10.239.47.61])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 02:13:14 -0700
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: seanjc@google.com,
-	pbonzini@redhat.com,
-	dave.hansen@intel.com
-Cc: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	x86@kernel.org,
-	rick.p.edgecombe@intel.com,
-	kas@kernel.org,
-	tabba@google.com,
-	ackerleytng@google.com,
-	michael.roth@amd.com,
-	david@kernel.org,
-	vannapurve@google.com,
-	sagis@google.com,
-	vbabka@suse.cz,
-	thomas.lendacky@amd.com,
-	nik.borisov@suse.com,
-	pgonda@google.com,
-	fan.du@intel.com,
-	jun.miao@intel.com,
-	francescolavra.fl@gmail.com,
-	jgross@suse.com,
-	xiaoyao.li@intel.com,
-	kai.huang@intel.com,
-	binbin.wu@linux.intel.com,
-	chao.p.peng@intel.com,
-	chao.gao@intel.com,
-	farrah.chen@intel.com,
-	yan.y.zhao@intel.com
-Subject: [PATCH v4 17/17] KVM: TDX: Turn on PG_LEVEL_2M
-Date: Mon, 28 Sep 2026 17:12:42 +0800
-Message-ID: <20260928091242.15743-1-yan.y.zhao@intel.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20260928090729.15468-1-yan.y.zhao@intel.com>
-References: <20260928090729.15468-1-yan.y.zhao@intel.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QPhpoxYS"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=HxNwpHe0nHsH16nYk3/3aMin7+3c9bVF1RTMSXmtCuE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790587486; v=1; x=1791192286;
+ b=QPhpoxYSjKH3PdIbQuHd94yXAuuXcYNXhuJTievVvLsgidgeUB6Yx2iezKBuTOKxyeDE6X8C
+ tE3Db+9hGuHrexhPl0s3XjqckRVyyc9zhe5J0gcQGS9mT2llMs9HHZEkI8EH13kzls2BARAOelb
+ FAq1eZnqnLccQzLfhNa3pDFY=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 9c7b60c04c93c979;
+	Mon, 28 Sep 2026 09:24:46 +0000
+X-Mizu-Trace-ID: 9c7b60c04c93c979
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <8531bc11-b191-42c0-829d-36f831f6288e@linux.dev>
+Date: Mon, 28 Sep 2026 17:24:38 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: cui.tao@linux.dev, loongarch@lists.linux.dev, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, chenhuacai@kernel.org, kernel@xen0n.name,
+ nagachaithanya9911@gmail.com, Tao Cui <cuitao@kylinos.cn>
+Subject: Re: [PATCH 2/6] LoongArch: KVM: Guard against NULL irqchip in irq
+ injection
+To: Bibo Mao <maobibo@loongson.cn>, gaosong@loongson.cn,
+ zhaotianrui@loongson.cn
+References: <20260927075240.3007947-1-cui.tao@linux.dev>
+ <20260927075240.3007947-3-cui.tao@linux.dev>
+ <4b4aba4a-c609-93f5-51e8-3b70a8baf6ad@loongson.cn>
+From: Tao Cui <cui.tao@linux.dev>
+In-Reply-To: <4b4aba4a-c609-93f5-51e8-3b70a8baf6ad@loongson.cn>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Introduce a module parameter named "tdx_huge_page" for kvm-intel.ko and
-enable TDX huge pages if the module parameter is true and if:
-(1) KVM supports gmem in-place conversions,
-(2) the TDX module supports uninterruptible demote, and
-(3) the TDX module supports DPAMT.
 
-Condition (1) forces TDX huge pages to be the first user of gmem in-place
-conversion. Condition (2) is required because the current splitting
-implementation depends on the TDX module's non-interruptible demote
-feature. Condition (3) simplifies the DEMOTE SEAMCALL's implementation.
 
-When TDX huge page support is enabled, report to KVM MMU that the maximum
-allowed mapping level for private memory is 2MB when the TD is RUNNABLE,
-while forcing it to 4KB during TD build time. This is because KVM can only
-create mappings up to 2MB level in the S-EPT via the TDH_MEM_PAGE_AUG
-SEAMCALL, while TDH_MEM_PAGE_ADD mandates the mapping level must be 4KB.
-1GB mappings in the S-EPT are only possible via promotion, which is not yet
-supported due to the complexity incurred by the TDX module's rules for huge
-page promotion.
+在 2026/9/28 12:14, Bibo Mao 写道:
+> 
+> 
+> On 2026/9/27 下午3:52, Tao Cui wrote:
+>> From: Tao Cui <cuitao@kylinos.cn>
+>>
+>> The irqfd injection path dispatches through the irq routing table
+>> without the kvm_arch_irqchip_in_kernel() gate that protects
+>> KVM_IRQ_LINE: kvm_set_pic_irq() and kvm_arch_set_irq_inatomic() call
+>> pch_pic_set_irq(kvm->arch.pch_pic, ...) and pch_msi_set_irq() calls
+>> eiointc_set_irq(kvm->arch.eiointc, ...) directly, so a routing entry
+>> that outlives the corresponding in-kernel irqchip dereferences a NULL
+>> (or, before the previous patch, a freed) device.
+>>
+>> Make pch_pic_set_irq(), eiointc_set_irq() and dmsintc_set_irq()
+>> tolerate a NULL device.
+>>
+>> Fixes: 1928254c5ccb ("LoongArch: KVM: Add irqfd support")
+>> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+>> ---
+>>   arch/loongarch/kvm/intc/dmsintc.c | 3 +++
+>>   arch/loongarch/kvm/intc/eiointc.c | 5 ++++-
+>>   arch/loongarch/kvm/intc/pch_pic.c | 3 +++
+>>   3 files changed, 10 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/dmsintc.c
+>> index 63072595c01b..e27f448bb54f 100644
+>> --- a/arch/loongarch/kvm/intc/dmsintc.c
+>> +++ b/arch/loongarch/kvm/intc/dmsintc.c
+>> @@ -70,6 +70,9 @@ int dmsintc_set_irq(struct kvm *kvm, u64 addr, int data, int level)
+>>       unsigned int irq, cpu;
+>>       struct kvm_vcpu *vcpu;
+>>   +    if (!kvm->arch.dmsintc)
+>> +        return -EINVAL;
+>> +
+> There is kvm->arch.dmsintc checking in its caller function pch_msi_set_irq().
+> 
+>>       irq = (addr >> AVEC_IRQ_SHIFT) & AVEC_IRQ_MASK;
+>>       cpu = (addr >> AVEC_CPU_SHIFT) & kvm->arch.dmsintc->cpu_mask;
+>>       if (cpu >= KVM_MAX_VCPUS)
+>> diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
+>> index fe0a1918f26f..c68f9033638a 100644
+>> --- a/arch/loongarch/kvm/intc/eiointc.c
+>> +++ b/arch/loongarch/kvm/intc/eiointc.c
+>> @@ -112,8 +112,11 @@ static inline void eiointc_update_sw_coremap(struct loongarch_eiointc *s,
+>>   void eiointc_set_irq(struct loongarch_eiointc *s, int irq, int level)
+>>   {
+>>       unsigned long flags;
+>> -    unsigned long *isr = (unsigned long *)s->isr;
+>> +    unsigned long *isr;
+>>   +    if (!s)
+>> +        return;
+> When is it possible that parameter s is NULL? There is kvm_arch_irqchip_in_kernel() checking in kvm_send_userspace_msi().
+> 
+>> +    isr = (unsigned long *)s->isr;
+>>       spin_lock_irqsave(&s->lock, flags);
+>>       level ? __set_bit(irq, isr) : __clear_bit(irq, isr);
+>>       eiointc_update_irq(s, irq, level);
+>> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
+>> index 62c09b5f3937..88666425d800 100644
+>> --- a/arch/loongarch/kvm/intc/pch_pic.c
+>> +++ b/arch/loongarch/kvm/intc/pch_pic.c
+>> @@ -48,6 +48,9 @@ void pch_pic_set_irq(struct loongarch_pch_pic *s, int irq, int level)
+>>   {
+>>       u64 mask = BIT(irq);
+>>   +    if (!s)
+>> +        return;
+>> +
+> When is it possible that parameter s is NULL? I think that when in kernel irqchip is removed, there is no way to inject line IRQ in kernel side.
+> 
 
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
----
-v4:
-- Disallowed huge page if gmem_in_place_conversion is false. (Sean)
-- Updated map part due to MMU refactor. (Sean)
-- Disallowed huge page if DPAMT is not enabled. (Rick)
+Thanks for looking into this.
 
-v3:
-- Introduce the module param enable_tdx_huge_page and disable to toggle TDX
-  huge page support.
-- Disable TDX huge page if TDX module does not support
-  TDX_FEATURES0_ENHANCE_DEMOTE_INTERRUPTIBILITY. (Kai).
-- Explain why not allow 2M before TD is RUNNABLE in patch log.(Kai)
-- Add comment to explain the relationship between returning PG_LEVEL_2M
-  and guest accept level. (Kai)
-- Dropped some KVM_BUG_ON()s due to rebasing. Updated KVM_BUG_ON()s on
-  mapping levels to take into account of enable_tdx_huge_page.
+You're right. I rechecked the lifetime rules after your comments, and
+my reasoning for this patch was flawed.
 
-RFC v2:
-- Merged RFC v1's patch 4 (forcing PG_LEVEL_4K before TD runnable) with
-  patch 9 (allowing PG_LEVEL_2M after TD runnable).
----
- arch/x86/kvm/vmx/tdx.c | 41 ++++++++++++++++++++++++++++++++++-------
- 1 file changed, 34 insertions(+), 7 deletions(-)
+I had assumed an irqfd could remain active after the corresponding
+in-kernel irqchip had been removed. In fact, that state is not
+reachable. The irqchip devices are not destroyed during the lifetime
+of a running VM, and during VM teardown irqfds are released before
+the irqchip devices are destroyed. For DMSINTC, the rollback path is
+already guarded by `pch_msi_set_irq()`.
 
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 0ecfc17e6235..ee17e50bf439 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -57,6 +57,9 @@
- bool enable_tdx __ro_after_init;
- module_param_named(tdx, enable_tdx, bool, 0444);
- 
-+static bool __read_mostly enable_tdx_huge_page = true;
-+module_param_named(tdx_huge_page, enable_tdx_huge_page, bool, 0444);
-+
- static const struct tdx_sys_info *tdx_sysinfo;
- 
- void tdh_vp_rd_failed(struct vcpu_tdx *tdx, char *uclass, u32 field, u64 err)
-@@ -1786,8 +1789,9 @@ static int tdx_sept_map_leaf_spte(struct kvm *kvm, gfn_t gfn, enum pg_level leve
- 	if (KVM_BUG_ON(!vcpu, kvm))
- 		return -EIO;
- 
--	/* TODO: handle large pages. */
--	if (KVM_BUG_ON(level != PG_LEVEL_4K, kvm))
-+	/* TODO: Support hugepages when building the initial TD image. */
-+	if (KVM_BUG_ON(level != PG_LEVEL_4K &&
-+		       to_kvm_tdx(kvm)->state != TD_STATE_RUNNABLE, kvm))
- 		return -EIO;
- 
- 	WARN_ON_ONCE((new_spte & VMX_EPT_RWX_MASK) != VMX_EPT_RWX_MASK);
-@@ -1883,10 +1887,6 @@ static int tdx_sept_remove_leaf_spte(struct kvm *kvm, gfn_t gfn,
- 	if (KVM_BUG_ON(!is_hkid_assigned(to_kvm_tdx(kvm)), kvm))
- 		return -EIO;
- 
--	/* TODO: handle large pages. */
--	if (KVM_BUG_ON(level != PG_LEVEL_4K, kvm))
--		return -EIO;
--
- 	err = tdh_do_no_vcpus(tdh_mem_range_block, kvm, &kvm_tdx->td, gpa,
- 			      level, &entry, &level_state);
- 	if (TDX_BUG_ON_2(err, TDH_MEM_RANGE_BLOCK, entry, level_state, kvm))
-@@ -3665,12 +3665,34 @@ int tdx_vcpu_ioctl(struct kvm_vcpu *vcpu, void __user *argp)
- 	return ret;
- }
- 
-+/*
-+ * For private pages:
-+ *
-+ * Force KVM to map at 4KB level when !enable_tdx_huge_page (e.g., due to
-+ * incompatible TDX module) or before TD state is RUNNABLE.
-+ *
-+ * Always allow KVM to map at 2MB level in other cases, though KVM may still map
-+ * the page at 4KB (i.e., passing in PG_LEVEL_4K to AUG) due to
-+ * (1) the backend folio is 4KB,
-+ * (2) disallow_lpage restrictions:
-+ *     - mixed private/shared pages in the 2MB range
-+ *     - level misalignment due to slot base_gfn, slot size, and ugfn
-+ *     - guest_inhibit bit set due to guest's 4KB accept level
-+ * (3) page merging is disallowed (e.g., when part of a 2MB range has been
-+ *     mapped at 4KB level during TD build time).
-+ */
- int tdx_gmem_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn, bool is_private)
- {
- 	if (!is_private)
- 		return 0;
- 
--	return PG_LEVEL_4K;
-+	if (!enable_tdx_huge_page)
-+		return PG_LEVEL_4K;
-+
-+	if (unlikely(to_kvm_tdx(kvm)->state != TD_STATE_RUNNABLE))
-+		return PG_LEVEL_4K;
-+
-+	return PG_LEVEL_2M;
- }
- 
- void tdx_hardware_unsetup(void)
-@@ -3749,6 +3771,11 @@ static int __init __tdx_hardware_setup(void)
- 	if (misc_cg_set_capacity(MISC_CG_RES_TDX, tdx_get_nr_guest_keyids()))
- 		return -EINVAL;
- 
-+	if (enable_tdx_huge_page && (!gmem_in_place_conversion ||
-+				     !tdx_huge_page_demote_uninterruptible(tdx_sysinfo) ||
-+				     !tdx_supports_dynamic_pamt(tdx_sysinfo)))
-+		enable_tdx_huge_page = false;
-+
- 	return 0;
- }
- 
--- 
-2.43.2
+So these NULL checks are not protecting a real execution path. I'll
+drop this patch in the next revision.
+
+Thanks,
+Tao
+
+> Regards
+> Bibo Mao
+>>       spin_lock(&s->lock);
+>>       if (level)
+>>           s->irr |= mask; /* set irr */
+>>
+> 
 
