@@ -1,125 +1,96 @@
-Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9361549D5A4
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 23:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC93344036
+	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 23:16:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790636919; cv=none; b=P2PMNBiJxHmTwbL8oH+jSRgFEua/95DGyuiOOGTtcs3gm0ygHPV4cD2DuyqlVUwfmvj1jRXO/7XxwzfQ+VTuzOa7iagwA5wwKC5ideocmeVJNpk0rfNprWEji58ELnU3tahqwb8+gD1IST/Pma8vCI+F2b1z8Zr5+SYVgPsxb6I=
+	t=1790637401; cv=none; b=A5fRv3wNKHJLRUycfBxodKwjvrik4Q0T51mirLX36lJ2aTbk60bina9yrcmYUGL/z2fLxzFSzUfFiiN/AQ+IqIjX4s5+rNDhNFYtC2IoSCfpumIraPvR3cYvNTU0fwXPq3QfYBq1igyv6Ad2Dw/AZF4gwQn5tdcq2NeMV/KLzSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790636919; c=relaxed/simple;
-	bh=0nWeG7gLZ/H7cWQa/8TVyUSe9M/rW/4Yls/RoHMrSnU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PfXNoEUh4MIIqE5v9qAAVZNeCEtx0hk2QHQnDhqfoRVd84k0nw/sVlZZ+Ht+Z4rybACNfqwdwNbHNl9VhDmmtYaEU0FSy+Q11F9RM4a3V4Y0BLP/lojZuevfyLuq6ZXUAMn4IrNN8bAzv6e7of1WG/fSUHhD/ggp+eeu/W4ZCA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=mssMXxRS; arc=none smtp.client-ip=74.125.229.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1790637401; c=relaxed/simple;
+	bh=xJg953kDIMQCVcGBad5cCy8PqtHYIG7YHEk9BopT5ho=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=NWPu7TyPrvj4py4iBark7HLLZ6LCNvJHO2fdxnX9ED3byacdJ/rxEyW/sF8by+X1LiEYbhlP9nUhHpQgpYEC5tfUsf2BoUmDiKFGZwFOfu3sNwwGSL2C4/EPhiOO6zaVcaMiN/PxQUtBzSgGTXr2hXBkqTxFYZPRcqYS6Qi56PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IWS7vRLo; arc=none smtp.client-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="mssMXxRS"
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-34abf779ac9so552955eec.1
-        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 16:08:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IWS7vRLo"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cee1ec30f2so33853935ad.3
+        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 16:16:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1790636916; x=1791241716; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=77Ly/kE6ea0uAMR6LixnKC4rocy66Cjich0gHdqD2Co=;
-        b=mssMXxRS7EPxpqbhMPQMtvz6oR0LoKfQKm4ujbPbkyyvKa3HupArx8WgUVrNWgTuIl
-         MIehwsc0OplYd8FfKJUHAfjv9t8vhQeESvZ20HCifMlGRk4fmDESwkX4D2m3B/NgphFj
-         z9DQP1YBoMIvegYNc3c8DXkpEmume9+XFSKLWBfRKFvHhqiOubL3nrOeXJnTCY/1SUgm
-         hErdDW7QPl42M3IESDLVxebkmRMG1MOuqx3rnMT39d/K/2xK+DnWr6lwDd1OT1WW4o9X
-         61X0vucuQBzsLod31pyF9oM1aU0YbHjwsiqbQWNH0vBV7oGT3Ta2czrlv4lARhFbQTyf
-         rckQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790636916; x=1791241716;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1790637399; x=1791242199; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=77Ly/kE6ea0uAMR6LixnKC4rocy66Cjich0gHdqD2Co=;
-        b=FpjhD5zGOeoehi7wRzxYhZJIXx1Sh+CLxJzFGKHcGEfBTNPuoYGTrQupPk2BLXhRR2
-         D7qQjwkZjaIt7gC6yAhDqCcGmyhP/sFYFKUBmRQTJleU9QcJ0OHI6yquqk41idFMCHLj
-         kx8do0w5sENuhqwlnm+ytvsJn5zzBUVmHyLNK57i+Ph1aSVILRCP5qrXucIT89OG3Mup
-         QO4d1Mosor/Th3O0yBzTXrdk2ClXz5Bhyddw5CgvDT9X+ZtgYxQK/iihdId7lXxRS9zS
-         KQ2MpoeHn9g6Z7o6hK571YqsfuSAhIX056wOrj5jLPHaYyeWFIpYCkhpgEo+rZsMCgGQ
-         Gz2w==
-X-Forwarded-Encrypted: i=1; AKwUvBxxZWeHM9cs57vqn7wfidFp39k8ILNW2OJfg8SjujFIBvlxFZv2DvOz1GWdxT/WDieZcHY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJSKMPxW1iscvub7VJmAC7AnAhKNd2oOIRA/gvAwQSIiC5WwN4b
-	QoweRGmekyz6a5BIajurDlzew2pi0eQafw/mOZhYbRHb4L4ZfHdbF6N7OZs17xCrftU=
-X-Gm-Gg: AYBFou075uQjJRzG3i/l63biZVEFYeD+DBnn5Mh3zcv7egymL3Z0YZ0G4YdK633cFYR
-	J6Bc3HAHYaaIBF2KuMzoiGmk04oPsZW0NrlIfyo9UzwJKUaj6M9us4iR2I8CyD4e8jVn7SolDDp
-	GvQArIUeJkHd8ASs98YArVdW6etcTVJFlGlLx7HANw9e/5xUxNWcHY6FL/IVdrZL2qvA0juMpUq
-	0wo5DDIuMX/O+I4tz6erJl1TMLC9x9kQrjuSlobrPlKaIyLE8q8xgbdCxSO2ZtM8FdLAztMD4D8
-	BLQGrKeMtDP4Loqzp40W5341IxlZ44otan0jTnpe1sk7sRLHll1kEDFuhjRgl9sv0nhMjHsxLQG
-	wjbA7PjsTDmCx8Nfo7+LKkTA3IiUuoIY7nYpn1mGstVeTvNNqu7srAKvd4P98Z2mNl7oecwd4DS
-	W+gaaHVs7dpYZfz/Kt4asy9YMDfY49fgdyG1s3INyKoKt+
-X-Received: by 2002:a05:7300:d58d:b0:34b:354b:79b9 with SMTP id 5a478bee46e88-34b355ad91amr317545eec.12.1790636916413;
-        Mon, 28 Sep 2026 16:08:36 -0700 (PDT)
-Received: from ziepe.ca ([130.41.10.202])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-347328dd123sm9211297eec.13.2026.09.28.16.08.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 16:08:35 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xBKSY-00000007uAr-1P1O;
-	Mon, 28 Sep 2026 20:08:34 -0300
-Date: Mon, 28 Sep 2026 20:08:34 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Sonang Patel <sonangp@nvidia.com>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <helgaas@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [RFC PATCH v6 11/11] PCI/TSM: Add reference-counted contexts for
- vdevice providers
-Message-ID: <20260928230834.GL163130@ziepe.ca>
-References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
- <20260917140159.1163281-12-aneesh.kumar@kernel.org>
- <arq2Ql3-q9EApe3X@sonangrm.nvidia.com>
+        bh=tmxfbxC6dKbbrMURHxbUMM8J1sxRM1KRxB+INYiPXxE=;
+        b=IWS7vRLoyA5LIuUvN8yPLHS0IdQmcGW8+gItojQrcB0foyFqkg1WH0+n9ReXGrgzQZ
+         ypXIMiZGxIZFn5weU+11D7IB0X7frTA4mw3dNJ3Knzz7G1DhD/HrsnCuKSfBvtVPV2Qi
+         RhLhn0pOPhnBh/oLZWq+TvnHg/ULjXxS6k5CZB/42GLMBjVCQH2UgL5TrBBwXC6i1YB5
+         SjFqoeSTu/Q1PpyEEWM9MU/UOakvs3uP/V4kEWOE/yRh3nNCETjO/VXWM/UZMghWz/52
+         ocg+TjDWvHP1G3XFBy20qCGRScYS+ANHb5vwAYchLW+JfyRP/Tbd/x+nhlziz0qSlJPK
+         in2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790637399; x=1791242199;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=tmxfbxC6dKbbrMURHxbUMM8J1sxRM1KRxB+INYiPXxE=;
+        b=1JMR6pl7qvg/yzLdmENAEA+VD+qsVWyaYC6m1d6MxNE05vRivZ92MLrqv3G01vlP3r
+         7INg8o/LU78/3cH6RuHrZe1oYk/JQhMwoM/fFZ27NPe+M3b8sIsEpk7f+mV2GEpG84xC
+         NvV7/FLlarCnpc8XNpN3vrBJf2hOM9/ihMKWJ1YIQNxNi7pAWOzguC1kN909u1BVDS7p
+         6+ln9knWmpS5QIo72jBkA6sEt7EIgNcTRRL6QZhgIRmO75PWkxNNWSPtWkdwOvAIstoa
+         R+uzVJmzD8/Is06WaTzCWBf2NiVzziq+9tG0lk1MIlhoHHunImMRc51vekD4WjUR7vBe
+         mrkQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwrBA/5QxWX4Qw98v2Ukcr84m+YqFvTAPkCnEVWnMnq8dRkpeEGnaY7dupbgIVp2/jJ2Io=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKD2LflgheQI2oOErga5IiYVnbIHedKoXJuefJsxDYwki0ttDcy
+	+9tlcruZYC/ML7+eU6D6gPWxOgCdc9nQnzbl0QKY2O8FJENI7pyHcbyJTpaguERAubPbwvwgleE
+	nAJF6Fw==
+X-Received: from ploc24.prod.google.com ([2002:a17:902:8498:b0:2df:b341:73fa])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:380d:b0:2d8:d4cd:dc8f
+ with SMTP id d9443c01a7336-2df7de8a7f9mr118569465ad.18.1790637398923; Mon, 28
+ Sep 2026 16:16:38 -0700 (PDT)
+Date: Mon, 28 Sep 2026 16:16:38 -0700
+In-Reply-To: <20260815142218.85067-1-hmushi@amazon.co.uk>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arq2Ql3-q9EApe3X@sonangrm.nvidia.com>
+Mime-Version: 1.0
+References: <20260815142218.85067-1-hmushi@amazon.co.uk>
+Message-ID: <arr1VgGZmgUmY4hc@google.com>
+Subject: Re: [PATCH] KVM: Use kvcalloc() to allocate lpage_info arrays and
+ dirty bitmaps
+From: Sean Christopherson <seanjc@google.com>
+To: Mushahid Hussain <hmushi@amazon.co.uk>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, nh-open-source@amazon.com
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Sep 29, 2026 at 12:17:30AM +0530, Sonang Patel wrote:
-> On Thu, 17 Sep 2026 19:31:59 +0530, Aneesh Kumar K.V (Arm) wrote:
-> > +		if (is_pci_tsm_pf0(pdev)) {
-> > +			if (pci_tsm_disconnect(pdev))
-> > +				pci_warn(pdev, "TSM connection is still in use\n");
-> > +		} else {
-> > +			tsm_remove(pdev->tsm);
-> > +		}
-> 
-> What happens if the PCI device is removed (e.g. sysfs remove, surprise
-> hot-unplug) while the vDEVICE/TDI still exists?
-> Since removal cannot be refused, should the remove path still force
-> the unbind/unlock?
+On Sat, Aug 15, 2026, Mushahid Hussain wrote:
+> __vcalloc() makes every allocation at least a page, so a single page
+> memslot consumes 8 KiB of vmalloc for 8 bytes of lpage_info and
+> another 4 KiB for a 16 byte dirty bitmap when dirty logging is
+> enabled. This overhead scales with the number of slots and VMs on a
+> host, adding up to memory pressure when guest address spaces are
+> fragmented into small slots.
 
-vfio prevents that. It currently will block the sysfs remove until
-vfio is closed.
+If memslots are fragmented that badly, then the rmaps are also going to be
+extremely wasteful.
 
-If we ever decide to fix that then vfio would have to tear down the
-iommufd vdevice before allowing itself to be destroyed.
+> The rmap and gfn_write_track arrays keep __vcalloc() and vfree():
+> the 4K rmap and gfn_write_track are per-page arrays, 8 and 2 bytes
+> per 4 KiB page, which legitimately cross INT_MAX below the 8 TiB
+> slot ceiling; the smaller higher-level rmaps share the 4K rmap's
+> allocation loop; and none of them allocate under the TDP MMU,
 
-We don't need any lifetime nonsense once we are inside an iommufd
-context, its existing locking scheme is very strong already. tsm
-should not be allowed to change while a driver is bound, and basically
-I shouldn't see any refcounting or locking in any of these paths
-stemming from a bound driver context in iommufd.
+Until nested virtualization gets used, and then KVM pays the overhead cost for
+every memslot.
 
-Jason
+Rather than flip-flop because of a semi-arbitrary limit that has nothing to do
+with KVM, I think we should provide dedicated KVM APIs for allocating memslot
+metadata, and pick a pivot that makes sense for KVM.  Or just pivot on INT_MAX
+to route to kv() vs. v() to play nice with the "not crazy" rule.
+
+> where the waste above was observed.
