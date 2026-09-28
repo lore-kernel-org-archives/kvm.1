@@ -1,112 +1,111 @@
-Received: from mail-qk2-f40.google.com (mail-qk2-f40.google.com [74.125.230.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D14D4FC355
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 19:33:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.232
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790624037; cv=pass; b=WEHQ1/F5dQskrcWd+ASe6Fhmwh642F3KsZPYvuknmBb1EggyM79hGh6Yr1usT+faBSP/QA1/U/xxQW9YCWsKE9tz3i/A1l+EubBbS5y/ppmgk4wd1K67Wwh3h9zKYCcE02CPqpD6mkdqsebamxLIK/5O/U0HbzJyRz0wQg6P6fA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790624037; c=relaxed/simple;
-	bh=49UVDPsfhpCuIHZ3UG5p9FtrrAcGEKNJjsJt45MZKOY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jDLfeugKFOHhdDH4mZr0JgRNu8AmiO40aYpXr6R2Nn1reDpsQ2SSw4fPK0FxYaReTERTHkbGMqwXO2pWdq0Lq4seKTn4yhjZTPq/o2s1ZDJmXBP4ZExt+wgfHlGv2ZFDVk3Z/APfJzecc0pbf2BmsLnxYOgs74ogEE66RN2d6cQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eJAc4DMW; arc=pass smtp.client-ip=74.125.230.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13D236B91D;
+	Mon, 28 Sep 2026 20:00:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790625636; cv=none; b=U0WTPN6VAZI+v1Z1aUpab8qYwGMD/VQlyzX2fThCE89az9ztH8LEse0/Dgj4IrBTlsAQ9kHi86lq8GAZun2tgcUAHzZVmhQeLttry8Vjhw4o4DrnijQmqWorv9ofS1W0VYQcBWvtTDfids0mwpynSFieKHxnDdErdfVkhRziwBg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790625636; c=relaxed/simple;
+	bh=ViAD/E+mnm7ngGc3SKqvxSiu/sT4mDNDzUCp1fg6gB0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QBYqrZpZhW7Ye6n2iLSul1nyr5Cvz/XzOxxf1p8tXYxBco4l0QS2zZ7SrSDRg9zGDGOqrMnQJhXbF2N8+b4hMikIQtgDPBF+2wINwSt3L0SiArHgPGCavZaBgHMo3DIGgHUdWMZkbawB0VJabfd4Ug1VpyCoNW05s743OVFNCAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=Mdj/lZn/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=q5cRui9+; arc=none smtp.client-ip=202.12.124.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eJAc4DMW"
-Received: by mail-qk2-f40.google.com with SMTP id af79cd13be357-93c5f7af3e1so213154585a.3
-        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 12:33:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790624034; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JnMxz+iwgxdHZctPorxOuncevlrh9jC2aRPCE0cdujExexESR9oXAbPsixWvJehU0V
-         rMWV3bSQvvjkDVzBUcNafmAneOaWsI//hugDRmPZ3jvoKrkguSnNmCiBs3kX9MkBIe63
-         QSrUSb+P+NgnJB3jE4EYN+t6fcOvM9GZ/Lmexzu8EsLszIxE7m3Hjg0EY/tnTpc+NFPk
-         ZHtkqLIE2sLKM9qwJ/YZA9nylqpwwjyYvvIt8HQdEg6I6UXJFTaNu+OeoevHRjV8vv9x
-         MKV9U/yRrEMtCUbM9kGBCjYfmVIGC/flwN9f3M93a0HVINX0rN1DsJZ/0/RK2D+uBnGq
-         BSdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=IuIiIDvTF28b5jDv9opUgdHcN4uGqk2vytTOQavm6Es=;
-        fh=QwUZW9susYdM3+9srFW+iCw8FVLv3exYrbss1yjl6Mk=;
-        b=PMue3+CXg4lLlWCfa+WYHAeiuAFIQY3Otrovd/IeqM8mMAE3sHyuRA7mOqzn/exp7/
-         uBkTSFx9kVDNUlqaF0IyQVgYRBXMix1IE2rACKNZTjMqCIXOsrt/VpnnmnKDjIkyMFrQ
-         IcCKQMl5Zh4Ft1v2DsxI/G8jAKqy8i+4krAdp/VmqjEKAI4OorXd49rmgoSLToHDAsqp
-         m2g66xjNyLNMXsFMyxuLoX1EGik9ejVkg1E4a2+YhPIWVgm1AdjxQ8NfEt7W2Rbv7LPm
-         I5x5y6dWojScd13/0m9UI7BJVoqlOkSDNo601HTg4yNethmluUxrg/kY11F0f13NzI5X
-         9knA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790624034; x=1791228834; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IuIiIDvTF28b5jDv9opUgdHcN4uGqk2vytTOQavm6Es=;
-        b=eJAc4DMWrTLj4jGg9+/d/GqfzVzt16XTP9DDcsim6KcQZ/3fv25podszFOlSJhYo4b
-         acFVpqmp1zMlvFpDNqrVhkSF9Ejq6HDl3VbfMprUaTJjTH+P643ggWtDmUxZpC5e1d25
-         yT72XRPfYzeLFAGcwl5D5Zjc4GbT9mop5yNYp4BktnZNENUFRdCH55vM9W2tNuSB9f2+
-         Sjc+WO3kP86eKEdk8SG7/UPtnQ9dGBKVQdx3s701t3J8RMtSJ657a8aqZC3zRis/qC0u
-         UH6c6UntTsju8r7stOdq5uoIdI84U/No4JrR7UwZ58LdcCqyZV+/U6f/LPR5rPR4Bogt
-         tFXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790624034; x=1791228834;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=IuIiIDvTF28b5jDv9opUgdHcN4uGqk2vytTOQavm6Es=;
-        b=Egfq3IjJMSJc5zK26xeV/HVUc4CqQrbC8vt3/LvUYly8e8WByumroS/PYbjm4yOO1o
-         XXjlMBPyES7xJTfEL1jDVr05xHGn+mzxKW5IO/Sb/0SqQ2S4xD5YsRiHV6NaPubTxF43
-         G/Vc6ze3xYvWdsYmLe8eEJ5npFyt/SMI53s7g/OAOfrDFj970t3x6moiwZ7dkXoCu8hu
-         N0b83MpkWJL8gYm6PykbjOG30k+tGXiv4V98fLlDylzzI3wa9RpjNbLPXHs9ePV2sHh+
-         dJTF3Ws0JXZNw5kZT8Rq+QTTt23IFg9PUObvej5lNlGhO8NRPOmrliM8lGndxN2HUiE3
-         Ft0g==
-X-Forwarded-Encrypted: i=1; AKwUvByQ3QTjlVIVTuodSdnY5sb4kasgTfWLv1/ciPir/noBYSCQzpcnQbot+s/hsFcdmo94aAs=@vger.kernel.org
-X-Gm-Message-State: AFuF++k4peOc7p7Sh3GzSyhBNXGqmA7APa++zdli1C2U6m4DWfyalewf
-	uLCpmHXQWvcsf8VI/YxP5MEx8lRanuBROYSVFCrs9iNX8ZvZBA4F9CvUGg2WibJBzI/mTVqn13Q
-	j4lciqr2ISMeLtAOicMexRCx9jP3gMXk=
-X-Gm-Gg: AYBFou0yc5pFL8yXSnVyyTXwl5yRKtmusM+QyCJSGjU6KHiGc4jjQsPUMwgqc0HKIQd
-	n48+YKX7foj3pLUCmrGOltVMiGirYtqswqITs/+QlC7sg3txVcM8Qj4ahs86vjQnVdUwnp2BsqJ
-	V/oa/E4CpFaZvna+FwV/YYhYuikAKXukNzo87tjWPKcrNbhcnIoISDu4D+hZJ9XlVTSO/dlSlD6
-	cNqXyn3Cr6v0eJeYcbCSTMGuY9mzrw14oUfhK/Fh0K9Wd9oECKakcta0eRvOqRb54hRkWOvWL2C
-	4Pauw+ZKCB0nZf7w/THeIjRPpI21aNhQWCjvZNrfzccj9s18EWNjGp5ZnUTWv7NppeCjwyUULkf
-	/Gmt05jYOsDQPQvSs/XBsWO8dk8of35AisGbHBjv+
-X-Received: by 2002:a05:620a:4686:b0:93b:d7a2:dd2c with SMTP id
- af79cd13be357-93c43d3468dmr2068881185a.60.1790624034002; Mon, 28 Sep 2026
- 12:33:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="Mdj/lZn/";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="q5cRui9+"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 7D5EB7A0158;
+	Mon, 28 Sep 2026 16:00:31 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Mon, 28 Sep 2026 16:00:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1790625631;
+	 x=1790712031; bh=52qrLPR1v+W4l+TnU+fJ0kLC3sIi6bZoNbc7A0mB5k8=; b=
+	Mdj/lZn/RyLGjc4gLQ1xLNMiG/BhCTLnVtt5uMVtguSWFi8GwNl3/aVAMsdRYiib
+	cMyToNdxFKVSag91m21/M8YqKrruv+zaTg7GtMcUWdHqNTeMIDK7neGFLTVwZshY
+	KJlWNBaYZZjBv8l57ZwGzsVbCMJKbIBCFFonC5gH9mrIW6y1U9KeT8dcE4U3vDwz
+	d3BMbg5ub1Q3Fylp+InDiRIRNRrJmdWa1p7AzdFSYegwWSVVqUjFABufMI6Ve96I
+	pIo69XvkbS3i3V8oj1wXnGDfMXBwGS3hwYjXhhPDr2HbVWzouLTZi2mahw6avsbx
+	FgeSLS7JGXzaUFdXtD7pmA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790625631; x=
+	1790712031; bh=52qrLPR1v+W4l+TnU+fJ0kLC3sIi6bZoNbc7A0mB5k8=; b=q
+	5cRui9+gcFd3rx5weUWRKbMYg5LNcdk0jsAQGfIbDapdR3Ft90kzIy5pPLp4cKoX
+	FW0dqWKka7ETYbuC297Zt4MmDT04sxSmlQydcAzs8VE5MMEnqphb8lmh2OPGwh0y
+	VZceF/J8AdLmOZ2kgJpFosuHAJcz38fbDwX8tG6pkrNpfm6YlY2KV2TcVx3o6X+Z
+	EkZVGt2m1+KL9gfSdkESJeoiUh2sZ8QJbu/V32WnxzRASw+7rPwlhyT12BGfRRfF
+	tBOOUNn7XAwxqtCZ8z8NsN0VWlwz2pBBzvVftsr8NZNxE9YTserYoVi1sISeOBIC
+	AXr0wOHfSFVDyVrW26Kpg==
+X-ME-Sender: <xms:Xse6apUzTjKZlX9VeEV19Z9SV8rwJuknc2AaQfSKW7gYIBYT7n2VyA>
+    <xme:Xse6alen5GcblXgS8G6BqdUcMmtHVFALf2KIqQGnZpmSk2dsb8L7ZmQW-lJZfIyiN
+    jGSLVbO5BS08XdJ9b7VrCdzevclHBcwIWpls15sBm09rpNExRKd8A>
+X-ME-Received: <xmr:Xse6aiaFsjDaCYl6XspN7rKFBbodZbVeTSFYRmtLuFTMWbO2hKFgHTIg3uiL0A>
+X-ME-Proxy-Cause: dmFkZTECBFw91l/dFqrj5NtUh1dVLoOTyFAkyh+RW9igPujPTw7luImqD8CHmA9J/p9tvg
+    Fy2DoOS45Bc0KMuvi8543bwnjVV3dm8ovNMk3VFVkq25K5cEeTWYi39MH45zSjplCYLyvP
+    lt10iQPZeGaOp/EtTxrKXcQW76A+pVVYViSIZEhhuoJzXlMlLXwXKdRPL2Yn81uiVkEQvf
+    84E4UiFBGHgYHYC06PjW8dU+GmkGAt4dh5KhbJp5I7o64KD8zzWnmOrWL4Q+X5kbYblwXO
+    t7ns4abOD7vddsz3UBh4tGctiqrtZEvBf2qR+IIPZHqbQIPtnC3P4K5OCx3Oi1xr24IOZM
+    sl3DTKHXo4UVUM/zTeeNq9yiCZkA3eiIAkv4pO0YbVzJwojtSRj26BiL4yzKeAAiACNMy+
+    5CkrLhQ8ISokoFSVtU5SpL/sy49SmnEttecus29Twb8DRdTRlYfBa+rjPcnAud8T8WiZ2V
+    QzaSBYL33luf9gkeYjCJ3FqDjLrF/EY+f/glRWoyYCBJgAjrokDKV4lqFbitvww/M9ydN8
+    E5ruvLQRFbLRE1QWaSDVNEocyauytvEKQB+2JidbTgLHJAwG+zdUVd1Kei64XMig2YJyf6
+    8H3/aZvCe7Bvaxll+NYu6vjXuTJfqpZWZPdaohPFTokRJFN8NfE3EsqKAh3w
+X-ME-Proxy: <xmx:Xse6ahNA3I98yTfDvmQdapU_n39-8DE-wQKt6nabEYX7u2_QIKAH1w>
+    <xmx:X8e6aoWTLXacfvE88DLe7Lqy-aAKfXjyllHOw3GIalGhWoh5LXEgKg>
+    <xmx:X8e6auKKO8tAOSmalghpiVbFvM9bGgF1imovMCp4-Os9PR4TGK97Wg>
+    <xmx:X8e6arrEA1JZMnoEJxUnZSqpo-4k4splpkB8Ug-ECiMHizSj3Hkx0w>
+    <xmx:X8e6aprxtamkThElgZ3zaQOPU64ZMjCalBW0hwhmTpIc_zW7XDDfKFOd>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 28 Sep 2026 16:00:29 -0400 (EDT)
+Date: Mon, 28 Sep 2026 14:00:28 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Dave Airlie <airlied@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, linux-pci@vger.kernel.org,
+ kvm@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, Dave Airlie
+ <airlied@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, Rodrigo Vivi
+ <rodrigo.vivi@intel.com>, Alex Deucher <alexander.deucher@amd.com>,
+ alex@shazbot.org, "Simon Song (SW-GPU)" <xinmengs@nvidia.com>
+Subject: Re: [PATCH] pci/vgaarb: pass a data pointer to be used in the
+ decode callback (v2)
+Message-ID: <20260928140028.02900e68@shazbot.org>
+In-Reply-To: <20260922071807.2533884-1-airlied@gmail.com>
+References: <20260922071807.2533884-1-airlied@gmail.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260922071807.2533884-1-airlied@gmail.com>
-In-Reply-To: <20260922071807.2533884-1-airlied@gmail.com>
-From: Dave Airlie <airlied@gmail.com>
-Date: Tue, 29 Sep 2026 05:33:41 +1000
-X-Gm-Features: AclHuK-sQSLvzYjEjXWXH3RxSWPaJTQOvV3BfLQe4gXQZEzn2tL4fGGuHRa1r-A
-Message-ID: <CAPM=9tx6A=hT8VS2s4KfxkDsTi3wBwmRQP6Cmqz6ng--uFnDog@mail.gmail.com>
-Subject: Re: [PATCH] pci/vgaarb: pass a data pointer to be used in the decode
- callback (v2)
-To: dri-devel@lists.freedesktop.org, linux-pci@vger.kernel.org, 
-	kvm@vger.kernel.org
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Dave Airlie <airlied@redhat.com>, Alex Williamson <alex@shazbot.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Alex Deucher <alexander.deucher@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Tue, 22 Sep 2026 17:18:07 +1000
+Dave Airlie <airlied@gmail.com> wrote:
+
+> From: Dave Airlie <airlied@redhat.com>
+> 
 > This changes the vgaarb client API so that the user can pass a
 > private data pointer into the register that will get used in
 > the decode callback.
->
+> 
 > This allows a bunch of pdev conversions in the drivers, and lets
 > some future vfio cleanups be nicer.
->
+> 
 > I'd like to merge this via the drm next tree but also fine with
 > it going via pci.
->
+> 
 > Signed-off-by: Dave Airlie <airlied@redhat.com>
 > Cc: Alex Williamson <alex@shazbot.org>
 > Cc: Bjorn Helgaas <bhelgaas@google.com>
@@ -114,13 +113,6 @@ Content-Type: text/plain; charset="UTF-8"
 > Cc: Alex Deucher <alexander.deucher@amd.com>
 > ---
 > v2: fix loongson (spotted by sashiko)
-
-@Alex Williamson or @Jason Gunthorpe can I get an ack on the vfio
-piece, since I think the initial report on this problem came from
-Jason.
-
-Dave.
-
 > ---
 >  drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |  6 +++---
 >  drivers/gpu/drm/i915/display/intel_vga.c   |  7 ++++---
@@ -131,7 +123,19 @@ Dave.
 >  drivers/vfio/pci/vfio_pci_core.c           |  9 +++++----
 >  include/linux/vgaarb.h                     |  8 +++++---
 >  8 files changed, 34 insertions(+), 26 deletions(-)
->
+
+
+Acked-by: Alex Williamson <alex@shazbot.org>
+
+Preemptively, could this get merged via a topic branch that we could
+share in case further drvdata cleanup arrives in vfio-pci this cycle?
+
+I'm imagining this might also be a good time to push vgaarb
+registration out of vfio-pci-core as well.  Thanks,
+
+Alex
+
+ 
 > diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
 > index 62b5b4a23f17..1344b2b1bd16 100644
 > --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
@@ -142,95 +146,95 @@ Dave.
 >   */
 > -static unsigned int amdgpu_device_vga_set_decode(struct pci_dev *pdev,
 > +static unsigned int amdgpu_device_vga_set_decode(void *data,
->                 bool state)
+>  		bool state)
 >  {
-> -       struct amdgpu_device *adev = drm_to_adev(pci_get_drvdata(pdev));
-> +       struct amdgpu_device *adev = (struct amdgpu_device *)data;
->
->         amdgpu_asic_set_vga_state(adev, state);
->         if (state)
+> -	struct amdgpu_device *adev = drm_to_adev(pci_get_drvdata(pdev));
+> +	struct amdgpu_device *adev = (struct amdgpu_device *)data;
+>  
+>  	amdgpu_asic_set_vga_state(adev, state);
+>  	if (state)
 > @@ -4208,7 +4208,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
->          * ignore it
->          */
->         if ((adev->pdev->class >> 8) == PCI_CLASS_DISPLAY_VGA)
-> -               vga_client_register(adev->pdev, amdgpu_device_vga_set_decode);
-> +               vga_client_register(adev->pdev, amdgpu_device_vga_set_decode, adev);
->
->         px = amdgpu_device_supports_px(adev);
->
+>  	 * ignore it
+>  	 */
+>  	if ((adev->pdev->class >> 8) == PCI_CLASS_DISPLAY_VGA)
+> -		vga_client_register(adev->pdev, amdgpu_device_vga_set_decode);
+> +		vga_client_register(adev->pdev, amdgpu_device_vga_set_decode, adev);
+>  
+>  	px = amdgpu_device_supports_px(adev);
+>  
 > diff --git a/drivers/gpu/drm/i915/display/intel_vga.c b/drivers/gpu/drm/i915/display/intel_vga.c
 > index 4966fd7eea92..0889edb36190 100644
 > --- a/drivers/gpu/drm/i915/display/intel_vga.c
 > +++ b/drivers/gpu/drm/i915/display/intel_vga.c
 > @@ -283,9 +283,10 @@ void intel_vga_disable(struct intel_display *display)
->         intel_de_posting_read(display, vga_reg);
+>  	intel_de_posting_read(display, vga_reg);
 >  }
->
+>  
 > -static unsigned int intel_vga_set_decode(struct pci_dev *pdev, bool enable_decode)
 > +static unsigned int intel_vga_set_decode(void *data, bool enable_decode)
 >  {
-> -       struct intel_display *display = to_intel_display(pdev);
-> +       struct intel_display *display = (struct intel_display *)data;
-> +       struct pci_dev *pdev = to_pci_dev(display->drm->dev);
->         unsigned int decodes = VGA_RSRC_NORMAL_IO | VGA_RSRC_NORMAL_MEM;
->
->         drm_dbg_kms(display->drm, "%s VGA decode due to VGA arbitration\n",
+> -	struct intel_display *display = to_intel_display(pdev);
+> +	struct intel_display *display = (struct intel_display *)data;
+> +	struct pci_dev *pdev = to_pci_dev(display->drm->dev);
+>  	unsigned int decodes = VGA_RSRC_NORMAL_IO | VGA_RSRC_NORMAL_MEM;
+>  
+>  	drm_dbg_kms(display->drm, "%s VGA decode due to VGA arbitration\n",
 > @@ -331,7 +332,7 @@ void intel_vga_register(struct intel_display *display)
->          * then we do not take part in VGA arbitration and the
->          * vga_client_register() fails with -ENODEV.
->          */
-> -       ret = vga_client_register(pdev, intel_vga_set_decode);
-> +       ret = vga_client_register(pdev, intel_vga_set_decode, display);
->         drm_WARN_ON(display->drm, ret && ret != -ENODEV);
+>  	 * then we do not take part in VGA arbitration and the
+>  	 * vga_client_register() fails with -ENODEV.
+>  	 */
+> -	ret = vga_client_register(pdev, intel_vga_set_decode);
+> +	ret = vga_client_register(pdev, intel_vga_set_decode, display);
+>  	drm_WARN_ON(display->drm, ret && ret != -ENODEV);
 >  }
->
+>  
 > diff --git a/drivers/gpu/drm/loongson/lsdc_drv.c b/drivers/gpu/drm/loongson/lsdc_drv.c
 > index 3fd828d23271..5a13df31eb90 100644
 > --- a/drivers/gpu/drm/loongson/lsdc_drv.c
 > +++ b/drivers/gpu/drm/loongson/lsdc_drv.c
 > @@ -254,7 +254,7 @@ lsdc_create_device(struct pci_dev *pdev,
->
+>  
 >  /* For multiple GPU driver instance co-exixt in the system */
->
+>  
 > -static unsigned int lsdc_vga_set_decode(struct pci_dev *pdev, bool state)
 > +static unsigned int lsdc_vga_set_decode(void *data, bool state)
 >  {
->         return VGA_RSRC_NORMAL_IO | VGA_RSRC_NORMAL_MEM;
+>  	return VGA_RSRC_NORMAL_IO | VGA_RSRC_NORMAL_MEM;
 >  }
 > @@ -291,7 +291,7 @@ static int lsdc_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
->
->         pci_set_drvdata(pdev, ddev);
->
-> -       vga_client_register(pdev, lsdc_vga_set_decode);
-> +       vga_client_register(pdev, lsdc_vga_set_decode, NULL);
->
->         drmm_kms_helper_poll_init(ddev);
->
+>  
+>  	pci_set_drvdata(pdev, ddev);
+>  
+> -	vga_client_register(pdev, lsdc_vga_set_decode);
+> +	vga_client_register(pdev, lsdc_vga_set_decode, NULL);
+>  
+>  	drmm_kms_helper_poll_init(ddev);
+>  
 > diff --git a/drivers/gpu/drm/nouveau/nouveau_vga.c b/drivers/gpu/drm/nouveau/nouveau_vga.c
 > index 29a801124e56..6662e30466f2 100644
 > --- a/drivers/gpu/drm/nouveau/nouveau_vga.c
 > +++ b/drivers/gpu/drm/nouveau/nouveau_vga.c
 > @@ -9,9 +9,9 @@
 >  #include "nouveau_vga.h"
->
+>  
 >  static unsigned int
 > -nouveau_vga_set_decode(struct pci_dev *pdev, bool state)
 > +nouveau_vga_set_decode(void *data, bool state)
 >  {
-> -       struct nouveau_drm *drm = pci_get_drvdata(pdev);
-> +       struct nouveau_drm *drm = (struct nouveau_drm *)data;
->         struct nvif_object *device = &drm->client.device.object;
->
->         if (drm->client.device.info.family == NV_DEVICE_INFO_V0_CURIE &&
+> -	struct nouveau_drm *drm = pci_get_drvdata(pdev);
+> +	struct nouveau_drm *drm = (struct nouveau_drm *)data;
+>  	struct nvif_object *device = &drm->client.device.object;
+>  
+>  	if (drm->client.device.info.family == NV_DEVICE_INFO_V0_CURIE &&
 > @@ -103,7 +103,7 @@ nouveau_vga_init(struct nouveau_drm *drm)
->                 return;
->         pdev = to_pci_dev(dev->dev);
->
-> -       vga_client_register(pdev, nouveau_vga_set_decode);
-> +       vga_client_register(pdev, nouveau_vga_set_decode, drm);
->
->         /* don't register Thunderbolt eGPU with vga_switcheroo */
->         if (pci_is_thunderbolt_attached(pdev))
+>  		return;
+>  	pdev = to_pci_dev(dev->dev);
+>  
+> -	vga_client_register(pdev, nouveau_vga_set_decode);
+> +	vga_client_register(pdev, nouveau_vga_set_decode, drm);
+>  
+>  	/* don't register Thunderbolt eGPU with vga_switcheroo */
+>  	if (pci_is_thunderbolt_attached(pdev))
 > diff --git a/drivers/gpu/drm/radeon/radeon_device.c b/drivers/gpu/drm/radeon/radeon_device.c
 > index 9523240110a6..cf8a6bd00c77 100644
 > --- a/drivers/gpu/drm/radeon/radeon_device.c
@@ -242,34 +246,34 @@ Dave.
 > -static unsigned int radeon_vga_set_decode(struct pci_dev *pdev, bool state)
 > +static unsigned int radeon_vga_set_decode(void *data, bool state)
 >  {
-> -       struct drm_device *dev = pci_get_drvdata(pdev);
-> -       struct radeon_device *rdev = dev->dev_private;
-> +       struct radeon_device *rdev = (struct radeon_device *)data;
->         radeon_vga_set_state(rdev, state);
->         if (state)
->                 return VGA_RSRC_LEGACY_IO | VGA_RSRC_LEGACY_MEM |
+> -	struct drm_device *dev = pci_get_drvdata(pdev);
+> -	struct radeon_device *rdev = dev->dev_private;
+> +	struct radeon_device *rdev = (struct radeon_device *)data;
+>  	radeon_vga_set_state(rdev, state);
+>  	if (state)
+>  		return VGA_RSRC_LEGACY_IO | VGA_RSRC_LEGACY_MEM |
 > @@ -1431,7 +1430,7 @@ int radeon_device_init(struct radeon_device *rdev,
->         /* if we have > 1 VGA cards, then disable the radeon VGA resources */
->         /* this will fail for cards that aren't VGA class devices, just
->          * ignore it */
-> -       vga_client_register(rdev->pdev, radeon_vga_set_decode);
-> +       vga_client_register(rdev->pdev, radeon_vga_set_decode, rdev);
->
->         if (rdev->flags & RADEON_IS_PX)
->                 runtime = true;
+>  	/* if we have > 1 VGA cards, then disable the radeon VGA resources */
+>  	/* this will fail for cards that aren't VGA class devices, just
+>  	 * ignore it */
+> -	vga_client_register(rdev->pdev, radeon_vga_set_decode);
+> +	vga_client_register(rdev->pdev, radeon_vga_set_decode, rdev);
+>  
+>  	if (rdev->flags & RADEON_IS_PX)
+>  		runtime = true;
 > diff --git a/drivers/pci/vgaarb.c b/drivers/pci/vgaarb.c
 > index 3de05aee7859..3e58b2c05c85 100644
 > --- a/drivers/pci/vgaarb.c
 > +++ b/drivers/pci/vgaarb.c
 > @@ -51,7 +51,8 @@ struct vga_device {
->         unsigned int mem_norm_cnt;      /* normal MEM count */
->         bool bridge_has_one_vga;
->         bool is_firmware_default;       /* device selected by firmware */
-> -       unsigned int (*set_decode)(struct pci_dev *pdev, bool decode);
-> +       unsigned int (*set_decode)(void *data, bool decode);
-> +       void *set_decode_data;
+>  	unsigned int mem_norm_cnt;	/* normal MEM count */
+>  	bool bridge_has_one_vga;
+>  	bool is_firmware_default;	/* device selected by firmware */
+> -	unsigned int (*set_decode)(struct pci_dev *pdev, bool decode);
+> +	unsigned int (*set_decode)(void *data, bool decode);
+> +	void *set_decode_data;
 >  };
->
+>  
 >  static LIST_HEAD(vga_list);
 > @@ -935,6 +936,7 @@ EXPORT_SYMBOL(vga_set_legacy_decoding);
 >   * vga_client_register - register or unregister a VGA arbitration client
@@ -283,32 +287,32 @@ Dave.
 >   * Returns: 0 on success, -ENODEV on failure
 >   */
 >  int vga_client_register(struct pci_dev *pdev,
-> -               unsigned int (*set_decode)(struct pci_dev *pdev, bool decode))
-> +               unsigned int (*set_decode)(void *data, bool decode),
-> +               void *data)
+> -		unsigned int (*set_decode)(struct pci_dev *pdev, bool decode))
+> +		unsigned int (*set_decode)(void *data, bool decode),
+> +		void *data)
 >  {
->         unsigned long flags;
->         struct vga_device *vgadev;
->
->         spin_lock_irqsave(&vga_lock, flags);
->         vgadev = vgadev_find(pdev);
-> -       if (vgadev)
-> +       if (vgadev) {
->                 vgadev->set_decode = set_decode;
-> +               vgadev->set_decode_data = data;
-> +       }
->         spin_unlock_irqrestore(&vga_lock, flags);
->         if (!vgadev)
->                 return -ENODEV;
+>  	unsigned long flags;
+>  	struct vga_device *vgadev;
+>  
+>  	spin_lock_irqsave(&vga_lock, flags);
+>  	vgadev = vgadev_find(pdev);
+> -	if (vgadev)
+> +	if (vgadev) {
+>  		vgadev->set_decode = set_decode;
+> +		vgadev->set_decode_data = data;
+> +	}
+>  	spin_unlock_irqrestore(&vga_lock, flags);
+>  	if (!vgadev)
+>  		return -ENODEV;
 > @@ -1464,7 +1469,7 @@ static void vga_arbiter_notify_clients(void)
->         spin_lock_irqsave(&vga_lock, flags);
->         list_for_each_entry(vgadev, &vga_list, list) {
->                 if (vgadev->set_decode) {
-> -                       new_decodes = vgadev->set_decode(vgadev->pdev,
-> +                       new_decodes = vgadev->set_decode(vgadev->set_decode_data,
->                                                          new_state);
->                         vga_update_device_decodes(vgadev, new_decodes);
->                 }
+>  	spin_lock_irqsave(&vga_lock, flags);
+>  	list_for_each_entry(vgadev, &vga_list, list) {
+>  		if (vgadev->set_decode) {
+> -			new_decodes = vgadev->set_decode(vgadev->pdev,
+> +			new_decodes = vgadev->set_decode(vgadev->set_decode_data,
+>  							 new_state);
+>  			vga_update_device_decodes(vgadev, new_decodes);
+>  		}
 > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
 > index 6757054e9d87..b04ce3ded08c 100644
 > --- a/drivers/vfio/pci/vfio_pci_core.c
@@ -320,25 +324,25 @@ Dave.
 > -static unsigned int vfio_pci_set_decode(struct pci_dev *pdev, bool single_vga)
 > +static unsigned int vfio_pci_set_decode(void *data, bool single_vga)
 >  {
-> -       struct vfio_pci_core_device *vdev = dev_get_drvdata(&pdev->dev);
-> +       struct vfio_pci_core_device *vdev = data;
-> +       struct pci_dev *pdev = vdev->pdev;
->         struct pci_dev *tmp = NULL;
->         unsigned char max_busnr;
->         unsigned int decodes;
+> -	struct vfio_pci_core_device *vdev = dev_get_drvdata(&pdev->dev);
+> +	struct vfio_pci_core_device *vdev = data;
+> +	struct pci_dev *pdev = vdev->pdev;
+>  	struct pci_dev *tmp = NULL;
+>  	unsigned char max_busnr;
+>  	unsigned int decodes;
 > @@ -2159,10 +2160,10 @@ static int vfio_pci_vga_init(struct vfio_pci_core_device *vdev)
->         if (ret)
->                 return ret;
->
-> -       ret = vga_client_register(pdev, vfio_pci_set_decode);
-> +       ret = vga_client_register(pdev, vfio_pci_set_decode, vdev);
->         if (ret)
->                 return ret;
-> -       vga_set_legacy_decoding(pdev, vfio_pci_set_decode(pdev, false));
-> +       vga_set_legacy_decoding(pdev, vfio_pci_set_decode(vdev, false));
->         return 0;
+>  	if (ret)
+>  		return ret;
+>  
+> -	ret = vga_client_register(pdev, vfio_pci_set_decode);
+> +	ret = vga_client_register(pdev, vfio_pci_set_decode, vdev);
+>  	if (ret)
+>  		return ret;
+> -	vga_set_legacy_decoding(pdev, vfio_pci_set_decode(pdev, false));
+> +	vga_set_legacy_decoding(pdev, vfio_pci_set_decode(vdev, false));
+>  	return 0;
 >  }
->
+>  
 > diff --git a/include/linux/vgaarb.h b/include/linux/vgaarb.h
 > index 97129a1bbb7d..71a364669eaf 100644
 > --- a/include/linux/vgaarb.h
@@ -347,31 +351,29 @@ Dave.
 >  void vga_set_default_device(struct pci_dev *pdev);
 >  int vga_remove_vgacon(struct pci_dev *pdev);
 >  int vga_client_register(struct pci_dev *pdev,
-> -               unsigned int (*set_decode)(struct pci_dev *pdev, bool state));
-> +               unsigned int (*set_decode)(void *data, bool state),
-> +               void *data);
+> -		unsigned int (*set_decode)(struct pci_dev *pdev, bool state));
+> +		unsigned int (*set_decode)(void *data, bool state),
+> +		void *data);
 >  #else /* CONFIG_VGA_ARB */
 >  static inline void vga_set_legacy_decoding(struct pci_dev *pdev,
->                 unsigned int decodes)
+>  		unsigned int decodes)
 > @@ -59,7 +60,8 @@ static inline int vga_remove_vgacon(struct pci_dev *pdev)
->         return 0;
+>  	return 0;
 >  }
 >  static inline int vga_client_register(struct pci_dev *pdev,
-> -               unsigned int (*set_decode)(struct pci_dev *pdev, bool state))
-> +               unsigned int (*set_decode)(void *data, bool state),
-> +               void *data)
+> -		unsigned int (*set_decode)(struct pci_dev *pdev, bool state))
+> +		unsigned int (*set_decode)(void *data, bool state),
+> +		void *data)
 >  {
->         return 0;
+>  	return 0;
 >  }
 > @@ -97,7 +99,7 @@ static inline int vga_get_uninterruptible(struct pci_dev *pdev,
->
+>  
 >  static inline void vga_client_unregister(struct pci_dev *pdev)
 >  {
-> -       vga_client_register(pdev, NULL);
-> +       vga_client_register(pdev, NULL, NULL);
+> -	vga_client_register(pdev, NULL);
+> +	vga_client_register(pdev, NULL, NULL);
 >  }
->
+>  
 >  #endif /* LINUX_VGA_H */
-> --
-> 2.54.0
->
+
