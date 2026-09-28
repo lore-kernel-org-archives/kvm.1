@@ -1,119 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC831F12F8;
-	Mon, 28 Sep 2026 15:39:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827D44E5349
+	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 15:41:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790609957; cv=none; b=p4gzKxgMDo0Eli43/PfXPuEt4W3IHAVSd1vCnJ1664AWxRK8UDiakEsYP0sUhifuXUsoqQ0vZFkGM8VLj7zYhH5PY+m/9Fx8StzIpCOlQiM9tRGmgtcgSbT7HSGvJSOJ/NotCXcFsLNA9ukzVb4uVqqmZmf6goJZuAulYG+rlAE=
+	t=1790610097; cv=none; b=Y+tAyKf0Mkx+MtD/NJmpNgwu41llMSnt2S23kR4qPrcHZ/Yp/N/ebMALAwtnPfspK2iQwxT9y2r2kTOVPQRkUMDl5KDNsoXuFNVQjlimFU+U18uWXgnvD50kqfUYikW7Lh2+rocqkPoMw7WPqotEFR/qdZvi0pmTykk0M/cmaUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790609957; c=relaxed/simple;
-	bh=T4rEflIDWfaQfbsHhUu9H9wpN6bQ0eGXh0mkZKTX8zc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=KmWUeb3kmne0KRoiCxXnXkXFF9f2qupHAyrWpbkCNPgGrsvORM72/Q2Z0suX3K8daEe6X2skJbMH0wQLbAtcXEORr+3a6sWyv52THV8Bqoqeqw7xSRvp58qEqPzaZFjUsmYmrzer2j5a5fR7hbsxbaDdGVjaAEJQBNwv6c46Lts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LfyQHDVx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790610097; c=relaxed/simple;
+	bh=9Msw6I067+6iBsgwsr/Bt4ePiirOGUBNmkcsMmUbeO4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ki2oNC7Jjt/+A5qRre1iEZ7QRv6QIGk/sy1d8sLtKK9scRXLrjBTn/xyj/fZTWNPYcgZFzLmHKhHORkhgBMdllxHBj96WXbcOUpvgFABNMnqruLXVijB7PXTvTZ8Olks0c7tZJpIZRLRlzvzvZQFLgRprBmRdA2Fy+WThb7fYwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UJo6vSKr; arc=none smtp.client-ip=209.85.215.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LfyQHDVx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 391841F00893;
-	Mon, 28 Sep 2026 15:39:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790609956;
-	bh=NzWh6TDC+XXJKSXvMFMQHGa1MigG1SoSGoWh2Px4kr8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=LfyQHDVxeVyncOPX2JC6edrNJEYMurzdqfkRFC7TlDigy2B3j7c6UTmmiv89B3FS8
-	 tgrSitsHXL4kkPdDxOcHolHey9C7g60+RL5dTlDSdqMT8qhljCys9SXX1i2O5HscoT
-	 yQtJLbBOyFPSdXLQmkolaIPkNUSl+OUrs4XQdjCIai0iEZK9AOTJMC5F25E8Tddzv6
-	 2t9eSHabcTLuPYvUndrIZiudyI+/cVuIdHh6l/1T2agpydr0iq7U9hvKlNoBU47D+I
-	 S+CANggpDQCr6BL+zXiSWzd5X0Ro7ZPWuYEM+nXP4tG5TSwyUZsorGs+YiMMq0FEf5
-	 cAwQjfOFkv2YA==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: linux-coco@lists.linux.dev, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [RFC PATCH v6 05/11] iommu: Add a helper to validate a vIOMMU
- parent
-In-Reply-To: <20260928121147.GP9354@nvidia.com>
-References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
- <20260917140159.1163281-6-aneesh.kumar@kernel.org>
- <179027891416.104879.10365675178574704349.b4-review@b4>
- <yq5ald8pkhj7.fsf@kernel.org> <20260925122305.GG9354@nvidia.com>
- <yq5a5wzpr7b9.fsf@kernel.org> <20260928121147.GP9354@nvidia.com>
-Date: Mon, 28 Sep 2026 21:09:06 +0530
-Message-ID: <yq5azex1peqt.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UJo6vSKr"
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc489e7a701so3899698a12.2
+        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 08:41:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790610096; x=1791214896; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=vK0Krog7rzU4pR4Isc7XjCheGIHMrcN1uvJXgDIv7WA=;
+        b=UJo6vSKrdb1FJJmAC5rwm2jy7fh5IGeHhMa36zwuacU/6z2+ufQhkslHMue57nkQMD
+         oskhJF+Q9a8/+Vfetl2OlnyDeoTtllz7n3aER8GpcZRG7qgg7IAnUwWUB21Xc44Avdui
+         xVhjS7OXwiqJn14gn/C67rQ7ZfKINQjlvlUmeqZgXJvoL4smzR8rImsCadLq14q3o1WK
+         ZtwTICgXPU13Q2b80JcoMJbUiAzDtf93Yc1SXdaZ+t49vFqg9uJicghzDiSjKSfDn8xl
+         QAin0+mbMBr+DTIc/E7e+gzPPcjGKJM31lxfrqFOQTMqA1rVUh0a0B5Siy080/mBuYbF
+         ZLhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790610096; x=1791214896;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vK0Krog7rzU4pR4Isc7XjCheGIHMrcN1uvJXgDIv7WA=;
+        b=dwjgfOk0xvxbR2tCPhJQ023KmEXNV7jBpy6PRdzvJAAjYqTw2o0pfurm+HvU1aJ4u3
+         Q6xUeofnCEweDd10rkM4ZfDHfPtSSFsq6NcIglK6jTomkDtEwZRdARtbSoKNkxCjekOE
+         769biLa3QSl43ZJe9izDdZxSmimrCtl6xMEf+ON4uxExkqQM0YmeVFSpaqBjjLpAPLTi
+         dmMcVizkDIQIT+o1Sbx1+nd0UMepweFSvycZF57GusuDntkyfZc52MocnzznMzqpO1bI
+         uxKwcNe22IBFC9XIWNrfGQNeE/C6PSql5wEVtfs5IgnK1mBGW0ug9vO2tuhyHluq6qdP
+         HnWw==
+X-Gm-Message-State: AFuF++mZOYox1m/A7+6nHW8alfFUACa/p5qpknJCjkkjHpq6y+/c3P18
+	knRPQbpwvwaql9+AAiTKZhAzVOwAHlAjnnJ/RXNWu/mIya8218JSkfWeHGaS9jzfMBtErGlggKm
+	5xVV6bg==
+X-Received: from pgbbm24.prod.google.com ([2002:a65:6e98:0:b0:cc7:85ef:361e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:d48b:b0:3dd:85a8:cb7f
+ with SMTP id adf61e73a8af0-3de0e8a05bamr11668505637.34.1790610095566; Mon, 28
+ Sep 2026 08:41:35 -0700 (PDT)
+Date: Mon, 28 Sep 2026 08:41:34 -0700
+In-Reply-To: <CABgObfZeA_q_prxJhbdNqYpE8quPD360LhVBQv8ypcPpLA-Mhg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20260925233321.2381319-1-seanjc@google.com> <CABgObfZeA_q_prxJhbdNqYpE8quPD360LhVBQv8ypcPpLA-Mhg@mail.gmail.com>
+Message-ID: <arqKrvYupBpAM2WI@google.com>
+Subject: Re: [GIT PULL] KVM: Fixes for 7.3-rcN
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Jason Gunthorpe <jgg@nvidia.com> writes:
+On Sat, Sep 26, 2026, Paolo Bonzini wrote:
+> On Sat, Sep 26, 2026 at 1:33=E2=80=AFAM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> >
+> > Please pull a variety of fixes.  Nothing is super urgent, but all of th=
+ese can
+> > be fatal to the host and/or guest (except for the selftest change, whic=
+h fixes
+> > a regression that was introduced in 7.3).
+> >
+> > The following changes since commit d599822bdb66aeec5ec76297b0fc6efaaeef=
+e07c:
+> >
+> >   Merge tag 'kvm-s390-master-7.3-1' of https://git.kernel.org/pub/scm/l=
+inux/kernel/git/kvms390/linux into HEAD (2026-09-04 17:34:28 +0200)
+> >
+> > are available in the Git repository at:
+> >
+> >   https://github.com/kvm-x86/linux.git tags/kvm-x86-fixes-7.3-rc5
+> >
+> > for you to fetch changes up to 119e9db233ad0f4cbd4cfb9f9385a7bca378b37d=
+:
+> >
+> >   KVM: Don't pre-reserve xarray entries when storing empty/NULL attribu=
+tes (2026-09-22 08:36:16 -0700)
+>=20
+> Pulled, thanks. I added on top the SEV cache writeback patches which
+> are not present here.
 
-> On Mon, Sep 28, 2026 at 04:06:42PM +0530, Aneesh Kumar K.V wrote:
->> Jason Gunthorpe <jgg@nvidia.com> writes:
->> 
->> > On Fri, Sep 25, 2026 at 11:18:44AM +0530, Aneesh Kumar K.V wrote:
->> >> > The TSM viommu should use a NULL parent domain, it doesn't have an
->> >> > iommufd managed S2.
->> >> 
->> >> How would we assign an untrusted device? I currently follow these steps:
->> >
->> >> 1. Create an HWPT with IOMMU_HWPT_ALLOC_NEST_PARENT.
->> >> 2. Allocate a vIOMMU with viommu.hwpt_id set to that hwpt_id.
->> >> 3. Allocate a vdevice with alloc_vdev.viommu_id set to that viommu_id.
->> >> 4. Use VFIO_DEVICE_ATTACH_IOMMUFD_PT with the hwpt_id.
->> >
->> > The vmiommu.hwpt_id should be 0.
->> >
->> > 1. Create a a HWPT with IOMMU_HWPT_ALLOC_NEST_PARENT
->> > 2. VFIO_DEVICE_ATTACH_IOMMUFD_PT with the hwpt_id to establish the T=0
->> >    identity S2, no T=0 vSMMU
->> > 3. Create a VIOMMU with no hwpt_id and the RMM's type. This triggers
->> >    RMM to create the the T=1 vSMMU inside the realm
->> > 4. Allocate a vdevice on the viommu_id. This triggers RMM to create
->> >    the VDEV inside the realm
->> > 5. Setup guest ACPI tables/etc to point at the RMM's T=1 vsmmu.
->> >
->> > Now both the T=1 VSUMM and T=0 fixed translation are setup.
->> >
->> 
->> ok so iommufd_viommu_alloc_ioctl() will do this based on type.
->> 
->> +	if (iommufd_viommu_type_requires_hwpt(cmd->type)) {
->> +		hwpt_paging = iommufd_get_hwpt_paging(ucmd, cmd->hwpt_id);
->> +		if (IS_ERR(hwpt_paging)) {
->
-> The core code should not decode type, that's always a hack..
->
-> The ideal thing is to order things so we get a viommu_ops before
-> trying to get the hwpt, then use a flag in the ops
->
+Heh, because they're buggy.  Sashiko pointed out flaws in both[1][2].  I ha=
+ve
+fixes (will send them shortly); I was late on posting v2 because it took me=
+ forever
+to figure out a not-awful solution for the double-free issue due to the ann=
+oying
+CONFIG_CPUMASK_OFFSTACK behavior.
 
-Does that mean the SMMU driver will return viommu_ops before
-iommu_ops->viommu_init() is called? If so, should viommu_init() be moved
-into viommu_ops?
-
-Would the core then only need to do something like:
-
-	rc = tsm_viommu_get_info(idev->dev, cmd->type, &info);
-	if (not_using_tsm) // All smmu driver will now support get_viommu_info.
-		rc = iommu_ops->get_viommu_info(idev->dev, cmd->type, &info);
-
-and then call info->ops->viommu_init()?
-
--aneesh
+[1] https://lore.kernel.org/all/20260923165304.1662E1F000FF@smtp.kernel.org
+[2] https://lore.kernel.org/all/20260923165349.CAAF01F000FF@smtp.kernel.org
