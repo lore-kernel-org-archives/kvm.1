@@ -1,185 +1,153 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552335FDA7;
-	Mon, 28 Sep 2026 03:55:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790567714; cv=fail; b=tLLWkpTBwlXeZstNXPqt4frbaGrj8bhjgUytcvfhmoKPz+x3w4bfiSImuplsHCSCTOgBmKtXRN2H7UofdvUfXD8NcQ1Q+3I139fcIwVMH2mtNQX2pxWs0UaNKwwvEUbNDHAGdb2vgC7s/PQ1o+W2tMIjIsbUZJL5ohFI1UDQZoY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790567714; c=relaxed/simple;
-	bh=S8wUOIITyRW9MGe32A6wwFaQ77T7rIW9ipLbk1IDT5U=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=I9GxR9zZafDJkzYFDFJHhundrqOIyTprdU41D5B6LTciLIobb+7BEv8QVAn8PfmbdfFLEe6srrr53tuugtSaJSvPTB67dwzhEIcpzsZ5JXeevisE3/fv1bthSH/WZTvCbRQFHzF5WVyaxXHdQQH2FfKU9PX4YOfloQKkn4c5ELY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B7fsOdc8; arc=fail smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B7fsOdc8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790567713; x=1822103713;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=S8wUOIITyRW9MGe32A6wwFaQ77T7rIW9ipLbk1IDT5U=;
-  b=B7fsOdc8Crsg+S0oI+xQgNJ00cfiXmt6B//c0OzAGNvOzK5HbkETra9u
-   RIkioYqjFyjU3AWzgXJaiFsUobnyRpcCKbXAg8DJYl5NJh/sm5rGV4fzg
-   69CnvRMdaKdmJdOxeONzz3FcxfgpuaoPU/dgTD2f+mPAxTF1rRgkzQZ04
-   74eF7KkG/1xxDWAf6He46UTXi4AF0S1GlCjQqq6fr7+Cmd5CuGzh+8NJ9
-   9YBzeUJiRXH+I4b6+6vO4DqZfoRWvZdGFCoLvjM+wzOaEZ++Sc/8mnDO8
-   ZUVy1q1zuwwUDuAKFKZ5ivCjmgOkwHhUyCaDjR1IhuLsybpILRqB7b7kO
-   w==;
-X-CSE-ConnectionGUID: 3uK6PHB0S22370XpyzuQPg==
-X-CSE-MsgGUID: 2yx4N3lGS7ahsaMCsw8xKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11918"; a="78820240"
-X-IronPort-AV: E=Sophos;i="6.27,127,1787036400"; 
-   d="scan'208";a="78820240"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2026 20:55:12 -0700
-X-CSE-ConnectionGUID: cQGM5ApaQYmL/xyvay3TJA==
-X-CSE-MsgGUID: /0pWgvn6QaOq472MS7Mahw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,127,1787036400"; 
-   d="scan'208";a="273549442"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2026 20:55:12 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Sun, 27 Sep 2026 20:55:11 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Sun, 27 Sep 2026 20:55:11 -0700
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.27) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Sun, 27 Sep 2026 20:55:11 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bW4EhQw0B5YZvOT13Tjr0SbKb55FF1rhmFVUvhih297lfj0JM6ULyBe7/5euGCxEtO7FrDHs+C5u/shzAd97XTPnIVffRmUEnMu3uMHVLV2R1yMGzddzhGP6+mWQOEMqHNAtnDeUTIVf2ZPP8iBXkui4qrwLahCOIWInBcO/vNZoawo+cpND9oXaYDWyVj8tbjss6OA6t+Rxw1RL4eq0bxRFu03q/lEBUh12q2Whhd8a7K69NJ5hAVGMvmpUKQR0YeIxikgruAQNlAk+BtuX7NKi3ILChl05949+WAKk5jCk4wB513ihBsEPTa3ddMX+cqOUxFEtoSPg51JHvuZBPw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=S8wUOIITyRW9MGe32A6wwFaQ77T7rIW9ipLbk1IDT5U=;
- b=bamAqIhFQRxqkmQ3BG1ii+VBqaSdNNryl+KxnsLn9+D0OAnE9yi025tIQT5YN6605SDyPTozD28wI7iix6Uyb9X1gn01D12p3rLgMRHIYN6HspxtqeM4EtO/zAW0zBKUExobx+1/NC1EOMcmdADBSPHdWvHfG91cw93eUNpdyNq36LzJqJLqjyiN8550RejU+s0HWrQvn9/vGRpEoyQrEwyv0Z8UImD0xYq8gK4sNB1Fif4V6HR7ne9lDzXwTOZ4Zl5mlr2Qhsi4CpUVAH6+r6mAg9Q/bPhIqbSNGoxLfCAgFlHjsiOwpmtUZt1RHqG3kni2fQRmTzeY73bWLxyPLQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from CO1PR11MB4835.namprd11.prod.outlook.com (2603:10b6:303:9e::22)
- by IA0PR11MB7744.namprd11.prod.outlook.com (2603:10b6:208:409::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.23; Mon, 28 Sep
- 2026 03:55:08 +0000
-Received: from CO1PR11MB4835.namprd11.prod.outlook.com
- ([fe80::d051:d948:c209:9225]) by CO1PR11MB4835.namprd11.prod.outlook.com
- ([fe80::d051:d948:c209:9225%4]) with mapi id 15.21.0451.022; Mon, 28 Sep 2026
- 03:55:08 +0000
-From: "Tian, Kevin" <kevin.tian@intel.com>
-To: "Tian, Kevin" <kevin.tian@intel.com>, Aneesh Kumar K.V
-	<aneesh.kumar@kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "iommu@lists.linux.dev"
-	<iommu@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-CC: Jason Gunthorpe <jgg@ziepe.ca>, Alexey Kardashevskiy <aik@amd.com>, "Bjorn
- Helgaas" <helgaas@kernel.org>, Joerg Roedel <joro@8bytes.org>, "Jonathan
- Cameron" <jic23@kernel.org>, Nicolin Chen <nicolinc@nvidia.com>, Samuel Ortiz
-	<sameo@rivosinc.com>, Steven Price <steven.price@arm.com>, Suzuki K Poulose
-	<Suzuki.Poulose@arm.com>, Will Deacon <will@kernel.org>, Xu Yilun
-	<yilun.xu@linux.intel.com>, Shameer Kolothum
-	<shameerali.kolothum.thodi@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: RE: [RFC PATCH v6 00/11] iommufd: Infrastructure for vIOMMU creation
- for confidential guests and guest TSM requests
-Thread-Topic: [RFC PATCH v6 00/11] iommufd: Infrastructure for vIOMMU creation
- for confidential guests and guest TSM requests
-Thread-Index: AQHdRq07BOB130WWqEurUaVXxg4wX7bdXiywgAGkk4CABGTTkIAABK2A
-Date: Mon, 28 Sep 2026 03:55:08 +0000
-Message-ID: <CO1PR11MB4835427396755B996E325A058C8D2@CO1PR11MB4835.namprd11.prod.outlook.com>
-References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
- <CO1PR11MB48358E3116CC6CF34E6437658C812@CO1PR11MB4835.namprd11.prod.outlook.com>
- <yq5a33uxka2g.fsf@kernel.org>
- <CO1PR11MB48350079E4B431ABAA358ADA8C8D2@CO1PR11MB4835.namprd11.prod.outlook.com>
-In-Reply-To: <CO1PR11MB48350079E4B431ABAA358ADA8C8D2@CO1PR11MB4835.namprd11.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CO1PR11MB4835:EE_|IA0PR11MB7744:EE_
-x-ms-office365-filtering-correlation-id: f3e46fbd-63b8-441f-f90d-08df1d14498d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024|23010399003|10067099003|11063799006|56012099006|22082099003|18002099003|4143699003|38070700021;
-x-microsoft-antispam-message-info: ZETm4EwAEarwcSxl+spQpykx5akvoMp7TLBoGeyj/j8G35kUy+aUcxGkQ04xNG+OGusvWekbf/NJO91usqqZwWMilqKli9fnO/fU47cqvtsUmLpvUxOfPkwc0TcAwR5r51J4sriNRGjf0eF0dFoA+fVACk/XFFUdt7NUl/7FE6pV5UCKbZfGWCb8aCMxny8dUGLAx72ZwDnv4BumPD/N/zdZVVXrW5XRJyOcfHmt+u530DpYwpdzqXjSmIhjUDYRRK3RogUNBSIfMU3SVFPigs8PfgMO3Jw675ZWEeVeVgcSTjR6cZ7kaduCvJ0w7h6Vg+mMNdY6tsh1kZOh9q18e8JMMSta+FI7Ur/oFvyKng8s60FoBkjKUX5B97uhKPBKXVQGF7peRv09rnBpDb75Hy2uKYdN+qiBtdD5zm0DTi6Wz8c7WGqdu6/4IexzcxHDOH84bH+Q9xLhhR6p50TmVMSlT/aCY8jsAB0iBBlSlCp9xAmL08uTTQDdWGSIQ1loQkOaVTwMaSJODzr2lWjErL11fsOeM89sAsQqJAbKaaXNhswaJknBcCQEFS4PeQUSCZ0itzMumlZKfVcLtZ30pvgxcrmClO5utBHKVuCYUcAaE39ZYkT6AvGCF/Grx7fEeuRDPxhr5ou2UqEE6ocipc6srdOFkH++1UKdNaM8Xas9OE6GWhNYpOXQeLIoiQPqh29o/XlxDv9xNk6zvnxskvYAjXG99wMESpbVPviq5H8=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB4835.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(23010399003)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003)(4143699003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?o5fsX+rbTtG12oRw+PYpjkCMiEb+0NedwLWNNF22a2EjDeeN5HOIC9W3+iAV?=
- =?us-ascii?Q?6Xf8lUzp2XRwaXoLAeTc2tZ3WsuUsPizmYHuUOtDQjBMW+t0FSHf4YHzO6LB?=
- =?us-ascii?Q?RpOpZI/i3mXAvNnnvawO7X2N0Gk+y0CEWXK6nfRPwacvdj1EQqcR9jd12hfn?=
- =?us-ascii?Q?46c4qNuiKM1YqeoqGCG4a3DExi7RuVWdoaglwB6HU0DpRqEven2GgUbmB/uf?=
- =?us-ascii?Q?A121XB5XE9buwI4GTZ8GzdNudDNdeoQoQghIhXGdEjlIr6qWtNmZ19Ptw8Ss?=
- =?us-ascii?Q?CdXKhzES7hKlqha0b2xRMvPimO2EJsMPKIkIJXWsRMs88HABcfwyhI3Jln5y?=
- =?us-ascii?Q?JDCxyEB4q0JXSScPRcUCOHFCszZT4pUuSpKCXJ4K6BjUgeK7tsX21XbO+bv/?=
- =?us-ascii?Q?FgWR6xJArztrtY6aQ4w/5asoxDJwTTv4MkyKD0x53+fVq0Tx+oeEk5+sHEOt?=
- =?us-ascii?Q?z6OY71rgEGtfCK9T9fSR/BqjAdmOTqKLUTaqkdDt8NEC2mBKsGc1wY1BKVcv?=
- =?us-ascii?Q?fRVrKo7KtV9dlhQf6ZNZdiWPFqV+OCBPfho4pjLgmC82zMsOWaqMo5pvMze1?=
- =?us-ascii?Q?1Dq+jFqBfpbwhhUrt7uCZdaGGpAtsUuO/wVyHqvPtEyrRr3BnHiK3kGa+WBa?=
- =?us-ascii?Q?WG7hTVjDg2v4YXUN2SYFXzDZxTdVUY5zjd1qnG6tBcFZvFr/9dj97+Ejghib?=
- =?us-ascii?Q?5eVGGAntr+sjYEmurtBHD1zTcsrmLD9sWJsvDs3/as0qlVHpL560vdI4JFPZ?=
- =?us-ascii?Q?GadNl6rfU+Drfnnevl6KLGlgWiUiWt9l9B07A7gj8H7PaQZy0M+XF+hPMXMl?=
- =?us-ascii?Q?Ow2oUeDpPilz44sZ9qmjGyj4SzMANY3OoSMWm0uPHkjeaXFP89WiAg6pkksO?=
- =?us-ascii?Q?Ld/RlnY77OcPVsJkK/5Hg0HJesLhSSRVwzvAm1YWZB/tX/yDupY6vrsdQwvo?=
- =?us-ascii?Q?tH4IgehHBLaINaxSieAVFvg4Tl4le2KzM6oFIYDViye2UFXv+kz6Ck9EMCxR?=
- =?us-ascii?Q?90VMiTpXpxH8HM2ZCoX36soxsTDffWENi6aNOX96XZVhJ02d7V6FDYl43Gry?=
- =?us-ascii?Q?t94csqaa656cXoJpGoezxs8rlmEK9z14AvqIqylO+3OUtFLUd9kN5+yOb4/S?=
- =?us-ascii?Q?sarWGG8OzqxGI5LaSVMszUgWGFYbYAwT/vL8V4VlOEQSiwwPb4bT84Z6nRmt?=
- =?us-ascii?Q?BKv3nJXUADMT0j81FtzIqI1qu0EODhHNU0Bsboclgi9OysVyCa8ivN+sdyPs?=
- =?us-ascii?Q?KOdLyan3f4UIizhn5+Z4bl2NLvAZVuZb+SlXIx/VT+mfPyej3H/OTSWmqAv7?=
- =?us-ascii?Q?t00PmJaWGV7rNAg3TuCuCf5Ors7LwRal9aAtMjSvzFHOqe+6x6pAwB/ajIGJ?=
- =?us-ascii?Q?XCnaAINz+YCrCIvsZQ1+blwUFNHv1AAnAIhudPAgC32/r6I28xBCajlidpFo?=
- =?us-ascii?Q?tB7YrYgvEh6vmvP6sm9nQDzwwpJXHjV2cbwe97/hkt1ka02qOOg7nrbcvjY+?=
- =?us-ascii?Q?oDHz4taf+apLb0SCKBXRXdIC9ojNbFnt2xIU5KDwz5sJX23e+rxCIxhKKM4l?=
- =?us-ascii?Q?LPIlWo9jnKXAnRE0OLDf8aFOJR5KtexA+NT+4OcrmeFYXA5EmjlMffRKe/Aq?=
- =?us-ascii?Q?L2BnymC1LGcur15yy0IA6Z11+YranuH72pCVuJpcz7nWV3sBtRc8/9LIeqh2?=
- =?us-ascii?Q?1LBlLeEKtg/JmxjCMui6CTLXtYEzQubFHoYjSCznsBO4yk0k?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80419332638;
+	Mon, 28 Sep 2026 04:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790568488; cv=none; b=j5nIeutoNF4dEyASPd3gywOwuVuRwmIT0E2ttHS2+q2bvBFHBAfbzbPsW9dVn6d2a3VxiKX/dkapbdAJUfojrWEn4ifI7Df8Un9Zg4uTahlbKRBeVhulU5Ay5kLP0J8GOpsZo4Uwj5PkrtU+lG3ioPfZmp+SiQSdWwUDteIckig=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790568488; c=relaxed/simple;
+	bh=Ch0HBzW6MmJQnnO350wpH+dXfM0Nv71aaBGupaQEktw=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=E6h3ErWS3IgbjF91NOeYu5JI4LRfRjwMR4livAAxXgc/M3RzUQ2z6iB6z8rc0U2jqd7ZKMyEAzGgV1XaBsmkhEdtbMStwTE51l+eJx9zC0XR0I1ncBDKkXSZcYUWAa0aVIjvwodyg4GHjnWv7sfF7MyvXKL+p5zWwb7mUiZ0EPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8AxYdGt57lqvF8QAA--.48337S3;
+	Mon, 28 Sep 2026 12:06:05 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJDxBc2s57lqqu8lAA--.52758S2;
+	Mon, 28 Sep 2026 12:06:04 +0800 (CST)
+Subject: Re: [PATCH 1/6] LoongArch: KVM: Clear device pointer in irqchip
+ destroy callbacks
+To: Tao Cui <cui.tao@linux.dev>, gaosong@loongson.cn, zhaotianrui@loongson.cn
+Cc: loongarch@lists.linux.dev, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, chenhuacai@kernel.org, kernel@xen0n.name,
+ nagachaithanya9911@gmail.com, Tao Cui <cuitao@kylinos.cn>
+References: <20260927075240.3007947-1-cui.tao@linux.dev>
+ <20260927075240.3007947-2-cui.tao@linux.dev>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <8c68712a-c210-ce43-af5e-e69e0e5d538c@loongson.cn>
+Date: Mon, 28 Sep 2026 12:07:29 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: 0QBNNf5V9EMiu0soYKMOoesp/v6amLLcCaKF+zQ1xdAYINiWE+9rlrI1kxwQVxlE/bi33oSuJVMkhRrKk1R5EfcEWZpLw07JS4EDGnHoEI8URYhVX/+WwM1pzJNjdHmZFh261Wik9uskXZgOSuqbx9S/0tpJAvxHvBWIdvZNSRc6HY+DLtr3xYFi3h5rCzNRCo0mudyJhc5NY6+BQ11ANjW1zUDNbSv9YE0lNzBkQ2c+cGKVHp+ETchHMglFA31UVBP/8zmxtWhburXiv3oQK5YJvJQSfDonHjYYxgyQDJdq1EMOQeYN1qENRmKOOtBd1f++VNnl8889LBBhpNDD4Q==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4835.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f3e46fbd-63b8-441f-f90d-08df1d14498d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Sep 2026 03:55:08.0420
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: deTDPIjiXO+H2nE2dbTcLJ6Ibp/ra8Pjrjh2rylwIcyxvw/I+aq6U4Zq5TMG5t5No+klifKejema3SPjwII/Ew==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7744
-X-OriginatorOrg: intel.com
+In-Reply-To: <20260927075240.3007947-2-cui.tao@linux.dev>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDxBc2s57lqqu8lAA--.52758S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxWry5CF1xArW3tFy5JF45twc_yoW5KF13pF
+	Wruas0kr4rWr1DXFZrZ3WDWr4jvFsagrySga4jvFyUCFnIqFyrJ3W8Ar9rAFyDu3y8Cay0
+	qF1fK34Fv3WUAacCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWU
+	twAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
+	Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
+	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
+	cVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
+	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
+	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j5xhLUUUUU=
 
-> From: Tian, Kevin <kevin.tian@intel.com>
-> Sent: Monday, September 28, 2026 11:41 AM
->=20
-> > From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-> > Sent: Friday, September 25, 2026 4:30 PM
-> >
-> > "Tian, Kevin" <kevin.tian@intel.com> writes:
-> > > There may also be further vendor-specific interactions between
-> > > the IOMMU and TSM drivers.
-> > >
-> >
-> > This is an important point. Can you identify those interactions so we
-> > can determine whether an iommu_ops callback is the right abstraction?
->=20
-> will do. Hopefully they are all about the TSM driver calling some
-> IOMMU driver helpers, then would be less a concern to abstract.
->=20
 
-Correction - I meant "less need for a general abstraction". :)
+
+On 2026/9/27 下午3:52, Tao Cui wrote:
+> From: Tao Cui <cuitao@kylinos.cn>
+> 
+> The destroy callbacks of the four irqchip devices free the device
+> structure without clearing kvm->arch.{ipi,eiointc,pch_pic,dmsintc},
+> leaving a dangling pointer.  ops->destroy() is not only called at VM
+> teardown but also when KVM_CREATE_DEVICE succeeds and the following
+> anon_inode_getfd() fails (e.g. under RLIMIT_NOFILE); the VM stays
+> alive, kvm_arch_irqchip_in_kernel() still reports true, and interrupt
+> injection dereferences the freed device.
+> 
+> Clear the pointer before freeing.
+> 
+> Fixes: c532de5a67a7 ("LoongArch: KVM: Add IPI device support")
+> Fixes: 2e8b9df82631 ("LoongArch: KVM: Add EIOINTC device support")
+> Fixes: e785dfacf7e7 ("LoongArch: KVM: Add PCHPIC device support")
+> Fixes: 229132c309d6 ("LoongArch: KVM: Add DMSINTC device support")
+> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+> ---
+>   arch/loongarch/kvm/intc/dmsintc.c | 5 ++++-
+>   arch/loongarch/kvm/intc/eiointc.c | 1 +
+>   arch/loongarch/kvm/intc/ipi.c     | 1 +
+>   arch/loongarch/kvm/intc/pch_pic.c | 1 +
+>   4 files changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/dmsintc.c
+> index 89f980d867be..63072595c01b 100644
+> --- a/arch/loongarch/kvm/intc/dmsintc.c
+> +++ b/arch/loongarch/kvm/intc/dmsintc.c
+> @@ -161,11 +161,14 @@ static int kvm_dmsintc_create(struct kvm_device *dev, u32 type)
+>   
+>   static void kvm_dmsintc_destroy(struct kvm_device *dev)
+>   {
+> +	struct loongarch_dmsintc *s;
+>   
+>   	if (!dev || !dev->kvm || !dev->kvm->arch.dmsintc)
+>   		return;
+>   
+> -	kfree(dev->kvm->arch.dmsintc);
+> +	s = dev->kvm->arch.dmsintc;
+> +	dev->kvm->arch.dmsintc = NULL;
+> +	kfree(s);
+one line patch seems better here such as:
++	dev->kvm->arch.dmsintc = NULL;
+
+Regards
+Bibo Mao
+>   	kfree(dev);
+>   }
+>   
+> diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
+> index 80f78e07c74a..fe0a1918f26f 100644
+> --- a/arch/loongarch/kvm/intc/eiointc.c
+> +++ b/arch/loongarch/kvm/intc/eiointc.c
+> @@ -675,6 +675,7 @@ static void kvm_eiointc_destroy(struct kvm_device *dev)
+>   
+>   	kvm = dev->kvm;
+>   	eiointc = kvm->arch.eiointc;
+> +	kvm->arch.eiointc = NULL;
+>   	mutex_lock(&kvm->slots_lock);
+>   	kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &eiointc->device);
+>   	kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &eiointc->device_vext);
+> diff --git a/arch/loongarch/kvm/intc/ipi.c b/arch/loongarch/kvm/intc/ipi.c
+> index 7b333a4a0430..6ee90c10827a 100644
+> --- a/arch/loongarch/kvm/intc/ipi.c
+> +++ b/arch/loongarch/kvm/intc/ipi.c
+> @@ -444,6 +444,7 @@ static void kvm_ipi_destroy(struct kvm_device *dev)
+>   
+>   	kvm = dev->kvm;
+>   	ipi = kvm->arch.ipi;
+> +	kvm->arch.ipi = NULL;
+>   	mutex_lock(&kvm->slots_lock);
+>   	kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &ipi->device);
+>   	mutex_unlock(&kvm->slots_lock);
+> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
+> index 2b63b0c2c7ce..62c09b5f3937 100644
+> --- a/arch/loongarch/kvm/intc/pch_pic.c
+> +++ b/arch/loongarch/kvm/intc/pch_pic.c
+> @@ -483,6 +483,7 @@ static void kvm_pch_pic_destroy(struct kvm_device *dev)
+>   
+>   	kvm = dev->kvm;
+>   	s = kvm->arch.pch_pic;
+> +	kvm->arch.pch_pic = NULL;
+>   	/* unregister pch pic device and free it's memory */
+>   	mutex_lock(&kvm->slots_lock);
+>   	kvm_io_bus_unregister_dev(kvm, KVM_MMIO_BUS, &s->device);
+> 
+
