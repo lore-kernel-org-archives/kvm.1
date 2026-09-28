@@ -1,147 +1,156 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD5C36F8F7;
-	Mon, 28 Sep 2026 17:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-qv2-f43.google.com (mail-qv2-f43.google.com [74.125.230.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505D036A37B
+	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 17:29:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790616518; cv=none; b=krhiwZCWwhi8dRDS0+2AR+T4eeE7kA4z6N5WE2lKGU5PWzeB8ILxM+dHxPer42ZsixUf/FK1Nu328TORoi5hX3J81ZTax262uwIKCyNWC0+I7/sbmjoa/GVwMFVyHDSQoMMzrP1+uTxYLqiCVQq5SQVFSc8KP7CTNVWPVZ8fRXo=
+	t=1790616583; cv=none; b=MfLAX9WdxMEqjVWeQ1HGnYzYb4wxZgyeIZeCTG6z8AkAk0j/sSi5qPDTYa1ygR7UX58VqZu33q6oXRYP27bgOTXF/eIy2dyo0XtNXZU4pcVh0z3fbvAEgE1VrkG2BuymryhCPcsmcxI4H8wcWinSEopiyB1H1AYK9f7qIclVNzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790616518; c=relaxed/simple;
-	bh=NOwlg1fLIhsJpwRRWJEx28YKpYmKtZ7WGDsI1WtfweU=;
+	s=arc-20240116; t=1790616583; c=relaxed/simple;
+	bh=SKQB0mEZagqmGsDNZPnaWe7gUble3NHrhIKbwNSH1Jw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jJCnP9lWKVGEAg5TiEWRj4/9PGIzcaqc7lUvzTjAvL6x//QWM87ueAiICAsZVsiGghmLbWyXU5/rNfPmN/RpDXbIloeyB6AjZplHSk/3hC8KJyexAXwsDCeSU5sDXx7X6+8wNHM7vn274bbQs4ZPdBxF2AXLw9jC/Xy/dVH/3oY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=JYxAo8jR; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=YoeXCtkSLscwerYPDGq3F3GTJzNIne1wzqJ1jEoNbrdOABd8Rlkw15pw1bzV/iDqbl84Mjnfgcm35BHHR09xaB/QiSx1dJH/FzT0haAiffnPh7RRz6ckK65toqlWxw5kiS3HfCzEeaIyF92QwUWAqdT6kzC5CMq1hn0OxXMSUFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=AXmJdboN; arc=none smtp.client-ip=74.125.230.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="JYxAo8jR"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4497D1655;
-	Mon, 28 Sep 2026 10:28:32 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3B4EC3F763;
-	Mon, 28 Sep 2026 10:28:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790616515; bh=NOwlg1fLIhsJpwRRWJEx28YKpYmKtZ7WGDsI1WtfweU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JYxAo8jR8/FlcEOgF0lfNeAhVBe1YM6gGqbAJOGgGoAcD5TwzeszFXE3Luz4YDa0X
-	 Ii/FE5eavzr3+dGKMrbQA2TWWA6/IxxcwbgeXhtUiWM9WbdL+yBH7ESoJ6RA3MNwWo
-	 qBK3Y8YEHYJu6sms16eIB8qUYi/47RJEbNZY0ywA=
-Date: Mon, 28 Sep 2026 18:28:21 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
-	will@kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
-	aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
-	joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
-	linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
-	sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
-	WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
-	sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com,
-	Gareth Stockwell <Gareth.Stockwell@arm.com>
-Subject: Re: [PATCH v19 4/7] firmware: arm_rmm: Add support for SRO
-Message-ID: <arqjteW-Y5u2XX2r@arm.com>
-References: <20260924135201.850038-1-suzuki.poulose@arm.com>
- <20260924135201.850038-5-suzuki.poulose@arm.com>
- <arozNIQ-fQ0XQViI@arm.com>
- <4fabad44-280f-40e6-95bb-49011cd2f185@arm.com>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="AXmJdboN"
+Received: by mail-qv2-f43.google.com with SMTP id 6a1803df08f44-91400f92ae8so26869086d6.0
+        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 10:29:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1790616581; x=1791221381; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=F8wHi2lHLlVmnngzxn3a4naORn9qZPczzGL0TvCk5Do=;
+        b=AXmJdboNcWfKQqwuUPCXX6Rn93Y/ElzgHMYokUjabBvqd2Xqe8xSV+pwcD0LXzNZW2
+         8viM3Ku+mp73QMATFvmcekMooi2y7DURd7K97gX6ogo9XH/0i80JoLcUwLr14lwGgje2
+         uXVL+jaLV2cPhsmHFcgkWM1+NQflhZkSRUkCpfI6fR8UBC5ZOrsLx/3Zp6rgE+ZXQW+v
+         YZZAFTIec7nOUhTYT0SSMxVudqvgh/VKoBxSo48Ry8BMg9KgFWpnIKlEW+yJW/Db4J5B
+         fSF7H1/lLqMh9MrlEVrvnSqWdih01PAd0RdYO/AaK8rLLHEvulSG7LoKrZ/8QZ6sCiln
+         1a5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790616581; x=1791221381;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=F8wHi2lHLlVmnngzxn3a4naORn9qZPczzGL0TvCk5Do=;
+        b=N9c1uHpV87durUrRBxKb0knQSWd969txy5xbn5opb1r1cPcrfXk1KIoieJr6QgzZH3
+         Z7KCE4uj/oSlrrJhmGKT6RJlNlP+lS3++avwqnpfI5rxXzbqrNTWYp2RU8C6D6/xY4mA
+         Be8ooCEXxoy/4vX4GN/FLioA/8Kr5Lwmabw7ss3lAATSA2fObr6zGFztbGH/2JwgGugE
+         O+WpqGxKrme9aqUdi8wm2udGjDIHOj91HFycInsBDKyfMr2Ys6t8pScD52xNZoqKBAMl
+         VWwPigY5BGKByW7sCMg46XV/XG7e5+hbl+TnnNyp8yJXM4FSv/Jz5D2swXnudUxJE+FE
+         k2mA==
+X-Forwarded-Encrypted: i=1; AKwUvBwoJdGN4x8u0ekP8THTSNrevus4a+bd1zxB9AgVpFY8KxU35lLLvev3WNRc2y+WSMnMdn8=@vger.kernel.org
+X-Gm-Message-State: AFuF++koQ9N1faqxi50jjCEFrcHyxFAK0eK1q7ZYlgZUZAY+tvpxGY9I
+	NJ1zBYEbyzYoIyB5Q3k8Z/sIPXTRh263fMlThf8BgGONeZMFWw2q8kMOHhoZ+CyuGfQ=
+X-Gm-Gg: AYBFou15n6UifVqoH+3eZld1zG8E3YU6hpwH1VkY9bVG2TkIf0gDLLyyqcS5x2EY3zz
+	a8XF4urq9v0B20HncRi2QsIkvkM88kL4SRIORd5QTuCihGNp02rGDafsv6/dh9aHPZwP7ps3yiz
+	tOH1syVqViiHd+JOH7vmH5Z0iYxCyqdEpLwapBpJu4o7uCIb4uhemdMDfIMadUjSQo2euuAkxLZ
+	gEf3xYZG5V0lP/pm9vBHVTFiu+9iuAK5v0zjQAR5WPKmq4nNUt3FiDEKVcFg/R7S8qt+hkm/3My
+	kzjG84sZCK5RdEE4BSVK1JDsTlAWLs3eJpR4riCdZHreGZziF2o3al0KFSH9FgLBZVuYNyFceQn
+	MCjAStHJOP/zGOpG3awNe2FC1+vTQJ19EK62g5h01knikXLwJjciq7QD5DrcYVTrWRqwj1P2Wvm
+	Dm55e6jdLzMshp5M2eCVPh3TCMZ/r96ILYs7ddebR7MiEO
+X-Received: by 2002:a05:6214:19c6:b0:916:7629:f1c with SMTP id 6a1803df08f44-91676291098mr52487856d6.10.1790616581176;
+        Mon, 28 Sep 2026 10:29:41 -0700 (PDT)
+Received: from ziepe.ca ([130.41.10.202])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91430df77adsm84361036d6.26.2026.09.28.10.29.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 10:29:40 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xBFAZ-00000007NhG-43XU;
+	Mon, 28 Sep 2026 14:29:39 -0300
+Date: Mon, 28 Sep 2026 14:29:39 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Zhiping Zhang <zhipingz@meta.com>
+Cc: fengchengwen <fengchengwen@huawei.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian Konig <christian.koenig@amd.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, kvm@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v13 5/5] RDMA/mlx5: get tph for p2p access when
+ registering dma-buf mr
+Message-ID: <20260928172939.GK163130@ziepe.ca>
+References: <20260731211601.3033906-1-zhipingz@meta.com>
+ <20260731211601.3033906-6-zhipingz@meta.com>
+ <f4ff7ced-63b6-42e6-8e01-9f01d2e59843@huawei.com>
+ <CAH3zFs24esHCGA=wPrkiH8oKQCv7SnOwcBbkMxrOEvOVtwstYg@mail.gmail.com>
+ <20260924233058.GA163130@ziepe.ca>
+ <CAH3zFs2rhg6-b-pVDps1V8LsM4Dn48t4J4LFVyKOZtT4axdY=Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <4fabad44-280f-40e6-95bb-49011cd2f185@arm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH3zFs2rhg6-b-pVDps1V8LsM4Dn48t4J4LFVyKOZtT4axdY=Q@mail.gmail.com>
 
-On Mon, Sep 28, 2026 at 11:13:39AM +0100, Suzuki K Poulose wrote:
-> On 28/09/2026 10:28, Catalin Marinas wrote:
-> > On Thu, Sep 24, 2026 at 02:51:58PM +0100, Suzuki K Poulose wrote:
-> > > +long rmi_sro_memxfer_execute(struct rmi_sro_state *sro, gfp_t gfp)
-> > > +{
-> > > +	struct arm_smccc_1_2_regs *regs = &sro->regs;
-> > > +	bool cancelled = false;
-> > > +	unsigned long sro_handle;
-> > > +
-> > > +	rmi_smccc_invoke(regs);
-> > > +
-> > > +	sro_handle = regs->a1;
-> > > +	while (RMI_RESULT_STATUS(regs->a0) == RMI_INCOMPLETE) {
-> > > +		bool can_cancel = RMI_RESULT_CAN_CANCEL(regs->a0) == RMI_OP_CAN_CANCEL;
-> > > +		int ret = 0;
-> > > +
-> > > +		switch (RMI_RESULT_MEMREQ(regs->a0)) {
-> > > +		case RMI_OP_MEM_REQ_NONE:
-> > > +			rmi_op_continue(sro_handle, RMI_CONTINUE_KEEP_GOING,
-> > > +					regs);
-> > > +			break;
-> > > +		case RMI_OP_MEM_REQ_DONATE:
-> > > +			ret = rmi_sro_donate(sro, sro_handle, regs->a2, regs,
-> > > +					     gfp);
-> > > +			break;
-> > > +		case RMI_OP_MEM_REQ_RECLAIM:
-> > > +			ret = rmi_sro_reclaim(sro, sro_handle, regs);
-> > > +			break;
-> > > +		default:
-> > > +			WARN_ON_ONCE(1);
-> > > +			ret = -ENXIO;
-> > > +			break;
-> > > +		}
-> > 
-> > Another thing I came across while looking whether we can defer the
-> > activation. It seems that the spec (I_JVYCH) lists some SROs as
-> > PE-bound. Nothing here or in rmi_sro_execute() disables migration and
-> > the memory allocation paths can even sleep with GFP_KERNEL.
+On Thu, Sep 24, 2026 at 11:17:57PM -0700, Zhiping Zhang wrote:
+> On Thu, Sep 24, 2026 at 4:31 PM Jason Gunthorpe <jgg@ziepe.ca> wrote:
+> >
+> > >
+> > On Wed, Sep 23, 2026 at 11:24:56PM -0700, Zhiping Zhang wrote:
+> > > I don't think this belongs in the importer. Every in-tree dma-buf
+> > > caller of pci_p2pdma_distance() is the exporter, in its .attach,
+> > > clearing attach->peer2peer -- amdgpu_dma_buf.c, xe_dma_buf.c,
+> > > habanalabs memory.c. There is no importer-side caller.
+> >
+> > Right, and they shouldn't be doing that, but it still has to be
+> > checked that the st is going directly to the peer device not the host
+> > bridge. Not using the distance, but by the PCI_P2PDMA_MAP_BUS_ADDR
+> > indication.
+> >
+> > I fear you will need some of Leon's series to make that happen.
+> >
+> > So probably the proposed change to dmabuf ops is far too simple.
+> >
+> > Jason
 > 
-> No, this is not required. I agree this is confusing. I will get it
-> clarified.
+> Hi Jason,
 > 
-> So, there are two different sources for the SRO contexts. One is a global
-> pool and the other an Object.
+> Thanks for the comments.
 > 
-> e.g., For an RMI operation on an Object, SRO context can be the object
-> itself (e.g., REC_CREATE, REALM_ACTIVATE etc.)
+> Agreed -- the tag should not be handed out unless the routing is
+> PCI_P2PDMA_MAP_BUS_ADDR. That can be enforced conservatively on 7.3
+> with two changes. I can fold both into patch 4.
+> ```
+> In drivers/pci/p2pdma.c, make pci_p2pdma_map_type() callable from
+> tristate VFIO_PCI_CORE:
 > 
-> However, when there is no reliable object for the command (e.g.,
-> RMI_GRANULE_RANGE_DELEGATE), the RMM must allocate a context from
-> the global pool. Now, the "PE" in there comes from a recommendation
-> to the RMM implementations, that the global pool size must depend on
-> the number of PEs on the system. This doesn't mean that the SRO
-> handles are only bound to those PEs. I will get this clarified
-> in the RMM spec.
+>     EXPORT_SYMBOL_GPL(pci_p2pdma_map_type);
 
-This part of the spec needs rewriting, not clarifying. No matter how
-hard you try, there's no way you can read it as a "global pool". For
-example:
+No, that's been rejected several times already.
+ 
+> and in drivers/vfio/pci/vfio_pci_dmabuf.c,
+> vfio_pci_dma_buf_get_pci_tph() gains:
+> 
+>     struct dma_buf_attachment *attach;
+> 
+>     if (list_empty(&dmabuf->attachments))
+>         return -EOPNOTSUPP;
+> 
+>     list_for_each_entry(attach, &dmabuf->attachments, node)
+>         if (pci_p2pdma_map_type(priv->provider, attach->dev) !=
+>             PCI_P2PDMA_MAP_BUS_ADDR)
+>                 return -EOPNOTSUPP;
+> ```
 
-D_GZLMRA	SRO context is bound to one of the following:
-		  - A PE
-		  - An RMM object
+Also no, this has to be done via PCI_P2PDMA_MAP_BUS_ADDR which also
+enforces putting the determination in the right place in the code
+flow..
 
-And take a random command:
+> Two properties are worth stating explicitly:
 
-B4.5.2 RMI_DPT_L0_CREATE command
-	Create a Level 0 DPT.
-	The RMI_DPT_L0_CREATE command may initiate a Stateful RMI
-	Operation whose context is bound to the current PE.
+Ah! AI!
 
-"bound to the current PE" pretty clearly shows the intention was to
-disable preemption. It also doesn't say what happens when this pool is
-exhausted (presumably it returns RMI_BLOCKED).
-
-TBH, that's a pretty significant change for a bet3/4 release, though
-arguably it can be seen as a relaxation. Code that relies on disabling
-preemption should still work (somewhat, assuming the global pool is at
-least the number of PEs and the host plays nicely to complete or cancel
-all SROs).
-
-That said, such pool is a limited resource and we need some way to probe
-its size if we want to do something smarter in the kernel, like a
-semaphore to ensure we don't randomly fail because of an RMM limitation.
-I don't really see how the number of PEs is relevant to this global
-pool sizing, it's not that we limit the realms we can start to the
-online CPUs.
-
--- 
-Catalin
+Jason
