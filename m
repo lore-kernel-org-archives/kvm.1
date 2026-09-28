@@ -1,98 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC23F44E65F;
-	Mon, 28 Sep 2026 10:36:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E32949B21A;
+	Mon, 28 Sep 2026 10:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790591812; cv=none; b=srq13U7SR/p0li9/e+tM876m8Ig/lMdeG0De5+Xa3CQgmR5BS9YjUqDX73Aoa2WV74j4TIO+5Uq6OAd3LlVmvgGzmgczbpRkJbLArIXpv+yTwvwwcqC0cMdNO2YQyogLYyAMLj3Ck1dM0wJZGAElg8Vy/J74mFPMKeUyPAEaTs4=
+	t=1790591888; cv=none; b=LjAgkvEimrRi+glrrkprCmqMyGeykVkwC2jvSOYf6XDITg2IlBFv6S4sYR++FOPK3ECdezeie5gOcX+jWgDk1CPYnTn4yxJyTVntiGtwLtsdravhEY7IG/XN9capBM/wCISMzaQR6nstIQaU4UxtbjZCcz4cbjZQ8Elzfj1P+NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790591812; c=relaxed/simple;
-	bh=+eiU14WtffpsablTSQZkeXYAVRjbhnndgQrMqpPYHgA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=duU2wTlnzkI0QM2aW/fBO6Oy7mBSxSy8BZtlEPpTVoPXez28YWrUBjs6eArgjXzkP6HCvx7SrAJCY7CwCgoPhmGVm6oXvGZm1vK8U0eVnfy6Qz/JcTbr9faIS/so0Kmwp2wT+SNHR34xsgSoq4iRdJ6bD7VL8+kkUCM4pbUepHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ex9E14LS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790591888; c=relaxed/simple;
+	bh=WyhGkEh/Tg98781MkrRtXVLM7OrY9RABxic2LWuUJO0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YUpCUiVYRm95ZYJXitu+4Y+0+VBqe8eiP4oBLsNelqhKKY8BLvHO50grrn37PpDpNut4yxI4VCOWSlD395HIoYdx5RJ6nlOuwIsJj0icnlt1dEhVuNemYIPftZYnN/m9uCRvWyp1if757fGQkauBmy2dCcZnkA5S64nsluya3FU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=b6e/9zz0; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ex9E14LS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96EFE1F000FF;
-	Mon, 28 Sep 2026 10:36:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790591810;
-	bh=3P2mxhk6Zs1a78JTFJDfkPQ7ymLagWRZKHkU7l2oUs0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Ex9E14LSPc2TpBUWFF4DLuttqWcWR3I5aUQkGCvGQo9fb9wZJcYjuwPo+aWKDdFBO
-	 mcB34+UNJlXcXuLBR/pWeuBR/2QN6O9xpdvhycb+A6lziTjuLJMTE6ADvc6lWQztDe
-	 YKBRfhVDM/h87MFKcJw6UR1s0s9m1fgJPbuh+ZaRfA9pVACqz41c1UUxRybOkTGMqB
-	 3SJ0Z61CJj8vxV6UBX19iRM6PaUtgiIXn6pb9EfSLOMcZQxjVL+13WluC1DQs6u76c
-	 1yOWjAIThgTYnJ8+t4vQL3BGvHVc27eiJxrrBLiDCYG1PKc1pJnSIo9AsEDBqaZyab
-	 UtCxiGoYp+dow==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: linux-coco@lists.linux.dev, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [RFC PATCH v6 05/11] iommu: Add a helper to validate a vIOMMU
- parent
-In-Reply-To: <20260925122305.GG9354@nvidia.com>
-References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
- <20260917140159.1163281-6-aneesh.kumar@kernel.org>
- <179027891416.104879.10365675178574704349.b4-review@b4>
- <yq5ald8pkhj7.fsf@kernel.org> <20260925122305.GG9354@nvidia.com>
-Date: Mon, 28 Sep 2026 16:06:42 +0530
-Message-ID: <yq5a5wzpr7b9.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="b6e/9zz0"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3F45B1595;
+	Mon, 28 Sep 2026 03:38:02 -0700 (PDT)
+Received: from [10.57.12.79] (unknown [10.57.12.79])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B3BF63F86F;
+	Mon, 28 Sep 2026 03:38:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790591885; bh=WyhGkEh/Tg98781MkrRtXVLM7OrY9RABxic2LWuUJO0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=b6e/9zz0pkhgc+qaHVauwUb4u5rmxdp7i1PHyPSXEKggwpo+VB31jvoLg5zQzb/0h
+	 iYZ2vFcYs8WFv8M1rrY3QbDiNBuzgTBgfDKeybi4RgMK7SqwG6zIb3YB44LK0PhEqB
+	 4caPUYWw3Z88gErdYPNWuklLnK9KYYIs0cpyhB4c=
+Message-ID: <3934b4c9-6b1f-44fa-847e-4fb1e67a58e7@arm.com>
+Date: Mon, 28 Sep 2026 11:38:01 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18] arm64: mm: Handle Granule Protection Faults (GPFs)
+Content-Language: en-GB
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev, maz@kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260913070459.2547407-1-suzuki.poulose@arm.com>
+ <arK3tsTV6EDhI-nt@willie-the-truck> <arOyp8WUrYBAjrGH@arm.com>
+ <arP0IF0MjFUv36AP@willie-the-truck>
+ <49dcab27-1d03-4df2-b7cb-4df4eda6d909@arm.com> <araqPCdcSnqZqPWz@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <araqPCdcSnqZqPWz@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Jason Gunthorpe <jgg@nvidia.com> writes:
+On 25/09/2026 18:07, Catalin Marinas wrote:
+> On Wed, Sep 23, 2026 at 05:04:06PM +0100, Suzuki K Poulose wrote:
+>> On 23/09/2026 16:45, Will Deacon wrote:
+>>> On Wed, Sep 23, 2026 at 12:06:15PM +0100, Catalin Marinas wrote:
+>>>> On Tue, Sep 22, 2026 at 06:15:34PM +0100, Will Deacon wrote:
+>>>>> On Sun, Sep 13, 2026 at 08:04:58AM +0100, Suzuki K Poulose wrote:
+>>>>>> From: Steven Price <steven.price@arm.com>
+>>>>>>
+>>>>>> If the host attempts to access granules that have been delegated for use
+>>>>>> in a realm these accesses will be caught and will trigger a Granule
+>>>>>> Protection Fault (GPF).
+>>>>>>
+>>>>>> A fault during a page walk signals a bug in the kernel and is handled by
+>>>>>> oopsing the kernel. A non-page walk fault could be caused by user space
+>>>>>> having access to a page which has been delegated to the kernel and will
+>>>>>> trigger a SIGBUS to allow debugging why user space is trying to access a
+>>>>>> delegated page.
+>>>>>>
+>>>>>> There is work in progress to unmap the guest_memfd backed private pages from the
+>>>>>> linear map. Until we get that support, we could get spurious GPFs from within
+>>>>>> the kernel, e.g., load_unaligned_zeropad(). So, try to fix them up for now.
+>>>>>>
+>>>>>> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>>>> Reviewed-by: Gavin Shan <gshan@redhat.com>
+>>>>>> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+>>>>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>>>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>>>> ---
+>>>>>> Changes since v17:
+>>>>>>    * Pass untagged address to die_kernel_fault() - Sashiko
+>>>>>>    * Explicitly check !user_mode() for fixups - Catalin
+>>>>>>    * Switch to BUS_OBJERR for si_code from SI_KERNEL - Catalin
+>>>>>>    * Clarify the commit description about the upcoming work on
+>>>>>>      unmapping guest_memfd backed pages from linear map
+>>>>>> Changes since v16:
+>>>>>>    * Update the commit description to indicate why we try to fixup GPFs
+>>>>>> Changes since v10:
+>>>>>>    * Don't call arm64_notify_die() in do_gpf() but simply return 1.
+>>>>>> Changes since v2:
+>>>>>>    * Include missing "Granule Protection Fault at level -1"
+>>>>>> ---
+>>>>>>    arch/arm64/mm/fault.c | 30 ++++++++++++++++++++++++------
+>>>>>>    1 file changed, 24 insertions(+), 6 deletions(-)
+>>>>>
+>>>>> I still don't think we should do this, given that the plan is to unmap
+>>>>> the memory from the linear map. If this thing fires, it's a kernel bug
+>>>>> and it should be fatal.
+>>>>
+>>>> If the linear unmapping gets merged first, I agree, no need to handle
+>>>> these faults. I haven't followed that series, so no idea where it is at.
+>>
+>> There doesn't seem to be much progress on that series. Brendan
+>> volunteered to resurrect the series, taking over from Nikita [0].
+>> But looks like Brendan is not working on this anymore. Will see
+>> if someone is really planning to look at it.
+>>
+>> [0] https://lore.kernel.org/all/DJJ35VLH2PE5.DFD8OYXEOH97@linux.dev
+> 
+> I just realised that this only solves part of the problem. Normal kernel
+> allocations are delegated RMM metadata and they'll also trigger GPF
 
-> On Fri, Sep 25, 2026 at 11:18:44AM +0530, Aneesh Kumar K.V wrote:
->> > The TSM viommu should use a NULL parent domain, it doesn't have an
->> > iommufd managed S2.
->> 
->> How would we assign an untrusted device? I currently follow these steps:
->
->> 1. Create an HWPT with IOMMU_HWPT_ALLOC_NEST_PARENT.
->> 2. Allocate a vIOMMU with viommu.hwpt_id set to that hwpt_id.
->> 3. Allocate a vdevice with alloc_vdev.viommu_id set to that viommu_id.
->> 4. Use VFIO_DEVICE_ATTACH_IOMMUFD_PT with the hwpt_id.
->
-> The vmiommu.hwpt_id should be 0.
->
-> 1. Create a a HWPT with IOMMU_HWPT_ALLOC_NEST_PARENT
-> 2. VFIO_DEVICE_ATTACH_IOMMUFD_PT with the hwpt_id to establish the T=0
->    identity S2, no T=0 vSMMU
-> 3. Create a VIOMMU with no hwpt_id and the RMM's type. This triggers
->    RMM to create the the T=1 vSMMU inside the realm
-> 4. Allocate a vdevice on the viommu_id. This triggers RMM to create
->    the VDEV inside the realm
-> 5. Setup guest ACPI tables/etc to point at the RMM's T=1 vsmmu.
->
-> Now both the T=1 VSUMM and T=0 fixed translation are setup.
->
+Other than Kdump, kernel shouldn't try to touch these metadata pages
+unless there is a kernel bug ?
 
-ok so iommufd_viommu_alloc_ioctl() will do this based on type.
+And the userspace wouldn't have a mapping for them anyways ?
 
-+	if (iommufd_viommu_type_requires_hwpt(cmd->type)) {
-+		hwpt_paging = iommufd_get_hwpt_paging(ucmd, cmd->hwpt_id);
-+		if (IS_ERR(hwpt_paging)) {
+> faults. Kdump is another point raised here:
+
+True.
+
+> 
+> https://lore.kernel.org/all/a11aba04-eaaa-43fd-988b-a2581b1b2fdb@arm.com/
+> 
+> I think rmi_delegate_range() covers the non-kdump cases, both for
+> metadata and realm memory, we could unmap the linear map there (map it
+> back in rmi_undelegate_range()).
+
+We could explore that option for the kernel allocations too.
+
+> 
+> For kdump, we have /proc/vmcore that may be mmap'ed or read() syscalls.
+> I think Alper proposed an idea to use copy_from_kernel_nofault() (with
+> exception recovery in do_gpf()) but we'd still need to block
+> mmap_vmcore() or somehow handle SIGBUS in makedumpfile unless it does
+> this already.
+
+There is a --no-mmap option for makedumpfile in the worst case.
+
+> 
+> So, I think we should revisit the GPF handling. If we manage to unmap
+> all delegated pages, we could limit the exception handling to
+> is_kdump_kernel(). Otherwise we keep the exception handling as proposed
+> earlier, maybe with some warnings like EL0 access.
+
+Agree. We definitely need this for kdump handling.
+
+Suzuki
 
 
--aneesh
+
