@@ -1,107 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F8C4E3241
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 16:55:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95474F30E4
+	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 17:01:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790614522; cv=none; b=IAqtn4eSKt9pdZNk3NDnwmtK1DNig3PZVE8MPke42fkmfpiN1EsiHgGz5/FG8jZ5TrOG59r8239aZTwH9uKwmfnplCvekyCcBmEmLS2XhwzeFbaBV8xDLc4Nmfc/SQQ8Xiqv6CN+3lgGRQEbE94+g3o/gDEX/hK+g/mF10afS8w=
+	t=1790614918; cv=none; b=eFOgYjIPnMpEVfD2oGnIkvzsJ7FKSNf0ucuX9hH0sDP8FjPMHLXYyUawmIpPJx5SpvmaEWGNBwTiy+KuiadvnubouSFjpxtyRSqC+GWlvfkBNGIjswHZjUAJ2Hv9gJftOqY7V1JqTnjbsT9RwkHt2ZPx6IaSbDy6OsR7n9v1BVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790614522; c=relaxed/simple;
-	bh=CD5a+7Ez4rYXqFw6VrpjAY/5sXrdRVK+oT3Rt4dAP7A=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=nBVxgRDpxf0s3nTaHVevOf04hQPC4tKYpv4E8sIAayE8u+GlGgjFyYkGy1XJ2gYHP6x9M2V/S4JYdx767sZfjUAkfiAADBcysIS20LaNOX/1xQJWqgDLvxbPAl2S5UtmhN31aZNSKxm5Ud5s64b0ynYKxWaGRfKhJ+BJJcfG7QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xs5CzrS8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790614918; c=relaxed/simple;
+	bh=aMzM5fzvbcSHzOHJA1huRTbo8w52WJS9I3sDGwRRaqE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=dpKC6A3lmpx0H0/KUS13a2F5Z4+IAxlFm1uibjQyRpSdFGLRLUbGGh8WK5yqV33LDfj1cLBch6bmiOgEWnxSndIZxwhFMQJFkS2xlp+Qo2rhg+1arqrDh0iXAo22WN4+rqiH20hHQCYgYWCugLrQA7vPl3VClVDjXlGbgo9WVXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jmna8R/M; arc=none smtp.client-ip=209.85.215.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xs5CzrS8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30991F000FF;
-	Mon, 28 Sep 2026 16:55:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790614520;
-	bh=UbjDl/VyrkLr3CM6vU/GwJfwBEa8Le6J2stMW4Mu4gg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Xs5CzrS8tnqsak16GJKm6drNx3NzMaXX8TV1AfJiibkAXnCghNZobgijkP8r2JEWY
-	 4P4lGpH8TvdNEdKjssJEXe1j8N+ZLlkZ6UyNkVbUTT38cZaydVX7ERoDnxpTEBWvZH
-	 +buabTaSPxPNgw79LXfkZj3iL3hU5kNIFxfvuQjycvRZKqehjkIDM+CgemMejknWrv
-	 ebk6csYoZILkShzq3Asy36N17ok52K3dTr9X2BXw3J9P0mhQxIMO0hSPsrOr8qcMsJ
-	 NkTgG9IEEy7BoPrO2BKAqVGIgCzQHB6owDa6rr5FfAOVzOq+Vbs0d/SpFsEUtCWvSs
-	 je1qLPd9PuLRA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 5.15.y v4 06/11] KVM: X86: Rename gpte_is_8_bytes to
- has_4_byte_gpte and invert the direction
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Kenta Akagi" <k@mgml.me>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260928164427.4699-7-k@mgml.me>
-References: <20260928164427.4699-1-k@mgml.me>
- <20260928164427.4699-7-k@mgml.me>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 28 Sep 2026 16:55:20 +0000
-Message-Id: <20260928165520.A30991F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jmna8R/M"
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb11535e6a1so1860127a12.0
+        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 10:01:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790614915; x=1791219715; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=v5MkOtLdmaXNujQwpeiaeYMUIR7StZN5Q2iECEiW9FU=;
+        b=jmna8R/MwKmWsqL9annwcXlGPhnQm0L2baB9vv3hMTpLNPDZORuLkdvKxkik8+3COL
+         OhVQfHg9+n7PwqQqCFAQtO0Ou+EhNCZxAsSlFt+1iCglHmQKzkVcxtEpupFQplFRRvuq
+         6/dtHv6ngD6pF6PlSL1IgO65SwNeBAbaMrWOldE0MWxVg+j0ZS8/tYPBa9fW7ZWJTxVn
+         tVqYbgZMRsKz60Y2vifbXDgJEzobd4AMRE9suYdU7MQM5vUmKAb4u6TfpVUu/AD06Pbt
+         MOWn1T/kAYdqyQV2zXdK1pLHAy42KEp/fQDlwd0ty48hYXeP2FxWZ+QsABtfTwpJadEl
+         6KBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790614915; x=1791219715;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=v5MkOtLdmaXNujQwpeiaeYMUIR7StZN5Q2iECEiW9FU=;
+        b=zrJKAaLhB6w1+YW9ozuDALPeDF2yuS5AcOr+eNHuLOqS5MIy7ztb2S5IRvBKZx7uj/
+         LFUGIfLbrjLptK5EQXf/wD/VfbpMcxGSKK7ivIfjsnCigFFJbTALNLEDeuN6R6n8FWYG
+         QpjJyEiFZLqruz1twGL5wwRt8MSCIt67RcQlpJOk58KSQrrJCpSNkQgI7yqc7FOec5SX
+         mReyWd2hSyglG266f0mkSj/M5yBLwOe6thUPuLNA/o+vlYnDriTzgbEJzw3CtHfw3VtM
+         qI4Y2lfVGIQZr2hTUVlV0ZOASI4t+D0tiDu05VG4l3qgDJ1Zj7K9y3xRoTJ3YxmLAkDr
+         mA+w==
+X-Forwarded-Encrypted: i=1; AKwUvBwf2UgHH1faSmBCT9gEmmyhXNCz8HhHLPFaR/f9jb3/6hmbiw9UcT4eey2FIMm815z5aS0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKojtROfi+Vb+CYEOVflFeCKAxvbElPIudzRgHkmsjdHcS51yqz
+	nhyv6io7SlSTGCCvA1p1+0RFL+6ODX/0acQHcoRPhLYkxcvBiQeiTefhY1HoqFhsr1d69hUwN0r
+	ZkjkLfw==
+X-Received: from pgde25.prod.google.com ([2002:a05:6a02:319:b0:cc7:9ef7:92eb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:270d:b0:3a4:80bf:af6
+ with SMTP id 98e67ed59e1d1-3a480bf0b5fmr1559457a91.30.1790614915254; Mon, 28
+ Sep 2026 10:01:55 -0700 (PDT)
+Date: Mon, 28 Sep 2026 10:01:54 -0700
+In-Reply-To: <20260926061135.714158-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260926053253.195597-1-pbonzini@redhat.com> <20260926061135.714158-1-pbonzini@redhat.com>
+Message-ID: <arqdghk8eIxk1A4A@google.com>
+Subject: Re: [PATCH 00/11] KVM: fix issues with stale control fields
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] tools/kvm: inverted page role bit breaks plugin_kvm.c parsing
---
+On Sat, Sep 26, 2026, Paolo Bonzini wrote:
+> > Fix two bugs where the guest could do stupid things on purpose to
+> > cause problems in the host.
+> >
+> > Patches 1-5 cover cases where actions done through VMCB control fields
+> > have to be redone if VMRUN fails.  In particular, failed VMRUNs can
+> > cause pending TLB flushes to be dropped.
+> >
+> > Patch 6 fixes a case where eVMCS execution controls can cause the
+> > host to use a stale MSR permission bitmap.  Patches 7-11 are tests
+> > for nested x2APIC; don't run them on an unpatched kernel.
+> 
+> In addition to what was reported by Sashiko, the test does not pass on
+> SVM.  Fixed as follows:
 
-commit e1e76187db8d1987f4d32cf661bdfabf00f858af
-Author: Lai Jiangshan <laijs@linux.alibaba.com>
-
-KVM: X86: Rename gpte_is_8_bytes to has_4_byte_gpte and invert the direction
-
-The commit renames the gpte_is_8_bytes bit in the MMU page role to
-has_4_byte_gpte and inverts its logic. This removes a special case since
-guests with paging disabled do not use 4-byte PTEs.
-
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_h=
-ost.h
-> index 2c378064a1db9..d31817fb39620 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-[ ... ]
-> @@ -316,7 +316,7 @@ union kvm_mmu_page_role {
->  	u32 word;
->  	struct {
->  		unsigned level:4;
-> -		unsigned gpte_is_8_bytes:1;
-> +		unsigned has_4_byte_gpte:1;
-
-[Severity: Medium]
-Does this logic inversion break userspace tracing tools?
-
-Looking at tools/lib/traceevent/plugins/plugin_kvm.c, the in-tree plugin
-parses this raw bit from the role word under the assumption it represents P=
-AE
-being enabled (when set to 1):
-
-tools/lib/traceevent/plugins/plugin_kvm.c:union kvm_mmu_page_role {
-        unsigned word;
-        struct {
-                unsigned level:4;
-                unsigned cr4_pae:1;
-
-It then prints it as inverted if the bit is zero:
-
-tools/lib/traceevent/plugins/plugin_kvm.c:kvm_mmu_print_role() {
-        trace_seq_printf(s, "%u q%u%s %s%s %spae %snxe %swp%s%s%s",
-                         ...
-                         role.cr4_pae ? "" : "!",
-
-Because this patch inverts the logic in the kernel's role bit without
-updating the plugin, will tracing tools like trace-cmd and perf now display
-an inverted PAE state (printing 'pae' when disabled, and '!pae' when
-enabled)?
-
->  		unsigned quadrant:2;
->  		unsigned direct:1;
->  		unsigned access:3;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260928164427.4699=
--1-k@mgml.me?part=3D6
+Thanks for cleaning up the mess!  I was definitely getting too greedy trying to
+get bonus coverage on AMD (and I've been ignoring the SVM failures in my local
+testing for an embarrasingly long time).
