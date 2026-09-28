@@ -1,130 +1,130 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BF54E3242
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 15:57:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790611034; cv=pass; b=VzlP3vLw18GDQICe6YdcL03YNxjLfKoRhe3+B1vtnD4IzBn5v/q5IO82IMfVo/0qBFghJMXJT6gabj6m1wRJckfxI6usjO9G5OAr4+HKF+LCfBF+W8VKVuDOHEoA06poz3KIXgbJApt6HW6PzCNuURJCLUiK9C1mgocFfZ0jmPE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790611034; c=relaxed/simple;
-	bh=QqOHndixwXTfbKcazOrogEdBF1Lh5VPxTHmhor2BS+8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aduSy3kiwo7//Ia8m7IiXZ2nCtKHKHTDxv2ITC5AXnJ/VCS8KnmioxAcYo+4gHZP4/OO2g6r/Ilw8sTKeIJ1C9c1ATTX9hRiK76QAPhZa4aVIWZyWJ/XWMUKpd/JvOht9iKjj8hk/lLxTkcD+10gCj1CWK8a6n7j5pqa47VK7ZY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cWeh1Vaz; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FjeO9ox2; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D5A4E0202;
+	Mon, 28 Sep 2026 15:58:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790611119; cv=none; b=jQZYp8stJVf62H9TA85fQMC+InmZP3dkHTf22ymcJi4bjxmscLK+ewyM7KvKGvbewkhJq9Aly86fcN4SOyriXftuFZARFQq/eOk4HVEEHg7I8KGVJloZwyW4IFrAYnp6KqUNWAd0B1gtP/GB/95xrI+Z+d9PMhHjhkWeUD6D1pE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790611119; c=relaxed/simple;
+	bh=IIZlNVEjc6NoJs8qFG5usy5vutf9Tt3Y7Wx/O5zOyk8=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NjvK6Y6rUlejHLmVJOVLZzcQAU0XgcLRNX1G7w750iZIFgnyzVRU1HThacQgJOh4iQMiRm2LRabNsk/Nea7vBp1tsJh42yCOgPfKAjgxviVRu9lz8cZuBk1bdHMJg5HpcZp2NvvTj5POVcncDHhqjWS9WrPKNm/RSj/Kj00YuSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D/jlsU+X; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cWeh1Vaz";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FjeO9ox2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790611032;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0/ZTD2VeOCjUPPogrc+Mc/r0VX3g+O7Z3MtGT/sljKA=;
-	b=cWeh1Vaz7q3eZnkqonoVOPF1YF/RVgC+7FcGRYlv0t5jT63KddeguL0DBpszp2rEC8iClu
-	rmNVnzFy0CC1ytXmXAciWd1tFqtEDklO8kRB1RFiIu9TjSUxxkdwlJ6mzruOUOblqxc54B
-	1e4lBux0rga3YEOD59YOegY73vs/mQY=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-371-RL-zYlQ3OLCKKE740w7tig-1; Mon, 28 Sep 2026 11:57:10 -0400
-X-MC-Unique: RL-zYlQ3OLCKKE740w7tig-1
-X-Mimecast-MFC-AGG-ID: RL-zYlQ3OLCKKE740w7tig_1790611030
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-39b77130a7fso3537625a91.2
-        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 08:57:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790611030; cv=none;
-        d=google.com; s=arc-20260327;
-        b=AkKHdL7aZppWwlyLHGo/lhuXFa2pvt3nzaeYOqMiEP/ctrNQcTTyT8XcvyoO09KS05
-         vVcV5evTQkt11fJGigYPapvfj719tEwo14jQtUhSlsqLrzioT8apexZFqm/D3mKZPhTs
-         qMSt7By3t2nrjVRZ55vLD2yxWS9GZE0dUK3d9PfI6bVpkwYNt2RUDtTZbohEdsGfZxlg
-         0Yo4BwIPi9OJWuTICDJXFRXmVvHzm8BNeK4dDV/uoXzINwYsdOGjWe7yxZ9Fa5D089vA
-         zmJDllMiIgFRY2v4Tms3PX0wBadc3Ybk4FGX4vnJc7acSAOqLlLIKfrHutYvzRZCaWYs
-         cAMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0/ZTD2VeOCjUPPogrc+Mc/r0VX3g+O7Z3MtGT/sljKA=;
-        fh=qaYm4b6GKYlZ0T3gtLZ7fjEfCEC8jMv5XzYe6fOhw1Y=;
-        b=AoQ1uySb4EnNjryeqXNiTmiZV5ud0QGeGABIABSUZSWoRde4uzMAtAYojLLmLyQhq9
-         AwhhQaFo7iR+MZQGozA20Xw4R8OrUcuYSYS3H9t0d2J6b1WkfOucwlHxQI7cnafmFRCp
-         3Q+FPHGv6bj/U9LGQB3IlDPwNt0kHBojLb2SMYWDeeDHO02y0Z6MKISvypsLUiGCHDp/
-         PI7EQ2XtRZ7GHjQxTt/GHZ76kOtasAHWuYlL/Fr1fpPri1sHE+Wbjv3gAretE6Y2AvEJ
-         0iy7lD7ufJdFJQjxNjazKIFx06P+U/+8ro1h3XETzgQ0b6ZgXd+0VhLr7om2e5+w9eNL
-         I9yA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790611030; x=1791215830; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0/ZTD2VeOCjUPPogrc+Mc/r0VX3g+O7Z3MtGT/sljKA=;
-        b=FjeO9ox2H1n5hhCeNlVaE7A6A4aSQ85LY6/jLva50w4642KxT/NkxrW3UJAAkfvLbg
-         LeqEhL2ufzQEWsjjXU/yhwK5aDM3ksxtc7NUSqZHSr1f17Yaj7GIMaAVeOkQqx8N5033
-         O5NTUPr8/s1rwFn3TylEea9OQn5X1JdRxp4ConZ3RpJZo7T0o4iIY1Ujy09OZTXfdIkt
-         a8K8zAm9ZUbe73YxHZJVptqxAkanhx56RVwRXa/KUj44h/ij5/ZjSpGgBpQOO0udHuXY
-         LzD3TK1G7LpV3zEC3rQ2bAcMqVMt1diI2k0ycyolAvTVNMAVCeTAFU1LHLepzzentOnY
-         crCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790611030; x=1791215830;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0/ZTD2VeOCjUPPogrc+Mc/r0VX3g+O7Z3MtGT/sljKA=;
-        b=Xgjv+0qpIXbRcf99hV+Y8fXjkFJtFkkkT20J2znmj91jDyWX8OTtUX5Wb/m7cGUwpF
-         5wADhkQZ4H5uUwDrzpGghB8hRN8PqjDo9IEJ/4mIUdfLEz52SvMSggUTqQljg1hglhMb
-         c3qQmvyNblNTXinUucPUp1nNkkSwlM5YLyDoRmo00ibuvqlTh+GCWP4G4na+XvKnOrFb
-         Pd7Brgnl3nRGd8EHa1BBawY8Ay0YQf2OQeroZp7cCrrM972e1av7aJnsU2XPCRRdY9sY
-         6nMTneMxKerNMXpTeTTZ/o0vPeQg2bC9tEBjNxk9jK7gi/zhOIoOzUx31jhapTSRGa7m
-         TJwQ==
-X-Gm-Message-State: AFq9FYIXdjNg8gPmBT1j3VB0POVCNDHuqc1RWsiQkMSAeFMz3SV71UDe
-	RuIOKBblpiYtqAIzOnbXQ9Rtse/jPnOGsW5l6PLvOEqvtqmrjnjhAMqOklMC+mGfbNWnGU2HC1o
-	lM0g/ozMIvvNIxVzwKTCoX2GWbk8zWxB9OzEKed6s+AjA+CeSC30dmw36nIu194HyxyVXuoOT55
-	UhJ3XHZplbIG7PbIlj0x8lkxrQs2/z
-X-Gm-Gg: AYBFou1JE+/ROwfBCXwGO9POwkuAzd9S+PqXGE33DG9LAsXk8dXFzs5A/9XAvG0LBkL
-	AsN4kGsCfnhHpbCtw7PI+Pv/cU9nl5049ekI3kJngMpQMITWg0yq/Q7wNRqN2O8m9Ojp5iksE0A
-	4K6R9QNc0vuBlrsj1g71miwMxRYvCzoHcZTTnMNx5KCuufRn8BkeSv5Rx5qCFhE4Ov3Wo+lrGH9
-	hihetn9qEsGFF+sGx6M1+YTSqx86kGDrfr2E3NSYmOlbnSLyjhdWfVDxbsEMQ==
-X-Received: by 2002:a17:90b:2e50:b0:39e:6a81:5a97 with SMTP id 98e67ed59e1d1-3a098e3e987mr11638007a91.43.1790611029640;
-        Mon, 28 Sep 2026 08:57:09 -0700 (PDT)
-X-Received: by 2002:a17:90b:2e50:b0:39e:6a81:5a97 with SMTP id
- 98e67ed59e1d1-3a098e3e987mr11637997a91.43.1790611029099; Mon, 28 Sep 2026
- 08:57:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D/jlsU+X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44751F000FF;
+	Mon, 28 Sep 2026 15:58:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790611117;
+	bh=L09WXLeVI8ZZO4N5TRjN+sDhuH/Uq2FZQIL3+yQNvvw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=D/jlsU+X0Rg00FW5O7hps2Z3kBE+sXzCZUEc/YJcmYwiMNGAbGwMU+zUTFabNB0jy
+	 X/wqtBnKWbsgMIHGGHv9FofyUW6TbxNo4U2QKsDg6Eah9WJBPKuxQtWwj5knwyUSdI
+	 PJhQtV5NJ1KHZSl6lVTN1R/lkheKKMymGaCPYxB6/qXFULvL6q7VgM/ZkK4cnPM7m4
+	 0rQMqtKjmHRFjKqlTukfWE1HB24KHD+4YCK9icioekkEoPD6N+mXPK5rGaaLFi7NEF
+	 555fHEM44T1/DXdZFrUcQlk/Z/Cu89mogFvQuFfePU7Wszt8YJV+vo1w4VhTHeSATQ
+	 hITvJo2dCc+Eg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xBDkR-0000000ER3N-1OLK;
+	Mon, 28 Sep 2026 15:58:35 +0000
+Date: Mon, 28 Sep 2026 16:58:34 +0100
+Message-ID: <86cxtx4bbp.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: Oliver Upton <oupton@kernel.org>,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Jing Zhang <jingzhangos@google.com>,
+	Karl Mehltretter <kmehltretter@gmail.com>,
+	Fuad Tabba <tabba@google.com>,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 00/10] KVM: arm64: Nested stage-2 walk error handling and other small fixes
+In-Reply-To: <20260928152507.2116110-1-fuad.tabba@linux.dev>
+References: <20260928152507.2116110-1-fuad.tabba@linux.dev>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260925233321.2381319-1-seanjc@google.com> <CABgObfZeA_q_prxJhbdNqYpE8quPD360LhVBQv8ypcPpLA-Mhg@mail.gmail.com>
- <arqKrvYupBpAM2WI@google.com>
-In-Reply-To: <arqKrvYupBpAM2WI@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 28 Sep 2026 17:56:55 +0200
-X-Gm-Features: AclHuK-7CM2Is7844IC-ONgeUbRSTmzwlEMShQq7MFNhnttTE_XpGhhHS1k5ziQ
-Message-ID: <CABgObfYBt61rn2RjSP2DQqNUN-eBK6NToW34va+1x=K-sQD4VA@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM: Fixes for 7.3-rcN
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: fuad.tabba@linux.dev, oupton@kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, seiden@linux.ibm.com, catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, jingzhangos@google.com, kmehltretter@gmail.com, tabba@google.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Mon, Sep 28, 2026 at 5:41=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
-> > Pulled, thanks. I added on top the SEV cache writeback patches which
-> > are not present here.
->
-> Heh, because they're buggy.  Sashiko pointed out flaws in both[1][2].
+On Mon, 28 Sep 2026 16:24:57 +0100,
+Fuad Tabba <fuad.tabba@linux.dev> wrote:
+> 
+> Hi folks,
+> 
+> Small KVM/arm64 fixes that came out of reviewing Karl's SMCCC filter
+> series [1], and it just kept growing.
+> 
+> The first two are WARNs that userspace or a guest can trigger: the
+> SMCCC filter one on an allocation failure userspace can force with a
+> memory cgroup limit, which Sashiko raised [2], the nested one when an
+> L1 guest programs an invalid VTCR_EL2. Patches 3 and 4 are the same
+> walk's return values. With an invalid VTCR_EL2 or a stage-2 descriptor
+> KVM can't read, AT S12E{0,1}{R,W} was retried forever instead of
+> retiring with the fault in PAR_EL1. Reporting the unreadable descriptor
+> as a Data Abort instead, for the stage-1 walks too, is a separate
+> change I'll send later.
 
-Ouch... I have just now noticed that Sashiko only replies to kvm@ and
-not reply-to-all (including LKML), so depending on which duplicate an
-email search took me to, I was or was not seeing its replies. Of
-course for my patches I was specifically looking for those replies and
-therefore not seeing the issue. Fixed now. :(
+Why later?
 
-Paolo
+> Patch 5 extends the AT selftest to cover the
+> SL0 case.
+> 
+> The three documentation patches fix identifiers in api.rst that don't
+> exist anywhere in the tree, and the last two fix selftest leaks.
 
+<rant>
+What is this series about? Suppressing spurious warnings? Fixing the
+PTWs?  Fixing the documentation for something totally unrelated?
+Random selftest maintenance?
+
+To give you an idea, here's what my -next branch looks like:
+
+maz@valley-girl:~/hot-poop/arm-platforms$ git log --oneline --merges v7.3-rc3..kvmarm-master/next
+5c49bb52faf38 Merge branch kvm-arm64/misc-7.4 into kvmarm-master/next
+c345ec7f39efd Merge branch kvm-arm64/pre-faulting into kvmarm-master/next
+2716832906bd9 Merge branch kvm-arm64/s2-rmap into kvmarm-master/next
+edeb68e3d4e0c Merge tag 'kvmarm-fixes-7.3-1' into kvm-arm64/s2-rmap
+ede721366f1bf Merge branch kvm-arm64/gicv5-7.4 into kvmarm-master/next
+062cbcbae3e00 Merge branch kvm-arm64/gicv5-7.4 into kvmarm-master/next
+928737a70c491 Merge branch kvm-arm64/hyp-type-checking-7.4 into kvmarm-master/next
+1f99916b2a3d7 Merge branch kvm-arm64/selftests-7.4 into kvmarm-master/next
+a8f9576fa8466 Merge branch kvm-arm64/doc-7.4 into kvmarm-master/next
+7413af8a61612 Merge branch kvm-arm64/ffa-7.4 into kvmarm-master/next
+
+Where does this series fit? What is the theme? Do you really expect me
+to cherry-pick one patch after the other and build 3 or 4 consistent
+series out of this? Or should simply apply it as kvm-arm64/random-stuff-from-fuad-7.4?
+
+My definition of a series is "an ordered set of changes that have a
+common theme or form a progression towards a precise goal". This is
+not a series, but a patch dump.
+</rant>
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
