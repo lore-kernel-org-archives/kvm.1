@@ -1,153 +1,151 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971E74973AA
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 10:14:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D65149AA43
+	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 10:31:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790590443; cv=none; b=Mzp51N2YTqsSJZyl1y6sgx0IKjiqRUq61NgmUADj92s3CBL0kFvrhl5ZKR1Jie1YlI/3banBGa6aEmcZ8ipn77VnmQIjnUbyJ/YPqDYCdkchmS68eauMjFXI/J+k6rNim3+Sw/tZ3K4pOfmPkvmwQ8GXXZU7VLxUghsmqzijuyo=
+	t=1790591485; cv=none; b=IRaqBEFeRbhQUivtZLz5mYaCg/e+SLMg3QlpX7E+gSeQ9Msi6t0+HuaQ63TDV2JjsmaAgY/pSR5dt3itfWiumN1uywP98uuvXMFDyKehmHe9ui0CBM2fyp7OV/jex8OboJQWZZBRhfmTqLGoVdfK/iGYPBLL7LtDuDrqEL0a0S4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790590443; c=relaxed/simple;
-	bh=VZp64+mXhjMQ79RW/kguo2bQvLtTDxYhD4w6Hue2Ejg=;
+	s=arc-20240116; t=1790591485; c=relaxed/simple;
+	bh=ZcL7dYl+t7tDUahafwYFHtczoNBxBHDjjQvSaDt7MN4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IOJl8PXNQ2wuxE1rQvlSWKihuPyYcnMqA/Ozmyea1NE/goEZLpBwmmh5INepUR/70jZd/VvXHrjVNlJl3kZ4WRH2xAA1kHG4Fl+RgA4M4Qxtc9sY/O4dUyeLm4eWtUZv5n4xm4TrtT+MyEv1o43E5Fd7NWxP4zU1Yew/qfHCqpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EX9uSR/2; arc=none smtp.client-ip=170.10.133.124
+	 Content-Type:Content-Disposition:In-Reply-To; b=V4J3hH0NEQuUpolQJLpw+P5clX0737Lk5YtYlGlxVzvRWMCJ2YWDmCHE8lxwIQW69PuOaU3hO5J0XMHicdSp4ENWrXN1JKbhEduX1cq5VwemK20UnEIBVdmFsknfOB4F51FitMOL/ke6Z5C68mSOAh+NZJFcqTbwhrZXGgXoNWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bQZWVKzd; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LLfHoAqM; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EX9uSR/2"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bQZWVKzd";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LLfHoAqM"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790590440;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
-	bh=WfspKtklugh/OYlKtKuxjrPv/b7W5PFR1FRmVmYBQRs=;
-	b=EX9uSR/2mpihPkKFA8/uBHiE+aR//AMaWiI1F6WJoOt7hMZVCu3L1j5zj+8Pq1PpAZKBx0
-	S8MnftbzMms8FACzrGhLrsQ9GMMWqp2eT7uflpsMT9xWqhy+sKdOIR1BhonoKtKmXio+v8
-	fITKALVNw3/rTm4vZfyWGCLJEF9Ay6I=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-322-3q5wHjZTPt24_x-CQkTmEA-1; Mon,
- 28 Sep 2026 06:13:57 -0400
-X-MC-Unique: 3q5wHjZTPt24_x-CQkTmEA-1
-X-Mimecast-MFC-AGG-ID: 3q5wHjZTPt24_x-CQkTmEA_1790590435
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1D72B1954229;
-	Mon, 28 Sep 2026 10:13:55 +0000 (UTC)
-Received: from redhat.com (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 848C01956095;
-	Mon, 28 Sep 2026 10:13:51 +0000 (UTC)
-Date: Mon, 28 Sep 2026 11:13:48 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Yonggang Luo <luoyonggang@gmail.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
-	Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
-	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
-	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-	Fabiano Rosas <farosas@suse.de>,
-	Laurent Vivier <lvivier@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Alistair Francis <alistair@alistair23.me>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	=?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
-	qemu-arm@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [PATCH v4 46/55] qapi: add query-targets
-Message-ID: <aro93NuZBXYGbD33@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-References: <20260926070057.1234-1-luoyonggang@gmail.com>
- <20260926070057.1234-47-luoyonggang@gmail.com>
+	s=mimecast20190719; t=1790591481;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ncJygWXyDwSDtfOrrDTJhD8n3lBQBywOBBfJbF/rpYs=;
+	b=bQZWVKzdJalQOmfxPiYO9LLC2bpVvWX8TGz5uNBPJXw7/6UP2slhlCNonQu+Kw81/D8m9r
+	YDVEn/ss3ZkDWNYXOco/9DqOnQeFRsxa3vYfr8Qh3LHAS9Owp6ntis2W4n2VdG0yhhRw/U
+	cmc3Rr+mzPpXVZRwhPwgTkZ8ONXYXh0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-47-yfIwvOmZPNCNI7D0AqVdWw-1; Mon, 28 Sep 2026 06:31:20 -0400
+X-MC-Unique: yfIwvOmZPNCNI7D0AqVdWw-1
+X-Mimecast-MFC-AGG-ID: yfIwvOmZPNCNI7D0AqVdWw_1790591479
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49e6ba4abdfso31312255e9.1
+        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 03:31:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1790591479; x=1791196279; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ncJygWXyDwSDtfOrrDTJhD8n3lBQBywOBBfJbF/rpYs=;
+        b=LLfHoAqMX1aMROUtL7jkYlwegXn6NLXlwBpFOXDCTW7ZREhmIOhxtopDrJNxvH1jMr
+         57hgESpRVS2aMMkqYtnXfI9aItZn4+WXxI8Z2G4BS0dz48bidd56trrg41UfYQnE9Tci
+         IJIoHS3oxPSiTcfdTsg14HRyhT26x1Tux9t+fiIJMH1x+Vw8AmlVtDwm37MDstfAQx5o
+         3nz0lmJScXPLi7g0HI9AcX4hcWuzHVxVNGNg2tu1msfp4Z6owAa2sX767r8O81TQQJ5B
+         aN++X9pVsZxNBVNCZjwoRVdu9d8wSZXhHTd/YXQTIvlX3d6o2qIehIHlxSFFQ+EsjrnP
+         tghg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790591479; x=1791196279;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ncJygWXyDwSDtfOrrDTJhD8n3lBQBywOBBfJbF/rpYs=;
+        b=HU1+z4SpaehFn+UbnLPrH16n87DmIvlSi1H676rIDKKywa51Uxdzk5wK1++Oe1vTrW
+         Wqoc/W1DvSks+WvIBFv74Qm8tkb656CcTSeAP+j2UcwL+BdePj2x5qmNWpx/rBaXb3pl
+         EQG+N1wDPrv/++QeMEgFkVGTQm1xCPw89QUarBDLz0AjuA0GkWRap/dBPp7B1j5mNBPN
+         G7CnZ8YDvyVfla8lbcgqrDT4mbiHwhNREk1RPmcudBT3NeedNA2PAUam7Padp2AkT9ly
+         aGalqWjl3kFD91yUbcifWIZ9mnyAVrmbqNXIW4LdZiw7lC6bR4mfCKuzcjY47mPx1v50
+         71jA==
+X-Forwarded-Encrypted: i=1; AKwUvBx/8vppO3Jrj1Nun9+UAtTQP96yKCFqqzaWRHfzJ24wiSPKdJgr/D+m/wMApibdpM8f9Co=@vger.kernel.org
+X-Gm-Message-State: AFuF++kP7N3/dPA65sItyHVRi+CM/9ytsfDpALy79vBaMeNHw6ZS7XKW
+	o2qws1T5wnoCuuQzEHnbLSdS5f1RLihsPdXVVsTKANeIUQg0Xhr6VNblRH+iD9UrBCtHjU29mPX
+	/BILNoXWV99H6U+OjMS6eN53TaMG59v8b41QnfwGAoqpR4e6vPDPWMg==
+X-Gm-Gg: AYBFou0mSxNzkm1x4eKj1526nAFxHIKIJkpZip3CZO/nKhABjtmfbNy0bi+Biq/Hp9G
+	Jb9Qnak/xl3ou7uqJF2/lZYeO8gJD7xWWN4QWTudRwas4AR1FgKeUtU2KFk/tsJ6arNheSlOawJ
+	MSehagOEFm23wiqjsNTmd4tZc3cT1rVmHgbLMy8pPX13K7tNnRP64VI1D+Z/TeeFwcB1xH9spv2
+	r6WlupRVZq3OJSa6uBkqZrpRHB0LplVEpZxaRrAcSCAPGjdGSePPXroGeDiSnRhRgvcpG5h5Edu
+	T1DPMnMeVEEMSDtxbYfD6/L3jKKbcXlwZTjyM4rFuX4I1PrAqfOH+6yUA7ZmvAYpV+sgvCu2y1X
+	qCAJi
+X-Received: by 2002:a05:600c:a10d:b0:49f:e8bf:8f9b with SMTP id 5b1f17b1804b1-49fe8bf91bbmr166404275e9.4.1790591479279;
+        Mon, 28 Sep 2026 03:31:19 -0700 (PDT)
+X-Received: by 2002:a05:600c:a10d:b0:49f:e8bf:8f9b with SMTP id 5b1f17b1804b1-49fe8bf91bbmr166403775e9.4.1790591478661;
+        Mon, 28 Sep 2026 03:31:18 -0700 (PDT)
+Received: from sgarzare-redhat ([193.207.134.73])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a64ed6esm29113119f8f.29.2026.09.28.03.31.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 03:31:18 -0700 (PDT)
+Date: Mon, 28 Sep 2026 12:31:05 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Asias He <asias@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 3/5] vsock: Enforce no-transport invariant for
+ TCP_LISTEN sockets
+Message-ID: <arpBYXWb9pohx-8v@sgarzare-redhat>
+References: <20260915-vsock-connect-reset-closing-v2-0-a1d9abb472f7@rbox.co>
+ <20260915-vsock-connect-reset-closing-v2-3-a1d9abb472f7@rbox.co>
+ <aqp7CV9DnfsG1GJc@sgarzare-redhat>
+ <0bc40e5c-8790-4a36-84bc-80e0bfe6b504@rbox.co>
+ <arT3jXoS7OaU6Tsc@sgarzare-redhat>
+ <6c1516ca-4699-4d9b-af6e-c7762759d495@rbox.co>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260926070057.1234-47-luoyonggang@gmail.com>
-User-Agent: Mutt/2.4.0 (2026-06-19)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+In-Reply-To: <6c1516ca-4699-4d9b-af6e-c7762759d495@rbox.co>
 
-On Sat, Sep 26, 2026 at 03:00:45PM +0800, Yonggang Luo wrote:
-> query-targets lists each linked target, including none, with its
-> arch, endianness, and the machines that target accepts.
+On Thu, Sep 24, 2026 at 11:26:47PM +0200, Michal Luczaj wrote:
+> On 9/24/26 12:17, Stefano Garzarella wrote:
+> > On Tue, Sep 22, 2026 at 03:18:13PM +0200, Michal Luczaj wrote:
+> >> ...
+> >> I've addressed all your other comments for v2 and went through Ashiko's
+> >> reports (side effects of lockless peer_shutdown write, imperfect
+> >> no-transport TCP_LISTENER enforcement). I've decided to try the
+> >> eager-unassign approach. I think/hope this way we sidestep the lockless
+> >> writes and enforce the invariant without breaking the API, while fixing the
+> >> bugs.
+> >>
+> >> This should probably be RFC, but I'm posting as v3[1] so netdev's LLM can
+> >> have a go (too). Hope I'm not breaking any workflow. Let me know what you
+> >> think.
+> > 
+> > I think you can add RFC also on a v3 patch, just to make it clear you 
+> > are not sure it's ready to be merged.
+> > 
+> > That said, thanks for that :-) I'll take a look today or next week 
+> > because I'm off tomorrow.
+> > 
+> > I'm just worried it's becoming too big for net. Anyway, I'll comment 
+> > there.
 > 
-> Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
-> ---
->  hw/core/machine-qmp-cmds.c | 30 ++++++++++++++++++++++++++++++
->  qapi/machine.json          | 35 +++++++++++++++++++++++++++++++++++
->  2 files changed, 65 insertions(+)
+> Yeah, I get it. Would you rather have a single net.git patch[1] for the
+> original report + keep all the rest for net-next, or do the whole series as
+> is, but slowly at net-next?
 
+I'd go with the first option. Let's try to get the fix into net first, 
+and then move the rest to net-next at a reasonable pace. WDYT?
 
-> diff --git a/qapi/machine.json b/qapi/machine.json
-> index 6aaa2af709a..d8cdea6203e 100644
-> --- a/qapi/machine.json
-> +++ b/qapi/machine.json
-> @@ -307,6 +307,41 @@
->  ##
->  { 'command': 'query-target', 'returns': 'QemuTargetInfo' }
->  
-> +##
-> +# @TargetMachines:
-> +#
-> +# One registered system target and the machines that can run on it.
-> +#
-> +# @arch: the target architecture
-> +#
-> +# @endianness: the target endianness
-> +#
-> +# @machines: machine type names, not aliases
-> +#
-> +# Since: 11.2
-> +##
-> +{ 'struct': 'TargetMachines',
-> +  'data': { 'arch': 'SysEmuTarget',
-> +            'endianness': 'EndianMode',
-> +            'machines': ['str'] } }
+> 
+> [1]: Basically
+> https://lore.kernel.org/netdev/20260915-vsock-connect-reset-closing-v2-4-a1d9abb472f7@rbox.co/
+> + your comments addressed + addressing one of Sashiko's comments, and
+> ignoring the transport-reset-surprise one
+> 
 
-We already have  'QemuTargetInfo' struct which is used
-with 'query-target', that should also be used with the
-new 'query-targets' command.
+Yeah, that!
 
-We need to add the 'endianness' field to QemuTargetInfo.
-
-I don't think that we need to report machines though.
-We already have 'query-machines' which gives much broader
-information on the machines. "MachineInfo" needs to
-gain
-
-   "targets": ["SysEmuTarget"]
-
-to list which target(s) a machine can be used with.
-
-
-> +
-> +##
-> +# @query-targets:
-> +#
-> +# Return each target linked into this QEMU binary and the machines
-> +# whose availability check accepts that target.
-> +#
-> +# Since: 11.2
-> +#
-> +# .. qmp-example::
-> +#
-> +#     -> { "execute": "query-targets" }
-> +#     <- { "return": [ { "arch": "aarch64", "endianness": "little",
-> +#                        "machines": [ "virt" ] } ] }
-> +##
-> +{ 'command': 'query-targets',
-> +  'returns': ['TargetMachines'] }
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
-|: https://libvirt.org          ~~          https://entangle-photo.org :|
-|: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
+Thanks,
+Stefano
 
