@@ -1,267 +1,152 @@
-Received: from mail-ed2-f39.google.com (mail-ed2-f39.google.com [74.125.228.103])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111694D9F99
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 14:24:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.103
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790605498; cv=pass; b=hUQ/coCVzGctNKNLxZK/nBc+tsFHsTMKFokUHWGGYrA/2W9/aVM6Uo2mRheC5SHGEgci6gQ39K6ik2hT9ypTrljXNFoWyOiuR3o6gI4gGTq+Ixc3mnGFc93a6i11F0VqP0Myi39q0+ladR2HVg422d2MM3SNxU8X+d0yqlXr5L4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790605498; c=relaxed/simple;
-	bh=zV/x34xUvR3c3WOoN6J6UJVr6RTUzKrUeID2Y6fuWGU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a/KDs3zx1r7WPwpqVgZBP4yH4P7HyS+30HV4lRYkM7uMZ3lKJ2C+jjgDWZKRRHWL8ejNR+wX1hdD+nGUTsqX29w/1a5Fgs2+EggdHRUgaMKnK/crQO+sJEsiLLrdk5EWpkn44Xa66gbGwuSAJH0CK6JbtI2u/WzvawXCDqan9mU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BL5W5v7I; arc=pass smtp.client-ip=74.125.228.103
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20204DA9AF;
+	Mon, 28 Sep 2026 14:25:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790605556; cv=none; b=gsAuTYSSfowwVrtu/IJbH5Pm4epnbC0TmnCkHidM6LIySYmJBbGNvTErvYBwBY0s/7YcGGUXw6kaXVxpxodDTREXjN93iVeX16ay8A4gtkjOepqI4dbA++QTDSR1vEpATRCjq8rJEdNT73jcF3RR8z1LlipANXCKqhfrEDSFoY4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790605556; c=relaxed/simple;
+	bh=E4OtNlRF+OEgy1s/cU8oXVilO2mjtnvoa9OcBCOQmcQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kKPNXipMJw7NIOS9PtqgTLSCcrEtzijmyYjJY3B2YcfssQC34oS4V49h18lo0ME35ObPplfQYxwVAsXgtXOQQY7Mewv+6o1PJ+auKYt5eJ86glmN3uimJ+FL1X5rLmn8P9ir1Q1rE5F0wVxHLGVlQBVU3Gz/jmgFJfOr3L5ciUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P07mXZIx; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BL5W5v7I"
-Received: by mail-ed2-f39.google.com with SMTP id 4fb4d7f45d1cf-6aa0ee64afdso3606431a12.0
-        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 07:24:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790605494; cv=none;
-        d=google.com; s=arc-20260327;
-        b=B3mhsZZ4NFu5W/4noK323MbFFyae1LELG9qSaQ8hHM0cgRVM+4mCCvOD3Gic9TrMjf
-         WpuTWPR48mnfiJ680qaZKMtJioIY6e1DZ1wKnKa+QLUrXm1jFl6VMD2DOj2lLyA0Yyte
-         qeSQcEmXmN4/RkcrpFhPbVIIk1tAC0EBlKtI0UQNsgG8CFYXiBYgvUG0bJiB0NXawlSw
-         K7yeOFHwkIBbm90EC+CmABl+G36t0qq+d43oDiMVeDD4CY2vl5/W/NgV6Z8Nc0xXbkgD
-         lKTWGL/eQpcCrQ0sCL/u/SuN4oacZrv2dEe0/Nb1j5pDdtK35QQ1rat4m6XbTcgHAoZn
-         IOBQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:dkim-signature;
-        bh=cFi7chTl/dXnccUH1qK76VepQPSMCTxgrhW/RRhkUhE=;
-        fh=gLLZOjKlpIatgfWYBDie6havjwWZvKX+cV7S2Vx2XEg=;
-        b=eGCCzpVPLhIbaLbPW6nIttXoEk4LTWM09tvYeWEot96s6ibwa72G7V5RrRIhszPOOt
-         mTFUOX31AKFsr7vT+sWQozW8jUKTr5RMkLDXiigNbiB4db3gHryIpjOvVnIWRuhDN4Jo
-         /8HALwmFHn4Szj0TObRy03aevbc3ol4Bbk91+HRos39nRgyCz3WmBtPKcDyDatxe9OWu
-         RXdM4dQHlAhcJJU6ShISFYJW2icFrP/Ycib5XJACclpC5M8OlLLrEPI/okCDUPeNYG32
-         skCUKYPD9hRRG4WuQsfyfjp0KRauh7yWqxC0gRducmJGQKeAHx1STBPdKTdfQC7uRGxe
-         8y+Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790605494; x=1791210294; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:reply-to:in-reply-to:references:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=cFi7chTl/dXnccUH1qK76VepQPSMCTxgrhW/RRhkUhE=;
-        b=BL5W5v7I1F7SEwhk0FoNAoeMyxvf/NSXXwY/2m5zRYOb92SX5OctnqfS0de15lRnSB
-         gYoPNtz/A2KfbZm4INcXSdR7zegWRXOy9TE0byLkyPXpUiqPpJn+PQoTsWhziRrzQB0N
-         wIA1Emr3Jvh1+qf/7qgGX42gQkFeUFVcMWImQgKW/uv7TZJZ4cRN8BheyHIOss8Ca7DQ
-         0kwaWm7er9BbWFLbvKxm4oSna1pg2Zl5ZcWiesZK1TMD8bjDTBBwAPKwNf627MfOaClU
-         1k24V9LF1gL311JOUHsm+MY+lJLXnLu5HPi4XdYmyw3SwE29Hg1Y2KhWbNYTB5ljrVQ2
-         ZprA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790605494; x=1791210294;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:reply-to:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cFi7chTl/dXnccUH1qK76VepQPSMCTxgrhW/RRhkUhE=;
-        b=ynrLFXaQ4YyQwgOzBQJzFdmdZibWQKCMAunFnr2Sz6Dx5jXM5VlYsmgmEDBYEFbc/i
-         HfiwF3UrSWR7GsBkW3shxrV6vVTsloxkdDdZn0HufUW8+Z+EE+UYaGAl3g8gFoYXlhew
-         FK/rxHkHBDvfy4Y9yuwV7k+6nFZVVflUjuj4au5IwtT7XQ/ddwhJl3quXjNkyJCfRopD
-         a1eus+7yO4PuWELQsO6S7Qri7zQPz4nFfcu4jn3DklL8WJ1nzRUF1dmBnBR5xHUSa9hn
-         Ff7cxf+gP9lGV1s8vpYBj5yrAPUzseDwShFk5B4ysma8qNyG7QR8L8UVduOQqS7bUGH3
-         euUA==
-X-Forwarded-Encrypted: i=1; AKwUvBxWOk/wQJpnJtldpoj6ReoHy1/WxfzRY4wsiuZK2M+FonrpfCb2CoICBh5DbAEkuOhbwOw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKTCFCWDHs2Om9MihVSvOhluLKRa45vVIsz0n4bXthbdc/+3IN/
-	USwOUBp5aQxOWOK0yf15WqljaFJRiB/1KI740CCEgTQcORr6vW8MosfOitKPwjBom+YI8AQVni9
-	6uGbugKmrvmuJNWSSWhNW63SYaG/pi3c=
-X-Gm-Gg: AYBFou22BobB4nVRfvMZuShES6GWTymqHz08vx8P9IBDrW1fGprYeVFERA+BQGb6LC4
-	WuaHO+qajewcIbpIWx/tHHwxjIPWmn4F7cuz9xlOwQlUYbAG6nTBHe6esps9eN0J+Xxkm6Vwgfb
-	F4GlIwS/eluxQkHRfCpO11QNYDkkcSa4RvWKcjDrKq3u3F+snNWfEjLQVwP3zJc4pZ9tj0vPmUh
-	4v9+aNseTc6/T04Xr6USOWYCsEqXrcQJis/ruRxWSnzN6lEEZUy+F2opoVjOP8ah68f0FXCHeJu
-	xof1wUMy7tGDZgSbtfZHxaslMJAgbuHhgPfyGktcz6iNQVoNbskn1lw=
-X-Received: by 2002:a05:6402:2406:b0:6aa:734b:1a2d with SMTP id
- 4fb4d7f45d1cf-6aac908f34amr10185339a12.39.1790605493584; Mon, 28 Sep 2026
- 07:24:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P07mXZIx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790605554; x=1822141554;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=E4OtNlRF+OEgy1s/cU8oXVilO2mjtnvoa9OcBCOQmcQ=;
+  b=P07mXZIxbAIkzlfxQaeK5yLytZUndHQxPGLisg6ks6VLFJEk3A8/BSTW
+   EY8lAcwY+CQ5VZtLtE2fM1TR7/mBpvQduVgzY4xuB25CMu9UfqXJAH4Ct
+   x4iAYf14E1ZG8bjoQOTp4rix/2r9X/bB3KqUkL+6RPZeRvtRYLHG6tDEl
+   mOfUpqdbgp9RWZm2qsJIAxZkSxQaLNMp4SbNlGgM3BTmRNJeU1rPE64qC
+   ffCqU0wtojRbNwdyhtTVc7kRZtTysghUnLOx33ociMWtgw8+7s7l7tPN1
+   Nyrly0qWoxt0KGueGGTdv4Wygpd1i4ubCLjeZAj6sM9KeW/Ro8qlYUTXj
+   A==;
+X-CSE-ConnectionGUID: E8GLGnpeShWIhkN8k9eNAw==
+X-CSE-MsgGUID: iN3ehfRRS5S0lDCxapI1UA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="107685001"
+X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
+   d="scan'208";a="107685001"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 07:25:54 -0700
+X-CSE-ConnectionGUID: zi23QJQET7+/OdM4ZQ0f4Q==
+X-CSE-MsgGUID: loOYMG02Qpa0tArkYDyiJA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
+   d="scan'208";a="275101488"
+Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.111.49]) ([10.125.111.49])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 07:25:54 -0700
+Message-ID: <14006b3b-4782-4331-a4eb-e89bfaad58c3@intel.com>
+Date: Mon, 28 Sep 2026 07:25:52 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260926070057.1234-1-luoyonggang@gmail.com> <20260926070057.1234-47-luoyonggang@gmail.com>
- <aro93NuZBXYGbD33@redhat.com>
-In-Reply-To: <aro93NuZBXYGbD33@redhat.com>
-Reply-To: luoyonggang@gmail.com
-From: Yonggang Luo <luoyonggang@gmail.com>
-Date: Mon, 28 Sep 2026 22:24:39 +0800
-X-Gm-Features: AclHuK_TF7EH46o0FV_02vjDQ7TfERSCRkWxvOvxDGTBInzpkGOWpF_MFAtARQg
-Message-ID: <CAE2XoE9AAz8KfJrpErBaZvW5p5COxfE1yveA_AMPwa0j=ghyEA@mail.gmail.com>
-Subject: Re: [PATCH v4 46/55] qapi: add query-targets
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
-	=?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@oss.qualcomm.com>, 
-	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
-	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>, Fabiano Rosas <farosas@suse.de>, 
-	Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Alistair Francis <alistair@alistair23.me>, Peter Maydell <peter.maydell@linaro.org>, 
-	=?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
-	qemu-arm@nongnu.org, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 02/10] x86/virt/tdx: Convert the version metadata
+ reader
+To: Chao Gao <chao.gao@intel.com>
+Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
+ "kas@kernel.org" <kas@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+ "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
+ "mingo@redhat.com" <mingo@redhat.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "tglx@kernel.org" <tglx@kernel.org>
+References: <20260918132946.76533-1-chao.gao@intel.com>
+ <20260918132946.76533-3-chao.gao@intel.com>
+ <390fc4d56769f87d91949e900262640b52b505b7.camel@intel.com>
+ <arS6D6KoPbqVBtPl@intel.com> <2042fa92-0b33-4ce2-a288-8eebda2b7305@intel.com>
+ <arpQReaF8q8ENnhv@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <arpQReaF8q8ENnhv@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 28, 2026 at 6:14=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
-edhat.com> wrote:
->
-> I don't think that we need to report machines though.
-> We already have 'query-machines' which gives much broader
-> information on the machines. "MachineInfo" needs to
-> gain
->
->    "targets": ["SysEmuTarget"]
->
-> to list which target(s) a machine can be used with.
->
+On 9/28/26 04:32, Chao Gao wrote:
+> Then I would go one step further and move the mapping table into
+> get_tdx_sys_info() too, so it sits next to its only use. Using the
+> "features" metadata class as an example:
+> 
+> static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+> {
+> 	static const struct field_mapping feature_mappings[] __initconst = {
+> 		TDX_SYSINFO_MAP_FEATURES(TDX_FIELD_TDX_FEATURES0, tdx_features0),
+> 	};
+> 	int ret = 0;
+> 
+> 	ret = ret ?: read_sys_metadata_table(version_mappings, &sysinfo->version);
+> 	...
+> 	ret = ret ?: read_sys_metadata_table(feature_mappings, &sysinfo->features);
+> 
+> 
+> version_mappings[] will be the exception and stay at file scope because
+> tdx_module_run_update() reads it as well.
+> 
+> Let me know if you disagree.
 
-This is my final design for the query-target / query-targets / query-machin=
-es,
-for consistency and testability.
+Two concerns: One, the structures are wide and the extra indentation
+might makes them too wide. Two, this separates the code from the
+function header. That might hurt function readability.
 
-Per review: reuse `QemuTargetInfo` for both target commands, drop the
-per-target machine list, and let
-`MachineInfo` say which target(s) each machine runs on.
-`QemuTargetInfo` stays small; `query-target` and `query-targets` return a
-derived struct that adds the target's device and accel Kconfig state.
+The value of making a static variable is also lower for something that's
+const because you don't have writers.
 
-## QemuTargetInfo
-
-```
-{ 'struct': 'QemuTargetInfo',
-  'data': { 'arch': 'SysEmuTarget' } }  # since 1.2
-```
-
-`mips` and `mipsel` are distinct `SysEmuTarget` values; the target value
-identifies the system emulator, including its endianness, rather than only
-the underlying architecture family.
-
-## QemuTargetDetails: QemuTargetInfo plus kconfig
-
-```
-{ 'struct': 'QemuTargetDetails',
-  'base': 'QemuTargetInfo',
-  'data': { 'kconfig': 'any' } }
-```
-
-`kconfig` maps every device and accel `CONFIG_*` symbol to whether it
-is enabled for that target.
-
-For example, `TYPE_NITRO_ENCLAVE_MACHINE` is available only when
-`CONFIG_NITRO_ENCLAVE` is enabled for the target:
-
-```
-{ "arch": "x86_64",
-  "kconfig": { "CONFIG_NITRO_ENCLAVE": true } }
-```
-
-Examples below are trimmed.
-
-## query-target (now returns QemuTargetDetails)
-
-Adding members to a return type is backward compatible; existing
-clients reading only `arch` are unaffected.
-
-```
-{ 'command': 'query-target', 'returns': 'QemuTargetDetails' }
-```
-
-Single-target binary (`qemu-system-aarch64`):
-
-```
--> { "execute": "query-target" }
-<- { "return": { "arch": "aarch64",
-                 "kconfig": { "CONFIG_ARM_VIRT": true,
-                              "CONFIG_Q35": false,
-                              ... } } }
-```
-
-## query-targets (new, returns ['QemuTargetDetails'])
-
-Single-target binary:
-
-```
--> { "execute": "query-targets" }
-<- { "return": [ { "arch": "aarch64",
-                   "kconfig": { "CONFIG_ARM_VIRT": true,
-                                "CONFIG_Q35": false, ... } } ] }
-```
-
-Combined `qemu-system` linking aarch64 and riscv64 (`none` is always
-present):
-
-```
--> { "execute": "query-targets" }
-<- { "return": [ { "arch": "aarch64",
-                   "kconfig": { "CONFIG_ARM_VIRT": true,
-                                "CONFIG_RISCV_VIRT": false, ... } },
-                 { "arch": "riscv64",
-                   "kconfig": { "CONFIG_ARM_VIRT": false,
-                                "CONFIG_RISCV_VIRT": true, ... } },
-                 { "arch": "none",
-                   "kconfig": { "CONFIG_ARM_VIRT": false,
-                                "CONFIG_RISCV_VIRT": false, ... } } ] }
-```
-
-## query-machines: MachineInfo gains targets
-
-```
-{ 'struct': 'MachineInfo',
-  'data': { 'name': 'str', 'typename': 'str', ...existing members...,
-            'targets': ['QemuTargetInfo'] } }   # since 11.2
-```
-
-Combined `qemu-system` (other MachineInfo members trimmed):
-
-```
--> { "execute": "query-machines" }
-<- { "return": [
-       { "name": "virt-11.2", "typename": "arm-virt-11.2-machine",
-         "alias": "virt", "is-default": false,
-         "cpu-max": 512, "deprecated": false, "secure": true,
-         "targets": [ { "arch": "aarch64" } ] },
-       { "name": "virt", "typename": "riscv-virt-machine",
-         "cpu-max": 512, "deprecated": false,
-         "secure": true,
-         "targets": [ { "arch": "riscv64" } ] },
-       { "name": "none", "typename": "none-machine",
-         "cpu-max": 1, "deprecated": false,
-         "secure": false,
-         "targets": [ { "arch": "aarch64" },
-                      { "arch": "riscv64" },
-                      { "arch": "none" } ] }
-     ] }
-```
-
-Single-target binary: every entry has exactly one element in
-`targets`, equal to `query-target`'s `arch`.
-
-A client that wants the old "machines per target" view filters
-`query-machines` on `targets`.
-
-## Open questions for the list
-
-Machine names are not unique in a combined binary (`virt` above exists
-for aarch64 and riscv64). `typename` is the unique QOM identity, so the
-list contains one `MachineInfo` per `typename`; `targets` lists the
-targets on which that machine type is available.
-
-1. `kconfig` on `QemuTargetDetails`. The use case is tests telling "not
-   built" apart from "missing". Open points:
-   - `'any'` (a JSON object) vs. a list of enabled symbol names.
-     The object makes a typo (symbol absent) distinguishable from
-     "disabled" (`false`).
-   - Stable, or an `unstable` feature, given that Kconfig symbol
-     names are internal and can be renamed.
-   - Size: several hundred entries per target, which is why it is
-     in `QemuTargetDetails` (`query-target`, `query-targets`) and not
-     in `QemuTargetInfo` (which contains only the target architecture).
-
---=20
-         =E6=AD=A4=E8=87=B4
-=E7=A4=BC
-=E7=BD=97=E5=8B=87=E5=88=9A
-Yours
-    sincerely,
-Yonggang Luo
+So I don't hate it especially for 3 lines, but I do think it generally
+looks more natural to have these at global scope.
