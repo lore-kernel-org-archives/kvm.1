@@ -1,194 +1,236 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0738C3803E8;
-	Mon, 28 Sep 2026 18:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790619831; cv=fail; b=F3pl9CAyI/Ml8f+ebIu9RZ+jeQt/YK2EJz+pPbKNygkwTasQUP8ti86IvHCaIUchkDCOZg91HJ3c/DA7ap5sgDX+95mVsJdqO7cfG5gafrvIpem8vV33wHl8bQ7bASdRoMGRfZgt1eutaDkP6V7fn5w5s/Q6wvRePkW52RJ78PQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790619831; c=relaxed/simple;
-	bh=PtukrGRxvmwGDW9l+x2GD7utIb3vc58PpwzJAqm3H+Q=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ThoGp7eJYlraNaXpUob0Bzn+tJm5yOKVosHYBAv/g/Me7D2rgW7DRESQYyLEaHp0nGmwc0nxMKe7SGuOfc/YMsqTAGa9elXeYSdL/AsOaYzeflDA9M+8+CnF2H8PUH9GTLFAwpTVBtlmvZcgwy4VTP4Kmo7c8DnJqSR8Sfemhsg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cHAVp88T; arc=fail smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6453A386568;
+	Mon, 28 Sep 2026 18:28:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790620109; cv=none; b=u5SAfST5bsJKVA2oFpI0LAIXqKrMal7V1PJ52IWvJIFIxXPf9zkfAu+3hSJRPKrgv+bUZaCLzaiEYh0XrYoPCiNYDzfVyuTLoSDnOcbnyXVXUmHw1uYWaZnHlPAXskaG84EmsA4qA5YTjpmLpUOmgrtST0mVU4PVoTL1YxAKX8I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790620109; c=relaxed/simple;
+	bh=f3DvkzW2iQw+m17VNhkq0p0aYIFiioIzjPtp6J3TSN0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D0S9MgncwxV9/65T5YF37TRP2gzXMSYfWGsTfmN2v20S+cwG0gdZNv3OMGuLA0sRQ3MB5uRrQvUeWrBHyl2YYBO4TXOUH6y7CoF5M5pATtNsQLFhd4S6vB8JacE1IL81TE8vuHvvq/ie6o5OdFCa4rCPcUnqNoVEnsUoOXUtmn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=mcFYTgd3; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cHAVp88T"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790619831; x=1822155831;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=PtukrGRxvmwGDW9l+x2GD7utIb3vc58PpwzJAqm3H+Q=;
-  b=cHAVp88TDD3Gx+hoIzhiyDIOfqjYcEfHCQji9nEvJBgWMHHEwhMRonqP
-   3HcKojPwF1BpUcqYaxGu2mYVNBeG1U+QNzMuGcX5JkadGOebhAKPaVXG8
-   SvfPoCbB79a5JCcqZ6cPVONLkjD5CNQ1vHMO+fcUGEi7JrKH5xtlXhJJK
-   Sz2YWi3QeP1v29EkOxJ9bL5mbNB63GGJVrV4Xi2Mb2SRRLmkOls2k8ejm
-   07YQp2x3N2No4DaCg7d693zzHF+7IQ9Bd/xS/dItzseK7pHZ2WYBiF5ir
-   dpfO2Fxq+JgRnZ4+6EcMFOPx/v8fL9FyzwOWtJY4TiBci8QX2MwY9mbXn
-   g==;
-X-CSE-ConnectionGUID: JpZ52pGaQ6qHdrfDRwKmYw==
-X-CSE-MsgGUID: GG1GuuL2THup3wt7HpmVIA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="90194385"
-X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
-   d="scan'208";a="90194385"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 11:23:50 -0700
-X-CSE-ConnectionGUID: dfdsKwWvSf+v7PgCtyanPQ==
-X-CSE-MsgGUID: PGb+kN9dRyO4OtJykjegew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; 
-   d="scan'208";a="273736473"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 11:23:49 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Mon, 28 Sep 2026 11:23:48 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Mon, 28 Sep 2026 11:23:48 -0700
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.27) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Mon, 28 Sep 2026 11:23:48 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qlK9SqhvX5F73c5U/nnKtVxAmTKlv/Ic7j2+V1E6v1QrbAx9k5lcSQTIBZLLGuCOrqubRjj7mWaZ+Mxrlo1BUuNYdAoia31fz52Ayqi/L8wz131pdNQOMiqfLDUdfJRnX0wih692wskB6YQQDdcaLXUwDOg6jKQkVYSW5de3U8xjKsXYtUYhiaFkoScw18DW9Ug+T1YsLF3JNZBpkr4CyUIsiD4tR36IkdrR/WH22f4ycyKRP6kFrvvFTKdIsrQvylmo1jUhOOnP2hsAf7aZk6Qxep+rAt6gw2eDlPopXpVAe5ArP4lDVe/RAs3oaqgTTZdx6rpXsShzHwT/PR9gGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PtukrGRxvmwGDW9l+x2GD7utIb3vc58PpwzJAqm3H+Q=;
- b=zDfwtrTvc61Gdla6vAbidCmi52gBTt8n6Uf9/oY7trZ4CctJhMH4UkMamZZGFOQIXy3A3J2kVoFaXgTRo2JqYtBzedqDF3u39sphtzz2lss4zCx3JZwWjrv9/EPeYZY5Sigis85YeUVwySiI3dTpXswJznr+PKNYx5MfaRNZbMQKUgdA0/0AAMpBCYW3D9vvf2Ol0oj0bcBWBTp2/TjVvaKMlZ5cwHnoS07ET5aQROUiWQvK8uzXCn3pU6RB65dUx4hyA6Jfct7P3/OEwkQRrCr5bgFKtiZRlL6sAL+cnVx/ny5YJnCEojR/XlOe6UQhnm5+Ol/TP2a4uXfHjdvpfQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6771.namprd11.prod.outlook.com (2603:10b6:510:1b5::20)
- by MW5PR11MB5883.namprd11.prod.outlook.com (2603:10b6:303:19f::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.23; Mon, 28 Sep
- 2026 18:23:44 +0000
-Received: from PH7PR11MB6771.namprd11.prod.outlook.com
- ([fe80::effa:162e:c9c9:a1b4]) by PH7PR11MB6771.namprd11.prod.outlook.com
- ([fe80::effa:162e:c9c9:a1b4%4]) with mapi id 15.21.0451.014; Mon, 28 Sep 2026
- 18:23:43 +0000
-From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To: "sathyanarayanan.kuppuswamy@linux.intel.com"
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, "kas@kernel.org"
-	<kas@kernel.org>, "Fang, Peter" <peter.fang@intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
-CC: "seanjc@google.com" <seanjc@google.com>, "bp@alien8.de" <bp@alien8.de>,
-	"x86@kernel.org" <x86@kernel.org>, "binbin.wu@linux.intel.com"
-	<binbin.wu@linux.intel.com>, "hpa@zytor.com" <hpa@zytor.com>,
-	"mingo@redhat.com" <mingo@redhat.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"tglx@kernel.org" <tglx@kernel.org>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "Bityutskiy, Artem"
-	<artem.bityutskiy@intel.com>, "tony.lindgren@linux.intel.com"
-	<tony.lindgren@linux.intel.com>
-Subject: Re: [PATCH v5 4/6] virt: tdx-guest: Add a helper for the Quote buffer
- size
-Thread-Topic: [PATCH v5 4/6] virt: tdx-guest: Add a helper for the Quote
- buffer size
-Thread-Index: AQHdTzGrpyv2GJzwpkGpI0tjfVPUWLbkTpaA
-Date: Mon, 28 Sep 2026 18:23:42 +0000
-Message-ID: <27febde6bbd1142222f0a21db4e5180e0bd3261c.camel@intel.com>
-References: <20260928100913.2265687-1-peter.fang@intel.com>
-	 <20260928100913.2265687-5-peter.fang@intel.com>
-In-Reply-To: <20260928100913.2265687-5-peter.fang@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.44.4-0ubuntu2.1 
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6771:EE_|MW5PR11MB5883:EE_
-x-ms-office365-filtering-correlation-id: 93d244ba-3caa-4542-7ec0-08df1d8da099
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|7416014|1800799024|23010399003|4143699003|10067099003|11063799006|56012099006|22082099003|18002099003|38070700021;
-x-microsoft-antispam-message-info: AC7Erw0so4wjRw6lWD9PZ9xZqE+yDKaaaqThaDSJQa5FaXMZBCRGhUmZec/x/Dv82Qq0uSWZiVvrlsJ9cNAvm/xlrV7O5Ru2s8pHTs2YfWLHZPpSMEBYNXM8kDZqgRaCQLJ3Fic15k0rqQu7nLvAIe6mtohJrRE3WGQALaLwbPgU7B33F+MRq6PQXv+Q1Rr9cG8OsDNiFfPtGJX1D3RIAftXnKyX7N9mmn9tfYr8hpZzsz7j7Xyfw2AbJpzP4DtrYOkk771URhJ4Vi8i2MlW6RwXMId3tUSMqVek1qt/acgvGIzfXkWBJAUTtfQuFB438YQ9dPxdgshVF+nShGwWmwevITOeyVvjfhiTnNCtWGxYerJtURqkP38VIwf+vZEL62PbDIYvhLR+/yg75lLlOi7n1/fHqNnMQuLPbgLg4IK+LWSe/so1cK13QTUQwwFggNkD2+UrMReESnn+3suv3uUbi1alOIDqLyZNvMiQRyOh8BOUwj+OCjp/p4WAhVcxrj+5bYbc1b6Zshj1VRpRdKPUkWH5Dq4Nd5TXWCngI0uuJQ1vNbaHWfUr1e+BYWycOgd4wUJBjcxmwzWSnUom9gn5HYh+HsqTCI9AIiFMY8oyX4rVfOJuL+xEg3VT7EbgRHBMwGwS1pZOEIWVZmQ0azP6JR5c7eqX2zcVdfIFYHZJAi6lSY44BdlBekTGafARjBpEKUQSs6oVHVp58ljfp+rxN399G1dWOX6aQGwyP0k=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6771.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024)(23010399003)(4143699003)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?MG5ibTRQL09YVDIrK1NiRk9LR0FvV1gyUCtsb3NUakxYY3hxM3Z1RlVhcDJG?=
- =?utf-8?B?NENZTlBrZC9TMTdEVHJEL1Z4RHVDSnlZa21OTzNFY0RZMk1PNkZsaXpiVWUy?=
- =?utf-8?B?YitxeDZRNWd4bGxrRVhsL0swdXR3b1Y5L2h6anVBZ1FKZWcvK1JNbWtPNDUx?=
- =?utf-8?B?YTVQSXZQUDJMSk9TVmZwaWVIQ3FjemkxbU0wU3dOWEtPOFQ2TmFsK0RwaDdl?=
- =?utf-8?B?dlljdWQ0QkQ3SFovaTNWTFBEdWJqOUdQSGhZTVNqR2FmU1FBajV0UEwvYVlG?=
- =?utf-8?B?bnN5WTZBTXg2cEdjaTJGdE9LNTNQOFhjQ0RaZFlwL0pTeGN0WU5XUzhYb0dT?=
- =?utf-8?B?b1NjcWk0cll1RjBpcUhSUjFMekpQbmFvK3BBb1FZUXovYUVIeXNEUm4zK3JR?=
- =?utf-8?B?Wm0veHJuMFg4VnQ0cEYwQi91cEJuUGlEMG5hcWg2Q01kcWRXSm11TTZaZnNy?=
- =?utf-8?B?cHdCdkRxenZ6QjI4TE5YTFlTUkhuZ1c5YXdQM2NyRnV2aXd0TTM2eWp5M25V?=
- =?utf-8?B?OEEvTVhkNkxqMVhPZnpsTmx1eXdqNHNOalY0WnVPOTY1cEF0bUh0Rmw4SHpk?=
- =?utf-8?B?azZ1NytaU2dMemF6VUJmemI4VSs2YVFYdGgwTitrMDdkeVZwUVRBdWkwb0Vo?=
- =?utf-8?B?V2E1NitSQWxKMnQwTFJBaXoxZ0UvdUZ3N3RYMyswR2hVUVlIelgxRzhqSlZz?=
- =?utf-8?B?UUhxRzMrazFjcURoZ1hqZ3MrUDZNOUtyVXkraXlOQVQ0cE85Q0R5bTRVVmVv?=
- =?utf-8?B?N1kzWmpnSjdVdjRmK3B2VHBpQnNwcEQwU2pNaU85SEFrRG5pdWZMeExDaTlo?=
- =?utf-8?B?dGNsR1ZZaXp6VXp3QStTNmJIVEU5eUtLNXQ2ZnFGZTNOWFQvY1FkVzVCZklx?=
- =?utf-8?B?RklOeTMzUUNEUlZObG15QnA0R2JDT1dITmttdjg2Zm84QTI2OXMzZXNVaEtr?=
- =?utf-8?B?N1AvbEVETE9sSCtkaVlmTG5jRS9UMmV3MVB0eXZUVkFNeFpUWnhhd3B2SXpy?=
- =?utf-8?B?RWswanUxNjFndytTVXZCTnUzcDhTUk0wRWZNeDRRZnJJY0t5NU1TK0dLT3Zy?=
- =?utf-8?B?Vy81WllkVFRvSWc5UjZob3dyZ1RWMEQwSmZIczBEUFU3NS9LWjNuNkNyMnZJ?=
- =?utf-8?B?SUZOYlBrc0Y2YmdPMDRWMXU5UXRhQ01qZi8zeTErWjZWWGRzdG9WanlRZmN4?=
- =?utf-8?B?Q2tMZFI3aFNqQnZ0bFBDajBvV0tmRUxaYTJzdkU1MjdHM0FwQ2VIWVdsSXB4?=
- =?utf-8?B?ZzR4amZsYnFlL2VXVFVRcXVtVUE0d1o2b1VoYXBFNTRRZDV5ZHJidWswZEtK?=
- =?utf-8?B?bG5yRVFjWCtFcW1LcXpOVlhzTW5SYnBmUE1kZ0lzK2U5aHFzeGk1bGhxL1pP?=
- =?utf-8?B?MTZGekViQVE5aUFnUDQ0RFJWOFJqZU5rNnNaTzlKY1dmbzdYaVFlTkZPYU9t?=
- =?utf-8?B?dUdGVmFXNUxpWE9TUG5rLzdxd2JIdm1keU1UZ3p6YkgwV1ptSkRpd09ya0Fh?=
- =?utf-8?B?U2hFT21XKzk4MGxTSDNHNnFpK0ZKVE1EOXpwYWVpYlJnV3E2Y2lHRE0yK0FF?=
- =?utf-8?B?d0JuRGhQL0lvMjR6UXZrY1poc2Z5VzlZNGNTK094enNrcVoxekErMXJlSXVU?=
- =?utf-8?B?cVdrTE1KczVoTmZFYXp6YzFHMEFQZllKWnN5U3htZDJFOTFDYTJublc5bDU3?=
- =?utf-8?B?R1lXcU85U1d2Zml1UjhEMVVuQlRpRXBKb1doVGpYczI3VjM0U2RwTFA4Vit0?=
- =?utf-8?B?Tm5iUmZLVG1xN1J6RHNxZmk0YnNGQW1JdW00U2llZUxGWncxbzZYZlRJcGhq?=
- =?utf-8?B?bmZNcGZ3eURXZzRYM0trV0EwdjR6MFNueGlCaGw4TUJWYzdaRW5oU0pYWDl3?=
- =?utf-8?B?ajdCZk0xeDZRYVVWMHR6OXB5SXhxSjRMNjg1OFc1aHpFWEp2TEZPMnVCMEND?=
- =?utf-8?B?MWtsdUZsc2RVb2VKdkl4ZDArZ1ZNQTJkcllGZHZvT09JWXFoOHB1Z2k1bEh6?=
- =?utf-8?B?TERYckVhcE1BRWhEVzIwaFFUc3h2RVM2NkJnd1E4Qk15Vlh3VXVIREk5REl3?=
- =?utf-8?B?SG5FUzI3bkY0azlnQkNnbDRhb1VDYmZ2NDhrWEJyUnI5bGxvV09sNytFZnhk?=
- =?utf-8?B?UjVHVVV3OTltbThrZGNkMGNweElJZ3BNWjhYall3djdaVG9oYTBna1BuSzZO?=
- =?utf-8?B?RDZ2WDN0L2hXMkwxa0FIOHVEK3NrN0oxdFMvVmU1eXMzK2VJcXEySVhJMjRz?=
- =?utf-8?B?NlphSzRFUk1GTUVReUZGaXUrVEtkRWNvVHlxTjAyKzdqYkJROWoyUzVjWmRB?=
- =?utf-8?B?aHhRcDN4MlMrbFJGTHFDUU1mUHBoLzhVZjVKSzNtM3ZBNmFRWjgvTjkyRVow?=
- =?utf-8?Q?JN4zltIZZldd7UXE=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F71AB6F5214BB84FAD6DDBE9969CBD65@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="mcFYTgd3"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D31A21655;
+	Mon, 28 Sep 2026 11:28:21 -0700 (PDT)
+Received: from [10.57.12.116] (unknown [10.57.12.116])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C842E3F86F;
+	Mon, 28 Sep 2026 11:28:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790620105; bh=f3DvkzW2iQw+m17VNhkq0p0aYIFiioIzjPtp6J3TSN0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=mcFYTgd3hxYj+1w/iSFFS3RH+8JRKNJWnhBdjTsuGBthMAC1uKMNQnAKX49dFPQK/
+	 aCHMuuEO/8X+Qh6W0KhSteXcdZ1MZBTTEq1Z0cbjJ5cixApf3fkgJfOe2QV6RJnv+7
+	 l0MvfPq0sy15NUOC9H508RTlXCsTaCSD63LFvBTo=
+Message-ID: <0f68dcff-1dfe-4515-9912-515ca6457674@arm.com>
+Date: Mon, 28 Sep 2026 19:28:20 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: adflb63h6cQ0Oyk8+blmVpMhz0ClbTeaFPbV/Eo9daVWNNlzk9jjsV9Fe+mLjgknSOO3IQGvPgHfL8qGwf2GnQs1VjPO3H5ZFdupKeuhD6WR+CuhXFWG+4XxaYMZPuyWRwKafpKzZ2/VTtiSSvK5UvZ6S+T5YAfXte+iQ2pqLe/uk6gfdFFuQC5+XKCXcf/LGa1ksADEaAdXCmx9/kpac74ARUAfY5z4+BunCYhJMu/FtKQCB5xvg65yxdmxb6w/cNuClW2i3x5h62uBkChhD0Xh1G/topB/vinA8csKdXycQsjjxavws+jDm69yMg+fV/fTv6RXAyAOdTqvcxbuJg==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6771.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 93d244ba-3caa-4542-7ec0-08df1d8da099
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Sep 2026 18:23:42.2357
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Ar3Wtq3t6pwMO+LYo5uDtE9icx2VUzr9fzIFjTl9/EbTVCxQ2RQfWEWIMne4hBgvcD5LwjTz+gzDVABV8B20fjsy6QkjyitgPbOWA1Sbxxc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR11MB5883
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v19 5/7] firmware: arm_rmm: Activate the RMM
+Content-Language: en-GB
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+ sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+References: <20260924135201.850038-1-suzuki.poulose@arm.com>
+ <20260924135201.850038-6-suzuki.poulose@arm.com> <arZmXFw5Jw2IbAmA@arm.com>
+ <a11aba04-eaaa-43fd-988b-a2581b1b2fdb@arm.com> <araketG70TIKeNuf@arm.com>
+ <12e83d88-de4c-4230-aac2-1796123320ad@arm.com>
+ <70d47475-e26e-40e1-b409-b0c16aecb8c0@arm.com>
+ <195cdfe4-a55a-453f-9c34-620738eca244@arm.com> <arqrZ_Auk9BYOopa@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <arqrZ_Auk9BYOopa@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-T24gTW9uLCAyMDI2LTA5LTI4IGF0IDAzOjA4IC0wNzAwLCBQZXRlciBGYW5nIHdyb3RlOg0KPiAr
-c3RhdGljIHNpemVfdCBnZXRfcXVvdGVfYnVmX3NpemUodm9pZCkNCj4gK3sNCj4gKwlzdGF0aWMg
-c2l6ZV90IHF1b3RlX2J1Zl9zaXplOw0KPiArDQo+ICsJaWYgKHF1b3RlX2J1Zl9zaXplKQ0KPiAr
-CQlyZXR1cm4gcXVvdGVfYnVmX3NpemU7DQo+ICsNCj4gKwlxdW90ZV9idWZfc2l6ZSA9IFBBR0Vf
-QUxJR04oVERYX0RFRkFVTFRfUVVPVEVfU0laRSk7DQo+ICsNCj4gKwlyZXR1cm4gcXVvdGVfYnVm
-X3NpemU7DQo+ICt9DQo+ICsNCg0KVGhpcyBtYWtlcyBubyBzZW5zZSwgYXQgdGhlIHBvaW50IG9m
-IHRoaXMgcGF0Y2guIEl0IGxhemlseSBzZXRzIGEgZ2xvYmFsIHRvIGENCmNvbnN0YW50IHZhbHVl
-LiBGdW5jdGlvbiBzY29wZWQgc3RhdGljIGlzIGFsc28gd2VpcmQuDQoNCkkgdGhpbmsgeW91IGFy
-ZSBkb2luZyBpdCB0aGlzIHdheSBzbyB0aGF0IGxhdGVyIHlvdSBjYW4gcGx1ZyBpbiB0aGUgZHlu
-YW1pYw0KcmVhZC4gQnV0IGxhdGVyIGl0IHN0aWxsIGRvZXNuJ3QgbWFrZSBzZW5zZSB3aHkgdG8g
-bGF6aWx5IGZldGNoIGl0LiBXaHkgbm90IGp1c3QNCnJlYWQgaXQgaW4gdGhlIHRkeF9ndWVzdF9p
-bml0KCkgdG8gYSBnbG9iYWw/IElmIHRoZSByZWFkIGZhaWxzLCBzZXQgdG8NClREWF9ERUZBVUxU
-X1FVT1RFX1NJWkUuIFRoZW4geW91IGFyZSBkb25lLiBBbGwgY2FsbGVycyBvZiB0ZHhfZ3Vlc3Rf
-aW5pdCgpIGp1c3QNCnJlZmVyIHRvIHRoZSBnbG9iYWwuIFdoeSBub3Q/DQo=
+Hi Catalin
+
+On 28/09/2026 19:01, Catalin Marinas wrote:
+> On Mon, Sep 28, 2026 at 02:55:11PM +0100, Suzuki K Poulose wrote:
+>> firmware: rmm: Deactivate RMM at reboot
+>>
+>> Deactivate the RMM at system shutdown. This would allow a normal kexec to
+>> cleanup the state and boot into a new kernel gracefully.
+>>
+>> Kdump kernels need not worry about an active RMM, as long as it can
+>> handle the GPF on access to the Delegated granules.
+>>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> ---
+>>   arch/arm64/kernel/machine_kexec.c |  2 +
+>>   drivers/firmware/arm_rmm/rmi.c    | 63 ++++++++++++++++++++++++++++++-
+>>   include/linux/arm-rmi-cmds.h      | 10 +++++
+>>   3 files changed, 73 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/arm64/kernel/machine_kexec.c
+>> b/arch/arm64/kernel/machine_kexec.c
+>> index 8f9bc2327dc85..8f16f92a5d389 100644
+>> --- a/arch/arm64/kernel/machine_kexec.c
+>> +++ b/arch/arm64/kernel/machine_kexec.c
+>> @@ -6,6 +6,7 @@
+>>    * Copyright (C) Huawei Futurewei Technologies.
+>>    */
+>>
+>> +#include <linux/arm-rmi-cmds.h>
+>>   #include <linux/interrupt.h>
+>>   #include <linux/irq.h>
+>>   #include <linux/kernel.h>
+>> @@ -171,6 +172,7 @@ void machine_kexec(struct kimage *kimage)
+>>   	BUG_ON(!in_kexec_crash && (stuck_cpus || (num_online_cpus() > 1)));
+>>   	WARN(in_kexec_crash && (stuck_cpus || smp_crash_stop_failed()),
+>>   		"Some CPUs may be stale, kdump will be unreliable.\n");
+>> +	WARN(!in_kexec_crash && is_rmm_active(), "RMM is active, kexec will be
+>> unreliable.\n");
+>>
+>>   	pr_info("Bye!\n");
+>>
+>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+>> index 51343e9d5c2a9..5b695f3155b1c 100644
+>> --- a/drivers/firmware/arm_rmm/rmi.c
+>> +++ b/drivers/firmware/arm_rmm/rmi.c
+>> @@ -7,6 +7,7 @@
+>>   #include <linux/memblock.h>
+>>   #include <linux/memory.h>
+>>   #include <linux/arm-rmi-cmds.h>
+>> +#include <linux/reboot.h>
+>>   #include <linux/slab.h>
+>>
+>>   #include <asm/memory.h>
+>> @@ -15,6 +16,13 @@
+>>   /* RMM v2.0 defines RmiFeatureRegister0 to RmiFeatureRegister4. */
+>>   static unsigned long rmi_feat_reg_cache[5] __ro_after_init;
+>>   static bool arm64_rmi_is_available;
+>> +static bool arm64_rmm_active;
+>> +
+>> +bool is_rmm_active(void)
+>> +{
+>> +	return arm64_rmm_active;
+>> +}
+>> +EXPORT_SYMBOL_GPL(is_rmm_active);
+>>
+>>   /**
+>>    * rmi_granule_range_undelegate() - Undelegate a range of granules
+>> @@ -1017,6 +1025,53 @@ bool is_rmi_available(void)
+>>   }
+>>   EXPORT_SYMBOL_GPL(is_rmi_available);
+>>
+>> +static int rmi_rmm_deactivate(struct rmi_sro_state *sro)
+>> +{
+>> +	int ret;
+>> +
+>> +	if (!READ_ONCE(arm64_rmm_active))
+>> +		return 0;
+>> +
+>> +	ret = WARN_ON(rmi_sro_memxfer_cmd(sro, GFP_KERNEL, SMC_RMI_RMM_DEACTIVATE));
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	WRITE_ONCE(arm64_rmm_active, false);
+>> +	WRITE_ONCE(arm64_rmi_is_available, false);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static int rmi_reboot_notifier(struct notifier_block *nb,
+>> +			       unsigned long action, void *data)
+>> +{
+>> +	int ret;
+>> +
+>> +	switch (action) {
+>> +	case SYS_RESTART:
+>> +	case SYS_HALT:
+>> +	case SYS_POWER_OFF:
+>> +		break;
+>> +	default:
+>> +		return NOTIFY_DONE;
+>> +	}
+>> +
+>> +	struct rmi_sro_state *sro __free(kfree) = kmalloc_obj(*sro);
+>> +
+>> +	if (!sro)
+>> +		return -ENOMEM;
+> 
+> Nit: it needs a NOTIFY_* value.
+
+Thanks, Yep, I have fixed it locally based on codex review ;-)
+> 
+>> +
+>> +	ret = rmi_rmm_deactivate(sro);
+>> +	if (ret)
+>> +		pr_emerg("RMM Deactivation failed: %d\n", ret);
+>> +
+>> +	return NOTIFY_DONE;
+>> +}
+>> +
+>> +static struct notifier_block rmi_reboot_nb = {
+>> +	.notifier_call = rmi_reboot_notifier,
+>> +};
+> 
+> Thinking some more about this, it's a good aim but I think it only works
+> if we do a systemctl kexec that tears down the processes (including the
+> VMMs). For a direct kexec -e, we happily reboot with pages still
+> delegated. Now, such tear-down in the kernel is painful, I think a lot
+> more work to figure out the delegated pages.
+
+nit: kexec -e uses normal reboot path, it is only the kexec -f which
+skips shutdown path. But yes, forced kexec won't work and that would
+probably never work reliably with RMM in place.
+
+> 
+> Also we don't cancel the kexec here even if we return an error, just
+> warn and continue into the new kernel.
+
+Correct, and that could fail with delegated granules in place.
+
+> 
+> So maybe blocking the kexec (e.g. machine_kexec_prepare()) in the first
+> place would be a better option for the time being. But I'd like, if
+
+Ack
+
+> possible, to defer the RMM activation until the first user (still do the
+> RMI probing as an initcall). If we run on RME-capable hardware and
+> firmware but don't care about realms or TSM, we still get the normal OS
+> functionality.
+
+Would you prefer this in the first drop of the RMM ? Or is this
+something we could add as a separate series ?
+
+> 
+> If this deferring works, I'd also make memory hotplug dependent on this
+> (RMM activated => no hotplug; hotplug before activation => don't
+> activate the RMM). Maybe later, if we have a request for hotplug in
+> ZONE_MOVABLE and we can guarantee guest_memfd doesn't allocate from
+> there, we can relax this requirement.
+
+Right now guest_memfd doesn't allocate from the ZONE_MOVABLE. But that 
+might change in the future and we would need RMM to support it.
+Not supported with RMM v2.0 spec.
+
+> 
+> That said, we may have a problem with hibernation as well if it tries to
+> read the delegated pages. I don't know how it interacts with guest_memfd
+> and the non-gmem pages we delegate. Maybe cpus_are_stuck_in_kernel() is
+> the right place, it prevents hibernation as well.
+
+Ack.
+
+
+Cheers
+Suzuki
+
