@@ -1,80 +1,82 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37BF34DDB57
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 14:31:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BCB4DEC3C
+	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 14:31:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790605902; cv=none; b=DEdygt21YMQRLQcsTb79BvuUNiA25iZdd9YT8IJSAB9xZEGqIjDsV8mcIpyfaDazTul9ANDMjdkHlXlbrlkgL5i9oWgU4R4lFRJZgp1UynLQpDZhbJzrHQqOaL6zIQHeiZWqumHvPWHfpdAc1ov3abIS63v00/dxel5tWqLV7iM=
+	t=1790605918; cv=none; b=eKTXu2+nMUkCwAtS6w8iGFR84hLrCils/A7GKcnxg6CdH919M60Kink277hzOjwpmHLjBUz6uMfG21Er7riZ5hSgn0MotJWWbXG2nBbYMynBOtwp3iRxs3vFj6vEn76/VEQCMdhliDnL96H9ENp+o93No4yH3QhC/9Gjrozqpvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790605902; c=relaxed/simple;
-	bh=H5GiHK6ztFKrLa7xReiffciw7VCa8JM2dUKAkH6u0T4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c6AfvXUGtOSttKK3f34gAqp36iWCOBfwmZUiJ/N8uzotUaCzX8IcYrvrxuVSYWyKRX7IsfxniJz9pKS2sW7GvYqMN7D8LSNZ3q3IOQ70KZtzYtzJTVe6IzpbjSOnvMLC6LwEqOQaVE7Nx3PNgtPdc4mwv+/4S3TmhiawvkfxI6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WEJVLUt6; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=IMejttRt; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1790605918; c=relaxed/simple;
+	bh=HMHDIkk9eqjhFkHSH2xSM+qF3/e16Lj391jOJsFu1M4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=a/Ro8HzrUv93JmJlim8uLjNehnLPZ5ikDvR5R6ZInzfQnDzqL3/Dfuw3831CVIA2UJFPq0kB7XIHxxYQFnXqhssC0Wro1SxJd+lbPSDM0kSJVqlTwoKBfMyRhiqiCTc3t1OPju0qnNOb3XGwYqjCRknyFIMVUFPjEmmZXs1R0YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PeL9p4w2; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=C6sC2lg4; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WEJVLUt6";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="IMejttRt"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68SBAOjL2294806
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 14:31:35 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PeL9p4w2";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="C6sC2lg4"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68SBA8Z61189326
+	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 14:31:49 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=z60xJj9fp2vRAD3QTBKkgHGd6KjBHDRVy/O
-	SLFJMMjU=; b=WEJVLUt6Qgndx5YiL7HpWyG8kpXQW6l5olRaMN4FmaJtiSAMI7T
-	3yv/pOhRBpkLZyiKRu0CfqCIbDxYg1vdaHIBC73J9OOf/tSqGMkuhLADt8b5ShH5
-	BBBWHHl4A3D2+X1ObB3j0llCuQrJgtg29SJEBbeGast4A4kD2OXm+BAihAAGIShA
-	BgZ0QlwUae0plvs6QYFxdtCn8m2+kcG9SqUn7P3XW5f+co5y7bdt6hJLhfJIzh9X
-	c4ISX9iTXWVvLjlGbhpAY9jv8e/3I4XsnmtFwE/KWcOm9EtiAQ4z5l6gsYcoSSMt
-	F177KeS7x4cTW3Fi7Mbg/muDcB24nsKEd8A==
-Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com [209.85.222.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gyhubj0vh-1
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=SgBxAUOx84U
+	cn9DyKFIg2KlUymyjg92B5RIf9l+yQcg=; b=PeL9p4w26BhoNlRqOvQ3LSV7n/M
+	IktOMye2ZvfZB0pICaZ3TBWrcQlguntFEJzgoIjtjths47tJk1xoUZly2IPaQszy
+	pNIDDoUjuy9W6cB/mpFxHlby71PtXHVdx0VWz6WtEILSV8JQfkeE87kr7Ib7ZPIG
+	TOC7sMO2YdQEslR/txVR634Jw5qrZWxsKyoGjrLuyh/QQjmvwNSaJ/WsFebp67mG
+	IImMljNxomfy+bPYM3oRVTQ8paB3pwle9mjd3f8s58TbjX1938Z7pGGKc7eXz9Rg
+	gV+3ERanv7za6SCrYk/1jUrCxiIAqpgci3qNcOuCurOWNf5dPF9aV7CCWrw==
+Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com [209.85.217.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gynbc15v4-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 14:31:34 +0000 (GMT)
-Received: by mail-ua1-f72.google.com with SMTP id a1e0cc1a2514c-97e9909eeeaso251069241.3
-        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 07:31:34 -0700 (PDT)
+	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 14:31:49 +0000 (GMT)
+Received: by mail-vs1-f72.google.com with SMTP id ada2fe7eead31-7b37c39d36fso497311137.0
+        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 07:31:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790605894; x=1791210694; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=z60xJj9fp2vRAD3QTBKkgHGd6KjBHDRVy/OSLFJMMjU=;
-        b=IMejttRt1+Ccu7pVB4V3at0FCK5IHYO9zYD4i2kEEYff0Bvx36ZtnijBN2QUec7Zh1
-         g4Znu9TAWML3OwNUaSGsc9hn5L0ceQFoz9QoHA2fA5p/uLwAB9cdFXPLWyx9CoJuo4re
-         AQbEAMmIWDMcPNauJ+vFHQPQnq50eh8ZuVOLDE4CKcIV/zmwgu2MAIAFY9oUuvbXoLCp
-         lBUFuhvah1PbphkoNa1t3zzpAOXWv3C6zSbXyL7tngGwk0aEZyAFGD4McEDT+GQYE060
-         JMLdror/xV+kHi6Qi+G/dCW5PZn0K0kgVLz0BvcuzIUh0GEEYCMYrvXYDtdDRRoj3ES6
-         1kdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790605894; x=1791210694;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=oss.qualcomm.com; s=google; t=1790605908; x=1791210708; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=z60xJj9fp2vRAD3QTBKkgHGd6KjBHDRVy/OSLFJMMjU=;
-        b=gRR6uqiv0goMDCTRWkjYLxld0zilQxaMIjuEfqyhMJ34dtRwrlMPpfR6Nu/eoxRt5J
-         rZxX4DSOIJyi6zX4tvieqMosQ8GOE+JHzKLt3QO/EnLaRBvNCrT5FVMWUuXL7Gc3gwNf
-         HvLNJn+zWK/4wlGTixYkl0/ucexpsQGxdqlyQVvC/rZQI6CEUBRupCw9M5RJoh7Rc+Dr
-         YQVTursa3UqEFHzkebr05iXOLOsKdvKEHKFF2NKRuzszKnbEDYcGKe3ztOXRd0JyLX7E
-         Mv96YBLtv/6D0iaab4f0gCKnUI/8iEEFDfwemIC1qVJCihihtOU3XMFQSP1wwh1IVPC1
-         vAkg==
-X-Forwarded-Encrypted: i=1; AKwUvBy4GtwnSmyORSs5walfInDKmk8CWYX/FoXMGW5ox4Kc2mvLOUhKrzeKlRsH9VA4ChoPjSQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJSZAsTXg80Hghv8csYmPPh2A/2DIcqZ5lm3kbijBHho0HZ7Xf9
-	mTA/HDIqpE4+376WBBs1i0dWBZQaB/nDNE9vtIao4ZrUlYYtk0DunMTK3rh+mrbYd2ACzAMeJlq
-	mTdgqnObKdENSi7tOnjterNCWlTChTK/ut1NOKe/VTReYkS6qtTrlOoA=
-X-Gm-Gg: AYBFou1G/CV8iHP5curlDKbu7wtVH7V2CpOSSOX5WdSFseftZ13V/CsronK8+d+wEH7
-	Qphrs40hn+KZI/6C90cmN0SSncKbc1c+9CHyjb5gx8uJjj3OGdeCpipWyrIqiULNtcVl0ufytNN
-	BFR+UEubmvJIw9WV6kXFnvnF/O81Yu6lBpbLWL/60pVM2PCHkArgk4VPuoKlCO3U4pUoV3stI4d
-	3NM6Aouv+P1nFthyricMhFTgOPsrWPU6YeqE3cWQxM0EGwJD1BVSx2Fx7k60fQNxBrVOqN2mLcG
-	r1+RfqcVgGSZSuyytn1NNm18f12qdWiWOrN0/z2dBiKgqNwNxhJRhmWpMtDt3g9h178k3haM0F7
-	PM1u4s459ylwfeytK3ofKMzrBxuEDDlODtPk38w==
-X-Received: by 2002:a05:6102:c03:b0:7a7:196a:84e6 with SMTP id ada2fe7eead31-7b390445334mr1520070137.30.1790605893566;
-        Mon, 28 Sep 2026 07:31:33 -0700 (PDT)
-X-Received: by 2002:a05:6102:c03:b0:7a7:196a:84e6 with SMTP id ada2fe7eead31-7b390445334mr1519697137.30.1790605875667;
-        Mon, 28 Sep 2026 07:31:15 -0700 (PDT)
+        bh=SgBxAUOx84Ucn9DyKFIg2KlUymyjg92B5RIf9l+yQcg=;
+        b=C6sC2lg45nsbZq1eSuGD9s5R/hnB+G68ElvbiXkwVDn0GJDMlQq1NzsDR+W3V3f8fu
+         DR7P1gsWNabgOeK9akdKYY5zHhBMUDx8xGguQXp8T25uZ+wEBwRXCdoU1EtQrbhp+SEc
+         5PzSy7V83PuCplYwZorLrzyG5JYnrSO+Ucv9KisqfThlYWGfqw9GtHgfab2+BBJvPfre
+         VavcDKn07ahQt02NJsWWPZ2KSU93bHyqLgJHgwiZaQxbiQ6py4cFiJZ4hlTUWyyXLAny
+         m3vyc1nE/3IckhFWVxvoTI2+4evXd1Vf6oxXFrODbchRZ7hIrZcXLyEfeusqXvv1j17o
+         SHvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790605908; x=1791210708;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=SgBxAUOx84Ucn9DyKFIg2KlUymyjg92B5RIf9l+yQcg=;
+        b=Wmin2wSZOvUzPYsRKMjB3DKNpw3FWDzo1JwWGqQXrDBH21F4hMHQd0voYi/9nJXKey
+         eeM6UisfbTvpXHWAfPvdaYHOWCcjxXZN7RufaEd7YZJeR9nDIwN5omPvg28zdp8nqC1t
+         z8RwTsjwJotd0HL13WYnOUNf+69wMXS3cwM+So+rk2+ZSrOh/HLJ+j3J6WOiCZuHGzxa
+         8kONUih5n5ahIB2Be5z7ak61Vdm5ea3vjSKnIO21XsPrlqeDKqEsKPFUiCuuYekP7ln4
+         SrvKmFogTO4id90zQ4FNlzuPkhcUVkHBwsEaN9Qx+Su/ytkuv7elQg+Zuf63r7f4qpmi
+         ZVXQ==
+X-Forwarded-Encrypted: i=1; AKwUvByO56q1VIU6aRrn++7NfbdRZctJ23v9Tu2RtDjMN6lkuZS3UhkNmPVcvyqQx4+nEulcOMg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIEb5atSMbEt7Q7i3n0WCw9mj+n0LaEaamm3zjUQVvssLCia1w/
+	6chsnrh76T8/HBWVNiTCk9XZC2fpGpjIWO3DHk1SboliMcOXZ5cFNa4Gvj6j4eT58bPHzVxanwT
+	Vfswzkz4nm2tXPwcbFvrS9PW/3cswL3T+nqNb5Cvts2AwEORDm+IJSYk=
+X-Gm-Gg: AYBFou0TKd1k6cDNzfuiRC2Vhfw8pitikvMy50rZ8HXIDbyK1g9iO5OrKKBHzeonZft
+	r045uedAx9D3sLuj350Iqno50OY9Kt+4bi/PBL1sQ66NiMwkyXFPGrm08hkmPQi5wU17854ALiN
+	7XnmAexXWkwNhUsiykX5XjdEC8Xh5S/A9sgG9154TeNUYRU8ZqVUyhw+5Uht7UmgJ5d3okVGnPl
+	Fg7y4CiX8Rz1im8PmW09T7QvMq0tmuTusDIFf5TLBOCftX2BuH7a5DfbPhL0i3AGw9iPuywCqfD
+	pODzkzCkPPQmz+urlYXPT72tg0aKaaTRl5/V2LLFdSxzvDQ1eGyMBBRz1FUjcffhJnHi2K9lfoR
+	h4PJpxI+E97LhRkUWlVV8bnbCCWTQKG/E32aRsA==
+X-Received: by 2002:a05:6102:4b1a:b0:7a7:5355:7fb6 with SMTP id ada2fe7eead31-7af1e4f8b12mr3623679137.24.1790605908336;
+        Mon, 28 Sep 2026 07:31:48 -0700 (PDT)
+X-Received: by 2002:a05:6102:4b1a:b0:7a7:5355:7fb6 with SMTP id ada2fe7eead31-7af1e4f8b12mr3623511137.24.1790605896839;
+        Mon, 28 Sep 2026 07:31:36 -0700 (PDT)
 Received: from localhost (ip-86-49-245-11.bb.vodafone.cz. [86.49.245.11])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2dbd3bcadbsm292389266b.72.2026.09.28.07.31.14
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6aae5dc097csm4205378a12.12.2026.09.28.07.31.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 07:31:14 -0700 (PDT)
+        Mon, 28 Sep 2026 07:31:36 -0700 (PDT)
 From: Andrew Jones <andrew.jones@oss.qualcomm.com>
 To: iommu@lists.linux.dev, kvm-riscv@lists.infradead.org, kvm@vger.kernel.org,
         linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
@@ -83,10 +85,12 @@ Cc: tomasz.jeznach@linux.dev, jgg@ziepe.ca, jgg@nvidia.com, joro@8bytes.org,
         palmer@dabbelt.com, tglx@kernel.org, anup@brainfault.org,
         atish.patra@linux.dev, fangyu.yu@linux.alibaba.com,
         zhangzhanpeng.jasper@bytedance.com, zong.li@sifive.com
-Subject: [RFC PATCH v3 00/14] iommu/riscv: Add irqbypass support
-Date: Mon, 28 Sep 2026 16:30:59 +0200
-Message-ID: <20260928143113.49838-1-andrew.jones@oss.qualcomm.com>
+Subject: [RFC PATCH v3 02/14] iommu/riscv: Prepare domain bonds for outer locking
+Date: Mon, 28 Sep 2026 16:31:01 +0200
+Message-ID: <20260928143113.49838-3-andrew.jones@oss.qualcomm.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260928143113.49838-1-andrew.jones@oss.qualcomm.com>
+References: <20260928143113.49838-1-andrew.jones@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -94,162 +98,162 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: hS2IfNXD7fv9nbrYVCCSV-6X01A0LS5P
-X-Authority-Analysis: v=2.4 cv=C7F8WgP+ c=1 sm=1 tr=0 ts=6aba7a46 cx=c_pps
- a=ULNsgckmlI/WJG3HAyAuOQ==:117 a=4CXLxsOAgPM/krjtHEZQyA==:17
+X-Authority-Analysis: v=2.4 cv=Sq4Fe/O0 c=1 sm=1 tr=0 ts=6aba7a55 cx=c_pps
+ a=DUEm7b3gzWu7BqY5nP7+9g==:117 a=4CXLxsOAgPM/krjtHEZQyA==:17
  a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22 a=NEAV23lmAAAA:8
- a=VwQbUJbxAAAA:8 a=bDdBU3oEAAAA:8 a=EUspDBNiAAAA:8 a=SRrdq9N9AAAA:8
- a=JbFp9CTg7fNynJPQWhgA:9 a=1WsBpfsz9X-RYQiigVTh:22 a=DN7SgORnOiO7RqxRx1GC:22
-X-Proofpoint-ORIG-GUID: hS2IfNXD7fv9nbrYVCCSV-6X01A0LS5P
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI4MDA1NyBTYWx0ZWRfX0153ydpTej7j
- z4k4FtW6vHFeW0iCCds38kvF/H9T476W28KQP+IbdyFzLdTRkq4KQ5DmSzyjakon3pKGBY79Iz+
- ROr2fSEGmQ9Jcaqyb3hpyqNd9wwjr4qT0zprPpY6Q9Knl796EmRhzUm2wm1tJ3/U+HO25xsKNNZ
- QPQKyMgMdMVCNvV447Az49q2HNp49FaiaPt2uR4wfE8nSuCPNOhOuvNFGUbq5xETHnPqVAqpXlO
- bmFx2rFdtVG0cp3jYbqA1viDFxhT/7SWV//vi+h9X2aAC9J1K6BjzlooUvp4jwftBbijudlZgYg
- iZp1zFcKkb3evXYUpZz2T4XSngpb1DczE7vp4qSyIEkCvv/f16Qz1Hor2AfdhusWHX/ii9N4ZoX
- 1Kw04y9IG73tvI50olJ3gIYnAc3ac0yc9Fd9RUvcloAlYanxZSA5n+nbKaZXlm0KuDEuoFPVeFn
- uWiINsz8l6VkRmsO1lw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI4MDA1NyBTYWx0ZWRfXz+j/4b6QtXV7
- 2VzUoXUvanvZh8QR2+lfmxDmc8U2MvbQF+2tsraTjj0DeQ+hppL9vt78xEoSatgdLve+n3lgTfK
- 1SJwhrx7Op/EK33Pp7GprP3yK+f/THg=
+ a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22 a=EUspDBNiAAAA:8
+ a=69OsnF3JIPtLgHPxktkA:9 a=-aSRE8QhW-JAV6biHavz:22
+X-Proofpoint-GUID: wiE52XzPpFbyRMKK7CEKvpvymn-fvgZz
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI4MDA1NyBTYWx0ZWRfX5cTKxBCab21q
+ 0fWJMk/xMaHKfd0z9Dm/s6/KZQUGdTumgcrt0n0KsynsuVorLtSS5Qst+fuyF0f8dyo4anC1vbN
+ hYE5OEHvGW0Xtn8m/LK3nk9yrISBX6qkWoMK3+70wZYdX/pPOWksV9G39zMojf1+ZTZW1cEnZDm
+ iUFt0g4+hKtA8S8ZQWpzAmyKq/3E9poeqToo+7kZ2r8+wsXAQWpwix2WZx2QjtwAiR3/f5+0BkE
+ sjo4FPX109Gl3l0iZn9RYqCg2rbiYFpCypY7C51UWgiOKoHFgOIjKg5aPTCxYyWr4z5UKyCKP+Z
+ G2dZPnX9pXyhKrxqmV4NM3buzo/XOyWIeIWevmKM0Z0bHRUZ9p2Dy3sLyU1Ju/PkNRJwRqHXDaY
+ yolfz+gCcurFVvZZdH/dp4xueLtal9R+ZJN9D2E6rVT47ULGfAq5Tueqkl8uY41CtYT4iIUGHuv
+ WnzO79p6F7h9nU4sveA==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI4MDA1NyBTYWx0ZWRfX/xzSoe/JE5uw
+ 30dK151UOv8TZH0Vnh3EGzhVwsYGIYkF0ZSNqq27Hg+Y8LHxcrtRVXb/PMzSDdmAOv6v2uvtEkW
+ yKFQw3PZfcVcryC7KEsY7ljVYv6GMas=
+X-Proofpoint-ORIG-GUID: wiE52XzPpFbyRMKK7CEKvpvymn-fvgZz
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-28_03,2026-09-21_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 adultscore=0 suspectscore=0 spamscore=0
- malwarescore=0 lowpriorityscore=0 clxscore=1015 phishscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609280057
+ impostorscore=0 clxscore=1015 priorityscore=1501 bulkscore=0 malwarescore=0
+ adultscore=0 phishscore=0 spamscore=0 lowpriorityscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609280057
 
-This series adds the RISC-V IOMMU side of IRQ bypass, allowing MSIs from
-assigned devices to be delivered directly to guest IMSIC interrupt files.
-It uses the IOMMU's flat MSI page table to translate guest IMSIC addresses
-to their host backing, with support for both hardware guest interrupt
-files (VS-files) and memory-resident interrupt files (MRIFs).
+IRQ bypass will serialize attachment under a raw spinlock. Bond updates
+retain their own lock, so make it raw for safe PREEMPT_RT nesting.
 
-It has been a year since v2[1], and much of the design and implementation
-has changed. Host MSI remapping, IOMMU_DMA, and VFIO enablement have been
-split into a prerequisite series[3]. This posting contains only the
-IOMMU/IRQ-side support. The KVM patches will be posted separately: they
-are currently a minimal client for testing this interface, with further
-work needed for general device assignment.
+MSI forwarding will acquire the MSI table lock under the hardirq-safe
+IRQ descriptor lock. Nesting the bond lock below the MSI table lock
+therefore requires IRQ protection even for domains without an MSI
+table, where attachment takes only the bond lock. Use irqsave/irqrestore
+in both bond helpers to avoid a HARDIRQ-safe to HARDIRQ-unsafe lock
+dependency.
 
-The design evolved while considering two-stage guests in the discussions
-with Jason on v4 of the host MSI-remapping series[2]. With a guest vIOMMU,
-the address in the device's MSI message may be any guest IOVA which the
-guest's first-stage page tables map to a guest IMSIC GPA. The hypervisor
-cannot determine the target vCPU simply by decoding that IOVA. Instead,
-the intended hardware path is:
+Also split allocation from list insertion so a future outer lock can be
+taken after the sleeping allocation.
 
-  Guest MSI IOVA -> S1 -> guest IMSIC GPA -> MSI table -> VS-file or MRIF
+No functional change intended.
 
-An MSI-table match completes the translation; addresses outside the MSI
-pattern use the ordinary second-stage page tables. With S1 Bare, the
-device uses the guest IMSIC GPA directly. Populating the MSI table with
-all guest IMSIC targets allows guest changes to S1 mappings or interrupt
-affinity without corresponding MSI-table updates. When a vCPU's host
-backing changes, the hypervisor updates the entry for that guest IMSIC
-GPA, leaving the device message and guest S1 mapping unchanged.
+Signed-off-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
+---
+ drivers/iommu/riscv/iommu.c | 34 ++++++++++++++++------------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
-The MSI table belongs to the second-stage IOMMU domain and is shared by
-all devices attached to it. RISC-V requires second-stage translation to
-be enabled when using the MSI table. This is separate from host MSI
-remapping, which uses ordinary page-table mappings prepared by the common
-DMA-IOMMU/iommufd code and composed by the IMSIC driver.
-
-A per-IOMMU interrupt-remapping irqdomain, installed as the MSI parent of
-eligible devices at probe time, provides the irq_set_vcpu_affinity()
-entry point. The IRQ hierarchy remains stable across IOMMU domain changes.
-The callback obtains the device from the MSI descriptor and operates on
-its currently attached second-stage domain. The irqdomain has no private
-per-IRQ mapping state or MSI table of its own.
-
-The affinity protocol supplies an owner, the guest IMSIC address pattern
-and mask, and the complete set of guest targets. The first forwarded IRQ
-populates the table and installs its configuration in every attached
-device context. Further IRQs share that table after checking the owner
-and address layout. A separate target-update command changes a guest
-IMSIC's backing without changing per-IRQ forwarding state. The last IRQ
-to stop forwarding removes the table configuration from the devices.
-
-The main changes since v2 are therefore:
-
-- Separate host MSI remapping from guest IRQ bypass, and use second-stage
-  domains for the guest MSI tables
-- Replace per-IRQ MSI-entry mapping and reference counting with complete
-  guest-topology setup, domain-wide table lifetime, and individual target
-  updates. This is intended to accommodate guest-controlled S1 mappings.
-- Add IOMMU-side MRIF support alongside hardware guest interrupt files.
-- Move the KVM client out of this series
-
-This remains an RFC, particularly for the relationship between the IRQ
-hierarchy and the domain-owned MSI table. Jason raised the alternative of
-a per-VM irqdomain owning the table[2]; the arrangement proposed here
-keeps the IRQ hierarchy stable and ties the mappings to the S2 domain
-shared by the devices.
-
-The dependency stack is based on linux-iommu/next at 634706fe6e36, with:
-
-- "iommu/riscv: Enable MSI remapping, IOMMU_DMA and VFIO" v6[3].
-- Fangyu's "iommu/riscv: Add hardware dirty tracking for second-stage
-  domains" RFC v4[4], which also supplies second-stage domain allocation
-  and page-table support.
-
-The branch below contains all of the above, this series, and the minimal
-KVM IRQ-bypass client:
-
-  https://github.com/jones-drew/linux/commits/riscv/iommu-irqbypass-rfc-v3-kvm/
-
-Testing requires userspace to select a second-stage domain, for example
-by allocating an iommufd HWPT with IOMMU_HWPT_ALLOC_NEST_PARENT. The
-corresponding kvmtool branch is available here:
-
-  https://github.com/jones-drew/kvmtool/commits/iommufd-nested-rfc-v1/
-
-LLM-based coding assistants were used during development for code
-exploration, patch review, test execution, and drafting and editing
-commit messages and this cover letter. I reviewed and finalized all
-resulting code and text. Per-patch Assisted-by tags are omitted in
-light of the ongoing discussion about simplifying coding-assistant
-attribution.
-
-Thanks,
-drew
-
-[1] https://lore.kernel.org/all/20250920203851.2205115-20-ajones@ventanamicro.com/
-[2] https://lore.kernel.org/all/20260820214150.545737-3-andrew.jones@oss.qualcomm.com/
-[3] https://lore.kernel.org/all/20260925151659.419512-1-andrew.jones@oss.qualcomm.com/
-[4] https://lore.kernel.org/all/20260915032828.11250-1-fangyu.yu@linux.alibaba.com/
-
-Andrew Jones (14):
-  iommu/riscv: Allocate MSI tables for second-stage domains
-  iommu/riscv: Prepare domain bonds for outer locking
-  iommu/riscv: Serialize MSI table publication with domain attachment
-  iommu/riscv: Reject live S2 replacement with forwarded IRQs
-  iommu/riscv: Derive the IOMMU from the device in IODIR updates
-  iommu/riscv: Cache the programmed device context
-  iommu/riscv: Prepare MSI table updates for interrupt remapping
-  irqchip/riscv-imsic: Define IOMMU IRQ bypass protocol
-  genirq/msi: Provide DOMAIN_BUS_MSI_REMAP
-  iommu/riscv: Add IRQ domain for interrupt remapping
-  iommu/riscv: Prepare info->domain for concurrent RCU access
-  iommu/riscv: Prepare interrupt remapping for IRQ bypass
-  iommu/riscv: Validate IRQ forwarding requests
-  iommu/riscv: Implement IRQ forwarding
-
- drivers/iommu/riscv/Makefile            |   1 +
- drivers/iommu/riscv/iommu-bits.h        |  27 ++
- drivers/iommu/riscv/iommu-ir.c          | 505 ++++++++++++++++++++++++
- drivers/iommu/riscv/iommu.c             | 352 +++++++++++++++--
- drivers/iommu/riscv/iommu.h             |  56 +++
- drivers/irqchip/irq-msi-lib.c           |   8 +-
- drivers/irqchip/irq-riscv-imsic-state.c |   6 +
- include/linux/irqchip/riscv-imsic.h     |  60 +++
- include/linux/irqdomain_defs.h          |   1 +
- 9 files changed, 974 insertions(+), 42 deletions(-)
- create mode 100644 drivers/iommu/riscv/iommu-ir.c
-
+diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
+index 3bbb4d0d0a85..09ec8c3e4a72 100644
+--- a/drivers/iommu/riscv/iommu.c
++++ b/drivers/iommu/riscv/iommu.c
+@@ -858,7 +858,7 @@ struct riscv_iommu_domain {
+ 		struct pt_iommu_riscv_64 riscvpt;
+ 	};
+ 	struct list_head bonds;
+-	spinlock_t lock;		/* protect bonds list updates. */
++	raw_spinlock_t lock;		/* protect bonds list updates. */
+ 	struct mutex mutex;		/* serialize domain state updates */
+ 	int pscid;
+ 	int gscid;
+@@ -896,34 +896,27 @@ struct riscv_iommu_bond {
+ 	struct device *dev;
+ };
+ 
+-static int riscv_iommu_bond_link(struct riscv_iommu_domain *domain,
+-				 struct device *dev)
++static void riscv_iommu_bond_link(struct riscv_iommu_domain *domain,
++				  struct riscv_iommu_bond *bond)
+ {
+-	struct riscv_iommu_device *iommu = dev_to_iommu(dev);
+-	struct riscv_iommu_bond *bond;
++	struct riscv_iommu_device *iommu = dev_to_iommu(bond->dev);
+ 	struct list_head *bonds;
+-
+-	bond = kzalloc_obj(*bond);
+-	if (!bond)
+-		return -ENOMEM;
+-	bond->dev = dev;
++	unsigned long flags;
+ 
+ 	/*
+ 	 * List of devices attached to the domain is arranged based on
+ 	 * managed IOMMU device.
+ 	 */
+ 
+-	spin_lock(&domain->lock);
++	raw_spin_lock_irqsave(&domain->lock, flags);
+ 	list_for_each(bonds, &domain->bonds)
+ 		if (dev_to_iommu(list_entry(bonds, struct riscv_iommu_bond, list)->dev) == iommu)
+ 			break;
+ 	list_add_rcu(&bond->list, bonds);
+-	spin_unlock(&domain->lock);
++	raw_spin_unlock_irqrestore(&domain->lock, flags);
+ 
+ 	/* Synchronize with riscv_iommu_iotlb_inval() sequence. See comment below. */
+ 	smp_mb();
+-
+-	return 0;
+ }
+ 
+ static void riscv_iommu_bond_unlink(struct riscv_iommu_domain *domain,
+@@ -932,12 +925,13 @@ static void riscv_iommu_bond_unlink(struct riscv_iommu_domain *domain,
+ 	struct riscv_iommu_device *iommu = dev_to_iommu(dev);
+ 	struct riscv_iommu_bond *bond, *found = NULL;
+ 	struct riscv_iommu_command cmd;
++	unsigned long flags;
+ 	int count = 0;
+ 
+ 	if (!domain)
+ 		return;
+ 
+-	spin_lock(&domain->lock);
++	raw_spin_lock_irqsave(&domain->lock, flags);
+ 	list_for_each_entry(bond, &domain->bonds, list) {
+ 		if (found && count)
+ 			break;
+@@ -948,7 +942,7 @@ static void riscv_iommu_bond_unlink(struct riscv_iommu_domain *domain,
+ 	}
+ 	if (found)
+ 		list_del_rcu(&found->list);
+-	spin_unlock(&domain->lock);
++	raw_spin_unlock_irqrestore(&domain->lock, flags);
+ 	kfree_rcu(found, rcu);
+ 
+ 	/*
+@@ -1391,6 +1385,7 @@ static int riscv_iommu_attach_paging_domain(struct iommu_domain *iommu_domain,
+ 	struct riscv_iommu_domain *domain = iommu_domain_to_riscv(iommu_domain);
+ 	struct riscv_iommu_device *iommu = dev_to_iommu(dev);
+ 	struct riscv_iommu_info *info = dev_iommu_priv_get(dev);
++	struct riscv_iommu_bond *bond;
+ 	struct pt_iommu_riscv_64_hw_info pt_info;
+ 	struct riscv_iommu_dc dc = {0};
+ 	int ret;
+@@ -1421,9 +1416,12 @@ static int riscv_iommu_attach_paging_domain(struct iommu_domain *iommu_domain,
+ 	dc.ta = FIELD_PREP(RISCV_IOMMU_PC_TA_PSCID, domain->pscid) |
+ 	     RISCV_IOMMU_PC_TA_V;
+ 
+-	if (riscv_iommu_bond_link(domain, dev))
++	bond = kzalloc_obj(*bond);
++	if (!bond)
+ 		return -ENOMEM;
++	bond->dev = dev;
+ 
++	riscv_iommu_bond_link(domain, bond);
+ 	riscv_iommu_iodir_update(iommu, dev, &dc);
+ 	riscv_iommu_bond_unlink(info->domain, dev);
+ 	info->domain = domain;
+@@ -1475,7 +1473,7 @@ riscv_iommu_domain_alloc_paging_flags(struct device *dev, u32 flags,
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	INIT_LIST_HEAD_RCU(&domain->bonds);
+-	spin_lock_init(&domain->lock);
++	raw_spin_lock_init(&domain->lock);
+ 	mutex_init(&domain->mutex);
+ 	iommu = dev_to_iommu(dev);
+ 	cfg.common.hw_max_oasz_lg2 = 56;
 -- 
 2.43.0
+
