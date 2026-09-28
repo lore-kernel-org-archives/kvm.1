@@ -1,213 +1,128 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD05D344036
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 21:48:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.145.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790632082; cv=fail; b=FNxyxKr5A/GE1PKBCldU4tcYPytm//vX09SgzU1YIIfFSvrXzB0pjABXELerxPN1gngzEI+auqCAK54x0VGwj5/U/EiG5ORHykaKOCXDPNGSSghM9PzCaNSpcv8Azi6Bk53oLgLFa8h0YGCa0+hNK96/JOtZbCeuH7u0dO/cJH0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790632082; c=relaxed/simple;
-	bh=BTOe3Am915BHVXg3ukWQGJbf2RonMUAlNyZzaCFwnm0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k8RDj4UcX62R/tKFJu93P6HKaNl1RrP5Q+2kgtJWk9yUMq0OODvEjqeurndMAi1ZXEv0b0Dl4rLx3Ca4wANTvgp8sdf3F607ZRNCgMs8QRR0iTLrAf6YpdmBFmfbviD8cpWCwUfYNS51F9ntGtm2RTCut7eGWQ82f+hZyJbhj98=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=kOlYqGiD; arc=fail smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE744F7993;
+	Mon, 28 Sep 2026 22:24:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790634246; cv=none; b=MgIusAm0nHDs1mfboJXK+8pO5q43PVha6yBPPp9+MA0cWd/odYcNqfwdCTCWogrdkxet+nXAgGBP7hM9BIOle+m5mzjalRDcsSWMxLlqKVSrUSLyxZq6hQRvyunmL0W7DbwBYOyNYIZcnyPF8sW9fC+eMwTJOYJBSyeA4Ga8Ijc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790634246; c=relaxed/simple;
+	bh=yWgL9R8J6QfXxcaXNP6NyG6bCWOtvD6I5vqArl62G4k=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=emrXv5LIV933zRwRSq4RoX6Z72XgT8z/LbpOX0uKpOF4PgsiNfhRWkyldOxQT7RcMHe1W1fAhT3OBG5mNXl2KDhUJJ8cyRx8ZvNidzdsNxPszT5xtmBM4UJjTFXIe+utPPFM3yiQSAONDSyAXVJOh7An6BKM/dXZM5uuQxK6HcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=gAI7EDjq; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="kOlYqGiD"
-Received: from pps.filterd (m0109333.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68SLTn16552221
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 14:48:00 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=OVdNSiqQUhRQfp/JGpi7EaQ9UmFZis0CHFKmY
-	zkvi1s=; b=kOlYqGiDxua0gnAE94K8BoX1NpPHaagCIF/NCVsflq+xJJtWzb0YO
-	YBz6kPJxXBjaCNh3T3N0DhRurSOV0/7GVM28F/QnZ/33gICD9+BdtSZshieGanER
-	vkLOi/B0XbuISnjkPoUk6rjCHlg1hWu9itC41ZN+PCfbNrj2xaueHxJIxQBEr4mX
-	RYbT1AgUpkZn3AQcdT6NVr7FTzap0WZo1xshFg+qb7pA3nGyffOzxt/7/jstZw1c
-	QAEC64RTXEw+vOSZeiCr82m/OtVaCK+KDEYEmzFgK2UQLd21WhAZEmuzhfp2WhSF
-	CSFY0u34VEvqr/lTJHB4spcEJIIWbkwzg==
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4gxa34swgp-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 14:47:59 -0700 (PDT)
-Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-81a9f98acfcso3608690a34.2
-        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 14:47:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790632079; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HdSGi2CMCc/K7k006BFn8+T4B6ojVXA79uVMZGSAIemM3I+vrCEeZARO7KXmlZjsBG
-         BAQw+BB2/ZEkWDhRRF/iJpHFb0GnxnhUbSkJKbRBqLSmAh7+AOgGwOlHlw7Gqf/ZgFdR
-         2GMOyOqsShvXoNSVD2kdS3t3YacEqOjmlt+aVthk6qj90kSIpMK4ktvMt4ypbQuH3jiv
-         9ZaSSnjPvfLRUC0TGaJ0fqrR55GrwE0axAO3xpIQxSFGTWQjdtVFSM5zEWOBeL0HotZk
-         h0IRBaHp+NwffUiQQT8YVMKk/nL2WOt0Vlq3ELY8eDTVOlXHG/gJew++QCUhPUFmjGdp
-         +RAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=nsM/d13GDOKofLPZVXyaTADEaxrWWppyFB4m09sEx30=;
-        fh=DVyeiqvmoTPXOWZU2TmDSBylgkNanndN4tQmXlqE4FI=;
-        b=NxRkf4G3e5Qh4fTbYwKAsXqE4jrxA2NAa20BVvGSlh39PeS+4LM/i+wm2XmjAElAJ1
-         5I9l/vna9nXfN0x5/RDjAsdOUknai9wjS6S8cZ3pa90njYBMIlB9OQT05UGMUaHJ8ie3
-         FN1booVk3LhFxjzwhWpbkkd0sCGiJ5Mb+VuRXbmNU1bL/zDargmXGFUD50Tl7hY5jKMc
-         xWqJDbemgD86/L6qhjU1jNiZaTxJMB+fI3yMta/7j/kqfCanz7jnVLn2qR7f5AVTchEU
-         9kK0t/YxkxIptAw9NpzQ5v27w6TwvYSsjy8WvUeVGprdRvO2tmxzhxuy9NzRqm/uhBJE
-         O3jQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790632079; x=1791236879;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nsM/d13GDOKofLPZVXyaTADEaxrWWppyFB4m09sEx30=;
-        b=PhOnvFo3W86hlXDYpqUBowOoApReaJIAqTu7FvAfFtKpAAdIq+aIqyjrRTaQw81tLm
-         YUkz9h/yDfCjh1MYo7ScHcStkLeoBf1u4MSp4kHemf6w5PBM6C1Umjpal8qXHeozcMsW
-         H7xxLqdZSW6NBYGckj+gGiuy8Hy81tbC3HKlJRpyes2c0F8A18bIwPTvY0EsOlnk2IB8
-         +X74Betb5o3H77o6MquDtt8HPteZTiLjQfkwgvxGaLZNAK0+/gIH58xs4bfR7ChpOlVd
-         U7/yc2mmmLxTm1NNb8RC0Eu8xdSN1hMV/pe9Xx6DXRLEZ94mLlQG5ui6MaoqWB2jev8I
-         lOxA==
-X-Forwarded-Encrypted: i=1; AKwUvByQyOGqeA46PHLTfXmjLNMh+7CzTHnpJCOTHKNT5KumtxyZ+IPouW9x9AEJkLniWwltfwA=@vger.kernel.org
-X-Gm-Message-State: AFuF++m2dann+UmOW8K/FIjW4JYXBouMMaQOwQ/dz9aqKLTlgJzSoHKf
-	LaDiT0S9oxSWbrp27tF240bOFyeBKdVtz1FOEizI/ELCrkMnLPuQf5v2Phi21ecGaKHwE5Ef644
-	NAwXOEc7/m1EChUjX/wXPYTMYbpUVNeYP60jG0ATG7zZ9Ioomhkr0bncIN/KIg/k9gGQjpHS92N
-	lkwyBfWX7emzmYXh2WaAPxrGaLr0w=
-X-Gm-Gg: AYBFou1Oq/9js8dimKw1qUOfkAPFSLPkB2OHa7ORLGApgo3wgae1vBM2AKSC6sDkjt5
-	SIaa5JLIcErTtpMJvIFsICD0WlBhOGRs+2w2F+C87HCALCyetUjmb1dxhxyv7dtUjfeEuWGwi7y
-	20mLR91+p2ZPOpdjT6v+tqaoy7vI9FKUv0sYNyLNkwqedANG6FWabxEHOSmnauScGJi54CqaYg
-X-Received: by 2002:a05:6820:f012:b0:6d7:fe06:604 with SMTP id 006d021491bc7-6d7fe0607eemr5411479eaf.18.1790632079070;
-        Mon, 28 Sep 2026 14:47:59 -0700 (PDT)
-X-Received: by 2002:a05:6820:f012:b0:6d7:fe06:604 with SMTP id
- 006d021491bc7-6d7fe0607eemr5411459eaf.18.1790632078491; Mon, 28 Sep 2026
- 14:47:58 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="gAI7EDjq"
+Received: from localhost (unknown [20.236.10.163])
+	by linux.microsoft.com (Postfix) with ESMTPSA id A060820B716A;
+	Mon, 28 Sep 2026 15:23:12 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A060820B716A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1790634193;
+	bh=cTAy/BNC2U75pwxrEQc/VQ2Mbb57wX4ATnB/0hzfS3A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=gAI7EDjqyqQ3DD7dzjcplEewID1FzVgGMiszzqePOOKyl6tBjAXDFze5Wz3Qgzx41
+	 ZndL0a+CbpuSvtMmsPAH+Q0/I7U7HqNBxw6FrKEMUllabi+KmjQXKZSGN5vT+fv8nt
+	 Biy2cV00WKQ2Zpxj4uclJ9HcIlVmLAUorXbDUZto=
+Date: Mon, 28 Sep 2026 15:24:02 -0700
+From: Jacob Pan <jacob.pan@linux.microsoft.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ linux-coco@lists.linux.dev, iommu@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Alexey Kardashevskiy
+ <aik@amd.com>, Bjorn Helgaas <helgaas@kernel.org>, Joerg Roedel
+ <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>, Kevin Tian
+ <kevin.tian@intel.com>, Nicolin Chen <nicolinc@nvidia.com>, Samuel Ortiz
+ <sameo@rivosinc.com>, Steven Price <steven.price@arm.com>, Suzuki K Poulose
+ <Suzuki.Poulose@arm.com>, Will Deacon <will@kernel.org>, Xu Yilun
+ <yilun.xu@linux.intel.com>, Shameer Kolothum
+ <shameerali.kolothum.thodi@huawei.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, jacob.pan@linux.microsoft.com
+Subject: Re: [RFC PATCH v6 05/11] iommu: Add a helper to validate a vIOMMU
+ parent
+Message-ID: <20260928152402.000079ce@linux.microsoft.com>
+In-Reply-To: <20260928182022.GD1616761@nvidia.com>
+References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
+	<20260917140159.1163281-6-aneesh.kumar@kernel.org>
+	<179027891416.104879.10365675178574704349.b4-review@b4>
+	<yq5ald8pkhj7.fsf@kernel.org>
+	<20260925122305.GG9354@nvidia.com>
+	<yq5a5wzpr7b9.fsf@kernel.org>
+	<20260928121147.GP9354@nvidia.com>
+	<yq5azex1peqt.fsf@kernel.org>
+	<20260928161738.GB1616761@nvidia.com>
+	<20260928110854.00003ff0@linux.microsoft.com>
+	<20260928182022.GD1616761@nvidia.com>
+Organization: LSG
+X-Mailer: Claws Mail 3.21.0 (GTK+ 2.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260731211601.3033906-1-zhipingz@meta.com> <20260731211601.3033906-6-zhipingz@meta.com>
- <f4ff7ced-63b6-42e6-8e01-9f01d2e59843@huawei.com> <CAH3zFs24esHCGA=wPrkiH8oKQCv7SnOwcBbkMxrOEvOVtwstYg@mail.gmail.com>
- <20260924233058.GA163130@ziepe.ca> <CAH3zFs2rhg6-b-pVDps1V8LsM4Dn48t4J4LFVyKOZtT4axdY=Q@mail.gmail.com>
- <20260928172939.GK163130@ziepe.ca>
-In-Reply-To: <20260928172939.GK163130@ziepe.ca>
-From: Zhiping Zhang <zhipingz@meta.com>
-Date: Mon, 28 Sep 2026 14:47:46 -0700
-X-Gm-Features: AclHuK-FrHEzthVV7FZ3Ls3GrwbmAQee8rpJCMTJYpOGKi1s1NipCikGQwgcBpk
-Message-ID: <CAH3zFs1mCujYjB=5ywo+huAjPJZQoe9u7NM4evNRYr5_ZQbcXQ@mail.gmail.com>
-Subject: Re: [PATCH v13 5/5] RDMA/mlx5: get tph for p2p access when
- registering dma-buf mr
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: fengchengwen <fengchengwen@huawei.com>, Leon Romanovsky <leon@kernel.org>,
-        Michael Guralnik <michaelgur@nvidia.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian Konig <christian.koenig@amd.com>,
-        Alex Williamson <alex@shazbot.org>,
-        Bjorn Helgaas <bhelgaas@google.com>, kvm@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-ORIG-GUID: Omadvh9hitXBDzKuRpVGi6qzln40Ps9U
-X-Proofpoint-GUID: Omadvh9hitXBDzKuRpVGi6qzln40Ps9U
-X-Authority-Analysis: v=2.4 cv=QZjzLcbv c=1 sm=1 tr=0 ts=6abae08f cx=c_pps
- a=7uPEO8VhqeOX8vTJ3z8K6Q==:117 a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=tpM8CJlwf7uhpglF1g9U:22
- a=VwQbUJbxAAAA:8 a=Ikd4Dj_1AAAA:8 a=9jRdOu3wAAAA:8 a=l_Ha6740zCVOtLZIeloA:9
- a=QEXdDO2ut3YA:10 a=EXS-LbY8YePsIyqnH6vw:22 a=ZE6KLimJVUuLrTuGpvhn:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI4MDA4NiBTYWx0ZWRfX8BqptTP89eCi
- kX9PcVc8+zA2/KHYNmvScfW+gYjhwYEPT0iqtItiWyJvM5uwA9qOWDW+4mUxyp7aMNV4ogN1gky
- 1gBXy3gNWg4SPGCUnL+7yS78KbqgotVXeeR5x1u49IhhlU3ttPGQUTRqgierdHdzqVY9zJhVj2A
- PqShZtubiAMRkhWcTBSs0u7GsBU9RegjgFMXByQc8kvvW7Ni2Om1RswbWrbpjtyiE/Dex768TqA
- wwCZTSm25ftIsduHu1a8fs9oKF+e0PkF06IElEfCwTPSqD6MWEjS4a96GZW8XGMHphPwu57+G85
- xYyuCN+SY9hx3D017FXvBRW4sAGBhtHqwiqWAKzVyQ7n/CNOA8RPR9mHbqVHn4mTTW177DAvJaN
- 9Ekv8+OpVk4mYSNJHzxvOe70kBi1iQZrMxWwrwJnibTVpt7lmnKi9doPTWQYHA1pKcK3S84trpG
- yfOvIKESNRXcw64ZOFA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI4MDA4NiBTYWx0ZWRfX3Yb+XfDVo9UO
- Tms+eAIXt96JSJaOGY+f6lL50TRkoopDiApkqek7c9HMr2QJgiw69AnafuoP6n4c3EP9ZhsDMOw
- JGspucMh61GVBm0HcdiBIVceK0e+H3Q=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-28_06,2026-09-21_02,2025-10-01_01
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 28, 2026 at 10:30=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.ca> wro=
-te:
->
-> >
-> On Thu, Sep 24, 2026 at 11:17:57PM -0700, Zhiping Zhang wrote:
-> > On Thu, Sep 24, 2026 at 4:31=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> =
-wrote:
-> > >
-> > > >
-> > > On Wed, Sep 23, 2026 at 11:24:56PM -0700, Zhiping Zhang wrote:
-> > > > I don't think this belongs in the importer. Every in-tree dma-buf
-> > > > caller of pci_p2pdma_distance() is the exporter, in its .attach,
-> > > > clearing attach->peer2peer -- amdgpu_dma_buf.c, xe_dma_buf.c,
-> > > > habanalabs memory.c. There is no importer-side caller.
-> > >
-> > > Right, and they shouldn't be doing that, but it still has to be
-> > > checked that the st is going directly to the peer device not the host
-> > > bridge. Not using the distance, but by the PCI_P2PDMA_MAP_BUS_ADDR
-> > > indication.
-> > >
-> > > I fear you will need some of Leon's series to make that happen.
-> > >
-> > > So probably the proposed change to dmabuf ops is far too simple.
-> > >
-> > > Jason
-> >
+Hi Jason,
+
+On Mon, 28 Sep 2026 15:20:22 -0300
+Jason Gunthorpe <jgg@nvidia.com> wrote:
+
+> On Mon, Sep 28, 2026 at 11:08:54AM -0700, Jacob Pan wrote:
 > > Hi Jason,
-> >
-> > Thanks for the comments.
-> >
-> > Agreed -- the tag should not be handed out unless the routing is
-> > PCI_P2PDMA_MAP_BUS_ADDR. That can be enforced conservatively on 7.3
-> > with two changes. I can fold both into patch 4.
-> > ```
-> > In drivers/pci/p2pdma.c, make pci_p2pdma_map_type() callable from
-> > tristate VFIO_PCI_CORE:
-> >
-> >     EXPORT_SYMBOL_GPL(pci_p2pdma_map_type);
->
-> No, that's been rejected several times already.
->
-> > and in drivers/vfio/pci/vfio_pci_dmabuf.c,
-> > vfio_pci_dma_buf_get_pci_tph() gains:
-> >
-> >     struct dma_buf_attachment *attach;
-> >
-> >     if (list_empty(&dmabuf->attachments))
-> >         return -EOPNOTSUPP;
-> >
-> >     list_for_each_entry(attach, &dmabuf->attachments, node)
-> >         if (pci_p2pdma_map_type(priv->provider, attach->dev) !=3D
-> >             PCI_P2PDMA_MAP_BUS_ADDR)
-> >                 return -EOPNOTSUPP;
-> > ```
->
-> Also no, this has to be done via PCI_P2PDMA_MAP_BUS_ADDR which also
-> enforces putting the determination in the right place in the code
-> flow..
->
-> > Two properties are worth stating explicitly:
->
-> Ah! AI!
->
-> Jason
+> > 
+> > On Mon, 28 Sep 2026 13:17:38 -0300
+> > Jason Gunthorpe <jgg@nvidia.com> wrote:
+> >   
+> > > On Mon, Sep 28, 2026 at 09:09:06PM +0530, Aneesh Kumar K.V wrote:
+> > >   
+> > > > Does that mean the SMMU driver will return viommu_ops before
+> > > > iommu_ops->viommu_init() is called? If so, should viommu_init()
+> > > > be moved into viommu_ops?    
+> > > 
+> > > That's probably the cleanest arrangement, yeah. Then the TSM ops
+> > > are just the same 'get_viommu_ops' call under TSM and it is easy
+> > > to put in a flag 'must have null hwpt' that goes at the right
+> > > point. 
+> > This should also work for the parentless hypervisor vIOMMU in my
+> > RFC: https://lore.kernel.org/linux-iommu/20260925190742.1575380-1-jacob.pan@linux.microsoft.com/T/#t  
+> 
+> Yes! That case is very similar, the hypervisor under Linux is a close
+> cousin to RMM/TDX.
+> 
+> > I will give below a try, I currently have below (can be avoided if
+> > get_viommu_ops() can simply return NULL for the hypervisor type):  
+> 
+> The amd_iommufd_get_viommu_ops() must only permit its own type, but
+> AMD doesn't have a type right now because they are merging their
+> patches bit by bit..
+> 
+> ARM already returns NULL:
+> 
+> > > +const struct iommufd_viommu_ops *
+> > > +arm_smmu_get_viommu_ops(struct device *dev, enum
+> > > iommu_viommu_type viommu_type) {
+> > >  	struct arm_smmu_master *master = dev_iommu_priv_get(dev);
+> > >  	struct arm_smmu_device *smmu = master->smmu;
+> > >  
+> > >  	if (!(smmu->features & ARM_SMMU_FEAT_NESTING))
+> > > +		return NULL;  
+> 
+> Though I wonder why would you check for IOMMU_VIOMMU_TYPE_HYPERVISOR
+> in the amd driver?
+> 
+It is an early capability check. AMD vIOMMUs require a nesting
+parent, while IOMMU_VIOMMU_TYPE_HYPERVISOR is parentless. Returning
+zero prevents the core from allocating an AMD vIOMMU and calling
+viommu_init() with a NULL parent. As you said above, AMD doesn't have a
+allowed vIOMMU type yet.
 
-Thanks Jason, I see what you meant by Leon's series now:
-  https://lore.kernel.org/all/20260928-fix-p2p-acs-v4-0-v8-0-404453b9c435@n=
-vidia.com/
+> Maybe hyperv should be a TSM?  Maybe we should also route the
+> get_viommu through the the "kvm" fd somehow?
+Just to understand this better, are you suggesting to do away with
+hv-iommu-root driver in the context of external domain attach, instead
+let mshv (hyperv) register as a vIOMMU external provider?
 
-Looking at v8, it seems patches 1-4 can stay functionally unchanged,
-while patch 5 uses dma_buf_p2pdma_map_type() on its own attachment for
-both the initial TPH query and revalidation. Is that what you expect?
 
-If so, would you prefer that I wait for Leon's series and rebase the
-whole stack on it, or split the series so patches 1-4 can land first
-and patch 5 follows after Leon's series?
-
-Thanks,
-Zhiping
