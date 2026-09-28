@@ -1,83 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-216.mta0.migadu.com [91.218.175.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DA34EDCDB;
-	Mon, 28 Sep 2026 17:42:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8697C4E3EF6
+	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 17:47:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790617366; cv=none; b=uHd47VzrVcRVyNodcJkuQsiQ2Xuf3SNetBfuUu6MlE0GMUcTQaX2JhatSr4L2MUqj2ODnN/Qw925GRG7B4UeHtLfD4dTfqgFWJIeETRzv+RjWv5ih7lrnq9fCxnlIjA9EyvmrDO0JJwbqLDKGuUrqQmnamiXTlF6kMLmbXk1CDI=
+	t=1790617647; cv=none; b=i7prFF86zJ+Ekhje7Fen216kcEcZbmRbRG6Aq/OPiRCnt6vnYZ2gf1GMjomU2b4aLi37UEpqUsdg3i7svpMgqbhv5o3dLOmIO5Th4f+XKaUDbrRQKTEZamog6zWWEQsQ2NisDLFpzDLPVerY5G53frBCDfNqFk4x18743qoe2YY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790617366; c=relaxed/simple;
-	bh=6NCfchU+PQQZyERuUU2Ed3mKB3UP4iu3pRSwW0GBrJA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nIoZDMHkirpFx+g/LfDfr0G22GhsMli50L0wU0iFT2Vn2qzgxlq0bPbPx8XV9XmvsCXPTsfDp38jayqnaoOSb/ZIxLfelpbk/yXPBK3ef6BTzdoR5KGtm227yClomgOMAbQQV0sjVyalfjbVTRYoOPt+0P/u9Kkyj1ALnj9ZCLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QRKeJG7F; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790617647; c=relaxed/simple;
+	bh=XyuHMcU9BbS4rZO3qSAgRdBv7BTX7Z9PJ3I+SxV2FeE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sTrZHvYnroNbg/JP3WYvp9XLfLoJGPSRXVVjgQ9zMZe+QrCtuGdpuLyo3WfrOceoHOK2TS8bMqkdw8BLJqVlhiQIUevpAAcQUUkl7Kt3Aefit0jwzmqVqHVAocFveEA0tyXZpFnOuVN4DFGN4bGaVbIIv5VmPXDv59fjahdpjR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rG+cYlCp; arc=none smtp.client-ip=91.218.175.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QRKeJG7F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AECA1F000FF;
-	Mon, 28 Sep 2026 17:42:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790617365;
-	bh=UDattfyukG7O26TIJoHp52x3bz/aQeuPX0drEE2gCME=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QRKeJG7FT4AQ4KAYYnwg1Mgg7UXxChV50eEcr/SFojsjo22EJ/71nY8A1n9aLaFAh
-	 +x0/3gJq12IUg+gctN1VCGLqIlG11+F4YRpkeM0yEJobM58QhXe7IwEextZCLR+vIr
-	 t8GE0cxP9lg8569mYudNnG3L7UeOOl43PL+WOQZSL4xduMer7Ff23lCBsr5bAmwfx1
-	 R4EFqgVLHMoRimgJC9t5LY7EcUubpkstATxMuLdrtOe6rWGS4k6S/AUuTFZ3F+/svg
-	 aWRK//5WaugSCngCHXmGszR2oSw7ZwPQ5wt4P/eMQQQp2lnaDWPzxw/aR82myDp+nO
-	 TwXsPHUWSqrvQ==
-Date: Mon, 28 Sep 2026 10:42:43 -0700
-From: Wei Liu <wei.liu@kernel.org>
-To: Qiliang Yuan <odys.yuan@gmail.com>
-Cc: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>, linux-hyperv@vger.kernel.org
-Subject: Re: [PATCH] KVM: x86: Clear CR3[63:32] on SMM entry from long mode
-Message-ID: <20260928174243.GA3705413@liuwe-devbox-debian-v2.local>
-References: <20260928-kvm-smm-cr3-upper-bits-v1-1-138f52dd531e@gmail.com>
- <20260928072534.1987-1-odys.yuan@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rG+cYlCp"
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=XyuHMcU9BbS4rZO3qSAgRdBv7BTX7Z9PJ3I+SxV2FeE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790617639; v=1; x=1791222439;
+ b=rG+cYlCpWA7YUysgTp+nJZS8DB0k3hg004QgeE6o77dfXykYd0WV2i9ocLruRHgghTEGY7Tn
+ baTMLQXUYdTh2X2O1hxTJ7p8/gwUoB2Tlcdc4/xuS+zAXSv/9PQDTgKNCtCZgnyZZdMyztzkXuM
+ i/2v3ZqOPBdsQR407E0kjFRA=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id dc16216e8299a601;
+	Mon, 28 Sep 2026 17:47:19 +0000
+X-Mizu-Trace-ID: dc16216e8299a601
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6ab0140ecb2so1200a12.0
+        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 10:47:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByIvN3GRg+ko24e12cDiFoaOfIDjPkncnm2YC2kN6maVRAeVjsXbPFmr9LzQa1eXx+9ypc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK7PqFRZdVeFgBbDVwRfuf5cUD1AaeJiI03oIMV1n6eYYJmaHHc
+	6Jw1m3/tvdfj7UqZJjRyZYn47aLEQKx+kHuaQI+1grRLvYMkadwWm3aaiKEGwP/4uyUp5B+t8ss
+	QCrrHcS6DuOwb8Qd6ixzzC3VUsTmRRK/XmU6s0GP3
+X-Received: by 2002:aa7:ca57:0:b0:6a6:967c:3186 with SMTP id
+ 4fb4d7f45d1cf-6ab01ed939fmr94944a12.2.1790617638152; Mon, 28 Sep 2026
+ 10:47:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260928072534.1987-1-odys.yuan@gmail.com>
+References: <20260928152507.2116110-1-fuad.tabba@linux.dev>
+ <20260928152507.2116110-5-fuad.tabba@linux.dev> <arqaNHGzVfMpVha5@kernel.org>
+In-Reply-To: <arqaNHGzVfMpVha5@kernel.org>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Mon, 28 Sep 2026 18:46:40 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTz=sKCZpQzLkMaks0o5hR-R=ACKVinPgwzAiyVUubirxA@mail.gmail.com>
+X-Gm-Features: AclHuK-Tq_Aet2hB71IGOYbMLUlrt7UHvVGW8T4ukejDyUoOFxO6nR4iiKf3Ohs
+Message-ID: <CA+EHjTz=sKCZpQzLkMaks0o5hR-R=ACKVinPgwzAiyVUubirxA@mail.gmail.com>
+Subject: Re: [PATCH v1 04/10] KVM: arm64: nv: Return a failed stage-2
+ descriptor read as a fault
+To: Oliver Upton <oupton@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Jing Zhang <jingzhangos@google.com>, Karl Mehltretter <kmehltretter@gmail.com>, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Qiliang
+Hi Oliver,
 
-On Mon, Sep 28, 2026 at 03:25:34PM +0800, Qiliang Yuan wrote:
-> +Cc Hyper-V folks and linux-hyperv, since the failure is triggered by
-> Hyper-V's handling of VMRUN for a nested (L1) hypervisor, i.e. KVM
-> running on WSL2.
-> 
-> For the Hyper-V side: the VMRUN is rejected when the guest state has
-> CR0.PG=0, EFER.LMA=0 and CR3[63:32] != 0, a combination that bare-metal
-> SVM does not reject.  Is that check intentional?  If it is not, a
-> Hyper-V fix would help older KVM versions as well; either way the patch
-> avoids creating that state in the first place.
-> 
-> The full patch is here:
-> https://lore.kernel.org/r/20260928-kvm-smm-cr3-upper-bits-v1-1-138f52dd531e@gmail.com
+On Mon, 28 Sep 2026 17:47:48 +0100, Oliver Upton <oupton@kernel.org> wrote:
+[...]
+> Hmm. Rather than fixing these things individually, I'd prefer aligning return
+> codes between the S1 and S2 walks. I agree with the approach; negative
+> return codes should be reserved for host-visible failure reasons whereas
+> everything guest visible gets communicated through s1_walk_result /
+> kvm_s2_trans.
 
-Please share the Windows version from `winver`.
+Makes sense. I'll bring the S1 walk in line with that in the respin,
+with the Data Abort change on top.
 
-My colleague said that it had been fixed. Maybe the change needs to be ported.
-
-Thanks,
-Wei
-
-> 
-> Thanks,
-> Qiliang
+Cheers,
+/fuad
