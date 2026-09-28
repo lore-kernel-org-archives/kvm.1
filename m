@@ -1,115 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F0D4EB87F;
-	Mon, 28 Sep 2026 16:29:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB304EC659
+	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 16:30:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790612970; cv=none; b=tfjGQ/+TL9g8dWtIYf79mL6udYWoER0hRiL+w1/MW6KVHzu27s6fxf1l18Hq2+FO46JqcBRpgF8Lx42k3bvZItl/Rdtcii9o+XmQcELO7L+MXLUbgXyHly4IGxF9PR25fZbTjDE+Bylym5D1olGZJ8T5kVpPadje3ZjMmPpu2rM=
+	t=1790613004; cv=none; b=SngnBTiBxFa2uwkhSKTAfhOHa3ZqgU+KTsBNEjgLX0ci3AOhWEpTjb4Kw6zYFMK+fmcpkS4OVBItpgD26aeGdpII1sSV2Iif6UnNrng79HNUc3pHMxVCDCkzwb+arTIi/qXKUD2+PLUr+wod/in1X5IJ+yniTGzIRm3YCEj+F6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790612970; c=relaxed/simple;
-	bh=jsC7eTXb861JGQRBOV+oF6UcxdvctYqJhowMoD7P874=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fYbDYLik+fm7xSflpmFtupEibMVOmZPeekpBPeQEnynuIxx/BLjH+7XqvJcL+5+eai+Hpx/SGcI+r641Q5sykrDxzmEoPatVh85azl6qEtn6JXgkseenIy5FJlZo1MAb8L65wt6Ih3l2a6QXy2kKMxigmG6ICqW/t5TnoGe95hU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DGNsSm5C; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790613004; c=relaxed/simple;
+	bh=oCY95uwHxELLJ64Ab+wCn+UQVYno8VUrLtnEf4Z2jzo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=uG1kH96IkHaqUrvuMzB6pB8OnJHIYge9YoXnL+LyNyjngInQ5TRdkpf837PEhTcskEpxZ+5/YNIIJKZF7Xr7iBUTlIxi+tJBKJkcC27qUWgOKwbqMwXqTBooiZT2FIvYgByWKoL7+7ff6gB32QjHIhjtj/mLRelanewcy5qyITI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BmV4LUz2; arc=none smtp.client-ip=209.85.216.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DGNsSm5C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187C71F000FF;
-	Mon, 28 Sep 2026 16:29:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790612969;
-	bh=+K5yiCqW9C+tRMYZ/wwccsdp0OS3k1cMcrj4lVdzjRc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DGNsSm5CeSch8qKbicKiPS+/iTe9NVwwVAY1o2qvMrigSCn7ZW5izpAY4X8yUhJlZ
-	 XC5f77ZgevAcosylEbZnqnE9p612ztQWIkhempJZQH1ec+eXBPIA8N6ZqwLKjhgvvd
-	 jUFyuiU1lCHqyrcRATKg+IzIqMYNTYvPMjR3klJaqD2ABO4G84iRb91Hago/EJW9cr
-	 YeLcZXBw6k4lGXcpKbwrOa6lSCiDyAs111UWnGibka9Gu+1tE9KGfdon5JFh8oPWq5
-	 2cZyNrh7hTuu/TNWld91/aVkopMYRMuTz1hZnPRbBD4753VRHPGsVaEZ3ECk3DCVsf
-	 izAy266OL5oQg==
-Date: Mon, 28 Sep 2026 17:29:24 +0100
-From: Mark Brown <broonie@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	Oliver Upton <oupton@kernel.org>, Ben Horgan <ben.horgan@arm.com>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 1/3] KVM: selftests: arm64: Report set_id_reg reads of
- test registers as tests
-Message-ID: <0cd3acab-b974-41e4-a4a5-639ddadba1d7@sirena.org.uk>
-References: <20260901-kvm-arm64-set-id-regs-aarch64-v7-0-7b065b0bda9a@kernel.org>
- <20260901-kvm-arm64-set-id-regs-aarch64-v7-1-7b065b0bda9a@kernel.org>
- <arqE3CNeYyQpgcMf@gremlin>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BmV4LUz2"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-398dcfabbf8so9244801a91.0
+        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 09:30:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790613002; x=1791217802; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9oIVAQYUB8UbZQVC7AqnOK7Iqj3kO0cakRNqeZlr1xM=;
+        b=BmV4LUz2pObJ78FA5jgzNNoFXyEcAijB3aaXwU3SAsrbXpnNCNoXZ0WaQn6Yn+BY1G
+         AxBrkV1uYFBDJIAjt/FsW+EOpaDgdtCLxSMA33V665y+HHldP6pwg+Yun+EdQcIfGD0x
+         DEHx7cUi7y1tbiEfwLkuaW7ji0LhpW1Q0f+5z3a+dX7fAkagRnmQVj20BfIINi3pCXj9
+         1hgZ2MUMgTDgtZiCv1M8Fvdxy7Udx4uuFDIETt2yHm4X6ir/HDjMRZRuxMhBoRAA+MIN
+         ylGhT/GdhxSHNvUzfbdHjR6kUK/B0upvBtpAJwMxgzLMbtJuQBknboZ0/hdigMeE2tYJ
+         WA0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790613002; x=1791217802;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9oIVAQYUB8UbZQVC7AqnOK7Iqj3kO0cakRNqeZlr1xM=;
+        b=vdFRR/f0vQy4FUw1IbTBpDqrS97Eq6t/iTJz1r5/EjfY6oZVGxfK81z12wL4zK/sW0
+         5Duk5NTDKsShKpE2DjLxVDtdbEMIIr88AzhP4bbocq8FPKt5ikfOuJaW+yBynkN43rqX
+         cA1fD+Pw5ohHJ2nAQ3LYsilCO1XitFvsfCOAgIw81XfSiKTzcqCPFVGrt9FbugThWHhL
+         0Ps7FGmjCCCW/CSfs5S1Qtyp1N6i+rOk/zmsKgBW1n8IEKRbIjvRP4pHoIxNia4Np0e8
+         0aWKVUsDu1/0Z3/1FZ6rIQ1JCPjVlaVUJhfNgqJ9/mLN0/Tq3exiuP2EgQpQqHXhoIrm
+         V2ew==
+X-Forwarded-Encrypted: i=1; AKwUvBwABFvgK4Zjf9lCVZM31ZD9aqvOekUQVg7rGFIunscps9Zd+fdyoFzx8DfZGHyZHlhwMcc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI8qJPG6Y2bl4D7c8gy5jT4GttLWA/EtXBHjpr+x15YqP9l50TQ
+	X90s5YJESkianhNsu61dGfmMNSR4rQKMxVVWJN4FGVtTNzfv8BErtCZyEv4nCjXEcdUspc0RoIj
+	/b575UQ==
+X-Received: from pjbkr7.prod.google.com ([2002:a17:90b:4907:b0:3a0:8124:2580])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3c49:b0:3a0:7d60:450d
+ with SMTP id 98e67ed59e1d1-3a098feb5d1mr12910441a91.43.1790613001553; Mon, 28
+ Sep 2026 09:30:01 -0700 (PDT)
+Date: Mon, 28 Sep 2026 09:30:00 -0700
+In-Reply-To: <shvokigIdaYF83vU8rik51QxCt-IWzK_vNIV72voXL13vdzqLnE4pdpMT-le6GLd7K8VWiWRTn7lpzJDzLBGYxPIhgdbr5MfPwnUY9lc1ME=@proton.me>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fdLDzAIjJR2VDlrJ"
-Content-Disposition: inline
-In-Reply-To: <arqE3CNeYyQpgcMf@gremlin>
-X-Cookie: All is fear in love and war.
+Mime-Version: 1.0
+References: <20260915175335.138547-1-davimaba.v@proton.me> <179028303710.1997669.4762091811625597120.b4-ty@b4>
+ <shvokigIdaYF83vU8rik51QxCt-IWzK_vNIV72voXL13vdzqLnE4pdpMT-le6GLd7K8VWiWRTn7lpzJDzLBGYxPIhgdbr5MfPwnUY9lc1ME=@proton.me>
+Message-ID: <arqWCDEKxYsi34z0@google.com>
+Subject: Re: [PATCH v4 0/3] KVM: Fix and account mem_attr_array reservations
+ abandoned on ENOMEM
+From: Sean Christopherson <seanjc@google.com>
+To: David Ballesteros <davimaba.v@proton.me>
+Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
+On Sun, Sep 27, 2026, David Ballesteros wrote:
+> 
+> Haha, I didn't even realize using AI would make me sound like a bot
+> until now...
+> 
+> Jokes aside, I truly appreciate your kindness. I have to admit that even
+> though I tried to review everything as thoroughly as possible, this was my
+> very first patch submission, which is why I found it a bit tricky to follow
+> all the conventions (though that's no excuse). 
 
---fdLDzAIjJR2VDlrJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+No worries, contributing upstream is definitely a gauntlet run.  Calling it "a
+bit tricky" is being *very* generous.
 
-On Mon, Sep 28, 2026 at 04:26:57PM +0100, Lorenzo Stoakes (ARM) wrote:
-> On Tue, Sep 01, 2026 at 07:50:01PM +0100, Mark Brown wrote:
+> I definitely leaned too heavily on AI for the write-up. With that said, I
+> understand the extra work it causes and I am truly sorry. If there's a next
+> time,
 
-> > +	switch (id) {
-> > +	case SYS_MPIDR_EL1:
-> > +		return "MPIDR_EL1";
-> > +	case SYS_CLIDR_EL1:
-> > +		return "CLIDR_EL1";
-> > +	case SYS_CTR_EL0:
-> > +		return "CTR_EL0";
-> > +	case SYS_MIDR_EL1:
-> > +		return "MIDR_EL1";
-> > +	case SYS_REVIDR_EL1:
-> > +		return "REVIDR_EL1";
-> > +	case SYS_AIDR_EL1:
-> > +		return "AIDR_EL1";
-> > +	default:
-> > +		TEST_FAIL("Unknown register");
-> > +	}
+Hopefully there is a next time, but selfishly, I hope the next wave of security
+fixes is to a different subsystem. :-D
 
-> I guess these are for GUEST_REG_SYNC() registers, etc. that don't appear =
-in the
-> TEST_REG() list?
+> I'll write it myself -- AI at most for a rough first pass, but the
+> words that reach the list in general will be mine. Best regards, and thanks
+> for the guidance and patience.
 
-Yes.
+In the future, please also wait a reasonable amount of time between versions,
+e.g. 1-2 business days for relatively urgent fixes, more for non-urgent things
+(though with so many of the guidelines, there are exceptions; use common sense).
 
-> > @@ -828,7 +872,7 @@ int main(void)
-> >
-> >  	ksft_print_header();
-> >
-> > -	test_cnt =3D 3 + MPAM_IDREG_TEST + MTE_IDREG_TEST;
-> > +	test_cnt =3D 3 + MPAM_IDREG_TEST + MTE_IDREG_TEST + GUEST_READ_TEST;
->=20
-> I guess because you made things use TAP now?
+With Sashiko and syzbot giving such quick feedback, it's tempting and all too
+easy to blast versions back-to-back(-to-back), but that's often counter-productive.
+E.g. there's almost no opportunity for a human to step in and provide guidance
+(e.g. to point out the existing on-list fixes), the sheer volume of mail adds to
+the load of maintainers, and if we overload the bots, then we risk losing some
+of that early/prompt feedback.
 
-Yes.
-
---fdLDzAIjJR2VDlrJ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmq6leMACgkQJNaLcl1U
-h9BjmAf/USPitIAZrXSGRtz8RmYTAZ6Zu7zIOqOnzA05aYcufhrgg0JlTCO5i2jF
-WUsJEsqePHFiy+W/ydFn7+BZ1hDHABtDvR3k08GrqNyh1zquMnDvPqqppNs0ZHDo
-YdYrGjdQF+ujDqk+ZgYwflBO37HWmvceyR/kwjImXyoVo7OP0yrAJIvkUo1CATB6
-CtpOujxpIounDRqj7/nvCL6u9n2lfuNXGm4zfpLpNsxw1lMBuMS+ahe5laA6wcx5
-XO56EdJkdk8rxJYq5wvq/6AzLFRxJeIS/J82wtz0x53Ljq0IiqFTxmQ33Y9+85kS
-6vt6rGEnMmQvzFPK1aSrnqpQlzgwmw==
-=1OOp
------END PGP SIGNATURE-----
-
---fdLDzAIjJR2VDlrJ--
+Thanks again!
