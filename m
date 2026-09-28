@@ -1,144 +1,129 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD752D061C
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 11:48:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9165D4B7A5D
+	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 11:57:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790596082; cv=none; b=A/q8IeBiOvUlkxvdznOQ4GX3d7iVSqnE46pcBoKxmTyXWICRUdp5MUOaauTu0KVfjzESEH2CplWiVRfDgxwFqb00hg6ehBrXBNNsfdxMW7uCSty9lIAh5OpbwxXFTHvFyM4/4TsOsIP8pZLJJcXG8b4sn1j8GACV7KgwQgH8Czs=
+	t=1790596652; cv=none; b=j6dfH2J/dH0B0bqSsXFM7yHd8cKDndMUXMQsRCO+7dmYk87jzkiZg5bnd3rfTWrg8X25j2p2GEwRBb3IlM180CGTgIfpxb34DMXWAXFNLB7R64p2HaObgcodZttrYaw2rCK3oSiHysGQNKIOocb5aeT3TDj6DDbM247cqJsEn0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790596082; c=relaxed/simple;
-	bh=4Lr+ZWJIYnFoMUEklGu9RLSn5nQX9TBjjviN7WDLIYQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Ndey4cxYAHJrCiGR35UlilnK4y05NTWwovTr8d+yGHmd612TRHuHCIPr5D8Vaks3/yOxNEK8CM+FMxEAz4lwu0/vC3rwGI7QGHUh/gi+ksjioXNwBj8+2b16h7RbvYNV6pX4RfJDiZH+ehec7cQqe1tgBAJeOqI20CvaLIbDLwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=b/2qFG3v; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790596652; c=relaxed/simple;
+	bh=zJJc3iDmiqfZWD1GmDyXQ8dCs+surDxnB5XRqzPxIhw=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=QepMgMLHSu1Wd9rpTRvOijqmA1Nno/BHpErCK/URSclXLfiqyjw5VgNZIAAN+qybPZz2U7idiIqftwG3/o/VhLgAWkPBBgCtpMpL67iFLbJCPvl/CLtK0t+HxHa+7IWoB4sm/A9gZlmUkjjzbLmLSvT9dg/2fm+UZeRPtuBTJDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eNdB5Zgs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b/2qFG3v"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790596080;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UklCMeok/lRwwENuhgX7Blw7lwK8sUDFmGXUvT9wcyc=;
-	b=b/2qFG3vLxsGjFe7kyJWH7MlyZrZYu8qDYFGZ5Ut+FO3AcrwX4YHuugqeThOande9AnbJp
-	lvoNBD2SETXYoZzNVL55w4AbphAHRK/O6B8TmuEfTtooU3V0s9sbG0TpX1tYr2bT/XwY9H
-	c6MHGtVpaKjTH4eGZI+ZuAOTeu7AKlY=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-492-J4yRTP5DMKyOeSX3gMLLJQ-1; Mon,
- 28 Sep 2026 07:47:56 -0400
-X-MC-Unique: J4yRTP5DMKyOeSX3gMLLJQ-1
-X-Mimecast-MFC-AGG-ID: J4yRTP5DMKyOeSX3gMLLJQ_1790596074
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6CD4E19541AE;
-	Mon, 28 Sep 2026 11:47:54 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.44.22.5])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E6F1730000E4;
-	Mon, 28 Sep 2026 11:47:53 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
-	id 9796221E6A04; Mon, 28 Sep 2026 13:47:51 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Yonggang Luo <luoyonggang@gmail.com>
-Cc: qemu-devel@nongnu.org,  Richard Henderson
- <richard.henderson@linaro.org>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@oss.qualcomm.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,
-  "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,  Pierrick Bouvier
- <pierrick.bouvier@oss.qualcomm.com>,  Fabiano Rosas <farosas@suse.de>,
-  Laurent Vivier <lvivier@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  Alistair Francis <alistair@alistair23.me>,  Peter
- Maydell <peter.maydell@linaro.org>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,  qemu-arm@nongnu.org,  kvm@vger.kernel.org
-Subject: Re: [PATCH v4 41/55] target-info: add SysEmuTarget none
-In-Reply-To: <20260926070057.1234-42-luoyonggang@gmail.com> (Yonggang Luo's
-	message of "Sat, 26 Sep 2026 15:00:40 +0800")
-References: <20260926070057.1234-1-luoyonggang@gmail.com>
-	<20260926070057.1234-42-luoyonggang@gmail.com>
-Date: Mon, 28 Sep 2026 13:47:51 +0200
-Message-ID: <87zex1fvh4.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eNdB5Zgs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E05B1F000FF;
+	Mon, 28 Sep 2026 11:57:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790596651;
+	bh=KR3p0YL3OPXQ1Lq0CxFQXBboTf9iegewunBJnYsnVhc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=eNdB5Zgs3763U1/8lbcFuL2chG4pI1DUZKVh8avxeYJswq5WsIxBHfsRN7trjA+3y
+	 PEznxjYlrJbYoP13MN5DLwbl9FyGtsyncxs/XUuwLzO7o4RBTV15lHiFTBmts23ruV
+	 akNT3jW9O9mf3041DMZGrIQcxpz1jVn7bT26Gm6t7IDC11KLCqWGSC0egSLK2Od6vh
+	 2q7C2tMsBQhhuCSCHDwrMOqBmaeNo8DIb3zXccMwATOozrPGJ8uZgp/AupT5NEKVoZ
+	 Ss7KrOPmtswt9cfHXTTZxY6XSmwrLUFrQD4rdL+W5tw3wfVo/3QS43SN4kSoxtJENo
+	 AIF4A5GvQTFdw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/3] KVM: PPC: Book3S HV: Add preempt_disable() around
+ virtual-mode HPTE bit-lock users
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Amit Machhiwal" <amachhiw@linux.ibm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260928113704.48912-2-amachhiw@linux.ibm.com>
+References: <20260928113704.48912-1-amachhiw@linux.ibm.com>
+ <20260928113704.48912-2-amachhiw@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 28 Sep 2026 11:57:30 +0000
+Message-Id: <20260928115731.4E05B1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Yonggang Luo <luoyonggang@gmail.com> writes:
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] kvm: ppc: hard deadlock due to asymmetric preemption in HPTE bit-l=
+ock
+--
 
-> Add a none target for when no TargetInfo is selected. It is last
-> so existing SYS_EMU_TARGET_* values stay put, and it is not a
-> qemu-system- executable name. target_is_none() and target_none()
-> report that state.
+commit 4ab3d02887c651ee39ea07438e210fdda4821de1
+Author: Amit Machhiwal <amachhiw@linux.ibm.com>
 
-Why does it matter that existing SYS_EMU_TARGET_* stay put?
+KVM: PPC: Book3S HV: Add preempt_disable() around virtual-mode HPTE bit-loc=
+k users
+   =20
+This commit wraps virtual-mode HPTE bit-lock users in
+kvmppc_pseries_do_hcall() and kvmppc_handle_exit_hv() with
+preempt_disable() and preempt_enable() pairs. This is intended to prevent
+indefinite spinning if a vCPU thread is preempted while holding the bit-loc=
+k.
 
-> Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index aa51968e206a7..52f72f30baf0a 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -1212,9 +1212,11 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
+>  	case H_CLEAR_REF:
+>  	case H_PROTECT:
+>  	case H_BULK_REMOVE:
+> +		preempt_disable();
 
-[...]
+[Severity: High]
+Does disabling preemption here expose the system to a hard deadlock?
 
-> diff --git a/qapi/machine.json b/qapi/machine.json
-> index b1be5608b61..6aaa2af709a 100644
-> --- a/qapi/machine.json
-> +++ b/qapi/machine.json
-> @@ -22,6 +22,10 @@
->  # The individual target constants are not documented here, for the
->  # time being.
->  #
-> +# @none: no TargetInfo selected.
+While this patch ensures the virtual-mode spin loop won't be preempted,
+host-side HPTE bit-lock owners like kvm_unmap_rmapp() still acquire the
+lock and execute their critical sections with preemption enabled.
 
-Doc comments are reference documentation for users.  TargetInfo is an
-internal thing.  Please rephrase in terms that make sense to users.
+For example, when called from kvmppc_core_flush_memslot_hv() under
+slots_arch_lock mutex, preemption is not disabled:
 
->                                    Not a qemu-system- executable name.
+arch/powerpc/kvm/book3s_64_mmu_hv.c:kvmppc_core_flush_memslot_hv() {
+	for (n =3D memslot->npages; n; --n, ++gfn) {
+		...
+		if (*rmapp & KVMPPC_RMAP_PRESENT)
+			kvm_unmap_rmapp(kvm, memslot, gfn);
+		++rmapp;
+	}
+}
 
-This barely makes sense.  I recommend to leave documenting the
-qemu-system-T naming convention to the note below.
+The lock is acquired and held without disabling preemption:
 
-> +#     Last enumerator so existing SYS_EMU_TARGET_* values stay put.
+arch/powerpc/kvm/book3s_64_mmu_hv.c:kvm_unmap_rmapp() {
+	if (!try_lock_hpte(hptep, HPTE_V_HVLOCK)) {
+		/* unlock rmap before spinning on the HPTE lock */
+		unlock_rmap(rmapp);
+		while (be64_to_cpu(hptep[0]) & HPTE_V_HVLOCK)
+			cpu_relax();
+		continue;
+	}
 
-Of no concern to users, therefore inappropriate for user documentation.
+	kvmppc_unmap_hpte(kvm, i, memslot, rmapp, gfn);
+	unlock_rmap(rmapp);
+	__unlock_hpte(hptep, be64_to_cpu(hptep[0]));
+}
 
-> +#     (since 11.2)
-> +#
->  # @rx: since 5.0
->  #
->  # @avr: since 5.1
-> @@ -30,9 +34,10 @@
->  #
->  # @hexagon: since 11.0
->  #
-> -# .. note:: The resulting QMP strings can be appended to the
-> -#    "qemu-system-" prefix to produce the corresponding QEMU
-> -#    executable name.  This is true even for "qemu-system-x86_64".
-> +# .. note:: Except for ``none``, the resulting QMP strings can be
-> +#    appended to the "qemu-system-" prefix to produce the
-> +#    corresponding QEMU executable name.  This is true even for
-> +#    "qemu-system-x86_64".
+If the host-side thread executing kvm_unmap_rmapp() is preempted while
+holding HPTE_V_HVLOCK, and a vCPU thread on the same CPU subsequently enters
+kvmppc_pseries_do_hpt_hcall(), the vCPU thread will spin indefinitely trying
+to acquire the lock because preemption is now disabled here. The preempted
+lock owner will never be scheduled on that CPU to release the lock.
 
-Not this patch's concern: I don't understand what's so special about
-x86_64.
+>  		idx =3D srcu_read_lock(&kvm->srcu);
+>  		ret =3D kvmppc_pseries_do_hpt_hcall(vcpu, req);
+>  		srcu_read_unlock(&kvm->srcu, idx);
+> +		preempt_enable();
+>  		if (ret =3D=3D H_TOO_HARD)
+>  			return RESUME_HOST;
+>  		break;
 
->  #
->  # Since: 3.0
->  ##
-> @@ -42,7 +47,7 @@
->               'mips64el', 'mipsel', 'or1k', 'ppc',
->               'ppc64', 'riscv32', 'riscv64', 'rx', 's390x', 'sh4',
->               'sh4eb', 'sparc', 'sparc64', 'tricore',
-> -             'x86_64', 'xtensa', 'xtensaeb' ] }
-> +             'x86_64', 'xtensa', 'xtensaeb', 'none' ] }
->  
->  ##
->  # @S390CpuState:
+[ ... ]
 
-[...]
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260928113704.4891=
+2-4-amachhiw@linux.ibm.com?part=3D2
