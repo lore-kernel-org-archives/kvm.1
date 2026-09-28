@@ -1,91 +1,85 @@
 Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE07478842;
-	Mon, 28 Sep 2026 22:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12EDA46983F;
+	Mon, 28 Sep 2026 22:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790634529; cv=none; b=S2IrNwYuk30dJnJVnF87XANOjo4jc1iYUeRbcDxup7pq6vOexPJF/J4alGggLG4F9GRVO4x+zzRQtnUHO1KKkjzeWd6deXRIMBT382zMJsCpxriXRB/AoN4r6lk7nrCSpBWK2QvWS9xFGdfQScGv9pG/roMmNqjaQ3+21ip/Lws=
+	t=1790634533; cv=none; b=g6uD8V66vSAYe/LxFrLbTq0VMX4Nff0wrWB7Tuou9gChkJ4dUsyr34upcB29+Vg+CknJEXpGDV4iHXBuSO1zTUoEBykRgoiUHJUSu3XUJRDhXfUcncbvpVnrvA5y9FIjhhYTnh5hefckwIJ9jJ0MV6UAMNNYHT7WyLgCr6B5XQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790634529; c=relaxed/simple;
-	bh=6w98JnFuqLQ7swHNEd357ROn9GLTXPPxfoytR/6X2d8=;
+	s=arc-20240116; t=1790634533; c=relaxed/simple;
+	bh=jBMb3L296c0O+OjW5SKCRhHUGPAT24o3WEYc6pidZqA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oSsQa2rAArffSCesnvvA0HdN1PiUyeEe44sIjBl2vduZYgX1NJQbpV1YvNyTYLChSh2hM187y/O4dayy462hXoCIzCx/P2zS9O0OFt4bU9WvVgNh0aXPRWYTiIcxU9DcBsxNYK9HHyDzB6Jb0+Xe+DeGjTAy2zYfOQOIvqPVTcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=j3wTQjhT; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=EWj7Cksj; arc=none smtp.client-ip=202.12.124.144
+	 MIME-Version:Content-Type; b=SeFQBVoKgmvxZhw7WkGNa4PgpPeK5kSGDDh8vZfKxTMUEXodyh9UsQtLqcZfApVJTpt+bdijT9LBRAolyA+QaBezcl0NEyNb1EU0mczJP1U5sJNNmdlemSwoRpMqbKxgdWauFd275hAuaqcvgZYJ//O+lJahD8HEfBvkg0QMwGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=fhJkH05o; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=v84oGVZ/; arc=none smtp.client-ip=202.12.124.144
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="j3wTQjhT";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="EWj7Cksj"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfout.stl.internal (Postfix) with ESMTP id 7BE121D000F5;
-	Mon, 28 Sep 2026 18:28:43 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="fhJkH05o";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="v84oGVZ/"
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailfout.stl.internal (Postfix) with ESMTP id 28B421D000F5;
+	Mon, 28 Sep 2026 18:28:51 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Mon, 28 Sep 2026 18:28:44 -0400
+  by phl-compute-07.internal (MEProxy); Mon, 28 Sep 2026 18:28:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1790634523;
-	 x=1790720923; bh=9MPDcqcdVPxLHwAEsIz514gjGwXbAqqJQTEEaOtjMO4=; b=
-	j3wTQjhTxx52qxsu1bMl9sKoMbMl1BZnN2+NpHHsZ1BT1YX0ehYUiK+LN6iVE063
-	3S1nhAJxVe83MoBpHjPj7GgMuckze7YcDr2ou8eq5SZUFeiHo2cDGZrWmryik7Ug
-	2GcUmh10FNCI9nPAXfwliw/MwL7C9munsoXET0YAyTaSrxtuLCudZPGVk/ljg9eF
-	Fg4Md0EtUhzkvATPsRMG1STwkbwXdVoycpy2lwQUmixG/wWvuHRsUCUGdzaI99Rb
-	ljr75nX+RM5LGjZ4kqxe59u5FVZVGUxh+yDSJ3rdZgbZr9XO9gRY/gwKL/XBYtDX
-	51Ge7V3EcRiYZH0mlJdhXw==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1790634531;
+	 x=1790720931; bh=NUzzglyhr6LSnVy/4PTW7bzB6yZwtCHGNUPCejsAehY=; b=
+	fhJkH05ok1woYsovbmlM92S0xhvJIOHR0nvPutgPz81rVsANbS17uZWZ9s+axVph
+	1Tq9ELhbPqQg0JSFznw80MtjGljtbV5Al1/BOUo6Z+9wHUpKV0uJigG+4pBQ2HM3
+	U0iNkQcSJY7xt1x8qCF9yO6QwpkonqbfiTONWYu6KjS5kqY4iztRHuQNj2mpsmI2
+	NyuwuSqnjE+sZ6t+wD1fQcKy6gQ4tL+hkhFnN2byeEpYtlizjHPGt/PTnd5FaHvk
+	E8ZZXoeBVp9iNVaTdUB0PQPsreZ7N+AsWpepQdgI4b5rvca37H0Py/C+lqBXL+MK
+	Rk/gLZ1cCLxXBxlddsx2/w==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790634523; x=
-	1790720923; bh=9MPDcqcdVPxLHwAEsIz514gjGwXbAqqJQTEEaOtjMO4=; b=E
-	Wj7CksjYMwdPK8xmqIDeZ54MgQKToCMAwtXGQnbdFgizxPZEbaaCRcOwRKhbLkvf
-	WWQO0ySQW0Q50JWuP41HcANiYfqSfAlGcVvdUngsv946b3zoMHO373s8LnIcWId1
-	lruw2cmo//rKffEaK85yShp9HxKkz2gPFIaW00nxaXidasZ2v8WninLDGEGpIkCT
-	XKYo0UeT9m/Md8S3J4LFin3vyHova+adSRIOcM/VJjh8Wm7zAYNjWS8qJUvJYGOq
-	4ROh8NaCZB55hb8Wn6spfS8sPAtRPJ5INVzAWrotx/mU7papQsS07ciY1CK/OMxw
-	2/CyIUvDf85bEGAhfv+hg==
-X-ME-Sender: <xms:Guq6alx2AwZECemahxNwQPKZ7z2_KexZDXZep-GdBOy7y9lt9eKJMg>
-    <xme:Guq6am-o_CPnO-6avvxCwsvF3DQeaU7YHlzI4jOH_Gr2BphmbvMuajDKqUBoRegrH
-    ObMBuDdJbvm6JIy5sH-zZE9dmTJPHjMm-5Dwd33S9Z1dZ13LCYB8BY>
-X-ME-Received: <xmr:Guq6aiwiOtcexKnuJj_2UZ1VkvwSmIzme9mbKJHqYV22rM-iKb5ELfk3eadttg>
-X-ME-Proxy-Cause: dmFkZTFtelLzGYVdByzqF87ZFqdfB2mHNpYaUcMvT3rUJICZTimYyNFKN0gvw38v8OfulS
-    V+LtKiv9pTdKAJkxNact9rNtRfWcp1ZGRLo4EiS7QK47poRep96qaNDx+k6VLf1aCP9ajp
-    GWmIqF5zmAislVGo3WAhg9qeGF8kjw6J+atOHc9LOkjvP7htlA1d3beVjPXdbRSDFuWPTA
-    EZxQlx4IuRccXM0/a9U+aBKw7ikA0m6o/ohVm1qZUYvBgIzPJIcNlZadEAp4dVzTaJwS+w
-    GqjOfEWO15mdHZS2k6h2kgUs6G4fLmoKfmzbX/9m5D2PJV5Q2VMghmHV5RYGgbv2BfLicD
-    RiuG3VRpRNoyntw+Dl6M04vackSXZ88Gp/Kv/qDC1sqzEdnB7MqH7e31vaYP37e587LiAv
-    jL6xJ1skQVPk8FSKPEByOnYvqa3tVOYH2oua34FfOtXwLHUQpV8tx3Z3cu1oJSmL+hCOoR
-    ZRAL9ObWl+fdooqw/6hxw1SoTYJuStMAq7isswv8fC59VOXq1G0vRuMTltm2m52iUXn9Zp
-    dFZ4tzCir3cHpBVykLjIDXnFS5qC25visDUh6ehKSgADHqM1s2ktp9CrNTJ+m7vt6JjapV
-    mgpeSq81kVD2g60MTQSU60KQNwJZ4DBESmWvMzhcEgokS9EvnwdHMR7FHtMg
-X-ME-Proxy: <xmx:Guq6anUKc-C8WE-WKXQPOmycrnrMSdVJRemt4J2GHIHz1HXivqoHLg>
-    <xmx:Guq6atbuqApBLPkF6syEogeopjD3l2-LLL3UJmVVRlZe0BhYquI_oQ>
-    <xmx:Guq6akR0rDJQQdbvTWSWxhBWyH5wuswX8TXhlJQh7uo46aIlGeUSlg>
-    <xmx:Guq6atSfagFSZAJcoRygzwN_UhBzo1gyKK3Dl1y5UzFps-oWKtl6Pw>
-    <xmx:G-q6ai7wgQ7FDkIe0PnIuexj2YKVBzji4IlLXWlWk_2uxff7tT7h7M2Y>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790634531; x=
+	1790720931; bh=NUzzglyhr6LSnVy/4PTW7bzB6yZwtCHGNUPCejsAehY=; b=v
+	84oGVZ/lB7MJKmFr72jrfCusu3R/Or7zgwvkxygyKT+NZXOT06Ex9vs2ChE4sziZ
+	QA2icfOcr2WTP26rlvLjuJbiTnpNB5E9PaGmF9T7B1T42xx1aSLsVaDs0IEkeh5y
+	AYpOyGBJtcwjjxjpUOB7qzrxNM000Pn5+UiPpUDMyeKPY0KyrenH9VZlAjW02JD0
+	SBApAGsvPYsLdyUZ0K+f3qfZKyClsWbAzZ6gZTCDvkrkSRED55eetbDSfK0veiBi
+	Gztmt32ONZXcJNYfSJj2s6is5InXP7hrG9nzJ7iwW5ihpnByMNz8LXC2r3n/xCVW
+	Q6tPMgYhIGcaTsIdupAjQ==
+X-ME-Sender: <xms:Iuq6apO4C2g7xkgP-685zqUJwU8WYuTK2KUOXSg2aw72xIv2Y19OaA>
+    <xme:Iuq6ahI3lJ5rqquQ1lNwuUjX0_7OuHuy3uTqW9lSKZ4OAsR6f_ld9vt5dY1faOxf6
+    nnYb8jZZF6omggG6vKb8UMCEB_GeKT5Md9IrApsQ7WEpsrwuW_VG5U>
+X-ME-Received: <xmr:Iuq6apKc5e_M1EepTZBFBQsMZdCCCUoynh_sdUXd_ub0PMDDHAFiBFBdhcxDEQ>
+X-ME-Proxy-Cause: dmFkZTFjkexj7t9P8sudggapxulSyVz1RZc2pvM3/cyjddeDx19eMQiocZet65GSKkqAn2
+    tTJdDmDhWxdtjM2+0uDTlmsqOB2+3l5ra8RhDVZZQuuZAc2jhR7UpmEEwzergnJLj0uxJc
+    RJIdgu+RNcx1w5QOWkm6LCqxApocTGNG2VU5tez/SHCNcbWxv2QtvylFZcPnI53nop6KHc
+    1FaYu+1ui4cRMHsUH00TwDB4y29mT88Ft2cCqJzXAt7sOZQlB22vFaxRviF4lEvLUbhRku
+    RR7Rje2bdC24gYdtYBSh3Kr5YLqgbZS7iy0OeOorws9kj5BGlq0MgscXwJkEZVyyhot4pA
+    O4HNxsCELSiXnrNvsqU9RcP1Not/uTzQLPToclgZDC14ytnYBmJXfoAG6zUOxHa4F7SogD
+    SaGXuvpMaoBoUR7wY3nEiiplLv2CVaoVXeH4qEAvMGGDYI6UbkeliPAmFwHlphnonZgB9+
+    CCGjQFedKAiik2RbuvoRbcjWoipvIGjikrXantn7sWMA15lxzAwd+1XdaxdhHwAAZSyDjn
+    o6LrdCiGPks29sxNkx8rHhmKE2aSdQ7Vud5Y8Rx3JQBrbLmWoH9yyfLgxNsvw/QImDkFPN
+    3d5jjaIlleTV91VKD+kxEdXzlAhq7mmCcgYh+5M8Z1JT619s5fUh+VVCSnnA
+X-ME-Proxy: <xmx:Iuq6ar4myuQmu0RpOjn_oPYyC7degT03DvKaxyx-lfQ2jMPhlxX-Lw>
+    <xmx:Iuq6ajcTvbYzLDTkNCTDBBbt_qk0fXrDRKhXu-CdhmiNWneoqxzojg>
+    <xmx:Iuq6amFtlp0KR42fxCGjsl_Bmdhkr57DBJ9NZ_73X13AvBFAUkorbA>
+    <xmx:Iuq6asRtSkCShooC4QZtfea9Z4gea0_qQetAaRClVRxmaxr-3xfwww>
+    <xmx:I-q6an_lY_7ogsD1_rldGXiteswAhuukSOB5qabQFc3u8dKRZUDQZ4D1>
 Feedback-ID: i03f14258:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 28 Sep 2026 18:28:40 -0400 (EDT)
-Date: Mon, 28 Sep 2026 16:28:38 -0600
+ 28 Sep 2026 18:28:49 -0400 (EDT)
+Date: Mon, 28 Sep 2026 16:28:48 -0600
 From: Alex Williamson <alex@shazbot.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: David Matlack <dmatlack@google.com>, Fuad Tabba <fuad.tabba@linux.dev>,
- Joey Gouly <joey.gouly@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev, Leon Romanovsky <leon@kernel.org>,
- linux-arm-kernel@lists.infradead.org, linux-kselftest@vger.kernel.org,
- linux-rdma@vger.kernel.org, Marc Zyngier <maz@kernel.org>, Mark Bloch
- <mbloch@nvidia.com>, netdev@vger.kernel.org, Oliver Upton
- <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Saeed Mahameed
- <saeedm@nvidia.com>, Sean Christopherson <seanjc@google.com>, Steffen Eiden
- <seiden@linux.ibm.com>, Shuah Khan <shuah@kernel.org>, Suzuki K Poulose
- <suzuki.poulose@arm.com>, Tariq Toukan <tariqt@nvidia.com>, Zenghui Yu
- <yuzenghui@huawei.com>, patches@lists.linux.dev, alex@shazbot.org
-Subject: Re: [PATCH v7 00/10] mlx5 support for VFIO self test
-Message-ID: <20260928162838.44dc6abb@shazbot.org>
-In-Reply-To: <0-v7-c6d30e8ce1e4+3dfa6-mlx5st_jgg@nvidia.com>
-References: <0-v7-c6d30e8ce1e4+3dfa6-mlx5st_jgg@nvidia.com>
+To: Alex Williamson <alex@shazbot.org>, kvm <kvm@vger.kernel.org>
+Cc: Alex Williamson <alex.williamson@nvidia.com>, linux-kernel
+ <linux-kernel@vger.kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian
+ <kevin.tian@intel.com>, Yi Liu <yi.l.liu@intel.com>, David Matlack
+ <dmatlack@google.com>
+Subject: Re: [PATCH v3] vfio: selftests: Verify a failed second open
+ preserves the vf_token
+Message-ID: <20260928162848.72f6c716@shazbot.org>
+In-Reply-To: <20260925205134.3505611-1-alex.williamson@nvidia.com>
+References: <20260925205134.3505611-1-alex.williamson@nvidia.com>
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -96,63 +90,96 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 21 Sep 2026 19:35:40 -0300
-Jason Gunthorpe <jgg@nvidia.com> wrote:
+On Fri, 25 Sep 2026 14:51:32 -0600
+Alex Williamson <alex.williamson@nvidia.com> wrote:
 
-> Add an mlx5 driver to VFIO self test. This is largely a remix of the
-> existing VFIO mlx5 driver in rdma-core. It uses an RDMA loopback QP
-> to issue RDMA WRITE operations which effectively perform memory
-> copies using DMA. Since mlx5 has a stable programming ABI this
-> should work on devices from CX5 to current HW. The device FW must
-> support the QP loopback configuration.
+> The cdev path enforces a single open per device and rejects a second
+> bind of an already open device.  That rejection must happen before the
+> bind can mutate state shared across opens, notably the PF vf_token, so
+> that a bind which cannot complete leaves the current opener's state
+> untouched.  Before the fix in commit 258ba46543ab ("vfio: Reject a
+> second cdev open before mutating shared device state"), the second bind
+> mutated the vf_token and only then failed with -EINVAL.  It is now
+> rejected early with -EBUSY.
 > 
-> Also support send_msi by arming completion events of the RDMA WRITE
-> to trigger MSI delivery.
+> Add a regression test that binds a PF with one token, attempts a second
+> bind of the same PF with a different token, then initializes a VF with
+> the original token.  The VF init succeeds only if the rejected second
+> bind left the PF vf_token intact; a regression that clobbered it to the
+> second token would make the VF init fail.  The -EBUSY errno is checked
+> with EXPECT_EQ() so the clobber assertion still runs if the rejection
+> returns a different error.
 > 
-> mlx5 device startup is very complex and most of this code is just
-> booting the device, with a smaller amount for operating the QP.
+> This hazard is specific to the cdev/iommufd single-open path, so the
+> test runs only in iommufd mode.
 > 
-> This entire series was coded by Claude Code in about 4 days. It
-> used about 4.5M output tokens, 30 individual sessions and 5600 lines
-> of AI-generated .md files. I spent an annoying amount of time
-> de-slopping and cleaning its work product to make it presentable.
-> However, previous VFIO drivers have taken on the order of 1-2
-> months to write, so getting one in a week is pretty remarkable.
+> Suggested-by: David Matlack <dmatlack@google.com>
+> Assisted-by: LLM
+> Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+> ---
 > 
-> For those interested, the flow I used was broadly a prompt sequence
-> sort of like:
+> v3 following v2 from [1], incorporating David's suggestions to combine
+> the tests using EXPECT_EQ() rather than ASSERT_EQ() so that we still
+> test both aspects without duplicating code.  -EINVAL reference moved to
+> commit log.  Remaining patches from [1] applied to vfio next branch.
 > 
->  - Hey Claude, go look at the falcon series, VFIO self test, the
->    mlx5 driver, rdma-core and some PDF documentation and make a
->    plan to put mlx5 under the selftest.
->  - Write an rdma-core application using the built-in VFIO provider
->    that can do the required memcpy operations that vfio selftests
->    wants.
->    (This resulted in a 1k loc C file that compiled and ran the
->     first time but had a few bugs related to device programming
->     that the AI resolved.)
->  - Replace the rdma-core components with open-coded versions to
->    create a fully stand-alone program that does the DMA memcpy.
->  - Review and audit the thing.
->  [Pause and de-slop it]
->  - Make it work on a PF too (this is surprisingly hard!).
->  [Move to a kernel tree and copy all the .md files and .c program
->   it made]
->  - Hey Claude, look at all this stuff and make a broad plan to
->    actually build a VFIO self test.
->  - Here is my 1 sentence advice on what each patch should look
->    like, make a detailed plan to make a patch for every one.
->  [Pause and polish the patch plans]
->  - Execute plan X then commit it [pause and de-slop each patch,
->    repeat].
->  [Review and final polish]
-> eeb2cc76b0b4
-> v7:
->  - Fix some compilation problems, kvm and the igb
+> [1] https://lore.kernel.org/all/20260911170429.1642480-3-alex.williamson@nvidia.com/
+> 
+>  .../selftests/vfio/vfio_pci_sriov_uapi_test.c | 35 +++++++++++++++++++
+>  1 file changed, 35 insertions(+)
 
-Applied to vfio next branch for v7.4.  Topic branch published as
-mlx5-vfio-selftest-v7[1] for conflict management.  Thanks,
+Applied to vfio next branch for v7.4 with resolved nit from David.
+Thanks,
 
 Alex
 
-[1]https://github.com/awilliam/linux-vfio.git mlx5-vfio-selftest-v7
+> 
+> diff --git a/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c b/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c
+> index 19d657d00b75..87f42aae340c 100644
+> --- a/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c
+> +++ b/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c
+> @@ -157,6 +157,41 @@ TEST_F(vfio_pci_sriov_uapi_test, override_token)
+>  	ASSERT_COND_VF_CREATION(ret);
+>  }
+>  
+> +TEST(failed_second_open_does_not_clobber_token)
+> +{
+> +	struct vfio_pci_device *pf = NULL, *pf_second_fd = NULL, *vf = NULL;
+> +	struct iommu *iommu;
+> +	int ret;
+> +
+> +	iommu = iommu_init("iommufd");
+> +
+> +	/* Create and bind PF using UUID_1 */
+> +	ret = device_init(pf_bdf, iommu, UUID_1, &pf);
+> +	ASSERT_EQ(ret, 0);
+> +
+> +	/*
+> +	 * Attempt to open the same PF again and bind it with a *different*
+> +	 * token (UUID_2).  This must fail with -EBUSY because the cdev path
+> +	 * only supports a single open per device.  Enforce it with EXPECT_EQ()
+> +	 * so the clobber assertion below still runs if the errno differs.
+> +	 */
+> +	ret = device_init(pf_bdf, iommu, UUID_2, &pf_second_fd);
+> +	EXPECT_EQ(ret, -EBUSY);
+> +
+> +	/*
+> +	 * Attempt to initialize a VF using the original PF token (UUID_1).
+> +	 * If the failed open above clobbered the PF's token (i.e. updated it to
+> +	 * UUID_2), this VF initialization will fail.
+> +	 */
+> +	ret = device_init(vf_bdf, iommu, UUID_1, &vf);
+> +	ASSERT_EQ(ret, 0);
+> +
+> +	device_cleanup(vf);
+> +	device_cleanup(pf_second_fd);
+> +	device_cleanup(pf);
+> +	iommu_cleanup(iommu);
+> +}
+> +
+>  static void vf_teardown(void)
+>  {
+>  	/*
+> 
+> base-commit: bc78c90728cd74d1c7335fef786fa51968bdebad
+
