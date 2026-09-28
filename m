@@ -1,85 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCD64EB87C;
-	Mon, 28 Sep 2026 19:24:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4B937AA9C
+	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 19:26:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790623501; cv=none; b=D+oHT8xZ+xFQYEEx3B+IP8MR1CFz4KvXzzFTOAU8M2jqkl9OVQLYL7IINVpPspBhX9tK+eVB39/3DG5H3fQ93sgDs73EglG+t98JMw35MVRw/GWbvtoY8Wgar9npVY0/opBWtedpNtFakAaTg4YDvwlAjCMEVRgK80pNUi02nD0=
+	t=1790623574; cv=none; b=rsju5SzVjCX+c5zKzUihf/RXo31e8UWbjHCcqp3Dpv95sMug82DiJabBf3DLLtKGl6xS+B4DUnsCDZ10RaH+ZGckC8hHDmvmc7zNCDWGf5LqAiCGB8PY+tusobZ115atrUb1YZIEIDGDdessCUksHw03jgqSozAiWafYqNSLLh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790623501; c=relaxed/simple;
-	bh=ro3/3fheEqjppbkTvnlG9BjmlBEOGBFlHvLL8uCC8rE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o57Csftpy8Q5lCvV9eF8GhnYOJ4dVn3Fz91GSgvPcxgTcCgVM3JD29CsmFmTbRRqMh+2pbuNBO+braFK2ZwkRnnqQhNa5nt7mvngl1O8lwJoryJgVY8W+dZqVEe3MUEColdIxYcY+WCjkIkwYfJQ97836RFCANOvWxotbodrH/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XYEG3iWA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790623574; c=relaxed/simple;
+	bh=j/6Iu06N1bxUnrcYFaW7Y+bggLuadcmx+PEc0B3682w=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Y7pL4+V/TT541OgBM+I8skxYsNRKnOrTXAtKAhLuQdfpYxfiVNF2xXNOmOw4plYwrouAUwUleK3KJSa2EPsuIwB6lBoF/ceV/sNklDfSHFINyxBKk4AiNrovix/HST82DKdH8BIPBEAax/G4/hWiEwxZD/FcM/s+lt8/AAzD8aY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qyrLF3o6; arc=none smtp.client-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XYEG3iWA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 385251F000FF;
-	Mon, 28 Sep 2026 19:24:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790623499;
-	bh=zxaPe3RXYWfDysMbj1dNL8wCloA5fdLhj22QTkhmqgI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XYEG3iWArZn3su6Y0OK3+bWiRF575+VJU1q1+F+6KpJ02oYyJ9WXJX1dWH78AywBP
-	 epGowUkfpKZONyTD2QyDEuS1h9FCT7IPC/xC640Ys19a4cm6rXRr9XfCDxlaWB3BGc
-	 vu0xEdw9c3VLSmR9Xp1FViIj9iMn3+H3sIXFEnPiNhir4UQT8zqSjGsTlI6kFekF3D
-	 4yGgHlvB9v/q+Gn0fWxY8KIWzT+xBilBwVCfRbnttO7X7GOnTVUsKSGpOTro/mclzi
-	 ElIbrwOtezft7+rOlwl1tCtyLl2ApnJaqnbVvGJEBD94682YxcSIZy1b9sCPEAPyWY
-	 2ihxu6ypJckhA==
-Date: Mon, 28 Sep 2026 22:24:56 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alex Williamson <alex@shazbot.org>, David Matlack <dmatlack@google.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>,
-	kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org,
-	Marc Zyngier <maz@kernel.org>, Mark Bloch <mbloch@nvidia.com>,
-	netdev@vger.kernel.org, Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Steffen Eiden <seiden@linux.ibm.com>, Shuah Khan <shuah@kernel.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Tariq Toukan <tariqt@nvidia.com>, Zenghui Yu <yuzenghui@huawei.com>,
-	patches@lists.linux.dev
-Subject: Re: [PATCH v7 04/10] net/mlx5: Add ONCE and MMIO accessor variants
- to mlx5_ifc_macros.h
-Message-ID: <20260928192456.GG563127@unreal>
-References: <0-v7-c6d30e8ce1e4+3dfa6-mlx5st_jgg@nvidia.com>
- <4-v7-c6d30e8ce1e4+3dfa6-mlx5st_jgg@nvidia.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qyrLF3o6"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2df8484f12cso32910525ad.3
+        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 12:26:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790623572; x=1791228372; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yNYJ9iXwZtkkaIquLN753az1rX5eiSNS35Ev0JuX/44=;
+        b=qyrLF3o6PxiP6qvD1EmYvtyRtqRVU0rRLCAE3bA1XI+c8bGvDEfsQZx85tzdCPfNuK
+         Q2avXamuY1f0115kEdrSQj9WMqlCUX8mzeFT4t6K0FcIazIb+wZEyA1012mSKQEkJcLr
+         uKCwxal8a05VQNYwZHyQrVTqTPw+8w9FreVOq9BCdQDgnu25N/l15OjrRNwI03/ElWHN
+         ZvwyCpXzD+PhRsu+V48aTudU7Qi0+tFM+XQY6B6F6DLVv92pG/p5ILtdv/qRYDq1X54B
+         2bRxF1MN8ffx5wdSUc1eWMJ52EPCzxtwL+5DJm4hvzAvyLhAYP4aObC3uKzh9bjdpJKS
+         erIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790623572; x=1791228372;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=yNYJ9iXwZtkkaIquLN753az1rX5eiSNS35Ev0JuX/44=;
+        b=tPm3/bTfQ7wTWUl2qUZBUgIzSxxqc+W8DJRBuB2ArH3CBvDJYPXfogIhDsMH68Zqte
+         n0qQFjPxUyfQPqKO1XnbhbNv1qk6/my/nCdJ945lAKg+atVDz15po9cqIM9guLO+TeoG
+         h6jnJe8JyqZhJ8DXEuqUtqvnWjeXyWl98AzmAGLF70Cu1TvydthY0P6+jA6PSwy969Rr
+         hXpSUqmPspf40IHO7gFAJjAcL0OMtv5LrBnb2Y8xT4+t6kotqFX2bFPOZRltXHW3z07I
+         zXPDhrND9LiRMqLSik58s2jJgznX7ihm7jdF9oasi0NLktQIo1YHsqjnEcM139xMCGwu
+         009w==
+X-Forwarded-Encrypted: i=1; AKwUvBwUwtiBSPrI1JON7aq0+ZI2JIr1JbwphPP8mRD4EmKx+4D0LSuc9Gv0idP9l5g31bVc6yk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLfZak3DF0/AZcfDzrMzXj4adVIQ2vr3ofhBYZPtx5JTn42Ys3C
+	Ufm8BuWxZivP8v+q/TIw2XoiBvgfTYfFpL4cuAueoYlYIWSxRxwCZCSPMnDl0YcVSztSYxEVvRV
+	ht9tczg==
+X-Received: from plat19.prod.google.com ([2002:a17:902:e1d3:b0:2df:b3e8:1983])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c951:b0:2dd:c053:82f8
+ with SMTP id d9443c01a7336-2df7deb7760mr122583415ad.47.1790623571619; Mon, 28
+ Sep 2026 12:26:11 -0700 (PDT)
+Date: Mon, 28 Sep 2026 12:26:10 -0700
+In-Reply-To: <20260928-vfio-v4-0-e32e226d5932@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4-v7-c6d30e8ce1e4+3dfa6-mlx5st_jgg@nvidia.com>
+Mime-Version: 1.0
+References: <20260928-vfio-v4-0-e32e226d5932@linux.ibm.com>
+Message-ID: <arq_Uu4cXOT5PA5C@google.com>
+Subject: Re: [PATCH v4 0/6] KVM/vfio: Use file-based reference counting for KVM
+From: Sean Christopherson <seanjc@google.com>
+To: Steffen Eiden <seiden@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, David Hildenbrand <david@kernel.org>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Matthew Rosato <mjrosato@linux.ibm.com>, Farhan Ali <alifm@linux.ibm.com>, 
+	Eric Farman <farman@linux.ibm.com>, Tony Krowiak <akrowiak@linux.ibm.com>, 
+	Halil Pasic <pasic@linux.ibm.com>, Jason Herne <jjherne@linux.ibm.com>, 
+	Harald Freudenberger <freude@linux.ibm.com>, Holger Dengler <dengler@linux.ibm.com>, 
+	Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org, linux-s390@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Sep 21, 2026 at 07:35:44PM -0300, Jason Gunthorpe wrote:
-> Add MLX5_GET_ONCE / MLX5_SET_ONCE which include READ_ONCE/WRITE_ONCE
-> semantics for touching ownership bits that hardware may read or write
-> at any time. The kernel driver doesn't use the IFC struct for these
-> ownership bits, but the VFIO driver will and needs these helpers.
-> 
-> Add MLX5_GET_MMIO / MLX5_SET_MMIO for accessing the init seg using
-> the IFC offsets. They embed a readl/writel using the IFC struct to
-> generate the addressing.
-> 
-> Add MLX5_ARRAY_GET64(), the missing counterpart to
-> MLX5_ARRAY_SET64().
-> 
-> Assisted-by: Claude:claude-opus-4.6
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> ---
->  include/linux/mlx5/mlx5_ifc_macros.h | 52 ++++++++++++++++++++++++++++
->  1 file changed, 52 insertions(+)
+On Mon, Sep 28, 2026, Steffen Eiden wrote:
+> This series switches the KVM-VFIO interface and external consumers over to
+> standard file-based reference counting, eliminating all external KVM symbol
+> exports.
 
-You should have updated the copyright in this commit or the preceding one.
-However, this is not important, so there is no need to respin the series
-just for this.
+...
 
-Thanks,
-Acked-by: Leon Romanovsky <leonro@nvidia.com>
+> Steffen Eiden (6):
+>       KVM: Introduce file_to_kvm_<arch>() infrastructure
+>       KVM: Add file back-pointer to struct kvm
+>       KVM: x86: Use file_to_kvm_x86() in SEV
+>       KVM/vfio: Use file-based reference counting for KVM
+>       KVM: Restrict kvm_get_kvm/kvm_put_kvm export to internal KVM modules
+>       KVM: Remove unused file_is_kvm
+
+Acked-by: Sean Christopherson <seanjc@google.com>
