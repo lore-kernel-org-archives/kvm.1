@@ -1,159 +1,154 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716BC496D5E
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 10:57:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA714489FB9;
+	Mon, 28 Sep 2026 11:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790593040; cv=none; b=Vx9wlg6/DmKsGar+UHw9tIGZHaFu1zw3pUci+uOLDjttV5a94XIHeSQxlpGe4umJ+e81D+PnGNfWwzHFzf59dexXVXG7xNeM2BHnPCI58qyQY1AnVliBK+yA2MdhHdNqU2NBZ5DrYDkcXfo2iSQ6dwZx9RrCuTvbYbgKwcJYpu0=
+	t=1790593285; cv=none; b=nEckSyc57s5oRUAxuVotdcAdrZHyTGix/2UcRwOugs3mqNTlCbTwkwRGdQp7KEsTCeV5uGtH3KyePs1EOhwfadAL2arI/QFFlpI0YlNqaSTZIETjWWy5PM805iBLMHkj5NfuqIBCeCVYpBqeBeFFvQByDaOu0IkavcIRQhi73TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790593040; c=relaxed/simple;
-	bh=9Uc0wAdERe1daog+4RCvnNHwKCsA3ndPdG/Wc6uOvOE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V84bVRY4+4105dkRrvytXDVPpgix/8D0bdU4xGyuMqrdKFxY/WSyUce4W0AeAwhpEGpMUi9qxD8thVQ2Q7ABSO6axCzMY8RLP/XF/MsJ/HIMKWMPExYmX3sZFWPojBSS/Megh3Gpjc1jHzZoetgkryCAC9Y7aqfP5l94HbRn0lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EmGS0Lhr; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790593285; c=relaxed/simple;
+	bh=OPgOww627zD19BL+U//itmZv8dXx28KLUtom1uWHtxo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=asqUvpU1HBKv9fJp0nLZWxAinCLS9TuA0l/EvH+O8zkzeByQ35b17UjpdPAd44X2WPcua/WSYYJAUEwCd7Sqt8h4ii7wcXxucnet79mcpkwwzKIuiPQmbxGOU1qapP8LRQ4wASq1s44iALoMwILE/DnF7OFqYLE8bshYwgFayts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=tKg2YA0R; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EmGS0Lhr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790593037;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YDar4Z7zDZs3Gf1LVC2IUvdH1Oto7aASa+E88d+qPwo=;
-	b=EmGS0Lhr4DyRJcQgODRkuWbx5yuYqz2Z7YW4u2vPssaR6/4WETyIqerqzRhSdGEBKMwVYd
-	0DBKt8k2bT9o9AwjdpWmfsBWtNzgtLIeV85biyaTXPxRfy5cvqQmv57u5Cjd6TBzhoumoq
-	MUXa9ea62QlM6Nu1n0gPe5G5imaJ65o=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-383-dBhQGp6tMvW_GPR04Ctp6w-1; Mon,
- 28 Sep 2026 06:57:11 -0400
-X-MC-Unique: dBhQGp6tMvW_GPR04Ctp6w-1
-X-Mimecast-MFC-AGG-ID: dBhQGp6tMvW_GPR04Ctp6w_1790593030
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E0FED195394F;
-	Mon, 28 Sep 2026 10:57:09 +0000 (UTC)
-Received: from redhat.com (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 76C7C1956087;
-	Mon, 28 Sep 2026 10:57:06 +0000 (UTC)
-Date: Mon, 28 Sep 2026 11:57:03 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Yonggang Luo <luoyonggang@gmail.com>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
-	qemu-devel@nongnu.org,
-	Richard Henderson <richard.henderson@linaro.org>,
-	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
-	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-	Fabiano Rosas <farosas@suse.de>,
-	Laurent Vivier <lvivier@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Alistair Francis <alistair@alistair23.me>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	=?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
-	qemu-arm@nongnu.org, kvm@vger.kernel.org,
-	Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v4 46/55] qapi: add query-targets
-Message-ID: <arpH_2anGV-JU12e@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-References: <20260926070057.1234-1-luoyonggang@gmail.com>
- <20260926070057.1234-47-luoyonggang@gmail.com>
- <aro93NuZBXYGbD33@redhat.com>
- <87e7c5ae-c78c-4a47-b9ba-9851ce5757d9@oss.qualcomm.com>
- <CAE2XoE9qsZZ+AnfGQ797SQj5yXP8SDOZyxYoKP=oh57UPFqq0Q@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="tKg2YA0R"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A3ED81595;
+	Mon, 28 Sep 2026 04:01:19 -0700 (PDT)
+Received: from [10.57.12.79] (unknown [10.57.12.79])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B95943F86F;
+	Mon, 28 Sep 2026 04:01:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790593283; bh=OPgOww627zD19BL+U//itmZv8dXx28KLUtom1uWHtxo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tKg2YA0RHPuzdmRwV0lPGoDlgCUybqftje3GGS1BYH9CKtDCPS2NkvtEfCoAcTdbL
+	 ggVP7QGb7VEoJkplTGJTVfZVKoE56b1IVaD/Hu4bXFFzuEw+HScrzYRvw5CHvILr8y
+	 oMAmklYeDEboPJMEJeAx1kRbKYe4TFF0mFie7dms=
+Message-ID: <4e315360-5b7a-4a0e-99c0-679a0271e625@arm.com>
+Date: Mon, 28 Sep 2026 12:01:18 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAE2XoE9qsZZ+AnfGQ797SQj5yXP8SDOZyxYoKP=oh57UPFqq0Q@mail.gmail.com>
-User-Agent: Mutt/2.4.0 (2026-06-19)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18] arm64: mm: Handle Granule Protection Faults (GPFs)
+Content-Language: en-GB
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260913070459.2547407-1-suzuki.poulose@arm.com>
+ <aqrGPK0lFBFXL2qY@arm.com> <985520fa-99b0-4620-bfee-8e6321b36104@arm.com>
+ <aqvCwM_73qMpqzvV@arm.com> <749ab0c9-810d-4989-8fa5-1706124f05bc@arm.com>
+ <arKVcjCOJf8p9rWL@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <arKVcjCOJf8p9rWL@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 28, 2026 at 06:51:41PM +0800, Yonggang Luo wrote:
-> On Mon, Sep 28, 2026 at 6:39 PM Philippe Mathieu-Daudé <
-> philmd@oss.qualcomm.com> wrote:
-> >
-> > On 28/9/26 12:13, Daniel P. BerrangÃ© wrote:
-> > > On Sat, Sep 26, 2026 at 03:00:45PM +0800, Yonggang Luo wrote:
-> > >> query-targets lists each linked target, including none, with its
-> > >> arch, endianness, and the machines that target accepts.
-> > >>
-> > >> Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
-> > >> ---
-> > >>   hw/core/machine-qmp-cmds.c | 30 ++++++++++++++++++++++++++++++
-> > >>   qapi/machine.json          | 35 +++++++++++++++++++++++++++++++++++
-> > >>   2 files changed, 65 insertions(+)
-> > >
-> > >
-> > >> diff --git a/qapi/machine.json b/qapi/machine.json
-> > >> index 6aaa2af709a..d8cdea6203e 100644
-> > >> --- a/qapi/machine.json
-> > >> +++ b/qapi/machine.json
-> > >> @@ -307,6 +307,41 @@
-> > >>   ##
-> > >>   { 'command': 'query-target', 'returns': 'QemuTargetInfo' }
-> > >>
-> > >> +##
-> > >> +# @TargetMachines:
-> > >> +#
-> > >> +# One registered system target and the machines that can run on it.
-> > >> +#
-> > >> +# @arch: the target architecture
-> > >> +#
-> > >> +# @endianness: the target endianness
-> > >> +#
-> > >> +# @machines: machine type names, not aliases
-> > >> +#
-> > >> +# Since: 11.2
-> > >> +##
-> > >> +{ 'struct': 'TargetMachines',
-> > >> +  'data': { 'arch': 'SysEmuTarget',
-> > >> +            'endianness': 'EndianMode',
-> > >> +            'machines': ['str'] } }
-> > >
-> > > We already have  'QemuTargetInfo' struct which is used
-> > > with 'query-target', that should also be used with the
-> > > new 'query-targets' command.
-> > >
-> > > We need to add the 'endianness' field to QemuTargetInfo.
-> >
-> > Why do we want to expose endianness, and what endianness to
-> > expose? Endianness is a runtime bit state of CPUs. Sometime
-> > this bit is hardwired but that is an implementation detail.
-> 
-> For some targets it's, but for some targets it's not. for example
-> 
-> mips-softmmu.mak
-> mipsel-softmmu.mak
-> mips64el-softmmu.mak
-> mips64-softmmu.mak
-> 
-> 
-> mips64el-softmmu.mak
-> mips64-softmmu.mak
-> only differ the endianless
+Hi Catalin
 
-"EndianMode" is a tri-state including 'unspecified' as a value,
-so we can cope with both scenarios - the targets where endianness
-is runtime switchable in the CPU can use 'unspecified' as the
-EndianMode. That behaviour should be documented in the QAPI
-docs for QemuTargetInfo
+On 22/09/2026 15:49, Catalin Marinas wrote:
+> On Tue, Sep 22, 2026 at 02:21:13PM +0100, Suzuki K Poulose wrote:
+>> I had another look and we could handle this via kvm_fault_is_gmem_abort()
+>> see in arch/arm64/kvm/mmu.c:
+>>
+>>
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index 87e49251e0447..af5a4bf961aae 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+>> @@ -1731,6 +1731,9 @@ static int gmem_abort(const struct kvm_s2_fault_desc
+>> *s2fd)
+>>          gfn_t gfn;
+>>          int ret;
+>>
+>> +       if (!kvm_slot_has_gmem(s2fd->memslot))
+>> +               return -EINVAL;
+> 
+> I wonder whether we should add a KVM_BUG_ON() here. With the rest of the
+> changes, we should never get in this situation. Well, to be revisited
+> for private devices.
+> 
+> Also maybe move it to the caller, kvm_vm_mem_abort(), and not change
+> kvm_fault_is_gmem_abort(). Something like:
+> 
+> 	if (private_ipa_fault(kvm, s2fd->fault_ipa) &&
+> 	    KVM_BUG_ON(!kvm_slot_has_gmem(s2fd->memslot), kvm))
+> 		return -EIO;
+> 
+> To me it makes more sense for gmem_abort() to be called only *if* it's a
+> gmem slot. So any inconsistency, avoiding user_mem_abort() for private
+> memory, should be done in the caller. I assume the caller will also have
+> to route the private device path as well rather than rely on
+> gmem_abort().
+> 
+>> +
+>>          if (!perm_fault) {
+>>                  memcache = get_mmu_memcache(vcpu);
+>>                  ret = topup_mmu_memcache(vcpu, memcache);
+>> @@ -2277,10 +2280,12 @@ static bool private_ipa_fault(struct kvm *kvm,
+>> phys_addr_t fault_ipa);
+>>   static bool kvm_fault_is_gmem_abort(struct kvm *kvm,
+>>                                      const struct kvm_s2_fault_desc *s2fd)
+>>   {
+>> -       if (!kvm_slot_has_gmem(s2fd->memslot))
+>> -               return false;
+>>          if (kvm_memslot_is_gmem_only(s2fd->memslot))
+>>                  return true;
+>> +       /*
+>> +        * For Realms, all private faults must be backed by GMEM.
+>> +        * TODO: Handle Trusted device private memory mappings.
+>> +        */
+>>          if (private_ipa_fault(kvm, s2fd->fault_ipa))
+>>                  return true;
+>>          return false;
+>>
+>>
+>> Also, I have the following hunk for preventing memslot modifications.
+>> I will add this to v20 integration branch, which is almost ready ;-)
+>>
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index 582b48e34486b..87e49251e0447 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+>> @@ -2783,6 +2783,18 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
+>>          }
+>>   }
+>>
+>> +static bool kvm_prevents_memslot_change(struct kvm *kvm, enum kvm_mr_change change)
+>> +{
+>> +       /* Cannot modify memslots once a pVM has run or Realm created */
+>> +       if (change != KVM_MR_DELETE && change != KVM_MR_MOVE)
+>> +               return false;
+>> +
+>> +       if ((kvm_vm_is_protected_pkvm(kvm) && pkvm_hyp_vm_is_created(kvm)) ||
+>> +            kvm_realm_is_created(kvm))
+>> +               return true;
+>> +       return false;
+>> +}
+>> +
 
-With regards,
-Daniel
--- 
-|: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
-|: https://libvirt.org          ~~          https://entangle-photo.org :|
-|: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
+This needs to be tweaked for Realm to support non-secure device 
+assignment. Aneesh reports that the Device assignment fails now,
+because the Device BAR reset deletes the memory slot and re-registers
+it, which the above change prevents.
+
+I will modify that to
+1. Prevent "Guest-memfd" backed memory slot deletion. Makes sure that
+    nothing can replace a private memory slot.
+2. Allow non-Guest-memfd backed memory slots to be created
+   after the Realm is created. We anyways prevent "private" memory
+   to be mapped from a non-Guest-memfd memslot.
+
+Suzuki
 
