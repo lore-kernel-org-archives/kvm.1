@@ -1,258 +1,161 @@
-Received: from mail-ed2-f33.google.com (mail-ed2-f33.google.com [74.125.228.97])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEAA4E9C38
-	for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 16:05:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.97
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790611521; cv=pass; b=q2r3K+ymO/I2yS1j0qyFqWpPajMb6dLw/iDSqjTzpGxwxZpiQ5RZ8nspVXjc4tWjkHvwwgdTtG4Qos1MGKU0WyWfnH/wpSBuMTrBNO086InKH1qsNSGcK/EZ+fhjUDXCVMPT8hdDuhqm1+mjr/Pn0qsQ1pN4glZUwtkoc4Licfk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790611521; c=relaxed/simple;
-	bh=D20t56SJfazcKJzQ4nk8WVfJXVT0cZ8BIp8BmiaxG+c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JIGMlklSYxgI7fL8zspIm2rDTRYcLXgja2uh1unWLPWWnyUAnv6MdyKW54ZrI+WmLIvTt3dz3U4jrjZLPgwTbsIlfxJFGe82h/1Ib7wM4UDE2b6O8Ce+i31tzdGdZEI7lqMikGa6TavKXCcxgeJ+EzEDWVgPkYpu/c2Mkicv67Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S8tXoDoo; arc=pass smtp.client-ip=74.125.228.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E874E36F1;
+	Mon, 28 Sep 2026 16:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790611681; cv=none; b=RUsgXhvQ9qWkpdhyXUnAUhynq5ZYeVl3yFM1H78Cp5p6JAIwu9o4VeO9tQOasjO3kTpslwLzEhcyG0TnZL9zh5sxNEprJSOaJZAGDR3D2WO3Of3wu9oNSPRUb5TpkD6RBctE/cX+Y5f8StVwqVLKnor4CkqaYzE4L4tNXeq/2LQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790611681; c=relaxed/simple;
+	bh=c5FHfUVz5VVHTSc2j+d6ycLo0NpKTyx2202wpOOflXM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VBVHu8SQLMKZcaTjNswZ886pNgrGYMMP+16tEMoVsYewV/eEGokjI3ooCnBRcPu30E8K3RBXMqER8cd+gYPH7yxPRlox4cX17I3RaBFQMQFWA8HmupCKviKV/BIO/92K06NXNc5wxD5CHnCbx+cb/ntFdKEm4K8EewwrUByfnCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=OwU/63mP; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S8tXoDoo"
-Received: by mail-ed2-f33.google.com with SMTP id 4fb4d7f45d1cf-6ac6f5c507fso1910054a12.1
-        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 09:05:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790611517; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dLDKZrt6s10q2ejktlUnIlyd6w2uXNu7Cvsg3YOy2bJvXjVTfB9pJTuHX5xkJOg6N1
-         4SldhCJAXcq29bmBZy38KNGIFQOHDYb4KfGUT36peF+6b3fy8pdc873KxTuAR5aN3qt/
-         8iz/poE/gk7npKkazWSsJ6fzHY9/Buxby6RZF6uPyTjlbeHzKvvy1j1+twz8x3iVuehR
-         LEDOcEpU4ZNIDUpSM57Ml4ikD8RZtmXZAFtvHpFa237SpUEsRTIQ1MBs94iBTpfcPRnl
-         PkXrCFMbboEqMAXtnUDfwVvIFfTF+L21nypy3bNGgkENY28QOi1wxqQE9xTnbZuwWwoq
-         Fu1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:dkim-signature;
-        bh=w9EzIeFbERenqhymBK9XblJ6PBKI//1Ot9k5xJ9LNso=;
-        fh=yE1D6Ej31Jb8QyuY2SgVMKVFGWegrnhUChx1FBa5sYY=;
-        b=JDJXagbNlvk9S7MeD+zA2tub2ThhKy8Ilho+A2m6ofHdh7HUpe3rOVqUe/ay3iPdSh
-         zfCcvzpbpsJ2pjxE/qWRKXOvt//SY6O60D+OC0WFUKilUsLlfMokAxG/ygA6p6mCT4hu
-         HckkXE2XtC2puNwdbGcWVKS7Ggwttq9YJ0dPFTtbUpnztHxjI6XpTfdTevNujbuyu3nn
-         X2Xn26DVGpuBAuNy0AydiTJ9ocks8JELS0qD0XaUXyOl5dibmJq9Usr7a5Hk0tt2syEX
-         TlN/1mXYAPDGHFWTyXTHhd0g/KmlWtVz90K4EVmBX3gkRogGAOLRfXqSCQy6BCpCZD03
-         28GA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790611517; x=1791216317; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:reply-to:in-reply-to:references:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=w9EzIeFbERenqhymBK9XblJ6PBKI//1Ot9k5xJ9LNso=;
-        b=S8tXoDoodwJbLnV9my57sGJj9q1m2zgSyaG43lrsIB+3/DV9rdBsKC/62FAVMjdQX0
-         MmNKpLI7BxpjgAczm3KlngFFI7adEWNDEES0/AhxnUpbkyG3FBBbvnxm5l61hTveJ/Eu
-         FmxM/QgeLKHlw+itqK1uTuBpjqZWhM+wO/g3SkyHorkAyusUup0bojuozvSfTVmNJO9T
-         KIHibNXJAu5/WxwBngKvWajb9gO9D/lUwkaK5XJOWNK4IQqSLFv4jNOAgVQuUylD2Rag
-         HzCqzZHkS/m4Pbm9+Y0davkD61zJPK/j/Dv/9FuDmYQ1EJh2pKy3AK0BZRxyeF1fvzi4
-         XRyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790611517; x=1791216317;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:reply-to:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=w9EzIeFbERenqhymBK9XblJ6PBKI//1Ot9k5xJ9LNso=;
-        b=ROX1+9fdzEc7CfEMgrYKLAhnoZ9yww7Wg+R1UuWmvio66CbHsAVlsOZrBlcr1miFiP
-         tcr5Bttm2qYPYgH3X0oZIOpA5ToL8Yln3sDyFZK+8xtHoX5iSfVgJQNkH5Vcf3zLQcJL
-         F+8z+z3cCRNmJ0dZTlNP0ns/9RtZrn8K1rYAca8cu1Ib/ePzXq8gcGq+2TdPQ1lFcRTX
-         bFTICVxhP6uRuMQP811oowThBiTl0OW/Zdm3TC91evC2TiQrUu/kaWS4bj9sIdjj++x3
-         mJjt81vxFQVObmAjRGljiFsmu+D8tr4r3PgQWQp0mvEfDJStNlnigez3r6YLNLlvzjrW
-         YJXg==
-X-Forwarded-Encrypted: i=1; AKwUvBwA9E6XiATuhM3C9VR4RaKki+0woYvskbNEK2Phmag9fsCe9mp2Kwd2APnR8ixyfxlJfB4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ0RjR3NSDfse91PFI+m2zo8ncN3Qm+5gC/DVAlm7PzXYhcwqXa
-	45XQbKcetk2v4R+KUYhRhVyUJ4J5ywC91sc3mGMxmAuHfOhcjooAZcPGhzrieigKa10ExeElMHf
-	OO8I4Vt4pVFerlL3qLKDZxB/AA/caEck=
-X-Gm-Gg: AYBFou156xcInx+nsnRmZSQkxrwkUD+My2GjFay7trrgktC9QjAehX8PgDqShuVU4aq
-	v+8xnIbkE3J0XWMequq+iB8j7Ya9jGFOhJhKR4/ISZGYID0qJQJqxb9jTGs8dY2xBHIxjMhEcpz
-	NgwJr4OOoBP8Al0Y3mFqfXi3R5DS1oL45F7mnaPiYCCFsSu1pWBFtTjXlOSF81PTORaWVc/lBL4
-	DzRQthO8h39MoPfQ+t8282x2YQTx5U0OlyIt/HuBlFOfZYl48JCh6SLsKsYf0Fs6j6DIp5x6njU
-	hFue6O5M3LV4jmGZOpOHhKgcnmET4r5RxZW8W7DUEmWvfQS3c8n9AN0=
-X-Received: by 2002:a05:6402:a290:10b0:6aa:e589:87df with SMTP id
- 4fb4d7f45d1cf-6aae5898994mr5001332a12.30.1790611516982; Mon, 28 Sep 2026
- 09:05:16 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="OwU/63mP"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 384901655;
+	Mon, 28 Sep 2026 09:07:56 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 47AEC3FA1F;
+	Mon, 28 Sep 2026 09:07:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790611679; bh=c5FHfUVz5VVHTSc2j+d6ycLo0NpKTyx2202wpOOflXM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OwU/63mP+mDZeSRe60JhpPQnlr7sDP3cia+ZLhZhxhc/Iyn6lkPHoIlEV+vofTcIG
+	 QYnJuy+WgYfE6nrh8qbtZjjUn/b0kG5vKGmJ6Po2u7w7hWulE4bsqKG2cFxY7tmd66
+	 l70A93Xu6/3iN2DQ+wYq1ZM3q40cP1SV7Pj/jrIc=
+Date: Mon, 28 Sep 2026 17:07:52 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Steffen Eiden <seiden@linux.ibm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Grapentin <gra@linux.ibm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Friedrich Welter <fritz@linux.ibm.com>,
+	Fuad Tabba <tabba@google.com>, Gautam Gala <ggala@linux.ibm.com>,
+	Hariharan Mari <hari55@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>, Marc Zyngier <maz@kernel.org>,
+	Nico Boehr <nrb@linux.ibm.com>,
+	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
+	Oliver Upton <oupton@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: Re: [PATCH v8 16/29] arm64: Share arm64 headers with s390
+Message-ID: <arqQ2Eat4VUBbl49@arm.com>
+References: <20260918133107.1042730-1-seiden@linux.ibm.com>
+ <20260918133107.1042730-17-seiden@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260926070057.1234-1-luoyonggang@gmail.com> <20260926070057.1234-47-luoyonggang@gmail.com>
- <aro93NuZBXYGbD33@redhat.com> <CAE2XoE9AAz8KfJrpErBaZvW5p5COxfE1yveA_AMPwa0j=ghyEA@mail.gmail.com>
- <arp7xUzPHmkgfxLC@redhat.com>
-In-Reply-To: <arp7xUzPHmkgfxLC@redhat.com>
-Reply-To: luoyonggang@gmail.com
-From: Yonggang Luo <luoyonggang@gmail.com>
-Date: Tue, 29 Sep 2026 00:05:04 +0800
-X-Gm-Features: AclHuK_ySAh2wUP_ZLkRO-cTQXhVC-RYZXjpf9omF8LYWvQDhoUtMF2fg4CBqtU
-Message-ID: <CAE2XoE_Zgs0_Co4ZLZiTRQZrx4DMRo_i-FEN79b+ZbHCedFd6w@mail.gmail.com>
-Subject: Re: [PATCH v4 46/55] qapi: add query-targets
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
-	=?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@oss.qualcomm.com>, 
-	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
-	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>, Fabiano Rosas <farosas@suse.de>, 
-	Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Alistair Francis <alistair@alistair23.me>, Peter Maydell <peter.maydell@linaro.org>, 
-	=?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
-	qemu-arm@nongnu.org, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260918133107.1042730-17-seiden@linux.ibm.com>
 
-On Mon, Sep 28, 2026 at 10:38=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@=
-redhat.com> wrote:
->
-> On Mon, Sep 28, 2026 at 10:24:39PM +0800, Yonggang Luo wrote:
-> > On Mon, Sep 28, 2026 at 6:14=E2=80=AFPM Daniel P. Berrang=C3=A9 <berran=
-ge@redhat.com> wrote:
-> > >
-> > > I don't think that we need to report machines though.
-> > > We already have 'query-machines' which gives much broader
-> > > information on the machines. "MachineInfo" needs to
-> > > gain
-> > >
-> > >    "targets": ["SysEmuTarget"]
-> > >
-> > > to list which target(s) a machine can be used with.
-> > >
-> >
-> > This is my final design for the query-target / query-targets / query-ma=
-chines,
-> > for consistency and testability.
-> >
-> > Per review: reuse `QemuTargetInfo` for both target commands, drop the
-> > per-target machine list, and let
-> > `MachineInfo` say which target(s) each machine runs on.
-> > `QemuTargetInfo` stays small; `query-target` and `query-targets` return=
- a
-> > derived struct that adds the target's device and accel Kconfig state.
-> >
-> > ## QemuTargetInfo
-> >
-> > ```
-> > { 'struct': 'QemuTargetInfo',
-> >   'data': { 'arch': 'SysEmuTarget' } }  # since 1.2
-> > ```
->
-> > ## QemuTargetDetails: QemuTargetInfo plus kconfig
-> >
-> > ```
-> > { 'struct': 'QemuTargetDetails',
-> >   'base': 'QemuTargetInfo',
-> >   'data': { 'kconfig': 'any' } }
-> > ```
-> >
-> > `kconfig` maps every device and accel `CONFIG_*` symbol to whether it
-> > is enabled for that target.
->
-> KConfig is an internal implementation detail that should not be exposed
-> to management apps as we don't want KConfig to become an ABI we must
-> preserve.  QAPI introspection provides feature based information to
-> the user. eg instead of querying for "CONFIG_SEV", qom-list-types can
-> be queried to look for the 'sev-guest' class.
+On Fri, Sep 18, 2026 at 03:30:53PM +0200, Steffen Eiden wrote:
+> diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
+> index 6b005c8fef70..12cbad460258 100644
+> --- a/arch/arm64/Makefile
+> +++ b/arch/arm64/Makefile
+> @@ -45,6 +45,11 @@ KBUILD_CFLAGS	+= $(CC_FLAGS_NO_FPU) \
+>  KBUILD_CFLAGS	+= $(call cc-disable-warning, psabi)
+>  KBUILD_AFLAGS	+= $(compat_vdso)
+>  
+> +# Enable all code shared to s390
+> +KBUILD_CFLAGS	+= -DARM64_S390_COMMON
+> +KBUILD_AFLAGS	+= -DARM64_S390_COMMON
+> +KBUILD_CPPFLAGS	+= -DARM64_S390_COMMON
 
-For example, `TYPE_NITRO_ENCLAVE_MACHINE` is available only when
-`CONFIG_NITRO_ENCLAVE` is enabled for the target. When I construct the
-machine list literal,
-I need this information to help me to check if the machine is listed
-in qemu-system that matches
-qemu-sysetem-$arch. That needs a QAPI for it. What's the method you
-would suggest
-for? Otherwise, the test for the listing machine names can not be
-reliably running for it.
+Do we actually need these defines? They seem only to be used as markers
+for the awk scripts to extract the definitions. Why do we need the C
+preprocessor involved at all? Could we not just have comment markers:
 
-for example:
+/* ARM64_S390_COMMON_BEGIN */
+...
+/* ARM64_S390_COMMON_END */
 
+(also the CPPFLAGS definition was enough, it gets copied into the others
+automatically)
 
-/*
- * Machines omitted from the normal lists. Merged in when @kconfig is
- * true in the target's query-targets "kconfig" object, which already
- * folds in host libraries and accelerators. xenfv is an alias of
- * xenfv-4.2.
- */
-static const char * const xen_pc_machines[] =3D {
-    "xenpv",
-    "xenpvh",
-    "xenfv-4.2",
-};
+> diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
+> index ab205f9db94a..1c5c4df260be 100644
+> --- a/arch/arm64/include/asm/sysreg.h
+> +++ b/arch/arm64/include/asm/sysreg.h
+> @@ -16,6 +16,8 @@
+>  
+>  #include <asm/gpr-num.h>
+>  
+> +#ifdef ARM64_S390_COMMON
+> +
+>  /*
+>   * ARMv8 ARM reserves the following encoding for system registers:
+>   * (Ref: ARMv8 ARM, Section: "System instruction class encoding overview",
+> @@ -50,6 +52,8 @@
+>  #define sys_reg_CRm(id)	(((id) >> CRm_shift) & CRm_mask)
+>  #define sys_reg_Op2(id)	(((id) >> Op2_shift) & Op2_mask)
+>  
+> +#endif /* ARM64_S390_COMMON */
+> +
+>  #ifndef CONFIG_BROKEN_GAS_INST
+>  
+>  #ifdef __ASSEMBLER__
+> @@ -123,6 +127,8 @@
+>  #define GSB_SYS_BARRIER_INSN		__SYS_BARRIER_INSN(1, 0, 12, 0, 0, 31)
+>  #define GSB_ACK_BARRIER_INSN		__SYS_BARRIER_INSN(1, 0, 12, 0, 1, 31)
+>  
+> +#ifdef ARM64_S390_COMMON
+> +
+>  /* Data cache zero operations */
+>  #define SYS_DC_ISW			sys_insn(1, 0, 7, 6, 2)
+>  #define SYS_DC_IGSW			sys_insn(1, 0, 7, 6, 4)
+> @@ -832,6 +838,8 @@
+>  #define SCTLR_ELx_A	 (BIT(1))
+>  #define SCTLR_ELx_M	 (BIT(0))
+>  
+> +#endif /* ARM64_S390_COMMON */
+> +
+>  #ifdef CONFIG_CPU_BIG_ENDIAN
+>  #define ENDIAN_SET_EL2		SCTLR_ELx_EE
+>  #else
+> @@ -866,6 +874,7 @@
+>  	 SCTLR_EL1_LSMAOE | SCTLR_EL1_nTLSMD | SCTLR_EL1_EIS   | \
+>  	 SCTLR_EL1_TSCXT  | SCTLR_EL1_EOS)
+>  
+> +#ifdef ARM64_S390_COMMON
+>  /* MAIR_ELx memory attributes (used by Linux) */
+>  #define MAIR_ATTR_DEVICE_nGnRnE		UL(0x00)
+>  #define MAIR_ATTR_DEVICE_nGnRE		UL(0x04)
+> @@ -1102,6 +1111,8 @@
+>  #define GICV5_GICR_CDNMIA_TYPE_MASK	GENMASK_ULL(31, 29)
+>  #define GICV5_GICR_CDNMIA_ID_MASK	GENMASK_ULL(23, 0)
+>  
+> +#endif /* ARM64_S390_COMMON */
 
-static const char * const xen_aarch64_machines[] =3D {
-    "xenpvh",
-};
+I haven't checked them all but there are a few definitions in here that
+depend on arm64-specific configs: e.g. GCR depends on KASAN, TGRAN
+macros depend on page size, PA_BITS_52 influences some other values.
 
-static const char * const vmapple_machines[] =3D {
-    "vmapple",
-};
+I think they should be outside the common definitions shared with s390.
+In addition, the awk scripts should reject any CONFIG_ (or at least
+CONFIG_ARM64_) lines in the copied files. Ideally report an error rather
+than silently masking them out.
 
-static const char * const microvm_machines[] =3D {
-    "microvm",
-};
-
-static const char * const nitro_machines[] =3D {
-    "nitro",
-};
-
-static const char * const nitro_enclave_machines[] =3D {
-    "nitro-enclave",
-};
-
-static const char * const x_remote_machines[] =3D {
-    "x-remote",
-};
-
-#define SPECIAL(t, k, m) { t, k, m, G_N_ELEMENTS(m) }
-
-static const struct SpecialMachineMap {
-    const char *target;
-    const char *kconfig;
-    const char * const *machines;
-    size_t n_machines;
-} special_machine_map[] =3D {
-    SPECIAL("i386", "CONFIG_XEN", xen_pc_machines),
-    SPECIAL("x86_64", "CONFIG_XEN", xen_pc_machines),
-    SPECIAL("aarch64", "CONFIG_XEN", xen_aarch64_machines),
-    SPECIAL("aarch64", "CONFIG_VMAPPLE", vmapple_machines),
-    SPECIAL("i386", "CONFIG_MICROVM", microvm_machines),
-    SPECIAL("x86_64", "CONFIG_MICROVM", microvm_machines),
-    SPECIAL("x86_64", "CONFIG_NITRO_MACHINE", nitro_machines),
-    SPECIAL("aarch64", "CONFIG_NITRO_MACHINE", nitro_machines),
-    SPECIAL("i386", "CONFIG_NITRO_ENCLAVE", nitro_enclave_machines),
-    SPECIAL("x86_64", "CONFIG_NITRO_ENCLAVE", nitro_enclave_machines),
-    SPECIAL("i386", "CONFIG_MULTIPROCESS", x_remote_machines),
-    SPECIAL("x86_64", "CONFIG_MULTIPROCESS", x_remote_machines),
-    SPECIAL("aarch64", "CONFIG_MULTIPROCESS", x_remote_machines),
-    SPECIAL("ppc", "CONFIG_MULTIPROCESS", x_remote_machines),
-    SPECIAL("ppc64", "CONFIG_MULTIPROCESS", x_remote_machines),
-    SPECIAL("s390x", "CONFIG_MULTIPROCESS", x_remote_machines),
-    SPECIAL("riscv64", "CONFIG_MULTIPROCESS", x_remote_machines),
-    SPECIAL("loongarch64", "CONFIG_MULTIPROCESS", x_remote_machines),
-};
-
-#undef SPECIAL
-
-These machines all depend on the kconfig. When I try to write qtest
-for it, I need the CONFIG_* information to be returned for them.
-
->
->
-> With regards,
-> Daniel
-> --
-> |: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
-> |: https://libvirt.org          ~~          https://entangle-photo.org :|
-> |: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
->
-
-
---=20
-         =E6=AD=A4=E8=87=B4
-=E7=A4=BC
-=E7=BD=97=E5=8B=87=E5=88=9A
-Yours
-    sincerely,
-Yonggang Luo
+-- 
+Catalin
