@@ -1,176 +1,243 @@
-Received: from mail-dl2-f43.google.com (mail-dl2-f43.google.com [74.125.229.171])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C39C2236FA
-	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 01:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790645638; cv=none; b=UD+qQwalJIRmdY2ivBmxKE8vvfOSzSlp1c0QP9zzQKZ5uUDI/2OXyWf6vpTXaDsSl5qphXE1kgrfkvCl1jIW3J4vRikwbwOSac9F2Ocht4ZYQzV8gDGzFe2KBz+tyY2KzhqpSkvLZWd/o/kvFKATggKdXNFlXYyuWWqLGZtaWTc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790645638; c=relaxed/simple;
-	bh=kxGNE40utXqOB/ZP/mcvhOu56gwEzydqUUJpeOle4aY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Shq0OPVeRSayhXxrxwNXvoM5Glmq4xq52LDvqUOHCBrASGRreFhtMS1wBPayu9TdPaDWCGSK0aajBbkHUQM3oC6HqJQuoi0FWXjnbEGnzDcRTNSv7jODw0PLAXnqZiqv/6BPAycReomTETt7E7BbX0qCCydFsUEeIMuxTt89uvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KxEiB5GV; arc=none smtp.client-ip=74.125.229.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88804175A64
+	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 01:36:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790645778; cv=pass; b=DwCjbChJUy9GaIOR3xlfdnH2UM00YCRSVax+1GRTbGwmsqUfyDSJF2qwHYk4d67nGsXxJP42ZQuV29+4eOR20UQ0vZKQrDUG3bBKqqHs754XFiVy5h8GF5cTxakSPIMAS1/52nWg0BqIsXln1YIAqV9yVggMZ3RNMTmd/gWCBXM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790645778; c=relaxed/simple;
+	bh=FIwE0Bpd+eoA32YbChPqzcgtv1uYijeu/1Gr3AA0O1w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l7P+c3/YMUKgE3Tqu8ktNmhetyV2j/oLuyjgCXD82dNqYYwUckN18gQkOzGdkav9Hv5tgQ8ao3qcLrlVS0wJO79+1cfAediRU5VRNMtUgUzn1cxfIi29rDPcXmVRLfW8WNT7uBdCG3hnuJYttZJm2lpeRTvSZpWnL2A5ISwPEic=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XT6xaMz0; arc=pass smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KxEiB5GV"
-Received: by mail-dl2-f43.google.com with SMTP id a92af1059eb24-144f7915355so3188905c88.3
-        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 18:33:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XT6xaMz0"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6aaf28a86b9so930227a12.1
+        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 18:36:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790645775; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jpZp7rZvAtWDRftJd6sG7CaqkDEXt4JJQD0CSmoFOzcEW2p6zzrmX1h6UR07eKuLDB
+         ho122+fVFCB7Uj+PXBPAS1KmVxfM5TgQhCL46lxRJFKw5IOC4VWcVG/8RH+NaVTFsR6s
+         BLmkSTmim2X4FROGqg5JqLElSBMg6XELWlnx+GIdVApYhagrCrT7AhJa48T55AET2f9Z
+         pd3YpAhx/5CrVIOKx4FtHiRzLzGinF5tkjKo+QWwOl4oEd5i6J9nrFyGuYjgXnU6XCKZ
+         Q7uxSSQpd99MTl/mV57vtK8vkaB+mHuz7eFbxEUNDOMOWVxXT2C2NeYZIl87N+I3I+1X
+         zfig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:dkim-signature;
+        bh=rs9au1eGA9M7SYgh5SPNLTgJY2xqQlWh6Et+Arr6MM0=;
+        fh=qqnpyLzYKDKE9KOxhmePoUzRHTF6GhynPhu0qyQycEk=;
+        b=Lm6yXOy+Q+F5WbDMSchS8Lk8Slgyv+X3LloaoEx9lL3i8TmOglfHgbCudSn3TNYQvU
+         D1btlRXJk1GKqH3vBsOWkar/6nrfnVzGqHHmnYLs8oKrhmiJcIYGsltIVLgIdvsQNyDT
+         UJWa1kasK3YP6vaiAL7hAd5FOUGL/75wjZ1PcuJiOQIjXp0Y0E9IYaLsahaQ9Dr5rx9Q
+         9FOrL7buSC2rDLFi7TEM6+8EmhYoODwa9t6s5uzh8c6/lEAvO+GK3F4DxHpWvrCF65H0
+         954alajB9jAibFWzjU+bMQ9WlGf87VioiGaaSKWjGB9p166DqZS8TZsWKn0QIKcB45ah
+         2ndw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790645636; x=1791250436; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=ZzdBs4uL28XU4a9dZRzwsUcYZMoE3Q6Rk7PhwLzbkoU=;
-        b=KxEiB5GVti091qrkdEoltwpfex+tcD525Bi6QhejHUvimokPQA02dirb2B6Zh6qpyL
-         HM09k3RJ7RFLdlcQa5u6hpVKSeVsgCmKMIWRQtmrgU4BjM/bNcbNblqhixZeYieMh4la
-         zORV/BuPtUCzQ1LDehxwHnrSY/b8D+0y3+mS6haUrF5X2w8GMo4MUGm35hLJYNSSWYDl
-         0Q3nEuXIz2TuYa20FvifP2Hw6FZ4qkqYw//5K3jVdDSFK0OFX0bI2cudKcnmQef6y5Nf
-         2mOYHo0MOP4ODUrPAWiIi8J6/c60fXQtl+Jo2J2tBN4rXimKnLUcYf/hvEihX2+Gr1kX
-         i9OA==
+        d=gmail.com; s=20251104; t=1790645775; x=1791250575; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:reply-to:in-reply-to:references:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=rs9au1eGA9M7SYgh5SPNLTgJY2xqQlWh6Et+Arr6MM0=;
+        b=XT6xaMz0EcYQzAgA+sdrd8yP94KEbCfplQnttJJ6JvU/fTl71yEro0KYai19Ph2q6W
+         l1jzdfTEFvD3fU8n3x/p/i/0MRAoH5YLGWFZrCXESRsM4YbjyUyZ/bktlx3/RLLVjW3u
+         WwQgoMY6p0sA1eifZt1vOJgjTrfXMcqtuW5ID/L3BdddQrYMN97vkFMNfxH28gxbVhSB
+         JtL+n4OsZiM3eZY4abqWIeiLfnOdAPqRBqaNtgTB7di8jq2voaxlIBpiNpIan52gN3hm
+         PDvZh/mIt2C92eNmZ6kBz+JvOAKQUto86/lnlyT/m0D6PLxdsC72JWJkgp9s3NKjPThy
+         TxSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790645636; x=1791250436;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=ZzdBs4uL28XU4a9dZRzwsUcYZMoE3Q6Rk7PhwLzbkoU=;
-        b=cuRZGLBLiTynOQ9qkMUT6wv+Ikf7/GutpeX5ETO6YzoGobD1rxsXPn17mc9yNoB6/H
-         2f0TidUgFpzFeIW89jH9i7/aKpvGiG/s4pCbJQ9+nU/9wzH8u65a/xw5UMoqGEQh6KRU
-         almuT152raNI6aJfsl7Sph7UZ3K3p1bs/iUtzxb/gSJ/pVJgNIGBv1DP56kY9arsjmKQ
-         TqHtTuX1Hgz0x4Ga26d3O0oVGdlENuEvOWUWEtXrN9a4mNIL/dbG08su4CxjOHEHn8fv
-         Xu0nqkwG4vvQ6Keo/+GPmu+h2YEUOIdPjpQM3wQxO3dDCsnXcTcpd7PQ05iiYrgp33vL
-         FHAA==
-X-Gm-Message-State: AFq9FYKPXfj3pJy+1e1AO1vQ1hOtN5nTXiuvMJAixG4ngNR/nk9q2/x+
-	UND0vs0GD1eYH2E466BGK+yZBzM2pqntaeij1fg/Y10booAcREOWnydN
-X-Gm-Gg: AYBFou2Wz/SvyN9nOP7IWP781bKLDlZ0SXmX6Ise5Ov9/GQ0YyKSFiD4bmwS5Jdr4Ix
-	ApuSZzjJxF6gItsDnyYH41UFqNCvVgNmNXp8x4fRgc2Nb3mtqGHhEz+qk1OWDFurG+31kemRQM1
-	G6wx3ZmK+2SIL+/ynJRkTkHB6lxByY/+rZ/x8p00C2qaQwdaSzCvquTtqnQFDB8czQQ6b2xPqWV
-	9gq4GCbbsGC4Ph1mjsgwnn1rdU19plwqYXZBsKR9H8UxuAHgmZBtH6BOWNQiW3SR5j+NfOj2OHA
-	40NQUsGW2bxisKlJPQ+NCvues6J6M92JQ9m6iONL9TDV4uG/k1453UEFLB4dRKHo5id07nSp/8F
-	Z3aFtjYbjosQBiiKkyjK4N2BKf5cIHqG1mjdcbBYB3QzSHAv2ezv/+1vfWYXrnXesDLtOiPWFNF
-	KG05ME4wVI1ppS5LQoB1LsL53iXyPTkBDGHoZkOkum/0AcXTsiJjc+Cyal0/B5thQFXbOSIhPBb
-	tI=
-X-Received: by 2002:a05:7300:3395:b0:33e:3f5b:3ff6 with SMTP id 5a478bee46e88-342710b5401mr10486609eec.18.1790645636296;
-        Mon, 28 Sep 2026 18:33:56 -0700 (PDT)
-Received: from wujing.localdomain ([23.254.208.9])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3433628f5basm23265646eec.18.2026.09.28.18.33.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 18:33:55 -0700 (PDT)
-From: Qiliang Yuan <odys.yuan@gmail.com>
-Date: Tue, 29 Sep 2026 09:33:47 +0800
-Subject: [PATCH v2] KVM: x86: Clear CR3[63:32] on SMM entry when running on
- Hyper-V
+        d=1e100.net; s=20260707; t=1790645775; x=1791250575;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:reply-to:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rs9au1eGA9M7SYgh5SPNLTgJY2xqQlWh6Et+Arr6MM0=;
+        b=BNRY8csdyLnrZ3YApuBzAMX6/MEOOUxzLI0Ld6sUoX/BXA2tsPUUnSME/a2vElObXH
+         5TXz9/BGg7zUxwT9nwrZkEns5JZrmwfDPZ4QFIKSMXDTt3Q3GpEWzn8Alv7Ob8mn76v8
+         q9hvRrkw+e0FrWsqqPVjxU/d5KmeahQL3uHppxEqwP2Yswfp05R3ImBdMEIDPBnUbWB1
+         f14GNsjmVHQpG9Q4DkOjhZLbYSeO+h68kj1qwN7Ua8Dec36S0J6B34MOtppzr4Qp110o
+         KKhER2DtuJriz2cH9Jej3FV/UIEcpErE+SLY2a1rpBvPl6KHtlu8scBUCmqjWyWc8nyn
+         DGsA==
+X-Forwarded-Encrypted: i=1; AKwUvBxoW3q4Hc94a6Eyf/VjlfJ/mZuHqVJl2H3yx37iiNKTluGafqEtJanMTlO7F71tdAycAgM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLH32rJ5lQf4RqUvsliWOGgVqr23wdBCy3g474NVUUNMVD6xiYB
+	Qh3sIB8X7Eal4rZ1EGWgq01GgSYFWdFvSRmRfICwQLDZEM1SBbiwrxCdU82X3/lSZHI5bPAfic8
+	EG/NHdeq2mBtckZmBdud+9QSyTrww7wVdMd9KpUQ=
+X-Gm-Gg: AYBFou0nH2yycPWnOYFSLp0sz7y56LrnlycYp1g2soHcJyYxMIxDtRiMbMLvakfesSj
+	BtRTorTrEmE3dEg6/57vgBHhjKnMp6bYWd6XI4Zb3YJWE3HZNHFISVJ4FbtQxPMXfcJAQm3ov1k
+	rH6cx2dIOgYRk5bemYi8FNkYVQ3SfM1F9F1CPZSYPCNOW5tGRR2tYLtIIB8joaQkMbiaa2j3w9k
+	x2JcidPKmDDnsWvC/KcxPBQYmJ/W98x9lcel71kG9NSGmo3zgzMVXs3/GCSU/lwpHTKIfzkZSUH
+	DLDrwL8niF7COIrR8aMTsIZROcJxlDhWmxiwQ4GwD6EN/gDOtW1vo0I=
+X-Received: by 2002:aa7:d51a:0:b0:6ab:260:6378 with SMTP id
+ 4fb4d7f45d1cf-6aca86236a8mr499160a12.11.1790645774380; Mon, 28 Sep 2026
+ 18:36:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260929-kvm-smm-cr3-upper-bits-v2-1-622429d0cd3c@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNQQ6CMBBFr0Jm7RjaBgVX3sOwqDCFiZY2LTYa0
- rtbuYD5q/eT//4GkQJThEu1QaDEkd1SQB4qGGa9TIQ8FgZZy1PdyRYfyWK0Foeg8OU9BbzzGrF
- rRaeFlkapM5SxD2T4vYtvfeGZ4+rCZ/9J4tf+VSaBJao1jRzHRgm6Tlbz8zg4C33O+QtF1ipav
- AAAAA==
-X-Change-ID: 20260928-kvm-smm-cr3-upper-bits-9819a1a2f337
-To: Sean Christopherson <seanjc@google.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Vitaly Kuznetsov <vkuznets@redhat.com>, 
- "K. Y. Srinivasan" <kys@microsoft.com>, 
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
- Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
- linux-hyperv@vger.kernel.org, Qiliang Yuan <odys.yuan@gmail.com>
-X-Mailer: b4 0.14.3
+References: <20260926070057.1234-1-luoyonggang@gmail.com> <20260926070057.1234-47-luoyonggang@gmail.com>
+ <aro93NuZBXYGbD33@redhat.com> <87e7c5ae-c78c-4a47-b9ba-9851ce5757d9@oss.qualcomm.com>
+ <CAE2XoE8Fp8w4m0WBjEXF3LceFXUqKDcXhdSmhCThgkAM3wRVaQ@mail.gmail.com> <1f46d3a3-1275-4ae0-be07-717c643cf0ae@oss.qualcomm.com>
+In-Reply-To: <1f46d3a3-1275-4ae0-be07-717c643cf0ae@oss.qualcomm.com>
+Reply-To: luoyonggang@gmail.com
+From: Yonggang Luo <luoyonggang@gmail.com>
+Date: Tue, 29 Sep 2026 09:36:00 +0800
+X-Gm-Features: AclHuK_udHvC7oTjEuhilwZdEHpiOvElmXHC3KV0wZOIgddeR19NpS3MIjJMWOE
+Message-ID: <CAE2XoE_fxTRQJPzsDZHS44z65KR0e54cWjVpyZQGtr1sdLOinw@mail.gmail.com>
+Subject: Re: [PATCH v4 46/55] qapi: add query-targets
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@oss.qualcomm.com>
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+	qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
+	"Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>, Fabiano Rosas <farosas@suse.de>, 
+	Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Alistair Francis <alistair@alistair23.me>, Peter Maydell <peter.maydell@linaro.org>, 
+	=?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+	qemu-arm@nongnu.org, kvm@vger.kernel.org, Thomas Huth <thuth@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-enter_smm() clears CR0.PG and EFER.LMA/LME but leaves CR3 as-is, so a
-64-bit guest whose page tables live above 4GiB enters SMM with
-CR3[63:32] != 0 while outside of long mode.  Bare-metal SVM accepts that
-state, but Hyper-V's emulation of VMRUN for a nested hypervisor rejects
-it as an invalid VMCB, and the vCPU dies on the very first instruction
-of the SMI handler:
+On Tue, Sep 29, 2026 at 3:11=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
+<philmd@oss.qualcomm.com> wrote:
+>
+> On 28/9/26 20:34, Yonggang Luo wrote:
+> > On Mon, Sep 28, 2026 at 6:39=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <
+> > philmd@oss.qualcomm.com> wrote:
+> >>
+> >> On 28/9/26 12:13, Daniel P. Berrang=C3=83=C2=A9 wrote:
+> >>> On Sat, Sep 26, 2026 at 03:00:45PM +0800, Yonggang Luo wrote:
+> >>>> query-targets lists each linked target, including none, with its
+> >>>> arch, endianness, and the machines that target accepts.
+> >>>>
+> >>>> Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
+> >>>> ---
+> >>>>    hw/core/machine-qmp-cmds.c | 30 ++++++++++++++++++++++++++++++
+> >>>>    qapi/machine.json          | 35 +++++++++++++++++++++++++++++++++=
+++
+> >>>>    2 files changed, 65 insertions(+)
+> >>>
+> >>>
+> >>>> diff --git a/qapi/machine.json b/qapi/machine.json
+> >>>> index 6aaa2af709a..d8cdea6203e 100644
+> >>>> --- a/qapi/machine.json
+> >>>> +++ b/qapi/machine.json
+> >>>> @@ -307,6 +307,41 @@
+> >>>>    ##
+> >>>>    { 'command': 'query-target', 'returns': 'QemuTargetInfo' }
+> >>>>
+> >>>> +##
+> >>>> +# @TargetMachines:
+> >>>> +#
+> >>>> +# One registered system target and the machines that can run on it.
+> >>>> +#
+> >>>> +# @arch: the target architecture
+> >>>> +#
+> >>>> +# @endianness: the target endianness
+> >>>> +#
+> >>>> +# @machines: machine type names, not aliases
+> >>>> +#
+> >>>> +# Since: 11.2
+> >>>> +##
+> >>>> +{ 'struct': 'TargetMachines',
+> >>>> +  'data': { 'arch': 'SysEmuTarget',
+> >>>> +            'endianness': 'EndianMode',
+> >>>> +            'machines': ['str'] } }
+> >>>
+> >>> We already have  'QemuTargetInfo' struct which is used
+> >>> with 'query-target', that should also be used with the
+> >>> new 'query-targets' command.
+> >>>
+> >>> We need to add the 'endianness' field to QemuTargetInfo.
+> >>
+> >> Why do we want to expose endianness, and what endianness to
+> >> expose? Endianness is a runtime bit state of CPUs. Sometime
+> >> this bit is hardwired but that is an implementation detail.
+> >>
+> >> See commit 0e2c5647d92 and surrounding for MicroBlaze for
+> >> example.
+> >
+> > Please take a look at
+> > https://gitlab.com/lygstate-qemu/qemu/-/pipelines/2890507627
+> >
+> > I do not have clue to fixes it properly
+>
+> What are you asking here? I'm seeing failures on targets supporting
+> dual endianness. I can not try to help you until I understand what
+> your goal is (I asked it multiple times but you don't reply explaining).
 
-  KVM: entry failed, hardware error 0xffffffff
-  EIP=00008000 EFL=00000002 [-------] CPL=0 II=0 A20=1 SMM=1 HLT=0
-  CS =f900 7bff9000 ffffffff 00809300
-  CR0=00050032 CR2=2a91044a CR3=77681000 CR4=00000000
-  EFER=0000000000000000
+Now I can answer the question more clear, it's because the pitfall of commi=
+t
+https://gitlab.com/qemu-project/qemu/-/commit/e934c624f32f6f44f427d73a2e6a6=
+7e983a02ae6
+cause the issue
 
-QEMU prints only CR3[31:0] here; the CR3 saved in SMRAM for this vCPU
-was 0x277681000.  All vCPUs that failed had a CR3 above 4GiB, while the
-one vCPU whose CR3 was below 4GiB entered SMM without issue.
+ target-info-stub.c | 2 +-
+ target-info.c      | 8 +-------
+ 2 files changed, 2 insertions(+), 8 deletions(-)
 
-This reproduces reliably when booting a Windows 11 guest (8GiB of RAM)
-with Secure Boot OVMF, i.e. with SMM enabled, in KVM on WSL2 on an AMD
-host, with Windows 11 25H2 build 26200.9457, the latest released build.
+diff --git a/target-info-stub.c b/target-info-stub.c
+index 8392d81e8f..65220cc782 100644
+--- a/target-info-stub.c
++++ b/target-info-stub.c
+@@ -18,7 +18,7 @@ QEMU_BUILD_BUG_ON(offsetof(ArchCPU, env) !=3D sizeof(CPUS=
+tate));
 
-With paging disabled outside of long mode, only CR3[31:0] is
-reachable: a MOV to CR3 can only write 32 bits, and the SMI handler
-must load its own CR3 before enabling paging.  RSM restores the full
-CR3 from the SMRAM state-save area, which was written before this point.
-Clear the upper 32 bits when KVM runs on Hyper-V, so that the SMM entry
-state passes Hyper-V's VMRUN consistency checks.  Leave the behavior on
-other hosts unchanged, as the problem belongs to Hyper-V and should be
-fixed there.
+ static const TargetInfo target_info_stub =3D {
+     .target_name =3D TARGET_NAME,
+-    .target_arch =3D SYS_EMU_TARGET__MAX,
++    .target_arch =3D glue(SYS_EMU_TARGET_, TARGET_ARCH),
+     .long_bits =3D TARGET_LONG_BITS,
+     .cpu_type =3D CPU_RESOLVING_TYPE,
+     .machine_typename =3D TYPE_MACHINE,
+diff --git a/target-info.c b/target-info.c
+index 5a6d728252..a26532f660 100644
+--- a/target-info.c
++++ b/target-info.c
+@@ -24,13 +24,7 @@ unsigned target_long_bits(void)
 
-Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
----
-V1 -> V2:
-- Only clear CR3[63:32] when KVM runs on Hyper-V, leave other hosts
-  unchanged (Sean)
-- Note in the changelog that the latest released Windows 11 build
-  (25H2, 26200.9457) is still affected
-- Cc Hyper-V maintainers and linux-hyperv
+ SysEmuTarget target_arch(void)
+ {
+-    SysEmuTarget arch =3D target_info()->target_arch;
+-
+-    if (arch =3D=3D SYS_EMU_TARGET__MAX) {
+-        arch =3D qapi_enum_parse(&SysEmuTarget_lookup, target_name(), -1,
+-                               &error_abort);
+-    }
+-    return arch;
++    return target_info()->target_arch;
+ }
 
-v1: https://lore.kernel.org/r/20260928-kvm-smm-cr3-upper-bits-v1-1-138f52dd531e@gmail.com
----
- arch/x86/kvm/smm.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ const char *target_cpu_type(void)
 
-diff --git a/arch/x86/kvm/smm.c b/arch/x86/kvm/smm.c
-index f623c5986119..34c16b8c2c0b 100644
---- a/arch/x86/kvm/smm.c
-+++ b/arch/x86/kvm/smm.c
-@@ -2,6 +2,7 @@
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
- #include <linux/kvm_host.h>
-+#include <asm/hypervisor.h>
- #include "x86.h"
- #include "kvm_cache_regs.h"
- #include "kvm_emulate.h"
-@@ -361,6 +362,20 @@ void enter_smm(struct kvm_vcpu *vcpu)
- 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_LM))
- 		if (kvm_x86_call(set_efer)(vcpu, 0))
- 			goto error;
-+
-+	/*
-+	 * Work around Hyper-V rejecting VMRUN for a nested hypervisor when
-+	 * CR3[63:32] != 0 with EFER.LMA=0, which is exactly the state left
-+	 * behind by entering SMM with page tables above 4GiB.  CR3 is
-+	 * unmodified on SMM entry, but with paging disabled and outside of
-+	 * long mode bits 63:32 are unreachable, and RSM restores the full
-+	 * value from SMRAM, so clearing them is invisible to the guest.
-+	 */
-+	if (hypervisor_is_type(X86_HYPER_MS_HYPERV) &&
-+	    kvm_read_cr3(vcpu) >> 32) {
-+		vcpu->arch.cr3 = (u32)vcpu->arch.cr3;
-+		kvm_register_mark_dirty(vcpu, VCPU_EXREG_CR3);
-+	}
- #endif
- 
- 	vcpu->arch.cpuid_dynamic_bits_dirty = true;
+Look at the diff, the original one is directly parsed from
+target_name(). and the new one
+defines "glue(SYS_EMU_TARGET_, TARGET_ARCH)", but that indeed does not
+match target_name() at all.
 
----
-base-commit: eb3f4b7426cfd2b79d65b7d37155480b32259a11
-change-id: 20260928-kvm-smm-cr3-upper-bits-9819a1a2f337
+And TARGET_ARCH is introduced in commit
+https://gitlab.com/lygstate-qemu/qemu/-/commit/f87f7e145d63f93315e0f0e00fb9=
+ba0b6ee8570f
+for this.
+Hi Richard, is this done for intention or a mistake?
+maybe we should always generate target_arch from target_name()
+in meson.build?
 
-Best regards,
--- 
-Qiliang Yuan <odys.yuan@gmail.com>
 
+
+>
+
+
+--
+         =E6=AD=A4=E8=87=B4
+=E7=A4=BC
+=E7=BD=97=E5=8B=87=E5=88=9A
+Yours
+    sincerely,
+Yonggang Luo
