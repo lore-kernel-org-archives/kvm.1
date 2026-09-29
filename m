@@ -1,164 +1,146 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708DB513560;
-	Tue, 29 Sep 2026 10:42:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F40A519DE9
+	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 10:42:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790678544; cv=none; b=h7JIfmHp4TMUIzyWaNTyRfzFdN1AIWaI3tiBrwFmZFO+dre5rQmX4xe1b2oJvWnKZ76wSZflXv/V3r6RvT505EEOaqaE1plgzR00KTkVEaDxCNPSREnpQlPeT7rcE14UlbRpCrRZ9c9Wi6Fcy2x9otx0wipPs8fQA+irkVOhsg4=
+	t=1790678570; cv=none; b=osxkH4Nx66ZeOMcytjMa8GVSvSmMTdS6Msbrr6oWGAIUM8oBViXRV0hlEhYpYauxm63/36Mkzq++WxvF+npEmCK93z82JFnetK3XQ3sUjljT6OqFHJJEY2Dg+VPbdr55ANcGa5sQZSbM41WufMA3tbGvgZF+hib3/dhC2l3S7HQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790678544; c=relaxed/simple;
-	bh=7/qDNxbBp1ADohJnweYVMAso5g2WF/JpQG/PO2h7y30=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SW82b7xNgZXAIX31fpVtEnM5WFtviN0LmUwWhIb48J/4i9I074LcpPEGkG2LfTdSFPkmYy5/zL4COVMdL6FryYtBKbZMBOvRfZfyrlsdpMM1qssmFNcznFgUhN+1vpPt6lu17sodZJuXH9gce56fiHyTygczM05/aQxEdN49Khg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=PC0ik/yd; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790678570; c=relaxed/simple;
+	bh=rn5Gt3VFfBE5dKlYdI4q200gMKtpnsxlNkM21kxz64Q=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=XlLbUwOkavbV//TfSho+aHj91OVI/rtNG8VBjXjOMKutxI9+iJd45mjh+trm/trmhA2Lh/j1SERjv7RLtRTue+tmpgz2+yIDjBBYrVxA/PQMwJhGhYLBmTB2hqi97rmCTIoylSXi3ff9PupdcQJErW8RXx6qWzVxnaAau3kq7CA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jAO+Kju/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="PC0ik/yd"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2BA63497;
-	Tue, 29 Sep 2026 03:42:07 -0700 (PDT)
-Received: from [10.57.12.116] (unknown [10.57.12.116])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A904A3F86F;
-	Tue, 29 Sep 2026 03:42:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790678530; bh=7/qDNxbBp1ADohJnweYVMAso5g2WF/JpQG/PO2h7y30=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PC0ik/ydlxF//U+lOzOT0FQMQrw91+SgzqjHx8bSSGqPb2dUxJ8O169VPU4eiTqnA
-	 fm3nTXkhVLT4Z/MtxA698ns0dQ477LlEA5AfOd7bC58zuZOSRkbEXUw6qxg/8JlVG1
-	 CQlrL5P0hFD8zGPUViyWR8naA+LE5p96UT9StgiU=
-Message-ID: <eacadf9d-439d-48c4-a874-49df7e403f86@arm.com>
-Date: Tue, 29 Sep 2026 11:42:06 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jAO+Kju/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431EC1F000FF;
+	Tue, 29 Sep 2026 10:42:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790678551;
+	bh=/R8pcZIGRThEQoVJHLHwhIMkJKVMFXKW85XHUDhOeoI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=jAO+Kju/6arejod0esvLWepKArDD8EZ6l0J06c5ZeLdZI43ZEcSap2oGOwYlm66SY
+	 s68/mAXPixv5TouGeG/lhvfNOWY2usnODIXlgaHpjK3f8oMGvucZTmzXbKeOsQIoYK
+	 nPZh9xUCmUik650GbKlKKkZbFj6akA9k+p50wwJHPwX+8enuF83YkHXD7ZseMtoxKx
+	 ik555fkEE4V1Em3YgA/BH4hlmInVhJiqh6lZaxhyb21WeT7gUNDB5hcFxn4sO040pP
+	 uMMlOD3F8gW9fyElAvVoWUZrRd7LssR1AAUs5w2Lj4H+yS70Lclv1gsyOmyfisYOY1
+	 eeqHBpUkwjxYQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 1/4] LoongArch: KVM: Clear device pointer in irqchip
+ destroy callbacks
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Tao Cui" <cui.tao@linux.dev>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260929102821.36112-2-cui.tao@linux.dev>
+References: <20260929102821.36112-1-cui.tao@linux.dev>
+ <20260929102821.36112-2-cui.tao@linux.dev>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 29 Sep 2026 10:42:30 +0000
+Message-Id: <20260929104231.431EC1F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v18] arm64: mm: Handle Granule Protection Faults (GPFs)
-Content-Language: en-GB
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev, maz@kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
- aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
- joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
- linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
- sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
- WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
-References: <20260913070459.2547407-1-suzuki.poulose@arm.com>
- <arK3tsTV6EDhI-nt@willie-the-truck> <arOyp8WUrYBAjrGH@arm.com>
- <arP0IF0MjFUv36AP@willie-the-truck>
- <49dcab27-1d03-4df2-b7cb-4df4eda6d909@arm.com> <araqPCdcSnqZqPWz@arm.com>
- <3934b4c9-6b1f-44fa-847e-4fb1e67a58e7@arm.com> <aruTTJiIheHigPSJ@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <aruTTJiIheHigPSJ@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 29/09/2026 11:30, Catalin Marinas wrote:
-> On Mon, Sep 28, 2026 at 11:38:01AM +0100, Suzuki K Poulose wrote:
->> On 25/09/2026 18:07, Catalin Marinas wrote:
->>> On Wed, Sep 23, 2026 at 05:04:06PM +0100, Suzuki K Poulose wrote:
->>>> On 23/09/2026 16:45, Will Deacon wrote:
->>>>> On Wed, Sep 23, 2026 at 12:06:15PM +0100, Catalin Marinas wrote:
->>>>>> On Tue, Sep 22, 2026 at 06:15:34PM +0100, Will Deacon wrote:
->>>>>>> On Sun, Sep 13, 2026 at 08:04:58AM +0100, Suzuki K Poulose wrote:
->>>>>>>> From: Steven Price <steven.price@arm.com>
->>>>>>>>
->>>>>>>> If the host attempts to access granules that have been delegated for use
->>>>>>>> in a realm these accesses will be caught and will trigger a Granule
->>>>>>>> Protection Fault (GPF).
->>>>>>>>
->>>>>>>> A fault during a page walk signals a bug in the kernel and is handled by
->>>>>>>> oopsing the kernel. A non-page walk fault could be caused by user space
->>>>>>>> having access to a page which has been delegated to the kernel and will
->>>>>>>> trigger a SIGBUS to allow debugging why user space is trying to access a
->>>>>>>> delegated page.
->>>>>>>>
->>>>>>>> There is work in progress to unmap the guest_memfd backed private pages from the
->>>>>>>> linear map. Until we get that support, we could get spurious GPFs from within
->>>>>>>> the kernel, e.g., load_unaligned_zeropad(). So, try to fix them up for now.
->>>>>>>>
->>>>>>>> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>>>>>> Reviewed-by: Gavin Shan <gshan@redhat.com>
->>>>>>>> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
->>>>>>>> Signed-off-by: Steven Price <steven.price@arm.com>
->>>>>>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>>>>>> ---
->>>>>>>> Changes since v17:
->>>>>>>>     * Pass untagged address to die_kernel_fault() - Sashiko
->>>>>>>>     * Explicitly check !user_mode() for fixups - Catalin
->>>>>>>>     * Switch to BUS_OBJERR for si_code from SI_KERNEL - Catalin
->>>>>>>>     * Clarify the commit description about the upcoming work on
->>>>>>>>       unmapping guest_memfd backed pages from linear map
->>>>>>>> Changes since v16:
->>>>>>>>     * Update the commit description to indicate why we try to fixup GPFs
->>>>>>>> Changes since v10:
->>>>>>>>     * Don't call arm64_notify_die() in do_gpf() but simply return 1.
->>>>>>>> Changes since v2:
->>>>>>>>     * Include missing "Granule Protection Fault at level -1"
->>>>>>>> ---
->>>>>>>>     arch/arm64/mm/fault.c | 30 ++++++++++++++++++++++++------
->>>>>>>>     1 file changed, 24 insertions(+), 6 deletions(-)
->>>>>>>
->>>>>>> I still don't think we should do this, given that the plan is to unmap
->>>>>>> the memory from the linear map. If this thing fires, it's a kernel bug
->>>>>>> and it should be fatal.
->>>>>>
->>>>>> If the linear unmapping gets merged first, I agree, no need to handle
->>>>>> these faults. I haven't followed that series, so no idea where it is at.
->>>>
->>>> There doesn't seem to be much progress on that series. Brendan
->>>> volunteered to resurrect the series, taking over from Nikita [0].
->>>> But looks like Brendan is not working on this anymore. Will see
->>>> if someone is really planning to look at it.
->>>>
->>>> [0] https://lore.kernel.org/all/DJJ35VLH2PE5.DFD8OYXEOH97@linux.dev
->>>
->>> I just realised that this only solves part of the problem. Normal kernel
->>> allocations are delegated RMM metadata and they'll also trigger GPF
->>
->> Other than Kdump, kernel shouldn't try to touch these metadata pages
->> unless there is a kernel bug ?
-> 
-> Hibernate but we need to reject this as well since there's no way you
-> can save and restore the realm memory.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Critical] kvm: loongarch: NULL deref and UAF via lockless irqchip destru=
+ction
+--
 
-Ack. I have disabled both kexec (including kdump for now, more on that
-below) and hibernate when RMM is active.
+commit 1d2bf4dc9e1262efde3462bede6b473d0a4a01e5
+Author: Tao Cui <cuitao@kylinos.cn>
 
-> 
->> And the userspace wouldn't have a mapping for them anyways ?
-> 
-> That's the aim but proposed KVM/CCA support still allows non-gmem slots
-> to end up delegated (I haven't checked the latest if addressed).
+LoongArch: KVM: Clear device pointer in irqchip destroy callbacks
 
-This has been addressed in v20 integration branch here :
+The commit clears device pointers in the destroy callbacks for the four
+LoongArch irqchip devices to prevent dangling pointers. This addresses an
+issue where anon_inode_getfd() failures during KVM_CREATE_DEVICE can
+leave the VM alive with a freed irqchip device.
 
-https://git.gitlab.arm.com/linux-arm/linux-cca/-/commit/0e697f0f3b2c11855192ae6e80d6036e9374ccef?file_path=arch%2Farm64%2Fkvm%2Fmmu.c#line_b12897615_A2307
+> diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/=
+dmsintc.c
+> index bb7285c49df3a..4bd98b888e3f1 100644
+> --- a/arch/loongarch/kvm/intc/dmsintc.c
+> +++ b/arch/loongarch/kvm/intc/dmsintc.c
+> @@ -166,6 +166,7 @@ static void kvm_dmsintc_destroy(struct kvm_device *de=
+v)
+>  		return;
+> =20
+>  	kfree(dev->kvm->arch.dmsintc);
+> +	dev->kvm->arch.dmsintc =3D NULL;
 
-> 
->>> https://lore.kernel.org/all/a11aba04-eaaa-43fd-988b-a2581b1b2fdb@arm.com/
->>>
->>> I think rmi_delegate_range() covers the non-kdump cases, both for
->>> metadata and realm memory, we could unmap the linear map there (map it
->>> back in rmi_undelegate_range()).
->>
->> We could explore that option for the kernel allocations too.
-> 
-> I do wonder what we gain from unmapping. If architecturally we get a
-> synchronous fault when accessing delegated pages, it's only marginally
-> more code to do_gpf() (and we might need this function anyway for
-> kdump) and we avoid linear map fragmentation. So, I think we just need
-> to agree what's fatal and what can safely recover. We do need Alper's
-> patch for kdump, otherwise we can't fix it up in do_gpf().
+[Severity: Critical]
+Does setting this pointer to NULL after freeing it leave a window open for
+a use-after-free?
 
-Ack. We could add that in later series. For now we block all kexecs.
+If anon_inode_getfd() fails during KVM_CREATE_DEVICE, the error path
+calls ops->destroy() locklessly. At the same time, concurrent KVM_IRQ_LINE
+requests can locklessly invoke kvm_set_irq(), which drops kvm->irq_srcu
+before calling the routing callbacks.
 
-Cheers
-Suzuki
+If those callbacks read the pointer between the kfree() and this NULL
+assignment, won't they dereference freed memory? Does this ordering defeat
+any READ_ONCE() fixes intended for concurrent lockless readers?
 
+[ ... ]
 
-> 
+> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/=
+pch_pic.c
+> index e7b77705c516a..5d046a1cab4e2 100644
+> --- a/arch/loongarch/kvm/intc/pch_pic.c
+> +++ b/arch/loongarch/kvm/intc/pch_pic.c
+> @@ -480,6 +480,7 @@ static void kvm_pch_pic_destroy(struct kvm_device *de=
+v)
+> =20
+>  	kvm =3D dev->kvm;
+>  	s =3D kvm->arch.pch_pic;
+> +	kvm->arch.pch_pic =3D NULL;
 
+[Severity: Critical]
+Can assigning NULL here without synchronization lead to a deterministic NULL
+pointer dereference and host panic?
+
+If kvm->arch.pch_pic is set to NULL locklessly here, and a concurrent
+KVM_IRQ_LINE ioctl calls into kvm_set_pic_irq(), the routing table
+execution happens after kvm_set_irq() drops irq_srcu:
+
+virt/kvm/irqchip.c:kvm_set_irq() {
+    ...
+    idx =3D srcu_read_lock(&kvm->irq_srcu);
+    i =3D kvm_irq_map_gsi(kvm, irq_set, irq);
+    srcu_read_unlock(&kvm->irq_srcu, idx);
+
+    while (i--) {
+        int r;
+        r =3D irq_set[i].set(&irq_set[i], kvm, irq_source_id, level,
+                           line_status);
+    ...
+}
+
+The callback kvm_set_pic_irq() then blindly passes the newly-NULL pointer
+to pch_pic_set_irq() without checking it:
+
+arch/loongarch/kvm/irqfd.c:kvm_set_pic_irq() {
+    ...
+    pch_pic_set_irq(kvm->arch.pch_pic, e->irqchip.pin, level);
+    ...
+}
+
+Since pch_pic_set_irq() unconditionally dereferences the pointer:
+
+arch/loongarch/kvm/intc/pch_pic.c:pch_pic_set_irq() {
+    ...
+    spin_lock(&s->lock);
+    ...
+}
+
+Doesn't this mean an unprivileged userspace process exhausting file
+descriptors and concurrently injecting interrupts will trigger a host panic?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260929102821.3611=
+2-1-cui.tao@linux.dev?part=3D1
