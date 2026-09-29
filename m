@@ -1,231 +1,149 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72E1514770;
-	Tue, 29 Sep 2026 11:43:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7862519909
+	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 11:53:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790682239; cv=none; b=JrMDovPQloWkGEs1eNjzM012kt676l9luOHRruCKEihs52KwWmzufFNoDf5c+K1K5ESjC2X91oaW9xHII311DUMXK3F8t7GTOvNaKZU9t+ZdnEeqliwK5OCykEsjJGqvC33pRU+T4TtB1hOFARNS03Dp21h70l+x5BkW0VZ6g2E=
+	t=1790682829; cv=none; b=ZsGU8wVqHf2VgPTqDoesYFLOpsZfN2vq990y+RHE+8NPdoDe4w9c7wrVYJ6ZZuYp6wC05B6rftNXOc4ptykwGWa7NU8hsMpuBqJZoeJ9F9LaAFH4LRwMmHcM6qZ2bnhPrxxSU+kr44f+bmQDGlL3hv0Gg2FcE2LAdD3QV9sB1Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790682239; c=relaxed/simple;
-	bh=KbI05H8257pbTzuYfeN0E7QF6PPoH8UPLCkl8YK1WlI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cwTc6Syw5YVwa6UOwQOA5mwTLRO8FNqsoPCtp+d09vexynYQB8xsJ9JpCjNlovR2KIw1a1eaINu9ImRAKJQV3Jib9+uhrw0Uvjoqz65dOy8ihwBa3J2LYI2E05JAcYWwDLMhw9HJywKbNG8k7oLDUHnvaXYrnFSBddwITrQ3rZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=y72ExFnk; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
+	s=arc-20240116; t=1790682829; c=relaxed/simple;
+	bh=g4g2cwMO176VdUCWdqN85c3miIvSOkjBwzz1S4H+4bU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=k9BmE0eLuYe0KqYZaSdg8Iy37z9ArFI7P6egPTih93Se5p6UM+4BCFFkBmC11hfF562U7I6X4VQXk7UXRAFY4mtNL7pw8rG5ic0N7mNcWU8+tsYkSPtn5TM2uoP0bVaA5fBUH4/JToxGngtQGxFsHHIW+Xr0dvZ9cSRoRrpG/9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NH/RKKmA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="y72ExFnk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1790682200;
-	bh=odX8h+v3SuO3LBAU4tzqREo252vsuXpN4nbA3pZgk4M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=y72ExFnkOblYlkejvfz50psNdKfcbaTHptBCwG5Fs0LSKDtLdjoPF1A/pnJOgMB/R
-	 vJl0KHdDt6OAxcRDdxMX1hmmIVBsKAd4EyeBjaC84sNrPxQrmOoWRA5g2rlAOSiAmO
-	 IVvfN94A4Jf+aK0UZgxDy4bwu36RRmrgW+A0/BzMrju9b7Krr1ns3Rf285FSCi3J7/
-	 RLwxRxZg6UnUsTKvGVwkd426DmWDJuDiORwQqlndhUjncGsGZP5c+X3OjN51rVCD10
-	 K10j+YGrS+CJG8YDDDy3ZsJfuryhnGzBffduAaow9tb3p38Hgryzgt2qGrJRPiPk92
-	 bl4Jv/7LhEk6w==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4hvGWz0nfcz4wDx;
-	Tue, 29 Sep 2026 21:43:10 +1000 (AEST)
-Message-ID: <ed9a25ad-9a10-407d-b910-1b5cbdff88b4@ozlabs.org>
-Date: Tue, 29 Sep 2026 12:43:37 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NH/RKKmA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE831F00898;
+	Tue, 29 Sep 2026 11:53:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790682827;
+	bh=EnDuh/21BYzQ89nx6t9gdl4Srsee79XVAC5JK9BcWS4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=NH/RKKmACRR4h4ujk8awCTXh3Hy3izUfEqjquDqabEnJ7AKIh/3gGgpFDojOHuxys
+	 c+OLxM5uDowG8pl7g1wlCgiNFk+VceJ2KWMV1vF40DSly2I8ljvJ2ISvA2hmMyWlEF
+	 AEx75lNbfNtMCG10hIks/MCaMvDrbZ2JDrKYFc9mMHLfLGhsAzQRrWOwtbka1fLTzC
+	 8PFbCjp+FLVCYlTYunYZyBexkvj6O1ywhSbKUHtW1/+lpjbAZ6+PRnpmHW/ASaKolr
+	 6ql5EbAERn+vpCe9OQC41qUhEufXDXEWnmdbd4S1yJdfDnDQIAUvgaNP1qsMyg752A
+	 lgHCnJFJjsM6A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v1 3/3] KVM: selftests: dirty_log_perf_test: Add
+ dirty-ring support
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Leonardo Bras" <leo.bras@arm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260929113711.2064390-4-leo.bras@arm.com>
+References: <20260929113711.2064390-1-leo.bras@arm.com>
+ <20260929113711.2064390-4-leo.bras@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 29 Sep 2026 11:53:46 +0000
+Message-Id: <20260929115347.5FE831F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 3/9] dma-buf: Provide dma_buf_set_name()
-Content-Language: en-GB
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
- Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
- Kevin Tian <kevin.tian@intel.com>, Pranjal Shrivastava <praan@google.com>,
- Longfang Liu <liulongfang@huawei.com>, Mahmoud Adam <mngyadam@amazon.de>,
- David Matlack <dmatlack@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
- Ankit Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
- linux-pci@vger.kernel.org
-References: <20260924152159.49702-1-matt@ozlabs.org>
- <20260924152159.49702-4-matt@ozlabs.org>
- <654a5994-97e4-4a0d-aba9-24090b495da5@amd.com>
-From: Matt Evans <matt@ozlabs.org>
-In-Reply-To: <654a5994-97e4-4a0d-aba9-24090b495da5@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 25/09/2026 09:39, Christian König wrote:
-> 
-> 
-> On 9/24/26 17:21, Matt Evans wrote:
->> Allow exporters to set the name of buffers, during export or for
->> subsequent updates.  This is useful to express buffer-specific debug
->> information, indicate state particular to the exporter's usage, etc.
->> Only exporters and userspace are expected to set names; it isn't
->> sensible for importers to do it.
->>
->> Originally, the static dma_buf_set_name() was used for
->> DMA_BUF_SET_NAME ioctls, taking a __user string parameter.  Export
->> this function as a generic set-name helper, taking a kernel-allocated
->> string.  The SET_NAME ioctls now locally duplicate the __user string,
->> and use the new function to set the name.
->>
->> Signed-off-by: Matt Evans <matt@ozlabs.org>
->> ---
->>   drivers/dma-buf/dma-buf.c | 78 ++++++++++++++++++++++++---------------
->>   include/linux/dma-buf.h   |  2 +
->>   2 files changed, 50 insertions(+), 30 deletions(-)
->>
->> diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
->> index 4c9add51f9ef..e4ec504e9288 100644
->> --- a/drivers/dma-buf/dma-buf.c
->> +++ b/drivers/dma-buf/dma-buf.c
->> @@ -404,34 +404,6 @@ static __poll_t dma_buf_poll(struct file *file, poll_table *poll)
->>   	return events;
->>   }
->>   
->> -/**
->> - * dma_buf_set_name - Set a name to a specific dma_buf to track the usage.
->> - * It could support changing the name of the dma-buf if the same
->> - * piece of memory is used for multiple purpose between different devices.
->> - *
->> - * @dmabuf: [in]     dmabuf buffer that will be renamed.
->> - * @buf:    [in]     A piece of userspace memory that contains the name of
->> - *                   the dma-buf.
->> - *
->> - * Returns 0 on success. If the dma-buf buffer is already attached to
->> - * devices, return -EBUSY.
->> - *
->> - */
->> -static long dma_buf_set_name(struct dma_buf *dmabuf, const char __user *buf)
->> -{
->> -	char *name = strndup_user(buf, DMA_BUF_NAME_LEN);
->> -
->> -	if (IS_ERR(name))
->> -		return PTR_ERR(name);
->> -
->> -	spin_lock(&dmabuf->name_lock);
->> -	kfree(dmabuf->name);
->> -	dmabuf->name = name;
->> -	spin_unlock(&dmabuf->name_lock);
->> -
->> -	return 0;
->> -}
->> -
->>   #if IS_ENABLED(CONFIG_SYNC_FILE)
->>   static long dma_buf_export_sync_file(struct dma_buf *dmabuf,
->>   				     void __user *user_data)
->> @@ -577,8 +549,19 @@ static long dma_buf_ioctl(struct file *file,
->>   		return ret;
->>   
->>   	case DMA_BUF_SET_NAME_A:
->> -	case DMA_BUF_SET_NAME_B:
->> -		return dma_buf_set_name(dmabuf, (const char __user *)arg);
->> +	case DMA_BUF_SET_NAME_B: {
->> +		char *name = strndup_user((const char __user *)arg,
->> +					  DMA_BUF_NAME_LEN);
->> +
->> +		if (IS_ERR(name))
->> +			return PTR_ERR(name);
->> +
->> +		ret = dma_buf_set_name(dmabuf, name);
->> +		if (ret)
->> +			kfree(name);
->> +
->> +		return ret;
->> +	}
->>   
->>   #if IS_ENABLED(CONFIG_SYNC_FILE)
->>   	case DMA_BUF_IOCTL_EXPORT_SYNC_FILE:
->> @@ -874,6 +857,41 @@ void dma_buf_put(struct dma_buf *dmabuf)
->>   }
->>   EXPORT_SYMBOL_NS_GPL(dma_buf_put, "DMA_BUF");
->>   
->> +/**
->> + * dma_buf_set_name - Set a dmabuf's name
->> + * Intended to be used by the exporter to set a name for debug
->> + * purposes.  This can also change an existing name if the same piece
->> + * of memory is used for multiple purposes over time.
-> 
-> Add something like "Importers should *NOT* use this function to overwrite the name." here and add some note under "DOC: locking convention" how this function is supposed to be called.
-> 
-> Apart from that looks good to me,
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] kvm: selftests: dirty ring collection time excludes lock wait ti=
+me
+--
 
-Thanks, Christian.  Good point, done.
+commit 2c539bfee74e383775f9c7f30033144876ad2f45
+Author: Leonardo Bras <leo.bras@arm.com>
 
-Re the locking convention, it appears dma_buf_set_name() is agnostic to 
-whether resv is held or not.  However, rather than adding that as a new 
-category to the 'DOC: locking convention', I've put this function in the 
-existing "don't hold resv" section.
+KVM: selftests: dirty_log_perf_test: Add dirty-ring support
 
-Whilst conservative, this matches existing (and this series's) usage, 
-and can then be relaxed in future.  If you think a new "resv is 
-permitted but not required to be held" category of API doc is better, do 
-say.
+This commit adds dirty-ring support to the dirty_log_perf_test to enable
+performance comparisons between dirty-bitmap and dirty-ring tracking
+mechanisms.
 
-Thanks,
+> diff --git a/tools/testing/selftests/kvm/dirty_log_perf_test.c b/tools/te=
+sting/selftests/kvm/dirty_log_perf_test.c
+> index 8f791ad7b86a8..af0ab654d46e2 100644
+> --- a/tools/testing/selftests/kvm/dirty_log_perf_test.c
+> +++ b/tools/testing/selftests/kvm/dirty_log_perf_test.c
+[ ... ]
+> @@ -29,9 +30,53 @@ static bool run_vcpus_while_disabling_dirty_logging;
+> =20
+>  /* Host variables */
+>  static u64 dirty_log_manual_caps;
+> +static u32 dirty_ring_size;
+>  static bool host_quit;
+>  static int iteration;
+>  static int vcpu_last_completed_iteration[KVM_MAX_VCPUS];
+> +static struct timespec vcpu_dirty_ring_collect[KVM_MAX_VCPUS];
+> +
+> +static void dirty_ring_collect(struct kvm_vcpu *vcpu, u32 *ring_idx,
+> +				struct timespec *ts)
+> +{
+> +	static pthread_mutex_t collect =3D PTHREAD_MUTEX_INITIALIZER;
+> +	struct timespec start;
+> +	struct kvm_dirty_gfn *dirty_gfns =3D vcpu_map_dirty_ring(vcpu);
+> +	u32 idx =3D *ring_idx;
+> +	u32 ring_size =3D vcpu->vm->dirty_ring_size / sizeof(struct kvm_dirty_g=
+fn);
+> +	int cleared, count;
+> +
+> +	pthread_mutex_lock(&collect);
+> +
+> +	clock_gettime(CLOCK_MONOTONIC, &start);
 
+[Severity: Medium]
+Since the timer is initialized after acquiring the lock, the time spent
+waiting for the mutex is not recorded in the collection time. When multiple
+vCPUs fill their dirty rings concurrently and wait on this lock, will this
+lock contention time be incorrectly omitted from collect?
 
-Matt
+> +
+> +	while (true) {
+> +		struct kvm_dirty_gfn *cur;
+[ ... ]
+> @@ -43,24 +88,45 @@ static void vcpu_worker(struct memstress_vcpu_args *v=
+cpu_args)
+>  	struct timespec ts_diff;
+>  	struct timespec total =3D (struct timespec){0};
+>  	struct timespec avg;
+> +	bool use_dirty_ring =3D !!vcpu->vm->dirty_ring_size;
+> +	u32 ring_idx =3D 0;
+>  	int ret;
+> =20
+>  	run =3D vcpu->run;
+> =20
+>  	while (!READ_ONCE(host_quit)) {
+>  		int current_iteration =3D READ_ONCE(iteration);
+> +		struct timespec collect =3D (struct timespec){0};
+> =20
+>  		clock_gettime(CLOCK_MONOTONIC, &start);
+> -		ret =3D _vcpu_run(vcpu);
+> +
+> +		do {
+> +			ret =3D _vcpu_run(vcpu);
+> +			if (!use_dirty_ring)
+> +				break;
+> +
+> +			dirty_ring_collect(vcpu, &ring_idx, &collect);
+> +		} while (!ret && run->exit_reason =3D=3D KVM_EXIT_DIRTY_RING_FULL);
+> +
+>  		ts_diff =3D timespec_elapsed(start);
+> =20
+> +		if (use_dirty_ring) {
+> +			ts_diff =3D timespec_sub(ts_diff, collect);
 
+[Severity: Medium]
+Because collect does not include the lock wait time from
+dirty_ring_collect(), subtracting it from ts_diff leaves the lock
+contention overhead misattributed to the guest execution time. Doesn't this
+artificially inflate the reported guest execution time and obscure the true
+overhead of dirty ring synchronization?
 
-> Christian.
-> 
->> + *
->> + * @dmabuf: [in]     dmabuf buffer that will be renamed.
->> + * @name:   [in]     The name of the dma-buf, allocated with kmalloc() or
->> + *                   similar.  This takes ownership of the allocation
->> + *                   on success, which will be kfree()d when the
->> + *                   dmabuf is released or a new name assigned.
->> + *
->> + * Returns 0 on success, -EINVAL if the name is NULL, or -E2BIG if the
->> + * name (including terminator) exceeds DMA_BUF_NAME_LEN.
->> + */
->> +int dma_buf_set_name(struct dma_buf *dmabuf, char *name)
->> +{
->> +	if (!name)
->> +		return -EINVAL;
->> +
->> +	/* dmabuffs_dname() won't use the string if the length
->> +	 * (including terminator) exceeds DMA_BUF_NAME_LEN:
->> +	 */
->> +	if (strlen(name) >= DMA_BUF_NAME_LEN)
->> +		return -E2BIG;
->> +
->> +	spin_lock(&dmabuf->name_lock);
->> +	kfree(dmabuf->name);
->> +	dmabuf->name = name;
->> +	spin_unlock(&dmabuf->name_lock);
->> +
->> +	return 0;
->> +}
->> +EXPORT_SYMBOL_NS_GPL(dma_buf_set_name, "DMA_BUF");
->> +
->>   static int dma_buf_wrap_sg_table(struct sg_table **sg_table)
->>   {
->>   	struct scatterlist *to_sg, *from_sg;
->> diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
->> index d15b2b31d3c9..952a2c196ad4 100644
->> --- a/include/linux/dma-buf.h
->> +++ b/include/linux/dma-buf.h
->> @@ -571,6 +571,8 @@ void dma_buf_fd_install(struct dma_buf *dmabuf, int fd);
->>   struct dma_buf *dma_buf_get(int fd);
->>   void dma_buf_put(struct dma_buf *dmabuf);
->>   
->> +int dma_buf_set_name(struct dma_buf *dmabuf, char *name);
->> +
->>   struct sg_table *dma_buf_map_attachment(struct dma_buf_attachment *,
->>   					enum dma_data_direction);
->>   void dma_buf_unmap_attachment(struct dma_buf_attachment *, struct sg_table *,
-> 
+> +			vcpu_dirty_ring_collect[vcpu_idx] =3D collect;
+> +		}
+> +
+>  		TEST_ASSERT(ret =3D=3D 0, "vcpu_run failed: %d", ret);
 
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260929113711.2064=
+390-1-leo.bras@arm.com?part=3D3
