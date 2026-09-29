@@ -1,296 +1,240 @@
-Received: from mail-pl1-f227.google.com (mail-pl1-f227.google.com [209.85.214.227])
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB91551815B
-	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 17:13:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296FF3A2559
+	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 17:26:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790701991; cv=none; b=N14zlYE8sPRwKeNtixecn8ICigxfHEYCYLk5PS74V3996SndXK5wbztdhhj1d6hQIf68zCYjgrExxdjlBVeeaMMYl6BukAA7LL2GCWwtlPfwT88DPCUIJGBQMAdoMrbtvWdIqjKpvK+PRCvgFRfaGAHQTQs8rM5wAapr53FnRO8=
+	t=1790702809; cv=none; b=pWH0BHZT3H07i9t+7hAZ/XSKxF1sNE6KpmVMm2xNWFncRJblWfy+zqudWxlOVLwWCPg5Nnja6PXBIF/aT1GynupGp669M3wTDNAE3AP8YpqrWscYtGGQJ6ycE8HW87I3XeO52H8WwezFXLcf5ApJkqwMTamIynzcI/sdGMNV0VY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790701991; c=relaxed/simple;
-	bh=za+M2qxUqSGpox75MMVrf4a9Js6M3eCbEBCSiLV7HbE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PPL8GmKPIGzlmMGGAuNJClDC9VBITnHy55IYMGYgAmKw7UyR8z2aT+Zb0SULZJQqJ8dW8/K8c/I2nW95679eAvmu3PIKSeI9je1T/Pa9ovslk61Jz/DGglKIftLJ4GjYthpwXTlRs/i9+KiqwsRMmXecJwomCYFRJcFzSKXSuH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=CJutjKXa; arc=none smtp.client-ip=209.85.214.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1790702809; c=relaxed/simple;
+	bh=u9XPzUqW79rJKn6aQ5AIYZwHVFkebmqpU+ELj+QTgU0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l/B7w1RHfrraorQYScSt47Nlbp7amWrGp8bpiB1BJaNCdO6M6hTn5d1NItIQMShaE6/KgCpCodJ4CebiP8alttKF1a5X/1Y1r+ntmoA6MKJ1Tvod9S6KainpiHWvRz4qjWqfUNcvxuA0TQBVztocX/KM9TA7vXEj4uCLrcNq2XM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Xi3+zwKO; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="CJutjKXa"
-Received: by mail-pl1-f227.google.com with SMTP id d9443c01a7336-2e2d4cf3668so1108675ad.0
-        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 10:13:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790701989; x=1791306789;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ipLrIfDy0zz7yTWWZQrQ7FdxK85HKYpzvmK9ciRMIIg=;
-        b=lQNiK2qW4JDM49/+yzNtI0QJ43zqRIZb9dPaYNBjJfGeUd9+FVAVcdEdTbZjOsimet
-         HlfaOsPeUdJHVfGB84oA0Ldlp+2eQMbQ1yUCqlx75R4Li9peynXoXNhi6YcCg1sziOmi
-         y86qVdJRRUE1/ShAHJaof2m29nbdOoRNeu/g/eQBBNUQc2KmI02jzJVIjeQueEL5mkvD
-         DNCdO6t4qnP0DJLMHVeiw8wiaU/NMf381lT8uhPOLG3aX/GteC/1bpjxdVBKAlil2Zqk
-         Pxrm7oV5HjpOCt9TIEqxcDJYKSczEDO1orYsG7U21VdXYeSF9ctOZVNjwc5sN6prZU4+
-         5aYw==
-X-Forwarded-Encrypted: i=1; AKwUvBzhedcDaM/WtPLLVPtwL7BFtRal/5/Iy9XEOq5f6O4YABjTZkhyF51RghcWOXIPT94edDg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLYfYQt0z/CuFJL3pRKArTxvHy/Fufs+KEaE4EB6g5yj9H21Egk
-	nPeN9Mpb2X4rqqtJtTA4R9wbJ/4cfWSclS/2S1QikRktlH3y1R6TVSWWvrmEJQcNtATorUm7jol
-	09JrJ0xLDEYTwFNhHgMQ8lpSS/hCidVGjDg7f9+3OrnnkfHVEeF6fGN2myTxnqDzbG1mGiBPiw6
-	n/HPlsEV+39GoyJlUXZC3dEs5JJqVpZNbV7+kyPYpEsNHMCM235oHJrkNSk2+4IACF2eO8teqrY
-	h5Y
-X-Gm-Gg: AYBFou0W1EFgtcb2JB+9yTHHyfY1lSOP7/cKnYOu3tZLzkF+JrgEb86KRzFJkLHnO0Z
-	eeTnjLVcqkPJ6Xwz20di1l2/zSNVHxHCJLo0VNCeARd2Hvej7JdWj6OnRJm0NxF8WWzefHOIEPb
-	eVf/+A1vLaZOaaYMANsTC+44I93K+edOFc78Eb3UTQ+jxl26GhaAnP/Gq1PTFT3d8X5qO/axbhS
-	0f7Lv9tb2mHtfnyKB8xhEg/R26N66ni0NNt+DT/k/JdHULHau9kcKozL53yaOqX1aXwP5fsWyLA
-	DSZ+rysPEvCCT/9F4X0xEhqv7l8s+AJ+B/gonskbwpQjaEN40+aL9IZDdLtOPKHT2jJ/AGxK1Aa
-	2CdOVUvcfhdq+LKZsYdNdVd3sZZLZmZMjz0/lomUySKgOwouk7mWU3hcJ91/A+Js7EZgYBQAQnX
-	1CP1l+JARdnVm3xkc5iL7bLgmX+L3Aj7gwOFc=
-X-Received: by 2002:a17:902:ce84:b0:2df:90d4:1185 with SMTP id d9443c01a7336-2df90d41ad1mr121689105ad.10.1790701989071;
-        Tue, 29 Sep 2026 10:13:09 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-124.dlp.protect.broadcom.com. [144.49.247.124])
-        by smtp-relay.gmail.com with ESMTPS id 41be03b00d2f7-cc7d2df4554sm77173a12.9.2026.09.29.10.13.08
-        for <kvm@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 29 Sep 2026 10:13:09 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-30c0d568830so8892927eec.1
-        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 10:13:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Xi3+zwKO"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e71cdb22bso33389585e9.2
+        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 10:26:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1790701987; x=1791306787; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ipLrIfDy0zz7yTWWZQrQ7FdxK85HKYpzvmK9ciRMIIg=;
-        b=CJutjKXakx1wsVf0NMCE1woayzEr3hBhkg85jVY34k/04PH8Ld1Vi66DWB9/k5nrev
-         3gX4aFvNgDpA8Ge4WX03kMbe+StgHn7DzbxwBrEIGihq0HZ3T4he4EPN6wox9T1eG8E4
-         scpqZ0LbUzSYrO5DbOl413vhcgjOdCO05x4MU=
-X-Forwarded-Encrypted: i=1; AKwUvBwMl2sxzrGnyA8ifua8KOU7HPovCH9foLbudGw3VJervyuN+BBEVqHcQUfP0mOd5CHLQoQ=@vger.kernel.org
-X-Received: by 2002:a05:7301:4908:b0:348:201a:6c8b with SMTP id 5a478bee46e88-348201a6ef2mr6324542eec.38.1790701983155;
-        Tue, 29 Sep 2026 10:13:03 -0700 (PDT)
-X-Received: by 2002:a05:7301:4908:b0:348:201a:6c8b with SMTP id
- 5a478bee46e88-348201a6ef2mr6324466eec.38.1790701981900; Tue, 29 Sep 2026
- 10:13:01 -0700 (PDT)
+        d=suse.com; s=google; t=1790702805; x=1791307605; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=i0fkT9jvbr/kwSvFoz/Z+e93i45No9+Z9jUlZdZhhO8=;
+        b=Xi3+zwKOoatI/v7TsD1rOIG0uwvMNKz4BYRSgWYzv6OUosug9tGlIpXCEKp6y8GZCS
+         eBMlC651ryozPrSV/QV4d+MGYwGW1HsggeCPlkpk9JQkX0pfH3cqWBNKbXT8+cxPZU3Q
+         KMSESbfVmx53kVhvP4iaWxgNzlx6dR5D4X8RRgtAi/mDvgcNkh3HUg54susQNeNku3RI
+         kDK01RUH1JVLpg1q44pLIqqz+zMklsr8+fhBqh9PW8Y/+idKuophuXgm4wjHjCYAuYOo
+         dcJQFd+T1yseB0TXwi7pn9NaQbkR7hOBrWWP6DJLwE374giugEHtFQDzda7UZ7WxdoSh
+         KmAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790702805; x=1791307605;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=i0fkT9jvbr/kwSvFoz/Z+e93i45No9+Z9jUlZdZhhO8=;
+        b=Xrx2jqmV/vQn0thVRvG8gJV55bOCxAXPoUp4Zg6Mw0iyVWuPzp2Qnz18nhzrlRGPkb
+         1W4lvX1kEKX+RS9ZmQIiOvpoO0JaQVdnBBJC9vt/BZoTjDDMtPesgZUd00RgNXNq2L62
+         oYP//GtnUZDx6Bts6MPPK6Nx2U7hW6RQjCdoWnPUPKNjjzoSXhccLPB/ILTKDrI5pIIn
+         u+tx7IWBL8fnLGRYdrQq8ANvBVF9YVpJKkmUI0nUuZKWwRi1TXRVCroYzNnAWlhj/Ej6
+         47Q9Gt8OICYyLAGo663zXP0vSg0MBqF4cV3V6kTMwlR5kah4nxTu3wf3rXtHqj9boQ6e
+         B7GA==
+X-Forwarded-Encrypted: i=1; AKwUvBwgERjMFLTYMjzMZhHNwcClkD1T669VP62NTLqYj2vpAn+TI50lqPA2+zjnXtOMp6PRulQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++mQY5/X9vWnRDMLT7IPZzFTlAaJZu8Fni4jt6Jm/NwCmSNQRxpV
+	xfCmPTrZ1NST1vnSSSJJlKM86IwGAQuuOGQUqjyknUgPiJ9hkgt5k1V8jU9/vV3uWQQ=
+X-Gm-Gg: AYBFou06EcThffRaEzkbtJFm9Saas9uecNt3IXgInuq9TNga5kHQj0JLS8XbtZgCHA1
+	eosp1q1eHnYPLMMv/BBpfHOnNHEJhPFAa4YbX4s88akXXn0IjqE1VDn2jOcmzpyfLknUGmoYuHE
+	C1pKSBpCbREtxCUkT3WhrqcOVRMWKwjOUzQs1PGF6b4lNZdm5AtRIdSw/HyXeJKtfrc7rVkY0kI
+	0g2hse2l+17C8OwR/7KZuIBGkreE4K61JSJhLqwJ5njbjnzrRrYlylBtL2pQ3JrwZ722ENoMOl7
+	YMLoypWHibuco2uq2ZQTwaAShDyyYDF5LwD4XxVuJiTudQ1OK6dwHJT4kR/9Ce0+Wl4pZQc4YQg
+	gVViwks7lxO4FlKP3twhzzrEu6W+WdFNRzC4U9p0UFijrHAh5tMwJFjUeTXWhc6xfeGN31XAVkj
+	GAPcN8JrDgtrmROdfYgpRQQSU2X4xwJEqq/dfbDOSm3Imr2ExCsKBqNM7CBiVAL64WKpoA6a/wz
+	vYR0rLzULadSXOn9+CMlnE=
+X-Received: by 2002:a05:600c:1c2a:b0:4a0:c2a:485e with SMTP id 5b1f17b1804b1-4a00c2a48cdmr77569005e9.33.1790702805403;
+        Tue, 29 Sep 2026 10:26:45 -0700 (PDT)
+Received: from [192.168.0.20] (nborisov.ddns.nbis.net. [185.218.66.243])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01491d4dbsm1981735e9.3.2026.09.29.10.26.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Sep 2026 10:26:45 -0700 (PDT)
+Message-ID: <b88401eb-ebd8-41dd-8260-af3890886ca3@suse.com>
+Date: Tue, 29 Sep 2026 20:26:43 +0300
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260929040256.543767-1-zack.rusin@broadcom.com>
- <20260929040256.543767-3-zack.rusin@broadcom.com> <20260929075426.GQ4120091@noisy.programming.kicks-ass.net>
-In-Reply-To: <20260929075426.GQ4120091@noisy.programming.kicks-ass.net>
-From: Zack Rusin <zack.rusin@broadcom.com>
-Date: Tue, 29 Sep 2026 13:12:45 -0400
-X-Gm-Features: AclHuK9CQF2HwjTfB3IkA5Iz-7VKmkeLlHNlajXqAX5pb_ttJ9z-UY2UurMeehQ
-Message-ID: <CABQX2QP0+Jr6gG0nZkDggvyGWCSHMNVKPPavZTYBqH+wg7rdMg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/6] percpu: Bound decrypted storage for all x86
- encrypted guests
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	virtualization@lists.linux.dev, bcm-kernel-feedback-list@broadcom.com, 
-	linux-kernel@vger.kernel.org, Christoph Lameter <cl@gentwo.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Bo Gan <bo.gan@broadcom.com>, linux-mm@kvack.org, 
-	linux-arch@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	Jonathan Corbet <corbet@lwn.net>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Long Li <longli@microsoft.com>, 
-	Andy Lutomirski <luto@kernel.org>, linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org, 
-	Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000dd8cad065ca24b7f"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/5] x86/virt/tdx: Detect if the extensions
+ initialization is required
+To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: kas@kernel.org, rick.p.edgecombe@intel.com, yilun.xu@intel.com,
+ xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com,
+ kishen.maloor@intel.com, tony.lindgren@linux.intel.com,
+ peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+ chao.gao@intel.com, artem.bityutskiy@linux.intel.com, kvm@vger.kernel.org
+References: <20260915102658.713079-1-yilun.xu@linux.intel.com>
+ <20260915102658.713079-4-yilun.xu@linux.intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <20260915102658.713079-4-yilun.xu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
---000000000000dd8cad065ca24b7f
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 29, 2026 at 3:54=E2=80=AFAM Peter Zijlstra <peterz@infradead.or=
-g> wrote:
-> On Tue, Sep 29, 2026 at 12:02:51AM -0400, Zack Rusin wrote:
-> > @@ -1022,11 +1024,13 @@
-> >   * Note: We use a separate section so that only this section gets
-> >   * decrypted to avoid exposing more than we wish.
-> >   */
-> > -#ifdef CONFIG_AMD_MEM_ENCRYPT
-> > +#if defined(CONFIG_X86_MEM_ENCRYPT) && defined(CONFIG_SMP)
-> >  #define PERCPU_DECRYPTED_SECTION                                     \
-> >       . =3D ALIGN(PAGE_SIZE);                                          =
- \
-> > +     __start_percpu_decrypted =3D .;                                  =
- \
-> >       *(.data..percpu..decrypted)                                     \
-> > -     . =3D ALIGN(PAGE_SIZE);
-> > +     . =3D ALIGN(PAGE_SIZE);                                          =
- \
-> > +     __end_percpu_decrypted =3D .;
-> >  #else
-> >  #define PERCPU_DECRYPTED_SECTION
-> >  #endif
->
-> So you're page aligning something that will get different protection and
-> will thus shatter large pages?
->
-> That is somewhat uncool. We like large pages, large pages are good.
 
-I'm a huge large pages fan too. I have a poster in my office and
-everything... And I never do things that are uncool. I have a wwcdd
-(what would cool dude do) bracelet and I look at it every time I make
-a decision, which given that I'm old gets on my wife's nerves a lot.
-That is to say I'm handsome and innocent.
+On 15.09.26 г. 13:26 ч., Xu Yilun wrote:
+> Some add-on features require TDX module extensions. The TDX module
+> provides a metadata field "ext_required" to indicate this requirement.
+> 
+> Add the first step of TDX module extensions initialization by detecting
+> if the extensions are required:
+> 
+>    1. Check if the extensions are supported via TDX_FEATURES0_EXT. If
+>       not, ext_required is not readable.
+>    2. Check if any TDX feature needs the extensions via ext_required.
+> 
+> Skip the extensions initialization when it is not required.
+> 
+> Currently all metadata fields are read at the very beginning of TDX
+> module initialization. However, ext_required is only valid after the
+> add-on feature configuration, so it cannot use the existing metadata
+> reading method.
+> 
+> Add a dedicated metadata reading interface for the extensions, call it
+> after add-on feature configuration.
+> 
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+> ---
+> v1:
+>   - Include struct tdx_sys_info_ext in struct tdx_sys_info.
+> ---
+>   arch/x86/include/asm/tdx.h                  |  1 +
+>   arch/x86/include/asm/tdx_global_metadata.h  |  5 ++++
+>   arch/x86/virt/vmx/tdx/tdx.c                 | 28 +++++++++++++++++++++
+>   arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 14 +++++++++++
+>   4 files changed, 48 insertions(+)
+> 
+> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+> index 89e97d5761d8..6657f2db0330 100644
+> --- a/arch/x86/include/asm/tdx.h
+> +++ b/arch/x86/include/asm/tdx.h
+> @@ -36,6 +36,7 @@
+>   /* Bit definitions of TDX_FEATURES0 metadata field */
+>   #define TDX_FEATURES0_TD_PRESERVING	BIT_ULL(1)
+>   #define TDX_FEATURES0_NO_RBP_MOD	BIT_ULL(18)
+> +#define TDX_FEATURES0_EXT		BIT_ULL(39)
+>   
+>   #ifndef __ASSEMBLER__
+>   
+> diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
+> index 41150d546589..fe3fe91de71f 100644
+> --- a/arch/x86/include/asm/tdx_global_metadata.h
+> +++ b/arch/x86/include/asm/tdx_global_metadata.h
+> @@ -44,12 +44,17 @@ struct tdx_sys_info_handoff {
+>   	u16 module_hv;
+>   };
+>   
+> +struct tdx_sys_info_ext {
+> +	bool ext_required;
+> +};
+> +
+>   struct tdx_sys_info {
+>   	struct tdx_sys_info_version version;
+>   	struct tdx_sys_info_features features;
+>   	struct tdx_sys_info_tdmr tdmr;
+>   	struct tdx_sys_info_td_ctrl td_ctrl;
+>   	struct tdx_sys_info_td_conf td_conf;
+> +	struct tdx_sys_info_ext ext;
+>   };
+>   
+>   #endif
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index 763c2d1b25d0..916a8906da10 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -1181,6 +1181,30 @@ static __init int init_tdmrs(struct tdmr_info_list *tdmr_list)
+>   	return 0;
+>   }
+>   
+> +static __init int init_tdx_module_extensions(void)
+> +{
+> +	int ret;
+> +
+> +	if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
+> +		return 0;
+> +
+> +	ret = get_tdx_sys_info_ext(&tdx_sysinfo.ext);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/*
+> +	 * ext_required indicates if any add-on features requiring TDX module
+> +	 * extensions are configured via TDH.SYS.CONFIG. If none, skip the
+> +	 * initialization.
+> +	 */
+> +	if (!tdx_sysinfo.ext.ext_required)
+> +		return 0;
 
-The alignment isn't new. It has been there since ac26963a1175
-("percpu: Introduce DEFINE_PER_CPU_DECRYPTED") under AMD_MEM_ENCRYPT,
-which common distro kernels enable. This patch extends it to TDX-only
-builds and adds the boundary symbols. On bare metal and in ordinary
-guests nothing changes protection, so no large pages are split.
+I'm slightly confused by the parlance introduced here. TDX_FEATURES0_EXT 
+indicates whether this tdx module supports extensions. And ext_required 
+aka 0x3100000000000001 is, as per td_scope_metadata.json: "Extended 
+Features Available Mask:  indicates the extended user and system 
+features which are available for  the TD." So aren't by definition all 
+add-on features extensions. How do you distinguish add-on which are 
+extensions and those which aren't? I think it's best if ext_required is 
+referred to as "ext_mask" or some such and not ext_required. That value 
+is not about what is required but rather what is available, no ?
 
-In confidential guests, yes, converting each CPU's page splits the
-direct map around it. The alignment doesn't cause that: a large
-mapping can't be part private and part shared, so a converted page
-can't stay inside one. The alignment only keeps unrelated per-CPU data
-out of the shared page. Because that page sits in every CPU's per-CPU
-unit, each 2M mapping that holds one of them becomes 4K mappings,
-including the ordinary per-CPU data around it. In the layouts we've
-tested that's most of the first per-CPU chunk.
+<snip>
 
-SMP KVM SEV guests already pay this today. sev_map_percpu_data()
-converts the same pages for every possible CPU, at the same
-granularity. What v2 adds is TDX guests and guests on other
-hypervisors.
-
-Where you're right is that v2 converts in every encrypted guest apart
-from Hyper-V vTOM, even when nothing uses the pages. VMware only needs
-them when the steal clock is enabled.
-
-If this is a deal breaker for you for v3 I could convert only when the
-hypervisor's platform setup says it will use them: VMware when the
-steal clock is available, KVM when async page faults, steal time or PV
-EOI are enabled. That decision would be made before the conversion
-(for KVM that means making it in kvm_init_platform() instead of
-kvm_guest_init()), so there's still no readiness state, and other
-confidential guests don't lose large pages to this.
-
-If you'd also like to keep large pages while the steal clock is in
-use, the alternative is to move these buffers out of the per-CPU area
-into one tightly packed allocation. That concentrates the splits in
-that one allocation, so the rest of the per-CPU area keeps its large
-pages. Kiryl preferred the per-CPU section when we discussed v1, so
-I'd like to hear from both of you before going that way. fwiw, I'd
-vastly prefer to first fix the steal-time bug for VMware before trying
-to do this though (whether it's with this series or a smaller
-VMware-only fix). x86 kernel team is notoriously opinionated, which
-isn't a bad thing, but it means that a rewrite of core x86 bits like
-that will take a long time and it's starting to feel a little like I
-stepped into something and you're all behind blast doors yelling "cut
-all the wires you coward!!!" and I'm just confused going "I just came
-here to get some blueberries".
-
-z
-
---000000000000dd8cad065ca24b7f
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-6U6qgI8F5eiKsQyE0HgYrQJx/sDs9LLVZlaNiA3U8M8CgEnb8VhuH3BN/yXphhEQdJXb1TyaJA60
-SmHcZdEQZbl4EjwUcs3UIowmI/Mhi7ADQB7VNsO/BaOVBEQk53xH+4djY/cg7jvqTTeliY05j2Yx
-uwwXcDC4mWjGzxAT5DVqC8fKQvon1uc2heorHb555+sLdwYxAgMBAAGjggHYMIIB1DAOBgNVHQ8B
-Af8EBAMCBaAwgZMGCCsGAQUFBwEBBIGGMIGDMEYGCCsGAQUFBzAChjpodHRwOi8vc2VjdXJlLmds
-b2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3I2c21pbWVjYTIwMjMuY3J0MDkGCCsGAQUFBzABhi1o
-dHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3I2c21pbWVjYTIwMjMwZQYDVR0gBF4wXDAJ
-BgdngQwBBQMBMAsGCSsGAQQBoDIBKDBCBgorBgEEAaAyCgMCMDQwMgYIKwYBBQUHAgEWJmh0dHBz
-Oi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwQQYDVR0fBDowODA2
-oDSgMoYwaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3I2c21pbWVjYTIwMjMuY3JsMCIG
-A1UdEQQbMBmBF3phY2sucnVzaW5AYnJvYWRjb20uY29tMBMGA1UdJQQMMAoGCCsGAQUFBwMEMB8G
-A1UdIwQYMBaAFAApNp5ceroPry1QLdugI4UYsKCSMB0GA1UdDgQWBBQNDn2m/OLuDx9YjEqPLCDB
-s/VKNTANBgkqhkiG9w0BAQsFAAOCAgEAF463syOLTQkWZmEyyR60W1sM3J1cbnMRrBFUBt3S2NTY
-SJ2NAvkTAxbPoOhK6IQdaTyrWi8xdg2tftr5FC1bOSUdxudY6dipq2txe7mEoUE6VlpJid/56Mo4
-QJRb6YiykQeIfoJiYMKsyuXWsTB1rhQxlxfnaFxi8Xy3+xKAeX68DcsHG3ZU0h1beBURA44tXcz6
-fFDNPQ2k6rWDFz+XNN2YOPqfse2wEm3DXpqNT79ycU7Uva7e51b8XdbmJ6XVzUFmWzhjXy5hvV8z
-iF+DvP+KT1/bjO6aNL2/3PWiy1u6xjnWvobHuAYVrXxQ5wzk8aPOnED9Q8pt2nqk/UIzw2f67Cn9
-3CxrVqXUKm93J+rupyKVTGgKO9T1ODVPo665aIbM72RxSI9Wsofatm2fo8DWOkrfs29pYfy6eECl
-91qfFMl+IzIVfDgIrEX6gSngJ2ZLaG6L+/iNrUxHxxsaUmyDwBbTfjYwr10H6NKES3JaxVRslnpF
-06HTTciJNx2wowbYF1c+BFY4r/19LHygijIVa+hZEgNuMrVLyAamaAKZ1AWxTdv8Q/eeNN3Myq61
-b1ykTSPCXjBq/03CMF/wT1wly16jYjLDXZ6II/HYyJt34QeqnBENU9zXTc9RopqcuHD2g+ROT7lI
-VLi5ffzC8rVliltTltbYPc7F0lAvGKAxggJXMIICUwIBATBiMFIxCzAJBgNVBAYTAkJFMRkwFwYD
-VQQKExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBD
-QSAyMDIzAgxhPxw+eieHWB40hPkwDQYJYIZIAWUDBAIBBQCggccwLwYJKoZIhvcNAQkEMSIEIM95
-Y+wYvsgw8fhQBqM5K0hnr0Cphy3qyWfbqheI4Lz8MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEw
-HAYJKoZIhvcNAQkFMQ8XDTI2MDkyOTE3MTMwN1owXAYJKoZIhvcNAQkPMU8wTTALBglghkgBZQME
-ASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQcwCwYJ
-YIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIBAGh2xOLNTZnJJCZX8ta2OOULWhnYNl6nURTmqezV
-EWCsd9fVqy097xWLJlHL1ct6119tQbP/uPJfTlSgoVSxiEyRDZCvktEaPSBDj9UE+17P8QpkcAn9
-PSkE3hygTjmWgWK1W/vXPf2jZSlESKWPymasKv/SWtffOJP2bMdxTvKAhfGatzEbzyRDLOp0ZyJA
-WEItz+NUT16lVNfUUq9ivkMUHMHayW41eTP9JJrm2SbX6i+U+Tg3nHuEw28dUg5CCzjSwNB7CLdw
-PO0q6M/k/WByi+g9yxPk9C98rqDooB/q0u1jp982V2EMSfEmf1ZIg1fUMqr4NAFpIh7LLWnDHpE=
---000000000000dd8cad065ca24b7f--
