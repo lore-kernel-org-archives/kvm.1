@@ -1,178 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C662848BE;
-	Tue, 29 Sep 2026 22:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD443DB994;
+	Tue, 29 Sep 2026 23:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790721044; cv=none; b=N/yvCBsiWH6K4ODsTfty2NlH63urtCgkbtaLUehLxKi9c7OFs1mDjpgSXaG5aZ4iH9pcp04+Oh5L3Wj0+zdhCRumVTsx+f0yXecVZEDw83vEw6RHEu6OZDfg6B1k8dpj1/+RqLtVEkkO22ZLHdp0LatYz1D+O3LVBaqCuuHBFZg=
+	t=1790723572; cv=none; b=jmB1ggp1q6PA4uDaEEESJu8xfImuCmnEOdIuU/BZNC9NYFSQxHK6pQntk4agzZJ2QptQBnk6tyR3StiaSuhbUK+PjmBDah1e98OE0nmOMgYmT67n1UZc3sklfiXZTy5sfy5lKX5EeeQRlg6+vczp5AUUoA9MB88jH8kC4ZpUw9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790721044; c=relaxed/simple;
-	bh=WT0QEWbypzBdoDEFN1sZgN+YU3iCsax/zxN9UK5aQ3I=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=TeCkyh9lmH8WeGKEpkLgfi3UqqI07Boy57YR0Fpyxoq1PuAHs+0/zEqQSv2d/rmLEsbyVJtpxZaKVlWH9w2lPQyCiE8Y3R5B8LdXRmXNcrHfdg3BB2HNeyFEE8y+NZcDKckGp8MLkyoyeHEdrk75MM5OALxXvjC4d+7lOZy9aQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aIMR2JMc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790723572; c=relaxed/simple;
+	bh=z4PLtxqtGwCEBgSls2uKze3odixUtuWpbTV/YAG3KIc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=G5AmIVL9cIrZqdNO2XuNP2kDmxXCwBz8ytaxSeasXeeGdXGqavuujYdXExCghx3xeTUNrfWPsQ4IeJVKiYDxvmleggyvFbl2foVcvpK8iQRRRdwtUDI4e6b26AH7D2kCKTp/17x56ZGSVxm6BJ5cmPQRG1SDa6G2C0fRSTHjF0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=a6N/LBSr; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=WjQ2m/k+; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aIMR2JMc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 681D61F000FF;
-	Tue, 29 Sep 2026 22:30:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790721042;
-	bh=T180Hb52MtWB1bdwjFkuKEflYgc+bCCM+QhU40hsEC4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=aIMR2JMceY+MFiRaDgct1Xt/3jfxIcFALOE9U/DAy9Rr+qLeI7x9t76KZQnaaRh4o
-	 o1Hn88HgQVfaDNHenjjAr0jQi0nojyE/kJiLiC8Suoo6a25kQfwJBdbv2kP6EcHZzJ
-	 LKGQWM26kxhiPgLtA+s828DQERt28cZ3qiAaG02ieDq2jy43MhTCErNpUbJyEbnuob
-	 Y+RWdJdnjRiULU8nRnsN4lDPI9Tn942G8LVsMEaBl3aqLMF/mfHsFp9/UC93BD+k29
-	 1hPC+P0+KIRhhse4evsoCxJCccXpndr/H+LUzbx+VTDhHCroXbsMPDQgS9PVWTUbSp
-	 +Kb/BfkWXqEwg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v20 4/9] firmware: arm_rmm: Add support for SRO
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Suzuki K Poulose" <suzuki.poulose@arm.com>
-Cc: "Oliver Upton" <oupton@kernel.org>, kvmarm@lists.linux.dev, kvm@vger.kernel.org, "Marc
- Zyngier" <maz@kernel.org>
-In-Reply-To: <20260929221623.1342076-5-suzuki.poulose@arm.com>
-References: <20260929221623.1342076-1-suzuki.poulose@arm.com>
- <20260929221623.1342076-5-suzuki.poulose@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 29 Sep 2026 22:30:41 +0000
-Message-Id: <20260929223042.681D61F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="a6N/LBSr";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="WjQ2m/k+"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id D5FA414000A9;
+	Tue, 29 Sep 2026 19:12:47 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 29 Sep 2026 19:12:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1790723567;
+	 x=1790809967; bh=5N8h4cDDPZVbZ0cY4qvCL0csuOeAgz31V+uoawEdTzI=; b=
+	a6N/LBSrV9poCK6KvdAdRAY2+RfNy2XWhhrVgG443xzXiMz4d4wPl1SG3IYSEENM
+	nivsMv8lYNB6ozIK45JA/V8GBr224iLsrkw4okdyUQAmFzfhVA8VhQ+WWc9Ny0/r
+	dK8Y/RBHEUqfSkEaC7TyuvQpqLrrBMQXZ/agrnjrRYc8MAxxf+9tmltTIBqWgyNN
+	Tl9qf/6J6/ZzgZAPv56LN2qdSKeGEjpq3NgEWbXsybylwcN7KBZu5ypQ24XTGrrD
+	8Xcn5x6YWFCB8kzPmZ4ytA7BAeVe9iQrxzsUZncrZ9ffsHcKMcFQTMD7eYswBXT5
+	T+m8W66b4qUkeEXtrmOUfg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790723567; x=
+	1790809967; bh=5N8h4cDDPZVbZ0cY4qvCL0csuOeAgz31V+uoawEdTzI=; b=W
+	jQ2m/k+JOr+GBHpOCjb086bC0PHeerc6wnqXfcH6MgA28lc63LRNwotxFKr39nh1
+	Y1Fa84v3kg7yNqlo3Tibz1bV4BPv2xilOB7uABoByVfI3cKgSGNxF9NKg+BPMcci
+	d6KNIQXxHFLtkDJfiGbLkfJx2BXLSqcIXRKa3Z9+Pll1JUdI6fL+RNHUk/tVk+Ub
+	HPDu39QKHLuVmNmZe//W2mPfCC0dXr0YIgQuoLu5lQJ/27KvQmNTSt+gJ0DQpBT6
+	mo6Hq2Itx2PTVAgYubv9yVYCS7OnAk+hulMuMK7dGSDycNTcTmQ2Mh7fdd2bwPSN
+	vnbZAwm9ws+zgW/t/0G/g==
+X-ME-Sender: <xms:70W8apYOhkXJBezxoQD7-XKKApbmNBro9gpH0ektkQ09twrF5kn8lg>
+    <xme:70W8amZxeWoNLolNnwupbdiEncRXjrN0PWTMe_FlyuHMaqIigcweR24_TdQcjxQJJ
+    cIki7lInl7maZAmI26jTGynNplA14ll9zNhL5rMLvxC_0NI9fr8jCk>
+X-ME-Received: <xmr:70W8amxVXwNH7tnpI3Fywv4Isw2ofxiW1gWOYO5c4QgRYNJSDyG5kt_jH4fm6w>
+X-ME-Proxy-Cause: dmFkZTGzkRVwE7IVkz7bX/VwLuT+4AbufLz94UjH4E0LDN3MKrom4+IChXgf+oHYLo0Ur4
+    dlevciSILgkCgvVzC0Y2VaN/E+vuQG69hPuFUyKi04WZdzhd76RboE6vWPmHthYEXxKNkG
+    5i/nSO82SPN3EQvxlcFZbHOJVtpvQmqtCodFq8B7sOdQGmKEOxICdt1JnarA2otuDbTxOS
+    PZZERuSmBKZGMgesXxEiKa45q+y4idVmAymZ+JVuQY261e2UsG+ekqbZSKsMtc6w8Hwvlq
+    VmA6Arunx2zuM+IZeAoR7mrwxgGTBJXNul+PXG9JCj2XZqNp9kvfiA1sYWEFTL9+ksKASL
+    qzKJwwemRAMQg8uQ3vYD2A8k9E53bYKqPn/4ErnDV2mZlbxVkpB2dL+KXd7UBKL27gKm0T
+    cfp/p4g5i3p3BVidBv+kTv58k4jdmy4YALIlRgzj6wDsLi4Oht4cy5fpkaXUpoRdlDwL04
+    2OuX422sR7yi12b4KXYgaQJ+L3t5KrhVajoi4ofhXzWmVq1APG4U4f3UaEd2ERGVD80QD0
+    TC53u+9eJf0O/8t4bnCl1NYaVxsNF3WgDPrF08qYwL4Q31sChn0Y8bOJ3MTR/K0f4/1OhA
+    E0OLkyoHUsG2YQQaXlteVYdFovLSVyxYgM14+z5oTFmtuavMiYBJx6b67utg
+X-ME-Proxy: <xmx:70W8aqd3WEAFS3CRLad4RrmZMcGJsaRV_3UY4M6tWeyudSvL4_8p4w>
+    <xmx:70W8aj6-mYqMA_tX9XUSYK84VZgly9uKc9lWDw9qau5DL4NcEibNcQ>
+    <xmx:70W8anI6AqwONJ0_uxh8h3PJyGp-guQzORBSiIEOu4TuSanDTLnt6g>
+    <xmx:70W8ajyS2_EKXxdBdrVf6y2TlCDBNZjqCft4gaYkZ1nHspAYDlW5dw>
+    <xmx:70W8aqp1z77twTCNsKk8uT76DfPXOs4AKddvkmf2afCtF9a2lGg_sfZy>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 29 Sep 2026 19:12:46 -0400 (EDT)
+Date: Tue, 29 Sep 2026 17:12:44 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: lirongqing <lirongqing@baidu.com>
+Cc: Matt Evans <mattev@meta.com>, Kevin Tian <kevin.tian@intel.com>, Kees
+ Cook <kees@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Ramesh Thomas
+ <ramesh.thomas@intel.com>, <kvm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, alex@shazbot.org
+Subject: Re: [PATCH] vfio/pci: Restore 8-byte ioeventfd support
+Message-ID: <20260929171244.172f0b3d@shazbot.org>
+In-Reply-To: <20260922040013.2188-1-lirongqing@baidu.com>
+References: <20260922040013.2188-1-lirongqing@baidu.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [Medium] arm_rmm: SRO cancellation discards partial progress limit leadin=
-g to memory corruption
-- [Medium] arm_rmm: integer overflow in granule clamp bypasses RMM protecti=
-on
-- [Medium] arm_rmm: missing validation of block_size_fld leads to division =
-by zero
---
+On Tue, 22 Sep 2026 12:00:13 +0800
+lirongqing <lirongqing@baidu.com> wrote:
 
-commit 44837285c82689401d14180cb932077aa7982b67
-Author: Steven Price <steven.price@arm.com>
+> From: Li RongQing <lirongqing@baidu.com>
+> 
+> Commit b44a06bd28f2 ("vfio/pci: Remove #ifdef iowrite64 and #ifdef
+> ioread64") inadvertently converted a conditional 8-byte rejection
+> into an unconditional one.
+> 
+> Originally, 'count == 8' was rejected only if iowrite64 was undefined
+> (#ifndef iowrite64). When iowrite64 became globally available via generic
+> fallbacks, this rejection became dead code, allowing 8-byte ioeventfds.
+> However, b44a06bd28f2 removed the #ifndef wrappers but left the nested
+> 'if (count == 8) return -EINVAL;' intact, breaking all 8-byte
+> registrations.
+> 
+> Drop the unconditional check to restore 8-byte ioeventfd support,
+> matching the original intent.
+> 
+> Fixes: b44a06bd28f2 ("vfio/pci: Remove #ifdef iowrite64 and #ifdef ioread64")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Li RongQing <lirongqing@baidu.com>
+> ---
+>  drivers/vfio/pci/vfio_pci_rdwr.c | 3 ---
+>  1 file changed, 3 deletions(-)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
+> index 7f14dd4..df88480 100644
+> --- a/drivers/vfio/pci/vfio_pci_rdwr.c
+> +++ b/drivers/vfio/pci/vfio_pci_rdwr.c
+> @@ -423,9 +423,6 @@ int vfio_pci_ioeventfd(struct vfio_pci_core_device *vdev, loff_t offset,
+>  	      pos >= vdev->msix_offset + vdev->msix_size))
+>  		return -EINVAL;
+>  
+> -	if (count == 8)
+> -		return -EINVAL;
+> -
+>  	io = vfio_pci_core_get_iomap(vdev, bar);
+>  	if (IS_ERR(io))
+>  		return PTR_ERR(io);
 
-firmware: arm_rmm: Add support for SRO
+Applied to vfio next branch for v7.4.  Thanks!
 
-This commit introduces support for Stateful RMI Operations (SRO), allowing =
-RMI
-commands to return incomplete and be resumed. It adds SRO state tracking,
-memory donation and reclaim handling, and wrappers for SRO commands.
-
-> --- a/drivers/firmware/arm_rmm/rmi.c
-> +++ b/drivers/firmware/arm_rmm/rmi.c
-> @@ -14,6 +15,687 @@
-> +static long rmi_granule_range_delegate(unsigned long base,
-> +				       unsigned long top,
-> +				       unsigned long *out_top)
-> +{
-> +	struct arm_smccc_1_2_regs regs =3D {
-> +		SMC_RMI_GRANULE_RANGE_DELEGATE, base, top
-> +	};
-> +	long ret =3D rmi_sro_execute(&regs);
-> +
-> +	if (ret =3D=3D RMI_SUCCESS && out_top)
-> +		*out_top =3D regs.a1;
-> +
-> +	return ret;
-> +}
-[ ... ]
-> +static int rmi_sro_donate_contig(struct rmi_sro_state *sro,
-> +				 unsigned long sro_handle,
-> +				 unsigned long donatereq,
-> +				 struct arm_smccc_1_2_regs *out_regs,
-> +				 gfp_t gfp)
-> +{
-[ ... ]
-> +mem_donate:
-> +	rmi_op_mem_donate(sro_handle,
-> +			  virt_to_phys(&sro->addr_list[sro->addr_count]), 1,
-> +			  0, out_regs);
-> +	donated_size =3D out_regs->a1 << PAGE_SHIFT;
-> +
-> +	if (WARN_ON(donated_size > size))
-> +		donated_size =3D size;
-
-[Severity: Medium]
-Is there a risk of an integer overflow here before the bounds check?
-
-If a buggy or compromised RMM returns a maliciously large value for
-out_regs->a1, the left shift by PAGE_SHIFT could overflow the 64-bit
-donated_size variable. This would result in a small value that bypasses
-the WARN_ON() check.
-
-The host kernel might then erroneously believe the RMM consumed fewer
-granules than it actually did, freeing the remaining memory back to the
-allocator while the RMM is actively using it. This could result in memory
-corruption.
-
-[ ... ]
-> +static int rmi_sro_donate_noncontig(struct rmi_sro_state *sro,
-> +				    unsigned long sro_handle,
-> +				    unsigned long donatereq,
-> +				    struct arm_smccc_1_2_regs *out_regs,
-> +				    gfp_t gfp)
-> +{
-> +	unsigned long block_size_fld =3D RMI_DONATE_BLOCK_SIZE(donatereq);
-> +	unsigned long block_size =3D rmi_addr_block_size_to_bytes(block_size_fl=
-d);
-> +	unsigned long count =3D RMI_DONATE_COUNT(donatereq);
-> +	unsigned long state =3D RMI_DONATE_STATE(donatereq);
-> +	unsigned long found =3D 0;
-> +	unsigned long donated_granules;
-> +	unsigned long granules_per_block =3D block_size >> PAGE_SHIFT;
-> +	unsigned long consumed_blocks;
-[ ... ]
-> +	donated_granules =3D out_regs->a1;
-[ ... ]
-> +	consumed_blocks =3D donated_granules / granules_per_block;
-
-[Severity: Medium]
-Could an unvalidated block_size_fld lead to a division by zero panic here?
-
-While count and state are explicitly validated against anomalies,
-block_size_fld from the firmware appears to be blindly trusted. If the
-firmware returns an out-of-bounds value (e.g., 6), the shift amount in
-rmi_addr_block_size_to_bytes() can evaluate modulo 64, yielding a block_size
-smaller than PAGE_SIZE.
-
-This would cause granules_per_block to evaluate to 0, triggering a kernel
-panic when donated_granules is divided by granules_per_block.
-
-[ ... ]
-> +long rmi_sro_execute(struct arm_smccc_1_2_regs *regs)
-> +{
-> +	bool cancelled =3D false;
-> +	unsigned long sro_handle;
-[ ... ]
-> +	if (cancelled)
-> +		return -ECANCELED;
-> +
-> +	return regs->a0;
-> +}
-
-[Severity: Medium]
-When an operation is cancelled, does this unconditionally discard the
-output registers containing the partial progress limit?
-
-If a buggy or compromised RMM returns an unexpected MEMREQ during a non-mem=
-ory
-SRO like SMC_RMI_GRANULE_RANGE_DELEGATE, rmi_sro_execute() issues an
-RMI_OP_CANCEL and unconditionally returns -ECANCELED. This drops the final
-state in the a1 register.
-
-As a result, callers like rmi_granule_range_delegate() fail to capture
-the progress limit. The kernel would then undelegate fewer granules
-than the RMM successfully processed before returning them to the normal
-allocator, which can lead to fatal Granule Protection Faults when the host
-later accesses them.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260929221623.1342=
-076-1-suzuki.poulose@arm.com?part=3D4
+Alex
