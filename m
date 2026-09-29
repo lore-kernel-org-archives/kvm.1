@@ -1,171 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DDD501F25;
-	Tue, 29 Sep 2026 16:25:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CF952CCFB
+	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 16:29:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790699153; cv=none; b=ODB6KguYVSNk6fEQWB/MHeaQuufDktVuq/jY3KrV/i6ZLxV+q8gOnhGSGBMdJ19pwl8ado4Xpdpuz6DeXFT+PWV3M8ngI1GdLTuLoIl5ep9rMyO1DnkkgTLMviWcQ5RK7usdrDknLLBC8g5FGelr3XyaWWMEeXjpYDV02JVVaBI=
+	t=1790699391; cv=none; b=U2gmyy9YPJqbP6Kx0+a0aC9tt7nOb8AixlztlZsd+RyjnGd3ogEZejB+X3lDlFmTiv4tp+i2+iS5ztzl/UUAHz4ANDaEB43rxQZSxSC80D8FrMsGsyWX7bWdyx4hEYMd/s9CCiJuDcgYdwl3xa49jWQcLbh354M05S5eMagafZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790699153; c=relaxed/simple;
-	bh=Kwt7NK9oH5FmK5X09UqbhhtL97/yzBABChsZOu0XnUc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lPUMDY6naJ2xwsVsoO38oKLxRib7rr2YZBEQ4/jbg7c2DzDH5FOMEDd9Uwj3C1c4UGl5s75Iz0G4xxKD8hWXHZtR7Lem70FRO7FoePT0PEb+gmD58xCcC+shoiEKUyMTPcd6ACce4WvZmqhkBQied7zXWO1jCnqwBzYzpaUD8jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T6qOf9cS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790699391; c=relaxed/simple;
+	bh=at9caQSNlDirzi19HDDan4Y2L3uJCRt9I9RlxktvPA0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DUPRPG6AvkRqldKNRk5QqpAWPGd9QTzEcEQBcRjnZbtyyS7T4iloWcrfutKKPsPby3wJtuLhAi49UFbsXVG2kAFZ6++JgKNP2zDb2eiAoQ/ikq0hXfiLLa2GwBiYPGRU5TVspAuH7tOLna6gkveWkca4HWVqzGxq6l9LH1dAO24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TBR5IXRm; arc=none smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T6qOf9cS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1E91F00893;
-	Tue, 29 Sep 2026 16:25:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790699151;
-	bh=FDsvSmIYjY7Wlu5xjH/XblAkB0TRMYrgy/Yq1eEWrDQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=T6qOf9cS1m3QYKzDLkO+yE9M1yE4okzFEsCnW9ZxmdTNTyhgW+WTIbbgMOyFDWbkf
-	 2NomCNw0Q5PN4n2w7oyNxstUvfJ+kOPCpWSYunwu9qyTDcQzJMIAV0pVL1sHrkq/vI
-	 5/SUozIZv4GW9Ql1a+/UZIF41MCXgJ/Y5kX7u2odPS9T2mGMxlDHHwnN/QSNSEHZOn
-	 pXr1mjS+uySi+wr4JF77nWG+Gz7ZjTPgyazZ/IF6J5smCsVt2KFwf0N22lrDQt7Lnu
-	 I3hQ8M9j6SYGtvPqg8rEWfzyDq/uhUdS15j/jXUuShlPDM21udtaRxYfDc/zyzHW3B
-	 U46GpymF6dIJA==
-From: Mark Brown <broonie@kernel.org>
-Date: Tue, 29 Sep 2026 17:16:54 +0100
-Subject: [PATCH v8 3/3] KVM: selftests: arm64: Make set_id_regs bitfield
- validity checks non-fatal
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TBR5IXRm"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccafb751so2119189a91.2
+        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 09:29:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790699389; x=1791304189; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tH7cezq+gJXVplHNKlxZez1fJO97a08MzeloZBiVfiI=;
+        b=TBR5IXRmomUpK6uuo+27sfEnZuB9z+QyyX8PQNBGyA9EofMqSFJ4CzTvYilbflTLXA
+         YDkJQ5KHZezf3pP9kfsLw6h7c+Yd4wXq/ktDQHOc1T+4De2u5ufNhg8qIKOzPNkJ3cYL
+         QXoprhz0+JkE3Tm/YlJQwtsqea+JO6yj4KimQ6qQdPGOb2bI/+/A8eB1+1wxZ13JNTdc
+         vy3XSsNm73eWblGUVQapLKtnO7uSEtCeTkzB6XjFfonUv/o5DzePowvWRO1l+87W1kQ2
+         wRJFgz0Ukunx3Avf8/n517AgyLENjuSLwpUXVnN/2BLmEZL23W+x2Dz3hvZ9t9wGPhev
+         soXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790699389; x=1791304189;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=tH7cezq+gJXVplHNKlxZez1fJO97a08MzeloZBiVfiI=;
+        b=MiBBD8apjtDQiFKbYtjYzx+5u68V4Pxgr+j9YSn5TCzj8zuqmEpL9N3HMg2T948ZtS
+         iRxnps50/40IsBfOWuU2IMpFgiTnVDwtFbPNXIihqMr3JllOE6Q8yHsOWnF9/RCn3rGW
+         PlC/riBftivRVP36wt4X2dsgosEwL3zf1ES1yJBG+wHK6dHTP/KXTAIoxhR09IH+c2CL
+         L3CyAxt+NUf/jnm8vJNtXG6WS2HKp+pLkVPZRsVgR3teTJzCkGeNoKAgk7ioQVsrDSMv
+         edI6nKqKxRiXDt23Eb0iUvsje/guOQEN+EyXcAGKePNHQ4tXt3e+uKP0OCzpTUIEHv2U
+         yvsg==
+X-Gm-Message-State: AFq9FYIqiKz4b5CF/YR08vctClIAHnKBTeZdxjks7QD8DvvSOtruJ5fy
+	kLuBc171gomBpfVgAOJRrsZfln+1pTp9ZMIza8xR6ChF22FRLuK/rmMG
+X-Gm-Gg: AYBFou1l7XefyaH5KGCtUGJu7Ttos36azF3bEYw3i/Lk0GN2csfvfYZ0eM8J+3xt3hm
+	6X+zDkchEAByXIKO9cswarXE4qbdZnvXVthTYffHKFb2hUuEpgFzdR5Q1A6k5l7DUMT7mDbzBv+
+	lcPpMMXj5pSMYAEhQ5og9br5xtrmJp5bgu88xXM+QRC6Gbh45oFcj9DZnRP8NijAoBOOEMPY7Lf
+	WSCuTJi0abGBDEEESxEGKA1NpLAf6bxAHb3TH2UDsjhkRsn12GmroTsAvsIYC3o10xIHWBzojMu
+	hM1r3Y3qelJbpvJMNsWzx/iMeW/q7RMx+XnjpQAiTcLza1HBmMIEbU+cm85Obs6VX62FY16kwSZ
+	DwBAnoN8nJVi45R/b6Ji2Sppp397bocWtKJSKMdLl7Xt1fiBLR1sxJLe0btsdIM791r+oPdqu2v
+	suZEwz8lCrpfFyYth94kCV4A/zUNIkaQ6PuhbWW8Jz7Gfob1SgT5n6k/DNpIcoVoiJcKvdhith4
+	RZ0kJFg+QiKZdBNCRY5ug==
+X-Received: by 2002:a17:90b:2882:b0:3a4:b8fd:5d67 with SMTP id 98e67ed59e1d1-3a4b8fd5e29mr379785a91.50.1790699389050;
+        Tue, 29 Sep 2026 09:29:49 -0700 (PDT)
+Received: from x1c ([2405:9800:b670:b64b:8c3c:36b:3374:1c96])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a497ecef67sm6481678a91.6.2026.09.29.09.29.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 09:29:48 -0700 (PDT)
+From: Tharit Tangkijwanichakul <tharitt97@gmail.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com,
+	shuah@kernel.org
+Cc: kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kernel-mentees@lists.linux.dev,
+	skhan@linuxfoundation.org,
+	me@brighamcampbell.com,
+	jkoolstra@xs4all.nl,
+	Tharit Tangkijwanichakul <tharitt97@gmail.com>
+Subject: [PATCH v2] KVM: selftests: Verify KVM_MSR_EXIT_REASON_INVAL on non-canonical FS_BASE write
+Date: Tue, 29 Sep 2026 23:29:40 +0700
+Message-ID: <20260929162940.14610-1-tharitt97@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260929-kvm-arm64-set-id-regs-aarch64-v8-3-58aabe2c2fac@kernel.org>
-References: <20260929-kvm-arm64-set-id-regs-aarch64-v8-0-58aabe2c2fac@kernel.org>
-In-Reply-To: <20260929-kvm-arm64-set-id-regs-aarch64-v8-0-58aabe2c2fac@kernel.org>
-To: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
- Suzuki K Poulose <suzuki.poulose@arm.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
- Oliver Upton <oupton@kernel.org>
-Cc: Ben Horgan <ben.horgan@arm.com>, linux-arm-kernel@lists.infradead.org, 
- kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Mark Brown <broonie@kernel.org>, "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3917; i=broonie@kernel.org;
- h=from:subject:message-id; bh=Kwt7NK9oH5FmK5X09UqbhhtL97/yzBABChsZOu0XnUc=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqu+aBqXzx00nzUEuB2LfTbrWnbVSZTlb7CkI00
- lr3/p6auLyJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCarvmgQAKCRAk1otyXVSH
- 0FVSB/9oxGazFsvlXdHLhoAUYTxZ7MgTCm6AnNbR8S3Bo1cSBe98pqQklokTY94QfIQnBhqvGWr
- /3mWeQYDvkAfp+T3M+8q4TLwGx32vcdnuoi+erCxlvZJfqBWHejyH+OWgOOj14iY0FgIS0j1pPm
- UFzArso7o4QCiLfjUvGo/lCDIjHttYH5rW8Uo7O4ywvswSROtO6XBg48Kz3qt7eETZntI8fXVwd
- ErW4oQkcClL1DjiS/z8BTIeTacrXw0Ih6jfAuQ+HYDsTl+5KzgS6oVGuXdqxG0UphC5S78HhZqd
- +csfIxak8Vgw5PJltY57mZz9H5ez1FLywLN3q8pUBMPIEzSz
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
 
-Currently when set_id_regs encounters a problem checking validation of
-writes to feature registers it uses an immediately fatal assert to report
-the problem. This is not idiomatic for kselftest, and it is also not great
-for usability. The affected bitfield is not clearly reported and further
-tests do not have their results reported.
+The msr_filter_deny test covers the FILTER and UNKNOWN MSR exit
+reasons, but nothing exercises KVM_MSR_EXIT_REASON_INVAL.
 
-Switch to using standard kselftest result reporting for the asserts we
-do, these are non-fatal asserts so allow the program to continue and the
-test names include the affected field.
+Have the guest write a non-canonical value to FS_BASE and verify
+that the write exits to userspace with KVM_MSR_EXIT_REASON_INVAL along
+with the attempted value.
 
-Reviewed-by: Ben Horgan <ben.horgan@arm.com>
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+FS_BASE writes are passed through to hardware, i.e. a plain WRMSR
+takes #GP directly without exiting, so use forced emulation to route
+the write through KVM.
+
+Signed-off-by: Tharit Tangkijwanichakul <tharitt97@gmail.com>
 ---
- tools/testing/selftests/kvm/arm64/set_id_regs.c | 31 ++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 8 deletions(-)
+v2:
+ - Use a write of non-canonical to FS_BASE value instead of 
+   reserved EFER bit 63 because writing non-canonical can't 
+   become valid without massive architectural changes unlike EFER reserved bit
+   (suggested by Sean).
+Tested on Intel Core i5-10210U (VMX). Not tested on AMD.
+---
+ .../kvm/x86/userspace_msr_exit_test.c         | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/kvm/arm64/set_id_regs.c b/tools/testing/selftests/kvm/arm64/set_id_regs.c
-index 3aa8886e8b70..43dd9506036c 100644
---- a/tools/testing/selftests/kvm/arm64/set_id_regs.c
-+++ b/tools/testing/selftests/kvm/arm64/set_id_regs.c
-@@ -422,6 +422,7 @@ static u64 test_reg_set_success(struct kvm_vcpu *vcpu, u64 reg,
- 	u8 shift = ftr_bits->shift;
- 	u64 mask = ftr_bits->mask;
- 	u64 val, new_val, ftr;
-+	bool match;
- 
- 	val = vcpu_get_reg(vcpu, reg);
- 	ftr = (val & mask) >> shift;
-@@ -434,7 +435,10 @@ static u64 test_reg_set_success(struct kvm_vcpu *vcpu, u64 reg,
- 
- 	vcpu_set_reg(vcpu, reg, val);
- 	new_val = vcpu_get_reg(vcpu, reg);
--	TEST_ASSERT_EQ(new_val, val);
-+	match = new_val == val;
-+	if (!match)
-+		ksft_print_msg("%lx != %lx\n", new_val, val);
-+	ksft_test_result(match, "%s valid write succeeded\n", ftr_bits->name);
- 
- 	return new_val;
- }
-@@ -446,6 +450,7 @@ static void test_reg_set_fail(struct kvm_vcpu *vcpu, u64 reg,
- 	u64 mask = ftr_bits->mask;
- 	u64 val, old_val, ftr;
- 	int r;
-+	bool match;
- 
- 	val = vcpu_get_reg(vcpu, reg);
- 	ftr = (val & mask) >> shift;
-@@ -458,11 +463,19 @@ static void test_reg_set_fail(struct kvm_vcpu *vcpu, u64 reg,
- 	val |= ftr;
- 
- 	r = __vcpu_set_reg(vcpu, reg, val);
--	TEST_ASSERT(r < 0 && errno == EINVAL,
--		    "Unexpected KVM_SET_ONE_REG error: r=%d, errno=%d", r, errno);
-+	if (r >= 0 || errno != EINVAL) {
-+		ksft_print_msg("Unexpected KVM_SET_ONE_REG error: r=%d, errno=%d (%s)\n",
-+			       r, errno, strerror(errno));
-+		ksft_test_result_fail("%s invalid write rejected\n",
-+				      ftr_bits->name);
-+		return;
-+	}
- 
- 	val = vcpu_get_reg(vcpu, reg);
--	TEST_ASSERT_EQ(val, old_val);
-+	match = val == old_val;
-+	if (!match)
-+		ksft_print_msg("%lx != %lx\n", val, old_val);
-+	ksft_test_result(match, "%s invalid write rejected\n", ftr_bits->name);
+diff --git a/tools/testing/selftests/kvm/x86/userspace_msr_exit_test.c b/tools/testing/selftests/kvm/x86/userspace_msr_exit_test.c
+index 2808ce727e5f..40b084cba2c0 100644
+--- a/tools/testing/selftests/kvm/x86/userspace_msr_exit_test.c
++++ b/tools/testing/selftests/kvm/x86/userspace_msr_exit_test.c
+@@ -309,6 +309,14 @@ static void guest_msr_calls(bool trapped)
+ 	/* Invalid MSR, should always be handled by user space exit */
+ 	GUEST_ASSERT(rdmsr(0xdeadbeef) == 0xdeadbeef);
+ 	wrmsr(0xdeadbeef, 0x1234);
++
++	/*
++	 * Writing a non-canonical value to FS_BASE is rejected by KVM, but
++	 * FS_BASE writes are passed through to hardware, so force emulation
++	 * to route the write through KVM and get an INVAL exit.
++	 */
++	if (is_forced_emulation_enabled)
++		test_em_wrmsr(MSR_FS_BASE, NONCANONICAL);
  }
  
- static u64 test_reg_vals[KVM_ARM_FEATURE_ID_RANGE_SIZE];
-@@ -502,7 +515,11 @@ static void test_vm_ftr_id_regs(struct kvm_vcpu *vcpu, bool aarch64_only)
- 		for (int j = 0;  ftr_bits[j].type != FTR_END; j++) {
- 			/* Skip aarch32 reg on aarch64 only system, since they are RAZ/WI. */
- 			if (aarch64_only && sys_reg_CRm(reg_id) < 4) {
--				ksft_test_result_skip("%s on AARCH64 only system\n",
-+				ksft_print_msg("%s on AARCH64 only system\n",
-+					       ftr_bits[j].name);
-+				ksft_test_result_skip("%s invalid write rejected\n",
-+						      ftr_bits[j].name);
-+				ksft_test_result_skip("%s valid write succeeded\n",
- 						      ftr_bits[j].name);
- 				continue;
- 			}
-@@ -514,8 +531,6 @@ static void test_vm_ftr_id_regs(struct kvm_vcpu *vcpu, bool aarch64_only)
- 
- 			test_reg_vals[idx] = test_reg_set_success(vcpu, reg,
- 								  &ftr_bits[j]);
--
--			ksft_test_result_pass("%s\n", ftr_bits[j].name);
- 		}
+ static void guest_code_filter_deny(void)
+@@ -627,6 +635,13 @@ static void handle_wrmsr(struct kvm_run *run)
+ 		TEST_ASSERT(run->msr.reason == KVM_MSR_EXIT_REASON_UNKNOWN,
+ 			    "deadbeef trap w/o inval fault");
  	}
++
++	if (run->msr.index == MSR_FS_BASE) {
++		TEST_ASSERT(run->msr.data == NONCANONICAL,
++			    "MSR_FS_BASE data is not NONCANONICAL");
++		TEST_ASSERT(run->msr.reason == KVM_MSR_EXIT_REASON_INVAL,
++			    "MSR_FS_BASE trap w/o inval fault");
++	}
  }
-@@ -882,7 +897,7 @@ int main(void)
- 		ID_REG_RESET_UNCHANGED_TEST;
- 	for (i = 0; i < ARRAY_SIZE(test_regs); i++)
- 		for (j = 0; test_regs[i].ftr_bits[j].type != FTR_END; j++)
--			test_cnt++;
-+			test_cnt += 2;
  
- 	ksft_set_plan(test_cnt);
+ KVM_ONE_VCPU_TEST(user_msr, msr_filter_deny, guest_code_filter_deny)
+@@ -667,7 +682,9 @@ KVM_ONE_VCPU_TEST(user_msr, msr_filter_deny, guest_code_filter_deny)
  
-
+ done:
+ 	TEST_ASSERT(msr_reads == 4, "Handled 4 rdmsr in user space");
+-	TEST_ASSERT(msr_writes == 3, "Handled 3 wrmsr in user space");
++	TEST_ASSERT(msr_writes == (is_forced_emulation_enabled ? 5 : 3),
++		    "Handled %u wrmsr in user space, expected %u",
++		    msr_writes, is_forced_emulation_enabled ? 5 : 3);
+ }
+ 
+ KVM_ONE_VCPU_TEST(user_msr, msr_permission_bitmap, guest_code_permission_bitmap)
 -- 
-2.47.3
+2.53.0
 
