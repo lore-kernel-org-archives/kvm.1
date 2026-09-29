@@ -1,283 +1,233 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010053.outbound.protection.outlook.com [52.101.201.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55C138F250
-	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 18:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15DF457E4E;
+	Tue, 29 Sep 2026 19:10:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790705630; cv=pass; b=cDFgw775siPBSFbEyRRI+FkBpkPPTBxN6Ipmu35kpYubXVU6YYnci85MYqDpYFf0SAn/rmKdDruf6pJjPdMjFa0uGlrye1nruxTQdtEDTDNnyOdqUnjE25R7T6aledTknlyZ+XlBgpPVYnFvIUU21FKzHvMfGZJRm9i6yvBi1zc=
+	t=1790709047; cv=fail; b=j+BXfDHJlaiTSgBNytfkw0vhKBn0pyfa4hh0xmMhuzsDRdXmCcrDFRoh7yvU+HTPkTBoyFolCYIfDtc2aJe7RonkNaOiyHECnkIFGtZP6kwSJPY4bLqQ7JIAmwxjxmVqf68Id4APydy20LlaNxU8bTdxb4R5AeH91Hvwo8YoPGg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790705630; c=relaxed/simple;
-	bh=og+/cfUijpSZAoHGwYfistXQZPsm/+cWrVsHh/GMNL8=;
-	h=From:MIME-Version:Date:Message-ID:Subject:To:Cc:Content-Type; b=s/E4SIYJxLVerVMPWvnFYpWhdRu2sK6pGt/YV1WlfCg2VoYYfLUMYab5grzE7VVMHnwYROYeumy/FHC8PAZpO5nAloDFXZgt5Gj8/v3JnFkWcUSwuOByCYAIm+BUUM86TVArRGj+BGBmhR9cCGZ6FBi7Zy3iThne0oJ0OkcmwMk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=YNnZrxnU; arc=pass smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1790709047; c=relaxed/simple;
+	bh=t36GaFK473LCDnekCC3CYqVgvCYlnlWgeYpWvTj2qrU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=tauOQD+AuJ9Kez/MUXeh3dngdmDhTW+Kbt2QPSxAGnbG159QhgkITJoPW9B6obekY+6Mfo9tUUYBziCIlKyFsOu3K9Yt2yG0oNIe5H8ApLuqtHeGApXwucoQRJnRSXgIDknhwnO8SKOoQVyxElAgvg0zktRUb6zgbMsZ+9fAoTA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LXqEmSgj; arc=fail smtp.client-ip=52.101.201.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="YNnZrxnU"
-Received: from pps.filterd (m0528009.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68TI29Bb3137626
-	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 11:13:48 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-type:date:from:message-id:mime-version:subject:to; s=
-	pps82601-s2048-2026-q3; bh=cw5TddyzbNZYYT3wG/ekZg/7fsNBMWBQMQhmn
-	ududVw=; b=YNnZrxnUJ6kXB20J5tGEVguRDlj/S9cfF1071HlZenCTjuckJILVR
-	LO4xsMEomnI41+vpYxO/y2TiD8d9nCs79fGQ6/dxq0PJ5xObiMPfT8BgZOnI+UDI
-	NcHeaF9Lqv2C5okAqKvvm6gArN+nYgic5bFlS2t2tPEcFqALpfhaJr+9G9jE1el6
-	bwpY1ymVpRus58kif9C2cg91p6SpXbqgRefp2lrtU1bEBjaEc30IWYZX4qPWsxcE
-	BjfkfYkZx7QqJwXFO+zc+BV29kEQKdZpzEVGMFXGwEdGCRxHRUMStAr5OBrBYMu/
-	cTyqsjRasz700SPyk3H+MqFAMMXb3EsPA==
-Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com [209.85.160.70])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4gyva1uu6u-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 11:13:44 -0700 (PDT)
-Received: by mail-oa1-f70.google.com with SMTP id 586e51a60fabf-467c2c754f8so4061242fac.3
-        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 11:13:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790705555; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Q1dd4k0OS0bWoAYAk7eHLlK6/H0Pzn6eDlbOUi+f0oF4BxLnftErtnEndchx/hOSNT
-         3guMl14STJ30epMs1szqQuHjHaBjlLmZLZi0CrmAhc+5dxZn+DBDSZ/5zjc2LNP/L+b7
-         /fnRk7T8f55DauviR/gAAEcylwxs3Adoy4tOtN9wPzDdTgnjGfd+2fIKgdf++OBzvNHQ
-         RO13NGlcsBtzL0JyrJS8G5b9NhWi3yXfGniXupzBxcGr9qD+S3OcfGPjZVKLoz/fIFCN
-         tKkBRBiuhxOv1/0YOd/RJ+twI+RU5RKYnzzl5WOTNuvv8zImn2tYeNGGM266wEleddFt
-         GG0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:from;
-        bh=cw5TddyzbNZYYT3wG/ekZg/7fsNBMWBQMQhmnududVw=;
-        fh=611hLUfWRyUR1LdGQTjjT/wiZVDZZGTn+coX43FHaRM=;
-        b=KBBj0OnpZfbG3+dXT56wYx0oVhtYE/piSz4Z6hueryeJ5R0a+HvGTEbBv9UXD/KbhT
-         Ukjs7c8gh6DtKr8MviV+qyQFAEKtyqGDqketAcxg2Cy+NgrlhP/0R9m0C2HIN7PBTC42
-         3jnS89BGH7jVl8Wnm5DHqcxFsO7x8ikLVlwxJVTiitMG7g55hIeOpE680rWkPBG8mtZ9
-         23QTsS56gucLI9vGlU431+8FiKKoocPF1VGWxl2796jUaavozWruyHqDhOOxbWujMnDn
-         5jwSPX+NIdi/q3VcKaLkaxcWidbQ/IgVpYts2xM9E07TA859LoquF58n+2Rz+s/p+x/0
-         lxZg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790705555; x=1791310355;
-        h=content-type:cc:to:subject:message-id:date:mime-version:from
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=cw5TddyzbNZYYT3wG/ekZg/7fsNBMWBQMQhmnududVw=;
-        b=aCZMF2oB/mjfeDDqhYaJVKGLzHUFEBWd7/S9U5i6YVM+9WXZJBj4RVLmTkZg9/0QhR
-         1o61gOujTs0EVaSkTnkszkY5UnkyO8VvXp7lAmORMHkZVaFVQbqziM/wk3sPatTYM4kG
-         1lPXVo5xa2LAONaxZRVp1T7EfmXinjR3Lt9zZU0ehMYg+/hcDZSQ0JAK18W/YjeOavX3
-         Cvkz44S+Jmn1LvVfbK9Vda/j2W2mYHXWZBzyJeInq77xR2cC3cndwiIHWWTU7Y9EO86e
-         WJJdxvQuNB76VnBAdr+tAEISS7URaX9rpCyQHkS38eOhtRF2GhnnU5Xz+Kk6qNFHQOxH
-         bJ8w==
-X-Forwarded-Encrypted: i=1; AKwUvBwnySM+Asjfm/aNq6r2UsnwEgG3N2XUiUM3WTUyqNexM+bFVMmA/dunbvzJzcMd8E5vMYI=@vger.kernel.org
-X-Gm-Message-State: AFuF++kM2cRp1VHISNL7GbbsW6ZPYtvC1XN8r6uK241/h/DUMeGuzsQQ
-	AbtT1f/XiquR/zeYO/PBOrgu6AD7iWPvQOQzHfAzHh3gVC7yAvNUHZS6o7YQsPXYiOwVCXeBztY
-	BMhiHppMFYxdNDVJEeBknNfFIAPTpb0BcDdWqWvVYwyzhy3lhwV/CcKHajmCo0/TlMmZBTL/WdW
-	lh70308RsqPiUZlZdTLhicl/iJsg==
-X-Gm-Gg: AYBFou2QZuaPmxtTZFQc1qD7FuLtOATzEjqbc5EY63GL7bicghCbG4+KI1NezFho1wm
-	XlgBoyeZp4ztcSYQ9vgyvzL3Gw+2j0P4XqAzjSNHXCALs/SYgt5/FQAsEligd8W3HDk4/zjvj3M
-	E9ZFT7NPMxilZelqR2b3nIp60p26CQJGtFsYvvCTy5pA1zxHQMJUgB1Ik3Dzwr3G0=
-X-Received: by 2002:a05:6870:de16:b0:47c:eb7:eb43 with SMTP id 586e51a60fabf-49dd0d5502bmr75728fac.17.1790705554524;
-        Tue, 29 Sep 2026 11:12:34 -0700 (PDT)
-X-Received: by 2002:a05:6870:de16:b0:47c:eb7:eb43 with SMTP id
- 586e51a60fabf-49dd0d5502bmr75704fac.17.1790705553985; Tue, 29 Sep 2026
- 11:12:33 -0700 (PDT)
-Received: from 556666599688 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 29 Sep 2026 11:12:32 -0700
-Received: from 556666599688 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 29 Sep 2026 14:11:23 -0400
-From: EJ Campbell <ejc3@meta.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LXqEmSgj"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tJTUdxTeOOUb4AQuxQztIy5tJu1MsvYJ6FfoFsudSj4I03mBlO2ckchLyQkCT0ECS+HEnnkiOcVJz6uMn0iQ7sW3D1Ig+AmfKfh3RYgx9cvdB9zC8HQBAdqF8c7leK+k/IrI4yUOPBiJGu6P8QLhRtXkpfXqCerpL7gv76hnnKCiXXLJbUNd5PkaD6VY6EGOEUBxuGe3U9+A8jyXBqiX5Fv6ZKpcmh42xku2V2CuLsTCpraxdClpNTbKZn7pT2SyqGqdzgbaVgu7O6ZNYOnQnibD6s4AWKzWKh3Z7ohOzAnGEErKdfE6K2q6bR+Oi9fBw/KKw6JdDXXJoL1ezfwXgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zI8Lv26UzNIVqgveJdbNAIcXue0En+gsq2cV4G46D54=;
+ b=GDNs6Akcmqh65qaSzfDMDuBotGdDrAjpiG2/32mWHLUPuOjigiGPTUDSBJy0yQfQ1j5vfLoQNL9DK9TGkGwRoxu8dCjjH+5qE+T28JMVbU9Hh2bJV8fhWBknoPqITGzEG6lp+b9UEZgCVZ/I+8ROlUGpUx/zRIW8gY4eVm4R/UDUpoppA88VMumtuiGMb8xIv6ekOuo138SnWTBzI0hXIB6OcZkZJekKeAkYY0hamfB4ZT4yyMlPd4tkac6pd7kycNfuRpvMZY5RAHQZ0+wrjVuTV2FbFqmuZ+BPo6hYesa+yjPcR01nuqODCWD/+AGGQR0kD1B63/IOYmGm3dfUcQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zI8Lv26UzNIVqgveJdbNAIcXue0En+gsq2cV4G46D54=;
+ b=LXqEmSgjRNxszZFpFnyUu+jsWZYiCGvrC5zwr5J3CpGUsDiHdBH2t1YeemuAEVdao+WHQDcxIQ73E7XE778g+MkzPDH0ib5Wfnq7mwqGkFMbVdUz3epAXJ+EbPh7qPw3soFMBlFMcx3neIkEteZl9EG54P9f4XJ/Xy1DlD2ENZBiQDJws20hikyxDiluiCezEmnHzhBs112fHTEhoKTkj6rtdyCjv9pCrjl4GM/9lQNk/XaZNouea1NXYnleiR3QQcZ/M17e4yXQto1UygBfUFcXMZuzf2V+rlpjrHhIGOPKIBu/3FhWuMoIHlLHeh6JY2JlfYlw3zolvSPbyPKBOA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12) by DM6PR12MB4202.namprd12.prod.outlook.com
+ (2603:10b6:5:219::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
+ 2026 19:10:40 +0000
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0451.024; Tue, 29 Sep 2026
+ 19:10:40 +0000
+Date: Tue, 29 Sep 2026 16:10:38 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: "Tian, Kevin" <kevin.tian@intel.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Bjorn Helgaas <helgaas@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [RFC PATCH v6 08/11] iommufd: Add vIOMMU provider support
+Message-ID: <20260929191038.GO1616761@nvidia.com>
+References: <20260917140159.1163281-9-aneesh.kumar@kernel.org>
+ <179027891417.104879.5995584402952067518.b4-review@b4>
+ <yq5acxu1kgmo.fsf@kernel.org>
+ <20260925123918.GI9354@nvidia.com>
+ <CO1PR11MB483580AB119687B7EC2DD8518C8D2@CO1PR11MB4835.namprd11.prod.outlook.com>
+ <yq5atsn8posb.fsf@kernel.org>
+ <20260929121723.GI1616761@nvidia.com>
+ <yq5aqzicp6oc.fsf@kernel.org>
+ <20260929130643.GL1616761@nvidia.com>
+ <yq5ald8koxqa.fsf@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5ald8koxqa.fsf@kernel.org>
+X-ClientProxiedBy: SJ0PR05CA0199.namprd05.prod.outlook.com
+ (2603:10b6:a03:330::24) To CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 29 Sep 2026 11:12:32 -0700
-X-Gm-Features: AclHuK-0menqV2wPSclxNCnIU0qeGt1qcoIMc1LHzGBaM5EOtYHxSFhk2rGHvAE
-Message-ID: <CADkxfh-uQTca_6jB1JPDq1MsKffF_UKGQR339oQSJNcoV75GNQ@mail.gmail.com>
-Subject: [PATCH] x86/kvm: Don't consume async #PF flags on a kernel #PF in NMI context
-To: Paolo Bonzini <pbonzini@redhat.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>
-Cc: Sean Christopherson <seanjc@google.com>, Andy Lutomirski <luto@kernel.org>,
-        Lai Jiangshan <jiangshanlai@gmail.com>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        EJ Campbell <ejc3@meta.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI5MDA3MiBTYWx0ZWRfXyx3RZVzDsxJI
- T6xZZiY1JU6fOJGt/tHCFxD4Q8ECKmB75kFSU3W7AeEHcTYofZW3vNtucU3zOc3RD9Z0cCOPpQ8
- 6NyRIiH43Z9oDm2fwkm18ijjlZb9dJJfHdiCu9uhtWg6OgRUZBsXXa7dmbSQZvOLzsaIdr0T1Es
- jKFGSomIkVXqRjZ0FOnYAH3CBlTsd/m3dXflHwKpxkQpbuF7hQfjLCay1yH1itND4vdwiORYplA
- nm64RAoa2dEk9+EdwM2xOmkdSMrzvBgVB/U6zC82ZYqdn47OSBLCuCYFFPOcf3LsQDQqL5PljnD
- pKh9ukOd3yqk2KpuGffwa0AUXARBaP0DvfliWLYFcncWpUnjNSAWaIKSN7xeP310sEUlFykggvX
- XfHFwmP7PZ7WZCyxygM9HbejieLi2ugQsx5HotjTaW//DIF3KEPqmUCbJzErjas3q7Qmk3H7Lu0
- s6H5uXE5NKJlirNwLMw==
-X-Proofpoint-ORIG-GUID: n1APRL8xIAjRzgdnKsmQuDv593n1BdBJ
-X-Proofpoint-GUID: n1APRL8xIAjRzgdnKsmQuDv593n1BdBJ
-X-Authority-Analysis: v=2.4 cv=eJSGH3p1 c=1 sm=1 tr=0 ts=6abbffda cx=c_pps
- a=nSjmGuzVYOmhOUYzIAhsAg==:117 a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10
- a=-jRnnWX_dE0A:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=U_y8lYiYyhHBU5rMqhb2:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=a9TSg2_WAAAA:20
- a=VabnemYjAAAA:8 a=HhdKVQOAWFZzIEBA3B8A:9 a=QEXdDO2ut3YA:10
- a=1zu1i0D7hVQfj8NKfPKu:22 a=gKebqoRLp9LExxC7YDUY:22 a=bn7x_FpfJtc3yKQXRW3z:22
- a=bA3UWDv6hWIuX7UZL3qL:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI5MDA3MiBTYWx0ZWRfX7F4ePS0+T3G0
- 6qEy5Us74BEBzka6gioBdPgBf2ZBJjlFLsic7EAXWUR1KJG3nhWL6LRoLpCA7yN6F7tfN5YJDiu
- wYob0pPkdHMRBbw3NfUbHA/uoCIpyoA=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-29_04,2026-09-21_02,2025-10-01_01
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|DM6PR12MB4202:EE_
+X-MS-Office365-Filtering-Correlation-Id: b1f8b82c-36b7-4716-8767-08df1e5d5a2c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|4143699003|10067099003|56012099006|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	DhI6fTvSC8XorMw45+rnZQYJGihbp6hQOJZ5Zrkgx4dtM4j2VcmPHK8So52kbaWpD0YR0hpTy7aDX/2HRwpVczphUGIB0rhit2J+RP5NZ55nyYB2sfkhLYNe829UshIgM5ThN88Sgr0UhXL4olkfTaNnjTrJIJ8979l5FECRqM7eWsAUHW+U8t+60dg0Qguspn2nicZctkCI7MiYePArogo30YZilu99f+UISoqC1/BYblCyXmlnyZokL9FjOQ3XbmH/8Tk+3ynZev8OWC2fdDvTEW4nYmp0rNb2zlrVlW87s/G+OCFK5idKOO4WMKUcTwWPNX22088W3UcNJBjJtl1LMByGJkSSiZiMk+siyfPW4XekQD//VzYBfDbmxtgadYLK8ABsXBMsvzVrgBUC1vpzSfxIvXWYFsZ/zFyqzgbErtf/BpHfYS8kH5Z8YSW9adXOwpdOPKvx5c5Jrei+uMie4x4JmHva/HNZRyuY2pqJv4UWZ3NjxdxwvIO10kH3T8/QXHbzskl+9ZjLP/mMR93uCUtyCCI44T6zzdDiG9ec8NZGjVUrkBDJU7ZYS8K1eRIsoX9DSYEWTucGAcKnjZYS6D6JLDbKrM2j68ciN4Cb1cLX6Ql7o/tmXbKeuIeV5bWzOuZTYv2yQTPxP9PD0zewBz4/3z+t6VmIUBnjNkM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(4143699003)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?I5X2zLxtScITxw7vRjg3Aunp8R5liIjpob2yj1CIVww/C28VLN90sczmEQ0z?=
+ =?us-ascii?Q?wi3u4CPUJdNQSuPn8uOBmZqjHKC83QhfC2oMb5oQl9SLsFP1QJtcIbPKl1ht?=
+ =?us-ascii?Q?N8KHv7iqx/doleqfEGzuZrzpwxQ9apwO0Ni/ywNdwvWVo7BCG6/U4ib8HGQM?=
+ =?us-ascii?Q?rWIFvtrulZvqJ/Sk1coI0t/Y9m1RESo0zxdj17qH6inlUOVlxsbVcySM4hWl?=
+ =?us-ascii?Q?e7+Njybr1XXXcWNtJjMHtteIkbF1B+bwH0ebLcmUMEFJyBY6chdF7Hez1cRo?=
+ =?us-ascii?Q?th2x3Eswnni8+yNvfq/o54RVb+fg/YfX+KkSQzBEYoBXk5fWbek48WSDHDIG?=
+ =?us-ascii?Q?xd8VcK56nagWqORGUkt87u/KMXVygoN2mI5qg56B1wP3aQLnrzv3KQduCCU6?=
+ =?us-ascii?Q?hNj7l+aAJB1jq/uWpRyu9Yml5oYxIvQFGLKEqxT6tcjE90TgkY9dlDt2hPQF?=
+ =?us-ascii?Q?ResQDfWw9VGhslKOALbXP2F6LrUobYihsk1M183akISwCn3qw7Q9N9KEwTUL?=
+ =?us-ascii?Q?lMUfOhunotCd0OY4tqXm+8vKB48U0Latsqq4augvSuQfs+d9ccHLrun2791a?=
+ =?us-ascii?Q?zHiZ8FVOpjoY9YxsOJZULu8SCbWGSGy9gSL7HhMUul8Z40uXfJNrSlhn9tQJ?=
+ =?us-ascii?Q?ks1MeBHeH0nRGi93sM1+cUZnWUSW2gEwOCQxJwST3iKgAR/y+g/O4yhtu1z5?=
+ =?us-ascii?Q?mdz+x3cYWe6Dybr7js7S/SiHf2OQW7eoRhnZyPSq4rUbIcOGB5oisksveJHk?=
+ =?us-ascii?Q?h7G/R7kPl7IcKzsLWi6NjW9lvE/Jo+1KGeu4xzL1Mc8gpciS4NWCtr/Xk7dA?=
+ =?us-ascii?Q?o3lH0AGr313/YYYm/CjqC0IdJkRtKuo/UohntaAxULrogb+V3YYzc9OEwubD?=
+ =?us-ascii?Q?FeLHsrHWVF7FDXN1aE/D9YudKREKAo2Qec6CZ6FtfOsZyVBM+niJn/k7uYZH?=
+ =?us-ascii?Q?1lQikcXVh0sImW5rKLKaYm87juOT2w+5Zf4ou0E4ysNQJWQfqc0/v3sz0IhL?=
+ =?us-ascii?Q?FuBbOqOSswWV3/mSnltDRPzF7oQLH9agDPIaXj+4zHBV9PXPK7FE65rFHyei?=
+ =?us-ascii?Q?kwrC47oybhwuWH+gI8d60r/2DUJw9Ye4bmB94/ncedcdWtCmFIdUU9eRdsH5?=
+ =?us-ascii?Q?kVZW5jAF7D4heyHLWzCVo65IWy2Q7z1VvD8T8+8C/sDfJFip/tv4tCszJyt1?=
+ =?us-ascii?Q?gGQUjf1QaQfA2+LECCl1na4wyAzeceLaIip2CSh+bcJn+m3FAPlAHUiOS54H?=
+ =?us-ascii?Q?YlQlaIsG6IPto3g9iOK5jT2bdOYWjr7QyM0wBnWAqUdRZzy1qEffj0ozF7xb?=
+ =?us-ascii?Q?1gTsWPrROYoxibRM9lbmVC84LnMfdH2TR7a1tIvG5UPMvpbwyCl33WNjiziU?=
+ =?us-ascii?Q?fzIOfUREaEUY7nKt2yoc4POzoM+wAeyO3ddDNpuhWoBp1RnUloFycqrMJ19X?=
+ =?us-ascii?Q?ynDg+HxaueWTvrJMy23NhWHdFEBQNsoBbC1Ek/BExYFh/9mtsmSqEzKA4LH+?=
+ =?us-ascii?Q?Tv5QotAa+ifnFo6itIxRgVu42Fiuf2o1gz7OEBSK9c7kPLJRMahHL6rDdnE2?=
+ =?us-ascii?Q?OG4NJFlsVBMtOvgemrjlqyliACQF8z/uM+Jm1943Qc9u1gNUjrKVdPxIJ6rd?=
+ =?us-ascii?Q?AeYn5QO6vodcmZ3EEeqYLwpqEExgmon9iikwNp9ZyBLBE6XyzkRdhmznudAE?=
+ =?us-ascii?Q?FTTAm3pD7vfGR9mgMPmC+dOco3xl7obAFEU0mZjxGNJOYrZd?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b1f8b82c-36b7-4716-8767-08df1e5d5a2c
+X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 19:10:40.4622
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Lh2inqU4sBzH9o02N6xh4NYIewPflQLRKTSJp/2uaE4/YSUkAWopUdqfOSC7SKlC
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4202
 
-An async #PF "page not present" event arrives through the #PF vector,
-and its reason sits in the per-CPU apf_reason.flags until
-__kvm_handle_async_pf() reads and clears it. If an NMI arrives after
-the event is injected and before the #PF handler reads the flags, and
-the NMI handler itself takes a #PF, that fault reads and clears the
-flags belonging to the #PF it interrupted. It then finds interrupts
-disabled in the NMI context it interrupted, and panics:
+On Tue, Sep 29, 2026 at 09:28:53PM +0530, Aneesh Kumar K.V wrote:
+> Switching pdev->tsm to an RCU-protected pointer requires broader changes
+> to the existing TSM code. To move this series forward, I will continue
+> protecting it with pci_tsm_rwsem in the next revision, as that requires
+> fewer changes. We can revisit an RCU conversion later if needed?
 
-  Kernel panic - not syncing: Host injected async #PF in interrupt
-disabled region
-  Call Trace:
-   <NMI>
-   panic+0x52/0x60
-   __kvm_handle_async_pf+0xb0/0xb0
-   exc_page_fault+0x71/0xb0
-   asm_exc_page_fault+0x27/0x30
-  RIP: 0010:__get_user_nocheck_8+0x6/0x20
-   perf_callchain_user+0x147/0x1a0
-   get_perf_callchain+0x12d/0x1c0
-   ...
-   perf_event_nmi_handler+0x26/0x50
-   exc_nmi+0xe8/0x110
-  RIP: 0010:asm_exc_page_fault+0x0/0x30
-   </NMI>
+Sure, as long as we get the general big picture properties of no hot
+unplug and a very simple lifecycle model
 
-The last RIP line shows the NMI landing on the first instruction of
-the #PF entry. perf with user call chains takes such a fault: the
-sampling NMI walks the user stack with __get_user(), which faults when
-a saved frame pointer is not a valid user address or the walk runs off
-the top of the stack. The same window exists when KVM, running as an
-L1 hypervisor with DELIVERY_AS_PF_VMEXIT, reads the flags itself after
-a #PF VM-exit.
+> With this approach, viommu_alloc() will do:
+> 	struct tsm_dev *tsm_dev = NULL;
+> 
+> 
+> 	tsm_dev = tsm_get_device(idev->dev);
+> 	ops = tsm_dev ? tsm_viommu_get_ops(tsm_dev, idev->dev, cmd->type) : NULL;
+> 	if (!ops) {
+>                 tsm_dev = NULL;
+> 		ops = iommu_dev->ops->get_viommu_ops(idev->dev, cmd->type);
+>         }
+> 
+> 	viommu = (struct iommufd_viommu *)_iommufd_object_alloc_ucmd(
+> 	viommu->tsm_dev = tsm_dev;
+> 	tsm_dev = NULL;
+> 
+> 	rc = ops->viommu_init(viommu, idev->dev,....)
+> 
+> ....
+> 	if (tsm_dev)
+> 		tsm_put_device(tsm_dev);
 
-The NMI entry code saves and restores CR2 for this nesting, but not the
-async #PF reason. Andy Lutomirski described the race, with perf as the
-example, when async #PF delivery was reworked in 2020 [1]. Saving and
-clearing the flags across the NMI, next to CR2, was discussed there but
-not merged.
+This probably shouldn't be here? The way iommufd usually works is
+these undos are alway here:
 
-Since that rework the guest does not set KVM_ASYNC_PF_SEND_ALWAYS, so
-the host delivers "page not present" only to user mode. Read the flags
-only for a fault from user mode. A kernel-mode fault in NMI context
-(in_nmi() is also true in kernel-mode #MC and #DB) returns without
-touching the flags, and the interrupted handler finds them intact. This
-leaves the NMI entry path unchanged. A kernel-mode fault outside NMI
-context only checks whether a reason is pending, and keeps the "Host
-injected async #PF in kernel mode" panic for a host that delivers one.
-An earlier posting [2] also skipped the flags for kernel-mode faults,
-for a different reason, and removed that panic.
+> void iommufd_viommu_destroy(struct iommufd_object *obj)
+> {
+> ..
+> 	if (viommu->tsm_dev)
+> 		tsm_put_device(viommu->tsm_dev);
+> ...
+> }
 
-Tested on v7.3-rc5 in a 4-vCPU, 2 GiB guest restored from a snapshot
-whose memory is served on demand through userfaultfd, so that reading
-it back takes async #PFs, while every thread samples hardware cycles
-with user call chains and points its frame pointer at an unmapped page.
-Without this patch the guest panicked as above in 3 of 3 runs. With it,
-the guest survived 3 of 3 runs of 60 seconds, and the host counted
-148,441 to 153,334 kvm_async_pf_not_present events in the first 20
-seconds of each. On 6.18.50 the results were the same: the guest
-panicked without the patch and survived with it.
 
-Link: https://lore.kernel.org/all/ed71d0967113a35f670a9625a058b8e6e0b2f104.1583547991.git.luto@kernel.org/
-[1]
-Link: https://lore.kernel.org/all/20211126123145.2772-1-jiangshanlai@gmail.com/
-[2]
-Cc: stable@vger.kernel.org # v5.9+
-Signed-off-by: EJ Campbell <ejc3@meta.com>
----
-Notes:
+> struct tsm_dev *pci_tsm_get_device(struct pci_dev *pdev)
+> {
+> 	const struct pci_tsm_ops *ops;
+> 	struct tsm_dev *tsm_dev;
+> 
+> 	guard(rwsem_read)(&pci_tsm_rwsem);
+> 	if (!pdev->tsm)
+> 		return NULL;
+> 
+> 	tsm_dev = pdev->tsm->tsm_dev;
+> 
+> 	ops = tsm_dev->pci_ops;
+> 	if (!try_module_get(ops->owner)) // arm-cca-host
+> 		return ERR_PTR(-ENODEV);
+> 	if (!tsm_try_get(tsm_dev)) {
 
-- The reproducer is a small C program run in a guest restored by fcvm,
-  a Firecracker-based VM manager:
-  https://github.com/ejc3/fcvm/blob/9c7519f861273e8be954f9d006bc4d6654669f15/tests/data/async_pf_nmi.c
-  It fills memory, the guest is snapshotted, and the restored guest reads
-  the memory back while it samples with call chains.
+What/why is this tsm_try_get()? I wouldn't expect to see both
+try_module_get() and tsm_try_get()?
 
-- For a kernel-mode fault outside NMI context with a reason pending,
-  which requires a host that ignores KVM_ASYNC_PF_SEND_ALWAYS being
-  clear, two messages change: with IF=0 the guest now panics with "Host
-  injected async #PF in kernel mode" rather than "... in interrupt
-  disabled region", and a reason other than PAGE_NOT_PRESENT panics
-  instead of hitting the WARN_ONCE. The guest requires ASYNC_PF_INT, so
-  PAGE_NOT_PRESENT is the only reason a conforming host writes.
+> Are you suggesting setting suppress_bind_attrs = true for the
+> arm-cca-host driver?
 
-- No Fixes: tag. The race predates ef68017eb570 ("x86/kvm: Handle async
-  page faults directly through do_page_fault()"), which created
-  __kvm_handle_async_pf(). The fix relies on the host not delivering
-  "page not present" to kernel mode (since v5.8) and on "page ready"
-  arriving by interrupt rather than #PF (since v5.9), hence v5.9+.
----
- arch/x86/kernel/kvm.c | 30 +++++++++++++++++++++++++++---
- 1 file changed, 27 insertions(+), 3 deletions(-)
+That or it blocks waiting on unbind.
 
-diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index 6b0a5861c..87ba4e174 100644
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -265,11 +265,37 @@ noinstr u32 kvm_read_and_reset_apf_flags(void)
- }
- EXPORT_SYMBOL_FOR_KVM(kvm_read_and_reset_apf_flags);
+No hot unplug of TSMs under active use. This is very hard to implement
+correctly, and there is no use case.
 
-+static __always_inline bool kvm_apf_reason_pending(void)
-+{
-+	return __this_cpu_read(async_pf_enabled) &&
-+	       __this_cpu_read(apf_reason.flags);
-+}
-+
- noinstr bool __kvm_handle_async_pf(struct pt_regs *regs, u32 token)
- {
--	u32 flags = kvm_read_and_reset_apf_flags();
- 	irqentry_state_t state;
-+	u32 flags;
-+
-+	/*
-+	 * The guest does not enable KVM_ASYNC_PF_SEND_ALWAYS, so the host
-+	 * delivers async #PF only to user mode (or as a #PF VM-exit, which KVM
-+	 * reads itself). A #PF from kernel mode can still arrive between that
-+	 * delivery and the read of the reason flags, inside an NMI that
-+	 * interrupted it, for instance perf reading user memory for a call
-+	 * chain. Such a fault is a real one: leave the flags for the fault they
-+	 * belong to. Outside NMI context, which in_nmi() also reports for
-+	 * kernel-mode #MC and #DB, pending flags on a kernel-mode fault mean
-+	 * the host is broken.
-+	 */
-+	if (!user_mode(regs)) {
-+		if (likely(in_nmi() || !kvm_apf_reason_pending()))
-+			return false;
-+		state = irqentry_enter(regs);
-+		instrumentation_begin();
-+		panic("Host injected async #PF in kernel mode\n");
-+	}
+> The driver model otherwise allows the driver to be unbound. 
 
-+	flags = kvm_read_and_reset_apf_flags();
- 	if (!flags)
- 		return false;
+Isn't this is a side effect of introducing smcc bus? We didn't used to
+have actual drivers for this stuff that isn't physically hot
+pluggable.
 
-@@ -285,8 +311,6 @@ noinstr bool __kvm_handle_async_pf(struct pt_regs
-*regs, u32 token)
- 		panic("Host injected async #PF in interrupt disabled region\n");
+> We need to support tsm_unregister() in that
+> case. I am also not sure whether there are other paths that can call
+> tsm_unregister().  Currently, we register the cleanup callback via
+>
+> 	tsm_dev = tsm_register(&sdev->dev, &cca_link_pci_ops);
+> 
+> 	ret = devm_add_action_or_reset(&sdev->dev, cca_link_tsm_remove, tsm_dev);
+> 	if (ret)
 
- 	if (flags & KVM_PV_REASON_PAGE_NOT_PRESENT) {
--		if (unlikely(!(user_mode(regs))))
--			panic("Host injected async #PF in kernel mode\n");
- 		/* Page is swapped out by the host. */
- 		kvm_async_pf_task_wait_schedule(token);
- 	} else {
+Yeah, since you have a driver it has to be structured like that, but
+that doesn't mean we have to be forced into implementing full general
+hot unplug across all of tsm.
 
----
-base-commit: 6f8319e3e9a44dd537d17f41565a8453c560a581
-change-id: 20260929-kvm-apf-nmi-1911965f5e46
+Either block sysfs and use the module refcount, or hang in removal
+until all the users naturally close (like vfio). Everything else is
+too complicated to be justified..
 
-Best regards,
---
-EJ Campbell <ejc3@meta.com>
+Jason
