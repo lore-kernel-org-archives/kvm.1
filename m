@@ -1,123 +1,145 @@
-Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010001.outbound.protection.outlook.com [52.101.193.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2533C414F
-	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 05:27:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790659652; cv=none; b=QQU9S5J2FDPTyjEDPML56WutbLoiGHyMJYnb4WZk+FKdF0jS/yt85CWLo4e2ATb0Xbh5FrmJk9OkKCsNheh/ggtaGR7iFYXyux3a6t9tLAJSm4HEHGA2lQcAz86jqz8renQoGxwkj6srfFZg+5G2UkuV6LAn2DiEt8ATTN1pnuM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790659652; c=relaxed/simple;
-	bh=qEEI8aktSwTOLRHps3xZRdfVtwrSTMCF4gmb4m+bhVM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hOdLnZuyAs07X6qtwGucsHqXx3ezKMzCWCpRgUlE6SLTIatO4bPsifGPw0HqIfW/f0L+H5cqnJ/ViYkJjTU8hS2aquQhiFg/Z8qxc25/t7NTV3sqJxPOOzwxwVUgTIrm8UlJ0NqRb/qZvu6/zNSXOUfgjEwj936mSW+2J5/iBEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z2PP1ieP; arc=none smtp.client-ip=74.125.229.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48CF30D3ED
+	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 05:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790659661; cv=fail; b=jEs1t82sB3JSpcQPgVfhgCEBmsksa7MZWHvEL6ermZGu7AiydVE5IoqBD810toHDXwx+ZUh2lReGsrAQ6AGRxtIK2fR0mzGN/BWgPvD4YN4wE6XTOki35eTx6BcZVofrKYMyVR4WdnzezU74jge0q7EPJuXF7rr2+IzvJB+ixzo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790659661; c=relaxed/simple;
+	bh=Tj8g072UYyky8ZWO7ECzbd/32kJQEqWwKDEIWUv5kLI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=R5Ni6EStOIvMEFIymsbu9veZv5Ev8qoEzt/pf8jydA+LTHGCAo4ng1bOByU2+VDVBrUYrbtoxDel3GHlde7jqE0kAfsk626BX1Z2Wh+mZx9hT8a6nxZaDr4uQ+2jiZAzQrHUSl7lD8c9ntO2KXAMZz7jhDBkMINyWS8+KPSBhC8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=WwyApyMz; arc=fail smtp.client-ip=52.101.193.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z2PP1ieP"
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33e630052ebso4379312eec.0
-        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 22:27:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790659650; x=1791264450; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=O8QN8snA6KWfiFUHUmB9j8vT4kxR/u7KkTNc9IaHvVk=;
-        b=Z2PP1iePjB3jUJUSZ5uSiVRznFUG2v6amQY3UIDopqDnFfHH5jOEUp2CflB/vKVpbg
-         Kfgkvt0+Sg30NVjT77Pn4uHfgpJY57RcP+s7kK3l0M5DyYwhQbQqtwedHKuSQIcAF0MV
-         llZwgsBKF+PxC7iyxBL9tj8N1k0H7aU6RdYa2RJm0N8sLHzvcjIFRRxEMFeEoOEh3ado
-         9dcFf6D5fTTuT48ZSZ31ahIUerhVbUZaNTO1f6emAOYmp3EiWQxX98NqgwicI+XfPDQr
-         cVLsALd7K+Sx1Iy/3OaI7EMqLAshodR2HainmQnOIeC+Srr/UnVPR7ZAOYbcT9br40+p
-         Z6Lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790659650; x=1791264450;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=O8QN8snA6KWfiFUHUmB9j8vT4kxR/u7KkTNc9IaHvVk=;
-        b=P7cZzNCUK101Y730T+KhBsS6NeH4ipKzebLwrnwoo9RwlN1fqV2qNo6Ng7cYZ8Vu6k
-         847JsZuRrkV/XbRb8nmxxrVjcGH24SilPZwKVOXA86amKp9ak5Xyl7RIa6oLQQj5VwXM
-         rwlBKjWDlxkE+Rpp0rwm3DT6GGUaSJVaPkq7O/flkb9EqO0SQ/kOaPkpVczrHxiWPr9F
-         c6M42npL69a+UsYAtrBCqbUXQ7NHSq3hGO9pd3iF+rgBnMY+IjhHWhrDPsMiqFuM33hw
-         lxsqQ72hP1kZaMS6qUO0oFvh3DrTWBI0LB7R8n1qaYP2onzzFpAKGPQePpSFOPmMdqVB
-         T44w==
-X-Forwarded-Encrypted: i=1; AKwUvBxbycbtVKFsgew7XT1G3YarM0Oy7ZNCcz7ZNw+y+19YffM9p1K4aiTrVonNRUYt6XXpBJM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJFd+js4+tIDk6M3Ej7yFK1vRHw341xxfQwURGZl6O59QQm6URG
-	Qie/ja++ehRAMRINSn5CEifDKXUP6rhViCQqB7PDemR60tPEsiFVE+2dBjmcU6vS
-X-Gm-Gg: AYBFou224rSD5AOcq+ZDTNzkK5hxM2YbcG5RCff6dhaQolhUK9SPnchjFNAhVfA0kaR
-	fXEZPRxWOAU+nBTMA+8eWJmCcltl3EwokcRB/kVupW5JFeTbbNdLlNZAZhqgr/Ogct3hjyZvBWS
-	q8TksW98OCk3U3aKllYvN5GhLZbWuQZJmjXRmcpqz3Ox5hC0x+L7dzNYecO7taxGtZNK0IrXuiX
-	Fh1vVpBxBUxHgndvR/Ll8rhp9MsWOdgrKLySY8AyQaudKkbZtqLRYyXU1GkAryGdWpC3biUZh1b
-	yS7qszs/ZuLOEqgKwNHpT0f+VaURzbhXSk3mB//fY50AvfTeOVDCMHX8R7VG6ox5Dey96rYq4CE
-	FL/I6T7RBUGM/j/gGfcmt9IkYCeq7qcFEh+3wi5559clqiv2jUiwU6R4GWS9z9d2XKvxfpb2cJZ
-	OJxYh2iMDVMCzjyZfGSrCoKkEOeKg9IujpHcEfYWUlIdBha4Tiru48FH8F25ecRF/Jtv/414fba
-	SFzDgkKvEqFxRGkPo0lhg==
-X-Received: by 2002:a05:7301:4204:b0:342:810b:9554 with SMTP id 5a478bee46e88-342810b964dmr11955549eec.32.1790659649933;
-        Mon, 28 Sep 2026 22:27:29 -0700 (PDT)
-Received: from amd.ban-spse ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34b580fc50asm2092057eec.14.2026.09.28.22.27.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 22:27:29 -0700 (PDT)
-From: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
-To: Huacai Chen <chenhuacai@kernel.org>,
-	Bibo Mao <maobibo@loongson.cn>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>
-Cc: WANG Xuerui <kernel@xen0n.name>,
-	Xianglai Li <lixianglai@loongson.cn>,
-	kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
-Subject: [PATCH] LoongArch: KVM: Return the actual error code in kvm_pch_pic_create()
-Date: Tue, 29 Sep 2026 05:27:12 +0000
-Message-ID: <20260929052712.470413-1-nagachaithanya9911@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="WwyApyMz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fh90od+ZV/d3eVKWa68ehobA7nKeFfnYHPmApruafUYZsr5rD4R20P1QcGKpgnXaVQYAY+I0FMJQWiYAOfhr4rO3QIlWV9klm3AfMY8L388i4TD7smGkihwPavO4zSINKJqvEG88sBPBpIr7ZhL/D0/vKbWRYw4Us7NB7bAYrNdMFjzVkuNWA7E8mEQv3je9s9DIurTmBunujQLiPtPsqQyv3ywCpjfiigOoIykDJSGGU9Lss4Eb+1lENEzv7/3MOhlJOF8IIkWqVL213ByyF+V8JQ4d9s19DXDFYoU92BWfkjyYwCIH9wtR8FsxbdqlXp7m8pyTqkYn1vkUg/cc0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ml1BCJ8siQqAM/Jk6GrnXi6sKudyWKysOEKmkro/v88=;
+ b=jdxYuoNHRg4rYKGLpcBCzqQEWyGkzOH97QWVfnSF1k3bs94eaoRKihLF6I9K0IoCI2foKnR5rb+PEGGr8WqTO7185Vl/86+j57TprOafNuvSQV1bWE1TFUehFNKyxlBV276KRaev2NMHo256EDgnMDm7LKMS9kIUMDQ5pJra0QoNdt9kDSmY5iOg12dgxbtG3TtRjaVTDKZkjOlecib9i1GUmy7brmkPOkjnqx6ZZOGWkmByfVMj4TRoBjQm1iIkxaHMNnFdy5PWCpGU8vp+ozXanR/uFivT6JVEU7RvWdWnfSgf1xzyPfwL3D9yHFlVqjPiXcM8FPGwGB6l6T24iQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ml1BCJ8siQqAM/Jk6GrnXi6sKudyWKysOEKmkro/v88=;
+ b=WwyApyMzCzkOSmASxLr0pOS2cSq4a/yya2NhJzIWKKhiH0X60vvCIiVJsf4/JfnNWe5txDjwqBy3kA7utG6RRptQjNst5pMHog22xIZG05OfvsgYZgkE6kR8UQHxr5AJHb0IBaH7ZebUZRsYKL2006He1gBgAQ1YMjVVTn1UPmA=
+Received: from SJ0PR03CA0297.namprd03.prod.outlook.com (2603:10b6:a03:39e::32)
+ by DS6PR12MB500340.namprd12.prod.outlook.com (2603:10b6:8:52c::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
+ 2026 05:27:36 +0000
+Received: from SJ1PEPF00002320.namprd03.prod.outlook.com
+ (2603:10b6:a03:39e:cafe::96) by SJ0PR03CA0297.outlook.office365.com
+ (2603:10b6:a03:39e::32) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.24 via Frontend Transport; Tue,
+ 29 Sep 2026 05:27:36 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ SJ1PEPF00002320.mail.protection.outlook.com (10.167.242.86) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.472.14 via Frontend Transport; Tue, 29 Sep 2026 05:27:36 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 29 Sep
+ 2026 00:27:35 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 29 Sep
+ 2026 00:27:35 -0500
+Received: from [10.136.46.160] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Tue, 29 Sep 2026 00:27:32 -0500
+Message-ID: <7911fb0b-5b8a-4a4d-8495-e82555fa0fd1@amd.com>
+Date: Tue, 29 Sep 2026 10:57:26 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 0/8] KVM: SVM: Add Page Modification Logging (PML)
+ support
+To: <seanjc@google.com>, <pbonzini@redhat.com>
+CC: <thomas.lendacky@amd.com>, <bp@alien8.de>, <joao.m.martins@oracle.com>,
+	<kai.huang@intel.com>, <yosry@kernel.org>, <kvm@vger.kernel.org>
+References: <20260907063906.1964557-1-nikunj@amd.com>
+Content-Language: en-US
+From: Nikunj A Dadhania <nikunj@amd.com>
+In-Reply-To: <20260907063906.1964557-1-nikunj@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002320:EE_|DS6PR12MB500340:EE_
+X-MS-Office365-Filtering-Correlation-Id: c3f58322-3226-42e2-e209-08df1dea5f19
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|23010399003|376014|36860700016|56012099006|10067099003|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	56Xc92Z3eXub9JcuB7Z5uFSc54PWilpYs4V8yM50tbaT5prrSZ0yFZEZWDP2+2WQQ5Xs8pNrLLPzvOOHdyq4eHhHKYUGLxLhoZwF3yx9CkERSMpGvrgi2HFAKzcDVgXDa1bCbjklp+cKYi5CfOgGwSrymgJX0cez42o56/kgmXQRiXLh04Ye8orRuYb7wtgvebEwJ/ya/nlPZ/orfCcady5WBCF9/QYLsZS950ToQN8AW56OczGI+Kn97zd+0an4LcKjnWDE3IE4RFqZWMcFDY5CPCaz8lK2SFkvTgdcMSprAUGInD2/uEBfMI2hCef+Wipf5HMgm8E+08HzxDZEdaomEmp+0e1nQH6ofINvojk4eOAiEARYAk0Hm+u9o4VF4Y3yaCA/LE7s1LO+6K4aREtlBCTYy7IW4EbjK/QJb5SJ8bclxNCD8PxlQiGaKNhEqtL551p93D3WI89o9q8h1rUddO9QdFdStiWYju1tquHkra6b16wD+6DgDz4VtmWKEoARdViJOQpbfuVcwZcVF3mrCi8yKVnUMK2Oec+zjZM9cmjENWQQZZ4TQsmuy5EaYXdLEu9FqCV9WfxgDPMJ8j9W/OhtWWnP6rnnGKM197j4O5PThngMit4XOqzMplocx2plIEFyhRUm+sTaDsKkXIEwZEfCjRYwpvX3cNLgaWMyujZvzMATJDOIyx40P1LyKL0Vil7Ia+nPcbyYmEqhgg==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(23010399003)(376014)(36860700016)(56012099006)(10067099003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	bfzWTYEU5LYnHTQNKXrZTcRyotBCnD6PtaBl2D+kLiekDZv5UMWKJVF3TNsilOq6sgInGq0iEaveaLAUQbN6OSmCuR4smF/Y7WmXP4aG51oFytBQ8Wt5lUgCp+UP7dLrM1BS5eEfh9AxKkZeYkTA9+o8qSzTsP+rXe9Ygh25Z+X0wpq085VeVTIFrIgFRocDj2bHfzvNy5QvbHLpYuOStdq9P2jUkqcdZkz3enXXssUfhSRxQlh+PKX8LKiC5VcW2AFLR9sEmbeUYtutWGSvLjescTmZ8LXf8nmsuBMr09QDX99t2V6yRZnmNGvxcTjA03FPa9Xme5o9EBNcj1+vhmjVnBleADtLnSBf+mJLcWftIwfC5C8bXOmq7eoSbUwH6jXgl6YohNhUx4iRzf5IW1eOHXwvKCK/n7oblwIvmtjxwOJVnAp1VF4e6D00x8od
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 05:27:36.3717
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c3f58322-3226-42e2-e209-08df1dea5f19
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00002320.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR12MB500340
 
-kvm_pch_pic_create() sets up the default IRQ routing and reports every
-failure as -ENOMEM, discarding the error code it was given:
+On 9/7/2026 12:08 PM, Nikunj A Dadhania wrote:
+> This series implements Page Modification Logging (PML) for guests on select
+> AMD Zen6 and later processors, bringing hardware-assisted dirty logging
+> support. PML is designed to track guest modified memory pages. PML enables the> hypervisor to identify which pages in a guest's memory have been modified
+> since the last checkpoint or during live migration. More details can be
+> found in the latest AMD APM Volume 2 (System Programming), section
+> "15.25.15 Page Modification Logging".
+> 
+> The PML feature uses two new VMCB fields (PML_ADDR and PML_INDEX) and
+> generates a VMEXIT when the 4KB log buffer becomes full.
+> 
+> The feature is enabled by default when hardware support is detected and can
+> be disabled via the 'pml' module parameter.
+> 
+> Changelog:
+> v8:
+> * Rebased on latest kvm/next
+> * Drop redundant pml_addr=0 in nested_vmcb02_prepare_control() (Yosry)
+> * Fix misleading comment, pml_index=-1 is hardening not stale-data
+>   cleanup (Yosry, Sean)
+> * Route nested SVM_EXIT_PML_FULL to KVM and treat it as unexpected
+>   exit (Sean)
+> * Refactor update_cpu_dirty_logging() to common code as a separate
+>   pre-patch (Sean)
+> 
 
-	ret = kvm_setup_default_irq_routing(kvm);
-	if (ret)
-		return -ENOMEM;
+Hi Sean,
 
-kvm_setup_default_irq_routing() returns -ENOMEM only when its routing
-entry array cannot be allocated. Otherwise it forwards the result of
-kvm_set_irq_routing(), which also fails with -EINVAL when an entry is
-rejected by setup_routing_entry(). Userspace creating a
-KVM_DEV_TYPE_LOONGARCH_PCHPIC device can therefore receive -ENOMEM even
-when IRQ routing setup actually failed with -EINVAL.
+A gentle ping on this series. Is there anything else you would like me
+to change, or does this look reasonable for v7.4?
 
-Return ret so the original error code reaches userspace. This matches
-kvm_eiointc_create(), which already propagates the error code from the
-helpers it calls.
-
-Only compile-tested.
-
-Fixes: 1928254c5ccb ("LoongArch: KVM: Add irqfd support")
-Signed-off-by: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
----
- arch/loongarch/kvm/intc/pch_pic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
-index 2b63b0c2c7ce..7fee60ae01a5 100644
---- a/arch/loongarch/kvm/intc/pch_pic.c
-+++ b/arch/loongarch/kvm/intc/pch_pic.c
-@@ -444,7 +444,7 @@ static int kvm_pch_pic_create(struct kvm_device *dev, u32 type)
- 
- 	ret = kvm_setup_default_irq_routing(kvm);
- 	if (ret)
--		return -ENOMEM;
-+		return ret;
- 
- 	s = kzalloc_obj(struct loongarch_pch_pic);
- 	if (!s)
--- 
-2.43.0
+Regards,
+Nikunj
 
