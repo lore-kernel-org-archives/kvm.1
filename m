@@ -1,192 +1,340 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9F352E046;
-	Tue, 29 Sep 2026 16:38:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790699921; cv=fail; b=TJbGBWPTQ1F4Z2M7+ZYKXN03gGQ8vTlR2hXoaSz9+01EEIaqUeCdtugC8iN0UL0YaX+ORhP+NL9KHB3CNgS/dcCUkfFV21uLj/PIk/14+wSaG7VTrHAKKcN5chLCad1zXUllug/NBQIHkqwa/KpSrF3hJ+Htq9ZvtXmjphIkem0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790699921; c=relaxed/simple;
-	bh=LqwBT9Pmjk7ZgPVe16TvnyhCvukJv1n7B4Iw7twJ9cI=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=JycrVtjJGNf9SEgxntFAp2RHjgBq2WG8NfcbZExMIRFAx/225LCYN0tQyznMA3tOIilpQYKQJ03l42zRx1cCxeYwhCByGOWQiofC82WDOgKnq4RFgEIX2bBzfLnah8iiSpKgsD/DMZzeN5/vCFS2gpXrr0hvWfjIka7D/vpw6zg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cbcHHRSt; arc=fail smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CCD53A38D;
+	Tue, 29 Sep 2026 16:57:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790701045; cv=none; b=Kv5tcZmy6LdLoRv0BhHui8O9TUsAbeNXn5EA7tMwYBuI0y32Jfr5SpR7VOQbnXfHkbdcmoIcGD6tcXz+Nt369OS8iDD5JAdwnpZ50vjDFPlgTsU2xdMHkHLrFlPDdFBvb7jOO0JRdAyOcct8qFFjZ+GeDzd+gQTgOI3o/mfO+Ds=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790701045; c=relaxed/simple;
+	bh=8kkhWSLBFUa4+9QxUBFQ6d/1U9fhLDpXLuHQJyOLedA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TJW1fywevvX9o2VJsDu9VnyC2JL0kDhqlEcLwGDQJ1I5zx5d6Hju7ttJVNBKqTfkidql9c1DRWWgeZZUpHN1rU7OdPfsK4BGYzCZq109uuCxFmcjJFWXKvLs74aPYryP4C9NSHrzHGExgOzEqy6ZSiz6YycY8+FsvsYbmVH8ET8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KTIOBS1P; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cbcHHRSt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790699920; x=1822235920;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=LqwBT9Pmjk7ZgPVe16TvnyhCvukJv1n7B4Iw7twJ9cI=;
-  b=cbcHHRSt8eifcMOC722Ko8jVRek5lJVqr3XRPnhct3qb7eMmi5QyisSa
-   B7acmW5tL0vqNXPrNr+0dTKg3VMulWUovW2Yb3eQkdRSVKcQo2cJxe7rn
-   oqfLgi6oopmS2b7s8Z/w6BxF6Piji0gAyzPBm/ckReOixYVuvImoV17q4
-   7Ko2ZLnWHxp6Ewd1IJ/yQg32FWbh9BAsxhkUUQbgqE+X3/7CAaN2VZunD
-   2/YbGZdP7zSK+MTJ6tLhTzYuov6VYAEcT1TGfex3BHGVU7igAAGGdXg11
-   kWaJt3emq6WZT73MbGXNXYpKuE8KdMorO4RnYVJNoESKH/gFk1r+lQa4i
-   A==;
-X-CSE-ConnectionGUID: Gx7r1GApTFmJ85CXZtVO+g==
-X-CSE-MsgGUID: m9SkGnfPQpWPRciJs6MkAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="94137971"
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
-   d="scan'208";a="94137971"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 09:38:39 -0700
-X-CSE-ConnectionGUID: wiloYKQMTIiFrfzEqpfx3g==
-X-CSE-MsgGUID: V33BXvWcS0+c5RYQHPSq6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
-   d="scan'208";a="313359582"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 09:38:39 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Tue, 29 Sep 2026 09:38:38 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Tue, 29 Sep 2026 09:38:38 -0700
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.56) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Tue, 29 Sep 2026 09:38:38 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yUc+1L4qOSVikrlj6SmM1ux0umO2i4yeVfCIoTbgR0eGqCN4esQ9xZpjv+jXgpqJDuuW1IDWtnzCU2sPwIMhwUv85zYD4jNSppn4o/dcSb5bGVsQPz2a5O+GH2pJoiLgoy+Lo9No7mqIY96KZ/X9k6NtL1BDGBuf93KTITxb90P7MshNjFRVVFcxVoFdEti00lbkP0tWUjz2bM9fQvyGqM9/5nuwwzQbMaMXmnX5rdJ7lAi5tf53yIj9c3XC8p58J4xa61OVIFl0PiAdu/Xoqs7FiVOPQSAHarxrxoQfdTIY/ti7/e/c2sGpaTwBbvJQ3lVVB7FfJo/S/QCcPFr+xg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TBrdKhGAy0L4YJ3zjEjAHd6THPvuxc0/mURHxv6t87U=;
- b=FjqYXaibXGotCs4rPGuONUSLp39h22dVD3gQ4UWVcyppc95k8NHqG+ZzvZl3y/MffisckZCxpge3iF1/jgXfzWw9D6JvkbitlMCms67+Wavtkb1HWZp26Lx/xWKGLgDbGIU9GaJwYAt+NtKV2UoEhJuQhZY2LBYKGfnu1WQIq1nZU/A8VfSir/RM2+O05+gabFGbOIA4+2A2wG8vW6hfNZ9BUT4IofVkXZ528WDvsgomSauOf01pszkj8rk7iqYz26n3TEZKnJmq+c3YIo08kv1+vq6j4eEjvhmjCjmsG0rAe1BUM802eSLQwYox1/daYp8qHAJJ6q4JdAWhMHFioA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB435924.namprd11.prod.outlook.com
- (2603:10b6:610:34a::8) by SJ0PR11MB5770.namprd11.prod.outlook.com
- (2603:10b6:a03:421::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
- 2026 16:38:36 +0000
-Received: from CH3PR11MB435924.namprd11.prod.outlook.com
- ([fe80::1696:c90e:60af:a0cd]) by CH3PR11MB435924.namprd11.prod.outlook.com
- ([fe80::1696:c90e:60af:a0cd%6]) with mapi id 15.21.0451.024; Tue, 29 Sep 2026
- 16:38:36 +0000
-Date: Tue, 29 Sep 2026 09:38:33 -0700
-From: Peter Fang <peter.fang@intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-CC: "sathyanarayanan.kuppuswamy@linux.intel.com"
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, "kas@kernel.org"
-	<kas@kernel.org>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "seanjc@google.com" <seanjc@google.com>,
-	"bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>,
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "hpa@zytor.com"
-	<hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Li, Xiaoyao"
-	<xiaoyao.li@intel.com>, "tglx@kernel.org" <tglx@kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "Bityutskiy, Artem"
-	<artem.bityutskiy@intel.com>, "tony.lindgren@linux.intel.com"
-	<tony.lindgren@linux.intel.com>
-Subject: Re: [PATCH v5 4/6] virt: tdx-guest: Add a helper for the Quote
- buffer size
-Message-ID: <arvpiaIvGWhWNv4E@intel.com>
-References: <20260928100913.2265687-1-peter.fang@intel.com>
- <20260928100913.2265687-5-peter.fang@intel.com>
- <27febde6bbd1142222f0a21db4e5180e0bd3261c.camel@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <27febde6bbd1142222f0a21db4e5180e0bd3261c.camel@intel.com>
-X-ClientProxiedBy: SJ0PR03CA0164.namprd03.prod.outlook.com
- (2603:10b6:a03:338::19) To CH3PR11MB435924.namprd11.prod.outlook.com
- (2603:10b6:610:34a::8)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KTIOBS1P"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68TB5X5X2187948;
+	Tue, 29 Sep 2026 16:57:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Wq/0bV
+	RI7FzgPLTTsiKa8WJA6E6CA1Hxsz5L801Xmgs=; b=KTIOBS1Pv3m69OrO8Cx1A4
+	guu5KzKx3KbroyUys82fr8fWF4qcCbrTwo86g0rvzPgmgkVFwYi/+BCb7hslwbIU
+	r+fWACt96PZBvtD4GebK6zYiAMqiUq2JmIiYQaG0KBfnIlGjLVkgv04ClDKQFCC6
+	0E6CxDVstzu1m312ZURYgWQX58YVwX/JWUBTc5Eb85BQsz9hXPUJQRYkd/qddRN4
+	FbJNNGWDlUuAxmEUW5jzx5KgqaxxgbBJl6JHi03KEyTQlriKDxBgfvjRW9u6JXmn
+	8UhM4FMIwA+GtOFQhrihLPS7N5kCwb9J6PlLWZ4ZIdznn2+Shu97w9DqnztP212g
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5qr86vq-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 29 Sep 2026 16:57:22 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68TF109w1647411;
+	Tue, 29 Sep 2026 16:57:21 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gxu2yacsw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Sep 2026 16:57:21 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68TGvKo823069374
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 29 Sep 2026 16:57:20 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EA6DA58061;
+	Tue, 29 Sep 2026 16:57:19 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 457375805A;
+	Tue, 29 Sep 2026 16:57:19 +0000 (GMT)
+Received: from [9.61.162.12] (unknown [9.61.162.12])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 29 Sep 2026 16:57:19 +0000 (GMT)
+Message-ID: <5c7cd376-2b86-45d9-b898-a8e927e2deb8@linux.ibm.com>
+Date: Tue, 29 Sep 2026 12:57:18 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB435924:EE_|SJ0PR11MB5770:EE_
-X-MS-Office365-Filtering-Correlation-Id: c48c991a-c32e-4cb5-d594-08df1e481bb3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|23010399003|1800799024|18002099003|22082099003|10067099003|56012099006|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info: XOj41wCZctdNwGD38iXX5fUQDXitWLZDI2c67NwHTUtQ4o98YW5edjkHDVX8PykSmHvIGr+GGit5/gHH002yufuZMAKTf5c0EeJdrgZXIPV+CknKR97enoTE4juy4Sz8Z8K7Bhv9xfT5hRRjvcjjb/rEV3AkPZ+FOh+Yvr+NRRHVaJxsHsdG3WZv0GyzcKaebhYvWk5BcjjZPsaZ7Hf77mZihFyBg4oMG1LMqpehntE+FUrF03PhzFoNkFBrC6JIroz1C97qDi0B/RTqdVmlhOPYIqbp162V84Z0fcyCYlt3x26RDttv6VDHZSZWi9xqO/JSsTQYwBjY7HpAD0jshWQUaqERp1fE/PihmyIy9lXpCHfrKyMebMnhxIQFzR5Xa+NwLmJVdCMDgsXbwyCILYAfXj4YvbWfdjlgXDpeuaPgA+9OOz2J/Ftml4e2vNNMZgp4mEKkZ//lIWc0feCaVRKyKiLKHfTO7sXwKFl9PyEc1lc+9iKXui/+PAe6W0XmDoyBqrMGlqp0qOeknYFly0ebYE2ExcKVEG1CZj/z35hRoKOROX3S0kuHhPYam6QlgAxTkYoGrd4AL3Ebc7XL90IkzoTnyxDiAlyjdlluml1mNFJWt1u6yzqPxfEvEYWOKAj0y0kvtb2LKMZyZTZO7tYJ05nh1/B8ktXKP8Fecmw=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB435924.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(1800799024)(18002099003)(22082099003)(10067099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?/RJj5KsBIhTlsHsPyVdynVgCtvQIiVJLefw5Qv1sD3JCRDrQXHBIvMDMet/S?=
- =?us-ascii?Q?6edCNO/Brny6FSgn8XCIsh6ncRn5b5hzTqQYqolmp9XAjjB4Zc+pHStiMr2D?=
- =?us-ascii?Q?UJaCmoE10shhwNiRryWR5vIwSI6UBBJMiJ8Zy6EuzGIz48KLUwhFW4lmCZyP?=
- =?us-ascii?Q?KD/xRdp962J+j/QwzWl33hrfMz1i9iw45CbuHhQlvmCaBCiBRqBc4wHqzUpj?=
- =?us-ascii?Q?9f/hKvmRz8HKISZffXyaNRxgjqjDCX6JdjpzWYE1zuUspzSIaZg/gkvKqV4x?=
- =?us-ascii?Q?WJIY715sZJv8yUiuKefnaKUwf8jMuqiRVvhV7LGJbzsy5Cp+mYYfQPx6kVz+?=
- =?us-ascii?Q?7GnFuEViGd00DSVTVidK3iIJkySsypHquCjOAA0FgKSmHzzOR6NQm90dyowC?=
- =?us-ascii?Q?gxnyxGKeFWcV7xACT653a2+Ty9WxoZWC6NmZXab+jnjjYk8X9tedn4tpJcy5?=
- =?us-ascii?Q?v6vPC1Lm8BvZM0KClu5GxJFHYJwNagFu5D7k6fZ5c+1B7E76tTfrI4diswSq?=
- =?us-ascii?Q?Q3gVp4llrrREoGpQfQmwjpQFfl+uzEbGcpYFU5XvZXN67YTMssT4iZKhA4mi?=
- =?us-ascii?Q?Im1qJrSEv/om1Z5gOmkd0nMgK3yygMVIBmWcCAszRF2ZiDUhRLVCFuuQdLTB?=
- =?us-ascii?Q?QUzA91brXP252LHi0KHZE96rHVhUJhL0+U9AOR0kGxb5hSRKMiu/sc0Bh8Ry?=
- =?us-ascii?Q?/bse3PuOHluW0KfelDkUx6hNYAOl4LP1GlLUuAIZoIzZXwaZfm5YS+veTN52?=
- =?us-ascii?Q?SLrzXDgtMBbI6K+bnJ6olVhC29rswfSlcp7CMiTADkh0T1d79zU2tyHH0gU6?=
- =?us-ascii?Q?9DtRhhexxqNyI/R4ZJ+BpZVn1bzifCEe1duRuMJUYEcWw+oJP8c63l5/TLfG?=
- =?us-ascii?Q?MoCFnD2kRtFaKFlePZUaOZ9sN6LgcNYJC6WqGZwB6axFohR4SpMsbNQHwo4T?=
- =?us-ascii?Q?yMLDymboNiOaXFubM0Uy3nEfDhKC4KwUBnWc9wNy0/o3Ln6QZ26nAAubz+mw?=
- =?us-ascii?Q?E4SZvmaHfGAjNLnEjTmUMeqLxQfYEFLx9ZrlOrXWrgrGTTy3cNDtjNR1Xv3b?=
- =?us-ascii?Q?Npyjqsje4/K38IbbPr3826NdTINGqS/kYfRzgCJNcRkn3sDUEUZSU81Isl1+?=
- =?us-ascii?Q?9BQv1Z5sQRB0oSkBKlClHF1OPEAO1QF1y5J50f7yGFQ3HJyuH/iMv6LUoW8Y?=
- =?us-ascii?Q?0ZHc3WA1OS82BY3n3C7czQtZw7Ly7BfeF/aWMp8wqxgoWdX7R7+x/TajstmA?=
- =?us-ascii?Q?Yfwq3hvdwJTvoShrjJeiObJDHt3neVySn6znCSHUhHC0/KweKZB+Zpf4LFkl?=
- =?us-ascii?Q?Xdb1UK1uYq3pLYxFunrYCcn/N4+/NqV8cyrRpxdx7daf7yDor5aHtrF+1qLK?=
- =?us-ascii?Q?FK6p0l43ObvizWT5Yo/Evv7+lu/L0TDGIBn12K7Cpj3LM8vNLxbTrn1WZb7p?=
- =?us-ascii?Q?xy9bj71YVyfLGrAQPwddB2pfeXHvTQOuNfOy6kef7mHWLGUZuA4V/cDQpow0?=
- =?us-ascii?Q?+43fs8ZOpM9DL/tEM8Kd7dbBYOdjZWJzmq7vLjjG7QzT+9whTITyCDsU+Sb1?=
- =?us-ascii?Q?w+z0mDYjH1DM9sbCYKm/ml8UrDon/c5ocpU93ANt+fXjv4F6ULd18uf4qj8c?=
- =?us-ascii?Q?W4pAwNt/3440YjogxIL4Rfjr28Jf7Q2vnfdI/nj3WxjTzoYx4YbwMUljIl30?=
- =?us-ascii?Q?b+y2brJ0mD8cX1eUjSToQgYCOcXeklay9+YdIe1DhkmKqV2vcLwAXJsHVab8?=
- =?us-ascii?Q?PCQ0BWjQug=3D=3D?=
-X-Exchange-RoutingPolicyChecked: 5wzCLJAt3bG4FfrkAVCHjhIbXzLHMa9w+xlFa2mtDkTuvNsR/TiHuQJDMTVWpj8MbfVUF9wJ63uuYSxp3fp6/nPsB00yCST+uIGcMYfPXgZMcWpRkKtoo5JpS8YI//owVI4hO/phEQfnqULl7UZd9ame8eAwFkXdElXr9GZauLlXe8aDuxB4ZUkSvDOYRfZn+ZdxZ95Dfiv5egLMMeUQyudnCBLB+MDvy5C+XJ8jG5yqpyAAdcGxV4lRygtYUThs75q7X3bLTHC1drXhzB5vvTg1O+c3EKmO4FuMFVGwTBKsk4klxho1CxP3KDtgnGt/+d76SKrJkvAXM0/x/osxTg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: c48c991a-c32e-4cb5-d594-08df1e481bb3
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB435924.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 16:38:36.2198
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pCut+TXM5IPx3wY1gPWyuFwRuWqsFyn1qOaayKYqvDVaa7KUsmsFuwtKea9kkrPw7ta7WXyBOkSW/hMrbBJWVg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5770
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 3/6] s390/vfio-ap: Fix unbounded loop in
+ apq_reset_check()
+To: sashiko-reviews@lists.linux.dev
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        linux-s390@vger.kernel.org, kvm@vger.kernel.org,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Jason Herne <jjherne@linux.ibm.com>
+References: <20260929121837.2715710-1-akrowiak@linux.ibm.com>
+ <20260929121837.2715710-4-akrowiak@linux.ibm.com>
+ <20260929123815.287871F000FF@smtp.kernel.org>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20260929123815.287871F000FF@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI5MDA2NiBTYWx0ZWRfX5dWXnH0uKb9Y
+ pQzNFzSmPZ3FmuJWQjuZJNSCdZ3YSb5WlnoeU41BQ6mAtYgl6HvH+iJpmh5IjRZ23creyXJKhnk
+ HNPN5H3kjjmHuT8xY7MyF8bqqUZbIcBmLGk7E3HZRCRsnekdINFSDTAKWg7V+mBGJBu1dCr8f8B
+ nkvdhopoA9TOHWrOq0u9wk1gBZ2hlriQYERBeSF01UfniEcR6lWDE8prlUQdkUFL+Z5HDtZ57Eq
+ vA9zVenh9bSAurX+0OXO5Uru6luTJmd8ne+TXo8a7kVQJ2V8lNtjjhnGunPf9ozsG+aUOG6DpLz
+ 1rOc2gYYvUWt8y6KVsrTlZQVQL6YfwchGkrXd6EYVTwRr2nJcpYOjQdPOE3/hdk6qkVaW+S/oqE
+ Iv8jTYlwO8fz8528rBh4qNSZaf1lWRtdHm4D/BLXtzag7W0VLI31eoAp7kU1RsDYdnAaXDgHHwb
+ SSVHXDJuNSNO4sww0QQ==
+X-Authority-Analysis: v=2.4 cv=SPbXx+vH c=1 sm=1 tr=0 ts=6abbedf2 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=OakYlLxFb6o4_ZYK9GoA:9 a=QEXdDO2ut3YA:10 a=O8hF6Hzn-FEA:10
+X-Proofpoint-ORIG-GUID: 8qK9x2e5DRBo5sSOH2mwhNt4QO69Oxve
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI5MDA2NiBTYWx0ZWRfX6U4a9HB6pZ/U
+ z6+OO0qDGFfK14C9nyn3Oce8JRGum8TQJxq/+2uG0uG5POsPuK1tsO7jrC9lBkItUT0+N97ZgSb
+ 05l1fMJVFPKW3W6CST5l/S+OlY5hzuE=
+X-Proofpoint-GUID: 8qK9x2e5DRBo5sSOH2mwhNt4QO69Oxve
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-29_04,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 clxscore=1015 spamscore=0
+ lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0 impostorscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609290066
 
-On Mon, Sep 28, 2026 at 11:23:42AM -0700, Edgecombe, Rick P wrote:
-> On Mon, 2026-09-28 at 03:08 -0700, Peter Fang wrote:
-> > +static size_t get_quote_buf_size(void)
-> > +{
-> > +	static size_t quote_buf_size;
-> > +
-> > +	if (quote_buf_size)
-> > +		return quote_buf_size;
-> > +
-> > +	quote_buf_size = PAGE_ALIGN(TDX_DEFAULT_QUOTE_SIZE);
-> > +
-> > +	return quote_buf_size;
-> > +}
-> > +
-> 
-> This makes no sense, at the point of this patch. It lazily sets a global to a
-> constant value. Function scoped static is also weird.
-> 
-> I think you are doing it this way so that later you can plug in the dynamic
-> read. But later it still doesn't make sense why to lazily fetch it. Why not just
-> read it in the tdx_guest_init() to a global? If the read fails, set to
-> TDX_DEFAULT_QUOTE_SIZE. Then you are done. All callers of tdx_guest_init() just
-> refer to the global. Why not?
 
-After some offline discussion with Dave and Rick, the conclusion was
-that KISS is better. Just read this metadata field each time and assume
-the TDX module won't change it (because it shouldn't). That also gets
-rid of the static variable.
+
+On 9/29/26 8:38 AM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 6 potential issue(s) to consider:
+> - [Critical] crypto: zeroization bypass and DMA vulnerability if ZAPQ returns BUSY
+> - [Critical] crypto: Use-After-Free of vdev pointer after reset timeout
+> - [High] crypto: resource leak and erroneous WARN when ZAPQ returns BUSY
+> - [High] crypto: zeroization bypass if non-reset state change completes at timeout
+> - [Medium] crypto: spurious ZAPQs from conflating TAPQ and ZAPQ BUSY responses
+> - [Low] crypto: dead code setting fallback reset status on timeout
+> --
+>
+> commit 625818127ace62cbd33b251880fe0f1f6d732f69
+> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+>
+> s390/vfio-ap: Fix unbounded loop in apq_reset_check()
+>
+> This commit fixes an unbounded wait loop in the apq_reset_check() worker by
+> adding a 2000ms timeout. It also updates TAPQ status checks to accurately
+> verify asynchronous queue zeroization completion before freeing AQIC
+> resources.
+>
+>> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+>> index 087e8474a34ab..07fbfa6f10152 100644
+>> --- a/drivers/s390/crypto/vfio_ap_ops.c
+>> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+>> @@ -2164,6 +2164,12 @@ static int apq_status_check(int apqn, struct ap_queue_status *status)
+>>   		return -EBUSY;
+>>   
+>>   	case AP_RESPONSE_BUSY:
+>> +		/*
+>> +		 * The queue is busy with something unrelated to a reset and our
+>> +		 * ZAPQ was rejected outright. Re-issue the ZAPQ.
+>> +		 */
+>> +		return -EAGAIN;
+>> +
+> [Severity: Medium]
+> Does returning `-EAGAIN` here trigger spurious ZAPQs by conflating TAPQ and
+> ZAPQ BUSY responses?
+>
+> `apq_status_check()` evaluates the output of `ap_tapq()`. If `ap_tapq()`
+> returns `AP_RESPONSE_BUSY`, it means the read instruction itself was
+> transiently rejected. However, this code appears to incorrectly assume it
+> means the previous ZAPQ was rejected outright, returning `-EAGAIN`.
+>
+> This forces the worker loop to immediately issue a new `ap_zapq()`, which
+> overwrites `q->reset_status` and destroys the correct queue state tracking,
+> likely leading to further failures.
+
+Returning -EAGAIN causes apq_reset_check() to spuriously
+issue a new ZAPQ and overwrite q->reset_status rather than continuing
+to poll. We will change apq_status_check() to return -EBUSY on
+AP_RESPONSE_BUSY.
+
+>
+> [ ... ]
+>
+>> @@ -2223,30 +2280,73 @@ static void apq_reset_check(struct work_struct *reset_work)
+>>   			 */
+>>   			memcpy(&q->reset_status, &status, sizeof(status));
+>>   			return;
+>> -		}
+>> -		if (ret == -EBUSY) {
+>> +		} else if (elapsed >= AP_RESET_MAX_WAIT) {
+>> +			/*Timed out without being able to verify zapq completed */
+>> +			if (!ret || ret == -ENODEV) {
+> [Severity: High]
+> Does evaluating the timeout condition before the retry logic allow an
+> unrelated state change completion to bypass the required zeroization step?
+>
+> If the initial ZAPQ returns `AP_RESPONSE_STATE_CHANGE_IN_PROGRESS`, the worker
+> polls until it completes before retrying ZAPQ. If the state change completes
+> exactly at `elapsed >= AP_RESET_MAX_WAIT`, `ap_tapq()` indicates the queue is
+> idle, and `ret = 0`.
+>
+> Because the loop evaluates the timeout condition `else if (elapsed >=
+> AP_RESET_MAX_WAIT)` before the ZAPQ retry logic, the timeout block executes
+> `apq_reset_finalize()`, forces the status to `AP_RESPONSE_NORMAL`, and returns.
+>
+> The required `ap_zapq()` is entirely bypassed, leaving the queue unzeroized
+> while freeing AQIC resources, resulting in a DMA vulnerability.
+
+Thinking this through it makes no sense to issue a PQAP-TAPQ for
+AP_RESPONSE_STATE_CHANGE_IN_PROGRESS, because that response code is not 
+valid for PQAP_TAPQ, so calling apq_status_check() will not tell us 
+anything about the ZAPQ, because the response code indicates it failed 
+to execute. The fix here is to check for 
+AP_RESPONSE_STATE_CHANGE_IN_PROGRESS as well as AP_RESPONSE_BUSY right 
+after the msleep and update of timeout counter and continue the loop.
+>
+>> +				/*
+>> +				 * Zeroization confirmed (ret == 0): the TAPQ status bits
+>> +				 * indicate the async portion of the ZAPQ completed
+>> +				 * successfully. Free AQIC resources and return.
+>> +				 *
+>> +				 * Queue non-operational (ret == -ENODEV): the queue is
+>> +				 * deconfigured or checkstopped; interrupts are not
+>> +				 * possible so AQIC resources can be safely freed.
+>> +				 * Zeroization cannot be confirmed in this state, but the
+>> +				 * queue cannot generate interrupts, so the NIB page is
+>> +				 * no longer a DMA target and it is safe to free it.
+>> +				 */
+>> +				apq_reset_finalize(q, &status, ret);
+>> +				return;
+>> +			}
+>> +
+>> +			report_apq_reset_check_timeout(q);
+>> +
+>> +			/*
+>> +			 * Zeroization could not be confirmed; set
+>> +			 * reset_status to AP_RESPONSE_RESET_IN_PROGRESS.
+>> +			 * This is used internally to signal that the reset
+>> +			 * did not complete, and ensures that if the queue
+>> +			 * is reset again, the re-issue logic in
+>> +			 * apq_reset_check() will re-issue the ZAPQ.
+>> +			 */
+>> +			q->reset_status.response_code = AP_RESPONSE_RESET_IN_PROGRESS;
+> [Severity: Low]
+> Is this assignment to `q->reset_status.response_code` dead code?
+>
+> The timeout logic assigns `AP_RESPONSE_RESET_IN_PROGRESS` to theoretically
+> trigger a re-issue during the next reset. However, the next reset requires
+> calling `vfio_ap_mdev_reset_queue()`, which immediately executes
+> `status = ap_zapq(q->apqn, 0)` and unconditionally overwrites
+> `q->reset_status` via `memcpy`.
+
+Valid. Setting q->reset_status.response_code to
+AP_RESPONSE_RESET_IN_PROGRESS on timeout is overwritten on any
+subsequent reset because vfio_ap_mdev_reset_queue() immediately issues
+ap_zapq() and overwrites q->reset_status with the new ZAPQ status. We
+will remove this redundant assignment.
+
+>
+>> +
+>> +			return;
+> [Severity: Critical]
+> Does returning early here skip cleanup and leave `q->aqic_resources.vdev`
+> as a dangling pointer?
+>
+> `q->aqic_resources.vdev` points to the `vdev` embedded in `ap_matrix_mdev`
+> without holding a reference count. When the new timeout mechanism returns
+> early without calling `apq_reset_finalize()`, it leaves
+> `q->aqic_resources.vdev` populated.
+>
+> When the mediated device is removed, `vfio_ap_mdev_remove()` flushes the
+> worker and calls `vfio_put_device()`, which frees the `ap_matrix_mdev`.
+> This turns `q->aqic_resources.vdev` into a dangling pointer on a surviving
+> `vfio_ap_queue`.
+>
+> Later, if the AP queue is unbound or reused, `vfio_ap_free_aqic_resources()`
+> unconditionally dereferences this pointer via
+> `vfio_unpin_pages(q->aqic_resources.vdev, ...)`, which could trigger a
+> use-after-free on the host.
+
+Valid. When apq_reset_check() times out without freeing AQIC resources,
+q->aqic_resources.vdev retains a raw pointer to matrix_mdev->vdev. If
+the mdev is subsequently removed, matrix_mdev is freed while the queue
+remains bound. A later call to vfio_ap_free_aqic_resources() dereferences
+the stale vdev pointer in vfio_unpin_pages(), causing a use-after-free.
+We will handle stale pointer tracking to avoid this dereference.
+
+>
+>> +		} else if (ret == -EBUSY) {
+>>   			pr_notice_ratelimited(WAIT_MSG, elapsed,
+>>   					      AP_QID_CARD(q->apqn),
+>>   					      AP_QID_QUEUE(q->apqn),
+>>   					      status.response_code,
+>>   					      status.queue_empty,
+>>   					      status.irq_enabled);
+>> +			continue;
+>>   		} else {
+>> -			if (q->reset_status.response_code == AP_RESPONSE_RESET_IN_PROGRESS ||
+>> -			    q->reset_status.response_code == AP_RESPONSE_BUSY ||
+>> -			    q->reset_status.response_code == AP_RESPONSE_STATE_CHANGE_IN_PROGRESS ||
+>> -			    ret == -EAGAIN) {
+>> +			if (ret == -EAGAIN ||
+>> +			    q->reset_status.response_code == AP_RESPONSE_RESET_IN_PROGRESS ||
+>> +			    q->reset_status.response_code == AP_RESPONSE_STATE_CHANGE_IN_PROGRESS) {
+> [Severity: Critical]
+> Is it possible for `AP_RESPONSE_BUSY` to be missed in this retry check?
+>
+> If `ap_zapq()` inside the worker loop is rejected with `AP_RESPONSE_BUSY`,
+> `q->reset_status.response_code` is set to `AP_RESPONSE_BUSY`.
+> On the next iteration, if the queue becomes idle, `ap_tapq()` returns
+> `AP_RESPONSE_NORMAL` (ret = 0).
+>
+> Since `AP_RESPONSE_BUSY` is missing from the retry condition, the worker seems
+> to skip re-issuing the ZAPQ. It would fall through to `apq_reset_finalize()`,
+> falsely overriding the status to `AP_RESPONSE_NORMAL` and freeing the AQIC
+> resources. Can this leave secret keys intact and expose the host to wild
+> DMA writes?
+
+The AP_RESPONSE_BUSY was intentionally removed because it is not a valid 
+response code from ZAPQ. If it is returned from ZAPQ, it will fall 
+through to the default case in vfio_ap_mdev_reset_queue() because it is 
+not architecturally possible to receive that response code for ZAPQ.
+>
+>> +				status = ap_zapq(q->apqn, 0);
+>> +				memcpy(&q->reset_status, &status, sizeof(status));
+>>   				continue;
+>>   			}
+>
+> I also have a question about `vfio_ap_mdev_reset_queue()`:
+>
+> drivers/s390/crypto/vfio_ap_ops.c:vfio_ap_mdev_reset_queue() {
+>      ...
+> 	switch (status.response_code) {
+> 	case AP_RESPONSE_NORMAL:
+> 	case AP_RESPONSE_RESET_IN_PROGRESS:
+> 	case AP_RESPONSE_STATE_CHANGE_IN_PROGRESS:
+>      ...
+> }
+>
+> [Severity: High]
+> Does lacking `case AP_RESPONSE_BUSY:` here cause legitimately busy queues
+> to fail in the default case?
+>
+> If the queue is transiently busy, ZAPQ returns `AP_RESPONSE_BUSY`. Execution
+> falls to the `default:` branch, triggering a host WARN (falsely claiming a
+> hardware bug) and intentionally leaking AQIC resources without queueing the
+> worker to retry. Could this allow a guest that keeps the queue busy to cause
+> resource leaks and kernel warnings on the host when the device is removed or
+> reset?
+
+See response to the previous question. Since AP_RESPONSE_BUSY is not a
+valid response code for ZAPQ, it is in fact a hardware bug or an I/O
+issue or something of the sort.
+
+>
+
