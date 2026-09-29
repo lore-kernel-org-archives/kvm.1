@@ -1,38 +1,38 @@
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9BC051A754;
-	Tue, 29 Sep 2026 10:37:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4650A50B43F;
+	Tue, 29 Sep 2026 10:37:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790678241; cv=none; b=u9Q5fYbctdDidBHThbDmFTt+mWfvSOkGkd7d0jxfs3fb+CLcpHFO1C4I/h01FVKT4GRWjoerkvfrX33vpNAz177kZsse/k5D6GWFzOdJyzhAs9V3piGm33CEgovNhKAcF6ct4b7IkLY45SSV3OB1Yd6gPLsVd1MQf34fnLBsKgU=
+	t=1790678241; cv=none; b=oUaOv1HFfctYVLz6DW0JryjUQLZFHW8xgU/Tp1cCm06qLy3Y0UtKvxy84ZYgyugsflJFyE9BMKNJMp8qRbToowjDlf7vGeLBO5eWm07a1nP48wuU0bNxaR/tt0zT194fTR8NiTd1fhil2qT2Tqikq7k38D4DuRL8jFaaRv+8r/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790678241; c=relaxed/simple;
-	bh=7dAGAZt61NcYflfhAv0nDLW17VM0ti4kgeJDgL6NmkU=;
+	bh=69fvRkToTeX+F/KMnL03LHrqFoA/tWT4JJWe2Rr5SjE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ed7le2gWFsd1OesCYBl3t3zV0FXH1CJDcJg95n2tMaRUP0065KAacrZn737DipQ3a7kEt1BbnMl287knFxOMfU3YGPMePkVrmliRGeUuVycyd64tN3iU8g2CV73BP3kTg72kGbqJtTvNiiQs2o4rrSQcb7ZaGU8Dq2qAnM6u/6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=ljGVRr9d; arc=none smtp.client-ip=113.46.200.223
+	 MIME-Version:Content-Type; b=FE2Js5jPa1hfzaFbmYNYWCSo5MXZIDuFoWHZCRDefWd2PzoU/VX93Ip7sD7r4o1Cm55cSGJOM3T9yTWcDb0zIlTcKUrx3c4wfnwhiRxRCcOK+sK0rLS7iKPP3eVs2ji2+FKpWej2sJmSuIBBKR4xf3bSA2dEgMIqN4Z21oZzS1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=I8GkUGEY; arc=none smtp.client-ip=113.46.200.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="ljGVRr9d"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="I8GkUGEY"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=FG2fSrBLzTEi5cgZPg/wmj6p28Uf1X+o6OUro3L7LTw=;
-	b=ljGVRr9djyRE4Nc9scgYujgOAYfl8s9i1kh2EthogOwA4BFrUs6cZ6GZawsCn9OyBxbDJe1P+
-	Z0znAg+Rz4XKlsJ5d8Drw0f1+0hAkNZRjsplR4Ne6mu7GHDsLwEUC6zBhWPDo3iiHeXUD+LKDWQ
-	FxANwd2uTN7saIN91CWsX9w=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4hvDnZ4yH4zmV8f;
-	Tue, 29 Sep 2026 18:24:50 +0800 (CST)
+	bh=xOVL/ev52VgGnekwG/3m+mVjJWWVs31DVf2kAXdZSbk=;
+	b=I8GkUGEYFz/IyJR89y3PpljGHROkV3uzvpo0o85CwNU0uwy8xop+8WpfuHAF56cropz3WZvs/
+	w+Z9RJ9CHS9wdYpPEGDYsQbmtHhai4AziCPZ1s/ZPkiaNGqykONORyg1DtzLXixbCgt6AyPJX/J
+	ukSnbe7QgnLI/KO8XM6rN1U=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hvDnr2Qwpz1T4Fq;
+	Tue, 29 Sep 2026 18:25:04 +0800 (CST)
 Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
-	by mail.maildlp.com (Postfix) with ESMTPS id F20DA4055B;
-	Tue, 29 Sep 2026 18:36:58 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 6CAA34058E;
+	Tue, 29 Sep 2026 18:37:04 +0800 (CST)
 Received: from huawei.com (10.50.163.32) by kwepemr100010.china.huawei.com
  (7.202.195.125) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 29 Sep
- 2026 18:36:57 +0800
+ 2026 18:37:03 +0800
 From: Tian Zheng <zhengtian10@huawei.com>
 To: <maz@kernel.org>, <oupton@kernel.org>, <catalin.marinas@arm.com>,
 	<will@kernel.org>, <corbet@lwn.net>, <pbonzini@redhat.com>,
@@ -47,9 +47,9 @@ CC: <yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>,
 	<mark.rutland@arm.com>, <seanjc@google.com>, <rdunlap@infradead.org>,
 	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
 	<skhan@linuxfoundation.org>
-Subject: [PATCH v5 03/15] KVM: arm64: Introduce a dedicated walker for stage2 write-protect
-Date: Tue, 29 Sep 2026 18:36:43 +0800
-Message-ID: <20260929103655.85107-4-zhengtian10@huawei.com>
+Subject: [PATCH v5 10/15] KVM: Add kvm_arch_dirty_ring_size_updated() hook
+Date: Tue, 29 Sep 2026 18:36:50 +0800
+Message-ID: <20260929103655.85107-11-zhengtian10@huawei.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20260929103655.85107-1-zhengtian10@huawei.com>
 References: <20260929103655.85107-1-zhengtian10@huawei.com>
@@ -64,64 +64,59 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
  kwepemr100010.china.huawei.com (7.202.195.125)
 
-From: Leonardo Bras <leo.bras@arm.com>
+Draining a CPU-side dirty log buffer into the dirty ring requires
+sizing that buffer against the ring, which reserves room for a full
+flush. Add a kvm_arch_dirty_ring_size_updated() hook called right
+after kvm->dirty_ring_size is recorded, with a __weak no-op default.
 
-The new walker cleans the dirty bit on leaf entries, as well as clean
-the DBM bit in blocks so it still faults for lazy hugepage splitting when
-we enable FEAT_HDBSS in future patches.
+arm64 will use it to pin its HDBSS buffer size in dirty-ring mode.
 
-With disabled HDBSS, there should be no change in faulting behavior.
-
-Link: https://lore.kernel.org/all/20260901171558.2674031-4-leo.bras@arm.com/
-Signed-off-by: Leonardo Bras <leo.bras@arm.com>
 Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
 ---
- arch/arm64/kvm/hyp/pgtable.c | 30 ++++++++++++++++++++++++++----
- 1 file changed, 26 insertions(+), 4 deletions(-)
+ include/linux/kvm_dirty_ring.h | 1 +
+ virt/kvm/dirty_ring.c          | 4 ++++
+ virt/kvm/kvm_main.c            | 1 +
+ 3 files changed, 6 insertions(+)
 
-diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
-index 357b06648418..aa0448d3a6a4 100644
---- a/arch/arm64/kvm/hyp/pgtable.c
-+++ b/arch/arm64/kvm/hyp/pgtable.c
-@@ -1293,12 +1293,34 @@ static int stage2_update_leaf_attrs(struct kvm_pgtable *pgt, u64 addr,
+diff --git a/include/linux/kvm_dirty_ring.h b/include/linux/kvm_dirty_ring.h
+index eb10d87adf7d..c2b922791530 100644
+--- a/include/linux/kvm_dirty_ring.h
++++ b/include/linux/kvm_dirty_ring.h
+@@ -73,6 +73,7 @@ static inline void kvm_dirty_ring_free(struct kvm_dirty_ring *ring)
+ #else /* CONFIG_HAVE_KVM_DIRTY_RING */
+
+ int kvm_cpu_dirty_log_size(struct kvm *kvm);
++void kvm_arch_dirty_ring_size_updated(struct kvm *kvm);
+ bool kvm_use_dirty_bitmap(struct kvm *kvm);
+ bool kvm_arch_allow_write_without_running_vcpu(struct kvm *kvm);
+ u32 kvm_dirty_ring_get_rsvd_entries(struct kvm *kvm);
+diff --git a/virt/kvm/dirty_ring.c b/virt/kvm/dirty_ring.c
+index 572b854edf74..784f53c95b54 100644
+--- a/virt/kvm/dirty_ring.c
++++ b/virt/kvm/dirty_ring.c
+@@ -16,6 +16,10 @@ int __weak kvm_cpu_dirty_log_size(struct kvm *kvm)
  	return 0;
  }
 
-+static int stage2_wrprotect_walker(const struct kvm_pgtable_visit_ctx *ctx,
-+				   enum kvm_pgtable_walk_flags visit)
++void __weak kvm_arch_dirty_ring_size_updated(struct kvm *kvm)
 +{
-+	kvm_pte_t new = ctx->old & ~KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
-+
-+	/* We remove DBM on blocks so they can fault and get split */
-+	if (ctx->level < KVM_PGTABLE_LAST_LEVEL)
-+		new &= ~KVM_PTE_LEAF_ATTR_HI_S2_DBM;
-+
-+	/*
-+	 * We may race with the CPU trying to set the access flag here,
-+	 * but worst-case the access flag update gets lost and will be
-+	 * set on the next access instead.
-+	 */
-+	if (kvm_pte_valid(ctx->old) && ctx->old != new)
-+		WRITE_ONCE(*ctx->ptep, new);
-+
-+	return 0;
 +}
 +
- int kvm_pgtable_stage2_wrprotect(struct kvm_pgtable *pgt, u64 addr, u64 size)
+ u32 kvm_dirty_ring_get_rsvd_entries(struct kvm *kvm)
  {
--	return stage2_update_leaf_attrs(pgt, addr, size, 0,
--					KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W,
--					NULL, NULL,
--					KVM_PGTABLE_WALK_IGNORE_EAGAIN);
-+	struct kvm_pgtable_walker walker = {
-+		.cb	= stage2_wrprotect_walker,
-+		.flags	= KVM_PGTABLE_WALK_LEAF,
-+	};
-+
-+	return kvm_pgtable_walk(pgt, addr, size, &walker);
- }
+ 	return KVM_DIRTY_RING_RSVD_ENTRIES + kvm_cpu_dirty_log_size(kvm);
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 85f42289748d..d109062f6a1c 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -5011,6 +5011,7 @@ static int kvm_vm_ioctl_enable_dirty_log_ring(struct kvm *kvm, u32 size)
+ 		r = -EINVAL;
+ 	} else {
+ 		kvm->dirty_ring_size = size;
++		kvm_arch_dirty_ring_size_updated(kvm);
+ 		r = 0;
+ 	}
 
- void kvm_pgtable_stage2_mkyoung(struct kvm_pgtable *pgt, u64 addr,
 --
 2.43.0
 
