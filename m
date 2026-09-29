@@ -1,125 +1,143 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34173F58E9
-	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 05:52:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB4B3C2BB0;
+	Tue, 29 Sep 2026 05:55:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790661179; cv=none; b=RGuWL0Sjy90qs50c7w6x+HJWIOt2/wQysietOJL33UCkpjw1qxXgU0aTjs+PpXQDniAu6fHNDXawVxVE5rqQ3d34ymICoadTa5i67Fa7lOoA4ngBSdgbi26xWMmeOsp+lCjaievQ5KNjfN6/+KPPYtFAdodB0IUinrAy+YuMjTA=
+	t=1790661330; cv=none; b=fM81fA1M6O49AQOHFYM0PqvFGttU4RSLq7Sh8cHKQG4ZhSFSSauniUiQd5MY4KQaXnKfRbNvvjZSxGZ9QpKPI8FCCqB6DQa9Aq2bv8gIgmYqL1Bl+gqgr/4MZe2fQy33v0B1AVQONnfbaqdTtVEES/dFH3kax/lOLLB4FbkNGYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790661179; c=relaxed/simple;
-	bh=7e4sXeFJ3QQFNwKsifPZ++1Lx7HnmX4ToYVT7DdVoRI=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=l6QRoUvzJTGAvAzuameoPYORKiQWw+0OPsd27CprkpaGNwHhizVEfKm1nlb/6U7brhePaLRen70bMeJ9YZdnnaV2kz7dsYS5ekBJJ2NENfz7C0pn0RHzPD5r0gx7liRzd+D3MVgPmbBTSH+cBX8ryxEUp0XU9KJfZe7AttKoR1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--shrutiss.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gOJnlLgG; arc=none smtp.client-ip=209.85.210.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--shrutiss.bounces.google.com
+	s=arc-20240116; t=1790661330; c=relaxed/simple;
+	bh=Fp3ASAfdwGkKv8Do8YeHQOXYlQNzOd7+pSHNk78Jv+Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dWABAjaXMop+6EcfZ2cOGgjIrgZQnud02kwgH9hODq6d6XC1nz70Dzvr+I0jxHQxke4qvBdQCVMzTttYkJmIvejx3zDVbZC2ESc06z6qgjxmemu04aChig++bqdWmWTMqmEeTlUdf6AFO5CLSukYxJI6szhuAsb0elfbT/FflLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=AkPxVdjD; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gOJnlLgG"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8696b921ac0so3186752b3a.3
-        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 22:52:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790661177; x=1791265977; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Fd7XnyqI//p9q3JxaL37a85VvYx8Nu6XtCLQZOYJTA4=;
-        b=gOJnlLgGRN4pFi1AZ1GYgm92IO62uj3oLEVwXcH0Ue4bYcjH78mvM+AkFonFOSYMGz
-         CN2xCg2DjFvx2UOZYBMhpOv0j5hG9r3zEYLh6MVVvKZ2/ByEbeWWl2RgXhxXUOwuwRyA
-         MgXFSFOdEpKwOgc90Jt7WCsw/Yy/q3zYkTVerSjLDiZsYK8g7zqjMMpwdB5H29SzVlvb
-         LK0uVMLLrmWjlovXZNcnBB1dwh+2Ye7WxNAKOiBbBLQyepsZh52bj3izHxj2DRdKsAlZ
-         4eJLreKwlnhjvqyieqrbTPPmKel29uKHp+BO93uZChhaZnz3DDrVxdD0RbgmTk70IvVK
-         3y8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790661177; x=1791265977;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Fd7XnyqI//p9q3JxaL37a85VvYx8Nu6XtCLQZOYJTA4=;
-        b=Ogw9IfzL3HqTooXEmOle85Fml4lBrZX3OSol2EKWnYvHqRoc5bAqUbys8xgPe4uXaR
-         fj4tdJUN9i7HOrk2RO1DukreeSxuIS6VPQrTERFptANN47Pn43O5i22KP0fogSToMMN3
-         JNNo2Fne0Js5alelikuoaZcmWjsAzQYJYugIxpFCjsKhLpOm2xyjWTZozBuyZ1fnzlV4
-         68EWeXFG0jfvVGfIB0V0boASymDSq5yi9b7n+kZwmHoWfZQDi8czsav7P5Auf8fScoWa
-         zKCTcIsWGiYxVJWgiWa92kcJ0r+xktQs3STuxKeJumM5ciXLeo+gIA1OWfOWv7ZPuh0k
-         d9QQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwcpWjYLxoHOf9EFWhhZDGx3+f0Ud4taycNmo9RwbaiGHT2XNTPjtfDoZ23eJhD5GuLTTQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++kr8QlRY6iR/84/Ep/99lBi3ars3MQCgcN51mkBPWRN/PcVGAbL
-	WbGnSw65QCGSsVoWW/LpcpaZdxEsIGQkfiXM2UGi97fZ+Sysph3c4KCo6ayI1FFfRKmNK7cpa5H
-	jyHwc5tZGHoFpSA==
-X-Received: from pfje18.prod.google.com ([2002:a05:6a00:d2:b0:880:eb99:bc26])
- (user=shrutiss job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:408e:b0:87d:f382:14af with SMTP id d2e1a72fcca58-87e9cc174b4mr12314938b3a.1.1790661177115;
- Mon, 28 Sep 2026 22:52:57 -0700 (PDT)
-Date: Tue, 29 Sep 2026 05:52:55 +0000
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="AkPxVdjD"
+Received: from localhost (unknown [52.148.171.5])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 9874020B7166;
+	Mon, 28 Sep 2026 22:54:35 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9874020B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1790661276;
+	bh=RqvZ73cpuNzHe1b0yJARkZbhTnZBRPHAmgqGr1m2fww=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=AkPxVdjDCERw9peipuPPRQynyjaW2tN6h+VXzjWNM9NWri/sqSmXwEuD3q5SsBU2j
+	 oJNGtMBTSjefMRdFCTF44Lo7OHpaCjJQTKkOqtRzvcWLxVSFhNue0DluJSVFMigZEb
+	 NRAmYqCWk3RlxrpCOzuLOBZjh0CLngPFF4wQo8m8=
+Date: Mon, 28 Sep 2026 22:55:24 -0700
+From: Jacob Pan <jacob.pan@linux.microsoft.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ linux-coco@lists.linux.dev, iommu@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Alexey Kardashevskiy
+ <aik@amd.com>, Bjorn Helgaas <helgaas@kernel.org>, Joerg Roedel
+ <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>, Kevin Tian
+ <kevin.tian@intel.com>, Nicolin Chen <nicolinc@nvidia.com>, Samuel Ortiz
+ <sameo@rivosinc.com>, Steven Price <steven.price@arm.com>, Suzuki K Poulose
+ <Suzuki.Poulose@arm.com>, Will Deacon <will@kernel.org>, Xu Yilun
+ <yilun.xu@linux.intel.com>, Shameer Kolothum
+ <shameerali.kolothum.thodi@huawei.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, jacob.pan@linux.microsoft.com
+Subject: Re: [RFC PATCH v6 05/11] iommu: Add a helper to validate a vIOMMU
+ parent
+Message-ID: <20260928225524.00002b85@linux.microsoft.com>
+In-Reply-To: <20260928230328.GE1616761@nvidia.com>
+References: <179027891416.104879.10365675178574704349.b4-review@b4>
+	<yq5ald8pkhj7.fsf@kernel.org>
+	<20260925122305.GG9354@nvidia.com>
+	<yq5a5wzpr7b9.fsf@kernel.org>
+	<20260928121147.GP9354@nvidia.com>
+	<yq5azex1peqt.fsf@kernel.org>
+	<20260928161738.GB1616761@nvidia.com>
+	<20260928110854.00003ff0@linux.microsoft.com>
+	<20260928182022.GD1616761@nvidia.com>
+	<20260928152402.000079ce@linux.microsoft.com>
+	<20260928230328.GE1616761@nvidia.com>
+Organization: LSG
+X-Mailer: Claws Mail 3.21.0 (GTK+ 2.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260929055255.1380202-1-shrutiss@google.com>
-Subject: [PATCH] x86/apic/savic: Forward APIC_SPIV writes to the hypervisor
-From: shrutiss@google.com
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
-Cc: "H . Peter Anvin" <hpa@zytor.com>, Kishon Vijay Abraham I <kvijayab@amd.com>, Tianyu Lan <tiala@microsoft.com>, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	stable@vger.kernel.org, jxgao@google.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Shruti <shrutiss@google.com>
+Hi Jason,
 
-For Secure AVIC (SAVIC) guests, the hypervisor (KVM) emulates the LAPIC
-timer and LVT registers, while the guest's APIC backing page is kept in
-encrypted guest-private memory that the hypervisor cannot read.
+On Mon, 28 Sep 2026 20:03:28 -0300
+Jason Gunthorpe <jgg@nvidia.com> wrote:
 
-Currently, savic_write() updates APIC_SPIV (Spurious Interrupt Vector
-Register) only in the guest's private APIC backing page without
-notifying the hypervisor. Because the hypervisor never sees the guest
-set the APIC Software Enable bit (APIC_SPIV_APIC_ENABLED) in APIC_SPIV,
-it continues to treat the vCPU's Local APIC as software-disabled.
+> On Mon, Sep 28, 2026 at 03:24:02PM -0700, Jacob Pan wrote:
+> > > > > +arm_smmu_get_viommu_ops(struct device *dev, enum
+> > > > > iommu_viommu_type viommu_type) {
+> > > > >  	struct arm_smmu_master *master =
+> > > > > dev_iommu_priv_get(dev); struct arm_smmu_device *smmu =
+> > > > > master->smmu; 
+> > > > >  	if (!(smmu->features & ARM_SMMU_FEAT_NESTING))
+> > > > > +		return NULL;    
+> > > 
+> > > Though I wonder why would you check for
+> > > IOMMU_VIOMMU_TYPE_HYPERVISOR in the amd driver?
+> > >   
+> > It is an early capability check. AMD vIOMMUs require a nesting
+> > parent, while IOMMU_VIOMMU_TYPE_HYPERVISOR is parentless. Returning
+> > zero prevents the core from allocating an AMD vIOMMU and calling
+> > viommu_init() with a NULL parent. As you said above, AMD doesn't
+> > have a allowed vIOMMU type yet.  
+> 
+> I'm a bit confused why a hyperv root parition has an AMD iommu inside
+> it.. I thought that was what the hv-iommu-root driver was for?
+> 
+You are right, AMD iommu driver should never load in hyperv root.
+I introduced this check in AMD driver for completeness as part of the
+generic iommufd change.
+https://lore.kernel.org/linux-iommu/20260925190742.1575380-3-jacob.pan@linux.microsoft.com/T/#u
 
-When the hypervisor sees a vCPU's APIC as software-disabled, it forcibly
-masks all LVT writes (including APIC_LVTT for the local timer) and drops
-timer and fixed interrupts for that vCPU. On SMP guests, where secondary
-CPUs (APs) start with their emulated APIC reset to software-disabled,
-this prevents APs from receiving local timer interrupts and leaves them
-hung in idle (HLT) during boot.
+> But we should fix the AMD driver to have a type (ooops that is a
+> troublesome bug!),
+Agreed.
 
-Forward APIC_SPIV writes to the hypervisor via savic_ghcb_msr_write() in
-addition to updating the guest's APIC backing page so the hypervisor's
-APIC state stays in sync with the guest.
+> and you should call add-on-top drivers like TSM
+> before calling the real iommu driver..
+> 
+I am not seeing a need for mshv to use the add-on driver like TSM,
+since MSHV is not layered on top of a physical IOMMU driver.
 
-Fixes: c822f58a4fab ("x86/apic: Populate .read()/.write() callbacks of Secure AVIC driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shruti <shrutiss@google.com>
----
- arch/x86/kernel/apic/x2apic_savic.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Also, we don't have a T=0 to T=1 transition, our intended external
+attach can be transitioned from a blocked domain, not from a paging
+domain to external.
 
-diff --git a/arch/x86/kernel/apic/x2apic_savic.c b/arch/x86/kernel/apic/x2apic_savic.c
-index dbc5678bc3b6..1ef4c5b6c494 100644
---- a/arch/x86/kernel/apic/x2apic_savic.c
-+++ b/arch/x86/kernel/apic/x2apic_savic.c
-@@ -214,7 +214,6 @@ static void savic_write(u32 reg, u32 data)
- 		break;
- 	case APIC_TASKPRI:
- 	case APIC_EOI:
--	case APIC_SPIV:
- 	case SAVIC_NMI_REQ:
- 	case APIC_ESR:
- 	case APIC_ECTRL:
-@@ -223,6 +222,10 @@ static void savic_write(u32 reg, u32 data)
- 	case APIC_EILVTn(0) ... APIC_EILVTn(3):
- 		apic_set_reg(ap, reg, data);
- 		break;
-+	case APIC_SPIV:
-+		savic_ghcb_msr_write(reg, data);
-+		apic_set_reg(ap, reg, data);
-+		break;
- 	case APIC_ICR:
- 		savic_icr_write(data, 0);
- 		break;
--- 
-2.55.0.1082.g2b9226bbc0-goog
+> > > Maybe hyperv should be a TSM?  Maybe we should also route the
+> > > get_viommu through the the "kvm" fd somehow?  
+> > Just to understand this better, are you suggesting to do away with
+> > hv-iommu-root driver in the context of external domain attach,
+> > instead let mshv (hyperv) register as a vIOMMU external provider?  
+> 
+> Maybe? I don't quite understand what you've got here..
+> If the VM path doesn't interact with the iommut at all, which is how
+> these CC cases are, then sure that might be a good idea.
+I do think keeping the hv-iommu-root route is cleaner and logical. I
+misunderstood your comment about "hyperv should be a TSM".
+
+> I think you are going to have module dependency issues trying to get
+> the mshv driver's info into the iommu driver, adding a "TSM" like
+> driver would resolve that. ie mshv could just provide the viommu.
+> 
+I introduced a similar registration interface in hv-common to solve the
+module dep issue. Will look into if I can leverage the vIOMMU helper
+here.
+
+> But, you do have a hv-iommu-root driver so it certainly can provide
+> the viommu too, if that can be done cleanly.
+> 
+> I guess think about it ?
+Yes, my RFC has hv-iommu-root provide the hypervisor vIOMMU directly,
+and I think the resulting layering is clean. Could you review that
+approach in the MSHV iommufd RFC thread? 
+
+> 
+> Jason
 
