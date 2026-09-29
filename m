@@ -1,146 +1,236 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F40A519DE9
-	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 10:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80E3D51476D;
+	Tue, 29 Sep 2026 10:47:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790678570; cv=none; b=osxkH4Nx66ZeOMcytjMa8GVSvSmMTdS6Msbrr6oWGAIUM8oBViXRV0hlEhYpYauxm63/36Mkzq++WxvF+npEmCK93z82JFnetK3XQ3sUjljT6OqFHJJEY2Dg+VPbdr55ANcGa5sQZSbM41WufMA3tbGvgZF+hib3/dhC2l3S7HQ=
+	t=1790678836; cv=none; b=utLzb39gcypQkjFO22wbnVsQw+by7BkSMWiSTAg4MHd/F7xfkxSenLH28YmbkLQs5n2nCodzJnA0Xm87jouVOKmQFAd95FMizjfZ0Q4Tpx3Jyiggd1x7gN+yGzgE/d8X8yZXTM55TDfWtek13GrRhSYlFdLe5Va6hYGGjqpYwR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790678570; c=relaxed/simple;
-	bh=rn5Gt3VFfBE5dKlYdI4q200gMKtpnsxlNkM21kxz64Q=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=XlLbUwOkavbV//TfSho+aHj91OVI/rtNG8VBjXjOMKutxI9+iJd45mjh+trm/trmhA2Lh/j1SERjv7RLtRTue+tmpgz2+yIDjBBYrVxA/PQMwJhGhYLBmTB2hqi97rmCTIoylSXi3ff9PupdcQJErW8RXx6qWzVxnaAau3kq7CA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jAO+Kju/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790678836; c=relaxed/simple;
+	bh=hDXphX09qKnZTaJnf2uETn6cTi5T0p2DOBdhFYlOQCQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RfoG+IxXV3bekOwH6qrr58MqhBwRiQ/q6h0Q3VZQy4ObHN8dBrofNSAaiFEsYM8cG6xIpheAG9+55XE2DeZQs9DQrWFkikB4vus+mk6HNi1hzx3sGFIKwhamtq20cmIwV4ADRyaCJdJ+KZYDGwUDNGzwek9UbcHw989915j6tng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=lKxkrxDj; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jAO+Kju/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431EC1F000FF;
-	Tue, 29 Sep 2026 10:42:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790678551;
-	bh=/R8pcZIGRThEQoVJHLHwhIMkJKVMFXKW85XHUDhOeoI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jAO+Kju/6arejod0esvLWepKArDD8EZ6l0J06c5ZeLdZI43ZEcSap2oGOwYlm66SY
-	 s68/mAXPixv5TouGeG/lhvfNOWY2usnODIXlgaHpjK3f8oMGvucZTmzXbKeOsQIoYK
-	 nPZh9xUCmUik650GbKlKKkZbFj6akA9k+p50wwJHPwX+8enuF83YkHXD7ZseMtoxKx
-	 ik555fkEE4V1Em3YgA/BH4hlmInVhJiqh6lZaxhyb21WeT7gUNDB5hcFxn4sO040pP
-	 uMMlOD3F8gW9fyElAvVoWUZrRd7LssR1AAUs5w2Lj4H+yS70Lclv1gsyOmyfisYOY1
-	 eeqHBpUkwjxYQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/4] LoongArch: KVM: Clear device pointer in irqchip
- destroy callbacks
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tao Cui" <cui.tao@linux.dev>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260929102821.36112-2-cui.tao@linux.dev>
-References: <20260929102821.36112-1-cui.tao@linux.dev>
- <20260929102821.36112-2-cui.tao@linux.dev>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 29 Sep 2026 10:42:30 +0000
-Message-Id: <20260929104231.431EC1F000FF@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="lKxkrxDj"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0CFC0143D;
+	Tue, 29 Sep 2026 03:47:02 -0700 (PDT)
+Received: from [10.57.12.116] (unknown [10.57.12.116])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 87A813F86F;
+	Tue, 29 Sep 2026 03:47:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790678825; bh=hDXphX09qKnZTaJnf2uETn6cTi5T0p2DOBdhFYlOQCQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lKxkrxDjvga5FOjH3t6Yj1iKwWagsd/wMmWoA1WYkVLzMM4llvhziG7QgcnfVdXib
+	 tu+C5uVpMbjZ+ckSbcRTtXaNmdq6FjJcWtA3LYkyHniieLc6R7hR35T/CrN9ou94HE
+	 IH6YjWHpRHoYZRCC0zogCsU5b0m6BAEs3zlVuGUQ=
+Message-ID: <26e097b4-58f6-42e1-ad7e-1b5c67673a21@arm.com>
+Date: Tue, 29 Sep 2026 11:47:01 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v18] arm64: mm: Handle Granule Protection Faults (GPFs)
+Content-Language: en-GB
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com
+References: <20260913070459.2547407-1-suzuki.poulose@arm.com>
+ <aqrGPK0lFBFXL2qY@arm.com> <985520fa-99b0-4620-bfee-8e6321b36104@arm.com>
+ <aqvCwM_73qMpqzvV@arm.com> <749ab0c9-810d-4989-8fa5-1706124f05bc@arm.com>
+ <arKVcjCOJf8p9rWL@arm.com> <4e315360-5b7a-4a0e-99c0-679a0271e625@arm.com>
+ <aruVrvQcYCGe0HJ6@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <aruVrvQcYCGe0HJ6@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Critical] kvm: loongarch: NULL deref and UAF via lockless irqchip destru=
-ction
---
+On 29/09/2026 11:40, Catalin Marinas wrote:
+> On Mon, Sep 28, 2026 at 12:01:18PM +0100, Suzuki K Poulose wrote:
+>> On 22/09/2026 15:49, Catalin Marinas wrote:
+>>> On Tue, Sep 22, 2026 at 02:21:13PM +0100, Suzuki K Poulose wrote:
+>>>> I had another look and we could handle this via kvm_fault_is_gmem_abort()
+>>>> see in arch/arm64/kvm/mmu.c:
+>>>>
+>>>>
+>>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>>>> index 87e49251e0447..af5a4bf961aae 100644
+>>>> --- a/arch/arm64/kvm/mmu.c
+>>>> +++ b/arch/arm64/kvm/mmu.c
+>>>> @@ -1731,6 +1731,9 @@ static int gmem_abort(const struct kvm_s2_fault_desc
+>>>> *s2fd)
+>>>>           gfn_t gfn;
+>>>>           int ret;
+>>>>
+>>>> +       if (!kvm_slot_has_gmem(s2fd->memslot))
+>>>> +               return -EINVAL;
+>>>
+>>> I wonder whether we should add a KVM_BUG_ON() here. With the rest of the
+>>> changes, we should never get in this situation. Well, to be revisited
+>>> for private devices.
+>>>
+>>> Also maybe move it to the caller, kvm_vm_mem_abort(), and not change
+>>> kvm_fault_is_gmem_abort(). Something like:
+>>>
+>>> 	if (private_ipa_fault(kvm, s2fd->fault_ipa) &&
+>>> 	    KVM_BUG_ON(!kvm_slot_has_gmem(s2fd->memslot), kvm))
+>>> 		return -EIO;
+>>>
+>>> To me it makes more sense for gmem_abort() to be called only *if* it's a
+>>> gmem slot. So any inconsistency, avoiding user_mem_abort() for private
+>>> memory, should be done in the caller. I assume the caller will also have
+>>> to route the private device path as well rather than rely on
+>>> gmem_abort().
+>>>
+>>>> +
+>>>>           if (!perm_fault) {
+>>>>                   memcache = get_mmu_memcache(vcpu);
+>>>>                   ret = topup_mmu_memcache(vcpu, memcache);
+>>>> @@ -2277,10 +2280,12 @@ static bool private_ipa_fault(struct kvm *kvm,
+>>>> phys_addr_t fault_ipa);
+>>>>    static bool kvm_fault_is_gmem_abort(struct kvm *kvm,
+>>>>                                       const struct kvm_s2_fault_desc *s2fd)
+>>>>    {
+>>>> -       if (!kvm_slot_has_gmem(s2fd->memslot))
+>>>> -               return false;
+>>>>           if (kvm_memslot_is_gmem_only(s2fd->memslot))
+>>>>                   return true;
+>>>> +       /*
+>>>> +        * For Realms, all private faults must be backed by GMEM.
+>>>> +        * TODO: Handle Trusted device private memory mappings.
+>>>> +        */
+>>>>           if (private_ipa_fault(kvm, s2fd->fault_ipa))
+>>>>                   return true;
+>>>>           return false;
+>>>>
+>>>>
+>>>> Also, I have the following hunk for preventing memslot modifications.
+>>>> I will add this to v20 integration branch, which is almost ready ;-)
+>>>>
+>>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>>>> index 582b48e34486b..87e49251e0447 100644
+>>>> --- a/arch/arm64/kvm/mmu.c
+>>>> +++ b/arch/arm64/kvm/mmu.c
+>>>> @@ -2783,6 +2783,18 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
+>>>>           }
+>>>>    }
+>>>>
+>>>> +static bool kvm_prevents_memslot_change(struct kvm *kvm, enum kvm_mr_change change)
+>>>> +{
+>>>> +       /* Cannot modify memslots once a pVM has run or Realm created */
+>>>> +       if (change != KVM_MR_DELETE && change != KVM_MR_MOVE)
+>>>> +               return false;
+>>>> +
+>>>> +       if ((kvm_vm_is_protected_pkvm(kvm) && pkvm_hyp_vm_is_created(kvm)) ||
+>>>> +            kvm_realm_is_created(kvm))
+>>>> +               return true;
+>>>> +       return false;
+>>>> +}
+>>>> +
+>>
+>> This needs to be tweaked for Realm to support non-secure device assignment.
+>> Aneesh reports that the Device assignment fails now,
+>> because the Device BAR reset deletes the memory slot and re-registers
+>> it, which the above change prevents.
+>>
+>> I will modify that to
+>> 1. Prevent "Guest-memfd" backed memory slot deletion. Makes sure that
+>>     nothing can replace a private memory slot.
+>> 2. Allow non-Guest-memfd backed memory slots to be created
+>>    after the Realm is created. We anyways prevent "private" memory
+>>    to be mapped from a non-Guest-memfd memslot.
+> 
+> Yes, I think this should be fine. But at least with the last version I
+> looked at, we did not prevent private memory from being mapped from
+> non-guest_memfd slots (there was a way to delete the gmem slot, add a
+> normal one while the guest does a private IPA access). If we prevent
+> gmem slot deletion, we no longer have this issue, although we should
+> warn somewhere on the user_mem_abort() both.
+> 
+> Anyway, to be discussed on the KVM patches, not here. I raised it
+> initially here as I was looking whether a non-gmem slot ever ends up
+> private and trigger the GPF.
 
-commit 1d2bf4dc9e1262efde3462bede6b473d0a4a01e5
-Author: Tao Cui <cuitao@kylinos.cn>
+Agree. For the record here is what the change looks like, to be included
+in v21 kvm-integration. We can discuss it with KVM changes.
 
-LoongArch: KVM: Clear device pointer in irqchip destroy callbacks
 
-The commit clears device pointers in the destroy callbacks for the four
-LoongArch irqchip devices to prevent dangling pointers. This addresses an
-issue where anon_inode_getfd() failures during KVM_CREATE_DEVICE can
-leave the VM alive with a freed irqchip device.
 
-> diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/=
-dmsintc.c
-> index bb7285c49df3a..4bd98b888e3f1 100644
-> --- a/arch/loongarch/kvm/intc/dmsintc.c
-> +++ b/arch/loongarch/kvm/intc/dmsintc.c
-> @@ -166,6 +166,7 @@ static void kvm_dmsintc_destroy(struct kvm_device *de=
-v)
->  		return;
-> =20
->  	kfree(dev->kvm->arch.dmsintc);
-> +	dev->kvm->arch.dmsintc =3D NULL;
+KVM: arm64: CCA: Prevent memslot modifications after Realm creation
 
-[Severity: Critical]
-Does setting this pointer to NULL after freeing it leave a window open for
-a use-after-free?
+Once the Realm is created, prevent any changes to guest_memfd backed
+memslots, as the private memory is provided by slots backed by gmem.
+This is also validated when we handle a fault for Realm Stage2.
 
-If anon_inode_getfd() fails during KVM_CREATE_DEVICE, the error path
-calls ops->destroy() locklessly. At the same time, concurrent KVM_IRQ_LINE
-requests can locklessly invoke kvm_set_irq(), which drops kvm->irq_srcu
-before calling the routing callbacks.
+Additionally, similar to pKVM, we do not support dirty logging or
+read-only memslots.
 
-If those callbacks read the pointer between the kfree() and this NULL
-assignment, won't they dereference freed memory? Does this ordering defeat
-any READ_ONCE() fixes intended for concurrent lockless readers?
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-[ ... ]
+diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+index 2e584a187602f..ea14f66ed9f29 100644
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@ -2726,17 +2726,28 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
+         hva_t hva, reg_end;
+         int ret = 0;
 
-> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/=
-pch_pic.c
-> index e7b77705c516a..5d046a1cab4e2 100644
-> --- a/arch/loongarch/kvm/intc/pch_pic.c
-> +++ b/arch/loongarch/kvm/intc/pch_pic.c
-> @@ -480,6 +480,7 @@ static void kvm_pch_pic_destroy(struct kvm_device *de=
-v)
-> =20
->  	kvm =3D dev->kvm;
->  	s =3D kvm->arch.pch_pic;
-> +	kvm->arch.pch_pic =3D NULL;
++       if (kvm_vm_is_protected(kvm)) {
++               if (new &&
++                   new->flags & (KVM_MEM_LOG_DIRTY_PAGES | 
+KVM_MEM_READONLY)) {
++                       return -EPERM;
++               }
++       }
++
+         if (kvm_vm_is_protected_pkvm(kvm)) {
+                 /* Cannot modify memslots once a pVM has run. */
+                 if (pkvm_hyp_vm_is_created(kvm) &&
+                     (change == KVM_MR_DELETE || change == KVM_MR_MOVE)) {
+                         return -EPERM;
+                 }
+-
+-               if (new &&
+-                   new->flags & (KVM_MEM_LOG_DIRTY_PAGES | 
+KVM_MEM_READONLY)) {
++       } else if (kvm_realm_is_created(kvm)) {
++               /*
++                * Once the Realm is created, we cannot modify any slots 
+that
++                * could be providing private memory. i.e., guest_memfd 
+backed
++                * slots.
++                * TODO: Handle trusted device private memory slots
++                */
++               if (kvm_slot_has_gmem(old) || kvm_slot_has_gmem(new))
+                         return -EPERM;
+-               }
+         }
 
-[Severity: Critical]
-Can assigning NULL here without synchronization lead to a deterministic NULL
-pointer dereference and host panic?
+         if (change != KVM_MR_CREATE && change != KVM_MR_MOVE &&
+diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+index 8756ea4c76619..5755422ddcb49 100644
+--- a/arch/arm64/kvm/rmi.c
++++ b/arch/arm64/kvm/rmi.c
+@@ -1196,6 +1196,7 @@ int kvm_activate_realm(struct kvm *kvm)
+         if (kvm_realm_state(kvm) >= REALM_STATE_ACTIVE)
+                 return 0;
 
-If kvm->arch.pch_pic is set to NULL locklessly here, and a concurrent
-KVM_IRQ_LINE ioctl calls into kvm_set_pic_irq(), the routing table
-execution happens after kvm_set_irq() drops irq_srcu:
++       guard(mutex)(&kvm->slots_lock);
+         guard(mutex)(&kvm->arch.config_lock);
+         /* Check again with the lock held */
+         if (kvm_realm_state(kvm) >= REALM_STATE_ACTIVE)
 
-virt/kvm/irqchip.c:kvm_set_irq() {
-    ...
-    idx =3D srcu_read_lock(&kvm->irq_srcu);
-    i =3D kvm_irq_map_gsi(kvm, irq_set, irq);
-    srcu_read_unlock(&kvm->irq_srcu, idx);
+> 
 
-    while (i--) {
-        int r;
-        r =3D irq_set[i].set(&irq_set[i], kvm, irq_source_id, level,
-                           line_status);
-    ...
-}
-
-The callback kvm_set_pic_irq() then blindly passes the newly-NULL pointer
-to pch_pic_set_irq() without checking it:
-
-arch/loongarch/kvm/irqfd.c:kvm_set_pic_irq() {
-    ...
-    pch_pic_set_irq(kvm->arch.pch_pic, e->irqchip.pin, level);
-    ...
-}
-
-Since pch_pic_set_irq() unconditionally dereferences the pointer:
-
-arch/loongarch/kvm/intc/pch_pic.c:pch_pic_set_irq() {
-    ...
-    spin_lock(&s->lock);
-    ...
-}
-
-Doesn't this mean an unprivileged userspace process exhausting file
-descriptors and concurrently injecting interrupts will trigger a host panic?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260929102821.3611=
-2-1-cui.tao@linux.dev?part=3D1
