@@ -1,285 +1,186 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC353822A1;
-	Tue, 29 Sep 2026 07:16:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790666183; cv=none; b=WaQzvdsfdG78xTUsxFEgLaq90l3UEiXBc20ug3R5EQphvYvFmsJ8CZzAWizcD+Pg9St3TR/NLmMW0lmSNR/ffUDBHYVaDCYgABXBQQCHOwx48fk+RqKYy63+HzjJVc1q7p5l613lF8j8ksvyV9jKBPe7BcWhSpoafrTMKPaD+9I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790666183; c=relaxed/simple;
-	bh=1KNSDVRh0rJHFPY3GyssGJ8thgeS3VYVzNRHLPdERFg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CDDDY9+rKa295Mg8LwUVLYplX6UI83ZyUwu5Z7o6r2ZHD8AromESytOPISX80HL1ZaTr/xGzNKm7ojVM1cI116BqhxZTFZkd+B/7Sex9ZdJUYwwEeoAMGbam5vPsLWR5sCy/FQS8uPrgsSVpCWHzuMhuu40Fq3ZB5RhVF7FIVO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ibm.com; spf=pass smtp.mailfrom=ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pnv94pym; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F3F3A59B1;
+	Tue, 29 Sep 2026 07:24:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790666658; cv=fail; b=TVSE2Iv7AqpdNtP/eerrtkwgLFb6hh+/VhE9WrkAy39FcxYKI6f+qiRMA4GY7v7xwuTnLn2ccV+KpcbR3mw6bFqhmM9BoRZMImPHoiTE0oe98ti73pbJ2OLlTRLno6hN+fNhVQjUqVioChkXmgqxK4mBWZ+fhTGG882ENPY3p38=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790666658; c=relaxed/simple;
+	bh=A+nLqGzLJeUYl5xKgslsu1GocXM3wkY4r6o1imsjQqM=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=pOyaBwpHzk/bx8LlG08QBnkihOq0DTeJ+EqWr/rIANE3RHAOuG/+jG5XtdzrlOBU4xFZ9xUO+E8/fGMo3Kfy7EOL0fcqIPMnMPsehMkJUAM2E1wWf7tx7b/q9OMyxUZ+FDEwzbMmoRenhaMAuki95ZchGScFcYBtxnfKbdjSFpI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KFT6xpz0; arc=fail smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pnv94pym"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68T46KHA3076706;
-	Tue, 29 Sep 2026 07:15:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=FZ9Juu
-	Ss/D+akfl91xU7OP2eBpxBAvfXWSZY4zEvYBU=; b=pnv94pymYS0IkF3b2G50M4
-	RVkV8lncqhwY25+KxnAPc7KJwZVwdpd0iKVIrj4PwxwfYDMRh5T+oR2yEtuzPbH2
-	kdv9XrbE4eQtQLFmYta2zPltzRW7rhH586EJ2ybEDNqh8OSAuakepqe+7Pt4n5mP
-	DGX5X/mETzLJG1sXOqDhr2Rb9wpxG36dw3L/5R+pFX+nps9uXskpE6ZIFYlEJcWJ
-	g08Vtu+2FfMj+4am4v8c63suUwZPSmRO2N3qPwVCozQd+Ycy+/YuLD8AUcNxhXzb
-	L8/IXF/12LKdKDVVQyMOqk7m12zbbTGC4wNJ68wXadbZIqsb5kDKowEw1/TRnTvQ
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5j55tup-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 29 Sep 2026 07:15:48 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68T4HjaP4070253;
-	Tue, 29 Sep 2026 07:15:47 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gxtkg8h5r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Sep 2026 07:15:47 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68T7F1jI63111648
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 29 Sep 2026 07:15:01 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9B92B5803F;
-	Tue, 29 Sep 2026 07:15:45 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C7B0358056;
-	Tue, 29 Sep 2026 07:15:33 +0000 (GMT)
-Received: from [9.39.21.128] (unknown [9.39.21.128])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 29 Sep 2026 07:15:33 +0000 (GMT)
-Message-ID: <e5a70518-9dfb-47e5-ac32-58b75c07a858@ibm.com>
-Date: Tue, 29 Sep 2026 12:45:30 +0530
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KFT6xpz0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790666656; x=1822202656;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=A+nLqGzLJeUYl5xKgslsu1GocXM3wkY4r6o1imsjQqM=;
+  b=KFT6xpz0LwhwPU4H3HBfWQEH6K55ex4SJ17kS3YZUR0IZyGfgC55qoSm
+   XVdPLJRiTIALWz8uhaDg0/IHRqMdXM5F0PeAwL4kZ06L0fmzJDLySzqtE
+   n9igqkvbbfXeWJ/MQPfP44Pz9svnHD7HobQaP6WktiycFL711H2JyeItw
+   2fnJRSFoDCG6RgijlUTGihToPwXSkB9eJuTtlwbEDKFt8E/6wNsPr5O5s
+   csCYm9FpbIQlP30vWyCvmEjX9rXuMdCpLz+Zaw8sha7RTWqZfZ9wFh/8i
+   05AZuxJc3byBxUOjrxZID54qU9i5w4XYRMgdQbEsrdayxjUvsvDwfHndJ
+   A==;
+X-CSE-ConnectionGUID: DBh/63b6Ti6a6jgUpvn0lw==
+X-CSE-MsgGUID: asOQ/UqpSNiycHGh8lBKbw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="102750396"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="102750396"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 00:24:15 -0700
+X-CSE-ConnectionGUID: DUcvPpKOSfSF2eAsXsglnQ==
+X-CSE-MsgGUID: 2p5DqBCOTvaKOh0BHIdzeQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="274814695"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 00:24:15 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 29 Sep 2026 00:24:14 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Tue, 29 Sep 2026 00:24:14 -0700
+Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.8) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 29 Sep 2026 00:24:14 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BMBfvuDk6qyqcrz3KygS6msP16yrR2fQioeZc2p/gSCqHVavrFlhUIX4pK3WBeiSGcwQi9S34ADIiiZgfeo5Zeue2Nmb/LBs/IzvAppz6bjEwXaCCAH5+Y0u1pR2+iGoEC/u8v5hOEIT9O3kCK1gFCL/77u9v46K6V3xu5mK8rTpS3nIYuD9xe5OOVKuKR/HhS/bUnQ1pXDPM3+GuHA4Ns6LQ7wN35iVFgzquAh+u1KHJgivSnm1B95L6eH7cRSWUWEOZUvNrTBVHQCrgiqhvt75VnEf586vdg3bt540Ma3emyuggJqFMPpBuCT3fS40yCd/nBDP6OO6uYEY0iDzpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jj7+pOAgBFZXVQxGVwKGK9v6Tdh549Zs7oFTvYkkQEo=;
+ b=uA2JGEqhJgBcaD9wTX5u9fBbV48bWBGNrNAICFCQY5LV/W6KagAXh5lksLRaghaGIBtfPrOz9UUgM/a3zbXnXPBMHMXGRCLJhF0m5dG4zFXd0od4o59E4KVRVt2jmfiBjm3uHRLGUqcusf1RHKgCtaHOvNc7CRO7igCxbDG0YAo9L4DJdEfsuab2ZhYpoobrpNgePv4jXSaTKNAAvwjhDYucE1LQdyDC3re153KRs74pa056gJvrKgHSC9AC1Tu4HYOD17B5d2xEDtDfgqsCCH3ZK5F5n4LSYSSd4+iJGXF4udpGuemgVzNhJoT0FBKalIyn3IXj41K4dwz1H4+eVA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH3PR11MB435924.namprd11.prod.outlook.com
+ (2603:10b6:610:34a::8) by SA3PR11MB7556.namprd11.prod.outlook.com
+ (2603:10b6:806:31f::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
+ 2026 07:24:12 +0000
+Received: from CH3PR11MB435924.namprd11.prod.outlook.com
+ ([fe80::1696:c90e:60af:a0cd]) by CH3PR11MB435924.namprd11.prod.outlook.com
+ ([fe80::1696:c90e:60af:a0cd%6]) with mapi id 15.21.0451.024; Tue, 29 Sep 2026
+ 07:24:12 +0000
+Date: Tue, 29 Sep 2026 00:23:52 -0700
+From: Peter Fang <peter.fang@intel.com>
+To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+CC: Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau
+	<kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, "Thomas
+ Gleixner" <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+	<linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<kvm@vger.kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, Binbin Wu
+	<binbin.wu@linux.intel.com>, Tony Lindgren <tony.lindgren@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>, Artem Bityutskiy
+	<artem.bityutskiy@intel.com>
+Subject: Re: [PATCH v5 6/6] virt: tdx-guest: Make the Quote buffer size
+ dynamic
+Message-ID: <artniA7jmNoK4Y2g@intel.com>
+References: <20260928100913.2265687-1-peter.fang@intel.com>
+ <20260928100913.2265687-7-peter.fang@intel.com>
+ <224672fa-8e29-4b0a-b472-6721e057b8a3@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <224672fa-8e29-4b0a-b472-6721e057b8a3@linux.intel.com>
+X-ClientProxiedBy: BY3PR03CA0015.namprd03.prod.outlook.com
+ (2603:10b6:a03:39a::20) To CH3PR11MB435924.namprd11.prod.outlook.com
+ (2603:10b6:610:34a::8)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/20] KVM: selftests: PPC pre-enabling
-To: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
-        Oliver Upton <oupton@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-        Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
-        Huacai Chen <chenhuacai@kernel.org>, Anup Patel <anup@brainfault.org>,
-        Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        Ritesh Harjani <ritesh.list@gmail.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>,
-        Steffen Eiden <seiden@linux.ibm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Zenghui Yu
- <yuzenghui@huawei.com>,
-        Atish Patra <atish.patra@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>,
-        David Hildenbrand <david@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-        loongarch@lists.linux.dev, kvm-riscv@lists.infradead.org,
-        linux-riscv@lists.infradead.org,
-        Itaru Kitayama
- <itaru.kitayama@fujitsu.com>,
-        Nicholas Piggin <npiggin@gmail.com>
-References: <20260902164123.2546762-1-seanjc@google.com>
-Content-Language: en-US
-From: Anushree Mathur <anushree.mathur2@ibm.com>
-In-Reply-To: <20260902164123.2546762-1-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI5MDAyOCBTYWx0ZWRfX4W62F1yk8l8n
- XRhO7dxw6DEBdNCkzVHNd7rm217fvhWBjLGNh2KVb7AZ6oSj/1GseOaZgbN6WYJGep0nXfw82O7
- jJOdA+BHclkxjO9Ket6CpoVz9mTJDmQ=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI5MDAyOCBTYWx0ZWRfX29hXdJK+LPTK
- cxwZVEFGcWGq/Mgo5FUIs2Vb4htVFQjwN8KlZwtb4sjWi5GeUTQcnBZbpE1O091Ihohaeuh5qkR
- SLpswNapgrgeZaNwRvBWGshWh7SXpWZgnE3wlbUUG8uCHLJnYNHq3PzZ/6PO4ms+P9cf1E8kgMY
- 9/GzKedeG8bpauhAcmM9Si0xRO+IzkXkqqbrkBV2yTKLPErnsIB9vtqbLM3S8SvO+uhIRBKupnc
- XLHQRfxTuk3WJIgYj1huHrtlzo4qHBfCjMIkb+EXNecZLXBk7ls9pat6npTqb56LiPtrNmbg5/h
- v1nDPuLvnwRP6XLiA4YRRw9MfHFT5zP1/vQQh/rgnHbqWeHrsgLfHlR5NVZK4aZy05CsaHl5QEA
- sPXalB7Hzb37c68E5EyXRywagkkFFrGZ1FcWNV4uV2zUQPqqU/b51FTOrRFYoqOZnQSvrSVpsWY
- iup3H4jBaxT2Nyul/yw==
-X-Proofpoint-GUID: lq-aGJq6ZdFWNGe-LVvOh1HYDcJzNXa4
-X-Authority-Analysis: v=2.4 cv=RKcmjIi+ c=1 sm=1 tr=0 ts=6abb65a5 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=1XWaLZrsAAAA:8 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=zvVxG0z6fLcq2R3n2ywA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: pfPYA5yzPUw02pptXEK0MLlNkLCDJqba
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-29_02,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 priorityscore=1501 spamscore=0 bulkscore=0 impostorscore=0
- adultscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609290028
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB435924:EE_|SA3PR11MB7556:EE_
+X-MS-Office365-Filtering-Correlation-Id: b1d18dea-07ec-408b-90ed-08df1dfaa8a2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|23010399003|22082099003|18002099003|10067099003|56012099006|11063799006|4143699003;
+X-Microsoft-Antispam-Message-Info: eGL/bR9WyBDlOH75yS9NCf8i+VfJoKtMGq1PWaNg3qwcKqgEZHxbCVdV4FSrRDcOH2ZmTIyUBnojiXcJrmWmspCvIEpPs2UmM4D63ZbfTzHkf7bzfnLoxKt9E+CYCaYxDI8FYTTAbMSWWj44PkYuk9+FI/4iVqe+sdt6yXMIAbufzEOE2ggPrw8JzXUHfH0yWNW3OYsmcc5IKiltOiv/7lQpox6OmbZJkeURJO8OyOCVpQWvT2XJTyjNobmtlkFWvcnDr9ce6D5qVRUTN2a2yjbR3fpzDxgTieC0zY9Q54HZzYlRKj6ht2CUm/GtyySOp5WIGIsWu1oPBUgKoQAE9DleMe7EGAeJNmLKcomvIpu1hZgXcSYFaryft8NMY/5gKoXMiSYLtSKJD+W9smRMZahOMN3dbTfgie17JGTTGwDsMqcvzPlFgRAh22EG0LHbElzKgW6bt0uTGWAXF4rXhgsjEElysX/U6lGhhrt1y3EJt+GIPMn1mDbUfeVlmy4CPl8Znu9ZllNXsuuewh2y3x9BCblaT/KMgVVAU3SjnGDV/+m/4OrYZojcAZ4nmvyTKFQeKDNj16bmj0HzsYBcSlaj7pIAJ2Y6Gflz16KSpXYgG+bK/VfgbhqtngqLppcfuccxIDqYF9JG8ltKESB1yR0GrCBH4kOT93YsqO6I83c=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB435924.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(23010399003)(22082099003)(18002099003)(10067099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Df88VnlK+h1Oej2Ms3e2KY+Cbf8Pqz8rJYDBOLgTmYxbVzxD165aFObrexI0?=
+ =?us-ascii?Q?oYQgmJBM1zvxBi3WfKxRVrCMnrxvCYPQiAu2b+YTUjXJ1asjdCkPbzfJrjsD?=
+ =?us-ascii?Q?MXZAa5uHIKsv3wVIq5T7dpzNfJlPUF034bBliV3jvw6aWbdjswAAnSxcmEU7?=
+ =?us-ascii?Q?tydPNv3Y8hJOzGDTKnaQ0T4nzeXFFAsOj25hW7YrS3KWVHlcsZQZdi2Iqtb5?=
+ =?us-ascii?Q?Z5T7Rk7yVl9vd0YLyW4PnXd6wWSqNMDlLDgNJJ2T14dQmwepYiDWeV25Itno?=
+ =?us-ascii?Q?QwoAWRpDPXPMpVRCH76kcL+l1kJjfF1H8XLnXNg9k359IRH8mXb9+/llQoqO?=
+ =?us-ascii?Q?7iMDsFtjNwiWnr6L+SDpKsOAy2LAAtIvvVGwBJTBR7Yg5d7NW4loxdmzunFI?=
+ =?us-ascii?Q?YyFncIB8JVWogVYuc/9F67eXmjTF2ZqovpiBpiVaFbzllwCfGfm9UwS1GF1j?=
+ =?us-ascii?Q?3RP955OWTcLX9tyN0AQXQyJjgLl5QJFP2mv1f4Ys+qqF5dnuuq/BflaDI/9o?=
+ =?us-ascii?Q?yXw8kcmEQPx7KCNOCFKuH3vr3S3It1v+3e2NshKiV/5iiV64/LZCWLAHWWyW?=
+ =?us-ascii?Q?sqYDUhddB5GZSaEx8dE/EA2/49LzBUoRB4CPFKfeZipllKcKfpPdgscFb7wf?=
+ =?us-ascii?Q?y1kWYDZ3Lig6B+D2vl4AD5+xIhYZ+tYNtt9Lj1Bevi65oxpWrE5O07HuK69K?=
+ =?us-ascii?Q?DKQ/7QNkW8RQdKs0yNNy32JYsfS+CZF6zjwZswFgs5FQGKMBGsMasI3YwK8i?=
+ =?us-ascii?Q?kYr+epMcm0Lyov40DbyCyOR/ngvYqEqcetPjillgZQxecjYKIx3CXsHapGdG?=
+ =?us-ascii?Q?TiQJ7qgdj1Z4L3czZLn+LwI/4DSYyZihc310Dh4NVypAcBu3z0xJ7Nj8926O?=
+ =?us-ascii?Q?rePJzBxr2xnhHwtu1Y15lbsZqsL7QddjeQ7UtRu6ebY9v2AYPjo2p4UmgYbl?=
+ =?us-ascii?Q?qPhVoAk6I/uulTASm+aGLodz/4otzPKNMrHdxmL5I8vHQL4nQg8vesp96D4N?=
+ =?us-ascii?Q?pSAu1a+tVqRoTNS7ayRvW2buwCsYM4ffddWrpEmshXftCjXK9sEVrgjeu5tu?=
+ =?us-ascii?Q?Tm+CjPeAf0O5JeT/vv16QM+yLn0XtzCyidfgX0Rjz75l2Eaopqvafv0ljjcn?=
+ =?us-ascii?Q?yAkMHYwKUw9fCOcHOmRircKO/Tq3ffkjTxwnrdgSIiE6UKwV3d+FN8dBcMqo?=
+ =?us-ascii?Q?8r5SvPeb2J5o5BcaizrjtJU8wY/x6QqZRdXS7jqNuBI7NWabvlWQ3vhfqL+g?=
+ =?us-ascii?Q?TFXlpt8Hagv655COGh7tnSlFo2Lb121IQDTFQndKJYD2mWbycj4ZxJ/Y2ZMN?=
+ =?us-ascii?Q?QfRIoRCugMwLBe4yN9rRsoKZXVL8T52LGn2flgKwsQdgFrf31Mw9WjevD2ng?=
+ =?us-ascii?Q?Cm4KOt3oQdPIom8p8dtXc2oOQN4QAGrYwhabNd2Nn2yIQmq6IzjJbOJuNzBU?=
+ =?us-ascii?Q?lXVcKJ9PWBl2TIYjmwVnpWrbO3Wv3vhcj06ksymkxHIQyOqo9ji2fE6NScsx?=
+ =?us-ascii?Q?qa6t8GYWPG1Z1lAEkhOLE9hGc8yC6WWSLI6pxrIKRdSltB9xTusT72z573jF?=
+ =?us-ascii?Q?0Qh6pQULZe1QERsRxKnHA33Prw0WGQn5Pq4YqVsm4RE9c1R7kGsQoOO4gdMx?=
+ =?us-ascii?Q?aqWPZL6EUFMkHxQrf6f34HlGitUDKL6ljk8mteF3lbv88+M9OM1LICTIMkh0?=
+ =?us-ascii?Q?J+22L5+gFtQx8Rqccha289LOsVW5I0qBc4mu4UVq4Y3QzfqInqh9TAWG57RW?=
+ =?us-ascii?Q?TXFgCRSuEw=3D=3D?=
+X-Exchange-RoutingPolicyChecked: biXCuejR+LdFTQn15spyyMqqO+tOGenuHje6Z4faTIsaUNZMKwaKvbxFMdt5mgnyjllE116cHFbAA7YhvP511Xep7wZlXnhHQ4XXr64ENCvmxtcHAEPYomdeSZfflZd458gotxtiXnTFlJiIXuPyZBcHd6ZodusgfCWp31Q/S7kp1MtHQDWlLNqWA4Td/FkUhLA61g5BPsMJGER+XQ3M192OGhlIu9QITS72LI7h0qJjBSkBmwIrjzuaePf/5Wd971j2BZbMhYjjE2lKQlyOjFZofzvBmvk81RB1MDM9XLDBOMoi/xAHipZ6NUBK9r4CHfrVjS7dAYRiqzZDniACuQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: b1d18dea-07ec-408b-90ed-08df1dfaa8a2
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB435924.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 07:24:11.9137
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vKX5jsWZPBawBqEBb3S6VCDgC9Yb23rwROcSgmLiNva66e2hjL18NJ3+5RCwkitCnfr0eZKL9txxaHQHdcCbOw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7556
+X-OriginatorOrg: intel.com
 
+On Mon, Sep 28, 2026 at 01:37:11PM -0700, Kuppuswamy Sathyanarayanan wrote:
+> Hi,
+> 
+> > 
+> > diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> > index 323e1efc78ea..847430fc639f 100644
+> > --- a/arch/x86/coco/tdx/tdx.c
+> > +++ b/arch/x86/coco/tdx/tdx.c
+> > @@ -213,6 +213,7 @@ int tdx_get_max_quote_size(u64 *max_quote_size)
+> >  
+> >  	return 0;
+> >  }
+> > +EXPORT_SYMBOL_FOR_MODULES(tdx_get_max_quote_size, "tdx-guest");
+> 
+> I think you can cleanup other exports consumed by tdx-guest driver
+> to use the same format (in a prep patch).
+> 
+> tdx_hcall_get_quote(), tdx_mcall_get_report0() and tdx_mcall_extend_rtmr(0.
 
-On 02/09/26 10:11 PM, Sean Christopherson wrote:
-> This is a big pile of cleanups and refactoring to prepare for PPC support in
-> KVM selftests.  PPC has paging modes that require multi-page page tables, and
-> those page tables need to be naturally aligned.  The original proposal was to
-> plumb in an @align param to the page allocators[*], but I didn't love the idea
-> of adding another rarely used param to the allocators.
->
-> v2:
->   - Collect tags. [Itaru, Bibo]
->   - Use 0x180000 as the min GPA for page table pages on LoongArch, instead of
->     changing every other arch to use 0x200000. [Sashiko, Bibo]
->   - Opportunistically move the vGIC LPI stress test's global "gpa_base" variable
->     into setup_memslot(). [Sashiko]
->
-> v1: https://lore.kernel.org/all/20260826230511.972824-1-seanjc@google.com
->
-> [*] https://lore.kernel.org/all/df86b5ccdbdafc3509d9538bd5e6796737bab2db.1781093720.git.ritesh.list@gmail.com
->
-> Nicholas Piggin (1):
->    KVM: selftests: Use goto instead of do-while to retry finding unused
->      physical pages
->
-> Sean Christopherson (19):
->    KVM: selftests: Use MEM_REGION_PT memslot instead of '0' for s390
->      regions/segments
->    KVM: selftests: Use the common minimum GPA for page tables on
->      LoongArch
->    KVM: selftests: Use vm_alloc_page_table() to allocate LoongArch page
->      tables
->    KVM: selftests: Rename "num" param to "nr_pages" for physical page
->      allocators
->    KVM: selftests: Extend page allocator to support naturally aligned
->      allocations
->    KVM: selftests: Make the single-page allocator APIs static inline
->    KVM: selftests: Use the innermost page allocator API in the memslot
->      perf test
->    KVM: selftests: Use the innermost page allocator API in s390's IRQ
->      routing test
->    KVM: selftests: Add a wrapper API to allocate multiple page table
->      pages
->    KVM: selftests: Initialize vm->memslots[] with invalid memslots during
->      creation
->    KVM: selftests: Add APIs to override memory region types with custom
->      memslots
->    KVM: selftests: Add TEST_EXTRA memory region type for "special"
->      memslots
->    KVM: selftests: Use TEST_EXTRA region in arm64's vGIC LPI stress test
->    KVM: selftests: Use TEST_EXTRA region in x86's smaller MAXPHYADDR test
->    KVM: selftests: Use TEST_EXTRA region in set memory region test
->    KVM: selftests: Take the memory region type, not memslot, in page
->      allocators
->    KVM: selftests: Use TEST_ASSERT(), not assert(), in
->      vm_get_mem_region()
->    KVM: selftests: Automatically pick min_gpa for allocations based on
->      region type
->    KVM: selftests: Add arch hook to force page tables to be naturally
->      aligned
->
->   .../selftests/kvm/arm64/page_fault_test.c     |  18 ++-
->   .../selftests/kvm/arm64/vgic_lpi_stress.c     |  21 ++-
->   .../testing/selftests/kvm/include/kvm_util.h  | 106 +++++++++++++--
->   tools/testing/selftests/kvm/include/x86/smm.h |   2 +-
->   .../selftests/kvm/lib/arm64/processor.c       |   4 +-
->   tools/testing/selftests/kvm/lib/kvm_util.c    | 127 +++++++++++-------
->   .../selftests/kvm/lib/loongarch/processor.c   |   5 +-
->   .../selftests/kvm/lib/riscv/processor.c       |   4 +-
->   .../selftests/kvm/lib/s390/processor.c        |   7 +-
->   .../testing/selftests/kvm/lib/x86/processor.c |  15 ++-
->   .../testing/selftests/kvm/memslot_perf_test.c |   3 +-
->   tools/testing/selftests/kvm/s390/cmma_test.c  |  19 +--
->   .../testing/selftests/kvm/s390/irq_routing.c  |   2 +-
->   .../selftests/kvm/set_memory_region_test.c    |   8 +-
->   .../x86/smaller_maxphyaddr_emulation_test.c   |   9 +-
->   15 files changed, 221 insertions(+), 129 deletions(-)
->
->
-> base-commit: 76671054f9a1ff6abb976583cd8da37650acdc97
+There's another patch on the list doing exactly that [1] (and queued),
+so I mentioned in the cover letter that perhaps these changes will
+eventually fit together.
 
-Hi Sean,
+[1] https://lore.kernel.org/all/20260925131808.2415177-1-nik.borisov@suse.com/
 
-Thanks for working on this patch series. I tested this series (v2) as a 
-base
-for Ritesh's PowerPC KVM selftest series (v5) [1] on two real 
-PowerPC(ppc64le)
-PowerVM & PowerNV systems. Your patches applied cleanly and the core 
-infrastructure
-changes worked correctly on PowerPC — exactly the foundation Ritesh's 
-series needed.
-
-
-Ritesh's patch series : 
-https://lore.kernel.org/linuxppc-dev/cover.1790101179.git.ritesh.list@gmail.com/
-
-Full test suite summary (make run_tests):
------------------------------------------
-                                    LPAR    bare-metal
-   demand_paging_test               PASS      PASS
-   dirty_log_test                   PASS      PASS
-   dirty_log_perf_test              PASS      PASS
-   guest_print_test                 PASS      PASS
-   hardware_disable_test            PASS      PASS
-   kvm_binary_stats_test            PASS      PASS
-   kvm_create_max_vcpus             PASS      PASS
-   kvm_page_table_test              PASS      PASS
-   set_memory_region_test           PASS      PASS
-   memslot_modification_stress_test PASS      PASS
-   memslot_perf_test                PASS      PASS
-   access_tracking_perf_test        PASS      PASS
-   irqfd_test                       SKIP      SKIP
-   vm_types_test                    SKIP      SKIP
-   --------------------------------------------------
-   Total                         12 PASS   12 PASS
-                                  2 SKIP    2 SKIP
-
-My Detailed testing analysis for your patches on PowerPC (ppc64le):
--------------------------------------------------
-Patches 1-5 [Page allocator and memslot refactoring]
-   Core page allocator and memslot infrastructure exercised by all 14
-   tests on both systems — no regressions observed.
-
-Patches 6-10 [Extended page allocator APIs]
-   Exercised via kvm_create_max_vcpus and memslot_perf_test on both
-   systems — APIs work correctly on PowerPC.
-
-Patches 11-13, 16 [Memslot initialization and TEST_EXTRA region]
-   set_memory_region_test and memslot_modification_stress_test ran
-   successfully on both systems — memslot init, TEST_EXTRA region, and
-   its usage in set_memory_region_test all working correctly.
-
-Patch 17 [Memory region type API]
-   Exercised by set_memory_region_test — PASS on both systems.
-
-Patch 18 [Use TEST_ASSERT() in kvm_util.c]
-   Exercised by all tests — no assertion failures observed.
-
-Patch 19 [Auto-pick min_gpa for PowerPC]
-   This is the critical patch for PPC — guest physical test memory
-   was correctly placed above 256M on both systems:
-     LPAR:       guest physical test memory: [0xfffffbfff0000, 
-0xfffffffff0000)
-     bare-metal: guest physical test memory: [0xfffffbfff0000, 
-0xfffffffff0000)
-
-Patch 20 [Add arch hook to force page table setup]
-   lib/powerpc/processor.c correctly hooks into this — guest page
-   tables set up correctly on both systems.
-
-Note: Patches 14 and 15 (arm64/x86-specific TEST_EXTRA usage) were
-not exercised as those tests don't build on PowerPC — as expected.
-
-
-Please feel free to add :
-
-Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
-
-Thank you,
-Anushree Mathur
-
+> 
