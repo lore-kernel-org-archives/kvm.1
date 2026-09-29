@@ -1,155 +1,218 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B6B50EBFE
-	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 12:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48602CCC6;
+	Tue, 29 Sep 2026 12:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790685809; cv=none; b=cDTHOiiEhxOlRgalZrljZCD19sXs0GinEV48YONI4Zz55p24CiJjNeM5rMo0E/3UmV0zj0A3VBDK6urA/+83SbSrsRDOKKcLrIj68wR3OyU4PI6Xpc231wf10+nCVE0UTpSOe5KI4YUPUoGbK+8DFEnO/5yVgbWPcB2O6uHrdUY=
+	t=1790685949; cv=none; b=BT3ukaeyKh2KqTim9xgz8TCz21x6t4Kk29w5s/2GStd+/c7cyjqxElzBy5NBH4IaGcnWcaxmHQebj5fsQA4qitiRQWj0unssa1/nB8PgNja6pkGEpO4rUCVYtRmhxx02EwF5Iv2jW4aBLuY5ao8agqiOGJk3Zj0/fjbwDTST+Uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790685809; c=relaxed/simple;
-	bh=dsmtcH1KUa8/Fv5TCQXae98WQoKQjz4Gj8d6RLEUcmk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fijxb16hOU7h9co+IqRcBjxcnKaAZgUsGKeL7VEumUXMRbwnC1Zoe+neB6V/5hG3d/wgXP8TGfwTVmkVc59I1YfN3MwfXPJ+WKQfCxUr9hP4I0hoTMVYjNwR9JtHfhoNHRtrtUaZR/TQV8ZJbi8v469x8Kn/osWPI1mVYg3ALE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aUyb3eI6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790685949; c=relaxed/simple;
+	bh=qnm2RhPFRDpTqXj55ishlxNlGXELwe5/rhYz9tjyx94=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=pWpFfYRA3m+/z9i8dt8kUsWLAtpKnEXo8UlD4+LfoZdJzmTbwpG1+zywqCUNciaFsf3sVo1/1QshYKOk0qXRV54eS+xGiWdIf+HXGfN0Dxf0IjPgzzcIbXBHNEa4nrsdGsTCL4alIVGyBQ/1n+B8bFU+Yv6F8vApmHiRH2VQGxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=owMivbsp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aUyb3eI6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7268A1F00893
-	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 12:43:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="owMivbsp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCFE1F000FF;
+	Tue, 29 Sep 2026 12:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790685807;
-	bh=01YLInGl/50+krWWqQhGHR/yvk2It1cDSicZVJPaDHQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=aUyb3eI6ziwjWdZZTNIsAfRshpUXxY/uvx/feq9CcbjMe6cAos40JfNtz5kiqOTeF
-	 0+rXSjwTDt2+xNsp5NMAPbthqLYYwKY+Th+wNez2nnUpxFq8x3+VqEVI6s5CDy/RW7
-	 GOQRSkfZTi6QHGmsfXwyNARrYZGRvQioMFUwCF2GAUOFHEd5G7oTsL3NvySGLu4lTW
-	 7S5U7Dr9eZn5g/9LphWOWlLwJhVg9bFEMIW9CAIclwrkjfJyhqkpwNneo6ueNkNw5+
-	 gzg7IRR1oka/7/C86y8KFPwMcvreXcU/G/ks469MxIqT5ws0NSPzWUWmyJW9UgKGkW
-	 PwpaAFd4eZt6w==
-Received: by mail-ed2-f35.google.com with SMTP id 4fb4d7f45d1cf-6aaf10bf094so5571553a12.2
-        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 05:43:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBywY2q5OZRZpoVorBlJQxg/7cXEPp+X6yqyfITPDG/gPobNLabkSQLkvVYF+cTU1Em/ADQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKQQDEMl35FyvwjMfquwb9Wp7u9wAWkCeec0UWwyFvkxF1x3uil
-	41XXcwB752hEfsI8GRASRVwIgn0up+fn6CNBEnG0fis7mS0TMISFvFRDKzhJDyD3naAvAY4+wSi
-	6Evh9hc3zoNCY3lbfNKHWHlMg6kV/cxo=
-X-Received: by 2002:a05:6402:454c:b0:6aa:734b:1a28 with SMTP id
- 4fb4d7f45d1cf-6aac8f828cdmr9987825a12.34.1790685806078; Tue, 29 Sep 2026
- 05:43:26 -0700 (PDT)
+	s=k20260515; t=1790685948;
+	bh=+PvuRUjwfVEYB0LlwC45wEHePseY0nNhXaBtNPmKXzE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=owMivbspanebUhaAPh5cLnsyGm9gfA5gdAsPctsT7RupcAB0EIueePVN68Nz9JHtw
+	 7cEWSZl/fe2CBgndkqKyWd0Xfn5564xJvM65JPRKvBsMf5q/fGj0k18n4uwOlZeGBa
+	 QNCDgcUxE2SOFtZB0pzVHuEN8K0b0hgS3Cy4N+ngaTD65paRc8NUYLU8yk4nbJtwx5
+	 QJ/Eu+Wc78RX1K5olW/krnYKow82y3nS7aaDo5f0a3Lu1PkYX5GTBXdEVz4BIhPn+T
+	 3kjrkFdc67b4pPIykIk3IHU/Xg9OXqdNOqVS2Qh1NWCus8kqKSbBNLvHidOeiaKIs0
+	 PGFcgqImjRs7Q==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: "Tian, Kevin" <kevin.tian@intel.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [RFC PATCH v6 08/11] iommufd: Add vIOMMU provider support
+In-Reply-To: <20260929121723.GI1616761@nvidia.com>
+References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
+ <20260917140159.1163281-9-aneesh.kumar@kernel.org>
+ <179027891417.104879.5995584402952067518.b4-review@b4>
+ <yq5acxu1kgmo.fsf@kernel.org> <20260925123918.GI9354@nvidia.com>
+ <CO1PR11MB483580AB119687B7EC2DD8518C8D2@CO1PR11MB4835.namprd11.prod.outlook.com>
+ <yq5atsn8posb.fsf@kernel.org> <20260929121723.GI1616761@nvidia.com>
+Date: Tue, 29 Sep 2026 18:15:39 +0530
+Message-ID: <yq5aqzicp6oc.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260929102821.36112-1-cui.tao@linux.dev> <20260929102821.36112-5-cui.tao@linux.dev>
-In-Reply-To: <20260929102821.36112-5-cui.tao@linux.dev>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Tue, 29 Sep 2026 20:43:13 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5GNKZSjB_MN2Vi7uhbf1q9nqqvsfwqF+THpkwk3dEhGQ@mail.gmail.com>
-X-Gm-Features: AclHuK8JCKLgJD0QHBNnHihyqU8NcdH-N30jZAFiC48CChMGSvffDsMY5HNhzHo
-Message-ID: <CAAhV-H5GNKZSjB_MN2Vi7uhbf1q9nqqvsfwqF+THpkwk3dEhGQ@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] LoongArch: KVM: Reject repeated PCH-PIC CTRL_INIT
-To: Tao Cui <cui.tao@linux.dev>
-Cc: maobibo@loongson.cn, gaosong@loongson.cn, zhaotianrui@loongson.cn, 
-	loongarch@lists.linux.dev, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel@xen0n.name, nagachaithanya9911@gmail.com, Tao Cui <cuitao@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-Hi, Tao,
+Jason Gunthorpe <jgg@nvidia.com> writes:
 
-On Tue, Sep 29, 2026 at 6:29=E2=80=AFPM Tao Cui <cui.tao@linux.dev> wrote:
+> On Tue, Sep 29, 2026 at 11:44:28AM +0530, Aneesh Kumar K.V wrote:
 >
-> From: Tao Cui <cuitao@kylinos.cn>
+>> tsm_viommu_get_ops() runs with pci_tsm_rwsem held for read and takes a
+>> temporary reference on the backend module (the CCA module). This keeps
+>> the selected ops callable until vIOMMU initialization completes. iommufd
+>> then drops the reference. This does not pin a particular TSM
+>> registration or prevent tsm_unregister().
 >
-> KVM_DEV_LOONGARCH_PCH_PIC_CTRL_INIT has no guard against repeated
-> invocation: every call overwrites pch_pic_base and registers the same
-> kvm_io_device on the MMIO bus at the new address, while
-> kvm_pch_pic_destroy() unregisters only one bus range.  After a repeated
-> init, MMIO to the stale ranges computes its register offset against the
-> new base and silently reads 0 / drops writes, and the leftover bus
-> entries persist until the VM is destroyed.
+> That seems over complicated. Maybe we can't get to the sane locking I
+> suggested earlier where TSM module is stable while a driver is bound,
+> but we absolutely must have sane locking where we can "pin" the tsm
+> for a pdev and it cannot be unregistered for long periods of time,
+> such as while a viommu/vdev exists.
 >
-> Reject repeated initialization with -EEXIST, tracking the state with
-> a has_init flag so the check and the MMIO base update are atomic
-> under slots_lock.  The base is only committed after a successful bus
-> registration, and the real registration error is propagated instead
-> of being replaced with -EFAULT.
+> That period should start right before getting the ops and continue to
+> until the viommu is destroyed.
 >
-> Fixes: d206d9514873 ("LoongArch: KVM: Add PCHPIC user mode read and write=
- functions")
-> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-> ---
->  arch/loongarch/include/asm/kvm_pch_pic.h |  1 +
->  arch/loongarch/kvm/intc/pch_pic.c        | 12 ++++++++++--
->  2 files changed, 11 insertions(+), 2 deletions(-)
+> No hot unplug of tsm modules while things are active.
 >
-> diff --git a/arch/loongarch/include/asm/kvm_pch_pic.h b/arch/loongarch/in=
-clude/asm/kvm_pch_pic.h
-> index 887b0431fd20..679132d840e6 100644
-> --- a/arch/loongarch/include/asm/kvm_pch_pic.h
-> +++ b/arch/loongarch/include/asm/kvm_pch_pic.h
-> @@ -53,6 +53,7 @@ struct loongarch_pch_pic {
->         spinlock_t lock;
->         struct kvm *kvm;
->         struct kvm_io_device device;
-> +       bool has_init;
->         union pch_pic_id id;
->         uint64_t mask; /* 1:disable irq, 0:enable irq */
->         uint64_t htmsi_en; /* 1:msi */
-> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/=
-pch_pic.c
-> index 7a704f18880d..a884a043feef 100644
-> --- a/arch/loongarch/kvm/intc/pch_pic.c
-> +++ b/arch/loongarch/kvm/intc/pch_pic.c
-> @@ -282,16 +282,24 @@ static int kvm_pch_pic_init(struct kvm_device *dev,=
- u64 addr)
->         struct kvm_io_device *device;
->         struct loongarch_pch_pic *s =3D dev->kvm->arch.pch_pic;
-Why so complicated? The below is enough, no?
 
-diff --git a/arch/loongarch/kvm/intc/pch_pic.c
-b/arch/loongarch/kvm/intc/pch_pic.c
-index 2b63b0c2c7ce..7855d78304b7 100644
---- a/arch/loongarch/kvm/intc/pch_pic.c
-+++ b/arch/loongarch/kvm/intc/pch_pic.c
-@@ -281,6 +281,9 @@ static int kvm_pch_pic_init(struct kvm_device
-*dev, u64 addr)
-        struct kvm_io_device *device;
-        struct loongarch_pch_pic *s =3D dev->kvm->arch.pch_pic;
 
-+       if (s->device->ops)
-+               return -EEXIST;
-+
-        s->pch_pic_base =3D addr;
-        device =3D &s->device;
-        /* init device by pch pic writing and reading ops */
+That is essentially how it works. I decided to take the module reference
+here and the tsm_dev reference in viommu_init() to keep the rest of
+viommu_alloc() cleaner. That is, we have:
+
+	struct module *owner = NULL;
+
+	ops = tsm_viommu_get_ops(idev->dev, cmd->type, &owner);
+
+	if (!ops) {
+		ops = iommu_dev->ops->get_viommu_ops(idev->dev, cmd->type);
+                
+	rc = ops->viommu_init(viommu, idev->dev,
+	if (rc)
+		goto out_put_hwpt;
+
+out_put_idev:
+	module_put(owner);
+
+The tsm_dev and module details are needed only by tsm_viommu, not by a
+generic SMMU driver. For viommu_init() to take ownership of the resources
+acquired by get_ops(), I would either need to add a viommu_info argument
+to viommu_init(), affecting all IOMMU driver implementations, or make the
+error handling conditional and awkward.
+
+What I have now is that get_ops() pins the module, so the CCA module
+cannot disappear after get_ops() returns. We retain that reference until
+viommu_init() completes, and viommu_init() establishes the long-term
+pins internally. This keeps the API simpler.
 
 >
-> -       s->pch_pic_base =3D addr;
->         device =3D &s->device;
->         /* init device by pch pic writing and reading ops */
->         kvm_iodevice_init(device, &kvm_pch_pic_ops);
->         mutex_lock(&kvm->slots_lock);
-> +       if (s->has_init) {
-> +               ret =3D -EEXIST;
-> +               goto out;
-> +       }
->         /* register pch pic device */
->         ret =3D kvm_io_bus_register_dev(kvm, KVM_MMIO_BUS, addr, PCH_PIC_=
-SIZE, device);
-> +       if (!ret) {
-> +               s->pch_pic_base =3D addr;
-> +               s->has_init =3D true;
-> +       }
-> +out:
->         mutex_unlock(&kvm->slots_lock);
+>> CCA vIOMMU initialization takes a tsm_dev reference, keeping the TSM
+>> object and its PCI/TSM resources alive until the vIOMMU is
+>> destroyed.
 >
-> -       return (ret < 0) ? -EFAULT : 0;
-> +       return ret;
->  }
+> iommufd should do this, so long as the viommu object exists the tsm
+> for it exists. It should not be inside tsm drivers.
 >
->  /* used by user space to get or set pch pic registers */
-> --
-> 2.43.0
+
+That would expose more TSM details to iommufd. The reference must also
+be acquired under pci_tsm_rwsem.
+
+/* Pin the current TSM and revalidate the selected vIOMMU operations. */
+struct tsm_dev * pci_tsm_viommu_get_tsm_dev(struct pci_dev *pdev,
+		enum iommu_viommu_type type,
+		const struct iommufd_viommu_ops *expected_ops)
+{
+	const struct pci_tsm_ops *ops;
+	const struct iommufd_viommu_ops *viommu_ops;
+	struct tsm_dev *tsm_dev;
+	int ret = -ENODEV;
+
+	{
+		guard(rwsem_read)(&pci_tsm_rwsem);
+		if (!pdev->tsm)
+			return ERR_PTR(-ENODEV);
+		if (pdev->tsm->tsm_dev->unregistering)
+			return ERR_PTR(-ENODEV);
+		ops = to_pci_tsm_ops(pdev->tsm);
+		if (!ops->viommu_get_ops)
+			return ERR_PTR(-ENODEV);
+		tsm_dev = pdev->tsm->tsm_dev;
+		/* Unlike get_device(), this also keeps PCI/TSM resources active. */
+		if (!tsm_try_get(tsm_dev))
+			return ERR_PTR(-ENODEV);
+
+		viommu_ops = ops->viommu_get_ops(&pdev->dev, type);
+		if (viommu_ops == expected_ops)
+			return tsm_dev;
+		if (IS_ERR(viommu_ops))
+			ret = PTR_ERR(viommu_ops);
+	}
+
+	tsm_put(tsm_dev);
+	return ERR_PTR(ret);
+}
+EXPORT_SYMBOL_GPL(pci_tsm_viommu_get_tsm_dev);
+
+
 >
+>> The initialization callback also takes a reference on the CCA module so
+>> that the vIOMMU callbacks remain available after iommufd drops the
+>> temporary discovery reference described above.
+>
+> The initial pin should do this since it is the only way to prevent
+> unregistration.
+>
+
+see above
+
+>
+>> For a link TSM-connected device, a vdevice holds a pci_tsm_context
+>> reference. The context holds device references and increments PF0's
+>> context_users under the PF0 mutex. PCI/TSM disconnect checks that count
+>> under the same mutex and returns -EBUSY while contexts remain. The
+>> context is released during vdevice teardown. This prevents link
+>> disconnect while a vdevice is active without blocking tsm_unregister().
+>
+> This one seems reasonable, but not sure a mutex is needed on top of a
+> a simple refcount scheme.
+>
+
+The PF0 mutex is already used by PCI/TSM to serialize some of these
+operations. I can double-check whether it is necessary here.
+
+>
+>> A new unregistering state is added to tsm_dev. tsm_unregister() sets it,
+>> unregisters the class device, and drops the registration reference. New
+>> vIOMMU allocations, vdevice contexts, and PCI TSM connect/lock
+>> operations reject the TSM once this state is set. Existing users retain
+>> their references and can be torn down normally, so tsm_unregister() does
+>> not need to wait for them. PCI/TSM teardown occurs when the last active
+>> tsm_dev reference is dropped.
+>
+> This seems over complicated, tsm unregistration should be made
+> impossible while it is not able to complete. We shouldn't need the
+> complexity of states here when we don't need to support tsm
+> hot-unplug.
+>
+>
+> ideally the module refcount handles this and the only way to trigger a
+> tsm remove is through module unload, with no sysfs path?
+>
+
+
+I agree. The existing code takes extra care to allow tsm_unregister().
+However, if unloading arm-cca-host.ko is the only way to trigger
+unregistration, as it currently is, we can avoid this complexity.
+
+-aneesh
