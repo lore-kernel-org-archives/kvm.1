@@ -1,148 +1,178 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBDA4F4043
-	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 14:13:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89D72E8B83;
+	Tue, 29 Sep 2026 14:18:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790691201; cv=none; b=EVeVdn737VxYVkJLQkDTJC7FD3GlXrO77D6iZiCndqvS3/gahTHoteoubt1p3oydq2EXRoh80hJdUERT7TKzhcy8XlL9dYDjkO4SMWMj0HQmmHiPMay7mheyj2VhOJhMEBefG6kxCAZsTM92cqudl4OP3bvn1t8wOCzlo5fEMQI=
+	t=1790691518; cv=none; b=lzzFoekV44j4VIqAvYtoAP5/03C2Thb0Xf0AXIEVuYTq1WYi+9PnT+ZLtg4o37Uoi6yCcW32jUaVhz5QO/2dy4yAAECKCNGChN+zCOtBahikMWii1jPIWEnUz8kOUmGS3NPGiNBTdLrcHLcBWD5RkTGoQCEZKCEMUMX+4vQfDWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790691201; c=relaxed/simple;
-	bh=QVNPYRjccZ4oE0aDn4xWSSlGbXx+ahF7r87kLGC0Jyo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=tAs0fv8YZ4miUAupgZAwXeXISdbk23UQkx+TlFA2msrCwz3mrO1XXolBJNvjEEfjROyc5tgo4GI7W7Vh+VDVnmB+wN8S55rxtF8gR+zNGGGbgee3/OJFGtYoQ1U/CeF5SF8L1ArwuflIUzBgwxupLHZvniekjHyvAfHCuy011q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=kKKbU149; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790691518; c=relaxed/simple;
+	bh=LqkNb6abpVDJXMXtvFunz9ROyI+WRLfictPOxtgcly0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Oie6RbxQJEZIP0mWpdw9zecdClSYDJ8PpnnMNcosWY/Fn5sc94ERo1RtvX6tMxD1AKUi79ogzlyOTdPr2dnkD5cw8wtDUaaDuS7FCjgyb3i5/rq2WNfVj2sAU9QBQu1bDrRtJzwjo+AXyU2DNDYGGMdSt7V1X/LeStDHPUNvG64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wi8prc5l; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="kKKbU149"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 790331476;
-	Tue, 29 Sep 2026 07:13:15 -0700 (PDT)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7211F3F86F;
-	Tue, 29 Sep 2026 07:13:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790691199; bh=QVNPYRjccZ4oE0aDn4xWSSlGbXx+ahF7r87kLGC0Jyo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kKKbU149tUlnraS3nYr9wtu6vKJQdOzXEFbhRRV3/uXmpH/2jzPVVUkKyP+hpi9ow
-	 214ijdoB+nVu5j+KKzuvLsjiAKn92Phh1iNfgaPxvSIUs5QWP+DNn1XQWonOQej3W6
-	 UGJLPUmJgo8tmDFkEftEJK0iZCuZAQfQqPPzPZLk=
-From: Leonardo Bras <leo.bras@arm.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH v1 3/3] KVM: selftests: dirty_log_perf_test: Add dirty-ring support
-Date: Tue, 29 Sep 2026 15:13:12 +0100
-Message-ID: <arvHeEVvnVmdtbSq@LeoBrasDK>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260929115347.5FE831F00898@smtp.kernel.org>
-References: <20260929113711.2064390-1-leo.bras@arm.com> <20260929113711.2064390-4-leo.bras@arm.com> <20260929115347.5FE831F00898@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wi8prc5l"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790691517; x=1822227517;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=LqkNb6abpVDJXMXtvFunz9ROyI+WRLfictPOxtgcly0=;
+  b=Wi8prc5ll2lQufwyFFpSfUNR/lcPizKyUzXCmvRlbbwwLjaIWbSUfTuD
+   18LZgBJ0ku2zTn/7TGkkUC0t3SvdXSh/qQBM15fNWw2VuQYpSw81jMCFL
+   uBIdQHTVKGEMx4l+wqzoeTXRAd8M3PqY0HcvieyEKnyan9wTYIZyMl+W9
+   CYCLizYq0gSd3wt3mO6tnM5fm5iAqSSm7SUKqHToj4rBkWTvt4JKai/7a
+   dko7jq7spVGVxJvBW4K26/1MWSQdVZSS8BwxeI3Ue/FjBlr1oEAEoBKO/
+   vD5HEUHePg9T+PmAZcjRgnhNslJ4tAHJVDZ1uw4PJfQUsY1Shqg4/kK3q
+   g==;
+X-CSE-ConnectionGUID: pFbBu0mPTz6dy3jFWu5GJA==
+X-CSE-MsgGUID: E6DtAjU1S8q980VSZNkG7w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="94123530"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="94123530"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 07:18:37 -0700
+X-CSE-ConnectionGUID: QEj2zho0R0aScPJ8qcrnvw==
+X-CSE-MsgGUID: 3S5G5ID3SqGUYGjpu4sFLQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="301659883"
+Received: from vverma7-desk1.amr.corp.intel.com (HELO [10.125.111.116]) ([10.125.111.116])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 07:18:34 -0700
+Message-ID: <d71b319c-5a72-4e2a-b46d-c22a5817a854@intel.com>
+Date: Tue, 29 Sep 2026 07:18:33 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 5/6] x86/tdx: Add a helper to query maximum Quote size
+To: Peter Fang <peter.fang@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Binbin Wu <binbin.wu@linux.intel.com>,
+ Tony Lindgren <tony.lindgren@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Artem Bityutskiy <artem.bityutskiy@intel.com>
+References: <20260928100913.2265687-1-peter.fang@intel.com>
+ <20260928100913.2265687-6-peter.fang@intel.com>
+ <61a63fcb-c40c-4259-b314-9ec63b0bc847@linux.intel.com>
+ <aruCUJObHUV-xt6q@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <aruCUJObHUV-xt6q@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 29, 2026 at 11:53:46AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] kvm: selftests: dirty ring collection time excludes lock wait time
-> --
+On 9/29/26 02:18, Peter Fang wrote:
+> On Mon, Sep 28, 2026 at 01:32:06PM -0700, Kuppuswamy Sathyanarayanan wrote:
+>> On 9/28/2026 3:08 AM, Peter Fang wrote:
+>>> TDX attestation report ("Quote") sizes can grow with newer crypto
+>>> algorithms, so guests can no longer rely on a fixed-size buffer for the
+>>> Quote.
+>>>
+>>> The TDX module added a new ABI that reports the largest possible Quote
+>>> size via a metadata field [1]. Add a helper to query the size instead of
+>>> exposing tdg_vm_rd() directly, as it can read arbitrary metadata fields.
+>>>
+>>> The reported size covers every Quote type the platform can produce,
+>>> including SGX-based Quotes.
+>>>
+>>> Thanks to Xu Yilun for suggesting this in an off-list discussion.
+>>
+>> If the patch is suggested by Xu Uilun you can use Suggested-by:
 > 
-> commit 2c539bfee74e383775f9c7f30033144876ad2f45
-> Author: Leonardo Bras <leo.bras@arm.com>
+> I think tip's preference is to use some prose rather than a tag for
+> these things [1]. So I'll probably keep the prose unless you have
+> objections?
 > 
-> KVM: selftests: dirty_log_perf_test: Add dirty-ring support
-> 
-> This commit adds dirty-ring support to the dirty_log_perf_test to enable
-> performance comparisons between dirty-bitmap and dirty-ring tracking
-> mechanisms.
-> 
-> > diff --git a/tools/testing/selftests/kvm/dirty_log_perf_test.c b/tools/testing/selftests/kvm/dirty_log_perf_test.c
-> > index 8f791ad7b86a8..af0ab654d46e2 100644
-> > --- a/tools/testing/selftests/kvm/dirty_log_perf_test.c
-> > +++ b/tools/testing/selftests/kvm/dirty_log_perf_test.c
-> [ ... ]
-> > @@ -29,9 +30,53 @@ static bool run_vcpus_while_disabling_dirty_logging;
-> >  
-> >  /* Host variables */
-> >  static u64 dirty_log_manual_caps;
-> > +static u32 dirty_ring_size;
-> >  static bool host_quit;
-> >  static int iteration;
-> >  static int vcpu_last_completed_iteration[KVM_MAX_VCPUS];
-> > +static struct timespec vcpu_dirty_ring_collect[KVM_MAX_VCPUS];
-> > +
-> > +static void dirty_ring_collect(struct kvm_vcpu *vcpu, u32 *ring_idx,
-> > +				struct timespec *ts)
-> > +{
-> > +	static pthread_mutex_t collect = PTHREAD_MUTEX_INITIALIZER;
-> > +	struct timespec start;
-> > +	struct kvm_dirty_gfn *dirty_gfns = vcpu_map_dirty_ring(vcpu);
-> > +	u32 idx = *ring_idx;
-> > +	u32 ring_size = vcpu->vm->dirty_ring_size / sizeof(struct kvm_dirty_gfn);
-> > +	int cleared, count;
-> > +
-> > +	pthread_mutex_lock(&collect);
-> > +
-> > +	clock_gettime(CLOCK_MONOTONIC, &start);
-> 
-> [Severity: Medium]
-> Since the timer is initialized after acquiring the lock, the time spent
-> waiting for the mutex is not recorded in the collection time. When multiple
-> vCPUs fill their dirty rings concurrently and wait on this lock, will this
-> lock contention time be incorrectly omitted from collect?
+> [1] https://lore.kernel.org/all/c1c9bddf-1c00-4625-a915-d545acd67fd0@intel.com/
 
-Yes, but that was a design choice.
+Actually, I'm not a huge fan of the prose in this case either.
+"Suggesting this" is not specific. What's the point of even mentioning it?
 
-> 
-> > +
-> > +	while (true) {
-> > +		struct kvm_dirty_gfn *cur;
-> [ ... ]
-> > @@ -43,24 +88,45 @@ static void vcpu_worker(struct memstress_vcpu_args *vcpu_args)
-> >  	struct timespec ts_diff;
-> >  	struct timespec total = (struct timespec){0};
-> >  	struct timespec avg;
-> > +	bool use_dirty_ring = !!vcpu->vm->dirty_ring_size;
-> > +	u32 ring_idx = 0;
-> >  	int ret;
-> >  
-> >  	run = vcpu->run;
-> >  
-> >  	while (!READ_ONCE(host_quit)) {
-> >  		int current_iteration = READ_ONCE(iteration);
-> > +		struct timespec collect = (struct timespec){0};
-> >  
-> >  		clock_gettime(CLOCK_MONOTONIC, &start);
-> > -		ret = _vcpu_run(vcpu);
-> > +
-> > +		do {
-> > +			ret = _vcpu_run(vcpu);
-> > +			if (!use_dirty_ring)
-> > +				break;
-> > +
-> > +			dirty_ring_collect(vcpu, &ring_idx, &collect);
-> > +		} while (!ret && run->exit_reason == KVM_EXIT_DIRTY_RING_FULL);
-> > +
-> >  		ts_diff = timespec_elapsed(start);
-> >  
-> > +		if (use_dirty_ring) {
-> > +			ts_diff = timespec_sub(ts_diff, collect);
-> 
-> [Severity: Medium]
-> Because collect does not include the lock wait time from
-> dirty_ring_collect(), subtracting it from ts_diff leaves the lock
-> contention overhead misattributed to the guest execution time. Doesn't this
-> artificially inflate the reported guest execution time and obscure the true
-> overhead of dirty ring synchronization?
-> 
+Responding to a minor review comment does not need to get documented,
+either in prose or in a tag. What part of the suggestion was so
+important that it needs to be remembered for all time as coming from Xu
+Yilun in the commit log?
 
-But that's what's going to happen in any VMM.
-Also, doing otherwise would fakely account for the cleaning part, which is 
-what we are trying to measure.
+It doesn't seem that important because I don't even see Xu Yilun on cc. ;)
 
-Thanks!
-Leo
+>>> +/*
+>>> + * Ask the TDX module what the largest possible Quote might be.
+>>> + */
+>>> +int tdx_get_max_quote_size(u64 *max_quote_size)
+>>> +{
+>>> +	u64 err;
+>>> +
+>>> +	err = tdg_vm_rd(TDCS_QUOTE_MAX_SIZE, max_quote_size);
+>>> +
+>>> +	/* Old modules do not support this. Tell the caller. */
+>>> +	if (err)
+>>> +		return -EINVAL;
+>>
+>> I think -ENODEV or -EOPNOTSUPP is more appropriate return value
+>> for unsupported case.
+> 
+> Hmm, I don't see either one being a common pattern for guest-side TDX
+> code. -ENODEV is usually used for some basic operation failure.
+> -EOPNOTSUPP is not used in the guest. But between the two I think
+> -EOPNOTSUPP probably fits better. Thanks.
+
+Just leave it alone. All that matters is that it is non-zero. If it were
+going out to userspace, we could argue all day about it, but it's not.
