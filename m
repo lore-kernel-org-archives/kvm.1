@@ -1,286 +1,184 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012049.outbound.protection.outlook.com [40.93.195.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24E83B38B9;
-	Tue, 29 Sep 2026 13:38:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790689107; cv=none; b=F4RFuw2sfc+4cZQkkXbSq5KCmx0droGYVb1cp/hqw1eJHvwBQQvJS1eP28ipkMgkbGUqRd3DFZkbDg32YR6HWjfIRUATGXG1FdccoKcOs81h0/sh1POcyJED/9QSb4qKyWPucZQwp4toys5eIlfrrftO0SgEZV3J98FemzOcVuc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790689107; c=relaxed/simple;
-	bh=LiTZ2CqzUEmT2+U5pU37fEvQKbAwfuMhEfoTh3UgvII=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tI/xR7BHXZ2IEFcUyiClZI6ecQEJF5tAf5Y4QErqi43TWjptpn6ajidgfkd80YTFM6f5+52aEGbLWs0Uhu89YAd6z/qoOmwBOZQCnEJ6DM8Z01NucvE2JPacE8mMNUPCARNDszP1Yka/G786H7jLYqeIJjiO8x9/Dwncd5RPK84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=NqA+B+IL; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9951D331202;
+	Tue, 29 Sep 2026 13:39:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790689194; cv=fail; b=QP/eRxhb1JOKlvzOoBDdcg/9HafZ2bOdSYUBoX0mE4rpTHDhLpRVLictdO0sOAVtkWisLM38lN2vF9xf0h9LuYm/xn3RXdkX5p9YEX2fF2WD0+2GUQOtPqHQ9E3WsRKmJzm1yKR10B+KZLOr0d3ihRQ+V1PoxXdWfMLgvlys9fw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790689194; c=relaxed/simple;
+	bh=jZhZ468FTagQfov/V0Lo1T+omqYn+46gJz3lTnnKjG4=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=tI2Trjgvkor0/yDeiFiivFeca6G6O1Wt9NPfv7k1yZvh0o8CFyRcg6+z5Bm6YhVRirYFNBtolRQ5AN4VLZUL+VlM76ujFDL0PukMFxHYvc8yXyNfM3dcYsZFR+BGlxbwEdg7fQGwssNQesDZ8+g9CRZlFYp893xJj4XEl8Vyal8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Fhb47ryH; arc=fail smtp.client-ip=40.93.195.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="NqA+B+IL"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68TB5YUE2187974;
-	Tue, 29 Sep 2026 13:38:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=+x5SJn
-	easI6AK27aTC2+v3wSsY8o47SiNhlvYQVxad0=; b=NqA+B+ILRAk0qDlfE8GnXJ
-	PPHsVt4DB2fZ33maZpsz7yhIPwmKvdtQYLXExfYlzVXT+byJ27bIvLDcSFVTELen
-	/QoQ4pqxGASD/hZwpYz01iIAzqVrST80xTxGDowwy+AhQav8GrN4o6o3HzxbzOny
-	o1lozP/v6xh1aYEbbn7WLgzlJmt+JUJbxMAfm++y5JuSg0XwuBI2wzfXdHdnc6jj
-	dR5h8AsBZnFdo49TKDeMzWCm9S9eqlppEyh52W2dqXwKOlWwWfteKQZxqTLt6Tn2
-	jgoOljnjw0aIYE/ehqzS2C1zIYCBgggGMCDrh7z6i2+nvuaqzPGTaCHgFHVhg5Hg
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5qr788k-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 29 Sep 2026 13:38:24 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68TAm2fl1617536;
-	Tue, 29 Sep 2026 13:38:23 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gxrrwa1fb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Sep 2026 13:38:23 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68TDcM6E26804852
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 29 Sep 2026 13:38:22 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 21DA658056;
-	Tue, 29 Sep 2026 13:38:22 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8718D5803F;
-	Tue, 29 Sep 2026 13:38:21 +0000 (GMT)
-Received: from [9.61.162.12] (unknown [9.61.162.12])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 29 Sep 2026 13:38:21 +0000 (GMT)
-Message-ID: <23656c81-a31b-408c-9f1f-d066a58c6192@linux.ibm.com>
-Date: Tue, 29 Sep 2026 09:38:21 -0400
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Fhb47ryH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qdwzXQrDE+854oZmRxuLpBYDDDqFnPulVdPW5Ooh5hvRhXufxaLAbkQ2R2tsE3ddRdI1lnSVbot90W324mI73Czq9eTtSjh6sbvQEMmpvb0wmmPqEoQVqgWUB1q2WVPwnFKbSd7FadAq0n2GTCdBdQ+4AgAfxdsiq4DGXsIY8rYnelBIM0SYrYtOMgoVdBTrJXaHRB9wnYlO/zHRBqjnCTtgxdP+oK0VIuehTVIU+KXGfBx5TRjsRDy3ppbre71TJ2jurQTXfhS2G2JD3VljDiddjljD/egnzvVeyaf2JjIDnN485EMxsxPY6+pS4B2W/d5jeWrEbwawhWclTHtK7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/DKxUVmlUNMF84gqISxc316RKHl7RXsVcNh3QJRCEOY=;
+ b=emObO0JqXuVN4wikCiK49bhO0r+5FoIOwBQd7lvQBBL1xTHYLYRqGGC4e1Owf0dig+GfNoAlHYxIwGYEYFpd4BfUkS5qPYyXkgbUVp5EV6MFqNG2yzGey7vNnR6kER02e4Cod63N17UJ0IcA9NLEAGnE31n6Qq5XHTJHIDyLm8iKhzXnhyWZwYIS30w0NgY6sjims6hKWqd5MxYd8c3nuQ2/+AcFPWOo2KUtI2LqzGAtaTbvN5sd+mgwnOgc4eSXvMUCUq/jJsEZH2V7diF6i10O/vGPIUpTtrFFnup/cCNPjjDVLLR6L6puFSXkybwyBicbqysU5FHCPPNr+8MSsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/DKxUVmlUNMF84gqISxc316RKHl7RXsVcNh3QJRCEOY=;
+ b=Fhb47ryHyYHVzE7RdYRQWpdeaCkDvvaImRX7MTP6wyfyYxdMQhaPJ+hfoWIuxRFfifPW+f1SAm5NqKGlfq1KBIEoc8aUX9z4cAJNCDb7wtwzprlhsmQdN4xwPBUUessAhOA9vz+NCz0GUbMHbnvNKvNT5kiKWhj+gJLlAVNl4TE=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by PH8PR12MB7352.namprd12.prod.outlook.com (2603:10b6:510:214::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.23; Tue, 29 Sep
+ 2026 13:39:49 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c%3]) with mapi id 15.21.0451.022; Tue, 29 Sep 2026
+ 13:39:49 +0000
+Message-ID: <720dbac3-24f6-4c91-899e-e205865c1fd1@amd.com>
+Date: Tue, 29 Sep 2026 15:39:42 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 16/23] dma-buf: Let importers ask how peer-to-peer
+ traffic is routed
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe
+ <logang@deltatee.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, iommu@lists.linux.dev,
+ Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+ linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
+ Chaitanya Kulkarni <kch@nvidia.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jens Axboe
+ <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
+ Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Sumit Semwal <sumit.semwal@linaro.org>
+References: <20260928-fix-p2p-acs-v4-0-v8-0-404453b9c435@nvidia.com>
+ <20260928-fix-p2p-acs-v4-0-v8-16-404453b9c435@nvidia.com>
+ <607e8903-a979-4d78-bf08-447321c03119@amd.com>
+ <20260929132305.GJ563127@unreal>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <20260929132305.GJ563127@unreal>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR4P281CA0225.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e4::17) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 1/6] s390/vfio-ap: Fix leaks of pinned NIB and
- registered GISC
-To: sashiko-reviews@lists.linux.dev
-Cc: Vasily Gorbik <gor@linux.ibm.com>, kvm@vger.kernel.org,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org,
-        Heiko Carstens <hca@linux.ibm.com>
-References: <20260929121837.2715710-1-akrowiak@linux.ibm.com>
- <20260929121837.2715710-2-akrowiak@linux.ibm.com>
- <20260929123327.D24FE1F0089A@smtp.kernel.org>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <20260929123327.D24FE1F0089A@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI5MDA1NCBTYWx0ZWRfX3fZS5wgC8vZa
- OpBr5xKnclaInC+f0wlolUccxZ+zeW8mtbgQtEksahOn9NzgxY9pNa579DQY3J9dm/D7JaC8JWo
- OScr6hYhDzSH3PMb7BUf/xFP/FxNk+/fkNwRCW1GahR1hsfUtvMp5wZiaeRhzUvU+rUTyy+9HNM
- YwB6vcxP5Ut/JSuen912ngaA1i6EI/NJC7nqg47GwyxB8oPX/+MoTQOndbut9tgdhcmvrEW6O+q
- rHvC4diTx6m02wJwoXifqUXcooJASqwmR+ZWVHnD5WZomhXDWmw3G77BRwy5mqHnNBRcuNE2pQk
- ShXb7+CqFUv8fuP1afd+WmtxMCVMyS7+8S/iNjrhscWO6lbZtScqMDOmC6ov4JrZBfsGJQPrfIX
- etgrnOYno1TpLHYw4q3zKjbYQhmDdD4lwMPfwYpgDZPdR8muGVvHUHG9ozwSCcmXlhr8Li02AiK
- v8aNtMxf08Np8EzQwGw==
-X-Authority-Analysis: v=2.4 cv=SPbXx+vH c=1 sm=1 tr=0 ts=6abbbf50 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=rORQQuJ1QDlRwYwXYLEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: LI-rj9vcVDm8Zrs-3UCkTbKFMHbJ-pVe
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI5MDA1NCBTYWx0ZWRfXxlrgQX3+CFvK
- Szz8gHjs2JkmqJWXUhdPEvFILKYqfM37d1hr20/z2jYSRZTSe/zSvHbWYq8epq22ecGFUYUw6CO
- g6mM/jdBDjEMc6rlchk8TZJ9qIg3TnA=
-X-Proofpoint-GUID: LI-rj9vcVDm8Zrs-3UCkTbKFMHbJ-pVe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-29_04,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 clxscore=1015 spamscore=0
- lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0 impostorscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609290054
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|PH8PR12MB7352:EE_
+X-MS-Office365-Filtering-Correlation-Id: 68f22e0c-83c5-4bfc-bd3c-08df1e2f21fd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|6133799003|11063799006|4143699003|10067099003|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	CPl3uXOKx1EK6QBm/zE8m3N/tJQZ/Ja58aZeSzT9mD9aAKmuHdZQ270iVR7Wrhq9QbIm0birr0rUFyuhdWvjFp+igIGAdlmx4t9VA/CnYdm3kpqEw/ldsHuDm8RaTIuq1keYxvgtmCXvWQNsxRkEQjr/fASCtF+1IZhrdhWQSSLBO9znd2f5DQbFO60wSTDyKzdvDJbED/JUl0r4exFS8Wy9DMkB7DzoUtdkDH5CmyfQ4Ci/qlO6p8o/OpnYQwTABrdPKSP+eLZb/ixxW2DWG0nGVsWkA7dO+Vl0bMGlDKZ5xFmpfRRBEl0RrEH89CoSKScp2A1+pW8z11TbQDftMPFFGarGbVn6Y/lu6u7hOBMWXjdLPgjAVtymxTzHymXTv0dzOsBUrIOsTOkr22ewTgRnpGDsKtbJZPaMWU7Rm5R7lWRjOq58ReI9XyUhAXSFdG4hcenqQBU0ZK+OXjE24vVa1HSUn6Nt1VZpeXhdi6NxOZLz/Gva7ck6kLQmQPTJX6ztNPgMYOhJgYpo99vIa6/h8Pw/Op4khfqGOrQJwx9zj6OtmVl0KTr6rcU8Th1BDCHCTEGlE8kUYkNFrXUWpd2Qv46P7j1csZM+houmrjpnzErQRTD+qDPdfVM1pHP4
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(6133799003)(11063799006)(4143699003)(10067099003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YVZtR1hIWHBIMitzRXZNUnNxWXcrYVg3Yy90SzFlL3hQTnYzMXdaQkRmZVI2?=
+ =?utf-8?B?NmhBL3hSK1FPTHpBM1pZVVFsejFQeFU4ZGpET3pIOWF6QjI2NXVxUnR4TkRr?=
+ =?utf-8?B?WTFQMkZWYzBVbDJ5WEQ5TVJvb3lMcFI0MUFIckxwSWs5L2VJQyszNTZuM3dC?=
+ =?utf-8?B?eEh5c01XSmh6OGRoUHRkdnZkWW9qUCtMSVVPWUtNWU5EWHhrUzFTamcxb3FH?=
+ =?utf-8?B?emdYSlBUeEd0RmU1UTNMTWNmMTVKeTN6a3ZBbm9jVTIrNDhxb21RdDNxNjFw?=
+ =?utf-8?B?MkV5MTdGN1k4VU1wd3B2bktRc285bUFwNm9SQ0g2Qk01OStsZ2g5RGw1bDdP?=
+ =?utf-8?B?cklwZGRVRUdCaVRBSjk2KytsSWdpSEpDOGxPU2NneTdXMmZIMzRyc1B2YzBu?=
+ =?utf-8?B?aTV2ZlJlK3hrSHFSeTgxWjQ0dGU1Nk8wbmdvYU1USXNNa290UzF4cGh3Ni9Z?=
+ =?utf-8?B?djQ0a2tCbG0xdlk1S1lhM2xQaWcxQVBGUHMxV3RQMHA3YVFXRThiUm5PV1Er?=
+ =?utf-8?B?L3QweForZk1jbC9TeHhYTGgxNEFiZVpURTFtUHhaY1hoenB1eXVnMlNmMUlh?=
+ =?utf-8?B?QkhNbEsyVExhMGZCWFo1dUNRZ1YxVGhjamVqNDRIRUZwNTJya1plMFB1bnZ5?=
+ =?utf-8?B?Mk0vLzNuUDlCWWNmOUZzMDJTdnQrRWF6SWhNMjBhY1ZCTlpjaEFFVzZTQ29S?=
+ =?utf-8?B?a0RpdThpZTA2MVNGVlk5UnY3Nlk4ZVM4MENsbWZjcVo2YmQzTnV2ZGZOay8v?=
+ =?utf-8?B?QmNEUU5CbEFGOFVaZ0tqMG9JZTBORVNuM0ZKUEtqTFBuS0FEbUEwc1NqcnAw?=
+ =?utf-8?B?R0ErZUxObXVjTkk0THB5VW03ZHlQT1ZtUEpuMVdkK0dwbjNwdCtmYjVxT2RW?=
+ =?utf-8?B?SHlOdzJENitiRGNwL0JzNThIeldzaTdIQ09ob3diLytjRldHOVVRWVFnNUUv?=
+ =?utf-8?B?U054cEVOQ3h1SE1UejNZNnNFOGVuMHhWNUgxM2tRcTlmTHZISERGTlBTcWxU?=
+ =?utf-8?B?VTBySVhWNFozWTdTOEViTmZTWjN3L3pCM25RZ24xZmFQc2Q5TWFVelU4cmhs?=
+ =?utf-8?B?aVZnSkRxY1dTcm8raEtSdk1URGIrZkk0QjdBeHZtdElmL1RCc1BFa3lCUWlT?=
+ =?utf-8?B?ZzM4RTN6MWpPYzFoNmVGQ2xqSlJ4ZVQwWnBTVEFmTzlaK0pJUXNiU0x1S2dG?=
+ =?utf-8?B?Q3QweEpmRWswSjFaSjZha3ZMMzIzZTB6RFNHZ09pVzR4clRTeWdVVHFXb0E2?=
+ =?utf-8?B?ZWVuQlIwdllqbWJsYVBsL2NLNWQrSGMwQXJOakxLdUJIektwZEd6bm5yR0Yw?=
+ =?utf-8?B?YmxtZkZwbzRST0FUVjBnRytHNmgrMkp0d0U5YUpIZW5IcWovRXowZi9qV1Qz?=
+ =?utf-8?B?STdOeWRXS2hpZXVVakNMZzg1NkYwaEltc0hMbGkzSVBsdkhvOFdyYnZWYWJm?=
+ =?utf-8?B?Z0VWTm9hMmh0MWY0eW9MelBXQ0J5V1N1UjRObENFZTZqaS9mSjMydjY0eHVV?=
+ =?utf-8?B?NjV5cnVQdUZZak9lRW5QWEdFVkRMcjJTSDNiWTdMOHF5Z3RzejBYUFprdHU0?=
+ =?utf-8?B?bzE0QkJMM2R5TWhsaThFZ2pmZ0FMNmpldnRsU1JrUFIxQUJyU2Zud0pndVUv?=
+ =?utf-8?B?U1J3YVNrQ0tnaEk1QjdLK1NOQ081cmF1eG03MnpUeTRHTG9zOG54WXZvZWYv?=
+ =?utf-8?B?Tlg5N3FDTXRsVjhBVVBqbHlySFB2bXBiU2J1K1RqdGN2V1pwbnBZSFNlT0wv?=
+ =?utf-8?B?dVV5ekJzK0ZXN2VsekZ5YlhkZWlxVEtzVDRNVGhYSFNNaTVaSkRJS09ieGd1?=
+ =?utf-8?B?c0JjRHZ6OHkzRTlRZzVhMlI0eDZQNlVxdmVKa0trT0l5WFgwV2tJbklIME1Q?=
+ =?utf-8?B?RXYwY1c5QllLbHRCandwUWh4aC83NDAyQTZDTEc3SmRJKzFpQy9KeG9vOFgv?=
+ =?utf-8?B?YmpvUkdBZERWL0NjWXNydlhpUDg5ZXBGWDJmMmprYmpCMWFzYjJYREJIZ1Nn?=
+ =?utf-8?B?clc2RTdTR3I2M3crNWd3M2dxSWdwOWczdFpWaDhkb0Q3TUx0eXErMC9NcHdK?=
+ =?utf-8?B?ck40TzFqWmdvYnFUd25HaFJKb2oyTVZjQmVLMU03MjRvbXdTWHJCblYwM2l5?=
+ =?utf-8?B?Y0h0UWc5NnFlTFVxSklLTmRxQnZ0ZmZ6bjdZQ0U2bnFUYzQzdEY2dFJEYmZl?=
+ =?utf-8?B?WUcyeHc2a2ErYnV4dHNDZFo1QjNkUm10QVJvQndTNXp2MHFzN3BZWDJaSnVT?=
+ =?utf-8?B?OC9lNmZRR0NJd1RjQnZVd2gzRjFycnBTK0x0bjVpWnVjM0tWV2lXOFVCdVpa?=
+ =?utf-8?Q?0v59DNI3iCLVUbUDbJ?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 68f22e0c-83c5-4bfc-bd3c-08df1e2f21fd
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 13:39:49.4000
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1xoKwk7vvB7JVNQYGOC8b+MbPksqBNN1o6DVPkYOw/hVayeswQvM6UCLWrBhVLAv
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7352
 
+On 9/29/26 15:23, Leon Romanovsky wrote:
+> On Tue, Sep 29, 2026 at 11:34:05AM +0200, Christian König wrote:
+>> On 9/28/26 13:19, Leon Romanovsky wrote:
+...>>
+>>> +	return pci_p2pdma_map_type_tlp(provider, attach->dev, tlp_flags);
+>>
+>> This function call here *must* be in the exporter and not the DMA-buf framework.
+>>
+>> So clear NAK to putting that here.
+> 
+> "Look, it is easy to complain you don't like how it looks, but this
+> stuff is hard there are lots of competing concerns, if you have a
+> better idea now is a good time to present it."
+> https://lore.kernel.org/all/20260921130858.GO11599@ziepe.ca/#t
+> 
+> Do you have a viable solution?
 
+Ok, that sounds like you haven't understood why I'm rejecting this.
 
-On 9/29/26 8:33 AM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 4 potential issue(s) to consider:
-> - [Critical] vfio_ap: Use-After-Free of vfio_device on AQIC resource release
-> - [High] vfio_ap: ABA pointer aliasing causes unintended KVM GISC unregistration
-> - [High] vfio_ap: Host panic due to VFIO BUG_ON when queue reset fails during unmap
-> - [Medium] vfio_ap: KVM GISC alert reference leak on dynamic queue unplug
-> --
->
-> commit 83f84bb0e3c067b95ee373106f589b768094e294
-> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
-> Subject: s390/vfio-ap: Fix leaks of pinned NIB and registered GISC
->
-> Several code paths in the vfio_ap driver failed to free the AQIC resources,
-> specifically the pinned guest NIB page and the registered guest ISC used to
-> enable interrupts for a queue. This commit adds fixes to handle response
-> codes and prevent memory exhaustion and depletion of KVM interrupt subclass
-> registrations during dynamic AP reconfiguration.
->
->> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
->> index 4db878c18f41c..e178b657faa8f 100644
->> --- a/drivers/s390/crypto/vfio_ap_ops.c
->> +++ b/drivers/s390/crypto/vfio_ap_ops.c
-> [ ... ]
->> @@ -254,90 +276,231 @@ static void vfio_ap_wait_for_irqclear(int apqn)
-> [ ... ]
->>   static void vfio_ap_free_aqic_resources(struct vfio_ap_queue *q)
->>   {
->>   	if (!q)
->>   		return;
->> -	if (q->saved_isc != VFIO_AP_ISC_INVALID) {
->> -		if (!WARN_ON(!q->matrix_mdev) && q->matrix_mdev->kvm)
->> -			kvm_s390_gisc_unregister(q->matrix_mdev->kvm, q->saved_isc);
->> -		q->saved_isc = VFIO_AP_ISC_INVALID;
->> +
->> +	if (q->aqic_resources.isc != VFIO_AP_ISC_INVALID) {
->> +		if (q->aqic_resources.kvm &&
->> +		    q->matrix_mdev && q->aqic_resources.kvm == q->matrix_mdev->kvm) {
->> +			kvm_s390_gisc_unregister(q->aqic_resources.kvm, q->aqic_resources.isc);
-> [Severity: High]
-> Can this equality check fall victim to an ABA problem? If the original guest's
-> struct kvm is freed and a new guest's struct kvm is allocated at the exact
-> same memory address, could this evaluate to true and mistakenly unregister
-> the new guest's GISC, silently stopping its AP interrupts?
+By moving the calls to pci_p2pdma functions into DMA-buf you bypass the NAK to expose those functions to drivers from the DMA maintainers.
 
-Not valid. `vfio_ap_mdev_set_kvm()` takes a `kvm_get_kvm()`
-reference before storing the pointer, so the struct cannot be
-freed while the mdev holds it. `vfio_ap_mdev_unset_kvm()` sets
-`matrix_mdev->kvm = NULL` before dropping the ref, so by the
-time the struct could be freed the comparison cannot be true.
+I unfortunately didn't understood that when the dma-buf-mapping.c code was added and just assumed that you just needed a place to put some common code.
 
->
-> [Severity: Medium]
-> If a queue is hot-unplugged from a running guest via sysfs and the reset
-> fails, the AQIC resources are intentionally leaked and q->matrix_mdev is set
-> to NULL. If the queue recovers later, will bypassing
-> kvm_s390_gisc_unregister() permanently leak the KVM GISA alert reference for
-> the still-running guest?
+So as long as that NAK from the DMA maintainers to expose the pci_p2p functions to drivers stand I will push hard to get that stuff removed again from DMA-buf as well.
 
-Not valid. `kvm_s390_gisa_destroy()` zeroes `gi->alert.mask`
-and sets `gi->origin = NULL` on guest teardown. After that,
-`kvm_s390_gisc_unregister()` returns -ENODEV harmlessly. The
-KVM teardown path cleans up the GISC registration regardless
-of whether vfio-ap explicitly calls unregister.
+What you try to do here is seriously not ok and I will push back hard on that in the future.
 
->
->> +		} else {
->> +			report_gisc_unregister_failure(q);
->> +		}
->> +		q->aqic_resources.isc = VFIO_AP_ISC_INVALID;
->> +		q->aqic_resources.kvm = NULL;
->>   	}
->> -	if (q->saved_iova && !WARN_ON(!q->matrix_mdev)) {
->> -		vfio_unpin_pages(&q->matrix_mdev->vdev, q->saved_iova, 1);
->> -		q->saved_iova = 0;
->> +
->> +	if (q->aqic_resources.iova) {
->> +		if (q->aqic_resources.vdev)
->> +			vfio_unpin_pages(q->aqic_resources.vdev, q->aqic_resources.iova, 1);
-> [Severity: Critical]
-> Is it possible for the q->aqic_resources.vdev pointer to become dangling here
-> if the original matrix_mdev was destroyed? If a queue reset failed previously
-> and the resources were kept leaked, the queue would retain the unreferenced
-> vdev pointer while the matrix_mdev is freed. Could a subsequent reset or
-> reassignment trigger a use-after-free when dereferencing it for
-> vfio_unpin_pages()?
+Regards,
+Christian.
 
-Not valid in practice. `vfio_ap_mdev_remove()` flushes all
-reset work before calling `vfio_put_device()`, so
-`vfio_ap_free_aqic_resources()` — the only site that
-dereferences `vdev` — always completes before `matrix_mdev`
-is freed. No reachable path calls it on a detached queue.
-
->
->> +		else
->> +			pr_warn_ratelimited("APQN %02x.%04x: Failed to unpin NIB page at %pad\n",
->> +					    AP_QID_CARD(q->apqn),
->> +					    AP_QID_QUEUE(q->apqn),
->> +					    &q->aqic_resources.iova);
->> +		q->aqic_resources.iova = 0;
->> +		q->aqic_resources.vdev = NULL;
->>   	}
->>   }
-> [ ... ]
->> @@ -489,27 +658,48 @@ static struct ap_queue_status vfio_ap_irq_enable(struct vfio_ap_queue *q,
->>   	status = ap_aqic(q->apqn, aqic_gisa, h_nib);
->>   	switch (status.response_code) {
->>   	case AP_RESPONSE_NORMAL:
-> [ ... ]
->>   		vfio_ap_free_aqic_resources(q);
->> -		q->saved_iova = nib;
->> -		q->saved_isc = isc;
->> +		q->aqic_resources.iova = nib;
->> +		q->aqic_resources.isc  = isc;
->> +		q->aqic_resources.vdev = &q->matrix_mdev->vdev;
-> [Severity: Critical]
-> Does this code need to acquire a lifecycle reference to the vdev pointer
-> before storing it here? Snapshooting the embedded pointer from matrix_mdev
-> without taking a reference appears to expose the use-after-free discussed
-> above if the mediated device goes away.
-
-Not valid in practice, same reason as Comment 3. Taking a
-vfio ref would also be wrong: `vdev` is embedded in
-`matrix_mdev`, so holding a ref while resources are
-intentionally leaked would prevent the mdev from ever being
-freed — introducing a new leak.
-
->
->> +		q->aqic_resources.kvm  = q->matrix_mdev->kvm;
->>   		break;
-> [ ... ]
->> @@ -1857,8 +2046,29 @@ static void unmap_iova(struct ap_matrix_mdev *matrix_mdev, u64 iova, u64 length)
->>   	int loop_cursor;
->>   
->>   	hash_for_each(qtable->queues, loop_cursor, q, mdev_qnode) {
->> -		if (q->saved_iova >= iova && q->saved_iova < iova + length)
->> +		if (q->aqic_resources.iova >= iova && q->aqic_resources.iova < iova + length) {
->>   			vfio_ap_irq_disable(q);
->> +			/*
->> +			 * If AQIC disable was unable to confirm that interrupts were
->> +			 * disabled (IR=0), q->aqic_res.iova remains non-zero. VFIO
->> +			 * core requires the mapped pages to be unpinned during DMA
->> +			 * unmap notifications (or type1 IOMMU will BUG_ON after 10
->> +			 * retries).
->> +			 *
->> +			 * To satisfy VFIO core safely, fall back to a queue reset via
->> +			 * ZAPQ. ZAPQ wipes the queue state and clears the hardware's
->> +			 * internal NIB address register, neutralizing pending DMA.
->> +			 *
->> +			 * Flush the reset worker. If the reset completes, the worker
->> +			 * frees the AQIC resources (unpinning the NIB). If the reset
->> +			 * times out or fails with an error, the resources are kept
->> +			 * leaked to guard against wild DMA writes.
->> +			 */
->> +			if (q->aqic_resources.iova) {
->> +				vfio_ap_mdev_reset_queue(q);
->> +				flush_work(&q->reset_work);
->> +			}
-> [Severity: High]
-> If the queue reset times out or fails with an error, the NIB page is kept
-> leaked and remains pinned. Since the VFIO core requires all mapped pages to
-> be unpinned during an unmap notifier, could returning to the VFIO core from
-> unmap_iova() without unpinning the page trigger a BUG_ON or WARN_ON and panic
-> the host kernel?
-
-Valid. If both `vfio_ap_irq_disable()` and the ZAPQ fallback
-fail, `unmap_iova()` returns with `aqic_resources.iova`
-non-zero. `vfio_iommu_type1.c:1522` hits
-`BUG_ON(++retries > 10)` — a real host panic. Fix: add a
-last-resort forced unpin with a `pr_crit` after `flush_work()`
-when the ZAPQ also fails to release the NIB.
-
->
->> +		}
->>   	}
->>   }
+> 
+> Thanks
+> 
+>>
+>> Regards,
+>> Christian.
 
