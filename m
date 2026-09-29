@@ -1,113 +1,123 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD16B3783C3;
-	Tue, 29 Sep 2026 00:19:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF5A1799F
+	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 00:41:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790641200; cv=none; b=WfG+GZX67zN+tx0RNg9XFUoxyEmlOvLnEWa2lK+j6Um2gQfzMGA3hSDRSRB4DBFJZgD92a+IPpxndiShG4wBNrcszEMicb+dJImQs0q6Be63owT5x5BZCMb5pKeSzxWqd6u+cor3OOHnmgmZRwjwO9DWFbo41tbzBMMQp6MSolU=
+	t=1790642489; cv=none; b=DqAT7b8UUWtcJ08bxGS0axBLUoSXP7E5DAhppCqdvjcTu0uKRnw28i02IM1z+aKqBTJbkS61Do55Lg3ldPfYjVUXJKt59ozrMGRERI8D+3Tft5EzP7/dsmLKiZpMsfgj+BR3dtIyVLQpOlQ7DyFB405l/wcCl3GyER2Kubx83aA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790641200; c=relaxed/simple;
-	bh=BwX/BkX3f9mp6+4BYNr1evnobdAgb5wrMhB8WZW8+kA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wt3TfGisS7G0fQuZzpi6e6iEC2vsW6YAkia5ta3Xn5MxiOJrT0kT2Xxr4+rNRUGwsEUs5FIgEVBkSnqQvJJYvpaJoLadXnk1uWRCoeCmJ4enL2W178ytWe/fyRBNHSVyKbbyOD/sz0VQj9s55SLu5zmKhaN28J94TWN6coPqt8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MiMYr9TV; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1790642489; c=relaxed/simple;
+	bh=tZZZr1CPozPRTFjo9ntrI25q+cyqlBujqnrT564JpMY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=fDKd3/unv6tZFznpJGTHS1+FWY0xa/h5mLLXvyWKLHTCqt1SyKYAk881s3ameQO8Rk8oT4wROSXUwa4G0FsO9HdmGyre7b09QJz0wuO7M2wJw7mr1SogO+waBJJ6V3cr5czGG3grwzw6Dq3a1FdDJN3LWB9XwVsEwFbZ56+bAaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fitXOy9z; arc=none smtp.client-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MiMYr9TV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790641195; x=1822177195;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=BwX/BkX3f9mp6+4BYNr1evnobdAgb5wrMhB8WZW8+kA=;
-  b=MiMYr9TVJjcKAl7gB/drQLnVtyVMSIPOS8cqpEXLy3cqp17weVTWDTbs
-   LQNLS3yyriecsRr0FFaHYhzKRDl4vPQDxM6X939EauKTOkb4d9GK5njYq
-   +tmodC/KXaBQcD5k5SuSU//8b9PEJGWTa5eOTq28eiPqAX3qvHOYx/eDq
-   aUAOt/8pnWNjIp0cJxNeUZ+gwaXNKQafAFAkp9Nq7OmGj6JglU3F0+iMk
-   A5bz2OHphutTfS7rBIw/ZEtqO+dKvdaQTiQwux7xev8V78vpL7BOFRYDH
-   X2ubrYXQBTt2TH1kTVWkPX/NfO8l5HK80JWXeeZSIv4t0OQnAbkHHs9ZZ
-   A==;
-X-CSE-ConnectionGUID: vacoaxpLS6iE3F4MZtuCEw==
-X-CSE-MsgGUID: 9kKMZqG0SPWi14+rjOlNvA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="90217401"
-X-IronPort-AV: E=Sophos;i="6.27,129,1787036400"; 
-   d="scan'208";a="90217401"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 17:19:50 -0700
-X-CSE-ConnectionGUID: loBOEpsSSz+EoBHEJL2QQw==
-X-CSE-MsgGUID: Q37POYIVSFuGXM6GZHxmYQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,129,1787036400"; 
-   d="scan'208";a="275340580"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2026 17:19:46 -0700
-Message-ID: <c824aec5-119f-4054-ab47-96839adf08b1@linux.intel.com>
-Date: Tue, 29 Sep 2026 08:19:43 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fitXOy9z"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2dd1631d291so35562025ad.1
+        for <kvm@vger.kernel.org>; Mon, 28 Sep 2026 17:41:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790642488; x=1791247288; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Yk6u7JlIY9cpCj86tRiO0V0xPpeT5SfEotOmOCGfdo0=;
+        b=fitXOy9zc6dxS+c5zUmN31yOhetlZWwa6/+sbm/Z/y14L+3JJcHWbHJT60XwVKobG2
+         5nd6lQpke0A+BeBbkotbAYcEL/QQ+krF1VAnfYWrtGoCvHgVyTNO3AZmy017B35y+uOW
+         2VQfBZo/zLPAfhjX4pzdYZ8HlGviHJgoR2EF9lpxTO5a7RaXHGfiYMhJ2fquMBFc80Q0
+         eF2jgtfSJd0dCZZxiuR2vXYRsMNFiFYE1zn9dNNjn5r+uSyP59K9+wrQ1tNuLB2tSBlA
+         sBbewdR2DvGqhHxznG8cgdUa03cSCRwAa7TqByEgbdsPLm8V0dG+ktelpugx3R3mMkWW
+         m74w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790642488; x=1791247288;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Yk6u7JlIY9cpCj86tRiO0V0xPpeT5SfEotOmOCGfdo0=;
+        b=nzPlcGwYsdVUesauBKD/zfzkxV4rov9GjoODpr4tuz7tU00L86TN/3AotdDIXzlvYP
+         5xtx/xumClna0gs/aZfdOfRzZFU2y79OD5/fDojQ6HmsC6CaVCYGPWX0121X/KopTuns
+         9AK/IXp2EGZJWXbeooMy/tDVVQgyXgstBZRFvTtoL5duYCeikQKQgY3kQWEffuA2qgi1
+         FGyf73qLmaFi3XB56lheigCWtp27Mj0nAXvSd6z5pKQAqci/31PeS/XqpHBJFKafcGpn
+         YSO9FC4fWsW48/3C0bEiY2/6IfbvzbGLQ7wI5nAAoQ7pZWV4GkMWWPLxo1ccZu4JeydD
+         x9+w==
+X-Forwarded-Encrypted: i=1; AKwUvBy6actHWTYHh08l8CARUpmccvhPgiTMdKwvY7x6ZQsYGsYNXZ9VnX6a7p3/vhAd8PSHna4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJnPd2FWD0ecvSR2vWIeqe5jFe3USCqAo7RXIq245anNt+WqAYw
+	0ythMa9wOIMiE3BP7uOj91hKSpOesI3BiYQZ0Mk71AFkbVM14S0T5cJlOMBfZKtMNvAXZeSwCQo
+	YX1LObQ==
+X-Received: from pgdu19.prod.google.com ([2002:a05:6a02:2f53:b0:cc7:9e4f:bfea])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4c50:b0:3a0:d823:c74a
+ with SMTP id 98e67ed59e1d1-3a0d823cb89mr7425271a91.65.1790642487472; Mon, 28
+ Sep 2026 17:41:27 -0700 (PDT)
+Date: Mon, 28 Sep 2026 17:41:26 -0700
+In-Reply-To: <f0ce99261caf71e88cd0d51a4053abb77454e8bf.1790208413.git.jmattson@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/4] KVM: TDX: Track configurable CPUID bits allowed by
- KVM
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "Li, Xiaoyao" <xiaoyao.li@intel.com>
-Cc: "Gao, Chao" <chao.gao@intel.com>,
- "dedekind1@gmail.com" <dedekind1@gmail.com>,
- "seanjc@google.com" <seanjc@google.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "kas@kernel.org" <kas@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Maloor, Kishen" <kishen.maloor@intel.com>,
- "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
- "andrew.cooper3@citrix.com" <andrew.cooper3@citrix.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "nik.borisov@suse.com" <nik.borisov@suse.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>
-References: <20260917072548.2314491-1-binbin.wu@linux.intel.com>
- <20260917072548.2314491-2-binbin.wu@linux.intel.com>
- <39047bbc-757d-4131-a25c-5a7743fd591a@intel.com>
- <062f5365-7eb5-4e04-9c84-f5ecd566f019@linux.intel.com>
- <eca53031-fd47-4471-9d05-d73295a0f57e@intel.com>
- <8bcba51e-2a3b-44b8-89cd-aebfd1e50cfd@linux.intel.com>
- <de109514-91b8-49a6-bbbe-c1f7f1ee407f@intel.com>
- <c612e6cd-ca84-4c37-af72-9c13eeb1f3ce@linux.intel.com>
- <c2b669f099174c5d67593d5446a02abc43eff40c.camel@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <c2b669f099174c5d67593d5446a02abc43eff40c.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <cover.1790208413.git.jmattson@google.com> <f0ce99261caf71e88cd0d51a4053abb77454e8bf.1790208413.git.jmattson@google.com>
+Message-ID: <arsJNv9HrFGMJSho@google.com>
+Subject: Re: [PATCH v2 4/4] KVM: selftests: Add coverage for the
+ EFER_LMSLE_MBZ defeature
+From: Sean Christopherson <seanjc@google.com>
+To: Jim Mattson <jmattson@google.com>
+Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	nikunj@amd.com, yosry@kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On 9/29/2026 7:58 AM, Edgecombe, Rick P wrote:
-> 
->>
->> My consideration was maybe some userspace could set this bit.
->>
->> But userspace is expected to consult KVM_TDX_CAPABILITIES for the configurable
->> bits before invoking KVM_TDX_INIT_VM
-> 
-> If a guest is already using it, then even if the bit disappears from
-> KVM_TDX_CAPABILITIES it could cause a regression when it doesn't get configured
-> in the guest.
+On Wed, Sep 23, 2026, Jim Mattson wrote:
+> +	/*
+> +	 * Per AMD APM vol. 2, if CPUID.80000008H:EBX[bit 20] is set, "64-bit
 
-The precondition is these excluded features bits are not in kvm_cpu_caps[], i.e.
-these features are 
-- Obsolete or
-- Not supported by KVM, there would have been issues if a guest is
-  using them.
+Please tell your LLM not to quote specific volumes/sections in code comments.
+It's a-ok for changelogs to reference specific sections, because those are
+naturally timestamped (and can even explicitly call out the APM/SDM version).
+But code/comments are usually read without the context of when the code/comment
+was added, i.e. are much more likely to become stale in practice.
 
-I will add the precondition when describe it in the change log.
+> +	/*
+> +	 * EFER_LMSLE_MBZ, CPUID.80000008H:EBX[bit 20], is a "defeature" bit,
+> +	 * i.e. is set when the CPU does *not* support long mode segment
+> +	 * limits.  KVM enumerates the defeature if and only if KVM refuses to
+> +	 * set EFER.LMSLE, i.e. if the CPU doesn't support LMSLE, or if KVM
+> +	 * doesn't support nested SVM.  Derive the expectation from raw CPUID
+> +	 * and kvm_amd's "nested" module param rather than from
+> +	 * kvm_cpu_has(X86_FEATURE_SVM), so that the assertion doesn't simply
+> +	 * compare KVM's enumeration to itself.
+> +	 *
+> +	 * Note, kvm_amd's "nested" is an "int" module param, i.e. reads back
+> +	 * as '1'/'0' and not as 'Y'/'N'.  Query the param if and only if the
+> +	 * CPU supports SVM, i.e. if and only if kvm_amd is the module in
+> +	 * play.  Checking the vendor string wouldn't suffice, e.g. Zhaoxin
+> +	 * and Centaur CPUs are "GenuineIntel"-adjacent at best, but run VMX
+> +	 * and thus load kvm_intel.
 
-> 
->> , regardless of this patch series, there is no risk to break userspace, except
->> for CORE_CAPABILITIES, which is the only
->> special case as it was defined as fixed-1.
->>
->> I think there is no need to add XTPR to the allow list either.
-> 
+Happily, that support is actually already in kvm-x86, i.e. there's now a
+host_cpu_is_intel_compatible sitting in the "selftests" branch.  That's mildly
+annoying as I don't want to take this series through "selftests", but that's
+easy enough to deal with, by deliberately touching the same code so I don't
+forget to tell Paolo about a semantic-only conflict.
 
+I also want to add a helper for "nested" so that we don't end up with similar
+checks sprinkled here and there, but with a scary comment instructing developers
+to use kvm_cpu_has(X86_FEATURE_{VMX,SVM}) (I want to avoid having two common ways
+of doing one thing).
+
+I'll send a v3 (assuming my code works) with this:
+
+	/*
+	 * EFER_LMSLE_MBZ, CPUID.80000008H:EBX[bit 20], is a "defeature" bit,
+	 * i.e. is set when the CPU does *not* support long mode segment
+	 * limits.  KVM enumerates the defeature if and only if KVM refuses to
+	 * set EFER.LMSLE, i.e. if the CPU doesn't support LMSLE, or if KVM
+	 * doesn't support nested SVM.  Derive the expectation from raw CPUID
+	 * and kvm_amd's "nested" module param rather than from
+	 * kvm_cpu_has(X86_FEATURE_SVM), so that the assertion doesn't simply
+	 * compare KVM's enumeration to itself.
+	 */
+	lmsle_mbz = this_cpu_has(X86_FEATURE_EFER_LMSLE_MBZ) ||
+		    !this_cpu_has(X86_FEATURE_SVM) ||
+		    !kvm_is_nested_virtualization_enabled();
