@@ -1,149 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7862519909
-	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 11:53:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B53519DF5;
+	Tue, 29 Sep 2026 12:14:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790682829; cv=none; b=ZsGU8wVqHf2VgPTqDoesYFLOpsZfN2vq990y+RHE+8NPdoDe4w9c7wrVYJ6ZZuYp6wC05B6rftNXOc4ptykwGWa7NU8hsMpuBqJZoeJ9F9LaAFH4LRwMmHcM6qZ2bnhPrxxSU+kr44f+bmQDGlL3hv0Gg2FcE2LAdD3QV9sB1Hc=
+	t=1790684078; cv=none; b=nyuexRgSHMo7Z9AKZioRV8TYPPHMvNDxlVrdQXvAPfgo+UZD70vrk4Q0ycR8sWjpk1HGC0xFA3rHp8QsvRhZzNVKo9xYe+9h2wCGS9X9ZSWTgKA+gUMt9NnLRNf7TiXTnPk1Uj+b+V/oyShC67MPD9PcjgEJ7kD8d468koevU3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790682829; c=relaxed/simple;
-	bh=g4g2cwMO176VdUCWdqN85c3miIvSOkjBwzz1S4H+4bU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=k9BmE0eLuYe0KqYZaSdg8Iy37z9ArFI7P6egPTih93Se5p6UM+4BCFFkBmC11hfF562U7I6X4VQXk7UXRAFY4mtNL7pw8rG5ic0N7mNcWU8+tsYkSPtn5TM2uoP0bVaA5fBUH4/JToxGngtQGxFsHHIW+Xr0dvZ9cSRoRrpG/9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NH/RKKmA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790684078; c=relaxed/simple;
+	bh=KpbRo5wvWYYEvhUJ8NixQglOE8FclIcuHa9+3zDEXSg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=r3Oa+zeybQ27WzwpvuqoXHXokIBOsc8Y2nEvrtPXKVdTJay1M8C/UrhVic4Y3XD+QVOLuyUEOSCsly84AXZ8ch0JmAlAnQ+nEDmkp50ZsOjgej2LCgJR4yZv1ymNZ40Gf4Qc97yMn1TNbEO00eJ0rAxqf85wUNvLjOlMeW9bavw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Gj3lVZyc; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NH/RKKmA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE831F00898;
-	Tue, 29 Sep 2026 11:53:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790682827;
-	bh=EnDuh/21BYzQ89nx6t9gdl4Srsee79XVAC5JK9BcWS4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NH/RKKmACRR4h4ujk8awCTXh3Hy3izUfEqjquDqabEnJ7AKIh/3gGgpFDojOHuxys
-	 c+OLxM5uDowG8pl7g1wlCgiNFk+VceJ2KWMV1vF40DSly2I8ljvJ2ISvA2hmMyWlEF
-	 AEx75lNbfNtMCG10hIks/MCaMvDrbZ2JDrKYFc9mMHLfLGhsAzQRrWOwtbka1fLTzC
-	 8PFbCjp+FLVCYlTYunYZyBexkvj6O1ywhSbKUHtW1/+lpjbAZ6+PRnpmHW/ASaKolr
-	 6ql5EbAERn+vpCe9OQC41qUhEufXDXEWnmdbd4S1yJdfDnDQIAUvgaNP1qsMyg752A
-	 lgHCnJFJjsM6A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1 3/3] KVM: selftests: dirty_log_perf_test: Add
- dirty-ring support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Leonardo Bras" <leo.bras@arm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260929113711.2064390-4-leo.bras@arm.com>
-References: <20260929113711.2064390-1-leo.bras@arm.com>
- <20260929113711.2064390-4-leo.bras@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 29 Sep 2026 11:53:46 +0000
-Message-Id: <20260929115347.5FE831F00898@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Gj3lVZyc"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C140A1516;
+	Tue, 29 Sep 2026 05:14:32 -0700 (PDT)
+Received: from [10.57.12.116] (unknown [10.57.12.116])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6C2F83F86F;
+	Tue, 29 Sep 2026 05:14:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790684076; bh=KpbRo5wvWYYEvhUJ8NixQglOE8FclIcuHa9+3zDEXSg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Gj3lVZyccDDRPlbotO7N9QaG7/lLlhFDj/O4VW4/SVs/zSipgDwsdhSfIr35e/TwW
+	 Kbm62sJwIYm+/mS3vWKQOXaPkD4vwsdzVO04Ch4k4woBd0+4Jj/v8rhORtdte4EgHn
+	 f4jELitrKpY8/XVi6KsgpNC4q2ErFwxb6jvKrq1c=
+Message-ID: <b9744fc2-ecc6-406b-ae33-62ba374a87fc@arm.com>
+Date: Tue, 29 Sep 2026 13:14:30 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v19 0/7] firmware: arm_rmm: Add RMM v2.0 base RMI support
+Content-Language: en-GB
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, maz@kernel.org,
+ will@kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, steven.price@arm.com,
+ aneesh.kumar@kernel.org, oupton@kernel.org, gshan@redhat.com,
+ joey.gouly@arm.com, tabba@google.com, yuzenghui@huawei.com,
+ linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com,
+ sdonthineni@nvidia.com, alpergun@google.com, fj0570is@fujitsu.com,
+ WeiLin.Chang@arm.com, lpieralisi@kernel.org, enju.kohei@fujitsu.com,
+ sudeep.holla@arm.com, jonathan.cameron@oss.qualcomm.com
+References: <20260924135201.850038-1-suzuki.poulose@arm.com>
+ <aruWz-QkcdD9ETbC@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <aruWz-QkcdD9ETbC@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] kvm: selftests: dirty ring collection time excludes lock wait ti=
-me
---
+On 29/09/2026 11:50, Catalin Marinas wrote:
+> On Thu, Sep 24, 2026 at 02:51:54PM +0100, Suzuki K Poulose wrote:
+>>   arch/arm64/Kconfig                |    1 +
+>>   arch/arm64/kernel/cpufeature.c    |    1 +
+>>   drivers/firmware/Kconfig          |    1 +
+>>   drivers/firmware/Makefile         |    1 +
+>>   drivers/firmware/arm_rmm/Kconfig  |   25 +
+>>   drivers/firmware/arm_rmm/Makefile |    2 +
+>>   drivers/firmware/arm_rmm/rmi.c    | 1072 +++++++++++++++++++++++++++++
+>>   include/linux/arm-rmi-cmds.h      |  558 +++++++++++++++
+>>   include/linux/arm-smccc-rmi.h     |  505 ++++++++++++++
+> 
+> One more nit: patches 1 and 2 I think add new header files without a
+> MAINTAINERS entry. You can add them to arm64.
 
-commit 2c539bfee74e383775f9c7f30033144876ad2f45
-Author: Leonardo Bras <leo.bras@arm.com>
+Ack, I have added them. Thanks
 
-KVM: selftests: dirty_log_perf_test: Add dirty-ring support
+Suzuki
+> 
 
-This commit adds dirty-ring support to the dirty_log_perf_test to enable
-performance comparisons between dirty-bitmap and dirty-ring tracking
-mechanisms.
-
-> diff --git a/tools/testing/selftests/kvm/dirty_log_perf_test.c b/tools/te=
-sting/selftests/kvm/dirty_log_perf_test.c
-> index 8f791ad7b86a8..af0ab654d46e2 100644
-> --- a/tools/testing/selftests/kvm/dirty_log_perf_test.c
-> +++ b/tools/testing/selftests/kvm/dirty_log_perf_test.c
-[ ... ]
-> @@ -29,9 +30,53 @@ static bool run_vcpus_while_disabling_dirty_logging;
-> =20
->  /* Host variables */
->  static u64 dirty_log_manual_caps;
-> +static u32 dirty_ring_size;
->  static bool host_quit;
->  static int iteration;
->  static int vcpu_last_completed_iteration[KVM_MAX_VCPUS];
-> +static struct timespec vcpu_dirty_ring_collect[KVM_MAX_VCPUS];
-> +
-> +static void dirty_ring_collect(struct kvm_vcpu *vcpu, u32 *ring_idx,
-> +				struct timespec *ts)
-> +{
-> +	static pthread_mutex_t collect =3D PTHREAD_MUTEX_INITIALIZER;
-> +	struct timespec start;
-> +	struct kvm_dirty_gfn *dirty_gfns =3D vcpu_map_dirty_ring(vcpu);
-> +	u32 idx =3D *ring_idx;
-> +	u32 ring_size =3D vcpu->vm->dirty_ring_size / sizeof(struct kvm_dirty_g=
-fn);
-> +	int cleared, count;
-> +
-> +	pthread_mutex_lock(&collect);
-> +
-> +	clock_gettime(CLOCK_MONOTONIC, &start);
-
-[Severity: Medium]
-Since the timer is initialized after acquiring the lock, the time spent
-waiting for the mutex is not recorded in the collection time. When multiple
-vCPUs fill their dirty rings concurrently and wait on this lock, will this
-lock contention time be incorrectly omitted from collect?
-
-> +
-> +	while (true) {
-> +		struct kvm_dirty_gfn *cur;
-[ ... ]
-> @@ -43,24 +88,45 @@ static void vcpu_worker(struct memstress_vcpu_args *v=
-cpu_args)
->  	struct timespec ts_diff;
->  	struct timespec total =3D (struct timespec){0};
->  	struct timespec avg;
-> +	bool use_dirty_ring =3D !!vcpu->vm->dirty_ring_size;
-> +	u32 ring_idx =3D 0;
->  	int ret;
-> =20
->  	run =3D vcpu->run;
-> =20
->  	while (!READ_ONCE(host_quit)) {
->  		int current_iteration =3D READ_ONCE(iteration);
-> +		struct timespec collect =3D (struct timespec){0};
-> =20
->  		clock_gettime(CLOCK_MONOTONIC, &start);
-> -		ret =3D _vcpu_run(vcpu);
-> +
-> +		do {
-> +			ret =3D _vcpu_run(vcpu);
-> +			if (!use_dirty_ring)
-> +				break;
-> +
-> +			dirty_ring_collect(vcpu, &ring_idx, &collect);
-> +		} while (!ret && run->exit_reason =3D=3D KVM_EXIT_DIRTY_RING_FULL);
-> +
->  		ts_diff =3D timespec_elapsed(start);
-> =20
-> +		if (use_dirty_ring) {
-> +			ts_diff =3D timespec_sub(ts_diff, collect);
-
-[Severity: Medium]
-Because collect does not include the lock wait time from
-dirty_ring_collect(), subtracting it from ts_diff leaves the lock
-contention overhead misattributed to the guest execution time. Doesn't this
-artificially inflate the reported guest execution time and obscure the true
-overhead of dirty ring synchronization?
-
-> +			vcpu_dirty_ring_collect[vcpu_idx] =3D collect;
-> +		}
-> +
->  		TEST_ASSERT(ret =3D=3D 0, "vcpu_run failed: %d", ret);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260929113711.2064=
-390-1-leo.bras@arm.com?part=3D3
