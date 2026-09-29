@@ -1,31 +1,31 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4BE3DB33D;
-	Tue, 29 Sep 2026 22:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F826280A56;
+	Tue, 29 Sep 2026 22:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790720234; cv=none; b=hdWjv0FBW/Ealc2zqnOCtASgGvfn1mU05WaMfjFUZrimqtQ758YMJ3ein/Tjuos09dSDUwjlxcR7/+0gmE+ZUIy+8qlt1ntbSBJ+v0Ktdq33LLs4L9A32mqAHodX8EW8oDCLYuhGIjDDJXka9H7OcT9ZZLVuecAcPs2Wn7FmWn8=
+	t=1790720234; cv=none; b=I95mrVb1o7+tFEDF050Ll4OLR2FdKgjHQ6fLCpAnJw3v0v9d/JnaiEJ2TJkktfFjIRaC0BppcfCbme57zhnadOlEGyoC8mt6Tpg1X/UWKYMdejPfrFCWDb86ES/UJPBew5bMWUXVLjp72jupuSvzP/G3G5XFMGN9RsWxVuZxhZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790720234; c=relaxed/simple;
-	bh=bOPfrjZC9H0ZdpIC5yzFK/KuR63sWAw36xeTjbxYxb4=;
+	bh=2U+cAcr8VcJVMr34PG0rQs6SPss8l1YbdTIFge5eJ3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SUpHE0Ibl2uGmCztwSX3WqVPWEetY4P/hmLGk2cAgbfU+SUY5pank0IAel3H63Tu0Lse8sJd8kA45kuTtrvKkKxygbooDQ2fgu+2Bx5kT/nKW8cstHIi2ymQ0bQWrthaEf707FCVTuSAswxtMtwfwdX+VxuuLElx67Da1qA+Zd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=BUJoILqN; arc=none smtp.client-ip=217.140.110.172
+	 MIME-Version; b=ui3PhHV1Lb/QEqsrG02UpsYiH4v7DXkagDKbAqqLYPSnunj6cBliF9HGD/RNoOkElObzvlY4RH1MXfiw9lOHCDodOcDFCINx3XxKzTGAJCwkxSSYgR6dTJL/+AzKglkxS/vvHQ5p1gCThmuwJ+lLJHp6/0H3ThkBZ9I5N11WS94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=XQoSVaj/; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="BUJoILqN"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="XQoSVaj/"
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BCDD41516;
-	Tue, 29 Sep 2026 15:17:01 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AC3CB1682;
+	Tue, 29 Sep 2026 15:17:09 -0700 (PDT)
 Received: from ewhatever.cambridge.arm.com (ewhatever.cambridge.arm.com [10.2.197.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9CDEE3F85F;
-	Tue, 29 Sep 2026 15:17:01 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 6839F3F85F;
+	Tue, 29 Sep 2026 15:17:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790720225; bh=bOPfrjZC9H0ZdpIC5yzFK/KuR63sWAw36xeTjbxYxb4=;
+	t=1790720233; bh=2U+cAcr8VcJVMr34PG0rQs6SPss8l1YbdTIFge5eJ3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BUJoILqN3MexnXVDG7eeaKD0yQYeZvc3vwl2HbjB5GMinIoytwhW1vHWq7FU++A2Q
-	 o8URuWuBf1xW5Yz+NtSqt0ERv/pWm0TTqURBK3ChlxKETM1S7ZMlIgCoYrsnGEJGCa
-	 QJPKxxJpk9bxqStQtA1vY503C6CQfSmatHAjX1rY=
+	b=XQoSVaj/joHDiB+a+Td9/wqeuygHIGRa4x9oWLe7eEDb/5FM0lKIoXcXl92wLTSB1
+	 B1gw19h9UeWXp9nJ/EEuVZHgoXwvANX1XUVZaIllSXlm0ryyN/q5u7yL9yXvwkjvvP
+	 +XUVKbXkU3aJ9LfMpmsO5X3er6QaCrnS6hKe+kaE=
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
 To: kvm@vger.kernel.org,
 	kvmarm@lists.linux.dev
@@ -51,10 +51,11 @@ Cc: maz@kernel.org,
 	enju.kohei@fujitsu.com,
 	sudeep.holla@arm.com,
 	jonathan.cameron@oss.qualcomm.com,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [PATCH v20 7/9] arm64: Block hibernate and kexec while RMM is active
-Date: Tue, 29 Sep 2026 23:16:21 +0100
-Message-ID: <20260929221623.1342076-8-suzuki.poulose@arm.com>
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	David Hildenbrand <david@kernel.org>
+Subject: [PATCH v20 9/9] firmware: arm_rmm: hotplug: Skip memory added to ZONE_MOVABLE
+Date: Tue, 29 Sep 2026 23:16:23 +0100
+Message-ID: <20260929221623.1342076-10-suzuki.poulose@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260929221623.1342076-1-suzuki.poulose@arm.com>
 References: <20260929221623.1342076-1-suzuki.poulose@arm.com>
@@ -66,83 +67,44 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-RMM can be deactivated only after all delegated granules have been
-reclaimed. If a new kernel is entered while any granules remain in the
-Realm PAS, accesses to that memory can raise a Granule Protection Fault
-and be fatal to the new kernel.
+If the hotadded memory is in ZONE_MOVABLE, we could allow that to proceed
+without the RMM having fine grained tracking, as we won't allocate pages
+from there for guest-memfd or kernel allocation
 
-Crash kexec/kdump needs separate handling. It can be supported only once
-the crash kernel can tolerate delegated memory inherited from the primary
-kernel. i.e., be able to read the pages safely and fixup the GPF. Until
-then disable the kexec completely.
-
-Hibernate has a similar problem. The image cannot be safely saved for
-delegated pages, as the RMM doesn't support exporting the pages.
-
-Disable both kexec and hiberation while the RMM is active.
-
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 ---
 Changes since v19:
- - New patch to disable kexec and hibernation with RMM
+ - New patch in v20, keeping this at the tail to allow for the rest of the
+   series to proceed, while this patch gets discussed.
 ---
- arch/arm64/kernel/hibernate.c     |  6 ++++++
- arch/arm64/kernel/machine_kexec.c | 11 +++++++++++
- 2 files changed, 17 insertions(+)
+ drivers/firmware/arm_rmm/rmi.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/arch/arm64/kernel/hibernate.c b/arch/arm64/kernel/hibernate.c
-index 7bf1174277772..d02f01c17febf 100644
---- a/arch/arm64/kernel/hibernate.c
-+++ b/arch/arm64/kernel/hibernate.c
-@@ -10,6 +10,7 @@
-  * Copyright (C) 2006 Rafael J. Wysocki <rjw@sisk.pl>
-  */
- #define pr_fmt(x) "hibernate: " x
-+#include <linux/arm-rmi-cmds.h>
- #include <linux/cpu.h>
- #include <linux/kvm_host.h>
- #include <linux/pm.h>
-@@ -341,6 +342,11 @@ int swsusp_arch_suspend(void)
- 		return -EBUSY;
- 	}
- 
-+	if (is_rmm_active()) {
-+		pr_err("Can't hibernate: RMM is active.\n");
-+		return -EBUSY;
-+	}
-+
- 	flags = local_daif_save();
- 
- 	if (__cpu_suspend_enter(&state)) {
-diff --git a/arch/arm64/kernel/machine_kexec.c b/arch/arm64/kernel/machine_kexec.c
-index 8f9bc2327dc85..48f343704cb54 100644
---- a/arch/arm64/kernel/machine_kexec.c
-+++ b/arch/arm64/kernel/machine_kexec.c
-@@ -6,6 +6,7 @@
-  * Copyright (C) Huawei Futurewei Technologies.
-  */
- 
-+#include <linux/arm-rmi-cmds.h>
- #include <linux/interrupt.h>
- #include <linux/irq.h>
- #include <linux/kernel.h>
-@@ -59,6 +60,16 @@ int machine_kexec_prepare(struct kimage *kimage)
- 		return -EBUSY;
- 	}
+diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+index d4d098448e46e..ef0a171ba9677 100644
+--- a/drivers/firmware/arm_rmm/rmi.c
++++ b/drivers/firmware/arm_rmm/rmi.c
+@@ -1043,6 +1043,18 @@ static int rmi_memory_notifier(struct notifier_block *nb,
+ 	start = PFN_PHYS(arg->start_pfn);
+ 	end = PFN_PHYS(arg->start_pfn + arg->nr_pages);
  
 +	/*
-+	 * We will be able to allow kdump to proceed, once we have the support
-+	 * for handling GPF from vmcore accesses to delegated pages. Until then
-+	 * block kexec completely.
++	 * If the hotplugged memory region is in ZONE_MOVABLE, neither the
++	 * guest-memfd nor the kernel allocations can come from there. So we are
++	 * fine to skip this.
++	 * For boot time memory, we don't allow this discount, as the
++	 * decision to move boot memory pages to ZONE_MOVABLE is purely
++	 * a kernel choice and the firmware must have decided what it covers.
 +	 */
-+	if (is_rmm_active()) {
-+		pr_err("Can't kexec: RMM is active.\n");
-+		return -EBUSY;
-+	}
++	if (page_zonenum(pfn_to_page(arg->start_pfn)) == ZONE_MOVABLE &&
++	    page_zonenum(pfn_to_page(arg->start_pfn + arg->nr_pages - 1)) == ZONE_MOVABLE)
++		return NOTIFY_DONE;
 +
- 	return 0;
- }
+ 	ret = rmi_prepare_memory(start, end);
  
+ 	return notifier_from_errno(ret);
 -- 
 2.43.0
 
