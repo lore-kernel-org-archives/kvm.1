@@ -1,204 +1,281 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012020.outbound.protection.outlook.com [52.101.43.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FF341A92C;
-	Tue, 29 Sep 2026 13:06:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790687165; cv=none; b=jY0/n4xstugP9BJmlC89Qw81aTN9VT3k0LWv7jXLfkEU6oiOwuhEeSLugx/TnuQ+7BzfB3/T3tmGvg7BKNuaLU1z2YeoFlWN4mqZrBsvXZDox5/5ETSZkkws2Gwh/uDYbS+aGAhgyh87WbXjUPkIMPRDvpLOOO3GoKkeImHCLAg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790687165; c=relaxed/simple;
-	bh=4/qgfcgx5Slrb/nvXZTrBwS4wRRJDx0ZBHlG3MzDYMs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MsL5MowOZQLQIhMrMHpTT/hAvAOQHtqIKPG8TMG/7ma2/7/gvnJkx+Xjd9asycQ0rTIMOAG0b42Zx/71l++/T5DxFLt7kTZnVqwMJImbRUXCoB8WjDvivtBZ+w1ynbAONvW6waEjKaZ+u1+eGTXri7lZjVWPoRftgp+Jo0kClsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Nh5XVP/D; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A7F344D9B;
+	Tue, 29 Sep 2026 13:06:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790687215; cv=fail; b=NuTtKBw+na/OO69ARbR+wo2nxT/+58kdQKNPTbH6GwhAAz/hVe/qWpDTTCoBNAsGRQLYEPmHmFeivkawDycwTSQGnvxePfoOej+r8Rm0AW7btLMm1PJZJNQwEZPJ5Zx1LxlOIFMjmOF/lHHLVvl4Qrq0vD+80zeYRpcPZF7qJLE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790687215; c=relaxed/simple;
+	bh=TXeDympNQjTZNHnJ7h3UVTJKmSMikAnqdwOavCuGDe8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=bN0H1Xv3oUNpWmPiQ9ltbFd6LQFCDz7sR+pkBWFFXMUMJ1tB1ThsO9W10YRvcT4Z2m0D/AwoZqNVzafUWqq79Uwj7SvI0jzJpOKjRZfEv2Peyh8O/TaEFR1909LGXgNQ/THwdfmk3m7JFgQ5TNOxKauF8jaS5lksz8MS7LqhfYs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=h2FPLH8/; arc=fail smtp.client-ip=52.101.43.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Nh5XVP/D"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68TB5fbO4017657;
-	Tue, 29 Sep 2026 13:05:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=lT+AMN
-	wa1qnKid+StkqQoP21mDueBhkfgnfbFu19Neg=; b=Nh5XVP/DNMxBp2hKG+tIH9
-	FoTFVx+HPCer5hiSX0aMjursQz7ptArIQKRcBvUtS+67eMNYpCk3liLsMwZpINZz
-	kRGJt6tzeDTqKp7hfEExJ7v0o/H0JvrfvTaKyPtw9V+IdWNVFrkytYkR6b5tmx1K
-	ID8Z9RNk7433N57+Co/GqNOG7uqNI/NntNjq3TkY8A+snZFLtVN6I8GoE01tfKCv
-	OiHuc8LA6BpG14uHdxsgVDNmZEWUsoSH28TVtWUtRof+23bH0pAD1KgOoZoJpLAl
-	kyxDgGWok+DCFIgk4YRj73vQalOr+cuEU2xa8bqOgA5P+KgG0taJfBXz79fYqUyQ
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5pt6cqx-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 29 Sep 2026 13:05:46 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68TAlqxn1657703;
-	Tue, 29 Sep 2026 13:05:45 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gxrcpt008-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Sep 2026 13:05:45 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68TD5g9i16646570
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 29 Sep 2026 13:05:42 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 20EEE2004B;
-	Tue, 29 Sep 2026 13:05:42 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7573620049;
-	Tue, 29 Sep 2026 13:05:41 +0000 (GMT)
-Received: from [9.111.44.243] (unknown [9.111.44.243])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 29 Sep 2026 13:05:41 +0000 (GMT)
-Message-ID: <0be2ddbb-e382-4d78-b77d-3b448668575d@linux.ibm.com>
-Date: Tue, 29 Sep 2026 15:05:41 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="h2FPLH8/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aixYaLV6mcGkT5ztVBF0/lOINZxV+UIDoCRZesPjVED7EFyuqAjGXxdpT82v1bTrbnRC3DD0SwmXQiOuSfHB9kiz1xOxb+s8MqukBNztkvOIW1YcPH7r0v64M7kXf9479NVzvtmIJC4+PH+nOONyFfdLoICECeQq3+Sz8BsboIDFkkcG3qZwM4bahR1iIa7eIqR7kk2BD0CSUMpeuOZtGqm8c1Y9YzRNK4rprH+I8jS6Zp3rpWFnH3MJL9lBRpQJj/ArYMpDuS7Fa1SuZeDF+i2FPw4kZQNjH4L0Wn1rc5bWlqLuT8ujdcWb9s07/2+1/wl0NIm0dbJKxQSM2EPPJA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=G04UasHxc0ROenVMtmy5sD4YuDN7AdK9YKNkcdL81ko=;
+ b=KKAZ37k0OyFYX0SM3ky5QYZuXGxd0MBs14f1PRka510OCVGVaUEa1Xigl55UH30AZ60mIk963qjfklomWZjQJWml+gSCtC8nJUYaJcqDAwxfR8WpswP92GCrKiFZMzYqgavtUkKS7EUzInAWj05LNjPXECXeuknAAG9Zz+xpRDTahl/1Qn0eiNTGvMO6nLp3r2Uv+BDhK3RVAG9wTqvv6ATsz0wjdU7DE36LIBs0AufdUwK/xDJcgwdLeQJtYi1HNBP3yYMXFvEz621QitYwHZ4ELwX4vxkgtFLuaqM4iC7mnMu2d9kMxcSAYi1IA0vxMO1ONHaRWsQOLIxMrMJQEg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=G04UasHxc0ROenVMtmy5sD4YuDN7AdK9YKNkcdL81ko=;
+ b=h2FPLH8/C1Da3OYJfS3+S4G8JZOn42O08dED6PJ9VHyYF0GWePZAPrQqXZx3pCE4CPniTe+XM+ciPNRIZaoU1ktxB0E5iz1xf1FXsyXcVZe6PeV5jf3bebiRuZR0NyelV44hY8XthCM1BdLL+D9gIpEkvdDC6zOmaH/0luX2n0vPWUDDJuZY6/mrNacsmBtx9wvQHcd1Gz9zCi3XqKCjACE73C1+Z52EDThluyeqh9TZZl64C0YT95z08zPH0opuUSZglAgGyrAQ6qlOiurMRyj0QeogK1cDGPOL7uBgHmReFIpuCwOXxwVKZZCC3B5fBdXMwYTopfV4HnOGeBzsSw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12) by SA1PR12MB6847.namprd12.prod.outlook.com
+ (2603:10b6:806:25e::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
+ 2026 13:06:46 +0000
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0451.024; Tue, 29 Sep 2026
+ 13:06:44 +0000
+Date: Tue, 29 Sep 2026 10:06:43 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: "Tian, Kevin" <kevin.tian@intel.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Bjorn Helgaas <helgaas@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [RFC PATCH v6 08/11] iommufd: Add vIOMMU provider support
+Message-ID: <20260929130643.GL1616761@nvidia.com>
+References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
+ <20260917140159.1163281-9-aneesh.kumar@kernel.org>
+ <179027891417.104879.5995584402952067518.b4-review@b4>
+ <yq5acxu1kgmo.fsf@kernel.org>
+ <20260925123918.GI9354@nvidia.com>
+ <CO1PR11MB483580AB119687B7EC2DD8518C8D2@CO1PR11MB4835.namprd11.prod.outlook.com>
+ <yq5atsn8posb.fsf@kernel.org>
+ <20260929121723.GI1616761@nvidia.com>
+ <yq5aqzicp6oc.fsf@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5aqzicp6oc.fsf@kernel.org>
+X-ClientProxiedBy: SA1P222CA0101.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:35e::9) To CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/6] KVM/vfio: Use file-based reference counting for
- KVM
-To: Steffen Eiden <seiden@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev
- <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini
- <pbonzini@redhat.com>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Farhan Ali <alifm@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
-        Tony Krowiak <akrowiak@linux.ibm.com>,
-        Halil Pasic <pasic@linux.ibm.com>, Jason Herne <jjherne@linux.ibm.com>,
-        Harald Freudenberger <freude@linux.ibm.com>,
-        Holger Dengler <dengler@linux.ibm.com>,
-        Alex Williamson <alex@shazbot.org>
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
-References: <20260928-vfio-v4-0-e32e226d5932@linux.ibm.com>
-Content-Language: en-US
-From: Janosch Frank <frankja@linux.ibm.com>
-Autocrypt: addr=frankja@linux.ibm.com; keydata=
- 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
-In-Reply-To: <20260928-vfio-v4-0-e32e226d5932@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: quLO0xM_1oMRqiXW3cFGDE3eQ7IMAgQE
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI5MDA1MiBTYWx0ZWRfX1sjNKxg0FxFF
- dS2yCFbYRNn7u3CmLfE9wPqLAp4nRB6teBLYqXj3M9uV3Kw7ZFYHIdeXcEyA+G/oGKEH7xelwdq
- CHQH4Y62L+76pe2S7xx2UZr5gbrzeBHwAnc+IrjRmqpdR8XjMMuOmTKUFRKeO8+tKYPrTaTACrH
- 90ccSrioAtn7hH4LB024XnWFe38gzEBhHZwDxy72m2N4FP1Fzni7PtsGjVZwFcBsYthvP/UF7QH
- g7u1S/V+NCECVyGO4wxXCa+t+DKb/RX4qPif21d3Z98shrbR96B6c3g9XNPJxkZJ8zKYFDrnf+Y
- qoGJGvp62+plKvlFtq1hyy2c3GsEIQvv25gVuz21TtGX6hvwyJFt1VtxX8mr0MFUazGOvwmABMq
- 4fLPgfrMFHLcEcR/Lg35aihyUPxBE4KHCB4fOQ3yXpABfna7jh74fdnnpRpWjJeA6u8MxgoKJJR
- EfZjPca6t6wL2WpH8WA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI5MDA1MiBTYWx0ZWRfXyLHiNOcW/jp4
- BruZvu48upL1P/uDTY81fmSbSJgoZ6P+TmIt9rw/hzYijf9/M3lh8q92/B2aC9nZ82BH1hnI2ia
- Dj14UKniUwNN0WqFcOLAw+pVpvfNdIY=
-X-Authority-Analysis: v=2.4 cv=EY5d0/mC c=1 sm=1 tr=0 ts=6abbb7ab cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=k4G1AkHzgUvhF1Ut7VEA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: Hn9TX-Ez48Wm7k5Rrepn29YU2GLjTC5a
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-29_04,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 suspectscore=0 adultscore=0 clxscore=1011
- malwarescore=0 impostorscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609290052
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|SA1PR12MB6847:EE_
+X-MS-Office365-Filtering-Correlation-Id: ccd92db2-bbfa-4c2e-2c7e-08df1e2a831e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|23010399003|376014|1800799024|6133799003|18002099003|22082099003|10067099003|56012099006|11063799006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	Nzv/MLC3RisVjtX+EPRfNqAfUnlZqERTPzvKHFaqkMS+dv7yQatb1m0zFRYV/svwvfDir3aTbgny22rq8u2pwAzkoDPsT0ppMs+RiLlGty7W+pKcAnMj+/sUsLoYElr+oWGQTfkHyIjR46Umh/c132nZ/Wuact9dGGJMWX61Ms5LloLQRZmrc/LM05AJnIJaKxHfr9Cu5YqIVNqkNzwdJk1y0S245YjXa/D94cbeVNWNxGKZZOreurX//foNoonsAxv2bF5y268FNv2EJUqopmQ/nuXzpbx3JQXB/2/ET3k4pFLV3TLwrfVHmouC/ukdfl7BKME6AswGxiXn6l3xIcW3oCBM+9fCKBXBwiNj6XrxA32fGOzggJS8MrbaFt1kPG3ZqGzQ3HFLWZWjDhgDrTNxyuNjKkSr1wJ09WWX0C8qeBtmLooCDvwNHhf15w382wKAoD5b1Msd22/TE4syCDWOsUbsf0Inn3TJ+wRWAMY+gm4eU9JMNHYQxInMRFZYZupc2hOH0JxZmhZSeSoBLdijIG8CpoRyd9peU7BdRm1NcePNl8jbIlR9mdPUTjB5tI0DfxZ2n8Of9k0U8Aim8xF5VmusxiIkWtMppmN9XWix14LTTnm9nAYx1Vby9ecsnqmA4b6xsRI+j0gDuvQdb6sohKlYAXYFQ9eYrEMySSs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(23010399003)(376014)(1800799024)(6133799003)(18002099003)(22082099003)(10067099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?vjE1SNvTShosyyq+3ipHb5raMOH5oZ34gVNlr7TC+QGsxlyJUO1crrO9R8n1?=
+ =?us-ascii?Q?bQ2/5fCqj7hQDyzT/rcTtmeTRlSpc/FwdjF7e5qXeWnjlADNrGNjyVv3uKN6?=
+ =?us-ascii?Q?tE62iLJ3q5JtFVKc2LAl3lElV0PuKxkEiIiKoFjGKZU7hR/bZ3pvBUfOHNec?=
+ =?us-ascii?Q?v38QTQgsLlqXKmU/PQ/k1FGuaPN1Nfh5I5E2Wta/CFNmx7Lfy+U8fa55UrKL?=
+ =?us-ascii?Q?OoRcANvCp5REINaYpwq8vsg9x79fXwR49qKsr/HNmyI2QtS6xloSc35Gjlk9?=
+ =?us-ascii?Q?8+snNaJ6prI6HgSvzOdCyuIfXzdTuzTwtCgxeARYCB0J8SSmRl+P6nezWvmq?=
+ =?us-ascii?Q?Fdn6DDkKaLzqXhwYeWz2Pp0stGmL5dCCxN/m2vMiYDlmGqfzvf2dHEwUPwGw?=
+ =?us-ascii?Q?GBx5GTSN5wtIJ4lCgCoLciAlb4QVH1dXcZd0R07SZfkDYNaSBfCSzXF4QKlJ?=
+ =?us-ascii?Q?fcPCoh3bH28X/glC38qhGGj2OXyTHtqd1zGF10vCkOfm5ujpNee+8xK5uHN7?=
+ =?us-ascii?Q?Elh++M1r+z1R4SdOjfMJQu9V+zQP2qtxjsF1qGFmCpYWDZiQf99tXE2i29o2?=
+ =?us-ascii?Q?VemsaaCWeswePjp2wDxK7SZqEvIIklHIsHaVAUHGTmfdwvS/Q61G008rqBY3?=
+ =?us-ascii?Q?j93eU3eNGWtlOU3B9nGHyECPpkoloq5DZwm5EaJzoSWLGAPk4rK/Sjh7P23G?=
+ =?us-ascii?Q?8qAEMj63G6QJkyFShTqMUFpRZjQmpUtFmvVLRck0AuhLROrrlQGSgsBaHqrW?=
+ =?us-ascii?Q?1qh8kIvK9tVqha5JZtmGDSdwx7debLzhaC9oK/djw9Nby21s0pCT+6BMGiUE?=
+ =?us-ascii?Q?keOuHxToa5KA5vAHAqRisgAaUiiksdFNlDd0ZxaCfTRhyx/JdGSVKyDqfBWV?=
+ =?us-ascii?Q?wUQxvnMsYMliSOT+miMFwnZ8ec9ff6nvJsNBWIBlsKqfmnFsL/cG5jPY58ae?=
+ =?us-ascii?Q?zJuxicIQMqj+FL//prCjRsSgqZ5/qZlBIokEx0w7gBNRLRbkHpPagYT1QB9+?=
+ =?us-ascii?Q?3Y9jjWxcxdPWg31hew4imYznNd2pbdu5DhY02K0YYaS1gpU1tfhIWpC3QkSY?=
+ =?us-ascii?Q?TmvrY7gvi3xFYAJMOV6+wU20T67exZZ6QtrhD47ROpWWFB+bDljKjZFYyyq+?=
+ =?us-ascii?Q?6LjInbMvM7OLVDiBSSQSi3dDhtEwtC0xXx5vRl12jCss4gEipPI240KVbm7U?=
+ =?us-ascii?Q?5RDPZTAR84P2Iv3kIgXWY+W/iLnWU1twa9gxGyGOAzsMM3l03oOQw3UK5xEA?=
+ =?us-ascii?Q?JY/+oOjBoZ6QlT8XWm+stJGNxzM43S2fY+S0FmtuFxAHeq7HimYuuCIwy2g4?=
+ =?us-ascii?Q?P9eIBIvUVTwWvTaiEg89Zm4ROknfHPTjzxzDLMykaE13JAEQkD+wIkozqPAw?=
+ =?us-ascii?Q?askJhck/HzXHcuxjgDN/Yi1EJ0lqk0VMF3soqkKLc9bRy48grm/co0GMuXlJ?=
+ =?us-ascii?Q?gijmYQlbE9zESUcegXxflrZJsUaCRG/+bDb2xY+Otj+IdDJtiB0bcOno+jX3?=
+ =?us-ascii?Q?8e2vQceISAcf93fyYGjziteDjFvm1Qtn9E8AgG1vjtAsGeyKmWKUfINRVnE3?=
+ =?us-ascii?Q?uEORhZD1C+f4AJeZqdz5qgN5J0vtt5jTpiPYmtHD4u9tcDxW+kk20ionRDsl?=
+ =?us-ascii?Q?thRttd7fSxVZNizMFGPd+C9MgSlVeR3/grpUXTLHa5VK9cZd0irSuILdHY/B?=
+ =?us-ascii?Q?Rmtl4dcg2d1Qf4zqC4DLbCd/dTYJFaQBhpJoeB9gL9CVPUzl?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ccd92db2-bbfa-4c2e-2c7e-08df1e2a831e
+X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 13:06:44.8061
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2qRooxJD2GgSWfphmAEkdLVKULA3tHxrJwaIqu3upEDGVV6IDnwrMLukN2GUMZQn
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6847
 
-On 9/28/26 3:07 PM, Steffen Eiden wrote:
-> This series switches the KVM-VFIO interface and external consumers over to
-> standard file-based reference counting, eliminating all external KVM symbol
-> exports.
+On Tue, Sep 29, 2026 at 06:15:39PM +0530, Aneesh Kumar K.V wrote:
+> Jason Gunthorpe <jgg@nvidia.com> writes:
 > 
-> This is a spin-off for the arm on s390 series (old version: [1]) to
-> address all the relevant persons w/o polluting their mailbox. The
-> arm-on-s390 series now dropped those patches and depends on this series
-> (for beeing able to link with KVM=y)
+> > On Tue, Sep 29, 2026 at 11:44:28AM +0530, Aneesh Kumar K.V wrote:
+> >
+> >> tsm_viommu_get_ops() runs with pci_tsm_rwsem held for read and takes a
+> >> temporary reference on the backend module (the CCA module). This keeps
+> >> the selected ops callable until vIOMMU initialization completes. iommufd
+> >> then drops the reference. This does not pin a particular TSM
+> >> registration or prevent tsm_unregister().
+> >
+> > That seems over complicated. Maybe we can't get to the sane locking I
+> > suggested earlier where TSM module is stable while a driver is bound,
+> > but we absolutely must have sane locking where we can "pin" the tsm
+> > for a pdev and it cannot be unregistered for long periods of time,
+> > such as while a viommu/vdev exists.
+> >
+> > That period should start right before getting the ops and continue to
+> > until the viommu is destroyed.
+> >
+> > No hot unplug of tsm modules while things are active.
+> >
 > 
-> Currently, VFIO integrates with KVM by looking up kvm_get_kvm_safe() and
-> kvm_put_kvm() dynamically using symbol_get(), manually tracking module
-> reference counts and storing a put_kvm function pointer in struct
-> vfio_device.
 > 
-> In the ARM64-on-s390 architecture, a second concurrent KVM module
-> (kvm-arm64) is introduced alongside native KVM to host hardware-accelerated
-> ARM64 guests. Having exported global symbols (like kvm_get_kvm/kvm_put_kvm)
-> creates symbol conflicts and prevents clean coexistence of two KVM modules.
+> That is essentially how it works. I decided to take the module reference
+> here and the tsm_dev reference in viommu_init() to keep the rest of
+> viommu_alloc() cleaner. That is, we have:
 > 
-> Additionally, the file based counting simplifies the code and reuses
-> the existing fs refcounting.
+> 	struct module *owner = NULL;
 > 
-> Instead of passing raw KVM pointers and managing module symbols manually, the
-> interface now passes the underlying VM file descriptor throughout VFIO and
-> associated architecture subsystems. To safely extract the KVM instance from a
-> file, an architecture-namespaced helper mechanism is introduced that verifies
-> the file belongs to the expected KVM implementation before accessing its
-> internal state. A back-pointer from the KVM instance to its associated file is
-> maintained across its lifecycle so subsystems can safely acquire file
-> references on demand. Finally, with VFIO, architecture page tracking, and
-> device hooks converted to use file references, the remaining KVM reference-
-> counting exports are restricted strictly to internal KVM modules.
+> 	ops = tsm_viommu_get_ops(idev->dev, cmd->type, &owner);
 > 
-> 	Steffen
-Series
-Acked-by: Janosch Frank <frankja@linux.ibm.com>
+> 	if (!ops) {
+> 		ops = iommu_dev->ops->get_viommu_ops(idev->dev, cmd->type);
+>                 
+> 	rc = ops->viommu_init(viommu, idev->dev,
+> 	if (rc)
+> 		goto out_put_hwpt;
+> 
+> out_put_idev:
+> 	module_put(owner);
+
+if we have a get_ops we need a put_ops()..
+
+> The tsm_dev and module details are needed only by tsm_viommu, not by a
+> generic SMMU driver. For viommu_init() to take ownership of the resources
+> acquired by get_ops(), I would either need to add a viommu_info argument
+> to viommu_init(), affecting all IOMMU driver implementations, or make the
+> error handling conditional and awkward.
+
+Just don't, iommufd can hold the tsm ops if it knows it created the
+viommu through tsm.
+
+
+> >> CCA vIOMMU initialization takes a tsm_dev reference, keeping the TSM
+> >> object and its PCI/TSM resources alive until the vIOMMU is
+> >> destroyed.
+> >
+> > iommufd should do this, so long as the viommu object exists the tsm
+> > for it exists. It should not be inside tsm drivers.
+> >
+> 
+> That would expose more TSM details to iommufd. The reference must also
+> be acquired under pci_tsm_rwsem.
+
+That seems like overkill.
+
+> /* Pin the current TSM and revalidate the selected vIOMMU operations. */
+> struct tsm_dev * pci_tsm_viommu_get_tsm_dev(struct pci_dev *pdev,
+> 		enum iommu_viommu_type type,
+> 		const struct iommufd_viommu_ops *expected_ops)
+> {
+> 	const struct pci_tsm_ops *ops;
+> 	const struct iommufd_viommu_ops *viommu_ops;
+> 	struct tsm_dev *tsm_dev;
+> 	int ret = -ENODEV;
+> 
+> 	{
+> 		guard(rwsem_read)(&pci_tsm_rwsem);
+> 		if (!pdev->tsm)
+> 			return ERR_PTR(-ENODEV);
+> 		if (pdev->tsm->tsm_dev->unregistering)
+> 			return ERR_PTR(-ENODEV);
+> 		ops = to_pci_tsm_ops(pdev->tsm);
+> 		if (!ops->viommu_get_ops)
+> 			return ERR_PTR(-ENODEV);
+> 		tsm_dev = pdev->tsm->tsm_dev;
+> 		/* Unlike get_device(), this also keeps PCI/TSM resources active. */
+> 		if (!tsm_try_get(tsm_dev))
+> 			return ERR_PTR(-ENODEV);
+
+This is way too complicated for what should be a very simple scheme :(
+
+rcu_read_lock()
+tsm = rcu_derference(pdev->tsm);
+if (!tsm)
+   return NULL;
+/* Prevent the module from unloading which must be the only way to
+   trigger unregister */
+if (!try_module_get(tsm->ops->module))
+   return NULL;
+rcu_read_unlock()
+
+And this should be exposed to iommufd..
+
+viommu_create:
+ tsm = tsm_get_device(pdev)
+ tsm_get_viommu_ops(tsm,...)
+ [..]
+
+viommu_destroy:
+  tsm_put_device(tsm)
+
+No lock, no registering FSM, just RCU free the pdev->tsm memory and do
+that module unload rcu synchronize during module unload. No hand of of
+the lifecylce to other layers.
+
+Hold the module get in iommufd inside the iommufd viommu object.
+
+It is simple and easy to understand.
+
+> 		viommu_ops = ops->viommu_get_ops(&pdev->dev, type);
+> 		if (viommu_ops == expected_ops)
+> 			return tsm_dev;
+> 		if (IS_ERR(viommu_ops))
+> 			ret = PTR_ERR(viommu_ops);
+> 	}
+
+
+This should just be try_module_get and a touch of RCU.
+
+> > ideally the module refcount handles this and the only way to trigger a
+> > tsm remove is through module unload, with no sysfs path?
+> 
+> I agree. The existing code takes extra care to allow tsm_unregister().
+> However, if unloading arm-cca-host.ko is the only way to trigger
+> unregistration, as it currently is, we can avoid this complexity.
+
+I've been badly traumitized by hot unplug races, bugs and deadlock,
+let's not introduce anything like this here, there is no need.
+
+Jason
