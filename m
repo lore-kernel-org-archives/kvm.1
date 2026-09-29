@@ -1,120 +1,296 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F08953D9D5;
-	Tue, 29 Sep 2026 17:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pl1-f227.google.com (mail-pl1-f227.google.com [209.85.214.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB91551815B
+	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 17:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790701229; cv=none; b=MRGQs41vnOpLaaEW7Dmov3c3Df64WDNpK3o6GwpdH03lN0xKSDB5j64psUOR+GSwkmdSWBunOMZSwlj84OIMkr4NnbBZyX6XIEz9R347nSTfbRmssihex+3fj6f7fFxXkRUHpNuj86IbrWrMuxW+Tw1C/pHLmxdLrZdMLN1Hfgk=
+	t=1790701991; cv=none; b=N14zlYE8sPRwKeNtixecn8ICigxfHEYCYLk5PS74V3996SndXK5wbztdhhj1d6hQIf68zCYjgrExxdjlBVeeaMMYl6BukAA7LL2GCWwtlPfwT88DPCUIJGBQMAdoMrbtvWdIqjKpvK+PRCvgFRfaGAHQTQs8rM5wAapr53FnRO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790701229; c=relaxed/simple;
-	bh=JOH3/jvzoj8I30I9E7kqxaEsc2Cplh2etaLYcI+/ZEo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zd7b9ff4NtA9o9X5XmnigljUk03pW1+fQethfUqW2vzFqPXphLhsgN96D9pQftrckzvqaZfWVIbbJ94X6rSIbYCgJ3gRmK69BCRu/FVNoNevVDQdoLxVmUBSHv8xlj9ORnmvuZavzGNfvnPBgGXwn/JyZIUQnHqaayEe2j5MVfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=nzbmtfKi; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1790701991; c=relaxed/simple;
+	bh=za+M2qxUqSGpox75MMVrf4a9Js6M3eCbEBCSiLV7HbE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PPL8GmKPIGzlmMGGAuNJClDC9VBITnHy55IYMGYgAmKw7UyR8z2aT+Zb0SULZJQqJ8dW8/K8c/I2nW95679eAvmu3PIKSeI9je1T/Pa9ovslk61Jz/DGglKIftLJ4GjYthpwXTlRs/i9+KiqwsRMmXecJwomCYFRJcFzSKXSuH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=CJutjKXa; arc=none smtp.client-ip=209.85.214.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="nzbmtfKi"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8F3EF1655;
-	Tue, 29 Sep 2026 10:00:23 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 55F753F85F;
-	Tue, 29 Sep 2026 10:00:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790701227; bh=JOH3/jvzoj8I30I9E7kqxaEsc2Cplh2etaLYcI+/ZEo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nzbmtfKi8hy7Cc/yT4F+PGL6tW6kIHItKwVzh05TXYNazNIP2VPxFmRX+iByTzJci
-	 vkpKv707Z8drHTA6cAUBWSs41lcGj8D84X8Ul4eZUyi05Lu5EFRpj5sH9ciUXEZV9J
-	 JuiircUcRlGb+buJ2IlH/gTkk8HxtKdcSyyrp3Zo=
-Date: Tue, 29 Sep 2026 18:00:12 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Andreas Grapentin <gra@linux.ibm.com>
-Cc: Steffen Eiden <seiden@linux.ibm.com>, kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Friedrich Welter <fritz@linux.ibm.com>,
-	Fuad Tabba <tabba@google.com>, Gautam Gala <ggala@linux.ibm.com>,
-	Hariharan Mari <hari55@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>, Marc Zyngier <maz@kernel.org>,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>,
-	Oliver Upton <oupton@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v8 16/29] arm64: Share arm64 headers with s390
-Message-ID: <arvunF8epgpWh1YT@arm.com>
-References: <20260918133107.1042730-1-seiden@linux.ibm.com>
- <20260918133107.1042730-17-seiden@linux.ibm.com>
- <arqQ2Eat4VUBbl49@arm.com>
- <20260928162345.428362-C-seiden@linux.ibm.com>
- <ars6Jh5DiendDT7G@li-d8547bcc-2d90-11b2-a85c-a70f2a37009a.ibm.com>
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="CJutjKXa"
+Received: by mail-pl1-f227.google.com with SMTP id d9443c01a7336-2e2d4cf3668so1108675ad.0
+        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 10:13:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790701989; x=1791306789;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ipLrIfDy0zz7yTWWZQrQ7FdxK85HKYpzvmK9ciRMIIg=;
+        b=lQNiK2qW4JDM49/+yzNtI0QJ43zqRIZb9dPaYNBjJfGeUd9+FVAVcdEdTbZjOsimet
+         HlfaOsPeUdJHVfGB84oA0Ldlp+2eQMbQ1yUCqlx75R4Li9peynXoXNhi6YcCg1sziOmi
+         y86qVdJRRUE1/ShAHJaof2m29nbdOoRNeu/g/eQBBNUQc2KmI02jzJVIjeQueEL5mkvD
+         DNCdO6t4qnP0DJLMHVeiw8wiaU/NMf381lT8uhPOLG3aX/GteC/1bpjxdVBKAlil2Zqk
+         Pxrm7oV5HjpOCt9TIEqxcDJYKSczEDO1orYsG7U21VdXYeSF9ctOZVNjwc5sN6prZU4+
+         5aYw==
+X-Forwarded-Encrypted: i=1; AKwUvBzhedcDaM/WtPLLVPtwL7BFtRal/5/Iy9XEOq5f6O4YABjTZkhyF51RghcWOXIPT94edDg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLYfYQt0z/CuFJL3pRKArTxvHy/Fufs+KEaE4EB6g5yj9H21Egk
+	nPeN9Mpb2X4rqqtJtTA4R9wbJ/4cfWSclS/2S1QikRktlH3y1R6TVSWWvrmEJQcNtATorUm7jol
+	09JrJ0xLDEYTwFNhHgMQ8lpSS/hCidVGjDg7f9+3OrnnkfHVEeF6fGN2myTxnqDzbG1mGiBPiw6
+	n/HPlsEV+39GoyJlUXZC3dEs5JJqVpZNbV7+kyPYpEsNHMCM235oHJrkNSk2+4IACF2eO8teqrY
+	h5Y
+X-Gm-Gg: AYBFou0W1EFgtcb2JB+9yTHHyfY1lSOP7/cKnYOu3tZLzkF+JrgEb86KRzFJkLHnO0Z
+	eeTnjLVcqkPJ6Xwz20di1l2/zSNVHxHCJLo0VNCeARd2Hvej7JdWj6OnRJm0NxF8WWzefHOIEPb
+	eVf/+A1vLaZOaaYMANsTC+44I93K+edOFc78Eb3UTQ+jxl26GhaAnP/Gq1PTFT3d8X5qO/axbhS
+	0f7Lv9tb2mHtfnyKB8xhEg/R26N66ni0NNt+DT/k/JdHULHau9kcKozL53yaOqX1aXwP5fsWyLA
+	DSZ+rysPEvCCT/9F4X0xEhqv7l8s+AJ+B/gonskbwpQjaEN40+aL9IZDdLtOPKHT2jJ/AGxK1Aa
+	2CdOVUvcfhdq+LKZsYdNdVd3sZZLZmZMjz0/lomUySKgOwouk7mWU3hcJ91/A+Js7EZgYBQAQnX
+	1CP1l+JARdnVm3xkc5iL7bLgmX+L3Aj7gwOFc=
+X-Received: by 2002:a17:902:ce84:b0:2df:90d4:1185 with SMTP id d9443c01a7336-2df90d41ad1mr121689105ad.10.1790701989071;
+        Tue, 29 Sep 2026 10:13:09 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-124.dlp.protect.broadcom.com. [144.49.247.124])
+        by smtp-relay.gmail.com with ESMTPS id 41be03b00d2f7-cc7d2df4554sm77173a12.9.2026.09.29.10.13.08
+        for <kvm@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 29 Sep 2026 10:13:09 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-30c0d568830so8892927eec.1
+        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 10:13:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1790701987; x=1791306787; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ipLrIfDy0zz7yTWWZQrQ7FdxK85HKYpzvmK9ciRMIIg=;
+        b=CJutjKXakx1wsVf0NMCE1woayzEr3hBhkg85jVY34k/04PH8Ld1Vi66DWB9/k5nrev
+         3gX4aFvNgDpA8Ge4WX03kMbe+StgHn7DzbxwBrEIGihq0HZ3T4he4EPN6wox9T1eG8E4
+         scpqZ0LbUzSYrO5DbOl413vhcgjOdCO05x4MU=
+X-Forwarded-Encrypted: i=1; AKwUvBwMl2sxzrGnyA8ifua8KOU7HPovCH9foLbudGw3VJervyuN+BBEVqHcQUfP0mOd5CHLQoQ=@vger.kernel.org
+X-Received: by 2002:a05:7301:4908:b0:348:201a:6c8b with SMTP id 5a478bee46e88-348201a6ef2mr6324542eec.38.1790701983155;
+        Tue, 29 Sep 2026 10:13:03 -0700 (PDT)
+X-Received: by 2002:a05:7301:4908:b0:348:201a:6c8b with SMTP id
+ 5a478bee46e88-348201a6ef2mr6324466eec.38.1790701981900; Tue, 29 Sep 2026
+ 10:13:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ars6Jh5DiendDT7G@li-d8547bcc-2d90-11b2-a85c-a70f2a37009a.ibm.com>
+References: <20260929040256.543767-1-zack.rusin@broadcom.com>
+ <20260929040256.543767-3-zack.rusin@broadcom.com> <20260929075426.GQ4120091@noisy.programming.kicks-ass.net>
+In-Reply-To: <20260929075426.GQ4120091@noisy.programming.kicks-ass.net>
+From: Zack Rusin <zack.rusin@broadcom.com>
+Date: Tue, 29 Sep 2026 13:12:45 -0400
+X-Gm-Features: AclHuK9CQF2HwjTfB3IkA5Iz-7VKmkeLlHNlajXqAX5pb_ttJ9z-UY2UurMeehQ
+Message-ID: <CABQX2QP0+Jr6gG0nZkDggvyGWCSHMNVKPPavZTYBqH+wg7rdMg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/6] percpu: Bound decrypted storage for all x86
+ encrypted guests
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Kiryl Shutsemau <kas@kernel.org>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	virtualization@lists.linux.dev, bcm-kernel-feedback-list@broadcom.com, 
+	linux-kernel@vger.kernel.org, Christoph Lameter <cl@gentwo.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Bo Gan <bo.gan@broadcom.com>, linux-mm@kvack.org, 
+	linux-arch@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	Jonathan Corbet <corbet@lwn.net>, "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Long Li <longli@microsoft.com>, 
+	Andy Lutomirski <luto@kernel.org>, linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+	Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="000000000000dd8cad065ca24b7f"
 
-On Tue, Sep 29, 2026 at 06:19:20AM +0200, Andreas Grapentin wrote:
-> On Sep 28 26, Steffen Eiden wrote:
-> > On Mon, Sep 28, 2026 at 05:07:52PM +0100, Catalin Marinas wrote:
-> > > On Fri, Sep 18, 2026 at 03:30:53PM +0200, Steffen Eiden wrote:
-> > > > +# Enable all code shared to s390
-> > > > +KBUILD_CFLAGS	+= -DARM64_S390_COMMON
-> > > > +KBUILD_AFLAGS	+= -DARM64_S390_COMMON
-> > > > +KBUILD_CPPFLAGS	+= -DARM64_S390_COMMON
-> > > 
-> > > Do we actually need these defines? They seem only to be used as markers
-> > > for the awk scripts to extract the definitions. Why do we need the C
-> > > preprocessor involved at all? Could we not just have comment markers:
-> > > 
-> > > /* ARM64_S390_COMMON_BEGIN */
-> > > ...
-> > > /* ARM64_S390_COMMON_END */
-> > >
-> > No technically we do not need those. They could be useful if we find out
-> > that AWK is the wrong tool and move to a C Preprocessor + diff based
-> > approach. 
-> > 
-> > if the ifdev is not closed the compiler will complain, but an 'arm did
-> > not destroy us' verifiaction tool ( I will send one soonish) could do
-> > the same.
-> 
-> iirc the last time we discussed this we didn't think that load-bearing
-> comments were the right tool here. We also briefly floated the idea of
-> using a #pragma region based approach, but in the end we went with the
-> #ifdef preprocessor directives instead, as the least invasive
-> non-comment marker that was available.
+--000000000000dd8cad065ca24b7f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The downside is that the macro affects the preprocessed code. We need to
-ensure they don't leak in uapi headers for example. Not a fan of this
-approach but I don't have a better suggestion either. At least we could
-write them as:
+On Tue, Sep 29, 2026 at 3:54=E2=80=AFAM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
+> On Tue, Sep 29, 2026 at 12:02:51AM -0400, Zack Rusin wrote:
+> > @@ -1022,11 +1024,13 @@
+> >   * Note: We use a separate section so that only this section gets
+> >   * decrypted to avoid exposing more than we wish.
+> >   */
+> > -#ifdef CONFIG_AMD_MEM_ENCRYPT
+> > +#if defined(CONFIG_X86_MEM_ENCRYPT) && defined(CONFIG_SMP)
+> >  #define PERCPU_DECRYPTED_SECTION                                     \
+> >       . =3D ALIGN(PAGE_SIZE);                                          =
+ \
+> > +     __start_percpu_decrypted =3D .;                                  =
+ \
+> >       *(.data..percpu..decrypted)                                     \
+> > -     . =3D ALIGN(PAGE_SIZE);
+> > +     . =3D ALIGN(PAGE_SIZE);                                          =
+ \
+> > +     __end_percpu_decrypted =3D .;
+> >  #else
+> >  #define PERCPU_DECRYPTED_SECTION
+> >  #endif
+>
+> So you're page aligning something that will get different protection and
+> will thus shatter large pages?
+>
+> That is somewhat uncool. We like large pages, large pages are good.
 
-#if ARM64_S390_COMMON == 1
+I'm a huge large pages fan too. I have a poster in my office and
+everything... And I never do things that are uncool. I have a wwcdd
+(what would cool dude do) bracelet and I look at it every time I make
+a decision, which given that I'm old gets on my wife's nerves a lot.
+That is to say I'm handsome and innocent.
 
-so we get an error if someone misspells the macro name (or they leak in
-uapi headers, vDSO).
+The alignment isn't new. It has been there since ac26963a1175
+("percpu: Introduce DEFINE_PER_CPU_DECRYPTED") under AMD_MEM_ENCRYPT,
+which common distro kernels enable. This patch extends it to TDX-only
+builds and adds the boundary symbols. On bare metal and in ordinary
+guests nothing changes protection, so no large pages are split.
 
-It would also be useful for the awk scripts look for the paired #endif
-rather than relying on the comment at the end of the line. Otherwise
-it's not really different from just sticking to comments.
+In confidential guests, yes, converting each CPU's page splits the
+direct map around it. The alignment doesn't cause that: a large
+mapping can't be part private and part shared, so a converted page
+can't stay inside one. The alignment only keeps unrelated per-CPU data
+out of the shared page. Because that page sits in every CPU's per-CPU
+unit, each 2M mapping that holds one of them becomes 4K mappings,
+including the ordinary per-CPU data around it. In the layouts we've
+tested that's most of the first per-CPU chunk.
 
--- 
-Catalin
+SMP KVM SEV guests already pay this today. sev_map_percpu_data()
+converts the same pages for every possible CPU, at the same
+granularity. What v2 adds is TDX guests and guests on other
+hypervisors.
+
+Where you're right is that v2 converts in every encrypted guest apart
+from Hyper-V vTOM, even when nothing uses the pages. VMware only needs
+them when the steal clock is enabled.
+
+If this is a deal breaker for you for v3 I could convert only when the
+hypervisor's platform setup says it will use them: VMware when the
+steal clock is available, KVM when async page faults, steal time or PV
+EOI are enabled. That decision would be made before the conversion
+(for KVM that means making it in kvm_init_platform() instead of
+kvm_guest_init()), so there's still no readiness state, and other
+confidential guests don't lose large pages to this.
+
+If you'd also like to keep large pages while the steal clock is in
+use, the alternative is to move these buffers out of the per-CPU area
+into one tightly packed allocation. That concentrates the splits in
+that one allocation, so the rest of the per-CPU area keeps its large
+pages. Kiryl preferred the per-CPU section when we discussed v1, so
+I'd like to hear from both of you before going that way. fwiw, I'd
+vastly prefer to first fix the steal-time bug for VMware before trying
+to do this though (whether it's with this series or a smaller
+VMware-only fix). x86 kernel team is notoriously opinionated, which
+isn't a bad thing, but it means that a rewrite of core x86 bits like
+that will take a long time and it's starting to feel a little like I
+stepped into something and you're all behind blast doors yelling "cut
+all the wires you coward!!!" and I'm just confused going "I just came
+here to get some blueberries".
+
+z
+
+--000000000000dd8cad065ca24b7f
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+6U6qgI8F5eiKsQyE0HgYrQJx/sDs9LLVZlaNiA3U8M8CgEnb8VhuH3BN/yXphhEQdJXb1TyaJA60
+SmHcZdEQZbl4EjwUcs3UIowmI/Mhi7ADQB7VNsO/BaOVBEQk53xH+4djY/cg7jvqTTeliY05j2Yx
+uwwXcDC4mWjGzxAT5DVqC8fKQvon1uc2heorHb555+sLdwYxAgMBAAGjggHYMIIB1DAOBgNVHQ8B
+Af8EBAMCBaAwgZMGCCsGAQUFBwEBBIGGMIGDMEYGCCsGAQUFBzAChjpodHRwOi8vc2VjdXJlLmds
+b2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3I2c21pbWVjYTIwMjMuY3J0MDkGCCsGAQUFBzABhi1o
+dHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3I2c21pbWVjYTIwMjMwZQYDVR0gBF4wXDAJ
+BgdngQwBBQMBMAsGCSsGAQQBoDIBKDBCBgorBgEEAaAyCgMCMDQwMgYIKwYBBQUHAgEWJmh0dHBz
+Oi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwQQYDVR0fBDowODA2
+oDSgMoYwaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3I2c21pbWVjYTIwMjMuY3JsMCIG
+A1UdEQQbMBmBF3phY2sucnVzaW5AYnJvYWRjb20uY29tMBMGA1UdJQQMMAoGCCsGAQUFBwMEMB8G
+A1UdIwQYMBaAFAApNp5ceroPry1QLdugI4UYsKCSMB0GA1UdDgQWBBQNDn2m/OLuDx9YjEqPLCDB
+s/VKNTANBgkqhkiG9w0BAQsFAAOCAgEAF463syOLTQkWZmEyyR60W1sM3J1cbnMRrBFUBt3S2NTY
+SJ2NAvkTAxbPoOhK6IQdaTyrWi8xdg2tftr5FC1bOSUdxudY6dipq2txe7mEoUE6VlpJid/56Mo4
+QJRb6YiykQeIfoJiYMKsyuXWsTB1rhQxlxfnaFxi8Xy3+xKAeX68DcsHG3ZU0h1beBURA44tXcz6
+fFDNPQ2k6rWDFz+XNN2YOPqfse2wEm3DXpqNT79ycU7Uva7e51b8XdbmJ6XVzUFmWzhjXy5hvV8z
+iF+DvP+KT1/bjO6aNL2/3PWiy1u6xjnWvobHuAYVrXxQ5wzk8aPOnED9Q8pt2nqk/UIzw2f67Cn9
+3CxrVqXUKm93J+rupyKVTGgKO9T1ODVPo665aIbM72RxSI9Wsofatm2fo8DWOkrfs29pYfy6eECl
+91qfFMl+IzIVfDgIrEX6gSngJ2ZLaG6L+/iNrUxHxxsaUmyDwBbTfjYwr10H6NKES3JaxVRslnpF
+06HTTciJNx2wowbYF1c+BFY4r/19LHygijIVa+hZEgNuMrVLyAamaAKZ1AWxTdv8Q/eeNN3Myq61
+b1ykTSPCXjBq/03CMF/wT1wly16jYjLDXZ6II/HYyJt34QeqnBENU9zXTc9RopqcuHD2g+ROT7lI
+VLi5ffzC8rVliltTltbYPc7F0lAvGKAxggJXMIICUwIBATBiMFIxCzAJBgNVBAYTAkJFMRkwFwYD
+VQQKExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBD
+QSAyMDIzAgxhPxw+eieHWB40hPkwDQYJYIZIAWUDBAIBBQCggccwLwYJKoZIhvcNAQkEMSIEIM95
+Y+wYvsgw8fhQBqM5K0hnr0Cphy3qyWfbqheI4Lz8MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEw
+HAYJKoZIhvcNAQkFMQ8XDTI2MDkyOTE3MTMwN1owXAYJKoZIhvcNAQkPMU8wTTALBglghkgBZQME
+ASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQcwCwYJ
+YIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIBAGh2xOLNTZnJJCZX8ta2OOULWhnYNl6nURTmqezV
+EWCsd9fVqy097xWLJlHL1ct6119tQbP/uPJfTlSgoVSxiEyRDZCvktEaPSBDj9UE+17P8QpkcAn9
+PSkE3hygTjmWgWK1W/vXPf2jZSlESKWPymasKv/SWtffOJP2bMdxTvKAhfGatzEbzyRDLOp0ZyJA
+WEItz+NUT16lVNfUUq9ivkMUHMHayW41eTP9JJrm2SbX6i+U+Tg3nHuEw28dUg5CCzjSwNB7CLdw
+PO0q6M/k/WByi+g9yxPk9C98rqDooB/q0u1jp982V2EMSfEmf1ZIg1fUMqr4NAFpIh7LLWnDHpE=
+--000000000000dd8cad065ca24b7f--
