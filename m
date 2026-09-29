@@ -1,56 +1,56 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1CD5012B9
-	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 13:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319DD51AEC7
+	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 13:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790687057; cv=none; b=hDURWXCVMfOhoee+bg++xCHkIWMME/NKgO8xLmXVXT6XaisT0bng+j/TYbdgMgrz2nlqbMghmfdA/P/W+pJdwpPl7mLmh2k9Lz7LQi0SVhc9t/meHg5vcEaQCzfuCdLwItngEUACDkstddj+SApFQlWzYQnGUMI3lYc1sTuGjUg=
+	t=1790687057; cv=none; b=Tzs1Yvuyjr6g6QK3kHm9jasLTlguz/fM1AvXiXQ1Fnne6Yk5n4K/thHurvF+Up4CdO2YcoWrZcqJhGPG5unasomOPQsxwpIatreV3q5IEmcBiWlR7wqyDbsRDRlzXKaASqw07CTv6k8YTIOsgpr8CNd2RAb7SYr7UdZ9SY3iMiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790687057; c=relaxed/simple;
-	bh=NZtFOz//WPMbBQGPi/EBcBXNelS6rNh+c8nARksit88=;
+	bh=iXQtKYVzI1WcinZxgHLLFl0aaU/3XJVMW6gmub25IYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=khMTi+yUS0O90tF/aBqSqy3bRiIXjGVGGGCnajqvnXuuw6u0JIWzPNIYy5+FHCLcK70fduSxW486Vx2vNt4pRJ+kvXlOwxdZ5fVvKoKY2op13tlfIyrgRmLf6V/uE6FC9lC5xllnbonrlsIYZB22shBAI/gzX8P9b+CstQ9Kol8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mBZPPMEj; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=AKHQpcb01MV0ZhSL76r/Zu3knAB6nzsnQmVAKeXL9xkVTP/UEgqeKrIb8dJKpYNXjV/MoLzvJ4SVXELypaXbgiWOaRpOZHdHEjUhry3i9a2BjCQK49B8n08GLXIHLpFUVun6ZAkvZFbruZCmSLbJNg4qcslvOXCzg2nuQE7Ny1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ckgUOkz9; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mBZPPMEj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ckgUOkz9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790687055; x=1822223055;
+  t=1790687056; x=1822223056;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=NZtFOz//WPMbBQGPi/EBcBXNelS6rNh+c8nARksit88=;
-  b=mBZPPMEja4lffcAvgnfkxNNLkSILVTlI6SLTpc4fe7le6KjTSsHw3RG6
-   xbeIUwsZRsBwYgXgavCOffxk3m9UtLYcVWW/Fc21B5AXcdSHVG7+MDohU
-   IbyyLbk3Jb2aEb5vlS7rpqCtcqJgJi7N+GnCQj+vCrJDJsog85FsoySGq
-   mqF+vo4RvI5Ue/sVTEBffUtxg51m0aaaygnqnWW3NfL+c9pNlBK2aRHHN
-   5J2oe38GBbbFUN5rM69+mzOUVpIwV9mc3o2W6GNhY1tNF8zorCpTYAVcb
-   alpbOVUx1OCZFkf0DzbD+41e6YcCO6mCBh80n7/gAgP9KSizN1QZsrvAj
+  bh=iXQtKYVzI1WcinZxgHLLFl0aaU/3XJVMW6gmub25IYQ=;
+  b=ckgUOkz9GgS4bW79RaQADtBpMP4B62BczfHSz0Ui6yzlU76sRLjdD12l
+   j/1URRUwRcHQ0qF5VdSnn+MAJOTp7Z1R3I86fDyhqbeBBTYfpAVxwAEIB
+   n/qKKINEI0A8ieWjKPYDSLFCqvpvSAWmzx4Wsna2A2XhQDy2WTuHJffOV
+   Tvd0BcJOu+WIydX0mhpkd0kaVFyb65ZVFxi8tNtZEKhvp+5meiRl+oRxT
+   ppRq0OTttGPEoGGeUO3Hc8cqdfwKXA6KOH0npm5In20DytsimiHYsK008
+   d9WQ6Vec90IXvLHtReHRL7hwE0P76MCboeDN2jQCV88oXITneNb7B2nb0
    w==;
-X-CSE-ConnectionGUID: zw5SIXSjS2aBovKlxdhdtQ==
-X-CSE-MsgGUID: 3bZQfdpLRPCtMkPiw6y6qQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="108894089"
+X-CSE-ConnectionGUID: AY/DApLTQ5GdhGWcz4nbvQ==
+X-CSE-MsgGUID: Ir64oVBJSPWkQm/qtaj9rQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="108894095"
 X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
-   d="scan'208";a="108894089"
+   d="scan'208";a="108894095"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 06:04:14 -0700
-X-CSE-ConnectionGUID: +LidmRoeSN6PR08z3e1BgQ==
-X-CSE-MsgGUID: TGfZ/AVFS9G+5S+FKSSnKw==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 06:04:15 -0700
+X-CSE-ConnectionGUID: ua/E4rUMQ7ukdCDierlkvg==
+X-CSE-MsgGUID: 77tnNh9sQYeMbDfpcMnvTg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
-   d="scan'208";a="275397812"
+   d="scan'208";a="275397821"
 Received: from lxy-dev.sh.intel.com ([10.239.48.89])
-  by orviesa009.jf.intel.com with ESMTP; 29 Sep 2026 06:04:13 -0700
+  by orviesa009.jf.intel.com with ESMTP; 29 Sep 2026 06:04:15 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>
 Cc: kvm@vger.kernel.org,
 	xiaoyao.li@intel.com
-Subject: [kvm-unit-tests PATCH v2 1/2] x86: Make cet and lam tests KVM-only
-Date: Tue, 29 Sep 2026 20:24:33 +0000
-Message-ID: <20260929202434.174501-2-xiaoyao.li@intel.com>
+Subject: [kvm-unit-tests PATCH v2 2/2] x86/run: Use separate "-accel" option to configure the accelerator
+Date: Tue, 29 Sep 2026 20:24:34 +0000
+Message-ID: <20260929202434.174501-3-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260929202434.174501-1-xiaoyao.li@intel.com>
 References: <20260929202434.174501-1-xiaoyao.li@intel.com>
@@ -62,46 +62,33 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Passing "-enable-kvm" in qemu_params forces tests to run with kvm
-accelerator.  This leads cet and lam tests to run with kvm accelerator
-silently without any warning even when "ACCEL=tcg" is passed.  Change to
-require "accel = kvm" for cet and lam tests so that they can be skipped:
+When configuring accelerator via machine's "accel" property, it cannot
+pass additional ACCEL_PROPS. For example, it hits following error when
+configuring KVM with "notify-vmexit":
 
-  SKIP cet (kvm only, but ACCEL=tcg)
-  SKIP lam (kvm only, but ACCEL=tcg)
+  # ACCEL="kvm,notify-vmexit=internal-error" ./x86-run x86/apic.c
+  #   qemu-system-x86_64: Property 'pc-i440fx-11.1-machine.notify-vmexit' not found
 
-when "ACCEL=tcg" is passed.
-
-As a bouns, removing the use of "-enable-kvm" will allow pass $ACCEL and
-$ACCEL_PROPS to the standalone "-accel" QEMU parameter, since QEMU
-translates "-enable-kvm" to "-machine accel=kvm", which is not
-compatbile with "-accel" parameter:
-
-  qemu: The -accel and "-machine accel=" options are incompatible
+Switch to use separate "-accel" option to configure the accelerator.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- x86/unittests.cfg | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ x86/run | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/x86/unittests.cfg b/x86/unittests.cfg
-index ae731a93dc7a..afc0f7128c03 100644
---- a/x86/unittests.cfg
-+++ b/x86/unittests.cfg
-@@ -535,9 +535,11 @@ groups = tsx-ctrl
- file = cet.flat
- arch = x86_64
- smp = 2
--qemu_params = -enable-kvm -m 2048 -cpu host
-+accel = kvm
-+qemu_params = -m 2048 -cpu host
+diff --git a/x86/run b/x86/run
+index dd38f14c871f..a68d469dd1b8 100755
+--- a/x86/run
++++ b/x86/run
+@@ -43,7 +43,7 @@ fi
+ pit="-global kvm-pit.lost_tick_policy=discard"
  
- [lam]
- file = lam.flat
- arch = x86_64
--qemu_params = -enable-kvm -cpu max
-+accel = kvm
-+qemu_params = -cpu max
+ command="${qemu} --no-reboot -nodefaults $pit $pc_testdev -display none -serial stdio $pci_testdev"
+-command+=" -machine accel=$ACCEL$ACCEL_PROPS"
++command+=" -accel $ACCEL$ACCEL_PROPS"
+ if [ "${CONFIG_EFI}" != y ]; then
+ 	command+=" -kernel"
+ fi
 -- 
 2.53.0
 
