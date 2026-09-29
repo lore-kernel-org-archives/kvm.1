@@ -1,60 +1,39 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5082F3A7F7E;
-	Tue, 29 Sep 2026 11:41:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72E1514770;
+	Tue, 29 Sep 2026 11:43:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790682100; cv=none; b=cmafat3mW3s5O5bhZnKkbkO1fbqnpAzvb77eoQPTdFPw7Aj7YAOJ3nAd5oMkeF2NgYjA+a/2yrQf59G0zOLeDn5G7WnPGhDYZxweDY21w9cLjTsGeCfKI70ROjtf0U7Wn/0sX0FL220lABhlIXeT0D7ICLTd5BZ5+enj7Aqzbho=
+	t=1790682239; cv=none; b=JrMDovPQloWkGEs1eNjzM012kt676l9luOHRruCKEihs52KwWmzufFNoDf5c+K1K5ESjC2X91oaW9xHII311DUMXK3F8t7GTOvNaKZU9t+ZdnEeqliwK5OCykEsjJGqvC33pRU+T4TtB1hOFARNS03Dp21h70l+x5BkW0VZ6g2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790682100; c=relaxed/simple;
-	bh=I8MJcxFshaLmToebzEiE/AfqRYtZfgOkccDv/SdZVOc=;
+	s=arc-20240116; t=1790682239; c=relaxed/simple;
+	bh=KbI05H8257pbTzuYfeN0E7QF6PPoH8UPLCkl8YK1WlI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K5vGu8S4wtiGpiklFD5hRlNtNacKB9E/cYhz6wYMNL/6t6oLn4l2o/d1J2B8a1HJ1yFmq/ihLobFuOpXEvVaRCigoz9cVUwI1Y+FlbZbx2IPtBTx8NhcBKYsuIy9ZfeB3OwsD+YHxo0NQYTYfDUgg5X0NxmCenk60PsLNDMU/Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=SR3PkMks; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=cwTc6Syw5YVwa6UOwQOA5mwTLRO8FNqsoPCtp+d09vexynYQB8xsJ9JpCjNlovR2KIw1a1eaINu9ImRAKJQV3Jib9+uhrw0Uvjoqz65dOy8ihwBa3J2LYI2E05JAcYWwDLMhw9HJywKbNG8k7oLDUHnvaXYrnFSBddwITrQ3rZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=y72ExFnk; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="SR3PkMks"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68TB5Ybb3836658;
-	Tue, 29 Sep 2026 11:41:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=aDEwa2
-	bobXQiAvTNgfL86JTzNGxU3hs1hVTUlK5JvVM=; b=SR3PkMksBtEgDMjILBWtd4
-	nLLqA9BuIU5tLmxwY1HxAyl6SbcCPkpckGzFvrd6CjAGbl1UYsdMxyxuFNdH9EJH
-	Fnscs7tqORjqe9vVFNoYeVWutdGrIhLPAJ+M3YP+2xHsmUnM3ki/chTxqjsGmuwE
-	268/BDAB/d54cxu42vuF5+n/QNL80X4xZ+LnClbKHfDHec5xN6/KC/HEsSZ00WYD
-	EMZ2Y4S73dSg8BYQDF4cINVP53Kz9nHRuBe9MswmWe+ASgzNN6hIslA1UwEV00r9
-	zhoHY8ET9qkx0wvdZprv4qPkG4Lwlwn/7O8ruyiMX/0v6jAhXHCy6oRNxrzTu2bg
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx3fk6d2v-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 29 Sep 2026 11:41:37 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68TAlhrD1608057;
-	Tue, 29 Sep 2026 11:41:36 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gxsck9gnw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Sep 2026 11:41:36 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68TBfZwB14811648
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 29 Sep 2026 11:41:35 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4DE5158056;
-	Tue, 29 Sep 2026 11:41:35 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1121758054;
-	Tue, 29 Sep 2026 11:41:34 +0000 (GMT)
-Received: from [9.61.24.130] (unknown [9.61.24.130])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 29 Sep 2026 11:41:33 +0000 (GMT)
-Message-ID: <e4807f54-f443-49df-b6cb-e77d4986dcd9@linux.ibm.com>
-Date: Tue, 29 Sep 2026 07:41:33 -0400
+	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="y72ExFnk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
+	s=201707; t=1790682200;
+	bh=odX8h+v3SuO3LBAU4tzqREo252vsuXpN4nbA3pZgk4M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=y72ExFnkOblYlkejvfz50psNdKfcbaTHptBCwG5Fs0LSKDtLdjoPF1A/pnJOgMB/R
+	 vJl0KHdDt6OAxcRDdxMX1hmmIVBsKAd4EyeBjaC84sNrPxQrmOoWRA5g2rlAOSiAmO
+	 IVvfN94A4Jf+aK0UZgxDy4bwu36RRmrgW+A0/BzMrju9b7Krr1ns3Rf285FSCi3J7/
+	 RLwxRxZg6UnUsTKvGVwkd426DmWDJuDiORwQqlndhUjncGsGZP5c+X3OjN51rVCD10
+	 K10j+YGrS+CJG8YDDDy3ZsJfuryhnGzBffduAaow9tb3p38Hgryzgt2qGrJRPiPk92
+	 bl4Jv/7LhEk6w==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4hvGWz0nfcz4wDx;
+	Tue, 29 Sep 2026 21:43:10 +1000 (AEST)
+Message-ID: <ed9a25ad-9a10-407d-b910-1b5cbdff88b4@ozlabs.org>
+Date: Tue, 29 Sep 2026 12:43:37 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,213 +41,191 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 5/6] s390/vfio-ap: fix queue state leakage to guest and
- host
-To: sashiko-reviews@lists.linux.dev
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Jason Herne <jjherne@linux.ibm.com>
-References: <20260925124551.665448-1-akrowiak@linux.ibm.com>
- <20260925124551.665448-6-akrowiak@linux.ibm.com>
- <20260925130308.D988B1F000FF@smtp.kernel.org>
-Content-Language: en-US
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-In-Reply-To: <20260925130308.D988B1F000FF@smtp.kernel.org>
+Subject: Re: [PATCH v7 3/9] dma-buf: Provide dma_buf_set_name()
+Content-Language: en-GB
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
+ Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
+ Kevin Tian <kevin.tian@intel.com>, Pranjal Shrivastava <praan@google.com>,
+ Longfang Liu <liulongfang@huawei.com>, Mahmoud Adam <mngyadam@amazon.de>,
+ David Matlack <dmatlack@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Ankit Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ linux-pci@vger.kernel.org
+References: <20260924152159.49702-1-matt@ozlabs.org>
+ <20260924152159.49702-4-matt@ozlabs.org>
+ <654a5994-97e4-4a0d-aba9-24090b495da5@amd.com>
+From: Matt Evans <matt@ozlabs.org>
+In-Reply-To: <654a5994-97e4-4a0d-aba9-24090b495da5@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: anjZi5culZ2WQg-bF3bzwydA-fVWITrX
-X-Proofpoint-GUID: anjZi5culZ2WQg-bF3bzwydA-fVWITrX
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI5MDA0NiBTYWx0ZWRfX6mhn8SBq1qOW
- olGyi/WcNZ8T8Q8whWnatKO3zWrLdTAqRFVDjfb5cKN2HOXLllWXw6fuki88Ynvue8w490ejpXZ
- pSH+mOoxK+IZh7v90OmDmHvm+HO6hAQ=
-X-Authority-Analysis: v=2.4 cv=Vv62kO2n c=1 sm=1 tr=0 ts=6abba3f1 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=af_09KNe_OGDYySOq_oA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI5MDA0NiBTYWx0ZWRfX1uxjwkhkOZZX
- bOGPwIZxLW653jawrcfd/LzHPhgFuxb28ESzUvKvJsUwp3PQXA1TgBd4sV97qwXu2yObTvGL3jl
- i3Jvfrfdcx1intE+YssioYFkTngP3Fo/3AQ1x5DbBodY6yfHGU5ldTNBPAH87Rp0u9olIU7x1pJ
- 6dJjrMaqfRbDUBIAyx+6hI9A697D3qdwPoRwHmQ3f0d7kIkabkw2zanYLGslLVdWiqSJC6p7HIP
- a+5rQsaqO2oFOnKZh0UudtQLtiJK/C8vcJ4sLoEAezQKaG8IWZ/TAFqd/j8+3rCooB9Nr0a0sHG
- 9iuHEB3DBclLyvpOYGQ9zyXnqq02f2yWiFywba9YaYqJCHPtra1jslKeF+q8nf/Tf/sakntBUZ4
- s0UuYY2/liTO/OiYTD35oQ/PeSD3QT3+Z6nitqqmW4e6eJPXNKX05zCGk6YFG3GhnhTBGLg0d7r
- HKXdo/nEQH8jEImqgyw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-29_04,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 phishscore=0 bulkscore=0 adultscore=0
- priorityscore=1501 malwarescore=0 clxscore=1015 lowpriorityscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609290046
+Content-Transfer-Encoding: 8bit
 
-
-
-On 9/25/26 9:03 AM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
-> - [High] crypto: vfio: Use-After-Free of vfio_ap_queue in vfio_ap_on_qstate_transition
-> - [High] crypto: vfio: TOCTOU on q->matrix_mdev leads to unprotected KVM state updates and deadlocks
-> - [Low] crypto: vfio: Incorrect comment for __drv_notify_qstate_transitioned
-> --
->
-> commit 6964322bafaab43ec603a04a262b5d1370b6779d
-> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
->
-> s390/vfio-ap: fix queue state leakage to guest and host
->
-> This patch limits the wait for a queue reset to complete and prevents the
-> leakage of queue state to a guest. It introduces an on_qstate_transition
-> callback to track queue state changes and restricts queue passability to
-> fully zeroized states.
->
-> Cc: stable@vger.kernel.org
->
->> diff --git a/drivers/s390/crypto/ap_bus.c b/drivers/s390/crypto/ap_bus.c
->> index d82df5b4e2db3..a53cfad3543eb 100644
->> --- a/drivers/s390/crypto/ap_bus.c
->> +++ b/drivers/s390/crypto/ap_bus.c
-> [ ... ]
->> @@ -1979,6 +1979,28 @@ static inline void notify_scan_complete(void)
->>   			 __drv_notify_scan_complete);
+On 25/09/2026 09:39, Christian König wrote:
+> 
+> 
+> On 9/24/26 17:21, Matt Evans wrote:
+>> Allow exporters to set the name of buffers, during export or for
+>> subsequent updates.  This is useful to express buffer-specific debug
+>> information, indicate state particular to the exporter's usage, etc.
+>> Only exporters and userspace are expected to set names; it isn't
+>> sensible for importers to do it.
+>>
+>> Originally, the static dma_buf_set_name() was used for
+>> DMA_BUF_SET_NAME ioctls, taking a __user string parameter.  Export
+>> this function as a generic set-name helper, taking a kernel-allocated
+>> string.  The SET_NAME ioctls now locally duplicate the __user string,
+>> and use the new function to set the name.
+>>
+>> Signed-off-by: Matt Evans <matt@ozlabs.org>
+>> ---
+>>   drivers/dma-buf/dma-buf.c | 78 ++++++++++++++++++++++++---------------
+>>   include/linux/dma-buf.h   |  2 +
+>>   2 files changed, 50 insertions(+), 30 deletions(-)
+>>
+>> diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+>> index 4c9add51f9ef..e4ec504e9288 100644
+>> --- a/drivers/dma-buf/dma-buf.c
+>> +++ b/drivers/dma-buf/dma-buf.c
+>> @@ -404,34 +404,6 @@ static __poll_t dma_buf_poll(struct file *file, poll_table *poll)
+>>   	return events;
 >>   }
 >>   
->> +/* Helper function for notify_config_changed */
->> +static int __drv_notify_qstate_transitioned(struct device_driver *drv, void *data)
-> [Severity: Low]
-> Is this comment accurate? It states this is a helper function for
-> notify_config_changed, but the function name and usage indicate it is a
-> helper for notify_qstate_transitioned.
-
-This will be fixed ion the forthcoming v9 patch series
-
->
->> +{
-> [ ... ]
->> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
->> index ffc2d8715bd96..cd4a436c43194 100644
->> --- a/drivers/s390/crypto/vfio_ap_ops.c
->> +++ b/drivers/s390/crypto/vfio_ap_ops.c
-> [ ... ]
->> @@ -3309,3 +3310,46 @@ void vfio_ap_on_scan_complete(struct ap_config_info *new_config_info,
+>> -/**
+>> - * dma_buf_set_name - Set a name to a specific dma_buf to track the usage.
+>> - * It could support changing the name of the dma-buf if the same
+>> - * piece of memory is used for multiple purpose between different devices.
+>> - *
+>> - * @dmabuf: [in]     dmabuf buffer that will be renamed.
+>> - * @buf:    [in]     A piece of userspace memory that contains the name of
+>> - *                   the dma-buf.
+>> - *
+>> - * Returns 0 on success. If the dma-buf buffer is already attached to
+>> - * devices, return -EBUSY.
+>> - *
+>> - */
+>> -static long dma_buf_set_name(struct dma_buf *dmabuf, const char __user *buf)
+>> -{
+>> -	char *name = strndup_user(buf, DMA_BUF_NAME_LEN);
+>> -
+>> -	if (IS_ERR(name))
+>> -		return PTR_ERR(name);
+>> -
+>> -	spin_lock(&dmabuf->name_lock);
+>> -	kfree(dmabuf->name);
+>> -	dmabuf->name = name;
+>> -	spin_unlock(&dmabuf->name_lock);
+>> -
+>> -	return 0;
+>> -}
+>> -
+>>   #if IS_ENABLED(CONFIG_SYNC_FILE)
+>>   static long dma_buf_export_sync_file(struct dma_buf *dmabuf,
+>>   				     void __user *user_data)
+>> @@ -577,8 +549,19 @@ static long dma_buf_ioctl(struct file *file,
+>>   		return ret;
 >>   
->>   	mutex_unlock(&matrix_dev->guests_lock);
->>   }
+>>   	case DMA_BUF_SET_NAME_A:
+>> -	case DMA_BUF_SET_NAME_B:
+>> -		return dma_buf_set_name(dmabuf, (const char __user *)arg);
+>> +	case DMA_BUF_SET_NAME_B: {
+>> +		char *name = strndup_user((const char __user *)arg,
+>> +					  DMA_BUF_NAME_LEN);
 >> +
->> +/**
->> + * vfio_ap_on_qstate_transition:
->> + *Instead of calling vfio_ap_find_queue() without locks and reading q->matrix_mdev, vfio_ap_on_qstate_transition() now calls get_update_locks_by_apqn(apqn)
->> + * AP bus callback notifying the vfio_ap device driver that the state of a
->> + * queue has transitioned.
->> + *
->> + * @qstate_trans: the object containing a reference to the queue device and the
->> + *		  state to which it transitioned.
->> + */
->> +void vfio_ap_on_qstate_transition(struct ap_qstate_transition *qstate_trans)
->> +{
->> +	struct vfio_ap_queue *q = vfio_ap_find_queue(qstate_trans->queue->qid);
->> +	DECLARE_BITMAP(apm_filtered, AP_DEVICES);
+>> +		if (IS_ERR(name))
+>> +			return PTR_ERR(name);
 >> +
->> +	/*
->> +	 * If the queue is not bound to the vfio_ap device driver, then it won't
->> +	 * be passed through to a guest; so, no need to continue.
->> +	 */
->> +	if (!q)
->> +		return;
+>> +		ret = dma_buf_set_name(dmabuf, name);
+>> +		if (ret)
+>> +			kfree(name);
 >> +
->> +	get_update_locks_for_mdev(q->matrix_mdev);
-> [Severity: High]
-> Can this dereference a freed pointer?
->
-> If vfio_ap_find_queue() reads the device's drvdata and drops the device
-> reference before returning, q has no reference count. Because
-> vfio_ap_on_qstate_transition() holds no locks, a concurrent sysfs unbind
-> can invoke vfio_ap_mdev_remove_queue(), which clears drvdata and calls
-> kfree(q).
->
-> This would cause a use-after-free when reading q->matrix_mdev.
->
-> Additionally, is there a TOCTOU race when reading q->matrix_mdev without
-> locks?
->
-> If q->matrix_mdev is NULL here, get_update_locks_for_mdev() will skip
-> acquiring kvm->lock. If another thread concurrently updates q->matrix_mdev
-> to a non-NULL value while waiting on guests_lock, this could lead to issues
-> later in the function.
-
-This is a legitimate concern.
-Instead of calling vfio_ap_find_queue() without locks and reading 
-q->matrix_mdev,
-matrix_mdev = get_update_locks_by_apqn(apqn) can be used since the apqn 
-can be
-obtained from qstate_trans->queue->qid. get_update_locks_by_apqn() 
-acquires matrix_dev->guests_lock, searches matrix_dev->mdev_list for the 
-mdev that owns the apqn, acquires matrix_mdev->kvm->lock (if attached to 
-a guest), and finally acquires matrix_dev->mdevs_lock. Lookup of q via 
-vfio_ap_mdev_get_queue() is done entirely under the protection of all 
-three locks, completely eliminating the UAF and TOCTOU races.
->
->> +
->> +	switch (qstate_trans->new_state) {
->> +	case AP_QUEUE_CONFIG_ON:
->> +	case AP_QUEUE_CHKSTOP_OFF:
->> +		vfio_ap_mdev_reset_queue(q);
->> +		flush_work(&q->reset_work);
-> [Severity: High]
-> Does this also cause a use-after-free for the same reason? Passing the
-> potentially freed queue object to vfio_ap_mdev_reset_queue(q) and flushing
-> its work struct could trigger further memory corruption.
-
-As stated above, using matrix_mdev = get_update_locks_by_apqn(apqn) should
-also resolve this issue. If q is retrieved from matrix_mdev under
-mdevs_lock, and vfio_ap_mdev_remove_queue() requires mdevs_lock to unlink
-and free q, q is guaranteed valid throughout the reset and
-flush_work(&q->reset_work) sequence.
-
->
->> +
->> +		if (q->matrix_mdev) {
->> +			if (vfio_ap_mdev_filter_matrix(q->matrix_mdev, apm_filtered)) {
->> +				vfio_ap_mdev_update_guest_apcb(q->matrix_mdev);
-> [Severity: High]
-> If q->matrix_mdev changed concurrently after get_update_locks_for_mdev()
-> was called, could this update the KVM guest state without having acquired
-> the proper KVM locks?
-
-As stated above, using matrix_mdev = get_update_locks_by_apqn(apqn) should
-also resolve this issue. If an mdev is attached to a guest
-(matrix_mdev->kvm != NULL), kvm->lock is held. All matrix filtering,
-APCB updates (vfio_ap_mdev_update_guest_apcb()), and queue resets operate
-strictly on the locked matrix_mdev handle, with no unprotected pointer
-re-reads.
-
->
->> +				reset_queues_for_apids(q->matrix_mdev, apm_filtered);
->> +			}
->> +		}
->> +		break;
->> +	default:
->> +		break;
+>> +		return ret;
 >> +	}
->> +Instead of calling vfio_ap_find_queue() without locks and reading q->matrix_mdev, vfio_ap_on_qstate_transition() now calls get_update_locks_by_apqn(apqn)
->> +	release_update_locks_for_mdev(q->matrix_mdev);
-> [Severity: High]
-> If q->matrix_mdev was modified between the initial acquisition and here,
-> would this call mutex_unlock() on a lock it did not acquire, or leave
-> an acquired lock perpetually locked?
+>>   
+>>   #if IS_ENABLED(CONFIG_SYNC_FILE)
+>>   	case DMA_BUF_IOCTL_EXPORT_SYNC_FILE:
+>> @@ -874,6 +857,41 @@ void dma_buf_put(struct dma_buf *dmabuf)
+>>   }
+>>   EXPORT_SYMBOL_NS_GPL(dma_buf_put, "DMA_BUF");
+>>   
+>> +/**
+>> + * dma_buf_set_name - Set a dmabuf's name
+>> + * Intended to be used by the exporter to set a name for debug
+>> + * purposes.  This can also change an existing name if the same piece
+>> + * of memory is used for multiple purposes over time.
+> 
+> Add something like "Importers should *NOT* use this function to overwrite the name." here and add some note under "DOC: locking convention" how this function is supposed to be called.
+> 
+> Apart from that looks good to me,
 
-As stated above, using matrix_mdev = get_update_locks_by_apqn(apqn) should
-also resolve this issue. At the exit point, the locks can be freed with
-release_update_locks_for_mdev(matrix_mdev), passing the exact same
-matrix_mdev that was locked by get_update_locks_by_apqn(). This guarantees
-100% symmetry between lock acquisition and release under all execution
-paths.
+Thanks, Christian.  Good point, done.
 
->
+Re the locking convention, it appears dma_buf_set_name() is agnostic to 
+whether resv is held or not.  However, rather than adding that as a new 
+category to the 'DOC: locking convention', I've put this function in the 
+existing "don't hold resv" section.
+
+Whilst conservative, this matches existing (and this series's) usage, 
+and can then be relaxed in future.  If you think a new "resv is 
+permitted but not required to be held" category of API doc is better, do 
+say.
+
+Thanks,
+
+
+Matt
+
+
+> Christian.
+> 
+>> + *
+>> + * @dmabuf: [in]     dmabuf buffer that will be renamed.
+>> + * @name:   [in]     The name of the dma-buf, allocated with kmalloc() or
+>> + *                   similar.  This takes ownership of the allocation
+>> + *                   on success, which will be kfree()d when the
+>> + *                   dmabuf is released or a new name assigned.
+>> + *
+>> + * Returns 0 on success, -EINVAL if the name is NULL, or -E2BIG if the
+>> + * name (including terminator) exceeds DMA_BUF_NAME_LEN.
+>> + */
+>> +int dma_buf_set_name(struct dma_buf *dmabuf, char *name)
+>> +{
+>> +	if (!name)
+>> +		return -EINVAL;
+>> +
+>> +	/* dmabuffs_dname() won't use the string if the length
+>> +	 * (including terminator) exceeds DMA_BUF_NAME_LEN:
+>> +	 */
+>> +	if (strlen(name) >= DMA_BUF_NAME_LEN)
+>> +		return -E2BIG;
+>> +
+>> +	spin_lock(&dmabuf->name_lock);
+>> +	kfree(dmabuf->name);
+>> +	dmabuf->name = name;
+>> +	spin_unlock(&dmabuf->name_lock);
+>> +
+>> +	return 0;
 >> +}
+>> +EXPORT_SYMBOL_NS_GPL(dma_buf_set_name, "DMA_BUF");
+>> +
+>>   static int dma_buf_wrap_sg_table(struct sg_table **sg_table)
+>>   {
+>>   	struct scatterlist *to_sg, *from_sg;
+>> diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
+>> index d15b2b31d3c9..952a2c196ad4 100644
+>> --- a/include/linux/dma-buf.h
+>> +++ b/include/linux/dma-buf.h
+>> @@ -571,6 +571,8 @@ void dma_buf_fd_install(struct dma_buf *dmabuf, int fd);
+>>   struct dma_buf *dma_buf_get(int fd);
+>>   void dma_buf_put(struct dma_buf *dmabuf);
+>>   
+>> +int dma_buf_set_name(struct dma_buf *dmabuf, char *name);
+>> +
+>>   struct sg_table *dma_buf_map_attachment(struct dma_buf_attachment *,
+>>   					enum dma_data_direction);
+>>   void dma_buf_unmap_attachment(struct dma_buf_attachment *, struct sg_table *,
+> 
 
