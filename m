@@ -1,78 +1,152 @@
-Received: from mta0.migadu.com (out-27.mta0.migadu.com [91.218.175.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D5051AEC7
-	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 13:08:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806A241A92C
+	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 13:09:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790687305; cv=none; b=skeI70XyOUEwltRZWjXL8EwbHSfW6xN64AX6w8Oy84DOQKmquPkA1QHFCskocn7LCdZFmXo2OeczFZ1hAk5/IgQHIRbWnIaFWhU8IV3GAj6YAczNxBm/pcELUFMTtwfaHFWAMABtNsIOyqkVEkpvqj8guLlJa20ENEE6N/bhQDM=
+	t=1790687347; cv=none; b=sBwBWPSzUkVIGyI2JI/QxDJgBLLeSCNK0m1eu3H7nO8f4ECAqS8rSs9TZ1gWcxFsWJO3z0yCLQT0LaALmwjsSGhzhu4wmeRVQ3eNLojhLqB85DOe+fpmK56DymFM9i+/3TPkpNUn/GUjL7fzOE6uN2zFpqXN+9SWPqILVTSzqRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790687305; c=relaxed/simple;
-	bh=uaXy1AnqfLSnUDMwwNF1+OLNUhz5wbsELYGN7SWq6fc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l5G9mHv7vjyDlSIaNp+IFoVwjZl6lDgHKf0yYqbH7zbKShIN6/OJwECiOWpc95LVvvWcbVRJgAo2iAz2N51PZoPE7MMHi+h0Kls4uZC8TPe9n38vRZvODDMtmDDQSuySP2/O5AwhD8LZX75Imxz54Y5JwKZ4rE0oprtmPTYROMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vxFTBRr+; arc=none smtp.client-ip=91.218.175.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1790687347; c=relaxed/simple;
+	bh=pMl+8QYd2Lz5x4ZfIFFrqKfkCgEJJ7MdB2xi0xnzCRo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cxOkjZ3hVe372/brLKBU5zTFwHMJZ2HtO2h2eygkxnv3MrsR1BTBCExb4kjOasufNmy6IAbVpNijeptT2lbZ9Hm/CRM6oG0RgenD/74LZp2YmjclxV0uJ2V1cx4kQ4PfC9EUL7tjCx2JqJG/agF0SHHBKAesQVbt4t8kxRCaRms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fHSU42fp; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vxFTBRr+"
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=uaXy1AnqfLSnUDMwwNF1+OLNUhz5wbsELYGN7SWq6fc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790687301; v=1; x=1791292101;
- b=vxFTBRr+qAbXP1wxmXHQlO8ldesQGqJppVh7CiwzdXfsZrVWD6K5gE3jm2D6OyOIZO/Lc8+m
- p7R8maYq3q7WVxbY0HxxOqlHRa9PcoTTJrpH3XxDHsdT7Tcynl6jvcTf8YC9EuzWlgStflriM0w
- cm4xcBzAMpOBw+50mj8sYS98=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 2a8a6d2cfa55f8d5;
-	Tue, 29 Sep 2026 13:08:21 +0000
-X-Mizu-Trace-ID: 2a8a6d2cfa55f8d5
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 29 Sep 2026 15:08:20 +0200
-From: Andrew Jones <andrew.jones@linux.dev>
-To: Giacomo Mazzola <gmazz@amazon.de>
-Cc: kvm@vger.kernel.org
-Subject: Re: [kvm-unit-tests PATCH v2 8/8] lib: parse KUT_ENV= from command
- line into environ
-Message-ID: <z5uivx36dfvxwkjndaankge4mhwuo4kakfig6p56avmudtu56a@ze25zjnlv3wm>
-References: <20260609140901.95727-9-gmazz@amazon.de>
- <20260625140452.24159-1-gmazz@amazon.de>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fHSU42fp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790687345; x=1822223345;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=pMl+8QYd2Lz5x4ZfIFFrqKfkCgEJJ7MdB2xi0xnzCRo=;
+  b=fHSU42fpeL9WoyTnJxLCxX5p6eU/x7n8CeFdfoDSEOMWCGXlPgwvzr/D
+   zeMvT+5nFYeetRU3/cZlnyWEwJ0EAkYgOafOq1U4J3lqg2Qe2kfrlt28S
+   nhhzGiq88kGYwqRHeZyceIw8o1AQXKU7uMdJ3n17NS0oEIkzRgtYLtZq7
+   MHFLiUtqV/q534kZ7kaBv9uTPh4kcRBTLzO7qG/aZ4abjdj+Y0nK3o0x2
+   uFmAys5fYqFxsInGg2nTWUJKal2soJXIUeXSHvDO3uT84t/pYF/HK7wxf
+   11RZwX8TR0cIPNiDZJZjUhd3bjp9cLfLvf3mATlJGlMkyNhGvv+tclv/D
+   Q==;
+X-CSE-ConnectionGUID: tQlXgTUoRmaNtWxkvD8wuw==
+X-CSE-MsgGUID: orVuswfUQs6JJuNtpuWM7A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="95216991"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="95216991"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 06:09:04 -0700
+X-CSE-ConnectionGUID: QW1ff3QHTeWSlRXYVLnHGA==
+X-CSE-MsgGUID: +1bLjB0CS6upBCrmshkmBw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
+   d="scan'208";a="280101375"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.119]) ([10.124.240.119])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 06:09:03 -0700
+Message-ID: <36b42923-21ee-4cac-b050-781770824037@intel.com>
+Date: Tue, 29 Sep 2026 21:09:01 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260625140452.24159-1-gmazz@amazon.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [kvm-unit-tests PATCH] x86/run: Use separate "-accel" option to
+ configure the accelerator
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+References: <20260528071712.1407929-1-xiaoyao.li@intel.com>
+ <ahg8i_Zv9TRk-UzE@google.com>
+ <7987e722-4ee3-4d6c-a4b7-369cfd272dac@intel.com>
+ <fe9d441a-91b1-4084-8e1c-71813c3c8bb2@intel.com>
+ <ah7mxim83BLuF-Ia@google.com> <ah87cbm6mxt0aWWk@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <ah87cbm6mxt0aWWk@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jun 25, 2026 at 02:04:52PM +0000, Giacomo Mazzola wrote:
-> Add support for passing environment variables via the command line.
-> If any argv element starts with 'KUT_ENV=', the value after the '='
-> is parsed as a comma-separated list of KEY=VAL pairs and fed to
-> setup_env().  The KUT_ENV= argument is then removed from argv so
-> tests do not see it as a spurious positional argument.
+On 6/3/2026 4:22 AM, Sean Christopherson wrote:
+> On Tue, Jun 02, 2026, Sean Christopherson wrote:
+>> On Tue, Jun 02, 2026, Xiaoyao Li wrote:
+>>> On 5/29/2026 8:09 AM, Xiaoyao Li wrote:
+>>>> On 5/28/2026 9:00 PM, Sean Christopherson wrote:
+>>>>> On Thu, May 28, 2026, Xiaoyao Li wrote:
+>>>>>> When configuring accelerator via machine's "accel" property, it cannot
+>>>>>> pass additional ACCEL_PROPS. For example, it hits following error when
+>>>>>> configuring KVM with "notify-vmexit":
+>>>>>>
+>>>>>>    # ACCEL="kvm,notify-vmexit=internal-error" ./x86-run x86/apic.c
+>>>>>>    #   qemu-system-x86_64: Property
+>>>>>> 'pc-i440fx-11.1-machine.notify- vmexit' not found
+>>>>>>
+>>>>>> Switch to use separate "-accel" option to configure the accelerator.
+>>>>>>
+>>>>>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>>>>>> ---
+>>>>>>   x86/run | 2 +-
+>>>>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>>>
+>>>>>> diff --git a/x86/run b/x86/run
+>>>>>> index dd38f14c871f..a68d469dd1b8 100755
+>>>>>> --- a/x86/run
+>>>>>> +++ b/x86/run
+>>>>>> @@ -43,7 +43,7 @@ fi
+>>>>>>   pit="-global kvm-pit.lost_tick_policy=discard"
+>>>>>>   command="${qemu} --no-reboot -nodefaults $pit $pc_testdev
+>>>>>> -display none -serial stdio $pci_testdev"
+>>>>>> -command+=" -machine accel=$ACCEL$ACCEL_PROPS"
+>>>>>> +command+=" -accel $ACCEL$ACCEL_PROPS"
+>>>>>
+>>>>> This breaks my setup for specifying kernel_irqchip=split.
+>>>>>
+>>>>>    qemu: -accel kvm,kernel_irqchip=split: Property 'kvm-
+>>>>> accel.kernel_irqchip' not found
+>>>>
+>>>> If you switch "kernel_irqchip" to "kernel-irqchip", it should work again.
+>>>>
+>>>> This needs to be fixed on QEMU side. I'll look at it.
+>>>
+>>> Well, I feel hard to justify a QEMU "fix" for it.
+>>>
+>>> "kernel_irqchip" was a property of "machine" in old QEMU, and QEMU switched
+>>> it to "kernel-irqchip" automatically.
+>>>
+>>> Then QEMU moved it to be a property of "accel", while keeping the
+>>> compatibility when users configure it via "machine" that QEMU internally
+>>> setting it to accel's property in this case.
+>>>
+>>> However, "kernel_irqchip" is only valid on "machine", but not on "accel".
+>>>
+>>> For this KVM unit test issue, do we need to add workaround to keep your
+>>> (work-by-accident) usage working? or just kill it?
+>>
+>> Nah, just switch to "accel" and call it good.  I'm likely the one and only user
+>> of kernel_irqchip.
 > 
-> Example: KUT_ENV=PARAM_1=VALUE_1,PARAM_2=VALUE_2
+> There's another problem: the CET and LAM tests force -enable-kvm:
 > 
-> Signed-off-by: Giacomo Mazzola <gmazz@amazon.de>
-> ---
-> Thanks for the review, Drew.
+>   [cet]
+>   file = cet.flat
+>   arch = x86_64
+>   smp = 2
+>   qemu_params = -enable-kvm -m 2048 -cpu host
 > 
-> v1 -> v2:
->  - Moved setup_args_env() from lib/efi.c to lib/argv.c
->  - Use strncmp prefix match instead of strstr
->  - Shift argv down instead of swap-with-last to preserve order
->  - Drop redundant isspace check and COMMAND_LINE_SIZE cap
->
+>   [lam]
+>   file = lam.flat
+>   arch = x86_64
+>   qemu_params = -enable-kvm -cpu max
+> 
+> Which apparently is wired up to "-machine accel=" under the hood, because they
+> get skipped with:
+> 
+>   SKIP cet (qemu: The -accel and "-machine accel=" options are incompatible)
+>   SKIP lam (qemu: The -accel and "-machine accel=" options are incompatible)
 
-Hi,
+Oh, sorry for not respond. I didn't see this mail until I decided to ping you
+for this patch after I noticed you were queuing kvm-unit-test patches.
 
-I'm not sure what happened to this series, but for this patch
+I just sent a v2, which adds one patch to handle cet and lam tests:
 
-Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
-
-Thanks,
-drew
+https://lore.kernel.org/all/20260929202434.174501-1-xiaoyao.li@intel.com/
