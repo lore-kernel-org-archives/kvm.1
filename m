@@ -1,285 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BBB546F494;
-	Tue, 29 Sep 2026 15:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FC446F494
+	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 15:59:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790697550; cv=none; b=E4ycgyWle3g8WZY0eMM7dOIh+hecL+AQDYEAxPl+xPeFGe2fyubF6Ju/FfjoD6SOT40/dIn4vcdgUJt8aaO1RkLoTNWNp8527Zeew+KNaBX4uQLNT1kwR6np3CWSaV86yXmV+XQrJ0JDOLvjoWTl2ljG+Kwu2U0zz2MZeBVEjCI=
+	t=1790697565; cv=none; b=kbJLpqQPEPbY4boVpQ601HDR4TBNusNsuUlDxzvclAvfhU6znZm2zLqAxkc/5brmeLaer6ttFNrRsF9g+FdUGyG61bk5VDAnLlUjndPq5aLNmPZwBGuWNv6S2SmNCMCfVHHQt6iPLnuxI4yB+ncUSrjJ6QA7g8MTmGBcfSbnlMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790697550; c=relaxed/simple;
-	bh=oNY6pvl62fDrWyXHEGscg+QfWsikrFZUD3qzrdwaKwM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=YDYGhHhtKelVsqGSKhu5T6bJ4DZF5O+2S7CBKRtS/gX0/IhCuz/pzPr3FEQKKMeHuVsALNT5CakiGJSiMoHClfUchC6RHlGptOlU1mYKZk+AGNdyeoecbUh70g1Hl3sulHWD4yX38Q7MPdsFePTFw2UUxmIgnTKol777v/Nhymk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bPeNPuU3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790697565; c=relaxed/simple;
+	bh=bwnWYK80nFfKr3iwUcfFe3FiEOIbobSQBQGXAMlfsws=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZRnHqVEQoh8zFipxVO1FvhSEcdn+eq/TqCA5dJhzJ8ZBOcmhtsKJMy7xMJhwYg7R7XykoirhuH8a1zOcAcGFX4u8/bkvr3YK55htaSUHndYEDdsH56YN1cWbfBpgFjQReVGmJ4RhoHKthyNCtRAx+pa70erCX9nYUOG9egR2UIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=nYBYdIxr; arc=none smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bPeNPuU3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3FD51F000FF;
-	Tue, 29 Sep 2026 15:58:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790697542;
-	bh=bk6LzkoYwabfYGJGHc5M32NHw8d6cLNScan2vJ7kpPw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=bPeNPuU3JeMZyxyBG1jcn/LsRS+2SPoB24KIZtG5YPsr9ckxhjOjvsgWMgj6qnw2R
-	 CPDdF+buiQgEn9wr7jKmGrKJqoeV1H+HP2+kjWLQ2psOhB4252bK27TRi5eRI69xAk
-	 0/+4ksyu1BhfNn9m3aketvMYWQLITtMLhpsyLDBRVL4+2+dR2VYY0VxN583FXabJYW
-	 NBBzCE99vAzY2Ixfoj6idCii/5dqali3I1BYBWdHdPT6hyyDwLasdaoSuKgFRErOxI
-	 z5xc0+MF4ylFyVo396ExFP87fqfVb2FUZSvb1mEBPlihqkkDMV8XBosBQM0g4nagqe
-	 gtURzyAMhlQKQ==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: "Tian, Kevin" <kevin.tian@intel.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [RFC PATCH v6 08/11] iommufd: Add vIOMMU provider support
-In-Reply-To: <20260929130643.GL1616761@nvidia.com>
-References: <20260917140159.1163281-1-aneesh.kumar@kernel.org>
- <20260917140159.1163281-9-aneesh.kumar@kernel.org>
- <179027891417.104879.5995584402952067518.b4-review@b4>
- <yq5acxu1kgmo.fsf@kernel.org> <20260925123918.GI9354@nvidia.com>
- <CO1PR11MB483580AB119687B7EC2DD8518C8D2@CO1PR11MB4835.namprd11.prod.outlook.com>
- <yq5atsn8posb.fsf@kernel.org> <20260929121723.GI1616761@nvidia.com>
- <yq5aqzicp6oc.fsf@kernel.org> <20260929130643.GL1616761@nvidia.com>
-Date: Tue, 29 Sep 2026 21:28:53 +0530
-Message-ID: <yq5ald8koxqa.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="nYBYdIxr"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f6350f91so2567961f8f.1
+        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 08:59:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1790697560; x=1791302360; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3j1GsvDFG4oGBkWvUsNYUZ4jWPGCGdM9fhJMq32ExyQ=;
+        b=nYBYdIxrDawbXfSaFe7w3OFYOIJlQrI7qz59yDzNoP/mpoddTQw11jDpz8fIdtFR8U
+         Znr8Mf9igyXtWKyhX9oMfdAJDqgBGoGjvHJ6igkkprc58F97zd5CcoCsAlzLvRI3ylim
+         m1hLqtLjxW1ZBq19GMmUHaYSFSOffW8bLP3K3qMkDov5FsMy3S3x/irgsjS1eOVIRxq+
+         mTxoNRrvS3DP/l/GGQcl6eQRSamNLt1PpjT8Td4ULW0LxMOaLDCJ+NvWfW4h18DY5Ss0
+         azhkGRaDxXPuY2FEehlaV3VB2aS/wbvlM5l1jOZ2enaChDZdM1x+J0h36wzrNkROlZrg
+         6rYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790697560; x=1791302360;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3j1GsvDFG4oGBkWvUsNYUZ4jWPGCGdM9fhJMq32ExyQ=;
+        b=RY/DJCwtQv05IFF8w9mIYU/JR5tEe7Xq0UNOlHnoG9tD2eBxCuEiiHTtTVSdSG9l1a
+         b97RSurlxUomYXN9+12pztM/LcLjw4ZGZ21RqzkcyebFDtyqcroFH3F8mF9UJ5buKFg4
+         +L7/JXb4hX1irbUmAdKbivjThqo2KJUjtIjXrFTPTIAUh7Ube4Uc+2r0ScDtpnPkvaON
+         3COYN2zHcIfe4B26QNgBi1XWljPgD6Uf2MI8rezaw1enbmOmv/woErd5rUcWOXZEmnAG
+         /G2udU+GPOAbw+6AsajwqaP5p0R4t/HyLcPXPTgUpXOSV7Hg3s+02t6fwPZL1f4uyIWt
+         7Psg==
+X-Forwarded-Encrypted: i=1; AKwUvBxJ8Miw7oAKn+tNdsOfV4NFAPL7TEydxW9FExg6dXir1GdLEa+fpAi2+yX3+35Ru5C4oug=@vger.kernel.org
+X-Gm-Message-State: AFuF++mjmQ47pfO7dT6kpb2h0c8/bbVqfYpzUKolQ/b5SaQbD0K6WKv+
+	ROam3UlQ9MAfW5q6v90rIRSudnHBDnOxH5pDgErSxPvZGGhmpMjU5HlMTPz2ZnG5V5c=
+X-Gm-Gg: AYBFou2xGQtpcW106r+9SamjEzJby16QrPT9q9BxU/ReRdYdYangB9onh/wXyyUFcnu
+	xIL6eYV5XHvzaQpAPXr6XRX8so5fX/Ig3Y2xu0QHUUkyPTL+6nIEpdLDGgECUnK8mYSDN8s/DUW
+	F+HvFaew3VAIl5qQip1Uol8GqoyBctcAxZqFKzF6YQWUcrFe13vN95SZtFlRayS1kPGMu0WYE1N
+	cSymRcFAarGnGVRO+Pxx0ITiCbyZfBm+qnStH1US0uRpnd5VBqJ2uoADqgnLyQMsbAcWXW129kI
+	ycI3CrhVE5zxd+KkAOxOetKs/TMUSTPwl5mdVvx4KMJtkMYruzUugREHTX2h0XbybWuBLjolKoK
+	HgvPjynSKS7ezuVDKHX/9RxKAHBwzvG++vYiwUiX/G9IFJ65q6KyPxVlHOEuLtbyy5RPB7T5zW4
+	s+7ppz+Pj3aHbRovIBKfr9tSl/LTzPgjvayyqMga/63OiFQP3C5DTYQucb2peP5cRG1w==
+X-Received: by 2002:a05:600c:46d4:b0:49f:ec98:f030 with SMTP id 5b1f17b1804b1-49ff06f839dmr227620145e9.33.1790697559827;
+        Tue, 29 Sep 2026 08:59:19 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F ([2620:10d:c092:500::5:5c0])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a013c6f295sm7062155e9.0.2026.09.29.08.59.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 08:59:19 -0700 (PDT)
+Date: Tue, 29 Sep 2026 11:59:17 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev
+Subject: Re: [PATCH v3 07/40] mm/vma: tidy up map kernel pages enum values
+Message-ID: <arvgNTUgcO0nPh-V@gourry-fedora-PF4VCD3F>
+References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
+ <20260917-b4-mmap-prepare-vma-flag-sanify-v3-7-4583d8a23bca@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-7-4583d8a23bca@kernel.org>
 
-Jason Gunthorpe <jgg@nvidia.com> writes:
+On Thu, Sep 17, 2026 at 05:22:16PM +0100, Lorenzo Stoakes (ARM) wrote:
+> MMAP_MAP_KERNEL_PAGES is a mouthful, discard the MAP_ as that's implied by
+> MMAP.
+> 
+> Also while we're here delete useless comments for mmap actions whose names
+> clearly indicate what they are for.
+> 
+> Also update the userland VMA tests to reflect this change.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-> On Tue, Sep 29, 2026 at 06:15:39PM +0530, Aneesh Kumar K.V wrote:
->> Jason Gunthorpe <jgg@nvidia.com> writes:
->> 
->> > On Tue, Sep 29, 2026 at 11:44:28AM +0530, Aneesh Kumar K.V wrote:
->> >
->> >> tsm_viommu_get_ops() runs with pci_tsm_rwsem held for read and takes a
->> >> temporary reference on the backend module (the CCA module). This keeps
->> >> the selected ops callable until vIOMMU initialization completes. iommufd
->> >> then drops the reference. This does not pin a particular TSM
->> >> registration or prevent tsm_unregister().
->> >
->> > That seems over complicated. Maybe we can't get to the sane locking I
->> > suggested earlier where TSM module is stable while a driver is bound,
->> > but we absolutely must have sane locking where we can "pin" the tsm
->> > for a pdev and it cannot be unregistered for long periods of time,
->> > such as while a viommu/vdev exists.
->> >
->> > That period should start right before getting the ops and continue to
->> > until the viommu is destroyed.
->> >
->> > No hot unplug of tsm modules while things are active.
->> >
->> 
->> 
->> That is essentially how it works. I decided to take the module reference
->> here and the tsm_dev reference in viommu_init() to keep the rest of
->> viommu_alloc() cleaner. That is, we have:
->> 
->> 	struct module *owner = NULL;
->> 
->> 	ops = tsm_viommu_get_ops(idev->dev, cmd->type, &owner);
->> 
->> 	if (!ops) {
->> 		ops = iommu_dev->ops->get_viommu_ops(idev->dev, cmd->type);
->>                 
->> 	rc = ops->viommu_init(viommu, idev->dev,
->> 	if (rc)
->> 		goto out_put_hwpt;
->> 
->> out_put_idev:
->> 	module_put(owner);
->
-> if we have a get_ops we need a put_ops()..
->
->> The tsm_dev and module details are needed only by tsm_viommu, not by a
->> generic SMMU driver. For viommu_init() to take ownership of the resources
->> acquired by get_ops(), I would either need to add a viommu_info argument
->> to viommu_init(), affecting all IOMMU driver implementations, or make the
->> error handling conditional and awkward.
->
-> Just don't, iommufd can hold the tsm ops if it knows it created the
-> viommu through tsm.
->
->
->> >> CCA vIOMMU initialization takes a tsm_dev reference, keeping the TSM
->> >> object and its PCI/TSM resources alive until the vIOMMU is
->> >> destroyed.
->> >
->> > iommufd should do this, so long as the viommu object exists the tsm
->> > for it exists. It should not be inside tsm drivers.
->> >
->> 
->> That would expose more TSM details to iommufd. The reference must also
->> be acquired under pci_tsm_rwsem.
->
-> That seems like overkill.
->
->> /* Pin the current TSM and revalidate the selected vIOMMU operations. */
->> struct tsm_dev * pci_tsm_viommu_get_tsm_dev(struct pci_dev *pdev,
->> 		enum iommu_viommu_type type,
->> 		const struct iommufd_viommu_ops *expected_ops)
->> {
->> 	const struct pci_tsm_ops *ops;
->> 	const struct iommufd_viommu_ops *viommu_ops;
->> 	struct tsm_dev *tsm_dev;
->> 	int ret = -ENODEV;
->> 
->> 	{
->> 		guard(rwsem_read)(&pci_tsm_rwsem);
->> 		if (!pdev->tsm)
->> 			return ERR_PTR(-ENODEV);
->> 		if (pdev->tsm->tsm_dev->unregistering)
->> 			return ERR_PTR(-ENODEV);
->> 		ops = to_pci_tsm_ops(pdev->tsm);
->> 		if (!ops->viommu_get_ops)
->> 			return ERR_PTR(-ENODEV);
->> 		tsm_dev = pdev->tsm->tsm_dev;
->> 		/* Unlike get_device(), this also keeps PCI/TSM resources active. */
->> 		if (!tsm_try_get(tsm_dev))
->> 			return ERR_PTR(-ENODEV);
->
-> This is way too complicated for what should be a very simple scheme :(
->
-> rcu_read_lock()
-> tsm = rcu_derference(pdev->tsm);
-> if (!tsm)
->    return NULL;
-> /* Prevent the module from unloading which must be the only way to
->    trigger unregister */
-> if (!try_module_get(tsm->ops->module))
->    return NULL;
-> rcu_read_unlock()
->
-> And this should be exposed to iommufd..
->
-> viommu_create:
->  tsm = tsm_get_device(pdev)
->  tsm_get_viommu_ops(tsm,...)
->  [..]
->
-> viommu_destroy:
->   tsm_put_device(tsm)
->
-> No lock, no registering FSM, just RCU free the pdev->tsm memory and do
-> that module unload rcu synchronize during module unload. No hand of of
-> the lifecylce to other layers.
->
-> Hold the module get in iommufd inside the iommufd viommu object.
->
-> It is simple and easy to understand.
->
-
-
-Switching pdev->tsm to an RCU-protected pointer requires broader changes
-to the existing TSM code. To move this series forward, I will continue
-protecting it with pci_tsm_rwsem in the next revision, as that requires
-fewer changes. We can revisit an RCU conversion later if needed?
-
-With this approach, viommu_alloc() will do:
-	struct tsm_dev *tsm_dev = NULL;
-
-
-	tsm_dev = tsm_get_device(idev->dev);
-	ops = tsm_dev ? tsm_viommu_get_ops(tsm_dev, idev->dev, cmd->type) : NULL;
-	if (!ops) {
-                tsm_dev = NULL;
-		ops = iommu_dev->ops->get_viommu_ops(idev->dev, cmd->type);
-        }
-
-	viommu = (struct iommufd_viommu *)_iommufd_object_alloc_ucmd(
-	viommu->tsm_dev = tsm_dev;
-	tsm_dev = NULL;
-
-	rc = ops->viommu_init(viommu, idev->dev,....)
-
-....
-	if (tsm_dev)
-		tsm_put_device(tsm_dev);
-
-
-void iommufd_viommu_destroy(struct iommufd_object *obj)
-{
-..
-	if (viommu->tsm_dev)
-		tsm_put_device(viommu->tsm_dev);
-...
-}
-
-struct tsm_dev *pci_tsm_get_device(struct pci_dev *pdev)
-{
-	const struct pci_tsm_ops *ops;
-	struct tsm_dev *tsm_dev;
-
-	guard(rwsem_read)(&pci_tsm_rwsem);
-	if (!pdev->tsm)
-		return NULL;
-
-	tsm_dev = pdev->tsm->tsm_dev;
-
-	ops = tsm_dev->pci_ops;
-	if (!try_module_get(ops->owner)) // arm-cca-host
-		return ERR_PTR(-ENODEV);
-	if (!tsm_try_get(tsm_dev)) {
-		module_put(ops->owner);
-		return ERR_PTR(-ENODEV);
-	}
-	return tsm_dev;
-}
-
->
->> 		viommu_ops = ops->viommu_get_ops(&pdev->dev, type);
->> 		if (viommu_ops == expected_ops)
->> 			return tsm_dev;
->> 		if (IS_ERR(viommu_ops))
->> 			ret = PTR_ERR(viommu_ops);
->> 	}
->
->
-> This should just be try_module_get and a touch of RCU.
->
->> > ideally the module refcount handles this and the only way to trigger a
->> > tsm remove is through module unload, with no sysfs path?
->> 
->> I agree. The existing code takes extra care to allow tsm_unregister().
->> However, if unloading arm-cca-host.ko is the only way to trigger
->> unregistration, as it currently is, we can avoid this complexity.
->
-> I've been badly traumitized by hot unplug races, bugs and deadlock,
-> let's not introduce anything like this here, there is no need.
->
-
-Are you suggesting setting suppress_bind_attrs = true for the
-arm-cca-host driver?
-
-The driver model otherwise allows the driver to be unbound. For example,
-what happens when arm-rmi device is unbound from the arm-cca-host
-driver? We need to support tsm_unregister() in that case. I am also not
-sure whether there are other paths that can call tsm_unregister().
-Currently, we register the cleanup callback via
-
-	tsm_dev = tsm_register(&sdev->dev, &cca_link_pci_ops);
-
-	ret = devm_add_action_or_reset(&sdev->dev, cca_link_tsm_remove, tsm_dev);
-	if (ret)
-
--aneesh
+Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
