@@ -1,271 +1,184 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010031.outbound.protection.outlook.com [52.101.56.31])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF99A3CFF6F;
-	Tue, 29 Sep 2026 09:34:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.31
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790674457; cv=fail; b=M3qX5UwBI91cwfAwKtBxwiKiOT88TeAZIu0eN+OYyJ6EwDV+0M09eMoXPStoknCg4+4RF2Wp/In9uSJ3jMAZSfXbkTpbCtBatwn0A3sXL8KW1BfGWf//BmPKJYnmPgkXAMulEdojI7bs/kPX3FEdpiSk5R8QMEEc18lH/Um4riI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790674457; c=relaxed/simple;
-	bh=FxzTS7zYLKZHud2dE+/d8d2tBibJBowEh+0iolJa2V4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Nkx22/cScAUfLxr1i5QxBw3rNCZ3A7pdWIDyDrVYUcijvReotKrhdQUb1caw7VqBI/BajQeljNIm9DFFyNa1KDbaji8q7bbCPZCZFz1Z6m5im5jP3mR5n69N4pkzZw2+8uhYwGuPC3PoZ/nmSc0OrGKLzR4cLl/aw0OmQh+MNF8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=n8UNefGK; arc=fail smtp.client-ip=52.101.56.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DBF14968F3;
+	Tue, 29 Sep 2026 09:36:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790674588; cv=none; b=RBTlwIB0C9YwfJIYFsLKy1+QyX1j/qaKQlTzZCiEM56pwpglfpuC6kS3hfVyMZ+BJyARhR+FDJWA6o51gcIJ/SRkz3AFPDZNvSEKkQQyxAcQwc1pOOmdD1NWDDrBjk97MLP5CKl8jNcxA8bKy+gWadlXvuBjzr3ovTTXGkHNv04=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790674588; c=relaxed/simple;
+	bh=pFM70FbyR1JknXLq7uZwl6YV5EpPi9DGj3f51A1Qqbk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gP7GhMTDqMLCjeNcGqNzP8EdurYbtiKfnFE3W2rgoHUPGWiL8c8GPJJyW1MyPMEY9bbwu78M1xPsZoxaj3p0Q8WWaUFKDs/BnIxcn4arQmyw0B/rhL/9xrgCHRKQrSxRCVBsO7QtjNYzGJrNfES/laIy8VhyclJCKPCSH4gV+5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=sxD/SrnW; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="n8UNefGK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uOtiRmTnKgBw7qLcZVP6Ql+DeKZ29ek78juXbdTsvTXxp80Utz/MBxvDQIvd9aPPiQkEqubXUeudrwzHduoY6kj77rPc0A/pbNU3nNI7i72D3kkUYSvwkE4wkaBlUAxYEV/nomO0AlG9Wva6ikRt6G9G0DHqk7uYi+t41+So1iLwxaYLFhjCXBhjhMzvEzF8oT5UXIy5wUcUZtXbIpD9619rtT8n3H6Y9ExBay5rEk64xr4niavHewytSocEYzdth9Vv69ls6sy7WF9agcwEyNXSOhIfT+mlzfgsbLLIh/p16usJMhTepbNf2VOSobIu37yrAw6VPg35VJkiWbqHYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OgiE4v+ES9hU7TNohJ4+cvHed5bu5p/LR+bfNDswaYg=;
- b=gSnJyfi0D40TLHriqloRvgbbeJEq8Xgty/VigPWGq1Iz9bBWnxcV4sxSLi/kUKVynGs3tDbdilPfPwYDdVGMlluE05rSeAZZy/iTpXYgseNS2XLJ5DERZbtKiM+teJd+xb/NQAX5H4qoBwloEE1ZT9lCATxTEMG/QFTS1M4Rjx3oPAqsCElw2O9s/Rlsqafa9AHx7UKbhMrBxhtXQ3VP7pKCPs7Nzuu4DXZOUMPubDOCQpVGJANBn/2+h9Yo0OnNyIyRQjqgFJM1Fz100B7NcsiTQIUui7U1WesXod9kKv3B05+avyc33LJTEqyDpEkIzLuuGt7YkjKl8SYfwUUubA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OgiE4v+ES9hU7TNohJ4+cvHed5bu5p/LR+bfNDswaYg=;
- b=n8UNefGKm6nmPgGvHyA1f0DshXH9e64bISjbFB99KEQ3HaSzUASdzm+9wgZelZ+bCwwt18/MCLQLlEG0QIa7jeKgoa1rrVC9TiN9KTOpoExuI2F69uH9W3iEryFl2x+lVWOqL59V5VjVmJZSm6OiUl0futfeURWl25Qtm+/gl6s=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by SA3PR12MB342319.namprd12.prod.outlook.com (2603:10b6:806:594::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
- 2026 09:34:13 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%3]) with mapi id 15.21.0451.022; Tue, 29 Sep 2026
- 09:34:13 +0000
-Message-ID: <607e8903-a979-4d78-bf08-447321c03119@amd.com>
-Date: Tue, 29 Sep 2026 11:34:05 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 16/23] dma-buf: Let importers ask how peer-to-peer
- traffic is routed
-To: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Logan Gunthorpe <logang@deltatee.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, iommu@lists.linux.dev,
- Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
- Chaitanya Kulkarni <kch@nvidia.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jens Axboe
- <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
- Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Sumit Semwal <sumit.semwal@linaro.org>
-References: <20260928-fix-p2p-acs-v4-0-v8-0-404453b9c435@nvidia.com>
- <20260928-fix-p2p-acs-v4-0-v8-16-404453b9c435@nvidia.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20260928-fix-p2p-acs-v4-0-v8-16-404453b9c435@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0405.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cf::11) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="sxD/SrnW"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68T7aDwY3536158;
+	Tue, 29 Sep 2026 09:36:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=KVpDbV
+	bfbiJtmrjCjI3Y+IC3oKR47tlBG6IjlgbdpyY=; b=sxD/SrnWKX1fJNH6dyLVer
+	AANxPC2zM2TWQ8Y7n0fJS+CTPxw552lfOeNZa1b4q1Jkzdx/W2QJfzkqXrhtFNPJ
+	PqMuNHuDNPHwtVd+cjhWUGK3XtRcGp5iJrSl0wU44eh1FCq81GS7zZ/iEai5JS8v
+	TBeinZwD62rZiDKNdmVRDyRxiMKCA0VCjE5Yq1FdlffsAwRHTOT+J/kjo0cf79uJ
+	Npl1/3wC3wyGGS1zERyoFOpqFXxCkBimZC4NA5ARsAgJzc1kvmi/6WAIUdt/cZx2
+	IxduQtwq+JE3Lsb6TtAgub8zby1yelEZOWG8CR2/ijbrIWEledErBF1eDS2EHoXA
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5s5688g-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 29 Sep 2026 09:36:26 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68T7Wccj092052;
+	Tue, 29 Sep 2026 09:36:25 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gxtkg8xp6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Sep 2026 09:36:25 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68T9aNEX49217812
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 29 Sep 2026 09:36:23 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C293358054;
+	Tue, 29 Sep 2026 09:36:23 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C99CC58052;
+	Tue, 29 Sep 2026 09:36:22 +0000 (GMT)
+Received: from [9.61.24.130] (unknown [9.61.24.130])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 29 Sep 2026 09:36:22 +0000 (GMT)
+Message-ID: <dbeb1586-52e7-4ff0-884c-7cbdf3242904@linux.ibm.com>
+Date: Tue, 29 Sep 2026 05:36:22 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SA3PR12MB342319:EE_
-X-MS-Office365-Filtering-Correlation-Id: e096fc85-bcef-4cfe-e70f-08df1e0cd25a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|7416014|10067099003|11063799006|56012099006|5023799004|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	pEXa4dzaOAEdQGPBWnWyGWj8IaHW4orK+9nUfTJV7Wv/wCP6DDwzzCdKsR0yIObg8XaxC/qB3PGru797sjaPopDcBU5DErjABfLCv+r4NCRTKlHQBRym4zw+kBLS93fWLAcx6r3CGgbsQefSSjkZE6dwKlmuH7YXZhejFwpogvCyW1Gku0DqTr5XqMOjRuIYOC6lznwx3yrf2W4JWjFhdg8jRS1RupE63oSV4yZMB5a2HVih1FQMsIFevu/5jeLoDmM8lb4aGW6JRpnvTyLsAiKfa2idf0yecjDQU5xs0VQl4DeESkB4AUuJwsvWKJCzRk7YloxPnSa4Hl5/P9nLxSkLcRlaCNxaFKkhGx9UO7y4kRDlEES1MXtXwFLmpM3Uyitphfglmv4E+9rMUBOSqi3Oxb8/fTXNzCUuvcl0UwljK1pAoGuLdEXVXe/Ue9uHRAROjAqQgEgZdoPNcBw73jTyU07VvL2Rd3H0+JSNaXkq8K0g3yjPmyVVWpRZPVectasBFHNlarcTux1B33dLO0M6OObafUVl8oGHwnqsBKJeiQ32aM79FQ5EUYvY+u8d23v/gsob6DNpWtr4bk4LandVbB+uVVtY2ImsRqVHpP27JLCBtADR2rX4nCPyuCTjzHt1S9HP+9aIfYd8pXJCozSmmFCy339mS9kgwNdNdYs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(7416014)(10067099003)(11063799006)(56012099006)(5023799004)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bVAycjZWdWdoajdCc0ZOYzBFbHVPR1JoM25yWWZadGVXdW1nczBudnVvdmdI?=
- =?utf-8?B?MkhCa243SFRSUEx5eVQwK1V2OFBYcGJleUNKWmFBN2VUVW1jUXNSZ2J3NGJV?=
- =?utf-8?B?VVNFVUJFQnh3YmpiVnprNGFESjQxa1NaMUlnQVZSaTlNNlhsOENvalRRYit0?=
- =?utf-8?B?S1Q0cWZMWG1qNTM0MFRIajZXMzJsV3pqeWFlY1ZONFFKY2kveFh6MFc1NnZS?=
- =?utf-8?B?YlgvYmt6RGRmMGEyWkJnTFp2Z043ek00blArSjg3c0owelFwc09FRzdsek1t?=
- =?utf-8?B?WngvY3JjaFd0blp1TVdkR2wyNWVOTGM0cHpuKzJHUnVHMEJ4S0FLZ1Zrd1Zp?=
- =?utf-8?B?ZFMrbUVpTTZDRUQ1VUsrTkVLaWp4Mmt0YTdTTml5YmZpYzVxZDRpOVA1M2RB?=
- =?utf-8?B?UGk1a2RvdVVPKzVRdEpNM0pBUGRtc2RYQUlqemlhV09YR1V6VkVmdVJBYWVv?=
- =?utf-8?B?RElqcWNiNlF3U1FtdkFSNWE4NklvQlRhbURCQkNINy9BU2JNc0UveVlDdXVP?=
- =?utf-8?B?NHFwb1RuRUp4RlozcUFWMHRTMi9tSmFXY29oTDR3eWpQcUNMekFzdUF0NGN1?=
- =?utf-8?B?czRBdjdSYmxJdTBKQzVBSjZQUVlnZkNoRVJDa0x0TGxjOVZYMk9IMVlKaGNs?=
- =?utf-8?B?NEd3UmpGQjc0VUdsK1F2R2o1eWpSc2JuaWJLbG93bUo4US9xQkRvYnhvdGJX?=
- =?utf-8?B?Z0RaUkRpN25VdTZEdDR4WVlrM1Q5S0daTndSeGhZbkh3VmtUaWo4TEkvQUJl?=
- =?utf-8?B?MWcyZjFmTVVVVUVmaXhrdGVEc1EwWHEzWmtsZDdoVmltamFqVk9wMW5qOFZW?=
- =?utf-8?B?VFdIOHIxaFFvNlZzeFdnQmxleW81ZjJoRW1iRmUxNGFBQytIZzV2S2I3Q1li?=
- =?utf-8?B?ZlBRdkg3Nmh3dG13T0F1Y1VlcUVrSE9KVk1xUm9Ic0I5bVB6WnZjb080V2lR?=
- =?utf-8?B?eXRKcEIvang3MHFnS3I4STVSbWtjaThhT3pLOXJuOW9Yam8vT3V4L01VREZj?=
- =?utf-8?B?L3NMeWtIbG8vNXN4YkkyWHlVYzVSMy93eGc3Q2hKeFNVUU4vL0FKdDRlZUhX?=
- =?utf-8?B?alBJN2llNGpGUEswOW5QajFSeDZOcXBacjkxdnp0TFp5OUpaclRDdmtqeVls?=
- =?utf-8?B?M0cwcnp5dmhKT2REZFRYZmtCL0FVa0E4Ui9xanRJSVdRS2lYQ3puQXhCVmth?=
- =?utf-8?B?QU8rNThJNUdmSnZHeDdQdVVwQlFHWFNDUnIxQks3WDNMNExLakxydUMwMEdB?=
- =?utf-8?B?c3FwQmdhSXlzeGFIc01SMG5UT2JIaFlWUUNVcHlnWkRPNTV4Rm1xeHozM1E5?=
- =?utf-8?B?cVQzd1h5L0FMMStUOXhrR1BidFNBVjV0cnFRdGdDTElSZmpBZGNBQzV0R3VZ?=
- =?utf-8?B?T0J5UVdETW9wQUlCeXZpY2JVMS9KNWNxdkQzcDBLdExJdlFRQzcvS0pBaEdt?=
- =?utf-8?B?VFErSVhoRXpMUDI4YXJ4UlplRUVLNkpqYUREcmFyeUU4eTFCams4bGd1cXJ0?=
- =?utf-8?B?aGRCQTMzeWVjSXc3Y0t5eDE5QWIwQmcyRWFxT1NtbDRiRUxYV1A5V1dPbGhq?=
- =?utf-8?B?d1I4eGZhMGRCbkFNQnhSM1FrTmd3TC93Q04zTE1VbzJiWmpTYlJLd25zV1Nx?=
- =?utf-8?B?QWgwN2pkc0dQNnlXWVFNYmdFa0syUXVPb1pJc2ZWaWtkMGl5WTFlTzgxN1Ro?=
- =?utf-8?B?Z2cxZ0MwWDF3Z3g4bkpnTFFUemxJeGdiOWJJeUorWUJIUS9nMTM4REwwSWph?=
- =?utf-8?B?eEM4U3pPTEI0YjVJNVRwV3JzOFVyUW0zaXh4TFFjRjB5dnNzTFJxZlZmcTlq?=
- =?utf-8?B?a3RMMk1FWEhUWml5WS9JMllXMDVsajdGdXZTZDZiN3laSWFRdFdsaWMwcXow?=
- =?utf-8?B?Qm8yK2ZBWWJqSUV4M0lFUksxUXUzOTh2WXVWZHVTdW5yUnVPRTdMYzFtOFly?=
- =?utf-8?B?YXdBVVdETmJLclhSa2VrVUwzOGJuUHlzOUZ5OWN5S3RRcEk3RC9ETlN3dGlQ?=
- =?utf-8?B?THJZS0FNQTNqRXpnLzBEVjZjWlIyQUpYNi9idWFyYnAxM0ExK2FOQ0gzb3lL?=
- =?utf-8?B?eUJnRjQ3ZGk0ZVR3OFB0RHUvbzFHMEM4TG5mTlhYOENaNW9GOFMrM1RrYzcr?=
- =?utf-8?B?Z2tFNlVHM2Yxek0veHpuRXZDZWFhUWE5SURldzVFNVFQVzdxTmdTanY5TW9w?=
- =?utf-8?B?dGlxNEdZeVc4VkZ4Q2NUK0Z4ZUxLb3JmbHEwazE2NWsxd1RVbmxaNzU2WFY5?=
- =?utf-8?B?djc3L05NYWlHSlhsZE80cTJwNi9uVHdBcTJ5cmpZOVVrOG1jOVNOaVBWQ0Fo?=
- =?utf-8?Q?+Hm8PX1WDwoKIs710u?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e096fc85-bcef-4cfe-e70f-08df1e0cd25a
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 09:34:13.0509
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0YwLZpdwY6Bnma6PogxhU0/bjnXebor00cj+IhHXEeja1ew2NAaHu5ltojfTIiP7
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB342319
-
-On 9/28/26 13:19, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
-> 
-> Exporters keep the &struct p2pdma_provider backing a buffer in their own
-> private data. An importer cannot reach it, so it has no way to learn how
-> its own peer-to-peer traffic would be routed before it programs its
-> hardware.
-> 
-> Add an optional @p2pdma_provider callback for an exporter to hand that
-> provider out, and dma_buf_p2pdma_map_type() for an importer to ask by TLP
-> class. Exporters keep the provider where it already lives, so this adds an
-> operation rather than changing any existing signature or structure.
-> 
-> Tested-by: Tushar Dave <tdave@nvidia.com>
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> ---
->  drivers/dma-buf/dma-buf-mapping.c | 39 +++++++++++++++++++++++++++++++++++++++
->  include/linux/dma-buf-mapping.h   |  3 +++
->  include/linux/dma-buf.h           | 19 +++++++++++++++++++
->  3 files changed, 61 insertions(+)
-> 
-> diff --git a/drivers/dma-buf/dma-buf-mapping.c b/drivers/dma-buf/dma-buf-mapping.c
-> index 794acff2546a..41702045f803 100644
-> --- a/drivers/dma-buf/dma-buf-mapping.c
-> +++ b/drivers/dma-buf/dma-buf-mapping.c
-> @@ -6,6 +6,45 @@
->  #include <linux/dma-buf-mapping.h>
->  #include <linux/dma-resv.h>
->  
-> +/**
-> + * dma_buf_p2pdma_map_type - How peer-to-peer traffic to a buffer is routed
-> + * @attach:	attachment of the importer that will issue the traffic
-> + * @tlp_flags:	&enum pci_p2pdma_tlp_flags describing the TLPs it will issue
-> + *
-> + * Reports how the PCIe fabric routes @tlp_flags traffic between the buffer
-> + * behind @attach and the importer attached to it, so that an importer can
-> + * choose the TLP attributes that earn it a direct route before it programs
-> + * its hardware.
-> + *
-> + * The caller must hold the reservation lock. The provider is owned by the
-> + * exporter's driver binding, and exporters revoke under that lock before
-> + * letting an unbind proceed, so dropping it any earlier would leave this
-> + * racing a teardown that frees the provider.
-> + *
-> + * Return: the mapping type for @tlp_flags traffic, or PCI_P2PDMA_MAP_NONE
-> + * when the exporter names no &struct p2pdma_provider and nothing is known
-> + * about the route.
-> + */
-> +enum pci_p2pdma_map_type
-> +dma_buf_p2pdma_map_type(struct dma_buf_attachment *attach,
-> +			unsigned int tlp_flags)
-> +{
-> +	struct dma_buf *dmabuf = attach->dmabuf;
-> +	struct p2pdma_provider *provider;
-> +
-> +	dma_resv_assert_held(dmabuf->resv);
-> +
-> +	if (!dmabuf->ops->p2pdma_provider)
-> +		return PCI_P2PDMA_MAP_NONE;
-> +
-> +	provider = dmabuf->ops->p2pdma_provider(dmabuf);
-> +	if (!provider)
-> +		return PCI_P2PDMA_MAP_NONE;
-> +
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 1/6] s390/vfio-ap: Fix leaks of pinned NIB and
+ registered GISC
+To: sashiko-reviews@lists.linux.dev
+Cc: Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>, kvm@vger.kernel.org,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Jason Herne <jjherne@linux.ibm.com>
+References: <20260925124551.665448-1-akrowiak@linux.ibm.com>
+ <20260925124551.665448-2-akrowiak@linux.ibm.com>
+ <20260925125721.5C29C1F000FF@smtp.kernel.org>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20260925125721.5C29C1F000FF@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI5MDAzOCBTYWx0ZWRfXzYLJbo5INnVj
+ syjCP568XS5CGLaeZVwpPpDW9bhfUjPTWjDJT1aDfu0U+A5rTsdnm8LqFeA8YH8RGuFsxxQF8uJ
+ IUw2TCyPyYfFtUPbz4VS5qh2G9kzLxs=
+X-Authority-Analysis: v=2.4 cv=HJ5WhYtv c=1 sm=1 tr=0 ts=6abb869a cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=V9ano03wmCg1Q3s48aMA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: r-QIiHrIuGcOxYSM9Iz-Xt2-yMfqdqno
+X-Proofpoint-ORIG-GUID: r-QIiHrIuGcOxYSM9Iz-Xt2-yMfqdqno
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI5MDAzOCBTYWx0ZWRfX3fbh/wkYx+xI
+ MfQc2Hg2R34i5QaMnGvP8oq4MBJNXlDGSiWlhempwLXEAWkcIJlZHzExcKS4qxAFrq28ycnIZkQ
+ 0VUjQ1iI5F8azV1SUb0BryolwkdsdrYjg4PX/AEgFeLEd4v+fJvndB0C3A0dIkLnbuQR6yCNJpR
+ PHpzQGl3S0UNHfTX1Tb4AFEk+1Pf6ZSg6jqEw3pY/riUb0EX4dzqohPFtvXdSo1rf9rVqBCOI8A
+ A+Fy2ySiDU32LE14gbTck9Mb5RAVeZumQRBqwSIQJYaPVXLnob7p8rZcClrXmTCon+zlG7Ycios
+ mWmFkggQ71g92oAOfKSlCyIwqkO+raybHdNf1VcvFtvXlnJvF6KSXyq73o7/j3MVhhY7N1LA35J
+ KLIeDHUZExZIdojK/sLt78NzwdaI/OC/OsXzi3bD0doAFXmXRCz3vYL2pqQoUvXlhHz6jX/Frfk
+ xVbiACv6aYAhUoWSKKQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-29_03,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0 bulkscore=0 clxscore=1015 lowpriorityscore=0
+ spamscore=0 impostorscore=0 phishscore=0 priorityscore=1501 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609290038
 
 
-> +	return pci_p2pdma_map_type_tlp(provider, attach->dev, tlp_flags);
 
-This function call here *must* be in the exporter and not the DMA-buf framework.
+On 9/25/26 8:57 AM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] s390/vfio-ap: wild DMA write due to unconditional NIB unpin in unmap_iova
+> --
+>
+> commit f138c70af93258555b6e1c1c1233b5d5dc8b82da
+> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+>
+> s390/vfio-ap: Fix leaks of pinned NIB and registered GISC
+>
+> This commit addresses resource leaks of pinned NIB pages and registered
+> GISCs across several paths. It introduces intentional leaks for cases where
+> hardware might still be able to write to the NIB, while freeing resources
+> when queues become unavailable.
+>
+>> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+>> --- a/drivers/s390/crypto/vfio_ap_ops.c
+>> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+> [ ... ]
+>> @@ -1857,8 +2006,28 @@ static void unmap_iova(struct ap_matrix_mdev *matrix_mdev, u64 iova, u64 length)
+>>   	int loop_cursor;
+>>   
+>>   	hash_for_each(qtable->queues, loop_cursor, q, mdev_qnode) {
+>> -		if (q->saved_iova >= iova && q->saved_iova < iova + length)
+>> +		if (q->saved_iova >= iova && q->saved_iova < iova + length) {
+>>   			vfio_ap_irq_disable(q);
+>> +			/*
+>> +			 * If IRQ disable failed or IR=0 could not be confirmed,
+>> +			 * vfio_ap_irq_disable() intentionally leaks the NIB to
+>> +			 * prevent a wild DMA write. But vfio core requires the
+>> +			 * page to be unpinned before dma_unmap returns, or it
+>> +			 * will BUG_ON after 10 re-notification rounds.
+>> +			 *
+>> +			 * Fall back to a bounded queue reset. The ZAPQ zeroizes
+>> +			 * the NIB pointer in hardware, eliminating the DMA risk
+>> +			 * that justified the leak. Once the worker finishes (or
+>> +			 * times out with a reset confirmed in-progress), the
+>> +			 * hardware no longer holds a reference to saved_iova and
+>> +			 * it is safe to unpin unconditionally.
+>> +			 */
+>> +			if (q->saved_iova) {
+>> +				vfio_ap_mdev_reset_queue(q);
+>> +				flush_work(&q->reset_work);
+>> +				vfio_ap_free_aqic_resources(q);
+> [Severity: High]
+> Does this unconditional call to vfio_ap_free_aqic_resources() risk allowing
+> a wild DMA write into host memory?
+>
+> If vfio_ap_mdev_reset_queue() encounters a hardware fault and TAPQ returns
+> an invalid response code, it intentionally leaves the NIB pinned. The
+> comment in vfio_ap_mdev_reset_queue() notes:
+>
+> "An invalid response code indicates a hardware or firmware bug. Since we
+> cannot determine whether the queue can still DMA-write to the NIB, the AQIC
+> resources are intentionally leaked lest the NIB page is reallocated to a new
+> owner."
+>
+> However, calling vfio_ap_free_aqic_resources() in unmap_iova() forces the
+> NIB page to be unpinned regardless of the reset result. If the ZAPQ failed
+> to zeroize the NIB, unpinning it here overrides the intentional safety leak
+> and could expose the host to memory corruption.
 
-So clear NAK to putting that here.
+vfio_ap_reset_queue() along with the apq_reset_check() work queue function
+frees the AQIC resources only if reset completion is verified; so, the
+freeing of resources should be delegated to vfio_ap_reset_queue()
+and not unconditionally.
 
-Regards,
-Christian.
-
-> +}
-> +EXPORT_SYMBOL_NS_GPL(dma_buf_p2pdma_map_type, "DMA_BUF");
-> +
->  static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
->  					 dma_addr_t addr)
->  {
-> diff --git a/include/linux/dma-buf-mapping.h b/include/linux/dma-buf-mapping.h
-> index 09bde3f748e4..37b3da10b17a 100644
-> --- a/include/linux/dma-buf-mapping.h
-> +++ b/include/linux/dma-buf-mapping.h
-> @@ -7,6 +7,9 @@
->  #define __DMA_BUF_MAPPING_H__
->  #include <linux/dma-buf.h>
->  
-> +enum pci_p2pdma_map_type
-> +dma_buf_p2pdma_map_type(struct dma_buf_attachment *attach,
-> +			unsigned int tlp_flags);
->  struct sg_table *dma_buf_phys_vec_to_sgt(struct dma_buf_attachment *attach,
->  					 struct p2pdma_provider *provider,
->  					 struct phys_vec *phys_vec,
-> diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
-> index d1203da56fc5..d56a48d41215 100644
-> --- a/include/linux/dma-buf.h
-> +++ b/include/linux/dma-buf.h
-> @@ -186,6 +186,25 @@ struct dma_buf_ops {
->  	 * if the call would block.
->  	 */
->  
-> +	/**
-> +	 * @p2pdma_provider:
-> +	 *
-> +	 * Returns the &struct p2pdma_provider backing this buffer, so that an
-> +	 * importer can ask how its peer-to-peer traffic would be routed before
-> +	 * it programs its hardware. Importers reach this through
-> +	 * dma_buf_p2pdma_map_type() rather than calling it directly.
-> +	 *
-> +	 * Exporters of MMIO memory that is reachable peer-to-peer should
-> +	 * implement this. Called with the &dma_buf.resv reservation lock held,
-> +	 * which is what lets an exporter refuse once it has revoked the buffer
-> +	 * and started tearing the provider down. This callback is optional.
-> +	 *
-> +	 * Returns:
-> +	 *
-> +	 * The provider backing the buffer.
-> +	 */
-> +	struct p2pdma_provider *(*p2pdma_provider)(struct dma_buf *dmabuf);
-> +
->  	/**
->  	 * @release:
->  	 *
-> 
+>
+>> +			}
+>> +		}
+>>   	}
+>>   }
 
