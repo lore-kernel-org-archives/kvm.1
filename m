@@ -1,38 +1,38 @@
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBFC51AFFB;
-	Tue, 29 Sep 2026 10:37:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436B02C0F6D;
+	Tue, 29 Sep 2026 10:37:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790678242; cv=none; b=U+hjFMfd0x5eKqsox60GatDvOc/eJDBeY/Uh0nBRhIH8L0RLKA47WUFx7/6MxatrIqf+bb3a1hDQmrbQf7j24B6+SsJ4ySATdyvjjEat5AmpFHiHBACeHWQAiNiRQwGFLP9b9dr99w9ItWGHBKx8tGGkFWCuhFqxr8ryZlCboN0=
+	t=1790678245; cv=none; b=o/OSSwLaGVzL+Ub141rtuANNvSwILwZ4g3FA0ql7plRExj64ihO0ANjfsYxJ3Vof4aji1n4uUXRxGoBCNmDEf4v6NR5ILdBVnqxw8OGFnC9KAgneD9jTtlwtAXwDGSfo5tW18JcXce5Ld/wkagbrZVcnTHzdpikgp8/2QleTBBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790678242; c=relaxed/simple;
-	bh=/34ynkesFSAcSxO89K8xVk+DM9LauRzHE6wmn2UCaSc=;
+	s=arc-20240116; t=1790678245; c=relaxed/simple;
+	bh=ZQLPHAUkIBmHOIVI2GrtjqLwxNZ1YdXBuQwqXJtuR/8=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oj/Fr3HQN0UqOQdFAa/CsAhcWTm1l1vahh7/OxVz+gvRr3Db3vupgXbgK3/bs4qUTVB7nJptfelxcSkWu9HPCWNRlbUHYAI5YOYHdHzc5n98P8OcgFINEVO2iToGmhVeQsOmKn1o45Zeao7L625WyXEFxag2f5XSq0oHHtPPhZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=HXEyhcQi; arc=none smtp.client-ip=113.46.200.223
+	 MIME-Version:Content-Type; b=J2hRwzY8oJvJXJ+vqrLITjbHPwRo/7C+TK8Aj4ZxVSlAEkCgoLRPK3lRkzWdABlTVoCvTDxKaapA9AmzFHE2gr7PQ+Dy36plO22rF4j4xAsBp8xRUsvwcA2Eoala2yUWg2XE8j5KYs9t4QxHL7tzu2ur3+9p0ZeGJtViHi5DLg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Dnshry09; arc=none smtp.client-ip=113.46.200.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="HXEyhcQi"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Dnshry09"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=4x36drenHC31a65AUAmISM+E18V5XgYGEXDL6/a05K8=;
-	b=HXEyhcQipW8cTovkTLfbN3Ra9WRx0WOhjMNGAo+9/HNiZzbp0qFABbhzNayLfuwRX/maeiISE
-	hKwzDJSGVwGZdO8X8NrCCYqD7pZqTX2aOsl7blLNDtukSOaeGInylpquqBM4pTqoDgXBPeVLecl
-	u01kqFu3Yu1zWnO6EEvtOkU=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4hvDnh6V19zmVCD;
-	Tue, 29 Sep 2026 18:24:56 +0800 (CST)
+	bh=Blv/7cpUNGHBbFBX/FZEcrFfjdEkznQrqytJ8Q1b5q0=;
+	b=Dnshry09UvgzKoVnQrjejYN5kUHd77jpQ/hEYYoBvBgXRlcTyrl8r7/+sKaFuBaIG9MU3ESeL
+	B/bzLiKrzDl4WxIX1gYx+B9emb61lTpvNj94VhK614HD/l/ece8pTu8bqHeUfzSh32v8wHyJi4E
+	nCvyDDmcl0kMEEsSzv9Q9hw=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4hvDnl4cqDzpT0h;
+	Tue, 29 Sep 2026 18:24:59 +0800 (CST)
 Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
-	by mail.maildlp.com (Postfix) with ESMTPS id 34E964048B;
-	Tue, 29 Sep 2026 18:37:05 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 5C9754056D;
+	Tue, 29 Sep 2026 18:37:08 +0800 (CST)
 Received: from huawei.com (10.50.163.32) by kwepemr100010.china.huawei.com
  (7.202.195.125) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 29 Sep
- 2026 18:37:04 +0800
+ 2026 18:37:07 +0800
 From: Tian Zheng <zhengtian10@huawei.com>
 To: <maz@kernel.org>, <oupton@kernel.org>, <catalin.marinas@arm.com>,
 	<will@kernel.org>, <corbet@lwn.net>, <pbonzini@redhat.com>,
@@ -47,9 +47,9 @@ CC: <yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>,
 	<mark.rutland@arm.com>, <seanjc@google.com>, <rdunlap@infradead.org>,
 	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
 	<skhan@linuxfoundation.org>
-Subject: [PATCH v5 11/15] KVM: arm64: Reserve dirty ring space for the HDBSS buffer
-Date: Tue, 29 Sep 2026 18:36:51 +0800
-Message-ID: <20260929103655.85107-12-zhengtian10@huawei.com>
+Subject: [PATCH v5 15/15] KVM: arm64: selftests: Add HDBSS buffer size ioctl interface test
+Date: Tue, 29 Sep 2026 18:36:55 +0800
+Message-ID: <20260929103655.85107-16-zhengtian10@huawei.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20260929103655.85107-1-zhengtian10@huawei.com>
 References: <20260929103655.85107-1-zhengtian10@huawei.com>
@@ -64,54 +64,267 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
  kwepemr100010.china.huawei.com (7.202.195.125)
 
-The dirty ring reserves room for CPU-side dirty buffers via
-kvm_cpu_dirty_log_size(). Report the HDBSS buffer entry count
-through it, so a full buffer flush always fits in the ring.
+Add a selftest (arm64/hdbss_test) for the KVM_CAP_ARM_HDBSS_BUFFER_SIZE
+interface: CHECK_EXTENSION semantics (global max, per-VM default and
+configured values), the accepted size range (power of two in
+[PAGE_SIZE, SZ_2M]), the rejection paths (invalid sizes, after vCPU
+creation, duplicate configuration, dirty ring enabled), and the
+contract that enabling the dirty ring resets a configured size to the
+default.
 
-Pin the HDBSS buffer size to PAGE_SIZE when dirty-ring is enabled,
-via kvm_arch_dirty_ring_size_updated(): a larger buffer only
-shrinks the soft_limit and forces more frequent userspace drains.
+The default size is derived from getpagesize() so the test holds on
+16KB/64KB page systems.
+
+The test does not run guest code.
 
 Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
 ---
- arch/arm64/kvm/arm.c | 8 ++++++++
- arch/arm64/kvm/mmu.c | 8 ++++++++
- 2 files changed, 16 insertions(+)
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../testing/selftests/kvm/arm64/hdbss_test.c  | 224 ++++++++++++++++++
+ 2 files changed, 225 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/arm64/hdbss_test.c
 
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 9d7bdece149a..5a7046acb62e 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -215,6 +215,14 @@ static int kvm_arm_default_max_vcpus(void)
- 	return vgic_present ? kvm_vgic_get_max_vcpus() : KVM_MAX_VCPUS;
- }
-
-+void kvm_arch_dirty_ring_size_updated(struct kvm *kvm)
-+{
-+	if (!system_supports_hdbss())
-+		return;
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 6a1482e3a286..a665fd568391 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -179,6 +179,7 @@ TEST_GEN_PROGS_arm64 += arm64/hello_el2
+ TEST_GEN_PROGS_arm64 += arm64/host_sve
+ TEST_GEN_PROGS_arm64 += arm64/hypercalls
+ TEST_GEN_PROGS_arm64 += arm64/external_aborts
++TEST_GEN_PROGS_arm64 += arm64/hdbss_test
+ TEST_GEN_PROGS_arm64 += arm64/mmio_sign_ext
+ TEST_GEN_PROGS_arm64 += arm64/page_fault_test
+ TEST_GEN_PROGS_arm64 += arm64/psci_test
+diff --git a/tools/testing/selftests/kvm/arm64/hdbss_test.c b/tools/testing/selftests/kvm/arm64/hdbss_test.c
+new file mode 100644
+index 000000000000..9de26d2a67d1
+--- /dev/null
++++ b/tools/testing/selftests/kvm/arm64/hdbss_test.c
+@@ -0,0 +1,224 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Test the KVM_CAP_ARM_HDBSS_BUFFER_SIZE ioctl interface: query
++ * semantics, accepted/rejected sizes, and the interaction with the
++ * dirty ring. Does not run guest code.
++ *
++ * Copyright (C) 2026 Huawei Technologies Co., Ltd
++ * Author: Tian Zheng <zhengtian10@huawei.com>
++ */
 +
-+	kvm->arch.hdbss_buffer_size = KVM_ARM_HDBSS_DEFAULT_SIZE;
++#include <errno.h>
++#include <linux/sizes.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
++
++#include "kvm_util.h"
++#include "test_util.h"
++
++/*
++ * The kernel default is PAGE_SIZE: derive it from the running kernel so
++ * the test also holds on 16KB/64KB page systems.
++ */
++#define HDBSS_DEFAULT_SIZE	((u64)getpagesize())
++#define HDBSS_MAX_SIZE		SZ_2M
++
++static bool hdbss_supported(void)
++{
++	return kvm_check_cap(KVM_CAP_ARM_HDBSS_BUFFER_SIZE) > 0;
 +}
 +
- /**
-  * kvm_arch_init_vm - initializes a VM data structure
-  * @kvm:	pointer to the KVM struct
-diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-index 7bf82d65041c..c1e09ba98d48 100644
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -2841,3 +2841,11 @@ void kvm_toggle_cache(struct kvm_vcpu *vcpu, bool was_enabled)
-
- 	trace_kvm_toggle_cache(*vcpu_pc(vcpu), was_enabled, now_enabled);
- }
-+
-+int kvm_cpu_dirty_log_size(struct kvm *kvm)
++static long hdbss_global_query(void)
 +{
-+	if (!system_supports_hdbss())
-+		return 0;
++	return (long)kvm_check_cap(KVM_CAP_ARM_HDBSS_BUFFER_SIZE);
++}
 +
-+	return kvm_hdbss_buffer_size(kvm) / sizeof(u64);
++static long hdbss_vm_query(struct kvm_vm *vm)
++{
++	return (long)vm_check_cap(vm, KVM_CAP_ARM_HDBSS_BUFFER_SIZE);
++}
++
++static int hdbss_set(struct kvm_vm *vm, u64 size)
++{
++	return __vm_enable_cap(vm, KVM_CAP_ARM_HDBSS_BUFFER_SIZE, size);
++}
++
++static void test_global_query(void)
++{
++	long ret;
++
++	ret = hdbss_global_query();
++	TEST_ASSERT(ret == HDBSS_MAX_SIZE,
++		    "Global HDBSS query returned %ld (0x%lx), expected %d (0x%x)",
++		    ret, ret, HDBSS_MAX_SIZE, HDBSS_MAX_SIZE);
++	pr_info("Global HDBSS max size: %ld bytes\n", ret);
++}
++
++static void test_vm_query_default(void)
++{
++	struct kvm_vm *vm;
++	long ret;
++
++	vm = vm_create_barebones();
++	ret = hdbss_vm_query(vm);
++	TEST_ASSERT(ret == HDBSS_DEFAULT_SIZE,
++		    "Per-VM HDBSS query (unconfigured) returned %ld, expected %ld",
++		    ret, (long)HDBSS_DEFAULT_SIZE);
++	pr_info("Default HDBSS buffer size: %ld bytes\n", ret);
++	kvm_vm_free(vm);
++}
++
++static void test_vm_query_after_set(u64 set_size)
++{
++	struct kvm_vm *vm;
++	long ret;
++
++	vm = vm_create_barebones();
++	TEST_ASSERT_EQ(hdbss_set(vm, set_size), 0);
++	ret = hdbss_vm_query(vm);
++	TEST_ASSERT(ret == (long)set_size,
++		    "Per-VM HDBSS query after set returned %ld, expected %lld",
++		    ret, (unsigned long long)set_size);
++	kvm_vm_free(vm);
++}
++
++static void test_set_valid(u64 size)
++{
++	struct kvm_vm *vm;
++	int ret;
++
++	vm = vm_create_barebones();
++	ret = hdbss_set(vm, size);
++	TEST_ASSERT(ret == 0,
++		    "Setting HDBSS buffer size to %lld (0x%llx) failed: %d (%s)",
++		    (unsigned long long)size, (unsigned long long)size,
++		    ret, strerror(errno));
++	pr_info("Set HDBSS buffer size to %lld bytes: OK\n",
++		(unsigned long long)size);
++	kvm_vm_free(vm);
++}
++
++static void test_set_invalid(u64 size, int expected_errno)
++{
++	struct kvm_vm *vm;
++	int ret;
++
++	vm = vm_create_barebones();
++	ret = hdbss_set(vm, size);
++	TEST_ASSERT(ret == -1 && errno == expected_errno,
++		    "HDBSS buffer size set to %lld (0x%llx) should fail with %d, got ret=%d errno=%d (%s)",
++		    (unsigned long long)size, (unsigned long long)size,
++		    expected_errno, ret, errno, strerror(errno));
++	kvm_vm_free(vm);
++}
++
++static void test_set_after_vcpu(void)
++{
++	struct kvm_vm *vm;
++	int ret;
++
++	vm = vm_create_barebones();
++	__vm_vcpu_add(vm, 0);
++	ret = hdbss_set(vm, HDBSS_DEFAULT_SIZE);
++	TEST_ASSERT(ret == -1 && errno == EINVAL,
++		    "Setting HDBSS buffer size after vCPU creation should fail with EINVAL, got ret=%d errno=%d",
++		    ret, errno);
++	pr_info("Set HDBSS after vCPU creation: correctly rejected\n");
++	kvm_vm_free(vm);
++}
++
++static void test_set_twice(void)
++{
++	struct kvm_vm *vm;
++	int ret;
++
++	vm = vm_create_barebones();
++	TEST_ASSERT_EQ(hdbss_set(vm, HDBSS_DEFAULT_SIZE), 0);
++	ret = hdbss_set(vm, HDBSS_DEFAULT_SIZE * 2);
++	TEST_ASSERT(ret == -1 && errno == EBUSY,
++		    "Duplicate HDBSS buffer size set should fail with EBUSY, got ret=%d errno=%d",
++		    ret, errno);
++	pr_info("Duplicate HDBSS set: correctly rejected\n");
++	kvm_vm_free(vm);
++}
++
++static void test_mutex_dirty_ring_then_hdbss(void)
++{
++	struct kvm_vm *vm;
++	int ret;
++
++	vm = vm_create_barebones();
++
++	/* Sized to cover the HDBSS reservation on any page size. */
++	vm_enable_dirty_ring(vm, 16384 * sizeof(struct kvm_dirty_gfn));
++
++	ret = hdbss_set(vm, HDBSS_DEFAULT_SIZE);
++	TEST_ASSERT(ret == -1 && errno == EINVAL,
++		    "Setting HDBSS after dirty ring should fail with EINVAL, got ret=%d errno=%d",
++		    ret, errno);
++	pr_info("HDBSS after dirty ring: correctly rejected\n");
++	kvm_vm_free(vm);
++}
++
++static void test_dirty_ring_resets_size(void)
++{
++	struct kvm_vm *vm;
++	long ret;
++
++	vm = vm_create_barebones();
++
++	/*
++	 * The ring must cover the HDBSS reservation, 2 * buffer + 1KB.
++	 * Ring mode then pins the buffer to the default.
++	 */
++	TEST_ASSERT_EQ(hdbss_set(vm, SZ_256K), 0);
++	vm_enable_dirty_ring(vm, 65536 * sizeof(struct kvm_dirty_gfn));
++	ret = hdbss_vm_query(vm);
++	TEST_ASSERT(ret == (long)HDBSS_DEFAULT_SIZE,
++		    "Dirty ring mode should reset the HDBSS buffer size to the default (%lld), got %ld",
++		    (unsigned long long)HDBSS_DEFAULT_SIZE, ret);
++	pr_info("Dirty ring mode resets HDBSS buffer size to default\n");
++	kvm_vm_free(vm);
++}
++
++int main(void)
++{
++	/*
++	 * Valid sizes depend on the page size: the kernel minimum is
++	 * PAGE_SIZE, so only exercise sizes at or above it.
++	 */
++	u64 page_size = getpagesize();
++
++	TEST_REQUIRE(hdbss_supported());
++
++	pr_info("Starting HDBSS ioctl interface tests\n\n");
++
++	test_global_query();
++	test_vm_query_default();
++	if (page_size < SZ_16K)
++		test_vm_query_after_set(SZ_16K);
++	test_vm_query_after_set(HDBSS_MAX_SIZE);
++
++	test_set_valid(HDBSS_DEFAULT_SIZE);
++	if (page_size < SZ_8K)
++		test_set_valid(SZ_8K);
++	if (page_size < SZ_64K)
++		test_set_valid(SZ_64K);
++	test_set_valid(HDBSS_MAX_SIZE);
++
++	test_set_invalid(0, EINVAL);
++	test_set_invalid(3, EINVAL);
++	test_set_invalid(page_size - 1, EINVAL);
++	test_set_invalid(page_size + 1, EINVAL);
++	test_set_invalid(HDBSS_MAX_SIZE * 2, EINVAL);
++
++	test_set_after_vcpu();
++	test_set_twice();
++	test_mutex_dirty_ring_then_hdbss();
++	test_dirty_ring_resets_size();
++
++	pr_info("\nAll HDBSS ioctl interface tests passed!\n");
++	return 0;
 +}
 --
 2.43.0
