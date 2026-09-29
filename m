@@ -1,258 +1,373 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709BB4FECEA;
-	Tue, 29 Sep 2026 11:06:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455EB4FE2EE;
+	Tue, 29 Sep 2026 11:11:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790680001; cv=none; b=ZGFxzJSdvwlFVPT2JmVrfqpbCK0x6kFZGBaDQiFXntJ3ZoHSHrci/x2C8QFJHA1DAxj6sdqPt0VUQBgbB7zDyEc2JZDc7PdZJfNm0upIHQJfpfT1iwLvBAB54sX5yyex6X29l2q1mN+G8JCJ2Vr0r1JnQa6ISryccHJR/YsoHMo=
+	t=1790680283; cv=none; b=TQw3wrF4v/GAHSswHICMIIXkBY8DoPzkIHK6a2PqWarQbgEPwM9KU0ldmazUKeYN2+L1mLCbIeEPdR5N2pb2tXIrOqWD59rGyP0DYeg9fFgITJBHWMb4AwQQMoS7gBON1QDuv2CSIv5xFwHO2vV53Y5X/oA1VWUopOLTddCCKcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790680001; c=relaxed/simple;
-	bh=xo99Uqbz4winsFycjLoBbZOBDB4IgEKD6IeoGvlzROY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JqkxsfMjbOe59hxRmN75KtA3Sm5UB4FJwb+3LcJNZNoWcWABN7M+W0Uzm2fZ3oX7RrPnTJ/HaVaQ4YNRVdVopV8etCNmpJeB7BWgZLP+U2Fj3bE2btN0c21unhtLZXlv6e//nD0amK+XkhuCAJxlrlQLA8I2xmGROIt7hFH01xY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jd/PVxO5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790680283; c=relaxed/simple;
+	bh=ZyyMkW5S1TM3sy3g1z9MwxHefuII4HNTK4qD5iAhAn0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h85oX/KyJhoa5/TYuuHHDhTl0WRrTbNKZZoP1gLZfscydT2cczWt/dNzYt8ZX0YFk2WEqCv2P8MxYt7YxjswwCP2OxMez7op7LCu77P1xAVJDdYfLb026vQR8JJjwBU8styULQ6gJsDGxgsFCRMBpQvfXj81dvADGWmHqPOGSxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Xjy5v/dL; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jd/PVxO5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D19171F000FF;
-	Tue, 29 Sep 2026 11:06:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790679999;
-	bh=x7xpjkH/+Y+E+QqPl1IPWhcctgJIBF+u5LKGMwCv304=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Jd/PVxO5dqtpJiY3lOtt8/Ab+ilruJ1HYAdbGUAXJEy1uKN/InG4JO74wuuQPe+SY
-	 mecC//sqaow0SOSto48WK9Y9r1Sq0lOUHv8AL9CwsLUbSxnyJmM6Kft1J83PUiKdsH
-	 EfUwIkA6s46sf558388Ylo6G1COgFwvOktPsnpta0kG/q6VkC9rANjlHgH+FTnnBf1
-	 Io5HibFONgzqm5Tv6Bk40aYG1ariGxIzL6SugmOhMuZSx6AfjeLAzRKgBO6WE8qKGR
-	 1jZzfHeIN6ZyoBkdbXfQihj4yJ4dpEFjVUMDfpjKeGHjO/IYUHP6HS5fRPE6Q4d9Ry
-	 ZgPcaFiIbO+MA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 14/15] KVM: arm64: Document HDBSS buffer size ioctl
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tian Zheng" <zhengtian10@huawei.com>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, "Marc Zyngier" <maz@kernel.org>, "Oliver
- Upton" <oupton@kernel.org>
-In-Reply-To: <20260929103655.85107-15-zhengtian10@huawei.com>
-References: <20260929103655.85107-1-zhengtian10@huawei.com>
- <20260929103655.85107-15-zhengtian10@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 29 Sep 2026 11:06:38 +0000
-Message-Id: <20260929110638.D19171F000FF@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Xjy5v/dL"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68TB5b7u2783627;
+	Tue, 29 Sep 2026 11:11:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=1noVY2
+	vw/fnkEnLs97LTa80eKlAgUIq6tcCNC6juZ3A=; b=Xjy5v/dLCUZEsMMo5dGq1l
+	qWkS8M/reQgbgKprBZ0BP6ikO9PtMWBa/a3xgS63kYf9ob8/6QLnCa9s7bL1drpb
+	VCpYIqDGyr9nerPqPEsYcQSIq/xtUoDmYf8b/DC5wkor/dG+UorIgbrYfspeVHn/
+	QWozi9vCCXUtUHnh8sS9GQ+tWJ+v8bCVl/F7asCkILSOFecIvhj511S2U2NGWPck
+	A13/GZOWRJ/j83rKWPwvV/YSBGtaNrCcAfvWLZvQF1h7lbHEMCQ1c1d28H3OtNd4
+	EotLkBoVZdo48d1k0I6nrNHA8uIqm1LZimO+3m+ADrBxaSBNf1Drh0Xao8+X32bw
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx4fe60ya-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 29 Sep 2026 11:11:19 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68TAldpR1667746;
+	Tue, 29 Sep 2026 11:11:19 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gxsvhhbdg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Sep 2026 11:11:19 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68TBBI9A33751578
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 29 Sep 2026 11:11:18 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2AD3B58054;
+	Tue, 29 Sep 2026 11:11:18 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 14C2658045;
+	Tue, 29 Sep 2026 11:11:17 +0000 (GMT)
+Received: from [9.61.24.130] (unknown [9.61.24.130])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 29 Sep 2026 11:11:16 +0000 (GMT)
+Message-ID: <af150dee-b942-4bb6-a25b-5c8be9f98b73@linux.ibm.com>
+Date: Tue, 29 Sep 2026 07:11:16 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 3/6] s390/vfio-ap: Fix unbounded loop in
+ apq_reset_check()
+To: sashiko-reviews@lists.linux.dev
+Cc: Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>, kvm@vger.kernel.org,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Jason Herne <jjherne@linux.ibm.com>
+References: <20260925124551.665448-1-akrowiak@linux.ibm.com>
+ <20260925124551.665448-4-akrowiak@linux.ibm.com>
+ <20260925130031.739B01F00898@smtp.kernel.org>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20260925130031.739B01F00898@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=FYWiV5+6 c=1 sm=1 tr=0 ts=6abb9cd7 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=PggxQ46kYxiAi-Y4iioA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=O8hF6Hzn-FEA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI5MDA0NCBTYWx0ZWRfXy9HRfLijL5HL
+ zx0kwWsCBC+Jo7OunbIZRtpfwetpZnB+sNpIs8X8zdxXw2B1aSguqSWHSzfnwuoqOMBJ7ZmFVgw
+ hBEJXHXAbLgKEjN/EiiqkH47leckuss=
+X-Proofpoint-ORIG-GUID: D8RaYGAv2Jo5y49noU0srvwd5_fmVw5k
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI5MDA0NCBTYWx0ZWRfX+pvGNWhleGbM
+ fvVjIUkHIde0deL+yOdksd1m93ltkSzxoIlyjfDiojoaGP+bXmJ2o8KXW+oVaPvUmq+pzdyKgj8
+ kNQA/DBAjf52Lmk0ugH+kYIe4jJupyrwN20N8bplkon91RzlLEKuMjgmNRTcwlWs31JfqzFp2h7
+ DxQx+9KasSG0RUdGjWwgj/2sxDd3Ep8gNBQ540H4OEBLyKvfQanoRlqnh5Yibz0VMZbPiKKH2k+
+ 9mSM5QEDzPcb2oEVmdW2rOWu8v/XfeghIYVbgV8bCurXITBxA3ue+XusMBkGW6V1Ax+oKGIgECU
+ 2UogKRNY6QPqmAvJRlD/WYqxbkGyUILlhAC0h83o0R4PF0BPD/VdQkq0lfpqF5j1fE+rPJ8EIU0
+ C6n7nUg550VAxrcBkPQqen9hbjJRv4MR+HF9IhZ9faDxwAE0fP4uA1u4/nG0dfW3zbW9WMlSkiV
+ LUyM1agMu+FgnJYqFTg==
+X-Proofpoint-GUID: D8RaYGAv2Jo5y49noU0srvwd5_fmVw5k
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-29_04,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 clxscore=1015 impostorscore=0 spamscore=0 phishscore=0
+ priorityscore=1501 malwarescore=0 bulkscore=0 lowpriorityscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609290044
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [Critical] kvm: arm64: missing vCPU kick in kvm_arch_update_hw_dirty_mode=
- causes data corruption
-- [High] kvm: arm64: stage2_wrprotect_walker clobbers concurrent hardware P=
-TE updates
-- [Medium] kvm: uapi: enabling dirty ring silently resets HDBSS buffer size
-- [Low] kvm: uapi: KVM_CHECK_EXTENSION misused to return mutable VM state
---
 
-commit ad3d8df658768bdca959742e1b61e3dd3914fdd8
-Author: Tian Zheng <zhengtian10@huawei.com>
 
-KVM: arm64: Document HDBSS buffer size ioctl
-   =20
-Document KVM_CAP_ARM_HDBSS_BUFFER_SIZE, which lets userspace configure the
-per-vCPU HDBSS buffer size for hardware-assisted dirty tracking during live
-migration.
+On 9/25/26 9:00 AM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 6 potential issue(s) to consider:
+> - [Critical] s390/vfio-ap: unmap_iova() defeats timeout leak, causing wild DMA write
+> - [Critical] s390/vfio-ap: vfio_ap_mdev_reset_queue() abandons reset on AP_RESPONSE_BUSY
+> - [Critical] s390/vfio-ap: apq_reset_check() falsely reports zeroization complete
+> - [High] s390/vfio-ap: apq_reset_check() infinite loop on AP_RESPONSE_BUSY
+> - [High] s390/vfio-ap: cross-guest resource corruption due to dangling IOVA/ISC
+> - [Low] s390/vfio-ap: dead code and ineffective state handling on reset timeout
+> --
+>
+> commit 3205ec637b4cfa8d70d28a8f5abc909aba0bd19c
+> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+> Subject: s390/vfio-ap: Fix unbounded loop in apq_reset_check()
+>
+> The commit introduces a 2000ms timeout to apq_reset_check() to prevent
+> indefinite spinning when the hardware continuously returns a busy response.
+> If the timeout is reached, the NIB page and ISC registration are intentionally
+> leaked to avoid memory corruption from potential wild DMA writes. It also
+> corrects the confirmation logic by checking multiple status bits returned
+> from TAPQ.
+>
+>> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+>> index 940c0ff668bee..47d4936fb9d7c 100644
+>> --- a/drivers/s390/crypto/vfio_ap_ops.c
+>> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+> [ ... ]
+>> @@ -1857,8 +2006,28 @@ static void unmap_iova(struct ap_matrix_mdev *matrix_mdev, u64 iova, u64 length)
+>>   	int loop_cursor;
+>>   
+>>   	hash_for_each(qtable->queues, loop_cursor, q, mdev_qnode) {
+>> -		if (q->saved_iova >= iova && q->saved_iova < iova + length)
+>> +		if (q->saved_iova >= iova && q->saved_iova < iova + length) {
+>>   			vfio_ap_irq_disable(q);
+>> +			/*
+>> +			 * If IRQ disable failed or IR=0 could not be confirmed,
+>> +			 * vfio_ap_irq_disable() intentionally leaks the NIB to
+>> +			 * prevent a wild DMA write. But vfio core requires the
+>> +			 * page to be unpinned before dma_unmap returns, or it
+>> +			 * will BUG_ON after 10 re-notification rounds.
+>> +			 *
+>> +			 * Fall back to a bounded queue reset. The ZAPQ zeroizes
+>> +			 * the NIB pointer in hardware, eliminating the DMA risk
+>> +			 * that justified the leak. Once the worker finishes (or
+>> +			 * times out with a reset confirmed in-progress), the
+>> +			 * hardware no longer holds a reference to saved_iova and
+>> +			 * it is safe to unpin unconditionally.
+>> +			 */
+>> +			if (q->saved_iova) {
+>> +				vfio_ap_mdev_reset_queue(q);
+>> +				flush_work(&q->reset_work);
+>> +				vfio_ap_free_aqic_resources(q);
+> [Severity: Critical]
+> Could this sequence unconditionally free the AQIC resources immediately after
+> the timeout completes, defeating the deliberate leak?
+>
+> apq_reset_check() intentionally leaks the NIB page on timeout because hardware
+> might still be actively writing to it. However, unmap_iova() executes
+> flush_work(&q->reset_work) and then unconditionally checks q->saved_iova.
+>
+> Because the timeout path didn't clear saved_iova, unmap_iova() immediately
+> unpins the page via vfio_ap_free_aqic_resources(). Returning an active DMA
+> target to the page allocator could cause host memory corruption via wild DMA
+> writes.
 
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.=
-rst
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -9056,6 +9056,34 @@ enabled, cmma can't be enabled anymore and pfmfi a=
-nd the storage key
->  interpretation are disabled. If cmma has already been enabled or the
->  hpage_2g module parameter is not set to 1, -EINVAL is returned.
-> =20
-> +7.48 KVM_CAP_ARM_HDBSS_BUFFER_SIZE
-> +-----------------------------------
-> +
-> +:Architectures: arm64
-> +:Target: VM
-> +:Parameters: args[0] is the per-vCPU HDBSS buffer size in bytes
-> +:Returns: 0 on success; -EINVAL if the size is invalid or vCPUs have alr=
-eady
-> +          been created; -EBUSY if the buffer size was already configured.
-> +
-> +This capability configures the per-vCPU HDBSS buffer size used for
-> +hardware-assisted dirty tracking during live migration.
-> +
-> +Userspace sets the size in bytes via KVM_ENABLE_CAP. KVM allocates
-> +per-vCPU HDBSS buffers of the requested size.
-> +
-> +KVM_CHECK_EXTENSION returns the maximum supported size (``SZ_2M``)
-> +when queried without a VM, or the configured per-VM size (default
-> +``PAGE_SIZE``) when queried with a VM.
+Asked and answered in response to same comment in patch 1/6.
 
-[Severity: Low]
-KVM_CHECK_EXTENSION is designed to advertise static feature support and
-limits, not to serve as a GET interface for mutable, dynamically configured
-VM attributes.
+>
+>> +			}
+>> +		}
+>>   	}
+>>   }
+> [ ... ]
+>> @@ -1959,8 +2220,77 @@ static void apq_reset_check(struct work_struct *reset_work)
+>>   		elapsed += AP_RESET_INTERVAL;
+>>   		status = ap_tapq(q->apqn, NULL);
+>>   		ret = apq_status_check(q->apqn, &status);
+> [ ... ]
+>> +		if (!ret || ret == -ENODEV) {
+>> +			/*
+>> +			 * Zeroization confirmed (ret == 0): the TAPQ status bits
+>> +			 * indicate the async portion of the ZAPQ completed
+>> +			 * successfully. Free AQIC resources and return.
+>> +			 *
+>> +			 * Queue non-operational (ret == -ENODEV): the queue is
+>> +			 * deconfigured or checkstopped; interrupts are not
+>> +			 * possible so AQIC resources can be safely freed.
+>> +			 * Zeroization cannot be confirmed in this state, but the
+>> +			 * queue cannot generate interrupts, so the NIB page is
+>> +			 * no longer a DMA target and it is safe to free it.
+>> +			 */
+>> +			apq_reset_finalize(q, &status, ret);
+>> +			return;
+> [Severity: Critical]
+> Does this immediate return prevent the rejected ZAPQ instruction from being
+> reissued, bypassing queue zeroization entirely while falsely reporting success?
+>
+> If the initial ap_zapq() is rejected (e.g., returns
+> AP_RESPONSE_STATE_CHANGE_IN_PROGRESS), apq_reset_check() is queued without the
+> queue being zeroized. apq_reset_check() polls with ap_tapq().
+>
+> Once the hardware state change finishes, ap_tapq() returns AP_RESPONSE_NORMAL
+> (queue empty). apq_reset_check() sees !ret, executes apq_reset_finalize(),
+> and returns success.
+>
+> The ZAPQ command is never reissued. The queue is falsely marked as reset and
+> can be assigned to a new guest with the previous guest's cryptographic secrets
+> intact.
 
-Would it be better to use a dedicated interface to read back this dynamic
-state instead of KVM_CHECK_EXTENSION?
+This is a legitimate concern and will be fixed in v9 of the series 
+forthcoming.
 
-> +
-> +Constraints:
-> +
-> +- The size must be a power of two in [``PAGE_SIZE``, ``SZ_2M``].
-> +- Dirty-bitmap mode only: rejected with -EINVAL once the dirty ring
-> +  (``KVM_CAP_DIRTY_LOG_RING``) is enabled, and enabling the ring after
-> +  a size was set resets it to the default.
+>
+>> +		}
+>> +
+>> +		if (elapsed >= AP_RESET_MAX_WAIT) {
+>> +			/*
+>> +			 * Timed out without being able to verify zapq completed.
+> [ ... ]
+>> +			 */
+>> +			report_aqic_resource_leak(q);
+>> +			/*
+>> +			 * Zeroization could not be confirmed; set
+>> +			 * reset_status to AP_RESPONSE_RESET_IN_PROGRESS.
+>> +			 * This is used internally to signal that the reset
+>> +			 * did not complete, and ensures that if the queue
+>> +			 * is reset again, the re-issue logic in
+>> +			 * apq_reset_check() will re-issue the ZAPQ.
+>> +			 */
+>> +			q->reset_status.response_code = AP_RESPONSE_RESET_IN_PROGRESS;
+>> +
+>> +			return;
+> [Severity: High]
+> Can leaving q->saved_iova and q->saved_isc populated after the timeout corrupt
+> cross-guest resources?
+>
+> If the queue is assigned to a new guest, q->matrix_mdev points to the new
+> guest's matrix_mdev. When the new guest enables interrupts,
+> vfio_ap_free_aqic_resources() is called.
+>
+> It uses the new q->matrix_mdev to unpin the old q->saved_iova and unregister
+> the old q->saved_isc, corrupting the new guest's IOMMU pinning counts
+> and KVM ISC refcounts.
 
-[Severity: Medium]
-The KVM guidelines mandate that new memslot and vCPU flags default to
-immutable.=20
+This is a legitimate concern; The guest ISC needs to be unregistered 
+using the
+kvm pointer used to register it if possible. The pinned NIB page needs to be
+freed using the vfio_device whose IOMMU container owns the pinned NIB
+page. This will be fixed in v9 of the series forthcoming.
 
-Instead of silently mutating previously configured state (which can lead to
-unpredictable state-machine transitions that userspace is not prepared
-for), should this incompatible capability configuration fail explicitly by
-returning an error like -EINVAL?
+>
+>> +		}
+>> +
+>>   		if (ret == -EBUSY) {
+>>   			pr_notice_ratelimited(WAIT_MSG, elapsed,
+>>   					      AP_QID_CARD(q->apqn),
+>> @@ -1968,18 +2298,15 @@ static void apq_reset_check(struct work_struct *reset_work)
+>>   					      status.response_code,
+>>   					      status.queue_empty,
+>>   					      status.irq_enabled);
+>> -		} else {
+>> -			if (q->reset_status.response_code == AP_RESPONSE_RESET_IN_PROGRESS ||
+>> -			    q->reset_status.response_code == AP_RESPONSE_BUSY ||
+>> -			    q->reset_status.response_code == AP_RESPONSE_STATE_CHANGE_IN_PROGRESS ||
+>> -			    ret == -EAGAIN) {
+>> -				status = ap_zapq(q->apqn, 0);
+>> -				memcpy(&q->reset_status, &status, sizeof(status));
+>> -				continue;
+>> -			}
+>> -			if (q->saved_isc != VFIO_AP_ISC_INVALID)
+>> -				vfio_ap_free_aqic_resources(q);
+>> -			break;
+>> +			continue;
+>> +		}
+>> +
+>> +		if (ret == -EAGAIN ||
+>> +		    q->reset_status.response_code == AP_RESPONSE_RESET_IN_PROGRESS ||
+>> +		    q->reset_status.response_code == AP_RESPONSE_STATE_CHANGE_IN_PROGRESS) {
+> [Severity: Low]
+> Is this condition checking dead code because earlier flow control guarantees
+> ret == -EAGAIN is always true here?
+>
+> The code attempts to signal a failed reset by setting
+> reset_status.response_code = AP_RESPONSE_RESET_IN_PROGRESS on timeout.
+>
+> However, vfio_ap_mdev_reset_queue() overwrites reset_status unconditionally
+> with the result of a new ap_zapq() call on the next reset attempt, rendering
+> the signal useless. Furthermore, the conditional check for this status inside
+> apq_reset_check() is completely unreachable because execution only reaches that
+> block if ret == -EAGAIN, which short-circuits the OR condition.
 
-> +- Must be set before any vCPU is created; a second setting is rejected
-> +  with -EBUSY.
-> =20
-> diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
-> --- a/arch/arm64/kvm/hyp/pgtable.c
-> +++ b/arch/arm64/kvm/hyp/pgtable.c
+The premature early exit for !ret needs to be removed from the top of 
+the loop.
+When the worker starts after an initial ap_zapq() returns
+AP_RESPONSE_STATE_CHANGE_IN_PROGRESS or AP_RESPONSE_RESET_IN_PROGRESS,
+TAPQ might initially report AP_RESPONSE_NORMAL (returning ret = 0); in 
+this case,
+the queue will not have been reset/zeroized, so we need to let it fall 
+through to
+the block above. This will be fixed in the forthcoming v9 of the series.
 
-[ ... ]
 
-> @@ -1285,12 +1298,47 @@ static int stage2_update_leaf_attrs(struct kvm_pg=
-table *pgt, u64 addr,
->  	return 0;
->  }
-> =20
-> +static int stage2_wrprotect_walker(const struct kvm_pgtable_visit_ctx *c=
-tx,
-> +				   enum kvm_pgtable_walk_flags visit)
-> +{
-> +	kvm_pte_t new =3D ctx->old & ~KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
-> +
-> +	/* We remove DBM on blocks so they can fault and get split */
-> +	if (ctx->level < KVM_PGTABLE_LAST_LEVEL)
-> +		new &=3D ~KVM_PTE_LEAF_ATTR_HI_S2_DBM;
-> +
-> +	if (kvm_pte_valid(ctx->old) && ctx->old !=3D new &&
-> +	    (ctx->old & KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W) &&
-> +	    ctx->mm_ops->mark_page_dirty)
-> +		ctx->mm_ops->mark_page_dirty(kvm_pte_to_phys(ctx->old));
-> +
-> +	/*
-> +	 * The plain WRITE_ONCE races with hardware updates; both are
-> +	 * benign.
-> +	 *
-> +	 * AF: the update may be lost, and is set on the next access.
-> +	 *
-> +	 * Dirty state: we only rewrite entries whose old value had S2AP[1]
-> +	 * set, while hardware only promotes entries with S2AP[1] clear, so
-> +	 * the two never touch the same entry. The one overlap is DBM removal
-> +	 * on writable-clean blocks: a racing promotion is demoted back to
-> +	 * read-only, but the write is still recorded in the HDBSS buffer and
-> +	 * the folio was marked dirty at fault-in, so nothing is lost.
-> +	 */
-> +	if (kvm_pte_valid(ctx->old) && ctx->old !=3D new)
-> +		WRITE_ONCE(*ctx->ptep, new);
+>
+>> +			status = ap_zapq(q->apqn, 0);
+>> +			memcpy(&q->reset_status, &status, sizeof(status));
+>> +			elapsed = 0;
+> [Severity: High]
+> Will this repeatedly reset the timeout counter when dealing with busy
+> responses, bypassing the timeout logic?
+>
+> If the hardware continuously returns AP_RESPONSE_BUSY, apq_status_check()
+> maps this to -EAGAIN. In apq_reset_check(), if ret == -EAGAIN, the elapsed
+> timeout counter is reset to 0, completely bypassing the new 2000ms timeout
+> logic.
+>
+> This causes the worker to spin indefinitely, deadlocking the host system as
+> callers hold global mutexes like mdevs_lock while waiting on flush_work().
 
-[Severity: High]
-The global review guidelines strictly mandate: When KVM updates SPTE bits t=
-hat
-the hardware page-table walker also writes (Dirty/Access on leaf entries), =
-the
-update must not clobber a concurrent hardware update.
+The the 'elapsed' timeout counter should not be reset to 0.
+If the hardware continuously returns busy / EAGAIN responses, the
+loop will be guaranteed to exit once elapsed >= AP_RESET_MAX_WAIT (2000ms),
+preventing any unbounded spinning or host deadlock.
 
-Since WRITE_ONCE unconditionally overwrites the PTE with the old masked
-value, could this non-atomic write in stage2_wrprotect_walker() clobber
-concurrent hardware updates to the Access Flag (AF) or Dirty Bit on leaf
-PTEs?
+>
+>>   		}
+>>   	}
+>>   }
+> [ ... ]
+>> @@ -1995,18 +2322,27 @@ static void vfio_ap_mdev_reset_queue(struct vfio_ap_queue *q)
+>>   	switch (status.response_code) {
+>>   	case AP_RESPONSE_NORMAL:
+>>   	case AP_RESPONSE_RESET_IN_PROGRESS:
+>> -	case AP_RESPONSE_BUSY:
+>>   	case AP_RESPONSE_STATE_CHANGE_IN_PROGRESS:
+>>   		/*
+>>   		 * Let's verify whether the ZAPQ completed successfully on a work queue.
+>>   		 */
+>>   		queue_work(system_long_wq, &q->reset_work);
+>>   		break;
+> [Severity: Critical]
+> Would removing AP_RESPONSE_BUSY here cause the flow to fall through to the
+> default error case?
+>
+> If the initial ap_zapq() returns AP_RESPONSE_BUSY, it falls to the default
+> case, aborting the reset and not queueing the reset_work.
+>
+> This leaves the cryptographic queue unzeroized, leading to an information
+> leak when the queue is reassigned.
 
-> +
-> +	return 0;
-> +}
-> +
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
+The AP_RESPONSE_BUSY (05) response code is not a valid response for
+ZAPQ according to the architecture; so, it makes sense to let it fall 
+through
+to the default case since it is architecturally incorrect.  On the other 
+hand,
+AP_RESPONSE_BUSY is valid for TAPQ which is used by apq_status_check()
+to verify whether a reset has successfully completed. If TAPQ returns
+AP_RESPONSE_BUSY, the status check returns -EAGAIN so the ZAPQ
+is re-issued.
 
-[ ... ]
+>
 
-> @@ -2581,6 +2629,45 @@ int __init kvm_mmu_init(u32 hyp_va_bits)
->  	return err;
->  }
-> =20
-> +/*
-> + * The VM's hardware dirty-management mode is a derived value, a pure
-> + * function of the static capabilities and the number of logging
-> + * memslots, so recomputing it on every event cannot lose an update
-> + * and needs no locking against racing writers:
-> + *
-> + *   logging && HDBSS-capable  ->  HD|HA|HDBSS (hardware tracking)
-> + *   logging, no HDBSS         ->  off (write-protect faults)
-> + *   !logging && HAFDBS-cap.   ->  HD|HA (only written pages go dirty)
-> + */
-> +void kvm_arch_update_hw_dirty_mode(struct kvm *kvm)
-> +{
-> +	unsigned long cur, target;
-> +	bool logging =3D atomic_read(&kvm->nr_memslots_dirty_logging) !=3D 0;
-> +
-> +	if (logging && kvm_supports_hdbss(kvm))
-> +		target =3D VTCR_EL2_HD | VTCR_EL2_HA | VTCR_EL2_HDBSS;
-> +	else if (logging || !kvm_supports_hafdbs())
-> +		target =3D 0;
-> +	else
-> +		target =3D VTCR_EL2_HD | VTCR_EL2_HA;
-> +
-> +	cur =3D kvm->arch.mmu.vtcr & (VTCR_EL2_HD | VTCR_EL2_HA | VTCR_EL2_HDBS=
-S);
-> +	if (cur =3D=3D target)
-> +		return;
-> +
-> +	kvm->arch.mmu.vtcr =3D (kvm->arch.mmu.vtcr &
-> +			      ~(VTCR_EL2_HD | VTCR_EL2_HA | VTCR_EL2_HDBSS)) |
-> +			     target;
-> +
-> +	kvm_make_all_cpus_request(kvm, KVM_REQ_RELOAD_STAGE2);
-> +
-> +	/*
-> +	 * The request only reloads VTCR_EL2; cached translations keep
-> +	 * the old permissions until invalidated.
-> +	 */
-> +	kvm_flush_remote_tlbs(kvm);
-
-[Severity: Critical]
-Inside kvm_arch_update_hw_dirty_mode(), kvm_make_all_cpus_request() is issu=
-ed
-with KVM_REQ_RELOAD_STAGE2, which is defined as:
-
-#define KVM_REQ_RELOAD_STAGE2 \
-	KVM_ARCH_REQ_FLAGS(12, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
-
-The KVM_REQUEST_NO_WAKEUP flag prevents the request from interrupting runni=
-ng
-vCPUs. The subsequent kvm_flush_remote_tlbs() executes a hardware broadcast=
- TLBI
-and also does not send IPIs.=20
-
-Because running vCPUs are never kicked out of guest mode, won't they
-continue executing with their physical VTCR_EL2 register holding the
-stale state (HD=3D1)?
-
-If software dirty logging is active but HDBSS is not correctly synchronized
-on the CPU, the hardware page table walker could silently promote
-writable-clean PTEs to writable-dirty without trapping. Since KVM never
-sees the write, could this cause silent data loss during live migration?
-
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260929103655.8510=
-7-1-zhengtian10@huawei.com?part=3D14
