@@ -1,182 +1,148 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AE952842D;
-	Tue, 29 Sep 2026 14:12:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBDA4F4043
+	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 14:13:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790691157; cv=none; b=cPTeCEeYp9Fu/G1ShGpqY3qvToGR5hmxhAwHWNMivyk0bWsMsCogM3W03x3V02GUQ4psNjtfqHDD1DQ3AdJiJpyM2OS+Nrtdu0Mh3jNCgJT59Pvs22ZBWZLVOzQXHxnMDE2jRa1dmC4lmXMq4H4r9YL26RarqO6KrKIgKe4wbQs=
+	t=1790691201; cv=none; b=EVeVdn737VxYVkJLQkDTJC7FD3GlXrO77D6iZiCndqvS3/gahTHoteoubt1p3oydq2EXRoh80hJdUERT7TKzhcy8XlL9dYDjkO4SMWMj0HQmmHiPMay7mheyj2VhOJhMEBefG6kxCAZsTM92cqudl4OP3bvn1t8wOCzlo5fEMQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790691157; c=relaxed/simple;
-	bh=KxYUde1/KEXNJejqTrFp4SUYsnBB9mXRBQ/AuHK+DCo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Hi8kkU8uVEzTiTWF6/jkOh79Dw7kP53HJuPaEtp3l8X55SrRjUnlNQzj3xYOW2cc2X/8XtGDHeqNWDUYiESySMaZLX8438JbtCPAMQZJTSC5KGXZq+v6uXFuLk44Ti8nTRkUyPcTf0fi+LH1AYQP/GbAlcPxn0B97f2k6So1yw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=WNfyQU9c; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
+	s=arc-20240116; t=1790691201; c=relaxed/simple;
+	bh=QVNPYRjccZ4oE0aDn4xWSSlGbXx+ahF7r87kLGC0Jyo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=tAs0fv8YZ4miUAupgZAwXeXISdbk23UQkx+TlFA2msrCwz3mrO1XXolBJNvjEEfjROyc5tgo4GI7W7Vh+VDVnmB+wN8S55rxtF8gR+zNGGGbgee3/OJFGtYoQ1U/CeF5SF8L1ArwuflIUzBgwxupLHZvniekjHyvAfHCuy011q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=kKKbU149; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="WNfyQU9c"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1790691123;
-	bh=Aw7Hjrk1sBkpUcXdU7XN6UKj9w+0U2HAjIBfpJZKRPo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WNfyQU9cFo10yl6/oCL5McnApoxTM1lNPigavhilb6ac/iMqQbs2+CTZNV71NdtyQ
-	 1Pyk2z/R7Cp2x/CWk2KXrJ1DFXPYrx9AJa5ZLzKWjhX7sZnDAPLbObovErSYy3u0r1
-	 DaUJ24j/AX7JR/CJ6ow7MG1GMd+v0qhH/Dg2k+V/aLD88bXkTEjU7UVjug/1koKAsV
-	 l7/F4EKw/FflF5aeqzk7An1xdxtr5SG/JCL4ECbh/YXmJ0xhteB93OXzBx3IfDcPI/
-	 8yTPHO/qGHhTFJJS+ROhm/wqKlCQaM4lkalfAsRnUr8++IZj4xrs2zwv2UM/F8HhqJ
-	 J6f2It0H3NHyQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4hvKqh2QQ3z4wDw;
-	Wed, 30 Sep 2026 00:11:59 +1000 (AEST)
-Message-ID: <cfc03c25-2900-48fa-bba0-01e3283232a5@ozlabs.org>
-Date: Tue, 29 Sep 2026 15:12:25 +0100
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="kKKbU149"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 790331476;
+	Tue, 29 Sep 2026 07:13:15 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7211F3F86F;
+	Tue, 29 Sep 2026 07:13:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790691199; bh=QVNPYRjccZ4oE0aDn4xWSSlGbXx+ahF7r87kLGC0Jyo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kKKbU149tUlnraS3nYr9wtu6vKJQdOzXEFbhRRV3/uXmpH/2jzPVVUkKyP+hpi9ow
+	 214ijdoB+nVu5j+KKzuvLsjiAKn92Phh1iNfgaPxvSIUs5QWP+DNn1XQWonOQej3W6
+	 UGJLPUmJgo8tmDFkEftEJK0iZCuZAQfQqPPzPZLk=
+From: Leonardo Bras <leo.bras@arm.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH v1 3/3] KVM: selftests: dirty_log_perf_test: Add dirty-ring support
+Date: Tue, 29 Sep 2026 15:13:12 +0100
+Message-ID: <arvHeEVvnVmdtbSq@LeoBrasDK>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260929115347.5FE831F00898@smtp.kernel.org>
+References: <20260929113711.2064390-1-leo.bras@arm.com> <20260929113711.2064390-4-leo.bras@arm.com> <20260929115347.5FE831F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/9] vfio/pci: Remove DMABUF export dependency on
- vdev->memory_lock
-Content-Language: en-GB
-To: sashiko-reviews@lists.linux.dev
-Cc: linux-pci@vger.kernel.org, media-ci@linuxtv.org, kvm@vger.kernel.org,
- dri-devel@lists.freedesktop.org
-References: <20260924152159.49702-1-matt@ozlabs.org>
- <20260924152159.49702-2-matt@ozlabs.org>
- <20260924153737.951E71F000FF@smtp.kernel.org>
-From: Matt Evans <matt@ozlabs.org>
-In-Reply-To: <20260924153737.951E71F000FF@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Dear Robot,
-
-On 24/09/2026 16:37, sashiko-bot@kernel.org wrote:
+On Tue, Sep 29, 2026 at 11:53:46AM +0000, sashiko-bot@kernel.org wrote:
 > Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] vfio: incorrect initial DMABUF revoked state allows DMA to disabled BARs
+> - [Medium] kvm: selftests: dirty ring collection time excludes lock wait time
 > --
 > 
-> commit fb51fe9e3cab37471d1c4237de83fcf89aad79f5
-> Author: Matt Evans <matt@ozlabs.org>
+> commit 2c539bfee74e383775f9c7f30033144876ad2f45
+> Author: Leonardo Bras <leo.bras@arm.com>
 > 
-> vfio/pci: Remove DMABUF export dependency on vdev->memory_lock
+> KVM: selftests: dirty_log_perf_test: Add dirty-ring support
 > 
-> This commit introduces a new dmabuf_lock to protect the list of exported
-> DMABUFs and a new bars_revoked flag for tracking BAR revocation state. This
-> removes the dependency on vdev->memory_lock during DMABUF export in
-> preparation for future mmap refactoring.
+> This commit adds dirty-ring support to the dirty_log_perf_test to enable
+> performance comparisons between dirty-bitmap and dirty-ring tracking
+> mechanisms.
 > 
->> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
->> index 6757054e9d875..1f60661078313 100644
->> --- a/drivers/vfio/pci/vfio_pci_core.c
->> +++ b/drivers/vfio/pci/vfio_pci_core.c
->> @@ -663,6 +663,7 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
->>   		vdev->has_vga = true;
->>   
->>   	vfio_pci_core_map_bars(vdev);
->> +	vdev->bars_revoked = false;
-> 
-> [Severity: High]
-> Is this hardcoded initialization safe?
-
-I believe so -- this report seems to be incorrect.
-
-> Earlier in vfio_pci_core_enable(), pci_try_reset_function() is called,
-> which performs a fundamental reset that clears the device's
-> PCI_COMMAND_MEMORY bit in the physical hardware.
-
-First, on entering any driver probe, the PCIe function is enabled (MSE=1).
-
-The HW FLR does indeed clear MSE, but pci_try_reset_function() 
-saves/restores config space either side of the reset:  since it starts 
-out enabled, the pci_dev_restore(dev) in there means that 
-PCI_COMMAND_MEMORY is re-enabled after the reset.
-
-And for a device that doesn't have a reset method, MSE is never cleared 
-so is also enabled through vfio_pci_core_enable().
-
-> Then vfio_config_init() populates the virtual config space by reading from
-> the hardware, capturing PCI_COMMAND_MEMORY == 0. Does initializing
-> bars_revoked to false here fail to match that initial virtual config state?
-
-vfio_config_init() runs after the above has restored/left MSE=1, so the 
-vconfig captures memory enabled.
-
-So, vdev->bars_revoked = false is correct here.  (I had considered 
-initialising it based on the read value of MSE, but I can't see a way 
-for MSE to be 0 here.)
-
->>   
->>   	return 0;
->>   
-> 
+> > diff --git a/tools/testing/selftests/kvm/dirty_log_perf_test.c b/tools/testing/selftests/kvm/dirty_log_perf_test.c
+> > index 8f791ad7b86a8..af0ab654d46e2 100644
+> > --- a/tools/testing/selftests/kvm/dirty_log_perf_test.c
+> > +++ b/tools/testing/selftests/kvm/dirty_log_perf_test.c
 > [ ... ]
+> > @@ -29,9 +30,53 @@ static bool run_vcpus_while_disabling_dirty_logging;
+> >  
+> >  /* Host variables */
+> >  static u64 dirty_log_manual_caps;
+> > +static u32 dirty_ring_size;
+> >  static bool host_quit;
+> >  static int iteration;
+> >  static int vcpu_last_completed_iteration[KVM_MAX_VCPUS];
+> > +static struct timespec vcpu_dirty_ring_collect[KVM_MAX_VCPUS];
+> > +
+> > +static void dirty_ring_collect(struct kvm_vcpu *vcpu, u32 *ring_idx,
+> > +				struct timespec *ts)
+> > +{
+> > +	static pthread_mutex_t collect = PTHREAD_MUTEX_INITIALIZER;
+> > +	struct timespec start;
+> > +	struct kvm_dirty_gfn *dirty_gfns = vcpu_map_dirty_ring(vcpu);
+> > +	u32 idx = *ring_idx;
+> > +	u32 ring_size = vcpu->vm->dirty_ring_size / sizeof(struct kvm_dirty_gfn);
+> > +	int cleared, count;
+> > +
+> > +	pthread_mutex_lock(&collect);
+> > +
+> > +	clock_gettime(CLOCK_MONOTONIC, &start);
 > 
->> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
->> index c16f460c01d68..847ee5cc78e7f 100644
->> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
->> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> [Severity: Medium]
+> Since the timer is initialized after acquiring the lock, the time spent
+> waiting for the mutex is not recorded in the collection time. When multiple
+> vCPUs fill their dirty rings concurrently and wait on this lock, will this
+> lock contention time be incorrectly omitted from collect?
+
+Yes, but that was a design choice.
+
 > 
+> > +
+> > +	while (true) {
+> > +		struct kvm_dirty_gfn *cur;
 > [ ... ]
+> > @@ -43,24 +88,45 @@ static void vcpu_worker(struct memstress_vcpu_args *vcpu_args)
+> >  	struct timespec ts_diff;
+> >  	struct timespec total = (struct timespec){0};
+> >  	struct timespec avg;
+> > +	bool use_dirty_ring = !!vcpu->vm->dirty_ring_size;
+> > +	u32 ring_idx = 0;
+> >  	int ret;
+> >  
+> >  	run = vcpu->run;
+> >  
+> >  	while (!READ_ONCE(host_quit)) {
+> >  		int current_iteration = READ_ONCE(iteration);
+> > +		struct timespec collect = (struct timespec){0};
+> >  
+> >  		clock_gettime(CLOCK_MONOTONIC, &start);
+> > -		ret = _vcpu_run(vcpu);
+> > +
+> > +		do {
+> > +			ret = _vcpu_run(vcpu);
+> > +			if (!use_dirty_ring)
+> > +				break;
+> > +
+> > +			dirty_ring_collect(vcpu, &ring_idx, &collect);
+> > +		} while (!ret && run->exit_reason == KVM_EXIT_DIRTY_RING_FULL);
+> > +
+> >  		ts_diff = timespec_elapsed(start);
+> >  
+> > +		if (use_dirty_ring) {
+> > +			ts_diff = timespec_sub(ts_diff, collect);
 > 
->> @@ -305,12 +305,27 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
->>   
->>   	/* dma_buf_put() now frees priv */
->>   	INIT_LIST_HEAD(&priv->dmabufs_elm);
->> -	down_write(&vdev->memory_lock);
->> +
->> +	/*
->> +	 * dmabuf_lock synchronises access (R) or updates (W) to the
->> +	 * vdev->dmabufs list and to bars_revoked (see below).  The
->> +	 * revocation state of DMABUF elements in the list is written
->> +	 * holding both dmabuf_lock(W) and resv, and tested with
->> +	 * either.
->> +	 *
->> +	 * dmabuf_lock -> resv
->> +	 *
->> +	 * vdev->bars_revoked tracks the BAR revocation status updated
->> +	 * via vfio_pci_dma_buf_move(), so the initial DMABUF state
->> +	 * follows the same criteria that later update the DMABUF
->> +	 * state (BAR zap, etc.).
->> +	 */
->> +	down_write(&vdev->dmabuf_lock);
->>   	dma_resv_lock(priv->dmabuf->resv, NULL);
->> -	priv->revoked = !__vfio_pci_memory_enabled(vdev);
->> +	priv->revoked = vdev->bars_revoked;
-> 
-> [Severity: High]
-> Can this incorrect initial state allow P2P DMA to disabled BARs?
-
-Nope.
-
-> If userspace exports a DMABUF at this point,
-
-Above, the flag value is correct, but also one can't export a DMABUF 
-from a VFIO device that hasn't completed initialisation.
-
-
-Matt
-
-> the DMABUF inherits the
-> un-revoked state from vdev->bars_revoked (false), bypassing the correct
-> state evaluation.
-> 
-> Could this permit P2P DMA to this DMABUF to be allowed by the kernel but
-> dropped by the endpoint since memory decoding is disabled? This would trigger
-> PCIe Unsupported Request (UR) errors, which could potentially be weaponized
-> by unprivileged users controlling the VFIO device to trigger AER and crash
-> the host.
-> 
->>   	list_add_tail(&priv->dmabufs_elm, &vdev->dmabufs);
->>   	dma_resv_unlock(priv->dmabuf->resv);
->> -	up_write(&vdev->memory_lock);
->> +	up_write(&vdev->dmabuf_lock);
->>
+> [Severity: Medium]
+> Because collect does not include the lock wait time from
+> dirty_ring_collect(), subtracting it from ts_diff leaves the lock
+> contention overhead misattributed to the guest execution time. Doesn't this
+> artificially inflate the reported guest execution time and obscure the true
+> overhead of dirty ring synchronization?
 > 
 
+But that's what's going to happen in any VMM.
+Also, doing otherwise would fakely account for the cleaning part, which is 
+what we are trying to measure.
+
+Thanks!
+Leo
