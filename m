@@ -1,145 +1,184 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010001.outbound.protection.outlook.com [52.101.193.1])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48CF30D3ED
-	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 05:27:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.1
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790659661; cv=fail; b=jEs1t82sB3JSpcQPgVfhgCEBmsksa7MZWHvEL6ermZGu7AiydVE5IoqBD810toHDXwx+ZUh2lReGsrAQ6AGRxtIK2fR0mzGN/BWgPvD4YN4wE6XTOki35eTx6BcZVofrKYMyVR4WdnzezU74jge0q7EPJuXF7rr2+IzvJB+ixzo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790659661; c=relaxed/simple;
-	bh=Tj8g072UYyky8ZWO7ECzbd/32kJQEqWwKDEIWUv5kLI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=R5Ni6EStOIvMEFIymsbu9veZv5Ev8qoEzt/pf8jydA+LTHGCAo4ng1bOByU2+VDVBrUYrbtoxDel3GHlde7jqE0kAfsk626BX1Z2Wh+mZx9hT8a6nxZaDr4uQ+2jiZAzQrHUSl7lD8c9ntO2KXAMZz7jhDBkMINyWS8+KPSBhC8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=WwyApyMz; arc=fail smtp.client-ip=52.101.193.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162254A32;
+	Tue, 29 Sep 2026 05:40:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790660429; cv=none; b=p59FdwU0idZGhRjlAO5fUgwE3gESpQZRaj1hV8Pa8MZ6itZAOM/tXPsIhfAonLxD7xIMyBSUyWnkUIFi+v9xBX3eUXoegWh+5k0TNfSB0/G9yYoz0sitGHsZjkHhV3cBi70f1gK8fAXocCm2AtN7/OYQlrrlK4CuB6YJ3UkLC2A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790660429; c=relaxed/simple;
+	bh=UwBNj/WRYvBhs+qLQKgoN88/2kBTeszB+PSYJ+ZygHk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YWsHb9XHE1SbrrK9db2s3jfFmTube686pCl91NtUq+N3og2NEnzfLdXW4bpiDnzHHDppNg6lDLTkVUXyWV3eqS5pV6CUPz5grvrLz4wy5l/DltXJmDKvtbgIT+NL6lmTJASoWA71f1yVS77aU4Fq7DsuP4wDjXrQwbStoSxuF18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=PJOuuQ1O reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="WwyApyMz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fh90od+ZV/d3eVKWa68ehobA7nKeFfnYHPmApruafUYZsr5rD4R20P1QcGKpgnXaVQYAY+I0FMJQWiYAOfhr4rO3QIlWV9klm3AfMY8L388i4TD7smGkihwPavO4zSINKJqvEG88sBPBpIr7ZhL/D0/vKbWRYw4Us7NB7bAYrNdMFjzVkuNWA7E8mEQv3je9s9DIurTmBunujQLiPtPsqQyv3ywCpjfiigOoIykDJSGGU9Lss4Eb+1lENEzv7/3MOhlJOF8IIkWqVL213ByyF+V8JQ4d9s19DXDFYoU92BWfkjyYwCIH9wtR8FsxbdqlXp7m8pyTqkYn1vkUg/cc0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ml1BCJ8siQqAM/Jk6GrnXi6sKudyWKysOEKmkro/v88=;
- b=jdxYuoNHRg4rYKGLpcBCzqQEWyGkzOH97QWVfnSF1k3bs94eaoRKihLF6I9K0IoCI2foKnR5rb+PEGGr8WqTO7185Vl/86+j57TprOafNuvSQV1bWE1TFUehFNKyxlBV276KRaev2NMHo256EDgnMDm7LKMS9kIUMDQ5pJra0QoNdt9kDSmY5iOg12dgxbtG3TtRjaVTDKZkjOlecib9i1GUmy7brmkPOkjnqx6ZZOGWkmByfVMj4TRoBjQm1iIkxaHMNnFdy5PWCpGU8vp+ozXanR/uFivT6JVEU7RvWdWnfSgf1xzyPfwL3D9yHFlVqjPiXcM8FPGwGB6l6T24iQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ml1BCJ8siQqAM/Jk6GrnXi6sKudyWKysOEKmkro/v88=;
- b=WwyApyMzCzkOSmASxLr0pOS2cSq4a/yya2NhJzIWKKhiH0X60vvCIiVJsf4/JfnNWe5txDjwqBy3kA7utG6RRptQjNst5pMHog22xIZG05OfvsgYZgkE6kR8UQHxr5AJHb0IBaH7ZebUZRsYKL2006He1gBgAQ1YMjVVTn1UPmA=
-Received: from SJ0PR03CA0297.namprd03.prod.outlook.com (2603:10b6:a03:39e::32)
- by DS6PR12MB500340.namprd12.prod.outlook.com (2603:10b6:8:52c::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
- 2026 05:27:36 +0000
-Received: from SJ1PEPF00002320.namprd03.prod.outlook.com
- (2603:10b6:a03:39e:cafe::96) by SJ0PR03CA0297.outlook.office365.com
- (2603:10b6:a03:39e::32) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.24 via Frontend Transport; Tue,
- 29 Sep 2026 05:27:36 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- SJ1PEPF00002320.mail.protection.outlook.com (10.167.242.86) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.472.14 via Frontend Transport; Tue, 29 Sep 2026 05:27:36 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 29 Sep
- 2026 00:27:35 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 29 Sep
- 2026 00:27:35 -0500
-Received: from [10.136.46.160] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Tue, 29 Sep 2026 00:27:32 -0500
-Message-ID: <7911fb0b-5b8a-4a4d-8495-e82555fa0fd1@amd.com>
-Date: Tue, 29 Sep 2026 10:57:26 +0530
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="PJOuuQ1O"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 90C9640E01ED;
+	Tue, 29 Sep 2026 05:40:24 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id LW9VMulucr1U; Tue, 29 Sep 2026 05:40:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1790660414; bh=4lbDjmw7JtBgfO2hPYdY0U8ZEXv57xCD4oHdW903C5w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PJOuuQ1OX8x8eK+0w+F5cbdnUGSPrA8pi/h5SDJBeGEsOnwgCvPAVmrnHiPiObdDP
+	 et7KfBmhLy+crcqPIG3X0MyMtYijQWmADye082P0afK3ztffARE+/RWwyVUB+gWwx+
+	 meTKNH7NDq1RtEe3/bLWL6hwhWxD46FXH+HtJXG/0jDaGSxJfF6Pe3T1iWK45qot5U
+	 2LfqvK13f6GD7tUmMVa1mn1dorgnMf08BKYtnKhMN5Gpu+b+r9+VmSfhxqQaSmo4KP
+	 H+44JUWa/alrd+4EhBdHCePdSwe/MRXL8KAc/RdsPVYBd0n3lH3CqY/vAkqPrZrTGq
+	 /M+W3xct/KCM/3iPxwfF/was8cNy/hc+25ugpW1cp2z2XqI+PePUOSiC1/zJj1fbpg
+	 QQlb2Km0uC3V/R8nnJVzeUYcVNOtT6XvHAEZbLI+uYyVSBoKGGpme7aE5vmW1twx4K
+	 J/4gGT7BVgeqZoCYcFQ0uJgtIEpGy1fNNiQG7DH3HLjukLsEm/kewzzgIueScAo7kH
+	 yB83BPL6mbiHeGeMfrV4PGbWdqhmVdTw3lO+VJrbfAH86L2T+PeJ+huzdrnq025EzS
+	 OxKWC/z/2nvnTSqHoZfDcGagnhp3WcaEniNGYCg78V+tMWGMGsSR7D9BZa7RfDZK8V
+	 go6kmqSEINa+cyy3zeqxqcl8=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::3a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2796940E015D;
+	Tue, 29 Sep 2026 05:39:34 +0000 (UTC)
+Date: Mon, 28 Sep 2026 22:39:30 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Zack Rusin <zack.rusin@broadcom.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>, x86@kernel.org,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, virtualization@lists.linux.dev,
+	bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org,
+	Christoph Lameter <cl@gentwo.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bo Gan <bo.gan@broadcom.com>, linux-mm@kvack.org,
+	linux-arch@vger.kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Long Li <longli@microsoft.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>, linux-doc@vger.kernel.org,
+	linux-hyperv@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>,
+	Kees Cook <kees@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>
+Subject: Re: [PATCH v2 0/6] x86/percpu: Share decrypted storage before guest
+ setup
+Message-ID: <20260929053930.GEartPEjbZMpBVSvSk@fat_crate.local>
+References: <20260929040256.543767-1-zack.rusin@broadcom.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 0/8] KVM: SVM: Add Page Modification Logging (PML)
- support
-To: <seanjc@google.com>, <pbonzini@redhat.com>
-CC: <thomas.lendacky@amd.com>, <bp@alien8.de>, <joao.m.martins@oracle.com>,
-	<kai.huang@intel.com>, <yosry@kernel.org>, <kvm@vger.kernel.org>
-References: <20260907063906.1964557-1-nikunj@amd.com>
-Content-Language: en-US
-From: Nikunj A Dadhania <nikunj@amd.com>
-In-Reply-To: <20260907063906.1964557-1-nikunj@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002320:EE_|DS6PR12MB500340:EE_
-X-MS-Office365-Filtering-Correlation-Id: c3f58322-3226-42e2-e209-08df1dea5f19
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|23010399003|376014|36860700016|56012099006|10067099003|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	56Xc92Z3eXub9JcuB7Z5uFSc54PWilpYs4V8yM50tbaT5prrSZ0yFZEZWDP2+2WQQ5Xs8pNrLLPzvOOHdyq4eHhHKYUGLxLhoZwF3yx9CkERSMpGvrgi2HFAKzcDVgXDa1bCbjklp+cKYi5CfOgGwSrymgJX0cez42o56/kgmXQRiXLh04Ye8orRuYb7wtgvebEwJ/ya/nlPZ/orfCcady5WBCF9/QYLsZS950ToQN8AW56OczGI+Kn97zd+0an4LcKjnWDE3IE4RFqZWMcFDY5CPCaz8lK2SFkvTgdcMSprAUGInD2/uEBfMI2hCef+Wipf5HMgm8E+08HzxDZEdaomEmp+0e1nQH6ofINvojk4eOAiEARYAk0Hm+u9o4VF4Y3yaCA/LE7s1LO+6K4aREtlBCTYy7IW4EbjK/QJb5SJ8bclxNCD8PxlQiGaKNhEqtL551p93D3WI89o9q8h1rUddO9QdFdStiWYju1tquHkra6b16wD+6DgDz4VtmWKEoARdViJOQpbfuVcwZcVF3mrCi8yKVnUMK2Oec+zjZM9cmjENWQQZZ4TQsmuy5EaYXdLEu9FqCV9WfxgDPMJ8j9W/OhtWWnP6rnnGKM197j4O5PThngMit4XOqzMplocx2plIEFyhRUm+sTaDsKkXIEwZEfCjRYwpvX3cNLgaWMyujZvzMATJDOIyx40P1LyKL0Vil7Ia+nPcbyYmEqhgg==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(23010399003)(376014)(36860700016)(56012099006)(10067099003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	bfzWTYEU5LYnHTQNKXrZTcRyotBCnD6PtaBl2D+kLiekDZv5UMWKJVF3TNsilOq6sgInGq0iEaveaLAUQbN6OSmCuR4smF/Y7WmXP4aG51oFytBQ8Wt5lUgCp+UP7dLrM1BS5eEfh9AxKkZeYkTA9+o8qSzTsP+rXe9Ygh25Z+X0wpq085VeVTIFrIgFRocDj2bHfzvNy5QvbHLpYuOStdq9P2jUkqcdZkz3enXXssUfhSRxQlh+PKX8LKiC5VcW2AFLR9sEmbeUYtutWGSvLjescTmZ8LXf8nmsuBMr09QDX99t2V6yRZnmNGvxcTjA03FPa9Xme5o9EBNcj1+vhmjVnBleADtLnSBf+mJLcWftIwfC5C8bXOmq7eoSbUwH6jXgl6YohNhUx4iRzf5IW1eOHXwvKCK/n7oblwIvmtjxwOJVnAp1VF4e6D00x8od
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 05:27:36.3717
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c3f58322-3226-42e2-e209-08df1dea5f19
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002320.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR12MB500340
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260929040256.543767-1-zack.rusin@broadcom.com>
+Content-Transfer-Encoding: quoted-printable
 
-On 9/7/2026 12:08 PM, Nikunj A Dadhania wrote:
-> This series implements Page Modification Logging (PML) for guests on select
-> AMD Zen6 and later processors, bringing hardware-assisted dirty logging
-> support. PML is designed to track guest modified memory pages. PML enables the> hypervisor to identify which pages in a guest's memory have been modified
-> since the last checkpoint or during live migration. More details can be
-> found in the latest AMD APM Volume 2 (System Programming), section
-> "15.25.15 Page Modification Logging".
-> 
-> The PML feature uses two new VMCB fields (PML_ADDR and PML_INDEX) and
-> generates a VMEXIT when the 4KB log buffer becomes full.
-> 
-> The feature is enabled by default when hardware support is detected and can
-> be disabled via the 'pml' module parameter.
-> 
-> Changelog:
-> v8:
-> * Rebased on latest kvm/next
-> * Drop redundant pml_addr=0 in nested_vmcb02_prepare_control() (Yosry)
-> * Fix misleading comment, pml_index=-1 is hardening not stale-data
->   cleanup (Yosry, Sean)
-> * Route nested SVM_EXIT_PML_FULL to KVM and treat it as unexpected
->   exit (Sean)
-> * Refactor update_cpu_dirty_logging() to common code as a separate
->   pre-patch (Sean)
-> 
+On Tue, Sep 29, 2026 at 12:02:49AM -0400, Zack Rusin wrote:
+> VMware publishes its per-CPU steal-time GPA without first sharing the
+> storage in encrypted guests.
 
-Hi Sean,
+So this one liner is the only explanation why this patchset exists, AFAIC=
+T. So
+I asked AI. I'm pasting what it said below, at the end.
 
-A gentle ping on this series. Is there anything else you would like me
-to change, or does this look reasonable for v7.4?
+Is any of it true?
 
-Regards,
-Nikunj
+If so, how much and is that the reason this patchset exists?
 
+I.e., you want for vmware monitoring tools to work with CoCo guests.
+
+Yes, no? Anything else?
+
+And looking at your commit messages, they don't really talk about why the
+patches exist.
+
+And I don't think you know your audience - you're sending a bunch of patc=
+hes
+touching arch/x86/ and you throw all that virt gibberish around like it a=
+in't
+no tomorrow and you're thinking that tip people can follow. And I think w=
+e can
+follow only bits and pieces but all of us will be mostly head-scratching =
+here
+and probably ignore the whole set.
+
+So perhaps you should lay off your virt hat for a minute and try to expla=
+in in
+an approachable way what you're trying to do so that even non-virt people=
+ can
+follow.
+
+Right now concepts are flying around left and right in that text and I ha=
+ve no
+clue what's going on here.
+
+Thx.
+
+P.S., here's the AI gunk:
+
+"In this context, =E2=80=9CVMware per=E2=80=91CPU steal=E2=80=91time GPA=E2=
+=80=9D is referring to **Guest
+Physical Address (GPA)**=E2=80=93based accounting of **CPU steal time per=
+ vCPU**
+inside a VMware virtual machine.
+
+Let=E2=80=99s break the components down:
+
+- **Steal time** =20
+
+  In virtualization, =E2=80=9Csteal time=E2=80=9D is the amount of time a=
+ guest CPU *wanted*
+  to run but **was not scheduled by the hypervisor** because the physical=
+ CPU
+  was busy running other VMs or host tasks. =20
+
+  Per=E2=80=91CPU steal time means this is measured **for each vCPU** sep=
+arately.
+
+- **GPA (Guest Physical Address)** =20
+  GPA is the CPU=E2=80=99s view of =E2=80=9Cphysical=E2=80=9D memory insi=
+de the guest. It=E2=80=99s:
+  - The address space the guest OS uses for RAM, MMIO, etc.
+  - Translated by the hypervisor to real host physical memory (or nested =
+translations with EPT/NPT).
+
+- **Why GPA for steal time?** =20
+  VMware (and other hypervisors) can expose performance statistics (like =
+steal time, idle time, run time) via:
+  - Per=E2=80=91vCPU counters/timers
+  - Memory=E2=80=91mapped (GPA=E2=80=91mapped) structures that the guest =
+can read
+  - Paravirtual interfaces (e.g., hypercalls, PV drivers) which are often=
+ described or backed by GPA regions
+
+So when someone says =E2=80=9CVMware per=E2=80=91CPU steal-time GPA,=E2=80=
+=9D they usually mean:
+
+A VMware mechanism where **per=E2=80=91vCPU steal=E2=80=91time metrics** =
+are exposed to the
+guest via data structures located in **guest physical address space**, so=
+ the
+guest OS or monitoring tools can read those counters and attribute lost C=
+PU
+time per vCPU."
+
+--=20
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
