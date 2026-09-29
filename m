@@ -1,72 +1,25 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB7A3F1048
-	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 08:30:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C5A74E9C1B;
+	Tue, 29 Sep 2026 09:03:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790670602; cv=none; b=oz64Mg+gM7OuyMShxIfN//gutF7SeSs4/AfDyfYMlqwiGX5VubrZhsb/qZiYewprtzu3HEXf0P6w4/gPTzu5S7yoy6JF8hC9IlHsIzMjgowbUnAagX/9KL5j0d0ZZDOb51QQ83RxfmJl4PW+RRP9qQDXkhELpsTQAM9BGapeBE0=
+	t=1790672623; cv=none; b=D1bm/KDJW1yCJsmpiqICLU94OQmwU5X1U4vkoRYpvk/5HfvBRqPo5OIfS2aPG/QN3iA43AIAuf1DvuTbf1qJZxcJKJ7u7V1GkJ1LwL8KQY9aiEOtQUVkticdj9gFwPlWAw6Gnk5pDZ8ztjtryVPM/Wa8RBrA0TymK3Xkzyu7xbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790670602; c=relaxed/simple;
-	bh=8kxH/OayBaB/YISkRgr8hDh2O4L9NhgdZOgWgNcyhkI=;
+	s=arc-20240116; t=1790672623; c=relaxed/simple;
+	bh=XE0diPgi/S0dFf0Xr5cAfejhQRRFpZccGQeHnbrLWi8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=khlzrIWWakOi1SQ0BjjYOBHZRIyf5UfN30elLFs+yI9j3AR3HZzGK+KpoDBan2BMYDkcr8Ovoo89xiNYQcqpnno61dtUXpu9G/5AE+aJHbfWTTCV0RbJuBoqkU0Jxyh66s7MxuMLwLgy6xMwyeVrP9YYFOKMaChrcL2oBRNL9WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GDVu1vko; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GDVu1vko"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790670599;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vxbsc+NCljbcHcDxhWzgsYHRMDqK6k1gG92IIwNO9h4=;
-	b=GDVu1vkoVMDD0cwi3jkGwvi76uIcNpMPpC3Vwf0GgFSYMGR8r2EiLywzwe2vLwCckUeYXo
-	2uUBhJcQsz3rmSiX+UyA0ytXaqqBB2Y8fQZg/SuwZFm7kSGfYXW6BqAbRidhcubgJfufng
-	XBTmOp9sJEz7KjqXJCjOp0M2eEDMN/Q=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-282-fNfSDtvAORy8mlLou8Gapg-1; Tue, 29 Sep 2026 04:29:56 -0400
-X-MC-Unique: fNfSDtvAORy8mlLou8Gapg-1
-X-Mimecast-MFC-AGG-ID: fNfSDtvAORy8mlLou8Gapg_1790670595
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c29959eb71fso400218566b.1
-        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 01:29:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790670595; x=1791275395;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:reply-to:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Vxbsc+NCljbcHcDxhWzgsYHRMDqK6k1gG92IIwNO9h4=;
-        b=V0wvOQTUJsAUuOgBh5k1Oo0frJe5o05NSE5/NpJ6YwBBgOdnEjsjUiYLtb4N72eFYU
-         LA+H/sO16yIFXo1HdZa9IROz2p0dfj4PU1KctyhMv4WBpCOqJTQ+bS3TULMWZTDXJkeH
-         Nqp8bPMSZ0X40w9oGCPTOGk9xd2xXv0cs1iyqBUAJVSr+sgl8XHyF6sbuQERPK+xrf0m
-         a1yerUnEi80PGeGNyF3WIN6fJH6NKJ2ZWoPTWYsjKvTDqNKHpIFmMiUmUMpb13GEFPXj
-         dK939h18mbuhFsO4Rx3QvwEp2VNOq70jvLyUQhAqp2W+BMnMpyGECG3wHB4edGDL96VT
-         pDBw==
-X-Gm-Message-State: AFuF++kYF+uNLTkavRXdy5H8kV0xs3LhRKPl8K5EhDsc9Y+ji+k79/wI
-	Xd2Xh25IU19fZ+cKxsJGWqxjypWyt/Fj6UUHkNzjSToajZ3gvLIAiGHiFOz+c0Yba7rsFIuj0zP
-	nJO4aPt4kWI5jh0Ij5oJmFUy71sZSjwwYgLkzLHPI9WnFzaTwt704Iw==
-X-Gm-Gg: AYBFou0BG7k5aMbhwL5OtETJBqzCnJES0IRndhjxop/OBwvJALoxd40rNothLEFV9oC
-	1/NRObV/jO9ikn1ANuL6jIYgFbn51DAPceEPtLTroi4g3Flft1FfKG+PDB8hZkVOWTDNFMK2KvJ
-	lRelnPFGVcCLggGimkVw5CIYvqtFZ8vhVKuzNQhJqI9KERXFlWae0MeQQoT+YGmCFjdSLOn69pp
-	ZjBWZMH/MmGFr2DDzQDxQAU7BAlvwMJZ1Xq+YjONgsKVKYfAob3k/Vpcm1Vc0bDeSlinJrWCyjD
-	BAtySZIv7AG7goPVSU0cziH2BKQUGHtSp+6S7Kd1OwFfEhGrjiN488n6uRsxgMxWgO++Jc4a/vE
-	6j9o1HEACvuS6eRvVUOyZojXVwXph1YxpmGWzasFPs4fi1XBM
-X-Received: by 2002:a17:907:c609:10b0:c2a:cf73:63fe with SMTP id a640c23a62f3a-c2acf7369d6mr801066666b.6.1790670595119;
-        Tue, 29 Sep 2026 01:29:55 -0700 (PDT)
-X-Received: by 2002:a17:907:c609:10b0:c2a:cf73:63fe with SMTP id a640c23a62f3a-c2acf7369d6mr801064266b.6.1790670594668;
-        Tue, 29 Sep 2026 01:29:54 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874? ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2dc57c8dbbsm363629266b.12.2026.09.29.01.29.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Sep 2026 01:29:54 -0700 (PDT)
-Message-ID: <de7adc58-cb00-4ffd-8b2a-29728114c655@redhat.com>
-Date: Tue, 29 Sep 2026 10:29:52 +0200
+	 In-Reply-To:Content-Type; b=cNiPn8X7oaT7bRfAbawRdk/TS4qkw/+PP1N/jJpLa1+fIyktPlluwFGO4uQLT8k1Wph44i217MD56zgvQV6IgAjwJY8R6aU/MuPkE7QyKxd/Ey6FNc9Mq40lKzUEeUu73QEnfvEnMyUxlD6A8Pk0HV53hvZ1B2uR/fJ9SpqyIDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.40.46.54])
+	by gateway (Coremail) with SMTP id _____8AxS_Dbfrtqk+cQAA--.49609S3;
+	Tue, 29 Sep 2026 17:03:23 +0800 (CST)
+Received: from [10.40.46.54] (unknown [10.40.46.54])
+	by front1 (Coremail) with SMTP id qMiowJDxRs3Yfrtq+XgmAA--.3044S2;
+	Tue, 29 Sep 2026 17:03:20 +0800 (CST)
+Message-ID: <7d47fb51-2f92-4565-92d5-be11181ef1ab@loongson.cn>
+Date: Tue, 29 Sep 2026 17:04:43 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -74,70 +27,83 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Reply-To: eric.auger@redhat.com
-Subject: Re: [PATCH 4/7] vfio/platform: keep logical vm_pgoff in MMIO region
- mmap
+Subject: Re: [PATCH] LoongArch: KVM: Return the actual error code in
+ kvm_pch_pic_create()
+To: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>,
+ Huacai Chen <chenhuacai@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>
+Cc: WANG Xuerui <kernel@xen0n.name>, Xianglai Li <lixianglai@loongson.cn>,
+ kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20260929052712.470413-1-nagachaithanya9911@gmail.com>
 Content-Language: en-US
-To: Alex Williamson <alex@shazbot.org>, Abdifatah Suruur <suruurism@gmail.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, smostafa@google.com,
- praan@google.com, ioana.ciornei@nxp.com, nipun.gupta@amd.com,
- nikhil.agarwal@amd.com
-References: <20260921122334.2099-1-suruurism@gmail.com>
- <20260921122334.2099-5-suruurism@gmail.com>
- <20260928170019.2b46ee5a@shazbot.org>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20260928170019.2b46ee5a@shazbot.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Bibo Mao <maobibo@loongson.cn>
+In-Reply-To: <20260929052712.470413-1-nagachaithanya9911@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDxRs3Yfrtq+XgmAA--.3044S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7WrW8Zw1ftr1xtw47KrWUKFX_yoW8AFW5pF
+	W8CFs0kF4kCr1xXa92v34DGFsxZrWxXFyIgF129FW5ArsxX3WSkr10krZIvF98K395Gr1S
+	qrsxGF90v3W7tacCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUyEb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE
+	14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCF04k20xvY0x0EwI
+	xGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
+	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7
+	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k2
+	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
+	AFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1CPfJUUUUU==
 
+Hi Chaithanya,
 
+Thanks for patch, there is similar version at:
+https://lore.kernel.org/lkml/20260927075240.3007947-6-cui.tao@linux.dev/
 
-On 9/29/26 1:00 AM, Alex Williamson wrote:
-> On Mon, 21 Sep 2026 15:23:31 +0300
-> Abdifatah Suruur <suruurism@gmail.com> wrote:
->
->> vfio_platform_mmap_mmio() overwrites vma->vm_pgoff with the physical
->> frame number of the MMIO region and passes it to remap_pfn_range().
->> The VMA is inserted into the device file's mapping->i_mmap interval
->> tree keyed by vm_pgoff, which VFIO expects to be the logical file
->> offset: the core links every device mmap to the device inode's
->> i_mapping precisely so that unmap_mapping_range() can revoke all
->> mappings associated with a device (see vfio_device_cdev_open()).
->>
->> With a raw PFN in vm_pgoff the interval tree entry lands in the wrong
->> coordinate space and unmap_mapping_range() cannot find the VMA,
->> leaving stale MMIO mappings behind any revocation attempt.  Keep
->> vm_pgoff in the logical VFIO offset space, as vfio-pci does, and pass
->> the physical PFN to remap_pfn_range() explicitly.
->>
->> This is defensive hygiene: none of vfio-platform, vfio/fsl-mc and
->> vfio/cdx call unmap_mapping_range() today, so no reachable
->> stale-mapping issue exists.  Keeping vm_pgoff logical preserves the
->> VFIO core contract for any future revocation path.
->>
->> Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
->> ---
->> --- a/drivers/vfio/platform/vfio_platform_common.c
->> +++ b/drivers/vfio/platform/vfio_platform_common.c
->> @@ -561,6 +561,5 @@
->>  	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
->> -	vma->vm_pgoff = (region.addr >> PAGE_SHIFT) + pgoff;
->> -
->> -	return remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff,
->> +	return remap_pfn_range(vma, vma->vm_start,
->> +			       (region.addr >> PAGE_SHIFT) + pgoff,
->>  			       req_len, vma->vm_page_prot);
->>  }
-> Eric had provided a Reviewed-by in [1], I think the only difference is
-> the commit log, including dropping the Fixes: tag since it's not
-> currently reachable.  I'd keep the R-b for that, or he can re-add it on
-> the next spin.  Thanks,
-I do agree. Feel free to keep the R-b
+Regards
+Bibo Mao
 
-Eric
->
-> Alex
->
-> [1]https://lore.kernel.org/all/21fda51a-6974-487d-874a-387dd73e2346@redhat.com/
->
+在 2026/9/29 13:27, Chaithanya Lagisetty 写道:
+> kvm_pch_pic_create() sets up the default IRQ routing and reports every
+> failure as -ENOMEM, discarding the error code it was given:
+> 
+> 	ret = kvm_setup_default_irq_routing(kvm);
+> 	if (ret)
+> 		return -ENOMEM;
+> 
+> kvm_setup_default_irq_routing() returns -ENOMEM only when its routing
+> entry array cannot be allocated. Otherwise it forwards the result of
+> kvm_set_irq_routing(), which also fails with -EINVAL when an entry is
+> rejected by setup_routing_entry(). Userspace creating a
+> KVM_DEV_TYPE_LOONGARCH_PCHPIC device can therefore receive -ENOMEM even
+> when IRQ routing setup actually failed with -EINVAL.
+> 
+> Return ret so the original error code reaches userspace. This matches
+> kvm_eiointc_create(), which already propagates the error code from the
+> helpers it calls.
+> 
+> Only compile-tested.
+> 
+> Fixes: 1928254c5ccb ("LoongArch: KVM: Add irqfd support")
+> Signed-off-by: Chaithanya Lagisetty <nagachaithanya9911@gmail.com>
+> ---
+>   arch/loongarch/kvm/intc/pch_pic.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
+> index 2b63b0c2c7ce..7fee60ae01a5 100644
+> --- a/arch/loongarch/kvm/intc/pch_pic.c
+> +++ b/arch/loongarch/kvm/intc/pch_pic.c
+> @@ -444,7 +444,7 @@ static int kvm_pch_pic_create(struct kvm_device *dev, u32 type)
+>   
+>   	ret = kvm_setup_default_irq_routing(kvm);
+>   	if (ret)
+> -		return -ENOMEM;
+> +		return ret;
+>   
+>   	s = kzalloc_obj(struct loongarch_pch_pic);
+>   	if (!s)
 
