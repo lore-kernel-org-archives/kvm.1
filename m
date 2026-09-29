@@ -1,145 +1,143 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABEE3AFD0E
-	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 08:15:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB7A3F1048
+	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 08:30:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790669711; cv=none; b=nKweV2WlYPZSOKb/8/P97T3UJH4Y9HB6EMt3WVON3pacAjTBvf1dqx8jxf/bS19vVWntKQ5OE0VQkhMtgPB7fJkR//+VaZic2ffsd+sxGLtBG7Wh9ofWwimUu6t2P/bG0cxIrixASWp+M1nu8Zb8ueMz1NYteN+5xHFJ0c48MYI=
+	t=1790670602; cv=none; b=oz64Mg+gM7OuyMShxIfN//gutF7SeSs4/AfDyfYMlqwiGX5VubrZhsb/qZiYewprtzu3HEXf0P6w4/gPTzu5S7yoy6JF8hC9IlHsIzMjgowbUnAagX/9KL5j0d0ZZDOb51QQ83RxfmJl4PW+RRP9qQDXkhELpsTQAM9BGapeBE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790669711; c=relaxed/simple;
-	bh=nqRGNPkOJSPCRNGCqHrDgAqHCM5yXfU5zF6swmIYNH4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bC1CVX1FVFEUl3UkRMQKH8udpX7vDNfFb2QcbL7ZRYaZpcEhXXpd79Lp77tOjZk5urYq6yABY6KvyYwmCCMxHKiNxOC3is/X6xPa5jDswnpfw3soVIoqdzeEpIY82wtk25bgo/nzVbemlenU18Pr2AkPySl4cAhbBxAObFKBGqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HR+hCNCa; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790670602; c=relaxed/simple;
+	bh=8kxH/OayBaB/YISkRgr8hDh2O4L9NhgdZOgWgNcyhkI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=khlzrIWWakOi1SQ0BjjYOBHZRIyf5UfN30elLFs+yI9j3AR3HZzGK+KpoDBan2BMYDkcr8Ovoo89xiNYQcqpnno61dtUXpu9G/5AE+aJHbfWTTCV0RbJuBoqkU0Jxyh66s7MxuMLwLgy6xMwyeVrP9YYFOKMaChrcL2oBRNL9WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GDVu1vko; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HR+hCNCa"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912df756so30523005e9.3
-        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 01:15:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790669707; x=1791274507; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2XjctQkCqSCfpDqQlG2z1p9aO81GXpVDzes0Kw5Yea0=;
-        b=HR+hCNCaHhcj+IwVcvT2tA1zM6gjVHMeZndeohKxOFWRJnjpORwfOC1tOH2XFEPDga
-         ikkos7/UT4V9GebvVoqeyayYT1J3erAFGUTET9XwoK6i/Tl6bOfEjX90YrcOLrdOjnP1
-         Iauisaan23B49EYDNLzdPgz5eXGF8sl9Gku/dVXXnxtFz3APCMOLGYJJ9b07nlg/8/39
-         pYQ7WVdVpHW51tOddEfl7pq7EOOd5b+AIjimw/2O2OIIo8+LxBIvGvyNzR5Ksvbptxok
-         S4wT328CrDHIZFG+5t4M/vrgv6Zc37SHDyQDM2Y08d5uATQUKcRsHMBjiB3WKWamvH1S
-         Smyw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GDVu1vko"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790670599;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Vxbsc+NCljbcHcDxhWzgsYHRMDqK6k1gG92IIwNO9h4=;
+	b=GDVu1vkoVMDD0cwi3jkGwvi76uIcNpMPpC3Vwf0GgFSYMGR8r2EiLywzwe2vLwCckUeYXo
+	2uUBhJcQsz3rmSiX+UyA0ytXaqqBB2Y8fQZg/SuwZFm7kSGfYXW6BqAbRidhcubgJfufng
+	XBTmOp9sJEz7KjqXJCjOp0M2eEDMN/Q=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-282-fNfSDtvAORy8mlLou8Gapg-1; Tue, 29 Sep 2026 04:29:56 -0400
+X-MC-Unique: fNfSDtvAORy8mlLou8Gapg-1
+X-Mimecast-MFC-AGG-ID: fNfSDtvAORy8mlLou8Gapg_1790670595
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c29959eb71fso400218566b.1
+        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 01:29:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790669707; x=1791274507;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2XjctQkCqSCfpDqQlG2z1p9aO81GXpVDzes0Kw5Yea0=;
-        b=hAReMLHqc8LZiUPcqiTQOHqgJuKUVXdSlNwflVy5x5uvPSb7FTL84gfMIPLPMIL1Wb
-         NrdR6Dn0qMuXC8vsz5Ay7UtDQC2e55ucYKbSgaSsZBhWJzaA29sgmGV6w2sW6Mw5ENjI
-         6WURS1XL/QJQnDTCpnVbafNtHwzDDRDLVZLUxrAmQqY6LAwdUio8hUF2tXJQcIKI+JLV
-         ha3chlUT7T5Pvy8tVoUL7FeeoBtyuveT3pcXnImqyws3o1Hkcza3aCU083MwIM51ZsvQ
-         Rp2yNQp+7LEmx7//+yq6+84f9HkQC8InjPSFTUOgzNYtEmeR6rBqC0iUwIDWrt9v1Hle
-         TIXQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzrIl4rxmsPU7ajAerfKowkd6vDWd81cNXX0/AW9EfY/y89TVfxVkWfdAAvqTJgMrP9gK8=@vger.kernel.org
-X-Gm-Message-State: AFuF++mMkdH80JpO+fdmxcD+2vx58ToVXNXPjfrelkVlWukpSZ7dhsMo
-	jz9vnLAhW4N8XsAMNG0JhtKdb3Fe4H7EGbgpxO1OHN6MG2VsYp248OdM
-X-Gm-Gg: AYBFou3+V+KLp88Zw7N3v2kmfkmyyXtM/iuSxji6ilw5SjVrb2UvO4gFsmZQpNcQstW
-	bYAHUF4rBT97YXBWIWbMPfLomuONPIa4Z0I8jtniJiJdyqWUAAu6n3zbyzJwsASRwJPgGdArFsO
-	1Tro2kT8UhNuLMlCegSRA5rZ9pFklbbt5ui/rjxKdbeWWluN1UUud1sDztx1K2jqImpig1pzpfI
-	0BSYWh9zjnfN41Qlwx8eCIev4W6AvKopSSz4MF7mc98xNSOufxmzfnM4N0U5vS/J8HTdr7JrkLg
-	iOSarqB9Vnf4SBYvxxIjEwWyads+9x3wihl/vdiyLywUEj5g6ch6egzjYMVe9PJ1/vrhdOIzjXW
-	YHdXwMg081ak6zPmYJhDVdJG0BHK3lxzdLtbwWBDHpAn2x8GPeWhQ/Q60G5MdHus2c9Raa8x7cG
-	TMrIX4BTnNWJGutNI7bJYm12F+fLJsoXBYQzF7tJX8O5+hqwtl7aQAT2yxRhSVReQBCfrjAoaNd
-	u59ni7ORhxPnoVYoWdWG9x8GbPQOlAoEew=
-X-Received: by 2002:a05:600c:81c5:b0:4a0:4f6:3dc5 with SMTP id 5b1f17b1804b1-4a004f63f6bmr72984115e9.7.1790669707346;
-        Tue, 29 Sep 2026 01:15:07 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00c130538sm54658975e9.4.2026.09.29.01.15.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 01:15:07 -0700 (PDT)
-Date: Tue, 29 Sep 2026 09:15:06 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Vitaly Kuznetsov
- <vkuznets@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner
- <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org, Peng Fan
- <peng.fan@nxp.com>, kvm@vger.kernel.org
-Subject: Re: [PATCH] KVM: x86: use assign_bit() where applicable
-Message-ID: <20260929091506.5472bc5c@pumpkin>
-In-Reply-To: <arsNUfVv0NhKZ6zT@google.com>
-References: <20260920022649.3145701-1-peng.fan@oss.nxp.com>
-	<arsNUfVv0NhKZ6zT@google.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        d=1e100.net; s=20260707; t=1790670595; x=1791275395;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:reply-to:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Vxbsc+NCljbcHcDxhWzgsYHRMDqK6k1gG92IIwNO9h4=;
+        b=V0wvOQTUJsAUuOgBh5k1Oo0frJe5o05NSE5/NpJ6YwBBgOdnEjsjUiYLtb4N72eFYU
+         LA+H/sO16yIFXo1HdZa9IROz2p0dfj4PU1KctyhMv4WBpCOqJTQ+bS3TULMWZTDXJkeH
+         Nqp8bPMSZ0X40w9oGCPTOGk9xd2xXv0cs1iyqBUAJVSr+sgl8XHyF6sbuQERPK+xrf0m
+         a1yerUnEi80PGeGNyF3WIN6fJH6NKJ2ZWoPTWYsjKvTDqNKHpIFmMiUmUMpb13GEFPXj
+         dK939h18mbuhFsO4Rx3QvwEp2VNOq70jvLyUQhAqp2W+BMnMpyGECG3wHB4edGDL96VT
+         pDBw==
+X-Gm-Message-State: AFuF++kYF+uNLTkavRXdy5H8kV0xs3LhRKPl8K5EhDsc9Y+ji+k79/wI
+	Xd2Xh25IU19fZ+cKxsJGWqxjypWyt/Fj6UUHkNzjSToajZ3gvLIAiGHiFOz+c0Yba7rsFIuj0zP
+	nJO4aPt4kWI5jh0Ij5oJmFUy71sZSjwwYgLkzLHPI9WnFzaTwt704Iw==
+X-Gm-Gg: AYBFou0BG7k5aMbhwL5OtETJBqzCnJES0IRndhjxop/OBwvJALoxd40rNothLEFV9oC
+	1/NRObV/jO9ikn1ANuL6jIYgFbn51DAPceEPtLTroi4g3Flft1FfKG+PDB8hZkVOWTDNFMK2KvJ
+	lRelnPFGVcCLggGimkVw5CIYvqtFZ8vhVKuzNQhJqI9KERXFlWae0MeQQoT+YGmCFjdSLOn69pp
+	ZjBWZMH/MmGFr2DDzQDxQAU7BAlvwMJZ1Xq+YjONgsKVKYfAob3k/Vpcm1Vc0bDeSlinJrWCyjD
+	BAtySZIv7AG7goPVSU0cziH2BKQUGHtSp+6S7Kd1OwFfEhGrjiN488n6uRsxgMxWgO++Jc4a/vE
+	6j9o1HEACvuS6eRvVUOyZojXVwXph1YxpmGWzasFPs4fi1XBM
+X-Received: by 2002:a17:907:c609:10b0:c2a:cf73:63fe with SMTP id a640c23a62f3a-c2acf7369d6mr801066666b.6.1790670595119;
+        Tue, 29 Sep 2026 01:29:55 -0700 (PDT)
+X-Received: by 2002:a17:907:c609:10b0:c2a:cf73:63fe with SMTP id a640c23a62f3a-c2acf7369d6mr801064266b.6.1790670594668;
+        Tue, 29 Sep 2026 01:29:54 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874? ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2dc57c8dbbsm363629266b.12.2026.09.29.01.29.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Sep 2026 01:29:54 -0700 (PDT)
+Message-ID: <de7adc58-cb00-4ffd-8b2a-29728114c655@redhat.com>
+Date: Tue, 29 Sep 2026 10:29:52 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Reply-To: eric.auger@redhat.com
+Subject: Re: [PATCH 4/7] vfio/platform: keep logical vm_pgoff in MMIO region
+ mmap
+Content-Language: en-US
+To: Alex Williamson <alex@shazbot.org>, Abdifatah Suruur <suruurism@gmail.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, smostafa@google.com,
+ praan@google.com, ioana.ciornei@nxp.com, nipun.gupta@amd.com,
+ nikhil.agarwal@amd.com
+References: <20260921122334.2099-1-suruurism@gmail.com>
+ <20260921122334.2099-5-suruurism@gmail.com>
+ <20260928170019.2b46ee5a@shazbot.org>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20260928170019.2b46ee5a@shazbot.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Mon, 28 Sep 2026 17:58:57 -0700
-Sean Christopherson <seanjc@google.com> wrote:
 
-> On Sun, Sep 20, 2026, Peng Fan (OSS) wrote:
-> > From: Peng Fan <peng.fan@nxp.com>
-> > 
-> > Convert open-coded if/else with set_bit/clear_bit and their
-> > non-atomic __set_bit/__clear_bit variants to the assign_bit/__assign_bit
-> > API.  
-> 
-> ...
-> 
-> > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > ---
-> >  arch/x86/kvm/hyperv.c  | 12 ++++--------
-> >  arch/x86/kvm/svm/pmu.c |  6 ++----
-> >  arch/x86/kvm/x86.c     | 11 +++--------
-> >  3 files changed, 9 insertions(+), 20 deletions(-)
-> > 
-> > diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-> > index 8d2669d8ef34..c131d9a3c550 100644
-> > --- a/arch/x86/kvm/hyperv.c
-> > +++ b/arch/x86/kvm/hyperv.c
-> > @@ -114,17 +114,13 @@ static void synic_update_vector(struct kvm_vcpu_hv_synic *synic,
-> >  	if (vector < HV_SYNIC_FIRST_VALID_VECTOR)
-> >  		return;
-> >  
-> > -	if (synic_has_vector_connected(synic, vector))
-> > -		__set_bit(vector, synic->vec_bitmap);
-> > -	else
-> > -		__clear_bit(vector, synic->vec_bitmap);
-> > +	__assign_bit(vector, synic->vec_bitmap,
-> > +		     synic_has_vector_connected(synic, vector));
-> >  
-> >  	auto_eoi_old = !bitmap_empty(synic->auto_eoi_bitmap, 256);
-> >  
-> > -	if (synic_has_vector_auto_eoi(synic, vector))
-> > -		__set_bit(vector, synic->auto_eoi_bitmap);
-> > -	else
-> > -		__clear_bit(vector, synic->auto_eoi_bitmap);
-> > +	__assign_bit(vector, synic->auto_eoi_bitmap,
-> > +		     synic_has_vector_auto_eoi(synic, vector));  
-> 
-> Am I the only one that finds the assign_bit() code signficantly harder to follow?
-> Maybe it's just that I haven't seen assign_bit() much, but I've come back to this
-> patch several times, and I've had the same reaction every time.  IMO, this is a
-> solution looking for a problem.
-> 
 
-The same is pretty much true of __set_bit() and even BIT().
-What is wrong with:
-	if (synic_has_vector_auto_eoi(synic, vector))
-		vector |= 1u << synic->auto_eoi_bitmap;
-	else
-		vector &= ~(1u << synic->auto_eoi_bitmap);
-'Does what is sway on the tin'.
+On 9/29/26 1:00 AM, Alex Williamson wrote:
+> On Mon, 21 Sep 2026 15:23:31 +0300
+> Abdifatah Suruur <suruurism@gmail.com> wrote:
+>
+>> vfio_platform_mmap_mmio() overwrites vma->vm_pgoff with the physical
+>> frame number of the MMIO region and passes it to remap_pfn_range().
+>> The VMA is inserted into the device file's mapping->i_mmap interval
+>> tree keyed by vm_pgoff, which VFIO expects to be the logical file
+>> offset: the core links every device mmap to the device inode's
+>> i_mapping precisely so that unmap_mapping_range() can revoke all
+>> mappings associated with a device (see vfio_device_cdev_open()).
+>>
+>> With a raw PFN in vm_pgoff the interval tree entry lands in the wrong
+>> coordinate space and unmap_mapping_range() cannot find the VMA,
+>> leaving stale MMIO mappings behind any revocation attempt.  Keep
+>> vm_pgoff in the logical VFIO offset space, as vfio-pci does, and pass
+>> the physical PFN to remap_pfn_range() explicitly.
+>>
+>> This is defensive hygiene: none of vfio-platform, vfio/fsl-mc and
+>> vfio/cdx call unmap_mapping_range() today, so no reachable
+>> stale-mapping issue exists.  Keeping vm_pgoff logical preserves the
+>> VFIO core contract for any future revocation path.
+>>
+>> Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
+>> ---
+>> --- a/drivers/vfio/platform/vfio_platform_common.c
+>> +++ b/drivers/vfio/platform/vfio_platform_common.c
+>> @@ -561,6 +561,5 @@
+>>  	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+>> -	vma->vm_pgoff = (region.addr >> PAGE_SHIFT) + pgoff;
+>> -
+>> -	return remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff,
+>> +	return remap_pfn_range(vma, vma->vm_start,
+>> +			       (region.addr >> PAGE_SHIFT) + pgoff,
+>>  			       req_len, vma->vm_page_prot);
+>>  }
+> Eric had provided a Reviewed-by in [1], I think the only difference is
+> the commit log, including dropping the Fixes: tag since it's not
+> currently reachable.  I'd keep the R-b for that, or he can re-add it on
+> the next spin.  Thanks,
+I do agree. Feel free to keep the R-b
 
-David
+Eric
+>
+> Alex
+>
+> [1]https://lore.kernel.org/all/21fda51a-6974-487d-874a-387dd73e2346@redhat.com/
+>
 
