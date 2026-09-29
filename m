@@ -1,38 +1,38 @@
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7085B51B168;
-	Tue, 29 Sep 2026 10:37:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C0451477C;
+	Tue, 29 Sep 2026 10:37:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790678241; cv=none; b=HDQ0BHop9j2PWGvMtVLEPMtvKCBKfVEAa0zu7kVxDm9dH3KlzshVHqvg9/4xBDOg/O8WhnOe/T+Fe7gxs4+dCNU19sm8vQv8h3Asal7oGFsczRq0/FsbcgzgBeG4PyfYxjOIu1T1YIVIIe4fMYBL3ttva+1yFdUEf6dVF4ZqMW8=
+	t=1790678241; cv=none; b=kseBZAsnqmV7P/g2BWJQp3CXisD03dRAt9ckpRA4iGdPnhiPsgYmoXNUQOzmnBQhUi/Ezckvsu2N9P6YY5c3GX8V9RRd3d2Yw0cmoG3A72E62gxgB8yYrP+C2I0J6KvtqwRcccrkPUCCJULHsDO+xSPSl38J0bjQ+7lxAqxKMEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790678241; c=relaxed/simple;
-	bh=ItLfTe4Xj7U+jCQ8lrtq6m2FRje8G3Lp4fDHc9S8vGc=;
+	bh=xOzV7sX8Hl1oUH6thulieIiyIW9WreMN6lm/eWJySZ4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JQ//T1R8YsW/mtsvX9VmhDejH9yrXf1wk8wOQVKK230qMZexT/+qNqQf9BMZiXXbh6SdSz6dkW2zpWBy91NlxCsrfellb06ANa9wS54YmegOU30fqhPIa9b7lzVFTd5bXmbRrUoRzw01CyUpGY6T9X8t4oWVtFMJRm9lE159YE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=PW5NPQWV; arc=none smtp.client-ip=113.46.200.218
+	 MIME-Version:Content-Type; b=HjGgmdA2qgChJncehNsZwcHqkFrgv/sCvjv3Eb2LQ9bdXJxKFqo1ks+PuGmY0jZVE2B3u9NB0KhC5uUoTooq8FlmTb8zeZodbcFo8cN3niboCi7oIvytDt9ngbsq2P+QbTYGEwj/X9WS3zf4CBRD5zEm+ilY9cvSoPBcaWLDKkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=gD4gRAxf; arc=none smtp.client-ip=113.46.200.219
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="PW5NPQWV"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="gD4gRAxf"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=Andp5VDV+A4AW07a5bDFOCh8KWVJkL4Vd6SoEbvZutE=;
-	b=PW5NPQWVzKrCPAeqQzi5/g4ahW18MU7ss3ZMC2zzYgBfLa+P+/sgySwMBkPZKwRkSG1FpiOAu
-	miJqRgqLhWlsWdyHY0O8uAxdMZBTowN1PXuRKYnYsSsM9wAeqk4J60/eAW9HBG8It3tVsFMrlcn
-	lkfBnWfpWvuEiR6NvEmg7Xo=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4hvDnb64TSzpSy8;
-	Tue, 29 Sep 2026 18:24:51 +0800 (CST)
+	bh=UhCl5i1QqeG6DsLGoEVhwhQZILgarOVG0u5bGP7j+qo=;
+	b=gD4gRAxfs4SbgG+kI4hny6tT0fFtf6zYwuRXd+A1rHopu/M32i+ZYP0i2JRO2/OpYIT6FslfL
+	1ROClicrUEOgjqdQ49NYH7Uy3alwpWNcfktQyCVzkFtybvL3MuPk6rUUpaSmdw6qdZRxzzbAQe2
+	Pks7TeWi8tA5K0TNNNsmNGo=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4hvDnc0xypz1prLc;
+	Tue, 29 Sep 2026 18:24:52 +0800 (CST)
 Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8514940575;
-	Tue, 29 Sep 2026 18:37:00 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id E1A5E203C8;
+	Tue, 29 Sep 2026 18:37:02 +0800 (CST)
 Received: from huawei.com (10.50.163.32) by kwepemr100010.china.huawei.com
  (7.202.195.125) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 29 Sep
- 2026 18:36:59 +0800
+ 2026 18:37:01 +0800
 From: Tian Zheng <zhengtian10@huawei.com>
 To: <maz@kernel.org>, <oupton@kernel.org>, <catalin.marinas@arm.com>,
 	<will@kernel.org>, <corbet@lwn.net>, <pbonzini@redhat.com>,
@@ -47,9 +47,9 @@ CC: <yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>,
 	<mark.rutland@arm.com>, <seanjc@google.com>, <rdunlap@infradead.org>,
 	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
 	<skhan@linuxfoundation.org>
-Subject: [PATCH v5 05/15] KVM: arm64: Harvest stage-2 dirty state into the host folio account
-Date: Tue, 29 Sep 2026 18:36:45 +0800
-Message-ID: <20260929103655.85107-6-zhengtian10@huawei.com>
+Subject: [PATCH v5 08/15] KVM: arm64: Flush the HDBSS buffer on VM exit
+Date: Tue, 29 Sep 2026 18:36:48 +0800
+Message-ID: <20260929103655.85107-9-zhengtian10@huawei.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20260929103655.85107-1-zhengtian10@huawei.com>
 References: <20260929103655.85107-1-zhengtian10@huawei.com>
@@ -64,117 +64,166 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
  kwepemr100010.china.huawei.com (7.202.195.125)
 
-With VTCR_EL2.HD set, hardware promotes writable-clean descriptors to
-writable-dirty without any VM exit, and the only record of the write
-is the S2AP[1] bit in the stage-2 PTE. The write never passed through
-the host stage-1, and no unmap path reads the bit, so the record dies
-with the PTE and reclaim may discard written guest data (silent
-corruption).
+From: Eillon <yezhenyu2@huawei.com>
 
-The fault paths already mark the folio speculatively at fault-in, but
-the mapping lifecycle still needs exact harvesting, mirroring
-zap_present_folio_ptes() in the generic mm:
+HDBSS entries accumulate in the per-vCPU buffer while the guest runs,
+and must be drained into the dirty bitmap or dirty ring before
+userspace can observe them.
 
-  - stage2_unmap_walker(): harvest the output address of a valid leaf
-    with S2AP[1] set before tearing it down.
+Drain the buffer at a single point: kvm_arch_vcpu_ioctl_run() flushes
+it on every VM exit, before the exit reason is handled. Flushing
+inside the run loop keeps the dirty-ring feedback timely: when a flush
+pushes the ring past its soft limit, kvm_dirty_ring_push() raises
+KVM_REQ_DIRTY_RING_SOFT_FULL, which check_vcpu_requests() observes at
+the top of the next loop iteration, so the vCPU exits to userspace for
+the harvest before re-entering the guest.
 
-  - stage2_wrprotect_walker(): a WD -> WC transition drops the dirty
-    state, so harvest before the clear.
+kvm_arch_sync_dirty_log() relies on the exit path to flush: it kicks
+vCPUs out of guest mode, and the GET/CLEAR protocol tolerates
+concurrent bitmap writes, so the snapshot is complete without extra
+synchronization.
 
-Both hooks go through a new kvm_pgtable_mm_ops::mark_page_dirty
-callback, as the walkers are also compiled into the nVHE hypervisor,
-where SetPageDirty() is unavailable. pKVM leaves the callback NULL.
-
-The folio is dirtied at its head, so one harvest covers a whole block
-mapping. MMIO/PFNMAP ranges and reserved pages are skipped, mirroring
-kvm_is_ad_tracked_page().
-
+Signed-off-by: Eillon <yezhenyu2@huawei.com>
 Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
 ---
- arch/arm64/include/asm/kvm_pgtable.h |  2 ++
- arch/arm64/kvm/hyp/pgtable.c         | 14 ++++++++++++--
- arch/arm64/kvm/mmu.c                 | 16 ++++++++++++++++
- 3 files changed, 30 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/kvm_dirty_bit.h | 15 +++++++++
+ arch/arm64/kvm/arm.c                   | 20 ++++++++++++
+ arch/arm64/kvm/dirty_bit.c             | 45 ++++++++++++++++++++++++++
+ 3 files changed, 80 insertions(+)
 
-diff --git a/arch/arm64/include/asm/kvm_pgtable.h b/arch/arm64/include/asm/kvm_pgtable.h
-index 379031c74cbc..ea71c13615f7 100644
---- a/arch/arm64/include/asm/kvm_pgtable.h
-+++ b/arch/arm64/include/asm/kvm_pgtable.h
-@@ -246,6 +246,8 @@ struct kvm_pgtable_mm_ops {
- 	phys_addr_t	(*virt_to_phys)(void *addr);
- 	void		(*dcache_clean_inval_poc)(void *addr, size_t size);
- 	void		(*icache_inval_pou)(void *addr, size_t size);
-+	/* NULL where folios are not tracked. */
-+	void		(*mark_page_dirty)(u64 pa);
- };
+diff --git a/arch/arm64/include/asm/kvm_dirty_bit.h b/arch/arm64/include/asm/kvm_dirty_bit.h
+index fe703f02626b..d828e6b43fe9 100644
+--- a/arch/arm64/include/asm/kvm_dirty_bit.h
++++ b/arch/arm64/include/asm/kvm_dirty_bit.h
+@@ -13,6 +13,9 @@
+ #include <asm/sysreg.h>
+ #include <linux/sizes.h>
 
- /**
-diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
-index aa0448d3a6a4..9dde7e779699 100644
---- a/arch/arm64/kvm/hyp/pgtable.c
-+++ b/arch/arm64/kvm/hyp/pgtable.c
-@@ -1182,8 +1182,13 @@ static int stage2_unmap_walker(const struct kvm_pgtable_visit_ctx *ctx,
-
- 		if (mm_ops->page_count(childp) != 1)
- 			return 0;
--	} else if (stage2_pte_cacheable(pgt, ctx->old)) {
--		need_flush = !cpus_have_final_cap(ARM64_HAS_STAGE2_FWB);
-+	} else {
-+		if (stage2_pte_cacheable(pgt, ctx->old))
-+			need_flush = !cpus_have_final_cap(ARM64_HAS_STAGE2_FWB);
++#define HDBSS_ENTRY_VALID	BIT(0)
++#define HDBSS_ENTRY_IPA	GENMASK_ULL(55, 12)
 +
-+		if ((ctx->old & KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W) &&
-+		    mm_ops->mark_page_dirty)
-+			mm_ops->mark_page_dirty(kvm_pte_to_phys(ctx->old));
- 	}
+ #define KVM_ARM_HDBSS_DEFAULT_SIZE  PAGE_SIZE
+ #define KVM_ARM_HDBSS_MAX_SIZE      SZ_2M
 
- 	/*
-@@ -1302,6 +1307,11 @@ static int stage2_wrprotect_walker(const struct kvm_pgtable_visit_ctx *ctx,
- 	if (ctx->level < KVM_PGTABLE_LAST_LEVEL)
- 		new &= ~KVM_PTE_LEAF_ATTR_HI_S2_DBM;
-
-+	if (kvm_pte_valid(ctx->old) && ctx->old != new &&
-+	    (ctx->old & KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W) &&
-+	    ctx->mm_ops->mark_page_dirty)
-+		ctx->mm_ops->mark_page_dirty(kvm_pte_to_phys(ctx->old));
-+
- 	/*
- 	 * We may race with the CPU trying to set the access flag here,
- 	 * but worst-case the access flag update gets lost and will be
-diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-index 698a87e85a6d..85a98d2c23a9 100644
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -897,6 +897,21 @@ static int get_user_mapping_size(struct kvm *kvm, u64 addr)
- 	return BIT(ARM64_HW_PGTABLE_LEVEL_SHIFT(level));
+@@ -22,7 +25,19 @@ static inline u32 kvm_hdbss_buffer_size(struct kvm *kvm)
+ 	return kvm->arch.hdbss_buffer_size ?: KVM_ARM_HDBSS_DEFAULT_SIZE;
  }
 
-+static void kvm_s2_mark_page_dirty(u64 pa)
++static inline bool kvm_hdbss_enabled(struct kvm *kvm)
 +{
-+	unsigned long pfn = pa >> PAGE_SHIFT;
-+	struct page *page;
-+
-+	if (!pfn_valid(pfn))
-+		return;
-+
-+	page = pfn_to_page(pfn);
-+	if (PageReserved(page))
-+		return;
-+
-+	SetPageDirty(page);
++	return kvm->arch.mmu.vtcr & VTCR_EL2_HDBSS;
 +}
 +
- static struct kvm_pgtable_mm_ops kvm_s2_mm_ops = {
- 	.zalloc_page		= stage2_memcache_zalloc_page,
- 	.zalloc_pages_exact	= kvm_s2_zalloc_pages_exact,
-@@ -909,6 +924,7 @@ static struct kvm_pgtable_mm_ops kvm_s2_mm_ops = {
- 	.virt_to_phys		= kvm_host_pa,
- 	.dcache_clean_inval_poc	= clean_dcache_guest_page,
- 	.icache_inval_pou	= invalidate_icache_guest_page,
-+	.mark_page_dirty	= kvm_s2_mark_page_dirty,
- };
++static inline bool vcpu_hdbss_enabled(struct kvm_vcpu *vcpu)
++{
++	return vcpu->arch.hw_mmu &&
++		(vcpu->arch.hw_mmu->vtcr & VTCR_EL2_HDBSS);
++}
++
+ int kvm_arm_vcpu_alloc_hdbss(struct kvm_vcpu *vcpu);
+ void kvm_arm_vcpu_free_hdbss(struct kvm_vcpu *vcpu);
++void kvm_flush_hdbss_buffer(struct kvm_vcpu *vcpu);
 
- static int kvm_init_ipa_range(struct kvm_s2_mmu *mmu, unsigned long type)
+ #endif /* __ARM64_KVM_DIRTY_BIT_H__ */
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index 5ea4ac26995e..9d7bdece149a 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -1430,6 +1430,14 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+
+ 		trace_kvm_exit(ret, kvm_vcpu_trap_get_class(vcpu), *vcpu_pc(vcpu));
+
++		/*
++		 * Drain the HDBSS buffer before the exit is handled, so
++		 * entries pushed to the dirty ring are accounted for by
++		 * dirty_ring_check_request() on the next iteration.
++		 */
++		if (vcpu_hdbss_enabled(vcpu))
++			kvm_flush_hdbss_buffer(vcpu);
++
+ 		/* Exit types that need handling before we can be preempted */
+ 		handle_exit_early(vcpu, ret);
+
+@@ -2017,7 +2025,19 @@ long kvm_arch_vcpu_unlocked_ioctl(struct file *filp, unsigned int ioctl,
+
+ void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
+ {
++	unsigned long i;
++	struct kvm_vcpu *vcpu;
+
++	if (!kvm_hdbss_enabled(kvm))
++		return;
++
++	/*
++	 * The buffer is drained on every VM exit, so kicking running
++	 * vCPUs is enough to flush them; the dirty-log GET/CLEAR
++	 * protocol tolerates bits set concurrently with the snapshot.
++	 */
++	kvm_for_each_vcpu(i, vcpu, kvm)
++		kvm_vcpu_kick(vcpu);
+ }
+
+ static int kvm_vm_ioctl_set_device_addr(struct kvm *kvm,
+diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
+index f9aeb9f34ad0..be0d12555c84 100644
+--- a/arch/arm64/kvm/dirty_bit.c
++++ b/arch/arm64/kvm/dirty_bit.c
+@@ -13,6 +13,7 @@
+ #include <linux/kconfig.h>
+ #include <linux/log2.h>
+ #include <linux/mm.h>
++#include <linux/srcu.h>
+
+ int kvm_arm_vcpu_alloc_hdbss(struct kvm_vcpu *vcpu)
+ {
+@@ -53,3 +54,47 @@ void kvm_arm_vcpu_free_hdbss(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.hdbss.hdbss_pg = NULL;
+ 	vcpu->arch.hdbss.hdbssbr_el2 = 0;
+ }
++
++void kvm_flush_hdbss_buffer(struct kvm_vcpu *vcpu)
++{
++	int idx, curr_idx;
++	u64 prod;
++	u32 entries;
++	u64 *hdbss_buf;
++	struct kvm *kvm = vcpu->kvm;
++	int srcu_idx;
++
++	if (!vcpu_hdbss_enabled(vcpu))
++		return;
++
++	prod = read_sysreg_s(SYS_HDBSSPROD_EL2);
++	curr_idx = HDBSSPROD_IDX(prod);
++
++	if (curr_idx == 0 || !vcpu->arch.hdbss.hdbss_pg)
++		return;
++
++	hdbss_buf = page_address(vcpu->arch.hdbss.hdbss_pg);
++	if (!hdbss_buf)
++		return;
++
++	entries = kvm_hdbss_buffer_size(kvm) / sizeof(u64);
++
++	/* kvm_vcpu_mark_page_dirty() resolves the memslot under SRCU. */
++	srcu_idx = srcu_read_lock(&kvm->srcu);
++	for (idx = 0; idx < min_t(u32, curr_idx, entries); idx++) {
++		u64 gpa;
++
++		gpa = hdbss_buf[idx];
++		if (!(gpa & HDBSS_ENTRY_VALID))
++			continue;
++
++		gpa &= HDBSS_ENTRY_IPA;
++		kvm_vcpu_mark_page_dirty(vcpu, gpa >> PAGE_SHIFT);
++	}
++	srcu_read_unlock(&kvm->srcu, srcu_idx);
++
++	prod &= ~HDBSSPROD_EL2_INDEX_MASK;
++	write_sysreg_s(prod, SYS_HDBSSPROD_EL2);
++	vcpu->arch.hdbss.hdbssprod_el2 = prod;
++	isb();
++}
 --
 2.43.0
 
