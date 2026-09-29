@@ -1,486 +1,286 @@
-Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B3450EBFE
-	for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 13:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.141
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790688907; cv=pass; b=CoskwRynBzKXzeZRaNNxbSrcZNVwRqz8ZFnAMlpJ+oDr9gCWSiQ2xnirMUhUWKhBYTN7nHpYxYAOqz05HfoVo+jHQyBZeGdkQrly+x/738YRkql0DxO+Qza90ojeBQSMKABtU3+STizxESGaJ5nY9ChDE42S2I/YAjxGc7Dw1Rc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790688907; c=relaxed/simple;
-	bh=/tc9oQ2dzlmLeYdO5vX1NZl1Se2vgA63V7Zb+Q3n0PE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KCmdTYKiFoLks1O3AmtSswPNOplcHpvPyaQWiZMmfM4Ta+M6ZPIEyazEd3vVNGwfDZOSfNRu/Sy2cA28+PgqSEjiRGBHSxc0Zm01YxZh5ED2wnat71dS/l0FSUQguCxMoVVgI/kLFjFATcgD91OzVIhnOsUJEv8VZ5sTgB10yXs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=auVb/ohr; arc=pass smtp.client-ip=74.125.224.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24E83B38B9;
+	Tue, 29 Sep 2026 13:38:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790689107; cv=none; b=F4RFuw2sfc+4cZQkkXbSq5KCmx0droGYVb1cp/hqw1eJHvwBQQvJS1eP28ipkMgkbGUqRd3DFZkbDg32YR6HWjfIRUATGXG1FdccoKcOs81h0/sh1POcyJED/9QSb4qKyWPucZQwp4toys5eIlfrrftO0SgEZV3J98FemzOcVuc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790689107; c=relaxed/simple;
+	bh=LiTZ2CqzUEmT2+U5pU37fEvQKbAwfuMhEfoTh3UgvII=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tI/xR7BHXZ2IEFcUyiClZI6ecQEJF5tAf5Y4QErqi43TWjptpn6ajidgfkd80YTFM6f5+52aEGbLWs0Uhu89YAd6z/qoOmwBOZQCnEJ6DM8Z01NucvE2JPacE8mMNUPCARNDszP1Yka/G786H7jLYqeIJjiO8x9/Dwncd5RPK84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=NqA+B+IL; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="auVb/ohr"
-Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66f7a9afe43so3553119d50.1
-        for <kvm@vger.kernel.org>; Tue, 29 Sep 2026 06:35:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790688902; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UXNhuBb9F/tanjIysuZwj4BfH0+RqXov/TcqBjfX1rQrr20q2Vv1cCMBXzYOU9WS93
-         TKF4X53fThGtvxgo7eIM0Yz2XJz+LzwuLKE0tLWLnhXcsm60pmdX3PdPDcOV6B3IPPUQ
-         PWZazBQPKJaLV3ZJJ5vn3tTECxQAUfIRSuge/EwdsAlyJA9joKY9HDKrrS5jpkHTmYHf
-         BOrcZKWmwRPO2LymzFMTBsDQbbFqbQ7g8t1paOt+f9QIadq2tqI2IDVtDaeB95T6h69k
-         fQtWUJteKLJLDLUduhKgVEBkGqQdZV86ti88/qS51WFWJeXuasHc8YH69CUySfT7VVvS
-         jyrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CMqmTdvAS89k83oYXVNW5NcZm+vCN1W6BXXzB1vwMug=;
-        fh=DP+EYvH9rxL41tJGIk+Z90NmC9KxskQ/W6ZPkTKGKQw=;
-        b=jrvH5bM8F0F8htHgopreckEf0JxcR1TtdNiw+0sv8sY7l7CtF4h81+W1kVfQiN6Nhe
-         7njA7q+kKft8cbdPQ2BbYPC5hDIJ+JEjq/NV+p1rRfrXEVdHw/5eDlXqPfl+lU2ywS2r
-         t2Txi7U7h0mgdgYSy2iW0ReWHJPNwz3zFv01Y5fhcQpHxyxxZOLl/cgsugGSLKEU2Znd
-         ul/XviPzE9dC+wi3neMNHABSTmQsBe64nz7Wl1fhSluPoEuQ8nG5yHXt/hTYE360GPMw
-         hfyLr1TwoTNi2h/1kBxPaeEptwsTa2K4Nt5Jy5tJX+fey3ZYP1DVRFMAWpvgmEF3cLk+
-         swtQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790688902; x=1791293702; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CMqmTdvAS89k83oYXVNW5NcZm+vCN1W6BXXzB1vwMug=;
-        b=auVb/ohrRzXP2IeR/oQAyrmUoH8bPKf7JlZr7WJ3AZT6PpVDMzrMY7+QLaJCAQz2Oe
-         0btvi8Jeo8b1ZPjACjwaXctYZZu55CkoaXkuLshOycEpldNaXmO8y9dXaULqMLs/BEry
-         1jYcobStwkA6tPHq5hiHKQTE7UrrJXxxY97dO6rpJa8C6IdoSNyVJQQeK93eToP2jDva
-         irFBl2Yvby1H/cD7IlzJJYD+4Hp89PN5yKIAXlSfM/U5ZE2PVS6cqmwDQWj6iq7c8IrT
-         9MWZd9yepQvvJhNyu3AG+cbA3fyCSE9PdtXiCRVwSIvX+PWQDzf+NaF09TxZBVsn2HSZ
-         DjWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790688902; x=1791293702;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CMqmTdvAS89k83oYXVNW5NcZm+vCN1W6BXXzB1vwMug=;
-        b=R5MSMYzIyr3fok8eP8Lj1WywaU3Ar2qrRPU2AaqymXafnNubnnDi/+fmJATjYgKFS2
-         AL0fGw8DjEpknHqW6rprs9sBQhIjfakSvAtzaHbp1TCcfusFaMghWzo/Wf3PO/YpWE4H
-         DQSMewh6z5eeD/8M56Xb/LZRJmt55hhB3d3BYj4M8cuTd084rnq1R+NYkAqMoLUSlmTV
-         kj/thnx3zFJZjuC0uiTSUfHTerGiud6cM3XljkaU0oEHkeYKBhykvC4ljsFMZiK6VZTn
-         wC03DqTug4lfSU4XSZ2yZ8d7SN2BMz8uyB+Mu6Z1bK5zQNPn8K334n0DSdh/fv9rus/c
-         rCbA==
-X-Forwarded-Encrypted: i=1; AKwUvBwFEZema/tNQNSDOprOGdw5gOBpKWm4btKE7L+YoclLzlKyM2sOAHeATufNOenVSdA0x6k=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJRV0ElCkP32k4l6ri5KvzTm3EX2kApDHMMZAHjcfkxdniyDM42
-	eJaSbNudXjAXzSNpiQbk/2Rbwt/4JRoSuSV0j4wBNDNUXzYbTLU3B3fpWF5fmLRHkxsetw2engs
-	gRkETqmAj4pPyjlZhl55j1aI6RPs7Yg56apdMrWm/
-X-Gm-Gg: AYBFou2BkFauSVinCFblaDiytQpYD3jhCGeDYkzH4ecorPKUCJl3OD9xJj1O252CsKr
-	SPeRSSepBHaE1Ad98Lf8IRTnsVRMB49r8dMEWr5GgF0BiT7vKWCT7Xc9GrP+ADc4Fw/p0oC4YJO
-	jYyKAFg7VBbpgJKp1EqqUfyK7c0q2+4QrzEpwPDKvpFHxfagnn3gGLnYd+EVHQAnWBNCeymWkEO
-	zsAhmMZR2Uh7zrncsI/wafn4hpx0aochbF8BivrstNREs+W1RgeW8LyUME9+kGOuudplmU9xGFN
-	AHchBj3sSolyAdq9CiWpzfUNJ0nfz3Y+Et+N2gAaDRKIGmB1SVicbDD0TOf/D0yA2hnRwuH+NHa
-	b/KaF8/GoQGr7rlSHse9Fk3ZOaCyXfWfQ8d8el+iUFNT/Oj51vdHNufkNRdMUfNcSugtEPGpNQk
-	IpLrQz3VASOg==
-X-Received: by 2002:a05:690e:806:10b0:671:8e1:2386 with SMTP id
- 956f58d0204a3-672ed2d1ef2mr4268077d50.44.1790688901718; Tue, 29 Sep 2026
- 06:35:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="NqA+B+IL"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68TB5YUE2187974;
+	Tue, 29 Sep 2026 13:38:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=+x5SJn
+	easI6AK27aTC2+v3wSsY8o47SiNhlvYQVxad0=; b=NqA+B+ILRAk0qDlfE8GnXJ
+	PPHsVt4DB2fZ33maZpsz7yhIPwmKvdtQYLXExfYlzVXT+byJ27bIvLDcSFVTELen
+	/QoQ4pqxGASD/hZwpYz01iIAzqVrST80xTxGDowwy+AhQav8GrN4o6o3HzxbzOny
+	o1lozP/v6xh1aYEbbn7WLgzlJmt+JUJbxMAfm++y5JuSg0XwuBI2wzfXdHdnc6jj
+	dR5h8AsBZnFdo49TKDeMzWCm9S9eqlppEyh52W2dqXwKOlWwWfteKQZxqTLt6Tn2
+	jgoOljnjw0aIYE/ehqzS2C1zIYCBgggGMCDrh7z6i2+nvuaqzPGTaCHgFHVhg5Hg
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5qr788k-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 29 Sep 2026 13:38:24 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68TAm2fl1617536;
+	Tue, 29 Sep 2026 13:38:23 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gxrrwa1fb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Sep 2026 13:38:23 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68TDcM6E26804852
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 29 Sep 2026 13:38:22 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 21DA658056;
+	Tue, 29 Sep 2026 13:38:22 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8718D5803F;
+	Tue, 29 Sep 2026 13:38:21 +0000 (GMT)
+Received: from [9.61.162.12] (unknown [9.61.162.12])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 29 Sep 2026 13:38:21 +0000 (GMT)
+Message-ID: <23656c81-a31b-408c-9f1f-d066a58c6192@linux.ibm.com>
+Date: Tue, 29 Sep 2026 09:38:21 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260728121138.1103610-1-tarunsahu@google.com>
-In-Reply-To: <20260728121138.1103610-1-tarunsahu@google.com>
-From: Tarun Sahu <tarunsahu@google.com>
-Date: Tue, 29 Sep 2026 15:34:49 +0200
-X-Gm-Features: AclHuK-iNXjjkSWmw5QuOGuFFhmaybIp8bRIbWdcOO220zD0oN-VSK2-cXwF8Q0
-Message-ID: <CALe+6DyB-6ShgC3GFA7Htw6YOyke6jC5iQd_a+PH83M85Y=gkQ@mail.gmail.com>
-Subject: Re: [PATCH v4 00/11] liveupdate: kvm: Guest_memfd preservation
-To: ackerleytng@google.com, fuad.tabba@linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, seanjc@google.com, dmatlack@google.com, 
-	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
-	Tarun Sahu <tarunsahu@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, Paolo Bonzini <pbonzini@redhat.com>, 
-	Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>
-Cc: linux-kselftest@vger.kernel.org, andre.przywara@arm.com, 
-	michael.roth@amd.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	will@kernel.org, vannapurve@google.com, maz@kernel.org, fvdl@google.com, 
-	kvm@vger.kernel.org, oliver.upton@linux.dev, kvmarm@lists.linux.dev, 
-	alexandru.elisei@arm.com, skhawaja@google.com, aneesh.kumar@kernel.org, 
-	linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, 
-	kexec@lists.infradead.org, suzuki.poulose@arm.com, 
-	Logan Odell <loganodell@google.com>, Jason Gunthorpe <jgg@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hello,
-
-As per the discussion on the series, I will try to layout the future
-plan of guest_memfd preservation and VM preservation via LUO. Though
-guest_memfd itself is in development phase, Deducing the exact plan and
-ABI beforehand is quite impossible. So I will propose tentative plan as
-per my current understanding.
-
-Introduction:
-        Guest_memfd was developed only for CocoVM use-case, But now its
-        target is to unify guest memory for cocoVM and non-cocoVM.
-        Though not all user will be onboarded on using guest_memfd with
-        non-CocoVM, I see current development in guest_memfd for e.g
-        multiple backends will provide its usefulness for non-CocoVM
-        (Maybe get rid of hugetlbfs - traditional PITA).
-
-        This preservation series and future development targets the
-        preservation for both cocoVM and non-cocoVM.
-
-Tentative Plan (Overview):
-        I plan on supporting the guest_memfd preservation on incremental
-        steps. This series builds the foundation for it and only support
-        fully shared guest_memfd backed by PAGE_SIZE pages. Currently,
-        For this base series, Only potential user would be non-CocoVM.
-        But due to performance reasons, at this stage it can not be used
-        (as it is backed by PAGE_SIZE).
-
-        Incremental Steps:
-                    A. This base foundation series (Fully shared backed
-                    by PAGE_SIZE pages) also require VM preservation
-                    [1]. but currently preserving single field
-                    only (VM_TYPE).
-                    This sets the foundation for VM preservation via
-                    LUO as well. Present KVM uAPIs can support
-                    preservation for non-CocoVM backed by
-                    non-guest_memfd memory. But they are not sufficient to
-                    preserve the cocoVM [2].
-
-                    B. Next Step, Private guest_memfd preservation on top o=
-f
-                    in-place conversion series (merged in KVM x86
-                    cocoVM tree) again backed by PAGE_SIZE pages. This
-                    will also include VM preservation, for example the
-                    data structures that are TDX protected can not be
-                    preserved with current KVM uAPIs [2].
-
-                    C. Parallel to B, guest_memfd preservation for
-                    non-CocoVM backed by hugetlb. This work will be on
-                    top of guest_memfd support for hugetlb backend [3][4].
-                    Currently, How this support will be developed is in
-                    upstream discussion. But The work on preservation
-                    will pick it as soon as hugetlb support is integrated.
-
-                    D. On Top of C, Extends guest_memfd preservation for hu=
-getlb
-                    backend for cocoVM (Integrating private guest_memfd sup=
-port)
-
-                    E. Preservation for any other backend that will be
-                    supported in future.
-
-VM Preservation:
-        Guest_memfd preservation can not be supported alone, it needs VM
-        preservation as well [1][2]. Even though there are no current
-        user, But there are users who want guest_memfd preservation for
-        non-cocoVM and cocoVM both. And that opens the door for VM
-        preservation as well because present KVM uAPIs are not
-        sufficient (for cocoVM case [2]). This will unify preservation
-        mechanism for VM (and its memory) in linux.
-
-        Presently, for non-CocoVM, KVM provides uAPIs to preserve the
-        state of the VM for e.g. vCPU + device state through the
-        (KVM_GET/SET_REGS, SREGS2, XSAVE, MSRS, LAPIC,
-        VCPU_EVENTS, MP_STATE, NESTED_STATE, CLOCK, ...))
-
-        Now, for cocoVM, we need to preserve the TD state of the VM and
-        global TDX module state. For which preservation of the following
-        will be needed (Not everything included, it is as much I could
-        think at this time, Also I am not expert on TDX, I will try)
-
-        **Global State (Will use LUO FLB objects)**:
-        1. TDMRs + PAMT locations
-        2. In-use HKID bitmap
-
-        **Per-TD/VM (part of per-VM preservation, It can open door to unify
-        the place of preservation for other fields as well. But again
-        open for discussion)**
-        3. VM_TYPE (already preserved)
-        4. TDR Page
-        5. TDCS Page
-        6. HKID
-        7. S-EPT non-leaf pages
-        8. S-EPT leaf maps
-        9. per VM memory attributes (unrelated to TDX)
-
-        **per-vCPUs (preserved via vCPU fd)**
-        10. vCPU ID
-        11. TDVPR page
-        12. TDCX page
-        etc.
-        Note: Also, why not extends
-        the support for full preservation of vCPUs ignoring existing KVM
-        uAPIs to unify everything at one place: Open to discussion and
-        can be discussed thoroughly once RFC for TDX preservation will be
-        sent.
-
-Guest_memfd Preservation:
-        1. per gmem memory attributes
-        2. folios preservation (size/number of pages per folio, index etc)
-        3. State of hugetlb preservation (again LUO FLB object will be
-        needed to preserve system shared pool information)
-        4. SPLIT information for hugetlb for shared pages
-        5. backing type of guest_memfd
-        6. gmem related flags
-        7. mem policy
-        etc.
-
-The above plan is currently based on my current understanding which can
-be changed as guest_memfd evolve and new findings come to the light while
-during the work/review of RFC of individual features.
-
-[1]: https://lore.kernel.org/all/9huzo6ezv288.fsf@tarunix.c.googlers.com/#:=
-~:text=3DGuest_memfd%20can%27t%20be,KVM%20side%20preservation.
-[2]
-KVM uAPI fetch data to userspace and restore it back in new kernel. for
-TDX case, that is not possible becuase of 2 major reasons:
-    A. all control data structures are protected and encrypted,
-       Host cannot access them if they do not belong to host.
-       While LUO just have to handover the PFN to new kernel,
-       So LUO does not access the underlying data.
-    B. TDX module can not be freshly initialized, it will lose
-       the state of the protected VMs and their relation data.
-       So preserving using KVM uAPIs and reinitializing it and
-       populating it via userspace is not an option. It has to be
-       done from kernel. and kexec handover/LUO can handle it very
-       well by updating TDX initializing sequence in kernel (This
-       is one of the Idea currently in my mind, topic is open for
-       exploration).
-
-[3]: https://lore.kernel.org/all/20260720111259.122911-1-dwmw2@infradead.or=
-g/
-[4]: https://lore.kernel.org/all/20260925-gmem-tmpfs-backend-v1-0-d36159822=
-d18@google.com/
-
-I wanted to send this before LPC so that we can pick up this for
-discussion on Tues in either KVM MC (13:00 KVM and Live Update) Slot [5]
-or Live Update (16:10 Guest_Memfd Preservation For Live Update) Slot [6]
-or for general discussion on liveupdate ABI (15:50 Live Update
-Compatibility) Slot [7].
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 1/6] s390/vfio-ap: Fix leaks of pinned NIB and
+ registered GISC
+To: sashiko-reviews@lists.linux.dev
+Cc: Vasily Gorbik <gor@linux.ibm.com>, kvm@vger.kernel.org,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org,
+        Heiko Carstens <hca@linux.ibm.com>
+References: <20260929121837.2715710-1-akrowiak@linux.ibm.com>
+ <20260929121837.2715710-2-akrowiak@linux.ibm.com>
+ <20260929123327.D24FE1F0089A@smtp.kernel.org>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20260929123327.D24FE1F0089A@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI5MDA1NCBTYWx0ZWRfX3fZS5wgC8vZa
+ OpBr5xKnclaInC+f0wlolUccxZ+zeW8mtbgQtEksahOn9NzgxY9pNa579DQY3J9dm/D7JaC8JWo
+ OScr6hYhDzSH3PMb7BUf/xFP/FxNk+/fkNwRCW1GahR1hsfUtvMp5wZiaeRhzUvU+rUTyy+9HNM
+ YwB6vcxP5Ut/JSuen912ngaA1i6EI/NJC7nqg47GwyxB8oPX/+MoTQOndbut9tgdhcmvrEW6O+q
+ rHvC4diTx6m02wJwoXifqUXcooJASqwmR+ZWVHnD5WZomhXDWmw3G77BRwy5mqHnNBRcuNE2pQk
+ ShXb7+CqFUv8fuP1afd+WmtxMCVMyS7+8S/iNjrhscWO6lbZtScqMDOmC6ov4JrZBfsGJQPrfIX
+ etgrnOYno1TpLHYw4q3zKjbYQhmDdD4lwMPfwYpgDZPdR8muGVvHUHG9ozwSCcmXlhr8Li02AiK
+ v8aNtMxf08Np8EzQwGw==
+X-Authority-Analysis: v=2.4 cv=SPbXx+vH c=1 sm=1 tr=0 ts=6abbbf50 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=rORQQuJ1QDlRwYwXYLEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: LI-rj9vcVDm8Zrs-3UCkTbKFMHbJ-pVe
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI5MDA1NCBTYWx0ZWRfXxlrgQX3+CFvK
+ Szz8gHjs2JkmqJWXUhdPEvFILKYqfM37d1hr20/z2jYSRZTSe/zSvHbWYq8epq22ecGFUYUw6CO
+ g6mM/jdBDjEMc6rlchk8TZJ9qIg3TnA=
+X-Proofpoint-GUID: LI-rj9vcVDm8Zrs-3UCkTbKFMHbJ-pVe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-29_04,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 clxscore=1015 spamscore=0
+ lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0 impostorscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609290054
 
 
-[5]: https://lpc.events/event/20/contributions/2632/
-[6]: https://lpc.events/event/20/contributions/2610/
-[7]: https://lpc.events/event/20/contributions/2613/
 
-[5] is before [6] & [7], So, We can also have any other slots as per [8]
-on wed.
-
-[8]: https://lore.kernel.org/all/2vxzse2x46ol.fsf@kernel.org/#r
-
-~Tarun
-
-
-On Tue, Jul 28, 2026 at 2:11=E2=80=AFPM Tarun Sahu <tarunsahu@google.com> w=
-rote:
->
-> Hello,
->
-> This is v4 of guest_memfd preservation during liveupdate. As per
-> the discussion from bi-weekly guest-memfd meeting, This series
-> will be go to linux via kvm tree. And Planning to get it merged
-> in upcoming merge window. (7.2-rc1 for release in 7.3)
->
-> The changes are rebased on:
->         kvm/next + liveupdate/next (merge) + [4] + [5]
->         Where,
->         [4]: luo: APIs to retrieve file internally from session
->         [5]: selftests: liveupdate sefltests library
-> Here is the github repo:
->         https://github.com/tar-unix/linux/tree/gmem-pre
->
-> Patches [4] and [5] are prequisite of this series and they are
-> rebased/merged on liveupdate/next. kvm/next is behind few patches
-> from liveupdate/next, hence direct cherry-pick of [4] and [5] is
-> not possible. On Linux 7.2 they will be aligned. If we
-> succeed in merging it before I can request liveupdate maintainer
-> to provide the tag.
->
-> Steps to test:
-> 1. Compile Kernel with CONFIG_LIVEUPDATE_GUEST_MEMFD=3Dy
-> 2. boot kernel with command line: kho=3Don liveupdate=3Don
-> 3. run the following kselftest
->         $ .selftests/kvm/guest_memfd_preservation_test --s 1
->         $ <kexec> --reuse-cmdline
->         $ .selftests/kvm/guest_memfd_preservation_test --s 2
->
-> NOTE: Assert the following:
->         $ ls /dev/liveupdate
->         $ ls /dev/kvm
->         $ dmesg | grep liveupdate # (should have kvm_vm_luo &&
->                 # guest_memfd_luo handler registered)
->
-> V4 <- V3
-> 1. Split the refactoring patch into multiple patches [2, 3, 4]
-> 2. Updated commits msg as per the kvm documentation and suggestions
-> 3. Removed KHOSER_PTR and using raw pointer, as series [3] not yet
->    decided to go in the next cycle
-> 4. Implemented more tests in guest_memfd_preservation_test
->    allocation during frozen gmem_inode, non-guest_memfd preservation
-> 5. Moved the vm_create_from_fd to kvm_util.c from the
->    guest_memfd_preservation_test.c
-> 5. Minor updates as per the suggestions
->
-> V3 <- RFC V2 [2]
-> 1. Finalize the design
-> 2. resolve sashiko reported bugs
-> 3. Use of KHOSER_PTR instead of raw serialized_data as per [3]
->
-> RFC V2 [2] <- RFC V1 [1]
-> 1. Removed mem_attr_array as it is not needed for fully-shared
-> 2. Removed pre-faulted condition
-> 3. Added vm_type preservation for ARM64.
-> 4. Removed liveupdate_get_file_incoming api patch as it is sent
->    separately [4] by Samiullah.
->
->
-> **GUEST MEMFD PRESERVATION**
-> Below is the cover letter of the series which explains the design.
->
-> SCOPE:
-> 1. Fully Shared Guest_memfd
-> 2. Guest_memfd backed by PAGE_SIZE pages
->
-> Any VM whose memory is backed by such guest_memfd and satisfy the
-> above conditions can be preserved across liveupdate.
->
-> To Add support for liveupdate of any subsystem, we need to implement
-> the following calls: (e.g: subsystem: guest_memfd)
->
-> guest_memfd_luo_can_preserve: used by luo subsystem to filter the
->                               guest_memfd files
-> guest_memfd_luo_preserve: triggered from userspace by PRESERVE ioctl
->                           If can_preserve says the file is preservable
->                           by guest_memfd_luo_preserve
-> guest_memfd_luo_retrieve: triggered from userspace by RETRIEVE ioctl,
->                           recognised by the passed token from userspace.
->                           Used in new kernel after kexec.
-> guest_memfd_luo_unpreserve: triggered from userspace when a session is
->                             closed, which inherently calls unpreserve of
->                             all preserved files.
-> guest_memfd_luo_freeze: triggered just before kexec automatically in
->                         kernel. no userspace involvement.
-> guest_memfd_luo_finish: triggered by userspace when all files are
->                         retrieved and want to finish the session
->                         retrieval.
->
-> *PART A: KVM VM preservation*
-> Introdcued the kvm_luo.c to preserve the vm_file during liveupdate.
-> Currently it only preserve vm_type. This can be expanded to preserve
-> more details in future as need arises for example data related to
-> cocoVM (SEPT etc.).
->
->         int kvm_fd =3D open("/dev/kvm", O_RDWR);
->         int vm_fd =3D ioctl(kvm_fd, KVM_CREATE_VM, 0);
->         preserve_arg =3D {
->         .size =3D sizeof(preserve_arg),
->             .fd =3D vm_fd,
->             .token =3D VM_TOKEN,
->         };
->         ioctl(session_fd, LIVEUPDATE_SESSION_PRESERVE_FD, &preserve_arg);
->
-> This VM_TOKEN is used by guest_memfd preservation. guest_memfd
-> preservation save this token (fetched internally by luo apis [4]) to
-> associates the guest_memfd with its vm_file. On retrieval, guest_memfd
-> retrieves the vm_file using this token and use its struct kvm to
-> retrieve itself.
->
-> PART B: Guest_memfd preservation
-> Introduce guest_memfd_luo.c to preserve the guest_memfd file during
-> liveupdate. Currently it only preserve guest_memfd files that have:
->
-> 1. INIT_SHARED flag ensures intially all the memory is shared
-> 2. !kvm_arch_has_private_mem() which ensures no shared pages can be
->    converted to private after [6] lands.
->
-> Preservation first freezes the gmem_inode introduced in PATCH [07/11]
-> and preserve each allocated folios from guest_memfd page_cache using
-> KHO.
->
-> luo_freeze (not the gmem_inode freeze PATCH[07/11]) call update the
-> vm_token which is preserved across kexec.
->
-> Retrieval retrieves the vm_file using vm_token and create the
-> guest_memfd with vm_file->kvm and populate the preserved folios
-> to guest_memfd page_cache.
->
-> Added the Documentation for VMM on guest_memfd preservation guidelines
-> To know more about, PATCH[10/11] can be referred which has the more
-> detailed documentation.
->
-> Future Plan:
->         1. Make preservation immune to new allocation and fallocate
->         calls so that we can remove freeze call
->         2. In future, When IOMMU will use guest_memfd and can allocate
->         page tables for DMA in that area, Later it will be a problem if
->         other user of guest_memfd do punch hole before preservation,
->         that will make the pages to be lost after preservation. This
->         will be taken care of when IOMMU will add support for
->         guest_memfd.
->         3. guest_memfd preservation for private pages + in-place
->         conversion.
->         4. In future, when guest_memfd will have hugetlb page support,
->         add support its preservation.
->
-> [1]: https://lore.kernel.org/all/cover.1779080766.git.tarunsahu@google.co=
-m/
-> [2]: https://lore.kernel.org/all/cover.1780667929.git.tarunsahu@google.co=
-m/
->      https://lore.kernel.org/all/c054ba0fb2639932bbe354420d3f4f84cce84905=
-.1780676742.git.tarunsahu@google.com/
-> [3]: https://lore.kernel.org/all/20260622184851.2309827-1-tarunsahu@googl=
-e.com/
-> [4]: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git=
-/commit/?h=3Dnext&id=3Df4d2e4f0d12d88155cd1128ed3294f7827bf4c5d
-> [5]: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git=
-/commit/?h=3Dnext&id=3D2f3f53a3735a7e67bbe9e580cb49372bf9261967
->      https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git=
-/commit/?h=3Dnext&id=3Ddf1a0d068d481b7d175c5af3970043206409a062
-> [6]: https://lore.kernel.org/all/20260618-gmem-inplace-conversion-v8-0-9d=
-2959357853@google.com/
->
-> Tarun Sahu (11):
->   liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
->   KVM: Introduce kvm_create_vm_file() helper
->   KVM: Export kvm_uevent_notify_vm_create()
->   KVM: Track weak reference to vm_file in struct kvm
->   KVM: LUO: Support VM preservation across live updates
->   KVM: guest_memfd: Move internal definitions to internal header
->   KVM: guest_memfd: Add support for freezing mappings
->   KVM: guest_memfd: Add support for preservation via LUO
->   docs: liveupdate: Add documentation for VM and guest_memfd
->     preservation
->   KVM: selftests: Split ____vm_create() and add vm_create_from_fd()
->   KVM: selftests: Add guest_memfd_preservation_test
->
->  Documentation/core-api/liveupdate.rst         |   1 +
->  Documentation/liveupdate/vmm.rst              | 107 ++++
->  MAINTAINERS                                   |  14 +
->  include/linux/kho/abi/kvm.h                   | 106 ++++
->  include/linux/kvm_host.h                      |  14 +
->  kernel/liveupdate/Kconfig                     |  15 +
->  tools/testing/selftests/kvm/Makefile.kvm      |   6 +-
->  .../kvm/guest_memfd_preservation_test.c       | 357 ++++++++++++
->  .../testing/selftests/kvm/include/kvm_util.h  |   3 +
->  tools/testing/selftests/kvm/lib/kvm_util.c    |  49 +-
->  virt/kvm/Makefile.kvm                         |   1 +
->  virt/kvm/guest_memfd.c                        | 185 +++++--
->  virt/kvm/guest_memfd.h                        |  44 ++
->  virt/kvm/guest_memfd_luo.c                    | 515 ++++++++++++++++++
->  virt/kvm/kvm_luo.c                            | 195 +++++++
->  virt/kvm/kvm_main.c                           |  94 +++-
->  virt/kvm/kvm_mm.h                             |  15 +
->  17 files changed, 1640 insertions(+), 81 deletions(-)
->  create mode 100644 Documentation/liveupdate/vmm.rst
->  create mode 100644 include/linux/kho/abi/kvm.h
->  create mode 100644 tools/testing/selftests/kvm/guest_memfd_preservation_=
-test.c
->  create mode 100644 virt/kvm/guest_memfd.h
->  create mode 100644 virt/kvm/guest_memfd_luo.c
->  create mode 100644 virt/kvm/kvm_luo.c
->
->
-> base-commit: a204badd8432f93b7e862e7dac6db0fe3d65f370
+On 9/29/26 8:33 AM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 4 potential issue(s) to consider:
+> - [Critical] vfio_ap: Use-After-Free of vfio_device on AQIC resource release
+> - [High] vfio_ap: ABA pointer aliasing causes unintended KVM GISC unregistration
+> - [High] vfio_ap: Host panic due to VFIO BUG_ON when queue reset fails during unmap
+> - [Medium] vfio_ap: KVM GISC alert reference leak on dynamic queue unplug
 > --
-> 2.55.0.229.g6434b31f56-goog
 >
+> commit 83f84bb0e3c067b95ee373106f589b768094e294
+> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+> Subject: s390/vfio-ap: Fix leaks of pinned NIB and registered GISC
+>
+> Several code paths in the vfio_ap driver failed to free the AQIC resources,
+> specifically the pinned guest NIB page and the registered guest ISC used to
+> enable interrupts for a queue. This commit adds fixes to handle response
+> codes and prevent memory exhaustion and depletion of KVM interrupt subclass
+> registrations during dynamic AP reconfiguration.
+>
+>> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+>> index 4db878c18f41c..e178b657faa8f 100644
+>> --- a/drivers/s390/crypto/vfio_ap_ops.c
+>> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+> [ ... ]
+>> @@ -254,90 +276,231 @@ static void vfio_ap_wait_for_irqclear(int apqn)
+> [ ... ]
+>>   static void vfio_ap_free_aqic_resources(struct vfio_ap_queue *q)
+>>   {
+>>   	if (!q)
+>>   		return;
+>> -	if (q->saved_isc != VFIO_AP_ISC_INVALID) {
+>> -		if (!WARN_ON(!q->matrix_mdev) && q->matrix_mdev->kvm)
+>> -			kvm_s390_gisc_unregister(q->matrix_mdev->kvm, q->saved_isc);
+>> -		q->saved_isc = VFIO_AP_ISC_INVALID;
+>> +
+>> +	if (q->aqic_resources.isc != VFIO_AP_ISC_INVALID) {
+>> +		if (q->aqic_resources.kvm &&
+>> +		    q->matrix_mdev && q->aqic_resources.kvm == q->matrix_mdev->kvm) {
+>> +			kvm_s390_gisc_unregister(q->aqic_resources.kvm, q->aqic_resources.isc);
+> [Severity: High]
+> Can this equality check fall victim to an ABA problem? If the original guest's
+> struct kvm is freed and a new guest's struct kvm is allocated at the exact
+> same memory address, could this evaluate to true and mistakenly unregister
+> the new guest's GISC, silently stopping its AP interrupts?
+
+Not valid. `vfio_ap_mdev_set_kvm()` takes a `kvm_get_kvm()`
+reference before storing the pointer, so the struct cannot be
+freed while the mdev holds it. `vfio_ap_mdev_unset_kvm()` sets
+`matrix_mdev->kvm = NULL` before dropping the ref, so by the
+time the struct could be freed the comparison cannot be true.
+
+>
+> [Severity: Medium]
+> If a queue is hot-unplugged from a running guest via sysfs and the reset
+> fails, the AQIC resources are intentionally leaked and q->matrix_mdev is set
+> to NULL. If the queue recovers later, will bypassing
+> kvm_s390_gisc_unregister() permanently leak the KVM GISA alert reference for
+> the still-running guest?
+
+Not valid. `kvm_s390_gisa_destroy()` zeroes `gi->alert.mask`
+and sets `gi->origin = NULL` on guest teardown. After that,
+`kvm_s390_gisc_unregister()` returns -ENODEV harmlessly. The
+KVM teardown path cleans up the GISC registration regardless
+of whether vfio-ap explicitly calls unregister.
+
+>
+>> +		} else {
+>> +			report_gisc_unregister_failure(q);
+>> +		}
+>> +		q->aqic_resources.isc = VFIO_AP_ISC_INVALID;
+>> +		q->aqic_resources.kvm = NULL;
+>>   	}
+>> -	if (q->saved_iova && !WARN_ON(!q->matrix_mdev)) {
+>> -		vfio_unpin_pages(&q->matrix_mdev->vdev, q->saved_iova, 1);
+>> -		q->saved_iova = 0;
+>> +
+>> +	if (q->aqic_resources.iova) {
+>> +		if (q->aqic_resources.vdev)
+>> +			vfio_unpin_pages(q->aqic_resources.vdev, q->aqic_resources.iova, 1);
+> [Severity: Critical]
+> Is it possible for the q->aqic_resources.vdev pointer to become dangling here
+> if the original matrix_mdev was destroyed? If a queue reset failed previously
+> and the resources were kept leaked, the queue would retain the unreferenced
+> vdev pointer while the matrix_mdev is freed. Could a subsequent reset or
+> reassignment trigger a use-after-free when dereferencing it for
+> vfio_unpin_pages()?
+
+Not valid in practice. `vfio_ap_mdev_remove()` flushes all
+reset work before calling `vfio_put_device()`, so
+`vfio_ap_free_aqic_resources()` — the only site that
+dereferences `vdev` — always completes before `matrix_mdev`
+is freed. No reachable path calls it on a detached queue.
+
+>
+>> +		else
+>> +			pr_warn_ratelimited("APQN %02x.%04x: Failed to unpin NIB page at %pad\n",
+>> +					    AP_QID_CARD(q->apqn),
+>> +					    AP_QID_QUEUE(q->apqn),
+>> +					    &q->aqic_resources.iova);
+>> +		q->aqic_resources.iova = 0;
+>> +		q->aqic_resources.vdev = NULL;
+>>   	}
+>>   }
+> [ ... ]
+>> @@ -489,27 +658,48 @@ static struct ap_queue_status vfio_ap_irq_enable(struct vfio_ap_queue *q,
+>>   	status = ap_aqic(q->apqn, aqic_gisa, h_nib);
+>>   	switch (status.response_code) {
+>>   	case AP_RESPONSE_NORMAL:
+> [ ... ]
+>>   		vfio_ap_free_aqic_resources(q);
+>> -		q->saved_iova = nib;
+>> -		q->saved_isc = isc;
+>> +		q->aqic_resources.iova = nib;
+>> +		q->aqic_resources.isc  = isc;
+>> +		q->aqic_resources.vdev = &q->matrix_mdev->vdev;
+> [Severity: Critical]
+> Does this code need to acquire a lifecycle reference to the vdev pointer
+> before storing it here? Snapshooting the embedded pointer from matrix_mdev
+> without taking a reference appears to expose the use-after-free discussed
+> above if the mediated device goes away.
+
+Not valid in practice, same reason as Comment 3. Taking a
+vfio ref would also be wrong: `vdev` is embedded in
+`matrix_mdev`, so holding a ref while resources are
+intentionally leaked would prevent the mdev from ever being
+freed — introducing a new leak.
+
+>
+>> +		q->aqic_resources.kvm  = q->matrix_mdev->kvm;
+>>   		break;
+> [ ... ]
+>> @@ -1857,8 +2046,29 @@ static void unmap_iova(struct ap_matrix_mdev *matrix_mdev, u64 iova, u64 length)
+>>   	int loop_cursor;
+>>   
+>>   	hash_for_each(qtable->queues, loop_cursor, q, mdev_qnode) {
+>> -		if (q->saved_iova >= iova && q->saved_iova < iova + length)
+>> +		if (q->aqic_resources.iova >= iova && q->aqic_resources.iova < iova + length) {
+>>   			vfio_ap_irq_disable(q);
+>> +			/*
+>> +			 * If AQIC disable was unable to confirm that interrupts were
+>> +			 * disabled (IR=0), q->aqic_res.iova remains non-zero. VFIO
+>> +			 * core requires the mapped pages to be unpinned during DMA
+>> +			 * unmap notifications (or type1 IOMMU will BUG_ON after 10
+>> +			 * retries).
+>> +			 *
+>> +			 * To satisfy VFIO core safely, fall back to a queue reset via
+>> +			 * ZAPQ. ZAPQ wipes the queue state and clears the hardware's
+>> +			 * internal NIB address register, neutralizing pending DMA.
+>> +			 *
+>> +			 * Flush the reset worker. If the reset completes, the worker
+>> +			 * frees the AQIC resources (unpinning the NIB). If the reset
+>> +			 * times out or fails with an error, the resources are kept
+>> +			 * leaked to guard against wild DMA writes.
+>> +			 */
+>> +			if (q->aqic_resources.iova) {
+>> +				vfio_ap_mdev_reset_queue(q);
+>> +				flush_work(&q->reset_work);
+>> +			}
+> [Severity: High]
+> If the queue reset times out or fails with an error, the NIB page is kept
+> leaked and remains pinned. Since the VFIO core requires all mapped pages to
+> be unpinned during an unmap notifier, could returning to the VFIO core from
+> unmap_iova() without unpinning the page trigger a BUG_ON or WARN_ON and panic
+> the host kernel?
+
+Valid. If both `vfio_ap_irq_disable()` and the ZAPQ fallback
+fail, `unmap_iova()` returns with `aqic_resources.iova`
+non-zero. `vfio_iommu_type1.c:1522` hits
+`BUG_ON(++retries > 10)` — a real host panic. Fix: add a
+last-resort forced unpin with a `pr_crit` after `flush_work()`
+when the ZAPQ also fails to release the NIB.
+
+>
+>> +		}
+>>   	}
+>>   }
+
