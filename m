@@ -1,184 +1,182 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012049.outbound.protection.outlook.com [40.93.195.49])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9951D331202;
-	Tue, 29 Sep 2026 13:39:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790689194; cv=fail; b=QP/eRxhb1JOKlvzOoBDdcg/9HafZ2bOdSYUBoX0mE4rpTHDhLpRVLictdO0sOAVtkWisLM38lN2vF9xf0h9LuYm/xn3RXdkX5p9YEX2fF2WD0+2GUQOtPqHQ9E3WsRKmJzm1yKR10B+KZLOr0d3ihRQ+V1PoxXdWfMLgvlys9fw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790689194; c=relaxed/simple;
-	bh=jZhZ468FTagQfov/V0Lo1T+omqYn+46gJz3lTnnKjG4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=tI2Trjgvkor0/yDeiFiivFeca6G6O1Wt9NPfv7k1yZvh0o8CFyRcg6+z5Bm6YhVRirYFNBtolRQ5AN4VLZUL+VlM76ujFDL0PukMFxHYvc8yXyNfM3dcYsZFR+BGlxbwEdg7fQGwssNQesDZ8+g9CRZlFYp893xJj4XEl8Vyal8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Fhb47ryH; arc=fail smtp.client-ip=40.93.195.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AE952842D;
+	Tue, 29 Sep 2026 14:12:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790691157; cv=none; b=cPTeCEeYp9Fu/G1ShGpqY3qvToGR5hmxhAwHWNMivyk0bWsMsCogM3W03x3V02GUQ4psNjtfqHDD1DQ3AdJiJpyM2OS+Nrtdu0Mh3jNCgJT59Pvs22ZBWZLVOzQXHxnMDE2jRa1dmC4lmXMq4H4r9YL26RarqO6KrKIgKe4wbQs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790691157; c=relaxed/simple;
+	bh=KxYUde1/KEXNJejqTrFp4SUYsnBB9mXRBQ/AuHK+DCo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Hi8kkU8uVEzTiTWF6/jkOh79Dw7kP53HJuPaEtp3l8X55SrRjUnlNQzj3xYOW2cc2X/8XtGDHeqNWDUYiESySMaZLX8438JbtCPAMQZJTSC5KGXZq+v6uXFuLk44Ti8nTRkUyPcTf0fi+LH1AYQP/GbAlcPxn0B97f2k6So1yw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=WNfyQU9c; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Fhb47ryH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qdwzXQrDE+854oZmRxuLpBYDDDqFnPulVdPW5Ooh5hvRhXufxaLAbkQ2R2tsE3ddRdI1lnSVbot90W324mI73Czq9eTtSjh6sbvQEMmpvb0wmmPqEoQVqgWUB1q2WVPwnFKbSd7FadAq0n2GTCdBdQ+4AgAfxdsiq4DGXsIY8rYnelBIM0SYrYtOMgoVdBTrJXaHRB9wnYlO/zHRBqjnCTtgxdP+oK0VIuehTVIU+KXGfBx5TRjsRDy3ppbre71TJ2jurQTXfhS2G2JD3VljDiddjljD/egnzvVeyaf2JjIDnN485EMxsxPY6+pS4B2W/d5jeWrEbwawhWclTHtK7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/DKxUVmlUNMF84gqISxc316RKHl7RXsVcNh3QJRCEOY=;
- b=emObO0JqXuVN4wikCiK49bhO0r+5FoIOwBQd7lvQBBL1xTHYLYRqGGC4e1Owf0dig+GfNoAlHYxIwGYEYFpd4BfUkS5qPYyXkgbUVp5EV6MFqNG2yzGey7vNnR6kER02e4Cod63N17UJ0IcA9NLEAGnE31n6Qq5XHTJHIDyLm8iKhzXnhyWZwYIS30w0NgY6sjims6hKWqd5MxYd8c3nuQ2/+AcFPWOo2KUtI2LqzGAtaTbvN5sd+mgwnOgc4eSXvMUCUq/jJsEZH2V7diF6i10O/vGPIUpTtrFFnup/cCNPjjDVLLR6L6puFSXkybwyBicbqysU5FHCPPNr+8MSsA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/DKxUVmlUNMF84gqISxc316RKHl7RXsVcNh3QJRCEOY=;
- b=Fhb47ryHyYHVzE7RdYRQWpdeaCkDvvaImRX7MTP6wyfyYxdMQhaPJ+hfoWIuxRFfifPW+f1SAm5NqKGlfq1KBIEoc8aUX9z4cAJNCDb7wtwzprlhsmQdN4xwPBUUessAhOA9vz+NCz0GUbMHbnvNKvNT5kiKWhj+gJLlAVNl4TE=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by PH8PR12MB7352.namprd12.prod.outlook.com (2603:10b6:510:214::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.23; Tue, 29 Sep
- 2026 13:39:49 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%3]) with mapi id 15.21.0451.022; Tue, 29 Sep 2026
- 13:39:49 +0000
-Message-ID: <720dbac3-24f6-4c91-899e-e205865c1fd1@amd.com>
-Date: Tue, 29 Sep 2026 15:39:42 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 16/23] dma-buf: Let importers ask how peer-to-peer
- traffic is routed
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe
- <logang@deltatee.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, iommu@lists.linux.dev,
- Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
- Chaitanya Kulkarni <kch@nvidia.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jens Axboe
- <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
- Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Sumit Semwal <sumit.semwal@linaro.org>
-References: <20260928-fix-p2p-acs-v4-0-v8-0-404453b9c435@nvidia.com>
- <20260928-fix-p2p-acs-v4-0-v8-16-404453b9c435@nvidia.com>
- <607e8903-a979-4d78-bf08-447321c03119@amd.com>
- <20260929132305.GJ563127@unreal>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20260929132305.GJ563127@unreal>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0225.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:e4::17) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="WNfyQU9c"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
+	s=201707; t=1790691123;
+	bh=Aw7Hjrk1sBkpUcXdU7XN6UKj9w+0U2HAjIBfpJZKRPo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=WNfyQU9cFo10yl6/oCL5McnApoxTM1lNPigavhilb6ac/iMqQbs2+CTZNV71NdtyQ
+	 1Pyk2z/R7Cp2x/CWk2KXrJ1DFXPYrx9AJa5ZLzKWjhX7sZnDAPLbObovErSYy3u0r1
+	 DaUJ24j/AX7JR/CJ6ow7MG1GMd+v0qhH/Dg2k+V/aLD88bXkTEjU7UVjug/1koKAsV
+	 l7/F4EKw/FflF5aeqzk7An1xdxtr5SG/JCL4ECbh/YXmJ0xhteB93OXzBx3IfDcPI/
+	 8yTPHO/qGHhTFJJS+ROhm/wqKlCQaM4lkalfAsRnUr8++IZj4xrs2zwv2UM/F8HhqJ
+	 J6f2It0H3NHyQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4hvKqh2QQ3z4wDw;
+	Wed, 30 Sep 2026 00:11:59 +1000 (AEST)
+Message-ID: <cfc03c25-2900-48fa-bba0-01e3283232a5@ozlabs.org>
+Date: Tue, 29 Sep 2026 15:12:25 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|PH8PR12MB7352:EE_
-X-MS-Office365-Filtering-Correlation-Id: 68f22e0c-83c5-4bfc-bd3c-08df1e2f21fd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|6133799003|11063799006|4143699003|10067099003|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	CPl3uXOKx1EK6QBm/zE8m3N/tJQZ/Ja58aZeSzT9mD9aAKmuHdZQ270iVR7Wrhq9QbIm0birr0rUFyuhdWvjFp+igIGAdlmx4t9VA/CnYdm3kpqEw/ldsHuDm8RaTIuq1keYxvgtmCXvWQNsxRkEQjr/fASCtF+1IZhrdhWQSSLBO9znd2f5DQbFO60wSTDyKzdvDJbED/JUl0r4exFS8Wy9DMkB7DzoUtdkDH5CmyfQ4Ci/qlO6p8o/OpnYQwTABrdPKSP+eLZb/ixxW2DWG0nGVsWkA7dO+Vl0bMGlDKZ5xFmpfRRBEl0RrEH89CoSKScp2A1+pW8z11TbQDftMPFFGarGbVn6Y/lu6u7hOBMWXjdLPgjAVtymxTzHymXTv0dzOsBUrIOsTOkr22ewTgRnpGDsKtbJZPaMWU7Rm5R7lWRjOq58ReI9XyUhAXSFdG4hcenqQBU0ZK+OXjE24vVa1HSUn6Nt1VZpeXhdi6NxOZLz/Gva7ck6kLQmQPTJX6ztNPgMYOhJgYpo99vIa6/h8Pw/Op4khfqGOrQJwx9zj6OtmVl0KTr6rcU8Th1BDCHCTEGlE8kUYkNFrXUWpd2Qv46P7j1csZM+houmrjpnzErQRTD+qDPdfVM1pHP4
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(6133799003)(11063799006)(4143699003)(10067099003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YVZtR1hIWHBIMitzRXZNUnNxWXcrYVg3Yy90SzFlL3hQTnYzMXdaQkRmZVI2?=
- =?utf-8?B?NmhBL3hSK1FPTHpBM1pZVVFsejFQeFU4ZGpET3pIOWF6QjI2NXVxUnR4TkRr?=
- =?utf-8?B?WTFQMkZWYzBVbDJ5WEQ5TVJvb3lMcFI0MUFIckxwSWs5L2VJQyszNTZuM3dC?=
- =?utf-8?B?eEh5c01XSmh6OGRoUHRkdnZkWW9qUCtMSVVPWUtNWU5EWHhrUzFTamcxb3FH?=
- =?utf-8?B?emdYSlBUeEd0RmU1UTNMTWNmMTVKeTN6a3ZBbm9jVTIrNDhxb21RdDNxNjFw?=
- =?utf-8?B?MkV5MTdGN1k4VU1wd3B2bktRc285bUFwNm9SQ0g2Qk01OStsZ2g5RGw1bDdP?=
- =?utf-8?B?cklwZGRVRUdCaVRBSjk2KytsSWdpSEpDOGxPU2NneTdXMmZIMzRyc1B2YzBu?=
- =?utf-8?B?aTV2ZlJlK3hrSHFSeTgxWjQ0dGU1Nk8wbmdvYU1USXNNa290UzF4cGh3Ni9Z?=
- =?utf-8?B?djQ0a2tCbG0xdlk1S1lhM2xQaWcxQVBGUHMxV3RQMHA3YVFXRThiUm5PV1Er?=
- =?utf-8?B?L3QweForZk1jbC9TeHhYTGgxNEFiZVpURTFtUHhaY1hoenB1eXVnMlNmMUlh?=
- =?utf-8?B?QkhNbEsyVExhMGZCWFo1dUNRZ1YxVGhjamVqNDRIRUZwNTJya1plMFB1bnZ5?=
- =?utf-8?B?Mk0vLzNuUDlCWWNmOUZzMDJTdnQrRWF6SWhNMjBhY1ZCTlpjaEFFVzZTQ29S?=
- =?utf-8?B?a0RpdThpZTA2MVNGVlk5UnY3Nlk4ZVM4MENsbWZjcVo2YmQzTnV2ZGZOay8v?=
- =?utf-8?B?QmNEUU5CbEFGOFVaZ0tqMG9JZTBORVNuM0ZKUEtqTFBuS0FEbUEwc1NqcnAw?=
- =?utf-8?B?R0ErZUxObXVjTkk0THB5VW03ZHlQT1ZtUEpuMVdkK0dwbjNwdCtmYjVxT2RW?=
- =?utf-8?B?SHlOdzJENitiRGNwL0JzNThIeldzaTdIQ09ob3diLytjRldHOVVRWVFnNUUv?=
- =?utf-8?B?U054cEVOQ3h1SE1UejNZNnNFOGVuMHhWNUgxM2tRcTlmTHZISERGTlBTcWxU?=
- =?utf-8?B?VTBySVhWNFozWTdTOEViTmZTWjN3L3pCM25RZ24xZmFQc2Q5TWFVelU4cmhs?=
- =?utf-8?B?aVZnSkRxY1dTcm8raEtSdk1URGIrZkk0QjdBeHZtdElmL1RCc1BFa3lCUWlT?=
- =?utf-8?B?ZzM4RTN6MWpPYzFoNmVGQ2xqSlJ4ZVQwWnBTVEFmTzlaK0pJUXNiU0x1S2dG?=
- =?utf-8?B?Q3QweEpmRWswSjFaSjZha3ZMMzIzZTB6RFNHZ09pVzR4clRTeWdVVHFXb0E2?=
- =?utf-8?B?ZWVuQlIwdllqbWJsYVBsL2NLNWQrSGMwQXJOakxLdUJIektwZEd6bm5yR0Yw?=
- =?utf-8?B?YmxtZkZwbzRST0FUVjBnRytHNmgrMkp0d0U5YUpIZW5IcWovRXowZi9qV1Qz?=
- =?utf-8?B?STdOeWRXS2hpZXVVakNMZzg1NkYwaEltc0hMbGkzSVBsdkhvOFdyYnZWYWJm?=
- =?utf-8?B?Z0VWTm9hMmh0MWY0eW9MelBXQ0J5V1N1UjRObENFZTZqaS9mSjMydjY0eHVV?=
- =?utf-8?B?NjV5cnVQdUZZak9lRW5QWEdFVkRMcjJTSDNiWTdMOHF5Z3RzejBYUFprdHU0?=
- =?utf-8?B?bzE0QkJMM2R5TWhsaThFZ2pmZ0FMNmpldnRsU1JrUFIxQUJyU2Zud0pndVUv?=
- =?utf-8?B?U1J3YVNrQ0tnaEk1QjdLK1NOQ081cmF1eG03MnpUeTRHTG9zOG54WXZvZWYv?=
- =?utf-8?B?Tlg5N3FDTXRsVjhBVVBqbHlySFB2bXBiU2J1K1RqdGN2V1pwbnBZSFNlT0wv?=
- =?utf-8?B?dVV5ekJzK0ZXN2VsekZ5YlhkZWlxVEtzVDRNVGhYSFNNaTVaSkRJS09ieGd1?=
- =?utf-8?B?c0JjRHZ6OHkzRTlRZzVhMlI0eDZQNlVxdmVKa0trT0l5WFgwV2tJbklIME1Q?=
- =?utf-8?B?RXYwY1c5QllLbHRCandwUWh4aC83NDAyQTZDTEc3SmRJKzFpQy9KeG9vOFgv?=
- =?utf-8?B?YmpvUkdBZERWL0NjWXNydlhpUDg5ZXBGWDJmMmprYmpCMWFzYjJYREJIZ1Nn?=
- =?utf-8?B?clc2RTdTR3I2M3crNWd3M2dxSWdwOWczdFpWaDhkb0Q3TUx0eXErMC9NcHdK?=
- =?utf-8?B?ck40TzFqWmdvYnFUd25HaFJKb2oyTVZjQmVLMU03MjRvbXdTWHJCblYwM2l5?=
- =?utf-8?B?Y0h0UWc5NnFlTFVxSklLTmRxQnZ0ZmZ6bjdZQ0U2bnFUYzQzdEY2dFJEYmZl?=
- =?utf-8?B?WUcyeHc2a2ErYnV4dHNDZFo1QjNkUm10QVJvQndTNXp2MHFzN3BZWDJaSnVT?=
- =?utf-8?B?OC9lNmZRR0NJd1RjQnZVd2gzRjFycnBTK0x0bjVpWnVjM0tWV2lXOFVCdVpa?=
- =?utf-8?Q?0v59DNI3iCLVUbUDbJ?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 68f22e0c-83c5-4bfc-bd3c-08df1e2f21fd
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 13:39:49.4000
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1xoKwk7vvB7JVNQYGOC8b+MbPksqBNN1o6DVPkYOw/hVayeswQvM6UCLWrBhVLAv
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7352
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/9] vfio/pci: Remove DMABUF export dependency on
+ vdev->memory_lock
+Content-Language: en-GB
+To: sashiko-reviews@lists.linux.dev
+Cc: linux-pci@vger.kernel.org, media-ci@linuxtv.org, kvm@vger.kernel.org,
+ dri-devel@lists.freedesktop.org
+References: <20260924152159.49702-1-matt@ozlabs.org>
+ <20260924152159.49702-2-matt@ozlabs.org>
+ <20260924153737.951E71F000FF@smtp.kernel.org>
+From: Matt Evans <matt@ozlabs.org>
+In-Reply-To: <20260924153737.951E71F000FF@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 9/29/26 15:23, Leon Romanovsky wrote:
-> On Tue, Sep 29, 2026 at 11:34:05AM +0200, Christian König wrote:
->> On 9/28/26 13:19, Leon Romanovsky wrote:
-...>>
->>> +	return pci_p2pdma_map_type_tlp(provider, attach->dev, tlp_flags);
+Dear Robot,
+
+On 24/09/2026 16:37, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] vfio: incorrect initial DMABUF revoked state allows DMA to disabled BARs
+> --
+> 
+> commit fb51fe9e3cab37471d1c4237de83fcf89aad79f5
+> Author: Matt Evans <matt@ozlabs.org>
+> 
+> vfio/pci: Remove DMABUF export dependency on vdev->memory_lock
+> 
+> This commit introduces a new dmabuf_lock to protect the list of exported
+> DMABUFs and a new bars_revoked flag for tracking BAR revocation state. This
+> removes the dependency on vdev->memory_lock during DMABUF export in
+> preparation for future mmap refactoring.
+> 
+>> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+>> index 6757054e9d875..1f60661078313 100644
+>> --- a/drivers/vfio/pci/vfio_pci_core.c
+>> +++ b/drivers/vfio/pci/vfio_pci_core.c
+>> @@ -663,6 +663,7 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+>>   		vdev->has_vga = true;
+>>   
+>>   	vfio_pci_core_map_bars(vdev);
+>> +	vdev->bars_revoked = false;
+> 
+> [Severity: High]
+> Is this hardcoded initialization safe?
+
+I believe so -- this report seems to be incorrect.
+
+> Earlier in vfio_pci_core_enable(), pci_try_reset_function() is called,
+> which performs a fundamental reset that clears the device's
+> PCI_COMMAND_MEMORY bit in the physical hardware.
+
+First, on entering any driver probe, the PCIe function is enabled (MSE=1).
+
+The HW FLR does indeed clear MSE, but pci_try_reset_function() 
+saves/restores config space either side of the reset:  since it starts 
+out enabled, the pci_dev_restore(dev) in there means that 
+PCI_COMMAND_MEMORY is re-enabled after the reset.
+
+And for a device that doesn't have a reset method, MSE is never cleared 
+so is also enabled through vfio_pci_core_enable().
+
+> Then vfio_config_init() populates the virtual config space by reading from
+> the hardware, capturing PCI_COMMAND_MEMORY == 0. Does initializing
+> bars_revoked to false here fail to match that initial virtual config state?
+
+vfio_config_init() runs after the above has restored/left MSE=1, so the 
+vconfig captures memory enabled.
+
+So, vdev->bars_revoked = false is correct here.  (I had considered 
+initialising it based on the read value of MSE, but I can't see a way 
+for MSE to be 0 here.)
+
+>>   
+>>   	return 0;
+>>   
+> 
+> [ ... ]
+> 
+>> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
+>> index c16f460c01d68..847ee5cc78e7f 100644
+>> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
+>> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> 
+> [ ... ]
+> 
+>> @@ -305,12 +305,27 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
+>>   
+>>   	/* dma_buf_put() now frees priv */
+>>   	INIT_LIST_HEAD(&priv->dmabufs_elm);
+>> -	down_write(&vdev->memory_lock);
+>> +
+>> +	/*
+>> +	 * dmabuf_lock synchronises access (R) or updates (W) to the
+>> +	 * vdev->dmabufs list and to bars_revoked (see below).  The
+>> +	 * revocation state of DMABUF elements in the list is written
+>> +	 * holding both dmabuf_lock(W) and resv, and tested with
+>> +	 * either.
+>> +	 *
+>> +	 * dmabuf_lock -> resv
+>> +	 *
+>> +	 * vdev->bars_revoked tracks the BAR revocation status updated
+>> +	 * via vfio_pci_dma_buf_move(), so the initial DMABUF state
+>> +	 * follows the same criteria that later update the DMABUF
+>> +	 * state (BAR zap, etc.).
+>> +	 */
+>> +	down_write(&vdev->dmabuf_lock);
+>>   	dma_resv_lock(priv->dmabuf->resv, NULL);
+>> -	priv->revoked = !__vfio_pci_memory_enabled(vdev);
+>> +	priv->revoked = vdev->bars_revoked;
+> 
+> [Severity: High]
+> Can this incorrect initial state allow P2P DMA to disabled BARs?
+
+Nope.
+
+> If userspace exports a DMABUF at this point,
+
+Above, the flag value is correct, but also one can't export a DMABUF 
+from a VFIO device that hasn't completed initialisation.
+
+
+Matt
+
+> the DMABUF inherits the
+> un-revoked state from vdev->bars_revoked (false), bypassing the correct
+> state evaluation.
+> 
+> Could this permit P2P DMA to this DMABUF to be allowed by the kernel but
+> dropped by the endpoint since memory decoding is disabled? This would trigger
+> PCIe Unsupported Request (UR) errors, which could potentially be weaponized
+> by unprivileged users controlling the VFIO device to trigger AER and crash
+> the host.
+> 
+>>   	list_add_tail(&priv->dmabufs_elm, &vdev->dmabufs);
+>>   	dma_resv_unlock(priv->dmabuf->resv);
+>> -	up_write(&vdev->memory_lock);
+>> +	up_write(&vdev->dmabuf_lock);
 >>
->> This function call here *must* be in the exporter and not the DMA-buf framework.
->>
->> So clear NAK to putting that here.
 > 
-> "Look, it is easy to complain you don't like how it looks, but this
-> stuff is hard there are lots of competing concerns, if you have a
-> better idea now is a good time to present it."
-> https://lore.kernel.org/all/20260921130858.GO11599@ziepe.ca/#t
-> 
-> Do you have a viable solution?
-
-Ok, that sounds like you haven't understood why I'm rejecting this.
-
-By moving the calls to pci_p2pdma functions into DMA-buf you bypass the NAK to expose those functions to drivers from the DMA maintainers.
-
-I unfortunately didn't understood that when the dma-buf-mapping.c code was added and just assumed that you just needed a place to put some common code.
-
-So as long as that NAK from the DMA maintainers to expose the pci_p2p functions to drivers stand I will push hard to get that stuff removed again from DMA-buf as well.
-
-What you try to do here is seriously not ok and I will push back hard on that in the future.
-
-Regards,
-Christian.
-
-> 
-> Thanks
-> 
->>
->> Regards,
->> Christian.
 
